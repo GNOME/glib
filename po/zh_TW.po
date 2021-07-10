@@ -10,16 +10,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.64\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2020-10-01 16:40+0000\n"
-"PO-Revision-Date: 2020-10-12 22:54+0800\n"
-"Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
-"Language-Team: Chinese (Traditional) <zh-l10n@lists.linux.org.tw>\n"
+"POT-Creation-Date: 2021-03-27 11:34+0000\n"
+"PO-Revision-Date: 2021-04-26 06:53+0000\n"
+"Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
+"Language-Team: Chinese (Traditional) <http://darkbear.ddns.net/projects/"
+"gnome-40/glib-glib-2-68-zh_tw/zh_Hant/>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.4.1\n"
+"X-Generator: Weblate 4.6\n"
 
 #: gio/gapplication.c:500
 msgid "GApplication options"
@@ -58,90 +59,90 @@ msgstr "顯示版本"
 msgid "Print version information and exit"
 msgstr "輸出版本資訊並離開"
 
-#: gio/gapplication-tool.c:52
+#: gio/gapplication-tool.c:53
 msgid "List applications"
 msgstr "列出應用程式"
 
-#: gio/gapplication-tool.c:53
+#: gio/gapplication-tool.c:54
 msgid "List the installed D-Bus activatable applications (by .desktop files)"
 msgstr "列出已安裝可使用 D-Bus 的應用程式 (依 .desktop 檔案)"
 
-#: gio/gapplication-tool.c:55
+#: gio/gapplication-tool.c:57
 msgid "Launch an application"
 msgstr "執行應用程式"
 
-#: gio/gapplication-tool.c:56
+#: gio/gapplication-tool.c:58
 msgid "Launch the application (with optional files to open)"
 msgstr "執行應用程式 (選擇性加上要開啟的檔案)"
 
-#: gio/gapplication-tool.c:57
+#: gio/gapplication-tool.c:59
 msgid "APPID [FILE…]"
 msgstr "APPID [FILE...]"
 
-#: gio/gapplication-tool.c:59
+#: gio/gapplication-tool.c:61
 msgid "Activate an action"
 msgstr "讓動作生效"
 
-#: gio/gapplication-tool.c:60
+#: gio/gapplication-tool.c:62
 msgid "Invoke an action on the application"
 msgstr "呼叫應用程式的動作"
 
-#: gio/gapplication-tool.c:61
+#: gio/gapplication-tool.c:63
 msgid "APPID ACTION [PARAMETER]"
 msgstr "APPID ACTION [PARAMETER]"
 
-#: gio/gapplication-tool.c:63
+#: gio/gapplication-tool.c:65
 msgid "List available actions"
 msgstr "列出可用的動作"
 
-#: gio/gapplication-tool.c:64
+#: gio/gapplication-tool.c:66
 msgid "List static actions for an application (from .desktop file)"
 msgstr "列出應用程式的靜態動作 (從 .desktop 檔案)"
 
-#: gio/gapplication-tool.c:65 gio/gapplication-tool.c:71
+#: gio/gapplication-tool.c:67 gio/gapplication-tool.c:73
 msgid "APPID"
 msgstr "APPID"
 
-#: gio/gapplication-tool.c:70 gio/gapplication-tool.c:133 gio/gdbus-tool.c:102
+#: gio/gapplication-tool.c:72 gio/gapplication-tool.c:135 gio/gdbus-tool.c:106
 #: gio/gio-tool.c:224
 msgid "COMMAND"
 msgstr "指令"
 
-#: gio/gapplication-tool.c:70
+#: gio/gapplication-tool.c:72
 msgid "The command to print detailed help for"
 msgstr "顯示詳細求助的指令"
 
-#: gio/gapplication-tool.c:71
+#: gio/gapplication-tool.c:73
 msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr "D-Bus 格式的應用程式識別碼（例如：org.example.viewer）"
 
-#: gio/gapplication-tool.c:72 gio/glib-compile-resources.c:738
+#: gio/gapplication-tool.c:74 gio/glib-compile-resources.c:738
 #: gio/glib-compile-resources.c:744 gio/glib-compile-resources.c:772
 #: gio/gresource-tool.c:500 gio/gresource-tool.c:566
 msgid "FILE"
 msgstr "FILE"
 
-#: gio/gapplication-tool.c:72
+#: gio/gapplication-tool.c:74
 msgid "Optional relative or absolute filenames, or URIs to open"
 msgstr "選擇性相對或絕對的檔案名稱，或要開啟的 URI"
 
-#: gio/gapplication-tool.c:73
+#: gio/gapplication-tool.c:75
 msgid "ACTION"
 msgstr "動作"
 
-#: gio/gapplication-tool.c:73
+#: gio/gapplication-tool.c:75
 msgid "The action name to invoke"
 msgstr "要呼叫的動作名稱"
 
-#: gio/gapplication-tool.c:74
+#: gio/gapplication-tool.c:76
 msgid "PARAMETER"
 msgstr "參數"
 
-#: gio/gapplication-tool.c:74
+#: gio/gapplication-tool.c:76
 msgid "Optional parameter to the action invocation, in GVariant format"
 msgstr "動作呼叫時選擇性的參數，以 GVariant 格式"
 
-#: gio/gapplication-tool.c:96 gio/gresource-tool.c:531 gio/gsettings-tool.c:659
+#: gio/gapplication-tool.c:98 gio/gresource-tool.c:531 gio/gsettings-tool.c:659
 #, c-format
 msgid ""
 "Unknown command %s\n"
@@ -150,26 +151,26 @@ msgstr ""
 "不明指令 %s\n"
 "\n"
 
-#: gio/gapplication-tool.c:101
+#: gio/gapplication-tool.c:103
 msgid "Usage:\n"
 msgstr "用法：\n"
 
-#: gio/gapplication-tool.c:114 gio/gresource-tool.c:556
+#: gio/gapplication-tool.c:116 gio/gresource-tool.c:556
 #: gio/gsettings-tool.c:694
 msgid "Arguments:\n"
 msgstr "引數：\n"
 
-#: gio/gapplication-tool.c:133 gio/gio-tool.c:224
+#: gio/gapplication-tool.c:135 gio/gio-tool.c:224
 msgid "[ARGS…]"
 msgstr "[ARGS...]"
 
-#: gio/gapplication-tool.c:134
+#: gio/gapplication-tool.c:136
 #, c-format
 msgid "Commands:\n"
 msgstr "指令：\n"
 
 #. Translators: do not translate 'help', but please translate 'COMMAND'.
-#: gio/gapplication-tool.c:146
+#: gio/gapplication-tool.c:148
 #, c-format
 msgid ""
 "Use “%s help COMMAND” to get detailed help.\n"
@@ -178,7 +179,7 @@ msgstr ""
 "使用「'%s help COMMAND」以取得詳細的求助。\n"
 "\n"
 
-#: gio/gapplication-tool.c:165
+#: gio/gapplication-tool.c:167
 #, c-format
 msgid ""
 "%s command requires an application id to directly follow\n"
@@ -187,13 +188,13 @@ msgstr ""
 "%s 指令需要應用程式 id 直接跟隨\n"
 "\n"
 
-#: gio/gapplication-tool.c:171
+#: gio/gapplication-tool.c:173
 #, c-format
 msgid "invalid application id: “%s”\n"
 msgstr "無效的應用程式 id：「%s」\n"
 
 #. Translators: %s is replaced with a command name like 'list-actions'
-#: gio/gapplication-tool.c:182
+#: gio/gapplication-tool.c:184
 #, c-format
 msgid ""
 "“%s” takes no arguments\n"
@@ -202,21 +203,21 @@ msgstr ""
 "「%s」不需要引數\n"
 "\n"
 
-#: gio/gapplication-tool.c:266
+#: gio/gapplication-tool.c:268
 #, c-format
 msgid "unable to connect to D-Bus: %s\n"
 msgstr "無法連接到 D-Bus：%s\n"
 
-#: gio/gapplication-tool.c:286
+#: gio/gapplication-tool.c:288
 #, c-format
 msgid "error sending %s message to application: %s\n"
 msgstr "傳送 %s 訊息到應用程式時發生錯誤：%s\n"
 
-#: gio/gapplication-tool.c:317
+#: gio/gapplication-tool.c:319
 msgid "action name must be given after application id\n"
 msgstr "動作名稱必須在應用程式 id 之後\n"
 
-#: gio/gapplication-tool.c:325
+#: gio/gapplication-tool.c:327
 #, c-format
 msgid ""
 "invalid action name: “%s”\n"
@@ -225,25 +226,25 @@ msgstr ""
 "無效的動作名稱：「%s」\n"
 "動作名稱必須只由字母、「-」和「.」組成\n"
 
-#: gio/gapplication-tool.c:344
+#: gio/gapplication-tool.c:346
 #, c-format
 msgid "error parsing action parameter: %s\n"
 msgstr "解析動作參數時發生錯誤：%s\n"
 
-#: gio/gapplication-tool.c:356
+#: gio/gapplication-tool.c:358
 msgid "actions accept a maximum of one parameter\n"
 msgstr "動作最大只能接受一個參數\n"
 
-#: gio/gapplication-tool.c:411
+#: gio/gapplication-tool.c:413
 msgid "list-actions command takes only the application id"
 msgstr "list-actions 指令只接受應用程式 id"
 
-#: gio/gapplication-tool.c:421
+#: gio/gapplication-tool.c:423
 #, c-format
 msgid "unable to find desktop file for application %s\n"
 msgstr "無法找到應用程式的桌面檔案 %s\n"
 
-#: gio/gapplication-tool.c:466
+#: gio/gapplication-tool.c:468
 #, c-format
 msgid ""
 "unrecognised command: %s\n"
@@ -253,8 +254,8 @@ msgstr ""
 "\n"
 
 #: gio/gbufferedinputstream.c:420 gio/gbufferedinputstream.c:498
-#: gio/ginputstream.c:179 gio/ginputstream.c:379 gio/ginputstream.c:617
-#: gio/ginputstream.c:1019 gio/goutputstream.c:223 gio/goutputstream.c:1049
+#: gio/ginputstream.c:179 gio/ginputstream.c:379 gio/ginputstream.c:646
+#: gio/ginputstream.c:1048 gio/goutputstream.c:223 gio/goutputstream.c:1049
 #: gio/gpollableinputstream.c:205 gio/gpollableoutputstream.c:277
 #, c-format
 msgid "Too large count value passed to %s"
@@ -265,11 +266,11 @@ msgstr "傳給 %s 的計數值太大"
 msgid "Seek not supported on base stream"
 msgstr "不支援在基礎串流中搜尋"
 
-#: gio/gbufferedinputstream.c:937
+#: gio/gbufferedinputstream.c:938
 msgid "Cannot truncate GBufferedInputStream"
 msgstr "不能截短 GBufferedInputStream"
 
-#: gio/gbufferedinputstream.c:982 gio/ginputstream.c:1208 gio/giostream.c:300
+#: gio/gbufferedinputstream.c:983 gio/ginputstream.c:1237 gio/giostream.c:300
 #: gio/goutputstream.c:2198
 msgid "Stream is already closed"
 msgstr "串流已經關閉"
@@ -278,7 +279,7 @@ msgstr "串流已經關閉"
 msgid "Truncate not supported on base stream"
 msgstr "在基礎串流中不支援截短(truncate)"
 
-#: gio/gcancellable.c:319 gio/gdbusconnection.c:1862 gio/gdbusprivate.c:1413
+#: gio/gcancellable.c:319 gio/gdbusconnection.c:1872 gio/gdbusprivate.c:1416
 #: gio/gsimpleasyncresult.c:871 gio/gsimpleasyncresult.c:897
 #, c-format
 msgid "Operation was cancelled"
@@ -297,23 +298,23 @@ msgid "Not enough space in destination"
 msgstr "在目的端中沒有足夠的空間"
 
 #: gio/gcharsetconverter.c:342 gio/gdatainputstream.c:848
-#: gio/gdatainputstream.c:1261 glib/gconvert.c:448 glib/gconvert.c:878
-#: glib/giochannel.c:1564 glib/giochannel.c:1606 glib/giochannel.c:2461
+#: gio/gdatainputstream.c:1266 glib/gconvert.c:448 glib/gconvert.c:878
+#: glib/giochannel.c:1573 glib/giochannel.c:1615 glib/giochannel.c:2470
 #: glib/gutf8.c:875 glib/gutf8.c:1328
 msgid "Invalid byte sequence in conversion input"
 msgstr "轉換輸入資料時遇到不正確的位元組組合"
 
 #: gio/gcharsetconverter.c:347 glib/gconvert.c:456 glib/gconvert.c:792
-#: glib/giochannel.c:1571 glib/giochannel.c:2473
+#: glib/giochannel.c:1580 glib/giochannel.c:2482
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "轉換時發生錯誤：%s"
 
-#: gio/gcharsetconverter.c:445 gio/gsocket.c:1133
+#: gio/gcharsetconverter.c:445 gio/gsocket.c:1143
 msgid "Cancellable initialization not supported"
 msgstr "不支援可取消的初始化"
 
-#: gio/gcharsetconverter.c:456 glib/gconvert.c:321 glib/giochannel.c:1392
+#: gio/gcharsetconverter.c:456 glib/gconvert.c:321 glib/giochannel.c:1401
 #, c-format
 msgid "Conversion from character set “%s” to “%s” is not supported"
 msgstr "不支援將字元集「%s」轉換成「%s」"
@@ -323,7 +324,7 @@ msgstr "不支援將字元集「%s」轉換成「%s」"
 msgid "Could not open converter from “%s” to “%s”"
 msgstr "無法開啟「%s」至「%s」的轉換"
 
-#: gio/gcontenttype.c:452
+#: gio/gcontenttype.c:454
 #, c-format
 msgid "%s type"
 msgstr "%s 類型"
@@ -361,152 +362,152 @@ msgstr "在這個 OS 無法做到憑證偽裝"
 msgid "Unexpected early end-of-stream"
 msgstr "未預期的串流過早結束"
 
-#: gio/gdbusaddress.c:158 gio/gdbusaddress.c:232 gio/gdbusaddress.c:321
+#: gio/gdbusaddress.c:159 gio/gdbusaddress.c:233 gio/gdbusaddress.c:322
 #, c-format
 msgid "Unsupported key “%s” in address entry “%s”"
 msgstr "「%2$s」位址條目有不支援的「%1$s」鍵"
 
-#: gio/gdbusaddress.c:171
+#: gio/gdbusaddress.c:172
 #, c-format
 msgid "Meaningless key/value pair combination in address entry “%s”"
 msgstr "在「%s」位址條目中有無意義的鍵/值組合配對"
 
-#: gio/gdbusaddress.c:180
+#: gio/gdbusaddress.c:181
 #, c-format
 msgid ""
 "Address “%s” is invalid (need exactly one of path, dir, tmpdir, or abstract "
 "keys)"
 msgstr "「%s」位址無效 (需要有明確的 path、dir、tmpdir 或 abstract 鍵之一)"
 
-#: gio/gdbusaddress.c:247 gio/gdbusaddress.c:258 gio/gdbusaddress.c:273
-#: gio/gdbusaddress.c:336 gio/gdbusaddress.c:347
+#: gio/gdbusaddress.c:248 gio/gdbusaddress.c:259 gio/gdbusaddress.c:274
+#: gio/gdbusaddress.c:337 gio/gdbusaddress.c:348
 #, c-format
 msgid "Error in address “%s” — the “%s” attribute is malformed"
 msgstr "「%s」位址有錯誤 —「%s」特性的格式不良"
 
-#: gio/gdbusaddress.c:417 gio/gdbusaddress.c:681
+#: gio/gdbusaddress.c:418 gio/gdbusaddress.c:682
 #, c-format
 msgid "Unknown or unsupported transport “%s” for address “%s”"
 msgstr "「%2$s」位址有不明或不支援的「%1$s」傳輸"
 
-#: gio/gdbusaddress.c:461
+#: gio/gdbusaddress.c:462
 #, c-format
 msgid "Address element “%s” does not contain a colon (:)"
 msgstr "「%s」位址元素中並未包含分號 (:)"
 
-#: gio/gdbusaddress.c:470
+#: gio/gdbusaddress.c:471
 #, c-format
 msgid "Transport name in address element “%s” must not be empty"
 msgstr "「%s」位址元素中的傳輸名稱不能空白"
 
-#: gio/gdbusaddress.c:491
+#: gio/gdbusaddress.c:492
 #, c-format
 msgid ""
 "Key/Value pair %d, “%s”, in address element “%s” does not contain an equal "
 "sign"
 msgstr "在鍵/值配對 %d，「%s」，「%s」位址元素中，並未包含等於符號"
 
-#: gio/gdbusaddress.c:502
+#: gio/gdbusaddress.c:503
 #, c-format
 msgid ""
 "Key/Value pair %d, “%s”, in address element “%s” must not have an empty key"
 msgstr "在鍵/值配對 %d，「%s」，「%s」位址元素中，不能有空白的鍵"
 
-#: gio/gdbusaddress.c:516
+#: gio/gdbusaddress.c:517
 #, c-format
 msgid ""
 "Error unescaping key or value in Key/Value pair %d, “%s”, in address element "
 "“%s”"
 msgstr "在鍵/值配對 %d，「%s」，「%s」位址元素中有錯誤的反轉義鍵"
 
-#: gio/gdbusaddress.c:588
+#: gio/gdbusaddress.c:589
 #, c-format
 msgid ""
 "Error in address “%s” — the unix transport requires exactly one of the keys "
 "“path” or “abstract” to be set"
 msgstr "「%s」位址有錯誤 — unix 傳輸需要明確的設定一個「path」或「abstract」鍵"
 
-#: gio/gdbusaddress.c:624
+#: gio/gdbusaddress.c:625
 #, c-format
 msgid "Error in address “%s” — the host attribute is missing or malformed"
 msgstr "「%s」位址有錯誤 — host 特性遺失或格式不良"
 
-#: gio/gdbusaddress.c:638
+#: gio/gdbusaddress.c:639
 #, c-format
 msgid "Error in address “%s” — the port attribute is missing or malformed"
 msgstr "「%s」位址有錯誤 — port 特性遺失或格式不良"
 
-#: gio/gdbusaddress.c:652
+#: gio/gdbusaddress.c:653
 #, c-format
 msgid "Error in address “%s” — the noncefile attribute is missing or malformed"
 msgstr "「%s」位址有錯誤 — noncefile 特性遺失或格式不良"
 
-#: gio/gdbusaddress.c:673
+#: gio/gdbusaddress.c:674
 msgid "Error auto-launching: "
 msgstr "自動執行失敗："
 
-#: gio/gdbusaddress.c:726
+#: gio/gdbusaddress.c:727
 #, c-format
 msgid "Error opening nonce file “%s”: %s"
 msgstr "開啟臨時檔案「%s」時發生錯誤：%s"
 
-#: gio/gdbusaddress.c:745
+#: gio/gdbusaddress.c:746
 #, c-format
 msgid "Error reading from nonce file “%s”: %s"
 msgstr "讀取臨時檔案「%s」時發生錯誤：%s"
 
-#: gio/gdbusaddress.c:754
+#: gio/gdbusaddress.c:755
 #, c-format
 msgid "Error reading from nonce file “%s”, expected 16 bytes, got %d"
 msgstr "讀取臨時檔案「%s」時發生錯誤，預期為 16 位元組，卻得到 %d"
 
-#: gio/gdbusaddress.c:772
+#: gio/gdbusaddress.c:773
 #, c-format
 msgid "Error writing contents of nonce file “%s” to stream:"
 msgstr "寫入臨時檔案「%s」的內容到串流時發生錯誤："
 
-#: gio/gdbusaddress.c:981
+#: gio/gdbusaddress.c:988
 msgid "The given address is empty"
 msgstr "指定的位址是空白的"
 
-#: gio/gdbusaddress.c:1094
+#: gio/gdbusaddress.c:1101
 #, c-format
 msgid "Cannot spawn a message bus when setuid"
 msgstr "在 setuid 時不能產生訊息匯流排"
 
-#: gio/gdbusaddress.c:1101
+#: gio/gdbusaddress.c:1108
 msgid "Cannot spawn a message bus without a machine-id: "
 msgstr "沒有 machine-id 不能產生訊息匯流排："
 
-#: gio/gdbusaddress.c:1108
+#: gio/gdbusaddress.c:1115
 #, c-format
 msgid "Cannot autolaunch D-Bus without X11 $DISPLAY"
 msgstr "沒有 X11 $DISPLAY 不能自動執行 D-Bus "
 
-#: gio/gdbusaddress.c:1150
+#: gio/gdbusaddress.c:1157
 #, c-format
 msgid "Error spawning command line “%s”: "
 msgstr "產生命令列「%s」時出現錯誤："
 
-#: gio/gdbusaddress.c:1219
+#: gio/gdbusaddress.c:1226
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr "不能判斷作業階段匯流排位址（沒有在這個 OS 實作）"
 
-#: gio/gdbusaddress.c:1357 gio/gdbusconnection.c:7192
+#: gio/gdbusaddress.c:1397 gio/gdbusconnection.c:7241
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
 "— unknown value “%s”"
 msgstr "不能從 DBUS_STARTER_BUS_TYPE 環境變數判斷匯流排位址 — 不明的「%s」值"
 
-#: gio/gdbusaddress.c:1366 gio/gdbusconnection.c:7201
+#: gio/gdbusaddress.c:1406 gio/gdbusconnection.c:7250
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
 msgstr "不能判斷匯流排位址，因為尚未設定 DBUS_STARTER_BUS_TYPE 環境變數"
 
-#: gio/gdbusaddress.c:1376
+#: gio/gdbusaddress.c:1416
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "不明的匯流排類型 %d"
@@ -525,218 +526,232 @@ msgid ""
 "Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
 msgstr "竭盡所有可用的核對機制 (已嘗試：%s) (可用：%s)"
 
-#: gio/gdbusauth.c:1167
+#: gio/gdbusauth.c:1170
+msgid "User IDs must be the same for peer and server"
+msgstr "對等端和伺服器端的使用者 ID 必須相同"
+
+#: gio/gdbusauth.c:1182
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr "已透過 GDBusAuthObserver::authorize-authenticated-peer 取消"
 
-#: gio/gdbusauthmechanismsha1.c:296
+#: gio/gdbusauthmechanismsha1.c:298
 #, c-format
 msgid "Error when getting information for directory “%s”: %s"
 msgstr "從目錄「%s」取得資訊時發生錯誤：%s"
 
-#: gio/gdbusauthmechanismsha1.c:311
+#: gio/gdbusauthmechanismsha1.c:313
 #, c-format
 msgid ""
 "Permissions on directory “%s” are malformed. Expected mode 0700, got 0%o"
-msgstr "目錄「%s」的權限格式下良。預期的模式為 0700，卻得到 0%o"
+msgstr "目錄「%s」的權限格式不良。預期的模式為 0700，卻得到 0%o"
 
-#: gio/gdbusauthmechanismsha1.c:341
+#: gio/gdbusauthmechanismsha1.c:346 gio/gdbusauthmechanismsha1.c:357
 #, c-format
 msgid "Error creating directory “%s”: %s"
 msgstr "建立目錄「%s」時發生錯誤：%s"
 
-#: gio/gdbusauthmechanismsha1.c:386
+#: gio/gdbusauthmechanismsha1.c:359 gio/gfile.c:1062 gio/gfile.c:1300
+#: gio/gfile.c:1438 gio/gfile.c:1676 gio/gfile.c:1731 gio/gfile.c:1789
+#: gio/gfile.c:1873 gio/gfile.c:1930 gio/gfile.c:1994 gio/gfile.c:2049
+#: gio/gfile.c:3754 gio/gfile.c:3809 gio/gfile.c:4102 gio/gfile.c:4572
+#: gio/gfile.c:4983 gio/gfile.c:5068 gio/gfile.c:5158 gio/gfile.c:5255
+#: gio/gfile.c:5342 gio/gfile.c:5443 gio/gfile.c:8153 gio/gfile.c:8243
+#: gio/gfile.c:8327 gio/win32/gwinhttpfile.c:453
+msgid "Operation not supported"
+msgstr "不支援的操作"
+
+#: gio/gdbusauthmechanismsha1.c:402
 #, c-format
 msgid "Error opening keyring “%s” for reading: "
 msgstr "開啟鑰匙圈「%s」讀取時發生錯誤："
 
-#: gio/gdbusauthmechanismsha1.c:409 gio/gdbusauthmechanismsha1.c:731
+#: gio/gdbusauthmechanismsha1.c:425 gio/gdbusauthmechanismsha1.c:747
 #, c-format
 msgid "Line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr "位於「%2$s」內容「%3$s」的鑰匙圈第 %1$d 列格式不良"
 
-#: gio/gdbusauthmechanismsha1.c:423 gio/gdbusauthmechanismsha1.c:745
+#: gio/gdbusauthmechanismsha1.c:439 gio/gdbusauthmechanismsha1.c:761
 #, c-format
 msgid ""
 "First token of line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr "位於「%2$s」內容「%3$s」的鑰匙圈第 %1$d 列第一記號格式不良"
 
-#: gio/gdbusauthmechanismsha1.c:437 gio/gdbusauthmechanismsha1.c:759
+#: gio/gdbusauthmechanismsha1.c:453 gio/gdbusauthmechanismsha1.c:775
 #, c-format
 msgid ""
 "Second token of line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr "位於「%2$s」內容「%3$s」的鑰匙圈第 %1$d 列第二記號格式不良"
 
-#: gio/gdbusauthmechanismsha1.c:461
+#: gio/gdbusauthmechanismsha1.c:477
 #, c-format
 msgid "Didn’t find cookie with id %d in the keyring at “%s”"
 msgstr "在「%2$s」鑰匙圈找不到 id %1$d 的 cookie"
 
-#: gio/gdbusauthmechanismsha1.c:507
+#: gio/gdbusauthmechanismsha1.c:523
 #, c-format
 msgid "Error creating lock file “%s”: %s"
 msgstr "建立鎖定檔案「%s」時發生錯誤：%s"
 
-#: gio/gdbusauthmechanismsha1.c:571
+#: gio/gdbusauthmechanismsha1.c:587
 #, c-format
 msgid "Error deleting stale lock file “%s”: %s"
 msgstr "刪除舊的鎖定檔案「%s」時發生錯誤：%s"
 
-#: gio/gdbusauthmechanismsha1.c:610
+#: gio/gdbusauthmechanismsha1.c:626
 #, c-format
 msgid "Error closing (unlinked) lock file “%s”: %s"
 msgstr "關閉 (取消連結) 鎖定檔案時發生錯誤「%s」：%s"
 
-#: gio/gdbusauthmechanismsha1.c:621
+#: gio/gdbusauthmechanismsha1.c:637
 #, c-format
 msgid "Error unlinking lock file “%s”: %s"
 msgstr "取消連結鎖定檔案時發生錯誤「%s」：%s"
 
-#: gio/gdbusauthmechanismsha1.c:698
+#: gio/gdbusauthmechanismsha1.c:714
 #, c-format
 msgid "Error opening keyring “%s” for writing: "
 msgstr "開啟鑰匙圈「%s」寫入時發生錯誤："
 
-#: gio/gdbusauthmechanismsha1.c:892
+#: gio/gdbusauthmechanismsha1.c:908
 #, c-format
 msgid "(Additionally, releasing the lock for “%s” also failed: %s) "
 msgstr "(另外，釋放「%s」的鎖定失敗：%s)"
 
-#: gio/gdbusconnection.c:595 gio/gdbusconnection.c:2391
+#: gio/gdbusconnection.c:603 gio/gdbusconnection.c:2405
 msgid "The connection is closed"
 msgstr "這個連線已關閉"
 
-#: gio/gdbusconnection.c:1892
+#: gio/gdbusconnection.c:1902
 msgid "Timeout was reached"
 msgstr "已達逾時時間"
 
-#: gio/gdbusconnection.c:2513
+#: gio/gdbusconnection.c:2528
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr "當建立客戶端連線時遇到不支援的旗標"
 
-#: gio/gdbusconnection.c:4163 gio/gdbusconnection.c:4510
+#: gio/gdbusconnection.c:4186 gio/gdbusconnection.c:4533
 #, c-format
 msgid ""
 "No such interface “org.freedesktop.DBus.Properties” on object at path %s"
 msgstr "在 %s 路徑的物件沒有「org.freedesktop.DBus.Properties」這個介面"
 
-#: gio/gdbusconnection.c:4305
+#: gio/gdbusconnection.c:4328
 #, c-format
 msgid "No such property “%s”"
 msgstr "沒有這個屬性「%s」"
 
-#: gio/gdbusconnection.c:4317
+#: gio/gdbusconnection.c:4340
 #, c-format
 msgid "Property “%s” is not readable"
 msgstr "無法讀取「%s」屬性"
 
-#: gio/gdbusconnection.c:4328
+#: gio/gdbusconnection.c:4351
 #, c-format
 msgid "Property “%s” is not writable"
 msgstr "無法寫入「%s」屬性"
 
-#: gio/gdbusconnection.c:4348
+#: gio/gdbusconnection.c:4371
 #, c-format
 msgid "Error setting property “%s”: Expected type “%s” but got “%s”"
 msgstr "「%s」屬性設定錯誤：預期的類型為「%s」但得到「%s」"
 
-#: gio/gdbusconnection.c:4453 gio/gdbusconnection.c:4661
-#: gio/gdbusconnection.c:6632
+#: gio/gdbusconnection.c:4476 gio/gdbusconnection.c:4684
+#: gio/gdbusconnection.c:6681
 #, c-format
 msgid "No such interface “%s”"
 msgstr "沒有這個「%s」介面"
 
-#: gio/gdbusconnection.c:4879 gio/gdbusconnection.c:7141
+#: gio/gdbusconnection.c:4902 gio/gdbusconnection.c:7190
 #, c-format
 msgid "No such interface “%s” on object at path %s"
 msgstr "在 %2$s 路徑的物件沒有「%1$s」這個介面"
 
-#: gio/gdbusconnection.c:4977
+#: gio/gdbusconnection.c:5000
 #, c-format
 msgid "No such method “%s”"
 msgstr "沒有「%s」方法"
 
-#: gio/gdbusconnection.c:5008
+#: gio/gdbusconnection.c:5031
 #, c-format
 msgid "Type of message, “%s”, does not match expected type “%s”"
 msgstr "訊息的類型，「%s」，不符合預期的類型「%s」"
 
-#: gio/gdbusconnection.c:5206
+#: gio/gdbusconnection.c:5229
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "有物件已為介面 %s 匯出於 %s"
 
-#: gio/gdbusconnection.c:5432
+#: gio/gdbusconnection.c:5455
 #, c-format
 msgid "Unable to retrieve property %s.%s"
 msgstr "無法取回屬性 %s.%s"
 
-#: gio/gdbusconnection.c:5488
+#: gio/gdbusconnection.c:5511
 #, c-format
 msgid "Unable to set property %s.%s"
 msgstr "無法設定屬性 %s.%s"
 
-#: gio/gdbusconnection.c:5666
+#: gio/gdbusconnection.c:5690
 #, c-format
 msgid "Method “%s” returned type “%s”, but expected “%s”"
 msgstr "方法「%s」傳回類型「%s」，但預期為「%s」"
 
-#: gio/gdbusconnection.c:6743
+#: gio/gdbusconnection.c:6792
 #, c-format
 msgid "Method “%s” on interface “%s” with signature “%s” does not exist"
 msgstr "介面「%2$s」簽章「%3$s」的方法「%1$s」不存在"
 
-#: gio/gdbusconnection.c:6864
+#: gio/gdbusconnection.c:6913
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "子樹狀目錄已為 %s 匯出"
 
-#: gio/gdbusmessage.c:1255
+#: gio/gdbusmessage.c:1266
 msgid "type is INVALID"
 msgstr "類型為無效"
 
-#: gio/gdbusmessage.c:1266
+#: gio/gdbusmessage.c:1277
 msgid "METHOD_CALL message: PATH or MEMBER header field is missing"
 msgstr "METHOD_CALL 訊息：缺少 PATH 或 MEMBER 標頭欄位"
 
-#: gio/gdbusmessage.c:1277
+#: gio/gdbusmessage.c:1288
 msgid "METHOD_RETURN message: REPLY_SERIAL header field is missing"
 msgstr "METHOD_RETURN 訊息：缺少 REPLY_SERIAL 標頭欄位"
 
-#: gio/gdbusmessage.c:1289
+#: gio/gdbusmessage.c:1300
 msgid "ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing"
 msgstr "ERROR 訊息：缺少 REPLY_SERIAL 或 ERROR_NAME 標頭欄位"
 
-#: gio/gdbusmessage.c:1302
+#: gio/gdbusmessage.c:1313
 msgid "SIGNAL message: PATH, INTERFACE or MEMBER header field is missing"
 msgstr "SIGNAL 訊息：缺少 PATH、INTERFACE 或 MEMBER 標頭欄位"
 
-#: gio/gdbusmessage.c:1310
+#: gio/gdbusmessage.c:1321
 msgid ""
 "SIGNAL message: The PATH header field is using the reserved value /org/"
 "freedesktop/DBus/Local"
 msgstr "SIGNAL 訊息：PATH 標頭欄位使用了保留的值 /org/freedesktop/DBus/Local"
 
-#: gio/gdbusmessage.c:1318
+#: gio/gdbusmessage.c:1329
 msgid ""
 "SIGNAL message: The INTERFACE header field is using the reserved value org."
 "freedesktop.DBus.Local"
 msgstr ""
 "SIGNAL 訊息：INTERFACE 標頭欄位使用了保留的值 org.freedesktop.DBus.Local"
 
-#: gio/gdbusmessage.c:1366 gio/gdbusmessage.c:1426
+#: gio/gdbusmessage.c:1377 gio/gdbusmessage.c:1437
 #, c-format
 msgid "Wanted to read %lu byte but only got %lu"
 msgid_plural "Wanted to read %lu bytes but only got %lu"
 msgstr[0] "嘗試讀取 %lu 位元組卻只得到 %lu"
 
-#: gio/gdbusmessage.c:1380
+#: gio/gdbusmessage.c:1391
 #, c-format
 msgid "Expected NUL byte after the string “%s” but found byte %d"
 msgstr "預期在字串「%s」之後為 NUL 位元組，但是發現位元組 %d"
 
-#: gio/gdbusmessage.c:1399
+#: gio/gdbusmessage.c:1410
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
@@ -745,21 +760,21 @@ msgstr ""
 "預期為有效的 UTF-8 字串但是在位元組 %d 處發現無效的位元組 (字串的長度為 %d)。"
 "到那一點之前的有效 UTF-8 字串為「%s」"
 
-#: gio/gdbusmessage.c:1463 gio/gdbusmessage.c:1711 gio/gdbusmessage.c:1900
+#: gio/gdbusmessage.c:1474 gio/gdbusmessage.c:1722 gio/gdbusmessage.c:1911
 msgid "Value nested too deeply"
 msgstr "值的巢狀層次過深"
 
-#: gio/gdbusmessage.c:1609
+#: gio/gdbusmessage.c:1620
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus object path"
 msgstr "已解析「%s」值不是有效的 D-Bus 物件路徑"
 
-#: gio/gdbusmessage.c:1631
+#: gio/gdbusmessage.c:1642
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature"
 msgstr "已解析「%s」值不是一個有效的 D-Bus 簽章"
 
-#: gio/gdbusmessage.c:1678
+#: gio/gdbusmessage.c:1689
 #, c-format
 msgid ""
 "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
@@ -767,7 +782,7 @@ msgid_plural ""
 "Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."
 msgstr[0] "遇到長度為 %u 位元組的陣列。最大長度為 2<<26 位元組 (64 MiB)。"
 
-#: gio/gdbusmessage.c:1698
+#: gio/gdbusmessage.c:1709
 #, c-format
 msgid ""
 "Encountered array of type “a%c”, expected to have a length a multiple of %u "
@@ -775,113 +790,115 @@ msgid ""
 msgstr ""
 "遇到類型「a%c」的陣列，預期長度應為 %u 位元組的倍數，但發現長度為 %u 位元組"
 
-#: gio/gdbusmessage.c:1884
+#: gio/gdbusmessage.c:1895
 #, c-format
 msgid "Parsed value “%s” for variant is not a valid D-Bus signature"
 msgstr "已解析「%s」值不是有效的 D-Bus 簽章"
 
-#: gio/gdbusmessage.c:1925
+#: gio/gdbusmessage.c:1936
 #, c-format
 msgid ""
 "Error deserializing GVariant with type string “%s” from the D-Bus wire format"
 msgstr "從 D-Bus 線性格式以類型字串「%s」反序列化 GVariant 時發生錯誤"
 
-#: gio/gdbusmessage.c:2110
+#: gio/gdbusmessage.c:2121
 #, c-format
 msgid ""
 "Invalid endianness value. Expected 0x6c (“l”) or 0x42 (“B”) but found value "
 "0x%02x"
 msgstr "無效的字節順序值。預期為 0x6c (「I」) 或 0x42 (「B」) 卻得到值 0x%02x"
 
-#: gio/gdbusmessage.c:2123
+#: gio/gdbusmessage.c:2134
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr "無效的主通訊協定版本。預期為 1 但找到 %d"
 
-#: gio/gdbusmessage.c:2177 gio/gdbusmessage.c:2773
+#: gio/gdbusmessage.c:2188 gio/gdbusmessage.c:2784
 msgid "Signature header found but is not of type signature"
 msgstr "找到簽章標頭，但不是一種類型簽章"
 
-#: gio/gdbusmessage.c:2189
+#: gio/gdbusmessage.c:2200
 #, c-format
 msgid "Signature header with signature “%s” found but message body is empty"
 msgstr "發現簽章「%s」的簽章標頭但訊息主體是空的"
 
-#: gio/gdbusmessage.c:2204
+#: gio/gdbusmessage.c:2215
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature (for body)"
 msgstr "已解析「%s」值不是有效的 D-Bus 簽章 (於主體)"
 
-#: gio/gdbusmessage.c:2236
+#: gio/gdbusmessage.c:2247
 #, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
 msgstr[0] "在訊息中沒有簽章標頭但訊息主體有 %u 位元組"
 
-#: gio/gdbusmessage.c:2246
+#: gio/gdbusmessage.c:2257
 msgid "Cannot deserialize message: "
 msgstr "不能反序列化訊息："
 
-#: gio/gdbusmessage.c:2590
+#: gio/gdbusmessage.c:2601
 #, c-format
 msgid ""
 "Error serializing GVariant with type string “%s” to the D-Bus wire format"
 msgstr "從 D-Bus 線性格式以類型字串「%s」序列化 GVariant 時發生錯誤"
 
-#: gio/gdbusmessage.c:2727
+#: gio/gdbusmessage.c:2738
 #, c-format
 msgid ""
 "Number of file descriptors in message (%d) differs from header field (%d)"
 msgstr "訊息 (%d) 中的檔案描述狀態數量跟標頭欄位 (%d) 的不同"
 
-#: gio/gdbusmessage.c:2735
+#: gio/gdbusmessage.c:2746
 msgid "Cannot serialize message: "
 msgstr "不能序列化訊息："
 
-#: gio/gdbusmessage.c:2788
+#: gio/gdbusmessage.c:2799
 #, c-format
 msgid "Message body has signature “%s” but there is no signature header"
 msgstr "訊息主體有簽章「%s」但是沒有簽章標頭"
 
-#: gio/gdbusmessage.c:2798
+#: gio/gdbusmessage.c:2809
 #, c-format
 msgid ""
 "Message body has type signature “%s” but signature in the header field is "
 "“%s”"
 msgstr "訊息主體有類型簽章「%s」但是標頭欄位中的簽章為「%s」"
 
-#: gio/gdbusmessage.c:2814
+#: gio/gdbusmessage.c:2825
 #, c-format
 msgid "Message body is empty but signature in the header field is “(%s)”"
 msgstr "訊息主體是空的但是標頭欄位中的簽章為「%s」"
 
-#: gio/gdbusmessage.c:3367
+#: gio/gdbusmessage.c:3378
 #, c-format
 msgid "Error return with body of type “%s”"
 msgstr "傳回類型「%s」主體時發生錯誤"
 
-#: gio/gdbusmessage.c:3375
+#: gio/gdbusmessage.c:3386
 msgid "Error return with empty body"
 msgstr "傳回空白主體錯誤"
 
-#: gio/gdbusprivate.c:2244
+#: gio/gdbusprivate.c:2246
 #, c-format
 msgid "(Type any character to close this window)\n"
 msgstr "(輸入任何字元以關閉這個視窗)\n"
 
-#: gio/gdbusprivate.c:2418
+#: gio/gdbusprivate.c:2420
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
 msgstr "作業階段 dbus 尚未執行，且自動執行失敗"
 
-#: gio/gdbusprivate.c:2441
+#: gio/gdbusprivate.c:2443
 #, c-format
 msgid "Unable to get Hardware profile: %s"
 msgstr "無法取得硬體設定檔：%s"
 
-#: gio/gdbusprivate.c:2486
-msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
-msgstr "無法載入 /var/lib/dbus/machine-id 或 /etc/machine-id："
+#. Translators: Both placeholders are file paths
+#: gio/gdbusprivate.c:2494
+#, c-format
+msgid "Unable to load %s or %s: "
+msgstr "無法載入 %s 或 %s︰ "
 
 #: gio/gdbusproxy.c:1562
 #, c-format
@@ -902,30 +919,30 @@ msgstr ""
 "不能呼叫方法；Proxy 是沒有擁有者的 %s 已知名稱，而 Proxy 以 "
 "G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START 旗標建構"
 
-#: gio/gdbusserver.c:755
+#: gio/gdbusserver.c:763
 msgid "Abstract namespace not supported"
 msgstr "不支援抽象命名空間"
 
-#: gio/gdbusserver.c:848
+#: gio/gdbusserver.c:856
 msgid "Cannot specify nonce file when creating a server"
 msgstr "當建立伺服器時不能指定臨時檔案"
 
-#: gio/gdbusserver.c:930
+#: gio/gdbusserver.c:938
 #, c-format
 msgid "Error writing nonce file at “%s”: %s"
 msgstr "在「%s」寫入臨時檔案時發生錯誤：%s"
 
-#: gio/gdbusserver.c:1103
+#: gio/gdbusserver.c:1113
 #, c-format
 msgid "The string “%s” is not a valid D-Bus GUID"
 msgstr "字串「%s」不是一個有效的 D-Bus GUID"
 
-#: gio/gdbusserver.c:1143
+#: gio/gdbusserver.c:1153
 #, c-format
 msgid "Cannot listen on unsupported transport “%s”"
 msgstr "不能聽取不支援的傳輸「%s」"
 
-#: gio/gdbus-tool.c:107
+#: gio/gdbus-tool.c:111
 #, c-format
 msgid ""
 "Commands:\n"
@@ -948,283 +965,288 @@ msgstr ""
 "  \n"
 "使用「%s COMMAND --help」來取得每個指令的求助資訊。\n"
 
-#: gio/gdbus-tool.c:197 gio/gdbus-tool.c:264 gio/gdbus-tool.c:336
-#: gio/gdbus-tool.c:360 gio/gdbus-tool.c:850 gio/gdbus-tool.c:1187
-#: gio/gdbus-tool.c:1672
+#: gio/gdbus-tool.c:201 gio/gdbus-tool.c:273 gio/gdbus-tool.c:345
+#: gio/gdbus-tool.c:369 gio/gdbus-tool.c:859 gio/gdbus-tool.c:1236
+#: gio/gdbus-tool.c:1724
 #, c-format
 msgid "Error: %s\n"
 msgstr "錯誤：%s\n"
 
-#: gio/gdbus-tool.c:208 gio/gdbus-tool.c:277 gio/gdbus-tool.c:1688
+#: gio/gdbus-tool.c:212 gio/gdbus-tool.c:286 gio/gdbus-tool.c:1740
 #, c-format
 msgid "Error parsing introspection XML: %s\n"
 msgstr "解析檢討 XML 時出現錯誤：%s\n"
 
-#: gio/gdbus-tool.c:246
+#: gio/gdbus-tool.c:250
 #, c-format
 msgid "Error: %s is not a valid name\n"
 msgstr "錯誤：%s 不是有效的名稱\n"
 
-#: gio/gdbus-tool.c:394
+#: gio/gdbus-tool.c:255 gio/gdbus-tool.c:745 gio/gdbus-tool.c:1060
+#: gio/gdbus-tool.c:1890 gio/gdbus-tool.c:2130
+#, c-format
+msgid "Error: %s is not a valid object path\n"
+msgstr "錯誤：%s 不是有效的物件路徑\n"
+
+#: gio/gdbus-tool.c:403
 msgid "Connect to the system bus"
 msgstr "連線到系統匯流排"
 
-#: gio/gdbus-tool.c:395
+#: gio/gdbus-tool.c:404
 msgid "Connect to the session bus"
 msgstr "連線到作業階段匯流排"
 
-#: gio/gdbus-tool.c:396
+#: gio/gdbus-tool.c:405
 msgid "Connect to given D-Bus address"
 msgstr "連線到指定的 D-Bus 位址"
 
-#: gio/gdbus-tool.c:406
+#: gio/gdbus-tool.c:415
 msgid "Connection Endpoint Options:"
 msgstr "連線端點選項："
 
-#: gio/gdbus-tool.c:407
+#: gio/gdbus-tool.c:416
 msgid "Options specifying the connection endpoint"
 msgstr "指定連線端點的選項"
 
-#: gio/gdbus-tool.c:430
+#: gio/gdbus-tool.c:439
 #, c-format
 msgid "No connection endpoint specified"
 msgstr "沒有指定連線端點"
 
-#: gio/gdbus-tool.c:440
+#: gio/gdbus-tool.c:449
 #, c-format
 msgid "Multiple connection endpoints specified"
 msgstr "指定了多重連線端點"
 
-#: gio/gdbus-tool.c:513
+#: gio/gdbus-tool.c:522
 #, c-format
 msgid ""
 "Warning: According to introspection data, interface “%s” does not exist\n"
 msgstr "警告：根據檢討資料，介面「%s」不存在\n"
 
-#: gio/gdbus-tool.c:522
+#: gio/gdbus-tool.c:531
 #, c-format
 msgid ""
 "Warning: According to introspection data, method “%s” does not exist on "
 "interface “%s”\n"
 msgstr "警告：根據檢討資料，介面「%2$s」的方法「%1$s」不存在\n"
 
-#: gio/gdbus-tool.c:584
+#: gio/gdbus-tool.c:593
 msgid "Optional destination for signal (unique name)"
 msgstr "信號的選擇性目的端 (獨特名稱)"
 
-#: gio/gdbus-tool.c:585
+#: gio/gdbus-tool.c:594
 msgid "Object path to emit signal on"
 msgstr "要發出信號的物件路徑"
 
-#: gio/gdbus-tool.c:586
+#: gio/gdbus-tool.c:595
 msgid "Signal and interface name"
 msgstr "信號和介面名稱"
 
-#: gio/gdbus-tool.c:619
+#: gio/gdbus-tool.c:628
 msgid "Emit a signal."
 msgstr "發出信號。"
 
-#: gio/gdbus-tool.c:674 gio/gdbus-tool.c:981 gio/gdbus-tool.c:1775
-#: gio/gdbus-tool.c:2007 gio/gdbus-tool.c:2227
+#: gio/gdbus-tool.c:683 gio/gdbus-tool.c:997 gio/gdbus-tool.c:1827
+#: gio/gdbus-tool.c:2059 gio/gdbus-tool.c:2279
 #, c-format
 msgid "Error connecting: %s\n"
 msgstr "連線錯誤：%s\n"
 
-#: gio/gdbus-tool.c:694
+#: gio/gdbus-tool.c:703
 #, c-format
 msgid "Error: %s is not a valid unique bus name.\n"
 msgstr "錯誤：%s 不是有效的獨特匯流排名稱。\n"
 
-#: gio/gdbus-tool.c:713 gio/gdbus-tool.c:1024 gio/gdbus-tool.c:1818
+#: gio/gdbus-tool.c:722 gio/gdbus-tool.c:1040 gio/gdbus-tool.c:1870
 msgid "Error: Object path is not specified\n"
 msgstr "錯誤：沒有指定物件路徑\n"
 
-#: gio/gdbus-tool.c:736 gio/gdbus-tool.c:1044 gio/gdbus-tool.c:1838
-#: gio/gdbus-tool.c:2078
-#, c-format
-msgid "Error: %s is not a valid object path\n"
-msgstr "錯誤：%s 不是有效的物件路徑\n"
-
-#: gio/gdbus-tool.c:756
+#: gio/gdbus-tool.c:765
 msgid "Error: Signal name is not specified\n"
 msgstr "錯誤：沒有指定信號名稱\n"
 
-#: gio/gdbus-tool.c:770
+#: gio/gdbus-tool.c:779
 #, c-format
 msgid "Error: Signal name “%s” is invalid\n"
 msgstr "錯誤：「%s」信號名稱無效\n"
 
-#: gio/gdbus-tool.c:782
+#: gio/gdbus-tool.c:791
 #, c-format
 msgid "Error: %s is not a valid interface name\n"
 msgstr "錯誤：%s 不是有效的介面名稱\n"
 
-#: gio/gdbus-tool.c:788
+#: gio/gdbus-tool.c:797
 #, c-format
 msgid "Error: %s is not a valid member name\n"
 msgstr "錯誤：%s 不是有效的成員名稱\n"
 
 #. Use the original non-"parse-me-harder" error
-#: gio/gdbus-tool.c:825 gio/gdbus-tool.c:1156
+#: gio/gdbus-tool.c:834 gio/gdbus-tool.c:1172
 #, c-format
 msgid "Error parsing parameter %d: %s\n"
 msgstr "解析參數 %d 時發生錯誤：%s\n"
 
-#: gio/gdbus-tool.c:857
+#: gio/gdbus-tool.c:866
 #, c-format
 msgid "Error flushing connection: %s\n"
 msgstr "清除連線時發生錯誤：%s\n"
 
-#: gio/gdbus-tool.c:884
+#: gio/gdbus-tool.c:893
 msgid "Destination name to invoke method on"
 msgstr "要呼叫方法的目的端名稱"
 
-#: gio/gdbus-tool.c:885
+#: gio/gdbus-tool.c:894
 msgid "Object path to invoke method on"
 msgstr "要呼叫方法的物件路徑"
 
-#: gio/gdbus-tool.c:886
+#: gio/gdbus-tool.c:895
 msgid "Method and interface name"
 msgstr "方法和介面名稱"
 
-#: gio/gdbus-tool.c:887
+#: gio/gdbus-tool.c:896
 msgid "Timeout in seconds"
 msgstr "逾時時間(秒)"
 
-#: gio/gdbus-tool.c:926
+#: gio/gdbus-tool.c:942
 msgid "Invoke a method on a remote object."
 msgstr "呼叫遠端物件的方法。"
 
-#: gio/gdbus-tool.c:998 gio/gdbus-tool.c:1792 gio/gdbus-tool.c:2032
+#: gio/gdbus-tool.c:1014 gio/gdbus-tool.c:1844 gio/gdbus-tool.c:2084
 msgid "Error: Destination is not specified\n"
 msgstr "錯誤：尚未指定目的端\n"
 
-#: gio/gdbus-tool.c:1009 gio/gdbus-tool.c:1809 gio/gdbus-tool.c:2043
+#: gio/gdbus-tool.c:1025 gio/gdbus-tool.c:1861 gio/gdbus-tool.c:2095
 #, c-format
 msgid "Error: %s is not a valid bus name\n"
 msgstr "錯誤：%s 不是有效的匯流排名稱\n"
 
-#: gio/gdbus-tool.c:1059
+#: gio/gdbus-tool.c:1075
 msgid "Error: Method name is not specified\n"
 msgstr "錯誤：沒有指定方法名稱\n"
 
-#: gio/gdbus-tool.c:1070
+#: gio/gdbus-tool.c:1086
 #, c-format
 msgid "Error: Method name “%s” is invalid\n"
 msgstr "錯誤：方法名稱「%s」是無效的\n"
 
-#: gio/gdbus-tool.c:1148
+#: gio/gdbus-tool.c:1164
 #, c-format
 msgid "Error parsing parameter %d of type “%s”: %s\n"
 msgstr "解析類型「%2$s」的參數 %1$d 時發生錯誤：%3$s\n"
 
-#: gio/gdbus-tool.c:1634
+#: gio/gdbus-tool.c:1190
+#, c-format
+msgid "Error adding handle %d: %s\n"
+msgstr "加入處理程式 %d 時發生錯誤：%s\n"
+
+#: gio/gdbus-tool.c:1686
 msgid "Destination name to introspect"
 msgstr "要檢討的目的端名稱"
 
-#: gio/gdbus-tool.c:1635
+#: gio/gdbus-tool.c:1687
 msgid "Object path to introspect"
 msgstr "要檢討的物件路徑"
 
-#: gio/gdbus-tool.c:1636
+#: gio/gdbus-tool.c:1688
 msgid "Print XML"
 msgstr "顯示 XML"
 
-#: gio/gdbus-tool.c:1637
+#: gio/gdbus-tool.c:1689
 msgid "Introspect children"
 msgstr "Introspect 子項目"
 
-#: gio/gdbus-tool.c:1638
+#: gio/gdbus-tool.c:1690
 msgid "Only print properties"
 msgstr "只有列印特性"
 
-#: gio/gdbus-tool.c:1727
+#: gio/gdbus-tool.c:1779
 msgid "Introspect a remote object."
 msgstr "檢查遠端物件。"
 
-#: gio/gdbus-tool.c:1933
+#: gio/gdbus-tool.c:1985
 msgid "Destination name to monitor"
 msgstr "要監控的目的端名稱"
 
-#: gio/gdbus-tool.c:1934
+#: gio/gdbus-tool.c:1986
 msgid "Object path to monitor"
 msgstr "要監控的物件路徑"
 
-#: gio/gdbus-tool.c:1959
+#: gio/gdbus-tool.c:2011
 msgid "Monitor a remote object."
 msgstr "監控遠端物件。"
 
-#: gio/gdbus-tool.c:2017
+#: gio/gdbus-tool.c:2069
 msgid "Error: can’t monitor a non-message-bus connection\n"
 msgstr "錯誤：無法監控非訊息匯流排的連線\n"
 
-#: gio/gdbus-tool.c:2141
+#: gio/gdbus-tool.c:2193
 msgid "Service to activate before waiting for the other one (well-known name)"
 msgstr "在等待其他前要啟用的服務（已知名稱）"
 
-#: gio/gdbus-tool.c:2144
+#: gio/gdbus-tool.c:2196
 msgid ""
 "Timeout to wait for before exiting with an error (seconds); 0 for no timeout "
 "(default)"
 msgstr "發生錯誤結束前的等待逾時（秒）；0 表示沒有逾時（預設值）"
 
-#: gio/gdbus-tool.c:2192
+#: gio/gdbus-tool.c:2244
 msgid "[OPTION…] BUS-NAME"
 msgstr "[OPTION…] BUS-NAME"
 
-#: gio/gdbus-tool.c:2193
+#: gio/gdbus-tool.c:2245
 msgid "Wait for a bus name to appear."
 msgstr "等待匯流排名稱顯示。"
 
-#: gio/gdbus-tool.c:2269
+#: gio/gdbus-tool.c:2321
 msgid "Error: A service to activate for must be specified.\n"
 msgstr "錯誤：需要指定要啟用的服務。\n"
 
-#: gio/gdbus-tool.c:2274
+#: gio/gdbus-tool.c:2326
 msgid "Error: A service to wait for must be specified.\n"
 msgstr "錯誤：需要指定要等待的服務。\n"
 
-#: gio/gdbus-tool.c:2279
+#: gio/gdbus-tool.c:2331
 msgid "Error: Too many arguments.\n"
 msgstr "錯誤：引數太多。\n"
 
-#: gio/gdbus-tool.c:2287 gio/gdbus-tool.c:2294
+#: gio/gdbus-tool.c:2339 gio/gdbus-tool.c:2346
 #, c-format
 msgid "Error: %s is not a valid well-known bus name.\n"
 msgstr "錯誤：%s 不是有效的已知匯流排名稱。\n"
 
-#: gio/gdesktopappinfo.c:2073 gio/gdesktopappinfo.c:4893
+#: gio/gdesktopappinfo.c:2106 gio/gdesktopappinfo.c:4932
 msgid "Unnamed"
 msgstr "未命名的"
 
-#: gio/gdesktopappinfo.c:2483
+#: gio/gdesktopappinfo.c:2516
 msgid "Desktop file didn’t specify Exec field"
 msgstr "桌面(Desktop)檔案未指定 Exec 欄位"
 
-#: gio/gdesktopappinfo.c:2763
+#: gio/gdesktopappinfo.c:2801
 msgid "Unable to find terminal required for application"
 msgstr "無法找到應用程式要求的終端機"
 
-#: gio/gdesktopappinfo.c:3414
+#: gio/gdesktopappinfo.c:3452
 #, c-format
 msgid "Can’t create user application configuration folder %s: %s"
 msgstr "不能建立使用者應用程式設定資料夾 %s：%s"
 
-#: gio/gdesktopappinfo.c:3418
+#: gio/gdesktopappinfo.c:3456
 #, c-format
 msgid "Can’t create user MIME configuration folder %s: %s"
 msgstr "不能建立使用者 MIME 設定資料夾 %s：%s"
 
-#: gio/gdesktopappinfo.c:3660 gio/gdesktopappinfo.c:3684
+#: gio/gdesktopappinfo.c:3698 gio/gdesktopappinfo.c:3722
 msgid "Application information lacks an identifier"
 msgstr "應用程式資訊缺少識別碼"
 
-#: gio/gdesktopappinfo.c:3920
+#: gio/gdesktopappinfo.c:3958
 #, c-format
 msgid "Can’t create user desktop file %s"
 msgstr "不能建立使用者桌面檔案 %s"
 
-#: gio/gdesktopappinfo.c:4056
+#: gio/gdesktopappinfo.c:4094
 #, c-format
 msgid "Custom definition for %s"
 msgstr "自訂 %s 的定義"
@@ -1289,87 +1311,77 @@ msgstr "GEmblemedIcon 編碼中記號 (%d) 的數量格式不正確"
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "預期為 GEmblemedIcon 的 GEmblem"
 
-#: gio/gfile.c:1044 gio/gfile.c:1282 gio/gfile.c:1420 gio/gfile.c:1658
-#: gio/gfile.c:1713 gio/gfile.c:1771 gio/gfile.c:1855 gio/gfile.c:1912
-#: gio/gfile.c:1976 gio/gfile.c:2031 gio/gfile.c:3722 gio/gfile.c:3777
-#: gio/gfile.c:4070 gio/gfile.c:4540 gio/gfile.c:4951 gio/gfile.c:5036
-#: gio/gfile.c:5126 gio/gfile.c:5223 gio/gfile.c:5310 gio/gfile.c:5411
-#: gio/gfile.c:8121 gio/gfile.c:8211 gio/gfile.c:8295
-#: gio/win32/gwinhttpfile.c:453
-msgid "Operation not supported"
-msgstr "不支援的操作"
-
 #. Translators: This is an error message when
 #. * trying to find the enclosing (user visible)
 #. * mount of a file, but none exists.
 #.
-#: gio/gfile.c:1543
+#: gio/gfile.c:1561
 msgid "Containing mount does not exist"
 msgstr "包含了不存在的掛載點"
 
-#: gio/gfile.c:2590 gio/glocalfile.c:2430
+#: gio/gfile.c:2608 gio/glocalfile.c:2472
 msgid "Can’t copy over directory"
 msgstr "不能複製整個目錄"
 
-#: gio/gfile.c:2650
+#: gio/gfile.c:2668
 msgid "Can’t copy directory over directory"
 msgstr "不能將目錄複製到目錄上"
 
-#: gio/gfile.c:2658
+#: gio/gfile.c:2676
 msgid "Target file exists"
 msgstr "目標檔案已存在"
 
-#: gio/gfile.c:2677
+#: gio/gfile.c:2695
 msgid "Can’t recursively copy directory"
 msgstr "不能遞廻複製目錄"
 
-#: gio/gfile.c:2952
+#: gio/gfile.c:2996
 msgid "Splice not supported"
 msgstr "不支援拼接"
 
-#: gio/gfile.c:2956 gio/gfile.c:3001
+#: gio/gfile.c:3000
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "拼接檔案時發生錯誤：%s"
 
-#: gio/gfile.c:3117
+#: gio/gfile.c:3152
 msgid "Copy (reflink/clone) between mounts is not supported"
 msgstr "不支援在掛載點之間複製 (參照連結/重製)"
 
-#: gio/gfile.c:3121
+#: gio/gfile.c:3156
 msgid "Copy (reflink/clone) is not supported or invalid"
 msgstr "複製 (參照連結/重製) 不支援或無效"
 
-#: gio/gfile.c:3126
+#: gio/gfile.c:3161
 msgid "Copy (reflink/clone) is not supported or didn’t work"
 msgstr "複製 (參照連結/重製) 不支援或無法運作"
 
-#: gio/gfile.c:3190
+#: gio/gfile.c:3226
 msgid "Can’t copy special file"
 msgstr "不能複製特殊的檔案"
 
-#: gio/gfile.c:4003
+#: gio/gfile.c:4035
 msgid "Invalid symlink value given"
 msgstr "提供了無效的符號連結值"
 
-#: gio/gfile.c:4013 glib/gfileutils.c:2349
+#: gio/gfile.c:4045 glib/gfileutils.c:2362
 msgid "Symbolic links not supported"
 msgstr "不支援符號連結"
 
-#: gio/gfile.c:4181
+#: gio/gfile.c:4213
 msgid "Trash not supported"
 msgstr "不支援垃圾桶"
 
-#: gio/gfile.c:4293
+#: gio/gfile.c:4325
 #, c-format
 msgid "File names cannot contain “%c”"
 msgstr "檔案名稱不能包含「%c」"
 
-#: gio/gfile.c:6774 gio/gvolume.c:364
+#: gio/gfile.c:6806 gio/gvolume.c:364
 msgid "volume doesn’t implement mount"
 msgstr "儲存區尚未實作掛載功能"
 
-#: gio/gfile.c:6888 gio/gfile.c:6936
+#: gio/gfile.c:6920 gio/gfile.c:6968
 msgid "No application is registered as handling this file"
 msgstr "沒有應用程式註冊為用以處理這個檔案"
 
@@ -1386,12 +1398,12 @@ msgstr "檔案列舉器(enumerator)有異常操作"
 msgid "File enumerator is already closed"
 msgstr "檔案列舉器(enumerator)已經關閉"
 
-#: gio/gfileicon.c:236
+#: gio/gfileicon.c:250
 #, c-format
 msgid "Can’t handle version %d of GFileIcon encoding"
 msgstr "不能處理版本為 %d 的 GFileIcon 編碼"
 
-#: gio/gfileicon.c:246
+#: gio/gfileicon.c:260
 msgid "Malformed input data for GFileIcon"
 msgstr "給 GFileIcon 的輸入資料格式不良"
 
@@ -1440,7 +1452,11 @@ msgstr "HTTP 代理伺服器需要核對"
 msgid "HTTP proxy connection failed: %i"
 msgstr "HTTP 代理伺服器連線失敗：%i"
 
-#: gio/ghttpproxy.c:269
+#: gio/ghttpproxy.c:266
+msgid "HTTP proxy response too big"
+msgstr "HTTP 代理伺服器回應太大"
+
+#: gio/ghttpproxy.c:283
 msgid "HTTP proxy server closed connection unexpectedly."
 msgstr "HTTP 代理伺服器未預期關閉連線。"
 
@@ -1515,7 +1531,7 @@ msgstr "輸入串流尚未實作讀取"
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: gio/ginputstream.c:1218 gio/giostream.c:310 gio/goutputstream.c:2208
+#: gio/ginputstream.c:1247 gio/giostream.c:310 gio/goutputstream.c:2208
 msgid "Stream has outstanding operation"
 msgstr "串流有異常操作"
 
@@ -1556,58 +1572,62 @@ msgid "Show information about locations"
 msgstr "顯示位置的相關資訊"
 
 #: gio/gio-tool.c:232
+msgid "Launch an application from a desktop file"
+msgstr "從 .desktop 檔案執行應用程式"
+
+#: gio/gio-tool.c:233
 msgid "List the contents of locations"
 msgstr "列出位置的內容"
 
-#: gio/gio-tool.c:233
+#: gio/gio-tool.c:234
 msgid "Get or set the handler for a mimetype"
 msgstr "取得或設定 MIME 類型的處理程式"
 
-#: gio/gio-tool.c:234
+#: gio/gio-tool.c:235
 msgid "Create directories"
 msgstr "建立目錄"
 
-#: gio/gio-tool.c:235
+#: gio/gio-tool.c:236
 msgid "Monitor files and directories for changes"
 msgstr "監控檔案與目錄的變更"
 
-#: gio/gio-tool.c:236
+#: gio/gio-tool.c:237
 msgid "Mount or unmount the locations"
 msgstr "掛載或卸載位置"
 
-#: gio/gio-tool.c:237
+#: gio/gio-tool.c:238
 msgid "Move one or more files"
 msgstr "移動一個或多個檔案"
 
-#: gio/gio-tool.c:238
+#: gio/gio-tool.c:239
 msgid "Open files with the default application"
 msgstr "以預設的應用程式開啟檔案"
 
-#: gio/gio-tool.c:239
+#: gio/gio-tool.c:240
 msgid "Rename a file"
 msgstr "重新命名檔案"
 
-#: gio/gio-tool.c:240
+#: gio/gio-tool.c:241
 msgid "Delete one or more files"
 msgstr "刪除一個或多個檔案"
 
-#: gio/gio-tool.c:241
+#: gio/gio-tool.c:242
 msgid "Read from standard input and save"
 msgstr "從標準輸入讀取並儲存"
 
-#: gio/gio-tool.c:242
+#: gio/gio-tool.c:243
 msgid "Set a file attribute"
 msgstr "設定檔案特性"
 
-#: gio/gio-tool.c:243
+#: gio/gio-tool.c:244
 msgid "Move files or directories to the trash"
 msgstr "將檔案或目錄移至垃圾桶"
 
-#: gio/gio-tool.c:244
+#: gio/gio-tool.c:245
 msgid "Lists the contents of locations in a tree"
 msgstr "以樹狀圖列出位置的內容"
 
-#: gio/gio-tool.c:246
+#: gio/gio-tool.c:247
 #, c-format
 msgid "Use %s to get detailed help.\n"
 msgstr "使用 %s 以取得詳細的求助。\n"
@@ -1617,12 +1637,12 @@ msgid "Error writing to stdout"
 msgstr "寫入至標準輸出時發生錯誤"
 
 #. Translators: commandline placeholder
-#: gio/gio-tool-cat.c:133 gio/gio-tool-info.c:333 gio/gio-tool-list.c:172
+#: gio/gio-tool-cat.c:133 gio/gio-tool-info.c:340 gio/gio-tool-list.c:172
 #: gio/gio-tool-mkdir.c:48 gio/gio-tool-monitor.c:37 gio/gio-tool-monitor.c:39
 #: gio/gio-tool-monitor.c:41 gio/gio-tool-monitor.c:43
-#: gio/gio-tool-monitor.c:203 gio/gio-tool-mount.c:1199 gio/gio-tool-open.c:70
+#: gio/gio-tool-monitor.c:204 gio/gio-tool-mount.c:1199 gio/gio-tool-open.c:70
 #: gio/gio-tool-remove.c:48 gio/gio-tool-rename.c:45 gio/gio-tool-set.c:89
-#: gio/gio-tool-trash.c:90 gio/gio-tool-tree.c:239
+#: gio/gio-tool-trash.c:220 gio/gio-tool-tree.c:239
 msgid "LOCATION"
 msgstr "LOCATION"
 
@@ -1640,9 +1660,9 @@ msgstr ""
 "位置來取代本地端檔案：例如您可以使用類似\n"
 " smb://server/resource/file.txt 做為位置。"
 
-#: gio/gio-tool-cat.c:162 gio/gio-tool-info.c:364 gio/gio-tool-mkdir.c:76
-#: gio/gio-tool-monitor.c:228 gio/gio-tool-mount.c:1250 gio/gio-tool-open.c:96
-#: gio/gio-tool-remove.c:72 gio/gio-tool-trash.c:145
+#: gio/gio-tool-cat.c:162 gio/gio-tool-info.c:371 gio/gio-tool-mkdir.c:76
+#: gio/gio-tool-monitor.c:229 gio/gio-tool-mount.c:1250 gio/gio-tool-open.c:96
+#: gio/gio-tool-remove.c:72 gio/gio-tool-trash.c:303
 msgid "No locations given"
 msgstr "未提供位置"
 
@@ -1777,24 +1797,24 @@ msgstr "uri： %s\n"
 msgid "local path: %s\n"
 msgstr "本機路徑：%s\n"
 
-#: gio/gio-tool-info.c:199
+#: gio/gio-tool-info.c:205
 #, c-format
 msgid "unix mount: %s%s %s %s %s\n"
 msgstr "unix 掛載：%s%s %s %s %s\n"
 
-#: gio/gio-tool-info.c:279
+#: gio/gio-tool-info.c:286
 msgid "Settable attributes:\n"
 msgstr "可設定特性：\n"
 
-#: gio/gio-tool-info.c:303
+#: gio/gio-tool-info.c:310
 msgid "Writable attribute namespaces:\n"
 msgstr "可寫入特性命名空間：\n"
 
-#: gio/gio-tool-info.c:338
+#: gio/gio-tool-info.c:345
 msgid "Show information about locations."
 msgstr "顯示位置的相關資訊。"
 
-#: gio/gio-tool-info.c:340
+#: gio/gio-tool-info.c:347
 msgid ""
 "gio info is similar to the traditional ls utility, but using GIO\n"
 "locations instead of local files: for example, you can use something\n"
@@ -1807,6 +1827,40 @@ msgstr ""
 " smb://server/resource/file.txt 做為位置。檔案\n"
 "特性可以使用它們的 GIO 名稱來指定，如 standard::icon\n"
 "或只使用命名空間，像 unix，或「*」比對所有的屬性"
+
+#. Translators: commandline placeholder
+#: gio/gio-tool-launch.c:54
+msgid "DESKTOP-FILE [FILE-ARG …]"
+msgstr "DESKTOP-檔案 [檔案-引數 …]"
+
+#: gio/gio-tool-launch.c:57
+msgid ""
+"Launch an application from a desktop file, passing optional filename "
+"arguments to it."
+msgstr "從桌面檔案啟動應用程式，可以將選擇性的檔案名稱引數傳遞給它。"
+
+#: gio/gio-tool-launch.c:77
+msgid "No desktop file given"
+msgstr "沒有提供桌面檔案"
+
+#: gio/gio-tool-launch.c:85
+msgid "The launch command is not currently supported on this platform"
+msgstr "您的平臺目前沒有支援啟動指令"
+
+#: gio/gio-tool-launch.c:98
+#, c-format
+msgid "Unable to load ‘%s‘: %s"
+msgstr "無法載入 ‘%s‘ ︰%s"
+
+#: gio/gio-tool-launch.c:107
+#, c-format
+msgid "Unable to load application information for ‘%s‘"
+msgstr "無法載入‘%s‘的應用程式資訊"
+
+#: gio/gio-tool-launch.c:119
+#, c-format
+msgid "Unable to launch application ‘%s’: %s"
+msgstr "無法啟動應用程式‘%s’︰%s"
 
 #: gio/gio-tool-list.c:37 gio/gio-tool-tree.c:32
 msgid "Show hidden files"
@@ -1945,7 +1999,7 @@ msgstr "回報移動與重新命名為簡單的刪除/建立事件"
 msgid "Watch for mount events"
 msgstr "監看掛載事件"
 
-#: gio/gio-tool-monitor.c:208
+#: gio/gio-tool-monitor.c:209
 msgid "Monitor files or directories for changes."
 msgstr "監控檔案或目錄的變更。"
 
@@ -2069,7 +2123,7 @@ msgstr ""
 "使用註冊為處理該檔案類型的\n"
 "預設應用程式來開啟檔案。"
 
-#: gio/gio-tool-remove.c:31 gio/gio-tool-trash.c:31
+#: gio/gio-tool-remove.c:31 gio/gio-tool-trash.c:33
 msgid "Ignore nonexistent files, never prompt"
 msgstr "忽略不存在的檔案，永不提示"
 
@@ -2182,13 +2236,47 @@ msgstr "尚未指定值"
 msgid "Invalid attribute type “%s”"
 msgstr "無效的特性類型「%s」"
 
-#: gio/gio-tool-trash.c:32
+#: gio/gio-tool-trash.c:34
 msgid "Empty the trash"
 msgstr "清理垃圾桶"
 
-#: gio/gio-tool-trash.c:95
-msgid "Move files or directories to the trash."
-msgstr "將檔案或目錄移至垃圾桶。"
+#: gio/gio-tool-trash.c:35
+msgid "List files in the trash with their original locations"
+msgstr "列出回收筒中的檔案與它們原始的位置"
+
+#: gio/gio-tool-trash.c:36
+msgid ""
+"Restore a file from trash to its original location (possibly recreating the "
+"directory)"
+msgstr "將檔案從回收筒還原到其原始位置 (可能會重新建立目錄)"
+
+#: gio/gio-tool-trash.c:106
+msgid "Unable to find original path"
+msgstr "無法找到原始的路徑"
+
+#: gio/gio-tool-trash.c:123
+msgid "Unable to recreate original location: "
+msgstr "無法建立原始位置︰ "
+
+#: gio/gio-tool-trash.c:136
+msgid "Unable to move file to its original location: "
+msgstr "無法將檔案移至其原始位置： "
+
+#: gio/gio-tool-trash.c:225
+msgid "Move/Restore files or directories to the trash."
+msgstr "將檔案或目錄移動/復原至回收筒。"
+
+#: gio/gio-tool-trash.c:227
+msgid ""
+"Note: for --restore switch, if the original location of the trashed file \n"
+"already exists, it will not be overwritten unless --force is set."
+msgstr ""
+"注意：以 --restore 開關而言，如果回收筒中檔案的原始位置 \n"
+"已經存在，它將不會被覆蓋，除非設定 --force。"
+
+#: gio/gio-tool-trash.c:258
+msgid "Location given doesn't start with trash:///"
+msgstr "指定的的位置不是以 trash:/// 開頭"
 
 #: gio/gio-tool-tree.c:33
 msgid "Follow symbolic links, mounts and shortcuts"
@@ -2822,8 +2910,8 @@ msgstr "讀取檔案 %s 時發生錯誤：%s"
 msgid "Can’t rename file, filename already exists"
 msgstr "不能重新命名檔案，該檔案名稱已存在"
 
-#: gio/glocalfile.c:1182 gio/glocalfile.c:2324 gio/glocalfile.c:2352
-#: gio/glocalfile.c:2491 gio/glocalfileoutputstream.c:650
+#: gio/glocalfile.c:1182 gio/glocalfile.c:2366 gio/glocalfile.c:2394
+#: gio/glocalfile.c:2533 gio/glocalfileoutputstream.c:656
 msgid "Invalid filename"
 msgstr "無效的檔案名稱"
 
@@ -2837,91 +2925,91 @@ msgstr "開啟檔案 %s 時發生錯誤：%s"
 msgid "Error removing file %s: %s"
 msgstr "移除檔案 %s 時發生錯誤：%s"
 
-#: gio/glocalfile.c:1969
+#: gio/glocalfile.c:1980 gio/glocalfile.c:1991
 #, c-format
 msgid "Error trashing file %s: %s"
 msgstr "移動檔案 %s 至垃圾桶時發生錯誤：%s"
 
-#: gio/glocalfile.c:2010
+#: gio/glocalfile.c:2029
 #, c-format
-msgid "Unable to create trash dir %s: %s"
-msgstr "無法建立垃圾桶目錄 %s：%s"
+msgid "Unable to create trash directory %s: %s"
+msgstr "無法建立回收筒目錄 %s：%s"
 
-#: gio/glocalfile.c:2030
+#: gio/glocalfile.c:2050
 #, c-format
 msgid "Unable to find toplevel directory to trash %s"
 msgstr "無法找到垃圾桶 %s 的頂端層級目錄"
 
-#: gio/glocalfile.c:2038
+#: gio/glocalfile.c:2058
 #, c-format
 msgid "Trashing on system internal mounts is not supported"
 msgstr "不支援在系統內部掛載點使用垃圾桶"
 
-#: gio/glocalfile.c:2118 gio/glocalfile.c:2138
+#: gio/glocalfile.c:2141 gio/glocalfile.c:2169
 #, c-format
-msgid "Unable to find or create trash directory for %s"
-msgstr "無法找到或建立 %s 的垃圾桶目錄"
+msgid "Unable to find or create trash directory %s to trash %s"
+msgstr "無法找到或建立回收筒目錄 %s 以回收 %s"
 
-#: gio/glocalfile.c:2173
+#: gio/glocalfile.c:2215
 #, c-format
 msgid "Unable to create trashing info file for %s: %s"
 msgstr "無法建立 %s 垃圾桶資訊檔案：%s"
 
-#: gio/glocalfile.c:2235
+#: gio/glocalfile.c:2277
 #, c-format
 msgid "Unable to trash file %s across filesystem boundaries"
 msgstr "無法將檔案 %s 跨檔案系統邊界移至垃圾桶"
 
-#: gio/glocalfile.c:2239 gio/glocalfile.c:2295
+#: gio/glocalfile.c:2281 gio/glocalfile.c:2337
 #, c-format
 msgid "Unable to trash file %s: %s"
 msgstr "無法將檔案 %s 移至垃圾桶：%s"
 
-#: gio/glocalfile.c:2301
+#: gio/glocalfile.c:2343
 #, c-format
 msgid "Unable to trash file %s"
 msgstr "無法將檔案 %s 移至垃圾桶"
 
-#: gio/glocalfile.c:2327
+#: gio/glocalfile.c:2369
 #, c-format
 msgid "Error creating directory %s: %s"
 msgstr "建立目錄 %s 時發生錯誤：%s"
 
-#: gio/glocalfile.c:2356
+#: gio/glocalfile.c:2398
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "檔案系統不支援符號連結"
 
-#: gio/glocalfile.c:2359
+#: gio/glocalfile.c:2401
 #, c-format
 msgid "Error making symbolic link %s: %s"
 msgstr "建立符號連結 %s 時發生錯誤：%s"
 
-#: gio/glocalfile.c:2402 gio/glocalfile.c:2437 gio/glocalfile.c:2494
+#: gio/glocalfile.c:2444 gio/glocalfile.c:2479 gio/glocalfile.c:2536
 #, c-format
 msgid "Error moving file %s: %s"
 msgstr "移動檔案 %s 時發生錯誤：%s"
 
-#: gio/glocalfile.c:2425
+#: gio/glocalfile.c:2467
 msgid "Can’t move directory over directory"
 msgstr "不能將目錄移動至目錄上"
 
-#: gio/glocalfile.c:2451 gio/glocalfileoutputstream.c:1039
-#: gio/glocalfileoutputstream.c:1053 gio/glocalfileoutputstream.c:1068
-#: gio/glocalfileoutputstream.c:1085 gio/glocalfileoutputstream.c:1099
+#: gio/glocalfile.c:2493 gio/glocalfileoutputstream.c:1079
+#: gio/glocalfileoutputstream.c:1093 gio/glocalfileoutputstream.c:1108
+#: gio/glocalfileoutputstream.c:1125 gio/glocalfileoutputstream.c:1139
 msgid "Backup file creation failed"
 msgstr "建立備份檔案失敗"
 
-#: gio/glocalfile.c:2470
+#: gio/glocalfile.c:2512
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "移除目標檔案時發生錯誤：%s"
 
-#: gio/glocalfile.c:2484
+#: gio/glocalfile.c:2526
 msgid "Move between mounts not supported"
 msgstr "不支援在掛載點之間移動"
 
-#: gio/glocalfile.c:2658
+#: gio/glocalfile.c:2700
 #, c-format
 msgid "Could not determine the disk usage of %s: %s"
 msgstr "無法決定 %s 的磁碟使用量：%s"
@@ -2943,185 +3031,184 @@ msgstr "無效的延伸特性名稱"
 msgid "Error setting extended attribute “%s”: %s"
 msgstr "設定延伸特性「%s」時發生錯誤：%s"
 
-#: gio/glocalfileinfo.c:1666 gio/win32/gwinhttpfile.c:191
+#: gio/glocalfileinfo.c:1709 gio/win32/gwinhttpfile.c:191
 msgid " (invalid encoding)"
 msgstr "（無效的編碼）"
 
-#: gio/glocalfileinfo.c:1825 gio/glocalfileoutputstream.c:915
+#: gio/glocalfileinfo.c:1868 gio/glocalfileoutputstream.c:943
 #, c-format
 msgid "Error when getting information for file “%s”: %s"
 msgstr "取得檔案「%s」資訊時發生錯誤：%s"
 
-#: gio/glocalfileinfo.c:2091
+#: gio/glocalfileinfo.c:2134
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr "取得檔案描述狀態資訊時發生錯誤：%s"
 
-#: gio/glocalfileinfo.c:2136
+#: gio/glocalfileinfo.c:2179
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "無效的特性類型（應為 uint32 值）"
 
-#: gio/glocalfileinfo.c:2154
+#: gio/glocalfileinfo.c:2197
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "無效的特性類型（應為 uint64 值）"
 
-#: gio/glocalfileinfo.c:2173 gio/glocalfileinfo.c:2192
+#: gio/glocalfileinfo.c:2216 gio/glocalfileinfo.c:2235
 msgid "Invalid attribute type (byte string expected)"
 msgstr "無效的特性類型（應為 byte string 值）"
 
-#: gio/glocalfileinfo.c:2239
+#: gio/glocalfileinfo.c:2282
 msgid "Cannot set permissions on symlinks"
 msgstr "不能設定符號連結的權限"
 
-#: gio/glocalfileinfo.c:2255
+#: gio/glocalfileinfo.c:2298
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "設定權限時發生錯誤：%s"
 
-#: gio/glocalfileinfo.c:2306
+#: gio/glocalfileinfo.c:2349
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "設定擁有者時發生錯誤：%s"
 
-#: gio/glocalfileinfo.c:2329
+#: gio/glocalfileinfo.c:2372
 msgid "symlink must be non-NULL"
 msgstr "符號連結必須為非-NULL"
 
-#: gio/glocalfileinfo.c:2339 gio/glocalfileinfo.c:2358
-#: gio/glocalfileinfo.c:2369
+#: gio/glocalfileinfo.c:2382 gio/glocalfileinfo.c:2401
+#: gio/glocalfileinfo.c:2412
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "設定符號連結時發生錯誤：%s"
 
-#: gio/glocalfileinfo.c:2348
+#: gio/glocalfileinfo.c:2391
 msgid "Error setting symlink: file is not a symlink"
 msgstr "設定符號連結時發生錯誤：檔案不是符號連結"
 
-#: gio/glocalfileinfo.c:2420
+#: gio/glocalfileinfo.c:2463
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld are negative"
 msgstr "UNIX 時間戳 %2$lld 的延伸奈秒 %1$d 是負數"
 
-#: gio/glocalfileinfo.c:2429
+#: gio/glocalfileinfo.c:2472
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld reach 1 second"
 msgstr "UNIX 時間戳 %2$lld 的延伸奈秒 %1$d 達 1 秒"
 
-#: gio/glocalfileinfo.c:2439
+#: gio/glocalfileinfo.c:2482
 #, c-format
 msgid "UNIX timestamp %lld does not fit into 64 bits"
 msgstr "UNIX 時間戳 %lld 不能完整放入 64 位元"
 
-#: gio/glocalfileinfo.c:2450
+#: gio/glocalfileinfo.c:2493
 #, c-format
 msgid "UNIX timestamp %lld is outside of the range supported by Windows"
 msgstr "UNIX 時間戳 %lld 超出 Windows 所支援的範圍"
 
-#: gio/glocalfileinfo.c:2514
+#: gio/glocalfileinfo.c:2557
 #, c-format
 msgid "File name “%s” cannot be converted to UTF-16"
 msgstr "「%s」檔名無法轉換為 UTF-16"
 
-#: gio/glocalfileinfo.c:2533
+#: gio/glocalfileinfo.c:2576
 #, c-format
 msgid "File “%s” cannot be opened: Windows Error %lu"
 msgstr "無法開啟「%s」檔案：Windows 錯誤 %lu"
 
-#: gio/glocalfileinfo.c:2546
+#: gio/glocalfileinfo.c:2589
 #, c-format
 msgid "Error setting modification or access time for file “%s”: %lu"
 msgstr "設定「%s」檔案的修改或存取時間時發生錯誤：%lu"
 
-#: gio/glocalfileinfo.c:2647
+#: gio/glocalfileinfo.c:2690
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "設定修改或存取時刻時發生錯誤：%s"
 
-#: gio/glocalfileinfo.c:2670
+#: gio/glocalfileinfo.c:2713
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux 情境必須為非-NULL"
 
-#: gio/glocalfileinfo.c:2685
+#: gio/glocalfileinfo.c:2720
+msgid "SELinux is not enabled on this system"
+msgstr "SELinux 在這個系統上並未啟用"
+
+#: gio/glocalfileinfo.c:2730
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "設定 SELinux 情境時發生錯誤：%s"
 
-#: gio/glocalfileinfo.c:2692
-msgid "SELinux is not enabled on this system"
-msgstr "SELinux 在這個系統上並未啟用"
-
-#: gio/glocalfileinfo.c:2784
+#: gio/glocalfileinfo.c:2823
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "不支援設定特性 %s"
 
-#: gio/glocalfileinputstream.c:168 gio/glocalfileoutputstream.c:795
+#: gio/glocalfileinputstream.c:163 gio/glocalfileoutputstream.c:801
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "從檔案讀取時發生錯誤：%s"
 
-#: gio/glocalfileinputstream.c:199 gio/glocalfileinputstream.c:211
-#: gio/glocalfileinputstream.c:225 gio/glocalfileinputstream.c:333
-#: gio/glocalfileoutputstream.c:557 gio/glocalfileoutputstream.c:1117
-#, c-format
-msgid "Error seeking in file: %s"
-msgstr "在檔案中搜尋時發生錯誤：%s"
-
-#: gio/glocalfileinputstream.c:255 gio/glocalfileoutputstream.c:347
-#: gio/glocalfileoutputstream.c:441
+#: gio/glocalfileinputstream.c:194 gio/glocalfileoutputstream.c:353
+#: gio/glocalfileoutputstream.c:447
 #, c-format
 msgid "Error closing file: %s"
 msgstr "關閉檔案時發生錯誤：%s"
 
-#: gio/glocalfilemonitor.c:865
+#: gio/glocalfileinputstream.c:272 gio/glocalfileoutputstream.c:563
+#: gio/glocalfileoutputstream.c:1157
+#, c-format
+msgid "Error seeking in file: %s"
+msgstr "在檔案中搜尋時發生錯誤：%s"
+
+#: gio/glocalfilemonitor.c:866
 msgid "Unable to find default local file monitor type"
 msgstr "無法找到預設的本地端檔案監視器類型"
 
-#: gio/glocalfileoutputstream.c:214 gio/glocalfileoutputstream.c:292
-#: gio/glocalfileoutputstream.c:328 gio/glocalfileoutputstream.c:816
+#: gio/glocalfileoutputstream.c:220 gio/glocalfileoutputstream.c:298
+#: gio/glocalfileoutputstream.c:334 gio/glocalfileoutputstream.c:822
 #, c-format
 msgid "Error writing to file: %s"
 msgstr "寫入至檔案時發生錯誤：%s"
 
-#: gio/glocalfileoutputstream.c:374
+#: gio/glocalfileoutputstream.c:380
 #, c-format
 msgid "Error removing old backup link: %s"
 msgstr "移除舊備份連結時發生錯誤：%s"
 
-#: gio/glocalfileoutputstream.c:388 gio/glocalfileoutputstream.c:401
+#: gio/glocalfileoutputstream.c:394 gio/glocalfileoutputstream.c:407
 #, c-format
 msgid "Error creating backup copy: %s"
 msgstr "建立備份複本時發生錯誤：%s"
 
-#: gio/glocalfileoutputstream.c:419
+#: gio/glocalfileoutputstream.c:425
 #, c-format
 msgid "Error renaming temporary file: %s"
 msgstr "重新命名暫存檔案時發生錯誤：%s"
 
-#: gio/glocalfileoutputstream.c:603 gio/glocalfileoutputstream.c:1168
+#: gio/glocalfileoutputstream.c:609 gio/glocalfileoutputstream.c:1208
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "截短檔案時發生錯誤：%s"
 
-#: gio/glocalfileoutputstream.c:656 gio/glocalfileoutputstream.c:894
-#: gio/glocalfileoutputstream.c:1149 gio/gsubprocess.c:380
+#: gio/glocalfileoutputstream.c:662 gio/glocalfileoutputstream.c:907
+#: gio/glocalfileoutputstream.c:1189 gio/gsubprocess.c:226
 #, c-format
 msgid "Error opening file “%s”: %s"
 msgstr "開啟檔案「%s」時發生錯誤：%s"
 
-#: gio/glocalfileoutputstream.c:928
+#: gio/glocalfileoutputstream.c:957
 msgid "Target file is a directory"
 msgstr "目標檔案是一個目錄"
 
-#: gio/glocalfileoutputstream.c:933
+#: gio/glocalfileoutputstream.c:971
 msgid "Target file is not a regular file"
 msgstr "目標檔案不是正規的檔案"
 
-#: gio/glocalfileoutputstream.c:945
+#: gio/glocalfileoutputstream.c:984
 msgid "The file was externally modified"
 msgstr "該檔案已被外部程式修改過"
 
-#: gio/glocalfileoutputstream.c:1133
+#: gio/glocalfileoutputstream.c:1173
 #, c-format
 msgid "Error removing old file: %s"
 msgstr "移除舊檔案時發生錯誤：%s"
@@ -3274,15 +3361,15 @@ msgstr "%s 未實作"
 msgid "Invalid domain"
 msgstr "網域無效"
 
-#: gio/gresource.c:672 gio/gresource.c:931 gio/gresource.c:970
-#: gio/gresource.c:1094 gio/gresource.c:1166 gio/gresource.c:1239
-#: gio/gresource.c:1320 gio/gresourcefile.c:476 gio/gresourcefile.c:599
+#: gio/gresource.c:681 gio/gresource.c:943 gio/gresource.c:983
+#: gio/gresource.c:1107 gio/gresource.c:1179 gio/gresource.c:1253
+#: gio/gresource.c:1334 gio/gresourcefile.c:476 gio/gresourcefile.c:599
 #: gio/gresourcefile.c:736
 #, c-format
 msgid "The resource at “%s” does not exist"
 msgstr "「%s」的資源不存在"
 
-#: gio/gresource.c:837
+#: gio/gresource.c:848
 #, c-format
 msgid "The resource at “%s” failed to decompress"
 msgstr "「%s」的資源無法解壓縮"
@@ -3656,7 +3743,7 @@ msgstr "無效的 socket，初始化失敗原因為：%s"
 msgid "Socket is already closed"
 msgstr "Socket 已經關閉"
 
-#: gio/gsocket.c:443 gio/gsocket.c:3180 gio/gsocket.c:4403 gio/gsocket.c:4461
+#: gio/gsocket.c:443 gio/gsocket.c:3190 gio/gsocket.c:4420 gio/gsocket.c:4478
 msgid "Socket I/O timed out"
 msgstr "Socket I/O 逾時"
 
@@ -3665,176 +3752,181 @@ msgstr "Socket I/O 逾時"
 msgid "creating GSocket from fd: %s"
 msgstr "正在從 fd 建立 GSocket：%s"
 
-#: gio/gsocket.c:607 gio/gsocket.c:661 gio/gsocket.c:668
+#: gio/gsocket.c:607 gio/gsocket.c:671 gio/gsocket.c:678
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "無法建立 socket：%s"
 
-#: gio/gsocket.c:661
+#: gio/gsocket.c:671
 msgid "Unknown family was specified"
 msgstr "指定了不明的字族"
 
-#: gio/gsocket.c:668
+#: gio/gsocket.c:678
 msgid "Unknown protocol was specified"
 msgstr "指定了不明的通訊協定"
 
-#: gio/gsocket.c:1159
+#: gio/gsocket.c:1169
 #, c-format
 msgid "Cannot use datagram operations on a non-datagram socket."
 msgstr "不能在非資料電報 socket 上使用資料電報操作。"
 
-#: gio/gsocket.c:1176
+#: gio/gsocket.c:1186
 #, c-format
 msgid "Cannot use datagram operations on a socket with a timeout set."
 msgstr "不能在有逾時設定 socket 上使用資料電報操作。"
 
-#: gio/gsocket.c:1983
+#: gio/gsocket.c:1993
 #, c-format
 msgid "could not get local address: %s"
 msgstr "無法取得本地端位址：%s"
 
-#: gio/gsocket.c:2029
+#: gio/gsocket.c:2039
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "無法取得遠端位址：%s"
 
-#: gio/gsocket.c:2095
+#: gio/gsocket.c:2105
 #, c-format
 msgid "could not listen: %s"
 msgstr "無法聽取：%s"
 
-#: gio/gsocket.c:2199
+#: gio/gsocket.c:2209
 #, c-format
 msgid "Error binding to address %s: %s"
 msgstr "綁定至 %s 位址時發生錯誤：%s"
 
-#: gio/gsocket.c:2375 gio/gsocket.c:2412 gio/gsocket.c:2522 gio/gsocket.c:2547
-#: gio/gsocket.c:2610 gio/gsocket.c:2668 gio/gsocket.c:2686
+#: gio/gsocket.c:2385 gio/gsocket.c:2422 gio/gsocket.c:2532 gio/gsocket.c:2557
+#: gio/gsocket.c:2620 gio/gsocket.c:2678 gio/gsocket.c:2696
 #, c-format
 msgid "Error joining multicast group: %s"
 msgstr "加入多點廣播群組時發生錯誤：%s"
 
-#: gio/gsocket.c:2376 gio/gsocket.c:2413 gio/gsocket.c:2523 gio/gsocket.c:2548
-#: gio/gsocket.c:2611 gio/gsocket.c:2669 gio/gsocket.c:2687
+#: gio/gsocket.c:2386 gio/gsocket.c:2423 gio/gsocket.c:2533 gio/gsocket.c:2558
+#: gio/gsocket.c:2621 gio/gsocket.c:2679 gio/gsocket.c:2697
 #, c-format
 msgid "Error leaving multicast group: %s"
 msgstr "離開多點廣播群組時發生錯誤：%s"
 
-#: gio/gsocket.c:2377
+#: gio/gsocket.c:2387
 msgid "No support for source-specific multicast"
 msgstr "不支援指定來源的多點廣播"
 
-#: gio/gsocket.c:2524
+#: gio/gsocket.c:2534
 msgid "Unsupported socket family"
 msgstr "不支援的 socket 家族"
 
-#: gio/gsocket.c:2549
+#: gio/gsocket.c:2559
 msgid "source-specific not an IPv4 address"
 msgstr "指定來源不是 IPv4 位址"
 
-#: gio/gsocket.c:2573
+#: gio/gsocket.c:2583
 #, c-format
 msgid "Interface name too long"
 msgstr "介面名稱過長"
 
-#: gio/gsocket.c:2586 gio/gsocket.c:2636
+#: gio/gsocket.c:2596 gio/gsocket.c:2646
 #, c-format
 msgid "Interface not found: %s"
 msgstr "找不到介面：%s"
 
-#: gio/gsocket.c:2612
+#: gio/gsocket.c:2622
 msgid "No support for IPv4 source-specific multicast"
 msgstr "不支援 IPv4 指定來源的多點廣播"
 
-#: gio/gsocket.c:2670
+#: gio/gsocket.c:2680
 msgid "No support for IPv6 source-specific multicast"
 msgstr "不支援 IPv6 指定來源的多點廣播"
 
-#: gio/gsocket.c:2879
+#: gio/gsocket.c:2889
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "接受連線時發生錯誤：%s"
 
-#: gio/gsocket.c:3005
+#: gio/gsocket.c:3015
 msgid "Connection in progress"
 msgstr "連線進行中"
 
-#: gio/gsocket.c:3056
+#: gio/gsocket.c:3066
 msgid "Unable to get pending error: "
 msgstr "無法取得未處理的錯誤："
 
-#: gio/gsocket.c:3245
+#: gio/gsocket.c:3255
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "接收資料時發生錯誤：%s"
 
-#: gio/gsocket.c:3442
+#: gio/gsocket.c:3452
 #, c-format
 msgid "Error sending data: %s"
 msgstr "傳送資料時發生錯誤：%s"
 
-#: gio/gsocket.c:3629
+#: gio/gsocket.c:3639
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "無法關閉 socket：%s"
 
-#: gio/gsocket.c:3710
+#: gio/gsocket.c:3720
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "關閉 socket 時發生錯誤：%s"
 
-#: gio/gsocket.c:4396
+#: gio/gsocket.c:4413
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "等候 socket 情況：%s"
 
-#: gio/gsocket.c:4774 gio/gsocket.c:4776 gio/gsocket.c:4923 gio/gsocket.c:5008
-#: gio/gsocket.c:5186 gio/gsocket.c:5226 gio/gsocket.c:5228
+#: gio/gsocket.c:4804 gio/gsocket.c:4820 gio/gsocket.c:4833
+#, c-format
+msgid "Unable to send message: %s"
+msgstr "無法傳送訊息：%s"
+
+#: gio/gsocket.c:4805 gio/gsocket.c:4821 gio/gsocket.c:4834
+msgid "Message vectors too large"
+msgstr "訊息係數過大"
+
+#: gio/gsocket.c:4850 gio/gsocket.c:4852 gio/gsocket.c:4999 gio/gsocket.c:5084
+#: gio/gsocket.c:5262 gio/gsocket.c:5302 gio/gsocket.c:5304
 #, c-format
 msgid "Error sending message: %s"
 msgstr "傳送訊息時發生錯誤：%s"
 
-#: gio/gsocket.c:4950
+#: gio/gsocket.c:5026
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "視窗不支援 GSocketControlMessage"
 
-#: gio/gsocket.c:5419 gio/gsocket.c:5492 gio/gsocket.c:5718
+#: gio/gsocket.c:5495 gio/gsocket.c:5571 gio/gsocket.c:5797
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "取回郵件發生錯誤：%s"
 
-#: gio/gsocket.c:5990 gio/gsocket.c:6038
+#: gio/gsocket.c:6070 gio/gsocket.c:6081 gio/gsocket.c:6127
 #, c-format
 msgid "Unable to read socket credentials: %s"
 msgstr "無法讀取 socket 機密：%s"
 
-#: gio/gsocket.c:6047
+#: gio/gsocket.c:6136
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials 沒有在這個 OS 上實作"
 
-#: gio/gsocketclient.c:182
+#: gio/gsocketclient.c:191
 #, c-format
 msgid "Could not connect to proxy server %s: "
 msgstr "無法連線到代理伺服器 %s："
 
-#: gio/gsocketclient.c:196
+#: gio/gsocketclient.c:205
 #, c-format
 msgid "Could not connect to %s: "
 msgstr "無法連接到 %s："
 
-#: gio/gsocketclient.c:198
+#: gio/gsocketclient.c:207
 msgid "Could not connect: "
 msgstr "無法連接："
 
-#: gio/gsocketclient.c:1037 gio/gsocketclient.c:1866
-msgid "Unknown error on connect"
-msgstr "連線時有不明的錯誤"
-
-#: gio/gsocketclient.c:1091 gio/gsocketclient.c:1668
+#: gio/gsocketclient.c:1162 gio/gsocketclient.c:1749
 msgid "Proxying over a non-TCP connection is not supported."
 msgstr "不支援嘗試透過非-TCP 連線使用代理伺服器。"
 
-#: gio/gsocketclient.c:1120 gio/gsocketclient.c:1698
+#: gio/gsocketclient.c:1194 gio/gsocketclient.c:1778
 #, c-format
 msgid "Proxy protocol “%s” is not supported."
 msgstr "指定的通訊協定「%s」不被支援。"
@@ -3963,25 +4055,29 @@ msgstr "暫時無法解析「%s」"
 msgid "Error resolving “%s”"
 msgstr "解析「%s」時發生錯誤"
 
-#: gio/gtlscertificate.c:243
+#: gio/gtlscertificate.c:298
 msgid "No PEM-encoded private key found"
 msgstr "找不到 PEM 編碼的私鑰"
 
-#: gio/gtlscertificate.c:253
+#: gio/gtlscertificate.c:308
 msgid "Cannot decrypt PEM-encoded private key"
 msgstr "不能解鎖 PEM 編碼的私鑰"
 
-#: gio/gtlscertificate.c:264
+#: gio/gtlscertificate.c:319
 msgid "Could not parse PEM-encoded private key"
 msgstr "無法解析 PEM 編碼的私鑰"
 
-#: gio/gtlscertificate.c:291
+#: gio/gtlscertificate.c:346
 msgid "No PEM-encoded certificate found"
 msgstr "找到非 PEM 編碼的憑證"
 
-#: gio/gtlscertificate.c:300
+#: gio/gtlscertificate.c:355
 msgid "Could not parse PEM-encoded certificate"
 msgstr "無法解析 PEM 編碼的憑證"
+
+#: gio/gtlscertificate.c:710
+msgid "This GTlsBackend does not support creating PKCS #11 certificates"
+msgstr "這個 GTlsBackend 不支援建立does PKCS #11 憑證"
 
 #: gio/gtlspassword.c:111
 msgid ""
@@ -4051,24 +4147,24 @@ msgstr "不是預期的控制訊息，卻收到 %d"
 msgid "Error while disabling SO_PASSCRED: %s"
 msgstr "停用 SO_PASSCRED 時發生錯誤：%s"
 
-#: gio/gunixinputstream.c:362 gio/gunixinputstream.c:383
+#: gio/gunixinputstream.c:357 gio/gunixinputstream.c:378
 #, c-format
 msgid "Error reading from file descriptor: %s"
 msgstr "讀取檔案描述狀態時發生錯誤：%s"
 
-#: gio/gunixinputstream.c:416 gio/gunixoutputstream.c:525
+#: gio/gunixinputstream.c:411 gio/gunixoutputstream.c:520
 #: gio/gwin32inputstream.c:217 gio/gwin32outputstream.c:204
 #, c-format
 msgid "Error closing file descriptor: %s"
 msgstr "關閉檔案描述狀態時發生錯誤：%s"
 
-#: gio/gunixmounts.c:2755 gio/gunixmounts.c:2808
+#: gio/gunixmounts.c:2780 gio/gunixmounts.c:2833
 msgid "Filesystem root"
 msgstr "根檔案系統"
 
-#: gio/gunixoutputstream.c:362 gio/gunixoutputstream.c:382
-#: gio/gunixoutputstream.c:469 gio/gunixoutputstream.c:489
-#: gio/gunixoutputstream.c:635
+#: gio/gunixoutputstream.c:357 gio/gunixoutputstream.c:377
+#: gio/gunixoutputstream.c:464 gio/gunixoutputstream.c:484
+#: gio/gunixoutputstream.c:630
 #, c-format
 msgid "Error writing to file descriptor: %s"
 msgstr "寫入檔案描述狀態時發生錯誤：%s"
@@ -4272,25 +4368,25 @@ msgid "The pathname “%s” is not an absolute path"
 msgstr "路徑名稱「%s」不是絕對路徑"
 
 #. Translators: this is the preferred format for expressing the date and the time
-#: glib/gdatetime.c:220
+#: glib/gdatetime.c:226
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
 msgstr "%Y年%m月%d日 (%A) %H時%M分%S秒"
 
 #. Translators: this is the preferred format for expressing the date
-#: glib/gdatetime.c:223
+#: glib/gdatetime.c:229
 msgctxt "GDateTime"
 msgid "%m/%d/%y"
 msgstr "%y/%m/%d"
 
 #. Translators: this is the preferred format for expressing the time
-#: glib/gdatetime.c:226
+#: glib/gdatetime.c:232
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
 msgstr "%H:%M:%S"
 
 #. Translators: this is the preferred format for expressing 12 hour time
-#: glib/gdatetime.c:229
+#: glib/gdatetime.c:235
 msgctxt "GDateTime"
 msgid "%I:%M:%S %p"
 msgstr "%p %I時%M分%S秒"
@@ -4311,62 +4407,62 @@ msgstr "%p %I時%M分%S秒"
 #. * non-European) there is no difference between the standalone and
 #. * complete date form.
 #.
-#: glib/gdatetime.c:268
+#: glib/gdatetime.c:274
 msgctxt "full month name"
 msgid "January"
 msgstr "一月"
 
-#: glib/gdatetime.c:270
+#: glib/gdatetime.c:276
 msgctxt "full month name"
 msgid "February"
 msgstr "二月"
 
-#: glib/gdatetime.c:272
+#: glib/gdatetime.c:278
 msgctxt "full month name"
 msgid "March"
 msgstr "三月"
 
-#: glib/gdatetime.c:274
+#: glib/gdatetime.c:280
 msgctxt "full month name"
 msgid "April"
 msgstr "四月"
 
-#: glib/gdatetime.c:276
+#: glib/gdatetime.c:282
 msgctxt "full month name"
 msgid "May"
 msgstr "五月"
 
-#: glib/gdatetime.c:278
+#: glib/gdatetime.c:284
 msgctxt "full month name"
 msgid "June"
 msgstr "六月"
 
-#: glib/gdatetime.c:280
+#: glib/gdatetime.c:286
 msgctxt "full month name"
 msgid "July"
 msgstr "七月"
 
-#: glib/gdatetime.c:282
+#: glib/gdatetime.c:288
 msgctxt "full month name"
 msgid "August"
 msgstr "八月"
 
-#: glib/gdatetime.c:284
+#: glib/gdatetime.c:290
 msgctxt "full month name"
 msgid "September"
 msgstr "九月"
 
-#: glib/gdatetime.c:286
+#: glib/gdatetime.c:292
 msgctxt "full month name"
 msgid "October"
 msgstr "十月"
 
-#: glib/gdatetime.c:288
+#: glib/gdatetime.c:294
 msgctxt "full month name"
 msgid "November"
 msgstr "十一月"
 
-#: glib/gdatetime.c:290
+#: glib/gdatetime.c:296
 msgctxt "full month name"
 msgid "December"
 msgstr "十二月"
@@ -4388,132 +4484,132 @@ msgstr "十二月"
 #. * other platform.  Here are abbreviated month names in a form
 #. * appropriate when they are used standalone.
 #.
-#: glib/gdatetime.c:322
+#: glib/gdatetime.c:328
 msgctxt "abbreviated month name"
 msgid "Jan"
 msgstr "一月"
 
-#: glib/gdatetime.c:324
+#: glib/gdatetime.c:330
 msgctxt "abbreviated month name"
 msgid "Feb"
 msgstr "二月"
 
-#: glib/gdatetime.c:326
+#: glib/gdatetime.c:332
 msgctxt "abbreviated month name"
 msgid "Mar"
 msgstr "三月"
 
-#: glib/gdatetime.c:328
+#: glib/gdatetime.c:334
 msgctxt "abbreviated month name"
 msgid "Apr"
 msgstr "四月"
 
-#: glib/gdatetime.c:330
+#: glib/gdatetime.c:336
 msgctxt "abbreviated month name"
 msgid "May"
 msgstr "五月"
 
-#: glib/gdatetime.c:332
+#: glib/gdatetime.c:338
 msgctxt "abbreviated month name"
 msgid "Jun"
 msgstr "六月"
 
-#: glib/gdatetime.c:334
+#: glib/gdatetime.c:340
 msgctxt "abbreviated month name"
 msgid "Jul"
 msgstr "七月"
 
-#: glib/gdatetime.c:336
+#: glib/gdatetime.c:342
 msgctxt "abbreviated month name"
 msgid "Aug"
 msgstr "八月"
 
-#: glib/gdatetime.c:338
+#: glib/gdatetime.c:344
 msgctxt "abbreviated month name"
 msgid "Sep"
 msgstr "九月"
 
-#: glib/gdatetime.c:340
+#: glib/gdatetime.c:346
 msgctxt "abbreviated month name"
 msgid "Oct"
 msgstr "十月"
 
-#: glib/gdatetime.c:342
+#: glib/gdatetime.c:348
 msgctxt "abbreviated month name"
 msgid "Nov"
 msgstr "十一月"
 
-#: glib/gdatetime.c:344
+#: glib/gdatetime.c:350
 msgctxt "abbreviated month name"
 msgid "Dec"
 msgstr "十二月"
 
-#: glib/gdatetime.c:359
+#: glib/gdatetime.c:365
 msgctxt "full weekday name"
 msgid "Monday"
 msgstr "星期一"
 
-#: glib/gdatetime.c:361
+#: glib/gdatetime.c:367
 msgctxt "full weekday name"
 msgid "Tuesday"
 msgstr "星期二"
 
-#: glib/gdatetime.c:363
+#: glib/gdatetime.c:369
 msgctxt "full weekday name"
 msgid "Wednesday"
 msgstr "星期三"
 
-#: glib/gdatetime.c:365
+#: glib/gdatetime.c:371
 msgctxt "full weekday name"
 msgid "Thursday"
 msgstr "星期四"
 
-#: glib/gdatetime.c:367
+#: glib/gdatetime.c:373
 msgctxt "full weekday name"
 msgid "Friday"
 msgstr "星期五"
 
-#: glib/gdatetime.c:369
+#: glib/gdatetime.c:375
 msgctxt "full weekday name"
 msgid "Saturday"
 msgstr "星期六"
 
-#: glib/gdatetime.c:371
+#: glib/gdatetime.c:377
 msgctxt "full weekday name"
 msgid "Sunday"
 msgstr "星期日"
 
-#: glib/gdatetime.c:386
+#: glib/gdatetime.c:392
 msgctxt "abbreviated weekday name"
 msgid "Mon"
 msgstr "週一"
 
-#: glib/gdatetime.c:388
+#: glib/gdatetime.c:394
 msgctxt "abbreviated weekday name"
 msgid "Tue"
 msgstr "週二"
 
-#: glib/gdatetime.c:390
+#: glib/gdatetime.c:396
 msgctxt "abbreviated weekday name"
 msgid "Wed"
 msgstr "週三"
 
-#: glib/gdatetime.c:392
+#: glib/gdatetime.c:398
 msgctxt "abbreviated weekday name"
 msgid "Thu"
 msgstr "週四"
 
-#: glib/gdatetime.c:394
+#: glib/gdatetime.c:400
 msgctxt "abbreviated weekday name"
 msgid "Fri"
 msgstr "週五"
 
-#: glib/gdatetime.c:396
+#: glib/gdatetime.c:402
 msgctxt "abbreviated weekday name"
 msgid "Sat"
 msgstr "週六"
 
-#: glib/gdatetime.c:398
+#: glib/gdatetime.c:404
 msgctxt "abbreviated weekday name"
 msgid "Sun"
 msgstr "週日"
@@ -4535,62 +4631,62 @@ msgstr "週日"
 #. * (western European, non-European) there is no difference between the
 #. * standalone and complete date form.
 #.
-#: glib/gdatetime.c:462
+#: glib/gdatetime.c:468
 msgctxt "full month name with day"
 msgid "January"
 msgstr "一月"
 
-#: glib/gdatetime.c:464
+#: glib/gdatetime.c:470
 msgctxt "full month name with day"
 msgid "February"
 msgstr "二月"
 
-#: glib/gdatetime.c:466
+#: glib/gdatetime.c:472
 msgctxt "full month name with day"
 msgid "March"
 msgstr "三月"
 
-#: glib/gdatetime.c:468
+#: glib/gdatetime.c:474
 msgctxt "full month name with day"
 msgid "April"
 msgstr "四月"
 
-#: glib/gdatetime.c:470
+#: glib/gdatetime.c:476
 msgctxt "full month name with day"
 msgid "May"
 msgstr "五月"
 
-#: glib/gdatetime.c:472
+#: glib/gdatetime.c:478
 msgctxt "full month name with day"
 msgid "June"
 msgstr "六月"
 
-#: glib/gdatetime.c:474
+#: glib/gdatetime.c:480
 msgctxt "full month name with day"
 msgid "July"
 msgstr "七月"
 
-#: glib/gdatetime.c:476
+#: glib/gdatetime.c:482
 msgctxt "full month name with day"
 msgid "August"
 msgstr "八月"
 
-#: glib/gdatetime.c:478
+#: glib/gdatetime.c:484
 msgctxt "full month name with day"
 msgid "September"
 msgstr "九月"
 
-#: glib/gdatetime.c:480
+#: glib/gdatetime.c:486
 msgctxt "full month name with day"
 msgid "October"
 msgstr "十月"
 
-#: glib/gdatetime.c:482
+#: glib/gdatetime.c:488
 msgctxt "full month name with day"
 msgid "November"
 msgstr "十一月"
 
-#: glib/gdatetime.c:484
+#: glib/gdatetime.c:490
 msgctxt "full month name with day"
 msgid "December"
 msgstr "十二月"
@@ -4612,74 +4708,74 @@ msgstr "十二月"
 #. * month names almost ready to copy and paste here.  In other systems
 #. * due to a bug the result is incorrect in some languages.
 #.
-#: glib/gdatetime.c:549
+#: glib/gdatetime.c:555
 msgctxt "abbreviated month name with day"
 msgid "Jan"
 msgstr "一月"
 
-#: glib/gdatetime.c:551
+#: glib/gdatetime.c:557
 msgctxt "abbreviated month name with day"
 msgid "Feb"
 msgstr "二月"
 
-#: glib/gdatetime.c:553
+#: glib/gdatetime.c:559
 msgctxt "abbreviated month name with day"
 msgid "Mar"
 msgstr "三月"
 
-#: glib/gdatetime.c:555
+#: glib/gdatetime.c:561
 msgctxt "abbreviated month name with day"
 msgid "Apr"
 msgstr "四月"
 
-#: glib/gdatetime.c:557
+#: glib/gdatetime.c:563
 msgctxt "abbreviated month name with day"
 msgid "May"
 msgstr "五月"
 
-#: glib/gdatetime.c:559
+#: glib/gdatetime.c:565
 msgctxt "abbreviated month name with day"
 msgid "Jun"
 msgstr "六月"
 
-#: glib/gdatetime.c:561
+#: glib/gdatetime.c:567
 msgctxt "abbreviated month name with day"
 msgid "Jul"
 msgstr "七月"
 
-#: glib/gdatetime.c:563
+#: glib/gdatetime.c:569
 msgctxt "abbreviated month name with day"
 msgid "Aug"
 msgstr "八月"
 
-#: glib/gdatetime.c:565
+#: glib/gdatetime.c:571
 msgctxt "abbreviated month name with day"
 msgid "Sep"
 msgstr "九月"
 
-#: glib/gdatetime.c:567
+#: glib/gdatetime.c:573
 msgctxt "abbreviated month name with day"
 msgid "Oct"
 msgstr "十月"
 
-#: glib/gdatetime.c:569
+#: glib/gdatetime.c:575
 msgctxt "abbreviated month name with day"
 msgid "Nov"
 msgstr "十一月"
 
-#: glib/gdatetime.c:571
+#: glib/gdatetime.c:577
 msgctxt "abbreviated month name with day"
 msgid "Dec"
 msgstr "十二月"
 
 #. Translators: 'before midday' indicator
-#: glib/gdatetime.c:588
+#: glib/gdatetime.c:594
 msgctxt "GDateTime"
 msgid "AM"
 msgstr "上午"
 
 #. Translators: 'after midday' indicator
-#: glib/gdatetime.c:591
+#: glib/gdatetime.c:597
 msgctxt "GDateTime"
 msgid "PM"
 msgstr "下午"
@@ -4710,176 +4806,176 @@ msgstr "檔案「%s」太過巨大"
 msgid "Failed to read from file “%s”: %s"
 msgstr "讀取檔案「%s」失敗：%s"
 
-#: glib/gfileutils.c:902 glib/gfileutils.c:974 glib/gfileutils.c:1466
+#: glib/gfileutils.c:904 glib/gfileutils.c:979 glib/gfileutils.c:1476
 #, c-format
 msgid "Failed to open file “%s”: %s"
 msgstr "開啟檔案「%s」失敗：%s"
 
-#: glib/gfileutils.c:914
+#: glib/gfileutils.c:917
 #, c-format
 msgid "Failed to get attributes of file “%s”: fstat() failed: %s"
 msgstr "獲取檔案「%s」的特性失敗：fstat() 失敗：%s"
 
-#: glib/gfileutils.c:944
+#: glib/gfileutils.c:948
 #, c-format
 msgid "Failed to open file “%s”: fdopen() failed: %s"
 msgstr "開啟檔案「%s」失敗：fdopen() 失敗：%s"
 
-#: glib/gfileutils.c:1044
+#: glib/gfileutils.c:1049
 #, c-format
 msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
 msgstr "檔案名稱由「%s」改為「%s」失敗：g_rename() 失敗：%s"
 
-#: glib/gfileutils.c:1169
+#: glib/gfileutils.c:1175
 #, c-format
 msgid "Failed to write file “%s”: write() failed: %s"
 msgstr "無法寫入檔案「%s」：write() 失敗：%s"
 
-#: glib/gfileutils.c:1189
+#: glib/gfileutils.c:1196
 #, c-format
 msgid "Failed to write file “%s”: fsync() failed: %s"
 msgstr "無法寫入檔案「%s」：fsync() 失敗：%s"
 
-#: glib/gfileutils.c:1357 glib/gfileutils.c:1769
+#: glib/gfileutils.c:1365 glib/gfileutils.c:1780
 #, c-format
 msgid "Failed to create file “%s”: %s"
 msgstr "建立檔案「%s」失敗：%s"
 
-#: glib/gfileutils.c:1401
+#: glib/gfileutils.c:1410
 #, c-format
 msgid "Existing file “%s” could not be removed: g_unlink() failed: %s"
 msgstr "現存檔案「%s」無法移除：g_unlink() 失敗：%s"
 
-#: glib/gfileutils.c:1735
+#: glib/gfileutils.c:1745
 #, c-format
 msgid "Template “%s” invalid, should not contain a “%s”"
 msgstr "範本「%s」無效，不應含有「%s」"
 
 # (Abel) this is file template for mktemp/mkstemp
-#: glib/gfileutils.c:1748
+#: glib/gfileutils.c:1758
 #, c-format
 msgid "Template “%s” doesn’t contain XXXXXX"
 msgstr "範本「%s」沒有包含 XXXXXX"
 
-#: glib/gfileutils.c:2306 glib/gfileutils.c:2334
+#: glib/gfileutils.c:2318 glib/gfileutils.c:2347
 #, c-format
 msgid "Failed to read the symbolic link “%s”: %s"
 msgstr "讀取符號連結「%s」失敗：%s"
 
-#: glib/giochannel.c:1396
+#: glib/giochannel.c:1405
 #, c-format
 msgid "Could not open converter from “%s” to “%s”: %s"
 msgstr "無法開啟將「%s」轉換至「%s」的轉換器：%s"
 
-#: glib/giochannel.c:1749
+#: glib/giochannel.c:1758
 msgid "Can’t do a raw read in g_io_channel_read_line_string"
 msgstr "在 g_io_channel_read_line_string 中無法讀取原始資料"
 
-#: glib/giochannel.c:1796 glib/giochannel.c:2054 glib/giochannel.c:2141
+#: glib/giochannel.c:1805 glib/giochannel.c:2063 glib/giochannel.c:2150
 msgid "Leftover unconverted data in read buffer"
 msgstr "用來讀取資料的緩衝區中仍有未轉換的資料"
 
-#: glib/giochannel.c:1877 glib/giochannel.c:1954
+#: glib/giochannel.c:1886 glib/giochannel.c:1963
 msgid "Channel terminates in a partial character"
 msgstr "在字元未完整之前，輸入管道已經結束"
 
-#: glib/giochannel.c:1940
+#: glib/giochannel.c:1949
 msgid "Can’t do a raw read in g_io_channel_read_to_end"
 msgstr "在 g_io_channel_read_to_end 中無法讀取原始資料"
 
-#: glib/gkeyfile.c:789
+#: glib/gkeyfile.c:790
 msgid "Valid key file could not be found in search dirs"
 msgstr "在資料目錄中找不到有效的鍵檔案"
 
-#: glib/gkeyfile.c:826
+#: glib/gkeyfile.c:827
 msgid "Not a regular file"
 msgstr "不是正規的檔案"
 
-#: glib/gkeyfile.c:1275
+#: glib/gkeyfile.c:1282
 #, c-format
 msgid ""
 "Key file contains line “%s” which is not a key-value pair, group, or comment"
 msgstr "鍵檔案中「%s」行並非鍵值配對、群組或註解"
 
-#: glib/gkeyfile.c:1332
+#: glib/gkeyfile.c:1339
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "無效的群組名稱：%s"
 
-#: glib/gkeyfile.c:1354
+#: glib/gkeyfile.c:1361
 msgid "Key file does not start with a group"
 msgstr "鍵檔案並非以群組開頭"
 
-#: glib/gkeyfile.c:1380
+#: glib/gkeyfile.c:1387
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "無效的鍵名稱：%s"
 
-#: glib/gkeyfile.c:1407
+#: glib/gkeyfile.c:1414
 #, c-format
 msgid "Key file contains unsupported encoding “%s”"
 msgstr "鍵檔案包含不支援的編碼「%s」"
 
-#: glib/gkeyfile.c:1650 glib/gkeyfile.c:1823 glib/gkeyfile.c:3276
-#: glib/gkeyfile.c:3340 glib/gkeyfile.c:3470 glib/gkeyfile.c:3602
-#: glib/gkeyfile.c:3748 glib/gkeyfile.c:3977 glib/gkeyfile.c:4044
+#: glib/gkeyfile.c:1663 glib/gkeyfile.c:1836 glib/gkeyfile.c:3289
+#: glib/gkeyfile.c:3353 glib/gkeyfile.c:3483 glib/gkeyfile.c:3615
+#: glib/gkeyfile.c:3761 glib/gkeyfile.c:3996 glib/gkeyfile.c:4063
 #, c-format
 msgid "Key file does not have group “%s”"
 msgstr "鍵檔案沒有群組「%s」"
 
-#: glib/gkeyfile.c:1778
+#: glib/gkeyfile.c:1791
 #, c-format
 msgid "Key file does not have key “%s” in group “%s”"
 msgstr "鍵檔案的「%2$s」群組中沒有「%1$s」鍵"
 
-#: glib/gkeyfile.c:1940 glib/gkeyfile.c:2056
+#: glib/gkeyfile.c:1953 glib/gkeyfile.c:2069
 #, c-format
 msgid "Key file contains key “%s” with value “%s” which is not UTF-8"
 msgstr "鍵檔案包含的「%s」鍵（值為「%s」）並非 UTF-8"
 
-#: glib/gkeyfile.c:1960 glib/gkeyfile.c:2076 glib/gkeyfile.c:2518
+#: glib/gkeyfile.c:1973 glib/gkeyfile.c:2089 glib/gkeyfile.c:2531
 #, c-format
 msgid ""
 "Key file contains key “%s” which has a value that cannot be interpreted."
 msgstr "鍵檔案包含的「%s」鍵的值無法解譯。"
 
-#: glib/gkeyfile.c:2736 glib/gkeyfile.c:3105
+#: glib/gkeyfile.c:2749 glib/gkeyfile.c:3118
 #, c-format
 msgid ""
 "Key file contains key “%s” in group “%s” which has a value that cannot be "
 "interpreted."
 msgstr "鍵檔案包含的「%2$s」群組中「%1$s」鍵的值無法解譯。"
 
-#: glib/gkeyfile.c:2814 glib/gkeyfile.c:2891
+#: glib/gkeyfile.c:2827 glib/gkeyfile.c:2904
 #, c-format
 msgid "Key “%s” in group “%s” has value “%s” where %s was expected"
 msgstr "「%2$s」群組中的「%1$s」鍵包含「%3$s」值，但預期為「%4$s」"
 
-#: glib/gkeyfile.c:4284
+#: glib/gkeyfile.c:4306
 msgid "Key file contains escape character at end of line"
 msgstr "鍵檔案在行尾包含跳出字元"
 
-#: glib/gkeyfile.c:4306
+#: glib/gkeyfile.c:4328
 #, c-format
 msgid "Key file contains invalid escape sequence “%s”"
 msgstr "鍵檔案含有不正確的「跳出字元」「%s」"
 
-#: glib/gkeyfile.c:4450
+#: glib/gkeyfile.c:4472
 #, c-format
 msgid "Value “%s” cannot be interpreted as a number."
 msgstr "「%s」值不能被解譯為數字。"
 
-#: glib/gkeyfile.c:4464
+#: glib/gkeyfile.c:4486
 #, c-format
 msgid "Integer value “%s” out of range"
 msgstr "整數值「%s」超出範圍"
 
-#: glib/gkeyfile.c:4497
+#: glib/gkeyfile.c:4519
 #, c-format
 msgid "Value “%s” cannot be interpreted as a float number."
 msgstr "「%s」值不能被解譯為浮點數。"
 
-#: glib/gkeyfile.c:4536
+#: glib/gkeyfile.c:4558
 #, c-format
 msgid "Value “%s” cannot be interpreted as a boolean."
 msgstr "「%s」值不能被解譯為布林值。"
@@ -5540,82 +5636,82 @@ msgstr "字串完結前仍沒有對應於 %c 的引號 (字串為「%s」)"
 msgid "Text was empty (or contained only whitespace)"
 msgstr "文字是空白的（或只含有空白字元）"
 
-#: glib/gspawn.c:323
+#: glib/gspawn.c:318
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "無法從副進程讀取資料 (%s)"
 
-#: glib/gspawn.c:468
+#: glib/gspawn.c:465
 #, c-format
 msgid "Unexpected error in reading data from a child process (%s)"
 msgstr "從子程序 (%s) 讀取資料時發生未預期的錯誤"
 
-#: glib/gspawn.c:553
+#: glib/gspawn.c:550
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "waitpid() 發生未預期的錯誤 (%s)"
 
-#: glib/gspawn.c:1061 glib/gspawn-win32.c:1329
+#: glib/gspawn.c:1154 glib/gspawn-win32.c:1383
 #, c-format
 msgid "Child process exited with code %ld"
 msgstr "子程序以代碼 %ld 結束"
 
-#: glib/gspawn.c:1069
+#: glib/gspawn.c:1162
 #, c-format
 msgid "Child process killed by signal %ld"
 msgstr "子程序被信號 %ld 中止"
 
-#: glib/gspawn.c:1076
+#: glib/gspawn.c:1169
 #, c-format
 msgid "Child process stopped by signal %ld"
 msgstr "子程序被信號 %ld 停止"
 
-#: glib/gspawn.c:1083
+#: glib/gspawn.c:1176
 #, c-format
 msgid "Child process exited abnormally"
 msgstr "子程序異常結束"
 
-#: glib/gspawn.c:1532 glib/gspawn-win32.c:350 glib/gspawn-win32.c:358
+#: glib/gspawn.c:1767 glib/gspawn-win32.c:350 glib/gspawn-win32.c:358
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "無法從管道讀取資料 (%s)"
 
-#: glib/gspawn.c:1788
+#: glib/gspawn.c:2069
 #, c-format
 msgid "Failed to spawn child process “%s” (%s)"
 msgstr "無法產生副程序「%s」(%s)"
 
-#: glib/gspawn.c:1871
+#: glib/gspawn.c:2186
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "無法衍生進程 (%s)"
 
-#: glib/gspawn.c:2026 glib/gspawn-win32.c:381
+#: glib/gspawn.c:2346 glib/gspawn-win32.c:381
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
 msgstr "無法進入目錄「%s」(%s)"
 
-#: glib/gspawn.c:2036
+#: glib/gspawn.c:2356
 #, c-format
 msgid "Failed to execute child process “%s” (%s)"
 msgstr "無法執行副程序「%s」(%s)"
 
-#: glib/gspawn.c:2046
+#: glib/gspawn.c:2366
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "無法將副進程的輸出或輸入重新導向 (%s)"
 
-#: glib/gspawn.c:2055
+#: glib/gspawn.c:2375
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "無法衍生副進程 (%s)"
 
-#: glib/gspawn.c:2063
+#: glib/gspawn.c:2383
 #, c-format
 msgid "Unknown error executing child process “%s”"
 msgstr "執行副程序「%s」時發生不明的錯誤"
 
-#: glib/gspawn.c:2087
+#: glib/gspawn.c:2407
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "無法從 child pid pipe 讀取足夠的資料 (%s)"
@@ -5639,99 +5735,104 @@ msgstr "無法執行副進程 (%s)"
 msgid "Invalid program name: %s"
 msgstr "程式名稱無效：%s"
 
-#: glib/gspawn-win32.c:471 glib/gspawn-win32.c:725
+#: glib/gspawn-win32.c:471 glib/gspawn-win32.c:757
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "第 %d 個引數向量中含無效的字串：%s"
 
-#: glib/gspawn-win32.c:482 glib/gspawn-win32.c:740
+#: glib/gspawn-win32.c:482 glib/gspawn-win32.c:772
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "環境變數中的字串無效：%s"
 
-#: glib/gspawn-win32.c:721
+#: glib/gspawn-win32.c:753
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "無效的工作目錄：%s"
 
-#: glib/gspawn-win32.c:783
+#: glib/gspawn-win32.c:815
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "無法執行協助程式 (%s)"
 
-#: glib/gspawn-win32.c:1056
+#: glib/gspawn-win32.c:1042
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr "當 g_io_channel_win32_poll() 從副進程讀取資料時發生無法預計的錯誤"
 
-#: glib/gstrfuncs.c:3303 glib/gstrfuncs.c:3405
+#: glib/gstrfuncs.c:3338 glib/gstrfuncs.c:3440
 msgid "Empty string is not a number"
 msgstr "空字串不是數字"
 
-#: glib/gstrfuncs.c:3327
+#: glib/gstrfuncs.c:3362
 #, c-format
 msgid "“%s” is not a signed number"
 msgstr "「%s」不是有號數字"
 
-#: glib/gstrfuncs.c:3337 glib/gstrfuncs.c:3441
+#: glib/gstrfuncs.c:3372 glib/gstrfuncs.c:3476
 #, c-format
 msgid "Number “%s” is out of bounds [%s, %s]"
 msgstr "「%s」數字超出範圍 [%s, %s]"
 
-#: glib/gstrfuncs.c:3431
+#: glib/gstrfuncs.c:3466
 #, c-format
 msgid "“%s” is not an unsigned number"
 msgstr "「%s」不是無號數字"
 
-#: glib/guri.c:313
+#: glib/guri.c:315
 #, no-c-format
 msgid "Invalid %-encoding in URI"
 msgstr "URI 中有無效的 %-編碼"
 
-#: glib/guri.c:330
+#: glib/guri.c:332
 msgid "Illegal character in URI"
 msgstr "URI 中有不合規的字元"
 
-#: glib/guri.c:359
+#: glib/guri.c:366
 msgid "Non-UTF-8 characters in URI"
 msgstr "URI 中有非 UTF-8 字元"
 
-#: glib/guri.c:533
+#: glib/guri.c:546
 #, c-format
 msgid "Invalid IPv6 address ‘%.*s’ in URI"
 msgstr "URI 中有無效的 IPv6 位址「%.*s」"
 
-#: glib/guri.c:588
+#: glib/guri.c:601
 #, c-format
 msgid "Illegal encoded IP address ‘%.*s’ in URI"
 msgstr "URI 中有不合規的編碼 IP 位址「%.*s」"
 
-#: glib/guri.c:620 glib/guri.c:632
+#: glib/guri.c:613
+#, c-format
+msgid "Illegal internationalized hostname ‘%.*s’ in URI"
+msgstr "URI 中有不合規的國際化主機名稱「%.*s」"
+
+#: glib/guri.c:645 glib/guri.c:657
 #, c-format
 msgid "Could not parse port ‘%.*s’ in URI"
 msgstr "無法解析 URI 中的「%.*s」連接埠"
 
-#: glib/guri.c:639
+#: glib/guri.c:664
 #, c-format
 msgid "Port ‘%.*s’ in URI is out of range"
 msgstr "URI 中的「%.*s」連接埠超出範圍"
 
-#: glib/guri.c:1119 glib/guri.c:1183
+#: glib/guri.c:1224 glib/guri.c:1288
 #, c-format
 msgid "URI ‘%s’ is not an absolute URI"
 msgstr "「%s」URI 不是絕對路徑 URI"
 
-#: glib/guri.c:1125
+#: glib/guri.c:1230
 #, c-format
 msgid "URI ‘%s’ has no host component"
 msgstr "「%s」URI 沒有主機部分"
 
-#: glib/guri.c:1330
+#: glib/guri.c:1435
 msgid "URI is not absolute, and no base URI was provided"
 msgstr "URI 不是絕對路徑，且沒有提供基礎 URI"
 
-#: glib/guri.c:2082
+#: glib/guri.c:2209
 msgid "Missing ‘=’ and parameter value"
 msgstr "缺失「=」與參數值"
 
@@ -5753,170 +5854,170 @@ msgid "Character out of range for UTF-16"
 msgstr "字元不在 UTF-16 範圍之內"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2759
+#: glib/gutils.c:2767
 #, c-format
 msgid "%.1f kB"
 msgstr "%.1f kB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2761
+#: glib/gutils.c:2769
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2763
+#: glib/gutils.c:2771
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2765
+#: glib/gutils.c:2773
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2767
+#: glib/gutils.c:2775
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2769
+#: glib/gutils.c:2777
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2773
+#: glib/gutils.c:2781
 #, c-format
 msgid "%.1f KiB"
 msgstr "%.1f KiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2775
+#: glib/gutils.c:2783
 #, c-format
 msgid "%.1f MiB"
 msgstr "%.1f MiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2777
+#: glib/gutils.c:2785
 #, c-format
 msgid "%.1f GiB"
 msgstr "%.1f GiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2779
+#: glib/gutils.c:2787
 #, c-format
 msgid "%.1f TiB"
 msgstr "%.1f TiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2781
+#: glib/gutils.c:2789
 #, c-format
 msgid "%.1f PiB"
 msgstr "%.1f PiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2783
+#: glib/gutils.c:2791
 #, c-format
 msgid "%.1f EiB"
 msgstr "%.1f EiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2787
+#: glib/gutils.c:2795
 #, c-format
 msgid "%.1f kb"
 msgstr "%.1f kb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2789
+#: glib/gutils.c:2797
 #, c-format
 msgid "%.1f Mb"
 msgstr "%.1f Mb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2791
+#: glib/gutils.c:2799
 #, c-format
 msgid "%.1f Gb"
 msgstr "%.1f Gb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2793
+#: glib/gutils.c:2801
 #, c-format
 msgid "%.1f Tb"
 msgstr "%.1f Tb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2795
+#: glib/gutils.c:2803
 #, c-format
 msgid "%.1f Pb"
 msgstr "%.1f Pb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2797
+#: glib/gutils.c:2805
 #, c-format
 msgid "%.1f Eb"
 msgstr "%.1f Eb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2801
+#: glib/gutils.c:2809
 #, c-format
 msgid "%.1f Kib"
 msgstr "%.1f Kib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2803
+#: glib/gutils.c:2811
 #, c-format
 msgid "%.1f Mib"
 msgstr "%.1f Mib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2805
+#: glib/gutils.c:2813
 #, c-format
 msgid "%.1f Gib"
 msgstr "%.1f Gib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2807
+#: glib/gutils.c:2815
 #, c-format
 msgid "%.1f Tib"
 msgstr "%.1f Tib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2809
+#: glib/gutils.c:2817
 #, c-format
 msgid "%.1f Pib"
 msgstr "%.1f Pib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2811
+#: glib/gutils.c:2819
 #, c-format
 msgid "%.1f Eib"
 msgstr "%.1f Eib"
 
-#: glib/gutils.c:2845 glib/gutils.c:2962
+#: glib/gutils.c:2853 glib/gutils.c:2970
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
 msgstr[0] "%u 位元組"
 
-#: glib/gutils.c:2849
+#: glib/gutils.c:2857
 #, c-format
 msgid "%u bit"
 msgid_plural "%u bits"
 msgstr[0] "%u 位元"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
-#: glib/gutils.c:2916
+#: glib/gutils.c:2924
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
 msgstr[0] "%s 位元組"
 
 #. Translators: the %s in "%s bits" will always be replaced by a number.
-#: glib/gutils.c:2921
+#: glib/gutils.c:2929
 #, c-format
 msgid "%s bit"
 msgid_plural "%s bits"
@@ -5927,35 +6028,41 @@ msgstr[0] "%s 位元"
 #. * compatibility.  Users will not see this string unless a program is using this deprecated function.
 #. * Please translate as literally as possible.
 #.
-#: glib/gutils.c:2975
+#: glib/gutils.c:2983
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: glib/gutils.c:2980
+#: glib/gutils.c:2988
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: glib/gutils.c:2985
+#: glib/gutils.c:2993
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: glib/gutils.c:2990
+#: glib/gutils.c:2998
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
-#: glib/gutils.c:2995
+#: glib/gutils.c:3003
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
-#: glib/gutils.c:3000
+#: glib/gutils.c:3008
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
+
+#~ msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
+#~ msgstr "無法載入 /var/lib/dbus/machine-id 或 /etc/machine-id："
+
+#~ msgid "Unknown error on connect"
+#~ msgstr "連線時有不明的錯誤"
 
 #~ msgid "Error in address “%s” — the family attribute is malformed"
 #~ msgstr "位址「%s」有錯誤 — family 屬性的格式不良"
@@ -6003,9 +6110,6 @@ msgstr "%.1f EB"
 
 #~ msgid "Error: signal must be the fully-qualified name.\n"
 #~ msgstr "錯誤：信號必須為完全合規定的名稱。\n"
-
-#~ msgid "No files given"
-#~ msgstr "尚未指定檔案"
 
 #~ msgid "Error getting writable attributes: %s\n"
 #~ msgstr "取得可寫入屬性時發生錯誤：%s\n"
