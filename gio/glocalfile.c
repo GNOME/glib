@@ -2068,6 +2068,7 @@ g_local_file_trash (GFile         *file,
 	  (global_stat.st_mode & S_ISVTX) != 0)
 	{
 	  trashdir = g_build_filename (globaldir, uid_str, NULL);
+	  success = TRUE;
 
 	  if (g_lstat (trashdir, &trash_stat) == 0)
 	    {
@@ -2077,12 +2078,14 @@ g_local_file_trash (GFile         *file,
 		  /* Not a directory or not owned by user, ignore */
 		  g_free (trashdir);
 		  trashdir = NULL;
+		  success = FALSE;
 		}
 	    }
 	  else if (g_mkdir (trashdir, 0700) == -1)
 	    {
 	      g_free (trashdir);
 	      trashdir = NULL;
+	      success = FALSE;
 	    }
 	}
       g_free (globaldir);
