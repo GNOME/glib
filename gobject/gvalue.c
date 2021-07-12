@@ -44,9 +44,13 @@
  * of a type identifier and a specific value of that type.
  * The type identifier within a #GValue structure always determines the
  * type of the associated value.
+ *
  * To create an undefined #GValue structure, simply create a zero-filled
  * #GValue structure. To initialize the #GValue, use the g_value_init()
- * function. A #GValue cannot be used until it is initialized.
+ * function. A #GValue cannot be used until it is initialized. Before 
+ * destruction you must always use g_value_unset() to make sure allocated
+ * memory is freed.
+ *
  * The basic type operations (such as freeing and copying) are determined
  * by the #GTypeValueTable associated with the type ID stored in the #GValue.
  * Other #GValue operations (such as converting values between types) are
@@ -109,6 +113,10 @@
  *   return 0;
  * }
  * ]|
+ *
+ * See also [gobject-Standard-Parameter-and-Value-Types] for more information on
+ * validation of #GValue.
+ * 
  */
 
 
