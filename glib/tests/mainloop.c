@@ -2481,6 +2481,166 @@ test_steal_fd (void)
   g_free (tmpfile);
 }
 
+typedef enum
+{
+  INITIAL = 0,
+  MAIN_CONTEXT_READY = (1 << 0),
+  SOURCE_READY = (1 << 1),
+} SimultaneousDestructionTestState;
+
+typedef struct
+{
+  SimultaneousDestructionTestState state; /* (mutex lock) */
+  GMainContext *main_context; /* (mutex lock) */
+  GSource *source; /* (mutex lock) */
+  GMutex lock;
+  GCond cond;
+  GThread *main_context_thread;
+  GThread *source_thread; /* (mutex lock) */
+} SimultaneousDestructionTest;
+
+static SimultaneousDestructionTest *
+create_simultaneous_destruction_test (void)
+{
+  SimultaneousDestructionTest *test;
+
+  test = g_new0 (SimultaneousDestructionTest, 1);
+
+  g_mutex_init (&test->lock);
+  g_cond_init (&test->cond);
+
+  return test;
+}
+
+static void
+free_simultaneous_destruction_test (SimultaneousDestructionTest * test)
+{
+  g_mutex_clear (&test->lock);
+  g_cond_clear (&test->cond);
+
+  /* Should have already been cleared in wait_simultaneous_destruction_test() */
+  g_assert (test->main_context == NULL);
+  g_assert (test->source == NULL);
+  g_assert (test->main_context_thread == NULL);
+  g_assert (test->source_thread == NULL);
+
+  g_free (test);
+}
+
+static gpointer
+source_create_unref_thread_func (gpointer data)
+{
+  SimultaneousDestructionTest *test = data;
+
+  g_mutex_lock (&test->lock);
+  test->source = g_timeout_source_new_seconds (100);
+  g_source_attach (test->source, test->main_context);
+  test->state |= SOURCE_READY;
+  g_cond_broadcast (&test->cond);
+  while ((test->state & MAIN_CONTEXT_READY) == 0)
+    g_cond_wait (&test->cond, &test->lock);
+  g_mutex_unlock (&test->lock);
+
+  g_thread_yield ();
+  g_source_destroy (test->source);
+
+  g_mutex_lock (&test->lock);
+  g_source_unref (test->source);
+  test->source = NULL;
+  g_cond_broadcast (&test->cond);
+  g_mutex_unlock (&test->lock);
+
+  return NULL;
+}
+
+static gpointer
+main_context_create_unref_thread_func (gpointer data)
+{
+  SimultaneousDestructionTest *test = data;
+
+  g_mutex_lock (&test->lock);
+  test->main_context = g_main_context_new ();
+  test->source_thread = g_thread_new (NULL, source_create_unref_thread_func, test);
+
+  test->state |= MAIN_CONTEXT_READY;
+  while ((test->state & SOURCE_READY) == 0)
+    g_cond_wait (&test->cond, &test->lock);
+  g_mutex_unlock (&test->lock);
+
+  g_thread_yield ();
+  g_main_context_unref (test->main_context);
+
+  g_mutex_lock (&test->lock);
+  test->main_context = NULL;
+  g_cond_broadcast (&test->cond);
+  g_mutex_unlock (&test->lock);
+
+  return NULL;
+}
+
+static void
+start_simultaneous_destruction_test (SimultaneousDestructionTest * test)
+{
+  test->main_context_thread = g_thread_new (NULL, main_context_create_unref_thread_func, test);
+
+  g_mutex_lock (&test->lock);
+  while (test->main_context)
+    g_cond_wait (&test->cond, &test->lock);
+  g_mutex_unlock (&test->lock);
+}
+
+static void
+wait_simultaneous_destruction_test (SimultaneousDestructionTest * test)
+{
+  g_mutex_lock (&test->lock);
+  while (test->main_context || test->source)
+    g_cond_wait (&test->cond, &test->lock);
+  g_mutex_unlock (&test->lock);
+
+  g_thread_join (g_steal_pointer (&test->main_context_thread));
+  g_thread_join (g_steal_pointer (&test->source_thread));
+}
+
+static void
+test_simultaneous_source_context_destruction (void)
+{
+  guint64 n_concurrent = 128, n_iterations = 100;
+  SimultaneousDestructionTest **test;
+  guint64 i;
+
+  if (g_test_thorough ())
+    {
+      n_concurrent = 512;
+      n_iterations = 2000;
+    }
+
+  test = g_new0 (SimultaneousDestructionTest *, n_concurrent);
+
+  for (i = 0; i < n_iterations; i++)
+    {
+      gsize j = 0;
+      for (j = 0; j < n_concurrent; j++)
+        test[j] = create_simultaneous_destruction_test ();
+
+      for (j = 0; j < n_concurrent; j++)
+        start_simultaneous_destruction_test (test[j]);
+
+      for (j = 0; j < n_concurrent; j++)
+        {
+          wait_simultaneous_destruction_test (test[j]);
+          free_simultaneous_destruction_test (test[j]);
+        }
+
+      if (g_test_verbose() && i % 100 == 0)
+        g_test_message ("# %" G_GUINT64_FORMAT " / %" G_GUINT64_FORMAT, i, n_iterations);
+    }
+
+  if (g_test_verbose ())
+    g_test_message ("%" G_GUINT64_FORMAT " / %" G_GUINT64_FORMAT, n_iterations, n_iterations);
+
+  g_free (test);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -2535,6 +2695,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/mainloop/steal-fd", test_steal_fd);
   g_test_add_data_func ("/mainloop/ownerless-polling/attach-first", GINT_TO_POINTER (TRUE), test_ownerless_polling);
   g_test_add_data_func ("/mainloop/ownerless-polling/pop-first", GINT_TO_POINTER (FALSE), test_ownerless_polling);
+  g_test_add_func ("/mainloop/simultaneous-source-context-destruction", test_simultaneous_source_context_destruction);
 
   return g_test_run ();
 }

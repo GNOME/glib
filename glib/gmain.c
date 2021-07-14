@@ -392,6 +392,15 @@ static gboolean g_idle_dispatch    (GSource     *source,
 				    gpointer     user_data);
 
 static void block_source (GSource *source);
+static GMainContext *source_dup_main_context (GSource *source);
+
+/* Lock for serializing access for safe execution of
+ * g_main_context_unref() with concurrent use of
+ * g_source_destroy() and g_source_unref().
+ *
+ * Locking order is source_destroy_lock, then context lock.
+ */
+static GRWLock source_destroy_lock;
 
 static GMainContext *glib_worker_context;
 
@@ -437,8 +446,6 @@ GSourceFuncs g_unix_signal_funcs =
   NULL, NULL
 };
 #endif /* !G_OS_WIN32 */
-G_LOCK_DEFINE_STATIC (main_context_list);
-static GSList *main_context_list = NULL;
 
 GSourceFuncs g_timeout_funcs =
 {
@@ -510,20 +517,42 @@ g_main_context_unref (GMainContext *context)
   GSList *s_iter, *remaining_sources = NULL;
   GSourceList *list;
   guint i;
+  guint old_ref;
+  GSource **pending_dispatches;
+  gsize pending_dispatches_len;
 
   g_return_if_fail (context != NULL);
   g_return_if_fail (g_atomic_int_get (&context->ref_count) > 0); 
 
-  if (!g_atomic_int_dec_and_test (&context->ref_count))
-    return;
+retry_decrement:
+  old_ref = g_atomic_int_get (&context->ref_count);
+  if (old_ref > 1)
+    {
+      if (!g_atomic_int_compare_and_exchange (&context->ref_count, old_ref, old_ref - 1))
+        goto retry_decrement;
 
-  G_LOCK (main_context_list);
-  main_context_list = g_slist_remove (main_context_list, context);
-  G_UNLOCK (main_context_list);
+      return;
+    }
+
+  g_rw_lock_writer_lock (&source_destroy_lock);
+
+  /* if a weak ref got to the source_destroy lock first, we need to retry */
+  old_ref = g_atomic_int_add (&context->ref_count, -1);
+  if (old_ref != 1)
+    {
+      g_rw_lock_writer_unlock (&source_destroy_lock);
+      return;
+    }
+
+  LOCK_CONTEXT (context);
+  pending_dispatches = (GSource **) g_ptr_array_steal (context->pending_dispatches, &pending_dispatches_len);
+  UNLOCK_CONTEXT (context);
 
   /* Free pending dispatches */
-  for (i = 0; i < context->pending_dispatches->len; i++)
-    g_source_unref_internal (context->pending_dispatches->pdata[i], context, FALSE);
+  for (i = 0; i < pending_dispatches_len; i++)
+    g_source_unref_internal (pending_dispatches[i], context, FALSE);
+
+  g_clear_pointer (&pending_dispatches, g_free);
 
   /* g_source_iter_next() assumes the context is locked. */
   LOCK_CONTEXT (context);
@@ -554,6 +583,11 @@ g_main_context_unref (GMainContext *context)
       g_source_destroy_internal (source, context, TRUE);
     }
 
+  g_rw_lock_writer_unlock (&source_destroy_lock);
+
+  /* the context is going to die now */
+  g_return_if_fail (old_ref > 0);
+
   sl_iter = context->source_lists.head;
   while (sl_iter != NULL)
     {
@@ -562,20 +596,29 @@ g_main_context_unref (GMainContext *context)
       g_slice_free (GSourceList, list);
     }
 
-  g_hash_table_destroy (context->sources);
+  g_hash_table_remove_all (context->sources);
 
   UNLOCK_CONTEXT (context);
-  g_mutex_clear (&context->mutex);
 
-  g_ptr_array_free (context->pending_dispatches, TRUE);
-  g_free (context->cached_poll_array);
+  /* if the object has been reffed meanwhile by an internal weak ref, keep the
+   * resources alive until the last reference is gone.
+   */
+  if (old_ref == 1)
+    {
+      g_mutex_clear (&context->mutex);
 
-  poll_rec_list_free (context, context->poll_records);
+      g_ptr_array_free (context->pending_dispatches, TRUE);
+      g_free (context->cached_poll_array);
 
-  g_wakeup_free (context->wakeup);
-  g_cond_clear (&context->cond);
+      poll_rec_list_free (context, context->poll_records);
 
-  g_free (context);
+      g_wakeup_free (context->wakeup);
+      g_cond_clear (&context->cond);
+
+      g_hash_table_unref (context->sources);
+
+      g_free (context);
+    }
 
   /* And now finally get rid of our references to the sources. This will cause
    * them to be freed unless something else still has a reference to them. Due
@@ -671,15 +714,10 @@ g_main_context_new_with_flags (GMainContextFlags flags)
   g_wakeup_get_pollfd (context->wakeup, &context->wake_up_rec);
   g_main_context_add_poll_unlocked (context, 0, &context->wake_up_rec);
 
-  G_LOCK (main_context_list);
-  main_context_list = g_slist_append (main_context_list, context);
-
 #ifdef G_MAIN_POLL_DEBUG
   if (_g_main_poll_debug)
     g_print ("created context=%p\n", context);
 #endif
-
-  G_UNLOCK (main_context_list);
 
   return context;
 }
@@ -1333,6 +1371,22 @@ g_source_destroy_internal (GSource      *source,
     UNLOCK_CONTEXT (context);
 }
 
+static GMainContext *
+source_dup_main_context (GSource *source)
+{
+  GMainContext *ret = NULL;
+
+  g_rw_lock_reader_lock (&source_destroy_lock);
+
+  ret = source->context;
+  if (ret)
+    g_atomic_int_inc (&ret->ref_count);
+
+  g_rw_lock_reader_unlock (&source_destroy_lock);
+
+  return ret;
+}
+
 /**
  * g_source_destroy:
  * @source: a #GSource
@@ -1361,10 +1415,13 @@ g_source_destroy (GSource *source)
   g_return_if_fail (source != NULL);
   g_return_if_fail (g_atomic_int_get (&source->ref_count) > 0);
   
-  context = source->context;
-  
+  context = source_dup_main_context (source);
+
   if (context)
-    g_source_destroy_internal (source, context, FALSE);
+    {
+      g_source_destroy_internal (source, context, FALSE);
+      g_main_context_unref (context);
+    }
   else
     g_atomic_int_and (&source->flags, ~G_HOOK_FLAG_ACTIVE);
 }
@@ -2369,10 +2426,17 @@ retry_beginning:
 void
 g_source_unref (GSource *source)
 {
+  GMainContext *context;
+
   g_return_if_fail (source != NULL);
   /* refcount is checked inside g_source_unref_internal() */
 
-  g_source_unref_internal (source, source->context, FALSE);
+  context = source_dup_main_context (source);
+
+  g_source_unref_internal (source, context, FALSE);
+
+  if (context)
+    g_main_context_unref (context);
 }
 
 /**
@@ -5582,8 +5646,8 @@ wake_source (GSource *source)
    *    - the GMainContext will either be NULL or point to a live
    *      GMainContext
    *
-   *    - the GMainContext will remain valid since we hold the
-   *      main_context_list lock
+   *    - the GMainContext will remain valid since source_dup_main_context()
+   *      gave us a ref or NULL
    *
    *  Since we are holding a lot of locks here, don't try to enter any
    *  more GMainContext functions for fear of dealock -- just hit the
@@ -5591,11 +5655,12 @@ wake_source (GSource *source)
    *  unsafe with some very minor changes in the future, and signal
    *  handling is not the most well-tested codepath.
    */
-  G_LOCK(main_context_list);
-  context = source->context;
+  context = source_dup_main_context (source);
   if (context)
     g_wakeup_signal (context->wakeup);
-  G_UNLOCK(main_context_list);
+
+  if (context)
+    g_main_context_unref (context);
 }
 
 static void
