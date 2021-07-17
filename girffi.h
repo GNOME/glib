@@ -95,6 +95,11 @@ ffi_closure * g_callable_info_prepare_closure     (GICallableInfo       *callabl
                                                    ffi_cif              *cif,
                                                    GIFFIClosureCallback  callback,
                                                    gpointer              user_data);
+
+GI_AVAILABLE_IN_1_70
+gpointer * g_callable_info_get_closure_native_address (GICallableInfo       *callable_info,
+                                                       ffi_closure          *closure);
+
 GI_AVAILABLE_IN_ALL
 void          g_callable_info_free_closure        (GICallableInfo       *callable_info,
                                                    ffi_closure          *closure);

@@ -349,6 +349,7 @@ g_function_invoker_destroy (GIFunctionInvoker    *invoker)
 typedef struct {
   ffi_closure ffi_closure;
   gpointer writable_self;
+  gpointer native_address;
 } GIClosureWrapper;
 
 /**
@@ -386,6 +387,7 @@ g_callable_info_prepare_closure (GICallableInfo       *callable_info,
       return NULL;
     }
   closure->writable_self = closure;
+  closure->native_address = exec_ptr;
 
   atypes = g_callable_info_get_ffi_arg_types (callable_info, &n_args);
   status = ffi_prep_cif (cif, FFI_DEFAULT_ABI, n_args,
@@ -407,6 +409,21 @@ g_callable_info_prepare_closure (GICallableInfo       *callable_info,
     }
 
   return &closure->ffi_closure;
+}
+
+/**
+ * g_callable_info_get_closure_native_address:
+ * @callable_info: a callable info from a typelib
+ * @closure: ffi closure
+ *
+ * Gets callable code from ffi_closure prepared by g_callable_info_prepare_closure()
+ */
+gpointer *
+g_callable_info_get_closure_native_address (GICallableInfo       *callable_info,
+                                            ffi_closure          *closure)
+{
+  GIClosureWrapper *wrapper = (GIClosureWrapper *)closure;
+  return wrapper->native_address;
 }
 
 /**
