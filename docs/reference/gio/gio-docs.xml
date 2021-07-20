@@ -238,6 +238,7 @@
         <xi:include href="xml/gmenuexporter.xml"/>
         <xi:include href="xml/gdbusmenumodel.xml"/>
         <xi:include href="xml/gnotification.xml"/>
+        <xi:include href="xml/gpowerprofilemonitor.xml"/>
     </chapter>
     <chapter id="extending">
         <title>Extending GIO</title>
