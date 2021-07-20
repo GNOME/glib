@@ -4230,6 +4230,24 @@ g_network_connectivity_get_type
 </SECTION>
 
 <SECTION>
+<FILE>gpowerprofilemonitor</FILE>
+<TITLE>GPowerProfileMonitor</TITLE>
+GPowerProfileMonitor
+GPowerProfileMonitorInterface
+G_POWER_PROFILE_MONITOR_EXTENSION_POINT_NAME
+g_power_profile_monitor_dup_default
+g_power_profile_monitor_get_power_saver_enabled
+<SUBSECTION Standard>
+g_power_profile_monitor_get_type
+G_TYPE_POWER_PROFILE_MONITOR
+G_POWER_PROFILE_MONITOR
+G_IS_POWER_PROFILE_MONITOR
+G_POWER_PROFILE_MONITOR_GET_INTERFACE
+G_TYPE_POWER_PROFILE_LEVEL
+g_power_profile_level_get_type
+</SECTION>
+
+<SECTION>
 <FILE>gmenuexporter</FILE>
 g_dbus_connection_export_menu_model
 g_dbus_connection_unexport_menu_model

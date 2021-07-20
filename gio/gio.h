@@ -120,6 +120,7 @@
 #include <gio/gpollableinputstream.h>
 #include <gio/gpollableoutputstream.h>
 #include <gio/gpollableutils.h>
+#include <gio/gpowerprofilemonitor.h>
 #include <gio/gpropertyaction.h>
 #include <gio/gproxy.h>
 #include <gio/gproxyaddress.h>

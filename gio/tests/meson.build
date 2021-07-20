@@ -75,6 +75,7 @@ gio_tests = {
   'network-monitor-race' : {},
   'permission' : {},
   'pollable' : {'dependencies' : [libdl_dep]},
+  'power-profile-monitor' : {},
   'proxy-test' : {},
   'readwrite' : {},
   'simple-async-result' : {},
