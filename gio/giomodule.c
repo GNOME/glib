@@ -342,6 +342,7 @@ static gboolean
 g_io_module_load_module (GTypeModule *gmodule)
 {
   GIOModule *module = G_IO_MODULE (gmodule);
+  GError *error = NULL;
 
   if (!module->filename)
     {
@@ -349,11 +350,12 @@ g_io_module_load_module (GTypeModule *gmodule)
       return FALSE;
     }
 
-  module->library = g_module_open (module->filename, G_MODULE_BIND_LAZY | G_MODULE_BIND_LOCAL);
+  module->library = g_module_open_full (module->filename, G_MODULE_BIND_LAZY | G_MODULE_BIND_LOCAL, &error);
 
   if (!module->library)
     {
-      g_printerr ("%s\n", g_module_error ());
+      g_printerr ("%s\n", error->message);
+      g_clear_error (&error);
       return FALSE;
     }
 

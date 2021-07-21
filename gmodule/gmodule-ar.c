@@ -100,7 +100,8 @@ exit:
 static gpointer
 _g_module_open (const gchar *file_name,
 		gboolean     bind_lazy,
-		gboolean     bind_local)
+		gboolean     bind_local,
+                GError     **error)
 {
   gpointer handle;
   gchar* member;
@@ -123,7 +124,12 @@ _g_module_open (const gchar *file_name,
   g_free (full_name);
 
   if (!handle)
-    g_module_set_error (fetch_dlerror (TRUE));
+    {
+      const gchar *message = fetch_dlerror (TRUE);
+
+      g_module_set_error (message);
+      g_set_error_literal (error, G_MODULE_ERROR, G_MODULE_ERROR_FAILED, message);
+    }
   
   return handle;
 }

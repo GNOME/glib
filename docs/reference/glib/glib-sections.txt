@@ -2490,9 +2490,12 @@ g_bookmark_file_error_quark
 <FILE>modules</FILE>
 <INCLUDE>gmodule.h</INCLUDE>
 GModule
+GModuleError
+G_MODULE_ERROR
 g_module_supported
 g_module_build_path
 g_module_open
+g_module_open_full
 GModuleFlags
 g_module_symbol
 g_module_name
@@ -2505,6 +2508,8 @@ GModuleUnload
 G_MODULE_SUFFIX
 G_MODULE_EXPORT
 G_MODULE_IMPORT
+<SUBSECTION Private>
+g_module_error_quark
 </SECTION>
 
 <SECTION>

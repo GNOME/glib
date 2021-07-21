@@ -127,7 +127,8 @@ fetch_dlerror (gboolean replace_null)
 static gpointer
 _g_module_open (const gchar *file_name,
 		gboolean     bind_lazy,
-		gboolean     bind_local)
+		gboolean     bind_local,
+                GError     **error)
 {
   gpointer handle;
   
@@ -135,7 +136,13 @@ _g_module_open (const gchar *file_name,
   handle = dlopen (file_name,
 		   (bind_local ? 0 : RTLD_GLOBAL) | (bind_lazy ? RTLD_LAZY : RTLD_NOW));
   if (!handle)
-    g_module_set_error (fetch_dlerror (TRUE));
+    {
+      const gchar *message = fetch_dlerror (TRUE);
+
+      g_module_set_error (message);
+      g_set_error_literal (error, G_MODULE_ERROR, G_MODULE_ERROR_FAILED, message);
+    }
+
   unlock_dlerror ();
   
   return handle;

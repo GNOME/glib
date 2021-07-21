@@ -81,7 +81,7 @@ query_dir (const char *dirname)
 	continue;
 
       path = g_build_filename (dirname, name, NULL);
-      module = g_module_open (path, G_MODULE_BIND_LAZY | G_MODULE_BIND_LOCAL);
+      module = g_module_open_full (path, G_MODULE_BIND_LAZY | G_MODULE_BIND_LOCAL, &error);
       g_free (path);
 
       if (module)
@@ -119,6 +119,12 @@ query_dir (const char *dirname)
 
 	  g_module_close (module);
 	}
+      else
+        {
+          g_debug ("Failed to open module %s: %s", name, error->message);
+        }
+
+      g_clear_error (&error);
     }
 
   g_dir_close (dir);

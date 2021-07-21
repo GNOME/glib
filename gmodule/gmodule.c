@@ -204,9 +204,10 @@ struct _GModule
 
 
 /* --- prototypes --- */
-static gpointer		_g_module_open		(const gchar	*file_name,
-						 gboolean	 bind_lazy,
-						 gboolean	 bind_local);
+static gpointer _g_module_open (const gchar  *file_name,
+                                gboolean      bind_lazy,
+                                gboolean      bind_local,
+                                GError      **error);
 static void		_g_module_close		(gpointer	 handle);
 static gpointer		_g_module_self		(void);
 static gpointer		_g_module_symbol	(gpointer	 handle,
@@ -289,10 +290,12 @@ g_module_set_error (const gchar *error)
 #define	SUPPORT_OR_RETURN(rv)	{ g_module_set_error ("dynamic modules are " \
                                               "not supported by this system"); return rv; }
 static gpointer
-_g_module_open (const gchar	*file_name,
-		gboolean	 bind_lazy,
-		gboolean	 bind_local)
+_g_module_open (const gchar  *file_name,
+                gboolean      bind_lazy,
+                gboolean      bind_local,
+                GError      **error)
 {
+  g_module_set_error (NULL);
   return NULL;
 }
 static void
@@ -317,6 +320,15 @@ _g_module_build_path (const gchar *directory,
   return NULL;
 }
 #endif	/* no implementation */
+
+/**
+ * G_MODULE_ERROR:
+ *
+ * The error domain of the #GModule API.
+ *
+ * Since: 2.70
+ */
+G_DEFINE_QUARK (g-module-error-quark, g_module_error)
 
 /* --- functions --- */
 
@@ -425,17 +437,6 @@ parse_libtool_archive (const gchar* libtool_name)
   return name;
 }
 
-static inline gboolean
-str_check_suffix (const gchar* string,
-		  const gchar* suffix)
-{
-  gsize string_len = strlen (string);    
-  gsize suffix_len = strlen (suffix);    
-
-  return string_len >= suffix_len && 
-    strcmp (string + string_len - suffix_len, suffix) == 0;
-}
-
 enum
 {
   G_MODULE_DEBUG_RESIDENT_MODULES = 1 << 0,
@@ -462,36 +463,42 @@ _g_module_debug_init (void)
 static GRecMutex g_module_global_lock;
 
 /**
- * g_module_open:
+ * g_module_open_full:
  * @file_name: (nullable): the name of the file containing the module, or %NULL
  *     to obtain a #GModule representing the main program itself
  * @flags: the flags used for opening the module. This can be the
  *     logical OR of any of the #GModuleFlags
+ * @error: #GError.
  *
  * Opens a module. If the module has already been opened,
  * its reference count is incremented.
  *
- * First of all g_module_open() tries to open @file_name as a module.
+ * First of all g_module_open_full() tries to open @file_name as a module.
  * If that fails and @file_name has the ".la"-suffix (and is a libtool
  * archive) it tries to open the corresponding module. If that fails
  * and it doesn't have the proper module suffix for the platform
  * (#G_MODULE_SUFFIX), this suffix will be appended and the corresponding
  * module will be opened. If that fails and @file_name doesn't have the
- * ".la"-suffix, this suffix is appended and g_module_open() tries to open
+ * ".la"-suffix, this suffix is appended and g_module_open_full() tries to open
  * the corresponding module. If eventually that fails as well, %NULL is
  * returned.
  *
  * Returns: a #GModule on success, or %NULL on failure
+ *
+ * Since: 2.70
  */
 GModule*
-g_module_open (const gchar    *file_name,
-	       GModuleFlags    flags)
+g_module_open_full (const gchar   *file_name,
+                    GModuleFlags   flags,
+                    GError       **error)
 {
   GModule *module;
   gpointer handle = NULL;
   gchar *name = NULL;
   
   SUPPORT_OR_RETURN (NULL);
+
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
   
   g_rec_mutex_lock (&g_module_global_lock);
 
@@ -577,30 +584,23 @@ g_module_open (const gchar    *file_name,
     }
 
   /* ok, try loading the module */
-  if (name)
-    {
-      /* if it's a libtool archive, figure library file to load */
-      if (str_check_suffix (name, ".la")) /* libtool archive? */
-	{
-	  gchar *real_name = parse_libtool_archive (name);
+  g_assert (name != NULL);
 
-	  /* real_name might be NULL, but then module error is already set */
-	  if (real_name)
-	    {
-	      g_free (name);
-	      name = real_name;
-            }
-	}
-      if (name)
-	handle = _g_module_open (name, (flags & G_MODULE_BIND_LAZY) != 0,
-			(flags & G_MODULE_BIND_LOCAL) != 0);
-    }
-  else
+  /* if it's a libtool archive, figure library file to load */
+  if (g_str_has_suffix (name, ".la")) /* libtool archive? */
     {
-      gchar *display_file_name = g_filename_display_name (file_name);
-      g_module_set_error_unduped (g_strdup_printf ("unable to access file \"%s\"", display_file_name));
-      g_free (display_file_name);
+      gchar *real_name = parse_libtool_archive (name);
+
+      /* real_name might be NULL, but then module error is already set */
+      if (real_name)
+        {
+          g_free (name);
+          name = real_name;
+        }
     }
+
+  handle = _g_module_open (name, (flags & G_MODULE_BIND_LAZY) != 0,
+                           (flags & G_MODULE_BIND_LOCAL) != 0, error);
   g_free (name);
 
   if (handle)
@@ -643,15 +643,16 @@ g_module_open (const gchar    *file_name,
       
       if (check_failed)
 	{
-	  gchar *error;
+	  gchar *temp_error;
 
-	  error = g_strconcat ("GModule (", file_name, ") ",
-                               "initialization check failed: ",
-                               check_failed, NULL);
+          temp_error = g_strconcat ("GModule (", file_name, ") ",
+                                    "initialization check failed: ",
+                                    check_failed, NULL);
 	  g_module_close (module);
 	  module = NULL;
-	  g_module_set_error (error);
-	  g_free (error);
+          g_module_set_error (temp_error);
+          g_set_error_literal (error, G_MODULE_ERROR, G_MODULE_ERROR_CHECK_FAILED, temp_error);
+          g_free (temp_error);
 	}
       else
 	g_module_set_error (saved_error);
@@ -665,6 +666,24 @@ g_module_open (const gchar    *file_name,
 
   g_rec_mutex_unlock (&g_module_global_lock);
   return module;
+}
+
+/**
+ * g_module_open:
+ * @file_name: (nullable): the name of the file containing the module, or %NULL
+ *     to obtain a #GModule representing the main program itself
+ * @flags: the flags used for opening the module. This can be the
+ *     logical OR of any of the #GModuleFlags.
+ *
+ * A thin wrapper function around g_module_open_full()
+ *
+ * Returns: a #GModule on success, or %NULL on failure
+ */
+GModule *
+g_module_open (const gchar  *file_name,
+               GModuleFlags  flags)
+{
+  return g_module_open_full (file_name, flags, NULL);
 }
 
 /**
