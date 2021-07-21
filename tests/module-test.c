@@ -84,6 +84,7 @@ main (int    argc,
   gchar *plugin_a, *plugin_b;
   SimpleFunc f_a, f_b, f_self;
   GModuleFunc gmod_f;
+  GError *error = NULL;
 
   g_test_init (&argc, &argv, NULL);
 
@@ -95,18 +96,21 @@ main (int    argc,
 
   /* module handles */
   
-  module_self = g_module_open (NULL, G_MODULE_BIND_LAZY);
+  module_self = g_module_open_full (NULL, G_MODULE_BIND_LAZY, &error);
+  g_assert_no_error (error);
   if (!module_self)
     g_error ("error: %s", g_module_error ());
 
   if (!g_module_symbol (module_self, "g_module_close", (gpointer *) &f_self))
     g_error ("error: %s", g_module_error ());
 
-  module_a = g_module_open (plugin_a, G_MODULE_BIND_LAZY);
+  module_a = g_module_open_full (plugin_a, G_MODULE_BIND_LAZY, &error);
+  g_assert_no_error (error);
   if (!module_a)
     g_error ("error: %s", g_module_error ());
 
-  module_b = g_module_open (plugin_b, G_MODULE_BIND_LAZY);
+  module_b = g_module_open_full (plugin_b, G_MODULE_BIND_LAZY, &error);
+  g_assert_no_error (error);
   if (!module_b)
     g_error ("error: %s", g_module_error ());
 
