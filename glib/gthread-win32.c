@@ -307,12 +307,12 @@ static CRITICAL_SECTION g_private_lock;
 static DWORD
 g_private_get_impl (GPrivate *key)
 {
-  DWORD impl = (DWORD) key->p;
+  DWORD impl = (DWORD) GPOINTER_TO_UINT(key->p);
 
   if G_UNLIKELY (impl == 0)
     {
       EnterCriticalSection (&g_private_lock);
-      impl = (DWORD) key->p;
+      impl = (UINT_PTR) key->p;
       if (impl == 0)
         {
           GPrivateDestructor *destructor;
@@ -603,7 +603,7 @@ SetThreadName (DWORD  dwThreadID,
    if ((!IsDebuggerPresent ()) && (SetThreadName_VEH_handle == NULL))
      return;
 
-   RaiseException (EXCEPTION_SET_THREAD_NAME, 0, infosize, (DWORD *) &info);
+   RaiseException (EXCEPTION_SET_THREAD_NAME, 0, infosize, (const ULONG_PTR *) &info);
 #endif
 }
 
