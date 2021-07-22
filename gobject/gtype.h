@@ -2071,8 +2071,24 @@ type_name##_get_type (void) \
  * @copy_func: the #GBoxedCopyFunc for the new type
  * @free_func: the #GBoxedFreeFunc for the new type
  *
- * A convenience macro for boxed type implementations, which defines a
- * type_name_get_type() function registering the boxed type.
+ * A convenience macro for defining a new custom boxed type. 
+ *
+ * Using this macro is the recommended way of defining new custom boxed
+ * types, over calling g_boxed_type_register_static() directly. It defines 
+ * a `type_name_get_type()` function which will return the newly defined
+ * #GType, enabling lazy instantiation.
+ *
+ * |[<!-- language="C" --> 
+ * G_DEFINE_BOXED_TYPE (MyStruct, my_struct, my_struct_copy, my_struct_free)
+ *
+ * void 
+ * foo ()
+ * {
+ *   GType type = my_struct_get_type ();
+ *   // ... your code ...
+ * }
+ *
+ * ]|
  *
  * Since: 2.26
  */
