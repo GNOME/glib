@@ -116,7 +116,31 @@
  *
  * See also [gobject-Standard-Parameter-and-Value-Types] for more information on
  * validation of #GValue.
- * 
+ *
+ * For letting a #GValue own (and memory manage) arbitrary types or pointers,
+ * they need to become a [boxed type][gboxed]. The example below shows how
+ * the pointer `mystruct` of type `MyStruct` is used as a [boxed type][gboxed].
+ *
+ * |[<!-- language="C" -->
+ * typedef struct { ... } MyStruct;
+ * G_DEFINE_BOXED_TYPE (MyStruct, my_struct, my_struct_copy, my_struct_free)
+ *
+ * // These two lines normally go in a public header. By GObject convention,
+ * // the naming scheme is NAMESPACE_TYPE_NAME:
+ * #define MY_TYPE_STRUCT (my_struct_get_type ())
+ * GType my_struct_get_type (void);
+ *
+ * void
+ * foo ()
+ * {
+ *   GValue *value = g_new0 (GValue, 1);
+ *   g_value_init (value, MY_TYPE_STRUCT);
+ *   g_value_set_boxed (value, mystruct);
+ *   // [... your code ....]
+ *   g_value_unset (value);
+ *   g_value_free (value);
+ * }
+ * ]|
  */
 
 
