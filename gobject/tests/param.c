@@ -905,6 +905,7 @@ main (int argc, char *argv[])
                                          data.use_this_flag, data.use_this_type);
             test_data = g_memdup2 (&data, sizeof (TestParamImplementData));
             g_test_add_data_func_full (test_path, test_data, test_param_implement_child, g_free);
+            g_free (test_data);
             g_free (test_path);
           }
 
