@@ -1331,6 +1331,7 @@ g_system_thread_new (GThreadFunc proxy,
     {
       g_set_error (error, G_THREAD_ERROR, G_THREAD_ERROR_AGAIN, 
                    "Error creating thread: %s", g_strerror (ret));
+      g_free (thread->thread.name);
       g_slice_free (GThreadPosix, thread);
       return NULL;
     }
