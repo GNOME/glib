@@ -506,6 +506,9 @@ void          g_test_suite_add_suite    (GTestSuite     *suite,
 GLIB_AVAILABLE_IN_ALL
 int           g_test_run_suite          (GTestSuite     *suite);
 
+GLIB_AVAILABLE_IN_2_70
+void          g_test_case_free          (GTestCase *test_case);
+
 GLIB_AVAILABLE_IN_ALL
 void    g_test_trap_assertions          (const char     *domain,
                                          const char     *file,

@@ -2994,6 +2994,21 @@ g_test_run_suite (GTestSuite *suite)
   return n_bad;
 }
 
+/**
+ * g_test_case_free:
+ * @test_case: a #GTestCase
+ *
+ * Free the @test_case.
+ *
+ * Since: 2.70
+ */
+void
+g_test_case_free (GTestCase *test_case)
+{
+  g_free (test_case->name);
+  g_slice_free (GTestCase, test_case);
+}
+
 static void
 gtest_default_log_handler (const gchar    *log_domain,
                            GLogLevelFlags  log_level,
