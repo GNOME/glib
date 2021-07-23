@@ -832,6 +832,7 @@ struct DestroyEntry
 };
 
 /* --- prototypes --- */
+static void     test_cleanup                    (void);
 static void     test_run_seed                   (const gchar *rseed);
 static void     test_trap_clear                 (void);
 static guint8*  g_test_log_dump                 (GTestLogMsg *msg,
@@ -1727,6 +1728,18 @@ void
 }
 
 static void
+test_cleanup (void)
+{
+  /* Free statically allocated variables */
+
+  g_clear_pointer (&test_run_rand, g_rand_free);
+
+  g_clear_pointer (&test_argv0_dirname, g_free);
+
+  g_clear_pointer (&test_initial_cwd, g_free);
+}
+
+static void
 test_run_seed (const gchar *rseed)
 {
   guint seed_failed = 0;
@@ -2217,6 +2230,7 @@ g_test_run (void)
 
 out:
   g_test_suite_free (suite);
+  test_cleanup ();
   return ret;
 }
 
