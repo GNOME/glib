@@ -2216,6 +2216,7 @@ g_test_run (void)
     }
 
 out:
+  g_test_suite_free (suite);
   return ret;
 }
 
@@ -3007,6 +3008,26 @@ g_test_case_free (GTestCase *test_case)
 {
   g_free (test_case->name);
   g_slice_free (GTestCase, test_case);
+}
+
+/**
+ * g_test_suite_free:
+ * @suite: a #GTestSuite
+ *
+ * Free the @suite and all nested #GTestSuites.
+ *
+ * Since: 2.70
+ */
+void
+g_test_suite_free (GTestSuite *suite)
+{
+  g_slist_free_full (suite->cases, (GDestroyNotify)g_test_case_free);
+
+  g_free (suite->name);
+
+  g_slist_free_full (suite->suites, (GDestroyNotify)g_test_suite_free);
+
+  g_slice_free (GTestSuite, suite);
 }
 
 static void
