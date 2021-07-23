@@ -2178,8 +2178,15 @@ g_test_get_root (void)
 int
 g_test_run (void)
 {
-  if (g_test_run_suite (g_test_get_root()) != 0)
-    return 1;
+  int ret;
+  GTestSuite *suite;
+
+  suite = g_test_get_root ();
+  if (g_test_run_suite (suite) != 0)
+    {
+      ret = 1;
+      goto out;
+    }
 
   /* Clean up the temporary directory. */
   if (test_isolate_dirs_tmpdir != NULL)
@@ -2192,12 +2199,24 @@ g_test_run (void)
   /* 77 is special to Automake's default driver, but not Automake's TAP driver
    * or Perl's prove(1) TAP driver. */
   if (test_tap_log)
-    return 0;
+    {
+      ret = 0;
+      goto out;
+    }
 
   if (test_run_count > 0 && test_run_count == test_skipped_count)
-    return 77;
+    {
+      ret = 77;
+      goto out;
+    }
   else
-    return 0;
+    {
+      ret = 0;
+      goto out;
+    }
+
+out:
+  return ret;
 }
 
 /**
