@@ -364,6 +364,8 @@ struct _GSourcePrivate
   GSList *fds;
 
   GSourceDisposeFunc dispose;
+
+  gboolean static_name;
 };
 
 typedef struct _GSourceIter
@@ -2059,6 +2061,41 @@ g_source_get_can_recurse (GSource  *source)
   return (source->flags & G_SOURCE_CAN_RECURSE) != 0;
 }
 
+static void
+g_source_set_name_full (GSource    *source,
+                        const char *name,
+                        gboolean    is_static)
+{
+  GMainContext *context;
+
+  g_return_if_fail (source != NULL);
+  g_return_if_fail (g_atomic_int_get (&source->ref_count) > 0);
+
+  context = source->context;
+
+  if (context)
+    LOCK_CONTEXT (context);
+
+  TRACE (GLIB_SOURCE_SET_NAME (source, name));
+
+  /* setting back to NULL is allowed, just because it's
+   * weird if get_name can return NULL but you can't
+   * set that.
+   */
+
+  if (!source->priv->static_name)
+    g_free (source->name);
+
+  if (is_static)
+    source->name = (char *)name;
+  else
+    source->name = g_strdup (name);
+
+  source->priv->static_name = is_static;
+
+  if (context)
+    UNLOCK_CONTEXT (context);
+}
 
 /**
  * g_source_set_name:
@@ -2082,34 +2119,33 @@ g_source_get_can_recurse (GSource  *source)
  * the value, and changing the value will free it while the other thread
  * may be attempting to use it.
  *
+ * Also see g_source_set_static_name().
+ *
  * Since: 2.26
  **/
 void
 g_source_set_name (GSource    *source,
                    const char *name)
 {
-  GMainContext *context;
+  g_source_set_name_full (source, name, FALSE);
+}
 
-  g_return_if_fail (source != NULL);
-  g_return_if_fail (g_atomic_int_get (&source->ref_count) > 0);
-
-  context = source->context;
-
-  if (context)
-    LOCK_CONTEXT (context);
-
-  TRACE (GLIB_SOURCE_SET_NAME (source, name));
-
-  /* setting back to NULL is allowed, just because it's
-   * weird if get_name can return NULL but you can't
-   * set that.
-   */
-
-  g_free (source->name);
-  source->name = g_strdup (name);
-
-  if (context)
-    UNLOCK_CONTEXT (context);
+/**
+ * g_source_set_static_name:
+ * @source: a #GSource
+ * @name: debug name for the source
+ *
+ * A variant of g_source_set_name() that does not
+ * duplicate the @name, and can only be used with
+ * string literals.
+ *
+ * Since: 2.70
+ */
+void
+g_source_set_static_name (GSource    *source,
+                          const char *name)
+{
+  g_source_set_name_full (source, name, TRUE);
 }
 
 /**
@@ -2284,7 +2320,8 @@ g_source_unref_internal (GSource      *source,
           g_warn_if_fail (old_ref_count == 1);
         }
 
-      g_free (source->name);
+      if (!source->priv->static_name)
+        g_free (source->name);
       source->name = NULL;
 
       g_slist_free (source->poll_fds);

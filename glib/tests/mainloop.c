@@ -83,6 +83,9 @@ test_maincontext_basic (void)
   g_assert_true (g_source_get_can_recurse (source));
   g_assert_cmpstr (g_source_get_name (source), ==, "d");
 
+  g_source_set_static_name (source, "still d");
+  g_assert_cmpstr (g_source_get_name (source), ==, "still d");
+
   g_assert_null (g_main_context_find_source_by_user_data (ctx, NULL));
   g_assert_null (g_main_context_find_source_by_funcs_user_data (ctx, &funcs, NULL));
 
