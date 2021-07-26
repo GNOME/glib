@@ -832,6 +832,7 @@ struct DestroyEntry
 };
 
 /* --- prototypes --- */
+static void     test_cleanup                    (void);
 static void     test_run_seed                   (const gchar *rseed);
 static void     test_trap_clear                 (void);
 static guint8*  g_test_log_dump                 (GTestLogMsg *msg,
@@ -1727,6 +1728,18 @@ void
 }
 
 static void
+test_cleanup (void)
+{
+  /* Free statically allocated variables */
+
+  g_clear_pointer (&test_run_rand, g_rand_free);
+
+  g_clear_pointer (&test_argv0_dirname, g_free);
+
+  g_clear_pointer (&test_initial_cwd, g_free);
+}
+
+static void
 test_run_seed (const gchar *rseed)
 {
   guint seed_failed = 0;
@@ -2178,8 +2191,15 @@ g_test_get_root (void)
 int
 g_test_run (void)
 {
-  if (g_test_run_suite (g_test_get_root()) != 0)
-    return 1;
+  int ret;
+  GTestSuite *suite;
+
+  suite = g_test_get_root ();
+  if (g_test_run_suite (suite) != 0)
+    {
+      ret = 1;
+      goto out;
+    }
 
   /* Clean up the temporary directory. */
   if (test_isolate_dirs_tmpdir != NULL)
@@ -2192,12 +2212,26 @@ g_test_run (void)
   /* 77 is special to Automake's default driver, but not Automake's TAP driver
    * or Perl's prove(1) TAP driver. */
   if (test_tap_log)
-    return 0;
+    {
+      ret = 0;
+      goto out;
+    }
 
   if (test_run_count > 0 && test_run_count == test_skipped_count)
-    return 77;
+    {
+      ret = 77;
+      goto out;
+    }
   else
-    return 0;
+    {
+      ret = 0;
+      goto out;
+    }
+
+out:
+  g_test_suite_free (suite);
+  test_cleanup ();
+  return ret;
 }
 
 /**
@@ -2973,6 +3007,41 @@ g_test_run_suite (GTestSuite *suite)
   test_run_name = NULL;
 
   return n_bad;
+}
+
+/**
+ * g_test_case_free:
+ * @test_case: a #GTestCase
+ *
+ * Free the @test_case.
+ *
+ * Since: 2.70
+ */
+void
+g_test_case_free (GTestCase *test_case)
+{
+  g_free (test_case->name);
+  g_slice_free (GTestCase, test_case);
+}
+
+/**
+ * g_test_suite_free:
+ * @suite: a #GTestSuite
+ *
+ * Free the @suite and all nested #GTestSuites.
+ *
+ * Since: 2.70
+ */
+void
+g_test_suite_free (GTestSuite *suite)
+{
+  g_slist_free_full (suite->cases, (GDestroyNotify)g_test_case_free);
+
+  g_free (suite->name);
+
+  g_slist_free_full (suite->suites, (GDestroyNotify)g_test_suite_free);
+
+  g_slice_free (GTestSuite, suite);
 }
 
 static void

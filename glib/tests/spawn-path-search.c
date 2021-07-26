@@ -389,6 +389,8 @@ test_search_path_heap_allocation (void)
   long_dir = g_test_build_filename (G_TEST_BUILT, "path-test-subdir", placeholder, NULL);
   long_path = g_strjoin (G_SEARCHPATH_SEPARATOR_S, subdir, long_dir, NULL);
   envp = g_environ_setenv (envp, "PATH", long_path, TRUE);
+  g_free (long_path);
+  g_free (long_dir);
 
   g_ptr_array_add (argv,
                    g_test_build_filename (G_TEST_BUILT, "spawn-path-search-helper", NULL));

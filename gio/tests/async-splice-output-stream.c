@@ -63,6 +63,7 @@ test_copy_chunks_splice_cb (GObject      *source,
   if (data->flags & TEST_CANCEL)
     {
       g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
+      g_error_free (error);
       g_main_loop_quit (data->main_loop);
       return;
     }
