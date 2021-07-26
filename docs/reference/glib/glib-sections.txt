@@ -918,6 +918,7 @@ g_source_get_name
 g_source_set_name
 g_source_set_static_name
 g_source_set_name_by_id
+g_source_set_static_name_by_id
 g_source_get_context
 g_source_set_callback
 GSourceFunc

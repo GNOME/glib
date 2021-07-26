@@ -613,6 +613,9 @@ const char *         g_source_get_name       (GSource        *source);
 GLIB_AVAILABLE_IN_ALL
 void                 g_source_set_name_by_id (guint           tag,
                                               const char     *name);
+GLIB_AVAILABLE_IN_2_70
+void                 g_source_set_static_name_by_id (guint           tag,
+                                                     const char     *name);
 
 GLIB_AVAILABLE_IN_2_36
 void                 g_source_set_ready_time (GSource        *source,

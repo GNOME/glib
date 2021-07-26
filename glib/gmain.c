@@ -2097,6 +2097,22 @@ g_source_set_name_full (GSource    *source,
     UNLOCK_CONTEXT (context);
 }
 
+static void
+g_source_set_name_by_id_full (guint       tag,
+                              const char *name,
+                              gboolean    is_static)
+{
+  GSource *source;
+
+  g_return_if_fail (tag > 0);
+
+  source = g_main_context_find_source_by_id (NULL, tag);
+  if (source == NULL)
+    return;
+
+  g_source_set_name_full (source, name, is_static);
+}
+
 /**
  * g_source_set_name:
  * @source: a #GSource
@@ -2190,23 +2206,34 @@ g_source_get_name (GSource *source)
  * been reissued, leading to the operation being performed against the
  * wrong source.
  *
+ * Also see g_source_set_static_name_by_id().
+ *
  * Since: 2.26
  **/
 void
 g_source_set_name_by_id (guint           tag,
                          const char     *name)
 {
-  GSource *source;
-
-  g_return_if_fail (tag > 0);
-
-  source = g_main_context_find_source_by_id (NULL, tag);
-  if (source == NULL)
-    return;
-
-  g_source_set_name (source, name);
+  g_source_set_name_by_id_full (tag, name, FALSE);
 }
 
+/**
+ * g_source_set_static_name_by_id:
+ * @tag: a #GSource ID
+ * @name: debug name for the source
+ *
+ * A variant of g_source_set_name_by_id() that does not
+ * duplicate the @name, and can only be used with
+ * string literals.
+ *
+ * Since: 2.70
+ */
+void
+g_source_set_static_name_by_id (guint       tag,
+                                const char *name)
+{
+  g_source_set_name_by_id_full (tag, name, TRUE);
+}
 
 /**
  * g_source_ref:
