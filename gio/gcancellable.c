@@ -798,7 +798,7 @@ g_cancellable_source_new (GCancellable *cancellable)
   GCancellableSource *cancellable_source;
 
   source = g_source_new (&cancellable_source_funcs, sizeof (GCancellableSource));
-  g_source_set_name (source, "GCancellable");
+  g_source_set_static_name (source, "GCancellable");
   g_source_set_dispose_function (source, cancellable_source_dispose);
   cancellable_source = (GCancellableSource *)source;
 

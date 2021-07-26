@@ -261,7 +261,7 @@ g_io_scheduler_job_send_to_mainloop (GIOSchedulerJob *job,
   g_source_set_priority (source, G_PRIORITY_DEFAULT);
   g_source_set_callback (source, mainloop_proxy_func, proxy,
 			 NULL);
-  g_source_set_name (source, "[gio] mainloop_proxy_func");
+  g_source_set_static_name (source, "[gio] mainloop_proxy_func");
 
   g_source_attach (source, job->context);
   g_source_unref (source);
@@ -318,7 +318,7 @@ g_io_scheduler_job_send_to_mainloop_async (GIOSchedulerJob *job,
   g_source_set_priority (source, G_PRIORITY_DEFAULT);
   g_source_set_callback (source, mainloop_proxy_func, proxy,
 			 (GDestroyNotify)mainloop_proxy_free);
-  g_source_set_name (source, "[gio] mainloop_proxy_func");
+  g_source_set_static_name (source, "[gio] mainloop_proxy_func");
 
   g_source_attach (source, job->context);
   g_source_unref (source);

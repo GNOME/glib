@@ -1667,8 +1667,8 @@ file_is_hidden (const gchar *path,
             g_timeout_source_new_seconds (hidden_cache_ttl_secs +
                                           hidden_cache_ttl_jitter_secs);
           g_source_set_priority (hidden_cache_source, G_PRIORITY_DEFAULT);
-          g_source_set_name (hidden_cache_source,
-                             "[gio] remove_from_hidden_cache");
+          g_source_set_static_name (hidden_cache_source,
+                                    "[gio] remove_from_hidden_cache");
           g_source_set_callback (hidden_cache_source,
                                  remove_from_hidden_cache,
                                  NULL, NULL);

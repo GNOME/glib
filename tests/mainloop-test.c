@@ -158,13 +158,13 @@ adder_thread (gpointer data)
   addr_data.count = 0;
 
   adder_source = g_io_create_watch (channels[0], G_IO_IN | G_IO_HUP);
-  g_source_set_name (adder_source, "Adder I/O");
+  g_source_set_static_name (adder_source, "Adder I/O");
   g_source_set_callback (adder_source, (GSourceFunc)adder_callback, &addr_data, NULL);
   g_source_attach (adder_source, context);
   g_source_unref (adder_source);
 
   timeout_source = g_timeout_source_new (10);
-  g_source_set_name (timeout_source, "Adder timeout");
+  g_source_set_static_name (timeout_source, "Adder timeout");
   g_source_set_callback (timeout_source, (GSourceFunc)timeout_callback, &addr_data, NULL);
   g_source_set_priority (timeout_source, G_PRIORITY_HIGH);
   g_source_attach (timeout_source, context);
@@ -335,7 +335,7 @@ static void
 create_crawler (void)
 {
   GSource *source = g_timeout_source_new (g_random_int_range (0, CRAWLER_TIMEOUT_RANGE));
-  g_source_set_name (source, "Crawler timeout");
+  g_source_set_static_name (source, "Crawler timeout");
   g_source_set_callback (source, (GSourceFunc)crawler_callback, source, NULL);
 
   G_LOCK (crawler_array_lock);
@@ -389,7 +389,7 @@ recurser_start (gpointer data)
     {
       context = context_array->pdata[g_random_int_range (0, context_array->len)];
       source = g_idle_source_new ();
-      g_source_set_name (source, "Recursing idle source");
+      g_source_set_static_name (source, "Recursing idle source");
       g_source_set_callback (source, recurser_idle, context, NULL);
       g_source_attach (source, context);
       g_source_unref (source);
