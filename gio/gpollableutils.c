@@ -116,7 +116,7 @@ g_pollable_source_new (GObject *pollable_stream)
 			G_IS_POLLABLE_OUTPUT_STREAM (pollable_stream), NULL);
 
   source = g_source_new (&pollable_source_funcs, sizeof (GPollableSource));
-  g_source_set_name (source, "GPollableSource");
+  g_source_set_static_name (source, "GPollableSource");
   pollable_source = (GPollableSource *)source;
   pollable_source->stream = g_object_ref (pollable_stream);
 

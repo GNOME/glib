@@ -1854,7 +1854,7 @@ mtab_file_changed (GFileMonitor      *monitor,
   source = g_idle_source_new ();
   g_source_set_priority (source, G_PRIORITY_DEFAULT);
   g_source_set_callback (source, mtab_file_changed_cb, NULL, NULL);
-  g_source_set_name (source, "[gio] mtab_file_changed_cb");
+  g_source_set_static_name (source, "[gio] mtab_file_changed_cb");
   g_source_attach (source, context);
   g_source_unref (source);
 }

@@ -658,7 +658,7 @@ g_file_monitor_source_new (gpointer           instance,
   source = g_source_new (&source_funcs, sizeof (GFileMonitorSource));
   fms = (GFileMonitorSource *) source;
 
-  g_source_set_name (source, "GFileMonitorSource");
+  g_source_set_static_name (source, "GFileMonitorSource");
 
   g_mutex_init (&fms->lock);
   g_weak_ref_init (&fms->instance_ref, instance);

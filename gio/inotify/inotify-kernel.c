@@ -381,7 +381,7 @@ ik_source_new (gboolean (* callback) (ik_event_t *event))
   source = g_source_new (&source_funcs, sizeof (InotifyKernelSource));
   iks = (InotifyKernelSource *) source;
 
-  g_source_set_name (source, "inotify kernel source");
+  g_source_set_static_name (source, "inotify kernel source");
 
   iks->unmatched_moves = g_hash_table_new (NULL, NULL);
   iks->fd = inotify_init1 (IN_CLOEXEC);

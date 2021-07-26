@@ -275,7 +275,7 @@ call_destroy_notify (GMainContext  *context,
                          call_destroy_notify_data_in_idle,
                          data,
                          (GDestroyNotify) call_destroy_notify_data_free);
-  g_source_set_name (idle_source, "[gio] call_destroy_notify_data_in_idle");
+  g_source_set_static_name (idle_source, "[gio] call_destroy_notify_data_in_idle");
   g_source_attach (idle_source, context);
   g_source_unref (idle_source);
 }
@@ -1418,7 +1418,7 @@ schedule_closed_unlocked (GDBusConnection *connection,
                          emit_closed_in_idle,
                          data,
                          (GDestroyNotify) emit_closed_data_free);
-  g_source_set_name (idle_source, "[gio] emit_closed_in_idle");
+  g_source_set_static_name (idle_source, "[gio] emit_closed_in_idle");
   g_source_attach (idle_source, connection->main_context_at_construction);
   g_source_unref (idle_source);
 }
@@ -1885,7 +1885,7 @@ send_message_with_reply_cancelled_cb (GCancellable *cancellable,
    * via g_cancellable_connect() (e.g. holding lock)
    */
   idle_source = g_idle_source_new ();
-  g_source_set_name (idle_source, "[gio] send_message_with_reply_cancelled_idle_cb");
+  g_source_set_static_name (idle_source, "[gio] send_message_with_reply_cancelled_idle_cb");
   g_task_attach_source (task, idle_source, send_message_with_reply_cancelled_idle_cb);
   g_source_unref (idle_source);
 }
@@ -3954,7 +3954,7 @@ schedule_callbacks (GDBusConnection *connection,
                                  emit_signal_instance_in_idle_cb,
                                  signal_instance,
                                  (GDestroyNotify) signal_instance_free);
-          g_source_set_name (idle_source, "[gio] emit_signal_instance_in_idle_cb");
+          g_source_set_static_name (idle_source, "[gio] emit_signal_instance_in_idle_cb");
           g_source_attach (idle_source, subscriber->context);
           g_source_unref (idle_source);
         }
@@ -4429,9 +4429,9 @@ validate_and_maybe_schedule_property_getset (GDBusConnection            *connect
                          property_data,
                          (GDestroyNotify) property_data_free);
   if (is_get)
-    g_source_set_name (idle_source, "[gio] invoke_get_property_in_idle_cb");
+    g_source_set_static_name (idle_source, "[gio] invoke_get_property_in_idle_cb");
   else
-    g_source_set_name (idle_source, "[gio] invoke_set_property_in_idle_cb");
+    g_source_set_static_name (idle_source, "[gio] invoke_set_property_in_idle_cb");
   g_source_attach (idle_source, main_context);
   g_source_unref (idle_source);
 
@@ -4649,7 +4649,7 @@ validate_and_maybe_schedule_property_get_all (GDBusConnection            *connec
                          invoke_get_all_properties_in_idle_cb,
                          property_get_all_data,
                          (GDestroyNotify) property_get_all_data_free);
-  g_source_set_name (idle_source, "[gio] invoke_get_all_properties_in_idle_cb");
+  g_source_set_static_name (idle_source, "[gio] invoke_get_all_properties_in_idle_cb");
   g_source_attach (idle_source, main_context);
   g_source_unref (idle_source);
 
@@ -4966,7 +4966,7 @@ schedule_method_call (GDBusConnection            *connection,
                          call_in_idle_cb,
                          invocation,
                          g_object_unref);
-  g_source_set_name (idle_source, "[gio, " __FILE__ "] call_in_idle_cb");
+  g_source_set_static_name (idle_source, "[gio, " __FILE__ "] call_in_idle_cb");
   g_source_attach (idle_source, main_context);
   g_source_unref (idle_source);
 }
@@ -6828,7 +6828,7 @@ subtree_message_func (GDBusConnection *connection,
                          process_subtree_vtable_message_in_idle_cb,
                          data,
                          (GDestroyNotify) subtree_deferred_data_free);
-  g_source_set_name (idle_source, "[gio] process_subtree_vtable_message_in_idle_cb");
+  g_source_set_static_name (idle_source, "[gio] process_subtree_vtable_message_in_idle_cb");
   g_source_attach (idle_source, es->context);
   g_source_unref (idle_source);
 

@@ -249,7 +249,7 @@ g_action_group_exporter_set_events (GActionGroupExporter *exporter,
       source = g_idle_source_new ();
       exporter->pending_source = source;
       g_source_set_callback (source, g_action_group_exporter_dispatch_events, exporter, NULL);
-      g_source_set_name (source, "[gio] g_action_group_exporter_dispatch_events");
+      g_source_set_static_name (source, "[gio] g_action_group_exporter_dispatch_events");
       g_source_attach (source, exporter->context);
       g_source_unref (source);
     }

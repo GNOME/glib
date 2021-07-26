@@ -5592,7 +5592,7 @@ _g_main_create_unix_signal_watch (int signum)
   unix_signal_source->pending = FALSE;
 
   /* Set a default name on the source, just in case the caller does not. */
-  g_source_set_name (source, signum_to_string (signum));
+  g_source_set_static_name (source, signum_to_string (signum));
 
   G_LOCK (unix_signal_lock);
   ref_unix_signal_handler_unlocked (signum);
@@ -5729,7 +5729,7 @@ g_child_watch_source_new (GPid pid)
   child_watch_source = (GChildWatchSource *)source;
 
   /* Set a default name on the source, just in case the caller does not. */
-  g_source_set_name (source, "GChildWatchSource");
+  g_source_set_static_name (source, "GChildWatchSource");
 
   child_watch_source->pid = pid;
 
@@ -5918,7 +5918,7 @@ g_idle_source_new (void)
   g_source_set_priority (source, G_PRIORITY_DEFAULT_IDLE);
 
   /* Set a default name on the source, just in case the caller does not. */
-  g_source_set_name (source, "GIdleSource");
+  g_source_set_static_name (source, "GIdleSource");
 
   return source;
 }
