@@ -1183,27 +1183,29 @@ main (int argc, char **argv)
 		   "#ifdef G_HAS_CONSTRUCTORS\n"
 		   "\n"
 		   "#ifdef G_DEFINE_CONSTRUCTOR_NEEDS_PRAGMA\n"
-		   "#pragma G_DEFINE_CONSTRUCTOR_PRAGMA_ARGS(resource_constructor)\n"
+		   "#pragma G_DEFINE_CONSTRUCTOR_PRAGMA_ARGS(%sresource_constructor)\n"
 		   "#endif\n"
-		   "G_DEFINE_CONSTRUCTOR(resource_constructor)\n"
+		   "G_DEFINE_CONSTRUCTOR(%sresource_constructor)\n"
 		   "#ifdef G_DEFINE_DESTRUCTOR_NEEDS_PRAGMA\n"
-		   "#pragma G_DEFINE_DESTRUCTOR_PRAGMA_ARGS(resource_destructor)\n"
+		   "#pragma G_DEFINE_DESTRUCTOR_PRAGMA_ARGS(%sresource_destructor)\n"
 		   "#endif\n"
-		   "G_DEFINE_DESTRUCTOR(resource_destructor)\n"
+		   "G_DEFINE_DESTRUCTOR(%sresource_destructor)\n"
 		   "\n"
 		   "#else\n"
 		   "#warning \"Constructor not supported on this compiler, linking in resources will not work\"\n"
 		   "#endif\n"
 		   "\n"
-		   "static void resource_constructor (void)\n"
+		   "static void %sresource_constructor (void)\n"
 		   "{\n"
 		   "  g_static_resource_init (&static_resource);\n"
 		   "}\n"
 		   "\n"
-		   "static void resource_destructor (void)\n"
+		   "static void %sresource_destructor (void)\n"
 		   "{\n"
 		   "  g_static_resource_fini (&static_resource);\n"
-		   "}\n");
+		   "}\n",
+           c_name, c_name, c_name,
+           c_name, c_name, c_name);
 	}
 
       fclose (file);
