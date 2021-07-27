@@ -1636,7 +1636,7 @@ _g_ir_node_build_typelib (GIrNode         *node,
                                                   prop->setter);
             if (index == -1)
               {
-                g_error ("Unknown setter %s for property %s", prop->setter, node->name);
+                g_error ("Unknown setter %s for property %s:%s", prop->setter, parent->name, node->name);
               }
 
             blob->setter = (guint) index;
@@ -1651,7 +1651,7 @@ _g_ir_node_build_typelib (GIrNode         *node,
                                                   prop->getter);
             if (index == -1)
               {
-                g_error ("Unknown getter %s for property %s", prop->getter, node->name);
+                g_error ("Unknown getter %s for property %s:%s", prop->getter, parent->name, node->name);
               }
 
             blob->getter = (guint) index;
@@ -1698,7 +1698,7 @@ _g_ir_node_build_typelib (GIrNode         *node,
                                                   function->property);
             if (index == -1)
               {
-                g_error ("Unknown property %s for accessor %s", function->property, node->name);
+                g_error ("Unknown property %s:%s for accessor %s", parent->name, function->property, function->symbol);
               }
 
             blob->setter = function->is_setter;
