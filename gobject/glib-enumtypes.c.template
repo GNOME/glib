@@ -3,10 +3,19 @@
 #include "glib-enumtypes.h"
 #include <glib-object.h>
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+
 /*** END file-header ***/
+
+/*** BEGIN file-tail ***/
+
+G_GNUC_END_IGNORE_DEPRECATIONS
+
+/*** END file-tail ***/
 
 /*** BEGIN file-production ***/
 /* enumerations from "@filename@" */
+
 /*** END file-production ***/
 
 /*** BEGIN value-header ***/
