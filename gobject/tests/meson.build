@@ -51,6 +51,7 @@ gobject_tests = {
     'source' : ['signals.c', marshalers_h, marshalers_c],
   },
   'testing' : {},
+  'type-flags' : {},
 }
 
 if cc.get_id() != 'msvc'

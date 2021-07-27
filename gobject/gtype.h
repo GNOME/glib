@@ -370,6 +370,18 @@ G_BEGIN_DECLS
  * Returns: %TRUE on success
  */
 #define G_TYPE_HAS_VALUE_TABLE(type)            (g_type_value_table_peek (type) != NULL)
+/**
+ * G_TYPE_IS_FINAL:
+ * @type: a #GType value
+ *
+ * Checks if @type is a final type. A final type cannot be derived any
+ * further.
+ *
+ * Returns: %TRUE on success
+ *
+ * Since: 2.70
+ */
+#define G_TYPE_IS_FINAL(type)                   (g_type_test_flags ((type), G_TYPE_FLAG_FINAL)) GLIB_AVAILABLE_MACRO_IN_2_70
 
 
 /* Typedefs
@@ -1002,13 +1014,16 @@ typedef enum    /*< skip >*/
  * @G_TYPE_FLAG_VALUE_ABSTRACT: Indicates an abstract value type, i.e. a type
  *  that introduces a value table, but can't be used for
  *  g_value_init()
+ * @G_TYPE_FLAG_FINAL: Indicates a final type. A final type is a non-derivable
+ *  leaf node in a deep derivable type hierarchy tree. Since: 2.70
  * 
  * Bit masks used to check or determine characteristics of a type.
  */
 typedef enum    /*< skip >*/
 {
-  G_TYPE_FLAG_ABSTRACT		= (1 << 4),
-  G_TYPE_FLAG_VALUE_ABSTRACT	= (1 << 5)
+  G_TYPE_FLAG_ABSTRACT = (1 << 4),
+  G_TYPE_FLAG_VALUE_ABSTRACT = (1 << 5),
+  G_TYPE_FLAG_FINAL GLIB_AVAILABLE_ENUMERATOR_IN_2_70 = (1 << 6)
 } GTypeFlags;
 /**
  * GTypeInfo:
@@ -1685,6 +1700,57 @@ guint     g_type_get_type_registration_serial (void);
  * Since: 2.38
  */
 #define G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE(TN, t_n, T_P)   G_DEFINE_TYPE_EXTENDED (TN, t_n, T_P, G_TYPE_FLAG_ABSTRACT, G_ADD_PRIVATE (TN))
+/**
+ * G_DEFINE_FINAL_TYPE:
+ * @TN: the name of the new type, in Camel case
+ * @t_n: the name of the new type, in lower case, with words
+ *   separated by `_` (snake case)
+ * @T_P: the #GType of the parent type
+ *
+ * A convenience macro for type implementations.
+ *
+ * Similar to G_DEFINE_TYPE(), but defines a final type.
+ *
+ * See G_DEFINE_TYPE_EXTENDED() for an example.
+ *
+ * Since: 2.70
+ */
+#define G_DEFINE_FINAL_TYPE(TN, t_n, T_P)                      G_DEFINE_TYPE_EXTENDED (TN, t_n, T_P, G_TYPE_FLAG_FINAL, {}) GLIB_AVAILABLE_MACRO_IN_2_70
+/**
+ * G_DEFINE_FINAL_TYPE_WITH_CODE:
+ * @TN: the name of the new type, in Camel case
+ * @t_n: the name of the new type, in lower case, with words
+ *   separated by `_` (snake case)
+ * @T_P: the #GType of the parent type
+ * @_C_: Custom code that gets inserted in the `type_name_get_type()` function.
+ *
+ * A convenience macro for type implementations.
+ *
+ * Similar to G_DEFINE_TYPE_WITH_CODE(), but defines a final type and
+ * allows you to insert custom code into the `*_get_type()` function, e.g.
+ * interface implementations  via G_IMPLEMENT_INTERFACE().
+ *
+ * See G_DEFINE_TYPE_EXTENDED() for an example.
+ *
+ * Since: 2.70
+ */
+#define G_DEFINE_FINAL_TYPE_WITH_CODE(TN, t_n, T_P, _C_)       _G_DEFINE_TYPE_EXTENDED_BEGIN (TN, t_n, T_P, G_TYPE_FLAG_FINAL) {_C_;} _G_DEFINE_TYPE_EXTENDED_END() GLIB_AVAILABLE_MACRO_IN_2_70
+/**
+ * G_DEFINE_FINAL_TYPE_WITH_PRIVATE:
+ * @TN: the name of the new type, in Camel case
+ * @t_n: the name of the new type, in lower case, with words
+ *   separated by `_` (snake case)
+ * @T_P: the #GType of the parent type
+ *
+ * A convenience macro for type implementations.
+ *
+ * Similar to G_DEFINE_TYPE_WITH_PRIVATE(), but defines a final type.
+ *
+ * See G_DEFINE_TYPE_EXTENDED() for an example.
+ *
+ * Since: 2.70
+ */
+#define G_DEFINE_FINAL_TYPE_WITH_PRIVATE(TN, t_n, T_P)         G_DEFINE_TYPE_EXTENDED (TN, t_n, T_P, G_TYPE_FLAG_FINAL, G_ADD_PRIVATE (TN)) GLIB_AVAILABLE_MACRO_IN_2_70
 /**
  * G_DEFINE_TYPE_EXTENDED:
  * @TN: The name of the new type, in Camel case.
