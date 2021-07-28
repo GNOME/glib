@@ -25,6 +25,7 @@
 #include "giomodule-priv.h"
 #include "glibintl.h"
 #include "glib/gstdio.h"
+#include "gcancellable.h"
 #include "gdbusproxy.h"
 #include "gdbusnamewatching.h"
 
@@ -38,6 +39,7 @@ struct _GMemoryMonitorDBus
   GObject parent_instance;
 
   guint watch_id;
+  GCancellable *cancellable;
   GDBusProxy *proxy;
   gulong signal_id;
 };
@@ -77,24 +79,15 @@ proxy_signal_cb (GDBusProxy         *proxy,
 }
 
 static void
-lmm_appeared_cb (GDBusConnection *connection,
-                 const gchar     *name,
-                 const gchar     *name_owner,
-                 gpointer         user_data)
+lmm_proxy_cb (GObject      *source_object,
+              GAsyncResult *res,
+              gpointer      user_data)
 {
   GMemoryMonitorDBus *dbus = user_data;
   GDBusProxy *proxy;
   GError *error = NULL;
 
-  proxy = g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SYSTEM,
-                                         G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START,
-                                         NULL,
-                                         "org.freedesktop.LowMemoryMonitor",
-                                         "/org/freedesktop/LowMemoryMonitor",
-                                         "org.freedesktop.LowMemoryMonitor",
-                                         NULL,
-                                         &error);
-
+  proxy = g_dbus_proxy_new_finish (res, &error);
   if (!proxy)
     {
       g_debug ("Failed to create LowMemoryMonitor D-Bus proxy: %s",
@@ -106,6 +99,26 @@ lmm_appeared_cb (GDBusConnection *connection,
   dbus->signal_id = g_signal_connect (G_OBJECT (proxy), "g-signal",
                                       G_CALLBACK (proxy_signal_cb), dbus);
   dbus->proxy = proxy;
+
+}
+
+static void
+lmm_appeared_cb (GDBusConnection *connection,
+                 const gchar     *name,
+                 const gchar     *name_owner,
+                 gpointer         user_data)
+{
+  GMemoryMonitorDBus *dbus = user_data;
+
+  g_dbus_proxy_new (connection,
+                    G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START,
+                    NULL,
+                    "org.freedesktop.LowMemoryMonitor",
+                    "/org/freedesktop/LowMemoryMonitor",
+                    "org.freedesktop.LowMemoryMonitor",
+                    dbus->cancellable,
+                    lmm_proxy_cb,
+                    dbus);
 }
 
 static void
@@ -115,8 +128,7 @@ lmm_vanished_cb (GDBusConnection *connection,
 {
   GMemoryMonitorDBus *dbus = user_data;
 
-  if (dbus->proxy != NULL)
-    g_clear_signal_handler (&dbus->signal_id, dbus->proxy);
+  g_clear_signal_handler (&dbus->signal_id, dbus->proxy);
   g_clear_object (&dbus->proxy);
 }
 
@@ -127,6 +139,7 @@ g_memory_monitor_dbus_initable_init (GInitable     *initable,
 {
   GMemoryMonitorDBus *dbus = G_MEMORY_MONITOR_DBUS (initable);
 
+  dbus->cancellable = g_cancellable_new ();
   dbus->watch_id = g_bus_watch_name (G_BUS_TYPE_SYSTEM,
                                      "org.freedesktop.LowMemoryMonitor",
                                      G_BUS_NAME_WATCHER_FLAGS_AUTO_START,
@@ -143,8 +156,9 @@ g_memory_monitor_dbus_finalize (GObject *object)
 {
   GMemoryMonitorDBus *dbus = G_MEMORY_MONITOR_DBUS (object);
 
-  if (dbus->proxy != NULL)
-    g_clear_signal_handler (&dbus->signal_id, dbus->proxy);
+  g_cancellable_cancel (dbus->cancellable);
+  g_clear_object (&dbus->cancellable);
+  g_clear_signal_handler (&dbus->signal_id, dbus->proxy);
   g_clear_object (&dbus->proxy);
   g_clear_handle_id (&dbus->watch_id, g_bus_unwatch_name);
 
