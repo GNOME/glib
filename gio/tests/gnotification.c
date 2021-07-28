@@ -180,6 +180,7 @@ struct _GNotification
   gchar *body;
   GIcon *icon;
   GNotificationPriority priority;
+  gchar *category;
   GPtrArray *buttons;
   gchar *default_action;
   GVariant *default_action_target;
@@ -205,10 +206,12 @@ test_properties (void)
 
   g_notification_set_title (n, "title");
   g_notification_set_body (n, "body");
+  g_notification_set_category (n, "cate.gory");
   icon = g_themed_icon_new ("i-c-o-n");
   g_notification_set_icon (n, icon);
   g_object_unref (icon);
   g_notification_set_priority (n, G_NOTIFICATION_PRIORITY_HIGH);
+  g_notification_set_category (n, "cate.gory");
   g_notification_add_button (n, "label1", "app.action1::target1");
   g_notification_set_default_action (n, "app.action2::target2");
 
@@ -222,6 +225,7 @@ test_properties (void)
   g_assert_cmpstr (names[1], ==, "i-c-o-n-symbolic");
   g_assert_null (names[2]);
   g_assert (rn->priority == G_NOTIFICATION_PRIORITY_HIGH);
+  g_assert_cmpstr (rn->category, ==, "cate.gory");
 
   g_assert_cmpint (rn->buttons->len, ==, 1);
   b = (Button*)rn->buttons->pdata[0];

@@ -97,6 +97,7 @@ struct _GNotification
   gchar *body;
   GIcon *icon;
   GNotificationPriority priority;
+  gchar *category;
   GPtrArray *buttons;
   gchar *default_action;
   GVariant *default_action_target;
@@ -141,6 +142,7 @@ g_notification_finalize (GObject *object)
 
   g_free (notification->title);
   g_free (notification->body);
+  g_free (notification->category);
   g_free (notification->default_action);
   if (notification->default_action_target)
     g_variant_unref (notification->default_action_target);
@@ -345,6 +347,52 @@ g_notification_set_urgent (GNotification *notification,
   notification->priority = urgent ?
       G_NOTIFICATION_PRIORITY_URGENT :
       G_NOTIFICATION_PRIORITY_NORMAL;
+}
+
+/*< private >
+ * g_notification_get_category:
+ * @notification: a #GNotification
+ *
+ * Gets the cateogry of @notification.
+ *
+ * This will be %NULL if no category is set.
+ *
+ * Returns: (nullable): the cateogry of @notification
+ *
+ * Since: 2.70
+ */
+const gchar *
+g_notification_get_category (GNotification *notification)
+{
+  g_return_val_if_fail (G_IS_NOTIFICATION (notification), NULL);
+
+  return notification->category;
+}
+
+/**
+ * g_notification_set_category:
+ * @notification: a #GNotification
+ * @category: (nullable): the category for @notification, or %NULL for no category
+ *
+ * Sets the type of @notification to @category. Categories have a main
+ * type like `email`, `im` or `device` and can have a detail separated
+ * by a `.`, e.g. `im.received` or `email.arrived`. Setting the category
+ * helps the notification server to select proper feedback to the user.
+ *
+ * Standard categories are [listed in the specification](https://specifications.freedesktop.org/notification-spec/latest/ar01s06.html).
+ *
+ * Since: 2.70
+ */
+void
+g_notification_set_category (GNotification *notification,
+                             const gchar   *category)
+{
+  g_return_if_fail (G_IS_NOTIFICATION (notification));
+  g_return_if_fail (category == NULL || *category != '\0');
+
+  g_free (notification->category);
+
+  notification->category = g_strdup (category);
 }
 
 /**

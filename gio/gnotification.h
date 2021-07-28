@@ -59,6 +59,10 @@ GLIB_AVAILABLE_IN_2_42
 void                    g_notification_set_priority                     (GNotification         *notification,
                                                                          GNotificationPriority  priority);
 
+GLIB_AVAILABLE_IN_2_70
+void                    g_notification_set_category                     (GNotification *notification,
+                                                                         const gchar   *category);
+
 GLIB_AVAILABLE_IN_2_40
 void                    g_notification_add_button                       (GNotification *notification,
                                                                          const gchar   *label,

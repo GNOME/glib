@@ -4677,6 +4677,7 @@ g_notification_set_icon
 GNotificationPriority
 g_notification_set_priority
 g_notification_set_urgent
+g_notification_set_category
 <SUBSECTION>
 g_notification_set_default_action
 g_notification_set_default_action_and_target
