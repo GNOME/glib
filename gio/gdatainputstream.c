@@ -76,9 +76,9 @@ g_data_input_stream_class_init (GDataInputStreamClass *klass)
   object_class->set_property = g_data_input_stream_set_property;
 
   /**
-   * GDataStream:byte-order:
+   * GDataInputStream:byte-order:
    *
-   * The ::byte-order property determines the byte ordering that
+   * The :byte-order property determines the byte ordering that
    * is used when reading multi-byte entities (such as integers)
    * from the stream.
    */ 
@@ -92,7 +92,7 @@ g_data_input_stream_class_init (GDataInputStreamClass *klass)
                                                       G_PARAM_READWRITE|G_PARAM_STATIC_NAME|G_PARAM_STATIC_BLURB));
 
   /**
-   * GDataStream:newline-type:
+   * GDataInputStream:newline-type:
    *
    * The :newline-type property determines what is considered
    * as a line ending when reading complete lines from the stream.
