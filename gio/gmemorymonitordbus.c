@@ -115,8 +115,7 @@ lmm_vanished_cb (GDBusConnection *connection,
 {
   GMemoryMonitorDBus *dbus = user_data;
 
-  if (dbus->proxy != NULL)
-    g_clear_signal_handler (&dbus->signal_id, dbus->proxy);
+  g_clear_signal_handler (&dbus->signal_id, dbus->proxy);
   g_clear_object (&dbus->proxy);
 }
 
@@ -143,8 +142,7 @@ g_memory_monitor_dbus_finalize (GObject *object)
 {
   GMemoryMonitorDBus *dbus = G_MEMORY_MONITOR_DBUS (object);
 
-  if (dbus->proxy != NULL)
-    g_clear_signal_handler (&dbus->signal_id, dbus->proxy);
+  g_clear_signal_handler (&dbus->signal_id, dbus->proxy);
   g_clear_object (&dbus->proxy);
   g_clear_handle_id (&dbus->watch_id, g_bus_unwatch_name);
 
