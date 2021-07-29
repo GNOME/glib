@@ -1426,8 +1426,6 @@ test_fully_decompose_len (void)
   }
 }
 
-/* Test that g_unichar_decompose() returns the correct value for various
- * ASCII and Unicode alphabetic, numeric, and other, codepoints. */
 static void
 test_iso15924 (void)
 {
