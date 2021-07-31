@@ -2550,9 +2550,7 @@ g_win32_registry_key_watch (GWin32RegistryKey                   *key,
                                            0,
                                            TRUE);
 
-  g_assert (status != STATUS_SUCCESS);
-
-  if (status == STATUS_PENDING)
+  if (status == STATUS_PENDING || status == STATUS_SUCCESS)
     return TRUE;
 
   g_atomic_int_set (&key->priv->change_indicator, G_WIN32_KEY_UNKNOWN);
