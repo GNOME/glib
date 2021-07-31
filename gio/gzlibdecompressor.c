@@ -40,7 +40,7 @@ enum {
 };
 
 /**
- * SECTION:gzdecompressor
+ * SECTION:gzlibdecompressor
  * @short_description: Zlib decompressor
  * @include: gio/gio.h
  *
