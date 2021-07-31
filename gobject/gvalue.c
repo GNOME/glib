@@ -42,6 +42,7 @@
  *
  * The #GValue structure is basically a variable container that consists
  * of a type identifier and a specific value of that type.
+ *
  * The type identifier within a #GValue structure always determines the
  * type of the associated value.
  *

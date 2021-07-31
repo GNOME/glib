@@ -145,7 +145,9 @@ G_BEGIN_DECLS
  *  Since 2.26
  * 
  * Through the #GParamFlags flag values, certain aspects of parameters
- * can be configured. See also #G_PARAM_STATIC_STRINGS.
+ * can be configured.
+ *
+ * See also: %G_PARAM_STATIC_STRINGS
  */
 typedef enum
 {
@@ -368,6 +370,7 @@ typedef struct _GParamSpecTypeInfo GParamSpecTypeInfo;
  * This structure is used to provide the type system with the information
  * required to initialize and destruct (finalize) a parameter's class and
  * instances thereof.
+ *
  * The initialized structure is passed to the g_param_type_register_static() 
  * The type system will perform a deep copy of this structure, so its memory 
  * does not need to be persistent across invocation of 

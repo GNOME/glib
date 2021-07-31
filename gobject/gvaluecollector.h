@@ -23,6 +23,7 @@
  * 
  * The macros in this section provide the varargs parsing support needed
  * in variadic GObject functions such as g_object_new() or g_object_set().
+ *
  * They currently support the collection of integral types, floating point 
  * types and pointers.
  */
@@ -79,9 +80,10 @@ union _GTypeCValue
  * @__error: a #gchar** variable that will be modified to hold a g_new()
  *  allocated error messages if something fails
  * 
- * Collects a variable argument value from a va_list. We have to
- * implement the varargs collection as a macro, because on some systems
- * va_list variables cannot be passed by reference.
+ * Collects a variable argument value from a `va_list`.
+ *
+ * We have to implement the varargs collection as a macro, because on some
+ * systems `va_list` variables cannot be passed by reference.
  *
  * Since: 2.24
  */
@@ -136,9 +138,10 @@ G_STMT_START {										\
  * @__error: a #gchar** variable that will be modified to hold a g_new()
  *  allocated error messages if something fails
  *
- * Collects a variable argument value from a va_list. We have to
- * implement the varargs collection as a macro, because on some systems
- * va_list variables cannot be passed by reference.
+ * Collects a variable argument value from a `va_list`.
+ *
+ * We have to implement the varargs collection as a macro, because on some systems
+ * `va_list` variables cannot be passed by reference.
  *
  * Note: If you are creating the @value argument just before calling this macro,
  * you should use the #G_VALUE_COLLECT_INIT variant and pass the uninitialized
@@ -203,7 +206,8 @@ G_STMT_START {										\
  * @__error: a #gchar** variable that will be modified to hold a g_new()
  *  allocated error message if something fails
  *
- * Stores a value’s value into one or more argument locations from a va_list.
+ * Stores a value’s value into one or more argument locations from a `va_list`.
+ *
  * This is the inverse of G_VALUE_COLLECT().
  */
 #define G_VALUE_LCOPY(value, var_args, flags, __error)					\

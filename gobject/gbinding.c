@@ -25,11 +25,12 @@
  *
  * #GBinding is the representation of a binding between a property on a
  * #GObject instance (or source) and another property on another #GObject
- * instance (or target). Whenever the source property changes, the same
- * value is applied to the target property; for instance, the following
- * binding:
+ * instance (or target).
  *
- * |[<!-- language="C" --> 
+ * Whenever the source property changes, the same value is applied to the
+ * target property; for instance, the following binding:
+ *
+ * |[<!-- language="C" -->
  *   g_object_bind_property (object1, "property-a",
  *                           object2, "property-b",
  *                           G_BINDING_DEFAULT);
@@ -1409,10 +1410,12 @@ g_object_bind_property_full (gpointer               source,
  * @flags: flags to pass to #GBinding
  *
  * Creates a binding between @source_property on @source and @target_property
- * on @target. Whenever the @source_property is changed the @target_property is
+ * on @target.
+ *
+ * Whenever the @source_property is changed the @target_property is
  * updated using the same value. For instance:
  *
- * |[
+ * |[<!-- language="C" -->
  *   g_object_bind_property (action, "active", widget, "sensitive", 0);
  * ]|
  *

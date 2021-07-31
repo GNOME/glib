@@ -32,6 +32,7 @@ G_BEGIN_DECLS
  * @type: A #GType value.
  * 
  * The fundamental type which is the ancestor of @type.
+ *
  * Fundamental types are types that serve as ultimate bases for the derived types, 
  * thus they are the roots of distinct inheritance hierarchies.
  */
@@ -70,6 +71,7 @@ G_BEGIN_DECLS
  * G_TYPE_CHAR:
  * 
  * The fundamental type corresponding to #gchar.
+ *
  * The type designated by G_TYPE_CHAR is unconditionally an 8-bit signed integer.
  * This may or may not be the same type a the C type "gchar".
  */
@@ -213,6 +215,7 @@ G_BEGIN_DECLS
  * @x: the fundamental type number.
  * 
  * Get the type ID for the fundamental type number @x.
+ *
  * Use g_type_fundamental_next() instead of this macro to create new fundamental 
  * types.
  *
@@ -281,6 +284,7 @@ G_BEGIN_DECLS
  * @type: A #GType value
  * 
  * Checks if @type is an interface type.
+ *
  * An interface type provides a pure API, the implementation
  * of which is provided by another type (which is then said to conform
  * to the interface).  GLib interfaces are somewhat analogous to Java
@@ -451,7 +455,8 @@ struct _GTypeInterface
  * @instance_size: the size of the instance structure
  * 
  * A structure holding information for a specific type.
- * It is filled in by the g_type_query() function.
+ *
+ * See also: g_type_query()
  */
 struct _GTypeQuery
 {
@@ -642,6 +647,7 @@ struct _GTypeQuery
  * @c_type: The C type for the private structure
  * 
  * Gets the private structure for a particular type.
+ *
  * The private structure must have been registered in the
  * class_init function with g_type_class_add_private().
  * 
@@ -661,6 +667,7 @@ struct _GTypeQuery
  * @c_type: The C type for the private structure
  * 
  * Gets the private class structure for a particular type.
+ *
  * The private structure must have been registered in the
  * get_type() function with g_type_add_class_private().
  * 
@@ -773,9 +780,12 @@ int                   g_type_get_instance_count      (GType            type);
  * @g_class: (type GObject.TypeClass): The #GTypeClass structure to initialize
  * 
  * A callback function used by the type system to do base initialization
- * of the class structures of derived types. It is called as part of the
- * initialization process of all derived classes and should reallocate
- * or reset all dynamic class members copied over from the parent class.
+ * of the class structures of derived types.
+ *
+ * This function is called as part of the initialization process of all derived
+ * classes and should reallocate or reset all dynamic class members copied over
+ * from the parent class.
+ *
  * For example, class members (such as strings) that are not sufficiently
  * handled by a plain memory copy of the parent class into the derived class
  * have to be altered. See GClassInitFunc() for a discussion of the class
@@ -788,8 +798,11 @@ typedef void   (*GBaseInitFunc)              (gpointer         g_class);
  * 
  * A callback function used by the type system to finalize those portions
  * of a derived types class structure that were setup from the corresponding
- * GBaseInitFunc() function. Class finalization basically works the inverse
- * way in which class initialization is performed.
+ * GBaseInitFunc() function.
+ *
+ * Class finalization basically works the inverse way in which class
+ * initialization is performed.
+ *
  * See GClassInitFunc() for a discussion of the class initialization process.
  */
 typedef void   (*GBaseFinalizeFunc)          (gpointer         g_class);
@@ -799,8 +812,9 @@ typedef void   (*GBaseFinalizeFunc)          (gpointer         g_class);
  * @class_data: The @class_data member supplied via the #GTypeInfo structure.
  * 
  * A callback function used by the type system to initialize the class
- * of a specific type. This function should initialize all static class
- * members.
+ * of a specific type.
+ *
+ * This function should initialize all static class members.
  *
  * The initialization process of a class involves:
  * 
@@ -869,6 +883,7 @@ typedef void   (*GBaseFinalizeFunc)          (gpointer         g_class);
  *   class->static_float = 3.14159265358979323846;
  * }
  * ]|
+ *
  * Initialization of TypeBClass will first cause initialization of
  * TypeAClass (derived classes reference their parent classes, see
  * g_type_class_ref() on this).
@@ -902,8 +917,10 @@ typedef void   (*GClassInitFunc)             (gpointer         g_class,
  * @class_data: The @class_data member supplied via the #GTypeInfo structure
  * 
  * A callback function used by the type system to finalize a class.
+ *
  * This function is rarely needed, as dynamically allocated class resources
  * should be handled by GBaseInitFunc() and GBaseFinalizeFunc().
+ *
  * Also, specification of a GClassFinalizeFunc() in the #GTypeInfo
  * structure of a static type is invalid, because classes of static types
  * will never be finalized (they are artificially kept alive when their
@@ -918,8 +935,10 @@ typedef void   (*GClassFinalizeFunc)         (gpointer         g_class,
  *    created for
  * 
  * A callback function used by the type system to initialize a new
- * instance of a type. This function initializes all instance members and
- * allocates any resources required by it.
+ * instance of a type.
+ *
+ * This function initializes all instance members and allocates any resources
+ * required by it.
  *
  * Initialization of a derived instance involves calling all its parent
  * types instance initializers, so the class member of the instance
@@ -937,8 +956,10 @@ typedef void   (*GInstanceInitFunc)          (GTypeInstance   *instance,
  * @iface_data: The @interface_data supplied via the #GInterfaceInfo structure
  * 
  * A callback function used by the type system to initialize a new
- * interface.  This function should initialize all internal data and
- * allocate any resources required by the interface.
+ * interface.
+ *
+ * This function should initialize all internal data and* allocate any
+ * resources required by the interface.
  *
  * The members of @iface_data are guaranteed to have been filled with
  * zeros before this function is called.
@@ -951,6 +972,7 @@ typedef void   (*GInterfaceInitFunc)         (gpointer         g_iface,
  * @iface_data: The @interface_data supplied via the #GInterfaceInfo structure
  * 
  * A callback function used by the type system to finalize an interface.
+ *
  * This function should destroy any internal data and release any resources
  * allocated by the corresponding GInterfaceInitFunc() function.
  */
@@ -963,10 +985,11 @@ typedef void   (*GInterfaceFinalizeFunc)     (gpointer         g_iface,
  *    unreferenced
  * 
  * A callback function which is called when the reference count of a class 
- * drops to zero. It may use g_type_class_ref() to prevent the class from
- * being freed. You should not call g_type_class_unref() from a 
- * #GTypeClassCacheFunc function to prevent infinite recursion, use 
- * g_type_class_unref_uncached() instead.
+ * drops to zero.
+ *
+ * It may use g_type_class_ref() to prevent the class from being freed. You
+ * should not call g_type_class_unref() from a #GTypeClassCacheFunc function
+ * to prevent infinite recursion, use g_type_class_unref_uncached() instead.
  * 
  * The functions have to check the class id passed in to figure 
  * whether they actually want to cache the class of this type, since all
@@ -984,6 +1007,7 @@ typedef gboolean (*GTypeClassCacheFunc)	     (gpointer	       cache_data,
  *    initialized
  * 
  * A callback called after an interface vtable is initialized.
+ *
  * See g_type_add_interface_check().
  * 
  * Since: 2.4
@@ -1356,12 +1380,12 @@ guint     g_type_get_type_registration_serial (void);
  * @OBJ_NAME: The bare name of the type, in all caps (like `WIDGET`)
  * @ParentName: the name of the parent type, in camel case (like `GtkWidget`)
  *
- * A convenience macro for emitting the usual declarations in the header file for a type which is not (at the
- * present time) intended to be subclassed.
+ * A convenience macro for emitting the usual declarations in the header file
+ * for a type which is not (at the present time) intended to be subclassed.
  *
  * You might use it in a header as follows:
  *
- * |[
+ * |[<!-- language="C" -->
  * #ifndef _myapp_window_h_
  * #define _myapp_window_h_
  *
@@ -1442,7 +1466,7 @@ guint     g_type_get_type_registration_serial (void);
  *
  * You might use it in a header as follows:
  *
- * |[
+ * |[<!-- language="C" -->
  * #ifndef _gtk_frobber_h_
  * #define _gtk_frobber_h_
  *
@@ -1539,7 +1563,7 @@ guint     g_type_get_type_registration_serial (void);
  *
  * You might use it in a header as follows:
  *
- * |[
+ * |[<!-- language="C" -->
  * #ifndef _my_model_h_
  * #define _my_model_h_
  *
@@ -1623,7 +1647,8 @@ guint     g_type_get_type_registration_serial (void);
  * @T_P: The #GType of the parent type.
  * @_C_: Custom code that gets inserted in the `*_get_type()` function.
  * 
- * A convenience macro for type implementations.  
+ * A convenience macro for type implementations.
+ *
  * Similar to G_DEFINE_TYPE(), but allows you to insert custom code into the 
  * `*_get_type()` function, e.g. interface implementations via G_IMPLEMENT_INTERFACE().
  * See G_DEFINE_TYPE_EXTENDED() for an example.
@@ -1642,6 +1667,7 @@ guint     g_type_get_type_registration_serial (void);
  * initialization function, an instance initialization function (see #GTypeInfo
  * for information about these), a static variable named `t_n_parent_class`
  * pointing to the parent class, and adds private instance data to the type.
+ *
  * Furthermore, it defines a `*_get_type()` function. See G_DEFINE_TYPE_EXTENDED()
  * for an example.
  * 
@@ -1663,8 +1689,9 @@ guint     g_type_get_type_registration_serial (void);
  *  separated by `_`.
  * @T_P: The #GType of the parent type.
  * 
- * A convenience macro for type implementations. 
- * Similar to G_DEFINE_TYPE(), but defines an abstract type. 
+ * A convenience macro for type implementations.
+ *
+ * Similar to G_DEFINE_TYPE(), but defines an abstract type.
  * See G_DEFINE_TYPE_EXTENDED() for an example.
  * 
  * Since: 2.4
@@ -1679,9 +1706,11 @@ guint     g_type_get_type_registration_serial (void);
  * @_C_: Custom code that gets inserted in the `type_name_get_type()` function.
  * 
  * A convenience macro for type implementations.
+ *
  * Similar to G_DEFINE_TYPE_WITH_CODE(), but defines an abstract type and
  * allows you to insert custom code into the `*_get_type()` function, e.g.
  * interface implementations  via G_IMPLEMENT_INTERFACE().
+ *
  * See G_DEFINE_TYPE_EXTENDED() for an example.
  * 
  * Since: 2.4
@@ -1694,7 +1723,8 @@ guint     g_type_get_type_registration_serial (void);
  *  separated by `_`.
  * @T_P: The #GType of the parent type.
  *
- * Similar to G_DEFINE_TYPE_WITH_PRIVATE(), but defines an abstract type. 
+ * Similar to G_DEFINE_TYPE_WITH_PRIVATE(), but defines an abstract type.
+ *
  * See G_DEFINE_TYPE_EXTENDED() for an example.
  * 
  * Since: 2.38
@@ -1772,7 +1802,9 @@ guint     g_type_get_type_registration_serial (void);
  *                         G_IMPLEMENT_INTERFACE (TYPE_GIZMO,
  *                                                gtk_gadget_gizmo_init));
  * ]|
+ *
  * expands to
+ *
  * |[<!-- language="C" -->
  * static void     gtk_gadget_init       (GtkGadget      *self);
  * static void     gtk_gadget_class_init (GtkGadgetClass *klass);
@@ -1819,6 +1851,7 @@ guint     g_type_get_type_registration_serial (void);
  *   return static_g_define_type_id;
  * }
  * ]|
+ *
  * The only pieces which have to be manually provided are the definitions of
  * the instance and class structure and the definitions of the instance and
  * class init functions.
@@ -1860,11 +1893,13 @@ guint     g_type_get_type_registration_serial (void);
  * for no prerequisite type.
  * @_C_: Custom code that gets inserted in the `*_get_type()` function.
  *
- * A convenience macro for #GTypeInterface definitions. Similar to
- * G_DEFINE_INTERFACE(), but allows you to insert custom code into the
- * `*_get_type()` function, e.g. additional interface implementations
- * via G_IMPLEMENT_INTERFACE(), or additional prerequisite types. See
- * G_DEFINE_TYPE_EXTENDED() for a similar example using
+ * A convenience macro for #GTypeInterface definitions.
+ *
+ * Similar to G_DEFINE_INTERFACE(), but allows you to insert custom code
+ * into the `*_get_type()` function, e.g. additional interface implementations
+ * via G_IMPLEMENT_INTERFACE(), or additional prerequisite types.
+ *
+ * See G_DEFINE_TYPE_EXTENDED() for a similar example using
  * G_DEFINE_TYPE_WITH_CODE().
  *
  * Since: 2.24
@@ -2153,7 +2188,6 @@ type_name##_get_type (void) \
  *   GType type = my_struct_get_type ();
  *   // ... your code ...
  * }
- *
  * ]|
  *
  * Since: 2.26
@@ -2169,6 +2203,7 @@ type_name##_get_type (void) \
  * @_C_: Custom code that gets inserted in the `*_get_type()` function
  *
  * A convenience macro for boxed type implementations.
+ *
  * Similar to G_DEFINE_BOXED_TYPE(), but allows to insert custom code into the
  * `type_name_get_type()` function, e.g. to register value transformations with
  * g_value_register_transform_func(), for instance:

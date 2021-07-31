@@ -48,7 +48,7 @@
  *     management system
  * @title:Type Information
  *
- * The GType API is the foundation of the GObject system.  It provides the
+ * The GType API is the foundation of the GObject system. It provides the
  * facilities for registering and managing all fundamental data types,
  * user-defined object and interface types.
  *

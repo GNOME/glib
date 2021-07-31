@@ -42,6 +42,7 @@ G_BEGIN_DECLS
  * @cl: a #GClosure
  * 
  * Get the total number of notifiers connected with the closure @cl. 
+ *
  * The count includes the meta marshaller, the finalize and invalidate notifiers 
  * and the marshal guards. Note that each guard counts as two notifiers. 
  * See g_closure_set_meta_marshal(), g_closure_add_finalize_notifier(),
@@ -78,10 +79,13 @@ typedef struct _GClosureNotifyData	 GClosureNotifyData;
  * GCallback:
  * 
  * The type used for callback functions in structure definitions and function 
- * signatures. This doesn't mean that all callback functions must take no 
- * parameters and return void. The required signature of a callback function 
- * is determined by the context in which is used (e.g. the signal to which it 
- * is connected). Use G_CALLBACK() to cast the callback function to a #GCallback. 
+ * signatures.
+ *
+ * This doesn't mean that all callback functions must take no  parameters and
+ * return void. The required signature of a callback function is determined by
+ * the context in which is used (e.g. the signal to which it is connected).
+ *
+ * Use G_CALLBACK() to cast the callback function to a #GCallback. 
  */
 typedef void  (*GCallback)              (void);
 /**
