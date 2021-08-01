@@ -1487,7 +1487,8 @@ safe_fdwalk (int (*cb)(void *data, int fd), void *data)
 static void
 safe_closefrom (int lowfd)
 {
-#if defined(__FreeBSD__) || defined(__OpenBSD__)
+#if defined(__FreeBSD__) || defined(__OpenBSD__) || \
+  (defined(__sun__) && defined(F_CLOSEFROM))
   /* Use closefrom function provided by the system if it is known to be
    * async-signal safe.
    *
@@ -1496,6 +1497,9 @@ safe_closefrom (int lowfd)
    *
    * OpenBSD: closefrom is not included in the list, but a direct system call
    * should be safe to use.
+   *
+   * In Solaris as of 11.3 SRU 31, closefrom() is also a direct system call.
+   * On such systems, F_CLOSEFROM is defined.
    */
   (void) closefrom (lowfd);
 #elif defined(__DragonFly__)
