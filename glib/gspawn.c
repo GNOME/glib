@@ -1507,6 +1507,28 @@ safe_fdwalk (int (*cb)(void *data, int fd), void *data)
 /* This function is called between fork() and exec() and hence must be
  * async-signal-safe (see signal-safety(7)). */
 static void
+safe_fdwalk_set_cloexec (int lowfd)
+{
+#if defined(HAVE_CLOSE_RANGE) && defined(CLOSE_RANGE_CLOEXEC)
+  /* close_range() is available in Linux since kernel 5.9, and on FreeBSD at
+   * around the same time. It was designed for use in async-signal-safe
+   * situations: https://bugs.python.org/issue38061
+   *
+   * The `CLOSE_RANGE_CLOEXEC` flag was added in Linux 5.11, and is not yet
+   * present in FreeBSD.
+   *
+   * Handle ENOSYS in case it’s supported in libc but not the kernel; if so,
+   * fall back to safe_fdwalk(). Handle EINVAL in case `CLOSE_RANGE_CLOEXEC`
+   * is not supported. */
+  if (close_range (lowfd, G_MAXUINT, CLOSE_RANGE_CLOEXEC) != 0 &&
+      (errno == ENOSYS || errno == EINVAL))
+#endif  /* HAVE_CLOSE_RANGE */
+  (void) safe_fdwalk (set_cloexec, GINT_TO_POINTER (lowfd));
+}
+
+/* This function is called between fork() and exec() and hence must be
+ * async-signal-safe (see signal-safety(7)). */
+static void
 safe_closefrom (int lowfd)
 {
 #if defined(__FreeBSD__) || defined(__OpenBSD__) || \
@@ -1715,7 +1737,7 @@ do_exec (gint                  child_err_report_fd,
         }
       else
         {
-          safe_fdwalk (set_cloexec, GINT_TO_POINTER (3));
+          safe_fdwalk_set_cloexec (3);
         }
     }
   else
