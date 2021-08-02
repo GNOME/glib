@@ -499,27 +499,27 @@ static void
 test_string_replace (void)
 {
   GString *s;
-  gint n;
+  guint n;
 
   s = g_string_new ("foo bar foo baz foo bar foobarbaz");
 
   n = g_string_replace (s, "bar", "baz", 0);
   g_assert_cmpstr ("foo baz foo baz foo baz foobazbaz", ==, s->str);
-  g_assert_cmpint (n, ==, 3);
+  g_assert_cmpuint (n, ==, 3);
 
   n = g_string_replace (s, "baz", "bar", 3);
   g_assert_cmpstr ("foo bar foo bar foo bar foobazbaz", ==, s->str);
-  g_assert_cmpint (n, ==, 3);
+  g_assert_cmpuint (n, ==, 3);
 
   n = g_string_replace (s, "foobar", "bar", 1);
   g_assert_cmpstr ("foo bar foo bar foo bar foobazbaz", ==, s->str);
-  g_assert_cmpint (n, ==, 0);
+  g_assert_cmpuint (n, ==, 0);
 
   s = g_string_assign (s, "aaaaaaaa");
   n = g_string_replace (s, "a", "abcdefghijkl", 0);
   g_assert_cmpstr ("abcdefghijklabcdefghijklabcdefghijklabcdefghijklabcdefghijklabcdefghijklabcdefghijklabcdefghijkl",
                    ==, s->str);
-  g_assert_cmpint (n, ==, 8);
+  g_assert_cmpuint (n, ==, 8);
 
   g_string_free (s, TRUE);
 }
