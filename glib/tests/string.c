@@ -528,6 +528,12 @@ test_string_replace (void)
       "", 3 },
     { "aaa", "aa", "bb", 0,
       "bba", 1 },
+    { "foo", "", "bar", 0,
+      "barfbarobarobar", 4 },
+    { "", "", "x", 0,
+      "x", 1 },
+    { "", "", "", 0,
+      "", 1 },
   };
   gsize i;
 
