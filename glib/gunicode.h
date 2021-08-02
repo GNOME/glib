@@ -758,10 +758,15 @@ GLIB_VAR const gchar * const g_utf8_skip;
  * g_utf8_next_char:
  * @p: Pointer to the start of a valid UTF-8 character
  *
- * Skips to the next character in a UTF-8 string. The string must be
- * valid; this macro is as fast as possible, and has no error-checking.
- * You would use this macro to iterate over a string character by
- * character. The macro returns the start of the next UTF-8 character.
+ * Skips to the next character in a UTF-8 string.
+ *
+ * The string must be valid; this macro is as fast as possible, and has
+ * no error-checking.
+ *
+ * You would use this macro to iterate over a string character by character.
+ *
+ * The macro returns the start of the next UTF-8 character.
+ *
  * Before using this macro, use g_utf8_validate() to validate strings
  * that may contain invalid UTF-8.
  */
