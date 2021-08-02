@@ -498,30 +498,64 @@ test_string_to_bytes (void)
 static void
 test_string_replace (void)
 {
-  GString *s;
-  gint n;
+  static const struct
+  {
+    const char *string;
+    const char *original;
+    const char *replacement;
+    guint limit;
+    const char *expected;
+    guint expected_n;
+  }
+  tests[] =
+  {
+    { "foo bar foo baz foo bar foobarbaz", "bar", "baz", 0,
+      "foo baz foo baz foo baz foobazbaz", 3 },
+    { "foo baz foo baz foo baz foobazbaz", "baz", "bar", 3,
+      "foo bar foo bar foo bar foobazbaz", 3 },
+    { "foo bar foo bar foo bar foobazbaz", "foobar", "bar", 1,
+      "foo bar foo bar foo bar foobazbaz", 0 },
+    { "aaaaaaaa", "a", "abcdefghijkl", 0,
+      "abcdefghijklabcdefghijklabcdefghijklabcdefghijklabcdefghijklabcdefghijklabcdefghijklabcdefghijkl",
+      8 },
+    { "/usr/$LIB/libMangoHud.so", "$LIB", "lib32", 0,
+      "/usr/lib32/libMangoHud.so", 1 },
+    { "food for foals", "o", "", 0,
+      "fd fr fals", 4 },
+    { "aaa", "a", "aaa", 0,
+      "aaaaaaaaa", 3 },
+    { "aaa", "a", "", 0,
+      "", 3 },
+    { "aaa", "aa", "bb", 0,
+      "bba", 1 },
+    { "foo", "", "bar", 0,
+      "barfbarobarobar", 4 },
+    { "", "", "x", 0,
+      "x", 1 },
+    { "", "", "", 0,
+      "", 1 },
+  };
+  gsize i;
 
-  s = g_string_new ("foo bar foo baz foo bar foobarbaz");
+  for (i = 0; i < G_N_ELEMENTS (tests); i++)
+    {
+      GString *s;
+      guint n;
 
-  n = g_string_replace (s, "bar", "baz", 0);
-  g_assert_cmpstr ("foo baz foo baz foo baz foobazbaz", ==, s->str);
-  g_assert_cmpint (n, ==, 3);
-
-  n = g_string_replace (s, "baz", "bar", 3);
-  g_assert_cmpstr ("foo bar foo bar foo bar foobazbaz", ==, s->str);
-  g_assert_cmpint (n, ==, 3);
-
-  n = g_string_replace (s, "foobar", "bar", 1);
-  g_assert_cmpstr ("foo bar foo bar foo bar foobazbaz", ==, s->str);
-  g_assert_cmpint (n, ==, 0);
-
-  s = g_string_assign (s, "aaaaaaaa");
-  n = g_string_replace (s, "a", "abcdefghijkl", 0);
-  g_assert_cmpstr ("abcdefghijklabcdefghijklabcdefghijklabcdefghijklabcdefghijklabcdefghijklabcdefghijklabcdefghijkl",
-                   ==, s->str);
-  g_assert_cmpint (n, ==, 8);
-
-  g_string_free (s, TRUE);
+      s = g_string_new (tests[i].string);
+      g_test_message ("%" G_GSIZE_FORMAT ": Replacing \"%s\" with \"%s\" (limit %u) in \"%s\"",
+                      i, tests[i].original, tests[i].replacement,
+                      tests[i].limit, tests[i].string);
+      n = g_string_replace (s, tests[i].original, tests[i].replacement,
+                            tests[i].limit);
+      g_test_message ("-> %u replacements, \"%s\"",
+                      n, s->str);
+      g_assert_cmpstr (tests[i].expected, ==, s->str);
+      g_assert_cmpuint (strlen (tests[i].expected), ==, s->len);
+      g_assert_cmpuint (strlen (tests[i].expected) + 1, <=, s->allocated_len);
+      g_assert_cmpuint (tests[i].expected_n, ==, n);
+      g_string_free (s, TRUE);
+    }
 }
 
 int
