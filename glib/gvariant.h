@@ -345,7 +345,9 @@ GQuark                          g_variant_parse_error_quark             (void);
  * A stack-allocated #GVariantBuilder must be initialized if it is
  * used together with g_auto() to avoid warnings or crashes if
  * function returns before g_variant_builder_init() is called on the
- * builder.  This macro can be used as initializer instead of an
+ * builder.
+ *
+ * This macro can be used as initializer instead of an
  * explicit zeroing a variable when declaring it and a following
  * g_variant_builder_init(), but it cannot be assigned to a variable.
  *
@@ -354,7 +356,7 @@ GQuark                          g_variant_parse_error_quark             (void);
  * the G_VARIANT_BUILDER_INIT() call, but rather in functions that
  * make sure that #GVariantBuilder is valid.
  *
- * |[
+ * |[<!-- language="C" -->
  *   g_auto(GVariantBuilder) builder = G_VARIANT_BUILDER_INIT (G_VARIANT_TYPE_BYTESTRING);
  * ]|
  *
@@ -455,6 +457,7 @@ struct _GVariantDict {
  * A stack-allocated #GVariantDict must be initialized if it is used
  * together with g_auto() to avoid warnings or crashes if function
  * returns before g_variant_dict_init() is called on the builder.
+ *
  * This macro can be used as initializer instead of an explicit
  * zeroing a variable when declaring it and a following
  * g_variant_dict_init(), but it cannot be assigned to a variable.
@@ -468,7 +471,7 @@ struct _GVariantDict {
  * safely with a different @asv right after the variable was
  * initialized with G_VARIANT_DICT_INIT().
  *
- * |[
+ * |[<!-- language="C" -->
  *   g_autoptr(GVariant) variant = get_asv_variant ();
  *   g_auto(GVariantDict) dict = G_VARIANT_DICT_INIT (variant);
  * ]|
