@@ -115,7 +115,8 @@
  * @tv_usec: microseconds
  *
  * Represents a precise time, with seconds and microseconds.
- * Similar to the struct timeval returned by the gettimeofday()
+ *
+ * Similar to the struct timeval returned by the `gettimeofday()`
  * UNIX system call.
  *
  * GLib is attempting to unify around the use of 64-bit integers to
@@ -133,15 +134,15 @@
  * @julian: this bit is set if @julian_days is valid
  * @dmy: this is set if @day, @month and @year are valid
  * @day: the day of the day-month-year representation of the date,
- *     as a number between 1 and 31
+ *   as a number between 1 and 31
  * @month: the day of the day-month-year representation of the date,
- *     as a number between 1 and 12
+ *   as a number between 1 and 12
  * @year: the day of the day-month-year representation of the date
  *
  * Represents a day between January 1, Year 1 and a few thousand years in
  * the future. None of its members should be accessed directly.
  *
- * If the #GDate-struct is obtained from g_date_new(), it will be safe
+ * If the `GDate` is obtained from g_date_new(), it will be safe
  * to mutate but invalid and thus not safe for calendrical computations.
  *
  * If it's declared on the stack, it will contain garbage so must be
@@ -156,7 +157,9 @@
  *
  * Simply a replacement for `time_t`. It has been deprecated
  * since it is not equivalent to `time_t` on 64-bit platforms
- * with a 64-bit `time_t`. Unrelated to #GTimer.
+ * with a 64-bit `time_t`.
+ *
+ * Unrelated to #GTimer.
  *
  * Note that #GTime is defined to always be a 32-bit integer,
  * unlike `time_t` which may be 64-bit on some systems. Therefore,
@@ -165,6 +168,7 @@
  * function.
  *
  * Instead, do the following:
+ *
  * |[<!-- language="C" -->
  * time_t ttime;
  * GTime gtime;
@@ -191,7 +195,8 @@
  * GDateDay:
  *
  * Integer representing a day of the month; between 1 and 31.
- * #G_DATE_BAD_DAY represents an invalid day of the month.
+ *
+ * The %G_DATE_BAD_DAY value represents an invalid day of the month.
  */
 
 /**
@@ -210,16 +215,20 @@
  * @G_DATE_NOVEMBER: November
  * @G_DATE_DECEMBER: December
  *
- * Enumeration representing a month; values are #G_DATE_JANUARY,
- * #G_DATE_FEBRUARY, etc. #G_DATE_BAD_MONTH is the invalid value.
+ * Enumeration representing a month; values are %G_DATE_JANUARY,
+ * %G_DATE_FEBRUARY, etc. %G_DATE_BAD_MONTH is the invalid value.
  */
 
 /**
  * GDateYear:
  *
- * Integer representing a year; #G_DATE_BAD_YEAR is the invalid
- * value. The year must be 1 or higher; negative (BC) years are not
- * allowed. The year is represented with four digits.
+ * Integer type representing a year.
+ *
+ * The %G_DATE_BAD_YEAR value is the invalid value. The year
+ * must be 1 or higher; negative ([BCE](https://en.wikipedia.org/wiki/Common_Era))
+ * years are not allowed.
+ *
+ * The year is represented with four digits.
  */
 
 /**
