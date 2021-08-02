@@ -518,6 +518,16 @@ test_string_replace (void)
     { "aaaaaaaa", "a", "abcdefghijkl", 0,
       "abcdefghijklabcdefghijklabcdefghijklabcdefghijklabcdefghijklabcdefghijklabcdefghijklabcdefghijkl",
       8 },
+    { "/usr/$LIB/libMangoHud.so", "$LIB", "lib32", 0,
+      "/usr/lib32/libMangoHud.so", 1 },
+    { "food for foals", "o", "", 0,
+      "fd fr fals", 4 },
+    { "aaa", "a", "aaa", 0,
+      "aaaaaaaaa", 3 },
+    { "aaa", "a", "", 0,
+      "", 3 },
+    { "aaa", "aa", "bb", 0,
+      "bba", 1 },
   };
   gsize i;
 
