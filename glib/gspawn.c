@@ -1444,6 +1444,27 @@ safe_fdwalk (int (*cb)(void *data, int fd), void *data)
 
 #endif
 
+#if defined(__sun__) && defined(F_PREVFD) && defined(F_NEXTFD)
+/*
+ * Solaris 11.4 has a signal-safe way which allows
+ * us to find all file descriptors in a process.
+ *
+ * fcntl(fd, F_NEXTFD, maxfd)
+ * - returns the first allocated file descriptor <= maxfd  > fd.
+ *
+ * fcntl(fd, F_PREVFD)
+ * - return highest allocated file descriptor < fd.
+ */
+
+  open_max = fcntl (INT_MAX, F_PREVFD); /* find the maximum fd */
+  if (open_max < 0) /* No open files */
+    return 0;
+
+  for (fd = -1; (fd = fcntl (fd, F_NEXTFD, open_max)) != -1; )
+    if ((res = cb (data, fd)) != 0 || fd == open_max)
+      break;
+#else
+
 #if 0 && defined(HAVE_SYS_RESOURCE_H)
   /* Use getrlimit() function provided by the system if it is known to be
    * async-signal safe.
@@ -1477,6 +1498,7 @@ safe_fdwalk (int (*cb)(void *data, int fd), void *data)
   for (fd = 0; fd < open_max; fd++)
       if ((res = cb (data, fd)) != 0)
           break;
+#endif
 
   return res;
 #endif
@@ -1487,7 +1509,8 @@ safe_fdwalk (int (*cb)(void *data, int fd), void *data)
 static void
 safe_closefrom (int lowfd)
 {
-#if defined(__FreeBSD__) || defined(__OpenBSD__)
+#if defined(__FreeBSD__) || defined(__OpenBSD__) || \
+  (defined(__sun__) && defined(F_CLOSEFROM))
   /* Use closefrom function provided by the system if it is known to be
    * async-signal safe.
    *
@@ -1496,6 +1519,9 @@ safe_closefrom (int lowfd)
    *
    * OpenBSD: closefrom is not included in the list, but a direct system call
    * should be safe to use.
+   *
+   * In Solaris as of 11.3 SRU 31, closefrom() is also a direct system call.
+   * On such systems, F_CLOSEFROM is defined.
    */
   (void) closefrom (lowfd);
 #elif defined(__DragonFly__)
