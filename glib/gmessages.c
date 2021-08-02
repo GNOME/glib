@@ -383,7 +383,7 @@ myInvalidParameterHandler(const wchar_t *expression,
  * @...: format string, followed by parameters to insert
  *     into the format string (as with printf())
  *
- * Logs a "critical warning" (#G_LOG_LEVEL_CRITICAL).
+ * Logs a "critical warning" (%G_LOG_LEVEL_CRITICAL).
  *
  * Critical warnings are intended to be used in the event of an error
  * that originated in the current process (a programmer error).
@@ -794,40 +794,44 @@ g_log_set_fatal_mask (const gchar   *log_domain,
 /**
  * g_log_set_handler:
  * @log_domain: (nullable): the log domain, or %NULL for the default ""
- *     application domain
+ *    application domain
  * @log_levels: the log levels to apply the log handler for.
- *     To handle fatal and recursive messages as well, combine
- *     the log levels with the #G_LOG_FLAG_FATAL and
- *     #G_LOG_FLAG_RECURSION bit flags.
+ *    To handle fatal and recursive messages as well, combine
+ *    the log levels with the %G_LOG_FLAG_FATAL and
+ *    %G_LOG_FLAG_RECURSION bit flags.
  * @log_func: the log handler function
  * @user_data: data passed to the log handler
  *
  * Sets the log handler for a domain and a set of log levels.
+ *
  * To handle fatal and recursive messages the @log_levels parameter
- * must be combined with the #G_LOG_FLAG_FATAL and #G_LOG_FLAG_RECURSION
+ * must be combined with the %G_LOG_FLAG_FATAL and %G_LOG_FLAG_RECURSION
  * bit flags.
  *
- * Note that since the #G_LOG_LEVEL_ERROR log level is always fatal, if
+ * Note that since the %G_LOG_LEVEL_ERROR log level is always fatal, if
  * you want to set a handler for this log level you must combine it with
- * #G_LOG_FLAG_FATAL.
+ * %G_LOG_FLAG_FATAL.
  *
  * This has no effect if structured logging is enabled; see
  * [Using Structured Logging][using-structured-logging].
  *
  * Here is an example for adding a log handler for all warning messages
  * in the default domain:
+ *
  * |[<!-- language="C" --> 
  * g_log_set_handler (NULL, G_LOG_LEVEL_WARNING | G_LOG_FLAG_FATAL
  *                    | G_LOG_FLAG_RECURSION, my_log_handler, NULL);
  * ]|
  *
  * This example adds a log handler for all critical messages from GTK+:
+ *
  * |[<!-- language="C" --> 
  * g_log_set_handler ("Gtk", G_LOG_LEVEL_CRITICAL | G_LOG_FLAG_FATAL
  *                    | G_LOG_FLAG_RECURSION, my_log_handler, NULL);
  * ]|
  *
  * This example adds a log handler for all messages from GLib:
+ *
  * |[<!-- language="C" --> 
  * g_log_set_handler ("GLib", G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL
  *                    | G_LOG_FLAG_RECURSION, my_log_handler, NULL);
@@ -847,11 +851,11 @@ g_log_set_handler (const gchar	 *log_domain,
 /**
  * g_log_set_handler_full: (rename-to g_log_set_handler)
  * @log_domain: (nullable): the log domain, or %NULL for the default ""
- *     application domain
+ *   application domain
  * @log_levels: the log levels to apply the log handler for.
- *     To handle fatal and recursive messages as well, combine
- *     the log levels with the #G_LOG_FLAG_FATAL and
- *     #G_LOG_FLAG_RECURSION bit flags.
+ *   To handle fatal and recursive messages as well, combine
+ *   the log levels with the %G_LOG_FLAG_FATAL and
+ *   %G_LOG_FLAG_RECURSION bit flags.
  * @log_func: the log handler function
  * @user_data: data passed to the log handler
  * @destroy: destroy notify for @user_data, or %NULL
@@ -1419,11 +1423,11 @@ g_logv (const gchar   *log_domain,
 
 /**
  * g_log:
- * @log_domain: (nullable): the log domain, usually #G_LOG_DOMAIN, or %NULL
- * for the default
+ * @log_domain: (nullable): the log domain, usually %G_LOG_DOMAIN, or %NULL
+ *   for the default
  * @log_level: the log level, either from #GLogLevelFlags
- *     or a user-defined level
- * @format: the message format. See the printf() documentation
+ *   or a user-defined level
+ * @format: the message format. See the `printf()` documentation
  * @...: the parameters to insert into the format string
  *
  * Logs an error or debugging message.
@@ -1611,10 +1615,12 @@ done_query:
  *    by the key "MESSAGE", followed by a printf()-style message format,
  *    followed by parameters to insert in the format string
  *
- * Log a message with structured data. The message will be passed through to
- * the log writer set by the application using g_log_set_writer_func(). If the
- * message is fatal (i.e. its log level is %G_LOG_LEVEL_ERROR), the program will
- * be aborted by calling G_BREAKPOINT() at the end of this function. If the log writer returns
+ * Log a message with structured data.
+ *
+ * The message will be passed through to the log writer set by the application
+ * using g_log_set_writer_func(). If the message is fatal (i.e. its log level
+ * is %G_LOG_LEVEL_ERROR), the program will be aborted by calling
+ * G_BREAKPOINT() at the end of this function. If the log writer returns
  * %G_LOG_WRITER_UNHANDLED (failure), no other fallback writers will be tried.
  * See the documentation for #GLogWriterFunc for information on chaining
  * writers.
@@ -1648,9 +1654,10 @@ done_query:
  * Note that `CODE_FILE`, `CODE_LINE` and `CODE_FUNC` are automatically set by
  * the logging macros, G_DEBUG_HERE(), g_message(), g_warning(), g_critical(),
  * g_error(), etc, if the symbols `G_LOG_USE_STRUCTURED` is defined before including
- * glib.h.
+ * `glib.h`.
  *
  * For example:
+ *
  * |[<!-- language="C" -->
  * g_log_structured (G_LOG_DOMAIN, G_LOG_LEVEL_DEBUG,
  *                   "MESSAGE_ID", "06d4df59e6c24647bfe69d2c27ef0b4e",
@@ -1671,6 +1678,7 @@ done_query:
  * interpreted as a string.
  *
  * For example:
+ *
  * |[<!-- language="C" -->
  * const GLogField fields[] = {
  *   { "MESSAGE", "This is a debug message.", -1 },
