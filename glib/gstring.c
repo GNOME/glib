@@ -966,6 +966,11 @@ g_string_erase (GString *string,
  * less than @limit, all instances are replaced. If @limit is `0`,
  * all instances of @find are replaced.
  *
+ * If @find is the empty string, since versions 2.69.1 and 2.68.4 the
+ * replacement will be inserted no more than once per possible position
+ * (beginning of string, end of string and between characters). This did
+ * not work correctly in earlier versions.
+ *
  * Returns: the number of find and replace operations performed.
  *
  * Since: 2.68
