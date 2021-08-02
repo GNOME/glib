@@ -1629,6 +1629,7 @@ process_uwp_verbs (GList                    *verbs,
           continue;
         }
 
+      acid = NULL;
       got_value = g_win32_registry_key_get_value_w (key,
                                                     g_win32_registry_get_os_dirs_w (),
                                                     TRUE,
@@ -3634,6 +3635,7 @@ grab_registry_string (GWin32RegistryKey  *handler_appkey,
   if (*destination != NULL)
     return;
 
+  value = NULL;
   if (g_win32_registry_key_get_value_w (handler_appkey,
                                         NULL,
                                         TRUE,
