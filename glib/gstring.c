@@ -966,6 +966,11 @@ g_string_erase (GString *string,
  * less than @limit, all instances are replaced. If the number of
  * instances is `0`, all instances of @find are replaced.
  *
+ * If @find is the empty string, since versions 2.69.1 and 2.68.4 the
+ * replacement will be inserted no more than once per possible position
+ * (beginning of string, end of string and between characters). This did
+ * not work correctly in earlier versions.
+ *
  * Returns: the number of find and replace operations performed.
  *
  * Since: 2.68
@@ -995,6 +1000,15 @@ g_string_replace (GString     *string,
       g_string_insert (string, pos, replace);
       cur = string->str + pos + r_len;
       n++;
+      /* Only match the empty string once at any given position, to
+       * avoid infinite loops */
+      if (f_len == 0)
+        {
+          if (cur[0] == '\0')
+            break;
+          else
+            cur++;
+        }
       if (n == limit)
         break;
     }
