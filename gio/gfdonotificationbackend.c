@@ -303,6 +303,12 @@ call_notify (GDBusConnection     *con,
                          g_variant_new_string (g_application_get_application_id (app)));
   urgency = urgency_from_priority (g_notification_get_priority (notification));
   g_variant_builder_add (&hints_builder, "{sv}", "urgency", g_variant_new_byte (urgency));
+  if (g_notification_get_category (notification))
+    {
+      g_variant_builder_add (&hints_builder, "{sv}", "category",
+                             g_variant_new_string (g_notification_get_category (notification)));
+    }
+
   icon = g_notification_get_icon (notification);
   if (icon != NULL)
     {

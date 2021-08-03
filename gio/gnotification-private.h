@@ -28,6 +28,8 @@ const gchar *           g_notification_get_title                        (GNotifi
 
 const gchar *           g_notification_get_body                         (GNotification *notification);
 
+const gchar *           g_notification_get_category                     (GNotification *notification);
+
 GIcon *                 g_notification_get_icon                         (GNotification *notification);
 
 GNotificationPriority   g_notification_get_priority                     (GNotification *notification);
