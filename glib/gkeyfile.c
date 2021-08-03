@@ -218,7 +218,7 @@
 /**
  * GKeyFileError:
  * @G_KEY_FILE_ERROR_UNKNOWN_ENCODING: the text being parsed was in
- *     an unknown encoding
+ *   an unknown encoding
  * @G_KEY_FILE_ERROR_PARSE: document was ill-formed
  * @G_KEY_FILE_ERROR_NOT_FOUND: the file was not found
  * @G_KEY_FILE_ERROR_KEY_NOT_FOUND: a requested key was not found
@@ -232,13 +232,13 @@
  * GKeyFileFlags:
  * @G_KEY_FILE_NONE: No flags, default behaviour
  * @G_KEY_FILE_KEEP_COMMENTS: Use this flag if you plan to write the
- *     (possibly modified) contents of the key file back to a file;
- *     otherwise all comments will be lost when the key file is
- *     written back.
+ *   (possibly modified) contents of the key file back to a file;
+ *   otherwise all comments will be lost when the key file is
+ *   written back.
  * @G_KEY_FILE_KEEP_TRANSLATIONS: Use this flag if you plan to write the
- *     (possibly modified) contents of the key file back to a file;
- *     otherwise only the translations for the current language will be
- *     written back.
+ *   (possibly modified) contents of the key file back to a file;
+ *   otherwise only the translations for the current language will be
+ *   written back.
  *
  * Flags which influence the parsing.
  */
@@ -257,11 +257,12 @@
 /**
  * G_KEY_FILE_DESKTOP_KEY_TYPE:
  *
- * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a string
- * giving the type of the desktop entry. Usually
- * #G_KEY_FILE_DESKTOP_TYPE_APPLICATION,
- * #G_KEY_FILE_DESKTOP_TYPE_LINK, or
- * #G_KEY_FILE_DESKTOP_TYPE_DIRECTORY.
+ * A key under %G_KEY_FILE_DESKTOP_GROUP, whose value is a string
+ * giving the type of the desktop entry.
+ *
+ * Usually %G_KEY_FILE_DESKTOP_TYPE_APPLICATION,
+ * %G_KEY_FILE_DESKTOP_TYPE_LINK, or
+ * %G_KEY_FILE_DESKTOP_TYPE_DIRECTORY.
  *
  * Since: 2.14
  */
@@ -269,7 +270,7 @@
 /**
  * G_KEY_FILE_DESKTOP_KEY_VERSION:
  *
- * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a string
+ * A key under %G_KEY_FILE_DESKTOP_GROUP, whose value is a string
  * giving the version of the Desktop Entry Specification used for
  * the desktop entry file.
  *
@@ -279,7 +280,7 @@
 /**
  * G_KEY_FILE_DESKTOP_KEY_NAME:
  *
- * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a localized
+ * A key under %G_KEY_FILE_DESKTOP_GROUP, whose value is a localized
  * string giving the specific name of the desktop entry.
  *
  * Since: 2.14
@@ -288,7 +289,7 @@
 /**
  * G_KEY_FILE_DESKTOP_KEY_GENERIC_NAME:
  *
- * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a localized
+ * A key under %G_KEY_FILE_DESKTOP_GROUP, whose value is a localized
  * string giving the generic name of the desktop entry.
  *
  * Since: 2.14
@@ -297,7 +298,7 @@
 /**
  * G_KEY_FILE_DESKTOP_KEY_NO_DISPLAY:
  *
- * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a boolean
+ * A key under %G_KEY_FILE_DESKTOP_GROUP, whose value is a boolean
  * stating whether the desktop entry should be shown in menus.
  *
  * Since: 2.14
@@ -306,7 +307,7 @@
 /**
  * G_KEY_FILE_DESKTOP_KEY_COMMENT:
  *
- * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a localized
+ * A key under %G_KEY_FILE_DESKTOP_GROUP, whose value is a localized
  * string giving the tooltip for the desktop entry.
  *
  * Since: 2.14
@@ -315,7 +316,7 @@
 /**
  * G_KEY_FILE_DESKTOP_KEY_ICON:
  *
- * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a localized
+ * A key under %G_KEY_FILE_DESKTOP_GROUP, whose value is a localized
  * string giving the name of the icon to be displayed for the desktop
  * entry.
  *
@@ -325,7 +326,7 @@
 /**
  * G_KEY_FILE_DESKTOP_KEY_HIDDEN:
  *
- * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a boolean
+ * A key under %G_KEY_FILE_DESKTOP_GROUP, whose value is a boolean
  * stating whether the desktop entry has been deleted by the user.
  *
  * Since: 2.14
@@ -334,7 +335,7 @@
 /**
  * G_KEY_FILE_DESKTOP_KEY_ONLY_SHOW_IN:
  *
- * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a list of
+ * A key under %G_KEY_FILE_DESKTOP_GROUP, whose value is a list of
  * strings identifying the environments that should display the
  * desktop entry.
  *
@@ -344,7 +345,7 @@
 /**
  * G_KEY_FILE_DESKTOP_KEY_NOT_SHOW_IN:
  *
- * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a list of
+ * A key under %G_KEY_FILE_DESKTOP_GROUP, whose value is a list of
  * strings identifying the environments that should not display the
  * desktop entry.
  *
@@ -354,7 +355,7 @@
 /**
  * G_KEY_FILE_DESKTOP_KEY_TRY_EXEC:
  *
- * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a string
+ * A key under %G_KEY_FILE_DESKTOP_GROUP, whose value is a string
  * giving the file name of a binary on disk used to determine if the
  * program is actually installed. It is only valid for desktop entries
  * with the `Application` type.
@@ -365,7 +366,7 @@
 /**
  * G_KEY_FILE_DESKTOP_KEY_EXEC:
  *
- * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a string
+ * A key under %G_KEY_FILE_DESKTOP_GROUP, whose value is a string
  * giving the command line to execute. It is only valid for desktop
  * entries with the `Application` type.
  *
@@ -375,7 +376,7 @@
  /**
   * G_KEY_FILE_DESKTOP_KEY_PATH:
   *
-  * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a string
+  * A key under %G_KEY_FILE_DESKTOP_GROUP, whose value is a string
   * containing the working directory to run the program in. It is only
   * valid for desktop entries with the `Application` type.
   *
@@ -385,10 +386,10 @@
 /**
  * G_KEY_FILE_DESKTOP_KEY_TERMINAL:
  *
- * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a boolean
+ * A key under %G_KEY_FILE_DESKTOP_GROUP, whose value is a boolean
  * stating whether the program should be run in a terminal window.
- * It is only valid for desktop entries with the
- * `Application` type.
+ *
+ * It is only valid for desktop entries with the `Application` type.
  *
  * Since: 2.14
  */
@@ -396,7 +397,7 @@
 /**
  * G_KEY_FILE_DESKTOP_KEY_MIME_TYPE:
  *
- * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a list
+ * A key under %G_KEY_FILE_DESKTOP_GROUP, whose value is a list
  * of strings giving the MIME types supported by this desktop entry.
  *
  * Since: 2.14
@@ -405,7 +406,7 @@
 /**
  * G_KEY_FILE_DESKTOP_KEY_CATEGORIES:
  *
- * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a list
+ * A key under %G_KEY_FILE_DESKTOP_GROUP, whose value is a list
  * of strings giving the categories in which the desktop entry
  * should be shown in a menu.
  *
@@ -415,7 +416,7 @@
 /**
  * G_KEY_FILE_DESKTOP_KEY_STARTUP_NOTIFY:
  *
- * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a boolean
+ * A key under %G_KEY_FILE_DESKTOP_GROUP, whose value is a boolean
  * stating whether the application supports the
  * [Startup Notification Protocol Specification](http://www.freedesktop.org/Standards/startup-notification-spec).
  *
@@ -425,7 +426,7 @@
 /**
  * G_KEY_FILE_DESKTOP_KEY_STARTUP_WM_CLASS:
  *
- * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is string
+ * A key under %G_KEY_FILE_DESKTOP_GROUP, whose value is string
  * identifying the WM class or name hint of a window that the application
  * will create, which can be used to emulate Startup Notification with
  * older applications.
@@ -436,7 +437,7 @@
 /**
  * G_KEY_FILE_DESKTOP_KEY_URL:
  *
- * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a string
+ * A key under %G_KEY_FILE_DESKTOP_GROUP, whose value is a string
  * giving the URL to access. It is only valid for desktop entries
  * with the `Link` type.
  *
@@ -446,8 +447,8 @@
 /**
  * G_KEY_FILE_DESKTOP_KEY_DBUS_ACTIVATABLE:
  *
- * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a boolean set to true
- * if the application is D-Bus activatable.
+ * A key under %G_KEY_FILE_DESKTOP_GROUP, whose value is a boolean
+ * set to true if the application is D-Bus activatable.
  *
  * Since: 2.38
  */
@@ -455,7 +456,7 @@
 /**
  * G_KEY_FILE_DESKTOP_KEY_ACTIONS:
  *
- * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a string list
+ * A key under %G_KEY_FILE_DESKTOP_GROUP, whose value is a string list
  * giving the available application actions.
  *
  * Since: 2.38
@@ -464,7 +465,7 @@
 /**
  * G_KEY_FILE_DESKTOP_TYPE_APPLICATION:
  *
- * The value of the #G_KEY_FILE_DESKTOP_KEY_TYPE, key for desktop
+ * The value of the %G_KEY_FILE_DESKTOP_KEY_TYPE, key for desktop
  * entries representing applications.
  *
  * Since: 2.14
@@ -473,7 +474,7 @@
 /**
  * G_KEY_FILE_DESKTOP_TYPE_LINK:
  *
- * The value of the #G_KEY_FILE_DESKTOP_KEY_TYPE, key for desktop
+ * The value of the %G_KEY_FILE_DESKTOP_KEY_TYPE, key for desktop
  * entries representing links to documents.
  *
  * Since: 2.14
@@ -482,7 +483,7 @@
 /**
  * G_KEY_FILE_DESKTOP_TYPE_DIRECTORY:
  *
- * The value of the #G_KEY_FILE_DESKTOP_KEY_TYPE, key for desktop
+ * The value of the %G_KEY_FILE_DESKTOP_KEY_TYPE, key for desktop
  * entries representing directories.
  *
  * Since: 2.14

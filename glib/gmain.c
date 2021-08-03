@@ -122,7 +122,7 @@
  * thread-safe.
  *
  * Each event source is assigned a priority. The default priority,
- * #G_PRIORITY_DEFAULT, is 0. Values less than 0 denote higher priorities.
+ * %G_PRIORITY_DEFAULT, is 0. Values less than 0 denote higher priorities.
  * Values greater than 0 denote lower priorities. Events from high priority
  * sources are always processed before events from lower priority sources.
  *
@@ -5005,11 +5005,11 @@ g_timeout_source_new_seconds (guint interval)
 /**
  * g_timeout_add_full: (rename-to g_timeout_add)
  * @priority: the priority of the timeout source. Typically this will be in
- *            the range between #G_PRIORITY_DEFAULT and #G_PRIORITY_HIGH.
+ *   the range between %G_PRIORITY_DEFAULT and %G_PRIORITY_HIGH.
  * @interval: the time between calls to the function, in milliseconds
- *             (1/1000ths of a second)
+ *   (1/1000ths of a second)
  * @function: function to call
- * @data:     data to pass to @function
+ * @data: data to pass to @function
  * @notify: (nullable): function to call when the timeout is removed, or %NULL
  * 
  * Sets a function to be called at regular intervals, with the given
@@ -5069,15 +5069,17 @@ g_timeout_add_full (gint           priority,
 /**
  * g_timeout_add:
  * @interval: the time between calls to the function, in milliseconds
- *             (1/1000ths of a second)
+ *    (1/1000ths of a second)
  * @function: function to call
- * @data:     data to pass to @function
+ * @data: data to pass to @function
  * 
  * Sets a function to be called at regular intervals, with the default
- * priority, #G_PRIORITY_DEFAULT.  The function is called repeatedly
- * until it returns %FALSE, at which point the timeout is automatically
- * destroyed and the function will not be called again.  The first call
- * to the function will be at the end of the first @interval.
+ * priority, %G_PRIORITY_DEFAULT.
+ *
+ * The given @function is called repeatedly until it returns %G_SOURCE_REMOVE
+ * or %FALSE, at which point the timeout is automatically destroyed and the
+ * function will not be called again. The first call to the function will be
+ * at the end of the first @interval.
  *
  * Note that timeout functions may be delayed, due to the processing of other
  * event sources. Thus they should not be relied on for precise timing.
@@ -5118,24 +5120,25 @@ g_timeout_add (guint32        interval,
 /**
  * g_timeout_add_seconds_full: (rename-to g_timeout_add_seconds)
  * @priority: the priority of the timeout source. Typically this will be in
- *            the range between #G_PRIORITY_DEFAULT and #G_PRIORITY_HIGH.
+ *   the range between %G_PRIORITY_DEFAULT and %G_PRIORITY_HIGH.
  * @interval: the time between calls to the function, in seconds
  * @function: function to call
- * @data:     data to pass to @function
+ * @data: data to pass to @function
  * @notify: (nullable): function to call when the timeout is removed, or %NULL
  *
  * Sets a function to be called at regular intervals, with @priority.
- * The function is called repeatedly until it returns %FALSE, at which
- * point the timeout is automatically destroyed and the function will
- * not be called again.
+ *
+ * The function is called repeatedly until it returns %G_SOURCE_REMOVE
+ * or %FALSE, at which point the timeout is automatically destroyed and
+ * the function will not be called again.
  *
  * Unlike g_timeout_add(), this function operates at whole second granularity.
  * The initial starting point of the timer is determined by the implementation
  * and the implementation is expected to group multiple timers together so that
- * they fire all at the same time.
- * To allow this grouping, the @interval to the first timer is rounded
- * and can deviate up to one second from the specified interval.
- * Subsequent timer iterations will generally run at the specified interval.
+ * they fire all at the same time. To allow this grouping, the @interval to the
+ * first timer is rounded and can deviate up to one second from the specified
+ * interval. Subsequent timer iterations will generally run at the specified
+ * interval.
  *
  * Note that timeout functions may be delayed, due to the processing of other
  * event sources. Thus they should not be relied on for precise timing.
@@ -5198,8 +5201,10 @@ g_timeout_add_seconds_full (gint           priority,
  * @data: data to pass to @function
  *
  * Sets a function to be called at regular intervals with the default
- * priority, #G_PRIORITY_DEFAULT. The function is called repeatedly until
- * it returns %FALSE, at which point the timeout is automatically destroyed
+ * priority, %G_PRIORITY_DEFAULT.
+ *
+ * The function is called repeatedly until it returns %G_SOURCE_REMOVE
+ * or %FALSE, at which point the timeout is automatically destroyed
  * and the function will not be called again.
  *
  * This internally creates a main loop source using
@@ -5753,18 +5758,18 @@ g_child_watch_source_new (GPid pid)
 /**
  * g_child_watch_add_full: (rename-to g_child_watch_add)
  * @priority: the priority of the idle source. Typically this will be in the
- *            range between #G_PRIORITY_DEFAULT_IDLE and #G_PRIORITY_HIGH_IDLE.
- * @pid:      process to watch. On POSIX the positive pid of a child process. On
+ *   range between %G_PRIORITY_DEFAULT_IDLE and %G_PRIORITY_HIGH_IDLE.
+ * @pid: process to watch. On POSIX the positive pid of a child process. On
  * Windows a handle for a process (which doesn't have to be a child).
  * @function: function to call
- * @data:     data to pass to @function
+ * @data: data to pass to @function
  * @notify: (nullable): function to call when the idle is removed, or %NULL
  * 
  * Sets a function to be called when the child indicated by @pid 
  * exits, at the priority @priority.
  *
  * If you obtain @pid from g_spawn_async() or g_spawn_async_with_pipes() 
- * you will need to pass #G_SPAWN_DO_NOT_REAP_CHILD as flag to 
+ * you will need to pass %G_SPAWN_DO_NOT_REAP_CHILD as flag to 
  * the spawn function for the child watching to work.
  *
  * In many programs, you will want to call g_spawn_check_wait_status()
@@ -5818,17 +5823,17 @@ g_child_watch_add_full (gint            priority,
 
 /**
  * g_child_watch_add:
- * @pid:      process id to watch. On POSIX the positive pid of a child
- * process. On Windows a handle for a process (which doesn't have to be
- * a child).
+ * @pid: process id to watch. On POSIX the positive pid of a child
+ *   process. On Windows a handle for a process (which doesn't have
+ *   to be a child).
  * @function: function to call
- * @data:     data to pass to @function
+ * @data: data to pass to @function
  * 
  * Sets a function to be called when the child indicated by @pid 
- * exits, at a default priority, #G_PRIORITY_DEFAULT.
+ * exits, at a default priority, %G_PRIORITY_DEFAULT.
  * 
  * If you obtain @pid from g_spawn_async() or g_spawn_async_with_pipes() 
- * you will need to pass #G_SPAWN_DO_NOT_REAP_CHILD as flag to 
+ * you will need to pass %G_SPAWN_DO_NOT_REAP_CHILD as flag to 
  * the spawn function for the child watching to work.
  * 
  * Note that on platforms where #GPid must be explicitly closed
@@ -5926,13 +5931,15 @@ g_idle_source_new (void)
 /**
  * g_idle_add_full: (rename-to g_idle_add)
  * @priority: the priority of the idle source. Typically this will be in the
- *            range between #G_PRIORITY_DEFAULT_IDLE and #G_PRIORITY_HIGH_IDLE.
+ *   range between %G_PRIORITY_DEFAULT_IDLE and %G_PRIORITY_HIGH_IDLE.
  * @function: function to call
- * @data:     data to pass to @function
+ * @data: data to pass to @function
  * @notify: (nullable): function to call when the idle is removed, or %NULL
  * 
  * Adds a function to be called whenever there are no higher priority
- * events pending.  If the function returns %FALSE it is automatically
+ * events pending.
+ *
+ * If the function returns %G_SOURCE_REMOVE or %FALSE it is automatically
  * removed from the list of event sources and will not be called again.
  *
  * See [memory management of sources][mainloop-memory-management] for details
@@ -5979,7 +5986,7 @@ g_idle_add_full (gint           priority,
  * 
  * Adds a function to be called whenever there are no higher priority
  * events pending to the default main loop. The function is given the
- * default idle priority, #G_PRIORITY_DEFAULT_IDLE.  If the function
+ * default idle priority, %G_PRIORITY_DEFAULT_IDLE.  If the function
  * returns %FALSE it is automatically removed from the list of event
  * sources and will not be called again.
  *
@@ -6035,7 +6042,7 @@ g_idle_remove_by_data (gpointer data)
  *
  * In any other case, an idle source is created to call @function and
  * that source is attached to @context (presumably to be run in another
- * thread).  The idle source is attached with #G_PRIORITY_DEFAULT
+ * thread).  The idle source is attached with %G_PRIORITY_DEFAULT
  * priority.  If you want a different priority, use
  * g_main_context_invoke_full().
  *

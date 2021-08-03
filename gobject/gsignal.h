@@ -36,9 +36,11 @@ typedef struct _GSignalInvocationHint	 GSignalInvocationHint;
  * 
  * This is the signature of marshaller functions, required to marshall
  * arrays of parameter values to signal emissions into C language callback
- * invocations. It is merely an alias to #GClosureMarshal since the #GClosure
- * mechanism takes over responsibility of actual function invocation for the
- * signal system.
+ * invocations.
+ *
+ * It is merely an alias to #GClosureMarshal since the #GClosure mechanism
+ * takes over responsibility of actual function invocation for the signal
+ * system.
  */
 typedef GClosureMarshal			 GSignalCMarshaller;
 /**
@@ -58,9 +60,10 @@ typedef GVaClosureMarshal		 GSignalCVaMarshaller;
  *  the signal was emitted, followed by the parameters of the emission.
  * @data: user data associated with the hook.
  * 
- * A simple function pointer to get invoked when the signal is emitted. This 
- * allows you to tie a hook to the signal type, so that it will trap all 
- * emissions of that signal, from any object.
+ * A simple function pointer to get invoked when the signal is emitted.
+ *
+ * Emission hooks allow you to tie a hook to the signal type, so that it will
+ * trap all emissions of that signal, from any object.
  * 
  * You may not attach these to signals created with the #G_SIGNAL_NO_HOOKS flag.
  * 
@@ -81,10 +84,12 @@ typedef gboolean (*GSignalEmissionHook) (GSignalInvocationHint *ihint,
  * 
  * The signal accumulator is a special callback function that can be used
  * to collect return values of the various callbacks that are called
- * during a signal emission. The signal accumulator is specified at signal
- * creation time, if it is left %NULL, no accumulation of callback return
- * values is performed. The return value of signal emissions is then the
- * value returned by the last callback.
+ * during a signal emission.
+ *
+ * The signal accumulator is specified at signal creation time, if it is
+ * left %NULL, no accumulation of callback return values is performed.
+ * The return value of signal emissions is then the value returned by the
+ * last callback.
  * 
  * Returns: The accumulator function returns whether the signal emission
  *  should be aborted. Returning %TRUE will continue with
@@ -126,9 +131,7 @@ typedef gboolean (*GSignalAccumulator)	(GSignalInvocationHint *ihint,
  *   functions for the #GSignalInvocationHint::run_type field to mark the first
  *   call to the accumulator function for a signal emission.  Since 2.68.
  *
- * The signal flags are used to specify a signal's behaviour, the overall
- * signal description outlines how especially the RUN flags control the
- * stages of a signal emission.
+ * The signal flags are used to specify a signal's behaviour.
  */
 typedef enum
 {
@@ -253,8 +256,9 @@ struct _GSignalInvocationHint
  *  gpointer     data2);
  *  ]|
  * 
- * A structure holding in-depth information for a specific signal. It is
- * filled in by the g_signal_query() function.
+ * A structure holding in-depth information for a specific signal.
+ *
+ * See also: g_signal_query()
  */
 struct _GSignalQuery
 {

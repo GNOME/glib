@@ -2028,22 +2028,26 @@ g_strncasecmp (const gchar *s1,
  * @new_delimiter: the new delimiter character
  *
  * Converts any delimiter characters in @string to @new_delimiter.
+ *
  * Any characters in @string which are found in @delimiters are
  * changed to the @new_delimiter character. Modifies @string in place,
- * and returns @string itself, not a copy. The return value is to
- * allow nesting such as
+ * and returns @string itself, not a copy.
+ *
+ * The return value is to allow nesting such as:
+ *
  * |[<!-- language="C" -->
  *   g_ascii_strup (g_strdelimit (str, "abc", '?'))
  * ]|
  *
- * In order to modify a copy, you may use `g_strdup()`:
+ * In order to modify a copy, you may use g_strdup():
+ *
  * |[<!-- language="C" -->
  *   reformatted = g_strdelimit (g_strdup (const_str), "abc", '?');
  *   ...
  *   g_free (reformatted);
  * ]|
  *
- * Returns: @string
+ * Returns: the modified @string
  */
 gchar *
 g_strdelimit (gchar       *string,
@@ -2073,21 +2077,24 @@ g_strdelimit (gchar       *string,
  * @substitutor: replacement character for disallowed bytes
  *
  * For each character in @string, if the character is not in @valid_chars,
- * replaces the character with @substitutor. Modifies @string in place,
- * and return @string itself, not a copy. The return value is to allow
- * nesting such as
+ * replaces the character with @substitutor.
+ *
+ * Modifies @string in place, and return @string itself, not a copy. The
+ * return value is to allow nesting such as:
+ *
  * |[<!-- language="C" -->
  *   g_ascii_strup (g_strcanon (str, "abc", '?'))
  * ]|
  *
- * In order to modify a copy, you may use `g_strdup()`:
+ * In order to modify a copy, you may use g_strdup():
+ *
  * |[<!-- language="C" -->
  *   reformatted = g_strcanon (g_strdup (const_str), "abc", '?');
  *   ...
  *   g_free (reformatted);
  * ]|
  *
- * Returns: @string
+ * Returns: the modified @string
  */
 gchar *
 g_strcanon (gchar       *string,

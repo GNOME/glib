@@ -164,16 +164,17 @@
  * G_LOCK_DEFINE:
  * @name: the name of the lock
  *
- * The #G_LOCK_ macros provide a convenient interface to #GMutex.
- * #G_LOCK_DEFINE defines a lock. It can appear in any place where
+ * The `G_LOCK_` macros provide a convenient interface to #GMutex.
+ * %G_LOCK_DEFINE defines a lock. It can appear in any place where
  * variable definitions may appear in programs, i.e. in the first block
  * of a function or outside of functions. The @name parameter will be
  * mangled to get the name of the #GMutex. This means that you
  * can use names of existing variables as the parameter - e.g. the name
  * of the variable you intend to protect with the lock. Look at our
- * give_me_next_number() example using the #G_LOCK macros:
+ * give_me_next_number() example using the `G_LOCK` macros:
  *
- * Here is an example for using the #G_LOCK convenience macros:
+ * Here is an example for using the `G_LOCK` convenience macros:
+ *
  * |[<!-- language="C" --> 
  *   G_LOCK_DEFINE (current_number);
  *
@@ -196,14 +197,14 @@
  * G_LOCK_DEFINE_STATIC:
  * @name: the name of the lock
  *
- * This works like #G_LOCK_DEFINE, but it creates a static object.
+ * This works like %G_LOCK_DEFINE, but it creates a static object.
  */
 
 /**
  * G_LOCK_EXTERN:
  * @name: the name of the lock
  *
- * This declares a lock, that is defined with #G_LOCK_DEFINE in another
+ * This declares a lock, that is defined with %G_LOCK_DEFINE in another
  * module.
  */
 
@@ -212,7 +213,7 @@
  * @name: the name of the lock
  *
  * Works like g_mutex_lock(), but for a lock defined with
- * #G_LOCK_DEFINE.
+ * %G_LOCK_DEFINE.
  */
 
 /**
@@ -220,7 +221,7 @@
  * @name: the name of the lock
  *
  * Works like g_mutex_trylock(), but for a lock defined with
- * #G_LOCK_DEFINE.
+ * %G_LOCK_DEFINE.
  *
  * Returns: %TRUE, if the lock could be locked.
  */
@@ -230,7 +231,7 @@
  * @name: the name of the lock
  *
  * Works like g_mutex_unlock(), but for a lock defined with
- * #G_LOCK_DEFINE.
+ * %G_LOCK_DEFINE.
  */
 
 /* GMutex Documentation {{{1 ------------------------------------------ */

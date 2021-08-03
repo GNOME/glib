@@ -890,9 +890,10 @@ value_param_lcopy_value (const GValue *value,
  * GParamSpecPool:
  *
  * A #GParamSpecPool maintains a collection of #GParamSpecs which can be
- * quickly accessed by owner and name. The implementation of the #GObject property
- * system uses such a pool to store the #GParamSpecs of the properties all object
- * types.
+ * quickly accessed by owner and name.
+ *
+ * The implementation of the #GObject property system uses such a pool to
+ * store the #GParamSpecs of the properties all object types.
  */
 struct _GParamSpecPool
 {
@@ -1401,10 +1402,12 @@ default_values_cmp (GParamSpec   *pspec,
  * @name: 0-terminated string used as the name of the new #GParamSpec type.
  * @pspec_info: The #GParamSpecTypeInfo for this #GParamSpec type.
  *
- * Registers @name as the name of a new static type derived from
- * #G_TYPE_PARAM. The type system uses the information contained in
- * the #GParamSpecTypeInfo structure pointed to by @info to manage the
- * #GParamSpec type and its instances.
+ * Registers @name as the name of a new static type derived
+ * from #G_TYPE_PARAM.
+ *
+ * The type system uses the information contained in the #GParamSpecTypeInfo
+ * structure pointed to by @info to manage the #GParamSpec type and its
+ * instances.
  *
  * Returns: The new type identifier.
  */

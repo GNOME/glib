@@ -998,6 +998,7 @@ thread_memory_magazine2_free (ThreadMemory *tmem,
  * @next: the field name of the next pointer in @type
  *
  * Frees a linked list of memory blocks of structure type @type.
+ *
  * The memory blocks must be equal-sized, allocated via
  * g_slice_alloc() or g_slice_alloc0() and linked together by
  * a @next pointer (similar to #GSList). The name of the
@@ -1016,17 +1017,19 @@ thread_memory_magazine2_free (ThreadMemory *tmem,
  * @block_size: the number of bytes to allocate
  *
  * Allocates a block of memory from the slice allocator.
+ *
  * The block address handed out can be expected to be aligned
- * to at least 1 * sizeof (void*),
- * though in general slices are 2 * sizeof (void*) bytes aligned,
- * if a malloc() fallback implementation is used instead,
- * the alignment may be reduced in a libc dependent fashion.
+ * to at least `1 * sizeof (void*)`, though in general slices
+ * are `2 * sizeof (void*)` bytes aligned; if a `malloc()`
+ * fallback implementation is used instead, the alignment may
+ * be reduced in a libc dependent fashion.
+ *
  * Note that the underlying slice allocation mechanism can
  * be changed with the [`G_SLICE=always-malloc`][G_SLICE]
  * environment variable.
  *
- * Returns: a pointer to the allocated memory block, which will be %NULL if and
- *    only if @mem_size is 0
+ * Returns: a pointer to the allocated memory block, which will
+ *   be %NULL if and only if @mem_size is 0
  *
  * Since: 2.10
  */

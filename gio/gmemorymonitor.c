@@ -42,13 +42,14 @@
  * There is also an implementation for use inside Flatpak sandboxes.
  *
  * Possible actions to take when the signal is received are:
- * - Free caches
- * - Save files that haven't been looked at in a while to disk, ready to be reopened when needed
- * - Run a garbage collection cycle
- * - Try and compress fragmented allocations
- * - Exit on idle if the process has no reason to stay around
- * - Call [`malloc_trim(3)`](man:malloc_trim) to return cached heap pages to
- *   the kernel (if supported by your libc)
+ *
+ *  - Free caches
+ *  - Save files that haven't been looked at in a while to disk, ready to be reopened when needed
+ *  - Run a garbage collection cycle
+ *  - Try and compress fragmented allocations
+ *  - Exit on idle if the process has no reason to stay around
+ *  - Call [`malloc_trim(3)`](man:malloc_trim) to return cached heap pages to
+ *    the kernel (if supported by your libc)
  *
  * Note that some actions may not always improve system performance, and so
  * should be profiled for your application. `malloc_trim()`, for example, may

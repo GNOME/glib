@@ -48,8 +48,8 @@
         <title>Data conversion</title>
         <xi:include href="xml/gconverter.xml"/>
         <xi:include href="xml/gcharsetconverter.xml"/>
-        <xi:include href="xml/gzcompressor.xml"/>
-        <xi:include href="xml/gzdecompressor.xml"/>
+        <xi:include href="xml/gzlibcompressor.xml"/>
+        <xi:include href="xml/gzlibdecompressor.xml"/>
     </chapter>
     <chapter id="streaming">
         <title>Streaming I/O</title>

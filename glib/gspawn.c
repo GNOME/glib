@@ -209,6 +209,8 @@ G_DEFINE_QUARK (g-spawn-exit-error-quark, g_spawn_exit_error)
  * @user_data: (closure): user data for @child_setup
  * @child_pid: (out) (optional): return location for child process reference, or %NULL
  * @error: return location for error
+ *
+ * Executes a child program asynchronously.
  * 
  * See g_spawn_async_with_pipes() for a full description; this function
  * simply calls the g_spawn_async_with_pipes() without any pipes.
@@ -216,7 +218,7 @@ G_DEFINE_QUARK (g-spawn-exit-error-quark, g_spawn_exit_error)
  * You should call g_spawn_close_pid() on the returned child process
  * reference when you don't need it any more.
  * 
- * If you are writing a GTK+ application, and the program you are spawning is a
+ * If you are writing a GTK application, and the program you are spawning is a
  * graphical application too, then to ensure that the spawned program opens its
  * windows on the right screen, you may want to use #GdkAppLaunchContext,
  * #GAppLaunchContext, or set the %DISPLAY environment variable.
@@ -329,6 +331,7 @@ read_data (GString *str,
  * @error: return location for error, or %NULL
  *
  * Executes a child synchronously (waits for the child to exit before returning).
+ *
  * All output from the child is stored in @standard_output and @standard_error,
  * if those parameters are non-%NULL. Note that you must set the  
  * %G_SPAWN_STDOUT_TO_DEV_NULL and %G_SPAWN_STDERR_TO_DEV_NULL flags when
@@ -665,52 +668,53 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
  * @error: return location for error
  *
  * Executes a child program asynchronously (your program will not
- * block waiting for the child to exit). The child program is
- * specified by the only argument that must be provided, @argv.
- * @argv should be a %NULL-terminated array of strings, to be passed
- * as the argument vector for the child. The first string in @argv
- * is of course the name of the program to execute. By default, the
- * name of the program must be a full path. If @flags contains the
- * %G_SPAWN_SEARCH_PATH flag, the `PATH` environment variable is
- * used to search for the executable. If @flags contains the
- * %G_SPAWN_SEARCH_PATH_FROM_ENVP flag, the `PATH` variable from
- * @envp is used to search for the executable. If both the
- * %G_SPAWN_SEARCH_PATH and %G_SPAWN_SEARCH_PATH_FROM_ENVP flags
- * are set, the `PATH` variable from @envp takes precedence over
- * the environment variable.
+ * block waiting for the child to exit).
  *
- * If the program name is not a full path and %G_SPAWN_SEARCH_PATH flag is not
- * used, then the program will be run from the current directory (or
- * @working_directory, if specified); this might be unexpected or even
+ * The child program is specified by the only argument that must be
+ * provided, @argv. @argv should be a %NULL-terminated array of strings,
+ * to be passed as the argument vector for the child. The first string
+ * in @argv is of course the name of the program to execute. By default,
+ * the name of the program must be a full path. If @flags contains the
+ * %G_SPAWN_SEARCH_PATH flag, the `PATH` environment variable is used to
+ * search for the executable. If @flags contains the
+ * %G_SPAWN_SEARCH_PATH_FROM_ENVP flag, the `PATH` variable from @envp
+ * is used to search for the executable. If both the
+ * %G_SPAWN_SEARCH_PATH and %G_SPAWN_SEARCH_PATH_FROM_ENVP flags are
+ * set, the `PATH` variable from @envp takes precedence over the
+ * environment variable.
+ *
+ * If the program name is not a full path and %G_SPAWN_SEARCH_PATH flag
+ * is not used, then the program will be run from the current directory
+ * (or @working_directory, if specified); this might be unexpected or even
  * dangerous in some cases when the current directory is world-writable.
  *
  * On Windows, note that all the string or string vector arguments to
- * this function and the other g_spawn*() functions are in UTF-8, the
+ * this function and the other `g_spawn*()` functions are in UTF-8, the
  * GLib file name encoding. Unicode characters that are not part of
  * the system codepage passed in these arguments will be correctly
  * available in the spawned program only if it uses wide character API
  * to retrieve its command line. For C programs built with Microsoft's
- * tools it is enough to make the program have a wmain() instead of
- * main(). wmain() has a wide character argument vector as parameter.
+ * tools it is enough to make the program have a `wmain()` instead of
+ * `main()`. `wmain()` has a wide character argument vector as parameter.
  *
- * At least currently, mingw doesn't support wmain(), so if you use
+ * At least currently, mingw doesn't support `wmain()`, so if you use
  * mingw to develop the spawned program, it should call
  * g_win32_get_command_line() to get arguments in UTF-8.
  *
- * On Windows the low-level child process creation API CreateProcess()
+ * On Windows the low-level child process creation API `CreateProcess()`
  * doesn't use argument vectors, but a command line. The C runtime
- * library's spawn*() family of functions (which g_spawn_async_with_pipes()
+ * library's `spawn*()` family of functions (which g_spawn_async_with_pipes()
  * eventually calls) paste the argument vector elements together into
  * a command line, and the C runtime startup code does a corresponding
  * reconstruction of an argument vector from the command line, to be
- * passed to main(). Complications arise when you have argument vector
+ * passed to `main()`. Complications arise when you have argument vector
  * elements that contain spaces or double quotes. The `spawn*()` functions
  * don't do any quoting or escaping, but on the other hand the startup
  * code does do unquoting and unescaping in order to enable receiving
  * arguments with embedded spaces or double quotes. To work around this
  * asymmetry, g_spawn_async_with_pipes() will do quoting and escaping on
  * argument vector elements that need it before calling the C runtime
- * spawn() function.
+ * `spawn()` function.
  *
  * The returned @child_pid on Windows is a handle to the child
  * process, not its identifier. Process handles and process
@@ -729,13 +733,13 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
  * free resources which may be associated with the child process. (On Unix,
  * using a child watch is equivalent to calling waitpid() or handling
  * the `SIGCHLD` signal manually. On Windows, calling g_spawn_close_pid()
- * is equivalent to calling CloseHandle() on the process handle returned
+ * is equivalent to calling `CloseHandle()` on the process handle returned
  * in @child_pid). See g_child_watch_add().
  *
  * Open UNIX file descriptors marked as `FD_CLOEXEC` will be automatically
  * closed in the child process. %G_SPAWN_LEAVE_DESCRIPTORS_OPEN means that
  * other open file descriptors will be inherited by the child; otherwise all
- * descriptors except stdin/stdout/stderr will be closed before calling exec()
+ * descriptors except stdin/stdout/stderr will be closed before calling `exec()`
  * in the child. %G_SPAWN_SEARCH_PATH means that @argv[0] need not be an
  * absolute path, it will be looked for in the `PATH` environment
  * variable. %G_SPAWN_SEARCH_PATH_FROM_ENVP means need not be an
@@ -776,25 +780,25 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
  * @child_setup and @user_data are a function and user data. On POSIX
  * platforms, the function is called in the child after GLib has
  * performed all the setup it plans to perform (including creating
- * pipes, closing file descriptors, etc.) but before calling exec().
- * That is, @child_setup is called just before calling exec() in the
+ * pipes, closing file descriptors, etc.) but before calling `exec()`.
+ * That is, @child_setup is called just before calling `exec()` in the
  * child. Obviously actions taken in this function will only affect
  * the child, not the parent.
  *
- * On Windows, there is no separate fork() and exec() functionality.
+ * On Windows, there is no separate `fork()` and `exec()` functionality.
  * Child processes are created and run with a single API call,
- * CreateProcess(). There is no sensible thing @child_setup
+ * `CreateProcess()`. There is no sensible thing @child_setup
  * could be used for on Windows so it is ignored and not called.
  *
  * If non-%NULL, @child_pid will on Unix be filled with the child's
  * process ID. You can use the process ID to send signals to the child,
- * or to use g_child_watch_add() (or waitpid()) if you specified the
+ * or to use g_child_watch_add() (or `waitpid()`) if you specified the
  * %G_SPAWN_DO_NOT_REAP_CHILD flag. On Windows, @child_pid will be
  * filled with a handle to the child process only if you specified the
  * %G_SPAWN_DO_NOT_REAP_CHILD flag. You can then access the child
  * process using the Win32 API, for example wait for its termination
- * with the WaitFor*() functions, or examine its exit code with
- * GetExitCodeProcess(). You should close the handle with CloseHandle()
+ * with the `WaitFor*()` functions, or examine its exit code with
+ * `GetExitCodeProcess()`. You should close the handle with `CloseHandle()`
  * or g_spawn_close_pid() when you no longer need it.
  *
  * If non-%NULL, the @stdin_pipe_out, @stdout_pipe_out, @stderr_pipe_out
@@ -818,7 +822,7 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
  * @error can be %NULL to ignore errors, or non-%NULL to report errors.
  * If an error is set, the function returns %FALSE. Errors are reported
  * even if they occur in the child (for example if the executable in
- * @argv[0] is not found). Typically the `message` field of returned
+ * `@argv[0]` is not found). Typically the `message` field of returned
  * errors should be displayed to users. Possible errors are those from
  * the #G_SPAWN_ERROR domain.
  *
@@ -829,7 +833,7 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
  * process reference must be closed using g_spawn_close_pid().
  *
  * On modern UNIX platforms, GLib can use an efficient process launching
- * codepath driven internally by posix_spawn(). This has the advantage of
+ * codepath driven internally by `posix_spawn()`. This has the advantage of
  * avoiding the fork-time performance costs of cloning the parent process
  * address space, and avoiding associated memory overcommit checks that are
  * not relevant in the context of immediately executing a distinct process.
@@ -841,9 +845,11 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
  * 3. %G_SPAWN_SEARCH_PATH_FROM_ENVP is not set
  * 4. @working_directory is %NULL
  * 5. @child_setup is %NULL
- * 6. The program is of a recognised binary format, or has a shebang. Otherwise, GLib will have to execute the program through the shell, which is not done using the optimized codepath.
+ * 6. The program is of a recognised binary format, or has a shebang.
+ *    Otherwise, GLib will have to execute the program through the
+ *    shell, which is not done using the optimized codepath.
  *
- * If you are writing a GTK+ application, and the program you are spawning is a
+ * If you are writing a GTK application, and the program you are spawning is a
  * graphical application too, then to ensure that the spawned program opens its
  * windows on the right screen, you may want to use #GdkAppLaunchContext,
  * #GAppLaunchContext, or set the `DISPLAY` environment variable.
@@ -925,6 +931,8 @@ g_spawn_async_with_pipes_and_fds (const gchar           *working_directory,
  * @stderr_fd: file descriptor to use for child's stderr, or `-1`
  * @error: return location for error
  *
+ * Executes a child program asynchronously.
+ *
  * Identical to g_spawn_async_with_pipes_and_fds() but with `n_fds` set to zero,
  * so no FD assignments are used.
  *
@@ -986,12 +994,17 @@ g_spawn_async_with_fds (const gchar          *working_directory,
  * @error: return location for errors
  *
  * A simple version of g_spawn_sync() with little-used parameters
- * removed, taking a command line instead of an argument vector.  See
- * g_spawn_sync() for full details. @command_line will be parsed by
- * g_shell_parse_argv(). Unlike g_spawn_sync(), the %G_SPAWN_SEARCH_PATH flag
- * is enabled. Note that %G_SPAWN_SEARCH_PATH can have security
- * implications, so consider using g_spawn_sync() directly if
- * appropriate. Possible errors are those from g_spawn_sync() and those
+ * removed, taking a command line instead of an argument vector.
+ *
+ * See g_spawn_sync() for full details.
+ *
+ * The @command_line argument will be parsed by g_shell_parse_argv().
+ *
+ * Unlike g_spawn_sync(), the %G_SPAWN_SEARCH_PATH flag is enabled.
+ * Note that %G_SPAWN_SEARCH_PATH can have security implications, so
+ * consider using g_spawn_sync() directly if appropriate.
+ *
+ * Possible errors are those from g_spawn_sync() and those
  * from g_shell_parse_argv().
  *
  * If @wait_status is non-%NULL, the platform-specific status of
@@ -1050,8 +1063,9 @@ g_spawn_command_line_sync (const gchar  *command_line,
  * @error: return location for errors
  * 
  * A simple version of g_spawn_async() that parses a command line with
- * g_shell_parse_argv() and passes it to g_spawn_async(). Runs a
- * command line in the background. Unlike g_spawn_async(), the
+ * g_shell_parse_argv() and passes it to g_spawn_async().
+ *
+ * Runs a command line in the background. Unlike g_spawn_async(), the
  * %G_SPAWN_SEARCH_PATH flag is enabled, other flags are not. Note
  * that %G_SPAWN_SEARCH_PATH can have security implications, so
  * consider using g_spawn_async() directly if appropriate. Possible
@@ -1134,7 +1148,7 @@ g_spawn_command_line_async (const gchar *command_line,
  * functionality, although under a misleading name.
  *
  * Returns: %TRUE if child exited successfully, %FALSE otherwise (and
- *     @error will be set)
+ *   @error will be set)
  *
  * Since: 2.70
  */

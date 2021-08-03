@@ -502,15 +502,16 @@ G_DEFINE_QUARK (g-file-error-quark, g_file_error)
  * @err_no: an "errno" value
  * 
  * Gets a #GFileError constant based on the passed-in @err_no.
+ *
  * For example, if you pass in `EEXIST` this function returns
- * #G_FILE_ERROR_EXIST. Unlike `errno` values, you can portably
+ * %G_FILE_ERROR_EXIST. Unlike `errno` values, you can portably
  * assume that all #GFileError values will exist.
  *
  * Normally a #GFileError value goes into a #GError returned
  * from a function that manipulates files. So you would use
  * g_file_error_from_errno() when constructing a #GError.
  * 
- * Returns: #GFileError corresponding to the given @errno
+ * Returns: #GFileError corresponding to the given @err_no
  **/
 GFileError
 g_file_error_from_errno (gint err_no)
