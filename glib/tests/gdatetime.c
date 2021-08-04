@@ -2325,23 +2325,23 @@ typedef struct
 } MixedUtf8TestData;
 
 static const MixedUtf8TestData utf8_time_non_utf8_messages = {
-  .utf8_messages = FALSE,
-  .utf8_time = TRUE
+  FALSE, /* utf8_messages */
+  TRUE   /* utf8_time */
 };
 
 static const MixedUtf8TestData non_utf8_time_utf8_messages = {
-  .utf8_messages = TRUE,
-  .utf8_time = FALSE
+  TRUE, /* utf8_messages */
+  FALSE /* utf8_time */
 };
 
 static const MixedUtf8TestData utf8_time_utf8_messages = {
-  .utf8_messages = TRUE,
-  .utf8_time = TRUE
+  TRUE, /* utf8_messages */
+  TRUE  /* utf8_time */
 };
 
 static const MixedUtf8TestData non_utf8_time_non_utf8_messages = {
-  .utf8_messages = FALSE,
-  .utf8_time = FALSE
+  FALSE, /* utf8_messages */
+  FALSE  /* utf8_time */
 };
 
 static gboolean
