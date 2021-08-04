@@ -485,13 +485,21 @@ g_tls_database_class_init (GTlsDatabaseClass *klass)
  * used.
  *
  * If @chain is found to be valid, then the return value will be 0. If
- * @chain is found to be invalid, then the return value will indicate
- * the problems found. If the function is unable to determine whether
- * @chain is valid or not (eg, because @cancellable is triggered
- * before it completes) then the return value will be
- * %G_TLS_CERTIFICATE_GENERIC_ERROR and @error will be set
- * accordingly. @error is not set when @chain is successfully analyzed
- * but found to be invalid.
+ * @chain is found to be invalid, then the return value will indicate at
+ * least one problem found. If the function is unable to determine
+ * whether @chain is valid (for example, because @cancellable is
+ * triggered before it completes) then the return value will be
+ * %G_TLS_CERTIFICATE_GENERIC_ERROR and @error will be set accordingly.
+ * @error is not set when @chain is successfully analyzed but found to
+ * be invalid.
+ *
+ * GLib guarantees that if certificate verification fails, at least one
+ * error will be set in the return value, but it does not guarantee
+ * that all possible errors will be set. Accordingly, you may not safely
+ * decide to ignore any particular type of error. For example, it would
+ * be incorrect to mask %G_TLS_CERTIFICATE_EXPIRED if you want to allow
+ * expired certificates, because this could potentially be the only
+ * error flag set even if other problems exist with the certificate.
  *
  * Prior to GLib 2.48, GLib's default TLS backend modified @chain to
  * represent the certification path built by #GTlsDatabase during

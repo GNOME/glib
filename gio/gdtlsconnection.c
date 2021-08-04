@@ -223,6 +223,14 @@ g_dtls_connection_default_init (GDtlsConnectionInterface *iface)
    * #GDtlsConnection::accept-certificate overrode the default
    * behavior.
    *
+   * GLib guarantees that if certificate verification fails, at least
+   * one error will be set, but it does not guarantee that all possible
+   * errors will be set. Accordingly, you may not safely decide to
+   * ignore any particular type of error. For example, it would be
+   * incorrect to mask %G_TLS_CERTIFICATE_EXPIRED if you want to allow
+   * expired certificates, because this could potentially be the only
+   * error flag set even if other problems exist with the certificate.
+   *
    * Since: 2.48
    */
   g_object_interface_install_property (iface,
@@ -313,6 +321,15 @@ g_dtls_connection_default_init (GDtlsConnectionInterface *iface)
    * certificate to be accepted despite @errors, return %TRUE from the
    * signal handler. Otherwise, if no handler accepts the certificate,
    * the handshake will fail with %G_TLS_ERROR_BAD_CERTIFICATE.
+   *
+   * GLib guarantees that if certificate verification fails, this signal
+   * will be emitted with at least one error will be set in @errors, but
+   * it does not guarantee that all possible errors will be set.
+   * Accordingly, you may not safely decide to ignore any particular
+   * type of error. For example, it would be incorrect to ignore
+   * %G_TLS_CERTIFICATE_EXPIRED if you want to allow expired
+   * certificates, because this could potentially be the only error flag
+   * set even if other problems exist with the certificate.
    *
    * For a server-side connection, @peer_cert is the certificate
    * presented by the client, if this was requested via the server's
