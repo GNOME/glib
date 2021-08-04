@@ -226,6 +226,18 @@ g_tls_certificate_class_init (GTlsCertificateClass *class)
    * self-signed, or else the certificate of the issuer is not
    * available.
    *
+   * Beware the issuer certificate may not be the same as the
+   * certificate that would actually be used to construct a valid
+   * certification path during certificate verification.
+   * [RFC 4158](https://datatracker.ietf.org/doc/html/rfc4158) explains
+   * why an issuer certificate cannot be naively assumed to be part of the
+   * the certification path (though GLib's TLS backends may not follow the
+   * path building strategies outlined in this RFC). Due to the complexity
+   * of certification path building, GLib does not provide any way to know
+   * which certification path will actually be used. Accordingly, this
+   * property cannot be used to make security-related decisions. Only
+   * GLib itself should make security decisions about TLS certificates.
+   *
    * Since: 2.28
    */
   g_object_class_install_property (gobject_class, PROP_ISSUER,
@@ -949,6 +961,13 @@ g_tls_certificate_get_issuer (GTlsCertificate  *cert)
  *
  * (All other #GTlsCertificateFlags values will always be set or unset
  * as appropriate.)
+ *
+ * Because TLS session context is not used, #GTlsCertificate may not
+ * perform as many checks on the certificates as #GTlsConnection would.
+ * For example, certificate constraints cannot be honored, and some
+ * revocation checks cannot be performed. The best way to verify TLS
+ * certificates used by a TLS connection is to let #GTlsConnection
+ * handle the verification.
  *
  * Returns: the appropriate #GTlsCertificateFlags
  *
