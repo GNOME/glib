@@ -1,3 +1,55 @@
+Overview of changes in GLib 2.69.1
+==================================
+
+* Support categories in desktop notifications (`GNotification`)
+  (work by Guido Günther) (#2446)
+
+* Add `GPowerProfileMonitor` for monitoring when to use less power (due to being
+  on battery power, electricity being expensive or high-carbon, etc.)
+  (work by Patrick Griffis, Bastien Nocera) (#2444)
+
+* Allow static names to be set for `GSource`s to avoid unnecessary string copies
+  (work by Matthias Clasen) (!2196)
+
+* Bugs fixed:
+ - #203 API: need g_module_open() variant with GError
+ - #2058 win32: GPrivate can leak some objects
+ - #2321 Add a GTypeFlag for final types
+ - #2429 safe_fdwalk/safe_closefrom for Solaris 11.3/11.4
+ - #2439 gio trash doesn't recognize existing trash directory in non-fs-root mount
+ - #2446 Support `categories` for notifications
+ - #2452 g_string_replace() loops 2**32 times when replacing empty string
+ - !2177 gio/tests/g-file-info: don't assume million-in-one events don't happen
+ - !2178 Clarify GValue documentation
+ - !2179 Update GValue doc: How to use GBoxed with GValue
+ - !2180 correctly use 3 parameters for close_range
+ - !2181 gclosure: Fix the invoke() return_value annotation
+ - !2182 glocalfileinfo: Fix usec/nsec confusion with filetimes on Windows
+ - !2184 gspawn: Use CLOSE_RANGE_CLOEXEC if available
+ - !2188 g_boxed_type_register_static, G_DEFINE_BOXED_TYPE: added correlating information
+ - !2192 Fix more warnings
+ - !2193 glib.supp: Expand match kinds for g_get_language_names() suppressions
+ - !2194 Add GPowerProfileMonitor
+ - !2195 Fix some test suite memory leaks
+ - !2196 mainloop: Add g_source_set_static_name
+ - !2197 GResource compiler: Prefix static [con|de]strutors with c_name
+ - !2198 Port internal uses to use g_source_set_static_name()
+ - !2200 Fix doc stanzas for GDataInputStream properties
+ - !2201 Fix a Unicode typo
+ - !2202 Document the stance on ID-based mainloop APIs
+ - !2204 tests: Add a test for Unicode normalization
+ - !2205 GWin32RegistryKey / GWin32AppInfo registry watch fixes
+ - !2206 Adapt documentation to gi-docgen
+ - !2210 GWin32AppInfo: Fix missing initialization
+
+* Translation updates:
+ - Indonesian
+ - Portuguese
+ - Portuguese (Brazil)
+ - Russian
+ - Ukrainian
+
+
 Overview of changes in GLib 2.69.0
 ==================================
 
