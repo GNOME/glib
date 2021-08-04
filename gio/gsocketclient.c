@@ -289,7 +289,9 @@ g_socket_client_get_property (GObject    *object,
 	break;
 
       case PROP_TLS_VALIDATION_FLAGS:
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 	g_value_set_flags (value, g_socket_client_get_tls_validation_flags (client));
+G_GNUC_END_IGNORE_DEPRECATIONS
 	break;
 
       case PROP_PROXY_RESOLVER:
@@ -340,7 +342,9 @@ g_socket_client_set_property (GObject      *object,
       break;
 
     case PROP_TLS_VALIDATION_FLAGS:
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       g_socket_client_set_tls_validation_flags (client, g_value_get_flags (value));
+G_GNUC_END_IGNORE_DEPRECATIONS
       break;
 
     case PROP_PROXY_RESOLVER:
@@ -679,9 +683,15 @@ g_socket_client_set_tls (GSocketClient *client,
  * Gets the TLS validation flags used creating TLS connections via
  * @client.
  *
+ * This function does not work as originally designed and is impossible
+ * to use correctly. See #GSocketClient:tls-validation-flags for more
+ * information.
+ *
  * Returns: the TLS validation flags
  *
  * Since: 2.28
+ *
+ * Deprecated: 2.72: Do not attempt to ignore validation errors.
  */
 GTlsCertificateFlags
 g_socket_client_get_tls_validation_flags (GSocketClient *client)
@@ -697,7 +707,13 @@ g_socket_client_get_tls_validation_flags (GSocketClient *client)
  * Sets the TLS validation flags used when creating TLS connections
  * via @client. The default value is %G_TLS_CERTIFICATE_VALIDATE_ALL.
  *
+ * This function does not work as originally designed and is impossible
+ * to use correctly. See #GSocketClient:tls-validation-flags for more
+ * information.
+ *
  * Since: 2.28
+ *
+ * Deprecated: 2.72: Do not attempt to ignore validation errors.
  */
 void
 g_socket_client_set_tls_validation_flags (GSocketClient        *client,
@@ -916,6 +932,29 @@ g_socket_client_class_init (GSocketClientClass *class)
 							 G_PARAM_CONSTRUCT |
 							 G_PARAM_READWRITE |
 							 G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GSocketClient:tls-validation-flags:
+   *
+   * The TLS validation flags used when creating TLS connections. The
+   * default value is %G_TLS_CERTIFICATE_VALIDATE_ALL.
+   *
+   * GLib guarantees that if certificate verification fails, at least one
+   * flag will be set, but it does not guarantee that all possible flags
+   * will be set. Accordingly, you may not safely decide to ignore any
+   * particular type of error. For example, it would be incorrect to mask
+   * %G_TLS_CERTIFICATE_EXPIRED if you want to allow expired certificates,
+   * because this could potentially be the only error flag set even if
+   * other problems exist with the certificate. Therefore, there is no
+   * safe way to use this property. This is not a horrible problem,
+   * though, because you should not be attempting to ignore validation
+   * errors anyway. If you really must ignore TLS certificate errors,
+   * connect to the #GSocketClient::event signal, wait for it to be
+   * emitted with %G_SOCKET_CLIENT_TLS_HANDSHAKING, and use that to
+   * connect to #GTlsConnection::accept-certificate.
+   *
+   * Deprecated: 2.72: Do not attempt to ignore validation errors.
+   */
   g_object_class_install_property (gobject_class, PROP_TLS_VALIDATION_FLAGS,
 				   g_param_spec_flags ("tls-validation-flags",
 						       P_("TLS validation flags"),
@@ -924,7 +963,8 @@ g_socket_client_class_init (GSocketClientClass *class)
 						       G_TLS_CERTIFICATE_VALIDATE_ALL,
 						       G_PARAM_CONSTRUCT |
 						       G_PARAM_READWRITE |
-						       G_PARAM_STATIC_STRINGS));
+						       G_PARAM_STATIC_STRINGS |
+						       G_PARAM_DEPRECATED));
 
   /**
    * GSocketClient:proxy-resolver:
@@ -1209,8 +1249,10 @@ g_socket_client_connect (GSocketClient       *client,
 
 	  if (tlsconn)
 	    {
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 	      g_tls_client_connection_set_validation_flags (G_TLS_CLIENT_CONNECTION (tlsconn),
                                                             client->priv->tls_validation_flags);
+G_GNUC_END_IGNORE_DEPRECATIONS
 	      g_socket_client_emit_event (client, G_SOCKET_CLIENT_TLS_HANDSHAKING, connectable, connection);
 	      if (g_tls_connection_handshake (G_TLS_CONNECTION (tlsconn),
 					      cancellable, &error_info->tmp_error))
@@ -1635,8 +1677,10 @@ g_socket_client_tls_handshake (ConnectionAttempt *attempt)
 					 &data->error_info->tmp_error);
   if (tlsconn)
     {
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       g_tls_client_connection_set_validation_flags (G_TLS_CLIENT_CONNECTION (tlsconn),
                                                     data->client->priv->tls_validation_flags);
+G_GNUC_END_IGNORE_DEPRECATIONS
       g_socket_client_emit_event (data->client, G_SOCKET_CLIENT_TLS_HANDSHAKING, data->connectable, G_IO_STREAM (tlsconn));
       g_tls_connection_handshake_async (G_TLS_CONNECTION (tlsconn),
 					G_PRIORITY_DEFAULT,
