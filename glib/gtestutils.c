@@ -2435,6 +2435,29 @@ g_test_incomplete (const gchar *msg)
 }
 
 /**
+ * g_test_incomplete_printf:
+ * @format: the format string
+ * @...:    printf-like arguments to @format
+ *
+ * Equivalent to g_test_incomplete(), but the explanation is formatted
+ * as if by g_strdup_printf().
+ *
+ * Since: 2.70
+ */
+void
+g_test_incomplete_printf (const char *format,
+                          ...)
+{
+  va_list args;
+
+  test_run_success = G_TEST_RUN_INCOMPLETE;
+  va_start (args, format);
+  g_free (test_run_msg);
+  test_run_msg = g_strdup_vprintf (format, args);
+  va_end (args);
+}
+
+/**
  * g_test_skip:
  * @msg: (nullable): explanation
  *
@@ -2455,6 +2478,29 @@ g_test_skip (const gchar *msg)
   test_run_success = G_TEST_RUN_SKIPPED;
   g_free (test_run_msg);
   test_run_msg = g_strdup (msg);
+}
+
+/**
+ * g_test_skip_printf:
+ * @format: the format string
+ * @...:    printf-like arguments to @format
+ *
+ * Equivalent to g_test_skip(), but the explanation is formatted
+ * as if by g_strdup_printf().
+ *
+ * Since: 2.70
+ */
+void
+g_test_skip_printf (const char *format,
+                    ...)
+{
+  va_list args;
+
+  test_run_success = G_TEST_RUN_SKIPPED;
+  va_start (args, format);
+  g_free (test_run_msg);
+  test_run_msg = g_strdup_vprintf (format, args);
+  va_end (args);
 }
 
 /**

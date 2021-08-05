@@ -1100,6 +1100,25 @@ test_tap (void)
   g_free (output);
   g_ptr_array_unref (argv);
 
+  g_test_message ("skip with printf format");
+  argv = g_ptr_array_new ();
+  g_ptr_array_add (argv, (char *) testing_helper);
+  g_ptr_array_add (argv, "skip-printf");
+  g_ptr_array_add (argv, "--tap");
+  g_ptr_array_add (argv, NULL);
+
+  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+                G_SPAWN_STDERR_TO_DEV_NULL,
+                NULL, NULL, &output, NULL, &status,
+                &error);
+  g_assert_no_error (error);
+
+  g_spawn_check_wait_status (status, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (strstr (output, "\nok 1 /skip-printf # SKIP not enough coffee\n"));
+  g_free (output);
+  g_ptr_array_unref (argv);
+
   g_test_message ("incomplete");
   argv = g_ptr_array_new ();
   g_ptr_array_add (argv, (char *) testing_helper);
@@ -1116,6 +1135,25 @@ test_tap (void)
   g_spawn_check_wait_status (status, &error);
   g_assert_no_error (error);
   g_assert_nonnull (strstr (output, "\nnot ok 1 /incomplete # TODO mind reading not implemented yet\n"));
+  g_free (output);
+  g_ptr_array_unref (argv);
+
+  g_test_message ("incomplete with printf format");
+  argv = g_ptr_array_new ();
+  g_ptr_array_add (argv, (char *) testing_helper);
+  g_ptr_array_add (argv, "incomplete-printf");
+  g_ptr_array_add (argv, "--tap");
+  g_ptr_array_add (argv, NULL);
+
+  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+                G_SPAWN_STDERR_TO_DEV_NULL,
+                NULL, NULL, &output, NULL, &status,
+                &error);
+  g_assert_no_error (error);
+
+  g_spawn_check_wait_status (status, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (strstr (output, "\nnot ok 1 /incomplete-printf # TODO telekinesis not implemented yet\n"));
   g_free (output);
   g_ptr_array_unref (argv);
 

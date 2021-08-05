@@ -3570,7 +3570,9 @@ g_test_get_dir
 
 g_test_fail
 g_test_skip
+g_test_skip_printf
 g_test_incomplete
+g_test_incomplete_printf
 g_test_failed
 g_test_message
 g_test_bug_base

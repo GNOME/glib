@@ -36,6 +36,14 @@ test_skip (void)
 }
 
 static void
+test_skip_printf (void)
+{
+  const char *beverage = "coffee";
+
+  g_test_skip_printf ("not enough %s", beverage);
+}
+
+static void
 test_fail (void)
 {
   g_test_fail ();
@@ -45,6 +53,14 @@ static void
 test_incomplete (void)
 {
   g_test_incomplete ("mind reading not implemented yet");
+}
+
+static void
+test_incomplete_printf (void)
+{
+  const char *operation = "telekinesis";
+
+  g_test_incomplete_printf ("%s not implemented yet", operation);
 }
 
 static void
@@ -91,9 +107,17 @@ main (int   argc,
     {
       g_test_add_func ("/skip", test_skip);
     }
+  else if (g_strcmp0 (argv1, "skip-printf") == 0)
+    {
+      g_test_add_func ("/skip-printf", test_skip_printf);
+    }
   else if (g_strcmp0 (argv1, "incomplete") == 0)
     {
       g_test_add_func ("/incomplete", test_incomplete);
+    }
+  else if (g_strcmp0 (argv1, "incomplete-printf") == 0)
+    {
+      g_test_add_func ("/incomplete-printf", test_incomplete_printf);
     }
   else if (g_strcmp0 (argv1, "fail") == 0)
     {
