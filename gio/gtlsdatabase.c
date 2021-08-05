@@ -462,15 +462,11 @@ g_tls_database_class_init (GTlsDatabaseClass *klass)
  * @cancellable: (nullable): a #GCancellable, or %NULL
  * @error: (nullable): a #GError, or %NULL
  *
- * Determines the validity of a certificate chain after looking up and
- * adding any missing certificates to the chain.
+ * Determines the validity of a certificate chain, outside the context
+ * of a TLS session.
  *
  * @chain is a chain of #GTlsCertificate objects each pointing to the next
- * certificate in the chain by its #GTlsCertificate:issuer property. The chain may initially
- * consist of one or more certificates. After the verification process is
- * complete, @chain may be modified by adding missing certificates, or removing
- * extra certificates. If a certificate anchor was found, then it is added to
- * the @chain.
+ * certificate in the chain by its #GTlsCertificate:issuer property.
  *
  * @purpose describes the purpose (or usage) for which the certificate
  * is being used. Typically @purpose will be set to #G_TLS_DATABASE_PURPOSE_AUTHENTICATE_SERVER
@@ -497,8 +493,27 @@ g_tls_database_class_init (GTlsDatabaseClass *klass)
  * accordingly. @error is not set when @chain is successfully analyzed
  * but found to be invalid.
  *
- * This function can block, use g_tls_database_verify_chain_async() to perform
- * the verification operation asynchronously.
+ * Prior to GLib 2.48, GLib's default TLS backend modified @chain to
+ * represent the certification path built by #GTlsDatabase during
+ * certificate verification by adjusting the #GTlsCertificate:issuer
+ * property of each certificate in @chain. Since GLib 2.48, this no
+ * longer occurs, so you cannot rely on #GTlsCertificate:issuer to
+ * represent the actual certification path used during certificate
+ * verification.
+ *
+ * Because TLS session context is not used, #GTlsDatabase may not
+ * perform as many checks on the certificates as #GTlsConnection would.
+ * For example, certificate constraints cannot be honored, and some
+ * revocation checks cannot be performed. The best way to verify TLS
+ * certificates used by a TLS connection is to let #GTlsConnection
+ * handle the verification.
+ *
+ * The TLS backend may attempt to look up and add missing certificates
+ * to the chain. Since GLib 2.70, this may involve HTTP requests to
+ * download missing certificates.
+ *
+ * This function can block. Use g_tls_database_verify_chain_async() to
+ * perform the verification operation asynchronously.
  *
  * Returns: the appropriate #GTlsCertificateFlags which represents the
  * result of verification.
@@ -783,14 +798,26 @@ g_tls_database_lookup_certificate_for_handle_finish (GTlsDatabase            *se
  * @cancellable: (nullable): a #GCancellable, or %NULL
  * @error: (nullable): a #GError, or %NULL
  *
- * Look up the issuer of @certificate in the database.
+ * Look up the issuer of @certificate in the database. The
+ * #GTlsCertificate:issuer property of @certificate is not modified, and
+ * the two certificates are not hooked into a chain.
  *
- * The #GTlsCertificate:issuer property
- * of @certificate is not modified, and the two certificates are not hooked
- * into a chain.
+ * This function can block. Use g_tls_database_lookup_certificate_issuer_async()
+ * to perform the lookup operation asynchronously.
  *
- * This function can block, use g_tls_database_lookup_certificate_issuer_async() to perform
- * the lookup operation asynchronously.
+ * Beware this function cannot be used to build certification paths. The
+ * issuer certificate returned by this function may not be the same as
+ * the certificate that would actually be used to construct a valid
+ * certification path during certificate verification.
+ * [RFC 4158](https://datatracker.ietf.org/doc/html/rfc4158) explains
+ * why an issuer certificate cannot be naively assumed to be part of the
+ * the certification path (though GLib's TLS backends may not follow the
+ * path building strategies outlined in this RFC). Due to the complexity
+ * of certification path building, GLib does not provide any way to know
+ * which certification path will actually be used when verifying a TLS
+ * certificate. Accordingly, this function cannot be used to make
+ * security-related decisions. Only GLib itself should make security
+ * decisions about TLS certificates.
  *
  * Returns: (transfer full): a newly allocated issuer #GTlsCertificate,
  * or %NULL. Use g_object_unref() to release the certificate.
