@@ -1038,6 +1038,14 @@ watch_with_different_context (gboolean unwatch_early)
   GThread *watcher;
   guint id;
 
+#if defined(__FreeBSD__) || defined(__FreeBSD_kernel__)
+  if (!g_test_thorough ())
+    {
+      g_test_incomplete ("https://gitlab.gnome.org/GNOME/glib/-/issues/2457");
+      return;
+    }
+#endif
+
   session_bus_up ();
 
   connection = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
