@@ -194,6 +194,16 @@ test_thread_pool_full (gconstpointer shared_first)
   g_assert_true (success);
 
   g_thread_pool_free (pool, TRUE, TRUE);
+
+#if defined(__FreeBSD__) || defined(__FreeBSD_kernel__)
+  if (!free_func_called && !g_test_thorough ())
+    {
+      g_test_incomplete ("GThreadPool free-function not called - "
+                         "https://gitlab.gnome.org/GNOME/glib/-/issues/2456");
+      return;
+    }
+#endif
+
   g_assert_true (free_func_called);
 }
 
