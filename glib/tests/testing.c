@@ -1136,6 +1136,7 @@ test_tap (void)
   g_assert_error (error, G_SPAWN_EXIT_ERROR, 1);
   g_assert_nonnull (strstr (output, "\nnot ok 1 /fail\n"));
   g_free (output);
+  g_clear_error (&error);
   g_ptr_array_unref (argv);
 
   g_test_message ("all");
@@ -1149,6 +1150,9 @@ test_tap (void)
                 G_SPAWN_STDOUT_TO_DEV_NULL | G_SPAWN_STDERR_TO_DEV_NULL,
                 NULL, NULL, NULL, NULL, &status,
                 &error);
+  g_assert_no_error (error);
+
+  g_spawn_check_wait_status (status, &error);
   g_assert_error (error, G_SPAWN_EXIT_ERROR, 1);
   g_clear_error (&error);
   g_ptr_array_unref (argv);
