@@ -50,6 +50,12 @@ test_fail (void)
 }
 
 static void
+test_fail_printf (void)
+{
+  g_test_fail_printf ("this test intentionally left failing");
+}
+
+static void
 test_incomplete (void)
 {
   g_test_incomplete ("mind reading not implemented yet");
@@ -122,6 +128,10 @@ main (int   argc,
   else if (g_strcmp0 (argv1, "fail") == 0)
     {
       g_test_add_func ("/fail", test_fail);
+    }
+  else if (g_strcmp0 (argv1, "fail-printf") == 0)
+    {
+      g_test_add_func ("/fail-printf", test_fail_printf);
     }
   else if (g_strcmp0 (argv1, "all-non-failures") == 0)
     {

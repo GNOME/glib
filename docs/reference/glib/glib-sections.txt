@@ -3569,6 +3569,7 @@ g_test_get_filename
 g_test_get_dir
 
 g_test_fail
+g_test_fail_printf
 g_test_skip
 g_test_skip_printf
 g_test_incomplete

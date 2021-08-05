@@ -345,6 +345,9 @@ const char * g_test_get_path            (void);
 /* tell about failure */
 GLIB_AVAILABLE_IN_2_30
 void    g_test_fail                     (void);
+GLIB_AVAILABLE_IN_2_70
+void    g_test_fail_printf              (const char *format,
+                                         ...) G_GNUC_PRINTF (1, 2);
 GLIB_AVAILABLE_IN_2_38
 void    g_test_incomplete               (const gchar *msg);
 GLIB_AVAILABLE_IN_2_70
