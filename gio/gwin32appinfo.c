@@ -1629,6 +1629,7 @@ process_uwp_verbs (GList                    *verbs,
           continue;
         }
 
+      acid = NULL;
       got_value = g_win32_registry_key_get_value_w (key,
                                                     g_win32_registry_get_os_dirs_w (),
                                                     TRUE,
@@ -3634,6 +3635,7 @@ grab_registry_string (GWin32RegistryKey  *handler_appkey,
   if (*destination != NULL)
     return;
 
+  value = NULL;
   if (g_win32_registry_key_get_value_w (handler_appkey,
                                         NULL,
                                         TRUE,
@@ -3828,6 +3830,9 @@ update_registry_data (void)
   return;
 }
 
+static void
+watch_keys (void);
+
 /* This function is called when any of our registry watchers detect
  * changes in the registry.
  */
@@ -3835,6 +3840,7 @@ static void
 keys_updated (GWin32RegistryKey  *key,
               gpointer            user_data)
 {
+  watch_keys ();
   /* Indicate the tree as not up-to-date, push a new job for the AppInfo thread */
   g_atomic_int_inc (&gio_win32_appinfo_update_counter);
   /* We don't use the data pointer, but it must be non-NULL */
@@ -4029,7 +4035,6 @@ gio_win32_appinfo_init (gboolean do_wait)
       g_mutex_lock (&gio_win32_appinfo_mutex);
       while (g_atomic_int_get (&gio_win32_appinfo_update_counter) > 0)
         g_cond_wait (&gio_win32_appinfo_cond, &gio_win32_appinfo_mutex);
-      watch_keys ();
       g_mutex_unlock (&gio_win32_appinfo_mutex);
     }
 }

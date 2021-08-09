@@ -2425,17 +2425,20 @@ key_changed (PVOID            closure,
              ULONG            reserved)
 {
   GWin32RegistryKey *key = G_WIN32_REGISTRY_KEY (closure);
+  gpointer user_data;
+  GWin32RegistryKeyWatchCallbackFunc callback;
+
+  callback = g_steal_pointer (&key->priv->callback);
+  user_data = g_steal_pointer (&key->priv->user_data);
 
   g_free (status_block);
   g_atomic_int_set (&key->priv->change_indicator, G_WIN32_KEY_CHANGED);
   g_atomic_int_set (&key->priv->watch_indicator, G_WIN32_KEY_UNWATCHED);
   key->priv->update_flags = G_WIN32_REGISTRY_UPDATED_NOTHING;
 
-  if (key->priv->callback)
-    key->priv->callback (key, key->priv->user_data);
+  if (callback)
+    callback (key, user_data);
 
-  key->priv->callback = NULL;
-  key->priv->user_data = NULL;
   g_object_unref (key);
 }
 
@@ -2550,9 +2553,7 @@ g_win32_registry_key_watch (GWin32RegistryKey                   *key,
                                            0,
                                            TRUE);
 
-  g_assert (status != STATUS_SUCCESS);
-
-  if (status == STATUS_PENDING)
+  if (status == STATUS_PENDING || status == STATUS_SUCCESS)
     return TRUE;
 
   g_atomic_int_set (&key->priv->change_indicator, G_WIN32_KEY_UNKNOWN);
