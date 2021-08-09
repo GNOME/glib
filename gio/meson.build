@@ -383,6 +383,7 @@ if host_system != 'windows'
     'gopenuriportal.c',
     'gmemorymonitorportal.c',
     'gnetworkmonitorportal.c',
+    'gpowerprofilemonitorportal.c',
     'gproxyresolverportal.c',
     'gtrashportal.c',
     'gportalsupport.c',

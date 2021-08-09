@@ -50,6 +50,7 @@
 #include "gmemorymonitordbus.h"
 #include "gpowerprofilemonitor.h"
 #include "gpowerprofilemonitordbus.h"
+#include "gpowerprofilemonitorportal.h"
 #ifdef G_OS_WIN32
 #include "gregistrysettingsbackend.h"
 #include "giowin32-priv.h"
@@ -1301,6 +1302,7 @@ _g_io_modules_ensure_loaded (void)
       g_type_ensure (g_memory_monitor_dbus_get_type ());
       g_type_ensure (g_memory_monitor_portal_get_type ());
       g_type_ensure (g_network_monitor_portal_get_type ());
+      g_type_ensure (g_power_profile_monitor_portal_get_type ());
       g_type_ensure (g_proxy_resolver_portal_get_type ());
 #endif
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= 1090

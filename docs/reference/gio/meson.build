@@ -66,6 +66,7 @@ if get_option('gtk_doc')
     'gpollfilemonitor.h',
     'gportalsupport.h',
     'gpowerprofilemonitordbus.h',
+    'gpowerprofilemonitorportal.h',
     'gproxyresolverportal.h',
     'gregistrysettingsbackend.h',
     'gresourcefile.h',
