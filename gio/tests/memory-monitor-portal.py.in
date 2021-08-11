@@ -31,7 +31,6 @@ try:
 
     dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
 
-    # XDG_DESKTOP_PORTAL_PATH = os.path.expanduser("~/.cache/jhbuild/build/xdg-desktop-portal/xdg-desktop-portal")
     XDG_DESKTOP_PORTAL_PATH = "@libexecdir@/xdg-desktop-portal"
 
     class TestLowMemoryMonitorPortal(dbusmock.DBusTestCase):
