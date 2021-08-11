@@ -142,6 +142,7 @@
 #define g_macro__has_attribute___deprecated__ G_GNUC_CHECK_VERSION (3, 1)
 #define g_macro__has_attribute_may_alias G_GNUC_CHECK_VERSION (3, 3)
 #define g_macro__has_attribute_warn_unused_result G_GNUC_CHECK_VERSION (3, 4)
+#define g_macro__has_attribute_cleanup G_GNUC_CHECK_VERSION (3, 3)
 
 #endif
 
@@ -1187,7 +1188,7 @@
 
 #ifndef __GI_SCANNER__
 
-#if defined (__GNUC__) || defined (__clang__)
+#if g_macro__has_attribute(cleanup)
 
 /* these macros are private */
 #define _GLIB_AUTOPTR_FUNC_NAME(TypeName) glib_autoptr_cleanup_##TypeName
