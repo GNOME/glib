@@ -84,6 +84,23 @@ try:
             self.p_mock.terminate()
             self.p_mock.wait()
 
+        def assertEventually(self, condition, message=None, timeout=50):
+            '''Assert that condition function eventually returns True.
+
+            Timeout is in deciseconds, defaulting to 50 (5 seconds). message is
+            printed on failure.
+            '''
+            while timeout >= 0:
+                context = GLib.MainContext.default()
+                while context.iteration(False):
+                    pass
+                if condition():
+                    break
+                timeout -= 1
+                time.sleep(0.1)
+            else:
+                self.fail(message or 'timed out waiting for ' + str(condition))
+
         def portal_memory_warning_cb(self, monitor, level):
             self.last_warning = level
             self.main_context.wakeup()
@@ -100,21 +117,11 @@ try:
 
             self.dbusmock.EmitWarning(100)
             # Wait 2 seconds or until warning
-            timeout = 2
-            while timeout > 0 and self.last_warning != 100:
-                time.sleep(0.5)
-                timeout -= 0.5
-                self.main_context.iteration(False)
-            self.assertEqual(self.last_warning, 100)
+            self.assertEventually(self.last_warning == 100, "'100' low-memory warning not received", 20)
 
             self.dbusmock.EmitWarning(255)
             # Wait 2 seconds or until warning
-            timeout = 2
-            while timeout > 0 and self.last_warning != 255:
-                time.sleep(0.5)
-                timeout -= 0.5
-                self.main_context.iteration(False)
-            self.assertEqual(self.last_warning, 255)
+            self.assertEventually(self.last_warning == 255, "'255' low-memory warning not received", 20)
 
 except ImportError as e:
     @unittest.skip("Cannot import %s" % e.name)
