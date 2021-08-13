@@ -8,7 +8,7 @@
 
 __author__ = 'Bastien Nocera'
 __email__ = 'hadess@hadess.net'
-__copyright__ = '(c) 2019 Red Hat Inc.'
+__copyright__ = '(c) 2021 Red Hat Inc.'
 __license__ = 'LGPL 3+'
 
 import unittest
@@ -31,10 +31,11 @@ try:
 
     dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
 
+    # XDG_DESKTOP_PORTAL_PATH = os.path.expanduser("~/.cache/jhbuild/build/xdg-desktop-portal/xdg-desktop-portal")
     XDG_DESKTOP_PORTAL_PATH = "@libexecdir@/xdg-desktop-portal"
 
-    class TestLowMemoryMonitorPortal(dbusmock.DBusTestCase):
-        '''Test GMemoryMonitorPortal'''
+    class TestPowerProfileMonitorPortal(dbusmock.DBusTestCase):
+        '''Test GPowerProfileMonitorPortal'''
 
         @classmethod
         def setUpClass(klass):
@@ -45,22 +46,22 @@ try:
 
         def setUp(self):
             try:
-                Gio.MemoryMonitor
+                Gio.PowerProfileMonitor
             except AttributeError:
-                raise unittest.SkipTest('Low memory monitor not in '
+                raise unittest.SkipTest('Power Profile Monitor not in '
                                         'introspection data. Requires '
-                                        'GObject-Introspection ≥ 1.63.2')
+                                        'GObject-Introspection > 1.69.0')
             try:
-                (self.p_mock, self.obj_lmm) = self.spawn_server_template(
-                    'low_memory_monitor', {}, stdout=subprocess.PIPE)
+                (self.p_mock, self.obj_ppd) = self.spawn_server_template(
+                    'power_profiles_daemon', {}, stdout=subprocess.PIPE)
             except ModuleNotFoundError:
-                raise unittest.SkipTest("Low memory monitor dbusmock template not "
-                                        "found. Requires dbusmock ≥ 0.18.4.")
+                raise unittest.SkipTest("power-profiles-daemon dbusmock template not "
+                                        "found. Requires dbusmock > 0.23.1.")
             # set log to nonblocking
             flags = fcntl.fcntl(self.p_mock.stdout, fcntl.F_GETFL)
             fcntl.fcntl(self.p_mock.stdout, fcntl.F_SETFL, flags | os.O_NONBLOCK)
-            self.last_warning = -1
-            self.dbusmock = dbus.Interface(self.obj_lmm, dbusmock.MOCK_IFACE)
+            self.power_saver_enabled = False
+            self.dbus_props = dbus.Interface(self.obj_ppd, dbus.PROPERTIES_IFACE)
             try:
                 self.xdp = subprocess.Popen([XDG_DESKTOP_PORTAL_PATH])
             except FileNotFoundError:
@@ -74,9 +75,9 @@ try:
             # subprocess.Popen(['gdbus', 'monitor', '--session', '--dest', 'org.freedesktop.portal.Desktop'])
 
             os.environ['GTK_USE_PORTAL'] = "1"
-            self.memory_monitor = Gio.MemoryMonitor.dup_default()
-            assert("GMemoryMonitorPortal" in str(self.memory_monitor))
-            self.memory_monitor.connect("low-memory-warning", self.portal_memory_warning_cb)
+            self.power_profile_monitor = Gio.PowerProfileMonitor.dup_default()
+            assert("GPowerProfileMonitorPortal" in str(self.power_profile_monitor))
+            self.power_profile_monitor.connect("notify::power-saver-enabled", self.power_saver_enabled_cb)
             self.mainloop = GLib.MainLoop()
             self.main_context = self.mainloop.get_context()
 
@@ -101,32 +102,24 @@ try:
             else:
                 self.fail(message or 'timed out waiting for ' + str(condition))
 
-        def portal_memory_warning_cb(self, monitor, level):
-            self.last_warning = level
+        def power_saver_enabled_cb(self, spec, data):
+            self.power_saver_enabled = self.power_profile_monitor.get_power_saver_enabled()
             self.main_context.wakeup()
 
-        def test_low_memory_warning_portal_signal(self):
-            '''LowMemoryWarning signal'''
+        def test_power_profile_power_saver_enabled_portal(self):
+            '''power-saver-enabled property'''
 
-            # Wait 2 seconds
-            timeout = 2
-            while timeout > 0:
-                time.sleep(0.5)
-                timeout -= 0.5
-                self.main_context.iteration(False)
+            self.assertEqual(self.power_profile_monitor.get_power_saver_enabled(), False)
+            self.dbus_props.Set('net.hadess.PowerProfiles', 'ActiveProfile', dbus.String('power-saver', variant_level=1))
+            self.assertEventually(lambda: self.power_saver_enabled == True, "power-saver didn't become enabled", 10)
 
-            self.dbusmock.EmitWarning(100)
-            # Wait 2 seconds or until warning
-            self.assertEventually(self.last_warning == 100, "'100' low-memory warning not received", 20)
-
-            self.dbusmock.EmitWarning(255)
-            # Wait 2 seconds or until warning
-            self.assertEventually(self.last_warning == 255, "'255' low-memory warning not received", 20)
+            self.dbus_props.Set('net.hadess.PowerProfiles', 'ActiveProfile', dbus.String('balanced', variant_level=1))
+            self.assertEventually(lambda: self.power_saver_enabled == False, "power-saver didn't become disabled", 10)
 
 except ImportError as e:
     @unittest.skip("Cannot import %s" % e.name)
-    class TestLowMemoryMonitorPortal(unittest.TestCase):
-        def test_low_memory_warning_portal_signal(self):
+    class TestPowerProfileMonitorPortal(unittest.TestCase):
+        def test_power_profile_power_saver_enabled_portal(self):
             pass
 
 if __name__ == '__main__':
