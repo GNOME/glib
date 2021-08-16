@@ -1880,6 +1880,9 @@
  * In order to use this function, you must include string.h yourself,
  * because this macro may use memmove() and GLib does not include
  * string.h for you.
+ *
+ * Each invocation of `G_VA_COPY (ap1, ap2)` must be matched with a
+ * corresponding `va_end (ap1)` call in the same function.
  */
 
 /**
