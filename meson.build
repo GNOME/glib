@@ -962,6 +962,7 @@ else
   vsnprintf_c99_test_code = '''
 #include <stdio.h>
 #include <stdarg.h>
+#include <stdlib.h>
 
 int
 doit(char * s, ...)
@@ -1011,6 +1012,7 @@ main(void)
   snprintf_c99_test_code = '''
 #include <stdio.h>
 #include <stdarg.h>
+#include <stdlib.h>
 
 int
 doit()
@@ -1057,6 +1059,8 @@ main(void)
 
   printf_unix98_test_code = '''
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 int
 main (void)
@@ -2174,6 +2178,7 @@ cmdline_test_code = '''
 #include <sys/stat.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 static int
 __getcmdline (void)
