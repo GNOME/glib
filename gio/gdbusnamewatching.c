@@ -90,6 +90,13 @@ client_ref (Client *client)
   return client;
 }
 
+static gboolean
+free_user_data_cb (gpointer user_data)
+{
+  /* The user data is actually freed by the GDestroyNotify for the idle source */
+  return G_SOURCE_REMOVE;
+}
+
 static void
 client_unref (Client *client)
 {
@@ -105,9 +112,26 @@ client_unref (Client *client)
         }
       g_free (client->name);
       g_free (client->name_owner);
-      g_main_context_unref (client->main_context);
+
       if (client->user_data_free_func != NULL)
-        client->user_data_free_func (client->user_data);
+        {
+          /* Ensure client->user_data_free_func() is called from the right thread */
+          if (client->main_context != g_main_context_get_thread_default ())
+            {
+              GSource *idle_source = g_idle_source_new ();
+              g_source_set_callback (idle_source, free_user_data_cb,
+                                     client->user_data,
+                                     client->user_data_free_func);
+              g_source_set_name (idle_source, "[gio, gdbusnamewatching.c] free_user_data_cb");
+              g_source_attach (idle_source, client->main_context);
+              g_source_unref (idle_source);
+            }
+          else
+            client->user_data_free_func (client->user_data);
+        }
+
+      g_main_context_unref (client->main_context);
+
       g_free (client);
     }
 }
