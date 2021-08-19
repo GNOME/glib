@@ -964,6 +964,11 @@ g_thread_pool_free_internal (GRealThreadPool* pool)
   g_return_if_fail (pool->running == FALSE);
   g_return_if_fail (pool->num_threads == 0);
 
+  /* Ensure the dummy item pushed on by g_thread_pool_wakeup_and_stop_all() is
+   * removed, before it’s potentially passed to the user-provided
+   * @item_free_func. */
+  g_async_queue_remove (pool->queue, GUINT_TO_POINTER (1));
+
   g_async_queue_unref (pool->queue);
   g_cond_clear (&pool->cond);
 

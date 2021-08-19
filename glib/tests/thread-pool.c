@@ -88,12 +88,6 @@ dummy_pool_func (gpointer data, gpointer user_data)
 }
 
 static void
-dummy_pool_func_full (gpointer data, gpointer user_data)
-{
-  g_assert_true (data == user_data);
-}
-
-static void
 test_create_first_pool (gconstpointer shared_first)
 {
   GThreadPool *pool;
@@ -148,53 +142,115 @@ test_create_first_pool (gconstpointer shared_first)
   g_thread_pool_free (pool, TRUE, TRUE);
 }
 
+typedef struct
+{
+  GMutex mutex;  /* (owned) */
+  GCond cond;  /* (owned) */
+  gboolean threads_should_block;  /* protected by mutex, cond */
+
+  guint n_jobs_started;  /* (atomic) */
+  guint n_jobs_completed;  /* (atomic) */
+  guint n_free_func_calls;  /* (atomic) */
+} TestThreadPoolFullData;
+
+static void
+full_thread_func (gpointer data,
+                  gpointer user_data)
+{
+  TestThreadPoolFullData *test_data = data;
+
+  g_atomic_int_inc (&test_data->n_jobs_started);
+
+  /* Make the thread block until told to stop blocking. */
+  g_mutex_lock (&test_data->mutex);
+  while (test_data->threads_should_block)
+    g_cond_wait (&test_data->cond, &test_data->mutex);
+  g_mutex_unlock (&test_data->mutex);
+
+  g_atomic_int_inc (&test_data->n_jobs_completed);
+}
+
 static void
 free_func (gpointer user_data)
 {
-  gboolean *free_func_called = user_data;
-  *free_func_called = TRUE;
+  TestThreadPoolFullData *test_data = user_data;
+
+  g_atomic_int_inc (&test_data->n_free_func_calls);
 }
 
 static void
 test_thread_pool_full (gconstpointer shared_first)
 {
-  GThreadPool *pool;
-  gboolean free_func_called = FALSE;
-  GError *err = NULL;
-  gboolean success;
+  guint i;
 
   g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/121");
 
   g_thread_pool_set_max_unused_threads (0);
 
-  if (GPOINTER_TO_INT (shared_first))
-    pool = g_thread_pool_new_full (dummy_pool_func_full, &free_func_called, free_func, -1, FALSE, &err);
-  else
-    pool = g_thread_pool_new_full (dummy_pool_func_full, &free_func_called, free_func, 2, TRUE, &err);
-  g_assert_no_error (err);
-  g_assert_nonnull (pool);
+  /* Run the test twice, once with a shared pool and once with an exclusive one. */
+  for (i = 0; i < 2; i++)
+    {
+      GThreadPool *pool;
+      TestThreadPoolFullData test_data;
+      GError *local_error = NULL;
+      gboolean success;
+      guint j;
 
-  success = g_thread_pool_push (pool, &free_func_called, &err);
-  g_assert_no_error (err);
-  g_assert_true (success);
+      g_mutex_init (&test_data.mutex);
+      g_cond_init (&test_data.cond);
+      test_data.threads_should_block = TRUE;
+      test_data.n_jobs_started = 0;
+      test_data.n_jobs_completed = 0;
+      test_data.n_free_func_calls = 0;
 
-  g_thread_pool_free (pool, TRUE, TRUE);
-  g_assert_true (free_func_called);
+      /* Create a thread pool with only one worker thread. The pool can be
+       * created in shared or exclusive mode. */
+      pool = g_thread_pool_new_full (full_thread_func, &test_data, free_func,
+                                     1, (i == 0),
+                                     &local_error);
+      g_assert_no_error (local_error);
+      g_assert_nonnull (pool);
 
-  free_func_called = FALSE;
-  if (GPOINTER_TO_INT (shared_first))
-    pool = g_thread_pool_new_full (dummy_pool_func_full, &free_func_called, free_func, 2, TRUE, &err);
-  else
-    pool = g_thread_pool_new_full (dummy_pool_func_full, &free_func_called, free_func, -1, FALSE, &err);
-  g_assert_no_error (err);
-  g_assert_nonnull (pool);
+      /* Push two jobs into the pool. The first one will start executing and
+       * will block, the second one will wait in the queue as there’s only one
+       * worker thread. */
+      for (j = 0; j < 2; j++)
+        {
+          success = g_thread_pool_push (pool, &test_data, &local_error);
+          g_assert_no_error (local_error);
+          g_assert_true (success);
+        }
 
-  success = g_thread_pool_push (pool, &free_func_called, &err);
-  g_assert_no_error (err);
-  g_assert_true (success);
+      /* Wait for the first job to start. */
+      while (g_atomic_int_get (&test_data.n_jobs_started) == 0);
 
-  g_thread_pool_free (pool, TRUE, TRUE);
-  g_assert_true (free_func_called);
+      /* Free the pool. This won’t actually free the queued second job yet, as
+       * the thread pool hangs around until the executing first job has
+       * completed. The first job will complete only once @threads_should_block
+       * is unset. */
+      g_thread_pool_free (pool, TRUE, FALSE);
+
+      g_assert_cmpuint (g_atomic_int_get (&test_data.n_jobs_started), ==, 1);
+      g_assert_cmpuint (g_atomic_int_get (&test_data.n_jobs_completed), ==, 0);
+      g_assert_cmpuint (g_atomic_int_get (&test_data.n_free_func_calls), ==, 0);
+
+      /* Unblock the job and allow the pool to be freed. */
+      g_mutex_lock (&test_data.mutex);
+      test_data.threads_should_block = FALSE;
+      g_cond_signal (&test_data.cond);
+      g_mutex_unlock (&test_data.mutex);
+
+      /* Wait for the first job to complete before freeing the mutex and cond. */
+      while (g_atomic_int_get (&test_data.n_jobs_completed) != 1 ||
+             g_atomic_int_get (&test_data.n_free_func_calls) != 1);
+
+      g_assert_cmpuint (g_atomic_int_get (&test_data.n_jobs_started), ==, 1);
+      g_assert_cmpuint (g_atomic_int_get (&test_data.n_jobs_completed), ==, 1);
+      g_assert_cmpuint (g_atomic_int_get (&test_data.n_free_func_calls), ==, 1);
+
+      g_cond_clear (&test_data.cond);
+      g_mutex_clear (&test_data.mutex);
+    }
 }
 
 int
@@ -205,7 +261,7 @@ main (int argc, char *argv[])
   g_test_add_data_func ("/thread_pool/shared", GINT_TO_POINTER (TRUE), test_simple);
   g_test_add_data_func ("/thread_pool/exclusive", GINT_TO_POINTER (FALSE), test_simple);
   g_test_add_data_func ("/thread_pool/create_shared_after_exclusive", GINT_TO_POINTER (FALSE), test_create_first_pool);
-  g_test_add_data_func ("/thread_pool/create_full", GINT_TO_POINTER (FALSE), test_thread_pool_full);
+  g_test_add_data_func ("/thread_pool/create_full", NULL, test_thread_pool_full);
   g_test_add_data_func ("/thread_pool/create_exclusive_after_shared", GINT_TO_POINTER (TRUE), test_create_first_pool);
 
   return g_test_run ();
