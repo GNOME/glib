@@ -1,3 +1,21 @@
+Overview of changes in GLib 2.68.4
+==================================
+
+* Bugs fixed:
+ - #2454 Read past the end of buffer in g_win32_package_parser_enum_packages
+ - !2158 Backport !2155 “glocalfilemonitor: Avoid a deadlock on finalization” to glib-2-68
+ - !2175 Backport !2174 “data-to-c.py: generate new-line at the end of the file” to glib-2-68
+ - !2183 Backport !2180 “correctly use 3 parameters for close_range” to glib-2-68
+ - !2186 Backport !2185 “glocalfile: Fix the global trash dir detection” to glib-2-68
+ - !2209 Backport !2208 “g_string_replace: Don't replace empty string more than once per location” to glib-2-68
+ - !2220 Backport GWin32AppInfo fixes to glib-2-68
+
+* Translation updates:
+ - Chinese (China)
+ - Chinese (Taiwan)
+ - Occitan (post 1500)
+
+
 Overview of changes in GLib 2.68.3
 ==================================
 
