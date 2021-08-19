@@ -271,6 +271,10 @@ typedef struct _GVolumeMonitor                GVolumeMonitor;
  * where the #GTask was created. All other users of
  * #GAsyncReadyCallback must likewise call it asynchronously in a
  * later iteration of the main context.
+ *
+ * The asynchronous operation is guaranteed to have held a reference to
+ * @source_object from the time when the `*_async()` function was called, until
+ * after this callback returns.
  **/
 typedef void (*GAsyncReadyCallback) (GObject *source_object,
 				     GAsyncResult *res,
