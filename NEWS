@@ -1,3 +1,40 @@
+Overview of changes in GLib 2.69.2
+==================================
+
+* The `DBUS_SESSION_BUS_ADDRESS` environment variable is once more not used if
+  the process is `AT_SECURE` (setuid/setgid/setcap); this change was previously
+  applied and then reverted because it broke gnome-keyring (#2316)
+
+* Add `g_test_fail_printf()`, `g_test_skip_printf()`,
+  `g_test_incomplete_printf()` helper functions for printing messages when tests
+  end prematurely (work by Simon McVittie) (!2215)
+
+* Add portal implementation of `GPowerProfileMonitor` (work by
+  Bastien Nocera) (!2222)
+
+* Bugs fixed:
+ - #2316 Re-harden DBUS_SESSION_BUS_ADDRESS for AT_SECURE processes in GLib 2.70
+ - #2343 Document explicitly refcount mgmt of source-object during GAsyncReadyCallbacks
+ - #2454 Read past the end of buffer in g_win32_package_parser_enum_packages
+ - #2456 Frequent test failure on FreeBSD: glib/tests/thread-pool.c:197:test_thread_pool_full: 'free_func_called' should be TRUE
+ - !2157 tests: Add missing wakeup calls to gdbus-names test
+ - !2165 docs: Mention the stable/unstable support version in README.md
+ - !2211 Improve documentation of various TLS stuff
+ - !2215 gtestutils: Add more convenience functions
+ - !2216 tests: Fix error handling when testing gtestutils
+ - !2222 gio: Add portal version of GPowerProfileMonitor
+ - !2224 Docs: Mention that G_VA_COPY() must be followed by `va_end()`
+ - !2225 build: Fix implicit declaration of function errors
+ - !2226 Annotate the GString constructors
+
+* Translation updates:
+ - Czech
+ - Hebrew
+ - Slovenian
+ - Spanish
+ - Swedish
+
+
 Overview of changes in GLib 2.69.1
 ==================================
 
