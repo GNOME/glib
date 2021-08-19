@@ -482,8 +482,7 @@ assert_strings_equivalent (const gchar *expected,
         if (g_str_equal (expected_words[i], result_words[j]))
           goto got_it;
 
-      g_test_message ("Unable to find expected string '%s' in result '%s'", expected_words[i], result);
-      g_test_fail ();
+      g_test_fail_printf ("Unable to find expected string '%s' in result '%s'", expected_words[i], result);
 
 got_it:
       continue;

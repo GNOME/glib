@@ -1039,6 +1039,8 @@ g_test_log (GTestLogType lbit,
             g_print (" # TODO %s\n", string2 ? string2 : "");
           else if (result == G_TEST_RUN_SKIPPED)
             g_print (" # SKIP %s\n", string2 ? string2 : "");
+          else if (result == G_TEST_RUN_FAILURE && string2 != NULL)
+            g_print (" - %s\n", string2);
           else
             g_print ("\n");
         }
@@ -2401,12 +2403,42 @@ g_test_add_vtable (const char       *testpath,
  *
  * If not called from inside a test, this function does nothing.
  *
+ * Note that unlike g_test_skip() and g_test_incomplete(), this
+ * function does not log a message alongside the test failure.
+ * If details of the test failure are available, either log them with
+ * g_test_message() before g_test_fail(), or use g_test_fail_printf()
+ * instead.
+ *
  * Since: 2.30
  **/
 void
 g_test_fail (void)
 {
   test_run_success = G_TEST_RUN_FAILURE;
+  g_clear_pointer (&test_run_msg, g_free);
+}
+
+/**
+ * g_test_fail_printf:
+ * @format: the format string
+ * @...:    printf-like arguments to @format
+ *
+ * Equivalent to g_test_fail(), but also record a message like
+ * g_test_skip_printf().
+ *
+ * Since: 2.70
+ **/
+void
+g_test_fail_printf (const char *format,
+                    ...)
+{
+  va_list args;
+
+  test_run_success = G_TEST_RUN_FAILURE;
+  va_start (args, format);
+  g_free (test_run_msg);
+  test_run_msg = g_strdup_vprintf (format, args);
+  va_end (args);
 }
 
 /**
@@ -2435,6 +2467,29 @@ g_test_incomplete (const gchar *msg)
 }
 
 /**
+ * g_test_incomplete_printf:
+ * @format: the format string
+ * @...:    printf-like arguments to @format
+ *
+ * Equivalent to g_test_incomplete(), but the explanation is formatted
+ * as if by g_strdup_printf().
+ *
+ * Since: 2.70
+ */
+void
+g_test_incomplete_printf (const char *format,
+                          ...)
+{
+  va_list args;
+
+  test_run_success = G_TEST_RUN_INCOMPLETE;
+  va_start (args, format);
+  g_free (test_run_msg);
+  test_run_msg = g_strdup_vprintf (format, args);
+  va_end (args);
+}
+
+/**
  * g_test_skip:
  * @msg: (nullable): explanation
  *
@@ -2455,6 +2510,29 @@ g_test_skip (const gchar *msg)
   test_run_success = G_TEST_RUN_SKIPPED;
   g_free (test_run_msg);
   test_run_msg = g_strdup (msg);
+}
+
+/**
+ * g_test_skip_printf:
+ * @format: the format string
+ * @...:    printf-like arguments to @format
+ *
+ * Equivalent to g_test_skip(), but the explanation is formatted
+ * as if by g_strdup_printf().
+ *
+ * Since: 2.70
+ */
+void
+g_test_skip_printf (const char *format,
+                    ...)
+{
+  va_list args;
+
+  test_run_success = G_TEST_RUN_SKIPPED;
+  va_start (args, format);
+  g_free (test_run_msg);
+  test_run_msg = g_strdup_vprintf (format, args);
+  va_end (args);
 }
 
 /**

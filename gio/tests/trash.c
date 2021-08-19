@@ -111,11 +111,7 @@ test_trash_symlinks (void)
 
   if (!g_file_test (target, G_FILE_TEST_IS_DIR))
     {
-      gchar *message;
-
-      message = g_strdup_printf ("Directory '%s' does not exist", target);
-      g_test_skip (message);
-      g_free (message);
+      g_test_skip_printf ("Directory '%s' does not exist", target);
       g_free (target);
       return;
     }
@@ -124,12 +120,7 @@ test_trash_symlinks (void)
 
   if (target_mount == NULL)
     {
-      gchar *message;
-
-      message = g_strdup_printf ("Unable to determine mount point for %s",
-                                 target);
-      g_test_skip (message);
-      g_free (message);
+      g_test_skip_printf ("Unable to determine mount point for %s", target);
       g_free (target);
       return;
     }
@@ -144,11 +135,7 @@ test_trash_symlinks (void)
 
   if (tmp_mount == NULL)
     {
-      gchar *message;
-
-      message = g_strdup_printf ("Unable to determine mount point for %s", tmp);
-      g_test_skip (message);
-      g_free (message);
+      g_test_skip_printf ("Unable to determine mount point for %s", tmp);
       g_unix_mount_free (target_mount);
       g_free (target);
       g_free (tmp);

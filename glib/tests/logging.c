@@ -435,9 +435,8 @@ expect_log_writer (GLogLevelFlags   log_level,
       char *str;
 
       str = g_log_writer_format_fields (log_level, fields, n_fields, FALSE);
-      g_test_message ("Unexpected message: %s", str);
+      g_test_fail_printf ("Unexpected message: %s", str);
       g_free (str);
-      g_test_fail ();
     }
 
   return G_LOG_WRITER_HANDLED;
@@ -529,9 +528,8 @@ test_structured_logging_roundtrip1 (void)
       ExpectedMessage *expected = expected_messages->data;
 
       str = g_log_writer_format_fields (0, expected->fields, expected->n_fields, FALSE);
-      g_test_message ("Unexpected message: %s", str);
+      g_test_fail_printf ("Unexpected message: %s", str);
       g_free (str);
-      g_test_fail ();
     }
 }
 
