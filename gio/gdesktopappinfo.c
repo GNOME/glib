@@ -2959,6 +2959,64 @@ g_desktop_app_info_make_platform_data (GDesktopAppInfo   *info,
   return g_variant_builder_end (&builder);
 }
 
+typedef struct
+{
+  GDesktopAppInfo     *info; /* (owned) */
+  GAppLaunchContext   *launch_context; /* (owned) (nullable) */
+  GAsyncReadyCallback  callback;
+  gchar               *startup_id; /* (owned) */
+  gpointer             user_data;
+} LaunchUrisWithDBusData;
+
+static void
+launch_uris_with_dbus_data_free (LaunchUrisWithDBusData *data)
+{
+  g_clear_object (&data->info);
+  g_clear_object (&data->launch_context);
+  g_free (data->startup_id);
+
+  g_free (data);
+}
+
+static void
+launch_uris_with_dbus_signal_cb (GObject      *object,
+                                 GAsyncResult *result,
+                                 gpointer      user_data)
+{
+  LaunchUrisWithDBusData *data = user_data;
+  GVariantBuilder builder;
+
+  if (data->launch_context)
+    {
+      if (g_task_had_error (G_TASK (result)))
+        g_app_launch_context_launch_failed (data->launch_context, data->startup_id);
+      else
+        {
+          GVariant *platform_data;
+
+          g_variant_builder_init (&builder, G_VARIANT_TYPE_ARRAY);
+          /* the docs guarantee `pid` will be set, but we can’t
+           * easily know it for a D-Bus process, so set it to zero */
+          g_variant_builder_add (&builder, "{sv}", "pid", g_variant_new_int32 (0));
+          if (data->startup_id)
+            g_variant_builder_add (&builder, "{sv}",
+                                   "startup-notification-id",
+                                   g_variant_new_string (data->startup_id));
+          platform_data = g_variant_ref_sink (g_variant_builder_end (&builder));
+          g_signal_emit_by_name (data->launch_context,
+                                 "launched",
+                                 data->info,
+                                 platform_data);
+          g_variant_unref (platform_data);
+        }
+    }
+
+  if (data->callback)
+    data->callback (object, result, data->user_data);
+
+  launch_uris_with_dbus_data_free (data);
+}
+
 static void
 launch_uris_with_dbus (GDesktopAppInfo    *info,
                        GDBusConnection    *session_bus,
@@ -2968,8 +3026,11 @@ launch_uris_with_dbus (GDesktopAppInfo    *info,
                        GAsyncReadyCallback callback,
                        gpointer            user_data)
 {
+  GVariant *platform_data;
   GVariantBuilder builder;
+  GVariantDict dict;
   gchar *object_path;
+  LaunchUrisWithDBusData *data;
 
   g_variant_builder_init (&builder, G_VARIANT_TYPE_TUPLE);
 
@@ -2983,13 +3044,23 @@ launch_uris_with_dbus (GDesktopAppInfo    *info,
       g_variant_builder_close (&builder);
     }
 
-  g_variant_builder_add_value (&builder, g_desktop_app_info_make_platform_data (info, uris, launch_context));
+  platform_data = g_desktop_app_info_make_platform_data (info, uris, launch_context);
 
+  g_variant_builder_add_value (&builder, platform_data);
   object_path = object_path_from_appid (info->app_id);
+
+  data = g_new0 (LaunchUrisWithDBusData, 1);
+  data->info = g_object_ref (info);
+  data->callback = callback;
+  data->user_data = user_data;
+  data->launch_context = launch_context ? g_object_ref (launch_context) : NULL;
+  g_variant_dict_init (&dict, platform_data);
+  g_variant_dict_lookup (&dict, "desktop-startup-id", "s", &data->startup_id);
+
   g_dbus_connection_call (session_bus, info->app_id, object_path, "org.freedesktop.Application",
                           uris ? "Open" : "Activate", g_variant_builder_end (&builder),
                           NULL, G_DBUS_CALL_FLAGS_NONE, -1,
-                          cancellable, callback, user_data);
+                          cancellable, launch_uris_with_dbus_signal_cb, g_steal_pointer (&data));
   g_free (object_path);
 }
 

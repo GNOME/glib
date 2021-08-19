@@ -1172,6 +1172,10 @@ g_app_launch_context_class_init (GAppLaunchContextClass *klass)
    * platform-specific data about this launch. On UNIX, at least the
    * `pid` and `startup-notification-id` keys will be present.
    *
+   * Since 2.72 the `pid` may be 0 if the process id wasn't known (for
+   * example if the process was launched via D-Bus). The `pid` may not be
+   * set at all in subsequent releases.
+   *
    * Since: 2.36
    */
   signals[LAUNCHED] = g_signal_new (I_("launched"),
