@@ -1006,3 +1006,21 @@ G_IS_BINDING
 g_binding_flags_get_type
 g_binding_get_type
 </SECTION>
+
+<SECTION>
+<FILE>gbindinggroup</FILE>
+GBindingGroup
+g_binding_group_new
+g_binding_group_dup_source
+g_binding_group_set_source
+g_binding_group_bind
+g_binding_group_bind_full
+g_binding_group_bind_with_closures
+<SUBSECTION Standard>
+G_TYPE_BINDING_GROUP
+G_TYPE_BINDING_GROUP_CLASS
+G_BINDING_GROUP
+G_IS_BINDING_GROUP
+<SUBSECTION Private>
+g_binding_group_get_type
+</SECTION>

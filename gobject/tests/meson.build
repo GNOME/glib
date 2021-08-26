@@ -37,6 +37,7 @@ gobject_tests = {
   'threadtests' : {},
   'dynamictests' : {},
   'binding' : {},
+  'bindinggroup' : {},
   'properties' : {},
   'reference' : {},
   'flags' : {},

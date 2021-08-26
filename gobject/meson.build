@@ -2,6 +2,7 @@ gobject_install_headers = files(
   'gobject-autocleanups.h',
   'glib-types.h',
   'gbinding.h',
+  'gbindinggroup.h',
   'gboxed.h',
   'gclosure.h',
   'genums.h',
@@ -25,6 +26,7 @@ install_headers(gobject_install_headers, subdir : 'glib-2.0/gobject')
 gobject_sources = files(
   'gatomicarray.c',
   'gbinding.c',
+  'gbindinggroup.c',
   'gboxed.c',
   'gclosure.c',
   'genums.c',

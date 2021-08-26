@@ -84,6 +84,7 @@
       <xi:include href="xml/gclosure.xml" />
       <xi:include href="xml/value_arrays.xml" />
       <xi:include href="xml/gbinding.xml" />
+      <xi:include href="xml/gbindinggroup.xml" />
   </reference>
   <reference label="III">
     <title>Tools Reference</title>
