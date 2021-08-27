@@ -1024,3 +1024,25 @@ G_IS_BINDING_GROUP
 <SUBSECTION Private>
 g_binding_group_get_type
 </SECTION>
+
+<SECTION>
+<FILE>gsignalgroup</FILE>
+GSignalGroup
+g_signal_group_block
+g_signal_group_connect
+g_signal_group_connect_after
+g_signal_group_connect_data
+g_signal_group_connect_object
+g_signal_group_connect_swapped
+g_signal_group_dup_target
+g_signal_group_get_type
+g_signal_group_new
+g_signal_group_set_target
+g_signal_group_unblock
+<SUBSECTION Standard>
+G_IS_SIGNAL_GROUP
+G_SIGNAL_GROUP
+G_TYPE_SIGNAL_GROUP
+<SUBSECTION Private>
+g_signal_group_get_type
+</SECTION>

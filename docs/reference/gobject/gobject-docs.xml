@@ -81,6 +81,7 @@
       <xi:include href="xml/gparamspec.xml" />
       <xi:include href="xml/value_collection.xml" />
       <xi:include href="xml/signals.xml" />
+      <xi:include href="xml/gsignalgroup.xml" />
       <xi:include href="xml/gclosure.xml" />
       <xi:include href="xml/value_arrays.xml" />
       <xi:include href="xml/gbinding.xml" />
