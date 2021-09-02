@@ -391,7 +391,8 @@ freebsd-12-x86_64:
   variables:
     CPPFLAGS: -I/usr/local/include
     LDFLAGS: -L/usr/local/lib -Wl,--disable-new-dtags
-    LANG: en_US.UTF-8
+    # FreeBSD supports C.UTF-8 locale since 12.1.
+    LANG: C.UTF-8
   before_script:
     - bash .gitlab-ci/show-execution-environment.sh
   script:
