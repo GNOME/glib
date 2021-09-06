@@ -28,6 +28,7 @@ try:
     import dbusmock
     from gi.repository import GLib
     from gi.repository import Gio
+    from gi.repository import GObject
 
     dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
 
@@ -115,6 +116,17 @@ try:
 
             self.dbus_props.Set('net.hadess.PowerProfiles', 'ActiveProfile', dbus.String('balanced', variant_level=1))
             self.assertEventually(lambda: self.power_saver_enabled == False, "power-saver didn't become disabled", 10)
+
+        def test_power_profile_power_saver_enabled_portal_default(self):
+            '''power-saver-enabled property default value'''
+
+            self.dbus_props.Set('net.hadess.PowerProfiles', 'ActiveProfile', dbus.String('power-saver', variant_level=1))
+
+            # Create a new power profile monitor and check its property value is
+            # correct by default.
+            new_power_profile_monitor = GObject.new(GObject.type_from_name('GPowerProfileMonitorPortal'))
+            new_power_profile_monitor.init()
+            self.assertTrue(new_power_profile_monitor.get_power_saver_enabled())
 
 except ImportError as e:
     @unittest.skip("Cannot import %s" % e.name)
