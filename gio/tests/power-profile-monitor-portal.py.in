@@ -66,12 +66,16 @@ try:
             try:
                 self.xdp = subprocess.Popen([XDG_DESKTOP_PORTAL_PATH])
             except FileNotFoundError:
+                self.p_mock.terminate()
+                self.p_mock.wait()
                 raise unittest.SkipTest("xdg-desktop-portal not available")
 
             try:
                 self.wait_for_bus_object('org.freedesktop.portal.Desktop',
                                         '/org/freedesktop/portal/desktop')
             except:
+                self.p_mock.terminate()
+                self.p_mock.wait()
                 raise
             # subprocess.Popen(['gdbus', 'monitor', '--session', '--dest', 'org.freedesktop.portal.Desktop'])
 
