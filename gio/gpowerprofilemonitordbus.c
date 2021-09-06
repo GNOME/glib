@@ -116,7 +116,8 @@ ppd_proxy_cb (GObject      *source_object,
     }
 
   active_profile_variant = g_dbus_proxy_get_cached_property (proxy, "ActiveProfile");
-  if (g_variant_is_of_type (active_profile_variant, G_VARIANT_TYPE_STRING))
+  if (active_profile_variant != NULL &&
+      g_variant_is_of_type (active_profile_variant, G_VARIANT_TYPE_STRING))
     {
       active_profile = g_variant_get_string (active_profile_variant, NULL);
       power_saver_enabled = g_strcmp0 (active_profile, "power-saver") == 0;
