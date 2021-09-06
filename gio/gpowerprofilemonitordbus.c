@@ -126,6 +126,7 @@ ppd_proxy_cb (GObject      *source_object,
           g_object_notify (G_OBJECT (dbus), "power-saver-enabled");
         }
     }
+  g_clear_pointer (&active_profile_variant, g_variant_unref);
 
   dbus->signal_id = g_signal_connect (G_OBJECT (proxy), "g-properties-changed",
                                       G_CALLBACK (ppd_properties_changed_cb), dbus);
