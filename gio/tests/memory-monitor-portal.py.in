@@ -117,11 +117,11 @@ try:
 
             self.dbusmock.EmitWarning(100)
             # Wait 2 seconds or until warning
-            self.assertEventually(self.last_warning == 100, "'100' low-memory warning not received", 20)
+            self.assertEventually(lambda: self.last_warning == 100, "'100' low-memory warning not received", 20)
 
             self.dbusmock.EmitWarning(255)
             # Wait 2 seconds or until warning
-            self.assertEventually(self.last_warning == 255, "'255' low-memory warning not received", 20)
+            self.assertEventually(lambda: self.last_warning == 255, "'255' low-memory warning not received", 20)
 
 except ImportError as e:
     @unittest.skip("Cannot import %s" % e.name)
