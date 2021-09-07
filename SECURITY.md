@@ -17,6 +17,17 @@ Under GLib’s versioning scheme, stable release series have an *even* minor
 component (for example, 2.66.0, 2.66.1, 2.68.3), and development release series
 have an *odd* minor component (2.67.1, 2.69.0).
 
+## Signed Releases
+
+The git tags for all releases ≥2.58.0 are signed by a maintainer using
+[git-evtag](https://github.com/cgwalters/git-evtag). The maintainer will use
+their personal GPG key; there is currently not necessarily a formal chain of
+trust for these keys. Please [create an issue](https://gitlab.gnome.org/GNOME/glib/-/issues/new)
+if you would like to work on improving this.
+
+Unsigned releases ≥2.58.0 should not be trusted. Releases prior to 2.58.0 were
+not signed.
+
 ## Reporting a Vulnerability
 
 If you think you've identified a security issue in GLib, GObject or GIO, please
