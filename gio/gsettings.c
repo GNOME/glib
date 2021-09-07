@@ -972,7 +972,7 @@ g_settings_class_init (GSettingsClass *class)
  * call to g_settings_new().  The new #GSettings will hold a reference
  * on the context.  See g_main_context_push_thread_default().
  *
- * Returns: a new #GSettings object
+ * Returns: (not nullable) (transfer full): a new #GSettings object
  *
  * Since: 2.26
  */
@@ -1020,7 +1020,7 @@ path_is_valid (const gchar *path)
  * begins and ends with '/' and does not contain two consecutive '/'
  * characters.
  *
- * Returns: a new #GSettings object
+ * Returns: (not nullable) (transfer full): a new #GSettings object
  *
  * Since: 2.26
  */
@@ -1051,7 +1051,7 @@ g_settings_new_with_path (const gchar *schema_id,
  * the system to get a settings object that modifies the system default
  * settings instead of the settings for this user.
  *
- * Returns: a new #GSettings object
+ * Returns: (not nullable) (transfer full): a new #GSettings object
  *
  * Since: 2.26
  */
@@ -1080,7 +1080,7 @@ g_settings_new_with_backend (const gchar      *schema_id,
  * This is a mix of g_settings_new_with_backend() and
  * g_settings_new_with_path().
  *
- * Returns: a new #GSettings object
+ * Returns: (not nullable) (transfer full): a new #GSettings object
  *
  * Since: 2.26
  */
@@ -1130,7 +1130,7 @@ g_settings_new_with_backend_and_path (const gchar      *schema_id,
  * @path is non-%NULL and not equal to the path that the schema does
  * have.
  *
- * Returns: a new #GSettings object
+ * Returns: (not nullable) (transfer full): a new #GSettings object
  *
  * Since: 2.32
  */
@@ -1207,7 +1207,7 @@ g_settings_read_from_backend (GSettings          *settings,
  * It is a programmer error to give a @key that isn't contained in the
  * schema for @settings.
  *
- * Returns: a new #GVariant
+ * Returns: (not nullable) (transfer full): a new #GVariant
  *
  * Since: 2.26
  */
@@ -1727,7 +1727,7 @@ g_settings_set (GSettings   *settings,
  * what is returned by this function.  %NULL is valid; it is returned
  * just as any other value would be.
  *
- * Returns: (transfer full): the result, which may be %NULL
+ * Returns: (nullable) (transfer full): the result, which may be %NULL
  **/
 gpointer
 g_settings_get_mapped (GSettings           *settings,
@@ -1794,7 +1794,7 @@ g_settings_get_mapped (GSettings           *settings,
  * It is a programmer error to give a @key that isn't specified as
  * having a string type in the schema for @settings.
  *
- * Returns: a newly-allocated string
+ * Returns: (not nullable) (transfer full): a newly-allocated string
  *
  * Since: 2.26
  */
@@ -2188,7 +2188,7 @@ g_settings_set_boolean (GSettings  *settings,
  * It is a programmer error to give a @key that isn't specified as
  * having an array of strings type in the schema for @settings.
  *
- * Returns: (array zero-terminated=1) (transfer full): a
+ * Returns: (array zero-terminated=1) (not nullable) (transfer full): a
  * newly-allocated, %NULL-terminated array of strings, the value that
  * is stored at @key in @settings.
  *
@@ -2426,7 +2426,7 @@ g_settings_is_writable (GSettings   *settings,
  * The schema for the child settings object must have been declared
  * in the schema of @settings using a <child> element.
  *
- * Returns: (transfer full): a 'child' settings object
+ * Returns: (not nullable) (transfer full): a 'child' settings object
  *
  * Since: 2.26
  */
@@ -2469,8 +2469,8 @@ g_settings_get_child (GSettings   *settings,
  * You should free the return value with g_strfreev() when you are done
  * with it.
  *
- * Returns: (transfer full) (element-type utf8): a list of the keys on
- *    @settings, in no defined order
+ * Returns: (not nullable) (transfer full) (element-type utf8): a list
+ *    of the keys on @settings, in no defined order
  * Deprecated: 2.46: Use g_settings_schema_list_keys() instead.
  */
 gchar **
@@ -2495,8 +2495,8 @@ g_settings_list_keys (GSettings *settings)
  * You should free the return value with g_strfreev() when you are done
  * with it.
  *
- * Returns: (transfer full) (element-type utf8): a list of the children on
- *    @settings, in no defined order
+ * Returns: (not nullable) (transfer full) (element-type utf8): a list of the children
+ *    on @settings, in no defined order
  */
 gchar **
 g_settings_list_children (GSettings *settings)
@@ -3380,7 +3380,7 @@ g_settings_action_enabled_changed (GSettings   *settings,
  * activations take the new value for the key (which must have the
  * correct type).
  *
- * Returns: (transfer full): a new #GAction
+ * Returns: (not nullable) (transfer full): a new #GAction
  *
  * Since: 2.32
  **/
