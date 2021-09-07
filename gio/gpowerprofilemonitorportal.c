@@ -108,6 +108,7 @@ g_power_profile_monitor_portal_initable_init (GInitable     *initable,
   GPowerProfileMonitorPortal *ppm = G_POWER_PROFILE_MONITOR_PORTAL (initable);
   GDBusProxy *proxy;
   gchar *name_owner;
+  GVariant *power_saver_enabled_v = NULL;
 
   if (!glib_should_use_portal ())
     {
@@ -142,6 +143,12 @@ g_power_profile_monitor_portal_initable_init (GInitable     *initable,
 
   ppm->signal_id = g_signal_connect (proxy, "g-properties-changed",
                                      G_CALLBACK (proxy_properties_changed), ppm);
+
+  power_saver_enabled_v = g_dbus_proxy_get_cached_property (proxy, "power-saver-enabled");
+  if (power_saver_enabled_v != NULL &&
+      g_variant_is_of_type (power_saver_enabled_v, G_VARIANT_TYPE_BOOLEAN))
+    ppm->power_saver_enabled = g_variant_get_boolean (power_saver_enabled_v);
+  g_clear_pointer (&power_saver_enabled_v, g_variant_unref);
 
   ppm->proxy = g_steal_pointer (&proxy);
 
