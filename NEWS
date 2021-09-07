@@ -1,3 +1,26 @@
+Overview of changes in GLib 2.69.3
+==================================
+
+* Bugs fixed:
+ - #2425 g_settings_schema_key_range_check() misbehaves for int versus bool
+ - #2472 Compiling anything with GCC <4.6 spews deprecation warnings
+ - #2477 `g_invoke_closure` bindings API break.
+ - #2481 GPowerProfileMonitorPortal does not notice initial power-saver-enabled status
+ - !2219 doc: Explicitly said, that no null term. is needed
+ - !2238 ci: Use C.UTF-8 locale on FreeBSD 12
+ - !2240 gio: Fix conditions in memory-monitor test
+
+* Translation updates:
+ - Basque
+ - Catalan
+ - Chinese (China)
+ - Galician
+ - Kazakh
+ - Korean
+ - Lithuanian
+ - Romanian
+
+
 Overview of changes in GLib 2.69.2
 ==================================
 
