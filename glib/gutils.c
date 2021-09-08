@@ -685,14 +685,17 @@ g_get_user_database_entry (void)
               {
                 gchar **gecos_fields;
                 gchar **name_parts;
+                gchar *uppercase_pw_name;
 
                 /* split the gecos field and substitute '&' */
                 gecos_fields = g_strsplit (pw->pw_gecos, ",", 0);
                 name_parts = g_strsplit (gecos_fields[0], "&", 0);
-                pw->pw_name[0] = g_ascii_toupper (pw->pw_name[0]);
-                e.real_name = g_strjoinv (pw->pw_name, name_parts);
+                uppercase_pw_name = g_strdup (pw->pw_name);
+                uppercase_pw_name[0] = g_ascii_toupper (uppercase_pw_name[0]);
+                e.real_name = g_strjoinv (uppercase_pw_name, name_parts);
                 g_strfreev (gecos_fields);
                 g_strfreev (name_parts);
+                g_free (uppercase_pw_name);
               }
 #endif
 
