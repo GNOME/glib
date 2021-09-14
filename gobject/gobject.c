@@ -1180,6 +1180,24 @@ g_object_real_dispose (GObject *object)
   g_datalist_id_set_data (&object->qdata, quark_weak_refs, NULL);
 }
 
+static gboolean
+floating_check (GObject *object)
+{
+  static const char *g_enable_diagnostic = NULL;
+
+  if (G_UNLIKELY (g_enable_diagnostic == NULL))
+    {
+      g_enable_diagnostic = g_getenv ("G_ENABLE_DIAGNOSTIC");
+      if (g_enable_diagnostic == NULL)
+        g_enable_diagnostic = "0";
+    }
+
+  if (g_enable_diagnostic[0] == '1')
+    return g_object_is_floating (object);
+
+  return FALSE;
+}
+
 static void
 g_object_finalize (GObject *object)
 {
@@ -1188,6 +1206,17 @@ g_object_finalize (GObject *object)
       g_critical ("object %s %p finalized while still in-construction",
                   G_OBJECT_TYPE_NAME (object), object);
     }
+
+#ifdef G_ENABLE_DEBUG
+ if (floating_check (object))
+   {
+      g_critical ("A floating object %s %p was finalized. This means that someone\n"
+                  "called g_object_unref() on an object that had only a floating\n"
+                  "reference; the initial floating reference is not owned by anyone\n"
+                  "and must be removed with g_object_ref_sink().",
+                  G_OBJECT_TYPE_NAME (object), object);
+   }
+#endif
 
   g_datalist_clear (&object->qdata);
   
