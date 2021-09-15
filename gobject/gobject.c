@@ -3536,10 +3536,11 @@ g_object_unref (gpointer _object)
             }
 
           /* We got the lock first, so the object will definitely die
-           * now. Clear out all the weak references.
+           * now. Clear out all the weak references, if they're still set.
            */
-          weak_locations_free_unlocked (weak_locations);
-          g_datalist_id_remove_no_notify (&object->qdata, quark_weak_locations);
+          weak_locations = g_datalist_id_remove_no_notify (&object->qdata,
+                                                           quark_weak_locations);
+          g_clear_pointer (&weak_locations, weak_locations_free_unlocked);
 
           g_rw_lock_writer_unlock (&weak_locations_lock);
         }
@@ -4731,6 +4732,12 @@ g_weak_ref_set (GWeakRef *weak_ref,
           g_assert (weak_locations != NULL);
 
           *weak_locations = g_slist_remove (*weak_locations, weak_ref);
+
+          if (!*weak_locations)
+            {
+              weak_locations_free_unlocked (weak_locations);
+              g_datalist_id_remove_no_notify (&old_object->qdata, quark_weak_locations);
+            }
         }
 
       /* Add the weak ref to the new object */
