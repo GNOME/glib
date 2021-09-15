@@ -1179,6 +1179,7 @@ g_object_real_dispose (GObject *object)
   g_signal_handlers_destroy (object);
   g_datalist_id_set_data (&object->qdata, quark_closure_array, NULL);
   g_datalist_id_set_data (&object->qdata, quark_weak_refs, NULL);
+  g_datalist_id_set_data (&object->qdata, quark_weak_locations, NULL);
 }
 
 static void
@@ -3574,7 +3575,8 @@ g_object_unref (gpointer _object)
       g_datalist_id_set_data (&object->qdata, quark_closure_array, NULL);
       g_signal_handlers_destroy (object);
       g_datalist_id_set_data (&object->qdata, quark_weak_refs, NULL);
-      
+      g_datalist_id_set_data (&object->qdata, quark_weak_locations, NULL);
+
       /* decrement the last reference */
       old_ref = g_atomic_int_add (&object->ref_count, -1);
       g_return_if_fail (old_ref > 0);

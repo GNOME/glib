@@ -600,6 +600,8 @@ weak_reffed_object_dispose (GObject *object)
   g_weak_ref_set (weak_reffed->weak_ref, object);
 
   G_OBJECT_CLASS (weak_reffed_object_parent_class)->dispose (object);
+
+  g_assert_null (g_weak_ref_get (weak_reffed->weak_ref));
 }
 
 static void
@@ -632,6 +634,28 @@ test_weak_ref_on_dispose (void)
   g_assert_cmpint (G_OBJECT (obj)->ref_count, ==, 1);
   g_clear_object (&obj);
 
+  g_assert_null (g_weak_ref_get (&weak));
+}
+
+static void
+test_weak_ref_on_run_dispose (void)
+{
+  GObject *obj;
+  GWeakRef weak = { { GUINT_TO_POINTER (0xDEADBEEFU) } };
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/865");
+  g_test_summary ("Test that a weak ref is cleared on g_object_run_dispose()");
+
+  obj = g_object_new (G_TYPE_OBJECT, NULL);
+  g_weak_ref_init (&weak, obj);
+
+  g_assert_true (obj == g_weak_ref_get (&weak));
+  g_object_unref (obj);
+
+  g_object_run_dispose (obj);
+  g_assert_null (g_weak_ref_get (&weak));
+
+  g_clear_object (&obj);
   g_assert_null (g_weak_ref_get (&weak));
 }
 
@@ -939,6 +963,7 @@ main (int argc, char **argv)
   g_test_add_func ("/object/weak-pointer/set-function", test_weak_pointer_set_function);
   g_test_add_func ("/object/weak-ref", test_weak_ref);
   g_test_add_func ("/object/weak-ref/on-dispose", test_weak_ref_on_dispose);
+  g_test_add_func ("/object/weak-ref/on-run-dispose", test_weak_ref_on_run_dispose);
   g_test_add_func ("/object/weak-ref/on-toggle-notify", test_weak_ref_on_toggle_notify);
   g_test_add_func ("/object/toggle-ref", test_toggle_ref);
   g_test_add_func ("/object/qdata", test_object_qdata);
