@@ -1,3 +1,21 @@
+Overview of changes in GLib 2.70.0
+==================================
+
+* Bugs fixed:
+ - !2248 ci: Replace FreeBSD 11 with FreeBSD 13
+
+* Translation updates:
+ - Croatian
+ - Danish
+ - English (United Kingdom)
+ - French
+ - German
+ - Hungarian
+ - Polish
+ - Swedish
+ - Turkish
+
+
 Overview of changes in GLib 2.69.3
 ==================================
 
