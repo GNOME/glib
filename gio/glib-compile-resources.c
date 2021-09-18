@@ -710,6 +710,86 @@ escape_makefile_string (const char *string)
   return g_string_free (str, FALSE);
 }
 
+typedef enum {
+  COMPILER_GCC,
+  COMPILER_CLANG,
+  COMPILER_MSVC,
+  COMPILER_UNKNOWN
+} CompilerType;
+
+/* Get the compiler id from the platform, environment, or command line
+ *
+ * Keep compiler IDs consistent with https://mesonbuild.com/Reference-tables.html#compiler-ids
+ * for simplicity
+ */
+static CompilerType
+get_compiler_id (const char *compiler)
+{
+  char *base, *ext_p;
+  CompilerType compiler_type;
+
+  if (compiler == NULL)
+    {
+#ifdef G_OS_UNIX
+      const char *compiler_env = g_getenv ("CC");
+
+# ifdef __APPLE__
+      if (compiler_env == NULL || *compiler_env == '\0')
+        compiler = "clang";
+      else
+        compiler = compiler_env;
+# elif __linux__
+      if (compiler_env == NULL || *compiler_env == '\0')
+        compiler = "gcc";
+      else
+        compiler = compiler_env;
+# else
+      if (compiler_env == NULL || *compiler_env == '\0')
+        compiler = "unknown";
+      else
+        compiler = compiler_env;
+# endif
+#endif
+
+#ifdef G_OS_WIN32
+      if (g_getenv ("MSYSTEM") != NULL)
+        {
+          const char *compiler_env = g_getenv ("CC");
+
+          if (compiler_env == NULL || *compiler_env == '\0')
+            compiler = "gcc";
+          else
+            compiler = compiler_env;
+        }
+      else
+        compiler = "msvc";
+#endif
+    }
+
+  base = g_path_get_basename (compiler);
+  ext_p = strrchr (base, '.');
+  if (ext_p != NULL)
+    {
+      gsize offset = ext_p - base;
+      base[offset] = '\0';
+    }
+
+  compiler = base;
+
+  if (g_strcmp0 (compiler, "gcc") == 0)
+    compiler_type = COMPILER_GCC;
+  else if (g_strcmp0 (compiler, "clang") == 0)
+    compiler_type = COMPILER_CLANG;
+  else if (g_strcmp0 (compiler, "msvc") == 0)
+    compiler_type = COMPILER_MSVC;
+  else
+    compiler_type = COMPILER_UNKNOWN;
+
+  g_free (base);
+
+  return compiler_type;
+}
+
 int
 main (int argc, char **argv)
 {
@@ -732,6 +812,8 @@ main (int argc, char **argv)
   char *c_name = NULL;
   char *c_name_no_underscores;
   const char *linkage = "extern";
+  const char *compiler = NULL;
+  CompilerType compiler_type = COMPILER_GCC;
   GOptionContext *context;
   GOptionEntry entries[] = {
     { "version", 0, 0, G_OPTION_ARG_NONE, &show_version_and_exit, N_("Show program version and exit"), NULL },
@@ -747,6 +829,7 @@ main (int argc, char **argv)
     { "internal", 0, 0, G_OPTION_ARG_NONE, &internal, N_("Don’t export functions; declare them G_GNUC_INTERNAL"), NULL },
     { "external-data", 0, 0, G_OPTION_ARG_NONE, &external_data, N_("Don’t embed resource data in the C file; assume it's linked externally instead"), NULL },
     { "c-name", 0, 0, G_OPTION_ARG_STRING, &c_name, N_("C identifier name used for the generated source code"), NULL },
+    { "compiler", 'C', 0, G_OPTION_ARG_STRING, &compiler, N_("The target C compiler (default: the CC environment variable)"), NULL },
     G_OPTION_ENTRY_NULL
   };
 
@@ -801,6 +884,8 @@ main (int argc, char **argv)
 
   if (internal)
     linkage = "G_GNUC_INTERNAL";
+
+  compiler_type = get_compiler_id (compiler);
 
   srcfile = argv[1];
 
@@ -1105,40 +1190,41 @@ main (int argc, char **argv)
         }
       else
         {
-          /* For Visual Studio builds: Avoid surpassing the 65535-character limit for a string, GitLab issue #1580 */
-          g_fprintf (file, "#ifdef _MSC_VER\n");
-          g_fprintf (file,
-                     "static const SECTION union { const guint8 data[%"G_GSIZE_FORMAT"]; const double alignment; void * const ptr;}  %s_resource_data = { {\n",
-                     data_size + 1 /* nul terminator */, c_name);
-
-          for (i = 0; i < data_size; i++)
+          if (compiler_type == COMPILER_MSVC || compiler_type == COMPILER_UNKNOWN)
             {
-              if (i % 16 == 0)
-                g_fprintf (file, "  ");
-              g_fprintf (file, "0%3.3o", (int)data[i]);
-              if (i != data_size - 1)
-                g_fprintf (file, ", ");
-              if (i % 16 == 15 || i == data_size - 1)
-                g_fprintf (file, "\n");
+              /* For Visual Studio builds: Avoid surpassing the 65535-character limit for a string, GitLab issue #1580 */
+              g_fprintf (file,
+                         "static const SECTION union { const guint8 data[%"G_GSIZE_FORMAT"]; const double alignment; void * const ptr;}  %s_resource_data = { {\n",
+                         data_size + 1 /* nul terminator */, c_name);
+
+              for (i = 0; i < data_size; i++)
+                {
+                  if (i % 16 == 0)
+                    g_fprintf (file, "  ");
+                  g_fprintf (file, "0%3.3o", (int)data[i]);
+                  if (i != data_size - 1)
+                    g_fprintf (file, ", ");
+                  if (i % 16 == 15 || i == data_size - 1)
+                     g_fprintf (file, "\n");
+                }
+
+              g_fprintf (file, "} };\n");
             }
-
-          g_fprintf (file, "} };\n");
-
-          /* For other compilers, use the long string approach */
-          g_fprintf (file, "#else /* _MSC_VER */\n");
-          g_fprintf (file,
-                     "static const SECTION union { const guint8 data[%"G_GSIZE_FORMAT"]; const double alignment; void * const ptr;}  %s_resource_data = {\n  \"",
-                     data_size + 1 /* nul terminator */, c_name);
-
-          for (i = 0; i < data_size; i++)
+          else
             {
-              g_fprintf (file, "\\%3.3o", (int)data[i]);
-              if (i % 16 == 15)
-                g_fprintf (file, "\"\n  \"");
-            }
+              g_fprintf (file,
+                         "static const SECTION union { const guint8 data[%"G_GSIZE_FORMAT"]; const double alignment; void * const ptr;}  %s_resource_data = {\n  \"",
+                         data_size + 1 /* nul terminator */, c_name);
 
-          g_fprintf (file, "\" };\n");
-          g_fprintf (file, "#endif /* !_MSC_VER */\n");
+              for (i = 0; i < data_size; i++)
+                {
+                  g_fprintf (file, "\\%3.3o", (int)data[i]);
+                  if (i % 16 == 15)
+                    g_fprintf (file, "\"\n  \"");
+                }
+
+              g_fprintf (file, "\" };\n");
+            }
         }
 
       g_fprintf (file,

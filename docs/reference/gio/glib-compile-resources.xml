@@ -200,6 +200,16 @@ be used with <literal>make</literal>.
 </para></listitem>
 </varlistentry>
 
+<varlistentry>
+<term><option>--compiler=<replaceable>NAME</replaceable></option></term>
+<listitem><para>
+Generate code that is going to target the given compiler <replaceable>NAME</replaceable>.
+The current two compiler modes are "gcc", for all GCC-compatible toolchains; and "msvc",
+for the Microsoft Visual C Compiler. If this option isn't set, then the default will be
+taken from the <envar>CC</envar> environment variable.
+</para></listitem>
+</varlistentry>
+
 </variablelist>
 </refsect1>
 
