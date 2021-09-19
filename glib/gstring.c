@@ -123,7 +123,7 @@ g_string_sized_new (gsize dfl_size)
   string->len   = 0;
   string->str   = NULL;
 
-  g_string_maybe_expand (string, MAX (dfl_size, 2));
+  g_string_maybe_expand (string, MAX (dfl_size, 64));
   string->str[0] = 0;
 
   return string;
