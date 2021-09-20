@@ -343,6 +343,85 @@ test_threaded_weak_ref (void)
              get_wins, unref_wins);
 }
 
+typedef struct
+{
+  GObject *object;
+  GWeakRef *weak;
+  gint started; /* (atomic) */
+  gint finished; /* (atomic) */
+  gint disposing; /* (atomic) */
+} ThreadedWeakRefData;
+
+static void
+on_weak_ref_disposed (gpointer data,
+                      GObject *gobj)
+{
+  ThreadedWeakRefData *thread_data = data;
+
+  /* Wait until the thread has started */
+  while (!g_atomic_int_get (&thread_data->started))
+    continue;
+
+  g_atomic_int_set (&thread_data->disposing, 1);
+
+  /* Wait for the thread to act, so that the object is still valid */
+  while (!g_atomic_int_get (&thread_data->finished))
+    continue;
+
+  g_atomic_int_set (&thread_data->disposing, 0);
+}
+
+static gpointer
+on_other_thread_weak_ref (gpointer user_data)
+{
+  ThreadedWeakRefData *thread_data = user_data;
+  GObject *object = thread_data->object;
+
+  g_atomic_int_set (&thread_data->started, 1);
+
+  /* Ensure we've started disposal */
+  while (!g_atomic_int_get (&thread_data->disposing))
+    continue;
+
+  g_object_ref (object);
+  g_weak_ref_set (thread_data->weak, object);
+  g_object_unref (object);
+
+  g_assert_cmpint (thread_data->disposing, ==, 1);
+  g_atomic_int_set (&thread_data->finished, 1);
+
+  return NULL;
+}
+
+static void
+test_threaded_weak_ref_finalization (void)
+{
+  GObject *obj = g_object_new (G_TYPE_OBJECT, NULL);
+  GWeakRef weak = { { GUINT_TO_POINTER (0xDEADBEEFU) } };
+  ThreadedWeakRefData thread_data = {
+    .object = obj, .weak = &weak, .started = 0, .finished = 0
+  };
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/2390");
+  g_test_summary ("Test that a weak ref added by another thread during dispose "
+                  "of a GObject is cleared during finalisation. "
+                  "Use on_weak_ref_disposed() to synchronize the other thread "
+                  "with the dispose vfunc.");
+
+  g_weak_ref_init (&weak, NULL);
+  g_object_weak_ref (obj, on_weak_ref_disposed, &thread_data);
+
+  g_assert_cmpint (obj->ref_count, ==, 1);
+  g_thread_unref (g_thread_new ("on_other_thread",
+                                on_other_thread_weak_ref,
+                                &thread_data));
+  g_object_unref (obj);
+
+  /* This is what this test is about: at this point the weak reference
+   * should have been unset (and not point to a dead object either). */
+  g_assert_null (g_weak_ref_get (&weak));
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -352,6 +431,8 @@ main (int   argc,
   /* g_test_add_func ("/GObject/threaded-class-init", test_threaded_class_init); */
   g_test_add_func ("/GObject/threaded-object-init", test_threaded_object_init);
   g_test_add_func ("/GObject/threaded-weak-ref", test_threaded_weak_ref);
+  g_test_add_func ("/GObject/threaded-weak-ref/on-finalization",
+                   test_threaded_weak_ref_finalization);
 
   return g_test_run();
 }

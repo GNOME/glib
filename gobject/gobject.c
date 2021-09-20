@@ -233,6 +233,7 @@ static guint               object_floating_flag_handler (GObject        *object,
 
 static void object_interface_check_properties           (gpointer        check_data,
 							 gpointer        g_iface);
+static void                weak_locations_free_unlocked (GSList **weak_locations);
 
 /* --- typedefs --- */
 typedef struct _GObjectNotifyQueue            GObjectNotifyQueue;
@@ -1178,6 +1179,7 @@ g_object_real_dispose (GObject *object)
   g_signal_handlers_destroy (object);
   g_datalist_id_set_data (&object->qdata, quark_closure_array, NULL);
   g_datalist_id_set_data (&object->qdata, quark_weak_refs, NULL);
+  g_datalist_id_set_data (&object->qdata, quark_weak_locations, NULL);
 }
 
 static void
@@ -3512,6 +3514,10 @@ g_object_unref (gpointer _object)
        * established at this time, because the other thread would have
        * to hold a strong ref in order to call
        * g_object_add_weak_pointer() and then we wouldn't be here.
+       *
+       * Other GWeakRef's (weak locations) instead may still be added
+       * before the object is finalized, but in such case we'll unset
+       * them as part of the qdata removal.
        */
       weak_locations = g_datalist_id_get_data (&object->qdata, quark_weak_locations);
 
@@ -3531,15 +3537,11 @@ g_object_unref (gpointer _object)
             }
 
           /* We got the lock first, so the object will definitely die
-           * now. Clear out all the weak references.
+           * now. Clear out all the weak references, if they're still set.
            */
-          while (*weak_locations)
-            {
-              GWeakRef *weak_ref_location = (*weak_locations)->data;
-
-              weak_ref_location->priv.p = NULL;
-              *weak_locations = g_slist_delete_link (*weak_locations, *weak_locations);
-            }
+          weak_locations = g_datalist_id_remove_no_notify (&object->qdata,
+                                                           quark_weak_locations);
+          g_clear_pointer (&weak_locations, weak_locations_free_unlocked);
 
           g_rw_lock_writer_unlock (&weak_locations_lock);
         }
@@ -3573,7 +3575,8 @@ g_object_unref (gpointer _object)
       g_datalist_id_set_data (&object->qdata, quark_closure_array, NULL);
       g_signal_handlers_destroy (object);
       g_datalist_id_set_data (&object->qdata, quark_weak_refs, NULL);
-      
+      g_datalist_id_set_data (&object->qdata, quark_weak_locations, NULL);
+
       /* decrement the last reference */
       old_ref = g_atomic_int_add (&object->ref_count, -1);
       g_return_if_fail (old_ref > 0);
@@ -4646,6 +4649,35 @@ g_weak_ref_get (GWeakRef *weak_ref)
   return object_or_null;
 }
 
+static void
+weak_locations_free_unlocked (GSList **weak_locations)
+{
+  if (*weak_locations)
+    {
+      GSList *weak_location;
+
+      for (weak_location = *weak_locations; weak_location;)
+        {
+          GWeakRef *weak_ref_location = weak_location->data;
+
+          weak_ref_location->priv.p = NULL;
+          weak_location = g_slist_delete_link (weak_location, weak_location);
+        }
+    }
+
+  g_free (weak_locations);
+}
+
+static void
+weak_locations_free (gpointer data)
+{
+  GSList **weak_locations = data;
+
+  g_rw_lock_writer_lock (&weak_locations_lock);
+  weak_locations_free_unlocked (weak_locations);
+  g_rw_lock_writer_unlock (&weak_locations_lock);
+}
+
 /**
  * g_weak_ref_set: (skip)
  * @weak_ref: location for a weak reference
@@ -4702,6 +4734,12 @@ g_weak_ref_set (GWeakRef *weak_ref,
           g_assert (weak_locations != NULL);
 
           *weak_locations = g_slist_remove (*weak_locations, weak_ref);
+
+          if (!*weak_locations)
+            {
+              weak_locations_free_unlocked (weak_locations);
+              g_datalist_id_remove_no_notify (&old_object->qdata, quark_weak_locations);
+            }
         }
 
       /* Add the weak ref to the new object */
@@ -4712,7 +4750,8 @@ g_weak_ref_set (GWeakRef *weak_ref,
           if (weak_locations == NULL)
             {
               weak_locations = g_new0 (GSList *, 1);
-              g_datalist_id_set_data_full (&new_object->qdata, quark_weak_locations, weak_locations, g_free);
+              g_datalist_id_set_data_full (&new_object->qdata, quark_weak_locations,
+                                           weak_locations, weak_locations_free);
             }
 
           *weak_locations = g_slist_prepend (*weak_locations, weak_ref);
