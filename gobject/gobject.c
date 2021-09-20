@@ -1570,15 +1570,9 @@ object_set_property (GObject             *object,
     {
       class->set_property (object, param_id, &tmp_value, pspec);
 
-      if (~pspec->flags & G_PARAM_EXPLICIT_NOTIFY)
-        {
-          GParamSpec *notify_pspec;
-
-          notify_pspec = get_notify_pspec (pspec);
-
-          if (notify_pspec != NULL)
-            g_object_notify_queue_add (object, nqueue, notify_pspec);
-        }
+      if (~pspec->flags & G_PARAM_EXPLICIT_NOTIFY &&
+          pspec->flags & G_PARAM_READABLE)
+        g_object_notify_queue_add (object, nqueue, pspec);
     }
   g_value_unset (&tmp_value);
 }
