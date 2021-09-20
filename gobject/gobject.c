@@ -2523,17 +2523,14 @@ g_object_getv (GObject      *object,
 
   g_object_ref (object);
 
+  memset (values, 0, n_properties * sizeof (GValue));
+
   obj_type = G_OBJECT_TYPE (object);
   for (i = 0; i < n_properties; i++)
     {
-      pspec = g_param_spec_pool_lookup (pspec_pool,
-				        names[i],
-				        obj_type,
-				        TRUE);
+      pspec = g_param_spec_pool_lookup (pspec_pool, names[i], obj_type, TRUE);
       if (!g_object_get_is_valid_property (object, pspec, names[i]))
         break;
-
-      memset (&values[i], 0, sizeof (GValue));
       g_value_init (&values[i], pspec->value_type);
       object_get_property (object, pspec, &values[i]);
     }
