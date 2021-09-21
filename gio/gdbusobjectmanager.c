@@ -211,7 +211,7 @@ g_dbus_object_manager_get_objects (GDBusObjectManager *manager)
  * @manager: A #GDBusObjectManager.
  * @object_path: Object path to look up.
  *
- * Gets the #GDBusObjectProxy at @object_path, if any.
+ * Gets the #GDBusObject at @object_path, if any.
  *
  * Returns: (transfer full) (nullable): A #GDBusObject or %NULL. Free with
  *   g_object_unref().
