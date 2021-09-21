@@ -337,6 +337,11 @@ test_unichar_script (void)
     { G_UNICODE_SCRIPT_DIVES_AKURU,            0x11900 },
     { G_UNICODE_SCRIPT_KHITAN_SMALL_SCRIPT,    0x18B00 },
     { G_UNICODE_SCRIPT_YEZIDI,                 0x10E80 },
+    { G_UNICODE_SCRIPT_CYPRO_MINOAN,           0x12F90 },
+    { G_UNICODE_SCRIPT_OLD_UYGHUR,             0x10F70 },
+    { G_UNICODE_SCRIPT_TANGSA,                 0x16A70 },
+    { G_UNICODE_SCRIPT_TOTO,                   0x1E290 },
+    { G_UNICODE_SCRIPT_VITHKUQI,               0x10570 }
   };
   for (i = 0; i < G_N_ELEMENTS (examples); i++)
     g_assert_cmpint (g_unichar_get_script (examples[i].c), ==, examples[i].script);
@@ -1666,6 +1671,13 @@ test_iso15924 (void)
     { G_UNICODE_SCRIPT_DIVES_AKURU,            "Diak" },
     { G_UNICODE_SCRIPT_KHITAN_SMALL_SCRIPT,    "Kits" },
     { G_UNICODE_SCRIPT_YEZIDI,                 "Yezi" },
+
+    /* Unicode 14.0 additions */
+    { G_UNICODE_SCRIPT_CYPRO_MINOAN,           "Cpmn" },
+    { G_UNICODE_SCRIPT_OLD_UYGHUR,             "Ougr" },
+    { G_UNICODE_SCRIPT_TANGSA,                 "Tnsa" },
+    { G_UNICODE_SCRIPT_TOTO,                   "Toto" },
+    { G_UNICODE_SCRIPT_VITHKUQI,               "Vith" }
   };
   guint i;
 
