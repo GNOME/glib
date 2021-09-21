@@ -300,6 +300,25 @@ test_write_bytes (void)
   g_bytes_unref (bytes2);
 }
 
+static void
+test_write_null (void)
+{
+  GOutputStream *mo;
+  GError *error = NULL;
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/2471");
+
+  mo = g_memory_output_stream_new_resizable ();
+  g_output_stream_write_all (mo, NULL, 0, NULL, NULL, &error);
+  g_assert_no_error (error);
+
+  g_assert_cmpint (0, ==, g_memory_output_stream_get_data_size (G_MEMORY_OUTPUT_STREAM (mo)));
+
+  g_output_stream_close (mo, NULL, &error);
+  g_assert_no_error (error);
+  g_object_unref (mo);
+}
+
 /* Test that writev() works on #GMemoryOutputStream with a non-empty set of vectors. This
  * covers the default writev() implementation around write(). */
 static void
@@ -437,6 +456,7 @@ main (int   argc,
   g_test_add_func ("/memory-output-stream/get-data-size", test_data_size);
   g_test_add_func ("/memory-output-stream/properties", test_properties);
   g_test_add_func ("/memory-output-stream/write-bytes", test_write_bytes);
+  g_test_add_func ("/memory-output-stream/write-null", test_write_null);
   g_test_add_func ("/memory-output-stream/writev", test_writev);
   g_test_add_func ("/memory-output-stream/writev_nonblocking", test_writev_nonblocking);
   g_test_add_func ("/memory-output-stream/steal_as_bytes", test_steal_as_bytes);
