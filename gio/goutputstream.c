@@ -293,7 +293,7 @@ g_output_stream_write_all (GOutputStream  *stream,
   gssize res;
 
   g_return_val_if_fail (G_IS_OUTPUT_STREAM (stream), FALSE);
-  g_return_val_if_fail (buffer != NULL, FALSE);
+  g_return_val_if_fail (buffer != NULL || count == 0, FALSE);
 
   _bytes_written = 0;
   while (_bytes_written < count)
