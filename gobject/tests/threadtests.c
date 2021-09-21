@@ -422,6 +422,91 @@ test_threaded_weak_ref_finalization (void)
   g_assert_null (g_weak_ref_get (&weak));
 }
 
+typedef struct
+{
+  GObject *object;
+  int done;    /* (atomic) */
+  int toggles; /* (atomic) */
+} ToggleNotifyThreadData;
+
+static gpointer
+on_reffer_thread (gpointer user_data)
+{
+  ToggleNotifyThreadData *thread_data = user_data;
+
+  while (!g_atomic_int_get (&thread_data->done))
+    {
+      g_object_ref (thread_data->object);
+      g_object_unref (thread_data->object);
+    }
+
+  return NULL;
+}
+
+static void
+on_toggle_notify (gpointer data,
+                  GObject *object,
+                  gboolean is_last_ref)
+{
+  /* Anything could be put here, but we don't care for this test.
+   * Actually having this empty made the bug to happen more frequently (being
+   * timing related).
+   */
+}
+
+static gpointer
+on_toggler_thread (gpointer user_data)
+{
+  ToggleNotifyThreadData *thread_data = user_data;
+
+  while (!g_atomic_int_get (&thread_data->done))
+    {
+      g_object_ref (thread_data->object);
+      g_object_remove_toggle_ref (thread_data->object, on_toggle_notify, thread_data);
+      g_object_add_toggle_ref (thread_data->object, on_toggle_notify, thread_data);
+      g_object_unref (thread_data->object);
+      g_atomic_int_add (&thread_data->toggles, 1);
+    }
+
+  return NULL;
+}
+
+static void
+test_threaded_toggle_notify (void)
+{
+  GObject *object = g_object_new (G_TYPE_OBJECT, NULL);
+  ToggleNotifyThreadData data = { object, FALSE, 0 };
+  GThread *threads[3];
+  gsize i;
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/issues/2394");
+  g_test_summary ("Test that toggle reference notifications can be changed "
+                  "safely from another (the main) thread without causing the "
+                  "notifying thread to abort");
+
+  g_object_add_toggle_ref (object, on_toggle_notify, &data);
+  g_object_unref (object);
+
+  g_assert_cmpint (object->ref_count, ==, 1);
+  threads[0] = g_thread_new ("on_reffer_thread", on_reffer_thread, &data);
+  threads[1] = g_thread_new ("on_another_reffer_thread", on_reffer_thread, &data);
+  threads[2] = g_thread_new ("on_main_toggler_thread", on_toggler_thread, &data);
+
+  /* We need to wait here for the threads to run for a bit in order to make the
+   * race to happen, so we wait for an high number of toggle changes to be met
+   * so that we can be consistent on each platform.
+   */
+  while (g_atomic_int_get (&data.toggles) < 1000000)
+    ;
+  g_atomic_int_set (&data.done, TRUE);
+
+  for (i = 0; i < G_N_ELEMENTS (threads); i++)
+    g_thread_join (threads[i]);
+
+  g_assert_cmpint (object->ref_count, ==, 1);
+  g_clear_object (&object);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -433,6 +518,8 @@ main (int   argc,
   g_test_add_func ("/GObject/threaded-weak-ref", test_threaded_weak_ref);
   g_test_add_func ("/GObject/threaded-weak-ref/on-finalization",
                    test_threaded_weak_ref_finalization);
+  g_test_add_func ("/GObject/threaded-toggle-notify",
+                   test_threaded_toggle_notify);
 
   return g_test_run();
 }
