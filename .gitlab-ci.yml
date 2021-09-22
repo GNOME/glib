@@ -297,6 +297,19 @@ cross-mingw64:
     # Meson commit 47b9c1a564756ac48a55da9a7c4d91787399c645
     - meson ${MESON_COMMON_OPTIONS} --cross-file=/opt/cross_file_mingw64.txt --wrap-mode=default _build
     - ninja -C _build
+  artifacts:
+    reports:
+      junit: "_build/${env:CI_JOB_NAME}-report.xml"
+    name: "glib-${env:CI_JOB_NAME}-${env:CI_COMMIT_REF_NAME}"
+    when: always
+    paths:
+      - _build/meson-logs
+      - "_build/${env:CI_JOB_NAME}-report.xml"
+      - _build/glib/libglib-2.0-0.dll
+      - _build/gio/libgio-2.0-0.dll
+      - _build/gmodule/libgmodule-2.0-0.dll
+      - _build/gthread/libgthread-2.0-0.dll
+      - _build/gobject/libgobject-2.0-0.dll
 
 msys2-mingw32:
   extends: .only-default
@@ -337,6 +350,11 @@ vs2017-x64:
     paths:
       - _build/meson-logs
       - "_build/${env:CI_JOB_NAME}-report.xml"
+      - _build/glib/libglib-2.0-0.dll
+      - _build/gio/libgio-2.0-0.dll
+      - _build/gmodule/libgmodule-2.0-0.dll
+      - _build/gthread/libgthread-2.0-0.dll
+      - _build/gobject/libgobject-2.0-0.dll
 
 freebsd-12-x86_64:
   stage: build
