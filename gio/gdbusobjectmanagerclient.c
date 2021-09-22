@@ -1689,9 +1689,9 @@ remove_interfaces (GDBusObjectManagerClient   *manager,
   op = g_hash_table_lookup (manager->priv->map_object_path_to_object_proxy, object_path);
   if (op == NULL)
     {
-      g_warning ("%s: Processing InterfaceRemoved signal for path %s but no object proxy exists",
-                 G_STRLOC,
-                 object_path);
+      g_debug ("%s: Processing InterfaceRemoved signal for path %s but no object proxy exists",
+               G_STRLOC,
+               object_path);
       g_mutex_unlock (&manager->priv->lock);
       goto out;
     }
