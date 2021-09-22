@@ -1693,7 +1693,7 @@ remove_interfaces (GDBusObjectManagerClient   *manager,
                G_STRLOC,
                object_path);
       g_mutex_unlock (&manager->priv->lock);
-      goto out;
+      return;
     }
 
   interfaces = g_dbus_object_get_interfaces (G_DBUS_OBJECT (op));
@@ -1730,8 +1730,6 @@ remove_interfaces (GDBusObjectManagerClient   *manager,
       g_object_unref (op);
     }
   g_object_unref (manager);
- out:
-  ;
 }
 
 static void
