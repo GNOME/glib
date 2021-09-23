@@ -1689,11 +1689,11 @@ remove_interfaces (GDBusObjectManagerClient   *manager,
   op = g_hash_table_lookup (manager->priv->map_object_path_to_object_proxy, object_path);
   if (op == NULL)
     {
-      g_warning ("%s: Processing InterfaceRemoved signal for path %s but no object proxy exists",
-                 G_STRLOC,
-                 object_path);
+      g_debug ("%s: Processing InterfaceRemoved signal for path %s but no object proxy exists",
+               G_STRLOC,
+               object_path);
       g_mutex_unlock (&manager->priv->lock);
-      goto out;
+      return;
     }
 
   interfaces = g_dbus_object_get_interfaces (G_DBUS_OBJECT (op));
@@ -1730,8 +1730,6 @@ remove_interfaces (GDBusObjectManagerClient   *manager,
       g_object_unref (op);
     }
   g_object_unref (manager);
- out:
-  ;
 }
 
 static void
