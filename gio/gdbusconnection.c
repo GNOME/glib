@@ -466,7 +466,8 @@ typedef struct ExportedObject ExportedObject;
 static void exported_object_free (ExportedObject *eo);
 
 typedef struct ExportedSubtree ExportedSubtree;
-static void exported_subtree_free (ExportedSubtree *es);
+static ExportedSubtree *exported_subtree_ref (ExportedSubtree *es);
+static void exported_subtree_unref (ExportedSubtree *es);
 
 enum
 {
@@ -1096,7 +1097,7 @@ g_dbus_connection_init (GDBusConnection *connection)
   connection->map_object_path_to_es = g_hash_table_new_full (g_str_hash,
                                                              g_str_equal,
                                                              NULL,
-                                                             (GDestroyNotify) exported_subtree_free);
+                                                             (GDestroyNotify) exported_subtree_unref);
 
   connection->map_id_to_es = g_hash_table_new (g_direct_hash,
                                                g_direct_equal);
@@ -4085,6 +4086,8 @@ typedef struct
 {
   ExportedObject *eo;
 
+  gint                        refcount;  /* (atomic) */
+
   guint                       id;
   gchar                      *interface_name;  /* (owned) */
   GDBusInterfaceVTable       *vtable;  /* (owned) */
@@ -4095,10 +4098,21 @@ typedef struct
   GDestroyNotify              user_data_free_func;
 } ExportedInterface;
 
-/* called with lock held */
-static void
-exported_interface_free (ExportedInterface *ei)
+static ExportedInterface *
+exported_interface_ref (ExportedInterface *ei)
 {
+  g_atomic_int_inc (&ei->refcount);
+
+  return ei;
+}
+
+/* May be called with lock held */
+static void
+exported_interface_unref (ExportedInterface *ei)
+{
+  if (!g_atomic_int_dec_and_test (&ei->refcount))
+    return;
+
   g_dbus_interface_info_cache_release (ei->interface_info);
   g_dbus_interface_info_unref ((GDBusInterfaceInfo *) ei->interface_info);
 
@@ -4115,6 +4129,8 @@ exported_interface_free (ExportedInterface *ei)
 
 struct ExportedSubtree
 {
+  gint                      refcount;  /* (atomic) */
+
   guint                     id;
   gchar                    *object_path;  /* (owned) */
   GDBusConnection          *connection;  /* (unowned) */
@@ -4126,9 +4142,21 @@ struct ExportedSubtree
   GDestroyNotify            user_data_free_func;
 };
 
-static void
-exported_subtree_free (ExportedSubtree *es)
+static ExportedSubtree *
+exported_subtree_ref (ExportedSubtree *es)
 {
+  g_atomic_int_inc (&es->refcount);
+
+  return es;
+}
+
+/* May be called with lock held */
+static void
+exported_subtree_unref (ExportedSubtree *es)
+{
+  if (!g_atomic_int_dec_and_test (&es->refcount))
+    return;
+
   call_destroy_notify (es->context,
                        es->user_data_free_func,
                        es->user_data);
@@ -5251,7 +5279,7 @@ g_dbus_connection_register_object (GDBusConnection             *connection,
       eo->map_if_name_to_ei = g_hash_table_new_full (g_str_hash,
                                                      g_str_equal,
                                                      NULL,
-                                                     (GDestroyNotify) exported_interface_free);
+                                                     (GDestroyNotify) exported_interface_unref);
       g_hash_table_insert (connection->map_object_path_to_eo, eo->object_path, eo);
     }
 
@@ -5268,6 +5296,7 @@ g_dbus_connection_register_object (GDBusConnection             *connection,
     }
 
   ei = g_new0 (ExportedInterface, 1);
+  ei->refcount = 1;
   ei->id = (guint) g_atomic_int_add (&_global_registration_id, 1); /* TODO: overflow etc. */
   ei->eo = eo;
   ei->user_data = user_data;
@@ -6924,6 +6953,7 @@ g_dbus_connection_register_subtree (GDBusConnection           *connection,
     }
 
   es = g_new0 (ExportedSubtree, 1);
+  es->refcount = 1;
   es->object_path = g_strdup (object_path);
   es->connection = connection;
 
