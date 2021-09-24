@@ -4086,11 +4086,11 @@ typedef struct
   ExportedObject *eo;
 
   guint                       id;
-  gchar                      *interface_name;
-  GDBusInterfaceVTable       *vtable;
-  GDBusInterfaceInfo         *interface_info;
+  gchar                      *interface_name;  /* (owned) */
+  GDBusInterfaceVTable       *vtable;  /* (owned) */
+  GDBusInterfaceInfo         *interface_info;  /* (owned) */
 
-  GMainContext               *context;
+  GMainContext               *context;  /* (owned) */
   gpointer                    user_data;
   GDestroyNotify              user_data_free_func;
 } ExportedInterface;
@@ -4116,12 +4116,12 @@ exported_interface_free (ExportedInterface *ei)
 struct ExportedSubtree
 {
   guint                     id;
-  gchar                    *object_path;
-  GDBusConnection          *connection;
-  GDBusSubtreeVTable       *vtable;
+  gchar                    *object_path;  /* (owned) */
+  GDBusConnection          *connection;  /* (unowned) */
+  GDBusSubtreeVTable       *vtable;  /* (owned) */
   GDBusSubtreeFlags         flags;
 
-  GMainContext             *context;
+  GMainContext             *context;  /* (owned) */
   gpointer                  user_data;
   GDestroyNotify            user_data_free_func;
 };
