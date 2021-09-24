@@ -4113,6 +4113,33 @@ exported_interface_free (ExportedInterface *ei)
   g_free (ei);
 }
 
+struct ExportedSubtree
+{
+  guint                     id;
+  gchar                    *object_path;
+  GDBusConnection          *connection;
+  GDBusSubtreeVTable       *vtable;
+  GDBusSubtreeFlags         flags;
+
+  GMainContext             *context;
+  gpointer                  user_data;
+  GDestroyNotify            user_data_free_func;
+};
+
+static void
+exported_subtree_free (ExportedSubtree *es)
+{
+  call_destroy_notify (es->context,
+                       es->user_data_free_func,
+                       es->user_data);
+
+  g_main_context_unref (es->context);
+
+  _g_dbus_subtree_vtable_free (es->vtable);
+  g_free (es->object_path);
+  g_free (es);
+}
+
 /* ---------------------------------------------------------------------------------------------------- */
 
 /* Convenience function to check if @registration_id (if not zero) or
@@ -6400,33 +6427,6 @@ g_dbus_connection_call_with_unix_fd_list_sync (GDBusConnection     *connection,
 #endif /* G_OS_UNIX */
 
 /* ---------------------------------------------------------------------------------------------------- */
-
-struct ExportedSubtree
-{
-  guint                     id;
-  gchar                    *object_path;
-  GDBusConnection          *connection;
-  GDBusSubtreeVTable       *vtable;
-  GDBusSubtreeFlags         flags;
-
-  GMainContext             *context;
-  gpointer                  user_data;
-  GDestroyNotify            user_data_free_func;
-};
-
-static void
-exported_subtree_free (ExportedSubtree *es)
-{
-  call_destroy_notify (es->context,
-                       es->user_data_free_func,
-                       es->user_data);
-
-  g_main_context_unref (es->context);
-
-  _g_dbus_subtree_vtable_free (es->vtable);
-  g_free (es->object_path);
-  g_free (es);
-}
 
 /* called without lock held in the thread where the caller registered
  * the subtree
