@@ -6824,14 +6824,15 @@ handle_subtree_method_invocation (GDBusConnection *connection,
 
 typedef struct
 {
-  GDBusMessage *message;
-  ExportedSubtree *es;
+  GDBusMessage *message;  /* (owned) */
+  ExportedSubtree *es;  /* (owned) */
 } SubtreeDeferredData;
 
 static void
 subtree_deferred_data_free (SubtreeDeferredData *data)
 {
   g_object_unref (data->message);
+  exported_subtree_unref (data->es);
   g_free (data);
 }
 
@@ -6890,7 +6891,7 @@ subtree_message_func (GDBusConnection *connection,
 
   data = g_new0 (SubtreeDeferredData, 1);
   data->message = g_object_ref (message);
-  data->es = es;
+  data->es = exported_subtree_ref (es);
 
   /* defer this call to an idle handler in the right thread */
   idle_source = g_idle_source_new ();
