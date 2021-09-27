@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
 "POT-Creation-Date: 2021-07-19 15:52+0000\n"
-"PO-Revision-Date: 2021-09-24 11:37+0330\n"
+"PO-Revision-Date: 2021-09-27 18:46+0330\n"
 "Last-Translator: eshagh <eshagh094@gmail.com>\n"
 "Language-Team: Persian <>\n"
 "Language: fa\n"
@@ -44,8 +44,8 @@ msgstr ""
 msgid "Replace the running instance"
 msgstr ""
 
-#: gio/gapplication-tool.c:45 gio/gapplication-tool.c:46 gio/gio-tool.c:227
-#: gio/gresource-tool.c:494 gio/gsettings-tool.c:572
+#: gio/gapplication-tool.c:45 gio/gapplication-tool.c:46 gio/gio-tool.c:227 gio/gresource-tool.c:494
+#: gio/gsettings-tool.c:572
 msgid "Print help"
 msgstr "چاپ راهنما"
 
@@ -105,8 +105,7 @@ msgstr ""
 msgid "APPID"
 msgstr ""
 
-#: gio/gapplication-tool.c:72 gio/gapplication-tool.c:135 gio/gdbus-tool.c:106
-#: gio/gio-tool.c:224
+#: gio/gapplication-tool.c:72 gio/gapplication-tool.c:135 gio/gdbus-tool.c:106 gio/gio-tool.c:224
 msgid "COMMAND"
 msgstr "COMMAND"
 
@@ -118,9 +117,8 @@ msgstr ""
 msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr ""
 
-#: gio/gapplication-tool.c:74 gio/glib-compile-resources.c:738
-#: gio/glib-compile-resources.c:744 gio/glib-compile-resources.c:772
-#: gio/gresource-tool.c:501 gio/gresource-tool.c:567
+#: gio/gapplication-tool.c:74 gio/glib-compile-resources.c:738 gio/glib-compile-resources.c:744
+#: gio/glib-compile-resources.c:772 gio/gresource-tool.c:501 gio/gresource-tool.c:567
 msgid "FILE"
 msgstr "FILE"
 
@@ -170,7 +168,7 @@ msgstr ""
 #: gio/gapplication-tool.c:136
 #, c-format
 msgid "Commands:\n"
-msgstr ""
+msgstr "دستورات:\n"
 
 #. Translators: do not translate 'help', but please translate 'COMMAND'.
 #: gio/gapplication-tool.c:148
@@ -255,16 +253,14 @@ msgstr ""
 "فرمان ناشناس %s\n"
 "\n"
 
-#: gio/gbufferedinputstream.c:420 gio/gbufferedinputstream.c:498
-#: gio/ginputstream.c:179 gio/ginputstream.c:379 gio/ginputstream.c:648
-#: gio/ginputstream.c:1050 gio/goutputstream.c:223 gio/goutputstream.c:1049
-#: gio/gpollableinputstream.c:205 gio/gpollableoutputstream.c:277
+#: gio/gbufferedinputstream.c:420 gio/gbufferedinputstream.c:498 gio/ginputstream.c:179
+#: gio/ginputstream.c:379 gio/ginputstream.c:648 gio/ginputstream.c:1050 gio/goutputstream.c:223
+#: gio/goutputstream.c:1049 gio/gpollableinputstream.c:205 gio/gpollableoutputstream.c:277
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "مقدار شمارش بسیار بزرگی به %s ارسال شده است"
 
-#: gio/gbufferedinputstream.c:891 gio/gbufferedoutputstream.c:575
-#: gio/gdataoutputstream.c:562
+#: gio/gbufferedinputstream.c:891 gio/gbufferedoutputstream.c:575 gio/gdataoutputstream.c:562
 #, fuzzy
 #| msgid "Splice not supported"
 msgid "Seek not supported on base stream"
@@ -274,8 +270,7 @@ msgstr "اتصال پشتیبانی نمی‌شود"
 msgid "Cannot truncate GBufferedInputStream"
 msgstr ""
 
-#: gio/gbufferedinputstream.c:983 gio/ginputstream.c:1239 gio/giostream.c:300
-#: gio/goutputstream.c:2198
+#: gio/gbufferedinputstream.c:983 gio/ginputstream.c:1239 gio/giostream.c:300 gio/goutputstream.c:2198
 msgid "Stream is already closed"
 msgstr "جریان از قبل بسته شده است"
 
@@ -285,8 +280,8 @@ msgstr "جریان از قبل بسته شده است"
 msgid "Truncate not supported on base stream"
 msgstr "زباله پشتیبانی نمی‌شود"
 
-#: gio/gcancellable.c:319 gio/gdbusconnection.c:1872 gio/gdbusprivate.c:1416
-#: gio/gsimpleasyncresult.c:871 gio/gsimpleasyncresult.c:897
+#: gio/gcancellable.c:319 gio/gdbusconnection.c:1872 gio/gdbusprivate.c:1416 gio/gsimpleasyncresult.c:871
+#: gio/gsimpleasyncresult.c:897
 #, c-format
 msgid "Operation was cancelled"
 msgstr "عملیات لغو شده"
@@ -304,15 +299,14 @@ msgstr "دنبالهٔ بایتی نامعتبر در ورودی تبدیل"
 msgid "Not enough space in destination"
 msgstr "فضا کافی در مقصد وجود ندارد"
 
-#: gio/gcharsetconverter.c:342 gio/gdatainputstream.c:848
-#: gio/gdatainputstream.c:1266 glib/gconvert.c:449 glib/gconvert.c:879
-#: glib/giochannel.c:1573 glib/giochannel.c:1615 glib/giochannel.c:2470
-#: glib/gutf8.c:875 glib/gutf8.c:1328
+#: gio/gcharsetconverter.c:342 gio/gdatainputstream.c:848 gio/gdatainputstream.c:1266 glib/gconvert.c:449
+#: glib/gconvert.c:879 glib/giochannel.c:1573 glib/giochannel.c:1615 glib/giochannel.c:2470 glib/gutf8.c:875
+#: glib/gutf8.c:1328
 msgid "Invalid byte sequence in conversion input"
 msgstr "دنبالهٔ بایتی نامعتبر در ورودی تبدیل"
 
-#: gio/gcharsetconverter.c:347 glib/gconvert.c:457 glib/gconvert.c:793
-#: glib/giochannel.c:1580 glib/giochannel.c:2482
+#: gio/gcharsetconverter.c:347 glib/gconvert.c:457 glib/gconvert.c:793 glib/giochannel.c:1580
+#: glib/giochannel.c:2482
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "خطا در حین تبدیل: %s"
@@ -387,12 +381,11 @@ msgstr ""
 
 #: gio/gdbusaddress.c:181
 #, c-format
-msgid ""
-"Address “%s” is invalid (need exactly one of path, dir, tmpdir, or abstract keys)"
+msgid "Address “%s” is invalid (need exactly one of path, dir, tmpdir, or abstract keys)"
 msgstr ""
 
-#: gio/gdbusaddress.c:248 gio/gdbusaddress.c:259 gio/gdbusaddress.c:274
-#: gio/gdbusaddress.c:337 gio/gdbusaddress.c:348
+#: gio/gdbusaddress.c:248 gio/gdbusaddress.c:259 gio/gdbusaddress.c:274 gio/gdbusaddress.c:337
+#: gio/gdbusaddress.c:348
 #, c-format
 msgid "Error in address “%s” — the “%s” attribute is malformed"
 msgstr ""
@@ -414,8 +407,7 @@ msgstr ""
 
 #: gio/gdbusaddress.c:492
 #, c-format
-msgid ""
-"Key/Value pair %d, “%s”, in address element “%s” does not contain an equal sign"
+msgid "Key/Value pair %d, “%s”, in address element “%s” does not contain an equal sign"
 msgstr ""
 
 #: gio/gdbusaddress.c:503
@@ -425,15 +417,13 @@ msgstr ""
 
 #: gio/gdbusaddress.c:517
 #, c-format
-msgid ""
-"Error unescaping key or value in Key/Value pair %d, “%s”, in address element “%s”"
+msgid "Error unescaping key or value in Key/Value pair %d, “%s”, in address element “%s”"
 msgstr ""
 
 #: gio/gdbusaddress.c:589
 #, c-format
 msgid ""
-"Error in address “%s” — the unix transport requires exactly one of the keys "
-"“path” or “abstract” to be set"
+"Error in address “%s” — the unix transport requires exactly one of the keys “path” or “abstract” to be set"
 msgstr ""
 
 #: gio/gdbusaddress.c:625
@@ -508,15 +498,11 @@ msgstr ""
 
 #: gio/gdbusaddress.c:1397 gio/gdbusconnection.c:7261
 #, c-format
-msgid ""
-"Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable — "
-"unknown value “%s”"
+msgid "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable — unknown value “%s”"
 msgstr ""
 
 #: gio/gdbusaddress.c:1406 gio/gdbusconnection.c:7270
-msgid ""
-"Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
-"variable is not set"
+msgid "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment variable is not set"
 msgstr ""
 
 #: gio/gdbusaddress.c:1416
@@ -534,8 +520,7 @@ msgstr ""
 
 #: gio/gdbusauth.c:482
 #, c-format
-msgid ""
-"Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
+msgid "Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
 msgstr ""
 
 #: gio/gdbusauth.c:1171
@@ -563,12 +548,10 @@ msgstr ""
 msgid "Error creating directory “%s”: %s"
 msgstr "خطا در هنگام ساخت شاخه «%s»: %s"
 
-#: gio/gdbusauthmechanismsha1.c:359 gio/gfile.c:1062 gio/gfile.c:1300
-#: gio/gfile.c:1438 gio/gfile.c:1676 gio/gfile.c:1731 gio/gfile.c:1789
-#: gio/gfile.c:1873 gio/gfile.c:1930 gio/gfile.c:1994 gio/gfile.c:2049
-#: gio/gfile.c:3754 gio/gfile.c:3809 gio/gfile.c:4102 gio/gfile.c:4572
-#: gio/gfile.c:4983 gio/gfile.c:5068 gio/gfile.c:5158 gio/gfile.c:5255
-#: gio/gfile.c:5342 gio/gfile.c:5443 gio/gfile.c:8153 gio/gfile.c:8243
+#: gio/gdbusauthmechanismsha1.c:359 gio/gfile.c:1062 gio/gfile.c:1300 gio/gfile.c:1438 gio/gfile.c:1676
+#: gio/gfile.c:1731 gio/gfile.c:1789 gio/gfile.c:1873 gio/gfile.c:1930 gio/gfile.c:1994 gio/gfile.c:2049
+#: gio/gfile.c:3754 gio/gfile.c:3809 gio/gfile.c:4102 gio/gfile.c:4572 gio/gfile.c:4983 gio/gfile.c:5068
+#: gio/gfile.c:5158 gio/gfile.c:5255 gio/gfile.c:5342 gio/gfile.c:5443 gio/gfile.c:8153 gio/gfile.c:8243
 #: gio/gfile.c:8327 gio/win32/gwinhttpfile.c:453
 msgid "Operation not supported"
 msgstr "عملیات پشتیبانی نمی‌شود"
@@ -591,8 +574,7 @@ msgstr ""
 
 #: gio/gdbusauthmechanismsha1.c:453 gio/gdbusauthmechanismsha1.c:775
 #, c-format
-msgid ""
-"Second token of line %d of the keyring at “%s” with content “%s” is malformed"
+msgid "Second token of line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr ""
 
 #: gio/gdbusauthmechanismsha1.c:477
@@ -753,15 +735,11 @@ msgid "SIGNAL message: PATH, INTERFACE or MEMBER header field is missing"
 msgstr ""
 
 #: gio/gdbusmessage.c:1321
-msgid ""
-"SIGNAL message: The PATH header field is using the reserved value /org/"
-"freedesktop/DBus/Local"
+msgid "SIGNAL message: The PATH header field is using the reserved value /org/freedesktop/DBus/Local"
 msgstr ""
 
 #: gio/gdbusmessage.c:1329
-msgid ""
-"SIGNAL message: The INTERFACE header field is using the reserved value org."
-"freedesktop.DBus.Local"
+msgid "SIGNAL message: The INTERFACE header field is using the reserved value org.freedesktop.DBus.Local"
 msgstr ""
 
 #: gio/gdbusmessage.c:1377 gio/gdbusmessage.c:1437
@@ -779,8 +757,8 @@ msgstr ""
 #: gio/gdbusmessage.c:1410
 #, c-format
 msgid ""
-"Expected valid UTF-8 string but found invalid bytes at byte offset %d (length of "
-"string is %d). The valid UTF-8 string up until that point was “%s”"
+"Expected valid UTF-8 string but found invalid bytes at byte offset %d (length of string is %d). The valid "
+"UTF-8 string up until that point was “%s”"
 msgstr ""
 
 #: gio/gdbusmessage.c:1474 gio/gdbusmessage.c:1722 gio/gdbusmessage.c:1911
@@ -801,16 +779,15 @@ msgstr ""
 #: gio/gdbusmessage.c:1689
 #, c-format
 msgid "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
-msgid_plural ""
-"Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."
+msgid_plural "Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."
 msgstr[0] ""
 msgstr[1] ""
 
 #: gio/gdbusmessage.c:1709
 #, c-format
 msgid ""
-"Encountered array of type “a%c”, expected to have a length a multiple of %u "
-"bytes, but found to be %u bytes in length"
+"Encountered array of type “a%c”, expected to have a length a multiple of %u bytes, but found to be %u "
+"bytes in length"
 msgstr ""
 
 #: gio/gdbusmessage.c:1895
@@ -820,14 +797,12 @@ msgstr ""
 
 #: gio/gdbusmessage.c:1936
 #, c-format
-msgid ""
-"Error deserializing GVariant with type string “%s” from the D-Bus wire format"
+msgid "Error deserializing GVariant with type string “%s” from the D-Bus wire format"
 msgstr ""
 
 #: gio/gdbusmessage.c:2121
 #, c-format
-msgid ""
-"Invalid endianness value. Expected 0x6c (“l”) or 0x42 (“B”) but found value 0x%02x"
+msgid "Invalid endianness value. Expected 0x6c (“l”) or 0x42 (“B”) but found value 0x%02x"
 msgstr ""
 
 #: gio/gdbusmessage.c:2134
@@ -881,8 +856,7 @@ msgstr ""
 
 #: gio/gdbusmessage.c:2809
 #, c-format
-msgid ""
-"Message body has type signature “%s” but signature in the header field is “%s”"
+msgid "Message body has type signature “%s” but signature in the header field is “%s”"
 msgstr ""
 
 #: gio/gdbusmessage.c:2825
@@ -936,8 +910,8 @@ msgstr ""
 #: gio/gdbusproxy.c:2699 gio/gdbusproxy.c:2834
 #, c-format
 msgid ""
-"Cannot invoke method; proxy is for the well-known name %s without an owner, and "
-"proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
+"Cannot invoke method; proxy is for the well-known name %s without an owner, and proxy was constructed "
+"with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
 msgstr ""
 
 #: gio/gdbusserver.c:767
@@ -978,9 +952,8 @@ msgid ""
 "Use “%s COMMAND --help” to get help on each command.\n"
 msgstr ""
 
-#: gio/gdbus-tool.c:201 gio/gdbus-tool.c:273 gio/gdbus-tool.c:345
-#: gio/gdbus-tool.c:369 gio/gdbus-tool.c:859 gio/gdbus-tool.c:1236
-#: gio/gdbus-tool.c:1724
+#: gio/gdbus-tool.c:201 gio/gdbus-tool.c:273 gio/gdbus-tool.c:345 gio/gdbus-tool.c:369 gio/gdbus-tool.c:859
+#: gio/gdbus-tool.c:1236 gio/gdbus-tool.c:1724
 #, c-format
 msgid "Error: %s\n"
 msgstr "خطا: %s\n"
@@ -996,8 +969,8 @@ msgstr "خطا در تجزیهٔ گزینهٔ %s"
 msgid "Error: %s is not a valid name\n"
 msgstr "خطا: %s یک نام عضو معتبر نیست\n"
 
-#: gio/gdbus-tool.c:255 gio/gdbus-tool.c:745 gio/gdbus-tool.c:1060
-#: gio/gdbus-tool.c:1890 gio/gdbus-tool.c:2130
+#: gio/gdbus-tool.c:255 gio/gdbus-tool.c:745 gio/gdbus-tool.c:1060 gio/gdbus-tool.c:1890
+#: gio/gdbus-tool.c:2130
 #, c-format
 msgid "Error: %s is not a valid object path\n"
 msgstr "خطا: %s یک مسیر شیء معتبر نیست\n"
@@ -1039,9 +1012,7 @@ msgstr ""
 
 #: gio/gdbus-tool.c:531
 #, c-format
-msgid ""
-"Warning: According to introspection data, method “%s” does not exist on interface "
-"“%s”\n"
+msgid "Warning: According to introspection data, method “%s” does not exist on interface “%s”\n"
 msgstr ""
 
 #: gio/gdbus-tool.c:593
@@ -1060,8 +1031,8 @@ msgstr ""
 msgid "Emit a signal."
 msgstr ""
 
-#: gio/gdbus-tool.c:683 gio/gdbus-tool.c:997 gio/gdbus-tool.c:1827
-#: gio/gdbus-tool.c:2059 gio/gdbus-tool.c:2279
+#: gio/gdbus-tool.c:683 gio/gdbus-tool.c:997 gio/gdbus-tool.c:1827 gio/gdbus-tool.c:2059
+#: gio/gdbus-tool.c:2279
 #, c-format
 msgid "Error connecting: %s\n"
 msgstr "خطا در هنگام اتصال: %s\n"
@@ -1204,9 +1175,7 @@ msgid "Service to activate before waiting for the other one (well-known name)"
 msgstr ""
 
 #: gio/gdbus-tool.c:2196
-msgid ""
-"Timeout to wait for before exiting with an error (seconds); 0 for no timeout "
-"(default)"
+msgid "Timeout to wait for before exiting with an error (seconds); 0 for no timeout (default)"
 msgstr ""
 
 #: gio/gdbus-tool.c:2244
@@ -1433,8 +1402,7 @@ msgstr "هیچ برنامه‌ای برای مار با این پرونده ثب
 msgid "Enumerator is closed"
 msgstr ""
 
-#: gio/gfileenumerator.c:219 gio/gfileenumerator.c:278 gio/gfileenumerator.c:377
-#: gio/gfileenumerator.c:476
+#: gio/gfileenumerator.c:219 gio/gfileenumerator.c:278 gio/gfileenumerator.c:377 gio/gfileenumerator.c:476
 msgid "File enumerator has outstanding operation"
 msgstr ""
 
@@ -1452,8 +1420,8 @@ msgstr "نمی‌توان با رمزنگاری نسخه %Id GThemedIcon را ک
 msgid "Malformed input data for GFileIcon"
 msgstr ""
 
-#: gio/gfileinputstream.c:149 gio/gfileinputstream.c:394 gio/gfileiostream.c:167
-#: gio/gfileoutputstream.c:164 gio/gfileoutputstream.c:497
+#: gio/gfileinputstream.c:149 gio/gfileinputstream.c:394 gio/gfileiostream.c:167 gio/gfileoutputstream.c:164
+#: gio/gfileoutputstream.c:497
 msgid "Stream doesn’t support query_info"
 msgstr ""
 
@@ -1559,8 +1527,8 @@ msgstr ""
 msgid "Could not parse “%s” as IP address mask"
 msgstr "نمی‌توان آدرس محلی را دریافت کرد: %s"
 
-#: gio/ginetsocketaddress.c:203 gio/ginetsocketaddress.c:220
-#: gio/gnativesocketaddress.c:109 gio/gunixsocketaddress.c:221
+#: gio/ginetsocketaddress.c:203 gio/ginetsocketaddress.c:220 gio/gnativesocketaddress.c:109
+#: gio/gunixsocketaddress.c:221
 msgid "Not enough space for socket address"
 msgstr ""
 
@@ -1585,7 +1553,7 @@ msgstr ""
 
 #: gio/gio-tool.c:160
 msgid "Copy with file"
-msgstr ""
+msgstr "رونوشت همراه پرونده"
 
 #: gio/gio-tool.c:164
 msgid "Keep with file when moved"
@@ -1605,7 +1573,7 @@ msgstr ""
 
 #: gio/gio-tool.c:226
 msgid "Commands:"
-msgstr ""
+msgstr "دستورات:"
 
 #: gio/gio-tool.c:229
 msgid "Concatenate files to standard output"
@@ -1655,11 +1623,11 @@ msgstr ""
 
 #: gio/gio-tool.c:240
 msgid "Rename a file"
-msgstr ""
+msgstr "تغییر نام یک پرونده"
 
 #: gio/gio-tool.c:241
 msgid "Delete one or more files"
-msgstr ""
+msgstr "حذف یک یا چند پرونده"
 
 #: gio/gio-tool.c:242
 msgid "Read from standard input and save"
@@ -1689,12 +1657,10 @@ msgid "Error writing to stdout"
 msgstr "خطا در هنگام نوشتن در پرونده: %s"
 
 #. Translators: commandline placeholder
-#: gio/gio-tool-cat.c:133 gio/gio-tool-info.c:340 gio/gio-tool-list.c:172
-#: gio/gio-tool-mkdir.c:48 gio/gio-tool-monitor.c:37 gio/gio-tool-monitor.c:39
-#: gio/gio-tool-monitor.c:41 gio/gio-tool-monitor.c:43 gio/gio-tool-monitor.c:204
-#: gio/gio-tool-mount.c:1199 gio/gio-tool-open.c:70 gio/gio-tool-remove.c:48
-#: gio/gio-tool-rename.c:45 gio/gio-tool-set.c:89 gio/gio-tool-trash.c:220
-#: gio/gio-tool-tree.c:239
+#: gio/gio-tool-cat.c:133 gio/gio-tool-info.c:340 gio/gio-tool-list.c:172 gio/gio-tool-mkdir.c:48
+#: gio/gio-tool-monitor.c:37 gio/gio-tool-monitor.c:39 gio/gio-tool-monitor.c:41 gio/gio-tool-monitor.c:43
+#: gio/gio-tool-monitor.c:204 gio/gio-tool-mount.c:1199 gio/gio-tool-open.c:70 gio/gio-tool-remove.c:48
+#: gio/gio-tool-rename.c:45 gio/gio-tool-set.c:89 gio/gio-tool-trash.c:220 gio/gio-tool-tree.c:239
 #, fuzzy
 #| msgid "SECTION"
 msgid "LOCATION"
@@ -1711,9 +1677,8 @@ msgid ""
 "like smb://server/resource/file.txt as location."
 msgstr ""
 
-#: gio/gio-tool-cat.c:162 gio/gio-tool-info.c:371 gio/gio-tool-mkdir.c:76
-#: gio/gio-tool-monitor.c:229 gio/gio-tool-mount.c:1250 gio/gio-tool-open.c:96
-#: gio/gio-tool-remove.c:72 gio/gio-tool-trash.c:303
+#: gio/gio-tool-cat.c:162 gio/gio-tool-info.c:371 gio/gio-tool-mkdir.c:76 gio/gio-tool-monitor.c:229
+#: gio/gio-tool-mount.c:1250 gio/gio-tool-open.c:96 gio/gio-tool-remove.c:72 gio/gio-tool-trash.c:303
 msgid "No locations given"
 msgstr ""
 
@@ -1725,7 +1690,7 @@ msgstr "پرونده هدف یک شاخه است"
 
 #: gio/gio-tool-copy.c:44 gio/gio-tool-move.c:39
 msgid "Show progress"
-msgstr ""
+msgstr "نمایش پیشرفت"
 
 #: gio/gio-tool-copy.c:45 gio/gio-tool-move.c:40
 msgid "Prompt before overwrite"
@@ -1810,37 +1775,37 @@ msgstr ""
 
 #: gio/gio-tool-info.c:78
 msgid "attributes:\n"
-msgstr ""
+msgstr "مشخصه‌ها:\n"
 
 #. Translators: This is a noun and represents and attribute of a file
 #: gio/gio-tool-info.c:134
-#, c-format
+#, fuzzy, c-format
 msgid "display name: %s\n"
-msgstr ""
+msgstr "نام نمایش: %s\n"
 
 #. Translators: This is a noun and represents and attribute of a file
 #: gio/gio-tool-info.c:139
-#, c-format
+#, fuzzy, c-format
 msgid "edit name: %s\n"
-msgstr ""
+msgstr "نام ویرایش: %s\n"
 
 #: gio/gio-tool-info.c:145
 #, c-format
 msgid "name: %s\n"
-msgstr ""
+msgstr "نام: %s\n"
 
 #: gio/gio-tool-info.c:152
 #, c-format
 msgid "type: %s\n"
-msgstr ""
+msgstr "گونه: %s\n"
 
 #: gio/gio-tool-info.c:158
 msgid "size: "
-msgstr ""
+msgstr "اندازه: "
 
 #: gio/gio-tool-info.c:163
 msgid "hidden\n"
-msgstr ""
+msgstr "مخفی\n"
 
 #: gio/gio-tool-info.c:166
 #, fuzzy, c-format
@@ -1885,9 +1850,7 @@ msgid "DESKTOP-FILE [FILE-ARG …]"
 msgstr ""
 
 #: gio/gio-tool-launch.c:57
-msgid ""
-"Launch an application from a desktop file, passing optional filename arguments to "
-"it."
+msgid "Launch an application from a desktop file, passing optional filename arguments to it."
 msgstr ""
 
 #: gio/gio-tool-launch.c:77
@@ -2067,15 +2030,15 @@ msgstr ""
 
 #: gio/gio-tool-mount.c:64
 msgid "ID"
-msgstr ""
+msgstr "شناسه"
 
 #: gio/gio-tool-mount.c:65
 msgid "Unmount"
-msgstr ""
+msgstr "پیاده کردن"
 
 #: gio/gio-tool-mount.c:66
 msgid "Eject"
-msgstr ""
+msgstr "بیرون دادن"
 
 #: gio/gio-tool-mount.c:67
 msgid "Stop drive with device file"
@@ -2104,7 +2067,7 @@ msgstr ""
 #. Translator: List here is a verb as in 'List all mounts'
 #: gio/gio-tool-mount.c:72
 msgid "List"
-msgstr ""
+msgstr "سیاهه"
 
 #: gio/gio-tool-mount.c:73
 msgid "Monitor events"
@@ -2308,9 +2271,7 @@ msgid "List files in the trash with their original locations"
 msgstr ""
 
 #: gio/gio-tool-trash.c:36
-msgid ""
-"Restore a file from trash to its original location (possibly recreating the "
-"directory)"
+msgid "Restore a file from trash to its original location (possibly recreating the directory)"
 msgstr ""
 
 #: gio/gio-tool-trash.c:106
@@ -2385,8 +2346,7 @@ msgstr "گزینهٔ نامعلوم %s"
 #. * the second %s is an environment variable, and the third
 #. * %s is a command line tool
 #.
-#: gio/glib-compile-resources.c:310 gio/glib-compile-resources.c:367
-#: gio/glib-compile-resources.c:424
+#: gio/glib-compile-resources.c:310 gio/glib-compile-resources.c:367 gio/glib-compile-resources.c:424
 #, c-format
 msgid "%s preprocessing requested, but %s is not set, and %s is not in PATH"
 msgstr ""
@@ -2417,12 +2377,10 @@ msgid "Name of the output file"
 msgstr "نام پرونده خروجی"
 
 #: gio/glib-compile-resources.c:739
-msgid ""
-"The directories to load files referenced in FILE from (default: current directory)"
+msgid "The directories to load files referenced in FILE from (default: current directory)"
 msgstr ""
 
-#: gio/glib-compile-resources.c:739 gio/glib-compile-schemas.c:2173
-#: gio/glib-compile-schemas.c:2202
+#: gio/glib-compile-resources.c:739 gio/glib-compile-schemas.c:2173 gio/glib-compile-schemas.c:2202
 msgid "DIRECTORY"
 msgstr "DIRECTORY"
 
@@ -2459,8 +2417,7 @@ msgid "Don’t export functions; declare them G_GNUC_INTERNAL"
 msgstr ""
 
 #: gio/glib-compile-resources.c:748
-msgid ""
-"Don’t embed resource data in the C file; assume it's linked externally instead"
+msgid "Don’t embed resource data in the C file; assume it's linked externally instead"
 msgstr ""
 
 #: gio/glib-compile-resources.c:749
@@ -2595,15 +2552,12 @@ msgid "<aliases> already specified for this key"
 msgstr "<%s id='%s'> از قبل مشخص شده است"
 
 #: gio/glib-compile-schemas.c:561
-msgid ""
-"<aliases> can only be specified for keys with enumerated or flags types or after "
-"<choices>"
+msgid "<aliases> can only be specified for keys with enumerated or flags types or after <choices>"
 msgstr ""
 
 #: gio/glib-compile-schemas.c:580
 #, c-format
-msgid ""
-"<alias value='%s'/> given when “%s” is already a member of the enumerated type"
+msgid "<alias value='%s'/> given when “%s” is already a member of the enumerated type"
 msgstr ""
 
 #: gio/glib-compile-schemas.c:586
@@ -2646,8 +2600,7 @@ msgstr ""
 #: gio/glib-compile-schemas.c:819
 #, c-format
 msgid ""
-"Invalid name “%s”: invalid character “%c”; only lowercase letters, numbers and "
-"hyphen (“-”) are permitted"
+"Invalid name “%s”: invalid character “%c”; only lowercase letters, numbers and hyphen (“-”) are permitted"
 msgstr ""
 
 #: gio/glib-compile-schemas.c:828
@@ -2681,16 +2634,12 @@ msgstr ""
 
 #: gio/glib-compile-schemas.c:972
 #, c-format
-msgid ""
-"<key name='%s'> shadows <key name='%s'> in <schema id='%s'>; use <override> to "
-"modify value"
+msgid "<key name='%s'> shadows <key name='%s'> in <schema id='%s'>; use <override> to modify value"
 msgstr ""
 
 #: gio/glib-compile-schemas.c:983
 #, c-format
-msgid ""
-"Exactly one of “type”, “enum” or “flags” must be specified as an attribute to "
-"<key>"
+msgid "Exactly one of “type”, “enum” or “flags” must be specified as an attribute to <key>"
 msgstr ""
 
 #: gio/glib-compile-schemas.c:1002
@@ -2752,9 +2701,7 @@ msgstr ""
 
 #: gio/glib-compile-schemas.c:1207
 #, c-format
-msgid ""
-"<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but “%s” does "
-"not extend “%s”"
+msgid "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but “%s” does not extend “%s”"
 msgstr ""
 
 #: gio/glib-compile-schemas.c:1224
@@ -2772,8 +2719,8 @@ msgstr "مسیر یک فهرست باید با «:/» خاتمه پیدا کند
 #: gio/glib-compile-schemas.c:1240
 #, c-format
 msgid ""
-"Warning: Schema “%s” has path “%s”.  Paths starting with “/apps/”, “/desktop/” or "
-"“/system/” are deprecated."
+"Warning: Schema “%s” has path “%s”.  Paths starting with “/apps/”, “/desktop/” or “/system/” are "
+"deprecated."
 msgstr ""
 
 #: gio/glib-compile-schemas.c:1270
@@ -2824,72 +2771,69 @@ msgstr "نادیده گرفتن این پرونده.\n"
 
 #: gio/glib-compile-schemas.c:1963
 #, c-format
-msgid ""
-"No such key “%s” in schema “%s” as specified in override file “%s”; ignoring "
-"override for this key."
+msgid "No such key “%s” in schema “%s” as specified in override file “%s”; ignoring override for this key."
 msgstr ""
 
 #: gio/glib-compile-schemas.c:1971
 #, c-format
 msgid ""
-"No such key “%s” in schema “%s” as specified in override file “%s” and --strict "
-"was specified; exiting."
+"No such key “%s” in schema “%s” as specified in override file “%s” and --strict was specified; exiting."
 msgstr ""
 
 #: gio/glib-compile-schemas.c:1993
 #, c-format
 msgid ""
-"Cannot provide per-desktop overrides for localized key “%s” in schema "
-"“%s” (override file “%s”); ignoring override for this key."
+"Cannot provide per-desktop overrides for localized key “%s” in schema “%s” (override file “%s”); ignoring "
+"override for this key."
 msgstr ""
 
 #: gio/glib-compile-schemas.c:2002
 #, c-format
 msgid ""
-"Cannot provide per-desktop overrides for localized key “%s” in schema "
-"“%s” (override file “%s”) and --strict was specified; exiting."
+"Cannot provide per-desktop overrides for localized key “%s” in schema “%s” (override file “%s”) and --"
+"strict was specified; exiting."
 msgstr ""
 
 #: gio/glib-compile-schemas.c:2026
 #, c-format
 msgid ""
-"Error parsing key “%s” in schema “%s” as specified in override file “%s”: %s. "
-"Ignoring override for this key."
+"Error parsing key “%s” in schema “%s” as specified in override file “%s”: %s. Ignoring override for this "
+"key."
 msgstr ""
 
 #: gio/glib-compile-schemas.c:2038
 #, c-format
 msgid ""
-"Error parsing key “%s” in schema “%s” as specified in override file “%s”: %s. --"
-"strict was specified; exiting."
+"Error parsing key “%s” in schema “%s” as specified in override file “%s”: %s. --strict was specified; "
+"exiting."
 msgstr ""
 
 #: gio/glib-compile-schemas.c:2065
 #, c-format
 msgid ""
-"Override for key “%s” in schema “%s” in override file “%s” is outside the range "
-"given in the schema; ignoring override for this key."
+"Override for key “%s” in schema “%s” in override file “%s” is outside the range given in the schema; "
+"ignoring override for this key."
 msgstr ""
 
 #: gio/glib-compile-schemas.c:2075
 #, c-format
 msgid ""
-"Override for key “%s” in schema “%s” in override file “%s” is outside the range "
-"given in the schema and --strict was specified; exiting."
+"Override for key “%s” in schema “%s” in override file “%s” is outside the range given in the schema and --"
+"strict was specified; exiting."
 msgstr ""
 
 #: gio/glib-compile-schemas.c:2101
 #, c-format
 msgid ""
-"Override for key “%s” in schema “%s” in override file “%s” is not in the list of "
-"valid choices; ignoring override for this key."
+"Override for key “%s” in schema “%s” in override file “%s” is not in the list of valid choices; ignoring "
+"override for this key."
 msgstr ""
 
 #: gio/glib-compile-schemas.c:2111
 #, c-format
 msgid ""
-"Override for key “%s” in schema “%s” in override file “%s” is not in the list of "
-"valid choices and --strict was specified; exiting."
+"Override for key “%s” in schema “%s” in override file “%s” is not in the list of valid choices and --"
+"strict was specified; exiting."
 msgstr ""
 
 #: gio/glib-compile-schemas.c:2173
@@ -2973,8 +2917,8 @@ msgstr "خطا در خواندن پرونده %s: %s"
 msgid "Can’t rename file, filename already exists"
 msgstr "نمی‌توان پرونده را مجددا نام‌گذاری کرد، نام پرونده از قبل وجود دارد"
 
-#: gio/glocalfile.c:1184 gio/glocalfile.c:2371 gio/glocalfile.c:2399
-#: gio/glocalfile.c:2538 gio/glocalfileoutputstream.c:656
+#: gio/glocalfile.c:1184 gio/glocalfile.c:2371 gio/glocalfile.c:2399 gio/glocalfile.c:2538
+#: gio/glocalfileoutputstream.c:656
 msgid "Invalid filename"
 msgstr "نام پرونده نامعتبر"
 
@@ -3052,7 +2996,7 @@ msgstr "خطا در هنگام ساخت شاخه «%s»: %s"
 #: gio/glocalfile.c:2403
 #, c-format
 msgid "Filesystem does not support symbolic links"
-msgstr "سیستم‌پرونده‌های از پیوندهای نمادین پشتیبانی نمی‌کند"
+msgstr "سیستم‌پرونده از پیوندهای نمادین پشتیبانی نمی‌کند"
 
 #: gio/glocalfile.c:2406
 #, fuzzy, c-format
@@ -3072,9 +3016,8 @@ msgstr "خطا در هنگام جابجایی پرونده: %s"
 msgid "Can’t move directory over directory"
 msgstr "نمي‌توان شاخه را بر روی شاخه رونوشت کرد"
 
-#: gio/glocalfile.c:2498 gio/glocalfileoutputstream.c:1108
-#: gio/glocalfileoutputstream.c:1122 gio/glocalfileoutputstream.c:1137
-#: gio/glocalfileoutputstream.c:1154 gio/glocalfileoutputstream.c:1168
+#: gio/glocalfile.c:2498 gio/glocalfileoutputstream.c:1108 gio/glocalfileoutputstream.c:1122
+#: gio/glocalfileoutputstream.c:1137 gio/glocalfileoutputstream.c:1154 gio/glocalfileoutputstream.c:1168
 msgid "Backup file creation failed"
 msgstr "ساخت پرونده پشتیبان شکست خورد"
 
@@ -3094,6 +3037,7 @@ msgid "Could not determine the disk usage of %s: %s"
 msgstr "نمی‌توان آدرس دوردست را دریافت کرد: %s"
 
 #: gio/glocalfileinfo.c:767
+#, fuzzy
 msgid "Attribute value must be non-NULL"
 msgstr "مقدار مشخصه نباید non-NULL باشد"
 
@@ -3115,8 +3059,7 @@ msgstr "خطا در باز کردن شاخهٔ «‎%s»‏: %s"
 msgid " (invalid encoding)"
 msgstr " (کدگذاری نامعتبر)"
 
-#: gio/glocalfileinfo.c:1868 gio/glocalfileoutputstream.c:943
-#: gio/glocalfileoutputstream.c:995
+#: gio/glocalfileinfo.c:1868 gio/glocalfileoutputstream.c:943 gio/glocalfileoutputstream.c:995
 #, fuzzy, c-format
 msgid "Error when getting information for file “%s”: %s"
 msgstr "خطا در بازکردن پرونده فعلی «‎%s»‏: %s"
@@ -3229,14 +3172,12 @@ msgstr "تنظیم کردن مشخصه %s پشتیبانی نمی‌شود"
 msgid "Error reading from file: %s"
 msgstr "خطا در هنگام خواندن از پرونده: %s"
 
-#: gio/glocalfileinputstream.c:194 gio/glocalfileoutputstream.c:353
-#: gio/glocalfileoutputstream.c:447
+#: gio/glocalfileinputstream.c:194 gio/glocalfileoutputstream.c:353 gio/glocalfileoutputstream.c:447
 #, c-format
 msgid "Error closing file: %s"
 msgstr "خطا در هنگام بستن پرونده: %s"
 
-#: gio/glocalfileinputstream.c:272 gio/glocalfileoutputstream.c:563
-#: gio/glocalfileoutputstream.c:1186
+#: gio/glocalfileinputstream.c:272 gio/glocalfileoutputstream.c:563 gio/glocalfileoutputstream.c:1186
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "خطا در هنگام جستجو در پرونده: %s"
@@ -3245,8 +3186,8 @@ msgstr "خطا در هنگام جستجو در پرونده: %s"
 msgid "Unable to find default local file monitor type"
 msgstr ""
 
-#: gio/glocalfileoutputstream.c:220 gio/glocalfileoutputstream.c:298
-#: gio/glocalfileoutputstream.c:334 gio/glocalfileoutputstream.c:822
+#: gio/glocalfileoutputstream.c:220 gio/glocalfileoutputstream.c:298 gio/glocalfileoutputstream.c:334
+#: gio/glocalfileoutputstream.c:822
 #, c-format
 msgid "Error writing to file: %s"
 msgstr "خطا در هنگام نوشتن در پرونده: %s"
@@ -3271,8 +3212,8 @@ msgstr "خطا خطا در تغییر نام پرونده موقت: %s"
 msgid "Error truncating file: %s"
 msgstr "خطا در هنگام کوتاه کردن پرونده: %s"
 
-#: gio/glocalfileoutputstream.c:662 gio/glocalfileoutputstream.c:907
-#: gio/glocalfileoutputstream.c:1218 gio/gsubprocess.c:226
+#: gio/glocalfileoutputstream.c:662 gio/glocalfileoutputstream.c:907 gio/glocalfileoutputstream.c:1218
+#: gio/gsubprocess.c:226
 #, fuzzy, c-format
 #| msgid "Error opening file '%s': %s"
 msgid "Error opening file “%s”: %s"
@@ -3316,9 +3257,7 @@ msgid "Failed to resize memory output stream"
 msgstr ""
 
 #: gio/gmemoryoutputstream.c:673
-msgid ""
-"Amount of memory required to process the write is larger than available address "
-"space"
+msgid "Amount of memory required to process the write is larger than available address space"
 msgstr ""
 
 #: gio/gmemoryoutputstream.c:782
@@ -3401,8 +3340,7 @@ msgstr "شبکه غیرقابل دسترس است"
 msgid "Host unreachable"
 msgstr "میزبان غیرقابل دسترسی است"
 
-#: gio/gnetworkmonitornetlink.c:99 gio/gnetworkmonitornetlink.c:111
-#: gio/gnetworkmonitornetlink.c:130
+#: gio/gnetworkmonitornetlink.c:99 gio/gnetworkmonitornetlink.c:111 gio/gnetworkmonitornetlink.c:130
 #, c-format
 msgid "Could not create network monitor: %s"
 msgstr "نمی‌توان پایشگر شبکه را ساخت: %s"
@@ -3458,9 +3396,9 @@ msgstr ""
 msgid "Invalid domain"
 msgstr "نام پرونده نامعتبر"
 
-#: gio/gresource.c:681 gio/gresource.c:943 gio/gresource.c:983 gio/gresource.c:1107
-#: gio/gresource.c:1179 gio/gresource.c:1253 gio/gresource.c:1334
-#: gio/gresourcefile.c:476 gio/gresourcefile.c:599 gio/gresourcefile.c:736
+#: gio/gresource.c:681 gio/gresource.c:943 gio/gresource.c:983 gio/gresource.c:1107 gio/gresource.c:1179
+#: gio/gresource.c:1253 gio/gresource.c:1334 gio/gresourcefile.c:476 gio/gresourcefile.c:599
+#: gio/gresourcefile.c:736
 #, c-format
 msgid "The resource at “%s” does not exist"
 msgstr ""
@@ -3653,8 +3591,8 @@ msgstr "[SCHEMA[:PATH]]"
 msgid "Get the value of KEY"
 msgstr "گرفتن مقدار KEY"
 
-#: gio/gsettings-tool.c:616 gio/gsettings-tool.c:622 gio/gsettings-tool.c:628
-#: gio/gsettings-tool.c:640 gio/gsettings-tool.c:652
+#: gio/gsettings-tool.c:616 gio/gsettings-tool.c:622 gio/gsettings-tool.c:628 gio/gsettings-tool.c:640
+#: gio/gsettings-tool.c:652
 msgid "SCHEMA[:PATH] KEY"
 msgstr "SCHEMA[:PATH] KEY"
 
@@ -3844,14 +3782,14 @@ msgstr ""
 msgid "Error binding to address %s: %s"
 msgstr "خطا در خواندن پروندهٔ «‎%s»‏: %s"
 
-#: gio/gsocket.c:2385 gio/gsocket.c:2422 gio/gsocket.c:2532 gio/gsocket.c:2557
-#: gio/gsocket.c:2620 gio/gsocket.c:2678 gio/gsocket.c:2696
+#: gio/gsocket.c:2385 gio/gsocket.c:2422 gio/gsocket.c:2532 gio/gsocket.c:2557 gio/gsocket.c:2620
+#: gio/gsocket.c:2678 gio/gsocket.c:2696
 #, fuzzy, c-format
 msgid "Error joining multicast group: %s"
 msgstr "خطا در راه‌اندازی برنامه: %s"
 
-#: gio/gsocket.c:2386 gio/gsocket.c:2423 gio/gsocket.c:2533 gio/gsocket.c:2558
-#: gio/gsocket.c:2621 gio/gsocket.c:2679 gio/gsocket.c:2697
+#: gio/gsocket.c:2386 gio/gsocket.c:2423 gio/gsocket.c:2533 gio/gsocket.c:2558 gio/gsocket.c:2621
+#: gio/gsocket.c:2679 gio/gsocket.c:2697
 #, fuzzy, c-format
 msgid "Error leaving multicast group: %s"
 msgstr "خطا در راه‌اندازی برنامه: %s"
@@ -3938,8 +3876,8 @@ msgstr "خطا در هنگام ارسال پیام: %s"
 msgid "Message vectors too large"
 msgstr "عبارت باقاعده بسیار بلند است"
 
-#: gio/gsocket.c:4850 gio/gsocket.c:4852 gio/gsocket.c:4999 gio/gsocket.c:5084
-#: gio/gsocket.c:5262 gio/gsocket.c:5302 gio/gsocket.c:5304
+#: gio/gsocket.c:4850 gio/gsocket.c:4852 gio/gsocket.c:4999 gio/gsocket.c:5084 gio/gsocket.c:5262
+#: gio/gsocket.c:5302 gio/gsocket.c:5304
 #, c-format
 msgid "Error sending message: %s"
 msgstr "خطا در هنگام ارسال پیام: %s"
@@ -4032,8 +3970,7 @@ msgid "The SOCKSv5 proxy requires authentication."
 msgstr "پیشکار SOCKSv5 به تصدیق هویت نیاز دارد."
 
 #: gio/gsocks5proxy.c:191
-msgid ""
-"The SOCKSv5 proxy requires an authentication method that is not supported by GLib."
+msgid "The SOCKSv5 proxy requires an authentication method that is not supported by GLib."
 msgstr "پیشکار SOCKSv5 به نوعی از تصدیق هویت نیاز دارد که در GLib پشتیبانی نمی‌شود."
 
 #: gio/gsocks5proxy.c:220
@@ -4104,8 +4041,8 @@ msgstr ""
 msgid "Error reverse-resolving “%s”: %s"
 msgstr "خطا در هنگام برطرف‌سازی معکوس «%s»: %s"
 
-#: gio/gthreadedresolver.c:676 gio/gthreadedresolver.c:755
-#: gio/gthreadedresolver.c:853 gio/gthreadedresolver.c:903
+#: gio/gthreadedresolver.c:676 gio/gthreadedresolver.c:755 gio/gthreadedresolver.c:853
+#: gio/gthreadedresolver.c:903
 #, c-format
 msgid "No DNS record of the requested type for “%s”"
 msgstr ""
@@ -4115,8 +4052,7 @@ msgstr ""
 msgid "Temporarily unable to resolve “%s”"
 msgstr ""
 
-#: gio/gthreadedresolver.c:686 gio/gthreadedresolver.c:863
-#: gio/gthreadedresolver.c:973
+#: gio/gthreadedresolver.c:686 gio/gthreadedresolver.c:863 gio/gthreadedresolver.c:973
 #, fuzzy, c-format
 #| msgid "Error resolving '%s'"
 msgid "Error resolving “%s”"
@@ -4148,25 +4084,19 @@ msgid "This GTlsBackend does not support creating PKCS #11 certificates"
 msgstr ""
 
 #: gio/gtlspassword.c:111
-msgid ""
-"This is the last chance to enter the password correctly before your access is "
-"locked out."
-msgstr ""
-"این آخرین شانس برای وارد کردن گذرواژه بطور صحیح قبل از قفل شدن دسترسی شما است."
+msgid "This is the last chance to enter the password correctly before your access is locked out."
+msgstr "این آخرین شانس برای وارد کردن گذرواژه بطور صحیح قبل از قفل شدن دسترسی شما است."
 
 #. Translators: This is not the 'This is the last chance' string. It is
 #. * displayed when more than one attempt is allowed.
 #: gio/gtlspassword.c:115
 #, fuzzy
 #| msgid ""
-#| "Several password entered have been incorrect, and your access will be locked "
-#| "out after further failures."
+#| "Several password entered have been incorrect, and your access will be locked out after further "
+#| "failures."
 msgid ""
-"Several passwords entered have been incorrect, and your access will be locked out "
-"after further failures."
-msgstr ""
-"تعدادی از گذرواژهای وارد شده نادرست بوده‌اند، و دسترسی شما بعد از اشتباهات بعدی "
-"بسته خواهد شد."
+"Several passwords entered have been incorrect, and your access will be locked out after further failures."
+msgstr "تعدادی از گذرواژهای وارد شده نادرست بوده‌اند، و دسترسی شما بعد از اشتباهات بعدی بسته خواهد شد."
 
 #: gio/gtlspassword.c:117
 msgid "The password entered is incorrect."
@@ -4211,8 +4141,7 @@ msgid "Error enabling SO_PASSCRED: %s"
 msgstr "خطا در هنگام فعال کردن SO_PASSCRED: %s"
 
 #: gio/gunixconnection.c:565
-msgid ""
-"Expecting to read a single byte for receiving credentials but read zero bytes"
+msgid "Expecting to read a single byte for receiving credentials but read zero bytes"
 msgstr "انتظار خواندن یک بایت برای دریافت گواهینامه می‌رفت اما صفر بایت خوانده شد"
 
 #: gio/gunixconnection.c:605
@@ -4230,8 +4159,8 @@ msgstr "خطا در هنگام غیرفعال‌سازی SO_PASSCRED: %s"
 msgid "Error reading from file descriptor: %s"
 msgstr "خطا در هنگام تنظیم توصیف‌گر پرونده: %s"
 
-#: gio/gunixinputstream.c:411 gio/gunixoutputstream.c:520
-#: gio/gwin32inputstream.c:217 gio/gwin32outputstream.c:204
+#: gio/gunixinputstream.c:411 gio/gunixoutputstream.c:520 gio/gwin32inputstream.c:217
+#: gio/gwin32outputstream.c:204
 #, fuzzy, c-format
 msgid "Error closing file descriptor: %s"
 msgstr "خطا در هنگام تنظیم توصیف‌گر پرونده: %s"
@@ -4240,9 +4169,8 @@ msgstr "خطا در هنگام تنظیم توصیف‌گر پرونده: %s"
 msgid "Filesystem root"
 msgstr "ریشه سیستم‌پرونده‌ها"
 
-#: gio/gunixoutputstream.c:357 gio/gunixoutputstream.c:377
-#: gio/gunixoutputstream.c:464 gio/gunixoutputstream.c:484
-#: gio/gunixoutputstream.c:630
+#: gio/gunixoutputstream.c:357 gio/gunixoutputstream.c:377 gio/gunixoutputstream.c:464
+#: gio/gunixoutputstream.c:484 gio/gunixoutputstream.c:630
 #, fuzzy, c-format
 msgid "Error writing to file descriptor: %s"
 msgstr "خطا در هنگام تنظیم توصیف‌گر پرونده: %s"
@@ -4328,22 +4256,19 @@ msgstr ""
 msgid "Unexpected attribute “%s” for element “%s”"
 msgstr "مشخصهٔ غیرمنتظرهٔ «%s» برای عنصر «%s»"
 
-#: glib/gbookmarkfile.c:788 glib/gbookmarkfile.c:868 glib/gbookmarkfile.c:878
-#: glib/gbookmarkfile.c:991
+#: glib/gbookmarkfile.c:788 glib/gbookmarkfile.c:868 glib/gbookmarkfile.c:878 glib/gbookmarkfile.c:991
 #, fuzzy, c-format
 #| msgid "Attribute '%s' of element '%s' not found"
 msgid "Attribute “%s” of element “%s” not found"
 msgstr "مشخصهٔ «%s» برای عنصر «%s» پیدا نشد"
 
-#: glib/gbookmarkfile.c:1200 glib/gbookmarkfile.c:1265 glib/gbookmarkfile.c:1329
-#: glib/gbookmarkfile.c:1339
+#: glib/gbookmarkfile.c:1200 glib/gbookmarkfile.c:1265 glib/gbookmarkfile.c:1329 glib/gbookmarkfile.c:1339
 #, fuzzy, c-format
 #| msgid "Unexpected tag '%s', tag '%s' expected"
 msgid "Unexpected tag “%s”, tag “%s” expected"
 msgstr "برچسب غیرمنتظرهٔ «%s»، برچسب «%s» انتظار می‌رفت"
 
-#: glib/gbookmarkfile.c:1225 glib/gbookmarkfile.c:1239 glib/gbookmarkfile.c:1307
-#: glib/gbookmarkfile.c:1353
+#: glib/gbookmarkfile.c:1225 glib/gbookmarkfile.c:1239 glib/gbookmarkfile.c:1307 glib/gbookmarkfile.c:1353
 #, fuzzy, c-format
 #| msgid "Unexpected tag '%s' inside '%s'"
 msgid "Unexpected tag “%s” inside “%s”"
@@ -4364,12 +4289,11 @@ msgstr "پروندهٔ چوب‌الف معتبری در شاخه‌های دا�
 msgid "A bookmark for URI “%s” already exists"
 msgstr "چوب‌الفی برای نشانی «‎%s» از قبل موجود است"
 
-#: glib/gbookmarkfile.c:2086 glib/gbookmarkfile.c:2244 glib/gbookmarkfile.c:2329
-#: glib/gbookmarkfile.c:2409 glib/gbookmarkfile.c:2494 glib/gbookmarkfile.c:2628
-#: glib/gbookmarkfile.c:2761 glib/gbookmarkfile.c:2896 glib/gbookmarkfile.c:2938
-#: glib/gbookmarkfile.c:3035 glib/gbookmarkfile.c:3156 glib/gbookmarkfile.c:3350
-#: glib/gbookmarkfile.c:3491 glib/gbookmarkfile.c:3710 glib/gbookmarkfile.c:3799
-#: glib/gbookmarkfile.c:3888 glib/gbookmarkfile.c:4007
+#: glib/gbookmarkfile.c:2086 glib/gbookmarkfile.c:2244 glib/gbookmarkfile.c:2329 glib/gbookmarkfile.c:2409
+#: glib/gbookmarkfile.c:2494 glib/gbookmarkfile.c:2628 glib/gbookmarkfile.c:2761 glib/gbookmarkfile.c:2896
+#: glib/gbookmarkfile.c:2938 glib/gbookmarkfile.c:3035 glib/gbookmarkfile.c:3156 glib/gbookmarkfile.c:3350
+#: glib/gbookmarkfile.c:3491 glib/gbookmarkfile.c:3710 glib/gbookmarkfile.c:3799 glib/gbookmarkfile.c:3888
+#: glib/gbookmarkfile.c:4007
 #, fuzzy, c-format
 #| msgid "No bookmark found for URI '%s'"
 msgid "No bookmark found for URI “%s”"
@@ -4410,8 +4334,7 @@ msgstr "خواندن پیوند نمادی «‎%s» شکست خورد: %s"
 msgid "Unrepresentable character in conversion input"
 msgstr "دنبالهٔ نامعتبر در ورودی تبدیل"
 
-#: glib/gconvert.c:495 glib/gutf8.c:871 glib/gutf8.c:1083 glib/gutf8.c:1220
-#: glib/gutf8.c:1324
+#: glib/gconvert.c:495 glib/gutf8.c:871 glib/gutf8.c:1083 glib/gutf8.c:1220 glib/gutf8.c:1324
 msgid "Partial character sequence at end of input"
 msgstr "دنباله نویسهٔ ناتمام در انتهای ورودی"
 
@@ -4469,29 +4392,33 @@ msgstr "نشانی اینترنتی «‎%s» نویسه‌های گریختهٔ
 msgid "The pathname “%s” is not an absolute path"
 msgstr "نام مسیر «‎%s» یک مسیر مطلق نیست"
 
+# استفاده از نویسه‌های U+2266 و U+2269 برای ایزوله‌کردن زمان، تا به درستی نمایش داده شود.
 #. Translators: this is the preferred format for expressing the date and the time
 #: glib/gdatetime.c:226
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
-msgstr "‫%A %Oe %B %Oy، %OH:%OM:%OS‬"
+msgstr "%A %Oe %B %Oy، ⁦%OH:%OM:%OS⁩"
 
+# استفاده از نویسه‌های U+2266 و U+2269 برای ایزوله‌کردن تاریخ، تا به درستی نمایش داده شود.
 #. Translators: this is the preferred format for expressing the date
 #: glib/gdatetime.c:229
 msgctxt "GDateTime"
 msgid "%m/%d/%y"
-msgstr "%Oy/%Om/%Od"
+msgstr "⁩%Oy/%Om/%Od⁩"
 
+# استفاده از نویسه‌های U+2266 و U+2269 برای ایزوله‌کردن زمان، تا به درستی نمایش داده شود.
 #. Translators: this is the preferred format for expressing the time
 #: glib/gdatetime.c:232
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
-msgstr "%OH:%OM:%OS"
+msgstr "⁦%OH:%OM:%OS⁩"
 
+# استفاده از نویسه‌های U+2266 و U+2269 برای ایزوله‌کردن زمان، تا به درستی نمایش داده شود.
 #. Translators: this is the preferred format for expressing 12 hour time
 #: glib/gdatetime.c:235
 msgctxt "GDateTime"
 msgid "%I:%M:%S %p"
-msgstr "%OI:%OM:%OS %p"
+msgstr "⁦%OI:%OM:%OS⁩ %p"
 
 #. Translators: Some languages (Baltic, Slavic, Greek, and some more)
 #. * need different grammatical forms of month names depending on whether
@@ -5015,8 +4942,7 @@ msgstr "پرونده متعارف نیست"
 
 #: glib/gkeyfile.c:1282
 #, fuzzy, c-format
-#| msgid ""
-#| "Key file contains line '%s' which is not a key-value pair, group, or comment"
+#| msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgid "Key file contains line “%s” which is not a key-value pair, group, or comment"
 msgstr "پرونده کلید حاوی خط «%s» است که جفت کلید‐مقدار، گروه یا توضیح  نیست"
 
@@ -5040,9 +4966,8 @@ msgstr "نام کلید نامعتبر: %s"
 msgid "Key file contains unsupported encoding “%s”"
 msgstr "پروندهٔ کلید حاوی کدگذاری پشتیبانی نشدهٔ «%s» است"
 
-#: glib/gkeyfile.c:1663 glib/gkeyfile.c:1836 glib/gkeyfile.c:3289
-#: glib/gkeyfile.c:3353 glib/gkeyfile.c:3483 glib/gkeyfile.c:3615
-#: glib/gkeyfile.c:3761 glib/gkeyfile.c:3996 glib/gkeyfile.c:4063
+#: glib/gkeyfile.c:1663 glib/gkeyfile.c:1836 glib/gkeyfile.c:3289 glib/gkeyfile.c:3353 glib/gkeyfile.c:3483
+#: glib/gkeyfile.c:3615 glib/gkeyfile.c:3761 glib/gkeyfile.c:3996 glib/gkeyfile.c:4063
 #, fuzzy, c-format
 #| msgid "Key file does not have group '%s'"
 msgid "Key file does not have group “%s”"
@@ -5068,17 +4993,13 @@ msgstr "پروندهٔ کلید حاوی کلید «%s» است که دارای 
 
 #: glib/gkeyfile.c:2749 glib/gkeyfile.c:3118
 #, fuzzy, c-format
-msgid ""
-"Key file contains key “%s” in group “%s” which has a value that cannot be "
-"interpreted."
-msgstr ""
-"پروندهٔ کلید حاوی کلید «%s» در گروه «%s» است که مقداری دارد که قابل تفسیر نیست"
+msgid "Key file contains key “%s” in group “%s” which has a value that cannot be interpreted."
+msgstr "پروندهٔ کلید حاوی کلید «%s» در گروه «%s» است که مقداری دارد که قابل تفسیر نیست"
 
 #: glib/gkeyfile.c:2827 glib/gkeyfile.c:2904
 #, fuzzy, c-format
 msgid "Key “%s” in group “%s” has value “%s” where %s was expected"
-msgstr ""
-"پروندهٔ کلید حاوی کلید «%s» در گروه «%s» است که مقداری دارد که قابل تفسیر نیست"
+msgstr "پروندهٔ کلید حاوی کلید «%s» در گروه «%s» است که مقداری دارد که قابل تفسیر نیست"
 
 #: glib/gkeyfile.c:4306
 msgid "Key file contains escape character at end of line"
@@ -5161,29 +5082,25 @@ msgstr "خطا در سطر %Id:‏ %s"
 #: glib/gmarkup.c:690
 #, fuzzy, c-format
 #| msgid ""
-#| "Failed to parse '%-.*s', which should have been a digit inside a character "
-#| "reference (&#234; for example) - perhaps the digit is too large"
+#| "Failed to parse '%-.*s', which should have been a digit inside a character reference (&#234; for "
+#| "example) - perhaps the digit is too large"
 msgid ""
-"Failed to parse “%-.*s”, which should have been a digit inside a character "
-"reference (&#234; for example) — perhaps the digit is too large"
+"Failed to parse “%-.*s”, which should have been a digit inside a character reference (&#234; for example) "
+"— perhaps the digit is too large"
 msgstr ""
-"تجزیهٔ «‎%-.*s»، که باید رقمی داخل یک ارجاع نویسه‌ای (مثل ‎&#234;‎) می‌بود شکست خورد - "
-"شاید رقم خیلی بزرگ است"
+"تجزیهٔ «‎%-.*s»، که باید رقمی داخل یک ارجاع نویسه‌ای (مثل ‎&#234;‎) می‌بود شکست خورد - شاید رقم خیلی بزرگ است"
 
 #: glib/gmarkup.c:702
 #, fuzzy
 #| msgid ""
-#| "Character reference did not end with a semicolon; most likely you used an "
-#| "ampersand character without intending to start an entity - escape ampersand as "
-#| "&amp;"
+#| "Character reference did not end with a semicolon; most likely you used an ampersand character without "
+#| "intending to start an entity - escape ampersand as &amp;"
 msgid ""
-"Character reference did not end with a semicolon; most likely you used an "
-"ampersand character without intending to start an entity — escape ampersand as "
-"&amp;"
+"Character reference did not end with a semicolon; most likely you used an ampersand character without "
+"intending to start an entity — escape ampersand as &amp;"
 msgstr ""
-"ارجاع نویسه‌ای با نقطه‌ویرگول تمام نشده است؛ به احتمال زیاد بدون این که بخواهید "
-"نهادی را آغاز کنید از نویسهٔ & استفاده کرده‌اید - برای نوشتن علامت & از ‎&amp;‎ "
-"استفاده کنید"
+"ارجاع نویسه‌ای با نقطه‌ویرگول تمام نشده است؛ به احتمال زیاد بدون این که بخواهید نهادی را آغاز کنید از نویسهٔ "
+"& استفاده کرده‌اید - برای نوشتن علامت & از ‎&amp;‎ استفاده کنید"
 
 #: glib/gmarkup.c:728
 #, fuzzy, c-format
@@ -5195,8 +5112,7 @@ msgstr "ارجاع نویسه‌ای «‎%-.*s» به نویسهٔ مجاز ا�
 #, fuzzy
 #| msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgid "Empty entity “&;” seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr ""
-"نهاد خالی «‎&;‎» مشاهده شد؛ نهادهای معتبر عبارتند از: ‎&amp; &quot; &lt; &gt; &apos;‎"
+msgstr "نهاد خالی «‎&;‎» مشاهده شد؛ نهادهای معتبر عبارتند از: ‎&amp; &quot; &lt; &gt; &apos;‎"
 
 #: glib/gmarkup.c:774
 #, fuzzy, c-format
@@ -5207,15 +5123,14 @@ msgstr "نام نهاد «%-.*s» شناخته شده نیست"
 #: glib/gmarkup.c:779
 #, fuzzy
 #| msgid ""
-#| "Entity did not end with a semicolon; most likely you used an ampersand "
-#| "character without intending to start an entity - escape ampersand as &amp;"
+#| "Entity did not end with a semicolon; most likely you used an ampersand character without intending to "
+#| "start an entity - escape ampersand as &amp;"
 msgid ""
-"Entity did not end with a semicolon; most likely you used an ampersand character "
-"without intending to start an entity — escape ampersand as &amp;"
+"Entity did not end with a semicolon; most likely you used an ampersand character without intending to "
+"start an entity — escape ampersand as &amp;"
 msgstr ""
-"نهاد با یک نقطه‌ویرگول لاتین تمام نشده است؛ به احتمال زیاد بدون این که بخواهید "
-"نهادی را آغاز کنید از نویسهٔ & استفاده کرده‌اید - برای نوشتن علامت & از ‎&amp;‎ "
-"استفاده کنید"
+"نهاد با یک نقطه‌ویرگول لاتین تمام نشده است؛ به احتمال زیاد بدون این که بخواهید نهادی را آغاز کنید از نویسهٔ "
+"& استفاده کرده‌اید - برای نوشتن علامت & از ‎&amp;‎ استفاده کنید"
 
 #: glib/gmarkup.c:1193
 msgid "Document must begin with an element (e.g. <book>)"
@@ -5223,23 +5138,15 @@ msgstr "نوشتار باید با یک عنصر (مثلاً <book>) شروع ش
 
 #: glib/gmarkup.c:1233
 #, fuzzy, c-format
-#| msgid ""
-#| "'%s' is not a valid character following a '<' character; it may not begin an "
-#| "element name"
-msgid ""
-"“%s” is not a valid character following a “<” character; it may not begin an "
-"element name"
+#| msgid "'%s' is not a valid character following a '<' character; it may not begin an element name"
+msgid "“%s” is not a valid character following a “<” character; it may not begin an element name"
 msgstr "‏«%s» پس از یک نویسهٔ '‎<‎' نویسهٔ مجازی نیست؛ نمی‌شود ابتدای نام یک عنصر باشد"
 
 #: glib/gmarkup.c:1276
 #, fuzzy, c-format
-#| msgid ""
-#| "Odd character '%s', expected a '>' character to end the empty-element tag '%s'"
-msgid ""
-"Odd character “%s”, expected a “>” character to end the empty-element tag “%s”"
-msgstr ""
-"نویسهٔ غیرعادی «%s»، برای پایان دادن به برچسب عنصر خالی «%s» انتظار یک نویسهٔ «‎>‎» "
-"می‌رفت"
+#| msgid "Odd character '%s', expected a '>' character to end the empty-element tag '%s'"
+msgid "Odd character “%s”, expected a “>” character to end the empty-element tag “%s”"
+msgstr "نویسهٔ غیرعادی «%s»، برای پایان دادن به برچسب عنصر خالی «%s» انتظار یک نویسهٔ «‎>‎» می‌رفت"
 
 #: glib/gmarkup.c:1346
 #, c-format
@@ -5248,59 +5155,44 @@ msgstr ""
 
 #: glib/gmarkup.c:1366
 #, fuzzy, c-format
-#| msgid ""
-#| "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+#| msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgid "Odd character “%s”, expected a “=” after attribute name “%s” of element “%s”"
-msgstr ""
-"نویسهٔ غیرعادی «%s»، بعد از نام مشخصهٔ «%s» عنصر «%s» انتظار یک نویسهٔ «=» می‌رفت"
+msgstr "نویسهٔ غیرعادی «%s»، بعد از نام مشخصهٔ «%s» عنصر «%s» انتظار یک نویسهٔ «=» می‌رفت"
 
 #: glib/gmarkup.c:1408
 #, fuzzy, c-format
 #| msgid ""
-#| "Odd character '%s', expected a '>' or '/' character to end the start tag of "
-#| "element '%s', or optionally an attribute; perhaps you used an invalid "
-#| "character in an attribute name"
+#| "Odd character '%s', expected a '>' or '/' character to end the start tag of element '%s', or "
+#| "optionally an attribute; perhaps you used an invalid character in an attribute name"
 msgid ""
-"Odd character “%s”, expected a “>” or “/” character to end the start tag of "
-"element “%s”, or optionally an attribute; perhaps you used an invalid character "
-"in an attribute name"
+"Odd character “%s”, expected a “>” or “/” character to end the start tag of element “%s”, or optionally "
+"an attribute; perhaps you used an invalid character in an attribute name"
 msgstr ""
-"نویسهٔ غیرعادی «%s»، برای پایان دادن به برچسب شروع عنصر «%s»، همین‌طور یک مشخصه، "
-"انتظار یک نویسهٔ «‎>‎» یا «/» می‌رفت؛ شاید از یک نویسهٔ نامعتبر در نام مشخصه‌ای استفاده "
-"کرده باشید"
+"نویسهٔ غیرعادی «%s»، برای پایان دادن به برچسب شروع عنصر «%s»، همین‌طور یک مشخصه، انتظار یک نویسهٔ «‎>‎» یا «/» "
+"می‌رفت؛ شاید از یک نویسهٔ نامعتبر در نام مشخصه‌ای استفاده کرده باشید"
 
 #: glib/gmarkup.c:1453
 #, fuzzy, c-format
 #| msgid ""
-#| "Odd character '%s', expected an open quote mark after the equals sign when "
-#| "giving value for attribute '%s' of element '%s'"
+#| "Odd character '%s', expected an open quote mark after the equals sign when giving value for attribute "
+#| "'%s' of element '%s'"
 msgid ""
-"Odd character “%s”, expected an open quote mark after the equals sign when giving "
-"value for attribute “%s” of element “%s”"
+"Odd character “%s”, expected an open quote mark after the equals sign when giving value for attribute "
+"“%s” of element “%s”"
 msgstr ""
-"نویسهٔ غیرعادی «%s»، هنگام مقدار دادن به مشخصهٔ «%s» از عنصر «%s» پس از علامت تساوی "
-"انتظار یک علامت نقل قول باز می‌رفت"
+"نویسهٔ غیرعادی «%s»، هنگام مقدار دادن به مشخصهٔ «%s» از عنصر «%s» پس از علامت تساوی انتظار یک علامت نقل قول "
+"باز می‌رفت"
 
 #: glib/gmarkup.c:1587
 #, fuzzy, c-format
-#| msgid ""
-#| "'%s' is not a valid character following the characters '</'; '%s' may not "
-#| "begin an element name"
-msgid ""
-"“%s” is not a valid character following the characters “</”; “%s” may not begin "
-"an element name"
-msgstr ""
-"‏«%s» بعد از نویسه‌های «‎</‎» نویسهٔ معتبری نیست؛ «%s» نمی‌تواند ابتدای نام عناصر قرار "
-"بگیرد"
+#| msgid "'%s' is not a valid character following the characters '</'; '%s' may not begin an element name"
+msgid "“%s” is not a valid character following the characters “</”; “%s” may not begin an element name"
+msgstr "‏«%s» بعد از نویسه‌های «‎</‎» نویسهٔ معتبری نیست؛ «%s» نمی‌تواند ابتدای نام عناصر قرار بگیرد"
 
 #: glib/gmarkup.c:1625
 #, fuzzy, c-format
-#| msgid ""
-#| "'%s' is not a valid character following the close element name '%s'; the "
-#| "allowed character is '>'"
-msgid ""
-"“%s” is not a valid character following the close element name “%s”; the allowed "
-"character is “>”"
+#| msgid "'%s' is not a valid character following the close element name '%s'; the allowed character is '>'"
+msgid "“%s” is not a valid character following the close element name “%s”; the allowed character is “>”"
 msgstr "‏«%s» نویسهٔ معتبری برای بستن نام عنصر «%s» نیست؛ نویسهٔ مجاز «‎>» است"
 
 #: glib/gmarkup.c:1637
@@ -5327,24 +5219,14 @@ msgstr "نوشتار به‌طور غیرمنتظره‌ای درست بعد ا�
 
 #: glib/gmarkup.c:1821 glib/gmarkup.c:1866
 #, fuzzy, c-format
-#| msgid ""
-#| "Document ended unexpectedly with elements still open - '%s' was the last "
-#| "element opened"
-msgid ""
-"Document ended unexpectedly with elements still open — “%s” was the last element "
-"opened"
-msgstr ""
-"نوشتار وقتی که هنوز عناصری باز بودند به‌طور غیرمنتظره‌ای پایان یافت ‐ آخرین عنصر "
-"باز شده «%s» بود"
+#| msgid "Document ended unexpectedly with elements still open - '%s' was the last element opened"
+msgid "Document ended unexpectedly with elements still open — “%s” was the last element opened"
+msgstr "نوشتار وقتی که هنوز عناصری باز بودند به‌طور غیرمنتظره‌ای پایان یافت ‐ آخرین عنصر باز شده «%s» بود"
 
 #: glib/gmarkup.c:1829
 #, c-format
-msgid ""
-"Document ended unexpectedly, expected to see a close angle bracket ending the tag "
-"<%s/>"
-msgstr ""
-"نوشتار به‌طور غیرمنتظره‌ای پایان یافت، یک علامت بزرگتر برای بستن برچسب ‎<%s/>‎ انتظار "
-"می‌رفت"
+msgid "Document ended unexpectedly, expected to see a close angle bracket ending the tag <%s/>"
+msgstr "نوشتار به‌طور غیرمنتظره‌ای پایان یافت، یک علامت بزرگتر برای بستن برچسب ‎<%s/>‎ انتظار می‌رفت"
 
 #: glib/gmarkup.c:1835
 msgid "Document ended unexpectedly inside an element name"
@@ -5359,12 +5241,9 @@ msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "نوشتار به‌طور غیرمنتظره‌ای داخل یک برچسب عنصربازکن پایان یافت."
 
 #: glib/gmarkup.c:1852
-msgid ""
-"Document ended unexpectedly after the equals sign following an attribute name; no "
-"attribute value"
+msgid "Document ended unexpectedly after the equals sign following an attribute name; no attribute value"
 msgstr ""
-"نوشتار به‌طور غیرمنتظره‌ای بعد از علامت تساوی‌ای که پس از نام مشخصه‌ای آمده بود تمام "
-"شد؛ بدون مقدار برای مشخصه"
+"نوشتار به‌طور غیرمنتظره‌ای بعد از علامت تساوی‌ای که پس از نام مشخصه‌ای آمده بود تمام شد؛ بدون مقدار برای مشخصه"
 
 #: glib/gmarkup.c:1859
 msgid "Document ended unexpectedly while inside an attribute value"
@@ -5695,9 +5574,7 @@ msgid "inconsistent NEWLINE options"
 msgstr ""
 
 #: glib/gregex.c:474
-msgid ""
-"\\g is not followed by a braced, angle-bracketed, or quoted name or number, or by "
-"a plain number"
+msgid "\\g is not followed by a braced, angle-bracketed, or quoted name or number, or by a plain number"
 msgstr ""
 
 #: glib/gregex.c:478
@@ -5861,9 +5738,7 @@ msgstr "متن دقیقاً پس از یک نویسهٔ «\\» پایان یاف
 #, fuzzy, c-format
 #| msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgid "Text ended before matching quote was found for %c. (The text was “%s”)"
-msgstr ""
-"متن پیش از آن که علامت نقل قول متناظر برای %c پیدا شود پایان یافت. (متن عبارت بود "
-"از «%s»)"
+msgstr "متن پیش از آن که علامت نقل قول متناظر برای %c پیدا شود پایان یافت. (متن عبارت بود از «%s»)"
 
 #: glib/gshell.c:599
 msgid "Text was empty (or contained only whitespace)"
@@ -5994,11 +5869,8 @@ msgid "Failed to execute helper program (%s)"
 msgstr "اجرای برنامهٔ راهنما  (‎%s) شکست خورد"
 
 #: glib/gspawn-win32.c:1064
-msgid ""
-"Unexpected error in g_io_channel_win32_poll() reading data from a child process"
-msgstr ""
-"خطای غیرمنتظره در g_io_channel_win32_poll()‎ هنگام خواندن داده‌ها از یک فراروند "
-"فرزند"
+msgid "Unexpected error in g_io_channel_win32_poll() reading data from a child process"
+msgstr "خطای غیرمنتظره در g_io_channel_win32_poll()‎ هنگام خواندن داده‌ها از یک فراروند فرزند"
 
 #: glib/gstrfuncs.c:3338 glib/gstrfuncs.c:3440
 msgid "Empty string is not a number"
@@ -6089,8 +5961,8 @@ msgstr "گرفتن حافظه شکست خورد"
 msgid "Character out of range for UTF-8"
 msgstr "نویسهٔ خارج از محدوده برای UTF-8"
 
-#: glib/gutf8.c:1051 glib/gutf8.c:1060 glib/gutf8.c:1190 glib/gutf8.c:1199
-#: glib/gutf8.c:1338 glib/gutf8.c:1435
+#: glib/gutf8.c:1051 glib/gutf8.c:1060 glib/gutf8.c:1190 glib/gutf8.c:1199 glib/gutf8.c:1338
+#: glib/gutf8.c:1435
 msgid "Invalid sequence in conversion input"
 msgstr "دنبالهٔ نامعتبر در ورودی تبدیل"
 
@@ -6370,12 +6242,11 @@ msgstr "%I.1f اگزابایت"
 #~ msgstr "دنبالهٔ نامعتبر در ورودی تبدیل"
 
 #~ msgid ""
-#~ "Character '%s' is not valid at the start of an entity name; the & character "
-#~ "begins an entity; if this ampersand isn't supposed to be an entity, escape it "
-#~ "as &amp;"
+#~ "Character '%s' is not valid at the start of an entity name; the & character begins an entity; if this "
+#~ "ampersand isn't supposed to be an entity, escape it as &amp;"
 #~ msgstr ""
-#~ "نویسهٔ «%s» در ابتدای نام نهادها مجاز نیست؛ نویسهٔ & نهاد را آغاز می‌کند؛ اگر این "
-#~ "علامت & قرار نیست نهاد شود، به‌جای آن از ‎&amp;‎ استفاده کنید"
+#~ "نویسهٔ «%s» در ابتدای نام نهادها مجاز نیست؛ نویسهٔ & نهاد را آغاز می‌کند؛ اگر این علامت & قرار نیست نهاد "
+#~ "شود، به‌جای آن از ‎&amp;‎ استفاده کنید"
 
 #~ msgid "Empty character reference; should include a digit such as &#454;"
 #~ msgstr "ارجاع نویسه‌ای خالی؛ باید یک رقم داشته باشد، مثل ‎&#454;‎"
