@@ -4,7 +4,7 @@ project('glib', 'c', 'cpp',
   meson_version : '>= 0.52.0',
   default_options : [
     'buildtype=debugoptimized',
-    'warning_level=1',
+    'warning_level=3',
     'c_std=gnu99'
   ]
 )
