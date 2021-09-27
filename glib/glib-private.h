@@ -78,6 +78,37 @@ g_ignore_strv_leak (GStrv strv)
 #endif
 }
 
+/*
+ * g_begin_ignore_leaks:
+ *
+ * Tell AddressSanitizer and similar tools to ignore all leaks from this point
+ * onwards, until g_end_ignore_leaks() is called.
+ *
+ * Try to use g_ignore_leak() where possible to target deliberate leaks more
+ * specifically.
+ */
+static inline void
+g_begin_ignore_leaks (void)
+{
+#ifdef _GLIB_ADDRESS_SANITIZER
+  __lsan_disable ();
+#endif
+}
+
+/*
+ * g_end_ignore_leaks:
+ *
+ * Start ignoring leaks again; this must be paired with a previous call to
+ * g_begin_ignore_leaks().
+ */
+static inline void
+g_end_ignore_leaks (void)
+{
+#ifdef _GLIB_ADDRESS_SANITIZER
+  __lsan_enable ();
+#endif
+}
+
 GMainContext *          g_get_worker_context            (void);
 gboolean                g_check_setuid                  (void);
 GMainContext *          g_main_context_new_with_next_id (guint next_id);
