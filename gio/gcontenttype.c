@@ -32,6 +32,7 @@
 #include "gfileenumerator.h"
 #include "gfileinfo.h"
 #include "glibintl.h"
+#include "glib-private.h"
 
 
 /**
@@ -57,7 +58,12 @@
 
 static void tree_magic_schedule_reload (void);
 
-/* We lock this mutex whenever we modify global state in this module.  */
+/* We lock this mutex whenever we modify global state in this module.
+ * Taking and releasing this lock should always be associated with a pair of
+ * g_begin_ignore_leaks()/g_end_ignore_leaks() calls, as any call into xdgmime
+ * could trigger xdg_mime_init(), which makes a number of one-time allocations
+ * which GLib can never free as it doesn’t know when is suitable to call
+ * xdg_mime_shutdown(). */
 G_LOCK_DEFINE_STATIC (gio_xdgmime);
 
 gsize
@@ -66,7 +72,9 @@ _g_unix_content_type_get_sniff_len (void)
   gsize size;
 
   G_LOCK (gio_xdgmime);
+  g_begin_ignore_leaks ();
   size = xdg_mime_get_max_buffer_extents ();
+  g_end_ignore_leaks ();
   G_UNLOCK (gio_xdgmime);
 
   return size;
@@ -78,7 +86,9 @@ _g_unix_content_type_unalias (const gchar *type)
   gchar *res;
 
   G_LOCK (gio_xdgmime);
+  g_begin_ignore_leaks ();
   res = g_strdup (xdg_mime_unalias_mime_type (type));
+  g_end_ignore_leaks ();
   G_UNLOCK (gio_xdgmime);
 
   return res;
@@ -95,6 +105,7 @@ _g_unix_content_type_get_parents (const gchar *type)
   array = g_ptr_array_new ();
 
   G_LOCK (gio_xdgmime);
+  g_begin_ignore_leaks ();
 
   umime = xdg_mime_unalias_mime_type (type);
 
@@ -106,6 +117,7 @@ _g_unix_content_type_get_parents (const gchar *type)
 
   free (parents);
 
+  g_end_ignore_leaks ();
   G_UNLOCK (gio_xdgmime);
 
   g_ptr_array_add (array, NULL);
@@ -233,7 +245,9 @@ g_content_type_equals (const gchar *type1,
   g_return_val_if_fail (type2 != NULL, FALSE);
 
   G_LOCK (gio_xdgmime);
+  g_begin_ignore_leaks ();
   res = xdg_mime_mime_type_equal (type1, type2);
+  g_end_ignore_leaks ();
   G_UNLOCK (gio_xdgmime);
 
   return res;
@@ -259,7 +273,9 @@ g_content_type_is_a (const gchar *type,
   g_return_val_if_fail (supertype != NULL, FALSE);
 
   G_LOCK (gio_xdgmime);
+  g_begin_ignore_leaks ();
   res = xdg_mime_mime_type_subclass (type, supertype);
+  g_end_ignore_leaks ();
   G_UNLOCK (gio_xdgmime);
 
   return res;
@@ -472,7 +488,9 @@ g_content_type_get_description (const gchar *type)
   g_return_val_if_fail (type != NULL, NULL);
 
   G_LOCK (gio_xdgmime);
+  g_begin_ignore_leaks ();
   type = xdg_mime_unalias_mime_type (type);
+  g_end_ignore_leaks ();
 
   if (type_comment_cache == NULL)
     type_comment_cache = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
@@ -528,7 +546,9 @@ g_content_type_get_icon_internal (const gchar *type,
   g_return_val_if_fail (type != NULL, NULL);
 
   G_LOCK (gio_xdgmime);
+  g_begin_ignore_leaks ();
   xdg_icon = xdg_mime_get_icon (type);
+  g_end_ignore_leaks ();
   G_UNLOCK (gio_xdgmime);
 
   if (xdg_icon)
@@ -619,7 +639,9 @@ g_content_type_get_generic_icon_name (const gchar *type)
   g_return_val_if_fail (type != NULL, NULL);
 
   G_LOCK (gio_xdgmime);
+  g_begin_ignore_leaks ();
   xdg_icon_name = xdg_mime_get_generic_icon (type);
+  g_end_ignore_leaks ();
   G_UNLOCK (gio_xdgmime);
 
   if (!xdg_icon_name)
@@ -703,8 +725,10 @@ g_content_type_from_mime_type (const gchar *mime_type)
   g_return_val_if_fail (mime_type != NULL, NULL);
 
   G_LOCK (gio_xdgmime);
+  g_begin_ignore_leaks ();
   /* mime type and content type are same on unixes */
   umime = g_strdup (xdg_mime_unalias_mime_type (mime_type));
+  g_end_ignore_leaks ();
   G_UNLOCK (gio_xdgmime);
 
   return umime;
@@ -751,6 +775,7 @@ g_content_type_guess (const gchar  *filename,
   g_return_val_if_fail (data_size != (gsize) -1, g_strdup (XDG_MIME_TYPE_UNKNOWN));
 
   G_LOCK (gio_xdgmime);
+  g_begin_ignore_leaks ();
 
   if (filename)
     {
@@ -775,6 +800,7 @@ g_content_type_guess (const gchar  *filename,
   if (n_name_mimetypes == 1)
     {
       gchar *s = g_strdup (name_mimetypes[0]);
+      g_end_ignore_leaks ();
       G_UNLOCK (gio_xdgmime);
       return s;
     }
@@ -843,6 +869,7 @@ g_content_type_guess (const gchar  *filename,
         }
     }
 
+  g_end_ignore_leaks ();
   G_UNLOCK (gio_xdgmime);
 
   return mimetype;
