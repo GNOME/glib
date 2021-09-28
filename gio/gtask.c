@@ -58,6 +58,10 @@
  * use g_task_propagate_pointer() or the like to extract the
  * return value.
  *
+ * Using #GTask requires the thread-default #GMainContext from when the
+ * #GTask was constructed to be running at least until the task has completed
+ * and its data has been freed.
+ *
  * Here is an example for using GTask as a GAsyncResult:
  * |[<!-- language="C" -->
  *     typedef struct {
