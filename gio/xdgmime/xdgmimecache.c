@@ -775,8 +775,6 @@ _xdg_mime_cache_get_mime_type_for_data (const void *data,
   return cache_get_mime_type_for_data (data, len, result_prio, NULL, 0);
 }
 
-#ifdef NOT_USED_IN_GIO
-
 const char *
 _xdg_mime_cache_get_mime_type_for_file (const char  *file_name,
 					struct stat *statbuf)
@@ -862,8 +860,6 @@ _xdg_mime_cache_get_mime_type_from_file_name (const char *file_name)
   else
     return XDG_MIME_TYPE_UNKNOWN;
 }
-
-#endif
 
 int
 _xdg_mime_cache_get_mime_types_from_file_name (const char *file_name,
@@ -1111,8 +1107,6 @@ _xdg_mime_cache_get_icon (const char *mime)
   return cache_lookup_icon (mime, 32);
 }
 
-#ifdef NOT_USED_IN_GIO
-
 static void
 dump_glob_node (XdgMimeCache *cache,
 		xdg_uint32_t  offset,
@@ -1164,4 +1158,4 @@ _xdg_mime_cache_glob_dump (void)
   }
 }
 
-#endif
+
