@@ -1103,6 +1103,7 @@ g_app_info_delete (GAppInfo *appinfo)
 
 enum {
   LAUNCH_FAILED,
+  LAUNCH_STARTED,
   LAUNCHED,
   LAST_SIGNAL
 };
@@ -1159,6 +1160,41 @@ g_app_launch_context_class_init (GAppLaunchContextClass *klass)
                                          G_STRUCT_OFFSET (GAppLaunchContextClass, launch_failed),
                                          NULL, NULL, NULL,
                                          G_TYPE_NONE, 1, G_TYPE_STRING);
+
+  /**
+   * GAppLaunchContext::launch-started:
+   * @context: the object emitting the signal
+   * @info: the #GAppInfo that is about to be launched
+   * @platform_data: (nullable): additional platform-specific data for this launch
+   *
+   * The #GAppLaunchContext::launch-started signal is emitted when a #GAppInfo is
+   * about to be launched. If non-null the @platform_data is an
+   * GVariant dictionary mapping strings to variants (ie `a{sv}`), which
+   * contains additional, platform-specific data about this launch. On
+   * UNIX, at least the `startup-notification-id` keys will be
+   * present.
+   *
+   * The value of the `startup-notification-id` key (type `s`) is a startup
+   * notification ID corresponding to the format from the [startup-notification
+   * specification](https://specifications.freedesktop.org/startup-notification-spec/startup-notification-0.1.txt).
+   * It allows tracking the progress of the launchee through startup.
+   *
+   * It is guaranteed that this signal is followed by either a #GAppLaunchContext::launched or
+   * #GAppLaunchContext::launch-failed signal.
+   *
+   * Since: 2.72
+   */
+  signals[LAUNCH_STARTED] = g_signal_new (I_("launch-started"),
+                                          G_OBJECT_CLASS_TYPE (object_class),
+                                          G_SIGNAL_RUN_LAST,
+                                          G_STRUCT_OFFSET (GAppLaunchContextClass, launch_started),
+                                          NULL, NULL,
+                                          _g_cclosure_marshal_VOID__OBJECT_VARIANT,
+                                          G_TYPE_NONE, 2,
+                                          G_TYPE_APP_INFO, G_TYPE_VARIANT);
+  g_signal_set_va_marshaller (signals[LAUNCH_STARTED],
+                              G_TYPE_FROM_CLASS (klass),
+                              _g_cclosure_marshal_VOID__OBJECT_VARIANTv);
 
   /**
    * GAppLaunchContext::launched:

@@ -2731,6 +2731,26 @@ notify_desktop_launch (GDBusConnection  *session_bus,
   g_object_unref (msg);
 }
 
+static void
+emit_launch_started (GAppLaunchContext *context,
+                     GDesktopAppInfo   *info,
+                     const gchar       *startup_id)
+{
+  GVariantBuilder builder;
+  GVariant *platform_data = NULL;
+
+  if (startup_id)
+    {
+      g_variant_builder_init (&builder, G_VARIANT_TYPE_ARRAY);
+      g_variant_builder_add (&builder, "{sv}",
+                             "startup-notification-id",
+                             g_variant_new_string (startup_id));
+      platform_data = g_variant_ref_sink (g_variant_builder_end (&builder));
+    }
+  g_signal_emit_by_name (context, "launch-started", info, platform_data);
+  g_clear_pointer (&platform_data, g_variant_unref);
+}
+
 #define _SPAWN_FLAGS_DEFAULT (G_SPAWN_SEARCH_PATH)
 
 static gboolean
@@ -2826,6 +2846,8 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
             }
 
           g_list_free_full (launched_files, g_object_unref);
+
+          emit_launch_started (launch_context, info, sn_id);
         }
 
       /* Wrap the @argv in a command which will set the
@@ -3056,6 +3078,9 @@ launch_uris_with_dbus (GDesktopAppInfo    *info,
   data->launch_context = launch_context ? g_object_ref (launch_context) : NULL;
   g_variant_dict_init (&dict, platform_data);
   g_variant_dict_lookup (&dict, "desktop-startup-id", "s", &data->startup_id);
+
+  if (launch_context)
+    emit_launch_started (launch_context, info, data->startup_id);
 
   g_dbus_connection_call (session_bus, info->app_id, object_path, "org.freedesktop.Application",
                           uris ? "Open" : "Activate", g_variant_builder_end (&builder),
