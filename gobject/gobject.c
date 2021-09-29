@@ -1490,15 +1490,12 @@ g_object_thaw_notify (GObject *object)
 }
 
 static void
-consider_issuing_property_deprecation_warning (const GParamSpec *pspec)
+maybe_issue_property_deprecation_warning (const GParamSpec *pspec)
 {
   static GHashTable *already_warned_table;
   static const gchar *enable_diagnostic;
   static GMutex already_warned_lock;
   gboolean already;
-
-  if (!(pspec->flags & G_PARAM_DEPRECATED))
-    return;
 
   if (g_once_init_enter (&enable_diagnostic))
     {
@@ -1537,6 +1534,13 @@ consider_issuing_property_deprecation_warning (const GParamSpec *pspec)
     g_warning ("The property %s:%s is deprecated and shouldn't be used "
                "anymore. It will be removed in a future version.",
                g_type_name (pspec->owner_type), pspec->name);
+}
+
+static inline void
+consider_issuing_property_deprecation_warning (const GParamSpec *pspec)
+{
+  if (G_UNLIKELY (pspec->flags & G_PARAM_DEPRECATED))
+    maybe_issue_property_deprecation_warning (pspec);
 }
 
 static inline void
