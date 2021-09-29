@@ -104,7 +104,7 @@ GTypeClass*        g_io_extension_ref_class                   (GIOExtension     
 /* API for the modules to implement */
 
 /**
- * g_io_module_load:
+ * g_io_module_load: (skip)
  * @module: a #GIOModule.
  *
  * Required API for GIO modules to implement.
@@ -125,7 +125,7 @@ GLIB_AVAILABLE_IN_ALL
 void   g_io_module_load   (GIOModule *module);
 
 /**
- * g_io_module_unload:
+ * g_io_module_unload: (skip)
  * @module: a #GIOModule.
  *
  * Required API for GIO modules to implement.
