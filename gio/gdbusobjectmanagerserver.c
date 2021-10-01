@@ -457,10 +457,31 @@ registration_data_free (RegistrationData *data)
   g_free (data);
 }
 
+/* Validate whether an object path is valid as a child of the manager. According
+ * to the specification:
+ * https://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager
+ * this means that:
+ * > All returned object paths are children of the object path implementing this
+ * > interface, i.e. their object paths start with the ObjectManager's object
+ * > path plus '/'
+ *
+ * For example, if the manager is at `/org/gnome/Example`, children will be
+ * `/org/gnome/Example/(.+)`.
+ *
+ * It is permissible (but not encouraged) for the manager to be at `/`. If so,
+ * children will be `/(.+)`.
+ */
 static gboolean
 is_valid_child_object_path (GDBusObjectManagerServer *manager,
                             const gchar              *child_object_path)
 {
+  /* Historically GDBus accepted @child_object_paths at `/` if the @manager
+   * itself is also at `/". This is not spec-compliant, but making GDBus enforce
+   * the spec more strictly would be an incompatible change.
+   *
+   * See https://gitlab.gnome.org/GNOME/glib/-/issues/2500 */
+  g_warn_if_fail (!g_str_equal (child_object_path, manager->priv->object_path_ending_in_slash));
+
   return g_str_has_prefix (child_object_path, manager->priv->object_path_ending_in_slash);
 }
 
