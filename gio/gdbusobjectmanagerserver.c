@@ -457,6 +457,13 @@ registration_data_free (RegistrationData *data)
   g_free (data);
 }
 
+static gboolean
+is_valid_child_object_path (GDBusObjectManagerServer *manager,
+                            const gchar              *child_object_path)
+{
+  return g_str_has_prefix (child_object_path, manager->priv->object_path_ending_in_slash);
+}
+
 /* ---------------------------------------------------------------------------------------------------- */
 
 static void
@@ -471,7 +478,7 @@ g_dbus_object_manager_server_export_unlocked (GDBusObjectManagerServer  *manager
 
   g_return_if_fail (G_IS_DBUS_OBJECT_MANAGER_SERVER (manager));
   g_return_if_fail (G_IS_DBUS_OBJECT (object));
-  g_return_if_fail (g_str_has_prefix (object_path, manager->priv->object_path_ending_in_slash));
+  g_return_if_fail (is_valid_child_object_path (manager, object_path));
 
   interface_names = g_ptr_array_new ();
 
@@ -574,7 +581,7 @@ g_dbus_object_manager_server_export_uniquely (GDBusObjectManagerServer *manager,
 
   g_return_if_fail (G_IS_DBUS_OBJECT_MANAGER_SERVER (manager));
   g_return_if_fail (G_IS_DBUS_OBJECT (object));
-  g_return_if_fail (g_str_has_prefix (orig_object_path, manager->priv->object_path_ending_in_slash));
+  g_return_if_fail (is_valid_child_object_path (manager, orig_object_path));
 
   g_mutex_lock (&manager->priv->lock);
 
@@ -650,7 +657,7 @@ g_dbus_object_manager_server_unexport_unlocked (GDBusObjectManagerServer  *manag
 
   g_return_val_if_fail (G_IS_DBUS_OBJECT_MANAGER_SERVER (manager), FALSE);
   g_return_val_if_fail (g_variant_is_object_path (object_path), FALSE);
-  g_return_val_if_fail (g_str_has_prefix (object_path, manager->priv->object_path_ending_in_slash), FALSE);
+  g_return_val_if_fail (is_valid_child_object_path (manager, object_path), FALSE);
 
   ret = FALSE;
 
