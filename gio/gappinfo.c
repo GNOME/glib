@@ -1147,7 +1147,7 @@ g_app_launch_context_class_init (GAppLaunchContextClass *klass)
    * @context: the object emitting the signal
    * @startup_notify_id: the startup notification id for the failed launch
    *
-   * The ::launch-failed signal is emitted when a #GAppInfo launch
+   * The #GAppLaunchContext::launch-failed signal is emitted when a #GAppInfo launch
    * fails. The startup notification id is provided, so that the launcher
    * can cancel the startup notification.
    *
@@ -1166,11 +1166,11 @@ g_app_launch_context_class_init (GAppLaunchContextClass *klass)
    * @info: the #GAppInfo that was just launched
    * @platform_data: additional platform-specific data for this launch
    *
-   * The ::launched signal is emitted when a #GAppInfo is successfully
+   * The #GAppLaunchContext::launched signal is emitted when a #GAppInfo is successfully
    * launched. The @platform_data is an GVariant dictionary mapping
-   * strings to variants (ie a{sv}), which contains additional,
+   * strings to variants (ie `a{sv}`), which contains additional,
    * platform-specific data about this launch. On UNIX, at least the
-   * "pid" and "startup-notification-id" keys will be present.
+   * `pid` and `startup-notification-id` keys will be present.
    *
    * Since: 2.36
    */
