@@ -293,12 +293,14 @@ struct _GAppLaunchContextClass
   void   (* launched)              (GAppLaunchContext *context,
                                     GAppInfo          *info,
                                     GVariant          *platform_data);
+  void   (* launch_started)        (GAppLaunchContext *context,
+                                    GAppInfo          *info,
+                                    GVariant          *platform_data);
 
   /* Padding for future expansion */
   void (*_g_reserved1) (void);
   void (*_g_reserved2) (void);
   void (*_g_reserved3) (void);
-  void (*_g_reserved4) (void);
 };
 
 GLIB_AVAILABLE_IN_ALL
