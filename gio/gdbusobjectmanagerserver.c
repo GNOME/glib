@@ -457,6 +457,34 @@ registration_data_free (RegistrationData *data)
   g_free (data);
 }
 
+/* Validate whether an object path is valid as a child of the manager. According
+ * to the specification:
+ * https://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager
+ * this means that:
+ * > All returned object paths are children of the object path implementing this
+ * > interface, i.e. their object paths start with the ObjectManager's object
+ * > path plus '/'
+ *
+ * For example, if the manager is at `/org/gnome/Example`, children will be
+ * `/org/gnome/Example/(.+)`.
+ *
+ * It is permissible (but not encouraged) for the manager to be at `/`. If so,
+ * children will be `/(.+)`.
+ */
+static gboolean
+is_valid_child_object_path (GDBusObjectManagerServer *manager,
+                            const gchar              *child_object_path)
+{
+  /* Historically GDBus accepted @child_object_paths at `/` if the @manager
+   * itself is also at `/". This is not spec-compliant, but making GDBus enforce
+   * the spec more strictly would be an incompatible change.
+   *
+   * See https://gitlab.gnome.org/GNOME/glib/-/issues/2500 */
+  g_warn_if_fail (!g_str_equal (child_object_path, manager->priv->object_path_ending_in_slash));
+
+  return g_str_has_prefix (child_object_path, manager->priv->object_path_ending_in_slash);
+}
+
 /* ---------------------------------------------------------------------------------------------------- */
 
 static void
@@ -471,7 +499,7 @@ g_dbus_object_manager_server_export_unlocked (GDBusObjectManagerServer  *manager
 
   g_return_if_fail (G_IS_DBUS_OBJECT_MANAGER_SERVER (manager));
   g_return_if_fail (G_IS_DBUS_OBJECT (object));
-  g_return_if_fail (g_str_has_prefix (object_path, manager->priv->object_path_ending_in_slash));
+  g_return_if_fail (is_valid_child_object_path (manager, object_path));
 
   interface_names = g_ptr_array_new ();
 
@@ -574,7 +602,7 @@ g_dbus_object_manager_server_export_uniquely (GDBusObjectManagerServer *manager,
 
   g_return_if_fail (G_IS_DBUS_OBJECT_MANAGER_SERVER (manager));
   g_return_if_fail (G_IS_DBUS_OBJECT (object));
-  g_return_if_fail (g_str_has_prefix (orig_object_path, manager->priv->object_path_ending_in_slash));
+  g_return_if_fail (is_valid_child_object_path (manager, orig_object_path));
 
   g_mutex_lock (&manager->priv->lock);
 
@@ -650,7 +678,7 @@ g_dbus_object_manager_server_unexport_unlocked (GDBusObjectManagerServer  *manag
 
   g_return_val_if_fail (G_IS_DBUS_OBJECT_MANAGER_SERVER (manager), FALSE);
   g_return_val_if_fail (g_variant_is_object_path (object_path), FALSE);
-  g_return_val_if_fail (g_str_has_prefix (object_path, manager->priv->object_path_ending_in_slash), FALSE);
+  g_return_val_if_fail (is_valid_child_object_path (manager, object_path), FALSE);
 
   ret = FALSE;
 
