@@ -117,7 +117,7 @@ else
   endif
 
   subdir('gnulib')
-  gnulib_objects = [gnulib_lib.extract_all_objects()]
+  gnulib_objects = [gnulib_lib.extract_all_objects(recursive: false)]
 endif
 
 glib_headers = files(
@@ -359,7 +359,7 @@ glib_c_args = ['-DG_LOG_DOMAIN="GLib"', '-DGLIB_COMPILATION'] + pcre_static_args
 libglib = library('glib-2.0',
   glib_dtrace_obj, glib_dtrace_hdr,
   sources : [deprecated_sources, glib_sources],
-  objects : [charset_lib.extract_all_objects()] + gnulib_objects,
+  objects : [charset_lib.extract_all_objects(recursive: false)] + gnulib_objects,
   version : library_version,
   soversion : soversion,
   darwin_versions : darwin_versions,
