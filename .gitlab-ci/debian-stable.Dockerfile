@@ -1,11 +1,11 @@
-FROM debian:buster
+FROM debian:bullseye
 
 RUN apt-get update -qq && apt-get install --no-install-recommends -qq -y \
     bindfs \
     black \
     clang \
-    clang-tools-7 \
-    clang-format-7 \
+    clang-tools \
+    clang-format \
     dbus \
     desktop-file-utils \
     elfutils \
