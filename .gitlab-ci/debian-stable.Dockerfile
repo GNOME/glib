@@ -26,7 +26,7 @@ RUN apt-get update -qq && apt-get install --no-install-recommends -qq -y \
     libffi-dev \
     libgamin-dev \
     libmount-dev \
-    libpcre2-dev \
+    libpcre3-dev \
     libselinux1-dev \
     libxml2-utils \
     libxslt1-dev \
