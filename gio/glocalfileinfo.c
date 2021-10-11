@@ -2650,7 +2650,7 @@ set_mtime_atime (char                       *filename,
     {
       if (lazy_stat (filename, &statbuf, &got_stat) == 0)
 	{
-	  times[0].tv_sec = statbuf.st_mtime;
+	  times[0].tv_sec = statbuf.st_atime;
 #if defined (HAVE_STRUCT_STAT_ST_ATIMENSEC)
 	  times[0].tv_usec = statbuf.st_atimensec / 1000;
 #elif defined (HAVE_STRUCT_STAT_ST_ATIM_TV_NSEC)
