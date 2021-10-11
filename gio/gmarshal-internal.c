@@ -490,13 +490,13 @@ _g_cclosure_marshal_BOOLEAN__STRINGv (GClosure *closure,
   gpointer arg0;
   va_list args_copy;
 
+  g_return_if_fail (return_value != NULL);
+
   G_VA_COPY (args_copy, args);
   arg0 = (gpointer) va_arg (args_copy, gpointer);
   if ((param_types[0] & G_SIGNAL_TYPE_STATIC_SCOPE) == 0 && arg0 != NULL)
     arg0 = g_strdup (arg0);
   va_end (args_copy);
-
-  g_return_if_fail (return_value != NULL);
 
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
