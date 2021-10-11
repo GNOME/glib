@@ -2526,6 +2526,8 @@ g_main_context_find_source_by_user_data (GMainContext *context,
  * is called on its (now invalid) source ID.  This source ID may have
  * been reissued, leading to the operation being performed against the
  * wrong source.
+ *
+ * Returns: %TRUE if the source was found and removed.
  **/
 gboolean
 g_source_remove (guint tag)
