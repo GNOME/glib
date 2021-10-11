@@ -2259,9 +2259,6 @@ g_key_file_get_locale_string (GKeyFile     *key_file,
 
       if (translated_value)
 	break;
-
-      g_free (translated_value);
-      translated_value = NULL;
    }
 
   /* Fallback to untranslated key
