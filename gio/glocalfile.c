@@ -2011,7 +2011,16 @@ g_local_file_trash (GFile         *file,
        * trying to rename across a filesystem boundary, which doesn't work. So
        * we use g_stat here instead of g_lstat, to know where the symlink
        * points to. */
-      g_stat (path, &file_stat);
+      if (g_stat (path, &file_stat))
+	{
+	  errsv = errno;
+	  g_free (path);
+
+	  g_set_io_error (error,
+			  _("Error trashing file %s: %s"),
+			  file, errsv);
+	  return FALSE;
+	}
       g_free (path);
     }
 
