@@ -997,6 +997,8 @@ parse_header (gchar *line)
 
   line[len - 1] = 0;
   s = strchr (line, ':');
+  if (s == NULL)
+    return NULL;
 
   match = g_slice_new0 (TreeMatch);
   match->priority = atoi (line + 1);
@@ -1025,9 +1027,13 @@ parse_match_line (gchar *line,
     {
       *depth = atoi (line);
       s = strchr (line, '>');
+      if (s == NULL)
+        goto handle_error;
     }
   s += 2;
   p = strchr (s, '"');
+  if (p == NULL)
+    goto handle_error;
   *p = 0;
 
   matchlet->path = g_strdup (s);
@@ -1058,6 +1064,10 @@ parse_match_line (gchar *line,
   g_strfreev (parts);
 
   return matchlet;
+
+handle_error:
+  g_slice_free (TreeMatchlet, matchlet);
+  return NULL;
 }
 
 static gint
@@ -1119,7 +1129,7 @@ read_tree_magic_from_directory (const gchar *prefix)
   gchar *text;
   gsize len;
   gchar **lines;
-  gint i;
+  gsize i;
   TreeMatch *match;
   TreeMatchlet *matchlet;
   gint depth;
@@ -1134,14 +1144,18 @@ read_tree_magic_from_directory (const gchar *prefix)
           match = NULL;
           for (i = 0; lines[i] && lines[i][0]; i++)
             {
-              if (lines[i][0] == '[')
+              if (lines[i][0] == '[' && (match = parse_header (lines[i])) != NULL)
                 {
-                  match = parse_header (lines[i]);
                   insert_match (match);
                 }
               else if (match != NULL)
                 {
                   matchlet = parse_match_line (lines[i], &depth);
+                  if (matchlet == NULL)
+                    {
+                      g_warning ("%s: body corrupt; skipping", filename);
+                      break;
+                    }
                   insert_matchlet (match, matchlet, depth);
                 }
               else
