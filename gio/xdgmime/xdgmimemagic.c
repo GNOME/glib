@@ -103,6 +103,8 @@ _xdg_mime_magic_matchlet_new (void)
   XdgMimeMagicMatchlet *matchlet;
 
   matchlet = malloc (sizeof (XdgMimeMagicMatchlet));
+  if (matchlet == NULL)
+    return NULL;
 
   matchlet->indent = 0;
   matchlet->offset = 0;
@@ -355,6 +357,11 @@ _xdg_mime_magic_parse_magic_line (FILE              *magic_file,
     return XDG_MIME_MAGIC_ERROR;
 
   matchlet = _xdg_mime_magic_matchlet_new ();
+
+  /* OOM */
+  if (matchlet == NULL)
+    return XDG_MIME_MAGIC_ERROR;
+
   matchlet->indent = indent;
   matchlet->offset = _xdg_mime_magic_read_a_number (magic_file, &end_of_file);
   if (end_of_file)
@@ -767,6 +774,11 @@ _xdg_mime_magic_read_magic_file (XdgMimeMagic *mime_magic,
 	{
 	case XDG_MIME_MAGIC_SECTION:
 	  match = _xdg_mime_magic_match_new ();
+
+	  /* OOM */
+	  if (match == NULL)
+	    return;
+
 	  state = _xdg_mime_magic_parse_header (magic_file, match);
 	  if (state == XDG_MIME_MAGIC_EOF || state == XDG_MIME_MAGIC_ERROR)
 	    _xdg_mime_magic_match_free (match);
