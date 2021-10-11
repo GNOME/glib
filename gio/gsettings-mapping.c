@@ -200,6 +200,8 @@ g_settings_get_mapping_int (GValue   *value,
     l = g_variant_get_int32 (variant);
   else if (g_variant_type_equal (type, G_VARIANT_TYPE_INT64))
     l = g_variant_get_int64 (variant);
+  else if (g_variant_type_equal (type, G_VARIANT_TYPE_HANDLE))
+    l = g_variant_get_handle (variant);
   else
     return FALSE;
 
@@ -291,8 +293,6 @@ g_settings_get_mapping_unsigned_int (GValue   *value,
     u = g_variant_get_uint32 (variant);
   else if (g_variant_type_equal (type, G_VARIANT_TYPE_UINT64))
     u = g_variant_get_uint64 (variant);
-  else if (g_variant_type_equal (type, G_VARIANT_TYPE_HANDLE))
-    u = g_variant_get_handle (variant);
   else
     return FALSE;
 
@@ -459,7 +459,8 @@ g_settings_get_mapping (GValue   *value,
 
   else if (g_variant_is_of_type (variant, G_VARIANT_TYPE_INT16)  ||
            g_variant_is_of_type (variant, G_VARIANT_TYPE_INT32)  ||
-           g_variant_is_of_type (variant, G_VARIANT_TYPE_INT64))
+           g_variant_is_of_type (variant, G_VARIANT_TYPE_INT64)  ||
+           g_variant_is_of_type (variant, G_VARIANT_TYPE_HANDLE))
     return g_settings_get_mapping_int (value, variant);
 
   else if (g_variant_is_of_type (variant, G_VARIANT_TYPE_DOUBLE))
@@ -467,8 +468,7 @@ g_settings_get_mapping (GValue   *value,
 
   else if (g_variant_is_of_type (variant, G_VARIANT_TYPE_UINT16) ||
            g_variant_is_of_type (variant, G_VARIANT_TYPE_UINT32) ||
-           g_variant_is_of_type (variant, G_VARIANT_TYPE_UINT64) ||
-           g_variant_is_of_type (variant, G_VARIANT_TYPE_HANDLE))
+           g_variant_is_of_type (variant, G_VARIANT_TYPE_UINT64))
     return g_settings_get_mapping_unsigned_int (value, variant);
 
   else if (g_variant_is_of_type (variant, G_VARIANT_TYPE_STRING)      ||
