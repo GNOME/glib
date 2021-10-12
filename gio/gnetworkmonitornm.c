@@ -253,33 +253,11 @@ sync_properties (GNetworkMonitorNM *nm,
 }
 
 static void
-update_cached_property (GDBusProxy   *proxy,
-                        const char   *property_name,
-                        GVariantDict *dict)
-{
-  GVariant *v;
-
-  v = g_variant_dict_lookup_value (dict, property_name, NULL);
-  if (!v)
-    return;
-  g_dbus_proxy_set_cached_property (proxy, property_name, v);
-  g_variant_unref (v);
-}
-
-static void
 proxy_properties_changed_cb (GDBusProxy        *proxy,
                              GVariant          *changed_properties,
                              GStrv              invalidated_properties,
                              GNetworkMonitorNM *nm)
 {
-  GVariantDict *dict;
-
-  dict = g_variant_dict_new (changed_properties);
-
-  update_cached_property (nm->priv->proxy, "Connectivity", dict);
-
-  g_variant_dict_unref (dict);
-
   sync_properties (nm, TRUE);
 }
 
