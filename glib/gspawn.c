@@ -1710,7 +1710,7 @@ do_exec (gint                  child_err_report_fd,
                 child_err_report_fd = safe_dup (child_err_report_fd);
 
               safe_dup2 (source_fds[i], target_fds[i]);
-              (void) close (source_fds[i]);
+              close_and_invalidate (&source_fds[i]);
             }
         }
     }
