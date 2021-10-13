@@ -380,7 +380,7 @@ slice_config_init (SliceConfig *config)
   {
 
   wchar_t wvalue[128];  /* at least big enough for `always-malloc,debug-blocks` */
-  int len;
+  gsize len;
 
   len = GetEnvironmentVariableW (L"G_SLICE", wvalue, G_N_ELEMENTS (wvalue));
 
