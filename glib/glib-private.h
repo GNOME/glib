@@ -23,8 +23,14 @@
 #include "gstdioprivate.h"
 
 /* gcc defines __SANITIZE_ADDRESS__, clang sets the address_sanitizer
- * feature flag */
-#if defined(__SANITIZE_ADDRESS__) || g_macro__has_feature(address_sanitizer)
+ * feature flag.
+ *
+ * MSVC defines __SANITIZE_ADDRESS__ as well when AddressSanitizer
+ * is enabled but __lsan_ignore_object() equivalent method is not supported
+ * See also
+ * https://docs.microsoft.com/en-us/cpp/sanitizers/asan-building?view=msvc-160
+ */
+#if !defined(_MSC_VER) && (defined(__SANITIZE_ADDRESS__) || g_macro__has_feature(address_sanitizer))
 
 /*
  * %_GLIB_ADDRESS_SANITIZER:
