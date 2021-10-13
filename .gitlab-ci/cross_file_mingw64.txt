@@ -4,9 +4,12 @@ cpu_family = 'x86_64'
 cpu = 'x86_64'
 endian = 'little'
 
+# Fedora builds GCC with --enable-default-ssp by default, but mingw64 puts its
+# stack-protected functions in a separate library which needs to be linked
+# explicitly, hence this flag.
 [properties]
 c_args = []
-c_link_args = []
+c_link_args = ['-fstack-protector']
 
 [binaries]
 c = 'x86_64-w64-mingw32-gcc'
