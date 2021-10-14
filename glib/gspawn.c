@@ -1572,7 +1572,6 @@ do_exec (gint                  child_err_report_fd,
   /* Redirect pipes as required */
   if (stdin_fd >= 0)
     {
-      /* dup2 can't actually fail here I don't think */
       if (safe_dup2 (stdin_fd, 0) < 0)
         write_err_and_exit (child_err_report_fd,
                             CHILD_DUP2_FAILED);
@@ -1588,13 +1587,14 @@ do_exec (gint                  child_err_report_fd,
       if (read_null < 0)
         write_err_and_exit (child_err_report_fd,
                             CHILD_DUP2_FAILED);
-      safe_dup2 (read_null, 0);
+      if (safe_dup2 (read_null, 0) < 0)
+        write_err_and_exit (child_err_report_fd,
+                            CHILD_DUP2_FAILED);
       close_and_invalidate (&read_null);
     }
 
   if (stdout_fd >= 0)
     {
-      /* dup2 can't actually fail here I don't think */
       if (safe_dup2 (stdout_fd, 1) < 0)
         write_err_and_exit (child_err_report_fd,
                             CHILD_DUP2_FAILED);
@@ -1609,13 +1609,14 @@ do_exec (gint                  child_err_report_fd,
       if (write_null < 0)
         write_err_and_exit (child_err_report_fd,
                             CHILD_DUP2_FAILED);
-      safe_dup2 (write_null, 1);
+      if (safe_dup2 (write_null, 1) < 0)
+        write_err_and_exit (child_err_report_fd,
+                            CHILD_DUP2_FAILED);
       close_and_invalidate (&write_null);
     }
 
   if (stderr_fd >= 0)
     {
-      /* dup2 can't actually fail here I don't think */
       if (safe_dup2 (stderr_fd, 2) < 0)
         write_err_and_exit (child_err_report_fd,
                             CHILD_DUP2_FAILED);
@@ -1630,7 +1631,9 @@ do_exec (gint                  child_err_report_fd,
       if (write_null < 0)
         write_err_and_exit (child_err_report_fd,
                             CHILD_DUP2_FAILED);
-      safe_dup2 (write_null, 2);
+      if (safe_dup2 (write_null, 2) < 0)
+        write_err_and_exit (child_err_report_fd,
+                            CHILD_DUP2_FAILED);
       close_and_invalidate (&write_null);
     }
 
@@ -1643,7 +1646,8 @@ do_exec (gint                  child_err_report_fd,
     {
       if (child_setup == NULL && n_fds == 0)
         {
-          safe_dup2 (child_err_report_fd, 3);
+          if (safe_dup2 (child_err_report_fd, 3) < 0)
+            write_err_and_exit (child_err_report_fd, CHILD_DUP2_FAILED);
           set_cloexec (GINT_TO_POINTER (0), 3);
           safe_closefrom (4);
           child_err_report_fd = 3;
@@ -1682,7 +1686,11 @@ do_exec (gint                  child_err_report_fd,
       for (i = 0; i < n_fds; i++)
         {
           if (source_fds[i] != target_fds[i])
-            source_fds[i] = dupfd_cloexec (source_fds[i], max_target_fd + 1);
+            {
+              source_fds[i] = dupfd_cloexec (source_fds[i], max_target_fd + 1);
+              if (source_fds[i] < 0)
+                write_err_and_exit (child_err_report_fd, CHILD_DUP2_FAILED);
+            }
         }
 
       for (i = 0; i < n_fds; i++)
@@ -1700,9 +1708,15 @@ do_exec (gint                  child_err_report_fd,
                * dup it so it doesn’t get conflated.
                */
               if (target_fds[i] == child_err_report_fd)
-                child_err_report_fd = dupfd_cloexec (child_err_report_fd, max_target_fd + 1);
+                {
+                  child_err_report_fd = dupfd_cloexec (child_err_report_fd, max_target_fd + 1);
+                  if (child_err_report_fd < 0)
+                    write_err_and_exit (child_err_report_fd, CHILD_DUP2_FAILED);
+                }
 
-              safe_dup2 (source_fds[i], target_fds[i]);
+              if (safe_dup2 (source_fds[i], target_fds[i]) < 0)
+                write_err_and_exit (child_err_report_fd, CHILD_DUP2_FAILED);
+
               close_and_invalidate (&source_fds[i]);
             }
         }
@@ -1945,7 +1959,11 @@ do_posix_spawn (const gchar * const *argv,
 
   duped_source_fds = g_new (gint, n_fds);
   for (i = 0; i < n_fds; i++)
-    duped_source_fds[i] = dupfd_cloexec (source_fds[i], max_target_fd + 1);
+    {
+      duped_source_fds[i] = dupfd_cloexec (source_fds[i], max_target_fd + 1);
+      if (duped_source_fds[i] < 0)
+        goto out_close_fds;
+    }
 
   for (i = 0; i < n_fds; i++)
     {
