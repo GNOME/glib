@@ -2363,7 +2363,7 @@ fork_exec (gboolean              intermediate_child,
               g_set_error (error,
                            G_SPAWN_ERROR,
                            G_SPAWN_ERROR_FAILED,
-                           _("Failed to redirect output or input of child process (%s)"),
+                           _("Failed to duplicate file descriptor for child process (%s)"),
                            g_strerror (buf[1]));
 
               break;
