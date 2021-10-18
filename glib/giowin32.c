@@ -1023,7 +1023,9 @@ GSourceFuncs g_io_watch_funcs = {
   g_io_win32_prepare,
   g_io_win32_check,
   g_io_win32_dispatch,
-  g_io_win32_finalize
+  g_io_win32_finalize,
+  NULL,
+  NULL
 };
 
 static GIOStatus

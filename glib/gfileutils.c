@@ -349,7 +349,7 @@ g_file_test (const gchar *filename,
              GFileTest    test)
 {
 #ifdef G_OS_WIN32
-  int attributes;
+  DWORD attributes;
   wchar_t *wfilename;
 #endif
 
@@ -2875,7 +2875,7 @@ g_get_current_dir (void)
 
   gchar *dir = NULL;
   wchar_t dummy[2], *wdir;
-  int len;
+  DWORD len;
 
   len = GetCurrentDirectoryW (2, dummy);
   wdir = g_new (wchar_t, len);
