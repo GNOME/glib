@@ -800,7 +800,13 @@ g_variant_new_array (const GVariantType *child_type,
 
   for (i = 0; i < n_children; i++)
     {
-      TYPE_CHECK (children[i], child_type, NULL);
+      if G_UNLIKELY (!g_variant_is_of_type (children[i], child_type))
+        {
+          while (i != 0)
+            g_variant_unref (my_children[--i]);
+          g_free (my_children);
+	  g_return_val_if_fail (g_variant_is_of_type (children[i], child_type), NULL);
+        }
       my_children[i] = g_variant_ref_sink (children[i]);
       trusted &= g_variant_is_trusted (children[i]);
     }
@@ -3190,8 +3196,7 @@ struct heap_builder
 #define GVSB_MAGIC               ((gsize) 1033660112u)
 #define GVSB_MAGIC_PARTIAL       ((gsize) 2942751021u)
 #define GVHB_MAGIC               ((gsize) 3087242682u)
-#define is_valid_builder(b)      (b != NULL && \
-                                  GVSB(b)->magic == GVSB_MAGIC)
+#define is_valid_builder(b)      (GVSB(b)->magic == GVSB_MAGIC)
 #define is_valid_heap_builder(b) (GVHB(b)->magic == GVHB_MAGIC)
 
 /* Just to make sure that by adding a union to GVariantBuilder, we
@@ -3201,7 +3206,9 @@ G_STATIC_ASSERT (sizeof (GVariantBuilder) == sizeof (gsize[16]));
 static gboolean
 ensure_valid_builder (GVariantBuilder *builder)
 {
-  if (is_valid_builder (builder))
+  if (builder == NULL)
+    return FALSE;
+  else if (is_valid_builder (builder))
     return TRUE;
   if (builder->u.s.partial_magic == GVSB_MAGIC_PARTIAL)
     {
@@ -3847,8 +3854,7 @@ struct heap_dict
 #define GVSD_MAGIC              ((gsize) 2579507750u)
 #define GVSD_MAGIC_PARTIAL      ((gsize) 3488698669u)
 #define GVHD_MAGIC              ((gsize) 2450270775u)
-#define is_valid_dict(d)        (d != NULL && \
-                                 GVSD(d)->magic == GVSD_MAGIC)
+#define is_valid_dict(d)        (GVSD(d)->magic == GVSD_MAGIC)
 #define is_valid_heap_dict(d)   (GVHD(d)->magic == GVHD_MAGIC)
 
 /* Just to make sure that by adding a union to GVariantDict, we didn't
@@ -3858,7 +3864,9 @@ G_STATIC_ASSERT (sizeof (GVariantDict) == sizeof (gsize[16]));
 static gboolean
 ensure_valid_dict (GVariantDict *dict)
 {
-  if (is_valid_dict (dict))
+  if (dict == NULL)
+    return FALSE;
+  else if (is_valid_dict (dict))
     return TRUE;
   if (dict->u.s.partial_magic == GVSD_MAGIC_PARTIAL)
     {

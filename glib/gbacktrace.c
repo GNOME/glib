@@ -340,7 +340,11 @@ stack_trace (const char * const *args)
       /* Save stderr for printing failure below */
       int old_err = dup (2);
       if (old_err != -1)
-        fcntl (old_err, F_SETFD, fcntl (old_err, F_GETFD) | FD_CLOEXEC);
+	{
+	  int getfd = fcntl (old_err, F_GETFD);
+	  if (getfd != -1)
+	    (void) fcntl (old_err, F_SETFD, getfd | FD_CLOEXEC);
+	}
 
       close (0); dup (in_fd[0]);   /* set the stdin to the in pipe */
       close (1); dup (out_fd[1]);  /* set the stdout to the out pipe */

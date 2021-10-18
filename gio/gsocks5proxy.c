@@ -328,7 +328,7 @@ set_connect_msg (guint8       *msg,
  *
  * The parser only requires 4 bytes.
  */
-#define SOCKS5_CONN_REP_LEN	  255
+#define SOCKS5_CONN_REP_LEN	  257
 static gboolean
 parse_connect_reply (const guint8 *data, gint *atype, GError **error)
 {
@@ -509,7 +509,7 @@ g_socks5_proxy_connect (GProxy            *proxy,
       guint8 data[SOCKS5_CONN_REP_LEN];
       gint atype;
 
-      if (!g_input_stream_read_all (in, data, 4, NULL,
+      if (!g_input_stream_read_all (in, data, 4 /* VER, REP, RSV, ATYP */, NULL,
 				    cancellable, error))
 	goto error;
 
@@ -519,23 +519,26 @@ g_socks5_proxy_connect (GProxy            *proxy,
       switch (atype)
 	{
 	  case SOCKS5_ATYP_IPV4:
-	    if (!g_input_stream_read_all (in, data, 6, NULL,
-					  cancellable, error))
+	    if (!g_input_stream_read_all (in, data,
+					  4 /* IPv4 length */ + 2 /* port */,
+					  NULL, cancellable, error))
 	      goto error;
 	    break;
 
 	  case SOCKS5_ATYP_IPV6:
-	    if (!g_input_stream_read_all (in, data, 18, NULL,
-					  cancellable, error))
+	    if (!g_input_stream_read_all (in, data,
+					  16 /* IPv6 length */ + 2 /* port */,
+					  NULL, cancellable, error))
 	      goto error;
 	    break;
 
 	  case SOCKS5_ATYP_DOMAINNAME:
-	    if (!g_input_stream_read_all (in, data, 1, NULL,
-					  cancellable, error))
+	    if (!g_input_stream_read_all (in, data, 1 /* domain name length */,
+					  NULL, cancellable, error))
 	      goto error;
-	    if (!g_input_stream_read_all (in, data, data[0] + 2, NULL,
-					  cancellable, error))
+	    if (!g_input_stream_read_all (in, data,
+					  data[0] /* domain name length */ + 2 /* port */,
+					  NULL, cancellable, error))
 	      goto error;
 	    break;
 	}

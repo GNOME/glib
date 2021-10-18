@@ -1307,7 +1307,7 @@ static gsize
 allocator_aligned_page_size (Allocator *allocator,
                              gsize      n_bytes)
 {
-  gsize val = 1 << g_bit_storage (n_bytes - 1);
+  gsize val = (gsize) 1 << g_bit_storage (n_bytes - 1);
   val = MAX (val, allocator->min_page_size);
   return val;
 }

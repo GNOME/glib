@@ -108,6 +108,8 @@ g_openuri_portal_open_uri (const char  *uri,
       errsv = errno;
       if (fd == -1)
         {
+	  g_free (path);
+	  g_variant_builder_clear (&opt_builder);
           g_set_error (error, G_IO_ERROR, g_io_error_from_errno (errsv),
                        "Failed to open '%s'", path);
           return FALSE;
