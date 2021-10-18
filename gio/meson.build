@@ -341,12 +341,6 @@ local_sources = files(
 
 platform_deps = []
 internal_deps = []
-# TODO: internal_objects is a workaround for
-# <https://github.com/mesonbuild/meson/issues/3934> and
-# <https://github.com/mesonbuild/meson/issues/3937>. When we can depend
-# on a meson version where those are fixed, revert the commit that
-# introduced this workaround.
-internal_objects = []
 appinfo_sources = []
 contenttype_sources = []
 portal_sources = []
@@ -419,7 +413,6 @@ if host_system != 'windows'
 
   subdir('xdgmime')
   internal_deps += [xdgmime_lib]
-  internal_objects += [xdgmime_lib.extract_all_objects()]
 
   install_headers(gio_unix_include_headers, subdir : 'gio-unix-2.0/gio')
 
@@ -758,20 +751,17 @@ gioenumtypes_dep = declare_dependency(sources : [gioenumtypes_h, glib_enumtypes_
 if glib_conf.has('HAVE_SYS_INOTIFY_H') and have_func_inotify_init1
   subdir('inotify')
   internal_deps += [ inotify_lib ]
-  internal_objects += [inotify_lib.extract_all_objects()]
 endif
 
 # kevent
 if have_func_kqueue and have_func_kevent
   subdir('kqueue')
   internal_deps += [ kqueue_lib ]
-  internal_objects += [kqueue_lib.extract_all_objects()]
 endif
 
 if host_system == 'windows'
   subdir('win32')
   internal_deps += [ giowin32_lib ]
-  internal_objects += [giowin32_lib.extract_all_objects()]
 endif
 
 if have_bash
@@ -807,13 +797,13 @@ endif
 libgio = library('gio-2.0',
   gioenumtypes_h, gioenumtypes_c, gnetworking_h, gio_sources,
   gio_dtrace_hdr, gio_dtrace_obj,
-  objects : internal_objects,
   version : library_version,
   soversion : soversion,
   darwin_versions : darwin_versions,
   install : true,
   include_directories : [configinc, gioinc],
   #  '$(gio_win32_res_ldflag)',
+  link_with: internal_deps,
   dependencies : [libz_dep, libdl_dep, libmount_dep, libglib_dep,
                   libgobject_dep, libgmodule_dep, selinux_dep, xattr_dep,
                   platform_deps, network_libs, libsysprof_capture_dep],
