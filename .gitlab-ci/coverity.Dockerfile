@@ -1,9 +1,9 @@
-FROM registry.gitlab.gnome.org/gnome/glib/fedora:v9
+FROM registry.gitlab.gnome.org/gnome/glib/fedora:v12
 
 ARG COVERITY_SCAN_PROJECT_NAME
 ARG COVERITY_SCAN_TOKEN
 
-RUN curl https://scan.coverity.com/download/linux64 \
+RUN curl https://scan.coverity.com/download/cxx/linux64 \
     -o /tmp/cov-analysis-linux64.tgz \
     --form project="${COVERITY_SCAN_PROJECT_NAME}" \
     --form token="${COVERITY_SCAN_TOKEN}" \
