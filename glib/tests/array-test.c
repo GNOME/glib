@@ -845,6 +845,45 @@ test_array_copy_sized (void)
   g_array_unref (array1);
 }
 
+static void
+array_overflow_append_vals (void)
+{
+  if (!g_test_undefined ())
+      return;
+
+  if (g_test_subprocess ())
+    {
+      GArray *array = g_array_new (TRUE, FALSE, 1);
+      /* Check for overflow should happen before data is accessed. */
+      g_array_append_vals (array, NULL, G_MAXUINT);
+    }
+  else
+    {
+      g_test_trap_subprocess (NULL, 0, 0);
+      g_test_trap_assert_failed ();
+      g_test_trap_assert_stderr ("*adding 4294967295 to array would overflow*");
+    }
+}
+
+static void
+array_overflow_set_size (void)
+{
+  if (!g_test_undefined ())
+      return;
+
+  if (g_test_subprocess ())
+    {
+      GArray *array = g_array_new (TRUE, FALSE, 1);
+      g_array_set_size (array, G_MAXUINT);
+    }
+  else
+    {
+      g_test_trap_subprocess (NULL, 0, 0);
+      g_test_trap_assert_failed ();
+      g_test_trap_assert_stderr ("*adding 4294967295 to array would overflow*");
+    }
+}
+
 /* Check g_ptr_array_steal() function */
 static void
 pointer_array_steal (void)
@@ -1644,6 +1683,26 @@ pointer_array_steal_index (void)
 }
 
 static void
+byte_array_new_take_overflow (void)
+{
+#if G_MAXSIZE <= G_MAXUINT
+  g_test_skip ("Overflow test requires G_MAXSIZE > G_MAXUINT.");
+#else
+  GByteArray* arr;
+
+  if (!g_test_undefined ())
+      return;
+
+  /* Check for overflow should happen before data is accessed. */
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                          "*assertion 'len <= G_MAXUINT' failed");
+  arr = g_byte_array_new_take (NULL, (gsize)G_MAXUINT + 1);
+  g_assert_null (arr);
+  g_test_assert_expected_messages ();
+#endif
+}
+
+static void
 byte_array_steal (void)
 {
   const guint array_size = 10000;
@@ -1998,6 +2057,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/array/clear-func", array_clear_func);
   g_test_add_func ("/array/binary-search", test_array_binary_search);
   g_test_add_func ("/array/copy-sized", test_array_copy_sized);
+  g_test_add_func ("/array/overflow-append-vals", array_overflow_append_vals);
+  g_test_add_func ("/array/overflow-set-size", array_overflow_set_size);
 
   for (i = 0; i < G_N_ELEMENTS (array_configurations); i++)
     {
@@ -2043,6 +2104,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/bytearray/sort", byte_array_sort);
   g_test_add_func ("/bytearray/sort-with-data", byte_array_sort_with_data);
   g_test_add_func ("/bytearray/new-take", byte_array_new_take);
+  g_test_add_func ("/bytearray/new-take-overflow", byte_array_new_take_overflow);
   g_test_add_func ("/bytearray/free-to-bytes", byte_array_free_to_bytes);
 
   return g_test_run ();
