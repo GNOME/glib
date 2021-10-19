@@ -253,48 +253,11 @@ sync_properties (GNetworkMonitorNM *nm,
 }
 
 static void
-update_cached_property (GDBusProxy   *proxy,
-                        const char   *property_name,
-                        GVariantDict *dict)
+proxy_properties_changed_cb (GDBusProxy        *proxy,
+                             GVariant          *changed_properties,
+                             GStrv              invalidated_properties,
+                             GNetworkMonitorNM *nm)
 {
-  GVariant *v;
-
-  v = g_variant_dict_lookup_value (dict, property_name, NULL);
-  if (!v)
-    return;
-  g_dbus_proxy_set_cached_property (proxy, property_name, v);
-  g_variant_unref (v);
-}
-
-static void
-proxy_signal_cb (GDBusProxy        *proxy,
-                 const gchar       *sender_name,
-                 const gchar       *signal_name,
-                 GVariant          *parameters,
-                 GNetworkMonitorNM *nm)
-{
-  GVariant *asv;
-  GVariantDict *dict;
-
-  if (g_strcmp0 (signal_name, "PropertiesChanged") != 0)
-    return;
-
-  g_variant_get (parameters, "(@a{sv})", &asv);
-  if (!asv)
-    return;
-
-  dict = g_variant_dict_new (asv);
-  g_variant_unref (asv);
-  if (!dict)
-    {
-      g_warning ("Failed to handle PropertiesChanged signal from NetworkManager");
-      return;
-    }
-
-  update_cached_property (nm->priv->proxy, "Connectivity", dict);
-
-  g_variant_dict_unref (dict);
-
   sync_properties (nm, TRUE);
 }
 
@@ -361,8 +324,8 @@ g_network_monitor_nm_initable_init (GInitable     *initable,
       return FALSE;
     }
 
-  nm->priv->signal_id = g_signal_connect (G_OBJECT (proxy), "g-signal",
-                                          G_CALLBACK (proxy_signal_cb), nm);
+  nm->priv->signal_id = g_signal_connect (G_OBJECT (proxy), "g-properties-changed",
+                                          G_CALLBACK (proxy_properties_changed_cb), nm);
   nm->priv->proxy = proxy;
   sync_properties (nm, FALSE);
 
