@@ -2321,7 +2321,10 @@ g_log_writer_format_fields (GLogLevelFlags   log_level,
   now = g_get_real_time ();
   now_secs = (time_t) (now / 1000000);
   now_tm = localtime (&now_secs);
-  strftime (time_buf, sizeof (time_buf), "%H:%M:%S", now_tm);
+  if (G_LIKELY (now_tm != NULL))
+    strftime (time_buf, sizeof (time_buf), "%H:%M:%S", now_tm);
+  else
+    strcpy (time_buf, "(error)");
 
   g_string_append_printf (gstring, "%s%s.%03d%s: ",
                           use_color ? "\033[34m" : "",

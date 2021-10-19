@@ -881,8 +881,8 @@ keyring_generate_entry (const gchar  *cookie_context,
                                      error))
         {
           *out_id = 0;
-          *out_cookie = 0;
           g_free (*out_cookie);
+          *out_cookie = 0;
           ret = FALSE;
           goto out;
         }
