@@ -3138,7 +3138,7 @@ g_socket_get_available_bytes (GSocket *socket)
        * systems add internal header size to the reported size, making it
        * unusable for this function. */
       avail = recv (socket->priv->fd, buf, bufsize, MSG_PEEK);
-      if (avail == -1)
+      if ((gint) avail == -1)
         {
           int errsv = get_socket_errno ();
 #ifdef G_OS_WIN32
@@ -5275,7 +5275,7 @@ g_socket_send_messages_with_timeout (GSocket        *socket,
 #else
   {
     gssize result;
-    gint i;
+    guint i;
     gint64 wait_timeout;
 
     wait_timeout = timeout_us;
@@ -5305,7 +5305,11 @@ g_socket_send_messages_with_timeout (GSocket        *socket,
 #endif
           }
 
-        result = pollable_result == G_POLLABLE_RETURN_OK ? bytes_written : -1;
+        if (G_MAXSSIZE > bytes_written &&
+            pollable_result == G_POLLABLE_RETURN_OK)
+          result = (gssize) bytes_written;
+        else
+          result = -1;
 
         /* check if we've timed out or how much time to wait at most */
         if (timeout_us > 0)

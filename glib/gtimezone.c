@@ -157,7 +157,7 @@ typedef struct
  */
 typedef struct
 {
-  gint         start_year;
+  guint        start_year;
   gint32       std_offset;
   gint32       dlt_offset;
   TimeZoneDate dlt_start;
@@ -906,8 +906,7 @@ rules_from_windows_time_zone (const gchar   *identifier,
   if (RegOpenKeyExW (HKEY_LOCAL_MACHINE, subkey_dynamic_w, 0,
                      KEY_QUERY_VALUE, &key) == ERROR_SUCCESS)
     {
-      DWORD first, last;
-      int year, i;
+      DWORD i, first, last, year;
       wchar_t s[12];
 
       size = sizeof first;
@@ -1458,6 +1457,8 @@ set_tz_name (gchar **pos, gchar *buffer, guint size)
   gchar *name_pos = *pos;
   guint len;
 
+  g_assert (size != 0);
+
   if (quoted)
     {
       name_pos++;
@@ -1479,7 +1480,7 @@ set_tz_name (gchar **pos, gchar *buffer, guint size)
 
   memset (buffer, 0, size);
   /* name_pos isn't 0-terminated, so we have to limit the length expressly */
-  len = *pos - name_pos > size - 1 ? size - 1 : *pos - name_pos;
+  len = (guint) (*pos - name_pos) > size - 1 ? size - 1 : (guint) (*pos - name_pos);
   strncpy (buffer, name_pos, len);
   *pos += quoted;
   return TRUE;
@@ -1542,8 +1543,7 @@ rules_from_identifier (const gchar   *identifier,
 #ifdef G_OS_WIN32
     /* Windows allows us to use the US DST boundaries if they're not given */
     {
-      int i;
-      guint rules_num = 0;
+      guint i, rules_num = 0;
 
       /* Use US rules, Windows' default is Pacific Standard Time */
       if ((rules_num = rules_from_windows_time_zone ("Pacific Standard Time",

@@ -546,7 +546,7 @@ g_winhttp_file_query_info (GFile                *file,
                                NULL))
     {
       gint64 cl;
-      int n;
+      size_t n;
       const char *gint64_format = "%"G_GINT64_FORMAT"%n";
       wchar_t *gint64_format_w = g_utf8_to_utf16 (gint64_format, -1, NULL, NULL, NULL);
 
