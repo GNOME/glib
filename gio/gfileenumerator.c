@@ -662,7 +662,10 @@ g_file_enumerator_iterate (GFileEnumerator  *direnum,
           const char *name = g_file_info_get_name (ret_info);
 
           if (G_UNLIKELY (name == NULL))
-            g_warning ("g_file_enumerator_iterate() created without standard::name");
+            {
+              g_critical ("g_file_enumerator_iterate() created without standard::name");
+              g_return_val_if_reached (FALSE);
+            }
           else
             {
               *out_child = g_file_get_child (g_file_enumerator_get_container (direnum), name);
@@ -718,6 +721,9 @@ g_file_enumerator_get_container (GFileEnumerator *enumerator)
  * directory of @enumerator.  This function is primarily intended to be used
  * inside loops with g_file_enumerator_next_file().
  *
+ * To use this, #G_FILE_ATTRIBUTE_STANDARD_NAME must have been listed in the
+ * attributes list used when creating the #GFileEnumerator.
+ *
  * This is a convenience method that's equivalent to:
  * |[<!-- language="C" -->
  *   gchar *name = g_file_info_get_name (info);
@@ -733,10 +739,20 @@ GFile *
 g_file_enumerator_get_child (GFileEnumerator *enumerator,
                              GFileInfo       *info)
 {
-  g_return_val_if_fail (G_IS_FILE_ENUMERATOR (enumerator), NULL);
+  const gchar *name;
 
-  return g_file_get_child (enumerator->priv->container,
-                           g_file_info_get_name (info));
+  g_return_val_if_fail (G_IS_FILE_ENUMERATOR (enumerator), NULL);
+  g_return_val_if_fail (G_IS_FILE_INFO (info), NULL);
+
+  name = g_file_info_get_name (info);
+
+  if (G_UNLIKELY (name == NULL))
+    {
+      g_critical ("GFileEnumerator created without standard::name");
+      g_return_val_if_reached (NULL);
+    }
+
+  return g_file_get_child (enumerator->priv->container, name);
 }
 
 static void
