@@ -419,7 +419,7 @@ if host_system != 'windows'
 
   subdir('xdgmime')
   internal_deps += [xdgmime_lib]
-  internal_objects += [xdgmime_lib.extract_all_objects()]
+  internal_objects += [xdgmime_lib.extract_all_objects(recursive: false)]
 
   install_headers(gio_unix_include_headers, subdir : 'gio-unix-2.0/gio')
 
@@ -758,20 +758,20 @@ gioenumtypes_dep = declare_dependency(sources : [gioenumtypes_h, glib_enumtypes_
 if glib_conf.has('HAVE_SYS_INOTIFY_H') and have_func_inotify_init1
   subdir('inotify')
   internal_deps += [ inotify_lib ]
-  internal_objects += [inotify_lib.extract_all_objects()]
+  internal_objects += [inotify_lib.extract_all_objects(recursive: false)]
 endif
 
 # kevent
 if have_func_kqueue and have_func_kevent
   subdir('kqueue')
   internal_deps += [ kqueue_lib ]
-  internal_objects += [kqueue_lib.extract_all_objects()]
+  internal_objects += [kqueue_lib.extract_all_objects(recursive: false)]
 endif
 
 if host_system == 'windows'
   subdir('win32')
   internal_deps += [ giowin32_lib ]
-  internal_objects += [giowin32_lib.extract_all_objects()]
+  internal_objects += [giowin32_lib.extract_all_objects(recursive: false)]
 endif
 
 if have_bash
