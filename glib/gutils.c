@@ -1900,12 +1900,21 @@ g_build_user_runtime_dir (void)
   const gchar *runtime_dir_env = g_getenv ("XDG_RUNTIME_DIR");
 
   if (runtime_dir_env && runtime_dir_env[0])
-    runtime_dir = g_strdup (runtime_dir_env);
+    {
+      runtime_dir = g_strdup (runtime_dir_env);
+
+      /* If the XDG_RUNTIME_DIR environment variable is set, we are being told by
+       * the OS that this directory exists and is appropriately configured
+       * already.
+       */
+    }
   else
     {
       runtime_dir = g_build_user_cache_dir ();
 
-      /* The user should be able to rely on the directory existing
+      /* Fallback case: the directory may not yet exist.
+       *
+       * The user should be able to rely on the directory existing
        * when the function returns.  Probably it already does, but
        * let's make sure.  Just do mkdir() directly since it will be
        * no more expensive than a stat() in the case that the
