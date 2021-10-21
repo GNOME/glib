@@ -1025,7 +1025,9 @@ g_file_resolve_relative_path (GFile      *file,
  * "standard::*" means all attributes in the standard namespace.
  * An example attribute query be "standard::*,owner::user".
  * The standard attributes are available as defines, like
- * #G_FILE_ATTRIBUTE_STANDARD_NAME.
+ * #G_FILE_ATTRIBUTE_STANDARD_NAME. #G_FILE_ATTRIBUTE_STANDARD_NAME should
+ * always be specified if you plan to call g_file_enumerator_get_child() or
+ * g_file_enumerator_iterate() on the returned enumerator.
  *
  * If @cancellable is not %NULL, then the operation can be cancelled
  * by triggering the cancellable object from another thread. If the
