@@ -662,7 +662,10 @@ g_file_enumerator_iterate (GFileEnumerator  *direnum,
           const char *name = g_file_info_get_name (ret_info);
 
           if (G_UNLIKELY (name == NULL))
-            g_warning ("g_file_enumerator_iterate() created without standard::name");
+            {
+              g_critical ("g_file_enumerator_iterate() created without standard::name");
+              g_return_val_if_reached (FALSE);
+            }
           else
             {
               *out_child = g_file_get_child (g_file_enumerator_get_container (direnum), name);
