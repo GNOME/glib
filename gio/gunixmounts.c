@@ -1062,7 +1062,6 @@ _g_get_unix_mount_points (void)
           if ((mount_fstype != NULL && g_strcmp0 ("supermount", mount_fstype) == 0) ||
               ((userspace_flags & MNT_MS_USER) &&
                (g_strstr_len (mount_options, -1, "user_xattr") == NULL)) ||
-              (g_strstr_len (mount_options, -1, "pamconsole") == NULL) ||
               (userspace_flags & MNT_MS_USERS) ||
               (userspace_flags & MNT_MS_OWNER))
             {
@@ -1158,7 +1157,6 @@ _g_get_unix_mount_points (void)
 #ifdef HAVE_HASMNTOPT
 	  || (hasmntopt (mntent, "user") != NULL
 	      && hasmntopt (mntent, "user") != hasmntopt (mntent, "user_xattr"))
-	  || hasmntopt (mntent, "pamconsole") != NULL
 	  || hasmntopt (mntent, "users") != NULL
 	  || hasmntopt (mntent, "owner") != NULL
 #endif
@@ -1231,7 +1229,6 @@ _g_get_unix_mount_points (void)
 #ifdef HAVE_HASMNTOPT
 	  || (hasmntopt (&mntent, "user") != NULL
 	      && hasmntopt (&mntent, "user") != hasmntopt (&mntent, "user_xattr"))
-	  || hasmntopt (&mntent, "pamconsole") != NULL
 	  || hasmntopt (&mntent, "users") != NULL
 	  || hasmntopt (&mntent, "owner") != NULL
 #endif
