@@ -734,6 +734,7 @@ g_file_enumerator_get_child (GFileEnumerator *enumerator,
                              GFileInfo       *info)
 {
   g_return_val_if_fail (G_IS_FILE_ENUMERATOR (enumerator), NULL);
+  g_return_val_if_fail (G_IS_FILE_INFO (info), NULL);
 
   return g_file_get_child (enumerator->priv->container,
                            g_file_info_get_name (info));
