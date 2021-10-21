@@ -9,3 +9,4 @@ patch_hash = 6b80f72385e1bf06721e26fbc83aced576e9c0d3182d86a55dd173a04050fe26
 
 [provide]
 libpcre = pcre_dep
+
