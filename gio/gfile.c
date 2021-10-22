@@ -863,6 +863,7 @@ g_file_get_child (GFile      *file,
 {
   g_return_val_if_fail (G_IS_FILE (file), NULL);
   g_return_val_if_fail (name != NULL, NULL);
+  g_return_val_if_fail (!g_path_is_absolute (name), NULL);
 
   return g_file_resolve_relative_path (file, name);
 }
