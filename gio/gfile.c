@@ -985,6 +985,9 @@ g_file_get_relative_path (GFile *parent,
  *
  * This call does no blocking I/O.
  *
+ * If the @relative_path is an absolute path name, the resolution
+ * is done absolutely (without taking @file path as base).
+ *
  * Returns: (transfer full): #GFile to the resolved path.
  *     %NULL if @relative_path is %NULL or if @file is invalid.
  *     Free the returned object with g_object_unref().
