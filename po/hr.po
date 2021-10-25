@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: glib 0\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
 "POT-Creation-Date: 2021-10-25 19:38+0000\n"
-"PO-Revision-Date: 2021-10-25 21:43+0200\n"
+"PO-Revision-Date: 2021-10-25 21:46+0200\n"
 "Last-Translator: gogo <trebelnik2@gmail.com>\n"
 "Language-Team: Croatian <lokalizacija@linux.hr>\n"
 "Language: hr\n"
@@ -2518,7 +2518,7 @@ msgstr "vrijednost='%s' je već navedena"
 #: gio/glib-compile-schemas.c:133
 #, c-format
 msgid "flags values must have at most 1 bit set"
-msgstr "vrijednosti oznake moraju imati najviše postavljen 1 bit"
+msgstr "vrijednosti oznaka moraju imati najviše postavljen 1 bit"
 
 #: gio/glib-compile-schemas.c:158
 #, c-format
