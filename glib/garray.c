@@ -181,7 +181,9 @@ g_array_new (gboolean zero_terminated,
              guint    elt_size)
 {
   g_return_val_if_fail (elt_size > 0, NULL);
+#if (UINT_WIDTH / 8) >= GLIB_SIZEOF_SIZE_T
   g_return_val_if_fail (elt_size <= G_MAXSIZE / 2 - 1, NULL);
+#endif
 
   return g_array_sized_new (zero_terminated, clear, elt_size, 0);
 }
@@ -262,7 +264,9 @@ g_array_sized_new (gboolean zero_terminated,
   GRealArray *array;
   
   g_return_val_if_fail (elt_size > 0, NULL);
-  g_return_val_if_fail (elt_size <= G_MAXSIZE, NULL);
+#if (UINT_WIDTH / 8) >= GLIB_SIZEOF_SIZE_T
+  g_return_val_if_fail (elt_size <= G_MAXSIZE / 2 - 1, NULL);
+#endif
 
   array = g_slice_new (GRealArray);
 
