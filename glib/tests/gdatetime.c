@@ -2351,7 +2351,7 @@ check_and_set_locale (int          category,
   setlocale (category, name);
   if (strstr (setlocale (category, NULL), name) == NULL)
     {
-      g_print ("Unavaible '%s' locale\n", name);
+      g_print ("Unavailable '%s' locale\n", name);
       g_test_skip ("required locale not available, skipping tests");
       return FALSE;
     }
