@@ -604,6 +604,11 @@ g_settings_set_property (GObject      *object,
 
     case PROP_BACKEND:
       settings->priv->backend = g_value_dup_object (value);
+      if (G_IS_DELAYED_SETTINGS_BACKEND (settings->priv->backend))
+        {
+          g_assert (settings->priv->delayed == NULL);
+          settings->priv->delayed = G_DELAYED_SETTINGS_BACKEND (settings->priv->backend);
+        }
       break;
 
     default:
@@ -680,7 +685,13 @@ g_settings_constructed (GObject *object)
     }
 
   if (settings->priv->backend == NULL)
-    settings->priv->backend = g_settings_backend_get_default ();
+    {
+      settings->priv->backend = g_settings_backend_get_default ();
+
+      /* The default had better not be delayed, otherwise we also need to set
+       * settings->priv->delayed. */
+      g_assert (!G_IS_DELAYED_SETTINGS_BACKEND (settings->priv->backend));
+    }
 
   g_settings_backend_watch (settings->priv->backend,
                             &listener_vtable, G_OBJECT (settings),
@@ -2425,6 +2436,9 @@ g_settings_is_writable (GSettings   *settings,
  *
  * The schema for the child settings object must have been declared
  * in the schema of @settings using a `<child>` element.
+ *
+ * The created child settings object will inherit the #GSettings:delay-apply
+ * mode from @settings.
  *
  * Returns: (not nullable) (transfer full): a 'child' settings object
  *

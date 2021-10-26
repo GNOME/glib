@@ -619,7 +619,7 @@ test_delay_child (void)
   g_assert_nonnull (child);
 
   g_object_get (child, "delay-apply", &delay, NULL);
-  g_assert_false (delay);
+  g_assert_true (delay);
 
   g_settings_get (child, "test-byte", "y", &byte);
   g_assert_cmpuint (byte, ==, 36);
@@ -629,6 +629,11 @@ test_delay_child (void)
   /* make sure the child was delayed too */
   g_settings_get (base, "test-byte", "y", &byte);
   g_assert_cmpuint (byte, ==, 36);
+
+  /* apply the child and the changes should be saved */
+  g_settings_apply (child);
+  g_settings_get (base, "test-byte", "y", &byte);
+  g_assert_cmpuint (byte, ==, 42);
 
   g_object_unref (child);
   g_object_unref (settings);
