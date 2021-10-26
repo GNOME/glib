@@ -2424,7 +2424,7 @@ g_settings_is_writable (GSettings   *settings,
  * @settings.
  *
  * The schema for the child settings object must have been declared
- * in the schema of @settings using a <child> element.
+ * in the schema of @settings using a `<child>` element.
  *
  * Returns: (not nullable) (transfer full): a 'child' settings object
  *
