@@ -4853,7 +4853,13 @@ g_win32_app_info_launch_internal (GWin32AppInfo      *info,
           GVariant *platform_data;
 
           g_variant_builder_init (&builder, G_VARIANT_TYPE_ARRAY);
-          g_variant_builder_add (&builder, "{sv}", "pid", g_variant_new_int32 ((gint32) pid));
+          /* pid handles are never bigger than 2^24 as per
+           * https://docs.microsoft.com/en-us/windows/win32/sysinfo/kernel-objects,
+           * so truncating to `int32` is valid.
+           * The gsize cast is to silence a compiler warning
+           * about conversion from pointer to integer of
+           * different size. */
+          g_variant_builder_add (&builder, "{sv}", "pid", g_variant_new_int32 ((gsize) pid));
 
           platform_data = g_variant_ref_sink (g_variant_builder_end (&builder));
           g_signal_emit_by_name (launch_context, "launched", info, platform_data);
