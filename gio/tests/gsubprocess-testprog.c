@@ -5,8 +5,6 @@
 #include <errno.h>
 #ifdef G_OS_UNIX
 #include <unistd.h>
-#include <gio/gunixinputstream.h>
-#include <gio/gunixoutputstream.h>
 #else
 #include <io.h>
 #endif
@@ -151,6 +149,55 @@ write_to_fds (int argc, char **argv)
 }
 
 static int
+read_from_fd (int argc, char **argv)
+{
+  int fd;
+  const char expectedResult[] = "Yay success!";
+  guint8 buf[sizeof (expectedResult) + 1];
+  gsize bytes_read;
+  FILE *f;
+
+  if (argc != 3)
+    {
+      g_print ("Usage: %s read-from-fd FD\n", argv[0]);
+      return 1;
+    }
+
+  fd = atoi (argv[2]);
+  if (fd == 0)
+    {
+      g_warning ("Argument \"%s\" does not look like a valid nonzero file descriptor", argv[2]);
+      return 1;
+    }
+
+  f = fdopen (fd, "r");
+  if (f == NULL)
+    {
+      g_warning ("Failed to open fd %d: %s", fd, g_strerror (errno));
+      return 1;
+    }
+
+  bytes_read = fread (buf, 1, sizeof (buf), f);
+  if (bytes_read != sizeof (expectedResult))
+    {
+      g_warning ("Read %zu bytes, but expected %zu", bytes_read, sizeof (expectedResult));
+      return 1;
+    }
+
+  if (memcmp (expectedResult, buf, sizeof (expectedResult)) != 0)
+    {
+      buf[sizeof (expectedResult)] = '\0';
+      g_warning ("Expected \"%s\" but read  \"%s\"", expectedResult, (char *)buf);
+      return 1;
+    }
+
+  if (fclose (f) == -1)
+    g_assert_not_reached ();
+
+  return 0;
+}
+
+static int
 env_mode (int argc, char **argv)
 {
   char **env;
@@ -242,6 +289,8 @@ main (int argc, char **argv)
     return sleep_forever_mode (argc, argv);
   else if (strcmp (mode, "write-to-fds") == 0)
     return write_to_fds (argc, argv);
+  else if (strcmp (mode, "read-from-fd") == 0)
+    return read_from_fd (argc, argv);
   else if (strcmp (mode, "env") == 0)
     return env_mode (argc, argv);
   else if (strcmp (mode, "cwd") == 0)
