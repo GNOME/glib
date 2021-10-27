@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: glib 0\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
 "POT-Creation-Date: 2021-10-12 13:21+0000\n"
-"PO-Revision-Date: 2021-10-27 18:53+0200\n"
+"PO-Revision-Date: 2021-10-27 19:05+0200\n"
 "Last-Translator: gogo <trebelnik2@gmail.com>\n"
 "Language-Team: Croatian <lokalizacija@linux.hr>\n"
 "MIME-Version: 1.0\n"
@@ -567,7 +567,7 @@ msgstr "Greška dobivanja informacija za direktorij “%s”: %s"
 msgid ""
 "Permissions on directory “%s” are malformed. Expected mode 0700, got 0%o"
 msgstr ""
-"Dozvole na direktoriju “%s” su oštećene. Očekivane dozvola 0700, dobiveno je "
+"Dozvole na direktoriju “%s” su oštećene. Očekivana dozvola 0700, dobivena je "
 "0%o"
 
 #: gio/gdbusauthmechanismsha1.c:346 gio/gdbusauthmechanismsha1.c:357
@@ -2542,7 +2542,7 @@ msgstr "vrijednosti oznaka moraju imati najviše postavljen 1 bit"
 #: gio/glib-compile-schemas.c:158
 #, c-format
 msgid "<%s> must contain at least one <value>"
-msgstr "<%s> mora sadržavati najmanje jednu <value>"
+msgstr "<%s> mora sadržavati najmanje jedan <value>"
 
 #: gio/glib-compile-schemas.c:314
 #, c-format
@@ -2705,7 +2705,7 @@ msgstr "<child name='%s'> je već određen"
 
 #: gio/glib-compile-schemas.c:943
 msgid "Cannot add keys to a “list-of” schema"
-msgstr "Nemoguće dodavanje ključeva u “list-off” shema"
+msgstr "Nemoguće dodavanje ključeva u “list-off” shemu"
 
 #: gio/glib-compile-schemas.c:954
 #, c-format
