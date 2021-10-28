@@ -1,3 +1,26 @@
+Overview of changes in GLib 2.70.1
+==================================
+
+* Fix network changes not being signalled from NetworkManager (work by
+  Julian Andres Klode) (#2505)
+
+* Fix build when building with --fatal-meson-warnings (work by Eli Schwartz) (!2304)
+
+* Bugs fixed:
+ - #2505 g_network_monitor_nm never updates on connection change (listens for signal on wrong dbus interface)
+ - !2245 gdesktopappinfo: Do not call xterm when it does not exist, inform the caller the launch failed
+ - !2253 Backport !2251 “GString: Bump minimum size” to glib-2-70
+ - !2256 Backport !2254 “Small optimization for g_object_set” to glib-2-70
+ - !2259 Backport !2257 “Fix documentation for g_dbus_object_manager_get_object().” to glib-2-70
+ - !2262 Backport !2244 “gutils: Avoid segfault in g_get_user_database_entry” to glib-2-70
+ - !2271 Backport !2266 “fix uninitial variable” to glib-2-70
+ - !2276 Backport !2274 “Do not try to access errno after calling getpwnam_r.” to glib-2-70
+ - !2300 Backport !2285 “fix issues found by svace static code analyzer” to glib-2-70
+ - !2301 Backport !2293 “glib-private: Fix MSVC build with AddressSanitizer” to glib-2-70
+ - !2302 Backport !2291 “gnetworkmonitornm: Stop using removed PropertiesChanged signal” to glib-2-70
+ - !2304 meson: fix warnings for extract_all_objects function
+
+
 Overview of changes in GLib 2.70.0
 ==================================
 
