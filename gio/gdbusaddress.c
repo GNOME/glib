@@ -1098,7 +1098,7 @@ get_session_address_dbus_launch (GError **error)
   if (GLIB_PRIVATE_CALL (g_check_setuid) ())
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-		   _("Cannot spawn a message bus when setuid"));
+                   _("Cannot spawn a message bus when AT_SECURE is set"));
       goto out;
     }
 
