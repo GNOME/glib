@@ -362,7 +362,7 @@ typedef struct {
  * Prepares a callback for ffi invocation.
  *
  * Returns: the ffi_closure or NULL on error. The return value
- *     should be freed by calling g_callable_info_destroy_closure().
+ *   should be freed by calling g_callable_info_destroy_closure().
  */
 ffi_closure *
 g_callable_info_create_closure (GICallableInfo       *callable_info,
@@ -453,8 +453,8 @@ g_callable_info_destroy_closure (GICallableInfo *callable_info,
  *
  * Prepares a callback for ffi invocation. Deprecated
  *
- * Returns: the native address of the closre or NULL on error. The return value
- *     should be freed by calling g_callable_info_free_closure().
+ * Returns: the native address of the closure or `NULL` on error. The return value
+ *   should be freed by calling g_callable_info_free_closure().
  */
 ffi_closure *
 g_callable_info_prepare_closure (GICallableInfo       *callable_info,
@@ -464,7 +464,7 @@ g_callable_info_prepare_closure (GICallableInfo       *callable_info,
 {
   ffi_closure * closure;
 
-  closure = g_callable_info_create_closure(callable_info, cif, callback, user_data);
+  closure = g_callable_info_create_closure (callable_info, cif, callback, user_data);
   if (!closure)
     {
       return NULL;
@@ -491,7 +491,9 @@ g_callable_info_prepare_closure (GICallableInfo       *callable_info,
  * which may cause a segfault because the native address is returned instead
  * of the closure address.
  */
-void g_callable_info_free_closure (GICallableInfo *callable_info, ffi_closure *closure)
+void
+g_callable_info_free_closure (GICallableInfo *callable_info,
+                              ffi_closure    *closure)
 {
   g_warning ("g_callable_info_free_closure is deprecated and leaks memory\n");
 #ifdef LEGACY_GIRFFI_FREE
