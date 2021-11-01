@@ -353,7 +353,7 @@ typedef struct {
 } GIClosureWrapper;
 
 /**
- * g_callable_info_prepare_closure:
+ * g_callable_info_create_closure:
  * @callable_info: a callable info from a typelib
  * @cif: a ffi_cif structure
  * @callback: the ffi callback
@@ -362,13 +362,13 @@ typedef struct {
  * Prepares a callback for ffi invocation.
  *
  * Returns: the ffi_closure or NULL on error. The return value
- *     should be freed by calling g_callable_info_free_closure().
+ *     should be freed by calling g_callable_info_destroy_closure().
  */
 ffi_closure *
-g_callable_info_prepare_closure (GICallableInfo       *callable_info,
-                                 ffi_cif              *cif,
-                                 GIFFIClosureCallback  callback,
-                                 gpointer              user_data)
+g_callable_info_create_closure (GICallableInfo       *callable_info,
+                                ffi_cif              *cif,
+                                GIFFIClosureCallback  callback,
+                                gpointer              user_data)
 {
   gpointer exec_ptr;
   int n_args;
@@ -388,6 +388,7 @@ g_callable_info_prepare_closure (GICallableInfo       *callable_info,
     }
   closure->writable_self = closure;
   closure->native_address = exec_ptr;
+
 
   atypes = g_callable_info_get_ffi_arg_types (callable_info, &n_args);
   status = ffi_prep_cif (cif, FFI_DEFAULT_ABI, n_args,
@@ -416,7 +417,7 @@ g_callable_info_prepare_closure (GICallableInfo       *callable_info,
  * @callable_info: a callable info from a typelib
  * @closure: ffi closure
  *
- * Gets callable code from ffi_closure prepared by g_callable_info_prepare_closure()
+ * Gets callable code from ffi_closure prepared by g_callable_info_create_closure()
  */
 gpointer *
 g_callable_info_get_closure_native_address (GICallableInfo       *callable_info,
@@ -427,18 +428,70 @@ g_callable_info_get_closure_native_address (GICallableInfo       *callable_info,
 }
 
 /**
- * g_callable_info_free_closure:
+ * g_callable_info_destroy_closure:
  * @callable_info: a callable info from a typelib
  * @closure: ffi closure
  *
- * Frees a ffi_closure returned from g_callable_info_prepare_closure()
+ * Frees a ffi_closure returned from g_callable_info_create_closure()
  */
 void
-g_callable_info_free_closure (GICallableInfo *callable_info,
-                              ffi_closure    *closure)
+g_callable_info_destroy_closure (GICallableInfo *callable_info,
+                                 ffi_closure    *closure)
 {
   GIClosureWrapper *wrapper = (GIClosureWrapper *)closure;
 
   g_free (wrapper->ffi_closure.cif->arg_types);
   ffi_closure_free (wrapper->writable_self);
+}
+
+/**
+ * g_callable_info_prepare_closure:
+ * @callable_info: a callable info from a typelib
+ * @cif: a ffi_cif structure
+ * @callback: the ffi callback
+ * @user_data: data to be passed into the callback
+ *
+ * Prepares a callback for ffi invocation. Deprecated
+ *
+ * Returns: the native address of the closre or NULL on error. The return value
+ *     should be freed by calling g_callable_info_free_closure().
+ */
+ffi_closure *
+g_callable_info_prepare_closure (GICallableInfo       *callable_info,
+                                 ffi_cif              *cif,
+                                 GIFFIClosureCallback  callback,
+                                 gpointer              user_data)
+{
+  ffi_closure * closure;
+
+  closure = g_callable_info_create_closure(callable_info, cif, callback, user_data);
+  if (!closure)
+    {
+      return NULL;
+    }
+
+  g_warning ("g_callable_info_prepare_closure is deprecated, use g_callable_info_create_closure instead\n");
+
+  /* Return the native pointer which, on some systems and ffi versions without static exec trampolines,
+   * points to the same underlying memory as closure, but via an executable-non-writable mapping.
+   * Deprecated, and kept for backwards compatibility only. Risks segfaults on freeing the closure.
+   */
+  return (ffi_closure *) g_callable_info_get_closure_native_address(callable_info, closure);
+}
+
+/**
+ * g_callable_info_free_closure:
+ * @callable_info: a callable info from a typelib
+ * @closure: ffi closure
+ *
+ * Does nothing. (Leaks memory!) Use g_callable_info_destroy_closure() instead,
+ * in conjunction with g_callable_info_create_closure().
+ *
+ * Should free a ffi_closure returned from g_callable_info_prepare_closure(),
+ * which may cause a segfault because the native address is returned instead
+ * of the closure address.
+ */
+void g_callable_info_free_closure (GICallableInfo *callable_info, ffi_closure *closure)
+{
+  g_warning ("g_callable_info_free_closure is deprecated and leaks memory\n");
 }
