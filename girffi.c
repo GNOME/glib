@@ -494,4 +494,7 @@ g_callable_info_prepare_closure (GICallableInfo       *callable_info,
 void g_callable_info_free_closure (GICallableInfo *callable_info, ffi_closure *closure)
 {
   g_warning ("g_callable_info_free_closure is deprecated and leaks memory\n");
+#ifdef LEGACY_GIRFFI_FREE
+  g_callable_info_destroy_closure(callable_info, closure);
+#endif
 }
