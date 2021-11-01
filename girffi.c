@@ -451,7 +451,9 @@ g_callable_info_destroy_closure (GICallableInfo *callable_info,
  * @callback: the ffi callback
  * @user_data: data to be passed into the callback
  *
- * Prepares a callback for ffi invocation. Deprecated
+ * Prepares a callback for ffi invocation.
+ *
+ * Deprecated: 1.72: Use g_callable_info_create_closure() instead
  *
  * Returns: the native address of the closure or `NULL` on error. The return value
  *   should be freed by calling g_callable_info_free_closure().
@@ -470,8 +472,6 @@ g_callable_info_prepare_closure (GICallableInfo       *callable_info,
       return NULL;
     }
 
-  g_warning ("g_callable_info_prepare_closure is deprecated, use g_callable_info_create_closure instead\n");
-
   /* Return the native pointer which, on some systems and ffi versions without static exec trampolines,
    * points to the same underlying memory as closure, but via an executable-non-writable mapping.
    * Deprecated, and kept for backwards compatibility only. Risks segfaults on freeing the closure.
@@ -484,18 +484,18 @@ g_callable_info_prepare_closure (GICallableInfo       *callable_info,
  * @callable_info: a callable info from a typelib
  * @closure: ffi closure
  *
- * Does nothing. (Leaks memory!) Use g_callable_info_destroy_closure() instead,
- * in conjunction with g_callable_info_create_closure().
+ * Deprecated: 1.72: Use g_callable_info_destroy_closure() instead, in
+ * conjunction with g_callable_info_create_closure().
  *
  * Should free a ffi_closure returned from g_callable_info_prepare_closure(),
- * which may cause a segfault because the native address is returned instead
- * of the closure address.
+ * which may cause a segfault because the native address is returned instead of
+ * the closure address. May do nothing and leak memory instead of freeing to
+ * avoid segfaults.
  */
 void
 g_callable_info_free_closure (GICallableInfo *callable_info,
                               ffi_closure    *closure)
 {
-  g_warning ("g_callable_info_free_closure is deprecated and leaks memory\n");
 #ifdef LEGACY_GIRFFI_FREE
   g_callable_info_destroy_closure(callable_info, closure);
 #endif
