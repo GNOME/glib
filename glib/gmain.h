@@ -38,6 +38,26 @@ typedef enum /*< flags >*/
   G_IO_NVAL	GLIB_SYSDEF_POLLNVAL
 } GIOCondition;
 
+/**
+ * GMainContextFlags:
+ * @G_MAIN_CONTEXT_FLAGS_NONE: Default behaviour.
+ * @G_MAIN_CONTEXT_FLAGS_OWNERLESS_POLLING: Assume that polling for events will
+ * free the thread to process other jobs. That's useful if you're using
+ * `g_main_context_{prepare,query,check,dispatch}` to integrate GMainContext in
+ * other event loops.
+ *
+ * Flags to pass to g_main_context_new_with_flags() which affect the behaviour
+ * of a #GMainContext.
+ *
+ * Since: 2.72
+ */
+GLIB_AVAILABLE_TYPE_IN_2_72
+typedef enum /*< flags >*/
+{
+  G_MAIN_CONTEXT_FLAGS_NONE = 0,
+  G_MAIN_CONTEXT_FLAGS_OWNERLESS_POLLING = 1
+} GMainContextFlags;
+
 
 /**
  * GMainContext:
@@ -358,6 +378,10 @@ struct _GSourceFuncs
 
 GLIB_AVAILABLE_IN_ALL
 GMainContext *g_main_context_new       (void);
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+GLIB_AVAILABLE_IN_2_72
+GMainContext *g_main_context_new_with_flags (GMainContextFlags flags);
+G_GNUC_END_IGNORE_DEPRECATIONS
 GLIB_AVAILABLE_IN_ALL
 GMainContext *g_main_context_ref       (GMainContext *context);
 GLIB_AVAILABLE_IN_ALL

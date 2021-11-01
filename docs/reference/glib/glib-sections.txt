@@ -841,7 +841,9 @@ G_SOURCE_REMOVE
 
 <SUBSECTION>
 GMainContext
+GMainContextFlags
 g_main_context_new
+g_main_context_new_with_flags
 g_main_context_ref
 g_main_context_unref
 g_main_context_default
