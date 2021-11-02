@@ -58,16 +58,12 @@ void          _xdg_mime_cache_unref         (XdgMimeCache *cache);
 const char  *_xdg_mime_cache_get_mime_type_for_data       (const void *data,
 		 				           size_t      len,
 							   int        *result_prio);
-#ifdef NOT_USED_IN_GIO
 const char  *_xdg_mime_cache_get_mime_type_for_file       (const char  *file_name,
 							   struct stat *statbuf);
-#endif
 int          _xdg_mime_cache_get_mime_types_from_file_name (const char *file_name,
 							    const char  *mime_types[],
 							    int          n_mime_types);
-#ifdef NOT_USED_IN_GIO
 const char  *_xdg_mime_cache_get_mime_type_from_file_name (const char *file_name);
-#endif
 int          _xdg_mime_cache_is_valid_mime_type           (const char *mime_type);
 int          _xdg_mime_cache_mime_type_equal              (const char *mime_a,
 						           const char *mime_b);
@@ -80,8 +76,6 @@ const char  *_xdg_mime_cache_unalias_mime_type            (const char *mime);
 int          _xdg_mime_cache_get_max_buffer_extents       (void);
 const char  *_xdg_mime_cache_get_icon                     (const char *mime);
 const char  *_xdg_mime_cache_get_generic_icon             (const char *mime);
-#ifdef NOT_USED_IN_GIO
 void         _xdg_mime_cache_glob_dump                    (void);
-#endif
 
 #endif /* __XDG_MIME_CACHE_H__ */

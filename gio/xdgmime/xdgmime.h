@@ -73,9 +73,9 @@ typedef void (*XdgMimeDestroy)  (void *user_data);
 #define xdg_mime_get_icon                     XDG_ENTRY(get_icon)
 #define xdg_mime_get_generic_icon             XDG_ENTRY(get_generic_icon)
 
-#define _xdg_mime_mime_type_subclass          XDG_RESERVED_ENTRY(mime_type_subclass)
 #define _xdg_mime_mime_type_equal             XDG_RESERVED_ENTRY(mime_type_equal)
-#define _xdg_mime_unalias_mime_type           XDG_RESERVED_ENTRY(unalias_mime_type)
+#define _xdg_mime_mime_type_subclass          XDG_RESERVED_ENTRY(mime_type_subclass)
+#define _xdg_mime_unalias_mime_type           XDG_RESERVED_ENTRY(unalias_mime_type)  
 #endif
 
 extern const char xdg_mime_type_unknown[];
@@ -88,17 +88,13 @@ extern const char xdg_mime_type_textplain[];
 const char  *xdg_mime_get_mime_type_for_data       (const void *data,
 						    size_t      len,
 						    int        *result_prio);
-#ifdef NOT_USED_IN_GIO
 const char  *xdg_mime_get_mime_type_for_file       (const char *file_name,
                                                     struct stat *statbuf);
 const char  *xdg_mime_get_mime_type_from_file_name (const char *file_name);
-#endif
 int          xdg_mime_get_mime_types_from_file_name(const char *file_name,
 						    const char *mime_types[],
 						    int         n_mime_types);
-#ifdef NOT_USED_IN_GIO
 int          xdg_mime_is_valid_mime_type           (const char *mime_type);
-#endif
 int          xdg_mime_mime_type_equal              (const char *mime_a,
 						    const char *mime_b);
 int          xdg_mime_media_type_equal             (const char *mime_a,
@@ -110,24 +106,18 @@ int          xdg_mime_mime_type_subclass           (const char *mime_a,
    * instead, but notice that that function expects you to free
    * the array it returns. 
    */
-#ifdef NOT_USED_IN_GIO
 const char **xdg_mime_get_mime_parents		   (const char *mime);
-#endif
 char **      xdg_mime_list_mime_parents		   (const char *mime);
 const char  *xdg_mime_unalias_mime_type		   (const char *mime);
 const char  *xdg_mime_get_icon                     (const char *mime);
 const char  *xdg_mime_get_generic_icon             (const char *mime);
 int          xdg_mime_get_max_buffer_extents       (void);
 void         xdg_mime_shutdown                     (void);
-#ifdef NOT_USED_IN_GIO
 void         xdg_mime_dump                         (void);
-#endif
 int          xdg_mime_register_reload_callback     (XdgMimeCallback  callback,
 						    void            *data,
 						    XdgMimeDestroy   destroy);
-#ifdef NOT_USED_IN_GIO
 void         xdg_mime_remove_callback              (int              callback_id);
-#endif
 
 void xdg_mime_set_dirs (const char * const *dirs);
 

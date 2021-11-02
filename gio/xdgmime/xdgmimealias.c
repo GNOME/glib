@@ -165,8 +165,6 @@ _xdg_mime_alias_read_from_file (XdgAliasList *list,
 }
 
 
-#ifdef NOT_USED_IN_GIO
-
 void
 _xdg_mime_alias_list_dump (XdgAliasList *list)
 {
@@ -183,4 +181,4 @@ _xdg_mime_alias_list_dump (XdgAliasList *list)
     }
 }
 
-#endif
+

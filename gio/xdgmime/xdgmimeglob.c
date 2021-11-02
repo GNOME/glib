@@ -162,8 +162,6 @@ _xdg_glob_hash_node_new (void)
   return glob_hash_node;
 }
 
-#ifdef NOT_USED_IN_GIO
-
 static void
 _xdg_glob_hash_node_dump (XdgGlobHashNode *glob_hash_node,
 			  int depth)
@@ -182,8 +180,6 @@ _xdg_glob_hash_node_dump (XdgGlobHashNode *glob_hash_node,
   if (glob_hash_node->next)
     _xdg_glob_hash_node_dump (glob_hash_node->next, depth);
 }
-
-#endif
 
 static XdgGlobHashNode *
 _xdg_glob_hash_insert_ucs4 (XdgGlobHashNode *glob_hash_node,
@@ -607,8 +603,6 @@ _xdg_glob_hash_append_glob (XdgGlobHash *glob_hash,
     }
 }
 
-#ifdef NOT_USED_IN_GIO
-
 void
 _xdg_glob_hash_dump (XdgGlobHash *glob_hash)
 {
@@ -645,7 +639,6 @@ _xdg_glob_hash_dump (XdgGlobHash *glob_hash)
     }
 }
 
-#endif
 
 void
 _xdg_mime_glob_read_from_file (XdgGlobHash *glob_hash,

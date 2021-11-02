@@ -46,7 +46,6 @@ XdgAliasList *_xdg_mime_alias_list_new       (void);
 void          _xdg_mime_alias_list_free      (XdgAliasList *list);
 const char   *_xdg_mime_alias_list_lookup    (XdgAliasList *list,
 					      const char  *alias);
-#ifdef NOT_USED_IN_GIO
 void          _xdg_mime_alias_list_dump      (XdgAliasList *list);
-#endif
+
 #endif /* __XDG_MIME_ALIAS_H__ */
