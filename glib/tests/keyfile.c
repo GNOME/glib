@@ -45,7 +45,7 @@ check_string_value (GKeyFile    *keyfile,
 
   value = g_key_file_get_string (keyfile, group, key, &error);
   check_no_error (&error);
-  g_assert (value != NULL);
+  g_assert_nonnull (value);
   g_assert_cmpstr (value, ==, expected);
   g_free (value);
 }
@@ -62,7 +62,7 @@ check_locale_string_value (GKeyFile    *keyfile,
 
   value = g_key_file_get_locale_string (keyfile, group, key, locale, &error);
   check_no_error (&error);
-  g_assert (value != NULL);
+  g_assert_nonnull (value);
   g_assert_cmpstr (value, ==, expected);
   g_free (value);
 }
@@ -95,14 +95,14 @@ check_string_list_value (GKeyFile    *keyfile,
 
   value = g_key_file_get_string_list (keyfile, group, key, &len, &error);
   check_no_error (&error);
-  g_assert (value != NULL);
+  g_assert_nonnull (value);
 
   va_start (args, key);
   i = 0;
   v = va_arg (args, gchar*);
   while (v)
     {
-      g_assert (value[i] != NULL);
+      g_assert_nonnull (value[i]);
       g_assert_cmpstr (v, ==, value[i]);
       i++;
       v = va_arg (args, gchar*);
@@ -128,14 +128,14 @@ check_locale_string_list_value (GKeyFile    *keyfile,
 
   value = g_key_file_get_locale_string_list (keyfile, group, key, locale, &len, &error);
   check_no_error (&error);
-  g_assert (value != NULL);
+  g_assert_nonnull (value);
 
   va_start (args, locale);
   i = 0;
   v = va_arg (args, gchar*);
   while (v)
     {
-      g_assert (value[i] != NULL);
+      g_assert_nonnull (value[i]);
       g_assert_cmpstr (v, ==, value[i]);
       i++;
       v = va_arg (args, gchar*);
@@ -160,7 +160,7 @@ check_integer_list_value (GKeyFile    *keyfile,
 
   value = g_key_file_get_integer_list (keyfile, group, key, &len, &error);
   check_no_error (&error);
-  g_assert (value != NULL);
+  g_assert_nonnull (value);
 
   va_start (args, key);
   i = 0;
@@ -192,7 +192,7 @@ check_double_list_value (GKeyFile    *keyfile,
 
   value = g_key_file_get_double_list (keyfile, group, key, &len, &error);
   check_no_error (&error);
-  g_assert (value != NULL);
+  g_assert_nonnull (value);
 
   va_start (args, key);
   i = 0;
@@ -224,7 +224,7 @@ check_boolean_list_value (GKeyFile    *keyfile,
 
   value = g_key_file_get_boolean_list (keyfile, group, key, &len, &error);
   check_no_error (&error);
-  g_assert (value != NULL);
+  g_assert_nonnull (value);
 
   va_start (args, key);
   i = 0;
@@ -436,7 +436,7 @@ test_comments (void)
   check_no_error (&error);
   comment = g_key_file_get_comment (keyfile, "group1", "key2", &error);
   check_no_error (&error);
-  g_assert (comment == NULL);
+  g_assert_null (comment);
 
   comment = g_key_file_get_comment (keyfile, "group1", "key4", &error);
   check_no_error (&error);
@@ -452,7 +452,7 @@ test_comments (void)
   check_error (&error,
                G_KEY_FILE_ERROR,
                G_KEY_FILE_ERROR_GROUP_NOT_FOUND);
-  g_assert (comment == NULL);
+  g_assert_null (comment);
 
   g_key_file_free (keyfile);
 }
@@ -479,7 +479,7 @@ test_listing (void)
   keyfile = load_data (data, 0);
 
   names = g_key_file_get_groups (keyfile, &len);
-  g_assert (names != NULL);
+  g_assert_nonnull (names);
 
   check_length ("groups", g_strv_length (names), len, 2);
   check_name ("group name", names[0], "group1", 0);
@@ -501,20 +501,20 @@ test_listing (void)
 
   g_strfreev (names);
 
-  g_assert (g_key_file_has_group (keyfile, "group1"));
-  g_assert (g_key_file_has_group (keyfile, "group2"));
-  g_assert (!g_key_file_has_group (keyfile, "group10"));
-  g_assert (!g_key_file_has_group (keyfile, "group20"));
+  g_assert_true (g_key_file_has_group (keyfile, "group1"));
+  g_assert_true (g_key_file_has_group (keyfile, "group2"));
+  g_assert_false (g_key_file_has_group (keyfile, "group10"));
+  g_assert_false (g_key_file_has_group (keyfile, "group20"));
 
   start = g_key_file_get_start_group (keyfile);
   g_assert_cmpstr (start, ==, "group1");
   g_free (start);
 
-  g_assert (g_key_file_has_key (keyfile, "group1", "key1", &error));
+  g_assert_true (g_key_file_has_key (keyfile, "group1", "key1", &error));
   check_no_error (&error);
-  g_assert (g_key_file_has_key (keyfile, "group2", "key3", &error));
+  g_assert_true (g_key_file_has_key (keyfile, "group2", "key3", &error));
   check_no_error (&error);
-  g_assert (!g_key_file_has_key (keyfile, "group2", "no-such-key", NULL));
+  g_assert_false (g_key_file_has_key (keyfile, "group2", "no-such-key", NULL));
 
   g_key_file_has_key (keyfile, "no-such-group", "key", &error);
   check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_GROUP_NOT_FOUND);
@@ -902,7 +902,7 @@ test_group_remove (void)
   keyfile = load_data (data, 0);
 
   names = g_key_file_get_groups (keyfile, &len);
-  g_assert (names != NULL);
+  g_assert_nonnull (names);
 
   check_length ("groups", g_strv_length (names), len, 3);
   check_name ("group name", names[0], "group1", 0);
@@ -915,7 +915,7 @@ test_group_remove (void)
   g_strfreev (names);
 
   names = g_key_file_get_groups (keyfile, &len);
-  g_assert (names != NULL);
+  g_assert_nonnull (names);
 
   check_length ("groups", g_strv_length (names), len, 2);
   check_name ("group name", names[0], "group2", 0);
@@ -927,7 +927,7 @@ test_group_remove (void)
   g_strfreev (names);
 
   names = g_key_file_get_groups (keyfile, &len);
-  g_assert (names != NULL);
+  g_assert_nonnull (names);
 
   check_length ("groups", g_strv_length (names), len, 1);
   check_name ("group name", names[0], "group3", 0);
@@ -1058,7 +1058,7 @@ test_group_names (void)
   check_error (&error,
                G_KEY_FILE_ERROR,
                G_KEY_FILE_ERROR_GROUP_NOT_FOUND);
-  g_assert (value == NULL);
+  g_assert_null (value);
   g_key_file_free (keyfile);
 
   keyfile = g_key_file_new ();
@@ -1067,7 +1067,7 @@ test_group_names (void)
   check_error (&error,
                G_KEY_FILE_ERROR,
                G_KEY_FILE_ERROR_GROUP_NOT_FOUND);
-  g_assert (value == NULL);
+  g_assert_null (value);
   g_key_file_free (keyfile);
 
   keyfile = g_key_file_new ();
@@ -1076,7 +1076,7 @@ test_group_names (void)
   check_error (&error,
                G_KEY_FILE_ERROR,
                G_KEY_FILE_ERROR_GROUP_NOT_FOUND);
-  g_assert (value == NULL);
+  g_assert_null (value);
   g_key_file_free (keyfile);
 
   keyfile = g_key_file_new ();
@@ -1335,7 +1335,7 @@ test_reload_idempotency (void)
   check_no_error (&error);
 
   data1 = g_key_file_to_data (keyfile, &len1, &error);
-  g_assert (data1 != NULL);
+  g_assert_nonnull (data1);
   g_key_file_free (keyfile);
 
   keyfile = g_key_file_new ();
@@ -1346,7 +1346,7 @@ test_reload_idempotency (void)
   check_no_error (&error);
 
   data2 = g_key_file_to_data (keyfile, &len2, &error);
-  g_assert (data2 != NULL);
+  g_assert_nonnull (data2);
   g_key_file_free (keyfile);
 
   g_assert_cmpstr (data1, ==, data2);
@@ -1377,13 +1377,13 @@ test_int64 (void)
 
   ok = g_key_file_load_from_data (file, int64_data, strlen (int64_data),
       0, NULL);
-  g_assert (ok);
+  g_assert_true (ok);
 
   c = g_key_file_get_uint64 (file, "bees", "c", NULL);
-  g_assert (c == G_GUINT64_CONSTANT (123456789123456789));
+  g_assert_cmpuint (c, ==, G_GUINT64_CONSTANT (123456789123456789));
 
   d = g_key_file_get_int64 (file, "bees", "d", NULL);
-  g_assert (d == G_GINT64_CONSTANT (-123456789123456789));
+  g_assert_cmpint (d, ==, G_GINT64_CONSTANT (-123456789123456789));
 
   g_key_file_set_uint64 (file, "bees", "c",
       G_GUINT64_CONSTANT (987654321987654321));
@@ -1417,7 +1417,7 @@ test_load (void)
   loaded = g_key_file_load_from_file (file, g_test_get_filename (G_TEST_DIST, "keyfiletest.ini", NULL), 0, &error);
 #endif
   g_assert_no_error (error);
-  g_assert (loaded);
+  g_assert_true (loaded);
 
   g_key_file_set_locale_string (file, "test", "key4", "de", "Vierter Schlüssel");
   g_key_file_set_boolean_list (file, "test", "key5", bools, 2);
@@ -1431,7 +1431,7 @@ test_load (void)
 
   file = g_key_file_new ();
   error = NULL;
-  g_assert (!g_key_file_load_from_data_dirs (file, "keyfile-test.ini", NULL, 0, &error));
+  g_assert_false (g_key_file_load_from_data_dirs (file, "keyfile-test.ini", NULL, 0, &error));
   g_assert_error (error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_NOT_FOUND);
   g_error_free (error);
   g_key_file_free (file);
@@ -1456,25 +1456,25 @@ test_save (void)
 
   kf = g_key_file_new ();
   ok = g_key_file_load_from_data (kf, data, strlen (data), 0, NULL);
-  g_assert (ok);
+  g_assert_true (ok);
 
   file = g_strdup ("key_file_XXXXXX");
   fd = g_mkstemp (file);
-  g_assert (fd != -1);
+  g_assert_cmpint (fd, !=, -1);
   ok = g_close (fd, &error);
-  g_assert (ok);
+  g_assert_true (ok);
   g_assert_no_error (error);
   ok = g_key_file_save_to_file (kf, file, &error);
-  g_assert (ok);
+  g_assert_true (ok);
   g_assert_no_error (error);
 
   kf2 = g_key_file_new ();
   ok = g_key_file_load_from_file (kf2, file, 0, &error);
-  g_assert (ok);
+  g_assert_true (ok);
   g_assert_no_error (error);
 
   c = g_key_file_get_uint64 (kf2, "bees", "c", NULL);
-  g_assert (c == G_GUINT64_CONSTANT (123456789123456789));
+  g_assert_cmpuint (c, ==, G_GUINT64_CONSTANT (123456789123456789));
 
   remove (file);
   g_free (file);
@@ -1490,10 +1490,10 @@ test_load_fail (void)
 
   file = g_key_file_new ();
   error = NULL;
-  g_assert (!g_key_file_load_from_file (file, g_test_get_filename (G_TEST_DIST, "keyfile.c", NULL), 0, &error));
+  g_assert_false (g_key_file_load_from_file (file, g_test_get_filename (G_TEST_DIST, "keyfile.c", NULL), 0, &error));
   g_assert_error (error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_PARSE);
   g_clear_error (&error);
-  g_assert (!g_key_file_load_from_file (file, "/nosuchfile", 0, &error));
+  g_assert_false (g_key_file_load_from_file (file, "/nosuchfile", 0, &error));
   g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_NOENT);
   g_clear_error (&error);
 
@@ -1517,22 +1517,22 @@ test_non_utf8 (void)
   file = g_key_file_new ();
 
   ok = g_key_file_load_from_data (file, data, strlen (data), 0, NULL);
-  g_assert (ok);
+  g_assert_true (ok);
 
   error = NULL;
   s = g_key_file_get_string (file, "group", "a", &error);
   g_assert_error (error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_UNKNOWN_ENCODING);
-  g_assert (s == NULL);
+  g_assert_null (s);
 
   g_clear_error (&error);
   l = g_key_file_get_string_list (file, "group", "b", NULL, &error);
   g_assert_error (error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_UNKNOWN_ENCODING);
-  g_assert (l == NULL);
+  g_assert_null (l);
 
   g_clear_error (&error);
   l = g_key_file_get_string_list (file, "group", "c", NULL, &error);
   g_assert_error (error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE);
-  g_assert (l == NULL);
+  g_assert_null (l);
 
   g_clear_error (&error);
 
@@ -1587,8 +1587,8 @@ test_ref (void)
   file = g_key_file_new ();
 
   ok = g_key_file_load_from_data (file, data, strlen (data), 0, NULL);
-  g_assert (ok);
-  g_assert (g_key_file_has_key (file, "group", "a", NULL));
+  g_assert_true (ok);
+  g_assert_true (g_key_file_has_key (file, "group", "a", NULL));
   g_key_file_ref (file);
   g_key_file_free (file);
   g_key_file_unref (file);
@@ -1666,7 +1666,7 @@ test_limbo (void)
 
   error = NULL;
   ok = g_key_file_load_from_data (file, data, strlen (data), 0, &error);
-  g_assert (!ok);
+  g_assert_false (ok);
   g_assert_error (error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_GROUP_NOT_FOUND);
   g_clear_error (&error);
   g_key_file_free (file);
@@ -1675,21 +1675,32 @@ test_limbo (void)
 static void
 test_utf8 (void)
 {
-  GKeyFile *file;
-  static const char data[] =
-"[group]\n"
-"Encoding=non-UTF-8\n";
-  gboolean ok;
-  GError *error;
+  const gchar *invalid_encoding_names[] =
+    {
+      "non-UTF-8",
+      "UTF",
+      "UTF-9",
+    };
+  gsize i;
 
-  file = g_key_file_new ();
+  for (i = 0; i < G_N_ELEMENTS (invalid_encoding_names); i++)
+    {
+      GKeyFile *file = NULL;
+      gchar *data = NULL;
+      gboolean ok;
+      GError *error = NULL;
 
-  error = NULL;
-  ok = g_key_file_load_from_data (file, data, strlen (data), 0, &error);
-  g_assert (!ok);
-  g_assert_error (error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_UNKNOWN_ENCODING);
-  g_clear_error (&error);
-  g_key_file_free (file);
+      g_test_message ("Testing invalid encoding ‘%s’", invalid_encoding_names[i]);
+
+      file = g_key_file_new ();
+      data = g_strdup_printf ("[group]\n"
+                              "Encoding=%s\n", invalid_encoding_names[i]);
+      ok = g_key_file_load_from_data (file, data, strlen (data), 0, &error);
+      g_assert_false (ok);
+      g_assert_error (error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_UNKNOWN_ENCODING);
+      g_clear_error (&error);
+      g_key_file_free (file);
+    }
 }
 
 static void

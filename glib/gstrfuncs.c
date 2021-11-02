@@ -1874,7 +1874,9 @@ g_ascii_strcasecmp (const gchar *s1,
  * @n: number of characters to compare
  *
  * Compare @s1 and @s2, ignoring the case of ASCII characters and any
- * characters after the first @n in each string.
+ * characters after the first @n in each string. If either string is
+ * less than @n bytes long, comparison will stop at the first nul byte
+ * encountered.
  *
  * Unlike the BSD strcasecmp() function, this only recognizes standard
  * ASCII letters and ignores the locale, treating all non-ASCII
