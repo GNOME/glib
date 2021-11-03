@@ -343,8 +343,6 @@ struct _GSettingsPrivate
   GSettingsBackend *backend;
   GSettingsSchema *schema;
   gchar *path;
-
-  GDelayedSettingsBackend *delayed;
 };
 
 enum
@@ -642,7 +640,7 @@ g_settings_get_property (GObject    *object,
       break;
 
      case PROP_DELAY_APPLY:
-      g_value_set_boolean (value, settings->priv->delayed != NULL);
+      g_value_set_boolean (value, G_IS_DELAYED_SETTINGS_BACKEND (settings->priv->backend));
       break;
 
      default:
@@ -2256,19 +2254,20 @@ g_settings_set_strv (GSettings           *settings,
 void
 g_settings_delay (GSettings *settings)
 {
+  GDelayedSettingsBackend *delayed = NULL;
+
   g_return_if_fail (G_IS_SETTINGS (settings));
 
-  if (settings->priv->delayed)
+  if (G_IS_DELAYED_SETTINGS_BACKEND (settings->priv->backend))
     return;
 
-  settings->priv->delayed =
-    g_delayed_settings_backend_new (settings->priv->backend,
-                                    settings,
-                                    settings->priv->main_context);
+  delayed = g_delayed_settings_backend_new (settings->priv->backend,
+                                            settings,
+                                            settings->priv->main_context);
   g_settings_backend_unwatch (settings->priv->backend, G_OBJECT (settings));
   g_object_unref (settings->priv->backend);
 
-  settings->priv->backend = G_SETTINGS_BACKEND (settings->priv->delayed);
+  settings->priv->backend = G_SETTINGS_BACKEND (delayed);
   g_settings_backend_watch (settings->priv->backend,
                             &listener_vtable, G_OBJECT (settings),
                             settings->priv->main_context);
@@ -2288,7 +2287,7 @@ g_settings_delay (GSettings *settings)
 void
 g_settings_apply (GSettings *settings)
 {
-  if (settings->priv->delayed)
+  if (G_IS_DELAYED_SETTINGS_BACKEND (settings->priv->backend))
     {
       GDelayedSettingsBackend *delayed;
 
@@ -2311,7 +2310,7 @@ g_settings_apply (GSettings *settings)
 void
 g_settings_revert (GSettings *settings)
 {
-  if (settings->priv->delayed)
+  if (G_IS_DELAYED_SETTINGS_BACKEND (settings->priv->backend))
     {
       GDelayedSettingsBackend *delayed;
 
@@ -2336,7 +2335,7 @@ g_settings_get_has_unapplied (GSettings *settings)
 {
   g_return_val_if_fail (G_IS_SETTINGS (settings), FALSE);
 
-  return settings->priv->delayed &&
+  return G_IS_DELAYED_SETTINGS_BACKEND (settings->priv->backend) &&
          g_delayed_settings_backend_get_has_unapplied (
            G_DELAYED_SETTINGS_BACKEND (settings->priv->backend));
 }
@@ -2424,7 +2423,10 @@ g_settings_is_writable (GSettings   *settings,
  * @settings.
  *
  * The schema for the child settings object must have been declared
- * in the schema of @settings using a <child> element.
+ * in the schema of @settings using a `<child>` element.
+ *
+ * The created child settings object will inherit the #GSettings:delay-apply
+ * mode from @settings.
  *
  * Returns: (not nullable) (transfer full): a 'child' settings object
  *
