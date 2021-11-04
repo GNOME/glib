@@ -701,7 +701,6 @@ test_basic (GDBusProxy *proxy)
   connection = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
 
   g_assert_true (g_dbus_proxy_get_connection (proxy) == connection);
-  g_assert_cmpint (g_dbus_proxy_get_flags (proxy), ==, G_DBUS_PROXY_FLAGS_NONE);
   g_assert_null (g_dbus_proxy_get_interface_info (proxy));
   g_assert_cmpstr (g_dbus_proxy_get_name (proxy), ==, "com.example.TestService");
   g_assert_cmpstr (g_dbus_proxy_get_object_path (proxy), ==, "/com/example/TestObject");
@@ -720,7 +719,7 @@ test_basic (GDBusProxy *proxy)
 
   g_assert_true (conn == connection);
   g_assert_null (info);
-  g_assert_cmpint (flags, ==, G_DBUS_PROXY_FLAGS_NONE);
+  g_assert_cmpint (flags, ==, g_dbus_proxy_get_flags (proxy));
   g_assert_cmpstr (name, ==, "com.example.TestService");
   g_assert_cmpstr (path, ==, "/com/example/TestObject");
   g_assert_cmpstr (interface, ==, "com.example.Frob");
@@ -763,7 +762,7 @@ kill_test_service (GDBusConnection *connection)
 }
 
 static void
-test_proxy (void)
+test_proxy_with_flags (GDBusProxyFlags flags)
 {
   GDBusProxy *proxy;
   GDBusConnection *connection;
@@ -777,7 +776,7 @@ test_proxy (void)
   g_assert_no_error (error);
   error = NULL;
   proxy = g_dbus_proxy_new_sync (connection,
-                                 G_DBUS_PROXY_FLAGS_NONE,
+                                 flags,
                                  NULL,                      /* GDBusInterfaceInfo */
                                  "com.example.TestService", /* name */
                                  "/com/example/TestObject", /* object path */
@@ -807,6 +806,12 @@ test_proxy (void)
 
   g_object_unref (proxy);
   g_object_unref (connection);
+}
+
+static void
+test_proxy (void)
+{
+  test_proxy_with_flags (G_DBUS_PROXY_FLAGS_NONE);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -930,6 +935,58 @@ test_wellknown_noauto (void)
   g_source_remove (id);
 }
 
+typedef enum {
+  ADD_MATCH,
+  REMOVE_MATCH,
+} AddOrRemove;
+
+static void
+add_or_remove_match_rule (GDBusConnection *connection,
+                          AddOrRemove      add_or_remove,
+                          GVariant        *match_rule)
+{
+  GDBusMessage *message = NULL;
+  GError *error = NULL;
+
+  message = g_dbus_message_new_method_call ("org.freedesktop.DBus", /* name */
+                                            "/org/freedesktop/DBus", /* path */
+                                            "org.freedesktop.DBus", /* interface */
+                                            (add_or_remove == ADD_MATCH) ? "AddMatch" : "RemoveMatch");
+  g_dbus_message_set_body (message, match_rule);
+  g_dbus_connection_send_message (connection,
+                                  message,
+                                  G_DBUS_SEND_MESSAGE_FLAGS_NONE,
+                                  NULL,
+                                  &error);
+  g_assert_no_error (error);
+  g_clear_object (&message);
+}
+
+static void
+test_proxy_no_match_rule (void)
+{
+  GDBusConnection *connection = NULL;
+  GVariant *match_rule = NULL;
+
+  g_test_summary ("Test that G_DBUS_PROXY_FLAGS_NO_MATCH_RULE works");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/1109");
+
+  connection = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
+
+  /* Add a custom match rule which matches everything. */
+  match_rule = g_variant_ref_sink (g_variant_new ("(s)", "type='signal'"));
+  add_or_remove_match_rule (connection, ADD_MATCH, match_rule);
+
+  /* Run the tests. */
+  test_proxy_with_flags (G_DBUS_PROXY_FLAGS_NO_MATCH_RULE);
+
+  /* Remove the match rule again. */
+  add_or_remove_match_rule (connection, REMOVE_MATCH, match_rule);
+
+  g_clear_pointer (&match_rule, g_variant_unref);
+  g_clear_object (&connection);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -950,6 +1007,7 @@ main (int   argc,
   g_test_add_func ("/gdbus/proxy/no-properties", test_no_properties);
   g_test_add_func ("/gdbus/proxy/wellknown-noauto", test_wellknown_noauto);
   g_test_add_func ("/gdbus/proxy/async", test_async);
+  g_test_add_func ("/gdbus/proxy/no-match-rule", test_proxy_no_match_rule);
 
   ret = session_bus_run();
 
