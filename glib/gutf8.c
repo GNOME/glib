@@ -574,7 +574,7 @@ static inline gunichar
 g_utf8_get_char_extended (const  gchar *p,
 			  gssize max_len)
 {
-  guint i, len;
+  gsize i, len;
   gunichar min_code;
   gunichar wc = (guchar) *p;
   const gunichar partial_sequence = (gunichar) -2;
@@ -623,9 +623,9 @@ g_utf8_get_char_extended (const  gchar *p,
       return malformed_sequence;
     }
 
-  if (G_UNLIKELY (max_len >= 0 && len > max_len))
+  if (G_UNLIKELY (max_len >= 0 && len > (gsize) max_len))
     {
-      for (i = 1; i < max_len; i++)
+      for (i = 1; i < (gsize) max_len; i++)
 	{
 	  if ((((guchar *)p)[i] & 0xc0) != 0x80)
 	    return malformed_sequence;
