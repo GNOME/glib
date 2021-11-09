@@ -511,8 +511,8 @@ g_tls_database_class_init (GTlsDatabaseClass *klass)
  *
  * Because TLS session context is not used, #GTlsDatabase may not
  * perform as many checks on the certificates as #GTlsConnection would.
- * For example, certificate constraints cannot be honored, and some
- * revocation checks cannot be performed. The best way to verify TLS
+ * For example, certificate constraints may not be honored, and
+ * revocation checks may not be performed. The best way to verify TLS
  * certificates used by a TLS connection is to let #GTlsConnection
  * handle the verification.
  *
