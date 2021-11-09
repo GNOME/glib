@@ -143,6 +143,19 @@ g_tls_connection_class_init (GTlsConnectionClass *klass)
    * If no certificate database is set, then the default database will be
    * used. See g_tls_backend_get_default_database().
    *
+   * When using a non-default database, #GTlsConnection must fall back to using
+   * the #GTlsDatabase to perform certificate verification using
+   * g_tls_database_verify_chain(), which means certificate verification will
+   * not be able to make use of TLS session context. This may be less secure.
+   * For example, if you create your own #GTlsDatabase that just wraps the
+   * default #GTlsDatabase, you might expect that you have not changed anything,
+   * but this is not true because you may have altered the behavior of
+   * #GTlsConnection by causing it to use g_tls_database_verify_chain(). See the
+   * documentation of g_tls_database_verify_chain() for more details on specific
+   * security checks that may not be performed. Accordingly, setting a
+   * non-default database is discouraged except for specialty applications with
+   * unusual security requirements.
+   *
    * Since: 2.30
    */
   g_object_class_install_property (gobject_class, PROP_DATABASE,
@@ -486,6 +499,9 @@ g_tls_connection_get_use_system_certdb (GTlsConnection *conn)
  * #GTlsConnection::accept-certificate will always be emitted on
  * client-side connections, unless that bit is not set in
  * #GTlsClientConnection:validation-flags).
+ *
+ * There are nonintuitive security implications when using a non-default
+ * database. See #GDtlsConnection:database for details.
  *
  * Since: 2.30
  */
