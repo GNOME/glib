@@ -517,8 +517,8 @@ g_tls_database_class_init (GTlsDatabaseClass *klass)
  * handle the verification.
  *
  * The TLS backend may attempt to look up and add missing certificates
- * to the chain. Since GLib 2.70, this may involve HTTP requests to
- * download missing certificates.
+ * to the chain. This may involve HTTP requests to download missing
+ * certificates.
  *
  * This function can block. Use g_tls_database_verify_chain_async() to
  * perform the verification operation asynchronously.
