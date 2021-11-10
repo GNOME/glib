@@ -128,6 +128,10 @@ test_utf8_substring (void)
   r = g_utf8_substring ("abc\xe2\x82\xa0gh\xe2\x82\xa4", 2, 5);
   g_assert_cmpstr (r, ==, "c\xe2\x82\xa0g");
   g_free (r);
+
+  r = g_utf8_substring ("abcd", 1, -1);
+  g_assert_cmpstr (r, ==, "bcd");
+  g_free (r);
 }
 
 static void

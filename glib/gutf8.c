@@ -271,10 +271,14 @@ g_utf8_strlen (const gchar *p,
  * g_utf8_substring:
  * @str: a UTF-8 encoded string
  * @start_pos: a character offset within @str
- * @end_pos: another character offset within @str
+ * @end_pos: another character offset within @str,
+ *   or `-1` to indicate the end of the string
  *
  * Copies a substring out of a UTF-8 encoded string.
  * The substring will contain @end_pos - @start_pos characters.
+ *
+ * Since GLib 2.72, `-1` can be passed to @end_pos to indicate the
+ * end of the string.
  *
  * Returns: (transfer full): a newly allocated copy of the requested
  *     substring. Free with g_free() when no longer needed.
@@ -288,8 +292,19 @@ g_utf8_substring (const gchar *str,
 {
   gchar *start, *end, *out;
 
+  g_return_val_if_fail (end_pos >= start_pos || end_pos == -1, NULL);
+
   start = g_utf8_offset_to_pointer (str, start_pos);
-  end = g_utf8_offset_to_pointer (start, end_pos - start_pos);
+
+  if (end_pos == -1)
+    {
+      glong length = g_utf8_strlen (start, -1);
+      end = g_utf8_offset_to_pointer (start, length);
+    }
+  else
+    {
+      end = g_utf8_offset_to_pointer (start, end_pos - start_pos);
+    }
 
   out = g_malloc (end - start + 1);
   memcpy (out, start, end - start);
