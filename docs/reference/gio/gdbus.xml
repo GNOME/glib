@@ -71,6 +71,7 @@
     <arg choice="plain">--method <replaceable>org.project.InterfaceName.MethodName</replaceable></arg>
     <group>
       <arg choice="plain">--timeout <replaceable>seconds</replaceable></arg>
+      <arg choice="plain">--interactive</arg>
     </group>
     <arg choice="plain">ARG1</arg>
     <arg choice="plain" rep="repeat">ARG2</arg>
