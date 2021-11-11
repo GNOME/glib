@@ -39,6 +39,7 @@ gio/gdbusprivate.c
 gio/gdbusproxy.c
 gio/gdbusserver.c
 gio/gdbus-tool.c
+gio/gdebugcontrollerdbus.c
 gio/gdesktopappinfo.c
 gio/gdrive.c
 gio/gdtlsclientconnection.c
