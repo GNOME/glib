@@ -161,7 +161,7 @@
   <para>
     The GIO model of I/O is stateful: if an application establishes e.g.
     a SFTP connection to a server, it becomes available to all applications
-    in the session; the user does not have to enter his password over
+    in the session; the user does not have to enter their password over
     and over again.
   </para>
   <para>
@@ -279,7 +279,7 @@ excellent book on this topic,
 When using GIO in code that runs with elevated privileges, you have to
 be careful. GIO has extension points whose implementations get loaded
 from modules (executable code in shared objects), which could allow
-an attacker to sneak his own code into your application by tricking it
+an attacker to sneak their own code into your application by tricking it
 into loading the code as a module. However, GIO will never load modules
 from your home directory except when explicitly asked to do so via an
 environment variable.
