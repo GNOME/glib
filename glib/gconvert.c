@@ -142,7 +142,7 @@
  *    "Unknown file name" in its title bar but still let the user save
  *    the file, as it would keep the raw file name internally. This
  *    can happen if the user has not set the `G_FILENAME_ENCODING`
- *    environment variable even though he has files whose names are
+ *    environment variable even though they have files whose names are
  *    not encoded in UTF-8.
  *
  * 3. If your user interface lets the user type a file name for saving
