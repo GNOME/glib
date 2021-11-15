@@ -969,8 +969,8 @@ g_tls_certificate_get_issuer (GTlsCertificate  *cert)
  *
  * Because TLS session context is not used, #GTlsCertificate may not
  * perform as many checks on the certificates as #GTlsConnection would.
- * For example, certificate constraints cannot be honored, and some
- * revocation checks cannot be performed. The best way to verify TLS
+ * For example, certificate constraints may not be honored, and
+ * revocation checks may not be performed. The best way to verify TLS
  * certificates used by a TLS connection is to let #GTlsConnection
  * handle the verification.
  *
