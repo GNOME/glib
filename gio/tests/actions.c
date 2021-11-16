@@ -275,10 +275,12 @@ test_stateful (void)
 
   if (g_test_undefined ())
     {
+      GVariant *new_state = g_variant_ref_sink (g_variant_new_int32 (123));
       g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
                              "*assertion*g_variant_is_of_type*failed*");
-      g_simple_action_set_state (action, g_variant_new_int32 (123));
+      g_simple_action_set_state (action, new_state);
       g_test_assert_expected_messages ();
+      g_variant_unref (new_state);
     }
 
   g_simple_action_set_state (action, g_variant_new_string ("hello"));
@@ -292,10 +294,12 @@ test_stateful (void)
 
   if (g_test_undefined ())
     {
+      GVariant *new_state = g_variant_ref_sink (g_variant_new_int32 (123));
       g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
                              "*assertion*!= NULL*failed*");
-      g_simple_action_set_state (action, g_variant_new_int32 (123));
+      g_simple_action_set_state (action, new_state);
       g_test_assert_expected_messages ();
+      g_variant_unref (new_state);
     }
 
   g_object_unref (action);
