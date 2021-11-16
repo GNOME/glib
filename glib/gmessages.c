@@ -2225,10 +2225,14 @@ g_log_writer_is_journald (gint output_fd)
   if (output_fd < 0)
     return FALSE;
 
+  /* Namespaced journals start with `/run/systemd/journal.${name}/` (see
+   * `RuntimeDirectory=systemd/journal.%i` in `systemd-journald@.service`. The
+   * default journal starts with `/run/systemd/journal/`. */
   addr_len = sizeof(addr);
   err = getpeername (output_fd, &addr.sa, &addr_len);
   if (err == 0 && addr.storage.ss_family == AF_UNIX)
-    return g_str_has_prefix (addr.un.sun_path, "/run/systemd/journal/");
+    return (g_str_has_prefix (addr.un.sun_path, "/run/systemd/journal/") ||
+            g_str_has_prefix (addr.un.sun_path, "/run/systemd/journal."));
 #endif
 
   return FALSE;
