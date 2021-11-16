@@ -1588,10 +1588,16 @@ typedef enum {
  *   flags
  *
  * A set of flags describing TLS certification validation. This can be
- * used to set which validation steps to perform (eg, with
- * g_tls_client_connection_set_validation_flags()), or to describe why
- * a particular certificate was rejected (eg, in
- * #GTlsConnection::accept-certificate).
+ * used to describe why a particular certificate was rejected (for
+ * example, in #GTlsConnection::accept-certificate).
+ *
+ * GLib guarantees that if certificate verification fails, at least one
+ * flag will be set, but it does not guarantee that all possible flags
+ * will be set. Accordingly, you may not safely decide to ignore any
+ * particular type of error. For example, it would be incorrect to mask
+ * %G_TLS_CERTIFICATE_EXPIRED if you want to allow expired certificates,
+ * because this could potentially be the only error flag set even if
+ * other problems exist with the certificate.
  *
  * Since: 2.28
  */

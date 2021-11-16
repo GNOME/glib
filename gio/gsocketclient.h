@@ -110,9 +110,9 @@ gboolean                g_socket_client_get_tls                         (GSocket
 GLIB_AVAILABLE_IN_2_28
 void                    g_socket_client_set_tls                         (GSocketClient        *client,
 									 gboolean              tls);
-GLIB_AVAILABLE_IN_2_28
+GLIB_DEPRECATED_IN_2_72
 GTlsCertificateFlags    g_socket_client_get_tls_validation_flags        (GSocketClient        *client);
-GLIB_AVAILABLE_IN_2_28
+GLIB_DEPRECATED_IN_2_72
 void                    g_socket_client_set_tls_validation_flags        (GSocketClient        *client,
 									 GTlsCertificateFlags  flags);
 GLIB_AVAILABLE_IN_2_36
