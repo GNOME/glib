@@ -444,17 +444,17 @@ g_nextstep_settings_backend_get_ns_object (GVariant *variant)
     {
       NSMutableDictionary *dictionary;
       GVariantIter iter;
-      GVariant *name;
+      const gchar *name;
       GVariant *value;
 
       dictionary = [NSMutableDictionary dictionaryWithCapacity:g_variant_iter_init (&iter, variant)];
 
-      while (g_variant_iter_loop (&iter, "{s*}", &name, &value))
+      while (g_variant_iter_loop (&iter, "{&s*}", &name, &value))
         {
           NSString *key;
           id object;
 
-          key = [NSString stringWithUTF8String:g_variant_get_string (name, NULL)];
+          key = [NSString stringWithUTF8String:name];
           object = g_nextstep_settings_backend_get_ns_object (value);
 
           [dictionary setObject:object forKey:key];
