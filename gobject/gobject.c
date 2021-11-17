@@ -24,6 +24,8 @@
 #include <string.h>
 #include <signal.h>
 
+#include "../glib/glib-private.h"
+
 #include "gobject.h"
 #include "gtype-private.h"
 #include "gvaluecollector.h"
@@ -1794,6 +1796,12 @@ g_object_get_type (void)
  * Similarly, #gfloat is promoted to #gdouble, so you must ensure that the value
  * you provide is a #gdouble, even for a property of type #gfloat.
  *
+ * Since GLib 2.72, all #GObjects are guaranteed to be aligned to at least the
+ * alignment of the largest basic GLib type (typically this is #guint64 or
+ * #gdouble). If you need larger alignment for an element in a #GObject, you
+ * should allocate it on the heap (aligned), or arrange for your #GObject to be
+ * appropriately padded.
+ *
  * Returns: (transfer full) (type GObject.Object): a new instance of
  *   @object_type
  */
@@ -1814,6 +1822,26 @@ g_object_new (GType	   object_type,
   va_end (var_args);
   
   return object;
+}
+
+/* Check alignment. (See https://gitlab.gnome.org/GNOME/glib/-/issues/1231.)
+ * This should never fail, since g_type_create_instance() uses g_slice_alloc0().
+ * The GSlice allocator always aligns to the next power of 2 greater than the
+ * allocation size. The allocation size for a GObject is
+ *   sizeof(GTypeInstance) + sizeof(guint) + sizeof(GData*)
+ * which is 12B on 32-bit platforms, and larger on 64-bit systems. In both
+ * cases, that’s larger than the 8B needed for a guint64 or gdouble.
+ *
+ * If GSlice falls back to malloc(), it’s documented to return something
+ * suitably aligned for any basic type. */
+static inline gboolean
+g_object_is_aligned (GObject *object)
+{
+  return ((((guintptr) (void *) object) %
+             MAX (G_ALIGNOF (gdouble),
+                  MAX (G_ALIGNOF (guint64),
+                       MAX (G_ALIGNOF (gint),
+                            G_ALIGNOF (glong))))) == 0);
 }
 
 static gpointer
@@ -1903,6 +1931,16 @@ g_object_new_with_custom_constructor (GObjectClass          *class,
       return NULL;
     }
 
+  if (!g_object_is_aligned (object))
+    {
+      g_critical ("Custom constructor for class %s returned a non-aligned "
+                  "GObject (which is invalid since GLib 2.72). Assuming any "
+                  "code using this object doesn’t require it to be aligned. "
+                  "Please fix your constructor to align to the largest GLib "
+                  "basic type (typically gdouble or guint64).",
+                  G_OBJECT_CLASS_NAME (class));
+    }
+
   /* g_object_init() will have marked the object as being in-construction.
    * Check if the returned object still is so marked, or if this is an
    * already-existing singleton (in which case we should not do 'constructed').
@@ -1968,6 +2006,8 @@ g_object_new_internal (GObjectClass          *class,
     return g_object_new_with_custom_constructor (class, params, n_params);
 
   object = (GObject *) g_type_create_instance (class->g_type_class.g_type);
+
+  g_assert (g_object_is_aligned (object));
 
   if (CLASS_HAS_PROPS (class))
     {
