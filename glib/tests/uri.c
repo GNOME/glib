@@ -898,6 +898,19 @@ static const UriRelativeTest relative_tests[] = {
   { "ScHeMe://User:P%61ss@HOST.%63om:1234/path/./from/../to%7d/item%2dobj?qu%65ry=something#fr%61gment",
     "scheme://User:Pass@HOST.com:1234/path/to%7D/item-obj?query=something#fragment",
     { "scheme", "User:Pass", "HOST.com", 1234, "/path/to}/item-obj", "query=something", "fragment" } },
+  /* Test corner cases of remove_dot_segments */
+  { "http:..", "http:",
+    { "http", NULL, NULL, -1, "", NULL, NULL } },
+  { "http:../", "http:",
+    { "http", NULL, NULL, -1, "", NULL, NULL } },
+  { "http:.", "http:",
+    { "http", NULL, NULL, -1, "", NULL, NULL } },
+  { "http:./", "http:",
+    { "http", NULL, NULL, -1, "", NULL, NULL } },
+  { "http:a/..", "http:/",
+    { "http", NULL, NULL, -1, "/", NULL, NULL } },
+  { "http:a/../", "http:/",
+    { "http", NULL, NULL, -1, "/", NULL, NULL } },
 };
 static int num_relative_tests = G_N_ELEMENTS (relative_tests);
 
