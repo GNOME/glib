@@ -1983,6 +1983,9 @@ typedef enum /*< flags >*/ {
  *   file descriptors of their parent, unless those descriptors have
  *   been explicitly marked as close-on-exec.  This flag has no effect
  *   over the "standard" file descriptors (stdin, stdout, stderr).
+ * @G_SUBPROCESS_FLAGS_SEARCH_PATH_FROM_ENVP: if path searching is
+ *   needed when spawning the subprocess, use the `PATH` in the launcher
+ *   environment. (Since: 2.72)
  *
  * Flags to define the behaviour of a #GSubprocess.
  *
@@ -2005,7 +2008,8 @@ typedef enum {
   G_SUBPROCESS_FLAGS_STDERR_PIPE           = (1u << 4),
   G_SUBPROCESS_FLAGS_STDERR_SILENCE        = (1u << 5),
   G_SUBPROCESS_FLAGS_STDERR_MERGE          = (1u << 6),
-  G_SUBPROCESS_FLAGS_INHERIT_FDS           = (1u << 7)
+  G_SUBPROCESS_FLAGS_INHERIT_FDS           = (1u << 7),
+  G_SUBPROCESS_FLAGS_SEARCH_PATH_FROM_ENVP = (1u << 8)
 } GSubprocessFlags;
 
 /**

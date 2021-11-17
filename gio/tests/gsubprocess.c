@@ -26,6 +26,14 @@
 #define SPLICELEN (TOTAL_HELLOS * strlen (HELLO_WORLD))
 #endif
 
+
+
+#ifdef G_OS_WIN32
+#define TESTPROG "gsubprocess-testprog.exe"
+#else
+#define TESTPROG "gsubprocess-testprog"
+#endif
+
 static GPtrArray *
 get_test_subprocess_args (const char *mode,
                           ...) G_GNUC_NULL_TERMINATED;
@@ -36,19 +44,12 @@ get_test_subprocess_args (const char *mode,
 {
   GPtrArray *ret;
   char *path;
-  const char *binname;
   va_list args;
   gpointer arg;
 
   ret = g_ptr_array_new_with_free_func (g_free);
 
-#ifdef G_OS_WIN32
-  binname = "gsubprocess-testprog.exe";
-#else
-  binname = "gsubprocess-testprog";
-#endif
-
-  path = g_test_build_filename (G_TEST_BUILT, binname, NULL);
+  path = g_test_build_filename (G_TEST_BUILT, TESTPROG, NULL);
   g_ptr_array_add (ret, path);
   g_ptr_array_add (ret, g_strdup (mode));
 
@@ -164,6 +165,31 @@ test_search_path (void)
 
   g_subprocess_wait_check (proc, NULL, error);
   g_assert_no_error (local_error);
+
+  g_object_unref (proc);
+}
+
+static void
+test_search_path_from_envp (void)
+{
+  GError *local_error = NULL;
+  GError **error = &local_error;
+  GSubprocessLauncher *launcher;
+  GSubprocess *proc;
+  const char *path;
+
+  path = g_test_get_dir (G_TEST_BUILT);
+
+  launcher = g_subprocess_launcher_new (G_SUBPROCESS_FLAGS_SEARCH_PATH_FROM_ENVP);
+  g_subprocess_launcher_setenv (launcher, "PATH", path, TRUE);
+
+  proc = g_subprocess_launcher_spawn (launcher, error, TESTPROG, "exit1", NULL);
+  g_assert_no_error (local_error);
+  g_object_unref (launcher);
+
+  g_subprocess_wait_check (proc, NULL, error);
+  g_assert_error (local_error, G_SPAWN_EXIT_ERROR, 1);
+  g_clear_error (error);
 
   g_object_unref (proc);
 }
@@ -1819,6 +1845,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gsubprocess/noop-stdin-inherit", test_noop_stdin_inherit);
 #ifdef G_OS_UNIX
   g_test_add_func ("/gsubprocess/search-path", test_search_path);
+  g_test_add_func ("/gsubprocess/search-path-from-envp", test_search_path_from_envp);
   g_test_add_func ("/gsubprocess/signal", test_signal);
 #endif
   g_test_add_func ("/gsubprocess/exit1", test_exit1);

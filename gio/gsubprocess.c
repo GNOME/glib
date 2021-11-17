@@ -61,7 +61,10 @@
  * As a matter of principle, #GSubprocess has no API that accepts
  * shell-style space-separated strings.  It will, however, match the
  * typical shell behaviour of searching the PATH for executables that do
- * not contain a directory separator in their name.
+ * not contain a directory separator in their name. By default, the `PATH`
+ * of the current process is used.  You can specify
+ * %G_SUBPROCESS_FLAGS_SEARCH_PATH_FROM_ENVP to use the `PATH` of the
+ * launcher environment instead.
  *
  * #GSubprocess attempts to have a very simple API for most uses (ie:
  * spawning a subprocess with arguments and support for most typical
@@ -380,7 +383,7 @@ initable_init (GInitable     *initable,
   /* argv0 has no '/' in it?  We better do a PATH lookup. */
   if (strchr (self->argv[0], G_DIR_SEPARATOR) == NULL)
     {
-      if (self->launcher && self->launcher->path_from_envp)
+      if (self->launcher && self->launcher->flags & G_SUBPROCESS_FLAGS_SEARCH_PATH_FROM_ENVP)
         spawn_flags |= G_SPAWN_SEARCH_PATH_FROM_ENVP;
       else
         spawn_flags |= G_SPAWN_SEARCH_PATH;
