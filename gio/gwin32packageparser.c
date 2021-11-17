@@ -96,7 +96,7 @@ static BOOL
 WIN32_FROM_HRESULT (HRESULT hresult,
                     DWORD  *win32_error_code)
 {
-  if ((hresult & 0xFFFF0000) == MAKE_HRESULT (SEVERITY_ERROR, FACILITY_WIN32, 0) ||
+  if ((hresult & (HRESULT) 0xFFFF0000) == MAKE_HRESULT (SEVERITY_ERROR, FACILITY_WIN32, 0) ||
       hresult == S_OK)
     {
       *win32_error_code = HRESULT_CODE (hresult);

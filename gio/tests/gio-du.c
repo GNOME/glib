@@ -79,7 +79,6 @@ main (int argc, char **argv)
 
 #ifdef G_OS_WIN32
   argv = g_win32_get_command_line ();
-  argc = g_strv_length (argv);
 #endif
 
   setlocale (LC_ALL, "");
