@@ -1296,68 +1296,93 @@ g_uri_is_valid (const gchar  *uri_string,
 }
 
 
-/* This does the "Remove Dot Segments" algorithm from section 5.2.4 of
- * RFC 3986, except that @path is modified in place.
+/* Implements the "Remove Dot Segments" algorithm from section 5.2.4 of
+ * RFC 3986.
  *
  * See https://tools.ietf.org/html/rfc3986#section-5.2.4
  */
 static void
 remove_dot_segments (gchar *path)
 {
-  gchar *p, *q;
+  /* The output can be written to the same buffer that the input
+   * is read from, as the output pointer is only ever increased
+   * when the input pointer is increased as well, and the input
+   * pointer is never decreased. */
+  gchar *input = path;
+  gchar *output = path;
 
   if (!*path)
     return;
 
-  /* Remove "./" where "." is a complete segment. */
-  for (p = path + 1; *p; )
+  while (*input)
     {
-      if (*(p - 1) == '/' &&
-          *p == '.' && *(p + 1) == '/')
-        memmove (p, p + 2, strlen (p + 2) + 1);
+      /*  A.  If the input buffer begins with a prefix of "../" or "./",
+       *      then remove that prefix from the input buffer; otherwise,
+       */
+      if (strncmp (input, "../", 3) == 0)
+        input += 3;
+      else if (strncmp (input, "./", 2) == 0)
+        input += 2;
+
+      /*  B.  if the input buffer begins with a prefix of "/./" or "/.",
+       *      where "." is a complete path segment, then replace that
+       *      prefix with "/" in the input buffer; otherwise,
+       */
+      else if (strncmp (input, "/./", 3) == 0)
+        input += 2;
+      else if (strcmp (input, "/.") == 0)
+        input[1] = '\0';
+
+      /*  C.  if the input buffer begins with a prefix of "/../" or "/..",
+       *      where ".." is a complete path segment, then replace that
+       *      prefix with "/" in the input buffer and remove the last
+       *      segment and its preceding "/" (if any) from the output
+       *      buffer; otherwise,
+       */
+      else if (strncmp (input, "/../", 4) == 0)
+        {
+          input += 3;
+          if (output > path)
+            {
+              do
+                {
+                  output--;
+                }
+              while (*output != '/' && output > path);
+            }
+        }
+      else if (strcmp (input, "/..") == 0)
+        {
+          input[1] = '\0';
+          if (output > path)
+            {
+              do
+                 {
+                   output--;
+                 }
+              while (*output != '/' && output > path);
+            }
+        }
+
+      /*  D.  if the input buffer consists only of "." or "..", then remove
+       *      that from the input buffer; otherwise,
+       */
+      else if (strcmp (input, "..") == 0 || strcmp (input, ".") == 0)
+        input[0] = '\0';
+
+      /*  E.  move the first path segment in the input buffer to the end of
+       *      the output buffer, including the initial "/" character (if
+       *      any) and any subsequent characters up to, but not including,
+       *      the next "/" character or the end of the input buffer.
+       */
       else
-        p++;
-    }
-  /* Remove "." at end. */
-  if (p > path + 2 &&
-      *(p - 1) == '.' && *(p - 2) == '/')
-    *(p - 1) = '\0';
-
-  /* Remove "<segment>/../" where <segment> != ".." */
-  for (p = path + 1; *p; )
-    {
-      if (!strncmp (p, "../", 3))
         {
-          p += 3;
-          continue;
+          *output++ = *input++;
+          while (*input && *input != '/')
+            *output++ = *input++;
         }
-      q = strchr (p + 1, '/');
-      if (!q)
-        break;
-      if (strncmp (q, "/../", 4) != 0)
-        {
-          p = q + 1;
-          continue;
-        }
-      memmove (p, q + 4, strlen (q + 4) + 1);
-      p = path + 1;
     }
-  /* Remove "<segment>/.." at end where <segment> != ".." */
-  q = strrchr (path, '/');
-  if (q && q != path && !strcmp (q, "/.."))
-    {
-      p = q - 1;
-      while (p > path && *p != '/')
-        p--;
-      if (strncmp (p, "/../", 4) != 0)
-        *(p + 1) = 0;
-    }
-
-  /* Remove extraneous initial "/.."s */
-  while (!strncmp (path, "/../", 4))
-    memmove (path, path + 3, strlen (path) - 2);
-  if (!strcmp (path, "/.."))
-    path[1] = '\0';
+  *output = '\0';
 }
 
 /**
