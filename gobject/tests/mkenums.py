@@ -247,7 +247,7 @@ file-tail
         value_num,
     ):
         """Assert that out (from runMkenumsWithHeader()) contains a single
-           enum and value matching the given arguments."""
+        enum and value matching the given arguments."""
         subs = dict(
             {
                 "enum_name_camel": enum_name_camel,
