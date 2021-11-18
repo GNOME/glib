@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 0\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2021-11-10 10:07+0000\n"
-"PO-Revision-Date: 2021-11-11 10:51+0100\n"
+"POT-Creation-Date: 2021-11-16 22:57+0000\n"
+"PO-Revision-Date: 2021-11-18 18:13+0100\n"
 "Last-Translator: gogo <trebelnik2@gmail.com>\n"
 "Language-Team: Croatian <lokalizacija@linux.hr>\n"
 "Language: hr\n"
@@ -1334,7 +1334,7 @@ msgstr "uređaj nema implementirano pokretanje"
 msgid "drive doesn’t implement stop"
 msgstr "uređaj nema implementirano zaustavljanje"
 
-#: gio/gdtlsconnection.c:1153 gio/gtlsconnection.c:920
+#: gio/gdtlsconnection.c:1170 gio/gtlsconnection.c:939
 msgid "TLS backend does not implement TLS binding retrieval"
 msgstr "TLS pozadinski program nema implementirano primanje TLS povezivanja"
 
@@ -4023,11 +4023,11 @@ msgstr "Nemoguće povezivanje sa %s: "
 msgid "Could not connect: "
 msgstr "Nemoguće povezivanje: "
 
-#: gio/gsocketclient.c:1162 gio/gsocketclient.c:1749
+#: gio/gsocketclient.c:1202 gio/gsocketclient.c:1793
 msgid "Proxying over a non-TCP connection is not supported."
 msgstr "Proxyiranje putem ne-TCP povezivanja nije podržano."
 
-#: gio/gsocketclient.c:1194 gio/gsocketclient.c:1778
+#: gio/gsocketclient.c:1234 gio/gsocketclient.c:1822
 #, c-format
 msgid "Proxy protocol “%s” is not supported."
 msgstr "Proxy protokol “%s” još nije podržan."
@@ -4745,62 +4745,62 @@ msgstr "Ned"
 #: glib/gdatetime.c:468
 msgctxt "full month name with day"
 msgid "January"
-msgstr "siječnja"
+msgstr "siječanj"
 
 #: glib/gdatetime.c:470
 msgctxt "full month name with day"
 msgid "February"
-msgstr "veljače"
+msgstr "veljača"
 
 #: glib/gdatetime.c:472
 msgctxt "full month name with day"
 msgid "March"
-msgstr "ožujka"
+msgstr "ožujak"
 
 #: glib/gdatetime.c:474
 msgctxt "full month name with day"
 msgid "April"
-msgstr "travnja"
+msgstr "travanj"
 
 #: glib/gdatetime.c:476
 msgctxt "full month name with day"
 msgid "May"
-msgstr "svibnja"
+msgstr "svibanj"
 
 #: glib/gdatetime.c:478
 msgctxt "full month name with day"
 msgid "June"
-msgstr "lipnja"
+msgstr "lipanj"
 
 #: glib/gdatetime.c:480
 msgctxt "full month name with day"
 msgid "July"
-msgstr "srpnja"
+msgstr "srpanj"
 
 #: glib/gdatetime.c:482
 msgctxt "full month name with day"
 msgid "August"
-msgstr "kolovoza"
+msgstr "kolovoz"
 
 #: glib/gdatetime.c:484
 msgctxt "full month name with day"
 msgid "September"
-msgstr "rujna"
+msgstr "rujan"
 
 #: glib/gdatetime.c:486
 msgctxt "full month name with day"
 msgid "October"
-msgstr "listopada"
+msgstr "listopad"
 
 #: glib/gdatetime.c:488
 msgctxt "full month name with day"
 msgid "November"
-msgstr "studenoga"
+msgstr "studeni"
 
 #: glib/gdatetime.c:490
 msgctxt "full month name with day"
 msgid "December"
-msgstr "prosinca"
+msgstr "prosinac"
 
 #. Translators: Some languages need different grammatical forms of
 #. * month names depending on whether they are standalone or in a full
