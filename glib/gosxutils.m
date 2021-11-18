@@ -21,6 +21,8 @@
 #include "gutils.h"
 #include "gstrfuncs.h"
 
+void load_user_special_dirs_macos (gchar **table);
+
 static gchar *
 find_folder (NSSearchPathDirectory type)
 {
