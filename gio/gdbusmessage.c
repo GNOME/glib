@@ -83,21 +83,36 @@ g_memory_buffer_is_byteswapped (GMemoryBuffer *mbuf)
 }
 
 static guchar
-g_memory_buffer_read_byte (GMemoryBuffer  *mbuf)
+g_memory_buffer_read_byte (GMemoryBuffer  *mbuf,
+                           GError        **error)
 {
+  g_return_val_if_fail (error == NULL || *error == NULL, 0);
+
   if (mbuf->pos >= mbuf->valid_len)
-    return 0;
+    {
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_INVALID_ARGUMENT,
+                   "Unexpected end of message while reading byte.");
+      return 0;
+    }
   return mbuf->data [mbuf->pos++];
 }
 
 static gint16
-g_memory_buffer_read_int16 (GMemoryBuffer  *mbuf)
+g_memory_buffer_read_int16 (GMemoryBuffer  *mbuf,
+                            GError        **error)
 {
   gint16 v;
-  
+
+  g_return_val_if_fail (error == NULL || *error == NULL, -1);
+
   if (mbuf->pos > mbuf->valid_len - 2)
     {
-      mbuf->pos = mbuf->valid_len;
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_INVALID_ARGUMENT,
+                   "Unexpected end of message while reading int16.");
       return 0;
     }
 
@@ -111,13 +126,19 @@ g_memory_buffer_read_int16 (GMemoryBuffer  *mbuf)
 }
 
 static guint16
-g_memory_buffer_read_uint16 (GMemoryBuffer  *mbuf)
+g_memory_buffer_read_uint16 (GMemoryBuffer  *mbuf,
+                             GError        **error)
 {
   guint16 v;
-  
+
+  g_return_val_if_fail (error == NULL || *error == NULL, 0);
+
   if (mbuf->pos > mbuf->valid_len - 2)
     {
-      mbuf->pos = mbuf->valid_len;
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_INVALID_ARGUMENT,
+                   "Unexpected end of message while reading uint16.");
       return 0;
     }
 
@@ -131,13 +152,19 @@ g_memory_buffer_read_uint16 (GMemoryBuffer  *mbuf)
 }
 
 static gint32
-g_memory_buffer_read_int32 (GMemoryBuffer  *mbuf)
+g_memory_buffer_read_int32 (GMemoryBuffer  *mbuf,
+                            GError        **error)
 {
   gint32 v;
-  
+
+  g_return_val_if_fail (error == NULL || *error == NULL, -1);
+
   if (mbuf->pos > mbuf->valid_len - 4)
     {
-      mbuf->pos = mbuf->valid_len;
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_INVALID_ARGUMENT,
+                   "Unexpected end of message while reading int32.");
       return 0;
     }
 
@@ -151,13 +178,19 @@ g_memory_buffer_read_int32 (GMemoryBuffer  *mbuf)
 }
 
 static guint32
-g_memory_buffer_read_uint32 (GMemoryBuffer  *mbuf)
+g_memory_buffer_read_uint32 (GMemoryBuffer  *mbuf,
+                             GError        **error)
 {
   guint32 v;
-  
+
+  g_return_val_if_fail (error == NULL || *error == NULL, 0);
+
   if (mbuf->pos > mbuf->valid_len - 4)
     {
-      mbuf->pos = mbuf->valid_len;
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_INVALID_ARGUMENT,
+                   "Unexpected end of message while reading uint32.");
       return 0;
     }
 
@@ -171,13 +204,19 @@ g_memory_buffer_read_uint32 (GMemoryBuffer  *mbuf)
 }
 
 static gint64
-g_memory_buffer_read_int64 (GMemoryBuffer  *mbuf)
+g_memory_buffer_read_int64 (GMemoryBuffer  *mbuf,
+                            GError        **error)
 {
   gint64 v;
-  
+
+  g_return_val_if_fail (error == NULL || *error == NULL, -1);
+
   if (mbuf->pos > mbuf->valid_len - 8)
     {
-      mbuf->pos = mbuf->valid_len;
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_INVALID_ARGUMENT,
+                   "Unexpected end of message while reading int64.");
       return 0;
     }
 
@@ -191,13 +230,19 @@ g_memory_buffer_read_int64 (GMemoryBuffer  *mbuf)
 }
 
 static guint64
-g_memory_buffer_read_uint64 (GMemoryBuffer  *mbuf)
+g_memory_buffer_read_uint64 (GMemoryBuffer  *mbuf,
+                             GError        **error)
 {
   guint64 v;
-  
+
+  g_return_val_if_fail (error == NULL || *error == NULL, 0);
+
   if (mbuf->pos > mbuf->valid_len - 8)
     {
-      mbuf->pos = mbuf->valid_len;
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_INVALID_ARGUMENT,
+                   "Unexpected end of message while reading uint64.");
       return 0;
     }
 
@@ -1500,7 +1545,9 @@ parse_value_from_blob (GMemoryBuffer       *buf,
       if (!just_align)
         {
           gboolean v;
-          v = g_memory_buffer_read_uint32 (buf);
+          v = g_memory_buffer_read_uint32 (buf, &local_error);
+          if (local_error)
+            goto fail;
           ret = g_variant_new_boolean (v);
         }
       break;
@@ -1509,7 +1556,9 @@ parse_value_from_blob (GMemoryBuffer       *buf,
       if (!just_align)
         {
           guchar v;
-          v = g_memory_buffer_read_byte (buf);
+          v = g_memory_buffer_read_byte (buf, &local_error);
+          if (local_error)
+            goto fail;
           ret = g_variant_new_byte (v);
         }
       break;
@@ -1519,7 +1568,9 @@ parse_value_from_blob (GMemoryBuffer       *buf,
       if (!just_align)
         {
           gint16 v;
-          v = g_memory_buffer_read_int16 (buf);
+          v = g_memory_buffer_read_int16 (buf, &local_error);
+          if (local_error)
+            goto fail;
           ret = g_variant_new_int16 (v);
         }
       break;
@@ -1529,7 +1580,9 @@ parse_value_from_blob (GMemoryBuffer       *buf,
       if (!just_align)
         {
           guint16 v;
-          v = g_memory_buffer_read_uint16 (buf);
+          v = g_memory_buffer_read_uint16 (buf, &local_error);
+          if (local_error)
+            goto fail;
           ret = g_variant_new_uint16 (v);
         }
       break;
@@ -1539,7 +1592,9 @@ parse_value_from_blob (GMemoryBuffer       *buf,
       if (!just_align)
         {
           gint32 v;
-          v = g_memory_buffer_read_int32 (buf);
+          v = g_memory_buffer_read_int32 (buf, &local_error);
+          if (local_error)
+            goto fail;
           ret = g_variant_new_int32 (v);
         }
       break;
@@ -1549,7 +1604,9 @@ parse_value_from_blob (GMemoryBuffer       *buf,
       if (!just_align)
         {
           guint32 v;
-          v = g_memory_buffer_read_uint32 (buf);
+          v = g_memory_buffer_read_uint32 (buf, &local_error);
+          if (local_error)
+            goto fail;
           ret = g_variant_new_uint32 (v);
         }
       break;
@@ -1559,7 +1616,9 @@ parse_value_from_blob (GMemoryBuffer       *buf,
       if (!just_align)
         {
           gint64 v;
-          v = g_memory_buffer_read_int64 (buf);
+          v = g_memory_buffer_read_int64 (buf, &local_error);
+          if (local_error)
+            goto fail;
           ret = g_variant_new_int64 (v);
         }
       break;
@@ -1569,7 +1628,9 @@ parse_value_from_blob (GMemoryBuffer       *buf,
       if (!just_align)
         {
           guint64 v;
-          v = g_memory_buffer_read_uint64 (buf);
+          v = g_memory_buffer_read_uint64 (buf, &local_error);
+          if (local_error)
+            goto fail;
           ret = g_variant_new_uint64 (v);
         }
       break;
@@ -1583,7 +1644,9 @@ parse_value_from_blob (GMemoryBuffer       *buf,
             gdouble v_double;
           } u;
           G_STATIC_ASSERT (sizeof (gdouble) == sizeof (guint64));
-          u.v_uint64 = g_memory_buffer_read_uint64 (buf);
+          u.v_uint64 = g_memory_buffer_read_uint64 (buf, &local_error);
+          if (local_error)
+            goto fail;
           ret = g_variant_new_double (u.v_double);
         }
       break;
@@ -1594,7 +1657,9 @@ parse_value_from_blob (GMemoryBuffer       *buf,
         {
           guint32 len;
           const gchar *v;
-          len = g_memory_buffer_read_uint32 (buf);
+          len = g_memory_buffer_read_uint32 (buf, &local_error);
+          if (local_error)
+            goto fail;
           v = read_string (buf, (gsize) len, &local_error);
           if (v == NULL)
             goto fail;
@@ -1608,7 +1673,9 @@ parse_value_from_blob (GMemoryBuffer       *buf,
         {
           guint32 len;
           const gchar *v;
-          len = g_memory_buffer_read_uint32 (buf);
+          len = g_memory_buffer_read_uint32 (buf, &local_error);
+          if (local_error)
+            goto fail;
           v = read_string (buf, (gsize) len, &local_error);
           if (v == NULL)
             goto fail;
@@ -1630,7 +1697,9 @@ parse_value_from_blob (GMemoryBuffer       *buf,
         {
           guchar len;
           const gchar *v;
-          len = g_memory_buffer_read_byte (buf);
+          len = g_memory_buffer_read_byte (buf, &local_error);
+          if (local_error)
+            goto fail;
           v = read_string (buf, (gsize) len, &local_error);
           if (v == NULL)
             goto fail;
@@ -1652,7 +1721,9 @@ parse_value_from_blob (GMemoryBuffer       *buf,
       if (!just_align)
         {
           gint32 v;
-          v = g_memory_buffer_read_int32 (buf);
+          v = g_memory_buffer_read_int32 (buf, &local_error);
+          if (local_error)
+            goto fail;
           ret = g_variant_new_handle (v);
         }
       break;
@@ -1672,7 +1743,9 @@ parse_value_from_blob (GMemoryBuffer       *buf,
           const GVariantType *element_type;
           guint fixed_size;
 
-          array_len = g_memory_buffer_read_uint32 (buf);
+          array_len = g_memory_buffer_read_uint32 (buf, &local_error);
+          if (local_error)
+            goto fail;
 
 #ifdef DEBUG_SERIALIZER
           is_leaf = FALSE;
@@ -1880,7 +1953,9 @@ parse_value_from_blob (GMemoryBuffer       *buf,
               GVariantType *variant_type;
               GVariant *value;
 
-              siglen = g_memory_buffer_read_byte (buf);
+              siglen = g_memory_buffer_read_byte (buf, &local_error);
+              if (local_error)
+                goto fail;
               sig = read_string (buf, (gsize) siglen, &local_error);
               if (sig == NULL)
                 goto fail;
@@ -2078,7 +2153,7 @@ g_dbus_message_new_from_blob (guchar                *blob,
                               GDBusCapabilityFlags   capabilities,
                               GError               **error)
 {
-  gboolean ret;
+  GError *local_error = NULL;
   GMemoryBuffer mbuf;
   GDBusMessage *message;
   guchar endianness;
@@ -2091,8 +2166,6 @@ g_dbus_message_new_from_blob (guchar                *blob,
 
   /* TODO: check against @capabilities */
 
-  ret = FALSE;
-
   g_return_val_if_fail (blob != NULL, NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
   g_return_val_if_fail (blob_len >= 12, NULL);
@@ -2103,7 +2176,10 @@ g_dbus_message_new_from_blob (guchar                *blob,
   mbuf.data = (gchar *)blob;
   mbuf.len = mbuf.valid_len = blob_len;
 
-  endianness = g_memory_buffer_read_byte (&mbuf);
+  endianness = g_memory_buffer_read_byte (&mbuf, &local_error);
+  if (local_error)
+    goto fail;
+
   switch (endianness)
     {
     case 'l':
@@ -2115,28 +2191,38 @@ g_dbus_message_new_from_blob (guchar                *blob,
       message->byte_order = G_DBUS_MESSAGE_BYTE_ORDER_BIG_ENDIAN;
       break;
     default:
-      g_set_error (error,
+      g_set_error (&local_error,
                    G_IO_ERROR,
                    G_IO_ERROR_INVALID_ARGUMENT,
                    _("Invalid endianness value. Expected 0x6c (“l”) or 0x42 (“B”) but found value 0x%02x"),
                    endianness);
-      goto out;
+      goto fail;
     }
 
-  message->type = g_memory_buffer_read_byte (&mbuf);
-  message->flags = g_memory_buffer_read_byte (&mbuf);
-  major_protocol_version = g_memory_buffer_read_byte (&mbuf);
+  message->type = g_memory_buffer_read_byte (&mbuf, &local_error);
+  if (local_error)
+    goto fail;
+  message->flags = g_memory_buffer_read_byte (&mbuf, &local_error);
+  if (local_error)
+    goto fail;
+  major_protocol_version = g_memory_buffer_read_byte (&mbuf, &local_error);
+  if (local_error)
+    goto fail;
   if (major_protocol_version != 1)
     {
-      g_set_error (error,
+      g_set_error (&local_error,
                    G_IO_ERROR,
                    G_IO_ERROR_INVALID_ARGUMENT,
                    _("Invalid major protocol version. Expected 1 but found %d"),
                    major_protocol_version);
-      goto out;
+      goto fail;
     }
-  message_body_len = g_memory_buffer_read_uint32 (&mbuf);
-  message->serial = g_memory_buffer_read_uint32 (&mbuf);
+  message_body_len = g_memory_buffer_read_uint32 (&mbuf, &local_error);
+  if (local_error)
+    goto fail;
+  message->serial = g_memory_buffer_read_uint32 (&mbuf, &local_error);
+  if (local_error)
+    goto fail;
 
 #ifdef DEBUG_SERIALIZER
   g_print ("Parsing blob (blob_len = 0x%04x bytes)\n", (gint) blob_len);
@@ -2156,9 +2242,9 @@ g_dbus_message_new_from_blob (guchar                *blob,
                                    G_DBUS_MAX_TYPE_DEPTH + 2 /* for the a{yv} */,
                                    FALSE,
                                    2,
-                                   error);
+                                   &local_error);
   if (headers == NULL)
-    goto out;
+    goto fail;
   g_variant_iter_init (&iter, headers);
   while ((item = g_variant_iter_next_value (&iter)) != NULL)
     {
@@ -2182,11 +2268,11 @@ g_dbus_message_new_from_blob (guchar                *blob,
 
       if (!g_variant_is_of_type (signature, G_VARIANT_TYPE_SIGNATURE))
         {
-          g_set_error_literal (error,
+          g_set_error_literal (&local_error,
                                G_IO_ERROR,
                                G_IO_ERROR_INVALID_ARGUMENT,
                                _("Signature header found but is not of type signature"));
-          goto out;
+          goto fail;
         }
 
       signature_str = g_variant_get_string (signature, &signature_str_len);
@@ -2194,12 +2280,12 @@ g_dbus_message_new_from_blob (guchar                *blob,
       /* signature but no body */
       if (message_body_len == 0 && signature_str_len > 0)
         {
-          g_set_error (error,
+          g_set_error (&local_error,
                        G_IO_ERROR,
                        G_IO_ERROR_INVALID_ARGUMENT,
                        _("Signature header with signature “%s” found but message body is empty"),
                        signature_str);
-          goto out;
+          goto fail;
         }
       else if (signature_str_len > 0)
         {
@@ -2209,13 +2295,13 @@ g_dbus_message_new_from_blob (guchar                *blob,
           if (!g_variant_is_signature (signature_str) ||
               !g_variant_type_string_is_valid (tupled_signature_str))
             {
-              g_set_error (error,
+              g_set_error (&local_error,
                            G_IO_ERROR,
                            G_IO_ERROR_INVALID_ARGUMENT,
                            _("Parsed value “%s” is not a valid D-Bus signature (for body)"),
                            signature_str);
               g_free (tupled_signature_str);
-              goto out;
+              goto fail;
             }
 
           variant_type = g_variant_type_new (tupled_signature_str);
@@ -2228,10 +2314,10 @@ g_dbus_message_new_from_blob (guchar                *blob,
                                                  G_DBUS_MAX_TYPE_DEPTH + 1 /* for the surrounding tuple */,
                                                  FALSE,
                                                  2,
-                                                 error);
+                                                 &local_error);
           g_variant_type_free (variant_type);
           if (message->body == NULL)
-            goto out;
+            goto fail;
         }
     }
   else
@@ -2240,7 +2326,7 @@ g_dbus_message_new_from_blob (guchar                *blob,
       if (message_body_len != 0)
         {
           /* G_GUINT32_FORMAT doesn't work with gettext, just use %u */
-          g_set_error (error,
+          g_set_error (&local_error,
                        G_IO_ERROR,
                        G_IO_ERROR_INVALID_ARGUMENT,
                        g_dngettext (GETTEXT_PACKAGE,
@@ -2248,29 +2334,22 @@ g_dbus_message_new_from_blob (guchar                *blob,
                                     "No signature header in message but the message body is %u bytes",
                                     message_body_len),
                        message_body_len);
-          goto out;
+          goto fail;
         }
     }
 
-  if (!validate_headers (message, error))
+  if (!validate_headers (message, &local_error))
     {
-      g_prefix_error (error, _("Cannot deserialize message: "));
-      goto out;
+      g_prefix_error (&local_error, _("Cannot deserialize message: "));
+      goto fail;
     }
 
-  ret = TRUE;
+  return message;
 
- out:
-  if (ret)
-    {
-      return message;
-    }
-  else
-    {
-      if (message != NULL)
-        g_object_unref (message);
-      return NULL;
-    }
+fail:
+  g_clear_object (&message);
+  g_propagate_error (error, local_error);
+  return NULL;
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
