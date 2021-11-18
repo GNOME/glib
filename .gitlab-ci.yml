@@ -436,7 +436,6 @@ macos:
     - pip3 install --user ninja
     - export PATH=/Users/gitlabrunner/Library/Python/3.7/bin:$PATH
   script:
-    # FIXME: Add --werror
     # FIXME: Use --wrap-mode=default so we download dependencies each time,
     # until the macOS runner is a VM where we can use a pre-made image which
     # already contains the dependencies. See:
@@ -444,6 +443,7 @@ macos:
     #  - https://gitlab.gnome.org/Infrastructure/Infrastructure/issues/225
     - meson ${MESON_COMMON_OPTIONS}
             --wrap-mode=default
+            --werror
             _build
     - ninja -C _build
     # FIXME: Multiple unit tests currently fails

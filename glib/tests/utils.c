@@ -553,7 +553,7 @@ test_os_info (void)
 {
   gchar *name;
   gchar *contents = NULL;
-#ifdef G_OS_UNIX
+#if defined (G_OS_UNIX) && !(defined (G_OS_WIN32) || defined (__APPLE__))
   struct utsname info;
 #endif
 

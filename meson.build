@@ -425,31 +425,40 @@ endforeach
 
 # Compiler flags
 if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
-  warning_c_args = [
+  warning_common_args = [
     '-Wduplicated-branches',
     '-Wimplicit-fallthrough',
     '-Wmisleading-indentation',
-    '-Wstrict-prototypes',
     '-Wunused',
     # Due to maintained deprecated code, we do not want to see unused parameters
     '-Wno-unused-parameter',
     # Due to pervasive use of things like GPOINTER_TO_UINT(), we do not support
     # building with -Wbad-function-cast.
-    '-Wno-bad-function-cast',
     '-Wno-cast-function-type',
     # Due to function casts through (void*) we cannot support -Wpedantic:
     # https://wiki.gnome.org/Projects/GLib/CompilerRequirements#Function_pointer_conversions.
     '-Wno-pedantic',
     # A zero-length format string shouldn't be considered an issue.
     '-Wno-format-zero-length',
-    '-Werror=declaration-after-statement',
+    # We explicitly require variadic macros
+    '-Wno-variadic-macros',
     '-Werror=format=2',
-    '-Werror=implicit-function-declaration',
     '-Werror=init-self',
     '-Werror=missing-include-dirs',
-    '-Werror=missing-prototypes',
     '-Werror=pointer-arith',
   ]
+
+  warning_c_args = warning_common_args + [
+    '-Wstrict-prototypes',
+    # Due to pervasive use of things like GPOINTER_TO_UINT(), we do not support
+    # building with -Wbad-function-cast.
+    '-Wno-bad-function-cast',
+    '-Werror=declaration-after-statement',
+    '-Werror=implicit-function-declaration',
+    '-Werror=missing-prototypes',
+  ]
+  warning_cxx_args = warning_common_args
+  warning_objc_args = warning_c_args
   warning_c_link_args = [
     '-Wl,-z,nodelete',
   ]
@@ -458,10 +467,13 @@ if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
   endif
 else
   warning_c_args = []
+  warning_cxx_args = []
+  warning_objc_args = []
   warning_c_link_args = []
 endif
 
 add_project_arguments(cc.get_supported_arguments(warning_c_args), language: 'c')
+add_project_arguments(cxx.get_supported_arguments(warning_cxx_args), language: 'cpp')
 
 # FIXME: We cannot build some of the GResource tests with -z nodelete, which
 # means we cannot use that flag in add_project_link_arguments(), and must add
@@ -754,6 +766,8 @@ glib_have_cocoa = false
 if host_system == 'darwin'
   add_languages('objc')
   objcc = meson.get_compiler('objc')
+
+  add_project_arguments(objcc.get_supported_arguments(warning_objc_args), language: 'objc')
 
   osx_ldflags += ['-Wl,-framework,CoreFoundation']
 
