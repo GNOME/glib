@@ -39,6 +39,7 @@ void g_console_win32_init (void);
 void g_clock_win32_init (void);
 void g_crash_handler_win32_init (void);
 void g_crash_handler_win32_deinit (void);
+gboolean _g_win32_call_rtl_version (OSVERSIONINFOEXW *info);
 extern HMODULE glib_dll;
 #endif
 
