@@ -1472,6 +1472,67 @@ test_message_parse_deep_body_nesting (void)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+static void
+test_message_parse_truncated (void)
+{
+  GDBusMessage *message = NULL;
+  GDBusMessage *message2 = NULL;
+  GVariantBuilder builder;
+  guchar *blob = NULL;
+  gsize size = 0;
+  GError *error = NULL;
+
+  g_test_summary ("Test that truncated messages are properly rejected.");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/2528");
+
+  message = g_dbus_message_new ();
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("(asbynqiuxtd)"));
+  g_variant_builder_open (&builder, G_VARIANT_TYPE ("as"));
+  g_variant_builder_add (&builder, "s", "fourtytwo");
+  g_variant_builder_close (&builder);
+  g_variant_builder_add (&builder, "b", TRUE);
+  g_variant_builder_add (&builder, "y", 42);
+  g_variant_builder_add (&builder, "n", 42);
+  g_variant_builder_add (&builder, "q", 42);
+  g_variant_builder_add (&builder, "i", 42);
+  g_variant_builder_add (&builder, "u", 42);
+  g_variant_builder_add (&builder, "x", 42);
+  g_variant_builder_add (&builder, "t", 42);
+  g_variant_builder_add (&builder, "d", (gdouble) 42);
+
+  g_dbus_message_set_message_type (message, G_DBUS_MESSAGE_TYPE_METHOD_CALL);
+  g_dbus_message_set_header (message, G_DBUS_MESSAGE_HEADER_FIELD_PATH,
+                             g_variant_new_object_path ("/foo/bar"));
+  g_dbus_message_set_header (message, G_DBUS_MESSAGE_HEADER_FIELD_MEMBER,
+                             g_variant_new_string ("Member"));
+  g_dbus_message_set_body (message, g_variant_builder_end (&builder));
+
+  blob = g_dbus_message_to_blob (message, &size, G_DBUS_CAPABILITY_FLAGS_NONE, &error);
+  g_assert_no_error (error);
+
+  g_clear_object (&message);
+
+  /* 12 bytes is the minimum size of the D-Bus message header. Anything less
+   * than that is rejected as a programming error by
+   * g_dbus_message_new_from_blob(). */
+  for (gsize i = 12; i < size; i++)
+    {
+      message2 = g_dbus_message_new_from_blob (blob, i, G_DBUS_CAPABILITY_FLAGS_NONE, &error);
+      g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
+      g_assert_null (message2);
+      g_clear_error (&error);
+    }
+
+  message2 = g_dbus_message_new_from_blob (blob, size, G_DBUS_CAPABILITY_FLAGS_NONE, &error);
+  g_assert_no_error (error);
+  g_assert_true (G_IS_DBUS_MESSAGE (message2));
+  g_clear_object (&message2);
+
+  g_free (blob);
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
 int
 main (int   argc,
       char *argv[])
@@ -1506,6 +1567,8 @@ main (int   argc,
                    test_message_parse_deep_header_nesting);
   g_test_add_func ("/gdbus/message-parse/deep-body-nesting",
                    test_message_parse_deep_body_nesting);
+  g_test_add_func ("/gdbus/message-parse/truncated",
+                   test_message_parse_truncated);
 
   return g_test_run();
 }
