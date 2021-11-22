@@ -511,14 +511,14 @@ g_tls_database_class_init (GTlsDatabaseClass *klass)
  *
  * Because TLS session context is not used, #GTlsDatabase may not
  * perform as many checks on the certificates as #GTlsConnection would.
- * For example, certificate constraints cannot be honored, and some
- * revocation checks cannot be performed. The best way to verify TLS
+ * For example, certificate constraints may not be honored, and
+ * revocation checks may not be performed. The best way to verify TLS
  * certificates used by a TLS connection is to let #GTlsConnection
  * handle the verification.
  *
  * The TLS backend may attempt to look up and add missing certificates
- * to the chain. Since GLib 2.70, this may involve HTTP requests to
- * download missing certificates.
+ * to the chain. This may involve HTTP requests to download missing
+ * certificates.
  *
  * This function can block. Use g_tls_database_verify_chain_async() to
  * perform the verification operation asynchronously.
