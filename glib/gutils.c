@@ -1383,10 +1383,10 @@ get_windows_version (gboolean with_windows)
     {
       gchar *win81_update;
 
-      g_string_append (version, "8.1");
-
-      if (!g_win32_check_windows_version (6, 3, 0, G_WIN32_OS_WORKSTATION))
-        g_string_append (version, " Server");
+      if (g_win32_check_windows_version (6, 3, 0, G_WIN32_OS_WORKSTATION))
+        g_string_append (version, "8.1");
+      else
+        g_string_append (version, "Server 2012 R2");
 
       win81_update = get_windows_8_1_update ();
 
@@ -1406,8 +1406,23 @@ get_windows_version (gboolean with_windows)
 
           g_string_append (version, versions[i].version);
 
-          if (!g_win32_check_windows_version (versions[i].major, versions[i].minor, versions[i].sp, G_WIN32_OS_WORKSTATION))
-            g_string_append (version, " Server");
+          if (g_win32_check_windows_version (versions[i].major, versions[i].minor, versions[i].sp, G_WIN32_OS_SERVER))
+            {
+              /*
+               * This condition should now always hold, since Windows
+               * 7+/Server 2008 R2+ is now required
+               */
+              if (versions[i].major == 6)
+                {
+                  g_string_append (version, "Server");
+                  if (versions[i].minor == 2)
+                    g_string_append (version, " 2012");
+                  else if (versions[i].minor == 1)
+                    g_string_append (version, " 2008 R2");
+                  else
+                    g_string_append (version, " 2008");
+                }
+            }
 
           g_string_append (version, versions[i].spversion);
         }
