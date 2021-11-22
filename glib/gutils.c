@@ -1298,14 +1298,35 @@ get_windows_version (gboolean with_windows)
   if (g_win32_check_windows_version (10, 0, 0, G_WIN32_OS_ANY))
     {
       gchar *win10_release;
+      gboolean is_win11 = FALSE;
 
-      g_string_append (version, "10");
+      if (!g_win32_check_windows_version (10, 0, 0, G_WIN32_OS_SERVER))
+        {
+          OSVERSIONINFOEXW osinfo;
 
-      if (!g_win32_check_windows_version (10, 0, 0, G_WIN32_OS_WORKSTATION))
-        g_string_append (version, " Server");
+          /*
+           * This always succeeds if we get here, since the
+           * g_win32_check_windows_version() already did this!
+           * We want the OSVERSIONINFOEXW here for more even
+           * fine-grained versioning items
+           */
+          _g_win32_call_rtl_version (&osinfo);
 
-      /* Windows 10 is identified by its release number, such as
-       * 1511, 1607, 1703, 1709, 1803, 1809 or 1903.
+          /*
+           * Windows 11 is actually Windows 10.0.22000+,
+           * so look at the build number
+           */
+          is_win11 = (osinfo.dwBuildNumber >= 22000);
+        }
+
+      if (is_win11)
+        g_string_append (version, "11");
+      else
+        g_string_append (version, "10");
+
+      /* Windows 10/Server 2016+ is identified by its ReleaseId or
+       * DisplayVersion (since 20H2), such as
+       * 1511, 1607, 1703, 1709, 1803, 1809 or 1903 etc.
        * The first version of Windows 10 has no release number.
        */
       win10_release = get_registry_str (HKEY_LOCAL_MACHINE,
@@ -1316,7 +1337,26 @@ get_windows_version (gboolean with_windows)
                                         L"ReleaseId");
 
       if (win10_release != NULL)
-        g_string_append_printf (version, " %s", win10_release);
+        {
+          if (g_strcmp0 (win10_release, "2009") != 0)
+            g_string_append_printf (version, " %s", win10_release);
+          else
+            {
+              g_free (win10_release);
+
+              win10_release = get_registry_str (HKEY_LOCAL_MACHINE,
+                                                L"SOFTWARE"
+                                                L"\\Microsoft"
+                                                L"\\Windows NT"
+                                                L"\\CurrentVersion",
+                                                L"DisplayVersion");
+
+              if (win10_release != NULL)
+                g_string_append_printf (version, " %s", win10_release);
+              else
+                g_string_append_printf (version, " 2009");
+            }
+        }
 
       g_free (win10_release);
     }
