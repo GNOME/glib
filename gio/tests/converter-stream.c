@@ -310,9 +310,9 @@ test_expander (void)
 			      G_CONVERTER_INPUT_AT_END,
 			      &n_read, &n_written, NULL);
 
-  g_assert (cres == G_CONVERTER_FINISHED);
-  g_assert (n_read == 11);
-  g_assert (n_written == 41030);
+  g_assert_cmpint (cres, ==, G_CONVERTER_FINISHED);
+  g_assert_cmpuint (n_read, ==, 11);
+  g_assert_cmpuint (n_written, ==, 41030);
 
   g_converter_reset (expander);
 
@@ -320,9 +320,9 @@ test_expander (void)
 					     sizeof (unexpanded_data),
 					     NULL);
   cstream = g_converter_input_stream_new (mem, expander);
-  g_assert (g_converter_input_stream_get_converter (G_CONVERTER_INPUT_STREAM (cstream)) == expander);
+  g_assert_true (g_converter_input_stream_get_converter (G_CONVERTER_INPUT_STREAM (cstream)) == expander);
   g_object_get (cstream, "converter", &converter, NULL);
-  g_assert (converter == expander);
+  g_assert_true (converter == expander);
   g_object_unref (converter);
   g_object_unref (mem);
 
@@ -334,7 +334,7 @@ test_expander (void)
       res = g_input_stream_read (cstream,
 				 ptr, 1,
 				 NULL, &error);
-      g_assert (res != -1);
+      g_assert_cmpint (res, !=, -1);
       if (res == 0)
 	break;
       ptr += res;
@@ -347,9 +347,9 @@ test_expander (void)
 
   mem_out = g_memory_output_stream_new (NULL, 0, g_realloc, g_free);
   cstream_out = g_converter_output_stream_new (mem_out, expander);
-  g_assert (g_converter_output_stream_get_converter (G_CONVERTER_OUTPUT_STREAM (cstream_out)) == expander);
+  g_assert_true (g_converter_output_stream_get_converter (G_CONVERTER_OUTPUT_STREAM (cstream_out)) == expander);
   g_object_get (cstream_out, "converter", &converter, NULL);
-  g_assert (converter == expander);
+  g_assert_true (converter == expander);
   g_object_unref (converter);
   g_object_unref (mem_out);
 
@@ -359,13 +359,13 @@ test_expander (void)
       res = g_output_stream_write (cstream_out,
 				   unexpanded_data + i, 1,
 				   NULL, &error);
-      g_assert (res != -1);
+      g_assert_cmpint (res, !=, -1);
       if (res == 0)
 	{
-	  g_assert (i == sizeof(unexpanded_data) -1);
+	  g_assert_cmpuint (i, ==, sizeof(unexpanded_data) -1);
 	  break;
 	}
-      g_assert (res == 1);
+      g_assert_cmpint (res, ==, 1);
     }
 
   g_output_stream_close (cstream_out, NULL, NULL);
@@ -402,9 +402,9 @@ test_compressor (void)
 			      expanded, 100*1000,
 			      G_CONVERTER_INPUT_AT_END,
 			      &n_read, &expanded_size, NULL);
-  g_assert (cres == G_CONVERTER_FINISHED);
-  g_assert (n_read == 11);
-  g_assert (expanded_size == 41030);
+  g_assert_cmpint (cres, ==, G_CONVERTER_FINISHED);
+  g_assert_cmpuint (n_read, ==, 11);
+  g_assert_cmpuint (expanded_size, ==, 41030);
 
   compressor = g_compressor_converter_new ();
 
@@ -424,7 +424,7 @@ test_compressor (void)
       res = g_input_stream_read (cstream,
 				 ptr, 1,
 				 NULL, &error);
-      g_assert (res != -1);
+      g_assert_cmpint (res, !=, -1);
       if (res == 0)
 	break;
       ptr += res;
@@ -448,13 +448,13 @@ test_compressor (void)
       res = g_output_stream_write (cstream_out,
 				   expanded + i, 1,
 				   NULL, &error);
-      g_assert (res != -1);
+      g_assert_cmpint (res, !=, -1);
       if (res == 0)
 	{
-	  g_assert (i == expanded_size -1);
+	  g_assert_cmpuint (i, ==, expanded_size -1);
 	  break;
 	}
-      g_assert (res == 1);
+      g_assert_cmpint (res, ==, 1);
     }
 
   g_output_stream_close (cstream_out, NULL, NULL);
@@ -485,15 +485,15 @@ test_compressor (void)
       res = g_input_stream_read (cstream,
 				 ptr, 1,
 				 NULL, &error);
-      g_assert (res != -1);
+      g_assert_cmpint (res, !=, -1);
       if (res == 0)
 	break;
       ptr += res;
       total_read += res;
     }
 
-  g_assert (total_read == 1);
-  g_assert (*converted == 5);
+  g_assert_cmpuint (total_read, ==, 1);
+  g_assert_cmpuint (*converted, ==, 5);
 
   g_object_unref (cstream);
 
@@ -511,16 +511,16 @@ test_compressor (void)
       res = g_input_stream_read (cstream,
 				 ptr, 1,
 				 NULL, &error);
-      g_assert (res != -1);
+      g_assert_cmpint (res, !=, -1);
       if (res == 0)
 	break;
       ptr += res;
       total_read += res;
     }
 
-  g_assert (total_read == 2);
-  g_assert (converted[0] == 5);
-  g_assert (converted[1] == 5);
+  g_assert_cmpuint (total_read, ==, 2);
+  g_assert_cmpuint (converted[0], ==, 5);
+  g_assert_cmpuint (converted[1], ==, 5);
 
   g_object_unref (cstream);
 
@@ -547,13 +547,13 @@ test_compressor (void)
 	  break;
 	}
 
-      g_assert (res != 0);
+      g_assert_cmpint (res, !=, 0);
       ptr += res;
       total_read += res;
     }
 
-  g_assert (total_read == 1);
-  g_assert (converted[0] == 5);
+  g_assert_cmpuint (total_read, ==, 1);
+  g_assert_cmpuint (converted[0], ==, 5);
 
   g_object_unref (cstream);
 
@@ -710,7 +710,7 @@ test_converter_leftover (void)
 				 converted + total_read,
 				 LEFTOVER_BUFSIZE - total_read,
 				 NULL, &error);
-      g_assert (res >= 0);
+      g_assert_cmpint (res, >=, 0);
       if (res == 0)
 	break;
       total_read += res;
@@ -763,10 +763,10 @@ test_roundtrip (gconstpointer data)
   g_file_info_set_name (info, "foo");
   g_object_set (compressor, "file-info", info, NULL);
   info2 = g_zlib_compressor_get_file_info (G_ZLIB_COMPRESSOR (compressor));
-  g_assert (info == info2);
+  g_assert_true (info == info2);
   g_object_unref (info);
   costream1 = g_converter_output_stream_new (ostream1, compressor);
-  g_assert (g_converter_output_stream_get_converter (G_CONVERTER_OUTPUT_STREAM (costream1)) == compressor);
+  g_assert_true (g_converter_output_stream_get_converter (G_CONVERTER_OUTPUT_STREAM (costream1)) == compressor);
 
   g_output_stream_splice (costream1, istream0, 0, NULL, &error);
   g_assert_no_error (error);
@@ -829,7 +829,7 @@ test_charset (gconstpointer data)
 
   conv = (GConverter *)g_charset_converter_new (test->charset_out, test->charset_in, NULL);
   g_object_get (conv, "use-fallback", &fallback, NULL);
-  g_assert (!fallback);
+  g_assert_false (fallback);
 
   in = g_memory_input_stream_new_from_data (test->text_in, -1, NULL);
   in2 = g_converter_input_stream_new (in, conv);
@@ -862,7 +862,7 @@ test_charset (gconstpointer data)
 
   g_converter_reset (conv);
 
-  g_assert (!g_charset_converter_get_use_fallback (G_CHARSET_CONVERTER (conv)));
+  g_assert_false (g_charset_converter_get_use_fallback (G_CHARSET_CONVERTER (conv)));
   g_charset_converter_set_use_fallback (G_CHARSET_CONVERTER (conv), TRUE);
 
   in = g_memory_input_stream_new_from_data (test->text_in, -1, NULL);
@@ -981,9 +981,9 @@ test_converter_pollable (void)
 			      expanded, 100*1000,
 			      G_CONVERTER_INPUT_AT_END,
 			      &n_read, &expanded_size, NULL);
-  g_assert (cres == G_CONVERTER_FINISHED);
-  g_assert (n_read == 11);
-  g_assert (expanded_size == 41030);
+  g_assert_cmpint (cres, ==, G_CONVERTER_FINISHED);
+  g_assert_cmpuint (n_read, ==, 11);
+  g_assert_cmpuint (expanded_size, ==, 41030);
   expanded_end = expanded + expanded_size;
 
   make_socketpair (&left, &right);
@@ -995,7 +995,7 @@ test_converter_pollable (void)
   cstream = g_converter_input_stream_new (g_io_stream_get_input_stream (left),
 					  compressor);
   pollable_in = G_POLLABLE_INPUT_STREAM (cstream);
-  g_assert (g_pollable_input_stream_can_poll (pollable_in));
+  g_assert_true (g_pollable_input_stream_can_poll (pollable_in));
 
   socket_out = g_io_stream_get_output_stream (right);
 
@@ -1071,8 +1071,8 @@ test_converter_pollable (void)
   cstream_out = g_converter_output_stream_new (mem_out, compressor);
   g_object_unref (mem_out);
   pollable_out = G_POLLABLE_OUTPUT_STREAM (cstream_out);
-  g_assert (g_pollable_output_stream_can_poll (pollable_out));
-  g_assert (g_pollable_output_stream_is_writable (pollable_out));
+  g_assert_true (g_pollable_output_stream_can_poll (pollable_out));
+  g_assert_true (g_pollable_output_stream_is_writable (pollable_out));
 
   for (i = 0; i < expanded_size; i++)
     {
@@ -1080,13 +1080,13 @@ test_converter_pollable (void)
       res = g_pollable_output_stream_write_nonblocking (pollable_out,
 							expanded + i, 1,
 							NULL, &error);
-      g_assert (res != -1);
+      g_assert_cmpint (res, !=, -1);
       if (res == 0)
 	{
-	  g_assert (i == expanded_size -1);
+	  g_assert_cmpuint (i, ==, expanded_size -1);
 	  break;
 	}
-      g_assert (res == 1);
+      g_assert_cmpint (res, ==, 1);
     }
 
   g_output_stream_close (cstream_out, NULL, NULL);
@@ -1127,7 +1127,7 @@ test_truncation (gconstpointer data)
   ostream1 = g_memory_output_stream_new (NULL, 0, g_realloc, g_free);
   compressor = G_CONVERTER (g_zlib_compressor_new (test->format, -1));
   costream1 = g_converter_output_stream_new (ostream1, compressor);
-  g_assert (g_converter_output_stream_get_converter (G_CONVERTER_OUTPUT_STREAM (costream1)) == compressor);
+  g_assert_true (g_converter_output_stream_get_converter (G_CONVERTER_OUTPUT_STREAM (costream1)) == compressor);
 
   g_output_stream_splice (costream1, istream0, 0, NULL, &error);
   g_assert_no_error (error);
