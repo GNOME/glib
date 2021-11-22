@@ -55,7 +55,7 @@ class TestCodegen(unittest.TestCase):
     cwd = ""
 
     def setUp(self):
-        self.timeout_seconds = 10  # seconds per test
+        self.timeout_seconds = 100  # seconds per test
         self.tmpdir = tempfile.TemporaryDirectory()
         self.cwd = os.getcwd()
         os.chdir(self.tmpdir.name)
