@@ -1294,18 +1294,58 @@ static gchar *
 get_windows_version (gboolean with_windows)
 {
   GString *version = g_string_new (NULL);
+  gboolean is_win_server = FALSE;
 
   if (g_win32_check_windows_version (10, 0, 0, G_WIN32_OS_ANY))
     {
       gchar *win10_release;
+      gboolean is_win11 = FALSE;
+      OSVERSIONINFOEXW osinfo;
 
-      g_string_append (version, "10");
+      /* Are we on Windows 2016/2019/2022 Server? */
+      is_win_server = g_win32_check_windows_version (10, 0, 0, G_WIN32_OS_SERVER);
 
-      if (!g_win32_check_windows_version (10, 0, 0, G_WIN32_OS_WORKSTATION))
-        g_string_append (version, " Server");
+      /*
+       * This always succeeds if we get here, since the
+       * g_win32_check_windows_version() already did this!
+       * We want the OSVERSIONINFOEXW here for more even
+       * fine-grained versioning items
+       */
+      _g_win32_call_rtl_version (&osinfo);
 
-      /* Windows 10 is identified by its release number, such as
-       * 1511, 1607, 1703, 1709, 1803, 1809 or 1903.
+      if (!is_win_server)
+        {
+          /*
+           * Windows 11 is actually Windows 10.0.22000+,
+           * so look at the build number
+           */
+          is_win11 = (osinfo.dwBuildNumber >= 22000);
+        }
+      else
+        {
+          /*
+           * Windows 2022 Server is actually Windows 10.0.20348+,
+           * Windows 2019 Server is actually Windows 10.0.17763+,
+           * Windows 2016 Server is actually Windows 10.0.14393+,
+           * so look at the build number
+           */
+          g_string_append (version, "Server");
+          if (osinfo.dwBuildNumber >= 20348)
+            g_string_append (version, " 2022");
+          else if (osinfo.dwBuildNumber >= 17763)
+            g_string_append (version, " 2019");
+          else
+            g_string_append (version, " 2016");
+        }
+
+      if (is_win11)
+        g_string_append (version, "11");
+      else if (!is_win_server)
+        g_string_append (version, "10");
+
+      /* Windows 10/Server 2016+ is identified by its ReleaseId or
+       * DisplayVersion (since 20H2), such as
+       * 1511, 1607, 1703, 1709, 1803, 1809 or 1903 etc.
        * The first version of Windows 10 has no release number.
        */
       win10_release = get_registry_str (HKEY_LOCAL_MACHINE,
@@ -1316,7 +1356,26 @@ get_windows_version (gboolean with_windows)
                                         L"ReleaseId");
 
       if (win10_release != NULL)
-        g_string_append_printf (version, " %s", win10_release);
+        {
+          if (g_strcmp0 (win10_release, "2009") != 0)
+            g_string_append_printf (version, " %s", win10_release);
+          else
+            {
+              g_free (win10_release);
+
+              win10_release = get_registry_str (HKEY_LOCAL_MACHINE,
+                                                L"SOFTWARE"
+                                                L"\\Microsoft"
+                                                L"\\Windows NT"
+                                                L"\\CurrentVersion",
+                                                L"DisplayVersion");
+
+              if (win10_release != NULL)
+                g_string_append_printf (version, " %s", win10_release);
+              else
+                g_string_append_printf (version, " 2009");
+            }
+        }
 
       g_free (win10_release);
     }
@@ -1324,10 +1383,10 @@ get_windows_version (gboolean with_windows)
     {
       gchar *win81_update;
 
-      g_string_append (version, "8.1");
-
-      if (!g_win32_check_windows_version (6, 3, 0, G_WIN32_OS_WORKSTATION))
-        g_string_append (version, " Server");
+      if (g_win32_check_windows_version (6, 3, 0, G_WIN32_OS_WORKSTATION))
+        g_string_append (version, "8.1");
+      else
+        g_string_append (version, "Server 2012 R2");
 
       win81_update = get_windows_8_1_update ();
 
@@ -1347,8 +1406,23 @@ get_windows_version (gboolean with_windows)
 
           g_string_append (version, versions[i].version);
 
-          if (!g_win32_check_windows_version (versions[i].major, versions[i].minor, versions[i].sp, G_WIN32_OS_WORKSTATION))
-            g_string_append (version, " Server");
+          if (g_win32_check_windows_version (versions[i].major, versions[i].minor, versions[i].sp, G_WIN32_OS_SERVER))
+            {
+              /*
+               * This condition should now always hold, since Windows
+               * 7+/Server 2008 R2+ is now required
+               */
+              if (versions[i].major == 6)
+                {
+                  g_string_append (version, "Server");
+                  if (versions[i].minor == 2)
+                    g_string_append (version, " 2012");
+                  else if (versions[i].minor == 1)
+                    g_string_append (version, " 2008 R2");
+                  else
+                    g_string_append (version, " 2008");
+                }
+            }
 
           g_string_append (version, versions[i].spversion);
         }
