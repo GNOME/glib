@@ -64,7 +64,8 @@ static guint signals[LAST_SIGNAL] = { 0 };
 
 struct _GResolverPrivate {
 #ifdef G_OS_UNIX
-  time_t resolv_conf_timestamp;
+  GMutex mutex;
+  time_t resolv_conf_timestamp;  /* protected by @mutex */
 #else
   int dummy;
 #endif
@@ -149,8 +150,24 @@ g_resolver_real_lookup_service_finish (GResolver            *resolver,
 }
 
 static void
+g_resolver_finalize (GObject *object)
+{
+#ifdef G_OS_UNIX
+  GResolver *resolver = G_RESOLVER (object);
+
+  g_mutex_clear (&resolver->priv->mutex);
+#endif
+
+  G_OBJECT_CLASS (g_resolver_parent_class)->finalize (object);
+}
+
+static void
 g_resolver_class_init (GResolverClass *resolver_class)
 {
+  GObjectClass *object_class = G_OBJECT_CLASS (resolver_class);
+
+  object_class->finalize = g_resolver_finalize;
+
   /* Automatically pass these over to the lookup_records methods */
   resolver_class->lookup_service = g_resolver_real_lookup_service;
   resolver_class->lookup_service_async = g_resolver_real_lookup_service_async;
@@ -185,6 +202,8 @@ g_resolver_init (GResolver *resolver)
 #ifdef G_OS_UNIX
   if (stat (_PATH_RESCONF, &st) == 0)
     resolver->priv->resolv_conf_timestamp = st.st_mtime;
+
+  g_mutex_init (&resolver->priv->mutex);
 #endif
 }
 
@@ -250,11 +269,15 @@ maybe_emit_reload (GResolver *resolver)
 
   if (stat (_PATH_RESCONF, &st) == 0)
     {
+      g_mutex_lock (&resolver->priv->mutex);
       if (st.st_mtime != resolver->priv->resolv_conf_timestamp)
         {
           resolver->priv->resolv_conf_timestamp = st.st_mtime;
+          g_mutex_unlock (&resolver->priv->mutex);
           g_signal_emit (resolver, signals[RELOAD], 0);
         }
+      else
+        g_mutex_unlock (&resolver->priv->mutex);
     }
 #endif
 }
@@ -1202,15 +1225,21 @@ g_resolver_lookup_records_finish (GResolver     *resolver,
 guint64
 g_resolver_get_serial (GResolver *resolver)
 {
+  guint64 result;
+
   g_return_val_if_fail (G_IS_RESOLVER (resolver), 0);
 
   maybe_emit_reload (resolver);
 
 #ifdef G_OS_UNIX
-  return (guint64) resolver->priv->resolv_conf_timestamp;
+  g_mutex_lock (&resolver->priv->mutex);
+  result = resolver->priv->resolv_conf_timestamp;
+  g_mutex_unlock (&resolver->priv->mutex);
 #else
-  return 1;
+  result = 1;
 #endif
+
+  return result;
 }
 
 /**
