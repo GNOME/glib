@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 0\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2021-11-16 22:57+0000\n"
-"PO-Revision-Date: 2021-11-18 18:13+0100\n"
+"POT-Creation-Date: 2021-11-22 13:59+0000\n"
+"PO-Revision-Date: 2021-11-22 17:16+0100\n"
 "Last-Translator: gogo <trebelnik2@gmail.com>\n"
 "Language-Team: Croatian <lokalizacija@linux.hr>\n"
 "Language: hr\n"
@@ -39,7 +39,7 @@ msgid "Replace the running instance"
 msgstr "Zamijeni pokrenuti primjerak"
 
 #: gio/gapplication-tool.c:45 gio/gapplication-tool.c:46 gio/gio-tool.c:227
-#: gio/gresource-tool.c:494 gio/gsettings-tool.c:572
+#: gio/gresource-tool.c:494 gio/gsettings-tool.c:584
 msgid "Print help"
 msgstr "Prikaži pomoć"
 
@@ -51,7 +51,7 @@ msgstr "[NAREDBA]"
 msgid "Print version"
 msgstr "Prikaži inačicu"
 
-#: gio/gapplication-tool.c:50 gio/gsettings-tool.c:578
+#: gio/gapplication-tool.c:50 gio/gsettings-tool.c:590
 msgid "Print version information and exit"
 msgstr "Prikaži informaciju inačice i izađi"
 
@@ -141,7 +141,7 @@ msgstr "PARAMETAR"
 msgid "Optional parameter to the action invocation, in GVariant format"
 msgstr "Neobavezni parametri za pokretanje radnje u GVariant formatu"
 
-#: gio/gapplication-tool.c:98 gio/gresource-tool.c:532 gio/gsettings-tool.c:664
+#: gio/gapplication-tool.c:98 gio/gresource-tool.c:532 gio/gsettings-tool.c:676
 #, c-format
 msgid ""
 "Unknown command %s\n"
@@ -155,7 +155,7 @@ msgid "Usage:\n"
 msgstr "Upotreba:\n"
 
 #: gio/gapplication-tool.c:116 gio/gresource-tool.c:557
-#: gio/gsettings-tool.c:699
+#: gio/gsettings-tool.c:711
 msgid "Arguments:\n"
 msgstr "Argumenti:\n"
 
@@ -300,7 +300,7 @@ msgstr "Nedovoljno prostora u odredištu"
 #: gio/gcharsetconverter.c:342 gio/gdatainputstream.c:848
 #: gio/gdatainputstream.c:1266 glib/gconvert.c:449 glib/gconvert.c:879
 #: glib/giochannel.c:1573 glib/giochannel.c:1615 glib/giochannel.c:2470
-#: glib/gutf8.c:875 glib/gutf8.c:1329
+#: glib/gutf8.c:890 glib/gutf8.c:1344
 msgid "Invalid byte sequence in conversion input"
 msgstr "Neispravan niz bajta na ulazu pretvorbe"
 
@@ -1021,13 +1021,13 @@ msgstr ""
 "Koristite “%s NAREDBA --help” za dobivanje pomoći pojedine naredbe.\n"
 
 #: gio/gdbus-tool.c:201 gio/gdbus-tool.c:273 gio/gdbus-tool.c:345
-#: gio/gdbus-tool.c:369 gio/gdbus-tool.c:859 gio/gdbus-tool.c:1236
-#: gio/gdbus-tool.c:1724
+#: gio/gdbus-tool.c:369 gio/gdbus-tool.c:859 gio/gdbus-tool.c:1244
+#: gio/gdbus-tool.c:1732
 #, c-format
 msgid "Error: %s\n"
 msgstr "Greška: %s\n"
 
-#: gio/gdbus-tool.c:212 gio/gdbus-tool.c:286 gio/gdbus-tool.c:1740
+#: gio/gdbus-tool.c:212 gio/gdbus-tool.c:286 gio/gdbus-tool.c:1748
 #, c-format
 msgid "Error parsing introspection XML: %s\n"
 msgstr "Greška preispitivanja XML-a: %s\n"
@@ -1037,8 +1037,8 @@ msgstr "Greška preispitivanja XML-a: %s\n"
 msgid "Error: %s is not a valid name\n"
 msgstr "Greška: %s nije valjani naziv\n"
 
-#: gio/gdbus-tool.c:255 gio/gdbus-tool.c:745 gio/gdbus-tool.c:1060
-#: gio/gdbus-tool.c:1890 gio/gdbus-tool.c:2130
+#: gio/gdbus-tool.c:255 gio/gdbus-tool.c:745 gio/gdbus-tool.c:1063
+#: gio/gdbus-tool.c:1898 gio/gdbus-tool.c:2138
 #, c-format
 msgid "Error: %s is not a valid object path\n"
 msgstr "Greška: %s nije valjana putanja objekta\n"
@@ -1104,8 +1104,8 @@ msgstr "Naziv signala i sučelja"
 msgid "Emit a signal."
 msgstr "Emitiraj signal."
 
-#: gio/gdbus-tool.c:683 gio/gdbus-tool.c:997 gio/gdbus-tool.c:1827
-#: gio/gdbus-tool.c:2059 gio/gdbus-tool.c:2279
+#: gio/gdbus-tool.c:683 gio/gdbus-tool.c:1000 gio/gdbus-tool.c:1835
+#: gio/gdbus-tool.c:2067 gio/gdbus-tool.c:2287
 #, c-format
 msgid "Error connecting: %s\n"
 msgstr "Greška povezivanja: %s\n"
@@ -1115,7 +1115,7 @@ msgstr "Greška povezivanja: %s\n"
 msgid "Error: %s is not a valid unique bus name.\n"
 msgstr "Greška: %s nije valjan jedinstven naziv sabirnice.\n"
 
-#: gio/gdbus-tool.c:722 gio/gdbus-tool.c:1040 gio/gdbus-tool.c:1870
+#: gio/gdbus-tool.c:722 gio/gdbus-tool.c:1043 gio/gdbus-tool.c:1878
 msgid "Error: Object path is not specified\n"
 msgstr "Greška: Putanja objekta nije navedena\n"
 
@@ -1139,7 +1139,7 @@ msgid "Error: %s is not a valid member name\n"
 msgstr "Greška: %s nije valjani naziv člana\n"
 
 #. Use the original non-"parse-me-harder" error
-#: gio/gdbus-tool.c:834 gio/gdbus-tool.c:1172
+#: gio/gdbus-tool.c:834 gio/gdbus-tool.c:1175
 #, c-format
 msgid "Error parsing parameter %d: %s\n"
 msgstr "Greška obrade parametra %d: %s\n"
@@ -1149,100 +1149,104 @@ msgstr "Greška obrade parametra %d: %s\n"
 msgid "Error flushing connection: %s\n"
 msgstr "Greška pražnjenja povezivanja: %s\n"
 
-#: gio/gdbus-tool.c:893
+#: gio/gdbus-tool.c:894
 msgid "Destination name to invoke method on"
 msgstr "Naziv odredišta za poziv načina"
 
-#: gio/gdbus-tool.c:894
+#: gio/gdbus-tool.c:895
 msgid "Object path to invoke method on"
 msgstr "Putanja objekta za poziv načina"
 
-#: gio/gdbus-tool.c:895
+#: gio/gdbus-tool.c:896
 msgid "Method and interface name"
 msgstr "Naziv načina i sučelja"
 
-#: gio/gdbus-tool.c:896
+#: gio/gdbus-tool.c:897
 msgid "Timeout in seconds"
 msgstr "Vrijeme čekanja u sekundama"
 
-#: gio/gdbus-tool.c:942
+#: gio/gdbus-tool.c:898
+msgid "Allow interactive authorization"
+msgstr "Dopusti interaktivnu ovjeru"
+
+#: gio/gdbus-tool.c:945
 msgid "Invoke a method on a remote object."
 msgstr "Pozovi način na udaljenom objektu."
 
-#: gio/gdbus-tool.c:1014 gio/gdbus-tool.c:1844 gio/gdbus-tool.c:2084
+#: gio/gdbus-tool.c:1017 gio/gdbus-tool.c:1852 gio/gdbus-tool.c:2092
 msgid "Error: Destination is not specified\n"
 msgstr "Greška: Odredište nije navedeno\n"
 
-#: gio/gdbus-tool.c:1025 gio/gdbus-tool.c:1861 gio/gdbus-tool.c:2095
+#: gio/gdbus-tool.c:1028 gio/gdbus-tool.c:1869 gio/gdbus-tool.c:2103
 #, c-format
 msgid "Error: %s is not a valid bus name\n"
 msgstr "Greška: %s nije valjan naziv sabirnice\n"
 
-#: gio/gdbus-tool.c:1075
+#: gio/gdbus-tool.c:1078
 msgid "Error: Method name is not specified\n"
 msgstr "Greška: Naziv načina nije naveden\n"
 
-#: gio/gdbus-tool.c:1086
+#: gio/gdbus-tool.c:1089
 #, c-format
 msgid "Error: Method name “%s” is invalid\n"
 msgstr "Greška: Naziv načina “%s” je nevaljan\n"
 
-#: gio/gdbus-tool.c:1164
+#: gio/gdbus-tool.c:1167
 #, c-format
 msgid "Error parsing parameter %d of type “%s”: %s\n"
 msgstr "Greška obrade parametra %d vrste “%s”: %s\n"
 
-#: gio/gdbus-tool.c:1190
+#: gio/gdbus-tool.c:1193
 #, c-format
 msgid "Error adding handle %d: %s\n"
 msgstr "Greška dodavanja rukovanja %d: %s\n"
 
-#: gio/gdbus-tool.c:1686
+#: gio/gdbus-tool.c:1694
 msgid "Destination name to introspect"
 msgstr "Naziv odredišta za preispitivanje"
 
-#: gio/gdbus-tool.c:1687
+#: gio/gdbus-tool.c:1695
 msgid "Object path to introspect"
 msgstr "Putanja objekta za preispitivanje"
 
-#: gio/gdbus-tool.c:1688
+#: gio/gdbus-tool.c:1696
 msgid "Print XML"
 msgstr "Prikaži XML"
 
-#: gio/gdbus-tool.c:1689
+#: gio/gdbus-tool.c:1697
 msgid "Introspect children"
 msgstr "Preispitivanje podsadržaja"
 
-#: gio/gdbus-tool.c:1690
+#: gio/gdbus-tool.c:1698
 msgid "Only print properties"
 msgstr "Samo prikaži svojstva"
 
-#: gio/gdbus-tool.c:1779
+#: gio/gdbus-tool.c:1787
 msgid "Introspect a remote object."
 msgstr "Preispitivanje udaljenog objekta."
 
-#: gio/gdbus-tool.c:1985
+#: gio/gdbus-tool.c:1993
 msgid "Destination name to monitor"
 msgstr "Naziv odredišta za nadgledanje"
 
-#: gio/gdbus-tool.c:1986
+#: gio/gdbus-tool.c:1994
 msgid "Object path to monitor"
 msgstr "Putanja objekta za nadgledanje"
 
-#: gio/gdbus-tool.c:2011
+#: gio/gdbus-tool.c:2019
 msgid "Monitor a remote object."
 msgstr "Nadgledaj udaljeni objekt."
 
-#: gio/gdbus-tool.c:2069
+#: gio/gdbus-tool.c:2077
 msgid "Error: can’t monitor a non-message-bus connection\n"
 msgstr ""
 "Greška: nemoguće nadgledanje povezivanja sabirnice koja nije za poruke\n"
 
-#: gio/gdbus-tool.c:2193
+#: gio/gdbus-tool.c:2201
 msgid "Service to activate before waiting for the other one (well-known name)"
 msgstr "Usluga za aktiviranje prije čekanja druge usluge (dobro poznat naziv)"
 
-#: gio/gdbus-tool.c:2196
+#: gio/gdbus-tool.c:2204
 msgid ""
 "Timeout to wait for before exiting with an error (seconds); 0 for no timeout "
 "(default)"
@@ -1250,27 +1254,27 @@ msgstr ""
 "Vrijeme čekanja prije zatvaranja s greškom (sekunde), O za vrijeme čekanja "
 "(zadano)"
 
-#: gio/gdbus-tool.c:2244
+#: gio/gdbus-tool.c:2252
 msgid "[OPTION…] BUS-NAME"
 msgstr "[MOGUĆNOST...] NAZIV-SABIRNICE"
 
-#: gio/gdbus-tool.c:2245
+#: gio/gdbus-tool.c:2253
 msgid "Wait for a bus name to appear."
 msgstr "Čekaj pojavljivanje naziva sabirnice."
 
-#: gio/gdbus-tool.c:2321
+#: gio/gdbus-tool.c:2329
 msgid "Error: A service to activate for must be specified.\n"
 msgstr "Greška: Usluga za aktiviranje mora biti navedena.\n"
 
-#: gio/gdbus-tool.c:2326
+#: gio/gdbus-tool.c:2334
 msgid "Error: A service to wait for must be specified.\n"
 msgstr "Greška: Usluga koja se čeka mora biti navedena.\n"
 
-#: gio/gdbus-tool.c:2331
+#: gio/gdbus-tool.c:2339
 msgid "Error: Too many arguments.\n"
 msgstr "Greška: previše argumenata.\n"
 
-#: gio/gdbus-tool.c:2339 gio/gdbus-tool.c:2346
+#: gio/gdbus-tool.c:2347 gio/gdbus-tool.c:2354
 #, c-format
 msgid "Error: %s is not a valid well-known bus name.\n"
 msgstr "Greška: %s nije valjan dobro poznat naziv sabirnice\n"
@@ -3287,7 +3291,7 @@ msgid "Error truncating file: %s"
 msgstr "Greška skraćivanja datoteke: %s"
 
 #: gio/glocalfileoutputstream.c:662 gio/glocalfileoutputstream.c:907
-#: gio/glocalfileoutputstream.c:1218 gio/gsubprocess.c:226
+#: gio/glocalfileoutputstream.c:1218 gio/gsubprocess.c:229
 #, c-format
 msgid "Error opening file “%s”: %s"
 msgstr "Greška otvaranja datoteke “%s”: %s"
@@ -3570,7 +3574,7 @@ msgstr ""
 msgid "  SECTION   An (optional) elf section name\n"
 msgstr "  ODJELJAK   (Neobavezni) elf naziv odjeljka\n"
 
-#: gio/gresource-tool.c:565 gio/gsettings-tool.c:706
+#: gio/gresource-tool.c:565 gio/gsettings-tool.c:718
 msgid "  COMMAND   The (optional) command to explain\n"
 msgstr "  Naredba   (Neobavezna) naredba objašnjenja\n"
 
@@ -3602,7 +3606,7 @@ msgstr "PUTANJA"
 msgid "  PATH      A resource path\n"
 msgstr "  PUTANJA      Putanja resursa\n"
 
-#: gio/gsettings-tool.c:49 gio/gsettings-tool.c:70 gio/gsettings-tool.c:911
+#: gio/gsettings-tool.c:49 gio/gsettings-tool.c:70 gio/gsettings-tool.c:923
 #, c-format
 msgid "No such schema “%s”\n"
 msgstr "Nema takve sheme “%s”\n"
@@ -3633,35 +3637,35 @@ msgstr "Putanja mora završavati s kosom crtom (/)\n"
 msgid "Path must not contain two adjacent slashes (//)\n"
 msgstr "Putanja ne smije sadržavati dvije uzastopne kose crte (//)\n"
 
-#: gio/gsettings-tool.c:541
+#: gio/gsettings-tool.c:553
 msgid "The provided value is outside of the valid range\n"
 msgstr "Navedene vrijednosti su izvan valjanog raspona\n"
 
-#: gio/gsettings-tool.c:548
+#: gio/gsettings-tool.c:560
 msgid "The key is not writable\n"
 msgstr "Ključ nije zapisiv\n"
 
-#: gio/gsettings-tool.c:584
+#: gio/gsettings-tool.c:596
 msgid "List the installed (non-relocatable) schemas"
 msgstr "Prikaži instalirane (nepremjestive) sheme"
 
-#: gio/gsettings-tool.c:590
+#: gio/gsettings-tool.c:602
 msgid "List the installed relocatable schemas"
 msgstr "Prikaži instalirane premjestive sheme"
 
-#: gio/gsettings-tool.c:596
+#: gio/gsettings-tool.c:608
 msgid "List the keys in SCHEMA"
 msgstr "Prikaži ključeve U SHEMI"
 
-#: gio/gsettings-tool.c:597 gio/gsettings-tool.c:603 gio/gsettings-tool.c:646
+#: gio/gsettings-tool.c:609 gio/gsettings-tool.c:615 gio/gsettings-tool.c:658
 msgid "SCHEMA[:PATH]"
 msgstr "SHEMA[:PUTANJA]"
 
-#: gio/gsettings-tool.c:602
+#: gio/gsettings-tool.c:614
 msgid "List the children of SCHEMA"
 msgstr "Prikaži podsadržaj SHEME"
 
-#: gio/gsettings-tool.c:608
+#: gio/gsettings-tool.c:620
 msgid ""
 "List keys and values, recursively\n"
 "If no SCHEMA is given, list all keys\n"
@@ -3669,48 +3673,48 @@ msgstr ""
 "Prikaži ključeve i vrijednosti, rekruzivno\n"
 "Ako nema zadane SHEME, prikaži sve ključeve\n"
 
-#: gio/gsettings-tool.c:610
+#: gio/gsettings-tool.c:622
 msgid "[SCHEMA[:PATH]]"
 msgstr "[SHEMA[:PUTANJA]]"
 
-#: gio/gsettings-tool.c:615
+#: gio/gsettings-tool.c:627
 msgid "Get the value of KEY"
 msgstr "Nabavi vrijednost KLJUČA"
 
-#: gio/gsettings-tool.c:616 gio/gsettings-tool.c:622 gio/gsettings-tool.c:628
-#: gio/gsettings-tool.c:640 gio/gsettings-tool.c:652
+#: gio/gsettings-tool.c:628 gio/gsettings-tool.c:634 gio/gsettings-tool.c:640
+#: gio/gsettings-tool.c:652 gio/gsettings-tool.c:664
 msgid "SCHEMA[:PATH] KEY"
 msgstr "SHEMA[:PUTANJA] KLJUČ"
 
-#: gio/gsettings-tool.c:621
+#: gio/gsettings-tool.c:633
 msgid "Query the range of valid values for KEY"
 msgstr "Upitaj za raspon valjanih vrijednosti KLJUČA"
 
-#: gio/gsettings-tool.c:627
+#: gio/gsettings-tool.c:639
 msgid "Query the description for KEY"
 msgstr "Upitaj za opis KLJUČA"
 
-#: gio/gsettings-tool.c:633
+#: gio/gsettings-tool.c:645
 msgid "Set the value of KEY to VALUE"
 msgstr "Postavi vrijednost KLJUČA u VRIJEDNOST"
 
-#: gio/gsettings-tool.c:634
+#: gio/gsettings-tool.c:646
 msgid "SCHEMA[:PATH] KEY VALUE"
 msgstr "SHEMA[:PUTANJA] VRIJEDNOST KLJUČA"
 
-#: gio/gsettings-tool.c:639
+#: gio/gsettings-tool.c:651
 msgid "Reset KEY to its default value"
 msgstr "Vrati KLJUČ na njegovu zadanu vrijednost"
 
-#: gio/gsettings-tool.c:645
+#: gio/gsettings-tool.c:657
 msgid "Reset all keys in SCHEMA to their defaults"
 msgstr "Vrati sve ključeve u SHEMI na njihove zadane vrijednosti"
 
-#: gio/gsettings-tool.c:651
+#: gio/gsettings-tool.c:663
 msgid "Check if KEY is writable"
 msgstr "Provjeri je li KLJUČ zapisiv"
 
-#: gio/gsettings-tool.c:657
+#: gio/gsettings-tool.c:669
 msgid ""
 "Monitor KEY for changes.\n"
 "If no KEY is specified, monitor all keys in SCHEMA.\n"
@@ -3720,11 +3724,11 @@ msgstr ""
 "Ako KLJUČ nije naveden, nadgledaj sve ključeve u SHEMI.\n"
 "Koristite ^C za zaustavljanje nadgledanja.\n"
 
-#: gio/gsettings-tool.c:660
+#: gio/gsettings-tool.c:672
 msgid "SCHEMA[:PATH] [KEY]"
 msgstr "SHEMA[:PUTANJA] [KLJUČ]"
 
-#: gio/gsettings-tool.c:672
+#: gio/gsettings-tool.c:684
 msgid ""
 "Usage:\n"
 "  gsettings --version\n"
@@ -3772,7 +3776,7 @@ msgstr ""
 "Koristite “gsettings help NAREDBA” za opširniju pomoć.\n"
 "\n"
 
-#: gio/gsettings-tool.c:696
+#: gio/gsettings-tool.c:708
 #, c-format
 msgid ""
 "Usage:\n"
@@ -3787,11 +3791,11 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: gio/gsettings-tool.c:702
+#: gio/gsettings-tool.c:714
 msgid "  SCHEMADIR A directory to search for additional schemas\n"
 msgstr "  DIREKTORIJ SHEME Direktorij za pretragu dodatnih shema\n"
 
-#: gio/gsettings-tool.c:710
+#: gio/gsettings-tool.c:722
 msgid ""
 "  SCHEMA    The name of the schema\n"
 "  PATH      The path, for relocatable schemas\n"
@@ -3799,32 +3803,32 @@ msgstr ""
 "  SHEMA    Naziv sheme\n"
 "  PUTANJA      Putanja, za premjestive sheme\n"
 
-#: gio/gsettings-tool.c:715
+#: gio/gsettings-tool.c:727
 msgid "  KEY       The (optional) key within the schema\n"
 msgstr "  KLJUČ       (Neobavezno) ključ sadržan unutar sheme\n"
 
-#: gio/gsettings-tool.c:719
+#: gio/gsettings-tool.c:731
 msgid "  KEY       The key within the schema\n"
 msgstr "  KLJUČ       Ključ sadržan unutar sheme\n"
 
-#: gio/gsettings-tool.c:723
+#: gio/gsettings-tool.c:735
 msgid "  VALUE     The value to set\n"
 msgstr "  VRIJEDNOST     Vrijednost za postaviti\n"
 
-#: gio/gsettings-tool.c:778
+#: gio/gsettings-tool.c:790
 #, c-format
 msgid "Could not load schemas from %s: %s\n"
 msgstr "Nemoguće učitavanje sheme iz %s: %s\n"
 
-#: gio/gsettings-tool.c:790
+#: gio/gsettings-tool.c:802
 msgid "No schemas installed\n"
 msgstr "Nema instaliranih shema\n"
 
-#: gio/gsettings-tool.c:869
+#: gio/gsettings-tool.c:881
 msgid "Empty schema name given\n"
 msgstr "Zadan je prazan naziv sheme\n"
 
-#: gio/gsettings-tool.c:924
+#: gio/gsettings-tool.c:936
 #, c-format
 msgid "No such key “%s”\n"
 msgstr "Nema takvog ključa “%s”\n"
@@ -4430,8 +4434,8 @@ msgstr "Neuspjelo proširivanje redka izvršavanja “%s” sa URI-jem “%s”"
 msgid "Unrepresentable character in conversion input"
 msgstr "Nereprezentativni znak u ulazu pretvorbe"
 
-#: glib/gconvert.c:495 glib/gutf8.c:871 glib/gutf8.c:1084 glib/gutf8.c:1221
-#: glib/gutf8.c:1325
+#: glib/gconvert.c:495 glib/gutf8.c:886 glib/gutf8.c:1099 glib/gutf8.c:1236
+#: glib/gutf8.c:1340
 msgid "Partial character sequence at end of input"
 msgstr "Nedovršeni niz znakova na kraju ulaza"
 
@@ -5971,176 +5975,176 @@ msgstr "URI '%s' nije apsolutni URI"
 msgid "URI ‘%s’ has no host component"
 msgstr "URI ‘%s’ nema komponentu poslužitelja"
 
-#: glib/guri.c:1435
+#: glib/guri.c:1460
 msgid "URI is not absolute, and no base URI was provided"
 msgstr "URI nije apsolutan, i nema navednog osnovnog URI-ja"
 
-#: glib/guri.c:2213
+#: glib/guri.c:2238
 msgid "Missing ‘=’ and parameter value"
 msgstr "Nedostaje ‘=’ i vrijednost parametra"
 
-#: glib/gutf8.c:817
+#: glib/gutf8.c:832
 msgid "Failed to allocate memory"
 msgstr "Neuspjela preraspodjela memorije"
 
-#: glib/gutf8.c:950
+#: glib/gutf8.c:965
 msgid "Character out of range for UTF-8"
 msgstr "Znak je izvan raspona za UTF-8"
 
-#: glib/gutf8.c:1052 glib/gutf8.c:1061 glib/gutf8.c:1191 glib/gutf8.c:1200
-#: glib/gutf8.c:1339 glib/gutf8.c:1436
+#: glib/gutf8.c:1067 glib/gutf8.c:1076 glib/gutf8.c:1206 glib/gutf8.c:1215
+#: glib/gutf8.c:1354 glib/gutf8.c:1451
 msgid "Invalid sequence in conversion input"
 msgstr "Neispravan niz u ulazu pretvorbe"
 
-#: glib/gutf8.c:1350 glib/gutf8.c:1447
+#: glib/gutf8.c:1365 glib/gutf8.c:1462
 msgid "Character out of range for UTF-16"
 msgstr "Znak je izvan raspona za UTF-16"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2739
+#: glib/gutils.c:2813
 #, c-format
 msgid "%.1f kB"
 msgstr "%.1f kB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2741
+#: glib/gutils.c:2815
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2743
+#: glib/gutils.c:2817
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2745
+#: glib/gutils.c:2819
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2747
+#: glib/gutils.c:2821
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2749
+#: glib/gutils.c:2823
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2753
+#: glib/gutils.c:2827
 #, c-format
 msgid "%.1f KiB"
 msgstr "%.1f KiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2755
+#: glib/gutils.c:2829
 #, c-format
 msgid "%.1f MiB"
 msgstr "%.1f MiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2757
+#: glib/gutils.c:2831
 #, c-format
 msgid "%.1f GiB"
 msgstr "%.1f GiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2759
+#: glib/gutils.c:2833
 #, c-format
 msgid "%.1f TiB"
 msgstr "%.1f TiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2761
+#: glib/gutils.c:2835
 #, c-format
 msgid "%.1f PiB"
 msgstr "%.1f PiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2763
+#: glib/gutils.c:2837
 #, c-format
 msgid "%.1f EiB"
 msgstr "%.1f EiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2767
+#: glib/gutils.c:2841
 #, c-format
 msgid "%.1f kb"
 msgstr "%.1f kb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2769
+#: glib/gutils.c:2843
 #, c-format
 msgid "%.1f Mb"
 msgstr "%.1f Mb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2771
+#: glib/gutils.c:2845
 #, c-format
 msgid "%.1f Gb"
 msgstr "%.1f Gb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2773
+#: glib/gutils.c:2847
 #, c-format
 msgid "%.1f Tb"
 msgstr "%.1f Tb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2775
+#: glib/gutils.c:2849
 #, c-format
 msgid "%.1f Pb"
 msgstr "%.1f Pb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2777
+#: glib/gutils.c:2851
 #, c-format
 msgid "%.1f Eb"
 msgstr "%.1f Eb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2781
+#: glib/gutils.c:2855
 #, c-format
 msgid "%.1f Kib"
 msgstr "%.1f Kib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2783
+#: glib/gutils.c:2857
 #, c-format
 msgid "%.1f Mib"
 msgstr "%.1f Mib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2785
+#: glib/gutils.c:2859
 #, c-format
 msgid "%.1f Gib"
 msgstr "%.1f Gib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2787
+#: glib/gutils.c:2861
 #, c-format
 msgid "%.1f Tib"
 msgstr "%.1f Tib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2789
+#: glib/gutils.c:2863
 #, c-format
 msgid "%.1f Pib"
 msgstr "%.1f Pib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2791
+#: glib/gutils.c:2865
 #, c-format
 msgid "%.1f Eib"
 msgstr "%.1f Eib"
 
-#: glib/gutils.c:2825 glib/gutils.c:2942
+#: glib/gutils.c:2899 glib/gutils.c:3016
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
@@ -6148,7 +6152,7 @@ msgstr[0] "%u bajt"
 msgstr[1] "%u bajta"
 msgstr[2] "%u bajtova"
 
-#: glib/gutils.c:2829
+#: glib/gutils.c:2903
 #, c-format
 msgid "%u bit"
 msgid_plural "%u bits"
@@ -6157,7 +6161,7 @@ msgstr[1] "%u bita"
 msgstr[2] "%u bitova"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
-#: glib/gutils.c:2896
+#: glib/gutils.c:2970
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
@@ -6166,7 +6170,7 @@ msgstr[1] "%s bajta"
 msgstr[2] "%s bajtova"
 
 #. Translators: the %s in "%s bits" will always be replaced by a number.
-#: glib/gutils.c:2901
+#: glib/gutils.c:2975
 #, c-format
 msgid "%s bit"
 msgid_plural "%s bits"
@@ -6179,32 +6183,32 @@ msgstr[2] "%s bitova"
 #. * compatibility.  Users will not see this string unless a program is using this deprecated function.
 #. * Please translate as literally as possible.
 #.
-#: glib/gutils.c:2955
+#: glib/gutils.c:3029
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: glib/gutils.c:2960
+#: glib/gutils.c:3034
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: glib/gutils.c:2965
+#: glib/gutils.c:3039
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: glib/gutils.c:2970
+#: glib/gutils.c:3044
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
-#: glib/gutils.c:2975
+#: glib/gutils.c:3049
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
-#: glib/gutils.c:2980
+#: glib/gutils.c:3054
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
