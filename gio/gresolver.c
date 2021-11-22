@@ -243,7 +243,7 @@ g_resolver_set_default (GResolver *resolver)
 }
 
 static void
-g_resolver_maybe_reload (GResolver *resolver)
+maybe_emit_reload (GResolver *resolver)
 {
 #ifdef G_OS_UNIX
   struct stat st;
@@ -436,7 +436,7 @@ lookup_by_name_real (GResolver                 *resolver,
       return NULL;
     }
 
-  g_resolver_maybe_reload (resolver);
+  maybe_emit_reload (resolver);
 
   if (flags != G_RESOLVER_NAME_LOOKUP_FLAGS_DEFAULT)
     {
@@ -594,7 +594,7 @@ lookup_by_name_async_real (GResolver                *resolver,
       return;
     }
 
-  g_resolver_maybe_reload (resolver);
+  maybe_emit_reload (resolver);
 
   if (flags != G_RESOLVER_NAME_LOOKUP_FLAGS_DEFAULT)
     {
@@ -831,7 +831,7 @@ g_resolver_lookup_by_address (GResolver     *resolver,
   g_return_val_if_fail (G_IS_RESOLVER (resolver), NULL);
   g_return_val_if_fail (G_IS_INET_ADDRESS (address), NULL);
 
-  g_resolver_maybe_reload (resolver);
+  maybe_emit_reload (resolver);
   return G_RESOLVER_GET_CLASS (resolver)->
     lookup_by_address (resolver, address, cancellable, error);
 }
@@ -860,7 +860,7 @@ g_resolver_lookup_by_address_async (GResolver           *resolver,
   g_return_if_fail (G_IS_RESOLVER (resolver));
   g_return_if_fail (G_IS_INET_ADDRESS (address));
 
-  g_resolver_maybe_reload (resolver);
+  maybe_emit_reload (resolver);
   G_RESOLVER_GET_CLASS (resolver)->
     lookup_by_address_async (resolver, address, cancellable, callback, user_data);
 }
@@ -977,7 +977,7 @@ g_resolver_lookup_service (GResolver     *resolver,
       return NULL;
     }
 
-  g_resolver_maybe_reload (resolver);
+  maybe_emit_reload (resolver);
   targets = G_RESOLVER_GET_CLASS (resolver)->
     lookup_service (resolver, rrname, cancellable, error);
 
@@ -1029,7 +1029,7 @@ g_resolver_lookup_service_async (GResolver           *resolver,
       return;
     }
 
-  g_resolver_maybe_reload (resolver);
+  maybe_emit_reload (resolver);
   G_RESOLVER_GET_CLASS (resolver)->
     lookup_service_async (resolver, rrname, cancellable, callback, user_data);
 
@@ -1128,7 +1128,7 @@ g_resolver_lookup_records (GResolver            *resolver,
   g_return_val_if_fail (G_IS_RESOLVER (resolver), NULL);
   g_return_val_if_fail (rrname != NULL, NULL);
 
-  g_resolver_maybe_reload (resolver);
+  maybe_emit_reload (resolver);
   records = G_RESOLVER_GET_CLASS (resolver)->
     lookup_records (resolver, rrname, record_type, cancellable, error);
 
@@ -1162,7 +1162,7 @@ g_resolver_lookup_records_async (GResolver           *resolver,
   g_return_if_fail (G_IS_RESOLVER (resolver));
   g_return_if_fail (rrname != NULL);
 
-  g_resolver_maybe_reload (resolver);
+  maybe_emit_reload (resolver);
   G_RESOLVER_GET_CLASS (resolver)->
     lookup_records_async (resolver, rrname, record_type, cancellable, callback, user_data);
 }
@@ -1204,7 +1204,7 @@ g_resolver_get_serial (GResolver *resolver)
 {
   g_return_val_if_fail (G_IS_RESOLVER (resolver), 0);
 
-  g_resolver_maybe_reload (resolver);
+  maybe_emit_reload (resolver);
 
 #ifdef G_OS_UNIX
   return (guint64) resolver->priv->resolv_conf_timestamp;
