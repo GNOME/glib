@@ -887,6 +887,7 @@ static gchar *opt_call_dest = NULL;
 static gchar *opt_call_object_path = NULL;
 static gchar *opt_call_method = NULL;
 static gint opt_call_timeout = -1;
+static gboolean opt_call_interactive = FALSE;
 
 static const GOptionEntry call_entries[] =
 {
@@ -894,6 +895,7 @@ static const GOptionEntry call_entries[] =
   { "object-path", 'o', 0, G_OPTION_ARG_STRING, &opt_call_object_path, N_("Object path to invoke method on"), NULL},
   { "method", 'm', 0, G_OPTION_ARG_STRING, &opt_call_method, N_("Method and interface name"), NULL},
   { "timeout", 't', 0, G_OPTION_ARG_INT, &opt_call_timeout, N_("Timeout in seconds"), NULL},
+  { "interactive", 'i', 0, G_OPTION_ARG_NONE, &opt_call_interactive, N_("Allow interactive authorization"), NULL},
   G_OPTION_ENTRY_NULL
 };
 
@@ -925,6 +927,7 @@ handle_call (gint        *argc,
   gboolean skip_dashes;
   guint parm;
   guint n;
+  GDBusCallFlags flags;
 
   ret = FALSE;
   c = NULL;
@@ -1204,6 +1207,11 @@ handle_call (gint        *argc,
 
   if (parameters != NULL)
     parameters = g_variant_ref_sink (parameters);
+
+  flags = G_DBUS_CALL_FLAGS_NONE;
+  if (opt_call_interactive)
+    flags |= G_DBUS_CALL_FLAGS_ALLOW_INTERACTIVE_AUTHORIZATION;
+
 #ifdef G_OS_UNIX
   result = g_dbus_connection_call_with_unix_fd_list_sync (c,
                                                           opt_call_dest,
@@ -1212,7 +1220,7 @@ handle_call (gint        *argc,
                                                           method_name,
                                                           parameters,
                                                           NULL,
-                                                          G_DBUS_CALL_FLAGS_NONE,
+                                                          flags,
                                                           opt_call_timeout > 0 ? opt_call_timeout * 1000 : opt_call_timeout,
                                                           fd_list,
                                                           NULL,
@@ -1226,7 +1234,7 @@ handle_call (gint        *argc,
 					method_name,
 					parameters,
 					NULL,
-					G_DBUS_CALL_FLAGS_NONE,
+					flags,
 					opt_call_timeout > 0 ? opt_call_timeout * 1000 : opt_call_timeout,
 					NULL,
 					&error);
