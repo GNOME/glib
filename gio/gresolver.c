@@ -242,11 +242,6 @@ g_resolver_set_default (GResolver *resolver)
   G_UNLOCK (default_resolver);
 }
 
-/* Bionic has res_init() but it's not in any header */
-#ifdef __BIONIC__
-int res_init (void);
-#endif
-
 static void
 g_resolver_maybe_reload (GResolver *resolver)
 {
@@ -258,9 +253,6 @@ g_resolver_maybe_reload (GResolver *resolver)
       if (st.st_mtime != resolver->priv->resolv_conf_timestamp)
         {
           resolver->priv->resolv_conf_timestamp = st.st_mtime;
-#ifdef HAVE_RES_INIT
-          res_init ();
-#endif
           g_signal_emit (resolver, signals[RELOAD], 0);
         }
     }
