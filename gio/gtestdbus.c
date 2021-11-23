@@ -32,6 +32,8 @@
 #endif
 #ifdef G_OS_WIN32
 #include <io.h>
+#include <fcntl.h>
+#include <windows.h>
 #endif
 
 #include <glib.h>
@@ -44,8 +46,8 @@
 
 #include "glibintl.h"
 
-#ifdef G_OS_WIN32
-#include <windows.h>
+#ifdef G_OS_UNIX
+#include "glib-unix.h"
 #endif
 
 /* -------------------------------------------------------------------------- */
@@ -436,7 +438,6 @@ struct _GTestDBusPrivate
   GTestDBusFlags flags;
   GPtrArray *service_dirs;
   GPid bus_pid;
-  gint bus_stdout_fd;
   gchar *bus_address;
   gboolean up;
 };
@@ -596,19 +597,51 @@ write_config_file (GTestDBus *self)
   return path;
 }
 
+static gboolean
+make_pipe (gint     pipe_fds[2],
+           GError **error)
+{
+#if defined(G_OS_UNIX)
+  return g_unix_open_pipe (pipe_fds, FD_CLOEXEC, error);
+#elif defined(G_OS_WIN32)
+  if (_pipe (pipe_fds, 4096, _O_BINARY) < 0)
+    {
+      int errsv = errno;
+
+      g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED,
+                   _("Failed to create pipe for communicating with child process (%s)"),
+                   g_strerror (errsv));
+      return FALSE;
+    }
+  return TRUE;
+#else
+  g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED,
+               _("Pipes are not supported in this platform"));
+  return FALSE;
+#endif
+}
+
 static void
 start_daemon (GTestDBus *self)
 {
   const gchar *argv[] = {"dbus-daemon", "--print-address", "--config-file=foo", NULL};
+  gint pipe_fds[2] = {-1, -1};
   gchar *config_path;
   gchar *config_arg;
+  gchar *print_address;
   GIOChannel *channel;
-  gint stdout_fd2;
   gsize termpos;
   GError *error = NULL;
 
   if (g_getenv ("G_TEST_DBUS_DAEMON") != NULL)
     argv[0] = (gchar *)g_getenv ("G_TEST_DBUS_DAEMON");
+
+  make_pipe (pipe_fds, &error);
+  g_assert_no_error (error);
+
+  print_address = g_strdup_printf ("--print-address=%d", pipe_fds[1]);
+  argv[1] = print_address;
+  g_assert_no_error (error);
 
   /* Write config file and set its path in argv */
   config_path = write_config_file (self);
@@ -616,38 +649,35 @@ start_daemon (GTestDBus *self)
   argv[2] = config_arg;
 
   /* Spawn dbus-daemon */
-  g_spawn_async_with_pipes (NULL,
-                            (gchar **) argv,
-                            NULL,
-                            /* We Need this to get the pid returned on win32 */
-                            G_SPAWN_DO_NOT_REAP_CHILD |
-                            G_SPAWN_SEARCH_PATH |
-                            /* dbus-daemon will not abuse our descriptors, and
-                             * passing this means we can use posix_spawn() for speed */
-                            G_SPAWN_LEAVE_DESCRIPTORS_OPEN,
-                            NULL,
-                            NULL,
-                            &self->priv->bus_pid,
-                            NULL,
-                            &self->priv->bus_stdout_fd,
-                            NULL,
-                            &error);
+  g_spawn_async_with_pipes_and_fds (NULL,
+                                    argv,
+                                    NULL,
+                                    /* We Need this to get the pid returned on win32 */
+                                    G_SPAWN_DO_NOT_REAP_CHILD |
+                                    G_SPAWN_SEARCH_PATH |
+                                    /* dbus-daemon will not abuse our descriptors, and
+                                     * passing this means we can use posix_spawn() for speed */
+                                    G_SPAWN_LEAVE_DESCRIPTORS_OPEN,
+                                    NULL, NULL,
+                                    -1, -1, -1,
+                                    &pipe_fds[1], &pipe_fds[1], 1,
+                                    &self->priv->bus_pid,
+                                    NULL, NULL, NULL,
+                                    &error);
   g_assert_no_error (error);
 
   _g_test_watcher_add_pid (self->priv->bus_pid);
 
-  /* Read bus address from daemon' stdout. We have to be careful to avoid
-   * closing the FD, as it is passed to any D-Bus service activated processes,
-   * and if we close it, they will get a SIGPIPE and die when they try to write
-   * to their stdout. */
-  stdout_fd2 = dup (self->priv->bus_stdout_fd);
-  g_assert_cmpint (stdout_fd2, >=, 0);
-  channel = g_io_channel_unix_new (stdout_fd2);
-
+  /* Read bus address from pipe */
+  channel = g_io_channel_unix_new (pipe_fds[0]);
+  pipe_fds[0] = -1;
+  g_io_channel_set_close_on_unref (channel, TRUE);
   g_io_channel_read_line (channel, &self->priv->bus_address, NULL,
       &termpos, &error);
   g_assert_no_error (error);
   self->priv->bus_address[termpos] = '\0';
+  close (pipe_fds[1]);
+  pipe_fds[1] = -1;
 
   /* start dbus-monitor */
   if (g_getenv ("G_DBUS_MONITOR") != NULL)
@@ -671,6 +701,7 @@ start_daemon (GTestDBus *self)
   if (g_unlink (config_path) != 0)
     g_assert_not_reached ();
 
+  g_free (print_address);
   g_free (config_path);
   g_free (config_arg);
 }
@@ -687,8 +718,6 @@ stop_daemon (GTestDBus *self)
   _g_test_watcher_remove_pid (self->priv->bus_pid);
   g_spawn_close_pid (self->priv->bus_pid);
   self->priv->bus_pid = 0;
-  close (self->priv->bus_stdout_fd);
-  self->priv->bus_stdout_fd = -1;
 
   g_free (self->priv->bus_address);
   self->priv->bus_address = NULL;
