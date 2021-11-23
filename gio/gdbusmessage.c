@@ -2168,7 +2168,6 @@ g_dbus_message_new_from_blob (guchar                *blob,
 
   g_return_val_if_fail (blob != NULL, NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
-  g_return_val_if_fail (blob_len >= 12, NULL);
 
   message = g_dbus_message_new ();
 
