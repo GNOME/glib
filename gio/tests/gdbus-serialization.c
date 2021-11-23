@@ -1512,10 +1512,8 @@ test_message_parse_truncated (void)
 
   g_clear_object (&message);
 
-  /* 12 bytes is the minimum size of the D-Bus message header. Anything less
-   * than that is rejected as a programming error by
-   * g_dbus_message_new_from_blob(). */
-  for (gsize i = 12; i < size; i++)
+  /* Try parsing all possible prefixes of the full @blob. */
+  for (gsize i = 0; i < size; i++)
     {
       message2 = g_dbus_message_new_from_blob (blob, i, G_DBUS_CAPABILITY_FLAGS_NONE, &error);
       g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
