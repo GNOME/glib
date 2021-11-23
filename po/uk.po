@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2021-11-22 13:59+0000\n"
-"PO-Revision-Date: 2021-11-23 09:46+0200\n"
+"POT-Creation-Date: 2021-11-23 13:32+0000\n"
+"PO-Revision-Date: 2021-11-23 20:43+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -750,27 +750,27 @@ msgstr "Піддерево вже експортовано для %s"
 msgid "Object does not exist at path “%s”"
 msgstr "Об'єкта зі шляхом «%s» не існує"
 
-#: gio/gdbusmessage.c:1266
+#: gio/gdbusmessage.c:1311
 msgid "type is INVALID"
 msgstr "НЕПРАВИЛЬНИЙ тип"
 
-#: gio/gdbusmessage.c:1277
+#: gio/gdbusmessage.c:1322
 msgid "METHOD_CALL message: PATH or MEMBER header field is missing"
 msgstr "Повідомлення METHOD_CALL: немає поля заголовка PATH або MEMBER"
 
-#: gio/gdbusmessage.c:1288
+#: gio/gdbusmessage.c:1333
 msgid "METHOD_RETURN message: REPLY_SERIAL header field is missing"
 msgstr "Повідомлення METHOD_RETURN: немає поля заголовка REPLY_SERIAL"
 
-#: gio/gdbusmessage.c:1300
+#: gio/gdbusmessage.c:1345
 msgid "ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing"
 msgstr "Повідомлення ERROR: немає поля заголовка REPLY_SERIAL або ERROR_NAME"
 
-#: gio/gdbusmessage.c:1313
+#: gio/gdbusmessage.c:1358
 msgid "SIGNAL message: PATH, INTERFACE or MEMBER header field is missing"
 msgstr "Повідомлення SIGNAL: немає поля заголовка PATH, INTERFACE або MEMBER"
 
-#: gio/gdbusmessage.c:1321
+#: gio/gdbusmessage.c:1366
 msgid ""
 "SIGNAL message: The PATH header field is using the reserved value /org/"
 "freedesktop/DBus/Local"
@@ -778,7 +778,7 @@ msgstr ""
 "Повідомлення SIGNAL: поле заголовка PATH використовує зарезервоване "
 "значення /org/freedesktop/DBus/Local"
 
-#: gio/gdbusmessage.c:1329
+#: gio/gdbusmessage.c:1374
 msgid ""
 "SIGNAL message: The INTERFACE header field is using the reserved value org."
 "freedesktop.DBus.Local"
@@ -786,7 +786,7 @@ msgstr ""
 "Повідомлення SIGNAL: поле заголовка INTERFACE використовує зарезервоване "
 "значення org.freedesktop.DBus.Local"
 
-#: gio/gdbusmessage.c:1377 gio/gdbusmessage.c:1437
+#: gio/gdbusmessage.c:1422 gio/gdbusmessage.c:1482
 #, c-format
 msgid "Wanted to read %lu byte but only got %lu"
 msgid_plural "Wanted to read %lu bytes but only got %lu"
@@ -794,12 +794,12 @@ msgstr[0] "Потрібно було прочитати %lu байт, але п�
 msgstr[1] "Потрібно було прочитати %lu байти, але прочитано лише %lu"
 msgstr[2] "Потрібно було прочитати %lu байтів, але прочитано лише %lu"
 
-#: gio/gdbusmessage.c:1391
+#: gio/gdbusmessage.c:1436
 #, c-format
 msgid "Expected NUL byte after the string “%s” but found byte %d"
 msgstr "Мало бути використано байт NUL після рядка «%s», але знайдено байт %d"
 
-#: gio/gdbusmessage.c:1410
+#: gio/gdbusmessage.c:1455
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
@@ -809,21 +809,21 @@ msgstr ""
 "(зміщення %d, довжина рядка %d). Коректний рядок UTF-8 аж до цієї миті був "
 "таким: «%s»"
 
-#: gio/gdbusmessage.c:1474 gio/gdbusmessage.c:1722 gio/gdbusmessage.c:1911
+#: gio/gdbusmessage.c:1519 gio/gdbusmessage.c:1795 gio/gdbusmessage.c:1986
 msgid "Value nested too deeply"
 msgstr "Рівень вкладеності значення є надто високим"
 
-#: gio/gdbusmessage.c:1620
+#: gio/gdbusmessage.c:1687
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus object path"
 msgstr "Оброблене значення «%s» не є припустимим шляхом до об'єкта D-Bus"
 
-#: gio/gdbusmessage.c:1642
+#: gio/gdbusmessage.c:1711
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature"
 msgstr "Оброблене значення «%s» не є припустимим підписом D-Bus"
 
-#: gio/gdbusmessage.c:1689
+#: gio/gdbusmessage.c:1762
 #, c-format
 msgid ""
 "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
@@ -839,7 +839,7 @@ msgstr[2] ""
 "Виявлено масив довжиною %u байтів. Максимальна довжина дорівнює 2<<26 байт "
 "(64 МіБ)."
 
-#: gio/gdbusmessage.c:1709
+#: gio/gdbusmessage.c:1782
 #, c-format
 msgid ""
 "Encountered array of type “a%c”, expected to have a length a multiple of %u "
@@ -848,19 +848,19 @@ msgstr ""
 "Виявлено масив типу «a%c». Очікувалося, що довжина буде кратною до %u "
 "байтів, втім, виявлено довжину %u байтів"
 
-#: gio/gdbusmessage.c:1895
+#: gio/gdbusmessage.c:1970
 #, c-format
 msgid "Parsed value “%s” for variant is not a valid D-Bus signature"
 msgstr "Оброблене значення «%s» для варіанта не є припустимим підписом D-Bus"
 
-#: gio/gdbusmessage.c:1936
+#: gio/gdbusmessage.c:2011
 #, c-format
 msgid ""
 "Error deserializing GVariant with type string “%s” from the D-Bus wire format"
 msgstr ""
 "Помилка десеріалізації GVariant з типом рядка «%s» з формату D-Bus wire"
 
-#: gio/gdbusmessage.c:2121
+#: gio/gdbusmessage.c:2196
 #, c-format
 msgid ""
 "Invalid endianness value. Expected 0x6c (“l”) or 0x42 (“B”) but found value "
@@ -869,29 +869,29 @@ msgstr ""
 "Неправильний порядок байтів у значенні. Мало бути 0x6c («l») або 0x42 («B»), "
 "але знайдено значення 0x%02x"
 
-#: gio/gdbusmessage.c:2134
+#: gio/gdbusmessage.c:2215
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr ""
 "Неправильний старший номер версії протоколу. Очікувався 1, але знайдено %d"
 
-#: gio/gdbusmessage.c:2188 gio/gdbusmessage.c:2784
+#: gio/gdbusmessage.c:2273 gio/gdbusmessage.c:2862
 msgid "Signature header found but is not of type signature"
 msgstr ""
 "Виявлено заголовок підпису, але цей заголовок не належить до типу підписів"
 
-#: gio/gdbusmessage.c:2200
+#: gio/gdbusmessage.c:2285
 #, c-format
 msgid "Signature header with signature “%s” found but message body is empty"
 msgstr ""
 "Знайдено заголовок підпису з підписом «%s», але вміст повідомлення є порожнім"
 
-#: gio/gdbusmessage.c:2215
+#: gio/gdbusmessage.c:2300
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature (for body)"
 msgstr "Оброблене значення «%s» не є припустимим підписом D-Bus (для вмісту)"
 
-#: gio/gdbusmessage.c:2247
+#: gio/gdbusmessage.c:2332
 #, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
@@ -905,17 +905,17 @@ msgstr[2] ""
 "Відсутній заголовок підпису у повідомленні, але тіло повідомлення займає %u "
 "байтів"
 
-#: gio/gdbusmessage.c:2257
+#: gio/gdbusmessage.c:2342
 msgid "Cannot deserialize message: "
 msgstr "Не вдалося виконати десеріалізацію повідомлення:"
 
-#: gio/gdbusmessage.c:2601
+#: gio/gdbusmessage.c:2679
 #, c-format
 msgid ""
 "Error serializing GVariant with type string “%s” to the D-Bus wire format"
 msgstr "Помилка серіалізації GVariant з типом рядка «%s» у формат D-Bus wire"
 
-#: gio/gdbusmessage.c:2738
+#: gio/gdbusmessage.c:2816
 #, c-format
 msgid ""
 "Number of file descriptors in message (%d) differs from header field (%d)"
@@ -923,16 +923,16 @@ msgstr ""
 "Кількість дескрипторів файлів у повідомленні (%d) відрізняється від значення "
 "у полі заголовка (%d)"
 
-#: gio/gdbusmessage.c:2746
+#: gio/gdbusmessage.c:2824
 msgid "Cannot serialize message: "
 msgstr "Не вдалося серіалізувати повідомлення: "
 
-#: gio/gdbusmessage.c:2799
+#: gio/gdbusmessage.c:2877
 #, c-format
 msgid "Message body has signature “%s” but there is no signature header"
 msgstr "Вміст повідомлення має підпис «%s», але немає заголовка підпису"
 
-#: gio/gdbusmessage.c:2809
+#: gio/gdbusmessage.c:2887
 #, c-format
 msgid ""
 "Message body has type signature “%s” but signature in the header field is "
@@ -941,19 +941,19 @@ msgstr ""
 "Вміст повідомлення має тип підпису «%s», але значення підпису у полі "
 "заголовка дорівнює «%s»"
 
-#: gio/gdbusmessage.c:2825
+#: gio/gdbusmessage.c:2903
 #, c-format
 msgid "Message body is empty but signature in the header field is “(%s)”"
 msgstr ""
 "Вміст повідомлення порожній, але значення підпису у полі заголовка дорівнює "
 "«(%s)»"
 
-#: gio/gdbusmessage.c:3380
+#: gio/gdbusmessage.c:3458
 #, c-format
 msgid "Error return with body of type “%s”"
 msgstr "Повернуто помилку для вмісту типу «%s»"
 
-#: gio/gdbusmessage.c:3388
+#: gio/gdbusmessage.c:3466
 msgid "Error return with empty body"
 msgstr "Повернена помилка з порожнім тілом"
 
@@ -1190,7 +1190,6 @@ msgid "Timeout in seconds"
 msgstr "Час очікування у секундах"
 
 #: gio/gdbus-tool.c:898
-#| msgid "Show information about locations"
 msgid "Allow interactive authorization"
 msgstr "Дозволити інтерактивне уповноваження"
 
@@ -1365,7 +1364,7 @@ msgstr "для диска не реалізовано функцію запус�
 msgid "drive doesn’t implement stop"
 msgstr "для диска не реалізовано функції зупинки"
 
-#: gio/gdtlsconnection.c:1170 gio/gtlsconnection.c:939
+#: gio/gdtlsconnection.c:1186 gio/gtlsconnection.c:955
 msgid "TLS backend does not implement TLS binding retrieval"
 msgstr "У модулі TLS не реалізовано отримання прив'язки TLS"
 
@@ -4189,6 +4188,17 @@ msgstr "Проксі SOCKSv5 не підтримує пропонований т
 msgid "Unknown SOCKSv5 proxy error."
 msgstr "Невідома помилка проксі SOCKSv5."
 
+#: gio/gtestdbus.c:612 glib/gspawn-win32.c:311
+#, c-format
+msgid "Failed to create pipe for communicating with child process (%s)"
+msgstr "Помилка створення каналу для обміну з дочірнім процесом (%s)"
+
+#: gio/gtestdbus.c:619
+#, c-format
+#| msgid "Seek not supported on stream"
+msgid "Pipes are not supported in this platform"
+msgstr "На цій платформі підтримки конвеєрів не передбачено"
+
 #: gio/gthemedicon.c:595
 #, c-format
 msgid "Can’t handle version %d of GThemedIcon encoding"
@@ -5943,11 +5953,6 @@ msgstr "Не вдалося зчитати достатню кількість �
 #: glib/gspawn-win32.c:294
 msgid "Failed to read data from child process"
 msgstr "Помилка зчитування даних з дочірнього процесу"
-
-#: glib/gspawn-win32.c:311
-#, c-format
-msgid "Failed to create pipe for communicating with child process (%s)"
-msgstr "Помилка створення каналу для обміну з дочірнім процесом (%s)"
 
 #: glib/gspawn-win32.c:387 glib/gspawn-win32.c:392 glib/gspawn-win32.c:511
 #, c-format
