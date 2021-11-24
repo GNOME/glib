@@ -69,6 +69,7 @@
 #include "garray.h"
 #include "glibintl.h"
 #include "gstdio.h"
+#include "gquark.h"
 
 #ifdef G_PLATFORM_WIN32
 #include "gconvert.h"
@@ -1050,7 +1051,7 @@ g_get_host_name (void)
 }
 
 G_LOCK_DEFINE_STATIC (g_prgname);
-static gchar *g_prgname = NULL;
+static const gchar *g_prgname = NULL; /* always a quark */
 
 /**
  * g_get_prgname:
@@ -1071,7 +1072,7 @@ static gchar *g_prgname = NULL;
 const gchar*
 g_get_prgname (void)
 {
-  gchar* retval;
+  const gchar* retval;
 
   G_LOCK (g_prgname);
   retval = g_prgname;
@@ -1093,14 +1094,16 @@ g_get_prgname (void)
  * #GtkApplication::startup handler. The program name is found by
  * taking the last component of @argv[0].
  *
- * Note that for thread-safety reasons this function can only be called once.
+ * Since GLib 2.72, this function can be called multiple times
+ * and is fully thread safe. Prior to GLib 2.72, this function
+ * could only be called once per process.
  */
 void
 g_set_prgname (const gchar *prgname)
 {
+  GQuark qprgname = g_quark_from_string (prgname);
   G_LOCK (g_prgname);
-  g_free (g_prgname);
-  g_prgname = g_strdup (prgname);
+  g_prgname = g_quark_to_string (qprgname);
   G_UNLOCK (g_prgname);
 }
 
