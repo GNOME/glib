@@ -6055,10 +6055,20 @@ g_socket_get_credentials (GSocket   *socket,
       {
         if (cred.cr_version == XUCRED_VERSION)
           {
+            pid_t pid;
+            socklen_t optlen = sizeof (pid);
+
             ret = g_credentials_new ();
             g_credentials_set_native (ret,
                                       G_CREDENTIALS_NATIVE_TYPE,
                                       &cred);
+
+            if (getsockopt (socket->priv->fd,
+                            SOL_LOCAL,
+                            LOCAL_PEERPID,
+                            &pid,
+                            &optlen) == 0)
+              _g_credentials_set_local_peerid (ret, pid);
           }
         else
           {
