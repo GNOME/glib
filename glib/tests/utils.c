@@ -158,6 +158,52 @@ test_appname (void)
   g_assert_cmpstr (appname, ==, "appname");
 }
 
+static gpointer
+thread_prgname_check (gpointer data)
+{
+  gint *n_threads_got_prgname = (gint *) data;
+  const gchar *old_prgname;
+
+  old_prgname = g_get_prgname ();
+  g_assert_cmpstr (old_prgname, ==, "prgname");
+
+  g_atomic_int_inc (n_threads_got_prgname);
+
+  while (g_strcmp0 (g_get_prgname (), "prgname2") != 0);
+
+  return NULL;
+}
+
+static void
+test_prgname_thread_safety (void)
+{
+  gsize i;
+  gint n_threads_got_prgname;
+  GThread *threads[4];
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/847");
+  g_test_summary ("Test that threads racing to get and set the program name "
+                  "always receive a valid program name.");
+
+  g_set_prgname ("prgname");
+  g_atomic_int_set (&n_threads_got_prgname, 0);
+
+  for (i = 0; i < G_N_ELEMENTS (threads); i++)
+    threads[i] = g_thread_new (NULL, thread_prgname_check, &n_threads_got_prgname);
+
+  while (g_atomic_int_get (&n_threads_got_prgname) != G_N_ELEMENTS (threads))
+    g_usleep (50);
+
+  g_set_prgname ("prgname2");
+
+  /* Wait for all the workers to exit. */
+  for (i = 0; i < G_N_ELEMENTS (threads); i++)
+    g_thread_join (threads[i]);
+
+  /* reset prgname */
+  g_set_prgname ("prgname");
+}
+
 static void
 test_tmpdir (void)
 {
@@ -860,6 +906,7 @@ main (int   argc,
   g_test_add_func ("/utils/locale-variants", test_locale_variants);
   g_test_add_func ("/utils/version", test_version);
   g_test_add_func ("/utils/appname", test_appname);
+  g_test_add_func ("/utils/prgname-thread-safety", test_prgname_thread_safety);
   g_test_add_func ("/utils/tmpdir", test_tmpdir);
   g_test_add_func ("/utils/bits", test_bits);
   g_test_add_func ("/utils/swap", test_swap);
