@@ -491,6 +491,48 @@ G_GNUC_END_IGNORE_DEPRECATIONS
   return dirname;
 }
 
+/*
+ * private API to call Windows's RtlGetVersion(), which may need to be called
+ * via GetProcAddress()
+ */
+gboolean
+_g_win32_call_rtl_version (OSVERSIONINFOEXW *info)
+{
+  static OSVERSIONINFOEXW result;
+  static gsize inited = 0;
+
+  g_return_val_if_fail (info != NULL, FALSE);
+
+  if (g_once_init_enter (&inited))
+    {
+#if WINAPI_FAMILY != MODERN_API_FAMILY
+      /* For non-modern UI Apps, use the LoadLibraryW()/GetProcAddress() thing */
+      typedef NTSTATUS (WINAPI fRtlGetVersion) (PRTL_OSVERSIONINFOEXW);
+
+      fRtlGetVersion *RtlGetVersion;
+      HMODULE hmodule = LoadLibraryW (L"ntdll.dll");
+      g_return_val_if_fail (hmodule != NULL, FALSE);
+
+      RtlGetVersion = (fRtlGetVersion *) GetProcAddress (hmodule, "RtlGetVersion");
+      g_return_val_if_fail (RtlGetVersion != NULL, FALSE);
+#endif
+
+      memset (&result, 0, sizeof (OSVERSIONINFOEXW));
+      result.dwOSVersionInfoSize = sizeof (OSVERSIONINFOEXW);
+
+      RtlGetVersion (&result);
+
+#if WINAPI_FAMILY != MODERN_API_FAMILY
+      FreeLibrary (hmodule);
+#endif
+      g_once_init_leave (&inited, TRUE);
+    }
+
+  *info = result;
+
+  return TRUE;
+}
+
 /**
  * g_win32_check_windows_version:
  * @major: major version of Windows
@@ -526,31 +568,13 @@ g_win32_check_windows_version (const gint major,
   gboolean is_ver_checked = FALSE;
   gboolean is_type_checked = FALSE;
 
-#if WINAPI_FAMILY != MODERN_API_FAMILY
-  /* For non-modern UI Apps, use the LoadLibraryW()/GetProcAddress() thing */
-  typedef NTSTATUS (WINAPI fRtlGetVersion) (PRTL_OSVERSIONINFOEXW);
-
-  fRtlGetVersion *RtlGetVersion;
-  HMODULE hmodule;
-#endif
   /* We Only Support Checking for XP or later */
   g_return_val_if_fail (major >= 5 && (major <=6 || major == 10), FALSE);
   g_return_val_if_fail ((major >= 5 && minor >= 1) || major >= 6, FALSE);
 
   /* Check for Service Pack Version >= 0 */
   g_return_val_if_fail (spver >= 0, FALSE);
-
-#if WINAPI_FAMILY != MODERN_API_FAMILY
-  hmodule = LoadLibraryW (L"ntdll.dll");
-  g_return_val_if_fail (hmodule != NULL, FALSE);
-
-  RtlGetVersion = (fRtlGetVersion *) GetProcAddress (hmodule, "RtlGetVersion");
-  g_return_val_if_fail (RtlGetVersion != NULL, FALSE);
-#endif
-
-  memset (&osverinfo, 0, sizeof (OSVERSIONINFOEXW));
-  osverinfo.dwOSVersionInfoSize = sizeof (OSVERSIONINFOEXW);
-  RtlGetVersion (&osverinfo);
+  g_return_val_if_fail (_g_win32_call_rtl_version (&osverinfo), FALSE);
 
   /* check the OS and Service Pack Versions */
   if (osverinfo.dwMajorVersion > major)
@@ -587,10 +611,6 @@ g_win32_check_windows_version (const gint major,
             break;
         }
     }
-
-#if WINAPI_FAMILY != MODERN_API_FAMILY
-  FreeLibrary (hmodule);
-#endif
 
   return is_ver_checked && is_type_checked;
 }
