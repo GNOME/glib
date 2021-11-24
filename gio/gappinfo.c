@@ -326,7 +326,12 @@ g_app_info_set_as_default_for_type (GAppInfo    *appinfo,
 
   iface = G_APP_INFO_GET_IFACE (appinfo);
 
-  return (* iface->set_as_default_for_type) (appinfo, content_type, error);
+  if (iface->set_as_default_for_type)
+    return (* iface->set_as_default_for_type) (appinfo, content_type, error);
+
+  g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                       _("Setting default applications not supported yet"));
+  return FALSE;
 }
 
 /**
@@ -354,7 +359,12 @@ g_app_info_set_as_last_used_for_type (GAppInfo    *appinfo,
 
   iface = G_APP_INFO_GET_IFACE (appinfo);
 
-  return (* iface->set_as_last_used_for_type) (appinfo, content_type, error);
+  if (iface->set_as_last_used_for_type)
+    return (* iface->set_as_last_used_for_type) (appinfo, content_type, error);
+
+  g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                       _("Setting application as last used for type not supported yet"));
+  return FALSE;
 }
 
 /**
