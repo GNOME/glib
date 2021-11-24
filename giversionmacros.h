@@ -32,6 +32,16 @@
 #define _GI_EXTERN extern
 #endif
 
+#ifndef GI_DISABLE_DEPRECATION_WARNINGS
+# define GI_DEPRECATED G_DEPRECATED _GI_EXTERN
+# define GI_DEPRECATED_FOR(f) G_DEPRECATED_FOR(f) _GI_EXTERN
+# define GI_UNAVAILABLE(maj,min) G_UNAVAILABLE(maj, min) _GI_EXTERN
+#else
+# define GI_DEPRECATED _GI_EXTERN
+# define GI_DEPRECATED_FOR(f) _GI_EXTERN
+# define GI_UNAVAILABLE(maj,min) _GI_EXTERN
+#endif
+
 #define GI_AVAILABLE_IN_ALL _GI_EXTERN
 
 /* XXX: Every new stable minor release should add a set of macros here
@@ -42,145 +52,145 @@
  */
 
 #if GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_32
-# define GI_DEPRECATED_IN_1_32                GLIB_DEPRECATED
-# define GI_DEPRECATED_IN_1_32_FOR(f)         GLIB_DEPRECATED_FOR(f)
+# define GI_DEPRECATED_IN_1_32                GI_DEPRECATED
+# define GI_DEPRECATED_IN_1_32_FOR(f)         GI_DEPRECATED_FOR(f)
 #else
 # define GI_DEPRECATED_IN_1_32                _GI_EXTERN
 # define GI_DEPRECATED_IN_1_32_FOR(f)         _GI_EXTERN
 #endif
 
 #if GLIB_VERSION_MAX_ALLOWED < GLIB_VERSION_2_32
-# define GI_AVAILABLE_IN_1_32                 GLIB_UNAVAILABLE(2, 32)
+# define GI_AVAILABLE_IN_1_32                 GI_UNAVAILABLE(2, 32)
 #else
 # define GI_AVAILABLE_IN_1_32                 _GI_EXTERN
 #endif
 
 #if GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_34
-# define GI_DEPRECATED_IN_1_34                GLIB_DEPRECATED
-# define GI_DEPRECATED_IN_1_34_FOR(f)         GLIB_DEPRECATED_FOR(f)
+# define GI_DEPRECATED_IN_1_34                GI_DEPRECATED
+# define GI_DEPRECATED_IN_1_34_FOR(f)         GI_DEPRECATED_FOR(f)
 #else
 # define GI_DEPRECATED_IN_1_34                _GI_EXTERN
 # define GI_DEPRECATED_IN_1_34_FOR(f)         _GI_EXTERN
 #endif
 
 #if GLIB_VERSION_MAX_ALLOWED < GLIB_VERSION_2_34
-# define GI_AVAILABLE_IN_1_34                 GLIB_UNAVAILABLE(2, 34)
+# define GI_AVAILABLE_IN_1_34                 GI_UNAVAILABLE(2, 34)
 #else
 # define GI_AVAILABLE_IN_1_34                 _GI_EXTERN
 #endif
 
 #if GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_36
-# define GI_DEPRECATED_IN_1_36                GLIB_DEPRECATED
-# define GI_DEPRECATED_IN_1_36_FOR(f)         GLIB_DEPRECATED_FOR(f)
+# define GI_DEPRECATED_IN_1_36                GI_DEPRECATED
+# define GI_DEPRECATED_IN_1_36_FOR(f)         GI_DEPRECATED_FOR(f)
 #else
 # define GI_DEPRECATED_IN_1_36                _GI_EXTERN
 # define GI_DEPRECATED_IN_1_36_FOR(f)         _GI_EXTERN
 #endif
 
 #if GLIB_VERSION_MAX_ALLOWED < GLIB_VERSION_2_36
-# define GI_AVAILABLE_IN_1_36                 GLIB_UNAVAILABLE(2, 36)
+# define GI_AVAILABLE_IN_1_36                 GI_UNAVAILABLE(2, 36)
 #else
 # define GI_AVAILABLE_IN_1_36                 _GI_EXTERN
 #endif
 
 #if GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_38
-# define GI_DEPRECATED_IN_1_38                GLIB_DEPRECATED
-# define GI_DEPRECATED_IN_1_38_FOR(f)         GLIB_DEPRECATED_FOR(f)
+# define GI_DEPRECATED_IN_1_38                GI_DEPRECATED
+# define GI_DEPRECATED_IN_1_38_FOR(f)         GI_DEPRECATED_FOR(f)
 #else
 # define GI_DEPRECATED_IN_1_38                _GI_EXTERN
 # define GI_DEPRECATED_IN_1_38_FOR(f)         _GI_EXTERN
 #endif
 
 #if GLIB_VERSION_MAX_ALLOWED < GLIB_VERSION_2_38
-# define GI_AVAILABLE_IN_1_38                 GLIB_UNAVAILABLE(2, 38)
+# define GI_AVAILABLE_IN_1_38                 GI_UNAVAILABLE(2, 38)
 #else
 # define GI_AVAILABLE_IN_1_38                 _GI_EXTERN
 #endif
 
 #if GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_40
-# define GI_DEPRECATED_IN_1_40                GLIB_DEPRECATED
-# define GI_DEPRECATED_IN_1_40_FOR(f)         GLIB_DEPRECATED_FOR(f)
+# define GI_DEPRECATED_IN_1_40                GI_DEPRECATED
+# define GI_DEPRECATED_IN_1_40_FOR(f)         GI_DEPRECATED_FOR(f)
 #else
 # define GI_DEPRECATED_IN_1_40                _GI_EXTERN
 # define GI_DEPRECATED_IN_1_40_FOR(f)         _GI_EXTERN
 #endif
 
 #if GLIB_VERSION_MAX_ALLOWED < GLIB_VERSION_2_40
-# define GI_AVAILABLE_IN_1_40                 GLIB_UNAVAILABLE(2, 40)
+# define GI_AVAILABLE_IN_1_40                 GI_UNAVAILABLE(2, 40)
 #else
 # define GI_AVAILABLE_IN_1_40                 _GI_EXTERN
 #endif
 
 #if GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_42
-# define GI_DEPRECATED_IN_1_42                GLIB_DEPRECATED
-# define GI_DEPRECATED_IN_1_42_FOR(f)         GLIB_DEPRECATED_FOR(f)
+# define GI_DEPRECATED_IN_1_42                GI_DEPRECATED
+# define GI_DEPRECATED_IN_1_42_FOR(f)         GI_DEPRECATED_FOR(f)
 #else
 # define GI_DEPRECATED_IN_1_42                _GI_EXTERN
 # define GI_DEPRECATED_IN_1_42_FOR(f)         _GI_EXTERN
 #endif
 
 #if GLIB_VERSION_MAX_ALLOWED < GLIB_VERSION_2_42
-# define GI_AVAILABLE_IN_1_42                 GLIB_UNAVAILABLE(2, 42)
+# define GI_AVAILABLE_IN_1_42                 GI_UNAVAILABLE(2, 42)
 #else
 # define GI_AVAILABLE_IN_1_42                 _GI_EXTERN
 #endif
 
 #if GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_44
-# define GI_DEPRECATED_IN_1_44                GLIB_DEPRECATED
-# define GI_DEPRECATED_IN_1_44_FOR(f)         GLIB_DEPRECATED_FOR(f)
+# define GI_DEPRECATED_IN_1_44                GI_DEPRECATED
+# define GI_DEPRECATED_IN_1_44_FOR(f)         GI_DEPRECATED_FOR(f)
 #else
 # define GI_DEPRECATED_IN_1_44                _GI_EXTERN
 # define GI_DEPRECATED_IN_1_44_FOR(f)         _GI_EXTERN
 #endif
 
 #if GLIB_VERSION_MAX_ALLOWED < GLIB_VERSION_2_44
-# define GI_AVAILABLE_IN_1_44                 GLIB_UNAVAILABLE(2, 44)
+# define GI_AVAILABLE_IN_1_44                 GI_UNAVAILABLE(2, 44)
 #else
 # define GI_AVAILABLE_IN_1_44                 _GI_EXTERN
 #endif
 
 #if GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_46
-# define GI_DEPRECATED_IN_1_46                GLIB_DEPRECATED
-# define GI_DEPRECATED_IN_1_46_FOR(f)         GLIB_DEPRECATED_FOR(f)
+# define GI_DEPRECATED_IN_1_46                GI_DEPRECATED
+# define GI_DEPRECATED_IN_1_46_FOR(f)         GI_DEPRECATED_FOR(f)
 #else
 # define GI_DEPRECATED_IN_1_46                _GI_EXTERN
 # define GI_DEPRECATED_IN_1_46_FOR(f)         _GI_EXTERN
 #endif
 
 #if GLIB_VERSION_MAX_ALLOWED < GLIB_VERSION_2_46
-# define GI_AVAILABLE_IN_1_46                 GLIB_UNAVAILABLE(2, 46)
+# define GI_AVAILABLE_IN_1_46                 GI_UNAVAILABLE(2, 46)
 #else
 # define GI_AVAILABLE_IN_1_46                 _GI_EXTERN
 #endif
 
 #if defined(GLIB_VERSION_2_60) && GLIB_VERSION_MAX_ALLOWED < GLIB_VERSION_2_60
-# define GI_AVAILABLE_IN_1_60                 GLIB_UNAVAILABLE(2, 60)
+# define GI_AVAILABLE_IN_1_60                 GI_UNAVAILABLE(2, 60)
 #else
 # define GI_AVAILABLE_IN_1_60                 _GI_EXTERN
 #endif
 
 #if defined(GLIB_VERSION_2_66) && GLIB_VERSION_MAX_ALLOWED < GLIB_VERSION_2_66
-# define GI_AVAILABLE_IN_1_66                 GLIB_UNAVAILABLE(2, 66)
+# define GI_AVAILABLE_IN_1_66                 GI_UNAVAILABLE(2, 66)
 #else
 # define GI_AVAILABLE_IN_1_66                 _GI_EXTERN
 #endif
 
 #if defined(GLIB_VERSION_2_70) && GLIB_VERSION_MAX_ALLOWED < GLIB_VERSION_2_70
-# define GI_AVAILABLE_IN_1_70                 GLIB_UNAVAILABLE(2, 70)
+# define GI_AVAILABLE_IN_1_70                 GI_UNAVAILABLE(2, 70)
 #else
 # define GI_AVAILABLE_IN_1_70                 _GI_EXTERN
 #endif
 
 #if defined(GLIB_VERSION_2_72) && GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_72
-# define GI_DEPRECATED_IN_1_72                GLIB_DEPRECATED
-# define GI_DEPRECATED_IN_1_72_FOR(f)         GLIB_DEPRECATED_FOR(f)
+# define GI_DEPRECATED_IN_1_72                GI_DEPRECATED
+# define GI_DEPRECATED_IN_1_72_FOR(f)         GI_DEPRECATED_FOR(f)
 #else
 # define GI_DEPRECATED_IN_1_72                _GI_EXTERN
 # define GI_DEPRECATED_IN_1_72_FOR(f)         _GI_EXTERN
 #endif
 
 #if defined(GLIB_VERSION_2_72) && GLIB_VERSION_MAX_ALLOWED < GLIB_VERSION_2_72
-# define GI_AVAILABLE_IN_1_72                 GLIB_UNAVAILABLE(2, 72)
+# define GI_AVAILABLE_IN_1_72                 GI_UNAVAILABLE(2, 72)
 #else
 # define GI_AVAILABLE_IN_1_72                 _GI_EXTERN
 #endif
