@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2021-11-23 13:32+0000\n"
-"PO-Revision-Date: 2021-11-23 20:43+0200\n"
+"POT-Creation-Date: 2021-11-24 15:03+0000\n"
+"PO-Revision-Date: 2021-11-25 00:07+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -20,6 +20,16 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Lokalize 20.12.0\n"
+
+#: gio/gappinfo.c:333
+#| msgid "Setting attribute %s not supported"
+msgid "Setting default applications not supported yet"
+msgstr "Підтримки встановлення типової програми ще не передбачено"
+
+#: gio/gappinfo.c:366
+#| msgid "Setting attribute %s not supported"
+msgid "Setting application as last used for type not supported yet"
+msgstr "Підтримки встановлення програми, як останньої використаної для типу, ще не передбачено"
 
 #: gio/gapplication.c:500
 msgid "GApplication options"
@@ -978,17 +988,17 @@ msgstr "Не вдалося отримати профіль апаратури: 
 msgid "Unable to load %s or %s: "
 msgstr "Не вдалося завантажити %s або %s: "
 
-#: gio/gdbusproxy.c:1569
+#: gio/gdbusproxy.c:1573
 #, c-format
 msgid "Error calling StartServiceByName for %s: "
 msgstr "Помилка виклику StartServiceByName для %s: "
 
-#: gio/gdbusproxy.c:1592
+#: gio/gdbusproxy.c:1596
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Неочікувана відповідь %d з методу StartServiceByName(«%s»)"
 
-#: gio/gdbusproxy.c:2703 gio/gdbusproxy.c:2838
+#: gio/gdbusproxy.c:2707 gio/gdbusproxy.c:2842
 #, c-format
 msgid ""
 "Cannot invoke method; proxy is for the well-known name %s without an owner, "
@@ -4195,7 +4205,6 @@ msgstr "Помилка створення каналу для обміну з д
 
 #: gio/gtestdbus.c:619
 #, c-format
-#| msgid "Seek not supported on stream"
 msgid "Pipes are not supported in this platform"
 msgstr "На цій платформі підтримки конвеєрів не передбачено"
 
@@ -6085,150 +6094,150 @@ msgid "Character out of range for UTF-16"
 msgstr "Символ не входить в набір UTF-16"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2813
+#: glib/gutils.c:2816
 #, c-format
 msgid "%.1f kB"
 msgstr "%.1f кБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2815
+#: glib/gutils.c:2818
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f МБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2817
+#: glib/gutils.c:2820
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f ГБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2819
+#: glib/gutils.c:2822
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f ТБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2821
+#: glib/gutils.c:2824
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f ПБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2823
+#: glib/gutils.c:2826
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f ЕБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2827
+#: glib/gutils.c:2830
 #, c-format
 msgid "%.1f KiB"
 msgstr "%.1f КіБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2829
+#: glib/gutils.c:2832
 #, c-format
 msgid "%.1f MiB"
 msgstr "%.1f МіБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2831
+#: glib/gutils.c:2834
 #, c-format
 msgid "%.1f GiB"
 msgstr "%.1f ГіБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2833
+#: glib/gutils.c:2836
 #, c-format
 msgid "%.1f TiB"
 msgstr "%.1f ТіБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2835
+#: glib/gutils.c:2838
 #, c-format
 msgid "%.1f PiB"
 msgstr "%.1f ПіБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2837
+#: glib/gutils.c:2840
 #, c-format
 msgid "%.1f EiB"
 msgstr "%.1f ЕіБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2841
+#: glib/gutils.c:2844
 #, c-format
 msgid "%.1f kb"
 msgstr "%.1f кбіт"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2843
+#: glib/gutils.c:2846
 #, c-format
 msgid "%.1f Mb"
 msgstr "%.1f Мбіт"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2845
+#: glib/gutils.c:2848
 #, c-format
 msgid "%.1f Gb"
 msgstr "%.1f Гбіт"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2847
+#: glib/gutils.c:2850
 #, c-format
 msgid "%.1f Tb"
 msgstr "%.1f Тбіт"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2849
+#: glib/gutils.c:2852
 #, c-format
 msgid "%.1f Pb"
 msgstr "%.1f Пбіт"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2851
+#: glib/gutils.c:2854
 #, c-format
 msgid "%.1f Eb"
 msgstr "%.1f Ебіт"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2855
+#: glib/gutils.c:2858
 #, c-format
 msgid "%.1f Kib"
 msgstr "%.1f Кібіт"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2857
+#: glib/gutils.c:2860
 #, c-format
 msgid "%.1f Mib"
 msgstr "%.1f Мібіт"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2859
+#: glib/gutils.c:2862
 #, c-format
 msgid "%.1f Gib"
 msgstr "%.1f Гібіт"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2861
+#: glib/gutils.c:2864
 #, c-format
 msgid "%.1f Tib"
 msgstr "%.1f Тібіт"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2863
+#: glib/gutils.c:2866
 #, c-format
 msgid "%.1f Pib"
 msgstr "%.1f Пібіт"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2865
+#: glib/gutils.c:2868
 #, c-format
 msgid "%.1f Eib"
 msgstr "%.1f Еібіт"
 
-#: glib/gutils.c:2899 glib/gutils.c:3016
+#: glib/gutils.c:2902 glib/gutils.c:3019
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
@@ -6236,7 +6245,7 @@ msgstr[0] "%u байт"
 msgstr[1] "%u байти"
 msgstr[2] "%u байтів"
 
-#: glib/gutils.c:2903
+#: glib/gutils.c:2906
 #, c-format
 msgid "%u bit"
 msgid_plural "%u bits"
@@ -6245,7 +6254,7 @@ msgstr[1] "%u бітів"
 msgstr[2] "%u байтів"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
-#: glib/gutils.c:2970
+#: glib/gutils.c:2973
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
@@ -6254,7 +6263,7 @@ msgstr[1] "%s байти"
 msgstr[2] "%s байтів"
 
 #. Translators: the %s in "%s bits" will always be replaced by a number.
-#: glib/gutils.c:2975
+#: glib/gutils.c:2978
 #, c-format
 msgid "%s bit"
 msgid_plural "%s bits"
@@ -6267,32 +6276,32 @@ msgstr[2] "%s бітів"
 #. * compatibility.  Users will not see this string unless a program is using this deprecated function.
 #. * Please translate as literally as possible.
 #.
-#: glib/gutils.c:3029
+#: glib/gutils.c:3032
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f КБ"
 
-#: glib/gutils.c:3034
+#: glib/gutils.c:3037
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f МБ"
 
-#: glib/gutils.c:3039
+#: glib/gutils.c:3042
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f ГБ"
 
-#: glib/gutils.c:3044
+#: glib/gutils.c:3047
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f ТБ"
 
-#: glib/gutils.c:3049
+#: glib/gutils.c:3052
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f ПБ"
 
-#: glib/gutils.c:3054
+#: glib/gutils.c:3057
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f ЕБ"
