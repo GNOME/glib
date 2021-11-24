@@ -5094,6 +5094,15 @@ g_win32_app_info_launch_uris (GAppInfo           *appinfo,
 }
 
 static gboolean
+g_win32_app_info_should_show (GAppInfo *appinfo)
+{
+  /* FIXME: This is a placeholder implementation to avoid crashes
+   * for now. It can be made more specific to @appinfo in future. */
+
+  return TRUE;
+}
+
+static gboolean
 g_win32_app_info_launch (GAppInfo           *appinfo,
                          GList              *files,
                          GAppLaunchContext  *launch_context,
@@ -5229,7 +5238,7 @@ g_win32_app_info_iface_init (GAppInfoIface *iface)
   iface->supports_uris = g_win32_app_info_supports_uris;
   iface->supports_files = g_win32_app_info_supports_files;
   iface->launch_uris = g_win32_app_info_launch_uris;
-/*  iface->should_show = g_win32_app_info_should_show;*/
+  iface->should_show = g_win32_app_info_should_show;
 /*  iface->set_as_default_for_type = g_win32_app_info_set_as_default_for_type;*/
 /*  iface->set_as_default_for_extension = g_win32_app_info_set_as_default_for_extension;*/
 /*  iface->add_supports_type = g_win32_app_info_add_supports_type;*/
