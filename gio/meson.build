@@ -74,17 +74,6 @@ if host_system != 'windows'
     endif
   endif
 
-  # res_init()
-  if cc.links('''#include <sys/types.h>
-                 #include <netinet/in.h>
-                 #include <arpa/nameser.h>
-                 #include <resolv.h>
-                 int main (int argc, char ** argv) {
-                   return res_init();
-                 }''', args : network_args, name : 'res_init()')
-    glib_conf.set('HAVE_RES_INIT', 1)
-  endif
-
   # res_nclose()
   if cc.links('''#include <sys/types.h>
                  #include <netinet/in.h>

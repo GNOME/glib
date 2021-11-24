@@ -64,7 +64,8 @@ static guint signals[LAST_SIGNAL] = { 0 };
 
 struct _GResolverPrivate {
 #ifdef G_OS_UNIX
-  time_t resolv_conf_timestamp;
+  GMutex mutex;
+  time_t resolv_conf_timestamp;  /* protected by @mutex */
 #else
   int dummy;
 #endif
@@ -149,8 +150,24 @@ g_resolver_real_lookup_service_finish (GResolver            *resolver,
 }
 
 static void
+g_resolver_finalize (GObject *object)
+{
+#ifdef G_OS_UNIX
+  GResolver *resolver = G_RESOLVER (object);
+
+  g_mutex_clear (&resolver->priv->mutex);
+#endif
+
+  G_OBJECT_CLASS (g_resolver_parent_class)->finalize (object);
+}
+
+static void
 g_resolver_class_init (GResolverClass *resolver_class)
 {
+  GObjectClass *object_class = G_OBJECT_CLASS (resolver_class);
+
+  object_class->finalize = g_resolver_finalize;
+
   /* Automatically pass these over to the lookup_records methods */
   resolver_class->lookup_service = g_resolver_real_lookup_service;
   resolver_class->lookup_service_async = g_resolver_real_lookup_service_async;
@@ -185,6 +202,8 @@ g_resolver_init (GResolver *resolver)
 #ifdef G_OS_UNIX
   if (stat (_PATH_RESCONF, &st) == 0)
     resolver->priv->resolv_conf_timestamp = st.st_mtime;
+
+  g_mutex_init (&resolver->priv->mutex);
 #endif
 }
 
@@ -242,27 +261,23 @@ g_resolver_set_default (GResolver *resolver)
   G_UNLOCK (default_resolver);
 }
 
-/* Bionic has res_init() but it's not in any header */
-#ifdef __BIONIC__
-int res_init (void);
-#endif
-
 static void
-g_resolver_maybe_reload (GResolver *resolver)
+maybe_emit_reload (GResolver *resolver)
 {
 #ifdef G_OS_UNIX
   struct stat st;
 
   if (stat (_PATH_RESCONF, &st) == 0)
     {
+      g_mutex_lock (&resolver->priv->mutex);
       if (st.st_mtime != resolver->priv->resolv_conf_timestamp)
         {
           resolver->priv->resolv_conf_timestamp = st.st_mtime;
-#ifdef HAVE_RES_INIT
-          res_init ();
-#endif
+          g_mutex_unlock (&resolver->priv->mutex);
           g_signal_emit (resolver, signals[RELOAD], 0);
         }
+      else
+        g_mutex_unlock (&resolver->priv->mutex);
     }
 #endif
 }
@@ -444,7 +459,7 @@ lookup_by_name_real (GResolver                 *resolver,
       return NULL;
     }
 
-  g_resolver_maybe_reload (resolver);
+  maybe_emit_reload (resolver);
 
   if (flags != G_RESOLVER_NAME_LOOKUP_FLAGS_DEFAULT)
     {
@@ -602,7 +617,7 @@ lookup_by_name_async_real (GResolver                *resolver,
       return;
     }
 
-  g_resolver_maybe_reload (resolver);
+  maybe_emit_reload (resolver);
 
   if (flags != G_RESOLVER_NAME_LOOKUP_FLAGS_DEFAULT)
     {
@@ -839,7 +854,7 @@ g_resolver_lookup_by_address (GResolver     *resolver,
   g_return_val_if_fail (G_IS_RESOLVER (resolver), NULL);
   g_return_val_if_fail (G_IS_INET_ADDRESS (address), NULL);
 
-  g_resolver_maybe_reload (resolver);
+  maybe_emit_reload (resolver);
   return G_RESOLVER_GET_CLASS (resolver)->
     lookup_by_address (resolver, address, cancellable, error);
 }
@@ -868,7 +883,7 @@ g_resolver_lookup_by_address_async (GResolver           *resolver,
   g_return_if_fail (G_IS_RESOLVER (resolver));
   g_return_if_fail (G_IS_INET_ADDRESS (address));
 
-  g_resolver_maybe_reload (resolver);
+  maybe_emit_reload (resolver);
   G_RESOLVER_GET_CLASS (resolver)->
     lookup_by_address_async (resolver, address, cancellable, callback, user_data);
 }
@@ -985,7 +1000,7 @@ g_resolver_lookup_service (GResolver     *resolver,
       return NULL;
     }
 
-  g_resolver_maybe_reload (resolver);
+  maybe_emit_reload (resolver);
   targets = G_RESOLVER_GET_CLASS (resolver)->
     lookup_service (resolver, rrname, cancellable, error);
 
@@ -1037,7 +1052,7 @@ g_resolver_lookup_service_async (GResolver           *resolver,
       return;
     }
 
-  g_resolver_maybe_reload (resolver);
+  maybe_emit_reload (resolver);
   G_RESOLVER_GET_CLASS (resolver)->
     lookup_service_async (resolver, rrname, cancellable, callback, user_data);
 
@@ -1136,7 +1151,7 @@ g_resolver_lookup_records (GResolver            *resolver,
   g_return_val_if_fail (G_IS_RESOLVER (resolver), NULL);
   g_return_val_if_fail (rrname != NULL, NULL);
 
-  g_resolver_maybe_reload (resolver);
+  maybe_emit_reload (resolver);
   records = G_RESOLVER_GET_CLASS (resolver)->
     lookup_records (resolver, rrname, record_type, cancellable, error);
 
@@ -1170,7 +1185,7 @@ g_resolver_lookup_records_async (GResolver           *resolver,
   g_return_if_fail (G_IS_RESOLVER (resolver));
   g_return_if_fail (rrname != NULL);
 
-  g_resolver_maybe_reload (resolver);
+  maybe_emit_reload (resolver);
   G_RESOLVER_GET_CLASS (resolver)->
     lookup_records_async (resolver, rrname, record_type, cancellable, callback, user_data);
 }
@@ -1210,15 +1225,21 @@ g_resolver_lookup_records_finish (GResolver     *resolver,
 guint64
 g_resolver_get_serial (GResolver *resolver)
 {
+  guint64 result;
+
   g_return_val_if_fail (G_IS_RESOLVER (resolver), 0);
 
-  g_resolver_maybe_reload (resolver);
+  maybe_emit_reload (resolver);
 
 #ifdef G_OS_UNIX
-  return (guint64) resolver->priv->resolv_conf_timestamp;
+  g_mutex_lock (&resolver->priv->mutex);
+  result = resolver->priv->resolv_conf_timestamp;
+  g_mutex_unlock (&resolver->priv->mutex);
 #else
-  return 1;
+  result = 1;
 #endif
+
+  return result;
 }
 
 /**
