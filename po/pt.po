@@ -6,14 +6,14 @@
 # Sérgio Cardeira <cardeira.sergio@gmail.com>, 2016.
 # Tiago Santos <tiagofsantos81@sapo.pt>, 2014 - 2016.
 # Juliano de Souza Camargo <julianosc@protonmail.com>, 2020.
-# Hugo Carvalho <hugokarvalho@hotmail.com>, 2020.
+# Hugo Carvalho <hugokarvalho@hotmail.com>, 2020, 2021.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: 3.12\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2021-11-23 13:32+0000\n"
-"PO-Revision-Date: 2021-11-23 19:50+0000\n"
+"POT-Creation-Date: 2021-11-24 22:09+0000\n"
+"PO-Revision-Date: 2021-11-25 13:53+0000\n"
 "Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
 "Language-Team: Portuguese <https://l10n.gnome.org/teams/pt/>\n"
 "Language: pt\n"
@@ -22,6 +22,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.0\n"
+
+#: gio/gappinfo.c:333
+msgid "Setting default applications not supported yet"
+msgstr "Definição de aplicações predefinidas ainda não suportado"
+
+#: gio/gappinfo.c:366
+msgid "Setting application as last used for type not supported yet"
+msgstr "Definir aplicação como última utilizada para tipo ainda não suportado"
 
 #: gio/gapplication.c:500
 msgid "GApplication options"
@@ -974,17 +982,17 @@ msgstr "Impossível obter o perfil de equipamento: %s"
 msgid "Unable to load %s or %s: "
 msgstr "Incapaz de carregar %s ou %s: "
 
-#: gio/gdbusproxy.c:1569
+#: gio/gdbusproxy.c:1573
 #, c-format
 msgid "Error calling StartServiceByName for %s: "
 msgstr "Erro ao invocar StartServiceByName para %s: "
 
-#: gio/gdbusproxy.c:1592
+#: gio/gdbusproxy.c:1596
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Resposta %d inesperada do método StartServiceByName(“%s”)"
 
-#: gio/gdbusproxy.c:2703 gio/gdbusproxy.c:2838
+#: gio/gdbusproxy.c:2707 gio/gdbusproxy.c:2842
 #, c-format
 msgid ""
 "Cannot invoke method; proxy is for the well-known name %s without an owner, "
@@ -1235,7 +1243,7 @@ msgstr "Imprimir XML"
 
 #: gio/gdbus-tool.c:1697
 msgid "Introspect children"
-msgstr "Realizar introspeção dos filhos"
+msgstr "Realizar introspeção dos sub processos"
 
 #: gio/gdbus-tool.c:1698
 msgid "Only print properties"
@@ -1510,7 +1518,7 @@ msgstr "Fluxo de entrada não permite truncar"
 msgid "Truncate not supported on stream"
 msgstr "Fluxo não suporta truncar"
 
-#: gio/ghttpproxy.c:91 gio/gresolver.c:443 gio/gresolver.c:596
+#: gio/ghttpproxy.c:91 gio/gresolver.c:458 gio/gresolver.c:611
 #: glib/gconvert.c:1825
 msgid "Invalid hostname"
 msgstr "Nome de máquina inválido"
@@ -3476,18 +3484,18 @@ msgstr "Soma dos vetores passados ao %s demasiado longa"
 msgid "Source stream is already closed"
 msgstr "Fluxo de origem já está fechado"
 
-#: gio/gresolver.c:386 gio/gthreadedresolver.c:150 gio/gthreadedresolver.c:168
+#: gio/gresolver.c:401 gio/gthreadedresolver.c:150 gio/gthreadedresolver.c:168
 #, c-format
 msgid "Error resolving “%s”: %s"
 msgstr "Erro ao resolver “%s”: %s"
 
 #. Translators: The placeholder is for a function name.
-#: gio/gresolver.c:455 gio/gresolver.c:615
+#: gio/gresolver.c:470 gio/gresolver.c:630
 #, c-format
 msgid "%s not implemented"
 msgstr "%s não implementado"
 
-#: gio/gresolver.c:984 gio/gresolver.c:1036
+#: gio/gresolver.c:999 gio/gresolver.c:1051
 msgid "Invalid domain"
 msgstr "Domínio inválido"
 
@@ -3692,7 +3700,7 @@ msgstr "ESQUEMA[:CAMINHO]"
 
 #: gio/gsettings-tool.c:614
 msgid "List the children of SCHEMA"
-msgstr "Listar os filhos de ESQUEMA"
+msgstr "Listar os sub processos de ESQUEMA"
 
 #: gio/gsettings-tool.c:620
 msgid ""
@@ -3791,7 +3799,7 @@ msgstr ""
 "  list-schemas              Lista os esquemas instalados\n"
 "  list-relocatable-schemas  Lista os esquemas realocáveis\n"
 "  list-keys                 Lista as chaves num esquema\n"
-"  list-children             Lista os filhos de um esquema\n"
+"  list-children             Lista os sub processos de um esquema\n"
 "  list-recursively          Lista as chaves e valores, recursivamente\n"
 "  range                     Consulta o intervalo de uma chave\n"
 "  describe                  Consulta a descrição de um chave\n"
@@ -4165,12 +4173,12 @@ msgstr "Erro de proxy SOCKSv5 desconhecido."
 #: gio/gtestdbus.c:612 glib/gspawn-win32.c:311
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
-msgstr "Falha ao criar canal para comunicar com processo filho (%s)"
+msgstr "Falha ao criar canal para comunicar com sub processo (%s)"
 
 #: gio/gtestdbus.c:619
 #, c-format
 msgid "Pipes are not supported in this platform"
-msgstr "Pipes não são suportados nesta plataforma"
+msgstr "Os canais não são suportados nesta plataforma"
 
 #: gio/gthemedicon.c:595
 #, c-format
@@ -5843,12 +5851,12 @@ msgstr "Texto estava vazio (ou apenas continha espaços)"
 #: glib/gspawn.c:310
 #, c-format
 msgid "Failed to read data from child process (%s)"
-msgstr "Falha ao ler dados de processo filho (%s)"
+msgstr "Falha ao ler dados de sub processo (%s)"
 
 #: glib/gspawn.c:461
 #, c-format
 msgid "Unexpected error in reading data from a child process (%s)"
-msgstr "Erro inesperado ao ler dados de processo filho (%s)"
+msgstr "Erro inesperado ao ler dados de sub processo (%s)"
 
 #: glib/gspawn.c:546
 #, c-format
@@ -5858,22 +5866,22 @@ msgstr "Erro inesperado em waitpid() (%s)"
 #: glib/gspawn.c:1166 glib/gspawn-win32.c:1407
 #, c-format
 msgid "Child process exited with code %ld"
-msgstr "Processo filho terminou com o código %ld"
+msgstr "Sub processo terminou com o código %ld"
 
 #: glib/gspawn.c:1174
 #, c-format
 msgid "Child process killed by signal %ld"
-msgstr "Processo filho morto com o sinal %ld"
+msgstr "Sub processo morto com o sinal %ld"
 
 #: glib/gspawn.c:1181
 #, c-format
 msgid "Child process stopped by signal %ld"
-msgstr "Processo filho parado com o sinal %ld"
+msgstr "Sub processo parado com o sinal %ld"
 
 #: glib/gspawn.c:1188
 #, c-format
 msgid "Child process exited abnormally"
-msgstr "O processo filho terminou anormalmente"
+msgstr "O sub processo terminou anormalmente"
 
 #: glib/gspawn.c:1855 glib/gspawn-win32.c:350 glib/gspawn-win32.c:358
 #, c-format
@@ -5883,7 +5891,7 @@ msgstr "Falha ao ler de canal filho (%s)"
 #: glib/gspawn.c:2157
 #, c-format
 msgid "Failed to spawn child process “%s” (%s)"
-msgstr "Falha ao criar processo filho “%s” (%s)"
+msgstr "Falha ao criar sub processo “%s” (%s)"
 
 #: glib/gspawn.c:2274
 #, c-format
@@ -5898,22 +5906,22 @@ msgstr "Falha ao ir para o diretório “%s” (%s)"
 #: glib/gspawn.c:2444
 #, c-format
 msgid "Failed to execute child process “%s” (%s)"
-msgstr "Falha ao executar o processo filho “%s” (%s)"
+msgstr "Falha ao executar o sub processo “%s” (%s)"
 
 #: glib/gspawn.c:2454
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
-msgstr "Falha ao redirecionar saída ou entrada de processo filho (%s)"
+msgstr "Falha ao redirecionar saída ou entrada de sub processo (%s)"
 
 #: glib/gspawn.c:2463
 #, c-format
 msgid "Failed to fork child process (%s)"
-msgstr "Falha ao efetuar fork de processo filho (%s)"
+msgstr "Falha ao efetuar fork de sub processo (%s)"
 
 #: glib/gspawn.c:2471
 #, c-format
 msgid "Unknown error executing child process “%s”"
-msgstr "Erro desconhecido ao executar processo filho “%s”"
+msgstr "Erro desconhecido ao executar sub processo “%s”"
 
 #: glib/gspawn.c:2495
 #, c-format
@@ -5922,12 +5930,12 @@ msgstr "Impossível ler dados suficientes de canal pid do filho (%s)"
 
 #: glib/gspawn-win32.c:294
 msgid "Failed to read data from child process"
-msgstr "Falha ao ler dados de processo filho"
+msgstr "Falha ao ler dados de sub processo"
 
 #: glib/gspawn-win32.c:387 glib/gspawn-win32.c:392 glib/gspawn-win32.c:511
 #, c-format
 msgid "Failed to execute child process (%s)"
-msgstr "Falha ao executar processo filho (%s)"
+msgstr "Falha ao executar sub processo (%s)"
 
 #: glib/gspawn-win32.c:461
 #, c-format
@@ -5959,8 +5967,7 @@ msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr ""
-"Erro inesperado no g_io_channel_win32_poll() ao ler dados de um processo "
-"filho"
+"Erro inesperado no g_io_channel_win32_poll() ao ler dados de um sub processo"
 
 #: glib/gstrfuncs.c:3347 glib/gstrfuncs.c:3449
 msgid "Empty string is not a number"
@@ -6055,157 +6062,157 @@ msgid "Character out of range for UTF-16"
 msgstr "Carácter fora do limite para UTF-16"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2813
+#: glib/gutils.c:2816
 #, c-format
 msgid "%.1f kB"
 msgstr "%.1f kB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2815
+#: glib/gutils.c:2818
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2817
+#: glib/gutils.c:2820
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2819
+#: glib/gutils.c:2822
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2821
+#: glib/gutils.c:2824
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2823
+#: glib/gutils.c:2826
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2827
+#: glib/gutils.c:2830
 #, c-format
 msgid "%.1f KiB"
 msgstr "%.1f KiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2829
+#: glib/gutils.c:2832
 #, c-format
 msgid "%.1f MiB"
 msgstr "%.1f MiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2831
+#: glib/gutils.c:2834
 #, c-format
 msgid "%.1f GiB"
 msgstr "%.1f GiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2833
+#: glib/gutils.c:2836
 #, c-format
 msgid "%.1f TiB"
 msgstr "%.1f TiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2835
+#: glib/gutils.c:2838
 #, c-format
 msgid "%.1f PiB"
 msgstr "%.1f PiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2837
+#: glib/gutils.c:2840
 #, c-format
 msgid "%.1f EiB"
 msgstr "%.1f EiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2841
+#: glib/gutils.c:2844
 #, c-format
 msgid "%.1f kb"
 msgstr "%.1f kb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2843
+#: glib/gutils.c:2846
 #, c-format
 msgid "%.1f Mb"
 msgstr "%.1f Mb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2845
+#: glib/gutils.c:2848
 #, c-format
 msgid "%.1f Gb"
 msgstr "%.1f Gb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2847
+#: glib/gutils.c:2850
 #, c-format
 msgid "%.1f Tb"
 msgstr "%.1f Tb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2849
+#: glib/gutils.c:2852
 #, c-format
 msgid "%.1f Pb"
 msgstr "%.1f Pb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2851
+#: glib/gutils.c:2854
 #, c-format
 msgid "%.1f Eb"
 msgstr "%.1f Eb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2855
+#: glib/gutils.c:2858
 #, c-format
 msgid "%.1f Kib"
 msgstr "%.1f Kib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2857
+#: glib/gutils.c:2860
 #, c-format
 msgid "%.1f Mib"
 msgstr "%.1f Mib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2859
+#: glib/gutils.c:2862
 #, c-format
 msgid "%.1f Gib"
 msgstr "%.1f Gib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2861
+#: glib/gutils.c:2864
 #, c-format
 msgid "%.1f Tib"
 msgstr "%.1f Tib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2863
+#: glib/gutils.c:2866
 #, c-format
 msgid "%.1f Pib"
 msgstr "%.1f Pib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2865
+#: glib/gutils.c:2868
 #, c-format
 msgid "%.1f Eib"
 msgstr "%.1f Eib"
 
-#: glib/gutils.c:2899 glib/gutils.c:3016
+#: glib/gutils.c:2902 glib/gutils.c:3019
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
 msgstr[0] "%u byte"
 msgstr[1] "%u bytes"
 
-#: glib/gutils.c:2903
+#: glib/gutils.c:2906
 #, c-format
 msgid "%u bit"
 msgid_plural "%u bits"
@@ -6213,7 +6220,7 @@ msgstr[0] "%u bit"
 msgstr[1] "%u bits"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
-#: glib/gutils.c:2970
+#: glib/gutils.c:2973
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
@@ -6221,7 +6228,7 @@ msgstr[0] "%s byte"
 msgstr[1] "%s bytes"
 
 #. Translators: the %s in "%s bits" will always be replaced by a number.
-#: glib/gutils.c:2975
+#: glib/gutils.c:2978
 #, c-format
 msgid "%s bit"
 msgid_plural "%s bits"
@@ -6233,32 +6240,32 @@ msgstr[1] "%s bits"
 #. * compatibility.  Users will not see this string unless a program is using this deprecated function.
 #. * Please translate as literally as possible.
 #.
-#: glib/gutils.c:3029
+#: glib/gutils.c:3032
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: glib/gutils.c:3034
+#: glib/gutils.c:3037
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: glib/gutils.c:3039
+#: glib/gutils.c:3042
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: glib/gutils.c:3044
+#: glib/gutils.c:3047
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
-#: glib/gutils.c:3049
+#: glib/gutils.c:3052
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
-#: glib/gutils.c:3054
+#: glib/gutils.c:3057
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
