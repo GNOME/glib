@@ -270,9 +270,14 @@ g_string_chunk_insert_len (GStringChunk *chunk,
   else
     size = (gsize) len;
 
-  if ((chunk->storage_next + size + 1) > chunk->this_size)
+  if ((G_MAXSIZE - chunk->storage_next < size + 1) || (chunk->storage_next + size + 1) > chunk->this_size)
     {
       gsize new_size = g_nearest_pow (MAX (chunk->default_size, size + 1));
+
+      /* If size is bigger than G_MAXSIZE / 2 then store it in its own
+       * allocation instead of failing here */
+      if (new_size == 0)
+        new_size = size + 1;
 
       chunk->storage_list = g_slist_prepend (chunk->storage_list,
                                              g_new (gchar, new_size));
