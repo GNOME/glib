@@ -1503,8 +1503,16 @@ static void
 g_ptr_array_maybe_expand (GRealPtrArray *array,
                           guint          len)
 {
+  guint max_len;
+
+  /* The maximum array length is derived from following constraints:
+   * - The number of bytes must fit into a gsize / 2.
+   * - The number of elements must fit into guint.
+   */
+  max_len = MIN (G_MAXSIZE / 2 / sizeof (gpointer), G_MAXUINT);
+
   /* Detect potential overflow */
-  if G_UNLIKELY ((G_MAXUINT - array->len) < len)
+  if G_UNLIKELY ((max_len - array->len) < len)
     g_error ("adding %u to array would overflow", len);
 
   if ((array->len + len) > array->alloc)
