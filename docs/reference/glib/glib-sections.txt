@@ -1389,7 +1389,9 @@ g_mem_gc_friendly
 
 <SUBSECTION>
 g_alloca
+g_alloca0
 g_newa
+g_newa0
 
 <SUBSECTION>
 g_memmove
