@@ -29,6 +29,7 @@
 #include "gioerror.h"
 #include "string.h"
 #include "glibintl.h"
+#include "gutilsprivate.h"
 
 
 /**
@@ -594,17 +595,6 @@ array_resize (GMemoryOutputStream  *ostream,
     priv->valid_len = priv->len;
 
   return TRUE;
-}
-
-static gsize
-g_nearest_pow (gsize num)
-{
-  gsize n = 1;
-
-  while (n < num && n > 0)
-    n <<= 1;
-
-  return n;
 }
 
 static gssize

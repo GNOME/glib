@@ -37,6 +37,7 @@
 #include "gstring.h"
 #include "guriprivate.h"
 #include "gprintf.h"
+#include "gutilsprivate.h"
 
 
 /**
@@ -71,34 +72,21 @@
  * The GString struct contains the public fields of a GString.
  */
 
-
-#define MY_MAXSIZE ((gsize)-1)
-
-static inline gsize
-nearest_power (gsize base, gsize num)
-{
-  if (num > MY_MAXSIZE / 2)
-    {
-      return MY_MAXSIZE;
-    }
-  else
-    {
-      gsize n = base;
-
-      while (n < num)
-        n <<= 1;
-
-      return n;
-    }
-}
-
 static void
 g_string_maybe_expand (GString *string,
                        gsize    len)
 {
+  /* Detect potential overflow */
+  if G_UNLIKELY ((G_MAXSIZE - string->len - 1) < len)
+    g_error ("adding %" G_GSIZE_FORMAT " to string would overflow", len);
+
   if (string->len + len >= string->allocated_len)
     {
-      string->allocated_len = nearest_power (1, string->len + len + 1);
+      string->allocated_len = g_nearest_pow (string->len + len + 1);
+      /* If the new size is bigger than G_MAXSIZE / 2, only allocate enough
+       * memory for this string and don't over-allocate. */
+      if (string->allocated_len == 0)
+        string->allocated_len = string->len + len + 1;
       string->str = g_realloc (string->str, string->allocated_len);
     }
 }
