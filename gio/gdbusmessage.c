@@ -51,6 +51,7 @@
 #include "gseekable.h"
 #include "gioerror.h"
 #include "gdbusprivate.h"
+#include "gutilsprivate.h"
 
 #ifdef G_OS_UNIX
 #include "gunixfdlist.h"
@@ -256,17 +257,6 @@ g_memory_buffer_read_uint64 (GMemoryBuffer  *mbuf,
 }
 
 #define MIN_ARRAY_SIZE  128
-
-static gsize
-g_nearest_pow (gsize num)
-{
-  gsize n = 1;
-
-  while (n < num && n > 0)
-    n <<= 1;
-
-  return n;
-}
 
 static void
 array_resize (GMemoryBuffer  *mbuf,

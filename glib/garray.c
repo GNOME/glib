@@ -42,6 +42,7 @@
 #include "gmessages.h"
 #include "gqsort.h"
 #include "grefcount.h"
+#include "gutilsprivate.h"
 
 /**
  * SECTION:arrays
@@ -159,7 +160,6 @@ struct _GRealArray
     g_array_elt_zero ((array), (array)->len, 1);                        \
 }G_STMT_END
 
-static gsize g_nearest_pow        (gsize       num) G_GNUC_CONST;
 static void  g_array_maybe_expand (GRealArray *array,
                                    guint       len);
 
@@ -970,28 +970,6 @@ g_array_binary_search (GArray        *array,
     *out_match_index = middle;
 
   return result;
-}
-
-/* Returns the smallest power of 2 greater than or equal to n,
- * or 0 if such power does not fit in a gsize
- */
-static gsize
-g_nearest_pow (gsize num)
-{
-  gsize n = num - 1;
-
-  g_assert (num > 0 && num <= G_MAXSIZE / 2);
-
-  n |= n >> 1;
-  n |= n >> 2;
-  n |= n >> 4;
-  n |= n >> 8;
-  n |= n >> 16;
-#if GLIB_SIZEOF_SIZE_T == 8
-  n |= n >> 32;
-#endif
-
-  return n + 1;
 }
 
 static void
