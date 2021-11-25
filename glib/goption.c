@@ -2113,8 +2113,7 @@ g_option_context_parse (GOptionContext   *context,
                   gboolean has_h_entry = context_has_h_entry (context);
                   arg = (*argv)[i] + 1;
                   arg_length = strlen (arg);
-                  nulled_out = g_newa (gboolean, arg_length);
-                  memset (nulled_out, 0, arg_length * sizeof (gboolean));
+                  nulled_out = g_newa0 (gboolean, arg_length);
                   for (j = 0; j < arg_length; j++)
                     {
                       if (context->help_enabled && (arg[j] == '?' ||
