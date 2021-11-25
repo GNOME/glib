@@ -95,8 +95,7 @@ test_memchunk_thread (gpointer data)
     }
 
   /* prepare for memchunk creation */
-  memchunks = g_alloca (sizeof (memchunks[0]) * prime_size);
-  memset (memchunks, 0, sizeof (memchunks[0]) * prime_size);
+  memchunks = g_newa0 (GMemChunk*, prime_size);
 
   ps = g_new (guint8*, number_of_blocks);
   ss = g_new (guint, number_of_blocks);
