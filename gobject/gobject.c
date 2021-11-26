@@ -2163,8 +2163,7 @@ g_object_new_with_properties (GType          object_type,
           params[count].pspec = pspec;
 
           /* Init GValue */
-          params[count].value = g_newa (GValue, 1);
-          memset (params[count].value, 0, sizeof (GValue));
+          params[count].value = g_newa0 (GValue, 1);
           g_value_init (params[count].value, G_VALUE_TYPE (&values[i]));
 
           g_value_copy (&values[i], params[count].value);

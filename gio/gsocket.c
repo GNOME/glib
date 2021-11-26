@@ -4570,8 +4570,7 @@ G_STMT_START { \
       _msg->msg_control = NULL; \
     else \
       { \
-        _msg->msg_control = g_alloca (_msg->msg_controllen); \
-        memset (_msg->msg_control, '\0', _msg->msg_controllen); \
+        _msg->msg_control = g_alloca0 (_msg->msg_controllen); \
       } \
  \
     cmsg = CMSG_FIRSTHDR (_msg); \
