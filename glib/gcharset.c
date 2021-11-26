@@ -109,6 +109,12 @@ static gboolean
 g_utf8_get_charset_internal (const char  *raw_data,
                              const char **a)
 {
+  /* Allow CHARSET to override the charset of any locale category. Users should
+   * probably never be setting this — instead, just add the charset after a `.`
+   * in `LANGUAGE`/`LC_ALL`/`LC_*`/`LANG`. I can’t find any reference (in
+   * `git log`, code comments, or man pages) to this environment variable being
+   * standardised or documented or even used anywhere outside GLib. Perhaps it
+   * should eventually be removed. */
   const char *charset = g_getenv ("CHARSET");
 
   if (charset && *charset)

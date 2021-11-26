@@ -3047,6 +3047,10 @@ main (gint   argc,
    * Unset it to avoid interference with tests using setlocale and translation. */
   g_unsetenv ("LANGUAGE");
 
+  /* GLib uses CHARSET to allow overriding the character set used for all locale
+   * categories. Unset it to avoid interference with tests. */
+  g_unsetenv ("CHARSET");
+
   g_test_init (&argc, &argv, NULL);
 
   /* GDateTime Tests */
