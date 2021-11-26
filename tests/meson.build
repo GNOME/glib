@@ -30,7 +30,6 @@ tests = {
   'mapping-test' : {},
   'onceinit' : {},
   'asyncqueue-test' : {},
-  'qsort-test' : {},
   'relation-test' : {},
   'slice-concurrent' : {},
   'slice-threadinit' : {
