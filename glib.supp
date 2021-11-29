@@ -862,6 +862,17 @@
 	fun:g_get_user_data_dir
 }
 
+# g_get_home_dir() caches a one-time allocation
+{
+	g_get_home_dir
+	Memcheck:Leak
+	match-leak-kinds:reachable
+	fun:malloc
+	...
+	fun:g_build_home_dir
+	fun:g_get_home_dir
+}
+
 # gdesktopappinfo.c caches a one-time allocation global table of @desktop_file_dirs.
 {
 	desktop_file_dirs_malloc
