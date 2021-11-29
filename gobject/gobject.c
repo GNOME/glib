@@ -303,6 +303,7 @@ g_object_notify_queue_freeze (GObject  *object,
                G_OBJECT_TYPE_NAME (object), object);
   else
     nqueue->freeze_count++;
+
   G_UNLOCK(notify_lock);
 
   return nqueue;
@@ -3574,6 +3575,7 @@ g_object_unref (gpointer _object)
   else
     {
       GSList **weak_locations;
+      GObjectNotifyQueue *nqueue;
 
       /* The only way that this object can live at this point is if
        * there are outstanding weak references already established
@@ -3615,6 +3617,18 @@ g_object_unref (gpointer _object)
           g_rw_lock_writer_unlock (&weak_locations_lock);
         }
 
+      /* freeze the notification queue, so we don't accidentally emit
+       * notifications during dispose() and finalize().
+       *
+       * The notification queue stays frozen unless the instance acquires
+       * a reference during dispose(), in which case we thaw it and
+       * dispatch all the notifications. If the instance gets through
+       * to finalize(), the notification queue gets automatically
+       * drained when g_object_finalize() is reached and
+       * the qdata is cleared.
+       */
+      nqueue = g_object_notify_queue_freeze (object, FALSE);
+
       /* we are about to remove the last reference */
       TRACE (GOBJECT_OBJECT_DISPOSE(object,G_TYPE_FROM_INSTANCE(object), 1));
       G_OBJECT_GET_CLASS (object)->dispose (object);
@@ -3630,6 +3644,9 @@ g_object_unref (gpointer _object)
 
           if (!g_atomic_int_compare_and_exchange ((int *)&object->ref_count, old_ref, old_ref - 1))
 	    goto retry_atomic_decrement2;
+
+          /* emit all notifications that have been queued during dispose() */
+          g_object_notify_queue_thaw (object, nqueue);
 
 	  TRACE (GOBJECT_OBJECT_UNREF(object,G_TYPE_FROM_INSTANCE(object),old_ref));
 
@@ -3657,7 +3674,6 @@ g_object_unref (gpointer _object)
 	{
 	  TRACE (GOBJECT_OBJECT_FINALIZE(object,G_TYPE_FROM_INSTANCE(object)));
           G_OBJECT_GET_CLASS (object)->finalize (object);
-
 	  TRACE (GOBJECT_OBJECT_FINALIZE_END(object,G_TYPE_FROM_INSTANCE(object)));
 
           GOBJECT_IF_DEBUG (OBJECTS,
@@ -3675,6 +3691,13 @@ g_object_unref (gpointer _object)
 	    });
           g_type_free_instance ((GTypeInstance*) object);
 	}
+      else
+        {
+          /* The instance acquired a reference between dispose() and
+           * finalize(), so we need to thaw the notification queue
+           */
+          g_object_notify_queue_thaw (object, nqueue);
+        }
     }
 }
 
