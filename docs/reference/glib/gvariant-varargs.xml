@@ -658,6 +658,7 @@ g_variant_builder_unref (builder);
   gchar *str;
 
   g_variant_get (value, "as", &iter);
+  /* No need to free 'str' unless breaking out of the loop */
   while (g_variant_iter_loop (iter, "s", &str))
     g_print ("%s\n", str);
   g_variant_iter_free (iter);
@@ -878,7 +879,10 @@ value2 = g_variant_new ("(@(iii)*)", value1, g_variant_new_string ("foo"));
   g_variant_get (value2, "(rs)", NULL, &string); /* or "(@(iii)s)" */
   g_print ("i only got the string: %s\n", string);
   g_free (string);
-}]]></programlisting></informalexample>
+}
+
+/* no need to free 'value1' as 'value2' has consumed its floating reference */
+g_variant_unref (value2);]]></programlisting></informalexample>
    </refsect3>
   </refsect2>
 
@@ -917,7 +921,7 @@ dict = g_variant_builder_end (b);]]></programlisting></informalexample>
 gint value = 1;
 gint max = 3;
 
-/* type (oa{sa{sv}) */
+/* type (oa{sa{sv}}) */
 data = g_variant_new_parsed ("(%o, {'brightness': {'value': <%i>, 'max': <%i>}})",
                              "/object/path", value, max);
 {
@@ -928,10 +932,12 @@ data = g_variant_new_parsed ("(%o, {'brightness': {'value': <%i>, 'max': <%i>}})
 
   g_variant_get (data, "(o@a{?*})", &obj, &params);
   g_print ("object_path: %s\n", obj);
+  g_free (obj);
 
   p_brightness = g_variant_lookup_value (params, "brightness", G_VARIANT_TYPE_VARDICT);
   g_variant_lookup (p_brightness, "max", "i", &p_max);
   g_print ("max: %d\n", p_max);
+  g_variant_unref (params);
 }]]></programlisting></informalexample>
    </refsect3>
 
