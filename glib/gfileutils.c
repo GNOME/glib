@@ -2736,8 +2736,7 @@ gchar *
 g_canonicalize_filename (const gchar *filename,
                          const gchar *relative_to)
 {
-  gchar *canon, *start, *p, *q;
-  guint i;
+  gchar *canon, *input, *output, *start;
 
   g_return_val_if_fail (relative_to == NULL || g_path_is_absolute (relative_to), NULL);
 
@@ -2770,74 +2769,76 @@ g_canonicalize_filename (const gchar *filename,
       return g_build_filename (G_DIR_SEPARATOR_S, filename, NULL);
     }
 
-  /* POSIX allows double slashes at the start to
-   * mean something special (as does windows too).
-   * So, "//" != "/", but more than two slashes
+  /* Find the first dir separator and use the canonical dir separator. */
+  for (output = start - 1;
+       (output >= canon) && G_IS_DIR_SEPARATOR (*output);
+       output--)
+    *output = G_DIR_SEPARATOR;
+
+  output += 2;
+
+  /* POSIX allows double slashes at the start to mean something special
+   * (as does windows too). So, "//" != "/", but more than two slashes
    * is treated as "/".
    */
-  i = 0;
-  for (p = start - 1;
-       (p >= canon) &&
-         G_IS_DIR_SEPARATOR (*p);
-       p--)
-    i++;
-  if (i > 2)
-    {
-      i -= 1;
-      start -= i;
-      memmove (start, start+i, strlen (start+i) + 1);
-    }
+  if (start - output == 1)
+    output++;
 
-  /* Make sure we're using the canonical dir separator */
-  p++;
-  while (p < start && G_IS_DIR_SEPARATOR (*p))
-    *p++ = G_DIR_SEPARATOR;
-
-  p = start;
-  while (*p != 0)
+  input = start;
+  while (*input)
     {
-      if (p[0] == '.' && (p[1] == 0 || G_IS_DIR_SEPARATOR (p[1])))
+      /* input points to the next non-separator to be processed. */
+      /* output points to the next location to write to. */
+      g_assert (input > canon && G_IS_DIR_SEPARATOR (input[-1]));
+      g_assert (output > canon && G_IS_DIR_SEPARATOR (output[-1]));
+      g_assert (input >= output);
+
+      /* Ignore repeated dir separators. */
+      while (G_IS_DIR_SEPARATOR (input[0]))
+       input++;
+
+      /* Ignore single dot directory components. */
+      if (input[0] == '.' && (input[1] == 0 || G_IS_DIR_SEPARATOR (input[1])))
         {
-          memmove (p, p+1, strlen (p+1)+1);
+           if (input[1] == 0)
+             break;
+           input += 2;
         }
-      else if (p[0] == '.' && p[1] == '.' && (p[2] == 0 || G_IS_DIR_SEPARATOR (p[2])))
+      /* Remove double-dot directory components along with the preceding
+       * path component. */
+      else if (input[0] == '.' && input[1] == '.' &&
+               (input[2] == 0 || G_IS_DIR_SEPARATOR (input[2])))
         {
-          q = p + 2;
-          /* Skip previous separator */
-          p = p - 2;
-          if (p < start)
-            p = start;
-          while (p > start && !G_IS_DIR_SEPARATOR (*p))
-            p--;
-          if (G_IS_DIR_SEPARATOR (*p))
-            *p++ = G_DIR_SEPARATOR;
-          memmove (p, q, strlen (q)+1);
+          if (output > start)
+            {
+              do
+                {
+                  output--;
+                }
+              while (!G_IS_DIR_SEPARATOR (output[-1]) && output > start);
+            }
+          if (input[2] == 0)
+            break;
+          input += 3;
         }
+      /* Copy the input to the output until the next separator,
+       * while converting it to canonical separator */
       else
         {
-          /* Skip until next separator */
-          while (*p != 0 && !G_IS_DIR_SEPARATOR (*p))
-            p++;
-
-          if (*p != 0)
-            {
-              /* Canonicalize one separator */
-              *p++ = G_DIR_SEPARATOR;
-            }
+          while (*input && !G_IS_DIR_SEPARATOR (*input))
+            *output++ = *input++;
+          if (input[0] == 0)
+            break;
+          input++;
+          *output++ = G_DIR_SEPARATOR;
         }
-
-      /* Remove additional separators */
-      q = p;
-      while (*q && G_IS_DIR_SEPARATOR (*q))
-        q++;
-
-      if (p != q)
-        memmove (p, q, strlen (q) + 1);
     }
 
-  /* Remove trailing slashes */
-  if (p > start && G_IS_DIR_SEPARATOR (*(p-1)))
-    *(p-1) = 0;
+  /* Remove a potentially trailing dir separator */
+  if (output > start && G_IS_DIR_SEPARATOR (output[-1]))
+    output--;
+
+  *output = '\0';
 
   return canon;
 }
