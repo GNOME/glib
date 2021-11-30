@@ -78,6 +78,8 @@ test_async_queue_destroy (void)
 {
   GAsyncQueue *q;
 
+  destroy_count = 0;
+
   q = g_async_queue_new_full (destroy_notify);
 
   g_assert_cmpint (destroy_count, ==, 0);
@@ -268,11 +270,52 @@ test_async_queue_push_front (void)
   g_async_queue_unref (q);
 }
 
+static void
+test_basics (void)
+{
+  GAsyncQueue *q;
+  gpointer item;
+
+  destroy_count = 0;
+
+  q = g_async_queue_new_full (destroy_notify);
+  g_async_queue_lock (q);
+  g_async_queue_ref (q);
+  g_async_queue_unlock (q);
+  g_async_queue_lock (q);
+  g_async_queue_ref_unlocked (q);
+  g_async_queue_unref_and_unlock (q);
+
+  item = g_async_queue_try_pop (q);
+  g_assert_null (item);
+
+  g_async_queue_lock (q);
+  item = g_async_queue_try_pop_unlocked (q);
+  g_async_queue_unlock (q);
+  g_assert_null (item);
+
+  g_async_queue_push (q, GINT_TO_POINTER (1));
+  g_async_queue_push (q, GINT_TO_POINTER (2));
+  g_async_queue_push (q, GINT_TO_POINTER (3));
+  g_assert_cmpint (destroy_count, ==, 0);
+
+  g_async_queue_unref (q);
+  g_assert_cmpint (destroy_count, ==, 0);
+
+  item = g_async_queue_pop (q);
+  g_assert_cmpint (GPOINTER_TO_INT (item), ==, 1);
+  g_assert_cmpint (destroy_count, ==, 0);
+
+  g_async_queue_unref (q);
+  g_assert_cmpint (destroy_count, ==, 2);
+}
+
 int
 main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
 
+  g_test_add_func ("/asyncqueue/basics", test_basics);
   g_test_add_func ("/asyncqueue/sort", test_async_queue_sort);
   g_test_add_func ("/asyncqueue/destroy", test_async_queue_destroy);
   g_test_add_func ("/asyncqueue/threads", test_async_queue_threads);
