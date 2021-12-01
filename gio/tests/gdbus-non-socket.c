@@ -32,10 +32,10 @@
 
 #include "gdbus-tests.h"
 
-static GMainLoop *loop = NULL;
-
 /* ---------------------------------------------------------------------------------------------------- */
-#ifdef G_OS_UNIX
+#if defined(G_OS_UNIX) && defined(ENABLE_DBUS_COOKIE_SHA1)
+
+static GMainLoop *loop = NULL;
 
 #include "test-pipe-unix.h"
 #include "test-io-stream.h"
@@ -276,12 +276,13 @@ test_non_socket (void)
   exit (0);
 }
 
-#else /* G_OS_UNIX */
+#else /* G_OS_UNIX && ENABLE_DBUS_COOKIE_SHA1 */
 
 static void
 test_non_socket (void)
 {
   /* TODO: test this with e.g. GWin32InputStream/GWin32OutputStream */
+  g_test_skip ("This test only works on Unix with DBUS_COOKIE_SHA1 authentication enabled");
 }
 #endif
 

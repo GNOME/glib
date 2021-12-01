@@ -20,6 +20,8 @@
 
 #include "config.h"
 
+#ifdef ENABLE_DBUS_COOKIE_SHA1
+
 #include <string.h>
 #include <fcntl.h>
 #include <errno.h>
@@ -1257,3 +1259,5 @@ mechanism_client_shutdown (GDBusAuthMechanism   *mechanism)
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
+
+#endif /* ENABLE_DBUS_COOKIE_SHA1 */

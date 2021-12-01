@@ -495,7 +495,11 @@ test_server_auth_abstract (void)
 static void
 test_server_auth_tcp (void)
 {
+#ifdef ENABLE_DBUS_COOKIE_SHA1
   do_test_server_auth (INTEROP_FLAGS_TCP);
+#else
+  g_test_skip ("DBUS_COOKIE_SHA1 authentication is disabled");
+#endif
 }
 
 static void
@@ -525,13 +529,21 @@ test_server_auth_external_require_same_user (void)
 static void
 test_server_auth_sha1 (void)
 {
+#ifdef ENABLE_DBUS_COOKIE_SHA1
   do_test_server_auth (INTEROP_FLAGS_SHA1);
+#else
+  g_test_skip ("DBUS_COOKIE_SHA1 authentication is disabled");
+#endif
 }
 
 static void
 test_server_auth_sha1_tcp (void)
 {
+#ifdef ENABLE_DBUS_COOKIE_SHA1
   do_test_server_auth (INTEROP_FLAGS_SHA1 | INTEROP_FLAGS_TCP);
+#else
+  g_test_skip ("DBUS_COOKIE_SHA1 authentication is disabled");
+#endif
 }
 
 int

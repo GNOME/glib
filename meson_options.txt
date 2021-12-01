@@ -122,3 +122,8 @@ option('libelf',
        type : 'feature',
        value : 'auto',
        description : 'Enable support for listing and extracting from ELF resource files with gresource tool')
+
+option('dbus_cookie_sha1',
+       type : 'feature',
+       value : 'enabled',
+       description : 'Allow GDBus to use the DBUS_COOKIE_SHA1 authentication mechanism')

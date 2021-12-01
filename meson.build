@@ -2390,6 +2390,10 @@ if host_system != 'windows'
     install_dir : join_paths(get_option('datadir'), 'glib-2.0', 'valgrind'))
 endif
 
+if get_option('dbus_cookie_sha1').enabled()
+    glib_conf.set('ENABLE_DBUS_COOKIE_SHA1', 1)
+endif
+
 configure_file(output : 'config.h', configuration : glib_conf)
 
 if host_system == 'windows'

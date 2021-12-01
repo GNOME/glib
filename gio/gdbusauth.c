@@ -232,7 +232,9 @@ _g_dbus_auth_add_mechs (GDBusAuth         *auth,
 {
   /* TODO: trawl extension points */
   add_mechanism (auth, observer, G_TYPE_DBUS_AUTH_MECHANISM_ANON);
+#ifdef ENABLE_DBUS_COOKIE_SHA1
   add_mechanism (auth, observer, G_TYPE_DBUS_AUTH_MECHANISM_SHA1);
+#endif
   add_mechanism (auth, observer, G_TYPE_DBUS_AUTH_MECHANISM_EXTERNAL);
 
   auth->priv->available_mechanisms = g_list_sort (auth->priv->available_mechanisms,

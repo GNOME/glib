@@ -29,6 +29,8 @@
 #include "test-io-stream.h"
 #include "test-pipe-unix.h"
 
+#ifdef ENABLE_DBUS_COOKIE_SHA1
+
 #define MY_TYPE_OUTPUT_STREAM \
         (my_output_stream_get_type ())
 #define MY_OUTPUT_STREAM(o) \
@@ -150,6 +152,7 @@ my_output_stream_class_init (MyOutputStreamClass *cls)
   ostream_class->write_fn = my_output_stream_write;
   ostream_class->flush = my_output_stream_flush;
 }
+#endif /* ENABLE_DBUS_COOKIE_SHA1 */
 
 /* ---------------------------------------------------------------------------------------------------- */
 
@@ -170,6 +173,7 @@ typedef struct {
     GDBusConnection *server_conn;
 } Fixture;
 
+#ifdef ENABLE_DBUS_COOKIE_SHA1
 static void
 setup_client_cb (GObject      *source,
                  GAsyncResult *res,
@@ -195,11 +199,13 @@ setup_server_cb (GObject      *source,
   g_assert (G_IS_DBUS_CONNECTION (f->server_conn));
   g_assert (f->server_conn == G_DBUS_CONNECTION (source));
 }
+#endif /* ENABLE_DBUS_COOKIE_SHA1 */
 
 static void
 setup (Fixture       *f,
        gconstpointer  test_data G_GNUC_UNUSED)
 {
+#ifdef ENABLE_DBUS_COOKIE_SHA1
   gboolean ok;
 
   f->guid = g_dbus_generate_guid ();
@@ -234,8 +240,10 @@ setup (Fixture       *f,
 
   while (f->client_conn == NULL || f->server_conn == NULL)
     g_main_context_iteration (NULL, TRUE);
+#endif
 }
 
+#ifdef ENABLE_DBUS_COOKIE_SHA1
 static void
 flush_cb (GObject      *source,
           GAsyncResult *res,
@@ -254,11 +262,13 @@ flush_cb (GObject      *source,
 
   f->flushed = TRUE;
 }
+#endif
 
 static void
 test_flush_busy (Fixture       *f,
                  gconstpointer  test_data G_GNUC_UNUSED)
 {
+#ifdef ENABLE_DBUS_COOKIE_SHA1
   gint initial, started;
   gboolean ok;
 
@@ -303,12 +313,16 @@ test_flush_busy (Fixture       *f,
    */
   g_assert_cmpint (my_output_stream_get_bytes_flushed (f->client_ostream),
                    >=, started);
+#else /* ENABLE_DBUS_COOKIE_SHA1 */
+  g_test_skip ("DBUS_COOKIE_SHA1 authentication is disabled");
+#endif
 }
 
 static void
 test_flush_idle (Fixture       *f,
                  gconstpointer  test_data G_GNUC_UNUSED)
 {
+#ifdef ENABLE_DBUS_COOKIE_SHA1
   gint initial, finished;
   gboolean ok;
 
@@ -338,12 +352,16 @@ test_flush_idle (Fixture       *f,
    */
   g_assert_cmpint (my_output_stream_get_bytes_flushed (f->client_ostream),
                    >=, finished);
+#else /* ENABLE_DBUS_COOKIE_SHA1 */
+  g_test_skip ("DBUS_COOKIE_SHA1 authentication is disabled");
+#endif
 }
 
 static void
 teardown (Fixture       *f,
           gconstpointer  test_data G_GNUC_UNUSED)
 {
+#ifdef ENABLE_DBUS_COOKIE_SHA1
   g_clear_error (&f->error);
 
   g_clear_object (&f->client_stream);
@@ -358,6 +376,7 @@ teardown (Fixture       *f,
   g_clear_object (&f->server_conn);
 
   g_free (f->guid);
+#endif
 }
 
 /* ---------------------------------------------------------------------------------------------------- */

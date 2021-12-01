@@ -1589,6 +1589,7 @@ delayed_message_processing (void)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+#ifdef ENABLE_DBUS_COOKIE_SHA1
 static gboolean
 nonce_tcp_on_authorize_authenticated_peer (GDBusAuthObserver *observer,
                                            GIOStream         *stream,
@@ -1670,10 +1671,12 @@ nonce_tcp_service_thread_func (gpointer user_data)
 
   return NULL;
 }
+#endif
 
 static void
 test_nonce_tcp (void)
 {
+#ifdef ENABLE_DBUS_COOKIE_SHA1
   PeerData data;
   GError *error;
   GThread *service_thread;
@@ -1796,6 +1799,9 @@ test_nonce_tcp (void)
 
   g_main_loop_unref (loop);
   g_free (test_guid);
+#else
+  g_test_skip ("DBUS_COOKIE_SHA1 authentication is disabled");
+#endif
 }
 
 static void

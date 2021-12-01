@@ -213,7 +213,11 @@ auth_client_external (void)
 static void
 auth_client_dbus_cookie_sha1 (void)
 {
+#ifdef ENABLE_DBUS_COOKIE_SHA1
   test_auth_mechanism ("DBUS_COOKIE_SHA1", NULL);
+#else
+  g_test_skip ("DBUS_COOKIE_SHA1 authentication is disabled");
+#endif
 }
 
 static void
@@ -231,7 +235,11 @@ auth_server_external (void)
 static void
 auth_server_dbus_cookie_sha1 (void)
 {
+#ifdef ENABLE_DBUS_COOKIE_SHA1
   test_auth_mechanism (NULL, "DBUS_COOKIE_SHA1");
+#else
+  g_test_skip ("DBUS_COOKIE_SHA1 authentication is disabled");
+#endif
 }
 
 /* ---------------------------------------------------------------------------------------------------- */

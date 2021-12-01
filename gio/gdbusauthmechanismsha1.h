@@ -25,6 +25,8 @@
 #error "gdbusauthmechanismsha1.h is a private header file."
 #endif
 
+#ifdef ENABLE_DBUS_COOKIE_SHA1
+
 #include <gio/giotypes.h>
 #include <gio/gdbusauthmechanism.h>
 
@@ -55,7 +57,7 @@ struct _GDBusAuthMechanismSha1
 
 GType _g_dbus_auth_mechanism_sha1_get_type (void) G_GNUC_CONST;
 
-
 G_END_DECLS
 
+#endif /* ENABLE_DBUS_COOKIE_SHA1 */
 #endif /* __G_DBUS_AUTH_MECHANISM_SHA1_H__ */
