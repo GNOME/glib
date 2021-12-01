@@ -1878,6 +1878,191 @@ test_nfds (void)
   g_main_context_unref (ctx);
 }
 
+static gboolean
+nsources_cb (gpointer user_data)
+{
+  g_assert_not_reached ();
+  return FALSE;
+}
+
+static void
+shuffle_nsources (GSource **sources, int num)
+{
+  int i, a, b;
+  GSource *tmp;
+
+  for (i = 0; i < num * 10; i++)
+    {
+      a = g_random_int_range (0, num);
+      b = g_random_int_range (0, num);
+      tmp = sources[a];
+      sources[a] = sources[b];
+      sources[b] = tmp;
+    }
+}
+
+static void
+test_nsources_same_priority (void)
+{
+  GMainContext *context;
+  GSource **sources;
+  gint64 start, end;
+  gsize n_sources = 50000, i;
+
+  context = g_main_context_default ();
+  sources = g_new0 (GSource *, n_sources);
+
+  start = g_get_monotonic_time ();
+  for (i = 0; i < n_sources; i++)
+    {
+      sources[i] = g_idle_source_new ();
+      g_source_set_callback (sources[i], nsources_cb, NULL, NULL);
+      g_source_attach (sources[i], context);
+    }
+  end = g_get_monotonic_time ();
+  g_test_message ("Add same-priority sources: %" G_GINT64_FORMAT,
+                  (end - start) / 1000);
+
+  start = g_get_monotonic_time ();
+  for (i = 0; i < n_sources; i++)
+    g_assert_true (sources[i] == g_main_context_find_source_by_id (context, g_source_get_id (sources[i])));
+  end = g_get_monotonic_time ();
+  g_test_message ("Find each source: %" G_GINT64_FORMAT,
+                  (end - start) / 1000);
+
+  shuffle_nsources (sources, n_sources);
+
+  start = g_get_monotonic_time ();
+  for (i = 0; i < n_sources; i++)
+    {
+      g_source_destroy (sources[i]);
+      g_source_unref (sources[i]);
+    }
+  end = g_get_monotonic_time ();
+  g_test_message ("Remove in random order: %" G_GINT64_FORMAT,
+                  (end - start) / 1000);
+
+  /* Make sure they really did get removed */
+  g_main_context_iteration (context, FALSE);
+
+  g_free (sources);
+}
+
+static void
+test_nsources_different_priority (void)
+{
+  GMainContext *context;
+  GSource **sources;
+  gint64 start, end;
+  gsize n_sources = 50000, i;
+
+  context = g_main_context_default ();
+  sources = g_new0 (GSource *, n_sources);
+
+  start = g_get_monotonic_time ();
+  for (i = 0; i < n_sources; i++)
+    {
+      sources[i] = g_idle_source_new ();
+      g_source_set_callback (sources[i], nsources_cb, NULL, NULL);
+      g_source_set_priority (sources[i], i % 100);
+      g_source_attach (sources[i], context);
+    }
+  end = g_get_monotonic_time ();
+  g_test_message ("Add different-priority sources: %" G_GINT64_FORMAT,
+                  (end - start) / 1000);
+
+  start = g_get_monotonic_time ();
+  for (i = 0; i < n_sources; i++)
+    g_assert_true (sources[i] == g_main_context_find_source_by_id (context, g_source_get_id (sources[i])));
+  end = g_get_monotonic_time ();
+  g_test_message ("Find each source: %" G_GINT64_FORMAT,
+                  (end - start) / 1000);
+
+  shuffle_nsources (sources, n_sources);
+
+  start = g_get_monotonic_time ();
+  for (i = 0; i < n_sources; i++)
+    {
+      g_source_destroy (sources[i]);
+      g_source_unref (sources[i]);
+    }
+  end = g_get_monotonic_time ();
+  g_test_message ("Remove in random order: %" G_GINT64_FORMAT,
+                  (end - start) / 1000);
+
+  /* Make sure they really did get removed */
+  g_main_context_iteration (context, FALSE);
+
+  g_free (sources);
+}
+
+static void
+thread_pool_attach_func (gpointer data,
+                         gpointer user_data)
+{
+  GMainContext *context = user_data;
+  GSource *source = data;
+
+  g_source_attach (source, context);
+  g_source_unref (source);
+}
+
+static void
+thread_pool_destroy_func (gpointer data,
+                          gpointer user_data)
+{
+  GSource *source = data;
+
+  g_source_destroy (source);
+}
+
+static void
+test_nsources_threadpool (void)
+{
+  GMainContext *context;
+  GSource **sources;
+  GThreadPool *pool;
+  GError *error = NULL;
+  gint64 start, end;
+  gsize n_sources = 50000, i;
+
+  context = g_main_context_default ();
+  sources = g_new0 (GSource *, n_sources);
+
+  pool = g_thread_pool_new (thread_pool_attach_func, context,
+                            20, TRUE, NULL);
+  start = g_get_monotonic_time ();
+  for (i = 0; i < n_sources; i++)
+    {
+      sources[i] = g_idle_source_new ();
+      g_source_set_callback (sources[i], nsources_cb, NULL, NULL);
+      g_thread_pool_push (pool, sources[i], &error);
+      g_assert_no_error (error);
+    }
+  g_thread_pool_free (pool, FALSE, TRUE);
+  end = g_get_monotonic_time ();
+  g_test_message ("Add sources from threads: %" G_GINT64_FORMAT,
+                  (end - start) / 1000);
+
+  pool = g_thread_pool_new (thread_pool_destroy_func, context,
+                            20, TRUE, NULL);
+  start = g_get_monotonic_time ();
+  for (i = 0; i < n_sources; i++)
+    {
+      g_thread_pool_push (pool, sources[i], &error);
+      g_assert_no_error (error);
+    }
+  g_thread_pool_free (pool, FALSE, TRUE);
+  end = g_get_monotonic_time ();
+  g_test_message ("Remove sources from threads: %" G_GINT64_FORMAT,
+                  (end - start) / 1000);
+
+  /* Make sure they really did get removed */
+  g_main_context_iteration (context, FALSE);
+
+  g_free (sources);
+}
+
 static gboolean source_finalize_called = FALSE;
 static guint source_dispose_called = 0;
 static gboolean source_dispose_recycle = FALSE;
@@ -2158,6 +2343,9 @@ main (int argc, char *argv[])
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/maincontext/basic", test_maincontext_basic);
+  g_test_add_func ("/maincontext/nsources_same_priority", test_nsources_same_priority);
+  g_test_add_func ("/maincontext/nsources_different_priority", test_nsources_different_priority);
+  g_test_add_func ("/maincontext/nsources_threadpool", test_nsources_threadpool);
   g_test_add_func ("/maincontext/source_finalization", test_maincontext_source_finalization);
   for (i = 0; i < 10; i++)
     {

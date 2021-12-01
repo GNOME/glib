@@ -35,7 +35,6 @@ tests = {
   'slice-threadinit' : {
     'dependencies' : [libgthread_dep],
   },
-  'sources' : {},
   'spawn-test' : {},
   'thread-test' : {},
   'threadpool-test' : {'suite' : ['slow']},
