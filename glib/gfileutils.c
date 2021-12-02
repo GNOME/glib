@@ -2775,6 +2775,8 @@ g_canonicalize_filename (const gchar *filename,
        output--)
     *output = G_DIR_SEPARATOR;
 
+  /* 1 to re-increment after the final decrement above (so that output >= canon),
+   * and 1 to skip the first `/` */
   output += 2;
 
   /* POSIX allows double slashes at the start to mean something special
