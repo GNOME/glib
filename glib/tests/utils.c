@@ -310,27 +310,32 @@ test_basic_bits (void)
   /* we loop like this: 0, -1, 1, -2, 2, -3, 3, ... */
   for (i = 0; (glong) i < 1500; i = -(i + ((glong) i >= 0)))
     {
+      guint naive_bit_storage_i = naive_bit_storage (i);
+
 #if TEST_BUILTINS
-      g_assert_cmpint (naive_bit_storage (i), ==, builtin_bit_storage (i));
+      g_assert_cmpint (naive_bit_storage_i, ==, builtin_bit_storage (i));
 #endif
-      g_assert_cmpint (naive_bit_storage (i), ==, g_bit_storage (i));
+      g_assert_cmpint (naive_bit_storage_i, ==, g_bit_storage (i));
 
       for (nth_bit = -3; nth_bit <= 2 + GLIB_SIZEOF_LONG * 8; nth_bit++)
         {
+          gint naive_bit_nth_lsf_i_nth_bit = naive_bit_nth_lsf (i, nth_bit);
+          gint naive_bit_nth_msf_i_nth_bit = naive_bit_nth_msf (i, nth_bit);
+
 #if TEST_BUILTINS
-          g_assert_cmpint (naive_bit_nth_lsf (i, nth_bit), ==,
+          g_assert_cmpint (naive_bit_nth_lsf_i_nth_bit, ==,
                            builtin_bit_nth_lsf1 (i, nth_bit));
-          g_assert_cmpint (naive_bit_nth_lsf (i, nth_bit), ==,
+          g_assert_cmpint (naive_bit_nth_lsf_i_nth_bit, ==,
                            builtin_bit_nth_lsf2 (i, nth_bit));
 #endif
-          g_assert_cmpint (naive_bit_nth_lsf (i, nth_bit), ==,
+          g_assert_cmpint (naive_bit_nth_lsf_i_nth_bit, ==,
                            g_bit_nth_lsf (i, nth_bit));
 
 #if TEST_BUILTINS
-          g_assert_cmpint (naive_bit_nth_msf (i, nth_bit), ==,
+          g_assert_cmpint (naive_bit_nth_msf_i_nth_bit, ==,
                            builtin_bit_nth_msf (i, nth_bit));
 #endif
-          g_assert_cmpint (naive_bit_nth_msf (i, nth_bit), ==,
+          g_assert_cmpint (naive_bit_nth_msf_i_nth_bit, ==,
                            g_bit_nth_msf (i, nth_bit));
         }
     }
