@@ -2736,7 +2736,7 @@ gchar *
 g_canonicalize_filename (const gchar *filename,
                          const gchar *relative_to)
 {
-  gchar *canon, *input, *output, *start;
+  gchar *canon, *input, *output, *after_root, *output_start;
 
   g_return_val_if_fail (relative_to == NULL || g_path_is_absolute (relative_to), NULL);
 
@@ -2758,9 +2758,9 @@ g_canonicalize_filename (const gchar *filename,
       canon = g_strdup (filename);
     }
 
-  start = (char *)g_path_skip_root (canon);
+  after_root = (char *)g_path_skip_root (canon);
 
-  if (start == NULL)
+  if (after_root == NULL)
     {
       /* This shouldn't really happen, as g_get_current_dir() should
          return an absolute pathname, but bug 573843 shows this is
@@ -2770,21 +2770,24 @@ g_canonicalize_filename (const gchar *filename,
     }
 
   /* Find the first dir separator and use the canonical dir separator. */
-  for (output = start - 1;
+  for (output = after_root - 1;
        (output >= canon) && G_IS_DIR_SEPARATOR (*output);
        output--)
     *output = G_DIR_SEPARATOR;
 
+  /* 1 to re-increment after the final decrement above (so that output >= canon),
+   * and 1 to skip the first `/` */
   output += 2;
 
   /* POSIX allows double slashes at the start to mean something special
    * (as does windows too). So, "//" != "/", but more than two slashes
    * is treated as "/".
    */
-  if (start - output == 1)
+  if (after_root - output == 1)
     output++;
 
-  input = start;
+  input = after_root;
+  output_start = output;
   while (*input)
     {
       /* input points to the next non-separator to be processed. */
@@ -2809,13 +2812,13 @@ g_canonicalize_filename (const gchar *filename,
       else if (input[0] == '.' && input[1] == '.' &&
                (input[2] == 0 || G_IS_DIR_SEPARATOR (input[2])))
         {
-          if (output > start)
+          if (output > output_start)
             {
               do
                 {
                   output--;
                 }
-              while (!G_IS_DIR_SEPARATOR (output[-1]) && output > start);
+              while (!G_IS_DIR_SEPARATOR (output[-1]) && output > output_start);
             }
           if (input[2] == 0)
             break;
@@ -2835,7 +2838,7 @@ g_canonicalize_filename (const gchar *filename,
     }
 
   /* Remove a potentially trailing dir separator */
-  if (output > start && G_IS_DIR_SEPARATOR (output[-1]))
+  if (output > output_start && G_IS_DIR_SEPARATOR (output[-1]))
     output--;
 
   *output = '\0';
