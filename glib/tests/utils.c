@@ -211,6 +211,131 @@ test_tmpdir (void)
   g_assert_cmpstr (g_get_tmp_dir (), !=, "");
 }
 
+#if defined(__GNUC__) && (__GNUC__ >= 4)
+#define TEST_BUILTINS 1
+#else
+#define TEST_BUILTINS 0
+#endif
+
+#if TEST_BUILTINS
+static gint
+builtin_bit_nth_lsf1 (gulong mask, gint nth_bit)
+{
+  if (nth_bit >= 0)
+    {
+      if (G_LIKELY (nth_bit < GLIB_SIZEOF_LONG * 8 - 1))
+        mask &= -(1UL << (nth_bit + 1));
+      else
+        mask = 0;
+    }
+  return __builtin_ffsl (mask) - 1;
+}
+
+static gint
+builtin_bit_nth_lsf2 (gulong mask, gint nth_bit)
+{
+  if (nth_bit >= 0)
+    {
+      if (G_LIKELY (nth_bit < GLIB_SIZEOF_LONG * 8 - 1))
+        mask &= -(1UL << (nth_bit + 1));
+      else
+        mask = 0;
+    }
+  return mask ? __builtin_ctzl (mask) : -1;
+}
+
+static gint
+builtin_bit_nth_msf (gulong mask, gint nth_bit)
+{
+  if (nth_bit >= 0 && nth_bit < GLIB_SIZEOF_LONG * 8)
+    mask &= (1UL << nth_bit) - 1;
+  return mask ? GLIB_SIZEOF_LONG * 8 - 1 - __builtin_clzl (mask) : -1;
+}
+
+static guint
+builtin_bit_storage (gulong number)
+{
+  return number ? GLIB_SIZEOF_LONG * 8 - __builtin_clzl (number) : 1;
+}
+#endif
+
+static gint
+naive_bit_nth_lsf (gulong mask, gint nth_bit)
+{
+  if (G_UNLIKELY (nth_bit < -1))
+    nth_bit = -1;
+  while (nth_bit < ((GLIB_SIZEOF_LONG * 8) - 1))
+    {
+      nth_bit++;
+      if (mask & (1UL << nth_bit))
+        return nth_bit;
+    }
+  return -1;
+}
+
+static gint
+naive_bit_nth_msf (gulong mask, gint nth_bit)
+{
+  if (nth_bit < 0 || G_UNLIKELY (nth_bit > GLIB_SIZEOF_LONG * 8))
+    nth_bit = GLIB_SIZEOF_LONG * 8;
+  while (nth_bit > 0)
+    {
+      nth_bit--;
+      if (mask & (1UL << nth_bit))
+        return nth_bit;
+    }
+  return -1;
+}
+
+static guint
+naive_bit_storage (gulong number)
+{
+  guint n_bits = 0;
+
+  do
+    {
+      n_bits++;
+      number >>= 1;
+    }
+  while (number);
+  return n_bits;
+}
+
+static void
+test_basic_bits (void)
+{
+  gulong i;
+  gint nth_bit;
+
+  /* we loop like this: 0, -1, 1, -2, 2, -3, 3, ... */
+  for (i = 0; (glong) i < 1500; i = -(i + ((glong) i >= 0)))
+    {
+#if TEST_BUILTINS
+      g_assert_cmpint (naive_bit_storage (i), ==, builtin_bit_storage (i));
+#endif
+      g_assert_cmpint (naive_bit_storage (i), ==, g_bit_storage (i));
+
+      for (nth_bit = -3; nth_bit <= 2 + GLIB_SIZEOF_LONG * 8; nth_bit++)
+        {
+#if TEST_BUILTINS
+          g_assert_cmpint (naive_bit_nth_lsf (i, nth_bit), ==,
+                           builtin_bit_nth_lsf1 (i, nth_bit));
+          g_assert_cmpint (naive_bit_nth_lsf (i, nth_bit), ==,
+                           builtin_bit_nth_lsf2 (i, nth_bit));
+#endif
+          g_assert_cmpint (naive_bit_nth_lsf (i, nth_bit), ==,
+                           g_bit_nth_lsf (i, nth_bit));
+
+#if TEST_BUILTINS
+          g_assert_cmpint (naive_bit_nth_msf (i, nth_bit), ==,
+                           builtin_bit_nth_msf (i, nth_bit));
+#endif
+          g_assert_cmpint (naive_bit_nth_msf (i, nth_bit), ==,
+                           g_bit_nth_msf (i, nth_bit));
+        }
+    }
+}
+
 static void
 test_bits (void)
 {
@@ -908,6 +1033,7 @@ main (int   argc,
   g_test_add_func ("/utils/appname", test_appname);
   g_test_add_func ("/utils/prgname-thread-safety", test_prgname_thread_safety);
   g_test_add_func ("/utils/tmpdir", test_tmpdir);
+  g_test_add_func ("/utils/basic_bits", test_basic_bits);
   g_test_add_func ("/utils/bits", test_bits);
   g_test_add_func ("/utils/swap", test_swap);
   g_test_add_func ("/utils/find-program", test_find_program);
