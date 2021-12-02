@@ -1063,6 +1063,7 @@ test_paths (void)
     { "/", "./", "/" },
     { "/", "/.", "/" },
     { "/", "/./", "/" },
+    { "/", "///usr/../usr", "/usr" },
 #else
     { "/etc", "../usr/share", "\\usr\\share" },
     { "/", "/foo/bar", "\\foo\\bar" },
@@ -1090,6 +1091,7 @@ test_paths (void)
     { "/", "./", "/" },
     { "/", "/.", "/" },
     { "/", "/./", "/" },
+    { "/", "///usr/../usr", "/usr" },
 
     { "\\etc", "..\\usr\\share", "\\usr\\share" },
     { "\\", "\\foo\\bar", "\\foo\\bar" },
@@ -1117,6 +1119,7 @@ test_paths (void)
     { "\\", ".\\", "\\" },
     { "\\", "\\.", "\\" },
     { "\\", "\\.\\", "\\" },
+    { "\\", "\\\\\\usr\\..\\usr", "\\usr" },
 #endif
   };
   const guint n_canonicalize_filename_checks = G_N_ELEMENTS (canonicalize_filename_checks);
