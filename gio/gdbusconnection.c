@@ -466,7 +466,8 @@ typedef struct ExportedObject ExportedObject;
 static void exported_object_free (ExportedObject *eo);
 
 typedef struct ExportedSubtree ExportedSubtree;
-static void exported_subtree_free (ExportedSubtree *es);
+static ExportedSubtree *exported_subtree_ref (ExportedSubtree *es);
+static void exported_subtree_unref (ExportedSubtree *es);
 
 enum
 {
@@ -1096,7 +1097,7 @@ g_dbus_connection_init (GDBusConnection *connection)
   connection->map_object_path_to_es = g_hash_table_new_full (g_str_hash,
                                                              g_str_equal,
                                                              NULL,
-                                                             (GDestroyNotify) exported_subtree_free);
+                                                             (GDestroyNotify) exported_subtree_unref);
 
   connection->map_id_to_es = g_hash_table_new (g_direct_hash,
                                                g_direct_equal);
@@ -4085,23 +4086,39 @@ typedef struct
 {
   ExportedObject *eo;
 
-  guint                       id;
-  gchar                      *interface_name;
-  GDBusInterfaceVTable       *vtable;
-  GDBusInterfaceInfo         *interface_info;
+  gint                        refcount;  /* (atomic) */
 
-  GMainContext               *context;
+  guint                       id;
+  gchar                      *interface_name;  /* (owned) */
+  GDBusInterfaceVTable       *vtable;  /* (owned) */
+  GDBusInterfaceInfo         *interface_info;  /* (owned) */
+
+  GMainContext               *context;  /* (owned) */
   gpointer                    user_data;
   GDestroyNotify              user_data_free_func;
 } ExportedInterface;
 
-/* called with lock held */
-static void
-exported_interface_free (ExportedInterface *ei)
+static ExportedInterface *
+exported_interface_ref (ExportedInterface *ei)
 {
+  g_atomic_int_inc (&ei->refcount);
+
+  return ei;
+}
+
+/* May be called with lock held */
+static void
+exported_interface_unref (ExportedInterface *ei)
+{
+  if (!g_atomic_int_dec_and_test (&ei->refcount))
+    return;
+
   g_dbus_interface_info_cache_release (ei->interface_info);
   g_dbus_interface_info_unref ((GDBusInterfaceInfo *) ei->interface_info);
 
+  /* All uses of ei->vtable from callbacks scheduled in idle functions must
+   * have completed by this call_destroy_notify() call, as language bindings
+   * may destroy function closures in this callback. */
   call_destroy_notify (ei->context,
                        ei->user_data_free_func,
                        ei->user_data);
@@ -4113,36 +4130,95 @@ exported_interface_free (ExportedInterface *ei)
   g_free (ei);
 }
 
+struct ExportedSubtree
+{
+  gint                      refcount;  /* (atomic) */
+
+  guint                     id;
+  gchar                    *object_path;  /* (owned) */
+  GDBusConnection          *connection;  /* (unowned) */
+  GDBusSubtreeVTable       *vtable;  /* (owned) */
+  GDBusSubtreeFlags         flags;
+
+  GMainContext             *context;  /* (owned) */
+  gpointer                  user_data;
+  GDestroyNotify            user_data_free_func;
+};
+
+static ExportedSubtree *
+exported_subtree_ref (ExportedSubtree *es)
+{
+  g_atomic_int_inc (&es->refcount);
+
+  return es;
+}
+
+/* May be called with lock held */
+static void
+exported_subtree_unref (ExportedSubtree *es)
+{
+  if (!g_atomic_int_dec_and_test (&es->refcount))
+    return;
+
+  /* All uses of es->vtable from callbacks scheduled in idle functions must
+   * have completed by this call_destroy_notify() call, as language bindings
+   * may destroy function closures in this callback. */
+  call_destroy_notify (es->context,
+                       es->user_data_free_func,
+                       es->user_data);
+
+  g_main_context_unref (es->context);
+
+  _g_dbus_subtree_vtable_free (es->vtable);
+  g_free (es->object_path);
+  g_free (es);
+}
+
 /* ---------------------------------------------------------------------------------------------------- */
 
 /* Convenience function to check if @registration_id (if not zero) or
  * @subtree_registration_id (if not zero) has been unregistered. If
  * so, returns %TRUE.
  *
+ * If not, sets @out_ei and/or @out_es to a strong reference to the relevant
+ * #ExportedInterface/#ExportedSubtree and returns %FALSE.
+ *
  * May be called by any thread. Caller must *not* hold lock.
  */
 static gboolean
-has_object_been_unregistered (GDBusConnection  *connection,
-                              guint             registration_id,
-                              guint             subtree_registration_id)
+has_object_been_unregistered (GDBusConnection    *connection,
+                              guint               registration_id,
+                              ExportedInterface **out_ei,
+                              guint               subtree_registration_id,
+                              ExportedSubtree   **out_es)
 {
   gboolean ret;
+  ExportedInterface *ei = NULL;
+  gpointer es = NULL;
 
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), FALSE);
 
   ret = FALSE;
 
   CONNECTION_LOCK (connection);
-  if (registration_id != 0 && g_hash_table_lookup (connection->map_id_to_ei,
-                                                   GUINT_TO_POINTER (registration_id)) == NULL)
+
+  if (registration_id != 0)
     {
-      ret = TRUE;
+      ei = g_hash_table_lookup (connection->map_id_to_ei, GUINT_TO_POINTER (registration_id));
+      if (ei == NULL)
+        ret = TRUE;
+      else if (out_ei != NULL)
+        *out_ei = exported_interface_ref (ei);
     }
-  else if (subtree_registration_id != 0 && g_hash_table_lookup (connection->map_id_to_es,
-                                                                GUINT_TO_POINTER (subtree_registration_id)) == NULL)
+  if (subtree_registration_id != 0)
     {
-      ret = TRUE;
+      es = g_hash_table_lookup (connection->map_id_to_es, GUINT_TO_POINTER (subtree_registration_id));
+      if (es == NULL)
+        ret = TRUE;
+      else if (out_es != NULL)
+        *out_es = exported_subtree_ref (es);
     }
+
   CONNECTION_UNLOCK (connection);
 
   return ret;
@@ -4179,10 +4255,14 @@ invoke_get_property_in_idle_cb (gpointer _data)
   GVariant *value;
   GError *error;
   GDBusMessage *reply;
+  ExportedInterface *ei = NULL;
+  ExportedSubtree *es = NULL;
 
   if (has_object_been_unregistered (data->connection,
                                     data->registration_id,
-                                    data->subtree_registration_id))
+                                    &ei,
+                                    data->subtree_registration_id,
+                                    &es))
     {
       reply = g_dbus_message_new_method_error (data->message,
                                                "org.freedesktop.DBus.Error.UnknownMethod",
@@ -4229,6 +4309,9 @@ invoke_get_property_in_idle_cb (gpointer _data)
     }
 
  out:
+  g_clear_pointer (&ei, exported_interface_unref);
+  g_clear_pointer (&es, exported_subtree_unref);
+
   return FALSE;
 }
 
@@ -4526,10 +4609,14 @@ invoke_get_all_properties_in_idle_cb (gpointer _data)
   GVariantBuilder builder;
   GDBusMessage *reply;
   guint n;
+  ExportedInterface *ei = NULL;
+  ExportedSubtree *es = NULL;
 
   if (has_object_been_unregistered (data->connection,
                                     data->registration_id,
-                                    data->subtree_registration_id))
+                                    &ei,
+                                    data->subtree_registration_id,
+                                    &es))
     {
       reply = g_dbus_message_new_method_error (data->message,
                                                "org.freedesktop.DBus.Error.UnknownMethod",
@@ -4582,6 +4669,9 @@ invoke_get_all_properties_in_idle_cb (gpointer _data)
   g_object_unref (reply);
 
  out:
+  g_clear_pointer (&ei, exported_interface_unref);
+  g_clear_pointer (&es, exported_subtree_unref);
+
   return FALSE;
 }
 
@@ -4891,13 +4981,17 @@ call_in_idle_cb (gpointer user_data)
   GDBusInterfaceVTable *vtable;
   guint registration_id;
   guint subtree_registration_id;
+  ExportedInterface *ei = NULL;
+  ExportedSubtree *es = NULL;
 
   registration_id = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (invocation), "g-dbus-registration-id"));
   subtree_registration_id = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (invocation), "g-dbus-subtree-registration-id"));
 
   if (has_object_been_unregistered (g_dbus_method_invocation_get_connection (invocation),
                                     registration_id,
-                                    subtree_registration_id))
+                                    &ei,
+                                    subtree_registration_id,
+                                    &es))
     {
       GDBusMessage *reply;
       reply = g_dbus_message_new_method_error (g_dbus_method_invocation_get_message (invocation),
@@ -4923,6 +5017,9 @@ call_in_idle_cb (gpointer user_data)
                        g_dbus_method_invocation_get_user_data (invocation));
 
  out:
+  g_clear_pointer (&ei, exported_interface_unref);
+  g_clear_pointer (&es, exported_subtree_unref);
+
   return FALSE;
 }
 
@@ -5224,7 +5321,7 @@ g_dbus_connection_register_object (GDBusConnection             *connection,
       eo->map_if_name_to_ei = g_hash_table_new_full (g_str_hash,
                                                      g_str_equal,
                                                      NULL,
-                                                     (GDestroyNotify) exported_interface_free);
+                                                     (GDestroyNotify) exported_interface_unref);
       g_hash_table_insert (connection->map_object_path_to_eo, eo->object_path, eo);
     }
 
@@ -5241,6 +5338,7 @@ g_dbus_connection_register_object (GDBusConnection             *connection,
     }
 
   ei = g_new0 (ExportedInterface, 1);
+  ei->refcount = 1;
   ei->id = (guint) g_atomic_int_add (&_global_registration_id, 1); /* TODO: overflow etc. */
   ei->eo = eo;
   ei->user_data = user_data;
@@ -6401,33 +6499,6 @@ g_dbus_connection_call_with_unix_fd_list_sync (GDBusConnection     *connection,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-struct ExportedSubtree
-{
-  guint                     id;
-  gchar                    *object_path;
-  GDBusConnection          *connection;
-  GDBusSubtreeVTable       *vtable;
-  GDBusSubtreeFlags         flags;
-
-  GMainContext             *context;
-  gpointer                  user_data;
-  GDestroyNotify            user_data_free_func;
-};
-
-static void
-exported_subtree_free (ExportedSubtree *es)
-{
-  call_destroy_notify (es->context,
-                       es->user_data_free_func,
-                       es->user_data);
-
-  g_main_context_unref (es->context);
-
-  _g_dbus_subtree_vtable_free (es->vtable);
-  g_free (es->object_path);
-  g_free (es);
-}
-
 /* called without lock held in the thread where the caller registered
  * the subtree
  */
@@ -6753,14 +6824,15 @@ handle_subtree_method_invocation (GDBusConnection *connection,
 
 typedef struct
 {
-  GDBusMessage *message;
-  ExportedSubtree *es;
+  GDBusMessage *message;  /* (owned) */
+  ExportedSubtree *es;  /* (owned) */
 } SubtreeDeferredData;
 
 static void
 subtree_deferred_data_free (SubtreeDeferredData *data)
 {
   g_object_unref (data->message);
+  exported_subtree_unref (data->es);
   g_free (data);
 }
 
@@ -6819,7 +6891,7 @@ subtree_message_func (GDBusConnection *connection,
 
   data = g_new0 (SubtreeDeferredData, 1);
   data->message = g_object_ref (message);
-  data->es = es;
+  data->es = exported_subtree_ref (es);
 
   /* defer this call to an idle handler in the right thread */
   idle_source = g_idle_source_new ();
@@ -6924,6 +6996,7 @@ g_dbus_connection_register_subtree (GDBusConnection           *connection,
     }
 
   es = g_new0 (ExportedSubtree, 1);
+  es->refcount = 1;
   es->object_path = g_strdup (object_path);
   es->connection = connection;
 
