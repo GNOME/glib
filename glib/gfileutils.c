@@ -299,14 +299,14 @@ g_mkdir_with_parents (const gchar *pathname,
  * @filename: (type filename): a filename to test in the
  *     GLib file name encoding
  * @test: bitfield of #GFileTest flags
- * 
+ *
  * Returns %TRUE if any of the tests in the bitfield @test are
  * %TRUE. For example, `(G_FILE_TEST_EXISTS | G_FILE_TEST_IS_DIR)`
  * will return %TRUE if the file exists; the check whether it's a
  * directory doesn't matter since the existence test is %TRUE. With
  * the current set of available tests, there's no point passing in
  * more than one test at a time.
- * 
+ *
  * Apart from %G_FILE_TEST_IS_SYMLINK all tests follow symbolic links,
  * so for a symbolic link to a regular file g_file_test() will return
  * %TRUE for both %G_FILE_TEST_IS_SYMLINK and %G_FILE_TEST_IS_REGULAR.
@@ -500,7 +500,7 @@ G_DEFINE_QUARK (g-file-error-quark, g_file_error)
 /**
  * g_file_error_from_errno:
  * @err_no: an "errno" value
- * 
+ *
  * Gets a #GFileError constant based on the passed-in @err_no.
  *
  * For example, if you pass in `EEXIST` this function returns
@@ -510,7 +510,7 @@ G_DEFINE_QUARK (g-file-error-quark, g_file_error)
  * Normally a #GFileError value goes into a #GError returned
  * from a function that manipulates files. So you would use
  * g_file_error_from_errno() when constructing a #GError.
- * 
+ *
  * Returns: #GFileError corresponding to the given @err_no
  **/
 GFileError
@@ -1855,7 +1855,7 @@ g_file_open_tmp (const gchar  *tmpl,
  * Note that in contrast to g_mkdtemp() (and mkdtemp()) @tmpl is not
  * modified, and might thus be a read-only literal string.
  *
- * Returns: (type filename): The actual name used. This string
+ * Returns: (type filename) (transfer full): The actual name used. This string
  *     should be freed with g_free() when not needed any longer and is
  *     is in the GLib file name encoding. In case of errors, %NULL is
  *     returned and @error will be set.
@@ -1989,8 +1989,8 @@ g_build_path_va (const gchar  *separator,
  * as a string array, instead of varargs. This function is mainly
  * meant for language bindings.
  *
- * Returns: (type filename): a newly-allocated string that must be freed
- *     with g_free().
+ * Returns: (type filename) (transfer full): a newly-allocated string that
+ *     must be freed with g_free().
  *
  * Since: 2.8
  */
@@ -2037,9 +2037,9 @@ g_build_pathv (const gchar  *separator,
  * Other than for determination of the number of leading and trailing
  * copies of the separator, elements consisting only of copies
  * of the separator are ignored.
- * 
- * Returns: (type filename): a newly-allocated string that must be freed with
- *     g_free().
+ *
+ * Returns: (type filename) (transfer full): a newly-allocated string that
+ *     must be freed with g_free().
  **/
 gchar *
 g_build_path (const gchar *separator,
@@ -2198,8 +2198,8 @@ g_build_filename_va (const gchar  *first_argument,
  * Behaves exactly like g_build_filename(), but takes the path elements
  * as a va_list. This function is mainly meant for language bindings.
  *
- * Returns: (type filename): a newly-allocated string that must be freed
- *     with g_free().
+ * Returns: (type filename) (transfer full): a newly-allocated string that
+ *     must be freed with g_free().
  *
  * Since: 2.56
  */
@@ -2221,9 +2221,9 @@ g_build_filename_valist (const gchar  *first_element,
  * as a string array, instead of varargs. This function is mainly
  * meant for language bindings.
  *
- * Returns: (type filename): a newly-allocated string that must be freed
- *     with g_free().
- * 
+ * Returns: (type filename) (transfer full): a newly-allocated string that
+ *     must be freed with g_free().
+ *
  * Since: 2.8
  */
 gchar *
@@ -2251,10 +2251,10 @@ g_build_filenamev (gchar **args)
  *
  * No attempt is made to force the resulting filename to be an absolute
  * path. If the first element is a relative path, the result will
- * be a relative path. 
- * 
- * Returns: (type filename): a newly-allocated string that must be freed with
- *     g_free().
+ * be a relative path.
+ *
+ * Returns: (type filename) (transfer full): a newly-allocated string that
+ *     must be freed with g_free().
  **/
 gchar *
 g_build_filename (const gchar *first_element, 
@@ -2279,8 +2279,8 @@ g_build_filename (const gchar *first_element,
  * readlink() function.  The returned string is in the encoding used
  * for filenames. Use g_filename_to_utf8() to convert it to UTF-8.
  *
- * Returns: (type filename): A newly-allocated string with the contents of
- *     the symbolic link, or %NULL if an error occurred.
+ * Returns: (type filename) (transfer full): A newly-allocated string with
+ *     the contents of the symbolic link, or %NULL if an error occurred.
  *
  * Since: 2.4
  */
@@ -2534,8 +2534,8 @@ g_basename (const gchar *file_name)
  * separators (and on Windows, possibly a drive letter), a single
  * separator is returned. If @file_name is empty, it gets ".".
  *
- * Returns: (type filename): a newly allocated string containing the last
- *    component of the filename
+ * Returns: (type filename) (transfer full): a newly allocated string
+ *    containing the last component of the filename
  */
 gchar *
 g_path_get_basename (const gchar *file_name)
@@ -2595,7 +2595,7 @@ g_path_get_basename (const gchar *file_name)
  * If the file name has no directory components "." is returned.
  * The returned string should be freed when no longer needed.
  *
- * Returns: (type filename): the directory components of the file
+ * Returns: (type filename) (transfer full): the directory components of the file
  *
  * Deprecated: use g_path_get_dirname() instead
  */
@@ -2611,7 +2611,7 @@ g_path_get_basename (const gchar *file_name)
  * If the file name has no directory components "." is returned.
  * The returned string should be freed when no longer needed.
  *
- * Returns: (type filename): the directory components of the file
+ * Returns: (type filename) (transfer full): the directory components of the file
  */
 gchar *
 g_path_get_dirname (const gchar *file_name)
@@ -2870,7 +2870,7 @@ g_canonicalize_filename (const gchar *filename,
  * the current directory.  This can make a difference in the case that
  * the current directory is the target of a symbolic link.
  *
- * Returns: (type filename): the current directory
+ * Returns: (type filename) (transfer full): the current directory
  */
 gchar *
 g_get_current_dir (void)
