@@ -1,3 +1,58 @@
+Overview of changes in GLib 2.70.2
+==================================
+
+* Fix use of the default log writer with journald namespaces (diagnosis by Ilya Basin) (#2530)
+
+* Fix hang in `dbus-daemon` under `GTestDBus` when `G_MESSAGES_DEBUG=all` is set (work by Marco Trevisan) (#2537)
+
+* Speed up `g_canonicalize_filename()` to avoid pathogenic cases with `..` (work by Sebastian Wilhelmi) (#2541)
+
+* Fix URI for pcre subproject as it’s moved upstream (work by Albert Astals Cid) (!2324)
+
+* Fix storing GSettings dictionaries on macOS (work by Maurice) (#2527)
+
+* Speed up ‘remove dot segments’ algorithm in `GUri` to avoid pathogenic cases with `..` (work by Sebastian Wilhelmi) (#2526)
+
+* Fix infinite loops in D-Bus message parsing for truncated inputs (work by Sebastian Wilhelmi) (#2528)
+
+* Improve correctness of version information returned by `g_get_os_info()` for Windows 10/Server 2019+ (work by Chun-wei Fan) (#2443)
+
+* Bugs fixed:
+ - #2400 Use-after-free in invoke_set_property_in_idle_cb()
+ - #2426 GSettings delayed apply generates runtime warnings
+ - #2528 g_dbus_message_new_from_blob goes into infinite loop for certain inputs
+ - #2530 g_log_writer_is_journald fails if a Journal Namespace is used
+ - #2537 GTestDBus dbus daemon causes child process to hang when using verbose output
+ - #2541 g_canonicalize_filename should work in linear time complexity
+ - !2312 Backport !2265 “gdbusconnection: Fix race between method calls and object unregistration” to glib-2-70
+ - !2313 Backport !2260 “GWin32AppInfo: Remove assertion on the opened registry key” to glib-2-70
+ - !2314 Backport !2308 “gthread-win32: Remove an unnecessary volatile qualifier” to glib-2-70
+ - !2316 Backport !2309 “Rename libpcre.wrap to pcre.wrap” to glib-2-70
+ - !2320 Backport !2161 “gdelayedsettingsbackend: Fix applying after calling g_settings_reset()” to glib-2-70
+ - !2335 Backport !2324 “Fix link to pcre-8.37.tar.bz2” to glib-2-70
+ - !2337 Backport !2325 “Fix GSettings dict error macOS” to glib-2-70
+ - !2340 Backport !2338 “gmessages: Support namespaced journals” to glib-2-70
+ - !2344 Backport !2327 “guri: Improve performance of remove_dot_segments() algorithm” to glib-2-70
+ - !2356 Backport !2355 “gdbusmessage: Add more bounds checking when parsing D-Bus messages” to glib-2-70
+ - !2359 gutils.c: Improve g_get_os_info() for Windows 10/Server 2019+
+ - !2361 Backport !2354 “gtestdbus: Print the dbus address on a specific FD intead of stdout” to glib-2-70
+ - !2363 Backport !2360 “meson: specify when commands need to succeed in run_command” to glib-2-70
+ - !2366 Backport !2364 “tests: Allow `objcopy --help` to fail, because it fails on FreeBSD” to glib-2-70
+ - !2375 Backport !2374 “gfileutils: Improve performance of g_canonicalize_filename()” to glib-2-70
+ - !2383 Backport !2382 “gfileutils: Correctly reset start value when canonicalising paths” to glib-2-70
+
+* Translation updates:
+ - Croatian
+ - Italian
+ - Occitan (post 1500)
+ - Polish
+ - Portuguese
+ - Portuguese (Brazil)
+ - Russian
+ - Swedish
+ - Ukrainian
+
+
 Overview of changes in GLib 2.70.1
 ==================================
 
