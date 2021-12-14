@@ -89,6 +89,7 @@ enum {
 static void     g_desktop_app_info_iface_init         (GAppInfoIface    *iface);
 static gboolean g_desktop_app_info_ensure_saved       (GDesktopAppInfo  *info,
                                                        GError          **error);
+static gboolean g_desktop_app_info_load_file (GDesktopAppInfo *self);
 
 /**
  * GDesktopAppInfo:
@@ -1003,6 +1004,19 @@ desktop_file_dir_unindexed_init (DesktopFileDir *dir)
 }
 
 static GDesktopAppInfo *
+g_desktop_app_info_new_from_filename_unlocked (const char *filename)
+{
+  GDesktopAppInfo *info = NULL;
+
+  info = g_object_new (G_TYPE_DESKTOP_APP_INFO, "filename", filename, NULL);
+
+  if (!g_desktop_app_info_load_file (info))
+    g_clear_object (&info);
+
+  return info;
+}
+
+static GDesktopAppInfo *
 desktop_file_dir_unindexed_get_app (DesktopFileDir *dir,
                                     const gchar    *desktop_id)
 {
@@ -1013,7 +1027,7 @@ desktop_file_dir_unindexed_get_app (DesktopFileDir *dir,
   if (!filename)
     return NULL;
 
-  return g_desktop_app_info_new_from_filename (filename);
+  return g_desktop_app_info_new_from_filename_unlocked (filename);
 }
 
 static void
@@ -1033,7 +1047,7 @@ desktop_file_dir_unindexed_get_all (DesktopFileDir *dir,
       if (desktop_file_dir_app_name_is_masked (dir, app_name))
         continue;
 
-      add_to_table_if_appropriate (apps, app_name, g_desktop_app_info_new_from_filename (filename));
+      add_to_table_if_appropriate (apps, app_name, g_desktop_app_info_new_from_filename_unlocked (filename));
     }
 }
 
@@ -1754,6 +1768,56 @@ binary_from_exec (const char *exec)
   return g_strndup (start, p - start);
 }
 
+/*< internal >
+ * g_desktop_app_info_get_desktop_id_for_filename
+ * @self: #GDesktopAppInfo to get desktop id of
+ *
+ * Tries to find the desktop ID for a particular `.desktop` filename, as per the
+ * [Desktop Entry Specification](https://specifications.freedesktop.org/desktop-
+ * entry-spec/desktop-entry-spec-latest.html#desktop-file-id).
+ *
+ * Returns: desktop id or basename if filename is unknown.
+ */
+static char *
+g_desktop_app_info_get_desktop_id_for_filename (GDesktopAppInfo *self)
+{
+  guint i;
+  gchar *desktop_id = NULL;
+
+  g_return_val_if_fail (self->filename != NULL, NULL);
+
+  for (i = 0; i < desktop_file_dirs->len; i++)
+    {
+      DesktopFileDir *dir = g_ptr_array_index (desktop_file_dirs, i);
+      GHashTable *app_names;
+      GHashTableIter iter;
+      gpointer key, value;
+
+      app_names = dir->app_names;
+
+      if (!app_names)
+        continue;
+
+      g_hash_table_iter_init (&iter, app_names);
+      while (g_hash_table_iter_next (&iter, &key, &value))
+        {
+          if (!strcmp (value, self->filename))
+            {
+              desktop_id = g_strdup (key);
+              break;
+            }
+        }
+
+      if (desktop_id)
+        break;
+    }
+
+  if (!desktop_id)
+    desktop_id = g_path_get_basename (self->filename);
+
+  return g_steal_pointer (&desktop_id);
+}
+
 static gboolean
 g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
                                       GKeyFile        *key_file)
@@ -1912,6 +1976,9 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
       g_free (basename);
     }
 
+  if (info->filename)
+    info->desktop_id = g_desktop_app_info_get_desktop_id_for_filename (info);
+
   info->keyfile = g_key_file_ref (key_file);
 
   return TRUE;
@@ -1924,8 +1991,6 @@ g_desktop_app_info_load_file (GDesktopAppInfo *self)
   gboolean retval = FALSE;
 
   g_return_val_if_fail (self->filename != NULL, FALSE);
-
-  self->desktop_id = g_path_get_basename (self->filename);
 
   key_file = g_key_file_new ();
 
@@ -1953,11 +2018,14 @@ g_desktop_app_info_new_from_keyfile (GKeyFile *key_file)
 
   info = g_object_new (G_TYPE_DESKTOP_APP_INFO, NULL);
   info->filename = NULL;
+
+  desktop_file_dirs_lock ();
+
   if (!g_desktop_app_info_load_from_keyfile (info, key_file))
-    {
-      g_object_unref (info);
-      return NULL;
-    }
+    g_clear_object (&info);
+
+  desktop_file_dirs_unlock ();
+
   return info;
 }
 
@@ -1975,12 +2043,12 @@ g_desktop_app_info_new_from_filename (const char *filename)
 {
   GDesktopAppInfo *info = NULL;
 
-  info = g_object_new (G_TYPE_DESKTOP_APP_INFO, "filename", filename, NULL);
-  if (!g_desktop_app_info_load_file (info))
-    {
-      g_object_unref (info);
-      return NULL;
-    }
+  desktop_file_dirs_lock ();
+
+  info = g_desktop_app_info_new_from_filename_unlocked (filename);
+
+  desktop_file_dirs_unlock ();
+
   return info;
 }
 

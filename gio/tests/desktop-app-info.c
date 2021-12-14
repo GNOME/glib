@@ -797,6 +797,18 @@ test_launch_as_manager (void)
   g_assert_finalize_object (context);
 }
 
+/* Test if Desktop-File Id is correctly formed */
+static void
+test_id (void)
+{
+  gchar *result;
+
+  result = run_apps ("default-for-type", "application/vnd.kde.okular-archive",
+                     TRUE, FALSE, NULL, NULL, NULL);
+  g_assert_cmpstr (result, ==, "kde4-okular.desktop\n");
+  g_free (result);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -818,6 +830,7 @@ main (int   argc,
   g_test_add_func ("/desktop-app-info/implements", test_implements);
   g_test_add_func ("/desktop-app-info/show-in", test_show_in);
   g_test_add_func ("/desktop-app-info/launch-as-manager", test_launch_as_manager);
+  g_test_add_func ("/desktop-app-info/id", test_id);
 
   return g_test_run ();
 }
