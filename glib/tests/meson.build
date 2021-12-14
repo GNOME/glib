@@ -12,6 +12,7 @@ glib_tests = {
   'charset' : {},
   'checksum' : {},
   'collate' : {},
+  'completion' : {},
   'cond' : {},
   'convert' : {},
   'cxx' : {

@@ -19,18 +19,25 @@
  * Modified by the GLib Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GLib Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GLib at ftp://ftp.gtk.org/pub/gtk/. 
+ * GLib at ftp://ftp.gtk.org/pub/gtk/.
  */
+
+/* We are testing some deprecated APIs here */
+#ifndef GLIB_DISABLE_DEPRECATION_WARNINGS
+#define GLIB_DISABLE_DEPRECATION_WARNINGS
+#endif
+
 #include <string.h>
 
 #include "glib.h"
 
-int main (int argc, char *argv[])
+static void
+test_completion (void)
 {
   GCompletion *cmp;
   GList *items;
   gchar *prefix;
-  
+
   cmp = g_completion_new (NULL);
   g_completion_set_compare (cmp, strncmp);
 
@@ -43,40 +50,48 @@ int main (int argc, char *argv[])
   g_list_free (items);
 
   items = g_completion_complete (cmp, "a", &prefix);
-  g_assert (!strcmp ("a\302", prefix));
-  g_assert (g_list_length (items) == 2);
+  g_assert_cmpstr (prefix, ==, "a\302");
+  g_assert_cmpint (g_list_length (items), ==, 2);
   g_free (prefix);
-  
+
   items = g_completion_complete_utf8 (cmp, "a", &prefix);
-  g_assert (!strcmp ("a", prefix));
-  g_assert (g_list_length (items) == 2);
+  g_assert_cmpstr (prefix, ==, "a");
+  g_assert_cmpint (g_list_length (items), ==, 2);
   g_free (prefix);
 
   items = g_completion_complete (cmp, "b", &prefix);
-  g_assert (!strcmp ("b", prefix));
-  g_assert (g_list_length (items) == 2);
+  g_assert_cmpstr (prefix, ==, "b");
+  g_assert_cmpint (g_list_length (items), ==, 2);
   g_free (prefix);
-  
+
   items = g_completion_complete_utf8 (cmp, "b", &prefix);
-  g_assert (!strcmp ("b", prefix));
-  g_assert (g_list_length (items) == 2);
+  g_assert_cmpstr (prefix, ==, "b");
+  g_assert_cmpint (g_list_length (items), ==, 2);
   g_free (prefix);
 
   items = g_completion_complete (cmp, "a", NULL);
-  g_assert (g_list_length (items) == 2);
+  g_assert_cmpint (g_list_length (items), ==, 2);
 
   items = g_completion_complete_utf8 (cmp, "a", NULL);
-  g_assert (g_list_length (items) == 2);
+  g_assert_cmpint (g_list_length (items), ==, 2);
 
   items = g_list_append (NULL, "bb");
   g_completion_remove_items (cmp, items);
   g_list_free (items);
 
   items = g_completion_complete_utf8 (cmp, "b", &prefix);
-  g_assert (g_list_length (items) == 1);
+  g_assert_cmpint (g_list_length (items), ==, 1);
   g_free (prefix);
 
   g_completion_free (cmp);
+}
 
-  return 0;
+int
+main (int argc,
+      char *argv[])
+{
+  g_test_init (&argc, &argv, NULL);
+  g_test_add_func ("/completion/test-completion", test_completion);
+
+  return g_test_run ();
 }
