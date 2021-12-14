@@ -50,11 +50,6 @@ tests = {
     'source': 'module-test.c',
     'c_args': ['-DMODULE_TYPE="plugin"'],
   },
-  'cxx-test' : {
-    'source' : 'cxx-test.cpp',
-    'include_directories' : gmoduleinc,
-    'dependencies' : [libgio_dep],
-  },
 }
 
 test_extra_programs = {

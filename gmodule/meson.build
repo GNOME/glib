@@ -126,3 +126,7 @@ if meson.version().version_compare('>=0.54.0')
   meson.override_dependency('gmodule-export-2.0', libgmodule_dep)
   meson.override_dependency('gmodule-2.0', libgmodule_dep)
 endif
+
+if build_tests
+  subdir('tests')
+endif

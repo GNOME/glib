@@ -52,6 +52,9 @@ gio_tests = {
   'contenttype' : {},
   'converter-stream' : {},
   'credentials' : {},
+  'cxx' : {
+    'source' : ['cxx.cpp'],
+  },
   'data-input-stream' : {},
   'data-output-stream' : {},
   'defaultvalue' : {'extra_sources' : [giotypefuncs_inc]},
