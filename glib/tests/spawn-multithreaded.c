@@ -40,14 +40,8 @@ static char *echo_prog_path;
 #include <windows.h>
 #endif
 
-#ifdef G_OS_WIN32
-#define GPID_FORMAT "%p"
-#else
-#define GPID_FORMAT "%d"
-#endif
-
 GMainLoop *main_loop;
-gint alive;
+guint alive;
 
 #ifdef G_OS_WIN32
 char *argv0;
@@ -96,12 +90,10 @@ get_a_child (gint ttl)
 static gboolean
 child_watch_callback (GPid pid, gint status, gpointer data)
 {
-#ifdef VERBOSE
   gint ttl = GPOINTER_TO_INT (data);
 
-  g_print ("child " GPID_FORMAT " (ttl %d) exited, status %d\n",
-           pid, ttl, status);
-#endif
+  g_test_message ("Child %" G_PID_FORMAT " (ttl %d) exited, status %d",
+                  pid, ttl, status);
 
   g_spawn_close_pid (pid);
 
@@ -111,7 +103,6 @@ child_watch_callback (GPid pid, gint status, gpointer data)
   return TRUE;
 }
 
-#ifdef TEST_THREAD
 static gpointer
 start_thread (gpointer data)
 {
@@ -129,15 +120,12 @@ start_thread (gpointer data)
   g_source_attach (source, g_main_loop_get_context (new_main_loop));
   g_source_unref (source);
 
-#ifdef VERBOSE
-  g_print ("whee! created pid: " GPID_FORMAT " (ttl %d)\n", pid, ttl);
-#endif
+  g_test_message ("Created pid: %" G_PID_FORMAT " (ttl %d)", pid, ttl);
 
   g_main_loop_run (new_main_loop);
 
   return NULL;
 }
-#endif
 
 static gboolean
 quit_loop (gpointer data)
@@ -152,9 +140,7 @@ quit_loop (gpointer data)
 static void
 test_spawn_childs (void)
 {
-#ifndef TEST_THREAD
   GPid pid;
-#endif
 
   main_loop = g_main_loop_new (NULL, FALSE);
 
@@ -167,22 +153,40 @@ test_spawn_childs (void)
   alive = 2;
   g_timeout_add_seconds (30, quit_loop, main_loop);
 
-#ifdef TEST_THREAD
-  g_thread_create (start_thread, GINT_TO_POINTER (10), FALSE, NULL);
-  g_thread_create (start_thread, GINT_TO_POINTER (20), FALSE, NULL);
-#else
   pid = get_a_child (10);
   g_child_watch_add (pid, (GChildWatchFunc) child_watch_callback,
-                     GINT_TO_POINTER (10));
+                     GINT_TO_POINTER (3));
   pid = get_a_child (20);
   g_child_watch_add (pid, (GChildWatchFunc) child_watch_callback,
-                     GINT_TO_POINTER (20));
-#endif
+                     GINT_TO_POINTER (7));
 
   g_main_loop_run (main_loop);
   g_main_loop_unref (main_loop);
 
-  g_assert_true (alive == 0);
+  g_assert_cmpint (alive, ==, 0);
+}
+
+static void
+test_spawn_childs_threads (void)
+{
+  main_loop = g_main_loop_new (NULL, FALSE);
+
+#ifdef G_OS_WIN32
+  system ("ipconfig /all");
+#else
+  system ("true");
+#endif
+
+  alive = 2;
+  g_timeout_add_seconds (30, quit_loop, main_loop);
+
+  g_thread_new (NULL, start_thread, GINT_TO_POINTER (3));
+  g_thread_new (NULL, start_thread, GINT_TO_POINTER (7));
+
+  g_main_loop_run (main_loop);
+  g_main_loop_unref (main_loop);
+
+  g_assert_cmpint (alive, ==, 0);
 }
 
 static void
@@ -390,6 +394,7 @@ main (int   argc,
   g_assert (g_file_test (echo_prog_path, G_FILE_TEST_EXISTS));
 
   g_test_add_func ("/gthread/spawn-childs", test_spawn_childs);
+  g_test_add_func ("/gthread/spawn-childs-threads", test_spawn_childs_threads);
   g_test_add_func ("/gthread/spawn-sync", test_spawn_sync_multithreaded);
   g_test_add_func ("/gthread/spawn-async", test_spawn_async_multithreaded);
 
