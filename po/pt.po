@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 3.12\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2021-11-24 22:09+0000\n"
-"PO-Revision-Date: 2021-11-25 13:53+0000\n"
+"POT-Creation-Date: 2021-12-15 17:54+0000\n"
+"PO-Revision-Date: 2021-12-15 23:20+0000\n"
 "Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
 "Language-Team: Portuguese <https://l10n.gnome.org/teams/pt/>\n"
 "Language: pt\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: gio/gappinfo.c:333
 msgid "Setting default applications not supported yet"
@@ -756,27 +756,27 @@ msgstr "Já existe uma subárvore exportada para %s"
 msgid "Object does not exist at path “%s”"
 msgstr "O objeto não existe no caminho \"%s\""
 
-#: gio/gdbusmessage.c:1311
+#: gio/gdbusmessage.c:1301
 msgid "type is INVALID"
 msgstr "tipo é INVÁLIDO"
 
-#: gio/gdbusmessage.c:1322
+#: gio/gdbusmessage.c:1312
 msgid "METHOD_CALL message: PATH or MEMBER header field is missing"
 msgstr "Mensagem METHOD_CALL: falta campo de cabeçalho PATH ou MEMBER"
 
-#: gio/gdbusmessage.c:1333
+#: gio/gdbusmessage.c:1323
 msgid "METHOD_RETURN message: REPLY_SERIAL header field is missing"
 msgstr "Mensagem ETHOD_RETURN: falta campo de cabeçalho REPLY_SERIAL"
 
-#: gio/gdbusmessage.c:1345
+#: gio/gdbusmessage.c:1335
 msgid "ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing"
 msgstr "Mensagem ERROR: Falta campo de cabeçalho REPLY_SERIAL ou ERROR_NAME"
 
-#: gio/gdbusmessage.c:1358
+#: gio/gdbusmessage.c:1348
 msgid "SIGNAL message: PATH, INTERFACE or MEMBER header field is missing"
 msgstr "Mensagem SIGNAL: falta campo de cabeçalho PATH, INTERFACE ou MEMBER"
 
-#: gio/gdbusmessage.c:1366
+#: gio/gdbusmessage.c:1356
 msgid ""
 "SIGNAL message: The PATH header field is using the reserved value /org/"
 "freedesktop/DBus/Local"
@@ -784,7 +784,7 @@ msgstr ""
 "Mensagem SIGNAL: o campo de cabeçalho PATH está a utilizar o valor "
 "reservado /org/freedesktop/DBus/Local"
 
-#: gio/gdbusmessage.c:1374
+#: gio/gdbusmessage.c:1364
 msgid ""
 "SIGNAL message: The INTERFACE header field is using the reserved value org."
 "freedesktop.DBus.Local"
@@ -792,19 +792,19 @@ msgstr ""
 "Mensagem SIGNAL: o campo de cabeçalho INTERFACE está a utilizar o valor "
 "reservado org.freedesktop.DBus.Local"
 
-#: gio/gdbusmessage.c:1422 gio/gdbusmessage.c:1482
+#: gio/gdbusmessage.c:1412 gio/gdbusmessage.c:1472
 #, c-format
 msgid "Wanted to read %lu byte but only got %lu"
 msgid_plural "Wanted to read %lu bytes but only got %lu"
 msgstr[0] "Tentativa de ler %lu byte mas só obtido %lu"
 msgstr[1] "Tentativa de ler %lu bytes mas só obtidos %lu"
 
-#: gio/gdbusmessage.c:1436
+#: gio/gdbusmessage.c:1426
 #, c-format
 msgid "Expected NUL byte after the string “%s” but found byte %d"
 msgstr "Esperado o byte NUL após a cadeia “%s” mas encontrado o byte %d"
 
-#: gio/gdbusmessage.c:1455
+#: gio/gdbusmessage.c:1445
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
@@ -814,21 +814,21 @@ msgstr ""
 "de bytes %d (comprimento da cadeia é %d). A cadeia UTF-8 válida até esse "
 "ponto era “%s”"
 
-#: gio/gdbusmessage.c:1519 gio/gdbusmessage.c:1795 gio/gdbusmessage.c:1986
+#: gio/gdbusmessage.c:1509 gio/gdbusmessage.c:1785 gio/gdbusmessage.c:1976
 msgid "Value nested too deeply"
 msgstr "Origem do valor muito antiga"
 
-#: gio/gdbusmessage.c:1687
+#: gio/gdbusmessage.c:1677
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus object path"
 msgstr "Valor processado “%s” não é um caminho de objeto D-Bus válido"
 
-#: gio/gdbusmessage.c:1711
+#: gio/gdbusmessage.c:1701
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature"
 msgstr "Valor processado “%s” não é uma assinatura D-Bus válida"
 
-#: gio/gdbusmessage.c:1762
+#: gio/gdbusmessage.c:1752
 #, c-format
 msgid ""
 "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
@@ -841,7 +841,7 @@ msgstr[1] ""
 "Encontrado um vetor de %u bytes de comprimento. Tamanho máximo é 2<<26 bytes "
 "(64MiB)."
 
-#: gio/gdbusmessage.c:1782
+#: gio/gdbusmessage.c:1772
 #, c-format
 msgid ""
 "Encountered array of type “a%c”, expected to have a length a multiple of %u "
@@ -850,12 +850,12 @@ msgstr ""
 "Encontrado um vetor de tipo \"a%c\", esperado um comprimento múltiplo de %u "
 "bytes, obtidos %u bytes de comprimento"
 
-#: gio/gdbusmessage.c:1970
+#: gio/gdbusmessage.c:1960
 #, c-format
 msgid "Parsed value “%s” for variant is not a valid D-Bus signature"
 msgstr "Valor processado “%s” para variante não é uma assinatura D-Bus válida"
 
-#: gio/gdbusmessage.c:2011
+#: gio/gdbusmessage.c:2001
 #, c-format
 msgid ""
 "Error deserializing GVariant with type string “%s” from the D-Bus wire format"
@@ -863,7 +863,7 @@ msgstr ""
 "Erro ao remover serialização GVariant com a cadeia de tipo “%s” do formato "
 "de ligação D-Bus"
 
-#: gio/gdbusmessage.c:2196
+#: gio/gdbusmessage.c:2186
 #, c-format
 msgid ""
 "Invalid endianness value. Expected 0x6c (“l”) or 0x42 (“B”) but found value "
@@ -872,28 +872,28 @@ msgstr ""
 "Valor de \"endianness\" inválido. Esperado 0x6c (“l”) ou 0x42 (“B”) mas "
 "obtido o valor 0x%02x"
 
-#: gio/gdbusmessage.c:2215
+#: gio/gdbusmessage.c:2205
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr "Versão principal de protocolo inválida. Esperada 1 mas obtida %d"
 
-#: gio/gdbusmessage.c:2273 gio/gdbusmessage.c:2862
+#: gio/gdbusmessage.c:2263 gio/gdbusmessage.c:2852
 msgid "Signature header found but is not of type signature"
 msgstr "Assinatura de cabeçalho encontrada, mas não do tipo assinatura"
 
-#: gio/gdbusmessage.c:2285
+#: gio/gdbusmessage.c:2275
 #, c-format
 msgid "Signature header with signature “%s” found but message body is empty"
 msgstr ""
 "Assinatura de cabeçalho com a assinatura “%s” encontrada, mas o corpo da "
 "mensagem está vazio"
 
-#: gio/gdbusmessage.c:2300
+#: gio/gdbusmessage.c:2290
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature (for body)"
 msgstr "Valor processado “%s” não é uma assinatura D-Bus válida (para corpo)"
 
-#: gio/gdbusmessage.c:2332
+#: gio/gdbusmessage.c:2322
 #, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
@@ -904,11 +904,11 @@ msgstr[1] ""
 "Nenhum cabeçalho de assinatura na mensagem mas o corpo da mensagem tem %u "
 "bytes"
 
-#: gio/gdbusmessage.c:2342
+#: gio/gdbusmessage.c:2332
 msgid "Cannot deserialize message: "
 msgstr "Impossível remover serialização da mensagem: "
 
-#: gio/gdbusmessage.c:2679
+#: gio/gdbusmessage.c:2669
 #, c-format
 msgid ""
 "Error serializing GVariant with type string “%s” to the D-Bus wire format"
@@ -916,7 +916,7 @@ msgstr ""
 "Erro ao serializar GVariant com a cadeia de tipo “%s” para o formato de "
 "ligação D-Bus"
 
-#: gio/gdbusmessage.c:2816
+#: gio/gdbusmessage.c:2806
 #, c-format
 msgid ""
 "Number of file descriptors in message (%d) differs from header field (%d)"
@@ -924,18 +924,18 @@ msgstr ""
 "Número de descritores de ficheiro na mensagem (%d) difere do campo no "
 "cabeçalho (%d)"
 
-#: gio/gdbusmessage.c:2824
+#: gio/gdbusmessage.c:2814
 msgid "Cannot serialize message: "
 msgstr "Impossível serializar a mensagem: "
 
-#: gio/gdbusmessage.c:2877
+#: gio/gdbusmessage.c:2867
 #, c-format
 msgid "Message body has signature “%s” but there is no signature header"
 msgstr ""
 "O corpo da mensagem tem a assinatura “%s” mas não existe a assinatura de "
 "cabeçalho"
 
-#: gio/gdbusmessage.c:2887
+#: gio/gdbusmessage.c:2877
 #, c-format
 msgid ""
 "Message body has type signature “%s” but signature in the header field is "
@@ -944,19 +944,19 @@ msgstr ""
 "O corpo da mensagem tem o tipo de assinatura “%s”, mas a assinatura no campo "
 "de cabeçalho é “%s”"
 
-#: gio/gdbusmessage.c:2903
+#: gio/gdbusmessage.c:2893
 #, c-format
 msgid "Message body is empty but signature in the header field is “(%s)”"
 msgstr ""
 "O corpo da mensagem está vazio mas a assinatura no campo de cabeçalho é "
 "“(%s)”"
 
-#: gio/gdbusmessage.c:3458
+#: gio/gdbusmessage.c:3448
 #, c-format
 msgid "Error return with body of type “%s”"
 msgstr "Resposta de erro com corpo do tipo “%s”"
 
-#: gio/gdbusmessage.c:3466
+#: gio/gdbusmessage.c:3456
 msgid "Error return with empty body"
 msgstr "Resposta de erro com corpo vazio"
 
@@ -1306,39 +1306,39 @@ msgstr "Erro: demasiados argumentos\n"
 msgid "Error: %s is not a valid well-known bus name.\n"
 msgstr "Erro: %s não é um nome de canal válido\n"
 
-#: gio/gdesktopappinfo.c:2106 gio/gdesktopappinfo.c:5031
+#: gio/gdesktopappinfo.c:2174 gio/gdesktopappinfo.c:5099
 msgid "Unnamed"
 msgstr "Sem nome"
 
-#: gio/gdesktopappinfo.c:2516
+#: gio/gdesktopappinfo.c:2584
 msgid "Desktop file didn’t specify Exec field"
 msgstr "Ficheiro do ambiente de trabalho não especificou campo Exec"
 
-#: gio/gdesktopappinfo.c:2824
+#: gio/gdesktopappinfo.c:2892
 msgid "Unable to find terminal required for application"
 msgstr "Impossível encontrar o terminal necessário à aplicação"
 
-#: gio/gdesktopappinfo.c:3551
+#: gio/gdesktopappinfo.c:3619
 #, c-format
 msgid "Can’t create user application configuration folder %s: %s"
 msgstr ""
 "Impossível criar a pasta de configurações de utilizador da aplicação %s: %s"
 
-#: gio/gdesktopappinfo.c:3555
+#: gio/gdesktopappinfo.c:3623
 #, c-format
 msgid "Can’t create user MIME configuration folder %s: %s"
 msgstr "Impossível criar a pasta de configurações MIME do utilizador %s: %s"
 
-#: gio/gdesktopappinfo.c:3797 gio/gdesktopappinfo.c:3821
+#: gio/gdesktopappinfo.c:3865 gio/gdesktopappinfo.c:3889
 msgid "Application information lacks an identifier"
 msgstr "Informação da aplicação não possui um identificador"
 
-#: gio/gdesktopappinfo.c:4057
+#: gio/gdesktopappinfo.c:4125
 #, c-format
 msgid "Can’t create user desktop file %s"
 msgstr "Impossível criar ficheiro do ambiente de trabalho do utilizador %s"
 
-#: gio/gdesktopappinfo.c:4193
+#: gio/gdesktopappinfo.c:4261
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Definição personalizada de %s"
@@ -3347,7 +3347,7 @@ msgstr "O ficheiro foi alterado externamente"
 msgid "Error removing old file: %s"
 msgstr "Erro ao remover o ficheiro antigo: %s"
 
-#: gio/gmemoryinputstream.c:474 gio/gmemoryoutputstream.c:772
+#: gio/gmemoryinputstream.c:474 gio/gmemoryoutputstream.c:762
 msgid "Invalid GSeekType supplied"
 msgstr "Fornecido um GSeekType inválido"
 
@@ -3359,15 +3359,15 @@ msgstr "Pedido de procura inválido"
 msgid "Cannot truncate GMemoryInputStream"
 msgstr "Impossível truncar um GMemoryInputStream"
 
-#: gio/gmemoryoutputstream.c:567
+#: gio/gmemoryoutputstream.c:568
 msgid "Memory output stream not resizable"
 msgstr "Fluxo de saída de memória não é redimensionável"
 
-#: gio/gmemoryoutputstream.c:583
+#: gio/gmemoryoutputstream.c:584
 msgid "Failed to resize memory output stream"
 msgstr "Falha ao redimensionar fluxo de saída de memória"
 
-#: gio/gmemoryoutputstream.c:673
+#: gio/gmemoryoutputstream.c:663
 msgid ""
 "Amount of memory required to process the write is larger than available "
 "address space"
@@ -3375,11 +3375,11 @@ msgstr ""
 "Quantidade de memória necessária para processar a escrita é maior do que o "
 "espaço de endereçamento disponível"
 
-#: gio/gmemoryoutputstream.c:782
+#: gio/gmemoryoutputstream.c:772
 msgid "Requested seek before the beginning of the stream"
 msgstr "Pedida uma procura para antes do início do fluxo"
 
-#: gio/gmemoryoutputstream.c:797
+#: gio/gmemoryoutputstream.c:787
 msgid "Requested seek beyond the end of the stream"
 msgstr "Pedida uma procura para depois do final do fluxo"
 
@@ -4017,36 +4017,36 @@ msgstr "Erro ao fechar o socket: %s"
 msgid "Waiting for socket condition: %s"
 msgstr "A aguardar pela condição do socket: %s"
 
-#: gio/gsocket.c:4804 gio/gsocket.c:4820 gio/gsocket.c:4833
+#: gio/gsocket.c:4803 gio/gsocket.c:4819 gio/gsocket.c:4832
 #, c-format
 msgid "Unable to send message: %s"
 msgstr "Incapaz de enviar a mensagem: %s"
 
-#: gio/gsocket.c:4805 gio/gsocket.c:4821 gio/gsocket.c:4834
+#: gio/gsocket.c:4804 gio/gsocket.c:4820 gio/gsocket.c:4833
 msgid "Message vectors too large"
 msgstr "Vectores de mensagem demasiado grandes"
 
-#: gio/gsocket.c:4850 gio/gsocket.c:4852 gio/gsocket.c:4999 gio/gsocket.c:5084
-#: gio/gsocket.c:5262 gio/gsocket.c:5302 gio/gsocket.c:5304
+#: gio/gsocket.c:4849 gio/gsocket.c:4851 gio/gsocket.c:4998 gio/gsocket.c:5083
+#: gio/gsocket.c:5261 gio/gsocket.c:5301 gio/gsocket.c:5303
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Erro ao enviar a mensagem: %s"
 
-#: gio/gsocket.c:5026
+#: gio/gsocket.c:5025
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "GSocketControlMessage não é suportada em Windows"
 
-#: gio/gsocket.c:5499 gio/gsocket.c:5575 gio/gsocket.c:5801
+#: gio/gsocket.c:5498 gio/gsocket.c:5574 gio/gsocket.c:5800
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Erro ao receber a mensagem: %s"
 
-#: gio/gsocket.c:6074 gio/gsocket.c:6085 gio/gsocket.c:6131
+#: gio/gsocket.c:6073 gio/gsocket.c:6084 gio/gsocket.c:6130
 #, c-format
 msgid "Unable to read socket credentials: %s"
 msgstr "Impossível ler as credenciais do socket: %s"
 
-#: gio/gsocket.c:6140
+#: gio/gsocket.c:6139
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials não implementado neste SO"
 
@@ -5447,7 +5447,7 @@ msgstr "Erro ao processar a opção %s"
 msgid "Missing argument for %s"
 msgstr "Argumento em falta para %s"
 
-#: glib/goption.c:2185
+#: glib/goption.c:2184
 #, c-format
 msgid "Unknown option %s"
 msgstr "Opção %s desconhecida"
@@ -5883,47 +5883,52 @@ msgstr "Sub processo parado com o sinal %ld"
 msgid "Child process exited abnormally"
 msgstr "O sub processo terminou anormalmente"
 
-#: glib/gspawn.c:1855 glib/gspawn-win32.c:350 glib/gspawn-win32.c:358
+#: glib/gspawn.c:1869 glib/gspawn-win32.c:350 glib/gspawn-win32.c:358
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Falha ao ler de canal filho (%s)"
 
-#: glib/gspawn.c:2157
+#: glib/gspawn.c:2229
 #, c-format
 msgid "Failed to spawn child process “%s” (%s)"
 msgstr "Falha ao criar sub processo “%s” (%s)"
 
-#: glib/gspawn.c:2274
+#: glib/gspawn.c:2346
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Falha ao efetuar fork (%s)"
 
-#: glib/gspawn.c:2434 glib/gspawn-win32.c:381
+#: glib/gspawn.c:2506 glib/gspawn-win32.c:381
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
 msgstr "Falha ao ir para o diretório “%s” (%s)"
 
-#: glib/gspawn.c:2444
+#: glib/gspawn.c:2516
 #, c-format
 msgid "Failed to execute child process “%s” (%s)"
 msgstr "Falha ao executar o sub processo “%s” (%s)"
 
-#: glib/gspawn.c:2454
+#: glib/gspawn.c:2526
 #, c-format
-msgid "Failed to redirect output or input of child process (%s)"
-msgstr "Falha ao redirecionar saída ou entrada de sub processo (%s)"
+msgid "Failed to open file to remap file descriptor (%s)"
+msgstr "Falha ao abrir o ficheiro para remapear o descritor do ficheiro (%s)"
 
-#: glib/gspawn.c:2463
+#: glib/gspawn.c:2534
+#, c-format
+msgid "Failed to duplicate file descriptor for child process (%s)"
+msgstr "Falha ao duplicar descritor do ficheiro para o sub processo (%s)"
+
+#: glib/gspawn.c:2543
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Falha ao efetuar fork de sub processo (%s)"
 
-#: glib/gspawn.c:2471
+#: glib/gspawn.c:2551
 #, c-format
 msgid "Unknown error executing child process “%s”"
 msgstr "Erro desconhecido ao executar sub processo “%s”"
 
-#: glib/gspawn.c:2495
+#: glib/gspawn.c:2575
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Impossível ler dados suficientes de canal pid do filho (%s)"
@@ -5969,21 +5974,21 @@ msgid ""
 msgstr ""
 "Erro inesperado no g_io_channel_win32_poll() ao ler dados de um sub processo"
 
-#: glib/gstrfuncs.c:3347 glib/gstrfuncs.c:3449
+#: glib/gstrfuncs.c:3344 glib/gstrfuncs.c:3446
 msgid "Empty string is not a number"
 msgstr "Cadeia vazia não é um número"
 
-#: glib/gstrfuncs.c:3371
+#: glib/gstrfuncs.c:3368
 #, c-format
 msgid "“%s” is not a signed number"
 msgstr "“%s” não é um número com sinal"
 
-#: glib/gstrfuncs.c:3381 glib/gstrfuncs.c:3485
+#: glib/gstrfuncs.c:3378 glib/gstrfuncs.c:3482
 #, c-format
 msgid "Number “%s” is out of bounds [%s, %s]"
 msgstr "Número “%s” está fora do limite [%s, %s]"
 
-#: glib/gstrfuncs.c:3475
+#: glib/gstrfuncs.c:3472
 #, c-format
 msgid "“%s” is not an unsigned number"
 msgstr "“%s” não é um valor sem sinal"
