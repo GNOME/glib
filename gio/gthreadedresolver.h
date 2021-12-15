@@ -46,8 +46,8 @@ GType g_threaded_resolver_get_type (void) G_GNUC_CONST;
 GLIB_AVAILABLE_IN_ALL
 GList *g_resolver_records_from_res_query (const gchar      *rrname,
                                           gint              rrtype,
-                                          guchar           *answer,
-                                          gint              len,
+                                          const guint8     *answer,
+                                          gssize            len,
                                           gint              herr,
                                           GError          **error);
 
