@@ -5,6 +5,7 @@
 #include <sys/wait.h>
 #include <glib-unix.h>
 #include <gio/gunixinputstream.h>
+#include <gio/gunixoutputstream.h>
 #include <gio/gfiledescriptorbased.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -1723,7 +1724,8 @@ test_child_setup (void)
 }
 
 static void
-test_pass_fd (void)
+do_test_pass_fd (GSubprocessFlags     flags,
+                 GSpawnChildSetupFunc child_setup)
 {
   GError *local_error = NULL;
   GError **error = &local_error;
@@ -1748,9 +1750,11 @@ test_pass_fd (void)
   needdup_fd_str = g_strdup_printf ("%d", needdup_pipefds[1] + 1);
 
   args = get_test_subprocess_args ("write-to-fds", basic_fd_str, needdup_fd_str, NULL);
-  launcher = g_subprocess_launcher_new (G_SUBPROCESS_FLAGS_NONE);
+  launcher = g_subprocess_launcher_new (flags);
   g_subprocess_launcher_take_fd (launcher, basic_pipefds[1], basic_pipefds[1]);
   g_subprocess_launcher_take_fd (launcher, needdup_pipefds[1], needdup_pipefds[1] + 1);
+  if (child_setup != NULL)
+    g_subprocess_launcher_set_child_setup (launcher, child_setup, NULL, NULL);
   proc = g_subprocess_launcher_spawnv (launcher, (const gchar * const *) args->pdata, error);
   g_ptr_array_free (args, TRUE);
   g_assert_no_error (local_error);
@@ -1778,6 +1782,206 @@ test_pass_fd (void)
 
   g_object_unref (launcher);
   g_object_unref (proc);
+}
+
+static void
+test_pass_fd (void)
+{
+  do_test_pass_fd (G_SUBPROCESS_FLAGS_NONE, NULL);
+}
+
+static void
+empty_child_setup (gpointer user_data)
+{
+}
+
+static void
+test_pass_fd_empty_child_setup (void)
+{
+  /* Using a child setup function forces gspawn to use fork/exec
+   * rather than posix_spawn.
+   */
+  do_test_pass_fd (G_SUBPROCESS_FLAGS_NONE, empty_child_setup);
+}
+
+static void
+test_pass_fd_inherit_fds (void)
+{
+  /* Try to test the optimized posix_spawn codepath instead of
+   * fork/exec. Currently this requires using INHERIT_FDS since gspawn's
+   * posix_spawn codepath does not currently handle closing
+   * non-inherited fds. Note that using INHERIT_FDS means our testing of
+   * g_subprocess_launcher_take_fd() is less-comprehensive than when
+   * using G_SUBPROCESS_FLAGS_NONE.
+   */
+  do_test_pass_fd (G_SUBPROCESS_FLAGS_INHERIT_FDS, NULL);
+}
+
+static void
+do_test_fd_conflation (GSubprocessFlags     flags,
+                       GSpawnChildSetupFunc child_setup,
+                       gboolean             test_child_err_report_fd)
+{
+  char success_message[] = "Yay success!";
+  GError *error = NULL;
+  GOutputStream *output_stream;
+  GSubprocessLauncher *launcher;
+  GSubprocess *proc;
+  GPtrArray *args;
+  int unused_pipefds[2];
+  int pipefds[2];
+  int fd_to_pass_to_child;
+  gsize bytes_written;
+  gboolean success;
+  char *fd_str;
+
+  /* This test must run in a new process because it is extremely sensitive to
+   * order of opened fds.
+   */
+  if (!g_test_subprocess ())
+    {
+      g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_INHERIT_STDOUT | G_TEST_SUBPROCESS_INHERIT_STDERR);
+      g_test_trap_assert_passed ();
+      return;
+    }
+
+  g_unix_open_pipe (unused_pipefds, FD_CLOEXEC, &error);
+  g_assert_no_error (error);
+
+  g_unix_open_pipe (pipefds, FD_CLOEXEC, &error);
+  g_assert_no_error (error);
+
+  /* The fds should be sequential since we are in a new process. */
+  g_assert_cmpint (unused_pipefds[0] /* 3 */, ==, unused_pipefds[1] - 1);
+  g_assert_cmpint (unused_pipefds[1] /* 4 */, ==, pipefds[0] - 1);
+  g_assert_cmpint (pipefds[0] /* 5 */, ==, pipefds[1] /* 6 */ - 1);
+
+  /* Because GSubprocess allows arbitrary remapping of fds, it has to be careful
+   * to avoid fd conflation issues, e.g. it should properly handle 5 -> 4 and
+   * 4 -> 5 at the same time. GIO previously attempted to handle this by naively
+   * dup'ing the source fds, but this was not good enough because it was
+   * possible that the dup'ed result could still conflict with one of the target
+   * fds. For example:
+   *
+   * source_fd 5 -> target_fd 9, source_fd 3 -> target_fd 7
+   *
+   * dup(5) -> dup returns 8
+   * dup(3) -> dup returns 9
+   *
+   * After dup'ing, we wind up with: 8 -> 9, 9 -> 7. That means that after we
+   * dup2(8, 9), we have clobbered fd 9 before we dup2(9, 7). The end result is
+   * we have remapped 5 -> 9 as expected, but then remapped 5 -> 7 instead of
+   * 3 -> 7 as the application intended.
+   *
+   * This issue has been fixed in the simplest way possible, by passing a
+   * minimum fd value when using F_DUPFD_CLOEXEC that is higher than any of the
+   * target fds, to guarantee all source fds are different than all target fds,
+   * eliminating any possibility of conflation.
+   *
+   * Anyway, that is why we have the unused_pipefds here. We need to open fds in
+   * a certain order in order to trick older GSubprocess into conflating the
+   * fds. The primary goal of this test is to ensure this particular conflation
+   * issue is not reintroduced. See glib#2503.
+   *
+   * This test also has an alternate mode of operation where it instead tests
+   * for conflation with gspawn's child_err_report_fd, glib#2506.
+   *
+   * Be aware this test is necessarily extremely fragile. To reproduce these
+   * bugs, it relies on internals of gspawn and gmain that will likely change
+   * in the future, eventually causing this test to no longer test the bugs
+   * it was originally designed to test. That is OK! If the test fails, at
+   * least you know *something* is wrong.
+   */
+  if (test_child_err_report_fd)
+    fd_to_pass_to_child = pipefds[1] + 2 /* 8 */;
+  else
+    fd_to_pass_to_child = pipefds[1] + 3 /* 9 */;
+
+  launcher = g_subprocess_launcher_new (flags);
+  g_subprocess_launcher_take_fd (launcher, pipefds[0] /* 5 */, fd_to_pass_to_child);
+  g_subprocess_launcher_take_fd (launcher, unused_pipefds[0] /* 3 */, pipefds[1] + 1 /* 7 */);
+  if (child_setup != NULL)
+    g_subprocess_launcher_set_child_setup (launcher, child_setup, NULL, NULL);
+  fd_str = g_strdup_printf ("%d", fd_to_pass_to_child);
+  args = get_test_subprocess_args ("read-from-fd", fd_str, NULL);
+  proc = g_subprocess_launcher_spawnv (launcher, (const gchar * const *) args->pdata, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (proc);
+  g_ptr_array_free (args, TRUE);
+  g_object_unref (launcher);
+  g_free (fd_str);
+
+  /* Close the read ends of the pipes. */
+  close (unused_pipefds[0]);
+  close (pipefds[0]);
+
+  /* Also close the write end of the unused pipe. */
+  close (unused_pipefds[1]);
+
+  /* If doing our normal test:
+   *
+   * So now pipefds[0] should be inherited into the subprocess as
+   * pipefds[1] + 2, and unused_pipefds[0] should be inherited as
+   * pipefds[1] + 1. We will write to pipefds[1] and the subprocess will verify
+   * that it reads the expected data. But older broken GIO will accidentally
+   * clobber pipefds[1] + 2 with pipefds[1] + 1! This will cause the subprocess
+   * to hang trying to read from the wrong pipe.
+   *
+   * If testing conflation with child_err_report_fd:
+   *
+   * We are actually already done. The real test succeeded if we made it this
+   * far without hanging while spawning the child. But let's continue with our
+   * write and read anyway, to ensure things are good.
+   */
+  output_stream = g_unix_output_stream_new (pipefds[1], TRUE);
+  success = g_output_stream_write_all (output_stream,
+                                       success_message, sizeof (success_message),
+                                       &bytes_written,
+                                       NULL,
+                                       &error);
+  g_assert_no_error (error);
+  g_assert_cmpint (bytes_written, ==, sizeof (success_message));
+  g_assert_true (success);
+  g_object_unref (output_stream);
+
+  success = g_subprocess_wait_check (proc, NULL, &error);
+  g_assert_no_error (error);
+  g_object_unref (proc);
+}
+
+static void
+test_fd_conflation (void)
+{
+  do_test_fd_conflation (G_SUBPROCESS_FLAGS_NONE, NULL, FALSE);
+}
+
+static void
+test_fd_conflation_empty_child_setup (void)
+{
+  /* Using a child setup function forces gspawn to use fork/exec
+   * rather than posix_spawn.
+   */
+  do_test_fd_conflation (G_SUBPROCESS_FLAGS_NONE, empty_child_setup, FALSE);
+}
+
+static void
+test_fd_conflation_inherit_fds (void)
+{
+  /* Try to test the optimized posix_spawn codepath instead of
+   * fork/exec. Currently this requires using INHERIT_FDS since gspawn's
+   * posix_spawn codepath does not currently handle closing
+   * non-inherited fds.
+   */
+  do_test_fd_conflation (G_SUBPROCESS_FLAGS_INHERIT_FDS, NULL, FALSE);
+}
+
+static void
+test_fd_conflation_child_err_report_fd (void)
+{
+  /* Using a child setup function forces gspawn to use fork/exec
+   * rather than posix_spawn.
+   */
+  do_test_fd_conflation (G_SUBPROCESS_FLAGS_NONE, empty_child_setup, TRUE);
 }
 
 #endif
@@ -1917,7 +2121,13 @@ main (int argc, char **argv)
   g_test_add_func ("/gsubprocess/stdout-file", test_stdout_file);
   g_test_add_func ("/gsubprocess/stdout-fd", test_stdout_fd);
   g_test_add_func ("/gsubprocess/child-setup", test_child_setup);
-  g_test_add_func ("/gsubprocess/pass-fd", test_pass_fd);
+  g_test_add_func ("/gsubprocess/pass-fd/basic", test_pass_fd);
+  g_test_add_func ("/gsubprocess/pass-fd/empty-child-setup", test_pass_fd_empty_child_setup);
+  g_test_add_func ("/gsubprocess/pass-fd/inherit-fds", test_pass_fd_inherit_fds);
+  g_test_add_func ("/gsubprocess/fd-conflation/basic", test_fd_conflation);
+  g_test_add_func ("/gsubprocess/fd-conflation/empty-child-setup", test_fd_conflation_empty_child_setup);
+  g_test_add_func ("/gsubprocess/fd-conflation/inherit-fds", test_fd_conflation_inherit_fds);
+  g_test_add_func ("/gsubprocess/fd-conflation/child-err-report-fd", test_fd_conflation_child_err_report_fd);
 #endif
   g_test_add_func ("/gsubprocess/launcher-environment", test_launcher_environment);
 
