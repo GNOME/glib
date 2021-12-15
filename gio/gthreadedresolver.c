@@ -652,7 +652,7 @@ g_resolver_record_type_to_rrtype (GResolverRecordType type)
   g_return_val_if_reached (-1);
 }
 
-static GList *
+GList *
 g_resolver_records_from_res_query (const gchar      *rrname,
                                    gint              rrtype,
                                    guchar           *answer,

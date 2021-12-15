@@ -42,6 +42,15 @@ typedef struct {
 GLIB_AVAILABLE_IN_ALL
 GType g_threaded_resolver_get_type (void) G_GNUC_CONST;
 
+/* Used for a private test API */
+GLIB_AVAILABLE_IN_ALL
+GList *g_resolver_records_from_res_query (const gchar      *rrname,
+                                          gint              rrtype,
+                                          guchar           *answer,
+                                          gint              len,
+                                          gint              herr,
+                                          GError          **error);
+
 G_END_DECLS
 
 #endif /* __G_RESOLVER_H__ */
