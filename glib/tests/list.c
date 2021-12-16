@@ -532,7 +532,9 @@ static void
 test_double_free (void)
 {
   GList *list, *link;
-  GList  intruder = { NULL, (gpointer)0xDEADBEEF, (gpointer)0xDEADBEEF };
+  // Casts to size_t first ensure compilers won't warn about pointer casts that change size
+  // MSVC's C4312 warning with /Wp64
+  GList  intruder = { NULL, (gpointer)(size_t)0xDEADBEEF, (gpointer)(size_t)0xDEADBEEF };
 
   if (g_test_subprocess ())
     {
