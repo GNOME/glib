@@ -835,6 +835,67 @@ test_basename (void)
 }
 
 static void
+test_dirname (void)
+{
+  gsize i;
+  struct {
+    const gchar *filename;
+    const gchar *dirname;
+  } dirname_checks[] = {
+    { "/", "/" },
+    { "////", "/" },
+    { ".////", "." },
+    { ".", "." },
+    { "..", "." },
+    { "../", ".." },
+    { "..////", ".." },
+    { "", "." },
+    { "a/b", "a" },
+    { "a/b/", "a/b" },
+    { "c///", "c" },
+    { "/a/b", "/a" },
+    { "/a/b/", "/a/b" },
+#ifdef G_OS_WIN32
+    { "\\", "\\" },
+    { ".\\\\\\\\", "." },
+    { ".\\/\\/", "." },
+    { ".", "." },
+    { "..", "." },
+    { "..\\", ".." },
+    { "..\\\\\\\\", ".." },
+    { "..\\//\\", ".." },
+    { "", "." },
+    { "a\\b", "a" },
+    { "a\\b\\", "a\\b" },
+    { "\\a\\b", "\\a" },
+    { "\\a\\b\\", "\\a\\b" },
+    { "c\\\\\\", "c" },
+    { "c/\\\\", "c" },
+    { "a:", "a:." },
+    { "a:foo", "a:." },
+    { "a:foo\\bar", "a:foo" },
+    { "a:/foo", "a:/" },
+    { "a:/foo/bar", "a:/foo" },
+    { "a:/", "a:/" },
+    { "a://", "a:/" },
+    { "a:\\foo", "a:\\" },
+    { "a:\\", "a:\\" },
+    { "a:\\\\", "a:\\" },
+    { "a:\\/", "a:\\" },
+#endif
+  };
+
+  for (i = 0; i < G_N_ELEMENTS (dirname_checks); i++)
+    {
+      gchar *dirname;
+
+      dirname = g_path_get_dirname (dirname_checks[i].filename);
+      g_assert_cmpstr (dirname, ==, dirname_checks[i].dirname);
+      g_free (dirname);
+    }
+}
+
+static void
 test_dir_make_tmp (void)
 {
   gchar *name;
@@ -1839,6 +1900,7 @@ main (int   argc,
   g_test_add_func ("/fileutils/format-size-for-display", test_format_size_for_display);
   g_test_add_func ("/fileutils/errors", test_file_errors);
   g_test_add_func ("/fileutils/basename", test_basename);
+  g_test_add_func ("/fileutils/dirname", test_dirname);
   g_test_add_func ("/fileutils/dir-make-tmp", test_dir_make_tmp);
   g_test_add_func ("/fileutils/file-open-tmp", test_file_open_tmp);
   g_test_add_func ("/fileutils/mkstemp", test_mkstemp);
