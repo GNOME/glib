@@ -500,25 +500,29 @@ static void
 test_position (void)
 {
   GList *l, *ll;
+  char *a = "a";
+  char *b = "b";
+  char *c = "c";
+  char *d = "d";
 
   l = NULL;
-  l = g_list_append (l, "a");
-  l = g_list_append (l, "b");
-  l = g_list_append (l, "c");
+  l = g_list_append (l, a);
+  l = g_list_append (l, b);
+  l = g_list_append (l, c);
 
-  ll = g_list_find (l, "a");
+  ll = g_list_find (l, a);
   g_assert_cmpint (g_list_position (l, ll), ==, 0);
-  g_assert_cmpint (g_list_index (l, "a"), ==, 0);
-  ll = g_list_find (l, "b");
+  g_assert_cmpint (g_list_index (l, a), ==, 0);
+  ll = g_list_find (l, b);
   g_assert_cmpint (g_list_position (l, ll), ==, 1);
-  g_assert_cmpint (g_list_index (l, "b"), ==, 1);
-  ll = g_list_find (l, "c");
+  g_assert_cmpint (g_list_index (l, b), ==, 1);
+  ll = g_list_find (l, c);
   g_assert_cmpint (g_list_position (l, ll), ==, 2);
-  g_assert_cmpint (g_list_index (l, "c"), ==, 2);
+  g_assert_cmpint (g_list_index (l, c), ==, 2);
 
-  ll = g_list_append (NULL, "d");
+  ll = g_list_append (NULL, d);
   g_assert_cmpint (g_list_position (l, ll), ==, -1);
-  g_assert_cmpint (g_list_index (l, "d"), ==, -1);
+  g_assert_cmpint (g_list_index (l, d), ==, -1);
 
   g_list_free (l);
   g_list_free (ll);
