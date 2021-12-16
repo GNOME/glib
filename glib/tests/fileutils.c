@@ -967,9 +967,15 @@ test_file_open_tmp (void)
 static void
 test_mkstemp (void)
 {
-  gchar *name;
   gint fd;
+  gint result;
+  gchar *name;
+  char chars[62];
+  char template[32];
+  const char hello[] = "Hello, World";
+  const int hellolen = sizeof (hello) - 1;
 
+  /* Test normal case */
   name = g_strdup ("testXXXXXXtest"),
   fd = g_mkstemp (name);
   g_assert_cmpint (fd, !=, -1);
@@ -978,17 +984,48 @@ test_mkstemp (void)
   close (fd);
   g_free (name);
 
-  name = g_strdup ("testYYYYYYtest"),
-  fd = g_mkstemp (name);
-  g_assert_cmpint (fd, ==, -1);
-  g_free (name);
+  /* g_mkstemp() must not work if template doesn't contain XXXXXX */
+  strcpy (template, "foobar");
+  g_assert_cmpint (g_mkstemp (template), ==, -1);
+
+  /* g_mkstemp() must not work if template doesn't contain six X */
+  strcpy (template, "foobarXXX");
+  g_assert_cmpint (g_mkstemp (template), ==, -1);
+
+  strcpy (template, "fooXXXXXX");
+  fd = g_mkstemp (template);
+  g_assert_cmpint (fd, !=, -1);
+  result = write (fd, hello, hellolen);
+  g_assert_cmpint (result, !=, -1);
+  g_assert_cmpint (result, ==, hellolen);
+
+  lseek (fd, 0, 0);
+  result = read (fd, chars, sizeof (chars));
+  g_assert_cmpint (result, !=, -1);
+  g_assert_cmpint (result, ==, hellolen);
+
+  chars[result] = '\0';
+  g_assert_cmpstr (chars, ==, hello);
+
+  close (fd);
+  remove (template);
+
+  /* Check that is does not work for "fooXXXXXX.pdf" */
+  strcpy (template, "fooXXXXXX.pdf");
+  fd = g_mkstemp (template);
+  g_assert_cmpint (fd, !=, -1);
+
+  close (fd);
+  remove (template);
 }
 
 static void
 test_mkdtemp (void)
 {
-  gchar *name;
+  gint fd;
   gchar *ret;
+  gchar *name;
+  char template[32];
 
   name = g_strdup ("testXXXXXXtest"),
   ret = g_mkdtemp (name);
@@ -1001,6 +1038,56 @@ test_mkdtemp (void)
   ret = g_mkdtemp (name);
   g_assert_null (ret);
   g_free (name);
+
+  strcpy (template, "foodir");
+  g_assert_null (g_mkdtemp (template));
+
+  strcpy (template, "foodir");
+  g_assert_null (g_mkdtemp (template));
+
+  strcpy (template, "fooXXXXXX");
+  ret = g_mkdtemp (template);
+  g_assert_nonnull (ret);
+  g_assert_true (ret == template);
+  g_assert_false (g_file_test (template, G_FILE_TEST_IS_REGULAR));
+  g_assert_true (g_file_test (template, G_FILE_TEST_IS_DIR));
+
+  strcat (template, "/abc");
+  fd = g_open (template, O_WRONLY | O_CREAT, 0600);
+  g_assert_cmpint (fd, !=, -1);
+  close (fd);
+  g_assert_true (g_file_test (template, G_FILE_TEST_IS_REGULAR));
+  g_assert_cmpint (g_unlink (template), !=, -1);
+
+  template[9] = '\0';
+  g_assert_cmpint (g_rmdir (template), !=, -1);
+
+  strcpy (template, "fooXXXXXX.dir");
+  g_assert_nonnull (g_mkdtemp (template));
+  g_assert_true (g_file_test (template, G_FILE_TEST_IS_DIR));
+  g_rmdir (template);
+}
+
+static void
+test_get_contents (void)
+{
+  FILE *f;
+  gsize len;
+  gchar *contents;
+  GError *error = NULL;
+  const gchar *text = "abcdefghijklmnopqrstuvwxyz";
+  const gchar *filename = "file-test-get-contents";
+
+  f = g_fopen (filename, "w");
+  fwrite (text, 1, strlen (text), f);
+  fclose (f);
+
+  g_assert_true (g_file_test (filename, G_FILE_TEST_IS_REGULAR));
+
+  g_assert_true (g_file_get_contents (filename, &contents, &len, &error));
+  g_assert_cmpstr (text, ==, contents);
+
+  g_free (contents);
 }
 
 static void
@@ -1318,12 +1405,18 @@ test_read_link (void)
 #ifdef HAVE_READLINK
 #ifdef G_OS_UNIX
   int ret;
-  const gchar *oldpath;
+  FILE *file;
   gchar *cwd;
+  gchar *data;
   gchar *newpath;
   gchar *badpath;
   gchar *path;
   GError *error = NULL;
+  const gchar *oldpath;
+  const gchar *filename = "file-test-data";
+  const gchar *link1 = "file-test-link1";
+  const gchar *link2 = "file-test-link2";
+  const gchar *link3 = "file-test-link3";
 
   cwd = g_get_current_dir ();
 
@@ -1356,6 +1449,40 @@ test_read_link (void)
   g_free (newpath);
   g_free (badpath);
 
+  file = fopen (filename, "w");
+  g_assert_nonnull (file);
+  fclose (file);
+
+  g_assert_cmpint (symlink (filename, link1), ==, 0);
+  g_assert_cmpint (symlink (link1, link2), ==, 0);
+
+  error = NULL;
+  data = g_file_read_link (link1, &error);
+  g_assert_nonnull (data);
+  g_assert_cmpstr (data, ==, filename);
+  g_free (data);
+
+  error = NULL;
+  data = g_file_read_link (link2, &error);
+  g_assert_nonnull (data);
+  g_assert_cmpstr (data, ==, link1);
+  g_free (data);
+
+  error = NULL;
+  data = g_file_read_link (link3, &error);
+  g_assert_null (data);
+  g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_NOENT);
+  g_error_free (error);
+
+  error = NULL;
+  data = g_file_read_link (filename, &error);
+  g_assert_null (data);
+  g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_INVAL);
+  g_error_free (error);
+
+  remove (filename);
+  remove (link1);
+  remove (link2);
 #endif
 #else
   g_test_skip ("Symbolic links not supported");
@@ -1905,6 +2032,7 @@ main (int   argc,
   g_test_add_func ("/fileutils/file-open-tmp", test_file_open_tmp);
   g_test_add_func ("/fileutils/mkstemp", test_mkstemp);
   g_test_add_func ("/fileutils/mkdtemp", test_mkdtemp);
+  g_test_add_func ("/fileutils/get-contents", test_get_contents);
   g_test_add_func ("/fileutils/set-contents", test_set_contents);
   g_test_add_func ("/fileutils/set-contents-full", test_set_contents_full);
   g_test_add_func ("/fileutils/set-contents-full/read-only-file", test_set_contents_full_read_only_file);
