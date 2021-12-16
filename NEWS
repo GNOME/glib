@@ -1,3 +1,193 @@
+Overview of changes in GLib 2.71.0
+==================================
+
+* Fix network changes not being signalled from NetworkManager (work by
+  Julian Andres Klode) (#2505)
+
+* Fix build when building with --fatal-meson-warnings (work by Eli Schwartz) (!2304)
+
+* Fix use of the default log writer with journald namespaces (diagnosis by Ilya Basin) (#2530)
+
+* Fix hang in `dbus-daemon` under `GTestDBus` when `G_MESSAGES_DEBUG=all` is set (work by Marco Trevisan) (#2537)
+
+* Speed up `g_canonicalize_filename()` to avoid pathogenic cases with `..` (work by Sebastian Wilhelmi) (#2541)
+
+* Fix URI for pcre subproject as it’s moved upstream (work by Albert Astals Cid) (!2324)
+
+* Fix storing GSettings dictionaries on macOS (work by Maurice) (#2527)
+
+* Speed up ‘remove dot segments’ algorithm in `GUri` to avoid pathogenic cases with `..` (work by Sebastian Wilhelmi) (#2526)
+
+* Fix infinite loops in D-Bus message parsing for truncated inputs (work by Sebastian Wilhelmi) (#2528)
+
+* Improve correctness of version information returned by `g_get_os_info()` for Windows 10/Server 2019+ (work by Chun-wei Fan) (#2443)
+
+* Various fixes to GWeakRef cleanup (#865, #2390) and toggle refs (#2394) (work by Marco Trevisan)
+
+* Add `G_DBUS_PROXY_FLAGS_NO_MATCH_RULE` flag for disabling match rules when creating a `GDBusProxy` (#1109)
+
+* Fix FD remapping in `g_spawn_async_with_pipes_and_fds()` with certain values of target FDs (#2503, #2506) (work by Michael Catanzaro)
+
+* Make `GDBusProxy::g-signal` signal detailed with D-Bus signal names (#2536) (work by Aleksandr Mezin)
+
+* Emit `launched` signal for D-Bus activation of apps with `GDesktopAppInfo` (!2227) (work by Guido Günther)
+
+* Fix IDs of `GDesktopAppInfo`s which are constructed from a `.desktop` file in a subdirectory (!2283) (work by Ivalyo Dimitrov)
+
+* Add `--interactive` option to `gdbus call` (!2329)
+
+* Add `G_SUBPROCESS_FLAGS_SEARCH_PATH_FROM_ENVP` to `GSubprocess` (!2333) (work by Hristo Venev)
+
+* Bugs fixed:
+ - #475 Add g_alloca0() and g_newa0()
+ - #847 g_set_prgname() should be thread-safe
+ - #865 GWeakRefs not cleared by g_object_run_dispose()
+ - #1109 [PATCH] GDBusProxy: add G_DBUS_PROXY_FLAGS_NO_MATCH_RULE flag
+ - #1231 gobject declare macros cause alignment warnings on armhf/armhf/mipsel
+ - #1331 GArray with 10 million items overflows index arithmetic
+ - #1735 Get back to a -werror build
+ - #1781 Sort output of gsettings command-line tool
+ - #2310 contenttype test leaks xdg-mime internal data
+ - #2390 GWeakRef's aren't cleared again on finalization (and not fully thread-safe)
+ - #2394 Toggle refs notification may not handle multiple threads correctly
+ - #2400 Use-after-free in invoke_set_property_in_idle_cb()
+ - #2401 GDBus runtime warning from remove_interfaces()
+ - #2404 GTask: clarify that GTask assumes are running mainloop
+ - #2426 GSettings delayed apply generates runtime warnings
+ - #2443 Add Windows 11 support to get_windows_version()
+ - #2468 GSequence pessimizes itself and slows down
+ - #2471 g_output_stream_write_all_async prints error when count == 0 and content == NULL
+ - #2488 Unix password unit test fails on FreeBSD 13
+ - #2489 Add a (diagnostic) warning for finalized objects with floating refs
+ - #2490 Upgrade to Unicode Character Database 14.0
+ - #2496 Wrong parameter type for g_simple_proxy_resolver_set_ignore_hosts
+ - #2498 GIR: Remove non-existing IOModule methods `load`, `unload`
+ - #2500 Able to export object manager and object on root path, but not other paths
+ - #2503 gspawn.c may clobber target fds
+ - #2505 g_network_monitor_nm never updates on connection change (listens for signal on wrong dbus interface)
+ - #2506 gspawn.c fails to close child_err_report_fd if it is duped to avoid conflation with one of the target_fds
+ - #2507 Strange behavior of GFileEnumerator with GVfs locations
+ - #2514 test suite failure in glib/tests/gdatetime.c if German locale de_DE.ISO-8859-1 is available
+ - #2518 Misleading message when privileged program starts G_BUS_TYPE_SESSION
+ - #2520 g_date_new_ functions return NULL on invalid input
+ - #2523 MacOS generates warnings for g_size_checked_mul()
+ - #2526 fuzz_uri_parse failure
+ - #2527 Error storing dictionary with string keys as GSettings on macOS
+ - #2528 g_dbus_message_new_from_blob goes into infinite loop for certain inputs
+ - #2529 load_user_special_dirs returns NULL in certain cases
+ - #2530 g_log_writer_is_journald fails if a Journal Namespace is used
+ - #2536 GDBusProxy: make g-signal detailed
+ - #2537 GTestDBus dbus daemon causes child process to hang when using verbose output
+ - #2541 g_canonicalize_filename should work in linear time complexity
+ - #2553 Consider not depending on strtoull_l and strtoll_l as much
+ - !1960 Add g_main_context_new_with_flags() and ownerless polling option
+ - !1968 gspawn: Implement fd remapping for posix_spawn codepath, and fix file descriptor conflation issues
+ - !1991 Keyfile parsing performance improvements
+ - !2029 Updating xdgmime
+ - !2064 gobject: Cleanup GWeakRef locations on object finalization
+ - !2114 Coerce type cast to void* because it causes compiler warnings
+ - !2191 docs: Add .editorconfig file
+ - !2214 Document potential footgun with GTlsCertificateFlags and deprecate certain usages
+ - !2223 Better detection of the cleanup attribute.
+ - !2227 gdesktopappinfo: Emit "launched" signal for D-Bus activation too
+ - !2242 gsettings: Add various missing (nullable) or (not nullable) annotations
+ - !2244 gutils: Avoid segfault in g_get_user_database_entry
+ - !2245 gdesktopappinfo: Do not call xterm when it does not exist, inform the caller the launch failed
+ - !2246 gobject: Document it’s unsafe to call g_object_ref() from GWeakNotify
+ - !2249 Add version macros for GLib 2.72 and bump version to 2.71.0
+ - !2251 GString: Bump minimum size
+ - !2254 Small optimization for g_object_set
+ - !2255 gobject: Clarify behaviour of adding weak refs during disposal
+ - !2257 Fix documentation for g_dbus_object_manager_get_object().
+ - !2260 GWin32AppInfo: Do not assert about successful open'ing of registry keys
+ - !2261 Provide built DLLs as Gitlab-CI artifacts
+ - !2266 fix uninitial variable
+ - !2273 Fix more (Windows) warnings
+ - !2277 Revert "Don't compile some unused functions in gio/xdgmime/"
+ - !2283 GDesktopAppInfo: Try to always correctly set id
+ - !2284 update the proxy-libintl subproject to the latest release
+ - !2285 fix issues found by svace static code analyzer
+ - !2286 meson: fix warnings for extract_all_objects function
+ - !2287 ci: Update CI images to latest stable Debian and Fedora, bump Meson dependency to 0.52
+ - !2288 Update g_source_remove doc comment: the function doesn't always return TRUE
+ - !2289 Update g_source_remove documentation for the returned value
+ - !2290 mkdir path specified by XDG_RUNTIME_DIR
+ - !2292 Fix cast from pointer to integer of different size warning in gio/gwin32appinfo.c
+ - !2293 glib-private: Fix MSVC build with AddressSanitizer
+ - !2294 Fix windows warnings
+ - !2295 gutf8: Document that out args from g_utf16_to_utf8() are non-negative
+ - !2303 Fix more windows warnings
+ - !2305 gio: document GFile API when relative path is absolute
+ - !2306 gunixmounts: Drop references to pamconsole mount option
+ - !2308 gthread-win32: Remove an unnecessary volatile qualifier
+ - !2309 Rename libpcre.wrap to pcre.wrap
+ - !2310 tests: Fix a typo in a test message in gdatetime.c
+ - !2311 Fix always true comparison warning in glib/garray.c
+ - !2319 docs: Fix the GListModel description
+ - !2323 Fix final warnings in Windows code
+ - !2324 Fix link to pcre-8.37.tar.bz2
+ - !2326 Improve some documentation related to GTlsDatabase
+ - !2328 gutf8: add string length check when ending character offset is -1
+ - !2329 gdbus: Add --interactive option to `gdbus call`
+ - !2332 Changed gendered terms to be gender-neutral
+ - !2333 gsubprocess: Add G_SUBPROCESS_FLAGS_SEARCH_PATH_FROM_ENVP
+ - !2336 tests: Drop arbitrary and flaky waits from actions tests
+ - !2339 ci: Bump Meson version to 0.60.1 on macOS
+ - !2341 tests: Wait for gdbus-testserver to die when killing it
+ - !2342 tests: Reformat mkenums.py slightly to make run-black.sh happy
+ - !2345 gutils: Disable some dead code on macOS
+ - !2347 Removing tests/asyncqueue-test.c from tests/
+ - !2348 gio/tests/codegen.py: bump timeout to 100 seconds
+ - !2349 Annotate `g_getenv()` and `g_environ_getenv()` return value as `nullable`
+ - !2352 tests: Fix a flaky wait in converter-stream
+ - !2353 Address some oddities around GResolver::reload
+ - !2357 ci: Upgrade to clang-format-11 from clang-format-7
+ - !2360 meson: specify when commands need to succeed in run_command
+ - !2364 tests: Allow `objcopy --help` to fail, because it fails on FreeBSD
+ - !2365 Add vfunc checks in gappinfo.c
+ - !2368 De-duplicate g_nearest_pow() implementation and add some overflow protections to g_ptr_array_maybe_expand(), g_string_maybe_expand() and g_string_chunk_insert_len()
+ - !2370 gqsort: Move test to glib/tests/
+ - !2371 Freeze notification during object destruction
+ - !2372 docs: Improve GVariant docs
+ - !2373 glib.supp: Suppress one-time allocation in g_get_home_dir()
+ - !2376 GSource: move test to glib/tests/
+ - !2379 Merging tests/bit-test.c into glib/tests/utils.c
+ - !2381 tests: Test the function forms of g_bit_*() APIs too
+ - !2382 gfileutils: Correctly reset start value when canonicalising paths
+ - !2385 gfileutils: Fix transfer annotation and whitespace issues
+ - !2386 docs: Add API documentation links to the README
+ - !2387 docs: Update the README a little
+ - !2390 Merging tests/child-test.c into glib/tests/spawn-multithreaded.c
+ - !2391 Removing redundant cxx test tests/cxx-test.cpp
+ - !2392 Move tests/completion-test.c to glib/tests/completion.c
+ - !2393 Removing unnecessary test on gdatetime.c
+ - !2396 fuzzing: Add a fuzz test for parsing DNS records
+ - !2397 Moving tests/dirname-test.c to glib/tests/fileutils.c
+ - !2398 fix /list/position test
+
+* Translation updates:
+ - Croatian
+ - Friulian
+ - Galician
+ - Hebrew
+ - Indonesian
+ - Italian
+ - Latvian
+ - Lithuanian
+ - Occitan (post 1500)
+ - Persian
+ - Polish
+ - Portuguese
+ - Portuguese (Brazil)
+ - Romanian
+ - Russian
+ - Serbian
+ - Slovak
+ - Spanish
+ - Swedish
+ - Ukrainian
+
+
 Overview of changes in GLib 2.70.0
 ==================================
 
