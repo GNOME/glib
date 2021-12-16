@@ -1,3 +1,20 @@
+/* GLIB - Library of useful routines for C programming
+ * Copyright (C) 2010 Ryan Lortie
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include <glib.h>
 
 static void
@@ -39,6 +56,69 @@ test_listenv (void)
   g_assert_cmpint (g_hash_table_size (table), ==, 0);
   g_hash_table_unref (table);
   g_strfreev (list);
+}
+
+static void
+test_getenv (void)
+{
+  const gchar *data;
+  const gchar *variable = "TEST_G_SETENV";
+  const gchar *value1 = "works";
+  const gchar *value2 = "again";
+
+  /* Check that TEST_G_SETENV is not already set */
+  g_assert_null (g_getenv (variable));
+
+  /* Check if g_setenv() failed */
+  g_assert_cmpint (g_setenv (variable, value1, TRUE), !=, 0);
+
+  data = g_getenv (variable);
+  g_assert_nonnull (data);
+  g_assert_cmpstr (data, ==, value1);
+
+  g_assert_cmpint (g_setenv (variable, value2, FALSE), !=, 0);
+
+  data = g_getenv (variable);
+  g_assert_nonnull (data);
+  g_assert_cmpstr (data, !=, value2);
+  g_assert_cmpstr (data, ==, value1);
+
+  g_assert_cmpint (g_setenv (variable, value2, TRUE), !=, 0);
+
+  data = g_getenv (variable);
+  g_assert_nonnull (data);
+  g_assert_cmpstr (data, !=, value1);
+  g_assert_cmpstr (data, ==, value2);
+
+  g_unsetenv (variable);
+  g_assert_null (g_getenv (variable));
+
+  if (g_test_undefined ())
+    {
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion* == NULL*");
+      g_assert_false (g_setenv ("foo=bar", "baz", TRUE));
+      g_test_assert_expected_messages ();
+    }
+
+  g_assert_true (g_setenv ("foo", "bar=baz", TRUE));
+
+  data = g_getenv ("foo=bar");
+  g_assert_cmpstr (data, ==, "baz");
+
+  data = g_getenv ("foo");
+  g_assert_cmpstr (data, ==, "bar=baz");
+
+  if (g_test_undefined ())
+    {
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion* == NULL*");
+      g_unsetenv ("foo=bar");
+      g_test_assert_expected_messages ();
+    }
+
+  g_unsetenv ("foo");
+  g_assert_null (g_getenv ("foo"));
 }
 
 static void
@@ -160,6 +240,7 @@ main (int argc, char **argv)
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/environ/listenv", test_listenv);
+  g_test_add_func ("/environ/getenv", test_getenv);
   g_test_add_func ("/environ/setenv", test_setenv);
   g_test_add_func ("/environ/array", test_environ_array);
   g_test_add_func ("/environ/null", test_environ_null);
