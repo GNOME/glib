@@ -530,9 +530,9 @@ typedef enum __ns_type {
 #endif /* __BIONIC__ */
 
 static GVariant *
-parse_res_srv (guchar  *answer,
-               guchar  *end,
-               guchar **p)
+parse_res_srv (const guint8  *answer,
+               const guint8  *end,
+               const guint8 **p)
 {
   gchar namebuf[1024];
   guint16 priority, weight, port;
@@ -550,9 +550,9 @@ parse_res_srv (guchar  *answer,
 }
 
 static GVariant *
-parse_res_soa (guchar  *answer,
-               guchar  *end,
-               guchar **p)
+parse_res_soa (const guint8  *answer,
+               const guint8  *end,
+               const guint8 **p)
 {
   gchar mnamebuf[1024];
   gchar rnamebuf[1024];
@@ -578,9 +578,9 @@ parse_res_soa (guchar  *answer,
 }
 
 static GVariant *
-parse_res_ns (guchar  *answer,
-              guchar  *end,
-              guchar **p)
+parse_res_ns (const guint8  *answer,
+              const guint8  *end,
+              const guint8 **p)
 {
   gchar namebuf[1024];
 
@@ -590,9 +590,9 @@ parse_res_ns (guchar  *answer,
 }
 
 static GVariant *
-parse_res_mx (guchar  *answer,
-              guchar  *end,
-              guchar **p)
+parse_res_mx (const guint8  *answer,
+              const guint8  *end,
+              const guint8 **p)
 {
   gchar namebuf[1024];
   guint16 preference;
@@ -607,13 +607,13 @@ parse_res_mx (guchar  *answer,
 }
 
 static GVariant *
-parse_res_txt (guchar  *answer,
-               guchar  *end,
-               guchar **p)
+parse_res_txt (const guint8  *answer,
+               const guint8  *end,
+               const guint8 **p)
 {
   GVariant *record;
   GPtrArray *array;
-  guchar *at = *p;
+  const guint8 *at = *p;
   gsize len;
 
   array = g_ptr_array_new_with_free_func (g_free);
@@ -652,19 +652,19 @@ g_resolver_record_type_to_rrtype (GResolverRecordType type)
   g_return_val_if_reached (-1);
 }
 
-static GList *
+GList *
 g_resolver_records_from_res_query (const gchar      *rrname,
                                    gint              rrtype,
-                                   guchar           *answer,
-                                   gint              len,
+                                   const guint8     *answer,
+                                   gssize            len,
                                    gint              herr,
                                    GError          **error)
 {
   gint count;
   gchar namebuf[1024];
-  guchar *end, *p;
+  const guint8 *end, *p;
   guint16 type, qclass, rdlength;
-  HEADER *header;
+  const HEADER *header;
   GList *records;
   GVariant *record;
 
