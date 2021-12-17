@@ -2296,7 +2296,7 @@ if host_system == 'windows' and cc.get_id() != 'msvc' and cc.get_id() != 'clang-
   add_project_arguments(win32_cflags, language : 'c')
 
   # Win32 API libs, used only by libglib and exposed in glib-2.0.pc
-  win32_ldflags = ['-lws2_32', '-lole32', '-lwinmm', '-lshlwapi']
+  win32_ldflags = ['-lws2_32', '-lole32', '-lwinmm', '-lshlwapi', '-luuid']
 elif host_system == 'cygwin'
   win32_ldflags = ['-luser32', '-lkernel32']
 endif
