@@ -3160,8 +3160,13 @@ g_check_setuid (void)
 void
 g_abort (void)
 {
-  /* One call to break the debugger */
-  DebugBreak ();
+  /* One call to break the debugger 
+   * We check if a debugger is actually attached to
+   * avoid a windows error reporting popup window
+   * when run in a test harness / on CI 
+   */
+  if(IsDebuggerPresent())
+    DebugBreak ();
   /* One call in case CRT changes its abort() behaviour */
   abort ();
   /* And one call to bind them all and terminate the program for sure */
