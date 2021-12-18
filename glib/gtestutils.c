@@ -37,8 +37,6 @@
 #ifdef G_OS_WIN32
 #include <io.h>
 #include <windows.h>
-#endif
-#ifdef G_PLATFORM_WIN32
 #include <crtdbg.h>
 #endif
 #include <errno.h>
@@ -1600,20 +1598,24 @@ void
   mutable_test_config_vars.test_undefined = FALSE;
 #endif
 
-#ifdef G_PLATFORM_WIN32
+#ifdef G_OS_WIN32
   // don't open a window for errors (like the "abort() was called one")
-  _CrtSetReportMode(_CRT_ERROR, _CRTDBG_MODE_FILE);
-  _CrtSetReportFile(_CRT_ERROR, _CRTDBG_FILE_STDERR);
+  _CrtSetReportMode (_CRT_ERROR, _CRTDBG_MODE_FILE);
+  _CrtSetReportFile (_CRT_ERROR, _CRTDBG_FILE_STDERR);
   // while gtest tests tend to use g_assert and friends
   // if they do use the C standard assert macro we want to
   // output a message to stderr, not open a popup window
-  _CrtSetReportMode(_CRT_ASSERT, _CRTDBG_MODE_FILE);
-  _CrtSetReportFile(_CRT_ASSERT, _CRTDBG_FILE_STDERR);
+  _CrtSetReportMode (_CRT_ASSERT, _CRTDBG_MODE_FILE);
+  _CrtSetReportFile (_CRT_ASSERT, _CRTDBG_FILE_STDERR);
   // in release mode abort() will pop up a windows error
-  // reporting dialog, let's prevent that.
-  _set_abort_behavior(0, _CALL_REPORTFAULT);
+  // reporting dialog, let's prevent that. Only msvcrxx and
+  // the UCRT have this function, but there's no great way to
+  // detect msvcrxx (that I know of) so only call this when using
+  // the UCRT
+#ifdef _UCRT
+  _set_abort_behavior (0, _CALL_REPORTFAULT);
 #endif
-
+#endif
 
   va_start (args, argv);
   while ((option = va_arg (args, char *)))
