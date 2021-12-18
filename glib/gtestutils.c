@@ -35,9 +35,9 @@
 #include <sys/resource.h>
 #endif
 #ifdef G_OS_WIN32
+#include <crtdbg.h>
 #include <io.h>
 #include <windows.h>
-#include <crtdbg.h>
 #endif
 #include <errno.h>
 #include <signal.h>
