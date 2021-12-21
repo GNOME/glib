@@ -324,20 +324,16 @@ wait_for_file (const gchar *want_this,
                const gchar *but_not_this,
                const gchar *or_this)
 {
-  guint retries = 600;
+  GFile *file = g_file_new_for_path (want_this);
+  GFileMonitor *monitor;
 
-  /* I hate time-based conditions in tests, but this will wait up to one
-   * whole minute for "touch file" to finish running.  I think it should
-   * be OK.
-   *
-   * 600 * 100ms = 60 seconds.
-   */
+  monitor = g_file_monitor_file (file, G_FILE_MONITOR_NONE, NULL, NULL);
+  g_object_unref (file);
+
   while (access (want_this, F_OK) != 0)
-    {
-      g_usleep (100000); /* 100ms */
-      g_assert_cmpuint (retries, >, 0);
-      retries--;
-    }
+    g_main_context_iteration (NULL, TRUE);
+
+  g_object_unref (monitor);
 
   g_assert_cmpuint (access (but_not_this, F_OK), !=, 0);
   g_assert_cmpuint (access (or_this, F_OK), !=, 0);
