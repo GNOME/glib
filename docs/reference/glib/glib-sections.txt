@@ -2851,6 +2851,7 @@ g_trash_stack_height
 GHashTable
 g_hash_table_new
 g_hash_table_new_full
+g_hash_table_new_similar
 GHashFunc
 GEqualFunc
 g_hash_table_insert

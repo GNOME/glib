@@ -1086,6 +1086,33 @@ g_hash_table_new_full (GHashFunc      hash_func,
 }
 
 /**
+ * g_hash_table_new_similar:
+ * @other_hash_table: (not nullable) (transfer none): Another #GHashTable
+ *
+ * Creates a new #GHashTable like g_hash_table_new_full() with a reference
+ * count of 1.
+ *
+ * It inherits the hash function, the key equal function, the key destroy function,
+ * as well as the value destroy function, from @other_hash_table.
+ *
+ * The returned hash table will be empty; it will not contain the keys
+ * or values from @other_hash_table.
+ *
+ * Returns: (transfer full) (not nullable): a new #GHashTable
+ * Since: 2.72
+ */
+GHashTable *
+g_hash_table_new_similar (GHashTable *other_hash_table)
+{
+  g_return_val_if_fail (other_hash_table, NULL);
+
+  return g_hash_table_new_full (other_hash_table->hash_func,
+                                other_hash_table->key_equal_func,
+                                other_hash_table->key_destroy_func,
+                                other_hash_table->value_destroy_func);
+}
+
+/**
  * g_hash_table_iter_init:
  * @iter: an uninitialized #GHashTableIter
  * @hash_table: a #GHashTable
