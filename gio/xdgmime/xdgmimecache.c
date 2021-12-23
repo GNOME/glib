@@ -72,6 +72,10 @@
 #define MAP_FAILED ((void *) -1)
 #endif
 
+#ifndef S_ISREG
+#define S_ISREG(m) (((m) & _S_IFMT) == _S_IFREG)
+#endif
+
 #define MAJOR_VERSION 1
 #define MINOR_VERSION_MIN 1
 #define MINOR_VERSION_MAX 2
