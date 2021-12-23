@@ -1185,6 +1185,7 @@ g_object_real_dispose (GObject *object)
   g_datalist_id_set_data (&object->qdata, quark_weak_locations, NULL);
 }
 
+#ifdef G_ENABLE_DEBUG
 static gboolean
 floating_check (GObject *object)
 {
@@ -1202,6 +1203,7 @@ floating_check (GObject *object)
 
   return FALSE;
 }
+#endif
 
 static void
 g_object_finalize (GObject *object)

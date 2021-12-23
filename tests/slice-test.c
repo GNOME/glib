@@ -28,7 +28,7 @@ static gboolean want_corruption = FALSE;
 
 /* --- old memchunk prototypes (memchunks.c) --- */
 GMemChunk*      old_mem_chunk_new       (const gchar  *name,
-                                         gint          atom_size,
+                                         gulong        atom_size,
                                          gulong        area_size,
                                          gint          type);
 void            old_mem_chunk_destroy   (GMemChunk *mem_chunk);
