@@ -810,6 +810,20 @@ if cc.links('''#include <sys/eventfd.h>
   glib_conf.set('HAVE_EVENTFD', 1)
 endif
 
+# Check for pidfd_open(2)
+if cc.links('''#include <sys/syscall.h>
+               #include <sys/wait.h>
+               #include <linux/wait.h>
+               #include <unistd.h>
+               int main (int argc, char ** argv) {
+                 siginfo_t child_info = { 0, };
+                 syscall (SYS_pidfd_open, 0, 0);
+                 waitid (P_PIDFD, 0, &child_info, WEXITED | WNOHANG);
+                 return 0;
+               }''', name : 'pidfd_open(2) system call')
+  glib_conf.set('HAVE_PIDFD', 1)
+endif
+
 # Check for __uint128_t (gcc) by checking for 128-bit division
 uint128_t_src = '''int main() {
 static __uint128_t v1 = 100;

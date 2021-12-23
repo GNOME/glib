@@ -67,6 +67,12 @@
 #include <errno.h>
 #include <string.h>
 
+#ifdef HAVE_PIDFD
+#include <sys/syscall.h>
+#include <sys/wait.h>
+#include <linux/wait.h>  /* P_PIDFD */
+#endif  /* HAVE_PIDFD */
+
 #ifdef G_OS_WIN32
 #define STRICT
 #include <windows.h>
@@ -329,10 +335,11 @@ struct _GChildWatchSource
   GSource     source;
   GPid        pid;
   gint        child_status;
-#ifdef G_OS_WIN32
+  /* @poll is always used on Windows, and used on Unix iff @using_pidfd is set: */
   GPollFD     poll;
-#else /* G_OS_WIN32 */
-  gboolean    child_exited; /* (atomic) */
+#ifndef G_OS_WIN32
+  gboolean    child_exited; /* (atomic); not used iff @using_pidfd is set */
+  gboolean    using_pidfd;
 #endif /* G_OS_WIN32 */
 };
 
@@ -5325,7 +5332,8 @@ dispatch_unix_signals_unlocked (void)
         {
           GChildWatchSource *source = node->data;
 
-          if (!g_atomic_int_get (&source->child_exited))
+          if (!source->using_pidfd &&
+              !g_atomic_int_get (&source->child_exited))
             {
               pid_t pid;
               do
@@ -5384,12 +5392,72 @@ g_child_watch_prepare (GSource *source,
   return g_atomic_int_get (&child_watch_source->child_exited);
 }
 
+#ifdef HAVE_PIDFD
+static int
+siginfo_t_to_wait_status (const siginfo_t *info)
+{
+  /* Each of these returns is essentially the inverse of WIFEXITED(),
+   * WIFSIGNALED(), etc. */
+  switch (info->si_code)
+    {
+    case CLD_EXITED:
+      return W_EXITCODE (info->si_status, 0);
+    case CLD_KILLED:
+      return W_EXITCODE (0, info->si_status);
+    case CLD_DUMPED:
+#ifdef WCOREFLAG
+      return W_EXITCODE (0, info->si_status | WCOREFLAG);
+#else
+      g_assert_not_reached ();
+#endif
+    case CLD_CONTINUED:
+#ifdef __W_CONTINUED
+      return __W_CONTINUED;
+#else
+      g_assert_not_reached ();
+#endif
+    case CLD_STOPPED:
+    case CLD_TRAPPED:
+    default:
+      return W_STOPCODE (info->si_status);
+    }
+}
+#endif  /* HAVE_PIDFD */
+
 static gboolean
 g_child_watch_check (GSource *source)
 {
   GChildWatchSource *child_watch_source;
 
   child_watch_source = (GChildWatchSource *) source;
+
+#ifdef HAVE_PIDFD
+  if (child_watch_source->using_pidfd)
+    {
+      gboolean child_exited = child_watch_source->poll.revents & G_IO_IN;
+
+      if (child_exited)
+        {
+          siginfo_t child_info = { 0, };
+
+          /* Get the exit status */
+          if (waitid (P_PIDFD, child_watch_source->poll.fd, &child_info, WEXITED | WNOHANG) >= 0 &&
+              child_info.si_pid != 0)
+            {
+              /* waitid() helpfully provides the wait status in a decomposed
+               * form which is quite useful. Unfortunately we have to report it
+               * to the #GChildWatchFunc as a waitpid()-style platform-specific
+               * wait status, so that the user code in #GChildWatchFunc can then
+               * call WIFEXITED() (etc.) on it. That means re-composing the
+               * status information. */
+              child_watch_source->child_status = siginfo_t_to_wait_status (&child_info);
+              child_watch_source->child_exited = TRUE;
+            }
+        }
+
+      return child_exited;
+    }
+#endif  /* HAVE_PIDFD */
 
   return g_atomic_int_get (&child_watch_source->child_exited);
 }
@@ -5575,6 +5643,11 @@ g_unix_signal_watch_finalize (GSource    *source)
 static void
 g_child_watch_finalize (GSource *source)
 {
+  GChildWatchSource *child_watch_source = (GChildWatchSource *) source;
+
+  if (child_watch_source->using_pidfd)
+    return;
+
   G_LOCK (unix_signal_lock);
   unix_child_watches = g_slist_remove (unix_child_watches, source);
   unref_unix_signal_handler_unlocked (SIGCHLD);
@@ -5676,6 +5749,9 @@ g_child_watch_source_new (GPid pid)
 {
   GSource *source;
   GChildWatchSource *child_watch_source;
+#ifdef HAVE_PIDFD
+  int errsv;
+#endif
 
 #ifndef G_OS_WIN32
   g_return_val_if_fail (pid > 0, NULL);
@@ -5694,14 +5770,43 @@ g_child_watch_source_new (GPid pid)
   child_watch_source->poll.events = G_IO_IN;
 
   g_source_add_poll (source, &child_watch_source->poll);
-#else /* G_OS_WIN32 */
+#else /* !G_OS_WIN32 */
+
+#ifdef HAVE_PIDFD
+  /* Use a pidfd, if possible, to avoid having to install a global SIGCHLD
+   * handler and potentially competing with any other library/code which wants
+   * to install one.
+   *
+   * Unfortunately this use of pidfd isn’t race-free (the PID could be recycled
+   * between the caller calling g_child_watch_source_new() and here), but it’s
+   * better than SIGCHLD.
+   */
+  child_watch_source->poll.fd = (int) syscall (SYS_pidfd_open, pid, 0);
+  errsv = errno;
+
+  if (child_watch_source->poll.fd >= 0)
+    {
+      child_watch_source->using_pidfd = TRUE;
+      child_watch_source->poll.events = G_IO_IN;
+      g_source_add_poll (source, &child_watch_source->poll);
+
+      return source;
+    }
+  else
+    {
+      g_debug ("pidfd_open(%" G_PID_FORMAT ") failed with error: %s",
+               pid, g_strerror (errsv));
+      /* Fall through; likely the kernel isn’t new enough to support pidfd_open() */
+    }
+#endif  /* HAVE_PIDFD */
+
   G_LOCK (unix_signal_lock);
   ref_unix_signal_handler_unlocked (SIGCHLD);
   unix_child_watches = g_slist_prepend (unix_child_watches, child_watch_source);
   if (waitpid (pid, &child_watch_source->child_status, WNOHANG) > 0)
     child_watch_source->child_exited = TRUE;
   G_UNLOCK (unix_signal_lock);
-#endif /* G_OS_WIN32 */
+#endif /* !G_OS_WIN32 */
 
   return source;
 }
