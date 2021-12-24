@@ -275,6 +275,7 @@ void    g_test_init                     (int            *argc,
  *  - g_get_user_config_dir()
  *  - g_get_system_data_dirs()
  *  - g_get_user_data_dir()
+ *  - g_get_user_state_dir()
  *  - g_get_user_runtime_dir()
  *
  * The subdirectories may not be created by the test harness; as with normal

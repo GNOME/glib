@@ -1434,7 +1434,7 @@ test_do_isolate_dirs (GError **error)
 {
   gchar *subdir = NULL;
   gchar *home_dir = NULL, *cache_dir = NULL, *config_dir = NULL;
-  gchar *data_dir = NULL, *runtime_dir = NULL;
+  gchar *state_dir = NULL, *data_dir = NULL, *runtime_dir = NULL;
   gchar *config_dirs[3];
   gchar *data_dirs[3];
 
@@ -1471,6 +1471,7 @@ test_do_isolate_dirs (GError **error)
   cache_dir = g_build_filename (subdir, "cache", NULL);
   config_dir = g_build_filename (subdir, "config", NULL);
   data_dir = g_build_filename (subdir, "data", NULL);
+  state_dir = g_build_filename (subdir, "state", NULL);
 
   config_dirs[0] = g_build_filename (subdir, "system-config1", NULL);
   config_dirs[1] = g_build_filename (subdir, "system-config2", NULL);
@@ -1488,10 +1489,12 @@ test_do_isolate_dirs (GError **error)
                    "XDG_CONFIG_HOME", config_dir,
                    "XDG_DATA_DIRS", data_dirs,
                    "XDG_DATA_HOME", data_dir,
+                   "XDG_STATE_HOME", state_dir,
                    "XDG_RUNTIME_DIR", runtime_dir,
                    NULL);
 
   g_free (runtime_dir);
+  g_free (state_dir);
   g_free (data_dir);
   g_free (config_dir);
   g_free (cache_dir);

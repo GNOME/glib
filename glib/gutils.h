@@ -197,6 +197,8 @@ GLIB_AVAILABLE_IN_ALL
 const gchar *         g_get_user_config_dir    (void);
 GLIB_AVAILABLE_IN_ALL
 const gchar *         g_get_user_cache_dir     (void);
+GLIB_AVAILABLE_IN_2_72
+const gchar *         g_get_user_state_dir     (void);
 GLIB_AVAILABLE_IN_ALL
 const gchar * const * g_get_system_data_dirs   (void);
 
