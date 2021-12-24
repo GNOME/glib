@@ -113,8 +113,11 @@ test_getenv (void)
 
   g_assert_true (g_setenv ("foo", "bar=baz", TRUE));
 
+  /* Different OSs return different values; some return NULL because the key
+   * is invalid, but some are happy to return what we set above. */
   data = g_getenv ("foo=bar");
-  g_assert_cmpstr (data, ==, "baz");
+  if (data != NULL)
+    g_assert_cmpstr (data, ==, "baz");
 
   data = g_getenv ("foo");
   g_assert_cmpstr (data, ==, "bar=baz");
