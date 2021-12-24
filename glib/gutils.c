@@ -549,6 +549,7 @@ static  gchar   *g_user_data_dir = NULL;
 static  gchar  **g_system_data_dirs = NULL;
 static  gchar   *g_user_cache_dir = NULL;
 static  gchar   *g_user_config_dir = NULL;
+static  gchar   *g_user_state_dir = NULL;
 static  gchar   *g_user_runtime_dir = NULL;
 static  gchar  **g_system_config_dirs = NULL;
 static  gchar  **g_user_special_dirs = NULL;
@@ -1770,6 +1771,8 @@ g_set_user_dirs (const gchar *first_dir_type,
         set_strv_if_different (&g_system_data_dirs, dir_type, dir_value);
       else if (g_str_equal (dir_type, "XDG_DATA_HOME"))
         set_str_if_different (&g_user_data_dir, dir_type, dir_value);
+      else if (g_str_equal (dir_type, "XDG_STATE_HOME"))
+        set_str_if_different (&g_user_state_dir, dir_type, dir_value);
       else if (g_str_equal (dir_type, "XDG_RUNTIME_DIR"))
         set_str_if_different (&g_user_runtime_dir, dir_type, dir_value);
       else
@@ -1968,6 +1971,70 @@ g_get_user_cache_dir (void)
   G_UNLOCK (g_utils_global);
 
   return user_cache_dir;
+}
+
+static gchar *
+g_build_user_state_dir (void)
+{
+  gchar *state_dir = NULL;
+  const gchar *state_dir_env = g_getenv ("XDG_STATE_HOME");
+
+  if (state_dir_env && state_dir_env[0])
+    state_dir = g_strdup (state_dir_env);
+#ifdef G_OS_WIN32
+  else
+    state_dir = get_special_folder (&FOLDERID_LocalAppData);
+#endif
+  if (!state_dir || !state_dir[0])
+    {
+      gchar *home_dir = g_build_home_dir ();
+      state_dir = g_build_filename (home_dir, ".local/state", NULL);
+      g_free (home_dir);
+    }
+
+  return g_steal_pointer (&state_dir);
+}
+
+/**
+ * g_get_user_state_dir:
+ *
+ * Returns a base directory in which to store state files specific to
+ * particular user.
+ *
+ * On UNIX platforms this is determined using the mechanisms described
+ * in the
+ * [XDG Base Directory Specification](http://www.freedesktop.org/Standards/basedir-spec).
+ * In this case the directory retrieved will be `XDG_STATE_HOME`.
+ *
+ * On Windows it follows XDG Base Directory Specification if `XDG_STATE_HOME` is defined.
+ * If `XDG_STATE_HOME` is undefined, the folder to use for local (as opposed
+ * to roaming) application data is used instead. See the
+ * [documentation for `FOLDERID_LocalAppData`](https://docs.microsoft.com/en-us/windows/win32/shell/knownfolderid).
+ * Note that in this case on Windows it will be the same
+ * as what g_get_user_data_dir() returns.
+ *
+ * The return value is cached and modifying it at runtime is not supported, as
+ * it’s not thread-safe to modify environment variables at runtime.
+ *
+ * Returns: (type filename) (transfer none): a string owned by GLib that
+ *   must not be modified or freed.
+ *
+ * Since: 2.72
+ **/
+const gchar *
+g_get_user_state_dir (void)
+{
+  const gchar *user_state_dir;
+
+  G_LOCK (g_utils_global);
+
+  if (g_user_state_dir == NULL)
+    g_user_state_dir = g_build_user_state_dir ();
+  user_state_dir = g_user_state_dir;
+
+  G_UNLOCK (g_utils_global);
+
+  return user_state_dir;
 }
 
 static gchar *

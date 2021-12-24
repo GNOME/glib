@@ -877,7 +877,7 @@ static void
 test_info (void)
 {
   const gchar *un, *rn, *hn;
-  const gchar *tmpdir, *homedir, *userdatadir, *uconfdir, *ucachedir;
+  const gchar *tmpdir, *homedir, *userdatadir, *uconfdir, *ucachedir, *ustatedir;
   const gchar *uddesktop, *udddocs, *uddpubshare, *uruntimedir;
   gchar **sv, *cwd, *sdatadirs, *sconfdirs, *langnames;
   const gchar *charset;
@@ -917,6 +917,8 @@ test_info (void)
   g_assert (uconfdir != NULL);
   ucachedir = g_get_user_cache_dir ();
   g_assert (ucachedir != NULL);
+  ustatedir = g_get_user_state_dir ();
+  g_assert (ustatedir != NULL);
 
   uddesktop = g_get_user_special_dir (G_USER_DIRECTORY_DESKTOP);
   g_assert (uddesktop != NULL);

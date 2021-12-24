@@ -688,6 +688,15 @@ test_xdg_dirs (void)
   g_assert_cmpstr (dir, ==, xdg);
   g_free (xdg);
 
+  xdg = g_strdup (g_getenv ("XDG_STATE_HOME"));
+  if (!xdg)
+    xdg = g_build_filename (g_get_home_dir (), ".local/state", NULL);
+
+  dir = g_get_user_state_dir ();
+
+  g_assert_cmpstr (dir, ==, xdg);
+  g_free (xdg);
+
   xdg = g_strdup (g_getenv ("XDG_RUNTIME_DIR"));
   if (!xdg)
     xdg = g_strdup (g_get_user_cache_dir ());
