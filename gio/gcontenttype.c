@@ -736,7 +736,7 @@ g_content_type_from_mime_type (const gchar *mime_type)
 
 /**
  * g_content_type_guess:
- * @filename: (nullable): a string, or %NULL
+ * @filename: (nullable) (type filename): a path, or %NULL
  * @data: (nullable) (array length=data_size): a stream of data, or %NULL
  * @data_size: the size of @data
  * @result_uncertain: (out) (optional): return location for the certainty
