@@ -390,6 +390,8 @@ if host_system != 'windows'
     settings_sources += files('gnextstepsettingsbackend.m')
     contenttype_sources += files('gosxcontenttype.m')
     appinfo_sources += files('gosxappinfo.m')
+    framework_dep = dependency('appleframeworks', modules : ['Foundation', 'CoreFoundation', 'AppKit'])
+    platform_deps += [framework_dep]
     if glib_have_os_x_9_or_later
       unix_sources += files('gcocoanotificationbackend.m')
     endif
@@ -815,7 +817,6 @@ libgio_dep = declare_dependency(link_with : libgio,
   include_directories : [gioinc])
 
 pkg.generate(libgio,
-  libraries_private : [osx_ldflags],
   requires : ['glib-2.0', 'gobject-2.0'],
   variables : ['datadir=' + join_paths('${prefix}', get_option('datadir')),
                'schemasdir=' + join_paths('${datadir}', schemas_subdir),
