@@ -537,16 +537,16 @@ g_dbus_gvariant_to_gvalue (GVariant  *value,
  *
  * The conversion is using the following rules:
  *
- * - #G_TYPE_STRING: 's', 'o', 'g' or 'ay'
- * - #G_TYPE_STRV: 'as', 'ao' or 'aay'
- * - #G_TYPE_BOOLEAN: 'b'
- * - #G_TYPE_UCHAR: 'y'
- * - #G_TYPE_INT: 'i', 'n'
- * - #G_TYPE_UINT: 'u', 'q'
- * - #G_TYPE_INT64 'x'
- * - #G_TYPE_UINT64: 't'
- * - #G_TYPE_DOUBLE: 'd'
- * - #G_TYPE_VARIANT: Any #GVariantType
+ * - `G_TYPE_STRING`: 's', 'o', 'g' or 'ay'
+ * - `G_TYPE_STRV`: 'as', 'ao' or 'aay'
+ * - `G_TYPE_BOOLEAN`: 'b'
+ * - `G_TYPE_UCHAR`: 'y'
+ * - `G_TYPE_INT`: 'i', 'n'
+ * - `G_TYPE_UINT`: 'u', 'q'
+ * - `G_TYPE_INT64`: 'x'
+ * - `G_TYPE_UINT64`: 't'
+ * - `G_TYPE_DOUBLE`: 'd'
+ * - `G_TYPE_VARIANT`: Any #GVariantType
  *
  * This can fail if e.g. @gvalue is of type #G_TYPE_STRING and @type
  * is ['i'][G-VARIANT-TYPE-INT32:CAPS]. It will also fail for any #GType
