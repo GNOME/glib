@@ -549,7 +549,7 @@ g_dbus_gvariant_to_gvalue (GVariant  *value,
  * - `G_TYPE_VARIANT`: Any #GVariantType
  *
  * This can fail if e.g. @gvalue is of type #G_TYPE_STRING and @type
- * is ['i'][G-VARIANT-TYPE-INT32:CAPS]. It will also fail for any #GType
+ * is 'i', i.e. #G_VARIANT_TYPE_INT32. It will also fail for any #GType
  * (including e.g. #G_TYPE_OBJECT and #G_TYPE_BOXED derived-types) not
  * in the table above.
  *
