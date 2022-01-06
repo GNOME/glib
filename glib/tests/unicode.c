@@ -909,6 +909,11 @@ test_zerowidth (void)
   g_assert_false (g_unichar_iszerowidth (G_UNICODE_LAST_CHAR + 1));
   g_assert_false (g_unichar_iszerowidth (G_UNICODE_LAST_CHAR_PART1));
   g_assert_false (g_unichar_iszerowidth (G_UNICODE_LAST_CHAR_PART1 + 1));
+
+  /* Hangul Jamo Extended-B block, containing jungseong and jongseong for
+   * Old Korean */
+  g_assert_true (g_unichar_iszerowidth (0xD7B0));
+  g_assert_true (g_unichar_iszerowidth (0xD7FB));
 }
 
 /* Test that g_unichar_istitle() returns the correct value for various
