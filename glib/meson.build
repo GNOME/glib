@@ -310,6 +310,8 @@ glib_sources = files(
   'gprintf.c',
 )
 
+platform_deps = []
+
 if host_system == 'windows'
   glib_win_rc = configure_file(
     input: 'glib.rc.in',
@@ -330,6 +332,13 @@ endif
 
 if glib_have_cocoa
   glib_sources += files('gosxutils.m')
+  framework_dep = dependency('appleframeworks', modules : ['Foundation', 'CoreFoundation', 'AppKit'])
+  platform_deps += [framework_dep]
+endif
+
+if glib_have_carbon
+  framework_dep = dependency('appleframeworks', modules : 'Carbon')
+  platform_deps += [framework_dep]
 endif
 
 glib_sources += files('gthread-@0@.c'.format(threads_implementation))
@@ -373,7 +382,7 @@ libglib_dep = declare_dependency(
 
 pkg.generate(libglib,
   libraries : [libintl_deps],
-  libraries_private : [osx_ldflags, win32_ldflags],
+  libraries_private : [win32_ldflags],
   subdirs : ['glib-2.0'],
   extra_cflags : ['-I${libdir}/glib-2.0/include'] + win32_cflags,
   variables : ['bindir=' + join_paths('${prefix}', get_option('bindir')),

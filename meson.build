@@ -759,7 +759,6 @@ if host_system == 'linux'
   endif
 endif
 
-osx_ldflags = []
 glib_have_os_x_9_or_later = false
 glib_have_carbon = false
 glib_have_cocoa = false
@@ -769,8 +768,6 @@ if host_system == 'darwin'
 
   add_project_arguments(objcc.get_supported_arguments(warning_objc_args), language: 'objc')
 
-  osx_ldflags += ['-Wl,-framework,CoreFoundation']
-
   # Mac OS X Carbon support
   glib_have_carbon = objcc.compiles('''#include <Carbon/Carbon.h>
                                        #include <CoreServices/CoreServices.h>''',
@@ -778,7 +775,6 @@ if host_system == 'darwin'
 
   if glib_have_carbon
     glib_conf.set('HAVE_CARBON', true)
-    osx_ldflags += '-Wl,-framework,Carbon'
     glib_have_os_x_9_or_later = objcc.compiles('''#include <AvailabilityMacros.h>
                                                   #if MAC_OS_X_VERSION_MIN_REQUIRED < 1090
                                                   #error Compiling for minimum OS X version before 10.9
@@ -795,13 +791,7 @@ if host_system == 'darwin'
 
   if glib_have_cocoa
     glib_conf.set('HAVE_COCOA', true)
-    osx_ldflags += ['-Wl,-framework,Foundation', '-Wl,-framework,AppKit']
   endif
-
-  # FIXME: libgio mix C and objC source files and there is no way to reliably
-  # know which language flags it's going to use to link. Add to both languages
-  # for now. See https://github.com/mesonbuild/meson/issues/3585.
-  add_project_link_arguments(osx_ldflags, language : ['objc', 'c'])
 endif
 
 if host_system == 'qnx'
@@ -2061,13 +2051,13 @@ endif
 # FIXME: glib-gettext.m4 has much more checks to detect broken/uncompatible
 # implementations. This could be extended if issues are found in some platforms.
 libintl_deps = []
-if cc.has_function('ngettext', args : osx_ldflags)
+if cc.has_function('ngettext')
   have_bind_textdomain_codeset = cc.has_function('bind_textdomain_codeset')
 else
   # First just find the bare library.
   libintl = cc.find_library('intl', required : false)
   # The bare library probably won't link without help if it's static.
-  if libintl.found() and not cc.has_function('ngettext', args : osx_ldflags, dependencies : libintl)
+  if libintl.found() and not cc.has_function('ngettext', dependencies : libintl)
      libintl_iconv = cc.find_library('iconv', required : false)
      # libintl supports different threading APIs, which may not
      # require additional flags, but it defaults to using pthreads if
@@ -2077,10 +2067,10 @@ else
      # also defining the macros with the -pthread flag.
      libintl_pthread = cc.find_library('pthread', required : false)
      # Try linking with just libiconv.
-     if libintl_iconv.found() and cc.has_function('ngettext', args : osx_ldflags, dependencies : [libintl, libintl_iconv])
+     if libintl_iconv.found() and cc.has_function('ngettext', dependencies : [libintl, libintl_iconv])
        libintl_deps += [libintl_iconv]
      # Then also try linking with pthreads.
-     elif libintl_iconv.found() and libintl_pthread.found() and cc.has_function('ngettext', args : osx_ldflags, dependencies : [libintl, libintl_iconv, libintl_pthread])
+     elif libintl_iconv.found() and libintl_pthread.found() and cc.has_function('ngettext', dependencies : [libintl, libintl_iconv, libintl_pthread])
        libintl_deps += [libintl_iconv, libintl_pthread]
      else
        libintl = disabler()
@@ -2092,7 +2082,7 @@ else
     have_bind_textdomain_codeset = true  # proxy-libintl supports it
   else
     libintl_deps = [libintl] + libintl_deps
-    have_bind_textdomain_codeset = cc.has_function('bind_textdomain_codeset', args : osx_ldflags,
+    have_bind_textdomain_codeset = cc.has_function('bind_textdomain_codeset', 
                                                    dependencies : libintl_deps)
   endif
 endif
