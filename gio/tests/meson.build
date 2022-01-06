@@ -734,11 +734,16 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
                  '-o','@OUTPUT@'])
 
     # Rename symbol to match the one in the C file
+    if cc.get_id() == 'gcc' and host_system == 'windows'
+      underscore = '_'
+    else
+      underscore = ''
+    endif
     test_resources_binary2 = custom_target('test_resources2.o',
       input : test_resources_binary,
       output : 'test_resources2.o',
       command : [objcopy,
-                 '--add-symbol','_g_binary_test1_resource_data=.data:0',
+                 '--add-symbol', underscore + '_g_binary_test1_resource_data=.data:0',
                  '@INPUT@',
                  '@OUTPUT@'])
 
