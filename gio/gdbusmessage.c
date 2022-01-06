@@ -1839,6 +1839,16 @@ parse_value_from_blob (GMemoryBuffer       *buf,
                         }
                       g_variant_builder_add_value (&builder, item);
                       g_variant_unref (item);
+
+                      /* Array elements must not be zero-length. There are no
+                       * valid zero-length serialisations of any types which
+                       * can be array elements in the D-Bus wire format, so this
+                       * assertion should always hold.
+                       *
+                       * See https://gitlab.gnome.org/GNOME/glib/-/issues/2557
+                       */
+                      g_assert (buf->pos > (gsize) offset);
+
                       offset = buf->pos;
                     }
                 }
