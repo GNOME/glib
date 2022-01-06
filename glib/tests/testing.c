@@ -1589,11 +1589,18 @@ int
 main (int   argc,
       char *argv[])
 {
+  int ret;
+  char *filename, *filename2;
+
   argv0 = argv[0];
 
   setlocale (LC_ALL, "");
 
   g_test_init (&argc, &argv, NULL);
+
+  /* Part of a test for
+   * https://gitlab.gnome.org/GNOME/glib/-/issues/2563, see below */
+  filename = g_test_build_filename (G_TEST_BUILT, "nonexistent", NULL);
 
   g_test_add_func ("/random-generator/rand-1", test_rand1);
   g_test_add_func ("/random-generator/rand-2", test_rand2);
@@ -1675,5 +1682,16 @@ main (int   argc,
   g_test_add_func ("/tap", test_tap);
   g_test_add_func ("/tap/summary", test_tap_summary);
 
-  return g_test_run();
+  ret = g_test_run ();
+
+  /* We can't test for https://gitlab.gnome.org/GNOME/glib/-/issues/2563
+   * from a test-case, because the whole point of that issue is that it's
+   * about whether certain patterns are valid after g_test_run() has
+   * returned... so put an ad-hoc test here, and just crash if it fails. */
+  filename2 = g_test_build_filename (G_TEST_BUILT, "nonexistent", NULL);
+  g_assert_cmpstr (filename, ==, filename2);
+
+  g_free (filename);
+  g_free (filename2);
+  return ret;
 }
