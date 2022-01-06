@@ -648,8 +648,19 @@ if host_system == 'android'
 endif
 
 
-# Check that posix_memalign() is usable; must use header
-if host_system != 'windows' and cc.has_function('posix_memalign', prefix : '#include <stdlib.h>')
+if cc.has_function('memalign', prefix: '#include <stdlib.h>\n#include <malloc.h>')
+  glib_conf.set('HAVE_MEMALIGN', 1)
+endif
+
+if cc.has_function('_aligned_malloc', prefix: '#include <malloc.h>')
+  glib_conf.set('HAVE__ALIGNED_MALLOC', 1)
+endif
+
+if host_system != 'windows' and cc.has_function('aligned_alloc', prefix: '#include <stdlib.h>')
+  glib_conf.set('HAVE_ALIGNED_ALLOC', 1)
+endif
+
+if host_system != 'windows' and cc.has_function('posix_memalign', prefix: '#include <stdlib.h>')
   glib_conf.set('HAVE_POSIX_MEMALIGN', 1)
 endif
 
