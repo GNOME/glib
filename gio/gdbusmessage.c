@@ -1917,6 +1917,16 @@ parse_value_from_blob (GMemoryBuffer       *buf,
 
               g_variant_builder_init (&builder, type);
               element_type = g_variant_type_first (type);
+              if (!element_type)
+                {
+                  g_variant_builder_clear (&builder);
+                  g_set_error_literal (&local_error,
+                                       G_IO_ERROR,
+                                       G_IO_ERROR_INVALID_ARGUMENT,
+                                       _("Empty structures (tuples) are not allowed in D-Bus"));
+                  goto fail;
+                }
+
               while (element_type != NULL)
                 {
                   GVariant *item;
@@ -2627,6 +2637,15 @@ append_value_to_blob (GVariant            *value,
     default:
       if (g_variant_type_is_dict_entry (type) || g_variant_type_is_tuple (type))
         {
+          if (!g_variant_type_first (type))
+            {
+              g_set_error_literal (error,
+                                   G_IO_ERROR,
+                                   G_IO_ERROR_INVALID_ARGUMENT,
+                                   _("Empty structures (tuples) are not allowed in D-Bus"));
+              goto fail;
+            }
+
           padding_added = ensure_output_padding (mbuf, 8);
           if (value != NULL)
             {
