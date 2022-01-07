@@ -942,6 +942,10 @@ gvs_variable_sized_array_is_normal (GVariantSerialised value)
  * for the tuple.  See the notes in gvarianttypeinfo.h.
  */
 
+/* Note: This doesn’t guarantee that @out_member_end >= @out_member_start; that
+ * condition may not hold true for invalid serialised variants. The caller is
+ * responsible for checking the returned values and handling invalid ones
+ * appropriately. */
 static void
 gvs_tuple_get_member_bounds (GVariantSerialised  value,
                              gsize               index_,
@@ -1025,6 +1029,42 @@ gvs_tuple_get_child (GVariantSerialised value,
       g_assert (child.size != 0);
       child.data = NULL;
 
+      return child;
+    }
+
+  /* If the requested @index_ is beyond the set of indices whose framing offsets
+   * have been checked, check the remaining offsets to see whether they’re
+   * normal (in order, no overlapping tuple elements).
+   *
+   * Unlike the checks in gvs_variable_sized_array_get_child(), we have to check
+   * all the tuple *elements* here, not just all the framing offsets, since
+   * tuples contain a mix of elements which use framing offsets and ones which
+   * don’t. None of them are allowed to overlap. */
+  if (index_ > value.ordered_offsets_up_to)
+    {
+      gsize i, prev_i_end = 0;
+
+      if (value.ordered_offsets_up_to > 0)
+        gvs_tuple_get_member_bounds (value, value.ordered_offsets_up_to - 1, offset_size, NULL, &prev_i_end);
+
+      for (i = value.ordered_offsets_up_to; i <= index_; i++)
+        {
+          gsize i_start, i_end;
+
+          gvs_tuple_get_member_bounds (value, i, offset_size, &i_start, &i_end);
+
+          if (i_start > i_end || i_start < prev_i_end || i_end > value.size)
+            break;
+
+          prev_i_end = i_end;
+        }
+
+      value.ordered_offsets_up_to = i - 1;
+    }
+
+  if (index_ > value.ordered_offsets_up_to)
+    {
+      /* Offsets are invalid somewhere, so return an empty child. */
       return child;
     }
 

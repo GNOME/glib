@@ -1,6 +1,7 @@
 /*
  * Copyright © 2007, 2008 Ryan Lortie
  * Copyright © 2010 Codethink Limited
+ * Copyright © 2022 Endless OS Foundation, LLC
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -179,7 +180,7 @@ struct _GVariant
  *                             offsets themselves.
  *
  *                             This field is only relevant for arrays of non
- *                             fixed width types.
+ *                             fixed width types and for tuples.
  *
  *   .tree: Only valid when the instance is in tree form.
  *
@@ -1138,6 +1139,9 @@ g_variant_get_child_value (GVariant *value,
      * from the serialised data for the container
      */
     s_child = g_variant_serialised_get_child (serialised, index_);
+
+    /* Update the cached ordered_offsets_up_to, since @serialised will be thrown away when this function exits */
+    value->contents.serialised.ordered_offsets_up_to = MAX (value->contents.serialised.ordered_offsets_up_to, serialised.ordered_offsets_up_to);
 
     /* Check whether this would cause nesting too deep. If so, return a fake
      * child. The only situation we expect this to happen in is with a variant,

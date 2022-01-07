@@ -35,8 +35,11 @@ typedef struct
    * This guarantees that the bytes of element n don't overlap with any previous
    * element.
    *
-   * This is both read and set by g_variant_serialised_get_child for arrays of
-   * non-fixed-width types */
+   * This is both read and set by g_variant_serialised_get_child() for arrays of
+   * non-fixed-width types, and for tuples.
+   *
+   * Even when dealing with tuples, @ordered_offsets_up_to is an element index,
+   * rather than an index into the frame offsets. */
   gsize             ordered_offsets_up_to;
 } GVariantSerialised;
 

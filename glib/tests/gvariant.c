@@ -1,6 +1,7 @@
 /*
  * Copyright © 2010 Codethink Limited
  * Copyright © 2020 William Manley
+ * Copyright © 2022 Endless OS Foundation, LLC
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -1447,6 +1448,7 @@ test_maybe (void)
         serialised.data = flavoured_malloc (needed_size, flavour);
         serialised.size = needed_size;
         serialised.depth = 0;
+        serialised.ordered_offsets_up_to = 0;
 
         g_variant_serialiser_serialise (serialised,
                                         random_instance_filler,
@@ -1570,6 +1572,7 @@ test_array (void)
         serialised.data = flavoured_malloc (needed_size, flavour);
         serialised.size = needed_size;
         serialised.depth = 0;
+        serialised.ordered_offsets_up_to = 0;
 
         g_variant_serialiser_serialise (serialised, random_instance_filler,
                                         (gpointer *) instances, n_children);
@@ -1734,6 +1737,7 @@ test_tuple (void)
         serialised.data = flavoured_malloc (needed_size, flavour);
         serialised.size = needed_size;
         serialised.depth = 0;
+        serialised.ordered_offsets_up_to = 0;
 
         g_variant_serialiser_serialise (serialised, random_instance_filler,
                                         (gpointer *) instances, n_children);
@@ -1830,6 +1834,7 @@ test_variant (void)
         serialised.data = flavoured_malloc (needed_size, flavour);
         serialised.size = needed_size;
         serialised.depth = 0;
+        serialised.ordered_offsets_up_to = 0;
 
         g_variant_serialiser_serialise (serialised, random_instance_filler,
                                         (gpointer *) &instance, 1);
@@ -5090,6 +5095,176 @@ test_normal_checking_tuple_offsets (void)
   g_variant_unref (variant);
 }
 
+/* This is a regression test that we can't have non-normal values that take up
+ * significantly more space than the normal equivalent, by specifying the
+ * offset table entries so that tuple elements overlap.
+ *
+ * See https://gitlab.gnome.org/GNOME/glib/-/issues/2121#note_838503 and
+ * https://gitlab.gnome.org/GNOME/glib/-/issues/2121#note_838513 */
+static void
+test_normal_checking_tuple_offsets2 (void)
+{
+  const GVariantType *data_type = G_VARIANT_TYPE ("(yyaiyyaiyy)");
+  const guint8 data[] = {
+    0x12, 0x34, 0x56, 0x78, 0x01,
+    /*
+         ^───────────────────┘
+
+    ^^^^^^^^^^                   1st yy
+          ^^^^^^^^^^             2nd yy
+                ^^^^^^^^^^       3rd yy
+                            ^^^^ Framing offsets
+     */
+
+  /* If this variant was encoded normally, it would be something like this:
+   * 0x12, 0x34,  pad,  pad, [array bytes], 0x56, 0x78,  pad,  pad, [array bytes], 0x9A, 0xBC, 0xXX
+   *                                      ^─────────────────────────────────────────────────────┘
+   *
+   * ^^^^^^^^^^                                                                                     1st yy
+   *                                        ^^^^^^^^^^                                              2nd yy
+   *                                                                               ^^^^^^^^^^       3rd yy
+   *                                                                                           ^^^^ Framing offsets
+   */
+  };
+  gsize size = sizeof (data);
+  GVariant *variant = NULL;
+  GVariant *normal_variant = NULL;
+  GVariant *expected = NULL;
+
+  variant = g_variant_new_from_data (data_type, data, size, FALSE, NULL, NULL);
+  g_assert_nonnull (variant);
+
+  normal_variant = g_variant_get_normal_form (variant);
+  g_assert_nonnull (normal_variant);
+  g_assert_cmpuint (g_variant_get_size (normal_variant), <=, size * 3);
+
+  expected = g_variant_new_parsed (
+      "@(yyaiyyaiyy) (0x12, 0x34, [], 0x00, 0x00, [], 0x00, 0x00)");
+  g_assert_cmpvariant (expected, variant);
+  g_assert_cmpvariant (expected, normal_variant);
+
+  g_variant_unref (expected);
+  g_variant_unref (normal_variant);
+  g_variant_unref (variant);
+}
+
+/* This is a regression test that overlapping entries in the offset table are
+ * decoded consistently, even though they’re non-normal.
+ *
+ * See https://gitlab.gnome.org/GNOME/glib/-/issues/2121#note_910935 */
+static void
+test_normal_checking_tuple_offsets3 (void)
+{
+  /* The expected decoding of this non-normal byte stream is complex. See
+   * section 2.7.3 (Handling Non-Normal Serialised Data) of the GVariant
+   * specification.
+   *
+   * The rule “Child Values Overlapping Framing Offsets” from the specification
+   * says that the first `ay` must be decoded as `[0x01]` even though it
+   * overlaps the first byte of the offset table. However, since commit
+   * 7eedcd76f7d5b8c98fa60013e1fe6e960bf19df3, GLib explicitly doesn’t allow
+   * this as it’s exploitable. So the first `ay` must be given a default value.
+   *
+   * The second and third `ay`s must be given default values because of rule
+   * “End Boundary Precedes Start Boundary”.
+   *
+   * The `i` must be given a default value because of rule “Start or End
+   * Boundary of a Child Falls Outside the Container”.
+   */
+  const GVariantType *data_type = G_VARIANT_TYPE ("(ayayiay)");
+  const guint8 data[] = {
+    0x01, 0x00, 0x02,
+    /*
+               ^──┘
+
+    ^^^^^^^^^^                   1st ay, bytes 0-2 (but given a default value anyway, see above)
+                                 2nd ay, bytes 2-0
+                                     i,  bytes 0-4
+                                 3rd ay, bytes 4-1
+          ^^^^^^^^^^ Framing offsets
+     */
+  };
+  gsize size = sizeof (data);
+  GVariant *variant = NULL;
+  GVariant *normal_variant = NULL;
+  GVariant *expected = NULL;
+
+  variant = g_variant_new_from_data (data_type, data, size, FALSE, NULL, NULL);
+  g_assert_nonnull (variant);
+
+  g_assert_false (g_variant_is_normal_form (variant));
+
+  normal_variant = g_variant_get_normal_form (variant);
+  g_assert_nonnull (normal_variant);
+  g_assert_cmpuint (g_variant_get_size (normal_variant), <=, size * 3);
+
+  expected = g_variant_new_parsed ("@(ayayiay) ([], [], 0, [])");
+  g_assert_cmpvariant (expected, variant);
+  g_assert_cmpvariant (expected, normal_variant);
+
+  g_variant_unref (expected);
+  g_variant_unref (normal_variant);
+  g_variant_unref (variant);
+}
+
+/* This is a regression test that overlapping entries in the offset table are
+ * decoded consistently, even though they’re non-normal.
+ *
+ * See https://gitlab.gnome.org/GNOME/glib/-/issues/2121#note_910935 */
+static void
+test_normal_checking_tuple_offsets4 (void)
+{
+  /* The expected decoding of this non-normal byte stream is complex. See
+   * section 2.7.3 (Handling Non-Normal Serialised Data) of the GVariant
+   * specification.
+   *
+   * The rule “Child Values Overlapping Framing Offsets” from the specification
+   * says that the first `ay` must be decoded as `[0x01]` even though it
+   * overlaps the first byte of the offset table. However, since commit
+   * 7eedcd76f7d5b8c98fa60013e1fe6e960bf19df3, GLib explicitly doesn’t allow
+   * this as it’s exploitable. So the first `ay` must be given a default value.
+   *
+   * The second `ay` must be given a default value because of rule “End Boundary
+   * Precedes Start Boundary”.
+   *
+   * The third `ay` must be given a default value because its framing offsets
+   * overlap that of the first `ay`.
+   */
+  const GVariantType *data_type = G_VARIANT_TYPE ("(ayayay)");
+  const guint8 data[] = {
+    0x01, 0x00, 0x02,
+    /*
+               ^──┘
+
+    ^^^^^^^^^^                   1st ay, bytes 0-2 (but given a default value anyway, see above)
+                                 2nd ay, bytes 2-0
+                                 3rd ay, bytes 0-1
+          ^^^^^^^^^^ Framing offsets
+     */
+  };
+  gsize size = sizeof (data);
+  GVariant *variant = NULL;
+  GVariant *normal_variant = NULL;
+  GVariant *expected = NULL;
+
+  variant = g_variant_new_from_data (data_type, data, size, FALSE, NULL, NULL);
+  g_assert_nonnull (variant);
+
+  g_assert_false (g_variant_is_normal_form (variant));
+
+  normal_variant = g_variant_get_normal_form (variant);
+  g_assert_nonnull (normal_variant);
+  g_assert_cmpuint (g_variant_get_size (normal_variant), <=, size * 3);
+
+  expected = g_variant_new_parsed ("@(ayayay) ([], [], [])");
+  g_assert_cmpvariant (expected, variant);
+  g_assert_cmpvariant (expected, normal_variant);
+
+  g_variant_unref (expected);
+  g_variant_unref (normal_variant);
+  g_variant_unref (variant);
+}
+
 /* Test that an empty object path is normalised successfully to the base object
  * path, ‘/’. */
 static void
@@ -5237,6 +5412,12 @@ main (int argc, char **argv)
                    test_normal_checking_array_offsets2);
   g_test_add_func ("/gvariant/normal-checking/tuple-offsets",
                    test_normal_checking_tuple_offsets);
+  g_test_add_func ("/gvariant/normal-checking/tuple-offsets2",
+                   test_normal_checking_tuple_offsets2);
+  g_test_add_func ("/gvariant/normal-checking/tuple-offsets3",
+                   test_normal_checking_tuple_offsets3);
+  g_test_add_func ("/gvariant/normal-checking/tuple-offsets4",
+                   test_normal_checking_tuple_offsets4);
   g_test_add_func ("/gvariant/normal-checking/empty-object-path",
                    test_normal_checking_empty_object_path);
 
