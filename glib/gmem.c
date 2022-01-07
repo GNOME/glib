@@ -595,6 +595,14 @@ g_aligned_alloc (gsize n_blocks,
       return NULL;
     }
 
+  /* We need to clear errno because posix_memalign() will use its return
+   * value in the same way memalign() and aligned_alloc() will set errno.
+   * Additionally, posix_memalign() will warn if its return value is left
+   * unassigned.
+   *
+   * We handle all possible return values (ENOMEM and EINVAL) with either
+   * precondition or postcondition checking.
+   */
   errno = 0;
 
 #if defined(HAVE_POSIX_MEMALIGN)
