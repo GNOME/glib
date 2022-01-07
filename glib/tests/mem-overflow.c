@@ -34,13 +34,14 @@ static gsize a = G_MAXSIZE / 10 + 10;
 static gsize b = 10;
 typedef char X[10];
 
-#define MEM_OVERFLOW_TEST(name, code) \
+#define MEM_OVERFLOW_TEST(name, code) MEM_OVERFLOW_TEST_FULL(name, code, g_free)
+#define MEM_OVERFLOW_TEST_FULL(name, code, free_func) \
 static void                           \
 mem_overflow_ ## name (void)          \
 {                                     \
   gpointer p;                         \
   code;                               \
-  g_free (p);                         \
+  free_func (p);                      \
   exit (0);                           \
 }
 
@@ -67,6 +68,12 @@ MEM_OVERFLOW_TEST (new0_b, p = g_new0 (X, b))
 
 MEM_OVERFLOW_TEST (renew_a, p = g_malloc (1); p = g_renew (X, p, a))
 MEM_OVERFLOW_TEST (renew_b, p = g_malloc (1); p = g_renew (X, p, b))
+
+MEM_OVERFLOW_TEST_FULL (aligned_alloc_a, p = g_aligned_alloc (sizeof(X), a, 16), g_aligned_free)
+MEM_OVERFLOW_TEST_FULL (aligned_alloc_b, p = g_aligned_alloc (sizeof(X), b, 16), g_aligned_free)
+
+MEM_OVERFLOW_TEST_FULL (aligned_alloc0_a, p = g_aligned_alloc0 (sizeof(X), a, 16), g_aligned_free)
+MEM_OVERFLOW_TEST_FULL (aligned_alloc0_b, p = g_aligned_alloc0 (sizeof(X), b, 16), g_aligned_free)
 
 static void
 mem_overflow_malloc_0 (void)
@@ -171,6 +178,12 @@ mem_overflow (void)
 
   CHECK_SUBPROCESS_PASS (malloc_0);
   CHECK_SUBPROCESS_PASS (realloc_0);
+
+  CHECK_SUBPROCESS_FAIL (aligned_alloc_a);
+  CHECK_SUBPROCESS_PASS (aligned_alloc_b);
+
+  CHECK_SUBPROCESS_FAIL (aligned_alloc0_a);
+  CHECK_SUBPROCESS_PASS (aligned_alloc0_b);
 }
 
 #ifdef __GNUC__
@@ -231,6 +244,10 @@ main (int   argc,
   g_test_add_func ("/mem/overflow/subprocess/renew_b", mem_overflow_renew_b);
   g_test_add_func ("/mem/overflow/subprocess/malloc_0", mem_overflow_malloc_0);
   g_test_add_func ("/mem/overflow/subprocess/realloc_0", mem_overflow_realloc_0);
+  g_test_add_func ("/mem/overflow/subprocess/aligned_alloc_a", mem_overflow_aligned_alloc_a);
+  g_test_add_func ("/mem/overflow/subprocess/aligned_alloc_b", mem_overflow_aligned_alloc_b);
+  g_test_add_func ("/mem/overflow/subprocess/aligned_alloc0_a", mem_overflow_aligned_alloc0_a);
+  g_test_add_func ("/mem/overflow/subprocess/aligned_alloc0_b", mem_overflow_aligned_alloc0_b);
 
 #ifdef __GNUC__
   g_test_add_func ("/mem/empty-alloc", empty_alloc);

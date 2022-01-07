@@ -916,6 +916,100 @@ test_misc_mem (void)
 }
 
 static void
+aligned_alloc_nz (void)
+{
+  gpointer a;
+
+  /* Test an alignment that’s zero */
+  a = g_aligned_alloc (16, sizeof(char), 0);
+  g_assert_null (a);
+  exit (0);
+}
+
+static void
+aligned_alloc_npot (void)
+{
+  gpointer a;
+
+  /* Test an alignment that’s not a power of two */
+  a = g_aligned_alloc (16, sizeof(char), 15);
+  g_assert_null (a);
+  exit (0);
+}
+
+static void
+aligned_alloc_nmov (void)
+{
+  gpointer a;
+
+  /* Test an alignment that’s not a multiple of sizeof(void*) */
+  a = g_aligned_alloc (16, sizeof(char), 4);
+  g_assert_null (a);
+  exit (0);
+}
+
+static void
+test_aligned_mem (void)
+{
+  gpointer a;
+
+  g_test_summary ("Aligned memory allocator");
+
+  a = g_aligned_alloc (0, sizeof(int), 8);
+  g_assert_null (a);
+
+  a = g_aligned_alloc0 (0, sizeof(int), 8);
+  g_assert_null (a);
+
+  a = g_aligned_alloc (16, 0, 8);
+  g_assert_null (a);
+
+#define CHECK_SUBPROCESS_FAIL(name,msg) do { \
+        { \
+          g_test_message (msg); \
+          g_test_trap_subprocess ("/utils/aligned-mem/subprocess/" #name, 0, 0); \
+          g_test_trap_assert_failed (); \
+        } \
+    } while (0)
+
+  CHECK_SUBPROCESS_FAIL (aligned_alloc_nz, "Alignment must not be zero");
+  CHECK_SUBPROCESS_FAIL (aligned_alloc_npot, "Alignment must be a power of two");
+  CHECK_SUBPROCESS_FAIL (aligned_alloc_nmov, "Alignment must be a multiple of sizeof(void*)");
+}
+
+static void
+test_aligned_mem_alignment (void)
+{
+  gchar *p;
+
+  g_test_summary ("Check that g_aligned_alloc() returns a correctly aligned pointer");
+
+  p = g_aligned_alloc (5, sizeof (*p), 256);
+  g_assert_nonnull (p);
+  g_assert_cmpuint (((guintptr) p) % 256, ==, 0);
+
+  g_aligned_free (p);
+}
+
+static void
+test_aligned_mem_zeroed (void)
+{
+  gsize n_blocks = 10;
+  guint *p;
+  gsize i;
+
+  g_test_summary ("Check that g_aligned_alloc0() zeroes out its allocation");
+
+  p = g_aligned_alloc0 (n_blocks, sizeof (*p), 16);
+  g_assert_nonnull (p);
+
+  for (i = 0; i < n_blocks; i++)
+    g_assert_cmpuint (p[i], ==, 0);
+
+  g_aligned_free (p);
+}
+
+static void
 test_nullify (void)
 {
   gpointer p = &test_nullify;
@@ -1084,6 +1178,12 @@ main (int   argc,
   g_test_add_func ("/utils/take-pointer", test_take_pointer);
   g_test_add_func ("/utils/clear-source", test_clear_source);
   g_test_add_func ("/utils/misc-mem", test_misc_mem);
+  g_test_add_func ("/utils/aligned-mem", test_aligned_mem);
+  g_test_add_func ("/utils/aligned-mem/subprocess/aligned_alloc_nz", aligned_alloc_nz);
+  g_test_add_func ("/utils/aligned-mem/subprocess/aligned_alloc_npot", aligned_alloc_npot);
+  g_test_add_func ("/utils/aligned-mem/subprocess/aligned_alloc_nmov", aligned_alloc_nmov);
+  g_test_add_func ("/utils/aligned-mem/alignment", test_aligned_mem_alignment);
+  g_test_add_func ("/utils/aligned-mem/zeroed", test_aligned_mem_zeroed);
   g_test_add_func ("/utils/nullify", test_nullify);
   g_test_add_func ("/utils/atexit", test_atexit);
   g_test_add_func ("/utils/check-setuid", test_check_setuid);
