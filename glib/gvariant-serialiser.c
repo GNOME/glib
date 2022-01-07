@@ -942,6 +942,51 @@ gvs_variable_sized_array_is_normal (GVariantSerialised value)
  * for the tuple.  See the notes in gvarianttypeinfo.h.
  */
 
+static void
+gvs_tuple_get_member_bounds (GVariantSerialised  value,
+                             gsize               index_,
+                             gsize               offset_size,
+                             gsize              *out_member_start,
+                             gsize              *out_member_end)
+{
+  const GVariantMemberInfo *member_info;
+  gsize member_start, member_end;
+
+  member_info = g_variant_type_info_member_info (value.type_info, index_);
+
+  if (member_info->i + 1)
+    member_start = gvs_read_unaligned_le (value.data + value.size -
+                                          offset_size * (member_info->i + 1),
+                                          offset_size);
+  else
+    member_start = 0;
+
+  member_start += member_info->a;
+  member_start &= member_info->b;
+  member_start |= member_info->c;
+
+  if (member_info->ending_type == G_VARIANT_MEMBER_ENDING_LAST)
+    member_end = value.size - offset_size * (member_info->i + 1);
+
+  else if (member_info->ending_type == G_VARIANT_MEMBER_ENDING_FIXED)
+    {
+      gsize fixed_size;
+
+      g_variant_type_info_query (member_info->type_info, NULL, &fixed_size);
+      member_end = member_start + fixed_size;
+    }
+
+  else /* G_VARIANT_MEMBER_ENDING_OFFSET */
+    member_end = gvs_read_unaligned_le (value.data + value.size -
+                                        offset_size * (member_info->i + 2),
+                                        offset_size);
+
+  if (out_member_start != NULL)
+    *out_member_start = member_start;
+  if (out_member_end != NULL)
+    *out_member_end = member_end;
+}
+
 static gsize
 gvs_tuple_n_children (GVariantSerialised value)
 {
@@ -997,33 +1042,7 @@ gvs_tuple_get_child (GVariantSerialised value,
         }
     }
 
-  if (member_info->i + 1)
-    start = gvs_read_unaligned_le (value.data + value.size -
-                                   offset_size * (member_info->i + 1),
-                                   offset_size);
-  else
-    start = 0;
-
-  start += member_info->a;
-  start &= member_info->b;
-  start |= member_info->c;
-
-  if (member_info->ending_type == G_VARIANT_MEMBER_ENDING_LAST)
-    end = value.size - offset_size * (member_info->i + 1);
-
-  else if (member_info->ending_type == G_VARIANT_MEMBER_ENDING_FIXED)
-    {
-      gsize fixed_size;
-
-      g_variant_type_info_query (child.type_info, NULL, &fixed_size);
-      end = start + fixed_size;
-      child.size = fixed_size;
-    }
-
-  else /* G_VARIANT_MEMBER_ENDING_OFFSET */
-    end = gvs_read_unaligned_le (value.data + value.size -
-                                 offset_size * (member_info->i + 2),
-                                 offset_size);
+  gvs_tuple_get_member_bounds (value, index_, offset_size, &start, &end);
 
   /* The child should not extend into the offset table. */
   if (index_ != g_variant_type_info_n_members (value.type_info) - 1)
