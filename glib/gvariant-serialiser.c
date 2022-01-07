@@ -1007,14 +1007,18 @@ gvs_tuple_get_child (GVariantSerialised value,
   child.depth = value.depth + 1;
   offset_size = gvs_get_offset_size (value.size);
 
+  /* Ensure the size is set for fixed-sized children, or
+   * g_variant_serialised_check() will fail, even if we return
+   * (child.data == NULL) to indicate an error. */
+  if (member_info->ending_type == G_VARIANT_MEMBER_ENDING_FIXED)
+    g_variant_type_info_query (child.type_info, NULL, &child.size);
+
   /* tuples are the only (potentially) fixed-sized containers, so the
    * only ones that have to deal with the possibility of having %NULL
    * data with a non-zero %size if errors occurred elsewhere.
    */
   if G_UNLIKELY (value.data == NULL && value.size != 0)
     {
-      g_variant_type_info_query (child.type_info, NULL, &child.size);
-
       /* this can only happen in fixed-sized tuples,
        * so the child must also be fixed sized.
        */
@@ -1032,29 +1036,12 @@ gvs_tuple_get_child (GVariantSerialised value,
   else
     {
       if (offset_size * (member_info->i + 1) > value.size)
-        {
-          /* if the child is fixed size, return its size.
-           * if child is not fixed-sized, return size = 0.
-           */
-          g_variant_type_info_query (child.type_info, NULL, &child.size);
-
-          return child;
-        }
+        return child;
     }
-
-  gvs_tuple_get_member_bounds (value, index_, offset_size, &start, &end);
 
   /* The child should not extend into the offset table. */
-  if (index_ != g_variant_type_info_n_members (value.type_info) - 1)
-    {
-      GVariantSerialised last_child;
-      last_child = gvs_tuple_get_child (value,
-                                        g_variant_type_info_n_members (value.type_info) - 1);
-      last_end = last_child.data + last_child.size - value.data;
-      g_variant_type_info_unref (last_child.type_info);
-    }
-  else
-    last_end = end;
+  gvs_tuple_get_member_bounds (value, index_, offset_size, &start, &end);
+  gvs_tuple_get_member_bounds (value, g_variant_type_info_n_members (value.type_info) - 1, offset_size, NULL, &last_end);
 
   if (start < end && end <= value.size && end <= last_end)
     {
