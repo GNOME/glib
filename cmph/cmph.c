@@ -155,7 +155,7 @@ static cmph_uint32 count_nlfile_keys(FILE *fd)
 	while(1)
 	{
 		char buf[BUFSIZ];
-		fgets(buf, BUFSIZ, fd); 
+		if (fgets(buf, BUFSIZ, fd) == NULL) break;
 		if (feof(fd)) break;
 		if (buf[strlen(buf) - 1] != '\n') continue;
 		++count;
