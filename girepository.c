@@ -806,11 +806,13 @@ find_by_gtype (GHashTable *table, FindByGTypeData *data, gboolean check_prefix)
  */
 GIBaseInfo *
 g_irepository_find_by_gtype (GIRepository *repository,
-			     GType         gtype)
+                             GType         gtype)
 {
   FindByGTypeData data;
   GIBaseInfo *cached;
   DirEntry *entry;
+
+  g_return_val_if_fail (gtype != G_TYPE_INVALID, NULL);
 
   repository = get_repository (repository);
 
