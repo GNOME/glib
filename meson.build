@@ -282,7 +282,6 @@ headers = [
   'grp.h',
   'inttypes.h',
   'limits.h',
-  'linux/magic.h',
   'locale.h',
   'mach/mach_time.h',
   'memory.h',

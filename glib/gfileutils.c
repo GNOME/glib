@@ -56,11 +56,6 @@
 #include "gstdioprivate.h"
 #include "glibintl.h"
 
-#ifdef HAVE_LINUX_MAGIC_H /* for btrfs check */
-#include <linux/magic.h>
-#include <sys/vfs.h>
-#endif
-
 
 /**
  * SECTION:fileutils
@@ -1090,23 +1085,6 @@ fd_should_be_fsynced (int                    fd,
 {
 #ifdef HAVE_FSYNC
   struct stat statbuf;
-
-#ifdef BTRFS_SUPER_MAGIC
-  {
-    struct statfs buf;
-
-    /* On Linux, on btrfs, skip the fsync since rename-over-existing is
-     * guaranteed to be atomic and this is the only case in which we
-     * would fsync() anyway.
-     *
-     * See https://btrfs.wiki.kernel.org/index.php/FAQ#What_are_the_crash_guarantees_of_overwrite-by-rename.3F
-     */
-
-    if ((flags & G_FILE_SET_CONTENTS_CONSISTENT) &&
-        fstatfs (fd, &buf) == 0 && buf.f_type == BTRFS_SUPER_MAGIC)
-      return FALSE;
-  }
-#endif  /* BTRFS_SUPER_MAGIC */
 
   /* If the final destination exists and is > 0 bytes, we want to sync the
    * newly written file to ensure the data is on disk when we rename over
