@@ -207,3 +207,28 @@ _g_win32_sid_to_string (SID *sid, GError **error)
   LocalFree (tmp);
   return ret;
 }
+
+/**
+ * _g_win32_current_process_sid_string: (skip)
+ * @error: return location for a #GError, or %NULL
+ *
+ * Get the current process SID, as a string.
+ *
+ * Returns: A newly-allocated string, or NULL in case of an error.
+ */
+gchar *
+_g_win32_current_process_sid_string (GError **error)
+{
+  SID *sid;
+  gchar *ret;
+
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+
+  sid = _g_win32_process_get_access_token_sid (0, error);
+  if (!sid)
+    return NULL;
+
+  ret = _g_win32_sid_to_string (sid, error);
+  g_free (sid);
+  return ret;
+}

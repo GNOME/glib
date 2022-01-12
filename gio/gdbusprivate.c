@@ -55,6 +55,7 @@
 #include <windows.h>
 #include <io.h>
 #include <conio.h>
+#include "gwin32sid.h"
 #endif
 
 #include "glibintl.h"
@@ -2009,69 +2010,6 @@ _g_dbus_compute_complete_signature (GDBusArgInfo **args)
 /* ---------------------------------------------------------------------------------------------------- */
 
 #ifdef G_OS_WIN32
-
-extern BOOL WINAPI ConvertSidToStringSidA (PSID Sid, LPSTR *StringSid);
-
-gchar *
-_g_dbus_win32_get_user_sid (void)
-{
-  HANDLE h;
-  TOKEN_USER *user;
-  DWORD token_information_len;
-  PSID psid;
-  gchar *sid;
-  gchar *ret;
-
-  ret = NULL;
-  user = NULL;
-  h = INVALID_HANDLE_VALUE;
-
-  if (!OpenProcessToken (GetCurrentProcess (), TOKEN_QUERY, &h))
-    {
-      g_warning ("OpenProcessToken failed with error code %d", (gint) GetLastError ());
-      goto out;
-    }
-
-  /* Get length of buffer */
-  token_information_len = 0;
-  if (!GetTokenInformation (h, TokenUser, NULL, 0, &token_information_len))
-    {
-      if (GetLastError () != ERROR_INSUFFICIENT_BUFFER)
-        {
-          g_warning ("GetTokenInformation() failed with error code %d", (gint) GetLastError ());
-          goto out;
-        }
-    }
-  user = g_malloc (token_information_len);
-  if (!GetTokenInformation (h, TokenUser, user, token_information_len, &token_information_len))
-    {
-      g_warning ("GetTokenInformation() failed with error code %d", (gint) GetLastError ());
-      goto out;
-    }
-
-  psid = user->User.Sid;
-  if (!IsValidSid (psid))
-    {
-      g_warning ("Invalid SID");
-      goto out;
-    }
-
-  if (!ConvertSidToStringSidA (psid, &sid))
-    {
-      g_warning ("Invalid SID");
-      goto out;
-    }
-
-  ret = g_strdup (sid);
-  LocalFree (sid);
-
-out:
-  g_free (user);
-  if (h != INVALID_HANDLE_VALUE)
-    CloseHandle (h);
-  return ret;
-}
-
 
 #define DBUS_DAEMON_ADDRESS_INFO "DBusDaemonAddressInfo"
 #define DBUS_DAEMON_MUTEX "DBusDaemonMutex"

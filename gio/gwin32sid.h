@@ -33,6 +33,8 @@ SID      * _g_win32_process_get_access_token_sid         (DWORD    process_id,
 gchar    * _g_win32_sid_to_string                        (SID     *sid,
                                                           GError **error);
 
+gchar    * _g_win32_current_process_sid_string           (GError **error);
+
 G_END_DECLS
 
 #endif /* __G_WIN32_SID_H__ */
