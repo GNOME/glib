@@ -29,6 +29,10 @@
 
 #include "glibintl.h"
 
+#ifdef G_OS_WIN32
+#include "gwin32sid.h"
+#endif
+
 struct _GDBusAuthMechanismExternalPrivate
 {
   gboolean is_client;
@@ -124,11 +128,17 @@ static gboolean
 mechanism_is_supported (GDBusAuthMechanism *mechanism)
 {
   g_return_val_if_fail (G_IS_DBUS_AUTH_MECHANISM_EXTERNAL (mechanism), FALSE);
+
+#if defined(G_OS_WIN32)
+  /* all that is required is current process SID */
+  return TRUE;
+#else
   /* This mechanism is only available if credentials has been exchanged */
   if (_g_dbus_auth_mechanism_get_credentials (mechanism) != NULL)
     return TRUE;
   else
     return FALSE;
+#endif
 }
 
 static gint
@@ -329,32 +339,39 @@ mechanism_client_initiate (GDBusAuthMechanism   *mechanism,
 {
   GDBusAuthMechanismExternal *m = G_DBUS_AUTH_MECHANISM_EXTERNAL (mechanism);
   gchar *initial_response = NULL;
+#if defined(G_OS_UNIX)
   GCredentials *credentials;
+#endif
 
   g_return_val_if_fail (G_IS_DBUS_AUTH_MECHANISM_EXTERNAL (mechanism), NULL);
   g_return_val_if_fail (!m->priv->is_server && !m->priv->is_client, NULL);
 
   m->priv->is_client = TRUE;
-  m->priv->state = G_DBUS_AUTH_MECHANISM_STATE_ACCEPTED;
+  m->priv->state = G_DBUS_AUTH_MECHANISM_STATE_REJECTED;
 
   *out_initial_response_len = 0;
 
+  /* return the uid */
+#if defined(G_OS_UNIX)
   credentials = _g_dbus_auth_mechanism_get_credentials (mechanism);
   g_assert (credentials != NULL);
 
-  /* return the uid */
-#if defined(G_OS_UNIX)
   initial_response = g_strdup_printf ("%" G_GINT64_FORMAT, (gint64) g_credentials_get_unix_user (credentials, NULL));
- *out_initial_response_len = strlen (initial_response);
 #elif defined(G_OS_WIN32)
+  initial_response = _g_win32_current_process_sid_string (NULL);
+#else
 #ifdef __GNUC__
 #pragma GCC diagnostic push
 #pragma GCC diagnostic warning "-Wcpp"
 #warning Dont know how to send credentials on this OS. The EXTERNAL D-Bus authentication mechanism will not work.
 #pragma GCC diagnostic pop
 #endif
-  m->priv->state = G_DBUS_AUTH_MECHANISM_STATE_REJECTED;
 #endif
+  if (initial_response)
+    {
+      m->priv->state = G_DBUS_AUTH_MECHANISM_STATE_ACCEPTED;
+      *out_initial_response_len = strlen (initial_response);
+    }
   return initial_response;
 }
 
