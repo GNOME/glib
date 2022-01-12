@@ -34,6 +34,11 @@
 static void
 test_completion (void)
 {
+  static const char *const a1 = "a\302\243";
+  static const char *const a2 = "a\302\244";
+  static const char *const bb = "bb";
+  static const char *const bc = "bc";
+
   GCompletion *cmp;
   GList *items;
   gchar *prefix;
@@ -42,10 +47,10 @@ test_completion (void)
   g_completion_set_compare (cmp, strncmp);
 
   items = NULL;
-  items = g_list_append (items, "a\302\243");
-  items = g_list_append (items, "a\302\244");
-  items = g_list_append (items, "bb");
-  items = g_list_append (items, "bc");
+  items = g_list_append (items, (gpointer) a1);
+  items = g_list_append (items, (gpointer) a2);
+  items = g_list_append (items, (gpointer) bb);
+  items = g_list_append (items, (gpointer) bc);
   g_completion_add_items (cmp, items);
   g_list_free (items);
 
@@ -75,7 +80,7 @@ test_completion (void)
   items = g_completion_complete_utf8 (cmp, "a", NULL);
   g_assert_cmpint (g_list_length (items), ==, 2);
 
-  items = g_list_append (NULL, "bb");
+  items = g_list_append (NULL, (gpointer) bb);
   g_completion_remove_items (cmp, items);
   g_list_free (items);
 
