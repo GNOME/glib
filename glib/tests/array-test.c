@@ -1685,7 +1685,7 @@ pointer_array_steal_index (void)
 static void
 byte_array_new_take_overflow (void)
 {
-#if G_MAXSIZE <= G_MAXUINT
+#if SIZE_WIDTH <= UINT_WIDTH
   g_test_skip ("Overflow test requires G_MAXSIZE > G_MAXUINT.");
 #else
   GByteArray* arr;
