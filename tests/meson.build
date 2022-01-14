@@ -17,7 +17,6 @@ subdir('refcount')
 
 tests = {
   'testglib' : {'tap' : true},
-  'testgdate' : {},
   'gio-test' : {},
   'mainloop-test' : {},
   'mapping-test' : {},
