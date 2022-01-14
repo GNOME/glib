@@ -32,7 +32,6 @@ tests = {
   'thread-test' : {},
   'threadpool-test' : {'suite' : ['slow']},
   'type-test' : {},
-  'unicode-caseconv' : {},
   'unicode-encoding' : {},
   'module-test-library' : {
     'dependencies' : [libgmodule_dep],
@@ -73,8 +72,6 @@ endif
 if installed_tests_enabled
   install_data(
     'iochannel-test-infile',
-    'casemap.txt',
-    'casefold.txt',
     'utf8.txt',
     install_dir : installed_tests_execdir,
   )
