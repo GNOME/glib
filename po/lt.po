@@ -7,14 +7,14 @@
 # Gintautas Miliauskas <gintas@akl.lt>, 2007, 2008.
 # Rimas Kudelis <rq@akl.lt>, 2010.
 # Algimantas Margevičius <gymka@mail.ru>, 2011.
-# Aurimas Černius <aurisc4@gmail.com>, 2010-2021.
+# Aurimas Černius <aurisc4@gmail.com>, 2010-2022.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: lt\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2021-12-13 11:27+0000\n"
-"PO-Revision-Date: 2021-12-14 13:51+0200\n"
+"POT-Creation-Date: 2022-01-14 11:05+0000\n"
+"PO-Revision-Date: 2022-01-16 21:30+0200\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -27,12 +27,10 @@ msgstr ""
 "X-Project-Style: gnome\n"
 
 #: gio/gappinfo.c:333
-#| msgid "Setting attribute %s not supported"
 msgid "Setting default applications not supported yet"
 msgstr "Numatytųjų programų nustatymas dar nepalaikomas"
 
 #: gio/gappinfo.c:366
-#| msgid "Setting attribute %s not supported"
 msgid "Setting application as last used for type not supported yet"
 msgstr "Programos nustatymas kaip paskutinės naudotos dar nepalaikomas"
 
@@ -498,7 +496,6 @@ msgstr "Pateiktasis adresas yra tuščias"
 
 #: gio/gdbusaddress.c:1101
 #, c-format
-#| msgid "Cannot spawn a message bus when setuid"
 msgid "Cannot spawn a message bus when AT_SECURE is set"
 msgstr "Negalima paleisti pranešimų magistralės kai nustatyta AT_SECURE"
 
@@ -1192,7 +1189,6 @@ msgid "Timeout in seconds"
 msgstr "Laiko limitas sekundėmis"
 
 #: gio/gdbus-tool.c:898
-#| msgid "Show information about locations"
 msgid "Allow interactive authorization"
 msgstr "Rodyti interaktyvią autorizaciją"
 
@@ -1307,38 +1303,38 @@ msgstr "Klaida: per daug argumentų.\n"
 msgid "Error: %s is not a valid well-known bus name.\n"
 msgstr "Klaida: %s nėra tinkamas gerai žinomas magistralės pavadinimas.\n"
 
-#: gio/gdesktopappinfo.c:2106 gio/gdesktopappinfo.c:5031
+#: gio/gdesktopappinfo.c:2174 gio/gdesktopappinfo.c:5099
 msgid "Unnamed"
 msgstr "Nepavadinta"
 
-#: gio/gdesktopappinfo.c:2516
+#: gio/gdesktopappinfo.c:2584
 msgid "Desktop file didn’t specify Exec field"
 msgstr "Darbalaukio failas nenurodė Exec lauko"
 
-#: gio/gdesktopappinfo.c:2824
+#: gio/gdesktopappinfo.c:2892
 msgid "Unable to find terminal required for application"
 msgstr "Nerastas terminalas, reikalingas programai"
 
-#: gio/gdesktopappinfo.c:3551
+#: gio/gdesktopappinfo.c:3619
 #, c-format
 msgid "Can’t create user application configuration folder %s: %s"
 msgstr "Nepavyko sukurti naudotojo nustatymų aplanko %s: %s"
 
-#: gio/gdesktopappinfo.c:3555
+#: gio/gdesktopappinfo.c:3623
 #, c-format
 msgid "Can’t create user MIME configuration folder %s: %s"
 msgstr "Nepavyko sukurti naudotojo MIME nustatymų aplanko %s: %s"
 
-#: gio/gdesktopappinfo.c:3797 gio/gdesktopappinfo.c:3821
+#: gio/gdesktopappinfo.c:3865 gio/gdesktopappinfo.c:3889
 msgid "Application information lacks an identifier"
 msgstr "Programos informacijai trūksta identifikatoriaus"
 
-#: gio/gdesktopappinfo.c:4057
+#: gio/gdesktopappinfo.c:4125
 #, c-format
 msgid "Can’t create user desktop file %s"
 msgstr "Nepavyko sukurti naudotojo darbalaukio failo %s"
 
-#: gio/gdesktopappinfo.c:4193
+#: gio/gdesktopappinfo.c:4261
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Specialus apibrėžimas %s"
@@ -1457,7 +1453,7 @@ msgstr "Negalima kopijuoti specialaus failo"
 msgid "Invalid symlink value given"
 msgstr "Netaisyklinga simbolinės nuorodos reikšmė"
 
-#: gio/gfile.c:4051 glib/gfileutils.c:2355
+#: gio/gfile.c:4051 glib/gfileutils.c:2333
 msgid "Symbolic links not supported"
 msgstr "Simbolinės nuorodos nepalaikomos"
 
@@ -4937,7 +4933,7 @@ msgstr "PM"
 msgid "Error opening directory “%s”: %s"
 msgstr "Klaida atveriant aplanką „%s“: %s"
 
-#: glib/gfileutils.c:738 glib/gfileutils.c:830
+#: glib/gfileutils.c:733 glib/gfileutils.c:825
 #, c-format
 msgid "Could not allocate %lu byte to read file “%s”"
 msgid_plural "Could not allocate %lu bytes to read file “%s”"
@@ -4945,72 +4941,72 @@ msgstr[0] "Nepavyko išskirti %lu baito failo „%s“ perskaitymui"
 msgstr[1] "Nepavyko išskirti %lu baitų failo „%s“ perskaitymui"
 msgstr[2] "Nepavyko išskirti %lu baitų failo „%s“ perskaitymui"
 
-#: glib/gfileutils.c:755
+#: glib/gfileutils.c:750
 #, c-format
 msgid "Error reading file “%s”: %s"
 msgstr "Klaida skaitant failą „%s“: %s"
 
-#: glib/gfileutils.c:791
+#: glib/gfileutils.c:786
 #, c-format
 msgid "File “%s” is too large"
 msgstr "Failas „%s“ per didelis"
 
-#: glib/gfileutils.c:855
+#: glib/gfileutils.c:850
 #, c-format
 msgid "Failed to read from file “%s”: %s"
 msgstr "Nepavyko perskaityti failo „%s“: %s"
 
-#: glib/gfileutils.c:905 glib/gfileutils.c:980 glib/gfileutils.c:1469
+#: glib/gfileutils.c:900 glib/gfileutils.c:975 glib/gfileutils.c:1447
 #, c-format
 msgid "Failed to open file “%s”: %s"
 msgstr "Nepavyko atverti failo „%s“: %s"
 
-#: glib/gfileutils.c:918
+#: glib/gfileutils.c:913
 #, c-format
 msgid "Failed to get attributes of file “%s”: fstat() failed: %s"
 msgstr "Nepavyko gauti failo „%s“ atributų: fstat() klaida: %s"
 
-#: glib/gfileutils.c:949
+#: glib/gfileutils.c:944
 #, c-format
 msgid "Failed to open file “%s”: fdopen() failed: %s"
 msgstr "Nepavyko atverti failo „%s“: fdopen() klaida: %s"
 
-#: glib/gfileutils.c:1050
+#: glib/gfileutils.c:1045
 #, c-format
 msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
 msgstr "Nepavyko pervadinti failo „%s“ į „%s“: g_rename() klaida: %s"
 
-#: glib/gfileutils.c:1176
+#: glib/gfileutils.c:1154
 #, c-format
 msgid "Failed to write file “%s”: write() failed: %s"
 msgstr "Nepavyko įrašyti failo „%s“: write() klaida: %s"
 
-#: glib/gfileutils.c:1197
+#: glib/gfileutils.c:1175
 #, c-format
 msgid "Failed to write file “%s”: fsync() failed: %s"
 msgstr "Nepavyko įrašyti failo „%s“: fsync() klaida: %s"
 
-#: glib/gfileutils.c:1358 glib/gfileutils.c:1773
+#: glib/gfileutils.c:1336 glib/gfileutils.c:1751
 #, c-format
 msgid "Failed to create file “%s”: %s"
 msgstr "Nepavyko sukurti failo „%s“: %s"
 
-#: glib/gfileutils.c:1403
+#: glib/gfileutils.c:1381
 #, c-format
 msgid "Existing file “%s” could not be removed: g_unlink() failed: %s"
 msgstr "Nepavyko pašalinti egzistuojančio failo „%s“: g_unlink() klaida: %s"
 
-#: glib/gfileutils.c:1738
+#: glib/gfileutils.c:1716
 #, c-format
 msgid "Template “%s” invalid, should not contain a “%s”"
 msgstr "Šablonas „%s“ klaidingas, jame negali būti „%s“"
 
-#: glib/gfileutils.c:1751
+#: glib/gfileutils.c:1729
 #, c-format
 msgid "Template “%s” doesn’t contain XXXXXX"
 msgstr "Šablone „%s“ nėra XXXXXX"
 
-#: glib/gfileutils.c:2311 glib/gfileutils.c:2340
+#: glib/gfileutils.c:2289 glib/gfileutils.c:2318
 #, c-format
 msgid "Failed to read the symbolic link “%s”: %s"
 msgstr "Nepavyko perskaityti simbolinės nuorodos „%s“: %s"
@@ -5063,7 +5059,6 @@ msgstr "Raktų failas neprasideda grupe"
 
 #: glib/gkeyfile.c:1394
 #, c-format
-#| msgid "Invalid key name: %s"
 msgid "Invalid key name: %.*s"
 msgstr "Netinkamas rakto pavadinimas: %.*s"
 
@@ -5861,47 +5856,54 @@ msgstr "Vaikinis procesas sustabdytas signalu %ld"
 msgid "Child process exited abnormally"
 msgstr "Vaikinis procesas išėjo nenormaliai"
 
-#: glib/gspawn.c:1855 glib/gspawn-win32.c:350 glib/gspawn-win32.c:358
+#: glib/gspawn.c:1869 glib/gspawn-win32.c:350 glib/gspawn-win32.c:358
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Nepavyko perskaityti duomenų iš antrinio konvejerio (%s)"
 
-#: glib/gspawn.c:2157
+#: glib/gspawn.c:2229
 #, c-format
 msgid "Failed to spawn child process “%s” (%s)"
 msgstr "Nepavyko paleisti antrinio proceso „%s“ (%s)"
 
-#: glib/gspawn.c:2274
+#: glib/gspawn.c:2346
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Nepavyko atskirti (%s)"
 
-#: glib/gspawn.c:2434 glib/gspawn-win32.c:381
+#: glib/gspawn.c:2506 glib/gspawn-win32.c:381
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
 msgstr "Nepavyko pereiti į aplanką „%s“ (%s)"
 
-#: glib/gspawn.c:2444
+#: glib/gspawn.c:2516
 #, c-format
 msgid "Failed to execute child process “%s” (%s)"
 msgstr "Nepavyko paleisti antrinio proceso „%s“ (%s)"
 
-#: glib/gspawn.c:2454
+#: glib/gspawn.c:2526
 #, c-format
-msgid "Failed to redirect output or input of child process (%s)"
-msgstr "Nepavyko perimti antrinio proceso (%s) išvedimo arba įvedimo"
+#| msgid "Failed to open file “%s”: open() failed: %s"
+msgid "Failed to open file to remap file descriptor (%s)"
+msgstr "Nepavyko atverti failo deskriptoriaus pakeitimui (%s)"
 
-#: glib/gspawn.c:2463
+#: glib/gspawn.c:2534
+#, c-format
+#| msgid "Failed to redirect output or input of child process (%s)"
+msgid "Failed to duplicate file descriptor for child process (%s)"
+msgstr "Nepavyko dubliuoti failo deskriptoriaus antriniam procesui (%s)"
+
+#: glib/gspawn.c:2543
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Nepavyko atskirti antrinio proceso (%s)"
 
-#: glib/gspawn.c:2471
+#: glib/gspawn.c:2551
 #, c-format
 msgid "Unknown error executing child process “%s”"
 msgstr "Nežinoma klaida vykdant antrinį procesą „%s“"
 
-#: glib/gspawn.c:2495
+#: glib/gspawn.c:2575
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
@@ -6042,150 +6044,150 @@ msgid "Character out of range for UTF-16"
 msgstr "Simbolis neatitinka UTF-16 simbolių diapazono"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2816
+#: glib/gutils.c:2883
 #, c-format
 msgid "%.1f kB"
 msgstr "%.1f kB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2818
+#: glib/gutils.c:2885
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2820
+#: glib/gutils.c:2887
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2822
+#: glib/gutils.c:2889
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2824
+#: glib/gutils.c:2891
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2826
+#: glib/gutils.c:2893
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2830
+#: glib/gutils.c:2897
 #, c-format
 msgid "%.1f KiB"
 msgstr "%.1f KiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2832
+#: glib/gutils.c:2899
 #, c-format
 msgid "%.1f MiB"
 msgstr "%.1f MiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2834
+#: glib/gutils.c:2901
 #, c-format
 msgid "%.1f GiB"
 msgstr "%.1f GiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2836
+#: glib/gutils.c:2903
 #, c-format
 msgid "%.1f TiB"
 msgstr "%.1f TiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2838
+#: glib/gutils.c:2905
 #, c-format
 msgid "%.1f PiB"
 msgstr "%.1f PiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2840
+#: glib/gutils.c:2907
 #, c-format
 msgid "%.1f EiB"
 msgstr "%.1f EiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2844
+#: glib/gutils.c:2911
 #, c-format
 msgid "%.1f kb"
 msgstr "%.1f kb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2846
+#: glib/gutils.c:2913
 #, c-format
 msgid "%.1f Mb"
 msgstr "%.1f Mb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2848
+#: glib/gutils.c:2915
 #, c-format
 msgid "%.1f Gb"
 msgstr "%.1f Gb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2850
+#: glib/gutils.c:2917
 #, c-format
 msgid "%.1f Tb"
 msgstr "%.1f Tb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2852
+#: glib/gutils.c:2919
 #, c-format
 msgid "%.1f Pb"
 msgstr "%.1f Pb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2854
+#: glib/gutils.c:2921
 #, c-format
 msgid "%.1f Eb"
 msgstr "%.1f Eb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2858
+#: glib/gutils.c:2925
 #, c-format
 msgid "%.1f Kib"
 msgstr "%.1f Kib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2860
+#: glib/gutils.c:2927
 #, c-format
 msgid "%.1f Mib"
 msgstr "%.1f Mib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2862
+#: glib/gutils.c:2929
 #, c-format
 msgid "%.1f Gib"
 msgstr "%.1f Gib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2864
+#: glib/gutils.c:2931
 #, c-format
 msgid "%.1f Tib"
 msgstr "%.1f Tib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2866
+#: glib/gutils.c:2933
 #, c-format
 msgid "%.1f Pib"
 msgstr "%.1f Pib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2868
+#: glib/gutils.c:2935
 #, c-format
 msgid "%.1f Eib"
 msgstr "%.1f Eib"
 
-#: glib/gutils.c:2902 glib/gutils.c:3019
+#: glib/gutils.c:2969 glib/gutils.c:3086
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
@@ -6193,7 +6195,7 @@ msgstr[0] "%u baitas"
 msgstr[1] "%u baitai"
 msgstr[2] "%u baitų"
 
-#: glib/gutils.c:2906
+#: glib/gutils.c:2973
 #, c-format
 msgid "%u bit"
 msgid_plural "%u bits"
@@ -6202,7 +6204,7 @@ msgstr[1] "%u bitai"
 msgstr[2] "%u bitų"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
-#: glib/gutils.c:2973
+#: glib/gutils.c:3040
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
@@ -6211,7 +6213,7 @@ msgstr[1] "%s baitai"
 msgstr[2] "%s baitų"
 
 #. Translators: the %s in "%s bits" will always be replaced by a number.
-#: glib/gutils.c:2978
+#: glib/gutils.c:3045
 #, c-format
 msgid "%s bit"
 msgid_plural "%s bits"
@@ -6224,32 +6226,32 @@ msgstr[2] "%s bitų"
 #. * compatibility.  Users will not see this string unless a program is using this deprecated function.
 #. * Please translate as literally as possible.
 #.
-#: glib/gutils.c:3032
+#: glib/gutils.c:3099
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: glib/gutils.c:3037
+#: glib/gutils.c:3104
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: glib/gutils.c:3042
+#: glib/gutils.c:3109
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: glib/gutils.c:3047
+#: glib/gutils.c:3114
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
-#: glib/gutils.c:3052
+#: glib/gutils.c:3119
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
-#: glib/gutils.c:3057
+#: glib/gutils.c:3124
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
