@@ -440,6 +440,88 @@ zone_for_constant_offset (GTimeZone *gtz, const gchar *name)
 }
 
 #ifdef G_OS_UNIX
+
+#if defined(__sun) && defined(__SVR4)
+/*
+ * only used by Illumos distros or Solaris < 11: parse the /etc/default/init
+ * text file looking for TZ= followed by the timezone, possibly quoted
+ *
+ */
+static gchar *
+zone_identifier_illumos (void)
+{
+  gchar *resolved_identifier = NULL;
+  gchar *contents = NULL;
+  const gchar *line_start = NULL;
+  gsize tz_len = 0;
+
+  if (!g_file_get_contents ("/etc/default/init", &contents, NULL, NULL) )
+    return NULL;
+
+  /* is TZ= the first/only line in the file? */
+  if (strncmp (contents, "TZ=", 3) == 0)
+    {
+      /* found TZ= on the first line, skip over the TZ= */
+      line_start = contents + 3;
+    }
+  else 
+    {
+      /* find a newline followed by TZ= */
+      line_start = strstr (contents, "\nTZ=");
+      if (line_start != NULL)
+        line_start = line_start + 4; /* skip past the \nTZ= */
+    }
+
+  /* 
+   * line_start is NULL if we didn't find TZ= at the start of any line,
+   * otherwise it points to what is after the '=' (possibly '\0')
+   */
+  if (line_start == NULL || *line_start == '\0')
+    return NULL;
+
+  /* skip past a possible opening " or ' */
+  if (*line_start == '"' || *line_start == '\'')
+    line_start++;
+
+  /*
+   * loop over the next few characters, building up the length of
+   * the timezone identifier, ending with end of string, newline or
+   * a " or ' character
+   */
+  while (*(line_start + tz_len) != '\0' &&
+         *(line_start + tz_len) != '\n' &&
+         *(line_start + tz_len) != '"'  &&
+         *(line_start + tz_len) != '\'')
+    tz_len++; 
+
+  if (tz_len > 0)
+    {
+      /* found it */
+      resolved_identifier = g_strndup (line_start, tz_len);
+      g_strchomp (resolved_identifier);
+      g_free (contents);
+      return g_steal_pointer (&resolved_identifier);
+    }
+  else
+    return NULL;
+}
+#endif /* defined(__sun) && defined(__SRVR) */
+
+/*
+ * returns the path to the top of the Olson zoneinfo timezone hierarchy.
+ */
+static const gchar *
+zone_info_base_dir (void)
+{
+  if (g_file_test ("/usr/share/zoneinfo", G_FILE_TEST_IS_DIR))
+    return "/usr/share/zoneinfo";     /* Most distros */
+  else if (g_file_test ("/usr/share/lib/zoneinfo", G_FILE_TEST_IS_DIR))
+    return "/usr/share/lib/zoneinfo"; /* Illumos distros */
+
+  /* need a better fallback case */
+  return "/usr/share/zoneinfo";
+}
+
 static gchar *
 zone_identifier_unix (void)
 {
@@ -458,17 +540,26 @@ zone_identifier_unix (void)
                                                 G_FILE_ERROR_INVAL);
       g_clear_error (&read_link_err);
 
-      /* Fallback to the content of /var/db/zoneinfo or /etc/timezone
-       * if /etc/localtime is not a symlink. /var/db/zoneinfo is
-       * where 'tzsetup' program on FreeBSD and DragonflyBSD stores
-       * the timezone chosen by the user. /etc/timezone is where user
-       * choice is expressed on Gentoo OpenRC and others. */
+      /* if /etc/localtime is not a symlink, try:
+       *  - /var/db/zoneinfo : 'tzsetup' program on FreeBSD and
+       *    DragonflyBSD stores the timezone chosen by the user there.
+       *  - /etc/timezone : Gentoo, OpenRC, and others store
+       *    the user choice there.
+       *  - call zone_identifier_illumos iff __sun and __SVR4 are defined,
+       *    as a last-ditch effort to parse the TZ= setting from within
+       *    /etc/default/init
+       */
       if (not_a_symlink && (g_file_get_contents ("/var/db/zoneinfo",
                                                  &resolved_identifier,
                                                  NULL, NULL) ||
                             g_file_get_contents ("/etc/timezone",
                                                  &resolved_identifier,
-                                                 NULL, NULL)))
+                                                 NULL, NULL)
+#if defined(__sun) && defined(__SVR4)
+                                                             ||
+                            (resolved_identifier = zone_identifier_illumos ())
+#endif
+                                                             ))
         g_strchomp (resolved_identifier);
       else
         {
@@ -487,7 +578,7 @@ zone_identifier_unix (void)
 
   tzdir = g_getenv ("TZDIR");
   if (tzdir == NULL)
-    tzdir = "/usr/share/zoneinfo";
+    tzdir = zone_info_base_dir ();
 
   /* Strip the prefix and slashes if possible. */
   if (g_str_has_prefix (resolved_identifier, tzdir))
@@ -520,7 +611,7 @@ zone_info_unix (const gchar *identifier,
 
   tzdir = g_getenv ("TZDIR");
   if (tzdir == NULL)
-    tzdir = "/usr/share/zoneinfo";
+    tzdir = zone_info_base_dir ();
 
   /* identifier can be a relative or absolute path name;
      if relative, it is interpreted starting from /usr/share/zoneinfo
