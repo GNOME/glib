@@ -96,13 +96,10 @@ use of these flags is not tested.
 One particular detail to note, is that the architecture-dependent
 include file glibconfig.h is installed in:
 
-  $exec_prefix/lib/glib/include/
-
-if you have a version in $prefix/include, this is out of date
-and should be deleted.
+  $libdir/glib-2.0/include/
 
 .pc files for the various libraries are installed in
-$exec_prefix/lib/pkgconfig to provide information when compiling
+$libdir/pkgconfig to provide information when compiling
 other packages that depend on GLib. If you set PKG_CONFIG_PATH
 so that it points to this directory, then you can get the
 correct include flags and library flags for compiling a GLib
@@ -110,6 +107,9 @@ application with:
 
  pkg-config --cflags glib-2.0
  pkg-config --libs glib-2.0
+
+This is the only supported way of determining the include and library flags
+for building against GLib.
 
 
 Cross-compiling GLib
