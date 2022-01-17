@@ -2101,7 +2101,7 @@ class CodeGenerator:
                         "   *\n"
                         "   * Signal emitted when a remote caller is invoking the %s.%s() D-Bus method.\n"
                         "   *\n"
-                        "   * If a signal handler returns %%TRUE, it means the signal handler will handle the invocation (e.g. take a reference to @invocation and eventually call %s_complete_%s() or e.g. g_dbus_method_invocation_return_error() on it) and no order signal handlers will run. If no signal handler handles the invocation, the %%G_DBUS_ERROR_UNKNOWN_METHOD error is returned.\n"
+                        "   * If a signal handler returns %%TRUE, it means the signal handler will handle the invocation (e.g. take a reference to @invocation and eventually call %s_complete_%s() or e.g. g_dbus_method_invocation_return_error() on it) and no other signal handlers will run. If no signal handler handles the invocation, the %%G_DBUS_ERROR_UNKNOWN_METHOD error is returned.\n"
                         "   *\n"
                         "   * Returns: %%G_DBUS_METHOD_INVOCATION_HANDLED or %%TRUE if the invocation was handled, %%G_DBUS_METHOD_INVOCATION_UNHANDLED or %%FALSE to let other signal handlers run.\n"
                         % (i.name, m.name, i.name_lower, m.name_lower),
