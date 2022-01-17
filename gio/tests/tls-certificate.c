@@ -586,6 +586,45 @@ ip_addresses (void)
   g_object_unref (cert);
 }
 
+static void
+from_pkcs12 (void)
+{
+  GTlsCertificate *cert;
+  GError *error = NULL;
+  const guint8 data[1] = { 0 };
+
+  /* This simply fails because our test backend doesn't support this
+   * property. This reflects using a backend that doesn't support it.
+   * The real test lives in glib-networking. */
+  cert = g_tls_certificate_new_from_pkcs12 (data, 1, NULL, &error);
+
+  g_assert_null (cert);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);
+  g_error_free (error);
+}
+
+static void
+from_pkcs12_file (void)
+{
+  GTlsCertificate *cert;
+  GError *error = NULL;
+  char *path = g_test_build_filename (G_TEST_DIST, "cert-tests", "key-cert-password-123.p12", NULL);
+
+  /* Fails on our test backend, see from_pkcs12() above. */
+  cert = g_tls_certificate_new_from_file_with_password (path, "123", &error);
+  g_assert_null (cert);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);
+  g_clear_error (&error);
+
+  /* Just for coverage. */
+  cert = g_tls_certificate_new_from_file (path, &error);
+  g_assert_null (cert);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);
+  g_error_free (error);
+
+  g_free (path);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -656,6 +695,10 @@ main (int   argc,
                    from_pkcs11_uri);
   g_test_add_func ("/tls-certificate/pkcs11-uri-unsupported",
                    from_unsupported_pkcs11_uri);
+  g_test_add_func ("/tls-certificate/from_pkcs12",
+                   from_pkcs12);
+  g_test_add_func ("/tls-certificate/from_pkcs12_file",
+                   from_pkcs12_file);
   g_test_add_func ("/tls-certificate/not-valid-before",
                    not_valid_before);
   g_test_add_func ("/tls-certificate/not-valid-after",

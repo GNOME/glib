@@ -3715,7 +3715,9 @@ g_tls_backend_get_type
 <TITLE>GTlsCertificate</TITLE>
 GTlsCertificate
 g_tls_certificate_new_from_pem
+g_tls_certificate_new_from_pkcs12
 g_tls_certificate_new_from_file
+g_tls_certificate_new_from_file_with_password
 g_tls_certificate_new_from_files
 g_tls_certificate_new_from_pkcs11_uris
 g_tls_certificate_list_new_from_file

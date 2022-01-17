@@ -63,7 +63,15 @@ GLIB_AVAILABLE_IN_ALL
 GTlsCertificate      *g_tls_certificate_new_from_pem       (const gchar         *data,
 							    gssize               length,
 							    GError             **error);
-
+GLIB_AVAILABLE_IN_2_72
+GTlsCertificate      *g_tls_certificate_new_from_pkcs12      (const guint8      *data,
+                                                              gsize              length,
+                                                              const gchar       *password,
+                                                              GError           **error);
+GLIB_AVAILABLE_IN_2_72
+GTlsCertificate      *g_tls_certificate_new_from_file_with_password (const gchar  *file,
+                                                                     const gchar  *password,
+                                                                     GError      **error);
 GLIB_AVAILABLE_IN_ALL
 GTlsCertificate      *g_tls_certificate_new_from_file      (const gchar         *file,
 							    GError             **error);

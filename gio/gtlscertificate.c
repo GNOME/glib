@@ -50,7 +50,11 @@
  * Since: 2.28
  */
 
-G_DEFINE_ABSTRACT_TYPE (GTlsCertificate, g_tls_certificate, G_TYPE_OBJECT)
+struct _GTlsCertificatePrivate {
+  gboolean pkcs12_properties_not_overridden;
+};
+
+G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (GTlsCertificate, g_tls_certificate, G_TYPE_OBJECT)
 
 enum
 {
@@ -69,6 +73,8 @@ enum
   PROP_ISSUER_NAME,
   PROP_DNS_NAMES,
   PROP_IP_ADDRESSES,
+  PROP_PKCS12_DATA,
+  PROP_PASSWORD,
 };
 
 static void
@@ -84,11 +90,11 @@ g_tls_certificate_get_property (GObject    *object,
 {
   switch (prop_id)
     {
+    /* Subclasses must override these properties but this allows older backends to not fatally error */
     case PROP_PRIVATE_KEY:
     case PROP_PRIVATE_KEY_PEM:
     case PROP_PKCS11_URI:
     case PROP_PRIVATE_KEY_PKCS11_URI:
-      /* Subclasses must override this property but this allows older backends to not fatally error */
       g_value_set_static_string (value, NULL);
       break;
     default:
@@ -102,11 +108,19 @@ g_tls_certificate_set_property (GObject      *object,
 				const GValue *value,
 				GParamSpec   *pspec)
 {
+  GTlsCertificate *cert = (GTlsCertificate*)object;
+  GTlsCertificatePrivate *priv = g_tls_certificate_get_instance_private (cert);
+
   switch (prop_id)
     {
     case PROP_PKCS11_URI:
     case PROP_PRIVATE_KEY_PKCS11_URI:
-      /* Subclasses must override this property but this allows older backends to not fatally error */
+      /* Subclasses must override these properties but this allows older backends to not fatally error. */
+      break;
+    case PROP_PKCS12_DATA:
+    case PROP_PASSWORD:
+      /* We don't error on setting these properties however we track that they were not overridden. */
+      priv->pkcs12_properties_not_overridden = TRUE;
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -121,6 +135,39 @@ g_tls_certificate_class_init (GTlsCertificateClass *class)
   gobject_class->set_property = g_tls_certificate_set_property;
   gobject_class->get_property = g_tls_certificate_get_property;
 
+  /**
+   * GTlsCertificate:pkcs12-data: (nullable)
+   *
+   * The PKCS #12 formatted data used to construct the object.
+   *
+   * See also: g_tls_certificate_new_from_pkcs12()
+   *
+   * Since: 2.72
+   */
+  g_object_class_install_property (gobject_class, PROP_PKCS12_DATA,
+				   g_param_spec_boxed ("pkcs12-data",
+						       P_("PKCS #12 data"),
+						       P_("The PKCS #12 data used for construction"),
+						       G_TYPE_BYTE_ARRAY,
+						       G_PARAM_WRITABLE |
+						       G_PARAM_CONSTRUCT_ONLY |
+						       G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GTlsCertificate:password: (nullable)
+   *
+   * An optional password used when constructed with GTlsCertificate:pkcs12-data.
+   *
+   * Since: 2.72
+   */
+  g_object_class_install_property (gobject_class, PROP_PASSWORD,
+                                   g_param_spec_string ("password",
+                                                        P_("Password"),
+                                                        P_("Password used when constructing from bytes"),
+                                                        NULL,
+                                                        G_PARAM_WRITABLE |
+                                                          G_PARAM_CONSTRUCT_ONLY |
+                                                          G_PARAM_STATIC_STRINGS));
   /**
    * GTlsCertificate:certificate:
    *
@@ -684,23 +731,138 @@ g_tls_certificate_new_from_pem  (const gchar  *data,
 }
 
 /**
- * g_tls_certificate_new_from_file:
- * @file: (type filename): file containing a PEM-encoded certificate to import
+ * g_tls_certificate_new_from_pkcs12:
+ * @data: DER-encoded PKCS #12 format certificate data
+ * @length: the length of @data
+ * @password: (nullable): optional password for encrypted certificate data
  * @error: #GError for error reporting, or %NULL to ignore.
  *
- * Creates a #GTlsCertificate from the PEM-encoded data in @file. The
- * returned certificate will be the first certificate found in @file. As
- * of GLib 2.44, if @file contains more certificates it will try to load
- * a certificate chain. All certificates will be verified in the order
- * found (top-level certificate should be the last one in the file) and
- * the #GTlsCertificate:issuer property of each certificate will be set
- * accordingly if the verification succeeds. If any certificate in the
- * chain cannot be verified, the first certificate in the file will
- * still be returned.
+ * Creates a #GTlsCertificate from the data in @data. It must contain
+ * a certificate and matching private key.
+ *
+ * If extra certificates are included they will be verified as a chain
+ * and the #GTlsCertificate:issuer property will be set.
+ * All other data will be ignored.
+ *
+ * You can pass as single password for all of the data which will be
+ * used both for the PKCS #12 container as well as encrypted
+ * private keys. If decryption fails it will error with
+ * %G_TLS_ERROR_BAD_CERTIFICATE_PASSWORD.
+ *
+ * This constructor requires support in the current #GTlsBackend.
+ * If support is missing it will error with
+ * %G_IO_ERROR_NOT_SUPPORTED.
+ *
+ * Other parsing failures will error with %G_TLS_ERROR_BAD_CERTIFICATE.
+ *
+ * Returns: the new certificate, or %NULL if @data is invalid
+ *
+ * Since: 2.72
+ */
+GTlsCertificate *
+g_tls_certificate_new_from_pkcs12 (const guint8  *data,
+                                   gsize          length,
+                                   const gchar   *password,
+                                   GError       **error)
+{
+  GObject *cert;
+  GTlsBackend *backend;
+  GByteArray *bytes;
+
+  g_return_val_if_fail (data != NULL || length == 0, NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+
+  backend = g_tls_backend_get_default ();
+
+  bytes = g_byte_array_new ();
+  g_byte_array_append (bytes, data, length);
+
+  cert = g_initable_new (g_tls_backend_get_certificate_type (backend),
+                         NULL, error,
+                         "pkcs12-data", bytes,
+                         "password", password,
+                         NULL);
+
+  g_byte_array_unref (bytes);
+
+  if (cert)
+    {
+      GTlsCertificatePrivate *priv = g_tls_certificate_get_instance_private (G_TLS_CERTIFICATE (cert));
+
+      if (priv->pkcs12_properties_not_overridden)
+        {
+          g_clear_object (&cert);
+          g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                               _("The current TLS backend does not support PKCS #12"));
+          return NULL;
+        }
+    }
+
+  return G_TLS_CERTIFICATE (cert);
+}
+
+/**
+ * g_tls_certificate_new_from_file_with_password:
+ * @file: (type filename): file containing a certificate to import
+ * @password: (not nullable): password for PKCS #12 files
+ * @error: #GError for error reporting, or %NULL to ignore
+ *
+ * Creates a #GTlsCertificate from the data in @file.
  *
  * If @file cannot be read or parsed, the function will return %NULL and
- * set @error. Otherwise, this behaves like
- * g_tls_certificate_new_from_pem().
+ * set @error.
+ *
+ * Any unknown file types will error with %G_IO_ERROR_NOT_SUPPORTED.
+ * Currently only `.p12` and `.pfx` files are supported.
+ * See g_tls_certificate_new_from_pkcs12() for more details.
+ *
+ * Returns: the new certificate, or %NULL on error
+ *
+ * Since: 2.72
+ */
+GTlsCertificate *
+g_tls_certificate_new_from_file_with_password (const gchar  *file,
+                                               const gchar  *password,
+                                               GError      **error)
+{
+  GTlsCertificate *cert;
+  gchar *contents;
+  gsize length;
+
+  g_return_val_if_fail (file != NULL, NULL);
+  g_return_val_if_fail (password != NULL, NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+
+  if (!g_str_has_suffix (file, ".p12") && !g_str_has_suffix (file, ".pfx"))
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                   "The file type of \"%s\" is unknown. Only .p12 and .pfx files are supported currently.", file);
+      return NULL;
+    }
+
+  if (!g_file_get_contents (file, &contents, &length, error))
+    return NULL;
+
+  cert = g_tls_certificate_new_from_pkcs12 ((guint8 *)contents, length, password, error);
+
+  g_free (contents);
+  return cert;
+}
+
+/**
+ * g_tls_certificate_new_from_file:
+ * @file: (type filename): file containing a certificate to import
+ * @error: #GError for error reporting, or %NULL to ignore
+ *
+ * Creates a #GTlsCertificate from the data in @file.
+ *
+ * As of 2.72, if the filename ends in `.p12` or `.pfx` the data is loaded by
+ * g_tls_certificate_new_from_pkcs12() otherwise it is loaded by
+ * g_tls_certificate_new_from_pem(). See those functions for
+ * exact details.
+ *
+ * If @file cannot be read or parsed, the function will return %NULL and
+ * set @error.
  *
  * Returns: the new certificate, or %NULL on error
  *
@@ -708,16 +870,23 @@ g_tls_certificate_new_from_pem  (const gchar  *data,
  */
 GTlsCertificate *
 g_tls_certificate_new_from_file (const gchar  *file,
-				 GError      **error)
+                                 GError      **error)
 {
   GTlsCertificate *cert;
   gchar *contents;
   gsize length;
 
+  g_return_val_if_fail (file != NULL, NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+
   if (!g_file_get_contents (file, &contents, &length, error))
     return NULL;
 
-  cert = g_tls_certificate_new_from_pem (contents, length, error);
+  if (g_str_has_suffix (file, ".p12") || g_str_has_suffix (file, ".pfx"))
+    cert = g_tls_certificate_new_from_pkcs12 ((guint8 *)contents, length, NULL, error);
+  else
+    cert = g_tls_certificate_new_from_pem (contents, length, error);
+
   g_free (contents);
   return cert;
 }
