@@ -927,13 +927,16 @@ g_ascii_dtostr (gchar       *buffer,
  * @buffer: A buffer to place the resulting string in
  * @buf_len: The length of the buffer.
  * @format: The printf()-style format to use for the
- *          code to use for converting.
+ *   code to use for converting
  * @d: The #gdouble to convert
  *
  * Converts a #gdouble to a string, using the '.' as
  * decimal point. To format the number you pass in
  * a printf()-style format string. Allowed conversion
  * specifiers are 'e', 'E', 'f', 'F', 'g' and 'G'.
+ *
+ * The @format must just be a single format specifier
+ * starting with '%', expecting a double argument.
  *
  * The returned buffer is guaranteed to be nul-terminated.
  *
@@ -950,6 +953,10 @@ g_ascii_formatd (gchar       *buffer,
 {
 #ifdef USE_XLOCALE
   locale_t old_locale;
+
+  g_return_val_if_fail (buffer != NULL, NULL);
+  g_return_val_if_fail (format[0] == '%', NULL);
+  g_return_val_if_fail (strpbrk (format + 1, "'l%") == NULL, NULL);
 
   old_locale = uselocale (get_C_locale ());
    _g_snprintf (buffer, buf_len, format, d);
