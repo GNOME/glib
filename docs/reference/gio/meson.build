@@ -38,6 +38,7 @@ if get_option('gtk_doc')
     'ghttpproxy.h',
     'giomodule-priv.h',
     'gioprivate.h',
+    'giowin32-afunix.h',
     'giowin32-priv.h',
     'gio_probes.h',
     'gio_trace.h',
