@@ -115,7 +115,6 @@ if get_option('gtk_doc')
       'gunixfdmessage.h',
       'gunixinputstream.h',
       'gunixoutputstream.h',
-      'gunixsocketaddress.h',
       'gdesktopappinfo.h',
       'gosxappinfo.h',
     ]
