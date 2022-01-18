@@ -56,7 +56,11 @@ test_typeof (void)
 int
 main (int argc, char *argv[])
 {
+#if __cplusplus >= 201103L
+  g_test_init (&argc, &argv, nullptr);
+#else
   g_test_init (&argc, &argv, NULL);
+#endif
 
   g_test_add_func ("/C++/typeof", test_typeof);
 
