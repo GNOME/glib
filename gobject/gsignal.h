@@ -497,7 +497,7 @@ void   g_signal_chain_from_overridden_handler (gpointer           instance,
  * 
  * Connects a #GCallback function to a signal for a particular object.
  * 
- * The handler will be called before the default handler of the signal.
+ * The handler will be called synchronously, before the default handler of the signal. g_signal_emit() will not return control until all handlers are called.
  *
  * See [memory management of signal handlers][signal-memory-management] for
  * details on how to handle the return value and memory management of @data.
@@ -515,7 +515,7 @@ void   g_signal_chain_from_overridden_handler (gpointer           instance,
  * 
  * Connects a #GCallback function to a signal for a particular object.
  * 
- * The handler will be called after the default handler of the signal.
+ * The handler will be called synchronously, after the default handler of the signal.
  * 
  * Returns: the handler ID, of type #gulong (always greater than 0 for successful connections)
  */

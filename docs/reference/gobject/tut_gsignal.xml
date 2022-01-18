@@ -187,10 +187,10 @@ g_cclosure_marshal_VOID__INT (GClosure     *closure,
     <para>
       Each signal is registered in the type system together with the type on which
       it can be emitted: users of the type are said to <emphasis>connect</emphasis>
-      to the signal on a given type instance when they register a closure to be 
-      invoked upon the signal emission. Users can also emit the signal by themselves 
-      or stop the emission of the signal from within one of the closures connected 
-      to the signal.
+      to the signal on a given type instance when they register a closure to be  
+      invoked upon the signal emission. The closure will be called synchronously on emission.
+      Users can also emit the signal by themselves or stop the emission of the signal from
+      within one of the closures connected to the signal.
     </para>
 
     <para>
@@ -352,7 +352,7 @@ void g_signal_emitv (const GValue *instance_and_params,
 		</para>
 
 	  <para>
-		Signal emission can be decomposed in 5 steps:
+		Signal emission is done synchronously and can be decomposed in 5 steps:
 		<orderedlist>
 		  <listitem><para>
 			<literal>RUN_FIRST</literal>: if the
