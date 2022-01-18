@@ -936,7 +936,7 @@ g_ascii_dtostr (gchar       *buffer,
  * specifiers are 'e', 'E', 'f', 'F', 'g' and 'G'.
  *
  * The @format must just be a single format specifier
- * starting with '%', expecting a double argument.
+ * starting with `%`, expecting a #gdouble argument.
  *
  * The returned buffer is guaranteed to be nul-terminated.
  *
