@@ -608,7 +608,7 @@ g_sequence_move_range (GSequenceIter *dest,
                        GSequenceIter *begin,
                        GSequenceIter *end)
 {
-  GSequence *src_seq, *end_seq, *dest_seq;
+  GSequence *src_seq, *end_seq, *dest_seq = NULL;
   GSequenceNode *first;
 
   g_return_if_fail (begin != NULL);
