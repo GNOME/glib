@@ -571,13 +571,13 @@ parse_and_create_certificate_list (const gchar  *data,
   while (p < end && p && *p)
     {
       gchar *cert_pem;
-      GError *error = NULL;
+      GError *my_error = NULL;
 
-      cert_pem = parse_next_pem_certificate (&p, end, FALSE, &error);
-      if (error)
+      cert_pem = parse_next_pem_certificate (&p, end, FALSE, &my_error);
+      if (my_error)
         {
           g_slist_free_full (pem_list, g_free);
-          g_error_free (error);
+          g_error_free (my_error);
           return first_pem_list;
         }
       else if (!cert_pem)
