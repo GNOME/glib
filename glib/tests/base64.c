@@ -5,7 +5,7 @@
 #define DATA_SIZE 1024
 #define BLOCK_SIZE 32
 #define NUM_BLOCKS 32
-static guchar data[DATA_SIZE];
+static guchar global_data[DATA_SIZE];
 
 static void
 test_incremental (gboolean line_break,
@@ -28,7 +28,7 @@ test_incremental (gboolean line_break,
   while (input_len < length)
     {
       block_size = MIN (BLOCK_SIZE, length - input_len);
-      len += g_base64_encode_step (data + input_len, block_size,
+      len += g_base64_encode_step (global_data + input_len, block_size,
                                    line_break, text + len, &state, &save);
       input_len += block_size;
     }
@@ -57,7 +57,7 @@ test_incremental (gboolean line_break,
       len -= chunk_len;
     }
 
-  g_assert_cmpmem (data, length, data2, decoded_len);
+  g_assert_cmpmem (global_data, length, data2, decoded_len);
 
   g_free (text);
   g_free (data2);
@@ -87,11 +87,11 @@ test_full (gconstpointer d)
   guchar *data2;
   gsize len;
 
-  text = g_base64_encode (data, length);
+  text = g_base64_encode (global_data, length);
   data2 = g_base64_decode (text, &len);
   g_free (text);
 
-  g_assert_cmpmem (data, length, data2, len);
+  g_assert_cmpmem (global_data, length, data2, len);
 
   g_free (data2);
 }
@@ -494,7 +494,7 @@ main (int argc, char *argv[])
   g_test_init (&argc, &argv, NULL);
 
   for (i = 0; i < DATA_SIZE; i++)
-    data[i] = (guchar)i;
+    global_data[i] = (guchar) i;
 
   g_test_add_data_func ("/base64/full/1", GINT_TO_POINTER (DATA_SIZE), test_full);
   g_test_add_data_func ("/base64/full/2", GINT_TO_POINTER (1), test_full);
