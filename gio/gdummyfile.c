@@ -683,7 +683,7 @@ g_string_append_encoded (GString    *string,
 			 const char *reserved_chars_allowed)
 {
   unsigned char c;
-  static const gchar hex[16] = "0123456789ABCDEF";
+  static const gchar hex[] = "0123456789ABCDEF";
 
   while ((c = *encoded) != 0)
     {
