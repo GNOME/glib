@@ -48,7 +48,7 @@ dispatch (GSource *source, GSourceFunc cb, gpointer date)
   return FALSE;
 }
 
-static GSourceFuncs funcs = {
+static GSourceFuncs global_funcs = {
   prepare,
   check,
   dispatch,
@@ -63,14 +63,14 @@ test_maincontext_basic (void)
   GMainContext *ctx;
   GSource *source;
   guint id;
-  gpointer data = &funcs;
+  gpointer data = &global_funcs;
 
   ctx = g_main_context_new ();
 
   g_assert_false (g_main_context_pending (ctx));
   g_assert_false (g_main_context_iteration (ctx, FALSE));
 
-  source = g_source_new (&funcs, sizeof (GSource));
+  source = g_source_new (&global_funcs, sizeof (GSource));
   g_assert_cmpint (g_source_get_priority (source), ==, G_PRIORITY_DEFAULT);
   g_assert_false (g_source_is_destroyed (source));
 
@@ -87,7 +87,7 @@ test_maincontext_basic (void)
   g_assert_cmpstr (g_source_get_name (source), ==, "still d");
 
   g_assert_null (g_main_context_find_source_by_user_data (ctx, NULL));
-  g_assert_null (g_main_context_find_source_by_funcs_user_data (ctx, &funcs, NULL));
+  g_assert_null (g_main_context_find_source_by_funcs_user_data (ctx, &global_funcs, NULL));
 
   id = g_source_attach (source, ctx);
   g_assert_cmpint (g_source_get_id (source), ==, id);
@@ -113,18 +113,18 @@ test_maincontext_basic (void)
   g_source_unref (source);
 
   ctx = g_main_context_default ();
-  source = g_source_new (&funcs, sizeof (GSource));
-  g_source_set_funcs (source, &funcs);
+  source = g_source_new (&global_funcs, sizeof (GSource));
+  g_source_set_funcs (source, &global_funcs);
   g_source_set_callback (source, cb, data, NULL);
   id = g_source_attach (source, ctx);
   g_source_unref (source);
   g_source_set_name_by_id (id, "e");
   g_assert_cmpstr (g_source_get_name (source), ==, "e");
   g_assert_true (g_source_get_context (source) == ctx);
-  g_assert_true (g_source_remove_by_funcs_user_data (&funcs, data));
+  g_assert_true (g_source_remove_by_funcs_user_data (&global_funcs, data));
 
-  source = g_source_new (&funcs, sizeof (GSource));
-  g_source_set_funcs (source, &funcs);
+  source = g_source_new (&global_funcs, sizeof (GSource));
+  g_source_set_funcs (source, &global_funcs);
   g_source_set_callback (source, cb, data, NULL);
   id = g_source_attach (source, ctx);
   g_assert_cmpint (id, >, 0);
@@ -208,9 +208,9 @@ test_ownerless_polling (gconstpointer test_data)
   g_main_context_unref (ctx);
 }
 
-static gint a;
-static gint b;
-static gint c;
+static gint global_a;
+static gint global_b;
+static gint global_c;
 
 static gboolean
 count_calls (gpointer data)
@@ -235,23 +235,23 @@ test_timeouts (void)
       return;
     }
 
-  a = b = c = 0;
+  global_a = global_b = global_c = 0;
 
   ctx = g_main_context_new ();
   loop = g_main_loop_new (ctx, FALSE);
 
   source = g_timeout_source_new (100);
-  g_source_set_callback (source, count_calls, &a, NULL);
+  g_source_set_callback (source, count_calls, &global_a, NULL);
   g_source_attach (source, ctx);
   g_source_unref (source);
 
   source = g_timeout_source_new (250);
-  g_source_set_callback (source, count_calls, &b, NULL);
+  g_source_set_callback (source, count_calls, &global_b, NULL);
   g_source_attach (source, ctx);
   g_source_unref (source);
 
   source = g_timeout_source_new (330);
-  g_source_set_callback (source, count_calls, &c, NULL);
+  g_source_set_callback (source, count_calls, &global_c, NULL);
   g_source_attach (source, ctx);
   g_source_unref (source);
 
@@ -265,13 +265,13 @@ test_timeouts (void)
   /* We may be delayed for an arbitrary amount of time - for example,
    * it's possible for all timeouts to fire exactly once.
    */
-  g_assert_cmpint (a, >, 0);
-  g_assert_cmpint (a, >=, b);
-  g_assert_cmpint (b, >=, c);
+  g_assert_cmpint (global_a, >, 0);
+  g_assert_cmpint (global_a, >=, global_b);
+  g_assert_cmpint (global_b, >=, global_c);
 
-  g_assert_cmpint (a, <=, 10);
-  g_assert_cmpint (b, <=, 4);
-  g_assert_cmpint (c, <=, 3);
+  g_assert_cmpint (global_a, <=, 10);
+  g_assert_cmpint (global_b, <=, 4);
+  g_assert_cmpint (global_c, <=, 3);
 
   g_main_loop_unref (loop);
   g_main_context_unref (ctx);
@@ -284,36 +284,36 @@ test_priorities (void)
   GSource *sourcea;
   GSource *sourceb;
 
-  a = b = c = 0;
+  global_a = global_b = global_c = 0;
 
   ctx = g_main_context_new ();
 
   sourcea = g_idle_source_new ();
-  g_source_set_callback (sourcea, count_calls, &a, NULL);
+  g_source_set_callback (sourcea, count_calls, &global_a, NULL);
   g_source_set_priority (sourcea, 1);
   g_source_attach (sourcea, ctx);
   g_source_unref (sourcea);
 
   sourceb = g_idle_source_new ();
-  g_source_set_callback (sourceb, count_calls, &b, NULL);
+  g_source_set_callback (sourceb, count_calls, &global_b, NULL);
   g_source_set_priority (sourceb, 0);
   g_source_attach (sourceb, ctx);
   g_source_unref (sourceb);
 
   g_assert_true (g_main_context_pending (ctx));
   g_assert_true (g_main_context_iteration (ctx, FALSE));
-  g_assert_cmpint (a, ==, 0);
-  g_assert_cmpint (b, ==, 1);
+  g_assert_cmpint (global_a, ==, 0);
+  g_assert_cmpint (global_b, ==, 1);
 
   g_assert_true (g_main_context_iteration (ctx, FALSE));
-  g_assert_cmpint (a, ==, 0);
-  g_assert_cmpint (b, ==, 2);
+  g_assert_cmpint (global_a, ==, 0);
+  g_assert_cmpint (global_b, ==, 2);
 
   g_source_destroy (sourceb);
 
   g_assert_true (g_main_context_iteration (ctx, FALSE));
-  g_assert_cmpint (a, ==, 1);
-  g_assert_cmpint (b, ==, 2);
+  g_assert_cmpint (global_a, ==, 1);
+  g_assert_cmpint (global_b, ==, 2);
 
   g_assert_true (g_main_context_pending (ctx));
   g_source_destroy (sourcea);
@@ -499,7 +499,7 @@ run_inner_loop (gpointer user_data)
   GMainLoop *inner;
   GSource *timeout;
 
-  a++;
+  global_a++;
 
   inner = g_main_loop_new (ctx, FALSE);
   timeout = counter_source_new (100);
@@ -523,7 +523,7 @@ test_child_sources (void)
   ctx = g_main_context_new ();
   loop = g_main_loop_new (ctx, FALSE);
 
-  a = b = c = 0;
+  global_a = global_b = global_c = 0;
 
   parent = counter_source_new (2000);
   g_source_set_callback (parent, run_inner_loop, ctx, NULL);
@@ -531,11 +531,11 @@ test_child_sources (void)
   g_source_attach (parent, ctx);
 
   child_b = counter_source_new (250);
-  g_source_set_callback (child_b, count_calls, &b, NULL);
+  g_source_set_callback (child_b, count_calls, &global_b, NULL);
   g_source_add_child_source (parent, child_b);
 
   child_c = counter_source_new (330);
-  g_source_set_callback (child_c, count_calls, &c, NULL);
+  g_source_set_callback (child_c, count_calls, &global_c, NULL);
   g_source_set_priority (child_c, G_PRIORITY_HIGH);
   g_source_add_child_source (parent, child_c);
 
@@ -578,9 +578,9 @@ test_child_sources (void)
    * 1110 - inner loop ends, a returns, outer loop exits
    */
 
-  g_assert_cmpint (a, ==, 6);
-  g_assert_cmpint (b, ==, 3);
-  g_assert_cmpint (c, ==, 3);
+  g_assert_cmpint (global_a, ==, 6);
+  g_assert_cmpint (global_b, ==, 3);
+  g_assert_cmpint (global_c, ==, 3);
 
   g_source_destroy (parent);
   g_source_unref (parent);
@@ -601,17 +601,17 @@ test_recursive_child_sources (void)
   ctx = g_main_context_new ();
   loop = g_main_loop_new (ctx, FALSE);
 
-  a = b = c = 0;
+  global_a = global_b = global_c = 0;
 
   parent = counter_source_new (500);
-  g_source_set_callback (parent, count_calls, &a, NULL);
+  g_source_set_callback (parent, count_calls, &global_a, NULL);
 
   child_b = counter_source_new (220);
-  g_source_set_callback (child_b, count_calls, &b, NULL);
+  g_source_set_callback (child_b, count_calls, &global_b, NULL);
   g_source_add_child_source (parent, child_b);
 
   child_c = counter_source_new (430);
-  g_source_set_callback (child_c, count_calls, &c, NULL);
+  g_source_set_callback (child_c, count_calls, &global_c, NULL);
   g_source_add_child_source (child_b, child_c);
 
   g_source_attach (parent, ctx);
@@ -635,9 +635,9 @@ test_recursive_child_sources (void)
    * 1940 b (b -> 2160, a -> 2440)
    */
 
-  g_assert_cmpint (a, ==, 9);
-  g_assert_cmpint (b, ==, 9);
-  g_assert_cmpint (c, ==, 4);
+  g_assert_cmpint (global_a, ==, 9);
+  g_assert_cmpint (global_b, ==, 9);
+  g_assert_cmpint (global_c, ==, 4);
 
   g_source_destroy (parent);
   g_source_unref (parent);
