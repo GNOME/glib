@@ -257,7 +257,7 @@ main (int argc,
   GIOStream *connection;
   GInputStream *istream;
   GOutputStream *ostream;
-  GSocketAddress *src_address;
+  GSocketAddress *src_address = NULL;
   GTlsCertificate *certificate = NULL;
   gint i;
 
