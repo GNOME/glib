@@ -957,7 +957,7 @@ g_get_host_name (void)
   if (g_once_init_enter (&hostname))
     {
       gboolean failed;
-      gchar *utmp;
+      gchar *utmp = NULL;
 
 #ifndef G_OS_WIN32
       gsize size;
