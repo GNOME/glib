@@ -340,7 +340,7 @@ glib_init (void)
   g_error_init ();
 }
 
-#if defined (G_OS_WIN32)
+#ifdef G_PLATFORM_WIN32
 
 BOOL WINAPI DllMain (HINSTANCE hinstDLL,
                      DWORD     fdwReason,
