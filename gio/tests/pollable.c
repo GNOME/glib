@@ -36,12 +36,12 @@
 #error Should have been able to find openpty on GNU/Linux
 #endif
 
-GMainLoop *loop;
-GPollableInputStream *in;
-GOutputStream *out;
+static GMainLoop *loop;
+static GPollableInputStream *in;
+static GOutputStream *out;
 
 static gboolean
-poll_source_callback (GPollableInputStream *in,
+poll_source_callback (GPollableInputStream *input,
 		      gpointer              user_data)
 {
   GError *error = NULL;
@@ -49,13 +49,13 @@ poll_source_callback (GPollableInputStream *in,
   gssize nread;
   gboolean *success = user_data;
 
-  g_assert_true (g_pollable_input_stream_is_readable (G_POLLABLE_INPUT_STREAM (in)));
+  g_assert_true (g_pollable_input_stream_is_readable (G_POLLABLE_INPUT_STREAM (input)));
 
-  nread = g_pollable_input_stream_read_nonblocking (in, buf, 2, NULL, &error);
+  nread = g_pollable_input_stream_read_nonblocking (input, buf, 2, NULL, &error);
   g_assert_no_error (error);
   g_assert_cmpint (nread, ==, 2);
   g_assert_cmpstr (buf, ==, "x");
-  g_assert_false (g_pollable_input_stream_is_readable (G_POLLABLE_INPUT_STREAM (in)));
+  g_assert_false (g_pollable_input_stream_is_readable (G_POLLABLE_INPUT_STREAM (input)));
 
   *success = TRUE;
   return G_SOURCE_REMOVE;
