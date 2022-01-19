@@ -2199,8 +2199,8 @@ type_class_init_Wm (TypeNode   *node,
   
   if (pclass)
     {
-      TypeNode *pnode = lookup_type_node_I (pclass->g_type);
-      
+      pnode = lookup_type_node_I (pclass->g_type);
+
       memcpy (class, pclass, pnode->data->class.class_size);
       memcpy (G_STRUCT_MEMBER_P (class, ALIGN_STRUCT (node->data->class.class_size)), G_STRUCT_MEMBER_P (pclass, ALIGN_STRUCT (pnode->data->class.class_size)), pnode->data->class.class_private_size);
 
