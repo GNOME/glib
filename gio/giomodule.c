@@ -517,7 +517,7 @@ g_io_modules_scan_all_in_directory_with_scope (const char     *dirname,
 	  char *line = lines[i];
 	  char *file;
 	  char *colon;
-	  char **extension_points;
+	  char **strv_extension_points;
 
 	  if (line[0] == '#')
 	    continue;
@@ -537,8 +537,8 @@ g_io_modules_scan_all_in_directory_with_scope (const char     *dirname,
             cache = g_hash_table_new_full (g_str_hash, g_str_equal,
                                            g_free, (GDestroyNotify)g_strfreev);
 
-	  extension_points = g_strsplit (colon, ",", -1);
-	  g_hash_table_insert (cache, file, extension_points);
+	  strv_extension_points = g_strsplit (colon, ",", -1);
+	  g_hash_table_insert (cache, file, strv_extension_points);
 	}
       g_strfreev (lines);
     }
@@ -550,24 +550,24 @@ g_io_modules_scan_all_in_directory_with_scope (const char     *dirname,
 	  GIOExtensionPoint *extension_point;
 	  GIOModule *module;
 	  gchar *path;
-	  char **extension_points = NULL;
+	  char **strv_extension_points = NULL;
 	  int i;
 
 	  path = g_build_filename (dirname, name, NULL);
 	  module = g_io_module_new (path);
 
           if (cache)
-            extension_points = g_hash_table_lookup (cache, name);
+            strv_extension_points = g_hash_table_lookup (cache, name);
 
-	  if (extension_points != NULL &&
+	  if (strv_extension_points != NULL &&
 	      g_stat (path, &statbuf) == 0 &&
 	      statbuf.st_ctime <= cache_time)
 	    {
 	      /* Lazy load/init the library when first required */
-	      for (i = 0; extension_points[i] != NULL; i++)
+	      for (i = 0; strv_extension_points[i] != NULL; i++)
 		{
 		  extension_point =
-		    g_io_extension_point_register (extension_points[i]);
+		    g_io_extension_point_register (strv_extension_points[i]);
 		  extension_point->lazy_load_modules =
 		    g_list_prepend (extension_point->lazy_load_modules,
 				    module);
