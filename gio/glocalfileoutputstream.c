@@ -855,7 +855,7 @@ handle_overwrite_open (const char    *filename,
   int open_flags;
   int res;
   int mode;
-  int errsv;
+  int errsv = 0;
   gboolean replace_destination_set = (flags & G_FILE_CREATE_REPLACE_DESTINATION);
 
   mode = mode_from_flags_or_info (flags, reference_info);
@@ -1179,7 +1179,7 @@ handle_overwrite_open (const char    *filename,
       /* Seek back to the start of the file after the backup copy */
       if (lseek (fd, 0, SEEK_SET) == -1)
 	{
-          int errsv = errno;
+          errsv = errno;
 
 	  g_set_error (error, G_IO_ERROR,
 		       g_io_error_from_errno (errsv),
@@ -1195,7 +1195,7 @@ handle_overwrite_open (const char    *filename,
       
       if (g_unlink (filename) != 0)
 	{
-	  int errsv = errno;
+          errsv = errno;
 	  
 	  g_set_error (error, G_IO_ERROR,
 		       g_io_error_from_errno (errsv),
@@ -1211,8 +1211,10 @@ handle_overwrite_open (const char    *filename,
       fd = g_open (filename, open_flags, mode);
       if (fd == -1)
 	{
-	  int errsv = errno;
-	  char *display_name = g_filename_display_name (filename);
+    char *display_name;
+    errsv = errno;
+    display_name = g_filename_display_name (filename);
+
 	  g_set_error (error, G_IO_ERROR,
 		       g_io_error_from_errno (errsv),
 		       _("Error opening file “%s”: %s"),
@@ -1230,7 +1232,7 @@ handle_overwrite_open (const char    *filename,
 	if (ftruncate (fd, 0) == -1)
 #endif
 	  {
-	    int errsv = errno;
+	    errsv = errno;
 	    
 	    g_set_error (error, G_IO_ERROR,
 			 g_io_error_from_errno (errsv),
