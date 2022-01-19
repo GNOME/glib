@@ -17,15 +17,21 @@
  */
 
 #include <gio/gio.h>
+#include <glib/gstdio.h>
 
 #include <gio/gcredentialsprivate.h>
+#include <gio/gunixconnection.h>
+
 #ifdef G_OS_UNIX
 #include <errno.h>
 #include <sys/wait.h>
 #include <string.h>
 #include <stdlib.h>
 #include <gio/gnetworking.h>
-#include <gio/gunixconnection.h>
+#endif
+
+#ifdef G_OS_WIN32
+#include "giowin32-afunix.h"
 #endif
 
 #include "gnetworkingprivate.h"
@@ -1327,7 +1333,23 @@ test_sockaddr (void)
   g_object_unref (saddr);
 }
 
-#ifdef G_OS_UNIX
+static void
+bind_win32_unixfd (int fd)
+{
+#ifdef G_OS_WIN32
+  gint len, ret;
+  struct sockaddr_un addr;
+
+  memset (&addr, 0, sizeof addr);
+  addr.sun_family = AF_UNIX;
+  len = g_snprintf (addr.sun_path, sizeof addr.sun_path, "%s" G_DIR_SEPARATOR_S "%d.sock", g_get_tmp_dir (), fd);
+  g_assert_cmpint (len, <=, sizeof addr.sun_path);
+  ret = bind (fd, (struct sockaddr *)&addr, sizeof addr);
+  g_assert_cmpint (ret, ==, 0);
+  g_remove (addr.sun_path);
+#endif
+}
+
 static void
 test_unix_from_fd (void)
 {
@@ -1337,6 +1359,8 @@ test_unix_from_fd (void)
 
   fd = socket (AF_UNIX, SOCK_STREAM, 0);
   g_assert_cmpint (fd, !=, -1);
+
+  bind_win32_unixfd (fd);
 
   error = NULL;
   s = g_socket_new_from_fd (fd, &error);
@@ -1358,6 +1382,8 @@ test_unix_connection (void)
   fd = socket (AF_UNIX, SOCK_STREAM, 0);
   g_assert_cmpint (fd, !=, -1);
 
+  bind_win32_unixfd (fd);
+
   error = NULL;
   s = g_socket_new_from_fd (fd, &error);
   g_assert_no_error (error);
@@ -1367,6 +1393,7 @@ test_unix_connection (void)
   g_object_unref (s);
 }
 
+#ifdef G_OS_UNIX
 static GSocketConnection *
 create_connection_for_fd (int fd)
 {
@@ -1466,6 +1493,7 @@ test_unix_connection_ancillary_data (void)
    * g_unix_connection_receive_credentials().
    */
 }
+#endif
 
 static gboolean
 postmortem_source_cb (GSocket      *socket,
@@ -1512,8 +1540,6 @@ test_source_postmortem (void)
 
   g_main_context_unref (context);
 }
-
-#endif /* G_OS_UNIX */
 
 static void
 test_reuse_tcp (void)
@@ -2151,12 +2177,12 @@ main (int   argc,
   g_test_add_func ("/socket/timed_wait", test_timed_wait);
   g_test_add_func ("/socket/fd_reuse", test_fd_reuse);
   g_test_add_func ("/socket/address", test_sockaddr);
-#ifdef G_OS_UNIX
   g_test_add_func ("/socket/unix-from-fd", test_unix_from_fd);
   g_test_add_func ("/socket/unix-connection", test_unix_connection);
+#ifdef G_OS_UNIX
   g_test_add_func ("/socket/unix-connection-ancillary-data", test_unix_connection_ancillary_data);
-  g_test_add_func ("/socket/source-postmortem", test_source_postmortem);
 #endif
+  g_test_add_func ("/socket/source-postmortem", test_source_postmortem);
   g_test_add_func ("/socket/reuse/tcp", test_reuse_tcp);
   g_test_add_func ("/socket/reuse/udp", test_reuse_udp);
   g_test_add_data_func ("/socket/get_available/datagram", GUINT_TO_POINTER (G_SOCKET_TYPE_DATAGRAM),
