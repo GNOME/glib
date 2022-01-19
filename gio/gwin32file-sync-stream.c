@@ -386,8 +386,8 @@ _file_sync_stream_stat (IStream *self_ptr,
 
           if (buffer_size == 0)
             {
-              DWORD error = GetLastError ();
-              return __HRESULT_FROM_WIN32 (error);
+              DWORD my_error = GetLastError ();
+              return __HRESULT_FROM_WIN32 (my_error);
             }
 
           buffer = CoTaskMemAlloc (buffer_size);
