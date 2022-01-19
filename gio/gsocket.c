@@ -76,6 +76,10 @@
 #include "glibintl.h"
 #include "gioprivate.h"
 
+#ifdef G_OS_WIN32
+#include "giowin32-afunix.h"
+#endif
+
 /**
  * SECTION:gsocket
  * @short_description: Low-level socket object
@@ -6127,6 +6131,23 @@ g_socket_get_credentials (GSocket   *socket,
                                   G_CREDENTIALS_TYPE_SOLARIS_UCRED,
                                   ucred);
         ucred_free (ucred);
+      }
+  }
+#elif G_CREDENTIALS_USE_WIN32_PID
+  {
+    DWORD peerid, drc;
+
+    if (WSAIoctl (socket->priv->fd, SIO_AF_UNIX_GETPEERPID,
+                  NULL, 0U,
+                  &peerid, sizeof(peerid),
+                  /* Windows bug: always 0 https://github.com/microsoft/WSL/issues/4676 */
+                  &drc,
+                  NULL, NULL) == 0)
+      {
+        ret = g_credentials_new ();
+        g_credentials_set_native (ret,
+                                  G_CREDENTIALS_TYPE_WIN32_PID,
+                                  &peerid);
       }
   }
 #else

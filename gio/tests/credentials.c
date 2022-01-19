@@ -25,6 +25,28 @@
 #include <gio/gio.h>
 #include <gio/gcredentialsprivate.h>
 
+#ifdef G_OS_WIN32
+
+static void
+test_basic (void)
+{
+  GCredentials *creds = g_credentials_new ();
+  gchar *stringified;
+  DWORD *pid;
+
+  stringified = g_credentials_to_string (creds);
+  g_test_message ("%s", stringified);
+  g_free (stringified);
+
+  pid = g_credentials_get_native (creds,
+                                  G_CREDENTIALS_TYPE_WIN32_PID);
+  g_assert_cmpuint (*pid, ==, GetCurrentProcessId ());
+
+  g_object_unref (creds);
+}
+
+#else
+
 static void
 test_basic (void)
 {
@@ -176,6 +198,8 @@ test_basic (void)
   g_object_unref (creds);
   g_object_unref (other);
 }
+
+#endif /* !G_OS_WIN32 */
 
 int
 main (int   argc,

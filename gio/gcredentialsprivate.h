@@ -40,6 +40,7 @@
 #undef G_CREDENTIALS_USE_OPENBSD_SOCKPEERCRED
 #undef G_CREDENTIALS_USE_SOLARIS_UCRED
 #undef G_CREDENTIALS_USE_APPLE_XUCRED
+#undef G_CREDENTIALS_USE_WIN32_PID
 
 /*
  * G_CREDENTIALS_NATIVE_TYPE:
@@ -170,6 +171,14 @@
 
 void _g_credentials_set_local_peerid (GCredentials *credentials,
                                       pid_t         pid);
+
+#elif defined(_WIN32)
+#define G_CREDENTIALS_SUPPORTED 1
+#define G_CREDENTIALS_USE_WIN32_PID 1
+#define G_CREDENTIALS_NATIVE_TYPE G_CREDENTIALS_TYPE_WIN32_PID
+#define G_CREDENTIALS_NATIVE_SIZE (sizeof (DWORD))
+#define G_CREDENTIALS_SOCKET_GET_CREDENTIALS_SUPPORTED 1
+#define G_CREDENTIALS_HAS_PID 1
 
 #endif
 

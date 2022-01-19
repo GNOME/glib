@@ -1441,6 +1441,7 @@ typedef enum
  * @G_CREDENTIALS_TYPE_SOLARIS_UCRED: The native credentials type is a `ucred_t`. Added in 2.40.
  * @G_CREDENTIALS_TYPE_NETBSD_UNPCBID: The native credentials type is a `struct unpcbid`. Added in 2.42.
  * @G_CREDENTIALS_TYPE_APPLE_XUCRED: The native credentials type is a `struct xucred`. Added in 2.66.
+ * @G_CREDENTIALS_TYPE_WIN32_PID: The native credentials type is a PID `DWORD`. Added in 2.72.
  *
  * Enumeration describing different kinds of native credential types.
  *
@@ -1455,6 +1456,7 @@ typedef enum
   G_CREDENTIALS_TYPE_SOLARIS_UCRED,
   G_CREDENTIALS_TYPE_NETBSD_UNPCBID,
   G_CREDENTIALS_TYPE_APPLE_XUCRED,
+  G_CREDENTIALS_TYPE_WIN32_PID,
 } GCredentialsType;
 
 /**
