@@ -2219,7 +2219,7 @@ g_signal_chain_from_overridden_handler (gpointer instance,
   GType chain_type = 0, restore_type = 0;
   Emission *emission = NULL;
   GClosure *closure = NULL;
-  SignalNode *node;
+  SignalNode *node = NULL;
   guint n_params = 0;
 
   g_return_if_fail (G_TYPE_CHECK_INSTANCE (instance));
@@ -3365,7 +3365,6 @@ g_signal_emit_valist (gpointer instance,
 	  SignalAccumulator *accumulator;
 	  Emission emission;
 	  GValue *return_accu, accu = G_VALUE_INIT;
-	  guint signal_id;
 	  GType instance_type = G_TYPE_FROM_INSTANCE (instance);
 	  GValue emission_return = G_VALUE_INIT;
           GType rtype = node->return_type & ~G_SIGNAL_TYPE_STATIC_SCOPE;
@@ -3625,14 +3624,14 @@ signal_emit_unlocked_R (SignalNode   *node,
 
   if (node->flags & G_SIGNAL_NO_RECURSE)
     {
-      Emission *node = emission_find (signal_id, detail, instance);
-      
-      if (node)
-	{
-	  node->state = EMISSION_RESTART;
-	  SIGNAL_UNLOCK ();
-	  return return_value_altered;
-	}
+      Emission *emission_node = emission_find (signal_id, detail, instance);
+
+      if (emission_node)
+        {
+          emission_node->state = EMISSION_RESTART;
+          SIGNAL_UNLOCK ();
+          return return_value_altered;
+        }
     }
   accumulator = node->accumulator;
   if (accumulator)
