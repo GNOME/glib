@@ -131,7 +131,7 @@ test_async_queue_destroy (void)
   g_assert_cmpint (destroy_count, ==, 4);
 }
 
-static GAsyncQueue *q;
+static GAsyncQueue *global_queue;
 
 static GThread *threads[10];
 static gint counts[10];
@@ -146,7 +146,7 @@ thread_func (gpointer data)
 
   while (1)
     {
-      value = GPOINTER_TO_INT (g_async_queue_pop (q));
+      value = GPOINTER_TO_INT (g_async_queue_pop (global_queue));
 
       if (value == -1)
         break;
@@ -167,32 +167,32 @@ test_async_queue_threads (void)
   gint s, c;
   gint value;
 
-  q = g_async_queue_new ();
+  global_queue = g_async_queue_new ();
 
   for (i = 0; i < 10; i++)
     threads[i] = g_thread_new ("test", thread_func, GINT_TO_POINTER (i));
 
   for (i = 0; i < 100; i++)
     {
-      g_async_queue_lock (q);
+      g_async_queue_lock (global_queue);
       for (j = 0; j < 10; j++)
         {
           value = g_random_int_range (1, 100);
           total += value;
-          g_async_queue_push_unlocked (q, GINT_TO_POINTER (value));
+          g_async_queue_push_unlocked (global_queue, GINT_TO_POINTER (value));
         }
-      g_async_queue_unlock (q);
+      g_async_queue_unlock (global_queue);
 
       g_usleep (1000);
     }
 
   for (i = 0; i < 10; i++)
-    g_async_queue_push (q, GINT_TO_POINTER(-1));
+    g_async_queue_push (global_queue, GINT_TO_POINTER (-1));
 
   for (i = 0; i < 10; i++)
     g_thread_join (threads[i]);
 
-  g_assert_cmpint (g_async_queue_length (q), ==, 0);
+  g_assert_cmpint (g_async_queue_length (global_queue), ==, 0);
 
   s = c = 0;
 
@@ -207,7 +207,7 @@ test_async_queue_threads (void)
   g_assert_cmpint (s, ==, total);
   g_assert_cmpint (c, ==, 1000);
 
-  g_async_queue_unref (q);
+  g_async_queue_unref (global_queue);
 }
 
 static void
