@@ -36,7 +36,7 @@
 
 #include "gio-tool.h"
 
-static char *etag = NULL;
+static char *global_etag = NULL;
 static gboolean backup = FALSE;
 static gboolean create = FALSE;
 static gboolean append = FALSE;
@@ -54,7 +54,7 @@ static const GOptionEntry entries[] =
   /* Translators: The "etag" is a token allowing to verify whether a file has been modified */
   { "print-etag", 'v', 0, G_OPTION_ARG_NONE, &print_etag, N_("Print new etag at end"), NULL },
   /* Translators: The "etag" is a token allowing to verify whether a file has been modified */
-  { "etag", 'e', 0, G_OPTION_ARG_STRING, &etag, N_("The etag of the file being overwritten"), N_("ETAG") },
+  { "etag", 'e', 0, G_OPTION_ARG_STRING, &global_etag, N_("The etag of the file being overwritten"), N_("ETAG") },
   G_OPTION_ENTRY_NULL
 };
 
@@ -82,7 +82,7 @@ save (GFile *file)
   else if (append)
     out = (GOutputStream *)g_file_append_to (file, flags, NULL, &error);
   else
-    out = (GOutputStream *)g_file_replace (file, etag, backup, flags, NULL, &error);
+    out = (GOutputStream *)g_file_replace (file, global_etag, backup, flags, NULL, &error);
   if (out == NULL)
     {
       print_file_error (file, error->message);
