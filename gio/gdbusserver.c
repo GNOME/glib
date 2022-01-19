@@ -927,12 +927,12 @@ try_tcp (GDBusServer  *server,
       bytes_remaining = 16;
       while (bytes_remaining > 0)
         {
-          gssize ret;
+          gssize size;
           int errsv;
 
-          ret = write (fd, server->nonce + bytes_written, bytes_remaining);
+          size = write (fd, server->nonce + bytes_written, bytes_remaining);
           errsv = errno;
-          if (ret == -1)
+          if (size == -1)
             {
               if (errsv == EINTR)
                 goto again;
@@ -944,8 +944,8 @@ try_tcp (GDBusServer  *server,
                            g_strerror (errsv));
               goto out;
             }
-          bytes_written += ret;
-          bytes_remaining -= ret;
+          bytes_written += size;
+          bytes_remaining -= size;
         }
       if (!g_close (fd, error))
         goto out;
