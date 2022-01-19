@@ -108,7 +108,6 @@ if get_option('gtk_doc')
   if host_system == 'windows'
     ignore_headers += [
       'gfiledescriptorbased.h',
-      'gunixconnection.h',
       'gunixmounts.h',
       'gunixfdlist.h',
       'gunixfdmessage.h',

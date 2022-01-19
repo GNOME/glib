@@ -346,7 +346,6 @@ if host_system != 'windows'
   unix_sources = files(
     'gfiledescriptorbased.c',
     'giounix-private.c',
-    'gunixconnection.c',
     'gunixfdlist.c',
     'gunixfdmessage.c',
     'gunixmount.c',
@@ -374,7 +373,6 @@ if host_system != 'windows'
 
   gio_unix_include_headers = files(
     'gfiledescriptorbased.h',
-    'gunixconnection.h',
     'gunixmounts.h',
     'gunixfdlist.h',
     'gunixfdmessage.h',
@@ -565,6 +563,7 @@ gio_sources = files(
   'gdtlsclientconnection.c',
   'gdtlsserverconnection.c',
   'gunionvolumemonitor.c',
+  'gunixconnection.c',
   'gunixcredentialsmessage.c',
   'gunixsocketaddress.c',
   'gvfs.c',
@@ -702,6 +701,7 @@ gio_headers = files(
   'gdtlsconnection.h',
   'gdtlsclientconnection.h',
   'gdtlsserverconnection.h',
+  'gunixconnection.h',
   'gunixcredentialsmessage.h',
   'gunixsocketaddress.h',
   'gvfs.h',
