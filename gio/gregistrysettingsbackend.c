@@ -1200,7 +1200,7 @@ g_registry_backend_get_writable (GSettingsBackend *backend,
   GRegistryBackend *self = G_REGISTRY_BACKEND (backend);
   gchar *path_name;
   gunichar2 *path_namew;
-  gchar *value_name;
+  gchar *value_name = NULL;
   HKEY hpath;
   LONG result;
 
@@ -1495,14 +1495,14 @@ registry_cache_update (GRegistryBackend *self,
       child_item->readable = TRUE;
       if (changed && event != NULL)
         {
-          gchar *item;
+          gchar *item_path;
 
           if (partial_key_name == NULL)
-            item = g_strdup (buffer);
+            item_path = g_strdup (buffer);
           else
-            item = g_build_path ("/", partial_key_name, buffer, NULL);
+            item_path = g_build_path ("/", partial_key_name, buffer, NULL);
 
-          g_ptr_array_add (event->items, item);
+          g_ptr_array_add (event->items, item_path);
         }
 
       g_free (buffer);
