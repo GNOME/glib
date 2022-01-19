@@ -525,9 +525,9 @@ test_structured_logging_roundtrip1 (void)
   if (expected_messages != NULL)
     {
       char *str;
-      ExpectedMessage *expected = expected_messages->data;
+      ExpectedMessage *msg = expected_messages->data;
 
-      str = g_log_writer_format_fields (0, expected->fields, expected->n_fields, FALSE);
+      str = g_log_writer_format_fields (0, msg->fields, msg->n_fields, FALSE);
       g_test_fail_printf ("Unexpected message: %s", str);
       g_free (str);
     }
