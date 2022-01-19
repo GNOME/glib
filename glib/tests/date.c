@@ -1384,7 +1384,7 @@ test_year (gconstpointer t)
   GDateYear y = GPOINTER_TO_INT (t);
   GDateMonth m;
   GDateDay day;
-  guint32 j;
+  guint32 j = 0;
   GDate *d;
   gint i;
   GDate tmp;
