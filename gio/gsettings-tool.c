@@ -570,8 +570,8 @@ static int
 gsettings_help (gboolean     requested,
                 const gchar *command)
 {
-  const gchar *description;
-  const gchar *synopsis;
+  const gchar *description = NULL;
+  const gchar *synopsis = NULL;
   GString *string;
 
   string = g_string_new (NULL);
