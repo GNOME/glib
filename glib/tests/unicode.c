@@ -28,6 +28,7 @@
 #endif
 
 #include <locale.h>
+#include <stdio.h>
 
 #include "glib.h"
 
@@ -533,6 +534,99 @@ test_casefold (void)
   /* Tricky, comparing two unicode strings with an ASCII function */
   g_assert_cmpstr (str_casefold, ==, "aazz09x;\357\275\201\357\275\201");
   g_free (str_casefold);
+}
+
+static void
+test_casemap_and_casefold (void)
+{
+  FILE *infile;
+  char buffer[1024];
+  char **strings;
+  char *filename;
+  const char *locale;
+  const char *test;
+  const char *expected;
+  char *convert;
+  char *current_locale = setlocale (LC_CTYPE, NULL);
+
+  filename = g_test_build_filename (G_TEST_DIST, "casemap.txt", NULL);
+  infile = fopen (filename, "r");
+  g_assert (infile != NULL);
+
+  while (fgets (buffer, sizeof (buffer), infile))
+    {
+      if (buffer[0] == '#')
+        continue;
+
+      strings = g_strsplit (buffer, "\t", -1);
+      locale = strings[0];
+      if (!locale[0])
+        locale = "C";
+
+      if (strcmp (locale, current_locale) != 0)
+        {
+          setlocale (LC_CTYPE, locale);
+          current_locale = setlocale (LC_CTYPE, NULL);
+
+          if (strncmp (current_locale, locale, 2) != 0)
+            {
+              g_test_message ("Cannot set locale to %s, skipping", locale);
+              goto next;
+            }
+        }
+
+      test = strings[1];
+
+      /* gen-casemap-txt.py uses an empty string when a single
+       * character doesn't have an equivalent in a particular case;
+       * since that behavior is nonsense for multicharacter strings,
+       * it would make more sense to put the expected result ... the
+       * original character unchanged. But for now, we just work
+       * around it here and take the empty string to mean "same as
+       * original"
+       */
+
+      convert = g_utf8_strup (test, -1);
+      expected = strings[4][0] ? strings[4] : test;
+      g_assert_cmpstr (convert, ==, expected);
+      g_free (convert);
+
+      convert = g_utf8_strdown (test, -1);
+      expected = strings[2][0] ? strings[2] : test;
+      g_assert_cmpstr (convert, ==, expected);
+      g_free (convert);
+
+    next:
+      g_strfreev (strings);
+    }
+
+  fclose (infile);
+
+  g_free (filename);
+  filename = g_test_build_filename (G_TEST_DIST, "casefold.txt", NULL);
+
+  infile = fopen (filename, "r");
+  g_assert (infile != NULL);
+
+  while (fgets (buffer, sizeof (buffer), infile))
+    {
+      if (buffer[0] == '#')
+        continue;
+
+      buffer[strlen (buffer) - 1] = '\0';
+      strings = g_strsplit (buffer, "\t", -1);
+
+      test = strings[0];
+
+      convert = g_utf8_casefold (test, -1);
+      g_assert_cmpstr (convert, ==, strings[1]);
+      g_free (convert);
+
+      g_strfreev (strings);
+    }
+
+  fclose (infile);
+  g_free (filename);
 }
 
 /* Test that g_unichar_ismark() returns the correct value for various
@@ -1725,6 +1819,7 @@ main (int   argc,
   g_test_add_func ("/unicode/break-type", test_unichar_break_type);
   g_test_add_func ("/unicode/canonical-decomposition", test_canonical_decomposition);
   g_test_add_func ("/unicode/casefold", test_casefold);
+  g_test_add_func ("/unicode/casemap_and_casefold", test_casemap_and_casefold);
   g_test_add_func ("/unicode/cases", test_cases);
   g_test_add_func ("/unicode/character-type", test_unichar_character_type);
   g_test_add_func ("/unicode/cntrl", test_cntrl);

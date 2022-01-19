@@ -184,13 +184,15 @@ endif
 
 if installed_tests_enabled
   install_data(
-    'keyfiletest.ini',
-    'pages.ini',
-    'keyfile.c',
-    'empty',
     '4096-random-bytes',
+    'casefold.txt',
+    'casemap.txt',
     'echo-script',
     'echo-script.bat',
+    'empty',
+    'keyfile.c',
+    'keyfiletest.ini',
+    'pages.ini',
     install_dir : installed_tests_execdir,
   )
   install_subdir('bookmarks', install_dir : installed_tests_execdir)
