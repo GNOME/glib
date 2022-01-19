@@ -3997,7 +3997,10 @@ socket_source_dispatch (GSource     *source,
   gboolean ret;
 
 #ifdef G_OS_WIN32
-  events = update_condition (socket_source->socket);
+  if ((socket_source->pollfd.revents & G_IO_NVAL) != 0)
+    events = G_IO_NVAL;
+  else
+    events = update_condition (socket_source->socket);
 #else
   if (g_socket_is_closed (socket_source->socket))
     {
