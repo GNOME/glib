@@ -765,15 +765,15 @@ test_toggle_ref (void)
   g_object_remove_toggle_ref (obj, toggle_notify, &c);
 }
 
-static gboolean destroyed;
-static gint value;
+static gboolean global_destroyed;
+static gint global_value;
 
 static void
 data_destroy (gpointer data)
 {
-  g_assert_cmpint (GPOINTER_TO_INT (data), ==, value);
+  g_assert_cmpint (GPOINTER_TO_INT (data), ==, global_value);
 
-  destroyed = TRUE;
+  global_destroyed = TRUE;
 }
 
 static void
@@ -785,39 +785,39 @@ test_object_qdata (void)
 
   obj = g_object_new (G_TYPE_OBJECT, NULL);
 
-  value = 1;
-  destroyed = FALSE;
+  global_value = 1;
+  global_destroyed = FALSE;
   g_object_set_data_full (obj, "test", GINT_TO_POINTER (1), data_destroy);
   v = g_object_get_data (obj, "test");
   g_assert_cmpint (GPOINTER_TO_INT (v), ==, 1);
   g_object_set_data_full (obj, "test", GINT_TO_POINTER (2), data_destroy);
-  g_assert (destroyed);
-  value = 2;
-  destroyed = FALSE;
+  g_assert (global_destroyed);
+  global_value = 2;
+  global_destroyed = FALSE;
   v = g_object_steal_data (obj, "test");
   g_assert_cmpint (GPOINTER_TO_INT (v), ==, 2);
-  g_assert (!destroyed);
+  g_assert (!global_destroyed);
 
-  value = 1;
-  destroyed = FALSE;
+  global_value = 1;
+  global_destroyed = FALSE;
   quark = g_quark_from_string ("test");
   g_object_set_qdata_full (obj, quark, GINT_TO_POINTER (1), data_destroy);
   v = g_object_get_qdata (obj, quark);
   g_assert_cmpint (GPOINTER_TO_INT (v), ==, 1);
   g_object_set_qdata_full (obj, quark, GINT_TO_POINTER (2), data_destroy);
-  g_assert (destroyed);
-  value = 2;
-  destroyed = FALSE;
+  g_assert (global_destroyed);
+  global_value = 2;
+  global_destroyed = FALSE;
   v = g_object_steal_qdata (obj, quark);
   g_assert_cmpint (GPOINTER_TO_INT (v), ==, 2);
-  g_assert (!destroyed);
+  g_assert (!global_destroyed);
 
   g_object_set_qdata_full (obj, quark, GINT_TO_POINTER (3), data_destroy);
-  value = 3;
-  destroyed = FALSE;
+  global_value = 3;
+  global_destroyed = FALSE;
   g_object_unref (obj);
 
-  g_assert (destroyed);
+  g_assert (global_destroyed);
 }
 
 typedef struct {
