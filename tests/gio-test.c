@@ -128,7 +128,7 @@ recv_message (GIOChannel  *channel,
   if (cond & G_IO_IN)
     {
       char buf[BUFSIZE];
-      guint nbytes;
+      guint nbytes = 0;
       guint nb;
       guint j;
       int i, seq;
@@ -297,7 +297,7 @@ main (int    argc,
 	  exit (1);
 	}
 
-      windows_messages_channel = g_io_channel_win32_new_messages ((guint)hwnd);
+      windows_messages_channel = g_io_channel_win32_new_messages ((guint) (guintptr) hwnd);
       g_io_add_watch (windows_messages_channel, G_IO_IN, recv_windows_message, 0);
 #endif
 
