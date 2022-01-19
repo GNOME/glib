@@ -616,7 +616,7 @@ do_async_connectable (GSocketAddressEnumerator *enumerator)
 }
 
 static void
-do_connectable (const char *arg, gboolean synchronous, guint count)
+do_connectable (const char *arg, gboolean synch, guint count)
 {
   char **parts;
   GSocketConnectable *connectable;
@@ -660,7 +660,7 @@ do_connectable (const char *arg, gboolean synchronous, guint count)
     {
       enumerator = g_socket_connectable_enumerate (connectable);
 
-      if (synchronous)
+      if (synch)
         do_sync_connectable (enumerator);
       else
         do_async_connectable (enumerator);
