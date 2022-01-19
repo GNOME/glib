@@ -40,11 +40,11 @@ static char *echo_prog_path;
 #include <windows.h>
 #endif
 
-GMainLoop *main_loop;
-guint alive;
+static GMainLoop *global_main_loop;
+static guint alive;
 
 #ifdef G_OS_WIN32
-char *argv0;
+static char *argv0;
 #endif
 
 static GPid
@@ -98,7 +98,7 @@ child_watch_callback (GPid pid, gint status, gpointer data)
   g_spawn_close_pid (pid);
 
   if (--alive == 0)
-    g_main_loop_quit (main_loop);
+    g_main_loop_quit (global_main_loop);
 
   return TRUE;
 }
@@ -142,7 +142,7 @@ test_spawn_childs (void)
 {
   GPid pid;
 
-  main_loop = g_main_loop_new (NULL, FALSE);
+  global_main_loop = g_main_loop_new (NULL, FALSE);
 
 #ifdef G_OS_WIN32
   system ("ipconfig /all");
@@ -151,7 +151,7 @@ test_spawn_childs (void)
 #endif
 
   alive = 2;
-  g_timeout_add_seconds (30, quit_loop, main_loop);
+  g_timeout_add_seconds (30, quit_loop, global_main_loop);
 
   pid = get_a_child (10);
   g_child_watch_add (pid, (GChildWatchFunc) child_watch_callback,
@@ -160,8 +160,8 @@ test_spawn_childs (void)
   g_child_watch_add (pid, (GChildWatchFunc) child_watch_callback,
                      GINT_TO_POINTER (7));
 
-  g_main_loop_run (main_loop);
-  g_main_loop_unref (main_loop);
+  g_main_loop_run (global_main_loop);
+  g_main_loop_unref (global_main_loop);
 
   g_assert_cmpint (alive, ==, 0);
 }
@@ -169,7 +169,7 @@ test_spawn_childs (void)
 static void
 test_spawn_childs_threads (void)
 {
-  main_loop = g_main_loop_new (NULL, FALSE);
+  global_main_loop = g_main_loop_new (NULL, FALSE);
 
 #ifdef G_OS_WIN32
   system ("ipconfig /all");
@@ -178,13 +178,13 @@ test_spawn_childs_threads (void)
 #endif
 
   alive = 2;
-  g_timeout_add_seconds (30, quit_loop, main_loop);
+  g_timeout_add_seconds (30, quit_loop, global_main_loop);
 
   g_thread_new (NULL, start_thread, GINT_TO_POINTER (3));
   g_thread_new (NULL, start_thread, GINT_TO_POINTER (7));
 
-  g_main_loop_run (main_loop);
-  g_main_loop_unref (main_loop);
+  g_main_loop_run (global_main_loop);
+  g_main_loop_unref (global_main_loop);
 
   g_assert_cmpint (alive, ==, 0);
 }
