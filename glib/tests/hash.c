@@ -1345,6 +1345,49 @@ test_lookup_extended (void)
   g_hash_table_unref (hash);
 }
 
+static void
+inc_state (gpointer user_data)
+{
+  int *state = user_data;
+  g_assert_cmpint (*state, ==, 0);
+  *state = 1;
+}
+
+static void
+test_new_similar (void)
+{
+  GHashTable *hash1;
+  GHashTable *hash2;
+  int state1;
+  int state2;
+
+  hash1 = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                 g_free, inc_state);
+  state1 = 0;
+  g_hash_table_insert (hash1,
+                       g_strdup ("test"),
+                       &state1);
+  g_assert_true (g_hash_table_lookup (hash1, "test") == &state1);
+
+  hash2 = g_hash_table_new_similar (hash1);
+
+  g_assert_true (g_hash_table_lookup (hash1, "test") == &state1);
+  g_assert_null (g_hash_table_lookup (hash2, "test"));
+
+  state2 = 0;
+  g_hash_table_insert (hash2, g_strdup ("test"), &state2);
+  g_assert_true (g_hash_table_lookup (hash2, "test") == &state2);
+  g_hash_table_remove (hash2, "test");
+  g_assert_cmpint (state2, ==, 1);
+
+  g_assert_cmpint (state1, ==, 0);
+  g_hash_table_remove (hash1, "test");
+  g_assert_cmpint (state1, ==, 1);
+
+  g_hash_table_unref (hash1);
+  g_hash_table_unref (hash2);
+}
+
 struct _GHashTable
 {
   gsize            size;
@@ -1685,6 +1728,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/hash/steal-extended", test_steal_extended);
   g_test_add_func ("/hash/steal-extended/optional", test_steal_extended_optional);
   g_test_add_func ("/hash/lookup-extended", test_lookup_extended);
+  g_test_add_func ("/hash/new-similar", test_new_similar);
 
   /* tests for individual bugs */
   g_test_add_func ("/hash/lookup-null-key", test_lookup_null_key);
