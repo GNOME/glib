@@ -406,7 +406,7 @@ g_file_monitor_source_handle_event (GFileMonitorSource *fms,
       g_assert (!other && rename_to);
       if (fms->flags & (G_FILE_MONITOR_WATCH_MOVES | G_FILE_MONITOR_SEND_MOVED))
         {
-          GFile *other;
+          GFile *other_file;
           const gchar *dirname;
           gchar *allocated_dirname = NULL;
           GFileMonitorEvent event;
@@ -421,11 +421,11 @@ g_file_monitor_source_handle_event (GFileMonitorSource *fms,
               dirname = allocated_dirname;
             }
 
-          other = g_local_file_new_from_dirname_and_basename (dirname, rename_to);
+          other_file = g_local_file_new_from_dirname_and_basename (dirname, rename_to);
           g_file_monitor_source_file_changes_done (fms, rename_to);
-          g_file_monitor_source_send_event (fms, event, child, other);
+          g_file_monitor_source_send_event (fms, event, child, other_file);
 
-          g_object_unref (other);
+          g_object_unref (other_file);
           g_free (allocated_dirname);
         }
       else
