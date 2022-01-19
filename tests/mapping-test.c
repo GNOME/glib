@@ -29,7 +29,7 @@
 #include <process.h>
 #endif
 
-static gchar *dir, *filename, *displayname, *childname;
+static gchar *dir, *global_filename, *global_displayname, *childname;
 
 static gboolean stop = FALSE;
 
@@ -113,7 +113,7 @@ child_main (int argc, char *argv[])
   GMainLoop *loop;
 
   parent_pid = atoi (argv[2]);
-  map = map_or_die (filename, FALSE);
+  map = map_or_die (global_filename, FALSE);
 
 #ifndef G_OS_WIN32
   signal (SIGUSR1, handle_usr1);
@@ -139,13 +139,13 @@ test_mapping (void)
 {
   GMappedFile *map;
 
-  write_or_die (filename, "ABC", -1);
+  write_or_die (global_filename, "ABC", -1);
 
-  map = map_or_die (filename, FALSE);
+  map = map_or_die (global_filename, FALSE);
   g_assert (g_mapped_file_get_length (map) == 3);
   g_mapped_file_free (map);
 
-  map = map_or_die (filename, TRUE);
+  map = map_or_die (global_filename, TRUE);
   g_assert (g_mapped_file_get_length (map) == 3);
   g_mapped_file_free (map);
   g_message ("test_mapping: ok");
@@ -159,8 +159,8 @@ test_private (void)
   gchar *buffer;
   gsize len;
 
-  write_or_die (filename, "ABC", -1);
-  map = map_or_die (filename, TRUE);
+  write_or_die (global_filename, "ABC", -1);
+  map = map_or_die (global_filename, TRUE);
 
   buffer = (gchar *)g_mapped_file_get_contents (map);
   buffer[0] = '1';
@@ -168,10 +168,10 @@ test_private (void)
   buffer[2] = '3';
   g_mapped_file_free (map);
 
-  if (!g_file_get_contents (filename, &buffer, &len, &error))
+  if (!g_file_get_contents (global_filename, &buffer, &len, &error))
     {
-      g_print ("failed to read '%s': %s\n", 
-	       displayname, error->message);
+      g_print ("failed to read '%s': %s\n",
+               global_displayname, error->message);
       exit (1);
       
     }
@@ -201,8 +201,8 @@ test_child_private (gchar *argv0)
   g_assert (!g_file_test ("STOP", G_FILE_TEST_EXISTS));
 #endif
 
-  write_or_die (filename, "ABC", -1);
-  map = map_or_die (filename, TRUE);
+  write_or_die (global_filename, "ABC", -1);
+  map = map_or_die (global_filename, TRUE);
 
 #ifndef G_OS_WIN32
   signal (SIGUSR1, handle_usr1);
@@ -303,8 +303,8 @@ main (int argc,
 #endif
 
   dir = g_get_current_dir ();
-  filename = g_build_filename (dir, "maptest", NULL);
-  displayname = g_filename_display_name (filename);
+  global_filename = g_build_filename (dir, "maptest", NULL);
+  global_displayname = g_filename_display_name (global_filename);
   childname = g_build_filename (dir, "mapchild", NULL);
 
   if (argc > 1)
@@ -313,8 +313,8 @@ main (int argc,
     ret = parent_main (argc, argv);
 
   g_free (childname);
-  g_free (filename);
-  g_free (displayname);
+  g_free (global_filename);
+  g_free (global_displayname);
   g_free (dir);
 
   return ret;
