@@ -91,6 +91,7 @@ struct _GCredentials
   struct ucred native;
 #elif G_CREDENTIALS_USE_APPLE_XUCRED
   struct xucred native;
+  pid_t pid;
 #elif G_CREDENTIALS_USE_FREEBSD_CMSGCRED
   struct cmsgcred native;
 #elif G_CREDENTIALS_USE_NETBSD_UNPCBID
@@ -170,6 +171,8 @@ g_credentials_init (GCredentials *credentials)
    * For now we fill it with -1 (meaning "no data"). */
   for (i = 1; i < NGROUPS; i++)
     credentials->native.cr_groups[i] = -1;
+
+  credentials->pid = -1;
 #elif G_CREDENTIALS_USE_FREEBSD_CMSGCRED
   memset (&credentials->native, 0, sizeof (struct cmsgcred));
   credentials->native.cmcred_pid  = getpid ();
@@ -569,8 +572,7 @@ g_credentials_get_unix_user (GCredentials    *credentials,
  *
  * This operation can fail if #GCredentials is not supported on the
  * OS or if the native credentials type does not contain information
- * about the UNIX process ID (for example this is the case for
- * %G_CREDENTIALS_TYPE_APPLE_XUCRED).
+ * about the UNIX process ID.
  *
  * Returns: The UNIX process ID, or `-1` if @error is set.
  *
@@ -599,12 +601,18 @@ g_credentials_get_unix_pid (GCredentials    *credentials,
 #elif G_CREDENTIALS_USE_SOLARIS_UCRED
   ret = ucred_getpid (credentials->native);
 #else
-  /* this case includes G_CREDENTIALS_USE_APPLE_XUCRED */
+
+#if G_CREDENTIALS_USE_APPLE_XUCRED
+  ret = credentials->pid;
+#else
   ret = -1;
-  g_set_error_literal (error,
-                       G_IO_ERROR,
-                       G_IO_ERROR_NOT_SUPPORTED,
-                       _("GCredentials does not contain a process ID on this OS"));
+#endif
+
+  if (ret == -1)
+    g_set_error_literal (error,
+                         G_IO_ERROR,
+                         G_IO_ERROR_NOT_SUPPORTED,
+                         _("GCredentials does not contain a process ID on this OS"));
 #endif
 
   return ret;
@@ -670,5 +678,17 @@ g_credentials_set_unix_user (GCredentials    *credentials,
 
   return ret;
 }
+
+#ifdef __APPLE__
+void
+_g_credentials_set_local_peerid (GCredentials *credentials,
+                                 pid_t         pid)
+{
+  g_return_if_fail (G_IS_CREDENTIALS (credentials));
+  g_return_if_fail (pid >= 0);
+
+  credentials->pid = pid;
+}
+#endif /* __APPLE__ */
 
 #endif /* G_OS_UNIX */
