@@ -85,7 +85,7 @@ class DBusXMLParser:
                         symbol = line[0:colon_index]
                         rest_of_line = line[colon_index + 2 :].strip()
                         if len(rest_of_line) > 0:
-                            body += "<para>" + rest_of_line + "</para>"
+                            body += f"{rest_of_line}\n"
                         comment_state = DBusXMLParser.COMMENT_STATE_PARAMS
             elif comment_state == DBusXMLParser.COMMENT_STATE_PARAMS:
                 if line.startswith("@"):
@@ -93,9 +93,9 @@ class DBusXMLParser:
                     if colon_index == -1:
                         comment_state = DBusXMLParser.COMMENT_STATE_BODY
                         if not in_para:
-                            body += "<para>"
+                            body += "\n"
                             in_para = True
-                        body += orig_line + "\n"
+                        body += f"{orig_line}\n"
                     else:
                         param = line[1:colon_index]
                         docs = line[colon_index + 2 :]
@@ -104,21 +104,20 @@ class DBusXMLParser:
                     comment_state = DBusXMLParser.COMMENT_STATE_BODY
                     if len(line) > 0:
                         if not in_para:
-                            body += "<para>"
+                            body += "\n"
                             in_para = True
                         body += orig_line + "\n"
             elif comment_state == DBusXMLParser.COMMENT_STATE_BODY:
                 if len(line) > 0:
                     if not in_para:
-                        body += "<para>"
                         in_para = True
                     body += orig_line + "\n"
                 else:
                     if in_para:
-                        body += "</para>"
+                        body += "\n"
                         in_para = False
         if in_para:
-            body += "</para>"
+            body += "\n"
 
         if symbol != "":
             self.doc_comment_last_symbol = symbol
