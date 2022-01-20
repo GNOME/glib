@@ -297,7 +297,7 @@ inline static guint32   _g_stat_nlink     (const GLocalFileStat *buf) { return b
 #endif
 inline static dev_t     _g_stat_dev       (const GLocalFileStat *buf) { return buf->st_dev; }
 inline static ino_t     _g_stat_ino       (const GLocalFileStat *buf) { return buf->st_ino; }
-inline static off_t     _g_stat_size      (const GLocalFileStat *buf) { return buf->st_size; }
+inline static goffset   _g_stat_size      (const GLocalFileStat *buf) { return buf->st_size; }
 
 #ifndef G_OS_WIN32
 inline static uid_t     _g_stat_uid       (const GLocalFileStat *buf) { return buf->st_uid; }
