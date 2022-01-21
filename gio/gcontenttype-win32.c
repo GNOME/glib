@@ -128,7 +128,8 @@ g_content_type_is_a (const gchar *type,
                      const gchar *supertype)
 {
   gboolean res;
-  char *value_utf8;
+  char *perceived_type;
+  char *perceived_supertype;
 
   g_return_val_if_fail (type != NULL, FALSE);
   g_return_val_if_fail (supertype != NULL, FALSE);
@@ -136,12 +137,15 @@ g_content_type_is_a (const gchar *type,
   if (g_content_type_equals (type, supertype))
     return TRUE;
 
-  res = FALSE;
-  value_utf8 = get_registry_classes_key (type, L"PerceivedType");
-  if (value_utf8 && strcmp (value_utf8, supertype) == 0)
-    res = TRUE;
-  g_free (value_utf8);
-  
+  perceived_type = get_registry_classes_key (type, L"PerceivedType");
+  perceived_supertype = get_registry_classes_key (supertype, L"PerceivedType");
+
+  res = perceived_type && perceived_supertype &&
+    strcmp (perceived_type, perceived_supertype) == 0;
+
+  g_free (perceived_type);
+  g_free (perceived_supertype);
+
   return res;
 }
 
