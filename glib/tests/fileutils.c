@@ -1241,8 +1241,11 @@ test_set_contents_full (void)
       { EXISTING_FILE_REGULAR, 0644, FALSE, TRUE, 0 },
 #ifndef G_OS_WIN32
       { EXISTING_FILE_SYMLINK, 0644, FALSE, TRUE, 0 },
-#endif
       { EXISTING_FILE_DIRECTORY, 0644, FALSE, FALSE, G_FILE_ERROR_ISDIR },
+#else
+      /* on win32, _wopen returns EACCES if path is a directory */
+      { EXISTING_FILE_DIRECTORY, 0644, FALSE, FALSE, G_FILE_ERROR_ACCES },
+#endif
     };
   gsize i;
 
