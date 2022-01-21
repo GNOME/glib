@@ -267,6 +267,16 @@ executable('test-spawn-echo', 'test-spawn-echo.c',
   install: installed_tests_enabled,
 )
 
+if host_machine.system() == 'windows'
+  # test-spawn-sleep helper binary required by the spawn tests above
+  executable('test-spawn-sleep', 'test-spawn-sleep.c',
+    c_args : test_cargs,
+    dependencies : test_deps,
+    install_dir: installed_tests_execdir,
+    install: installed_tests_enabled,
+  )
+endif
+
 executable('testing-helper', 'testing-helper.c',
   c_args : test_cargs,
   dependencies : test_deps,
