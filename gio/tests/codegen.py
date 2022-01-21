@@ -382,6 +382,26 @@ G_END_DECLS
                 # The output should be the same.
                 self.assertEqual(result1.out, result2.out)
 
+    def test_generate_rst(self):
+        """Test the basic functionality of the rst generator."""
+        xml_contents = """
+        <node>
+          <interface name="org.project.Bar.Frobnicator">
+            <method name="RandomMethod"/>
+          </interface>
+        </node>
+        """
+        res = self.runCodegenWithInterface(
+            xml_contents,
+            "--generate-rst",
+            "test",
+        )
+        self.assertEqual("", res.err)
+        self.assertEqual("", res.out)
+        with open("test-org.project.Bar.Frobnicator.rst", "r") as f:
+            rst = f.readlines()
+            self.assertTrue(len(rst) != 0)
+
     def test_glib_min_required_invalid(self):
         """Test running with an invalid --glib-min-required."""
         with self.assertRaises(subprocess.CalledProcessError):
