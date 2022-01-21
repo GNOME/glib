@@ -6140,7 +6140,7 @@ msgstr "El port «%.*s» de l'URI està fora de rang"
 #: glib/guri.c:1224 glib/guri.c:1288
 #, c-format
 msgid "URI ‘%s’ is not an absolute URI"
-msgstr "L'URI «%s» no és un URI absoluta"
+msgstr "L'URI «%s» no és un URI absolut"
 
 #: glib/guri.c:1230
 #, c-format
