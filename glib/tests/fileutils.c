@@ -584,7 +584,7 @@ check_cap_dac_override (const char *tmpdir)
   inside = g_build_filename (dac_denies_write, "inside", NULL);
 
   g_assert_no_errno (mkdir (dac_denies_write, S_IRWXU));
-  g_assert_no_errno (chmod (dac_denies_write, 0));
+  g_assert_no_errno (g_chmod (dac_denies_write, 0));
 
   if (mkdir (inside, S_IRWXU) == 0)
     {
@@ -601,7 +601,7 @@ check_cap_dac_override (const char *tmpdir)
       have_cap = FALSE;
     }
 
-  g_assert_no_errno (chmod (dac_denies_write, S_IRWXU));
+  g_assert_no_errno (g_chmod (dac_denies_write, S_IRWXU));
   g_assert_no_errno (rmdir (dac_denies_write));
 
   if (safe_tmpdir != NULL)
@@ -1412,7 +1412,7 @@ test_set_contents_full_read_only_file (void)
   write (fd, "a", 1);
   g_assert_no_errno (g_fsync (fd));
   close (fd);
-  g_assert_no_errno (chmod (file_name, 0200));
+  g_assert_no_errno (g_chmod (file_name, 0200));
 
   if (g_test_undefined ())
     {
@@ -1485,7 +1485,7 @@ test_set_contents_full_read_only_directory (void)
       g_assert_no_errno (g_fsync (fd));
       close (fd);
 
-      g_assert_no_errno (chmod (dir_name, 0));
+      g_assert_no_errno (g_chmod (dir_name, 0));
 
       /* Set the file contents */
       ret = g_file_set_contents_full (file_name, "b", 1, flags, 0644, &error);
