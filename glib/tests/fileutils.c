@@ -1412,7 +1412,7 @@ test_set_contents_full_read_only_file (void)
   write (fd, "a", 1);
   g_assert_no_errno (g_fsync (fd));
   close (fd);
-  g_assert_no_errno (g_chmod (file_name, 0200));
+  g_assert_no_errno (g_chmod (file_name, 0400)); /* S_IREAD */
 
   if (g_test_undefined ())
     {
