@@ -344,8 +344,8 @@ test_tree (void)
   gchar **types;
   gsize i;
 
-#ifdef __APPLE__
-  g_test_skip ("The OSX backend does not implement g_content_type_guess_for_tree()");
+#if defined(__APPLE__) || defined(G_OS_WIN32)
+  g_test_skip ("The OSX & Windows backends do not implement g_content_type_guess_for_tree()");
   return;
 #endif
 
