@@ -145,7 +145,7 @@ test_spawn_childs (void)
   global_main_loop = g_main_loop_new (NULL, FALSE);
 
 #ifdef G_OS_WIN32
-  system ("ipconfig /all");
+  system ("cd .");
 #else
   system ("true");
 #endif
@@ -172,7 +172,7 @@ test_spawn_childs_threads (void)
   global_main_loop = g_main_loop_new (NULL, FALSE);
 
 #ifdef G_OS_WIN32
-  system ("ipconfig /all");
+  system ("cd .");
 #else
   system ("true");
 #endif
