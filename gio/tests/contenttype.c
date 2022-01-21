@@ -370,7 +370,7 @@ test_type_is_a_special_case (void)
   /* Everything but the inode type is application/octet-stream */
   res = g_content_type_is_a ("inode/directory", "application/octet-stream");
   g_assert_false (res);
-#ifndef __APPLE__
+#if !defined(__APPLE__) && !defined(G_OS_WIN32)
   res = g_content_type_is_a ("anything", "application/octet-stream");
   g_assert_true (res);
 #endif
