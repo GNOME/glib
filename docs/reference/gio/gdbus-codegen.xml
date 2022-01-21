@@ -35,6 +35,7 @@
     <arg><option>--c-generate-autocleanup</option> none|objects|all</arg>
     <arg><option>--output-directory</option> <replaceable>OUTDIR</replaceable></arg>
     <arg><option>--generate-docbook</option> <replaceable>OUTFILES</replaceable></arg>
+    <arg><option>--generate-rst</option> <replaceable>OUTFILES</replaceable></arg>
     <arg><option>--pragma-once</option></arg>
     <arg><option>--xml-files</option> <replaceable>FILE</replaceable></arg>
     <arg><option>--header</option></arg>
@@ -169,6 +170,16 @@
 </refsect1>
 
 <refsect1>
+  <title>Generating reStructuredText documentation</title>
+  <para>
+    Each generated reStructuredText file (see the
+    <option>--generate-rst</option> option for details) is a plain text
+    <ulink url="https://docutils.sourceforge.io/rst.html">reStructuredText</ulink>
+    document describing the D-Bus interface.
+  </para>
+</refsect1>
+
+<refsect1>
   <title>Options</title>
   <para>
     The following options are supported:
@@ -212,8 +223,25 @@
       <listitem>
         <para>
           Generate Docbook Documentation for each D-Bus interface and
-          put it in <filename>OUTFILES-NAME.xml</filename> where
-          <literal>NAME</literal> is a place-holder for the interface
+          put it in <filename><replaceable>OUTFILES</replaceable>-<replaceable>NAME</replaceable>.xml</filename>
+          where <literal>NAME</literal> is a place-holder for the interface
+          name, e.g. <literal>net.Corp.FooBar</literal> and so on.
+        </para>
+        <para>
+          Pass <option>--output-directory</option> to specify the directory
+          to put the output files in. By default the current directory
+          will be used.
+        </para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><option>--generate-rst</option> <replaceable>OUTFILES</replaceable></term>
+      <listitem>
+        <para>
+          Generate reStructuredText Documentation for each D-Bus interface and
+          put it in <filename><replaceable>OUTFILES</replaceable>-<replaceanle>NAME</replaceanle>.rst</filename>
+          where <literal>NAME</literal> is a place-holder for the interface
           name, e.g. <literal>net.Corp.FooBar</literal> and so on.
         </para>
         <para>
