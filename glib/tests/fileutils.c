@@ -1345,7 +1345,17 @@ test_set_contents_full (void)
               g_assert_no_errno (g_lstat (set_contents_name, &statbuf));
 
               if (tests[i].existing_file == EXISTING_FILE_NONE)
-                g_assert_cmpint (statbuf.st_mode & ~S_IFMT, ==, tests[i].new_mode);
+                {
+                  int mode = statbuf.st_mode & ~S_IFMT;
+                  int new_mode = tests[i].new_mode;
+#ifdef G_OS_WIN32
+                  /* on windows, group and others perms handling is different */
+                  /* only check the rwx user permissions */
+                  mode &= (_S_IREAD|_S_IWRITE|_S_IEXEC);
+                  new_mode &= (_S_IREAD|_S_IWRITE|_S_IEXEC);
+#endif
+                  g_assert_cmpint (mode, ==, new_mode);
+                }
 
 #ifndef G_OS_WIN32
               if (tests[i].existing_file == EXISTING_FILE_SYMLINK)
