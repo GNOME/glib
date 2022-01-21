@@ -342,7 +342,8 @@ g_content_type_from_mime_type (const gchar *mime_type)
   content_type = get_registry_classes_key (key, L"Extension");
   g_free (key);
 
-  return content_type;
+
+  return content_type ? g_steal_pointer (&content_type) : g_strdup ("*");
 }
 
 gchar *
