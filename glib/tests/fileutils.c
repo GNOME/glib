@@ -1452,6 +1452,8 @@ test_set_contents_full_read_only_file (void)
   g_free (file_name);
 }
 
+#ifndef G_OS_WIN32
+/* windows mostly ignores read-only flagged directoy, chmod doesn't work */
 static void
 test_set_contents_full_read_only_directory (void)
 {
@@ -1509,6 +1511,7 @@ test_set_contents_full_read_only_directory (void)
       g_free (dir_name);
     }
 }
+#endif
 
 static void
 test_read_link (void)
@@ -2158,7 +2161,9 @@ main (int   argc,
   g_test_add_func ("/fileutils/set-contents", test_set_contents);
   g_test_add_func ("/fileutils/set-contents-full", test_set_contents_full);
   g_test_add_func ("/fileutils/set-contents-full/read-only-file", test_set_contents_full_read_only_file);
+#ifndef G_OS_WIN32
   g_test_add_func ("/fileutils/set-contents-full/read-only-directory", test_set_contents_full_read_only_directory);
+#endif
   g_test_add_func ("/fileutils/read-link", test_read_link);
   g_test_add_func ("/fileutils/stdio-wrappers", test_stdio_wrappers);
   g_test_add_func ("/fileutils/fopen-modes", test_fopen_modes);
