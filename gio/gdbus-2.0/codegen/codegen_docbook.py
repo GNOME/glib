@@ -345,9 +345,17 @@ class DocbookCodeGenerator:
 
     def expand_paras(self, s, expandParamsAndConstants):
         s = self.expand(s, expandParamsAndConstants).strip()
+        res = []
         if not s.startswith("<para"):
-            s = "<para>%s</para>" % s
-        return s
+            res.append("<para>")
+        for line in s.split("\n"):
+            line = line.strip()
+            if not line:
+                line = "</para><para>"
+            res.append(line)
+        if not s.endswith("</para>"):
+            res.append("</para>")
+        return "\n".join(res)
 
     def generate_expand_dicts(self):
         self.expand_member_dict = {}

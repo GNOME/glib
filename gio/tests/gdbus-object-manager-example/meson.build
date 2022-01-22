@@ -17,6 +17,22 @@ gdbus_example_objectmanager_generated = custom_target('objectmanager-gen',
              '--symbol-decorator-define', 'HAVE_CONFIG_H',
              '@INPUT@'])
 
+gdbus_example_objectmanager_rst_gen = custom_target('objectmanager-rst-gen',
+  input: gdbus_example_objectmanager_xml,
+  output: [
+    'objectmanager-rst-gen-org.gtk.GDBus.Example.ObjectManager.Animal.rst',
+    'objectmanager-rst-gen-org.gtk.GDBus.Example.ObjectManager.Cat.rst',
+  ],
+  command: [
+    python,
+    gdbus_codegen,
+    '--interface-prefix', 'org.gtk.GDBus.Example.ObjectManager.',
+    '--generate-rst', 'objectmanager-rst-gen',
+    '--output-directory', '@OUTDIR@',
+    '@INPUT@',
+  ],
+)
+
 libgdbus_example_objectmanager = library('gdbus-example-objectmanager',
     gdbus_example_objectmanager_generated,
     c_args : test_c_args,
@@ -25,6 +41,9 @@ libgdbus_example_objectmanager = library('gdbus-example-objectmanager',
     install_dir : installed_tests_execdir)
 
 libgdbus_example_objectmanager_dep = declare_dependency(
-  sources : gdbus_example_objectmanager_generated[0],
+  sources : [
+    gdbus_example_objectmanager_generated[0],
+    gdbus_example_objectmanager_rst_gen[0],
+  ],
   link_with : libgdbus_example_objectmanager,
   dependencies : [libgio_dep])
