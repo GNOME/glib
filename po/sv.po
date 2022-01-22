@@ -1,16 +1,16 @@
 # Swedish messages for glib.
-# Copyright © 2001-2021 Free Software Foundation, Inc.
+# Copyright © 2001-2022 Free Software Foundation, Inc.
 # Christian Rose <menthos@menthos.com>, 2001-2005.
 # Daniel Nylander <po@danielnylander.se>, 2006-2012.
 # Sebastian Rasmussen <sebras@gmail.com>, 2014, 2015.
-# Anders Jonsson <anders.jonsson@norsjovallen.se>, 2015, 2016, 2017, 2018, 2019, 2020, 2021.
+# Anders Jonsson <anders.jonsson@norsjovallen.se>, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2021-11-24 15:51+0000\n"
-"PO-Revision-Date: 2021-11-24 17:23+0100\n"
+"POT-Creation-Date: 2022-01-19 15:32+0000\n"
+"PO-Revision-Date: 2022-01-20 16:19+0100\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: gio/gapplication.c:500
 msgid "GApplication options"
@@ -278,7 +278,7 @@ msgstr "Strömmen är redan stängd"
 msgid "Truncate not supported on base stream"
 msgstr "Kapning stöds inte på basströmmen"
 
-#: gio/gcancellable.c:319 gio/gdbusconnection.c:1872 gio/gdbusprivate.c:1416
+#: gio/gcancellable.c:319 gio/gdbusconnection.c:1873 gio/gdbusprivate.c:1416
 #: gio/gsimpleasyncresult.c:871 gio/gsimpleasyncresult.c:897
 #, c-format
 msgid "Operation was cancelled"
@@ -505,7 +505,7 @@ msgstr ""
 "Kan inte fastställa adress för sessionsbuss (inte implementerat för detta "
 "operativsystem)"
 
-#: gio/gdbusaddress.c:1375 gio/gdbusconnection.c:7261
+#: gio/gdbusaddress.c:1375 gio/gdbusconnection.c:7334
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -514,7 +514,7 @@ msgstr ""
 "Kan inte fastställa bussadressen från miljövariabeln DBUS_STARTER_BUS_TYPE — "
 "okänt värde ”%s”"
 
-#: gio/gdbusaddress.c:1384 gio/gdbusconnection.c:7270
+#: gio/gdbusaddress.c:1384 gio/gdbusconnection.c:7343
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -640,22 +640,22 @@ msgstr "Fel vid öppning av nyckelringen ”%s” för skrivning: "
 msgid "(Additionally, releasing the lock for “%s” also failed: %s) "
 msgstr "(I tillägg misslyckades även upplåsningen för ”%s”: %s) "
 
-#: gio/gdbusconnection.c:603 gio/gdbusconnection.c:2417
+#: gio/gdbusconnection.c:604 gio/gdbusconnection.c:2418
 msgid "The connection is closed"
 msgstr "Anslutningen är stängd"
 
-#: gio/gdbusconnection.c:1902
+#: gio/gdbusconnection.c:1903
 msgid "Timeout was reached"
 msgstr "Tidsgränsen uppnåddes"
 
-#: gio/gdbusconnection.c:2540
+#: gio/gdbusconnection.c:2541
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr ""
 "Flaggor som inte stöds påträffades vid konstruktion av en anslutning på "
 "klientsidan"
 
-#: gio/gdbusconnection.c:4189 gio/gdbusconnection.c:4536
+#: gio/gdbusconnection.c:4269 gio/gdbusconnection.c:4623
 #, c-format
 msgid ""
 "No such interface “org.freedesktop.DBus.Properties” on object at path %s"
@@ -663,79 +663,79 @@ msgstr ""
 "Inget sådant gränssnitt ”org.freedesktop.DBus.Properties” på objekt med "
 "sökvägen %s"
 
-#: gio/gdbusconnection.c:4331
+#: gio/gdbusconnection.c:4414
 #, c-format
 msgid "No such property “%s”"
 msgstr "Ingen sådan egenskap ”%s”"
 
-#: gio/gdbusconnection.c:4343
+#: gio/gdbusconnection.c:4426
 #, c-format
 msgid "Property “%s” is not readable"
 msgstr "Egenskapen ”%s” är inte läsbar"
 
-#: gio/gdbusconnection.c:4354
+#: gio/gdbusconnection.c:4437
 #, c-format
 msgid "Property “%s” is not writable"
 msgstr "Egenskapen ”%s” är inte skrivbar"
 
-#: gio/gdbusconnection.c:4374
+#: gio/gdbusconnection.c:4457
 #, c-format
 msgid "Error setting property “%s”: Expected type “%s” but got “%s”"
 msgstr ""
 "Fel vid inställning av egenskapen ”%s”: Förväntade typen ”%s” men fick ”%s”"
 
-#: gio/gdbusconnection.c:4479 gio/gdbusconnection.c:4687
-#: gio/gdbusconnection.c:6689
+#: gio/gdbusconnection.c:4562 gio/gdbusconnection.c:4777
+#: gio/gdbusconnection.c:6760
 #, c-format
 msgid "No such interface “%s”"
 msgstr "Inget sådan gränssnitt ”%s”"
 
-#: gio/gdbusconnection.c:4905 gio/gdbusconnection.c:7201
+#: gio/gdbusconnection.c:4999 gio/gdbusconnection.c:7274
 #, c-format
 msgid "No such interface “%s” on object at path %s"
 msgstr "Inget sådant gränssnitt ”%s” på objekt med sökvägen %s"
 
-#: gio/gdbusconnection.c:5003
+#: gio/gdbusconnection.c:5100
 #, c-format
 msgid "No such method “%s”"
 msgstr "Ingen sådan metod ”%s”"
 
-#: gio/gdbusconnection.c:5034
+#: gio/gdbusconnection.c:5131
 #, c-format
 msgid "Type of message, “%s”, does not match expected type “%s”"
 msgstr "Typ av meddelande, ”%s”, matchar inte förväntade typen ”%s”"
 
-#: gio/gdbusconnection.c:5237
+#: gio/gdbusconnection.c:5334
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Ett objekt är redan exporterat för gränssnittet %s vid %s"
 
-#: gio/gdbusconnection.c:5463
+#: gio/gdbusconnection.c:5561
 #, c-format
 msgid "Unable to retrieve property %s.%s"
 msgstr "Kunde inte hämta egenskap %s.%s"
 
-#: gio/gdbusconnection.c:5519
+#: gio/gdbusconnection.c:5617
 #, c-format
 msgid "Unable to set property %s.%s"
 msgstr "Kunde inte sätta egenskap %s.%s"
 
-#: gio/gdbusconnection.c:5698
+#: gio/gdbusconnection.c:5796
 #, c-format
 msgid "Method “%s” returned type “%s”, but expected “%s”"
 msgstr "Metoden ”%s” returnerade typen ”%s”, men förväntade ”%s”"
 
-#: gio/gdbusconnection.c:6800
+#: gio/gdbusconnection.c:6872
 #, c-format
 msgid "Method “%s” on interface “%s” with signature “%s” does not exist"
 msgstr "Metoden ”%s” på gränssnittet ”%s” med signaturen ”%s” finns inte"
 
-#: gio/gdbusconnection.c:6921
+#: gio/gdbusconnection.c:6993
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Ett underträd har redan exporterats för %s"
 
-#: gio/gdbusconnection.c:7209
+#: gio/gdbusconnection.c:7282
 #, c-format
 msgid "Object does not exist at path “%s”"
 msgstr "Objektet finns inte på sökvägen ”%s”"
@@ -1421,7 +1421,7 @@ msgstr "Kan inte kopiera specialfil"
 msgid "Invalid symlink value given"
 msgstr "Ogiltigt värde för symbolisk länk angivet"
 
-#: gio/gfile.c:4045 glib/gfileutils.c:2355
+#: gio/gfile.c:4045 glib/gfileutils.c:2333
 msgid "Symbolic links not supported"
 msgstr "Symboliska länkar stöds inte"
 
@@ -4899,83 +4899,83 @@ msgstr "em"
 msgid "Error opening directory “%s”: %s"
 msgstr "Fel vid öppning av katalogen ”%s”: %s"
 
-#: glib/gfileutils.c:738 glib/gfileutils.c:830
+#: glib/gfileutils.c:733 glib/gfileutils.c:825
 #, c-format
 msgid "Could not allocate %lu byte to read file “%s”"
 msgid_plural "Could not allocate %lu bytes to read file “%s”"
 msgstr[0] "Kunde inte allokera %lu byte för att läsa filen ”%s”"
 msgstr[1] "Kunde inte allokera %lu byte för att läsa filen ”%s”"
 
-#: glib/gfileutils.c:755
+#: glib/gfileutils.c:750
 #, c-format
 msgid "Error reading file “%s”: %s"
 msgstr "Fel vid läsning av filen ”%s”: %s"
 
-#: glib/gfileutils.c:791
+#: glib/gfileutils.c:786
 #, c-format
 msgid "File “%s” is too large"
 msgstr "Filen ”%s” är för stor"
 
-#: glib/gfileutils.c:855
+#: glib/gfileutils.c:850
 #, c-format
 msgid "Failed to read from file “%s”: %s"
 msgstr "Misslyckades med att läsa från filen ”%s”: %s"
 
-#: glib/gfileutils.c:905 glib/gfileutils.c:980 glib/gfileutils.c:1469
+#: glib/gfileutils.c:900 glib/gfileutils.c:975 glib/gfileutils.c:1447
 #, c-format
 msgid "Failed to open file “%s”: %s"
 msgstr "Misslyckades med att öppna filen ”%s”: %s"
 
-#: glib/gfileutils.c:918
+#: glib/gfileutils.c:913
 #, c-format
 msgid "Failed to get attributes of file “%s”: fstat() failed: %s"
 msgstr ""
 "Misslyckades med att få tag på attributen på filen ”%s”: fstat() "
 "misslyckades: %s"
 
-#: glib/gfileutils.c:949
+#: glib/gfileutils.c:944
 #, c-format
 msgid "Failed to open file “%s”: fdopen() failed: %s"
 msgstr "Misslyckades med att öppna filen ”%s”: fdopen() misslyckades: %s"
 
-#: glib/gfileutils.c:1050
+#: glib/gfileutils.c:1045
 #, c-format
 msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
 msgstr ""
 "Misslyckades med att byta namn på filen ”%s” till ”%s”: g_rename() "
 "misslyckades: %s"
 
-#: glib/gfileutils.c:1176
+#: glib/gfileutils.c:1154
 #, c-format
 msgid "Failed to write file “%s”: write() failed: %s"
 msgstr "Misslyckades med att skriva filen ”%s”: write() misslyckades: %s"
 
-#: glib/gfileutils.c:1197
+#: glib/gfileutils.c:1175
 #, c-format
 msgid "Failed to write file “%s”: fsync() failed: %s"
 msgstr "Misslyckades med att skriva filen ”%s”: fsync() misslyckades: %s"
 
-#: glib/gfileutils.c:1358 glib/gfileutils.c:1773
+#: glib/gfileutils.c:1336 glib/gfileutils.c:1751
 #, c-format
 msgid "Failed to create file “%s”: %s"
 msgstr "Misslyckades med att skapa filen ”%s”: %s"
 
-#: glib/gfileutils.c:1403
+#: glib/gfileutils.c:1381
 #, c-format
 msgid "Existing file “%s” could not be removed: g_unlink() failed: %s"
 msgstr "Befintliga filen ”%s” kunde inte tas bort: g_unlink() misslyckades: %s"
 
-#: glib/gfileutils.c:1738
+#: glib/gfileutils.c:1716
 #, c-format
 msgid "Template “%s” invalid, should not contain a “%s”"
 msgstr "Mallen ”%s” är ogiltig, den får inte innehålla ett ”%s”"
 
-#: glib/gfileutils.c:1751
+#: glib/gfileutils.c:1729
 #, c-format
 msgid "Template “%s” doesn’t contain XXXXXX"
 msgstr "Mallen ”%s” innehåller inte XXXXXX"
 
-#: glib/gfileutils.c:2311 glib/gfileutils.c:2340
+#: glib/gfileutils.c:2289 glib/gfileutils.c:2318
 #, c-format
 msgid "Failed to read the symbolic link “%s”: %s"
 msgstr "Misslyckades med att läsa den symboliska länken ”%s”: %s"
@@ -5826,48 +5826,53 @@ msgstr "Barnprocess stoppad av signal %ld"
 msgid "Child process exited abnormally"
 msgstr "Barnprocess avslutades onormalt"
 
-#: glib/gspawn.c:1855 glib/gspawn-win32.c:350 glib/gspawn-win32.c:358
+#: glib/gspawn.c:1864 glib/gspawn-win32.c:350 glib/gspawn-win32.c:358
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Misslyckades med att läsa från rör till barn (%s)"
 
-#: glib/gspawn.c:2157
+#: glib/gspawn.c:2166
 #, c-format
 msgid "Failed to spawn child process “%s” (%s)"
 msgstr "Misslyckades med att starta barnprocessen ”%s” (%s)"
 
-#: glib/gspawn.c:2274
+#: glib/gspawn.c:2283
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Misslyckades med att grena (%s)"
 
-#: glib/gspawn.c:2434 glib/gspawn-win32.c:381
+#: glib/gspawn.c:2443 glib/gspawn-win32.c:381
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
 msgstr "Misslyckades med att byta till katalogen ”%s” (%s)"
 
-#: glib/gspawn.c:2444
+#: glib/gspawn.c:2453
 #, c-format
 msgid "Failed to execute child process “%s” (%s)"
 msgstr "Misslyckades med att köra barnprocessen ”%s” (%s)"
 
-#: glib/gspawn.c:2454
+#: glib/gspawn.c:2463
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr ""
 "Misslyckades med att dirigera om utdata eller indata från barnprocess (%s)"
 
-#: glib/gspawn.c:2463
+#: glib/gspawn.c:2472
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Misslyckades med att skapa barnprocess (%s)"
 
-#: glib/gspawn.c:2471
+#: glib/gspawn.c:2480
+#, c-format
+msgid "Failed to close file descriptor for child process (%s)"
+msgstr "Misslyckades med att stänga filbeskrivare för barnprocess (%s)"
+
+#: glib/gspawn.c:2488
 #, c-format
 msgid "Unknown error executing child process “%s”"
 msgstr "Okänt fel vid körning av barnprocessen ”%s”"
 
-#: glib/gspawn.c:2495
+#: glib/gspawn.c:2512
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
