@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-01-17 11:22+0000\n"
-"PO-Revision-Date: 2022-01-17 16:59+0200\n"
+"POT-Creation-Date: 2022-01-19 12:44+0000\n"
+"PO-Revision-Date: 2022-01-19 17:48+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -4260,10 +4260,8 @@ msgid "Could not parse PEM-encoded certificate"
 msgstr "Не вдалося розібрати сертифікат у форматі PEM"
 
 #: gio/gtlscertificate.c:796
-#| msgid "This GTlsBackend does not support creating PKCS #11 certificates"
 msgid "The current TLS backend does not support PKCS #12"
-msgstr ""
-"У поточному модулі обробки TLS не передбачено підтримки PKCS #12"
+msgstr "У поточному модулі обробки TLS не передбачено підтримки PKCS #12"
 
 #: gio/gtlscertificate.c:1013
 msgid "This GTlsBackend does not support creating PKCS #11 certificates"
@@ -5920,52 +5918,58 @@ msgstr "Дочірній процес зупинений за сигналом %
 msgid "Child process exited abnormally"
 msgstr "Дочірній процес аварійно закінчив роботу"
 
-#: glib/gspawn.c:1869 glib/gspawn-win32.c:350 glib/gspawn-win32.c:358
+#: glib/gspawn.c:1879 glib/gspawn-win32.c:350 glib/gspawn-win32.c:358
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Помилка зчитування з дочірнього каналу (%s)"
 
-#: glib/gspawn.c:2229
+#: glib/gspawn.c:2239
 #, c-format
 msgid "Failed to spawn child process “%s” (%s)"
 msgstr "Не вдалося запустити дочірній процес «%s» (%s)"
 
-#: glib/gspawn.c:2346
+#: glib/gspawn.c:2356
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Помилка створення процесу (%s)"
 
-#: glib/gspawn.c:2506 glib/gspawn-win32.c:381
+#: glib/gspawn.c:2516 glib/gspawn-win32.c:381
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
 msgstr "Не вдалося змінити каталог на «%s» (%s)"
 
-#: glib/gspawn.c:2516
+#: glib/gspawn.c:2526
 #, c-format
 msgid "Failed to execute child process “%s” (%s)"
 msgstr "Не вдалося виконати дочірній процес «%s» (%s)"
 
-#: glib/gspawn.c:2526
+#: glib/gspawn.c:2536
 #, c-format
 msgid "Failed to open file to remap file descriptor (%s)"
 msgstr "Не вдалося відкрити файл для зміни прив'язки дескриптора файла (%s)"
 
-#: glib/gspawn.c:2534
+#: glib/gspawn.c:2544
 #, c-format
 msgid "Failed to duplicate file descriptor for child process (%s)"
 msgstr "Не вдалося здублювати дескриптор файла для дочірнього процесу (%s)"
 
-#: glib/gspawn.c:2543
+#: glib/gspawn.c:2553
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Помилка запуску дочірнього процесу (%s)"
 
-#: glib/gspawn.c:2551
+#: glib/gspawn.c:2561
+#, c-format
+#| msgid "Failed to duplicate file descriptor for child process (%s)"
+msgid "Failed to close file descriptor for child process (%s)"
+msgstr "Не вдалося закрити дескриптор файла для дочірнього процесу (%s)"
+
+#: glib/gspawn.c:2569
 #, c-format
 msgid "Unknown error executing child process “%s”"
 msgstr "Невідома помилка виконання дочірнього процесу «%s»"
 
-#: glib/gspawn.c:2575
+#: glib/gspawn.c:2593
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Не вдалося зчитати достатню кількість даних з дочірнього каналу (%s)"
@@ -6012,21 +6016,21 @@ msgstr ""
 "Неочікувана помилка в зчитуванні даних з дочірнього процесу через "
 "g_io_channel_win32_poll() "
 
-#: glib/gstrfuncs.c:3344 glib/gstrfuncs.c:3446
+#: glib/gstrfuncs.c:3351 glib/gstrfuncs.c:3453
 msgid "Empty string is not a number"
 msgstr "Порожній рядок не є числом"
 
-#: glib/gstrfuncs.c:3368
+#: glib/gstrfuncs.c:3375
 #, c-format
 msgid "“%s” is not a signed number"
 msgstr "«%s» не є числом зі знаком"
 
-#: glib/gstrfuncs.c:3378 glib/gstrfuncs.c:3482
+#: glib/gstrfuncs.c:3385 glib/gstrfuncs.c:3489
 #, c-format
 msgid "Number “%s” is out of bounds [%s, %s]"
 msgstr "Число «%s» не належить до діапазону [%s, %s]"
 
-#: glib/gstrfuncs.c:3472
+#: glib/gstrfuncs.c:3479
 #, c-format
 msgid "“%s” is not an unsigned number"
 msgstr "«%s» не є числом без знаку"
