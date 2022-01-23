@@ -1080,6 +1080,7 @@ extern GType _g_network_monitor_nm_get_type (void);
 
 extern GType g_memory_monitor_dbus_get_type (void);
 extern GType g_memory_monitor_portal_get_type (void);
+extern GType g_memory_monitor_win32_get_type (void);
 extern GType g_power_profile_monitor_dbus_get_type (void);
 
 #ifdef G_OS_UNIX
@@ -1315,6 +1316,7 @@ _g_io_modules_ensure_loaded (void)
 #ifdef G_OS_WIN32
       g_type_ensure (g_win32_notification_backend_get_type ());
       g_type_ensure (_g_winhttp_vfs_get_type ());
+      g_type_ensure (g_memory_monitor_win32_get_type ());
 #endif
       g_type_ensure (_g_local_vfs_get_type ());
       g_type_ensure (_g_dummy_proxy_resolver_get_type ());
