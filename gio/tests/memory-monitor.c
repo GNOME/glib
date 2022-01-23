@@ -33,7 +33,7 @@ warning_cb (GMemoryMonitor *m,
 	    GMemoryMonitorWarningLevel level)
 {
   char *str = g_enum_to_string (G_TYPE_MEMORY_MONITOR_WARNING_LEVEL, level);
-  g_debug ("Warning level: %s (%d)", str , level);
+  g_message ("Warning level: %s (%d)", str , level);
   g_free (str);
 }
 
