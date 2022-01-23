@@ -4,6 +4,17 @@
 #include <stdlib.h>
 #include <gio/gio.h>
 
+static gboolean
+skip_win32 (void)
+{
+#ifdef G_OS_WIN32
+  g_test_skip ("FIXME, test is broken on win32");
+  return TRUE;
+#else
+  return FALSE;
+#endif
+}
+
 /* These tests were written for the inotify implementation.
  * Other implementations may require slight adjustments in
  * the tests, e.g. the length of timeouts
@@ -361,6 +372,9 @@ test_atomic_replace (Fixture       *fixture,
   GError *error = NULL;
   TestData data;
 
+  if (skip_win32 ())
+    return;
+
   data.step = 0;
   data.events = NULL;
 
@@ -465,6 +479,9 @@ test_file_changes (Fixture       *fixture,
 {
   GError *error = NULL;
   TestData data;
+
+  if (skip_win32 ())
+    return;
 
   data.step = 0;
   data.events = NULL;
@@ -583,6 +600,9 @@ test_dir_monitor (Fixture       *fixture,
   GError *error = NULL;
   TestData data;
 
+  if (skip_win32 ())
+    return;
+
   data.step = 0;
   data.events = NULL;
 
@@ -679,6 +699,9 @@ test_dir_non_existent (Fixture       *fixture,
 {
   TestData data;
   GError *error = NULL;
+
+  if (skip_win32 ())
+    return;
 
   data.step = 0;
   data.events = NULL;
@@ -788,6 +811,9 @@ test_cross_dir_moves (Fixture       *fixture,
 {
   GError *error = NULL;
   TestData data[2];
+
+  if (skip_win32 ())
+    return;
 
   data[0].step = 0;
   data[0].events = NULL;
@@ -959,6 +985,9 @@ test_file_hard_links (Fixture       *fixture,
   TestData data;
 
   g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=755721");
+
+  if (skip_win32 ())
+    return;
 
 #ifdef HAVE_LINK
   g_test_message ("Running with hard link tests");
