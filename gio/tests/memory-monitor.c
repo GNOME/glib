@@ -18,21 +18,6 @@
 
 #include <gio/gio.h>
 
-static const char *
-get_level_string (GMemoryMonitorWarningLevel level)
-{
-  GEnumClass *eclass;
-  GEnumValue *value;
-
-  eclass = G_ENUM_CLASS (g_type_class_peek (G_TYPE_MEMORY_MONITOR_WARNING_LEVEL));
-  value = g_enum_get_value (eclass, level);
-
-  if (value == NULL)
-    return "unknown";
-
-  return value->value_nick;
-}
-
 static void
 test_dup_default (void)
 {
@@ -47,10 +32,9 @@ static void
 warning_cb (GMemoryMonitor *m,
 	    GMemoryMonitorWarningLevel level)
 {
-  const char *str;
-
-  str = get_level_string (level);
+  char *str = g_enum_to_string (G_TYPE_MEMORY_MONITOR_WARNING_LEVEL, level);
   g_debug ("Warning level: %s (%d)", str , level);
+  g_free (str);
 }
 
 static void
