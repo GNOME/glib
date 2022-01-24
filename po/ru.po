@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2021-12-17 18:00+0000\n"
-"PO-Revision-Date: 2021-12-21 19:33+0300\n"
+"POT-Creation-Date: 2022-01-22 10:47+0000\n"
+"PO-Revision-Date: 2022-01-22 15:11+0300\n"
 "Last-Translator: Aleksandr Melman <Alexmelman88@gmail.com>\n"
 "Language-Team: Русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -301,7 +301,7 @@ msgstr "Поток уже закрыт"
 msgid "Truncate not supported on base stream"
 msgstr "Усечение не поддерживается в базовом потоке"
 
-#: gio/gcancellable.c:319 gio/gdbusconnection.c:1873 gio/gdbusprivate.c:1416
+#: gio/gcancellable.c:319 gio/gdbusconnection.c:1873 gio/gdbusprivate.c:1417
 #: gio/gsimpleasyncresult.c:871 gio/gsimpleasyncresult.c:897
 #, c-format
 msgid "Operation was cancelled"
@@ -360,23 +360,23 @@ msgstr "Неизвестный тип"
 msgid "%s filetype"
 msgstr "Тип файлов %s"
 
-#: gio/gcredentials.c:323
+#: gio/gcredentials.c:326
 msgid "GCredentials contains invalid data"
 msgstr "Объект GCredentials содержит некорректные данные"
 
-#: gio/gcredentials.c:383 gio/gcredentials.c:667
+#: gio/gcredentials.c:386 gio/gcredentials.c:675
 msgid "GCredentials is not implemented on this OS"
 msgstr "Тип GCredentials не реализован для этой ОС"
 
-#: gio/gcredentials.c:538 gio/gcredentials.c:556
+#: gio/gcredentials.c:541 gio/gcredentials.c:559
 msgid "There is no GCredentials support for your platform"
 msgstr "Поддержка GCredentials для вашей платформы отсутствует"
 
-#: gio/gcredentials.c:607
+#: gio/gcredentials.c:615
 msgid "GCredentials does not contain a process ID on this OS"
 msgstr "Тип GCredentials не содержит идентификатора процесса для этой ОС"
 
-#: gio/gcredentials.c:661
+#: gio/gcredentials.c:669
 msgid "Credentials spoofing is not possible on this OS"
 msgstr "Спуфинг учётных данных невозможен в этой ОС"
 
@@ -580,23 +580,23 @@ msgstr "Идентификаторы пользователя должны бы�
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr "Отменено через GDBusAuthObserver::authorize-authenticated-peer"
 
-#: gio/gdbusauthmechanismsha1.c:298
+#: gio/gdbusauthmechanismsha1.c:299
 #, c-format
 msgid "Error when getting information for directory “%s”: %s"
 msgstr "Ошибка при получении информации о каталоге «%s»: %s"
 
-#: gio/gdbusauthmechanismsha1.c:313
+#: gio/gdbusauthmechanismsha1.c:314
 #, c-format
 msgid ""
 "Permissions on directory “%s” are malformed. Expected mode 0700, got 0%o"
 msgstr "Ошибочные права на каталог «%s». Ожидалось 0700, получено 0%o"
 
-#: gio/gdbusauthmechanismsha1.c:346 gio/gdbusauthmechanismsha1.c:357
+#: gio/gdbusauthmechanismsha1.c:347 gio/gdbusauthmechanismsha1.c:358
 #, c-format
 msgid "Error creating directory “%s”: %s"
 msgstr "Произошла ошибка при создании каталога «%s»: %s"
 
-#: gio/gdbusauthmechanismsha1.c:359 gio/gfile.c:1068 gio/gfile.c:1306
+#: gio/gdbusauthmechanismsha1.c:360 gio/gfile.c:1068 gio/gfile.c:1306
 #: gio/gfile.c:1444 gio/gfile.c:1682 gio/gfile.c:1737 gio/gfile.c:1795
 #: gio/gfile.c:1879 gio/gfile.c:1936 gio/gfile.c:2000 gio/gfile.c:2055
 #: gio/gfile.c:3760 gio/gfile.c:3815 gio/gfile.c:4108 gio/gfile.c:4578
@@ -606,17 +606,17 @@ msgstr "Произошла ошибка при создании каталога
 msgid "Operation not supported"
 msgstr "Действие не поддерживается"
 
-#: gio/gdbusauthmechanismsha1.c:402
+#: gio/gdbusauthmechanismsha1.c:403
 #, c-format
 msgid "Error opening keyring “%s” for reading: "
 msgstr "Произошла ошибка при открытии связки ключей «%s» на чтение: "
 
-#: gio/gdbusauthmechanismsha1.c:425 gio/gdbusauthmechanismsha1.c:747
+#: gio/gdbusauthmechanismsha1.c:426 gio/gdbusauthmechanismsha1.c:748
 #, c-format
 msgid "Line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr "Некорректная строка %d в связке ключей около «%s» с содержимым «%s»"
 
-#: gio/gdbusauthmechanismsha1.c:439 gio/gdbusauthmechanismsha1.c:761
+#: gio/gdbusauthmechanismsha1.c:440 gio/gdbusauthmechanismsha1.c:762
 #, c-format
 msgid ""
 "First token of line %d of the keyring at “%s” with content “%s” is malformed"
@@ -624,7 +624,7 @@ msgstr ""
 "Некорректная первая лексема в строке %d в связке ключей около «%s» с "
 "содержимым «%s»"
 
-#: gio/gdbusauthmechanismsha1.c:453 gio/gdbusauthmechanismsha1.c:775
+#: gio/gdbusauthmechanismsha1.c:454 gio/gdbusauthmechanismsha1.c:776
 #, c-format
 msgid ""
 "Second token of line %d of the keyring at “%s” with content “%s” is malformed"
@@ -632,37 +632,37 @@ msgstr ""
 "Некорректная вторая лексема в строке %d в связке ключей около «%s» с "
 "содержимым «%s»"
 
-#: gio/gdbusauthmechanismsha1.c:477
+#: gio/gdbusauthmechanismsha1.c:478
 #, c-format
 msgid "Didn’t find cookie with id %d in the keyring at “%s”"
 msgstr "Не удалось найти куки с идентификатором %d в связке ключей «%s»"
 
-#: gio/gdbusauthmechanismsha1.c:523
+#: gio/gdbusauthmechanismsha1.c:524
 #, c-format
 msgid "Error creating lock file “%s”: %s"
 msgstr "Произошла ошибка при создании файла блокировки «%s»: %s"
 
-#: gio/gdbusauthmechanismsha1.c:587
+#: gio/gdbusauthmechanismsha1.c:588
 #, c-format
 msgid "Error deleting stale lock file “%s”: %s"
 msgstr "Произошла ошибка при удалении устаревшего файла блокировки «%s»: %s"
 
-#: gio/gdbusauthmechanismsha1.c:626
+#: gio/gdbusauthmechanismsha1.c:627
 #, c-format
 msgid "Error closing (unlinked) lock file “%s”: %s"
 msgstr "Произошла ошибка при закрытии (удалённого) файла блокировки «%s»: %s"
 
-#: gio/gdbusauthmechanismsha1.c:637
+#: gio/gdbusauthmechanismsha1.c:638
 #, c-format
 msgid "Error unlinking lock file “%s”: %s"
 msgstr "Произошла ошибка при удалении файла блокировки «%s»: %s"
 
-#: gio/gdbusauthmechanismsha1.c:714
+#: gio/gdbusauthmechanismsha1.c:715
 #, c-format
 msgid "Error opening keyring “%s” for writing: "
 msgstr "Произошла ошибка при открытии связки ключей «%s» на запись: "
 
-#: gio/gdbusauthmechanismsha1.c:908
+#: gio/gdbusauthmechanismsha1.c:909
 #, c-format
 msgid "(Additionally, releasing the lock for “%s” also failed: %s) "
 msgstr "(Также, не удалось освободить блокировку для «%s»: %s) "
@@ -968,23 +968,23 @@ msgstr "Возвращена ошибка с телом типа «%s»"
 msgid "Error return with empty body"
 msgstr "Возвращена ошибка с пустым телом"
 
-#: gio/gdbusprivate.c:2246
+#: gio/gdbusprivate.c:2184
 #, c-format
 msgid "(Type any character to close this window)\n"
 msgstr "(Чтобы закрыть это окно, введите любой символ)\n"
 
-#: gio/gdbusprivate.c:2420
+#: gio/gdbusprivate.c:2358
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
 msgstr "Сеанс dbus не запущен, и автозапуск не выполнился"
 
-#: gio/gdbusprivate.c:2443
+#: gio/gdbusprivate.c:2381
 #, c-format
 msgid "Unable to get Hardware profile: %s"
 msgstr "Не удалось получить профиль аппаратуры: %s"
 
 #. Translators: Both placeholders are file paths
-#: gio/gdbusprivate.c:2494
+#: gio/gdbusprivate.c:2432
 #, c-format
 msgid "Unable to load %s or %s: "
 msgstr "Не удалось загрузить %s или %s: "
@@ -1463,7 +1463,7 @@ msgstr "Нельзя скопировать специальный файл"
 msgid "Invalid symlink value given"
 msgstr "Дано неверное значение символьной ссылки"
 
-#: gio/gfile.c:4051 glib/gfileutils.c:2355
+#: gio/gfile.c:4051 glib/gfileutils.c:2333
 msgid "Symbolic links not supported"
 msgstr "Символьные ссылки не поддерживаются"
 
@@ -4057,12 +4057,12 @@ msgstr "GSocketControlMessage не поддерживается в Windows"
 msgid "Error receiving message: %s"
 msgstr "Произошла ошибка при получении сообщения: %s"
 
-#: gio/gsocket.c:6073 gio/gsocket.c:6084 gio/gsocket.c:6130
+#: gio/gsocket.c:6083 gio/gsocket.c:6094 gio/gsocket.c:6140
 #, c-format
 msgid "Unable to read socket credentials: %s"
 msgstr "Не удалось прочитать полномочия сокета: %s"
 
-#: gio/gsocket.c:6139
+#: gio/gsocket.c:6149
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "Функция g_socket_get_credentials не реализована в этой ОС"
 
@@ -4227,27 +4227,31 @@ msgstr "Временно невозможно разрешить «%s»"
 msgid "Error resolving “%s”"
 msgstr "Произошла ошибка разрешения «%s»"
 
-#: gio/gtlscertificate.c:431
+#: gio/gtlscertificate.c:478
 msgid "No PEM-encoded private key found"
 msgstr "Не найден секретный ключ в формате PEM"
 
-#: gio/gtlscertificate.c:441
+#: gio/gtlscertificate.c:488
 msgid "Cannot decrypt PEM-encoded private key"
 msgstr "Не удалось расшифровать секретный ключ в формате PEM"
 
-#: gio/gtlscertificate.c:452
+#: gio/gtlscertificate.c:499
 msgid "Could not parse PEM-encoded private key"
 msgstr "Не удалось разобрать секретный ключ в формате PEM"
 
-#: gio/gtlscertificate.c:479
+#: gio/gtlscertificate.c:526
 msgid "No PEM-encoded certificate found"
 msgstr "Не найден сертификат в формате PEM"
 
-#: gio/gtlscertificate.c:488
+#: gio/gtlscertificate.c:535
 msgid "Could not parse PEM-encoded certificate"
 msgstr "Не удалось разобрать сертификат в формате PEM"
 
-#: gio/gtlscertificate.c:844
+#: gio/gtlscertificate.c:796
+msgid "The current TLS backend does not support PKCS #12"
+msgstr "Текущий бэкенд TLS не поддерживает PKCS #12"
+
+#: gio/gtlscertificate.c:1013
 msgid "This GTlsBackend does not support creating PKCS #11 certificates"
 msgstr "Сервис GTlsBackend не поддерживает создание сертификатов PKCS #11"
 
@@ -4970,7 +4974,7 @@ msgstr "ПП (PM)"
 msgid "Error opening directory “%s”: %s"
 msgstr "Произошла ошибка при открытии каталога «%s»: %s"
 
-#: glib/gfileutils.c:738 glib/gfileutils.c:830
+#: glib/gfileutils.c:733 glib/gfileutils.c:825
 #, c-format
 msgid "Could not allocate %lu byte to read file “%s”"
 msgid_plural "Could not allocate %lu bytes to read file “%s”"
@@ -4978,74 +4982,74 @@ msgstr[0] "Не удалось выделить %lu байт для чтения
 msgstr[1] "Не удалось выделить %lu байта для чтения файла «%s»"
 msgstr[2] "Не удалось выделить %lu байт для чтения файла «%s»"
 
-#: glib/gfileutils.c:755
+#: glib/gfileutils.c:750
 #, c-format
 msgid "Error reading file “%s”: %s"
 msgstr "Ошибка при чтении файла «%s»: %s"
 
-#: glib/gfileutils.c:791
+#: glib/gfileutils.c:786
 #, c-format
 msgid "File “%s” is too large"
 msgstr "Файл «%s» слишком велик"
 
-#: glib/gfileutils.c:855
+#: glib/gfileutils.c:850
 #, c-format
 msgid "Failed to read from file “%s”: %s"
 msgstr "Не удалось прочитать из файла «%s»: %s"
 
-#: glib/gfileutils.c:905 glib/gfileutils.c:980 glib/gfileutils.c:1469
+#: glib/gfileutils.c:900 glib/gfileutils.c:975 glib/gfileutils.c:1447
 #, c-format
 msgid "Failed to open file “%s”: %s"
 msgstr "Не удалось открыть файл «%s»: %s"
 
-#: glib/gfileutils.c:918
+#: glib/gfileutils.c:913
 #, c-format
 msgid "Failed to get attributes of file “%s”: fstat() failed: %s"
 msgstr "Не удалось получить атрибуты файла «%s»: сбой в функции fstat(): %s"
 
-#: glib/gfileutils.c:949
+#: glib/gfileutils.c:944
 #, c-format
 msgid "Failed to open file “%s”: fdopen() failed: %s"
 msgstr "Не удалось открыть файл «%s»: сбой в функции fdopen(): %s"
 
-#: glib/gfileutils.c:1050
+#: glib/gfileutils.c:1045
 #, c-format
 msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
 msgstr ""
 "Не удалось переименовать файл «%s» в «%s»: сбой в функции g_rename(): %s"
 
-#: glib/gfileutils.c:1176
+#: glib/gfileutils.c:1154
 #, c-format
 msgid "Failed to write file “%s”: write() failed: %s"
 msgstr "Не удалось записать файл «%s»: сбой в функции write(): %s"
 
-#: glib/gfileutils.c:1197
+#: glib/gfileutils.c:1175
 #, c-format
 msgid "Failed to write file “%s”: fsync() failed: %s"
 msgstr "Не удалось записать файл «%s»: сбой в функции fsync(): %s"
 
-#: glib/gfileutils.c:1358 glib/gfileutils.c:1773
+#: glib/gfileutils.c:1336 glib/gfileutils.c:1751
 #, c-format
 msgid "Failed to create file “%s”: %s"
 msgstr "Не удалось создать файл «%s»: %s"
 
-#: glib/gfileutils.c:1403
+#: glib/gfileutils.c:1381
 #, c-format
 msgid "Existing file “%s” could not be removed: g_unlink() failed: %s"
 msgstr ""
 "Не удалось удалить существующий файл «%s»: сбой в функции g_unlink(): %s"
 
-#: glib/gfileutils.c:1738
+#: glib/gfileutils.c:1716
 #, c-format
 msgid "Template “%s” invalid, should not contain a “%s”"
 msgstr "Шаблон «%s» недопустим: он не должен содержать «%s»"
 
-#: glib/gfileutils.c:1751
+#: glib/gfileutils.c:1729
 #, c-format
 msgid "Template “%s” doesn’t contain XXXXXX"
 msgstr "Шаблон «%s» не содержит XXXXXX"
 
-#: glib/gfileutils.c:2311 glib/gfileutils.c:2340
+#: glib/gfileutils.c:2289 glib/gfileutils.c:2318
 #, c-format
 msgid "Failed to read the symbolic link “%s”: %s"
 msgstr "Не удалось прочитать символьную ссылку «%s»: %s"
@@ -5913,52 +5917,57 @@ msgstr "Дочерний процесс остановлен по сигналу
 msgid "Child process exited abnormally"
 msgstr "Дочерний процесс аварийно завершил работу"
 
-#: glib/gspawn.c:1869 glib/gspawn-win32.c:350 glib/gspawn-win32.c:358
+#: glib/gspawn.c:1879 glib/gspawn-win32.c:350 glib/gspawn-win32.c:358
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Не удалось прочитать данные из канала потомка (%s)"
 
-#: glib/gspawn.c:2229
+#: glib/gspawn.c:2239
 #, c-format
 msgid "Failed to spawn child process “%s” (%s)"
 msgstr "Не удалось выполнить процесс-потомок «%s» (%s)"
 
-#: glib/gspawn.c:2346
+#: glib/gspawn.c:2356
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Функция fork завершилась неудачно (%s)"
 
-#: glib/gspawn.c:2506 glib/gspawn-win32.c:381
+#: glib/gspawn.c:2516 glib/gspawn-win32.c:381
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
 msgstr "Не удалось сменить каталог на «%s» (%s)"
 
-#: glib/gspawn.c:2516
+#: glib/gspawn.c:2526
 #, c-format
 msgid "Failed to execute child process “%s” (%s)"
 msgstr "Не удалось выполнить процесс-потомок «%s» (%s)"
 
-#: glib/gspawn.c:2526
+#: glib/gspawn.c:2536
 #, c-format
 msgid "Failed to open file to remap file descriptor (%s)"
 msgstr "Не удалось открыть файл для изменения дескриптора файла (%s)"
 
-#: glib/gspawn.c:2534
+#: glib/gspawn.c:2544
 #, c-format
 msgid "Failed to duplicate file descriptor for child process (%s)"
 msgstr "Не удалось дублировать дескриптор файла для дочернего процесса (%s)"
 
-#: glib/gspawn.c:2543
+#: glib/gspawn.c:2553
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "При создании процесса-потомка функция fork завершилась неудачно (%s)"
 
-#: glib/gspawn.c:2551
+#: glib/gspawn.c:2561
+#, c-format
+msgid "Failed to close file descriptor for child process (%s)"
+msgstr "Не удалось закрыть дескриптор файла для дочернего процесса (%s)"
+
+#: glib/gspawn.c:2569
 #, c-format
 msgid "Unknown error executing child process “%s”"
 msgstr "Произошла неизвестная ошибка при выполнении процесса-потомка «%s»"
 
-#: glib/gspawn.c:2575
+#: glib/gspawn.c:2593
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
@@ -6006,21 +6015,21 @@ msgstr ""
 "Произошла неожиданная ошибка в функции g_io_channel_win32_poll() при чтении "
 "данных из процесса-потомка"
 
-#: glib/gstrfuncs.c:3344 glib/gstrfuncs.c:3446
+#: glib/gstrfuncs.c:3351 glib/gstrfuncs.c:3453
 msgid "Empty string is not a number"
 msgstr "Пустая строка не является числом"
 
-#: glib/gstrfuncs.c:3368
+#: glib/gstrfuncs.c:3375
 #, c-format
 msgid "“%s” is not a signed number"
 msgstr "«%s» не является числом со знаком"
 
-#: glib/gstrfuncs.c:3378 glib/gstrfuncs.c:3482
+#: glib/gstrfuncs.c:3385 glib/gstrfuncs.c:3489
 #, c-format
 msgid "Number “%s” is out of bounds [%s, %s]"
 msgstr "Число «%s» is out of bounds [%s, %s]"
 
-#: glib/gstrfuncs.c:3472
+#: glib/gstrfuncs.c:3479
 #, c-format
 msgid "“%s” is not an unsigned number"
 msgstr "«%s» не является числом без знака"
@@ -6101,150 +6110,150 @@ msgid "Character out of range for UTF-16"
 msgstr "Символ находится вне диапазона для UTF-16"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2816
+#: glib/gutils.c:2883
 #, c-format
 msgid "%.1f kB"
 msgstr "%.1f кБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2818
+#: glib/gutils.c:2885
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f МБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2820
+#: glib/gutils.c:2887
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f ГБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2822
+#: glib/gutils.c:2889
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f ТБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2824
+#: glib/gutils.c:2891
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f ПБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2826
+#: glib/gutils.c:2893
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f ЭБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2830
+#: glib/gutils.c:2897
 #, c-format
 msgid "%.1f KiB"
 msgstr "%.1f КиБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2832
+#: glib/gutils.c:2899
 #, c-format
 msgid "%.1f MiB"
 msgstr "%.1f МиБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2834
+#: glib/gutils.c:2901
 #, c-format
 msgid "%.1f GiB"
 msgstr "%.1f ГиБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2836
+#: glib/gutils.c:2903
 #, c-format
 msgid "%.1f TiB"
 msgstr "%.1f ТиБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2838
+#: glib/gutils.c:2905
 #, c-format
 msgid "%.1f PiB"
 msgstr "%.1f ПиБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2840
+#: glib/gutils.c:2907
 #, c-format
 msgid "%.1f EiB"
 msgstr "%.1f ЭиБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2844
+#: glib/gutils.c:2911
 #, c-format
 msgid "%.1f kb"
 msgstr "%.1f кбит"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2846
+#: glib/gutils.c:2913
 #, c-format
 msgid "%.1f Mb"
 msgstr "%.1f Мбит"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2848
+#: glib/gutils.c:2915
 #, c-format
 msgid "%.1f Gb"
 msgstr "%.1f Гбит"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2850
+#: glib/gutils.c:2917
 #, c-format
 msgid "%.1f Tb"
 msgstr "%.1f Тбит"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2852
+#: glib/gutils.c:2919
 #, c-format
 msgid "%.1f Pb"
 msgstr "%.1f Пбит"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2854
+#: glib/gutils.c:2921
 #, c-format
 msgid "%.1f Eb"
 msgstr "%.1f Эбит"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2858
+#: glib/gutils.c:2925
 #, c-format
 msgid "%.1f Kib"
 msgstr "%.1f Кибит"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2860
+#: glib/gutils.c:2927
 #, c-format
 msgid "%.1f Mib"
 msgstr "%.1f Мибит"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2862
+#: glib/gutils.c:2929
 #, c-format
 msgid "%.1f Gib"
 msgstr "%.1f Гибит"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2864
+#: glib/gutils.c:2931
 #, c-format
 msgid "%.1f Tib"
 msgstr "%.1f Тибит"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2866
+#: glib/gutils.c:2933
 #, c-format
 msgid "%.1f Pib"
 msgstr "%.1f Пибит"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2868
+#: glib/gutils.c:2935
 #, c-format
 msgid "%.1f Eib"
 msgstr "%.1f Эибит"
 
-#: glib/gutils.c:2902 glib/gutils.c:3019
+#: glib/gutils.c:2969 glib/gutils.c:3086
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
@@ -6252,7 +6261,7 @@ msgstr[0] "%u байт"
 msgstr[1] "%u байта"
 msgstr[2] "%u байт"
 
-#: glib/gutils.c:2906
+#: glib/gutils.c:2973
 #, c-format
 msgid "%u bit"
 msgid_plural "%u bits"
@@ -6261,7 +6270,7 @@ msgstr[1] "%u бита"
 msgstr[2] "%u бит"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
-#: glib/gutils.c:2973
+#: glib/gutils.c:3040
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
@@ -6270,7 +6279,7 @@ msgstr[1] "%s байта"
 msgstr[2] "%s байт"
 
 #. Translators: the %s in "%s bits" will always be replaced by a number.
-#: glib/gutils.c:2978
+#: glib/gutils.c:3045
 #, c-format
 msgid "%s bit"
 msgid_plural "%s bits"
@@ -6283,32 +6292,32 @@ msgstr[2] "%s бит"
 #. * compatibility.  Users will not see this string unless a program is using this deprecated function.
 #. * Please translate as literally as possible.
 #.
-#: glib/gutils.c:3032
+#: glib/gutils.c:3099
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f КБ"
 
-#: glib/gutils.c:3037
+#: glib/gutils.c:3104
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f МБ"
 
-#: glib/gutils.c:3042
+#: glib/gutils.c:3109
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f ГБ"
 
-#: glib/gutils.c:3047
+#: glib/gutils.c:3114
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f ТБ"
 
-#: glib/gutils.c:3052
+#: glib/gutils.c:3119
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f ПБ"
 
-#: glib/gutils.c:3057
+#: glib/gutils.c:3124
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f ЭБ"
