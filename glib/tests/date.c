@@ -1068,7 +1068,14 @@ test_parse_locale_change (void)
   g_date_set_parse (&date, "07/04/76");
   g_assert_cmpint (g_date_get_day (&date), ==, 4);
   g_assert_cmpint (g_date_get_month (&date), ==, 7);
+#ifdef G_OS_WIN32
+  /* Windows g_date_strftime() implementation doesn't use twodigit_years */
+  /* FIXME: check if the function can be changed to return 4 digit years instead
+   * See https://gitlab.gnome.org/GNOME/glib/-/issues/2604 */
+  g_assert_cmpint (g_date_get_year (&date), ==, 76);
+#else
   g_assert_cmpint (g_date_get_year (&date), ==, 1976);
+#endif
 
   setlocale (LC_ALL, "");
 }
