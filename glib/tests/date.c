@@ -1084,6 +1084,9 @@ static void
 test_month_substring (void)
 {
   GDate date;
+#ifdef G_OS_WIN32
+  LCID old_lcid;
+#endif
 
   g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=793550");
 
@@ -1092,6 +1095,13 @@ test_month_substring (void)
       g_test_skip ("pl_PL locale not available");
       return;
     }
+
+#ifdef G_OS_WIN32
+  /* after the crt, set also the win32 thread locale: */
+  /* https://www.codeproject.com/Articles/9600/Windows-SetThreadLocale-and-CRT-setlocale */
+  old_lcid = GetThreadLocale ();
+  SetThreadLocale (MAKELCID (MAKELANGID (LANG_POLISH, SUBLANG_POLISH_POLAND), SORT_DEFAULT));
+#endif
 
   /* In Polish language September is "wrzesień" and August is "sierpień"
    * abbreviated as "sie". The former used to be confused with the latter
@@ -1109,6 +1119,9 @@ test_month_substring (void)
   g_assert_true (g_date_valid (&date));
   g_assert_cmpint (g_date_get_month (&date), ==, G_DATE_AUGUST);
 
+#ifdef G_OS_WIN32
+  SetThreadLocale (old_lcid);
+#endif
   setlocale (LC_ALL, "");
 }
 
