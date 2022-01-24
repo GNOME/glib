@@ -1239,10 +1239,17 @@ test_month_names (void)
     {
       TEST_DATE ( 9,  1, 2018, "%d de %B de %Y", "09 de enero de 2018");
       TEST_DATE ( 1,  2, 2018,      "%OB de %Y",     "febrero de 2018");
+#if defined(G_OS_WIN32) && defined(_UCRT)
+      TEST_DATE (10,  3, 2018, "%e de %b de %Y",   "10 de mar. de 2018");
+      TEST_DATE ( 1,  4, 2018,      "%Ob de %Y",         "abr. de 2018");
+      TEST_DATE (11,  5, 2018, "%d de %h de %Y",   "11 de may. de 2018");
+      TEST_DATE ( 1,  6, 2018,      "%Oh de %Y",         "jun. de 2018");
+#else
       TEST_DATE (10,  3, 2018, "%e de %b de %Y",   "10 de mar de 2018");
       TEST_DATE ( 1,  4, 2018,      "%Ob de %Y",         "abr de 2018");
       TEST_DATE (11,  5, 2018, "%d de %h de %Y",   "11 de may de 2018");
       TEST_DATE ( 1,  6, 2018,      "%Oh de %Y",         "jun de 2018");
+#endif
     }
   else
     g_test_skip ("locale es_ES not available, skipping Spanish month names test");
@@ -1277,7 +1284,11 @@ test_month_names (void)
       TEST_DATE ( 1,  5, 2018,   "%OB %Y",          "Μάιος 2018");
       TEST_DATE ( 1,  6, 2018,   "%OB %Y",        "Ιούνιος 2018");
       TEST_DATE (16,  7, 2018, "%e %b %Y",        "16 Ιουλ 2018");
+#if defined(G_OS_WIN32) && defined(_UCRT)
+      TEST_DATE ( 1,  8, 2018,   "%Ob %Y",            "Αυγ 2018");
+#else
       TEST_DATE ( 1,  8, 2018,   "%Ob %Y",            "Αύγ 2018");
+#endif
     }
   else
     g_test_skip ("locale el_GR not available, skipping Greek month names test");
