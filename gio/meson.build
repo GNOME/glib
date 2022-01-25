@@ -423,6 +423,7 @@ else
   platform_deps += uwp_gio_deps
 
   win32_sources += files(
+    'gmemorymonitorwin32.c',
     'gwin32registrykey.c',
     'gwin32mount.c',
     'gwin32volumemonitor.c',
