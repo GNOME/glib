@@ -49,6 +49,23 @@
   g_assert_cmpint ((U), ==, g_date_time_get_microsecond ((dt))); \
 } G_STMT_END
 
+static gboolean
+skip_if_running_uninstalled (void)
+{
+  /* If running uninstalled (G_TEST_BUILDDIR is set), skip this test, since we
+   * need the translations to be installed. We can’t mess around with
+   * bindtextdomain() here, as the compiled .gmo files in po/ are not in the
+   * right installed directory hierarchy to be successfully loaded by gettext. */
+  if (g_getenv ("G_TEST_BUILDDIR") != NULL)
+    {
+      g_test_skip ("Skipping due to running uninstalled. "
+                   "This test can only be run when the translations are installed.");
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
 static void
 get_localtime_tm (time_t     time_,
                   struct tm *retval)
@@ -1650,16 +1667,8 @@ test_non_utf8_printf (void)
 {
   gchar *oldlocale;
 
-  /* If running uninstalled (G_TEST_BUILDDIR is set), skip this test, since we
-   * need the translations to be installed. We can’t mess around with
-   * bindtextdomain() here, as the compiled .gmo files in po/ are not in the
-   * right installed directory hierarchy to be successfully loaded by gettext. */
-  if (g_getenv ("G_TEST_BUILDDIR") != NULL)
-    {
-      g_test_skip ("Skipping due to running uninstalled. "
-                   "This test can only be run when the translations are installed.");
-      return;
-    }
+  if (skip_if_running_uninstalled())
+    return;
 
   oldlocale = g_strdup (setlocale (LC_ALL, NULL));
   setlocale (LC_ALL, "ja_JP.eucjp");
@@ -1835,16 +1844,8 @@ test_month_names (void)
 
   g_test_bug ("http://bugzilla.gnome.org/749206");
 
-  /* If running uninstalled (G_TEST_BUILDDIR is set), skip this test, since we
-   * need the translations to be installed. We can’t mess around with
-   * bindtextdomain() here, as the compiled .gmo files in po/ are not in the
-   * right installed directory hierarchy to be successfully loaded by gettext. */
-  if (g_getenv ("G_TEST_BUILDDIR") != NULL)
-    {
-      g_test_skip ("Skipping due to running uninstalled. "
-                   "This test can only be run when the translations are installed.");
-      return;
-    }
+  if (skip_if_running_uninstalled())
+    return;
 
   oldlocale = g_strdup (setlocale (LC_ALL, NULL));
 
@@ -2473,7 +2474,12 @@ test_GDateTime_strftime_error_handling (void)
   gchar *oldlocale;
 #ifdef G_OS_WIN32
   LCID old_lcid;
+#endif
 
+  if (skip_if_running_uninstalled())
+    return;
+
+#ifdef G_OS_WIN32
   old_lcid = GetThreadLocale ();
   SetThreadLocale (MAKELCID (MAKELANGID (LANG_GERMAN, SUBLANG_GERMAN), SORT_DEFAULT));
 #endif
