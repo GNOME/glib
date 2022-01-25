@@ -732,7 +732,7 @@ g_tls_certificate_new_from_pem  (const gchar  *data,
 
 /**
  * g_tls_certificate_new_from_pkcs12:
- * @data: DER-encoded PKCS #12 format certificate data
+ * @data: (array length=length): DER-encoded PKCS #12 format certificate data
  * @length: the length of @data
  * @password: (nullable): optional password for encrypted certificate data
  * @error: #GError for error reporting, or %NULL to ignore.
