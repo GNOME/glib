@@ -34,6 +34,18 @@
 
 #include "glib/gunidecomp.h"
 
+#ifdef G_OS_WIN32
+#include <windows.h>
+#endif
+
+static void
+save_and_clear_env (const char  *name,
+                    char       **save)
+{
+  *save = g_strdup (g_getenv (name));
+  g_unsetenv (name);
+}
+
 /* Test that g_unichar_validate() returns the correct value for various
  * ASCII and Unicode alphabetic, numeric, and other, codepoints. */
 static void
@@ -548,6 +560,17 @@ test_casemap_and_casefold (void)
   const char *expected;
   char *convert;
   char *current_locale = setlocale (LC_CTYPE, NULL);
+  char *old_lc_all, *old_lc_messages, *old_lang;
+#ifdef G_OS_WIN32
+  LCID old_lcid;
+
+  old_lcid = GetThreadLocale ();
+#endif
+
+  /* interferes with g_win32_getlocale() */
+  save_and_clear_env ("LC_ALL", &old_lc_all);
+  save_and_clear_env ("LC_MESSAGES", &old_lc_messages);
+  save_and_clear_env ("LANG", &old_lang);
 
   filename = g_test_build_filename (G_TEST_DIST, "casemap.txt", NULL);
   infile = fopen (filename, "r");
@@ -574,6 +597,15 @@ test_casemap_and_casefold (void)
               goto next;
             }
         }
+
+#ifdef G_OS_WIN32
+      if (strstr (locale, "lt_LT"))
+        SetThreadLocale (MAKELCID (MAKELANGID (LANG_LITHUANIAN, SUBLANG_LITHUANIAN), SORT_DEFAULT));
+      else if (strstr (locale, "tr_TR"))
+        SetThreadLocale (MAKELCID (MAKELANGID (LANG_TURKISH, SUBLANG_TURKISH_TURKEY), SORT_DEFAULT));
+      else
+        SetThreadLocale (old_lcid);
+#endif
 
       test = strings[1];
 
@@ -627,6 +659,19 @@ test_casemap_and_casefold (void)
 
   fclose (infile);
   g_free (filename);
+
+  if (old_lc_all)
+    g_setenv ("LC_ALL", old_lc_all, TRUE);
+  if (old_lc_messages)
+    g_setenv ("LC_MESSAGES", old_lc_messages, TRUE);
+  if (old_lang)
+    g_setenv ("LANG", old_lang, TRUE);
+  g_free (old_lc_all);
+  g_free (old_lc_messages);
+  g_free (old_lang);
+#ifdef G_OS_WIN32
+  SetThreadLocale (old_lcid);
+#endif
 }
 
 /* Test that g_unichar_ismark() returns the correct value for various
