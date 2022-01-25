@@ -493,14 +493,28 @@ test_turkish_strupdown (void)
                     "\xcc\x87"  /* COMBINING DOT ABOVE (U+307) */
                     "\xc4\xb1"  /* LATIN SMALL LETTER DOTLESS I (U+131) */
                     "\xc4\xb0"; /* LATIN CAPITAL LETTER I WITH DOT ABOVE (U+130) */
+  char *oldlocale;
+  char *old_lc_all, *old_lc_messages, *old_lang;
+#ifdef G_OS_WIN32
+  LCID old_lcid;
+#endif
 
-  char *oldlocale = g_strdup (setlocale (LC_ALL, "tr_TR"));
+  /* interferes with g_win32_getlocale() */
+  save_and_clear_env ("LC_ALL", &old_lc_all);
+  save_and_clear_env ("LC_MESSAGES", &old_lc_messages);
+  save_and_clear_env ("LANG", &old_lang);
 
+  oldlocale = g_strdup (setlocale (LC_ALL, "tr_TR"));
   if (oldlocale == NULL)
     {
       g_test_skip ("locale tr_TR not available");
       return;
     }
+
+#ifdef G_OS_WIN32
+  old_lcid = GetThreadLocale ();
+  SetThreadLocale (MAKELCID (MAKELANGID (LANG_TURKISH, SUBLANG_TURKISH_TURKEY), SORT_DEFAULT));
+#endif
 
   str_up = g_utf8_strup (str, strlen (str));
   str_down = g_utf8_strdown (str, strlen (str));
@@ -520,7 +534,19 @@ test_turkish_strupdown (void)
   g_free (str_down);
 
   setlocale (LC_ALL, oldlocale);
+#ifdef G_OS_WIN32
+  SetThreadLocale (old_lcid);
+#endif
   g_free (oldlocale);
+  if (old_lc_all)
+    g_setenv ("LC_ALL", old_lc_all, TRUE);
+  if (old_lc_messages)
+    g_setenv ("LC_MESSAGES", old_lc_messages, TRUE);
+  if (old_lang)
+    g_setenv ("LANG", old_lang, TRUE);
+  g_free (old_lc_all);
+  g_free (old_lc_messages);
+  g_free (old_lang);
 }
 
 /* Test that g_utf8_casefold() returns the correct value for various
