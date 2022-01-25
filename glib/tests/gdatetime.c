@@ -2467,6 +2467,12 @@ static void
 test_GDateTime_strftime_error_handling (void)
 {
   gchar *oldlocale;
+#ifdef G_OS_WIN32
+  LCID old_lcid;
+
+  old_lcid = GetThreadLocale ();
+  SetThreadLocale (MAKELCID (MAKELANGID (LANG_GERMAN, SUBLANG_GERMAN), SORT_DEFAULT));
+#endif
 
   oldlocale = g_strdup (setlocale (LC_ALL, NULL));
   setlocale (LC_ALL, "de_DE.utf-8");
@@ -2480,6 +2486,10 @@ test_GDateTime_strftime_error_handling (void)
     g_test_skip ("locale de_DE not available, skipping error handling tests");
   setlocale (LC_ALL, oldlocale);
   g_free (oldlocale);
+
+#ifdef G_OS_WIN32
+  SetThreadLocale (old_lcid);
+#endif
 }
 
 static void
