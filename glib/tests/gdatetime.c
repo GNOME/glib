@@ -2365,6 +2365,9 @@ check_and_set_locale (int          category,
 static void
 test_format_time_mixed_utf8 (gconstpointer data)
 {
+#ifdef _MSC_VER
+  g_test_skip ("setlocale (LC_MESSAGES) asserts on ucrt");
+#else
   const MixedUtf8TestData *test_data;
   gchar *old_time_locale;
   gchar *old_messages_locale;
@@ -2430,6 +2433,7 @@ test_format_time_mixed_utf8 (gconstpointer data)
   setlocale (LC_MESSAGES, old_messages_locale);
   g_free (old_time_locale);
   g_free (old_messages_locale);
+#endif
 }
 
 #pragma GCC diagnostic push
