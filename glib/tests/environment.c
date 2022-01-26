@@ -118,9 +118,11 @@ test_getenv (void)
   data = g_getenv ("foo=bar");
   if (data != NULL)
     g_assert_cmpstr (data, ==, "baz");
-
-  data = g_getenv ("foo");
-  g_assert_cmpstr (data, ==, "bar=baz");
+  else
+    {
+      data = g_getenv ("foo");
+      g_assert_cmpstr (data, ==, "bar=baz");
+    }
 
   if (g_test_undefined ())
     {
