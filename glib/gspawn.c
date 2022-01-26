@@ -772,6 +772,8 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
  * any target FDs which equal @stdin_fd, @stdout_fd or @stderr_fd will overwrite
  * them in the spawned process.
  *
+ * @source_fds is supported on Windows since 2.72.
+ *
  * %G_SPAWN_FILE_AND_ARGV_ZERO means that the first element of @argv is
  * the file to execute, while the remaining elements are the actual
  * argument vector to pass to the file. Normally g_spawn_async_with_pipes()

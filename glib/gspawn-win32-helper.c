@@ -203,12 +203,14 @@ int
 main (int ignored_argc, char **ignored_argv)
 #endif
 {
+  GHashTable *fds;  /* (element-type int int) */
   int child_err_report_fd = -1;
   int helper_sync_fd = -1;
   int saved_stderr_fd = -1;
   int i;
   int fd;
   int mode;
+  int maxfd = 2;
   gintptr handle;
   int saved_errno;
   gintptr no_error = CHILD_NO_ERROR;
@@ -244,6 +246,7 @@ main (int ignored_argc, char **ignored_argv)
    * which write error messages.
    */
   child_err_report_fd = atoi (argv[ARG_CHILD_ERR_REPORT]);
+  maxfd = MAX (child_err_report_fd, maxfd);
 
   /* Hack to implement G_SPAWN_FILE_AND_ARGV_ZERO. If
    * argv[ARG_CHILD_ERR_REPORT] is suffixed with a '#' it means we get
@@ -259,6 +262,7 @@ main (int ignored_argc, char **ignored_argv)
    * from another process works only if that other process exists.
    */
   helper_sync_fd = atoi (argv[ARG_HELPER_SYNC]);
+  maxfd = MAX (helper_sync_fd, maxfd);
 
   /* argv[ARG_STDIN..ARG_STDERR] are the file descriptor numbers that
    * should be dup2'd to 0, 1 and 2. '-' if the corresponding fd
@@ -294,6 +298,8 @@ main (int ignored_argc, char **ignored_argv)
   saved_stderr_fd = reopen_noninherited (dup (2), _O_WRONLY);
   if (saved_stderr_fd == -1)
     write_err_and_exit (child_err_report_fd, CHILD_DUP_FAILED);
+
+  maxfd = MAX (saved_stderr_fd, maxfd);
   if (argv[ARG_STDERR][0] == '-')
     ; /* Nothing */
   else if (argv[ARG_STDERR][0] == 'z')
@@ -316,12 +322,76 @@ main (int ignored_argc, char **ignored_argv)
   else if (_wchdir (wargv[ARG_WORKING_DIRECTORY]) < 0)
     write_err_and_exit (child_err_report_fd, CHILD_CHDIR_FAILED);
 
+  fds = g_hash_table_new (NULL, NULL);
+  if (argv[ARG_FDS][0] != '-')
+    {
+      gchar **fdsv = g_strsplit (argv[ARG_FDS], ",", -1);
+      gsize i;
+
+      for (i = 0; fdsv[i]; i++)
+        {
+          char *endptr = NULL;
+          int sourcefd, targetfd;
+          gint64 val;
+
+          val = g_ascii_strtoll (fdsv[i], &endptr, 10);
+          g_assert (val <= G_MAXINT32);
+          sourcefd = val;
+          g_assert (endptr != fdsv[i]);
+          g_assert (*endptr == ':');
+          val = g_ascii_strtoll (endptr + 1, &endptr, 10);
+          targetfd = val;
+          g_assert (val <= G_MAXINT32);
+          g_assert (*endptr == '\0');
+
+          maxfd = MAX (maxfd, sourcefd);
+          maxfd = MAX (maxfd, targetfd);
+
+          g_hash_table_insert (fds, GINT_TO_POINTER (targetfd), GINT_TO_POINTER (sourcefd));
+        }
+
+      g_strfreev (fdsv);
+    }
+
+  maxfd++;
+  child_err_report_fd = checked_dup2 (child_err_report_fd, maxfd, child_err_report_fd, TRUE);
+  maxfd++;
+  helper_sync_fd = checked_dup2 (helper_sync_fd, maxfd, child_err_report_fd, TRUE);
+  maxfd++;
+  saved_stderr_fd = checked_dup2 (saved_stderr_fd, maxfd, child_err_report_fd, TRUE);
+
+  {
+    GHashTableIter iter;
+    gpointer sourcefd, targetfd;
+
+    g_hash_table_iter_init (&iter, fds);
+    while (g_hash_table_iter_next (&iter, &targetfd, &sourcefd))
+      {
+        /* If we're doing remapping fd assignments, we need to handle
+         * the case where the user has specified e.g. 5 -> 4, 4 -> 6.
+         * We do this by duping all source fds, taking care to ensure the new
+         * fds are larger than any target fd to avoid introducing new conflicts.
+         */
+        maxfd++;
+        checked_dup2 (GPOINTER_TO_INT (sourcefd), maxfd, child_err_report_fd, TRUE);
+        g_hash_table_iter_replace (&iter, GINT_TO_POINTER (maxfd));
+      }
+
+    g_hash_table_iter_init (&iter, fds);
+    while (g_hash_table_iter_next (&iter, &targetfd, &sourcefd))
+      checked_dup2 (GPOINTER_TO_INT (sourcefd), GPOINTER_TO_INT (targetfd), child_err_report_fd, TRUE);
+  }
+
+  g_hash_table_add (fds, GINT_TO_POINTER (child_err_report_fd));
+  g_hash_table_add (fds, GINT_TO_POINTER (helper_sync_fd));
+  g_hash_table_add (fds, GINT_TO_POINTER (saved_stderr_fd));
+
   /* argv[ARG_CLOSE_DESCRIPTORS] is "y" if file descriptors from 3
    *  upwards should be closed
    */
   if (argv[ARG_CLOSE_DESCRIPTORS][0] == 'y')
     for (i = 3; i < 1000; i++)	/* FIXME real limit? */
-      if (i != child_err_report_fd && i != helper_sync_fd && i != saved_stderr_fd)
+      if (!g_hash_table_contains (fds, GINT_TO_POINTER (i)))
         if (_get_osfhandle (i) != -1)
           close (i);
 
@@ -379,6 +449,7 @@ main (int ignored_argc, char **ignored_argv)
 
   LocalFree (wargv);
   g_strfreev (argv);
+  g_hash_table_unref (fds);
 
   return 0;
 }

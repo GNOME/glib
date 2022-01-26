@@ -102,6 +102,7 @@ enum {
   ARG_CLOSE_DESCRIPTORS,
   ARG_USE_PATH,
   ARG_WAIT,
+  ARG_FDS,
   ARG_PROGRAM,
   ARG_COUNT = ARG_PROGRAM
 };
@@ -575,6 +576,9 @@ fork_exec (gint                  *exit_status,
            gint                   stdin_fd,
            gint                   stdout_fd,
            gint                   stderr_fd,
+           const gint            *source_fds,
+           const gint            *target_fds,
+           gsize                  n_fds,
            gint                  *err_report,
            GError               **error)
 {
@@ -635,7 +639,8 @@ fork_exec (gint                  *exit_status,
       !(flags & G_SPAWN_STDOUT_TO_DEV_NULL) &&
       !(flags & G_SPAWN_STDERR_TO_DEV_NULL) &&
       (working_directory == NULL || !*working_directory) &&
-      (flags & G_SPAWN_LEAVE_DESCRIPTORS_OPEN))
+      (flags & G_SPAWN_LEAVE_DESCRIPTORS_OPEN) &&
+      n_fds == 0)
     {
       /* We can do without the helper process */
       gboolean retval =
@@ -754,6 +759,21 @@ fork_exec (gint                  *exit_status,
   else
     new_argv[ARG_WAIT] = "w";
 
+  if (n_fds == 0)
+    new_argv[ARG_FDS] = g_strdup ("-");
+  else
+    {
+      GString *fds = g_string_new ("");
+      gsize n;
+
+      for (n = 0; n < n_fds; n++)
+        g_string_append_printf (fds, "%d:%d,", source_fds[n], target_fds[n]);
+
+      /* remove the trailing , */
+      g_string_truncate (fds, fds->len - 1);
+      new_argv[ARG_FDS] = g_string_free (fds, FALSE);
+    }
+
   for (i = 0; i <= argc; i++)
     new_argv[ARG_PROGRAM + i] = protected_argv[i];
 
@@ -780,6 +800,7 @@ fork_exec (gint                  *exit_status,
       g_strfreev (protected_argv);
       g_free (new_argv[0]);
       g_free (new_argv[ARG_WORKING_DIRECTORY]);
+      g_free (new_argv[ARG_FDS]);
       g_free (new_argv);
       g_free (helper_process);
 
@@ -795,6 +816,7 @@ fork_exec (gint                  *exit_status,
       g_strfreev (protected_argv);
       g_free (new_argv[0]);
       g_free (new_argv[ARG_WORKING_DIRECTORY]);
+      g_free (new_argv[ARG_FDS]);
       g_free (new_argv);
       g_free (helper_process);
       g_strfreev ((gchar **) wargv);
@@ -826,6 +848,7 @@ fork_exec (gint                  *exit_status,
 
   g_free (new_argv[0]);
   g_free (new_argv[ARG_WORKING_DIRECTORY]);
+  g_free (new_argv[ARG_FDS]);
   g_free (new_argv);
 
   /* Check if gspawn-win32-helper couldn't be run */
@@ -997,6 +1020,7 @@ g_spawn_sync (const gchar          *working_directory,
                   -1,
                   -1,
                   -1,
+                  NULL, NULL, 0,
                   &reportpipe,
                   error))
     return FALSE;
@@ -1221,6 +1245,7 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
                     -1,
                     -1,
                     -1,
+                    NULL, NULL, 0,
                     NULL,
                     error);
 }
@@ -1262,6 +1287,7 @@ g_spawn_async_with_fds (const gchar          *working_directory,
                     stdin_fd,
                     stdout_fd,
                     stderr_fd,
+                    NULL, NULL, 0,
                     NULL,
                     error);
 
@@ -1299,14 +1325,6 @@ g_spawn_async_with_pipes_and_fds (const gchar           *working_directory,
   g_return_val_if_fail (stdout_pipe_out == NULL || stdout_fd < 0, FALSE);
   g_return_val_if_fail (stderr_pipe_out == NULL || stderr_fd < 0, FALSE);
 
-  /* source_fds/target_fds isn’t supported on Windows at the moment. */
-  if (n_fds != 0)
-    {
-      g_set_error_literal (error, G_SPAWN_ERROR, G_SPAWN_ERROR_INVAL,
-                           "FD redirection is not supported on Windows at the moment");
-      return FALSE;
-    }
-
   return fork_exec (NULL,
                     (flags & G_SPAWN_DO_NOT_REAP_CHILD),
                     working_directory,
@@ -1322,6 +1340,9 @@ g_spawn_async_with_pipes_and_fds (const gchar           *working_directory,
                     stdin_fd,
                     stdout_fd,
                     stderr_fd,
+                    source_fds,
+                    target_fds,
+                    n_fds,
                     NULL,
                     error);
 }
