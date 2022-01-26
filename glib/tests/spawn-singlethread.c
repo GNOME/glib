@@ -27,10 +27,10 @@
 #include <locale.h>
 #include <string.h>
 #include <fcntl.h>
+#include <glib/gstdio.h>
 
 #ifdef G_OS_UNIX
 #include <glib-unix.h>
-#include <glib/gstdio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -433,7 +433,6 @@ test_spawn_nonexistent (void)
 static void
 test_spawn_fd_assignment_clash (void)
 {
-#if defined(G_OS_UNIX) && defined(F_DUPFD_CLOEXEC)
   int tmp_fd;
   guint i;
 #define N_FDS 10
@@ -451,7 +450,12 @@ test_spawn_fd_assignment_clash (void)
 
   for (i = 0; i < (N_FDS - 1); ++i)
     {
-      int source = fcntl (tmp_fd, F_DUPFD_CLOEXEC, 3);
+      int source;
+#ifdef F_DUPFD_CLOEXEC
+      source = fcntl (tmp_fd, F_DUPFD_CLOEXEC, 3);
+#else
+      source = dup (tmp_fd);
+#endif
       g_assert_cmpint (source, >=, 0);
       source_fds[i] = source;
       target_fds[i] = source + N_FDS;
@@ -486,9 +490,6 @@ test_spawn_fd_assignment_clash (void)
   /* Clean up. */
   for (i = 0; i < N_FDS; i++)
     g_close (source_fds[i], NULL);
-#else  /* !G_OS_UNIX */
-  g_test_skip ("FD redirection only supported on Unix with F_DUPFD_CLOEXEC");
-#endif  /* !G_OS_UNIX */
 }
 
 int
