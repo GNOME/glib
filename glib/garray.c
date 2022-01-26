@@ -1001,7 +1001,7 @@ g_array_maybe_expand (GRealArray *array,
         memset (g_array_elt_pos (array, array->elt_capacity), 0,
                 g_array_elt_len (array, want_len - array->elt_capacity));
 
-      array->elt_capacity = want_alloc / array->elt_size;
+      array->elt_capacity = MIN (want_alloc / array->elt_size, G_MAXUINT);
     }
 }
 
@@ -1518,9 +1518,10 @@ g_ptr_array_maybe_expand (GRealPtrArray *array,
   if ((array->len + len) > array->alloc)
     {
       guint old_alloc = array->alloc;
-      array->alloc = g_nearest_pow (array->len + len);
-      array->alloc = MAX (array->alloc, MIN_ARRAY_SIZE);
-      array->pdata = g_realloc (array->pdata, sizeof (gpointer) * array->alloc);
+      gsize want_alloc = g_nearest_pow (sizeof (gpointer) * (array->len + len));
+      want_alloc = MAX (want_alloc, MIN_ARRAY_SIZE);
+      array->alloc = MIN (want_alloc / sizeof (gpointer), G_MAXUINT);
+      array->pdata = g_realloc (array->pdata, want_alloc);
       if (G_UNLIKELY (g_mem_gc_friendly))
         for ( ; old_alloc < array->alloc; old_alloc++)
           array->pdata [old_alloc] = NULL;
