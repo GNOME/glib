@@ -89,6 +89,7 @@ enum
   CHILD_CHDIR_FAILED,
   CHILD_SPAWN_FAILED,
   CHILD_SPAWN_NOENT,
+  CHILD_DUP_FAILED,
 };
 
 enum {
@@ -391,6 +392,11 @@ set_child_error (gintptr      report[2],
     case CHILD_SPAWN_NOENT:
       g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_NOENT,
                    _("Failed to execute child process (%s)"),
+                   g_strerror (report[1]));
+      break;
+    case CHILD_DUP_FAILED:
+      g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED,
+                   _("Failed to dup() in child process (%s)"),
                    g_strerror (report[1]));
       break;
     default:

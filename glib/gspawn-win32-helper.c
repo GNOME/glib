@@ -153,6 +153,21 @@ protect_wargv (gint       argc,
   return argc;
 }
 
+static int
+checked_dup2 (int oldfd, int newfd, int report_fd, gboolean close_old)
+{
+  if (oldfd == newfd)
+    return newfd;
+
+  if (dup2 (oldfd, newfd) == -1)
+    write_err_and_exit (report_fd, CHILD_DUP_FAILED);
+
+  if (close_old)
+    close (oldfd);
+
+  return newfd;
+}
+
 #if (defined (_MSC_VER) && _MSC_VER >= 1400)
 /*
  * This is the (empty) invalid parameter handler
@@ -255,20 +270,12 @@ main (int ignored_argc, char **ignored_argv)
   else if (argv[ARG_STDIN][0] == 'z')
     {
       fd = open ("NUL:", O_RDONLY);
-      if (fd != 0)
-	{
-	  dup2 (fd, 0);
-	  close (fd);
-	}
+      checked_dup2 (fd, 0, child_err_report_fd, TRUE);
     }
   else
     {
       fd = atoi (argv[ARG_STDIN]);
-      if (fd != 0)
-	{
-	  dup2 (fd, 0);
-	  close (fd);
-	}
+      checked_dup2 (fd, 0, child_err_report_fd, TRUE);
     }
 
   if (argv[ARG_STDOUT][0] == '-')
@@ -276,42 +283,28 @@ main (int ignored_argc, char **ignored_argv)
   else if (argv[ARG_STDOUT][0] == 'z')
     {
       fd = open ("NUL:", O_WRONLY);
-      if (fd != 1)
-	{
-	  dup2 (fd, 1);
-	  close (fd);
-	}
+      checked_dup2 (fd, 1, child_err_report_fd, TRUE);
     }
   else
     {
       fd = atoi (argv[ARG_STDOUT]);
-      if (fd != 1)
-	{
-	  dup2 (fd, 1);
-	  close (fd);
-	}
+      checked_dup2 (fd, 1, child_err_report_fd, TRUE);
     }
 
   saved_stderr_fd = reopen_noninherited (dup (2), _O_WRONLY);
+  if (saved_stderr_fd == -1)
+    write_err_and_exit (child_err_report_fd, CHILD_DUP_FAILED);
   if (argv[ARG_STDERR][0] == '-')
     ; /* Nothing */
   else if (argv[ARG_STDERR][0] == 'z')
     {
       fd = open ("NUL:", O_WRONLY);
-      if (fd != 2)
-	{
-	  dup2 (fd, 2);
-	  close (fd);
-	}
+      checked_dup2 (fd, 2, child_err_report_fd, TRUE);
     }
   else
     {
       fd = atoi (argv[ARG_STDERR]);
-      if (fd != 2)
-	{
-	  dup2 (fd, 2);
-	  close (fd);
-	}
+      checked_dup2 (fd, 2, child_err_report_fd, TRUE);
     }
 
   /* argv[ARG_WORKING_DIRECTORY] is the directory in which to run the
@@ -337,6 +330,8 @@ main (int ignored_argc, char **ignored_argv)
    */
   child_err_report_fd = reopen_noninherited (child_err_report_fd, _O_WRONLY);
   helper_sync_fd = reopen_noninherited (helper_sync_fd, _O_RDONLY);
+  if (helper_sync_fd == -1)
+    write_err_and_exit (child_err_report_fd, CHILD_DUP_FAILED);
 
   /* argv[ARG_WAIT] is "w" to wait for the program to exit */
   if (argv[ARG_WAIT][0] == 'w')
