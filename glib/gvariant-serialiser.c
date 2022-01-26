@@ -1587,6 +1587,9 @@ g_variant_serialised_byteswap (GVariantSerialised serialised)
 gboolean
 g_variant_serialised_is_normal (GVariantSerialised serialised)
 {
+  if (serialised.depth >= G_VARIANT_MAX_RECURSION_DEPTH)
+    return FALSE;
+
   DISPATCH_CASES (serialised.type_info,
 
                   return gvs_/**/,/**/_is_normal (serialised);
@@ -1594,8 +1597,6 @@ g_variant_serialised_is_normal (GVariantSerialised serialised)
                  )
 
   if (serialised.data == NULL)
-    return FALSE;
-  if (serialised.depth >= G_VARIANT_MAX_RECURSION_DEPTH)
     return FALSE;
 
   /* some hard-coded terminal cases */
