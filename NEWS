@@ -1,3 +1,40 @@
+Overview of changes in GLib 2.70.3
+==================================
+
+* Several important fixes to FD handling in gspawn (#2503, #2506, #2580)
+
+* Several important fixes to GDBus message and GVariant parsing of invalid data (#2557, #2572)
+
+* Fix potential data loss due to missing fsync when saving files on btrfs (!2437)
+
+* Bugs fixed:
+ - #2503 gspawn.c may clobber target fds
+ - #2506 gspawn.c fails to close child_err_report_fd if it is duped to avoid conflation with one of the target_fds
+ - #2557 Arrays of zero-element tuples with non-zero length lead to infinite loops in g_dbus_message_new_from_blob
+ - #2572 Check for GVariant recursion depth before recursing
+ - #2580 gspawn doesn't set CLOEXEC if close_range fails unexpectedly
+ - !2394 Backport !1968 “gspawn: Fix file descriptor conflation issues” to glib-2-70
+ - !2415 Backport !2412 “paramspec: fix unref annotation” to glib-2-70
+ - !2437 Backport !2425 “gfileutils: Remove outdated BTRFS fsync optimization from set_contents” to glib-2-70
+ - !2444 Backport !2435 “gspawn: Report errors with closing file descriptors between fork/exec” to glib-2-70
+ - !2455 Backport !2454 gdbusmessage and gvariant fixes to glib-2-70
+
+* Translation updates:
+ - Czech
+ - Indonesian
+ - Italian
+ - Lithuanian
+ - Polish
+ - Portuguese
+ - Romanian
+ - Serbian
+ - Slovenian
+ - Spanish
+ - Swedish
+ - Turkish
+ - Ukrainian
+
+
 Overview of changes in GLib 2.70.2
 ==================================
 
