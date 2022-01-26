@@ -340,13 +340,47 @@ glib_init (void)
   g_error_init ();
 }
 
-#if defined (G_OS_WIN32)
+#ifdef G_PLATFORM_WIN32
+
+HMODULE glib_dll = NULL;
+void glib_win32_init (void);
+
+void
+glib_win32_init (void)
+{
+  /* May be called more than once in static compilation mode */
+  static gboolean win32_already_init = FALSE;
+  if (!win32_already_init)
+    {
+      win32_already_init = TRUE;
+
+      g_crash_handler_win32_init ();
+#ifdef THREADS_WIN32
+      g_thread_win32_init ();
+#endif
+
+      g_clock_win32_init ();
+      glib_init ();
+      /* must go after glib_init */
+      g_console_win32_init ();
+    }
+}
+
+static void
+glib_win32_deinit (gboolean detach_thread)
+{
+#ifdef THREADS_WIN32
+  if (detach_thread)
+    g_thread_win32_process_detach ();
+#endif
+  g_crash_handler_win32_deinit ();
+}
+
+#ifndef GLIB_STATIC_COMPILATION
 
 BOOL WINAPI DllMain (HINSTANCE hinstDLL,
                      DWORD     fdwReason,
                      LPVOID    lpvReserved);
-
-HMODULE glib_dll;
 
 BOOL WINAPI
 DllMain (HINSTANCE hinstDLL,
@@ -357,14 +391,7 @@ DllMain (HINSTANCE hinstDLL,
     {
     case DLL_PROCESS_ATTACH:
       glib_dll = hinstDLL;
-      g_crash_handler_win32_init ();
-      g_clock_win32_init ();
-#ifdef THREADS_WIN32
-      g_thread_win32_init ();
-#endif
-      glib_init ();
-      /* must go after glib_init */
-      g_console_win32_init ();
+      glib_win32_init ();
       break;
 
     case DLL_THREAD_DETACH:
@@ -374,11 +401,7 @@ DllMain (HINSTANCE hinstDLL,
       break;
 
     case DLL_PROCESS_DETACH:
-#ifdef THREADS_WIN32
-      if (lpvReserved == NULL)
-        g_thread_win32_process_detach ();
-#endif
-      g_crash_handler_win32_deinit ();
+      glib_win32_deinit (lpvReserved == NULL);
       break;
 
     default:
@@ -389,7 +412,35 @@ DllMain (HINSTANCE hinstDLL,
   return TRUE;
 }
 
-#elif defined (G_HAS_CONSTRUCTORS)
+#elif defined(G_HAS_CONSTRUCTORS) /* && G_PLATFORM_WIN32 && GLIB_STATIC_COMPILATION */
+#ifdef G_DEFINE_CONSTRUCTOR_NEEDS_PRAGMA
+#pragma G_DEFINE_CONSTRUCTOR_PRAGMA_ARGS(glib_init_ctor)
+#endif
+#ifdef G_DEFINE_DESTRUCTOR_NEEDS_PRAGMA
+#pragma G_DEFINE_DESTRUCTOR_PRAGMA_ARGS(glib_init_dtor)
+#endif
+
+G_DEFINE_CONSTRUCTOR (glib_init_ctor)
+
+static void
+glib_init_ctor (void)
+{
+  glib_win32_init ();
+}
+
+G_DEFINE_DESTRUCTOR (glib_init_dtor)
+
+static void
+glib_init_dtor (void)
+{
+  glib_win32_deinit (FALSE);
+}
+
+#else /* G_PLATFORM_WIN32 && GLIB_STATIC_COMPILATION && !G_HAS_CONSTRUCTORS */
+#error Your platform/compiler is missing constructor support
+#endif /* GLIB_STATIC_COMPILATION */
+
+#elif defined(G_HAS_CONSTRUCTORS) /* && !G_PLATFORM_WIN32 */
 
 #ifdef G_DEFINE_CONSTRUCTOR_NEEDS_PRAGMA
 #pragma G_DEFINE_CONSTRUCTOR_PRAGMA_ARGS(glib_init_ctor)
@@ -402,6 +453,6 @@ glib_init_ctor (void)
   glib_init ();
 }
 
-#else
+#else /* !G_PLATFORM_WIN32 && !G_HAS_CONSTRUCTORS */
 # error Your platform/compiler is missing constructor support
-#endif
+#endif /* G_PLATFORM_WIN32 */

@@ -214,8 +214,10 @@ if get_option('default_library') != 'static'
 endif
 
 if get_option('default_library') == 'static'
-    glibconfig_conf.set('GLIB_STATIC_COMPILATION', '1')
-    glibconfig_conf.set('GOBJECT_STATIC_COMPILATION', '1')
+  glibconfig_conf.set('GLIB_STATIC_COMPILATION', '1')
+  glibconfig_conf.set('GOBJECT_STATIC_COMPILATION', '1')
+  glibconfig_conf.set('G_INTL_STATIC_COMPILATION', '1')
+  glibconfig_conf.set('FFI_STATIC_BUILD', '1')
 endif
 
 # Cygwin glib port maintainers made it clear

@@ -101,8 +101,12 @@ main (int    argc,
   if (!module_self)
     g_error ("error: %s", g_module_error ());
 
+    /* On Windows static compilation mode, glib API symbols are not
+     * exported dynamically by definition. */
+#if !defined(G_PLATFORM_WIN32) || !defined(GLIB_STATIC_COMPILATION)
   if (!g_module_symbol (module_self, "g_module_close", (gpointer *) &f_self))
     g_error ("error: %s", g_module_error ());
+#endif
 
   module_a = g_module_open_full (plugin_a, G_MODULE_BIND_LAZY, &error);
   g_assert_no_error (error);
