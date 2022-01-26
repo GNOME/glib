@@ -72,6 +72,9 @@
  * On Solaris (including OpenSolaris and its derivatives), the native
  * credential type is a `ucred_t`. This corresponds to
  * %G_CREDENTIALS_TYPE_SOLARIS_UCRED.
+ *
+ * Since GLib 2.72, on Windows, the native credentials may contain the PID of a
+ * process. This corresponds to %G_CREDENTIALS_TYPE_WIN32_PID.
  */
 
 /**
@@ -100,6 +103,8 @@ struct _GCredentials
   struct sockpeercred native;
 #elif G_CREDENTIALS_USE_SOLARIS_UCRED
   ucred_t *native;
+#elif G_CREDENTIALS_USE_WIN32_PID
+  DWORD native;
 #else
   #ifdef __GNUC__
   #pragma GCC diagnostic push
@@ -188,6 +193,8 @@ g_credentials_init (GCredentials *credentials)
   credentials->native.gid = getegid ();
 #elif G_CREDENTIALS_USE_SOLARIS_UCRED
   credentials->native = ucred_get (P_MYID);
+#elif G_CREDENTIALS_USE_WIN32_PID
+  credentials->native = GetCurrentProcessId ();
 #endif
 }
 
@@ -293,6 +300,8 @@ g_credentials_to_string (GCredentials *credentials)
     if (ret->str[ret->len - 1] == ',')
       ret->str[ret->len - 1] = '\0';
   }
+#elif G_CREDENTIALS_USE_WIN32_PID
+  g_string_append_printf (ret, "win32-pid:pid=%lu", credentials->native);
 #else
   g_string_append (ret, "unknown");
 #endif
@@ -600,6 +609,8 @@ g_credentials_get_unix_pid (GCredentials    *credentials,
   ret = credentials->native.pid;
 #elif G_CREDENTIALS_USE_SOLARIS_UCRED
   ret = ucred_getpid (credentials->native);
+#elif G_CREDENTIALS_USE_WIN32_PID
+  ret = credentials->native;
 #else
 
 #if G_CREDENTIALS_USE_APPLE_XUCRED

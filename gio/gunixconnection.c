@@ -24,7 +24,9 @@
 
 #include <errno.h>
 #include <string.h>
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif
 
 /**
  * SECTION:gunixconnection
@@ -39,9 +41,12 @@
  * It contains functions to do some of the UNIX socket specific
  * functionality like passing file descriptors.
  *
- * Note that `<gio/gunixconnection.h>` belongs to the UNIX-specific
- * GIO interfaces, thus you have to use the `gio-unix-2.0.pc`
- * pkg-config file when using it.
+ * Since GLib 2.72, #GUnixConnection is available on all platforms. It requires
+ * underlying system support (such as Windows 10 with `AF_UNIX`) at run time.
+ *
+ * Before GLib 2.72, `<gio/gunixconnection.h>` belonged to the UNIX-specific GIO
+ * interfaces, thus you had to use the `gio-unix-2.0.pc` pkg-config file when
+ * using it. This is no longer necessary since GLib 2.72.
  *
  * Since: 2.22
  */
@@ -86,6 +91,7 @@ g_unix_connection_send_fd (GUnixConnection  *connection,
                            GCancellable     *cancellable,
                            GError          **error)
 {
+#ifdef G_OS_UNIX
   GSocketControlMessage *scm;
   GSocket *socket;
 
@@ -114,6 +120,11 @@ g_unix_connection_send_fd (GUnixConnection  *connection,
   g_object_unref (scm);
 
   return TRUE;
+#else
+  g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                       _("Sending FD is not supported"));
+  return FALSE;
+#endif
 }
 
 /**
@@ -139,6 +150,7 @@ g_unix_connection_receive_fd (GUnixConnection  *connection,
                               GCancellable     *cancellable,
                               GError          **error)
 {
+#ifdef G_OS_UNIX
   GSocketControlMessage **scms;
   gint *fds, nfd, fd, nscm;
   GUnixFDMessage *fdmsg;
@@ -221,6 +233,11 @@ g_unix_connection_receive_fd (GUnixConnection  *connection,
     }
 
   return fd;
+#else
+  g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                       _("Receiving FD is not supported"));
+  return -1;
+#endif
 }
 
 static void

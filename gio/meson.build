@@ -346,13 +346,10 @@ if host_system != 'windows'
   unix_sources = files(
     'gfiledescriptorbased.c',
     'giounix-private.c',
-    'gunixconnection.c',
-    'gunixcredentialsmessage.c',
     'gunixfdlist.c',
     'gunixfdmessage.c',
     'gunixmount.c',
     'gunixmounts.c',
-    'gunixsocketaddress.c',
     'gunixvolume.c',
     'gunixvolumemonitor.c',
     'gunixinputstream.c',
@@ -376,14 +373,11 @@ if host_system != 'windows'
 
   gio_unix_include_headers = files(
     'gfiledescriptorbased.h',
-    'gunixconnection.h',
-    'gunixcredentialsmessage.h',
     'gunixmounts.h',
     'gunixfdlist.h',
     'gunixfdmessage.h',
     'gunixinputstream.h',
     'gunixoutputstream.h',
-    'gunixsocketaddress.h',
   )
 
   if glib_have_cocoa
@@ -569,6 +563,9 @@ gio_sources = files(
   'gdtlsclientconnection.c',
   'gdtlsserverconnection.c',
   'gunionvolumemonitor.c',
+  'gunixconnection.c',
+  'gunixcredentialsmessage.c',
+  'gunixsocketaddress.c',
   'gvfs.c',
   'gvolume.c',
   'gvolumemonitor.c',
@@ -704,6 +701,9 @@ gio_headers = files(
   'gdtlsconnection.h',
   'gdtlsclientconnection.h',
   'gdtlsserverconnection.h',
+  'gunixconnection.h',
+  'gunixcredentialsmessage.h',
+  'gunixsocketaddress.h',
   'gvfs.h',
   'gvolume.h',
   'gvolumemonitor.h',

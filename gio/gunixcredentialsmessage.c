@@ -31,6 +31,14 @@
  * g_unix_connection_receive_credentials(). To receive credentials of
  * a foreign process connected to a socket, use
  * g_socket_get_credentials().
+ *
+ * Since GLib 2.72, #GUnixCredentialMessage is available on all platforms. It
+ * requires underlying system support (such as Windows 10 with `AF_UNIX`) at run
+ * time.
+ *
+ * Before GLib 2.72, `<gio/gunixcredentialsmessage.h>` belonged to the UNIX-specific
+ * GIO interfaces, thus you had to use the `gio-unix-2.0.pc` pkg-config file
+ * when using it. This is no longer necessary since GLib 2.72.
  */
 
 #include "config.h"
@@ -40,7 +48,9 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <string.h>
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif
 
 #include "gunixcredentialsmessage.h"
 #include "gcredentials.h"

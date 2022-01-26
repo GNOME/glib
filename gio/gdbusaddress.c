@@ -40,12 +40,12 @@
 #include "gdbusprivate.h"
 #include "gstdio.h"
 
-#ifdef G_OS_UNIX
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <gio/gunixsocketaddress.h>
-#endif
 
 #ifdef G_OS_WIN32
 #include <windows.h>
@@ -66,6 +66,9 @@
  *
  * TCP D-Bus connections are supported, but accessing them via a proxy is
  * currently not supported.
+ *
+ * Since GLib 2.72, `unix:` addresses are supported on Windows with `AF_UNIX`
+ * support (Windows 10).
  */
 
 static gchar *get_session_address_platform_specific (GError **error);
@@ -571,11 +574,7 @@ g_dbus_address_connect (const gchar   *address_entry,
   ret = NULL;
   nonce_file = NULL;
 
-  if (FALSE)
-    {
-    }
-#ifdef G_OS_UNIX
-  else if (g_strcmp0 (transport_name, "unix") == 0)
+  if (g_strcmp0 (transport_name, "unix") == 0)
     {
       const gchar *path;
       const gchar *abstract;
@@ -605,7 +604,6 @@ g_dbus_address_connect (const gchar   *address_entry,
           g_assert_not_reached ();
         }
     }
-#endif
   else if (g_strcmp0 (transport_name, "tcp") == 0 || g_strcmp0 (transport_name, "nonce-tcp") == 0)
     {
       const gchar *s;

@@ -277,6 +277,7 @@ add_project_arguments(glib_debug_cflags, language: 'c')
 
 headers = [
   'alloca.h',
+  'afunix.h',
   'crt_externs.h',
   'dirent.h', # MSC does not come with this by default
   'float.h',
