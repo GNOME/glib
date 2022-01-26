@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 3.12\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-01-19 12:44+0000\n"
-"PO-Revision-Date: 2022-01-19 15:46+0000\n"
+"POT-Creation-Date: 2022-01-26 13:39+0000\n"
+"PO-Revision-Date: 2022-01-26 14:28+0000\n"
 "Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
 "Language-Team: Portuguese <https://l10n.gnome.org/teams/pt/>\n"
 "Language: pt\n"
@@ -293,7 +293,7 @@ msgstr "O fluxo já se encontra fechado"
 msgid "Truncate not supported on base stream"
 msgstr "Truncar não é suportado no fluxo base"
 
-#: gio/gcancellable.c:319 gio/gdbusconnection.c:1873 gio/gdbusprivate.c:1416
+#: gio/gcancellable.c:319 gio/gdbusconnection.c:1873 gio/gdbusprivate.c:1417
 #: gio/gsimpleasyncresult.c:871 gio/gsimpleasyncresult.c:897
 #, c-format
 msgid "Operation was cancelled"
@@ -352,23 +352,23 @@ msgstr "Tipo desconhecido"
 msgid "%s filetype"
 msgstr "Tipo de ficheiro %s"
 
-#: gio/gcredentials.c:323
+#: gio/gcredentials.c:326
 msgid "GCredentials contains invalid data"
 msgstr "GCredentials contém dados inválidos"
 
-#: gio/gcredentials.c:383 gio/gcredentials.c:667
+#: gio/gcredentials.c:386 gio/gcredentials.c:675
 msgid "GCredentials is not implemented on this OS"
 msgstr "GCredentials não está implementado neste SO"
 
-#: gio/gcredentials.c:538 gio/gcredentials.c:556
+#: gio/gcredentials.c:541 gio/gcredentials.c:559
 msgid "There is no GCredentials support for your platform"
 msgstr "Não existe suporte para GCredentials na sua plataforma"
 
-#: gio/gcredentials.c:607
+#: gio/gcredentials.c:615
 msgid "GCredentials does not contain a process ID on this OS"
 msgstr "GCredentials não contém um ID de processo neste SO"
 
-#: gio/gcredentials.c:661
+#: gio/gcredentials.c:669
 msgid "Credentials spoofing is not possible on this OS"
 msgstr "Simular credenciais não é possível neste SO"
 
@@ -568,12 +568,12 @@ msgstr ""
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr "Cancelado via GDBusAuthObserver::authorize-authenticated-peer"
 
-#: gio/gdbusauthmechanismsha1.c:298
+#: gio/gdbusauthmechanismsha1.c:299
 #, c-format
 msgid "Error when getting information for directory “%s”: %s"
 msgstr "Erro ao obter informação da diretório “%s”: %s"
 
-#: gio/gdbusauthmechanismsha1.c:313
+#: gio/gdbusauthmechanismsha1.c:314
 #, c-format
 msgid ""
 "Permissions on directory “%s” are malformed. Expected mode 0700, got 0%o"
@@ -581,12 +581,12 @@ msgstr ""
 "As permissões da diretório “%s” estão mal formadas. Esperado o modo 0700, "
 "obtido 0%o"
 
-#: gio/gdbusauthmechanismsha1.c:346 gio/gdbusauthmechanismsha1.c:357
+#: gio/gdbusauthmechanismsha1.c:347 gio/gdbusauthmechanismsha1.c:358
 #, c-format
 msgid "Error creating directory “%s”: %s"
 msgstr "Erro ao criar o diretório “%s”: %s"
 
-#: gio/gdbusauthmechanismsha1.c:359 gio/gfile.c:1068 gio/gfile.c:1306
+#: gio/gdbusauthmechanismsha1.c:360 gio/gfile.c:1068 gio/gfile.c:1306
 #: gio/gfile.c:1444 gio/gfile.c:1682 gio/gfile.c:1737 gio/gfile.c:1795
 #: gio/gfile.c:1879 gio/gfile.c:1936 gio/gfile.c:2000 gio/gfile.c:2055
 #: gio/gfile.c:3760 gio/gfile.c:3815 gio/gfile.c:4108 gio/gfile.c:4578
@@ -596,17 +596,17 @@ msgstr "Erro ao criar o diretório “%s”: %s"
 msgid "Operation not supported"
 msgstr "Operação não suportada"
 
-#: gio/gdbusauthmechanismsha1.c:402
+#: gio/gdbusauthmechanismsha1.c:403
 #, c-format
 msgid "Error opening keyring “%s” for reading: "
 msgstr "Erro ao abrir o chaveiro “%s” para leitura: "
 
-#: gio/gdbusauthmechanismsha1.c:425 gio/gdbusauthmechanismsha1.c:747
+#: gio/gdbusauthmechanismsha1.c:426 gio/gdbusauthmechanismsha1.c:748
 #, c-format
 msgid "Line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr "Linha %d do chaveiro em “%s” com o conteúdo “%s” está mal formada"
 
-#: gio/gdbusauthmechanismsha1.c:439 gio/gdbusauthmechanismsha1.c:761
+#: gio/gdbusauthmechanismsha1.c:440 gio/gdbusauthmechanismsha1.c:762
 #, c-format
 msgid ""
 "First token of line %d of the keyring at “%s” with content “%s” is malformed"
@@ -614,7 +614,7 @@ msgstr ""
 "O primeiro bloco da linha %d do chaveiro em “%s” com o conteúdo “%s” está "
 "mal formado"
 
-#: gio/gdbusauthmechanismsha1.c:453 gio/gdbusauthmechanismsha1.c:775
+#: gio/gdbusauthmechanismsha1.c:454 gio/gdbusauthmechanismsha1.c:776
 #, c-format
 msgid ""
 "Second token of line %d of the keyring at “%s” with content “%s” is malformed"
@@ -622,37 +622,37 @@ msgstr ""
 "O segundo bloco da linha %d do chaveiro em “%s” com o conteúdo “%s” está mal "
 "formado"
 
-#: gio/gdbusauthmechanismsha1.c:477
+#: gio/gdbusauthmechanismsha1.c:478
 #, c-format
 msgid "Didn’t find cookie with id %d in the keyring at “%s”"
 msgstr "Impossível encontrar a cookie com o id %d no chaveiro em “%s”"
 
-#: gio/gdbusauthmechanismsha1.c:523
+#: gio/gdbusauthmechanismsha1.c:524
 #, c-format
 msgid "Error creating lock file “%s”: %s"
 msgstr "Erro ao criar o ficheiro de acesso exclusivo “%s”: %s"
 
-#: gio/gdbusauthmechanismsha1.c:587
+#: gio/gdbusauthmechanismsha1.c:588
 #, c-format
 msgid "Error deleting stale lock file “%s”: %s"
 msgstr "Erro ao eliminar o ficheiro de acesso exclusivo “%s” abandonado: %s"
 
-#: gio/gdbusauthmechanismsha1.c:626
+#: gio/gdbusauthmechanismsha1.c:627
 #, c-format
 msgid "Error closing (unlinked) lock file “%s”: %s"
 msgstr "Erro ao fechar o ficheiro de acesso exclusivo “%s” (não ligado): %s"
 
-#: gio/gdbusauthmechanismsha1.c:637
+#: gio/gdbusauthmechanismsha1.c:638
 #, c-format
 msgid "Error unlinking lock file “%s”: %s"
 msgstr "Erro ao desfazer a ligação do ficheiro de acesso exclusivo “%s”: %s"
 
-#: gio/gdbusauthmechanismsha1.c:714
+#: gio/gdbusauthmechanismsha1.c:715
 #, c-format
 msgid "Error opening keyring “%s” for writing: "
 msgstr "Erro ao abrir o chaveiro “%s” para escrita: "
 
-#: gio/gdbusauthmechanismsha1.c:908
+#: gio/gdbusauthmechanismsha1.c:909
 #, c-format
 msgid "(Additionally, releasing the lock for “%s” also failed: %s) "
 msgstr "(adicionalmente, também falhou a libertação para “%s”: %s) "
@@ -814,7 +814,7 @@ msgstr ""
 "de bytes %d (comprimento da cadeia é %d). A cadeia UTF-8 válida até esse "
 "ponto era “%s”"
 
-#: gio/gdbusmessage.c:1509 gio/gdbusmessage.c:1785 gio/gdbusmessage.c:1976
+#: gio/gdbusmessage.c:1509 gio/gdbusmessage.c:1785 gio/gdbusmessage.c:1996
 msgid "Value nested too deeply"
 msgstr "Origem do valor muito antiga"
 
@@ -850,12 +850,16 @@ msgstr ""
 "Encontrado um vetor de tipo \"a%c\", esperado um comprimento múltiplo de %u "
 "bytes, obtidos %u bytes de comprimento"
 
-#: gio/gdbusmessage.c:1960
+#: gio/gdbusmessage.c:1926 gio/gdbusmessage.c:2645
+msgid "Empty structures (tuples) are not allowed in D-Bus"
+msgstr "Estruturas vazias (tuples) não são permitidas no D-Bus"
+
+#: gio/gdbusmessage.c:1980
 #, c-format
 msgid "Parsed value “%s” for variant is not a valid D-Bus signature"
 msgstr "Valor processado “%s” para variante não é uma assinatura D-Bus válida"
 
-#: gio/gdbusmessage.c:2001
+#: gio/gdbusmessage.c:2021
 #, c-format
 msgid ""
 "Error deserializing GVariant with type string “%s” from the D-Bus wire format"
@@ -863,7 +867,7 @@ msgstr ""
 "Erro ao remover serialização GVariant com a cadeia de tipo “%s” do formato "
 "de ligação D-Bus"
 
-#: gio/gdbusmessage.c:2186
+#: gio/gdbusmessage.c:2206
 #, c-format
 msgid ""
 "Invalid endianness value. Expected 0x6c (“l”) or 0x42 (“B”) but found value "
@@ -872,28 +876,28 @@ msgstr ""
 "Valor de \"endianness\" inválido. Esperado 0x6c (“l”) ou 0x42 (“B”) mas "
 "obtido o valor 0x%02x"
 
-#: gio/gdbusmessage.c:2205
+#: gio/gdbusmessage.c:2225
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr "Versão principal de protocolo inválida. Esperada 1 mas obtida %d"
 
-#: gio/gdbusmessage.c:2263 gio/gdbusmessage.c:2852
+#: gio/gdbusmessage.c:2283 gio/gdbusmessage.c:2881
 msgid "Signature header found but is not of type signature"
 msgstr "Assinatura de cabeçalho encontrada, mas não do tipo assinatura"
 
-#: gio/gdbusmessage.c:2275
+#: gio/gdbusmessage.c:2295
 #, c-format
 msgid "Signature header with signature “%s” found but message body is empty"
 msgstr ""
 "Assinatura de cabeçalho com a assinatura “%s” encontrada, mas o corpo da "
 "mensagem está vazio"
 
-#: gio/gdbusmessage.c:2290
+#: gio/gdbusmessage.c:2310
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature (for body)"
 msgstr "Valor processado “%s” não é uma assinatura D-Bus válida (para corpo)"
 
-#: gio/gdbusmessage.c:2322
+#: gio/gdbusmessage.c:2342
 #, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
@@ -904,11 +908,11 @@ msgstr[1] ""
 "Nenhum cabeçalho de assinatura na mensagem mas o corpo da mensagem tem %u "
 "bytes"
 
-#: gio/gdbusmessage.c:2332
+#: gio/gdbusmessage.c:2352
 msgid "Cannot deserialize message: "
 msgstr "Impossível remover serialização da mensagem: "
 
-#: gio/gdbusmessage.c:2669
+#: gio/gdbusmessage.c:2698
 #, c-format
 msgid ""
 "Error serializing GVariant with type string “%s” to the D-Bus wire format"
@@ -916,7 +920,7 @@ msgstr ""
 "Erro ao serializar GVariant com a cadeia de tipo “%s” para o formato de "
 "ligação D-Bus"
 
-#: gio/gdbusmessage.c:2806
+#: gio/gdbusmessage.c:2835
 #, c-format
 msgid ""
 "Number of file descriptors in message (%d) differs from header field (%d)"
@@ -924,18 +928,18 @@ msgstr ""
 "Número de descritores de ficheiro na mensagem (%d) difere do campo no "
 "cabeçalho (%d)"
 
-#: gio/gdbusmessage.c:2814
+#: gio/gdbusmessage.c:2843
 msgid "Cannot serialize message: "
 msgstr "Impossível serializar a mensagem: "
 
-#: gio/gdbusmessage.c:2867
+#: gio/gdbusmessage.c:2896
 #, c-format
 msgid "Message body has signature “%s” but there is no signature header"
 msgstr ""
 "O corpo da mensagem tem a assinatura “%s” mas não existe a assinatura de "
 "cabeçalho"
 
-#: gio/gdbusmessage.c:2877
+#: gio/gdbusmessage.c:2906
 #, c-format
 msgid ""
 "Message body has type signature “%s” but signature in the header field is "
@@ -944,40 +948,40 @@ msgstr ""
 "O corpo da mensagem tem o tipo de assinatura “%s”, mas a assinatura no campo "
 "de cabeçalho é “%s”"
 
-#: gio/gdbusmessage.c:2893
+#: gio/gdbusmessage.c:2922
 #, c-format
 msgid "Message body is empty but signature in the header field is “(%s)”"
 msgstr ""
 "O corpo da mensagem está vazio mas a assinatura no campo de cabeçalho é "
 "“(%s)”"
 
-#: gio/gdbusmessage.c:3448
+#: gio/gdbusmessage.c:3477
 #, c-format
 msgid "Error return with body of type “%s”"
 msgstr "Resposta de erro com corpo do tipo “%s”"
 
-#: gio/gdbusmessage.c:3456
+#: gio/gdbusmessage.c:3485
 msgid "Error return with empty body"
 msgstr "Resposta de erro com corpo vazio"
 
-#: gio/gdbusprivate.c:2246
+#: gio/gdbusprivate.c:2184
 #, c-format
 msgid "(Type any character to close this window)\n"
 msgstr "(insira um qualquer carácter para fechar esta janela)\n"
 
-#: gio/gdbusprivate.c:2420
+#: gio/gdbusprivate.c:2358
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
 msgstr ""
 "Dbus de sessão não se encontra em execução e o início automático falhou"
 
-#: gio/gdbusprivate.c:2443
+#: gio/gdbusprivate.c:2381
 #, c-format
 msgid "Unable to get Hardware profile: %s"
 msgstr "Impossível obter o perfil de equipamento: %s"
 
 #. Translators: Both placeholders are file paths
-#: gio/gdbusprivate.c:2494
+#: gio/gdbusprivate.c:2432
 #, c-format
 msgid "Unable to load %s or %s: "
 msgstr "Incapaz de carregar %s ou %s: "
@@ -4041,12 +4045,12 @@ msgstr "GSocketControlMessage não é suportada em Windows"
 msgid "Error receiving message: %s"
 msgstr "Erro ao receber a mensagem: %s"
 
-#: gio/gsocket.c:6073 gio/gsocket.c:6084 gio/gsocket.c:6130
+#: gio/gsocket.c:6083 gio/gsocket.c:6094 gio/gsocket.c:6140
 #, c-format
 msgid "Unable to read socket credentials: %s"
 msgstr "Impossível ler as credenciais do socket: %s"
 
-#: gio/gsocket.c:6139
+#: gio/gsocket.c:6149
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials não implementado neste SO"
 
