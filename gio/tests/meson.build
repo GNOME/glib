@@ -737,6 +737,7 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
       input : test_gresource_binary,
       output : 'test_resources.o',
       command : [ld,
+                 '-z', 'noexecstack',
                  '-r',
                  '-b','binary',
                  '@INPUT@',
@@ -752,6 +753,7 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
       input : test_resources_binary,
       output : 'test_resources2.o',
       command : [objcopy,
+                 '--strip-all',
                  '--add-symbol', underscore + '_g_binary_test1_resource_data=.data:0',
                  '@INPUT@',
                  '@OUTPUT@'])
