@@ -581,6 +581,7 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
     command : [glib_compile_resources,
                '--target=@OUTPUT@',
                '--sourcedir=' + meson.current_source_dir(),
+               '--internal',
                '--generate-source',
                '--c-name', '_g_plugin',
                '@INPUT@'])
@@ -606,6 +607,7 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
                '--target=@OUTPUT@',
                '--sourcedir=' + meson.current_source_dir(),
                '--sourcedir=' + meson.current_build_dir(),
+               '--internal',
                '@INPUT@'],
     install_dir : installed_tests_execdir,
     install : installed_tests_enabled)
@@ -616,6 +618,7 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
     command : [glib_compile_resources,
                '--target=@OUTPUT@',
                '--sourcedir=' + meson.current_source_dir(),
+               '--internal',
                '--generate',
                '--c-name', '_g_test2',
                '--manual-register',
@@ -627,6 +630,7 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
     command : [glib_compile_resources,
                '--target=@OUTPUT@',
                '--sourcedir=' + meson.current_source_dir(),
+               '--internal',
                '--generate',
                '--c-name', '_g_test2',
                '--manual-register',
@@ -640,6 +644,7 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
                '--target=@OUTPUT@',
                '--sourcedir=' + meson.current_source_dir(),
                '--sourcedir=' + meson.current_build_dir(),
+               '--internal',
                '--generate-source',
                '--c-name', '_g_test1',
                '@INPUT@'])
@@ -651,6 +656,7 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
                '--target=@OUTPUT@',
                '--sourcedir=' + meson.current_source_dir(),
                '--sourcedir=' + meson.current_build_dir(),
+               '--internal',
                '--generate-source',
                '--manual-register',
                '@INPUT@'])
@@ -661,6 +667,7 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
     command : [glib_compile_resources,
                '--target=@OUTPUT@',
                '--sourcedir=' + meson.current_source_dir(),
+               '--internal',
                '--generate',
                '--manual-register',
                '@INPUT@'])
@@ -706,6 +713,7 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
                  '--target=@OUTPUT@',
                  '--sourcedir=' + meson.current_source_dir(),
                  '--sourcedir=' + meson.current_build_dir(),
+                 '--internal',
                  '@INPUT@'],
       install_dir : installed_tests_execdir,
       install : installed_tests_enabled)
@@ -718,6 +726,7 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
                  '--target=@OUTPUT@',
                  '--sourcedir=' + meson.current_source_dir(),
                  '--sourcedir=' + meson.current_build_dir(),
+                 '--internal',
                  '--generate-source',
                  '--external-data',
                  '--c-name', '_g_binary_test1',
