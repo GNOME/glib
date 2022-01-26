@@ -200,6 +200,9 @@ endif
 glib_hidden_visibility_args = []
 if get_option('default_library') != 'static'
   if host_system == 'windows' or host_system == 'cygwin'
+    if get_option('default_library') != 'shared'
+      error('On Windows default_library must be "shared" or "static" but not "both"')
+    endif
     glib_conf.set('DLL_EXPORT', true)
     if cc.get_id() == 'msvc' or cc.get_id() == 'clang-cl'
       glib_conf.set('_GLIB_EXTERN', '__declspec(dllexport) extern')
