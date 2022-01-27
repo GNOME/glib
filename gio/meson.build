@@ -850,7 +850,7 @@ endif
 
 
 if host_system == 'windows'
-  pkg.generate(requires : ['gobject-2.0', 'gmodule-no-export-2.0', 'gio-2.0', 'zlib'],
+  pkg.generate(requires : ['gobject-2.0', 'gmodule-no-export-2.0', 'gio-2.0'],
     subdirs : ['gio-win32-2.0'],
     version : glib_version,
     install_dir : glib_pkgconfigreldir,
