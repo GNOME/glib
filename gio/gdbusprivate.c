@@ -23,27 +23,28 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "giotypes.h"
-#include "gioenumtypes.h"
-#include "gsocket.h"
 #include "gdbusauthobserver.h"
-#include "gdbusprivate.h"
-#include "gdbusmessage.h"
 #include "gdbusconnection.h"
-#include "gdbusproxy.h"
+#include "gdbusdaemon.h"
 #include "gdbuserror.h"
 #include "gdbusintrospection.h"
-#include "gdbusdaemon.h"
-#include "giomodule-priv.h"
-#include "gtask.h"
+#include "gdbusmessage.h"
+#include "gdbusprivate.h"
+#include "gdbusproxy.h"
 #include "ginputstream.h"
-#include "gmemoryinputstream.h"
+#include "gioenumtypes.h"
+#include "giomodule-priv.h"
 #include "giostream.h"
+#include "giotypes.h"
+#include "glib-private.h"
 #include "glib/gstdio.h"
+#include "gmemoryinputstream.h"
+#include "gsocket.h"
 #include "gsocketaddress.h"
-#include "gsocketcontrolmessage.h"
 #include "gsocketconnection.h"
+#include "gsocketcontrolmessage.h"
 #include "gsocketoutputstream.h"
+#include "gtask.h"
 
 #ifdef G_OS_UNIX
 #include "gunixfdmessage.h"
@@ -2275,6 +2276,26 @@ g_win32_run_session_bus (void* hwnd, void* hinst, const char* cmdline, int cmdsh
 
 static gboolean autolaunch_binary_absent = FALSE;
 
+static wchar_t *
+find_dbus_process_path (void)
+{
+  wchar_t *dbus_path;
+  gchar *exe_path = GLIB_PRIVATE_CALL (g_win32_find_helper_executable_path) ("gdbus.exe", _g_io_win32_get_module ());
+  dbus_path = g_utf8_to_utf16 (exe_path, -1, NULL, NULL, NULL);
+  g_free (exe_path);
+
+  if (dbus_path == NULL)
+    return NULL;
+
+  if (GetFileAttributesW (dbus_path) == INVALID_FILE_ATTRIBUTES)
+    {
+      g_free (dbus_path);
+      return NULL;
+    }
+
+  return dbus_path;
+}
+
 gchar *
 _g_dbus_win32_get_session_address_dbus_launch (GError **error)
 {
@@ -2292,61 +2313,53 @@ _g_dbus_win32_get_session_address_dbus_launch (GError **error)
 
   if (address == NULL && !autolaunch_binary_absent)
     {
-      wchar_t gio_path[MAX_PATH + 2] = { 0 };
-      int gio_path_len = GetModuleFileNameW (_g_io_win32_get_module (), gio_path, MAX_PATH + 1);
+      wchar_t *dbus_path = find_dbus_process_path ();
+      if (dbus_path == NULL)
+        {
+          /* warning won't be raised another time
+           * since autolaunch_binary_absent would be already set.
+           */
+          autolaunch_binary_absent = TRUE;
+          g_warning ("win32 session dbus binary not found");
+        }
+      else
+        {
+          PROCESS_INFORMATION pi = { 0 };
+          STARTUPINFOW si = { 0 };
+          BOOL res = FALSE;
+          wchar_t args[MAX_PATH * 2 + 100] = { 0 };
+          wchar_t working_dir[MAX_PATH + 2] = { 0 };
+          wchar_t *p;
 
-      /* The <= MAX_PATH check prevents truncated path usage */
-      if (gio_path_len > 0 && gio_path_len <= MAX_PATH)
-	{
-	  PROCESS_INFORMATION pi = { 0 };
-	  STARTUPINFOW si = { 0 };
-	  BOOL res = FALSE;
-	  wchar_t exe_path[MAX_PATH + 100] = { 0 };
-	  /* calculate index of first char of dll file name inside full path */
-	  int gio_name_index = gio_path_len;
-	  for (; gio_name_index > 0; --gio_name_index)
-	  {
-	    wchar_t prev_char = gio_path[gio_name_index - 1];
-	    if (prev_char == L'\\' || prev_char == L'/')
-	      break;
-	  }
-	  gio_path[gio_name_index] = L'\0';
-	  wcscpy (exe_path, gio_path);
-	  wcscat (exe_path, L"\\gdbus.exe");
+          wcscpy (working_dir, dbus_path);
+          p = wcsrchr (working_dir, L'\\');
+          if (p != NULL)
+            *p = L'\0';
 
-	  if (GetFileAttributesW (exe_path) == INVALID_FILE_ATTRIBUTES)
-	    {
-	      /* warning won't be raised another time
-	       * since autolaunch_binary_absent would be already set.
-	       */
-	      autolaunch_binary_absent = TRUE;
-	      g_warning ("win32 session dbus binary not found: %S", exe_path );
-	    }
-	  else
-	    {
-	      wchar_t args[MAX_PATH*2 + 100] = { 0 };
-	      wcscpy (args, L"\"");
-	      wcscat (args, exe_path);
-	      wcscat (args, L"\" ");
+          wcscpy (args, L"\"");
+          wcscat (args, dbus_path);
+          wcscat (args, L"\" ");
 #define _L_PREFIX_FOR_EXPANDED(arg) L##arg
 #define _L_PREFIX(arg) _L_PREFIX_FOR_EXPANDED (arg)
-	      wcscat (args, _L_PREFIX (_GDBUS_ARG_WIN32_RUN_SESSION_BUS));
+          wcscat (args, _L_PREFIX (_GDBUS_ARG_WIN32_RUN_SESSION_BUS));
 #undef _L_PREFIX
 #undef _L_PREFIX_FOR_EXPANDED
 
-	      res = CreateProcessW (exe_path, args,
-				    0, 0, FALSE,
-				    NORMAL_PRIORITY_CLASS | CREATE_NO_WINDOW | DETACHED_PROCESS,
-				    0, gio_path,
-				    &si, &pi);
-	    }
-	  if (res)
-	    {
-	      address = read_shm (DBUS_DAEMON_ADDRESS_INFO);
-	      if (address == NULL)
-		g_warning ("%S dbus binary failed to launch bus, maybe incompatible version", exe_path );
-	    }
-	}
+          res = CreateProcessW (dbus_path, args,
+                                0, 0, FALSE,
+                                NORMAL_PRIORITY_CLASS | CREATE_NO_WINDOW | DETACHED_PROCESS,
+                                0, working_dir,
+                                &si, &pi);
+
+          if (res)
+            {
+              address = read_shm (DBUS_DAEMON_ADDRESS_INFO);
+              if (address == NULL)
+                g_warning ("%S dbus binary failed to launch bus, maybe incompatible version", dbus_path);
+            }
+
+          g_free (dbus_path);
+        }
     }
 
   release_mutex (autolaunch_mutex);

@@ -42,10 +42,11 @@
 
 #include "config.h"
 
-#include "glib.h"
+#include "glib-init.h"
 #include "glib-private.h"
-#include "gprintfint.h"
+#include "glib.h"
 #include "glibintl.h"
+#include "gprintfint.h"
 #include "gspawn-private.h"
 #include "gthread.h"
 
@@ -586,7 +587,6 @@ fork_exec (gint                  *exit_status,
   gint conv_error_index;
   gchar *helper_process;
   wchar_t *whelper, **wargv, **wenvp;
-  gchar *glib_dll_directory;
   int stdin_pipe[2] = { -1, -1 };
   int stdout_pipe[2] = { -1, -1 };
   int stderr_pipe[2] = { -1, -1 };
@@ -651,16 +651,8 @@ fork_exec (gint                  *exit_status,
     helper_process = HELPER_PROCESS "-console.exe";
   else
     helper_process = HELPER_PROCESS ".exe";
-  
-  glib_dll_directory = _glib_get_dll_directory ();
-  if (glib_dll_directory != NULL)
-    {
-      helper_process = g_build_filename (glib_dll_directory, helper_process, NULL);
-      g_free (glib_dll_directory);
-    }
-  else
-    helper_process = g_strdup (helper_process);
 
+  helper_process = g_win32_find_helper_executable_path (helper_process, glib_dll);
   new_argv[0] = protect_argv_string (helper_process);
 
   _g_sprintf (args[ARG_CHILD_ERR_REPORT], "%d", child_err_report_pipe[1]);
