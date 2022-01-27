@@ -1,3 +1,113 @@
+Overview of changes in GLib 2.71.1
+==================================
+
+* Basic support for static builds on Windows (work by Loïc Le Page,
+  Marc-André Lureau, with contributions from Xavier Claessens, Nirbheek Chauhan,
+  Charlie Barto, Luca Bacci, Amos Wenger) (#692, #2585, !2442)
+
+* Add `GDebugController` and a D-Bus implementation which exposes whether
+  debug output is enabled in a process using the `org.gtk.Debugging` D-Bus
+  interface (work by Philip Withnall) (#1190)
+
+* Support for `AF_UNIX` sockets on Windows 10 (and later) (work by Marc-André Lureau) (#2487)
+
+* Several important fixes to GDBus message and GVariant parsing of invalid data (work by Sebastian Wilhelmi) (#2557, #2572)
+
+* Fix potential data loss due to missing fsync when saving files on btrfs (work by Sebastian Keller) (!2425)
+
+* Fix potential buffer overflows in `garray.c` for very large `GArray`s and `GPtrArray`s (work by Tobias Stoeckmann) (#2578)
+
+* Fix FDs in gspawn not being closed and causing process hangs if `close_range()` fails unexpectedly (work by Dan Nicholson) (#2580)
+
+* Fix `g_find_program_in_path()` not returning an absolute path if `$PATH` is relative (work by Christoph Niethammer) (#2586)
+
+* Add support for loading PKCS#12 encrypted files in `GTlsCertificate` (work by Patrick Griffis) (!2239)
+
+* A number of improvements to unit tests (work by Emmanuel Fleury, Charlie Barto) (!2399, !2400, !2402, !2403, !2428, !2431, !2432, !2434)
+
+* Support `LOCAL_PEERPID` on macOS, giving partial support for PIDs in
+  `GCredentials` on that platform (work by Ignacio Casal Quinteiro) (!2362)
+
+* Add `g_get_user_state_dir()` to support `XDG_STATE_HOME` (work by Sophie Herold) (!2395)
+
+* Add `g_hash_table_new_similar()` to copy a hash table and its hash/equal functions without its data (work by Jonas Ådahl) (!2405)
+
+* Support D-Bus client authentication with `EXTERNAL` on Windows (work by Marc-André Lureau) (!2429)
+
+* Add a reStructuredText documentation generator to `gdbus-codegen` (work by Emmanuele Bassi) (!2448)
+
+* Add a Windows implementation of `GMemoryMonitor` (work by Marc-André Lureau) (!2452)
+
+* Bugs fixed:
+ - #692 meta: Fix static build on Windows
+ - #1190 gapplication: Add an org.gtk.Debugging interface
+ - #2487 Add support for native unix domain sockets on WIN32 to GLib.Socket and related classes
+ - #2550 possible GDateTime issue with localtime on Illumos/Solaris
+ - #2557 Arrays of zero-element tuples with non-zero length lead to infinite loops in g_dbus_message_new_from_blob
+ - #2559 2.71.0: compile and link time warnings
+ - #2560 Link error xdgmime.c: unresolved external symbol S_ISREG when building with VS2022
+ - #2564 Hangul Jamo Extended-B should be 0-width
+ - #2565 Build glib-2.71.0 failed in Windows using MSYS2-MINGW64
+ - #2571 Cross build error "undefined reference to `_g_binary_test1_resource_data'" when building tests for Windows on openSUSE Leap
+ - #2572 Check for GVariant recursion depth before recursing
+ - #2578 buffer overflows in garray.c
+ - #2579 Outdated paths in INSTALL.in
+ - #2580 gspawn doesn't set CLOEXEC if close_range fails unexpectedly
+ - #2582 glib 2.71.0 muslc - build error missing sentinel in function call
+ - #2585 Static link issue on Windows due to resource files being linked in twice
+ - #2586 g_find_program_in_path not returning an absolute path
+ - !2239 gtlscertificate: Add ability to load PKCS#12 encrypted files
+ - !2362 credentials: support the local peerpid on macos
+ - !2384 meson: Fix linking with static library in Windows
+ - !2395 utils: Add XDG_STATE_HOME support
+ - !2399 Move tests/env-test.c into glib/tests/environment.c
+ - !2400 Prevent gtest tests from popping up dialog boxes
+ - !2402 Improving glib/tests/environment.c
+ - !2403 Improve test coverage of glib/tests/asyncqueue.c
+ - !2405 ghash: Add g_hash_table_new_similar
+ - !2407 tests: Fix environment test on FreeBSD
+ - !2411 annotate `g_content_type_guess` parameter as filename
+ - !2412 paramspec: fix unref annotation
+ - !2413 Use meson dependency to link against apple framework
+ - !2414 docs: Improve docs for gdbusutils.c
+ - !2417 gtestutils: Fix minor typos in the g_test_get_filename() docs
+ - !2423 Make clear in doc that signals are emitted synchroniously
+ - !2425 gfileutils: Remove outdated BTRFS fsync optimization from set_contents
+ - !2426 gdbus-codegen: Fix a typo in a comment
+ - !2428 Merge tests/gobject/gvalue-test.c with gobject/tests/value.c
+ - !2429 gdbus: make client work with EXTERNAL on Windows
+ - !2431 Merge tests/gobject/paramspec-test.c into gobject/tests/param.c
+ - !2432 Merge test/unicode-caseconv.c into glib/tests/unicode.c
+ - !2434 Remove a disabled test case that was covered by glib/tests/collate.c
+ - !2440 Improve g_ascii_formatd docs and preconditions
+ - !2441 Reduce the amount of compile-time warnings
+ - !2442 Fix tests with static build on Windows
+ - !2447 giowin32: use gint64 and _lseeki64
+ - !2448 Add reStructuredText documentation generator for gdbus-codegen
+ - !2452 gio/win32: add GMemoryMonitorWin32
+ - !2453 Add `(array length)` annotation to `g_tls_certificate_new_from_pkcs12()`
+ - !2454 gdbusmessage, gvariant and garray fixes
+ - !2456 tests: Pass --internal and -z noexecstack to glib-compile-resources tests
+ - !2459 gio: add missing zlib dependency in gio-windows-2.0.pc
+ - !2461 Fix memory leak in gio/gdbusauthmechanismsha1.c
+ - !2463 Revert "Merge branch 'fix-windows-pc' into 'main'"
+
+* Translation updates:
+ - Catalan
+ - Chinese (China)
+ - Czech
+ - Galician
+ - Hebrew
+ - Indonesian
+ - Lithuanian
+ - Polish
+ - Portuguese
+ - Portuguese (Brazil)
+ - Russian
+ - Spanish
+ - Ukrainian
+
+
 Overview of changes in GLib 2.71.0
 ==================================
 
