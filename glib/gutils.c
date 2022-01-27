@@ -456,7 +456,14 @@ g_find_program_in_path (const gchar *program)
 	  !g_file_test (startp, G_FILE_TEST_IS_DIR))
         {
           gchar *ret;
-          ret = g_strdup (startp);
+          if (g_path_is_absolute (startp)) {
+            ret = g_strdup (startp);
+          } else {
+            gchar *cwd = NULL;
+            cwd = g_get_current_dir ();
+            ret = g_build_filename (cwd, startp, NULL);
+            g_free (cwd);
+          }
           g_free (freeme);
 #ifdef G_OS_WIN32
 	  g_free ((gchar *) path_copy);
