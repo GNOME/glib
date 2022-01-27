@@ -4208,6 +4208,36 @@ GDBusObjectManagerServerPrivate
 </SECTION>
 
 <SECTION>
+<FILE>gdebugcontroller</FILE>
+<TITLE>GDebugController</TITLE>
+GDebugController
+GDebugControllerInterface
+G_DEBUG_CONTROLLER_EXTENSION_POINT_NAME
+g_debug_controller_dup_default
+g_debug_controller_get_debug_enabled
+g_debug_controller_set_debug_enabled
+<SUBSECTION Standard>
+g_debug_controller_get_type
+G_TYPE_DEBUG_CONTROLLER
+G_DEBUG_CONTROLLER
+G_IS_DEBUG_CONTROLLER
+G_DEBUG_CONTROLLER_GET_INTERFACE
+</SECTION>
+
+<SECTION>
+<FILE>gdebugcontrollerdbus</FILE>
+<TITLE>GDebugControllerDBus</TITLE>
+GDebugControllerDBus
+g_debug_controller_dbus_new
+<SUBSECTION Standard>
+g_debug_controller_dbus_get_type
+G_TYPE_DEBUG_CONTROLLER_DBUS
+G_DEBUG_CONTROLLER_DBUS
+G_IS_DEBUG_CONTROLLER_DBUS
+G_DEBUG_CONTROLLER_DBUS_GET_CLASS
+</SECTION>
+
+<SECTION>
 <FILE>gmemorymonitor</FILE>
 <TITLE>GMemoryMonitor</TITLE>
 GMemoryMonitor
