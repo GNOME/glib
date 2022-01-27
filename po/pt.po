@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 3.12\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-01-26 15:12+0000\n"
-"PO-Revision-Date: 2022-01-26 15:46+0000\n"
+"POT-Creation-Date: 2022-01-27 11:01+0000\n"
+"PO-Revision-Date: 2022-01-27 12:53+0000\n"
 "Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
 "Language-Team: Portuguese <https://l10n.gnome.org/teams/pt/>\n"
 "Language: pt\n"
@@ -176,7 +176,7 @@ msgstr "Argumentos:\n"
 
 #: gio/gapplication-tool.c:135 gio/gio-tool.c:224
 msgid "[ARGS…]"
-msgstr "[ARGUMENTOS...]"
+msgstr "[ARGS…]"
 
 #: gio/gapplication-tool.c:136
 #, c-format
@@ -1287,7 +1287,7 @@ msgstr ""
 
 #: gio/gdbus-tool.c:2252
 msgid "[OPTION…] BUS-NAME"
-msgstr "[OPÇÃO...] NOME-"
+msgstr "[OPÇÃO…] BUS-NAME"
 
 #: gio/gdbus-tool.c:2253
 msgid "Wait for a bus name to appear."
@@ -1309,6 +1309,11 @@ msgstr "Erro: demasiados argumentos\n"
 #, c-format
 msgid "Error: %s is not a valid well-known bus name.\n"
 msgstr "Erro: %s não é um nome de canal válido\n"
+
+#: gio/gdebugcontrollerdbus.c:203
+#, c-format
+msgid "Not authorized to change debug settings"
+msgstr "Não autorizado a alterar as definições de depuração"
 
 #: gio/gdesktopappinfo.c:2174 gio/gdesktopappinfo.c:5099
 msgid "Unnamed"
@@ -3537,11 +3542,11 @@ msgid ""
 msgstr ""
 "Lista recursos\n"
 "Se for especificada uma SECÇÃO, apenas listar recursos nesta secção\n"
-"Se for especificado um CAMINHO, apenas listar recursos que coincidam"
+"Se for especificado uma LOCALIZAÇÃO, apenas listar recursos que coincidam"
 
 #: gio/gresource-tool.c:509 gio/gresource-tool.c:519
 msgid "FILE [PATH]"
-msgstr "FICHEIRO [CAMINHO]"
+msgstr "FICHEIRO [LOCALIZAÇÃO]"
 
 #: gio/gresource-tool.c:510 gio/gresource-tool.c:520 gio/gresource-tool.c:527
 msgid "SECTION"
@@ -3556,7 +3561,7 @@ msgid ""
 msgstr ""
 "Listar recursos com detalhes\n"
 "Se for especificada uma SECÇÃO, apenas listar recursos nesta secção\n"
-"Se for especificado um CAMINHO, apenas listar recursos que coincidam\n"
+"Se for especificado uma LOCALIZAÇÃO, apenas listar recursos que coincidam\n"
 "Detalhes incluem a secção, tamanho e compressão"
 
 #: gio/gresource-tool.c:525
@@ -3565,7 +3570,7 @@ msgstr "Extrair um ficheiro de recurso para o terminal"
 
 #: gio/gresource-tool.c:526
 msgid "FILE PATH"
-msgstr "CAMINHO FICHEIRO"
+msgstr "LOCALIZAÇÃO FICHEIRO"
 
 #: gio/gresource-tool.c:540
 msgid ""
@@ -3633,19 +3638,20 @@ msgstr ""
 
 #: gio/gresource-tool.c:578
 msgid "[PATH]"
-msgstr "[CAMINHO]"
+msgstr "[LOCALIZAÇÃO]"
 
 #: gio/gresource-tool.c:580
 msgid "  PATH      An (optional) resource path (may be partial)\n"
-msgstr "  CAMINHO   Um caminho (opcional) de recurso (pode ser parcial)\n"
+msgstr ""
+"  LOCALIZAÇÃO   Uma localização (opcional) de recurso (pode ser parcial)\n"
 
 #: gio/gresource-tool.c:581
 msgid "PATH"
-msgstr "CAMINHO"
+msgstr "LOCALIZAÇÃO"
 
 #: gio/gresource-tool.c:583
 msgid "  PATH      A resource path\n"
-msgstr "  CAMINHO   Um caminho de recurso\n"
+msgstr "  LOCALIZAÇÃO   Uma localização de recurso\n"
 
 #: gio/gsettings-tool.c:49 gio/gsettings-tool.c:70 gio/gsettings-tool.c:923
 #, c-format
@@ -3700,7 +3706,7 @@ msgstr "Listar as chaves no ESQUEMA"
 
 #: gio/gsettings-tool.c:609 gio/gsettings-tool.c:615 gio/gsettings-tool.c:658
 msgid "SCHEMA[:PATH]"
-msgstr "ESQUEMA[:CAMINHO]"
+msgstr "ESQUEMA[:LOCALIZAÇÃO]"
 
 #: gio/gsettings-tool.c:614
 msgid "List the children of SCHEMA"
@@ -3716,7 +3722,7 @@ msgstr ""
 
 #: gio/gsettings-tool.c:622
 msgid "[SCHEMA[:PATH]]"
-msgstr "[ESQUEMA[:CAMINHO]]"
+msgstr "[ESQUEMA[:LOCALIZAÇÃO]]"
 
 #: gio/gsettings-tool.c:627
 msgid "Get the value of KEY"
@@ -3725,7 +3731,7 @@ msgstr "Obter o valor da CHAVE"
 #: gio/gsettings-tool.c:628 gio/gsettings-tool.c:634 gio/gsettings-tool.c:640
 #: gio/gsettings-tool.c:652 gio/gsettings-tool.c:664
 msgid "SCHEMA[:PATH] KEY"
-msgstr "ESQUEMA[:CAMINHO] CHAVE"
+msgstr "ESQUEMA[:LOCALIZAÇÃO] CHAVE"
 
 #: gio/gsettings-tool.c:633
 msgid "Query the range of valid values for KEY"
@@ -3741,7 +3747,7 @@ msgstr "Definir o valor da CHAVE com o VALOR"
 
 #: gio/gsettings-tool.c:646
 msgid "SCHEMA[:PATH] KEY VALUE"
-msgstr "ESQUEMA[:CAMINHO] CHAVE VALOR"
+msgstr "ESQUEMA[:LOCALIZAÇÃO] CHAVE VALOR"
 
 #: gio/gsettings-tool.c:651
 msgid "Reset KEY to its default value"
@@ -3767,7 +3773,7 @@ msgstr ""
 
 #: gio/gsettings-tool.c:672
 msgid "SCHEMA[:PATH] [KEY]"
-msgstr "ESQUEMA[:CAMINHO] [CHAVE]"
+msgstr "ESQUEMA[:LOCALIZAÇÃO] [CHAVE]"
 
 #: gio/gsettings-tool.c:684
 msgid ""
@@ -3842,7 +3848,7 @@ msgid ""
 "  PATH      The path, for relocatable schemas\n"
 msgstr ""
 "  ESQUEMA     O nome do esquema\n"
-"  CAMINHO     O caminho, para esquemas realocáveis\n"
+"  LOCALIZAÇÃO     A localização, para esquemas realocáveis\n"
 
 #: gio/gsettings-tool.c:727
 msgid "  KEY       The (optional) key within the schema\n"
@@ -6088,157 +6094,157 @@ msgid "Character out of range for UTF-16"
 msgstr "Carácter fora do limite para UTF-16"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2883
+#: glib/gutils.c:2890
 #, c-format
 msgid "%.1f kB"
 msgstr "%.1f kB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2885
+#: glib/gutils.c:2892
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2887
+#: glib/gutils.c:2894
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2889
+#: glib/gutils.c:2896
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2891
+#: glib/gutils.c:2898
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2893
+#: glib/gutils.c:2900
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2897
+#: glib/gutils.c:2904
 #, c-format
 msgid "%.1f KiB"
 msgstr "%.1f KiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2899
+#: glib/gutils.c:2906
 #, c-format
 msgid "%.1f MiB"
 msgstr "%.1f MiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2901
+#: glib/gutils.c:2908
 #, c-format
 msgid "%.1f GiB"
 msgstr "%.1f GiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2903
+#: glib/gutils.c:2910
 #, c-format
 msgid "%.1f TiB"
 msgstr "%.1f TiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2905
+#: glib/gutils.c:2912
 #, c-format
 msgid "%.1f PiB"
 msgstr "%.1f PiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2907
+#: glib/gutils.c:2914
 #, c-format
 msgid "%.1f EiB"
 msgstr "%.1f EiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2911
+#: glib/gutils.c:2918
 #, c-format
 msgid "%.1f kb"
 msgstr "%.1f kb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2913
+#: glib/gutils.c:2920
 #, c-format
 msgid "%.1f Mb"
 msgstr "%.1f Mb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2915
+#: glib/gutils.c:2922
 #, c-format
 msgid "%.1f Gb"
 msgstr "%.1f Gb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2917
+#: glib/gutils.c:2924
 #, c-format
 msgid "%.1f Tb"
 msgstr "%.1f Tb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2919
+#: glib/gutils.c:2926
 #, c-format
 msgid "%.1f Pb"
 msgstr "%.1f Pb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2921
+#: glib/gutils.c:2928
 #, c-format
 msgid "%.1f Eb"
 msgstr "%.1f Eb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2925
+#: glib/gutils.c:2932
 #, c-format
 msgid "%.1f Kib"
 msgstr "%.1f Kib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2927
+#: glib/gutils.c:2934
 #, c-format
 msgid "%.1f Mib"
 msgstr "%.1f Mib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2929
+#: glib/gutils.c:2936
 #, c-format
 msgid "%.1f Gib"
 msgstr "%.1f Gib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2931
+#: glib/gutils.c:2938
 #, c-format
 msgid "%.1f Tib"
 msgstr "%.1f Tib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2933
+#: glib/gutils.c:2940
 #, c-format
 msgid "%.1f Pib"
 msgstr "%.1f Pib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2935
+#: glib/gutils.c:2942
 #, c-format
 msgid "%.1f Eib"
 msgstr "%.1f Eib"
 
-#: glib/gutils.c:2969 glib/gutils.c:3086
+#: glib/gutils.c:2976 glib/gutils.c:3093
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
 msgstr[0] "%u byte"
 msgstr[1] "%u bytes"
 
-#: glib/gutils.c:2973
+#: glib/gutils.c:2980
 #, c-format
 msgid "%u bit"
 msgid_plural "%u bits"
@@ -6246,7 +6252,7 @@ msgstr[0] "%u bit"
 msgstr[1] "%u bits"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
-#: glib/gutils.c:3040
+#: glib/gutils.c:3047
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
@@ -6254,7 +6260,7 @@ msgstr[0] "%s byte"
 msgstr[1] "%s bytes"
 
 #. Translators: the %s in "%s bits" will always be replaced by a number.
-#: glib/gutils.c:3045
+#: glib/gutils.c:3052
 #, c-format
 msgid "%s bit"
 msgid_plural "%s bits"
@@ -6266,32 +6272,32 @@ msgstr[1] "%s bits"
 #. * compatibility.  Users will not see this string unless a program is using this deprecated function.
 #. * Please translate as literally as possible.
 #.
-#: glib/gutils.c:3099
+#: glib/gutils.c:3106
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: glib/gutils.c:3104
+#: glib/gutils.c:3111
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: glib/gutils.c:3109
+#: glib/gutils.c:3116
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: glib/gutils.c:3114
+#: glib/gutils.c:3121
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
-#: glib/gutils.c:3119
+#: glib/gutils.c:3126
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
-#: glib/gutils.c:3124
+#: glib/gutils.c:3131
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
