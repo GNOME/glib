@@ -1,4 +1,4 @@
-configure_file(input : 'glibconfig.h.in', output : 'glibconfig.h',
+glibconfig_h = configure_file(input : 'glibconfig.h.in', output : 'glibconfig.h',
   install_dir : join_paths(get_option('libdir'), 'glib-2.0/include'),
   configuration : glibconfig_conf)
 
@@ -119,6 +119,10 @@ glib_headers = files(
   'glib-object.h',
 )
 install_headers(glib_headers, subdir : 'glib-2.0')
+
+# Expose as variable to be used by gobject-introspection
+# when it includes GLib as a subproject
+glib_unix_h = files('glib-unix.h')
 
 glib_deprecated_headers = files(
   'deprecated/gallocator.h',
