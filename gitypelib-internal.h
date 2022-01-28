@@ -378,9 +378,9 @@ union _SimpleTypeBlob
  * references to types.
  *
  * SimpleTypeBlob is divided into two cases; first, if "reserved" and
- * "reserved2", the type tag for a basic type is embedded in the "tag" bits.
- * This allows e.g. GI_TYPE_TAG_UTF8, GI_TYPE_TAG_INT and the like to be
- * embedded directly without taking up extra space.
+ * "reserved2" are both zero, the type tag for a basic type is embedded in the
+ * "tag" bits. This allows e.g. GI_TYPE_TAG_UTF8, GI_TYPE_TAG_INT and the like
+ * to be embedded directly without taking up extra space.
  *
  * References to "interfaces" (objects, interfaces) are more complicated;
  * In this case, the integer is actually an offset into the directory (see
