@@ -48,6 +48,16 @@ G_BEGIN_DECLS
  */
 #define G_TYPE_TAG_IS_BASIC(tag) (tag < GI_TYPE_TAG_ARRAY || tag == GI_TYPE_TAG_UNICHAR)
 
+/**
+ * GI_TYPE_TAG_IS_NUMERIC:
+ * @tag: a type tag
+ *
+ * Checks if @tag is a numeric type. That is, integer or floating point.
+ *
+ * Since: 1.72
+ */
+#define GI_TYPE_TAG_IS_NUMERIC(tag) ((tag) >= GI_TYPE_TAG_INT8 && (tag) <= GI_TYPE_TAG_DOUBLE)
+
 GI_AVAILABLE_IN_ALL
 const gchar*           g_type_tag_to_string            (GITypeTag   type);
 

@@ -411,7 +411,7 @@ typedef enum {
   /* Basic types */
   GI_TYPE_TAG_VOID      =  0,
   GI_TYPE_TAG_BOOLEAN   =  1,
-  GI_TYPE_TAG_INT8      =  2,
+  GI_TYPE_TAG_INT8      =  2,  /* Start of GI_TYPE_TAG_IS_NUMERIC types */
   GI_TYPE_TAG_UINT8     =  3,
   GI_TYPE_TAG_INT16     =  4,
   GI_TYPE_TAG_UINT16    =  5,
@@ -420,7 +420,7 @@ typedef enum {
   GI_TYPE_TAG_INT64     =  8,
   GI_TYPE_TAG_UINT64    =  9,
   GI_TYPE_TAG_FLOAT     = 10,
-  GI_TYPE_TAG_DOUBLE    = 11,
+  GI_TYPE_TAG_DOUBLE    = 11,  /* End of numeric types */
   GI_TYPE_TAG_GTYPE     = 12,
   GI_TYPE_TAG_UTF8      = 13,
   GI_TYPE_TAG_FILENAME  = 14,
