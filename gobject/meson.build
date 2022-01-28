@@ -117,6 +117,10 @@ glib_enumtypes_c = custom_target('glib_enumtypes_c',
 
 glib_enumtypes_dep = declare_dependency(sources : [glib_enumtypes_h])
 
+# Expose as variable to be used by gobject-introspection
+# when it includes GLib as a subproject
+glib_types_h = files('glib-types.h')
+
 libgobject = library('gobject-2.0',
   gobject_dtrace_obj, gobject_dtrace_hdr, glib_enumtypes_h, glib_enumtypes_c,
   sources : gobject_sources,
