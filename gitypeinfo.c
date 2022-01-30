@@ -221,8 +221,8 @@ g_type_info_get_interface (GITypeInfo *info)
  * g_type_info_get_array_length:
  * @info: a #GITypeInfo
  *
- * Obtain the array length of the type. The type tag must be a
- * #GI_TYPE_TAG_ARRAY or -1 will returned.
+ * Obtain the position of the argument which gives the array length of the type.
+ * The type tag must be a #GI_TYPE_TAG_ARRAY or -1 will be returned.
  *
  * Returns: the array length, or -1 if the type is not an array
  */
@@ -256,7 +256,7 @@ g_type_info_get_array_length (GITypeInfo *info)
  * @info: a #GITypeInfo
  *
  * Obtain the fixed array size of the type. The type tag must be a
- * #GI_TYPE_TAG_ARRAY or -1 will returned.
+ * #GI_TYPE_TAG_ARRAY or -1 will be returned.
  *
  * Returns: the size or -1 if it's not an array
  */
@@ -290,7 +290,7 @@ g_type_info_get_array_fixed_size (GITypeInfo *info)
  * @info: a #GITypeInfo
  *
  * Obtain if the last element of the array is %NULL. The type tag must be a
- * #GI_TYPE_TAG_ARRAY or %FALSE will returned.
+ * #GI_TYPE_TAG_ARRAY or %FALSE will be returned.
  *
  * Returns: %TRUE if zero terminated
  */
