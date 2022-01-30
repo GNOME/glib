@@ -1,12 +1,12 @@
 # Japanese translation of glib message catalog.
-# Copyright (C) 2001-2013, 2020 glib's COPYRIGHT HOLDER
+# Copyright (C) 2001-2013, 2020, 2022 glib's COPYRIGHT HOLDER
 # Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>, 2001-2002, 2009-2010.
 # KAMAGASAKO Masatoshi <emerald@gnome.gr.jp>, 2003.
 # Takeshi AIHANA <takeshi.aihana@gmail.com>, 2004-2009.
 # Ryoichi INAGAKI <ryo1@bc.wakwak.com>, 2004.
 # OKANO Takayoshi <kano@na.rim.or.jp>, 2011.
 # Jiro Matsuzawa <jmatsuzawa@gnome.org>, 2012-2013.
-# sicklylife <translation@sicklylife.jp>, 2020.
+# sicklylife <translation@sicklylife.jp>, 2020, 2022.
 #
 # 訳語:
 #   be malformed: 不正です
@@ -28,7 +28,7 @@ msgstr ""
 "Project-Id-Version: glib glib-2-28\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
 "POT-Creation-Date: 2022-01-26 14:31+0000\n"
-"PO-Revision-Date: 2020-08-20 21:04+0900\n"
+"PO-Revision-Date: 2022-01-30 21:00+0900\n"
 "Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
@@ -756,10 +756,9 @@ msgid "A subtree is already exported for %s"
 msgstr "サブツリーはすでに %s にエクスポートされています"
 
 #: gio/gdbusconnection.c:7282
-#, fuzzy, c-format
-#| msgid "Key file does not have group “%s”"
+#, c-format
 msgid "Object does not exist at path “%s”"
-msgstr "キーファイルにグループ“%s”がありません"
+msgstr "パス“%s”にオブジェクトが存在しません"
 
 #: gio/gdbusmessage.c:1311
 msgid "type is INVALID"
@@ -975,10 +974,9 @@ msgstr "ハードウェアプロファイルを取得できません: %s"
 
 #. Translators: Both placeholders are file paths
 #: gio/gdbusprivate.c:2494
-#, fuzzy, c-format
-#| msgid "Unable to trash file %s: %s"
+#, c-format
 msgid "Unable to load %s or %s: "
-msgstr "ファイル %s をゴミ箱へ移動できません: %s"
+msgstr "%s または %s を読み込めません: "
 
 #: gio/gdbusproxy.c:1569
 #, c-format
@@ -1220,10 +1218,9 @@ msgid "Error parsing parameter %d of type “%s”: %s\n"
 msgstr "型“%2$s”のパラメーター %1$d の解析中にエラーが発生しました: %3$s\n"
 
 #: gio/gdbus-tool.c:1190
-#, fuzzy, c-format
-#| msgid "Error reading from handle: %s"
+#, c-format
 msgid "Error adding handle %d: %s\n"
-msgstr "ハンドルから読み込むときにエラーが発生しました: %s"
+msgstr "ハンドル %d を追加するときにエラーが発生しました: %s\n"
 
 #: gio/gdbus-tool.c:1686
 msgid "Destination name to introspect"
@@ -1310,7 +1307,7 @@ msgstr "デスクトップファイルで Exec フィールドを指定してい
 
 #: gio/gdesktopappinfo.c:2804
 msgid "Unable to find terminal required for application"
-msgstr "アプリケーションで必要な端末が見つかりませんでした"
+msgstr "アプリケーションで必要な端末が見つかりません"
 
 #: gio/gdesktopappinfo.c:3455
 #, c-format
@@ -1539,10 +1536,8 @@ msgid "HTTP proxy connection failed: %i"
 msgstr "HTTP プロキシ接続に失敗しました: %i"
 
 #: gio/ghttpproxy.c:266
-#, fuzzy
-#| msgid "HTTP proxy connection failed: %i"
 msgid "HTTP proxy response too big"
-msgstr "HTTP プロキシ接続に失敗しました: %i"
+msgstr "HTTP プロキシレスポンスが大きすぎます"
 
 #: gio/ghttpproxy.c:283
 msgid "HTTP proxy server closed connection unexpectedly."
@@ -1661,10 +1656,8 @@ msgid "Show information about locations"
 msgstr "場所についての情報を表示する"
 
 #: gio/gio-tool.c:232
-#, fuzzy
-#| msgid "Launch an application"
 msgid "Launch an application from a desktop file"
-msgstr "アプリケーションを起動する"
+msgstr "デスクトップファイルからアプリケーションを起動する"
 
 #: gio/gio-tool.c:233
 msgid "List the contents of locations"
@@ -1925,34 +1918,27 @@ msgid ""
 msgstr ""
 
 #: gio/gio-tool-launch.c:77
-#, fuzzy
-#| msgid "No destination given"
 msgid "No desktop file given"
-msgstr "対象を指定していません"
+msgstr "デスクトップファイルを指定していません"
 
 #: gio/gio-tool-launch.c:85
-#, fuzzy
-#| msgid "There is no GCredentials support for your platform"
 msgid "The launch command is not currently supported on this platform"
-msgstr "このプラットフォームは GCredentials をサポートしていません"
+msgstr "このプラットフォームは現在起動コマンドをサポートしていません"
 
 #: gio/gio-tool-launch.c:98
-#, fuzzy, c-format
-#| msgid "Unable to trash file %s: %s"
+#, c-format
 msgid "Unable to load ‘%s‘: %s"
-msgstr "ファイル %s をゴミ箱へ移動できません: %s"
+msgstr "‘%s’を読み込めません: %s"
 
 #: gio/gio-tool-launch.c:107
-#, fuzzy, c-format
-#| msgid "Failed to load info for handler “%s”"
+#, c-format
 msgid "Unable to load application information for ‘%s‘"
-msgstr "ハンドラ“%s”の情報読み込みに失敗しました"
+msgstr "‘%s’のアプリケーション情報を読み込めません"
 
 #: gio/gio-tool-launch.c:119
-#, fuzzy, c-format
-#| msgid "Default application for “%s”: %s\n"
+#, c-format
 msgid "Unable to launch application ‘%s’: %s"
-msgstr "“%s”のデフォルトのアプリケーション: %s\n"
+msgstr "アプリケーション‘%s’を起動できません: %s"
 
 #: gio/gio-tool-list.c:37 gio/gio-tool-tree.c:32
 msgid "Show hidden files"
@@ -2327,40 +2313,31 @@ msgid "Empty the trash"
 msgstr "ゴミ箱を空にする"
 
 #: gio/gio-tool-trash.c:35
-#, fuzzy
-#| msgid "List the contents of the locations."
 msgid "List files in the trash with their original locations"
-msgstr "場所の内容を一覧表示します。"
+msgstr "ゴミ箱にあるファイルの名前と元の場所を一覧表示する"
 
 #: gio/gio-tool-trash.c:36
 msgid ""
 "Restore a file from trash to its original location (possibly recreating the "
 "directory)"
-msgstr ""
+msgstr "ファイルをゴミ箱から元の場所に戻す (可能ならディレクトリも再作成される)"
 
 #: gio/gio-tool-trash.c:106
-#, fuzzy
-#| msgid "Unable to find terminal required for application"
 msgid "Unable to find original path"
-msgstr "アプリケーションで必要な端末が見つかりませんでした"
+msgstr "元のパスが見つかりません"
 
 #: gio/gio-tool-trash.c:123
-#, fuzzy
-#| msgid "Unable to create socket: %s"
 msgid "Unable to recreate original location: "
-msgstr "ソケットを作成できません: %s"
+msgstr "元の場所を再作成できません: "
 
 #: gio/gio-tool-trash.c:136
-#, fuzzy
-#| msgid "unable to find desktop file for application %s\n"
 msgid "Unable to move file to its original location: "
-msgstr "アプリケーション %s のデスクトップファイルが見つかりません\n"
+msgstr "ファイルを元の場所へ移動できません: "
 
 #: gio/gio-tool-trash.c:225
-#, fuzzy
-#| msgid "Move files or directories to the trash."
 msgid "Move/Restore files or directories to the trash."
-msgstr "ファイルやディレクトリをゴミ箱へ移動します。"
+msgstr ""
+"ファイルやディレクトリをゴミ箱へ移動またはゴミ箱から戻します。"
 
 #: gio/gio-tool-trash.c:227
 msgid ""
@@ -2370,7 +2347,7 @@ msgstr ""
 
 #: gio/gio-tool-trash.c:258
 msgid "Location given doesn't start with trash:///"
-msgstr ""
+msgstr "trash:/// から始まる場所を指定してください"
 
 #: gio/gio-tool-tree.c:33
 msgid "Follow symbolic links, mounts and shortcuts"
@@ -3024,8 +3001,7 @@ msgid "Error trashing file %s: %s"
 msgstr "ファイル %s をゴミ箱へ移動するときにエラーが発生しました: %s"
 
 #: gio/glocalfile.c:2040
-#, fuzzy, c-format
-#| msgid "Unable to create trash dir %s: %s"
+#, c-format
 msgid "Unable to create trash directory %s: %s"
 msgstr "ゴミ箱ディレクトリ %s を作成できません: %s"
 
@@ -3040,10 +3016,9 @@ msgid "Trashing on system internal mounts is not supported"
 msgstr ""
 
 #: gio/glocalfile.c:2155 gio/glocalfile.c:2183
-#, fuzzy, c-format
-#| msgid "Unable to find or create trash directory for %s"
+#, c-format
 msgid "Unable to find or create trash directory %s to trash %s"
-msgstr "%s のゴミ箱ディレクトリが存在しないか作成できません"
+msgstr "%2$s の移動先のゴミ箱ディレクトリ %1$s が存在しないか作成できません"
 
 #: gio/glocalfile.c:2229
 #, c-format
@@ -3468,17 +3443,17 @@ msgstr "不正なドメインです"
 #: gio/gresourcefile.c:736
 #, c-format
 msgid "The resource at “%s” does not exist"
-msgstr ""
+msgstr "“%s”のリソースが存在しません"
 
 #: gio/gresource.c:848
 #, c-format
 msgid "The resource at “%s” failed to decompress"
-msgstr ""
+msgstr "“%s”のリソースの展開に失敗しました"
 
 #: gio/gresourcefile.c:732
 #, c-format
 msgid "The resource at “%s” is not a directory"
-msgstr ""
+msgstr "“%s”のリソースはディレクトリではありません"
 
 #: gio/gresourcefile.c:940
 msgid "Input stream doesn’t implement seek"
@@ -3957,10 +3932,9 @@ msgid "Waiting for socket condition: %s"
 msgstr "ソケットの指定された状態を wait: %s"
 
 #: gio/gsocket.c:4804 gio/gsocket.c:4820 gio/gsocket.c:4833
-#, fuzzy, c-format
-#| msgid "Error sending message: %s"
+#, c-format
 msgid "Unable to send message: %s"
-msgstr "メッセージの送信中にエラーが発生しました: %s"
+msgstr "メッセージを送信できません: %s"
 
 #: gio/gsocket.c:4805 gio/gsocket.c:4821 gio/gsocket.c:4834
 msgid "Message vectors too large"
@@ -4113,10 +4087,9 @@ msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "子プロセスとの通信用パイプの作成に失敗しました (%s)"
 
 #: gio/gtestdbus.c:619
-#, fuzzy, c-format
-#| msgid "Seek not supported on stream"
+#, c-format
 msgid "Pipes are not supported in this platform"
-msgstr "ストリームのシークはサポートしていません"
+msgstr "このプラットフォームはパイプをサポートしていません"
 
 #: gio/gthemedicon.c:595
 #, c-format
@@ -4415,7 +4388,7 @@ msgstr "アプリケーション“%s”は“%s”というブックマーク�
 #: glib/gbookmarkfile.c:3743
 #, c-format
 msgid "Failed to expand exec line “%s” with URI “%s”"
-msgstr "コマンドラインの“%s”を“%s”という URI に展開できませんでした"
+msgstr "コマンドラインの“%s”を“%s”という URI に展開できません"
 
 #: glib/gconvert.c:468
 msgid "Unrepresentable character in conversion input"
@@ -5834,15 +5807,14 @@ msgid "Failed to fork child process (%s)"
 msgstr "子プロセスの fork に失敗しました (%s)"
 
 #: glib/gspawn.c:2480
-#, fuzzy, c-format
-#| msgid "Failed to read data from child process (%s)"
+#, c-format
 msgid "Failed to close file descriptor for child process (%s)"
-msgstr "子プロセスからデータを読み取れません (%s)"
+msgstr "子プロセスのファイルディスクリプターを閉じられません (%s)"
 
 #: glib/gspawn.c:2488
 #, c-format
 msgid "Unknown error executing child process “%s”"
-msgstr "子プロセス“%s”の起動時に不明なエラーが発生しました"
+msgstr "子プロセスの起動時に不明なエラーが発生しました“%s”"
 
 #: glib/gspawn.c:2512
 #, c-format
@@ -5934,10 +5906,9 @@ msgid "Illegal encoded IP address ‘%.*s’ in URI"
 msgstr "URI に正しくないエンコードの IP アドレス‘%.*s’があります"
 
 #: glib/guri.c:613
-#, fuzzy, c-format
-#| msgid "Illegal encoded IP address ‘%.*s’ in URI"
+#, c-format
 msgid "Illegal internationalized hostname ‘%.*s’ in URI"
-msgstr "URI に正しくないエンコードの IP アドレス‘%.*s’があります"
+msgstr "URI に正しくない国際化ホスト名‘%.*s’があります"
 
 #: glib/guri.c:645 glib/guri.c:657
 #, c-format
