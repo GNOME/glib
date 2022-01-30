@@ -425,11 +425,11 @@ typedef enum {
   GI_TYPE_TAG_UTF8      = 13,
   GI_TYPE_TAG_FILENAME  = 14,
   /* Non-basic types; compare with G_TYPE_TAG_IS_BASIC */
-  GI_TYPE_TAG_ARRAY     = 15,
+  GI_TYPE_TAG_ARRAY     = 15,  /* container (see GI_TYPE_TAG_IS_CONTAINER) */
   GI_TYPE_TAG_INTERFACE = 16,
-  GI_TYPE_TAG_GLIST     = 17,
-  GI_TYPE_TAG_GSLIST    = 18,
-  GI_TYPE_TAG_GHASH     = 19,
+  GI_TYPE_TAG_GLIST     = 17,  /* container */
+  GI_TYPE_TAG_GSLIST    = 18,  /* container */
+  GI_TYPE_TAG_GHASH     = 19,  /* container */
   GI_TYPE_TAG_ERROR     = 20,
   /* Another basic type */
   GI_TYPE_TAG_UNICHAR   = 21

@@ -58,6 +58,18 @@ G_BEGIN_DECLS
  */
 #define GI_TYPE_TAG_IS_NUMERIC(tag) ((tag) >= GI_TYPE_TAG_INT8 && (tag) <= GI_TYPE_TAG_DOUBLE)
 
+/**
+ * GI_TYPE_TAG_IS_CONTAINER:
+ * @tag: a type tag
+ *
+ * Checks if @tag is a container type. That is, a type which may have a nonnull
+ * return from g_type_info_get_param_type().
+ *
+ * Since: 1.72
+ */
+ #define GI_TYPE_TAG_IS_CONTAINER(tag) ((tag) == GI_TYPE_TAG_ARRAY || \
+    ((tag) >= GI_TYPE_TAG_GLIST && (tag) <= GI_TYPE_TAG_GHASH))
+
 GI_AVAILABLE_IN_ALL
 const gchar*           g_type_tag_to_string            (GITypeTag   type);
 
