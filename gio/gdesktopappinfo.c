@@ -1880,6 +1880,10 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
       else
         {
           char *t;
+
+          /* Since @exec is not an empty string, there must be at least one
+           * argument, so dereferencing argv[0] should return non-NULL. */
+          g_assert (argc > 0);
           t = g_find_program_in_path (argv[0]);
           g_strfreev (argv);
 
