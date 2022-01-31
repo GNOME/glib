@@ -890,7 +890,7 @@ static gboolean    test_debug_log = FALSE;
 static gboolean    test_tap_log = TRUE;  /* default to TAP as of GLib 2.62; see #1619; the non-TAP output mode is deprecated */
 static gboolean    test_nonfatal_assertions = FALSE;
 static DestroyEntry *test_destroy_queue = NULL;
-static const char *test_argv0 = NULL;           /* points into global argv */
+static const char *test_argv0 = NULL;           /* (nullable), points into global argv */
 static char       *test_argv0_dirname = NULL;   /* owned by GLib */
 static const char *test_disted_files_dir;       /* points into test_argv0_dirname or an environment variable */
 static const char *test_built_files_dir;        /* points into test_argv0_dirname or an environment variable */
@@ -1138,7 +1138,7 @@ parse_args (gint    *argc_p,
   gchar **argv = *argv_p;
   guint i, e;
 
-  test_argv0 = argv[0];
+  test_argv0 = argv[0];  /* will be NULL iff argc == 0 */
   test_initial_cwd = g_get_current_dir ();
 
   /* parse known args */
@@ -1382,8 +1382,8 @@ parse_args (gint    *argc_p,
   test_paths = g_slist_reverse (test_paths);
 
   /* collapse argv */
-  e = 1;
-  for (i = 1; i < argc; i++)
+  e = 0;
+  for (i = 0; i < argc; i++)
     if (argv[i])
       {
         argv[e++] = argv[i];
@@ -1732,7 +1732,7 @@ void
   g_log_set_default_handler (gtest_default_log_handler, NULL);
   g_test_log (G_TEST_LOG_START_BINARY, g_get_prgname(), test_run_seedstr, 0, NULL);
 
-  test_argv0_dirname = g_path_get_dirname (test_argv0);
+  test_argv0_dirname = (test_argv0 != NULL) ? g_path_get_dirname (test_argv0) : g_strdup (".");
 
   /* Make sure we get the real dirname that the test was run from */
   if (g_str_has_suffix (test_argv0_dirname, "/.libs"))
@@ -3827,6 +3827,9 @@ g_test_trap_subprocess (const char           *test_path,
 
   test_trap_clear ();
   test_trap_last_subprocess = g_strdup (test_path);
+
+  if (test_argv0 == NULL)
+    g_error ("g_test_trap_subprocess() requires argv0 to be passed to g_test_init()");
 
   argv = g_ptr_array_new ();
   g_ptr_array_add (argv, (char *) test_argv0);

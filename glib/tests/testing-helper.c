@@ -102,6 +102,24 @@ main (int   argc,
   argc -= 1;
   argv[argc] = NULL;
 
+  if (g_strcmp0 (argv1, "init-null-argv0") == 0)
+    {
+      int test_argc = 0;
+      char *test_argva[1] = { NULL };
+      char **test_argv = test_argva;
+
+      /* Test that `g_test_init()` can handle being called with an empty argv
+       * and argc == 0. While this isn’t recommended, it is possible for another
+       * process to use execve() to call a gtest process this way, so we’d
+       * better handle it gracefully.
+       *
+       * This test can’t be run after `g_test_init()` has been called normally,
+       * as it isn’t allowed to be called more than once in a process. */
+      g_test_init (&test_argc, &test_argv, NULL);
+
+      return 0;
+    }
+
   g_test_init (&argc, &argv, NULL);
   g_test_set_nonfatal_assertions ();
 
