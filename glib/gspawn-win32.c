@@ -236,7 +236,7 @@ g_spawn_async (const gchar          *working_directory,
                GPid                 *child_pid,
                GError              **error)
 {
-  g_return_val_if_fail (argv != NULL, FALSE);
+  g_return_val_if_fail (argv != NULL && argv[0] != NULL, FALSE);
   
   return g_spawn_async_with_pipes (working_directory,
                                    argv, envp,
@@ -460,6 +460,8 @@ do_spawn_directly (gint                 *exit_status,
   gint conv_error_index;
   wchar_t *wargv0, **wargv, **wenvp;
 
+  g_assert (argv != NULL && argv[0] != NULL);
+
   new_argv = (flags & G_SPAWN_FILE_AND_ARGV_ZERO) ? protected_argv + 1 : protected_argv;
       
   wargv0 = g_utf8_to_utf16 (argv[0], -1, NULL, NULL, &conv_error);
@@ -601,6 +603,7 @@ fork_exec (gint                  *exit_status,
   int stdout_pipe[2] = { -1, -1 };
   int stderr_pipe[2] = { -1, -1 };
 
+  g_assert (argv != NULL && argv[0] != NULL);
   g_assert (stdin_pipe_out == NULL || stdin_fd < 0);
   g_assert (stdout_pipe_out == NULL || stdout_fd < 0);
   g_assert (stderr_pipe_out == NULL || stderr_fd < 0);
@@ -989,7 +992,7 @@ g_spawn_sync (const gchar          *working_directory,
   gboolean failed;
   gint status;
   
-  g_return_val_if_fail (argv != NULL, FALSE);
+  g_return_val_if_fail (argv != NULL && argv[0] != NULL, FALSE);
   g_return_val_if_fail (!(flags & G_SPAWN_DO_NOT_REAP_CHILD), FALSE);
   g_return_val_if_fail (standard_output == NULL ||
                         !(flags & G_SPAWN_STDOUT_TO_DEV_NULL), FALSE);
@@ -1221,7 +1224,7 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
                           gint                 *standard_error,
                           GError              **error)
 {
-  g_return_val_if_fail (argv != NULL, FALSE);
+  g_return_val_if_fail (argv != NULL && argv[0] != NULL, FALSE);
   g_return_val_if_fail (standard_output == NULL ||
                         !(flags & G_SPAWN_STDOUT_TO_DEV_NULL), FALSE);
   g_return_val_if_fail (standard_error == NULL ||
@@ -1263,7 +1266,7 @@ g_spawn_async_with_fds (const gchar          *working_directory,
                         gint                  stderr_fd,
                         GError              **error)
 {
-  g_return_val_if_fail (argv != NULL, FALSE);
+  g_return_val_if_fail (argv != NULL && argv[0] != NULL, FALSE);
   g_return_val_if_fail (stdin_fd == -1 ||
                         !(flags & G_SPAWN_STDOUT_TO_DEV_NULL), FALSE);
   g_return_val_if_fail (stderr_fd == -1 ||
@@ -1312,7 +1315,7 @@ g_spawn_async_with_pipes_and_fds (const gchar           *working_directory,
                                   gint                  *stderr_pipe_out,
                                   GError               **error)
 {
-  g_return_val_if_fail (argv != NULL, FALSE);
+  g_return_val_if_fail (argv != NULL && argv[0] != NULL, FALSE);
   g_return_val_if_fail (stdout_pipe_out == NULL ||
                         !(flags & G_SPAWN_STDOUT_TO_DEV_NULL), FALSE);
   g_return_val_if_fail (stderr_pipe_out == NULL ||
@@ -1359,6 +1362,7 @@ g_spawn_command_line_sync (const gchar  *command_line,
 
   g_return_val_if_fail (command_line != NULL, FALSE);
   
+  /* This will return a runtime error if @command_line is the empty string. */
   if (!g_shell_parse_argv (command_line,
                            NULL, &argv,
                            error))
@@ -1388,6 +1392,7 @@ g_spawn_command_line_async (const gchar *command_line,
 
   g_return_val_if_fail (command_line != NULL, FALSE);
 
+  /* This will return a runtime error if @command_line is the empty string. */
   if (!g_shell_parse_argv (command_line,
                            NULL, &argv,
                            error))
