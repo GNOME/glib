@@ -106,7 +106,7 @@
  * The complete example can be found here: 
  * [gapplication-example-cmdline.c](https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-cmdline.c)
  *
- * In more complicated cases, the handling of the comandline can be
+ * In more complicated cases, the handling of the commandline can be
  * split between the launcher and the primary instance.
  * |[<!-- language="C" -->
  * static gboolean
