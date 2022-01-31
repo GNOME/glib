@@ -119,6 +119,12 @@
  *
  *   argv = *arguments;
  *
+ *   if (argv[0] == NULL)
+ *     {
+ *       *exit_status = 0;
+ *       return FALSE;
+ *     }
+ *
  *   i = 1;
  *   while (argv[i])
  *     {
