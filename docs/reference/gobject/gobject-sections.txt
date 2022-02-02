@@ -1006,3 +1006,43 @@ G_IS_BINDING
 g_binding_flags_get_type
 g_binding_get_type
 </SECTION>
+
+<SECTION>
+<FILE>gbindinggroup</FILE>
+GBindingGroup
+g_binding_group_new
+g_binding_group_dup_source
+g_binding_group_set_source
+g_binding_group_bind
+g_binding_group_bind_full
+g_binding_group_bind_with_closures
+<SUBSECTION Standard>
+G_TYPE_BINDING_GROUP
+G_TYPE_BINDING_GROUP_CLASS
+G_BINDING_GROUP
+G_IS_BINDING_GROUP
+<SUBSECTION Private>
+g_binding_group_get_type
+</SECTION>
+
+<SECTION>
+<FILE>gsignalgroup</FILE>
+GSignalGroup
+g_signal_group_block
+g_signal_group_connect
+g_signal_group_connect_after
+g_signal_group_connect_data
+g_signal_group_connect_object
+g_signal_group_connect_swapped
+g_signal_group_dup_target
+g_signal_group_get_type
+g_signal_group_new
+g_signal_group_set_target
+g_signal_group_unblock
+<SUBSECTION Standard>
+G_IS_SIGNAL_GROUP
+G_SIGNAL_GROUP
+G_TYPE_SIGNAL_GROUP
+<SUBSECTION Private>
+g_signal_group_get_type
+</SECTION>
