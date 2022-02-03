@@ -196,7 +196,9 @@ test_spawn_async_with_fds (void)
     { NO_FD, NO_FD, NO_FD },       /* Test with no fds passed */
     { NO_FD, FD_NEGATIVE, NO_FD }, /* Test another negative fd value */
     { PIPE, PIPE, PIPE },          /* Test with unique fds passed */
+#ifndef G_OS_WIN32
     { NO_FD, PIPE, STDOUT_PIPE },  /* Test the same fd for stdout + stderr */
+#endif
   };
 
   arg = g_strdup_printf ("thread %d", tnum);

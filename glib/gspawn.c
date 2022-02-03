@@ -854,6 +854,8 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
  * windows on the right screen, you may want to use #GdkAppLaunchContext,
  * #GAppLaunchContext, or set the `DISPLAY` environment variable.
  *
+ * On Windows, sharing the same FD for @stdout_fd and @stderr_fd is not supported.
+ *
  * Returns: %TRUE on success, %FALSE if an error was set
  *
  * Since: 2.68
@@ -935,6 +937,8 @@ g_spawn_async_with_pipes_and_fds (const gchar           *working_directory,
  *
  * Identical to g_spawn_async_with_pipes_and_fds() but with `n_fds` set to zero,
  * so no FD assignments are used.
+ *
+ * On Windows, sharing the same FD for @stdout_fd and @stderr_fd is not supported.
  *
  * Returns: %TRUE on success, %FALSE if an error was set
  *
