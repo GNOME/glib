@@ -475,23 +475,31 @@ g_callable_info_iterate_return_attributes (GICallableInfo  *info,
 }
 
 /**
- * gi_type_info_extract_ffi_return_value:
- * @return_info: TODO
- * @ffi_value: TODO
- * @arg: (out caller-allocates): TODO
+ * gi_type_tag_extract_ffi_return_value:
+ * @return_tag: #GITypeTag of the return value
+ * @interface_type: #GIInfoType of the underlying interface type
+ * @ffi_value: pointer to #GIFFIReturnValue union containing the return value
+ *   from ffi_call()
+ * @arg: (out caller-allocates): pointer to an allocated #GIArgument
  *
  * Extract the correct bits from an ffi_arg return value into
  * GIArgument: https://bugzilla.gnome.org/show_bug.cgi?id=665152
  *
  * Also see <citerefentry><refentrytitle>ffi_call</refentrytitle><manvolnum>3</manvolnum></citerefentry>
  *  - the storage requirements for return values are "special".
+ *
+ * The @interface_type argument only applies if @return_tag is
+ * %GI_TYPE_TAG_INTERFACE. Otherwise it is ignored.
+ *
+ * Since: 1.72
  */
 void
-gi_type_info_extract_ffi_return_value (GITypeInfo                  *return_info,
-                                       GIFFIReturnValue            *ffi_value,
-                                       GIArgument                  *arg)
+gi_type_tag_extract_ffi_return_value (GITypeTag         return_tag,
+                                      GIInfoType        interface_type,
+                                      GIFFIReturnValue *ffi_value,
+                                      GIArgument       *arg)
 {
-    switch (g_type_info_get_tag (return_info)) {
+    switch (return_tag) {
     case GI_TYPE_TAG_INT8:
         arg->v_int8 = (gint8) ffi_value->v_long;
         break;
@@ -525,30 +533,52 @@ gi_type_info_extract_ffi_return_value (GITypeInfo                  *return_info,
         arg->v_double = ffi_value->v_double;
         break;
     case GI_TYPE_TAG_INTERFACE:
-        {
-            GIBaseInfo* interface_info;
-            GIInfoType interface_type;
-
-            interface_info = g_type_info_get_interface(return_info);
-            interface_type = g_base_info_get_type(interface_info);
-
-            switch(interface_type) {
-            case GI_INFO_TYPE_ENUM:
-            case GI_INFO_TYPE_FLAGS:
-                arg->v_int32 = (gint32) ffi_value->v_long;
-                break;
-            default:
-                arg->v_pointer = (gpointer) ffi_value->v_pointer;
-                break;
-            }
-
-            g_base_info_unref(interface_info);
+        switch(interface_type) {
+        case GI_INFO_TYPE_ENUM:
+        case GI_INFO_TYPE_FLAGS:
+            arg->v_int32 = (gint32) ffi_value->v_long;
+            break;
+        default:
+            arg->v_pointer = (gpointer) ffi_value->v_pointer;
+            break;
         }
         break;
     default:
         arg->v_pointer = (gpointer) ffi_value->v_pointer;
         break;
     }
+}
+
+/**
+ * gi_type_info_extract_ffi_return_value:
+ * @return_info: #GITypeInfo describing the return type
+ * @ffi_value: pointer to #GIFFIReturnValue union containing the return value
+ *   from ffi_call()
+ * @arg: (out caller-allocates): pointer to an allocated #GIArgument
+ *
+ * Extract the correct bits from an ffi_arg return value into
+ * GIArgument: https://bugzilla.gnome.org/show_bug.cgi?id=665152
+ *
+ * Also see <citerefentry><refentrytitle>ffi_call</refentrytitle><manvolnum>3</manvolnum></citerefentry>
+ *  - the storage requirements for return values are "special".
+ */
+void
+gi_type_info_extract_ffi_return_value (GITypeInfo                  *return_info,
+                                       GIFFIReturnValue            *ffi_value,
+                                       GIArgument                  *arg)
+{
+  GITypeTag return_tag = g_type_info_get_tag (return_info);
+  GIInfoType interface_type = GI_INFO_TYPE_INVALID;
+
+  if (return_tag == GI_TYPE_TAG_INTERFACE)
+    {
+      GIBaseInfo *interface_info = g_type_info_get_interface (return_info);
+      interface_type = g_base_info_get_type (interface_info);
+      g_base_info_unref (interface_info);
+    }
+
+  return gi_type_tag_extract_ffi_return_value (return_tag, interface_type,
+                                               ffi_value, arg);
 }
 
 /**

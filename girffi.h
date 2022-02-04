@@ -75,6 +75,12 @@ void          gi_type_info_extract_ffi_return_value (GITypeInfo                 
                                                      GIFFIReturnValue            *ffi_value,
                                                      GIArgument                  *arg);
 
+GI_AVAILABLE_IN_1_72
+void          gi_type_tag_extract_ffi_return_value (GITypeTag         tag,
+                                                    GIInfoType        interface_type,
+                                                    GIFFIReturnValue *ffi_value,
+                                                    GIArgument       *arg);
+
 GI_AVAILABLE_IN_ALL
 gboolean      g_function_info_prep_invoker        (GIFunctionInfo       *info,
                                                    GIFunctionInvoker    *invoker,
