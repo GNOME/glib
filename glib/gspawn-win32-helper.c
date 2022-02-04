@@ -154,16 +154,13 @@ protect_wargv (gint       argc,
 }
 
 static int
-checked_dup2 (int oldfd, int newfd, int report_fd, gboolean close_old)
+checked_dup2 (int oldfd, int newfd, int report_fd)
 {
   if (oldfd == newfd)
     return newfd;
 
   if (dup2 (oldfd, newfd) == -1)
     write_err_and_exit (report_fd, CHILD_DUP_FAILED);
-
-  if (close_old)
-    close (oldfd);
 
   return newfd;
 }
@@ -274,12 +271,12 @@ main (int ignored_argc, char **ignored_argv)
   else if (argv[ARG_STDIN][0] == 'z')
     {
       fd = open ("NUL:", O_RDONLY);
-      checked_dup2 (fd, 0, child_err_report_fd, TRUE);
+      checked_dup2 (fd, 0, child_err_report_fd);
     }
   else
     {
       fd = atoi (argv[ARG_STDIN]);
-      checked_dup2 (fd, 0, child_err_report_fd, TRUE);
+      checked_dup2 (fd, 0, child_err_report_fd);
     }
 
   if (argv[ARG_STDOUT][0] == '-')
@@ -287,12 +284,12 @@ main (int ignored_argc, char **ignored_argv)
   else if (argv[ARG_STDOUT][0] == 'z')
     {
       fd = open ("NUL:", O_WRONLY);
-      checked_dup2 (fd, 1, child_err_report_fd, TRUE);
+      checked_dup2 (fd, 1, child_err_report_fd);
     }
   else
     {
       fd = atoi (argv[ARG_STDOUT]);
-      checked_dup2 (fd, 1, child_err_report_fd, TRUE);
+      checked_dup2 (fd, 1, child_err_report_fd);
     }
 
   saved_stderr_fd = reopen_noninherited (dup (2), _O_WRONLY);
@@ -305,12 +302,12 @@ main (int ignored_argc, char **ignored_argv)
   else if (argv[ARG_STDERR][0] == 'z')
     {
       fd = open ("NUL:", O_WRONLY);
-      checked_dup2 (fd, 2, child_err_report_fd, TRUE);
+      checked_dup2 (fd, 2, child_err_report_fd);
     }
   else
     {
       fd = atoi (argv[ARG_STDERR]);
-      checked_dup2 (fd, 2, child_err_report_fd, TRUE);
+      checked_dup2 (fd, 2, child_err_report_fd);
     }
 
   /* argv[ARG_WORKING_DIRECTORY] is the directory in which to run the
@@ -354,11 +351,11 @@ main (int ignored_argc, char **ignored_argv)
     }
 
   maxfd++;
-  child_err_report_fd = checked_dup2 (child_err_report_fd, maxfd, child_err_report_fd, TRUE);
+  child_err_report_fd = checked_dup2 (child_err_report_fd, maxfd, child_err_report_fd);
   maxfd++;
-  helper_sync_fd = checked_dup2 (helper_sync_fd, maxfd, child_err_report_fd, TRUE);
+  helper_sync_fd = checked_dup2 (helper_sync_fd, maxfd, child_err_report_fd);
   maxfd++;
-  saved_stderr_fd = checked_dup2 (saved_stderr_fd, maxfd, child_err_report_fd, TRUE);
+  saved_stderr_fd = checked_dup2 (saved_stderr_fd, maxfd, child_err_report_fd);
 
   {
     GHashTableIter iter;
@@ -373,13 +370,13 @@ main (int ignored_argc, char **ignored_argv)
          * fds are larger than any target fd to avoid introducing new conflicts.
          */
         maxfd++;
-        checked_dup2 (GPOINTER_TO_INT (sourcefd), maxfd, child_err_report_fd, TRUE);
+        checked_dup2 (GPOINTER_TO_INT (sourcefd), maxfd, child_err_report_fd);
         g_hash_table_iter_replace (&iter, GINT_TO_POINTER (maxfd));
       }
 
     g_hash_table_iter_init (&iter, fds);
     while (g_hash_table_iter_next (&iter, &targetfd, &sourcefd))
-      checked_dup2 (GPOINTER_TO_INT (sourcefd), GPOINTER_TO_INT (targetfd), child_err_report_fd, TRUE);
+      checked_dup2 (GPOINTER_TO_INT (sourcefd), GPOINTER_TO_INT (targetfd), child_err_report_fd);
   }
 
   g_hash_table_add (fds, GINT_TO_POINTER (child_err_report_fd));
