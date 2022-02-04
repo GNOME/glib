@@ -56,7 +56,7 @@ test_timer_basic (void)
   elapsed = g_timer_elapsed (timer, &micros);
 
   g_assert_cmpfloat (elapsed, <, 1.0);
-  g_assert_cmpuint (micros, ==, ((guint64)(elapsed * 1e6)) % 1000000);
+  g_assert_cmpfloat_with_epsilon (elapsed, micros / 1e6,  0.001);
 
   g_timer_destroy (timer);
 }
