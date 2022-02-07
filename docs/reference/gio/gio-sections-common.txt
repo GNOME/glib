@@ -149,6 +149,8 @@ g_file_copy
 g_file_copy_async
 g_file_copy_finish
 g_file_move
+g_file_move_async
+g_file_move_finish
 g_file_make_directory
 g_file_make_directory_async
 g_file_make_directory_finish

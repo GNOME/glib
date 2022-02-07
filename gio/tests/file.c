@@ -3006,6 +3006,111 @@ test_build_attribute_list_for_copy (void)
   g_clear_object (&tmpfile);
 }
 
+typedef struct
+{
+  GError *error;
+  gboolean done;
+  gboolean res;
+} MoveAsyncData;
+
+static void
+test_move_async_cb (GObject      *object,
+                    GAsyncResult *result,
+                    gpointer      user_data)
+{
+  GFile *file = G_FILE (object);
+  MoveAsyncData *data = user_data;
+  GError *error = NULL;
+
+  data->res = g_file_move_finish (file, result, &error);
+  data->error = error;
+  data->done = TRUE;
+}
+
+typedef struct
+{
+  goffset total_num_bytes;
+} MoveAsyncProgressData;
+
+static void
+test_move_async_progress_cb (goffset  current_num_bytes,
+                             goffset  total_num_bytes,
+                             gpointer user_data)
+{
+  MoveAsyncProgressData *data = user_data;
+  data->total_num_bytes = total_num_bytes;
+}
+
+/* Test that move_async() moves the file correctly */
+static void
+test_move_async (void)
+{
+  MoveAsyncData data = { 0 };
+  MoveAsyncProgressData progress_data = { 0 };
+  GFile *source;
+  GFileIOStream *iostream;
+  GOutputStream *ostream;
+  GFile *destination;
+  gchar *destination_path;
+  GError *error = NULL;
+  gboolean res;
+  const guint8 buffer[] = {1, 2, 3, 4, 5};
+
+  source = g_file_new_tmp ("g_file_move_XXXXXX", &iostream, NULL);
+
+  destination_path = g_build_path (G_DIR_SEPARATOR_S, g_get_tmp_dir (), "g_file_move_target", NULL);
+  destination = g_file_new_for_path (destination_path);
+
+  g_assert_nonnull (source);
+  g_assert_nonnull (iostream);
+
+  res = g_file_query_exists (source, NULL);
+  g_assert_true (res);
+  res = g_file_query_exists (destination, NULL);
+  g_assert_false (res);
+
+  // Write a known amount of bytes to the file, so we can test the progress callback against it
+  ostream = g_io_stream_get_output_stream (G_IO_STREAM (iostream));
+  g_output_stream_write (ostream, buffer, sizeof (buffer), NULL, &error);
+  g_assert_no_error (error);
+
+  g_file_move_async (source,
+                     destination,
+                     G_FILE_COPY_NONE,
+                     0,
+                     NULL,
+                     test_move_async_progress_cb,
+                     &progress_data,
+                     test_move_async_cb,
+                     &data);
+
+  while (!data.done)
+    g_main_context_iteration (NULL, TRUE);
+
+  g_assert_no_error (data.error);
+  g_assert_true (data.res);
+  g_assert_cmpuint (progress_data.total_num_bytes, ==, sizeof (buffer));
+
+  res = g_file_query_exists (source, NULL);
+  g_assert_false (res);
+  res = g_file_query_exists (destination, NULL);
+  g_assert_true (res);
+
+  res = g_io_stream_close (G_IO_STREAM (iostream), NULL, &error);
+  g_assert_no_error (error);
+  g_assert_true (res);
+  g_object_unref (iostream);
+
+  res = g_file_delete (destination, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_true (res);
+
+  g_object_unref (source);
+  g_object_unref (destination);
+
+  g_free (destination_path);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -3049,6 +3154,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/file/writev/async_all-to-big-vectors", test_writev_async_all_too_big_vectors);
   g_test_add_func ("/file/writev/async_all-cancellation", test_writev_async_all_cancellation);
   g_test_add_func ("/file/build-attribute-list-for-copy", test_build_attribute_list_for_copy);
+  g_test_add_func ("/file/move_async", test_move_async);
 
   return g_test_run ();
 }

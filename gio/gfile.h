@@ -121,8 +121,8 @@ typedef struct _GFileIface    		GFileIface;
  * @copy_async: Asynchronously copies a file.
  * @copy_finish: Finishes an asynchronous copy operation.
  * @move: Moves a file.
- * @_move_async: Asynchronously moves a file.
- * @_move_finish: Finishes an asynchronous move operation.
+ * @move_async: Asynchronously moves a file. Since: 2.72
+ * @move_finish: Finishes an asynchronous move operation. Since: 2.72
  * @mount_mountable: Mounts a mountable object.
  * @mount_mountable_finish: Finishes a mounting operation.
  * @unmount_mountable: Unmounts a mountable object.
@@ -424,8 +424,18 @@ struct _GFileIface
                                                        GFileProgressCallback progress_callback,
                                                        gpointer              progress_callback_data,
                                                        GError              **error);
-  void                (* _move_async)                 (void);
-  void                (* _move_finish)                (void);
+  void                (* move_async)                  (GFile                *source,
+                                                       GFile                *destination,
+                                                       GFileCopyFlags        flags,
+                                                       int                   io_priority,
+                                                       GCancellable         *cancellable,
+                                                       GFileProgressCallback progress_callback,
+                                                       gpointer              progress_callback_data,
+                                                       GAsyncReadyCallback   callback,
+                                                       gpointer              user_data);
+  gboolean            (* move_finish)                 (GFile                *file,
+                                                       GAsyncResult         *result,
+                                                       GError              **error);
 
   void                (* mount_mountable)             (GFile                *file,
                                                        GMountMountFlags      flags,
@@ -926,6 +936,20 @@ gboolean                g_file_move                       (GFile                
 							   GFileProgressCallback       progress_callback,
 							   gpointer                    progress_callback_data,
 							   GError                    **error);
+GLIB_AVAILABLE_IN_2_72
+void                    g_file_move_async                 (GFile                      *source,
+							                                             GFile                      *destination,
+							                                             GFileCopyFlags              flags,
+							                                             int                         io_priority,
+							                                             GCancellable               *cancellable,
+							                                             GFileProgressCallback       progress_callback,
+							                                             gpointer                    progress_callback_data,
+							                                             GAsyncReadyCallback         callback,
+							                                             gpointer                    user_data);
+GLIB_AVAILABLE_IN_2_72
+gboolean                g_file_move_finish                (GFile                      *file,
+							                                             GAsyncResult               *result,
+							                                             GError                    **error);
 GLIB_AVAILABLE_IN_ALL
 gboolean                g_file_make_directory             (GFile                      *file,
 							   GCancellable               *cancellable,
