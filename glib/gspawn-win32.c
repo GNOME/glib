@@ -658,6 +658,9 @@ fork_exec (gint                  *exit_status,
     {
       if (!make_pipe (stdin_pipe, error))
         goto cleanup_and_fail;
+      if (_g_spawn_invalid_source_fd (stdin_pipe[0], source_fds, n_fds, error) ||
+          _g_spawn_invalid_source_fd (stdin_pipe[1], source_fds, n_fds, error))
+        goto cleanup_and_fail;
       stdin_fd = stdin_pipe[0];
     }
 
@@ -665,12 +668,18 @@ fork_exec (gint                  *exit_status,
     {
       if (!make_pipe (stdout_pipe, error))
         goto cleanup_and_fail;
+      if (_g_spawn_invalid_source_fd (stdout_pipe[0], source_fds, n_fds, error) ||
+          _g_spawn_invalid_source_fd (stdout_pipe[1], source_fds, n_fds, error))
+        goto cleanup_and_fail;
       stdout_fd = stdout_pipe[1];
     }
 
   if (stderr_pipe_out != NULL)
     {
       if (!make_pipe (stderr_pipe, error))
+        goto cleanup_and_fail;
+      if (_g_spawn_invalid_source_fd (stderr_pipe[0], source_fds, n_fds, error) ||
+          _g_spawn_invalid_source_fd (stderr_pipe[1], source_fds, n_fds, error))
         goto cleanup_and_fail;
       stderr_fd = stderr_pipe[1];
     }
@@ -703,8 +712,14 @@ fork_exec (gint                  *exit_status,
 
   if (!make_pipe (child_err_report_pipe, error))
     goto cleanup_and_fail;
+  if (_g_spawn_invalid_source_fd (child_err_report_pipe[0], source_fds, n_fds, error) ||
+      _g_spawn_invalid_source_fd (child_err_report_pipe[1], source_fds, n_fds, error))
+    goto cleanup_and_fail;
   
   if (!make_pipe (helper_sync_pipe, error))
+    goto cleanup_and_fail;
+  if (_g_spawn_invalid_source_fd (helper_sync_pipe[0], source_fds, n_fds, error) ||
+      _g_spawn_invalid_source_fd (helper_sync_pipe[1], source_fds, n_fds, error))
     goto cleanup_and_fail;
   
   new_argv = g_new (char *, argc + 1 + ARG_COUNT);
