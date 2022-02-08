@@ -511,6 +511,13 @@ test_dates (void)
   g_assert_cmpint (g_date_is_first_of_month (d), ==, 1);
   g_date_free (d);
 
+  d = g_date_new_dmy (31, 3, 8);
+  g_date_subtract_months (d, 1);
+  g_assert_cmpint (g_date_get_month (d), ==, 2);
+  g_assert_cmpint (g_date_get_day (d), ==, 29);
+  g_assert_cmpint (g_date_get_year (d), ==, 8);
+  g_date_free (d);
+
   d = g_date_new_julian (375);
   g_date_add_months (d, 1);
   g_assert_cmpint (g_date_get_month (d), ==, 2);
@@ -537,6 +544,13 @@ test_dates (void)
   g_assert_cmpint (g_date_get_month (d), ==, 11);
   g_assert_cmpint (g_date_get_day (d), ==, 6);
   g_assert_cmpint (g_date_get_year (d), ==, 1);
+  g_date_free (d);
+
+  d = g_date_new_dmy (28, 2, 7);
+  g_date_subtract_years (d, 1);
+  g_assert_cmpint (g_date_get_month (d), ==, 2);
+  g_assert_cmpint (g_date_get_day (d), ==, 28);
+  g_assert_cmpint (g_date_get_year (d), ==, 6);
   g_date_free (d);
 
   d = g_date_new_dmy (29, 2, 8);
@@ -759,7 +773,7 @@ test_strftime (void)
     {
       g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
                              "*assertion *failed*");
-      g_date_strftime (buf, 100, "%x", d);
+      g_date_strftime (buf, sizeof (buf), "%x", d);
       g_test_assert_expected_messages ();
     }
 
@@ -769,13 +783,13 @@ test_strftime (void)
     {
       g_date_set_dmy (d, 10, 1, 2000);
       g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING, "*Error*");
-      g_date_strftime (buf, 100, invalid, d);
+      g_date_strftime (buf, sizeof (buf), invalid, d);
       g_test_assert_expected_messages ();
       g_assert_cmpstr (buf, ==, "");
     }
 #else
   g_date_set_dmy (d, 10, 1, 2000);
-  g_date_strftime (buf, 100, invalid, d);
+  g_date_strftime (buf, sizeof (buf), invalid, d);
   g_assert_cmpstr (buf, ==, "");
 #endif
 
@@ -784,7 +798,7 @@ test_strftime (void)
 
   for (i = 0; i < G_N_ELEMENTS (strftime_checks); i++)
     {
-      g_date_strftime (buf, 100, strftime_checks[i].format, d);
+      g_date_strftime (buf, sizeof (buf), strftime_checks[i].format, d);
       g_assert_cmpstr (buf, ==, strftime_checks[i].expect);
     }
 
@@ -792,6 +806,58 @@ test_strftime (void)
 
   setlocale (LC_ALL, oldlocale);
   g_free (oldlocale);
+#ifdef G_OS_WIN32
+  SetThreadLocale (old_lcid);
+#endif
+}
+
+static void
+test_two_digit_years (void)
+{
+  GDate *d;
+  gchar buf[101];
+  gchar *old_locale;
+#ifdef G_OS_WIN32
+  LCID old_lcid;
+#endif
+
+  old_locale = g_strdup (setlocale (LC_ALL, NULL));
+#ifdef G_OS_WIN32
+  old_lcid = GetThreadLocale ();
+#endif
+
+  /* Make sure that nothing has been changed in the original locales.  */
+  setlocale (LC_ALL, "C");
+#ifdef G_OS_WIN32
+  SetThreadLocale (MAKELCID (MAKELANGID (LANG_NEUTRAL, SUBLANG_DEFAULT), SORT_DEFAULT));
+#endif
+
+  d = g_date_new ();
+
+  /* Check two digit years */
+  g_date_set_dmy (d, 10, 10, 1976);
+  g_date_strftime (buf, sizeof (buf), "%D", d);
+  g_assert_cmpstr (buf, ==, "10/10/76");
+  g_date_set_parse (d, buf);
+  g_assert_cmpint (g_date_get_month (d), ==, 10);
+  g_assert_cmpint (g_date_get_day (d), ==, 10);
+  g_assert_true ((g_date_get_year (d) == 1976) ||
+                 (g_date_get_year (d) == 76));
+
+  /* Check two digit years below 100 */
+  g_date_set_dmy (d, 10, 10, 29);
+  g_date_strftime (buf, sizeof (buf), "%D", d);
+  g_assert_cmpstr (buf, ==, "10/10/29");
+  g_date_set_parse (d, buf);
+  g_assert_cmpint (g_date_get_month (d), ==, 10);
+  g_assert_cmpint (g_date_get_day (d), ==, 10);
+  g_assert_true ((g_date_get_year (d) == 2029) ||
+                 (g_date_get_year (d) == 29));
+
+  g_date_free (d);
+
+  setlocale (LC_ALL, old_locale);
+  g_free (old_locale);
 #ifdef G_OS_WIN32
   SetThreadLocale (old_lcid);
 #endif
@@ -815,7 +881,7 @@ test_parse (void)
 
   g_date_set_time (d, 1);
   g_assert_true (g_date_valid (d));
-  g_date_strftime (buf, 100, "Today is a %A, in the month of %B, %x", d);
+  g_date_strftime (buf, sizeof (buf), "Today is a %A, in the month of %B, %x", d);
   g_date_set_parse (d, buf);
 
   if (g_test_undefined ())
@@ -833,7 +899,7 @@ test_parse (void)
 
       g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
                              "*assertion *failed*");
-      g_date_strftime (buf, 100, NULL, d);
+      g_date_strftime (buf, sizeof (buf), NULL, d);
       g_test_assert_expected_messages ();
     }
 
@@ -842,13 +908,13 @@ test_parse (void)
 #ifndef G_OS_WIN32
   /* Windows FILETIME does not support dates before Jan 1 1601,
      so we can't strftime() the beginning of the "Julian" epoch. */
-  g_date_strftime (buf, 100, "Today is a %A, in the month of %B, %x", d);
+  g_date_strftime (buf, sizeof (buf), "Today is a %A, in the month of %B, %x", d);
   g_date_set_parse (d, buf);
 #endif
 
   g_date_set_dmy (d, 10, 1, 2000);
   g_assert_true (g_date_valid (d));
-  g_date_strftime (buf, 100, "%x", d);
+  g_date_strftime (buf, sizeof (buf), "%x", d);
   g_date_set_parse (d, buf);
   g_assert_cmpint (g_date_get_month (d), ==, 1);
   g_assert_cmpint (g_date_get_day (d), ==, 10);
@@ -1077,7 +1143,7 @@ test_month_names (void)
   {                                                    \
     gchar *o_casefold, *buf_casefold;                  \
     g_date_set_dmy (gdate, d, m, y);                   \
-    g_date_strftime (buf, 100, f, gdate);              \
+    g_date_strftime (buf, sizeof (buf), f, gdate);     \
     buf_casefold = g_utf8_casefold (buf, -1);          \
     o_casefold = g_utf8_casefold ((o), -1);            \
     g_assert_cmpstr (buf_casefold, ==, o_casefold);    \
@@ -1663,6 +1729,7 @@ main (int argc, char** argv)
   g_test_add_func ("/date/compare", test_date_compare);
   g_test_add_func ("/date/dates", test_dates);
   g_test_add_func ("/date/strftime", test_strftime);
+  g_test_add_func ("/date/two-digit-years", test_two_digit_years);
   g_test_add_func ("/date/parse", test_parse);
   g_test_add_func ("/date/parse/invalid", test_parse_invalid);
   g_test_add_func ("/date/parse_locale_change", test_parse_locale_change);
