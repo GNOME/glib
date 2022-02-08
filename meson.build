@@ -1858,6 +1858,10 @@ glibconfig_conf.set('G_ATOMIC_LOCK_FREE', have_atomic_lock_free)
 
 # === Threads ===
 
+if get_option('force_posix_threads')
+  warning('DEPRECATION: Option \'force_posix_threads\' is deprecated and will be removed after GLib 2.72; please file an issue with your use case if you still require it')
+endif
+
 # Determination of thread implementation
 if host_system == 'windows' and not get_option('force_posix_threads')
   thread_dep = []
