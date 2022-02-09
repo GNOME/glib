@@ -801,8 +801,13 @@ test_strftime (void)
       g_assert_cmpstr (buf, ==, strftime_checks[i].expect);
     }
 
-  /* Time zone is too versatile on OS_WIN32 to be checked precisely */
 #ifdef G_OS_WIN32
+  /*
+   * Time zone is too versatile on OS_WIN32 to be checked precisely,
+   * According to msdn: "Either the locale's time-zone name
+   * or time zone abbreviation, depending on registry settings; no characters
+   * if time zone is unknown".
+   */
   g_assert_cmpint (g_date_strftime (buf, sizeof (buf), "%Z", d), !=, 0);
 #endif
 
