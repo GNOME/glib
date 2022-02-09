@@ -27,10 +27,10 @@
 #include <locale.h>
 #include <string.h>
 #include <fcntl.h>
+#include <glib/gstdio.h>
 
 #ifdef G_OS_UNIX
 #include <glib-unix.h>
-#include <glib/gstdio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -433,12 +433,11 @@ test_spawn_nonexistent (void)
 static void
 test_spawn_fd_assignment_clash (void)
 {
-#if defined(G_OS_UNIX) && defined(F_DUPFD_CLOEXEC)
   int tmp_fd;
   guint i;
-  const guint n_fds = 10;
-  gint source_fds[n_fds];
-  gint target_fds[n_fds];
+#define N_FDS 10
+  gint source_fds[N_FDS];
+  gint target_fds[N_FDS];
   const gchar *argv[] = { "/nonexistent", NULL };
   gboolean retval;
   GError *local_error = NULL;
@@ -449,27 +448,32 @@ test_spawn_fd_assignment_clash (void)
   tmp_fd = g_file_open_tmp ("glib-spawn-test-XXXXXX", NULL, NULL);
   g_assert_cmpint (tmp_fd, >=, 0);
 
-  for (i = 0; i < (n_fds - 1); ++i)
+  for (i = 0; i < (N_FDS - 1); ++i)
     {
-      int source = fcntl (tmp_fd, F_DUPFD_CLOEXEC, 3);
+      int source;
+#ifdef F_DUPFD_CLOEXEC
+      source = fcntl (tmp_fd, F_DUPFD_CLOEXEC, 3);
+#else
+      source = dup (tmp_fd);
+#endif
       g_assert_cmpint (source, >=, 0);
       source_fds[i] = source;
-      target_fds[i] = source + n_fds;
+      target_fds[i] = source + N_FDS;
     }
 
   source_fds[i] = tmp_fd;
-  target_fds[i] = tmp_fd + n_fds;
+  target_fds[i] = tmp_fd + N_FDS;
 
   /* Print out the FD map. */
   g_test_message ("FD map:");
-  for (i = 0; i < n_fds; i++)
+  for (i = 0; i < N_FDS; i++)
     g_test_message (" • %d → %d", source_fds[i], target_fds[i]);
 
   /* Spawn the subprocess. This should fail because the executable doesn’t
    * exist. */
   retval = g_spawn_async_with_pipes_and_fds (NULL, argv, NULL, G_SPAWN_DEFAULT,
                                              NULL, NULL, -1, -1, -1,
-                                             source_fds, target_fds, n_fds,
+                                             source_fds, target_fds, N_FDS,
                                              NULL, NULL, NULL, NULL,
                                              &local_error);
   g_assert_error (local_error, G_SPAWN_ERROR, G_SPAWN_ERROR_NOENT);
@@ -484,11 +488,8 @@ test_spawn_fd_assignment_clash (void)
   g_assert_cmpuint (statbuf.st_size, ==, 0);
 
   /* Clean up. */
-  for (i = 0; i < n_fds; i++)
+  for (i = 0; i < N_FDS; i++)
     g_close (source_fds[i], NULL);
-#else  /* !G_OS_UNIX */
-  g_test_skip ("FD redirection only supported on Unix with F_DUPFD_CLOEXEC");
-#endif  /* !G_OS_UNIX */
 }
 
 int
