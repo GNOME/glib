@@ -319,6 +319,34 @@ test_spawn_async_with_fds (void)
 }
 
 static void
+test_spawn_async_with_invalid_fds (void)
+{
+  const gchar *argv[] = { echo_prog_path, "thread 0", NULL };
+  gint source_fds[1000];
+  GError *local_error = NULL;
+  gboolean retval;
+  gsize i;
+
+  /* this is very likely going to conflict with the internal fds, if not then skip */
+  for (i = 3; i < G_N_ELEMENTS (source_fds); i++)
+    source_fds[i] = i;
+
+  retval = g_spawn_async_with_pipes_and_fds (NULL, argv, NULL, G_SPAWN_DEFAULT,
+                                             NULL, NULL, -1, -1, -1,
+                                             source_fds, source_fds, G_N_ELEMENTS (source_fds),
+                                             NULL, NULL, NULL, NULL,
+                                             &local_error);
+  if (retval)
+    {
+      g_test_skip ("Skipping internal FDs check as test didn’t manage to trigger a collision");
+      return;
+    }
+  g_assert_false (retval);
+  g_assert_error (local_error, G_SPAWN_ERROR, G_SPAWN_ERROR_INVAL);
+  g_error_free (local_error);
+}
+
+static void
 test_spawn_sync (void)
 {
   int tnum = 1;
@@ -576,6 +604,7 @@ main (int   argc,
   g_test_add_func ("/gthread/spawn-stderr-socket", test_spawn_stderr_socket);
   g_test_add_func ("/gthread/spawn-single-async", test_spawn_async);
   g_test_add_func ("/gthread/spawn-single-async-with-fds", test_spawn_async_with_fds);
+  g_test_add_func ("/gthread/spawn-async-with-invalid-fds", test_spawn_async_with_invalid_fds);
   g_test_add_func ("/gthread/spawn-script", test_spawn_script);
   g_test_add_func ("/gthread/spawn/nonexistent", test_spawn_nonexistent);
   g_test_add_func ("/gthread/spawn-posix-spawn", test_posix_spawn);
