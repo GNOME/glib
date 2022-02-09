@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-01-24 08:36+0000\n"
-"PO-Revision-Date: 2022-01-26 08:50+0700\n"
+"POT-Creation-Date: 2022-02-01 19:33+0000\n"
+"PO-Revision-Date: 2022-02-09 10:03+0700\n"
 "Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
 "Language-Team: Indonesian <gnome@i15n.org>\n"
 "Language: id\n"
@@ -289,7 +289,7 @@ msgstr "Stream telah ditutup"
 msgid "Truncate not supported on base stream"
 msgstr "Pemenggalan tak didukung pada stream basis"
 
-#: gio/gcancellable.c:319 gio/gdbusconnection.c:1873 gio/gdbusprivate.c:1417
+#: gio/gcancellable.c:319 gio/gdbusconnection.c:1873 gio/gdbusprivate.c:1418
 #: gio/gsimpleasyncresult.c:871 gio/gsimpleasyncresult.c:897
 #, c-format
 msgid "Operation was cancelled"
@@ -320,7 +320,7 @@ msgstr "Rangkaian bita dalam input konversi tidak benar"
 msgid "Error during conversion: %s"
 msgstr "Galat ketika konversi: %s"
 
-#: gio/gcharsetconverter.c:445 gio/gsocket.c:1143
+#: gio/gcharsetconverter.c:445 gio/gsocket.c:1147
 msgid "Cancellable initialization not supported"
 msgstr "Inisialisasi yang dapat dibatalkan tak didukung"
 
@@ -348,23 +348,23 @@ msgstr "Tipe tak dikenal"
 msgid "%s filetype"
 msgstr "tipe berkas %s"
 
-#: gio/gcredentials.c:326
+#: gio/gcredentials.c:335
 msgid "GCredentials contains invalid data"
 msgstr "GCredentials berisi data yang tidak valid"
 
-#: gio/gcredentials.c:386 gio/gcredentials.c:675
+#: gio/gcredentials.c:395 gio/gcredentials.c:686
 msgid "GCredentials is not implemented on this OS"
 msgstr "GCredentials tak diimplementasikan di OS ini"
 
-#: gio/gcredentials.c:541 gio/gcredentials.c:559
+#: gio/gcredentials.c:550 gio/gcredentials.c:568
 msgid "There is no GCredentials support for your platform"
 msgstr "Tidak ada dukungan GCredentials bagi platform Anda"
 
-#: gio/gcredentials.c:615
+#: gio/gcredentials.c:626
 msgid "GCredentials does not contain a process ID on this OS"
 msgstr "GCredentials tak memuat suatu ID proses di OS ini"
 
-#: gio/gcredentials.c:669
+#: gio/gcredentials.c:680
 msgid "Credentials spoofing is not possible on this OS"
 msgstr "Pemalsuan kredensial tak diimplementasikan di OS ini"
 
@@ -372,17 +372,17 @@ msgstr "Pemalsuan kredensial tak diimplementasikan di OS ini"
 msgid "Unexpected early end-of-stream"
 msgstr "Akhir stream terlalu dini, tak diharapkan"
 
-#: gio/gdbusaddress.c:159 gio/gdbusaddress.c:233 gio/gdbusaddress.c:322
+#: gio/gdbusaddress.c:162 gio/gdbusaddress.c:236 gio/gdbusaddress.c:325
 #, c-format
 msgid "Unsupported key “%s” in address entry “%s”"
 msgstr "Kunci \"%s\" tak didukung pada entri alamat \"%s\""
 
-#: gio/gdbusaddress.c:172
+#: gio/gdbusaddress.c:175
 #, c-format
 msgid "Meaningless key/value pair combination in address entry “%s”"
 msgstr "Kombinasi pasangan kunci/nilai tanpa arti di entri alamat \"%s\""
 
-#: gio/gdbusaddress.c:181
+#: gio/gdbusaddress.c:184
 #, c-format
 msgid ""
 "Address “%s” is invalid (need exactly one of path, dir, tmpdir, or abstract "
@@ -391,28 +391,28 @@ msgstr ""
 "Alamat \"%s\" tak valid (perlu hanya salah satu dari path, dir, tmpdir, atau "
 "kunci abstrak)"
 
-#: gio/gdbusaddress.c:248 gio/gdbusaddress.c:259 gio/gdbusaddress.c:274
-#: gio/gdbusaddress.c:337 gio/gdbusaddress.c:348
+#: gio/gdbusaddress.c:251 gio/gdbusaddress.c:262 gio/gdbusaddress.c:277
+#: gio/gdbusaddress.c:340 gio/gdbusaddress.c:351
 #, c-format
 msgid "Error in address “%s” — the “%s” attribute is malformed"
 msgstr "Galat dalam alamat \"%s\" — atribut \"%s\" salah bentuk"
 
-#: gio/gdbusaddress.c:418 gio/gdbusaddress.c:682
+#: gio/gdbusaddress.c:421 gio/gdbusaddress.c:680
 #, c-format
 msgid "Unknown or unsupported transport “%s” for address “%s”"
 msgstr "Transport \"%s\" tak dikenal atau tak didukung bagi alamat \"%s\""
 
-#: gio/gdbusaddress.c:462
+#: gio/gdbusaddress.c:465
 #, c-format
 msgid "Address element “%s” does not contain a colon (:)"
 msgstr "Elemen alamat \"%s\" tak memuat titik dua (:)"
 
-#: gio/gdbusaddress.c:471
+#: gio/gdbusaddress.c:474
 #, c-format
 msgid "Transport name in address element “%s” must not be empty"
 msgstr "Nama transport dalam elemen alamat “%s” tidak boleh kosong"
 
-#: gio/gdbusaddress.c:492
+#: gio/gdbusaddress.c:495
 #, c-format
 msgid ""
 "Key/Value pair %d, “%s”, in address element “%s” does not contain an equal "
@@ -421,7 +421,7 @@ msgstr ""
 "Pasangan kunci/nilai %d, \"%s\", dalam elemen alamat \"%s\" tak memuat tanda "
 "sama dengan"
 
-#: gio/gdbusaddress.c:503
+#: gio/gdbusaddress.c:506
 #, c-format
 msgid ""
 "Key/Value pair %d, “%s”, in address element “%s” must not have an empty key"
@@ -429,7 +429,7 @@ msgstr ""
 "Pasangan kunci/nilai %d, \"%s\", dalam elemen alamat \"%s\" tak boleh "
 "memiliki kunci kosong"
 
-#: gio/gdbusaddress.c:517
+#: gio/gdbusaddress.c:520
 #, c-format
 msgid ""
 "Error unescaping key or value in Key/Value pair %d, “%s”, in address element "
@@ -438,7 +438,7 @@ msgstr ""
 "Galat saat membongkar kunci atau nilai dalam pasangan Key/Value %d, \"%s\", "
 "dalam elemen alamat \"%s\""
 
-#: gio/gdbusaddress.c:589
+#: gio/gdbusaddress.c:588
 #, c-format
 msgid ""
 "Error in address “%s” — the unix transport requires exactly one of the keys "
@@ -447,74 +447,74 @@ msgstr ""
 "Galat dalam alamat \"%s\" — transport unix memerlukan hanya satu dari kunci "
 "\"path\" atau \"abstract\" untuk ditata"
 
-#: gio/gdbusaddress.c:625
+#: gio/gdbusaddress.c:623
 #, c-format
 msgid "Error in address “%s” — the host attribute is missing or malformed"
 msgstr "Galat dalam alamat \"%s\" — atribut host kurang atau salah bentuk"
 
-#: gio/gdbusaddress.c:639
+#: gio/gdbusaddress.c:637
 #, c-format
 msgid "Error in address “%s” — the port attribute is missing or malformed"
 msgstr "Galat dalam alamat \"%s\" — atribut portt kurang atau salah bentuk"
 
-#: gio/gdbusaddress.c:653
+#: gio/gdbusaddress.c:651
 #, c-format
 msgid "Error in address “%s” — the noncefile attribute is missing or malformed"
 msgstr "Galat di alamat \"%s\" — atribut berkas nonce kurang atau salah bentuk"
 
-#: gio/gdbusaddress.c:674
+#: gio/gdbusaddress.c:672
 msgid "Error auto-launching: "
 msgstr "Galat saat meluncurkan otomatis: "
 
-#: gio/gdbusaddress.c:727
+#: gio/gdbusaddress.c:725
 #, c-format
 msgid "Error opening nonce file “%s”: %s"
 msgstr "Galat saat membuka berkas nonce \"%s\": %s"
 
-#: gio/gdbusaddress.c:746
+#: gio/gdbusaddress.c:744
 #, c-format
 msgid "Error reading from nonce file “%s”: %s"
 msgstr "Galat saat membaca berkas nonce \"%s\": %s"
 
-#: gio/gdbusaddress.c:755
+#: gio/gdbusaddress.c:753
 #, c-format
 msgid "Error reading from nonce file “%s”, expected 16 bytes, got %d"
 msgstr "Galat saat membaca berkas nonce \"%s\", berharap 16 bita, mendapat %d"
 
-#: gio/gdbusaddress.c:773
+#: gio/gdbusaddress.c:771
 #, c-format
 msgid "Error writing contents of nonce file “%s” to stream:"
 msgstr "Galat saat menulis isi dari berkas nonce \"%s\" ke stream:"
 
-#: gio/gdbusaddress.c:988
+#: gio/gdbusaddress.c:986
 msgid "The given address is empty"
 msgstr "Tidak ada alamat yang diberikan"
 
-#: gio/gdbusaddress.c:1101
+#: gio/gdbusaddress.c:1099
 #, c-format
 msgid "Cannot spawn a message bus when AT_SECURE is set"
 msgstr "Tak bisa spawn suatu bus pesan ketika AT_SECURE ditata"
 
-#: gio/gdbusaddress.c:1108
+#: gio/gdbusaddress.c:1106
 msgid "Cannot spawn a message bus without a machine-id: "
 msgstr "Tak bisa spawn suatu bus pesan tanpa id-mesin: "
 
-#: gio/gdbusaddress.c:1115
+#: gio/gdbusaddress.c:1113
 #, c-format
 msgid "Cannot autolaunch D-Bus without X11 $DISPLAY"
 msgstr "Tak bisa meluncurkan mandiri D-Bus tanpa $DISPLAY X11"
 
-#: gio/gdbusaddress.c:1157
+#: gio/gdbusaddress.c:1155
 #, c-format
 msgid "Error spawning command line “%s”: "
 msgstr "Galat saat spawn baris perintah \"%s\": "
 
-#: gio/gdbusaddress.c:1226
+#: gio/gdbusaddress.c:1224
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr "Tak bisa menentukan alamat bus sesi (tidak diimplementasi bagi OS ini)"
 
-#: gio/gdbusaddress.c:1375 gio/gdbusconnection.c:7334
+#: gio/gdbusaddress.c:1373 gio/gdbusconnection.c:7334
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -523,7 +523,7 @@ msgstr ""
 "Tak bisa menentukan alamat bus dari variabel lingkungan "
 "DBUS_STARTER_BUS_TYPE — nilai tak dikenal \"%s\""
 
-#: gio/gdbusaddress.c:1384 gio/gdbusconnection.c:7343
+#: gio/gdbusaddress.c:1382 gio/gdbusconnection.c:7343
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -531,7 +531,7 @@ msgstr ""
 "Tak bisa menentukan alamat bus karena variabel lingkungan "
 "DBUS_STARTER_BUS_TYPE tak diisi"
 
-#: gio/gdbusaddress.c:1394
+#: gio/gdbusaddress.c:1392
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "Tipe bus %d tak dikenal"
@@ -807,7 +807,7 @@ msgstr ""
 "%d (panjang string adalah %d). String UTF-8 yang valid sampai titik itu "
 "adalah \"%s\""
 
-#: gio/gdbusmessage.c:1509 gio/gdbusmessage.c:1785 gio/gdbusmessage.c:1976
+#: gio/gdbusmessage.c:1509 gio/gdbusmessage.c:1785 gio/gdbusmessage.c:1996
 msgid "Value nested too deeply"
 msgstr "Nilai bersarang terlalu dalam"
 
@@ -840,12 +840,16 @@ msgstr ""
 "Menemui larik bertipe \"a%c\", mengharapkan punya panjang kelipatan %u bita, "
 "tapi menemui panjang %u bita"
 
-#: gio/gdbusmessage.c:1960
+#: gio/gdbusmessage.c:1926 gio/gdbusmessage.c:2645
+msgid "Empty structures (tuples) are not allowed in D-Bus"
+msgstr "Struktur kosong (tuple) tidak diperbolehkan di D-Bus"
+
+#: gio/gdbusmessage.c:1980
 #, c-format
 msgid "Parsed value “%s” for variant is not a valid D-Bus signature"
 msgstr "Nilai terurai \"%s\" bagi varian bukan tanda tangan D-Bus yang valid"
 
-#: gio/gdbusmessage.c:2001
+#: gio/gdbusmessage.c:2021
 #, c-format
 msgid ""
 "Error deserializing GVariant with type string “%s” from the D-Bus wire format"
@@ -853,7 +857,7 @@ msgstr ""
 "Galat saat deserialisasi GVariant dengan type string \"%s\" dari format "
 "kabel D-Bus"
 
-#: gio/gdbusmessage.c:2186
+#: gio/gdbusmessage.c:2206
 #, c-format
 msgid ""
 "Invalid endianness value. Expected 0x6c (“l”) or 0x42 (“B”) but found value "
@@ -862,28 +866,28 @@ msgstr ""
 "Nilai ke-endian-an tak valid. Berharap 0x6c (\"l\") atau (0x42) \"B\" tapi "
 "menemui 0x%02x"
 
-#: gio/gdbusmessage.c:2205
+#: gio/gdbusmessage.c:2225
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr "Versi protokol mayor tak valid. Berharap 1 tapi menemui %d"
 
-#: gio/gdbusmessage.c:2263 gio/gdbusmessage.c:2852
+#: gio/gdbusmessage.c:2283 gio/gdbusmessage.c:2881
 msgid "Signature header found but is not of type signature"
 msgstr "Tajuk tanda tangan ditemukan tetapi bukan tipe tanda tangan"
 
-#: gio/gdbusmessage.c:2275
+#: gio/gdbusmessage.c:2295
 #, c-format
 msgid "Signature header with signature “%s” found but message body is empty"
 msgstr ""
 "Header tanda tangan dengan tanda tangan \"%s\" ditemukan tapi body pesan "
 "kosong"
 
-#: gio/gdbusmessage.c:2290
+#: gio/gdbusmessage.c:2310
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature (for body)"
 msgstr "Nilai terurai \"%s\" bukan tanda tangan D-Bus yang valid (bagi body)"
 
-#: gio/gdbusmessage.c:2322
+#: gio/gdbusmessage.c:2342
 #, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
@@ -891,11 +895,11 @@ msgstr[0] ""
 "Tidak terdapat tajuk tanda tangan pada pesan, tetapi panjang badan pesan "
 "adalah %u bita"
 
-#: gio/gdbusmessage.c:2332
+#: gio/gdbusmessage.c:2352
 msgid "Cannot deserialize message: "
 msgstr "Tak bisa men-deserialisasi pesan: "
 
-#: gio/gdbusmessage.c:2669
+#: gio/gdbusmessage.c:2698
 #, c-format
 msgid ""
 "Error serializing GVariant with type string “%s” to the D-Bus wire format"
@@ -903,23 +907,23 @@ msgstr ""
 "Kesalahan serialisasi GVariant dengan type string \"%s\" ke format kabel D-"
 "Bus"
 
-#: gio/gdbusmessage.c:2806
+#: gio/gdbusmessage.c:2835
 #, c-format
 msgid ""
 "Number of file descriptors in message (%d) differs from header field (%d)"
 msgstr ""
 "Jumlah deskriptor berkas dalam pesan (%d) berbeda dari field header (%d)"
 
-#: gio/gdbusmessage.c:2814
+#: gio/gdbusmessage.c:2843
 msgid "Cannot serialize message: "
 msgstr "Tak bisa men-serialisasi pesan: "
 
-#: gio/gdbusmessage.c:2867
+#: gio/gdbusmessage.c:2896
 #, c-format
 msgid "Message body has signature “%s” but there is no signature header"
 msgstr "Body pesan punya tanda tangan \"%s\" tapi tak ada header tanda tangan"
 
-#: gio/gdbusmessage.c:2877
+#: gio/gdbusmessage.c:2906
 #, c-format
 msgid ""
 "Message body has type signature “%s” but signature in the header field is "
@@ -928,37 +932,37 @@ msgstr ""
 "Tubuh pesan memiliki tanda tangan tipe \"%s\" tapi tanda tangan di ruas "
 "header adalah \"(%s)\""
 
-#: gio/gdbusmessage.c:2893
+#: gio/gdbusmessage.c:2922
 #, c-format
 msgid "Message body is empty but signature in the header field is “(%s)”"
 msgstr "Tubuh pesan kosong tapi tanda tangan pada ruas header adalah \"(%s)\""
 
-#: gio/gdbusmessage.c:3448
+#: gio/gdbusmessage.c:3477
 #, c-format
 msgid "Error return with body of type “%s”"
 msgstr "Galat balikan dengan tubuh bertipe \"%s\""
 
-#: gio/gdbusmessage.c:3456
+#: gio/gdbusmessage.c:3485
 msgid "Error return with empty body"
 msgstr "Galat balikan dengan body kosong"
 
-#: gio/gdbusprivate.c:2184
+#: gio/gdbusprivate.c:2185
 #, c-format
 msgid "(Type any character to close this window)\n"
 msgstr "(Ketikkan karakter apapun untuk menutup jendela ini)\n"
 
-#: gio/gdbusprivate.c:2358
+#: gio/gdbusprivate.c:2371
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
 msgstr "dbus sesi tak sedang berjalan, dan peluncuran-otomatis gagal"
 
-#: gio/gdbusprivate.c:2381
+#: gio/gdbusprivate.c:2394
 #, c-format
 msgid "Unable to get Hardware profile: %s"
 msgstr "Tak bisa mendapat profil perangkat keras: %s"
 
 #. Translators: Both placeholders are file paths
-#: gio/gdbusprivate.c:2432
+#: gio/gdbusprivate.c:2445
 #, c-format
 msgid "Unable to load %s or %s: "
 msgstr "Tak bisa memuat %s or %s: "
@@ -1289,6 +1293,11 @@ msgstr "Galat: Terlalu banyak argumen.\n"
 msgid "Error: %s is not a valid well-known bus name.\n"
 msgstr "Galat: %s bukan nama bus yang dikenal baik dan valid\n"
 
+#: gio/gdebugcontrollerdbus.c:203
+#, c-format
+msgid "Not authorized to change debug settings"
+msgstr "Tidak berwenang untuk mengubah pengaturan awakutu"
+
 #: gio/gdesktopappinfo.c:2174 gio/gdesktopappinfo.c:5099
 msgid "Unnamed"
 msgstr "Tanpa nama"
@@ -1588,7 +1597,7 @@ msgid "Could not parse “%s” as IP address mask"
 msgstr "Tak bisa mengurai \"%s\" sebagai mask alamat IP"
 
 #: gio/ginetsocketaddress.c:203 gio/ginetsocketaddress.c:220
-#: gio/gnativesocketaddress.c:109 gio/gunixsocketaddress.c:221
+#: gio/gnativesocketaddress.c:109 gio/gunixsocketaddress.c:228
 msgid "Not enough space for socket address"
 msgstr "Tak cukup ruang bagi alamat soket"
 
@@ -3849,183 +3858,183 @@ msgstr "Nama skema yang diberikan kosong\n"
 msgid "No such key “%s”\n"
 msgstr "Tidak ada kunci seperti \"%s\"\n"
 
-#: gio/gsocket.c:413
+#: gio/gsocket.c:417
 msgid "Invalid socket, not initialized"
 msgstr "Soket tak valid, tak diinisialisasi"
 
-#: gio/gsocket.c:420
+#: gio/gsocket.c:424
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
 msgstr "Soket tak valid, inisialisasi gagal karena: %s"
 
-#: gio/gsocket.c:428
+#: gio/gsocket.c:432
 msgid "Socket is already closed"
 msgstr "Soket telah ditutup"
 
-#: gio/gsocket.c:443 gio/gsocket.c:3190 gio/gsocket.c:4420 gio/gsocket.c:4478
+#: gio/gsocket.c:447 gio/gsocket.c:3194 gio/gsocket.c:4427 gio/gsocket.c:4485
 msgid "Socket I/O timed out"
 msgstr "I/O soket kehabisan waktu"
 
-#: gio/gsocket.c:578
+#: gio/gsocket.c:582
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "membuat GSocket dari fd: %s"
 
-#: gio/gsocket.c:607 gio/gsocket.c:671 gio/gsocket.c:678
+#: gio/gsocket.c:611 gio/gsocket.c:675 gio/gsocket.c:682
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "Tak bisa membuat soket: %s"
 
-#: gio/gsocket.c:671
+#: gio/gsocket.c:675
 msgid "Unknown family was specified"
 msgstr "Famili tak dikenal dinyatakan"
 
-#: gio/gsocket.c:678
+#: gio/gsocket.c:682
 msgid "Unknown protocol was specified"
 msgstr "Protokol tak dikenal dinyatakan"
 
-#: gio/gsocket.c:1169
+#: gio/gsocket.c:1173
 #, c-format
 msgid "Cannot use datagram operations on a non-datagram socket."
 msgstr "Tak bisa memakai operasi datagram pada suatu soket bukan datagram."
 
-#: gio/gsocket.c:1186
+#: gio/gsocket.c:1190
 #, c-format
 msgid "Cannot use datagram operations on a socket with a timeout set."
 msgstr ""
 "Tak bisa memakai operasi datagram pada suatu soket yang tenggang waktunya "
 "ditata."
 
-#: gio/gsocket.c:1993
+#: gio/gsocket.c:1997
 #, c-format
 msgid "could not get local address: %s"
 msgstr "tak bisa mendapat alamat lokal: %s"
 
-#: gio/gsocket.c:2039
+#: gio/gsocket.c:2043
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "tak bisa mendapat alamat jauh: %s"
 
-#: gio/gsocket.c:2105
+#: gio/gsocket.c:2109
 #, c-format
 msgid "could not listen: %s"
 msgstr "tak bisa mendengarkan: %s"
 
-#: gio/gsocket.c:2209
+#: gio/gsocket.c:2213
 #, c-format
 msgid "Error binding to address %s: %s"
 msgstr "Galat saat mengikat ke alamat %s: %s"
 
-#: gio/gsocket.c:2385 gio/gsocket.c:2422 gio/gsocket.c:2532 gio/gsocket.c:2557
-#: gio/gsocket.c:2620 gio/gsocket.c:2678 gio/gsocket.c:2696
+#: gio/gsocket.c:2389 gio/gsocket.c:2426 gio/gsocket.c:2536 gio/gsocket.c:2561
+#: gio/gsocket.c:2624 gio/gsocket.c:2682 gio/gsocket.c:2700
 #, c-format
 msgid "Error joining multicast group: %s"
 msgstr "Galat saat bergabung dengan grup multicast: %s"
 
-#: gio/gsocket.c:2386 gio/gsocket.c:2423 gio/gsocket.c:2533 gio/gsocket.c:2558
-#: gio/gsocket.c:2621 gio/gsocket.c:2679 gio/gsocket.c:2697
+#: gio/gsocket.c:2390 gio/gsocket.c:2427 gio/gsocket.c:2537 gio/gsocket.c:2562
+#: gio/gsocket.c:2625 gio/gsocket.c:2683 gio/gsocket.c:2701
 #, c-format
 msgid "Error leaving multicast group: %s"
 msgstr "Galat saat meninggalkan grup multicast: %s"
 
-#: gio/gsocket.c:2387
+#: gio/gsocket.c:2391
 msgid "No support for source-specific multicast"
 msgstr "Tak ada dukungan bagi multicast spesifik sumber"
 
-#: gio/gsocket.c:2534
+#: gio/gsocket.c:2538
 msgid "Unsupported socket family"
 msgstr "Keluarga soket tak didukung"
 
-#: gio/gsocket.c:2559
+#: gio/gsocket.c:2563
 msgid "source-specific not an IPv4 address"
 msgstr "spesifik sumber bukan alamat IPv4"
 
-#: gio/gsocket.c:2583
+#: gio/gsocket.c:2587
 #, c-format
 msgid "Interface name too long"
 msgstr "Nama antarmuka terlalu panjang"
 
-#: gio/gsocket.c:2596 gio/gsocket.c:2646
+#: gio/gsocket.c:2600 gio/gsocket.c:2650
 #, c-format
 msgid "Interface not found: %s"
 msgstr "Antarmuka tidak ditemukan: %s"
 
-#: gio/gsocket.c:2622
+#: gio/gsocket.c:2626
 msgid "No support for IPv4 source-specific multicast"
 msgstr "Tak ada dukungan bagi multicast spesifik sumber IPV4"
 
-#: gio/gsocket.c:2680
+#: gio/gsocket.c:2684
 msgid "No support for IPv6 source-specific multicast"
 msgstr "Tak ada dukungan bagi multicast spesifik sumber IPV6"
 
-#: gio/gsocket.c:2889
+#: gio/gsocket.c:2893
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Galat saat menerima sambungan: %s"
 
-#: gio/gsocket.c:3015
+#: gio/gsocket.c:3019
 msgid "Connection in progress"
 msgstr "Penyambungan tengah berlangsung"
 
-#: gio/gsocket.c:3066
+#: gio/gsocket.c:3070
 msgid "Unable to get pending error: "
 msgstr "Tak bisa mendapat kesalahan yang tertunda: "
 
-#: gio/gsocket.c:3255
+#: gio/gsocket.c:3259
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Galat saat menerima data: %s"
 
-#: gio/gsocket.c:3452
+#: gio/gsocket.c:3456
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Galat saat mengirim data: %s"
 
-#: gio/gsocket.c:3639
+#: gio/gsocket.c:3643
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "Tak bisa mematikan soket: %s"
 
-#: gio/gsocket.c:3720
+#: gio/gsocket.c:3724
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Galat saat menutup soket: %s"
 
-#: gio/gsocket.c:4413
+#: gio/gsocket.c:4420
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Menunggu kondisi soket: %s"
 
-#: gio/gsocket.c:4803 gio/gsocket.c:4819 gio/gsocket.c:4832
+#: gio/gsocket.c:4810 gio/gsocket.c:4826 gio/gsocket.c:4839
 #, c-format
 msgid "Unable to send message: %s"
 msgstr "Tak bisa mengirim pesan: %s"
 
-#: gio/gsocket.c:4804 gio/gsocket.c:4820 gio/gsocket.c:4833
+#: gio/gsocket.c:4811 gio/gsocket.c:4827 gio/gsocket.c:4840
 msgid "Message vectors too large"
 msgstr "Vektor pesan terlalu besar"
 
-#: gio/gsocket.c:4849 gio/gsocket.c:4851 gio/gsocket.c:4998 gio/gsocket.c:5083
-#: gio/gsocket.c:5261 gio/gsocket.c:5301 gio/gsocket.c:5303
+#: gio/gsocket.c:4856 gio/gsocket.c:4858 gio/gsocket.c:5005 gio/gsocket.c:5090
+#: gio/gsocket.c:5268 gio/gsocket.c:5308 gio/gsocket.c:5310
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Galat saat menerima pesan: %s"
 
-#: gio/gsocket.c:5025
+#: gio/gsocket.c:5032
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "GSocketControlMessage tak didukung pada Windows"
 
-#: gio/gsocket.c:5498 gio/gsocket.c:5574 gio/gsocket.c:5800
+#: gio/gsocket.c:5505 gio/gsocket.c:5581 gio/gsocket.c:5807
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Galat saat menerima pesan: %s"
 
-#: gio/gsocket.c:6083 gio/gsocket.c:6094 gio/gsocket.c:6140
+#: gio/gsocket.c:6090 gio/gsocket.c:6101 gio/gsocket.c:6164
 #, c-format
 msgid "Unable to read socket credentials: %s"
 msgstr "Tak bisa membaca kredensial soket: %s"
 
-#: gio/gsocket.c:6149
+#: gio/gsocket.c:6173
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials tidak diimplementasikan untuk OS ini"
 
@@ -4145,7 +4154,7 @@ msgstr "Proksi SOCSKv5 tidak mendukung jenis alamat yang diberikan."
 msgid "Unknown SOCKSv5 proxy error."
 msgstr "Galat tak dikenal pada proksi SOCKSv5."
 
-#: gio/gtestdbus.c:612 glib/gspawn-win32.c:311
+#: gio/gtestdbus.c:612 glib/gspawn-win32.c:312
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
@@ -4237,53 +4246,61 @@ msgstr ""
 msgid "The password entered is incorrect."
 msgstr "Sandi yang dimasukkan salah."
 
-#: gio/gunixconnection.c:166 gio/gunixconnection.c:579
+#: gio/gunixconnection.c:125
+msgid "Sending FD is not supported"
+msgstr "Mengirim FD tidak didukung"
+
+#: gio/gunixconnection.c:178 gio/gunixconnection.c:596
 #, c-format
 msgid "Expecting 1 control message, got %d"
 msgid_plural "Expecting 1 control message, got %d"
 msgstr[0] "Mengharapkan 1 pesan kendali, memperoleh %d"
 
-#: gio/gunixconnection.c:182 gio/gunixconnection.c:591
+#: gio/gunixconnection.c:194 gio/gunixconnection.c:608
 msgid "Unexpected type of ancillary data"
 msgstr "Tipe yang tak diharapkan dari data ancillary"
 
-#: gio/gunixconnection.c:200
+#: gio/gunixconnection.c:212
 #, c-format
 msgid "Expecting one fd, but got %d\n"
 msgid_plural "Expecting one fd, but got %d\n"
 msgstr[0] "Mengharapkan satu fd, tapi mendapat %d\n"
 
-#: gio/gunixconnection.c:219
+#: gio/gunixconnection.c:231
 msgid "Received invalid fd"
 msgstr "Menerima fd yang tak valid"
 
-#: gio/gunixconnection.c:363
+#: gio/gunixconnection.c:238
+msgid "Receiving FD is not supported"
+msgstr "Menerima FD tidak didukung"
+
+#: gio/gunixconnection.c:380
 msgid "Error sending credentials: "
 msgstr "Galat saat mengirim kredensial: "
 
-#: gio/gunixconnection.c:520
+#: gio/gunixconnection.c:537
 #, c-format
 msgid "Error checking if SO_PASSCRED is enabled for socket: %s"
 msgstr "Galat ketika memeriksa apakah SO_PASSCRED diaktifkan bagi soket: %s"
 
-#: gio/gunixconnection.c:536
+#: gio/gunixconnection.c:553
 #, c-format
 msgid "Error enabling SO_PASSCRED: %s"
 msgstr "Galat saat mengaktifkan SO_PASSCRED: %s"
 
-#: gio/gunixconnection.c:565
+#: gio/gunixconnection.c:582
 msgid ""
 "Expecting to read a single byte for receiving credentials but read zero bytes"
 msgstr ""
 "Berharap membaca bita tunggal untuk penerimaan kredensial tapi membaca nol "
 "bita"
 
-#: gio/gunixconnection.c:605
+#: gio/gunixconnection.c:622
 #, c-format
 msgid "Not expecting control message, but got %d"
 msgstr "Tak mengharapkan pesan kendali, tapi memperoleh %d"
 
-#: gio/gunixconnection.c:630
+#: gio/gunixconnection.c:647
 #, c-format
 msgid "Error while disabling SO_PASSCRED: %s"
 msgstr "Galat ketika mematikan SO_PASSCRED: %s"
@@ -4310,7 +4327,7 @@ msgstr "Akar sistem berkas"
 msgid "Error writing to file descriptor: %s"
 msgstr "Galat saat menulis ke descriptor berkas: %s"
 
-#: gio/gunixsocketaddress.c:244
+#: gio/gunixsocketaddress.c:251
 msgid "Abstract UNIX domain socket addresses not supported on this system"
 msgstr "Alamat soket domain UNIX abstrak tak didukung pada sistem ini"
 
@@ -5834,7 +5851,7 @@ msgstr "Galat tak terduga dalam membaca data dari proses anak (%s)"
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Terjadi galat pada fungsi waitpid() (%s)"
 
-#: glib/gspawn.c:1166 glib/gspawn-win32.c:1407
+#: glib/gspawn.c:1166 glib/gspawn-win32.c:1399
 #, c-format
 msgid "Child process exited with code %ld"
 msgstr "Proses anak keluar dengan kode %ld"
@@ -5854,7 +5871,7 @@ msgstr "Proses anak dihentikan oleh sinyal %ld"
 msgid "Child process exited abnormally"
 msgstr "Proses anak keluar secara tak normal"
 
-#: glib/gspawn.c:1879 glib/gspawn-win32.c:350 glib/gspawn-win32.c:358
+#: glib/gspawn.c:1879 glib/gspawn-win32.c:351 glib/gspawn-win32.c:359
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Gagal saat membaca dari pipe child (%s)"
@@ -5869,7 +5886,7 @@ msgstr "Gagal menelurkan proses anak \"%s\" (%s)"
 msgid "Failed to fork (%s)"
 msgstr "Gagal saat fork (%s)"
 
-#: glib/gspawn.c:2516 glib/gspawn-win32.c:381
+#: glib/gspawn.c:2516 glib/gspawn-win32.c:382
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
 msgstr "Gagal pindah ke direktori \"%s\" (%s)"
@@ -5909,41 +5926,41 @@ msgstr "Galat tak dikenal ketika menjalankan proses anak \"%s\""
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Gagal saat membaca data yang dibutuhkan dai pipe pid child (%s)"
 
-#: glib/gspawn-win32.c:294
+#: glib/gspawn-win32.c:295
 msgid "Failed to read data from child process"
 msgstr "Gagal untuk membaca data dari proses child"
 
-#: glib/gspawn-win32.c:387 glib/gspawn-win32.c:392 glib/gspawn-win32.c:511
+#: glib/gspawn-win32.c:388 glib/gspawn-win32.c:393 glib/gspawn-win32.c:512
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Gagal saat menjalankan proses child (%s)"
 
-#: glib/gspawn-win32.c:461
+#: glib/gspawn-win32.c:462
 #, c-format
 msgid "Invalid program name: %s"
 msgstr "Nama program salah: %s"
 
-#: glib/gspawn-win32.c:471 glib/gspawn-win32.c:779
+#: glib/gspawn-win32.c:472 glib/gspawn-win32.c:771
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "String tidak benar pada vektor argumen pada %d: %s"
 
-#: glib/gspawn-win32.c:482 glib/gspawn-win32.c:794
+#: glib/gspawn-win32.c:483 glib/gspawn-win32.c:786
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "String tidak benar pada variabel lingkungan: %s"
 
-#: glib/gspawn-win32.c:775
+#: glib/gspawn-win32.c:767
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "Direktori aktif salah: %s"
 
-#: glib/gspawn-win32.c:837
+#: glib/gspawn-win32.c:829
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "Gagal saat menjalankan program bantuan (%s)"
 
-#: glib/gspawn-win32.c:1064
+#: glib/gspawn-win32.c:1056
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -6044,170 +6061,170 @@ msgid "Character out of range for UTF-16"
 msgstr "Karakter di luar jangkauan UTF-16"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2883
+#: glib/gutils.c:2849
 #, c-format
 msgid "%.1f kB"
 msgstr "%.1f kB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2885
+#: glib/gutils.c:2851
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2887
+#: glib/gutils.c:2853
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2889
+#: glib/gutils.c:2855
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2891
+#: glib/gutils.c:2857
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2893
+#: glib/gutils.c:2859
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2897
+#: glib/gutils.c:2863
 #, c-format
 msgid "%.1f KiB"
 msgstr "%.1f KiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2899
+#: glib/gutils.c:2865
 #, c-format
 msgid "%.1f MiB"
 msgstr "%.1f MiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2901
+#: glib/gutils.c:2867
 #, c-format
 msgid "%.1f GiB"
 msgstr "%.1f GiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2903
+#: glib/gutils.c:2869
 #, c-format
 msgid "%.1f TiB"
 msgstr "%.1f TiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2905
+#: glib/gutils.c:2871
 #, c-format
 msgid "%.1f PiB"
 msgstr "%.1f PiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2907
+#: glib/gutils.c:2873
 #, c-format
 msgid "%.1f EiB"
 msgstr "%.1f EiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2911
+#: glib/gutils.c:2877
 #, c-format
 msgid "%.1f kb"
 msgstr "%.1f kb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2913
+#: glib/gutils.c:2879
 #, c-format
 msgid "%.1f Mb"
 msgstr "%.1f Mb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2915
+#: glib/gutils.c:2881
 #, c-format
 msgid "%.1f Gb"
 msgstr "%.1f Gb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2917
+#: glib/gutils.c:2883
 #, c-format
 msgid "%.1f Tb"
 msgstr "%.1f Tb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2919
+#: glib/gutils.c:2885
 #, c-format
 msgid "%.1f Pb"
 msgstr "%.1f Pb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2921
+#: glib/gutils.c:2887
 #, c-format
 msgid "%.1f Eb"
 msgstr "%.1f Eb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2925
+#: glib/gutils.c:2891
 #, c-format
 msgid "%.1f Kib"
 msgstr "%.1f Kib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2927
+#: glib/gutils.c:2893
 #, c-format
 msgid "%.1f Mib"
 msgstr "%.1f Mib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2929
+#: glib/gutils.c:2895
 #, c-format
 msgid "%.1f Gib"
 msgstr "%.1f Gib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2931
+#: glib/gutils.c:2897
 #, c-format
 msgid "%.1f Tib"
 msgstr "%.1f Tib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2933
+#: glib/gutils.c:2899
 #, c-format
 msgid "%.1f Pib"
 msgstr "%.1f Pib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2935
+#: glib/gutils.c:2901
 #, c-format
 msgid "%.1f Eib"
 msgstr "%.1f Eib"
 
-#: glib/gutils.c:2969 glib/gutils.c:3086
+#: glib/gutils.c:2935 glib/gutils.c:3052
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
 msgstr[0] "%u bita"
 
-#: glib/gutils.c:2973
+#: glib/gutils.c:2939
 #, c-format
 msgid "%u bit"
 msgid_plural "%u bits"
 msgstr[0] "%u bita"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
-#: glib/gutils.c:3040
+#: glib/gutils.c:3006
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
 msgstr[0] "%s bita"
 
 #. Translators: the %s in "%s bits" will always be replaced by a number.
-#: glib/gutils.c:3045
+#: glib/gutils.c:3011
 #, c-format
 msgid "%s bit"
 msgid_plural "%s bits"
@@ -6218,32 +6235,32 @@ msgstr[0] "%s bita"
 #. * compatibility.  Users will not see this string unless a program is using this deprecated function.
 #. * Please translate as literally as possible.
 #.
-#: glib/gutils.c:3099
+#: glib/gutils.c:3065
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: glib/gutils.c:3104
+#: glib/gutils.c:3070
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: glib/gutils.c:3109
+#: glib/gutils.c:3075
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: glib/gutils.c:3114
+#: glib/gutils.c:3080
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
-#: glib/gutils.c:3119
+#: glib/gutils.c:3085
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
-#: glib/gutils.c:3124
+#: glib/gutils.c:3090
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
