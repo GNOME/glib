@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-01-27 12:54+0000\n"
-"PO-Revision-Date: 2022-01-27 16:52+0200\n"
+"POT-Creation-Date: 2022-02-09 11:19+0000\n"
+"PO-Revision-Date: 2022-02-09 16:50+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -294,7 +294,7 @@ msgstr "Потік вже закрито"
 msgid "Truncate not supported on base stream"
 msgstr "Урізання не підтримується у базовому потоці"
 
-#: gio/gcancellable.c:319 gio/gdbusconnection.c:1873 gio/gdbusprivate.c:1417
+#: gio/gcancellable.c:319 gio/gdbusconnection.c:1873 gio/gdbusprivate.c:1418
 #: gio/gsimpleasyncresult.c:871 gio/gsimpleasyncresult.c:897
 #, c-format
 msgid "Operation was cancelled"
@@ -589,13 +589,13 @@ msgstr "Помилкові права на каталог «%s». Очікува
 msgid "Error creating directory “%s”: %s"
 msgstr "Сталася помилка при створенні каталогу «%s»: %s"
 
-#: gio/gdbusauthmechanismsha1.c:360 gio/gfile.c:1068 gio/gfile.c:1306
-#: gio/gfile.c:1444 gio/gfile.c:1682 gio/gfile.c:1737 gio/gfile.c:1795
-#: gio/gfile.c:1879 gio/gfile.c:1936 gio/gfile.c:2000 gio/gfile.c:2055
-#: gio/gfile.c:3760 gio/gfile.c:3815 gio/gfile.c:4108 gio/gfile.c:4578
-#: gio/gfile.c:4989 gio/gfile.c:5074 gio/gfile.c:5164 gio/gfile.c:5261
-#: gio/gfile.c:5348 gio/gfile.c:5449 gio/gfile.c:8159 gio/gfile.c:8249
-#: gio/gfile.c:8333 gio/win32/gwinhttpfile.c:453
+#: gio/gdbusauthmechanismsha1.c:360 gio/gfile.c:1080 gio/gfile.c:1318
+#: gio/gfile.c:1456 gio/gfile.c:1694 gio/gfile.c:1749 gio/gfile.c:1807
+#: gio/gfile.c:1891 gio/gfile.c:1948 gio/gfile.c:2012 gio/gfile.c:2067
+#: gio/gfile.c:3772 gio/gfile.c:3912 gio/gfile.c:4205 gio/gfile.c:4675
+#: gio/gfile.c:5086 gio/gfile.c:5171 gio/gfile.c:5261 gio/gfile.c:5358
+#: gio/gfile.c:5445 gio/gfile.c:5546 gio/gfile.c:8375 gio/gfile.c:8465
+#: gio/gfile.c:8549 gio/win32/gwinhttpfile.c:453
 msgid "Operation not supported"
 msgstr "Операція не підтримується"
 
@@ -860,8 +860,7 @@ msgstr ""
 
 #: gio/gdbusmessage.c:1926 gio/gdbusmessage.c:2645
 msgid "Empty structures (tuples) are not allowed in D-Bus"
-msgstr ""
-"Не можна використовувати порожні структури (кортежі) у D-Bus"
+msgstr "Не можна використовувати порожні структури (кортежі) у D-Bus"
 
 #: gio/gdbusmessage.c:1980
 #, c-format
@@ -972,23 +971,23 @@ msgstr "Повернуто помилку для вмісту типу «%s»"
 msgid "Error return with empty body"
 msgstr "Повернена помилка з порожнім тілом"
 
-#: gio/gdbusprivate.c:2184
+#: gio/gdbusprivate.c:2185
 #, c-format
 msgid "(Type any character to close this window)\n"
 msgstr "(Щоб закрити це вікно, уведіть будь-який символ)\n"
 
-#: gio/gdbusprivate.c:2358
+#: gio/gdbusprivate.c:2371
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
 msgstr "Сеанс dbus не запущений, і автозапуск не виконався"
 
-#: gio/gdbusprivate.c:2381
+#: gio/gdbusprivate.c:2394
 #, c-format
 msgid "Unable to get Hardware profile: %s"
 msgstr "Не вдалося отримати профіль апаратури: %s"
 
 #. Translators: Both placeholders are file paths
-#: gio/gdbusprivate.c:2432
+#: gio/gdbusprivate.c:2445
 #, c-format
 msgid "Unable to load %s or %s: "
 msgstr "Не вдалося завантажити %s або %s: "
@@ -1323,8 +1322,7 @@ msgstr "Помилка: %s не є припустимим добре відом�
 #: gio/gdebugcontrollerdbus.c:203
 #, c-format
 msgid "Not authorized to change debug settings"
-msgstr ""
-"Не уповноважено змінювати параметри діагностики"
+msgstr "Не уповноважено змінювати параметри діагностики"
 
 #: gio/gdesktopappinfo.c:2174 gio/gdesktopappinfo.c:5099
 msgid "Unnamed"
@@ -1426,74 +1424,74 @@ msgstr "Очікується GEmblem для GEmblemedIcon"
 #. * trying to find the enclosing (user visible)
 #. * mount of a file, but none exists.
 #.
-#: gio/gfile.c:1567
+#: gio/gfile.c:1579
 msgid "Containing mount does not exist"
 msgstr "Вкладена точка монтування не існує"
 
-#: gio/gfile.c:2614 gio/glocalfile.c:2486
+#: gio/gfile.c:2626 gio/glocalfile.c:2486
 msgid "Can’t copy over directory"
 msgstr "Не можна копіювати із заміною каталогу"
 
-#: gio/gfile.c:2674
+#: gio/gfile.c:2686
 msgid "Can’t copy directory over directory"
 msgstr "Не можна копіювати каталог поверх іншого каталогу"
 
-#: gio/gfile.c:2682
+#: gio/gfile.c:2694
 msgid "Target file exists"
 msgstr "Цільовий файл існує"
 
-#: gio/gfile.c:2701
+#: gio/gfile.c:2713
 msgid "Can’t recursively copy directory"
 msgstr "Не вдалося скопіювати каталог рекурсивно"
 
-#: gio/gfile.c:3002
+#: gio/gfile.c:3014
 msgid "Splice not supported"
 msgstr "З'єднання не підтримується"
 
-#: gio/gfile.c:3006
+#: gio/gfile.c:3018
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "Помилка при розрізанні файла: %s"
 
-#: gio/gfile.c:3158
+#: gio/gfile.c:3170
 msgid "Copy (reflink/clone) between mounts is not supported"
 msgstr "Копіювання (reflink/clone) між точками монтування не підтримується"
 
-#: gio/gfile.c:3162
+#: gio/gfile.c:3174
 msgid "Copy (reflink/clone) is not supported or invalid"
 msgstr "Копіювання (reflink/clone) не підтримується або некоректне"
 
-#: gio/gfile.c:3167
+#: gio/gfile.c:3179
 msgid "Copy (reflink/clone) is not supported or didn’t work"
 msgstr ""
 "Підтримки копіювання (reflink/clone) не передбачено або копіювання не працює"
 
-#: gio/gfile.c:3232
+#: gio/gfile.c:3244
 msgid "Can’t copy special file"
 msgstr "Не вдалося скопіювати спеціальний файл"
 
-#: gio/gfile.c:4041
+#: gio/gfile.c:4138
 msgid "Invalid symlink value given"
 msgstr "Неправильне значення символьного посилання"
 
-#: gio/gfile.c:4051 glib/gfileutils.c:2333
+#: gio/gfile.c:4148 glib/gfileutils.c:2333
 msgid "Symbolic links not supported"
 msgstr "Символічні посилання не підтримуються"
 
-#: gio/gfile.c:4219
+#: gio/gfile.c:4316
 msgid "Trash not supported"
 msgstr "Смітник не підтримується"
 
-#: gio/gfile.c:4331
+#: gio/gfile.c:4428
 #, c-format
 msgid "File names cannot contain “%c”"
 msgstr "Назви файлів не можуть містити символу «%c»"
 
-#: gio/gfile.c:6812 gio/gvolume.c:364
+#: gio/gfile.c:7028 gio/gvolume.c:364
 msgid "volume doesn’t implement mount"
 msgstr "для тому не реалізовано операцію монтування"
 
-#: gio/gfile.c:6926 gio/gfile.c:6974
+#: gio/gfile.c:7142 gio/gfile.c:7190
 msgid "No application is registered as handling this file"
 msgstr "Програм для обробки таких файлів не зареєстровано"
 
@@ -4209,7 +4207,7 @@ msgstr "Проксі SOCKSv5 не підтримує пропонований т
 msgid "Unknown SOCKSv5 proxy error."
 msgstr "Невідома помилка проксі SOCKSv5."
 
-#: gio/gtestdbus.c:612 glib/gspawn-win32.c:311
+#: gio/gtestdbus.c:612 glib/gspawn-win32.c:314
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Помилка створення каналу для обміну з дочірнім процесом (%s)"
@@ -4302,7 +4300,6 @@ msgid "The password entered is incorrect."
 msgstr "Уведено неправильний пароль."
 
 #: gio/gunixconnection.c:125
-#| msgid "Setting attribute %s not supported"
 msgid "Sending FD is not supported"
 msgstr "Підтримки надсилання дескриптора файла не передбачено"
 
@@ -4332,7 +4329,6 @@ msgid "Received invalid fd"
 msgstr "Отримано неправильний fd"
 
 #: gio/gunixconnection.c:238
-#| msgid "Setting attribute %s not supported"
 msgid "Receiving FD is not supported"
 msgstr "Підтримки отримання дескриптора файла не передбачено"
 
@@ -5919,116 +5915,122 @@ msgstr "Неочікувана помилка під час читання да�
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Неочікувана помилка у waitpid() (%s)"
 
-#: glib/gspawn.c:1166 glib/gspawn-win32.c:1407
+#: glib/gspawn.c:1168 glib/gspawn-win32.c:1426
 #, c-format
 msgid "Child process exited with code %ld"
 msgstr "Дочірній процес закінчився з кодом %ld"
 
-#: glib/gspawn.c:1174
+#: glib/gspawn.c:1176
 #, c-format
 msgid "Child process killed by signal %ld"
 msgstr "Дочірній процес вбитий за сигналом %ld"
 
-#: glib/gspawn.c:1181
+#: glib/gspawn.c:1183
 #, c-format
 msgid "Child process stopped by signal %ld"
 msgstr "Дочірній процес зупинений за сигналом %ld"
 
-#: glib/gspawn.c:1188
+#: glib/gspawn.c:1190
 #, c-format
 msgid "Child process exited abnormally"
 msgstr "Дочірній процес аварійно закінчив роботу"
 
-#: glib/gspawn.c:1879 glib/gspawn-win32.c:350 glib/gspawn-win32.c:358
+#: glib/gspawn.c:1881 glib/gspawn-win32.c:353 glib/gspawn-win32.c:361
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Помилка зчитування з дочірнього каналу (%s)"
 
-#: glib/gspawn.c:2239
+#: glib/gspawn.c:2241
 #, c-format
 msgid "Failed to spawn child process “%s” (%s)"
 msgstr "Не вдалося запустити дочірній процес «%s» (%s)"
 
-#: glib/gspawn.c:2356
+#: glib/gspawn.c:2358
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Помилка створення процесу (%s)"
 
-#: glib/gspawn.c:2516 glib/gspawn-win32.c:381
+#: glib/gspawn.c:2518 glib/gspawn-win32.c:384
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
 msgstr "Не вдалося змінити каталог на «%s» (%s)"
 
-#: glib/gspawn.c:2526
+#: glib/gspawn.c:2528
 #, c-format
 msgid "Failed to execute child process “%s” (%s)"
 msgstr "Не вдалося виконати дочірній процес «%s» (%s)"
 
-#: glib/gspawn.c:2536
+#: glib/gspawn.c:2538
 #, c-format
 msgid "Failed to open file to remap file descriptor (%s)"
 msgstr "Не вдалося відкрити файл для зміни прив'язки дескриптора файла (%s)"
 
-#: glib/gspawn.c:2544
+#: glib/gspawn.c:2546
 #, c-format
 msgid "Failed to duplicate file descriptor for child process (%s)"
 msgstr "Не вдалося здублювати дескриптор файла для дочірнього процесу (%s)"
 
-#: glib/gspawn.c:2553
+#: glib/gspawn.c:2555
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Помилка запуску дочірнього процесу (%s)"
 
-#: glib/gspawn.c:2561
+#: glib/gspawn.c:2563
 #, c-format
 msgid "Failed to close file descriptor for child process (%s)"
 msgstr "Не вдалося закрити дескриптор файла для дочірнього процесу (%s)"
 
-#: glib/gspawn.c:2569
+#: glib/gspawn.c:2571
 #, c-format
 msgid "Unknown error executing child process “%s”"
 msgstr "Невідома помилка виконання дочірнього процесу «%s»"
 
-#: glib/gspawn.c:2593
+#: glib/gspawn.c:2595
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Не вдалося зчитати достатню кількість даних з дочірнього каналу (%s)"
 
-#: glib/gspawn-win32.c:294
+#: glib/gspawn-win32.c:297
 msgid "Failed to read data from child process"
 msgstr "Помилка зчитування даних з дочірнього процесу"
 
-#: glib/gspawn-win32.c:387 glib/gspawn-win32.c:392 glib/gspawn-win32.c:511
+#: glib/gspawn-win32.c:390 glib/gspawn-win32.c:395 glib/gspawn-win32.c:519
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Помилка виконання дочірнього процесу (%s)"
 
-#: glib/gspawn-win32.c:461
+#: glib/gspawn-win32.c:400
+#, c-format
+#| msgid "Failed to fork child process (%s)"
+msgid "Failed to dup() in child process (%s)"
+msgstr "Не вдалося виконати dup() у дочірньому процесі (%s)"
+
+#: glib/gspawn-win32.c:469
 #, c-format
 msgid "Invalid program name: %s"
 msgstr "Неправильна назва програми: %s"
 
-#: glib/gspawn-win32.c:471 glib/gspawn-win32.c:779
+#: glib/gspawn-win32.c:479 glib/gspawn-win32.c:797
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "Неправильний рядок у векторі аргументів %d: %s"
 
-#: glib/gspawn-win32.c:482 glib/gspawn-win32.c:794
+#: glib/gspawn-win32.c:490 glib/gspawn-win32.c:813
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "Неправильний рядок у середовищі: %s"
 
-#: glib/gspawn-win32.c:775
+#: glib/gspawn-win32.c:793
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "Неправильний робочий каталог: %s"
 
-#: glib/gspawn-win32.c:837
+#: glib/gspawn-win32.c:858
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "Не вдалося виконати допоміжну програму (%s)"
 
-#: glib/gspawn-win32.c:1064
+#: glib/gspawn-win32.c:1086
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -6129,150 +6131,150 @@ msgid "Character out of range for UTF-16"
 msgstr "Символ не входить в набір UTF-16"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2890
+#: glib/gutils.c:2849
 #, c-format
 msgid "%.1f kB"
 msgstr "%.1f кБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2892
+#: glib/gutils.c:2851
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f МБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2894
+#: glib/gutils.c:2853
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f ГБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2896
+#: glib/gutils.c:2855
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f ТБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2898
+#: glib/gutils.c:2857
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f ПБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2900
+#: glib/gutils.c:2859
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f ЕБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2904
+#: glib/gutils.c:2863
 #, c-format
 msgid "%.1f KiB"
 msgstr "%.1f КіБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2906
+#: glib/gutils.c:2865
 #, c-format
 msgid "%.1f MiB"
 msgstr "%.1f МіБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2908
+#: glib/gutils.c:2867
 #, c-format
 msgid "%.1f GiB"
 msgstr "%.1f ГіБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2910
+#: glib/gutils.c:2869
 #, c-format
 msgid "%.1f TiB"
 msgstr "%.1f ТіБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2912
+#: glib/gutils.c:2871
 #, c-format
 msgid "%.1f PiB"
 msgstr "%.1f ПіБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2914
+#: glib/gutils.c:2873
 #, c-format
 msgid "%.1f EiB"
 msgstr "%.1f ЕіБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2918
+#: glib/gutils.c:2877
 #, c-format
 msgid "%.1f kb"
 msgstr "%.1f кбіт"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2920
+#: glib/gutils.c:2879
 #, c-format
 msgid "%.1f Mb"
 msgstr "%.1f Мбіт"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2922
+#: glib/gutils.c:2881
 #, c-format
 msgid "%.1f Gb"
 msgstr "%.1f Гбіт"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2924
+#: glib/gutils.c:2883
 #, c-format
 msgid "%.1f Tb"
 msgstr "%.1f Тбіт"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2926
+#: glib/gutils.c:2885
 #, c-format
 msgid "%.1f Pb"
 msgstr "%.1f Пбіт"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2928
+#: glib/gutils.c:2887
 #, c-format
 msgid "%.1f Eb"
 msgstr "%.1f Ебіт"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2932
+#: glib/gutils.c:2891
 #, c-format
 msgid "%.1f Kib"
 msgstr "%.1f Кібіт"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2934
+#: glib/gutils.c:2893
 #, c-format
 msgid "%.1f Mib"
 msgstr "%.1f Мібіт"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2936
+#: glib/gutils.c:2895
 #, c-format
 msgid "%.1f Gib"
 msgstr "%.1f Гібіт"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2938
+#: glib/gutils.c:2897
 #, c-format
 msgid "%.1f Tib"
 msgstr "%.1f Тібіт"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2940
+#: glib/gutils.c:2899
 #, c-format
 msgid "%.1f Pib"
 msgstr "%.1f Пібіт"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2942
+#: glib/gutils.c:2901
 #, c-format
 msgid "%.1f Eib"
 msgstr "%.1f Еібіт"
 
-#: glib/gutils.c:2976 glib/gutils.c:3093
+#: glib/gutils.c:2935 glib/gutils.c:3052
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
@@ -6280,7 +6282,7 @@ msgstr[0] "%u байт"
 msgstr[1] "%u байти"
 msgstr[2] "%u байтів"
 
-#: glib/gutils.c:2980
+#: glib/gutils.c:2939
 #, c-format
 msgid "%u bit"
 msgid_plural "%u bits"
@@ -6289,7 +6291,7 @@ msgstr[1] "%u бітів"
 msgstr[2] "%u байтів"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
-#: glib/gutils.c:3047
+#: glib/gutils.c:3006
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
@@ -6298,7 +6300,7 @@ msgstr[1] "%s байти"
 msgstr[2] "%s байтів"
 
 #. Translators: the %s in "%s bits" will always be replaced by a number.
-#: glib/gutils.c:3052
+#: glib/gutils.c:3011
 #, c-format
 msgid "%s bit"
 msgid_plural "%s bits"
@@ -6311,32 +6313,32 @@ msgstr[2] "%s бітів"
 #. * compatibility.  Users will not see this string unless a program is using this deprecated function.
 #. * Please translate as literally as possible.
 #.
-#: glib/gutils.c:3106
+#: glib/gutils.c:3065
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f КБ"
 
-#: glib/gutils.c:3111
+#: glib/gutils.c:3070
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f МБ"
 
-#: glib/gutils.c:3116
+#: glib/gutils.c:3075
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f ГБ"
 
-#: glib/gutils.c:3121
+#: glib/gutils.c:3080
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f ТБ"
 
-#: glib/gutils.c:3126
+#: glib/gutils.c:3085
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f ПБ"
 
-#: glib/gutils.c:3131
+#: glib/gutils.c:3090
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f ЕБ"
