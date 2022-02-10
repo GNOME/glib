@@ -584,7 +584,7 @@ check_cap_dac_override (const char *tmpdir)
   inside = g_build_filename (dac_denies_write, "inside", NULL);
 
   g_assert_no_errno (mkdir (dac_denies_write, S_IRWXU));
-  g_assert_no_errno (chmod (dac_denies_write, 0));
+  g_assert_no_errno (g_chmod (dac_denies_write, 0));
 
   if (mkdir (inside, S_IRWXU) == 0)
     {
@@ -601,7 +601,7 @@ check_cap_dac_override (const char *tmpdir)
       have_cap = FALSE;
     }
 
-  g_assert_no_errno (chmod (dac_denies_write, S_IRWXU));
+  g_assert_no_errno (g_chmod (dac_denies_write, S_IRWXU));
   g_assert_no_errno (rmdir (dac_denies_write));
 
   if (safe_tmpdir != NULL)
@@ -1241,8 +1241,11 @@ test_set_contents_full (void)
       { EXISTING_FILE_REGULAR, 0644, FALSE, TRUE, 0 },
 #ifndef G_OS_WIN32
       { EXISTING_FILE_SYMLINK, 0644, FALSE, TRUE, 0 },
-#endif
       { EXISTING_FILE_DIRECTORY, 0644, FALSE, FALSE, G_FILE_ERROR_ISDIR },
+#else
+      /* on win32, _wopen returns EACCES if path is a directory */
+      { EXISTING_FILE_DIRECTORY, 0644, FALSE, FALSE, G_FILE_ERROR_ACCES },
+#endif
     };
   gsize i;
 
@@ -1345,7 +1348,17 @@ test_set_contents_full (void)
               g_assert_no_errno (g_lstat (set_contents_name, &statbuf));
 
               if (tests[i].existing_file == EXISTING_FILE_NONE)
-                g_assert_cmpint (statbuf.st_mode & ~S_IFMT, ==, tests[i].new_mode);
+                {
+                  int mode = statbuf.st_mode & ~S_IFMT;
+                  int new_mode = tests[i].new_mode;
+#ifdef G_OS_WIN32
+                  /* on windows, group and others perms handling is different */
+                  /* only check the rwx user permissions */
+                  mode &= (_S_IREAD|_S_IWRITE|_S_IEXEC);
+                  new_mode &= (_S_IREAD|_S_IWRITE|_S_IEXEC);
+#endif
+                  g_assert_cmpint (mode, ==, new_mode);
+                }
 
 #ifndef G_OS_WIN32
               if (tests[i].existing_file == EXISTING_FILE_SYMLINK)
@@ -1399,7 +1412,7 @@ test_set_contents_full_read_only_file (void)
   write (fd, "a", 1);
   g_assert_no_errno (g_fsync (fd));
   close (fd);
-  g_assert_no_errno (chmod (file_name, 0200));
+  g_assert_no_errno (g_chmod (file_name, 0400)); /* S_IREAD */
 
   if (g_test_undefined ())
     {
@@ -1439,6 +1452,8 @@ test_set_contents_full_read_only_file (void)
   g_free (file_name);
 }
 
+#ifndef G_OS_WIN32
+/* windows mostly ignores read-only flagged directoy, chmod doesn't work */
 static void
 test_set_contents_full_read_only_directory (void)
 {
@@ -1472,7 +1487,7 @@ test_set_contents_full_read_only_directory (void)
       g_assert_no_errno (g_fsync (fd));
       close (fd);
 
-      g_assert_no_errno (chmod (dir_name, 0));
+      g_assert_no_errno (g_chmod (dir_name, 0));
 
       /* Set the file contents */
       ret = g_file_set_contents_full (file_name, "b", 1, flags, 0644, &error);
@@ -1496,6 +1511,7 @@ test_set_contents_full_read_only_directory (void)
       g_free (dir_name);
     }
 }
+#endif
 
 static void
 test_read_link (void)
@@ -2145,7 +2161,9 @@ main (int   argc,
   g_test_add_func ("/fileutils/set-contents", test_set_contents);
   g_test_add_func ("/fileutils/set-contents-full", test_set_contents_full);
   g_test_add_func ("/fileutils/set-contents-full/read-only-file", test_set_contents_full_read_only_file);
+#ifndef G_OS_WIN32
   g_test_add_func ("/fileutils/set-contents-full/read-only-directory", test_set_contents_full_read_only_directory);
+#endif
   g_test_add_func ("/fileutils/read-link", test_read_link);
   g_test_add_func ("/fileutils/stdio-wrappers", test_stdio_wrappers);
   g_test_add_func ("/fileutils/fopen-modes", test_fopen_modes);
