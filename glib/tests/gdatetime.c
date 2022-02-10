@@ -2970,10 +2970,10 @@ test_new_offset (void)
     }
 }
 
-#ifndef G_OS_WIN32
 static void
 test_time_zone_parse_rfc8536 (void)
 {
+#ifndef G_OS_WIN32
   const gchar *test_files[] =
     {
       /* Generated with `zic -b slim`; see
@@ -2999,8 +2999,10 @@ test_time_zone_parse_rfc8536 (void)
       g_time_zone_unref (tz);
       g_free (path);
     }
-}
+#else
+  g_test_skip ("RFC 8536 format time zone files are not available on Windows");
 #endif
+}
 
 /* Check GTimeZone instances are cached. */
 static void
@@ -3152,9 +3154,7 @@ main (gint   argc,
   g_test_add_func ("/GTimeZone/floating-point", test_GDateTime_floating_point);
   g_test_add_func ("/GTimeZone/identifier", test_identifier);
   g_test_add_func ("/GTimeZone/new-offset", test_new_offset);
-#ifndef G_OS_WIN32
   g_test_add_func ("/GTimeZone/parse-rfc8536", test_time_zone_parse_rfc8536);
-#endif
   g_test_add_func ("/GTimeZone/caching", test_time_zone_caching);
 
   return g_test_run ();
