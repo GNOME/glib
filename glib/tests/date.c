@@ -722,7 +722,6 @@ test_strftime (void)
     { "%X", "12:00:00 AM" },
     { "%x", "" },
     { "%Y", "0001" },
-    { "%Z", "Pacific Standard Time" },
 #else
     { "%B", "January" },
     { "%b", "Jan" },
@@ -801,6 +800,11 @@ test_strftime (void)
       g_date_strftime (buf, sizeof (buf), strftime_checks[i].format, d);
       g_assert_cmpstr (buf, ==, strftime_checks[i].expect);
     }
+
+  /* Time zone is too versatile on OS_WIN32 to be checked precisely */
+#ifdef G_OS_WIN32
+  g_assert_cmpint (g_date_strftime (buf, sizeof (buf), "%Z", d), !=, 0);
+#endif
 
   g_date_free (d);
 
