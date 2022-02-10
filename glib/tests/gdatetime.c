@@ -49,6 +49,23 @@
   g_assert_cmpint ((U), ==, g_date_time_get_microsecond ((dt))); \
 } G_STMT_END
 
+static gboolean
+skip_if_running_uninstalled (void)
+{
+  /* If running uninstalled (G_TEST_BUILDDIR is set), skip this test, since we
+   * need the translations to be installed. We can’t mess around with
+   * bindtextdomain() here, as the compiled .gmo files in po/ are not in the
+   * right installed directory hierarchy to be successfully loaded by gettext. */
+  if (g_getenv ("G_TEST_BUILDDIR") != NULL)
+    {
+      g_test_skip ("Skipping due to running uninstalled. "
+                   "This test can only be run when the translations are installed.");
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
 static void
 get_localtime_tm (time_t     time_,
                   struct tm *retval)
@@ -1650,16 +1667,8 @@ test_non_utf8_printf (void)
 {
   gchar *oldlocale;
 
-  /* If running uninstalled (G_TEST_BUILDDIR is set), skip this test, since we
-   * need the translations to be installed. We can’t mess around with
-   * bindtextdomain() here, as the compiled .gmo files in po/ are not in the
-   * right installed directory hierarchy to be successfully loaded by gettext. */
-  if (g_getenv ("G_TEST_BUILDDIR") != NULL)
-    {
-      g_test_skip ("Skipping due to running uninstalled. "
-                   "This test can only be run when the translations are installed.");
-      return;
-    }
+  if (skip_if_running_uninstalled())
+    return;
 
   oldlocale = g_strdup (setlocale (LC_ALL, NULL));
   setlocale (LC_ALL, "ja_JP.eucjp");
@@ -1805,6 +1814,7 @@ test_modifiers (void)
 
   oldlocale = g_strdup (setlocale (LC_ALL, NULL));
   setlocale (LC_ALL, "fa_IR.utf-8");
+#ifdef HAVE_LANGINFO_OUTDIGIT
   if (strstr (setlocale (LC_ALL, NULL), "fa_IR") != NULL)
     {
       TEST_PRINTF_TIME (23, 0, 0, "%OH", "\333\262\333\263");    /* '23' */
@@ -1818,6 +1828,9 @@ test_modifiers (void)
     }
   else
     g_test_skip ("locale fa_IR not available, skipping O modifier tests");
+#else
+    g_test_skip ("langinfo not available, skipping O modifier tests");
+#endif
   setlocale (LC_ALL, oldlocale);
   g_free (oldlocale);
 }
@@ -1831,16 +1844,8 @@ test_month_names (void)
 
   g_test_bug ("http://bugzilla.gnome.org/749206");
 
-  /* If running uninstalled (G_TEST_BUILDDIR is set), skip this test, since we
-   * need the translations to be installed. We can’t mess around with
-   * bindtextdomain() here, as the compiled .gmo files in po/ are not in the
-   * right installed directory hierarchy to be successfully loaded by gettext. */
-  if (g_getenv ("G_TEST_BUILDDIR") != NULL)
-    {
-      g_test_skip ("Skipping due to running uninstalled. "
-                   "This test can only be run when the translations are installed.");
-      return;
-    }
+  if (skip_if_running_uninstalled())
+    return;
 
   oldlocale = g_strdup (setlocale (LC_ALL, NULL));
 
@@ -2361,6 +2366,9 @@ check_and_set_locale (int          category,
 static void
 test_format_time_mixed_utf8 (gconstpointer data)
 {
+#ifdef _MSC_VER
+  g_test_skip ("setlocale (LC_MESSAGES) asserts on ucrt");
+#else
   const MixedUtf8TestData *test_data;
   gchar *old_time_locale;
   gchar *old_messages_locale;
@@ -2426,6 +2434,7 @@ test_format_time_mixed_utf8 (gconstpointer data)
   setlocale (LC_MESSAGES, old_messages_locale);
   g_free (old_time_locale);
   g_free (old_messages_locale);
+#endif
 }
 
 #pragma GCC diagnostic push
@@ -2463,6 +2472,17 @@ static void
 test_GDateTime_strftime_error_handling (void)
 {
   gchar *oldlocale;
+#ifdef G_OS_WIN32
+  LCID old_lcid;
+#endif
+
+  if (skip_if_running_uninstalled())
+    return;
+
+#ifdef G_OS_WIN32
+  old_lcid = GetThreadLocale ();
+  SetThreadLocale (MAKELCID (MAKELANGID (LANG_GERMAN, SUBLANG_GERMAN), SORT_DEFAULT));
+#endif
 
   oldlocale = g_strdup (setlocale (LC_ALL, NULL));
   setlocale (LC_ALL, "de_DE.utf-8");
@@ -2476,6 +2496,10 @@ test_GDateTime_strftime_error_handling (void)
     g_test_skip ("locale de_DE not available, skipping error handling tests");
   setlocale (LC_ALL, oldlocale);
   g_free (oldlocale);
+
+#ifdef G_OS_WIN32
+  SetThreadLocale (old_lcid);
+#endif
 }
 
 static void
@@ -2946,6 +2970,7 @@ test_new_offset (void)
     }
 }
 
+#ifndef G_OS_WIN32
 static void
 test_time_zone_parse_rfc8536 (void)
 {
@@ -2975,6 +3000,7 @@ test_time_zone_parse_rfc8536 (void)
       g_free (path);
     }
 }
+#endif
 
 /* Check GTimeZone instances are cached. */
 static void
@@ -3126,7 +3152,9 @@ main (gint   argc,
   g_test_add_func ("/GTimeZone/floating-point", test_GDateTime_floating_point);
   g_test_add_func ("/GTimeZone/identifier", test_identifier);
   g_test_add_func ("/GTimeZone/new-offset", test_new_offset);
+#ifndef G_OS_WIN32
   g_test_add_func ("/GTimeZone/parse-rfc8536", test_time_zone_parse_rfc8536);
+#endif
   g_test_add_func ("/GTimeZone/caching", test_time_zone_caching);
 
   return g_test_run ();
