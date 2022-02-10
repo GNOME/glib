@@ -57,6 +57,7 @@ gio_tests = {
   },
   'data-input-stream' : {},
   'data-output-stream' : {},
+  'debugcontroller' : {},
   'defaultvalue' : {'extra_sources' : [giotypefuncs_inc]},
   'fileattributematcher' : {},
   'filter-streams' : {},
