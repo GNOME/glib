@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib glib-2-70\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-01-23 14:08+0000\n"
-"PO-Revision-Date: 2022-01-26 08:48+0700\n"
+"POT-Creation-Date: 2022-02-09 19:50+0000\n"
+"PO-Revision-Date: 2022-02-10 10:09+0700\n"
 "Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
 "Language-Team: Indonesian <gnome@i15n.org>\n"
 "Language: id\n"
@@ -798,7 +798,7 @@ msgstr ""
 "%d (panjang string adalah %d). String UTF-8 yang valid sampai titik itu "
 "adalah \"%s\""
 
-#: gio/gdbusmessage.c:1519 gio/gdbusmessage.c:1795 gio/gdbusmessage.c:1986
+#: gio/gdbusmessage.c:1519 gio/gdbusmessage.c:1795 gio/gdbusmessage.c:2006
 msgid "Value nested too deeply"
 msgstr "Nilai bersarang terlalu dalam"
 
@@ -831,12 +831,16 @@ msgstr ""
 "Menemui larik bertipe \"a%c\", mengharapkan punya panjang kelipatan %u bita, "
 "tapi menemui panjang %u bita"
 
-#: gio/gdbusmessage.c:1970
+#: gio/gdbusmessage.c:1936 gio/gdbusmessage.c:2655
+msgid "Empty structures (tuples) are not allowed in D-Bus"
+msgstr "Struktur kosong (tuple) tidak diperbolehkan di D-Bus"
+
+#: gio/gdbusmessage.c:1990
 #, c-format
 msgid "Parsed value “%s” for variant is not a valid D-Bus signature"
 msgstr "Nilai terurai \"%s\" bagi varian bukan tanda tangan D-Bus yang valid"
 
-#: gio/gdbusmessage.c:2011
+#: gio/gdbusmessage.c:2031
 #, c-format
 msgid ""
 "Error deserializing GVariant with type string “%s” from the D-Bus wire format"
@@ -844,7 +848,7 @@ msgstr ""
 "Galat saat deserialisasi GVariant dengan type string \"%s\" dari format "
 "kabel D-Bus"
 
-#: gio/gdbusmessage.c:2196
+#: gio/gdbusmessage.c:2216
 #, c-format
 msgid ""
 "Invalid endianness value. Expected 0x6c (“l”) or 0x42 (“B”) but found value "
@@ -853,28 +857,28 @@ msgstr ""
 "Nilai ke-endian-an tak valid. Berharap 0x6c (\"l\") atau (0x42) \"B\" tapi "
 "menemui 0x%02x"
 
-#: gio/gdbusmessage.c:2215
+#: gio/gdbusmessage.c:2235
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr "Versi protokol mayor tak valid. Berharap 1 tapi menemui %d"
 
-#: gio/gdbusmessage.c:2273 gio/gdbusmessage.c:2862
+#: gio/gdbusmessage.c:2293 gio/gdbusmessage.c:2891
 msgid "Signature header found but is not of type signature"
 msgstr "Tajuk tanda tangan ditemukan tetapi bukan tipe tanda tangan"
 
-#: gio/gdbusmessage.c:2285
+#: gio/gdbusmessage.c:2305
 #, c-format
 msgid "Signature header with signature “%s” found but message body is empty"
 msgstr ""
 "Header tanda tangan dengan tanda tangan \"%s\" ditemukan tapi body pesan "
 "kosong"
 
-#: gio/gdbusmessage.c:2300
+#: gio/gdbusmessage.c:2320
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature (for body)"
 msgstr "Nilai terurai \"%s\" bukan tanda tangan D-Bus yang valid (bagi body)"
 
-#: gio/gdbusmessage.c:2332
+#: gio/gdbusmessage.c:2352
 #, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
@@ -882,11 +886,11 @@ msgstr[0] ""
 "Tidak terdapat tajuk tanda tangan pada pesan, tetapi panjang badan pesan "
 "adalah %u bita"
 
-#: gio/gdbusmessage.c:2342
+#: gio/gdbusmessage.c:2362
 msgid "Cannot deserialize message: "
 msgstr "Tak bisa men-deserialisasi pesan: "
 
-#: gio/gdbusmessage.c:2679
+#: gio/gdbusmessage.c:2708
 #, c-format
 msgid ""
 "Error serializing GVariant with type string “%s” to the D-Bus wire format"
@@ -894,23 +898,23 @@ msgstr ""
 "Kesalahan serialisasi GVariant dengan type string \"%s\" ke format kabel D-"
 "Bus"
 
-#: gio/gdbusmessage.c:2816
+#: gio/gdbusmessage.c:2845
 #, c-format
 msgid ""
 "Number of file descriptors in message (%d) differs from header field (%d)"
 msgstr ""
 "Jumlah deskriptor berkas dalam pesan (%d) berbeda dari field header (%d)"
 
-#: gio/gdbusmessage.c:2824
+#: gio/gdbusmessage.c:2853
 msgid "Cannot serialize message: "
 msgstr "Tak bisa men-serialisasi pesan: "
 
-#: gio/gdbusmessage.c:2877
+#: gio/gdbusmessage.c:2906
 #, c-format
 msgid "Message body has signature “%s” but there is no signature header"
 msgstr "Body pesan punya tanda tangan \"%s\" tapi tak ada header tanda tangan"
 
-#: gio/gdbusmessage.c:2887
+#: gio/gdbusmessage.c:2916
 #, c-format
 msgid ""
 "Message body has type signature “%s” but signature in the header field is "
@@ -919,17 +923,17 @@ msgstr ""
 "Tubuh pesan memiliki tanda tangan tipe \"%s\" tapi tanda tangan di ruas "
 "header adalah \"(%s)\""
 
-#: gio/gdbusmessage.c:2903
+#: gio/gdbusmessage.c:2932
 #, c-format
 msgid "Message body is empty but signature in the header field is “(%s)”"
 msgstr "Tubuh pesan kosong tapi tanda tangan pada ruas header adalah \"(%s)\""
 
-#: gio/gdbusmessage.c:3458
+#: gio/gdbusmessage.c:3487
 #, c-format
 msgid "Error return with body of type “%s”"
 msgstr "Galat balikan dengan tubuh bertipe \"%s\""
 
-#: gio/gdbusmessage.c:3466
+#: gio/gdbusmessage.c:3495
 msgid "Error return with empty body"
 msgstr "Galat balikan dengan body kosong"
 
