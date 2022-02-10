@@ -4215,7 +4215,6 @@ GDBusObjectManagerServerPrivate
 GDebugController
 GDebugControllerInterface
 G_DEBUG_CONTROLLER_EXTENSION_POINT_NAME
-g_debug_controller_dup_default
 g_debug_controller_get_debug_enabled
 g_debug_controller_set_debug_enabled
 <SUBSECTION Standard>

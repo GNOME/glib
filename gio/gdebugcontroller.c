@@ -50,23 +50,6 @@
 G_DEFINE_INTERFACE_WITH_CODE (GDebugController, g_debug_controller, G_TYPE_OBJECT,
                               g_type_interface_add_prerequisite (g_define_type_id, G_TYPE_INITABLE))
 
-/**
- * g_debug_controller_dup_default:
- *
- * Gets a reference to the default #GDebugController for the system.
- *
- * Returns: (not nullable) (transfer full): a new reference to the default #GDebugController
- *
- * Since: 2.72
- */
-GDebugController *
-g_debug_controller_dup_default (void)
-{
-  return g_object_ref (_g_io_module_get_default (G_DEBUG_CONTROLLER_EXTENSION_POINT_NAME,
-                                                 "GIO_USE_DEBUG_CONTROLLER",
-                                                 NULL));
-}
-
 static void
 g_debug_controller_default_init (GDebugControllerInterface *iface)
 {

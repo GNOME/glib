@@ -69,9 +69,6 @@ struct _GDebugControllerInterface {
 };
 
 GLIB_AVAILABLE_IN_2_72
-GDebugController      *g_debug_controller_dup_default           (void);
-
-GLIB_AVAILABLE_IN_2_72
 gboolean               g_debug_controller_get_debug_enabled     (GDebugController *self);
 GLIB_AVAILABLE_IN_2_72
 void                   g_debug_controller_set_debug_enabled     (GDebugController *self,
