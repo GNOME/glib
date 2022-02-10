@@ -44,6 +44,10 @@
  * default. Application code may connect to the #GObject::notify signal for it
  * to control other parts of its debug infrastructure as necessary.
  *
+ * If your application or service is using the default GLib log writer function,
+ * creating one of the built-in implementations of #GDebugController should be
+ * all that’s needed to dynamically enable or disable debug output.
+ *
  * Since: 2.72
  */
 
