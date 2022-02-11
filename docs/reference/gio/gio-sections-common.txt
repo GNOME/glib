@@ -4230,6 +4230,7 @@ G_DEBUG_CONTROLLER_GET_INTERFACE
 <TITLE>GDebugControllerDBus</TITLE>
 GDebugControllerDBus
 g_debug_controller_dbus_new
+g_debug_controller_dbus_stop
 <SUBSECTION Standard>
 g_debug_controller_dbus_get_type
 G_TYPE_DEBUG_CONTROLLER_DBUS

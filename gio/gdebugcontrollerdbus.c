@@ -183,8 +183,10 @@ typedef struct
 {
   GObject parent_instance;
 
+  GCancellable *cancellable;  /* (owned) */
   GDBusConnection *connection;  /* (owned) */
   guint object_id;
+  guint n_pending_authorize_tasks;
 
   gboolean debug_enabled;
 } GDebugControllerDBusPrivate;
@@ -202,8 +204,11 @@ G_DEFINE_TYPE_WITH_CODE (GDebugControllerDBus, g_debug_controller_dbus, G_TYPE_O
                                                          30))
 
 static void
-g_debug_controller_dbus_init (GDebugControllerDBus *dbus)
+g_debug_controller_dbus_init (GDebugControllerDBus *self)
 {
+  GDebugControllerDBusPrivate *priv = g_debug_controller_dbus_get_instance_private (self);
+
+  priv->cancellable = g_cancellable_new ();
 }
 
 static void
@@ -211,6 +216,9 @@ set_debug_enabled (GDebugControllerDBus *self,
                    gboolean              debug_enabled)
 {
   GDebugControllerDBusPrivate *priv = g_debug_controller_dbus_get_instance_private (self);
+
+  if (g_cancellable_is_cancelled (priv->cancellable))
+    return;
 
   if (debug_enabled != priv->debug_enabled)
     {
@@ -288,6 +296,7 @@ authorize_cb (GObject      *object,
               gpointer      user_data)
 {
   GDebugControllerDBus *self = G_DEBUG_CONTROLLER_DBUS (object);
+  GDebugControllerDBusPrivate *priv = g_debug_controller_dbus_get_instance_private (self);
   GTask *task = G_TASK (result);
   GDBusMethodInvocation *invocation = g_task_get_task_data (task);
   GVariant *parameters = g_dbus_method_invocation_get_parameters (invocation);
@@ -301,14 +310,18 @@ authorize_cb (GObject      *object,
       GError *local_error = g_error_new (G_DBUS_ERROR, G_DBUS_ERROR_ACCESS_DENIED,
                                          _("Not authorized to change debug settings"));
       g_dbus_method_invocation_take_error (invocation, g_steal_pointer (&local_error));
-      return;
+    }
+  else
+    {
+      /* Update the property value. */
+      g_variant_get (parameters, "(b)", &enabled);
+      set_debug_enabled (self, enabled);
+
+      g_dbus_method_invocation_return_value (invocation, NULL);
     }
 
-  /* Update the property value. */
-  g_variant_get (parameters, "(b)", &enabled);
-  set_debug_enabled (self, enabled);
-
-  g_dbus_method_invocation_return_value (invocation, NULL);
+  g_assert (priv->n_pending_authorize_tasks > 0);
+  priv->n_pending_authorize_tasks--;
 }
 
 /* Called in the #GMainContext which was default when the #GDebugControllerDBus
@@ -324,6 +337,7 @@ dbus_method_call (GDBusConnection       *connection,
                   gpointer               user_data)
 {
   GDebugControllerDBus *self = user_data;
+  GDebugControllerDBusPrivate *priv = g_debug_controller_dbus_get_instance_private (self);
   GDebugControllerDBusClass *klass = G_DEBUG_CONTROLLER_DBUS_GET_CLASS (self);
 
   /* Only on the org.gtk.Debugging interface */
@@ -331,9 +345,12 @@ dbus_method_call (GDBusConnection       *connection,
     {
       GTask *task = NULL;
 
-      task = g_task_new (self, NULL, authorize_cb, NULL);
+      task = g_task_new (self, priv->cancellable, authorize_cb, NULL);
       g_task_set_source_tag (task, dbus_method_call);
       g_task_set_task_data (task, g_object_ref (invocation), (GDestroyNotify) g_object_unref);
+
+      g_assert (priv->n_pending_authorize_tasks < G_MAXUINT);
+      priv->n_pending_authorize_tasks++;
 
       /* Check the calling peer is authorised to change the debug mode. So that
        * the signal handler can block on checking polkit authorisation (which
@@ -448,13 +465,10 @@ g_debug_controller_dbus_dispose (GObject *object)
   GDebugControllerDBus *self = G_DEBUG_CONTROLLER_DBUS (object);
   GDebugControllerDBusPrivate *priv = g_debug_controller_dbus_get_instance_private (self);
 
-  if (priv->object_id != 0)
-    {
-      g_dbus_connection_unregister_object (priv->connection, priv->object_id);
-      priv->object_id = 0;
-    }
-
+  g_debug_controller_dbus_stop (self);
+  g_assert (priv->n_pending_authorize_tasks == 0);
   g_clear_object (&priv->connection);
+  g_clear_object (&priv->cancellable);
 
   G_OBJECT_CLASS (g_debug_controller_dbus_parent_class)->dispose (object);
 }
@@ -586,4 +600,56 @@ g_debug_controller_dbus_new (GDBusConnection  *connection,
                          error,
                          "connection", connection,
                          NULL);
+}
+
+/**
+ * g_debug_controller_dbus_stop:
+ * @self: a #GDebugControllerDBus
+ *
+ * Stop the debug controller, unregistering its object from the bus.
+ *
+ * Any pending method calls to the object will complete successfully, but new
+ * ones will return an error. This method will block until all pending
+ * #GDebugControllerDBus::authorize signals have been handled. This is expected
+ * to not take long, as it will just be waiting for threads to join. If any
+ * #GDebugControllerDBus::authorize signal handlers are still executing in other
+ * threads, this will block until after they have returned.
+ *
+ * This method will be called automatically when the final reference to the
+ * #GDebugControllerDBus is dropped. You may want to call it explicitly to know
+ * when the controller has been fully removed from the bus, or to break
+ * reference count cycles.
+ *
+ * Calling this method from within a #GDebugControllerDBus::authorize signal
+ * handler will cause a deadlock and must not be done.
+ *
+ * Since: 2.72
+ */
+void
+g_debug_controller_dbus_stop (GDebugControllerDBus *self)
+{
+  GDebugControllerDBusPrivate *priv = g_debug_controller_dbus_get_instance_private (self);
+
+  g_cancellable_cancel (priv->cancellable);
+
+  if (priv->object_id != 0)
+    {
+      g_dbus_connection_unregister_object (priv->connection, priv->object_id);
+      priv->object_id = 0;
+    }
+
+  /* Wait for any pending authorize tasks to finish. These will just be waiting
+   * for threads to join at this point, as the D-Bus object has been
+   * unregistered and the cancellable cancelled.
+   *
+   * FIXME: There is still a narrow race here where (we think) the worker thread
+   * briefly holds a reference to the #GTask after the task thread function has
+   * returned.
+   *
+   * The loop will also never terminate if g_debug_controller_dbus_stop() is
+   * called from within an ::authorize callback.
+   *
+   * See discussion in https://gitlab.gnome.org/GNOME/glib/-/merge_requests/2486 */
+  while (priv->n_pending_authorize_tasks > 0)
+    g_thread_yield ();
 }
