@@ -111,6 +111,17 @@ gpointer g_try_realloc_n  (gpointer	 mem,
 			   gsize	 n_blocks,
 			   gsize	 n_block_bytes) G_GNUC_WARN_UNUSED_RESULT;
 
+GLIB_AVAILABLE_IN_2_72
+gpointer g_aligned_alloc  (gsize         n_blocks,
+                           gsize         n_block_bytes,
+                           gsize         alignment) G_GNUC_WARN_UNUSED_RESULT G_GNUC_ALLOC_SIZE2(1,2);
+GLIB_AVAILABLE_IN_2_72
+gpointer g_aligned_alloc0 (gsize         n_blocks,
+                           gsize         n_block_bytes,
+                           gsize         alignment) G_GNUC_WARN_UNUSED_RESULT G_GNUC_ALLOC_SIZE2(1,2);
+GLIB_AVAILABLE_IN_2_72
+void     g_aligned_free   (gpointer      mem);
+
 #if defined(glib_typeof) && GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_58
 #define g_clear_pointer(pp, destroy)                     \
   G_STMT_START                                           \

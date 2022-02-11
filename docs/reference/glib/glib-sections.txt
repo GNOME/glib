@@ -1394,6 +1394,11 @@ g_newa
 g_newa0
 
 <SUBSECTION>
+g_aligned_alloc
+g_aligned_alloc0
+g_aligned_free
+
+<SUBSECTION>
 g_memmove
 g_memdup
 g_memdup2
