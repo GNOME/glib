@@ -890,7 +890,7 @@ static gboolean    test_debug_log = FALSE;
 static gboolean    test_tap_log = TRUE;  /* default to TAP as of GLib 2.62; see #1619; the non-TAP output mode is deprecated */
 static gboolean    test_nonfatal_assertions = FALSE;
 static DestroyEntry *test_destroy_queue = NULL;
-static char       *test_argv0 = NULL;           /* points into global argv */
+static const char *test_argv0 = NULL;           /* points into global argv */
 static char       *test_argv0_dirname = NULL;   /* owned by GLib */
 static const char *test_disted_files_dir;       /* points into test_argv0_dirname or an environment variable */
 static const char *test_built_files_dir;        /* points into test_argv0_dirname or an environment variable */
@@ -3828,7 +3828,7 @@ g_test_trap_subprocess (const char           *test_path,
   test_trap_last_subprocess = g_strdup (test_path);
 
   argv = g_ptr_array_new ();
-  g_ptr_array_add (argv, test_argv0);
+  g_ptr_array_add (argv, (char *) test_argv0);
   g_ptr_array_add (argv, "-q");
   g_ptr_array_add (argv, "-p");
   g_ptr_array_add (argv, (char *)test_path);
