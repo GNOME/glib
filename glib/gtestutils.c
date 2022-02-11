@@ -890,10 +890,10 @@ static gboolean    test_debug_log = FALSE;
 static gboolean    test_tap_log = TRUE;  /* default to TAP as of GLib 2.62; see #1619; the non-TAP output mode is deprecated */
 static gboolean    test_nonfatal_assertions = FALSE;
 static DestroyEntry *test_destroy_queue = NULL;
-static char       *test_argv0 = NULL;
-static char       *test_argv0_dirname;
-static const char *test_disted_files_dir;
-static const char *test_built_files_dir;
+static const char *test_argv0 = NULL;           /* points into global argv */
+static char       *test_argv0_dirname = NULL;   /* owned by GLib */
+static const char *test_disted_files_dir;       /* points into test_argv0_dirname or an environment variable */
+static const char *test_built_files_dir;        /* points into test_argv0_dirname or an environment variable */
 static char       *test_initial_cwd = NULL;
 static gboolean    test_in_forked_child = FALSE;
 static gboolean    test_in_subprocess = FALSE;
@@ -2220,6 +2220,13 @@ g_test_run (void)
   int ret;
   GTestSuite *suite;
 
+  if (atexit (test_cleanup) != 0)
+    {
+      int errsv = errno;
+      g_error ("Unable to register test cleanup to be run at exit: %s",
+               g_strerror (errsv));
+    }
+
   suite = g_test_get_root ();
   if (g_test_run_suite (suite) != 0)
     {
@@ -2256,7 +2263,6 @@ g_test_run (void)
 
 out:
   g_test_suite_free (suite);
-  test_cleanup ();
   return ret;
 }
 
@@ -3823,7 +3829,7 @@ g_test_trap_subprocess (const char           *test_path,
   test_trap_last_subprocess = g_strdup (test_path);
 
   argv = g_ptr_array_new ();
-  g_ptr_array_add (argv, test_argv0);
+  g_ptr_array_add (argv, (char *) test_argv0);
   g_ptr_array_add (argv, "-q");
   g_ptr_array_add (argv, "-p");
   g_ptr_array_add (argv, (char *)test_path);
