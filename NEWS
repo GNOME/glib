@@ -1,3 +1,23 @@
+Overview of changes in GLib 2.70.4
+==================================
+
+* Bugs fixed:
+ - !2462 Backport !2461 “Fix memory leak in gio/gdbusauthmechanismsha1.c” to glib-2-70
+
+* Translation updates:
+ - Czech
+ - French
+ - Indonesian
+ - Japanese
+ - Polish
+ - Portuguese (Brazil)
+ - Russian
+ - Slovenian
+ - Spanish
+ - Swedish
+ - Ukrainian
+
+
 Overview of changes in GLib 2.70.3
 ==================================
 
