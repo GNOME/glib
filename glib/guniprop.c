@@ -1501,6 +1501,9 @@ static const guint32 iso15924_tags[] =
     PACK ('T', 'o', 't', 'o'), /* G_UNICODE_SCRIPT_TOTO */
     PACK ('V', 'i', 't', 'h'), /* G_UNICODE_SCRIPT_VITHKUQI */
 
+  /* not really a Unicode script, but part of ISO 15924 */
+    PACK ('Z', 'm', 't', 'h'), /* G_UNICODE_SCRIPT_MATH */
+
 #undef PACK
 };
 

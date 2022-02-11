@@ -1587,6 +1587,7 @@ test_iso15924 (void)
   } data[] = {
     { G_UNICODE_SCRIPT_COMMON,             "Zyyy" },
     { G_UNICODE_SCRIPT_INHERITED,          "Zinh" },
+    { G_UNICODE_SCRIPT_MATH,               "Zmth" },
     { G_UNICODE_SCRIPT_ARABIC,             "Arab" },
     { G_UNICODE_SCRIPT_ARMENIAN,           "Armn" },
     { G_UNICODE_SCRIPT_BENGALI,            "Beng" },
