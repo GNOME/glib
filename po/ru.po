@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-01-27 15:34+0000\n"
-"PO-Revision-Date: 2022-01-27 19:08+0300\n"
+"POT-Creation-Date: 2022-02-09 11:19+0000\n"
+"PO-Revision-Date: 2022-02-09 15:46+0300\n"
 "Last-Translator: Aleksandr Melman <Alexmelman88@gmail.com>\n"
 "Language-Team: Русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -596,13 +596,13 @@ msgstr "Ошибочные права на каталог «%s». Ожидало
 msgid "Error creating directory “%s”: %s"
 msgstr "Произошла ошибка при создании каталога «%s»: %s"
 
-#: gio/gdbusauthmechanismsha1.c:360 gio/gfile.c:1068 gio/gfile.c:1306
-#: gio/gfile.c:1444 gio/gfile.c:1682 gio/gfile.c:1737 gio/gfile.c:1795
-#: gio/gfile.c:1879 gio/gfile.c:1936 gio/gfile.c:2000 gio/gfile.c:2055
-#: gio/gfile.c:3760 gio/gfile.c:3815 gio/gfile.c:4108 gio/gfile.c:4578
-#: gio/gfile.c:4989 gio/gfile.c:5074 gio/gfile.c:5164 gio/gfile.c:5261
-#: gio/gfile.c:5348 gio/gfile.c:5449 gio/gfile.c:8159 gio/gfile.c:8249
-#: gio/gfile.c:8333 gio/win32/gwinhttpfile.c:453
+#: gio/gdbusauthmechanismsha1.c:360 gio/gfile.c:1080 gio/gfile.c:1318
+#: gio/gfile.c:1456 gio/gfile.c:1694 gio/gfile.c:1749 gio/gfile.c:1807
+#: gio/gfile.c:1891 gio/gfile.c:1948 gio/gfile.c:2012 gio/gfile.c:2067
+#: gio/gfile.c:3772 gio/gfile.c:3912 gio/gfile.c:4205 gio/gfile.c:4675
+#: gio/gfile.c:5086 gio/gfile.c:5171 gio/gfile.c:5261 gio/gfile.c:5358
+#: gio/gfile.c:5445 gio/gfile.c:5546 gio/gfile.c:8375 gio/gfile.c:8465
+#: gio/gfile.c:8549 gio/win32/gwinhttpfile.c:453
 msgid "Operation not supported"
 msgstr "Действие не поддерживается"
 
@@ -1422,74 +1422,74 @@ msgstr "Для GEmblemedIcon ожидается GEmblem"
 #. * trying to find the enclosing (user visible)
 #. * mount of a file, but none exists.
 #.
-#: gio/gfile.c:1567
+#: gio/gfile.c:1579
 msgid "Containing mount does not exist"
 msgstr "Содержащая точка монтирования не существует"
 
-#: gio/gfile.c:2614 gio/glocalfile.c:2486
+#: gio/gfile.c:2626 gio/glocalfile.c:2486
 msgid "Can’t copy over directory"
 msgstr "Нельзя скопировать поверх каталога"
 
-#: gio/gfile.c:2674
+#: gio/gfile.c:2686
 msgid "Can’t copy directory over directory"
 msgstr "Нельзя скопировать каталог поверх каталога"
 
-#: gio/gfile.c:2682
+#: gio/gfile.c:2694
 msgid "Target file exists"
 msgstr "Целевой файл существует"
 
-#: gio/gfile.c:2701
+#: gio/gfile.c:2713
 msgid "Can’t recursively copy directory"
 msgstr "Не удалось рекурсивно скопировать каталог"
 
-#: gio/gfile.c:3002
+#: gio/gfile.c:3014
 msgid "Splice not supported"
 msgstr "Соединение не поддерживается"
 
-#: gio/gfile.c:3006
+#: gio/gfile.c:3018
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "Произошла ошибка при соединении файла: %s"
 
-#: gio/gfile.c:3158
+#: gio/gfile.c:3170
 msgid "Copy (reflink/clone) between mounts is not supported"
 msgstr ""
 "Копирование (reflink/clone) между точками монтирования не поддерживается"
 
-#: gio/gfile.c:3162
+#: gio/gfile.c:3174
 msgid "Copy (reflink/clone) is not supported or invalid"
 msgstr "Копирование (reflink/clone) не поддерживается или некорректно"
 
-#: gio/gfile.c:3167
+#: gio/gfile.c:3179
 msgid "Copy (reflink/clone) is not supported or didn’t work"
 msgstr "Копирование (reflink/clone) не поддерживается или не работает"
 
-#: gio/gfile.c:3232
+#: gio/gfile.c:3244
 msgid "Can’t copy special file"
 msgstr "Нельзя скопировать специальный файл"
 
-#: gio/gfile.c:4041
+#: gio/gfile.c:4138
 msgid "Invalid symlink value given"
 msgstr "Дано неверное значение символьной ссылки"
 
-#: gio/gfile.c:4051 glib/gfileutils.c:2333
+#: gio/gfile.c:4148 glib/gfileutils.c:2333
 msgid "Symbolic links not supported"
 msgstr "Символьные ссылки не поддерживаются"
 
-#: gio/gfile.c:4219
+#: gio/gfile.c:4316
 msgid "Trash not supported"
 msgstr "Корзина не поддерживается"
 
-#: gio/gfile.c:4331
+#: gio/gfile.c:4428
 #, c-format
 msgid "File names cannot contain “%c”"
 msgstr "Имена файлов не могут содержать «%c»"
 
-#: gio/gfile.c:6812 gio/gvolume.c:364
+#: gio/gfile.c:7028 gio/gvolume.c:364
 msgid "volume doesn’t implement mount"
 msgstr "том не поддерживает присоединение"
 
-#: gio/gfile.c:6926 gio/gfile.c:6974
+#: gio/gfile.c:7142 gio/gfile.c:7190
 msgid "No application is registered as handling this file"
 msgstr "Нет зарегистрированного приложения для обработки данного файла"
 
@@ -4195,7 +4195,7 @@ msgstr "Прокси SOCKSv5 не поддерживает предложенн�
 msgid "Unknown SOCKSv5 proxy error."
 msgstr "Неизвестная ошибка прокси SOCKSv5."
 
-#: gio/gtestdbus.c:612 glib/gspawn-win32.c:312
+#: gio/gtestdbus.c:612 glib/gspawn-win32.c:314
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Не удалось создать канал для сообщения с процессом-потомком (%s)"
@@ -5901,130 +5901,135 @@ msgstr "Текст был пуст (или содержал только про�
 #: glib/gspawn.c:310
 #, c-format
 msgid "Failed to read data from child process (%s)"
-msgstr "Не удалось прочитать данные из процесса-потомка (%s)"
+msgstr "Не удалось прочитать данные из дочернего процесса (%s)"
 
 #: glib/gspawn.c:461
 #, c-format
 msgid "Unexpected error in reading data from a child process (%s)"
-msgstr ""
-"Произошла неожиданная ошибка при чтении данных из процесса-потомка (%s)"
+msgstr "Неожиданная ошибка при чтении данных из дочернего процесса (%s)"
 
 #: glib/gspawn.c:546
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Произошла неожиданная ошибка в функции waitpid() (%s)"
 
-#: glib/gspawn.c:1166 glib/gspawn-win32.c:1399
+#: glib/gspawn.c:1168 glib/gspawn-win32.c:1426
 #, c-format
 msgid "Child process exited with code %ld"
 msgstr "Дочерний процесс завершился с кодом %ld"
 
-#: glib/gspawn.c:1174
+#: glib/gspawn.c:1176
 #, c-format
 msgid "Child process killed by signal %ld"
 msgstr "Дочерний процесс убит по сигналу %ld"
 
-#: glib/gspawn.c:1181
+#: glib/gspawn.c:1183
 #, c-format
 msgid "Child process stopped by signal %ld"
 msgstr "Дочерний процесс остановлен по сигналу %ld"
 
-#: glib/gspawn.c:1188
+#: glib/gspawn.c:1190
 #, c-format
 msgid "Child process exited abnormally"
 msgstr "Дочерний процесс аварийно завершил работу"
 
-#: glib/gspawn.c:1879 glib/gspawn-win32.c:351 glib/gspawn-win32.c:359
+#: glib/gspawn.c:1881 glib/gspawn-win32.c:353 glib/gspawn-win32.c:361
 #, c-format
 msgid "Failed to read from child pipe (%s)"
-msgstr "Не удалось прочитать данные из канала потомка (%s)"
+msgstr "Не удалось выполнить чтение из дочернего канала (%s)"
 
-#: glib/gspawn.c:2239
+#: glib/gspawn.c:2241
 #, c-format
 msgid "Failed to spawn child process “%s” (%s)"
-msgstr "Не удалось выполнить процесс-потомок «%s» (%s)"
+msgstr "Не удалось запустить дочерний процесс \"%s\" (%s)"
 
-#: glib/gspawn.c:2356
+#: glib/gspawn.c:2358
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Функция fork завершилась неудачно (%s)"
 
-#: glib/gspawn.c:2516 glib/gspawn-win32.c:382
+#: glib/gspawn.c:2518 glib/gspawn-win32.c:384
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
 msgstr "Не удалось сменить каталог на «%s» (%s)"
 
-#: glib/gspawn.c:2526
+#: glib/gspawn.c:2528
 #, c-format
 msgid "Failed to execute child process “%s” (%s)"
-msgstr "Не удалось выполнить процесс-потомок «%s» (%s)"
+msgstr "Не удалось выполнить дочерний процесс \"%s\" (%s)"
 
-#: glib/gspawn.c:2536
+#: glib/gspawn.c:2538
 #, c-format
 msgid "Failed to open file to remap file descriptor (%s)"
 msgstr "Не удалось открыть файл для изменения дескриптора файла (%s)"
 
-#: glib/gspawn.c:2544
+#: glib/gspawn.c:2546
 #, c-format
 msgid "Failed to duplicate file descriptor for child process (%s)"
 msgstr "Не удалось дублировать дескриптор файла для дочернего процесса (%s)"
 
-#: glib/gspawn.c:2553
+#: glib/gspawn.c:2555
 #, c-format
 msgid "Failed to fork child process (%s)"
-msgstr "При создании процесса-потомка функция fork завершилась неудачно (%s)"
+msgstr "При создании дочернего процесса функция fork завершилась неудачно (%s)"
 
-#: glib/gspawn.c:2561
+#: glib/gspawn.c:2563
 #, c-format
 msgid "Failed to close file descriptor for child process (%s)"
 msgstr "Не удалось закрыть дескриптор файла для дочернего процесса (%s)"
 
-#: glib/gspawn.c:2569
+#: glib/gspawn.c:2571
 #, c-format
 msgid "Unknown error executing child process “%s”"
-msgstr "Произошла неизвестная ошибка при выполнении процесса-потомка «%s»"
+msgstr "Произошла неизвестная ошибка при выполнении дочернего процесса «%s»"
 
-#: glib/gspawn.c:2593
+#: glib/gspawn.c:2595
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
-"Не удалось прочитать нужное количество данных из канала процесса-потомка (%s)"
+"Не удалось прочитать нужное количество данных из канала дочернего процесса "
+"(%s)"
 
-#: glib/gspawn-win32.c:295
+#: glib/gspawn-win32.c:297
 msgid "Failed to read data from child process"
-msgstr "Не удалось прочитать данные из процесса-потомка"
+msgstr "Не удалось прочитать данные из дочернего процесса"
 
-#: glib/gspawn-win32.c:388 glib/gspawn-win32.c:393 glib/gspawn-win32.c:512
+#: glib/gspawn-win32.c:390 glib/gspawn-win32.c:395 glib/gspawn-win32.c:519
 #, c-format
 msgid "Failed to execute child process (%s)"
-msgstr "Не удалось выполнить процесс-потомок (%s)"
+msgstr "Не удалось выполнить дочерний процесс (%s)"
 
-#: glib/gspawn-win32.c:462
+#: glib/gspawn-win32.c:400
+#, c-format
+msgid "Failed to dup() in child process (%s)"
+msgstr "Не удалось выполнить dup() в дочернем процессе (%s)"
+
+#: glib/gspawn-win32.c:469
 #, c-format
 msgid "Invalid program name: %s"
 msgstr "Недопустимое имя программы: %s"
 
-#: glib/gspawn-win32.c:472 glib/gspawn-win32.c:771
+#: glib/gspawn-win32.c:479 glib/gspawn-win32.c:797
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "Недопустимая строка в векторе аргументов под номером %d: %s"
 
-#: glib/gspawn-win32.c:483 glib/gspawn-win32.c:786
+#: glib/gspawn-win32.c:490 glib/gspawn-win32.c:813
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "Недопустимая строка в окружении: %s"
 
-#: glib/gspawn-win32.c:767
+#: glib/gspawn-win32.c:793
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "Недопустимый рабочий каталог: %s"
 
-#: glib/gspawn-win32.c:829
+#: glib/gspawn-win32.c:858
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "Не удалось выполнить вспомогательную программу (%s)"
 
-#: glib/gspawn-win32.c:1056
+#: glib/gspawn-win32.c:1086
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
