@@ -37,6 +37,7 @@ G_BEGIN_DECLS
  *
  * The "typelib" is a binary, readonly, memory-mappable database
  * containing reflective information about a GObject library.
+ *
  * What the typelib describes and the types used are the same for every
  * platform so, apart the endianness of its scalar values, the typelib
  * database must be considered architecture-independent.
@@ -45,6 +46,7 @@ G_BEGIN_DECLS
  * format.
  *
  * Some of the differences to XPCOM include:
+ *
  * - Type information is stored not quite as compactly (XPCOM stores it inline
  *   in function descriptions in variable-sized blobs of 1 to n bytes. We store
  *   16 bits of type information for each parameter, which is enough to encode
@@ -57,6 +59,7 @@ G_BEGIN_DECLS
  *
  * The typelib has the following general format:
  *
+ * |[<!-- language="C" -->
  *   typelib ::= header, section-index, directory, blobs, attributes, attributedata
  *
  *   directory ::= list of entries
@@ -65,6 +68,7 @@ G_BEGIN_DECLS
  *   blob ::= function|callback|struct|boxed|enum|flags|object|interface|constant|union
  *   attribute ::= offset, key, value
  *   attributedata ::= string data for attributes
+ * ]|
  *
  * Details
  *
