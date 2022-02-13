@@ -38,15 +38,6 @@
  * A union has methods and fields.  Unions can optionally have a
  * discriminator, which is a field deciding what type of real union
  * fields is valid for specified instance.
- *
- * <refsect1 id="gi-giobjectinfo.struct-hierarchy" role="struct_hierarchy">
- * <title role="struct_hierarchy.title">Struct hierarchy</title>
- * <synopsis>
- *   <link linkend="GIBaseInfo">GIBaseInfo</link>
- *    +----<link linkend="gi-GIRegisteredTypeInfo">GIRegisteredTypeInfo</link>
- *          +----GIUnionInfo
- * </synopsis>
- * </refsect1>
  */
 
 /**

@@ -33,23 +33,17 @@
  * @title: GITypeInfo
  * @short_description: Struct representing a type
  *
- * GITypeInfo represents a type. You can retrieve a type info from
- * an argument (see #GIArgInfo), a functions return value (see #GIFunctionInfo),
- * a field (see #GIFieldInfo), a property (see #GIPropertyInfo), a constant
+ * GITypeInfo represents a type.
+ *
+ * You can retrieve a type info from an argument (see #GIArgInfo), a
+ * functions return value (see #GIFunctionInfo), a field (see
+ * #GIFieldInfo), a property (see #GIPropertyInfo), a constant
  * (see #GIConstantInfo) or for a union discriminator (see #GIUnionInfo).
  *
  * A type can either be a of a basic type which is a standard C primitive
  * type or an interface type. For interface types you need to call
  * g_type_info_get_interface() to get a reference to the base info for that
  * interface.
- *
- * <refsect1 id="gi-gitypeinfo.struct-hierarchy" role="struct_hierarchy">
- * <title role="struct_hierarchy.title">Struct hierarchy</title>
- * <synopsis>
- *   <link linkend="GIBaseInfo">GIBaseInfo</link>
- *    +----GITypeInfo
- * </synopsis>
- * </refsect1>
  */
 
 /**

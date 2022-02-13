@@ -38,15 +38,6 @@
  * GIStructInfo represents a generic C structure type.
  *
  * A structure has methods and fields.
- *
- * <refsect1 id="gi-giobjectinfo.struct-hierarchy" role="struct_hierarchy">
- * <title role="struct_hierarchy.title">Struct hierarchy</title>
- * <synopsis>
- *   <link linkend="GIBaseInfo">GIBaseInfo</link>
- *    +----<link linkend="gi-GIRegisteredTypeInfo">GIRegisteredTypeInfo</link>
- *          +----GIStructInfo
- * </synopsis>
- * </refsect1>
  */
 
 /**

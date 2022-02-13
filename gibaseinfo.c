@@ -185,43 +185,45 @@ _g_type_info_init (GIBaseInfo *info,
  * @title: GIBaseInfo
  * @short_description: Base struct for all GITypelib structs
  *
- * GIBaseInfo is the common base struct of all other *Info structs
+ * GIBaseInfo is the common base struct of all other Info structs
  * accessible through the #GIRepository API.
- * All other structs can be casted to a #GIBaseInfo, for instance:
- * <example>
- * <title>Casting a #GIFunctionInfo to #GIBaseInfo</title>
- * <programlisting>
+ *
+ * All info structures can be cast to a #GIBaseInfo, for instance:
+ *
+ * |[<!-- language="C" -->
  *    GIFunctionInfo *function_info = ...;
- *    GIBaseInfo *info = (GIBaseInfo*)function_info;
- * </programlisting>
- * </example>
- * Most #GIRepository APIs returning a #GIBaseInfo is actually creating a new struct, in other
- * words, g_base_info_unref() has to be called when done accessing the data.
- * GIBaseInfos are normally accessed by calling either
- * g_irepository_find_by_name(), g_irepository_find_by_gtype() or g_irepository_get_info().
+ *    GIBaseInfo *info = (GIBaseInfo *) function_info;
+ * ]|
  *
- * <example>
- * <title>Getting the Button of the Gtk typelib</title>
- * <programlisting>
- *    GIBaseInfo *button_info = g_irepository_find_by_name(NULL, "Gtk", "Button");
- *    ... use button_info ...
- *    g_base_info_unref(button_info);
- * </programlisting>
- * </example>
+ * Most #GIRepository APIs returning a #GIBaseInfo is actually
+ * creating a new struct; in other words, g_base_info_unref() has to
+ * be called when done accessing the data.
  *
- * <refsect1 id="gi-gibaseinfo.struct-hierarchy" role="struct_hierarchy">
- * <title role="struct_hierarchy.title">Struct hierarchy</title>
- * <synopsis>
+ * #GIBaseInfo structuress are normally accessed by calling either
+ * g_irepository_find_by_name(), g_irepository_find_by_gtype() or
+ * g_irepository_get_info().
+ *
+ * |[<!-- language="C" -->
+ * GIBaseInfo *button_info =
+ *   g_irepository_find_by_name (NULL, "Gtk", "Button");
+ *
+ * // ... use button_info ...
+ *
+ * g_base_info_unref (button_info);
+ * ]|
+ *
+ * ## Hierarchy
+ *
+ * |[<!-- language="plain" -->
  *   GIBaseInfo
- *    +----<link linkend="gi-GIArgInfo">GIArgInfo</link>
- *    +----<link linkend="gi-GICallableInfo">GICallableInfo</link>
- *    +----<link linkend="gi-GIConstantInfo">GIConstantInfo</link>
- *    +----<link linkend="gi-GIFieldInfo">GIFieldInfo</link>
- *    +----<link linkend="gi-GIPropertyInfo">GIPropertyInfo</link>
- *    +----<link linkend="gi-GIRegisteredTypeInfo">GIRegisteredTypeInfo</link>
- *    +----<link linkend="gi-GITypeInfo">GITypeInfo</link>
- * </synopsis>
- * </refsect1>
+ *    +---- GIArgInfo
+ *    +---- GICallableInfo
+ *    +---- GIConstantInfo
+ *    +---- GIFieldInfo
+ *    +---- GIPropertyInfo
+ *    +---- GIRegisteredTypeInfo
+ *    +---- GITypeInfo
+ * ]|
  */
 
 /**
@@ -573,9 +575,7 @@ _attribute_blob_find_first (GIBaseInfo *info,
  * Both the @name and @value should be treated as constants
  * and must not be freed.
  *
- * <example>
- * <title>Iterating over attributes</title>
- * <programlisting>
+ * |[<!-- language="C" -->
  * void
  * print_attributes (GIBaseInfo *info)
  * {
@@ -587,8 +587,7 @@ _attribute_blob_find_first (GIBaseInfo *info,
  *       g_print ("attribute name: %s value: %s", name, value);
  *     }
  * }
- * </programlisting>
- * </example>
+ * ]|
  *
  * Returns: %TRUE if there are more attributes
  */

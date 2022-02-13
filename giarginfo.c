@@ -35,16 +35,9 @@
  * @title: GIArgInfo
  * @short_description: Struct representing an argument
  *
- * GIArgInfo represents an argument. An argument is always
- * part of a #GICallableInfo.
+ * GIArgInfo represents an argument of a callable.
  *
- * <refsect1 id="gi-giarginfo.struct-hierarchy" role="struct_hierarchy">
- * <title role="struct_hierarchy.title">Struct hierarchy</title>
- * <synopsis>
- *   <link linkend="GIBaseInfo">GIBaseInfo</link>
- *    +----GIArgInfo
- * </synopsis>
- * </refsect1>
+ * An argument is always part of a #GICallableInfo.
  */
 
 /**

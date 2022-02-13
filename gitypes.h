@@ -64,17 +64,6 @@ typedef GIBaseInfo GIFunctionInfo;
  * @short_description: Struct representing a callback
  *
  * GICallbackInfo represents a callback.
- *
- * <refsect1 id="gi-gicallbackinfo.struct-hierarchy" role="struct_hierarchy">
- * <title role="struct_hierarchy.title">Struct hierarchy</title>
- * <synopsis>
- *   <link linkend="GIBaseInfo">GIBaseInfo</link>
- *    +----<link linkend="gi-GICallableInfo">GICallableInfo</link>
- *          +----GIFunctionInfo
- *          +----<link linkend="gi-GISignalInfo">GISignalInfo</link>
- *          +----<link linkend="gi-GIVFuncInfo">GIVFuncInfo</link>
- * </synopsis>
- * </refsect1>
  */
 
 /**
@@ -139,14 +128,6 @@ typedef GIBaseInfo GIConstantInfo;
  * @short_description: Struct representing a value
  *
  * GIValueInfo represents a value.
- *
- * <refsect1 id="gi-givalueinfo.struct-hierarchy" role="struct_hierarchy">
- * <title role="struct_hierarchy.title">Struct hierarchy</title>
- * <synopsis>
- *   <link linkend="GIBaseInfo">GIBaseInfo</link>
- *    +----GIValueInfo
- * </synopsis>
- * </refsect1>
  */
 
 /**

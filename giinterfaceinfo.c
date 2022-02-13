@@ -37,15 +37,6 @@
  *
  * A GInterface has methods, fields, properties, signals, interfaces, constants,
  * virtual functions and prerequisites.
- *
- * <refsect1 id="gi-giinterfaceinfo.struct-hierarchy" role="struct_hierarchy">
- * <title role="struct_hierarchy.title">Struct hierarchy</title>
- * <synopsis>
- *   <link linkend="GIBaseInfo">GIBaseInfo</link>
- *    +----<link linkend="gi-GIRegisteredTypeInfo">GIRegisteredTypeInfo</link>
- *          +----GIInterfaceInfo
- * </synopsis>
- * </refsect1>
  */
 
 /**

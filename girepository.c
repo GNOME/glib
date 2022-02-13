@@ -455,7 +455,7 @@ register_internal (GIRepository *repository,
  * @namespace_: Namespace of interest
  *
  * Return an array of the immediate versioned dependencies for @namespace_.
- * Returned strings are of the form <code>namespace-version</code>.
+ * Returned strings are of the form `namespace-version`.
  *
  * Note: @namespace_ must have already been loaded using a function
  * such as g_irepository_require() before calling this function.
@@ -537,9 +537,10 @@ get_typelib_dependencies_transitive (GIRepository *repository,
  *   process-global default #GIRepository
  * @namespace_: Namespace of interest
  *
- * Return an array of all (transitive) versioned dependencies for
- * @namespace_. Returned strings are of the form
- * <code>namespace-version</code>.
+ * Retrieves all (transitive) versioned dependencies for
+ * @namespace_.
+ *
+ * The strings are of the form `namespace-version`.
  *
  * Note: @namespace_ must have already been loaded using a function
  * such as g_irepository_require() before calling this function.
@@ -547,7 +548,7 @@ get_typelib_dependencies_transitive (GIRepository *repository,
  * To get only the immediate dependencies for @namespace_, use
  * g_irepository_get_immediate_dependencies().
  *
- * Returns: (transfer full): Zero-terminated string array of all versioned
+ * Returns: (transfer full) (array zero-terminated=1): all versioned
  *   dependencies
  */
 char **

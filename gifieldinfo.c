@@ -34,20 +34,15 @@
  * @title: GIFieldInfo
  * @short_description: Struct representing a struct or union field
  *
- * A GIFieldInfo struct represents a field of a struct (see #GIStructInfo),
- * union (see #GIUnionInfo) or an object (see #GIObjectInfo). The GIFieldInfo
- * is fetched by calling g_struct_info_get_field(), g_union_info_get_field()
- * or g_object_info_get_field().
- * A field has a size, type and a struct offset asssociated and a set of flags,
- * which is currently #GI_FIELD_IS_READABLE or #GI_FIELD_IS_WRITABLE.
+ * A GIFieldInfo struct represents a field of a struct, union, or object.
  *
- * <refsect1 id="gi-gifieldinfo.struct-hierarchy" role="struct_hierarchy">
- * <title role="struct_hierarchy.title">Struct hierarchy</title>
- * <synopsis>
- *   <link linkend="GIBaseInfo">GIBaseInfo</link>
- *    +----GIFieldInfo
- * </synopsis>
- * </refsect1>
+ * The GIFieldInfo is fetched by calling g_struct_info_get_field(),
+ * g_union_info_get_field() or g_object_info_get_field().
+ *
+ * A field has a size, type and a struct offset asssociated and a set of flags,
+ * which are currently #GI_FIELD_IS_READABLE or #GI_FIELD_IS_WRITABLE.
+ *
+ * See also: #GIStructInfo, #GIUnionInfo, #GIObjectInfo
  */
 
 /**

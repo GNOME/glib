@@ -33,22 +33,13 @@
  * @title: GISignalInfo
  * @short_description: Struct representing a signal
  *
- * GISignalInfo represents a signal. It's a sub-struct of #GICallableInfo
- * and contains a set of flags and a class closure.
+ * GISignalInfo represents a signal.
+ *
+ * It's a sub-struct of #GICallableInfo and contains a set of flags and
+ * a class closure.
  *
  * See #GICallableInfo for information on how to retreive arguments
  * and other metadata from the signal.
- *
- * <refsect1 id="gi-gisignalinfo.struct-hierarchy" role="struct_hierarchy">
- * <title role="struct_hierarchy.title">Struct hierarchy</title>
- * <synopsis>
- *   <link linkend="GIBaseInfo">GIBaseInfo</link>
- *    +----<link linkend="gi-GICallableInfo">GICallableInfo</link>
- *          +----<link linkend="gi-GIFunctionInfo">GIFunctionInfo</link>
- *          +----GISignalInfo
- *          +----<link linkend="gi-GIVFuncInfo">GIVFuncInfo</link>
- * </synopsis>
- * </refsect1>
  */
 
 /**

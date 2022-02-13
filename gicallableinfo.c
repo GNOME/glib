@@ -39,22 +39,15 @@
  * @short_description: Struct representing a callable
  *
  * GICallableInfo represents an entity which is callable.
- * Currently a function (#GIFunctionInfo), virtual function,
- * (#GIVFuncInfo) or callback (#GICallbackInfo).
+ *
+ * Examples of callable are:
+ *
+ *  - functions (#GIFunctionInfo)
+ *  - virtual functions (#GIVFuncInfo)
+ *  - callbacks (#GICallbackInfo).
  *
  * A callable has a list of arguments (#GIArgInfo), a return type,
  * direction and a flag which decides if it returns null.
- *
- * <refsect1 id="gi-gicallableinfo.struct-hierarchy" role="struct_hierarchy">
- * <title role="struct_hierarchy.title">Struct hierarchy</title>
- * <synopsis>
- *   <link linkend="GIBaseInfo">GIBaseInfo</link>
- *    +----GICallableInfo
- *          +----<link linkend="gi-GIFunctionInfo">GIFunctionInfo</link>
- *          +----<link linkend="gi-GISignalInfo">GISignalInfo</link>
- *          +----<link linkend="gi-GIVFuncInfo">GIVFuncInfo</link>
- * </synopsis>
- * </refsect1>
  */
 
 static guint32
@@ -479,14 +472,16 @@ g_callable_info_iterate_return_attributes (GICallableInfo  *info,
  * @return_tag: #GITypeTag of the return value
  * @interface_type: #GIInfoType of the underlying interface type
  * @ffi_value: pointer to #GIFFIReturnValue union containing the return value
- *   from ffi_call()
+ *   from `ffi_call()`
  * @arg: (out caller-allocates): pointer to an allocated #GIArgument
  *
- * Extract the correct bits from an ffi_arg return value into
- * GIArgument: https://bugzilla.gnome.org/show_bug.cgi?id=665152
+ * Extract the correct bits from an `ffi_arg` return value into
+ * GIArgument.
  *
- * Also see <citerefentry><refentrytitle>ffi_call</refentrytitle><manvolnum>3</manvolnum></citerefentry>
- *  - the storage requirements for return values are "special".
+ * See: https://bugzilla.gnome.org/show_bug.cgi?id=665152
+ *
+ * Also see `ffi_call(3)`: the storage requirements for return values
+ * are "special".
  *
  * The @interface_type argument only applies if @return_tag is
  * %GI_TYPE_TAG_INTERFACE. Otherwise it is ignored.
@@ -553,14 +548,16 @@ gi_type_tag_extract_ffi_return_value (GITypeTag         return_tag,
  * gi_type_info_extract_ffi_return_value:
  * @return_info: #GITypeInfo describing the return type
  * @ffi_value: pointer to #GIFFIReturnValue union containing the return value
- *   from ffi_call()
+ *   from `ffi_call()`
  * @arg: (out caller-allocates): pointer to an allocated #GIArgument
  *
- * Extract the correct bits from an ffi_arg return value into
- * GIArgument: https://bugzilla.gnome.org/show_bug.cgi?id=665152
+ * Extract the correct bits from an `ffi_arg` return value into
+ * #GIArgument.
  *
- * Also see <citerefentry><refentrytitle>ffi_call</refentrytitle><manvolnum>3</manvolnum></citerefentry>
- *  - the storage requirements for return values are "special".
+ * See: https://bugzilla.gnome.org/show_bug.cgi?id=665152
+ *
+ * Also see `ffi_call(3)`: the storage requirements for return values
+ * are "special".
  */
 void
 gi_type_info_extract_ffi_return_value (GITypeInfo                  *return_info,

@@ -31,22 +31,18 @@
 /**
  * SECTION:giobjectinfo
  * @title: GIObjectInfo
- * @short_description: Struct representing a GObject
+ * @short_description: Struct representing a classed type
  *
- * GIObjectInfo represents a #GObject. This doesn't represent a specific
- * instance of a GObject, instead this represent the object type (eg class).
+ * GIObjectInfo represents a classed type.
  *
- * A GObject has methods, fields, properties, signals, interfaces, constants
- * and virtual functions.
+ * Classed types in GType inherit from #GTypeInstance; the most common
+ * type is #GObject.
  *
- * <refsect1 id="gi-giobjectinfo.struct-hierarchy" role="struct_hierarchy">
- * <title role="struct_hierarchy.title">Struct hierarchy</title>
- * <synopsis>
- *   <link linkend="GIBaseInfo">GIBaseInfo</link>
- *    +----<link linkend="gi-GIRegisteredTypeInfo">GIRegisteredTypeInfo</link>
- *          +----GIObjectInfo
- * </synopsis>
- * </refsect1>
+ * A GIObjectInfo doesn't represent a specific instance of a classed type,
+ * instead this represent the object type (eg class).
+ *
+ * A GIObjectInfo has methods, fields, properties, signals, interfaces,
+ * constants and virtual functions.
  */
 
 /**

@@ -35,27 +35,16 @@
  * @title: GIRegisteredTypeInfo
  * @short_description: Struct representing a struct with a GType
  *
- * GIRegisteredTypeInfo represents an entity with a GType associated. Could
- * be either a #GIEnumInfo, #GIInterfaceInfo, #GIObjectInfo, #GIStructInfo or a
- * #GIUnionInfo.
+ * GIRegisteredTypeInfo represents an entity with a GType associated.
+ *
+ * Could be either a #GIEnumInfo, #GIInterfaceInfo, #GIObjectInfo,
+ * #GIStructInfo or a #GIUnionInfo.
  *
  * A registered type info struct has a name and a type function.
+ *
  * To get the name call g_registered_type_info_get_type_name().
  * Most users want to call g_registered_type_info_get_g_type() and don't worry
  * about the rest of the details.
- *
- * <refsect1 id="gi-giregisteredtypeinfo.struct-hierarchy" role="struct_hierarchy">
- * <title role="struct_hierarchy.title">Struct hierarchy</title>
- * <synopsis>
- *   <link linkend="GIBaseInfo">GIBaseInfo</link>
- *    +----GIRegisteredTypeInfo
- *          +----<link linkend="gi-GIEnumInfo">GIEnumInfo</link>
- *          +----<link linkend="gi-GIInterfaceInfo">GIInterfaceInfo</link>
- *          +----<link linkend="gi-GIObjectInfo">GIObjectInfo</link>
- *          +----<link linkend="gi-GIStructInfo">GIStructInfo</link>
- *          +----<link linkend="gi-GIUnionInfo">GIUnionInfo</link>
- * </synopsis>
- * </refsect1>
  */
 
 /**
