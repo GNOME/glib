@@ -32,7 +32,7 @@
 G_BEGIN_DECLS
 
 typedef struct _GIBaseInfoStub {
-  /* <private> */
+  /*< private >*/
   gint32 dummy1;
   gint32 dummy2;
   gpointer dummy3;

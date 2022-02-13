@@ -1210,7 +1210,7 @@ typedef struct {
 } AttributeBlob;
 
 struct _GITypelib {
-  /* <private> */
+  /*< private >*/
   guchar *data;
   gsize len;
   gboolean owns_memory;

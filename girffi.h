@@ -53,7 +53,7 @@ typedef struct _GIFunctionInvoker GIFunctionInvoker;
 struct _GIFunctionInvoker {
   ffi_cif cif;
   gpointer native_address;
-  /* <private> */
+  /*< private >*/
   gpointer padding[3];
 };
 

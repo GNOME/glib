@@ -40,7 +40,7 @@ G_BEGIN_DECLS
  * in a #GIBaseInfo struct.
  */
 typedef struct {
-  /* <private> */
+  /*< private >*/
   gpointer data;
   gpointer data2;
   gpointer data3;
@@ -100,4 +100,3 @@ GIBaseInfo *           g_info_new                   (GIInfoType    type,
 G_END_DECLS
 
 #endif  /* __GIBASEINFO_H__ */
-
