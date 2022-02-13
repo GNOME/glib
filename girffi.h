@@ -76,7 +76,7 @@ void          gi_type_info_extract_ffi_return_value (GITypeInfo                 
                                                      GIArgument                  *arg);
 
 GI_AVAILABLE_IN_1_72
-void          gi_type_tag_extract_ffi_return_value (GITypeTag         tag,
+void          gi_type_tag_extract_ffi_return_value (GITypeTag         return_tag,
                                                     GIInfoType        interface_type,
                                                     GIFFIReturnValue *ffi_value,
                                                     GIArgument       *arg);
