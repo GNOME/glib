@@ -10,8 +10,8 @@
 msgid ""
 msgstr "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-01-31 03:23+0000\n"
-"PO-Revision-Date: 2022-02-05 10:00+0100\n"
+"POT-Creation-Date: 2022-02-12 20:49+0000\n"
+"PO-Revision-Date: 2022-02-13 10:00+0100\n"
 "Last-Translator: Asier Sarasua Garmendia <asiersarasua@ni.eus>\n"
 "Language-Team: Basque <librezale@librezale.eus>\n"
 "Language: eu\n"
@@ -28,23 +28,23 @@ msgstr "Aplikazio lehenetsia ezartzea edago onartuta oraindik"
 msgid "Setting application as last used for type not supported yet"
 msgstr "Erabilitako azken aplikazioa motarako ezartzea ez dago onartuta oraindik"
 
-#: gio/gapplication.c:500
+#: gio/gapplication.c:497
 msgid "GApplication options"
 msgstr "GApplication aplikazioaren aukerak"
 
-#: gio/gapplication.c:500
+#: gio/gapplication.c:497
 msgid "Show GApplication options"
 msgstr "Erakutsi GApplication-en aukerak"
 
-#: gio/gapplication.c:545
+#: gio/gapplication.c:542
 msgid "Enter GApplication service mode (use from D-Bus service files)"
 msgstr "Sartu GApplication zerbitzu moduan (erabili D-Bus zerbitzuaren fitxategietatik)"
 
-#: gio/gapplication.c:557
+#: gio/gapplication.c:554
 msgid "Override the application’s ID"
 msgstr "Gainidatzi aplikazioaren IDa"
 
-#: gio/gapplication.c:569
+#: gio/gapplication.c:566
 msgid "Replace the running instance"
 msgstr "Ordeztu exekuzioan dagoen instantzia"
 
@@ -551,13 +551,13 @@ msgstr "“%s” direktorioko baimenak gaizki osatuta. 0700 modua espero zen, ba
 msgid "Error creating directory “%s”: %s"
 msgstr "Errorea “%s” direktorioa sortzean: %s"
 
-#: gio/gdbusauthmechanismsha1.c:360 gio/gfile.c:1068 gio/gfile.c:1306
-#: gio/gfile.c:1444 gio/gfile.c:1682 gio/gfile.c:1737 gio/gfile.c:1795
-#: gio/gfile.c:1879 gio/gfile.c:1936 gio/gfile.c:2000 gio/gfile.c:2055
-#: gio/gfile.c:3760 gio/gfile.c:3815 gio/gfile.c:4108 gio/gfile.c:4578
-#: gio/gfile.c:4989 gio/gfile.c:5074 gio/gfile.c:5164 gio/gfile.c:5261
-#: gio/gfile.c:5348 gio/gfile.c:5449 gio/gfile.c:8159 gio/gfile.c:8249
-#: gio/gfile.c:8333 gio/win32/gwinhttpfile.c:453
+#: gio/gdbusauthmechanismsha1.c:360 gio/gfile.c:1080 gio/gfile.c:1318
+#: gio/gfile.c:1456 gio/gfile.c:1694 gio/gfile.c:1749 gio/gfile.c:1807
+#: gio/gfile.c:1891 gio/gfile.c:1948 gio/gfile.c:2012 gio/gfile.c:2067
+#: gio/gfile.c:3772 gio/gfile.c:3912 gio/gfile.c:4205 gio/gfile.c:4675
+#: gio/gfile.c:5086 gio/gfile.c:5171 gio/gfile.c:5261 gio/gfile.c:5358
+#: gio/gfile.c:5445 gio/gfile.c:5546 gio/gfile.c:8375 gio/gfile.c:8465
+#: gio/gfile.c:8549 gio/win32/gwinhttpfile.c:453
 msgid "Operation not supported"
 msgstr "Eragiketa ez dago onartuta"
 
@@ -1330,73 +1330,73 @@ msgstr "GEmblen espero zen GEmblemedIcon-entzako"
 #. * trying to find the enclosing (user visible)
 #. * mount of a file, but none exists.
 #.
-#: gio/gfile.c:1567
+#: gio/gfile.c:1579
 msgid "Containing mount does not exist"
 msgstr "Ontziaren muntaia ez da existitzen"
 
-#: gio/gfile.c:2614 gio/glocalfile.c:2486
+#: gio/gfile.c:2626 gio/glocalfile.c:2486
 msgid "Can’t copy over directory"
 msgstr "Ezin da direktorioaren gainean kopiatu"
 
-#: gio/gfile.c:2674
+#: gio/gfile.c:2686
 msgid "Can’t copy directory over directory"
 msgstr "Ezin da direktorioa kopiatu direktorio gainean"
 
-#: gio/gfile.c:2682
+#: gio/gfile.c:2694
 msgid "Target file exists"
 msgstr "Helburuko fitxategia existitzen da"
 
-#: gio/gfile.c:2701
+#: gio/gfile.c:2713
 msgid "Can’t recursively copy directory"
 msgstr "Ezin da direktorioa errekurtsiboki kopiatu"
 
-#: gio/gfile.c:3002
+#: gio/gfile.c:3014
 msgid "Splice not supported"
 msgstr "Lotura ez da onartzen"
 
-#: gio/gfile.c:3006
+#: gio/gfile.c:3018
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "Errorea fitxategia batzean: %s"
 
-#: gio/gfile.c:3158
+#: gio/gfile.c:3170
 msgid "Copy (reflink/clone) between mounts is not supported"
 msgstr "Muntaien artean kopiatzea (reflink/clone) ez dago onartuta"
 
-#: gio/gfile.c:3162
+#: gio/gfile.c:3174
 msgid "Copy (reflink/clone) is not supported or invalid"
 msgstr "Kopiatzea (reflink/clone) ez dago onartuta edo baliogabea da"
 
-#: gio/gfile.c:3167
+#: gio/gfile.c:3179
 msgid "Copy (reflink/clone) is not supported or didn’t work"
 msgstr "Kopiatzea (reflink/clone) ez dago onartuta edo ez du funtzionatzen"
 
-#: gio/gfile.c:3232
+#: gio/gfile.c:3244
 msgid "Can’t copy special file"
 msgstr "Ezin da fitxategi berezia kopiatu"
 
-#: gio/gfile.c:4041
+#: gio/gfile.c:4138
 msgid "Invalid symlink value given"
 msgstr "Esteka sinbolikoaren baliogabeko balioa eman da"
 
-#: gio/gfile.c:4051 glib/gfileutils.c:2333
+#: gio/gfile.c:4148 glib/gfileutils.c:2333
 msgid "Symbolic links not supported"
 msgstr "Esteka sinbolikoak ez dira onartzen"
 
-#: gio/gfile.c:4219
+#: gio/gfile.c:4316
 msgid "Trash not supported"
 msgstr "Zakarrontzira botatzea ez dago onartuta"
 
-#: gio/gfile.c:4331
+#: gio/gfile.c:4428
 #, c-format
 msgid "File names cannot contain “%c”"
 msgstr "Fitxategi-izenek ezin dute “%c” eduki"
 
-#: gio/gfile.c:6812 gio/gvolume.c:364
+#: gio/gfile.c:7028 gio/gvolume.c:364
 msgid "volume doesn’t implement mount"
 msgstr "bolumenak ez dauka muntatzea inplementatuta"
 
-#: gio/gfile.c:6926 gio/gfile.c:6974
+#: gio/gfile.c:7142 gio/gfile.c:7190
 msgid "No application is registered as handling this file"
 msgstr "Ez da aplikaziorik erregistratu fitxategi hau kudeatzeko"
 
@@ -3998,7 +3998,7 @@ msgstr "SOCKSv5 proxyak ez du emandako helbide mota onartzen."
 msgid "Unknown SOCKSv5 proxy error."
 msgstr "SOCKSv5 proxyaren errore ezezaguna."
 
-#: gio/gtestdbus.c:612 glib/gspawn-win32.c:312
+#: gio/gtestdbus.c:612 glib/gspawn-win32.c:314
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Ezin izan da kanalizazioa sortu prozesu haurrarekin komunikatzeko (%s)"
@@ -5642,118 +5642,123 @@ msgstr "Ustekabeko errorea datuak prozesu umetik irakurtzean (%s)"
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Ustekabeko errorea waitpid()-en (%s)"
 
-#: glib/gspawn.c:1166 glib/gspawn-win32.c:1399
+#: glib/gspawn.c:1168 glib/gspawn-win32.c:1426
 #, c-format
 msgid "Child process exited with code %ld"
 msgstr "Prozesu haurra amaitu da %ld kodearekin"
 
-#: glib/gspawn.c:1174
+#: glib/gspawn.c:1176
 #, c-format
 msgid "Child process killed by signal %ld"
 msgstr "Prozesu haurra %ld seinaleak hilda"
 
-#: glib/gspawn.c:1181
+#: glib/gspawn.c:1183
 #, c-format
 msgid "Child process stopped by signal %ld"
 msgstr "Prozesu haurra %ld seinaleak geldituta"
 
-#: glib/gspawn.c:1188
+#: glib/gspawn.c:1190
 #, c-format
 msgid "Child process exited abnormally"
 msgstr "Prozesu haurra ustekabean amaituta"
 
-#: glib/gspawn.c:1879 glib/gspawn-win32.c:351 glib/gspawn-win32.c:359
+#: glib/gspawn.c:1881 glib/gspawn-win32.c:353 glib/gspawn-win32.c:361
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Ezin izan da kanalizazio umetik irakurri (%s)"
 
-#: glib/gspawn.c:2239
+#: glib/gspawn.c:2241
 #, c-format
 msgid "Failed to spawn child process “%s” (%s)"
 msgstr "Ezin izan da “%s” prozesu haurra abiarazi (%s)"
 
-#: glib/gspawn.c:2356
+#: glib/gspawn.c:2358
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Ezin da sardetu (%s)"
 
-#: glib/gspawn.c:2516 glib/gspawn-win32.c:382
+#: glib/gspawn.c:2518 glib/gspawn-win32.c:384
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
 msgstr "Ezin izan da “%s” direktoriora aldatu (%s)"
 
-#: glib/gspawn.c:2526
+#: glib/gspawn.c:2528
 #, c-format
 msgid "Failed to execute child process “%s” (%s)"
 msgstr "Ezin izan da “%s” prozesu haurra exekutatu (%s)"
 
-#: glib/gspawn.c:2536
+#: glib/gspawn.c:2538
 #, c-format
 msgid "Failed to open file to remap file descriptor (%s)"
 msgstr "Huts egin du fitxategia irekitzeak fitxategi-deskribatzailea birmapatzeko (%s)"
 
-#: glib/gspawn.c:2544
+#: glib/gspawn.c:2546
 #, c-format
 msgid "Failed to duplicate file descriptor for child process (%s)"
 msgstr "Huts egin du prozesu umerako fitxategi-deskribatzailea bikoizteak (%s)"
 
-#: glib/gspawn.c:2553
+#: glib/gspawn.c:2555
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Ezin izan da prozesu haurra sardetu (%s)"
 
-#: glib/gspawn.c:2561
+#: glib/gspawn.c:2563
 #, c-format
 msgid "Failed to close file descriptor for child process (%s)"
 msgstr "Huts egin du prozesu umerako fitxategi-deskribatzailea ixteak (%s)"
 
-#: glib/gspawn.c:2569
+#: glib/gspawn.c:2571
 #, c-format
 msgid "Unknown error executing child process “%s”"
 msgstr "Errore ezezaguna “%s” prozesu haurra exekutatzean"
 
-#: glib/gspawn.c:2593
+#: glib/gspawn.c:2595
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Ezin izan da nahikoa datu irakurri pid kanalizazio umetik (%s)"
 
-#: glib/gspawn-win32.c:295
+#: glib/gspawn-win32.c:297
 msgid "Failed to read data from child process"
 msgstr "Ezin izan da daturik irakurri prozesu umetik"
 
-#: glib/gspawn-win32.c:388 glib/gspawn-win32.c:393 glib/gspawn-win32.c:512
+#: glib/gspawn-win32.c:390 glib/gspawn-win32.c:395 glib/gspawn-win32.c:519
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Ezin izan da prozesu haurra exekutatu (%s)"
 
+#: glib/gspawn-win32.c:400
+#, c-format
+msgid "Failed to dup() in child process (%s)"
+msgstr "Huts egin du dup() komandoak prozesu haurrean (%s)"
+
 #
-#: glib/gspawn-win32.c:462
+#: glib/gspawn-win32.c:469
 #, c-format
 msgid "Invalid program name: %s"
 msgstr "Programaren izen baliogabea: %s"
 
-#: glib/gspawn-win32.c:472 glib/gspawn-win32.c:771
+#: glib/gspawn-win32.c:479 glib/gspawn-win32.c:797
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "Kate baliogabea %d(e)ko bektorearen argumentuan: %s"
 
-#: glib/gspawn-win32.c:483 glib/gspawn-win32.c:786
+#: glib/gspawn-win32.c:490 glib/gspawn-win32.c:813
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "Kate baliogabea ingurunean: %s"
 
-#: glib/gspawn-win32.c:767
+#: glib/gspawn-win32.c:793
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "Laneko direktorio baliogabea: %s"
 
 #
-#: glib/gspawn-win32.c:829
+#: glib/gspawn-win32.c:858
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "Ezin izan da laguntza-programa exekutatu (%s)"
 
-#: glib/gspawn-win32.c:1056
+#: glib/gspawn-win32.c:1086
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
