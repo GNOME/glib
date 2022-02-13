@@ -792,7 +792,7 @@ validate_type_blob (GITypelib     *typelib,
   if (simple->flags.reserved == 0 &&
       simple->flags.reserved2 == 0)
     {
-      if (!G_TYPE_TAG_IS_BASIC(simple->flags.tag))
+      if (!GI_TYPE_TAG_IS_BASIC(simple->flags.tag))
 	{
 	  g_set_error (error,
 		       G_TYPELIB_ERROR,

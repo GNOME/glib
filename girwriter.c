@@ -231,7 +231,7 @@ write_type_info (const gchar *namespace,
 
       xml_end_element (file, "type");
     }
-  else if (G_TYPE_TAG_IS_BASIC (tag))
+  else if (GI_TYPE_TAG_IS_BASIC (tag))
     {
       xml_start_element (file, "type");
       xml_printf (file, " name=\"%s\"", g_type_tag_to_string (tag));

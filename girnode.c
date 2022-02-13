@@ -632,7 +632,7 @@ _g_ir_node_get_full_size_internal (GIrNode *parent,
       {
 	GIrNodeType *type = (GIrNodeType *)node;
         size = sizeof (SimpleTypeBlob);
-        if (!G_TYPE_TAG_IS_BASIC(type->tag))
+        if (!GI_TYPE_TAG_IS_BASIC (type->tag))
 	  {
 	    g_debug ("node %p type tag '%s'", node,
 		     g_type_tag_to_string (type->tag));
@@ -1208,7 +1208,7 @@ serialize_type (GIrTypelibBuild    *build,
 {
   gint i;
 
-  if (G_TYPE_TAG_IS_BASIC(node->tag))
+  if (GI_TYPE_TAG_IS_BASIC (node->tag))
     {
       g_string_append_printf (str, "%s%s", g_type_tag_to_string (node->tag),
 			      node->is_pointer ? "*" : "");
@@ -1430,7 +1430,7 @@ _g_ir_node_build_typelib (GIrNode         *node,
 
 	*offset += sizeof (SimpleTypeBlob);
 
-	if (G_TYPE_TAG_IS_BASIC (type->tag))
+	if (GI_TYPE_TAG_IS_BASIC (type->tag))
 	  {
 	    blob->flags.reserved = 0;
 	    blob->flags.reserved2 = 0;
