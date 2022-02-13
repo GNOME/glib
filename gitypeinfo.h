@@ -45,8 +45,40 @@ G_BEGIN_DECLS
  * @tag: a type tag
  *
  * Checks if @tag is a basic type.
+ *
+ * Deprecated: 1.72: Use GI_TYPE_TAG_IS_BASIC() instead
  */
-#define G_TYPE_TAG_IS_BASIC(tag) (tag < GI_TYPE_TAG_ARRAY || tag == GI_TYPE_TAG_UNICHAR)
+#define G_TYPE_TAG_IS_BASIC(tag) GI_TYPE_TAG_IS_BASIC(tag)
+
+/**
+ * GI_TYPE_TAG_IS_BASIC
+ * @tag: a type tag
+ *
+ * Checks if @tag is a basic type.
+ *
+ * Since: 1.72
+ */
+#define GI_TYPE_TAG_IS_BASIC(tag) ((tag) < GI_TYPE_TAG_ARRAY || (tag) == GI_TYPE_TAG_UNICHAR)
+
+/**
+ * GI_TYPE_TAG_IS_NUMERIC:
+ * @tag: a type tag
+ *
+ * Checks if @tag is a numeric type. That is, integer or floating point.
+ *
+ * Since: 1.72
+ */
+#define GI_TYPE_TAG_IS_NUMERIC(tag) ((tag) >= GI_TYPE_TAG_INT8 && (tag) <= GI_TYPE_TAG_DOUBLE)
+
+/**
+ * GI_TYPE_TAG_IS_NUMERIC:
+ * @tag: a type tag
+ *
+ * Checks if @tag is a numeric type. That is, integer or floating point.
+ *
+ * Since: 1.72
+ */
+#define GI_TYPE_TAG_IS_NUMERIC(tag) ((tag) >= GI_TYPE_TAG_INT8 && (tag) <= GI_TYPE_TAG_DOUBLE)
 
 /**
  * GI_TYPE_TAG_IS_NUMERIC:
