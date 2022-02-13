@@ -1050,7 +1050,7 @@ typedef struct {
  * @abstract: whether the type can be instantiated
  * @fundamental: this object is not a GObject derived type, instead it's
  *   an additional fundamental type.
- * @final: whether the type can be derived
+ * @final_: whether the type can be derived
  * @reserved: Reserved for future use.
  * @name: TODO
  * @gtype_name: String name of the associated #GType
