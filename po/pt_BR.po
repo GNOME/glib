@@ -23,16 +23,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-02-09 19:51+0000\n"
-"PO-Revision-Date: 2022-02-09 22:09-0300\n"
-"Last-Translator: Matheus Barbosa <mdpb.matheus@gmail.com>\n"
+"POT-Creation-Date: 2022-02-14 13:48+0000\n"
+"PO-Revision-Date: 2022-02-14 19:19-0300\n"
+"Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1)\n"
-"X-Generator: Gtranslator 40.0\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.0.1\n"
 "X-Project-Style: gnome\n"
 "X-DL-Team: pt_BR\n"
 "X-DL-Module: glib\n"
@@ -50,25 +50,25 @@ msgstr ""
 "Definir o aplicativo como usado pela última vez para o tipo ainda não "
 "suportado"
 
-#: gio/gapplication.c:500
+#: gio/gapplication.c:497
 msgid "GApplication options"
 msgstr "Opções do GApplication"
 
-#: gio/gapplication.c:500
+#: gio/gapplication.c:497
 msgid "Show GApplication options"
 msgstr "Mostra as opções do GApplication"
 
-#: gio/gapplication.c:545
+#: gio/gapplication.c:542
 msgid "Enter GApplication service mode (use from D-Bus service files)"
 msgstr ""
 "Digite o modo de serviço do GApplication (usar dos arquivos de serviços do D-"
 "Bus)"
 
-#: gio/gapplication.c:557
+#: gio/gapplication.c:554
 msgid "Override the application’s ID"
 msgstr "Substitui ID do aplicativo"
 
-#: gio/gapplication.c:569
+#: gio/gapplication.c:566
 msgid "Replace the running instance"
 msgstr "Substitui a instância em execução"
 
@@ -148,8 +148,8 @@ msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr ""
 "Identificador do aplicativo em formato D-Bus (ex: org.exemplo.visualizador)"
 
-#: gio/gapplication-tool.c:74 gio/glib-compile-resources.c:738
-#: gio/glib-compile-resources.c:744 gio/glib-compile-resources.c:772
+#: gio/gapplication-tool.c:74 gio/glib-compile-resources.c:820
+#: gio/glib-compile-resources.c:826 gio/glib-compile-resources.c:855
 #: gio/gresource-tool.c:501 gio/gresource-tool.c:567
 msgid "FILE"
 msgstr "ARQUIVO"
@@ -2498,15 +2498,15 @@ msgstr "Ocorreu erro ao comprimir o arquivo %s"
 msgid "text may not appear inside <%s>"
 msgstr "texto não pode aparecer dentro de <%s>"
 
-#: gio/glib-compile-resources.c:737 gio/glib-compile-schemas.c:2172
+#: gio/glib-compile-resources.c:819 gio/glib-compile-schemas.c:2172
 msgid "Show program version and exit"
 msgstr "Mostra a versão do programa e sai"
 
-#: gio/glib-compile-resources.c:738
+#: gio/glib-compile-resources.c:820
 msgid "Name of the output file"
 msgstr "Nome do arquivo de saída"
 
-#: gio/glib-compile-resources.c:739
+#: gio/glib-compile-resources.c:821
 msgid ""
 "The directories to load files referenced in FILE from (default: current "
 "directory)"
@@ -2514,45 +2514,45 @@ msgstr ""
 "Os diretórios do quais serão carregados arquivos referenciados em ARQUIVO "
 "(padrão: diretório atual)"
 
-#: gio/glib-compile-resources.c:739 gio/glib-compile-schemas.c:2173
+#: gio/glib-compile-resources.c:821 gio/glib-compile-schemas.c:2173
 #: gio/glib-compile-schemas.c:2202
 msgid "DIRECTORY"
 msgstr "DIRETÓRIO"
 
-#: gio/glib-compile-resources.c:740
+#: gio/glib-compile-resources.c:822
 msgid ""
 "Generate output in the format selected for by the target filename extension"
 msgstr "Gera a saída no formato definido pela extensão do arquivo alvo"
 
-#: gio/glib-compile-resources.c:741
+#: gio/glib-compile-resources.c:823
 msgid "Generate source header"
 msgstr "Gera um cabeçalho"
 
-#: gio/glib-compile-resources.c:742
+#: gio/glib-compile-resources.c:824
 msgid "Generate source code used to link in the resource file into your code"
 msgstr "Gera código-fonte que vincula o recurso ao seu programa"
 
-#: gio/glib-compile-resources.c:743
+#: gio/glib-compile-resources.c:825
 msgid "Generate dependency list"
 msgstr "Gera uma lista de dependência"
 
-#: gio/glib-compile-resources.c:744
+#: gio/glib-compile-resources.c:826
 msgid "Name of the dependency file to generate"
 msgstr "Nome do arquivo de dependências para gerar"
 
-#: gio/glib-compile-resources.c:745
+#: gio/glib-compile-resources.c:827
 msgid "Include phony targets in the generated dependency file"
 msgstr "Inclui alvos falsos no arquivo de dependência gerado"
 
-#: gio/glib-compile-resources.c:746
+#: gio/glib-compile-resources.c:828
 msgid "Don’t automatically create and register resource"
 msgstr "Não cria e registra o recurso automaticamente"
 
-#: gio/glib-compile-resources.c:747
+#: gio/glib-compile-resources.c:829
 msgid "Don’t export functions; declare them G_GNUC_INTERNAL"
 msgstr "Não exporta funções; declara-as G_GNUC_INTERNAL"
 
-#: gio/glib-compile-resources.c:748
+#: gio/glib-compile-resources.c:830
 msgid ""
 "Don’t embed resource data in the C file; assume it's linked externally "
 "instead"
@@ -2560,11 +2560,15 @@ msgstr ""
 "Não embute dados de recurso no arquivo C; presume estar vinculado "
 "externamente"
 
-#: gio/glib-compile-resources.c:749
+#: gio/glib-compile-resources.c:831
 msgid "C identifier name used for the generated source code"
 msgstr "Nome do identificador C usado no código-fonte gerado"
 
-#: gio/glib-compile-resources.c:775
+#: gio/glib-compile-resources.c:832
+msgid "The target C compiler (default: the CC environment variable)"
+msgstr "O compilador C alvo (padrão: a variável de ambiente CC)"
+
+#: gio/glib-compile-resources.c:858
 msgid ""
 "Compile a resource specification into a resource file.\n"
 "Resource specification files have the extension .gresource.xml,\n"
@@ -2574,7 +2578,7 @@ msgstr ""
 "Arquivos de especificação de recurso têm a extensão .gresource.xml,\n"
 "e um arquivo de recurso tem a extensão .gresource."
 
-#: gio/glib-compile-resources.c:797
+#: gio/glib-compile-resources.c:880
 msgid "You should give exactly one file name\n"
 msgstr "Você deve fornecer exatamente um arquivo\n"
 
@@ -2986,7 +2990,7 @@ msgid ""
 msgstr ""
 "Sobrescrita para chave “%s” no esquema “%s” no arquivo de sobrescrita “%s” "
 "está fora dos limites dado pelo esquema; ignorando sobrescrita para essa "
-"chave"
+"chave."
 
 #: gio/glib-compile-schemas.c:2075
 #, c-format
@@ -6014,7 +6018,6 @@ msgstr "Falha ao executar processo filho (%s)"
 
 #: glib/gspawn-win32.c:400
 #, c-format
-#| msgid "Failed to fork child process (%s)"
 msgid "Failed to dup() in child process (%s)"
 msgstr "Falha em dup() no processo filho (%s)"
 
