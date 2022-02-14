@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 3.12\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-02-10 07:36+0000\n"
-"PO-Revision-Date: 2022-02-10 13:35+0000\n"
+"POT-Creation-Date: 2022-02-14 13:48+0000\n"
+"PO-Revision-Date: 2022-02-14 14:00+0000\n"
 "Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
 "Language-Team: Portuguese <https://l10n.gnome.org/teams/pt/>\n"
 "Language: pt\n"
@@ -31,25 +31,25 @@ msgstr "Definição de aplicações predefinidas ainda não suportado"
 msgid "Setting application as last used for type not supported yet"
 msgstr "Definir aplicação como última utilizada para tipo ainda não suportado"
 
-#: gio/gapplication.c:500
+#: gio/gapplication.c:497
 msgid "GApplication options"
 msgstr "Opções GApplication"
 
-#: gio/gapplication.c:500
+#: gio/gapplication.c:497
 msgid "Show GApplication options"
 msgstr "Mostrar opções GApplication"
 
-#: gio/gapplication.c:545
+#: gio/gapplication.c:542
 msgid "Enter GApplication service mode (use from D-Bus service files)"
 msgstr ""
 "Entrar em modo de serviço GApplication (utilizar a partir de ficheiros D-Bus "
 "de serviço)"
 
-#: gio/gapplication.c:557
+#: gio/gapplication.c:554
 msgid "Override the application’s ID"
 msgstr "Ignorar o ID da aplicação"
 
-#: gio/gapplication.c:569
+#: gio/gapplication.c:566
 msgid "Replace the running instance"
 msgstr "Substituir a instância em execução"
 
@@ -130,8 +130,8 @@ msgstr ""
 "Identificador de aplicação em formato D-Bus (por ex: org.exemplo."
 "visualizador)"
 
-#: gio/gapplication-tool.c:74 gio/glib-compile-resources.c:738
-#: gio/glib-compile-resources.c:744 gio/glib-compile-resources.c:772
+#: gio/gapplication-tool.c:74 gio/glib-compile-resources.c:820
+#: gio/glib-compile-resources.c:826 gio/glib-compile-resources.c:855
 #: gio/gresource-tool.c:501 gio/gresource-tool.c:567
 msgid "FILE"
 msgstr "FICHEIRO"
@@ -1662,7 +1662,7 @@ msgstr "Comandos:"
 
 #: gio/gio-tool.c:229
 msgid "Concatenate files to standard output"
-msgstr "Concatenar ficheiros para a saída pre-definida"
+msgstr "Concatenar ficheiros para a saída predefinida"
 
 #: gio/gio-tool.c:230
 msgid "Copy one or more files"
@@ -1714,7 +1714,7 @@ msgstr "Apagar um ou mais ficheiros"
 
 #: gio/gio-tool.c:242
 msgid "Read from standard input and save"
-msgstr "Ler da entrada padrão e guardar"
+msgstr "Ler da entrada predefinida e guardar"
 
 #: gio/gio-tool.c:243
 msgid "Set a file attribute"
@@ -1749,7 +1749,7 @@ msgstr "LOCALIZAÇÃO"
 
 #: gio/gio-tool-cat.c:138
 msgid "Concatenate files and print to standard output."
-msgstr "Concatenar ficheiros e imprimir para a saída padrão."
+msgstr "Concatenar ficheiros e imprimir para a saída predefinida."
 
 #: gio/gio-tool-cat.c:140
 msgid ""
@@ -2452,15 +2452,15 @@ msgstr "Erro ao comprimir o ficheiro %s"
 msgid "text may not appear inside <%s>"
 msgstr "não pode surgir texto dentro de <%s>"
 
-#: gio/glib-compile-resources.c:737 gio/glib-compile-schemas.c:2172
+#: gio/glib-compile-resources.c:819 gio/glib-compile-schemas.c:2172
 msgid "Show program version and exit"
 msgstr "Mostrar a versão da aplicação e sair"
 
-#: gio/glib-compile-resources.c:738
+#: gio/glib-compile-resources.c:820
 msgid "Name of the output file"
 msgstr "Nome do ficheiro de saída"
 
-#: gio/glib-compile-resources.c:739
+#: gio/glib-compile-resources.c:821
 msgid ""
 "The directories to load files referenced in FILE from (default: current "
 "directory)"
@@ -2468,59 +2468,63 @@ msgstr ""
 "O diretório de onde ler os ficheiros referenciados no FICHEIRO do "
 "(predefinição: diretório atual)"
 
-#: gio/glib-compile-resources.c:739 gio/glib-compile-schemas.c:2173
+#: gio/glib-compile-resources.c:821 gio/glib-compile-schemas.c:2173
 #: gio/glib-compile-schemas.c:2202
 msgid "DIRECTORY"
 msgstr "PASTA"
 
-#: gio/glib-compile-resources.c:740
+#: gio/glib-compile-resources.c:822
 msgid ""
 "Generate output in the format selected for by the target filename extension"
 msgstr ""
 "Gerar o resultado no formato selecionado pela extensão do nome do ficheiro "
 "de saída"
 
-#: gio/glib-compile-resources.c:741
+#: gio/glib-compile-resources.c:823
 msgid "Generate source header"
 msgstr "Gerar o cabeçalho de código"
 
-#: gio/glib-compile-resources.c:742
+#: gio/glib-compile-resources.c:824
 msgid "Generate source code used to link in the resource file into your code"
 msgstr ""
 "Gerar o código-fonte utilizado para ligar o ficheiro de recurso ao seu código"
 
-#: gio/glib-compile-resources.c:743
+#: gio/glib-compile-resources.c:825
 msgid "Generate dependency list"
 msgstr "Gerar lista de dependências"
 
-#: gio/glib-compile-resources.c:744
+#: gio/glib-compile-resources.c:826
 msgid "Name of the dependency file to generate"
 msgstr "Nome do ficheiro de dependência a gerar"
 
-#: gio/glib-compile-resources.c:745
+#: gio/glib-compile-resources.c:827
 msgid "Include phony targets in the generated dependency file"
 msgstr "Incluir alvos falsos no ficheiro de dependência gerado"
 
-#: gio/glib-compile-resources.c:746
+#: gio/glib-compile-resources.c:828
 msgid "Don’t automatically create and register resource"
 msgstr "Não criar e registar um recurso automaticamente"
 
-#: gio/glib-compile-resources.c:747
+#: gio/glib-compile-resources.c:829
 msgid "Don’t export functions; declare them G_GNUC_INTERNAL"
 msgstr "Não exportar funções; declará-las G_GNUC_INTERNAL"
 
-#: gio/glib-compile-resources.c:748
+#: gio/glib-compile-resources.c:830
 msgid ""
 "Don’t embed resource data in the C file; assume it's linked externally "
 "instead"
 msgstr ""
 "Não imbuir dados de recurso num ficheiro C; assuma-o ligado externamente"
 
-#: gio/glib-compile-resources.c:749
+#: gio/glib-compile-resources.c:831
 msgid "C identifier name used for the generated source code"
 msgstr "Nome do identificador C utilizado no código fonte gerado"
 
-#: gio/glib-compile-resources.c:775
+#: gio/glib-compile-resources.c:832
+msgid "The target C compiler (default: the CC environment variable)"
+msgstr "O compilador C de destino (padrão: a variável de ambiente CC)"
+
+#: gio/glib-compile-resources.c:858
 msgid ""
 "Compile a resource specification into a resource file.\n"
 "Resource specification files have the extension .gresource.xml,\n"
@@ -2531,7 +2535,7 @@ msgstr ""
 "xml,\n"
 "e o ficheiro de recurso tem a extensão .gresource."
 
-#: gio/glib-compile-resources.c:797
+#: gio/glib-compile-resources.c:880
 msgid "You should give exactly one file name\n"
 msgstr "Deverá indicar apenas um nome de ficheiro\n"
 
