@@ -342,7 +342,7 @@ class DocbookCodeGenerator:
     def expand_paras(self, s, expandParamsAndConstants):
         s = self.expand(s, expandParamsAndConstants).strip()
         res = []
-        if not s.startswith("<para"):
+        if not s.startswith("<para>"):
             res.append("<para>")
         for line in s.split("\n"):
             line = line.strip()
