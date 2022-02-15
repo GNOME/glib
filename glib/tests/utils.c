@@ -965,6 +965,7 @@ test_aligned_mem (void)
   g_assert_null (a);
 
 #define CHECK_SUBPROCESS_FAIL(name,msg) do { \
+      if (g_test_undefined ()) \
         { \
           g_test_message (msg); \
           g_test_trap_subprocess ("/utils/aligned-mem/subprocess/" #name, 0, 0); \
