@@ -25,10 +25,6 @@ from os import path
 from . import utils
 
 
-# Disable line length warnings as wrapping the Docbook templates would be hard
-# flake8: noqa: E501
-
-
 # ----------------------------------------------------------------------------------------------------
 
 
