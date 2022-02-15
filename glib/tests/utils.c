@@ -922,7 +922,7 @@ aligned_alloc_nz (void)
 
   /* Test an alignment that’s zero */
   a = g_aligned_alloc (16, sizeof(char), 0);
-  g_assert_null (a);
+  g_aligned_free (a);
   exit (0);
 }
 
@@ -933,7 +933,7 @@ aligned_alloc_npot (void)
 
   /* Test an alignment that’s not a power of two */
   a = g_aligned_alloc (16, sizeof(char), 15);
-  g_assert_null (a);
+  g_aligned_free (a);
   exit (0);
 }
 
@@ -943,8 +943,8 @@ aligned_alloc_nmov (void)
   gpointer a;
 
   /* Test an alignment that’s not a multiple of sizeof(void*) */
-  a = g_aligned_alloc (16, sizeof(char), 4);
-  g_assert_null (a);
+  a = g_aligned_alloc (16, sizeof(char), sizeof(void *) / 2);
+  g_aligned_free (a);
   exit (0);
 }
 
@@ -965,6 +965,7 @@ test_aligned_mem (void)
   g_assert_null (a);
 
 #define CHECK_SUBPROCESS_FAIL(name,msg) do { \
+      if (g_test_undefined ()) \
         { \
           g_test_message (msg); \
           g_test_trap_subprocess ("/utils/aligned-mem/subprocess/" #name, 0, 0); \
