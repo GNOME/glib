@@ -30,3 +30,6 @@ cat >index.html <<EOL
 </body>
 </html>
 EOL
+
+# Print a handy link to the coverage report
+echo "Coverage report at: https://${CI_PROJECT_NAMESPACE}.pages.gitlab.gnome.org/-/${CI_PROJECT_NAME}/-/jobs/${CI_BUILD_ID}/artifacts/_coverage/coverage/index.html"
