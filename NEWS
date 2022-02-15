@@ -1,3 +1,71 @@
+Overview of changes in GLib 2.71.2
+==================================
+
+* Rework `glib-compile-resources` to output compiler-specific files to reduce
+  compilation time; see the new `--compiler` option (work by Emmanuele Bassi) (#2492)
+
+* Add a cross-platform API for aligned memory allocations (`g_aligned_alloc()`,
+  `g_aligned_alloc0()` and `g_aligned_free()`) (work by Emmanuele Bassi) (#2574)
+
+* Deprecate `force_posix_threads` configure option, since it was a workaround
+  for static linking on Windows (#2592)
+
+* Add `GBindingGroup` and `GSignalGroup` APIs (work by Christian Hergert and
+  Garrett Regier) (!2235)
+
+* Implement FD remapping support for `g_spawn_async_with_pipes_and_fds()` on
+  Windows (work by Marc-André Lureau) (!2458)
+
+* Add an async file move API, `g_file_move_async()` (work by Lucas Schwiderski) (!2469)
+
+* Bugs fixed:
+ - #1190 gapplication: Add an org.gtk.Debugging interface
+ - #2329 GApplication CLI parsing of DOUBLE type failure
+ - #2492 glib-compile-resources contains resource data twice and creates large output files
+ - #2563 g_test_build_filename and friends not safe to call after g_test_run() has finished
+ - #2574 Add API for aligned allocations
+ - #2592 Consider deprecating 'force_posix_threads' build option
+ - #2601 Missing <para> tag in generated files
+ - !2235 Add GBindingGroup and GSignalGroup
+ - !2378 gtestutils: Mention the unit used for the test timer
+ - !2404 File tests
+ - !2433 Remove tests/testgdate.c from tests
+ - !2458 Implement fd passing for Windows spawn
+ - !2464 Amend g_bus_get* documentation regarding private connection
+ - !2465 gi: expose some files as variable for gobject-introspection
+ - !2467 ci: Add link to Coverage output at end of coverage job
+ - !2468 gfile: resolve_relative_path isn't nullable
+ - !2469 Implement async file movement
+ - !2471 Fix test on the date format for FreeBSD and MacOS X.
+ - !2472 Fix test date (again)...
+ - !2473 Fix glib/test/date.c for FreeBSD/OpenBSD/MacOS X
+ - !2476 Add G_UNICODE_SCRIPT_MATH to GUnicodeScript
+ - !2477 Improve coverage of two digit years in gdate tests
+ - !2481 Fix glib/tests/fileutils on win32
+ - !2482 Fix unit test on date format '%Z' which is too versatile to be trustable
+ - !2483 Fix glib/tests/gdatetime on win32
+ - !2484 tests: Use g_test_skip() to skip a test on Windows
+ - !2487 gconstructor.h: Visual Studio: Only include gslist.h if needed
+ - !2488 Fix some problems with g_aligned_alloc() tests
+
+* Translation updates:
+ - Basque
+ - Catalan
+ - Chinese (China)
+ - Czech
+ - French
+ - Galician
+ - Indonesian
+ - Japanese
+ - Polish
+ - Portuguese
+ - Portuguese (Brazil)
+ - Russian
+ - Slovenian
+ - Spanish
+ - Ukrainian
+
+
 Overview of changes in GLib 2.71.1
 ==================================
 
