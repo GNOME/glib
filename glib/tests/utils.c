@@ -943,7 +943,7 @@ aligned_alloc_nmov (void)
   gpointer a;
 
   /* Test an alignment that’s not a multiple of sizeof(void*) */
-  a = g_aligned_alloc (16, sizeof(char), 4);
+  a = g_aligned_alloc (16, sizeof(char), sizeof(void *) / 2);
   g_assert_null (a);
   exit (0);
 }
