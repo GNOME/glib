@@ -922,7 +922,7 @@ aligned_alloc_nz (void)
 
   /* Test an alignment that’s zero */
   a = g_aligned_alloc (16, sizeof(char), 0);
-  g_assert_null (a);
+  g_aligned_free (a);
   exit (0);
 }
 
@@ -933,7 +933,7 @@ aligned_alloc_npot (void)
 
   /* Test an alignment that’s not a power of two */
   a = g_aligned_alloc (16, sizeof(char), 15);
-  g_assert_null (a);
+  g_aligned_free (a);
   exit (0);
 }
 
@@ -944,7 +944,7 @@ aligned_alloc_nmov (void)
 
   /* Test an alignment that’s not a multiple of sizeof(void*) */
   a = g_aligned_alloc (16, sizeof(char), sizeof(void *) / 2);
-  g_assert_null (a);
+  g_aligned_free (a);
   exit (0);
 }
 
