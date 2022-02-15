@@ -1,0 +1,4 @@
+[flake8]
+# We are generating long lines through templates
+max-line-length = 120
+exclude = __pycache__
