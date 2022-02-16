@@ -30,7 +30,7 @@ test_guess (void)
   existing_directory = (gchar *) g_getenv ("SYSTEMROOT");
 
   if (existing_directory)
-    existing_directory = g_strdup_printf ("%s/", existing_directory);
+    existing_directory = g_strdup_printf ("%s" G_DIR_SEPARATOR_S, existing_directory);
 #else
   existing_directory = g_strdup ("/etc/");
 #endif
