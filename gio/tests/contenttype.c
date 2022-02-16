@@ -56,7 +56,8 @@ test_guess (void)
   g_free (res);
   g_free (expected);
 
-  /* Sadly OSX just doesn't have as large and robust of a mime type database as Linux */
+  /* Sadly win32 & OSX just don't have as large and robust of a mime type database as Linux */
+#ifndef G_OS_WIN32
 #ifndef __APPLE__
   res = g_content_type_guess ("foo", data, sizeof (data) - 1, &uncertain);
   expected = g_content_type_from_mime_type ("text/plain");
@@ -110,7 +111,7 @@ test_guess (void)
   g_assert_false (uncertain);
   g_free (res);
   g_free (expected);
-#endif
+#endif /* __APPLE__ */
 
   res = g_content_type_guess (NULL, (guchar *)"%!PS-Adobe-2.0 EPSF-1.2", 23, &uncertain);
   expected = g_content_type_from_mime_type ("image/x-eps");
@@ -126,6 +127,7 @@ test_guess (void)
   g_assert_false (uncertain);
   g_free (res);
   g_free (expected);
+#endif /* G_OS_WIN32 */
 }
 
 static void
