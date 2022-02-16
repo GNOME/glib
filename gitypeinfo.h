@@ -146,6 +146,15 @@ GI_AVAILABLE_IN_1_66
 gpointer               g_type_info_hash_pointer_from_argument (GITypeInfo *info,
                                                                GIArgument *arg);
 
+GI_AVAILABLE_IN_1_72
+void                   gi_type_tag_argument_from_hash_pointer (GITypeTag   storage_type,
+                                                               gpointer    hash_pointer,
+                                                               GIArgument *arg);
+
+GI_AVAILABLE_IN_1_72
+gpointer               gi_type_tag_hash_pointer_from_argument (GITypeTag   storage_type,
+                                                               GIArgument *arg);
+
 G_END_DECLS
 
 
