@@ -355,6 +355,7 @@ g_content_type_guess (const gchar  *filename,
   char *basename;
   char *type;
   char *dot;
+  size_t i;
 
   type = NULL;
 
@@ -367,11 +368,21 @@ g_content_type_guess (const gchar  *filename,
 
   if (filename)
     {
-      basename = g_path_get_basename (filename);
-      dot = strrchr (basename, '.');
-      if (dot)
-        type = g_strdup (dot);
-      g_free (basename);
+      i = strlen (filename);
+      if (i > 0 && filename[i - 1] == G_DIR_SEPARATOR)
+        {
+          type = g_strdup ("inode/directory");
+          if (result_uncertain)
+            *result_uncertain = TRUE;
+        }
+      else
+        {
+          basename = g_path_get_basename (filename);
+          dot = strrchr (basename, '.');
+          if (dot)
+            type = g_strdup (dot);
+          g_free (basename);
+        }
     }
 
   if (type)
