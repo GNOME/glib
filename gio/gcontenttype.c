@@ -780,7 +780,7 @@ g_content_type_guess (const gchar  *filename,
   if (filename)
     {
       i = strlen (filename);
-      if (filename[i - 1] == '/')
+      if (i > 0 && filename[i - 1] == '/')
         {
           name_mimetypes[0] = "inode/directory";
           name_mimetypes[1] = NULL;
