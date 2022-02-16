@@ -253,7 +253,9 @@ test_icon (void)
 #ifdef __APPLE__
       g_assert_true (g_strv_contains (names, "text-*"));
 #else
+#ifndef G_OS_WIN32
       g_assert_true (g_strv_contains (names, "text-plain"));
+#endif
       g_assert_true (g_strv_contains (names, "text-x-generic"));
 #endif
     }
@@ -268,9 +270,13 @@ test_icon (void)
       const gchar *const *names;
 
       names = g_themed_icon_get_names (G_THEMED_ICON (icon));
+#ifdef G_OS_WIN32
+      g_assert_true (g_strv_contains (names, "text-x-generic"));
+#else
       g_assert_true (g_strv_contains (names, "application-rtf"));
 #ifndef __APPLE__
       g_assert_true (g_strv_contains (names, "x-office-document"));
+#endif
 #endif
     }
   g_object_unref (icon);
