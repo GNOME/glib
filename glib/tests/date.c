@@ -801,8 +801,13 @@ test_strftime (void)
       g_assert_cmpstr (buf, ==, strftime_checks[i].expect);
     }
 
-  /* Time zone is too versatile on OS_WIN32 to be checked precisely */
 #ifdef G_OS_WIN32
+  /*
+   * Time zone is too versatile on OS_WIN32 to be checked precisely,
+   * According to msdn: "Either the locale's time-zone name
+   * or time zone abbreviation, depending on registry settings; no characters
+   * if time zone is unknown".
+   */
   g_assert_cmpint (g_date_strftime (buf, sizeof (buf), "%Z", d), !=, 0);
 #endif
 
@@ -1063,7 +1068,14 @@ test_parse_locale_change (void)
   g_date_set_parse (&date, "07/04/76");
   g_assert_cmpint (g_date_get_day (&date), ==, 4);
   g_assert_cmpint (g_date_get_month (&date), ==, 7);
+#ifdef G_OS_WIN32
+  /* Windows g_date_strftime() implementation doesn't use twodigit_years */
+  /* FIXME: check if the function can be changed to return 4 digit years instead
+   * See https://gitlab.gnome.org/GNOME/glib/-/issues/2604 */
+  g_assert_cmpint (g_date_get_year (&date), ==, 76);
+#else
   g_assert_cmpint (g_date_get_year (&date), ==, 1976);
+#endif
 
   setlocale (LC_ALL, "");
 }
@@ -1072,6 +1084,9 @@ static void
 test_month_substring (void)
 {
   GDate date;
+#ifdef G_OS_WIN32
+  LCID old_lcid;
+#endif
 
   g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=793550");
 
@@ -1080,6 +1095,13 @@ test_month_substring (void)
       g_test_skip ("pl_PL locale not available");
       return;
     }
+
+#ifdef G_OS_WIN32
+  /* after the crt, set also the win32 thread locale: */
+  /* https://www.codeproject.com/Articles/9600/Windows-SetThreadLocale-and-CRT-setlocale */
+  old_lcid = GetThreadLocale ();
+  SetThreadLocale (MAKELCID (MAKELANGID (LANG_POLISH, SUBLANG_POLISH_POLAND), SORT_DEFAULT));
+#endif
 
   /* In Polish language September is "wrzesień" and August is "sierpień"
    * abbreviated as "sie". The former used to be confused with the latter
@@ -1097,6 +1119,9 @@ test_month_substring (void)
   g_assert_true (g_date_valid (&date));
   g_assert_cmpint (g_date_get_month (&date), ==, G_DATE_AUGUST);
 
+#ifdef G_OS_WIN32
+  SetThreadLocale (old_lcid);
+#endif
   setlocale (LC_ALL, "");
 }
 
@@ -1214,10 +1239,17 @@ test_month_names (void)
     {
       TEST_DATE ( 9,  1, 2018, "%d de %B de %Y", "09 de enero de 2018");
       TEST_DATE ( 1,  2, 2018,      "%OB de %Y",     "febrero de 2018");
+#if defined(G_OS_WIN32) && defined(_UCRT)
+      TEST_DATE (10,  3, 2018, "%e de %b de %Y",   "10 de mar. de 2018");
+      TEST_DATE ( 1,  4, 2018,      "%Ob de %Y",         "abr. de 2018");
+      TEST_DATE (11,  5, 2018, "%d de %h de %Y",   "11 de may. de 2018");
+      TEST_DATE ( 1,  6, 2018,      "%Oh de %Y",         "jun. de 2018");
+#else
       TEST_DATE (10,  3, 2018, "%e de %b de %Y",   "10 de mar de 2018");
       TEST_DATE ( 1,  4, 2018,      "%Ob de %Y",         "abr de 2018");
       TEST_DATE (11,  5, 2018, "%d de %h de %Y",   "11 de may de 2018");
       TEST_DATE ( 1,  6, 2018,      "%Oh de %Y",         "jun de 2018");
+#endif
     }
   else
     g_test_skip ("locale es_ES not available, skipping Spanish month names test");
@@ -1252,7 +1284,11 @@ test_month_names (void)
       TEST_DATE ( 1,  5, 2018,   "%OB %Y",          "Μάιος 2018");
       TEST_DATE ( 1,  6, 2018,   "%OB %Y",        "Ιούνιος 2018");
       TEST_DATE (16,  7, 2018, "%e %b %Y",        "16 Ιουλ 2018");
+#if defined(G_OS_WIN32) && defined(_UCRT)
+      TEST_DATE ( 1,  8, 2018,   "%Ob %Y",            "Αυγ 2018");
+#else
       TEST_DATE ( 1,  8, 2018,   "%Ob %Y",            "Αύγ 2018");
+#endif
     }
   else
     g_test_skip ("locale el_GR not available, skipping Greek month names test");
