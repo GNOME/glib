@@ -19,9 +19,15 @@ glib_tests = {
     'source' : ['cxx.cpp'],
   },
   'dataset' : {},
-  'date' : {},
+  'date' : {
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
+    'should_fail' : host_system == 'darwin',
+  },
   'dir' : {},
-  'environment' : {},
+  'environment' : {
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
+    'should_fail' : host_system == 'darwin',
+  },
   'error' : {},
   'fileutils' : {},
   'gdatetime' : {
@@ -241,7 +247,12 @@ foreach test_name, extra_args : glib_tests
 
   suite = ['glib'] + extra_args.get('suite', [])
   timeout = suite.contains('slow') ? test_timeout_slow : test_timeout
-  test(test_name, exe, env : test_env, timeout : timeout, suite : suite)
+  test(test_name, exe,
+    env : test_env,
+    timeout : timeout,
+    suite : suite,
+    should_fail : extra_args.get('should_fail', false),
+  )
 endforeach
 
 executable('spawn-path-search-helper', 'spawn-path-search-helper.c',
