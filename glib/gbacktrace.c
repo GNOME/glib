@@ -321,7 +321,10 @@ stack_trace (const char * const *args)
   fd_set fdset;
   fd_set readset;
   struct timeval tv;
-  int sel, idx, state, line_idx;
+  int sel, idx, state;
+#ifdef USE_LLDB
+  int line_idx;
+#endif
   char buffer[BUFSIZE];
   char c;
 
@@ -382,7 +385,9 @@ stack_trace (const char * const *args)
 #endif
 
   idx = 0;
+#ifdef USE_LLDB
   line_idx = 0;
+#endif
   state = 0;
 
   while (1)
@@ -399,7 +404,10 @@ stack_trace (const char * const *args)
         {
           if (read (out_fd[0], &c, 1))
             {
+#ifdef USE_LLDB
               line_idx += 1;
+#endif
+
               switch (state)
                 {
                 case 0:
@@ -423,7 +431,9 @@ stack_trace (const char * const *args)
                       _g_fprintf (stdout, "%s", buffer);
                       state = 0;
                       idx = 0;
+#ifdef USE_LLDB
                       line_idx = 0;
+#endif
                     }
                   break;
                 default:
