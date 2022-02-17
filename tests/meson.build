@@ -58,7 +58,6 @@ test_extra_programs = {
 if host_machine.system() != 'windows'
   tests += {
     'timeloop' : {},
-    'iochannel-test' : {},
   }
 else
   test_extra_programs += {
@@ -68,7 +67,6 @@ endif
 
 if installed_tests_enabled
   install_data(
-    'iochannel-test-infile',
     'utf8.txt',
     install_dir : installed_tests_execdir,
   )

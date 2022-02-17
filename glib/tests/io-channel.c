@@ -1,5 +1,13 @@
 /* GLib testing framework examples and tests
  *
+ * Copyright © 2001 Hidetoshi Tajima
+ * Copyright © 2001 Ron Steinke
+ * Copyright © 2001 Owen Taylor
+ * Copyright © 2002 Manish Singh
+ * Copyright © 2011 Sjoerd Simons
+ * Copyright © 2012 Simon McVittie
+ * Copyright © 2013 Stef Walter
+ * Copyright © 2005, 2006, 2008, 2012, 2013 Matthias Clasen
  * Copyright © 2020 Endless Mobile, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -20,6 +28,138 @@
 
 #include <glib.h>
 #include <glib/gstdio.h>
+
+static void
+test_small_writes (void)
+{
+  GIOChannel *io;
+  GIOStatus status = G_IO_STATUS_ERROR;
+  guint bytes_remaining;
+  gchar tmp;
+  GError *local_error = NULL;
+
+  io = g_io_channel_new_file ("iochannel-test-outfile", "w", &local_error);
+  g_assert_no_error (local_error);
+
+  g_io_channel_set_encoding (io, NULL, NULL);
+  g_io_channel_set_buffer_size (io, 1022);
+
+  bytes_remaining = 2 * g_io_channel_get_buffer_size (io);
+  tmp = 0;
+
+  while (bytes_remaining)
+    {
+      status = g_io_channel_write_chars (io, &tmp, 1, NULL, NULL);
+      if (status == G_IO_STATUS_ERROR)
+        break;
+      if (status == G_IO_STATUS_NORMAL)
+        bytes_remaining--;
+    }
+
+  g_assert_cmpint (status, ==, G_IO_STATUS_NORMAL);
+
+  g_io_channel_unref (io);
+}
+
+static void
+test_read_write (void)
+{
+  GIOChannel *gio_r, *gio_w ;
+  GError *local_error = NULL;
+  GString *buffer;
+  char *filename;
+  gint rlength = 0;
+  glong wlength = 0;
+  gsize length_out;
+  const gchar *encoding = "EUC-JP";
+  GIOStatus status;
+  const gsize buffer_size_bytes = 1024;
+
+  filename = g_test_build_filename (G_TEST_DIST, "iochannel-test-infile", NULL);
+
+  setbuf (stdout, NULL); /* For debugging */
+
+  gio_r = g_io_channel_new_file (filename, "r", &local_error);
+  g_assert_no_error (local_error);
+
+  gio_w = g_io_channel_new_file ("iochannel-test-outfile", "w", &local_error);
+  g_assert_no_error (local_error);
+
+  g_io_channel_set_encoding (gio_r, encoding, &local_error);
+  g_assert_no_error (local_error);
+
+  g_io_channel_set_buffer_size (gio_r, buffer_size_bytes);
+
+  status = g_io_channel_set_flags (gio_r, G_IO_FLAG_NONBLOCK, &local_error);
+  if (status == G_IO_STATUS_ERROR)
+    {
+      /* Errors should not happen */
+      g_assert_no_error (local_error);
+      g_clear_error (&local_error);
+    }
+  buffer = g_string_sized_new (buffer_size_bytes);
+
+  while (TRUE)
+    {
+      do
+        status = g_io_channel_read_line_string (gio_r, buffer, NULL, &local_error);
+      while (status == G_IO_STATUS_AGAIN);
+      if (status != G_IO_STATUS_NORMAL)
+        break;
+
+      rlength += buffer->len;
+
+      do
+        status = g_io_channel_write_chars (gio_w, buffer->str, buffer->len,
+          &length_out, &local_error);
+      while (status == G_IO_STATUS_AGAIN);
+      if (status != G_IO_STATUS_NORMAL)
+        break;
+
+      wlength += length_out;
+
+      /* Ensure the whole line was written */
+      g_assert_cmpuint (length_out, ==, buffer->len);
+
+      g_test_message ("%s", buffer->str);
+      g_string_truncate (buffer, 0);
+    }
+
+  switch (status)
+    {
+      case G_IO_STATUS_EOF:
+        break;
+      case G_IO_STATUS_ERROR:
+        /* Errors should not happen */
+        g_assert_no_error (local_error);
+        g_clear_error (&local_error);
+        break;
+      default:
+        g_assert_not_reached ();
+        break;
+    }
+
+  do
+    status = g_io_channel_flush (gio_w, &local_error);
+  while (status == G_IO_STATUS_AGAIN);
+
+  if (status == G_IO_STATUS_ERROR)
+    {
+      /* Errors should not happen */
+      g_assert_no_error (local_error);
+      g_clear_error (&local_error);
+    }
+
+  g_test_message ("read %d bytes, wrote %ld bytes", rlength, wlength);
+
+  g_io_channel_unref (gio_r);
+  g_io_channel_unref (gio_w);
+
+  test_small_writes ();
+
+  g_free (filename);
+  g_string_free (buffer, TRUE);
+}
 
 static void
 test_read_line_embedded_nuls (void)
@@ -75,6 +215,7 @@ main (int   argc,
 {
   g_test_init (&argc, &argv, NULL);
 
+  g_test_add_func ("/io-channel/read-write", test_read_write);
   g_test_add_func ("/io-channel/read-line/embedded-nuls", test_read_line_embedded_nuls);
 
   return g_test_run ();
