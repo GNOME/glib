@@ -422,7 +422,7 @@ _uri_encoder (GString      *out,
               const gchar  *reserved_chars_allowed,
               gboolean      allow_utf8)
 {
-  static const gchar hex[16] = "0123456789ABCDEF";
+  static const gchar hex[] = "0123456789ABCDEF";
   const guchar *p = start;
   const guchar *end = p + length;
 
