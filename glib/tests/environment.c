@@ -180,25 +180,31 @@ test_environ_array (void)
 
   if (g_test_undefined ())
     {
+      gchar **undefined_env;
+
       g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
                              "*assertion* != NULL*");
-      env = g_environ_setenv (env, NULL, "bar", TRUE);
+      undefined_env = g_environ_setenv (env, NULL, "bar", TRUE);
       g_test_assert_expected_messages ();
+      g_strfreev (undefined_env);
 
       g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
                              "*assertion* == NULL*");
-      env = g_environ_setenv (env, "foo=fuz", "bar", TRUE);
+      undefined_env = g_environ_setenv (env, "foo=fuz", "bar", TRUE);
       g_test_assert_expected_messages ();
+      g_strfreev (undefined_env);
 
       g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
                              "*assertion* != NULL*");
-      env = g_environ_setenv (env, "foo", NULL, TRUE);
+      undefined_env = g_environ_setenv (env, "foo", NULL, TRUE);
       g_test_assert_expected_messages ();
+      g_strfreev (undefined_env);
 
       g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
                              "*assertion* != NULL*");
-      env = g_environ_unsetenv (env, NULL);
+      undefined_env = g_environ_unsetenv (env, NULL);
       g_test_assert_expected_messages ();
+      g_strfreev (undefined_env);
     }
 
   env = g_environ_setenv (env, "foo", "bar", TRUE);
