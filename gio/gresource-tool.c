@@ -180,7 +180,7 @@ elf_foreach_resource_section (Elf             *elf,
                               SectionCallback  callback,
                               gpointer         data)
 {
-  int ret;
+  int ret G_GNUC_UNUSED  /* when compiling with G_DISABLE_ASSERT */;
   size_t shstrndx, shnum;
   size_t scnidx;
   Elf_Scn *scn;
