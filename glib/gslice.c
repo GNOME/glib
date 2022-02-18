@@ -610,8 +610,8 @@ magazine_count (ChunkLink *head)
 #endif
 
 static inline gsize
-allocator_get_magazine_threshold (Allocator *allocator,
-                                  guint      ix)
+allocator_get_magazine_threshold (Allocator *local_allocator,
+                                  guint ix)
 {
   /* the magazine size calculated here has a lower bound of MIN_MAGAZINE_SIZE,
    * which is required by the implementation. also, for moderately sized chunks
@@ -622,9 +622,9 @@ allocator_get_magazine_threshold (Allocator *allocator,
    * MAX_MAGAZINE_SIZE. for larger chunks, this number is scaled down so that
    * the content of a single magazine doesn't exceed ca. 16KB.
    */
-  gsize chunk_size = SLAB_CHUNK_SIZE (allocator, ix);
-  guint threshold = MAX (MIN_MAGAZINE_SIZE, allocator->max_page_size / MAX (5 * chunk_size, 5 * 32));
-  guint contention_counter = allocator->contention_counters[ix];
+  gsize chunk_size = SLAB_CHUNK_SIZE (local_allocator, ix);
+  guint threshold = MAX (MIN_MAGAZINE_SIZE, local_allocator->max_page_size / MAX (5 * chunk_size, 5 * 32));
+  guint contention_counter = local_allocator->contention_counters[ix];
   if (G_UNLIKELY (contention_counter))  /* single CPU bias */
     {
       /* adapt contention counter thresholds to chunk sizes */
@@ -676,16 +676,16 @@ magazine_chain_prepare_fields (ChunkLink *magazine_chunks)
 #define magazine_chain_count(mc)        ((mc)->next->next->next->data)
 
 static void
-magazine_cache_trim (Allocator *allocator,
-                     guint      ix,
-                     guint      stamp)
+magazine_cache_trim (Allocator *local_allocator,
+                     guint ix,
+                     guint stamp)
 {
-  /* g_mutex_lock (allocator->mutex); done by caller */
+  /* g_mutex_lock (local_allocator->mutex); done by caller */
   /* trim magazine cache from tail */
-  ChunkLink *current = magazine_chain_prev (allocator->magazines[ix]);
+  ChunkLink *current = magazine_chain_prev (local_allocator->magazines[ix]);
   ChunkLink *trash = NULL;
-  while (!G_APPROX_VALUE(stamp, magazine_chain_uint_stamp (current),
-                         allocator->config.working_set_msecs))
+  while (!G_APPROX_VALUE (stamp, magazine_chain_uint_stamp (current),
+                          local_allocator->config.working_set_msecs))
     {
       /* unlink */
       ChunkLink *prev = magazine_chain_prev (current);
@@ -699,19 +699,19 @@ magazine_cache_trim (Allocator *allocator,
       magazine_chain_prev (current) = trash;
       trash = current;
       /* fixup list head if required */
-      if (current == allocator->magazines[ix])
+      if (current == local_allocator->magazines[ix])
         {
-          allocator->magazines[ix] = NULL;
+          local_allocator->magazines[ix] = NULL;
           break;
         }
       current = prev;
     }
-  g_mutex_unlock (&allocator->magazine_mutex);
+  g_mutex_unlock (&local_allocator->magazine_mutex);
   /* free trash */
   if (trash)
     {
-      const gsize chunk_size = SLAB_CHUNK_SIZE (allocator, ix);
-      g_mutex_lock (&allocator->slab_mutex);
+      const gsize chunk_size = SLAB_CHUNK_SIZE (local_allocator, ix);
+      g_mutex_lock (&local_allocator->slab_mutex);
       while (trash)
         {
           current = trash;
@@ -723,7 +723,7 @@ magazine_cache_trim (Allocator *allocator,
               slab_allocator_free_chunk (chunk_size, chunk);
             }
         }
-      g_mutex_unlock (&allocator->slab_mutex);
+      g_mutex_unlock (&local_allocator->slab_mutex);
     }
 }
 
@@ -1282,40 +1282,40 @@ g_slice_free_chain_with_offset (gsize    mem_size,
 
 /* --- single page allocator --- */
 static void
-allocator_slab_stack_push (Allocator *allocator,
-                           guint      ix,
-                           SlabInfo  *sinfo)
+allocator_slab_stack_push (Allocator *local_allocator,
+                           guint ix,
+                           SlabInfo *sinfo)
 {
   /* insert slab at slab ring head */
-  if (!allocator->slab_stack[ix])
+  if (!local_allocator->slab_stack[ix])
     {
       sinfo->next = sinfo;
       sinfo->prev = sinfo;
     }
   else
     {
-      SlabInfo *next = allocator->slab_stack[ix], *prev = next->prev;
+      SlabInfo *next = local_allocator->slab_stack[ix], *prev = next->prev;
       next->prev = sinfo;
       prev->next = sinfo;
       sinfo->next = next;
       sinfo->prev = prev;
     }
-  allocator->slab_stack[ix] = sinfo;
+  local_allocator->slab_stack[ix] = sinfo;
 }
 
 static gsize
-allocator_aligned_page_size (Allocator *allocator,
-                             gsize      n_bytes)
+allocator_aligned_page_size (Allocator *local_allocator,
+                             gsize n_bytes)
 {
   gsize val = (gsize) 1 << g_bit_storage (n_bytes - 1);
-  val = MAX (val, allocator->min_page_size);
+  val = MAX (val, local_allocator->min_page_size);
   return val;
 }
 
 static void
-allocator_add_slab (Allocator *allocator,
-                    guint      ix,
-                    gsize      chunk_size)
+allocator_add_slab (Allocator *local_allocator,
+                    guint ix,
+                    gsize chunk_size)
 {
   ChunkLink *chunk;
   SlabInfo *sinfo;
@@ -1326,7 +1326,7 @@ allocator_add_slab (Allocator *allocator,
   guint8 *mem;
   guint i;
 
-  page_size = allocator_aligned_page_size (allocator, SLAB_BPAGE_SIZE (allocator, chunk_size));
+  page_size = allocator_aligned_page_size (local_allocator, SLAB_BPAGE_SIZE (local_allocator, chunk_size));
   /* allocate 1 page for the chunks and the slab */
   aligned_memory = allocator_memalign (page_size, page_size - NATIVE_MALLOC_PADDING);
   errsv = errno;
@@ -1351,8 +1351,8 @@ allocator_add_slab (Allocator *allocator,
   padding = ((guint8*) sinfo - mem) - n_chunks * chunk_size;
   if (padding)
     {
-      color = (allocator->color_accu * P2ALIGNMENT) % padding;
-      allocator->color_accu += allocator->config.color_increment;
+      color = (local_allocator->color_accu * P2ALIGNMENT) % padding;
+      local_allocator->color_accu += local_allocator->config.color_increment;
     }
   /* add chunks to free list */
   chunk = (ChunkLink*) (mem + color);
@@ -1364,7 +1364,7 @@ allocator_add_slab (Allocator *allocator,
     }
   chunk->next = NULL;   /* last chunk */
   /* add slab to slab ring */
-  allocator_slab_stack_push (allocator, ix, sinfo);
+  allocator_slab_stack_push (local_allocator, ix, sinfo);
 }
 
 static gpointer

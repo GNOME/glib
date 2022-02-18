@@ -815,7 +815,7 @@ g_io_win32_check (GSource *source)
   GIOWin32Watch *watch = (GIOWin32Watch *)source;
   GIOWin32Channel *channel = (GIOWin32Channel *)watch->channel;
   GIOCondition buffer_condition = g_io_channel_get_buffer_condition (watch->channel);
-  WSANETWORKEVENTS events;
+  WSANETWORKEVENTS events = { 0 };
 
   if (channel->debug)
     g_print ("g_io_win32_check: source=%p channel=%p", source, channel);
@@ -1452,7 +1452,7 @@ g_io_win32_sock_read (GIOChannel *channel,
   GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
   gint result;
   GIOChannelError error;
-  int winsock_error;
+  int winsock_error = 0;
 
   if (win32_channel->debug)
     g_print ("g_io_win32_sock_read: channel=%p sock=%d count=%" G_GSIZE_FORMAT,
@@ -1513,8 +1513,8 @@ g_io_win32_sock_write (GIOChannel  *channel,
   GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
   gint result;
   GIOChannelError error;
-  int winsock_error;
-  
+  int winsock_error = 0;
+
   if (win32_channel->debug)
     g_print ("g_io_win32_sock_write: channel=%p sock=%d count=%" G_GSIZE_FORMAT,
 	     channel, win32_channel->fd, count);

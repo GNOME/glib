@@ -931,7 +931,7 @@ rules_from_windows_time_zone (const gchar   *identifier,
   TIME_ZONE_INFORMATION tzi;
   DWORD size;
   guint rules_num = 0;
-  RegTZI regtzi, regtzi_prev;
+  RegTZI regtzi = { 0 }, regtzi_prev;
   WCHAR winsyspath[MAX_PATH];
   gunichar2 *subkey_w, *subkey_dynamic_w;
 
@@ -1127,7 +1127,7 @@ find_relative_date (TimeZoneDate *buffer)
       g_date_set_dmy (&date, 1, buffer->mon, buffer->year);
       first_wday = g_date_get_weekday (&date);
 
-      if (first_wday > wday)
+      if ((guint) first_wday > wday)
         ++(buffer->week);
       /* week is 1 <= w <= 5, we need 0-based */
       days = 7 * (buffer->week - 1) + wday - first_wday;

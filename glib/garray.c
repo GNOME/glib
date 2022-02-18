@@ -936,7 +936,7 @@ g_array_binary_search (GArray        *array,
 {
   gboolean result = FALSE;
   GRealArray *_array = (GRealArray *) array;
-  guint left, middle, right;
+  guint left, middle = 0, right;
   gint val;
 
   g_return_val_if_fail (_array != NULL, FALSE);
