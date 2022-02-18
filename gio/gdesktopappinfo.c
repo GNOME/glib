@@ -3155,6 +3155,8 @@ launch_uris_with_dbus (GDesktopAppInfo    *info,
                           NULL, G_DBUS_CALL_FLAGS_NONE, -1,
                           cancellable, launch_uris_with_dbus_signal_cb, g_steal_pointer (&data));
   g_free (object_path);
+
+  g_variant_dict_clear (&dict);
 }
 
 static gboolean
