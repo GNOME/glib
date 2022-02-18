@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-02-09 11:19+0000\n"
-"PO-Revision-Date: 2022-02-09 15:46+0300\n"
+"POT-Creation-Date: 2022-02-14 13:48+0000\n"
+"PO-Revision-Date: 2022-02-15 11:23+0300\n"
 "Last-Translator: Aleksandr Melman <Alexmelman88@gmail.com>\n"
 "Language-Team: Русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: gio/gappinfo.c:333
 msgid "Setting default applications not supported yet"
@@ -38,25 +38,25 @@ msgstr ""
 "Установка приложения как последнего использованного для типа файла, который "
 "еще не поддерживается"
 
-#: gio/gapplication.c:500
+#: gio/gapplication.c:497
 msgid "GApplication options"
 msgstr "Параметры GApplication"
 
-#: gio/gapplication.c:500
+#: gio/gapplication.c:497
 msgid "Show GApplication options"
 msgstr "Показать параметры GApplication"
 
-#: gio/gapplication.c:545
+#: gio/gapplication.c:542
 msgid "Enter GApplication service mode (use from D-Bus service files)"
 msgstr ""
 "Запустить GApplication в режиме сервиса (использовать из сервисных файлов D-"
 "Bus)"
 
-#: gio/gapplication.c:557
+#: gio/gapplication.c:554
 msgid "Override the application’s ID"
 msgstr "Переопределить идентификатор приложения"
 
-#: gio/gapplication.c:569
+#: gio/gapplication.c:566
 msgid "Replace the running instance"
 msgstr "Заменить запущенный экземпляр"
 
@@ -136,8 +136,8 @@ msgstr "Команда, по которой выводится подробна�
 msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr "Идентификатор приложения в формате D-Bus (напр.: org.example.viewer)"
 
-#: gio/gapplication-tool.c:74 gio/glib-compile-resources.c:738
-#: gio/glib-compile-resources.c:744 gio/glib-compile-resources.c:772
+#: gio/gapplication-tool.c:74 gio/glib-compile-resources.c:820
+#: gio/glib-compile-resources.c:826 gio/glib-compile-resources.c:855
 #: gio/gresource-tool.c:501 gio/gresource-tool.c:567
 msgid "FILE"
 msgstr "ФАЙЛ"
@@ -2467,15 +2467,15 @@ msgstr "Ошибка при сжатии файла %s"
 msgid "text may not appear inside <%s>"
 msgstr "текста не может быть внутри <%s>"
 
-#: gio/glib-compile-resources.c:737 gio/glib-compile-schemas.c:2172
+#: gio/glib-compile-resources.c:819 gio/glib-compile-schemas.c:2172
 msgid "Show program version and exit"
 msgstr "Показать версию программы и выйти"
 
-#: gio/glib-compile-resources.c:738
+#: gio/glib-compile-resources.c:820
 msgid "Name of the output file"
 msgstr "Имя файла для сохранения"
 
-#: gio/glib-compile-resources.c:739
+#: gio/glib-compile-resources.c:821
 msgid ""
 "The directories to load files referenced in FILE from (default: current "
 "directory)"
@@ -2483,48 +2483,48 @@ msgstr ""
 "Каталоги для загрузки файлов, указанных в параметре FILE (по умолчанию: "
 "текущий каталог)"
 
-#: gio/glib-compile-resources.c:739 gio/glib-compile-schemas.c:2173
+#: gio/glib-compile-resources.c:821 gio/glib-compile-schemas.c:2173
 #: gio/glib-compile-schemas.c:2202
 msgid "DIRECTORY"
 msgstr "КАТАЛОГ"
 
-#: gio/glib-compile-resources.c:740
+#: gio/glib-compile-resources.c:822
 msgid ""
 "Generate output in the format selected for by the target filename extension"
 msgstr ""
 "Генерировать результат в формате в соответствии с расширением целевого файла"
 
-#: gio/glib-compile-resources.c:741
+#: gio/glib-compile-resources.c:823
 msgid "Generate source header"
 msgstr "Генерировать исходный заголовок"
 
-#: gio/glib-compile-resources.c:742
+#: gio/glib-compile-resources.c:824
 msgid "Generate source code used to link in the resource file into your code"
 msgstr ""
 "Генерировать исходный код, который используется для связи с файлом ресурсов "
 "вашего кода"
 
-#: gio/glib-compile-resources.c:743
+#: gio/glib-compile-resources.c:825
 msgid "Generate dependency list"
 msgstr "Генерировать список зависимостей"
 
-#: gio/glib-compile-resources.c:744
+#: gio/glib-compile-resources.c:826
 msgid "Name of the dependency file to generate"
 msgstr "Имя файла зависимостей для генерации"
 
-#: gio/glib-compile-resources.c:745
+#: gio/glib-compile-resources.c:827
 msgid "Include phony targets in the generated dependency file"
 msgstr "Включить фиктивные цели в созданный файл зависимостей"
 
-#: gio/glib-compile-resources.c:746
+#: gio/glib-compile-resources.c:828
 msgid "Don’t automatically create and register resource"
 msgstr "Не создавать и не регистрировать ресурс автоматически"
 
-#: gio/glib-compile-resources.c:747
+#: gio/glib-compile-resources.c:829
 msgid "Don’t export functions; declare them G_GNUC_INTERNAL"
 msgstr "Не экспортируйте функции; объявляйте их как G_GNUC_INTERNAL"
 
-#: gio/glib-compile-resources.c:748
+#: gio/glib-compile-resources.c:830
 msgid ""
 "Don’t embed resource data in the C file; assume it's linked externally "
 "instead"
@@ -2532,11 +2532,15 @@ msgstr ""
 "Не включайте ресурсные данные в файл С. Предполагается что они подключаются "
 "из отдельных файлов"
 
-#: gio/glib-compile-resources.c:749
+#: gio/glib-compile-resources.c:831
 msgid "C identifier name used for the generated source code"
 msgstr "Имя C-идентификатора, используемое для генерации исходного кода"
 
-#: gio/glib-compile-resources.c:775
+#: gio/glib-compile-resources.c:832
+msgid "The target C compiler (default: the CC environment variable)"
+msgstr "Целевой компилятор языка C (по умолчанию: переменная окружения CC)"
+
+#: gio/glib-compile-resources.c:858
 msgid ""
 "Compile a resource specification into a resource file.\n"
 "Resource specification files have the extension .gresource.xml,\n"
@@ -2546,7 +2550,7 @@ msgstr ""
 "Файлы спецификации ресурсов имеют расширение .gresource.xml,\n"
 "а файл ресурса имеет расширение .gresource."
 
-#: gio/glib-compile-resources.c:797
+#: gio/glib-compile-resources.c:880
 msgid "You should give exactly one file name\n"
 msgstr "Должно быть указано только одно имя имя файла\n"
 
