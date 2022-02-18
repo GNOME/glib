@@ -158,24 +158,6 @@ installed-tests:
     # Remove old headers, possibly present in current installation
     - sudo rm -f /usr/include/glib-2.0/glib/gurifuncs.h
     - sudo chown -R `id -un`:`id -gn` _build/
-    # FIXME Install newer xdg-desktop-portal with
-    # GMemoryMonitor support, see:
-    # https://github.com/flatpak/xdg-desktop-portal/pull/365
-    - git clone --branch 1.6.0 --depth 1 --no-tags https://github.com/flatpak/xdg-desktop-portal.git
-    - cd xdg-desktop-portal
-    - ./autogen.sh --prefix=/usr --libdir=/usr/lib64 --disable-libportal --disable-dependency-tracking
-    - make
-    - sudo make install
-    - cd ..
-    # FIXME install newer gobject-introspection
-    # with GMemoryMonitor support, see:
-    # https://gitlab.gnome.org/GNOME/gobject-introspection/merge_requests/193
-    - git clone --single-branch --depth 1 --no-tags https://gitlab.gnome.org/GNOME/gobject-introspection.git
-    - cd gobject-introspection
-    - /usr/bin/meson _build --prefix=/usr --libdir=/usr/lib64
-    - ninja -C _build
-    - sudo ninja -C _build install
-    - cd ..
     # Work-around https://gitlab.gnome.org/GNOME/gnome-desktop-testing/merge_requests/2
     - mkdir -p _build/installed-tests-report/logs/
     - GLIB_TEST_COMPILATION=1 gnome-desktop-testing-runner
