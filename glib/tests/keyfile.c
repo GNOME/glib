@@ -1700,6 +1700,7 @@ test_utf8 (void)
       g_assert_error (error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_UNKNOWN_ENCODING);
       g_clear_error (&error);
       g_key_file_free (file);
+      g_free (data);
     }
 }
 
