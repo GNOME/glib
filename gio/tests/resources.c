@@ -63,7 +63,7 @@ test_resource (GResource *resource)
 			       "/test1.txt",
 			       G_RESOURCE_LOOKUP_FLAGS_NONE,
 			       &size, &flags, &error);
-  g_assert (found);
+  g_assert_true (found);
   g_assert_no_error (error);
   g_assert_cmpint (size, ==, 6);
   g_assert_cmpuint (flags, ==, G_RESOURCE_FLAGS_COMPRESSED);
@@ -81,7 +81,7 @@ test_resource (GResource *resource)
 			       "/a_prefix/test2.txt",
 			       G_RESOURCE_LOOKUP_FLAGS_NONE,
 			       &size, &flags, &error);
-  g_assert (found);
+  g_assert_true (found);
   g_assert_no_error (error);
   g_assert_cmpint (size, ==, 6);
   g_assert_cmpuint (flags, ==, 0);
@@ -90,7 +90,7 @@ test_resource (GResource *resource)
 			       "/a_prefix/test2-alias.txt",
 			       G_RESOURCE_LOOKUP_FLAGS_NONE,
 			       &size, &flags, &error);
-  g_assert (found);
+  g_assert_true (found);
   g_assert_no_error (error);
   g_assert_cmpint (size, ==, 6);
   g_assert_cmpuint (flags, ==, 0);
@@ -137,13 +137,13 @@ test_resource (GResource *resource)
 			       "/test1.txt",
 			       G_RESOURCE_LOOKUP_FLAGS_NONE,
 			       &error);
-  g_assert (in != NULL);
+  g_assert_nonnull (in);
   g_assert_no_error (error);
 
   success = g_input_stream_read_all (in, buffer, sizeof (buffer) - 1,
 				     &size,
 				     NULL, &error);
-  g_assert (success);
+  g_assert_true (success);
   g_assert_no_error (error);
   g_assert_cmpint (size, ==, 6);
   buffer[size] = 0;
@@ -175,7 +175,7 @@ test_resource (GResource *resource)
 				 "/a_prefix/test2.txt",
 				 G_RESOURCE_LOOKUP_FLAGS_NONE,
 				 &error);
-  g_assert (data != NULL);
+  g_assert_nonnull (data);
   g_assert_no_error (error);
   size = g_bytes_get_size (data);
   g_assert_cmpint (size, ==, 6);
@@ -186,7 +186,7 @@ test_resource (GResource *resource)
 				 "/a_prefix/test2-alias.txt",
 				 G_RESOURCE_LOOKUP_FLAGS_NONE,
 				 &error);
-  g_assert (data != NULL);
+  g_assert_nonnull (data);
   g_assert_no_error (error);
   size = g_bytes_get_size (data);
   g_assert_cmpint (size, ==, 6);
@@ -211,7 +211,7 @@ test_resource (GResource *resource)
 					     "/a_prefix",
 					     G_RESOURCE_LOOKUP_FLAGS_NONE,
 					     &error);
-  g_assert (children != NULL);
+  g_assert_nonnull (children);
   g_assert_no_error (error);
   g_assert_cmpint (g_strv_length (children), ==, 2);
   g_strfreev (children);
@@ -221,7 +221,7 @@ test_resource (GResource *resource)
 					     "/a_prefix/",
 					     G_RESOURCE_LOOKUP_FLAGS_NONE,
 					     &error);
-  g_assert (children != NULL);
+  g_assert_nonnull (children);
   g_assert_no_error (error);
   g_assert_cmpint (g_strv_length (children), ==, 2);
   g_strfreev (children);
@@ -238,7 +238,7 @@ test_resource (GResource *resource)
 					     "/with/no/trailing/slash",
 					     G_RESOURCE_LOOKUP_FLAGS_NONE,
 					     &error);
-  g_assert (children == NULL);
+  g_assert_null (children);
   g_assert_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND);
   g_clear_error (&error);
 }
@@ -250,12 +250,12 @@ test_resource_file (void)
   GError *error = NULL;
 
   resource = g_resource_load ("not-there", &error);
-  g_assert (resource == NULL);
+  g_assert_null (resource);
   g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_NOENT);
   g_clear_error (&error);
 
   resource = g_resource_load (g_test_get_filename (G_TEST_BUILT, "test.gresource", NULL), &error);
-  g_assert (resource != NULL);
+  g_assert_nonnull (resource);
   g_assert_no_error (error);
 
   test_resource (resource);
@@ -293,10 +293,10 @@ test_resource_file_path (void)
       gchar *uri;
 
       file = g_file_new_for_uri (test_uris[i].input);
-      g_assert (file != NULL);
+      g_assert_nonnull (file);
 
       uri = g_file_get_uri (file);
-      g_assert (uri != NULL);
+      g_assert_nonnull (uri);
 
       g_assert_cmpstr (uri, ==, test_uris[i].expected);
 
@@ -317,12 +317,12 @@ test_resource_data (void)
 
   loaded_file = g_file_get_contents (g_test_get_filename (G_TEST_BUILT, "test.gresource", NULL),
                                      &content, &content_size, NULL);
-  g_assert (loaded_file);
+  g_assert_true (loaded_file);
 
   data = g_bytes_new_take (content, content_size);
   resource = g_resource_new_from_data (data, &error);
   g_bytes_unref (data);
-  g_assert (resource != NULL);
+  g_assert_nonnull (resource);
   g_assert_no_error (error);
 
   test_resource (resource);
@@ -342,7 +342,7 @@ test_resource_data_unaligned (void)
 
   loaded_file = g_file_get_contents (g_test_get_filename (G_TEST_BUILT, "test.gresource", NULL),
                                      &content, &content_size, NULL);
-  g_assert (loaded_file);
+  g_assert_true (loaded_file);
 
   content_copy = g_new (char, content_size + 1);
   memcpy (content_copy + 1, content, content_size);
@@ -352,7 +352,7 @@ test_resource_data_unaligned (void)
   g_free (content);
   resource = g_resource_new_from_data (data, &error);
   g_bytes_unref (data);
-  g_assert (resource != NULL);
+  g_assert_nonnull (resource);
   g_assert_no_error (error);
 
   test_resource (resource);
@@ -413,13 +413,13 @@ test_resource_registered (void)
   char buffer[128];
 
   resource = g_resource_load (g_test_get_filename (G_TEST_BUILT, "test.gresource", NULL), &error);
-  g_assert (resource != NULL);
+  g_assert_nonnull (resource);
   g_assert_no_error (error);
 
   found = g_resources_get_info ("/test1.txt",
 				G_RESOURCE_LOOKUP_FLAGS_NONE,
 				&size, &flags, &error);
-  g_assert (!found);
+  g_assert_false (found);
   g_assert_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND);
   g_clear_error (&error);
 
@@ -428,10 +428,10 @@ test_resource_registered (void)
   found = g_resources_get_info ("/test1.txt",
 				G_RESOURCE_LOOKUP_FLAGS_NONE,
 				&size, &flags, &error);
-  g_assert (found);
+  g_assert_true (found);
   g_assert_no_error (error);
   g_assert_cmpint (size, ==, 6);
-  g_assert (flags == (G_RESOURCE_FLAGS_COMPRESSED));
+  g_assert_cmpint (flags, ==, G_RESOURCE_FLAGS_COMPRESSED);
 
   found = g_resources_get_info ("/empty.txt",
                                 G_RESOURCE_LOOKUP_FLAGS_NONE,
@@ -439,12 +439,12 @@ test_resource_registered (void)
   g_assert_no_error (error);
   g_assert_true (found);
   g_assert_cmpint (size, ==, 0);
-  g_assert (flags == (G_RESOURCE_FLAGS_COMPRESSED));
+  g_assert_cmpint (flags, ==, G_RESOURCE_FLAGS_COMPRESSED);
 
   found = g_resources_get_info ("/a_prefix/test2.txt",
 				G_RESOURCE_LOOKUP_FLAGS_NONE,
 				&size, &flags, &error);
-  g_assert (found);
+  g_assert_true (found);
   g_assert_no_error (error);
   g_assert_cmpint (size, ==, 6);
   g_assert_cmpint (flags, ==, 0);
@@ -452,7 +452,7 @@ test_resource_registered (void)
   found = g_resources_get_info ("/a_prefix/test2-alias.txt",
 				G_RESOURCE_LOOKUP_FLAGS_NONE,
 				&size, &flags, &error);
-  g_assert (found);
+  g_assert_true (found);
   g_assert_no_error (error);
   g_assert_cmpint (size, ==, 6);
   g_assert_cmpuint (flags, ==, 0);
@@ -467,13 +467,13 @@ test_resource_registered (void)
   in = g_resources_open_stream ("/test1.txt",
 				G_RESOURCE_LOOKUP_FLAGS_NONE,
 				&error);
-  g_assert (in != NULL);
+  g_assert_nonnull (in);
   g_assert_no_error (error);
 
   success = g_input_stream_read_all (in, buffer, sizeof (buffer) - 1,
 				     &size,
 				     NULL, &error);
-  g_assert (success);
+  g_assert_true (success);
   g_assert_no_error (error);
   g_assert_cmpint (size, ==, 6);
   buffer[size] = 0;
@@ -510,7 +510,7 @@ test_resource_registered (void)
   data = g_resources_lookup_data ("/a_prefix/test2.txt",
 				  G_RESOURCE_LOOKUP_FLAGS_NONE,
 				  &error);
-  g_assert (data != NULL);
+  g_assert_nonnull (data);
   g_assert_no_error (error);
   size = g_bytes_get_size (data);
   g_assert_cmpint (size, ==, 6);
@@ -520,7 +520,7 @@ test_resource_registered (void)
   data = g_resources_lookup_data ("/a_prefix/test2-alias.txt",
 				  G_RESOURCE_LOOKUP_FLAGS_NONE,
 				  &error);
-  g_assert (data != NULL);
+  g_assert_nonnull (data);
   g_assert_no_error (error);
   size = g_bytes_get_size (data);
   g_assert_cmpint (size, ==, 6);
@@ -530,14 +530,14 @@ test_resource_registered (void)
   children = g_resources_enumerate_children ("/not/here",
 					     G_RESOURCE_LOOKUP_FLAGS_NONE,
 					     &error);
-  g_assert (children == NULL);
+  g_assert_null (children);
   g_assert_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND);
   g_clear_error (&error);
 
   children = g_resources_enumerate_children ("/a_prefix",
 					     G_RESOURCE_LOOKUP_FLAGS_NONE,
 					     &error);
-  g_assert (children != NULL);
+  g_assert_nonnull (children);
   g_assert_no_error (error);
   g_assert_cmpint (g_strv_length (children), ==, 2);
   g_strfreev (children);
@@ -548,7 +548,7 @@ test_resource_registered (void)
   found = g_resources_get_info ("/test1.txt",
 				G_RESOURCE_LOOKUP_FLAGS_NONE,
 				&size, &flags, &error);
-  g_assert (!found);
+  g_assert_false (found);
   g_assert_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND);
   g_clear_error (&error);
 }
@@ -565,7 +565,7 @@ test_resource_automatic (void)
   found = g_resources_get_info ("/auto_loaded/test1.txt",
 				G_RESOURCE_LOOKUP_FLAGS_NONE,
 				&size, &flags, &error);
-  g_assert (found);
+  g_assert_true (found);
   g_assert_no_error (error);
   g_assert_cmpint (size, ==, 6);
   g_assert_cmpint (flags, ==, 0);
@@ -573,7 +573,7 @@ test_resource_automatic (void)
   data = g_resources_lookup_data ("/auto_loaded/test1.txt",
 				  G_RESOURCE_LOOKUP_FLAGS_NONE,
 				  &error);
-  g_assert (data != NULL);
+  g_assert_nonnull (data);
   g_assert_no_error (error);
   size = g_bytes_get_size (data);
   g_assert_cmpint (size, ==, 6);
@@ -593,7 +593,7 @@ test_resource_manual (void)
   found = g_resources_get_info ("/manual_loaded/test1.txt",
 				G_RESOURCE_LOOKUP_FLAGS_NONE,
 				&size, &flags, &error);
-  g_assert (found);
+  g_assert_true (found);
   g_assert_no_error (error);
   g_assert_cmpint (size, ==, 6);
   g_assert_cmpuint (flags, ==, 0);
@@ -601,7 +601,7 @@ test_resource_manual (void)
   data = g_resources_lookup_data ("/manual_loaded/test1.txt",
 				  G_RESOURCE_LOOKUP_FLAGS_NONE,
 				  &error);
-  g_assert (data != NULL);
+  g_assert_nonnull (data);
   g_assert_no_error (error);
   size = g_bytes_get_size (data);
   g_assert_cmpint (size, ==, 6);
@@ -623,7 +623,7 @@ test_resource_manual2 (void)
                                  "/manual_loaded/test1.txt",
 				 G_RESOURCE_LOOKUP_FLAGS_NONE,
 				 &error);
-  g_assert (data != NULL);
+  g_assert_nonnull (data);
   g_assert_no_error (error);
   size = g_bytes_get_size (data);
   g_assert_cmpint (size, ==, 6);
@@ -730,7 +730,7 @@ test_resource_module (void)
       found = g_resources_get_info ("/resourceplugin/test1.txt",
 				    G_RESOURCE_LOOKUP_FLAGS_NONE,
 				    &size, &flags, &error);
-      g_assert (!found);
+      g_assert_false (found);
       g_assert_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND);
       g_clear_error (&error);
 
@@ -739,7 +739,7 @@ test_resource_module (void)
       found = g_resources_get_info ("/resourceplugin/test1.txt",
 				    G_RESOURCE_LOOKUP_FLAGS_NONE,
 				    &size, &flags, &error);
-      g_assert (found);
+      g_assert_true (found);
       g_assert_no_error (error);
       g_assert_cmpint (size, ==, 6);
       g_assert_cmpuint (flags, ==, 0);
@@ -747,7 +747,7 @@ test_resource_module (void)
       data = g_resources_lookup_data ("/resourceplugin/test1.txt",
 				      G_RESOURCE_LOOKUP_FLAGS_NONE,
 				      &error);
-      g_assert (data != NULL);
+      g_assert_nonnull (data);
       g_assert_no_error (error);
       size = g_bytes_get_size (data);
       g_assert_cmpint (size, ==, 6);
@@ -759,7 +759,7 @@ test_resource_module (void)
       found = g_resources_get_info ("/resourceplugin/test1.txt",
 				    G_RESOURCE_LOOKUP_FLAGS_NONE,
 				    &size, &flags, &error);
-      g_assert (!found);
+      g_assert_false (found);
       g_assert_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND);
       g_clear_error (&error);
     }
@@ -783,12 +783,12 @@ test_uri_query_info (void)
 
   loaded_file = g_file_get_contents (g_test_get_filename (G_TEST_BUILT, "test.gresource", NULL),
                                      &content, &content_size, NULL);
-  g_assert (loaded_file);
+  g_assert_true (loaded_file);
 
   data = g_bytes_new_take (content, content_size);
   resource = g_resource_new_from_data (data, &error);
   g_bytes_unref (data);
-  g_assert (resource != NULL);
+  g_assert_nonnull (resource);
   g_assert_no_error (error);
 
   g_resources_register (resource);
@@ -798,9 +798,9 @@ test_uri_query_info (void)
   g_assert_no_error (error);
 
   content_type = g_file_info_get_content_type (info);
-  g_assert (content_type);
+  g_assert_nonnull (content_type);
   mime_type = g_content_type_get_mime_type (content_type);
-  g_assert (mime_type);
+  g_assert_nonnull (mime_type);
   g_assert_cmpstr (mime_type, ==, "text/plain");
   g_free (mime_type);
 
@@ -847,19 +847,19 @@ test_uri_file (void)
 
   loaded_file = g_file_get_contents (g_test_get_filename (G_TEST_BUILT, "test.gresource", NULL),
                                      &content, &content_size, NULL);
-  g_assert (loaded_file);
+  g_assert_true (loaded_file);
 
   data = g_bytes_new_take (content, content_size);
   resource = g_resource_new_from_data (data, &error);
   g_bytes_unref (data);
-  g_assert (resource != NULL);
+  g_assert_nonnull (resource);
   g_assert_no_error (error);
 
   g_resources_register (resource);
 
   file = g_file_new_for_uri ("resource://" "/a_prefix/test2-alias.txt");
 
-  g_assert (g_file_get_path (file) == NULL);
+  g_assert_null (g_file_get_path (file));
 
   name = g_file_get_parse_name (file);
   g_assert_cmpstr (name, ==, "resource:///a_prefix/test2-alias.txt");
@@ -869,15 +869,15 @@ test_uri_file (void)
   g_assert_cmpstr (name, ==, "resource:///a_prefix/test2-alias.txt");
   g_free (name);
 
-  g_assert (!g_file_is_native (file));
-  g_assert (!g_file_has_uri_scheme (file, "http"));
-  g_assert (g_file_has_uri_scheme (file, "resource"));
+  g_assert_false (g_file_is_native (file));
+  g_assert_false (g_file_has_uri_scheme (file, "http"));
+  g_assert_true (g_file_has_uri_scheme (file, "resource"));
   scheme = g_file_get_uri_scheme (file);
   g_assert_cmpstr (scheme, ==, "resource");
   g_free (scheme);
 
   file2 = g_file_dup (file);
-  g_assert (g_file_equal (file, file2));
+  g_assert_true (g_file_equal (file, file2));
   g_object_unref (file2);
 
   parent = g_file_get_parent (file);
@@ -886,31 +886,31 @@ test_uri_file (void)
 
   file2 = g_file_get_child_for_display_name (parent, "test2-alias.txt", &error);
   g_assert_no_error (error);
-  g_assert (g_file_equal (file, file2));
+  g_assert_true (g_file_equal (file, file2));
   g_object_unref (file2);
 
   info = g_file_enumerator_next_file (enumerator, NULL, &error);
   g_assert_no_error (error);
-  g_assert (info != NULL);
+  g_assert_nonnull (info);
   g_object_unref (info);
 
   info = g_file_enumerator_next_file (enumerator, NULL, &error);
   g_assert_no_error (error);
-  g_assert (info != NULL);
+  g_assert_nonnull (info);
   g_object_unref (info);
 
   info = g_file_enumerator_next_file (enumerator, NULL, &error);
   g_assert_no_error (error);
-  g_assert (info == NULL);
+  g_assert_null (info);
 
   g_file_enumerator_close (enumerator, NULL, &error);
   g_assert_no_error (error);
   g_object_unref (enumerator);
 
   file2 = g_file_new_for_uri ("resource://" "a_prefix/../a_prefix//test2-alias.txt");
-  g_assert (g_file_equal (file, file2));
+  g_assert_true (g_file_equal (file, file2));
 
-  g_assert (g_file_has_prefix (file, parent));
+  g_assert_true (g_file_has_prefix (file, parent));
 
   name = g_file_get_relative_path (parent, file);
   g_assert_cmpstr (name, ==, "test2-alias.txt");
@@ -929,9 +929,9 @@ test_uri_file (void)
   stream = G_INPUT_STREAM (g_file_read (file, NULL, &error));
   g_assert_no_error (error);
   g_assert_cmpint (g_seekable_tell (G_SEEKABLE (stream)), ==, 0);
-  g_assert (g_seekable_can_seek (G_SEEKABLE (G_SEEKABLE (stream))));
+  g_assert_true (g_seekable_can_seek (G_SEEKABLE (G_SEEKABLE (stream))));
   ret = g_seekable_seek (G_SEEKABLE (stream), 1, G_SEEK_SET, NULL, &error);
-  g_assert (ret);
+  g_assert_true (ret);
   g_assert_no_error (error);
   skipped = g_input_stream_skip (stream, 1, NULL, &error);
   g_assert_cmpint (skipped, ==, 1);
@@ -939,7 +939,7 @@ test_uri_file (void)
 
   memset (buf, 0, 1024);
   ret = g_input_stream_read_all (stream, &buf, 1024, NULL, NULL, &error);
-  g_assert (ret);
+  g_assert_true (ret);
   g_assert_no_error (error);
   g_assert_cmpstr (buf, ==, "st2\n");
   info = g_file_input_stream_query_info (G_FILE_INPUT_STREAM (stream),
@@ -947,12 +947,12 @@ test_uri_file (void)
                                          NULL,
                                          &error);
   g_assert_no_error (error);
-  g_assert (info != NULL);
+  g_assert_nonnull (info);
   g_assert_cmpint (g_file_info_get_size (info), ==, 6);
   g_object_unref (info);
 
   ret = g_input_stream_close (stream, NULL, &error);
-  g_assert (ret);
+  g_assert_true (ret);
   g_assert_no_error (error);
   g_object_unref (stream);
 
