@@ -368,9 +368,6 @@ main (int   argc,
 {
   gint ret;
 
-  /* FIXME: Add debug for https://gitlab.gnome.org/GNOME/glib/issues/1929 */
-  g_setenv ("G_DBUS_DEBUG", "authentication", TRUE);
-
   g_test_init (&argc, &argv, NULL);
 
   g_test_add ("/gdbus/connection/flush/busy", Fixture, NULL,
