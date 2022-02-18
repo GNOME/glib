@@ -77,13 +77,13 @@ class DBusXMLParser:
                     colon_index = line.find(": ")
                     if colon_index == -1:
                         if line.endswith(":"):
-                            symbol = line[0:len(line) - 1]
+                            symbol = line[0 : len(line) - 1]
                             comment_state = DBusXMLParser.COMMENT_STATE_PARAMS
                         else:
                             comment_state = DBusXMLParser.COMMENT_STATE_SKIP
                     else:
                         symbol = line[0:colon_index]
-                        rest_of_line = line[colon_index + 2:].strip()
+                        rest_of_line = line[colon_index + 2 :].strip()
                         if len(rest_of_line) > 0:
                             body += f"{rest_of_line}\n"
                         comment_state = DBusXMLParser.COMMENT_STATE_PARAMS
@@ -98,7 +98,7 @@ class DBusXMLParser:
                         body += f"{orig_line}\n"
                     else:
                         param = line[1:colon_index]
-                        docs = line[colon_index + 2:]
+                        docs = line[colon_index + 2 :]
                         params[param] = docs
                 else:
                     comment_state = DBusXMLParser.COMMENT_STATE_BODY
