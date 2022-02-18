@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-02-09 19:51+0000\n"
-"PO-Revision-Date: 2022-02-10 09:50+0700\n"
+"POT-Creation-Date: 2022-02-15 19:11+0000\n"
+"PO-Revision-Date: 2022-02-18 09:03+0700\n"
 "Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
 "Language-Team: Indonesian <gnome@i15n.org>\n"
 "Language: id\n"
@@ -30,23 +30,23 @@ msgid "Setting application as last used for type not supported yet"
 msgstr ""
 "Menata aplikasi sebagai yang terakhir digunakan untuk tipe belum didukung"
 
-#: gio/gapplication.c:500
+#: gio/gapplication.c:497
 msgid "GApplication options"
 msgstr "Opsi GApplication"
 
-#: gio/gapplication.c:500
+#: gio/gapplication.c:497
 msgid "Show GApplication options"
 msgstr "Tunjukkan opsi GApplication"
 
-#: gio/gapplication.c:545
+#: gio/gapplication.c:542
 msgid "Enter GApplication service mode (use from D-Bus service files)"
 msgstr "Masuk mode layanan GApplication (pakai dari berkas layanan D-Bus)"
 
-#: gio/gapplication.c:557
+#: gio/gapplication.c:554
 msgid "Override the application’s ID"
 msgstr "Timpa ID aplikasi"
 
-#: gio/gapplication.c:569
+#: gio/gapplication.c:566
 msgid "Replace the running instance"
 msgstr "Ganti instance yang berjalan"
 
@@ -126,8 +126,8 @@ msgstr "Perintah yang ingin dicetak bantuan terrincinya"
 msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr "Identifier aplikasi dalam format D-Bus (mis: org.example.viewer)"
 
-#: gio/gapplication-tool.c:74 gio/glib-compile-resources.c:738
-#: gio/glib-compile-resources.c:744 gio/glib-compile-resources.c:772
+#: gio/gapplication-tool.c:74 gio/glib-compile-resources.c:820
+#: gio/glib-compile-resources.c:826 gio/glib-compile-resources.c:855
 #: gio/gresource-tool.c:501 gio/gresource-tool.c:567
 msgid "FILE"
 msgstr "BERKAS"
@@ -1293,7 +1293,7 @@ msgstr "Galat: Terlalu banyak argumen.\n"
 msgid "Error: %s is not a valid well-known bus name.\n"
 msgstr "Galat: %s bukan nama bus yang dikenal baik dan valid\n"
 
-#: gio/gdebugcontrollerdbus.c:203
+#: gio/gdebugcontrollerdbus.c:311
 #, c-format
 msgid "Not authorized to change debug settings"
 msgstr "Tidak berwenang untuk mengubah pengaturan awakutu"
@@ -2436,15 +2436,15 @@ msgstr "Galat saat memampatkan berkas %s"
 msgid "text may not appear inside <%s>"
 msgstr "teks tidak boleh muncul di dalam <%s>"
 
-#: gio/glib-compile-resources.c:737 gio/glib-compile-schemas.c:2172
+#: gio/glib-compile-resources.c:819 gio/glib-compile-schemas.c:2172
 msgid "Show program version and exit"
 msgstr "Tampilkan versi program dan keluar"
 
-#: gio/glib-compile-resources.c:738
+#: gio/glib-compile-resources.c:820
 msgid "Name of the output file"
 msgstr "Nama berkas keluaran"
 
-#: gio/glib-compile-resources.c:739
+#: gio/glib-compile-resources.c:821
 msgid ""
 "The directories to load files referenced in FILE from (default: current "
 "directory)"
@@ -2452,48 +2452,48 @@ msgstr ""
 "Direktori untuk memuat berkas yang direferensikan dalam FILE darinya "
 "(bawaan: direktori saat ini)"
 
-#: gio/glib-compile-resources.c:739 gio/glib-compile-schemas.c:2173
+#: gio/glib-compile-resources.c:821 gio/glib-compile-schemas.c:2173
 #: gio/glib-compile-schemas.c:2202
 msgid "DIRECTORY"
 msgstr "DIREKTORI"
 
-#: gio/glib-compile-resources.c:740
+#: gio/glib-compile-resources.c:822
 msgid ""
 "Generate output in the format selected for by the target filename extension"
 msgstr ""
 "Buat keluaran dalam format yang dipilih bagi ekstensi nama berkas target"
 
-#: gio/glib-compile-resources.c:741
+#: gio/glib-compile-resources.c:823
 msgid "Generate source header"
 msgstr "Buat tajuk sumber"
 
-#: gio/glib-compile-resources.c:742
+#: gio/glib-compile-resources.c:824
 msgid "Generate source code used to link in the resource file into your code"
 msgstr ""
 "Buat kode sumber yang dipakai untutk menaut berkas sumber daya ke dalam kode "
 "Anda"
 
-#: gio/glib-compile-resources.c:743
+#: gio/glib-compile-resources.c:825
 msgid "Generate dependency list"
 msgstr "Buat daftar kebergantungan"
 
-#: gio/glib-compile-resources.c:744
+#: gio/glib-compile-resources.c:826
 msgid "Name of the dependency file to generate"
 msgstr "Nama berkas kebergantungan yang akan dibuat"
 
-#: gio/glib-compile-resources.c:745
+#: gio/glib-compile-resources.c:827
 msgid "Include phony targets in the generated dependency file"
 msgstr "Sertakan target palsu pada berkas dependensi yang dihasilkan"
 
-#: gio/glib-compile-resources.c:746
+#: gio/glib-compile-resources.c:828
 msgid "Don’t automatically create and register resource"
 msgstr "Jangan buat dan daftarkan sumber daya secara otomatis"
 
-#: gio/glib-compile-resources.c:747
+#: gio/glib-compile-resources.c:829
 msgid "Don’t export functions; declare them G_GNUC_INTERNAL"
 msgstr "Jangan ekspor fungsi; deklarasikan mereka G_GNUC_INTERNAL"
 
-#: gio/glib-compile-resources.c:748
+#: gio/glib-compile-resources.c:830
 msgid ""
 "Don’t embed resource data in the C file; assume it's linked externally "
 "instead"
@@ -2501,11 +2501,15 @@ msgstr ""
 "Jangan menyematkan data sumber daya dalam berkas C; anggap itu terhubung "
 "secara eksternal sebagai gantinya"
 
-#: gio/glib-compile-resources.c:749
+#: gio/glib-compile-resources.c:831
 msgid "C identifier name used for the generated source code"
 msgstr "Nama identifier C yang dipakai bagi kode sumber yang dibuat"
 
-#: gio/glib-compile-resources.c:775
+#: gio/glib-compile-resources.c:832
+msgid "The target C compiler (default: the CC environment variable)"
+msgstr "Kompiler target C (bawaan: variabel lingkungan CC)"
+
+#: gio/glib-compile-resources.c:858
 msgid ""
 "Compile a resource specification into a resource file.\n"
 "Resource specification files have the extension .gresource.xml,\n"
@@ -2515,7 +2519,7 @@ msgstr ""
 "Berkas spesifikasi sumber daya memiliki ekstensi .gresource.xml,\n"
 "dan berkas sumber daya memiliki ekstensi bernama .gresource."
 
-#: gio/glib-compile-resources.c:797
+#: gio/glib-compile-resources.c:880
 msgid "You should give exactly one file name\n"
 msgstr "Anda mesti memberikan hanya satu nama berkas\n"
 
