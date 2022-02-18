@@ -762,6 +762,8 @@ test_resource_module (void)
       g_assert_false (found);
       g_assert_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND);
       g_clear_error (&error);
+
+      g_clear_object (&module);
     }
 }
 
