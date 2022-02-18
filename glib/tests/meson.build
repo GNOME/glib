@@ -190,6 +190,7 @@ if installed_tests_enabled
     'echo-script',
     'echo-script.bat',
     'empty',
+    'iochannel-test-infile',
     'keyfile.c',
     'keyfiletest.ini',
     'pages.ini',
