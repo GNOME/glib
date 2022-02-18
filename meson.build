@@ -24,8 +24,25 @@ if cc.get_id() == 'msvc'
   # If a warning is completely useless and spammy, use '/wdXXXX' to suppress it
   # If a warning is harmless but hard to fix, use '/woXXXX' so it's shown once
   # NOTE: Only add warnings here if you are sure they're spurious
-  add_project_arguments('/wd4035', '/wd4715', '/wd4116',
-    '/wd4046', '/wd4068', '/wo4090',language : 'c')
+  add_project_arguments(cc.get_supported_arguments([
+    '/wo4057',  # 'operator': 'identifier1' differs in indirection to slightly different base types from 'identifier2'
+    '/wd4068',  # unknown pragma
+    '/wo4090',  # 'operation': different 'modifier' qualifiers
+    '/wd4100',  # 'identifier': unreferenced formal parameter
+    '/wd4116',  # unnamed type definition in parentheses
+    '/wo4125',  # decimal digit terminates octal escape sequence
+    '/wd4127',  # conditional expression is constant
+    '/wd4146',  # unary minus operator applied to unsigned type, result still unsigned
+    '/wd4152',  # nonstandard extension, function/data pointer conversion in expression
+    '/wd4201',  # nonstandard extension used: nameless struct/union
+    '/wd4232',  # nonstandard extension used: 'identifier': address of dllimport 'dllimport' is not static, identity not guaranteed
+    '/wo4245',  # 'conversion_type': conversion from 'type1' to 'type2', signed/unsigned mismatch
+    '/wo4267',  # 'variable': conversion from 'size_t' to 'type', possible loss of data
+    '/wd4334',  # 'shift_operator': result of 32-bit shift implicitly converted to 64 bits (was 64-bit shift intended?)
+    '/wo4389',  # 'operator': signed/unsigned mismatch
+    '/wo4702',  # unreachable code
+    '/wd4706'   # assignment within conditional expression
+    ]), language : 'c')
   # Set the input and exec encoding to utf-8, like is the default with GCC
   add_project_arguments(cc.get_supported_arguments(['/utf-8']), language: 'c')
   # Disable SAFESEH with MSVC for plugins and libs that use external deps that
