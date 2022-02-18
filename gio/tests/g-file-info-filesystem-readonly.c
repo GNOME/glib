@@ -135,6 +135,13 @@ test_filesystem_readonly (gconstpointer with_mount_monitor)
   if (! g_file_set_contents (file_in_mount, "Example", -1, NULL))
     {
       g_test_skip ("Failed to create file needed to proceed further with the test");
+
+      g_free (dir_mountpoint);
+      g_free (file_in_mount);
+      g_free (dir_to_mount);
+      g_free (curdir);
+      g_free (fusermount);
+      g_free (bindfs);
       return;
     }
 
@@ -147,8 +154,18 @@ test_filesystem_readonly (gconstpointer with_mount_monitor)
     {
       gchar *skip_message = g_strdup_printf ("Failed to run bindfs to set up test: %s", error->message);
       g_test_skip (skip_message);
+
       g_free (skip_message);
       g_clear_error (&error);
+
+      g_clear_object (&mount_monitor);
+      g_free (dir_mountpoint);
+      g_free (file_in_mount);
+      g_free (dir_to_mount);
+      g_free (curdir);
+      g_free (fusermount);
+      g_free (bindfs);
+
       return;
     }
 
@@ -170,6 +187,18 @@ test_filesystem_readonly (gconstpointer with_mount_monitor)
   if (! g_file_info_get_attribute_boolean (file_info, G_FILE_ATTRIBUTE_FILESYSTEM_READONLY))
     {
       g_test_skip ("Failed to create readonly file needed to proceed further with the test");
+
+      g_clear_object (&file_info);
+      g_clear_object (&mounted_file);
+      g_free (file_in_mountpoint);
+      g_clear_object (&mount_monitor);
+      g_free (dir_mountpoint);
+      g_free (file_in_mount);
+      g_free (dir_to_mount);
+      g_free (curdir);
+      g_free (fusermount);
+      g_free (bindfs);
+
       return;
     }
 
