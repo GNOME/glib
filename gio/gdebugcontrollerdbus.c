@@ -186,7 +186,7 @@ typedef struct
   GCancellable *cancellable;  /* (owned) */
   GDBusConnection *connection;  /* (owned) */
   guint object_id;
-  guint n_pending_authorize_tasks;
+  GPtrArray *pending_authorize_tasks;  /* (element-type GWeakRef) (owned) (nullable) */
 
   gboolean debug_enabled;
 } GDebugControllerDBusPrivate;
@@ -272,6 +272,52 @@ dbus_get_property (GDBusConnection  *connection,
   return NULL;
 }
 
+static GWeakRef *
+weak_ref_new (GObject *obj)
+{
+  GWeakRef *weak_ref = g_new0 (GWeakRef, 1);
+
+  g_weak_ref_init (weak_ref, obj);
+
+  return g_steal_pointer (&weak_ref);
+}
+
+static void
+weak_ref_free (GWeakRef *weak_ref)
+{
+  g_weak_ref_clear (weak_ref);
+  g_free (weak_ref);
+}
+
+/* Called in the #GMainContext which was default when the #GDebugControllerDBus
+ * was initialised. */
+static void
+garbage_collect_weak_refs (GDebugControllerDBus *self)
+{
+  GDebugControllerDBusPrivate *priv = g_debug_controller_dbus_get_instance_private (self);
+  guint i;
+
+  if (priv->pending_authorize_tasks == NULL)
+    return;
+
+  /* Iterate in reverse order so that if we remove an element the hole won’t be
+   * filled by an element we haven’t checked yet. */
+  for (i = priv->pending_authorize_tasks->len; i > 0; i--)
+    {
+      GWeakRef *weak_ref = g_ptr_array_index (priv->pending_authorize_tasks, i - 1);
+      GObject *obj = g_weak_ref_get (weak_ref);
+
+      if (obj == NULL)
+        g_ptr_array_remove_index_fast (priv->pending_authorize_tasks, i - 1);
+      else
+        g_object_unref (obj);
+    }
+
+  /* Don’t need to keep the array around any more if it’s empty. */
+  if (priv->pending_authorize_tasks->len == 0)
+    g_clear_pointer (&priv->pending_authorize_tasks, g_ptr_array_unref);
+}
+
 /* Called in a worker thread. */
 static void
 authorize_task_cb (GTask        *task,
@@ -320,8 +366,9 @@ authorize_cb (GObject      *object,
       g_dbus_method_invocation_return_value (invocation, NULL);
     }
 
-  g_assert (priv->n_pending_authorize_tasks > 0);
-  priv->n_pending_authorize_tasks--;
+  /* The GTask will stay alive for a bit longer as the worker thread is
+   * potentially still in the process of dropping its reference to it. */
+  g_assert (priv->pending_authorize_tasks != NULL && priv->pending_authorize_tasks->len > 0);
 }
 
 /* Called in the #GMainContext which was default when the #GDebugControllerDBus
@@ -349,8 +396,15 @@ dbus_method_call (GDBusConnection       *connection,
       g_task_set_source_tag (task, dbus_method_call);
       g_task_set_task_data (task, g_object_ref (invocation), (GDestroyNotify) g_object_unref);
 
-      g_assert (priv->n_pending_authorize_tasks < G_MAXUINT);
-      priv->n_pending_authorize_tasks++;
+      /* Track the pending #GTask with a weak ref as its final strong ref could
+       * be dropped from this thread or an arbitrary #GTask worker thread. The
+       * weak refs will be evaluated in g_debug_controller_dbus_stop(). */
+      if (priv->pending_authorize_tasks == NULL)
+        priv->pending_authorize_tasks = g_ptr_array_new_with_free_func ((GDestroyNotify) weak_ref_free);
+      g_ptr_array_add (priv->pending_authorize_tasks, weak_ref_new (G_OBJECT (task)));
+
+      /* Take the opportunity to clean up a bit. */
+      garbage_collect_weak_refs (self);
 
       /* Check the calling peer is authorised to change the debug mode. So that
        * the signal handler can block on checking polkit authorisation (which
@@ -466,7 +520,7 @@ g_debug_controller_dbus_dispose (GObject *object)
   GDebugControllerDBusPrivate *priv = g_debug_controller_dbus_get_instance_private (self);
 
   g_debug_controller_dbus_stop (self);
-  g_assert (priv->n_pending_authorize_tasks == 0);
+  g_assert (priv->pending_authorize_tasks == NULL);
   g_clear_object (&priv->connection);
   g_clear_object (&priv->cancellable);
 
@@ -642,14 +696,13 @@ g_debug_controller_dbus_stop (GDebugControllerDBus *self)
    * for threads to join at this point, as the D-Bus object has been
    * unregistered and the cancellable cancelled.
    *
-   * FIXME: There is still a narrow race here where (we think) the worker thread
-   * briefly holds a reference to the #GTask after the task thread function has
-   * returned.
-   *
-   * The loop will also never terminate if g_debug_controller_dbus_stop() is
+   * The loop will never terminate if g_debug_controller_dbus_stop() is
    * called from within an ::authorize callback.
    *
    * See discussion in https://gitlab.gnome.org/GNOME/glib/-/merge_requests/2486 */
-  while (priv->n_pending_authorize_tasks > 0)
-    g_thread_yield ();
+  while (priv->pending_authorize_tasks != NULL)
+    {
+      garbage_collect_weak_refs (self);
+      g_thread_yield ();
+    }
 }
