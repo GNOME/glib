@@ -1401,6 +1401,17 @@ guint     g_type_get_type_registration_serial (void);
  * #endif
  * ]|
  *
+ * And use it as follow in your C file:
+ *
+ * |[<!-- language="C" -->
+ * struct _MyAppWindow
+ * {
+ *  GtkWindow parent;
+ *  ...
+ * };
+ * G_DEFINE_TYPE (MyAppWindow, my_app_window, GTK_TYPE_WINDOW)
+ * ]|
+ *
  * This results in the following things happening:
  *
  * - the usual `my_app_window_get_type()` function is declared with a return type of #GType
@@ -1489,6 +1500,18 @@ guint     g_type_get_type_registration_serial (void);
  * ...
  *
  * #endif
+ * ]|
+ *
+ * Since the instance structure is public it is often needed to declare a
+ * private struct as follow in your C file:
+ *
+ * |[<!-- language="C" -->
+ * typedef struct _GtkFrobberPrivate GtkFrobberPrivate;
+ * struct _GtkFrobberPrivate
+ * {
+ *   ...
+ * };
+ * G_DEFINE_TYPE_WITH_PRIVATE (GtkFrobber, gtk_frobber, GTK_TYPE_WIDGET)
  * ]|
  *
  * This results in the following things happening:
@@ -1583,6 +1606,18 @@ guint     g_type_get_type_registration_serial (void);
  * ...
  *
  * #endif
+ * ]|
+ *
+ * And use it as follow in your C file:
+ *
+ * |[<!-- language="C" -->
+ * G_DEFINE_INTERFACE (MyModel, my_model, G_TYPE_OBJECT);
+ *
+ * static void
+ * my_model_default_init (MyModelInterface *iface)
+ * {
+ *   ...
+ * }
  * ]|
  *
  * This results in the following things happening:
