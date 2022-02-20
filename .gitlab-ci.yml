@@ -242,7 +242,7 @@ valgrind:
       - "_build/glib/glibconfig.h"
       - "_build/meson-logs"
 
-.cross-template:
+.cross-build-linux:
   extends: .build-linux
   stage: build
   needs: []
@@ -253,7 +253,7 @@ valgrind:
       - "_build/meson-logs"
 
 cross-android_api21_arm64:
-  extends: .cross-template
+  extends: .cross-build-linux
   image: $ANDROID_IMAGE
   script:
     # FIXME: add --werror
@@ -263,7 +263,7 @@ cross-android_api21_arm64:
     - ninja -C _build
 
 cross-android_api28_arm64:
-  extends: .cross-template
+  extends: .cross-build-linux
   image: $ANDROID_IMAGE
   script:
     # FIXME: add --werror
@@ -271,7 +271,7 @@ cross-android_api28_arm64:
     - ninja -C _build
 
 cross-mingw64:
-  extends: .cross-template
+  extends: .cross-build-linux
   image: $MINGW_IMAGE
   script:
     # FIXME: Add --werror
