@@ -36,7 +36,6 @@ variables:
     - tags
 
 .build-linux:
-  extends: .only-default
   before_script:
     - bash .gitlab-ci/show-execution-environment.sh
     - cp -r $HOME/subprojects/* subprojects/
@@ -61,7 +60,9 @@ check-todos:
     - .gitlab-ci/run-check-todos.sh
 
 fedora-x86_64:
-  extends: .build-linux
+  extends:
+    - .build-linux
+    - .only-default
   image: $FEDORA_IMAGE
   stage: build
   needs: []
@@ -110,7 +111,9 @@ fedora-x86_64:
       - "_coverage"
 
 debian-stable-x86_64:
-  extends: .build-linux
+  extends:
+    - .build-linux
+    - .only-default
   image: $DEBIAN_IMAGE
   stage: build
   needs: []
@@ -253,7 +256,9 @@ valgrind:
       - "_build/meson-logs"
 
 cross-android_api21_arm64:
-  extends: .cross-build-linux
+  extends:
+    - .cross-build-linux
+    - .only-default
   image: $ANDROID_IMAGE
   script:
     # FIXME: add --werror
@@ -263,7 +268,9 @@ cross-android_api21_arm64:
     - ninja -C _build
 
 cross-android_api28_arm64:
-  extends: .cross-build-linux
+  extends:
+    - .cross-build-linux
+    - .only-default
   image: $ANDROID_IMAGE
   script:
     # FIXME: add --werror
@@ -271,7 +278,9 @@ cross-android_api28_arm64:
     - ninja -C _build
 
 cross-mingw64:
-  extends: .cross-build-linux
+  extends:
+    - .cross-build-linux
+    - .only-default
   image: $MINGW_IMAGE
   script:
     # FIXME: Add --werror
