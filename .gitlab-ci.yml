@@ -35,7 +35,7 @@ variables:
   except:
     - tags
 
-.build:
+.build-linux:
   extends: .only-default
   before_script:
     - bash .gitlab-ci/show-execution-environment.sh
@@ -61,7 +61,7 @@ check-todos:
     - .gitlab-ci/run-check-todos.sh
 
 fedora-x86_64:
-  extends: .build
+  extends: .build-linux
   image: $FEDORA_IMAGE
   stage: build
   needs: []
@@ -110,7 +110,7 @@ fedora-x86_64:
       - "_coverage"
 
 debian-stable-x86_64:
-  extends: .build
+  extends: .build-linux
   image: $DEBIAN_IMAGE
   stage: build
   needs: []
@@ -141,7 +141,7 @@ debian-stable-x86_64:
 
 installed-tests:
   extends:
-    - .build
+    - .build-linux
     - .only-schedules
   image: $FEDORA_IMAGE
   stage: build
@@ -179,7 +179,7 @@ installed-tests:
 
 G_DISABLE_ASSERT:
   extends:
-    - .build
+    - .build-linux
     - .only-schedules
   image: $FEDORA_IMAGE
   stage: build
@@ -208,7 +208,7 @@ G_DISABLE_ASSERT:
 
 valgrind:
   extends:
-    - .build
+    - .build-linux
     - .only-schedules
   image: $FEDORA_IMAGE
   stage: analysis
@@ -243,7 +243,7 @@ valgrind:
       - "_build/meson-logs"
 
 .cross-template:
-  extends: .build
+  extends: .build-linux
   stage: build
   needs: []
   artifacts:
@@ -486,7 +486,7 @@ coverage:
 
 scan-build:
   extends:
-    - .build
+    - .build-linux
     - .only-schedules
   image: $FEDORA_IMAGE
   stage: analysis
@@ -512,7 +512,7 @@ scan-build:
 
 coverity:
   extends:
-    - .build
+    - .build-linux
     - .only-schedules
   image: $COVERITY_IMAGE
   stage: analysis
