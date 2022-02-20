@@ -60,7 +60,6 @@ ENV ANDROID_NDK_PATH /opt/android-ndk
 COPY android-download-ndk.sh .
 RUN ./android-download-ndk.sh
 COPY android-setup-env.sh .
-RUN ./android-setup-env.sh arm64 21
 RUN ./android-setup-env.sh arm64 28
 RUN rm -rf $ANDROID_NDK_PATH
 

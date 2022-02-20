@@ -265,21 +265,6 @@ valgrind:
     paths:
       - "_build/meson-logs"
 
-cross-android_api21_arm64:
-  extends:
-    - .cross-build-linux
-    # The API 28 build is run on each commit, so the API 21 build can be run
-    # less regularly to save CI resources. The chance of a regression on API 21
-    # and not API 28 is tiny.
-    - .only-schedules
-  image: $ANDROID_IMAGE
-  script:
-    # FIXME: add --werror
-    # We use -Diconv=auto to test that we successfully detect that iconv is not
-    # provided by android api 21, and detect the external iconv instead.
-    - meson ${MESON_COMMON_OPTIONS} --cross-file=/opt/cross_file_android_arm64_21.txt -Diconv=auto _build
-    - ninja -C _build
-
 cross-android_api28_arm64:
   extends:
     - .cross-build-linux
