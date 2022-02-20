@@ -124,10 +124,14 @@
  * Each event source is assigned a priority. The default priority,
  * %G_PRIORITY_DEFAULT, is 0. Values less than 0 denote higher priorities.
  * Values greater than 0 denote lower priorities. Events from high priority
- * sources are always processed before events from lower priority sources.
+ * sources are always processed before events from lower priority sources: if
+ * several sources are ready to dispatch, the ones with equal-highest priority
+ * will be dispatched on the current #GMainContext iteration, and the rest wait
+ * until a subsequent #GMainContext iteration when they have the highest
+ * priority of the sources which are ready for dispatch.
  *
  * Idle functions can also be added, and assigned a priority. These will
- * be run whenever no events with a higher priority are ready to be processed.
+ * be run whenever no events with a higher priority are ready to be dispatched.
  *
  * The #GMainLoop data type represents a main event loop. A GMainLoop is
  * created with g_main_loop_new(). After adding the initial event sources,
