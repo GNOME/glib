@@ -1687,10 +1687,11 @@ threadf (gpointer data)
   source = g_timeout_source_new (250);
   g_source_set_callback (source, timeout_cb, loop, NULL);
   g_source_attach (source, context);
-  g_source_unref (source);
  
   g_main_loop_run (loop);
 
+  g_source_destroy (source);
+  g_source_unref (source);
   g_main_loop_unref (loop);
 
   return NULL;
