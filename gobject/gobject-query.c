@@ -196,7 +196,7 @@ main (gint   argc,
     }
   
   if (!gen_froots && !gen_tree)
-    return help (argv[i-1]);
+    return help ((argc > 0) ? argv[i-1] : NULL);
   
   if (!indent_inc)
     {

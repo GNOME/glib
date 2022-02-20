@@ -2034,7 +2034,8 @@ main(int argc, char **argv)
 
     if (fromcode == NULL || tocode == NULL)
     {
-        printf("usage: %s [-c] -f from-enc -t to-enc [file]\n", argv[0]);
+        printf("usage: %s [-c] -f from-enc -t to-enc [file]\n",
+               (argc > 0) ? argv[0] : "win_iconv");
         return 0;
     }
 
