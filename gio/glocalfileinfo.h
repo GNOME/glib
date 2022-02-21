@@ -326,6 +326,10 @@ inline static time_t    _g_stat_mtime     (const GLocalFileStat *buf) { return b
 inline static guint32   _g_stat_atim_nsec (const GLocalFileStat *buf) { return buf->st_atim.tv_nsec; }
 inline static guint32   _g_stat_ctim_nsec (const GLocalFileStat *buf) { return buf->st_ctim.tv_nsec; }
 inline static guint32   _g_stat_mtim_nsec (const GLocalFileStat *buf) { return buf->st_mtim.tv_nsec; }
+#else
+inline static guint32   _g_stat_atim_nsec (const GLocalFileStat *buf) { return 0; }
+inline static guint32   _g_stat_ctim_nsec (const GLocalFileStat *buf) { return 0; }
+inline static guint32   _g_stat_mtim_nsec (const GLocalFileStat *buf) { return 0; }
 #endif
 
 #endif  /* !HAVE_STATX */
