@@ -38,21 +38,6 @@ export LD=$target_host-ld
 export STRIP=$target_host-strip
 export PATH=$PATH:$toolchain_path/bin
 
-# Cross build libiconv when using API level <= 28.
-# Newer Android has it in its libc already.
-if [ "$api" -lt "28" ]; then
-  wget --quiet http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.15.tar.gz
-  echo "1233fe3ca09341b53354fd4bfe342a7589181145a1232c9919583a8c9979636855839049f3406f253a9d9829908816bb71fd6d34dd544ba290d6f04251376b1a  libiconv-1.15.tar.gz" | sha512sum -c
-  tar xzf libiconv-1.15.tar.gz
-  pushd libiconv-1.15
-  ./configure --host="${target_host}" --prefix="${prefix_path}"  --libdir="${prefix_path}/lib64"
-  make
-  make install
-  popd
-  rm libiconv-1.15.tar.gz
-  rm -r libiconv-1.15
-fi
-
 # Cross build libffi
 wget --quiet https://github.com/libffi/libffi/releases/download/v3.3-rc0/libffi-3.3-rc0.tar.gz
 echo "e6e695d32cd6eb7d65983f32986fccdfc786a593d2ea18af30ce741f58cfa1eb264b1a8d09df5084cb916001aea15187b005c2149a0620a44397a4453b6137d4  libffi-3.3-rc0.tar.gz" | sha512sum -c
