@@ -28,15 +28,14 @@
 #include <locale.h>
 #include <math.h>
 
-
-static GOptionEntry main_entries[] = {
+static GOptionEntry global_main_entries[] = {
   { "main-switch", 0, 0,
     G_OPTION_ARG_NONE, NULL,
     "A switch that is in the main group", NULL },
   G_OPTION_ENTRY_NULL
 };
 
-static GOptionEntry group_entries[] = {
+static GOptionEntry global_group_entries[] = {
   { "test-switch", 0, 0,
     G_OPTION_ARG_NONE, NULL,
     "A switch that is in the test group", NULL },
@@ -54,14 +53,14 @@ make_options (int test_number)
   options = g_option_context_new (NULL);
 
   if (have_main_entries)
-    g_option_context_add_main_entries (options, main_entries, NULL);
+    g_option_context_add_main_entries (options, global_main_entries, NULL);
   if (have_test_entries)
     {
       group = g_option_group_new ("test", "Test Options",
                                   "Show all test options",
                                   NULL, NULL);
       g_option_context_add_group (options, group);
-      g_option_group_add_entries (group, group_entries);
+      g_option_group_add_entries (group, global_group_entries);
     }
 
   return options;

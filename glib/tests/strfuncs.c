@@ -2440,15 +2440,14 @@ test_ascii_string_to_number_usual (void)
 
         case UNSIGNED:
           {
-            guint64 value64 = 0;
             result = g_ascii_string_to_unsigned (data->str,
                                                  data->base,
                                                  data->min,
                                                  data->max,
-                                                 &value64,
+                                                 &valueu64,
                                                  &error);
-            value = value64;
-            g_assert_cmpint (value, ==, value64);
+            value = valueu64;
+            g_assert_cmpint (value, ==, valueu64);
             break;
           }
 

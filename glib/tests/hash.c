@@ -34,9 +34,7 @@
 
 #include <glib.h>
 
-
-
-int array[10000];
+static int global_array[10000];
 
 static void
 fill_hash_table_and_array (GHashTable *hash_table)
@@ -45,8 +43,8 @@ fill_hash_table_and_array (GHashTable *hash_table)
 
   for (i = 0; i < 10000; i++)
     {
-      array[i] = i;
-      g_hash_table_insert (hash_table, &array[i], &array[i]);
+      global_array[i] = i;
+      g_hash_table_insert (hash_table, &global_array[i], &global_array[i]);
     }
 }
 
@@ -641,7 +639,7 @@ test_hash_misc (void)
   verify_result_array (result_array);
 
   for (i = 0; i < 10000; i++)
-    g_hash_table_remove (hash_table, &array[i]);
+    g_hash_table_remove (hash_table, &global_array[i]);
 
   fill_hash_table_and_array (hash_table);
 
@@ -971,14 +969,14 @@ set_ref_hash_test (void)
   key_unref (key2);
 }
 
-GHashTable *h;
+static GHashTable *global_hashtable;
 
 typedef struct {
     gchar *string;
     gboolean freed;
 } FakeFreeData;
 
-GPtrArray *fake_free_data;
+static GPtrArray *fake_free_data;
 
 static void
 fake_free (gpointer dead)
@@ -1003,7 +1001,7 @@ fake_free (gpointer dead)
 static void
 value_destroy_insert (gpointer value)
 {
-  g_hash_table_remove_all (h);
+  g_hash_table_remove_all (global_hashtable);
 }
 
 static void
@@ -1016,44 +1014,44 @@ test_destroy_modify (void)
 
   fake_free_data = g_ptr_array_new ();
 
-  h = g_hash_table_new_full (g_str_hash, g_str_equal, fake_free, value_destroy_insert);
+  global_hashtable = g_hash_table_new_full (g_str_hash, g_str_equal, fake_free, value_destroy_insert);
 
   ffd = g_new0 (FakeFreeData, 1);
   ffd->string = g_strdup ("a");
   g_ptr_array_add (fake_free_data, ffd);
-  g_hash_table_insert (h, ffd->string, "b");
+  g_hash_table_insert (global_hashtable, ffd->string, "b");
 
   ffd = g_new0 (FakeFreeData, 1);
   ffd->string = g_strdup ("c");
   g_ptr_array_add (fake_free_data, ffd);
-  g_hash_table_insert (h, ffd->string, "d");
+  g_hash_table_insert (global_hashtable, ffd->string, "d");
 
   ffd = g_new0 (FakeFreeData, 1);
   ffd->string = g_strdup ("e");
   g_ptr_array_add (fake_free_data, ffd);
-  g_hash_table_insert (h, ffd->string, "f");
+  g_hash_table_insert (global_hashtable, ffd->string, "f");
 
   ffd = g_new0 (FakeFreeData, 1);
   ffd->string = g_strdup ("g");
   g_ptr_array_add (fake_free_data, ffd);
-  g_hash_table_insert (h, ffd->string, "h");
+  g_hash_table_insert (global_hashtable, ffd->string, "h");
 
   ffd = g_new0 (FakeFreeData, 1);
   ffd->string = g_strdup ("h");
   g_ptr_array_add (fake_free_data, ffd);
-  g_hash_table_insert (h, ffd->string, "k");
+  g_hash_table_insert (global_hashtable, ffd->string, "k");
 
   ffd = g_new0 (FakeFreeData, 1);
   ffd->string = g_strdup ("a");
   g_ptr_array_add (fake_free_data, ffd);
-  g_hash_table_insert (h, ffd->string, "c");
+  g_hash_table_insert (global_hashtable, ffd->string, "c");
 
-  g_hash_table_remove (h, "c");
+  g_hash_table_remove (global_hashtable, "c");
 
   /* that removed everything... */
   for (i = 0; i < fake_free_data->len; i++)
     {
-      FakeFreeData *ffd = g_ptr_array_index (fake_free_data, i);
+      ffd = g_ptr_array_index (fake_free_data, i);
 
       g_assert (ffd->freed);
       g_free (ffd->string);
@@ -1063,9 +1061,9 @@ test_destroy_modify (void)
   g_ptr_array_unref (fake_free_data);
 
   /* ... so this is a no-op */
-  g_hash_table_remove (h, "e");
+  g_hash_table_remove (global_hashtable, "e");
 
-  g_hash_table_unref (h);
+  g_hash_table_unref (global_hashtable);
 }
 
 static gboolean

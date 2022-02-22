@@ -179,13 +179,13 @@ test_dataset_id (void)
   g_assert (ret == NULL);
 }
 
-static GData *list;
+static GData *global_list;
 
 static void
 free_one (gpointer data)
 {
   /* recurse */
-  g_datalist_clear (&list);
+  g_datalist_clear (&global_list);
 }
 
 static void
@@ -194,11 +194,11 @@ test_datalist_clear (void)
   /* Need to use a subprocess because it will deadlock if it fails */
   if (g_test_subprocess ())
     {
-      g_datalist_init (&list);
-      g_datalist_set_data_full (&list, "one", GINT_TO_POINTER (1), free_one);
-      g_datalist_set_data_full (&list, "two", GINT_TO_POINTER (2), NULL);
-      g_datalist_clear (&list);
-      g_assert (list == NULL);
+      g_datalist_init (&global_list);
+      g_datalist_set_data_full (&global_list, "one", GINT_TO_POINTER (1), free_one);
+      g_datalist_set_data_full (&global_list, "two", GINT_TO_POINTER (2), NULL);
+      g_datalist_clear (&global_list);
+      g_assert (global_list == NULL);
       return;
     }
 
