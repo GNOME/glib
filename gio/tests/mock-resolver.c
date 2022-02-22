@@ -87,18 +87,50 @@ mock_resolver_set_ipv6_error (MockResolver *self, GError *error)
     self->ipv6_error = g_error_copy (error);
 }
 
+static gboolean lookup_by_name_cb (gpointer user_data);
+
+/* Core of the implementation of `lookup_by_name()` in the mock resolver.
+ *
+ * It creates a #GSource which will become ready with the resolver results. It
+ * will become ready either after a timeout, or as an idle callback. This
+ * simulates doing some actual network-based resolution work.
+ *
+ * A previous implementation of this did the work in a thread, but that made it
+ * hard to synchronise the timeouts with the #GResolver failure timeouts in the
+ * calling thread, as spawning a worker thread could be subject to non-trivial
+ * delays. */
 static void
-do_lookup_by_name (GTask         *task,
-                   gpointer       source_object,
-                   gpointer       task_data,
-                   GCancellable  *cancellable)
+do_lookup_by_name (MockResolver             *self,
+                   GTask                    *task,
+                   GResolverNameLookupFlags  flags)
 {
-  MockResolver *self = source_object;
-  GResolverNameLookupFlags flags = GPOINTER_TO_UINT(task_data);
+  GSource *source = NULL;
+
+  g_task_set_task_data (task, GINT_TO_POINTER (flags), NULL);
+
+  if (flags == G_RESOLVER_NAME_LOOKUP_FLAGS_IPV4_ONLY)
+    source = g_timeout_source_new (self->ipv4_delay_ms);
+  else if (flags == G_RESOLVER_NAME_LOOKUP_FLAGS_IPV6_ONLY)
+    source = g_timeout_source_new (self->ipv6_delay_ms);
+  else if (flags == G_RESOLVER_NAME_LOOKUP_FLAGS_DEFAULT)
+    source = g_idle_source_new ();
+  else
+    g_assert_not_reached ();
+
+  g_source_set_callback (source, lookup_by_name_cb, g_object_ref (task), g_object_unref);
+  g_source_attach (source, g_main_context_get_thread_default ());
+  g_source_unref (source);
+}
+
+static gboolean
+lookup_by_name_cb (gpointer user_data)
+{
+  GTask *task = G_TASK (user_data);
+  MockResolver *self = g_task_get_source_object (task);
+  GResolverNameLookupFlags flags = GPOINTER_TO_INT (g_task_get_task_data (task));
 
   if (flags == G_RESOLVER_NAME_LOOKUP_FLAGS_IPV4_ONLY)
     {
-      g_usleep (self->ipv4_delay_ms * 1000);
       if (self->ipv4_error)
         g_task_return_error (task, g_error_copy (self->ipv4_error));
       else
@@ -106,7 +138,6 @@ do_lookup_by_name (GTask         *task,
     }
   else if (flags == G_RESOLVER_NAME_LOOKUP_FLAGS_IPV6_ONLY)
     {
-      g_usleep (self->ipv6_delay_ms * 1000);
       if (self->ipv6_error)
         g_task_return_error (task, g_error_copy (self->ipv6_error));
       else
@@ -120,6 +151,8 @@ do_lookup_by_name (GTask         *task,
     }
   else
     g_assert_not_reached ();
+
+  return G_SOURCE_REMOVE;
 }
 
 static void
@@ -130,27 +163,65 @@ lookup_by_name_with_flags_async (GResolver                *resolver,
                                  GAsyncReadyCallback       callback,
                                  gpointer                  user_data)
 {
-  GTask *task = g_task_new (resolver, cancellable, callback, user_data);
-  g_task_set_task_data (task, GUINT_TO_POINTER(flags), NULL);
-  g_task_run_in_thread (task, do_lookup_by_name);
+  MockResolver *self = MOCK_RESOLVER (resolver);
+  GTask *task = NULL;
+
+  task = g_task_new (resolver, cancellable, callback, user_data);
+  g_task_set_source_tag (task, lookup_by_name_with_flags_async);
+
+  do_lookup_by_name (self, task, flags);
+
   g_object_unref (task);
+}
+
+static void
+async_result_cb (GObject      *source_object,
+                 GAsyncResult *result,
+                 gpointer      user_data)
+{
+  GAsyncResult **result_out = user_data;
+
+  g_assert (*result_out == NULL);
+  *result_out = g_object_ref (result);
+
+  g_main_context_wakeup (g_main_context_get_thread_default ());
 }
 
 static GList *
-lookup_by_name (GResolver    *resolver,
-                const gchar  *hostname,
-                GCancellable *cancellable,
+lookup_by_name (GResolver     *resolver,
+                const gchar   *hostname,
+                GCancellable  *cancellable,
                 GError       **error)
 {
+  MockResolver *self = MOCK_RESOLVER (resolver);
+  GMainContext *context = NULL;
   GList *result = NULL;
-  GTask *task = g_task_new (resolver, cancellable, NULL, NULL);
-  g_task_set_task_data (task, GUINT_TO_POINTER (G_RESOLVER_NAME_LOOKUP_FLAGS_DEFAULT), NULL);
-  g_task_run_in_thread_sync (task, do_lookup_by_name);
-  result = g_task_propagate_pointer (task, error);
-  g_object_unref (task);
-  return result;
-}
+  GAsyncResult *async_result = NULL;
+  GTask *task = NULL;
 
+  context = g_main_context_new ();
+  g_main_context_push_thread_default (context);
+
+  task = g_task_new (resolver, cancellable, async_result_cb, &async_result);
+  g_task_set_source_tag (task, lookup_by_name);
+
+  /* Set up the resolution job. */
+  do_lookup_by_name (self, task, G_RESOLVER_NAME_LOOKUP_FLAGS_DEFAULT);
+
+  /* Wait for it to complete synchronously. */
+  while (async_result == NULL)
+    g_main_context_iteration (context, TRUE);
+
+  result = g_task_propagate_pointer (G_TASK (async_result), error);
+  g_object_unref (async_result);
+
+  g_assert_finalize_object (task);
+
+  g_main_context_pop_thread_default (context);
+  g_main_context_unref (context);
+
+  return g_steal_pointer (&result);
+}
 
 static GList *
 lookup_by_name_with_flags_finish (GResolver     *resolver,
