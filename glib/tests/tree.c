@@ -482,6 +482,235 @@ test_tree_insert (void)
   g_tree_unref (tree);
 }
 
+static void
+binary_tree_bound (GTree *tree,
+                   char   c,
+                   char   expected,
+                   int    lower)
+{
+  GTreeNode *node;
+
+  if (lower)
+    node = g_tree_lower_bound (tree, &c);
+  else
+    node = g_tree_upper_bound (tree, &c);
+
+  if (g_test_verbose ())
+    g_test_message ("%c %s: ", c, lower ? "lower" : "upper");
+
+  if (!node)
+    {
+      if (!g_tree_nnodes (tree))
+        {
+          if (g_test_verbose ())
+            g_test_message ("empty tree");
+        }
+      else
+        {
+          GTreeNode *last = g_tree_node_last (tree);
+
+          g_assert (last);
+          if (g_test_verbose ())
+            g_test_message ("past end last %c",
+                            *(char *) g_tree_node_key (last));
+        }
+      g_assert (expected == '\x00');
+    }
+  else
+    {
+      GTreeNode *begin = g_tree_node_first (tree);
+      GTreeNode *last = g_tree_node_last (tree);
+      GTreeNode *prev = g_tree_node_previous (node);
+      GTreeNode *next = g_tree_node_next (node);
+
+      g_assert (expected != '\x00');
+      g_assert (expected == *(char *) g_tree_node_key (node));
+
+      if (g_test_verbose ())
+        g_test_message ("%c", *(char *) g_tree_node_key (node));
+
+      if (node != begin)
+        {
+          g_assert (prev);
+          if (g_test_verbose ())
+            g_test_message (" prev %c", *(char *) g_tree_node_key (prev));
+        }
+      else
+        {
+          g_assert (!prev);
+          if (g_test_verbose ())
+            g_test_message (" no prev, it's the first one");
+        }
+
+      if (node != last)
+        {
+          g_assert (next);
+          if (g_test_verbose ())
+            g_test_message (" next %c", *(char *) g_tree_node_key (next));
+        }
+      else
+        {
+          g_assert (!next);
+          if (g_test_verbose ())
+            g_test_message (" no next, it's the last one");
+        }
+    }
+
+  if (g_test_verbose ())
+    g_test_message ("\n");
+}
+
+static void
+binary_tree_bounds (GTree *tree,
+                    char   c,
+                    int    mode)
+{
+  char expectedl, expectedu;
+  char first = mode == 0 ? '0' : mode == 1 ? 'A' : 'z';
+
+  g_assert (mode >= 0 && mode <= 3);
+
+  if (c < first)
+    expectedl = first;
+  else if (c > 'z')
+    expectedl = '\x00';
+  else
+    expectedl = c;
+
+  if (c < first)
+    expectedu = first;
+  else if (c >= 'z')
+    expectedu = '\x00';
+  else
+    expectedu = c == '9' ? 'A' : c == 'Z' ? 'a' : c + 1;
+
+  if (mode == 3)
+    {
+      expectedl = '\x00';
+      expectedu = '\x00';
+    }
+
+  binary_tree_bound (tree, c, expectedl, 1);
+  binary_tree_bound (tree, c, expectedu, 0);
+}
+
+static void
+binary_tree_bounds_test (GTree *tree,
+                         int    mode)
+{
+  binary_tree_bounds (tree, 'a', mode);
+  binary_tree_bounds (tree, 'A', mode);
+  binary_tree_bounds (tree, 'z', mode);
+  binary_tree_bounds (tree, 'Z', mode);
+  binary_tree_bounds (tree, 'Y', mode);
+  binary_tree_bounds (tree, '0', mode);
+  binary_tree_bounds (tree, '9', mode);
+  binary_tree_bounds (tree, '0' - 1, mode);
+  binary_tree_bounds (tree, 'z' + 1, mode);
+  binary_tree_bounds (tree, '0' - 2, mode);
+  binary_tree_bounds (tree, 'z' + 2, mode);
+}
+
+static void
+test_tree_bounds (void)
+{
+  GQueue queue = G_QUEUE_INIT;
+  GTree *tree;
+  char chars[62];
+  guint i, j;
+
+  tree = g_tree_new (my_compare);
+
+  i = 0;
+  for (j = 0; j < 10; j++, i++)
+    {
+      chars[i] = '0' + j;
+      g_queue_push_tail (&queue, &chars[i]);
+    }
+
+  for (j = 0; j < 26; j++, i++)
+    {
+      chars[i] = 'A' + j;
+      g_queue_push_tail (&queue, &chars[i]);
+    }
+
+  for (j = 0; j < 26; j++, i++)
+    {
+      chars[i] = 'a' + j;
+      g_queue_push_tail (&queue, &chars[i]);
+    }
+
+  if (g_test_verbose ())
+    g_test_message ("tree insert: ");
+
+  while (!g_queue_is_empty (&queue))
+    {
+      gint32 which = g_random_int_range (0, g_queue_get_length (&queue));
+      gpointer elem = g_queue_pop_nth (&queue, which);
+      GTreeNode *node;
+
+      if (g_test_verbose ())
+        g_test_message ("%c ", *(char *) elem);
+
+      node = g_tree_insert_node (tree, elem, elem);
+      g_assert (g_tree_node_key (node) == elem);
+      g_assert (g_tree_node_value (node) == elem);
+    }
+
+  if (g_test_verbose ())
+    g_test_message ("\n");
+
+  g_assert_cmpint (g_tree_nnodes (tree), ==, 10 + 26 + 26);
+  g_assert_cmpint (g_tree_height (tree), >=, 6);
+  g_assert_cmpint (g_tree_height (tree), <=, 8);
+
+  if (g_test_verbose ())
+    {
+      g_test_message ("tree: ");
+      g_tree_foreach (tree, my_traverse, NULL);
+      g_test_message ("\n");
+    }
+
+  binary_tree_bounds_test (tree, 0);
+
+  for (i = 0; i < 10; i++)
+    g_tree_remove (tree, &chars[i]);
+
+  g_assert_cmpint (g_tree_nnodes (tree), ==, 26 + 26);
+  g_assert_cmpint (g_tree_height (tree), >=, 6);
+  g_assert_cmpint (g_tree_height (tree), <=, 8);
+
+  if (g_test_verbose ())
+    {
+      g_test_message ("tree: ");
+      g_tree_foreach (tree, my_traverse, NULL);
+      g_test_message ("\n");
+    }
+
+  binary_tree_bounds_test (tree, 1);
+
+  for (i = 10; i < 10 + 26 + 26 - 1; i++)
+    g_tree_remove (tree, &chars[i]);
+
+  if (g_test_verbose ())
+    {
+      g_test_message ("tree: ");
+      g_tree_foreach (tree, my_traverse, NULL);
+      g_test_message ("\n");
+    }
+
+  binary_tree_bounds_test (tree, 2);
+
+  g_tree_remove (tree, &chars[10 + 26 + 26 - 1]);
+
+  if (g_test_verbose ())
+    g_test_message ("empty tree\n");
+
+  binary_tree_bounds_test (tree, 3);
+
+  g_tree_unref (tree);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -492,6 +721,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/tree/destroy", test_tree_destroy);
   g_test_add_func ("/tree/traverse", test_tree_traverse);
   g_test_add_func ("/tree/insert", test_tree_insert);
+  g_test_add_func ("/tree/bounds", test_tree_bounds);
   g_test_add_func ("/tree/remove-all", test_tree_remove_all);
 
   return g_test_run ();

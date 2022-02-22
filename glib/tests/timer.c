@@ -35,6 +35,24 @@ test_timer_basic (void)
 
   timer = g_timer_new ();
 
+  g_timer_start (timer);
+  elapsed = g_timer_elapsed (timer, NULL);
+  g_timer_stop (timer);
+  g_assert_cmpfloat (elapsed, <=, g_timer_elapsed (timer, NULL));
+
+  g_timer_destroy (timer);
+
+  timer = g_timer_new ();
+
+  g_timer_start (timer);
+  elapsed = g_timer_elapsed (timer, NULL);
+  g_timer_stop (timer);
+  g_assert_cmpfloat (elapsed, <=, g_timer_elapsed (timer, NULL));
+
+  g_timer_destroy (timer);
+
+  timer = g_timer_new ();
+
   elapsed = g_timer_elapsed (timer, &micros);
 
   g_assert_cmpfloat (elapsed, <, 1.0);
@@ -69,6 +87,19 @@ test_timer_continue (void)
   gdouble elapsed, elapsed2;
 
   timer = g_timer_new ();
+
+  /* Continue on a running timer */
+  if (g_test_undefined ())
+    {
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*== FALSE*");
+      g_timer_continue (timer);
+      g_test_assert_expected_messages ();
+    }
+
+  g_timer_reset (timer);
+
+  /* Continue on a stopped timer */
   g_usleep (100);
   g_timer_stop (timer);
 
@@ -164,16 +195,27 @@ test_timeval_from_iso8601 (void)
     { TRUE, "1970-01-01T00:00:17.1234Z", { 17, 123400 } },
     { TRUE, "1970-01-01T00:00:17.123456Z", { 17, 123456 } },
     { TRUE, "1980-02-22T12:36:00+02:00", { 320063760, 0 } },
+    { TRUE, "1980-02-22T10:36:00Z", { 320063760, 0 } },
+    { TRUE, "1980-02-22T10:36:00", { 320063760, 0 } },
+    { TRUE, "1980-02-22T12:36:00+02:00", { 320063760, 0 } },
+    { TRUE, "19800222T053600-0500", { 320063760, 0 } },
+    { TRUE, "1980-02-22T07:06:00-03:30", { 320063760, 0 } },
+    { TRUE, "1980-02-22T10:36:00.050000Z", { 320063760, 50000 } },
+    { TRUE, "1980-02-22T05:36:00,05-05:00", { 320063760, 50000 } },
+    { TRUE, "19800222T123600.050000000+0200", { 320063760, 50000 } },
+    { TRUE, "19800222T070600,0500-0330", { 320063760, 50000 } },
     { FALSE, "   ", { 0, 0 } },
     { FALSE, "x", { 0, 0 } },
     { FALSE, "123x", { 0, 0 } },
     { FALSE, "2001-10+x", { 0, 0 } },
+    { FALSE, "1980-02-22", { 0, 0 } },
     { FALSE, "1980-02-22T", { 0, 0 } },
     { FALSE, "2001-10-08Tx", { 0, 0 } },
     { FALSE, "2001-10-08T10:11x", { 0, 0 } },
     { FALSE, "Wed Dec 19 17:20:20 GMT 2007", { 0, 0 } },
     { FALSE, "1980-02-22T10:36:00Zulu", { 0, 0 } },
     { FALSE, "2T0+819855292164632335", { 0, 0 } },
+    { FALSE, "1980-02-22", { 320063760, 50000 } },
     { TRUE, "2018-08-03T14:08:05.446178377+01:00", { 1533301685, 446178 } },
     { FALSE, "2147483648-08-03T14:08:05.446178377+01:00", { 0, 0 } },
     { FALSE, "2018-13-03T14:08:05.446178377+01:00", { 0, 0 } },
@@ -222,7 +264,7 @@ test_timeval_from_iso8601 (void)
       out.tv_sec = 0;
       out.tv_usec = 0;
       success = g_time_val_from_iso8601 (tests[i].in, &out);
-      g_assert (success == tests[i].success);
+      g_assert_cmpint (success, ==, tests[i].success);
       if (tests[i].success)
         {
           g_assert_cmpint (out.tv_sec, ==, tests[i].val.tv_sec);
@@ -230,10 +272,20 @@ test_timeval_from_iso8601 (void)
         }
     }
 
+  /* revert back user defined time zone */
   if (old_tz != NULL)
     g_assert_true (g_setenv ("TZ", old_tz, TRUE));
   else
     g_unsetenv ("TZ");
+  tzset ();
+
+  for (i = 0; i < G_N_ELEMENTS (tests); i++)
+    {
+      out.tv_sec = 0;
+      out.tv_usec = 0;
+      success = g_time_val_from_iso8601 (tests[i].in, &out);
+      g_assert_cmpint (success, ==, tests[i].success);
+    }
 
   g_free (old_tz);
 }

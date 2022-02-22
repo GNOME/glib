@@ -68,6 +68,219 @@ check_string (gchar *str, const gchar *expected)
 }
 
 static void
+test_paths (void)
+{
+  struct
+  {
+    gchar *filename;
+    gchar *dirname;
+  } dirname_checks[] = {
+    { "/", "/" },
+    { "////", "/" },
+    { ".////", "." },
+    { "../", ".." },
+    { "..////", ".." },
+    { "a/b", "a" },
+    { "a/b/", "a/b" },
+    { "c///", "c" },
+#ifdef G_OS_WIN32
+    { "\\", "\\" },
+    { ".\\\\\\\\", "." },
+    { "..\\", ".." },
+    { "..\\\\\\\\", ".." },
+    { "a\\b", "a" },
+    { "a\\b/", "a\\b" },
+    { "a/b\\", "a/b" },
+    { "c\\\\/", "c" },
+    { "//\\", "/" },
+#endif
+#ifdef G_WITH_CYGWIN
+    { "//server/share///x", "//server/share" },
+#endif
+    { ".", "." },
+    { "..", "." },
+    { "", "." },
+  };
+  const guint n_dirname_checks = G_N_ELEMENTS (dirname_checks);
+  struct
+  {
+    gchar *filename;
+    gchar *without_root;
+  } skip_root_checks[] = {
+    { "/", "" },
+    { "//", "" },
+    { "/foo", "foo" },
+    { "//foo", "foo" },
+    { "a/b", NULL },
+#ifdef G_OS_WIN32
+    { "\\", "" },
+    { "\\foo", "foo" },
+    { "\\\\server\\foo", "" },
+    { "\\\\server\\foo\\bar", "bar" },
+    { "a\\b", NULL },
+#endif
+#ifdef G_WITH_CYGWIN
+    { "//server/share///x", "//x" },
+#endif
+    { ".", NULL },
+    { "", NULL },
+  };
+  const guint n_skip_root_checks = G_N_ELEMENTS (skip_root_checks);
+  struct
+  {
+    gchar *cwd;
+    gchar *relative_path;
+    gchar *canonical_path;
+  } canonicalize_filename_checks[] = {
+#ifndef G_OS_WIN32
+    { "/etc", "../usr/share", "/usr/share" },
+    { "/", "/foo/bar", "/foo/bar" },
+    { "/usr/bin", "../../foo/bar", "/foo/bar" },
+    { "/", "../../foo/bar", "/foo/bar" },
+    { "/double//dash", "../../foo/bar", "/foo/bar" },
+    { "/usr/share/foo", ".././././bar", "/usr/share/bar" },
+    { "/foo/bar", "../bar/./.././bar", "/foo/bar" },
+    { "/test///dir", "../../././foo/bar", "/foo/bar" },
+    { "/test///dir", "../../././/foo///bar", "/foo/bar" },
+    { "/etc", "///triple/slash", "/triple/slash" },
+    { "/etc", "//double/slash", "//double/slash" },
+    { "///triple/slash", ".", "/triple/slash" },
+    { "//double/slash", ".", "//double/slash" },
+    { "/cwd/../with/./complexities/", "./hello", "/with/complexities/hello" },
+    { "/", ".dot-dir", "/.dot-dir" },
+    { "/cwd", "..", "/" },
+    { "/etc", "hello/..", "/etc" },
+    { "/etc", "hello/../", "/etc" },
+    { "/", "..", "/" },
+    { "/", "../", "/" },
+    { "/", "/..", "/" },
+    { "/", "/../", "/" },
+    { "/", ".", "/" },
+    { "/", "./", "/" },
+    { "/", "/.", "/" },
+    { "/", "/./", "/" },
+    { "/", "///usr/../usr", "/usr" },
+#else
+    { "/etc", "../usr/share", "\\usr\\share" },
+    { "/", "/foo/bar", "\\foo\\bar" },
+    { "/usr/bin", "../../foo/bar", "\\foo\\bar" },
+    { "/", "../../foo/bar", "\\foo\\bar" },
+    { "/double//dash", "../../foo/bar", "\\foo\\bar" },
+    { "/usr/share/foo", ".././././bar", "\\usr\\share\\bar" },
+    { "/foo/bar", "../bar/./.././bar", "\\foo\\bar" },
+    { "/test///dir", "../../././foo/bar", "\\foo\\bar" },
+    { "/test///dir", "../../././/foo///bar", "\\foo\\bar" },
+    { "/etc", "///triple/slash", "\\triple\\slash" },
+    { "/etc", "//double/slash", "//double/slash" },
+    { "///triple/slash", ".", "\\triple\\slash" },
+    { "//double/slash", ".", "//double/slash\\" },
+    { "/cwd/../with/./complexities/", "./hello", "\\with\\complexities\\hello" },
+    { "/", ".dot-dir", "\\.dot-dir" },
+    { "/cwd", "..", "\\" },
+    { "/etc", "hello/..", "\\etc" },
+    { "/etc", "hello/../", "\\etc" },
+    { "/", "..", "\\" },
+    { "/", "../", "\\" },
+    { "/", "/..", "\\" },
+    { "/", "/../", "\\" },
+    { "/", ".", "\\" },
+    { "/", "./", "\\" },
+    { "/", "/.", "\\" },
+    { "/", "/./", "\\" },
+    { "/", "///usr/../usr", "\\usr" },
+
+    { "\\etc", "..\\usr\\share", "\\usr\\share" },
+    { "\\", "\\foo\\bar", "\\foo\\bar" },
+    { "\\usr\\bin", "..\\..\\foo\\bar", "\\foo\\bar" },
+    { "\\", "..\\..\\foo\\bar", "\\foo\\bar" },
+    { "\\double\\\\dash", "..\\..\\foo\\bar", "\\foo\\bar" },
+    { "\\usr\\share\\foo", "..\\.\\.\\.\\bar", "\\usr\\share\\bar" },
+    { "\\foo\\bar", "..\\bar\\.\\..\\.\\bar", "\\foo\\bar" },
+    { "\\test\\\\\\dir", "..\\..\\.\\.\\foo\\bar", "\\foo\\bar" },
+    { "\\test\\\\\\dir", "..\\..\\.\\.\\\\foo\\\\\\bar", "\\foo\\bar" },
+    { "\\etc", "\\\\\\triple\\slash", "\\triple\\slash" },
+    { "\\etc", "\\\\double\\slash", "\\\\double\\slash" },
+    { "\\\\\\triple\\slash", ".", "\\triple\\slash" },
+    { "\\\\double\\slash", ".", "\\\\double\\slash\\" },
+    { "\\cwd\\..\\with\\.\\complexities\\", ".\\hello", "\\with\\complexities\\hello" },
+    { "\\", ".dot-dir", "\\.dot-dir" },
+    { "\\cwd", "..", "\\" },
+    { "\\etc", "hello\\..", "\\etc" },
+    { "\\etc", "hello\\..\\", "\\etc" },
+    { "\\", "..", "\\" },
+    { "\\", "..\\", "\\" },
+    { "\\", "\\..", "\\" },
+    { "\\", "\\..\\", "\\" },
+    { "\\", ".", "\\" },
+    { "\\", ".\\", "\\" },
+    { "\\", "\\.", "\\" },
+    { "\\", "\\.\\", "\\" },
+    { "\\", "\\\\\\usr\\..\\usr", "\\usr" },
+#endif
+  };
+  const guint n_canonicalize_filename_checks = G_N_ELEMENTS (canonicalize_filename_checks);
+  gchar *string;
+  guint i;
+
+  string = g_path_get_basename (G_DIR_SEPARATOR_S "foo" G_DIR_SEPARATOR_S "dir" G_DIR_SEPARATOR_S);
+  g_assert_cmpstr (string, ==, "dir");
+  g_free (string);
+  string = g_path_get_basename (G_DIR_SEPARATOR_S "foo" G_DIR_SEPARATOR_S "file");
+  g_assert_cmpstr (string, ==, "file");
+  g_free (string);
+
+#ifdef G_OS_WIN32
+  string = g_path_get_basename ("/foo/dir/");
+  g_assert_cmpstr (string, ==, "dir");
+  g_free (string);
+  string = g_path_get_basename ("/foo/file");
+  g_assert_cmpstr (string, ==, "file");
+  g_free (string);
+#endif
+
+  for (i = 0; i < n_dirname_checks; i++)
+    {
+      gchar *dirname = g_path_get_dirname (dirname_checks[i].filename);
+      g_assert_cmpstr (dirname, ==, dirname_checks[i].dirname);
+      g_free (dirname);
+    }
+
+  for (i = 0; i < n_skip_root_checks; i++)
+    {
+      const gchar *skipped = g_path_skip_root (skip_root_checks[i].filename);
+      if ((skipped && !skip_root_checks[i].without_root) ||
+          (!skipped && skip_root_checks[i].without_root) ||
+          ((skipped && skip_root_checks[i].without_root) &&
+           strcmp (skipped, skip_root_checks[i].without_root)))
+        {
+          g_error ("failed for \"%s\"==\"%s\" (returned: \"%s\")",
+                   skip_root_checks[i].filename,
+                   (skip_root_checks[i].without_root ? skip_root_checks[i].without_root : "<NULL>"),
+                   (skipped ? skipped : "<NULL>"));
+        }
+    }
+
+  for (i = 0; i < n_canonicalize_filename_checks; i++)
+    {
+      gchar *canonical_path =
+          g_canonicalize_filename (canonicalize_filename_checks[i].relative_path,
+                                   canonicalize_filename_checks[i].cwd);
+      g_assert_cmpstr (canonical_path, ==,
+                       canonicalize_filename_checks[i].canonical_path);
+      g_free (canonical_path);
+    }
+
+  {
+    const gchar *relative_path = "./";
+    gchar *canonical_path = g_canonicalize_filename (relative_path, NULL);
+    gchar *cwd = g_get_current_dir ();
+    g_assert_cmpstr (canonical_path, ==, cwd);
+    g_free (cwd);
+    g_free (canonical_path);
+  }
+}
+
+static void
 test_build_path (void)
 {
   if (g_test_undefined ())
@@ -510,14 +723,14 @@ test_mkdir_with_parents_1 (const gchar *base)
 static void
 test_mkdir_with_parents (void)
 {
-  gchar *cwd;
+  gchar *cwd, *new_path;
   if (g_test_verbose())
     g_printerr ("checking g_mkdir_with_parents() in subdir ./hum/");
   test_mkdir_with_parents_1 ("hum");
   g_remove ("hum");
   if (g_test_verbose())
     g_printerr ("checking g_mkdir_with_parents() in subdir ./hii///haa/hee/");
-  test_mkdir_with_parents_1 ("hii///haa/hee");
+  test_mkdir_with_parents_1 ("./hii///haa/hee///");
   g_remove ("hii/haa/hee");
   g_remove ("hii/haa");
   g_remove ("hii");
@@ -525,7 +738,23 @@ test_mkdir_with_parents (void)
   if (g_test_verbose())
     g_printerr ("checking g_mkdir_with_parents() in cwd: %s", cwd);
   test_mkdir_with_parents_1 (cwd);
+
+  new_path = g_build_filename (cwd, "new", NULL);
+  g_assert_cmpint (g_mkdir_with_parents (new_path, 0), ==, 0);
+  g_assert_cmpint (g_rmdir (new_path), ==, 0);
+  g_free (new_path);
   g_free (cwd);
+
+  g_assert_cmpint (g_mkdir_with_parents ("./test", 0), ==, 0);
+  g_assert_cmpint (g_mkdir_with_parents ("./test", 0), ==, 0);
+  g_remove ("./test");
+
+#ifdef G_OS_WIN32
+  g_assert_cmpint (g_mkdir_with_parents ("\\Windows\\b\\c", 0), ==, -1);
+#else
+  g_assert_cmpint (g_mkdir_with_parents ("/usr/b/c", 0), ==, -1);
+  g_assert_cmpint (errno, ==, EACCES);
+#endif
 
   g_assert_cmpint (g_mkdir_with_parents (NULL, 0), ==, -1);
   g_assert_cmpint (errno, ==, EINVAL);
@@ -992,6 +1221,41 @@ test_file_open_tmp (void)
   g_assert_null (name);
   g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED);
   g_clear_error (&error);
+
+  error = NULL;
+  name = NULL;
+  fd = g_file_open_tmp ("zap" G_DIR_SEPARATOR_S "barXXXXXX", &name, &error);
+  g_assert_cmpint (fd, ==, -1);
+
+  g_clear_error (&error);
+  g_free (name);
+
+#ifdef G_OS_WIN32
+  name = NULL;
+  fd = g_file_open_tmp ("zap/barXXXXXX", &name, &error);
+  g_assert_cmpint (fd, ==, -1);
+
+  g_clear_error (&error);
+  g_free (name);
+#endif
+
+  name = NULL;
+  fd = g_file_open_tmp ("zapXXXXXX", &name, &error);
+  g_assert_cmpint (fd, !=, -1);
+
+  close (fd);
+  g_clear_error (&error);
+  remove (name);
+  g_free (name);
+
+  name = NULL;
+  fd = g_file_open_tmp (NULL, &name, &error);
+  g_assert_cmpint (fd, !=, -1);
+
+  close (fd);
+  g_clear_error (&error);
+  remove (name);
+  g_free (name);
 }
 
 static void
@@ -1004,6 +1268,19 @@ test_mkstemp (void)
   char template[32];
   const char hello[] = "Hello, World";
   const gsize hellolen = sizeof (hello) - 1;
+
+  if (g_test_undefined ())
+    {
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_cmpint (g_mkstemp (NULL), ==, -1);
+      g_test_assert_expected_messages ();
+    }
+
+  /* Expect to fail if no 'XXXXXX' is given */
+  name = g_strdup ("test");
+  g_assert_cmpint (g_mkstemp (name), ==, -1);
+  g_free (name);
 
   /* Test normal case */
   name = g_strdup ("testXXXXXXtest"),
@@ -2145,6 +2422,7 @@ main (int   argc,
   g_test_add_func ("/fileutils/stdio-win32-pathstrip", test_win32_pathstrip);
   g_test_add_func ("/fileutils/stdio-win32-zero-terminate-symlink", test_win32_zero_terminate_symlink);
 #endif
+  g_test_add_func ("/fileutils/paths", test_paths);
   g_test_add_func ("/fileutils/build-path", test_build_path);
   g_test_add_func ("/fileutils/build-pathv", test_build_pathv);
   g_test_add_func ("/fileutils/build-filename", test_build_filename);

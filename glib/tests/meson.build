@@ -51,6 +51,7 @@ glib_tests = {
   'markup-collect' : {},
   'markup-escape' : {},
   'markup-subparser' : {},
+  'memchunk' : {},
   'mem-overflow' : {
     'link_args' : cc.get_id() == 'gcc' and cc.version().version_compare('> 6')
       ? ['-Wno-alloc-size-larger-than'] : [],

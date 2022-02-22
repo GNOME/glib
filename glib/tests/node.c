@@ -232,6 +232,16 @@ traversal_test (void)
   g_node_traverse (root, G_LEVEL_ORDER, G_TRAVERSE_ALL, -1, node_build_string, &data);
   g_assert_cmpstr (data.s->str, ==, "ABFEDCGLMKJIH");
 
+  g_string_set_size (data.s, 0);
+  data.count = -1;
+  g_node_traverse (root, G_PRE_ORDER, G_TRAVERSE_LEAFS, -1, node_build_string, &data);
+  g_assert_cmpstr (data.s->str, ==, "ELMCKJIH");
+
+  g_string_set_size (data.s, 0);
+  data.count = -1;
+  g_node_traverse (root, G_PRE_ORDER, G_TRAVERSE_NON_LEAFS, -1, node_build_string, &data);
+  g_assert_cmpstr (data.s->str, ==, "ABDFG");
+
   g_node_destroy (root);
   g_string_free (data.s, TRUE);
 }

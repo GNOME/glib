@@ -16,7 +16,6 @@ subdir('gobject')
 subdir('refcount')
 
 tests = {
-  'testglib' : {'tap' : true},
   'gio-test' : {},
   'mainloop-test' : {},
   'mapping-test' : {},
