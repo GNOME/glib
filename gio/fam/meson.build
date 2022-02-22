@@ -34,3 +34,9 @@ module = shared_module('giofam', 'gfamfilemonitor.c',
 if not meson.is_cross_build()
   meson.add_install_script('../gio-querymodules-wrapper.py', gio_querymodules.full_path(), glib_giomodulesdir)
 endif
+
+if meson.version().version_compare('>=0.58')
+  env = environment()
+  env.prepend('GIO_EXTRA_MODULES', meson.current_build_dir())
+  meson.add_devenv(env)
+endif
