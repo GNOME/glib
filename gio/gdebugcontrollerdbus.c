@@ -342,13 +342,14 @@ authorize_cb (GObject      *object,
               gpointer      user_data)
 {
   GDebugControllerDBus *self = G_DEBUG_CONTROLLER_DBUS (object);
-  GDebugControllerDBusPrivate *priv = g_debug_controller_dbus_get_instance_private (self);
+  GDebugControllerDBusPrivate *priv G_GNUC_UNUSED  /* when compiling with G_DISABLE_ASSERT */;
   GTask *task = G_TASK (result);
   GDBusMethodInvocation *invocation = g_task_get_task_data (task);
   GVariant *parameters = g_dbus_method_invocation_get_parameters (invocation);
   gboolean enabled = FALSE;
   gboolean authorized;
 
+  priv = g_debug_controller_dbus_get_instance_private (self);
   authorized = g_task_propagate_boolean (task, NULL);
 
   if (!authorized)
