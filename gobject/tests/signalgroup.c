@@ -107,7 +107,7 @@ connect_after_cb (SignalTarget *target,
   g_assert_true (readback == target);
   g_object_unref (readback);
 
-  g_assert_cmpint (*signal_calls, ==, 4);
+  g_assert_cmpint (*signal_calls, ==, 5);
   *signal_calls += 1;
 }
 
@@ -194,7 +194,8 @@ connect_data_weak_notify_cb (gboolean     *weak_notify_called,
 static void
 connect_all_signals (GSignalGroup *group)
 {
-  GObject *object;
+  GObject  *object;
+  GClosure *closure;
 
   /* Check that these are called in the right order */
   g_signal_group_connect (group,
@@ -245,6 +246,20 @@ connect_all_signals (GSignalGroup *group)
   g_object_weak_ref (G_OBJECT (group),
                      (GWeakNotify)connect_data_weak_notify_cb,
                      &global_weak_notify_called);
+
+
+  /* Check that this can be called as a GClosure */
+  closure = g_cclosure_new (G_CALLBACK (connect_before_cb),
+                            &global_signal_calls,
+                            NULL);
+  g_signal_group_connect_closure (group, "the-signal", closure, FALSE);
+
+  /* Check that invalidated GClosures don't get called */
+  closure = g_cclosure_new (G_CALLBACK (connect_before_cb),
+                            &global_signal_calls,
+                            NULL);
+  g_closure_invalidate (closure);
+  g_signal_group_connect_closure (group, "the-signal", closure, FALSE);
 }
 
 static void
@@ -258,7 +273,7 @@ assert_signals (SignalTarget *target,
   global_signal_calls = 0;
   g_signal_emit (target, signals[THE_SIGNAL],
                  signal_detail_quark (), group);
-  g_assert_cmpint (global_signal_calls, ==, success ? 5 : 0);
+  g_assert_cmpint (global_signal_calls, ==, success ? 6 : 0);
 }
 
 static void

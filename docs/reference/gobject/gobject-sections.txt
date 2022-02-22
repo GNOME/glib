@@ -1034,6 +1034,7 @@ g_signal_group_connect_after
 g_signal_group_connect_data
 g_signal_group_connect_object
 g_signal_group_connect_swapped
+g_signal_group_connect_closure
 g_signal_group_dup_target
 g_signal_group_get_type
 g_signal_group_new

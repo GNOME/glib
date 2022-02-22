@@ -705,18 +705,28 @@ g_signal_group_new (GType target_type)
                        NULL);
 }
 
-static void
-g_signal_group_connect_full (GSignalGroup   *self,
-                             const gchar    *detailed_signal,
-                             GCallback       c_handler,
-                             gpointer        data,
-                             GClosureNotify  notify,
-                             GConnectFlags   flags,
-                             gboolean        is_object)
+/**
+ * g_signal_group_connect_closure:
+ * @self: a #GSignalGroup
+ * @detailed_signal: a string of the form `signal-name` with optional `::signal-detail`
+ * @closure: (not nullable): the closure to connect.
+ * @after: whether the handler should be called before or after the
+ *  default handler of the signal.
+ *
+ * Connects @closure to the signal @detailed_signal on #GSignalGroup:target.
+ *
+ * You cannot connect a signal handler after #GSignalGroup:target has been set.
+ *
+ * Since: 2.74
+ */
+void
+g_signal_group_connect_closure (GSignalGroup   *self,
+                                const gchar    *detailed_signal,
+                                GClosure       *closure,
+                                gboolean        after)
 {
   GObject *target;
   SignalHandler *handler;
-  GClosure *closure;
   guint signal_id;
   GQuark signal_detail;
 
@@ -724,8 +734,7 @@ g_signal_group_connect_full (GSignalGroup   *self,
   g_return_if_fail (detailed_signal != NULL);
   g_return_if_fail (g_signal_parse_name (detailed_signal, self->target_type,
                                          &signal_id, &signal_detail, TRUE) != 0);
-  g_return_if_fail (c_handler != NULL);
-  g_return_if_fail (!is_object || G_IS_OBJECT (data));
+  g_return_if_fail (closure != NULL);
 
   g_rec_mutex_lock (&self->mutex);
 
@@ -736,28 +745,14 @@ g_signal_group_connect_full (GSignalGroup   *self,
       return;
     }
 
-  if ((flags & G_CONNECT_SWAPPED) != 0)
-    closure = g_cclosure_new_swap (c_handler, data, notify);
-  else
-    closure = g_cclosure_new (c_handler, data, notify);
-
   handler = g_slice_new0 (SignalHandler);
   handler->group = self;
   handler->signal_id = signal_id;
   handler->signal_detail = signal_detail;
   handler->closure = g_closure_ref (closure);
-  handler->connect_after = ((flags & G_CONNECT_AFTER) != 0);
+  handler->connect_after = after;
 
   g_closure_sink (closure);
-
-  if (is_object)
-    {
-      /* Set closure->is_invalid when data is disposed. We only track this to avoid
-       * reconnecting in the future. However, we do a round of cleanup when ever we
-       * connect a new object or the target changes to GC the old handlers.
-       */
-      g_object_watch_closure (data, closure);
-    }
 
   g_ptr_array_add (self->handlers, handler);
 
@@ -773,6 +768,40 @@ g_signal_group_connect_full (GSignalGroup   *self,
   g_signal_group_gc_handlers (self);
 
   g_rec_mutex_unlock (&self->mutex);
+}
+
+static void
+g_signal_group_connect_full (GSignalGroup   *self,
+                             const gchar    *detailed_signal,
+                             GCallback       c_handler,
+                             gpointer        data,
+                             GClosureNotify  notify,
+                             GConnectFlags   flags,
+                             gboolean        is_object)
+{
+  GClosure *closure;
+
+  g_return_if_fail (c_handler != NULL);
+  g_return_if_fail (!is_object || G_IS_OBJECT (data));
+
+  if ((flags & G_CONNECT_SWAPPED) != 0)
+    closure = g_cclosure_new_swap (c_handler, data, notify);
+  else
+    closure = g_cclosure_new (c_handler, data, notify);
+
+  if (is_object)
+    {
+      /* Set closure->is_invalid when data is disposed. We only track this to avoid
+       * reconnecting in the future. However, we do a round of cleanup when ever we
+       * connect a new object or the target changes to GC the old handlers.
+       */
+      g_object_watch_closure (data, closure);
+    }
+
+  g_signal_group_connect_closure (self,
+                                  detailed_signal,
+                                  closure,
+                                  (flags & G_CONNECT_AFTER) != 0);
 }
 
 /**
