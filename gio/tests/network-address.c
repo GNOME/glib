@@ -20,7 +20,7 @@ test_basic (void)
   g_object_get (address, "hostname", &hostname, "port", &port, "scheme", &scheme, NULL);
   g_assert_cmpstr (hostname, ==, "www.gnome.org");
   g_assert_cmpint (port, ==, 8080);
-  g_assert (scheme == NULL);
+  g_assert_null (scheme);
   g_free (hostname);
 
   g_object_unref (address);
@@ -284,8 +284,8 @@ test_scope_id (GSocketConnectable *addr)
   saddr = g_socket_address_enumerator_next (addr_enum, NULL, &error);
   g_assert_no_error (error);
 
-  g_assert (saddr != NULL);
-  g_assert (G_IS_INET_SOCKET_ADDRESS (saddr));
+  g_assert_nonnull (saddr);
+  g_assert_true (G_IS_INET_SOCKET_ADDRESS (saddr));
 
   isaddr = G_INET_SOCKET_ADDRESS (saddr);
   g_assert_cmpint (g_inet_socket_address_get_scope_id (isaddr), ==, SCOPE_ID_TEST_INDEX);
@@ -299,7 +299,7 @@ test_scope_id (GSocketConnectable *addr)
   g_object_unref (saddr);
   saddr = g_socket_address_enumerator_next (addr_enum, NULL, &error);
   g_assert_no_error (error);
-  g_assert (saddr == NULL);
+  g_assert_null (saddr);
 
   g_object_unref (addr_enum);
 #else
@@ -377,7 +377,7 @@ assert_socket_address_matches (GSocketAddress *a,
   GInetSocketAddress *sa;
   gchar *str;  /* owned */
 
-  g_assert (G_IS_INET_SOCKET_ADDRESS (a));
+  g_assert_true (G_IS_INET_SOCKET_ADDRESS (a));
 
   sa = G_INET_SOCKET_ADDRESS (a);
   g_assert_cmpint (g_inet_socket_address_get_port (sa), ==, expected_port);
@@ -593,7 +593,7 @@ got_addr (GObject      *source_object,
     }
   else
     {
-      g_assert (G_IS_INET_SOCKET_ADDRESS (a));
+      g_assert_true (G_IS_INET_SOCKET_ADDRESS (a));
       data->addrs = g_list_prepend (data->addrs, a);
 
       if (!data->delay_ms)
