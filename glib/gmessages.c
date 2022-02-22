@@ -2910,7 +2910,7 @@ g_log_get_debug_enabled (void)
  * g_log_set_debug_enabled:
  * @enabled: %TRUE to enable debug output, %FALSE otherwise
  *
- * Enable or disable debug output from the GLib logging system is enabled. This
+ * Enable or disable debug output from the GLib logging system. This
  * value interacts disjunctively with `G_MESSAGES_DEBUG` — if either of them
  * would allow a debug message to be outputted, it will be.
  *
