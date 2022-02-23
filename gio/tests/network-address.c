@@ -20,7 +20,7 @@ test_basic (void)
   g_object_get (address, "hostname", &hostname, "port", &port, "scheme", &scheme, NULL);
   g_assert_cmpstr (hostname, ==, "www.gnome.org");
   g_assert_cmpint (port, ==, 8080);
-  g_assert (scheme == NULL);
+  g_assert_null (scheme);
   g_free (hostname);
 
   g_object_unref (address);
@@ -284,8 +284,8 @@ test_scope_id (GSocketConnectable *addr)
   saddr = g_socket_address_enumerator_next (addr_enum, NULL, &error);
   g_assert_no_error (error);
 
-  g_assert (saddr != NULL);
-  g_assert (G_IS_INET_SOCKET_ADDRESS (saddr));
+  g_assert_nonnull (saddr);
+  g_assert_true (G_IS_INET_SOCKET_ADDRESS (saddr));
 
   isaddr = G_INET_SOCKET_ADDRESS (saddr);
   g_assert_cmpint (g_inet_socket_address_get_scope_id (isaddr), ==, SCOPE_ID_TEST_INDEX);
@@ -299,7 +299,7 @@ test_scope_id (GSocketConnectable *addr)
   g_object_unref (saddr);
   saddr = g_socket_address_enumerator_next (addr_enum, NULL, &error);
   g_assert_no_error (error);
-  g_assert (saddr == NULL);
+  g_assert_null (saddr);
 
   g_object_unref (addr_enum);
 #else
@@ -377,7 +377,7 @@ assert_socket_address_matches (GSocketAddress *a,
   GInetSocketAddress *sa;
   gchar *str;  /* owned */
 
-  g_assert (G_IS_INET_SOCKET_ADDRESS (a));
+  g_assert_true (G_IS_INET_SOCKET_ADDRESS (a));
 
   sa = G_INET_SOCKET_ADDRESS (a);
   g_assert_cmpint (g_inet_socket_address_get_port (sa), ==, expected_port);
@@ -593,7 +593,7 @@ got_addr (GObject      *source_object,
     }
   else
     {
-      g_assert (G_IS_INET_SOCKET_ADDRESS (a));
+      g_assert_true (G_IS_INET_SOCKET_ADDRESS (a));
       data->addrs = g_list_prepend (data->addrs, a);
 
       if (!data->delay_ms)
@@ -768,16 +768,22 @@ sort_socket_addresses (gconstpointer a, gconstpointer b)
 static void
 assert_list_matches_expected (GList *result, GList *expected)
 {
+  GList *result_copy = NULL;
+
   g_assert_cmpint (g_list_length (result), ==, g_list_length (expected));
 
-  /* Sort by ipv4 first which matches the expected list */
-  result = g_list_sort (result, sort_socket_addresses);
+  /* Sort by ipv4 first which matches the expected list. Do this on a copy of
+   * @result to avoid modifying the original. */
+  result_copy = g_list_copy (result);
+  result = result_copy = g_list_sort (result_copy, sort_socket_addresses);
 
   for (; result != NULL; result = result->next, expected = expected->next)
     {
       GInetAddress *address = g_inet_socket_address_get_address (G_INET_SOCKET_ADDRESS (result->data));
       g_assert_true (g_inet_address_equal (address, expected->data));
     }
+
+  g_list_free (result_copy);
 }
 
 typedef struct {
@@ -855,6 +861,8 @@ test_happy_eyeballs_basic (HappyEyeballsFixture *fixture,
   g_main_loop_run (fixture->loop);
 
   assert_list_matches_expected (data.addrs, fixture->input_all_results);
+
+  g_list_free_full (data.addrs, (GDestroyNotify) g_object_unref);
 }
 
 static void
@@ -879,6 +887,7 @@ test_happy_eyeballs_parallel (HappyEyeballsFixture *fixture,
 
   /* Run again to ensure the cache from the previous one is correct */
 
+  g_list_free_full (data.addrs, (GDestroyNotify) g_object_unref);
   data.addrs = NULL;
   g_object_unref (enumerator2);
 
@@ -887,7 +896,9 @@ test_happy_eyeballs_parallel (HappyEyeballsFixture *fixture,
   g_main_loop_run (fixture->loop);
 
   assert_list_matches_expected (data.addrs, fixture->input_all_results);
+
   g_object_unref (enumerator2);
+  g_list_free_full (data.addrs, (GDestroyNotify) g_object_unref);
 }
 
 static void
@@ -905,6 +916,8 @@ test_happy_eyeballs_slow_ipv4 (HappyEyeballsFixture *fixture,
   g_main_loop_run (fixture->loop);
 
   assert_list_matches_expected (data.addrs, fixture->input_all_results);
+
+  g_list_free_full (data.addrs, (GDestroyNotify) g_object_unref);
 }
 
 static void
@@ -922,6 +935,8 @@ test_happy_eyeballs_slow_ipv6 (HappyEyeballsFixture *fixture,
   g_main_loop_run (fixture->loop);
 
   assert_list_matches_expected (data.addrs, fixture->input_all_results);
+
+  g_list_free_full (data.addrs, (GDestroyNotify) g_object_unref);
 }
 
 static void
@@ -939,6 +954,8 @@ test_happy_eyeballs_very_slow_ipv6 (HappyEyeballsFixture *fixture,
   g_main_loop_run (fixture->loop);
 
   assert_list_matches_expected (data.addrs, fixture->input_all_results);
+
+  g_list_free_full (data.addrs, (GDestroyNotify) g_object_unref);
 }
 
 static void
@@ -958,6 +975,8 @@ test_happy_eyeballs_slow_connection_and_ipv4 (HappyEyeballsFixture *fixture,
   g_main_loop_run (fixture->loop);
 
   assert_list_matches_expected (data.addrs, fixture->input_all_results);
+
+  g_list_free_full (data.addrs, (GDestroyNotify) g_object_unref);
 }
 
 static void
@@ -979,6 +998,7 @@ test_happy_eyeballs_ipv6_error_ipv4_first (HappyEyeballsFixture *fixture,
 
   assert_list_matches_expected (data.addrs, fixture->input_ipv4_results);
 
+  g_list_free_full (data.addrs, (GDestroyNotify) g_object_unref);
   g_error_free (ipv6_error);
 }
 
@@ -1001,6 +1021,7 @@ test_happy_eyeballs_ipv6_error_ipv6_first (HappyEyeballsFixture *fixture,
 
   assert_list_matches_expected (data.addrs, fixture->input_ipv4_results);
 
+  g_list_free_full (data.addrs, (GDestroyNotify) g_object_unref);
   g_error_free (ipv6_error);
 }
 
@@ -1026,6 +1047,7 @@ test_happy_eyeballs_ipv6_error_ipv4_very_slow (HappyEyeballsFixture *fixture,
 
   assert_list_matches_expected (data.addrs, fixture->input_ipv4_results);
 
+  g_list_free_full (data.addrs, (GDestroyNotify) g_object_unref);
   g_error_free (ipv6_error);
 }
 
@@ -1048,6 +1070,7 @@ test_happy_eyeballs_ipv4_error_ipv4_first (HappyEyeballsFixture *fixture,
 
   assert_list_matches_expected (data.addrs, fixture->input_ipv6_results);
 
+  g_list_free_full (data.addrs, (GDestroyNotify) g_object_unref);
   g_error_free (ipv4_error);
 }
 
@@ -1070,6 +1093,7 @@ test_happy_eyeballs_ipv4_error_ipv6_first (HappyEyeballsFixture *fixture,
 
   assert_list_matches_expected (data.addrs, fixture->input_ipv6_results);
 
+  g_list_free_full (data.addrs, (GDestroyNotify) g_object_unref);
   g_error_free (ipv4_error);
 }
 
