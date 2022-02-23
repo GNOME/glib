@@ -823,6 +823,16 @@ libgio_dep = declare_dependency(link_with : libgio,
   dependencies : [libgmodule_dep, libgobject_dep, gioenumtypes_dep],
   include_directories : [gioinc])
 
+# Work around variables kwarg requiring Meson 0.56
+if meson.version().version_compare('>=0.56.0')
+  libgio_dep = declare_dependency(dependencies: libgio_dep,
+    variables: [
+      'schemasdir=' + join_paths(glib_datadir, schemas_subdir),
+      'giomoduledir=' + glib_giomodulesdir,
+    ]
+  )
+endif
+
 pkg.generate(libgio,
   requires : ['glib-2.0', 'gobject-2.0'],
   variables : ['datadir=' + join_paths('${prefix}', get_option('datadir')),
