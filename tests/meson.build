@@ -28,7 +28,6 @@ tests = {
   'spawn-test' : {},
   'thread-test' : {},
   'threadpool-test' : {'suite' : ['slow']},
-  'type-test' : {},
   'unicode-encoding' : {},
   'module-test-library' : {
     'dependencies' : [libgmodule_dep],
