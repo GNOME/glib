@@ -19,21 +19,15 @@
  * Modified by the GLib Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GLib Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GLib at ftp://ftp.gtk.org/pub/gtk/. 
+ * GLib at ftp://ftp.gtk.org/pub/gtk/.
  */
 
-#undef G_DISABLE_ASSERT
-#undef G_LOG_DOMAIN
-
 #include <stdio.h>
-#include <string.h>
-#include "glib.h"
 
+#include <glib.h>
 
-
-int
-main (int   argc,
-      char *argv[])
+static void
+test_basic_types (void)
 {
   gchar *string;
   gushort gus;
@@ -50,7 +44,7 @@ main (int   argc,
   guint16 gu16t1 = 0x44afU, gu16t2 = 0xaf44U;
   guint32 gu32t1 = 0x02a7f109U, gu32t2 = 0x09f1a702U;
   guint64 gu64t1 = G_GINT64_CONSTANT(0x1d636b02300a7aa7U),
-	  gu64t2 = G_GINT64_CONSTANT(0xa77a0a30026b631dU);
+          gu64t2 = G_GINT64_CONSTANT(0xa77a0a30026b631dU);
   gint64 gi64t1;
   gint64 gi64t2;
   gssize gsst1;
@@ -59,65 +53,65 @@ main (int   argc,
   gsize  gst2;
 
   /* type sizes */
-  g_assert (sizeof (gint8) == 1);
-  g_assert (sizeof (gint16) == 2);
-  g_assert (sizeof (gint32) == 4);
-  g_assert (sizeof (gint64) == 8);
+  g_assert_cmpint (sizeof (gint8), ==, 1);
+  g_assert_cmpint (sizeof (gint16), ==, 2);
+  g_assert_cmpint (sizeof (gint32), ==, 4);
+  g_assert_cmpint (sizeof (gint64), ==, 8);
 
-  g_assert (GUINT16_SWAP_LE_BE (gu16t1) == gu16t2);
-  g_assert (GUINT32_SWAP_LE_BE (gu32t1) == gu32t2);
-  g_assert (GUINT64_SWAP_LE_BE (gu64t1) == gu64t2);
+  g_assert_cmpuint (GUINT16_SWAP_LE_BE (gu16t1), ==, gu16t2);
+  g_assert_cmpuint (GUINT32_SWAP_LE_BE (gu32t1), ==, gu32t2);
+  g_assert_cmpuint (GUINT64_SWAP_LE_BE (gu64t1), ==, gu64t2);
 
   /* Test the G_(MIN|MAX|MAXU)(SHORT|INT|LONG) macros */
 
   gus = G_MAXUSHORT;
   gus++;
-  g_assert (gus == 0);
+  g_assert_cmpuint (gus, ==, 0);
 
   gui = G_MAXUINT;
   gui++;
-  g_assert (gui == 0);
+  g_assert_cmpuint (gui, ==, 0);
 
   gul = G_MAXULONG;
   gul++;
-  g_assert (gul == 0);
+  g_assert_cmpuint (gul, ==, 0);
 
   gsz = G_MAXSIZE;
   gsz++;
-  
-  g_assert (gsz == 0);
+
+  g_assert_cmpuint (gsz, ==, 0);
 
   gs = G_MAXSHORT;
   gs = (gshort) (1 + (gushort) gs);
-  g_assert (gs == G_MINSHORT);
+  g_assert_cmpint (gs, ==, G_MINSHORT);
 
   gi = G_MAXINT;
   gi = (gint) (1 + (guint) gi);
-  g_assert (gi == G_MININT);
+  g_assert_cmpint (gi, ==, G_MININT);
 
   gl = G_MAXLONG;
   gl = (glong) (1 + (gulong) gl);
-  g_assert (gl == G_MINLONG);
+  g_assert_cmpint (gl, ==, G_MINLONG);
 
   /* Test the G_G(U)?INT(16|32|64)_FORMAT macros */
 
   gi16t1 = -0x3AFA;
   gu16t1 = 0xFAFA;
   gi32t1 = -0x3AFAFAFA;
-  gu32t1 = 0xFAFAFAFA; 
+  gu32t1 = 0xFAFAFAFA;
 
 #define FORMAT "%" G_GINT16_FORMAT " %" G_GINT32_FORMAT \
                " %" G_GUINT16_FORMAT " %" G_GUINT32_FORMAT "\n"
   string = g_strdup_printf (FORMAT, gi16t1, gi32t1, gu16t1, gu32t1);
   sscanf (string, FORMAT, &gi16t2, &gi32t2, &gu16t2, &gu32t2);
   g_free (string);
-  g_assert (gi16t1 == gi16t2);
-  g_assert (gi32t1 == gi32t2);
-  g_assert (gu16t1 == gu16t2);
-  g_assert (gu32t1 == gu32t2);
+  g_assert_cmpint (gi16t1, ==, gi16t2);
+  g_assert_cmpint (gi32t1, ==, gi32t2);
+  g_assert_cmpint (gu16t1, ==, gu16t2);
+  g_assert_cmpint (gu32t1, ==, gu32t2);
 
   gi64t1 = G_GINT64_CONSTANT (-0x3AFAFAFAFAFAFAFA);
-  gu64t1 = G_GINT64_CONSTANT (0xFAFAFAFAFAFAFAFA); 
+  gu64t1 = G_GINT64_CONSTANT (0xFAFAFAFAFAFAFAFA);
 
 #define FORMAT64 "%" G_GINT64_FORMAT " %" G_GUINT64_FORMAT "\n"
 #ifndef G_OS_WIN32
@@ -129,11 +123,11 @@ main (int   argc,
   string = g_strdup_printf (FORMAT64, gi64t1, gu64t1);
   sscanf (string, SCAN_FORMAT64, &gi64t2, &gu64t2);
   g_free (string);
-  g_assert (gi64t1 == gi64t2);
-  g_assert (gu64t1 == gu64t2);
+  g_assert_cmpint (gi64t1, ==, gi64t2);
+  g_assert_cmpint (gu64t1, ==, gu64t2);
 
   gsst1 = -0x3AFAFAFA;
-  gst1 = 0xFAFAFAFA; 
+  gst1 = 0xFAFAFAFA;
 
 #define FORMATSIZE "%" G_GSSIZE_FORMAT " %" G_GSIZE_FORMAT "\n"
 #ifndef G_OS_WIN32
@@ -145,8 +139,16 @@ main (int   argc,
   string = g_strdup_printf (FORMATSIZE, gsst1, gst1);
   sscanf (string, SCAN_FORMATSIZE, &gsst2, &gst2);
   g_free (string);
-  g_assert (gsst1 == gsst2);
-  g_assert (gst1 == gst2);
-  
-  return 0;
+  g_assert_cmpint (gsst1, ==, gsst2);
+  g_assert_cmpint (gst1, ==, gst2);
+}
+
+int
+main (int argc, char *argv[])
+{
+  g_test_init (&argc, &argv, NULL);
+
+  g_test_add_func ("/types/basic_types", test_basic_types);
+
+  return g_test_run ();
 }
