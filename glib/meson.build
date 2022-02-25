@@ -452,6 +452,13 @@ configure_file(
 
 install_data('glib_gdb.py', install_dir : join_paths(glib_pkgdatadir, 'gdb'))
 
+# This is needed to make gdb find glib_gdb.py
+if meson.version().version_compare('>=0.58')
+  env = environment()
+  env.prepend('PYTHONPATH', meson.current_source_dir())
+  meson.add_devenv(env)
+endif
+
 gdb_conf = configuration_data()
 gdb_conf.set('datadir', glib_datadir)
 # This is also used in gobject/meson.build
