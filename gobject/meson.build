@@ -170,6 +170,13 @@ configure_file(
   install: gdb_install,
 )
 
+# This is needed to make gdb find gobject_gdb.py
+if meson.version().version_compare('>=0.58')
+  env = environment()
+  env.prepend('PYTHONPATH', meson.current_source_dir())
+  meson.add_devenv(env)
+endif
+
 if enable_systemtap
   gobject_stp = configure_file(input : 'gobject.stp.in',
     output : '@0@.stp'.format(libgobject.full_path().split('/').get(-1)),
