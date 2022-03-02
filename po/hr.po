@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: glib 0\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
 "POT-Creation-Date: 2022-02-22 18:23+0000\n"
-"PO-Revision-Date: 2022-03-02 12:29+0100\n"
+"PO-Revision-Date: 2022-03-02 13:40+0100\n"
 "Last-Translator: gogo <trebelnik2@gmail.com>\n"
 "Language-Team: Croatian <lokalizacija@linux.hr>\n"
 "Language: hr\n"
@@ -5888,12 +5888,12 @@ msgstr "Neuspjelo pokretanje podređenog procesa “%s” (%s)"
 #, c-format
 msgid "Failed to open file to remap file descriptor (%s)"
 msgstr ""
-"Neuspjelo otvaranje datoteke za ponovno mapiranje opisivača datoteke (%s)"
+"Neuspjelo otvaranje datoteke za ponovno mapiranje opisnika datoteke (%s)"
 
 #: glib/gspawn.c:2558
 #, c-format
 msgid "Failed to duplicate file descriptor for child process (%s)"
-msgstr "Neuspjelo udvostručavanje opisivača datoteke za podređeni proces (%s)"
+msgstr "Neuspjelo udvostručavanje opisnika datoteke za podređeni proces (%s)"
 
 #: glib/gspawn.c:2567
 #, c-format
@@ -5903,7 +5903,7 @@ msgstr "Neuspjelo grananje podređenog procesa (%s)"
 #: glib/gspawn.c:2575
 #, c-format
 msgid "Failed to close file descriptor for child process (%s)"
-msgstr "Neuspjelo zatvaranje opisivača datoteke za podređeni proces (%s)"
+msgstr "Neuspjelo zatvaranje opisnika datoteke za podređeni proces (%s)"
 
 #: glib/gspawn.c:2583
 #, c-format
