@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: glib 0\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
 "POT-Creation-Date: 2022-02-22 18:23+0000\n"
-"PO-Revision-Date: 2022-03-02 12:27+0100\n"
+"PO-Revision-Date: 2022-03-02 12:29+0100\n"
 "Last-Translator: gogo <trebelnik2@gmail.com>\n"
 "Language-Team: Croatian <lokalizacija@linux.hr>\n"
 "Language: hr\n"
@@ -4216,7 +4216,7 @@ msgstr "Nemoguća obrada PEM-kôdirane vjerodajnice"
 
 #: gio/gtlscertificate.c:796
 msgid "The current TLS backend does not support PKCS #12"
-msgstr "Trenutni TLS backend ne podržava PKCS #12"
+msgstr "Trenutni TLS pozadinski program ne podržava PKCS #12"
 
 #: gio/gtlscertificate.c:1013
 msgid "This GTlsBackend does not support creating PKCS #11 certificates"
