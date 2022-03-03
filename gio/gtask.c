@@ -981,12 +981,18 @@ g_task_set_return_on_cancel (GTask    *task,
  * @task: the #GTask
  * @source_tag: an opaque pointer indicating the source of this task
  *
- * Sets @task's source tag. You can use this to tag a task return
+ * Sets @task's source tag.
+ *
+ * You can use this to tag a task return
  * value with a particular pointer (usually a pointer to the function
  * doing the tagging) and then later check it using
  * g_task_get_source_tag() (or g_async_result_is_tagged()) in the
  * task's "finish" function, to figure out if the response came from a
  * particular place.
+ *
+ * A macro wrapper around this function will automatically set the
+ * task’s name to the string form of @source_tag if it’s not already
+ * set, for convenience.
  *
  * Since: 2.36
  */
@@ -1014,7 +1020,8 @@ void
  * name of the #GSource used for idle completion of the task.
  *
  * This function may only be called before the @task is first used in a thread
- * other than the one it was constructed in.
+ * other than the one it was constructed in. It is called automatically by
+ * g_task_set_source_tag() if not called already.
  *
  * Since: 2.60
  */
