@@ -458,8 +458,7 @@ macos:
             --werror
             _build
     - ninja -C _build
-    # FIXME: Multiple unit tests currently fails
-    - .gitlab-ci/run-tests.sh || true
+    - .gitlab-ci/run-tests.sh
   artifacts:
     reports:
       junit: "_build/${CI_JOB_NAME}-report.xml"
