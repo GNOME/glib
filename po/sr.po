@@ -1,19 +1,19 @@
 # Serbian translation of glib
-# Courtesy of Prevod.org team (http://prevod.org/) -- 2003–2021.
+# Courtesy of Prevod.org team (http://prevod.org/) -- 2003–2022.
 # This file is distributed under the same license as the glib package.
 # Translators:
 # Данило Шеган <danilo@gnome.org>, 2004–2005.
 # Слободан Д. Средојевић <slobo@akrep.be>, 2006.
-# Бранко Кокановић <branko.kokanovic@gmail.com>, 2010.
 # Милош Поповић <gpopac@gmail.com>, 2010–2015.
-# Мирослав Николић <miroslavnikolic@rocketmail.com>, 2011–2021.
 # Марко М. Костић <marko.m.kostic@gmail.com>, 2016.
+# Бранко Кокановић <branko.kokanovic@gmail.com>, 2010.
+# Мирослав Николић <miroslavnikolic@rocketmail.com>, 2011–2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: 2.8\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2021-12-19 21:28+0000\n"
-"PO-Revision-Date: 2021-12-29 18:55+0200\n"
+"POT-Creation-Date: 2022-02-22 17:38+0000\n"
+"PO-Revision-Date: 2022-03-03 05:32+0200\n"
 "Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <(nothing)>\n"
 "Language: sr\n"
@@ -749,7 +749,6 @@ msgstr "Поддрво је већ извезено за %s"
 
 #: gio/gdbusconnection.c:7282
 #, c-format
-#| msgid "Key file does not have group “%s”"
 msgid "Object does not exist at path “%s”"
 msgstr "Објекат не постоји на путањи „%s“"
 
@@ -813,7 +812,7 @@ msgstr ""
 "Очекивах исправну УТФ-8 ниску, али нађох неисправне бајтове на бајт померају "
 "%d (дужина ниске је %d). Исправна ниска до тог дела је била „%s“"
 
-#: gio/gdbusmessage.c:1519 gio/gdbusmessage.c:1795 gio/gdbusmessage.c:1986
+#: gio/gdbusmessage.c:1519 gio/gdbusmessage.c:1795 gio/gdbusmessage.c:2006
 msgid "Value nested too deeply"
 msgstr "Вредност је угнеждена предубоко"
 
@@ -853,13 +852,17 @@ msgstr ""
 "Наиђох на низ врсте „a%c“, очекивах да је дужина умножак од %u бајта, али "
 "нађох да је дуг %u бајта"
 
-#: gio/gdbusmessage.c:1970
+#: gio/gdbusmessage.c:1936 gio/gdbusmessage.c:2655
+msgid "Empty structures (tuples) are not allowed in D-Bus"
+msgstr "Празне структуре (н-торке) нису дозвољене у Д-сабирници"
+
+#: gio/gdbusmessage.c:1990
 #, c-format
 msgid "Parsed value “%s” for variant is not a valid D-Bus signature"
 msgstr ""
 "Рашчлањена вредност „%s“ за варијанту није исправан потпис Д-магистрале"
 
-#: gio/gdbusmessage.c:2011
+#: gio/gdbusmessage.c:2031
 #, c-format
 msgid ""
 "Error deserializing GVariant with type string “%s” from the D-Bus wire format"
@@ -867,7 +870,7 @@ msgstr ""
 "Грешка при десеријализацији Гваријанта са ниском врсте „%s“ из жичаног "
 "формата Д-магистрале"
 
-#: gio/gdbusmessage.c:2196
+#: gio/gdbusmessage.c:2216
 #, c-format
 msgid ""
 "Invalid endianness value. Expected 0x6c (“l”) or 0x42 (“B”) but found value "
@@ -876,27 +879,27 @@ msgstr ""
 "Неисправна вредност за крајњост. Очекивао сам 0x6c („l“) или 0x42 („Bд) али "
 "сам нашао вредност 0x%02x"
 
-#: gio/gdbusmessage.c:2215
+#: gio/gdbusmessage.c:2235
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr "Неисправна главно издање протокола. Очекивано 1, али нађено %d"
 
-#: gio/gdbusmessage.c:2273 gio/gdbusmessage.c:2862
+#: gio/gdbusmessage.c:2293 gio/gdbusmessage.c:2891
 msgid "Signature header found but is not of type signature"
 msgstr "Потпис заглавља је пронађен али он није врсте потпис"
 
-#: gio/gdbusmessage.c:2285
+#: gio/gdbusmessage.c:2305
 #, c-format
 msgid "Signature header with signature “%s” found but message body is empty"
 msgstr "Потпис заглавља са потписом „%s“ је нађен, али је тело поруке празно"
 
-#: gio/gdbusmessage.c:2300
+#: gio/gdbusmessage.c:2320
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature (for body)"
 msgstr ""
 "Рашчлањена вредност „%s“ није исправан потпис Д-магистрале (за тело поруке)"
 
-#: gio/gdbusmessage.c:2332
+#: gio/gdbusmessage.c:2352
 #, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
@@ -905,11 +908,11 @@ msgstr[1] "Нема заглавља потписа у поруци, али те
 msgstr[2] "Нема заглавља потписа у поруци, али тело поруке има %u бајтова"
 msgstr[3] "Нема заглавља потписа у поруци, али тело поруке има један бајт"
 
-#: gio/gdbusmessage.c:2342
+#: gio/gdbusmessage.c:2362
 msgid "Cannot deserialize message: "
 msgstr "Не могу да десеријализујем поруку: "
 
-#: gio/gdbusmessage.c:2679
+#: gio/gdbusmessage.c:2708
 #, c-format
 msgid ""
 "Error serializing GVariant with type string “%s” to the D-Bus wire format"
@@ -917,40 +920,40 @@ msgstr ""
 "Грешка при серијализацији Гваријанта са ниском врсте „%s“ из жичаног формата "
 "Д-магистрале"
 
-#: gio/gdbusmessage.c:2816
+#: gio/gdbusmessage.c:2845
 #, c-format
 msgid ""
 "Number of file descriptors in message (%d) differs from header field (%d)"
 msgstr ""
 "Број описника датотеке у поруци (%d) се разликује од заглавља поља (%d)"
 
-#: gio/gdbusmessage.c:2824
+#: gio/gdbusmessage.c:2853
 msgid "Cannot serialize message: "
 msgstr "Не могу да серијализујем поруку: "
 
-#: gio/gdbusmessage.c:2877
+#: gio/gdbusmessage.c:2906
 #, c-format
 msgid "Message body has signature “%s” but there is no signature header"
 msgstr "Тело поруке има потпис „%s“, али недостаје заглавље потписа"
 
-#: gio/gdbusmessage.c:2887
+#: gio/gdbusmessage.c:2916
 #, c-format
 msgid ""
 "Message body has type signature “%s” but signature in the header field is "
 "“%s”"
 msgstr "Тело поруке има тип потписа „%s“, али потпис у пољу заглавља је „%s“"
 
-#: gio/gdbusmessage.c:2903
+#: gio/gdbusmessage.c:2932
 #, c-format
 msgid "Message body is empty but signature in the header field is “(%s)”"
 msgstr "Тело поруке је празно,,, али је потпис у пољу заглавља „(%s)“"
 
-#: gio/gdbusmessage.c:3458
+#: gio/gdbusmessage.c:3487
 #, c-format
 msgid "Error return with body of type “%s”"
 msgstr "Добијена је грешка са телом поруке типа „%s“"
 
-#: gio/gdbusmessage.c:3466
+#: gio/gdbusmessage.c:3495
 msgid "Error return with empty body"
 msgstr "Добијена је грешка са празним телом поруке"
 
@@ -1447,7 +1450,7 @@ msgstr "Не могу да умножим специјалну датотеку"
 msgid "Invalid symlink value given"
 msgstr "Дата је неисправна симболичка веза"
 
-#: gio/gfile.c:4045 glib/gfileutils.c:2355
+#: gio/gfile.c:4045 glib/gfileutils.c:2333
 msgid "Symbolic links not supported"
 msgstr "Симболичке везе нису подржане"
 
@@ -4146,7 +4149,6 @@ msgstr "Нисам успео да направим спојку за везу �
 
 #: gio/gtestdbus.c:619
 #, c-format
-#| msgid "Seek not supported on stream"
 msgid "Pipes are not supported in this platform"
 msgstr "Спојке нису подржане на овој платформи"
 
@@ -4927,7 +4929,7 @@ msgid "Error opening directory “%s”: %s"
 msgstr "Грешка при отварању директоријума „%s“: %s"
 
 # bug: plural-forms
-#: glib/gfileutils.c:738 glib/gfileutils.c:830
+#: glib/gfileutils.c:733 glib/gfileutils.c:825
 #, c-format
 msgid "Could not allocate %lu byte to read file “%s”"
 msgid_plural "Could not allocate %lu bytes to read file “%s”"
@@ -4936,81 +4938,81 @@ msgstr[1] "Не могу да доделим %lu бајта за читање д
 msgstr[2] "Не могу да доделим %lu бајтова за читање датотеке „%s“"
 msgstr[3] "Не могу да доделим %lu бајт за читање датотеке „%s“"
 
-#: glib/gfileutils.c:755
+#: glib/gfileutils.c:750
 #, c-format
 msgid "Error reading file “%s”: %s"
 msgstr "Грешка при читању датотеке „%s“: %s"
 
-#: glib/gfileutils.c:791
+#: glib/gfileutils.c:786
 #, c-format
 msgid "File “%s” is too large"
 msgstr "Датотека „%s“ је превелика"
 
-#: glib/gfileutils.c:855
+#: glib/gfileutils.c:850
 #, c-format
 msgid "Failed to read from file “%s”: %s"
 msgstr "Нисам успеода прочитам из датотеке „%s“: %s"
 
-#: glib/gfileutils.c:905 glib/gfileutils.c:980 glib/gfileutils.c:1469
+#: glib/gfileutils.c:900 glib/gfileutils.c:975 glib/gfileutils.c:1447
 #, c-format
 msgid "Failed to open file “%s”: %s"
 msgstr "Нисам успео да отворим датотеку „%s“: %s"
 
-#: glib/gfileutils.c:918
+#: glib/gfileutils.c:913
 #, c-format
 msgid "Failed to get attributes of file “%s”: fstat() failed: %s"
 msgstr ""
 "Нисам успео да сазнам особине датотеке „%s“: није успела функција „fstat()“: "
 "%s"
 
-#: glib/gfileutils.c:949
+#: glib/gfileutils.c:944
 #, c-format
 msgid "Failed to open file “%s”: fdopen() failed: %s"
 msgstr ""
 "Нисам успео да отворим датотеку „%s“: није успела функција „fdopen()“: %s"
 
-#: glib/gfileutils.c:1050
+#: glib/gfileutils.c:1045
 #, c-format
 msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
 msgstr ""
 "Нисам успео да преименујем датотеку „%s“ у „%s“: није успела функција "
 "„g_rename()“: %s"
 
-#: glib/gfileutils.c:1176
+#: glib/gfileutils.c:1154
 #, c-format
 msgid "Failed to write file “%s”: write() failed: %s"
 msgstr ""
 "Нисам успео да запишем датотеку „%s“: није успела функција „write()“: %s"
 
-#: glib/gfileutils.c:1197
+#: glib/gfileutils.c:1175
 #, c-format
 msgid "Failed to write file “%s”: fsync() failed: %s"
 msgstr ""
 "Нисам успео да упишем у датотеку „%s“: није успела функција „fsync()“: %s"
 
-#: glib/gfileutils.c:1358 glib/gfileutils.c:1773
+#: glib/gfileutils.c:1336 glib/gfileutils.c:1751
 #, c-format
 msgid "Failed to create file “%s”: %s"
 msgstr "Нисам успео да направим датотеку „%s“: %s"
 
-#: glib/gfileutils.c:1403
+#: glib/gfileutils.c:1381
 #, c-format
 msgid "Existing file “%s” could not be removed: g_unlink() failed: %s"
 msgstr ""
 "Постојећа датотека „%s“ се не може уклонити: није успела функција "
 "„g_unlink()“: %s"
 
-#: glib/gfileutils.c:1738
+#: glib/gfileutils.c:1716
 #, c-format
 msgid "Template “%s” invalid, should not contain a “%s”"
 msgstr "Неисправан шаблон „%s“, не сме садржати „%s“"
 
-#: glib/gfileutils.c:1751
+#: glib/gfileutils.c:1729
 #, c-format
 msgid "Template “%s” doesn’t contain XXXXXX"
 msgstr "Шаблон „%s“ не садржи XXXXXX"
 
-#: glib/gfileutils.c:2311 glib/gfileutils.c:2340
+#: glib/gfileutils.c:2289 glib/gfileutils.c:2318
 #, c-format
 msgid "Failed to read the symbolic link “%s”: %s"
 msgstr "Нисам успео да прочитам симболичку везу „%s“: %s"
@@ -5860,48 +5862,54 @@ msgstr "Потпроцес је заустављен сигналом %ld"
 msgid "Child process exited abnormally"
 msgstr "Потпроцес је неочекивано прекинут"
 
-#: glib/gspawn.c:1854 glib/gspawn-win32.c:350 glib/gspawn-win32.c:358
+#: glib/gspawn.c:1864 glib/gspawn-win32.c:350 glib/gspawn-win32.c:358
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Нисам успео да читам из спојке порода (%s)"
 
-#: glib/gspawn.c:2156
+#: glib/gspawn.c:2166
 #, c-format
 msgid "Failed to spawn child process “%s” (%s)"
 msgstr "Нисам успео да извршим потпроцес „%s“ (%s)"
 
 # за сада овако, можда гранање, умножавање? виљушкање ;-)
-#: glib/gspawn.c:2273
+#: glib/gspawn.c:2283
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Нисам успео да исцепим (%s)"
 
-#: glib/gspawn.c:2433 glib/gspawn-win32.c:381
+#: glib/gspawn.c:2443 glib/gspawn-win32.c:381
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
 msgstr "Нисам успео да пређем у директоријум „%s“ (%s)"
 
-#: glib/gspawn.c:2443
+#: glib/gspawn.c:2453
 #, c-format
 msgid "Failed to execute child process “%s” (%s)"
 msgstr "Нисам успео да извршим потпроцес „%s“ (%s)"
 
-#: glib/gspawn.c:2453
+#: glib/gspawn.c:2463
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Нисам успео да преусмерим улаз или излаз потпроцеса (%s)"
 
-#: glib/gspawn.c:2462
+#: glib/gspawn.c:2472
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Нисам успео да исцепим потпроцес (%s)"
 
-#: glib/gspawn.c:2470
+#: glib/gspawn.c:2480
+#, c-format
+#| msgid "Failed to read data from child process (%s)"
+msgid "Failed to close file descriptor for child process (%s)"
+msgstr "Нисам успео да затворим описника датотеке за потпроцес (%s)"
+
+#: glib/gspawn.c:2488
 #, c-format
 msgid "Unknown error executing child process “%s”"
 msgstr "Непозната грешка при извршавању потпроцеса „%s“"
 
-#: glib/gspawn.c:2494
+#: glib/gspawn.c:2512
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Није успео да прочита довољно података из цевке ка потпроцесу (%s)"
