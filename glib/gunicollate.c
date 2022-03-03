@@ -71,6 +71,10 @@ msc_strxfrm_wrapper (char       *string1,
  * compare the keys with strcmp() when sorting instead of sorting 
  * the original strings.
  * 
+ * If the two strings are not comparable due to being in different collation
+ * sequences, the result is undefined. This can happen if the strings are in
+ * different language scripts, for example.
+ *
  * Returns: < 0 if @str1 compares before @str2, 
  *   0 if they compare equal, > 0 if @str1 compares after @str2.
  **/
