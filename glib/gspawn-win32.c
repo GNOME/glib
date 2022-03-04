@@ -637,6 +637,13 @@ fork_exec (gint                  *exit_status,
 
   argc = protect_argv (argv, &protected_argv);
 
+  /*
+   * FIXME: Workaround broken spawnvpe functions that SEGV when "=X:="
+   * environment variables are missing. Calling chdir() will set the magic
+   * environment variable again.
+   */
+  _chdir (".");
+
   if (stdin_fd == -1 && stdout_fd == -1 && stderr_fd == -1 &&
       (flags & G_SPAWN_CHILD_INHERITS_STDIN) &&
       !(flags & G_SPAWN_STDOUT_TO_DEV_NULL) &&

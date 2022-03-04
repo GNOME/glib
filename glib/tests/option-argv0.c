@@ -39,7 +39,6 @@ test_platform_argv0 (void)
   const gchar * const expected_prgnames[] =
     {
       "option-argv0",
-      "lt-option-argv0",
 #ifdef G_OS_WIN32
       "option-argv0.exe",
 #endif

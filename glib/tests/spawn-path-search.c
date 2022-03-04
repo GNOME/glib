@@ -23,6 +23,17 @@
 #include <sys/wait.h>
 #endif
 
+static gboolean
+skip_win32 (void)
+{
+#ifdef G_OS_WIN32
+  g_test_skip ("The test manipulate PATH, and breaks DLL lookups.");
+  return TRUE;
+#else
+  return FALSE;
+#endif
+}
+
 static void
 test_do_not_search (void)
 {
@@ -37,6 +48,9 @@ test_do_not_search (void)
 
   g_test_summary ("Without G_SPAWN_SEARCH_PATH, spawn-test-helper "
                   "means ./spawn-test-helper.");
+
+  if (skip_win32 ())
+    return;
 
   envp = g_environ_setenv (envp, "PATH", subdir, TRUE);
 
@@ -90,6 +104,9 @@ test_search_path (void)
   g_test_summary ("With G_SPAWN_SEARCH_PATH, spawn-test-helper "
                   "means $PATH/spawn-test-helper.");
 
+  if (skip_win32 ())
+    return;
+
   envp = g_environ_setenv (envp, "PATH", subdir, TRUE);
 
   g_ptr_array_add (argv,
@@ -142,6 +159,9 @@ test_search_path_from_envp (void)
 
   g_test_summary ("With G_SPAWN_SEARCH_PATH_FROM_ENVP, spawn-test-helper "
                   "means $PATH/spawn-test-helper with $PATH from envp.");
+
+  if (skip_win32 ())
+    return;
 
   envp = g_environ_setenv (envp, "PATH", here, TRUE);
 
@@ -198,6 +218,9 @@ test_search_path_ambiguous (void)
   g_test_summary ("With G_SPAWN_SEARCH_PATH and G_SPAWN_SEARCH_PATH_FROM_ENVP, "
                   "the latter wins.");
 
+  if (skip_win32 ())
+    return;
+
   envp = g_environ_setenv (envp, "PATH", here, TRUE);
 
   g_ptr_array_add (argv,
@@ -252,6 +275,10 @@ test_search_path_fallback_in_environ (void)
   int wait_status = -1;
 
   g_test_summary ("With G_SPAWN_SEARCH_PATH but no PATH, a fallback is used.");
+
+  if (skip_win32 ())
+    return;
+
   /* We can't make a meaningful assertion about what the fallback *is*,
    * but we can assert that it *includes* the current working directory. */
 
@@ -319,6 +346,9 @@ test_search_path_fallback_in_envp (void)
   /* We can't make a meaningful assertion about what the fallback *is*,
    * but we can assert that it *includes* the current working directory. */
 
+  if (skip_win32 ())
+    return;
+
   if (g_file_test ("/usr/bin/spawn-test-helper", G_FILE_TEST_IS_EXECUTABLE) ||
       g_file_test ("/bin/spawn-test-helper", G_FILE_TEST_IS_EXECUTABLE))
     {
@@ -383,6 +413,9 @@ test_search_path_heap_allocation (void)
   GError *error = NULL;
   int wait_status = -1;
   gsize i;
+
+  if (skip_win32 ())
+    return;
 
   memset (placeholder, '_', sizeof (placeholder));
   /* Force search_path_buffer to be heap-allocated */

@@ -31,6 +31,7 @@
 #include <sys/types.h>
 
 static char *echo_prog_path;
+static char *sleep_prog_path;
 
 #ifdef G_OS_UNIX
 #include <unistd.h>
@@ -42,10 +43,6 @@ static char *echo_prog_path;
 
 static GMainLoop *global_main_loop;
 static guint alive;
-
-#ifdef G_OS_WIN32
-static char *argv0;
-#endif
 
 static GPid
 get_a_child (gint ttl)
@@ -61,9 +58,9 @@ get_a_child (gint ttl)
   si.cb = sizeof (&si);
   memset (&pi, 0, sizeof (pi));
 
-  cmdline = g_strdup_printf ("child-test -c%d", ttl);
+  cmdline = g_strdup_printf ("%s %d", sleep_prog_path, ttl);
 
-  if (!CreateProcess (argv0, cmdline, NULL, NULL,
+  if (!CreateProcess (NULL, cmdline, NULL, NULL,
                       FALSE, 0, NULL, NULL, &si, &pi))
     g_error ("CreateProcess failed: %s",
              g_win32_error_message (GetLastError ()));
@@ -145,7 +142,7 @@ test_spawn_childs (void)
   global_main_loop = g_main_loop_new (NULL, FALSE);
 
 #ifdef G_OS_WIN32
-  system ("ipconfig /all");
+  system ("cd .");
 #else
   system ("true");
 #endif
@@ -172,7 +169,7 @@ test_spawn_childs_threads (void)
   global_main_loop = g_main_loop_new (NULL, FALSE);
 
 #ifdef G_OS_WIN32
-  system ("ipconfig /all");
+  system ("cd .");
 #else
   system ("true");
 #endif
@@ -384,14 +381,13 @@ main (int   argc,
 
   dirname = g_path_get_dirname (argv[0]);
   echo_prog_path = g_build_filename (dirname, "test-spawn-echo" EXEEXT, NULL);
-  if (!g_file_test (echo_prog_path, G_FILE_TEST_EXISTS))
-    {
-      g_free (echo_prog_path);
-      echo_prog_path = g_build_filename (dirname, "lt-test-spawn-echo" EXEEXT, NULL);
-    }
+  sleep_prog_path = g_build_filename (dirname, "test-spawn-sleep" EXEEXT, NULL);
   g_free (dirname);
 
   g_assert (g_file_test (echo_prog_path, G_FILE_TEST_EXISTS));
+#ifdef G_OS_WIN32
+  g_assert (g_file_test (sleep_prog_path, G_FILE_TEST_EXISTS));
+#endif
 
   g_test_add_func ("/gthread/spawn-childs", test_spawn_childs);
   g_test_add_func ("/gthread/spawn-childs-threads", test_spawn_childs_threads);
@@ -401,6 +397,7 @@ main (int   argc,
   ret = g_test_run();
 
   g_free (echo_prog_path);
+  g_free (sleep_prog_path);
 
   return ret;
 }
