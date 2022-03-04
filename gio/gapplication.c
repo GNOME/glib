@@ -434,7 +434,8 @@ g_application_pack_option_entries (GApplication *application,
           break;
 
         case G_OPTION_ARG_INT:
-          value = g_variant_new_int32 (*(gint32 *) entry->arg_data);
+          if (*(gint32 *) entry->arg_data)
+            value = g_variant_new_int32 (*(gint32 *) entry->arg_data);
           break;
 
         case G_OPTION_ARG_FILENAME:
@@ -453,11 +454,13 @@ g_application_pack_option_entries (GApplication *application,
           break;
 
         case G_OPTION_ARG_DOUBLE:
-          value = g_variant_new_double (*(gdouble *) entry->arg_data);
+          if (*(gdouble *) entry->arg_data)
+            value = g_variant_new_double (*(gdouble *) entry->arg_data);
           break;
 
         case G_OPTION_ARG_INT64:
-          value = g_variant_new_int64 (*(gint64 *) entry->arg_data);
+          if (*(gint64 *) entry->arg_data)
+            value = g_variant_new_int64 (*(gint64 *) entry->arg_data);
           break;
 
         default:
@@ -695,10 +698,6 @@ add_packed_option (GApplication *application,
  * need to handle these arguments for yourself because once they are
  * consumed, they will no longer be visible to the default handling
  * (which treats them as filenames to be opened).
- *
- * The dict includes options that have been explicitly specified on the parsed
- * commandline, as well as zero values for numeric options that were not
- * necessarily specified.
  *
  * It is important to use the proper GVariant format when retrieving
  * the options with g_variant_dict_lookup():
