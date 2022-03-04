@@ -362,7 +362,14 @@ GQuark                          g_variant_parse_error_quark             (void);
  *
  * Since: 2.50
  */
-#define G_VARIANT_BUILDER_INIT(variant_type) { { { 2942751021u, variant_type, { 0, } } } }
+#define G_VARIANT_BUILDER_INIT(variant_type)                                          \
+  {                                                                                   \
+    {                                                                                 \
+      {                                                                               \
+        2942751021u /* == GVSB_MAGIC_PARTIAL, see gvariant.c */, variant_type, { 0, } \
+      }                                                                               \
+    }                                                                                 \
+  }
 
 GLIB_AVAILABLE_IN_ALL
 GVariantBuilder *               g_variant_builder_new                   (const GVariantType   *type);
@@ -478,7 +485,14 @@ struct _GVariantDict {
  *
  * Since: 2.50
  */
-#define G_VARIANT_DICT_INIT(asv) { { { asv, 3488698669u, { 0, } } } }
+#define G_VARIANT_DICT_INIT(asv)                                             \
+  {                                                                          \
+    {                                                                        \
+      {                                                                      \
+        asv, 3488698669u /* == GVSD_MAGIC_PARTIAL, see gvariant.c */, { 0, } \
+      }                                                                      \
+    }                                                                        \
+  }
 
 GLIB_AVAILABLE_IN_2_40
 GVariantDict *                  g_variant_dict_new                      (GVariant             *from_asv);
