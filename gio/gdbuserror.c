@@ -588,7 +588,7 @@ g_dbus_error_get_remote_error (const GError *error)
  * such that it can be recovered with g_dbus_error_get_remote_error().
  *
  * Otherwise, a #GError with the error code %G_IO_ERROR_DBUS_ERROR
- * in the #G_IO_ERROR error domain is returned. Also, @dbus_error_name is
+ * in the %G_IO_ERROR error domain is returned. Also, @dbus_error_name is
  * added to the error message such that it can be recovered with
  * g_dbus_error_get_remote_error().
  *

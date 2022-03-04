@@ -108,7 +108,7 @@
  * gint:
  *
  * Corresponds to the standard C int type.
- * Values of this type can range from #G_MININT to #G_MAXINT.
+ * Values of this type can range from %G_MININT to %G_MAXINT.
  */
 
 /**
@@ -127,7 +127,7 @@
  * guint:
  *
  * Corresponds to the standard C unsigned int type.
- * Values of this type can range from 0 to #G_MAXUINT.
+ * Values of this type can range from 0 to %G_MAXUINT.
  */
 
 /**
@@ -140,7 +140,7 @@
  * gshort:
  *
  * Corresponds to the standard C short type.
- * Values of this type can range from #G_MINSHORT to #G_MAXSHORT.
+ * Values of this type can range from %G_MINSHORT to %G_MAXSHORT.
  */
 
 /**
@@ -159,7 +159,7 @@
  * gushort:
  *
  * Corresponds to the standard C unsigned short type.
- * Values of this type can range from 0 to #G_MAXUSHORT.
+ * Values of this type can range from 0 to %G_MAXUSHORT.
  */
 
 /**
@@ -172,7 +172,7 @@
  * glong:
  *
  * Corresponds to the standard C long type.
- * Values of this type can range from #G_MINLONG to #G_MAXLONG.
+ * Values of this type can range from %G_MINLONG to %G_MAXLONG.
  */
 
 /**
@@ -191,7 +191,7 @@
  * gulong:
  *
  * Corresponds to the standard C unsigned long type.
- * Values of this type can range from 0 to #G_MAXULONG.
+ * Values of this type can range from 0 to %G_MAXULONG.
  */
 
 /**
@@ -204,8 +204,8 @@
  * gint8:
  *
  * A signed integer guaranteed to be 8 bits on all platforms.
- * Values of this type can range from #G_MININT8 (= -128) to
- * #G_MAXINT8 (= 127).
+ * Values of this type can range from %G_MININT8 (= -128) to
+ * %G_MAXINT8 (= 127).
  */
 
 /**
@@ -220,7 +220,7 @@
  * guint8:
  *
  * An unsigned integer guaranteed to be 8 bits on all platforms.
- * Values of this type can range from 0 to #G_MAXUINT8 (= 255).
+ * Values of this type can range from 0 to %G_MAXUINT8 (= 255).
  */
 
 /**
@@ -235,8 +235,8 @@
  * gint16:
  *
  * A signed integer guaranteed to be 16 bits on all platforms.
- * Values of this type can range from #G_MININT16 (= -32,768) to
- * #G_MAXINT16 (= 32,767).
+ * Values of this type can range from %G_MININT16 (= -32,768) to
+ * %G_MAXINT16 (= 32,767).
  *
  * To print or scan values of this type, use
  * %G_GINT16_MODIFIER and/or %G_GINT16_FORMAT.
@@ -289,7 +289,7 @@
  * guint16:
  *
  * An unsigned integer guaranteed to be 16 bits on all platforms.
- * Values of this type can range from 0 to #G_MAXUINT16 (= 65,535).
+ * Values of this type can range from 0 to %G_MAXUINT16 (= 65,535).
  *
  * To print or scan values of this type, use
  * %G_GINT16_MODIFIER and/or %G_GUINT16_FORMAT.
@@ -307,15 +307,15 @@
  * G_GUINT16_FORMAT:
  *
  * This is the platform dependent conversion specifier for scanning
- * and printing values of type #guint16. See also #G_GINT16_FORMAT
+ * and printing values of type #guint16. See also %G_GINT16_FORMAT
  */
 
 /**
  * gint32:
  *
  * A signed integer guaranteed to be 32 bits on all platforms.
- * Values of this type can range from #G_MININT32 (= -2,147,483,648)
- * to #G_MAXINT32 (= 2,147,483,647).
+ * Values of this type can range from %G_MININT32 (= -2,147,483,648)
+ * to %G_MAXINT32 (= 2,147,483,647).
  *
  * To print or scan values of this type, use
  * %G_GINT32_MODIFIER and/or %G_GINT32_FORMAT.
@@ -334,7 +334,7 @@
  *
  * The platform dependent length modifier for conversion specifiers
  * for scanning and printing values of type #gint32 or #guint32. It
- * is a string literal. See also #G_GINT16_MODIFIER.
+ * is a string literal. See also %G_GINT16_MODIFIER.
  *
  * Since: 2.4
  */
@@ -343,14 +343,14 @@
  * G_GINT32_FORMAT:
  *
  * This is the platform dependent conversion specifier for scanning
- * and printing values of type #gint32. See also #G_GINT16_FORMAT.
+ * and printing values of type #gint32. See also %G_GINT16_FORMAT.
  */
 
 /**
  * guint32:
  *
  * An unsigned integer guaranteed to be 32 bits on all platforms.
- * Values of this type can range from 0 to #G_MAXUINT32 (= 4,294,967,295).
+ * Values of this type can range from 0 to %G_MAXUINT32 (= 4,294,967,295).
  *
  * To print or scan values of this type, use
  * %G_GINT32_MODIFIER and/or %G_GUINT32_FORMAT.
@@ -368,15 +368,15 @@
  * G_GUINT32_FORMAT:
  *
  * This is the platform dependent conversion specifier for scanning
- * and printing values of type #guint32. See also #G_GINT16_FORMAT.
+ * and printing values of type #guint32. See also %G_GINT16_FORMAT.
  */
 
 /**
  * gint64:
  *
  * A signed integer guaranteed to be 64 bits on all platforms.
- * Values of this type can range from #G_MININT64
- * (= -9,223,372,036,854,775,808) to #G_MAXINT64
+ * Values of this type can range from %G_MININT64
+ * (= -9,223,372,036,854,775,808) to %G_MAXINT64
  * (= 9,223,372,036,854,775,807).
  *
  * To print or scan values of this type, use
@@ -407,7 +407,7 @@
  * G_GINT64_FORMAT:
  *
  * This is the platform dependent conversion specifier for scanning
- * and printing values of type #gint64. See also #G_GINT16_FORMAT.
+ * and printing values of type #gint64. See also %G_GINT16_FORMAT.
  *
  * Some platforms do not support scanning and printing 64-bit integers,
  * even though the types are supported. On such platforms %G_GINT64_FORMAT
@@ -421,7 +421,7 @@
  * guint64:
  *
  * An unsigned integer guaranteed to be 64-bits on all platforms.
- * Values of this type can range from 0 to #G_MAXUINT64
+ * Values of this type can range from 0 to %G_MAXUINT64
  * (= 18,446,744,073,709,551,615).
  *
  * To print or scan values of this type, use
@@ -438,7 +438,7 @@
  * G_GUINT64_FORMAT:
  *
  * This is the platform dependent conversion specifier for scanning
- * and printing values of type #guint64. See also #G_GINT16_FORMAT.
+ * and printing values of type #guint64. See also %G_GINT16_FORMAT.
  *
  * Some platforms do not support scanning and printing 64-bit integers,
  * even though the types are supported. On such platforms %G_GUINT64_FORMAT
@@ -470,7 +470,7 @@
  * gfloat:
  *
  * Corresponds to the standard C float type.
- * Values of this type can range from -#G_MAXFLOAT to #G_MAXFLOAT.
+ * Values of this type can range from -%G_MAXFLOAT to %G_MAXFLOAT.
  */
 
 /**
@@ -492,7 +492,7 @@
  * gdouble:
  *
  * Corresponds to the standard C double type.
- * Values of this type can range from -#G_MAXDOUBLE to #G_MAXDOUBLE.
+ * Values of this type can range from -%G_MAXDOUBLE to %G_MAXDOUBLE.
  */
 
 /**
@@ -518,7 +518,7 @@
  * This type is wide enough to hold the numeric value of a pointer,
  * so it is usually 32 bit wide on a 32-bit platform and 64 bit wide
  * on a 64-bit platform. Values of this type can range from 0 to
- * #G_MAXSIZE.
+ * %G_MAXSIZE.
  *
  * To print or scan values of this type, use
  * %G_GSIZE_MODIFIER and/or %G_GSIZE_FORMAT.
@@ -546,7 +546,7 @@
  * G_GSIZE_FORMAT:
  *
  * This is the platform dependent conversion specifier for scanning
- * and printing values of type #gsize. See also #G_GINT16_FORMAT.
+ * and printing values of type #gsize. See also %G_GINT16_FORMAT.
  *
  * Since: 2.6
  */
@@ -556,8 +556,8 @@
  *
  * A signed variant of #gsize, corresponding to the
  * ssize_t defined on most platforms.
- * Values of this type can range from #G_MINSSIZE
- * to #G_MAXSSIZE.
+ * Values of this type can range from %G_MINSSIZE
+ * to %G_MAXSSIZE.
  *
  * To print or scan values of this type, use
  * %G_GSSIZE_MODIFIER and/or %G_GSSIZE_FORMAT.
@@ -583,7 +583,7 @@
  * G_GSSIZE_FORMAT:
  *
  * This is the platform dependent conversion specifier for scanning
- * and printing values of type #gssize. See also #G_GINT16_FORMAT.
+ * and printing values of type #gssize. See also %G_GINT16_FORMAT.
  *
  * Since: 2.6
  */
@@ -605,8 +605,8 @@
  * corresponding to the POSIX type `off_t` as if compiling with
  * `_FILE_OFFSET_BITS` set to 64. #goffset is always 64 bits wide, even on
  * 32-bit architectures.
- * Values of this type can range from #G_MINOFFSET to
- * #G_MAXOFFSET.
+ * Values of this type can range from %G_MINOFFSET to
+ * %G_MAXOFFSET.
  *
  * To print or scan values of this type, use
  * %G_GOFFSET_MODIFIER and/or %G_GOFFSET_FORMAT.
@@ -631,7 +631,7 @@
  *
  * The platform dependent length modifier for conversion specifiers
  * for scanning and printing values of type #goffset. It is a string
- * literal. See also #G_GINT64_MODIFIER.
+ * literal. See also %G_GINT64_MODIFIER.
  *
  * Since: 2.20
  */
@@ -640,7 +640,7 @@
  * G_GOFFSET_FORMAT:
  *
  * This is the platform dependent conversion specifier for scanning
- * and printing values of type #goffset. See also #G_GINT64_FORMAT.
+ * and printing values of type #goffset. See also %G_GINT64_FORMAT.
  *
  * Since: 2.20
  */
@@ -652,7 +652,7 @@
  * This macro is used to insert #goffset 64-bit integer literals
  * into the source code.
  *
- * See also #G_GINT64_CONSTANT.
+ * See also G_GINT64_CONSTANT().
  *
  * Since: 2.20
  */
@@ -849,29 +849,29 @@
  * G_BYTE_ORDER:
  *
  * The host byte order.
- * This can be either #G_LITTLE_ENDIAN or #G_BIG_ENDIAN (support for
- * #G_PDP_ENDIAN may be added in future.)
+ * This can be either %G_LITTLE_ENDIAN or %G_BIG_ENDIAN (support for
+ * %G_PDP_ENDIAN may be added in future.)
  */
 
 /**
  * G_LITTLE_ENDIAN:
  *
  * Specifies one of the possible types of byte order.
- * See #G_BYTE_ORDER.
+ * See %G_BYTE_ORDER.
  */
 
 /**
  * G_BIG_ENDIAN:
  *
  * Specifies one of the possible types of byte order.
- * See #G_BYTE_ORDER.
+ * See %G_BYTE_ORDER.
  */
 
 /**
  * G_PDP_ENDIAN:
  *
  * Specifies one of the possible types of byte order
- * (currently unused). See #G_BYTE_ORDER.
+ * (currently unused). See %G_BYTE_ORDER.
  */
 
 /**
@@ -1543,7 +1543,7 @@
  * @title: Numerical Definitions
  * @short_description: mathematical constants, and floating point decomposition
  *
- * GLib offers mathematical constants such as #G_PI for the value of pi;
+ * GLib offers mathematical constants such as %G_PI for the value of pi;
  * many platforms have these in the C library, but some don't, the GLib
  * versions always exist.
  *
@@ -1857,7 +1857,7 @@
 /**
  * G_BEGIN_DECLS:
  *
- * Used (along with #G_END_DECLS) to bracket header files. If the
+ * Used (along with %G_END_DECLS) to bracket header files. If the
  * compiler in use is a C++ compiler, adds extern "C"
  * around the header.
  */
@@ -1865,7 +1865,7 @@
 /**
  * G_END_DECLS:
  *
- * Used (along with #G_BEGIN_DECLS) to bracket header files. If the
+ * Used (along with %G_BEGIN_DECLS) to bracket header files. If the
  * compiler in use is a C++ compiler, adds extern "C"
  * around the header.
  */

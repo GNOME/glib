@@ -613,7 +613,7 @@ g_drive_poll_for_media_finish (GDrive        *drive,
  *
  * Gets the identifier of the given kind for @drive. The only
  * identifier currently available is
- * #G_DRIVE_IDENTIFIER_KIND_UNIX_DEVICE.
+ * %G_DRIVE_IDENTIFIER_KIND_UNIX_DEVICE.
  *
  * Returns: (nullable) (transfer full): a newly allocated string containing the
  *     requested identifier, or %NULL if the #GDrive

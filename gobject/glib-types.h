@@ -44,7 +44,7 @@ typedef gsize GType;
  * The #GType for a boxed type holding a %NULL-terminated array of strings.
  *
  * The code fragments in the following example show the use of a property of
- * type #G_TYPE_STRV with g_object_class_install_property(), g_object_set()
+ * type %G_TYPE_STRV with g_object_class_install_property(), g_object_set()
  * and g_object_get().
  *
  * |[

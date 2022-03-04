@@ -284,7 +284,7 @@ typedef gboolean      (*GSettingsGetMapping)                            (GVarian
  * @G_SETTINGS_BIND_SET: Update the setting when the #GObject property changes.
  *     It is an error to use this flag if the property is not readable.
  * @G_SETTINGS_BIND_NO_SENSITIVITY: Do not try to bind a "sensitivity" property to the writability of the setting
- * @G_SETTINGS_BIND_GET_NO_CHANGES: When set in addition to #G_SETTINGS_BIND_GET, set the #GObject property
+ * @G_SETTINGS_BIND_GET_NO_CHANGES: When set in addition to %G_SETTINGS_BIND_GET, set the #GObject property
  *     value initially from the setting, but do not listen for changes of the setting
  * @G_SETTINGS_BIND_INVERT_BOOLEAN: When passed to g_settings_bind(), uses a pair of mapping functions that invert
  *     the boolean value when mapping between the setting and the property.  The setting and property must both

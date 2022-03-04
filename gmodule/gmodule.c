@@ -477,7 +477,7 @@ static GRecMutex g_module_global_lock;
  * If that fails and @file_name has the ".la"-suffix (and is a libtool
  * archive) it tries to open the corresponding module. If that fails
  * and it doesn't have the proper module suffix for the platform
- * (#G_MODULE_SUFFIX), this suffix will be appended and the corresponding
+ * (%G_MODULE_SUFFIX), this suffix will be appended and the corresponding
  * module will be opened. If that fails and @file_name doesn't have the
  * ".la"-suffix, this suffix is appended and g_module_open_full() tries to open
  * the corresponding module. If eventually that fails as well, %NULL is
@@ -782,7 +782,7 @@ g_module_error (void)
  * @symbol: (out): returns the pointer to the symbol value
  *
  * Gets a symbol pointer from a module, such as one exported
- * by #G_MODULE_EXPORT. Note that a valid symbol can be %NULL.
+ * by %G_MODULE_EXPORT. Note that a valid symbol can be %NULL.
  *
  * Returns: %TRUE on success
  */

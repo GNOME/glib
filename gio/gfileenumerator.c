@@ -721,7 +721,7 @@ g_file_enumerator_get_container (GFileEnumerator *enumerator)
  * directory of @enumerator.  This function is primarily intended to be used
  * inside loops with g_file_enumerator_next_file().
  *
- * To use this, #G_FILE_ATTRIBUTE_STANDARD_NAME must have been listed in the
+ * To use this, %G_FILE_ATTRIBUTE_STANDARD_NAME must have been listed in the
  * attributes list used when creating the #GFileEnumerator.
  *
  * This is a convenience method that's equivalent to:

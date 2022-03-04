@@ -31,7 +31,7 @@ G_BEGIN_DECLS
 
 /**
  * GError:
- * @domain: error domain, e.g. #G_FILE_ERROR
+ * @domain: error domain, e.g. %G_FILE_ERROR
  * @code: error code, e.g. %G_FILE_ERROR_NOENT
  * @message: human-readable informative error message
  *

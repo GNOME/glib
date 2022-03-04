@@ -122,8 +122,8 @@ typedef struct _GSourceCallbackFuncs    GSourceCallbackFuncs;
  *     connected to a callback using g_source_set_callback(). The @dispatch
  *     function should call the callback function with @user_data and whatever
  *     additional parameters are needed for this type of event source. The
- *     return value of the @dispatch function should be #G_SOURCE_REMOVE if the
- *     source should be removed or #G_SOURCE_CONTINUE to keep it.
+ *     return value of the @dispatch function should be %G_SOURCE_REMOVE if the
+ *     source should be removed or %G_SOURCE_CONTINUE to keep it.
  * @finalize: Called when the source is finalized. At this point, the source
  *     will have been destroyed, had its callback cleared, and have been removed
  *     from its #GMainContext, but it will still have its final reference count,
@@ -187,8 +187,8 @@ typedef struct _GSourceFuncs            GSourceFuncs;
  * different type to this type. Use G_SOURCE_FUNC() to avoid warnings about
  * incompatible function types.
  *
- * Returns: %FALSE if the source should be removed. #G_SOURCE_CONTINUE and
- * #G_SOURCE_REMOVE are more memorable names for the return value.
+ * Returns: %FALSE if the source should be removed. %G_SOURCE_CONTINUE and
+ * %G_SOURCE_REMOVE are more memorable names for the return value.
  */
 typedef gboolean (*GSourceFunc)       (gpointer user_data);
 
@@ -328,8 +328,8 @@ struct _GSourceFuncs
  *
  * Use this for high priority idle functions.
  *
- * GTK+ uses #G_PRIORITY_HIGH_IDLE + 10 for resizing operations,
- * and #G_PRIORITY_HIGH_IDLE + 20 for redrawing operations. (This is
+ * GTK+ uses %G_PRIORITY_HIGH_IDLE + 10 for resizing operations,
+ * and %G_PRIORITY_HIGH_IDLE + 20 for redrawing operations. (This is
  * done to ensure that any pending resizes are processed before any
  * pending redraws, so that widgets are not redrawn twice unnecessarily.)
  */

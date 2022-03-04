@@ -548,12 +548,12 @@ g_dbus_gvariant_to_gvalue (GVariant  *value,
  * - `G_TYPE_DOUBLE`: 'd'
  * - `G_TYPE_VARIANT`: Any #GVariantType
  *
- * This can fail if e.g. @gvalue is of type #G_TYPE_STRING and @type
- * is 'i', i.e. #G_VARIANT_TYPE_INT32. It will also fail for any #GType
- * (including e.g. #G_TYPE_OBJECT and #G_TYPE_BOXED derived-types) not
+ * This can fail if e.g. @gvalue is of type %G_TYPE_STRING and @type
+ * is 'i', i.e. %G_VARIANT_TYPE_INT32. It will also fail for any #GType
+ * (including e.g. %G_TYPE_OBJECT and %G_TYPE_BOXED derived-types) not
  * in the table above.
  *
- * Note that if @gvalue is of type #G_TYPE_VARIANT and its value is
+ * Note that if @gvalue is of type %G_TYPE_VARIANT and its value is
  * %NULL, the empty #GVariant instance (never %NULL) for @type is
  * returned (e.g. 0 for scalar types, the empty string for string types,
  * '/' for object path types, the empty array for any array type and so on).
