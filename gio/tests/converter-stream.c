@@ -1038,7 +1038,10 @@ test_converter_pollable (void)
 
       /* After closing the write end, we can't get WOULD_BLOCK any more */
       if (!socket_out)
-	g_assert_cmpint (res, !=, -1);
+        {
+          g_assert_no_error (error);
+          g_assert_cmpint (res, !=, -1);
+        }
 
       if (res == -1)
 	{
