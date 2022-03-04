@@ -112,6 +112,7 @@ glib_tests = {
   'timeout' : {},
   'timer' : {},
   'tree' : {},
+  'types' : {},
   'utf8-performance' : {},
   'utf8-pointer' : {},
   'utf8-validate' : {},
