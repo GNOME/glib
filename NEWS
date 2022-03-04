@@ -1,3 +1,73 @@
+Overview of changes in GLib 2.71.3
+==================================
+
+* Fix flaky `GDebugController` tests (!2504)
+
+* Numerous small documentation updates
+
+* Bugs fixed:
+ - #517 g_utf8_collate returns 0 on U+C5D0 vs U+CD94
+ - #1929 gdbus-connection-flush: setup_client_cb: Exhausted all available authentication mechanisms (tried: EXTERNAL, DBUS_COOKIE_SHA1)
+ - #2589 Hash sign misinterpreted as heading
+ - #2598 g_main_loop_run() may leak a GMainLoop reference
+ - #2609 Clarify documentation for g_log_set_debug_enabled()
+ - #2611 Unspecified options considered present
+ - #2612 side effects of ensure_valid_dict result used in g_return_if_fail macro
+ - #2613 Naked magic literal in gvariant.h
+ - !1707 Add cache to g_unix_mount_points_get()
+ - !2424 Remove old test file tests/testglib.c
+ - !2451 glib: fix buffer overflow in g_canonicalize_filename()
+ - !2466 Various minor fixes for empty argv handling
+ - !2480 Various glib/tests/date fixes on win32
+ - !2485 Various spawn-related test fixes on win32
+ - !2490 Cleanup warnings split 1
+ - !2491 Cleanup warnings split 2
+ - !2492 Cleanup warnings split 3
+ - !2493 Cleanup warnings split 4
+ - !2501 glib-compile-resources: Fix a memory leak of the compiler option
+ - !2502 tests: Merge iochannel-test into io-channel tests in glib directory
+ - !2503 gbacktrace: Fix a set-but-not-used variable
+ - !2504 gdebugcontrollerdbus: Track pending tasks with weak refs
+ - !2505 tests: Stop ignoring test failures on macOS
+ - !2506 gresource-tool: Fix unused-but-set-variable warn with G_DISABLE_ASSERT
+ - !2507 ci: Drop custom dependency builds from installed-tests
+ - !2508 codegen: Reformat parser.py according to black
+ - !2509 tests: Fix various small memory leaks
+ - !2510 gdesktopappinfo: Fix a leak when launching URIs over D-Bus
+ - !2512 doc: Extend a bit G_DECLARE_* documentation example
+ - !2513 gmain: Expand documentation about GSource priorities a little
+ - !2514 ci: Various cleanups and moving Android API 21 and FreeBSD 12 to scheduled run
+ - !2515 gmessages: Fix typo in docs
+ - !2516 glocalfileinfo: Always define _g_stat_mtim_nsec, etc.
+ - !2517 meson: Add schemasdir and giomoduledir to gio dependency
+ - !2518 meson: Set GIO_EXTRA_MODULES in devenv
+ - !2519 gdebugcontrollerdbus: Mark a variable as G_GNUC_UNUSED
+ - !2520 tests: Remove threads from mock-resolver/network-address test
+ - !2523 Add handling of NULL time_t* pointer as argument
+ - !2524 Revert "meson: Add schemasdir and giomoduledir to gio dependency"
+ - !2525 meson: Add schemasdir and giomoduledir to gio dependency
+ - !2526 Remove unused test tests/testgdateparser.c
+ - !2527 Move tests/type-test.c to glib/tests/types.c
+ - !2528 meson: Add PYTHONPATH to load GDB helper module
+ - !2531 gtask: Document that task name is set by g_task_set_source_tag()
+
+* Translation updates:
+ - Basque
+ - Catalan
+ - Chinese (China)
+ - Croatian
+ - Danish
+ - German
+ - Hebrew
+ - Indonesian
+ - Korean
+ - Lithuanian
+ - Romanian
+ - Russian
+ - Spanish
+ - Turkish
+
+
 Overview of changes in GLib 2.71.2
 ==================================
 
