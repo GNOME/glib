@@ -16,10 +16,6 @@
 
 #include <glib.h>
 
-/* On smcv's laptop, 1e4 iterations didn't always exhibit the bug, but 1e5
- * iterations exhibited it 10/10 times in practice. YMMV. */
-#define ITERATIONS 100000
-
 static GStaticPrivate sp;
 static GMutex *mutex;
 static GCond *cond;
@@ -51,6 +47,19 @@ static gpointer thread_func (gpointer nil)
 static void
 testcase (void)
 {
+  /* On smcv's laptop, 1e4 iterations didn't always exhibit the bug, but 1e5
+   * iterations exhibited it 10/10 times in practice. YMMV.
+   *
+   * If running with `-m slow` we want to try hard to reproduce the bug 10/10
+   * times. However, as of 2022 this takes around 240s on a CI machine, which
+   * is a long time to tie up those resources to verify that a bug fixed 10
+   * years ago is still fixed.
+   *
+   * So if running without `-m slow`, try 100× less hard to reproduce the bug,
+   * and rely on the fact that this is run under CI often enough to have a good
+   * chance of reproducing the bug in 1% of CI runs. */
+  const guint n_iterations = g_test_slow () ? 100000 : 1000;
+
   g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=642026");
 
   mutex = g_mutex_new ();
@@ -58,7 +67,7 @@ testcase (void)
 
   g_mutex_lock (mutex);
 
-  for (i = 0; i < ITERATIONS; i++)
+  for (i = 0; i < n_iterations; i++)
     {
       GThread *t1;
 
