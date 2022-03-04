@@ -3225,6 +3225,24 @@ ensure_valid_builder (GVariantBuilder *builder)
   return is_valid_builder (builder);
 }
 
+/* return_if_invalid_builder (b) is like
+ * g_return_if_fail (ensure_valid_builder (b)), except that
+ * the side effects of ensure_valid_builder are evaluated
+ * regardless of whether G_DISABLE_CHECKS is defined or not. */
+#define return_if_invalid_builder(b) G_STMT_START {                \
+  gboolean valid_builder G_GNUC_UNUSED = ensure_valid_builder (b); \
+  g_return_if_fail (valid_builder);                                \
+} G_STMT_END
+
+/* return_val_if_invalid_builder (b, val) is like
+ * g_return_val_if_fail (ensure_valid_builder (b), val), except that
+ * the side effects of ensure_valid_builder are evaluated
+ * regardless of whether G_DISABLE_CHECKS is defined or not. */
+#define return_val_if_invalid_builder(b, val) G_STMT_START {       \
+  gboolean valid_builder G_GNUC_UNUSED = ensure_valid_builder (b); \
+  g_return_val_if_fail (valid_builder, val);                       \
+} G_STMT_END
+
 /**
  * g_variant_builder_new:
  * @type: a container type
@@ -3337,7 +3355,7 @@ g_variant_builder_clear (GVariantBuilder *builder)
     /* all-zeros or partial case */
     return;
 
-  g_return_if_fail (ensure_valid_builder (builder));
+  return_if_invalid_builder (builder);
 
   g_variant_type_free (GVSB(builder)->type);
 
@@ -3500,7 +3518,7 @@ void
 g_variant_builder_add_value (GVariantBuilder *builder,
                              GVariant        *value)
 {
-  g_return_if_fail (ensure_valid_builder (builder));
+  return_if_invalid_builder (builder);
   g_return_if_fail (GVSB(builder)->offset < GVSB(builder)->max_items);
   g_return_if_fail (!GVSB(builder)->expected_type ||
                     g_variant_is_of_type (value,
@@ -3581,7 +3599,7 @@ g_variant_builder_open (GVariantBuilder    *builder,
 {
   GVariantBuilder *parent;
 
-  g_return_if_fail (ensure_valid_builder (builder));
+  return_if_invalid_builder (builder);
   g_return_if_fail (GVSB(builder)->offset < GVSB(builder)->max_items);
   g_return_if_fail (!GVSB(builder)->expected_type ||
                     g_variant_type_is_subtype_of (type,
@@ -3627,7 +3645,7 @@ g_variant_builder_close (GVariantBuilder *builder)
 {
   GVariantBuilder *parent;
 
-  g_return_if_fail (ensure_valid_builder (builder));
+  return_if_invalid_builder (builder);
   g_return_if_fail (GVSB(builder)->parent != NULL);
 
   parent = GVSB(builder)->parent;
@@ -3695,7 +3713,7 @@ g_variant_builder_end (GVariantBuilder *builder)
   GVariantType *my_type;
   GVariant *value;
 
-  g_return_val_if_fail (ensure_valid_builder (builder), NULL);
+  return_val_if_invalid_builder (builder, NULL);
   g_return_val_if_fail (GVSB(builder)->offset >= GVSB(builder)->min_items,
                         NULL);
   g_return_val_if_fail (!GVSB(builder)->uniform_item_types ||
@@ -3883,6 +3901,24 @@ ensure_valid_dict (GVariantDict *dict)
   return is_valid_dict (dict);
 }
 
+/* return_if_invalid_dict (d) is like
+ * g_return_if_fail (ensure_valid_dict (d)), except that
+ * the side effects of ensure_valid_dict are evaluated
+ * regardless of whether G_DISABLE_CHECKS is defined or not. */
+#define return_if_invalid_dict(d) G_STMT_START {                \
+  gboolean valid_dict G_GNUC_UNUSED = ensure_valid_dict (d);    \
+  g_return_if_fail (valid_dict);                                \
+} G_STMT_END
+
+/* return_val_if_invalid_dict (d, val) is like
+ * g_return_val_if_fail (ensure_valid_dict (d), val), except that
+ * the side effects of ensure_valid_dict are evaluated
+ * regardless of whether G_DISABLE_CHECKS is defined or not. */
+#define return_val_if_invalid_dict(d, val) G_STMT_START {       \
+  gboolean valid_dict G_GNUC_UNUSED = ensure_valid_dict (d);    \
+  g_return_val_if_fail (valid_dict, val);                       \
+} G_STMT_END
+
 /**
  * g_variant_dict_new:
  * @from_asv: (nullable): the #GVariant with which to initialise the
@@ -3990,7 +4026,7 @@ g_variant_dict_lookup (GVariantDict *dict,
   GVariant *value;
   va_list ap;
 
-  g_return_val_if_fail (ensure_valid_dict (dict), FALSE);
+  return_val_if_invalid_dict (dict, FALSE);
   g_return_val_if_fail (key != NULL, FALSE);
   g_return_val_if_fail (format_string != NULL, FALSE);
 
@@ -4035,7 +4071,7 @@ g_variant_dict_lookup_value (GVariantDict       *dict,
 {
   GVariant *result;
 
-  g_return_val_if_fail (ensure_valid_dict (dict), NULL);
+  return_val_if_invalid_dict (dict, NULL);
   g_return_val_if_fail (key != NULL, NULL);
 
   result = g_hash_table_lookup (GVSD(dict)->values, key);
@@ -4061,7 +4097,7 @@ gboolean
 g_variant_dict_contains (GVariantDict *dict,
                          const gchar  *key)
 {
-  g_return_val_if_fail (ensure_valid_dict (dict), FALSE);
+  return_val_if_invalid_dict (dict, FALSE);
   g_return_val_if_fail (key != NULL, FALSE);
 
   return g_hash_table_contains (GVSD(dict)->values, key);
@@ -4089,7 +4125,7 @@ g_variant_dict_insert (GVariantDict *dict,
 {
   va_list ap;
 
-  g_return_if_fail (ensure_valid_dict (dict));
+  return_if_invalid_dict (dict);
   g_return_if_fail (key != NULL);
   g_return_if_fail (format_string != NULL);
 
@@ -4115,7 +4151,7 @@ g_variant_dict_insert_value (GVariantDict *dict,
                              const gchar  *key,
                              GVariant     *value)
 {
-  g_return_if_fail (ensure_valid_dict (dict));
+  return_if_invalid_dict (dict);
   g_return_if_fail (key != NULL);
   g_return_if_fail (value != NULL);
 
@@ -4137,7 +4173,7 @@ gboolean
 g_variant_dict_remove (GVariantDict *dict,
                        const gchar  *key)
 {
-  g_return_val_if_fail (ensure_valid_dict (dict), FALSE);
+  return_val_if_invalid_dict (dict, FALSE);
   g_return_val_if_fail (key != NULL, FALSE);
 
   return g_hash_table_remove (GVSD(dict)->values, key);
@@ -4171,7 +4207,7 @@ g_variant_dict_clear (GVariantDict *dict)
     /* all-zeros case */
     return;
 
-  g_return_if_fail (ensure_valid_dict (dict));
+  return_if_invalid_dict (dict);
 
   g_hash_table_unref (GVSD(dict)->values);
   GVSD(dict)->values = NULL;
@@ -4202,7 +4238,7 @@ g_variant_dict_end (GVariantDict *dict)
   GHashTableIter iter;
   gpointer key, value;
 
-  g_return_val_if_fail (ensure_valid_dict (dict), NULL);
+  return_val_if_invalid_dict (dict, NULL);
 
   g_variant_builder_init (&builder, G_VARIANT_TYPE_VARDICT);
 
