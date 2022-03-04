@@ -286,7 +286,7 @@ boxed_proxy_lcopy_value (const GValue *value,
  * Boxed type handling functions have to be provided to copy and free
  * opaque boxed structures of this type.
  *
- * For the general case, it is recommended to use #G_DEFINE_BOXED_TYPE 
+ * For the general case, it is recommended to use G_DEFINE_BOXED_TYPE()
  * instead of calling g_boxed_type_register_static() directly. The macro 
  * will create the appropriate `*_get_type()` function for the boxed type.
  *

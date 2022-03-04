@@ -48,7 +48,7 @@ G_STATIC_ASSERT (G_ALIGNOF (GPid) == G_ALIGNOF (pid_t));
  * Most of GLib is intended to be portable; in contrast, this set of
  * functions is designed for programs which explicitly target UNIX,
  * or are using it to build higher level abstractions which would be
- * conditionally compiled if the platform matches G_OS_UNIX.
+ * conditionally compiled if the platform matches %G_OS_UNIX.
  *
  * To use these functions, you must explicitly include the
  * "glib-unix.h" header.
@@ -233,7 +233,7 @@ g_unix_signal_source_new (int signum)
 /**
  * g_unix_signal_add_full: (rename-to g_unix_signal_add)
  * @priority: the priority of the signal source. Typically this will be in
- *            the range between #G_PRIORITY_DEFAULT and #G_PRIORITY_HIGH.
+ *            the range between %G_PRIORITY_DEFAULT and %G_PRIORITY_HIGH.
  * @signum: Signal number
  * @handler: Callback
  * @user_data: Data for @handler

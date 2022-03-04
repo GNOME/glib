@@ -72,7 +72,7 @@ G_BEGIN_DECLS
  * 
  * The fundamental type corresponding to #gchar.
  *
- * The type designated by G_TYPE_CHAR is unconditionally an 8-bit signed integer.
+ * The type designated by %G_TYPE_CHAR is unconditionally an 8-bit signed integer.
  * This may or may not be the same type a the C type "gchar".
  */
 #define G_TYPE_CHAR			G_TYPE_MAKE_FUNDAMENTAL (3)
@@ -654,7 +654,7 @@ struct _GTypeQuery
  * This macro should only be used in type implementations.
  * 
  * Since: 2.4
- * Deprecated: 2.58: Use %G_ADD_PRIVATE and the generated
+ * Deprecated: 2.58: Use G_ADD_PRIVATE() and the generated
  *   `your_type_get_instance_private()` function instead
  * Returns: (not nullable): a pointer to the private data structure
  */
@@ -1210,7 +1210,7 @@ struct _GInterfaceInfo
  *  return NULL;
  *  ]|
  *  It should be noted, that it is generally a bad idea to follow the
- *  #G_VALUE_NOCOPY_CONTENTS hint for reference counted types. Due to
+ *  %G_VALUE_NOCOPY_CONTENTS hint for reference counted types. Due to
  *  reentrancy requirements and reference count assertions performed
  *  by the signal emission code, reference counts should always be
  *  incremented for reference counted contents stored in the value->data
@@ -1684,7 +1684,7 @@ guint     g_type_get_type_registration_serial (void);
  * 
  * A convenience macro for type implementations.
  *
- * Similar to G_DEFINE_TYPE(), but allows you to insert custom code into the 
+ * Similar to G_DEFINE_TYPE(), but allows you to insert custom code into the
  * `*_get_type()` function, e.g. interface implementations via G_IMPLEMENT_INTERFACE().
  * See G_DEFINE_TYPE_EXTENDED() for an example.
  * 
@@ -1744,7 +1744,7 @@ guint     g_type_get_type_registration_serial (void);
  *
  * Similar to G_DEFINE_TYPE_WITH_CODE(), but defines an abstract type and
  * allows you to insert custom code into the `*_get_type()` function, e.g.
- * interface implementations  via G_IMPLEMENT_INTERFACE().
+ * interface implementations via G_IMPLEMENT_INTERFACE().
  *
  * See G_DEFINE_TYPE_EXTENDED() for an example.
  * 
@@ -1793,7 +1793,7 @@ guint     g_type_get_type_registration_serial (void);
  *
  * Similar to G_DEFINE_TYPE_WITH_CODE(), but defines a final type and
  * allows you to insert custom code into the `*_get_type()` function, e.g.
- * interface implementations  via G_IMPLEMENT_INTERFACE().
+ * interface implementations via G_IMPLEMENT_INTERFACE().
  *
  * See G_DEFINE_TYPE_EXTENDED() for an example.
  *
@@ -2256,7 +2256,7 @@ type_name##_get_type (void) \
  *                                register_rectangle_transform_funcs (g_define_type_id))
  * ]|
  *
- * Similarly to the %G_DEFINE_TYPE family of macros, the #GType of the newly
+ * Similarly to the `G_DEFINE_TYPE_*` family of macros, the #GType of the newly
  * defined boxed type is exposed in the `g_define_type_id` variable.
  *
  * Since: 2.26

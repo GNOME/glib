@@ -1647,7 +1647,7 @@ g_key_file_to_data (GKeyFile  *key_file,
  * returned keys will be %NULL-terminated, so @length may
  * optionally be %NULL. In the event that the @group_name cannot
  * be found, %NULL is returned and @error is set to
- * #G_KEY_FILE_ERROR_GROUP_NOT_FOUND.
+ * %G_KEY_FILE_ERROR_GROUP_NOT_FOUND.
  *
  * Returns: (array zero-terminated=1) (transfer full): a newly-allocated %NULL-terminated array of strings.
  *     Use g_strfreev() to free it.
@@ -1817,9 +1817,9 @@ set_not_found_key_error (const char *group_name,
  * Use g_key_file_get_string() to retrieve an unescaped UTF-8 string. 
  *
  * In the event the key cannot be found, %NULL is returned and 
- * @error is set to #G_KEY_FILE_ERROR_KEY_NOT_FOUND.  In the 
+ * @error is set to %G_KEY_FILE_ERROR_KEY_NOT_FOUND.  In the
  * event that the @group_name cannot be found, %NULL is returned 
- * and @error is set to #G_KEY_FILE_ERROR_GROUP_NOT_FOUND.
+ * and @error is set to %G_KEY_FILE_ERROR_GROUP_NOT_FOUND.
  *
  *
  * Returns: a newly allocated string or %NULL if the specified 
@@ -1927,9 +1927,9 @@ g_key_file_set_value (GKeyFile    *key_file,
  * like \s.
  *
  * In the event the key cannot be found, %NULL is returned and 
- * @error is set to #G_KEY_FILE_ERROR_KEY_NOT_FOUND.  In the 
+ * @error is set to %G_KEY_FILE_ERROR_KEY_NOT_FOUND.  In the
  * event that the @group_name cannot be found, %NULL is returned 
- * and @error is set to #G_KEY_FILE_ERROR_GROUP_NOT_FOUND.
+ * and @error is set to %G_KEY_FILE_ERROR_GROUP_NOT_FOUND.
  *
  * Returns: a newly allocated string or %NULL if the specified 
  *   key cannot be found.
@@ -2038,9 +2038,9 @@ g_key_file_set_string (GKeyFile    *key_file,
  * Returns the values associated with @key under @group_name.
  *
  * In the event the key cannot be found, %NULL is returned and
- * @error is set to #G_KEY_FILE_ERROR_KEY_NOT_FOUND.  In the
+ * @error is set to %G_KEY_FILE_ERROR_KEY_NOT_FOUND.  In the
  * event that the @group_name cannot be found, %NULL is returned
- * and @error is set to #G_KEY_FILE_ERROR_GROUP_NOT_FOUND.
+ * and @error is set to %G_KEY_FILE_ERROR_GROUP_NOT_FOUND.
  *
  * Returns: (array zero-terminated=1 length=length) (element-type utf8) (transfer full): 
  *  a %NULL-terminated string array or %NULL if the specified 
@@ -2220,7 +2220,7 @@ g_key_file_set_locale_string (GKeyFile     *key_file,
  * %G_KEY_FILE_KEEP_TRANSLATIONS in order to load strings for all locales.
  *
  * If @key cannot be found then %NULL is returned and @error is set 
- * to #G_KEY_FILE_ERROR_KEY_NOT_FOUND. If the value associated
+ * to %G_KEY_FILE_ERROR_KEY_NOT_FOUND. If the value associated
  * with @key cannot be interpreted or no suitable translation can
  * be found then the untranslated value is returned.
  *
@@ -2374,7 +2374,7 @@ g_key_file_get_locale_for_key (GKeyFile    *key_file,
  * %G_KEY_FILE_KEEP_TRANSLATIONS in order to load strings for all locales.
  *
  * If @key cannot be found then %NULL is returned and @error is set 
- * to #G_KEY_FILE_ERROR_KEY_NOT_FOUND. If the values associated
+ * to %G_KEY_FILE_ERROR_KEY_NOT_FOUND. If the values associated
  * with @key cannot be interpreted or no suitable translations
  * can be found then the untranslated values are returned. The 
  * returned array is %NULL-terminated, so @length may optionally 
@@ -2496,9 +2496,9 @@ g_key_file_set_locale_string_list (GKeyFile            *key_file,
  * boolean. 
  *
  * If @key cannot be found then %FALSE is returned and @error is set
- * to #G_KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the value
+ * to %G_KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the value
  * associated with @key cannot be interpreted as a boolean then %FALSE
- * is returned and @error is set to #G_KEY_FILE_ERROR_INVALID_VALUE.
+ * is returned and @error is set to %G_KEY_FILE_ERROR_INVALID_VALUE.
  *
  * Returns: the value associated with the key as a boolean, 
  *    or %FALSE if the key was not found or could not be parsed.
@@ -2589,9 +2589,9 @@ g_key_file_set_boolean (GKeyFile    *key_file,
  * booleans. 
  *
  * If @key cannot be found then %NULL is returned and @error is set to
- * #G_KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the values associated
+ * %G_KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the values associated
  * with @key cannot be interpreted as booleans then %NULL is returned
- * and @error is set to #G_KEY_FILE_ERROR_INVALID_VALUE.
+ * and @error is set to %G_KEY_FILE_ERROR_INVALID_VALUE.
  *
  * Returns: (array length=length) (element-type gboolean) (transfer container):
  *    the values associated with the key as a list of booleans, or %NULL if the
@@ -2708,10 +2708,10 @@ g_key_file_set_boolean_list (GKeyFile    *key_file,
  * integer. 
  *
  * If @key cannot be found then 0 is returned and @error is set to
- * #G_KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the value associated
+ * %G_KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the value associated
  * with @key cannot be interpreted as an integer, or is out of range
  * for a #gint, then 0 is returned
- * and @error is set to #G_KEY_FILE_ERROR_INVALID_VALUE.
+ * and @error is set to %G_KEY_FILE_ERROR_INVALID_VALUE.
  *
  * Returns: the value associated with the key as an integer, or
  *     0 if the key was not found or could not be parsed.
@@ -2959,10 +2959,10 @@ g_key_file_set_uint64 (GKeyFile    *key_file,
  * integers. 
  *
  * If @key cannot be found then %NULL is returned and @error is set to
- * #G_KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the values associated
+ * %G_KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the values associated
  * with @key cannot be interpreted as integers, or are out of range for
  * #gint, then %NULL is returned
- * and @error is set to #G_KEY_FILE_ERROR_INVALID_VALUE.
+ * and @error is set to %G_KEY_FILE_ERROR_INVALID_VALUE.
  *
  * Returns: (array length=length) (element-type gint) (transfer container):
  *     the values associated with the key as a list of integers, or %NULL if
@@ -3078,9 +3078,9 @@ g_key_file_set_integer_list (GKeyFile    *key_file,
  * double. If @group_name is %NULL, the start_group is used.
  *
  * If @key cannot be found then 0.0 is returned and @error is set to
- * #G_KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the value associated
+ * %G_KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the value associated
  * with @key cannot be interpreted as a double then 0.0 is returned
- * and @error is set to #G_KEY_FILE_ERROR_INVALID_VALUE.
+ * and @error is set to %G_KEY_FILE_ERROR_INVALID_VALUE.
  *
  * Returns: the value associated with the key as a double, or
  *     0.0 if the key was not found or could not be parsed.
@@ -3173,9 +3173,9 @@ g_key_file_set_double  (GKeyFile    *key_file,
  * doubles. 
  *
  * If @key cannot be found then %NULL is returned and @error is set to
- * #G_KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the values associated
+ * %G_KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the values associated
  * with @key cannot be interpreted as doubles then %NULL is returned
- * and @error is set to #G_KEY_FILE_ERROR_INVALID_VALUE.
+ * and @error is set to %G_KEY_FILE_ERROR_INVALID_VALUE.
  *
  * Returns: (array length=length) (element-type gdouble) (transfer container):
  *     the values associated with the key as a list of doubles, or %NULL if the

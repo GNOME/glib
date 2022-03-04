@@ -421,7 +421,7 @@ g_param_spec_is_valid_name (const gchar *name)
 
 /**
  * g_param_spec_internal: (skip)
- * @param_type: the #GType for the property; must be derived from #G_TYPE_PARAM
+ * @param_type: the #GType for the property; must be derived from %G_TYPE_PARAM
  * @name: the canonical name of the property
  * @nick: the nickname of the property
  * @blurb: a short description of the property
@@ -1403,7 +1403,7 @@ default_values_cmp (GParamSpec   *pspec,
  * @pspec_info: The #GParamSpecTypeInfo for this #GParamSpec type.
  *
  * Registers @name as the name of a new static type derived
- * from #G_TYPE_PARAM.
+ * from %G_TYPE_PARAM.
  *
  * The type system uses the information contained in the #GParamSpecTypeInfo
  * structure pointed to by @info to manage the #GParamSpec type and its

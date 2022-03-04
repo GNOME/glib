@@ -2305,7 +2305,7 @@ g_desktop_app_info_get_generic_name (GDesktopAppInfo *info)
  *
  * Gets the value of the NoDisplay key, which helps determine if the
  * application info should be shown in menus. See
- * #G_KEY_FILE_DESKTOP_KEY_NO_DISPLAY and g_app_info_should_show().
+ * %G_KEY_FILE_DESKTOP_KEY_NO_DISPLAY and g_app_info_should_show().
  *
  * Returns: The value of the NoDisplay key
  *

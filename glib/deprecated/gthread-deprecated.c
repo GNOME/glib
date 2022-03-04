@@ -97,7 +97,7 @@
  * This macro is defined if POSIX style threads are used.
  *
  * Deprecated:2.32:POSIX threads are in use on all non-Windows systems.
- *                 Use G_OS_WIN32 to detect Windows.
+ *   Use %G_OS_WIN32 to detect Windows.
  */
 
 /**
@@ -105,7 +105,7 @@
  *
  * This macro is defined if Windows style threads are used.
  *
- * Deprecated:2.32:Use G_OS_WIN32 to detect Windows.
+ * Deprecated:2.32:Use %G_OS_WIN32 to detect Windows.
  */
 
 
@@ -463,7 +463,7 @@ g_once_init_enter_impl (volatile gsize *location)
  * @mutex: a #GStaticMutex to be initialized.
  *
  * Initializes @mutex.
- * Alternatively you can initialize it with #G_STATIC_MUTEX_INIT.
+ * Alternatively you can initialize it with %G_STATIC_MUTEX_INIT.
  *
  * Deprecated: 2.32: Use g_mutex_init()
  */
@@ -649,7 +649,7 @@ g_static_mutex_free (GStaticMutex* mutex)
  *
  * A #GStaticRecMutex must be initialized with this function before it
  * can be used. Alternatively you can initialize it with
- * #G_STATIC_REC_MUTEX_INIT.
+ * %G_STATIC_REC_MUTEX_INIT.
  *
  * Deprecated: 2.32: Use g_rec_mutex_init()
  */
@@ -949,7 +949,7 @@ g_static_rec_mutex_free (GStaticRecMutex *mutex)
  *
  * A #GStaticRWLock must be initialized with this function before it
  * can be used. Alternatively you can initialize it with
- * #G_STATIC_RW_LOCK_INIT.
+ * %G_STATIC_RW_LOCK_INIT.
  *
  * Deprecated: 2.32: Use g_rw_lock_init() instead
  */
@@ -1295,7 +1295,7 @@ GPrivate static_private_private = G_PRIVATE_INIT (g_static_private_cleanup);
  * @private_key: a #GStaticPrivate to be initialized
  *
  * Initializes @private_key. Alternatively you can initialize it with
- * #G_STATIC_PRIVATE_INIT.
+ * %G_STATIC_PRIVATE_INIT.
  */
 void
 g_static_private_init (GStaticPrivate *private_key)

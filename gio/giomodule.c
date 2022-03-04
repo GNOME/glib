@@ -1474,7 +1474,7 @@ g_io_extension_point_set_required_type (GIOExtensionPoint *extension_point,
  * Gets the required type for @extension_point.
  *
  * Returns: the #GType that all implementations must have, 
- *     or #G_TYPE_INVALID if the extension point has no required type
+ *   or %G_TYPE_INVALID if the extension point has no required type
  */
 GType
 g_io_extension_point_get_required_type (GIOExtensionPoint *extension_point)

@@ -392,7 +392,7 @@ typedef enum {
  *
  * Indicates a hint from the file system whether files should be
  * previewed in a file manager. Returned as the value of the key
- * #G_FILE_ATTRIBUTE_FILESYSTEM_USE_PREVIEW.
+ * %G_FILE_ATTRIBUTE_FILESYSTEM_USE_PREVIEW.
  **/
 typedef enum {
   G_FILESYSTEM_PREVIEW_TYPE_IF_ALWAYS = 0,
@@ -522,7 +522,7 @@ typedef enum {
  *   }
  * ]|
  * but should instead treat all unrecognized error codes the same as
- * #G_IO_ERROR_FAILED.
+ * %G_IO_ERROR_FAILED.
  *
  * See also #GPollableReturn for a cheaper way of returning
  * %G_IO_ERROR_WOULD_BLOCK to callers without allocating a #GError.
@@ -973,7 +973,7 @@ typedef enum
  * @G_BUS_NAME_OWNER_FLAGS_NONE: No flags set.
  * @G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT: Allow another message bus connection to claim the name.
  * @G_BUS_NAME_OWNER_FLAGS_REPLACE: If another message bus connection owns the name and have
- * specified #G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT, then take the name from the other connection.
+ * specified %G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT, then take the name from the other connection.
  * @G_BUS_NAME_OWNER_FLAGS_DO_NOT_QUEUE: If another message bus connection owns the name, immediately
  * return an error from g_bus_own_name() rather than entering the waiting queue for that name. (Since 2.54)
  *

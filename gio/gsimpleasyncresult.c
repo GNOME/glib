@@ -705,7 +705,7 @@ g_simple_async_result_take_error (GSimpleAsyncResult *simple,
 /**
  * g_simple_async_result_set_error_va: (skip)
  * @simple: a #GSimpleAsyncResult.
- * @domain: a #GQuark (usually #G_IO_ERROR).
+ * @domain: a #GQuark (usually %G_IO_ERROR).
  * @code: an error code.
  * @format: a formatted error reporting string.
  * @args: va_list of arguments.
@@ -735,7 +735,7 @@ g_simple_async_result_set_error_va (GSimpleAsyncResult *simple,
 /**
  * g_simple_async_result_set_error: (skip)
  * @simple: a #GSimpleAsyncResult.
- * @domain: a #GQuark (usually #G_IO_ERROR).
+ * @domain: a #GQuark (usually %G_IO_ERROR).
  * @code: an error code.
  * @format: a formatted error reporting string.
  * @...: a list of variables to fill in @format.
@@ -1007,7 +1007,7 @@ g_simple_async_result_is_valid (GAsyncResult *result,
  * @object: (nullable): a #GObject, or %NULL.
  * @callback: a #GAsyncReadyCallback.
  * @user_data: user data passed to @callback.
- * @domain: a #GQuark containing the error domain (usually #G_IO_ERROR).
+ * @domain: a #GQuark containing the error domain (usually %G_IO_ERROR).
  * @code: a specific error code.
  * @format: a formatted error reporting string.
  * @...: a list of variables to fill in @format.

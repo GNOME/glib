@@ -828,7 +828,7 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
  * even if they occur in the child (for example if the executable in
  * `@argv[0]` is not found). Typically the `message` field of returned
  * errors should be displayed to users. Possible errors are those from
- * the #G_SPAWN_ERROR domain.
+ * the %G_SPAWN_ERROR domain.
  *
  * If an error occurs, @child_pid, @stdin_pipe_out, @stdout_pipe_out,
  * and @stderr_pipe_out will not be filled with valid values.

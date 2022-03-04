@@ -65,7 +65,7 @@ typedef GVaClosureMarshal		 GSignalCVaMarshaller;
  * Emission hooks allow you to tie a hook to the signal type, so that it will
  * trap all emissions of that signal, from any object.
  * 
- * You may not attach these to signals created with the #G_SIGNAL_NO_HOOKS flag.
+ * You may not attach these to signals created with the %G_SIGNAL_NO_HOOKS flag.
  * 
  * Returns: whether it wants to stay connected. If it returns %FALSE, the signal 
  *  hook is disconnected (and destroyed).
@@ -155,7 +155,7 @@ typedef enum
 #define G_SIGNAL_FLAGS_MASK  0x1ff
 /**
  * GConnectFlags:
- * @G_CONNECT_AFTER: whether the handler should be called before or after the 
+ * @G_CONNECT_AFTER: whether the handler should be called before or after the
  *  default handler of the signal.
  * @G_CONNECT_SWAPPED: whether the instance and data should be swapped when
  *  calling the handler; see g_signal_connect_swapped() for an example.

@@ -45,7 +45,7 @@
  * Perl regular expression.
  *
  * Some functions accept a @start_position argument, setting it differs
- * from just passing over a shortened string and setting #G_REGEX_MATCH_NOTBOL
+ * from just passing over a shortened string and setting %G_REGEX_MATCH_NOTBOL
  * in the case of a pattern that begins with any kind of lookbehind assertion.
  * For example, consider the pattern "\Biss\B" which finds occurrences of "iss"
  * in the middle of words. ("\B" matches only if the current position in the
@@ -57,11 +57,11 @@
  * it is able to look behind the starting point to discover that it is
  * preceded by a letter.
  *
- * Note that, unless you set the #G_REGEX_RAW flag, all the strings passed
+ * Note that, unless you set the %G_REGEX_RAW flag, all the strings passed
  * to these functions must be encoded in UTF-8. The lengths and the positions
  * inside the strings are in bytes and not in characters, so, for instance,
  * "\xc3\xa0" (i.e. "à") is two bytes long but it is treated as a
- * single character. If you set #G_REGEX_RAW the strings can be non-valid
+ * single character. If you set %G_REGEX_RAW the strings can be non-valid
  * UTF-8 strings and a byte is treated as a character, so "\xc3\xa0" is two
  * bytes and two characters long.
  *
@@ -76,11 +76,11 @@
  * The behaviour of the dot, circumflex, and dollar metacharacters are
  * affected by newline characters, the default is to recognize any newline
  * character (the same characters recognized by "\R"). This can be changed
- * with #G_REGEX_NEWLINE_CR, #G_REGEX_NEWLINE_LF and #G_REGEX_NEWLINE_CRLF
- * compile options, and with #G_REGEX_MATCH_NEWLINE_ANY,
- * #G_REGEX_MATCH_NEWLINE_CR, #G_REGEX_MATCH_NEWLINE_LF and
- * #G_REGEX_MATCH_NEWLINE_CRLF match options. These settings are also
- * relevant when compiling a pattern if #G_REGEX_EXTENDED is set, and an
+ * with %G_REGEX_NEWLINE_CR, %G_REGEX_NEWLINE_LF and %G_REGEX_NEWLINE_CRLF
+ * compile options, and with %G_REGEX_MATCH_NEWLINE_ANY,
+ * %G_REGEX_MATCH_NEWLINE_CR, %G_REGEX_MATCH_NEWLINE_LF and
+ * %G_REGEX_MATCH_NEWLINE_CRLF match options. These settings are also
+ * relevant when compiling a pattern if %G_REGEX_EXTENDED is set, and an
  * unescaped "#" outside a character class is encountered. This indicates
  * a comment that lasts until after the next newline.
  *
@@ -860,19 +860,19 @@ g_match_info_get_match_count (const GMatchInfo *match_info)
  * able to raise an error as soon as a mistake is made.
  *
  * GRegex supports the concept of partial matching by means of the
- * #G_REGEX_MATCH_PARTIAL_SOFT and #G_REGEX_MATCH_PARTIAL_HARD flags.
+ * %G_REGEX_MATCH_PARTIAL_SOFT and %G_REGEX_MATCH_PARTIAL_HARD flags.
  * When they are used, the return code for
  * g_regex_match() or g_regex_match_full() is, as usual, %TRUE
  * for a complete match, %FALSE otherwise. But, when these functions
  * return %FALSE, you can check if the match was partial calling
  * g_match_info_is_partial_match().
  *
- * The difference between #G_REGEX_MATCH_PARTIAL_SOFT and 
- * #G_REGEX_MATCH_PARTIAL_HARD is that when a partial match is encountered
- * with #G_REGEX_MATCH_PARTIAL_SOFT, matching continues to search for a
- * possible complete match, while with #G_REGEX_MATCH_PARTIAL_HARD matching
+ * The difference between %G_REGEX_MATCH_PARTIAL_SOFT and
+ * %G_REGEX_MATCH_PARTIAL_HARD is that when a partial match is encountered
+ * with %G_REGEX_MATCH_PARTIAL_SOFT, matching continues to search for a
+ * possible complete match, while with %G_REGEX_MATCH_PARTIAL_HARD matching
  * stops at the partial match.
- * When both #G_REGEX_MATCH_PARTIAL_SOFT and #G_REGEX_MATCH_PARTIAL_HARD
+ * When both %G_REGEX_MATCH_PARTIAL_SOFT and %G_REGEX_MATCH_PARTIAL_HARD
  * are set, the latter takes precedence.
  *
  * There were formerly some restrictions on the pattern for partial matching.
@@ -903,7 +903,7 @@ g_match_info_is_partial_match (const GMatchInfo *match_info)
  * match done with @string against @regex and have the same syntax used by
  * g_regex_replace().
  *
- * The @string_to_expand must be UTF-8 encoded even if #G_REGEX_RAW was
+ * The @string_to_expand must be UTF-8 encoded even if %G_REGEX_RAW was
  * passed to g_regex_new().
  *
  * The backreferences are extracted from the string passed to the match
@@ -1739,7 +1739,7 @@ g_regex_match (const GRegex      *regex,
  * flexibility in reusing #GRegex structures.
  *
  * Setting @start_position differs from just passing over a shortened
- * string and setting #G_REGEX_MATCH_NOTBOL in the case of a pattern
+ * string and setting %G_REGEX_MATCH_NOTBOL in the case of a pattern
  * that begins with any kind of lookbehind assertion, such as "\b".
  *
  * Unless %G_REGEX_RAW is specified in the options, @string must be valid UTF-8.
@@ -1890,7 +1890,7 @@ g_regex_match_all (const GRegex      *regex,
  * is not able to capture substrings, so backreferences do not work.
  *
  * Setting @start_position differs from just passing over a shortened
- * string and setting #G_REGEX_MATCH_NOTBOL in the case of a pattern
+ * string and setting %G_REGEX_MATCH_NOTBOL in the case of a pattern
  * that begins with any kind of lookbehind assertion, such as "\b".
  *
  * Unless %G_REGEX_RAW is specified in the options, @string must be valid UTF-8.
@@ -2163,7 +2163,7 @@ g_regex_split (const GRegex     *regex,
  * "a", "b" and "c".
  *
  * Setting @start_position differs from just passing over a shortened
- * string and setting #G_REGEX_MATCH_NOTBOL in the case of a pattern
+ * string and setting %G_REGEX_MATCH_NOTBOL in the case of a pattern
  * that begins with any kind of lookbehind assertion, such as "\b".
  *
  * Returns: (transfer full): a %NULL-terminated gchar ** array. Free
@@ -2792,12 +2792,12 @@ interpolation_list_needs_match (GList *list)
  *
  * If you do not need to use backreferences use g_regex_replace_literal().
  *
- * The @replacement string must be UTF-8 encoded even if #G_REGEX_RAW was
+ * The @replacement string must be UTF-8 encoded even if %G_REGEX_RAW was
  * passed to g_regex_new(). If you want to use not UTF-8 encoded strings
  * you can use g_regex_replace_literal().
  *
  * Setting @start_position differs from just passing over a shortened
- * string and setting #G_REGEX_MATCH_NOTBOL in the case of a pattern that
+ * string and setting %G_REGEX_MATCH_NOTBOL in the case of a pattern that
  * begins with any kind of lookbehind assertion, such as "\b".
  *
  * Returns: a newly allocated string containing the replacements
@@ -2869,7 +2869,7 @@ literal_replacement (const GMatchInfo *match_info,
  * include backreferences use g_regex_replace().
  *
  * Setting @start_position differs from just passing over a
- * shortened string and setting #G_REGEX_MATCH_NOTBOL in the
+ * shortened string and setting %G_REGEX_MATCH_NOTBOL in the
  * case of a pattern that begins with any kind of lookbehind
  * assertion, such as "\b".
  *
@@ -2912,7 +2912,7 @@ g_regex_replace_literal (const GRegex      *regex,
  * @eval for that occurrence.
  *
  * Setting @start_position differs from just passing over a shortened
- * string and setting #G_REGEX_MATCH_NOTBOL in the case of a pattern
+ * string and setting %G_REGEX_MATCH_NOTBOL in the case of a pattern
  * that begins with any kind of lookbehind assertion, such as "\b".
  *
  * The following example uses g_regex_replace_eval() to replace multiple

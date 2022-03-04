@@ -416,7 +416,7 @@ test_connection_send (void)
 
   /*
    * Check that we never actually send a message if the GCancellable
-   * is already cancelled - i.e.  we should get #G_IO_ERROR_CANCELLED
+   * is already cancelled - i.e.  we should get G_IO_ERROR_CANCELLED
    * when the actual connection is not up.
    */
   ca = g_cancellable_new ();
