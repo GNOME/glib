@@ -48,8 +48,9 @@ timeout_cb (gpointer user_data)
  * unrefs complete first. This is typically used on the shared connection, to
  * ensure it’s in a correct state before beginning the next test. */
 static void
-assert_connection_has_one_ref (GDBusConnection *connection,
-                               GMainContext    *context)
+(assert_connection_has_one_ref) (GDBusConnection *connection,
+                                 GMainContext    *context,
+                                 const gchar     *calling_function)
 {
   GSource *timeout_source = NULL;
   TimeoutData data = { context, FALSE };
@@ -63,7 +64,8 @@ assert_connection_has_one_ref (GDBusConnection *connection,
 
   while (g_atomic_int_get (&G_OBJECT (connection)->ref_count) != 1 && !data.timed_out)
     {
-      g_debug ("refcount of %p is not right, sleeping", connection);
+      g_debug ("refcount of %p is not right (%u rather than 1) in %s(), sleeping",
+               connection, g_atomic_int_get (&G_OBJECT (connection)->ref_count), calling_function);
       g_main_context_iteration (NULL, TRUE);
     }
 
@@ -71,8 +73,13 @@ assert_connection_has_one_ref (GDBusConnection *connection,
   g_source_unref (timeout_source);
 
   if (g_atomic_int_get (&G_OBJECT (connection)->ref_count) != 1)
-    g_error ("connection %p had too many refs", connection);
+    g_error ("connection %p had too many refs (%u rather than 1) in %s()",
+             connection, g_atomic_int_get (&G_OBJECT (connection)->ref_count), calling_function);
 }
+
+/* Macro wrapper to add in the calling function name */
+#define assert_connection_has_one_ref(connection, context) \
+  (assert_connection_has_one_ref) (connection, context, G_STRFUNC)
 
 /* ---------------------------------------------------------------------------------------------------- */
 /* Ensure that signal and method replies are delivered in the right thread */
