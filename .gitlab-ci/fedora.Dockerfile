@@ -1,4 +1,4 @@
-FROM fedora:33
+FROM fedora:34
 
 RUN dnf -y update \
  && dnf -y install \
@@ -11,7 +11,6 @@ RUN dnf -y update \
     elfutils-libelf-devel \
     findutils \
     fuse \
-    gamin-devel \
     gcc \
     gcc-c++ \
     gettext \
