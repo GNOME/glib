@@ -1382,6 +1382,12 @@ check_proxies_in_thread (gpointer user_data)
   g_object_unref (thread_proxy_1);
   g_object_unref (thread_proxy_2);
 
+  /* Wait for the proxy signals to all be unsubscribed. */
+  while (g_main_context_iteration (thread_context, FALSE))
+    {
+      /* Nothing needs to be done here */
+    }
+
   g_main_loop_unref (thread_loop);
   g_main_context_unref (thread_context);
 #endif
