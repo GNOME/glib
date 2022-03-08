@@ -2803,6 +2803,12 @@ g_format_size (guint64 size)
  *     Network and storage sizes should be reported in the normal SI units.
  * @G_FORMAT_SIZE_BITS: set the size as a quantity in bits, rather than
  *     bytes, and return units in bits. For example, ‘Mb’ rather than ‘MB’.
+ * @G_FORMAT_SIZE_ONLY_VALUE: return only value, without unit; this should
+ *     not be used together with @G_FORMAT_SIZE_LONG_FORMAT
+ *     nor @G_FORMAT_SIZE_ONLY_UNIT. Since: 2.74
+ * @G_FORMAT_SIZE_ONLY_UNIT: return only unit, without value; this should
+ *     not be used together with @G_FORMAT_SIZE_LONG_FORMAT
+ *     nor @G_FORMAT_SIZE_ONLY_VALUE. Since: 2.74
  *
  * Flags to modify the format of the string returned by g_format_size_full().
  */
@@ -2845,69 +2851,73 @@ g_format_size_full (guint64          size,
 
   const struct Format formats[4][6] = {
     {
-      /* Translators: Keep the no-break space between %.1f and the unit symbol */
-      { KILOBYTE_FACTOR, N_("%.1f kB") },
-      /* Translators: Keep the no-break space between %.1f and the unit symbol */
-      { MEGABYTE_FACTOR, N_("%.1f MB") },
-      /* Translators: Keep the no-break space between %.1f and the unit symbol */
-      { GIGABYTE_FACTOR, N_("%.1f GB") },
-      /* Translators: Keep the no-break space between %.1f and the unit symbol */
-      { TERABYTE_FACTOR, N_("%.1f TB") },
-      /* Translators: Keep the no-break space between %.1f and the unit symbol */
-      { PETABYTE_FACTOR, N_("%.1f PB") },
-      /* Translators: Keep the no-break space between %.1f and the unit symbol */
-      { EXABYTE_FACTOR,  N_("%.1f EB") }
+      /* Translators: A unit symbol for size formatting, showing for example: "13.0 kB" */
+      { KILOBYTE_FACTOR, N_("kB") },
+      /* Translators: A unit symbol for size formatting, showing for example: "13.0 MB" */
+      { MEGABYTE_FACTOR, N_("MB") },
+      /* Translators: A unit symbol for size formatting, showing for example: "13.0 GB" */
+      { GIGABYTE_FACTOR, N_("GB") },
+      /* Translators: A unit symbol for size formatting, showing for example: "13.0 TB" */
+      { TERABYTE_FACTOR, N_("TB") },
+      /* Translators: A unit symbol for size formatting, showing for example: "13.0 PB" */
+      { PETABYTE_FACTOR, N_("PB") },
+      /* Translators: A unit symbol for size formatting, showing for example: "13.0 EB" */
+      { EXABYTE_FACTOR,  N_("EB") }
     },
     {
-      /* Translators: Keep the no-break space between %.1f and the unit symbol */
-      { KIBIBYTE_FACTOR, N_("%.1f KiB") },
-      /* Translators: Keep the no-break space between %.1f and the unit symbol */
-      { MEBIBYTE_FACTOR, N_("%.1f MiB") },
-      /* Translators: Keep the no-break space between %.1f and the unit symbol */
-      { GIBIBYTE_FACTOR, N_("%.1f GiB") },
-      /* Translators: Keep the no-break space between %.1f and the unit symbol */
-      { TEBIBYTE_FACTOR, N_("%.1f TiB") },
-      /* Translators: Keep the no-break space between %.1f and the unit symbol */
-      { PEBIBYTE_FACTOR, N_("%.1f PiB") },
-      /* Translators: Keep the no-break space between %.1f and the unit symbol */
-      { EXBIBYTE_FACTOR, N_("%.1f EiB") }
+      /* Translators: A unit symbol for size formatting, showing for example: "13.0 KiB" */
+      { KIBIBYTE_FACTOR, N_("KiB") },
+      /* Translators: A unit symbol for size formatting, showing for example: "13.0 MiB" */
+      { MEBIBYTE_FACTOR, N_("MiB") },
+      /* Translators: A unit symbol for size formatting, showing for example: "13.0 GiB" */
+      { GIBIBYTE_FACTOR, N_("GiB") },
+      /* Translators: A unit symbol for size formatting, showing for example: "13.0 TiB" */
+      { TEBIBYTE_FACTOR, N_("TiB") },
+      /* Translators: A unit symbol for size formatting, showing for example: "13.0 PiB" */
+      { PEBIBYTE_FACTOR, N_("PiB") },
+      /* Translators: A unit symbol for size formatting, showing for example: "13.0 EiB" */
+      { EXBIBYTE_FACTOR, N_("EiB") }
     },
     {
-      /* Translators: Keep the no-break space between %.1f and the unit symbol */
-      { KILOBYTE_FACTOR, N_("%.1f kb") },
-      /* Translators: Keep the no-break space between %.1f and the unit symbol */
-      { MEGABYTE_FACTOR, N_("%.1f Mb") },
-      /* Translators: Keep the no-break space between %.1f and the unit symbol */
-      { GIGABYTE_FACTOR, N_("%.1f Gb") },
-      /* Translators: Keep the no-break space between %.1f and the unit symbol */
-      { TERABYTE_FACTOR, N_("%.1f Tb") },
-      /* Translators: Keep the no-break space between %.1f and the unit symbol */
-      { PETABYTE_FACTOR, N_("%.1f Pb") },
-      /* Translators: Keep the no-break space between %.1f and the unit symbol */
-      { EXABYTE_FACTOR,  N_("%.1f Eb") }
+      /* Translators: A unit symbol for size formatting, showing for example: "13.0 kb" */
+      { KILOBYTE_FACTOR, N_("kb") },
+      /* Translators: A unit symbol for size formatting, showing for example: "13.0 Mb" */
+      { MEGABYTE_FACTOR, N_("Mb") },
+      /* Translators: A unit symbol for size formatting, showing for example: "13.0 Gb" */
+      { GIGABYTE_FACTOR, N_("Gb") },
+      /* Translators: A unit symbol for size formatting, showing for example: "13.0 Tb" */
+      { TERABYTE_FACTOR, N_("Tb") },
+      /* Translators: A unit symbol for size formatting, showing for example: "13.0 Pb" */
+      { PETABYTE_FACTOR, N_("Pb") },
+      /* Translators: A unit symbol for size formatting, showing for example: "13.0 Eb" */
+      { EXABYTE_FACTOR,  N_("Eb") }
     },
     {
-      /* Translators: Keep the no-break space between %.1f and the unit symbol */
-      { KIBIBYTE_FACTOR, N_("%.1f Kib") },
-      /* Translators: Keep the no-break space between %.1f and the unit symbol */
-      { MEBIBYTE_FACTOR, N_("%.1f Mib") },
-      /* Translators: Keep the no-break space between %.1f and the unit symbol */
-      { GIBIBYTE_FACTOR, N_("%.1f Gib") },
-      /* Translators: Keep the no-break space between %.1f and the unit symbol */
-      { TEBIBYTE_FACTOR, N_("%.1f Tib") },
-      /* Translators: Keep the no-break space between %.1f and the unit symbol */
-      { PEBIBYTE_FACTOR, N_("%.1f Pib") },
-      /* Translators: Keep the no-break space between %.1f and the unit symbol */
-      { EXBIBYTE_FACTOR, N_("%.1f Eib") }
+      /* Translators: A unit symbol for size formatting, showing for example: "13.0 Kib" */
+      { KIBIBYTE_FACTOR, N_("Kib") },
+      /* Translators: A unit symbol for size formatting, showing for example: "13.0 Mib" */
+      { MEBIBYTE_FACTOR, N_("Mib") },
+      /* Translators: A unit symbol for size formatting, showing for example: "13.0 Gib" */
+      { GIBIBYTE_FACTOR, N_("Gib") },
+      /* Translators: A unit symbol for size formatting, showing for example: "13.0 Tib" */
+      { TEBIBYTE_FACTOR, N_("Tib") },
+      /* Translators: A unit symbol for size formatting, showing for example: "13.0 Pib" */
+      { PEBIBYTE_FACTOR, N_("Pib") },
+      /* Translators: A unit symbol for size formatting, showing for example: "13.0 Eib" */
+      { EXBIBYTE_FACTOR, N_("Eib") }
     }
   };
 
   GString *string;
   FormatIndex index;
 
+  g_return_val_if_fail ((flags & (G_FORMAT_SIZE_LONG_FORMAT | G_FORMAT_SIZE_ONLY_VALUE)) != (G_FORMAT_SIZE_LONG_FORMAT | G_FORMAT_SIZE_ONLY_VALUE), NULL);
+  g_return_val_if_fail ((flags & (G_FORMAT_SIZE_LONG_FORMAT | G_FORMAT_SIZE_ONLY_UNIT)) != (G_FORMAT_SIZE_LONG_FORMAT | G_FORMAT_SIZE_ONLY_UNIT), NULL);
+  g_return_val_if_fail ((flags & (G_FORMAT_SIZE_ONLY_VALUE | G_FORMAT_SIZE_ONLY_UNIT)) != (G_FORMAT_SIZE_ONLY_VALUE | G_FORMAT_SIZE_ONLY_UNIT), NULL);
+
   string = g_string_new (NULL);
 
-  switch (flags & ~G_FORMAT_SIZE_LONG_FORMAT)
+  switch (flags & ~(G_FORMAT_SIZE_LONG_FORMAT | G_FORMAT_SIZE_ONLY_VALUE | G_FORMAT_SIZE_ONLY_UNIT))
     {
     case G_FORMAT_SIZE_DEFAULT:
       index = FORMAT_BYTES;
@@ -2928,24 +2938,37 @@ g_format_size_full (guint64          size,
 
   if (size < formats[index][0].factor)
     {
-      const char * format;
+      const char * units;
 
       if (index == FORMAT_BYTES || index == FORMAT_BYTES_IEC)
         {
-          format = g_dngettext (GETTEXT_PACKAGE, "%u byte", "%u bytes", (guint) size);
+          units = g_dngettext (GETTEXT_PACKAGE, "byte", "bytes", (guint) size);
         }
       else
         {
-          format = g_dngettext (GETTEXT_PACKAGE, "%u bit", "%u bits", (guint) size);
+          units = g_dngettext (GETTEXT_PACKAGE, "bit", "bits", (guint) size);
         }
 
-      g_string_printf (string, format, (guint) size);
+      if ((flags & G_FORMAT_SIZE_ONLY_UNIT) != 0)
+        g_string_append (string, units);
+      else if ((flags & G_FORMAT_SIZE_ONLY_VALUE) != 0)
+        /* Translators: The "%u" is replaced with the size value, like "13"; it could
+         * be part of "13 bytes", but only the number is requested this time. */
+        g_string_printf (string, C_("format-size", "%u"), (guint) size);
+      else
+        {
+          /* Translators: The first "%u" is replaced with the value, the "%s" with a unit of the value.
+           * The order can be changed with "%$2s %$1u". An example: "13 bytes" */
+          g_string_printf (string, C_("format-size", "%u %s"), (guint) size, units);
+        }
 
       flags &= ~G_FORMAT_SIZE_LONG_FORMAT;
     }
   else
     {
       const gsize n = G_N_ELEMENTS (formats[index]);
+      const gchar * units;
+      gdouble value;
       gsize i;
 
       /*
@@ -2964,7 +2987,22 @@ g_format_size_full (guint64          size,
             }
         }
 
-      g_string_printf (string, _(f->string), (gdouble) size / (gdouble) f->factor);
+      units = _(f->string);
+      value = (gdouble) size / (gdouble) f->factor;
+
+      if ((flags & G_FORMAT_SIZE_ONLY_UNIT) != 0)
+        g_string_append (string, units);
+      else if ((flags & G_FORMAT_SIZE_ONLY_VALUE) != 0)
+        /* Translators: The "%.1f" is replaced with the size value, like "13.0"; it could
+         * be part of "13.0 MB", but only the number is requested this time. */
+        g_string_printf (string, C_("format-size", "%.1f"), value);
+      else
+        {
+          /* Translators: The first "%.1f" is replaced with the value, the "%s" with a unit of the value.
+           * The order can be changed with "%$2s %$1.1f". Keep the no-break space between the value and
+           * the unit symbol. An example: "13.0 MB" */
+          g_string_printf (string, C_("format-size", "%.1f %s"), value, units);
+        }
     }
 
   if (flags & G_FORMAT_SIZE_LONG_FORMAT)
