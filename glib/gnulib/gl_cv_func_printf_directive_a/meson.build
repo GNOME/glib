@@ -79,7 +79,7 @@ glibc_printf_directive_a_test = '''
 int main () { return 0; }
 '''
 
-if not meson.is_cross_build() or meson.has_exe_wrapper()
+if meson.can_run_host_binaries()
   run_result = cc.run(printf_directive_a_test,
       name : 'printf supports the \'a\' and \'A\' directives')
   gl_cv_func_printf_directive_a = run_result.compiled() and run_result.returncode() == 0

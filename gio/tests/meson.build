@@ -603,7 +603,7 @@ if installed_tests_enabled
   endforeach
 endif
 
-if not meson.is_cross_build() or meson.has_exe_wrapper()
+if meson.can_run_host_binaries()
 
   compiler_type = '--compiler=@0@'.format(cc.get_id())
 

@@ -33,7 +33,7 @@ int main()
 }
 '''
 
-if not meson.is_cross_build() or meson.has_exe_wrapper()
+if meson.can_run_host_binaries()
   run_result = cc.run(ldexpl_test,
       name : 'ldexpl works',
       dependencies : [libm])

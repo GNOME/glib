@@ -23,7 +23,7 @@ int main ()
 }
 '''
 
-if not meson.is_cross_build() or meson.has_exe_wrapper()
+if meson.can_run_host_binaries()
   run_result = cc.run(printf_flag_zero_test,
       name : 'printf supports the zero flag correctly')
   gl_cv_func_printf_flag_zero = run_result.compiled() and run_result.returncode() == 0

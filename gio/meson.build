@@ -978,7 +978,7 @@ glib_compile_resources = executable('glib-compile-resources',
 # Cannot override those programs in cross compilation case because they are
 # native executables that cannot be run on the build machine.
 # See https://gitlab.gnome.org/GNOME/glib/issues/1859.
-if not meson.is_cross_build()
+if not meson.can_run_host_binaries()
   meson.override_find_program('glib-compile-schemas', glib_compile_schemas)
   meson.override_find_program('glib-compile-resources', glib_compile_resources)
   meson.override_find_program('gio-querymodules', gio_querymodules)

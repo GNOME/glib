@@ -37,7 +37,7 @@ int main ()
 }
 '''
 
-if not meson.is_cross_build() or meson.has_exe_wrapper()
+if meson.can_run_host_binaries()
   run_result = cc.run(printf_precision_test,
       name : 'printf supports large precisions')
   gl_cv_func_printf_precision = run_result.compiled() and run_result.returncode() == 0

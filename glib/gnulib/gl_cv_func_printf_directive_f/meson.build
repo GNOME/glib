@@ -29,7 +29,7 @@ int main ()
 }
 '''
 
-if not meson.is_cross_build() or meson.has_exe_wrapper()
+if meson.can_run_host_binaries()
   run_result = cc.run(printf_directive_f_test,
       name : 'printf supports the \'F\' directive')
   gl_cv_func_printf_directive_f = run_result.compiled() and run_result.returncode() == 0
