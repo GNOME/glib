@@ -43,7 +43,7 @@ msgstr "Volby GApplication"
 
 #: gio/gapplication.c:497
 msgid "Show GApplication options"
-msgstr "Ukázat volby GApplication"
+msgstr "Zobrazit volby GApplication"
 
 #: gio/gapplication.c:542
 msgid "Enter GApplication service mode (use from D-Bus service files)"
