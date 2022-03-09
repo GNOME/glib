@@ -24,9 +24,6 @@
 #include <glib.h>
 
 #include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include <time.h>
 
 #ifdef G_OS_WIN32
   #include <io.h>
@@ -246,7 +243,7 @@ spawn_process (int children_nb)
   int i;
 
 #ifdef G_OS_WIN32
-  GTimeVal start, end;
+  gint64 start, end;
   GPollFD pollfd;
   int pollresult;
   ATOM klass;
@@ -331,17 +328,14 @@ spawn_process (int children_nb)
       close (pipe_from_sub[1]);
 
 #ifdef G_OS_WIN32
-      g_get_current_time (&start);
+      start = g_get_monotonic_time();
       g_io_channel_win32_make_pollfd (my_read_channel, G_IO_IN, &pollfd);
       pollresult = g_io_channel_win32_poll (&pollfd, 1, 100);
-      g_get_current_time (&end);
-      if (end.tv_usec < start.tv_usec)
-        end.tv_sec--, end.tv_usec += 1000000;
-      g_print ("gio-test: had to wait %ld.%03ld s, result:%d\n",
-               end.tv_sec - start.tv_sec,
-               (end.tv_usec - start.tv_usec) / 1000, pollresult);
-#endif
+      end = g_get_monotonic_time();
 
+      g_print ("gio-test: had to wait %" G_GINT64_FORMAT "s, result:%d\n",
+               (end - start) / 1000000, pollresult);
+#endif
       g_io_channel_unref (my_read_channel);
     }
 
@@ -356,14 +350,12 @@ static void
 run_process (int argc, char *argv[])
 {
   int readfd, writefd;
-  GTimeVal tv;
+  gint64 dt;
   char buf[BUFSIZE];
   int buflen, i, j, n;
 #ifdef G_OS_WIN32
   HWND hwnd;
 #endif
-
-  g_get_current_time (&tv);
 
   /* Extract parameters */
   sscanf (argv[2], "%d:%d%n", &readfd, &writefd, &n);
@@ -371,7 +363,8 @@ run_process (int argc, char *argv[])
   sscanf (argv[2] + n, ":0x%p", &hwnd);
 #endif
 
-  srand (tv.tv_sec ^ (tv.tv_usec / 1000) ^ readfd ^ (writefd << 4));
+  dt = g_get_monotonic_time();
+  srand (dt ^ (dt / 1000) ^ readfd ^ (writefd << 4));
 
   for (i = 0; i < 20 + rand () % 10; i++)
     {
