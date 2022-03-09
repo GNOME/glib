@@ -356,6 +356,12 @@ g_vasprintf (gchar      **string,
 
     len = _g_vsprintf (*string, format, args2);
     va_end (args2);
+
+    if (len < 0)
+      {
+        g_free (*string);
+        *string = NULL;
+      }
   }
 #endif
 
