@@ -470,8 +470,8 @@ g_type_info_argument_from_hash_pointer (GITypeInfo *info,
                                         GIArgument *arg)
 {
     GITypeTag storage_type = g_type_info_get_storage_type (info);
-    return gi_type_tag_argument_from_hash_pointer (storage_type, hash_pointer,
-                                                   arg);
+    gi_type_tag_argument_from_hash_pointer (storage_type, hash_pointer,
+                                            arg);
 }
 
 /**

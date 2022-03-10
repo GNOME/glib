@@ -574,8 +574,8 @@ gi_type_info_extract_ffi_return_value (GITypeInfo                  *return_info,
       g_base_info_unref (interface_info);
     }
 
-  return gi_type_tag_extract_ffi_return_value (return_tag, interface_type,
-                                               ffi_value, arg);
+  gi_type_tag_extract_ffi_return_value (return_tag, interface_type,
+                                        ffi_value, arg);
 }
 
 /**
