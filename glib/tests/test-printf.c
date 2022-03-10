@@ -895,6 +895,44 @@ test_upper_bound (void)
   g_assert_cmpint (res, ==, 20);
 }
 
+static gint test_vasprintf_va (gchar       **string,
+                               const gchar  *format,
+                               ...) G_GNUC_PRINTF (2, 3);
+
+/* Wrapper around g_vasprintf() which takes varargs */
+static gint
+test_vasprintf_va (gchar       **string,
+                   const gchar  *format,
+                   ...)
+{
+  va_list args;
+  gint len;
+
+  va_start (args, format);
+  len = g_vasprintf (string, format, args);
+  va_end (args);
+
+  return len;
+}
+
+static void
+test_vasprintf_invalid_format_placeholder (void)
+{
+  gint len = 0;
+  gchar *buf = "some non-null string";
+
+  g_test_summary ("Test error handling for invalid format placeholder in g_vasprintf()");
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat"
+#pragma GCC diagnostic ignored "-Wformat-extra-args"
+  len = test_vasprintf_va (&buf, "%l", "nope");
+#pragma GCC diagnostic pop
+
+  g_assert_cmpint (len, ==, -1);
+  g_assert_null (buf);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -934,6 +972,8 @@ main (int   argc,
 
   g_test_add_func ("/sprintf/test-positional-params", test_positional_params3);
   g_test_add_func ("/sprintf/upper-bound", test_upper_bound);
+
+  g_test_add_func ("/vasprintf/invalid-format-placeholder", test_vasprintf_invalid_format_placeholder);
 
   return g_test_run();
 }
