@@ -112,8 +112,10 @@ start_thread (gpointer user_data)
   GPid pid;
   SpawnChildsData *data = user_data;
   gint ttl = data->ttl;
+  GMainContext *new_main_context = NULL;
 
-  new_main_loop = g_main_loop_new (NULL, FALSE);
+  new_main_context = g_main_context_new ();
+  new_main_loop = g_main_loop_new (new_main_context, FALSE);
 
   pid = get_a_child (ttl);
   source = g_child_watch_source_new (pid);
@@ -126,6 +128,7 @@ start_thread (gpointer user_data)
 
   g_main_loop_run (new_main_loop);
   g_main_loop_unref (new_main_loop);
+  g_main_context_unref (new_main_context);
 
   return NULL;
 }
