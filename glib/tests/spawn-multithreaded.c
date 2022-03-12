@@ -161,17 +161,17 @@ test_spawn_childs (void)
   timeout_id = g_timeout_add_seconds (30, quit_loop, main_loop);
 
   child1_data.main_loop = main_loop;
-  child1_data.ttl = 10;
+  child1_data.ttl = 1;
   child1_data.n_alive = &n_alive;
-  pid = get_a_child (10);
+  pid = get_a_child (child1_data.ttl);
   g_child_watch_add (pid,
                      (GChildWatchFunc) child_watch_callback,
                      &child1_data);
 
   child2_data.main_loop = main_loop;
-  child2_data.ttl = 20;
+  child2_data.ttl = 2;
   child2_data.n_alive = &n_alive;
-  pid = get_a_child (20);
+  pid = get_a_child (child2_data.ttl);
   g_child_watch_add (pid,
                      (GChildWatchFunc) child_watch_callback,
                      &child2_data);
@@ -204,12 +204,12 @@ test_spawn_childs_threads (void)
 
   thread1_data.main_loop = main_loop;
   thread1_data.n_alive = &n_alive;
-  thread1_data.ttl = 3;  /* seconds */
+  thread1_data.ttl = 1;  /* seconds */
   g_thread_new (NULL, start_thread, &thread1_data);
 
   thread2_data.main_loop = main_loop;
   thread2_data.n_alive = &n_alive;
-  thread2_data.ttl = 7;  /* seconds */
+  thread2_data.ttl = 2;  /* seconds */
   g_thread_new (NULL, start_thread, &thread2_data);
 
   g_main_loop_run (main_loop);
