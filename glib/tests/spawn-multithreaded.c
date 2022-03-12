@@ -350,8 +350,8 @@ test_spawn_async_multithreaded_instance (gpointer thread_data)
 
   g_main_loop_run (loop);
 
-  g_assert (data.child_exited);
-  g_assert (data.stdout_done);
+  g_assert_true (data.child_exited);
+  g_assert_true (data.stdout_done);
   g_assert_cmpstr (data.stdout_buf->str, ==, arg);
   g_string_free (data.stdout_buf, TRUE);
 
