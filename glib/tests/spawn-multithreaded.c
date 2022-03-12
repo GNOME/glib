@@ -88,7 +88,7 @@ get_a_child (gint ttl)
 #endif /* G_OS_WIN32 */
 }
 
-static gboolean
+static void
 child_watch_callback (GPid pid, gint status, gpointer user_data)
 {
   SpawnChildsData *data = user_data;
@@ -100,8 +100,6 @@ child_watch_callback (GPid pid, gint status, gpointer user_data)
 
   if (g_atomic_int_dec_and_test (data->n_alive))
     g_main_loop_quit (data->main_loop);
-
-  return TRUE;
 }
 
 static gpointer
