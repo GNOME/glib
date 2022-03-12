@@ -125,6 +125,7 @@ start_thread (gpointer user_data)
   g_test_message ("Created pid: %" G_PID_FORMAT " (ttl %d)", pid, ttl);
 
   g_main_loop_run (new_main_loop);
+  g_main_loop_unref (new_main_loop);
 
   return NULL;
 }
