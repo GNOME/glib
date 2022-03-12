@@ -46,6 +46,7 @@ typedef struct
   GMainLoop *main_loop;
   gint *n_alive;  /* (atomic) */
   gint ttl;  /* seconds */
+  GMainLoop *thread_main_loop;  /* (nullable) */
 } SpawnChildsData;
 
 static GPid
@@ -100,6 +101,8 @@ child_watch_callback (GPid pid, gint status, gpointer user_data)
 
   if (g_atomic_int_dec_and_test (data->n_alive))
     g_main_loop_quit (data->main_loop);
+  if (data->thread_main_loop != NULL)
+    g_main_loop_quit (data->thread_main_loop);
 }
 
 static gpointer
@@ -114,6 +117,7 @@ start_thread (gpointer user_data)
 
   new_main_context = g_main_context_new ();
   new_main_loop = g_main_loop_new (new_main_context, FALSE);
+  data->thread_main_loop = new_main_loop;
 
   pid = get_a_child (ttl);
   source = g_child_watch_source_new (pid);
@@ -191,6 +195,7 @@ test_spawn_childs_threads (void)
   SpawnChildsData thread1_data = { 0, }, thread2_data = { 0, };
   gint n_alive;
   guint timeout_id;
+  GThread *thread1, *thread2;
 
   main_loop = g_main_loop_new (NULL, FALSE);
 
@@ -206,18 +211,21 @@ test_spawn_childs_threads (void)
   thread1_data.main_loop = main_loop;
   thread1_data.n_alive = &n_alive;
   thread1_data.ttl = 1;  /* seconds */
-  g_thread_new (NULL, start_thread, &thread1_data);
+  thread1 = g_thread_new (NULL, start_thread, &thread1_data);
 
   thread2_data.main_loop = main_loop;
   thread2_data.n_alive = &n_alive;
   thread2_data.ttl = 2;  /* seconds */
-  g_thread_new (NULL, start_thread, &thread2_data);
+  thread2 = g_thread_new (NULL, start_thread, &thread2_data);
 
   g_main_loop_run (main_loop);
   g_main_loop_unref (main_loop);
   g_source_remove (timeout_id);
 
   g_assert_cmpint (g_atomic_int_get (&n_alive), ==, 0);
+
+  g_thread_join (g_steal_pointer (&thread2));
+  g_thread_join (g_steal_pointer (&thread1));
 }
 
 static void
