@@ -368,7 +368,7 @@ main (int   argc,
 {
   gint ret;
 
-  g_test_init (&argc, &argv, NULL);
+  g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
 
   g_test_add ("/gdbus/connection/flush/busy", Fixture, NULL,
               setup, test_flush_busy, teardown);
