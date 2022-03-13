@@ -495,6 +495,14 @@ g_list_store_splice (GListStore *store,
   g_list_store_items_changed (store, position, n_removals, n_additions);
 }
 
+static gboolean
+simple_equal (gconstpointer a,
+              gconstpointer b,
+              gpointer equal_func)
+{
+  return ((GEqualFunc) equal_func) (a, b);
+}
+
 /**
  * g_list_store_find_with_equal_func:
  * @store: a #GListStore
@@ -503,7 +511,7 @@ g_list_store_splice (GListStore *store,
  * @position: (out) (optional): the first position of @item, if it was found.
  *
  * Looks up the given @item in the list store by looping over the items and
- * comparing them with @compare_func until the first occurrence of @item which
+ * comparing them with @equal_func until the first occurrence of @item which
  * matches. If @item was not found, then @position will not be set, and this
  * method will return %FALSE.
  *
@@ -517,6 +525,35 @@ g_list_store_find_with_equal_func (GListStore *store,
                                    gpointer    item,
                                    GEqualFunc  equal_func,
                                    guint      *position)
+{
+  g_return_val_if_fail (equal_func != NULL, FALSE);
+
+  return g_list_store_find_with_equal_func_full (store, item, simple_equal,
+                                                 equal_func, position);
+}
+
+/**
+ * g_list_store_find_with_equal_func_full:
+ * @store: a #GListStore
+ * @item: (type GObject): an item
+ * @equal_func: (scope call): A custom equality check function
+ * @user_data: (closure): user data for @equal_func
+ * @position: (out) (optional): the first position of @item, if it was found.
+ *
+ * Like g_list_store_find_with_equal_func() but with an additional @user_data
+ * that is passed to @equal_func.
+ *
+ * Returns: Whether @store contains @item. If it was found, @position will be
+ * set to the position where @item occurred for the first time.
+ *
+ * Since: 2.74
+ */
+gboolean
+g_list_store_find_with_equal_func_full (GListStore     *store,
+                                        gpointer        item,
+                                        GEqualFuncFull  equal_func,
+                                        gpointer        user_data,
+                                        guint          *position)
 {
   GSequenceIter *iter, *begin, *end;
 
@@ -536,7 +573,7 @@ g_list_store_find_with_equal_func (GListStore *store,
       gpointer iter_item;
 
       iter_item = g_sequence_get (iter);
-      if (equal_func (iter_item, item))
+      if (equal_func (iter_item, item, user_data))
         {
           if (position)
             *position = g_sequence_iter_get_position (iter);

@@ -83,6 +83,13 @@ gboolean                g_list_store_find_with_equal_func               (GListSt
                                                                          GEqualFunc  equal_func,
                                                                          guint      *position);
 
+GLIB_AVAILABLE_IN_2_74
+gboolean                g_list_store_find_with_equal_func_full          (GListStore     *store,
+                                                                         gpointer        item,
+                                                                         GEqualFuncFull  equal_func,
+                                                                         gpointer        user_data,
+                                                                         guint          *position);
+
 G_END_DECLS
 
 #endif /* __G_LIST_STORE_H__ */
