@@ -101,7 +101,7 @@ static DEFINE_TYPE(TestObject, test_object,
                    G_TYPE_OBJECT)
 
 static void
-test_signals (void)
+test_basic_signals (void)
 {
   TestObject *object;
 
@@ -131,7 +131,7 @@ main (int  argc,
 
   g_test_init (&argc, &argv, NULL);
 
-  g_test_add_func ("/gobject/signals", test_signals);
+  g_test_add_func ("/gobject/basic-signals", test_basic_signals);
 
   return g_test_run ();
 }

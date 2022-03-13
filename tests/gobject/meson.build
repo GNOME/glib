@@ -1,47 +1,5 @@
-# We cannot use gnome.genmarshal() here
-testmarshal_h = custom_target('testmarshal_h',
-  output : 'testmarshal.h',
-  input : 'testmarshal.list',
-  command : [
-    python, glib_genmarshal,
-    '--prefix=test_marshal',
-    '--output=@OUTPUT@',
-    '--quiet',
-    '--header',
-    '@INPUT@',
-  ],
-)
-
-testmarshal_c = custom_target('testmarshal_c',
-  output : 'testmarshal.c',
-  input : 'testmarshal.list',
-  command : [
-    python, glib_genmarshal,
-    '--prefix=test_marshal',
-    '--include-header=testmarshal.h',
-    '--output=@OUTPUT@',
-    '--quiet',
-    '--body',
-    '@INPUT@',
-  ],
-)
-
 gobject_tests = {
-  'deftype' : {},
-  'defaultiface' : {
-    'extra_sources' : ['testmodule.c'],
-  },
-  'dynamictype' : {
-    'extra_sources' : ['testmodule.c'],
-  },
-  'override' : {},
-  'signals' : {},
-  'singleton' : {},
-  'references' : {},
   'testgobject' : {},
-  'accumulator' : {
-    'extra_sources' : [testmarshal_c, testmarshal_h],
-  },
 }
 
 if host_system != 'windows'
