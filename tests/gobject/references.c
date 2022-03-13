@@ -15,17 +15,9 @@
  * Public License along with this library; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#undef	G_LOG_DOMAIN
-#define	G_LOG_DOMAIN "TestReferences"
+#include <glib-object.h>
 
-#undef G_DISABLE_ASSERT
-#undef G_DISABLE_CHECKS
-#undef G_DISABLE_CAST_CHECKS
-
-#include	<glib-object.h>
-
-/* This test tests weak and toggle references
- */
+/* This test tests weak and toggle references */
 
 static GObject *global_object;
 
@@ -39,9 +31,7 @@ static gboolean toggle_ref2_strengthened;
 static gboolean toggle_ref3_weakened;
 static gboolean toggle_ref3_strengthened;
 
-/*
- * TestObject, a parent class for TestObject
- */
+/* TestObject, a parent class for TestObject */
 static GType test_object_get_type (void);
 #define TEST_TYPE_OBJECT          (test_object_get_type ())
 typedef struct _TestObject        TestObject;
@@ -62,7 +52,7 @@ static void
 test_object_finalize (GObject *object)
 {
   object_destroyed = TRUE;
-  
+
   G_OBJECT_CLASS (test_object_parent_class)->finalize (object);
 }
 
@@ -95,31 +85,31 @@ clear_flags (void)
 
 static void
 weak_ref1 (gpointer data,
-	   GObject *object)
+           GObject *object)
 {
-  g_assert (object == global_object);
-  g_assert (data == GUINT_TO_POINTER (42));
+  g_assert_true (object == global_object);
+  g_assert_cmpint (GPOINTER_TO_INT (data), ==, 42);
 
   weak_ref1_notified = TRUE;
 }
 
 static void
 weak_ref2 (gpointer data,
-	   GObject *object)
+           GObject *object)
 {
-  g_assert (object == global_object);
-  g_assert (data == GUINT_TO_POINTER (24));
+  g_assert_true (object == global_object);
+  g_assert_cmpint (GPOINTER_TO_INT (data), ==, 24);
 
   weak_ref2_notified = TRUE;
 }
 
 static void
 toggle_ref1 (gpointer data,
-	     GObject *object,
-	     gboolean is_last_ref)
+             GObject *object,
+             gboolean is_last_ref)
 {
-  g_assert (object == global_object);
-  g_assert (data == GUINT_TO_POINTER (42));
+  g_assert_true (object == global_object);
+  g_assert_cmpint (GPOINTER_TO_INT (data), ==, 42);
 
   if (is_last_ref)
     toggle_ref1_weakened = TRUE;
@@ -129,11 +119,11 @@ toggle_ref1 (gpointer data,
 
 static void
 toggle_ref2 (gpointer data,
-	     GObject *object,
-	     gboolean is_last_ref)
+             GObject *object,
+             gboolean is_last_ref)
 {
-  g_assert (object == global_object);
-  g_assert (data == GUINT_TO_POINTER (24));
+  g_assert_true (object == global_object);
+  g_assert_cmpint (GPOINTER_TO_INT (data), ==, 24);
 
   if (is_last_ref)
     toggle_ref2_weakened = TRUE;
@@ -143,11 +133,11 @@ toggle_ref2 (gpointer data,
 
 static void
 toggle_ref3 (gpointer data,
-	     GObject *object,
-	     gboolean is_last_ref)
+             GObject *object,
+             gboolean is_last_ref)
 {
-  g_assert (object == global_object);
-  g_assert (data == GUINT_TO_POINTER (34));
+  g_assert_true (object == global_object);
+  g_assert_cmpint (GPOINTER_TO_INT (data), ==, 34);
 
   if (is_last_ref)
     {
@@ -158,123 +148,126 @@ toggle_ref3 (gpointer data,
     toggle_ref3_strengthened = TRUE;
 }
 
-int
-main (int   argc,
-      char *argv[])
+static void
+test_references (void)
 {
   GObject *object;
-	
-  g_log_set_always_fatal (g_log_set_always_fatal (G_LOG_FATAL_MASK) |
-			  G_LOG_LEVEL_WARNING |
-			  G_LOG_LEVEL_CRITICAL);
 
-  /* Test basic weak reference operation
-   */
+  /* Test basic weak reference operation */
   global_object = object = g_object_new (TEST_TYPE_OBJECT, NULL);
-  
+
   g_object_weak_ref (object, weak_ref1, GUINT_TO_POINTER (42));
 
   clear_flags ();
   g_object_unref (object);
-  g_assert (weak_ref1_notified == TRUE);
-  g_assert (object_destroyed == TRUE);
+  g_assert_true (weak_ref1_notified);
+  g_assert_true (object_destroyed);
 
   /* Test two weak references at once
    */
   global_object = object = g_object_new (TEST_TYPE_OBJECT, NULL);
-  
+
   g_object_weak_ref (object, weak_ref1, GUINT_TO_POINTER (42));
   g_object_weak_ref (object, weak_ref2, GUINT_TO_POINTER (24));
 
   clear_flags ();
   g_object_unref (object);
-  g_assert (weak_ref1_notified == TRUE);
-  g_assert (weak_ref2_notified == TRUE);
-  g_assert (object_destroyed == TRUE);
+  g_assert_true (weak_ref1_notified);
+  g_assert_true (weak_ref2_notified);
+  g_assert_true (object_destroyed);
 
-  /* Test remove weak references
-   */
+  /* Test remove weak references */
   global_object = object = g_object_new (TEST_TYPE_OBJECT, NULL);
-  
+
   g_object_weak_ref (object, weak_ref1, GUINT_TO_POINTER (42));
   g_object_weak_ref (object, weak_ref2, GUINT_TO_POINTER (24));
   g_object_weak_unref (object, weak_ref1, GUINT_TO_POINTER (42));
 
   clear_flags ();
   g_object_unref (object);
-  g_assert (weak_ref1_notified == FALSE);
-  g_assert (weak_ref2_notified == TRUE);
-  g_assert (object_destroyed == TRUE);
+  g_assert_false (weak_ref1_notified);
+  g_assert_true (weak_ref2_notified);
+  g_assert_true (object_destroyed);
 
-  /* Test basic toggle reference operation
-   */
+  /* Test basic toggle reference operation */
   global_object = object = g_object_new (TEST_TYPE_OBJECT, NULL);
-  
+
   g_object_add_toggle_ref (object, toggle_ref1, GUINT_TO_POINTER (42));
 
   clear_flags ();
   g_object_unref (object);
-  g_assert (toggle_ref1_weakened == TRUE);
-  g_assert (toggle_ref1_strengthened == FALSE);
-  g_assert (object_destroyed == FALSE);
+  g_assert_true (toggle_ref1_weakened);
+  g_assert_false (toggle_ref1_strengthened);
+  g_assert_false (object_destroyed);
 
   clear_flags ();
   g_object_ref (object);
-  g_assert (toggle_ref1_weakened == FALSE);
-  g_assert (toggle_ref1_strengthened == TRUE);
-  g_assert (object_destroyed == FALSE);
+  g_assert_false (toggle_ref1_weakened);
+  g_assert_true (toggle_ref1_strengthened);
+  g_assert_false (object_destroyed);
 
   g_object_unref (object);
 
   clear_flags ();
   g_object_remove_toggle_ref (object, toggle_ref1, GUINT_TO_POINTER (42));
-  g_assert (toggle_ref1_weakened == FALSE);
-  g_assert (toggle_ref1_strengthened == FALSE);
-  g_assert (object_destroyed == TRUE);
+  g_assert_false (toggle_ref1_weakened);
+  g_assert_false (toggle_ref1_strengthened);
+  g_assert_true (object_destroyed);
 
   global_object = object = g_object_new (TEST_TYPE_OBJECT, NULL);
 
-  /* Test two toggle references at once
-   */
+  /* Test two toggle references at once */
   g_object_add_toggle_ref (object, toggle_ref1, GUINT_TO_POINTER (42));
   g_object_add_toggle_ref (object, toggle_ref2, GUINT_TO_POINTER (24));
 
   clear_flags ();
   g_object_unref (object);
-  g_assert (toggle_ref1_weakened == FALSE);
-  g_assert (toggle_ref1_strengthened == FALSE);
-  g_assert (toggle_ref2_weakened == FALSE);
-  g_assert (toggle_ref2_strengthened == FALSE);
-  g_assert (object_destroyed == FALSE);
+  g_assert_false (toggle_ref1_weakened);
+  g_assert_false (toggle_ref1_strengthened);
+  g_assert_false (toggle_ref2_weakened);
+  g_assert_false (toggle_ref2_strengthened);
+  g_assert_false (object_destroyed);
 
   clear_flags ();
   g_object_remove_toggle_ref (object, toggle_ref1, GUINT_TO_POINTER (42));
-  g_assert (toggle_ref1_weakened == FALSE);
-  g_assert (toggle_ref1_strengthened == FALSE);
-  g_assert (toggle_ref2_weakened == TRUE);
-  g_assert (toggle_ref2_strengthened == FALSE);
-  g_assert (object_destroyed == FALSE);
+  g_assert_false (toggle_ref1_weakened);
+  g_assert_false (toggle_ref1_strengthened);
+  g_assert_true (toggle_ref2_weakened);
+  g_assert_false (toggle_ref2_strengthened);
+  g_assert_false (object_destroyed);
 
   clear_flags ();
   /* Check that removing a toggle ref with %NULL data works fine. */
   g_object_remove_toggle_ref (object, toggle_ref2, NULL);
-  g_assert (toggle_ref1_weakened == FALSE);
-  g_assert (toggle_ref1_strengthened == FALSE);
-  g_assert (toggle_ref2_weakened == FALSE);
-  g_assert (toggle_ref2_strengthened == FALSE);
-  g_assert (object_destroyed == TRUE);
-  
-  /* Test a toggle reference that removes itself
-   */
+  g_assert_false (toggle_ref1_weakened);
+  g_assert_false (toggle_ref1_strengthened);
+  g_assert_false (toggle_ref2_weakened);
+  g_assert_false (toggle_ref2_strengthened);
+  g_assert_true (object_destroyed);
+
+  /* Test a toggle reference that removes itself */
   global_object = object = g_object_new (TEST_TYPE_OBJECT, NULL);
-  
+
   g_object_add_toggle_ref (object, toggle_ref3, GUINT_TO_POINTER (34));
 
   clear_flags ();
   g_object_unref (object);
-  g_assert (toggle_ref3_weakened == TRUE);
-  g_assert (toggle_ref3_strengthened == FALSE);
-  g_assert (object_destroyed == TRUE);
+  g_assert_true (toggle_ref3_weakened);
+  g_assert_false (toggle_ref3_strengthened);
+  g_assert_true (object_destroyed);
+}
 
-  return 0;
+int
+main (int   argc,
+      char *argv[])
+{
+  g_log_set_always_fatal (g_log_set_always_fatal (G_LOG_FATAL_MASK) |
+                          G_LOG_LEVEL_WARNING |
+                          G_LOG_LEVEL_CRITICAL);
+
+  g_test_init (&argc, &argv, NULL);
+
+  g_test_add_func ("/gobject/references", test_references);
+
+  return g_test_run ();
 }
