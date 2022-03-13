@@ -17,17 +17,6 @@
  * Public License along with this library; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#undef	G_LOG_DOMAIN
-#define	G_LOG_DOMAIN "TestOverride"
-
-#undef G_DISABLE_ASSERT
-#undef G_DISABLE_CHECKS
-#undef G_DISABLE_CAST_CHECKS
-
-#undef VERBOSE
-
-#include <string.h>
-
 #include <glib.h>
 #include <glib-object.h>
 
@@ -64,13 +53,13 @@ static void
 test_i_default_init (gpointer g_class)
 {
   foo_signal_id = g_signal_newv ("foo",
-				 TEST_TYPE_I,
-				 G_SIGNAL_RUN_LAST,
-				 g_cclosure_new(G_CALLBACK(test_i_foo),
-						NULL, NULL),
-				 NULL, NULL,
-				 g_cclosure_marshal_VOID__VOID,
-				 G_TYPE_NONE, 0, NULL);
+                                 TEST_TYPE_I,
+                                 G_SIGNAL_RUN_LAST,
+                                 g_cclosure_new(G_CALLBACK(test_i_foo),
+                                                NULL, NULL),
+                                 NULL, NULL,
+                                 g_cclosure_marshal_VOID__VOID,
+                                 G_TYPE_NONE, 0, NULL);
 }
 
 static DEFINE_IFACE (TestI, test_i, NULL, test_i_default_init)
@@ -99,7 +88,9 @@ test_a_foo (TestI *self)
   g_value_init (&args[0], TEST_TYPE_A);
   g_value_set_object (&args[0], self);
 
-  g_assert (g_signal_get_invocation_hint (self)->signal_id == foo_signal_id);
+  g_assert_cmpint (g_signal_get_invocation_hint (self)->signal_id,
+                   ==,
+                   foo_signal_id);
   g_signal_chain_from_overridden (args, NULL);
 
   g_value_unset (&args[0]);
@@ -118,8 +109,8 @@ test_a_baz (TestA    *self,
 {
   record ("TestA::baz");
 
-  g_assert (object == G_OBJECT (self));
-  g_assert (GPOINTER_TO_INT (pointer) == 23);
+  g_assert_true (object == G_OBJECT (self));
+  g_assert_cmpint (GPOINTER_TO_INT (pointer), ==, 23);
 
   return g_strdup ("TestA::baz");
 }
@@ -130,38 +121,39 @@ test_a_class_init (TestAClass *class)
   class->bar = test_a_bar;
 
   bar_signal_id = g_signal_new ("bar",
-				TEST_TYPE_A,
-				G_SIGNAL_RUN_LAST,
-				G_STRUCT_OFFSET (TestAClass, bar),
-				NULL, NULL,
-				g_cclosure_marshal_VOID__VOID,
-				G_TYPE_NONE, 0, NULL);
+                                TEST_TYPE_A,
+                                G_SIGNAL_RUN_LAST,
+                                G_STRUCT_OFFSET (TestAClass, bar),
+                                NULL, NULL,
+                                g_cclosure_marshal_VOID__VOID,
+                                G_TYPE_NONE, 0, NULL);
 
-  baz_signal_id = g_signal_new_class_handler ("baz",
-                                              TEST_TYPE_A,
-                                              G_SIGNAL_RUN_LAST,
-                                              G_CALLBACK (test_a_baz),
-                                              NULL, NULL,
-                                              g_cclosure_marshal_STRING__OBJECT_POINTER,
-                                              G_TYPE_STRING, 2,
-                                              G_TYPE_OBJECT,
-                                              G_TYPE_POINTER);
+  baz_signal_id =
+    g_signal_new_class_handler ("baz",
+                                TEST_TYPE_A,
+                                G_SIGNAL_RUN_LAST,
+                                G_CALLBACK (test_a_baz),
+                                NULL, NULL,
+                                g_cclosure_marshal_STRING__OBJECT_POINTER,
+                                G_TYPE_STRING, 2,
+                                G_TYPE_OBJECT,
+                                G_TYPE_POINTER);
 }
 
 static void
 test_a_interface_init (TestIClass *iface)
 {
   g_signal_override_class_closure (foo_signal_id,
-				   TEST_TYPE_A,
-				   g_cclosure_new (G_CALLBACK (test_a_foo),
-						   NULL, NULL));
+                                   TEST_TYPE_A,
+                                   g_cclosure_new (G_CALLBACK (test_a_foo),
+                                                   NULL, NULL));
 }
 
 static DEFINE_TYPE_FULL (TestA, test_a,
-			 test_a_class_init, NULL, NULL,
-			 G_TYPE_OBJECT,
-			 INTERFACE (test_a_interface_init, TEST_TYPE_I))
-     
+                         test_a_class_init, NULL, NULL,
+                         G_TYPE_OBJECT,
+                         INTERFACE (test_a_interface_init, TEST_TYPE_I))
+
 #define TEST_TYPE_B (test_b_get_type())
 
 typedef struct _TestB TestB;
@@ -184,7 +176,9 @@ test_b_foo (TestI *self)
   g_value_init (&args[0], TEST_TYPE_A);
   g_value_set_object (&args[0], self);
 
-  g_assert (g_signal_get_invocation_hint (self)->signal_id == foo_signal_id);
+  g_assert_cmpint (g_signal_get_invocation_hint (self)->signal_id,
+                   ==,
+                   foo_signal_id);
   g_signal_chain_from_overridden (args, NULL);
 
   g_value_unset (&args[0]);
@@ -200,7 +194,9 @@ test_b_bar (TestA *self)
   g_value_init (&args[0], TEST_TYPE_A);
   g_value_set_object (&args[0], self);
 
-  g_assert (g_signal_get_invocation_hint (self)->signal_id == bar_signal_id);
+  g_assert_cmpint (g_signal_get_invocation_hint (self)->signal_id,
+                   ==,
+                   bar_signal_id);
   g_signal_chain_from_overridden (args, NULL);
 
   g_value_unset (&args[0]);
@@ -215,8 +211,8 @@ test_b_baz (TestA    *self,
 
   record ("TestB::baz");
 
-  g_assert (object == G_OBJECT (self));
-  g_assert (GPOINTER_TO_INT (pointer) == 23);
+  g_assert_true (object == G_OBJECT (self));
+  g_assert_cmpint (GPOINTER_TO_INT (pointer), ==, 23);
 
   g_signal_chain_from_overridden_handler (self, object, pointer, &retval);
 
@@ -234,21 +230,21 @@ static void
 test_b_class_init (TestBClass *class)
 {
   g_signal_override_class_closure (foo_signal_id,
-				   TEST_TYPE_B,
-				   g_cclosure_new (G_CALLBACK (test_b_foo),
-						   NULL, NULL));
+                                   TEST_TYPE_B,
+                                   g_cclosure_new (G_CALLBACK (test_b_foo),
+                                                   NULL, NULL));
   g_signal_override_class_closure (bar_signal_id,
-				   TEST_TYPE_B,
-				   g_cclosure_new (G_CALLBACK (test_b_bar),
-						   NULL, NULL));
+                                   TEST_TYPE_B,
+                                   g_cclosure_new (G_CALLBACK (test_b_bar),
+                                                   NULL, NULL));
   g_signal_override_class_handler ("baz",
-				   TEST_TYPE_B,
-				   G_CALLBACK (test_b_baz));
+                                   TEST_TYPE_B,
+                                   G_CALLBACK (test_b_baz));
 }
 
 static DEFINE_TYPE (TestB, test_b,
-		    test_b_class_init, NULL, NULL,
-		    TEST_TYPE_A)
+                    test_b_class_init, NULL, NULL,
+                    TEST_TYPE_A)
 
 #define TEST_TYPE_C (test_c_get_type())
 
@@ -272,7 +268,9 @@ test_c_foo (TestI *self)
   g_value_init (&args[0], TEST_TYPE_A);
   g_value_set_object (&args[0], self);
 
-  g_assert (g_signal_get_invocation_hint (self)->signal_id == foo_signal_id);
+  g_assert_cmpint (g_signal_get_invocation_hint (self)->signal_id,
+                   ==,
+                   foo_signal_id);
   g_signal_chain_from_overridden (args, NULL);
 
   g_value_unset (&args[0]);
@@ -288,7 +286,9 @@ test_c_bar (TestA *self)
   g_value_init (&args[0], TEST_TYPE_A);
   g_value_set_object (&args[0], self);
 
-  g_assert (g_signal_get_invocation_hint (self)->signal_id == bar_signal_id);
+  g_assert_cmpint (g_signal_get_invocation_hint (self)->signal_id,
+                   ==,
+                   bar_signal_id);
   g_signal_chain_from_overridden (args, NULL);
 
   g_value_unset (&args[0]);
@@ -303,8 +303,8 @@ test_c_baz (TestA    *self,
 
   record ("TestC::baz");
 
-  g_assert (object == G_OBJECT (self));
-  g_assert (GPOINTER_TO_INT (pointer) == 23);
+  g_assert_true (object == G_OBJECT (self));
+  g_assert_cmpint (GPOINTER_TO_INT (pointer), ==, 23);
 
   g_signal_chain_from_overridden_handler (self, object, pointer, &retval);
 
@@ -322,26 +322,25 @@ static void
 test_c_class_init (TestBClass *class)
 {
   g_signal_override_class_closure (foo_signal_id,
-				   TEST_TYPE_C,
-				   g_cclosure_new (G_CALLBACK (test_c_foo),
-						   NULL, NULL));
+                                   TEST_TYPE_C,
+                                   g_cclosure_new (G_CALLBACK (test_c_foo),
+                                                   NULL, NULL));
   g_signal_override_class_closure (bar_signal_id,
-				   TEST_TYPE_C,
-				   g_cclosure_new (G_CALLBACK (test_c_bar),
-						   NULL, NULL));
+                                   TEST_TYPE_C,
+                                   g_cclosure_new (G_CALLBACK (test_c_bar),
+                                                   NULL, NULL));
   g_signal_override_class_handler ("baz",
-				   TEST_TYPE_C,
-				   G_CALLBACK (test_c_baz));
+                                   TEST_TYPE_C,
+                                   G_CALLBACK (test_c_baz));
 }
 
 
 static DEFINE_TYPE (TestC, test_c,
-		    test_c_class_init, NULL, NULL,
-		    TEST_TYPE_B)
+                    test_c_class_init, NULL, NULL,
+                    TEST_TYPE_B)
 
 static GString *test_string = NULL;
-gboolean failed = FALSE;
-     
+
 static void
 record (const gchar *str)
 {
@@ -349,7 +348,7 @@ record (const gchar *str)
     g_string_append_c (test_string, ',');
   g_string_append (test_string, str);
 }
-     
+
 static void
 test (GType        type,
       const gchar *signal,
@@ -369,39 +368,27 @@ test (GType        type,
       gchar *ret;
 
       g_signal_emit_by_name (self, signal, self, GINT_TO_POINTER (23), &ret);
-
-      if (strcmp (ret, expected_retval) != 0)
-        failed = TRUE;
+      g_assert_cmpstr (ret, ==, expected_retval);
 
       g_free (ret);
     }
 
-#ifndef VERBOSE
-  if (strcmp (test_string->str, expected) != 0)
-#endif
-    {
-      g_printerr ("*** emitting %s on a %s instance\n"
-		  "    Expecting: %s\n"
-		  "    Got: %s\n",
-		  signal, g_type_name (type),
-		  expected,
-		  test_string->str);
-      
-      if (strcmp (test_string->str, expected) != 0)
-	failed = TRUE;
-    }
+  g_test_message ("*** emitting %s on a %s instance\n"
+                  "    Expecting: %s\n"
+                  "    Got: %s",
+                  signal, g_type_name (type),
+                  expected,
+                  test_string->str);
+
+  g_assert_cmpstr (test_string->str, ==, expected);
 
   g_string_free (test_string, TRUE);
   g_object_unref (self);
 }
-     
-int
-main (int argc, char **argv)
-{
-  g_log_set_always_fatal (g_log_set_always_fatal (G_LOG_FATAL_MASK) |
-			  G_LOG_LEVEL_WARNING |
-			  G_LOG_LEVEL_CRITICAL);
 
+static void
+test_override (void)
+{
   test (TEST_TYPE_A, "foo", "TestA::foo,TestI::foo", NULL);
   test (TEST_TYPE_A, "bar", "TestA::bar", NULL);
   test (TEST_TYPE_A, "baz", "TestA::baz", "TestA::baz");
@@ -413,6 +400,19 @@ main (int argc, char **argv)
   test (TEST_TYPE_C, "foo", "TestC::foo,TestB::foo,TestA::foo,TestI::foo", NULL);
   test (TEST_TYPE_C, "bar", "TestC::bar,TestB::bar,TestA::bar", NULL);
   test (TEST_TYPE_C, "baz", "TestC::baz,TestB::baz,TestA::baz", "TestA::baz,TestB::baz,TestC::baz");
+}
 
-  return failed ? 1 : 0;
+int
+main (int  argc,
+      char **argv)
+{
+  g_log_set_always_fatal (g_log_set_always_fatal (G_LOG_FATAL_MASK) |
+                          G_LOG_LEVEL_WARNING |
+                          G_LOG_LEVEL_CRITICAL);
+
+  g_test_init (&argc, &argv, NULL);
+
+  g_test_add_func ("/gobject/override", test_override);
+
+  return g_test_run ();
 }
