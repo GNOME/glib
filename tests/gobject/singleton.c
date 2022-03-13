@@ -14,10 +14,8 @@
  * You should have received a copy of the GNU Lesser General
  * Public License along with this library; if not, see <http://www.gnu.org/licenses/>.
  */
-#undef  G_LOG_DOMAIN
-#define G_LOG_DOMAIN "TestSingleton"
+
 #include <glib-object.h>
-#include <string.h>
 
 /* --- MySingleton class --- */
 typedef struct {
@@ -29,11 +27,16 @@ typedef struct {
 
 static GType my_singleton_get_type (void);
 #define MY_TYPE_SINGLETON         (my_singleton_get_type ())
-#define MY_SINGLETON(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), MY_TYPE_SINGLETON, MySingleton))
-#define MY_IS_SINGLETON(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), MY_TYPE_SINGLETON))
-#define MY_SINGLETON_CLASS(c)     (G_TYPE_CHECK_CLASS_CAST ((c), MY_TYPE_SINGLETON, MySingletonClass))
-#define MY_IS_SINGLETON_CLASS(c)  (G_TYPE_CHECK_CLASS_TYPE ((c), MY_TYPE_SINGLETON))
-#define MY_SINGLETON_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), MY_TYPE_SINGLETON, MySingletonClass))
+#define MY_SINGLETON(o) \
+  (G_TYPE_CHECK_INSTANCE_CAST ((o), MY_TYPE_SINGLETON, MySingleton))
+#define MY_IS_SINGLETON(o) \
+  (G_TYPE_CHECK_INSTANCE_TYPE ((o), MY_TYPE_SINGLETON))
+#define MY_SINGLETON_CLASS(c) \
+  (G_TYPE_CHECK_CLASS_CAST ((c), MY_TYPE_SINGLETON, MySingletonClass))
+#define MY_IS_SINGLETON_CLASS(c) \
+  (G_TYPE_CHECK_CLASS_TYPE ((c), MY_TYPE_SINGLETON))
+#define MY_SINGLETON_GET_CLASS(o) \
+  (G_TYPE_INSTANCE_GET_CLASS ((o), MY_TYPE_SINGLETON, MySingletonClass))
 
 G_DEFINE_TYPE (MySingleton, my_singleton, G_TYPE_OBJECT)
 
@@ -54,7 +57,7 @@ my_singleton_constructor (GType                  type,
 static void
 my_singleton_init (MySingleton *self)
 {
-  g_assert (the_one_and_only == NULL);
+  g_assert_null (the_one_and_only);
   the_one_and_only = self;
 }
 
@@ -73,11 +76,13 @@ main (int   argc,
 
   /* create the singleton */
   singleton = g_object_new (MY_TYPE_SINGLETON, NULL);
-  g_assert (singleton != NULL);
+  g_assert_nonnull (singleton);
+
   /* assert _singleton_ creation */
   obj = g_object_new (MY_TYPE_SINGLETON, NULL);
-  g_assert (singleton == obj);
+  g_assert_true (singleton == obj);
   g_object_unref (obj);
+
   /* shutdown */
   g_object_unref (singleton);
   return 0;
