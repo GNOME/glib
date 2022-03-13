@@ -45,6 +45,7 @@ glib_tests = {
   'hmac' : {},
   'hook' : {},
   'hostutils' : {},
+  'io-channel-basic' : {},
   'io-channel' : {},
   'keyfile' : {},
   'list' : {},

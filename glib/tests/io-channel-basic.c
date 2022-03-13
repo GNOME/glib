@@ -19,6 +19,11 @@
  * Just run it. Optional parameter is number of sub-processes.
  */
 
+/* We are using g_io_channel_read() which is deprecated */
+#ifndef GLIB_DISABLE_DEPRECATION_WARNINGS
+#define GLIB_DISABLE_DEPRECATION_WARNINGS
+#endif
+
 #include "config.h"
 
 #include <glib.h>
@@ -74,7 +79,7 @@ read_all (int         fd,
 
       if (error != G_IO_ERROR_NONE)
         {
-          g_print ("gio-test: ...from %d: %d\n", fd, error);
+          g_print ("io-channel-basic: ...from %d: %d\n", fd, error);
           if (error == G_IO_ERROR_AGAIN)
             continue;
           break;
@@ -107,7 +112,7 @@ recv_message (GIOChannel  *channel,
   gint fd = g_io_channel_unix_get_fd (channel);
   gboolean retval = TRUE;
 
-  g_debug ("gio-test: ...from %d:%s%s%s%s", fd,
+  g_debug ("io-channel-basic: ...from %d:%s%s%s%s", fd,
            (cond & G_IO_ERR) ? " ERR" : "",
            (cond & G_IO_HUP) ? " HUP" : "",
            (cond & G_IO_IN)  ? " IN"  : "",
@@ -133,7 +138,7 @@ recv_message (GIOChannel  *channel,
         {
           if (nb == 0)
             {
-              g_debug ("gio-test: ...from %d: EOF", fd);
+              g_debug ("io-channel-basic: ...from %d: EOF", fd);
               shutdown_source (data);
               return FALSE;
             }
@@ -156,14 +161,14 @@ recv_message (GIOChannel  *channel,
 
       if (nb == 0)
         {
-          g_debug ("gio-test: ...from %d: EOF", fd);
+          g_debug ("io-channel-basic: ...from %d: EOF", fd);
           shutdown_source (data);
           return FALSE;
         }
       g_assert_cmpuint (nb, ==, sizeof (nbytes));
 
       g_assert_cmpuint (nbytes, <, BUFSIZE);
-      g_debug ("gio-test: ...from %d: %d bytes", fd, nbytes);
+      g_debug ("io-channel-basic: ...from %d: %d bytes", fd, nbytes);
       if (nbytes > 0)
         {
           error = read_all (fd, channel, buf, nbytes, &nb);
@@ -173,14 +178,14 @@ recv_message (GIOChannel  *channel,
 
           if (nb == 0)
             {
-              g_debug ("gio-test: ...from %d: EOF", fd);
+              g_debug ("io-channel-basic: ...from %d: EOF", fd);
               shutdown_source (data);
               return FALSE;
             }
 
           for (j = 0; j < nbytes; j++)
             g_assert_cmpint (buf[j], ==, ' ' + (char) ((nbytes + j) % 95));
-          g_debug ("gio-test: ...from %d: OK", fd);
+          g_debug ("io-channel-basic: ...from %d: OK", fd);
         }
     }
   return retval;
@@ -202,7 +207,7 @@ recv_windows_message (GIOChannel  *channel,
 
       if (error != G_IO_ERROR_NONE)
         {
-          g_print ("gio-test: ...reading Windows message: G_IO_ERROR_%s\n",
+          g_print ("io-channel-basic: ...reading Windows message: G_IO_ERROR_%s\n",
                    (error == G_IO_ERROR_AGAIN ? "AGAIN" :
                     (error == G_IO_ERROR_INVAL ? "INVAL" :
                      (error == G_IO_ERROR_UNKNOWN ? "UNKNOWN" : "???"))));
@@ -212,7 +217,7 @@ recv_windows_message (GIOChannel  *channel,
       break;
     }
 
-  g_print ("gio-test: ...Windows message for 0x%p: %d,%" G_GUINTPTR_FORMAT ",%" G_GINTPTR_FORMAT "\n",
+  g_print ("io-channel-basic: ...Windows message for 0x%p: %d,%" G_GUINTPTR_FORMAT ",%" G_GINTPTR_FORMAT "\n",
            msg.hwnd, msg.message, msg.wParam, (gintptr) msg.lParam);
 
   return TRUE;
@@ -229,7 +234,7 @@ window_procedure (HWND hwnd,
                   WPARAM wparam,
                   LPARAM lparam)
 {
-  g_print ("gio-test: window_procedure for 0x%p: %d,%" G_GUINTPTR_FORMAT ",%" G_GINTPTR_FORMAT "\n",
+  g_print ("io-channel-basic: window_procedure for 0x%p: %d,%" G_GUINTPTR_FORMAT ",%" G_GINTPTR_FORMAT "\n",
            hwnd, message, wparam, (gintptr) lparam);
   return DefWindowProc (hwnd, message, wparam, lparam);
 }
@@ -260,21 +265,21 @@ spawn_process (int children_nb)
   wcl.hCursor = NULL;
   wcl.hbrBackground = NULL;
   wcl.lpszMenuName = NULL;
-  wcl.lpszClassName = "gio-test";
+  wcl.lpszClassName = "io-channel-basic";
 
   klass = RegisterClass (&wcl);
 
   if (!klass)
     {
-      g_print ("gio-test: RegisterClass failed\n");
+      g_print ("io-channel-basic: RegisterClass failed\n");
       exit (1);
     }
 
-  hwnd = CreateWindow (MAKEINTATOM(klass), "gio-test", 0, 0, 0, 10, 10,
+  hwnd = CreateWindow (MAKEINTATOM(klass), "io-channel-basic", 0, 0, 0, 10, 10,
                        NULL, NULL, wcl.hInstance, NULL);
   if (!hwnd)
     {
-      g_print ("gio-test: CreateWindow failed\n");
+      g_print ("io-channel-basic: CreateWindow failed\n");
       exit (1);
     }
 
@@ -333,8 +338,8 @@ spawn_process (int children_nb)
       pollresult = g_io_channel_win32_poll (&pollfd, 1, 100);
       end = g_get_monotonic_time();
 
-      g_print ("gio-test: had to wait %" G_GINT64_FORMAT "s, result:%d\n",
-               (end - start) / 1000000, pollresult);
+      g_print ("io-channel-basic: had to wait %" G_GINT64_FORMAT "s, result:%d\n",
+               g_date_time_difference (end, start) / 1000000, pollresult);
 #endif
       g_io_channel_unref (my_read_channel);
     }
@@ -372,7 +377,7 @@ run_process (int argc, char *argv[])
       buflen = rand () % BUFSIZE;
       for (j = 0; j < buflen; j++)
         buf[j] = ' ' + ((buflen + j) % 95);
-      g_debug ("gio-test: child writing %d+%d bytes to %d",
+      g_debug ("io-channel-basic: child writing %d+%d bytes to %d",
                (int) (sizeof (i) + sizeof (buflen)), buflen, writefd);
       write (writefd, &i, sizeof (i));
       write (writefd, &buflen, sizeof (buflen));
@@ -384,13 +389,13 @@ run_process (int argc, char *argv[])
           int msg = WM_USER + (rand () % 100);
           WPARAM wparam = rand ();
           LPARAM lparam = rand ();
-          g_print ("gio-test: child posting message %d,%" G_GUINTPTR_FORMAT ",%" G_GINTPTR_FORMAT " to 0x%p\n",
+          g_print ("io-channel-basic: child posting message %d,%" G_GUINTPTR_FORMAT ",%" G_GINTPTR_FORMAT " to 0x%p\n",
                    msg, wparam, (gintptr) lparam, hwnd);
           PostMessage (hwnd, msg, wparam, lparam);
         }
 #endif
     }
-  g_debug ("gio-test: child exiting, closing %d", writefd);
+  g_debug ("io-channel-basic: child exiting, closing %d", writefd);
   close (writefd);
 }
 
