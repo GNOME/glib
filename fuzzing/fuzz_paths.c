@@ -4,7 +4,7 @@ int
 LLVMFuzzerTestOneInput (const unsigned char *data, size_t size)
 {
   unsigned char *nul_terminated_data = NULL;
-  const gchar *skipped_root;
+  const gchar *skipped_root G_GNUC_UNUSED  /* when compiling with G_DISABLE_ASSERT */;
   gchar *basename = NULL, *dirname = NULL;
 
   fuzz_set_logging_func ();
