@@ -1017,6 +1017,7 @@ test_converter_pollable (void)
 	}
       else if (socket_out)
 	{
+	  g_output_stream_close (socket_out, NULL, NULL);
 	  g_object_unref (right);
 	  socket_out = NULL;
 	}
