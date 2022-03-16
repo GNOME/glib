@@ -5,7 +5,7 @@
 #include <unistd.h>
 #endif
 
-#define G_TYPE_TEST               (my_test_get_type ())
+#define G_TYPE_TEST                (my_test_get_type ())
 #define MY_TEST(test)              (G_TYPE_CHECK_INSTANCE_CAST ((test), G_TYPE_TEST, GTest))
 #define MY_IS_TEST(test)           (G_TYPE_CHECK_INSTANCE_TYPE ((test), G_TYPE_TEST))
 #define MY_TEST_CLASS(tclass)      (G_TYPE_CHECK_CLASS_CAST ((tclass), G_TYPE_TEST, GTestClass))
@@ -65,7 +65,6 @@ my_test_class_init (GTestClass * klass)
   GObjectClass *gobject_class;
 
   gobject_class = (GObjectClass *) klass;
-
   parent_class = g_type_class_ref (G_TYPE_OBJECT);
 
   gobject_class->dispose = my_test_dispose;
@@ -74,7 +73,7 @@ my_test_class_init (GTestClass * klass)
 static void
 my_test_init (GTest * test)
 {
-  g_print ("init %p\n", test);
+  g_test_message ("init %p\n", test);
 }
 
 static void
@@ -84,7 +83,7 @@ my_test_dispose (GObject * object)
 
   test = MY_TEST (object);
 
-  g_print ("dispose %p!\n", test);
+  g_test_message ("dispose %p!\n", test);
 
   G_OBJECT_CLASS (parent_class)->dispose (object);
 }
@@ -92,8 +91,8 @@ my_test_dispose (GObject * object)
 static void
 my_test_do_refcount (GTest * test)
 {
-  g_object_ref (test); 
-  g_object_unref (test); 
+  g_object_ref (test);
+  g_object_unref (test);
 }
 
 static gpointer
@@ -104,24 +103,21 @@ run_thread (GTest * test)
   while (!g_atomic_int_get (&stopping)) {
     my_test_do_refcount (test);
     if ((i++ % 10000) == 0) {
-      g_print (".");
-      g_thread_yield(); /* force context switch */
+        g_test_message (".");
+        g_thread_yield (); /* force context switch */
     }
   }
 
   return NULL;
 }
 
-int
-main (int argc, char **argv)
+static void
+test_refcount_object_basics (void)
 {
   guint i;
   GTest *test1, *test2;
   GArray *test_threads;
   const guint n_threads = 5;
-
-  g_print ("START: %s\n", argv[0]);
-  g_log_set_always_fatal (G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL | g_log_set_always_fatal (G_LOG_FATAL_MASK));
 
   test1 = g_object_new (G_TYPE_TEST, NULL);
   test2 = g_object_new (G_TYPE_TEST, NULL);
@@ -139,11 +135,9 @@ main (int argc, char **argv)
     thread = g_thread_create ((GThreadFunc) run_thread, test2, TRUE, NULL);
     g_array_append_val (test_threads, thread);
   }
+
   g_usleep (5000000);
-
   g_atomic_int_set (&stopping, 1);
-
-  g_print ("\nstopping\n");
 
   /* join all threads */
   for (i = 0; i < 2 * n_threads; i++) {
@@ -156,8 +150,18 @@ main (int argc, char **argv)
   g_object_unref (test1);
   g_object_unref (test2);
   g_array_unref (test_threads);
+}
 
-  g_print ("stopped\n");
+int
+main (int argc, gchar *argv[])
+{
+  g_log_set_always_fatal (G_LOG_LEVEL_WARNING |
+                          G_LOG_LEVEL_CRITICAL |
+                          g_log_set_always_fatal (G_LOG_FATAL_MASK));
 
-  return 0;
+  g_test_init (&argc, &argv, NULL);
+
+  g_test_add_func ("/gobject/refcount/object-basics", test_refcount_object_basics);
+
+  return g_test_run ();
 }
