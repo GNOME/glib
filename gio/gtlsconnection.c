@@ -501,7 +501,7 @@ g_tls_connection_get_use_system_certdb (GTlsConnection *conn)
  * #GTlsClientConnection:validation-flags).
  *
  * There are nonintuitive security implications when using a non-default
- * database. See #GDtlsConnection:database for details.
+ * database. See #GTlsConnection:database for details.
  *
  * Since: 2.30
  */
