@@ -2940,19 +2940,26 @@ test_identifier (void)
 static void
 test_new_offset (void)
 {
-  const gint32 vectors[] =
+  const struct
     {
-      -10000,
-      -3600,
-      -61,
-      -60,
-      -59,
-      0,
-      59,
-      60,
-      61,
-      3600,
-      10000,
+      gint32 offset;
+      gboolean expected_success;
+    }
+  vectors[] =
+    {
+      { -158400, FALSE },
+      { -10000, TRUE },
+      { -3600, TRUE },
+      { -61, TRUE },
+      { -60, TRUE },
+      { -59, TRUE },
+      { 0, TRUE },
+      { 59, TRUE },
+      { 60, TRUE },
+      { 61, TRUE },
+      { 3600, TRUE },
+      { 10000, TRUE },
+      { 158400, FALSE },
     };
   gsize i;
 
@@ -2960,12 +2967,21 @@ test_new_offset (void)
     {
       GTimeZone *tz = NULL;
 
-      g_test_message ("Vector %" G_GSIZE_FORMAT ": %d", i, vectors[i]);
+      g_test_message ("Vector %" G_GSIZE_FORMAT ": %d", i, vectors[i].offset);
 
-      tz = g_time_zone_new_offset (vectors[i]);
+      tz = g_time_zone_new_offset (vectors[i].offset);
       g_assert_nonnull (tz);
-      g_assert_cmpstr (g_time_zone_get_identifier (tz), !=, "UTC");
-      g_assert_cmpint (g_time_zone_get_offset (tz, 0), ==, vectors[i]);
+
+      if (vectors[i].expected_success)
+        {
+          g_assert_cmpstr (g_time_zone_get_identifier (tz), !=, "UTC");
+          g_assert_cmpint (g_time_zone_get_offset (tz, 0), ==, vectors[i].offset);
+        }
+      else
+        {
+          g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "UTC");
+        }
+
       g_time_zone_unref (tz);
     }
 }

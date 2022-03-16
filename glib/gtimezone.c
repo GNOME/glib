@@ -2028,7 +2028,13 @@ g_time_zone_new_local (void)
  * This is equivalent to calling g_time_zone_new() with a string in the form
  * `[+|-]hh[:mm[:ss]]`.
  *
- * Returns: (transfer full): a timezone at the given offset from UTC
+ * It is possible for this function to fail if @seconds is too big (greater than
+ * 24 hours), in which case this function will return the UTC timezone for
+ * backwards compatibility. To detect failures like this, use
+ * g_time_zone_new_identifier() directly.
+ *
+ * Returns: (transfer full): a timezone at the given offset from UTC, or UTC on
+ *   failure
  * Since: 2.58
  */
 GTimeZone *
@@ -2048,10 +2054,14 @@ g_time_zone_new_offset (gint32 seconds)
                                 (ABS (seconds) / 60) % 60,
                                 ABS (seconds) % 60);
   tz = g_time_zone_new_identifier (identifier);
+
+  if (tz == NULL)
+    tz = g_time_zone_new_utc ();
+  else
+    g_assert (g_time_zone_get_offset (tz, 0) == seconds);
+
   g_assert (tz != NULL);
   g_free (identifier);
-
-  g_assert (g_time_zone_get_offset (tz, 0) == seconds);
 
   return tz;
 }
