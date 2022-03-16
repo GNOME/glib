@@ -87,18 +87,18 @@ my_test_class_init (GTestClass * klass)
   gobject_class->set_property = my_test_set_property;
 
   g_object_class_install_property (gobject_class,
-				   PROP_DUMMY,
-				   g_param_spec_int ("dummy",
-						     NULL, 
-						     NULL,
-						     0, G_MAXINT, 0,
-						     G_PARAM_READWRITE));
+                                   PROP_DUMMY,
+                                   g_param_spec_int ("dummy",
+                                                     NULL,
+                                                     NULL,
+                                                     0, G_MAXINT, 0,
+                                                     G_PARAM_READWRITE));
 }
 
 static void
 my_test_init (GTest * test)
 {
-  g_print ("init %p\n", test);
+  g_test_message ("init %p\n", test);
 }
 
 static void
@@ -108,15 +108,15 @@ my_test_dispose (GObject * object)
 
   test = MY_TEST (object);
 
-  g_print ("dispose %p!\n", test);
+  g_test_message ("dispose %p!\n", test);
 
   G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
-static void 
-my_test_get_property (GObject    *object,
-                      guint       prop_id,
-                      GValue     *value,
+static void
+my_test_get_property (GObject *object,
+                      guint prop_id,
+                      GValue *value,
                       GParamSpec *pspec)
 {
   GTest *test;
@@ -134,11 +134,11 @@ my_test_get_property (GObject    *object,
     }
 }
 
-static void 
-my_test_set_property (GObject      *object,
-                      guint         prop_id,
+static void
+my_test_set_property (GObject *object,
+                      guint prop_id,
                       const GValue *value,
-                      GParamSpec   *pspec)
+                      GParamSpec *pspec)
 {
   GTest *test;
 
@@ -163,7 +163,7 @@ dummy_notify (GObject    *object,
 {
   count++;
   if (count % 10000 == 0)
-    g_print (".");
+    g_test_message (".");
 }
 
 static void
@@ -175,28 +175,36 @@ my_test_do_property (GTest * test)
   g_object_set (test, "dummy", dummy + 1, NULL);
 }
 
-int
-main (int argc, char **argv)
+static void
+test_refcount_properties_2 (void)
 {
   gint i;
   GTest *test;
 
-  g_print ("START: %s\n", argv[0]);
-  g_log_set_always_fatal (G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL | g_log_set_always_fatal (G_LOG_FATAL_MASK));
-
   test = g_object_new (G_TYPE_TEST, NULL);
 
   g_signal_connect (test, "notify::dummy", G_CALLBACK (dummy_notify), NULL);
+  g_assert_cmpint (count, ==, test->dummy);
 
-  g_assert (count == test->dummy);
-
-  for (i=0; i<1000000; i++) {
-    my_test_do_property (test);
-  }
-
-  g_assert (count == test->dummy);
+  for (i = 0; i < 1000000; i++)
+    {
+      my_test_do_property (test);
+    }
+  g_assert_cmpint (count, ==, test->dummy);
 
   g_object_unref (test);
+}
 
-  return 0;
+int
+main (int argc, gchar *argv[])
+{
+  g_log_set_always_fatal (G_LOG_LEVEL_WARNING |
+                          G_LOG_LEVEL_CRITICAL |
+                          g_log_set_always_fatal (G_LOG_FATAL_MASK));
+
+  g_test_init (&argc, &argv, NULL);
+
+  g_test_add_func ("/gobject/refcount/properties-2", test_refcount_properties_2);
+
+  return g_test_run ();
 }
