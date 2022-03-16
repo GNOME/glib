@@ -73,7 +73,7 @@ my_test_class_init (GTestClass * klass)
 static void
 my_test_init (GTest * test)
 {
-  g_print ("init %p\n", test);
+  g_test_message ("init %p\n", test);
 }
 
 static void
@@ -83,7 +83,7 @@ my_test_dispose (GObject * object)
 
   test = MY_TEST (object);
 
-  g_print ("dispose %p!\n", test);
+  g_test_message ("dispose %p!\n", test);
 
   G_OBJECT_CLASS (parent_class)->dispose (object);
 }
@@ -92,30 +92,40 @@ static void
 my_test_do_refcount (GTest * test)
 {
   static guint i = 1;
+
   if (i++ % 100000 == 0)
-    g_print (".");
-  g_object_ref (test); 
-  g_object_unref (test); 
+    g_test_message (".");
+
+  g_object_ref (test);
+  g_object_unref (test);
+}
+
+static void
+test_refcount_object_advanced (void)
+{
+  gint i;
+  GTest *test;
+
+  test = g_object_new (G_TYPE_TEST, NULL);
+
+  for (i = 0; i < 100000000; i++)
+    {
+      my_test_do_refcount (test);
+    }
+
+  g_object_unref (test);
 }
 
 int
 main (int argc, char **argv)
 {
-  gint i;
-  GTest *test;
+  g_log_set_always_fatal (G_LOG_LEVEL_WARNING |
+                          G_LOG_LEVEL_CRITICAL |
+                          g_log_set_always_fatal (G_LOG_FATAL_MASK));
 
-  g_print ("START: %s\n", argv[0]);
-  g_log_set_always_fatal (G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL | g_log_set_always_fatal (G_LOG_FATAL_MASK));
+  g_test_init (&argc, &argv, NULL);
 
-  test = g_object_new (G_TYPE_TEST, NULL);
+  g_test_add_func ("/gobject/refcount/object-advanced", test_refcount_object_advanced);
 
-  for (i=0; i<100000000; i++) {
-    my_test_do_refcount (test);
-  }
-
-  g_object_unref (test);
-
-  g_print ("\n");
-
-  return 0;
+  return g_test_run ();
 }
