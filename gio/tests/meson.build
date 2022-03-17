@@ -333,6 +333,7 @@ if host_machine.system() != 'windows'
         'suite' : ['slow'],
       },
       'gdbus-introspection' : {'extra_sources' : extra_sources},
+      'gdbus-method-invocation' : {'extra_sources' : extra_sources},
       'gdbus-names' : {'extra_sources' : extra_sources},
       'gdbus-proxy' : {'extra_sources' : extra_sources},
       'gdbus-proxy-threads' : {
