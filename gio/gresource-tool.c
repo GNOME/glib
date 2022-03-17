@@ -477,8 +477,8 @@ static gint
 cmd_help (gboolean     requested,
           const gchar *command)
 {
-  const gchar *description;
-  const gchar *synopsis;
+  const gchar *description = NULL;
+  const gchar *synopsis = NULL;
   gchar *option;
   GString *string;
 

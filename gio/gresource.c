@@ -346,7 +346,7 @@ g_resource_find_overlay (const gchar    *path,
       if (envvar != NULL)
         {
           gchar **parts;
-          gint i, j;
+          gint j;
 
           parts = g_strsplit (envvar, G_SEARCHPATH_SEPARATOR_S, 0);
 
@@ -414,7 +414,7 @@ g_resource_find_overlay (const gchar    *path,
           /* We go out of the way to avoid malloc() in the normal case
            * where the environment variable is not set.
            */
-          static const gchar * const empty_strv[0 + 1];
+          static const gchar *const empty_strv[0 + 1] = { 0 };
           result = empty_strv;
         }
 

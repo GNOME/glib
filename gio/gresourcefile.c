@@ -447,8 +447,8 @@ g_resource_file_query_info (GFile                *file,
   GFileInfo *info;
   GFileAttributeMatcher *matcher;
   gboolean res;
-  gsize size;
-  guint32 resource_flags;
+  gsize size = 0;
+  guint32 resource_flags = 0;
   char **children;
   gboolean is_dir;
   char *base;
