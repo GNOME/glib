@@ -1059,7 +1059,8 @@ test_file_errors (void)
 static void
 test_basename (void)
 {
-  gchar *b;
+  const gchar *path = "/path/to/a/file/deep/down.sh";
+  const gchar *b;
 
   if (g_test_undefined ())
     {
@@ -1067,7 +1068,20 @@ test_basename (void)
                              "*assertion*!= NULL*");
       g_assert_null (g_basename (NULL));
       g_test_assert_expected_messages ();
+    }
 
+  b = g_basename (path);
+
+  g_assert_cmpstr (b, ==, "down.sh");
+}
+
+static void
+test_get_basename (void)
+{
+  gchar *b;
+
+  if (g_test_undefined ())
+    {
       g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
                              "*assertion*!= NULL*");
       g_assert_null (g_path_get_basename (NULL));
@@ -2434,6 +2448,7 @@ main (int   argc,
   g_test_add_func ("/fileutils/format-size-for-display", test_format_size_for_display);
   g_test_add_func ("/fileutils/errors", test_file_errors);
   g_test_add_func ("/fileutils/basename", test_basename);
+  g_test_add_func ("/fileutils/get-basename", test_get_basename);
   g_test_add_func ("/fileutils/dirname", test_dirname);
   g_test_add_func ("/fileutils/dir-make-tmp", test_dir_make_tmp);
   g_test_add_func ("/fileutils/file-open-tmp", test_file_open_tmp);
