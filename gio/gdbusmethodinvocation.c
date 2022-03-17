@@ -424,7 +424,9 @@ g_dbus_method_invocation_return_value_internal (GDBusMethodInvocation *invocatio
 
   /* property_info is only non-NULL if set that way from
    * GDBusConnection, so this must be the case of async property
-   * handling on either 'Get', 'Set' or 'GetAll'.
+   * handling on either 'Get' or 'Set'.
+   *
+   * property_info is NULL for 'GetAll'.
    */
   if (invocation->property_info != NULL)
     {
@@ -454,21 +456,6 @@ g_dbus_method_invocation_return_value_internal (GDBusMethodInvocation *invocatio
           g_variant_unref (nested);
         }
 
-      else if (g_str_equal (invocation->method_name, "GetAll"))
-        {
-          if (!g_variant_is_of_type (parameters, G_VARIANT_TYPE ("(a{sv})")))
-            {
-              g_warning ("Type of return value for property 'GetAll' call should be '(a{sv})' but got '%s'",
-                         g_variant_get_type_string (parameters));
-              goto out;
-            }
-
-          /* Could iterate the list of properties and make sure that all
-           * of them are actually on the interface and with the correct
-           * types, but let's not do that for now...
-           */
-        }
-
       else if (g_str_equal (invocation->method_name, "Set"))
         {
           if (!g_variant_is_of_type (parameters, G_VARIANT_TYPE_UNIT))
@@ -481,6 +468,21 @@ g_dbus_method_invocation_return_value_internal (GDBusMethodInvocation *invocatio
 
       else
         g_assert_not_reached ();
+    }
+  else if (g_str_equal (invocation->interface_name, "org.freedesktop.DBus.Properties") &&
+           g_str_equal (invocation->method_name, "GetAll"))
+    {
+      if (!g_variant_is_of_type (parameters, G_VARIANT_TYPE ("(a{sv})")))
+        {
+          g_warning ("Type of return value for property 'GetAll' call should be '(a{sv})' but got '%s'",
+                     g_variant_get_type_string (parameters));
+          goto out;
+        }
+
+      /* Could iterate the list of properties and make sure that all
+       * of them are actually on the interface and with the correct
+       * types, but let's not do that for now...
+       */
     }
 
   if (G_UNLIKELY (_g_dbus_debug_return ()))
