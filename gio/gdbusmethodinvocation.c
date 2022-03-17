@@ -397,14 +397,7 @@ g_dbus_method_invocation_return_value_internal (GDBusMethodInvocation *invocatio
   g_return_if_fail ((parameters == NULL) || g_variant_is_of_type (parameters, G_VARIANT_TYPE_TUPLE));
 
   if (g_dbus_message_get_flags (invocation->message) & G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED)
-    {
-      if (parameters != NULL)
-        {
-          g_variant_ref_sink (parameters);
-          g_variant_unref (parameters);
-        }
-      goto out;
-    }
+    goto out;
 
   if (parameters == NULL)
     parameters = g_variant_new_tuple (NULL, 0);
@@ -508,7 +501,7 @@ g_dbus_method_invocation_return_value_internal (GDBusMethodInvocation *invocatio
     }
 
   reply = g_dbus_message_new_method_reply (invocation->message);
-  g_dbus_message_set_body (reply, parameters);
+  g_dbus_message_set_body (reply, g_steal_pointer (&parameters));
 
 #ifdef G_OS_UNIX
   if (fd_list != NULL)
@@ -525,6 +518,12 @@ g_dbus_method_invocation_return_value_internal (GDBusMethodInvocation *invocatio
   g_object_unref (reply);
 
  out:
+  if (parameters != NULL)
+    {
+      g_variant_ref_sink (parameters);
+      g_variant_unref (parameters);
+    }
+
   g_object_unref (invocation);
 }
 
