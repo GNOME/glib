@@ -2365,21 +2365,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 static gboolean
-strv_has_string (gchar       **haystack,
-                 const gchar  *needle)
-{
-  guint n;
-
-  for (n = 0; haystack != NULL && haystack[n] != NULL; n++)
-    {
-      if (g_strcmp0 (haystack[n], needle) == 0)
-        return TRUE;
-    }
-  return FALSE;
-}
-
-static gboolean
-strv_set_equal (gchar **strv, ...)
+strv_set_equal (const gchar * const *strv, ...)
 {
   gsize count;
   va_list list;
@@ -2394,7 +2380,7 @@ strv_set_equal (gchar **strv, ...)
       str = va_arg (list, const gchar *);
       if (str == NULL)
         break;
-      if (!strv_has_string (strv, str))
+      if (!g_strv_contains (strv, str))
         {
           res = FALSE;
           break;
@@ -2422,8 +2408,8 @@ test_list_items (void)
   children = g_settings_list_children (settings);
   keys = g_settings_schema_list_keys (schema);
 
-  g_assert_true (strv_set_equal (children, "basic-types", "complex-types", "localized", NULL));
-  g_assert_true (strv_set_equal (keys, "greeting", "farewell", NULL));
+  g_assert_true (strv_set_equal ((const gchar * const *) children, "basic-types", "complex-types", "localized", NULL));
+  g_assert_true (strv_set_equal ((const gchar * const *) keys, "greeting", "farewell", NULL));
 
   g_strfreev (children);
   g_strfreev (keys);
@@ -2443,13 +2429,13 @@ G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   schemas = g_settings_list_schemas ();
 G_GNUC_END_IGNORE_DEPRECATIONS
 
-  g_assert_true (strv_set_equal ((gchar **)relocs,
+  g_assert_true (strv_set_equal (relocs,
                                  "org.gtk.test.no-path",
                                  "org.gtk.test.extends.base",
                                  "org.gtk.test.extends.extended",
                                  NULL));
 
-  g_assert_true (strv_set_equal ((gchar **)schemas,
+  g_assert_true (strv_set_equal (schemas,
                                  "org.gtk.test",
                                  "org.gtk.test.basic-types",
                                  "org.gtk.test.complex-types",
@@ -2658,7 +2644,7 @@ test_schema_list_keys (void)
 
   keys = g_settings_schema_list_keys (schema);
 
-  g_assert_true (strv_set_equal ((gchar **)keys,
+  g_assert_true (strv_set_equal ((const gchar * const *) keys,
                                  "greeting",
                                  "farewell",
                                  NULL));
@@ -2969,7 +2955,7 @@ test_extended_schema (void)
   settings = g_settings_new_with_path ("org.gtk.test.extends.extended", "/test/extendes/");
   g_object_get (settings, "settings-schema", &schema, NULL);
   keys = g_settings_schema_list_keys (schema);
-  g_assert_true (strv_set_equal (keys, "int32", "string", "another-int32", NULL));
+  g_assert_true (strv_set_equal ((const gchar * const *) keys, "int32", "string", "another-int32", NULL));
   g_strfreev (keys);
   g_object_unref (settings);
   g_settings_schema_unref (schema);

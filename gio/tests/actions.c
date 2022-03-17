@@ -115,33 +115,20 @@ test_name (void)
 }
 
 static gboolean
-strv_has_string (gchar       **haystack,
-                 const gchar  *needle)
-{
-  guint n;
-
-  for (n = 0; haystack != NULL && haystack[n] != NULL; n++)
-    {
-      if (g_strcmp0 (haystack[n], needle) == 0)
-        return TRUE;
-    }
-  return FALSE;
-}
-
-static gboolean
-strv_strv_cmp (gchar **a, gchar **b)
+strv_strv_cmp (const gchar * const *a,
+               const gchar * const *b)
 {
   guint n;
 
   for (n = 0; a[n] != NULL; n++)
     {
-       if (!strv_has_string (b, a[n]))
+       if (!g_strv_contains (b, a[n]))
          return FALSE;
     }
 
   for (n = 0; b[n] != NULL; n++)
     {
-       if (!strv_has_string (a, b[n]))
+       if (!g_strv_contains (a, b[n]))
          return FALSE;
     }
 
@@ -149,7 +136,7 @@ strv_strv_cmp (gchar **a, gchar **b)
 }
 
 static gboolean
-strv_set_equal (gchar **strv, ...)
+strv_set_equal (const gchar * const *strv, ...)
 {
   guint count;
   va_list list;
@@ -164,7 +151,7 @@ strv_set_equal (gchar **strv, ...)
       str = va_arg (list, const gchar *);
       if (str == NULL)
         break;
-      if (!strv_has_string (strv, str))
+      if (!g_strv_contains (strv, str))
         {
           res = FALSE;
           break;
@@ -215,7 +202,7 @@ test_simple_group (void)
   g_assert_false (g_action_group_has_action (G_ACTION_GROUP (group), "baz"));
   actions = g_action_group_list_actions (G_ACTION_GROUP (group));
   g_assert_cmpint (g_strv_length (actions), ==, 2);
-  g_assert_true (strv_set_equal (actions, "foo", "bar", NULL));
+  g_assert_true (strv_set_equal ((const gchar * const *) actions, "foo", "bar", NULL));
   g_strfreev (actions);
   g_assert_true (g_action_group_get_action_enabled (G_ACTION_GROUP (group), "foo"));
   g_assert_true (g_action_group_get_action_enabled (G_ACTION_GROUP (group), "bar"));
@@ -599,7 +586,7 @@ compare_action_groups (GActionGroup *a, GActionGroup *b)
 
   alist = g_action_group_list_actions (a);
   blist = g_action_group_list_actions (b);
-  equal = strv_strv_cmp (alist, blist);
+  equal = strv_strv_cmp ((const gchar * const *) alist, (const gchar * const *) blist);
 
   for (i = 0; equal && alist[i]; i++)
     {
