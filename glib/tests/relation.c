@@ -22,6 +22,8 @@
  * GLib at ftp://ftp.gtk.org/pub/gtk/.
  */
 
+#define GLIB_DISABLE_DEPRECATION_WARNINGS
+
 #include <glib.h>
 
 int array[10000];

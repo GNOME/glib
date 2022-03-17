@@ -89,6 +89,7 @@ glib_tests = {
     'dependencies' : [pcre],
     'c_args' : use_pcre_static_flag ? ['-DPCRE_STATIC'] : [],
   },
+  'relation' : {},
   'rwlock' : {},
   'scannerapi' : {},
   'search-utils' : {},
