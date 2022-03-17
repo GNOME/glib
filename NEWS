@@ -1,3 +1,29 @@
+Overview of changes in GLib 2.72.0
+==================================
+
+* Bugs fixed:
+ - #2620 g_time_zone_new_offset() assertion failure if offset >= 25 hours
+ - !2538 Various unit test fixes
+ - !2542 fuzzing: Fix test failure with G_DISABLE_ASSERT
+ - !2547 gprintf: Fix a memory leak with an invalid format in g_vasprintf()
+ - !2548 tests: Various fixes to gdbus-auth, gdbus-non-socket, gdbus-connection-flush, spawn-multithreaded tests
+ - !2551 tests: More flaky test fixes to converter-stream and test-printf
+ - !2552 gtlsconnection: fix typo in docs
+
+* Translation updates:
+ - Czech
+ - French
+ - Friulian
+ - Hebrew
+ - Hungarian
+ - Italian
+ - Kazakh
+ - Polish
+ - Romanian
+ - Serbian
+ - Swedish
+
+
 Overview of changes in GLib 2.71.3
 ==================================
 
