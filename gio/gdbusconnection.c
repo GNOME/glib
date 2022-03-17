@@ -282,22 +282,6 @@ call_destroy_notify (GMainContext  *context,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-static gboolean
-_g_strv_has_string (const gchar* const *haystack,
-                    const gchar        *needle)
-{
-  guint n;
-
-  for (n = 0; haystack != NULL && haystack[n] != NULL; n++)
-    {
-      if (g_strcmp0 (haystack[n], needle) == 0)
-        return TRUE;
-    }
-  return FALSE;
-}
-
-/* ---------------------------------------------------------------------------------------------------- */
-
 #ifdef G_OS_WIN32
 #define CONNECTION_ENSURE_LOCK(obj) do { ; } while (FALSE)
 #else
@@ -6544,7 +6528,7 @@ handle_subtree_introspect (GDBusConnection *connection,
 
       /* Assert existence of object if we are not dynamic */
       if (!(es->flags & G_DBUS_SUBTREE_FLAGS_DISPATCH_TO_UNENUMERATED_NODES) &&
-          !_g_strv_has_string ((const gchar * const *) children, requested_node))
+          !g_strv_contains ((const gchar * const *) children, requested_node))
         goto out;
     }
   else
@@ -6675,7 +6659,7 @@ handle_subtree_method_invocation (GDBusConnection *connection,
                                             es->object_path,
                                             es->user_data);
 
-          exists = _g_strv_has_string ((const gchar * const *) children, requested_node);
+          exists = g_strv_contains ((const gchar * const *) children, requested_node);
           g_strfreev (children);
 
           if (!exists)
