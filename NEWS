@@ -1,3 +1,21 @@
+Overview of changes in GLib 2.70.5
+==================================
+
+* Bugs fixed:
+ - #2620 g_time_zone_new_offset() assertion failure if offset >= 25 hours
+ - !2537 Backport !2451 “glib: fix buffer overflow in g_canonicalize_filename()” to glib-2-70
+ - !2555 Backport !2554 “gtimezone: Fix assertion failure when called with a huge offset” to glib-2-70
+
+* Translation updates:
+ - Catalan
+ - German
+ - Hungarian
+ - Lithuanian
+ - Romanian
+ - Serbian
+ - Turkish
+
+
 Overview of changes in GLib 2.70.4
 ==================================
 
