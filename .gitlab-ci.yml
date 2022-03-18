@@ -11,7 +11,7 @@ cache:
 
 variables:
   FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v13"
-  COVERITY_IMAGE: "registry.gitlab.gnome.org/gnome/glib/coverity:v2"
+  COVERITY_IMAGE: "registry.gitlab.gnome.org/gnome/glib/coverity:v3"
   DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v9"
   ANDROID_IMAGE: "registry.gitlab.gnome.org/gnome/glib/android-ndk:v5"
   MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v4"
@@ -525,7 +525,6 @@ coverity:
             --libdir=lib
             -Dsystemtap=true
             -Ddtrace=true
-            -Dfam=true
             -Dinstalled_tests=true
             _coverity_build
     - $HOME/cov-analysis-linux64-*/bin/cov-build --dir cov-int ninja -C _coverity_build
