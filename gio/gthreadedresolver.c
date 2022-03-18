@@ -667,6 +667,7 @@ g_resolver_records_from_res_query (const gchar      *rrname,
   const HEADER *header;
   GList *records;
   GVariant *record;
+  gsize len_unsigned;
 
   if (len <= 0)
     {
@@ -689,11 +690,23 @@ g_resolver_records_from_res_query (const gchar      *rrname,
       return NULL;
     }
 
+  /* We know len ≥ 0 now. */
+  len_unsigned = (gsize) len;
+
+  if (len_unsigned < sizeof (HEADER))
+    {
+      g_set_error (error, G_RESOLVER_ERROR, G_RESOLVER_ERROR_INTERNAL,
+                   /* Translators: the first placeholder is a domain name, the
+                    * second is an error message */
+                   _("Error resolving “%s”: %s"), rrname, _("Malformed DNS packet"));
+      return NULL;
+    }
+
   records = NULL;
 
   header = (HEADER *)answer;
   p = answer + sizeof (HEADER);
-  end = answer + len;
+  end = answer + len_unsigned;
 
   /* Skip query */
   count = ntohs (header->qdcount);
