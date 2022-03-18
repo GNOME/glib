@@ -10,7 +10,7 @@ cache:
     - _ccache/
 
 variables:
-  FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v12"
+  FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v13"
   COVERITY_IMAGE: "registry.gitlab.gnome.org/gnome/glib/coverity:v2"
   DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v9"
   ANDROID_IMAGE: "registry.gitlab.gnome.org/gnome/glib/android-ndk:v5"
@@ -90,7 +90,6 @@ fedora-x86_64:
             --libdir=lib
             -Dsystemtap=true
             -Ddtrace=true
-            -Dfam=true
             -Dinstalled_tests=true
             -Dgtk_doc=true
             _build
@@ -164,7 +163,6 @@ installed-tests:
     - meson ${MESON_COMMON_OPTIONS}
             --werror
             --prefix=/usr --libdir=/usr/lib64
-            -Dfam=true
             -Dinstalled_tests=true
             -Ddefault_library=both
             -Ddtrace=false
@@ -202,7 +200,6 @@ G_DISABLE_ASSERT:
             --werror
             -Dsystemtap=true
             -Ddtrace=true
-            -Dfam=true
             -Dinstalled_tests=true
             -Dglib_assert=false
             _build
@@ -233,7 +230,6 @@ valgrind:
             --werror
             -Dsystemtap=true
             -Ddtrace=true
-            -Dfam=true
             -Dinstalled_tests=true
             _build
     - ninja -C _build
@@ -501,7 +497,6 @@ scan-build:
             --libdir=lib
             -Dsystemtap=true
             -Ddtrace=true
-            -Dfam=true
             -Dinstalled_tests=true
             _scan_build
     - ninja -C _scan_build scan-build
