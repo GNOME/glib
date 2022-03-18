@@ -146,6 +146,42 @@ test_invalid_header (void)
     }
 }
 
+static void
+test_unknown_record_type (void)
+{
+#ifndef HAVE_DN_COMP
+  g_test_skip ("The dn_comp() function was not available.");
+  return;
+#else
+  GByteArray *answer = NULL;
+  GList *records = NULL;
+  GError *local_error = NULL;
+  const guint type_id = 20;  /* ISDN, not supported anywhere */
+
+  /* An answer with an unsupported type chosen from
+   * https://en.wikipedia.org/wiki/List_of_DNS_record_types#[1]_Obsolete_record_types */
+  answer = dns_header ();
+  dns_builder_add_domain (answer, "example.org");
+  dns_builder_add_uint16 (answer, type_id);
+  dns_builder_add_uint16 (answer, 1); /* qclass=C_IN */
+  dns_builder_add_uint32 (answer, 0); /* ttl (ignored) */
+  dns_builder_add_uint16 (answer, 0); /* rdlength */
+
+  records = g_resolver_records_from_res_query ("example.org",
+                                               type_id,
+                                               answer->data,
+                                               answer->len,
+                                               0,
+                                               &local_error);
+
+  g_assert_error (local_error, G_RESOLVER_ERROR, G_RESOLVER_ERROR_NOT_FOUND);
+  g_assert_null (records);
+  g_clear_error (&local_error);
+
+  g_byte_array_free (answer, TRUE);
+#endif
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -153,6 +189,7 @@ main (int   argc,
   g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
 
   g_test_add_func ("/gresolver/invalid-header", test_invalid_header);
+  g_test_add_func ("/gresolver/unknown-record-type", test_unknown_record_type);
 
   return g_test_run ();
 }

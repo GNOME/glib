@@ -780,7 +780,7 @@ g_resolver_records_from_res_query (const gchar      *rrname,
           record = parse_res_txt (answer, p + rdlength, &p);
           break;
         default:
-          g_warn_if_reached ();
+          g_debug ("Unrecognised DNS record type %u", rrtype);
           record = NULL;
           break;
         }
