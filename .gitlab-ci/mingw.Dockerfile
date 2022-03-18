@@ -1,4 +1,4 @@
-FROM fedora:33
+FROM fedora:34
 
 RUN dnf -y install \
     bindfs \
@@ -8,7 +8,6 @@ RUN dnf -y install \
     elfutils-libelf-devel \
     findutils \
     fuse \
-    gamin-devel \
     gcc \
     gcc-c++ \
     gettext \
