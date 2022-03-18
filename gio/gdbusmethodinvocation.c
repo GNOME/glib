@@ -397,14 +397,7 @@ g_dbus_method_invocation_return_value_internal (GDBusMethodInvocation *invocatio
   g_return_if_fail ((parameters == NULL) || g_variant_is_of_type (parameters, G_VARIANT_TYPE_TUPLE));
 
   if (g_dbus_message_get_flags (invocation->message) & G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED)
-    {
-      if (parameters != NULL)
-        {
-          g_variant_ref_sink (parameters);
-          g_variant_unref (parameters);
-        }
-      goto out;
-    }
+    goto out;
 
   if (parameters == NULL)
     parameters = g_variant_new_tuple (NULL, 0);
@@ -420,7 +413,7 @@ g_dbus_method_invocation_return_value_internal (GDBusMethodInvocation *invocatio
         {
           gchar *type_string = g_variant_type_dup_string (type);
 
-          g_warning ("Type of return value is incorrect: expected '%s', got '%s''",
+          g_warning ("Type of return value is incorrect: expected '%s', got '%s'",
 		     type_string, g_variant_get_type_string (parameters));
           g_variant_type_free (type);
           g_free (type_string);
@@ -431,7 +424,9 @@ g_dbus_method_invocation_return_value_internal (GDBusMethodInvocation *invocatio
 
   /* property_info is only non-NULL if set that way from
    * GDBusConnection, so this must be the case of async property
-   * handling on either 'Get', 'Set' or 'GetAll'.
+   * handling on either 'Get' or 'Set'.
+   *
+   * property_info is NULL for 'GetAll'.
    */
   if (invocation->property_info != NULL)
     {
@@ -461,21 +456,6 @@ g_dbus_method_invocation_return_value_internal (GDBusMethodInvocation *invocatio
           g_variant_unref (nested);
         }
 
-      else if (g_str_equal (invocation->method_name, "GetAll"))
-        {
-          if (!g_variant_is_of_type (parameters, G_VARIANT_TYPE ("(a{sv})")))
-            {
-              g_warning ("Type of return value for property 'GetAll' call should be '(a{sv})' but got '%s'",
-                         g_variant_get_type_string (parameters));
-              goto out;
-            }
-
-          /* Could iterate the list of properties and make sure that all
-           * of them are actually on the interface and with the correct
-           * types, but let's not do that for now...
-           */
-        }
-
       else if (g_str_equal (invocation->method_name, "Set"))
         {
           if (!g_variant_is_of_type (parameters, G_VARIANT_TYPE_UNIT))
@@ -488,6 +468,21 @@ g_dbus_method_invocation_return_value_internal (GDBusMethodInvocation *invocatio
 
       else
         g_assert_not_reached ();
+    }
+  else if (g_str_equal (invocation->interface_name, "org.freedesktop.DBus.Properties") &&
+           g_str_equal (invocation->method_name, "GetAll"))
+    {
+      if (!g_variant_is_of_type (parameters, G_VARIANT_TYPE ("(a{sv})")))
+        {
+          g_warning ("Type of return value for property 'GetAll' call should be '(a{sv})' but got '%s'",
+                     g_variant_get_type_string (parameters));
+          goto out;
+        }
+
+      /* Could iterate the list of properties and make sure that all
+       * of them are actually on the interface and with the correct
+       * types, but let's not do that for now...
+       */
     }
 
   if (G_UNLIKELY (_g_dbus_debug_return ()))
@@ -508,7 +503,7 @@ g_dbus_method_invocation_return_value_internal (GDBusMethodInvocation *invocatio
     }
 
   reply = g_dbus_message_new_method_reply (invocation->message);
-  g_dbus_message_set_body (reply, parameters);
+  g_dbus_message_set_body (reply, g_steal_pointer (&parameters));
 
 #ifdef G_OS_UNIX
   if (fd_list != NULL)
@@ -525,6 +520,12 @@ g_dbus_method_invocation_return_value_internal (GDBusMethodInvocation *invocatio
   g_object_unref (reply);
 
  out:
+  if (parameters != NULL)
+    {
+      g_variant_ref_sink (parameters);
+      g_variant_unref (parameters);
+    }
+
   g_object_unref (invocation);
 }
 
