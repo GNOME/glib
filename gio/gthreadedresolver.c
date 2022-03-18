@@ -836,6 +836,15 @@ g_resolver_records_from_res_query (const gchar      *rrname,
       p += 4; /* ignore the ttl (type=long) value */
       GETSHORT (rdlength, p);
 
+      if (end - p < rdlength)
+        {
+          g_set_error (&parsing_error, G_RESOLVER_ERROR, G_RESOLVER_ERROR_INTERNAL,
+                       /* Translators: the first placeholder is a domain name, the
+                        * second is an error message */
+                       _("Error resolving “%s”: %s"), rrname, _("Malformed DNS packet"));
+          break;
+        }
+
       if (type != rrtype || qclass != C_IN)
         {
           p += rdlength;
@@ -845,16 +854,16 @@ g_resolver_records_from_res_query (const gchar      *rrname,
       switch (rrtype)
         {
         case T_SRV:
-          record = parse_res_srv (answer, end, &p, &parsing_error);
+          record = parse_res_srv (answer, p + rdlength, &p, &parsing_error);
           break;
         case T_MX:
-          record = parse_res_mx (answer, end, &p, &parsing_error);
+          record = parse_res_mx (answer, p + rdlength, &p, &parsing_error);
           break;
         case T_SOA:
-          record = parse_res_soa (answer, end, &p, &parsing_error);
+          record = parse_res_soa (answer, p + rdlength, &p, &parsing_error);
           break;
         case T_NS:
-          record = parse_res_ns (answer, end, &p, &parsing_error);
+          record = parse_res_ns (answer, p + rdlength, &p, &parsing_error);
           break;
         case T_TXT:
           record = parse_res_txt (answer, p + rdlength, &p, &parsing_error);
