@@ -1,4 +1,4 @@
-FROM fedora:33
+FROM fedora:34
 
 RUN dnf -y install \
     autoconf \
@@ -10,7 +10,6 @@ RUN dnf -y install \
     elfutils-libelf-devel \
     findutils \
     fuse \
-    gamin-devel \
     gcc \
     gcc-c++ \
     gettext \
@@ -61,7 +60,17 @@ COPY android-download-ndk.sh .
 RUN ./android-download-ndk.sh
 COPY android-setup-env.sh .
 RUN ./android-setup-env.sh arm64 28
-RUN rm -rf $ANDROID_NDK_PATH
+# Explicitly remove some directories first to fix symlink traversal problems
+RUN rm -rf \
+  $ANDROID_NDK_PATH/sources/third_party/vulkan/src/tests/layers \
+  $ANDROID_NDK_PATH/sources/cxx-stl/llvm-libc++/test/std/containers/unord/unord.multimap/unord.multimap.modifiers \
+  $ANDROID_NDK_PATH/sources/cxx-stl/llvm-libc++/test/std/containers/unord/unord.multiset/unord.multiset.cnstr \
+  $ANDROID_NDK_PATH/sources/cxx-stl/llvm-libc++/test/std/iterators/predef.iterators/reverse.iterators/reverse.iter.ops/reverse.iter.opsum \
+  $ANDROID_NDK_PATH/sources/cxx-stl/llvm-libc++/test/std/experimental/filesystem/fs.op.funcs/fs.op.create_directory_symlink \
+  $ANDROID_NDK_PATH/sources/cxx-stl/llvm-libc++/test/std/experimental/filesystem/fs.op.funcs/fs.op.is_directory \
+  $ANDROID_NDK_PATH/sources/cxx-stl/llvm-libc++/test/std/experimental/filesystem/fs.op.funcs/fs.op.create_hard_link \
+  $ANDROID_NDK_PATH/sources/cxx-stl/llvm-libc++/test/std/experimental/filesystem/fs.op.funcs/fs.op.create_directory \
+  $ANDROID_NDK_PATH
 
 RUN pip3 install meson==0.52.0
 

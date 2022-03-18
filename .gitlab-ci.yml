@@ -13,7 +13,7 @@ variables:
   FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v13"
   COVERITY_IMAGE: "registry.gitlab.gnome.org/gnome/glib/coverity:v3"
   DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v9"
-  ANDROID_IMAGE: "registry.gitlab.gnome.org/gnome/glib/android-ndk:v5"
+  ANDROID_IMAGE: "registry.gitlab.gnome.org/gnome/glib/android-ndk:v6"
   MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v5"
   MESON_TEST_TIMEOUT_MULTIPLIER: 2
   G_MESSAGES_DEBUG: all
