@@ -712,8 +712,22 @@ g_resolver_records_from_res_query (const gchar      *rrname,
   count = ntohs (header->qdcount);
   while (count-- && p < end)
     {
-      p += dn_expand (answer, end, p, namebuf, sizeof (namebuf));
-      p += 4;
+      int expand_result;
+
+      expand_result = dn_expand (answer, end, p, namebuf, sizeof (namebuf));
+      if (expand_result < 0 || end - p < expand_result + 4)
+        {
+          /* Not possible to recover parsing as the length of the rest of the
+           * record is unknown or is too short. */
+          g_set_error (error, G_RESOLVER_ERROR, G_RESOLVER_ERROR_INTERNAL,
+                       /* Translators: the first placeholder is a domain name, the
+                        * second is an error message */
+                       _("Error resolving “%s”: %s"), rrname, _("Malformed DNS packet"));
+          return NULL;
+        }
+
+      p += expand_result;
+      p += 4;  /* skip TYPE and CLASS */
 
       /* To silence gcc warnings */
       namebuf[0] = namebuf[1];
@@ -723,7 +737,20 @@ g_resolver_records_from_res_query (const gchar      *rrname,
   count = ntohs (header->ancount);
   while (count-- && p < end)
     {
-      p += dn_expand (answer, end, p, namebuf, sizeof (namebuf));
+      int expand_result;
+
+      expand_result = dn_expand (answer, end, p, namebuf, sizeof (namebuf));
+      if (expand_result < 0 || end - p < expand_result + 10)
+        {
+          /* Not possible to recover parsing as the length of the rest of the
+           * record is unknown or is too short. */
+          g_set_error (error, G_RESOLVER_ERROR, G_RESOLVER_ERROR_INTERNAL,
+                       _("Error resolving “%s”"), rrname);
+          g_list_free_full (records, (GDestroyNotify) g_variant_unref);
+          return NULL;
+        }
+
+      p += expand_result;
       GETSHORT (type, p);
       GETSHORT (qclass, p);
       p += 4; /* ignore the ttl (type=long) value */
