@@ -602,20 +602,6 @@ on_subtree_unregistered (gpointer user_data)
   data->num_unregistered_subtree_calls++;
 }
 
-static gboolean
-_g_strv_has_string (const gchar* const * haystack,
-                    const gchar *needle)
-{
-  guint n;
-
-  for (n = 0; haystack != NULL && haystack[n] != NULL; n++)
-    {
-      if (g_strcmp0 (haystack[n], needle) == 0)
-        return TRUE;
-    }
-  return FALSE;
-}
-
 /* -------------------- */
 
 static gchar **
@@ -1306,11 +1292,11 @@ test_object_registration (void)
   nodes = get_nodes_at (c, "/foo/boss");
   g_assert (nodes != NULL);
   g_assert_cmpint (g_strv_length (nodes), ==, 5);
-  g_assert (_g_strv_has_string ((const gchar* const *) nodes, "worker1"));
-  g_assert (_g_strv_has_string ((const gchar* const *) nodes, "worker1p1"));
-  g_assert (_g_strv_has_string ((const gchar* const *) nodes, "worker2"));
-  g_assert (_g_strv_has_string ((const gchar* const *) nodes, "interns"));
-  g_assert (_g_strv_has_string ((const gchar* const *) nodes, "executives"));
+  g_assert (g_strv_contains ((const gchar* const *) nodes, "worker1"));
+  g_assert (g_strv_contains ((const gchar* const *) nodes, "worker1p1"));
+  g_assert (g_strv_contains ((const gchar* const *) nodes, "worker2"));
+  g_assert (g_strv_contains ((const gchar* const *) nodes, "interns"));
+  g_assert (g_strv_contains ((const gchar* const *) nodes, "executives"));
   g_strfreev (nodes);
   /* any registered object always implement org.freedesktop.DBus.[Peer,Introspectable,Properties] */
   g_assert_cmpint (count_interfaces (c, "/foo/boss"), ==, 5);
@@ -1322,7 +1308,7 @@ test_object_registration (void)
    */
   nodes = get_nodes_at (c, "/foo/boss/executives");
   g_assert (nodes != NULL);
-  g_assert (_g_strv_has_string ((const gchar* const *) nodes, "non_subtree_object"));
+  g_assert (g_strv_contains ((const gchar* const *) nodes, "non_subtree_object"));
   g_assert_cmpint (g_strv_length (nodes), ==, 1);
   g_strfreev (nodes);
   g_assert_cmpint (count_interfaces (c, "/foo/boss/executives"), ==, 0);
@@ -1332,11 +1318,11 @@ test_object_registration (void)
   nodes = get_nodes_at (c, "/foo/boss/executives");
   g_assert (nodes != NULL);
   g_assert_cmpint (g_strv_length (nodes), ==, 5);
-  g_assert (_g_strv_has_string ((const gchar* const *) nodes, "non_subtree_object"));
-  g_assert (_g_strv_has_string ((const gchar* const *) nodes, "vp0"));
-  g_assert (_g_strv_has_string ((const gchar* const *) nodes, "vp1"));
-  g_assert (_g_strv_has_string ((const gchar* const *) nodes, "evp0"));
-  g_assert (_g_strv_has_string ((const gchar* const *) nodes, "evp1"));
+  g_assert (g_strv_contains ((const gchar* const *) nodes, "non_subtree_object"));
+  g_assert (g_strv_contains ((const gchar* const *) nodes, "vp0"));
+  g_assert (g_strv_contains ((const gchar* const *) nodes, "vp1"));
+  g_assert (g_strv_contains ((const gchar* const *) nodes, "evp0"));
+  g_assert (g_strv_contains ((const gchar* const *) nodes, "evp1"));
   /* check that /foo/boss/executives/non_subtree_object is not handled by the
    * subtree handlers - we can do this because objects from subtree handlers
    * has exactly one interface and non_subtree_object has two
@@ -1358,13 +1344,13 @@ test_object_registration (void)
   nodes = get_nodes_at (c, "/foo/boss/executives");
   g_assert (nodes != NULL);
   g_assert_cmpint (g_strv_length (nodes), ==, 7);
-  g_assert (_g_strv_has_string ((const gchar* const *) nodes, "non_subtree_object"));
-  g_assert (_g_strv_has_string ((const gchar* const *) nodes, "vp0"));
-  g_assert (_g_strv_has_string ((const gchar* const *) nodes, "vp1"));
-  g_assert (_g_strv_has_string ((const gchar* const *) nodes, "vp2"));
-  g_assert (_g_strv_has_string ((const gchar* const *) nodes, "evp0"));
-  g_assert (_g_strv_has_string ((const gchar* const *) nodes, "evp1"));
-  g_assert (_g_strv_has_string ((const gchar* const *) nodes, "evp2"));
+  g_assert (g_strv_contains ((const gchar* const *) nodes, "non_subtree_object"));
+  g_assert (g_strv_contains ((const gchar* const *) nodes, "vp0"));
+  g_assert (g_strv_contains ((const gchar* const *) nodes, "vp1"));
+  g_assert (g_strv_contains ((const gchar* const *) nodes, "vp2"));
+  g_assert (g_strv_contains ((const gchar* const *) nodes, "evp0"));
+  g_assert (g_strv_contains ((const gchar* const *) nodes, "evp1"));
+  g_assert (g_strv_contains ((const gchar* const *) nodes, "evp2"));
   g_strfreev (nodes);
 
   /* This is to check that a bug (rather, class of bugs) in gdbusconnection.c's
@@ -1401,7 +1387,7 @@ test_object_registration (void)
   nodes = get_nodes_at (c, "/foo/boss/executives");
   g_assert (nodes != NULL);
   g_assert_cmpint (g_strv_length (nodes), ==, 1);
-  g_assert (_g_strv_has_string ((const gchar* const *) nodes, "non_subtree_object"));
+  g_assert (g_strv_contains ((const gchar* const *) nodes, "non_subtree_object"));
   g_strfreev (nodes);
 
   g_assert (g_dbus_connection_unregister_object (c, boss_foo_reg_id));
