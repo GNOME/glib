@@ -106,11 +106,53 @@ dns_header (void)
 }
 #endif /* HAVE_DN_COMP */
 
+static void
+test_invalid_header (void)
+{
+  const struct
+    {
+      const guint8 *answer;
+      gsize answer_len;
+      GResolverError expected_error_code;
+    }
+  vectors[] =
+    {
+      /* No answer: */
+      { (const guint8 *) "", 0, G_RESOLVER_ERROR_NOT_FOUND },
+      /* Definitely too short to be a valid header: */
+      { (const guint8 *) "\x20", 1, G_RESOLVER_ERROR_INTERNAL },
+      /* One byte too short to be a valid header: */
+      { (const guint8 *) "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", 11, G_RESOLVER_ERROR_INTERNAL },
+      /* Valid header indicating no answers: */
+      { (const guint8 *) "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", 12, G_RESOLVER_ERROR_NOT_FOUND },
+    };
+  gsize i;
+
+  for (i = 0; i < G_N_ELEMENTS (vectors); i++)
+    {
+      GList *records = NULL;
+      GError *local_error = NULL;
+
+      records = g_resolver_records_from_res_query ("example.org",
+                                                   g_resolver_record_type_to_rrtype (G_RESOLVER_RECORD_NS),
+                                                   vectors[i].answer,
+                                                   vectors[i].answer_len,
+                                                   0,
+                                                   &local_error);
+
+      g_assert_error (local_error, G_RESOLVER_ERROR, (gint) vectors[i].expected_error_code);
+      g_assert_null (records);
+      g_clear_error (&local_error);
+    }
+}
+
 int
 main (int   argc,
       char *argv[])
 {
   g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
+
+  g_test_add_func ("/gresolver/invalid-header", test_invalid_header);
 
   return g_test_run ();
 }
