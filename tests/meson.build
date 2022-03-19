@@ -20,6 +20,9 @@ tests = {
   'mainloop-test' : {},
   'mapping-test' : {},
   'onceinit' : {},
+  'slice-color' : {
+    'extra_sources' : ['memchunks.c'],
+  },
   'slice-concurrent' : {},
   'slice-threadinit' : {
     'dependencies' : [libgthread_dep],
@@ -44,9 +47,6 @@ tests = {
 
 test_extra_programs = {
   'slice-test' : {
-    'extra_sources' : ['memchunks.c'],
-  },
-  'slice-color' : {
     'extra_sources' : ['memchunks.c'],
   },
   'assert-msg-test' : {},
