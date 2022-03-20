@@ -20,10 +20,6 @@ tests = {
   'mainloop-test' : {},
   'mapping-test' : {},
   'onceinit' : {},
-  'slice-color' : {
-    'extra_sources' : ['memchunks.c'],
-  },
-  'slice-concurrent' : {},
   'slice-threadinit' : {
     'dependencies' : [libgthread_dep],
   },

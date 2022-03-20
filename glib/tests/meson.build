@@ -98,6 +98,10 @@ glib_tests = {
   },
   'shell' : {},
   'slice' : {},
+  'slice-color' : {
+    'extra_sources' : ['memchunks.c'],
+  },
+  'slice-concurrent' : {},
   'slist' : {},
   'sort' : {},
   'spawn-multithreaded' : {},
