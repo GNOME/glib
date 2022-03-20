@@ -15,19 +15,18 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, see <http://www.gnu.org/licenses/>.
  */
-#include <glib.h>
-#include <stdlib.h>
-#ifdef G_OS_UNIX
-#include <unistd.h>
-#endif
 
-#define N_THREADS	8
-#define N_ALLOCS	50000
+#include <glib.h>
+
+#include <stdlib.h>
+
+#define N_THREADS       8
+#define N_ALLOCS        50000
 #define MAX_BLOCK_SIZE  64
 
 struct ThreadData
 {
-  int	   thread_id;
+  int      thread_id;
   GThread* gthread;
 
   GMutex   to_free_mutex;
@@ -40,25 +39,23 @@ struct ThreadData
 static void *
 thread_func (void *arg)
 {
-  struct ThreadData *td = arg;
   int i;
-/*   g_print ("Thread %d starting\n", td->thread_id); */
+  struct ThreadData *td = arg;
+
   for (i = 0; i < N_ALLOCS; i++)
     {
-      int bytes;
+      int bytes, f, t;
       char *mem;
-      int f;
-      int t;
 
       if (rand() % (N_ALLOCS / 20) == 0)
-	g_print ("%c", 'a' - 1 + td->thread_id);
+        g_test_message ("%c", 'a' - 1 + td->thread_id);
 
       /* allocate block of random size and randomly fill */
       bytes = rand() % MAX_BLOCK_SIZE + 1;
       mem = g_slice_alloc (bytes);
 
       for (f = 0; f < bytes; f++)
-	mem[f] = rand();
+        mem[f] = rand();
 
       /* associate block with random thread */
       t = rand() % N_THREADS;
@@ -80,19 +77,20 @@ thread_func (void *arg)
       /* free a block associated with this thread */
       g_mutex_lock (&td->to_free_mutex);
       if (td->n_to_free > 0)
-	{
-	  td->n_to_free--;
-	  g_slice_free1 (td->bytes_to_free[td->n_to_free], td->to_free[td->n_to_free]);
-	  td->n_freed++;
-	}
+        {
+          td->n_to_free--;
+          g_slice_free1 (td->bytes_to_free[td->n_to_free],
+                         td->to_free[td->n_to_free]);
+          td->n_freed++;
+        }
       g_mutex_unlock (&td->to_free_mutex);
     }
 
   return NULL;
 }
 
-int
-main (void)
+static void
+test_concurrent_slice (void)
 {
   int t;
 
@@ -102,21 +100,31 @@ main (void)
       tdata[t].n_to_free = 0;
       tdata[t].n_freed = 0;
     }
-  g_print ("Starting %d threads for concurrent GSlice usage...\n", N_THREADS);
+
   for (t = 0; t < N_THREADS; t++)
     {
-      tdata[t].gthread   = g_thread_create (thread_func, &tdata[t], TRUE, NULL);
-      g_assert (tdata[t].gthread != NULL);
+      tdata[t].gthread = g_thread_new (NULL, thread_func, &tdata[t]);
+      g_assert_nonnull (tdata[t].gthread);
     }
+
   for (t = 0; t < N_THREADS; t++)
     {
       g_thread_join (tdata[t].gthread);
     }
-  g_print ("\n");
+
   for (t = 0; t < N_THREADS; t++)
     {
-      g_print ("Thread %d: %d blocks freed, %d blocks not freed\n",
-		    tdata[t].thread_id, tdata[t].n_freed, tdata[t].n_to_free);
+      g_test_message ("Thread %d: %d blocks freed, %d blocks not freed",
+                      tdata[t].thread_id, tdata[t].n_freed, tdata[t].n_to_free);
     }
-  return 0;
+}
+
+int
+main (int argc, char **argv)
+{
+  g_test_init (&argc, &argv, NULL);
+
+  g_test_add_func ("/slice/concurrent", test_concurrent_slice);
+
+  return g_test_run ();
 }
