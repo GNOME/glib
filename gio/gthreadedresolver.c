@@ -633,7 +633,7 @@ parse_res_txt (const guint8  *answer,
   return record;
 }
 
-static gint
+gint
 g_resolver_record_type_to_rrtype (GResolverRecordType type)
 {
   switch (type)

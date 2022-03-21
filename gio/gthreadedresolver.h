@@ -50,6 +50,8 @@ GList *g_resolver_records_from_res_query (const gchar      *rrname,
                                           gssize            len,
                                           gint              herr,
                                           GError          **error);
+GLIB_AVAILABLE_IN_ALL
+gint g_resolver_record_type_to_rrtype (GResolverRecordType type);
 
 G_END_DECLS
 
