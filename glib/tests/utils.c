@@ -593,17 +593,6 @@ test_console_charset (void)
 #endif
 }
 
-static void
-test_basename (void)
-{
-  const gchar *path = "/path/to/a/file/deep/down.sh";
-  const gchar *b;
-
-  b = g_basename (path);
-
-  g_assert_cmpstr (b, ==, "down.sh");
-}
-
 extern const gchar *glib_pgettext (const gchar *msgidctxt, gsize msgidoffset);
 
 static void
@@ -1162,7 +1151,6 @@ main (int   argc,
   g_test_add_func ("/utils/codeset", test_codeset);
   g_test_add_func ("/utils/codeset2", test_codeset2);
   g_test_add_func ("/utils/console-charset", test_console_charset);
-  g_test_add_func ("/utils/basename", test_basename);
   g_test_add_func ("/utils/gettext", test_gettext);
   g_test_add_func ("/utils/username", test_username);
   g_test_add_func ("/utils/realname", test_realname);
