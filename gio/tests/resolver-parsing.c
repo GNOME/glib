@@ -80,6 +80,31 @@ dns_builder_add_domain (GByteArray *builder,
   g_byte_array_append (builder, buffer, ret);
 }
 
+/* Append an invalid domain name to the DNS response. This is implemented by
+ * appending a single label followed by a pointer back to that label. This is
+ * invalid regardless of any other context in the response as its expansion is
+ * infinite.
+ *
+ * See https://datatracker.ietf.org/doc/html/rfc1035#section-4.1.4
+ *
+ * In order to create a pointer to the label, the label’s final offset in the
+ * DNS response must be known. The current length of @builder, plus @offset, is
+ * used for this. Hence, @offset is the additional offset (in bytes) to add, and
+ * typically corresponds to the length of the parent #GByteArray that @builder
+ * will eventually be added to. Potentially plus 2 bytes for the rdlength, as
+ * per dns_builder_add_answer_data(). */
+static void
+dns_builder_add_invalid_domain (GByteArray *builder,
+                                gsize       offset)
+{
+  offset += builder->len;
+  g_assert ((offset & 0xc0) == 0);
+
+  dns_builder_add_uint8 (builder, 1);
+  dns_builder_add_uint8 (builder, 'f');
+  dns_builder_add_uint8 (builder, 0xc0 | offset);
+}
+
 static void
 dns_builder_add_answer_data (GByteArray *builder,
                              GByteArray *answer)
@@ -103,6 +128,55 @@ dns_header (void)
   dns_builder_add_uint16 (answer, 0); /* ARCOUNT */
 
   return g_steal_pointer (&answer);
+}
+
+static void
+assert_query_fails (const gchar         *rrname,
+                    GResolverRecordType  record_type,
+                    GByteArray          *answer)
+{
+  GList *records = NULL;
+  GError *local_error = NULL;
+
+  records = g_resolver_records_from_res_query (rrname,
+                                               g_resolver_record_type_to_rrtype (record_type),
+                                               answer->data,
+                                               answer->len,
+                                               0,
+                                               &local_error);
+
+  g_assert_error (local_error, G_RESOLVER_ERROR, G_RESOLVER_ERROR_INTERNAL);
+  g_assert_null (records);
+  g_clear_error (&local_error);
+}
+
+static void
+assert_query_succeeds (const gchar         *rrname,
+                       GResolverRecordType  record_type,
+                       GByteArray          *answer,
+                       const gchar         *expected_answer_variant_str)
+{
+  GList *records = NULL;
+  GVariant *answer_variant, *expected_answer_variant = NULL;
+  GError *local_error = NULL;
+
+  records = g_resolver_records_from_res_query (rrname,
+                                               g_resolver_record_type_to_rrtype (record_type),
+                                               answer->data,
+                                               answer->len,
+                                               0,
+                                               &local_error);
+
+  g_assert_no_error (local_error);
+  g_assert_nonnull (records);
+
+  /* Test the results. */
+  answer_variant = records->data;
+  expected_answer_variant = g_variant_new_parsed (expected_answer_variant_str);
+  g_assert_cmpvariant (answer_variant, expected_answer_variant);
+
+  g_variant_unref (expected_answer_variant);
+  g_list_free_full (records, (GDestroyNotify) g_variant_unref);
 }
 #endif /* HAVE_DN_COMP */
 
@@ -182,6 +256,598 @@ test_unknown_record_type (void)
 #endif
 }
 
+static void
+test_mx_valid (void)
+{
+#ifndef HAVE_DN_COMP
+  g_test_skip ("The dn_comp() function was not available.");
+  return;
+#else
+  GByteArray *answer = NULL, *mx_rdata = NULL;
+
+  answer = dns_header ();
+
+  /* Resource record */
+  dns_builder_add_domain (answer, "example.org");
+  dns_builder_add_uint16 (answer, g_resolver_record_type_to_rrtype (G_RESOLVER_RECORD_MX));
+  dns_builder_add_uint16 (answer, 1); /* qclass=C_IN */
+  dns_builder_add_uint32 (answer, 0); /* ttl (ignored) */
+
+  /* MX rdata, https://datatracker.ietf.org/doc/html/rfc1035#section-3.3.9 */
+  mx_rdata = g_byte_array_new ();
+  dns_builder_add_uint16 (mx_rdata, 0);  /* preference */
+  dns_builder_add_domain (mx_rdata, "mail.example.org");
+  dns_builder_add_answer_data (answer, mx_rdata);
+  g_byte_array_unref (mx_rdata);
+
+  assert_query_succeeds ("example.org", G_RESOLVER_RECORD_MX, answer,
+                         "(@q 0, 'mail.example.org')");
+
+  g_byte_array_free (answer, TRUE);
+#endif
+}
+
+static void
+test_mx_invalid (void)
+{
+#ifndef HAVE_DN_COMP
+  g_test_skip ("The dn_comp() function was not available.");
+  return;
+#else
+  GByteArray *answer = NULL, *mx_rdata = NULL;
+
+  answer = dns_header ();
+
+  /* Resource record */
+  dns_builder_add_domain (answer, "example.org");
+  dns_builder_add_uint16 (answer, g_resolver_record_type_to_rrtype (G_RESOLVER_RECORD_MX));
+  dns_builder_add_uint16 (answer, 1); /* qclass=C_IN */
+  dns_builder_add_uint32 (answer, 0); /* ttl (ignored) */
+
+  /* MX rdata, https://datatracker.ietf.org/doc/html/rfc1035#section-3.3.9
+   *
+   * Use an invalid domain to trigger parsing failure. */
+  mx_rdata = g_byte_array_new ();
+  dns_builder_add_uint16 (mx_rdata, 0);  /* preference */
+  dns_builder_add_invalid_domain (mx_rdata, answer->len + 2);
+  dns_builder_add_answer_data (answer, mx_rdata);
+  g_byte_array_unref (mx_rdata);
+
+  assert_query_fails ("example.org", G_RESOLVER_RECORD_MX, answer);
+
+  g_byte_array_free (answer, TRUE);
+#endif
+}
+
+static void
+test_mx_invalid_too_short (void)
+{
+#ifndef HAVE_DN_COMP
+  g_test_skip ("The dn_comp() function was not available.");
+  return;
+#else
+  GByteArray *answer = NULL, *mx_rdata = NULL;
+
+  answer = dns_header ();
+
+  /* Resource record */
+  dns_builder_add_domain (answer, "example.org");
+  dns_builder_add_uint16 (answer, g_resolver_record_type_to_rrtype (G_RESOLVER_RECORD_MX));
+  dns_builder_add_uint16 (answer, 1); /* qclass=C_IN */
+  dns_builder_add_uint32 (answer, 0); /* ttl (ignored) */
+
+  /* MX rdata, https://datatracker.ietf.org/doc/html/rfc1035#section-3.3.9
+   *
+   * Miss out the domain field to trigger failure */
+  mx_rdata = g_byte_array_new ();
+  dns_builder_add_uint16 (mx_rdata, 0);  /* preference */
+  /* missing domain field */
+  dns_builder_add_answer_data (answer, mx_rdata);
+  g_byte_array_unref (mx_rdata);
+
+  assert_query_fails ("example.org", G_RESOLVER_RECORD_MX, answer);
+
+  g_byte_array_free (answer, TRUE);
+#endif
+}
+
+static void
+test_mx_invalid_too_short2 (void)
+{
+#ifndef HAVE_DN_COMP
+  g_test_skip ("The dn_comp() function was not available.");
+  return;
+#else
+  GByteArray *answer = NULL, *mx_rdata = NULL;
+
+  answer = dns_header ();
+
+  /* Resource record */
+  dns_builder_add_domain (answer, "example.org");
+  dns_builder_add_uint16 (answer, g_resolver_record_type_to_rrtype (G_RESOLVER_RECORD_MX));
+  dns_builder_add_uint16 (answer, 1); /* qclass=C_IN */
+  dns_builder_add_uint32 (answer, 0); /* ttl (ignored) */
+
+  /* MX rdata, https://datatracker.ietf.org/doc/html/rfc1035#section-3.3.9
+   *
+   * Miss out all fields to trigger failure */
+  mx_rdata = g_byte_array_new ();
+  /* missing preference and domain fields */
+  dns_builder_add_answer_data (answer, mx_rdata);
+  g_byte_array_unref (mx_rdata);
+
+  assert_query_fails ("example.org", G_RESOLVER_RECORD_MX, answer);
+
+  g_byte_array_free (answer, TRUE);
+#endif
+}
+
+static void
+test_ns_valid (void)
+{
+#ifndef HAVE_DN_COMP
+  g_test_skip ("The dn_comp() function was not available.");
+  return;
+#else
+  GByteArray *answer = NULL, *ns_rdata = NULL;
+
+  answer = dns_header ();
+
+  /* Resource record */
+  dns_builder_add_domain (answer, "example.org");
+  dns_builder_add_uint16 (answer, g_resolver_record_type_to_rrtype (G_RESOLVER_RECORD_NS));
+  dns_builder_add_uint16 (answer, 1); /* qclass=C_IN */
+  dns_builder_add_uint32 (answer, 0); /* ttl (ignored) */
+
+  /* NS rdata, https://datatracker.ietf.org/doc/html/rfc1035#section-3.3.11 */
+  ns_rdata = g_byte_array_new ();
+  dns_builder_add_domain (ns_rdata, "ns.example.org");
+  dns_builder_add_answer_data (answer, ns_rdata);
+  g_byte_array_unref (ns_rdata);
+
+  assert_query_succeeds ("example.org", G_RESOLVER_RECORD_NS, answer,
+                         "('ns.example.org',)");
+
+  g_byte_array_free (answer, TRUE);
+#endif
+}
+
+static void
+test_ns_invalid (void)
+{
+#ifndef HAVE_DN_COMP
+  g_test_skip ("The dn_comp() function was not available.");
+  return;
+#else
+  GByteArray *answer = NULL, *ns_rdata = NULL;
+
+  answer = dns_header ();
+
+  /* Resource record */
+  dns_builder_add_domain (answer, "example.org");
+  dns_builder_add_uint16 (answer, g_resolver_record_type_to_rrtype (G_RESOLVER_RECORD_NS));
+  dns_builder_add_uint16 (answer, 1); /* qclass=C_IN */
+  dns_builder_add_uint32 (answer, 0); /* ttl (ignored) */
+
+  /* NS rdata, https://datatracker.ietf.org/doc/html/rfc1035#section-3.3.11
+   *
+   * Use an invalid domain to trigger parsing failure. */
+  ns_rdata = g_byte_array_new ();
+  dns_builder_add_invalid_domain (ns_rdata, answer->len + 2);
+  dns_builder_add_answer_data (answer, ns_rdata);
+  g_byte_array_unref (ns_rdata);
+
+  assert_query_fails ("example.org", G_RESOLVER_RECORD_NS, answer);
+
+  g_byte_array_free (answer, TRUE);
+#endif
+}
+
+static void
+test_soa_valid (void)
+{
+#ifndef HAVE_DN_COMP
+  g_test_skip ("The dn_comp() function was not available.");
+  return;
+#else
+  GByteArray *answer = NULL, *soa_rdata = NULL;
+
+  answer = dns_header ();
+
+  /* Resource record */
+  dns_builder_add_domain (answer, "example.org");
+  dns_builder_add_uint16 (answer, g_resolver_record_type_to_rrtype (G_RESOLVER_RECORD_SOA));
+  dns_builder_add_uint16 (answer, 1); /* qclass=C_IN */
+  dns_builder_add_uint32 (answer, 0); /* ttl (ignored) */
+
+  /* SOA rdata, https://datatracker.ietf.org/doc/html/rfc1035#section-3.3.13 */
+  soa_rdata = g_byte_array_new ();
+  dns_builder_add_domain (soa_rdata, "mname.example.org");
+  dns_builder_add_domain (soa_rdata, "rname.example.org");
+  dns_builder_add_uint32 (soa_rdata, 0);  /* serial */
+  dns_builder_add_uint32 (soa_rdata, 0);  /* refresh */
+  dns_builder_add_uint32 (soa_rdata, 0);  /* retry */
+  dns_builder_add_uint32 (soa_rdata, 0);  /* expire */
+  dns_builder_add_uint32 (soa_rdata, 0);  /* minimum */
+  dns_builder_add_answer_data (answer, soa_rdata);
+  g_byte_array_unref (soa_rdata);
+
+  assert_query_succeeds ("example.org", G_RESOLVER_RECORD_SOA, answer,
+                         "('mname.example.org', 'rname.example.org', @u 0, @u 0, @u 0, @u 0, @u 0)");
+
+  g_byte_array_free (answer, TRUE);
+#endif
+}
+
+static void
+test_soa_invalid_mname (void)
+{
+#ifndef HAVE_DN_COMP
+  g_test_skip ("The dn_comp() function was not available.");
+  return;
+#else
+  GByteArray *answer = NULL, *soa_rdata = NULL;
+
+  answer = dns_header ();
+
+  /* Resource record */
+  dns_builder_add_domain (answer, "example.org");
+  dns_builder_add_uint16 (answer, g_resolver_record_type_to_rrtype (G_RESOLVER_RECORD_SOA));
+  dns_builder_add_uint16 (answer, 1); /* qclass=C_IN */
+  dns_builder_add_uint32 (answer, 0); /* ttl (ignored) */
+
+  /* SOA rdata, https://datatracker.ietf.org/doc/html/rfc1035#section-3.3.13
+   *
+   * Use an invalid domain to trigger parsing failure. */
+  soa_rdata = g_byte_array_new ();
+  dns_builder_add_invalid_domain (soa_rdata, answer->len + 2);  /* mname */
+  dns_builder_add_domain (soa_rdata, "rname.example.org");
+  dns_builder_add_uint32 (soa_rdata, 0);  /* serial */
+  dns_builder_add_uint32 (soa_rdata, 0);  /* refresh */
+  dns_builder_add_uint32 (soa_rdata, 0);  /* retry */
+  dns_builder_add_uint32 (soa_rdata, 0);  /* expire */
+  dns_builder_add_uint32 (soa_rdata, 0);  /* minimum */
+  dns_builder_add_answer_data (answer, soa_rdata);
+  g_byte_array_unref (soa_rdata);
+
+  assert_query_fails ("example.org", G_RESOLVER_RECORD_SOA, answer);
+
+  g_byte_array_free (answer, TRUE);
+#endif
+}
+
+static void
+test_soa_invalid_rname (void)
+{
+#ifndef HAVE_DN_COMP
+  g_test_skip ("The dn_comp() function was not available.");
+  return;
+#else
+  GByteArray *answer = NULL, *soa_rdata = NULL;
+
+  answer = dns_header ();
+
+  /* Resource record */
+  dns_builder_add_domain (answer, "example.org");
+  dns_builder_add_uint16 (answer, g_resolver_record_type_to_rrtype (G_RESOLVER_RECORD_SOA));
+  dns_builder_add_uint16 (answer, 1); /* qclass=C_IN */
+  dns_builder_add_uint32 (answer, 0); /* ttl (ignored) */
+
+  /* SOA rdata, https://datatracker.ietf.org/doc/html/rfc1035#section-3.3.13
+   *
+   * Use an invalid domain to trigger parsing failure. */
+  soa_rdata = g_byte_array_new ();
+  dns_builder_add_domain (soa_rdata, "mname.example.org");
+  dns_builder_add_invalid_domain (soa_rdata, answer->len + 2);  /* rname */
+  dns_builder_add_uint32 (soa_rdata, 0);  /* serial */
+  dns_builder_add_uint32 (soa_rdata, 0);  /* refresh */
+  dns_builder_add_uint32 (soa_rdata, 0);  /* retry */
+  dns_builder_add_uint32 (soa_rdata, 0);  /* expire */
+  dns_builder_add_uint32 (soa_rdata, 0);  /* minimum */
+  dns_builder_add_answer_data (answer, soa_rdata);
+  g_byte_array_unref (soa_rdata);
+
+  assert_query_fails ("example.org", G_RESOLVER_RECORD_SOA, answer);
+
+  g_byte_array_free (answer, TRUE);
+#endif
+}
+
+static void
+test_soa_invalid_too_short (void)
+{
+#ifndef HAVE_DN_COMP
+  g_test_skip ("The dn_comp() function was not available.");
+  return;
+#else
+  GByteArray *answer = NULL, *soa_rdata = NULL;
+
+  answer = dns_header ();
+
+  /* Resource record */
+  dns_builder_add_domain (answer, "example.org");
+  dns_builder_add_uint16 (answer, g_resolver_record_type_to_rrtype (G_RESOLVER_RECORD_SOA));
+  dns_builder_add_uint16 (answer, 1); /* qclass=C_IN */
+  dns_builder_add_uint32 (answer, 0); /* ttl (ignored) */
+
+  /* SOA rdata, https://datatracker.ietf.org/doc/html/rfc1035#section-3.3.13
+   *
+   * Miss out one of the fields to trigger a failure. */
+  soa_rdata = g_byte_array_new ();
+  dns_builder_add_domain (soa_rdata, "mname.example.org");
+  dns_builder_add_domain (soa_rdata, "rname.example.org");
+  dns_builder_add_uint32 (soa_rdata, 0);  /* serial */
+  dns_builder_add_uint32 (soa_rdata, 0);  /* refresh */
+  dns_builder_add_uint32 (soa_rdata, 0);  /* retry */
+  dns_builder_add_uint32 (soa_rdata, 0);  /* expire */
+  /* missing minimum field */
+  dns_builder_add_answer_data (answer, soa_rdata);
+  g_byte_array_unref (soa_rdata);
+
+  assert_query_fails ("example.org", G_RESOLVER_RECORD_SOA, answer);
+
+  g_byte_array_free (answer, TRUE);
+#endif
+}
+
+static void
+test_txt_valid (void)
+{
+#ifndef HAVE_DN_COMP
+  g_test_skip ("The dn_comp() function was not available.");
+  return;
+#else
+  GByteArray *answer = NULL, *txt_rdata = NULL;
+
+  answer = dns_header ();
+
+  /* Resource record */
+  dns_builder_add_domain (answer, "example.org");
+  dns_builder_add_uint16 (answer, g_resolver_record_type_to_rrtype (G_RESOLVER_RECORD_TXT));
+  dns_builder_add_uint16 (answer, 1); /* qclass=C_IN */
+  dns_builder_add_uint32 (answer, 0); /* ttl (ignored) */
+
+  /* TXT rdata, https://datatracker.ietf.org/doc/html/rfc1035#section-3.3.14 */
+  txt_rdata = g_byte_array_new ();
+  dns_builder_add_length_prefixed_string (txt_rdata, "some test content");
+  dns_builder_add_answer_data (answer, txt_rdata);
+  g_byte_array_unref (txt_rdata);
+
+  assert_query_succeeds ("example.org", G_RESOLVER_RECORD_TXT, answer,
+                         "(['some test content'],)");
+
+  g_byte_array_free (answer, TRUE);
+#endif
+}
+
+static void
+test_txt_valid_multiple_strings (void)
+{
+#ifndef HAVE_DN_COMP
+  g_test_skip ("The dn_comp() function was not available.");
+  return;
+#else
+  GByteArray *answer = NULL, *txt_rdata = NULL;
+
+  answer = dns_header ();
+
+  /* Resource record */
+  dns_builder_add_domain (answer, "example.org");
+  dns_builder_add_uint16 (answer, g_resolver_record_type_to_rrtype (G_RESOLVER_RECORD_TXT));
+  dns_builder_add_uint16 (answer, 1); /* qclass=C_IN */
+  dns_builder_add_uint32 (answer, 0); /* ttl (ignored) */
+
+  /* TXT rdata, https://datatracker.ietf.org/doc/html/rfc1035#section-3.3.14 */
+  txt_rdata = g_byte_array_new ();
+  dns_builder_add_length_prefixed_string (txt_rdata, "some test content");
+  dns_builder_add_length_prefixed_string (txt_rdata, "more test content");
+  dns_builder_add_answer_data (answer, txt_rdata);
+  g_byte_array_unref (txt_rdata);
+
+  assert_query_succeeds ("example.org", G_RESOLVER_RECORD_TXT, answer,
+                         "(['some test content', 'more test content'],)");
+
+  g_byte_array_free (answer, TRUE);
+#endif
+}
+
+static void
+test_txt_invalid_empty (void)
+{
+#ifndef HAVE_DN_COMP
+  g_test_skip ("The dn_comp() function was not available.");
+  return;
+#else
+  GByteArray *answer = NULL, *txt_rdata = NULL;
+
+  answer = dns_header ();
+
+  /* Resource record */
+  dns_builder_add_domain (answer, "example.org");
+  dns_builder_add_uint16 (answer, g_resolver_record_type_to_rrtype (G_RESOLVER_RECORD_TXT));
+  dns_builder_add_uint16 (answer, 1); /* qclass=C_IN */
+  dns_builder_add_uint32 (answer, 0); /* ttl (ignored) */
+
+  /* TXT rdata, https://datatracker.ietf.org/doc/html/rfc1035#section-3.3.14
+   *
+   * Provide zero character strings (i.e. an empty rdata section) to trigger
+   * failure. */
+  txt_rdata = g_byte_array_new ();
+  dns_builder_add_answer_data (answer, txt_rdata);
+  g_byte_array_unref (txt_rdata);
+
+  assert_query_fails ("example.org", G_RESOLVER_RECORD_TXT, answer);
+
+  g_byte_array_free (answer, TRUE);
+#endif
+}
+
+static void
+test_txt_invalid_overflow (void)
+{
+#ifndef HAVE_DN_COMP
+  g_test_skip ("The dn_comp() function was not available.");
+  return;
+#else
+  GByteArray *answer = NULL, *txt_rdata = NULL;
+
+  answer = dns_header ();
+
+  /* Resource record */
+  dns_builder_add_domain (answer, "example.org");
+  dns_builder_add_uint16 (answer, g_resolver_record_type_to_rrtype (G_RESOLVER_RECORD_TXT));
+  dns_builder_add_uint16 (answer, 1); /* qclass=C_IN */
+  dns_builder_add_uint32 (answer, 0); /* ttl (ignored) */
+
+  /* TXT rdata, https://datatracker.ietf.org/doc/html/rfc1035#section-3.3.14
+   *
+   * Use a character string whose length exceeds the remaining length in the
+   * answer record, to trigger failure. */
+  txt_rdata = g_byte_array_new ();
+  dns_builder_add_uint8 (txt_rdata, 10);  /* length, but no content */
+  dns_builder_add_answer_data (answer, txt_rdata);
+  g_byte_array_unref (txt_rdata);
+
+  assert_query_fails ("example.org", G_RESOLVER_RECORD_TXT, answer);
+
+  g_byte_array_free (answer, TRUE);
+#endif
+}
+
+static void
+test_srv_valid (void)
+{
+#ifndef HAVE_DN_COMP
+  g_test_skip ("The dn_comp() function was not available.");
+  return;
+#else
+  GByteArray *answer = NULL, *srv_rdata = NULL;
+
+  answer = dns_header ();
+
+  /* Resource record */
+  dns_builder_add_domain (answer, "example.org");
+  dns_builder_add_uint16 (answer, g_resolver_record_type_to_rrtype (G_RESOLVER_RECORD_SRV));
+  dns_builder_add_uint16 (answer, 1); /* qclass=C_IN */
+  dns_builder_add_uint32 (answer, 0); /* ttl (ignored) */
+
+  /* SRV rdata, https://datatracker.ietf.org/doc/html/rfc2782 */
+  srv_rdata = g_byte_array_new ();
+  dns_builder_add_uint16 (srv_rdata, 0);  /* priority */
+  dns_builder_add_uint16 (srv_rdata, 0);  /* weight */
+  dns_builder_add_uint16 (srv_rdata, 0);  /* port */
+  dns_builder_add_domain (srv_rdata, "target.example.org");
+  dns_builder_add_answer_data (answer, srv_rdata);
+  g_byte_array_unref (srv_rdata);
+
+  assert_query_succeeds ("example.org", G_RESOLVER_RECORD_SRV, answer,
+                         "(@q 0, @q 0, @q 0, 'target.example.org')");
+
+  g_byte_array_free (answer, TRUE);
+#endif
+}
+
+static void
+test_srv_invalid (void)
+{
+#ifndef HAVE_DN_COMP
+  g_test_skip ("The dn_comp() function was not available.");
+  return;
+#else
+  GByteArray *answer = NULL, *srv_rdata = NULL;
+
+  answer = dns_header ();
+
+  /* Resource record */
+  dns_builder_add_domain (answer, "example.org");
+  dns_builder_add_uint16 (answer, g_resolver_record_type_to_rrtype (G_RESOLVER_RECORD_SRV));
+  dns_builder_add_uint16 (answer, 1); /* qclass=C_IN */
+  dns_builder_add_uint32 (answer, 0); /* ttl (ignored) */
+
+  /* SRV rdata, https://datatracker.ietf.org/doc/html/rfc2782
+   *
+   * Use an invalid domain to trigger parsing failure. */
+  srv_rdata = g_byte_array_new ();
+  dns_builder_add_uint16 (srv_rdata, 0);  /* priority */
+  dns_builder_add_uint16 (srv_rdata, 0);  /* weight */
+  dns_builder_add_uint16 (srv_rdata, 0);  /* port */
+  dns_builder_add_invalid_domain (srv_rdata, answer->len + 2);
+  dns_builder_add_answer_data (answer, srv_rdata);
+  g_byte_array_unref (srv_rdata);
+
+  assert_query_fails ("example.org", G_RESOLVER_RECORD_SRV, answer);
+
+  g_byte_array_free (answer, TRUE);
+#endif
+}
+
+static void
+test_srv_invalid_too_short (void)
+{
+#ifndef HAVE_DN_COMP
+  g_test_skip ("The dn_comp() function was not available.");
+  return;
+#else
+  GByteArray *answer = NULL, *srv_rdata = NULL;
+
+  answer = dns_header ();
+
+  /* Resource record */
+  dns_builder_add_domain (answer, "example.org");
+  dns_builder_add_uint16 (answer, g_resolver_record_type_to_rrtype (G_RESOLVER_RECORD_SRV));
+  dns_builder_add_uint16 (answer, 1); /* qclass=C_IN */
+  dns_builder_add_uint32 (answer, 0); /* ttl (ignored) */
+
+  /* SRV rdata, https://datatracker.ietf.org/doc/html/rfc2782
+   *
+   * Miss out the target field to trigger failure */
+  srv_rdata = g_byte_array_new ();
+  dns_builder_add_uint16 (srv_rdata, 0);  /* priority */
+  dns_builder_add_uint16 (srv_rdata, 0);  /* weight */
+  dns_builder_add_uint16 (srv_rdata, 0);  /* port */
+  /* missing target field */
+  dns_builder_add_answer_data (answer, srv_rdata);
+  g_byte_array_unref (srv_rdata);
+
+  assert_query_fails ("example.org", G_RESOLVER_RECORD_SRV, answer);
+
+  g_byte_array_free (answer, TRUE);
+#endif
+}
+
+static void
+test_srv_invalid_too_short2 (void)
+{
+#ifndef HAVE_DN_COMP
+  g_test_skip ("The dn_comp() function was not available.");
+  return;
+#else
+  GByteArray *answer = NULL, *srv_rdata = NULL;
+
+  answer = dns_header ();
+
+  /* Resource record */
+  dns_builder_add_domain (answer, "example.org");
+  dns_builder_add_uint16 (answer, g_resolver_record_type_to_rrtype (G_RESOLVER_RECORD_SRV));
+  dns_builder_add_uint16 (answer, 1); /* qclass=C_IN */
+  dns_builder_add_uint32 (answer, 0); /* ttl (ignored) */
+
+  /* SRV rdata, https://datatracker.ietf.org/doc/html/rfc2782
+   *
+   * Miss out the target and port fields to trigger failure */
+  srv_rdata = g_byte_array_new ();
+  dns_builder_add_uint16 (srv_rdata, 0);  /* priority */
+  dns_builder_add_uint16 (srv_rdata, 0);  /* weight */
+  /* missing port and target fields */
+  dns_builder_add_answer_data (answer, srv_rdata);
+  g_byte_array_unref (srv_rdata);
+
+  assert_query_fails ("example.org", G_RESOLVER_RECORD_SRV, answer);
+
+  g_byte_array_free (answer, TRUE);
+#endif
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -190,6 +856,24 @@ main (int   argc,
 
   g_test_add_func ("/gresolver/invalid-header", test_invalid_header);
   g_test_add_func ("/gresolver/unknown-record-type", test_unknown_record_type);
+  g_test_add_func ("/gresolver/mx/valid", test_mx_valid);
+  g_test_add_func ("/gresolver/mx/invalid", test_mx_invalid);
+  g_test_add_func ("/gresolver/mx/invalid/too-short", test_mx_invalid_too_short);
+  g_test_add_func ("/gresolver/mx/invalid/too-short2", test_mx_invalid_too_short2);
+  g_test_add_func ("/gresolver/ns/valid", test_ns_valid);
+  g_test_add_func ("/gresolver/ns/invalid", test_ns_invalid);
+  g_test_add_func ("/gresolver/soa/valid", test_soa_valid);
+  g_test_add_func ("/gresolver/soa/invalid/mname", test_soa_invalid_mname);
+  g_test_add_func ("/gresolver/soa/invalid/rname", test_soa_invalid_rname);
+  g_test_add_func ("/gresolver/soa/invalid/too-short", test_soa_invalid_too_short);
+  g_test_add_func ("/gresolver/srv/valid", test_srv_valid);
+  g_test_add_func ("/gresolver/srv/invalid", test_srv_invalid);
+  g_test_add_func ("/gresolver/srv/invalid/too-short", test_srv_invalid_too_short);
+  g_test_add_func ("/gresolver/srv/invalid/too-short2", test_srv_invalid_too_short2);
+  g_test_add_func ("/gresolver/txt/valid", test_txt_valid);
+  g_test_add_func ("/gresolver/txt/valid/multiple-strings", test_txt_valid_multiple_strings);
+  g_test_add_func ("/gresolver/txt/invalid/empty", test_txt_invalid_empty);
+  g_test_add_func ("/gresolver/txt/invalid/overflow", test_txt_invalid_overflow);
 
   return g_test_run ();
 }
