@@ -19,15 +19,12 @@
  * Modified by the GLib Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GLib Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GLib at ftp://ftp.gtk.org/pub/gtk/. 
+ * GLib at ftp://ftp.gtk.org/pub/gtk/.
  */
 
-#undef G_DISABLE_ASSERT
-#undef G_LOG_DOMAIN
+#define GLIB_DISABLE_DEPRECATION_WARNINGS
 
-#include <stdio.h>
-#include <string.h>
-#include "glib.h"
+#include <glib.h>
 
 int array[10000];
 gboolean failed = FALSE;
@@ -50,21 +47,17 @@ else \
 #define GLIB_TEST_STRING_5 "el do"
 
 typedef struct {
-	guint age;
-	gchar name[40];
+  guint age;
+  gchar name[40];
 } GlibTestInfo;
 
-
-
-int
-main (int   argc,
-      char *argv[])
+static void
+test_relation (void)
 {
   gint i;
   GRelation *relation;
   GTuples *tuples;
   gint data [1024];
-
 
   relation = g_relation_new (2);
 
@@ -82,55 +75,54 @@ main (int   argc,
 
   for (i = 2; i < 1022; i += 1)
     {
-      g_assert (! g_relation_exists (relation, data + i, data + i));
-      g_assert (! g_relation_exists (relation, data + i, data + i + 2));
-      g_assert (! g_relation_exists (relation, data + i, data + i - 2));
+      g_assert_false (g_relation_exists (relation, data + i, data + i));
+      g_assert_false (g_relation_exists (relation, data + i, data + i + 2));
+      g_assert_false (g_relation_exists (relation, data + i, data + i - 2));
     }
 
   for (i = 1; i < 1023; i += 1)
     {
-      g_assert (g_relation_exists (relation, data + i, data + i + 1));
-      g_assert (g_relation_exists (relation, data + i, data + i - 1));
+      g_assert_true (g_relation_exists (relation, data + i, data + i + 1));
+      g_assert_true (g_relation_exists (relation, data + i, data + i - 1));
     }
 
   for (i = 2; i < 1022; i += 1)
     {
-      g_assert (g_relation_count (relation, data + i, 0) == 2);
-      g_assert (g_relation_count (relation, data + i, 1) == 2);
+      g_assert_cmpint (g_relation_count (relation, data + i, 0), ==, 2);
+      g_assert_cmpint (g_relation_count (relation, data + i, 1), ==, 2);
     }
 
-  g_assert (g_relation_count (relation, data, 0) == 0);
+  g_assert_cmpint (g_relation_count (relation, data, 0), ==, 0);
 
-  g_assert (g_relation_count (relation, data + 42, 0) == 2);
-  g_assert (g_relation_count (relation, data + 43, 1) == 2);
-  g_assert (g_relation_count (relation, data + 41, 1) == 2);
+  g_assert_cmpint (g_relation_count (relation, data + 42, 0), ==, 2);
+  g_assert_cmpint (g_relation_count (relation, data + 43, 1), ==, 2);
+  g_assert_cmpint (g_relation_count (relation, data + 41, 1), ==, 2);
+
   g_relation_delete (relation, data + 42, 0);
-  g_assert (g_relation_count (relation, data + 42, 0) == 0);
-  g_assert (g_relation_count (relation, data + 43, 1) == 1);
-  g_assert (g_relation_count (relation, data + 41, 1) == 1);
+
+  g_assert_cmpint (g_relation_count (relation, data + 42, 0), ==, 0);
+  g_assert_cmpint (g_relation_count (relation, data + 43, 1), ==, 1);
+  g_assert_cmpint (g_relation_count (relation, data + 41, 1), ==, 1);
 
   tuples = g_relation_select (relation, data + 200, 0);
 
-  g_assert (tuples->len == 2);
+  g_assert_cmpint (tuples->len, ==, 2);
 
-#if 0
-  for (i = 0; i < tuples->len; i += 1)
-    {
-      printf ("%d %d\n",
-	      *(gint*) g_tuples_index (tuples, i, 0),
-	      *(gint*) g_tuples_index (tuples, i, 1));
-    }
-#endif
-
-  g_assert (g_relation_exists (relation, data + 300, data + 301));
+  g_assert_true (g_relation_exists (relation, data + 300, data + 301));
   g_relation_delete (relation, data + 300, 0);
-  g_assert (!g_relation_exists (relation, data + 300, data + 301));
+  g_assert_false (g_relation_exists (relation, data + 300, data + 301));
 
   g_tuples_destroy (tuples);
-
   g_relation_destroy (relation);
+}
 
-  relation = NULL;
+int
+main (int   argc,
+      char *argv[])
+{
+  g_test_init (&argc, &argv, NULL);
 
-  return 0;
+  g_test_add_func ("/glib/relation", test_relation);
+
+  return g_test_run ();
 }
