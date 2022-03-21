@@ -2321,6 +2321,22 @@ test_format_iso8601 (void)
   g_free (p);
   g_date_time_unref (dt);
   g_time_zone_unref (tz);
+
+  tz = g_time_zone_new_utc ();
+  dt = g_date_time_new (tz, 9, 1, 2, 3, 4, 55);
+  p = g_date_time_format_iso8601 (dt);
+  g_assert_cmpstr (p, ==, "0009-01-02T03:04:55Z");
+  g_free (p);
+  g_date_time_unref (dt);
+  g_time_zone_unref (tz);
+
+  tz = g_time_zone_new_utc ();
+  dt = g_date_time_new (tz, 9990, 1, 2, 3, 4, 55.000001);
+  p = g_date_time_format_iso8601 (dt);
+  g_assert_cmpstr (p, ==, "9990-01-02T03:04:55.000001Z");
+  g_free (p);
+  g_date_time_unref (dt);
+  g_time_zone_unref (tz);
 }
 
 typedef struct
