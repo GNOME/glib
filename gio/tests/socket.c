@@ -1358,6 +1358,13 @@ test_unix_from_fd (void)
   GSocket *s;
 
   fd = socket (AF_UNIX, SOCK_STREAM, 0);
+#ifdef G_OS_WIN32
+  if (fd == -1)
+    {
+      g_test_skip ("AF_UNIX not supported on this Windows system.");
+      return;
+    }
+#endif
   g_assert_cmpint (fd, !=, -1);
 
   bind_win32_unixfd (fd);
@@ -1380,6 +1387,13 @@ test_unix_connection (void)
   GSocketConnection *c;
 
   fd = socket (AF_UNIX, SOCK_STREAM, 0);
+#ifdef G_OS_WIN32
+  if (fd == -1)
+    {
+      g_test_skip ("AF_UNIX not supported on this Windows system.");
+      return;
+    }
+#endif
   g_assert_cmpint (fd, !=, -1);
 
   bind_win32_unixfd (fd);
@@ -1518,6 +1532,14 @@ test_source_postmortem (void)
   gboolean callback_visited = FALSE;
 
   socket = g_socket_new (G_SOCKET_FAMILY_UNIX, G_SOCKET_TYPE_STREAM, G_SOCKET_PROTOCOL_DEFAULT, &error);
+#ifdef G_OS_WIN32
+  if (error)
+    {
+      g_test_skip_printf ("AF_UNIX not supported on this Windows system: %s", error->message);
+      g_clear_error (&error);
+      return;
+    }
+#endif
   g_assert_no_error (error);
 
   context = g_main_context_new ();
@@ -2225,6 +2247,11 @@ test_credentials_unix_socketpair (void)
 
 #ifdef G_OS_WIN32
   status = _g_win32_socketpair (PF_UNIX, SOCK_STREAM, 0, fds);
+  if (status != 0)
+    {
+      g_test_skip ("AF_UNIX not supported on this Windows system.");
+      return;
+    }
 #else
   status = socketpair (PF_UNIX, SOCK_STREAM, 0, fds);
 #endif

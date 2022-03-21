@@ -38,6 +38,10 @@ import taptestrunner
 Result = collections.namedtuple("Result", ("info", "out", "err", "subs"))
 
 
+def on_win32():
+    return sys.platform.find('win') != -1
+
+
 class TestCodegen(unittest.TestCase):
     """Integration test for running gdbus-codegen.
 
@@ -281,6 +285,7 @@ class TestCodegen(unittest.TestCase):
         with self.assertRaises(subprocess.CalledProcessError):
             self.runCodegen()
 
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_empty_interface_header(self):
         """Test generating a header with an empty interface file."""
         result = self.runCodegenWithInterface("", "--output", "/dev/stdout", "--header")
@@ -304,6 +309,7 @@ G_END_DECLS
             result.out.strip(),
         )
 
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_empty_interface_body(self):
         """Test generating a body with an empty interface file."""
         result = self.runCodegenWithInterface("", "--output", "/dev/stdout", "--body")
@@ -323,6 +329,7 @@ G_END_DECLS
             result.out.strip(),
         )
 
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_reproducible(self):
         """Test builds are reproducible regardless of file ordering."""
         xml_contents1 = """
@@ -422,6 +429,7 @@ G_END_DECLS
             rst = f.readlines()
             self.assertTrue(len(rst) != 0)
 
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_glib_min_required_invalid(self):
         """Test running with an invalid --glib-min-required."""
         with self.assertRaises(subprocess.CalledProcessError):
@@ -434,6 +442,7 @@ G_END_DECLS
                 "hello mum",
             )
 
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_glib_min_required_too_low(self):
         """Test running with a --glib-min-required which is too low (and hence
         probably a typo)."""
@@ -442,6 +451,7 @@ G_END_DECLS
                 "", "--output", "/dev/stdout", "--body", "--glib-min-required", "2.6"
             )
 
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_glib_min_required_major_only(self):
         """Test running with a --glib-min-required which contains only a major version."""
         result = self.runCodegenWithInterface(
@@ -457,6 +467,7 @@ G_END_DECLS
         self.assertEqual("", result.err)
         self.assertNotEqual("", result.out.strip())
 
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_glib_min_required_with_micro(self):
         """Test running with a --glib-min-required which contains a micro version."""
         result = self.runCodegenWithInterface(
@@ -465,6 +476,7 @@ G_END_DECLS
         self.assertEqual("", result.err)
         self.assertNotEqual("", result.out.strip())
 
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_glib_max_allowed_too_low(self):
         """Test running with a --glib-max-allowed which is too low (and hence
         probably a typo)."""
@@ -473,6 +485,7 @@ G_END_DECLS
                 "", "--output", "/dev/stdout", "--body", "--glib-max-allowed", "2.6"
             )
 
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_glib_max_allowed_major_only(self):
         """Test running with a --glib-max-allowed which contains only a major version."""
         result = self.runCodegenWithInterface(
@@ -481,6 +494,7 @@ G_END_DECLS
         self.assertEqual("", result.err)
         self.assertNotEqual("", result.out.strip())
 
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_glib_max_allowed_with_micro(self):
         """Test running with a --glib-max-allowed which contains a micro version."""
         result = self.runCodegenWithInterface(
@@ -489,6 +503,7 @@ G_END_DECLS
         self.assertEqual("", result.err)
         self.assertNotEqual("", result.out.strip())
 
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_glib_max_allowed_unstable(self):
         """Test running with a --glib-max-allowed which is unstable. It should
         be rounded up to the next stable version number, and hence should not
@@ -506,6 +521,7 @@ G_END_DECLS
         self.assertEqual("", result.err)
         self.assertNotEqual("", result.out.strip())
 
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_glib_max_allowed_less_than_min_required(self):
         """Test running with a --glib-max-allowed which is less than
         --glib-min-required."""
@@ -521,6 +537,7 @@ G_END_DECLS
                 "2.64",
             )
 
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_unix_fd_types_and_annotations(self):
         """Test an interface with `h` arguments, no annotation, and GLib < 2.64.
 
@@ -579,6 +596,7 @@ G_END_DECLS
         self.assertEqual("", result.err)
         self.assertEqual(result.out.strip().count("GUnixFDList"), 18)
 
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_call_flags_and_timeout_method_args(self):
         """Test that generated method call functions have @call_flags and
         @timeout_msec args if and only if GLib >= 2.64.

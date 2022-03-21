@@ -1854,14 +1854,17 @@ test_nfds (void)
 
   /* Now actually iterate the loop; the fd should be readable and
    * writable, so source1 and source3 should be triggered, but *not*
-   * source2, since it's lower priority than them. (Though on
-   * G_OS_WIN32, source3 doesn't get triggered, probably because of
-   * giowin32 weirdness...)
+   * source2, since it's lower priority than them.
    */
   g_main_context_iteration (ctx, FALSE);
 
-  g_assert_true (source1_ran);
+  /* FIXME:
+   * On win32, giowin32.c uses blocking threads for read/write on channels. They
+   * may not have yet triggered an event after one loop iteration. Hence, the
+   * following asserts are racy and disabled.
+   */
 #ifndef G_OS_WIN32
+  g_assert_true (source1_ran);
   g_assert_true (source3_ran);
 #endif
 

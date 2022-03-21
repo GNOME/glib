@@ -78,6 +78,11 @@ test_app_monitor (Fixture       *fixture,
   GAppInfoMonitor *monitor;
   GMainLoop *loop;
 
+#ifdef G_OS_WIN32
+  g_test_skip (".desktop monitor on win32");
+  return;
+#endif
+
   app_path = g_build_filename (fixture->applications_dir, "app.desktop", NULL);
 
   /* FIXME: this shouldn't be required */
