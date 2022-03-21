@@ -738,7 +738,7 @@ g_resolver_records_from_res_query (const gchar      *rrname,
                                    gint              herr,
                                    GError          **error)
 {
-  gint count;
+  uint16_t count;
   gchar namebuf[1024];
   const guint8 *end, *p;
   guint16 type, qclass, rdlength;
