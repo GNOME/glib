@@ -44,12 +44,12 @@ static G_NORETURN void
 usage (void)
 {
 	fprintf (stderr, "Usage: resolver [-s] [hostname | IP | service/protocol/domain ] ...\n");
-	fprintf (stderr, "Usage: resolver [-s] [-t MX|TXT|NS|SOA] rrname ...\n");
+	fprintf (stderr, "Usage: resolver [-s] [-t MX|TXT|NS|SOA|SRV] rrname ...\n");
 	fprintf (stderr, "       resolver [-s] -c NUMBER [hostname | IP | service/protocol/domain ]\n");
 	fprintf (stderr, "       Use -s to do synchronous lookups.\n");
 	fprintf (stderr, "       Use -c NUMBER (and only a single resolvable argument) to test GSocketConnectable.\n");
 	fprintf (stderr, "       The given NUMBER determines how many times the connectable will be enumerated.\n");
-	fprintf (stderr, "       Use -t with MX, TXT, NS or SOA to look up DNS records of those types.\n");
+	fprintf (stderr, "       Use -t with MX, TXT, NS, SOA or SRV to look up DNS records of those types.\n");
 	exit (1);
 }
 
@@ -233,6 +233,46 @@ print_resolved_txt (const char *rrname,
 }
 
 static void
+print_resolved_srv (const char *rrname,
+                    GList      *records,
+                    GError     *error)
+{
+  G_LOCK (response);
+  printf ("Domain: %s\n", rrname);
+  if (error)
+    {
+      printf ("Error: %s\n", error->message);
+      g_error_free (error);
+    }
+  else if (!records)
+    {
+      printf ("no SRV records\n");
+    }
+  else
+    {
+      GList *t;
+
+      for (t = records; t != NULL; t = t->next)
+        {
+          guint16 priority, weight, port;
+          const gchar *target;
+
+          g_variant_get (t->data, "(qqq&s)", &priority, &weight, &port, &target);
+
+          printf ("%s (priority %u, weight %u, port %u)\n",
+                  target, (guint) priority, (guint) weight, (guint) port);
+          g_variant_unref (t->data);
+        }
+
+      g_list_free (records);
+    }
+  printf ("\n");
+
+  done_lookup ();
+  G_UNLOCK (response);
+}
+
+static void
 print_resolved_soa (const char *rrname,
                     GList      *records,
                     GError     *error)
@@ -330,6 +370,9 @@ lookup_one_sync (const char *arg)
           break;
         case G_RESOLVER_RECORD_TXT:
           print_resolved_txt (arg, records, error);
+          break;
+        case G_RESOLVER_RECORD_SRV:
+          print_resolved_srv (arg, records, error);
           break;
         default:
           g_warn_if_reached ();
@@ -448,6 +491,9 @@ lookup_records_callback (GObject      *source,
       break;
     case G_RESOLVER_RECORD_TXT:
       print_resolved_txt (arg, records, error);
+      break;
+    case G_RESOLVER_RECORD_SRV:
+      print_resolved_srv (arg, records, error);
       break;
     default:
       g_warn_if_reached ();
@@ -659,9 +705,11 @@ record_type_arg (const gchar *option_name,
     record_type = G_RESOLVER_RECORD_SOA;
   } else if (g_ascii_strcasecmp (value, "NS") == 0) {
     record_type = G_RESOLVER_RECORD_NS;
+  } else if (g_ascii_strcasecmp (value, "SRV") == 0) {
+    record_type = G_RESOLVER_RECORD_SRV;
   } else {
       g_set_error (error, G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE,
-                   "Specify MX, TXT, NS or SOA for the special record lookup types");
+                   "Specify MX, TXT, NS, SOA or SRV for the special record lookup types");
       return FALSE;
   }
 

@@ -191,6 +191,7 @@ if host_machine.system() != 'windows'
     },
     'gdbus-peer-object-manager' : {},
     'live-g-file' : {},
+    'resolver-parsing' : {'dependencies' : [network_libs]},
     'socket-address' : {},
     'stream-rw_all' : {},
     'unix-fd' : {},
