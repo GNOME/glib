@@ -24,7 +24,6 @@ RUN apt-get update -qq && apt-get install --no-install-recommends -qq -y \
     libdbus-1-dev \
     libelf-dev \
     libffi-dev \
-    libgamin-dev \
     libmount-dev \
     libpcre3-dev \
     libselinux1-dev \

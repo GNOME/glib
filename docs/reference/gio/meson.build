@@ -3,7 +3,6 @@ if get_option('gtk_doc')
   subdir('xml')
 
   ignore_headers = [
-    'fam',
     'gdbus-2.0',
     'gvdb',
     'inotify',
