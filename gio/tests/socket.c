@@ -2241,7 +2241,7 @@ test_credentials_unix_socketpair (void)
 {
   gint fds[2];
   gint status;
-  GSocket *sock;
+  GSocket *sock[2];
   GError *error = NULL;
   GCredentials *creds;
 
@@ -2257,9 +2257,12 @@ test_credentials_unix_socketpair (void)
 #endif
   g_assert_cmpint (status, ==, 0);
 
-  sock = g_socket_new_from_fd (fds[0], &error);
+  sock[0] = g_socket_new_from_fd (fds[0], &error);
+  g_assert_no_error (error);
+  sock[1] = g_socket_new_from_fd (fds[1], &error);
+  g_assert_no_error (error);
 
-  creds = g_socket_get_credentials (sock, &error);
+  creds = g_socket_get_credentials (sock[0], &error);
   if (creds != NULL)
     {
       gchar *str = g_credentials_to_string (creds);
@@ -2274,8 +2277,8 @@ test_credentials_unix_socketpair (void)
       g_clear_error (&error);
     }
 
-  g_object_unref (sock);
-  g_close (fds[1], NULL);
+  g_object_unref (sock[0]);
+  g_object_unref (sock[1]);
 }
 #endif
 
