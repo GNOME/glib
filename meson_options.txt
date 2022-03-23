@@ -74,11 +74,6 @@ option('force_posix_threads',
        value : false,
        description : 'Also use posix threads in case the platform defaults to another implementation (on Windows for example)')
 
-option('fam',
-       type : 'boolean',
-       value : false,
-       description : 'Use fam for file system monitoring')
-
 option('tests',
        type : 'boolean',
        value : true,

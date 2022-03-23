@@ -1065,7 +1065,6 @@ _g_io_module_get_default (const gchar         *extension_point,
 G_LOCK_DEFINE_STATIC (registered_extensions);
 G_LOCK_DEFINE_STATIC (loaded_dirs);
 
-extern GType g_fen_file_monitor_get_type (void);
 extern GType g_inotify_file_monitor_get_type (void);
 extern GType g_kqueue_file_monitor_get_type (void);
 extern GType g_win32_file_monitor_get_type (void);
@@ -1328,9 +1327,6 @@ _g_io_modules_ensure_loaded (void)
 #endif
 #if defined(HAVE_KQUEUE)
       g_type_ensure (g_kqueue_file_monitor_get_type ());
-#endif
-#if defined(HAVE_FEN)
-      g_type_ensure (g_fen_file_monitor_get_type ());
 #endif
 #ifdef G_OS_WIN32
       g_type_ensure (_g_win32_volume_monitor_get_type ());

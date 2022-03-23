@@ -1033,7 +1033,6 @@ if enable_systemtap
   )
 endif
 
-subdir('fam')
 if build_tests
     subdir('tests')
 endif
