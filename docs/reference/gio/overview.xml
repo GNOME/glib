@@ -392,7 +392,7 @@ Gvfs is also heavily distributed and relies on a session bus to be present.
         The #GFileMonitor implementation for local files that is included
         in GIO on Linux has the name <literal>inotify</literal>, others that are built
         are built as modules (depending on the platform) are called
-        <literal>fam</literal> and <literal>fen</literal>.
+        <literal>fam</literal>, <literal>kqueue</literal> and <literal>win32filemonitor</literal>.
       </para><para>
         The special value <literal>help</literal> can be used to print a list of
         available implementations to standard output.

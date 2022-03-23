@@ -4,7 +4,6 @@ if get_option('gtk_doc')
 
   ignore_headers = [
     'fam',
-    'fen',
     'gdbus-2.0',
     'gvdb',
     'inotify',
