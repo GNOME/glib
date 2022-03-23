@@ -749,9 +749,7 @@ test_mkdir_with_parents (void)
   g_assert_cmpint (g_mkdir_with_parents ("./test", 0), ==, 0);
   g_remove ("./test");
 
-#ifdef G_OS_WIN32
-  g_assert_cmpint (g_mkdir_with_parents ("\\Windows\\b\\c", 0), ==, -1);
-#else
+#ifndef G_OS_WIN32
   g_assert_cmpint (g_mkdir_with_parents ("/usr/b/c", 0), ==, -1);
   /* EPERM may be returned if the filesystem as a whole is read-only */
   if (errno != EPERM)

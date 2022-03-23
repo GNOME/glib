@@ -93,8 +93,12 @@ test_read_write (void)
   status = g_io_channel_set_flags (gio_r, G_IO_FLAG_NONBLOCK, &local_error);
   if (status == G_IO_STATUS_ERROR)
     {
+#ifdef G_OS_WIN32
+      g_test_message ("FIXME: not implemented on win32");
+#else
       /* Errors should not happen */
       g_assert_no_error (local_error);
+#endif
       g_clear_error (&local_error);
     }
   buffer = g_string_sized_new (buffer_size_bytes);
