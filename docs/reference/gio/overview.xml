@@ -670,22 +670,6 @@ Gvfs is also heavily distributed and relies on a session bus to be present.
    </formalpara>
 
    <formalpara>
-      <title>G_LOCAL_DIRECTORY_MONITOR_EXTENSION_POINT_NAME</title>
-
-      <para>
-        Allows to override the directory monitor implementation for
-        local files. Implementations of this extension point must be
-        derived from #GLocalDirectoryMonitor. GIO uses the implementation
-        with the highest priority that is supported, as determined by the
-        is_supported() vfunc in #GLocalDirectoryMonitorClass.
-      </para>
-      <para>
-        GIO uses this extension point internally, to switch between
-        its fam-based and inotify-based directory monitoring implementations.
-      </para>
-   </formalpara>
-
-   <formalpara>
       <title>G_DESKTOP_APP_INFO_LOOKUP_EXTENSION_POINT_NAME</title>
 
       <para>
