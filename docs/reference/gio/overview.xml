@@ -390,9 +390,9 @@ Gvfs is also heavily distributed and relies on a session bus to be present.
         This variable can be set to the name of a #GFileMonitor
         implementation to override the default for debugging purposes.
         The #GFileMonitor implementation for local files that is included
-        in GIO on Linux has the name "inotify", others that are built
+        in GIO on Linux has the name <literal>inotify</literal>, others that are built
         are built as modules (depending on the platform) are called
-        "fam" and "fen".
+        <literal>fam</literal> and <literal>fen</literal>.
       </para><para>
         The special value <literal>help</literal> can be used to print a list of
         available implementations to standard output.
