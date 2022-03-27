@@ -1,4 +1,4 @@
-/* slice-threadinit.c - test GSlice across g_thread_init
+/* slice-known-pages.c - test GSlice across known pages
  * Copyright (C) 2007 Tim Janik
  *
  * This work is provided "as is"; redistribution and modification
@@ -19,17 +19,15 @@
  * if advised of the possibility of such damage.
  */
 
-/* We are testing threadinit which is deprecated */
-#ifndef GLIB_DISABLE_DEPRECATION_WARNINGS
-#define GLIB_DISABLE_DEPRECATION_WARNINGS
-#endif
-
 #include <glib.h>
 
 #define N_PAGES          (101)            /* number of pages to sample */
 #define SAMPLE_SIZE      (7)
 #define PAGE_SIZE        (128)            /* must be <= minimum GSlice alignment block */
-#define MAGAZINE_PROBES  { 97, 265, 347 } /* block sizes hopefully unused by g_thread_init */
+#define MAGAZINE_PROBES \
+  {                     \
+    97, 265, 347        \
+  }                                       /* block sizes hopefully unused */
 #define MAX_PROBE_TRIALS (1031)           /* must be >= maximum magazine size */
 
 #define ALIGN(size, base) \
@@ -75,7 +73,7 @@ allocate_from_known_page (void)
 }
 
 static void
-test_slice_thread_init (void)
+test_slice_known_pages (void)
 {
   gsize j, n_pages = 0;
   void *mps[N_MAGAZINE_PROBES];
@@ -133,13 +131,10 @@ test_slice_thread_init (void)
     }
   /* mps[*] now contains pointers to reallocated slices */
 
-  /* release magazine probes to be retained across g_thread_init */
+  /* release magazine probes to be retained across known pages */
   for (j = 0; j < N_MAGAZINE_PROBES; j++)
     g_slice_free1 (magazine_probes[j], mps[j]);
   /* mps[*] now contains pointers to released slices */
-
-  /* initialize threading (should retain allocator state) */
-  g_thread_init (NULL);
 
   /* ensure probes were retained */
   for (j = 0; j < N_MAGAZINE_PROBES; j++)
@@ -172,7 +167,7 @@ main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
 
-  g_test_add_func ("/slice/thread-init", test_slice_thread_init);
+  g_test_add_func ("/slice/known_pages", test_slice_known_pages);
 
   return g_test_run ();
 }
