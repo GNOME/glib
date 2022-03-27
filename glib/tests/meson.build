@@ -106,6 +106,13 @@ glib_tests = {
   },
   'slice-concurrent' : {},
   'slice-known-pages' : {},
+  'slice-glib' : {},
+  'slice-slab' : {},
+  'slice-malloc' : {},
+  'slice-memchunk' : {
+    'source' : ['slice-memchunk.c', 'memchunks.c'],
+  },
+  'slice-eager-freeing' : {},
   'slist' : {},
   'sort' : {},
   'spawn-multithreaded' : {},
