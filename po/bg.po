@@ -2582,7 +2582,7 @@ msgstr "Неправилна числова стойност"
 #: gio/glib-compile-schemas.c:111
 #, c-format
 msgid "<value nick='%s'/> already specified"
-msgstr "вече е указано <value nick='%s'>"
+msgstr "вече е указано <value nick='%s'/>"
 
 #: gio/glib-compile-schemas.c:119
 #, c-format
