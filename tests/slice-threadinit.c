@@ -18,15 +18,22 @@
  * otherwise) arising in any way out of the use of this software, even
  * if advised of the possibility of such damage.
  */
+
+/* We are testing threadinit which is deprecated */
+#ifndef GLIB_DISABLE_DEPRECATION_WARNINGS
+#define GLIB_DISABLE_DEPRECATION_WARNINGS
+#endif
+
 #include <glib.h>
 
-#define N_PAGES                 (101)                   /* number of pages to sample */
-#define SAMPLE_SIZE             (7)
-#define PAGE_SIZE               (128)                   /* must be <= minimum GSlice alignment block */
-#define MAGAZINE_PROBES         { 97, 265, 347 }        /* block sizes hopefully unused by g_thread_init */
-#define MAX_PROBE_TRIALS        (1031)                  /* must be >= maximum magazine size */
+#define N_PAGES          (101)            /* number of pages to sample */
+#define SAMPLE_SIZE      (7)
+#define PAGE_SIZE        (128)            /* must be <= minimum GSlice alignment block */
+#define MAGAZINE_PROBES  { 97, 265, 347 } /* block sizes hopefully unused by g_thread_init */
+#define MAX_PROBE_TRIALS (1031)           /* must be >= maximum magazine size */
 
-#define ALIGN(size, base)       ((base) * (gsize) (((size) + (base) - 1) / (base)))
+#define ALIGN(size, base) \
+  ((base) * (gsize) (((size) + (base) - 1) / (base)))
 
 static struct {
   void *page;
@@ -34,6 +41,7 @@ static struct {
 } pages[N_PAGES] = { { NULL, NULL }, };
 
 static const guint magazine_probes[] = MAGAZINE_PROBES;
+
 #define N_MAGAZINE_PROBES       G_N_ELEMENTS (magazine_probes)
 
 static void
@@ -66,9 +74,8 @@ allocate_from_known_page (void)
   return FALSE;
 }
 
-int
-main (int   argc,
-      char *argv[])
+static void
+test_slice_thread_init (void)
 {
   gsize j, n_pages = 0;
   void *mps[N_MAGAZINE_PROBES];
@@ -99,15 +106,15 @@ main (int   argc,
   release_trash_list (&free_list, SAMPLE_SIZE);
 
   /* ensure that we can allocate from known pages */
-  if (!allocate_from_known_page())
-    g_error ("failed to allocate from magazine/page cache (before g_thread_init)");
+  g_assert_true (allocate_from_known_page());
+
   /* release intermediate allocations */
   release_trash_list (&free_list, SAMPLE_SIZE);
 
   /* release magazine probes to be retained */
   for (j = 0; j < N_MAGAZINE_PROBES; j++)
     g_slice_free1 (magazine_probes[j], mps[j]);
-  /* mps[*] now contains pointers to releaed slices */
+  /* mps[*] now contains pointers to released slices */
 
   /* ensure probes were retained */
   for (j = 0; j < N_MAGAZINE_PROBES; j++)
@@ -122,8 +129,7 @@ main (int   argc,
           trash = g_slist_prepend (trash, mem);
         }
       release_trash_list (&trash, magazine_probes[j]);
-      if (k >= MAX_PROBE_TRIALS)        /* failed to reallocate slice */
-        g_error ("failed to reallocate slice from magazine (before g_thread_init): size=%d", magazine_probes[j]);
+      g_assert_cmpint (k, <, MAX_PROBE_TRIALS); /* failed to reallocate slice */
     }
   /* mps[*] now contains pointers to reallocated slices */
 
@@ -148,19 +154,25 @@ main (int   argc,
           trash = g_slist_prepend (trash, mem);
         }
       release_trash_list (&trash, magazine_probes[j]);
-      if (k >= MAX_PROBE_TRIALS)        /* failed to reallocate slice */
-        g_error ("failed to reallocate slice from magazine (after g_thread_init): size=%d", magazine_probes[j]);
+      g_assert_cmpint (k, <, MAX_PROBE_TRIALS); /* failed to reallocate slice */
     }
   /* mps[*] now contains pointers to reallocated slices */
 
   /* ensure that we can allocate from known pages */
-  if (!allocate_from_known_page())
-    g_error ("failed to allocate from magazine/page cache (after g_thread_init)");
+  g_assert_true (allocate_from_known_page());
 
   /* some cleanups */
   for (j = 0; j < N_MAGAZINE_PROBES; j++)
     g_slice_free1 (magazine_probes[j], mps[j]);
   release_trash_list (&free_list, SAMPLE_SIZE);
+}
 
-  return 0;
+int
+main (int argc, char *argv[])
+{
+  g_test_init (&argc, &argv, NULL);
+
+  g_test_add_func ("/slice/thread-init", test_slice_thread_init);
+
+  return g_test_run ();
 }
