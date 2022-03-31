@@ -22,10 +22,18 @@
 #include <glib/gstdio.h>
 
 #ifdef G_OS_UNIX
-#include <dlfcn.h>
 #include <fcntl.h>
+#ifdef HAVE_OPENPTY
+#include <pty.h>
+#endif
 #include <gio/gunixinputstream.h>
 #include <gio/gunixoutputstream.h>
+#endif
+
+/* openpty() is non-standard and might not be available on all kernels
+ * and libc implementations, but glibc on Linux definitely has it */
+#if defined(__linux__) && defined(__GNUC__) && !defined(HAVE_OPENPTY)
+#error Should have been able to find openpty on GNU/Linux
 #endif
 
 GMainLoop *loop;
@@ -185,31 +193,19 @@ test_pollable_unix_pipe (void)
 static void
 test_pollable_unix_pty (void)
 {
-  int (*openpty_impl) (int *, int *, char *, void *, void *);
+#ifdef HAVE_OPENPTY
   int a, b, status;
-#ifdef LIBUTIL_SONAME
-  void *handle;
 #endif
 
   g_test_summary ("Test that PTYs are considered pollable");
 
-#ifdef LIBUTIL_SONAME
-  handle = dlopen (LIBUTIL_SONAME, RTLD_GLOBAL | RTLD_LAZY);
-  g_assert_nonnull (handle);
-#endif
+#ifdef HAVE_OPENPTY
+  status = openpty (&a, &b, NULL, NULL, NULL);
 
-  openpty_impl = dlsym (RTLD_DEFAULT, "openpty");
-  if (openpty_impl == NULL)
-    {
-      g_test_skip ("System does not support openpty()");
-      goto close_libutil;
-    }
-
-  status = openpty_impl (&a, &b, NULL, NULL, NULL);
   if (status == -1)
     {
       g_test_skip ("Unable to open PTY");
-      goto close_libutil;
+      return;
     }
 
   in = G_POLLABLE_INPUT_STREAM (g_unix_input_stream_new (a, TRUE));
@@ -222,12 +218,8 @@ test_pollable_unix_pty (void)
 
   close (a);
   close (b);
-
-close_libutil:
-#ifdef LIBUTIL_SONAME
-  dlclose (handle);
 #else
-  return;
+  g_test_skip ("openpty not found");
 #endif
 }
 

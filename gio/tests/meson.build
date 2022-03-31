@@ -12,20 +12,20 @@ test_c_args = [
   '-UG_DISABLE_ASSERT',
 ]
 
-# workaround for https://github.com/mesonbuild/meson/issues/6880
-if build_machine.system() == 'linux'
-  libutil_name = 'libutil'
-  libutil = run_command('sh', '-c',
-    '''ldconfig -p | grep -o "[[:space:]]@0@\.so\(\.[0-9]\+\)\?\b"'''
-    .format(libutil_name), check: false).stdout().strip().split('\n')
+libutil_dep = dependency('', required : false)
 
-  if libutil.length() > 0
-      message('Found libutil as @0@'.format(libutil[0]))
-      test_c_args += '-DLIBUTIL_SONAME="@0@"'.format(libutil[0])
-  else
-      warning('libutil not found')
-  endif # libutil.length() > 0
-endif # build_machine.system() == 'linux'
+if cc.has_header('pty.h')
+  have_openpty = cc.has_function('openpty', prefix : '#include <pty.h>')
+
+  if host_machine.system() == 'linux' and not have_openpty
+    libutil_dep = cc.find_library('util', required : false)
+    have_openpty = cc.has_function('openpty', dependencies : libutil_dep, prefix : '#include <pty.h>')
+  endif
+
+  if have_openpty
+    test_c_args += '-DHAVE_OPENPTY'
+  endif
+endif
 
 if host_machine.system() == 'windows'
   common_gio_tests_deps += [iphlpapi_dep, winsock2, cc.find_library ('secur32')]
@@ -91,7 +91,7 @@ gio_tests = {
   'network-monitor' : {},
   'network-monitor-race' : {},
   'permission' : {},
-  'pollable' : {'dependencies' : [libdl_dep]},
+  'pollable' : {'dependencies' : [libutil_dep]},
   'power-profile-monitor' : {},
   'proxy-test' : {},
   'readwrite' : {},
