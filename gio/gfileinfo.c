@@ -99,7 +99,7 @@ G_LOCK_DEFINE_STATIC (attribute_hash);
 static int namespace_id_counter = 0;
 static GHashTable *ns_hash = NULL;
 static GHashTable *attribute_hash = NULL;
-static char ***attributes = NULL;
+static char ***global_attributes = NULL;
 
 /* Attribute ids are 32bit, we split it up like this:
  * |------------|--------------------|
@@ -134,9 +134,9 @@ _lookup_namespace (const char *namespace)
       ns_info = g_new0 (NSInfo, 1);
       ns_info->id = ++namespace_id_counter;
       g_hash_table_insert (ns_hash, g_strdup (namespace), ns_info);
-      attributes = g_realloc (attributes, (ns_info->id + 1) * sizeof (char **));
-      attributes[ns_info->id] = g_new (char *, 1);
-      attributes[ns_info->id][0] = g_strconcat (namespace, "::*", NULL);
+      global_attributes = g_realloc (global_attributes, (ns_info->id + 1) * sizeof (char **));
+      global_attributes[ns_info->id] = g_new (char *, 1);
+      global_attributes[ns_info->id][0] = g_strconcat (namespace, "::*", NULL);
     }
   return ns_info;
 }
@@ -164,12 +164,12 @@ _lookup_attribute (const char *attribute)
   g_free (ns);
 
   id = ++ns_info->attribute_id_counter;
-  attributes[ns_info->id] = g_realloc (attributes[ns_info->id], (id + 1) * sizeof (char *));
-  attributes[ns_info->id][id] = g_strdup (attribute);
+  global_attributes[ns_info->id] = g_realloc (global_attributes[ns_info->id], (id + 1) * sizeof (char *));
+  global_attributes[ns_info->id][id] = g_strdup (attribute);
 
   attr_id = MAKE_ATTR_ID (ns_info->id, id);
 
-  g_hash_table_insert (attribute_hash, attributes[ns_info->id][id], GUINT_TO_POINTER (attr_id));
+  g_hash_table_insert (attribute_hash, global_attributes[ns_info->id][id], GUINT_TO_POINTER (attr_id));
 
   return attr_id;
 }
@@ -299,7 +299,7 @@ get_attribute_for_id (int attribute)
 {
   char *s;
   G_LOCK (attribute_hash);
-  s = attributes[GET_NS(attribute)][GET_ID(attribute)];
+  s = global_attributes[GET_NS (attribute)][GET_ID (attribute)];
   G_UNLOCK (attribute_hash);
   return s;
 }

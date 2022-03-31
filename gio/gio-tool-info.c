@@ -30,13 +30,13 @@
 
 static gboolean writable = FALSE;
 static gboolean filesystem = FALSE;
-static char *attributes = NULL;
+static char *global_attributes = NULL;
 static gboolean nofollow_symlinks = FALSE;
 
 static const GOptionEntry entries[] = {
   { "query-writable", 'w', 0, G_OPTION_ARG_NONE, &writable, N_("List writable attributes"), NULL },
   { "filesystem", 'f', 0, G_OPTION_ARG_NONE, &filesystem, N_("Get file system info"), NULL },
-  { "attributes", 'a', 0, G_OPTION_ARG_STRING, &attributes, N_("The attributes to get"), N_("ATTRIBUTES") },
+  { "attributes", 'a', 0, G_OPTION_ARG_STRING, &global_attributes, N_("The attributes to get"), N_("ATTRIBUTES") },
   { "nofollow-symlinks", 'n', 0, G_OPTION_ARG_NONE, &nofollow_symlinks, N_("Don’t follow symbolic links"), NULL },
   G_OPTION_ENTRY_NULL
 };
@@ -230,8 +230,8 @@ query_info (GFile *file)
   if (file == NULL)
     return FALSE;
 
-  if (attributes == NULL)
-    attributes = "*";
+  if (global_attributes == NULL)
+    global_attributes = "*";
 
   flags = 0;
   if (nofollow_symlinks)
@@ -239,9 +239,9 @@ query_info (GFile *file)
 
   error = NULL;
   if (filesystem)
-    info = g_file_query_filesystem_info (file, attributes, NULL, &error);
+    info = g_file_query_filesystem_info (file, global_attributes, NULL, &error);
   else
-    info = g_file_query_info (file, attributes, flags, NULL, &error);
+    info = g_file_query_info (file, global_attributes, flags, NULL, &error);
 
   if (info == NULL)
     {

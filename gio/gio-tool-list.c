@@ -24,8 +24,7 @@
 
 #include "gio-tool.h"
 
-
-static char *attributes = NULL;
+static char *global_attributes = NULL;
 static gboolean show_hidden = FALSE;
 static gboolean show_long = FALSE;
 static gboolean nofollow_symlinks = FALSE;
@@ -33,7 +32,7 @@ static gboolean print_display_names = FALSE;
 static gboolean print_uris = FALSE;
 
 static const GOptionEntry entries[] = {
-  { "attributes", 'a', 0, G_OPTION_ARG_STRING, &attributes, N_("The attributes to get"), N_("ATTRIBUTES") },
+  { "attributes", 'a', 0, G_OPTION_ARG_STRING, &global_attributes, N_("The attributes to get"), N_("ATTRIBUTES") },
   { "hidden", 'h', 0, G_OPTION_ARG_NONE, &show_hidden, N_("Show hidden files"), NULL },
   { "long", 'l', 0, G_OPTION_ARG_NONE, &show_long, N_("Use a long listing format"), NULL },
   { "nofollow-symlinks", 'n', 0, G_OPTION_ARG_NONE, &nofollow_symlinks, N_("Don’t follow symbolic links"), NULL},
@@ -121,7 +120,7 @@ list (GFile *file)
 
   error = NULL;
   enumerator = g_file_enumerate_children (file,
-                                          attributes,
+                                          global_attributes,
                                           nofollow_symlinks ? G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS : 0,
                                           NULL,
                                           &error);
@@ -199,17 +198,15 @@ handle_list (int argc, char *argv[], gboolean do_help)
 
   g_option_context_free (context);
 
-  if (attributes != NULL)
+  if (global_attributes != NULL)
     show_long = TRUE;
 
-  attributes = g_strconcat (!print_display_names ? G_FILE_ATTRIBUTE_STANDARD_NAME "," : "",
-                            print_display_names ? G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME "," : "",
-                            G_FILE_ATTRIBUTE_STANDARD_TYPE ","
-                            G_FILE_ATTRIBUTE_STANDARD_SIZE ","
-                            G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN,
-                            attributes != NULL ? "," : "",
-                            attributes,
-                            NULL);
+  global_attributes = g_strconcat (!print_display_names ? G_FILE_ATTRIBUTE_STANDARD_NAME "," : "",
+                                   print_display_names ? G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME "," : "",
+                                   G_FILE_ATTRIBUTE_STANDARD_TYPE "," G_FILE_ATTRIBUTE_STANDARD_SIZE "," G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN,
+                                   global_attributes != NULL ? "," : "",
+                                   global_attributes,
+                                   NULL);
 
   res = TRUE;
   if (argc > 1)
@@ -232,7 +229,7 @@ handle_list (int argc, char *argv[], gboolean do_help)
       g_free (cwd);
     }
 
-  g_free (attributes);
+  g_free (global_attributes);
 
   return res ? 0 : 2;
 }

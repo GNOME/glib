@@ -353,7 +353,6 @@ _g_win32_extract_executable (const gunichar2  *commandline,
               gchar *dllpart_utf8;
               gchar *dllpart_utf8_folded;
               gchar *function_utf8;
-              gboolean folded;
               const gunichar2 *space = g_utf16_wchr (function_begin, L' ');
 
               if (space)

@@ -25,12 +25,12 @@
 #include "gio-tool.h"
 
 
-static gboolean force = FALSE;
+static gboolean global_force = FALSE;
 static gboolean empty = FALSE;
 static gboolean restore = FALSE;
 static gboolean list = FALSE;
 static const GOptionEntry entries[] = {
-  { "force", 'f', 0, G_OPTION_ARG_NONE, &force, N_("Ignore nonexistent files, never prompt"), NULL },
+  { "force", 'f', 0, G_OPTION_ARG_NONE, &global_force, N_("Ignore nonexistent files, never prompt"), NULL },
   { "empty", 0, 0, G_OPTION_ARG_NONE, &empty, N_("Empty the trash"), NULL },
   { "list", 0, 0, G_OPTION_ARG_NONE, &list, N_("List files in the trash with their original locations"), NULL },
   { "restore", 0, 0, G_OPTION_ARG_NONE, &restore, N_("Restore a file from trash to its original location (possibly "
@@ -258,7 +258,7 @@ handle_trash (int argc, char *argv[], gboolean do_help)
                   print_file_error (file, _("Location given doesn't start with trash:///"));
                   retval = 1;
                 }
-              else if (!restore_trash (file, force, NULL, &error))
+              else if (!restore_trash (file, global_force, NULL, &error))
                 {
                   print_file_error (file, error->message);
                   retval = 1;
@@ -266,7 +266,7 @@ handle_trash (int argc, char *argv[], gboolean do_help)
             }
           else if (!g_file_trash (file, NULL, &error))
             {
-              if (!force ||
+              if (!global_force ||
                   !g_error_matches (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
                 {
                   print_file_error (file, error->message);
@@ -279,7 +279,6 @@ handle_trash (int argc, char *argv[], gboolean do_help)
     }
   else if (list)
     {
-      GFile *file;
       file = g_file_new_for_uri ("trash:");
       trash_list (file, NULL, &error);
       if (error)
@@ -292,7 +291,6 @@ handle_trash (int argc, char *argv[], gboolean do_help)
     }
   else if (empty)
     {
-      GFile *file;
       file = g_file_new_for_uri ("trash:");
       delete_trash_file (file, FALSE, TRUE);
       g_object_unref (file);
