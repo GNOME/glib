@@ -147,7 +147,7 @@ test_unknown_key (void)
       g_object_unref (settings);
       return;
     }
-  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*does not contain*");
 }
@@ -170,7 +170,7 @@ test_no_schema (void)
       g_assert_null (settings);
       return;
     }
-  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*Settings schema 'no.such.schema' is not installed*");
 }
@@ -220,7 +220,7 @@ test_wrong_path (void)
       settings = g_settings_new_with_path ("org.gtk.test", "/wrong-path/");
       return;
     }
-  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*but path * specified by schema*");
 }
@@ -238,7 +238,7 @@ test_no_path (void)
       settings = g_settings_new ("org.gtk.test.no-path");
       return;
     }
-  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*attempting to create schema * without a path**");
 }
@@ -1507,7 +1507,7 @@ test_typesafe_binding (void)
       g_object_unref (settings);
       return;
     }
-  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*not compatible*");
 }
@@ -1665,12 +1665,14 @@ test_no_read_binding (void)
 {
   if (g_test_undefined ())
     {
-      g_test_trap_subprocess ("/gsettings/no-read-binding/subprocess/fail", 0, 0);
+      g_test_trap_subprocess ("/gsettings/no-read-binding/subprocess/fail", 0,
+                              G_TEST_SUBPROCESS_DEFAULT);
       g_test_trap_assert_failed ();
       g_test_trap_assert_stderr ("*property*is not readable*");
     }
 
-  g_test_trap_subprocess ("/gsettings/no-read-binding/subprocess/pass", 0, 0);
+  g_test_trap_subprocess ("/gsettings/no-read-binding/subprocess/pass", 0,
+                          G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_passed ();
 }
 
@@ -1708,12 +1710,14 @@ test_no_write_binding (void)
 {
   if (g_test_undefined ())
     {
-      g_test_trap_subprocess ("/gsettings/no-write-binding/subprocess/fail", 0, 0);
+      g_test_trap_subprocess ("/gsettings/no-write-binding/subprocess/fail", 0,
+                              G_TEST_SUBPROCESS_DEFAULT);
       g_test_trap_assert_failed ();
       g_test_trap_assert_stderr ("*property*is not writable*");
     }
 
-  g_test_trap_subprocess ("/gsettings/no-write-binding/subprocess/pass", 0, 0);
+  g_test_trap_subprocess ("/gsettings/no-write-binding/subprocess/pass", 0,
+                          G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_passed ();
 }
 
@@ -2141,19 +2145,23 @@ test_enums (void)
 
   if (g_test_undefined () && !backend_set)
     {
-      g_test_trap_subprocess ("/gsettings/enums/subprocess/non-enum-key", 0, 0);
+      g_test_trap_subprocess ("/gsettings/enums/subprocess/non-enum-key", 0,
+                              G_TEST_SUBPROCESS_DEFAULT);
       g_test_trap_assert_failed ();
       g_test_trap_assert_stderr ("*not associated with an enum*");
 
-      g_test_trap_subprocess ("/gsettings/enums/subprocess/non-enum-value", 0, 0);
+      g_test_trap_subprocess ("/gsettings/enums/subprocess/non-enum-value", 0,
+                              G_TEST_SUBPROCESS_DEFAULT);
       g_test_trap_assert_failed ();
       g_test_trap_assert_stderr ("*invalid enum value 42*");
 
-      g_test_trap_subprocess ("/gsettings/enums/subprocess/range", 0, 0);
+      g_test_trap_subprocess ("/gsettings/enums/subprocess/range", 0,
+                              G_TEST_SUBPROCESS_DEFAULT);
       g_test_trap_assert_failed ();
       g_test_trap_assert_stderr ("*g_settings_set_value*valid range*");
 
-      g_test_trap_subprocess ("/gsettings/enums/subprocess/non-flags", 0, 0);
+      g_test_trap_subprocess ("/gsettings/enums/subprocess/non-flags", 0,
+                              G_TEST_SUBPROCESS_DEFAULT);
       g_test_trap_assert_failed ();
       g_test_trap_assert_stderr ("*not associated with a flags*");
     }
@@ -2239,19 +2247,23 @@ test_flags (void)
 
   if (g_test_undefined () && !backend_set)
     {
-      g_test_trap_subprocess ("/gsettings/flags/subprocess/non-flags-key", 0, 0);
+      g_test_trap_subprocess ("/gsettings/flags/subprocess/non-flags-key", 0,
+                              G_TEST_SUBPROCESS_DEFAULT);
       g_test_trap_assert_failed ();
       g_test_trap_assert_stderr ("*not associated with a flags*");
 
-      g_test_trap_subprocess ("/gsettings/flags/subprocess/non-flags-value", 0, 0);
+      g_test_trap_subprocess ("/gsettings/flags/subprocess/non-flags-value", 0,
+                              G_TEST_SUBPROCESS_DEFAULT);
       g_test_trap_assert_failed ();
       g_test_trap_assert_stderr ("*invalid flags value 0x00000042*");
 
-      g_test_trap_subprocess ("/gsettings/flags/subprocess/range", 0, 0);
+      g_test_trap_subprocess ("/gsettings/flags/subprocess/range", 0,
+                              G_TEST_SUBPROCESS_DEFAULT);
       g_test_trap_assert_failed ();
       g_test_trap_assert_stderr ("*g_settings_set_value*valid range*");
 
-      g_test_trap_subprocess ("/gsettings/flags/subprocess/non-enum", 0, 0);
+      g_test_trap_subprocess ("/gsettings/flags/subprocess/non-enum", 0,
+                              G_TEST_SUBPROCESS_DEFAULT);
       g_test_trap_assert_failed ();
       g_test_trap_assert_stderr ("*not associated with an enum*");
     }
@@ -2328,11 +2340,13 @@ test_range (void)
 
   if (g_test_undefined () && !backend_set)
     {
-      g_test_trap_subprocess ("/gsettings/range/subprocess/high", 0, 0);
+      g_test_trap_subprocess ("/gsettings/range/subprocess/high", 0,
+                              G_TEST_SUBPROCESS_DEFAULT);
       g_test_trap_assert_failed ();
       g_test_trap_assert_stderr ("*g_settings_set_value*valid range*");
 
-      g_test_trap_subprocess ("/gsettings/range/subprocess/low", 0, 0);
+      g_test_trap_subprocess ("/gsettings/range/subprocess/low", 0,
+                              G_TEST_SUBPROCESS_DEFAULT);
       g_test_trap_assert_failed ();
       g_test_trap_assert_stderr ("*g_settings_set_value*valid range*");
     }
@@ -2881,7 +2895,8 @@ test_per_desktop (void)
 
   if (!g_test_subprocess ())
     {
-      g_test_trap_subprocess ("/gsettings/per-desktop/subprocess", 0, 0);
+      g_test_trap_subprocess ("/gsettings/per-desktop/subprocess", 0,
+                              G_TEST_SUBPROCESS_DEFAULT);
       g_test_trap_assert_passed ();
     }
 

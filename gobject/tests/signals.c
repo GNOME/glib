@@ -1640,7 +1640,7 @@ test_lookup_invalid (void)
       return;
     }
 
-  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*WARNING*unable to look up invalid signal name*");
 }
@@ -1757,7 +1757,7 @@ test_signals_invalid_name (gconstpointer test_data)
       return;
     }
 
-  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*CRITICAL*g_signal_is_valid_name (signal_name)*");
 }

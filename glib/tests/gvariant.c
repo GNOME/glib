@@ -2936,7 +2936,7 @@ static void
 do_failed_test (const char *test,
                 const gchar *pattern)
 {
-  g_test_trap_subprocess (test, 1000000, 0);
+  g_test_trap_subprocess (test, 1000000, G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr (pattern);
 }

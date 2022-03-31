@@ -861,7 +861,7 @@ array_overflow_append_vals (void)
     }
   else
     {
-      g_test_trap_subprocess (NULL, 0, 0);
+      g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
       g_test_trap_assert_failed ();
       g_test_trap_assert_stderr ("*adding 4294967295 to array would overflow*");
     }
@@ -880,7 +880,7 @@ array_overflow_set_size (void)
     }
   else
     {
-      g_test_trap_subprocess (NULL, 0, 0);
+      g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
       g_test_trap_assert_failed ();
       g_test_trap_assert_stderr ("*adding 4294967295 to array would overflow*");
     }

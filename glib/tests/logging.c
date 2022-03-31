@@ -200,48 +200,59 @@ test_default_handler_0x400 (void)
 static void
 test_default_handler (void)
 {
-  g_test_trap_subprocess ("/logging/default-handler/subprocess/error", 0, 0);
+  g_test_trap_subprocess ("/logging/default-handler/subprocess/error", 0,
+                          G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*ERROR*message1*");
 
-  g_test_trap_subprocess ("/logging/default-handler/subprocess/critical", 0, 0);
+  g_test_trap_subprocess ("/logging/default-handler/subprocess/critical", 0,
+                          G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*CRITICAL*message2*");
 
-  g_test_trap_subprocess ("/logging/default-handler/subprocess/warning", 0, 0);
+  g_test_trap_subprocess ("/logging/default-handler/subprocess/warning", 0,
+                          G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*WARNING*message3*");
 
-  g_test_trap_subprocess ("/logging/default-handler/subprocess/message", 0, 0);
+  g_test_trap_subprocess ("/logging/default-handler/subprocess/message", 0,
+                          G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_passed ();
   g_test_trap_assert_stderr ("*Message*message4*");
 
-  g_test_trap_subprocess ("/logging/default-handler/subprocess/info", 0, 0);
+  g_test_trap_subprocess ("/logging/default-handler/subprocess/info", 0,
+                          G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_passed ();
   g_test_trap_assert_stdout_unmatched ("*INFO*message5*");
 
-  g_test_trap_subprocess ("/logging/default-handler/subprocess/bar-info", 0, 0);
+  g_test_trap_subprocess ("/logging/default-handler/subprocess/bar-info", 0,
+                          G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_passed ();
   g_test_trap_assert_stdout ("*INFO*message5*");
 
-  g_test_trap_subprocess ("/logging/default-handler/subprocess/baz-debug", 0, 0);
+  g_test_trap_subprocess ("/logging/default-handler/subprocess/baz-debug", 0,
+                          G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_passed ();
   g_test_trap_assert_stdout ("*DEBUG*message6*");
 
-  g_test_trap_subprocess ("/logging/default-handler/subprocess/debug", 0, 0);
+  g_test_trap_subprocess ("/logging/default-handler/subprocess/debug", 0,
+                          G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_passed ();
   g_test_trap_assert_stdout ("*DEBUG*6*6*6*");
 
-  g_test_trap_subprocess ("/logging/default-handler/subprocess/debug-stderr", 0, 0);
+  g_test_trap_subprocess ("/logging/default-handler/subprocess/debug-stderr", 0,
+                          G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_passed ();
   g_test_trap_assert_stdout_unmatched ("DEBUG");
   g_test_trap_assert_stderr ("*DEBUG*6*6*6*");
 
-  g_test_trap_subprocess ("/logging/default-handler/subprocess/0x400", 0, 0);
+  g_test_trap_subprocess ("/logging/default-handler/subprocess/0x400", 0,
+                          G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_passed ();
   g_test_trap_assert_stdout ("*LOG-0x400*message7*");
 
-  g_test_trap_subprocess ("/logging/default-handler/subprocess/would-drop", 0, 0);
+  g_test_trap_subprocess ("/logging/default-handler/subprocess/would-drop", 0,
+                          G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_passed ();
 }
 
@@ -254,7 +265,7 @@ test_fatal_log_mask (void)
       g_log ("bu", G_LOG_LEVEL_INFO, "fatal");
       return;
     }
-  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_failed ();
   /* G_LOG_LEVEL_INFO isn't printed by default */
   g_test_trap_assert_stdout_unmatched ("*fatal*");
@@ -361,7 +372,7 @@ test_gibberish (void)
       g_warning ("bla bla \236\237\190");
       return;
     }
-  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*bla bla \\x9e\\x9f\\u000190*");
 }
@@ -465,7 +476,7 @@ test_structured_logging_no_state (void)
     }
   else
     {
-      g_test_trap_subprocess (NULL, 0, 0);
+      g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
       g_test_trap_assert_passed ();
     }
 }
@@ -494,7 +505,7 @@ test_structured_logging_some_state (void)
     }
   else
     {
-      g_test_trap_subprocess (NULL, 0, 0);
+      g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
       g_test_trap_assert_passed ();
     }
 }
@@ -517,7 +528,7 @@ test_structured_logging_robustness (void)
     }
   else
     {
-      g_test_trap_subprocess (NULL, 0, 0);
+      g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
       g_test_trap_assert_passed ();
     }
 }
@@ -568,7 +579,7 @@ test_structured_logging_roundtrip1 (void)
     }
   else
     {
-      g_test_trap_subprocess (NULL, 0, 0);
+      g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
       g_test_trap_assert_passed ();
     }
 }
@@ -603,7 +614,7 @@ test_structured_logging_roundtrip2 (void)
     }
   else
     {
-      g_test_trap_subprocess (NULL, 0, 0);
+      g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
       g_test_trap_assert_passed ();
     }
 }
@@ -632,7 +643,7 @@ test_structured_logging_roundtrip3 (void)
     }
   else
     {
-      g_test_trap_subprocess (NULL, 0, 0);
+      g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
       g_test_trap_assert_passed ();
     }
 }
@@ -672,7 +683,7 @@ test_structured_logging_variant1 (void)
     }
   else
     {
-      g_test_trap_subprocess (NULL, 0, 0);
+      g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
       g_test_trap_assert_passed ();
     }
 }
@@ -704,7 +715,7 @@ test_structured_logging_variant2 (void)
     }
   else
     {
-      g_test_trap_subprocess (NULL, 0, 0);
+      g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
       g_test_trap_assert_passed ();
     }
 }
@@ -721,7 +732,7 @@ test_structured_logging_set_writer_func_twice (void)
     }
   else
     {
-      g_test_trap_subprocess (NULL, 0, 0);
+      g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
       g_test_trap_assert_failed ();
     }
 }

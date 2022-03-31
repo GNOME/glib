@@ -639,7 +639,7 @@ test_positional_params2 (void)
       g_assert_cmpint (res, ==, 7);
       return;
     }
-  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_passed ();
   g_test_trap_assert_stdout ("a b\n   ab\nabcabc\n");
 }
@@ -674,7 +674,7 @@ test_percent2 (void)
       g_assert_cmpint (res, ==, 1);
       return;
     }
-  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_passed ();
   g_test_trap_assert_stdout ("*%*");
 }
@@ -858,13 +858,15 @@ _Pragma ("GCC diagnostic pop")
 static void
 test_64bit2 (void)
 {
-  g_test_trap_subprocess ("/printf/test-64bit/subprocess/base", 0, 0);
+  g_test_trap_subprocess ("/printf/test-64bit/subprocess/base", 0,
+                          G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_passed ();
   g_test_trap_assert_stdout ("123456\n-123456\n123456\n"
                              "361100\n0361100\n1e240\n"
                              "0x1e240\n1E240\n");
 #ifdef G_OS_WIN32
-  g_test_trap_subprocess ("/printf/test-64bit/subprocess/win32", 0, 0);
+  g_test_trap_subprocess ("/printf/test-64bit/subprocess/win32", 0,
+                          G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_passed ();
   g_test_trap_assert_stdout ("123456\n-123456\n123456\n"
                              "361100\n0361100\n1e240\n"

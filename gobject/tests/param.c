@@ -750,7 +750,7 @@ test_param_invalid_name (gconstpointer test_data)
       return;
     }
 
-  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*CRITICAL*g_param_spec_is_valid_name (name)*");
 }
@@ -1395,7 +1395,8 @@ test_param_implement (void)
             test_path = g_strdup_printf ("/param/implement/subprocess/%d-%d-%d-%d",
                                          change_this_flag, change_this_type,
                                          use_this_flag, use_this_type);
-            g_test_trap_subprocess (test_path, G_TIME_SPAN_SECOND, 0);
+            g_test_trap_subprocess (test_path, G_TIME_SPAN_SECOND,
+                                    G_TEST_SUBPROCESS_DEFAULT);
             g_free (test_path);
 
             /* We want to ensure that any flags mismatch problems are reported first. */
