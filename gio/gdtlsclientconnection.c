@@ -191,7 +191,7 @@ g_dtls_client_connection_new (GDatagramBased      *base_socket,
 GTlsCertificateFlags
 g_dtls_client_connection_get_validation_flags (GDtlsClientConnection *conn)
 {
-  GTlsCertificateFlags flags = 0;
+  GTlsCertificateFlags flags = G_TLS_CERTIFICATE_FLAGS_NONE;
 
   g_return_val_if_fail (G_IS_DTLS_CLIENT_CONNECTION (conn), 0);
 

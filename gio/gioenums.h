@@ -1578,6 +1578,7 @@ typedef enum {
 
 /**
  * GTlsCertificateFlags:
+ * @G_TLS_CERTIFICATE_FLAGS_NONE: No flags. Since: 2.74
  * @G_TLS_CERTIFICATE_UNKNOWN_CA: The signing certificate authority is
  *   not known.
  * @G_TLS_CERTIFICATE_BAD_IDENTITY: The certificate does not match the
@@ -1609,6 +1610,7 @@ typedef enum {
  * Since: 2.28
  */
 typedef enum {
+  G_TLS_CERTIFICATE_FLAGS_NONE GLIB_AVAILABLE_ENUMERATOR_IN_2_74 = 0,
   G_TLS_CERTIFICATE_UNKNOWN_CA    = (1 << 0),
   G_TLS_CERTIFICATE_BAD_IDENTITY  = (1 << 1),
   G_TLS_CERTIFICATE_NOT_ACTIVATED = (1 << 2),
