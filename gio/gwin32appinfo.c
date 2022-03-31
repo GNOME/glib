@@ -1742,7 +1742,7 @@ handler_add_verb (gpointer           handler_data1,
 {
   GWin32AppInfoHandler *handler_rec = (GWin32AppInfoHandler *) handler_data1;
   GWin32AppInfoApplication *app_rec = (GWin32AppInfoApplication *) handler_data2;
-  GWin32AppInfoShellVerb *shverb;
+  GWin32AppInfoShellVerb *shverb = NULL;
 
   _verb_lookup (handler_rec->verbs, verb, &shverb);
 
@@ -1788,7 +1788,7 @@ generate_new_verb_name (GPtrArray        *verbs,
                         gchar           **new_displayname)
 {
   gsize counter;
-  GWin32AppInfoShellVerb *shverb;
+  GWin32AppInfoShellVerb *shverb = NULL;
   gsize orig_len = g_utf16_len (verb);
   gsize new_verb_name_len = orig_len + strlen (" ()") + 2 + 1;
   gunichar2 *new_verb_name = g_new (gunichar2, new_verb_name_len);
@@ -1828,7 +1828,7 @@ app_add_verb (gpointer           handler_data1,
   gunichar2 *new_verb = NULL;
   gchar *new_displayname = NULL;
   GWin32AppInfoApplication *app_rec = (GWin32AppInfoApplication *) handler_data2;
-  GWin32AppInfoShellVerb *shverb;
+  GWin32AppInfoShellVerb *shverb = NULL;
 
   _verb_lookup (app_rec->verbs, verb, &shverb);
 
@@ -1899,7 +1899,7 @@ uwp_app_add_verb (GWin32AppInfoApplication *app_rec,
                   const gunichar2          *verb,
                   const gchar              *verb_displayname)
 {
-  GWin32AppInfoShellVerb *shverb;
+  GWin32AppInfoShellVerb *shverb = NULL;
 
   _verb_lookup (app_rec->verbs, verb, &shverb);
 
@@ -1934,7 +1934,7 @@ uwp_handler_add_verb (GWin32AppInfoHandler     *handler_rec,
                       const gchar              *verb_displayname,
                       gboolean                  verb_is_preferred)
 {
-  GWin32AppInfoShellVerb *shverb;
+  GWin32AppInfoShellVerb *shverb = NULL;
 
   _verb_lookup (handler_rec->verbs, verb, &shverb);
 
@@ -2530,8 +2530,8 @@ read_capable_app (const gunichar2 *app_key_path,
 
           while (g_win32_registry_value_iter_next (&iter, TRUE, NULL))
             {
-              gchar *schema_u8;
-              gchar *schema_u8_folded;
+              gchar *schema_u8 = NULL;
+              gchar *schema_u8_folded = NULL;
 
               if ((!g_win32_registry_value_iter_get_value_type (&iter,
                                                                 &value_type,
@@ -2791,18 +2791,18 @@ read_incapable_app (GWin32RegistryKey *incapable_app,
 static void
 read_exeapps (void)
 {
-  GWin32RegistryKey *applications_key;
+  GWin32RegistryKey *local_applications_key;
   GWin32RegistrySubkeyIter app_iter;
 
-  applications_key =
+  local_applications_key =
       g_win32_registry_key_new_w (L"HKEY_CLASSES_ROOT\\Applications", NULL);
 
-  if (applications_key == NULL)
+  if (local_applications_key == NULL)
     return;
 
-  if (!g_win32_registry_subkey_iter_init (&app_iter, applications_key, NULL))
+  if (!g_win32_registry_subkey_iter_init (&app_iter, local_applications_key, NULL))
     {
-      g_object_unref (applications_key);
+      g_object_unref (local_applications_key);
       return;
     }
 
@@ -2825,7 +2825,7 @@ read_exeapps (void)
         continue;
 
       incapable_app =
-          g_win32_registry_key_get_child_w (applications_key,
+          g_win32_registry_key_get_child_w (local_applications_key,
                                             app_exe_basename,
                                             NULL);
 
@@ -2841,7 +2841,7 @@ read_exeapps (void)
     }
 
   g_win32_registry_subkey_iter_clear (&app_iter);
-  g_object_unref (applications_key);
+  g_object_unref (local_applications_key);
 }
 
 /* Iterates over subkeys of HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\
@@ -3091,7 +3091,7 @@ link_handlers_to_unregistered_apps (void)
               GOT_SH_INFO,
               ERROR_GETTING_SH_INFO,
             } have_stat_handler = SH_UNKNOWN;
-          GWin32PrivateStat handler_verb_exec_info;
+          GWin32PrivateStat handler_verb_exec_info = { 0 };
 
           handler_verb = _verb_idx (handler->verbs, vi);
 
@@ -3365,7 +3365,7 @@ uwp_package_cb (gpointer         user_data,
   gchar *app_user_model_id_u8;
   gchar *app_user_model_id_u8_folded;
   GHashTableIter iter;
-  GWin32AppInfoHandler *ext;
+  GWin32AppInfoHandler *ext_handler;
   GWin32AppInfoHandler *url;
 
   if (!g_utf16_to_utf8_and_fold (app_user_model_id,
@@ -3457,18 +3457,18 @@ uwp_package_cb (gpointer         user_data,
   /* Pile up all handler verbs into the app too,
    * for cases when we don't have a ref to a handler.
    */
-  while (g_hash_table_iter_next (&iter, NULL, (gpointer *) &ext))
+  while (g_hash_table_iter_next (&iter, NULL, (gpointer *) &ext_handler))
     {
       guint i_hverb;
 
-      if (!ext)
+      if (!ext_handler)
         continue;
 
-      for (i_hverb = 0; i_hverb < ext->verbs->len; i_hverb++)
+      for (i_hverb = 0; i_hverb < ext_handler->verbs->len; i_hverb++)
         {
           GWin32AppInfoShellVerb *handler_verb;
 
-          handler_verb = _verb_idx (ext->verbs, i_hverb);
+          handler_verb = _verb_idx (ext_handler->verbs, i_hverb);
           uwp_app_add_verb (app, handler_verb->verb_name, handler_verb->verb_displayname);
           if (handler_verb->app == NULL && handler_verb->is_uwp)
             handler_verb->app = g_object_ref (app);
@@ -4453,7 +4453,7 @@ Legend: (from http://msdn.microsoft.com/en-us/library/windows/desktop/cc144101%2
         {
           gint i;
           GList *o;
-          gint n;
+          gint n = 0;
 
           switch (macro)
             {

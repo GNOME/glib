@@ -2228,7 +2228,7 @@ g_socket_w32_get_adapter_ipv4_addr (const gchar *name_or_ip)
   unsigned int malloc_iterations = 0;
   PIP_ADAPTER_ADDRESSES addr_buf = NULL, eth_adapter;
   wchar_t *wchar_name_or_ip = NULL;
-  gulong ip_result;
+  gulong ip_result = 0;
   NET_IFINDEX if_index;
 
   /*
@@ -2247,8 +2247,7 @@ g_socket_w32_get_adapter_ipv4_addr (const gchar *name_or_ip)
    */
 
   /* Step 1: Check if string is an IP address: */
-  ip_result = inet_addr (name_or_ip);
-  if (ip_result != INADDR_NONE)
+  if (inet_pton (AF_INET, name_or_ip, &ip_result) == 1)
     return ip_result;  /* Success, IP address string was given directly */
 
   /*
@@ -3887,7 +3886,7 @@ update_condition_unlocked (GSocket *socket)
 
   if (socket->priv->current_events & FD_CLOSE)
     {
-      int r, errsv, buffer;
+      int r, errsv = NO_ERROR, buffer;
 
       r = recv (socket->priv->fd, &buffer, sizeof (buffer), MSG_PEEK);
       if (r < 0)
