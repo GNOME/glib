@@ -101,9 +101,7 @@ glib_tests = {
   },
   'shell' : {},
   'slice' : {},
-  'slice-color' : {
-    'extra_sources' : ['memchunks.c'],
-  },
+  'slice-color' : {},
   'slice-concurrent' : {},
   'slice-known-pages' : {},
   'slice-glib' : {},
