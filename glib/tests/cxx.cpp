@@ -49,7 +49,7 @@ test_typeof (void)
   g_clear_pointer (&obj6, g_rc_box_release);
   g_rc_box_release (obj);
 #else
-  g_test_skip ("This test requires C++11 compiler");
+  g_test_skip ("This test requires a C++11 compiler");
 #endif
 }
 
