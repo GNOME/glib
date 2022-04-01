@@ -461,7 +461,6 @@ client_choose_mech_and_send_initial_response (GDBusAuth           *auth,
 
   if (auth_mech_to_use_gtype == (GType) 0)
     {
-      guint n;
       gchar *available;
       GString *tried_str;
 

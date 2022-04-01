@@ -5961,11 +5961,11 @@ g_dbus_connection_call_internal (GDBusConnection        *connection,
     }
   else
     {
-      GDBusMessageFlags flags;
+      GDBusMessageFlags msg_flags;
 
-      flags = g_dbus_message_get_flags (message);
-      flags |= G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED;
-      g_dbus_message_set_flags (message, flags);
+      msg_flags = g_dbus_message_get_flags (message);
+      msg_flags |= G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED;
+      g_dbus_message_set_flags (message, msg_flags);
 
       g_dbus_connection_send_message (connection,
                                       message,

@@ -246,12 +246,12 @@ check_expected_events (RecordedEvent *expected,
            * error messages. Print the expected and actual events first. */
           else
             {
-              GList *l;
+              GList *ll;
               gsize j;
 
               g_test_message ("Recorded events:");
-              for (l = recorded; l != NULL; l = l->next)
-                output_event ((RecordedEvent *) l->data);
+              for (ll = recorded; ll != NULL; ll = ll->next)
+                output_event ((RecordedEvent *) ll->data);
 
               g_test_message ("Expected events:");
               for (j = 0; j < n_expected; j++)

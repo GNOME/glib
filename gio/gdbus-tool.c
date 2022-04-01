@@ -1248,19 +1248,19 @@ handle_call (gint        *argc,
         {
           if (in_signature_types->len > 0)
             {
-              GString *s;
-              s = g_string_new (NULL);
+              GString *str;
+              str = g_string_new (NULL);
 
               for (n = 0; n < in_signature_types->len; n++)
                 {
                   GVariantType *type = in_signature_types->pdata[n];
-                  g_string_append_len (s,
+                  g_string_append_len (str,
                                        g_variant_type_peek_string (type),
                                        g_variant_type_get_string_length (type));
                 }
 
-              g_printerr ("(According to introspection data, you need to pass '%s')\n", s->str);
-              g_string_free (s, TRUE);
+              g_printerr ("(According to introspection data, you need to pass '%s')\n", str->str);
+              g_string_free (str, TRUE);
             }
           else
             g_printerr ("(According to introspection data, you need to pass no arguments)\n");
@@ -1532,7 +1532,6 @@ dump_interface (GDBusConnection          *c,
         }
       else
         {
-          guint n;
           for (n = 0; o->properties != NULL && o->properties[n] != NULL; n++)
             {
               result = g_dbus_connection_call_sync (c,

@@ -545,12 +545,12 @@ g_dbus_connection_export_action_group (GDBusConnection  *connection,
 
   if G_UNLIKELY (org_gtk_Actions == NULL)
     {
-      GError *error = NULL;
+      GError *my_error = NULL;
       GDBusNodeInfo *info;
 
-      info = g_dbus_node_info_new_for_xml (org_gtk_Actions_xml, &error);
+      info = g_dbus_node_info_new_for_xml (org_gtk_Actions_xml, &my_error);
       if G_UNLIKELY (info == NULL)
-        g_error ("%s", error->message);
+        g_error ("%s", my_error->message);
       org_gtk_Actions = g_dbus_node_info_lookup_interface (info, "org.gtk.Actions");
       g_assert (org_gtk_Actions != NULL);
       g_dbus_interface_info_ref (org_gtk_Actions);

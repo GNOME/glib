@@ -1203,7 +1203,7 @@ duplicate_fd (int fd)
       return -1;
     }
 
-  return (int)newfd;
+  return (int)(gintptr)newfd;
 #else
   return dup (fd);
 #endif
