@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-02-14 13:48+0000\n"
-"PO-Revision-Date: 2022-02-14 20:38+0100\n"
+"POT-Creation-Date: 2022-04-01 19:32+0000\n"
+"PO-Revision-Date: 2022-04-01 23:24+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: čeština <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -37,24 +37,24 @@ msgstr ""
 "Nastavení aplikace, jako poslední použité pro daný typ, není zatím "
 "podporováno"
 
-#: gio/gapplication.c:497
+#: gio/gapplication.c:500
 msgid "GApplication options"
 msgstr "Volby GApplication"
 
-#: gio/gapplication.c:497
+#: gio/gapplication.c:500
 msgid "Show GApplication options"
 msgstr "Zobrazit volby GApplication"
 
-#: gio/gapplication.c:542
+#: gio/gapplication.c:545
 msgid "Enter GApplication service mode (use from D-Bus service files)"
 msgstr ""
 "Vstoupit do režimu služby GApplication (použít ze souborů služby D-Bus)"
 
-#: gio/gapplication.c:554
+#: gio/gapplication.c:557
 msgid "Override the application’s ID"
 msgstr "Přepsat ID aplikace"
 
-#: gio/gapplication.c:566
+#: gio/gapplication.c:569
 msgid "Replace the running instance"
 msgstr "Nahradit běžící instanci"
 
@@ -298,7 +298,7 @@ msgstr "Proud je již uzavřen"
 msgid "Truncate not supported on base stream"
 msgstr "Zkrácování není v proudu podporováno"
 
-#: gio/gcancellable.c:319 gio/gdbusconnection.c:1873 gio/gdbusprivate.c:1418
+#: gio/gcancellable.c:319 gio/gdbusconnection.c:1857 gio/gdbusprivate.c:1418
 #: gio/gsimpleasyncresult.c:871 gio/gsimpleasyncresult.c:897
 #, c-format
 msgid "Operation was cancelled"
@@ -348,11 +348,11 @@ msgstr "Nelze otevřít převodník z „%s“ do „%s“"
 msgid "%s type"
 msgstr "typ %s"
 
-#: gio/gcontenttype-win32.c:192
+#: gio/gcontenttype-win32.c:196
 msgid "Unknown type"
 msgstr "Neznámý typ"
 
-#: gio/gcontenttype-win32.c:194
+#: gio/gcontenttype-win32.c:198
 #, c-format
 msgid "%s filetype"
 msgstr "typ souboru %s"
@@ -520,7 +520,7 @@ msgstr "Chyba při spouštění příkazového řádku „%s“: "
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr "Nelze určit adresu sběrnice sezení (v tomto OS neimplementováno)"
 
-#: gio/gdbusaddress.c:1373 gio/gdbusconnection.c:7334
+#: gio/gdbusaddress.c:1373 gio/gdbusconnection.c:7318
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -529,7 +529,7 @@ msgstr ""
 "Nelze určit adresu sběrnice z proměnné prostředí DBUS_STARTER_BUS_TYPE – "
 "neznámá hodnota „%s“"
 
-#: gio/gdbusaddress.c:1382 gio/gdbusconnection.c:7343
+#: gio/gdbusaddress.c:1382 gio/gdbusconnection.c:7327
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -550,39 +550,39 @@ msgstr "Neočekávaně scházející obsah při pokusu o přečtení řádku"
 msgid "Unexpected lack of content trying to (safely) read a line"
 msgstr "Neočekávaně scházející obsah při pokusu o (bezpečné) přečtení řádku"
 
-#: gio/gdbusauth.c:482
+#: gio/gdbusauth.c:481
 #, c-format
 msgid ""
 "Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
 msgstr ""
 "Vyčerpány všechny dostupné ověřovací mechanismy (pokusů: %s) (dostupných: %s)"
 
-#: gio/gdbusauth.c:1171
+#: gio/gdbusauth.c:1170
 msgid "User IDs must be the same for peer and server"
 msgstr "ID uživatele musí být stejné pro klienta i server"
 
-#: gio/gdbusauth.c:1183
+#: gio/gdbusauth.c:1182
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr "Zrušeno přes GDBusAuthObserver::authorize-authenticated-peer"
 
-#: gio/gdbusauthmechanismsha1.c:299
+#: gio/gdbusauthmechanismsha1.c:300
 #, c-format
 msgid "Error when getting information for directory “%s”: %s"
 msgstr "Chyba při získávání informací pro složku „%s“: %s"
 
-#: gio/gdbusauthmechanismsha1.c:314
+#: gio/gdbusauthmechanismsha1.c:315
 #, c-format
 msgid ""
 "Permissions on directory “%s” are malformed. Expected mode 0700, got 0%o"
 msgstr ""
 "Oprávnění složky „%s“ mají chybný formát. Očekáván režim 0700, obdržen 0%o"
 
-#: gio/gdbusauthmechanismsha1.c:347 gio/gdbusauthmechanismsha1.c:358
+#: gio/gdbusauthmechanismsha1.c:348 gio/gdbusauthmechanismsha1.c:359
 #, c-format
 msgid "Error creating directory “%s”: %s"
 msgstr "Chyba při vytváření složky %s: %s"
 
-#: gio/gdbusauthmechanismsha1.c:360 gio/gfile.c:1080 gio/gfile.c:1318
+#: gio/gdbusauthmechanismsha1.c:361 gio/gfile.c:1080 gio/gfile.c:1318
 #: gio/gfile.c:1456 gio/gfile.c:1694 gio/gfile.c:1749 gio/gfile.c:1807
 #: gio/gfile.c:1891 gio/gfile.c:1948 gio/gfile.c:2012 gio/gfile.c:2067
 #: gio/gfile.c:3772 gio/gfile.c:3912 gio/gfile.c:4205 gio/gfile.c:4675
@@ -592,157 +592,157 @@ msgstr "Chyba při vytváření složky %s: %s"
 msgid "Operation not supported"
 msgstr "Operace není podporována"
 
-#: gio/gdbusauthmechanismsha1.c:403
+#: gio/gdbusauthmechanismsha1.c:404
 #, c-format
 msgid "Error opening keyring “%s” for reading: "
 msgstr "Chyba při otevírání klíčenky „%s“ ke čtení: "
 
-#: gio/gdbusauthmechanismsha1.c:426 gio/gdbusauthmechanismsha1.c:748
+#: gio/gdbusauthmechanismsha1.c:427 gio/gdbusauthmechanismsha1.c:768
 #, c-format
 msgid "Line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr "Řádek %d klíčenky na „%s“ s obsahem „%s“ má chybný formát"
 
-#: gio/gdbusauthmechanismsha1.c:440 gio/gdbusauthmechanismsha1.c:762
+#: gio/gdbusauthmechanismsha1.c:441 gio/gdbusauthmechanismsha1.c:782
 #, c-format
 msgid ""
 "First token of line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr "První symbol řádku %d klíčenky na „%s“ s obsahem „%s“ má chybný formát"
 
-#: gio/gdbusauthmechanismsha1.c:454 gio/gdbusauthmechanismsha1.c:776
+#: gio/gdbusauthmechanismsha1.c:455 gio/gdbusauthmechanismsha1.c:796
 #, c-format
 msgid ""
 "Second token of line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr "Druhý symbol řádku %d klíčenky na „%s“ s obsahem „%s“ má chybný formát"
 
-#: gio/gdbusauthmechanismsha1.c:478
+#: gio/gdbusauthmechanismsha1.c:479
 #, c-format
 msgid "Didn’t find cookie with id %d in the keyring at “%s”"
 msgstr "Nenalezena cookie s id %d v klíčence na „%s“"
 
-#: gio/gdbusauthmechanismsha1.c:524
+#: gio/gdbusauthmechanismsha1.c:536
 #, c-format
 msgid "Error creating lock file “%s”: %s"
 msgstr "Chyba při vytváření zamykacího souboru „%s“: %s"
 
-#: gio/gdbusauthmechanismsha1.c:588
+#: gio/gdbusauthmechanismsha1.c:609
 #, c-format
 msgid "Error deleting stale lock file “%s”: %s"
 msgstr "Chyba při mazání zastaralého zamykacího souboru „%s“: %s"
 
-#: gio/gdbusauthmechanismsha1.c:627
+#: gio/gdbusauthmechanismsha1.c:648
 #, c-format
 msgid "Error closing (unlinked) lock file “%s”: %s"
 msgstr "Chyba při zavírání (neodkazovaného) zamykacího souboru „%s“: %s"
 
-#: gio/gdbusauthmechanismsha1.c:638
+#: gio/gdbusauthmechanismsha1.c:659
 #, c-format
 msgid "Error unlinking lock file “%s”: %s"
 msgstr "Chyba mazámí zamykacího souboru „%s“: %s"
 
-#: gio/gdbusauthmechanismsha1.c:715
+#: gio/gdbusauthmechanismsha1.c:735
 #, c-format
 msgid "Error opening keyring “%s” for writing: "
 msgstr "Chyba při otevírání klíčenky „%s“ k zápisu: "
 
-#: gio/gdbusauthmechanismsha1.c:909
+#: gio/gdbusauthmechanismsha1.c:929
 #, c-format
 msgid "(Additionally, releasing the lock for “%s” also failed: %s) "
 msgstr "(Navíc selhalo také uvolnění zámku pro „%s“: %s) "
 
-#: gio/gdbusconnection.c:604 gio/gdbusconnection.c:2418
+#: gio/gdbusconnection.c:588 gio/gdbusconnection.c:2402
 msgid "The connection is closed"
 msgstr "Spojení bylo ukončeno"
 
-#: gio/gdbusconnection.c:1903
+#: gio/gdbusconnection.c:1887
 msgid "Timeout was reached"
 msgstr "Časový limit vypršel"
 
-#: gio/gdbusconnection.c:2541
+#: gio/gdbusconnection.c:2525
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr ""
 "Nalezeny nepodporované příznaky při vytváření spojení na straně klienta"
 
-#: gio/gdbusconnection.c:4269 gio/gdbusconnection.c:4623
+#: gio/gdbusconnection.c:4253 gio/gdbusconnection.c:4607
 #, c-format
 msgid ""
 "No such interface “org.freedesktop.DBus.Properties” on object at path %s"
 msgstr ""
 "Rozhraní „org.freedesktop.DBus.Properties“ na objektu na cestě %s neexistuje"
 
-#: gio/gdbusconnection.c:4414
+#: gio/gdbusconnection.c:4398
 #, c-format
 msgid "No such property “%s”"
 msgstr "Vlastnost „%s“ neexistuje"
 
-#: gio/gdbusconnection.c:4426
+#: gio/gdbusconnection.c:4410
 #, c-format
 msgid "Property “%s” is not readable"
 msgstr "Vlastnost „%s“ není ke čtení"
 
-#: gio/gdbusconnection.c:4437
+#: gio/gdbusconnection.c:4421
 #, c-format
 msgid "Property “%s” is not writable"
 msgstr "Vlastnost „%s“ není zapisovatelná"
 
-#: gio/gdbusconnection.c:4457
+#: gio/gdbusconnection.c:4441
 #, c-format
 msgid "Error setting property “%s”: Expected type “%s” but got “%s”"
 msgstr ""
 "Chyba při nastavování vlastnosti „%s“: Očekáván typ „%s“, ale obdržen „%s“"
 
-#: gio/gdbusconnection.c:4562 gio/gdbusconnection.c:4777
-#: gio/gdbusconnection.c:6760
+#: gio/gdbusconnection.c:4546 gio/gdbusconnection.c:4761
+#: gio/gdbusconnection.c:6744
 #, c-format
 msgid "No such interface “%s”"
 msgstr "Rozhraní „%s“ neexistuje"
 
-#: gio/gdbusconnection.c:4999 gio/gdbusconnection.c:7274
+#: gio/gdbusconnection.c:4983 gio/gdbusconnection.c:7258
 #, c-format
 msgid "No such interface “%s” on object at path %s"
 msgstr "Rozhraní „%s“na objektu na cestě %s neexistuje"
 
-#: gio/gdbusconnection.c:5100
+#: gio/gdbusconnection.c:5084
 #, c-format
 msgid "No such method “%s”"
 msgstr "Metoda „%s“ neexistuje"
 
-#: gio/gdbusconnection.c:5131
+#: gio/gdbusconnection.c:5115
 #, c-format
 msgid "Type of message, “%s”, does not match expected type “%s”"
 msgstr "Typ zprávy „%s“ se neshoduje s očekávaným typem „%s“"
 
-#: gio/gdbusconnection.c:5334
+#: gio/gdbusconnection.c:5318
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Objekt je již exportován pro prostředí %s na %s"
 
-#: gio/gdbusconnection.c:5561
+#: gio/gdbusconnection.c:5545
 #, c-format
 msgid "Unable to retrieve property %s.%s"
 msgstr "Nelze načíst vlastnost %s.%s"
 
-#: gio/gdbusconnection.c:5617
+#: gio/gdbusconnection.c:5601
 #, c-format
 msgid "Unable to set property %s.%s"
 msgstr "Nelze nastavit vlastnost %s.%s"
 
-#: gio/gdbusconnection.c:5796
+#: gio/gdbusconnection.c:5780
 #, c-format
 msgid "Method “%s” returned type “%s”, but expected “%s”"
 msgstr "Metoda „%s“ vrátila typ „%s“, ale očekáván byl „%s“"
 
-#: gio/gdbusconnection.c:6872
+#: gio/gdbusconnection.c:6856
 #, c-format
 msgid "Method “%s” on interface “%s” with signature “%s” does not exist"
 msgstr "Metoda „%s“ na rozhraní „%s“ s podpisem „%s“ neexistuje"
 
-#: gio/gdbusconnection.c:6993
+#: gio/gdbusconnection.c:6977
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Podstrom je již exportován pro %s"
 
-#: gio/gdbusconnection.c:7282
+#: gio/gdbusconnection.c:7266
 #, c-format
 msgid "Object does not exist at path “%s”"
 msgstr "V cestě „%s“ objekt neexistuje"
@@ -1030,66 +1030,66 @@ msgstr ""
 "\n"
 "Nápovědu k jednotlivým příkazům získáte použitím „%s PŘÍKAZ --help“.\n"
 
-#: gio/gdbus-tool.c:201 gio/gdbus-tool.c:273 gio/gdbus-tool.c:345
-#: gio/gdbus-tool.c:369 gio/gdbus-tool.c:859 gio/gdbus-tool.c:1244
+#: gio/gdbus-tool.c:202 gio/gdbus-tool.c:274 gio/gdbus-tool.c:346
+#: gio/gdbus-tool.c:370 gio/gdbus-tool.c:860 gio/gdbus-tool.c:1245
 #: gio/gdbus-tool.c:1732
 #, c-format
 msgid "Error: %s\n"
 msgstr "Chyba: %s\n"
 
-#: gio/gdbus-tool.c:212 gio/gdbus-tool.c:286 gio/gdbus-tool.c:1748
+#: gio/gdbus-tool.c:213 gio/gdbus-tool.c:287 gio/gdbus-tool.c:1748
 #, c-format
 msgid "Error parsing introspection XML: %s\n"
 msgstr "Chyba při analýze introspection XML: %s\n"
 
-#: gio/gdbus-tool.c:250
+#: gio/gdbus-tool.c:251
 #, c-format
 msgid "Error: %s is not a valid name\n"
 msgstr "Chyba: %s není platným názvem\n"
 
-#: gio/gdbus-tool.c:255 gio/gdbus-tool.c:745 gio/gdbus-tool.c:1063
+#: gio/gdbus-tool.c:256 gio/gdbus-tool.c:746 gio/gdbus-tool.c:1064
 #: gio/gdbus-tool.c:1898 gio/gdbus-tool.c:2138
 #, c-format
 msgid "Error: %s is not a valid object path\n"
 msgstr "Chyba: %s není platnou cestou objektu\n"
 
-#: gio/gdbus-tool.c:403
+#: gio/gdbus-tool.c:404
 msgid "Connect to the system bus"
 msgstr "Připojit k systémové sběrnici"
 
-#: gio/gdbus-tool.c:404
+#: gio/gdbus-tool.c:405
 msgid "Connect to the session bus"
 msgstr "Připojit ke sběrnici sezení"
 
-#: gio/gdbus-tool.c:405
+#: gio/gdbus-tool.c:406
 msgid "Connect to given D-Bus address"
 msgstr "Připojit k dané adrese D-Bus"
 
-#: gio/gdbus-tool.c:415
+#: gio/gdbus-tool.c:416
 msgid "Connection Endpoint Options:"
 msgstr "Volby koncového bodu spojení:"
 
-#: gio/gdbus-tool.c:416
+#: gio/gdbus-tool.c:417
 msgid "Options specifying the connection endpoint"
 msgstr "Volby určující koncový bod spojení"
 
-#: gio/gdbus-tool.c:439
+#: gio/gdbus-tool.c:440
 #, c-format
 msgid "No connection endpoint specified"
 msgstr "Neurčen žádný koncový bod spojení"
 
-#: gio/gdbus-tool.c:449
+#: gio/gdbus-tool.c:450
 #, c-format
 msgid "Multiple connection endpoints specified"
 msgstr "Určeno více koncových bodů spojení"
 
-#: gio/gdbus-tool.c:522
+#: gio/gdbus-tool.c:523
 #, c-format
 msgid ""
 "Warning: According to introspection data, interface “%s” does not exist\n"
 msgstr "Varování: Podle introspektivních dat rozhraní „%s“ neexistuje\n"
 
-#: gio/gdbus-tool.c:531
+#: gio/gdbus-tool.c:532
 #, c-format
 msgid ""
 "Warning: According to introspection data, method “%s” does not exist on "
@@ -1098,115 +1098,115 @@ msgstr ""
 "Varování: Podle introspektivních dat metoda „%s“ neexistuje na rozhraní "
 "„%s“\n"
 
-#: gio/gdbus-tool.c:593
+#: gio/gdbus-tool.c:594
 msgid "Optional destination for signal (unique name)"
 msgstr "Volitelný cíl signálu (jedinečný název)"
 
-#: gio/gdbus-tool.c:594
+#: gio/gdbus-tool.c:595
 msgid "Object path to emit signal on"
 msgstr "Cesta objektu, na kterou se má vyslat signál"
 
-#: gio/gdbus-tool.c:595
+#: gio/gdbus-tool.c:596
 msgid "Signal and interface name"
 msgstr "Název signálu a rozhraní"
 
-#: gio/gdbus-tool.c:628
+#: gio/gdbus-tool.c:629
 msgid "Emit a signal."
 msgstr "Vyslat signál."
 
-#: gio/gdbus-tool.c:683 gio/gdbus-tool.c:1000 gio/gdbus-tool.c:1835
+#: gio/gdbus-tool.c:684 gio/gdbus-tool.c:1001 gio/gdbus-tool.c:1835
 #: gio/gdbus-tool.c:2067 gio/gdbus-tool.c:2287
 #, c-format
 msgid "Error connecting: %s\n"
 msgstr "Chyba při spojení: %s\n"
 
-#: gio/gdbus-tool.c:703
+#: gio/gdbus-tool.c:704
 #, c-format
 msgid "Error: %s is not a valid unique bus name.\n"
 msgstr "Chyba: %s není platným jedinečným názvem sběrnice.\n"
 
-#: gio/gdbus-tool.c:722 gio/gdbus-tool.c:1043 gio/gdbus-tool.c:1878
+#: gio/gdbus-tool.c:723 gio/gdbus-tool.c:1044 gio/gdbus-tool.c:1878
 msgid "Error: Object path is not specified\n"
 msgstr "Chyba: Není určena žádná cesta k objektu\n"
 
-#: gio/gdbus-tool.c:765
+#: gio/gdbus-tool.c:766
 msgid "Error: Signal name is not specified\n"
 msgstr "Chyba: Není určen název signálu\n"
 
-#: gio/gdbus-tool.c:779
+#: gio/gdbus-tool.c:780
 #, c-format
 msgid "Error: Signal name “%s” is invalid\n"
 msgstr "Chyba: Název signálu „%s“ je neplatný\n"
 
-#: gio/gdbus-tool.c:791
+#: gio/gdbus-tool.c:792
 #, c-format
 msgid "Error: %s is not a valid interface name\n"
 msgstr "Chyba: %s není platným názvem rozhraní\n"
 
-#: gio/gdbus-tool.c:797
+#: gio/gdbus-tool.c:798
 #, c-format
 msgid "Error: %s is not a valid member name\n"
 msgstr "Chyba: %s není platným názvem členu\n"
 
 #. Use the original non-"parse-me-harder" error
-#: gio/gdbus-tool.c:834 gio/gdbus-tool.c:1175
+#: gio/gdbus-tool.c:835 gio/gdbus-tool.c:1176
 #, c-format
 msgid "Error parsing parameter %d: %s\n"
 msgstr "Chyba při analyzování parametru %d: %s\n"
 
-#: gio/gdbus-tool.c:866
+#: gio/gdbus-tool.c:867
 #, c-format
 msgid "Error flushing connection: %s\n"
 msgstr "Chyba při vyprazdňování spojení: %s\n"
 
-#: gio/gdbus-tool.c:894
+#: gio/gdbus-tool.c:895
 msgid "Destination name to invoke method on"
 msgstr "Název cíle, u kterého se má spustit metoda"
 
-#: gio/gdbus-tool.c:895
+#: gio/gdbus-tool.c:896
 msgid "Object path to invoke method on"
 msgstr "Cesta objektu, u kterého se má spustit metoda"
 
-#: gio/gdbus-tool.c:896
+#: gio/gdbus-tool.c:897
 msgid "Method and interface name"
 msgstr "Název metody a rozhraní"
 
-#: gio/gdbus-tool.c:897
+#: gio/gdbus-tool.c:898
 msgid "Timeout in seconds"
 msgstr "Časový limit v sekundách"
 
-#: gio/gdbus-tool.c:898
+#: gio/gdbus-tool.c:899
 msgid "Allow interactive authorization"
 msgstr "Povolit interaktivní autorizaci"
 
-#: gio/gdbus-tool.c:945
+#: gio/gdbus-tool.c:946
 msgid "Invoke a method on a remote object."
 msgstr "Spustit metodu na vzdáleném objektu."
 
-#: gio/gdbus-tool.c:1017 gio/gdbus-tool.c:1852 gio/gdbus-tool.c:2092
+#: gio/gdbus-tool.c:1018 gio/gdbus-tool.c:1852 gio/gdbus-tool.c:2092
 msgid "Error: Destination is not specified\n"
 msgstr "Chyba: Není určen žádný cíl\n"
 
-#: gio/gdbus-tool.c:1028 gio/gdbus-tool.c:1869 gio/gdbus-tool.c:2103
+#: gio/gdbus-tool.c:1029 gio/gdbus-tool.c:1869 gio/gdbus-tool.c:2103
 #, c-format
 msgid "Error: %s is not a valid bus name\n"
 msgstr "Chyba: %s není platným názvem sběrnice\n"
 
-#: gio/gdbus-tool.c:1078
+#: gio/gdbus-tool.c:1079
 msgid "Error: Method name is not specified\n"
 msgstr "Chyba: Není určen název metody\n"
 
-#: gio/gdbus-tool.c:1089
+#: gio/gdbus-tool.c:1090
 #, c-format
 msgid "Error: Method name “%s” is invalid\n"
 msgstr "Chyba: Název metody „%s“ je neplatný\n"
 
-#: gio/gdbus-tool.c:1167
+#: gio/gdbus-tool.c:1168
 #, c-format
 msgid "Error parsing parameter %d of type “%s”: %s\n"
 msgstr "Chyba při analyzování parametru %d typu „%s“: %s\n"
 
-#: gio/gdbus-tool.c:1193
+#: gio/gdbus-tool.c:1194
 #, c-format
 msgid "Error adding handle %d: %s\n"
 msgstr "Chyba při přidávání obsluhy %d: %s\n"
@@ -1290,43 +1290,43 @@ msgstr "Chyba: Příliš mnoho argumentů.\n"
 msgid "Error: %s is not a valid well-known bus name.\n"
 msgstr "Chyba: %s není platným oficiálně známým názvem sběrnice.\n"
 
-#: gio/gdebugcontrollerdbus.c:203
+#: gio/gdebugcontrollerdbus.c:358
 #, c-format
 msgid "Not authorized to change debug settings"
 msgstr "Neautorizováno ke změnám ladicích nastavení"
 
-#: gio/gdesktopappinfo.c:2174 gio/gdesktopappinfo.c:5099
+#: gio/gdesktopappinfo.c:2178 gio/gdesktopappinfo.c:5105
 msgid "Unnamed"
 msgstr "Bez názvu"
 
-#: gio/gdesktopappinfo.c:2584
+#: gio/gdesktopappinfo.c:2588
 msgid "Desktop file didn’t specify Exec field"
 msgstr "V souboru .desktop není určeno pole Exec"
 
-#: gio/gdesktopappinfo.c:2892
+#: gio/gdesktopappinfo.c:2896
 msgid "Unable to find terminal required for application"
 msgstr "Nezdařilo se najít  terminál vyžadovaný pro aplikaci"
 
-#: gio/gdesktopappinfo.c:3619
+#: gio/gdesktopappinfo.c:3625
 #, c-format
 msgid "Can’t create user application configuration folder %s: %s"
 msgstr "Nezdařilo se vytvořit složku %s s uživatelským nastavením aplikace: %s"
 
-#: gio/gdesktopappinfo.c:3623
+#: gio/gdesktopappinfo.c:3629
 #, c-format
 msgid "Can’t create user MIME configuration folder %s: %s"
 msgstr "Nezdařilo se vytvořit složku %s s uživatelským nastavením MIME: %s"
 
-#: gio/gdesktopappinfo.c:3865 gio/gdesktopappinfo.c:3889
+#: gio/gdesktopappinfo.c:3871 gio/gdesktopappinfo.c:3895
 msgid "Application information lacks an identifier"
 msgstr "Informace o aplikaci postrádá identifikátor"
 
-#: gio/gdesktopappinfo.c:4125
+#: gio/gdesktopappinfo.c:4131
 #, c-format
 msgid "Can’t create user desktop file %s"
 msgstr "Nezdařilo se vytvořit uživatelský soubor .desktop %s"
 
-#: gio/gdesktopappinfo.c:4261
+#: gio/gdesktopappinfo.c:4267
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Vlastní definice %s"
@@ -1718,7 +1718,7 @@ msgid "Error writing to stdout"
 msgstr "Chyba při zápisu do standardního výstupu"
 
 #. Translators: commandline placeholder
-#: gio/gio-tool-cat.c:133 gio/gio-tool-info.c:340 gio/gio-tool-list.c:172
+#: gio/gio-tool-cat.c:133 gio/gio-tool-info.c:340 gio/gio-tool-list.c:171
 #: gio/gio-tool-mkdir.c:48 gio/gio-tool-monitor.c:37 gio/gio-tool-monitor.c:39
 #: gio/gio-tool-monitor.c:41 gio/gio-tool-monitor.c:43
 #: gio/gio-tool-monitor.c:204 gio/gio-tool-mount.c:1199 gio/gio-tool-open.c:70
@@ -1743,7 +1743,7 @@ msgstr ""
 
 #: gio/gio-tool-cat.c:162 gio/gio-tool-info.c:371 gio/gio-tool-mkdir.c:76
 #: gio/gio-tool-monitor.c:229 gio/gio-tool-mount.c:1250 gio/gio-tool-open.c:96
-#: gio/gio-tool-remove.c:72 gio/gio-tool-trash.c:303
+#: gio/gio-tool-remove.c:72 gio/gio-tool-trash.c:301
 msgid "No locations given"
 msgstr "Nebylo zadáno žádné umístění"
 
@@ -1822,15 +1822,15 @@ msgstr "Vypsat zapisovatelné atributy"
 msgid "Get file system info"
 msgstr "Vypsat informace o souborovém systému"
 
-#: gio/gio-tool-info.c:39 gio/gio-tool-list.c:36
+#: gio/gio-tool-info.c:39 gio/gio-tool-list.c:35
 msgid "The attributes to get"
 msgstr "Atributy, které se mají vypsat"
 
-#: gio/gio-tool-info.c:39 gio/gio-tool-list.c:36
+#: gio/gio-tool-info.c:39 gio/gio-tool-list.c:35
 msgid "ATTRIBUTES"
 msgstr "ATRIBUTY"
 
-#: gio/gio-tool-info.c:40 gio/gio-tool-list.c:39 gio/gio-tool-set.c:34
+#: gio/gio-tool-info.c:40 gio/gio-tool-list.c:38 gio/gio-tool-set.c:34
 msgid "Don’t follow symbolic links"
 msgstr "Nenásledovat symbolické odkazy"
 
@@ -1945,27 +1945,27 @@ msgstr "Nezdařilo se načíst informace o aplikaci pro „%s“"
 msgid "Unable to launch application ‘%s’: %s"
 msgstr "Nezdařilo se načíst aplikaci „%s“: %s"
 
-#: gio/gio-tool-list.c:37 gio/gio-tool-tree.c:32
+#: gio/gio-tool-list.c:36 gio/gio-tool-tree.c:32
 msgid "Show hidden files"
 msgstr "Zobrazit skryté soubory"
 
-#: gio/gio-tool-list.c:38
+#: gio/gio-tool-list.c:37
 msgid "Use a long listing format"
 msgstr "Použít dlouhý formát výpisu"
 
-#: gio/gio-tool-list.c:40
+#: gio/gio-tool-list.c:39
 msgid "Print display names"
 msgstr "Vypisovat zobrazované názvy"
 
-#: gio/gio-tool-list.c:41
+#: gio/gio-tool-list.c:40
 msgid "Print full URIs"
 msgstr "Vypsat úplné adresy URI"
 
-#: gio/gio-tool-list.c:177
+#: gio/gio-tool-list.c:176
 msgid "List the contents of the locations."
 msgstr "Vypsat obsahy umístění."
 
-#: gio/gio-tool-list.c:179
+#: gio/gio-tool-list.c:178
 msgid ""
 "gio list is similar to the traditional ls utility, but using GIO\n"
 "locations instead of local files: for example, you can use something\n"
@@ -3303,13 +3303,13 @@ msgstr "Chyba při vytváření záložní kopie: %s"
 msgid "Error renaming temporary file: %s"
 msgstr "Chyba při přejmenovávání dočasného souboru: %s"
 
-#: gio/glocalfileoutputstream.c:609 gio/glocalfileoutputstream.c:1237
+#: gio/glocalfileoutputstream.c:609 gio/glocalfileoutputstream.c:1239
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "Chyba při zkracování souboru: %s"
 
 #: gio/glocalfileoutputstream.c:662 gio/glocalfileoutputstream.c:907
-#: gio/glocalfileoutputstream.c:1218 gio/gsubprocess.c:229
+#: gio/glocalfileoutputstream.c:1220 gio/gsubprocess.c:229
 #, c-format
 msgid "Error opening file “%s”: %s"
 msgstr "Chyba při otevírání souboru %s: %s"
@@ -3467,7 +3467,11 @@ msgstr "Součet vektorů předaných do %s je příliš velký"
 msgid "Source stream is already closed"
 msgstr "Zdrojový proud je již ukončen"
 
+#. Translators: the first placeholder is a domain name, the
+#. * second is an error message
 #: gio/gresolver.c:401 gio/gthreadedresolver.c:150 gio/gthreadedresolver.c:168
+#: gio/gthreadedresolver.c:780 gio/gthreadedresolver.c:804
+#: gio/gthreadedresolver.c:829 gio/gthreadedresolver.c:844
 #, c-format
 msgid "Error resolving “%s”: %s"
 msgstr "Chyba při řešení „%s“: %s"
@@ -3866,7 +3870,7 @@ msgstr "Neplatný soket, spuštění selhalo kvůli: %s"
 msgid "Socket is already closed"
 msgstr "Soket je již ukončen"
 
-#: gio/gsocket.c:447 gio/gsocket.c:3194 gio/gsocket.c:4427 gio/gsocket.c:4485
+#: gio/gsocket.c:447 gio/gsocket.c:3193 gio/gsocket.c:4426 gio/gsocket.c:4484
 msgid "Socket I/O timed out"
 msgstr "Časový limit V/V soketu vypršel"
 
@@ -3919,116 +3923,116 @@ msgstr "nezdařilo se naslouchání: %s"
 msgid "Error binding to address %s: %s"
 msgstr "Chyba při navázání na adresu %s: %s"
 
-#: gio/gsocket.c:2389 gio/gsocket.c:2426 gio/gsocket.c:2536 gio/gsocket.c:2561
-#: gio/gsocket.c:2624 gio/gsocket.c:2682 gio/gsocket.c:2700
+#: gio/gsocket.c:2388 gio/gsocket.c:2425 gio/gsocket.c:2535 gio/gsocket.c:2560
+#: gio/gsocket.c:2623 gio/gsocket.c:2681 gio/gsocket.c:2699
 #, c-format
 msgid "Error joining multicast group: %s"
 msgstr "Chyba připojování ke skupině hromadného vysílání: %s"
 
-#: gio/gsocket.c:2390 gio/gsocket.c:2427 gio/gsocket.c:2537 gio/gsocket.c:2562
-#: gio/gsocket.c:2625 gio/gsocket.c:2683 gio/gsocket.c:2701
+#: gio/gsocket.c:2389 gio/gsocket.c:2426 gio/gsocket.c:2536 gio/gsocket.c:2561
+#: gio/gsocket.c:2624 gio/gsocket.c:2682 gio/gsocket.c:2700
 #, c-format
 msgid "Error leaving multicast group: %s"
 msgstr "Chyba při opouštění skupiny hromadného vysílání: %s"
 
-#: gio/gsocket.c:2391
+#: gio/gsocket.c:2390
 msgid "No support for source-specific multicast"
 msgstr "Není podpora pro hromadné vysílání určené zdrojem"
 
-#: gio/gsocket.c:2538
+#: gio/gsocket.c:2537
 msgid "Unsupported socket family"
 msgstr "Nepodporovaná rodina soketů"
 
-#: gio/gsocket.c:2563
+#: gio/gsocket.c:2562
 msgid "source-specific not an IPv4 address"
 msgstr "určení zdroje není adresa IPv4"
 
-#: gio/gsocket.c:2587
+#: gio/gsocket.c:2586
 #, c-format
 msgid "Interface name too long"
 msgstr "Název rozhraní je příliš dlouhý"
 
-#: gio/gsocket.c:2600 gio/gsocket.c:2650
+#: gio/gsocket.c:2599 gio/gsocket.c:2649
 #, c-format
 msgid "Interface not found: %s"
 msgstr "Rozhraní nebylo nalezeno: %s"
 
-#: gio/gsocket.c:2626
+#: gio/gsocket.c:2625
 msgid "No support for IPv4 source-specific multicast"
 msgstr "Není podpora pro hromadné vysílání určené zdrojem IPv4"
 
-#: gio/gsocket.c:2684
+#: gio/gsocket.c:2683
 msgid "No support for IPv6 source-specific multicast"
 msgstr "Není podpora pro hromadné vysílání určené zdrojem IPv6"
 
-#: gio/gsocket.c:2893
+#: gio/gsocket.c:2892
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Chyba při přijímání spojení: %s"
 
-#: gio/gsocket.c:3019
+#: gio/gsocket.c:3018
 msgid "Connection in progress"
 msgstr "Probíhá spojení"
 
-#: gio/gsocket.c:3070
+#: gio/gsocket.c:3069
 msgid "Unable to get pending error: "
 msgstr "Nelze získat nevyřízenou chybu: "
 
-#: gio/gsocket.c:3259
+#: gio/gsocket.c:3258
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Chyba při získávání dat: %s"
 
-#: gio/gsocket.c:3456
+#: gio/gsocket.c:3455
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Chyba při odesílání dat: %s"
 
-#: gio/gsocket.c:3643
+#: gio/gsocket.c:3642
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "Nelze ukončit soket: %s"
 
-#: gio/gsocket.c:3724
+#: gio/gsocket.c:3723
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Chyba při zavírání soketu: %s"
 
-#: gio/gsocket.c:4420
+#: gio/gsocket.c:4419
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Čeká se na stav soketu: %s"
 
-#: gio/gsocket.c:4810 gio/gsocket.c:4826 gio/gsocket.c:4839
+#: gio/gsocket.c:4809 gio/gsocket.c:4825 gio/gsocket.c:4838
 #, c-format
 msgid "Unable to send message: %s"
 msgstr "Nezdařilo se odeslat zprávu: %s"
 
-#: gio/gsocket.c:4811 gio/gsocket.c:4827 gio/gsocket.c:4840
+#: gio/gsocket.c:4810 gio/gsocket.c:4826 gio/gsocket.c:4839
 msgid "Message vectors too large"
 msgstr "Vektory zprávy jsou příliš rozsáhlé"
 
-#: gio/gsocket.c:4856 gio/gsocket.c:4858 gio/gsocket.c:5005 gio/gsocket.c:5090
-#: gio/gsocket.c:5268 gio/gsocket.c:5308 gio/gsocket.c:5310
+#: gio/gsocket.c:4855 gio/gsocket.c:4857 gio/gsocket.c:5004 gio/gsocket.c:5089
+#: gio/gsocket.c:5267 gio/gsocket.c:5307 gio/gsocket.c:5309
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Chyba při odesílání zprávy: %s"
 
-#: gio/gsocket.c:5032
+#: gio/gsocket.c:5031
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "GSocketControlMessage nepodporováno na Windows"
 
-#: gio/gsocket.c:5505 gio/gsocket.c:5581 gio/gsocket.c:5807
+#: gio/gsocket.c:5504 gio/gsocket.c:5580 gio/gsocket.c:5806
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Chyba při získávání zprávy: %s"
 
-#: gio/gsocket.c:6090 gio/gsocket.c:6101 gio/gsocket.c:6164
+#: gio/gsocket.c:6089 gio/gsocket.c:6100 gio/gsocket.c:6163
 #, c-format
 msgid "Unable to read socket credentials: %s"
 msgstr "Nelze číst pověření k soketu: %s"
 
-#: gio/gsocket.c:6173
+#: gio/gsocket.c:6172
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials není u tohoto OS implementováno"
 
@@ -4174,22 +4178,40 @@ msgstr "Nebyly nalezeny žádné platné adresy"
 msgid "Error reverse-resolving “%s”: %s"
 msgstr "Chyba při reverzním řešení „%s“: %s"
 
-#: gio/gthreadedresolver.c:676 gio/gthreadedresolver.c:755
-#: gio/gthreadedresolver.c:853 gio/gthreadedresolver.c:903
+#. Translators: the placeholder is a DNS record type, such as ‘MX’ or ‘SRV’
+#: gio/gthreadedresolver.c:550 gio/gthreadedresolver.c:572
+#: gio/gthreadedresolver.c:610 gio/gthreadedresolver.c:657
+#: gio/gthreadedresolver.c:686 gio/gthreadedresolver.c:698
+#, c-format
+msgid "Error parsing DNS %s record: malformed DNS packet"
+msgstr ""
+
+#: gio/gthreadedresolver.c:756 gio/gthreadedresolver.c:893
+#: gio/gthreadedresolver.c:991 gio/gthreadedresolver.c:1041
 #, c-format
 msgid "No DNS record of the requested type for “%s”"
 msgstr "Záznam DNS požadovaného typu pro „%s“ neexistuje"
 
-#: gio/gthreadedresolver.c:681 gio/gthreadedresolver.c:858
+#: gio/gthreadedresolver.c:761 gio/gthreadedresolver.c:996
 #, c-format
 msgid "Temporarily unable to resolve “%s”"
 msgstr "Dočasně není možné vyřešit „%s“"
 
-#: gio/gthreadedresolver.c:686 gio/gthreadedresolver.c:863
-#: gio/gthreadedresolver.c:973
+#: gio/gthreadedresolver.c:766 gio/gthreadedresolver.c:1001
+#: gio/gthreadedresolver.c:1111
 #, c-format
 msgid "Error resolving “%s”"
 msgstr "Chyba při řešení „%s“"
+
+#: gio/gthreadedresolver.c:780 gio/gthreadedresolver.c:804
+#: gio/gthreadedresolver.c:829 gio/gthreadedresolver.c:844
+msgid "Malformed DNS packet"
+msgstr "Poškozený paket DNS"
+
+#: gio/gthreadedresolver.c:886
+#, c-format
+msgid "Failed to parse DNS response for “%s”: "
+msgstr "Selhalo zpracování odpovědi DNS pro „%s“: "
 
 #: gio/gtlscertificate.c:478
 msgid "No PEM-encoded private key found"
@@ -4315,7 +4337,7 @@ msgstr "Chyba při čtení z popisovače souboru: %s"
 msgid "Error closing file descriptor: %s"
 msgstr "Chyba při zavírání popisovače souboru: %s"
 
-#: gio/gunixmounts.c:2782 gio/gunixmounts.c:2835
+#: gio/gunixmounts.c:2809 gio/gunixmounts.c:2862
 msgid "Filesystem root"
 msgstr "Kořen systému souborů"
 
@@ -5837,87 +5859,87 @@ msgstr "Text je prázdný (nebo obsahuje pouze mezery)"
 msgid "Failed to read data from child process (%s)"
 msgstr "Nelze číst data z procesu potomka (%s)"
 
-#: glib/gspawn.c:461
+#: glib/gspawn.c:462
 #, c-format
 msgid "Unexpected error in reading data from a child process (%s)"
 msgstr "Neočekávaná chyba při čtení dat z procesu potomka (%s)"
 
-#: glib/gspawn.c:546
+#: glib/gspawn.c:547
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Neočekávaná chyba v waitpid() (%s)"
 
-#: glib/gspawn.c:1168 glib/gspawn-win32.c:1426
+#: glib/gspawn.c:1175 glib/gspawn-win32.c:1438
 #, c-format
 msgid "Child process exited with code %ld"
 msgstr "Proces potomka skončil s kódem %ld"
 
-#: glib/gspawn.c:1176
+#: glib/gspawn.c:1183
 #, c-format
 msgid "Child process killed by signal %ld"
 msgstr "Proces potomka byl zabit signálem %ld"
 
-#: glib/gspawn.c:1183
+#: glib/gspawn.c:1190
 #, c-format
 msgid "Child process stopped by signal %ld"
 msgstr "Proces potomka byl zastaven signálem %ld"
 
-#: glib/gspawn.c:1190
+#: glib/gspawn.c:1197
 #, c-format
 msgid "Child process exited abnormally"
 msgstr "Proces potomka neskončil normálně"
 
-#: glib/gspawn.c:1881 glib/gspawn-win32.c:353 glib/gspawn-win32.c:361
+#: glib/gspawn.c:1890 glib/gspawn-win32.c:353 glib/gspawn-win32.c:361
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Selhalo čtení z roury potomka (%s)"
 
-#: glib/gspawn.c:2241
+#: glib/gspawn.c:2253
 #, c-format
 msgid "Failed to spawn child process “%s” (%s)"
 msgstr "Selhalo zplození procesu potomka „%s“ (%s)"
 
-#: glib/gspawn.c:2358
+#: glib/gspawn.c:2370
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Selhalo rozvětvení procesu (%s)"
 
-#: glib/gspawn.c:2518 glib/gspawn-win32.c:384
+#: glib/gspawn.c:2530 glib/gspawn-win32.c:384
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
 msgstr "Selhal přechod do složky „%s“ (%s)"
 
-#: glib/gspawn.c:2528
+#: glib/gspawn.c:2540
 #, c-format
 msgid "Failed to execute child process “%s” (%s)"
 msgstr "Selhalo spuštění procesu potomka „%s“ (%s)"
 
-#: glib/gspawn.c:2538
+#: glib/gspawn.c:2550
 #, c-format
 msgid "Failed to open file to remap file descriptor (%s)"
 msgstr "Selhalo otevření souboru pro přemapování popisovače souboru (%s)"
 
-#: glib/gspawn.c:2546
+#: glib/gspawn.c:2558
 #, c-format
 msgid "Failed to duplicate file descriptor for child process (%s)"
 msgstr "Selhalo zduplikování popisovače souboru pro proces potomka (%s)"
 
-#: glib/gspawn.c:2555
+#: glib/gspawn.c:2567
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Selhalo rozvětvení procesu potomka (%s)"
 
-#: glib/gspawn.c:2563
+#: glib/gspawn.c:2575
 #, c-format
 msgid "Failed to close file descriptor for child process (%s)"
 msgstr "Selhalo zavření popisovače souboru pro proces potomka (%s)"
 
-#: glib/gspawn.c:2571
+#: glib/gspawn.c:2583
 #, c-format
 msgid "Unknown error executing child process “%s”"
 msgstr "Neznámá chyba při běhu procesu potomka „%s“"
 
-#: glib/gspawn.c:2595
+#: glib/gspawn.c:2607
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Nezdařilo se přečíst dostatek dat z roury pid potomka (%s)"
@@ -5926,7 +5948,7 @@ msgstr "Nezdařilo se přečíst dostatek dat z roury pid potomka (%s)"
 msgid "Failed to read data from child process"
 msgstr "Selhalo čtení dat z procesu potomka"
 
-#: glib/gspawn-win32.c:390 glib/gspawn-win32.c:395 glib/gspawn-win32.c:519
+#: glib/gspawn-win32.c:390 glib/gspawn-win32.c:395 glib/gspawn-win32.c:521
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Selhalo spuštění procesu potomka (%s)"
@@ -5936,32 +5958,32 @@ msgstr "Selhalo spuštění procesu potomka (%s)"
 msgid "Failed to dup() in child process (%s)"
 msgstr "Selhala funkce dup() v procesu potomka (%s)"
 
-#: glib/gspawn-win32.c:469
+#: glib/gspawn-win32.c:471
 #, c-format
 msgid "Invalid program name: %s"
 msgstr "Neplatný název programu: %s"
 
-#: glib/gspawn-win32.c:479 glib/gspawn-win32.c:797
+#: glib/gspawn-win32.c:481 glib/gspawn-win32.c:807
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "Neplatný řetězec v poli argumentů na %d: %s"
 
-#: glib/gspawn-win32.c:490 glib/gspawn-win32.c:813
+#: glib/gspawn-win32.c:492 glib/gspawn-win32.c:823
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "Neplatný řetězec v prostředí: %s"
 
-#: glib/gspawn-win32.c:793
+#: glib/gspawn-win32.c:803
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "Neplatná aktuální složka: %s"
 
-#: glib/gspawn-win32.c:858
+#: glib/gspawn-win32.c:868
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "Nelze spustit pomocný program (%s)"
 
-#: glib/gspawn-win32.c:1086
+#: glib/gspawn-win32.c:1096
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
