@@ -94,10 +94,12 @@ gpointer               g_dbus_method_invocation_get_user_data        (GDBusMetho
 GLIB_AVAILABLE_IN_ALL
 void                   g_dbus_method_invocation_return_value         (GDBusMethodInvocation *invocation,
                                                                       GVariant              *parameters);
+#ifdef G_OS_UNIX
 GLIB_AVAILABLE_IN_ALL
 void                   g_dbus_method_invocation_return_value_with_unix_fd_list (GDBusMethodInvocation *invocation,
                                                                                 GVariant              *parameters,
                                                                                 GUnixFDList           *fd_list);
+#endif /* G_OS_UNIX */
 GLIB_AVAILABLE_IN_ALL
 void                   g_dbus_method_invocation_return_error         (GDBusMethodInvocation *invocation,
                                                                       GQuark                 domain,

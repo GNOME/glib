@@ -107,11 +107,16 @@ GVariant                 *g_dbus_message_get_body           (GDBusMessage       
 GLIB_AVAILABLE_IN_ALL
 void                      g_dbus_message_set_body           (GDBusMessage             *message,
                                                              GVariant                 *body);
+
+#ifdef G_OS_UNIX
+
 GLIB_AVAILABLE_IN_ALL
 GUnixFDList              *g_dbus_message_get_unix_fd_list   (GDBusMessage             *message);
 GLIB_AVAILABLE_IN_ALL
 void                      g_dbus_message_set_unix_fd_list   (GDBusMessage             *message,
                                                              GUnixFDList              *fd_list);
+
+#endif /* G_OS_UNIX */
 
 GLIB_AVAILABLE_IN_ALL
 guint32                   g_dbus_message_get_reply_serial   (GDBusMessage             *message);
