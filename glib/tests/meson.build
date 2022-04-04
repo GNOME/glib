@@ -124,6 +124,7 @@ glib_tests = {
   'utf8-misc' : {},
   'utils' : {},
   'unicode' : {},
+  'unicode-encoding' : {},
   'uri' : {},
   '1bit-mutex' : {},
   '1bit-emufutex' : {
@@ -261,6 +262,13 @@ foreach test_name, extra_args : glib_tests
     should_fail : extra_args.get('should_fail', false),
   )
 endforeach
+
+if installed_tests_enabled
+  install_data(
+    'utf8.txt',
+    install_dir : installed_tests_execdir,
+  )
+endif
 
 executable('spawn-path-search-helper', 'spawn-path-search-helper.c',
   c_args : test_cargs,

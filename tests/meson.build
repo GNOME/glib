@@ -26,7 +26,6 @@ tests = {
   'spawn-test' : {},
   'thread-test' : {},
   'threadpool-test' : {'suite' : ['slow']},
-  'unicode-encoding' : {},
   'module-test-library' : {
     'dependencies' : [libgmodule_dep],
     'export_dynamic' : true,
@@ -56,13 +55,6 @@ else
   test_extra_programs += {
     'spawn-test-win32-gui' : {'gui_app' : true}
   }
-endif
-
-if installed_tests_enabled
-  install_data(
-    'utf8.txt',
-    install_dir : installed_tests_execdir,
-  )
 endif
 
 module_suffix = []
