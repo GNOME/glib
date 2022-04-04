@@ -89,8 +89,12 @@ g_trash_portal_trash_file (GFile   *file,
 
   fd = g_open (path, O_RDWR | O_CLOEXEC | O_NOFOLLOW);
   if (fd == -1 && errno == EISDIR)
-    /* If it is a directory, fall back to O_PATH */
-    fd = g_open (path, O_PATH | O_CLOEXEC | O_RDONLY | O_NOFOLLOW);
+    /* If it is a directory, fall back to O_PATH.
+     * Remove O_NOFOLLOW since
+     * a) we know it is a directory, not a symlink, and
+     * b) the portal reject this combination
+     */
+    fd = g_open (path, O_PATH | O_CLOEXEC | O_RDONLY);
 
   errsv = errno;
 
