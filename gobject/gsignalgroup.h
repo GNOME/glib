@@ -59,6 +59,11 @@ GLIB_AVAILABLE_IN_2_72
 void          g_signal_group_block           (GSignalGroup   *self);
 GLIB_AVAILABLE_IN_2_72
 void          g_signal_group_unblock         (GSignalGroup   *self);
+GLIB_AVAILABLE_IN_2_74
+void          g_signal_group_connect_closure (GSignalGroup   *self,
+                                              const gchar    *detailed_signal,
+                                              GClosure       *closure,
+                                              gboolean        after);
 GLIB_AVAILABLE_IN_2_72
 void          g_signal_group_connect_object  (GSignalGroup   *self,
                                               const gchar    *detailed_signal,
