@@ -110,6 +110,27 @@ typedef gint            (*GCompareDataFunc)     (gconstpointer  a,
 						 gpointer       user_data);
 typedef gboolean        (*GEqualFunc)           (gconstpointer  a,
                                                  gconstpointer  b);
+
+/**
+ * GEqualFuncFull:
+ * @a: a value
+ * @b: a value to compare with
+ * @user_data: user data provided by the caller
+ *
+ * Specifies the type of a function used to test two values for
+ * equality. The function should return %TRUE if both values are equal
+ * and %FALSE otherwise.
+ *
+ * This is a version of #GEqualFunc which provides a @user_data closure from
+ * the caller.
+ *
+ * Returns: %TRUE if @a = @b; %FALSE otherwise
+ * Since: 2.74
+ */
+typedef gboolean        (*GEqualFuncFull)       (gconstpointer  a,
+                                                 gconstpointer  b,
+                                                 gpointer       user_data);
+
 typedef void            (*GDestroyNotify)       (gpointer       data);
 typedef void            (*GFunc)                (gpointer       data,
                                                  gpointer       user_data);

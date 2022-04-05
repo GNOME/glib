@@ -813,6 +813,18 @@ list_model_casecmp_action_by_name (gconstpointer a,
                              g_action_get_name (G_ACTION (b))) == 0;
 }
 
+static gboolean
+list_model_casecmp_action_by_name_full (gconstpointer a,
+                                        gconstpointer b,
+                                        gpointer      user_data)
+{
+  char buf[4];
+  const char *suffix = user_data;
+
+  g_snprintf (buf, sizeof buf, "%s%s", g_action_get_name (G_ACTION (b)), suffix);
+  return g_strcmp0 (g_action_get_name (G_ACTION (a)), buf) == 0;
+}
+
 /* Test if find() and find_with_equal_func() works */
 static void
 test_store_find (void)
@@ -864,6 +876,17 @@ test_store_find (void)
                                                     list_model_casecmp_action_by_name,
                                                     &position));
   g_assert_cmpint (position, ==, 2);
+  g_clear_object (&other_item);
+
+  /* try to find element which should only work with custom equality check and string concat */
+  other_item = g_simple_action_new ("c", NULL);
+  g_assert_false (g_list_store_find (store, other_item, NULL));
+  g_assert_true (g_list_store_find_with_equal_func_full (store,
+                                                         other_item,
+                                                         list_model_casecmp_action_by_name_full,
+                                                         "cc",
+                                                         &position));
+  g_assert_cmpint (position, ==, 3);
   g_clear_object (&other_item);
 
   for (i = 0; i < G_N_ELEMENTS (item_strs); i++)

@@ -2875,6 +2875,7 @@ g_hash_table_new_full
 g_hash_table_new_similar
 GHashFunc
 GEqualFunc
+GEqualFuncFull
 g_hash_table_insert
 g_hash_table_replace
 g_hash_table_add
