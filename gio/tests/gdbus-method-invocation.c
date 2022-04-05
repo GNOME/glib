@@ -300,6 +300,10 @@ test_method_invocation_return (void)
   g_assert_no_error (local_error);
   g_assert_nonnull (connection);
 
+  /* Don’t exit the test when the server closes the connection in
+   * CloseBeforeReturning(). */
+  g_dbus_connection_set_exit_on_close (connection, FALSE);
+
   /* Register an object which we can call methods on. */
   registration_id = g_dbus_connection_register_object (connection,
                                                        "/foo",
