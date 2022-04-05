@@ -292,9 +292,13 @@ main (int ignored_argc, char **ignored_argv)
       checked_dup2 (fd, 1, child_err_report_fd);
     }
 
-  saved_stderr_fd = reopen_noninherited (dup (2), _O_WRONLY);
-  if (saved_stderr_fd == -1)
-    write_err_and_exit (child_err_report_fd, CHILD_DUP_FAILED);
+  /* GUI application do not necessarily have a stderr */
+  if (_fileno (stderr) == 2)
+    {
+      saved_stderr_fd = reopen_noninherited (dup (2), _O_WRONLY);
+      if (saved_stderr_fd == -1)
+        write_err_and_exit (child_err_report_fd, CHILD_DUP_FAILED);
+    }
 
   maxfd = MAX (saved_stderr_fd, maxfd);
   if (argv[ARG_STDERR][0] == '-')
@@ -354,8 +358,11 @@ main (int ignored_argc, char **ignored_argv)
   child_err_report_fd = checked_dup2 (child_err_report_fd, maxfd, child_err_report_fd);
   maxfd++;
   helper_sync_fd = checked_dup2 (helper_sync_fd, maxfd, child_err_report_fd);
-  maxfd++;
-  saved_stderr_fd = checked_dup2 (saved_stderr_fd, maxfd, child_err_report_fd);
+  if (saved_stderr_fd >= 0)
+    {
+      maxfd++;
+      saved_stderr_fd = checked_dup2 (saved_stderr_fd, maxfd, child_err_report_fd);
+    }
 
   {
     GHashTableIter iter;
@@ -381,7 +388,8 @@ main (int ignored_argc, char **ignored_argv)
 
   g_hash_table_add (fds, GINT_TO_POINTER (child_err_report_fd));
   g_hash_table_add (fds, GINT_TO_POINTER (helper_sync_fd));
-  g_hash_table_add (fds, GINT_TO_POINTER (saved_stderr_fd));
+  if (saved_stderr_fd >= 0)
+    g_hash_table_add (fds, GINT_TO_POINTER (saved_stderr_fd));
 
   /* argv[ARG_CLOSE_DESCRIPTORS] is "y" if file descriptors from 3
    *  upwards should be closed
@@ -430,7 +438,9 @@ main (int ignored_argc, char **ignored_argv)
    * Remove redirection so that they would go to original stderr
    * instead of being treated as part of stderr of child process.
    */
-  dup2 (saved_stderr_fd, 2);
+  if (saved_stderr_fd >= 0)
+    dup2 (saved_stderr_fd, 2);
+
   if (handle == -1 && saved_errno != 0)
     {
       int ec = (saved_errno == ENOENT)
