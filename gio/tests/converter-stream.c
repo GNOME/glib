@@ -1037,12 +1037,11 @@ test_converter_pollable (void)
       if (!is_readable)
 	g_assert_cmpint (res, ==, -1);
 
-      /* After closing the write end, we can't get WOULD_BLOCK any more */
-      if (!socket_out)
-        {
-          g_assert_no_error (error);
-          g_assert_cmpint (res, !=, -1);
-        }
+      /* Even after closing the write end, we can get WOULD_BLOCK (particularly
+       * on FreeBSD), so we can’t make any assertions based on `!socket_out`.
+       * This is because the FIN packets may still be in the out buffer of one
+       * half of the socket pair, while the in buffer of the other half has some
+       * data, but not enough for a full block for the converter to consume. */
 
       if (res == -1)
 	{
