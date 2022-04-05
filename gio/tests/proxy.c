@@ -67,9 +67,9 @@ print_and_free_error (GError *error)
 }
 
 static void
-print_proxies (const gchar *info, gchar **proxies)
+print_proxies (const gchar *local_info, gchar **proxies)
 {
-  printf ("Proxies for URI '%s' are:\n", info);
+  printf ("Proxies for URI '%s' are:\n", local_info);
 
   if (proxies == NULL || proxies[0] == NULL)
     printf ("\tnone\n");

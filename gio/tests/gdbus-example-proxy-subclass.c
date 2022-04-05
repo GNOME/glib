@@ -111,15 +111,6 @@ static guint signals[LAST_SIGNAL] = {0};
 G_DEFINE_TYPE (AccountsUser, accounts_user, G_TYPE_DBUS_PROXY)
 
 static void
-accounts_user_finalize (GObject *object)
-{
-  G_GNUC_UNUSED AccountsUser *user = ACCOUNTS_USER (object);
-
-  if (G_OBJECT_CLASS (accounts_user_parent_class)->finalize != NULL)
-    G_OBJECT_CLASS (accounts_user_parent_class)->finalize (object);
-}
-
-static void
 accounts_user_init (AccountsUser *user)
 {
   /* Sets the expected interface */
@@ -234,7 +225,6 @@ accounts_user_class_init (AccountsUserClass *klass)
 
   gobject_class = G_OBJECT_CLASS (klass);
   gobject_class->get_property = accounts_user_get_property;
-  gobject_class->finalize = accounts_user_finalize;
 
   proxy_class = G_DBUS_PROXY_CLASS (klass);
   proxy_class->g_signal             = accounts_user_g_signal;
