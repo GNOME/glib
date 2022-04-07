@@ -805,8 +805,6 @@ g_win32_get_command_line (void)
   return result;
 }
 
-#ifdef G_OS_WIN32
-
 /* Binary compatibility versions. Not for newly compiled code. */
 
 _GLIB_EXTERN gchar *g_win32_get_package_installation_directory_utf8    (const gchar *package,
@@ -836,10 +834,6 @@ G_GNUC_BEGIN_IGNORE_DEPRECATIONS
                                                         subdir);
 G_GNUC_END_IGNORE_DEPRECATIONS
 }
-
-#endif
-
-#ifdef G_OS_WIN32
 
 /* This function looks up two environment
  * variables, G_WIN32_ALLOC_CONSOLE and G_WIN32_ATTACH_CONSOLE.
@@ -1454,5 +1448,3 @@ g_win32_find_helper_executable_path (const gchar *executable_name, void *dll_han
 
   return executable_path;
 }
-
-#endif
