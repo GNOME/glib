@@ -903,7 +903,8 @@ fork_exec (gint                  *exit_status,
 				    0, TRUE, DUPLICATE_SAME_ACCESS))
 		{
 		  char *emsg = g_win32_error_message (GetLastError ());
-		  g_print("%s\n", emsg);
+		  g_print ("%s\n", emsg);
+		  g_free (emsg);
 		  *child_pid = 0;
 		}
 	    }
