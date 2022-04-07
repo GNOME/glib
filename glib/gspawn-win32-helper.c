@@ -39,6 +39,7 @@
 #include "glib.h"
 #define GSPAWN_HELPER
 #include "gspawn-win32.c"	/* For shared definitions */
+#include "glib/glib-private.h"
 
 
 static void
@@ -295,7 +296,8 @@ main (int ignored_argc, char **ignored_argv)
   /* GUI application do not necessarily have a stderr */
   if (_fileno (stderr) == 2)
     {
-      saved_stderr_fd = reopen_noninherited (dup (2), _O_WRONLY);
+      saved_stderr_fd = GLIB_PRIVATE_CALL (g_win32_reopen_noninherited) (
+        dup (2), _O_WRONLY, NULL);
       if (saved_stderr_fd == -1)
         write_err_and_exit (child_err_report_fd, CHILD_DUP_FAILED);
     }
@@ -403,8 +405,10 @@ main (int ignored_argc, char **ignored_argv)
   /* We don't want our child to inherit the error report and
    * helper sync fds.
    */
-  child_err_report_fd = reopen_noninherited (child_err_report_fd, _O_WRONLY);
-  helper_sync_fd = reopen_noninherited (helper_sync_fd, _O_RDONLY);
+  child_err_report_fd = GLIB_PRIVATE_CALL (g_win32_reopen_noninherited) (
+    child_err_report_fd, _O_WRONLY, NULL);
+  helper_sync_fd = GLIB_PRIVATE_CALL (g_win32_reopen_noninherited) (
+    helper_sync_fd, _O_RDONLY, NULL);
   if (helper_sync_fd == -1)
     write_err_and_exit (child_err_report_fd, CHILD_DUP_FAILED);
 
