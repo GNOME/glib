@@ -39,7 +39,7 @@ create_fd_list (gint *fd_list)
 }
 
 static void
-test_fds (void)
+test_scm (void)
 {
   GError *err = NULL;
   GUnixFDMessage *message;
@@ -235,7 +235,7 @@ main (int argc, char **argv)
 {
   g_test_init (&argc, &argv, NULL);
 
-  g_test_add_func ("/unix-streams/file-descriptors", test_fds);
+  g_test_add_func ("/unix-fd/scm", test_scm);
 
   return g_test_run();
 
