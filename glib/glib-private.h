@@ -171,6 +171,10 @@ typedef struct {
   /* See gwin32.c */
   gchar *(*g_win32_find_helper_executable_path) (const gchar *process_name,
                                                  void *dll_handle);
+
+  int                   (* g_win32_reopen_noninherited) (int      fd,
+                                                         int      mode,
+                                                         GError **err);
 #endif
 
 
