@@ -1682,6 +1682,7 @@ test_nonce_tcp (void)
   gchar *nonce_file;
   gboolean res;
   const gchar *address;
+  int fd;
 
   test_guid = g_dbus_generate_guid ();
   loop = g_main_loop_new (NULL, FALSE);
@@ -1780,7 +1781,9 @@ test_nonce_tcp (void)
   g_assert (c == NULL);
 
   /* Recreate the nonce-file so we can ensure the server deletes it when stopped. */
-  g_assert_cmpint (g_creat (nonce_file, 0600), !=, -1);
+  fd = g_creat (nonce_file, 0600);
+  g_assert_cmpint (fd, !=, -1);
+  g_close (fd, NULL);
 
   g_dbus_server_stop (server);
   g_object_unref (server);
