@@ -169,6 +169,7 @@
 #include <gio/gtlsserverconnection.h>
 #include <gio/gunixconnection.h>
 #include <gio/gunixcredentialsmessage.h>
+#include <gio/gunixfdlist.h>
 #include <gio/gunixsocketaddress.h>
 #include <gio/gvfs.h>
 #include <gio/gvolume.h>
