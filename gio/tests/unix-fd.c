@@ -2,8 +2,11 @@
 #include <gio/gnetworking.h>
 #include <gio/gunixfdmessage.h>
 #include <gio/gunixsocketaddress.h>
-#include <string.h>
+#ifdef G_OS_UNIX
+#include <glib-unix.h>
 #include <unistd.h>
+#endif
+#include <string.h>
 
 /* ensures that no FDs are left open at the end */
 static void
@@ -41,6 +44,7 @@ create_fd_list (gint *fd_list)
 static void
 test_scm (void)
 {
+#ifndef G_OS_WIN32
   GError *err = NULL;
   GUnixFDMessage *message;
   GUnixFDMessage **mv;
@@ -228,6 +232,9 @@ G_GNUC_END_IGNORE_DEPRECATIONS
   g_object_unref (list);
 
   check_fd_list (fd_list);
+#else
+  g_test_skip ("FD SCM support doesn’t exist on Windows");
+#endif
 }
 
 int
