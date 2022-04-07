@@ -760,12 +760,11 @@ device_hash (gconstpointer v)
   return (guint) *(dev_t *)v;
 }
 
-static void
-get_mount_info (GFileInfo             *fs_info,
-		const char            *path,
-		GFileAttributeMatcher *matcher)
+static guint
+get_mount_info_internal (const char *path,
+                         gboolean    is_topdir,
+                         dev_t       path_dev)
 {
-  GStatBuf buf;
   gboolean got_info;
   gpointer info_as_ptr;
   guint mount_info;
@@ -773,9 +772,6 @@ get_mount_info (GFileInfo             *fs_info,
   dev_t *dev;
   GUnixMountEntry *mount;
   guint64 cache_time;
-
-  if (g_lstat (path, &buf) != 0)
-    return;
 
   G_LOCK (mount_info_hash);
 
@@ -788,9 +784,9 @@ get_mount_info (GFileInfo             *fs_info,
     g_hash_table_remove_all (mount_info_hash);
   
   got_info = g_hash_table_lookup_extended (mount_info_hash,
-					   &buf.st_dev,
-					   NULL,
-					   &info_as_ptr);
+                                           &path_dev,
+                                           NULL,
+                                           &info_as_ptr);
   
   G_UNLOCK (mount_info_hash);
   
@@ -800,7 +796,8 @@ get_mount_info (GFileInfo             *fs_info,
     {
       mount_info = 0;
 
-      mountpoint = find_mountpoint_for (path, buf.st_dev, FALSE);
+      mountpoint = find_mountpoint_for (path, path_dev, FALSE);
+
       if (mountpoint == NULL)
 	mountpoint = g_strdup ("/");
 
@@ -816,14 +813,29 @@ get_mount_info (GFileInfo             *fs_info,
       g_free (mountpoint);
 
       dev = g_new0 (dev_t, 1);
-      *dev = buf.st_dev;
-      
+      *dev = path_dev;
+
       G_LOCK (mount_info_hash);
       mount_info_hash_cache_time = cache_time;
       g_hash_table_insert (mount_info_hash, dev, GUINT_TO_POINTER (mount_info));
       G_UNLOCK (mount_info_hash);
     }
 
+  return mount_info;
+}
+
+static void
+get_mount_info (GFileInfo             *fs_info,
+                const char            *path,
+                GFileAttributeMatcher *matcher)
+{
+  guint mount_info;
+  GStatBuf buf;
+
+  if (g_lstat (path, &buf) != 0)
+    return;
+
+  mount_info = get_mount_info_internal (path, FALSE, buf.st_dev);
   if (mount_info & MOUNT_INFO_READONLY)
     g_file_info_set_attribute_boolean (fs_info, G_FILE_ATTRIBUTE_FILESYSTEM_READONLY, TRUE);
 }
