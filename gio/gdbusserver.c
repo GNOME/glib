@@ -51,9 +51,7 @@
 #include <io.h>
 #endif
 
-#ifdef G_OS_UNIX
 #include "gunixsocketaddress.h"
-#endif
 
 #include "glibintl.h"
 
@@ -673,8 +671,6 @@ g_dbus_server_stop (GDBusServer *server)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-#ifdef G_OS_UNIX
-
 static gint
 random_ascii (void)
 {
@@ -823,7 +819,6 @@ try_unix (GDBusServer  *server,
     }
   return ret;
 }
-#endif
 
 /* ---------------------------------------------------------------------------------------------------- */
 
@@ -1142,10 +1137,8 @@ initable_init (GInitable     *initable,
           if (FALSE)
             {
             }
-#ifdef G_OS_UNIX
           else if (g_strcmp0 (transport_name, "unix") == 0)
             ret = try_unix (server, address_entry, key_value_pairs, &this_error);
-#endif
           else if (g_strcmp0 (transport_name, "tcp") == 0)
             ret = try_tcp (server, address_entry, key_value_pairs, FALSE, &this_error);
           else if (g_strcmp0 (transport_name, "nonce-tcp") == 0)
