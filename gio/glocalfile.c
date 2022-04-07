@@ -111,6 +111,7 @@ G_DEFINE_TYPE_WITH_CODE (GLocalFile, g_local_file, G_TYPE_OBJECT,
 						g_local_file_file_iface_init))
 
 static char *find_mountpoint_for (const char *file, dev_t dev, gboolean resolve_basename_symlink);
+static gboolean ignore_trash_mount (GUnixMountEntry *mount);
 
 #ifndef G_OS_WIN32
 static gboolean is_remote_fs_type (const gchar *fsname);
@@ -744,7 +745,8 @@ static GHashTable *mount_info_hash = NULL;
 static guint64 mount_info_hash_cache_time = 0;
 
 typedef enum {
-  MOUNT_INFO_READONLY = 1<<0
+  MOUNT_INFO_READONLY = 1 << 0,
+  MOUNT_INFO_IGNORE_TRASH = 1 << 1
 } MountInfo;
 
 static gboolean
@@ -796,7 +798,10 @@ get_mount_info_internal (const char *path,
     {
       mount_info = 0;
 
-      mountpoint = find_mountpoint_for (path, path_dev, FALSE);
+      if (is_topdir)
+        mountpoint = g_strdup (path);
+      else
+        mountpoint = find_mountpoint_for (path, path_dev, FALSE);
 
       if (mountpoint == NULL)
 	mountpoint = g_strdup ("/");
@@ -807,8 +812,15 @@ get_mount_info_internal (const char *path,
 	  if (g_unix_mount_is_readonly (mount))
 	    mount_info |= MOUNT_INFO_READONLY;
 	  
+          if (ignore_trash_mount (mount))
+            mount_info |= MOUNT_INFO_IGNORE_TRASH;
+
 	  g_unix_mount_free (mount);
 	}
+      else
+        {
+          mount_info |= MOUNT_INFO_IGNORE_TRASH;
+        }
 
       g_free (mountpoint);
 
@@ -1816,21 +1828,16 @@ ignore_trash_mount (GUnixMountEntry *mount)
 }
 
 static gboolean
-ignore_trash_path (const gchar *topdir)
+ignore_trash_path (const gchar *topdir,
+                   dev_t        dir_dev)
 {
-  GUnixMountEntry *mount;
-  gboolean retval = TRUE;
+  MountInfo mount_info;
 
-  mount = g_unix_mount_at (topdir, NULL);
-  if (mount == NULL)
-    goto out;
+  mount_info = get_mount_info_internal (topdir, TRUE, dir_dev);
+  if (mount_info & MOUNT_INFO_IGNORE_TRASH)
+    return TRUE;
 
-  retval = ignore_trash_mount (mount);
-
- out:
-  g_clear_pointer (&mount, g_unix_mount_free);
-
-  return retval;
+  return FALSE;
 }
 
 gboolean
@@ -1872,7 +1879,7 @@ _g_local_file_has_trash_dir (const char *dirname, dev_t dir_dev)
   if (topdir == NULL)
     return FALSE;
 
-  if (ignore_trash_path (topdir))
+  if (ignore_trash_path (topdir, dir_dev))
     {
       g_free (topdir);
 
@@ -2075,7 +2082,7 @@ g_local_file_trash (GFile         *file,
 	  return FALSE;
 	}
 
-      if (ignore_trash_path (topdir))
+      if (ignore_trash_path (topdir, file_stat.st_dev))
         {
           g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
                        _("Trashing on system internal mounts is not supported"));
