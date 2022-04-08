@@ -107,6 +107,7 @@ glib_tests = {
   'spawn-multithreaded' : {},
   'spawn-path-search' : {},
   'spawn-singlethread' : {},
+  'spawn-test' : {},
   'strfuncs' : {},
   'string' : {},
   'strvbuilder' : {},
