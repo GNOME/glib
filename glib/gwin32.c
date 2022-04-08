@@ -1451,6 +1451,25 @@ g_win32_find_helper_executable_path (const gchar *executable_name, void *dll_han
 }
 
 /*
+ * g_win32_handle_is_socket:
+ * @h: a win32 HANDLE
+ *
+ * Returns: %TRUE if the handle is a `SOCKET`.
+ */
+gboolean
+g_win32_handle_is_socket (HANDLE h)
+{
+  int option = 0;
+  int optlen = sizeof (option);
+
+  /* according to: https://stackoverflow.com/a/50981652/1277510, this is reasonable */
+  if (getsockopt ((SOCKET) h, SOL_SOCKET, SO_DEBUG, (char *) &option, &optlen) == SOCKET_ERROR)
+    return FALSE;
+
+  return TRUE;
+}
+
+/*
  * g_win32_reopen_noninherited:
  * @fd: (transfer full): A file descriptor
  * @mode: _open_osfhandle flags

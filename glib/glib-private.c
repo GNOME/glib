@@ -56,6 +56,7 @@ glib__private__ (void)
     g_win32_fstat,
     g_win32_find_helper_executable_path,
     g_win32_reopen_noninherited,
+    g_win32_handle_is_socket,
 #endif
   };
 

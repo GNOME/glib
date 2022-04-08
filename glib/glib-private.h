@@ -175,6 +175,9 @@ typedef struct {
   int                   (* g_win32_reopen_noninherited) (int      fd,
                                                          int      mode,
                                                          GError **err);
+
+  gboolean              (* g_win32_handle_is_socket)    (void *handle);
+
 #endif
 
 
