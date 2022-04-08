@@ -32,11 +32,13 @@
 #ifdef G_OS_UNIX
 #include <glib-unix.h>
 #include <sys/types.h>
+#include <sys/socket.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #endif
 
 #ifdef G_OS_WIN32
+#include <winsock2.h>
 #include <io.h>
 #define LINEEND "\r\n"
 #else
@@ -353,6 +355,56 @@ test_spawn_sync (void)
   g_free (joined_args_str);
 }
 
+static void
+init_networking (void)
+{
+#ifdef G_OS_WIN32
+  WSADATA wsadata;
+
+  if (WSAStartup (MAKEWORD (2, 0), &wsadata) != 0)
+    g_error ("Windows Sockets could not be initialized");
+#endif
+}
+
+static void
+test_spawn_stderr_socket (void)
+{
+  GError *error = NULL;
+  GPtrArray *argv;
+  int estatus;
+  int fd;
+
+  g_test_summary ("Test calling g_spawn_sync() with its stderr FD set to a socket");
+
+  if (g_test_subprocess ())
+    {
+      init_networking ();
+      fd = socket (AF_INET, SOCK_STREAM, 0);
+      g_assert_cmpint (fd, >=, 0);
+#ifdef G_OS_WIN32
+      fd = _open_osfhandle (fd, 0);
+      g_assert_cmpint (fd, >=, 0);
+#endif
+      /* Set the socket as FD 2, stderr */
+      estatus = dup2 (fd, 2);
+      g_assert_cmpint (estatus, >=, 0);
+
+      argv = g_ptr_array_new ();
+      g_ptr_array_add (argv, echo_script_path);
+      g_ptr_array_add (argv, NULL);
+
+      g_spawn_sync (NULL, (char**) argv->pdata, NULL, 0, NULL, NULL, NULL, NULL, NULL, &error);
+      g_assert_no_error (error);
+      g_ptr_array_free (argv, TRUE);
+      g_close (fd, &error);
+      g_assert_no_error (error);
+      return;
+    }
+
+  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_assert_passed ();
+}
+
 /* Like test_spawn_sync but uses spawn flags that trigger the optimized
  * posix_spawn codepath.
  */
@@ -517,6 +569,7 @@ main (int   argc,
   g_assert (g_file_test (echo_script_path, G_FILE_TEST_EXISTS));
 
   g_test_add_func ("/gthread/spawn-single-sync", test_spawn_sync);
+  g_test_add_func ("/gthread/spawn-stderr-socket", test_spawn_stderr_socket);
   g_test_add_func ("/gthread/spawn-single-async", test_spawn_async);
   g_test_add_func ("/gthread/spawn-single-async-with-fds", test_spawn_async_with_fds);
   g_test_add_func ("/gthread/spawn-script", test_spawn_script);
