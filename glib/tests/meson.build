@@ -126,6 +126,7 @@ glib_tests = {
   'utils' : {},
   'unicode' : {},
   'unicode-encoding' : {},
+  'unicode-normalize': {},
   'uri' : {},
   '1bit-mutex' : {},
   '1bit-emufutex' : {
