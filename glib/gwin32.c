@@ -40,6 +40,7 @@
 #include <fcntl.h>
 
 #define STRICT			/* Strict typing, please */
+#include <winsock2.h>
 #include <windows.h>
 #undef STRICT
 #ifndef G_WITH_CYGWIN
@@ -1501,9 +1502,37 @@ g_win32_reopen_noninherited (int fd,
       return -1;
     }
 
-  if (DuplicateHandle (GetCurrentProcess (), h,
-                       GetCurrentProcess (), &duph,
-                       0, FALSE, DUPLICATE_SAME_ACCESS) == 0)
+  if (g_win32_handle_is_socket (h))
+    {
+      WSAPROTOCOL_INFO info;
+
+      if (WSADuplicateSocket ((SOCKET) h,
+                              GetCurrentProcessId (),
+                              &info))
+        {
+          gchar *emsg = g_win32_error_message (WSAGetLastError ());
+          g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                       "WSADuplicateSocket() failed: %s", emsg);
+          g_free (emsg);
+          return -1;
+        }
+
+      duph = (HANDLE) WSASocket (FROM_PROTOCOL_INFO,
+                                 FROM_PROTOCOL_INFO,
+                                 FROM_PROTOCOL_INFO,
+                                 &info, 0, 0);
+      if (duph == (HANDLE) INVALID_SOCKET)
+        {
+          gchar *emsg = g_win32_error_message (WSAGetLastError ());
+          g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                       "WSASocket() failed: %s", emsg);
+          g_free (emsg);
+          return -1;
+        }
+    }
+  else if (DuplicateHandle (GetCurrentProcess (), h,
+                            GetCurrentProcess (), &duph,
+                            0, FALSE, DUPLICATE_SAME_ACCESS) == 0)
     {
       char *emsg = g_win32_error_message (GetLastError ());
       g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
