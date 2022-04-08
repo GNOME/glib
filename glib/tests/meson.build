@@ -306,6 +306,13 @@ if host_machine.system() == 'windows'
     install_dir: installed_tests_execdir,
     install: installed_tests_enabled,
   )
+  executable('spawn-test-win32-gui', 'spawn-test-win32-gui.c',
+    c_args : test_cargs,
+    dependencies : test_deps,
+    install_dir: installed_tests_execdir,
+    install: installed_tests_enabled,
+    win_subsystem: 'windows',
+  )
 endif
 
 executable('testing-helper', 'testing-helper.c',
