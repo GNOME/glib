@@ -38,6 +38,7 @@ tests = {
     'source': 'module-test.c',
     'c_args': ['-DMODULE_TYPE="plugin"'],
   },
+  'unicode-normalize': {},
 }
 
 test_extra_programs = {
