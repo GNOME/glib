@@ -826,6 +826,8 @@ test_two_digit_years (void)
   GDate *d;
   gchar buf[101];
   gchar *old_locale;
+  gboolean use_alternative_format = FALSE;
+
 #ifdef G_OS_WIN32
   LCID old_lcid;
 #endif
@@ -848,6 +850,25 @@ test_two_digit_years (void)
   g_date_strftime (buf, sizeof (buf), "%D", d);
   g_assert_cmpstr (buf, ==, "10/10/76");
   g_date_set_parse (d, buf);
+
+#ifdef G_OS_WIN32
+  /*
+   * It depends on the locale setting whether the dd/mm/yy
+   * format is allowed for g_date_set_parse() on Windows, which
+   * corresponds to whether there is an d/M/YY or d/M/YYYY (or so)
+   * option in the "Date and Time Format" setting for the selected
+   * locale in the Control Panel settings.  If g_date_set_parse()
+   * renders the GDate invalid with the dd/mm/yy format, use an
+   * alternative format (yy/mm/dd) for g_date_set_parse() for the
+   * 2-digit year tests.
+   */
+  if (!g_date_valid (d))
+    use_alternative_format = TRUE;
+#endif
+
+  if (use_alternative_format)
+    g_date_set_parse (d, "76/10/10");
+
   g_assert_cmpint (g_date_get_month (d), ==, 10);
   g_assert_cmpint (g_date_get_day (d), ==, 10);
   g_assert_true ((g_date_get_year (d) == 1976) ||
@@ -857,7 +878,7 @@ test_two_digit_years (void)
   g_date_set_dmy (d, 10, 10, 29);
   g_date_strftime (buf, sizeof (buf), "%D", d);
   g_assert_cmpstr (buf, ==, "10/10/29");
-  g_date_set_parse (d, buf);
+  g_date_set_parse (d, use_alternative_format ? "29/10/10" : buf);
   g_assert_cmpint (g_date_get_month (d), ==, 10);
   g_assert_cmpint (g_date_get_day (d), ==, 10);
   g_assert_true ((g_date_get_year (d) == 2029) ||
