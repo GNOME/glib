@@ -107,8 +107,8 @@ test_spawn_basics (void)
                                       NULL, &erroutput, NULL, &err);
   g_assert_no_error (err);
   g_assert_true (result);
-  g_assert_cmpstr (erroutput, ==,
-                   "sort: cannot read: non-existing-file.txt: No such file or directory\n");
+  g_assert_true (g_str_has_prefix (erroutput, "sort: "));
+  g_assert_nonnull (strstr (erroutput, "No such file or directory"));
 
   g_free (erroutput);
   erroutput = NULL;
