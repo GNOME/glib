@@ -210,6 +210,7 @@ if installed_tests_enabled
     'iochannel-test-infile',
     'keyfile.c',
     'keyfiletest.ini',
+    'NormalizationTest.txt',
     'pages.ini',
     install_dir : installed_tests_execdir,
   )
