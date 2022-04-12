@@ -44,6 +44,13 @@ timeout_cb (gpointer user_data)
   return G_SOURCE_REMOVE;
 }
 
+static gboolean
+wakeup_cb (gpointer user_data)
+{
+  /* nothing to do here */
+  return G_SOURCE_CONTINUE;
+}
+
 /* Check that the given @connection has only one ref, waiting to let any pending
  * unrefs complete first. This is typically used on the shared connection, to
  * ensure it’s in a correct state before beginning the next test. */
@@ -53,14 +60,25 @@ static void
                                  const gchar     *calling_function)
 {
   GSource *timeout_source = NULL;
+  GSource *wakeup_source = NULL;
   TimeoutData data = { context, FALSE };
 
   if (g_atomic_int_get (&G_OBJECT (connection)->ref_count) == 1)
     return;
 
+  /* Use two timeout sources: @timeout_source to set a deadline after which the
+   * test will fail if the @connection doesn’t have the right number of refs;
+   * and @wakeup_source to periodically wake the @context up to allow the
+   * termination condition to be checked. This allows the termination condition
+   * to be fulfilled by something which doesn’t wake @context up, such as an
+   * unref happening in the GDBus worker thread. */
   timeout_source = g_timeout_source_new_seconds (3);
   g_source_set_callback (timeout_source, timeout_cb, &data, NULL);
   g_source_attach (timeout_source, context);
+
+  wakeup_source = g_timeout_source_new (50 /* ms */);
+  g_source_set_callback (wakeup_source, wakeup_cb, NULL, NULL);
+  g_source_attach (wakeup_source, context);
 
   while (g_atomic_int_get (&G_OBJECT (connection)->ref_count) != 1 && !data.timed_out)
     {
@@ -68,6 +86,9 @@ static void
                connection, g_atomic_int_get (&G_OBJECT (connection)->ref_count), calling_function);
       g_main_context_iteration (NULL, TRUE);
     }
+
+  g_source_destroy (wakeup_source);
+  g_source_unref (wakeup_source);
 
   g_source_destroy (timeout_source);
   g_source_unref (timeout_source);
