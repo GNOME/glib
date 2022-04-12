@@ -18,7 +18,9 @@
  * otherwise) arising in any way out of the use of this software, even
  * if advised of the possibility of such damage.
  */
+
 #include <glib.h>
+
 #include <stdlib.h>
 
 #define N_THREADS               (13)
@@ -33,8 +35,7 @@ assert_singleton_execution1 (void)
 {
   static int seen_execution = 0;  /* (atomic) */
   int old_seen_execution = g_atomic_int_add (&seen_execution, 1);
-  if (old_seen_execution != 0)
-    g_error ("%s: function executed more than once", G_STRFUNC);
+  g_assert_cmpint (old_seen_execution, ==, 0);
 }
 
 static void
@@ -42,8 +43,7 @@ assert_singleton_execution2 (void)
 {
   static int seen_execution = 0;  /* (atomic) */
   int old_seen_execution = g_atomic_int_add (&seen_execution, 1);
-  if (old_seen_execution != 0)
-    g_error ("%s: function executed more than once", G_STRFUNC);
+  g_assert_cmpint (old_seen_execution, ==, 0);
 }
 
 static void
@@ -51,8 +51,7 @@ assert_singleton_execution3 (void)
 {
   static int seen_execution = 0;  /* (atomic) */
   int old_seen_execution = g_atomic_int_add (&seen_execution, 1);
-  if (old_seen_execution != 0)
-    g_error ("%s: function executed more than once", G_STRFUNC);
+  g_assert_cmpint (old_seen_execution, ==, 0);
 }
 
 static void
@@ -62,7 +61,7 @@ initializer1 (void)
   if (g_once_init_enter (&initialized))
     {
       gsize initval = 42;
-      assert_singleton_execution1();
+      assert_singleton_execution1 ();
       g_once_init_leave (&initialized, initval);
     }
 }
@@ -74,7 +73,7 @@ initializer2 (void)
   if (g_once_init_enter (&initialized))
     {
       void *pointer_value = &dummy_value;
-      assert_singleton_execution2();
+      assert_singleton_execution2 ();
       g_once_init_leave (&initialized, (gsize) pointer_value);
     }
   return (void*) initialized;
@@ -87,7 +86,7 @@ initializer3 (void)
   if (g_once_init_enter (&initialized))
     {
       gsize initval = 42;
-      assert_singleton_execution3();
+      assert_singleton_execution3 ();
       g_usleep (25 * 1000);     /* waste time for multiple threads to wait */
       g_once_init_leave (&initialized, initval);
     }
@@ -99,56 +98,11 @@ tmain_call_initializer3 (gpointer user_data)
   g_mutex_lock (&tmutex);
   g_cond_wait (&tcond, &tmutex);
   g_mutex_unlock (&tmutex);
-  //g_printf ("[");
-  initializer3();
-  //g_printf ("]\n");
+
+  initializer3 ();
+
   g_atomic_int_add (&thread_call_count, 1);
   return NULL;
-}
-
-static void*     stress_concurrent_initializers (void*);
-
-int
-main (int   argc,
-      char *argv[])
-{
-  G_GNUC_UNUSED GThread *threads[N_THREADS];
-  int i;
-  void *p;
-
-  /* test simple initializer */
-  initializer1();
-  initializer1();
-  /* test pointer initializer */
-  p = initializer2();
-  g_assert (p == &dummy_value);
-  p = initializer2();
-  g_assert (p == &dummy_value);
-  /* start multiple threads for initializer3() */
-  g_mutex_lock (&tmutex);
-  for (i = 0; i < N_THREADS; i++)
-    threads[i] = g_thread_create (tmain_call_initializer3, 0, FALSE, NULL);
-  g_mutex_unlock (&tmutex);
-  /* concurrently call initializer3() */
-  g_cond_broadcast (&tcond);
-  /* loop until all threads passed the call to initializer3() */
-  while (g_atomic_int_get (&thread_call_count) < i)
-    {
-      if (rand() % 2)
-        g_thread_yield();   /* concurrent shuffling for single core */
-      else
-        g_usleep (1000);    /* concurrent shuffling for multi core */
-      g_cond_broadcast (&tcond);
-    }
-  /* call multiple (unoptimized) initializers from multiple threads */
-  g_mutex_lock (&tmutex);
-  g_atomic_int_set (&thread_call_count, 0);
-  for (i = 0; i < N_THREADS; i++)
-    g_thread_create (stress_concurrent_initializers, 0, FALSE, NULL);
-  g_mutex_unlock (&tmutex);
-  while (g_atomic_int_get (&thread_call_count) < 256 * 4 * N_THREADS)
-    g_usleep (50 * 1000);       /* wait for all 5 threads to complete */
-  return 0;
 }
 
 /* get rid of g_once_init_enter-optimizations in the below definitions
@@ -270,4 +224,64 @@ stress_concurrent_initializers (void *user_data)
       g_atomic_int_add (&thread_call_count, 1);
     }
   return NULL;
+}
+
+static void
+test_onceinit (void)
+{
+  G_GNUC_UNUSED GThread *threads[N_THREADS];
+  int i;
+  void *p;
+
+  /* test simple initializer */
+  initializer1 ();
+  initializer1 ();
+
+  /* test pointer initializer */
+  p = initializer2 ();
+  g_assert (p == &dummy_value);
+  p = initializer2 ();
+  g_assert (p == &dummy_value);
+
+  /* start multiple threads for initializer3() */
+  g_mutex_lock (&tmutex);
+
+  for (i = 0; i < N_THREADS; i++)
+    threads[i] = g_thread_new (NULL, tmain_call_initializer3, NULL);
+
+  g_mutex_unlock (&tmutex);
+
+  /* concurrently call initializer3() */
+  g_cond_broadcast (&tcond);
+
+  /* loop until all threads passed the call to initializer3() */
+  while (g_atomic_int_get (&thread_call_count) < i)
+    {
+      if (rand () % 2)
+        g_thread_yield (); /* concurrent shuffling for single core */
+      else
+        g_usleep (1000); /* concurrent shuffling for multi core */
+      g_cond_broadcast (&tcond);
+    }
+
+  /* call multiple (unoptimized) initializers from multiple threads */
+  g_mutex_lock (&tmutex);
+  g_atomic_int_set (&thread_call_count, 0);
+
+  for (i = 0; i < N_THREADS; i++)
+    g_thread_new (NULL, stress_concurrent_initializers, NULL);
+  g_mutex_unlock (&tmutex);
+
+  while (g_atomic_int_get (&thread_call_count) < 256 * 4 * N_THREADS)
+    g_usleep (50 * 1000); /* wait for all 5 threads to complete */
+}
+
+int
+main (int argc, char *argv[])
+{
+  g_test_init (&argc, &argv, NULL);
+
+  g_test_add_func ("/thread/onceinit", test_onceinit);
+
+  return g_test_run ();
 }

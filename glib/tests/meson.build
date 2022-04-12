@@ -65,6 +65,7 @@ glib_tests = {
   'mutex' : {},
   'node' : {},
   'once' : {},
+  'onceinit' : {},
   'option-context' : {},
   'option-argv0' : {},
   'overflow' : {},
