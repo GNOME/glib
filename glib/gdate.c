@@ -2556,9 +2556,7 @@ win32_strftime_helper (const GDate     *d,
 	      break;
 	    case 'Z':
 	      n = GetTimeZoneInformation (&tzinfo);
-	      if (n == TIME_ZONE_ID_UNKNOWN)
-		;
-	      else if (n == TIME_ZONE_ID_STANDARD)
+	      if (n == TIME_ZONE_ID_UNKNOWN || n == TIME_ZONE_ID_STANDARD)
 		g_array_append_vals (result, tzinfo.StandardName, wcslen (tzinfo.StandardName));
 	      else if (n == TIME_ZONE_ID_DAYLIGHT)
 		g_array_append_vals (result, tzinfo.DaylightName, wcslen (tzinfo.DaylightName));
