@@ -1,3 +1,56 @@
+Overview of changes in GLib 2.72.1
+==================================
+
+* Fix building projects which use g_warning_once() with clang++ (#2625)
+
+* Fix `g_file_trash()` not deleting directories via the portals backend (work by Matthias Clasen) (#2629)
+
+* A number more compiler warnings fixed for MSVC (work by Loïc Le Page) (!2495)
+
+* Fix detection of broken `poll()` function on macOS (work by Haruka Ma) (!2571)
+
+* Fix spawning subprocesses from GUI programs on Windows (work by Marc-André Lureau) (!2582)
+
+* Bugs fixed:
+ - #2312 gdbus-test-codegen tests leak GWeakRef objects
+ - #2625 g_warning_once fails to build with clang++
+ - #2629 g_file_trash() does not work on directories inside a sandbox
+ - !2495 Cleanup warnings split 6
+ - !2499 Various contenttype-related test fixes on win32
+ - !2534 gpowerprofilemonitor: Tweak wording of documentation to make more sense
+ - !2540 Various win32 tests skip & fixes
+ - !2541 meson: simplify lookup of python command
+ - !2543 ci: Update the Fedora CI image to Fedora 34
+ - !2556 gdbusconnection: Use g_strv_contains() rather than a home-grown version
+ - !2557 gdbusmethodinvocation: Fix a leak on an early return path
+ - !2558 Move unit test on g_basename() function to glib/tests/fileutils.c
+ - !2559 Move tests/relation-test.c to glib/tests/relation.c
+ - !2560 ci: Update Coverity, mingw and Android CI images to Fedora 34
+ - !2563 glib: Format GDateTime ISO8601 years as %C%y
+ - !2564 Move test files on slices from tests/ to glib/tests/
+ - !2566 tests: Add more tests for GResolver response parsing
+ - !2573 Backport translation fixes and !2571 “meson: Set BROKEN_POLL in macOS builds” to glib-2-72
+ - !2574 Backport !2565 “Revert "meson: simplify lookup of python command"” to glib-2-72
+ - !2587 Backport !2583 “Fix trashing sandboxed directories” to glib-2-72
+ - !2588 Backport !2582 “glib/win32: fix spawn from GUI regression” to glib-2-72
+ - !2590 Backport !2589 “tests: Don’t exit gdbus-method-invocation test early on connection close” to glib-2-72
+ - !2593 Backport !2578 “gatomic: Add a C++ variant of g_atomic_int_compare_and_exchange()” to glib-2-72
+
+* Translation updates:
+ - Bulgarian
+ - Catalan
+ - Indonesian
+ - Italian
+ - Lithuanian
+ - Polish
+ - Portuguese
+ - Russian
+ - Slovenian
+ - Swedish
+ - Turkish
+ - Ukrainian
+
+
 Overview of changes in GLib 2.72.0
 ==================================
 
