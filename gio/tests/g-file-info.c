@@ -654,7 +654,11 @@ test_internal_enhanced_stdio (void)
       g_assert_cmpuint (alsize_ps, <, 0x40000000);
       g_assert_cmpuint (size_ps, >, G_GUINT64_CONSTANT (0xFFFFFFFF));
       g_assert_cmpuint (statbuf_ps.st_size, >, 0);
+#if defined(_WIN64)
+      g_assert_cmpuint (statbuf_ps.st_size, ==, G_GUINT64_CONSTANT (0x10000000f));
+#else
       g_assert_cmpuint (statbuf_ps.st_size, <=, 0xFFFFFFFF);
+#endif
 
       g_object_unref (fi_ps);
       g_object_unref (gf_ps);
