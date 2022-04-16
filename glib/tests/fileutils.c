@@ -1447,6 +1447,7 @@ test_get_contents (void)
   g_assert_no_error (error);
 
   g_free (contents);
+  g_remove (filename);
 }
 
 static void
