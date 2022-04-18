@@ -28,8 +28,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-02-14 13:48+0000\n"
-"PO-Revision-Date: 2022-02-27 16:01+0100\n"
+"POT-Creation-Date: 2022-04-08 12:19+0000\n"
+"PO-Revision-Date: 2022-04-18 19:18+0200\n"
 "Last-Translator: Alan Mortensen <alanmortensen.am@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
@@ -48,23 +48,23 @@ msgid "Setting application as last used for type not supported yet"
 msgstr ""
 "Indstilling af program som det sidst brugte til typen understøttes endnu ikke"
 
-#: gio/gapplication.c:497
+#: gio/gapplication.c:500
 msgid "GApplication options"
 msgstr "GApplication-indstillinger"
 
-#: gio/gapplication.c:497
+#: gio/gapplication.c:500
 msgid "Show GApplication options"
 msgstr "Vis GApplication-indstillinger"
 
-#: gio/gapplication.c:542
+#: gio/gapplication.c:545
 msgid "Enter GApplication service mode (use from D-Bus service files)"
 msgstr "Indtast GApplication-tjenestetilstand (brug fra D-Bus-tjenestefiler)"
 
-#: gio/gapplication.c:554
+#: gio/gapplication.c:557
 msgid "Override the application’s ID"
 msgstr "Tilsidesæt programmets id"
 
-#: gio/gapplication.c:566
+#: gio/gapplication.c:569
 msgid "Replace the running instance"
 msgstr "Erstat den kørende instans"
 
@@ -306,7 +306,7 @@ msgstr "Strømmen er allerede lukket"
 msgid "Truncate not supported on base stream"
 msgstr "Afkortning understøttes ikke af basisstrømmen"
 
-#: gio/gcancellable.c:319 gio/gdbusconnection.c:1873 gio/gdbusprivate.c:1418
+#: gio/gcancellable.c:319 gio/gdbusconnection.c:1857 gio/gdbusprivate.c:1418
 #: gio/gsimpleasyncresult.c:871 gio/gsimpleasyncresult.c:897
 #, c-format
 msgid "Operation was cancelled"
@@ -356,11 +356,11 @@ msgstr "Kunne ikke konvertere fra “%s” til “%s”"
 msgid "%s type"
 msgstr "%s-type"
 
-#: gio/gcontenttype-win32.c:192
+#: gio/gcontenttype-win32.c:196
 msgid "Unknown type"
 msgstr "Ukendt type"
 
-#: gio/gcontenttype-win32.c:194
+#: gio/gcontenttype-win32.c:198
 #, c-format
 msgid "%s filetype"
 msgstr "%s-filtype"
@@ -535,7 +535,7 @@ msgstr ""
 "Kan ikke bestemme sessionsbussens adresse (ikke implementeret for dette "
 "operativsystem)"
 
-#: gio/gdbusaddress.c:1373 gio/gdbusconnection.c:7334
+#: gio/gdbusaddress.c:1373 gio/gdbusconnection.c:7318
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -544,7 +544,7 @@ msgstr ""
 "Kan ikke bestemme busadressen fra miljøvariablen DBUS_STARTER_BUS_TYPE — "
 "ukendt værdi “%s”"
 
-#: gio/gdbusaddress.c:1382 gio/gdbusconnection.c:7343
+#: gio/gdbusaddress.c:1382 gio/gdbusconnection.c:7327
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -581,12 +581,12 @@ msgstr "Bruger-id'er skal være de samme for peer og server"
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr "Annulleret via GDBusAuthObserver::authorize-authenticated-peer"
 
-#: gio/gdbusauthmechanismsha1.c:299
+#: gio/gdbusauthmechanismsha1.c:300
 #, c-format
 msgid "Error when getting information for directory “%s”: %s"
 msgstr "Fejl ved indhentning af oplysninger for mappen “%s”: %s"
 
-#: gio/gdbusauthmechanismsha1.c:314
+#: gio/gdbusauthmechanismsha1.c:315
 #, c-format
 msgid ""
 "Permissions on directory “%s” are malformed. Expected mode 0700, got 0%o"
@@ -594,12 +594,12 @@ msgstr ""
 "Rettigheder for mappen “%s” er fejlformateret. Forventede tilstanden 0700, "
 "fandt 0%o"
 
-#: gio/gdbusauthmechanismsha1.c:347 gio/gdbusauthmechanismsha1.c:358
+#: gio/gdbusauthmechanismsha1.c:348 gio/gdbusauthmechanismsha1.c:359
 #, c-format
 msgid "Error creating directory “%s”: %s"
 msgstr "Fejl ved oprettelse af mappen “%s”: %s"
 
-#: gio/gdbusauthmechanismsha1.c:360 gio/gfile.c:1080 gio/gfile.c:1318
+#: gio/gdbusauthmechanismsha1.c:361 gio/gfile.c:1080 gio/gfile.c:1318
 #: gio/gfile.c:1456 gio/gfile.c:1694 gio/gfile.c:1749 gio/gfile.c:1807
 #: gio/gfile.c:1891 gio/gfile.c:1948 gio/gfile.c:2012 gio/gfile.c:2067
 #: gio/gfile.c:3772 gio/gfile.c:3912 gio/gfile.c:4205 gio/gfile.c:4675
@@ -609,17 +609,17 @@ msgstr "Fejl ved oprettelse af mappen “%s”: %s"
 msgid "Operation not supported"
 msgstr "Operationen understøttes ikke"
 
-#: gio/gdbusauthmechanismsha1.c:403
+#: gio/gdbusauthmechanismsha1.c:404
 #, c-format
 msgid "Error opening keyring “%s” for reading: "
 msgstr "Fejl ved åbning af nøgleringen “%s” til læsning: "
 
-#: gio/gdbusauthmechanismsha1.c:426 gio/gdbusauthmechanismsha1.c:748
+#: gio/gdbusauthmechanismsha1.c:427 gio/gdbusauthmechanismsha1.c:769
 #, c-format
 msgid "Line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr "Linje %d i nøgleringen på “%s” med indholdet “%s” er fejlformateret"
 
-#: gio/gdbusauthmechanismsha1.c:440 gio/gdbusauthmechanismsha1.c:762
+#: gio/gdbusauthmechanismsha1.c:441 gio/gdbusauthmechanismsha1.c:783
 #, c-format
 msgid ""
 "First token of line %d of the keyring at “%s” with content “%s” is malformed"
@@ -627,7 +627,7 @@ msgstr ""
 "Første symbol i linje %d af nøgleringen på “%s” med indholdet “%s” er "
 "fejlformateret"
 
-#: gio/gdbusauthmechanismsha1.c:454 gio/gdbusauthmechanismsha1.c:776
+#: gio/gdbusauthmechanismsha1.c:455 gio/gdbusauthmechanismsha1.c:797
 #, c-format
 msgid ""
 "Second token of line %d of the keyring at “%s” with content “%s” is malformed"
@@ -635,136 +635,136 @@ msgstr ""
 "Andet symbol i linje %d af nøgleringen på “%s” med indholdet “%s” er "
 "fejlformateret"
 
-#: gio/gdbusauthmechanismsha1.c:478
+#: gio/gdbusauthmechanismsha1.c:479
 #, c-format
 msgid "Didn’t find cookie with id %d in the keyring at “%s”"
 msgstr "Fandt ingen cookie med id %d i nøgleringen på “%s”"
 
-#: gio/gdbusauthmechanismsha1.c:524
+#: gio/gdbusauthmechanismsha1.c:536
 #, c-format
 msgid "Error creating lock file “%s”: %s"
 msgstr "Fejl ved oprettelse af låsefil “%s”: %s"
 
-#: gio/gdbusauthmechanismsha1.c:588
+#: gio/gdbusauthmechanismsha1.c:609
 #, c-format
 msgid "Error deleting stale lock file “%s”: %s"
 msgstr "Fejl ved sletning af forældet låsefil “%s”: %s"
 
-#: gio/gdbusauthmechanismsha1.c:627
+#: gio/gdbusauthmechanismsha1.c:648
 #, c-format
 msgid "Error closing (unlinked) lock file “%s”: %s"
 msgstr "Fejl ved lukning af låsefil (uden link) “%s”: %s"
 
-#: gio/gdbusauthmechanismsha1.c:638
+#: gio/gdbusauthmechanismsha1.c:659
 #, c-format
 msgid "Error unlinking lock file “%s”: %s"
 msgstr "Fejl ved fjernelse af link til låsefil “%s”: %s"
 
-#: gio/gdbusauthmechanismsha1.c:715
+#: gio/gdbusauthmechanismsha1.c:736
 #, c-format
 msgid "Error opening keyring “%s” for writing: "
 msgstr "Fejl ved åbning af nøgleringen “%s” til skrivning: "
 
-#: gio/gdbusauthmechanismsha1.c:909
+#: gio/gdbusauthmechanismsha1.c:930
 #, c-format
 msgid "(Additionally, releasing the lock for “%s” also failed: %s) "
 msgstr "(Yderligere kunne låsen for “%s” ikke opgives: %s) "
 
-#: gio/gdbusconnection.c:604 gio/gdbusconnection.c:2418
+#: gio/gdbusconnection.c:588 gio/gdbusconnection.c:2402
 msgid "The connection is closed"
 msgstr "Forbindelsen er lukket"
 
-#: gio/gdbusconnection.c:1903
+#: gio/gdbusconnection.c:1887
 msgid "Timeout was reached"
 msgstr "Tiden løb ud"
 
-#: gio/gdbusconnection.c:2541
+#: gio/gdbusconnection.c:2525
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr ""
 "Der blev fundet ikke-understøttede flag ved oprettelse af en forbindelse på "
 "klientsiden"
 
-#: gio/gdbusconnection.c:4269 gio/gdbusconnection.c:4623
+#: gio/gdbusconnection.c:4253 gio/gdbusconnection.c:4607
 #, c-format
 msgid ""
 "No such interface “org.freedesktop.DBus.Properties” on object at path %s"
 msgstr ""
 "Ingen grænseflade “org.freedesktop.DBus.Properties” på objekt ved stien %s"
 
-#: gio/gdbusconnection.c:4414
+#: gio/gdbusconnection.c:4398
 #, c-format
 msgid "No such property “%s”"
 msgstr "Ingen sådan egenskab “%s”"
 
-#: gio/gdbusconnection.c:4426
+#: gio/gdbusconnection.c:4410
 #, c-format
 msgid "Property “%s” is not readable"
 msgstr "Egenskaben “%s” kan ikke læses"
 
-#: gio/gdbusconnection.c:4437
+#: gio/gdbusconnection.c:4421
 #, c-format
 msgid "Property “%s” is not writable"
 msgstr "Egenskaben “%s” er skrivebeskyttet"
 
-#: gio/gdbusconnection.c:4457
+#: gio/gdbusconnection.c:4441
 #, c-format
 msgid "Error setting property “%s”: Expected type “%s” but got “%s”"
 msgstr ""
 "Fejl ved anvendelse af egenskaben “%s”: Forventede typen “%s”, men fik “%s”"
 
-#: gio/gdbusconnection.c:4562 gio/gdbusconnection.c:4777
-#: gio/gdbusconnection.c:6760
+#: gio/gdbusconnection.c:4546 gio/gdbusconnection.c:4761
+#: gio/gdbusconnection.c:6744
 #, c-format
 msgid "No such interface “%s”"
 msgstr "Ingen sådan grænseflade “%s”"
 
-#: gio/gdbusconnection.c:4999 gio/gdbusconnection.c:7274
+#: gio/gdbusconnection.c:4983 gio/gdbusconnection.c:7258
 #, c-format
 msgid "No such interface “%s” on object at path %s"
 msgstr "Ingen sådan grænseflade “%s” på objektet ved stien %s"
 
-#: gio/gdbusconnection.c:5100
+#: gio/gdbusconnection.c:5084
 #, c-format
 msgid "No such method “%s”"
 msgstr "Ingen sådan metode “%s”"
 
-#: gio/gdbusconnection.c:5131
+#: gio/gdbusconnection.c:5115
 #, c-format
 msgid "Type of message, “%s”, does not match expected type “%s”"
 msgstr "Beskedtypen “%s” er ikke den forventede type, “%s”"
 
-#: gio/gdbusconnection.c:5334
+#: gio/gdbusconnection.c:5318
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Der er allerede eksporteret et objekt for grænsefladen %s på %s"
 
-#: gio/gdbusconnection.c:5561
+#: gio/gdbusconnection.c:5545
 #, c-format
 msgid "Unable to retrieve property %s.%s"
 msgstr "Kan ikke hente egenskaben %s.%s"
 
-#: gio/gdbusconnection.c:5617
+#: gio/gdbusconnection.c:5601
 #, c-format
 msgid "Unable to set property %s.%s"
 msgstr "Kan ikke sætte egenskaben %s.%s"
 
-#: gio/gdbusconnection.c:5796
+#: gio/gdbusconnection.c:5780
 #, c-format
 msgid "Method “%s” returned type “%s”, but expected “%s”"
 msgstr "Metoden “%s” returnerede typen “%s”, men forventede “%s”"
 
-#: gio/gdbusconnection.c:6872
+#: gio/gdbusconnection.c:6856
 #, c-format
 msgid "Method “%s” on interface “%s” with signature “%s” does not exist"
 msgstr "Metoden “%s” på grænsefladen “%s” med signatur “%s” findes ikke"
 
-#: gio/gdbusconnection.c:6993
+#: gio/gdbusconnection.c:6977
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Der er allerede eksporteret et undertræ for %s"
 
-#: gio/gdbusconnection.c:7282
+#: gio/gdbusconnection.c:7266
 #, c-format
 msgid "Object does not exist at path “%s”"
 msgstr "Objektet findes ikke ved stien “%s”"
@@ -1054,66 +1054,66 @@ msgstr ""
 "\n"
 "Brug “%s KOMMANDO --help” for at få hjælp om hver kommando.\n"
 
-#: gio/gdbus-tool.c:201 gio/gdbus-tool.c:273 gio/gdbus-tool.c:345
-#: gio/gdbus-tool.c:369 gio/gdbus-tool.c:859 gio/gdbus-tool.c:1244
-#: gio/gdbus-tool.c:1732
+#: gio/gdbus-tool.c:202 gio/gdbus-tool.c:274 gio/gdbus-tool.c:346
+#: gio/gdbus-tool.c:370 gio/gdbus-tool.c:860 gio/gdbus-tool.c:1245
+#: gio/gdbus-tool.c:1733
 #, c-format
 msgid "Error: %s\n"
 msgstr "Fejl: %s\n"
 
-#: gio/gdbus-tool.c:212 gio/gdbus-tool.c:286 gio/gdbus-tool.c:1748
+#: gio/gdbus-tool.c:213 gio/gdbus-tool.c:287 gio/gdbus-tool.c:1749
 #, c-format
 msgid "Error parsing introspection XML: %s\n"
 msgstr "Fejl ved fortolkning af XML til introspektion: %s\n"
 
-#: gio/gdbus-tool.c:250
+#: gio/gdbus-tool.c:251
 #, c-format
 msgid "Error: %s is not a valid name\n"
 msgstr "Fejl: %s er ikke et gyldigt navn\n"
 
-#: gio/gdbus-tool.c:255 gio/gdbus-tool.c:745 gio/gdbus-tool.c:1063
-#: gio/gdbus-tool.c:1898 gio/gdbus-tool.c:2138
+#: gio/gdbus-tool.c:256 gio/gdbus-tool.c:746 gio/gdbus-tool.c:1064
+#: gio/gdbus-tool.c:1899 gio/gdbus-tool.c:2139
 #, c-format
 msgid "Error: %s is not a valid object path\n"
 msgstr "Fejl: “%s” er ikke en gyldig objektsti\n"
 
-#: gio/gdbus-tool.c:403
+#: gio/gdbus-tool.c:404
 msgid "Connect to the system bus"
 msgstr "Forbind til systembussen"
 
-#: gio/gdbus-tool.c:404
+#: gio/gdbus-tool.c:405
 msgid "Connect to the session bus"
 msgstr "Forbind til sessionsbussen"
 
-#: gio/gdbus-tool.c:405
+#: gio/gdbus-tool.c:406
 msgid "Connect to given D-Bus address"
 msgstr "Forbind til den givne D-Bus-adresse"
 
-#: gio/gdbus-tool.c:415
+#: gio/gdbus-tool.c:416
 msgid "Connection Endpoint Options:"
 msgstr "Tilvalg for forbindelsesslutpunkt:"
 
-#: gio/gdbus-tool.c:416
+#: gio/gdbus-tool.c:417
 msgid "Options specifying the connection endpoint"
 msgstr "Tilvalg, der angiver forbindelsens slutpunkt"
 
-#: gio/gdbus-tool.c:439
+#: gio/gdbus-tool.c:440
 #, c-format
 msgid "No connection endpoint specified"
 msgstr "Intet slutpunkt for forbindelsen angivet"
 
-#: gio/gdbus-tool.c:449
+#: gio/gdbus-tool.c:450
 #, c-format
 msgid "Multiple connection endpoints specified"
 msgstr "Flere slutpunkter for forbindelsen angivet"
 
-#: gio/gdbus-tool.c:522
+#: gio/gdbus-tool.c:523
 #, c-format
 msgid ""
 "Warning: According to introspection data, interface “%s” does not exist\n"
 msgstr "Advarsel: Grænsefladen “%s” findes ikke ifølge introspektionsdata\n"
 
-#: gio/gdbus-tool.c:531
+#: gio/gdbus-tool.c:532
 #, c-format
 msgid ""
 "Warning: According to introspection data, method “%s” does not exist on "
@@ -1122,164 +1122,164 @@ msgstr ""
 "Advarsel: Metoden “%s” findes ikke i grænsefladen “%s” ifølge "
 "introspektionsdata\n"
 
-#: gio/gdbus-tool.c:593
+#: gio/gdbus-tool.c:594
 msgid "Optional destination for signal (unique name)"
 msgstr "Valgfri destination for signal (unikt navn)"
 
-#: gio/gdbus-tool.c:594
+#: gio/gdbus-tool.c:595
 msgid "Object path to emit signal on"
 msgstr "Objektsti, der skal udsendes et signal fra"
 
-#: gio/gdbus-tool.c:595
+#: gio/gdbus-tool.c:596
 msgid "Signal and interface name"
 msgstr "Signal- og grænsefladenavn"
 
-#: gio/gdbus-tool.c:628
+#: gio/gdbus-tool.c:629
 msgid "Emit a signal."
 msgstr "Udsend et signal."
 
-#: gio/gdbus-tool.c:683 gio/gdbus-tool.c:1000 gio/gdbus-tool.c:1835
-#: gio/gdbus-tool.c:2067 gio/gdbus-tool.c:2287
+#: gio/gdbus-tool.c:684 gio/gdbus-tool.c:1001 gio/gdbus-tool.c:1836
+#: gio/gdbus-tool.c:2068 gio/gdbus-tool.c:2288
 #, c-format
 msgid "Error connecting: %s\n"
 msgstr "Fejl ved forbindelse: %s\n"
 
-#: gio/gdbus-tool.c:703
+#: gio/gdbus-tool.c:704
 #, c-format
 msgid "Error: %s is not a valid unique bus name.\n"
 msgstr "Fejl: “%s” er ikke et gyldigt unikt busnavn.\n"
 
-#: gio/gdbus-tool.c:722 gio/gdbus-tool.c:1043 gio/gdbus-tool.c:1878
+#: gio/gdbus-tool.c:723 gio/gdbus-tool.c:1044 gio/gdbus-tool.c:1879
 msgid "Error: Object path is not specified\n"
 msgstr "Fejl: Objektstien er ikke angivet\n"
 
-#: gio/gdbus-tool.c:765
+#: gio/gdbus-tool.c:766
 msgid "Error: Signal name is not specified\n"
 msgstr "Fejl: Signalnavnet er ikke angivet\n"
 
-#: gio/gdbus-tool.c:779
+#: gio/gdbus-tool.c:780
 #, c-format
 msgid "Error: Signal name “%s” is invalid\n"
 msgstr "Fejl: Signalnavnet “%s” er ugyldigt\n"
 
-#: gio/gdbus-tool.c:791
+#: gio/gdbus-tool.c:792
 #, c-format
 msgid "Error: %s is not a valid interface name\n"
 msgstr "Fejl: “%s” er ikke et gyldigt grænsefladenavn\n"
 
-#: gio/gdbus-tool.c:797
+#: gio/gdbus-tool.c:798
 #, c-format
 msgid "Error: %s is not a valid member name\n"
 msgstr "Fejl: “%s” er ikke et gyldigt medlemsnavn\n"
 
 #. Use the original non-"parse-me-harder" error
-#: gio/gdbus-tool.c:834 gio/gdbus-tool.c:1175
+#: gio/gdbus-tool.c:835 gio/gdbus-tool.c:1176
 #, c-format
 msgid "Error parsing parameter %d: %s\n"
 msgstr "Fejl ved fortolkning af parameter %d: %s\n"
 
-#: gio/gdbus-tool.c:866
+#: gio/gdbus-tool.c:867
 #, c-format
 msgid "Error flushing connection: %s\n"
 msgstr "Fejl ved tømning (flush) af forbindelse: %s\n"
 
-#: gio/gdbus-tool.c:894
+#: gio/gdbus-tool.c:895
 msgid "Destination name to invoke method on"
 msgstr "Destinationsnavnet, som metoden skal kaldes på"
 
-#: gio/gdbus-tool.c:895
+#: gio/gdbus-tool.c:896
 msgid "Object path to invoke method on"
 msgstr "Objektstien, som metoden skal kaldes på"
 
-#: gio/gdbus-tool.c:896
+#: gio/gdbus-tool.c:897
 msgid "Method and interface name"
 msgstr "Metode- og grænsefladenavn"
 
-#: gio/gdbus-tool.c:897
+#: gio/gdbus-tool.c:898
 msgid "Timeout in seconds"
 msgstr "Tidsudløb i sekunder"
 
-#: gio/gdbus-tool.c:898
+#: gio/gdbus-tool.c:899
 msgid "Allow interactive authorization"
 msgstr "Tillad interaktiv godkendelse"
 
-#: gio/gdbus-tool.c:945
+#: gio/gdbus-tool.c:946
 msgid "Invoke a method on a remote object."
 msgstr "Kald en metode på et fjernobjekt."
 
-#: gio/gdbus-tool.c:1017 gio/gdbus-tool.c:1852 gio/gdbus-tool.c:2092
+#: gio/gdbus-tool.c:1018 gio/gdbus-tool.c:1853 gio/gdbus-tool.c:2093
 msgid "Error: Destination is not specified\n"
 msgstr "Fejl: Destinationen er ikke angivet\n"
 
-#: gio/gdbus-tool.c:1028 gio/gdbus-tool.c:1869 gio/gdbus-tool.c:2103
+#: gio/gdbus-tool.c:1029 gio/gdbus-tool.c:1870 gio/gdbus-tool.c:2104
 #, c-format
 msgid "Error: %s is not a valid bus name\n"
 msgstr "Fejl: %s er ikke et gyldigt busnavn\n"
 
-#: gio/gdbus-tool.c:1078
+#: gio/gdbus-tool.c:1079
 msgid "Error: Method name is not specified\n"
 msgstr "Fejl: Metodenavnet er ikke angivet\n"
 
-#: gio/gdbus-tool.c:1089
+#: gio/gdbus-tool.c:1090
 #, c-format
 msgid "Error: Method name “%s” is invalid\n"
 msgstr "Fejl: Metodenavnet “%s” er ugyldigt\n"
 
-#: gio/gdbus-tool.c:1167
+#: gio/gdbus-tool.c:1168
 #, c-format
 msgid "Error parsing parameter %d of type “%s”: %s\n"
 msgstr "Fejl ved fortolkning af parameter %d af typen “%s”: %s\n"
 
-#: gio/gdbus-tool.c:1193
+#: gio/gdbus-tool.c:1194
 #, c-format
 msgid "Error adding handle %d: %s\n"
 msgstr "Fejl ved tilføjelse af håndtag: %d: %s\n"
 
-#: gio/gdbus-tool.c:1694
+#: gio/gdbus-tool.c:1695
 msgid "Destination name to introspect"
 msgstr "Destinationsnavnet, der skal introspiceres"
 
-#: gio/gdbus-tool.c:1695
+#: gio/gdbus-tool.c:1696
 msgid "Object path to introspect"
 msgstr "Objektstien, der skal introspiceres"
 
-#: gio/gdbus-tool.c:1696
+#: gio/gdbus-tool.c:1697
 msgid "Print XML"
 msgstr "Udskriv XML"
 
-#: gio/gdbus-tool.c:1697
+#: gio/gdbus-tool.c:1698
 msgid "Introspect children"
 msgstr "Foretag introspektion af underelementer"
 
-#: gio/gdbus-tool.c:1698
+#: gio/gdbus-tool.c:1699
 msgid "Only print properties"
 msgstr "Vis kun egenskaber"
 
-#: gio/gdbus-tool.c:1787
+#: gio/gdbus-tool.c:1788
 msgid "Introspect a remote object."
 msgstr "Introspicér et fjernobjekt."
 
-#: gio/gdbus-tool.c:1993
+#: gio/gdbus-tool.c:1994
 msgid "Destination name to monitor"
 msgstr "Navn på destination, der skal overvåges"
 
-#: gio/gdbus-tool.c:1994
+#: gio/gdbus-tool.c:1995
 msgid "Object path to monitor"
 msgstr "Objektsti, der skal overvåges"
 
-#: gio/gdbus-tool.c:2019
+#: gio/gdbus-tool.c:2020
 msgid "Monitor a remote object."
 msgstr "Overvåg et fjernobjekt."
 
-#: gio/gdbus-tool.c:2077
+#: gio/gdbus-tool.c:2078
 msgid "Error: can’t monitor a non-message-bus connection\n"
 msgstr "Fejl: Kan ikke overvåge en ikke-meddelelsesbus-forbindelse\n"
 
-#: gio/gdbus-tool.c:2201
+#: gio/gdbus-tool.c:2202
 msgid "Service to activate before waiting for the other one (well-known name)"
 msgstr "Tjeneste som skal aktiveres, før den anden afventes (velkendt navn)"
 
-#: gio/gdbus-tool.c:2204
+#: gio/gdbus-tool.c:2205
 msgid ""
 "Timeout to wait for before exiting with an error (seconds); 0 for no timeout "
 "(default)"
@@ -1287,68 +1287,68 @@ msgstr ""
 "Ventetid før afslutning med fejl (sekunder); 0 for ingen tidsgrænse "
 "(standard)"
 
-#: gio/gdbus-tool.c:2252
+#: gio/gdbus-tool.c:2253
 msgid "[OPTION…] BUS-NAME"
 msgstr "[TILVALG …] BUSNAVN"
 
-#: gio/gdbus-tool.c:2253
+#: gio/gdbus-tool.c:2254
 msgid "Wait for a bus name to appear."
 msgstr "Vent på at et busnavn fremkommer."
 
-#: gio/gdbus-tool.c:2329
+#: gio/gdbus-tool.c:2330
 msgid "Error: A service to activate for must be specified.\n"
 msgstr "Fejl: Der skal angives en tjeneste at aktivere for.\n"
 
-#: gio/gdbus-tool.c:2334
+#: gio/gdbus-tool.c:2335
 msgid "Error: A service to wait for must be specified.\n"
 msgstr "Fejl: Der skal angives en tjeneste at vente på.\n"
 
-#: gio/gdbus-tool.c:2339
+#: gio/gdbus-tool.c:2340
 msgid "Error: Too many arguments.\n"
 msgstr "Fejl: For mange argumenter.\n"
 
-#: gio/gdbus-tool.c:2347 gio/gdbus-tool.c:2354
+#: gio/gdbus-tool.c:2348 gio/gdbus-tool.c:2355
 #, c-format
 msgid "Error: %s is not a valid well-known bus name.\n"
 msgstr "Fejl: %s er ikke et gyldigt velkendt busnavn.\n"
 
-#: gio/gdebugcontrollerdbus.c:203
+#: gio/gdebugcontrollerdbus.c:358
 #, c-format
 msgid "Not authorized to change debug settings"
 msgstr "Ikke godkendt til at ændre fejlsøgningsindstillinger"
 
-#: gio/gdesktopappinfo.c:2174 gio/gdesktopappinfo.c:5099
+#: gio/gdesktopappinfo.c:2178 gio/gdesktopappinfo.c:5105
 msgid "Unnamed"
 msgstr "Unavngivet"
 
-#: gio/gdesktopappinfo.c:2584
+#: gio/gdesktopappinfo.c:2588
 msgid "Desktop file didn’t specify Exec field"
 msgstr "Skrivebordsfil angav intet Exec-felt"
 
-#: gio/gdesktopappinfo.c:2892
+#: gio/gdesktopappinfo.c:2896
 msgid "Unable to find terminal required for application"
 msgstr "Kan ikke finde terminal krævet af dette program"
 
-#: gio/gdesktopappinfo.c:3619
+#: gio/gdesktopappinfo.c:3625
 #, c-format
 msgid "Can’t create user application configuration folder %s: %s"
 msgstr "Kan ikke oprette konfigurationsfolder %s for brugerprogram: %s"
 
-#: gio/gdesktopappinfo.c:3623
+#: gio/gdesktopappinfo.c:3629
 #, c-format
 msgid "Can’t create user MIME configuration folder %s: %s"
 msgstr "Kan ikke oprette bruger-MIME-konfigurationsfolder %s: %s"
 
-#: gio/gdesktopappinfo.c:3865 gio/gdesktopappinfo.c:3889
+#: gio/gdesktopappinfo.c:3871 gio/gdesktopappinfo.c:3895
 msgid "Application information lacks an identifier"
 msgstr "Programinformation mangler en identifikator"
 
-#: gio/gdesktopappinfo.c:4125
+#: gio/gdesktopappinfo.c:4131
 #, c-format
 msgid "Can’t create user desktop file %s"
 msgstr "Kan ikke oprette brugerskrivebords-fil %s"
 
-#: gio/gdesktopappinfo.c:4261
+#: gio/gdesktopappinfo.c:4267
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Tilpasset definition for %s"
@@ -3337,13 +3337,13 @@ msgstr "Fejl under oprettelse af sikkerhedskopi: %s"
 msgid "Error renaming temporary file: %s"
 msgstr "Fejl under omdøbning af midlertidig fil: %s"
 
-#: gio/glocalfileoutputstream.c:609 gio/glocalfileoutputstream.c:1237
+#: gio/glocalfileoutputstream.c:609 gio/glocalfileoutputstream.c:1239
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "Fejl ved afkortning af filen: %s"
 
 #: gio/glocalfileoutputstream.c:662 gio/glocalfileoutputstream.c:907
-#: gio/glocalfileoutputstream.c:1218 gio/gsubprocess.c:229
+#: gio/glocalfileoutputstream.c:1220 gio/gsubprocess.c:229
 #, c-format
 msgid "Error opening file “%s”: %s"
 msgstr "Fejl ved åbning af filen “%s”: %s"
@@ -3502,7 +3502,11 @@ msgstr "Summen af vektorer givet til %s er for stor"
 msgid "Source stream is already closed"
 msgstr "Kildestrømmen er allerede lukket"
 
+#. Translators: the first placeholder is a domain name, the
+#. * second is an error message
 #: gio/gresolver.c:401 gio/gthreadedresolver.c:150 gio/gthreadedresolver.c:168
+#: gio/gthreadedresolver.c:780 gio/gthreadedresolver.c:804
+#: gio/gthreadedresolver.c:829 gio/gthreadedresolver.c:844
 #, c-format
 msgid "Error resolving “%s”: %s"
 msgstr "Fejl ved opløsning af “%s”: %s"
@@ -4207,22 +4211,40 @@ msgstr "Der blev ikke fundet nogen gyldige adresser"
 msgid "Error reverse-resolving “%s”: %s"
 msgstr "Fejl ved baglæns opløsning af “%s”: %s"
 
-#: gio/gthreadedresolver.c:676 gio/gthreadedresolver.c:755
-#: gio/gthreadedresolver.c:853 gio/gthreadedresolver.c:903
+#. Translators: the placeholder is a DNS record type, such as ‘MX’ or ‘SRV’
+#: gio/gthreadedresolver.c:550 gio/gthreadedresolver.c:572
+#: gio/gthreadedresolver.c:610 gio/gthreadedresolver.c:657
+#: gio/gthreadedresolver.c:686 gio/gthreadedresolver.c:698
+#, c-format
+msgid "Error parsing DNS %s record: malformed DNS packet"
+msgstr "Fejl ved fortolkning af DNS-post %s: fejlformateret DNS-pakke"
+
+#: gio/gthreadedresolver.c:756 gio/gthreadedresolver.c:893
+#: gio/gthreadedresolver.c:991 gio/gthreadedresolver.c:1041
 #, c-format
 msgid "No DNS record of the requested type for “%s”"
 msgstr "Ingen DNS-post af den forespurgte type for “%s”"
 
-#: gio/gthreadedresolver.c:681 gio/gthreadedresolver.c:858
+#: gio/gthreadedresolver.c:761 gio/gthreadedresolver.c:996
 #, c-format
 msgid "Temporarily unable to resolve “%s”"
 msgstr "Midlertidigt ude af stand til at opløse “%s”"
 
-#: gio/gthreadedresolver.c:686 gio/gthreadedresolver.c:863
-#: gio/gthreadedresolver.c:973
+#: gio/gthreadedresolver.c:766 gio/gthreadedresolver.c:1001
+#: gio/gthreadedresolver.c:1111
 #, c-format
 msgid "Error resolving “%s”"
 msgstr "Fejl ved opløsning af “%s”"
+
+#: gio/gthreadedresolver.c:780 gio/gthreadedresolver.c:804
+#: gio/gthreadedresolver.c:829 gio/gthreadedresolver.c:844
+msgid "Malformed DNS packet"
+msgstr "Fejlformateret DNS-pakke"
+
+#: gio/gthreadedresolver.c:886
+#, c-format
+msgid "Failed to parse DNS response for “%s”: "
+msgstr "Kunne ikke fortolke DNS-svar for “%s”: "
 
 #: gio/gtlscertificate.c:478
 msgid "No PEM-encoded private key found"
@@ -4347,7 +4369,7 @@ msgstr "Fejl ved læsning fra fildeskriptor: %s"
 msgid "Error closing file descriptor: %s"
 msgstr "Fejl ved lukning af fildeskriptor: %s"
 
-#: gio/gunixmounts.c:2782 gio/gunixmounts.c:2835
+#: gio/gunixmounts.c:2809 gio/gunixmounts.c:2862
 msgid "Filesystem root"
 msgstr "Filsystemets rod"
 
@@ -5612,7 +5634,7 @@ msgstr "lookbehind-assert-erklæring har ikke fast længde"
 
 #: glib/gregex.c:394
 msgid "malformed number or name after (?("
-msgstr "fejlformet tal eller navn efter (?("
+msgstr "fejlformateret tal eller navn efter (?("
 
 #: glib/gregex.c:397
 msgid "conditional group contains more than two branches"
@@ -5671,7 +5693,7 @@ msgstr "to navngivne undermønstre har samme navn"
 
 #: glib/gregex.c:445
 msgid "malformed \\P or \\p sequence"
-msgstr "fejlformet \\P- eller \\p-sekvens"
+msgstr "fejlformateret \\P- eller \\p-sekvens"
 
 #: glib/gregex.c:448
 msgid "unknown property name after \\P or \\p"
@@ -5873,87 +5895,87 @@ msgstr "Tekst var tom (eller indeholdt kun blanke tegn)"
 msgid "Failed to read data from child process (%s)"
 msgstr "Fejl ved læsning af data fra underproces (%s)"
 
-#: glib/gspawn.c:461
+#: glib/gspawn.c:462
 #, c-format
 msgid "Unexpected error in reading data from a child process (%s)"
 msgstr "Uventet fejl ved læsning af data fra underproces (%s)"
 
-#: glib/gspawn.c:546
+#: glib/gspawn.c:547
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Uventet fejl i waitpid() (%s)"
 
-#: glib/gspawn.c:1168 glib/gspawn-win32.c:1426
+#: glib/gspawn.c:1175 glib/gspawn-win32.c:1438
 #, c-format
 msgid "Child process exited with code %ld"
 msgstr "Underproces afsluttede med kode %ld"
 
-#: glib/gspawn.c:1176
+#: glib/gspawn.c:1183
 #, c-format
 msgid "Child process killed by signal %ld"
 msgstr "Underproces dræbt med signal %ld"
 
-#: glib/gspawn.c:1183
+#: glib/gspawn.c:1190
 #, c-format
 msgid "Child process stopped by signal %ld"
 msgstr "Underproces stoppet med signal %ld"
 
-#: glib/gspawn.c:1190
+#: glib/gspawn.c:1197
 #, c-format
 msgid "Child process exited abnormally"
 msgstr "Underproces afsluttede fejlagtigt"
 
-#: glib/gspawn.c:1881 glib/gspawn-win32.c:353 glib/gspawn-win32.c:361
+#: glib/gspawn.c:1890 glib/gspawn-win32.c:353 glib/gspawn-win32.c:361
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Fejl under læsning fra barnedatakanal (%s)"
 
-#: glib/gspawn.c:2241
+#: glib/gspawn.c:2253
 #, c-format
 msgid "Failed to spawn child process “%s” (%s)"
 msgstr "Fejl under kørsel af underprocessen “%s” (%s)"
 
-#: glib/gspawn.c:2358
+#: glib/gspawn.c:2370
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Fejl under fraspaltning af proces (%s)"
 
-#: glib/gspawn.c:2518 glib/gspawn-win32.c:384
+#: glib/gspawn.c:2530 glib/gspawn-win32.c:384
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
 msgstr "Fejl ved skift til mappen “%s” (%s)"
 
-#: glib/gspawn.c:2528
+#: glib/gspawn.c:2540
 #, c-format
 msgid "Failed to execute child process “%s” (%s)"
 msgstr "Kunne ikke køre underprocessen “%s” (%s)"
 
-#: glib/gspawn.c:2538
+#: glib/gspawn.c:2550
 #, c-format
 msgid "Failed to open file to remap file descriptor (%s)"
 msgstr "Kunne ikke åbne filen for at omtildele fildeskriptoren (%s)"
 
-#: glib/gspawn.c:2546
+#: glib/gspawn.c:2558
 #, c-format
 msgid "Failed to duplicate file descriptor for child process (%s)"
 msgstr "Kunne ikke duplikere fildeskriptoren for underproces (%s)"
 
-#: glib/gspawn.c:2555
+#: glib/gspawn.c:2567
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Fejl ved fraspaltning af underproces (%s)"
 
-#: glib/gspawn.c:2563
+#: glib/gspawn.c:2575
 #, c-format
 msgid "Failed to close file descriptor for child process (%s)"
 msgstr "Kunne ikke lukke fildeskriptoren for underproces (%s)"
 
-#: glib/gspawn.c:2571
+#: glib/gspawn.c:2583
 #, c-format
 msgid "Unknown error executing child process “%s”"
 msgstr "Ukendt fejl under kørsel af underprocessen “%s”"
 
-#: glib/gspawn.c:2595
+#: glib/gspawn.c:2607
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
@@ -5963,7 +5985,7 @@ msgstr ""
 msgid "Failed to read data from child process"
 msgstr "Fejl under læsning af data fra underproces"
 
-#: glib/gspawn-win32.c:390 glib/gspawn-win32.c:395 glib/gspawn-win32.c:519
+#: glib/gspawn-win32.c:390 glib/gspawn-win32.c:395 glib/gspawn-win32.c:521
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Kunne ikke køre underproces (%s)"
@@ -5973,32 +5995,32 @@ msgstr "Kunne ikke køre underproces (%s)"
 msgid "Failed to dup() in child process (%s)"
 msgstr "Kunne ikke dup() i underproces (%s)"
 
-#: glib/gspawn-win32.c:469
+#: glib/gspawn-win32.c:471
 #, c-format
 msgid "Invalid program name: %s"
 msgstr "Ugyldigt programnavn: %s"
 
-#: glib/gspawn-win32.c:479 glib/gspawn-win32.c:797
+#: glib/gspawn-win32.c:481 glib/gspawn-win32.c:807
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "Ugyldig streng i argumentvektor på %d: %s"
 
-#: glib/gspawn-win32.c:490 glib/gspawn-win32.c:813
+#: glib/gspawn-win32.c:492 glib/gspawn-win32.c:823
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "Ugyldig streng i miljø: %s"
 
-#: glib/gspawn-win32.c:793
+#: glib/gspawn-win32.c:803
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "Ugyldigt arbejdskatalog: %s"
 
-#: glib/gspawn-win32.c:858
+#: glib/gspawn-win32.c:868
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "Fejl under kørsel af hjælpeprogram (%s)"
 
-#: glib/gspawn-win32.c:1086
+#: glib/gspawn-win32.c:1096
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
