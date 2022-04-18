@@ -1,12 +1,5 @@
-#undef G_DISABLE_ASSERT
-
 #include <glib.h>
 #include <glib/gstdio.h>
-#include <time.h>
-#include <locale.h>
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
 
 #define TEST_URI_0 	"file:///abc/defgh/ijklmnopqrstuvwxyz"
 #define TEST_URI_1 	"file:///test/uri/1"
@@ -149,6 +142,572 @@ test_move_item (void)
                                    &error);
   g_assert_true (res);
   g_assert_no_error (error);
+
+  g_bookmark_file_free (bookmark);
+}
+
+static void
+test_corner_cases (void)
+{
+  gsize size;
+  gchar *message, **messages;
+  GError *error = NULL;
+  GBookmarkFile *bookmark;
+
+  bookmark = g_bookmark_file_new ();
+
+  if (g_test_undefined ())
+    {
+      /* g_bookmark_file_load_from_data() */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_bookmark_file_load_from_data (NULL, NULL, -1, NULL));
+      g_test_assert_expected_messages ();
+
+      /* g_bookmark_file_load_from_file() */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_bookmark_file_load_from_file (NULL, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_bookmark_file_load_from_file (bookmark, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      /* g_bookmark_file_load_from_data_dirs() */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_bookmark_file_load_from_data_dirs (NULL, NULL, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_bookmark_file_load_from_data_dirs (bookmark, NULL, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      /* g_bookmark_file_to_data() */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_null (g_bookmark_file_to_data (NULL, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      /* g_bookmark_file_to_file() */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_bookmark_file_to_file (NULL, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_bookmark_file_to_file (bookmark, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      /* g_bookmark_file_remove_item() */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_bookmark_file_remove_item (NULL, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_bookmark_file_remove_item (bookmark, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      /* g_bookmark_file_has_item() */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_bookmark_file_has_item (NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_bookmark_file_has_item (bookmark, NULL));
+      g_test_assert_expected_messages ();
+
+      /* g_bookmark_file_get_uris() */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_null (g_bookmark_file_get_uris (NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      /* g_bookmark_file_set_title() */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_bookmark_file_set_title (NULL, NULL, NULL);
+      g_test_assert_expected_messages ();
+
+      /* g_bookmark_file_get_title() */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_null (g_bookmark_file_get_title (NULL, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      /* g_bookmark_file_set_description() */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_bookmark_file_set_description (NULL, NULL, NULL);
+      g_test_assert_expected_messages ();
+
+      /* g_bookmark_file_get_description() */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_bookmark_file_get_description (NULL, NULL, NULL);
+      g_test_assert_expected_messages ();
+
+      /* g_bookmark_file_set_mime_type() */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_bookmark_file_set_mime_type (NULL, NULL, NULL);
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_bookmark_file_set_mime_type (bookmark, NULL, NULL);
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_bookmark_file_set_mime_type (bookmark, "uri", NULL);
+      g_test_assert_expected_messages ();
+
+      /* g_bookmark_file_get_mime_type() */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_null (g_bookmark_file_get_mime_type (NULL, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_null (g_bookmark_file_get_mime_type (bookmark, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      /* g_bookmark_file_set_is_private() */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_bookmark_file_set_is_private (NULL, NULL, TRUE);
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_bookmark_file_set_is_private (bookmark, NULL, TRUE);
+      g_test_assert_expected_messages ();
+
+      /* g_bookmark_file_get_is_private() */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_bookmark_file_get_is_private (NULL, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_bookmark_file_get_is_private (bookmark, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      /* g_bookmark_file_set_added_date_time() */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_bookmark_file_set_added_date_time (NULL, NULL, NULL);
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_bookmark_file_set_added_date_time (bookmark, NULL, NULL);
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_bookmark_file_set_added_date_time (bookmark, "a", NULL);
+      g_test_assert_expected_messages ();
+
+      /* g_bookmark_file_get_added_date_time() */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_null (g_bookmark_file_get_added_date_time (NULL, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_null (g_bookmark_file_get_added_date_time (bookmark, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      /* g_bookmark_file_set_modified_date_time() */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_bookmark_file_set_modified_date_time (NULL, NULL, NULL);
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_bookmark_file_set_modified_date_time (bookmark, NULL, NULL);
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_bookmark_file_set_modified_date_time (bookmark, "a", NULL);
+      g_test_assert_expected_messages ();
+
+      /* g_bookmark_file_get_modified_date_time() */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_null (g_bookmark_file_get_modified_date_time (NULL, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_null (g_bookmark_file_get_modified_date_time (bookmark, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      /* g_bookmark_file_set_visited_date_time() */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_bookmark_file_set_visited_date_time (NULL, NULL, NULL);
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_bookmark_file_set_visited_date_time (bookmark, NULL, NULL);
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_bookmark_file_set_visited_date_time (bookmark, "a", NULL);
+      g_test_assert_expected_messages ();
+
+      /* g_bookmark_file_get_visited_date_time() */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_null (g_bookmark_file_get_visited_date_time (NULL, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_null (g_bookmark_file_get_visited_date_time (bookmark, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      /* g_bookmark_file_load_from_data_dirs() */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_bookmark_file_load_from_data_dirs (NULL, NULL, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_bookmark_file_load_from_data_dirs (bookmark, NULL, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      /* g_bookmark_file_has_group() */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_bookmark_file_has_group (NULL, NULL, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_bookmark_file_has_group (bookmark, NULL, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      /* g_bookmark_file_add_group() */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_bookmark_file_add_group (NULL, NULL, NULL);
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_bookmark_file_add_group (bookmark, NULL, NULL);
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_bookmark_file_add_group (bookmark, "a", NULL);
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_bookmark_file_add_group (bookmark, "a", "");
+      g_test_assert_expected_messages ();
+
+      /* g_bookmark_file_remove_group() */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_bookmark_file_remove_group (NULL, NULL, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_bookmark_file_remove_group (bookmark, NULL, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      /* g_bookmark_file_set_group() */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_bookmark_file_set_groups (NULL, NULL, NULL, 0);
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_bookmark_file_set_groups (bookmark, NULL, NULL, 0);
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_bookmark_file_set_groups (bookmark, "a", NULL, 0);
+      g_test_assert_expected_messages ();
+
+      /* g_bookmark_file_get_group() */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_null (g_bookmark_file_get_groups (NULL, NULL, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_null (g_bookmark_file_get_groups (bookmark, NULL, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      /* g_bookmark_file_to_file() */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_bookmark_file_to_file (NULL, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_bookmark_file_to_file (bookmark, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      /* g_bookmark_file_add_application() */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_bookmark_file_add_application (NULL, NULL, NULL, NULL);
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_bookmark_file_add_application (bookmark, NULL, NULL, NULL);
+      g_test_assert_expected_messages ();
+
+      /* g_bookmark_file_remove_application() */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_bookmark_file_remove_application (NULL, NULL, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_bookmark_file_remove_application (bookmark, NULL, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_bookmark_file_remove_application (bookmark, "a", NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      /* g_bookmark_file_has_application() */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_bookmark_file_has_application (NULL, NULL, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_bookmark_file_has_application (bookmark, NULL, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_bookmark_file_has_application (bookmark, "a", NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      /* g_bookmark_file_set_application_info() */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_bookmark_file_set_application_info (NULL, NULL, NULL, NULL, 0, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_bookmark_file_set_application_info (bookmark, NULL, NULL, NULL, 0, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_bookmark_file_set_application_info (bookmark, "a", NULL, NULL, 0, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_bookmark_file_set_application_info (bookmark, "a", "b", NULL, 0, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_bookmark_file_set_application_info (bookmark, "a", "b", "c", 5, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      /* g_bookmark_file_get_application_info() */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_bookmark_file_get_application_info (NULL, NULL, NULL, NULL, NULL, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_bookmark_file_get_application_info (bookmark, NULL, NULL, NULL, NULL, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_bookmark_file_get_application_info (bookmark, "a", NULL, NULL, NULL, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      /* g_bookmark_file_get_applications() */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_null (g_bookmark_file_get_applications (NULL, NULL, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_null (g_bookmark_file_get_applications (bookmark, NULL, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      /* g_bookmark_file_get_size() */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_cmpint (g_bookmark_file_get_size (NULL), ==, 0);
+      g_test_assert_expected_messages ();
+
+      /* g_bookmark_file_move_item() */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_bookmark_file_move_item (NULL, NULL, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_bookmark_file_move_item (bookmark, NULL, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      /* g_bookmark_file_set_icon() */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_bookmark_file_set_icon (NULL, NULL, NULL, NULL);
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_bookmark_file_set_icon (bookmark, NULL, NULL, NULL);
+      g_test_assert_expected_messages ();
+
+      /* g_bookmark_file_get_icon() */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_bookmark_file_get_icon (NULL, NULL, NULL, NULL, NULL));
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_bookmark_file_get_icon (bookmark, NULL, NULL, NULL, NULL));
+      g_test_assert_expected_messages ();
+    }
+
+  /* g_file_bookmark_free() */
+  g_bookmark_file_free (NULL);
+
+  /* g_bookmark_file_load_from_data() */
+  g_assert_false (g_bookmark_file_load_from_data (bookmark, "data", -1, &error));
+  g_assert_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE);
+  g_clear_error (&error);
+
+  /* g_bookmark_file_load_from_data_dirs() */
+  g_assert_false (g_bookmark_file_load_from_data_dirs (bookmark, "a", NULL, NULL));
+  g_assert_false (g_bookmark_file_load_from_data_dirs (bookmark, "a", NULL, &error));
+  g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_NOENT);
+  g_clear_error (&error);
+
+  /* g_bookmark_file_to_data() */
+  message = g_bookmark_file_to_data (bookmark, &size, &error);
+  g_assert_nonnull (message);
+  g_assert_cmpstr (message, ==,
+                   "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                   "<xbel version=\"1.0\"\n"
+                   "      xmlns:bookmark=\"http://www.freedesktop.org/standards/desktop-bookmarks\"\n"
+                   "      xmlns:mime=\"http://www.freedesktop.org/standards/shared-mime-info\"\n"
+                   "></xbel>");
+  g_free (message);
+
+  /* g_bookmark_file_get_uris() */
+  size = 10;
+  messages = g_bookmark_file_get_uris (bookmark, &size);
+  g_assert_nonnull (messages);
+  g_assert_null (messages[0]);
+  g_free (messages);
+
+  /* g_bookmark_file_get_added_date_time() */
+  g_assert_null (g_bookmark_file_get_added_date_time (bookmark, "a", NULL));
+  g_assert_null (g_bookmark_file_get_added_date_time (bookmark, "a", &error));
+  g_clear_error (&error);
+
+  /* g_bookmark_file_get_modified_date_time() */
+  g_assert_null (g_bookmark_file_get_modified_date_time (bookmark, "a", NULL));
+  g_assert_null (g_bookmark_file_get_modified_date_time (bookmark, "a", &error));
+  g_assert_error (error, G_BOOKMARK_FILE_ERROR, G_BOOKMARK_FILE_ERROR_URI_NOT_FOUND);
+  g_clear_error (&error);
+
+  /* g_bookmark_file_get_visited_date_time() */
+  g_assert_null (g_bookmark_file_get_visited_date_time (bookmark, "a", NULL));
+  g_assert_null (g_bookmark_file_get_visited_date_time (bookmark, "a", &error));
+  g_assert_error (error, G_BOOKMARK_FILE_ERROR, G_BOOKMARK_FILE_ERROR_URI_NOT_FOUND);
+  g_clear_error (&error);
+
+  /* g_bookmark_file_get_groups() */
+  g_assert_null (g_bookmark_file_get_groups (bookmark, "a", &size, NULL));
+  g_assert_null (g_bookmark_file_get_groups (bookmark, "a", &size, &error));
+  g_assert_error (error, G_BOOKMARK_FILE_ERROR, G_BOOKMARK_FILE_ERROR_URI_NOT_FOUND);
+  g_clear_error (&error);
+
+  /* g_bookmark_file_to_file() */
+  g_assert_true (g_bookmark_file_to_file (bookmark, "a", &error));
+  g_assert_no_error (error);
+
+  /* g_bookmark_file_remove_group() */
+  g_assert_false (g_bookmark_file_remove_group (bookmark, "a", NULL, NULL));
+  g_assert_false (g_bookmark_file_remove_group (bookmark, "a", NULL, &error));
+  g_assert_error (error, G_BOOKMARK_FILE_ERROR, G_BOOKMARK_FILE_ERROR_URI_NOT_FOUND);
+  g_clear_error (&error);
+
+  /* g_bookmark_file_get_title() */
+  g_assert_null (g_bookmark_file_get_title (bookmark, "a", &error));
+  g_assert_error (error, G_BOOKMARK_FILE_ERROR, G_BOOKMARK_FILE_ERROR_URI_NOT_FOUND);
+  g_clear_error (&error);
+
+  /* g_bookmark_file_add_application() */
+  g_bookmark_file_add_application (bookmark, "a", NULL, NULL);
+  g_bookmark_file_add_application (bookmark, "a", "b", NULL);
+  g_bookmark_file_add_application (bookmark, "a", "b", "c");
+
+  /* g_bookmark_file_remove_application() */
+  g_assert_true (g_bookmark_file_remove_application (bookmark, "a", "b", NULL));
+  g_assert_false (g_bookmark_file_remove_application (bookmark, "a", "b", &error));
+  g_assert_error (error, G_BOOKMARK_FILE_ERROR, G_BOOKMARK_FILE_ERROR_APP_NOT_REGISTERED);
+  g_clear_error (&error);
+
+  /* g_bookmark_file_get_application_info() */
+  g_assert_false (g_bookmark_file_get_application_info (bookmark, "a", "b", NULL, NULL, NULL, NULL));
+  g_assert_false (g_bookmark_file_get_application_info (bookmark, "a", "b", NULL, NULL, NULL, &error));
+  g_assert_error (error, G_BOOKMARK_FILE_ERROR, G_BOOKMARK_FILE_ERROR_APP_NOT_REGISTERED);
+  g_clear_error (&error);
+
+  /* g_bookmark_file_move_item() */
+  g_assert_true (g_bookmark_file_move_item (bookmark, "a", NULL, NULL));
+  g_assert_false (g_bookmark_file_move_item (bookmark, "a", NULL, &error));
+  g_assert_error (error, G_BOOKMARK_FILE_ERROR, G_BOOKMARK_FILE_ERROR_URI_NOT_FOUND);
+  g_clear_error (&error);
+  g_assert_false (g_bookmark_file_move_item (bookmark, "a", "b", &error));
+  g_assert_error (error, G_BOOKMARK_FILE_ERROR, G_BOOKMARK_FILE_ERROR_URI_NOT_FOUND);
+  g_clear_error (&error);
 
   g_bookmark_file_free (bookmark);
 }
@@ -704,6 +1263,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/bookmarks/load-from-data-dirs", test_load_from_data_dirs);
   g_test_add_func ("/bookmarks/to-file", test_to_file);
   g_test_add_func ("/bookmarks/move-item", test_move_item);
+  g_test_add_func ("/bookmarks/corner-cases", test_corner_cases);
   g_test_add_func ("/bookmarks/misc", test_misc);
   g_test_add_func ("/bookmarks/deprecated", test_deprecated);
 
