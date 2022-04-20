@@ -5,18 +5,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 0\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-03-23 16:45+0000\n"
-"PO-Revision-Date: 2022-03-24 19:34+0100\n"
-"Last-Translator: gogo <trebelnik2@gmail.com>\n"
+"POT-Creation-Date: 2022-04-08 10:54+0000\n"
+"PO-Revision-Date: 2022-04-08 14:53+0200\n"
+"Last-Translator: Milo Ivir <mail@milotype.de>\n"
 "Language-Team: Croatian <lokalizacija@linux.hr>\n"
 "Language: hr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Launchpad-Export-Date: 2021-10-27 14:24+0000\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.0\n"
 
 #: gio/gappinfo.c:333
 msgid "Setting default applications not supported yet"
@@ -66,7 +66,7 @@ msgstr "Prikaži informaciju inačice i izađi"
 
 #: gio/gapplication-tool.c:53
 msgid "List applications"
-msgstr "Prikaži apliakcije"
+msgstr "Prikaži aplikacije"
 
 #: gio/gapplication-tool.c:54
 msgid "List the installed D-Bus activatable applications (by .desktop files)"
@@ -96,7 +96,7 @@ msgstr "Pokreni radnju na aplikaciji"
 
 #: gio/gapplication-tool.c:63
 msgid "APPID ACTION [PARAMETER]"
-msgstr "ID APLIKACIJE RADNJE [PARAMETAR]"
+msgstr "RADNJA ID APLIKACIJE [PARAMETAR]"
 
 #: gio/gapplication-tool.c:65
 msgid "List available actions"
@@ -548,18 +548,18 @@ msgstr "Neočekivani nedostatak sadržaja pri čitanju redka"
 msgid "Unexpected lack of content trying to (safely) read a line"
 msgstr "Neočekivani nedostatak sadržaja pri (sigurnom ) čitanju redka"
 
-#: gio/gdbusauth.c:482
+#: gio/gdbusauth.c:481
 #, c-format
 msgid ""
 "Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
 msgstr ""
 "Iscrpljeni su svi dostupni mehanizmi ovjere (isprobano: %s) (dostupno: %s)"
 
-#: gio/gdbusauth.c:1171
+#: gio/gdbusauth.c:1170
 msgid "User IDs must be the same for peer and server"
 msgstr "Korisnički ID mora biti isti za točku ili poslužitelj"
 
-#: gio/gdbusauth.c:1183
+#: gio/gdbusauth.c:1182
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr "Poništeno putem GDBusAuthObserver::authorize-authenticated-peer"
 
@@ -596,19 +596,19 @@ msgstr "Radnja nije podržana"
 msgid "Error opening keyring “%s” for reading: "
 msgstr "Greška otvaranja skupa ključeva “%s” za čitanje: "
 
-#: gio/gdbusauthmechanismsha1.c:427 gio/gdbusauthmechanismsha1.c:769
+#: gio/gdbusauthmechanismsha1.c:427 gio/gdbusauthmechanismsha1.c:768
 #, c-format
 msgid "Line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr "Redak %d skupa ključeva na “%s” sa sadržajem “%s” je oštećen"
 
-#: gio/gdbusauthmechanismsha1.c:441 gio/gdbusauthmechanismsha1.c:783
+#: gio/gdbusauthmechanismsha1.c:441 gio/gdbusauthmechanismsha1.c:782
 #, c-format
 msgid ""
 "First token of line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr ""
 "Prvi token redka %d skupa ključeva na “%s” sa sadržajem “%s” je oštećen"
 
-#: gio/gdbusauthmechanismsha1.c:455 gio/gdbusauthmechanismsha1.c:797
+#: gio/gdbusauthmechanismsha1.c:455 gio/gdbusauthmechanismsha1.c:796
 #, c-format
 msgid ""
 "Second token of line %d of the keyring at “%s” with content “%s” is malformed"
@@ -640,12 +640,12 @@ msgstr "Greška zatvaranja (nepovezane) datoteke zaključavanja “%s”: %s"
 msgid "Error unlinking lock file “%s”: %s"
 msgstr "Greška uklanjanja poveznice datoteke zaključavanja “%s”: %s"
 
-#: gio/gdbusauthmechanismsha1.c:736
+#: gio/gdbusauthmechanismsha1.c:735
 #, c-format
 msgid "Error opening keyring “%s” for writing: "
 msgstr "Greška otvaranja skupa ključeva “%s” za zapisivanje: "
 
-#: gio/gdbusauthmechanismsha1.c:930
+#: gio/gdbusauthmechanismsha1.c:929
 #, c-format
 msgid "(Additionally, releasing the lock for “%s” also failed: %s) "
 msgstr "(Dodatno, oslobađanje zaključavanja za “%s” je isto neuspjelo: %s) "
@@ -1035,12 +1035,12 @@ msgstr ""
 
 #: gio/gdbus-tool.c:202 gio/gdbus-tool.c:274 gio/gdbus-tool.c:346
 #: gio/gdbus-tool.c:370 gio/gdbus-tool.c:860 gio/gdbus-tool.c:1245
-#: gio/gdbus-tool.c:1733
+#: gio/gdbus-tool.c:1732
 #, c-format
 msgid "Error: %s\n"
 msgstr "Greška: %s\n"
 
-#: gio/gdbus-tool.c:213 gio/gdbus-tool.c:287 gio/gdbus-tool.c:1749
+#: gio/gdbus-tool.c:213 gio/gdbus-tool.c:287 gio/gdbus-tool.c:1748
 #, c-format
 msgid "Error parsing introspection XML: %s\n"
 msgstr "Greška preispitivanja XML-a: %s\n"
@@ -1051,7 +1051,7 @@ msgid "Error: %s is not a valid name\n"
 msgstr "Greška: %s nije valjani naziv\n"
 
 #: gio/gdbus-tool.c:256 gio/gdbus-tool.c:746 gio/gdbus-tool.c:1064
-#: gio/gdbus-tool.c:1899 gio/gdbus-tool.c:2139
+#: gio/gdbus-tool.c:1898 gio/gdbus-tool.c:2138
 #, c-format
 msgid "Error: %s is not a valid object path\n"
 msgstr "Greška: %s nije valjana putanja objekta\n"
@@ -1117,8 +1117,8 @@ msgstr "Naziv signala i sučelja"
 msgid "Emit a signal."
 msgstr "Emitiraj signal."
 
-#: gio/gdbus-tool.c:684 gio/gdbus-tool.c:1001 gio/gdbus-tool.c:1836
-#: gio/gdbus-tool.c:2068 gio/gdbus-tool.c:2288
+#: gio/gdbus-tool.c:684 gio/gdbus-tool.c:1001 gio/gdbus-tool.c:1835
+#: gio/gdbus-tool.c:2067 gio/gdbus-tool.c:2287
 #, c-format
 msgid "Error connecting: %s\n"
 msgstr "Greška povezivanja: %s\n"
@@ -1128,7 +1128,7 @@ msgstr "Greška povezivanja: %s\n"
 msgid "Error: %s is not a valid unique bus name.\n"
 msgstr "Greška: %s nije valjan jedinstven naziv sabirnice.\n"
 
-#: gio/gdbus-tool.c:723 gio/gdbus-tool.c:1044 gio/gdbus-tool.c:1879
+#: gio/gdbus-tool.c:723 gio/gdbus-tool.c:1044 gio/gdbus-tool.c:1878
 msgid "Error: Object path is not specified\n"
 msgstr "Greška: Putanja objekta nije navedena\n"
 
@@ -1186,11 +1186,11 @@ msgstr "Dopusti interaktivnu ovjeru"
 msgid "Invoke a method on a remote object."
 msgstr "Pozovi način na udaljenom objektu."
 
-#: gio/gdbus-tool.c:1018 gio/gdbus-tool.c:1853 gio/gdbus-tool.c:2093
+#: gio/gdbus-tool.c:1018 gio/gdbus-tool.c:1852 gio/gdbus-tool.c:2092
 msgid "Error: Destination is not specified\n"
 msgstr "Greška: Odredište nije navedeno\n"
 
-#: gio/gdbus-tool.c:1029 gio/gdbus-tool.c:1870 gio/gdbus-tool.c:2104
+#: gio/gdbus-tool.c:1029 gio/gdbus-tool.c:1869 gio/gdbus-tool.c:2103
 #, c-format
 msgid "Error: %s is not a valid bus name\n"
 msgstr "Greška: %s nije valjan naziv sabirnice\n"
@@ -1214,52 +1214,52 @@ msgstr "Greška obrade parametra %d vrste “%s”: %s\n"
 msgid "Error adding handle %d: %s\n"
 msgstr "Greška dodavanja rukovanja %d: %s\n"
 
-#: gio/gdbus-tool.c:1695
+#: gio/gdbus-tool.c:1694
 msgid "Destination name to introspect"
 msgstr "Naziv odredišta za preispitivanje"
 
-#: gio/gdbus-tool.c:1696
+#: gio/gdbus-tool.c:1695
 msgid "Object path to introspect"
 msgstr "Putanja objekta za preispitivanje"
 
-#: gio/gdbus-tool.c:1697
+#: gio/gdbus-tool.c:1696
 msgid "Print XML"
 msgstr "Prikaži XML"
 
-#: gio/gdbus-tool.c:1698
+#: gio/gdbus-tool.c:1697
 msgid "Introspect children"
 msgstr "Preispitivanje podsadržaja"
 
-#: gio/gdbus-tool.c:1699
+#: gio/gdbus-tool.c:1698
 msgid "Only print properties"
 msgstr "Samo prikaži svojstva"
 
-#: gio/gdbus-tool.c:1788
+#: gio/gdbus-tool.c:1787
 msgid "Introspect a remote object."
 msgstr "Preispitivanje udaljenog objekta."
 
-#: gio/gdbus-tool.c:1994
+#: gio/gdbus-tool.c:1993
 msgid "Destination name to monitor"
 msgstr "Naziv odredišta za nadgledanje"
 
-#: gio/gdbus-tool.c:1995
+#: gio/gdbus-tool.c:1994
 msgid "Object path to monitor"
 msgstr "Putanja objekta za nadgledanje"
 
-#: gio/gdbus-tool.c:2020
+#: gio/gdbus-tool.c:2019
 msgid "Monitor a remote object."
 msgstr "Nadgledaj udaljeni objekt."
 
-#: gio/gdbus-tool.c:2078
+#: gio/gdbus-tool.c:2077
 msgid "Error: can’t monitor a non-message-bus connection\n"
 msgstr ""
 "Greška: nemoguće nadgledanje povezivanja sabirnice koja nije za poruke\n"
 
-#: gio/gdbus-tool.c:2202
+#: gio/gdbus-tool.c:2201
 msgid "Service to activate before waiting for the other one (well-known name)"
 msgstr "Usluga za aktiviranje prije čekanja druge usluge (dobro poznat naziv)"
 
-#: gio/gdbus-tool.c:2205
+#: gio/gdbus-tool.c:2204
 msgid ""
 "Timeout to wait for before exiting with an error (seconds); 0 for no timeout "
 "(default)"
@@ -1267,27 +1267,27 @@ msgstr ""
 "Vrijeme čekanja prije zatvaranja s greškom (sekunde), O za vrijeme čekanja "
 "(zadano)"
 
-#: gio/gdbus-tool.c:2253
+#: gio/gdbus-tool.c:2252
 msgid "[OPTION…] BUS-NAME"
 msgstr "[MOGUĆNOST...] NAZIV-SABIRNICE"
 
-#: gio/gdbus-tool.c:2254
+#: gio/gdbus-tool.c:2253
 msgid "Wait for a bus name to appear."
 msgstr "Čekaj pojavljivanje naziva sabirnice."
 
-#: gio/gdbus-tool.c:2330
+#: gio/gdbus-tool.c:2329
 msgid "Error: A service to activate for must be specified.\n"
 msgstr "Greška: Usluga za aktiviranje mora biti navedena.\n"
 
-#: gio/gdbus-tool.c:2335
+#: gio/gdbus-tool.c:2334
 msgid "Error: A service to wait for must be specified.\n"
 msgstr "Greška: Usluga koja se čeka mora biti navedena.\n"
 
-#: gio/gdbus-tool.c:2340
+#: gio/gdbus-tool.c:2339
 msgid "Error: Too many arguments.\n"
 msgstr "Greška: previše argumenata.\n"
 
-#: gio/gdbus-tool.c:2348 gio/gdbus-tool.c:2355
+#: gio/gdbus-tool.c:2347 gio/gdbus-tool.c:2354
 #, c-format
 msgid "Error: %s is not a valid well-known bus name.\n"
 msgstr "Greška: %s nije valjan dobro poznat naziv sabirnice\n"
@@ -1721,7 +1721,7 @@ msgid "Error writing to stdout"
 msgstr "Greška zapisivanja u stdout"
 
 #. Translators: commandline placeholder
-#: gio/gio-tool-cat.c:133 gio/gio-tool-info.c:340 gio/gio-tool-list.c:172
+#: gio/gio-tool-cat.c:133 gio/gio-tool-info.c:340 gio/gio-tool-list.c:171
 #: gio/gio-tool-mkdir.c:48 gio/gio-tool-monitor.c:37 gio/gio-tool-monitor.c:39
 #: gio/gio-tool-monitor.c:41 gio/gio-tool-monitor.c:43
 #: gio/gio-tool-monitor.c:204 gio/gio-tool-mount.c:1199 gio/gio-tool-open.c:70
@@ -1746,7 +1746,7 @@ msgstr ""
 
 #: gio/gio-tool-cat.c:162 gio/gio-tool-info.c:371 gio/gio-tool-mkdir.c:76
 #: gio/gio-tool-monitor.c:229 gio/gio-tool-mount.c:1250 gio/gio-tool-open.c:96
-#: gio/gio-tool-remove.c:72 gio/gio-tool-trash.c:303
+#: gio/gio-tool-remove.c:72 gio/gio-tool-trash.c:301
 msgid "No locations given"
 msgstr "Lokacija nije zadana"
 
@@ -1825,15 +1825,15 @@ msgstr "Prikaži zapisiva svojstva"
 msgid "Get file system info"
 msgstr "Dobivanje informacija datoteke sustava"
 
-#: gio/gio-tool-info.c:39 gio/gio-tool-list.c:36
+#: gio/gio-tool-info.c:39 gio/gio-tool-list.c:35
 msgid "The attributes to get"
 msgstr "Svojstva koja treba dobiti"
 
-#: gio/gio-tool-info.c:39 gio/gio-tool-list.c:36
+#: gio/gio-tool-info.c:39 gio/gio-tool-list.c:35
 msgid "ATTRIBUTES"
 msgstr "SVOJSTVA"
 
-#: gio/gio-tool-info.c:40 gio/gio-tool-list.c:39 gio/gio-tool-set.c:34
+#: gio/gio-tool-info.c:40 gio/gio-tool-list.c:38 gio/gio-tool-set.c:34
 msgid "Don’t follow symbolic links"
 msgstr "Ne slijedi simboličke poveznice"
 
@@ -1949,27 +1949,27 @@ msgstr "Nemoguće učitavanje informacija aplikacije za ‘%s‘"
 msgid "Unable to launch application ‘%s’: %s"
 msgstr "Nemoguće pokretanje aplikacije ‘%s’: %s"
 
-#: gio/gio-tool-list.c:37 gio/gio-tool-tree.c:32
+#: gio/gio-tool-list.c:36 gio/gio-tool-tree.c:32
 msgid "Show hidden files"
 msgstr "Prikaži skrivene datoteke"
 
-#: gio/gio-tool-list.c:38
+#: gio/gio-tool-list.c:37
 msgid "Use a long listing format"
 msgstr "Koristi format duljeg prikaza"
 
-#: gio/gio-tool-list.c:40
+#: gio/gio-tool-list.c:39
 msgid "Print display names"
 msgstr "Prikaži nazive prikaza"
 
-#: gio/gio-tool-list.c:41
+#: gio/gio-tool-list.c:40
 msgid "Print full URIs"
 msgstr "Prikaži potpune URI-je"
 
-#: gio/gio-tool-list.c:177
+#: gio/gio-tool-list.c:176
 msgid "List the contents of the locations."
 msgstr "Prikaži sadržaje lokacija."
 
-#: gio/gio-tool-list.c:179
+#: gio/gio-tool-list.c:178
 msgid ""
 "gio list is similar to the traditional ls utility, but using GIO\n"
 "locations instead of local files: for example, you can use something\n"
@@ -3872,7 +3872,7 @@ msgstr "Nevaljana priključnica, neuspjelo pokretanje zbog: %s"
 msgid "Socket is already closed"
 msgstr "Priključnica je već zatvorena"
 
-#: gio/gsocket.c:447 gio/gsocket.c:3194 gio/gsocket.c:4427 gio/gsocket.c:4485
+#: gio/gsocket.c:447 gio/gsocket.c:3193 gio/gsocket.c:4426 gio/gsocket.c:4484
 msgid "Socket I/O timed out"
 msgstr "Istek vremena U/I priključnice"
 
@@ -3926,116 +3926,116 @@ msgstr "nemoguće osluškivanje: %s"
 msgid "Error binding to address %s: %s"
 msgstr "Greška povezivanja s adresom %s: %s"
 
-#: gio/gsocket.c:2389 gio/gsocket.c:2426 gio/gsocket.c:2536 gio/gsocket.c:2561
-#: gio/gsocket.c:2624 gio/gsocket.c:2682 gio/gsocket.c:2700
+#: gio/gsocket.c:2388 gio/gsocket.c:2425 gio/gsocket.c:2535 gio/gsocket.c:2560
+#: gio/gsocket.c:2623 gio/gsocket.c:2681 gio/gsocket.c:2699
 #, c-format
 msgid "Error joining multicast group: %s"
 msgstr "Greška pridruživanja multicast grupi: %s"
 
-#: gio/gsocket.c:2390 gio/gsocket.c:2427 gio/gsocket.c:2537 gio/gsocket.c:2562
-#: gio/gsocket.c:2625 gio/gsocket.c:2683 gio/gsocket.c:2701
+#: gio/gsocket.c:2389 gio/gsocket.c:2426 gio/gsocket.c:2536 gio/gsocket.c:2561
+#: gio/gsocket.c:2624 gio/gsocket.c:2682 gio/gsocket.c:2700
 #, c-format
 msgid "Error leaving multicast group: %s"
 msgstr "Greška napuštanja multicast grupe: %s"
 
-#: gio/gsocket.c:2391
+#: gio/gsocket.c:2390
 msgid "No support for source-specific multicast"
 msgstr "Nema podrške za izvorom-određeni multicast"
 
-#: gio/gsocket.c:2538
+#: gio/gsocket.c:2537
 msgid "Unsupported socket family"
 msgstr "Nepodržana obitelj priključnice"
 
-#: gio/gsocket.c:2563
+#: gio/gsocket.c:2562
 msgid "source-specific not an IPv4 address"
 msgstr "izvorom-određeno nije IPv4 adresa"
 
-#: gio/gsocket.c:2587
+#: gio/gsocket.c:2586
 #, c-format
 msgid "Interface name too long"
 msgstr "Naziv sučelja je predugačak"
 
-#: gio/gsocket.c:2600 gio/gsocket.c:2650
+#: gio/gsocket.c:2599 gio/gsocket.c:2649
 #, c-format
 msgid "Interface not found: %s"
 msgstr "Sučelje nije pronađeno: %s"
 
-#: gio/gsocket.c:2626
+#: gio/gsocket.c:2625
 msgid "No support for IPv4 source-specific multicast"
 msgstr "Nema podrške za IPv4 izvorom-određeni multicast"
 
-#: gio/gsocket.c:2684
+#: gio/gsocket.c:2683
 msgid "No support for IPv6 source-specific multicast"
 msgstr "Nema podrške za IPv6 izvorom-određeni multicast"
 
-#: gio/gsocket.c:2893
+#: gio/gsocket.c:2892
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Greška prihvaćanja povezivanja: %s"
 
-#: gio/gsocket.c:3019
+#: gio/gsocket.c:3018
 msgid "Connection in progress"
 msgstr "Povezivanje u tijeku"
 
-#: gio/gsocket.c:3070
+#: gio/gsocket.c:3069
 msgid "Unable to get pending error: "
 msgstr "Nemoguće dobivanje greške čekanja: "
 
-#: gio/gsocket.c:3259
+#: gio/gsocket.c:3258
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Greška primanja podataka: %s"
 
-#: gio/gsocket.c:3456
+#: gio/gsocket.c:3455
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Greška slanja podataka: %s"
 
-#: gio/gsocket.c:3643
+#: gio/gsocket.c:3642
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "Nemoguće isključivanje priključnice: %s"
 
-#: gio/gsocket.c:3724
+#: gio/gsocket.c:3723
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Greška zatvaranja priključnice: %s"
 
-#: gio/gsocket.c:4420
+#: gio/gsocket.c:4419
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Čekanje stanja priključnice: %s"
 
-#: gio/gsocket.c:4810 gio/gsocket.c:4826 gio/gsocket.c:4839
+#: gio/gsocket.c:4809 gio/gsocket.c:4825 gio/gsocket.c:4838
 #, c-format
 msgid "Unable to send message: %s"
 msgstr "Nemoguće slanje poruke: %s"
 
-#: gio/gsocket.c:4811 gio/gsocket.c:4827 gio/gsocket.c:4840
+#: gio/gsocket.c:4810 gio/gsocket.c:4826 gio/gsocket.c:4839
 msgid "Message vectors too large"
 msgstr "Vektori poruke su preveliki"
 
-#: gio/gsocket.c:4856 gio/gsocket.c:4858 gio/gsocket.c:5005 gio/gsocket.c:5090
-#: gio/gsocket.c:5268 gio/gsocket.c:5308 gio/gsocket.c:5310
+#: gio/gsocket.c:4855 gio/gsocket.c:4857 gio/gsocket.c:5004 gio/gsocket.c:5089
+#: gio/gsocket.c:5267 gio/gsocket.c:5307 gio/gsocket.c:5309
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Greška slanja poruke: %s"
 
-#: gio/gsocket.c:5032
+#: gio/gsocket.c:5031
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "GSocketControlMessage nije podržano na Windowsima"
 
-#: gio/gsocket.c:5505 gio/gsocket.c:5581 gio/gsocket.c:5807
+#: gio/gsocket.c:5504 gio/gsocket.c:5580 gio/gsocket.c:5806
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Greška primanja poruke: %s"
 
-#: gio/gsocket.c:6090 gio/gsocket.c:6101 gio/gsocket.c:6164
+#: gio/gsocket.c:6089 gio/gsocket.c:6100 gio/gsocket.c:6163
 #, c-format
 msgid "Unable to read socket credentials: %s"
 msgstr "Nemoguće čitanje vjerodajnice priključnice: %s"
 
-#: gio/gsocket.c:6173
+#: gio/gsocket.c:6172
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials nije implemetirano za ovaj OS"
 
@@ -6077,168 +6077,177 @@ msgstr "Neispravan niz u ulazu pretvorbe"
 msgid "Character out of range for UTF-16"
 msgstr "Znak je izvan raspona za UTF-16"
 
-#. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2849
-#, c-format
-msgid "%.1f kB"
-msgstr "%.1f kB"
-
-#. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2851
-#, c-format
-msgid "%.1f MB"
-msgstr "%.1f MB"
-
-#. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2853
-#, c-format
-msgid "%.1f GB"
-msgstr "%.1f GB"
-
-#. Translators: Keep the no-break space between %.1f and the unit symbol
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 kB"
 #: glib/gutils.c:2855
-#, c-format
-msgid "%.1f TB"
-msgstr "%.1f TB"
+msgid "kB"
+msgstr "kB"
 
-#. Translators: Keep the no-break space between %.1f and the unit symbol
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 MB"
 #: glib/gutils.c:2857
-#, c-format
-msgid "%.1f PB"
-msgstr "%.1f PB"
+msgid "MB"
+msgstr "MB"
 
-#. Translators: Keep the no-break space between %.1f and the unit symbol
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 GB"
 #: glib/gutils.c:2859
-#, c-format
-msgid "%.1f EB"
-msgstr "%.1f EB"
+msgid "GB"
+msgstr "GB"
 
-#. Translators: Keep the no-break space between %.1f and the unit symbol
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 TB"
+#: glib/gutils.c:2861
+msgid "TB"
+msgstr "TB"
+
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 PB"
 #: glib/gutils.c:2863
-#, c-format
-msgid "%.1f KiB"
-msgstr "%.1f KiB"
+msgid "PB"
+msgstr "PB"
 
-#. Translators: Keep the no-break space between %.1f and the unit symbol
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 EB"
 #: glib/gutils.c:2865
-#, c-format
-msgid "%.1f MiB"
-msgstr "%.1f MiB"
+msgid "EB"
+msgstr "EB"
 
-#. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2867
-#, c-format
-msgid "%.1f GiB"
-msgstr "%.1f GiB"
-
-#. Translators: Keep the no-break space between %.1f and the unit symbol
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 KiB"
 #: glib/gutils.c:2869
-#, c-format
-msgid "%.1f TiB"
-msgstr "%.1f TiB"
+msgid "KiB"
+msgstr "KiB"
 
-#. Translators: Keep the no-break space between %.1f and the unit symbol
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 MiB"
 #: glib/gutils.c:2871
-#, c-format
-msgid "%.1f PiB"
-msgstr "%.1f PiB"
+msgid "MiB"
+msgstr "MiB"
 
-#. Translators: Keep the no-break space between %.1f and the unit symbol
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 GiB"
 #: glib/gutils.c:2873
-#, c-format
-msgid "%.1f EiB"
-msgstr "%.1f EiB"
+msgid "GiB"
+msgstr "GiB"
 
-#. Translators: Keep the no-break space between %.1f and the unit symbol
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 TiB"
+#: glib/gutils.c:2875
+msgid "TiB"
+msgstr "TiB"
+
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 PiB"
 #: glib/gutils.c:2877
-#, c-format
-msgid "%.1f kb"
-msgstr "%.1f kb"
+msgid "PiB"
+msgstr "PiB"
 
-#. Translators: Keep the no-break space between %.1f and the unit symbol
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 EiB"
 #: glib/gutils.c:2879
-#, c-format
-msgid "%.1f Mb"
-msgstr "%.1f Mb"
+msgid "EiB"
+msgstr "EiB"
 
-#. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2881
-#, c-format
-msgid "%.1f Gb"
-msgstr "%.1f Gb"
-
-#. Translators: Keep the no-break space between %.1f and the unit symbol
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 kb"
 #: glib/gutils.c:2883
-#, c-format
-msgid "%.1f Tb"
-msgstr "%.1f Tb"
+msgid "kb"
+msgstr "kb"
 
-#. Translators: Keep the no-break space between %.1f and the unit symbol
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Mb"
 #: glib/gutils.c:2885
-#, c-format
-msgid "%.1f Pb"
-msgstr "%.1f Pb"
+msgid "Mb"
+msgstr "Mb"
 
-#. Translators: Keep the no-break space between %.1f and the unit symbol
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Gb"
 #: glib/gutils.c:2887
-#, c-format
-msgid "%.1f Eb"
-msgstr "%.1f Eb"
+msgid "Gb"
+msgstr "Gb"
 
-#. Translators: Keep the no-break space between %.1f and the unit symbol
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Tb"
+#: glib/gutils.c:2889
+msgid "Tb"
+msgstr "Tb"
+
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Pb"
 #: glib/gutils.c:2891
-#, c-format
-msgid "%.1f Kib"
-msgstr "%.1f Kib"
+msgid "Pb"
+msgstr "Pb"
 
-#. Translators: Keep the no-break space between %.1f and the unit symbol
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Eb"
 #: glib/gutils.c:2893
-#, c-format
-msgid "%.1f Mib"
-msgstr "%.1f Mib"
+msgid "Eb"
+msgstr "Eb"
 
-#. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2895
-#, c-format
-msgid "%.1f Gib"
-msgstr "%.1f Gib"
-
-#. Translators: Keep the no-break space between %.1f and the unit symbol
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Kib"
 #: glib/gutils.c:2897
-#, c-format
-msgid "%.1f Tib"
-msgstr "%.1f Tib"
+msgid "Kib"
+msgstr "Kib"
 
-#. Translators: Keep the no-break space between %.1f and the unit symbol
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Mib"
 #: glib/gutils.c:2899
-#, c-format
-msgid "%.1f Pib"
-msgstr "%.1f Pib"
+msgid "Mib"
+msgstr "Mib"
 
-#. Translators: Keep the no-break space between %.1f and the unit symbol
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Gib"
 #: glib/gutils.c:2901
-#, c-format
-msgid "%.1f Eib"
-msgstr "%.1f Eib"
+msgid "Gib"
+msgstr "Gib"
 
-#: glib/gutils.c:2935 glib/gutils.c:3052
-#, c-format
-msgid "%u byte"
-msgid_plural "%u bytes"
-msgstr[0] "%u bajt"
-msgstr[1] "%u bajta"
-msgstr[2] "%u bajtova"
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Tib"
+#: glib/gutils.c:2903
+msgid "Tib"
+msgstr "Tib"
 
-#: glib/gutils.c:2939
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Pib"
+#: glib/gutils.c:2905
+msgid "Pib"
+msgstr "Pib"
+
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Eib"
+#: glib/gutils.c:2907
+msgid "Eib"
+msgstr "Eib"
+
+#: glib/gutils.c:2945
+msgid "byte"
+msgid_plural "bytes"
+msgstr[0] "bajt"
+msgstr[1] "bajta"
+msgstr[2] "bajtova"
+
+#: glib/gutils.c:2949
+msgid "bit"
+msgid_plural "bits"
+msgstr[0] "bit"
+msgstr[1] "bita"
+msgstr[2] "bitova"
+
+#. Translators: The "%u" is replaced with the size value, like "13"; it could
+#. * be part of "13 bytes", but only the number is requested this time.
+#: glib/gutils.c:2957
 #, c-format
-msgid "%u bit"
-msgid_plural "%u bits"
-msgstr[0] "%u bit"
-msgstr[1] "%u bita"
-msgstr[2] "%u bitova"
+msgctxt "format-size"
+msgid "%u"
+msgstr "%u"
+
+#. Translators: The first "%u" is replaced with the value, the "%s" with a unit of the value.
+#. * The order can be changed with "%$2s %$1u". An example: "13 bytes"
+#: glib/gutils.c:2962
+#, c-format
+msgctxt "format-size"
+msgid "%u %s"
+msgstr "%u %s"
+
+#. Translators: The "%.1f" is replaced with the size value, like "13.0"; it could
+#. * be part of "13.0 MB", but only the number is requested this time.
+#: glib/gutils.c:2998
+#, c-format
+#| msgid "%.1f KB"
+msgctxt "format-size"
+msgid "%.1f"
+msgstr "%.1f"
+
+#. Translators: The first "%.1f" is replaced with the value, the "%s" with a unit of the value.
+#. * The order can be changed with "%$2s %$1.1f". Keep the no-break space between the value and
+#. * the unit symbol. An example: "13.0 MB"
+#: glib/gutils.c:3004
+#, c-format
+#| msgid "%.1f kB"
+msgctxt "format-size"
+msgid "%.1f %s"
+msgstr "%.1f %s"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
-#: glib/gutils.c:3006
+#: glib/gutils.c:3044
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
@@ -6247,7 +6256,7 @@ msgstr[1] "%s bajta"
 msgstr[2] "%s bajtova"
 
 #. Translators: the %s in "%s bits" will always be replaced by a number.
-#: glib/gutils.c:3011
+#: glib/gutils.c:3049
 #, c-format
 msgid "%s bit"
 msgid_plural "%s bits"
@@ -6255,37 +6264,114 @@ msgstr[0] "%s bit"
 msgstr[1] "%s bita"
 msgstr[2] "%s bitova"
 
+#: glib/gutils.c:3090
+#, c-format
+msgid "%u byte"
+msgid_plural "%u bytes"
+msgstr[0] "%u bajt"
+msgstr[1] "%u bajta"
+msgstr[2] "%u bajtova"
+
 #. Translators: this is from the deprecated function g_format_size_for_display() which uses 'KB' to
 #. * mean 1024 bytes.  I am aware that 'KB' is not correct, but it has been preserved for reasons of
 #. * compatibility.  Users will not see this string unless a program is using this deprecated function.
 #. * Please translate as literally as possible.
 #.
-#: glib/gutils.c:3065
+#: glib/gutils.c:3103
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: glib/gutils.c:3070
+#: glib/gutils.c:3108
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: glib/gutils.c:3075
+#: glib/gutils.c:3113
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: glib/gutils.c:3080
+#: glib/gutils.c:3118
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
-#: glib/gutils.c:3085
+#: glib/gutils.c:3123
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
-#: glib/gutils.c:3090
+#: glib/gutils.c:3128
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
+
+#~ msgid "%.1f MB"
+#~ msgstr "%.1f MB"
+
+#~ msgid "%.1f GB"
+#~ msgstr "%.1f GB"
+
+#~ msgid "%.1f TB"
+#~ msgstr "%.1f TB"
+
+#~ msgid "%.1f PB"
+#~ msgstr "%.1f PB"
+
+#~ msgid "%.1f EB"
+#~ msgstr "%.1f EB"
+
+#~ msgid "%.1f KiB"
+#~ msgstr "%.1f KiB"
+
+#~ msgid "%.1f MiB"
+#~ msgstr "%.1f MiB"
+
+#~ msgid "%.1f GiB"
+#~ msgstr "%.1f GiB"
+
+#~ msgid "%.1f TiB"
+#~ msgstr "%.1f TiB"
+
+#~ msgid "%.1f PiB"
+#~ msgstr "%.1f PiB"
+
+#~ msgid "%.1f EiB"
+#~ msgstr "%.1f EiB"
+
+#~ msgid "%.1f kb"
+#~ msgstr "%.1f kb"
+
+#~ msgid "%.1f Mb"
+#~ msgstr "%.1f Mb"
+
+#~ msgid "%.1f Gb"
+#~ msgstr "%.1f Gb"
+
+#~ msgid "%.1f Tb"
+#~ msgstr "%.1f Tb"
+
+#~ msgid "%.1f Pb"
+#~ msgstr "%.1f Pb"
+
+#~ msgid "%.1f Eb"
+#~ msgstr "%.1f Eb"
+
+#~ msgid "%.1f Kib"
+#~ msgstr "%.1f Kib"
+
+#~ msgid "%.1f Mib"
+#~ msgstr "%.1f Mib"
+
+#~ msgid "%.1f Gib"
+#~ msgstr "%.1f Gib"
+
+#~ msgid "%.1f Tib"
+#~ msgstr "%.1f Tib"
+
+#~ msgid "%.1f Pib"
+#~ msgstr "%.1f Pib"
+
+#~ msgid "%.1f Eib"
+#~ msgstr "%.1f Eib"
