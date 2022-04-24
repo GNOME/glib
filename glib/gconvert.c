@@ -248,9 +248,9 @@ g_iconv_open (const gchar  *to_codeset,
  * g_iconv: (skip)
  * @converter: conversion descriptor from g_iconv_open()
  * @inbuf: bytes to convert
- * @inbytes_left: inout parameter, bytes remaining to convert in @inbuf
+ * @inbytes_left: (inout): inout parameter, bytes remaining to convert in @inbuf
  * @outbuf: converted output bytes
- * @outbytes_left: inout parameter, bytes available to fill in @outbuf
+ * @outbytes_left: (inout): inout parameter, bytes available to fill in @outbuf
  * 
  * Same as the standard UNIX routine iconv(), but
  * may be implemented via libiconv on UNIX flavors that lack
