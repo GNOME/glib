@@ -2220,14 +2220,49 @@ type_name##_get_type (void) \
  * a `type_name_get_type()` function which will return the newly defined
  * #GType, enabling lazy instantiation.
  *
+ * You might start by putting declarations in a header as follows:
+ *
+ * |[<!-- language="C" -->
+ * #define MY_TYPE_STRUCT my_struct_get_type ()
+ * GType my_struct_get_type (void) G_GNUC_CONST;
+ *
+ * MyStruct *    my_struct_new (void);
+ * void          my_struct_free (MyStruct *self);
+ * MyStruct *    my_struct_copy (MyStruct *self);
+ * ]|
+ *
+ * And then use this macro and define your implementation in the source file as
+ * follows:
+ *
  * |[<!-- language="C" --> 
+ * MyStruct *
+ * my_struct_new (void)
+ * {
+ *   // ... your code to allocate a new MyStruct ...
+ * }
+ *
+ * void
+ * my_struct_free (MyStruct *self)
+ * {
+ *   // ... your code to free a MyStruct ...
+ * }
+ *
+ * MyStruct *
+ * my_struct_copy (MyStruct *self)
+ * {
+ *   // ... your code return a newly allocated copy of a MyStruct ...
+ * }
+ *
  * G_DEFINE_BOXED_TYPE (MyStruct, my_struct, my_struct_copy, my_struct_free)
  *
  * void 
  * foo ()
  * {
- *   GType type = my_struct_get_type ();
+ *   MyStruct *ms;
+ *
+ *   ms = my_struct_new ();
  *   // ... your code ...
+ *   my_struct_free (ms);
  * }
  * ]|
  *
