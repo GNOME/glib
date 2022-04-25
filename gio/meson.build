@@ -877,7 +877,7 @@ if host_system == 'windows'
     description : 'Windows specific headers for glib I/O library',
   )
   if meson.version().version_compare('>=0.54.0')
-    meson.override_dependency('gio-win32-2.0', libgio_dep)
+    meson.override_dependency('gio-windows-2.0', libgio_dep)
   endif
 else
   pkg.generate(requires : ['gobject-2.0', 'gio-2.0'],
