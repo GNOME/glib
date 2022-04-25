@@ -112,7 +112,7 @@ test_spawn_basics (void)
 
   g_free (erroutput);
   erroutput = NULL;
-  g_unlink ("spawn-test-create-file.txt");
+  g_unlink ("spawn-test-created-file.txt");
 
 #ifdef G_OS_WIN32
   g_test_message ("Running spawn-test-win32-gui in various ways.");

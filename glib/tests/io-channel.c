@@ -59,6 +59,7 @@ test_small_writes (void)
   g_assert_cmpint (status, ==, G_IO_STATUS_NORMAL);
 
   g_io_channel_unref (io);
+  g_remove ("iochannel-test-outfile");
 }
 
 static void
