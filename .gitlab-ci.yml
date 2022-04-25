@@ -1,4 +1,9 @@
+include:
+  - remote: 'https://gitlab.freedesktop.org/freedesktop/ci-templates/-/raw/master/templates/fedora.yml'
+  - remote: 'https://gitlab.freedesktop.org/freedesktop/ci-templates/-/raw/master/templates/debian.yml'
+
 stages:
+  - "build docker"
   - style-check
   - build
   - coverage
@@ -10,15 +15,77 @@ cache:
     - _ccache/
 
 variables:
-  FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v13"
-  COVERITY_IMAGE: "registry.gitlab.gnome.org/gnome/glib/coverity:v3"
-  DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v9"
-  ANDROID_IMAGE: "registry.gitlab.gnome.org/gnome/glib/android-ndk:v6"
-  MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v5"
   MESON_TEST_TIMEOUT_MULTIPLIER: 2
   G_MESSAGES_DEBUG: all
   MESON_COMMON_OPTIONS_NO_WARNING: "--buildtype debug --wrap-mode=nodownload"
   MESON_COMMON_OPTIONS: "${MESON_COMMON_OPTIONS_NO_WARNING} --fatal-meson-warnings"
+  LANG: "C.UTF-8"
+  LANGUAGE: "C.UTF-8"
+  LC_ALL: "C.UTF-8"
+
+.fedora image:
+  variables:
+    ###
+    # IMPORTANT
+    # These are the version tags for the docker images the CI runs against.
+    # If you are hacking on them or need a them to rebuild, its enough
+    # to change any part of the string of the image you want.
+    ###
+    FDO_DISTRIBUTION_TAG: '2022-05-02.0'
+    FDO_DISTRIBUTION_VERSION: '34'
+    FDO_DISTRIBUTION_PACKAGES: >
+      bindfs clang clang-analyzer dbus-daemon dbus-devel desktop-file-utils
+      elfutils-libelf-devel findutils fuse gcc gcc-c++ gettext git glibc-devel
+      glibc-headers glibc-langpack-de glibc-langpack-el glibc-langpack-el
+      glibc-langpack-en glibc-langpack-es glibc-langpack-es glibc-langpack-fa
+      glibc-langpack-fr glibc-langpack-hr glibc-langpack-ja glibc-langpack-lt
+      glibc-langpack-pl glibc-langpack-ru glibc-langpack-tr
+      gnome-desktop-testing gtk-doc itstool lcov libattr-devel
+      libffi-devel libmount-devel libselinux-devel libxslt ncurses-compat-libs
+      ninja-build pcre-devel python3-dbusmock python3-pip
+      python3-pygments python3-wheel shared-mime-info systemtap-sdt-devel unzip
+      valgrind wget xdg-desktop-portal xz zlib-devel meson flex bison
+      python3-devel autoconf automake gettext-devel libtool diffutils
+      fontconfig-devel json-glib-devel geoclue2-devel pipewire-devel fuse-devel
+      make mingw64-gcc mingw64-gcc-c++ mingw64-gettext mingw64-libffi
+      mingw64-zlib
+    FDO_DISTRIBUTION_EXEC: .gitlab-ci/docker-fedora.sh $COVERITY_SCAN_PROJECT_NAME $COVERITY_SCAN_TOKEN
+    FDO_UPSTREAM_REPO: gnome/glib
+    FDO_USER: user
+
+fedora image:
+  stage: "build docker"
+  extends:
+    - .fedora image
+    - .fdo.container-build@fedora
+
+.debian image:
+  variables:
+    ###
+    # IMPORTANT
+    # These are the version tags for the docker images the CI runs against.
+    # If you are hacking on them or need a them to rebuild, its enough
+    # to change any part of the string of the image you want.
+    ###
+    FDO_DISTRIBUTION_TAG: '2022-04-28.0'
+    FDO_DISTRIBUTION_VERSION: 'bullseye'
+    FDO_DISTRIBUTION_PACKAGES: >
+      bindfs black clang clang-tools clang-format dbus desktop-file-utils
+      elfutils findutils flake8 fuse gcc g++ gettext git libc6-dev gtk-doc-tools
+      itstool lcov libattr1-dev libdbus-1-dev libelf-dev libffi-dev libmount-dev
+      libpcre3-dev libselinux1-dev libxml2-utils libxslt1-dev libz3-dev locales
+      ninja-build python3 python3-pip python3-setuptools python3-wheel
+      shared-mime-info shellcheck systemtap-sdt-dev unzip wget xsltproc xz-utils
+      zlib1g-dev
+    FDO_DISTRIBUTION_EXEC: .gitlab-ci/docker-debian.sh
+    FDO_UPSTREAM_REPO: gnome/glib
+    FDO_USER: user
+
+debian image:
+  stage: "build docker"
+  extends:
+    - .debian image
+    - .fdo.container-build@debian
 
 .only-default:
   only:
@@ -48,11 +115,13 @@ variables:
 .build-linux:
   before_script:
     - bash .gitlab-ci/show-execution-environment.sh
-    - cp -r $HOME/subprojects/* subprojects/
+    - cp -r /subprojects/* subprojects/
 
 style-check-diff:
-  extends: .only-default
-  image: $DEBIAN_IMAGE
+  extends:
+    - .only-default
+    - .debian image
+    - .fdo.distribution-image@debian
   stage: style-check
   allow_failure: true
   script:
@@ -66,9 +135,10 @@ fedora-x86_64:
   extends:
     - .build-linux
     - .only-default
-  image: $FEDORA_IMAGE
+    - .fedora image
+    - .fdo.distribution-image@fedora
   stage: build
-  needs: []
+  needs: ["fedora image"]
   variables:
     CFLAGS: "-coverage -ftest-coverage -fprofile-arcs"
   script:
@@ -117,9 +187,10 @@ debian-stable-x86_64:
   extends:
     - .build-linux
     - .only-default
-  image: $DEBIAN_IMAGE
+    - .debian image
+    - .fdo.distribution-image@debian
   stage: build
-  needs: []
+  needs: ["debian image"]
   script:
     - meson ${MESON_COMMON_OPTIONS}
             --werror
@@ -149,9 +220,10 @@ installed-tests:
   extends:
     - .build-linux
     - .only-schedules
-  image: $FEDORA_IMAGE
+    - .fedora image
+    - .fdo.distribution-image@fedora
   stage: build
-  needs: []
+  needs: ["fedora image"]
   script:
     # dtrace is disabled because it breaks the static-link.py test
     - meson ${MESON_COMMON_OPTIONS}
@@ -187,9 +259,10 @@ G_DISABLE_ASSERT:
   extends:
     - .build-linux
     - .only-schedules
-  image: $FEDORA_IMAGE
+    - .fedora image
+    - .fdo.distribution-image@fedora
   stage: build
-  needs: []
+  needs: ["fedora image"]
   script:
     - meson ${MESON_COMMON_OPTIONS}
             --werror
@@ -216,9 +289,10 @@ valgrind:
   extends:
     - .build-linux
     - .only-schedules
-  image: $FEDORA_IMAGE
+    - .fedora image
+    - .fdo.distribution-image@fedora
   stage: analysis
-  needs: []
+  needs: ["fedora image"]
   variables:
     MESON_TEST_TIMEOUT_MULTIPLIER: 10
   script:
@@ -251,7 +325,6 @@ valgrind:
 .cross-build-linux:
   extends: .build-linux
   stage: build
-  needs: []
   artifacts:
     name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
     when: always
@@ -259,24 +332,28 @@ valgrind:
     paths:
       - "_build/meson-logs"
 
-cross-android_api28_arm64:
+cross-android-arm64:
   extends:
     - .cross-build-linux
     - .only-default
-  image: $ANDROID_IMAGE
+    - .fedora image
+    - .fdo.distribution-image@fedora
+  needs: ["fedora image"]
   script:
     # FIXME: add --werror
-    - meson ${MESON_COMMON_OPTIONS} --cross-file=/opt/cross_file_android_arm64_28.txt _build
+    - meson ${MESON_COMMON_OPTIONS} --cross-file=.gitlab-ci/android_arm64.txt _build
     - ninja -C _build
 
 cross-mingw64:
   extends:
     - .cross-build-linux
     - .only-default
-  image: $MINGW_IMAGE
+    - .fedora image
+    - .fdo.distribution-image@fedora
+  needs: ["fedora image"]
   script:
     # FIXME: Add --werror
-    - meson ${MESON_COMMON_OPTIONS} --cross-file=/opt/cross_file_mingw64.txt _build
+    - meson ${MESON_COMMON_OPTIONS} --cross-file=.gitlab-ci/cross_file_mingw64.txt _build
     - ninja -C _build
   artifacts:
     reports:
@@ -472,10 +549,12 @@ macos:
       - "_build/${CI_JOB_NAME}-report.xml"
 
 coverage:
-  extends: .only-default
-  image: $FEDORA_IMAGE
+  extends:
+    - .only-default
+    - .fedora image
+    - .fdo.distribution-image@fedora
   stage: coverage
-  needs: ['fedora-x86_64', 'msys2-mingw32']
+  needs: ['fedora-x86_64', 'msys2-mingw32', 'fedora image']
   artifacts:
     name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
     expire_in: 1 week
@@ -491,9 +570,10 @@ scan-build:
   extends:
     - .build-linux
     - .only-schedules
-  image: $FEDORA_IMAGE
+    - .fedora image
+    - .fdo.distribution-image@fedora
   stage: analysis
-  needs: []
+  needs: ["fedora image"]
   script:
     - meson ${MESON_COMMON_OPTIONS}
             --werror
@@ -517,9 +597,10 @@ coverity:
   extends:
     - .build-linux
     - .only-schedules
-  image: $COVERITY_IMAGE
+    - .fedora image
+    - .fdo.distribution-image@fedora
   stage: analysis
-  needs: []
+  needs: ["fedora image"]
   variables:
     # cov-build doesn’t like GLIB_DEPRECATED_ENUMERATOR
     CFLAGS: '-DGLIB_DISABLE_DEPRECATION_WARNINGS'
@@ -534,7 +615,7 @@ coverity:
             -Ddtrace=true
             -Dinstalled_tests=true
             _coverity_build
-    - $HOME/cov-analysis-linux64-*/bin/cov-build --dir cov-int ninja -C _coverity_build
+    - /opt/cov-analysis-linux64-*/bin/cov-build --dir cov-int ninja -C _coverity_build
     - tar cfz cov-int.tar.gz cov-int
     - curl https://scan.coverity.com/builds?project=$COVERITY_SCAN_PROJECT_NAME
            --form token=$COVERITY_SCAN_TOKEN --form email=$GITLAB_USER_EMAIL
@@ -559,7 +640,9 @@ pages:
       - public
 
 dist-job:
-  image: $FEDORA_IMAGE
+  extends:
+    - .fedora image
+    - .fdo.distribution-image@fedora
   stage: build
   only:
     - tags
