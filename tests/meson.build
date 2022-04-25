@@ -45,11 +45,7 @@ test_extra_programs = {
   'assert-msg-test' : {},
 }
 
-if host_machine.system() != 'windows'
-  tests += {
-    'timeloop' : {},
-  }
-else
+if host_machine.system() == 'windows'
   test_extra_programs += {
     'spawn-test-win32-gui' : {'gui_app' : true}
   }
