@@ -1599,6 +1599,13 @@ g_cond_wait_until (GCond  *cond,
 {
   struct timespec now;
   struct timespec span;
+#ifdef __NR_futex_time64
+  long span_arg[2];
+  G_STATIC_ASSERT (sizeof (span_arg[0]) == 4);
+#else
+  struct timespec span_arg;
+#endif
+
   guint sampled;
   int res;
   gboolean success;
@@ -1618,9 +1625,33 @@ g_cond_wait_until (GCond  *cond,
   if (span.tv_sec < 0)
     return FALSE;
 
+  /* On x32 (ILP32 ABI on x86_64) and potentially sparc64, the raw futex()
+   * syscall takes a 32-bit timespan argument *regardless* of whether userspace
+   * is using 32-bit or 64-bit `struct timespec`. This means that we can’t
+   * unconditionally pass a `struct timespec` pointer into the syscall.
+   *
+   * Assume that any such platform is new enough to define the
+   * `__NR_futex_time64` workaround syscall (which accepts 64-bit timespecs,
+   * introduced in kernel 5.1), and use that as a proxy for whether to pass in
+   * `long[2]` or `struct timespec`.
+   *
+   * As per https://lwn.net/Articles/776427/, the `time64` syscalls only exist
+   * on 32-bit platforms, so in this case `sizeof(long)` should always be
+   * 32 bits.
+   *
+   * Don’t bother actually calling `__NR_futex_time64` as the `span` is relative
+   * and hence very unlikely to overflow, even if using 32-bit longs.
+   */
+#ifdef __NR_futex_time64
+  span_arg[0] = span.tv_sec;
+  span_arg[1] = span.tv_nsec;
+#else
+  span_arg = span;
+#endif
+
   sampled = cond->i[0];
   g_mutex_unlock (mutex);
-  res = syscall (__NR_futex, &cond->i[0], (gsize) FUTEX_WAIT_PRIVATE, (gsize) sampled, &span);
+  res = syscall (__NR_futex, &cond->i[0], (gsize) FUTEX_WAIT_PRIVATE, (gsize) sampled, &span_arg);
   success = (res < 0 && errno == ETIMEDOUT) ? FALSE : TRUE;
   g_mutex_lock (mutex);
 
