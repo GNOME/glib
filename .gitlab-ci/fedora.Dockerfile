@@ -85,6 +85,9 @@ ARG HOST_USER_ID=5555
 ENV HOST_USER_ID ${HOST_USER_ID}
 RUN useradd -u $HOST_USER_ID -G wheel -ms /bin/bash user
 
+COPY android-ndk.sh .
+RUN ./android-ndk.sh
+
 USER user
 WORKDIR /home/user
 
