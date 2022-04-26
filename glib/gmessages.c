@@ -2059,9 +2059,18 @@ g_log_set_writer_func (GLogWriterFunc func,
   g_return_if_fail (func != NULL);
 
   g_mutex_lock (&g_messages_lock);
+
+  if (log_writer_func != g_log_writer_default)
+    {
+      g_mutex_unlock (&g_messages_lock);
+      g_error ("g_log_set_writer_func() called multiple times");
+      return;
+    }
+
   log_writer_func = func;
   log_writer_user_data = user_data;
   log_writer_user_data_free = user_data_free;
+
   g_mutex_unlock (&g_messages_lock);
 }
 
