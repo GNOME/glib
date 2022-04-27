@@ -76,12 +76,14 @@ handle_set (int argc, char *argv[], gboolean do_help)
   const char *attribute;
   GFileAttributeType type;
   gpointer value;
+  gpointer value_allocated = NULL;
   gboolean b;
   guint32 uint32;
   gint32 int32;
   guint64 uint64;
   gint64 int64;
   gchar *param;
+  int retval = 0;
 
   g_set_prgname ("gio set");
 
@@ -147,7 +149,7 @@ handle_set (int argc, char *argv[], gboolean do_help)
       value = argv[3];
       break;
     case G_FILE_ATTRIBUTE_TYPE_BYTE_STRING:
-      value = hex_unescape (argv[3]);
+      value = value_allocated = hex_unescape (argv[3]);
       break;
     case G_FILE_ATTRIBUTE_TYPE_BOOLEAN:
       b = g_ascii_strcasecmp (argv[3], "true") == 0;
@@ -194,11 +196,11 @@ handle_set (int argc, char *argv[], gboolean do_help)
     {
       print_error ("%s", error->message);
       g_error_free (error);
-      g_object_unref (file);
-      return 1;
+      retval = 1;
     }
 
+  g_clear_pointer (&value_allocated, g_free);
   g_object_unref (file);
 
-  return 0;
+  return retval;
 }
