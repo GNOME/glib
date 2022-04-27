@@ -2604,8 +2604,12 @@ g_socket_multicast_group_operation_ssm (GSocket       *socket,
             S_ADDR_FIELD(mc_req_src) = iface_addr->sin_addr.s_addr;
 #endif  /* defined(G_OS_WIN32) && defined (HAVE_IF_NAMETOINDEX) */
           }
+
+        g_assert (g_inet_address_get_native_size (group) == sizeof (mc_req_src.imr_multiaddr));
         memcpy (&mc_req_src.imr_multiaddr, g_inet_address_to_bytes (group),
                 g_inet_address_get_native_size (group));
+
+        g_assert (g_inet_address_get_native_size (source_specific) == sizeof (mc_req_src.imr_sourceaddr));
         memcpy (&mc_req_src.imr_sourceaddr,
                 g_inet_address_to_bytes (source_specific),
                 g_inet_address_get_native_size (source_specific));
