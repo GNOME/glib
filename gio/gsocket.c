@@ -463,6 +463,8 @@ g_socket_details_from_fd (GSocket *socket)
   int value, family;
   int errsv;
 
+  memset (&address, 0, sizeof (address));
+
   fd = socket->priv->fd;
   if (!g_socket_get_option (socket, SOL_SOCKET, SO_TYPE, &value, NULL))
     {

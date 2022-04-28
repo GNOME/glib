@@ -1856,6 +1856,7 @@ test_read_link (void)
       g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
                              "*assertion*!= NULL*");
       newpath = g_file_read_link (NULL, &error);
+      g_assert_null (newpath);
       g_test_assert_expected_messages ();
     }
 
