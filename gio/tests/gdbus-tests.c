@@ -143,7 +143,6 @@ ensure_gdbus_testserver_up (GDBusConnection *connection,
     g_main_context_iteration (context, TRUE);
 
   g_bus_unwatch_name (watch_id);
-  watch_id = 0;
 
   while (!data.unwatch_complete)
     g_main_context_iteration (context, TRUE);
