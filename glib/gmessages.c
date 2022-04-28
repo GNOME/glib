@@ -2238,6 +2238,7 @@ g_log_writer_is_journald (gint output_fd)
   /* Namespaced journals start with `/run/systemd/journal.${name}/` (see
    * `RuntimeDirectory=systemd/journal.%i` in `systemd-journald@.service`. The
    * default journal starts with `/run/systemd/journal/`. */
+  memset (&addr, 0, sizeof (addr));
   addr_len = sizeof(addr);
   err = getpeername (output_fd, &addr.sa, &addr_len);
   if (err == 0 && addr.storage.ss_family == AF_UNIX)
