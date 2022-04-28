@@ -1651,14 +1651,12 @@ file_is_hidden (const gchar *path,
   if (!g_hash_table_lookup_extended (hidden_cache, dirname,
                                      NULL, (gpointer *) &data))
     {
-      gchar *mydirname;
-
       data = g_new0 (HiddenCacheData, 1);
       data->hidden_files = table = read_hidden_file (dirname);
       data->timestamp_secs = g_get_monotonic_time () / G_USEC_PER_SEC;
 
       g_hash_table_insert (hidden_cache,
-                           mydirname = g_strdup (dirname),
+                           g_strdup (dirname),
                            data);
 
       if (!hidden_cache_source)
