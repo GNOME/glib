@@ -2279,19 +2279,19 @@ g_date_time_get_day_of_month (GDateTime *datetime)
 {
   gint           day_of_year,
                  i;
-  const guint16 *days;
+  guint          is_leap;
   guint16        last = 0;
 
   g_return_val_if_fail (datetime != NULL, 0);
 
-  days = days_in_year[GREGORIAN_LEAP (g_date_time_get_year (datetime)) ? 1 : 0];
+  is_leap = GREGORIAN_LEAP (g_date_time_get_year (datetime)) ? 1 : 0;
   g_date_time_get_week_number (datetime, NULL, NULL, &day_of_year);
 
   for (i = 1; i <= 12; i++)
     {
-      if (days [i] >= day_of_year)
+      if (days_in_year[is_leap][i] >= day_of_year)
         return day_of_year - last;
-      last = days [i];
+      last = days_in_year[is_leap][i];
     }
 
   g_warn_if_reached ();
