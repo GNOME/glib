@@ -44,7 +44,7 @@ ninja
 
 lcov \
     --quiet \
-    --config-file "${DIR}"/.gitlab-ci/lcovrc \
+    --config-file "${DIR}"/.lcovrc \
     --directory "${DIR}/_build" \
     --capture \
     --initial \
@@ -61,7 +61,7 @@ python3 "${DIR}"/.gitlab-ci/meson-junit-report.py \
 
 lcov \
     --quiet \
-    --config-file "${DIR}"/.gitlab-ci/lcovrc \
+    --config-file "${DIR}"/.lcovrc \
     --directory "${DIR}/_build" \
     --capture \
     --output-file "${DIR}/_coverage/${CI_JOB_NAME}.lcov"
