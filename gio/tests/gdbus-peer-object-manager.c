@@ -180,10 +180,10 @@ on_server_connection (GObject *source,
   Test *test = user_data;
   GError *error = NULL;
 
-  g_assert (test->server == NULL);
+  g_assert_null (test->server);
   test->server = g_dbus_connection_new_finish (result, &error);
   g_assert_no_error (error);
-  g_assert (test->server != NULL);
+  g_assert_nonnull (test->server);
 
   if (test->server && test->client)
     g_main_loop_quit (test->loop);
@@ -197,10 +197,10 @@ on_client_connection (GObject *source,
   Test *test = user_data;
   GError *error = NULL;
 
-  g_assert (test->client == NULL);
+  g_assert_null (test->client);
   test->client = g_dbus_connection_new_finish (result, &error);
   g_assert_no_error (error);
-  g_assert (test->client != NULL);
+  g_assert_nonnull (test->client);
 
   if (test->server && test->client)
     g_main_loop_quit (test->loop);
@@ -231,7 +231,7 @@ setup (Test *test,
   g_assert_no_error (error);
 
   stream = g_socket_connection_factory_create_connection (socket);
-  g_assert (stream != NULL);
+  g_assert_nonnull (stream);
   g_object_unref (socket);
 
   guid = g_dbus_generate_guid ();
@@ -247,7 +247,7 @@ setup (Test *test,
   g_assert_no_error (error);
 
   stream = g_socket_connection_factory_create_connection (socket);
-  g_assert (stream != NULL);
+  g_assert_nonnull (stream);
   g_object_unref (socket);
 
   g_dbus_connection_new (G_IO_STREAM (stream), NULL,
@@ -257,8 +257,8 @@ setup (Test *test,
 
   g_main_loop_run (test->loop);
 
-  g_assert (test->server);
-  g_assert (test->client);
+  g_assert_nonnull (test->server);
+  g_assert_nonnull (test->client);
 
   g_object_unref (stream);
 }
@@ -278,7 +278,7 @@ on_result (GObject *source,
            gpointer user_data)
 {
   Test *test = user_data;
-  g_assert (test->result == NULL);
+  g_assert_null (test->result);
   test->result = g_object_ref (result);
   g_main_loop_quit (test->loop);
 
@@ -337,28 +337,28 @@ test_object_manager (Test *test,
   g_clear_object (&test->result);
 
   proxy = g_dbus_object_manager_get_interface (client, number1_path, "org.mock.Interface");
-  g_assert (proxy != NULL);
+  g_assert_nonnull (proxy);
   prop = g_dbus_proxy_get_cached_property (G_DBUS_PROXY (proxy), "Path");
-  g_assert (prop != NULL);
+  g_assert_nonnull (prop);
   g_assert_cmpstr ((gchar *)g_variant_get_type (prop), ==, (gchar *)G_VARIANT_TYPE_OBJECT_PATH);
   g_assert_cmpstr (g_variant_get_string (prop, NULL), ==, number1_path);
   g_variant_unref (prop);
   prop = g_dbus_proxy_get_cached_property (G_DBUS_PROXY (proxy), "Number");
-  g_assert (prop != NULL);
+  g_assert_nonnull (prop);
   g_assert_cmpstr ((gchar *)g_variant_get_type (prop), ==, (gchar *)G_VARIANT_TYPE_INT32);
   g_assert_cmpint (g_variant_get_int32 (prop), ==, 1);
   g_variant_unref (prop);
   g_object_unref (proxy);
 
   proxy = g_dbus_object_manager_get_interface (client, number2_path, "org.mock.Interface");
-  g_assert (proxy != NULL);
+  g_assert_nonnull (proxy);
   prop = g_dbus_proxy_get_cached_property (G_DBUS_PROXY (proxy), "Path");
-  g_assert (prop != NULL);
+  g_assert_nonnull (prop);
   g_assert_cmpstr ((gchar *)g_variant_get_type (prop), ==, (gchar *)G_VARIANT_TYPE_OBJECT_PATH);
   g_assert_cmpstr (g_variant_get_string (prop, NULL), ==, number2_path);
   g_variant_unref (prop);
   prop = g_dbus_proxy_get_cached_property (G_DBUS_PROXY (proxy), "Number");
-  g_assert (prop != NULL);
+  g_assert_nonnull (prop);
   g_assert_cmpstr ((gchar *)g_variant_get_type (prop), ==, (gchar *)G_VARIANT_TYPE_INT32);
   g_assert_cmpint (g_variant_get_int32 (prop), ==, 2);
   g_variant_unref (prop);
@@ -375,7 +375,7 @@ int
 main (int   argc,
       char *argv[])
 {
-  g_test_init (&argc, &argv, NULL);
+  g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
 
   g_test_add ("/gdbus/peer-object-manager/normal", Test, "/objects",
               setup, test_object_manager, teardown);
