@@ -263,16 +263,15 @@ msort_r (void *b, size_t n, size_t s, GCompareDataFunc cmp, void *arg)
   else
     {
       if ((s & (sizeof (guint32) - 1)) == 0
-	  && ((char *) b - (char *) 0) % ALIGNOF_GUINT32 == 0)
+	  && (guintptr) b % ALIGNOF_GUINT32 == 0)
 	{
 	  if (s == sizeof (guint32))
 	    p.var = 0;
 	  else if (s == sizeof (guint64)
-		   && ((char *) b - (char *) 0) % ALIGNOF_GUINT64 == 0)
+		   && (guintptr) b % ALIGNOF_GUINT64 == 0)
 	    p.var = 1;
 	  else if ((s & (sizeof (unsigned long) - 1)) == 0
-		   && ((char *) b - (char *) 0)
-		      % ALIGNOF_UNSIGNED_LONG == 0)
+		   && (guintptr) b % ALIGNOF_UNSIGNED_LONG == 0)
 	    p.var = 2;
 	}
       msort_with_tmp (&p, b, n);
