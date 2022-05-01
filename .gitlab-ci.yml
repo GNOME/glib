@@ -366,7 +366,7 @@ freebsd-12-x86_64:
   # The FreeBSD 13 build is run on each commit, so the FreeBSD 12 build can be
   # run less regularly to save CI resources. The chance of a regression on
   # FreeBSD 12 and not FreeBSD 13 is tiny.
-  extends: .only-schedules
+  extends: .only-origin
   stage: build
   tags:
     # To run a FreeBSD builder, install gitlab-runner package and start both
