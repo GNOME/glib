@@ -239,8 +239,6 @@ g_spawn_async (const gchar          *working_directory,
                GPid                 *child_pid,
                GError              **error)
 {
-  g_return_val_if_fail (argv != NULL, FALSE);
-  
   return g_spawn_async_with_pipes (working_directory,
                                    argv, envp,
                                    flags,
@@ -610,37 +608,18 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
                           gint                 *standard_error,
                           GError              **error)
 {
-  g_return_val_if_fail (argv != NULL, FALSE);
-  g_return_val_if_fail (argv[0] != NULL, FALSE);
-  g_return_val_if_fail (standard_output == NULL ||
-                        !(flags & G_SPAWN_STDOUT_TO_DEV_NULL), FALSE);
-  g_return_val_if_fail (standard_error == NULL ||
-                        !(flags & G_SPAWN_STDERR_TO_DEV_NULL), FALSE);
-  /* can't inherit stdin if we have an input pipe. */
-  g_return_val_if_fail (standard_input == NULL ||
-                        !(flags & G_SPAWN_CHILD_INHERITS_STDIN), FALSE);
-
-  return fork_exec (!(flags & G_SPAWN_DO_NOT_REAP_CHILD),
-                    working_directory,
-                    (const gchar * const *) argv,
-                    (const gchar * const *) envp,
-                    !(flags & G_SPAWN_LEAVE_DESCRIPTORS_OPEN),
-                    (flags & G_SPAWN_SEARCH_PATH) != 0,
-                    (flags & G_SPAWN_SEARCH_PATH_FROM_ENVP) != 0,
-                    (flags & G_SPAWN_STDOUT_TO_DEV_NULL) != 0,
-                    (flags & G_SPAWN_STDERR_TO_DEV_NULL) != 0,
-                    (flags & G_SPAWN_CHILD_INHERITS_STDIN) != 0,
-                    (flags & G_SPAWN_FILE_AND_ARGV_ZERO) != 0,
-                    (flags & G_SPAWN_CLOEXEC_PIPES) != 0,
-                    child_setup,
-                    user_data,
-                    child_pid,
-                    standard_input,
-                    standard_output,
-                    standard_error,
-                    -1, -1, -1,
-                    NULL, NULL, 0,
-                    error);
+  return g_spawn_async_with_pipes_and_fds (working_directory,
+                                           (const gchar * const *) argv,
+                                           (const gchar * const *) envp,
+                                           flags,
+                                           child_setup, user_data,
+                                           -1, -1, -1,
+                                           NULL, NULL, 0,
+                                           child_pid,
+                                           standard_input,
+                                           standard_output,
+                                           standard_error,
+                                           error);
 }
 
 /**
