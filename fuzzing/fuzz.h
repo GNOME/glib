@@ -17,6 +17,12 @@ static void
 fuzz_set_logging_func (void)
 {
 #ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
-  g_log_set_writer_func (empty_logging_func, NULL, NULL);
+  static gboolean writer_set = FALSE;
+
+  if (!writer_set)
+    {
+      g_log_set_writer_func (empty_logging_func, NULL, NULL);
+      writer_set = TRUE;
+    }
 #endif
 }
