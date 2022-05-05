@@ -24,7 +24,9 @@ information.) Information about pkg-config can be found at:
 
   http://www.freedesktop.org/software/pkgconfig/
 
-Meson (http://mesonbuild.com/) is also required.
+Meson (http://mesonbuild.com/) is also required. If your distribution does not
+package a new enough version of Meson, it can be [installed using
+`pip`](https://mesonbuild.com/Getting-meson.html#installing-meson-with-pip).
 
 In order to implement conversions between character sets,
 GLib requires an implementation of the standard iconv() routine.
