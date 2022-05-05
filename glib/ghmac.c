@@ -289,11 +289,17 @@ const gchar *
 g_hmac_get_string (GHmac *hmac)
 {
   guint8 *buffer;
+  gssize digest_len_signed;
   gsize digest_len;
 
   g_return_val_if_fail (hmac != NULL, NULL);
 
-  digest_len = g_checksum_type_get_length (hmac->digest_type);
+  /* It shouldn’t be possible for @digest_len_signed to be negative, as
+   * `hmac->digest_type` has already been validated as being supported. */
+  digest_len_signed = g_checksum_type_get_length (hmac->digest_type);
+  g_assert (digest_len_signed >= 0);
+  digest_len = digest_len_signed;
+
   buffer = g_alloca (digest_len);
 
   /* This is only called for its side-effect of updating hmac->digesto... */
@@ -329,7 +335,13 @@ g_hmac_get_digest (GHmac  *hmac,
 
   g_return_if_fail (hmac != NULL);
 
-  len = g_checksum_type_get_length (hmac->digest_type);
+  /* It shouldn’t be possible for @len_signed to be negative, as
+   * `hmac->digest_type` has already been validated as being supported. */
+  len_signed = g_checksum_type_get_length (hmac->digest_type);
+  g_assert (len_signed >= 0);
+  len = len_signed;
+
+  /* @buffer must be long enough for the digest */
   g_return_if_fail (*digest_len >= len);
 
   /* Use the same buffer, because we can :) */
