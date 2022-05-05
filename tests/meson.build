@@ -23,7 +23,6 @@ tests = {
     'dependencies' : [libgthread_dep],
   },
   'thread-test' : {},
-  'threadpool-test' : {'suite' : ['slow']},
   'module-test-library' : {
     'dependencies' : [libgmodule_dep],
     'export_dynamic' : true,
