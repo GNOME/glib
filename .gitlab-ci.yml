@@ -17,8 +17,7 @@ variables:
   MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v5"
   MESON_TEST_TIMEOUT_MULTIPLIER: 2
   G_MESSAGES_DEBUG: all
-  MESON_COMMON_OPTIONS_NO_WARNING: "--buildtype debug --wrap-mode=nodownload"
-  MESON_COMMON_OPTIONS: "${MESON_COMMON_OPTIONS_NO_WARNING} --fatal-meson-warnings"
+  MESON_COMMON_OPTIONS: "--buildtype debug --wrap-mode=nodownload --fatal-meson-warnings"
 
 .only-default:
   only:
@@ -72,10 +71,7 @@ fedora-x86_64:
   variables:
     CFLAGS: "-coverage -ftest-coverage -fprofile-arcs"
   script:
-    # FIXME: Cannot use MESON_COMMON_OPTIONS here because meson warns about gtkdoc
-    # feature fully functional in 0.54, but we only depend on 0.52. So we cannot build
-    # with --fatal-meson-warnings.
-    - meson ${MESON_COMMON_OPTIONS_NO_WARNING}
+    - meson ${MESON_COMMON_OPTIONS}
             --werror
             --default-library=both
             --prefix=$HOME/glib-installed
@@ -564,10 +560,7 @@ dist-job:
   only:
     - tags
   script:
-    # FIXME: Cannot use MESON_COMMON_OPTIONS here because meson warns about gtkdoc
-    # feature fully functional in 0.54, but we only depend on 0.52. So we cannot build
-    # with --fatal-meson-warnings.
-    - meson ${MESON_COMMON_OPTIONS_NO_WARNING} --buildtype release -Dgtk_doc=true -Dman=true _build
+    - meson ${MESON_COMMON_OPTIONS} --buildtype release -Dgtk_doc=true -Dman=true _build
     - cd _build
     - ninja dist
     - ninja glib-doc gobject-doc gio-doc

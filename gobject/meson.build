@@ -150,10 +150,7 @@ pkg.generate(libgobject,
 libgobject_dep = declare_dependency(link_with : libgobject,
   include_directories : [gobjectinc],
   dependencies : [libglib_dep, glib_enumtypes_dep])
-
-if meson.version().version_compare('>=0.54.0')
-  meson.override_dependency('gobject-2.0', libgobject_dep)
-endif
+meson.override_dependency('gobject-2.0', libgobject_dep)
 
 executable('gobject-query', 'gobject-query.c',
   install : true,
@@ -171,11 +168,9 @@ configure_file(
 )
 
 # This is needed to make gdb find gobject_gdb.py
-if meson.version().version_compare('>=0.58')
-  env = environment()
-  env.prepend('PYTHONPATH', meson.current_source_dir())
-  meson.add_devenv(env)
-endif
+env = environment()
+env.prepend('PYTHONPATH', meson.current_source_dir())
+meson.add_devenv(env)
 
 if enable_systemtap
   gobject_stp = configure_file(input : 'gobject.stp.in',
