@@ -38,4 +38,14 @@ foreach target_name : fuzz_targets
     c_args : extra_c_args,
     dependencies : deps,
   )
+
+  # If the FuzzingEngine isn’t available, build some unit tests to check that
+  # the fuzzing files do basically work. This doesn’t do any actual fuzzing though.
+  # Pass in the README as an arbitrary fuzzing input, just so we have something.
+  if not fuzzing_engine.found()
+    test(target_name, exe,
+      args : files('README.md'),
+      suite : 'fuzzing',
+    )
+  endif
 endforeach
