@@ -53,7 +53,7 @@ typedef gboolean (*GTraverseFunc) (gpointer  key,
 /**
  * GTraverseNodeFunc:
  * @node: a #GTreeNode
- * @data: user data passed to g_tree_foreach_node()
+ * @user_data: user data passed to g_tree_foreach_node()
  *
  * Specifies the type of function passed to g_tree_foreach_node(). It is
  * passed each node, together with the @user_data parameter passed to
@@ -64,7 +64,7 @@ typedef gboolean (*GTraverseFunc) (gpointer  key,
  * Since: 2.68
  */
 typedef gboolean (*GTraverseNodeFunc) (GTreeNode *node,
-                                       gpointer   data);
+                                       gpointer   user_data);
 
 /* Balanced binary trees
  */
