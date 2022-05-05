@@ -72,7 +72,7 @@ RUN rm -rf \
   $ANDROID_NDK_PATH/sources/cxx-stl/llvm-libc++/test/std/experimental/filesystem/fs.op.funcs/fs.op.create_directory \
   $ANDROID_NDK_PATH
 
-RUN pip3 install meson==0.52.0
+RUN pip3 install meson==0.60.3
 
 ARG HOST_USER_ID=5555
 ENV HOST_USER_ID ${HOST_USER_ID}

@@ -31,7 +31,7 @@ CCACHE_BASEDIR="$(pwd)"
 CCACHE_DIR="${CCACHE_BASEDIR}/_ccache"
 export CCACHE_BASEDIR CCACHE_DIR
 
-pip3 install --upgrade --user meson==0.52.0
+pip3 install --upgrade --user meson==0.60.3
 
 PATH="$(cygpath "$USERPROFILE")/.local/bin:$HOME/.local/bin:$PATH"
 CFLAGS="-coverage -ftest-coverage -fprofile-arcs"
