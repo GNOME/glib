@@ -1,6 +1,6 @@
 project('glib', 'c', 'cpp',
   version : '2.73.0',
-  # NOTE: We keep this pinned at 0.52 because that's what Debian Stable ships
+  # NOTE: See the policy in docs/meson-version.md before changing the Meson dependency
   meson_version : '>= 0.52.0',
   default_options : [
     'buildtype=debugoptimized',
