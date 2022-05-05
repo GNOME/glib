@@ -681,6 +681,8 @@ g_convert_with_fallback (const gchar *str,
   if (!local_error)
     return dest;
 
+  g_assert (dest == NULL);
+
   if (!g_error_matches (local_error, G_CONVERT_ERROR, G_CONVERT_ERROR_ILLEGAL_SEQUENCE))
     {
       g_propagate_error (error, local_error);
