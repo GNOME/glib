@@ -2725,6 +2725,8 @@ g_date_strftime (gchar       *s,
       g_warning (G_STRLOC "Error converting results of strftime to UTF-8: %s", error->message);
       g_error_free (error);
 
+      g_assert (convbuf == NULL);
+
       s[0] = '\0';
       return 0;
     }
