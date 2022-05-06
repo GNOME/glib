@@ -322,7 +322,10 @@ vs2017-x64:
   script:
     # FIXME: These should use --wrap-mode=nodownload but the Windows CI machines
     # aren’t currently set up for that.
-    - .gitlab-ci/test-msvc.bat ${MESON_COMMON_OPTIONS} --wrap-mode=default
+    - .gitlab-ci/test-msvc.bat ${MESON_COMMON_OPTIONS}
+                               --wrap-mode=default
+                               --python.platlibdir=C:\Python37\site-packages
+                               --python.purelibdir=C:\Python37\site-packages
   artifacts:
     reports:
       junit: "_build/${env:CI_JOB_NAME}-report.xml"
@@ -347,7 +350,11 @@ vs2017-x64-static:
   script:
     # FIXME: These should use --wrap-mode=nodownload but the Windows CI machines
     # aren’t currently set up for that.
-    - .gitlab-ci/test-msvc.bat ${MESON_COMMON_OPTIONS} --wrap-mode=default --default-library=static
+    - .gitlab-ci/test-msvc.bat ${MESON_COMMON_OPTIONS}
+                               --wrap-mode=default
+                               --default-library=static
+                               --python.platlibdir=C:\Python37\site-packages
+                               --python.purelibdir=C:\Python37\site-packages
   artifacts:
     reports:
       junit: "_build/${env:CI_JOB_NAME}-report.xml"
