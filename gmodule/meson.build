@@ -30,7 +30,7 @@ if g_module_impl == 'G_MODULE_IMPL_DL'
     rres = cc.run(dlopen_dlsym_test_code,
                   dependencies : libdl_dep,
                   name : 'dlsym() preceding underscores')
-    if host_system == 'windows' or rres.returncode() == 0
+    if host_system == 'windows' or (rres.compiled() and rres.returncode() == 0)
       g_module_need_uscore = 1
     endif
   else
