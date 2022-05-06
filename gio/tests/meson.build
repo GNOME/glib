@@ -830,7 +830,7 @@ foreach test_name, extra_args : gio_tests
       foreach var, value : installed_tests_env
          envs += '@0@=@1@'.format(var, value)
       endforeach
-      test_env_override = '@0@ @1@ '.format(env_program.path(), ' '.join(envs))
+      test_env_override = '@0@ @1@ '.format(env_program.full_path(), ' '.join(envs))
     endif
     test_conf.set('env', test_env_override)
     configure_file(

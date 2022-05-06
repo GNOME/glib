@@ -408,7 +408,7 @@ if host_system == 'windows'
   if host_machine.cpu_family() == 'x86'
     executable('gspawn-win32-helper', 'gspawn-win32-helper.c',
       install : true,
-      gui_app : true,
+      win_subsystem : 'windows',
       include_directories : configinc,
       dependencies : [libglib_dep])
     executable('gspawn-win32-helper-console', 'gspawn-win32-helper.c',
@@ -419,7 +419,7 @@ if host_system == 'windows'
   else
     executable('gspawn-win64-helper', 'gspawn-win32-helper.c',
       install : true,
-      gui_app : true,
+      win_subsystem : 'windows',
       include_directories : configinc,
       dependencies : [libglib_dep])
     executable('gspawn-win64-helper-console', 'gspawn-win32-helper.c',

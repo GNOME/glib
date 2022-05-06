@@ -46,7 +46,7 @@ test_extra_programs = {
 
 if host_machine.system() == 'windows'
   test_extra_programs += {
-    'spawn-test-win32-gui' : {'gui_app' : true}
+    'spawn-test-win32-gui' : {'win_subsystem' : 'windows'}
   }
 endif
 
@@ -119,6 +119,6 @@ foreach program_name, extra_args : test_extra_programs
       dependencies : common_deps + extra_args.get('dependencies', []),
       install_dir : installed_tests_execdir,
       install : install,
-      gui_app : extra_args.get('gui_app', false),
+      win_subsystem : extra_args.get('win_subsystem', 'console'),
   )
 endforeach

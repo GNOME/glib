@@ -1034,7 +1034,7 @@ main(void)
       have_good_vsnprintf = true
     endif
   else
-      have_good_vsnprintf = meson.get_cross_property('have_c99_vsnprintf', false)
+      have_good_vsnprintf = meson.get_external_property('have_c99_vsnprintf', false)
       glib_conf.set('HAVE_C99_VSNPRINTF', have_good_vsnprintf)
   endif
 
@@ -1082,7 +1082,7 @@ main(void)
       have_good_snprintf = true
     endif
   else
-      have_good_snprintf = meson.get_cross_property('have_c99_snprintf', false)
+      have_good_snprintf = meson.get_external_property('have_c99_snprintf', false)
       glib_conf.set('HAVE_C99_SNPRINTF', have_good_snprintf)
   endif
 
@@ -1109,7 +1109,7 @@ main (void)
       have_good_printf = true
     endif
   else
-      have_good_printf = meson.get_cross_property('have_unix98_printf', false)
+      have_good_printf = meson.get_external_property('have_unix98_printf', false)
       glib_conf.set('HAVE_UNIX98_PRINTF', have_good_printf)
   endif
 endif
@@ -1703,7 +1703,7 @@ if cc_can_run
   rres = cc.run(va_list_val_copy_prog, name : 'va_lists can be copied as values')
   glib_va_val_copy = rres.returncode() == 0
 else
-  glib_va_val_copy = meson.get_cross_property('va_val_copy', true)
+  glib_va_val_copy = meson.get_external_property('va_val_copy', true)
 endif
 if not glib_va_val_copy
   glib_vacopy = glib_vacopy + '\n#define G_VA_COPY_AS_ARRAY 1'
@@ -1982,7 +1982,7 @@ if cc_can_run
   rres = cc.run(stack_grows_check_prog, name : 'stack grows check')
   growing_stack = rres.returncode() == 0
 else
-  growing_stack = meson.get_cross_property('growing_stack', false)
+  growing_stack = meson.get_external_property('growing_stack', false)
 endif
 
 glibconfig_conf.set10('G_HAVE_GROWING_STACK', growing_stack)
@@ -2201,7 +2201,7 @@ if cc.has_function('strlcpy')
     if rres.compiled() and rres.returncode() == 0
       glib_conf.set('HAVE_STRLCPY', 1)
     endif
-  elif meson.get_cross_property('have_strlcpy', false)
+  elif meson.get_external_property('have_strlcpy', false)
     glib_conf.set('HAVE_STRLCPY', 1)
   endif
 endif
@@ -2258,7 +2258,7 @@ if cc_can_run
   rres = cc.run(cmdline_test_code, name : '/proc/self/cmdline')
   have_proc_self_cmdline = rres.compiled() and rres.returncode() == 0
 else
-  have_proc_self_cmdline = meson.get_cross_property('have_proc_self_cmdline', false)
+  have_proc_self_cmdline = meson.get_external_property('have_proc_self_cmdline', false)
 endif
 
 glib_conf.set('HAVE_PROC_SELF_CMDLINE', have_proc_self_cmdline)
