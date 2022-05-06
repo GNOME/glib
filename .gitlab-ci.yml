@@ -10,11 +10,11 @@ cache:
     - _ccache/
 
 variables:
-  FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v13"
-  COVERITY_IMAGE: "registry.gitlab.gnome.org/gnome/glib/coverity:v3"
-  DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v9"
-  ANDROID_IMAGE: "registry.gitlab.gnome.org/gnome/glib/android-ndk:v6"
-  MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v5"
+  FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v14"
+  COVERITY_IMAGE: "registry.gitlab.gnome.org/gnome/glib/coverity:v4"
+  DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v10"
+  ANDROID_IMAGE: "registry.gitlab.gnome.org/gnome/glib/android-ndk:v7"
+  MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v6"
   MESON_TEST_TIMEOUT_MULTIPLIER: 2
   G_MESSAGES_DEBUG: all
   MESON_COMMON_OPTIONS: "--buildtype debug --wrap-mode=nodownload --fatal-meson-warnings"
