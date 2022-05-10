@@ -874,7 +874,11 @@ client_free (Client *client)
       name_ref (name);
 
       if (name->owner && name->owner->client == client)
-	name_release_owner (name);
+        {
+          /* Help static analysers with the refcount at this point. */
+          g_assert (name->refcount >= 2);
+          name_release_owner (name);
+        }
 
       name_unqueue_owner (name, client);
 

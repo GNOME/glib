@@ -800,12 +800,13 @@ g_variant_new_array (const GVariantType *child_type,
 
   for (i = 0; i < n_children; i++)
     {
-      if G_UNLIKELY (!g_variant_is_of_type (children[i], child_type))
+      gboolean is_of_child_type = g_variant_is_of_type (children[i], child_type);
+      if G_UNLIKELY (!is_of_child_type)
         {
           while (i != 0)
             g_variant_unref (my_children[--i]);
           g_free (my_children);
-	  g_return_val_if_fail (g_variant_is_of_type (children[i], child_type), NULL);
+          g_return_val_if_fail (is_of_child_type, NULL);
         }
       my_children[i] = g_variant_ref_sink (children[i]);
       trusted &= g_variant_is_trusted (children[i]);
