@@ -111,8 +111,10 @@
  * @minor: the minor version to check for
  * @micro: the micro version to check for
  *
- * Checks the version of the GLib library that is being compiled
- * against. See glib_check_version() for a runtime check.
+ * Checks whether the version of the GLib library that is being compiled
+ * against is greater than or equal to the given one.
+ *
+ * See glib_check_version() for a runtime check.
  *
  * Returns: %TRUE if the version of the GLib header files
  * is the same as or newer than the passed-in version.
