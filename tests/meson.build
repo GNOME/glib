@@ -17,7 +17,6 @@ subdir('refcount')
 
 tests = {
   'gio-test' : {},
-  'mainloop-test' : {},
   'mapping-test' : {},
   'slice-threadinit' : {
     'dependencies' : [libgthread_dep],
