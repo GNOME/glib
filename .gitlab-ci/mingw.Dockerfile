@@ -57,7 +57,7 @@ RUN dnf -y install \
 WORKDIR /opt
 COPY cross_file_mingw64.txt /opt
 
-RUN pip3 install meson==0.52.0
+RUN pip3 install meson==0.60.3
 
 ARG HOST_USER_ID=5555
 ENV HOST_USER_ID ${HOST_USER_ID}

@@ -774,7 +774,7 @@ if have_bash
   bash_comp_inst_dir = ''
   if bash_comp_dep.found()
     bash_comp_dir_override = bash_comp_dep.version().version_compare('>= 2.10') ? ['datadir', get_option('datadir')] : ['prefix', get_option('prefix')]
-    bash_comp_inst_dir = bash_comp_dep.get_pkgconfig_variable('completionsdir', define_variable: bash_comp_dir_override)
+    bash_comp_inst_dir = bash_comp_dep.get_variable('completionsdir', pkgconfig_define: bash_comp_dir_override)
   endif
 
   if bash_comp_inst_dir == ''
@@ -829,17 +829,12 @@ schemas_subdir = join_paths('glib-2.0', 'schemas')
 
 libgio_dep = declare_dependency(link_with : libgio,
   dependencies : [libgmodule_dep, libgobject_dep, gioenumtypes_dep],
-  include_directories : [gioinc])
-
-# Work around variables kwarg requiring Meson 0.56
-if meson.version().version_compare('>=0.56.0')
-  libgio_dep = declare_dependency(dependencies: libgio_dep,
-    variables: [
-      'schemasdir=' + join_paths(glib_datadir, schemas_subdir),
-      'giomoduledir=' + glib_giomodulesdir,
-    ]
-  )
-endif
+  include_directories : [gioinc],
+  variables : [
+    'schemasdir=' + join_paths(glib_datadir, schemas_subdir),
+    'giomoduledir=' + glib_giomodulesdir,
+  ],
+)
 
 pkg.generate(libgio,
   requires : ['glib-2.0', 'gobject-2.0'],
@@ -861,11 +856,7 @@ pkg.generate(libgio,
   name : 'GIO',
   description : 'glib I/O library',
 )
-
-if meson.version().version_compare('>=0.54.0')
-  meson.override_dependency('gio-2.0', libgio_dep)
-endif
-
+meson.override_dependency('gio-2.0', libgio_dep)
 
 if host_system == 'windows'
   pkg.generate(requires : ['gobject-2.0', 'gmodule-no-export-2.0', 'gio-2.0'],
@@ -876,9 +867,7 @@ if host_system == 'windows'
     name : 'GIO Windows specific APIs',
     description : 'Windows specific headers for glib I/O library',
   )
-  if meson.version().version_compare('>=0.54.0')
-    meson.override_dependency('gio-windows-2.0', libgio_dep)
-  endif
+  meson.override_dependency('gio-windows-2.0', libgio_dep)
 else
   pkg.generate(requires : ['gobject-2.0', 'gio-2.0'],
     subdirs : ['gio-unix-2.0'],
@@ -888,9 +877,7 @@ else
     name : 'GIO unix specific APIs',
     description : 'unix specific headers for glib I/O library',
   )
-  if meson.version().version_compare('>=0.54.0')
-    meson.override_dependency('gio-unix-2.0', libgio_dep)
-  endif
+  meson.override_dependency('gio-unix-2.0', libgio_dep)
 endif
 
 if host_system == 'windows'
@@ -991,7 +978,7 @@ glib_compile_resources = executable('glib-compile-resources',
 # Cannot override those programs in cross compilation case because they are
 # native executables that cannot be run on the build machine.
 # See https://gitlab.gnome.org/GNOME/glib/issues/1859.
-if not meson.is_cross_build()
+if not meson.can_run_host_binaries()
   meson.override_find_program('glib-compile-schemas', glib_compile_schemas)
   meson.override_find_program('glib-compile-resources', glib_compile_resources)
   meson.override_find_program('gio-querymodules', gio_querymodules)

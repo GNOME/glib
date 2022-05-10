@@ -30,7 +30,7 @@ int main ()
 }
 '''
 
-if not meson.is_cross_build() or meson.has_exe_wrapper()
+if meson.can_run_host_binaries()
   run_result = cc.run(printf_long_double_test,
       name : 'printf supports \'long double\' arguments')
   gl_cv_func_printf_long_double = run_result.compiled() and run_result.returncode() == 0

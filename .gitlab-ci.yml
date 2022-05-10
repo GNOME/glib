@@ -10,15 +10,14 @@ cache:
     - _ccache/
 
 variables:
-  FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v13"
-  COVERITY_IMAGE: "registry.gitlab.gnome.org/gnome/glib/coverity:v3"
-  DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v9"
-  ANDROID_IMAGE: "registry.gitlab.gnome.org/gnome/glib/android-ndk:v6"
-  MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v5"
+  FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v14"
+  COVERITY_IMAGE: "registry.gitlab.gnome.org/gnome/glib/coverity:v4"
+  DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v10"
+  ANDROID_IMAGE: "registry.gitlab.gnome.org/gnome/glib/android-ndk:v7"
+  MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v6"
   MESON_TEST_TIMEOUT_MULTIPLIER: 2
   G_MESSAGES_DEBUG: all
-  MESON_COMMON_OPTIONS_NO_WARNING: "--buildtype debug --wrap-mode=nodownload"
-  MESON_COMMON_OPTIONS: "${MESON_COMMON_OPTIONS_NO_WARNING} --fatal-meson-warnings"
+  MESON_COMMON_OPTIONS: "--buildtype debug --wrap-mode=nodownload --fatal-meson-warnings"
 
 .only-default:
   only:
@@ -72,10 +71,7 @@ fedora-x86_64:
   variables:
     CFLAGS: "-coverage -ftest-coverage -fprofile-arcs"
   script:
-    # FIXME: Cannot use MESON_COMMON_OPTIONS here because meson warns about gtkdoc
-    # feature fully functional in 0.54, but we only depend on 0.52. So we cannot build
-    # with --fatal-meson-warnings.
-    - meson ${MESON_COMMON_OPTIONS_NO_WARNING}
+    - meson ${MESON_COMMON_OPTIONS}
             --werror
             --default-library=both
             --prefix=$HOME/glib-installed
@@ -326,7 +322,10 @@ vs2017-x64:
   script:
     # FIXME: These should use --wrap-mode=nodownload but the Windows CI machines
     # aren’t currently set up for that.
-    - .gitlab-ci/test-msvc.bat ${MESON_COMMON_OPTIONS} --wrap-mode=default
+    - .gitlab-ci/test-msvc.bat ${MESON_COMMON_OPTIONS}
+                               --wrap-mode=default
+                               --python.platlibdir=C:\Python37\site-packages
+                               --python.purelibdir=C:\Python37\site-packages
   artifacts:
     reports:
       junit: "_build/${env:CI_JOB_NAME}-report.xml"
@@ -351,7 +350,11 @@ vs2017-x64-static:
   script:
     # FIXME: These should use --wrap-mode=nodownload but the Windows CI machines
     # aren’t currently set up for that.
-    - .gitlab-ci/test-msvc.bat ${MESON_COMMON_OPTIONS} --wrap-mode=default --default-library=static
+    - .gitlab-ci/test-msvc.bat ${MESON_COMMON_OPTIONS}
+                               --wrap-mode=default
+                               --default-library=static
+                               --python.platlibdir=C:\Python37\site-packages
+                               --python.purelibdir=C:\Python37\site-packages
   artifacts:
     reports:
       junit: "_build/${env:CI_JOB_NAME}-report.xml"
@@ -564,10 +567,7 @@ dist-job:
   only:
     - tags
   script:
-    # FIXME: Cannot use MESON_COMMON_OPTIONS here because meson warns about gtkdoc
-    # feature fully functional in 0.54, but we only depend on 0.52. So we cannot build
-    # with --fatal-meson-warnings.
-    - meson ${MESON_COMMON_OPTIONS_NO_WARNING} --buildtype release -Dgtk_doc=true -Dman=true _build
+    - meson ${MESON_COMMON_OPTIONS} --buildtype release -Dgtk_doc=true -Dman=true _build
     - cd _build
     - ninja dist
     - ninja glib-doc gobject-doc gio-doc

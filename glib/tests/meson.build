@@ -315,7 +315,7 @@ executable('testing-helper', 'testing-helper.c',
 )
 
 # some testing of gtester functionality
-if not meson.is_cross_build() and host_system != 'windows'
+if meson.can_run_host_binaries() and host_system != 'windows'
   xmllint = find_program('xmllint', required: false)
   if xmllint.found()
     tmpsample_xml = custom_target('tmpsample.xml',

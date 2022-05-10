@@ -1,7 +1,7 @@
 project('glib', 'c', 'cpp',
   version : '2.73.0',
-  # NOTE: We keep this pinned at 0.52 because that's what Debian Stable ships
-  meson_version : '>= 0.52.0',
+  # NOTE: See the policy in docs/meson-version.md before changing the Meson dependency
+  meson_version : '>= 0.60.0',
   default_options : [
     'buildtype=debugoptimized',
     'warning_level=3',
@@ -12,7 +12,7 @@ project('glib', 'c', 'cpp',
 cc = meson.get_compiler('c')
 cxx = meson.get_compiler('cpp')
 
-cc_can_run = not meson.is_cross_build() or meson.has_exe_wrapper()
+cc_can_run = meson.can_run_host_binaries()
 
 if cc.get_argument_syntax() == 'msvc'
   # Ignore several spurious warnings for things glib does very commonly
@@ -100,7 +100,7 @@ installed_tests_template = files('template.test.in')
 installed_tests_template_tap = files('template-tap.test.in')
 
 # Don’t build the tests unless we can run them (either natively, in an exe wrapper, or by installing them for later use)
-build_tests = get_option('tests') and (not meson.is_cross_build() or (meson.is_cross_build() and meson.has_exe_wrapper()) or installed_tests_enabled)
+build_tests = get_option('tests') and (meson.can_run_host_binaries() or installed_tests_enabled)
 
 add_project_arguments('-D_GNU_SOURCE', language: 'c')
 
@@ -662,19 +662,6 @@ if host_system != 'windows' and cc.has_function('stpcpy', prefix : '#include <st
   glib_conf.set('HAVE_STPCPY', 1)
 endif
 
-# When building for Android-20 and earlier, require Meson 0.54.2 or newer.
-# This is needed, because Meson build versions prior to 0.54.2 return false
-# positive for stpcpy has_function check when building for legacy Android.
-if host_system == 'android'
-    android_is_older = cc.compiles('''#if __ANDROID_API__ >= 21
-                                        #error Android is 21 or newer
-                                    #endif''')
-    if android_is_older and meson.version().version_compare('< 0.54.2')
-      error('Compiling for <Android-21 requires Meson 0.54.2 or newer')
-    endif
-endif
-
-
 if cc.has_function('memalign', prefix: '#include <stdlib.h>\n#include <malloc.h>')
   glib_conf.set('HAVE_MEMALIGN', 1)
 endif
@@ -1047,7 +1034,7 @@ main(void)
       have_good_vsnprintf = true
     endif
   else
-      have_good_vsnprintf = meson.get_cross_property('have_c99_vsnprintf', false)
+      have_good_vsnprintf = meson.get_external_property('have_c99_vsnprintf', false)
       glib_conf.set('HAVE_C99_VSNPRINTF', have_good_vsnprintf)
   endif
 
@@ -1095,7 +1082,7 @@ main(void)
       have_good_snprintf = true
     endif
   else
-      have_good_snprintf = meson.get_cross_property('have_c99_snprintf', false)
+      have_good_snprintf = meson.get_external_property('have_c99_snprintf', false)
       glib_conf.set('HAVE_C99_SNPRINTF', have_good_snprintf)
   endif
 
@@ -1122,7 +1109,7 @@ main (void)
       have_good_printf = true
     endif
   else
-      have_good_printf = meson.get_cross_property('have_unix98_printf', false)
+      have_good_printf = meson.get_external_property('have_unix98_printf', false)
       glib_conf.set('HAVE_UNIX98_PRINTF', have_good_printf)
   endif
 endif
@@ -1716,7 +1703,7 @@ if cc_can_run
   rres = cc.run(va_list_val_copy_prog, name : 'va_lists can be copied as values')
   glib_va_val_copy = rres.compiled() and rres.returncode() == 0
 else
-  glib_va_val_copy = meson.get_cross_property('va_val_copy', true)
+  glib_va_val_copy = meson.get_external_property('va_val_copy', true)
 endif
 if not glib_va_val_copy
   glib_vacopy = glib_vacopy + '\n#define G_VA_COPY_AS_ARRAY 1'
@@ -1995,7 +1982,7 @@ if cc_can_run
   rres = cc.run(stack_grows_check_prog, name : 'stack grows check')
   growing_stack = rres.compiled() and rres.returncode() == 0
 else
-  growing_stack = meson.get_cross_property('growing_stack', false)
+  growing_stack = meson.get_external_property('growing_stack', false)
 endif
 
 glibconfig_conf.set10('G_HAVE_GROWING_STACK', growing_stack)
@@ -2214,7 +2201,7 @@ if cc.has_function('strlcpy')
     if rres.compiled() and rres.returncode() == 0
       glib_conf.set('HAVE_STRLCPY', 1)
     endif
-  elif meson.get_cross_property('have_strlcpy', false)
+  elif meson.get_external_property('have_strlcpy', false)
     glib_conf.set('HAVE_STRLCPY', 1)
   endif
 endif
@@ -2271,7 +2258,7 @@ if cc_can_run
   rres = cc.run(cmdline_test_code, name : '/proc/self/cmdline')
   have_proc_self_cmdline = rres.compiled() and rres.returncode() == 0
 else
-  have_proc_self_cmdline = meson.get_cross_property('have_proc_self_cmdline', false)
+  have_proc_self_cmdline = meson.get_external_property('have_proc_self_cmdline', false)
 endif
 
 glib_conf.set('HAVE_PROC_SELF_CMDLINE', have_proc_self_cmdline)

@@ -71,7 +71,7 @@ int main ()
 gl_cv_cc_double_expbit0_word = -1
 gl_cv_cc_double_expbit0_bit = -1
 
-if not meson.is_cross_build() or meson.has_exe_wrapper()
+if meson.can_run_host_binaries()
   run_result = cc.run(double_exponent_test,
       name : 'where to find the exponent in a \'double\'')
   if run_result.compiled() and run_result.returncode() == 0

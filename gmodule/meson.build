@@ -25,7 +25,7 @@ if g_module_impl == 'G_MODULE_IMPL_DL'
   if cc.get_id() == 'msvc' or cc.get_id() == 'clang-cl'
     message('Building for MSVC: assuming that symbols are prefixed with underscore')
     g_module_need_uscore = 1
-  elif meson.has_exe_wrapper()
+  elif meson.can_run_host_binaries()
     # FIXME: communicate result via stdout instead of return value, so non-0 return is not printed in bold red
     rres = cc.run(dlopen_dlsym_test_code,
                   dependencies : libdl_dep,
@@ -126,11 +126,9 @@ libgmodule_dep = declare_dependency(link_with : libgmodule,
   include_directories : [gmoduleinc],
   dependencies : [libglib_dep])
 
-if meson.version().version_compare('>=0.54.0')
-  meson.override_dependency('gmodule-no-export-2.0', libgmodule_dep)
-  meson.override_dependency('gmodule-export-2.0', libgmodule_dep)
-  meson.override_dependency('gmodule-2.0', libgmodule_dep)
-endif
+meson.override_dependency('gmodule-no-export-2.0', libgmodule_dep)
+meson.override_dependency('gmodule-export-2.0', libgmodule_dep)
+meson.override_dependency('gmodule-2.0', libgmodule_dep)
 
 if build_tests
   subdir('tests')
