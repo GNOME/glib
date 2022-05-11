@@ -2388,13 +2388,6 @@ endif
 install_data('m4macros/glib-2.0.m4', 'm4macros/glib-gettext.m4', 'm4macros/gsettings.m4',
   install_dir : join_paths(get_option('datadir'), 'aclocal'))
 
-if host_system != 'windows'
-  # Install Valgrind suppression file (except on Windows,
-  # as Valgrind is currently not supported on Windows)
-  install_data('glib.supp',
-    install_dir : join_paths(get_option('datadir'), 'glib-2.0', 'valgrind'))
-endif
-
 configure_file(output : 'config.h', configuration : glib_conf)
 
 if host_system == 'windows'

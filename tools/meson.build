@@ -12,3 +12,10 @@ if have_sh
     output : 'glib-gettextize',
     configuration : gettextize_conf)
 endif
+
+if host_system != 'windows'
+  # Install Valgrind suppression file (except on Windows,
+  # as Valgrind is currently not supported on Windows)
+  install_data('glib.supp',
+    install_dir : join_paths(get_option('datadir'), 'glib-2.0', 'valgrind'))
+endif
