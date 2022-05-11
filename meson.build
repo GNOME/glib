@@ -2377,25 +2377,11 @@ subdir('fuzzing')
 if build_tests
   subdir('tests')
 endif
+subdir('tools')
 
 # xgettext is optional (on Windows for instance)
 if find_program('xgettext', required : get_option('nls')).found()
   subdir('po')
-endif
-
-# Install glib-gettextize executable, if a UNIX-style shell is found
-if have_sh
-  # These should not contain " quotes around the values
-  gettextize_conf = configuration_data()
-  gettextize_conf.set('PACKAGE', 'glib')
-  gettextize_conf.set('VERSION', meson.project_version())
-  gettextize_conf.set('prefix', glib_prefix)
-  gettextize_conf.set('datarootdir', glib_datadir)
-  gettextize_conf.set('datadir', glib_datadir)
-  configure_file(input : 'glib-gettextize.in',
-    install_dir : glib_bindir,
-    output : 'glib-gettextize',
-    configuration : gettextize_conf)
 endif
 
 # Install m4 macros that other projects use
