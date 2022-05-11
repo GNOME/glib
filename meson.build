@@ -96,8 +96,8 @@ endif
 installed_tests_metadir = join_paths(glib_datadir, 'installed-tests', meson.project_name())
 installed_tests_execdir = join_paths(glib_libexecdir, 'installed-tests', meson.project_name())
 installed_tests_enabled = get_option('installed_tests')
-installed_tests_template = files('template.test.in')
-installed_tests_template_tap = files('template-tap.test.in')
+installed_tests_template = files('tests/template.test.in')
+installed_tests_template_tap = files('tests/template-tap.test.in')
 
 # Don’t build the tests unless we can run them (either natively, in an exe wrapper, or by installing them for later use)
 build_tests = get_option('tests') and (meson.can_run_host_binaries() or installed_tests_enabled)
