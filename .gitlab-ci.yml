@@ -10,10 +10,9 @@ cache:
     - _ccache/
 
 variables:
-  FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v14"
+  FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v15"
   COVERITY_IMAGE: "registry.gitlab.gnome.org/gnome/glib/coverity:v4"
   DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v10"
-  ANDROID_IMAGE: "registry.gitlab.gnome.org/gnome/glib/android-ndk:v7"
   MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v6"
   MESON_TEST_TIMEOUT_MULTIPLIER: 2
   G_MESSAGES_DEBUG: all
@@ -255,14 +254,14 @@ valgrind:
     paths:
       - "_build/meson-logs"
 
-cross-android_api28_arm64:
+cross-android_arm64:
   extends:
     - .cross-build-linux
     - .only-default
-  image: $ANDROID_IMAGE
+  image: $FEDORA_IMAGE
   script:
     # FIXME: add --werror
-    - meson ${MESON_COMMON_OPTIONS} --cross-file=/opt/cross_file_android_arm64_28.txt _build
+    - meson ${MESON_COMMON_OPTIONS} --cross-file=.gitlab-ci/cross_file_android_arm64_31.txt _build
     - ninja -C _build
 
 cross-mingw64:
