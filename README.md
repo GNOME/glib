@@ -13,7 +13,7 @@ The official web site is:
 
 ## Installation
 
-See the file '[INSTALL.in](INSTALL.in)'
+See the file '[INSTALL.md](INSTALL.md)'
 
 ## Supported versions
 

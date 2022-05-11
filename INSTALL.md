@@ -1,8 +1,8 @@
 Simple install procedure
 ========================
 
-  % tar xf glib-@GLIB_VERSION@.tar.gz       # unpack the sources
-  % cd glib-@GLIB_VERSION@                  # change to the toplevel directory
+  % tar xf glib-*.tar.gz                    # unpack the sources
+  % cd glib-*                               # change to the toplevel directory
   % meson _build                            # configure the build
   % ninja -C _build                         # build GLib
 
