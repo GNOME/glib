@@ -79,7 +79,7 @@ read_all (int         fd,
 
       if (error != G_IO_ERROR_NONE)
         {
-          g_print ("io-channel-basic: ...from %d: %d\n", fd, error);
+          g_test_message ("io-channel-basic: ...from %d: %d", fd, error);
           if (error == G_IO_ERROR_AGAIN)
             continue;
           break;
@@ -207,18 +207,16 @@ recv_windows_message (GIOChannel  *channel,
 
       if (error != G_IO_ERROR_NONE)
         {
-          g_print ("io-channel-basic: ...reading Windows message: G_IO_ERROR_%s\n",
-                   (error == G_IO_ERROR_AGAIN ? "AGAIN" :
-                    (error == G_IO_ERROR_INVAL ? "INVAL" :
-                     (error == G_IO_ERROR_UNKNOWN ? "UNKNOWN" : "???"))));
+          g_test_message ("io-channel-basic: ...reading Windows message: G_IO_ERROR_%s",
+                          (error == G_IO_ERROR_AGAIN ? "AGAIN" : (error == G_IO_ERROR_INVAL ? "INVAL" : (error == G_IO_ERROR_UNKNOWN ? "UNKNOWN" : "???"))));
           if (error == G_IO_ERROR_AGAIN)
             continue;
         }
       break;
     }
 
-  g_print ("io-channel-basic: ...Windows message for 0x%p: %d,%" G_GUINTPTR_FORMAT ",%" G_GINTPTR_FORMAT "\n",
-           msg.hwnd, msg.message, msg.wParam, (gintptr) msg.lParam);
+  g_test_message ("io-channel-basic: ...Windows message for 0x%p: %d,%" G_GUINTPTR_FORMAT ",%" G_GINTPTR_FORMAT,
+                  msg.hwnd, msg.message, msg.wParam, (gintptr) msg.lParam);
 
   return TRUE;
 }
@@ -234,8 +232,8 @@ window_procedure (HWND hwnd,
                   WPARAM wparam,
                   LPARAM lparam)
 {
-  g_print ("io-channel-basic: window_procedure for 0x%p: %d,%" G_GUINTPTR_FORMAT ",%" G_GINTPTR_FORMAT "\n",
-           hwnd, message, wparam, (gintptr) lparam);
+  g_test_message ("io-channel-basic: window_procedure for 0x%p: %d,%" G_GUINTPTR_FORMAT ",%" G_GINTPTR_FORMAT,
+                  hwnd, message, wparam, (gintptr) lparam);
   return DefWindowProc (hwnd, message, wparam, lparam);
 }
 #endif
@@ -268,20 +266,11 @@ spawn_process (int children_nb)
   wcl.lpszClassName = "io-channel-basic";
 
   klass = RegisterClass (&wcl);
-
-  if (!klass)
-    {
-      g_print ("io-channel-basic: RegisterClass failed\n");
-      exit (1);
-    }
+  g_assert_cmpint (klass, !=, 0);
 
   hwnd = CreateWindow (MAKEINTATOM(klass), "io-channel-basic", 0, 0, 0, 10, 10,
                        NULL, NULL, wcl.hInstance, NULL);
-  if (!hwnd)
-    {
-      g_print ("io-channel-basic: CreateWindow failed\n");
-      exit (1);
-    }
+  g_assert_nonnull (hwnd);
 
   windows_messages_channel =
     g_io_channel_win32_new_messages ((guint) (guintptr) hwnd);
@@ -338,8 +327,8 @@ spawn_process (int children_nb)
       pollresult = g_io_channel_win32_poll (&pollfd, 1, 100);
       end = g_get_monotonic_time();
 
-      g_print ("io-channel-basic: had to wait %" G_GINT64_FORMAT "s, result:%d\n",
-               g_date_time_difference (end, start) / 1000000, pollresult);
+      g_test_message ("io-channel-basic: had to wait %" G_GINT64_FORMAT "s, result:%d",
+                      (end - start) / 1000000, pollresult);
 #endif
       g_io_channel_unref (my_read_channel);
     }
@@ -389,8 +378,8 @@ run_process (int argc, char *argv[])
           int msg = WM_USER + (rand () % 100);
           WPARAM wparam = rand ();
           LPARAM lparam = rand ();
-          g_print ("io-channel-basic: child posting message %d,%" G_GUINTPTR_FORMAT ",%" G_GINTPTR_FORMAT " to 0x%p\n",
-                   msg, wparam, (gintptr) lparam, hwnd);
+          g_test_message ("io-channel-basic: child posting message %d,%" G_GUINTPTR_FORMAT ",%" G_GINTPTR_FORMAT " to 0x%p",
+                          msg, wparam, (gintptr) lparam, hwnd);
           PostMessage (hwnd, msg, wparam, lparam);
         }
 #endif
