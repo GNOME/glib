@@ -14,4 +14,4 @@ steps at once by running:
         checkout/glib# meson _build
 
 For information about submitting patches see the CONTRIBUTING.md file. For
-information about major design decisions, see the README.rationale file.
+information about major design decisions, see the docs/README.rationale file.
