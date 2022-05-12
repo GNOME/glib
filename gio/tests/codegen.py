@@ -39,7 +39,7 @@ Result = collections.namedtuple("Result", ("info", "out", "err", "subs"))
 
 
 def on_win32():
-    return sys.platform.find('win') != -1
+    return sys.platform.find("win") != -1
 
 
 class TestCodegen(unittest.TestCase):
