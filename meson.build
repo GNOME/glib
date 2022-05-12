@@ -337,9 +337,9 @@ foreach h : headers
   endif
 endforeach
 
-# FIXME: Use cc.check_header from Meson 0.47.
-# FreeBSD includes a malloc.h which always throw compilation error.
-if cc.compiles('#include <malloc.h>', name : 'malloc.h')
+# FreeBSD includes a malloc.h which always throws compilation error, so we have
+# to use check_header() rather than has_header().
+if cc.check_header('malloc.h')
   glib_conf.set('HAVE_MALLOC_H', 1)
   glib_conf_prefix = glib_conf_prefix + '#define HAVE_MALLOC_H 1\n'
 endif
