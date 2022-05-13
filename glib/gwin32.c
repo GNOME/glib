@@ -31,6 +31,7 @@
 
 #include "glibconfig.h"
 
+#include <glib/gstdio.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -39,6 +40,7 @@
 #include <fcntl.h>
 
 #define STRICT			/* Strict typing, please */
+#include <winsock2.h>
 #include <windows.h>
 #undef STRICT
 #ifndef G_WITH_CYGWIN
@@ -805,8 +807,6 @@ g_win32_get_command_line (void)
   return result;
 }
 
-#ifdef G_OS_WIN32
-
 /* Binary compatibility versions. Not for newly compiled code. */
 
 _GLIB_EXTERN gchar *g_win32_get_package_installation_directory_utf8    (const gchar *package,
@@ -836,10 +836,6 @@ G_GNUC_BEGIN_IGNORE_DEPRECATIONS
                                                         subdir);
 G_GNUC_END_IGNORE_DEPRECATIONS
 }
-
-#endif
-
-#ifdef G_OS_WIN32
 
 /* This function looks up two environment
  * variables, G_WIN32_ALLOC_CONSOLE and G_WIN32_ATTACH_CONSOLE.
@@ -1455,4 +1451,112 @@ g_win32_find_helper_executable_path (const gchar *executable_name, void *dll_han
   return executable_path;
 }
 
-#endif
+/*
+ * g_win32_handle_is_socket:
+ * @h: a win32 HANDLE
+ *
+ * Returns: %TRUE if the handle is a `SOCKET`.
+ */
+gboolean
+g_win32_handle_is_socket (HANDLE h)
+{
+  int option = 0;
+  int optlen = sizeof (option);
+
+  /* according to: https://stackoverflow.com/a/50981652/1277510, this is reasonable */
+  if (getsockopt ((SOCKET) h, SOL_SOCKET, SO_DEBUG, (char *) &option, &optlen) == SOCKET_ERROR)
+    return FALSE;
+
+  return TRUE;
+}
+
+/*
+ * g_win32_reopen_noninherited:
+ * @fd: (transfer full): A file descriptor
+ * @mode: _open_osfhandle flags
+ * @error: A location to return an error of type %G_FILE_ERROR
+ *
+ * Reopen the given @fd with `_O_NOINHERIT`.
+ *
+ * The @fd is closed on success.
+ *
+ * Returns: (transfer full): The new file-descriptor, or -1 on error.
+ */
+int
+g_win32_reopen_noninherited (int fd,
+                             int mode,
+                             GError **error)
+{
+  HANDLE h;
+  HANDLE duph;
+  int dupfd, errsv;
+
+  h = (HANDLE) _get_osfhandle (fd);
+  errsv = errno;
+
+  if (h == INVALID_HANDLE_VALUE)
+    {
+      const char *emsg = g_strerror (errsv);
+      g_set_error (error, G_FILE_ERROR, g_file_error_from_errno (errsv),
+                   "_get_osfhandle() failed: %s", emsg);
+      return -1;
+    }
+
+  if (g_win32_handle_is_socket (h))
+    {
+      WSAPROTOCOL_INFO info;
+
+      if (WSADuplicateSocket ((SOCKET) h,
+                              GetCurrentProcessId (),
+                              &info))
+        {
+          gchar *emsg = g_win32_error_message (WSAGetLastError ());
+          g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                       "WSADuplicateSocket() failed: %s", emsg);
+          g_free (emsg);
+          return -1;
+        }
+
+      duph = (HANDLE) WSASocket (FROM_PROTOCOL_INFO,
+                                 FROM_PROTOCOL_INFO,
+                                 FROM_PROTOCOL_INFO,
+                                 &info, 0, 0);
+      if (duph == (HANDLE) INVALID_SOCKET)
+        {
+          gchar *emsg = g_win32_error_message (WSAGetLastError ());
+          g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                       "WSASocket() failed: %s", emsg);
+          g_free (emsg);
+          return -1;
+        }
+    }
+  else if (DuplicateHandle (GetCurrentProcess (), h,
+                            GetCurrentProcess (), &duph,
+                            0, FALSE, DUPLICATE_SAME_ACCESS) == 0)
+    {
+      char *emsg = g_win32_error_message (GetLastError ());
+      g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                   "DuplicateHandle() failed: %s", emsg);
+      g_free (emsg);
+      return -1;
+    }
+
+  /* the duph ownership is transferred to dupfd */
+  dupfd = _open_osfhandle ((gintptr) duph, mode | _O_NOINHERIT);
+  if (dupfd < 0)
+    {
+      g_set_error_literal (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                           "_open_osfhandle() failed");
+      CloseHandle (duph);
+      return -1;
+    }
+
+  if (!g_close (fd, error))
+    {
+      /* ignore extra errors in this case */
+      g_close (dupfd, NULL);
+      return -1;
+    }
+
+  return dupfd;
+}

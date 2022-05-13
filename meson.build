@@ -114,6 +114,9 @@ if cc.has_argument('-fno-strict-aliasing')
   add_project_arguments('-fno-strict-aliasing', language: 'c')
 endif
 
+# dummy/empty dependency() object to declare fallbacks and simpler dependencies
+not_found = dependency('', required: false)
+
 ########################
 # Configuration begins #
 ########################
@@ -2134,6 +2137,8 @@ endif
 
 if host_system == 'windows'
   winsock2 = cc.find_library('ws2_32')
+else
+  winsock2 = not_found
 endif
 
 selinux_dep = []

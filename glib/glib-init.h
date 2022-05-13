@@ -43,6 +43,9 @@ gboolean _g_win32_call_rtl_version (OSVERSIONINFOEXW *info);
 
 extern HMODULE glib_dll;
 gchar *g_win32_find_helper_executable_path (const gchar *process_name, void *dll_handle);
+int g_win32_reopen_noninherited (int fd, int mode, GError **err);
+gboolean g_win32_handle_is_socket (void *h);
+
 #endif
 
 #endif /* __GLIB_INIT_H__ */

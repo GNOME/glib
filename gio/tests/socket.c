@@ -18,6 +18,7 @@
 
 #include <gio/gio.h>
 #include <glib/gstdio.h>
+#include "glib-private.h"
 
 #include <gio/gcredentialsprivate.h>
 #include <gio/gunixconnection.h>
@@ -32,6 +33,7 @@
 
 #ifdef G_OS_WIN32
 #include "giowin32-afunix.h"
+#include <io.h>
 #endif
 
 #include "gnetworkingprivate.h"
@@ -139,6 +141,9 @@ create_server_full (GSocketFamily   family,
   g_assert_cmpint (g_socket_get_family (server), ==, family);
   g_assert_cmpint (g_socket_get_socket_type (server), ==, socket_type);
   g_assert_cmpint (g_socket_get_protocol (server), ==, G_SOCKET_PROTOCOL_DEFAULT);
+#ifdef G_OS_WIN32
+  g_assert (GLIB_PRIVATE_CALL (g_win32_handle_is_socket) ((HANDLE)(gintptr) g_socket_get_fd (server)));
+#endif
 
   g_socket_set_blocking (server, TRUE);
 
@@ -475,7 +480,9 @@ test_ip_sync (GSocketFamily family)
   g_assert_cmpint (g_socket_get_family (client), ==, family);
   g_assert_cmpint (g_socket_get_socket_type (client), ==, G_SOCKET_TYPE_STREAM);
   g_assert_cmpint (g_socket_get_protocol (client), ==, G_SOCKET_PROTOCOL_DEFAULT);
-
+#ifdef G_OS_WIN32
+  g_assert (GLIB_PRIVATE_CALL (g_win32_handle_is_socket) ((HANDLE)(gintptr) g_socket_get_fd (client)));
+#endif
   g_socket_set_blocking (client, TRUE);
   g_socket_set_timeout (client, 1);
 
@@ -612,6 +619,9 @@ test_ip_sync_dgram (GSocketFamily family)
   g_assert_cmpint (g_socket_get_family (client), ==, family);
   g_assert_cmpint (g_socket_get_socket_type (client), ==, G_SOCKET_TYPE_DATAGRAM);
   g_assert_cmpint (g_socket_get_protocol (client), ==, G_SOCKET_PROTOCOL_DEFAULT);
+#ifdef G_OS_WIN32
+  g_assert (GLIB_PRIVATE_CALL (g_win32_handle_is_socket) ((HANDLE)(gintptr) g_socket_get_fd (client)));
+#endif
 
   g_socket_set_blocking (client, TRUE);
   g_socket_set_timeout (client, 1);
@@ -849,6 +859,9 @@ test_ip_sync_dgram_timeouts (GSocketFamily family)
   g_assert_cmpint (g_socket_get_family (client), ==, family);
   g_assert_cmpint (g_socket_get_socket_type (client), ==, G_SOCKET_TYPE_DATAGRAM);
   g_assert_cmpint (g_socket_get_protocol (client), ==, G_SOCKET_PROTOCOL_DEFAULT);
+#ifdef G_OS_WIN32
+  g_assert (GLIB_PRIVATE_CALL (g_win32_handle_is_socket) ((HANDLE)(gintptr) g_socket_get_fd (client)));
+#endif
 
 #ifdef G_OS_WIN32
   /* Winsock can't recv() on unbound udp socket */
@@ -991,6 +1004,9 @@ test_close_graceful (void)
   g_assert_cmpint (g_socket_get_family (client), ==, family);
   g_assert_cmpint (g_socket_get_socket_type (client), ==, G_SOCKET_TYPE_STREAM);
   g_assert_cmpint (g_socket_get_protocol (client), ==, G_SOCKET_PROTOCOL_DEFAULT);
+#ifdef G_OS_WIN32
+  g_assert (GLIB_PRIVATE_CALL (g_win32_handle_is_socket) ((HANDLE)(gintptr) g_socket_get_fd (client)));
+#endif
 
   g_socket_set_blocking (client, TRUE);
   g_socket_set_timeout (client, 1);
@@ -1258,6 +1274,9 @@ test_fd_reuse (void)
   g_assert_cmpint (g_socket_get_family (client2), ==, g_socket_get_family (client));
   g_assert_cmpint (g_socket_get_socket_type (client2), ==, g_socket_get_socket_type (client));
   g_assert_cmpint (g_socket_get_protocol (client2), ==, G_SOCKET_PROTOCOL_TCP);
+#ifdef G_OS_WIN32
+  g_assert (GLIB_PRIVATE_CALL (g_win32_handle_is_socket) ((HANDLE)(gintptr) g_socket_get_fd (client)));
+#endif
 
   len = g_socket_send (client2, testbuf, strlen (testbuf) + 1, NULL, &error);
   g_assert_no_error (error);
@@ -1377,6 +1396,9 @@ test_unix_from_fd (void)
   g_assert_cmpint (g_socket_get_family (s), ==, G_SOCKET_FAMILY_UNIX);
   g_assert_cmpint (g_socket_get_socket_type (s), ==, G_SOCKET_TYPE_STREAM);
   g_assert_cmpint (g_socket_get_protocol (s), ==, G_SOCKET_PROTOCOL_DEFAULT);
+#ifdef G_OS_WIN32
+  g_assert (GLIB_PRIVATE_CALL (g_win32_handle_is_socket) ((HANDLE)(gintptr) g_socket_get_fd (s)));
+#endif
   g_object_unref (s);
 }
 
@@ -1508,6 +1530,35 @@ test_unix_connection_ancillary_data (void)
   /* TODO: add test for g_unix_connection_send_credentials() and
    * g_unix_connection_receive_credentials().
    */
+}
+#endif
+
+#ifdef G_OS_WIN32
+static void
+test_handle_not_socket (void)
+{
+  GError *err = NULL;
+  gchar *name = NULL;
+  HANDLE hReadPipe, hWritePipe, h;
+  int fd;
+
+  g_assert_true (CreatePipe (&hReadPipe, &hWritePipe, NULL, 2048));
+  g_assert_false (GLIB_PRIVATE_CALL (g_win32_handle_is_socket) (hReadPipe));
+  g_assert_false (GLIB_PRIVATE_CALL (g_win32_handle_is_socket) (hWritePipe));
+  CloseHandle (hReadPipe);
+  CloseHandle (hWritePipe);
+
+  h = (HANDLE) _get_osfhandle (1);
+  g_assert_false (GLIB_PRIVATE_CALL (g_win32_handle_is_socket) (h));
+
+  fd = g_file_open_tmp (NULL, &name, &err);
+  g_assert_no_error (err);
+  h = (HANDLE) _get_osfhandle (fd);
+  g_assert_false (GLIB_PRIVATE_CALL (g_win32_handle_is_socket) (h));
+  g_close (fd, &err);
+  g_assert_no_error (err);
+  g_unlink (name);
+  g_free (name);
 }
 #endif
 
@@ -2327,6 +2378,9 @@ main (int   argc,
   g_test_add_func ("/socket/unix-connection", test_unix_connection);
 #ifdef G_OS_UNIX
   g_test_add_func ("/socket/unix-connection-ancillary-data", test_unix_connection_ancillary_data);
+#endif
+#ifdef G_OS_WIN32
+  g_test_add_func ("/socket/win32-handle-not-socket", test_handle_not_socket);
 #endif
   g_test_add_func ("/socket/source-postmortem", test_source_postmortem);
   g_test_add_func ("/socket/reuse/tcp", test_reuse_tcp);
