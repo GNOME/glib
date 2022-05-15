@@ -2364,7 +2364,7 @@ g_object_new_valist (GType        object_type,
           params[n_params].value = &values[n_params];
           memset (&values[n_params], 0, sizeof (GValue));
 
-          G_VALUE_COLLECT_INIT2 (&values[n_params], vtabs[n_params], pspec->value_type, var_args, 0, &error);
+          G_VALUE_COLLECT_INIT2 (&values[n_params], vtabs[n_params], pspec->value_type, var_args, G_VALUE_NOCOPY_CONTENTS, &error);
 
           if (error)
             {
