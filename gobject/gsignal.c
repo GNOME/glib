@@ -2422,7 +2422,7 @@ g_signal_connect_closure_by_id (gpointer  instance,
 	  Handler *handler = handler_new (signal_id, instance, after);
 
           if (G_TYPE_IS_OBJECT (node->itype))
-            _g_object_set_has_signal_handler ((GObject *)instance);
+            _g_object_set_has_signal_handler ((GObject *)instance, signal_id);
 
 	  handler_seq_no = handler->sequential_number;
 	  handler->detail = detail;
@@ -2489,7 +2489,7 @@ g_signal_connect_closure (gpointer     instance,
 	  Handler *handler = handler_new (signal_id, instance, after);
 
           if (G_TYPE_IS_OBJECT (node->itype))
-            _g_object_set_has_signal_handler ((GObject *)instance);
+            _g_object_set_has_signal_handler ((GObject *)instance, signal_id);
 
 	  handler_seq_no = handler->sequential_number;
 	  handler->detail = detail;
@@ -2593,7 +2593,7 @@ g_signal_connect_data (gpointer       instance,
 	  Handler *handler = handler_new (signal_id, instance, after);
 
           if (G_TYPE_IS_OBJECT (node->itype))
-            _g_object_set_has_signal_handler ((GObject *)instance);
+            _g_object_set_has_signal_handler ((GObject *)instance, signal_id);
 
 	  handler_seq_no = handler->sequential_number;
 	  handler->detail = detail;
