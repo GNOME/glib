@@ -1724,7 +1724,7 @@ test_nonce_tcp (void)
   s = strstr (address, "noncefile=");
   g_assert (s != NULL);
   s += sizeof "noncefile=" - 1;
-  nonce_file = g_strdup (s);
+  nonce_file = g_uri_unescape_string (s, NULL); /* URI-unescaping should be good enough */
 
   /* First try invalid data in the nonce file - this will actually
    * make the client send this and the server will reject it. The way
