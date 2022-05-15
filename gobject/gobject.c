@@ -1158,9 +1158,9 @@ g_object_init (GObject		*object,
   object->ref_count = 1;
   object->qdata = NULL;
 
-  if (CLASS_HAS_PROPS (class))
+  if (CLASS_HAS_PROPS (class) && CLASS_HAS_NOTIFY (class))
     {
-      /* freeze object's notification queue, g_object_newv() preserves pairedness */
+      /* freeze object's notification queue, g_object_new_internal() preserves pairedness */
       g_object_notify_queue_freeze (object, FALSE);
     }
 
@@ -1653,7 +1653,8 @@ object_set_property (GObject             *object,
       g_value_unset (&tmp_value);
     }
 
-  if ((pspec->flags & (G_PARAM_EXPLICIT_NOTIFY|G_PARAM_READABLE)) == G_PARAM_READABLE)
+  if ((pspec->flags & (G_PARAM_EXPLICIT_NOTIFY | G_PARAM_READABLE)) == G_PARAM_READABLE &&
+      nqueue != NULL)
     g_object_notify_queue_add (object, nqueue, pspec);
 }
 
@@ -2060,6 +2061,7 @@ g_object_new_internal (GObjectClass          *class,
 {
   GObjectNotifyQueue *nqueue = NULL;
   GObject *object;
+  guint i;
 
   if G_UNLIKELY (CLASS_HAS_CUSTOM_CONSTRUCTOR (class))
     return g_object_new_with_custom_constructor (class, params, n_params);
@@ -2072,9 +2074,12 @@ g_object_new_internal (GObjectClass          *class,
     {
       GSList *node;
 
-      /* This will have been setup in g_object_init() */
-      nqueue = g_datalist_id_get_data (&object->qdata, quark_notify_queue);
-      g_assert (nqueue != NULL);
+      if (CLASS_HAS_NOTIFY (class))
+        {
+          /* This will have been setup in g_object_init() */
+          nqueue = g_datalist_id_get_data (&object->qdata, quark_notify_queue);
+          g_assert (nqueue != NULL);
+        }
 
       /* We will set exactly n_construct_properties construct
        * properties, but they may come from either the class default
@@ -2107,20 +2112,15 @@ g_object_new_internal (GObjectClass          *class,
   if (CLASS_HAS_CUSTOM_CONSTRUCTED (class))
     class->constructed (object);
 
+  /* Set remaining properties.  The construct properties will
+   * already have been taken, so set only the non-construct ones.
+   */
+  for (i = 0; i < n_params; i++)
+    if (!(params[i].pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY)))
+      object_set_property (object, params[i].pspec, params[i].value, nqueue);
+
   if (nqueue)
-    {
-      guint i;
-
-      /* Set remaining properties.  The construct properties will
-       * already have been taken, so set only the non-construct
-       * ones.
-       */
-      for (i = 0; i < n_params; i++)
-        if (!(params[i].pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY)))
-          object_set_property (object, params[i].pspec, params[i].value, nqueue);
-
-      g_object_notify_queue_thaw (object, nqueue);
-    }
+    g_object_notify_queue_thaw (object, nqueue);
 
   return object;
 }
