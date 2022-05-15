@@ -1592,6 +1592,8 @@ object_set_property (GObject             *object,
   if (redirect)
     pspec = redirect;
 
+  consider_issuing_property_deprecation_warning (pspec);
+
   pclass = G_PARAM_SPEC_GET_CLASS (pspec);
   if (g_value_type_compatible (G_VALUE_TYPE (value), pspec->value_type) &&
       (pclass->value_validate == NULL ||
@@ -2021,10 +2023,7 @@ g_object_new_with_custom_constructor (GObjectClass          *class,
   /* set remaining properties */
   for (i = 0; i < n_params; i++)
     if (!(params[i].pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY)))
-      {
-        consider_issuing_property_deprecation_warning (params[i].pspec);
-        object_set_property (object, params[i].pspec, params[i].value, nqueue);
-      }
+      object_set_property (object, params[i].pspec, params[i].value, nqueue);
 
   /* If nqueue is non-NULL then we are frozen.  Thaw it. */
   if (nqueue)
@@ -2072,7 +2071,6 @@ g_object_new_internal (GObjectClass          *class,
           for (j = 0; j < n_params; j++)
             if (params[j].pspec == pspec)
               {
-                consider_issuing_property_deprecation_warning (pspec);
                 value = params[j].value;
                 break;
               }
@@ -2098,10 +2096,7 @@ g_object_new_internal (GObjectClass          *class,
        */
       for (i = 0; i < n_params; i++)
         if (!(params[i].pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY)))
-          {
-            consider_issuing_property_deprecation_warning (params[i].pspec);
-            object_set_property (object, params[i].pspec, params[i].value, nqueue);
-          }
+          object_set_property (object, params[i].pspec, params[i].value, nqueue);
 
       g_object_notify_queue_thaw (object, nqueue);
     }
@@ -2519,7 +2514,6 @@ g_object_setv (GObject       *object,
       if (!g_object_set_is_valid_property (object, pspec, names[i]))
         break;
 
-      consider_issuing_property_deprecation_warning (pspec);
       object_set_property (object, pspec, &values[i], nqueue);
     }
 
@@ -2574,7 +2568,6 @@ g_object_set_valist (GObject	 *object,
 	  break;
 	}
 
-      consider_issuing_property_deprecation_warning (pspec);
       object_set_property (object, pspec, &value, nqueue);
 
       /* We open-code g_value_unset() here to avoid the
