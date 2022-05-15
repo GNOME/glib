@@ -1343,7 +1343,8 @@ g_object_notify_by_spec_internal (GObject    *object,
   if (redirected != NULL)
     pspec = redirected;
 
-  if (pspec != NULL)
+  if (pspec != NULL &&
+      _g_object_has_notify_handler (object))
     {
       GObjectNotifyQueue *nqueue;
 
@@ -2510,7 +2511,7 @@ g_object_setv (GObject       *object,
                const GValue   values[])
 {
   guint i;
-  GObjectNotifyQueue *nqueue;
+  GObjectNotifyQueue *nqueue = NULL;
   GParamSpec *pspec;
   GType obj_type;
 
@@ -2521,7 +2522,10 @@ g_object_setv (GObject       *object,
 
   g_object_ref (object);
   obj_type = G_OBJECT_TYPE (object);
-  nqueue = g_object_notify_queue_freeze (object, FALSE);
+
+  if (_g_object_has_notify_handler (object))
+    nqueue = g_object_notify_queue_freeze (object, FALSE);
+
   for (i = 0; i < n_properties; i++)
     {
       pspec = g_param_spec_pool_lookup (pspec_pool, names[i], obj_type, TRUE);
@@ -2532,7 +2536,9 @@ g_object_setv (GObject       *object,
       object_set_property (object, pspec, &values[i], nqueue);
     }
 
-  g_object_notify_queue_thaw (object, nqueue);
+  if (nqueue)
+    g_object_notify_queue_thaw (object, nqueue);
+
   g_object_unref (object);
 }
 
@@ -2550,13 +2556,15 @@ g_object_set_valist (GObject	 *object,
 		     const gchar *first_property_name,
 		     va_list	  var_args)
 {
-  GObjectNotifyQueue *nqueue;
+  GObjectNotifyQueue *nqueue = NULL;
   const gchar *name;
   
   g_return_if_fail (G_IS_OBJECT (object));
-  
+
   g_object_ref (object);
-  nqueue = g_object_notify_queue_freeze (object, FALSE);
+
+  if (_g_object_has_notify_handler (object))
+    nqueue = g_object_notify_queue_freeze (object, FALSE);
   
   name = first_property_name;
   while (name)
@@ -2594,7 +2602,9 @@ g_object_set_valist (GObject	 *object,
       name = va_arg (var_args, gchar*);
     }
 
-  g_object_notify_queue_thaw (object, nqueue);
+  if (nqueue)
+    g_object_notify_queue_thaw (object, nqueue);
+
   g_object_unref (object);
 }
 
