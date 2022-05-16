@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-04-01 19:32+0000\n"
-"PO-Revision-Date: 2022-04-07 12:05+0200\n"
+"POT-Creation-Date: 2022-05-11 07:33+0000\n"
+"PO-Revision-Date: 2022-05-16 09:34+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <Proxecto Trasno <proxecto@trasno.gal>>\n"
 "Language: gl\n"
@@ -325,19 +325,19 @@ msgid "Not enough space in destination"
 msgstr "Non hai espazo abondo para o enderezo do socket"
 
 #: gio/gcharsetconverter.c:342 gio/gdatainputstream.c:848
-#: gio/gdatainputstream.c:1266 glib/gconvert.c:449 glib/gconvert.c:879
+#: gio/gdatainputstream.c:1266 glib/gconvert.c:449 glib/gconvert.c:881
 #: glib/giochannel.c:1573 glib/giochannel.c:1615 glib/giochannel.c:2470
 #: glib/gutf8.c:890 glib/gutf8.c:1344
 msgid "Invalid byte sequence in conversion input"
 msgstr "A secuencia de bytes non é válida na entrada da conversión"
 
-#: gio/gcharsetconverter.c:347 glib/gconvert.c:457 glib/gconvert.c:793
+#: gio/gcharsetconverter.c:347 glib/gconvert.c:457 glib/gconvert.c:795
 #: glib/giochannel.c:1580 glib/giochannel.c:2482
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Produciuse un erro durante a conversión: %s"
 
-#: gio/gcharsetconverter.c:445 gio/gsocket.c:1147
+#: gio/gcharsetconverter.c:445 gio/gsocket.c:1149
 msgid "Cancellable initialization not supported"
 msgstr "Non se permite a inicialización cancelábel"
 
@@ -1558,7 +1558,7 @@ msgid "Truncate not supported on stream"
 msgstr "Non se permite truncar no fluxo"
 
 #: gio/ghttpproxy.c:91 gio/gresolver.c:458 gio/gresolver.c:611
-#: glib/gconvert.c:1825
+#: glib/gconvert.c:1827
 msgid "Invalid hostname"
 msgstr "O nome do host non é válido"
 
@@ -1772,7 +1772,7 @@ msgstr "Produciuse un erro ao escribir ao stdout"
 #: gio/gio-tool-mkdir.c:48 gio/gio-tool-monitor.c:37 gio/gio-tool-monitor.c:39
 #: gio/gio-tool-monitor.c:41 gio/gio-tool-monitor.c:43
 #: gio/gio-tool-monitor.c:204 gio/gio-tool-mount.c:1199 gio/gio-tool-open.c:70
-#: gio/gio-tool-remove.c:48 gio/gio-tool-rename.c:45 gio/gio-tool-set.c:89
+#: gio/gio-tool-remove.c:48 gio/gio-tool-rename.c:45 gio/gio-tool-set.c:91
 #: gio/gio-tool-trash.c:220 gio/gio-tool-tree.c:239
 msgid "LOCATION"
 msgstr "LOCALIZACIÓN"
@@ -2287,7 +2287,7 @@ msgstr "Renomear un ficheiro."
 msgid "Missing argument"
 msgstr "Falta un argumento"
 
-#: gio/gio-tool-rename.c:76 gio/gio-tool-save.c:190 gio/gio-tool-set.c:137
+#: gio/gio-tool-rename.c:76 gio/gio-tool-save.c:190 gio/gio-tool-set.c:139
 msgid "Too many arguments"
 msgstr "Demasiados argumentos"
 
@@ -2351,31 +2351,31 @@ msgstr "Tipo do atributo"
 msgid "TYPE"
 msgstr "TIPO"
 
-#: gio/gio-tool-set.c:89
+#: gio/gio-tool-set.c:91
 msgid "ATTRIBUTE"
 msgstr "ATRIBUTO"
 
-#: gio/gio-tool-set.c:89
+#: gio/gio-tool-set.c:91
 msgid "VALUE"
 msgstr "VALOR"
 
-#: gio/gio-tool-set.c:93
+#: gio/gio-tool-set.c:95
 msgid "Set a file attribute of LOCATION."
 msgstr "Estabelece un atributo de ficheiro da LOCALIZACIÓN."
 
-#: gio/gio-tool-set.c:113
+#: gio/gio-tool-set.c:115
 msgid "Location not specified"
 msgstr "Localización non especificada"
 
-#: gio/gio-tool-set.c:120
+#: gio/gio-tool-set.c:122
 msgid "Attribute not specified"
 msgstr "Atributo non especificado"
 
-#: gio/gio-tool-set.c:130
+#: gio/gio-tool-set.c:132
 msgid "Value not specified"
 msgstr "Valor non especificado"
 
-#: gio/gio-tool-set.c:180
+#: gio/gio-tool-set.c:182
 #, c-format
 msgid "Invalid attribute type “%s”"
 msgstr "Tipo de atributo %s non válido"
@@ -3218,122 +3218,122 @@ msgstr "Nome estendido do atributo non válido"
 msgid "Error setting extended attribute “%s”: %s"
 msgstr "Produciuse un erro ao estabelecer o atributo estendido «%s»: %s"
 
-#: gio/glocalfileinfo.c:1709 gio/win32/gwinhttpfile.c:191
+#: gio/glocalfileinfo.c:1707 gio/win32/gwinhttpfile.c:191
 msgid " (invalid encoding)"
 msgstr " (codificación non válida)"
 
-#: gio/glocalfileinfo.c:1868 gio/glocalfileoutputstream.c:943
+#: gio/glocalfileinfo.c:1866 gio/glocalfileoutputstream.c:943
 #: gio/glocalfileoutputstream.c:995
 #, c-format
 msgid "Error when getting information for file “%s”: %s"
 msgstr "Produciuse un erro ao obter a información do ficheiro «%s»: %s"
 
-#: gio/glocalfileinfo.c:2134
+#: gio/glocalfileinfo.c:2132
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr "Produciuse un erro ao obter información do descritor do ficheiro: %s"
 
-#: gio/glocalfileinfo.c:2179
+#: gio/glocalfileinfo.c:2177
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "O tipo de atributo non é válido (esperábase uint32)"
 
-#: gio/glocalfileinfo.c:2197
+#: gio/glocalfileinfo.c:2195
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "O tipo de atributo non é válido (esperábase uint64)"
 
-#: gio/glocalfileinfo.c:2216 gio/glocalfileinfo.c:2235
+#: gio/glocalfileinfo.c:2214 gio/glocalfileinfo.c:2233
 msgid "Invalid attribute type (byte string expected)"
 msgstr "O tipo de atributo non é válido (esperábase unha cadea de bytes)"
 
-#: gio/glocalfileinfo.c:2282
+#: gio/glocalfileinfo.c:2280
 msgid "Cannot set permissions on symlinks"
 msgstr "Non foi posíbel estabelecer os permisos nas ligazóns simbólicas"
 
-#: gio/glocalfileinfo.c:2298
+#: gio/glocalfileinfo.c:2296
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Produciuse un erro ao estabelecer os permisos: %s"
 
-#: gio/glocalfileinfo.c:2349
+#: gio/glocalfileinfo.c:2347
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Produciuse un erro ao estabelecer o propietario: %s"
 
-#: gio/glocalfileinfo.c:2372
+#: gio/glocalfileinfo.c:2370
 msgid "symlink must be non-NULL"
 msgstr "a ligazón simbólica debe ser non nula"
 
-#: gio/glocalfileinfo.c:2382 gio/glocalfileinfo.c:2401
-#: gio/glocalfileinfo.c:2412
+#: gio/glocalfileinfo.c:2380 gio/glocalfileinfo.c:2399
+#: gio/glocalfileinfo.c:2410
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Produciuse un erro ao estabelecer a ligazón simbólica: %s"
 
-#: gio/glocalfileinfo.c:2391
+#: gio/glocalfileinfo.c:2389
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "Produciuse un erro ao estabelecer a ligazón simbólica: o ficheiro non é unha "
 "ligazón"
 
-#: gio/glocalfileinfo.c:2463
+#: gio/glocalfileinfo.c:2461
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld are negative"
 msgstr ""
 "Os nanosegundos %d adicionais en marcas de tempo UNIX %lld son negativas"
 
-#: gio/glocalfileinfo.c:2472
+#: gio/glocalfileinfo.c:2470
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld reach 1 second"
 msgstr ""
 "Os nanosegundos %d adicionais en marcas de tempo UNIX %lld alcanzan 1 segundo"
 
-#: gio/glocalfileinfo.c:2482
+#: gio/glocalfileinfo.c:2480
 #, c-format
 msgid "UNIX timestamp %lld does not fit into 64 bits"
 msgstr "A marca de tempo UNIX %lld non colle nos 64 bits"
 
-#: gio/glocalfileinfo.c:2493
+#: gio/glocalfileinfo.c:2491
 #, c-format
 msgid "UNIX timestamp %lld is outside of the range supported by Windows"
 msgstr "A marca de tempo %lld está fóra do rango admitido por Windows"
 
-#: gio/glocalfileinfo.c:2570
+#: gio/glocalfileinfo.c:2568
 #, c-format
 msgid "File name “%s” cannot be converted to UTF-16"
 msgstr "Non é posíbel converter o nome de ficheiro  «%s» a UTF-16."
 
-#: gio/glocalfileinfo.c:2589
+#: gio/glocalfileinfo.c:2587
 #, c-format
 msgid "File “%s” cannot be opened: Windows Error %lu"
 msgstr "Non é posíbel abrir o ficheiro «%s»: Erro de Windows %lu"
 
-#: gio/glocalfileinfo.c:2602
+#: gio/glocalfileinfo.c:2600
 #, c-format
 msgid "Error setting modification or access time for file “%s”: %lu"
 msgstr ""
 "Produciuse un erro ao estabelecer a data de modificación ou acceso para o "
 "ficheiro «%s»: %lu"
 
-#: gio/glocalfileinfo.c:2703
+#: gio/glocalfileinfo.c:2701
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr ""
 "Produciuse un erro ao modificar a configuración ou o tempo de acceso: %s"
 
-#: gio/glocalfileinfo.c:2726
+#: gio/glocalfileinfo.c:2724
 msgid "SELinux context must be non-NULL"
 msgstr "O contexto SELinux debe ser non-NULL"
 
-#: gio/glocalfileinfo.c:2733
+#: gio/glocalfileinfo.c:2731
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux non está activado neste sistema"
 
-#: gio/glocalfileinfo.c:2743
+#: gio/glocalfileinfo.c:2741
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Produciuse un erro ao estabelecer o contexto SELinux: %s"
 
-#: gio/glocalfileinfo.c:2836
+#: gio/glocalfileinfo.c:2834
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Non se permite estabelecer o atributo %s"
@@ -3951,172 +3951,172 @@ msgstr "O socket non é válido, a inicialización fallou debido a: %s"
 msgid "Socket is already closed"
 msgstr "O fluxo de orixe xa está pechado"
 
-#: gio/gsocket.c:447 gio/gsocket.c:3193 gio/gsocket.c:4426 gio/gsocket.c:4484
+#: gio/gsocket.c:447 gio/gsocket.c:3199 gio/gsocket.c:4432 gio/gsocket.c:4490
 msgid "Socket I/O timed out"
 msgstr "Tempo de espera do Socket de E/S superado"
 
-#: gio/gsocket.c:582
+#: gio/gsocket.c:584
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "creando o GSocket a partir de fd: %s"
 
-#: gio/gsocket.c:611 gio/gsocket.c:675 gio/gsocket.c:682
+#: gio/gsocket.c:613 gio/gsocket.c:677 gio/gsocket.c:684
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "Non é posíbel crear o socket: %s"
 
-#: gio/gsocket.c:675
+#: gio/gsocket.c:677
 msgid "Unknown family was specified"
 msgstr "Especificouse unha familia descoñecida"
 
-#: gio/gsocket.c:682
+#: gio/gsocket.c:684
 msgid "Unknown protocol was specified"
 msgstr "Especificouse un protocolo descoñecido"
 
-#: gio/gsocket.c:1173
+#: gio/gsocket.c:1175
 #, c-format
 msgid "Cannot use datagram operations on a non-datagram socket."
 msgstr ""
 "Non é posíbel usar as operacións de datagramas nun socket que non é de "
 "datagramas."
 
-#: gio/gsocket.c:1190
+#: gio/gsocket.c:1192
 #, c-format
 msgid "Cannot use datagram operations on a socket with a timeout set."
 msgstr ""
 "Non é posíbel usar operacións de datagramas nun socket con un tempo de "
 "espera máximo estabelecido."
 
-#: gio/gsocket.c:1997
+#: gio/gsocket.c:1999
 #, c-format
 msgid "could not get local address: %s"
 msgstr "non foi posíbel obter un enderezo local: %s"
 
-#: gio/gsocket.c:2043
+#: gio/gsocket.c:2045
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "non foi posíbel obter un enderezo remoto: %s"
 
-#: gio/gsocket.c:2109
+#: gio/gsocket.c:2111
 #, c-format
 msgid "could not listen: %s"
 msgstr "non foi posíbel escoitar: %s"
 
-#: gio/gsocket.c:2213
+#: gio/gsocket.c:2215
 #, c-format
 msgid "Error binding to address %s: %s"
 msgstr "Produciuse un erro ao ligar co enderezo %s: %s"
 
-#: gio/gsocket.c:2388 gio/gsocket.c:2425 gio/gsocket.c:2535 gio/gsocket.c:2560
-#: gio/gsocket.c:2623 gio/gsocket.c:2681 gio/gsocket.c:2699
+#: gio/gsocket.c:2390 gio/gsocket.c:2427 gio/gsocket.c:2537 gio/gsocket.c:2562
+#: gio/gsocket.c:2629 gio/gsocket.c:2687 gio/gsocket.c:2705
 #, c-format
 msgid "Error joining multicast group: %s"
 msgstr "Produciuse un erro ao unirse ao grupo multicast: %s"
 
-#: gio/gsocket.c:2389 gio/gsocket.c:2426 gio/gsocket.c:2536 gio/gsocket.c:2561
-#: gio/gsocket.c:2624 gio/gsocket.c:2682 gio/gsocket.c:2700
+#: gio/gsocket.c:2391 gio/gsocket.c:2428 gio/gsocket.c:2538 gio/gsocket.c:2563
+#: gio/gsocket.c:2630 gio/gsocket.c:2688 gio/gsocket.c:2706
 #, c-format
 msgid "Error leaving multicast group: %s"
 msgstr "Produciuse un erro ao deixar o grupo multicast: %s"
 
-#: gio/gsocket.c:2390
+#: gio/gsocket.c:2392
 msgid "No support for source-specific multicast"
 msgstr "Non se admite o multicast específico da fonte"
 
-#: gio/gsocket.c:2537
+#: gio/gsocket.c:2539
 msgid "Unsupported socket family"
 msgstr "Familia de socket non admitida"
 
-#: gio/gsocket.c:2562
+#: gio/gsocket.c:2564
 msgid "source-specific not an IPv4 address"
 msgstr "o source-specific non é un enderezo IPv4"
 
-#: gio/gsocket.c:2586
+#: gio/gsocket.c:2588
 #, c-format
 msgid "Interface name too long"
 msgstr "Nome da interface demasiado larga"
 
-#: gio/gsocket.c:2599 gio/gsocket.c:2649
+#: gio/gsocket.c:2601 gio/gsocket.c:2655
 #, c-format
 msgid "Interface not found: %s"
 msgstr "Interface non atopada: %s"
 
-#: gio/gsocket.c:2625
+#: gio/gsocket.c:2631
 msgid "No support for IPv4 source-specific multicast"
 msgstr "Non se admite o multicast IPv4 específico da fonte"
 
-#: gio/gsocket.c:2683
+#: gio/gsocket.c:2689
 msgid "No support for IPv6 source-specific multicast"
 msgstr "Non se admite o multicast IPv6 específico da fonte"
 
-#: gio/gsocket.c:2892
+#: gio/gsocket.c:2898
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Produciuse un erro ao aceptar a conexión: %s"
 
-#: gio/gsocket.c:3018
+#: gio/gsocket.c:3024
 msgid "Connection in progress"
 msgstr "Conexión en marcha"
 
-#: gio/gsocket.c:3069
+#: gio/gsocket.c:3075
 msgid "Unable to get pending error: "
 msgstr "Non é posíbel obter o erro pendente: "
 
-#: gio/gsocket.c:3258
+#: gio/gsocket.c:3264
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Produciuse un erro ao recibir datos: %s"
 
-#: gio/gsocket.c:3455
+#: gio/gsocket.c:3461
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Produciuse un erro ao enviar datos: %s"
 
-#: gio/gsocket.c:3642
+#: gio/gsocket.c:3648
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "Non é posíbel desconectar o socket: %s"
 
-#: gio/gsocket.c:3723
+#: gio/gsocket.c:3729
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Produciuse un erro ao pechar o socket: %s"
 
-#: gio/gsocket.c:4419
+#: gio/gsocket.c:4425
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Agardando pola situación do socket: %s"
 
-#: gio/gsocket.c:4809 gio/gsocket.c:4825 gio/gsocket.c:4838
+#: gio/gsocket.c:4815 gio/gsocket.c:4831 gio/gsocket.c:4844
 #, c-format
 msgid "Unable to send message: %s"
 msgstr "Non foi posíbel enviar a mensaxe: %s"
 
-#: gio/gsocket.c:4810 gio/gsocket.c:4826 gio/gsocket.c:4839
+#: gio/gsocket.c:4816 gio/gsocket.c:4832 gio/gsocket.c:4845
 msgid "Message vectors too large"
 msgstr "Os vectores de mensaxes son moi largos"
 
-#: gio/gsocket.c:4855 gio/gsocket.c:4857 gio/gsocket.c:5004 gio/gsocket.c:5089
-#: gio/gsocket.c:5267 gio/gsocket.c:5307 gio/gsocket.c:5309
+#: gio/gsocket.c:4861 gio/gsocket.c:4863 gio/gsocket.c:5010 gio/gsocket.c:5095
+#: gio/gsocket.c:5273 gio/gsocket.c:5313 gio/gsocket.c:5315
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Produciuse un erro ao enviar a mensaxe: %s"
 
-#: gio/gsocket.c:5031
+#: gio/gsocket.c:5037
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "O GSocketControlMessage non está permitido en Windows"
 
-#: gio/gsocket.c:5504 gio/gsocket.c:5580 gio/gsocket.c:5806
+#: gio/gsocket.c:5510 gio/gsocket.c:5586 gio/gsocket.c:5812
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Produciuse un erro ao recibir a mensaxe: %s"
 
-#: gio/gsocket.c:6089 gio/gsocket.c:6100 gio/gsocket.c:6163
+#: gio/gsocket.c:6095 gio/gsocket.c:6106 gio/gsocket.c:6169
 #, c-format
 msgid "Unable to read socket credentials: %s"
 msgstr "Non é posíbel ler as credenciais do socket: %s"
 
-#: gio/gsocket.c:6172
+#: gio/gsocket.c:6178
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr ""
 "g_socket_get_credentials non está implementado para este sistema operativo"
@@ -4298,13 +4298,13 @@ msgstr "Produciuse un erro ao resolver «%s»"
 #: gio/gthreadedresolver.c:780 gio/gthreadedresolver.c:804
 #: gio/gthreadedresolver.c:829 gio/gthreadedresolver.c:844
 msgid "Malformed DNS packet"
-msgstr ""
+msgstr "Paquete DNS mal formado"
 
 #: gio/gthreadedresolver.c:886
-#, fuzzy, c-format
+#, c-format
 #| msgid "Failed to read from file “%s”: %s"
 msgid "Failed to parse DNS response for “%s”: "
-msgstr "Produciuse un erro ao ler desde o ficheiro «%s»: %s"
+msgstr "Produciuse un erro ao analizar a resposta DNS para «%s»: "
 
 #: gio/gtlscertificate.c:478
 msgid "No PEM-encoded private key found"
@@ -4598,47 +4598,47 @@ msgstr "Carácter non representábel na entrada da conversión"
 msgid "Partial character sequence at end of input"
 msgstr "Hai unha secuencia de carácter parcial ao final da entrada"
 
-#: glib/gconvert.c:764
+#: glib/gconvert.c:766
 #, c-format
 msgid "Cannot convert fallback “%s” to codeset “%s”"
 msgstr ""
 "Non é posíbel converter o modo de emerxencia «%s» na codificación de "
 "caracteres «%s»"
 
-#: glib/gconvert.c:936
+#: glib/gconvert.c:938
 msgid "Embedded NUL byte in conversion input"
 msgstr "Byte NUL incrustado na entrada de conversión"
 
-#: glib/gconvert.c:957
+#: glib/gconvert.c:959
 msgid "Embedded NUL byte in conversion output"
 msgstr "Byte NUL incrustado na saída de conversión"
 
-#: glib/gconvert.c:1688
+#: glib/gconvert.c:1690
 #, c-format
 msgid "The URI “%s” is not an absolute URI using the “file” scheme"
 msgstr "O URI «%s» non é un URI absoluto usando o esquema «file»"
 
-#: glib/gconvert.c:1698
+#: glib/gconvert.c:1700
 #, c-format
 msgid "The local file URI “%s” may not include a “#”"
 msgstr "O URI do ficheiro local «%s» non pode incluír un «#»"
 
-#: glib/gconvert.c:1715
+#: glib/gconvert.c:1717
 #, c-format
 msgid "The URI “%s” is invalid"
 msgstr "O URI «%s» non é válido"
 
-#: glib/gconvert.c:1727
+#: glib/gconvert.c:1729
 #, c-format
 msgid "The hostname of the URI “%s” is invalid"
 msgstr "O nome de host do URI «%s» non é válido"
 
-#: glib/gconvert.c:1743
+#: glib/gconvert.c:1745
 #, c-format
 msgid "The URI “%s” contains invalidly escaped characters"
 msgstr "O URI «%s» contén caracteres de escape non válidos"
 
-#: glib/gconvert.c:1815
+#: glib/gconvert.c:1817
 #, c-format
 msgid "The pathname “%s” is not an absolute path"
 msgstr "O nome da ruta «%s» non é un camiño absoluto"
@@ -6186,7 +6186,7 @@ msgstr "A URI «%s» non ten o compoñente de equipo"
 msgid "URI is not absolute, and no base URI was provided"
 msgstr "A URI non é absoluta, e non se forneceu unha URI base"
 
-#: glib/guri.c:2238
+#: glib/guri.c:2246
 msgid "Missing ‘=’ and parameter value"
 msgstr "Falta «=» e o valor de parámetro"
 
@@ -6207,166 +6207,179 @@ msgstr "Secuencia non válida na entrada da conversión"
 msgid "Character out of range for UTF-16"
 msgstr "Carácter fóra de intervalo para UTF-16"
 
-#. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2849
-#, c-format
-msgid "%.1f kB"
-msgstr "%.1f kB"
-
-#. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2851
-#, c-format
-msgid "%.1f MB"
-msgstr "%.1f MB"
-
-#. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2853
-#, c-format
-msgid "%.1f GB"
-msgstr "%.1f GB"
-
-#. Translators: Keep the no-break space between %.1f and the unit symbol
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 kB"
 #: glib/gutils.c:2855
-#, c-format
-msgid "%.1f TB"
-msgstr "%.1f TB"
+msgid "kB"
+msgstr "kB"
 
-#. Translators: Keep the no-break space between %.1f and the unit symbol
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 MB"
 #: glib/gutils.c:2857
-#, c-format
-msgid "%.1f PB"
-msgstr "%.1f PB"
+msgid "MB"
+msgstr "MB"
 
-#. Translators: Keep the no-break space between %.1f and the unit symbol
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 GB"
 #: glib/gutils.c:2859
-#, c-format
-msgid "%.1f EB"
-msgstr "%.1f EB"
+msgid "GB"
+msgstr "GB"
 
-#. Translators: Keep the no-break space between %.1f and the unit symbol
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 TB"
+#: glib/gutils.c:2861
+msgid "TB"
+msgstr "TB"
+
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 PB"
 #: glib/gutils.c:2863
-#, c-format
-msgid "%.1f KiB"
-msgstr "%.1f KiB"
+msgid "PB"
+msgstr "PB"
 
-#. Translators: Keep the no-break space between %.1f and the unit symbol
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 EB"
 #: glib/gutils.c:2865
-#, c-format
-msgid "%.1f MiB"
-msgstr "%.1f MiB"
+msgid "EB"
+msgstr "EB"
 
-#. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2867
-#, c-format
-msgid "%.1f GiB"
-msgstr "%.1f GiB"
-
-#. Translators: Keep the no-break space between %.1f and the unit symbol
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 KiB"
 #: glib/gutils.c:2869
-#, c-format
-msgid "%.1f TiB"
-msgstr "%.1f TiB"
+msgid "KiB"
+msgstr "KiB"
 
-#. Translators: Keep the no-break space between %.1f and the unit symbol
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 MiB"
 #: glib/gutils.c:2871
-#, c-format
-msgid "%.1f PiB"
-msgstr "%.1f PiB"
+msgid "MiB"
+msgstr "MiB"
 
-#. Translators: Keep the no-break space between %.1f and the unit symbol
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 GiB"
 #: glib/gutils.c:2873
-#, c-format
-msgid "%.1f EiB"
-msgstr "%.1f EiB"
+msgid "GiB"
+msgstr "GiB"
 
-#. Translators: Keep the no-break space between %.1f and the unit symbol
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 TiB"
+#: glib/gutils.c:2875
+msgid "TiB"
+msgstr "TiB"
+
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 PiB"
 #: glib/gutils.c:2877
-#, c-format
-msgid "%.1f kb"
-msgstr "%.1f kb"
+msgid "PiB"
+msgstr " "
 
-#. Translators: Keep the no-break space between %.1f and the unit symbol
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 EiB"
 #: glib/gutils.c:2879
-#, c-format
-msgid "%.1f Mb"
-msgstr "%.1f Mb"
+msgid "EiB"
+msgstr "EiB"
 
-#. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2881
-#, c-format
-msgid "%.1f Gb"
-msgstr "%.1f Gb"
-
-#. Translators: Keep the no-break space between %.1f and the unit symbol
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 kb"
 #: glib/gutils.c:2883
-#, c-format
-msgid "%.1f Tb"
-msgstr "%.1f Tb"
+msgid "kb"
+msgstr "kb"
 
-#. Translators: Keep the no-break space between %.1f and the unit symbol
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Mb"
 #: glib/gutils.c:2885
-#, c-format
-msgid "%.1f Pb"
-msgstr "%.1f Pb"
+msgid "Mb"
+msgstr "Mb"
 
-#. Translators: Keep the no-break space between %.1f and the unit symbol
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Gb"
 #: glib/gutils.c:2887
-#, c-format
-msgid "%.1f Eb"
-msgstr "%.1f Eb"
+msgid "Gb"
+msgstr "Gb"
 
-#. Translators: Keep the no-break space between %.1f and the unit symbol
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Tb"
+#: glib/gutils.c:2889
+msgid "Tb"
+msgstr "Tb"
+
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Pb"
 #: glib/gutils.c:2891
-#, c-format
-msgid "%.1f Kib"
-msgstr "%.1f Kib"
+msgid "Pb"
+msgstr "Pb"
 
-#. Translators: Keep the no-break space between %.1f and the unit symbol
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Eb"
 #: glib/gutils.c:2893
-#, c-format
-msgid "%.1f Mib"
-msgstr "%.1f Mib"
+msgid "Eb"
+msgstr "Eb"
 
-#. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2895
-#, c-format
-msgid "%.1f Gib"
-msgstr "%.1f Gib"
-
-#. Translators: Keep the no-break space between %.1f and the unit symbol
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Kib"
 #: glib/gutils.c:2897
-#, c-format
-msgid "%.1f Tib"
-msgstr "%.1f Tib"
+msgid "Kib"
+msgstr "Kib"
 
-#. Translators: Keep the no-break space between %.1f and the unit symbol
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Mib"
 #: glib/gutils.c:2899
-#, c-format
-msgid "%.1f Pib"
-msgstr "%.1f Pib"
+msgid "Mib"
+msgstr "Mib"
 
-#. Translators: Keep the no-break space between %.1f and the unit symbol
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Gib"
 #: glib/gutils.c:2901
-#, c-format
-msgid "%.1f Eib"
-msgstr "%.1f Eib"
+msgid "Gib"
+msgstr "Gib"
 
-#: glib/gutils.c:2935 glib/gutils.c:3052
-#, c-format
-msgid "%u byte"
-msgid_plural "%u bytes"
-msgstr[0] "%u byte"
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Tib"
+#: glib/gutils.c:2903
+msgid "Tib"
+msgstr "Tib"
+
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Pib"
+#: glib/gutils.c:2905
+msgid "Pib"
+msgstr "Pib"
+
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Eib"
+#: glib/gutils.c:2907
+msgid "Eib"
+msgstr "Eib"
+
+#: glib/gutils.c:2945
+#| msgid "%u byte"
+#| msgid_plural "%u bytes"
+msgid "byte"
+msgid_plural "bytes"
+msgstr[0] "byte"
 msgstr[1] "%u bytes"
 
-#: glib/gutils.c:2939
-#, c-format
-msgid "%u bit"
-msgid_plural "%u bits"
-msgstr[0] "%u bit"
+#: glib/gutils.c:2949
+#| msgid "%u bit"
+#| msgid_plural "%u bits"
+msgid "bit"
+msgid_plural "bits"
+msgstr[0] "bit"
 msgstr[1] "%u bit"
 
+#. Translators: The "%u" is replaced with the size value, like "13"; it could
+#. * be part of "13 bytes", but only the number is requested this time.
+#: glib/gutils.c:2957
+#, c-format
+msgctxt "format-size"
+msgid "%u"
+msgstr "%u"
+
+#. Translators: The first "%u" is replaced with the value, the "%s" with a unit of the value.
+#. * The order can be changed with "%$2s %$1u". An example: "13 bytes"
+#: glib/gutils.c:2962
+#, c-format
+msgctxt "format-size"
+msgid "%u %s"
+msgstr "%u %s"
+
+#. Translators: The "%.1f" is replaced with the size value, like "13.0"; it could
+#. * be part of "13.0 MB", but only the number is requested this time.
+#: glib/gutils.c:2998
+#, c-format
+#| msgid "%.1f KB"
+msgctxt "format-size"
+msgid "%.1f"
+msgstr "%.1f"
+
+#. Translators: The first "%.1f" is replaced with the value, the "%s" with a unit of the value.
+#. * The order can be changed with "%$2s %$1.1f". Keep the no-break space between the value and
+#. * the unit symbol. An example: "13.0 MB"
+#: glib/gutils.c:3004
+#, c-format
+#| msgid "%.1f kB"
+msgctxt "format-size"
+msgid "%.1f %s"
+msgstr "%.1f %s"
+
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
-#: glib/gutils.c:3006
+#: glib/gutils.c:3044
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
@@ -6374,47 +6387,146 @@ msgstr[0] "%s byte"
 msgstr[1] "%s bytes"
 
 #. Translators: the %s in "%s bits" will always be replaced by a number.
-#: glib/gutils.c:3011
+#: glib/gutils.c:3049
 #, c-format
 msgid "%s bit"
 msgid_plural "%s bits"
 msgstr[0] "%s bit"
 msgstr[1] "%s bit"
 
+#: glib/gutils.c:3090
+#, c-format
+msgid "%u byte"
+msgid_plural "%u bytes"
+msgstr[0] "%u byte"
+msgstr[1] "%u bytes"
+
 #. Translators: this is from the deprecated function g_format_size_for_display() which uses 'KB' to
 #. * mean 1024 bytes.  I am aware that 'KB' is not correct, but it has been preserved for reasons of
 #. * compatibility.  Users will not see this string unless a program is using this deprecated function.
 #. * Please translate as literally as possible.
 #.
-#: glib/gutils.c:3065
+#: glib/gutils.c:3103
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: glib/gutils.c:3070
+#: glib/gutils.c:3108
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: glib/gutils.c:3075
+#: glib/gutils.c:3113
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: glib/gutils.c:3080
+#: glib/gutils.c:3118
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
-#: glib/gutils.c:3085
+#: glib/gutils.c:3123
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
-#: glib/gutils.c:3090
+#: glib/gutils.c:3128
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
+
+#, c-format
+#~ msgid "%.1f MB"
+#~ msgstr "%.1f MB"
+
+#, c-format
+#~ msgid "%.1f GB"
+#~ msgstr "%.1f GB"
+
+#, c-format
+#~ msgid "%.1f TB"
+#~ msgstr "%.1f TB"
+
+#, c-format
+#~ msgid "%.1f PB"
+#~ msgstr "%.1f PB"
+
+#, c-format
+#~ msgid "%.1f EB"
+#~ msgstr "%.1f EB"
+
+#, c-format
+#~ msgid "%.1f KiB"
+#~ msgstr "%.1f KiB"
+
+#, c-format
+#~ msgid "%.1f MiB"
+#~ msgstr "%.1f MiB"
+
+#, c-format
+#~ msgid "%.1f GiB"
+#~ msgstr "%.1f GiB"
+
+#, c-format
+#~ msgid "%.1f TiB"
+#~ msgstr "%.1f TiB"
+
+#, c-format
+#~ msgid "%.1f PiB"
+#~ msgstr "%.1f PiB"
+
+#, c-format
+#~ msgid "%.1f EiB"
+#~ msgstr "%.1f EiB"
+
+#, c-format
+#~ msgid "%.1f kb"
+#~ msgstr "%.1f kb"
+
+#, c-format
+#~ msgid "%.1f Mb"
+#~ msgstr "%.1f Mb"
+
+#, c-format
+#~ msgid "%.1f Gb"
+#~ msgstr "%.1f Gb"
+
+#, c-format
+#~ msgid "%.1f Tb"
+#~ msgstr "%.1f Tb"
+
+#, c-format
+#~ msgid "%.1f Pb"
+#~ msgstr "%.1f Pb"
+
+#, c-format
+#~ msgid "%.1f Eb"
+#~ msgstr "%.1f Eb"
+
+#, c-format
+#~ msgid "%.1f Kib"
+#~ msgstr "%.1f Kib"
+
+#, c-format
+#~ msgid "%.1f Mib"
+#~ msgstr "%.1f Mib"
+
+#, c-format
+#~ msgid "%.1f Gib"
+#~ msgstr "%.1f Gib"
+
+#, c-format
+#~ msgid "%.1f Tib"
+#~ msgstr "%.1f Tib"
+
+#, c-format
+#~ msgid "%.1f Pib"
+#~ msgstr "%.1f Pib"
+
+#, c-format
+#~ msgid "%.1f Eib"
+#~ msgstr "%.1f Eib"
 
 #~ msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
 #~ msgstr "Non é posíbel ler /var/lib/dbus/machine-id ou /etc/machine-id: "
