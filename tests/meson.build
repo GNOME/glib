@@ -19,7 +19,6 @@ tests = {
   'slice-threadinit' : {
     'dependencies' : [libgthread_dep],
   },
-  'thread-test' : {},
   'module-test-library' : {
     'dependencies' : [libgmodule_dep],
     'export_dynamic' : true,

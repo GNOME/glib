@@ -1,5 +1,6 @@
-#undef G_DISABLE_ASSERT
-#undef G_LOG_DOMAIN
+#ifndef GLIB_DISABLE_DEPRECATION_WARNINGS
+#define GLIB_DISABLE_DEPRECATION_WARNINGS
+#endif
 
 #include <glib.h>
 
@@ -13,12 +14,12 @@ G_LOCK_DEFINE_STATIC (test_g_mutex);
 static gpointer
 test_g_mutex_thread (gpointer data)
 {
-  g_assert (GPOINTER_TO_INT (data) == 42);
-  g_assert (g_mutex_trylock (&test_g_mutex_mutex) == FALSE);
-  g_assert (G_TRYLOCK (test_g_mutex) == FALSE);
+  g_assert_cmpint (GPOINTER_TO_INT (data), ==, 42);
+  g_assert_false (g_mutex_trylock (&test_g_mutex_mutex));
+  g_assert_false (G_TRYLOCK (test_g_mutex));
   test_g_mutex_thread_ready = TRUE;
   g_mutex_lock (&test_g_mutex_mutex);
-  g_assert (test_g_mutex_int == 42);
+  g_assert_cmpint (test_g_mutex_int, ==, 42);
   g_mutex_unlock (&test_g_mutex_mutex);
 
   return GINT_TO_POINTER (41);
@@ -29,8 +30,8 @@ test_g_mutex (void)
 {
   GThread *thread;
 
-  g_assert (g_mutex_trylock (&test_g_mutex_mutex));
-  g_assert (G_TRYLOCK (test_g_mutex));
+  g_assert_true (g_mutex_trylock (&test_g_mutex_mutex));
+  g_assert_true (G_TRYLOCK (test_g_mutex));
   test_g_mutex_thread_ready = FALSE;
   thread = g_thread_create (test_g_mutex_thread, GINT_TO_POINTER (42),
 			    TRUE, NULL);
@@ -41,7 +42,7 @@ test_g_mutex (void)
   test_g_mutex_int = 42;
   G_UNLOCK (test_g_mutex);
   g_mutex_unlock (&test_g_mutex_mutex);
-  g_assert (GPOINTER_TO_INT (g_thread_join (thread)) == 41);
+  g_assert_cmpint (GPOINTER_TO_INT (g_thread_join (thread)), ==, 41);
 }
 
 /* GStaticRecMutex */
@@ -53,19 +54,20 @@ static gboolean test_g_static_rec_mutex_thread_ready;
 static gpointer
 test_g_static_rec_mutex_thread (gpointer data)
 {
-  g_assert (GPOINTER_TO_INT (data) == 42);
-  g_assert (g_static_rec_mutex_trylock (&test_g_static_rec_mutex_mutex) 
-	    == FALSE);
+  g_assert_cmpint (GPOINTER_TO_INT (data), ==, 42);
+  g_assert_false (g_static_rec_mutex_trylock (&test_g_static_rec_mutex_mutex));
+
   test_g_static_rec_mutex_thread_ready = TRUE;
   g_static_rec_mutex_lock (&test_g_static_rec_mutex_mutex);
   g_static_rec_mutex_lock (&test_g_static_rec_mutex_mutex);
-  g_assert (test_g_static_rec_mutex_int == 42);
+  g_assert_cmpint (test_g_static_rec_mutex_int, ==, 42);
+
   test_g_static_rec_mutex_thread_ready = FALSE;
   g_static_rec_mutex_unlock (&test_g_static_rec_mutex_mutex);
   g_static_rec_mutex_unlock (&test_g_static_rec_mutex_mutex);
 
   g_thread_exit (GINT_TO_POINTER (43));
-  
+
   g_assert_not_reached ();
   return NULL;
 }
@@ -75,19 +77,19 @@ test_g_static_rec_mutex (void)
 {
   GThread *thread;
 
-  g_assert (g_static_rec_mutex_trylock (&test_g_static_rec_mutex_mutex));
+  g_assert_true (g_static_rec_mutex_trylock (&test_g_static_rec_mutex_mutex));
   test_g_static_rec_mutex_thread_ready = FALSE;
-  thread = g_thread_create (test_g_static_rec_mutex_thread, 
-			    GINT_TO_POINTER (42), TRUE, NULL);
+  thread = g_thread_create (test_g_static_rec_mutex_thread,
+                            GINT_TO_POINTER (42), TRUE, NULL);
   /* This busy wait is only for testing purposes and not an example of
    * good code!*/
   while (!test_g_static_rec_mutex_thread_ready)
     g_usleep (G_USEC_PER_SEC / 5);
 
-  g_assert (g_static_rec_mutex_trylock (&test_g_static_rec_mutex_mutex));
+  g_assert_true (g_static_rec_mutex_trylock (&test_g_static_rec_mutex_mutex));
   test_g_static_rec_mutex_int = 41;
   g_static_rec_mutex_unlock (&test_g_static_rec_mutex_mutex);
-  test_g_static_rec_mutex_int = 42;  
+  test_g_static_rec_mutex_int = 42;
   g_static_rec_mutex_unlock (&test_g_static_rec_mutex_mutex);
 
   /* This busy wait is only for testing purposes and not an example of
@@ -96,10 +98,10 @@ test_g_static_rec_mutex (void)
     g_usleep (G_USEC_PER_SEC / 5);
 
   g_static_rec_mutex_lock (&test_g_static_rec_mutex_mutex);
-  test_g_static_rec_mutex_int = 0;  
+  test_g_static_rec_mutex_int = 0;
   g_static_rec_mutex_unlock (&test_g_static_rec_mutex_mutex);
 
-  g_assert (GPOINTER_TO_INT (g_thread_join (thread)) == 43);
+  g_assert_cmpint (GPOINTER_TO_INT (g_thread_join (thread)), ==, 43);
 }
 
 /* GStaticPrivate */
@@ -117,7 +119,7 @@ test_g_static_private_constructor (void)
 {
   g_mutex_lock (&test_g_static_private_mutex);
   test_g_static_private_counter++;
-  g_mutex_unlock (&test_g_static_private_mutex);  
+  g_mutex_unlock (&test_g_static_private_mutex);
   return g_new (guint,1);
 }
 
@@ -126,7 +128,7 @@ test_g_static_private_destructor (gpointer data)
 {
   g_mutex_lock (&test_g_static_private_mutex);
   test_g_static_private_counter--;
-  g_mutex_unlock (&test_g_static_private_mutex);  
+  g_mutex_unlock (&test_g_static_private_mutex);
   g_free (data);
 }
 
@@ -157,16 +159,16 @@ test_g_static_private_thread (gpointer data)
 	}
       *private2 = number * 2;
       g_usleep (G_USEC_PER_SEC / 5);
-      g_assert (number == *private1);
-      g_assert (number * 2 == *private2);      
+      g_assert_cmpint (number, ==, *private1);
+      g_assert_cmpint (number * 2, ==, *private2);
     }
   g_mutex_lock (&test_g_static_private_mutex);
   test_g_static_private_ready++;
-  g_mutex_unlock (&test_g_static_private_mutex);  
+  g_mutex_unlock (&test_g_static_private_mutex);
 
   /* Busy wait is not nice but that's just a test */
   while (test_g_static_private_ready != 0)
-    g_usleep (G_USEC_PER_SEC / 5);  
+    g_usleep (G_USEC_PER_SEC / 5);
 
   for (i = 0; i < 10; i++)
     {
@@ -177,10 +179,10 @@ test_g_static_private_thread (gpointer data)
 	  private2 = test_g_static_private_constructor ();
 	  g_static_private_set (&test_g_static_private_private2, private2,
 				test_g_static_private_destructor);
-	}      
+        }
       *private2 = number * 2;
       g_usleep (G_USEC_PER_SEC / 5);
-      g_assert (number * 2 == *private2);      
+      g_assert_cmpint (number * 2, ==, *private2);
     }
 
   return GINT_TO_POINTER (GPOINTER_TO_INT (data) * 3);
@@ -196,8 +198,8 @@ test_g_static_private (void)
 
   for (i = 0; i < THREADS; i++)
     {
-      threads[i] = g_thread_create (test_g_static_private_thread, 
-				    GINT_TO_POINTER (i), TRUE, NULL);      
+      threads[i] = g_thread_create (test_g_static_private_thread,
+                                    GINT_TO_POINTER (i), TRUE, NULL);
     }
 
   /* Busy wait is not nice but that's just a test */
@@ -207,22 +209,22 @@ test_g_static_private (void)
   /* Reuse the static private */
   g_static_private_free (&test_g_static_private_private2);
   g_static_private_init (&test_g_static_private_private2);
-  
+
   test_g_static_private_ready = 0;
 
   for (i = 0; i < THREADS; i++)
-    g_assert (GPOINTER_TO_UINT (g_thread_join (threads[i])) == i * 3);
-    
-  g_assert (test_g_static_private_counter == 0); 
+    g_assert_cmpint (GPOINTER_TO_UINT (g_thread_join (threads[i])), ==, i * 3);
+
+  g_assert_cmpint (test_g_static_private_counter, ==, 0);
 }
 
 /* GStaticRWLock */
 
 /* -1 = writing; >0 = # of readers */
-static gint test_g_static_rw_lock_state = 0; 
+static gint test_g_static_rw_lock_state = 0;
 G_LOCK_DEFINE (test_g_static_rw_lock_state);
 
-static gboolean test_g_static_rw_lock_run = TRUE; 
+static gboolean test_g_static_rw_lock_run = TRUE;
 static GStaticRWLock test_g_static_rw_lock_lock = G_STATIC_RW_LOCK_INIT;
 
 static gpointer
@@ -232,15 +234,15 @@ test_g_static_rw_lock_thread (gpointer data)
     {
       if (g_random_double() > .2) /* I'm a reader */
 	{
-	  
-	  if (g_random_double() > .2) /* I'll block */
+
+          if (g_random_double() > .2) /* I'll block */
 	    g_static_rw_lock_reader_lock (&test_g_static_rw_lock_lock);
 	  else /* I'll only try */
 	    if (!g_static_rw_lock_reader_trylock (&test_g_static_rw_lock_lock))
 	      continue;
 	  G_LOCK (test_g_static_rw_lock_state);
-	  g_assert (test_g_static_rw_lock_state >= 0);
-	  test_g_static_rw_lock_state++;
+          g_assert_cmpint (test_g_static_rw_lock_state, >=, 0);
+          test_g_static_rw_lock_state++;
 	  G_UNLOCK (test_g_static_rw_lock_state);
 
 	  g_usleep (g_random_int_range (20,1000));
@@ -253,15 +255,14 @@ test_g_static_rw_lock_thread (gpointer data)
 	}
       else /* I'm a writer */
 	{
-	  
-	  if (g_random_double() > .2) /* I'll block */ 
-	    g_static_rw_lock_writer_lock (&test_g_static_rw_lock_lock);
+          if (g_random_double () > .2) /* I'll block */
+            g_static_rw_lock_writer_lock (&test_g_static_rw_lock_lock);
 	  else /* I'll only try */
 	    if (!g_static_rw_lock_writer_trylock (&test_g_static_rw_lock_lock))
 	      continue;
 	  G_LOCK (test_g_static_rw_lock_state);
-	  g_assert (test_g_static_rw_lock_state == 0);
-	  test_g_static_rw_lock_state = -1;
+          g_assert_cmpint (test_g_static_rw_lock_state, ==, 0);
+          test_g_static_rw_lock_state = -1;
 	  G_UNLOCK (test_g_static_rw_lock_state);
 
 	  g_usleep (g_random_int_range (20,1000));
@@ -283,8 +284,8 @@ test_g_static_rw_lock (void)
   guint i;
   for (i = 0; i < THREADS; i++)
     {
-      threads[i] = g_thread_create (test_g_static_rw_lock_thread, 
-				    NULL, TRUE, NULL);      
+      threads[i] = g_thread_create (test_g_static_rw_lock_thread,
+                                    NULL, TRUE, NULL);
     }
   g_usleep (G_USEC_PER_SEC * 5);
   test_g_static_rw_lock_run = FALSE;
@@ -292,7 +293,7 @@ test_g_static_rw_lock (void)
     {
       g_thread_join (threads[i]);
     }
-  g_assert (test_g_static_rw_lock_state == 0);
+  g_assert_cmpint (test_g_static_rw_lock_state, ==, 0);
 }
 
 #define G_ONCE_SIZE 100
@@ -322,17 +323,21 @@ test_g_once_thread (gpointer ignore)
   for (i = 0; i < 1000; i++)
     {
       guint pos = g_random_int_range (0, G_ONCE_SIZE);
-      gpointer ret = g_once (test_g_once_array + pos, test_g_once_init_func, 
-			     test_g_once_guint_array + pos);
-      g_assert (ret == test_g_once_guint_array + pos);
+      gpointer ret = g_once (test_g_once_array + pos,
+                             test_g_once_init_func,
+                             test_g_once_guint_array + pos);
+      g_assert_cmpmem (ret, sizeof (int),
+                       test_g_once_guint_array + pos, sizeof (int));
     }
-  
+
   /* Make sure, that all counters are touched at least once */
   for (i = 0; i < G_ONCE_SIZE; i++)
     {
-      gpointer ret = g_once (test_g_once_array + i, test_g_once_init_func, 
-			     test_g_once_guint_array + i);
-      g_assert (ret == test_g_once_guint_array + i);
+      gpointer ret = g_once (test_g_once_array + i,
+                             test_g_once_init_func,
+                             test_g_once_guint_array + i);
+      g_assert_cmpmem (ret, sizeof (int),
+                       test_g_once_guint_array + i, sizeof (int));
     }
 
   return NULL;
@@ -344,7 +349,7 @@ test_g_thread_once (void)
   static GOnce once_init = G_ONCE_INIT;
   GThread *threads[G_ONCE_THREADS];
   guint i;
-  for (i = 0; i < G_ONCE_SIZE; i++) 
+  for (i = 0; i < G_ONCE_SIZE; i++)
     {
       test_g_once_array[i] = once_init;
       test_g_once_guint_array[i] = i;
@@ -352,49 +357,54 @@ test_g_thread_once (void)
   G_LOCK (test_g_once);
   for (i = 0; i < G_ONCE_THREADS; i++)
     {
-      threads[i] = g_thread_create (test_g_once_thread, GUINT_TO_POINTER(i%2), 
-				    TRUE, NULL);
+      threads[i] = g_thread_create (test_g_once_thread, GUINT_TO_POINTER (i % 2),
+                                    TRUE, NULL);
     }
   G_UNLOCK (test_g_once);
   for (i = 0; i < G_ONCE_THREADS; i++)
     {
       g_thread_join (threads[i]);
     }
-  
-  for (i = 0; i < G_ONCE_SIZE; i++) 
+
+  for (i = 0; i < G_ONCE_SIZE; i++)
     {
-      g_assert (test_g_once_guint_array[i] == i + 1);
+      g_assert_cmpint (test_g_once_guint_array[i], ==, i + 1);
     }
 }
 
-/* run all the tests */
+/* rerun all the tests */
 static void
-run_all_tests (void)
+test_rerun_all (void)
 {
+  /* Now we rerun all tests, but this time we fool the system into
+   * thinking, that the available thread system is not native, but
+   * userprovided. */
+  g_thread_use_default_impl = FALSE;
+
   test_g_mutex ();
   test_g_static_rec_mutex ();
   test_g_static_private ();
   test_g_static_rw_lock ();
   test_g_thread_once ();
-}
-
-int 
-main (int   argc,
-      char *argv[])
-{
-  run_all_tests ();
-
-  /* Now we rerun all tests, but this time we fool the system into
-   * thinking, that the available thread system is not native, but
-   * userprovided. */
-
-  g_thread_use_default_impl = FALSE;
-  run_all_tests ();
 
   /* XXX: And this shows how silly the above non-native tests are */
   g_static_rw_lock_free (&test_g_static_rw_lock_lock);
   g_static_rec_mutex_free (&test_g_static_rec_mutex_mutex);
   g_static_private_free (&test_g_static_private_private2);
+}
 
-  return 0;
+int
+main (int argc,
+      char *argv[])
+{
+  g_test_init (&argc, &argv, NULL);
+
+  g_test_add_func ("/thread/mutex", test_g_mutex);
+  g_test_add_func ("/thread/static-rec-mutex", test_g_static_rec_mutex);
+  g_test_add_func ("/thread/static-private", test_g_static_private);
+  g_test_add_func ("/thread/static-rw-lock", test_g_static_rw_lock);
+  g_test_add_func ("/thread/once", test_g_thread_once);
+  g_test_add_func ("/thread/rerun-all", test_rerun_all);
+
+  return g_test_run ();
 }

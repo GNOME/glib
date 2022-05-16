@@ -119,6 +119,7 @@ glib_tests = {
   'testing' : {},
   'test-printf' : {},
   'thread' : {},
+  'thread-deprecated' : {},
   'thread-pool' : {},
   'thread-pool-slow' : {'suite' : ['slow']},
   'timeout' : {},
