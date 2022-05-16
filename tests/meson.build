@@ -16,7 +16,6 @@ subdir('gobject')
 subdir('refcount')
 
 tests = {
-  'gio-test' : {},
   'slice-threadinit' : {
     'dependencies' : [libgthread_dep],
   },
