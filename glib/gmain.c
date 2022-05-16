@@ -494,6 +494,7 @@ static gboolean g_idle_dispatch    (GSource     *source,
 static void block_source (GSource *source);
 
 static GMainContext *glib_worker_context;
+static GMainContext *glib_metrics_context;
 
 #ifndef G_OS_WIN32
 
@@ -1019,6 +1020,15 @@ on_timeout_fd_ready (void)
   return G_SOURCE_CONTINUE;
 }
 
+static gpointer
+glib_metrics_main (gpointer data)
+{
+  while (TRUE)
+    g_main_context_iteration (glib_metrics_context, TRUE);
+
+  return NULL;
+}
+
 /**
  * g_main_context_new:
  * 
@@ -1171,7 +1181,15 @@ g_main_context_new_with_flags (GMainContextFlags flags)
 
   if (metrics_timeout_source != NULL)
     {
-      g_source_attach (metrics_timeout_source, context);
+      sigset_t prev_mask;
+      sigset_t all;
+
+      sigfillset (&all);
+      pthread_sigmask (SIG_SETMASK, &all, &prev_mask);
+      glib_metrics_context = g_main_context_new ();
+      g_thread_new ("gmetrics", glib_metrics_main, NULL);
+      pthread_sigmask (SIG_SETMASK, &prev_mask, NULL);
+      g_source_attach (metrics_timeout_source, glib_metrics_context);
       g_source_unref (metrics_timeout_source);
     }
 
