@@ -96,8 +96,13 @@ read_all (int         fd,
 static void
 shutdown_source (gpointer data)
 {
-  if (g_source_remove (*(guint *) data))
+  guint *fd_ptr = data;
+
+  if (*fd_ptr != 0)
     {
+      g_source_remove (*fd_ptr);
+      *fd_ptr = 0;
+
       nrunning--;
       if (nrunning == 0)
         g_main_loop_quit (main_loop);
