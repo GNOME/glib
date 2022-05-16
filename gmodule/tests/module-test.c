@@ -30,7 +30,7 @@
 # define MODULE_FILENAME_PREFIX "lib"
 #endif
 
-gchar* global_state;
+gchar *global_state = NULL;
 
 G_MODULE_EXPORT void g_clash_func (void);
 

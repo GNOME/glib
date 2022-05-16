@@ -15,20 +15,7 @@ test_cargs = ['-DG_LOG_DOMAIN="GLib"', '-UG_DISABLE_ASSERT']
 subdir('gobject')
 subdir('refcount')
 
-tests = {
-  'module-test-library' : {
-    'dependencies' : [libgmodule_dep],
-    'export_dynamic' : true,
-    'source': 'module-test.c',
-    'c_args': ['-DMODULE_TYPE="library"'],
-  },
-  'module-test-plugin' : {
-    'dependencies' : [libgmodule_dep],
-    'export_dynamic' : true,
-    'source': 'module-test.c',
-    'c_args': ['-DMODULE_TYPE="plugin"'],
-  },
-}
+tests = {}
 
 test_extra_programs = {
   'slice-test' : {
@@ -36,28 +23,6 @@ test_extra_programs = {
   },
   'assert-msg-test' : {},
 }
-
-module_suffix = []
-# Keep the autotools convention for shared module suffix because GModule
-# depends on it: https://gitlab.gnome.org/GNOME/glib/issues/520
-if ['darwin', 'ios'].contains(host_machine.system())
-  module_suffix = 'so'
-endif
-
-foreach module : ['moduletestplugin_a', 'moduletestplugin_b']
-  shared_module(module + '_plugin', 'lib@0@.c'.format(module),
-    dependencies : [libglib_dep, libgmodule_dep],
-    install_dir : installed_tests_execdir,
-    install : installed_tests_enabled,
-    name_suffix : module_suffix
-  )
-  shared_library(module + '_library', 'lib@0@.c'.format(module),
-    dependencies : [libglib_dep, libgmodule_dep],
-    install_dir : installed_tests_execdir,
-    install : installed_tests_enabled,
-    name_suffix : module_suffix
-  )
-endforeach
 
 common_c_args = test_cargs + ['-DGLIB_DISABLE_DEPRECATION_WARNINGS']
 common_deps = [libm, thread_dep, libglib_dep]
