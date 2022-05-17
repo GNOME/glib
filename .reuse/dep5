@@ -1,0 +1,26 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: GLib
+Upstream-Contact: https://gitlab.gnome.org/GNOME/glib/-/issues
+Source: https://gitlab.gnome.org/GNOME/glib/
+
+# These test files are too simple to be copyrightable, but adding
+# copyright/licensing headers to them (or beside them in a .license file) may
+# affect the tests
+Files:
+ gio/tests/cert-tests/*.p12
+ gio/tests/cert-tests/*.pem
+ gio/tests/desktop-files/**.desktop
+ gio/tests/schema-tests/*.gschema.xml
+ gio/tests/thumbnails/*.png
+ glib/tests/bookmarks/*.xbel
+ glib/tests/markups/*.cdata-as-text
+ glib/tests/markups/*.expected
+ glib/tests/markups/*.gmarkup
+Copyright: See individual files
+License: CC0-1.0
+
+# Translation files are explicitly contributed under the license of the project,
+# but by multiple authors
+Files: po/*.po
+Copyright: See individual files
+License: LGPL-2.1-or-later
