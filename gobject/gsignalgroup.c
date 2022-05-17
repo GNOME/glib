@@ -705,36 +705,22 @@ g_signal_group_new (GType target_type)
                        NULL);
 }
 
-/**
- * g_signal_group_connect_closure:
- * @self: a #GSignalGroup
- * @detailed_signal: a string of the form `signal-name` with optional `::signal-detail`
- * @closure: (not nullable): the closure to connect.
- * @after: whether the handler should be called before or after the
- *  default handler of the signal.
- *
- * Connects @closure to the signal @detailed_signal on #GSignalGroup:target.
- *
- * You cannot connect a signal handler after #GSignalGroup:target has been set.
- *
- * Since: 2.74
- */
-void
-g_signal_group_connect_closure (GSignalGroup   *self,
-                                const gchar    *detailed_signal,
-                                GClosure       *closure,
-                                gboolean        after)
+static gboolean
+g_signal_group_connect_closure_ (GSignalGroup   *self,
+                                 const gchar    *detailed_signal,
+                                 GClosure       *closure,
+                                 gboolean        after)
 {
   GObject *target;
   SignalHandler *handler;
   guint signal_id;
   GQuark signal_detail;
 
-  g_return_if_fail (G_IS_SIGNAL_GROUP (self));
-  g_return_if_fail (detailed_signal != NULL);
-  g_return_if_fail (g_signal_parse_name (detailed_signal, self->target_type,
-                                         &signal_id, &signal_detail, TRUE) != 0);
-  g_return_if_fail (closure != NULL);
+  g_return_val_if_fail (G_IS_SIGNAL_GROUP (self), FALSE);
+  g_return_val_if_fail (detailed_signal != NULL, FALSE);
+  g_return_val_if_fail (g_signal_parse_name (detailed_signal, self->target_type,
+                                             &signal_id, &signal_detail, TRUE) != 0, FALSE);
+  g_return_val_if_fail (closure != NULL, FALSE);
 
   g_rec_mutex_lock (&self->mutex);
 
@@ -742,7 +728,7 @@ g_signal_group_connect_closure (GSignalGroup   *self,
     {
       g_critical ("Cannot add signals after setting target");
       g_rec_mutex_unlock (&self->mutex);
-      return;
+      return FALSE;
     }
 
   handler = g_slice_new0 (SignalHandler);
@@ -768,6 +754,30 @@ g_signal_group_connect_closure (GSignalGroup   *self,
   g_signal_group_gc_handlers (self);
 
   g_rec_mutex_unlock (&self->mutex);
+  return TRUE;
+}
+
+/**
+ * g_signal_group_connect_closure:
+ * @self: a #GSignalGroup
+ * @detailed_signal: a string of the form `signal-name` with optional `::signal-detail`
+ * @closure: (not nullable): the closure to connect.
+ * @after: whether the handler should be called before or after the
+ *  default handler of the signal.
+ *
+ * Connects @closure to the signal @detailed_signal on #GSignalGroup:target.
+ *
+ * You cannot connect a signal handler after #GSignalGroup:target has been set.
+ *
+ * Since: 2.74
+ */
+void
+g_signal_group_connect_closure (GSignalGroup   *self,
+                                const gchar    *detailed_signal,
+                                GClosure       *closure,
+                                gboolean        after)
+{
+  g_signal_group_connect_closure_ (self, detailed_signal, closure, after);
 }
 
 static void
@@ -798,10 +808,11 @@ g_signal_group_connect_full (GSignalGroup   *self,
       g_object_watch_closure (data, closure);
     }
 
-  g_signal_group_connect_closure (self,
-                                  detailed_signal,
-                                  closure,
-                                  (flags & G_CONNECT_AFTER) != 0);
+  if (!g_signal_group_connect_closure_ (self,
+                                        detailed_signal,
+                                        closure,
+                                        (flags & G_CONNECT_AFTER) != 0))
+    g_closure_unref (closure);
 }
 
 /**
