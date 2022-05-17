@@ -31,14 +31,14 @@ GLib is regularly built on at least the following systems:
  * Debian: https://packages.debian.org/experimental/libglib2.0-0
  * FreeBSD: https://wiki.gnome.org/Projects/Jhbuild/FreeBSD
  * openSUSE: https://build.opensuse.org/package/show/GNOME:Factory/glib2
- * CI runners, https://gitlab.gnome.org/GNOME/glib/blob/master/.gitlab-ci.yml:
-  * Fedora (31, https://gitlab.gnome.org/GNOME/glib/-/blob/master/.gitlab-ci/fedora.Dockerfile)
-  * Debian (Buster, https://gitlab.gnome.org/GNOME/glib/-/blob/master/.gitlab-ci/debian-stable.Dockerfile)
+ * CI runners, https://gitlab.gnome.org/GNOME/glib/blob/main/.gitlab-ci.yml:
+  * Fedora (34, https://gitlab.gnome.org/GNOME/glib/-/blob/main/.gitlab-ci/fedora.Dockerfile)
+  * Debian (Bullseye, https://gitlab.gnome.org/GNOME/glib/-/blob/main/.gitlab-ci/debian-stable.Dockerfile)
   * Windows (MinGW64)
   * Windows (msys2-mingw32)
-  * Windows (Visual Studio 2017)
-  * Android (NDK r17b, API 21+28, arm64, https://gitlab.gnome.org/GNOME/glib/-/blob/master/.gitlab-ci/android-download-ndk.sh)
-  * FreeBSD (11 and 12)
+  * Windows (Visual Studio 2017, and a static linking version)
+  * Android (NDK r23b, API 31, arm64, https://gitlab.gnome.org/GNOME/glib/-/blob/main/.gitlab-ci/android-ndk.sh)
+  * FreeBSD (12 and 13)
   * macOS
 
 If other platforms are to be supported, we need to set up regular CI testing for
