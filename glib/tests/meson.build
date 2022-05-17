@@ -105,6 +105,7 @@ glib_tests = {
     'extra_sources' : ['memchunks.c'],
   },
   'slice-concurrent' : {},
+  'slice-known-pages' : {},
   'slist' : {},
   'sort' : {},
   'spawn-multithreaded' : {},
