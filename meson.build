@@ -337,9 +337,9 @@ foreach h : headers
   endif
 endforeach
 
-# FIXME: Use cc.check_header from Meson 0.47.
-# FreeBSD includes a malloc.h which always throw compilation error.
-if cc.compiles('#include <malloc.h>', name : 'malloc.h')
+# FreeBSD includes a malloc.h which always throws compilation error, so we have
+# to use check_header() rather than has_header().
+if cc.check_header('malloc.h')
   glib_conf.set('HAVE_MALLOC_H', 1)
   glib_conf_prefix = glib_conf_prefix + '#define HAVE_MALLOC_H 1\n'
 endif
@@ -1511,52 +1511,20 @@ g_sizet_compatibility = {
 # Do separate checks for gcc/clang (and ignore other compilers for now), since
 # we need to explicitly pass -Werror to the compilers.
 # FIXME: https://github.com/mesonbuild/meson/issues/5399
-# We can’t simplify these checks using a foreach loop because dictionary keys
-# have to be string literals.
-# FIXME: https://github.com/mesonbuild/meson/issues/5231
 if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
-  g_sizet_compatibility += {
-    'short': g_sizet_compatibility['short'] and cc.compiles(
+  foreach type_name, size_compatibility : g_sizet_compatibility
+    g_sizet_compatibility += { type_name: size_compatibility and
+      cc.compiles(
         '''#include <stddef.h>
         size_t f (size_t *i) { return *i + 1; }
         int main (void) {
-          unsigned short i = 0;
+          unsigned ''' + type_name + ''' i = 0;
           f (&i);
           return 0;
         }''',
         args: ['-Werror'],
-        name : 'GCC size_t typedef is short'),
-    'int': g_sizet_compatibility['int'] and cc.compiles(
-        '''#include <stddef.h>
-        size_t f (size_t *i) { return *i + 1; }
-        int main (void) {
-          unsigned int i = 0;
-          f (&i);
-          return 0;
-        }''',
-        args: ['-Werror'],
-        name : 'GCC size_t typedef is int'),
-    'long': g_sizet_compatibility['long'] and cc.compiles(
-        '''#include <stddef.h>
-        size_t f (size_t *i) { return *i + 1; }
-        int main (void) {
-          unsigned long i = 0;
-          f (&i);
-          return 0;
-        }''',
-        args: ['-Werror'],
-        name : 'GCC size_t typedef is long'),
-    'long long': g_sizet_compatibility['long long'] and cc.compiles(
-        '''#include <stddef.h>
-        size_t f (size_t *i) { return *i + 1; }
-        int main (void) {
-          unsigned long long i = 0;
-          f (&i);
-          return 0;
-        }''',
-        args: ['-Werror'],
-        name : 'GCC size_t typedef is long long'),
-  }
+        name : 'GCC size_t typedef is ' + type_name), }
+  endforeach
 endif
 
 if g_sizet_compatibility['short']
