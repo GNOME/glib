@@ -8,16 +8,16 @@ GLib on a particular system, or we have regular builds of GLib on that system.
 Minimum versions
 ---
 
- * Mac OS: minimum version OS X 10.7 (we don’t support universal binaries: see
-   https://bugzilla.gnome.org/show_bug.cgi?id=780238); some features (like
-   notification support) require OS X 10.9 (see
-   https://bugzilla.gnome.org/show_bug.cgi?id=747146)
- * Windows: minimum version is Windows 8 (see
-   https://gitlab.gnome.org/GNOME/glib/-/merge_requests/1970), minimum build
-   chain is Visual Studio 2012
+ * macOS: minimum version OS X 10.7 (we
+   [don’t support universal binaries](https://bugzilla.gnome.org/show_bug.cgi?id=780238);
+   some features (like notification support)
+   [require OS X 10.9](https://bugzilla.gnome.org/show_bug.cgi?id=747146)
+ * Windows:
+   [minimum version is Windows 8](https://gitlab.gnome.org/GNOME/glib/-/merge_requests/1970),
+   minimum build chain is Visual Studio 2012
    * Static builds are only supported with MinGW-based toolchains (cf
      [this comment](https://gitlab.gnome.org/GNOME/glib/-/merge_requests/2384#note_1336662))
- * Android: minimum NDK version 15, see https://gitlab.gnome.org/GNOME/glib/issues/1113
+ * Android: [minimum NDK version 15](https://gitlab.gnome.org/GNOME/glib/issues/1113)
  * Linux: glibc newer than 2.5 (if using glibc; other forms of libc are supported)
 
 Tested platforms
@@ -48,7 +48,7 @@ Policy and rationale
 ---
 
 Due to their position in the market, we consider supporting GNU/Linux, Windows
-and Mac OS to be the highest priorities and we will go out of our way to
+and macOS to be the highest priorities and we will go out of our way to
 accommodate these systems, even in places that they are contravening standards.
 
 In general, we are open to the idea of supporting any Free Software UNIX-like
