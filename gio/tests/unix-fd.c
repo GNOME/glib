@@ -6,6 +6,7 @@
 #include <glib-unix.h>
 #include <unistd.h>
 #endif
+#include <glib/gstdio.h>
 #include <string.h>
 
 /* ensures that no FDs are left open at the end */
@@ -23,7 +24,7 @@ check_fd_list (const gint *fd_list)
     }
 
   for (i = 0; i < 40; i++)
-    close (fd_list[i]);
+    g_close (fd_list[i], NULL);
 }
 
 static void
@@ -38,7 +39,7 @@ create_fd_list (gint *fd_list)
     }
 
   for (i = 0; i < 40; i++)
-    close (fd_list[i]);
+    g_close (fd_list[i], NULL);
 }
 
 static void
@@ -60,7 +61,7 @@ test_scm (void)
   gint sv[3];
   gint flags;
   gint nm;
-  gint s;
+  gint s, i;
   gchar *path;
   GByteArray *array;
   gboolean abstract;
@@ -94,31 +95,24 @@ test_scm (void)
 
   g_unix_fd_message_append_fd (message, sv[0], &err);
   g_assert_no_error (err);
-  s = close (sv[0]);
-  g_assert_cmpint (s, ==, 0);
+  g_close (sv[0], &err);
+  g_assert_no_error (err);
   g_unix_fd_message_append_fd (message, sv[1], &err);
   g_assert_no_error (err);
-  s = close (sv[1]);
-  g_assert_cmpint (s, ==, 0);
+  g_close (sv[1], &err);
+  g_assert_no_error (err);
 
-  s = close (g_unix_fd_list_get (list, 0, &err));
-  g_assert_no_error (err);
-  g_assert_cmpint (s, ==, 0);
-  s = close (g_unix_fd_list_get (list, 1, &err));
-  g_assert_no_error (err);
-  g_assert_cmpint (s, ==, 0);
-  s = close (g_unix_fd_list_get (list, 0, &err));
-  g_assert_no_error (err);
-  g_assert_cmpint (s, ==, 0);
-  s = close (g_unix_fd_list_get (list, 1, &err));
-  g_assert_no_error (err);
-  g_assert_cmpint (s, ==, 0);
-  s = close (g_unix_fd_list_get (list, 0, &err));
-  g_assert_no_error (err);
-  g_assert_cmpint (s, ==, 0);
-  s = close (g_unix_fd_list_get (list, 1, &err));
-  g_assert_no_error (err);
-  g_assert_cmpint (s, ==, 0);
+  for (i = 0; i < 3; i++)
+    {
+      s = g_unix_fd_list_get (list, 0, &err);
+      g_assert_no_error (err);
+      g_close (s, &err);
+      g_assert_no_error (err);
+      s = g_unix_fd_list_get (list, 1, &err);
+      g_assert_no_error (err);
+      g_close (s, &err);
+      g_assert_no_error (err);
+    }
 
   g_object_unref (message);
   g_object_unref (list);
@@ -135,16 +129,18 @@ test_scm (void)
   g_assert_no_error (err);
   g_assert_cmpint (s, >=, 0);
 
-  s = close (sv[0]);
-  g_assert_cmpint (s, ==, 0);
-  s = close (sv[1]);
-  g_assert_cmpint (s, ==, 0);
-  s = close (g_unix_fd_list_get (list, 0, &err));
+  g_close (sv[0], &err);
   g_assert_no_error (err);
-  g_assert_cmpint (s, ==, 0);
-  s = close (g_unix_fd_list_get (list, 1, &err));
+  g_close (sv[1], &err);
   g_assert_no_error (err);
-  g_assert_cmpint (s, ==, 0);
+  s = g_unix_fd_list_get (list, 0, &err);
+  g_assert_no_error (err);
+  g_close (s, &err);
+  g_assert_no_error (err);
+  s = g_unix_fd_list_get (list, 1, &err);
+  g_assert_no_error (err);
+  g_close (s, &err);
+  g_assert_no_error (err);
 
   s = socketpair (PF_UNIX, SOCK_STREAM, 0, sv);
   g_assert_cmpint (s, ==, 0);
@@ -221,7 +217,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
   s = write (sv[0], buffer, strlen (buffer) + 1);
   g_assert_cmpint (s, ==, strlen (buffer) + 1);
 
-  close (sv[0]);
+  g_close (sv[0], NULL);
   memset (buffer, 0xff, sizeof buffer);
 
   s = read (peek[0], buffer, sizeof buffer);
@@ -245,5 +241,4 @@ main (int argc, char **argv)
   g_test_add_func ("/unix-fd/scm", test_scm);
 
   return g_test_run();
-
 }
