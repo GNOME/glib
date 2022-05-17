@@ -226,7 +226,7 @@ valgrind:
     - ninja -C _build
     - bash -x ./.gitlab-ci/run-tests.sh
                  --log-file _build/meson-logs/testlog-valgrind.json
-                 --wrap "valgrind --tool=memcheck --error-exitcode=1 --track-origins=yes --leak-check=full --leak-resolution=high --num-callers=50 --show-leak-kinds=definite,possible --show-error-list=yes --suppressions=${CI_PROJECT_DIR}/glib.supp"
+                 --wrap "valgrind --tool=memcheck --error-exitcode=1 --track-origins=yes --leak-check=full --leak-resolution=high --num-callers=50 --show-leak-kinds=definite,possible --show-error-list=yes --suppressions=${CI_PROJECT_DIR}/tools/glib.supp"
                  --no-suite no-valgrind
                  --no-suite slow
   # FIXME: Remove this when we have zero valgrind leaks.
