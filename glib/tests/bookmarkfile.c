@@ -710,6 +710,7 @@ test_corner_cases (void)
   g_clear_error (&error);
 
   g_bookmark_file_free (bookmark);
+  g_unlink ("a");
 }
 
 static void
