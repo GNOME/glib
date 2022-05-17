@@ -7,7 +7,11 @@
 #include <unistd.h>
 #endif
 #include <glib/gstdio.h>
+#include <fcntl.h>
 #include <string.h>
+#ifdef G_OS_WIN32
+#include <io.h>
+#endif
 
 /* ensures that no FDs are left open at the end */
 static void
@@ -40,6 +44,61 @@ create_fd_list (gint *fd_list)
 
   for (i = 0; i < 40; i++)
     g_close (fd_list[i], NULL);
+}
+
+static void
+test_fd_list (void)
+{
+  GError *err = NULL;
+  GUnixFDList *list;
+  const gint *peek;
+  gint *stolen;
+  gint fd_list[40];
+  gint sv[3];
+  gint s;
+
+  create_fd_list (fd_list);
+  sv[2] = -1;
+#ifdef G_OS_WIN32
+  s = _pipe (sv, 4096, _O_NOINHERIT | _O_BINARY);
+  g_assert_cmpint (s, ==, 0);
+#else
+  g_unix_open_pipe (sv, FD_CLOEXEC, &err);
+  g_assert_no_error (err);
+#endif
+  list = g_unix_fd_list_new_from_array (sv, -1);
+  peek = g_unix_fd_list_peek_fds (list, &s);
+  g_assert_cmpint (s, ==, 2);
+  g_assert_cmpint (peek[0], ==, sv[0]);
+  g_assert_cmpint (peek[1], ==, sv[1]);
+
+  s = g_unix_fd_list_get (list, 0, &err);
+  g_assert_no_error (err);
+  g_close (s, &err);
+  g_assert_no_error (err);
+  s = g_unix_fd_list_get (list, 1, &err);
+  g_assert_no_error (err);
+  g_close (s, &err);
+  g_assert_no_error (err);
+
+  s = g_unix_fd_list_append (list, sv[0], &err);
+  g_assert_no_error (err);
+  g_assert_cmpint (s, >=, 0);
+  stolen = g_unix_fd_list_steal_fds (list, &s);
+  g_assert_cmpint (s, ==, 3);
+  g_assert_cmpint (stolen[0], ==, sv[0]);
+  g_assert_cmpint (stolen[1], ==, sv[1]);
+  g_assert_cmpint (stolen[2], >=, 0);
+  g_close (stolen[0], &err);
+  g_assert_no_error (err);
+  g_close (stolen[1], &err);
+  g_assert_no_error (err);
+  g_close (stolen[2], &err);
+  g_assert_no_error (err);
+  g_free (stolen);
+
+  g_object_unref (list);
+  check_fd_list (fd_list);
 }
 
 static void
@@ -238,6 +297,7 @@ main (int argc, char **argv)
 {
   g_test_init (&argc, &argv, NULL);
 
+  g_test_add_func ("/unix-fd/fd-list", test_fd_list);
   g_test_add_func ("/unix-fd/scm", test_scm);
 
   return g_test_run();
