@@ -381,7 +381,6 @@ if host_system != 'windows'
   gio_unix_include_headers = files(
     'gfiledescriptorbased.h',
     'gunixmounts.h',
-    'gunixfdlist.h',
     'gunixfdmessage.h',
     'gunixinputstream.h',
     'gunixoutputstream.h',
@@ -715,6 +714,7 @@ gio_headers = files(
   'gdtlsserverconnection.h',
   'gunixconnection.h',
   'gunixcredentialsmessage.h',
+  'gunixfdlist.h',
   'gunixsocketaddress.h',
   'gvfs.h',
   'gvolume.h',
