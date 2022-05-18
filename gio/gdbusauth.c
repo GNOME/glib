@@ -39,11 +39,9 @@
 #include "gdatainputstream.h"
 #include "gdataoutputstream.h"
 
-#ifdef G_OS_UNIX
 #include "gnetworking.h"
 #include "gunixconnection.h"
 #include "gunixcredentialsmessage.h"
-#endif
 
 #include "glibintl.h"
 
@@ -974,7 +972,6 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
   g_data_input_stream_set_newline_type (dis, G_DATA_STREAM_NEWLINE_TYPE_CR_LF);
 
   /* read the NUL-byte, possibly with credentials attached */
-#ifdef G_OS_UNIX
 #ifndef G_CREDENTIALS_PREFER_MESSAGE_PASSING
   if (G_IS_SOCKET_CONNECTION (auth->priv->stream))
     {
@@ -1020,15 +1017,7 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
           goto out;
         }
     }
-#else
-  local_error = NULL;
-  (void)g_data_input_stream_read_byte (dis, cancellable, &local_error);
-  if (local_error != NULL)
-    {
-      g_propagate_error (error, local_error);
-      goto out;
-    }
-#endif
+
   if (credentials != NULL)
     {
       if (G_UNLIKELY (_g_dbus_debug_authentication ()))

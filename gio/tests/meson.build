@@ -81,6 +81,12 @@ gio_tests = {
   'g-icon' : {},
   'gdbus-addresses' : {},
   'gdbus-message' : {},
+  'gdbus-peer' : {
+    'dependencies' : [libgdbus_example_objectmanager_dep],
+    'install_rpath' : installed_tests_execdir,
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
+    'should_fail' : host_system == 'darwin',
+  },
   'inet-address' : {},
   'io-stream' : {},
   'memory-input-stream' : {},
@@ -115,6 +121,7 @@ gio_tests = {
   'tls-interaction' : {'extra_sources' : ['gtesttlsbackend.c']},
   'tls-database' : {'extra_sources' : ['gtesttlsbackend.c']},
   'tls-bindings' : {'extra_sources' : ['gtesttlsbackend.c']},
+  'unix-fd' : {},
   'gdbus-address-get-session' : {
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
     'should_fail' : host_system == 'darwin',
@@ -183,18 +190,11 @@ endif
 if host_machine.system() != 'windows'
   gio_tests += {
     'file' : {},
-    'gdbus-peer' : {
-      'dependencies' : [libgdbus_example_objectmanager_dep],
-      'install_rpath' : installed_tests_execdir,
-      # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
-      'should_fail' : host_system == 'darwin',
-    },
     'gdbus-peer-object-manager' : {},
     'live-g-file' : {},
     'resolver-parsing' : {'dependencies' : [network_libs]},
     'socket-address' : {},
     'stream-rw_all' : {},
-    'unix-fd' : {},
     'unix-mounts' : {},
     'unix-streams' : {},
     'g-file-info-filesystem-readonly' : {},

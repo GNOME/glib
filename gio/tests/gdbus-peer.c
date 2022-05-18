@@ -23,7 +23,6 @@
 #include "config.h"
 
 #include <gio/gio.h>
-#include <unistd.h>
 #include <string.h>
 
 /* for open(2) */
@@ -43,6 +42,10 @@
 #ifdef G_OS_UNIX
 #include <gio/gunixconnection.h>
 #include <errno.h>
+#endif
+
+#ifdef G_OS_WIN32
+#include <gio/giowin32-afunix.h>
 #endif
 
 #include "gdbus-tests.h"
@@ -298,10 +301,27 @@ on_proxy_signal_received_with_name_set (GDBusProxy *proxy,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+static gboolean
+af_unix_works (void)
+{
+  int fd;
+
+  g_networking_init ();
+  fd = socket (AF_UNIX, SOCK_STREAM, 0);
+
+#ifdef G_OS_WIN32
+  closesocket (fd);
+  return fd != (int) INVALID_SOCKET;
+#else
+  g_close (fd, NULL);
+  return fd >= 0;
+#endif
+}
+
 static void
 setup_test_address (void)
 {
-  if (is_unix)
+  if (is_unix || af_unix_works ())
     {
       g_test_message ("Testing with unix:dir address");
       tmpdir = g_dir_make_tmp ("gdbus-test-XXXXXX", NULL);
@@ -390,6 +410,13 @@ on_new_connection (GDBusServer *server,
       credentials = g_dbus_connection_get_peer_credentials (connection);
 
       g_assert (credentials != NULL);
+#ifdef G_OS_WIN32
+      {
+        DWORD *pid;
+        pid = g_credentials_get_native (credentials, G_CREDENTIALS_TYPE_WIN32_PID);
+        g_assert_cmpuint (*pid, ==, GetCurrentProcessId ());
+      }
+#else
       g_assert_cmpuint (g_credentials_get_unix_user (credentials, NULL), ==,
                         getuid ());
 #if G_CREDENTIALS_HAS_PID
@@ -400,9 +427,10 @@ on_new_connection (GDBusServer *server,
       g_assert_cmpint (g_credentials_get_unix_pid (credentials, &error), ==, -1);
       g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);
       g_clear_error (&error);
-#endif
+#endif /* G_CREDENTIALS_HAS_PID */
+#endif /* G_OS_WIN32 */
     }
-#endif
+#endif /* G_CREDENTIALS_SUPPORTED */
 
   /* export object on the newly established connection */
   reg_id = g_dbus_connection_register_object (connection,
@@ -1000,6 +1028,13 @@ do_test_peer (void)
     g_assert_no_error (error);
     g_assert (G_IS_CREDENTIALS (credentials));
 
+#ifdef G_OS_WIN32
+      {
+        DWORD *pid;
+        pid = g_credentials_get_native (credentials, G_CREDENTIALS_TYPE_WIN32_PID);
+        g_assert_cmpuint (*pid, ==, GetCurrentProcessId ());
+      }
+#else
     g_assert_cmpuint (g_credentials_get_unix_user (credentials, NULL), ==,
                       getuid ());
 #if G_CREDENTIALS_HAS_PID
@@ -1010,12 +1045,13 @@ do_test_peer (void)
     g_assert_cmpint (g_credentials_get_unix_pid (credentials, &error), ==, -1);
     g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);
     g_clear_error (&error);
-#endif
+#endif /* G_CREDENTIALS_HAS_PID */
     g_object_unref (credentials);
+#endif /* G_OS_WIN32 */
 #else
     g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);
     g_assert (credentials == NULL);
-#endif
+#endif /* G_CREDENTIALS_SOCKET_GET_CREDENTIALS_SUPPORTED */
   }
 
 
@@ -1474,7 +1510,7 @@ dmp_on_new_connection (GDBusServer     *server,
    * G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING really works
    * (GDBusServer uses this feature).
    */
-  usleep (100 * 1000);
+  g_usleep (100 * 1000);
 
   /* export an object */
   error = NULL;
@@ -1726,7 +1762,7 @@ test_nonce_tcp (void)
   s = strstr (address, "noncefile=");
   g_assert (s != NULL);
   s += sizeof "noncefile=" - 1;
-  nonce_file = g_strdup (s);
+  nonce_file = g_uri_unescape_string (s, NULL); /* URI-unescaping should be good enough */
 
   /* First try invalid data in the nonce file - this will actually
    * make the client send this and the server will reject it. The way
@@ -1809,17 +1845,26 @@ test_credentials (void)
   GCredentials *c1, *c2;
   GError *error;
   gchar *desc;
+  gboolean same;
 
   c1 = g_credentials_new ();
   c2 = g_credentials_new ();
 
   error = NULL;
+#ifdef G_OS_UNIX
   if (g_credentials_set_unix_user (c2, getuid (), &error))
     g_assert_no_error (error);
+#endif
 
-  g_clear_error (&error);
-  g_assert (g_credentials_is_same_user (c1, c2, &error));
+  same = g_credentials_is_same_user (c1, c2, &error);
+#ifdef G_OS_UNIX
+  g_assert (same);
   g_assert_no_error (error);
+#else
+  g_assert (!same);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);
+  g_clear_error (&error);
+#endif
 
   desc = g_credentials_to_string (c1);
   g_assert (desc != NULL);
