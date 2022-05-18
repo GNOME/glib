@@ -69,6 +69,10 @@
 #include "glibintl.h"
 #include "glib-unix.h"
 
+#define INHERITS_OR_NULL_STDIN  (G_SPAWN_STDIN_FROM_DEV_NULL | G_SPAWN_CHILD_INHERITS_STDIN)
+#define INHERITS_OR_NULL_STDOUT (G_SPAWN_STDOUT_TO_DEV_NULL | G_SPAWN_CHILD_INHERITS_STDOUT)
+#define INHERITS_OR_NULL_STDERR (G_SPAWN_STDERR_TO_DEV_NULL | G_SPAWN_CHILD_INHERITS_STDERR)
+
 /* posix_spawn() is assumed the fastest way to spawn, but glibc's
  * implementation was buggy before glibc 2.24, so avoid it on old versions.
  */
@@ -241,8 +245,6 @@ g_spawn_async (const gchar          *working_directory,
                GPid                 *child_pid,
                GError              **error)
 {
-  g_return_val_if_fail (argv != NULL, FALSE);
-  
   return g_spawn_async_with_pipes (working_directory,
                                    argv, envp,
                                    flags,
@@ -612,37 +614,18 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
                           gint                 *standard_error,
                           GError              **error)
 {
-  g_return_val_if_fail (argv != NULL, FALSE);
-  g_return_val_if_fail (argv[0] != NULL, FALSE);
-  g_return_val_if_fail (standard_output == NULL ||
-                        !(flags & G_SPAWN_STDOUT_TO_DEV_NULL), FALSE);
-  g_return_val_if_fail (standard_error == NULL ||
-                        !(flags & G_SPAWN_STDERR_TO_DEV_NULL), FALSE);
-  /* can't inherit stdin if we have an input pipe. */
-  g_return_val_if_fail (standard_input == NULL ||
-                        !(flags & G_SPAWN_CHILD_INHERITS_STDIN), FALSE);
-
-  return fork_exec (!(flags & G_SPAWN_DO_NOT_REAP_CHILD),
-                    working_directory,
-                    (const gchar * const *) argv,
-                    (const gchar * const *) envp,
-                    !(flags & G_SPAWN_LEAVE_DESCRIPTORS_OPEN),
-                    (flags & G_SPAWN_SEARCH_PATH) != 0,
-                    (flags & G_SPAWN_SEARCH_PATH_FROM_ENVP) != 0,
-                    (flags & G_SPAWN_STDOUT_TO_DEV_NULL) != 0,
-                    (flags & G_SPAWN_STDERR_TO_DEV_NULL) != 0,
-                    (flags & G_SPAWN_CHILD_INHERITS_STDIN) != 0,
-                    (flags & G_SPAWN_FILE_AND_ARGV_ZERO) != 0,
-                    (flags & G_SPAWN_CLOEXEC_PIPES) != 0,
-                    child_setup,
-                    user_data,
-                    child_pid,
-                    standard_input,
-                    standard_output,
-                    standard_error,
-                    -1, -1, -1,
-                    NULL, NULL, 0,
-                    error);
+  return g_spawn_async_with_pipes_and_fds (working_directory,
+                                           (const gchar * const *) argv,
+                                           (const gchar * const *) envp,
+                                           flags,
+                                           child_setup, user_data,
+                                           -1, -1, -1,
+                                           NULL, NULL, 0,
+                                           child_pid,
+                                           standard_input,
+                                           standard_output,
+                                           standard_error,
+                                           error);
 }
 
 /**
@@ -751,17 +734,23 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
  * @envp. If both %G_SPAWN_SEARCH_PATH and %G_SPAWN_SEARCH_PATH_FROM_ENVP
  * are used, the value from @envp takes precedence over the environment.
  *
- * %G_SPAWN_STDOUT_TO_DEV_NULL means that the child's standard output
- * will be discarded, instead of going to the same location as the parent's
- * standard output. If you use this flag, @stdout_pipe_out must be %NULL.
- *
- * %G_SPAWN_STDERR_TO_DEV_NULL means that the child's standard error
- * will be discarded, instead of going to the same location as the parent's
- * standard error. If you use this flag, @stderr_pipe_out must be %NULL.
- *
  * %G_SPAWN_CHILD_INHERITS_STDIN means that the child will inherit the parent's
  * standard input (by default, the child's standard input is attached to
- * `/dev/null`). If you use this flag, @stdin_pipe_out must be %NULL.
+ * `/dev/null`). %G_SPAWN_STDIN_FROM_DEV_NULL explicitly imposes the default
+ * behavior. Both flags cannot be enabled at the same time and, in both cases,
+ * the @stdin_pipe_out argument is ignored.
+ *
+ * %G_SPAWN_STDOUT_TO_DEV_NULL means that the child's standard output
+ * will be discarded (by default, it goes to the same location as the parent's
+ * standard output). %G_SPAWN_CHILD_INHERITS_STDOUT explicitly imposes the
+ * default behavior. Both flags cannot be enabled at the same time and, in
+ * both cases, the @stdout_pipe_out argument is ignored.
+ *
+ * %G_SPAWN_STDERR_TO_DEV_NULL means that the child's standard error
+ * will be discarded (by default, it goes to the same location as the parent's
+ * standard error). %G_SPAWN_CHILD_INHERITS_STDERR explicitly imposes the
+ * default behavior. Both flags cannot be enabled at the same time and, in
+ * both cases, the @stderr_pipe_out argument is ignored.
  *
  * It is valid to pass the same FD in multiple parameters (e.g. you can pass
  * a single FD for both @stdout_fd and @stderr_fd, and include it in
@@ -885,17 +874,21 @@ g_spawn_async_with_pipes_and_fds (const gchar           *working_directory,
 {
   g_return_val_if_fail (argv != NULL, FALSE);
   g_return_val_if_fail (argv[0] != NULL, FALSE);
-  g_return_val_if_fail (stdout_pipe_out == NULL ||
-                        !(flags & G_SPAWN_STDOUT_TO_DEV_NULL), FALSE);
-  g_return_val_if_fail (stderr_pipe_out == NULL ||
-                        !(flags & G_SPAWN_STDERR_TO_DEV_NULL), FALSE);
-  /* can't inherit stdin if we have an input pipe. */
-  g_return_val_if_fail (stdin_pipe_out == NULL ||
-                        !(flags & G_SPAWN_CHILD_INHERITS_STDIN), FALSE);
+  /* can’t both inherit and set pipes to /dev/null */
+  g_return_val_if_fail ((flags & INHERITS_OR_NULL_STDIN) != INHERITS_OR_NULL_STDIN, FALSE);
+  g_return_val_if_fail ((flags & INHERITS_OR_NULL_STDOUT) != INHERITS_OR_NULL_STDOUT, FALSE);
+  g_return_val_if_fail ((flags & INHERITS_OR_NULL_STDERR) != INHERITS_OR_NULL_STDERR, FALSE);
   /* can’t use pipes and stdin/stdout/stderr FDs */
   g_return_val_if_fail (stdin_pipe_out == NULL || stdin_fd < 0, FALSE);
   g_return_val_if_fail (stdout_pipe_out == NULL || stdout_fd < 0, FALSE);
   g_return_val_if_fail (stderr_pipe_out == NULL || stderr_fd < 0, FALSE);
+
+  if ((flags & INHERITS_OR_NULL_STDIN) != 0)
+    stdin_pipe_out = NULL;
+  if ((flags & INHERITS_OR_NULL_STDOUT) != 0)
+    stdout_pipe_out = NULL;
+  if ((flags & INHERITS_OR_NULL_STDERR) != 0)
+    stderr_pipe_out = NULL;
 
   return fork_exec (!(flags & G_SPAWN_DO_NOT_REAP_CHILD),
                     working_directory,
