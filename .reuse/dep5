@@ -7,6 +7,8 @@ Source: https://gitlab.gnome.org/GNOME/glib/
 # copyright/licensing headers to them (or beside them in a .license file) may
 # affect the tests
 Files:
+ fuzzing/*.corpus
+ fuzzing/*.dict
  gio/tests/cert-tests/*.p12
  gio/tests/cert-tests/*.pem
  gio/tests/desktop-files/**.desktop
