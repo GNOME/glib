@@ -381,6 +381,11 @@ test_string_insert_unichar (void)
   g_string_insert_unichar (string, -1, 0xFFD0);
   g_assert_cmpstr (string->str, ==, "start\xEF\xBF\x90");
   g_string_free (string, TRUE);
+
+  string = g_string_new ("start");
+  g_string_insert_unichar (string, -1, 0xFDD0);
+  g_assert_cmpstr (string->str, ==, "start\xEF\xB7\x90");
+  g_string_free (string, TRUE);
 }
 
 static void
