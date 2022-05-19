@@ -1094,53 +1094,57 @@ g_param_spec_pool_lookup (GParamSpecPool *pool,
 			  gboolean        walk_ancestors)
 {
   GParamSpec *pspec;
-  gchar *delim;
 
   g_return_val_if_fail (pool != NULL, NULL);
   g_return_val_if_fail (param_name != NULL, NULL);
 
   g_mutex_lock (&pool->mutex);
 
-  delim = pool->type_prefixing ? strchr (param_name, ':') : NULL;
-
   /* try quick and away, i.e. without prefix */
-  if (!delim)
+  pspec = param_spec_ht_lookup (pool->hash_table, param_name, owner_type, walk_ancestors);
+  if (pspec)
     {
-      pspec = param_spec_ht_lookup (pool->hash_table, param_name, owner_type, walk_ancestors);
       g_mutex_unlock (&pool->mutex);
-
       return pspec;
     }
 
-  /* strip type prefix */
-  if (pool->type_prefixing && delim[1] == ':')
+  if (pool->type_prefixing)
     {
-      guint l = delim - param_name;
-      gchar stack_buffer[32], *buffer = l < 32 ? stack_buffer : g_new (gchar, l + 1);
-      GType type;
-      
-      strncpy (buffer, param_name, delim - param_name);
-      buffer[l] = 0;
-      type = g_type_from_name (buffer);
-      if (l >= 32)
-	g_free (buffer);
-      if (type)		/* type==0 isn't a valid type pefix */
-	{
-	  /* sanity check, these cases don't make a whole lot of sense */
-	  if ((!walk_ancestors && type != owner_type) || !g_type_is_a (owner_type, type))
-	    {
-	      g_mutex_unlock (&pool->mutex);
+      char *delim;
 
-	      return NULL;
-	    }
-	  owner_type = type;
-	  param_name += l + 2;
-	  pspec = param_spec_ht_lookup (pool->hash_table, param_name, owner_type, walk_ancestors);
-	  g_mutex_unlock (&pool->mutex);
+      delim = strchr (param_name, ':');
 
-	  return pspec;
-	}
+      /* strip type prefix */
+      if (delim && delim[1] == ':')
+        {
+          guint l = delim - param_name;
+          gchar stack_buffer[32], *buffer = l < 32 ? stack_buffer : g_new (gchar, l + 1);
+          GType type;
+
+          strncpy (buffer, param_name, delim - param_name);
+          buffer[l] = 0;
+          type = g_type_from_name (buffer);
+          if (l >= 32)
+            g_free (buffer);
+          if (type)         /* type==0 isn't a valid type pefix */
+            {
+              /* sanity check, these cases don't make a whole lot of sense */
+              if ((!walk_ancestors && type != owner_type) || !g_type_is_a (owner_type, type))
+                {
+                  g_mutex_unlock (&pool->mutex);
+
+                  return NULL;
+                }
+              owner_type = type;
+              param_name += l + 2;
+              pspec = param_spec_ht_lookup (pool->hash_table, param_name, owner_type, walk_ancestors);
+              g_mutex_unlock (&pool->mutex);
+
+              return pspec;
+            }
+        }
     }
+
   /* malformed param_name */
 
   g_mutex_unlock (&pool->mutex);
