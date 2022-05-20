@@ -2294,9 +2294,11 @@ g_object_new_valist (GType        object_type,
     {
       GObjectConstructParam params_stack[16];
       GValue values_stack[G_N_ELEMENTS (params_stack)];
+      GTypeValueTable *vtabs_stack[G_N_ELEMENTS (params_stack)];
       const gchar *name;
       GObjectConstructParam *params = params_stack;
       GValue *values = values_stack;
+      GTypeValueTable **vtabs = vtabs_stack;
       guint n_params = 0;
       guint n_params_alloc = G_N_ELEMENTS (params_stack);
 
@@ -2321,14 +2323,17 @@ g_object_new_valist (GType        object_type,
                   n_params_alloc = G_N_ELEMENTS (params_stack) * 2u;
                   params = g_new (GObjectConstructParam, n_params_alloc);
                   values = g_new (GValue, n_params_alloc);
+                  vtabs = g_new (GTypeValueTable *, n_params_alloc);
                   memcpy (params, params_stack, sizeof (GObjectConstructParam) * n_params);
                   memcpy (values, values_stack, sizeof (GValue) * n_params);
+                  memcpy (vtabs, vtabs_stack, sizeof (GTypeValueTable *) * n_params);
                 }
               else
                 {
                   n_params_alloc *= 2u;
                   params = g_realloc (params, sizeof (GObjectConstructParam) * n_params_alloc);
                   values = g_realloc (values, sizeof (GValue) * n_params_alloc);
+                  vtabs = g_realloc (vtabs, sizeof (GTypeValueTable *) * n_params_alloc);
                 }
 
               for (i = 0; i < n_params; i++)
@@ -2339,7 +2344,7 @@ g_object_new_valist (GType        object_type,
           params[n_params].value = &values[n_params];
           memset (&values[n_params], 0, sizeof (GValue));
 
-          G_VALUE_COLLECT_INIT (&values[n_params], pspec->value_type, var_args, 0, &error);
+          G_VALUE_COLLECT_INIT2 (&values[n_params], vtabs[n_params], pspec->value_type, var_args, 0, &error);
 
           if (error)
             {
@@ -2356,12 +2361,19 @@ g_object_new_valist (GType        object_type,
       object = g_object_new_internal (class, params, n_params);
 
       while (n_params--)
-        g_value_unset (params[n_params].value);
+        {
+          /* We open-code g_value_unset() here to avoid the
+           * cost of looking up the GTypeValueTable again.
+           */
+          if (vtabs[n_params]->value_free)
+            vtabs[n_params]->value_free (params[n_params].value);
+        }
 
       if (G_UNLIKELY (n_params_alloc != G_N_ELEMENTS (params_stack)))
         {
           g_free (params);
           g_free (values);
+          g_free (vtabs);
         }
     }
   else
@@ -2516,6 +2528,7 @@ g_object_set_valist (GObject	 *object,
       GValue value = G_VALUE_INIT;
       GParamSpec *pspec;
       gchar *error = NULL;
+      GTypeValueTable *vtab;
       
       pspec = g_param_spec_pool_lookup (pspec_pool,
 					name,
@@ -2525,8 +2538,7 @@ g_object_set_valist (GObject	 *object,
       if (!g_object_set_is_valid_property (object, pspec, name))
         break;
 
-      G_VALUE_COLLECT_INIT (&value, pspec->value_type, var_args,
-			    0, &error);
+      G_VALUE_COLLECT_INIT2 (&value, vtab, pspec->value_type, var_args, 0, &error);
       if (error)
 	{
 	  g_warning ("%s: %s", G_STRFUNC, error);
@@ -2537,7 +2549,12 @@ g_object_set_valist (GObject	 *object,
 
       consider_issuing_property_deprecation_warning (pspec);
       object_set_property (object, pspec, &value, nqueue);
-      g_value_unset (&value);
+
+      /* We open-code g_value_unset() here to avoid the
+       * cost of looking up the GTypeValueTable again.
+       */
+      if (vtab->value_free)
+        vtab->value_free (&value);
 
       name = va_arg (var_args, gchar*);
     }
