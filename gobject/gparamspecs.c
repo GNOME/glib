@@ -759,18 +759,6 @@ param_boxed_set_default (GParamSpec *pspec,
   value->data[0].v_pointer = NULL;
 }
 
-static gboolean
-param_boxed_validate (GParamSpec *pspec,
-		      GValue     *value)
-{
-  /* GParamSpecBoxed *bspec = G_PARAM_SPEC_BOXED (pspec); */
-  guint changed = 0;
-
-  /* can't do a whole lot here since we haven't even G_BOXED_TYPE() */
-  
-  return changed;
-}
-
 static gint
 param_boxed_values_cmp (GParamSpec    *pspec,
 			 const GValue *value1,
@@ -1508,7 +1496,7 @@ _g_param_spec_types_init (void)
       G_TYPE_BOXED,		/* value_type */
       NULL,			/* finalize */
       param_boxed_set_default,	/* value_set_default */
-      param_boxed_validate,	/* value_validate */
+      NULL,                   	/* value_validate */
       param_boxed_values_cmp,	/* values_cmp */
     };
     type = g_param_type_register_static (g_intern_static_string ("GParamBoxed"), &pspec_info);
