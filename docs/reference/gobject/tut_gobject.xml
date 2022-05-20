@@ -555,7 +555,7 @@ viewer_file_class_init (ViewerFileClass *klass)
                          "Filename",
                          "Name of the file to load and display from.",
                          NULL  /* default value */,
-                         G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE);
+                         G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
 
   obj_properties[PROP_ZOOM_LEVEL] =
     g_param_spec_uint ("zoom-level",
@@ -564,7 +564,7 @@ viewer_file_class_init (ViewerFileClass *klass)
                        0  /* minimum value */,
                        10 /* maximum value */,
                        2  /* default value */,
-                       G_PARAM_READWRITE);
+                       G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
 
   g_object_class_install_properties (object_class,
                                      N_PROPERTIES,

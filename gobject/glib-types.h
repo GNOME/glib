@@ -54,7 +54,7 @@ typedef gsize GType;
  *                                                      _("Authors"),
  *                                                      _("List of authors"),
  *                                                      G_TYPE_STRV,
- *                                                      G_PARAM_READWRITE));
+ *                                                      G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
  *
  * gchar *authors[] = { "Owen", "Tim", NULL };
  * g_object_set (obj, "authors", authors, NULL);
