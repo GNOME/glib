@@ -707,9 +707,11 @@ g_object_class_install_property (GObjectClass *class,
  * class initialization:
  *
  * |[<!-- language="C" --> 
- * enum {
- *   PROP_0, PROP_FOO, PROP_BAR, N_PROPERTIES
- * };
+ * typedef enum {
+ *   PROP_FOO = 1,
+ *   PROP_BAR,
+ *   N_PROPERTIES
+ * } MyObjectProperty;
  *
  * static GParamSpec *obj_properties[N_PROPERTIES] = { NULL, };
  *
@@ -722,17 +724,17 @@ g_object_class_install_property (GObjectClass *class,
  *     g_param_spec_int ("foo", "Foo", "Foo",
  *                       -1, G_MAXINT,
  *                       0,
- *                       G_PARAM_READWRITE);
+ *                       G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
  *
  *   obj_properties[PROP_BAR] =
  *     g_param_spec_string ("bar", "Bar", "Bar",
  *                          NULL,
- *                          G_PARAM_READWRITE);
+ *                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
  *
  *   gobject_class->set_property = my_object_set_property;
  *   gobject_class->get_property = my_object_get_property;
  *   g_object_class_install_properties (gobject_class,
- *                                      N_PROPERTIES,
+ *                                      G_N_ELEMENTS (obj_properties),
  *                                      obj_properties);
  * }
  * ]|
@@ -1406,12 +1408,11 @@ g_object_notify (GObject     *object,
  * g_object_class_install_property() inside a static array, e.g.:
  *
  *|[<!-- language="C" --> 
- *   enum
+ *   typedef enum
  *   {
- *     PROP_0,
- *     PROP_FOO,
+ *     PROP_FOO = 1,
  *     PROP_LAST
- *   };
+ *   } MyObjectProperty;
  *
  *   static GParamSpec *properties[PROP_LAST];
  *
@@ -1421,7 +1422,7 @@ g_object_notify (GObject     *object,
  *     properties[PROP_FOO] = g_param_spec_int ("foo", "Foo", "The foo",
  *                                              0, 100,
  *                                              50,
- *                                              G_PARAM_READWRITE);
+ *                                              G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
  *     g_object_class_install_property (gobject_class,
  *                                      PROP_FOO,
  *                                      properties[PROP_FOO]);

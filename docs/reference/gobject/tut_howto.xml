@@ -1226,7 +1226,7 @@ viewer_editable_default_init (ViewerEditableInterface *iface)
                                                             0.0,  /* minimum */
                                                             G_MAXDOUBLE,  /* maximum */
                                                             0.0,  /* default */
-                                                            G_PARAM_READWRITE));
+                                                            G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 }
 </programlisting></informalexample>
     </para>
