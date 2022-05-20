@@ -255,7 +255,9 @@ static GQuark	            quark_closure_array = 0;
 static GQuark	            quark_weak_refs = 0;
 static GQuark	            quark_toggle_refs = 0;
 static GQuark               quark_notify_queue;
+#ifndef HAVE_OPTIONAL_FLAGS
 static GQuark               quark_in_construction;
+#endif
 static GParamSpecPool      *pspec_pool = NULL;
 static gulong	            gobject_signals[LAST_SIGNAL] = { 0, };
 static guint (*floating_flag_handler) (GObject*, gint) = object_floating_flag_handler;
@@ -515,7 +517,9 @@ g_object_do_class_init (GObjectClass *class)
   quark_weak_locations = g_quark_from_static_string ("GObject-weak-locations");
   quark_toggle_refs = g_quark_from_static_string ("GObject-toggle-references");
   quark_notify_queue = g_quark_from_static_string ("GObject-notify-queue");
+#ifndef HAVE_OPTIONAL_FLAGS
   quark_in_construction = g_quark_from_static_string ("GObject-in-construction");
+#endif
   pspec_pool = g_param_spec_pool_new (TRUE);
 
   class->constructor = g_object_constructor;
