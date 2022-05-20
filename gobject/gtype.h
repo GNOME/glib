@@ -728,6 +728,10 @@ GType                 g_type_next_base               (GType            leaf_type
 GLIB_AVAILABLE_IN_ALL
 gboolean              g_type_is_a                    (GType            type,
 						      GType            is_a_type);
+
+/* Hoist exact GType comparisons into the caller */
+#define g_type_is_a(a,b) ((a) == (b) || (g_type_is_a) ((a), (b)))
+
 GLIB_AVAILABLE_IN_ALL
 gpointer              g_type_class_ref               (GType            type);
 GLIB_AVAILABLE_IN_ALL

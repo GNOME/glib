@@ -3577,8 +3577,8 @@ type_node_conforms_to_U (TypeNode *node,
  * Returns: %TRUE if @type is a @is_a_type
  */
 gboolean
-g_type_is_a (GType type,
-	     GType iface_type)
+(g_type_is_a) (GType type,
+	       GType iface_type)
 {
   TypeNode *node, *iface_node;
   gboolean is_a;
