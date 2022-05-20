@@ -201,6 +201,20 @@ test_next_base (void)
   g_assert (type == G_TYPE_INITIALLY_UNOWNED);
 }
 
+/* Test that the macro an function versions of g_type_is_a
+ * work the same
+ */
+static void
+test_is_a (void)
+{
+  g_assert_true (g_type_is_a (G_TYPE_OBJECT, G_TYPE_OBJECT));
+  g_assert_true ((g_type_is_a) (G_TYPE_OBJECT, G_TYPE_OBJECT));
+  g_assert_true (g_type_is_a (bar_get_type (), G_TYPE_OBJECT));
+  g_assert_true ((g_type_is_a) (bar_get_type (), G_TYPE_OBJECT));
+  g_assert_false (g_type_is_a (bar_get_type (), bibi_get_type ()));
+  g_assert_false ((g_type_is_a) (bar_get_type (), bibi_get_type ()));
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -210,6 +224,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/type/interface-prerequisite", test_interface_prerequisite);
   g_test_add_func ("/type/interface-check", test_interface_check);
   g_test_add_func ("/type/next-base", test_next_base);
+  g_test_add_func ("/type/is-a", test_is_a);
 
   return g_test_run ();
 }
