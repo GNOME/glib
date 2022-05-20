@@ -1567,15 +1567,16 @@ object_get_property (GObject     *object,
 		     GParamSpec  *pspec,
 		     GValue      *value)
 {
-  GObjectClass *class = g_type_class_peek (pspec->owner_type);
+  GTypeInstance *inst = (GTypeInstance *) object;
+  GObjectClass *class;
   guint param_id = PARAM_SPEC_PARAM_ID (pspec);
 
-  if (class == NULL)
-    {
-      g_warning ("'%s::%s' is not a valid property name; '%s' is not a GObject subtype",
-                 g_type_name (pspec->owner_type), pspec->name, g_type_name (pspec->owner_type));
-      return;
-    }
+  if (G_LIKELY (inst->g_class->g_type == pspec->owner_type))
+    class = (GObjectClass *) inst->g_class;
+  else
+    class = g_type_class_peek (pspec->owner_type);
+
+  g_assert (class != NULL);
 
   if (((GTypeInstance *)pspec)->g_class->g_type == G_TYPE_PARAM_OVERRIDE)
     pspec = ((GParamSpecOverride *)pspec)->overridden;
@@ -1591,16 +1592,17 @@ object_set_property (GObject             *object,
 		     const GValue        *value,
 		     GObjectNotifyQueue  *nqueue)
 {
-  GObjectClass *class = g_type_class_peek (pspec->owner_type);
+  GTypeInstance *inst = (GTypeInstance *) object;
+  GObjectClass *class;
   GParamSpecClass *pclass;
   guint param_id = PARAM_SPEC_PARAM_ID (pspec);
 
-  if (G_UNLIKELY (class == NULL))
-    {
-      g_warning ("'%s::%s' is not a valid property name; '%s' is not a GObject subtype",
-                 g_type_name (pspec->owner_type), pspec->name, g_type_name (pspec->owner_type));
-      return;
-    }
+  if (G_LIKELY (inst->g_class->g_type == pspec->owner_type))
+    class = (GObjectClass *) inst->g_class;
+  else
+    class = g_type_class_peek (pspec->owner_type);
+
+  g_assert (class != NULL);
 
   if (((GTypeInstance *)pspec)->g_class->g_type == G_TYPE_PARAM_OVERRIDE)
     pspec = ((GParamSpecOverride *)pspec)->overridden;
