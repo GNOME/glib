@@ -531,6 +531,7 @@ g_param_spec_get_default_value
 g_param_value_set_default
 g_param_value_defaults
 g_param_value_validate
+g_param_value_is_valid
 g_param_value_convert
 g_param_values_cmp
 g_param_spec_is_valid_name

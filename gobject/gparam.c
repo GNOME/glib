@@ -706,6 +706,51 @@ g_param_value_validate (GParamSpec *pspec,
 }
 
 /**
+ * g_param_value_is_valid:
+ * @pspec: a valid #GParamSpec
+ * @value: a #GValue of correct type for @pspec
+ *
+ * Return whether the contents of @value comply with the specifications
+ * set out by @pspec.
+ *
+ * Returns: whether the contents of @value comply with the specifications
+ *   set out by @pspec.
+ *
+ * Since: 2.74
+ */
+gboolean
+g_param_value_is_valid (GParamSpec *pspec,
+                        const GValue *value)
+{
+  GParamSpecClass *class;
+
+  g_return_val_if_fail (G_IS_PARAM_SPEC (pspec), TRUE);
+  g_return_val_if_fail (G_IS_VALUE (value), TRUE);
+  g_return_val_if_fail (PSPEC_APPLIES_TO_VALUE (pspec, value), TRUE);
+
+  class = G_PARAM_SPEC_GET_CLASS (pspec);
+
+  if (class->value_is_valid)
+    return class->value_is_valid (pspec, value);
+  else if (class->value_validate)
+    {
+      GValue val = G_VALUE_INIT;
+      gboolean changed;
+
+      g_value_init (&val, G_VALUE_TYPE (value));
+      g_value_copy (value, &val);
+
+      changed = class->value_validate (pspec, &val);
+
+      g_value_unset (&val);
+
+      return !changed;
+    }
+
+  return TRUE;
+}
+
+/**
  * g_param_value_convert:
  * @pspec: a valid #GParamSpec
  * @src_value: source #GValue

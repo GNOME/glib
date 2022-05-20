@@ -326,6 +326,9 @@ gboolean	g_param_value_defaults		(GParamSpec    *pspec,
 GLIB_AVAILABLE_IN_ALL
 gboolean	g_param_value_validate		(GParamSpec    *pspec,
 						 GValue	       *value);
+GLIB_AVAILABLE_IN_2_74
+gboolean        g_param_value_is_valid          (GParamSpec    *pspec,
+                                                 const GValue  *value);
 GLIB_AVAILABLE_IN_ALL
 gboolean	g_param_value_convert		(GParamSpec    *pspec,
 						 const GValue  *src_value,
