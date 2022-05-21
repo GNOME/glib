@@ -85,7 +85,7 @@
  * GSequenceIterCompareFunc:
  * @a: a #GSequenceIter
  * @b: a #GSequenceIter
- * @data: user data
+ * @user_data: user data
  *
  * A #GSequenceIterCompareFunc is a function used to compare iterators.
  * It must return zero if the iterators compare equal, a negative value

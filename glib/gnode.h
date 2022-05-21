@@ -58,9 +58,9 @@ typedef enum
 } GTraverseType;
 
 typedef gboolean	(*GNodeTraverseFunc)	(GNode	       *node,
-						 gpointer	data);
+						 gpointer	user_data);
 typedef void		(*GNodeForeachFunc)	(GNode	       *node,
-						 gpointer	data);
+						 gpointer	user_data);
 
 /* N-way tree implementation
  */
