@@ -43,11 +43,11 @@ typedef struct _GHookList	GHookList;
 typedef gint		(*GHookCompareFunc)	(GHook		*new_hook,
 						 GHook		*sibling);
 typedef gboolean	(*GHookFindFunc)	(GHook		*hook,
-						 gpointer	 data);
+						 gpointer	 user_data);
 typedef void		(*GHookMarshaller)	(GHook		*hook,
-						 gpointer	 marshal_data);
+						 gpointer	 user_data);
 typedef gboolean	(*GHookCheckMarshaller)	(GHook		*hook,
-						 gpointer	 marshal_data);
+						 gpointer	 user_data);
 typedef void		(*GHookFunc)		(gpointer	 data);
 typedef gboolean	(*GHookCheckFunc)	(gpointer	 data);
 typedef void		(*GHookFinalizeFunc)	(GHookList      *hook_list,

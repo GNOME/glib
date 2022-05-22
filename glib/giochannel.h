@@ -129,7 +129,7 @@ struct _GIOChannel
 
 typedef gboolean (*GIOFunc) (GIOChannel   *source,
 			     GIOCondition  condition,
-			     gpointer      data);
+			     gpointer      user_data);
 struct _GIOFuncs
 {
   GIOStatus (*io_read)           (GIOChannel   *channel, 
