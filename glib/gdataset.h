@@ -55,6 +55,10 @@ void     g_datalist_id_set_data_full    (GData            **datalist,
 					 GQuark             key_id,
 					 gpointer           data,
 					 GDestroyNotify     destroy_func);
+GLIB_AVAILABLE_IN_2_74
+void     g_datalist_id_remove_multiple  (GData            **datalist,
+                                         GQuark            *keys,
+                                         gsize              n_keys);
 
 typedef gpointer (*GDuplicateFunc) (gpointer data, gpointer user_data);
 
