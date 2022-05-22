@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-04-01 19:32+0000\n"
-"PO-Revision-Date: 2022-04-08 12:13+0200\n"
+"POT-Creation-Date: 2022-05-18 14:09+0000\n"
+"PO-Revision-Date: 2022-05-21 23:04+0200\n"
 "Last-Translator: Charles Monzat <charles.monzat@free.fr>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "Language: fr\n"
@@ -924,8 +924,8 @@ msgid ""
 "Invalid endianness value. Expected 0x6c (“l”) or 0x42 (“B”) but found value "
 "0x%02x"
 msgstr ""
-"Valeur de boutisme non valide. 0x6c (« l ») ou 0x42 (« B ») attendus, mais 0x"
-"%02x trouvé"
+"Valeur de boutisme non valide. 0x6c (« l ») ou 0x42 (« B ») attendus, mais "
+"0x%02x trouvé"
 
 #: gio/gdbusmessage.c:2225
 #, c-format
@@ -1817,7 +1817,7 @@ msgstr "Erreur lors de l’écriture vers stdout"
 #: gio/gio-tool-mkdir.c:48 gio/gio-tool-monitor.c:37 gio/gio-tool-monitor.c:39
 #: gio/gio-tool-monitor.c:41 gio/gio-tool-monitor.c:43
 #: gio/gio-tool-monitor.c:204 gio/gio-tool-mount.c:1199 gio/gio-tool-open.c:70
-#: gio/gio-tool-remove.c:48 gio/gio-tool-rename.c:45 gio/gio-tool-set.c:89
+#: gio/gio-tool-remove.c:48 gio/gio-tool-rename.c:45 gio/gio-tool-set.c:91
 #: gio/gio-tool-trash.c:220 gio/gio-tool-tree.c:239
 msgid "LOCATION"
 msgstr "EMPLACEMENT"
@@ -2333,7 +2333,7 @@ msgstr "Renommer un fichier."
 msgid "Missing argument"
 msgstr "Paramètre manquant"
 
-#: gio/gio-tool-rename.c:76 gio/gio-tool-save.c:190 gio/gio-tool-set.c:137
+#: gio/gio-tool-rename.c:76 gio/gio-tool-save.c:190 gio/gio-tool-set.c:139
 msgid "Too many arguments"
 msgstr "Trop de paramètres"
 
@@ -2398,31 +2398,31 @@ msgstr "Type de l’attribut"
 msgid "TYPE"
 msgstr "TYPE"
 
-#: gio/gio-tool-set.c:89
+#: gio/gio-tool-set.c:91
 msgid "ATTRIBUTE"
 msgstr "ATTRIBUT"
 
-#: gio/gio-tool-set.c:89
+#: gio/gio-tool-set.c:91
 msgid "VALUE"
 msgstr "VALEUR"
 
-#: gio/gio-tool-set.c:93
+#: gio/gio-tool-set.c:95
 msgid "Set a file attribute of LOCATION."
 msgstr "Définir un attribut de fichier de l’EMPLACEMENT."
 
-#: gio/gio-tool-set.c:113
+#: gio/gio-tool-set.c:115
 msgid "Location not specified"
 msgstr "Emplacement non indiqué"
 
-#: gio/gio-tool-set.c:120
+#: gio/gio-tool-set.c:122
 msgid "Attribute not specified"
 msgstr "Attribut non indiqué"
 
-#: gio/gio-tool-set.c:130
+#: gio/gio-tool-set.c:132
 msgid "Value not specified"
 msgstr "Valeur non indiquée"
 
-#: gio/gio-tool-set.c:180
+#: gio/gio-tool-set.c:182
 #, c-format
 msgid "Invalid attribute type “%s”"
 msgstr "Type d’attribut « %s » non valide"
@@ -4349,6 +4349,7 @@ msgstr "Erreur de résolution inverse de « %s » : %s"
 #, c-format
 msgid "Error parsing DNS %s record: malformed DNS packet"
 msgstr ""
+"Erreur lors de l’analyse de l’enregistrement DNS %s : paquet DNS mal formé"
 
 #: gio/gthreadedresolver.c:756 gio/gthreadedresolver.c:893
 #: gio/gthreadedresolver.c:991 gio/gthreadedresolver.c:1041
@@ -4370,13 +4371,12 @@ msgstr "Erreur de résolution de « %s »"
 #: gio/gthreadedresolver.c:780 gio/gthreadedresolver.c:804
 #: gio/gthreadedresolver.c:829 gio/gthreadedresolver.c:844
 msgid "Malformed DNS packet"
-msgstr ""
+msgstr "Paquet DNS mal formé"
 
 #: gio/gthreadedresolver.c:886
-#, fuzzy, c-format
-#| msgid "Failed to read from file “%s”: %s"
+#, c-format
 msgid "Failed to parse DNS response for “%s”: "
-msgstr "La lecture depuis le fichier « %s » a échoué : %s"
+msgstr "Échec de l’analyse de la réponse DNS pour « %s » : "
 
 #: gio/gtlscertificate.c:478
 msgid "No PEM-encoded private key found"
@@ -4638,7 +4638,7 @@ msgstr "Un signet pour l’URI « %s » existe déjà"
 #: glib/gbookmarkfile.c:4007
 #, c-format
 msgid "No bookmark found for URI “%s”"
-msgstr "Aucun signet trouvé pour l’URI « %s »"
+msgstr "Aucun signet trouvé pour l’URI « %s »"
 
 #: glib/gbookmarkfile.c:2418
 #, c-format
