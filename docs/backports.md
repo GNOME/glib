@@ -52,6 +52,11 @@ Policy
    - For example, by splitting changes to be backported into a separate commit
      from those which should not be backported, or splitting out changes which
      are more likely to cause conflicts when cherry-picked
+ * Backports should be done as soon as a fix lands on the unstable branch,
+   rather than waiting until when the next stable release is due and then
+   backporting multiple changes from the unstable branch at once. This gives
+   more opportunity for backported changes to be tested, and reduces the chance
+   of backporting the wrong thing, or missing a backport.
  * These rules are not entirely prescriptive: there may be situations where
    maintainers agree that a backport is necessary even if it breaks some of
    these rules, due to the balance of fixing a critical bug vs keeping things

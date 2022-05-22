@@ -4,12 +4,12 @@ Simple install procedure
 ```sh
 tar xf glib-*.tar.gz                    # unpack the sources
 cd glib-*                               # change to the toplevel directory
-meson _build                            # configure the build
-ninja -C _build                         # build GLib
+meson setup _build                      # configure the build
+meson compile -C _build                 # build GLib
 
 # Become root if necessary
 
-ninja -C _build install                 # install GLib
+meson install -C _build                 # install GLib
 ```
 
 Requirements
