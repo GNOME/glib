@@ -1214,13 +1214,13 @@ floating_check (GObject *object)
 static void
 g_object_finalize (GObject *object)
 {
+#ifdef G_ENABLE_DEBUG
   if (object_in_construction (object))
     {
       g_critical ("object %s %p finalized while still in-construction",
                   G_OBJECT_TYPE_NAME (object), object);
     }
 
-#ifdef G_ENABLE_DEBUG
  if (floating_check (object))
    {
       g_critical ("A floating object %s %p was finalized. This means that someone\n"
