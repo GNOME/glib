@@ -3682,15 +3682,6 @@ g_object_unref (gpointer _object)
 	}
 
       /* we are still in the process of taking away the last ref */
-      g_signal_handlers_destroy (object);
-      {
-        GQuark keys[3] = {
-          quark_closure_array,
-          quark_weak_refs,
-          quark_weak_locations,
-        };
-        g_datalist_id_remove_multiple (&object->qdata, keys, G_N_ELEMENTS (keys));
-      }
 
       /* decrement the last reference */
       old_ref = g_atomic_int_add (&object->ref_count, -1);
