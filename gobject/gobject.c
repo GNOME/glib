@@ -1181,10 +1181,14 @@ g_object_do_get_property (GObject     *object,
 static void
 g_object_real_dispose (GObject *object)
 {
+  GQuark keys[3] = {
+    quark_closure_array,
+    quark_weak_refs,
+    quark_weak_locations,
+  };
+
   g_signal_handlers_destroy (object);
-  g_datalist_id_set_data (&object->qdata, quark_closure_array, NULL);
-  g_datalist_id_set_data (&object->qdata, quark_weak_refs, NULL);
-  g_datalist_id_set_data (&object->qdata, quark_weak_locations, NULL);
+  g_datalist_id_remove_multiple (&object->qdata, keys, G_N_ELEMENTS (keys));
 }
 
 #ifdef G_ENABLE_DEBUG
@@ -1210,13 +1214,13 @@ floating_check (GObject *object)
 static void
 g_object_finalize (GObject *object)
 {
+#ifdef G_ENABLE_DEBUG
   if (object_in_construction (object))
     {
       g_critical ("object %s %p finalized while still in-construction",
                   G_OBJECT_TYPE_NAME (object), object);
     }
 
-#ifdef G_ENABLE_DEBUG
  if (floating_check (object))
    {
       g_critical ("A floating object %s %p was finalized. This means that someone\n"
@@ -3678,10 +3682,15 @@ g_object_unref (gpointer _object)
 	}
 
       /* we are still in the process of taking away the last ref */
-      g_datalist_id_set_data (&object->qdata, quark_closure_array, NULL);
       g_signal_handlers_destroy (object);
-      g_datalist_id_set_data (&object->qdata, quark_weak_refs, NULL);
-      g_datalist_id_set_data (&object->qdata, quark_weak_locations, NULL);
+      {
+        GQuark keys[3] = {
+          quark_closure_array,
+          quark_weak_refs,
+          quark_weak_locations,
+        };
+        g_datalist_id_remove_multiple (&object->qdata, keys, G_N_ELEMENTS (keys));
+      }
 
       /* decrement the last reference */
       old_ref = g_atomic_int_add (&object->ref_count, -1);

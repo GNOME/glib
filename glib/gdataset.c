@@ -46,6 +46,7 @@
 #include "gtestutils.h"
 #include "gthread.h"
 #include "glib_trace.h"
+#include "galloca.h"
 
 /**
  * SECTION:datasets
@@ -487,6 +488,85 @@ g_data_set_internal (GData	  **datalist,
 
 }
 
+static inline void
+g_data_remove_internal (GData  **datalist,
+                        GQuark  *keys,
+                        gsize    n_keys)
+{
+  GData *d;
+
+  g_datalist_lock (datalist);
+
+  d = G_DATALIST_GET_POINTER (datalist);
+
+  if (d)
+    {
+      GDataElt *old, *data, *data_end;
+      gsize found_keys;
+
+      old = g_newa (GDataElt, n_keys);
+
+      data = d->data;
+      data_end = data + d->len;
+      found_keys = 0;
+
+      while (data < data_end && found_keys < n_keys)
+        {
+          gboolean remove = FALSE;
+
+          for (gsize i = 0; i < n_keys; i++)
+            {
+              if (data->key == keys[i])
+                {
+                  remove = TRUE;
+                  break;
+                }
+            }
+
+          if (remove)
+            {
+              old[found_keys] = *data;
+              found_keys++;
+
+              if (data < data_end)
+                {
+                  data_end--;
+                  *data = *data_end;
+                }
+
+              d->len--;
+
+              /* We don't bother to shrink, but if all data are now gone
+               * we at least free the memory
+               */
+              if (d->len == 0)
+                {
+                  G_DATALIST_SET_POINTER (datalist, NULL);
+                  g_free (d);
+                  break;
+                }
+            }
+
+          data++;
+        }
+
+      if (found_keys > 0)
+        {
+          g_datalist_unlock (datalist);
+
+          for (gsize i = 0; i < found_keys; i++)
+            {
+              if (old[i].destroy)
+                old[i].destroy (old[i].data);
+            }
+
+          return;
+        }
+    }
+
+  g_datalist_unlock (datalist);
+}
+
 /**
  * g_dataset_id_set_data_full: (skip)
  * @dataset_location: (not nullable): the location identifying the dataset.
@@ -670,6 +750,29 @@ g_datalist_id_set_data_full (GData	  **datalist,
     }
 
   g_data_set_internal (datalist, key_id, data, destroy_func, NULL);
+}
+
+/**
+ * g_datalist_id_remove_multiple:
+ * @datalist: a datalist
+ * @keys: (array length=n_keys): keys to remove
+ * @n_keys: length of @keys, must be <= 16
+ *
+ * Removes multiple keys from a datalist.
+ *
+ * This is more efficient than calling g_datalist_id_remove_data()
+ * multiple times in a row.
+ *
+ * Since: 2.74
+ */
+void
+g_datalist_id_remove_multiple (GData  **datalist,
+                               GQuark  *keys,
+                               gsize    n_keys)
+{
+  g_return_if_fail (n_keys <= 16);
+
+  g_data_remove_internal (datalist, keys, n_keys);
 }
 
 /**

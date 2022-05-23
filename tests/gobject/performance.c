@@ -522,6 +522,48 @@ test_construction_teardown (PerformanceTest *test,
 }
 
 static void
+test_finalization_init (PerformanceTest *test,
+			gpointer _data,
+			double count_factor)
+{
+  struct ConstructionTest *data = _data;
+  int n;
+
+  n = NUM_OBJECT_TO_CONSTRUCT * count_factor;
+  if (data->n_objects != n)
+    {
+      data->n_objects = n;
+      data->objects = g_new (GObject *, n);
+    }
+
+  for (int i = 0; i <  data->n_objects; i++)
+    {
+      data->objects[i] = g_object_new (data->type, NULL);
+    }
+}
+
+static void
+test_finalization_run (PerformanceTest *test,
+		       gpointer _data)
+{
+  struct ConstructionTest *data = _data;
+  GObject **objects = data->objects;
+  int i, n_objects;
+
+  n_objects = data->n_objects;
+  for (i = 0; i < n_objects; i++)
+    {
+      g_object_unref (objects[i]);
+    }
+}
+
+static void
+test_finalization_finish (PerformanceTest *test,
+			  gpointer _data)
+{
+}
+
+static void
 test_construction_print_result (PerformanceTest *test,
 				gpointer _data,
 				double time)
@@ -529,6 +571,17 @@ test_construction_print_result (PerformanceTest *test,
   struct ConstructionTest *data = _data;
 
   g_print ("Millions of constructed objects per second: %.3f\n",
+	   data->n_objects / (time * 1000000));
+}
+
+static void
+test_finalization_print_result (PerformanceTest *test,
+				gpointer _data,
+				double time)
+{
+  struct ConstructionTest *data = _data;
+
+  g_print ("Millions of finalized objects per second: %.3f\n",
 	   data->n_objects / (time * 1000000));
 }
 
@@ -889,6 +942,16 @@ static PerformanceTest tests[] = {
     test_construction_finish,
     test_construction_teardown,
     test_construction_print_result
+  },
+  {
+    "finalization",
+    simple_object_get_type,
+    test_construction_setup,
+    test_finalization_init,
+    test_finalization_run,
+    test_finalization_finish,
+    test_construction_teardown,
+    test_finalization_print_result
   },
   {
     "type-check",
