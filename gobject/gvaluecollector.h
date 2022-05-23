@@ -87,15 +87,38 @@ union _GTypeCValue
  *
  * Since: 2.24
  */
-#define G_VALUE_COLLECT_INIT(value, _value_type, var_args, flags, __error)		\
+#define G_VALUE_COLLECT_INIT(value, _value_type, var_args, flags, __error) \
+  G_STMT_START { \
+    GTypeValueTable *g_vci_vtab; \
+    G_VALUE_COLLECT_INIT2(value, g_vci_vtab, _value_type, var_args, flags, __error); \
+} G_STMT_END
+
+/**
+ * G_VALUE_COLLECT_INIT2:
+ * @value: a #GValue return location. @value must contain only 0 bytes.
+ * @g_vci_vtab: a #GTypeValueTable pointer that will be set to the value table
+ *   for @_value_type
+ * @_value_type: the #GType to use for @value.
+ * @var_args: the va_list variable; it may be evaluated multiple times
+ * @flags: flags which are passed on to the collect_value() function of
+ *  the #GTypeValueTable of @value.
+ * @__error: a #gchar** variable that will be modified to hold a g_new()
+ *  allocated error messages if something fails
+ *
+ * A variant of G_VALUE_COLLECT_INIT() that provides the #GTypeValueTable
+ * to the caller.
+ *
+ * Since: 2.74
+ */
+#define G_VALUE_COLLECT_INIT2(value, g_vci_vtab, _value_type, var_args, flags, __error)		\
 G_STMT_START {										\
   GValue *g_vci_val = (value);								\
   guint g_vci_flags = (flags);								\
-  GTypeValueTable *g_vci_vtab = g_type_value_table_peek (_value_type);			\
-  const gchar *g_vci_collect_format = g_vci_vtab->collect_format;					\
+  const gchar *g_vci_collect_format; \
   GTypeCValue g_vci_cvalues[G_VALUE_COLLECT_FORMAT_MAX_LENGTH] = { { 0, }, };		\
   guint g_vci_n_values = 0;									\
-                                                                                        \
+  g_vci_vtab = g_type_value_table_peek (_value_type);			\
+  g_vci_collect_format = g_vci_vtab->collect_format;					\
   g_vci_val->g_type = _value_type;		/* value_meminit() from gvalue.c */		\
   while (*g_vci_collect_format)								\
     {											\

@@ -813,6 +813,7 @@ g_param_spec_types
 <INCLUDE>glib-object.h,gobject/gvaluecollector.h</INCLUDE>
 GTypeCValue
 G_VALUE_COLLECT_INIT
+G_VALUE_COLLECT_INIT2
 G_VALUE_COLLECT
 G_VALUE_COLLECT_SKIP
 G_VALUE_LCOPY
