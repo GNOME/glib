@@ -91,6 +91,263 @@ test_param_spec_char (void)
 }
 
 static void
+test_param_spec_uchar (void)
+{
+  GParamSpec *pspec;
+  GValue value = G_VALUE_INIT;
+
+  pspec = g_param_spec_uchar ("char", NULL, NULL,
+                             20, 40, 30, G_PARAM_READWRITE);
+
+  g_assert_cmpstr (g_param_spec_get_name (pspec), ==, "char");
+
+  g_value_init (&value, G_TYPE_UCHAR);
+
+  g_value_set_uchar (&value, 0);
+  g_assert_false (g_param_value_is_valid (pspec, &value));
+  g_assert_true (g_param_value_validate (pspec, &value));
+  g_assert_cmpint (g_value_get_uchar (&value), ==, 20);
+
+  g_value_set_uchar (&value, 20);
+  g_assert_true (g_param_value_is_valid (pspec, &value));
+  g_assert_false (g_param_value_validate (pspec, &value));
+  g_assert_cmpint (g_value_get_uchar (&value), ==, 20);
+
+  g_param_spec_unref (pspec);
+}
+
+static void
+test_param_spec_int (void)
+{
+  GParamSpec *pspec;
+  GValue value = G_VALUE_INIT;
+
+  pspec = g_param_spec_int ("int", NULL, NULL,
+                            20, 40, 30, G_PARAM_READWRITE);
+
+  g_param_value_set_default (pspec, &value);
+  g_assert_true (G_VALUE_TYPE (&value) == G_TYPE_INT);
+  g_assert_cmpint (g_value_get_int (&value), ==, 30);
+  g_assert_true (g_param_value_defaults (pspec, &value));
+
+  g_value_set_int (&value, 0);
+  g_assert_false (g_param_value_is_valid (pspec, &value));
+  g_assert_true (g_param_value_validate (pspec, &value));
+  g_assert_cmpint (g_value_get_int (&value), ==, 20);
+
+  g_param_spec_unref (pspec);
+}
+
+static void
+test_param_spec_uint (void)
+{
+  GParamSpec *pspec;
+  GValue value = G_VALUE_INIT;
+
+  pspec = g_param_spec_uint ("uint", NULL, NULL,
+                             20, 40, 30, G_PARAM_READWRITE);
+
+  g_param_value_set_default (pspec, &value);
+  g_assert_true (G_VALUE_TYPE (&value) == G_TYPE_UINT);
+  g_assert_cmpint (g_value_get_uint (&value), ==, 30);
+  g_assert_true (g_param_value_defaults (pspec, &value));
+
+  g_value_set_uint (&value, 0);
+  g_assert_false (g_param_value_is_valid (pspec, &value));
+  g_assert_true (g_param_value_validate (pspec, &value));
+  g_assert_cmpint (g_value_get_uint (&value), ==, 20);
+
+  g_param_spec_unref (pspec);
+}
+
+static void
+test_param_spec_long (void)
+{
+  GParamSpec *pspec;
+  GValue value = G_VALUE_INIT;
+
+  pspec = g_param_spec_long ("long", NULL, NULL,
+                             20, 40, 30, G_PARAM_READWRITE);
+
+  g_param_value_set_default (pspec, &value);
+  g_assert_true (G_VALUE_TYPE (&value) == G_TYPE_LONG);
+  g_assert_cmpint (g_value_get_long (&value), ==, 30);
+  g_assert_true (g_param_value_defaults (pspec, &value));
+
+  g_value_set_long (&value, 0);
+  g_assert_false (g_param_value_is_valid (pspec, &value));
+  g_assert_true (g_param_value_validate (pspec, &value));
+  g_assert_cmpint (g_value_get_long (&value), ==, 20);
+
+  g_param_spec_unref (pspec);
+}
+
+static void
+test_param_spec_ulong (void)
+{
+  GParamSpec *pspec;
+  GValue value = G_VALUE_INIT;
+
+  pspec = g_param_spec_ulong ("ulong", NULL, NULL,
+                              20, 40, 30, G_PARAM_READWRITE);
+
+  g_param_value_set_default (pspec, &value);
+  g_assert_true (G_VALUE_TYPE (&value) == G_TYPE_ULONG);
+  g_assert_cmpint (g_value_get_ulong (&value), ==, 30);
+  g_assert_true (g_param_value_defaults (pspec, &value));
+
+  g_value_set_ulong (&value, 0);
+  g_assert_false (g_param_value_is_valid (pspec, &value));
+  g_assert_true (g_param_value_validate (pspec, &value));
+  g_assert_cmpint (g_value_get_ulong (&value), ==, 20);
+
+  g_param_spec_unref (pspec);
+}
+
+static void
+test_param_spec_int64 (void)
+{
+  GParamSpec *pspec;
+  GValue value = G_VALUE_INIT;
+
+  pspec = g_param_spec_int64 ("int64", NULL, NULL,
+                              20, 40, 30, G_PARAM_READWRITE);
+
+  g_param_value_set_default (pspec, &value);
+  g_assert_true (G_VALUE_TYPE (&value) == G_TYPE_INT64);
+  g_assert_cmpint (g_value_get_int64 (&value), ==, 30);
+  g_assert_true (g_param_value_defaults (pspec, &value));
+
+  g_value_set_int64 (&value, 0);
+  g_assert_false (g_param_value_is_valid (pspec, &value));
+  g_assert_true (g_param_value_validate (pspec, &value));
+  g_assert_cmpint (g_value_get_int64 (&value), ==, 20);
+
+  g_param_spec_unref (pspec);
+}
+
+static void
+test_param_spec_uint64 (void)
+{
+  GParamSpec *pspec;
+  GValue value = G_VALUE_INIT;
+
+  pspec = g_param_spec_uint64 ("uint64", NULL, NULL,
+                               20, 40, 30, G_PARAM_READWRITE);
+
+  g_param_value_set_default (pspec, &value);
+  g_assert_true (G_VALUE_TYPE (&value) == G_TYPE_UINT64);
+  g_assert_cmpint (g_value_get_uint64 (&value), ==, 30);
+  g_assert_true (g_param_value_defaults (pspec, &value));
+
+  g_value_set_uint64 (&value, 0);
+  g_assert_false (g_param_value_is_valid (pspec, &value));
+  g_assert_true (g_param_value_validate (pspec, &value));
+  g_assert_cmpint (g_value_get_uint64 (&value), ==, 20);
+
+  g_param_spec_unref (pspec);
+}
+
+static void
+test_param_spec_float (void)
+{
+  GParamSpec *pspec;
+  GValue value = G_VALUE_INIT;
+
+  pspec = g_param_spec_float ("float", NULL, NULL,
+                              20.0, 40.0, 30.0, G_PARAM_READWRITE);
+
+  g_param_value_set_default (pspec, &value);
+  g_assert_true (G_VALUE_TYPE (&value) == G_TYPE_FLOAT);
+  g_assert_cmpfloat (g_value_get_float (&value), ==, 30.0);
+  g_assert_true (g_param_value_defaults (pspec, &value));
+
+  g_value_set_float (&value, 0.0);
+  g_assert_false (g_param_value_is_valid (pspec, &value));
+  g_assert_true (g_param_value_validate (pspec, &value));
+  g_assert_cmpint (g_value_get_float (&value), ==, 20.0);
+
+  g_param_spec_unref (pspec);
+}
+
+static void
+test_param_spec_double (void)
+{
+  GParamSpec *pspec;
+  GValue value = G_VALUE_INIT;
+
+  pspec = g_param_spec_double ("double", NULL, NULL,
+                               20.0, 40.0, 30.0, G_PARAM_READWRITE);
+
+  g_param_value_set_default (pspec, &value);
+  g_assert_true (G_VALUE_TYPE (&value) == G_TYPE_DOUBLE);
+  g_assert_cmpfloat (g_value_get_double (&value), ==, 30.0);
+  g_assert_true (g_param_value_defaults (pspec, &value));
+
+  g_value_set_double (&value, 0.0);
+  g_assert_false (g_param_value_is_valid (pspec, &value));
+  g_assert_true (g_param_value_validate (pspec, &value));
+  g_assert_cmpint (g_value_get_double (&value), ==, 20.0);
+
+  g_param_spec_unref (pspec);
+}
+
+static void
+test_param_spec_unichar (void)
+{
+  GParamSpec *pspec;
+  GValue value = G_VALUE_INIT;
+
+  pspec = g_param_spec_unichar ("unichar", NULL, NULL,
+                                0x1F4A9, G_PARAM_READWRITE);
+
+  g_assert_cmpstr (g_param_spec_get_name (pspec), ==, "unichar");
+
+  g_value_init (&value, G_TYPE_UINT);
+
+  /* Unicode codepoints can’t be 0x110000 or above, as that’s not representable
+   * in UTF-16. */
+  g_value_set_uint (&value, 0x110000);
+  g_assert_false (g_param_value_is_valid (pspec, &value));
+  g_assert_true (g_param_value_validate (pspec, &value));
+  g_assert_cmpint (g_value_get_uint (&value), ==, 0);
+
+  g_value_set_uint (&value, 0x20);
+  g_assert_true (g_param_value_is_valid (pspec, &value));
+  g_assert_false (g_param_value_validate (pspec, &value));
+  g_assert_cmpint (g_value_get_uint (&value), ==, 0x20);
+
+  g_param_spec_unref (pspec);
+}
+
+static void
+test_param_spec_param (void)
+{
+  GParamSpec *wrapped_pspec_uint;
+  GParamSpec *pspec;
+  GValue value = G_VALUE_INIT;
+
+  wrapped_pspec_uint = g_param_spec_uint ("uint", NULL, NULL,
+                                          0, G_MAXUINT, 5, G_PARAM_READWRITE);
+
+  pspec = g_param_spec_param ("param", NULL, NULL,
+                              G_TYPE_PARAM_UINT, G_PARAM_READWRITE);
+
+  g_assert_cmpstr (g_param_spec_get_name (pspec), ==, "param");
+
+  g_value_init (&value, G_TYPE_PARAM_UINT);
+
+  g_value_set_param (&value, wrapped_pspec_uint);
+  g_assert_true (g_param_value_is_valid (pspec, &value));
+  g_assert_false (g_param_value_validate (pspec, &value));
+  g_assert_true (g_value_get_param (&value) == wrapped_pspec_uint);
+
+  g_value_unset (&value);
+  g_param_spec_unref (pspec);
+  g_param_spec_unref (wrapped_pspec_uint);
+}
+
+static void
 test_param_spec_string (void)
 {
   GParamSpec *pspec;
@@ -1383,6 +1640,17 @@ main (int argc, char *argv[])
   g_test_add_func ("/param/default", test_param_default);
   g_test_add_func ("/param/is-valid-name", test_param_is_valid_name);
   g_test_add_func ("/paramspec/char", test_param_spec_char);
+  g_test_add_func ("/paramspec/uchar", test_param_spec_uchar);
+  g_test_add_func ("/paramspec/int", test_param_spec_int);
+  g_test_add_func ("/paramspec/uint", test_param_spec_uint);
+  g_test_add_func ("/paramspec/long", test_param_spec_long);
+  g_test_add_func ("/paramspec/ulong", test_param_spec_ulong);
+  g_test_add_func ("/paramspec/int64", test_param_spec_int64);
+  g_test_add_func ("/paramspec/uint64", test_param_spec_uint64);
+  g_test_add_func ("/paramspec/float", test_param_spec_float);
+  g_test_add_func ("/paramspec/double", test_param_spec_double);
+  g_test_add_func ("/paramspec/unichar", test_param_spec_unichar);
+  g_test_add_func ("/paramspec/param", test_param_spec_param);
   g_test_add_func ("/paramspec/string", test_param_spec_string);
   g_test_add_func ("/paramspec/override", test_param_spec_override);
   g_test_add_func ("/paramspec/gtype", test_param_spec_gtype);
