@@ -5157,6 +5157,85 @@ g_timeout_add (guint32        interval,
 			     interval, function, data, NULL);
 }
 
+typedef struct {
+  GSourceOnceFunc function;
+  gpointer data;
+} OnceData;
+
+static void
+once_data_free (gpointer data)
+{
+  g_free (data);
+}
+
+static gboolean
+once_function (gpointer data)
+{
+  OnceData *once_data = data;
+
+  once_data->function (once_data->data);
+
+  return G_SOURCE_REMOVE;
+}
+
+/**
+ * g_timeout_add_once:
+ * @interval: the time after which the function will be called, in
+ *   milliseconds (1/1000ths of a second)
+ * @function: function to call
+ * @data: data to pass to @function
+ * 
+ * Sets a function to be called after @interval milliseconds have elapsed,
+ * with the default priority, %G_PRIORITY_DEFAULT.
+ *
+ * The given @function is called once.
+ *
+ * Note that timeout functions may be delayed, due to the processing of other
+ * event sources. Thus they should not be relied on for precise timing.
+ *
+ * See [memory management of sources][mainloop-memory-management] for details
+ * on how to handle the return value and memory management of @data.
+ *
+ * If you want to have a timer in the "seconds" range and do not care
+ * about the exact time of the first call of the timer, use the
+ * g_timeout_add_seconds() function; this function allows for more
+ * optimizations and more efficient system power usage.
+ *
+ * This internally creates a main loop source using g_timeout_source_new()
+ * and attaches it to the global #GMainContext using g_source_attach(), so
+ * the callback will be invoked in whichever thread is running that main
+ * context. You can do these steps manually if you need greater control or to
+ * use a custom main context.
+ * 
+ * It is safe to call this function from any thread.
+ *
+ * The interval given is in terms of monotonic time, not wall clock
+ * time.  See g_get_monotonic_time().
+ * 
+ * Returns: the ID (greater than 0) of the event source
+ *
+ * Since: 2.74
+ */
+guint
+g_timeout_add_once (guint32         interval,
+                    GSourceOnceFunc function,
+                    gpointer        data)
+{
+  OnceData *once_data;
+
+  g_return_val_if_fail (function != NULL, 0);
+
+  once_data = g_new (OnceData, 1);
+  once_data->function = function;
+  once_data->data = data;
+
+  return g_timeout_add_full (G_PRIORITY_DEFAULT,
+                             interval,
+                             once_function,
+                             once_data,
+                             once_data_free);
+}
+
 /**
  * g_timeout_add_seconds_full: (rename-to g_timeout_add_seconds)
  * @priority: the priority of the timeout source. Typically this will be in
@@ -6046,6 +6125,45 @@ g_idle_add (GSourceFunc    function,
 	    gpointer       data)
 {
   return g_idle_add_full (G_PRIORITY_DEFAULT_IDLE, function, data, NULL);
+}
+
+/**
+ * g_idle_add_once:
+ * @function: function to call
+ * @data: data to pass to @function
+ *
+ * Adds a function to be called whenever there are no higher priority
+ * events pending to the default main loop. The function is given the
+ * default idle priority, %G_PRIORITY_DEFAULT_IDLE.
+ *
+ * The function will only be called once.
+ *
+ * See [memory management of sources][mainloop-memory-management] for details
+ * on how to handle the return value and memory management of @data.
+ * 
+ * This internally creates a main loop source using g_idle_source_new()
+ * and attaches it to the global #GMainContext using g_source_attach(), so
+ * the callback will be invoked in whichever thread is running that main
+ * context. You can do these steps manually if you need greater control or to
+ * use a custom main context.
+ *
+ * Returns: the ID (greater than 0) of the event source
+ *
+ * Since: 2.74
+ */
+guint
+g_idle_add_once (GSourceOnceFunc function,
+                 gpointer        data)
+{
+  OnceData *once_data;
+
+  g_return_val_if_fail (function != NULL, 0);
+
+  once_data = g_new (OnceData, 1);
+  once_data->function = function;
+  once_data->data = data;
+
+  return g_idle_add_full (G_PRIORITY_DEFAULT_IDLE, once_function, once_data, once_data_free);
 }
 
 /**
