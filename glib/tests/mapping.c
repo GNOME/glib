@@ -85,13 +85,12 @@ map_or_die (const gchar *filename,
   return map;
 }
 
-static gboolean
+static void
 signal_parent (gpointer data)
 {
 #ifndef G_OS_WIN32
   kill (parent_pid, SIGUSR1);
 #endif
-  return G_SOURCE_REMOVE;
 }
 
 static void
@@ -113,7 +112,7 @@ child_main (void)
 #endif
   loop = g_main_loop_new (NULL, FALSE);
   g_idle_add (check_stop, loop);
-  g_idle_add (signal_parent, NULL);
+  g_idle_add_once (signal_parent, NULL);
   g_main_loop_run (loop);
 
   g_test_message ("test_child_private: received parent signal");
