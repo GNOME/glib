@@ -2023,28 +2023,7 @@ endif
 libm = cc.find_library('m', required : false)
 libffi_dep = dependency('libffi', version : '>= 3.0.0', fallback : ['libffi', 'ffi_dep'])
 
-if get_option('wrap_mode') == 'forcefallback'
-  # Respects "wrap_mode=forcefallback" option
-  libz_dep = subproject('zlib').get_variable('zlib_dep')
-else
-  # Don't use the bundled ZLib sources until we are sure that we can't find it on
-  # the system
-  libz_dep = dependency('zlib', required : false)
-endif
-
-if not libz_dep.found()
-  if cc.get_id() != 'msvc' and cc.get_id() != 'clang-cl'
-    libz_dep = cc.find_library('z', required : false)
-  else
-    libz_dep = cc.find_library('zlib1', required : false)
-    if not libz_dep.found()
-      libz_dep = cc.find_library('zlib', required : false)
-    endif
-  endif
-  if not libz_dep.found() or not cc.has_header('zlib.h')
-    libz_dep = subproject('zlib').get_variable('zlib_dep')
-  endif
-endif
+libz_dep = dependency('zlib')
 
 # First check in libc, fallback to libintl, and as last chance build
 # proxy-libintl subproject.
