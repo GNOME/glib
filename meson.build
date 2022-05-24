@@ -2030,40 +2030,35 @@ libz_dep = dependency('zlib')
 # FIXME: glib-gettext.m4 has much more checks to detect broken/uncompatible
 # implementations. This could be extended if issues are found in some platforms.
 libintl_deps = []
-if cc.has_function('ngettext')
-  have_bind_textdomain_codeset = cc.has_function('bind_textdomain_codeset')
-else
-  # First just find the bare library.
-  libintl = cc.find_library('intl', required : false)
-  # The bare library probably won't link without help if it's static.
-  if libintl.found() and not cc.has_function('ngettext', dependencies : libintl)
-     libintl_iconv = cc.find_library('iconv', required : false)
-     # libintl supports different threading APIs, which may not
-     # require additional flags, but it defaults to using pthreads if
-     # found. Meson's "threads" dependency does not allow you to
-     # prefer pthreads. We may not be using pthreads for glib itself
-     # either so just link the library to satisfy libintl rather than
-     # also defining the macros with the -pthread flag.
-     libintl_pthread = cc.find_library('pthread', required : false)
-     # Try linking with just libiconv.
-     if libintl_iconv.found() and cc.has_function('ngettext', dependencies : [libintl, libintl_iconv])
-       libintl_deps += [libintl_iconv]
-     # Then also try linking with pthreads.
-     elif libintl_iconv.found() and libintl_pthread.found() and cc.has_function('ngettext', dependencies : [libintl, libintl_iconv, libintl_pthread])
-       libintl_deps += [libintl_iconv, libintl_pthread]
-     else
-       libintl = disabler()
-     endif
-  endif
-  if not libintl.found()
-    libintl = subproject('proxy-libintl').get_variable('intl_dep')
-    libintl_deps = [libintl] + libintl_deps
-    have_bind_textdomain_codeset = true  # proxy-libintl supports it
+libintl = dependency('intl', required: false)
+if libintl.found()
+  # libintl supports different threading APIs, which may not
+  # require additional flags, but it defaults to using pthreads if
+  # found. Meson's "threads" dependency does not allow you to
+  # prefer pthreads. We may not be using pthreads for glib itself
+  # either so just link the library to satisfy libintl rather than
+  # also defining the macros with the -pthread flag.
+  #
+  # Meson's builtin dependency lookup as of 0.60.0 doesn't check for
+  # pthread, so we do this manually here.
+  if cc.has_function('ngettext', dependencies : libintl)
+    libintl_deps += [libintl]
   else
-    libintl_deps = [libintl] + libintl_deps
-    have_bind_textdomain_codeset = cc.has_function('bind_textdomain_codeset', 
-                                                   dependencies : libintl_deps)
+    libintl_pthread = cc.find_library('pthread', required : false)
+    if libintl_pthread.found() and cc.has_function('ngettext', dependencies : [libintl, libintl_pthread])
+      libintl_deps += [libintl, libintl_pthread]
+    else
+      libintl = disabler()
+    endif
   endif
+endif
+
+if libintl.found()
+  have_bind_textdomain_codeset = cc.has_function('bind_textdomain_codeset', dependencies: libintl_deps)
+else
+  libintl = subproject('proxy-libintl').get_variable('intl_dep')
+  libintl_deps = [libintl]
+  have_bind_textdomain_codeset = true  # proxy-libintl supports it
 endif
 
 glib_conf.set('HAVE_BIND_TEXTDOMAIN_CODESET', have_bind_textdomain_codeset)
