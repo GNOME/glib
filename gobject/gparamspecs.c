@@ -2639,8 +2639,7 @@ g_param_spec_value_array (const gchar *name,
 {
   GParamSpecValueArray *aspec;
   
-  if (element_spec)
-    g_return_val_if_fail (G_IS_PARAM_SPEC (element_spec), NULL);
+  g_return_val_if_fail (element_spec == NULL || G_IS_PARAM_SPEC (element_spec), NULL);
   
   aspec = g_param_spec_internal (G_TYPE_PARAM_VALUE_ARRAY,
 				 name,
