@@ -1573,12 +1573,12 @@ object_set_property (GObject             *object,
 		     const GValue        *value,
 		     GObjectNotifyQueue  *nqueue)
 {
-  GValue tmp_value = G_VALUE_INIT;
   GObjectClass *class = g_type_class_peek (pspec->owner_type);
+  GParamSpecClass *pclass;
   guint param_id = PARAM_SPEC_PARAM_ID (pspec);
   GParamSpec *redirect;
 
-  if (class == NULL)
+  if (G_UNLIKELY (class == NULL))
     {
       g_warning ("'%s::%s' is not a valid property name; '%s' is not a GObject subtype",
                  g_type_name (pspec->owner_type), pspec->name, g_type_name (pspec->owner_type));
@@ -1589,33 +1589,46 @@ object_set_property (GObject             *object,
   if (redirect)
     pspec = redirect;
 
-  /* provide a copy to work from, convert (if necessary) and validate */
-  g_value_init (&tmp_value, pspec->value_type);
-  if (!g_value_transform (value, &tmp_value))
-    g_warning ("unable to set property '%s' of type '%s' from value of type '%s'",
-	       pspec->name,
-	       g_type_name (pspec->value_type),
-	       G_VALUE_TYPE_NAME (value));
-  else if (g_param_value_validate (pspec, &tmp_value) && !(pspec->flags & G_PARAM_LAX_VALIDATION))
+  pclass = G_PARAM_SPEC_GET_CLASS (pspec);
+  if (g_value_type_compatible (G_VALUE_TYPE (value), pspec->value_type) &&
+      (pclass->value_validate == NULL ||
+       (pclass->value_is_valid != NULL && pclass->value_is_valid (pspec, value))))
     {
-      gchar *contents = g_strdup_value_contents (value);
-
-      g_warning ("value \"%s\" of type '%s' is invalid or out of range for property '%s' of type '%s'",
-		 contents,
-		 G_VALUE_TYPE_NAME (value),
-		 pspec->name,
-		 g_type_name (pspec->value_type));
-      g_free (contents);
+      class->set_property (object, param_id, value, pspec);
     }
   else
     {
-      class->set_property (object, param_id, &tmp_value, pspec);
+      /* provide a copy to work from, convert (if necessary) and validate */
+      GValue tmp_value = G_VALUE_INIT;
 
-      if (~pspec->flags & G_PARAM_EXPLICIT_NOTIFY &&
-          pspec->flags & G_PARAM_READABLE)
-        g_object_notify_queue_add (object, nqueue, pspec);
+      g_value_init (&tmp_value, pspec->value_type);
+
+      if (!g_value_transform (value, &tmp_value))
+        g_warning ("unable to set property '%s' of type '%s' from value of type '%s'",
+                   pspec->name,
+                   g_type_name (pspec->value_type),
+                   G_VALUE_TYPE_NAME (value));
+      else if (g_param_value_validate (pspec, &tmp_value) && !(pspec->flags & G_PARAM_LAX_VALIDATION))
+        {
+          gchar *contents = g_strdup_value_contents (value);
+
+          g_warning ("value \"%s\" of type '%s' is invalid or out of range for property '%s' of type '%s'",
+                     contents,
+                     G_VALUE_TYPE_NAME (value),
+                     pspec->name,
+                     g_type_name (pspec->value_type));
+          g_free (contents);
+        }
+      else
+        {
+          class->set_property (object, param_id, &tmp_value, pspec);
+        }
+
+      g_value_unset (&tmp_value);
     }
-  g_value_unset (&tmp_value);
+
+  if ((pspec->flags & (G_PARAM_EXPLICIT_NOTIFY|G_PARAM_READABLE)) == G_PARAM_READABLE)
+    g_object_notify_queue_add (object, nqueue, pspec);
 }
 
 static void
