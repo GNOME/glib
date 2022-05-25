@@ -105,7 +105,6 @@ fedora-x86_64:
       - "_build/docs/reference/gio/gio-undeclared.txt"
       - "_build/docs/reference/gio/gio-undocumented.txt"
       - "_build/docs/reference/gio/gio-unused.txt"
-      - "_build/${CI_JOB_NAME}-report.xml"
       - "_coverage"
 
 debian-stable-x86_64:
@@ -138,7 +137,6 @@ debian-stable-x86_64:
       - "_build/config.h"
       - "_build/glib/glibconfig.h"
       - "_build/meson-logs"
-      - "_build/${CI_JOB_NAME}-report.xml"
 
 installed-tests:
   extends:
@@ -205,7 +203,6 @@ G_DISABLE_ASSERT:
       - "_build/config.h"
       - "_build/glib/glibconfig.h"
       - "_build/meson-logs"
-      - "_build/${CI_JOB_NAME}-report.xml"
 
 valgrind:
   extends:
@@ -225,7 +222,6 @@ valgrind:
             _build
     - ninja -C _build
     - bash -x ./.gitlab-ci/run-tests.sh
-                 --log-file _build/meson-logs/testlog-valgrind.json
                  --wrap "valgrind --tool=memcheck --error-exitcode=1 --track-origins=yes --leak-check=full --leak-resolution=high --num-callers=50 --show-leak-kinds=definite,possible --show-error-list=yes --suppressions=${CI_PROJECT_DIR}/tools/glib.supp"
                  --no-suite no-valgrind
                  --no-suite slow
@@ -234,7 +230,7 @@ valgrind:
   allow_failure: true
   artifacts:
     reports:
-      junit: "_build/meson-logs/testlog.junit.xml"
+      junit: "_build/meson-logs/testlog-valgrind.junit.xml"
     name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
     when: always
     expire_in: 1 week
@@ -281,7 +277,6 @@ cross-mingw64:
     expire_in: 1 week
     paths:
       - _build/meson-logs
-      - "_build/${env:CI_JOB_NAME}-report.xml"
       - _build/glib/libglib-2.0-0.dll
       - _build/gio/libgio-2.0-0.dll
       - _build/gmodule/libgmodule-2.0-0.dll
@@ -309,7 +304,6 @@ msys2-mingw32:
     expire_in: 1 week
     paths:
       - _build/meson-logs
-      - "_build/${env:CI_JOB_NAME}-report.xml"
       - _coverage/
 
 vs2017-x64:
@@ -333,7 +327,6 @@ vs2017-x64:
     expire_in: 1 week
     paths:
       - _build/meson-logs
-      - "_build/${env:CI_JOB_NAME}-report.xml"
       - _build/glib/libglib-2.0-0.dll
       - _build/gio/libgio-2.0-0.dll
       - _build/gmodule/libgmodule-2.0-0.dll
@@ -362,7 +355,6 @@ vs2017-x64-static:
     expire_in: 1 week
     paths:
       - _build/meson-logs
-      - "_build/${env:CI_JOB_NAME}-report.xml"
 
 freebsd-12-x86_64:
   # The FreeBSD 13 build is run on each commit, so the FreeBSD 12 build can be
@@ -408,7 +400,6 @@ freebsd-12-x86_64:
       - "_build/config.h"
       - "_build/glib/glibconfig.h"
       - "_build/meson-logs"
-      - "_build/${CI_JOB_NAME}-report.xml"
 
 freebsd-13-x86_64:
   extends: .only-origin
@@ -436,7 +427,6 @@ freebsd-13-x86_64:
       - "_build/config.h"
       - "_build/glib/glibconfig.h"
       - "_build/meson-logs"
-      - "_build/${CI_JOB_NAME}-report.xml"
 
 macos:
   # FIXME: Temporarily disabled as the worker is offline
@@ -474,7 +464,6 @@ macos:
       - "_build/config.h"
       - "_build/glib/glibconfig.h"
       - "_build/meson-logs"
-      - "_build/${CI_JOB_NAME}-report.xml"
 
 coverage:
   extends: .only-default
