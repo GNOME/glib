@@ -478,6 +478,7 @@ g_object_base_class_init (GObjectClass *class)
 
   /* reset instance specific fields and methods that don't get inherited */
   class->construct_properties = pclass ? g_slist_copy (pclass->construct_properties) : NULL;
+  class->n_construct_properties = g_slist_length (class->construct_properties);
   class->get_property = NULL;
   class->set_property = NULL;
 }
@@ -491,6 +492,7 @@ g_object_base_class_finalize (GObjectClass *class)
 
   g_slist_free (class->construct_properties);
   class->construct_properties = NULL;
+  class->n_construct_properties = 0;
   list = g_param_spec_pool_list_owned (pspec_pool, G_OBJECT_CLASS_TYPE (class));
   for (node = list; node; node = node->next)
     {
@@ -627,14 +629,20 @@ validate_and_install_class_property (GObjectClass *class,
   if (install_property_internal (oclass_type, property_id, pspec))
     {
       if (pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
-        class->construct_properties = g_slist_append (class->construct_properties, pspec);
+        {
+          class->construct_properties = g_slist_append (class->construct_properties, pspec);
+          class->n_construct_properties += 1;
+        }
 
       /* for property overrides of construct properties, we have to get rid
        * of the overridden inherited construct property
        */
       pspec = g_param_spec_pool_lookup (pspec_pool, pspec->name, parent_type, TRUE);
       if (pspec && pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
-        class->construct_properties = g_slist_remove (class->construct_properties, pspec);
+        {
+          class->construct_properties = g_slist_remove (class->construct_properties, pspec);
+          class->n_construct_properties -= 1;
+        }
 
       return TRUE;
     }
@@ -1875,7 +1883,6 @@ g_object_new_with_custom_constructor (GObjectClass          *class,
   GObjectConstructParam *cparams;
   GObject *object;
   GValue *cvalues;
-  gint n_cparams;
   gint cvals_used;
   GSList *node;
   guint i;
@@ -1891,9 +1898,8 @@ g_object_new_with_custom_constructor (GObjectClass          *class,
    */
 
   /* Create the array of GObjectConstructParams for constructor() */
-  n_cparams = g_slist_length (class->construct_properties);
-  cparams = g_new (GObjectConstructParam, n_cparams);
-  cvalues = g_new0 (GValue, n_cparams);
+  cparams = g_new (GObjectConstructParam, class->n_construct_properties);
+  cvalues = g_new0 (GValue, class->n_construct_properties);
   cvals_used = 0;
   i = 0;
 
@@ -1934,7 +1940,7 @@ g_object_new_with_custom_constructor (GObjectClass          *class,
     }
 
   /* construct object from construction parameters */
-  object = class->constructor (class->g_type_class.g_type, n_cparams, cparams);
+  object = class->constructor (class->g_type_class.g_type, class->n_construct_properties, cparams);
   /* free construction values */
   g_free (cparams);
   while (cvals_used--)

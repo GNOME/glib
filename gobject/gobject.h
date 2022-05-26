@@ -369,8 +369,9 @@ struct  _GObjectClass
   /*< private >*/
   gsize		flags;
 
+  gsize         n_construct_properties;
   /* padding */
-  gpointer	pdummy[6];
+  gpointer	pdummy[5];
 };
 
 /**
