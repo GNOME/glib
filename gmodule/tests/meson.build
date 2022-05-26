@@ -2,7 +2,39 @@ gmodule_tests = {
   'cxx' : {
     'source' : ['cxx.cpp'],
   },
+  'module-test-library' : {
+    'export_dynamic' : true,
+    'source': 'module-test.c',
+    'c_args': ['-DMODULE_TYPE="library"'],
+  },
+  'module-test-plugin' : {
+    'export_dynamic' : true,
+    'source': 'module-test.c',
+    'c_args': ['-DMODULE_TYPE="plugin"'],
+  },
 }
+
+module_suffix = []
+# Keep the autotools convention for shared module suffix because GModule
+# depends on it: https://gitlab.gnome.org/GNOME/glib/issues/520
+if ['darwin', 'ios'].contains(host_machine.system())
+  module_suffix = 'so'
+endif
+
+foreach module : ['moduletestplugin_a', 'moduletestplugin_b']
+  shared_module(module + '_plugin', 'lib@0@.c'.format(module),
+    dependencies : [libglib_dep, libgmodule_dep],
+    install_dir : installed_tests_execdir,
+    install : installed_tests_enabled,
+    name_suffix : module_suffix
+  )
+  shared_library(module + '_library', 'lib@0@.c'.format(module),
+    dependencies : [libglib_dep, libgmodule_dep],
+    install_dir : installed_tests_execdir,
+    install : installed_tests_enabled,
+    name_suffix : module_suffix
+  )
+endforeach
 
 test_env = environment()
 test_env.set('G_TEST_SRCDIR', meson.current_source_dir())
@@ -35,6 +67,7 @@ foreach test_name, extra_args : gmodule_tests
     c_args : test_cargs + extra_args.get('c_args', []),
     link_args : extra_args.get('link_args', []),
     dependencies : test_deps + extra_args.get('dependencies', []),
+    export_dynamic : extra_args.get('export_dynamic', false),
     install_dir: installed_tests_execdir,
     install: install,
   )

@@ -19,14 +19,10 @@
  * Modified by the GLib Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GLib Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GLib at ftp://ftp.gtk.org/pub/gtk/. 
+ * GLib at ftp://ftp.gtk.org/pub/gtk/.
  */
 
-#undef G_DISABLE_ASSERT
-#undef G_LOG_DOMAIN
-
 #include <gmodule.h>
-#include <string.h>
 
 #ifdef _MSC_VER
 # define MODULE_FILENAME_PREFIX ""
@@ -34,7 +30,7 @@
 # define MODULE_FILENAME_PREFIX "lib"
 #endif
 
-gchar* global_state;
+gchar *global_state = NULL;
 
 G_MODULE_EXPORT void g_clash_func (void);
 
@@ -55,38 +51,34 @@ compare (const gchar *desc, const gchar *expected, const gchar *found)
 {
   if (!expected && !found)
     return;
-  
+
   if (expected && found && strcmp (expected, found) == 0)
     return;
-    
+
   g_error ("error: %s state should have been \"%s\", but is \"%s\"",
 	   desc, expected ? expected : "NULL", found ? found : "NULL");
 }
 
-static void 
-test_states (const gchar *global, const gchar *gplugin_a, 
-	     const gchar *gplugin_b)
-{	
+static void
+test_states (const gchar *global, const gchar *gplugin_a, const gchar *gplugin_b)
+{
   compare ("global", global, global_state);
   compare ("Plugin A", gplugin_a, *gplugin_a_state);
   compare ("Plugin B", gplugin_b, *gplugin_b_state);
-  
+
   global_state = *gplugin_a_state = *gplugin_b_state = NULL;
 }
- 
+
 static SimpleFunc plugin_clash_func = NULL;
 
-int
-main (int    argc,
-      char **argv)
+static void
+test_module_basics (void)
 {
   GModule *module_self, *module_a, *module_b;
   gchar *plugin_a, *plugin_b;
   SimpleFunc f_a, f_b, f_self;
   GModuleFunc gmod_f;
   GError *error = NULL;
-
-  g_test_init (&argc, &argv, NULL);
 
   if (!g_module_supported ())
     g_error ("dynamic modules not supported");
@@ -95,7 +87,7 @@ main (int    argc,
   plugin_b = g_test_build_filename (G_TEST_BUILT, MODULE_FILENAME_PREFIX "moduletestplugin_b_" MODULE_TYPE, NULL);
 
   /* module handles */
-  
+
   module_self = g_module_open_full (NULL, G_MODULE_BIND_LAZY, &error);
   g_assert_no_error (error);
   if (!module_self)
@@ -120,34 +112,33 @@ main (int    argc,
 
   /* get plugin state vars */
 
-  if (!g_module_symbol (module_a, "gplugin_a_state", 
-			(gpointer *) &gplugin_a_state))
+  if (!g_module_symbol (module_a, "gplugin_a_state",
+                        (gpointer *) &gplugin_a_state))
     g_error ("error: %s", g_module_error ());
-  
-  if (!g_module_symbol (module_b, "gplugin_b_state", 
-			(gpointer *) &gplugin_b_state))
+
+  if (!g_module_symbol (module_b, "gplugin_b_state",
+                        (gpointer *) &gplugin_b_state))
     g_error ("error: %s", g_module_error ());
   test_states (NULL, NULL, "check-init");
-  
-  /* get plugin specific symbols and call them
-   */
+
+  /* get plugin specific symbols and call them */
+
   if (!g_module_symbol (module_a, "gplugin_a_func", (gpointer *) &f_a))
     g_error ("error: %s", g_module_error ());
   test_states (NULL, NULL, NULL);
- 
+
   if (!g_module_symbol (module_b, "gplugin_b_func", (gpointer *) &f_b))
     g_error ("error: %s", g_module_error ());
   test_states (NULL, NULL, NULL);
- 
+
   f_a ();
   test_states (NULL, "Hello world", NULL);
-  
+
   f_b ();
   test_states (NULL, NULL, "Hello world");
-  
-  /* get and call globally clashing functions
-   */
- 
+
+  /* get and call globally clashing functions */
+
   if (!g_module_symbol (module_self, "g_clash_func", (gpointer *) &f_self))
     g_error ("error: %s", g_module_error ());
   test_states (NULL, NULL, NULL);
@@ -155,14 +146,14 @@ main (int    argc,
   if (!g_module_symbol (module_a, "g_clash_func", (gpointer *) &f_a))
     g_error ("error: %s", g_module_error ());
   test_states (NULL, NULL, NULL);
- 
+
   if (!g_module_symbol (module_b, "g_clash_func", (gpointer *) &f_b))
     g_error ("error: %s", g_module_error ());
   test_states (NULL, NULL, NULL);
- 
+
   f_self ();
   test_states ("global clash", NULL, NULL);
-  
+
   f_a ();
   test_states (NULL, "global clash", NULL);
 
@@ -195,7 +186,7 @@ main (int    argc,
 
   gmod_f (module_b);
   test_states (NULL, NULL, "BOOH");
- 
+
   gmod_f (module_a);
   test_states (NULL, "BOOH", NULL);
 
@@ -210,5 +201,14 @@ main (int    argc,
   g_free (plugin_a);
   g_free (plugin_b);
   g_module_close (module_self);
-  return 0;
+}
+
+int
+main (int argc, char *argv[])
+{
+  g_test_init (&argc, &argv, NULL);
+
+  g_test_add_func ("/module/basics", test_module_basics);
+
+  return g_test_run ();
 }

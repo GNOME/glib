@@ -1,4 +1,4 @@
-/* libgplugin_a.c - test plugin for testgmodule
+/* libgplugin_b.c - test plugin for testgmodule
  * Copyright (C) 1998 Tim Janik
  *
  * This library is free software; you can redistribute it and/or
@@ -19,57 +19,55 @@
  * Modified by the GLib Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GLib Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GLib at ftp://ftp.gtk.org/pub/gtk/. 
+ * GLib at ftp://ftp.gtk.org/pub/gtk/.
  */
 
-#undef G_DISABLE_ASSERT
-#undef G_LOG_DOMAIN
+#include        <gmodule.h>
 
-#include	<gmodule.h>
-#include	<stdlib.h>
+G_MODULE_EXPORT gchar* gplugin_b_state;
 
-G_MODULE_EXPORT void gplugin_a_func (void);
+G_MODULE_EXPORT const gchar* g_module_check_init (GModule *module);
+G_MODULE_EXPORT void   g_module_unload (GModule *module);
+
+G_MODULE_EXPORT void gplugin_b_func (void);
 G_MODULE_EXPORT void gplugin_clash_func (void);
 G_MODULE_EXPORT void g_clash_func (void);
 G_MODULE_EXPORT void gplugin_say_boo_func (void);
-G_MODULE_EXPORT void gplugin_a_module_func (GModule *module);
 
-G_MODULE_EXPORT gchar* gplugin_a_state;
+G_MODULE_EXPORT const gchar*
+g_module_check_init (GModule *module)
+{
+  gplugin_b_state = "check-init";
+
+  return NULL;
+}
 
 G_MODULE_EXPORT void
-gplugin_a_func (void)
+g_module_unload (GModule *module)
 {
-  gplugin_a_state = "Hello world";
+  gplugin_b_state = "unloaded";
+}
+
+G_MODULE_EXPORT void
+gplugin_b_func (void)
+{
+  gplugin_b_state = "Hello world";
 }
 
 G_MODULE_EXPORT void
 gplugin_clash_func (void)
 {
-  gplugin_a_state = "plugin clash";
+  gplugin_b_state = "plugin clash";
 }
 
 G_MODULE_EXPORT void
 g_clash_func (void)
 {
-  gplugin_a_state = "global clash";
+  gplugin_b_state = "global clash";
 }
 
 G_MODULE_EXPORT void
 gplugin_say_boo_func (void)
 {
-  gplugin_a_state = "BOOH";
-}
-
-G_MODULE_EXPORT void
-gplugin_a_module_func (GModule *module)
-{
-  void *f = NULL;
-
-  if (!g_module_symbol (module, "gplugin_say_boo_func", &f ))
-    {
-      g_print ("error: %s\n", g_module_error ());
-      exit (1);
-    }
-
-  ((void(*)(void)) f) ();
+  gplugin_b_state = "BOOH";
 }
