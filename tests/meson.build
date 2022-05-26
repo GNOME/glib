@@ -15,8 +15,6 @@ test_cargs = ['-DG_LOG_DOMAIN="GLib"', '-UG_DISABLE_ASSERT']
 subdir('gobject')
 subdir('refcount')
 
-tests = {}
-
 test_extra_programs = {
   'slice-test' : {
     'extra_sources' : ['memchunks.c'],
@@ -26,41 +24,6 @@ test_extra_programs = {
 
 common_c_args = test_cargs + ['-DGLIB_DISABLE_DEPRECATION_WARNINGS']
 common_deps = [libm, thread_dep, libglib_dep]
-
-foreach test_name, extra_args : tests
-  source = extra_args.get('source', test_name + '.c')
-  extra_sources = extra_args.get('extra_sources', [])
-  install = installed_tests_enabled and extra_args.get('install', true)
-  template = extra_args.get('tap', false) ? installed_tests_template_tap : installed_tests_template
-
-  if install
-    test_conf = configuration_data()
-    test_conf.set('installed_tests_dir', installed_tests_execdir)
-    test_conf.set('program', test_name)
-    test_conf.set('env', '')
-    configure_file(
-      input: template,
-      output: test_name + '.test',
-      install_dir: installed_tests_metadir,
-      configuration: test_conf
-    )
-  endif
-
-  # FIXME? $(GLIB_DEBUG_FLAGS)
-  exe = executable(test_name, [source, extra_sources],
-    c_args : common_c_args + extra_args.get('c_args', []),
-    dependencies : common_deps + extra_args.get('dependencies', []),
-    export_dynamic : extra_args.get('export_dynamic', false),
-    include_directories : extra_args.get('include_directories', []),
-    install_dir: installed_tests_execdir,
-    install: install,
-  )
-
-  suite = ['glib'] + extra_args.get('suite', [])
-  timeout = suite.contains('slow') ? test_timeout_slow : test_timeout
-  # FIXME? TESTS_ENVIRONMENT = LIBCHARSET_ALIAS_DIR=$(top_builddir)/glib/libcharset
-  test(test_name, exe, env : test_env, timeout : timeout, suite : suite)
-endforeach
 
 foreach program_name, extra_args : test_extra_programs
   source = extra_args.get('source', program_name + '.c')
