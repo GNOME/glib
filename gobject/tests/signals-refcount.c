@@ -275,10 +275,10 @@ test_refcount_signals (void)
   for (i = 0; i < n_threads; i++) {
     GThread *thread;
 
-    thread = g_thread_create ((GThreadFunc) run_thread, test1, TRUE, NULL);
+    thread = g_thread_new (NULL, (GThreadFunc) run_thread, test1);
     g_array_append_val (test_threads, thread);
 
-    thread = g_thread_create ((GThreadFunc) run_thread, test2, TRUE, NULL);
+    thread = g_thread_new (NULL, (GThreadFunc) run_thread, test2);
     g_array_append_val (test_threads, thread);
   }
   g_usleep (5000000);

@@ -210,7 +210,7 @@ test_refcount_properties_1 (void)
   g_atomic_int_set (&stopping, FALSE);
 
   for (i = 0; i < N_THREADS; i++)
-    test_threads[i] = g_thread_create ((GThreadFunc) run_thread, test_objects[i], TRUE, NULL);
+    test_threads[i] = g_thread_new (NULL, (GThreadFunc) run_thread, test_objects[i]);
 
   g_usleep (3000000);
 
