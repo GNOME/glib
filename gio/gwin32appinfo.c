@@ -3478,8 +3478,8 @@ uwp_package_cb (gpointer         user_data,
     }
 
   if (app->verbs->len == 0 && extensions_considered > 0)
-    g_warning ("Unexpectedly, UWP app `%S' (AUMId `%s') supports %d extensions but has no verbs",
-               full_package_name, app_user_model_id_u8, extensions_considered);
+    g_debug ("Unexpectedly, UWP app `%S' (AUMId `%s') supports %d extensions but has no verbs",
+             full_package_name, app_user_model_id_u8, extensions_considered);
 
   for (i = 0; i < supported_protocols->len; i++)
     {
