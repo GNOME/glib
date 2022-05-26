@@ -28,12 +28,26 @@ marshalers_c = custom_target('marshalers_c',
 
 gobject_tests = {
   'qdata' : {},
+  'accumulator' : {
+    'source' : ['accumulator.c', marshalers_h, marshalers_c],
+  },
   'boxed' : {},
   'cxx' : {
     'source' : ['cxx.cpp'],
   },
+  'defaultiface' : {
+    'source' : ['defaultiface.c', 'testmodule.c'],
+  },
+  'deftype' : {},
+  'dynamictype' : {
+    'source' : ['dynamictype.c', 'testmodule.c'],
+  },
   'enums' : {},
+  'override' : {},
   'param' : {},
+  'references' : {},
+  'basic-signals' : {},
+  'singleton' : {},
   'threadtests' : {},
   'dynamictests' : {},
   'binding' : {},

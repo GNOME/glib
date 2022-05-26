@@ -15,13 +15,6 @@
  * Public License along with this library; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#undef	G_LOG_DOMAIN
-#define	G_LOG_DOMAIN "TestDefaultIface"
-
-#undef G_DISABLE_ASSERT
-#undef G_DISABLE_CHECKS
-#undef G_DISABLE_CAST_CHECKS
-
 #include <glib-object.h>
 
 #include "testcommon.h"
@@ -56,7 +49,7 @@ test_static_iface_default_init (TestStaticIfaceClass *iface)
 }
 
 DEFINE_IFACE (TestStaticIface, test_static_iface,
-	      NULL, test_static_iface_default_init)
+              NULL, test_static_iface_default_init)
 
 static void
 test_static_iface (void)
@@ -65,22 +58,25 @@ test_static_iface (void)
 
   /* Not loaded until we call ref for the first time */
   static_iface = g_type_default_interface_peek (TEST_TYPE_STATIC_IFACE);
-  g_assert (static_iface == NULL);
+  g_assert_null (static_iface);
 
   /* Ref loads */
   static_iface = g_type_default_interface_ref (TEST_TYPE_STATIC_IFACE);
-  g_assert (static_iface && static_iface->val == 42);
+  g_assert_nonnull (static_iface);
+  g_assert_cmpint (static_iface->val, ==, 42);
 
   /* Peek then works */
   static_iface = g_type_default_interface_peek (TEST_TYPE_STATIC_IFACE);
-  g_assert (static_iface && static_iface->val == 42);
-  
+  g_assert_nonnull (static_iface);
+  g_assert_cmpint (static_iface->val, ==, 42);
+
   /* Unref does nothing */
   g_type_default_interface_unref (static_iface);
-  
+
   /* And peek still works */
   static_iface = g_type_default_interface_peek (TEST_TYPE_STATIC_IFACE);
-  g_assert (static_iface && static_iface->val == 42);
+  g_assert_nonnull (static_iface);
+  g_assert_cmpint (static_iface->val, ==, 42);
 }
 
 /**********************************************************************
@@ -116,11 +112,11 @@ test_dynamic_iface_default_finalize (TestStaticIfaceClass *iface)
 static void
 test_dynamic_iface_register (GTypeModule *module)
 {
-  const GTypeInfo iface_info =			
-    {								
+  const GTypeInfo iface_info =
+    {
       sizeof (TestDynamicIfaceClass),
-      (GBaseInitFunc)	   NULL,
-      (GBaseFinalizeFunc)  NULL,				
+      (GBaseInitFunc)      NULL,
+      (GBaseFinalizeFunc)  NULL,
       (GClassInitFunc)     test_dynamic_iface_default_init,
       (GClassFinalizeFunc) test_dynamic_iface_default_finalize,
       NULL,
@@ -128,10 +124,11 @@ test_dynamic_iface_register (GTypeModule *module)
       0,
       NULL,
       NULL
-    };							
+    };
 
-  test_dynamic_iface_type = g_type_module_register_type (module, G_TYPE_INTERFACE,
-							 "TestDynamicIface", &iface_info, 0);
+  test_dynamic_iface_type =
+    g_type_module_register_type (module, G_TYPE_INTERFACE,
+                                 "TestDynamicIface", &iface_info, 0);
 }
 
 static void
@@ -149,38 +146,47 @@ test_dynamic_iface (void)
 
   /* Not loaded until we call ref for the first time */
   dynamic_iface = g_type_default_interface_peek (TEST_TYPE_DYNAMIC_IFACE);
-  g_assert (dynamic_iface == NULL);
+  g_assert_null (dynamic_iface);
 
   /* Ref loads */
   dynamic_iface = g_type_default_interface_ref (TEST_TYPE_DYNAMIC_IFACE);
-  g_assert (dynamic_iface_init);
-  g_assert (dynamic_iface && dynamic_iface->val == 42);
+  g_assert_true (dynamic_iface_init);
+  g_assert_nonnull (dynamic_iface);
+  g_assert_cmpint (dynamic_iface->val, ==, 42);
 
   /* Peek then works */
   dynamic_iface = g_type_default_interface_peek (TEST_TYPE_DYNAMIC_IFACE);
-  g_assert (dynamic_iface && dynamic_iface->val == 42);
-  
+  g_assert_nonnull (dynamic_iface);
+  g_assert_cmpint (dynamic_iface->val, ==, 42);
+
   /* Unref causes finalize */
   g_type_default_interface_unref (dynamic_iface);
 #if 0
-  g_assert (!dynamic_iface_init);
+  /* Disabled as unloading dynamic types is disabled.
+   * See https://gitlab.gnome.org/GNOME/glib/-/issues/667 */
+  g_assert_false (dynamic_iface_init);
 #endif
 
   /* Peek returns NULL */
   dynamic_iface = g_type_default_interface_peek (TEST_TYPE_DYNAMIC_IFACE);
 #if 0
-  g_assert (dynamic_iface == NULL);
+  /* Disabled as unloading dynamic types is disabled.
+   * See https://gitlab.gnome.org/GNOME/glib/-/issues/667 */
+  g_assert_null (dynamic_iface);
 #endif
-  
+
   /* Ref reloads */
   dynamic_iface = g_type_default_interface_ref (TEST_TYPE_DYNAMIC_IFACE);
-  g_assert (dynamic_iface_init);
-  g_assert (dynamic_iface && dynamic_iface->val == 42);
+  g_assert_true (dynamic_iface_init);
+  g_assert_nonnull (dynamic_iface);
+  g_assert_cmpint (dynamic_iface->val, ==, 42);
 
   /* And Unref causes finalize once more*/
   g_type_default_interface_unref (dynamic_iface);
 #if 0
-  g_assert (!dynamic_iface_init);
+  /* Disabled as unloading dynamic types is disabled.
+   * See https://gitlab.gnome.org/GNOME/glib/-/issues/667 */
+  g_assert_false (dynamic_iface_init);
 #endif
 }
 
@@ -189,11 +195,13 @@ main (int   argc,
       char *argv[])
 {
   g_log_set_always_fatal (g_log_set_always_fatal (G_LOG_FATAL_MASK) |
-			  G_LOG_LEVEL_WARNING |
-			  G_LOG_LEVEL_CRITICAL);
+                          G_LOG_LEVEL_WARNING |
+                          G_LOG_LEVEL_CRITICAL);
 
-  test_static_iface ();
-  test_dynamic_iface ();
-  
-  return 0;
+  g_test_init (&argc, &argv, NULL);
+
+  g_test_add_func ("/gobject/static-iface", test_static_iface);
+  g_test_add_func ("/gobject/dynamic-iface", test_dynamic_iface);
+
+  return g_test_run ();
 }

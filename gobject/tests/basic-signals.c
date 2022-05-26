@@ -16,13 +16,6 @@
  * Public License along with this library; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#undef        G_LOG_DOMAIN
-#define       G_LOG_DOMAIN "TestSignals"
-
-#undef G_DISABLE_ASSERT
-#undef G_DISABLE_CHECKS
-#undef G_DISABLE_CAST_CHECKS
-
 #include <glib-object.h>
 
 #include "testcommon.h"
@@ -37,18 +30,19 @@
  * from an earlier handler in the same emission will not be run.
  */
 
-/*
- * TestObject, a parent class for TestObject
- */
+/* TestObject, a parent class for TestObject */
 #define TEST_TYPE_OBJECT         (test_object_get_type ())
 typedef struct _TestObject        TestObject;
 typedef struct _TestObjectClass   TestObjectClass;
-static gboolean callback1_ran = FALSE, callback2_ran = FALSE, callback3_ran = FALSE, default_handler_ran = FALSE;
+
+static gboolean callback1_ran = FALSE, callback2_ran = FALSE,
+  callback3_ran = FALSE, default_handler_ran = FALSE;
 
 struct _TestObject
 {
   GObject parent_instance;
 };
+
 struct _TestObjectClass
 {
   GObjectClass parent_class;
@@ -106,15 +100,10 @@ static DEFINE_TYPE(TestObject, test_object,
                    test_object_class_init, NULL, NULL,
                    G_TYPE_OBJECT)
 
-int
-main (int   argc,
-      char *argv[])
+static void
+test_basic_signals (void)
 {
   TestObject *object;
-
-  g_log_set_always_fatal (g_log_set_always_fatal (G_LOG_FATAL_MASK) |
-                          G_LOG_LEVEL_WARNING |
-                          G_LOG_LEVEL_CRITICAL);
 
   object = g_object_new (TEST_TYPE_OBJECT, NULL);
 
@@ -124,11 +113,25 @@ main (int   argc,
                     G_CALLBACK (test_object_signal_callback2), NULL);
   g_signal_emit_by_name (object, "test-signal");
 
-  g_assert (callback1_ran);
-  g_assert (!callback2_ran);
-  g_assert (!callback3_ran);
-  g_assert (default_handler_ran);
+  g_assert_true (callback1_ran);
+  g_assert_false (callback2_ran);
+  g_assert_false (callback3_ran);
+  g_assert_true (default_handler_ran);
 
   g_object_unref (object);
-  return 0;
+}
+
+int
+main (int  argc,
+      char *argv[])
+{
+  g_log_set_always_fatal (g_log_set_always_fatal (G_LOG_FATAL_MASK) |
+                          G_LOG_LEVEL_WARNING |
+                          G_LOG_LEVEL_CRITICAL);
+
+  g_test_init (&argc, &argv, NULL);
+
+  g_test_add_func ("/gobject/basic-signals", test_basic_signals);
+
+  return g_test_run ();
 }
