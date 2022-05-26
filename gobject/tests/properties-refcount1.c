@@ -5,7 +5,7 @@
 #include <unistd.h>
 #endif
 
-#define G_TYPE_TEST               (my_test_get_type ())
+#define G_TYPE_TEST                (my_test_get_type ())
 #define MY_TEST(test)              (G_TYPE_CHECK_INSTANCE_CAST ((test), G_TYPE_TEST, GTest))
 #define MY_IS_TEST(test)           (G_TYPE_CHECK_INSTANCE_TYPE ((test), G_TYPE_TEST))
 #define MY_TEST_CLASS(tclass)      (G_TYPE_CHECK_CLASS_CAST ((tclass), G_TYPE_TEST, GTestClass))
@@ -89,12 +89,12 @@ my_test_class_init (GTestClass * klass)
   gobject_class->set_property = my_test_set_property;
 
   g_object_class_install_property (gobject_class,
-				   PROP_DUMMY,
-				   g_param_spec_int ("dummy",
-						     NULL, 
-						     NULL,
-						     0, G_MAXINT, 0,
-						     G_PARAM_READWRITE));
+                                   PROP_DUMMY,
+                                   g_param_spec_int ("dummy",
+                                                     NULL,
+                                                     NULL,
+                                                     0, G_MAXINT, 0,
+                                                     G_PARAM_READWRITE));
 }
 
 static void
@@ -110,7 +110,7 @@ my_test_dispose (GObject * object)
   G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
-static void 
+static void
 my_test_get_property (GObject    *object,
                       guint       prop_id,
                       GValue     *value,
@@ -131,7 +131,7 @@ my_test_get_property (GObject    *object,
     }
 }
 
-static void 
+static void
 my_test_set_property (GObject      *object,
                       guint         prop_id,
                       const GValue *value,
@@ -160,7 +160,7 @@ dummy_notify (GObject    *object,
 
   test = MY_TEST (object);
 
-  test->count++;  
+  test->count++;
 }
 
 static void
@@ -176,12 +176,12 @@ static gpointer
 run_thread (GTest * test)
 {
   gint i = 1;
-  
+
   while (!g_atomic_int_get (&stopping)) {
     my_test_do_property (test);
     if ((i++ % 10000) == 0)
       {
-        g_print (".%c", 'a' + test->id);
+        g_test_message (".%c", 'a' + test->id);
         g_thread_yield(); /* force context switch */
       }
   }
@@ -189,16 +189,13 @@ run_thread (GTest * test)
   return NULL;
 }
 
-int
-main (int argc, char **argv)
+static void
+test_refcount_properties_1 (void)
 {
 #define N_THREADS 5
   GThread *test_threads[N_THREADS];
   GTest *test_objects[N_THREADS];
   gint i;
-
-  g_print ("START: %s\n", argv[0]);
-  g_log_set_always_fatal (G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL | g_log_set_always_fatal (G_LOG_FATAL_MASK));
 
   for (i = 0; i < N_THREADS; i++) {
     GTest *test;
@@ -206,32 +203,41 @@ main (int argc, char **argv)
     test = g_object_new (G_TYPE_TEST, NULL);
     test_objects[i] = test;
 
-    g_assert (test->count == test->dummy);
+    g_assert_cmpint (test->count, ==, test->dummy);
     g_signal_connect (test, "notify::dummy", G_CALLBACK (dummy_notify), NULL);
   }
 
   g_atomic_int_set (&stopping, FALSE);
 
   for (i = 0; i < N_THREADS; i++)
-    test_threads[i] = g_thread_create ((GThreadFunc) run_thread, test_objects[i], TRUE, NULL);
+    test_threads[i] = g_thread_new (NULL, (GThreadFunc) run_thread, test_objects[i]);
 
   g_usleep (3000000);
 
   g_atomic_int_set (&stopping, TRUE);
-  g_print ("\nstopping\n");
 
   /* join all threads */
   for (i = 0; i < N_THREADS; i++)
     g_thread_join (test_threads[i]);
 
-  g_print ("stopped\n");
-
   for (i = 0; i < N_THREADS; i++) {
     GTest *test = test_objects[i];
 
-    g_assert (test->count == test->dummy);
+    g_assert_cmpint (test->count, ==, test->dummy);
     g_object_unref (test);
   }
+}
 
-  return 0;
+int
+main (int argc, gchar *argv[])
+{
+  g_log_set_always_fatal (G_LOG_LEVEL_WARNING |
+                          G_LOG_LEVEL_CRITICAL |
+                          g_log_set_always_fatal (G_LOG_FATAL_MASK));
+
+  g_test_init (&argc, &argv, NULL);
+
+  g_test_add_func ("/gobject/refcount/properties-1", test_refcount_properties_1);
+
+  return g_test_run ();
 }
