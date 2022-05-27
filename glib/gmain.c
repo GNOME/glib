@@ -235,6 +235,7 @@
 
 /* Types */
 
+typedef struct _GIdleSource GIdleSource;
 typedef struct _GTimeoutSource GTimeoutSource;
 typedef struct _GChildWatchSource GChildWatchSource;
 typedef struct _GUnixSignalWatchSource GUnixSignalWatchSource;
@@ -330,6 +331,11 @@ struct _GMainLoop
   GMainContext *context;
   gboolean is_running; /* (atomic) */
   gint ref_count;  /* (atomic) */
+};
+
+struct _GIdleSource
+{
+  GSource  source;
 };
 
 struct _GTimeoutSource
@@ -6012,6 +6018,23 @@ g_idle_dispatch (GSource    *source,
   return again;
 }
 
+static GSource *
+idle_source_new (void)
+{
+  GSource *source;
+  GIdleSource *idle_source;
+
+  source = g_source_new (&g_idle_funcs, sizeof (GIdleSource));
+  idle_source = (GIdleSource *) source;
+
+  g_source_set_priority (source, G_PRIORITY_DEFAULT_IDLE);
+
+  /* Set a default name on the source, just in case the caller does not. */
+  g_source_set_static_name (source, "GIdleSource");
+
+  return source;
+}
+
 /**
  * g_idle_source_new:
  * 
@@ -6028,15 +6051,33 @@ g_idle_dispatch (GSource    *source,
 GSource *
 g_idle_source_new (void)
 {
+  return idle_source_new ();
+}
+
+static guint
+idle_add_full (gint           priority,
+               GSourceFunc    function,
+               gpointer       data,
+               GDestroyNotify notify)
+{
   GSource *source;
+  guint id;
 
-  source = g_source_new (&g_idle_funcs, sizeof (GSource));
-  g_source_set_priority (source, G_PRIORITY_DEFAULT_IDLE);
+  g_return_val_if_fail (function != NULL, 0);
 
-  /* Set a default name on the source, just in case the caller does not. */
-  g_source_set_static_name (source, "GIdleSource");
+  source = idle_source_new ();
 
-  return source;
+  if (priority != G_PRIORITY_DEFAULT_IDLE)
+    g_source_set_priority (source, priority);
+
+  g_source_set_callback (source, function, data, notify);
+  id = g_source_attach (source, NULL);
+
+  TRACE (GLIB_IDLE_ADD (source, g_main_context_default (), id, priority, function, data));
+
+  g_source_unref (source);
+
+  return id;
 }
 
 /**
@@ -6070,24 +6111,7 @@ g_idle_add_full (gint           priority,
 		 gpointer       data,
 		 GDestroyNotify notify)
 {
-  GSource *source;
-  guint id;
-  
-  g_return_val_if_fail (function != NULL, 0);
-
-  source = g_idle_source_new ();
-
-  if (priority != G_PRIORITY_DEFAULT_IDLE)
-    g_source_set_priority (source, priority);
-
-  g_source_set_callback (source, function, data, notify);
-  id = g_source_attach (source, NULL);
-
-  TRACE (GLIB_IDLE_ADD (source, g_main_context_default (), id, priority, function, data));
-
-  g_source_unref (source);
-
-  return id;
+  return idle_add_full (priority, function, data, notify);
 }
 
 /**
