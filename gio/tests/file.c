@@ -2999,6 +2999,20 @@ test_build_attribute_list_for_copy (void)
           g_assert_null (g_strstr_len (attrs_with_commas, -1, "," G_FILE_ATTRIBUTE_TIME_ACCESS_USEC ","));
         }
 #endif
+#ifdef HAVE_UTIMENSAT
+      g_assert_nonnull (g_strstr_len (attrs_with_commas, -1, "," G_FILE_ATTRIBUTE_TIME_MODIFIED ","));
+      g_assert_nonnull (g_strstr_len (attrs_with_commas, -1, "," G_FILE_ATTRIBUTE_TIME_MODIFIED_NSEC ","));
+      if (flags & G_FILE_COPY_ALL_METADATA)
+        {
+          g_assert_nonnull (g_strstr_len (attrs_with_commas, -1, "," G_FILE_ATTRIBUTE_TIME_ACCESS ","));
+          g_assert_nonnull (g_strstr_len (attrs_with_commas, -1, "," G_FILE_ATTRIBUTE_TIME_ACCESS_NSEC ","));
+        }
+      else
+        {
+          g_assert_null (g_strstr_len (attrs_with_commas, -1, "," G_FILE_ATTRIBUTE_TIME_ACCESS ","));
+          g_assert_null (g_strstr_len (attrs_with_commas, -1, "," G_FILE_ATTRIBUTE_TIME_ACCESS_NSEC ","));
+        }
+#endif
       g_free (attrs_with_commas);
     }
 
