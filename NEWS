@@ -1,3 +1,200 @@
+Overview of changes in GLib 2.73.0
+==================================
+
+* Support nanosecond time precision in file attributes (work by Nitin Wartkar) (#369)
+
+* Add `g_list_store_find_with_equal_func_full()` API to make `GListStore` more
+  introspection friendly (work by Jason Francis) (#2447)
+
+* Document some GLib maintenance policies a bit better (work by
+  Nirbheek Chauhan, Philip Withnall) (#2596, !2648, !2649, !2664)
+
+* Remove FAM/gamin file monitor and `-Dfam` meson option, as libgamin was last
+  released in 2007 and is dead upstream (work by Emmanuele Bassi) (#2605)
+
+* Fix futex timespec type on 32-bit kernels with 64-bit userspace (#2634)
+
+* Deprecate g_dtls_client_connection_set_validation_flags() (work by Michael Catanzaro) (#2646)
+
+* Add support for automatically `NULL`-terminated `GPtrArray`s (work by Thomas Haller) (!1485)
+
+* A lot of cleanup of warnings and old tests (work by Emmanuel Fleury)
+
+* Various compilation and test fixes on Windows (work by Marc-André Lureau)
+  (!2499, !2540, !2569, !2582, !2592, !2599, !2600, !2656)
+
+* Fix detection of broken `poll()` implementation on macOS, broken since the
+  port to Meson (work by Haruka Ma) (!2571)
+
+* Add additional flags to `g_spawn_async_with_pipes_and_fds()` to make it more
+  easily introspectable (work by Nicola Fontana) (!2632)
+
+* Initial (incomplete) support for REUSE licensing (work by Philip Withnall) (!2663, !2665, !2666)
+
+* GObject construction performance improvements (work by Matthias Clasen) (!2672, !2673, !2674, !2677, !2680, !2690)
+
+* Add `g_idle_add_once()` and `g_timeout_add_once()` for one-shot sources (work by Emmanuele Bassi) (!2684, !2693)
+
+* Simplify zlib dependency resolution using new built-in Meson support for it (work by Eli Schwartz) (!2685)
+
+* Bugs fixed:
+ - #369 file copy doesn't preserve nanosecond timestamps
+ - #2312 gdbus-test-codegen tests leak GWeakRef objects
+ - #2447 g_list_store_find_with_equal_func is not binding friendly
+ - #2596 Policy on meson requirement bumping
+ - #2605 Update Android CI to support API level 31
+ - #2614 Remove FAM/gamin file monitor
+ - #2625 g_warning_once fails to build with clang++
+ - #2629 g_file_trash() does not work on directories inside a sandbox
+ - #2633 Recent updates in gstdio.h breaks ABI on 64-bit MSVC builds
+ - #2634 g_cond_wait_until: returning FALSE immediately on mips24
+ - #2640 UWP warnings about extensions and verbs with glib 2.72.1
+ - #2646 Should g_dtls_client_connection_set_validation_flags etc. be deprecated?
+ - #2653 pango fails to build against glib main
+ - !1485 array: add support for g_ptr_array_null_terminated()
+ - !2449 Fix test suite on Windows
+ - !2494 Cleanup warnings split 5
+ - !2495 Cleanup warnings split 6
+ - !2496 Cleanup warnings split 7
+ - !2497 Cleanup warnings split 8
+ - !2498 Cleanup warnings split 9
+ - !2499 Various contenttype-related test fixes on win32
+ - !2521 gobject: Add g_signal_group_connect_closure
+ - !2534 gpowerprofilemonitor: Tweak wording of documentation to make more sense
+ - !2539 Convert tests/gio-test.c to g_test framework
+ - !2540 Various win32 tests skip & fixes
+ - !2541 meson: simplify lookup of python command
+ - !2543 ci: Update the Fedora CI image to Fedora 34
+ - !2545 gutils: Add flags to g_format_size_full() to return only value or only units
+ - !2550 Moving gobject tests from tests/gobjects to gobjects/tests
+ - !2553 Moving tests/refcount/ directory to gobject/tests/
+ - !2556 gdbusconnection: Use g_strv_contains() rather than a home-grown version
+ - !2557 gdbusmethodinvocation: Fix a leak on an early return path
+ - !2558 Move unit test on g_basename() function to glib/tests/fileutils.c
+ - !2559 Move tests/relation-test.c to glib/tests/relation.c
+ - !2560 ci: Update Coverity, mingw and Android CI images to Fedora 34
+ - !2562 tests: Call openpty (if available) without using dlsym
+ - !2563 glib: Format GDateTime ISO8601 years as %C%y
+ - !2564 Move test files on slices from tests/ to glib/tests/
+ - !2565 Revert "meson: simplify lookup of python command"
+ - !2566 tests: Add more tests for GResolver response parsing
+ - !2567 tests: Fix compilation when GLIB_DISABLE_DEPRECATION_WARNINGS is defined
+ - !2569 Various win32 tests fixes
+ - !2571 meson: Set BROKEN_POLL in macOS builds
+ - !2572 gversionmacros: Add version macros for GLib 2.74
+ - !2575 Move tests/spawn-test.c -> glib/tests/spawn-test.c
+ - !2577 build: Post-release version bump to 2.73.0
+ - !2579 Slice test
+ - !2580 Moving slice-threadinit.c test to glib/tests/
+ - !2581 Move tests/unicode-encoding.c to glib/tests/unicode-encoding.c
+ - !2582 glib/win32: fix spawn from GUI regression
+ - !2584 Move msvc warnings in meson.build file
+ - !2585 GUnixFDList: Include only in unix build
+ - !2586 Move test tests/unicode-normalize.c to glib/tests/
+ - !2589 tests: Don’t exit gdbus-method-invocation test early on connection close
+ - !2591 tests: Remove an incorrect assertion in converter-stream
+ - !2592 gio/tests: DuplicateHandle() is inappropriate for SOCKET
+ - !2594 ci: Expire CI artifacts after 1 week
+ - !2597 tests: Make a string comparison on an error string more relaxed
+ - !2598 ci: Combine style-check-diff and check-todos jobs into one
+ - !2599 Various socket-related fixes for win32
+ - !2600 GDate: Fix tests on Windows on certain locales
+ - !2601 Move tests/onceinit.c to glib/tests/onceinit.c
+ - !2602 tests: Ensure NormalizationTest.txt is installed for installed-tests
+ - !2603 tests: Use G_TEST_OPTION_ISOLATE_DIRS in gdbus-peer-object-manager
+ - !2604 tests: Reduce wakeup interval in gdbus-threading
+ - !2606 tests: Fix a minor leak in the unicode-normalize test
+ - !2607 Moving tests/mapping-test.c to glib/test/mapping.c
+ - !2608 Fixes in tests
+ - !2609 Remove tests/timeloop.c and tests/timeloopbasic.c
+ - !2610 Expand tests on gbookmark file API
+ - !2612 docs: Expand G_DEFINE_BOXED_TYPE docs with more detailed example
+ - !2613 gtestutils: Include stdlib.h for exit function
+ - !2614 Add inout annotations for g_iconv
+ - !2615 Meson: Fix gio-windows-2.0 override name
+ - !2617 gmessages: Error if g_log_set_writer_func() is called multiple times
+ - !2619 gversion: Clarify that GLIB_CHECK_VERSION is a >= check
+ - !2621 Fix the annotation of g_utf8_strncpy()
+ - !2624 Expand ghook unit tests for a better coverage and add more checks
+ - !2625 gsocket: Add assertions about socket address sizes for memcpy()
+ - !2626 gio-tool: Fix a minor memory leak when using gio-set with bytestrings
+ - !2627 gopenuriportal: Fix a use-after-free on an error path
+ - !2628 Fix various scan-build warnings
+ - !2630 build: Move lcovrc file to root so it’s picked up by Meson
+ - !2631 Cast to ptrdiff_t instead of subtracting by null
+ - !2632 g_spawn_async_with_pipes_and_fds uses out parameters as inputs
+ - !2633 Fix closure annotations in callbacks' user data parameters
+ - !2634 Move tests/threadpool-test.c to glib/test/thread-pool-slow.c
+ - !2635 Add a couple of assertions to help with static analysis
+ - !2636 ghmac: Fix some signed/unsigned issues with g_checksum_update()
+ - !2637 guri: Preallocate a buffer for building URIs
+ - !2638 fuzzing: Only set the writer function once
+ - !2639 Move tests/thread-test.c to glib/tests/thread-deprecated.c
+ - !2642 meson: Check rres.compiled() before calling rres.returncode()
+ - !2645 Remove unnecessary test tests/mainloop-test.c duplicated in glib/tests/mainloop.c
+ - !2646 Add some more assertions to help scan-build out
+ - !2648 docs: Add a code of conduct document
+ - !2649 Various updates to documentation and misc files in the root directory
+ - !2650 meson: Use range() instead of listing all stable versions
+ - !2651 Replace single quotes in gio/tests/codegen.py
+ - !2652 resources: Hide external data symbol
+ - !2653 build: Remove a few Meson workarounds and FIXMEs
+ - !2654 gtask: use g_strconcat() in g_task_return() only if needed
+ - !2655 Fix typo in gio/meson.build
+ - !2656 gio: various unix/fd-related enablement on win32
+ - !2657 ci: Temporarily allow failure of macOS CI runner until it’s fixed
+ - !2658 tests: Fix a double-close of a GSource in tests
+ - !2659 Cleaning a file left behind by glib/tests/bookmarkfile.c test case
+ - !2660 Move tests/module-test.c to gmodules/tests/
+ - !2663 docs: Initial REUSE licensing support
+ - !2664 docs: Add compiler and toolchain requirements from the wiki
+ - !2665 glib/gio/tests: Add SPDX license headers automatically
+ - !2666 fuzzing: Add copyright/licensing headers to fuzzing files
+ - !2669 Add a Unicode testcase
+ - !2671 Add another Unicode testcase
+ - !2672 gtype: small optimization
+ - !2673 param: Avoid strcmps
+ - !2674 Avoid g_type_peek_value_table
+ - !2675 docs: Use G_PARAM_STATIC_STRINGS in examples and explain it more
+ - !2677 param: Add a value_is_valid vfunc
+ - !2679 Rename user data parameters to user_data
+ - !2680 Speed up object finalization
+ - !2684 Add one-shot idle and timeout functions
+ - !2685 meson: use builtin dependency lookups for zlib
+ - !2686 gitlab-ci: remove meson-junit-report.py conversion
+ - !2687 gitlab-ci: left-over from junit cleanup
+ - !2688 gparamspecs: Remove redundant NULL checks
+ - !2689 build: update sysprof configuration options
+ - !2690 gobject: Keep a count of construct params
+ - !2693 gmain: Refactor idle-once and timeout-once to avoid a closure allocation
+
+* Translation updates:
+ - Basque
+ - Bulgarian
+ - Catalan
+ - Croatian
+ - Czech
+ - Danish
+ - English (United Kingdom)
+ - French
+ - Galician
+ - German
+ - Hungarian
+ - Indonesian
+ - Italian
+ - Lithuanian
+ - Nepali
+ - Polish
+ - Portuguese
+ - Portuguese (Brazil)
+ - Russian
+ - Slovenian
+ - Spanish
+ - Swedish
+ - Turkish
+ - Ukrainian
+
+
 Overview of changes in GLib 2.72.0
 ==================================
 
