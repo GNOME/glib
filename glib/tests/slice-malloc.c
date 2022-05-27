@@ -63,25 +63,6 @@ corruption (void)
   return 0;
 }
 
-static inline gpointer
-memchunk_alloc (GMemChunk **memchunkp,
-                guint       size)
-{
-  size = MAX (size, 1);
-  if (G_UNLIKELY (!*memchunkp))
-    *memchunkp = old_mem_chunk_new ("", size, 4096, G_ALLOC_AND_FREE);
-  return old_mem_chunk_alloc (*memchunkp);
-}
-
-static inline void
-memchunk_free (GMemChunk *memchunk,
-               gpointer   chunk)
-{
-  old_mem_chunk_free (memchunk, chunk);
-  if (clean_memchunks)
-    old_mem_chunk_clean (memchunk);
-}
-
 static gpointer
 test_sliced_mem_thread (gpointer data)
 {
