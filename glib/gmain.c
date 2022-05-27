@@ -5184,34 +5184,15 @@ once_function (gpointer data)
  *   milliseconds (1/1000ths of a second)
  * @function: function to call
  * @data: data to pass to @function
- * 
+ *
  * Sets a function to be called after @interval milliseconds have elapsed,
  * with the default priority, %G_PRIORITY_DEFAULT.
  *
- * The given @function is called once.
+ * The given @function is called once and then the source will be automatically
+ * removed from the main context.
  *
- * Note that timeout functions may be delayed, due to the processing of other
- * event sources. Thus they should not be relied on for precise timing.
+ * This function otherwise behaves like g_timeout_add().
  *
- * See [memory management of sources][mainloop-memory-management] for details
- * on how to handle the return value and memory management of @data.
- *
- * If you want to have a timer in the "seconds" range and do not care
- * about the exact time of the first call of the timer, use the
- * g_timeout_add_seconds() function; this function allows for more
- * optimizations and more efficient system power usage.
- *
- * This internally creates a main loop source using g_timeout_source_new()
- * and attaches it to the global #GMainContext using g_source_attach(), so
- * the callback will be invoked in whichever thread is running that main
- * context. You can do these steps manually if you need greater control or to
- * use a custom main context.
- * 
- * It is safe to call this function from any thread.
- *
- * The interval given is in terms of monotonic time, not wall clock
- * time.  See g_get_monotonic_time().
- * 
  * Returns: the ID (greater than 0) of the event source
  *
  * Since: 2.74
@@ -6136,16 +6117,10 @@ g_idle_add (GSourceFunc    function,
  * events pending to the default main loop. The function is given the
  * default idle priority, %G_PRIORITY_DEFAULT_IDLE.
  *
- * The function will only be called once.
+ * The function will only be called once and then the source will be
+ * automatically removed from the main context.
  *
- * See [memory management of sources][mainloop-memory-management] for details
- * on how to handle the return value and memory management of @data.
- * 
- * This internally creates a main loop source using g_idle_source_new()
- * and attaches it to the global #GMainContext using g_source_attach(), so
- * the callback will be invoked in whichever thread is running that main
- * context. You can do these steps manually if you need greater control or to
- * use a custom main context.
+ * This function otherwise behaves like g_idle_add().
  *
  * Returns: the ID (greater than 0) of the event source
  *

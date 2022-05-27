@@ -199,7 +199,8 @@ typedef gboolean (*GSourceFunc)       (gpointer user_data);
  * @user_data: data passed to the function, set when the source was
  *   created
  *
- * A source function that is only called once.
+ * A source function that is only called once before being removed from the main
+ * context automatically.
  *
  * See: g_idle_add_once(), g_timeout_add_once()
  *
