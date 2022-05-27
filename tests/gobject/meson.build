@@ -1,12 +1,6 @@
 gobject_tests = {
 }
 
-if host_system != 'windows'
-  gobject_tests += {
-    'timeloop-closure' : {},
-  }
-endif
-
 common_c_args = test_cargs + ['-DGLIB_DISABLE_DEPRECATION_WARNINGS']
 common_deps = [libm, thread_dep, libglib_dep, libgobject_dep]
 
