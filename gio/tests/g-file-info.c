@@ -409,6 +409,7 @@ test_g_file_info_creation_time (void)
   if (!dt)
     {
       g_test_skip ("Skipping testing creation time as it’s not supported by the kernel");
+      g_clear_object (&io_stream);
       g_file_delete (file, NULL, NULL);
       g_clear_object (&file);
       g_clear_object (&info);
