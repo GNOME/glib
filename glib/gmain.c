@@ -4980,6 +4980,21 @@ g_timeout_dispatch (GSource     *source,
   return again;
 }
 
+static GSource *
+timeout_source_new (guint    interval,
+                    gboolean seconds)
+{
+  GSource *source = g_source_new (&g_timeout_funcs, sizeof (GTimeoutSource));
+  GTimeoutSource *timeout_source = (GTimeoutSource *)source;
+
+  timeout_source->interval = interval;
+  timeout_source->seconds = seconds;
+
+  g_timeout_set_expiration (timeout_source, g_get_monotonic_time ());
+
+  return source;
+}
+
 /**
  * g_timeout_source_new:
  * @interval: the timeout interval in milliseconds.
@@ -4998,13 +5013,7 @@ g_timeout_dispatch (GSource     *source,
 GSource *
 g_timeout_source_new (guint interval)
 {
-  GSource *source = g_source_new (&g_timeout_funcs, sizeof (GTimeoutSource));
-  GTimeoutSource *timeout_source = (GTimeoutSource *)source;
-
-  timeout_source->interval = interval;
-  g_timeout_set_expiration (timeout_source, g_get_monotonic_time ());
-
-  return source;
+  return timeout_source_new (interval, FALSE);
 }
 
 /**
@@ -5030,17 +5039,36 @@ g_timeout_source_new (guint interval)
 GSource *
 g_timeout_source_new_seconds (guint interval)
 {
-  GSource *source = g_source_new (&g_timeout_funcs, sizeof (GTimeoutSource));
-  GTimeoutSource *timeout_source = (GTimeoutSource *)source;
-
-  timeout_source->interval = interval;
-  timeout_source->seconds = TRUE;
-
-  g_timeout_set_expiration (timeout_source, g_get_monotonic_time ());
-
-  return source;
+  return timeout_source_new (interval, TRUE);
 }
 
+static guint
+timeout_add_full (gint           priority,
+                  guint          interval,
+                  gboolean       seconds,
+                  GSourceFunc    function,
+                  gpointer       data,
+                  GDestroyNotify notify)
+{
+  GSource *source;
+  guint id;
+
+  g_return_val_if_fail (function != NULL, 0);
+
+  source = timeout_source_new (interval, seconds);
+
+  if (priority != G_PRIORITY_DEFAULT)
+    g_source_set_priority (source, priority);
+
+  g_source_set_callback (source, function, data, notify);
+  id = g_source_attach (source, NULL);
+
+  TRACE (GLIB_TIMEOUT_ADD (source, g_main_context_default (), id, priority, interval, function, data));
+
+  g_source_unref (source);
+
+  return id;
+}
 
 /**
  * g_timeout_add_full: (rename-to g_timeout_add)
@@ -5086,24 +5114,7 @@ g_timeout_add_full (gint           priority,
 		    gpointer       data,
 		    GDestroyNotify notify)
 {
-  GSource *source;
-  guint id;
-  
-  g_return_val_if_fail (function != NULL, 0);
-
-  source = g_timeout_source_new (interval);
-
-  if (priority != G_PRIORITY_DEFAULT)
-    g_source_set_priority (source, priority);
-
-  g_source_set_callback (source, function, data, notify);
-  id = g_source_attach (source, NULL);
-
-  TRACE (GLIB_TIMEOUT_ADD (source, g_main_context_default (), id, priority, interval, function, data));
-
-  g_source_unref (source);
-
-  return id;
+  return timeout_add_full (priority, interval, FALSE, function, data, notify);
 }
 
 /**
