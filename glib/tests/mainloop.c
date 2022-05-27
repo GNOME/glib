@@ -2310,6 +2310,72 @@ test_maincontext_source_finalization_from_dispatch (gconstpointer user_data)
 }
 
 static void
+once_cb (gpointer user_data)
+{
+  guint *counter = user_data;
+
+  *counter = *counter + 1;
+}
+
+static void
+test_maincontext_idle_once (void)
+{
+  guint counter = 0;
+  guint source_id;
+  GSource *source;
+
+  g_test_summary ("Test g_idle_add_once() works");
+
+  source_id = g_idle_add_once (once_cb, &counter);
+  source = g_main_context_find_source_by_id (NULL, source_id);
+  g_assert_nonnull (source);
+  g_source_ref (source);
+
+  /* Iterating the main context should dispatch the source. */
+  g_assert_cmpuint (counter, ==, 0);
+  g_main_context_iteration (NULL, FALSE);
+  g_assert_cmpuint (counter, ==, 1);
+
+  /* Iterating it again should not dispatch the source again. */
+  g_main_context_iteration (NULL, FALSE);
+  g_assert_cmpuint (counter, ==, 1);
+  g_assert_true (g_source_is_destroyed (source));
+
+  g_clear_pointer (&source, g_source_unref);
+}
+
+static void
+test_maincontext_timeout_once (void)
+{
+  guint counter = 0, check_counter = 0;
+  guint source_id;
+  GSource *source;
+
+  g_test_summary ("Test g_timeout_add_once() works");
+
+  source_id = g_timeout_add_once (10 /* ms */, once_cb, &counter);
+  source = g_main_context_find_source_by_id (NULL, source_id);
+  g_assert_nonnull (source);
+  g_source_ref (source);
+
+  /* Iterating the main context should dispatch the source, though we have to block. */
+  g_assert_cmpuint (counter, ==, 0);
+  g_main_context_iteration (NULL, TRUE);
+  g_assert_cmpuint (counter, ==, 1);
+
+  /* Iterating it again should not dispatch the source again. We add a second
+   * timeout and block until that is dispatched. Given the ordering guarantees,
+   * we should then know whether the first one would have re-dispatched by then. */
+  g_timeout_add_once (30 /* ms */, once_cb, &check_counter);
+  g_main_context_iteration (NULL, TRUE);
+  g_assert_cmpuint (check_counter, ==, 1);
+  g_assert_cmpuint (counter, ==, 1);
+  g_assert_true (g_source_is_destroyed (source));
+
+  g_clear_pointer (&source, g_source_unref);
+}
+
+static void
 test_steal_fd (void)
 {
   GError *error = NULL;
@@ -2363,6 +2429,9 @@ main (int argc, char *argv[])
       g_test_add_data_func (name, GINT_TO_POINTER (i), test_maincontext_source_finalization_from_dispatch);
       g_free (name);
     }
+  g_test_add_func ("/maincontext/idle-once", test_maincontext_idle_once);
+  g_test_add_func ("/maincontext/timeout-once", test_maincontext_timeout_once);
+
   g_test_add_func ("/mainloop/basic", test_mainloop_basic);
   g_test_add_func ("/mainloop/timeouts", test_timeouts);
   g_test_add_func ("/mainloop/priorities", test_priorities);

@@ -5,12 +5,10 @@
 
 static GMainLoop *loop;
 
-static gboolean
+static void
 stop_waiting (gpointer data)
 {
   g_main_loop_quit (loop);
-
-  return G_SOURCE_REMOVE;
 }
 
 static gboolean
@@ -44,7 +42,7 @@ test_seconds (void)
   g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=642052");
   loop = g_main_loop_new (NULL, FALSE);
 
-  g_timeout_add (2100, stop_waiting, NULL);
+  g_timeout_add_once (2100, stop_waiting, NULL);
   id = g_timeout_add_seconds (21475, unreachable_callback, NULL);
 
   g_main_loop_run (loop);
@@ -81,7 +79,7 @@ test_weeks_overflow (void)
   g_test_bug ("https://gitlab.gnome.org/GNOME/glib/issues/1600");
   loop = g_main_loop_new (NULL, FALSE);
 
-  g_timeout_add (2100, stop_waiting, NULL);
+  g_timeout_add_once (2100, stop_waiting, NULL);
   interval_seconds = 1 + G_MAXUINT / 1000;
   id = g_timeout_add_seconds (interval_seconds, unreachable_callback, NULL);
 

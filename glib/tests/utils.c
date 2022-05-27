@@ -767,11 +767,10 @@ test_os_info (void)
   g_free (contents);
 }
 
-static gboolean
+static void
 source_test (gpointer data)
 {
   g_assert_not_reached ();
-  return G_SOURCE_REMOVE;
 }
 
 static void
@@ -779,13 +778,13 @@ test_clear_source (void)
 {
   guint id;
 
-  id = g_idle_add (source_test, NULL);
+  id = g_idle_add_once (source_test, NULL);
   g_assert_cmpuint (id, >, 0);
 
   g_clear_handle_id (&id, g_source_remove);
   g_assert_cmpuint (id, ==, 0);
 
-  id = g_timeout_add (100, source_test, NULL);
+  id = g_timeout_add_once (100, source_test, NULL);
   g_assert_cmpuint (id, >, 0);
 
   g_clear_handle_id (&id, g_source_remove);

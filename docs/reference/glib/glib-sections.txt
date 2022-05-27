@@ -904,6 +904,7 @@ g_main_context_pop_thread_default
 g_timeout_source_new
 g_timeout_source_new_seconds
 g_timeout_add
+g_timeout_add_once
 g_timeout_add_full
 g_timeout_add_seconds
 g_timeout_add_seconds_full
@@ -911,6 +912,7 @@ g_timeout_add_seconds_full
 <SUBSECTION>
 g_idle_source_new
 g_idle_add
+g_idle_add_once
 g_idle_add_full
 g_idle_remove_by_data
 
@@ -954,6 +956,7 @@ g_source_get_context
 g_source_set_callback
 GSourceFunc
 G_SOURCE_FUNC
+GSourceOnceFunc
 g_source_set_callback_indirect
 g_source_set_ready_time
 g_source_get_ready_time
