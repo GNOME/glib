@@ -688,6 +688,28 @@ g_file_info_get_attribute_type (GFileInfo  *info,
     return G_FILE_ATTRIBUTE_TYPE_INVALID;
 }
 
+static void
+g_file_info_remove_value (GFileInfo *info,
+			  guint32 attr_id)
+{
+  GFileAttribute *attrs;
+  guint i;
+
+  if (info->mask != NO_ATTRIBUTE_MASK &&
+      !_g_file_attribute_matcher_matches_id (info->mask, attr_id))
+    return;
+
+  i = g_file_info_find_place (info, attr_id);
+
+  attrs = (GFileAttribute *)info->attributes->data;
+  if (i < info->attributes->len &&
+      attrs[i].attribute == attr_id)
+    {
+      _g_file_attribute_value_clear (&attrs[i].value);
+      g_array_remove_index (info->attributes, i);
+    }
+}
+
 /**
  * g_file_info_remove_attribute:
  * @info: a #GFileInfo.
@@ -700,22 +722,13 @@ g_file_info_remove_attribute (GFileInfo  *info,
 			      const char *attribute)
 {
   guint32 attr_id;
-  GFileAttribute *attrs;
-  guint i;
 
   g_return_if_fail (G_IS_FILE_INFO (info));
   g_return_if_fail (attribute != NULL && *attribute != '\0');
 
   attr_id = lookup_attribute (attribute);
 
-  i = g_file_info_find_place (info, attr_id);
-  attrs = (GFileAttribute *)info->attributes->data;
-  if (i < info->attributes->len &&
-      attrs[i].attribute == attr_id)
-    {
-      _g_file_attribute_value_clear (&attrs[i].value);
-      g_array_remove_index (info->attributes, i);
-    }
+  g_file_info_remove_value (info, attr_id);
 }
 
 /**
