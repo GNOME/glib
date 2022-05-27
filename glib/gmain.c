@@ -336,6 +336,7 @@ struct _GMainLoop
 struct _GIdleSource
 {
   GSource  source;
+  gboolean one_shot;
 };
 
 struct _GTimeoutSource
@@ -344,6 +345,7 @@ struct _GTimeoutSource
   /* Measured in seconds if 'seconds' is TRUE, or milliseconds otherwise. */
   guint       interval;
   gboolean    seconds;
+  gboolean    one_shot;
 };
 
 struct _GChildWatchSource
@@ -4976,7 +4978,16 @@ g_timeout_dispatch (GSource     *source,
       return FALSE;
     }
 
-  again = callback (user_data);
+  if (timeout_source->one_shot)
+    {
+      GSourceOnceFunc once_callback = (GSourceOnceFunc) callback;
+      once_callback (user_data);
+      again = G_SOURCE_REMOVE;
+    }
+  else
+    {
+      again = callback (user_data);
+    }
 
   TRACE (GLIB_TIMEOUT_DISPATCH (source, source->context, callback, user_data, again));
 
@@ -4988,13 +4999,15 @@ g_timeout_dispatch (GSource     *source,
 
 static GSource *
 timeout_source_new (guint    interval,
-                    gboolean seconds)
+                    gboolean seconds,
+                    gboolean one_shot)
 {
   GSource *source = g_source_new (&g_timeout_funcs, sizeof (GTimeoutSource));
   GTimeoutSource *timeout_source = (GTimeoutSource *)source;
 
   timeout_source->interval = interval;
   timeout_source->seconds = seconds;
+  timeout_source->one_shot = one_shot;
 
   g_timeout_set_expiration (timeout_source, g_get_monotonic_time ());
 
@@ -5019,7 +5032,7 @@ timeout_source_new (guint    interval,
 GSource *
 g_timeout_source_new (guint interval)
 {
-  return timeout_source_new (interval, FALSE);
+  return timeout_source_new (interval, FALSE, FALSE);
 }
 
 /**
@@ -5045,13 +5058,14 @@ g_timeout_source_new (guint interval)
 GSource *
 g_timeout_source_new_seconds (guint interval)
 {
-  return timeout_source_new (interval, TRUE);
+  return timeout_source_new (interval, TRUE, FALSE);
 }
 
 static guint
 timeout_add_full (gint           priority,
                   guint          interval,
                   gboolean       seconds,
+                  gboolean       one_shot,
                   GSourceFunc    function,
                   gpointer       data,
                   GDestroyNotify notify)
@@ -5061,7 +5075,7 @@ timeout_add_full (gint           priority,
 
   g_return_val_if_fail (function != NULL, 0);
 
-  source = timeout_source_new (interval, seconds);
+  source = timeout_source_new (interval, seconds, one_shot);
 
   if (priority != G_PRIORITY_DEFAULT)
     g_source_set_priority (source, priority);
@@ -5120,7 +5134,7 @@ g_timeout_add_full (gint           priority,
 		    gpointer       data,
 		    GDestroyNotify notify)
 {
-  return timeout_add_full (priority, interval, FALSE, function, data, notify);
+  return timeout_add_full (priority, interval, FALSE, FALSE, function, data, notify);
 }
 
 /**
@@ -5174,27 +5188,6 @@ g_timeout_add (guint32        interval,
 			     interval, function, data, NULL);
 }
 
-typedef struct {
-  GSourceOnceFunc function;
-  gpointer data;
-} OnceData;
-
-static void
-once_data_free (gpointer data)
-{
-  g_free (data);
-}
-
-static gboolean
-once_function (gpointer data)
-{
-  OnceData *once_data = data;
-
-  once_data->function (once_data->data);
-
-  return G_SOURCE_REMOVE;
-}
-
 /**
  * g_timeout_add_once:
  * @interval: the time after which the function will be called, in
@@ -5219,19 +5212,7 @@ g_timeout_add_once (guint32         interval,
                     GSourceOnceFunc function,
                     gpointer        data)
 {
-  OnceData *once_data;
-
-  g_return_val_if_fail (function != NULL, 0);
-
-  once_data = g_new (OnceData, 1);
-  once_data->function = function;
-  once_data->data = data;
-
-  return g_timeout_add_full (G_PRIORITY_DEFAULT,
-                             interval,
-                             once_function,
-                             once_data,
-                             once_data_free);
+  return timeout_add_full (G_PRIORITY_DEFAULT, interval, FALSE, TRUE, (GSourceFunc) function, data, NULL);
 }
 
 /**
@@ -6002,6 +5983,7 @@ g_idle_dispatch (GSource    *source,
 		 GSourceFunc callback,
 		 gpointer    user_data)
 {
+  GIdleSource *idle_source = (GIdleSource *)source;
   gboolean again;
 
   if (!callback)
@@ -6011,7 +5993,16 @@ g_idle_dispatch (GSource    *source,
       return FALSE;
     }
 
-  again = callback (user_data);
+  if (idle_source->one_shot)
+    {
+      GSourceOnceFunc once_callback = (GSourceOnceFunc) callback;
+      once_callback (user_data);
+      again = G_SOURCE_REMOVE;
+    }
+  else
+    {
+      again = callback (user_data);
+    }
 
   TRACE (GLIB_IDLE_DISPATCH (source, source->context, callback, user_data, again));
 
@@ -6019,13 +6010,15 @@ g_idle_dispatch (GSource    *source,
 }
 
 static GSource *
-idle_source_new (void)
+idle_source_new (gboolean one_shot)
 {
   GSource *source;
   GIdleSource *idle_source;
 
   source = g_source_new (&g_idle_funcs, sizeof (GIdleSource));
   idle_source = (GIdleSource *) source;
+
+  idle_source->one_shot = one_shot;
 
   g_source_set_priority (source, G_PRIORITY_DEFAULT_IDLE);
 
@@ -6051,11 +6044,12 @@ idle_source_new (void)
 GSource *
 g_idle_source_new (void)
 {
-  return idle_source_new ();
+  return idle_source_new (FALSE);
 }
 
 static guint
 idle_add_full (gint           priority,
+               gboolean       one_shot,
                GSourceFunc    function,
                gpointer       data,
                GDestroyNotify notify)
@@ -6065,7 +6059,7 @@ idle_add_full (gint           priority,
 
   g_return_val_if_fail (function != NULL, 0);
 
-  source = idle_source_new ();
+  source = idle_source_new (one_shot);
 
   if (priority != G_PRIORITY_DEFAULT_IDLE)
     g_source_set_priority (source, priority);
@@ -6111,7 +6105,7 @@ g_idle_add_full (gint           priority,
 		 gpointer       data,
 		 GDestroyNotify notify)
 {
-  return idle_add_full (priority, function, data, notify);
+  return idle_add_full (priority, FALSE, function, data, notify);
 }
 
 /**
@@ -6165,15 +6159,7 @@ guint
 g_idle_add_once (GSourceOnceFunc function,
                  gpointer        data)
 {
-  OnceData *once_data;
-
-  g_return_val_if_fail (function != NULL, 0);
-
-  once_data = g_new (OnceData, 1);
-  once_data->function = function;
-  once_data->data = data;
-
-  return g_idle_add_full (G_PRIORITY_DEFAULT_IDLE, once_function, once_data, once_data_free);
+  return idle_add_full (G_PRIORITY_DEFAULT_IDLE, TRUE, (GSourceFunc) function, data, NULL);
 }
 
 /**
