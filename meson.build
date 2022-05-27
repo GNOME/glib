@@ -792,7 +792,7 @@ glib_have_os_x_9_or_later = false
 glib_have_carbon = false
 glib_have_cocoa = false
 if host_system == 'darwin'
-  add_languages('objc')
+  add_languages('objc', native: false, required: true)
   objcc = meson.get_compiler('objc')
 
   add_project_arguments(objcc.get_supported_arguments(warning_objc_args), language: 'objc')
