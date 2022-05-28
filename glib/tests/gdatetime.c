@@ -1602,7 +1602,8 @@ GDateTime *__dt = g_date_time_new_local (2009, 10, 24, 0, 0, 0);\
   TEST_PRINTF ("%B", "October");
   TEST_PRINTF ("%d", "24");
   TEST_PRINTF_DATE (2009, 1, 1, "%d", "01");
-  TEST_PRINTF ("%e", "24"); // fixme
+  TEST_PRINTF ("%e", "24");
+  TEST_PRINTF_DATE (2009, 1, 1, "%e", "\u20071");
   TEST_PRINTF_TIME (10, 10, 1.001, "%f", "001000");
   TEST_PRINTF ("%h", "Oct");
   TEST_PRINTF ("%H", "00");
@@ -1780,7 +1781,7 @@ test_modifiers (void)
   TEST_PRINTF_DATE (2009, 1, 21, "%-d", "21");
   TEST_PRINTF_DATE (2009, 1, 21, "%0d", "21");
 
-  TEST_PRINTF_DATE (2009, 1,  1,  "%e", " 1");
+  TEST_PRINTF_DATE (2009, 1,  1,  "%e", "\u20071");
   TEST_PRINTF_DATE (2009, 1,  1, "%_e", " 1");
   TEST_PRINTF_DATE (2009, 1,  1, "%-e", "1");
   TEST_PRINTF_DATE (2009, 1,  1, "%0e", "01");
@@ -2462,6 +2463,24 @@ test_format_time_mixed_utf8 (gconstpointer data)
 #endif
 }
 
+#ifdef __linux__
+static gchar *
+str_utf8_replace (const gchar *str,
+                  gunichar     from,
+                  gunichar     to)
+{
+  GString *str_out = g_string_new ("");
+
+  for (; *str != '\0'; str = g_utf8_next_char (str))
+    {
+      gunichar c = g_utf8_get_char (str);
+      g_string_append_unichar (str_out, (c == from) ? to : c);
+    }
+
+  return g_string_free (g_steal_pointer (&str_out), FALSE);
+}
+#endif
+
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wformat-y2k"
 static void
@@ -2479,13 +2498,24 @@ test_strftime (void)
       GDateTime *date_time;
       gchar c_str[1000];
       gchar *dt_str;
+      gchar *dt_str_replaced = NULL, *c_str_replaced = NULL;
 
       date_time = g_date_time_new_from_unix_local (t);
       dt_str = g_date_time_format (date_time, TEST_FORMAT);
       strftime (c_str, sizeof c_str, TEST_FORMAT, localtime (&t));
-      g_assert_cmpstr (c_str, ==, dt_str);
+
+      /* Ensure the comparison is done insensitively to spaces.
+       * g_date_time_format() sometimes uses figure spaces (U+2007) whereas
+       * strftime() currently doesn’t, and that’s fine. */
+      dt_str_replaced = str_utf8_replace (dt_str, 0x2007, 0x20);
+      c_str_replaced = str_utf8_replace  (c_str, 0x2007, 0x20);
+
+      g_assert_cmpstr (c_str_replaced, ==, dt_str_replaced);
+
       g_date_time_unref (date_time);
       g_free (dt_str);
+      g_free (dt_str_replaced);
+      g_free (c_str_replaced);
     }
 #endif
 }

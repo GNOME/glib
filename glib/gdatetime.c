@@ -3141,7 +3141,7 @@ g_date_time_format_utf8 (GDateTime   *datetime,
 			 g_date_time_get_day_of_month (datetime));
 	  break;
 	case 'e':
-	  format_number (outstr, alt_digits, pad_set ? pad : " ", 2,
+	  format_number (outstr, alt_digits, pad_set ? pad : "\u2007", 2,
 			 g_date_time_get_day_of_month (datetime));
 	  break;
 	case 'f':
@@ -3355,7 +3355,8 @@ g_date_time_format_utf8 (GDateTime   *datetime,
  * - \%c: the preferred date and time representation for the current locale
  * - \%C: the century number (year/100) as a 2-digit integer (00-99)
  * - \%d: the day of the month as a decimal number (range 01 to 31)
- * - \%e: the day of the month as a decimal number (range  1 to 31)
+ * - \%e: the day of the month as a decimal number (range 1 to 31);
+ *   single digits are preceded by a figure space
  * - \%F: equivalent to `%Y-%m-%d` (the ISO 8601 date format)
  * - \%g: the last two digits of the ISO 8601 week-based year as a
  *   decimal number (00-99). This works well with \%V and \%u.
