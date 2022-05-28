@@ -1611,11 +1611,11 @@ GDateTime *__dt = g_date_time_new_local (2009, 10, 24, 0, 0, 0);\
   TEST_PRINTF_TIME (12, 0, 0, "%I", "12");
   TEST_PRINTF_TIME (15, 0, 0, "%I", "03");
   TEST_PRINTF ("%j", "297");
-  TEST_PRINTF ("%k", " 0");
+  TEST_PRINTF ("%k", "\u20070");
   TEST_PRINTF_TIME (13, 13, 13, "%k", "13");
   TEST_PRINTF ("%l", "12");
   TEST_PRINTF_TIME (12, 0, 0, "%I", "12");
-  TEST_PRINTF_TIME (13, 13, 13, "%l", " 1");
+  TEST_PRINTF_TIME (13, 13, 13, "%l", "\u20071");
   TEST_PRINTF_TIME (10, 13, 13, "%l", "10");
   TEST_PRINTF ("%m", "10");
   TEST_PRINTF ("%M", "00");
@@ -1711,7 +1711,7 @@ test_non_utf8_printf (void)
   TEST_PRINTF_TIME (13, 13, 13, "%k", "13");
   TEST_PRINTF ("%l", "12");
   TEST_PRINTF_TIME (12, 0, 0, "%I", "12");
-  TEST_PRINTF_TIME (13, 13, 13, "%l", " 1");
+  TEST_PRINTF_TIME (13, 13, 13, "%l", "\u20071");
   TEST_PRINTF_TIME (10, 13, 13, "%l", "10");
   TEST_PRINTF ("%m", "10");
   TEST_PRINTF ("%M", "00");
@@ -1807,12 +1807,12 @@ test_modifiers (void)
   TEST_PRINTF_TIME (23, 0, 0, "%-I", "11");
   TEST_PRINTF_TIME (23, 0, 0, "%0I", "11");
 
-  TEST_PRINTF_TIME ( 1, 0, 0,  "%k", " 1");
+  TEST_PRINTF_TIME ( 1, 0, 0,  "%k", "\u20071");
   TEST_PRINTF_TIME ( 1, 0, 0, "%_k", " 1");
   TEST_PRINTF_TIME ( 1, 0, 0, "%-k", "1");
   TEST_PRINTF_TIME ( 1, 0, 0, "%0k", "01");
 
-  TEST_PRINTF_TIME ( 1, 0, 0,  "%l", " 1");
+  TEST_PRINTF_TIME ( 1, 0, 0,  "%l", "\u20071");
   TEST_PRINTF_TIME ( 1, 0, 0, "%_l", " 1");
   TEST_PRINTF_TIME ( 1, 0, 0, "%-l", "1");
   TEST_PRINTF_TIME ( 1, 0, 0, "%0l", "01");
