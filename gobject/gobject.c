@@ -319,8 +319,6 @@ g_object_notify_queue_thaw (GObject            *object,
   GSList *slist;
   guint n_pspecs = 0;
 
-  g_return_if_fail (g_atomic_int_get(&object->ref_count) > 0);
-
   G_LOCK(notify_lock);
 
   /* Just make sure we never get into some nasty race condition */
@@ -333,7 +331,7 @@ g_object_notify_queue_thaw (GObject            *object,
 
   nqueue->freeze_count--;
   if (nqueue->freeze_count) {
-    G_UNLOCK(notify_lock);
+    G_UNLOCK (notify_lock);
     return;
   }
 
@@ -1378,8 +1376,6 @@ g_object_notify (GObject     *object,
   
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (property_name != NULL);
-  if (g_atomic_int_get (&object->ref_count) == 0)
-    return;
   
   /* We don't need to get the redirect target
    * (by, e.g. calling g_object_class_find_property())
@@ -1451,9 +1447,6 @@ g_object_notify_by_pspec (GObject    *object,
 
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (G_IS_PARAM_SPEC (pspec));
-
-  if (g_atomic_int_get (&object->ref_count) == 0)
-    return;
 
   g_object_notify_by_spec_internal (object, pspec);
 }
