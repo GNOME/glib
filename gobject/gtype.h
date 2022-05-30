@@ -1464,7 +1464,7 @@ guint     g_type_get_type_registration_serial (void);
   G_GNUC_UNUSED static inline ModuleObjName * MODULE##_##OBJ_NAME (gpointer ptr) {                       \
     return G_TYPE_CHECK_INSTANCE_CAST (ptr, module_obj_name##_get_type (), ModuleObjName); }             \
   G_GNUC_UNUSED static inline gboolean MODULE##_IS_##OBJ_NAME (gpointer ptr) {                           \
-    return G_TYPE_CHECK_INSTANCE_TYPE (ptr, module_obj_name##_get_type ()); }                            \
+    return ptr != NULL && G_OBJECT_TYPE (ptr) == module_obj_name##_get_type (); }                            \
   G_GNUC_END_IGNORE_DEPRECATIONS
 
 /**
