@@ -1,3 +1,27 @@
+Overview of changes in GLib 2.72.2
+==================================
+
+* Bugs fixed:
+ - #2640 UWP warnings about extensions and verbs with glib 2.72.1
+ - !2605 Backport !2449 and !2600 mingw test fixes to glib-2-72
+ - !2616 Backport !2615 “Meson: Fix gio-windows-2.0 override name” to glib-2-72
+ - !2629 Backport !2626, !2627 minor leak fixes to glib-2-72
+ - !2643 Backport !2642 “meson: Check rres.compiled() before calling rres.returncode()” to glib-2-72
+ - !2644 Backport !2631 “Cast to guintptr instead of subtracting by null” to glib-2-72
+ - !2662 Backport !2654 “gtask: use g_strconcat() in g_task_return() only if needed” to glib-2-72
+ - !2691 Backport !2661 “win32appinfo: change log level from warning to debug” to glib-2-72
+
+* Translation updates:
+ - Croatian
+ - Danish
+ - English (United Kingdom)
+ - French
+ - Galician
+ - German
+ - Nepali
+ - Portuguese (Brazil)
+
+
 Overview of changes in GLib 2.72.1
 ==================================
 
