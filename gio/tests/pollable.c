@@ -115,11 +115,11 @@ test_streams (void)
   GSource *poll_source;
   gboolean success = FALSE;
 
-  g_assert (g_pollable_input_stream_can_poll (in));
-  g_assert (g_pollable_output_stream_can_poll (G_POLLABLE_OUTPUT_STREAM (out)));
+  g_assert_true (g_pollable_input_stream_can_poll (in));
+  g_assert_true (g_pollable_output_stream_can_poll (G_POLLABLE_OUTPUT_STREAM (out)));
 
   readable = g_pollable_input_stream_is_readable (in);
-  g_assert (!readable);
+  g_assert_false (readable);
 
   nread = g_pollable_input_stream_read_nonblocking (in, buf, 1, NULL, &error);
   g_assert_cmpint (nread, ==, -1);
@@ -165,8 +165,8 @@ test_streams (void)
     in = G_POLLABLE_INPUT_STREAM (g_unix_input_stream_new (fd, FALSE)); \
     out = g_unix_output_stream_new (fd, FALSE);                         \
                                                                         \
-    g_assert (!g_pollable_input_stream_can_poll (in));                  \
-    g_assert (!g_pollable_output_stream_can_poll (                      \
+    g_assert_false (g_pollable_input_stream_can_poll (in));             \
+    g_assert_false (g_pollable_output_stream_can_poll (                 \
         G_POLLABLE_OUTPUT_STREAM (out)));                               \
                                                                         \
     g_clear_object (&in);                                               \
