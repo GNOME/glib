@@ -350,7 +350,6 @@ g_file_monitor_source_handle_event (GFileMonitorSource *fms,
                                     gint64              event_time)
 {
   gboolean interesting = TRUE;
-  GFileMonitor *instance = NULL;
 
   g_assert (!child || is_basename (child));
   g_assert (!rename_to || is_basename (rename_to));
@@ -361,9 +360,24 @@ g_file_monitor_source_handle_event (GFileMonitorSource *fms,
 
   g_mutex_lock (&fms->lock);
 
-  /* monitor is already gone -- don't bother */
-  instance = g_weak_ref_get (&fms->instance_ref);
-  if (instance == NULL)
+  /* NOTE:
+   *
+   * We process events even if the file monitor has already been disposed.
+   * The reason is that we must not take a reference to the instance here as
+   * destroying it from the event handling thread will lead to a deadlock when
+   * taking the lock in _ih_sub_cancel.
+   *
+   * This results in seemingly-unbounded growth of the `event_queue` with the
+   * calls to `g_file_monitor_source_queue_event()`. However, each of those sets
+   * the ready time on the #GSource, which means that it will be dispatched in
+   * a subsequent iteration of the #GMainContext it’s attached to. At that
+   * point, `g_file_monitor_source_dispatch()` will return %FALSE, and this will
+   * trigger finalisation of the source. That will clear the `event_queue`.
+   *
+   * If the source is no longer attached, this will return early to prevent
+   * unbounded queueing.
+   */
+  if (g_source_is_destroyed ((GSource *) fms))
     {
       g_mutex_unlock (&fms->lock);
       return TRUE;
@@ -454,7 +468,6 @@ g_file_monitor_source_handle_event (GFileMonitorSource *fms,
   g_file_monitor_source_update_ready_time (fms);
 
   g_mutex_unlock (&fms->lock);
-  g_clear_object (&instance);
 
   return interesting;
 }
@@ -601,9 +614,9 @@ g_file_monitor_source_dispose (GFileMonitorSource *fms)
 
   g_file_monitor_source_update_ready_time (fms);
 
-  g_mutex_unlock (&fms->lock);
-
   g_source_destroy ((GSource *) fms);
+
+  g_mutex_unlock (&fms->lock);
 }
 
 static void
