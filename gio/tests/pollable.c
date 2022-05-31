@@ -90,10 +90,8 @@ write_callback (gpointer user_data)
   g_assert_cmpint (nwrote, ==, 2);
   g_assert_true (g_pollable_output_stream_is_writable (G_POLLABLE_OUTPUT_STREAM (streams->out)));
 
-/* Give the pipe a few ticks to propagate the write for sockets. On my
- * iMac i7, 40 works, 30 doesn't. */
-  g_usleep (80L);
-
+  /* Wait for the pipe to propagate the write for sockets. */
+  while (!g_pollable_input_stream_is_readable (streams->in));
   g_assert_true (g_pollable_input_stream_is_readable (streams->in));
 
   return G_SOURCE_REMOVE;
