@@ -103,7 +103,6 @@ run_thread (GTest * test)
   while (!g_atomic_int_get (&stopping)) {
     my_test_do_refcount (test);
     if ((i++ % 10000) == 0) {
-        g_test_message (".");
         g_thread_yield (); /* force context switch */
     }
   }

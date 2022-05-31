@@ -144,7 +144,6 @@ run_thread (GTest * test)
     my_test_do_property (test);
     if ((i++ % 10000) == 0)
       {
-        g_test_message (".%c", 'a' + test->id);
         g_thread_yield(); /* force context switch */
       }
   }
