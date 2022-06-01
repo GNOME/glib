@@ -154,6 +154,119 @@ test_default (void)
   g_object_unref (info3);
 }
 
+typedef struct
+{
+  GAppInfo *expected_info;
+  GMainLoop *loop;
+} DefaultForTypeData;
+
+static void
+on_default_for_type_cb (GObject      *object,
+                        GAsyncResult *result,
+                        gpointer      user_data)
+{
+  GAppInfo *info;
+  GError *error = NULL;
+  DefaultForTypeData *data = user_data;
+
+  g_assert_null (object);
+
+  info = g_app_info_get_default_for_type_finish (result, &error);
+
+  if (data->expected_info)
+    {
+      g_assert_nonnull (info);
+      g_assert_no_error (error);
+      g_assert_true (g_app_info_equal (info, data->expected_info));
+    }
+  else
+    {
+      g_assert_null (info);
+      g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND);
+    }
+
+  g_main_loop_quit (data->loop);
+  g_clear_object (&info);
+  g_clear_error (&error);
+}
+
+static void
+test_default_async (void)
+{
+  DefaultForTypeData data;
+  GAppInfo *info1, *info2, *info3;
+  GList *list;
+  GError *error = NULL;
+
+  data.loop = g_main_loop_new (NULL, TRUE);
+
+  info1 = create_app_info ("Blah1");
+  info2 = create_app_info ("Blah2");
+  info3 = create_app_info ("Blah3");
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*content_type*failed*");
+  g_app_info_get_default_for_type_async (NULL, FALSE, NULL, NULL, NULL);
+  g_test_assert_expected_messages ();
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*content_type*failed*");
+  g_app_info_get_default_for_type_async ("", FALSE, NULL, NULL, NULL);
+  g_test_assert_expected_messages ();
+
+  g_app_info_set_as_default_for_type (info1, "application/x-test", &error);
+  g_assert_no_error (error);
+
+  g_app_info_set_as_default_for_type (info2, "application/x-test", &error);
+  g_assert_no_error (error);
+
+  data.expected_info = info2;
+  g_app_info_get_default_for_type_async ("application/x-test", FALSE,
+                                         NULL, on_default_for_type_cb, &data);
+  g_main_loop_run (data.loop);
+
+  /* now try adding something, but not setting as default */
+  g_app_info_add_supports_type (info3, "application/x-test", &error);
+  g_assert_no_error (error);
+
+  /* check that info2 is still default */
+  data.expected_info = info2;
+  g_app_info_get_default_for_type_async ("application/x-test", FALSE,
+                                         NULL, on_default_for_type_cb, &data);
+  g_main_loop_run (data.loop);
+
+  /* now remove info1 again */
+  g_app_info_remove_supports_type (info1, "application/x-test", &error);
+  g_assert_no_error (error);
+
+  /* and make sure info2 is still default */
+  data.expected_info = info2;
+  g_app_info_get_default_for_type_async ("application/x-test", FALSE,
+                                         NULL, on_default_for_type_cb, &data);
+  g_main_loop_run (data.loop);
+
+  /* now clean it all up */
+  g_app_info_reset_type_associations ("application/x-test");
+
+  data.expected_info = NULL;
+  g_app_info_get_default_for_type_async ("application/x-test", FALSE,
+                                         NULL, on_default_for_type_cb, &data);
+  g_main_loop_run (data.loop);
+
+  list = g_app_info_get_all_for_type ("application/x-test");
+  g_assert_null (list);
+
+  g_app_info_delete (info1);
+  g_app_info_delete (info2);
+  g_app_info_delete (info3);
+
+  g_object_unref (info1);
+  g_object_unref (info2);
+  g_object_unref (info3);
+
+  g_main_loop_unref (data.loop);
+}
+
 static void
 test_fallback (void)
 {
@@ -824,6 +937,7 @@ main (int   argc,
 
   g_test_add_func ("/desktop-app-info/delete", test_delete);
   g_test_add_func ("/desktop-app-info/default", test_default);
+  g_test_add_func ("/desktop-app-info/default-async", test_default_async);
   g_test_add_func ("/desktop-app-info/fallback", test_fallback);
   g_test_add_func ("/desktop-app-info/lastused", test_last_used);
   g_test_add_func ("/desktop-app-info/extra-getters", test_extra_getters);
