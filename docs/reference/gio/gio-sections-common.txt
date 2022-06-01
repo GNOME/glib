@@ -86,6 +86,8 @@ g_file_new_for_commandline_arg_and_cwd
 g_file_new_tmp
 g_file_new_tmp_async
 g_file_new_tmp_finish
+g_file_new_tmp_dir_async
+g_file_new_tmp_dir_finish
 g_file_parse_name
 g_file_new_build_filename
 g_file_dup
