@@ -7603,6 +7603,34 @@ query_default_handler_query_info_cb (GObject      *object,
   g_clear_object (&task);
 }
 
+static void
+on_query_default_handler_for_uri_cb (GObject      *object,
+                                     GAsyncResult *result,
+                                     gpointer      user_data)
+{
+  GTask *task = user_data;
+  GAppInfo *app_info;
+
+  app_info = g_app_info_get_default_for_uri_scheme_finish (result, NULL);
+
+  if (app_info)
+    {
+      g_task_return_pointer (task, g_steal_pointer (&app_info), g_object_unref);
+      g_object_unref (task);
+    }
+  else
+    {
+      g_file_query_info_async (g_task_get_source_object (task),
+                               G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE ","
+                               G_FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE,
+                               0,
+                               g_task_get_priority (task),
+                               g_task_get_cancellable (task),
+                               query_default_handler_query_info_cb,
+                               task);
+    }
+}
+
 /**
  * g_file_query_default_handler_async:
  * @file: a #GFile to open
@@ -7631,21 +7659,13 @@ g_file_query_default_handler_async (GFile              *file,
   uri_scheme = g_file_get_uri_scheme (file);
   if (uri_scheme && uri_scheme[0] != '\0')
     {
-      GAppInfo *appinfo;
-
-      /* FIXME: The following still uses blocking calls. */
-      appinfo = g_app_info_get_default_for_uri_scheme (uri_scheme);
+      g_app_info_get_default_for_uri_scheme_async (uri_scheme,
+                                                   cancellable,
+                                                   on_query_default_handler_for_uri_cb,
+                                                   g_steal_pointer (&task));
       g_free (uri_scheme);
-
-      if (appinfo != NULL)
-        {
-          g_task_return_pointer (task, g_steal_pointer (&appinfo), g_object_unref);
-          g_object_unref (task);
-          return;
-        }
+      return;
     }
-  else
-    g_free (uri_scheme);
 
   g_file_query_info_async (file,
                            G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE ","
@@ -7655,6 +7675,8 @@ g_file_query_default_handler_async (GFile              *file,
                            cancellable,
                            query_default_handler_query_info_cb,
                            g_steal_pointer (&task));
+
+  g_free (uri_scheme);
 }
 
 /**
