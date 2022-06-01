@@ -851,6 +851,88 @@ g_app_info_get_default_for_type_async  (const char          *content_type,
   g_object_unref (task);
 }
 
+static void
+get_default_for_scheme_thread (GTask         *task,
+                               gpointer       object,
+                               gpointer       task_data,
+                               GCancellable  *cancellable)
+{
+  const char *uri_scheme = task_data;
+  GAppInfo *info;
+
+  info = g_app_info_get_default_for_uri_scheme (uri_scheme);
+
+  if (!info)
+    {
+      g_task_return_new_error (task, G_IO_ERROR, G_IO_ERROR_NOT_FOUND,
+                               _("Failed to find default application for "
+                                 "URI Scheme ‘%s’"), uri_scheme);
+      return;
+    }
+
+  g_task_return_pointer (task, g_steal_pointer (&info), g_object_unref);
+}
+
+/**
+ * g_app_info_get_default_for_uri_scheme_async:
+ * @uri_scheme: a string containing a URI scheme.
+ * @cancellable: optional #GCancellable object, %NULL to ignore
+ * @callback: (nullable): a #GAsyncReadyCallback to call when the request is done
+ * @user_data: (nullable): data to pass to @callback
+ *
+ * Asynchronously gets the default application for handling URIs with
+ * the given URI scheme. A URI scheme is the initial part
+ * of the URI, up to but not including the ':', e.g. "http",
+ * "ftp" or "sip".
+ *
+ * Since: 2.74
+ */
+void
+g_app_info_get_default_for_uri_scheme_async (const char          *uri_scheme,
+                                             GCancellable        *cancellable,
+                                             GAsyncReadyCallback  callback,
+                                             gpointer             user_data)
+{
+  GTask *task;
+
+  g_return_if_fail (uri_scheme != NULL && *uri_scheme != '\0');
+  g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
+
+  task = g_task_new (NULL, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_app_info_get_default_for_uri_scheme_async);
+  g_task_set_task_data (task, g_strdup (uri_scheme), g_free);
+  g_task_set_check_cancellable (task, TRUE);
+  g_task_run_in_thread (task, get_default_for_scheme_thread);
+  g_object_unref (task);
+}
+
+/**
+ * g_app_info_get_default_for_uri_scheme_finish:
+ * @result: a #GAsyncResult
+ * @error: (nullable): a #GError
+ *
+ * Finishes a default #GAppInfo lookup started by
+ * g_app_info_get_default_for_uri_scheme_async().
+ *
+ * If no #GAppInfo is found, then @error will be set to %G_IO_ERROR_NOT_FOUND.
+ *
+ * Returns: (transfer full): #GAppInfo for given @uri_scheme or
+ *     %NULL on error.
+ *
+ * Since: 2.74
+ */
+GAppInfo *
+g_app_info_get_default_for_uri_scheme_finish (GAsyncResult  *result,
+                                              GError       **error)
+{
+  g_return_val_if_fail (g_task_is_valid (result, NULL), NULL);
+  g_return_val_if_fail (g_task_get_source_tag (G_TASK (result)) ==
+                        g_app_info_get_default_for_uri_scheme_async, NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+
+  return g_task_propagate_pointer (G_TASK (result), error);
+}
+
 /**
  * g_app_info_get_default_for_type_finish:
  * @result: a #GAsyncResult

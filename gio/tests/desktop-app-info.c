@@ -195,18 +195,10 @@ typedef struct
 } DefaultForTypeData;
 
 static void
-on_default_for_type_cb (GObject      *object,
-                        GAsyncResult *result,
-                        gpointer      user_data)
+ensure_default_type_result (GAppInfo           *info,
+                            DefaultForTypeData *data,
+                            GError             *error)
 {
-  GAppInfo *info;
-  GError *error = NULL;
-  DefaultForTypeData *data = user_data;
-
-  g_assert_null (object);
-
-  info = g_app_info_get_default_for_type_finish (result, &error);
-
   if (data->expected_info)
     {
       g_assert_nonnull (info);
@@ -222,6 +214,38 @@ on_default_for_type_cb (GObject      *object,
   g_main_loop_quit (data->loop);
   g_clear_object (&info);
   g_clear_error (&error);
+}
+
+static void
+on_default_for_type_cb (GObject      *object,
+                        GAsyncResult *result,
+                        gpointer      user_data)
+{
+  GAppInfo *info;
+  GError *error = NULL;
+  DefaultForTypeData *data = user_data;
+
+  g_assert_null (object);
+
+  info = g_app_info_get_default_for_type_finish (result, &error);
+
+  ensure_default_type_result (info, data, error);
+}
+
+static void
+on_default_for_uri_cb (GObject      *object,
+                       GAsyncResult *result,
+                       gpointer      user_data)
+{
+  GAppInfo *info;
+  GError *error = NULL;
+  DefaultForTypeData *data = user_data;
+
+  g_assert_null (object);
+
+  info = g_app_info_get_default_for_uri_scheme_finish (result, &error);
+
+  ensure_default_type_result (info, data, error);
 }
 
 static void
@@ -279,12 +303,37 @@ test_default_async (void)
                                          NULL, on_default_for_type_cb, &data);
   g_main_loop_run (data.loop);
 
+  g_app_info_set_as_default_for_type (info3, "x-scheme-handler/glib-async", &error);
+  g_assert_no_error (error);
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*uri_scheme*failed*");
+  g_assert_null (g_app_info_get_default_for_uri_scheme (NULL));
+  g_test_assert_expected_messages ();
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*uri_scheme*failed*");
+  g_assert_null (g_app_info_get_default_for_uri_scheme (""));
+  g_test_assert_expected_messages ();
+
+  data.expected_info = info3;
+  g_app_info_get_default_for_uri_scheme_async ("glib-async", NULL,
+                                               on_default_for_uri_cb, &data);
+  g_main_loop_run (data.loop);
+
   /* now clean it all up */
   g_app_info_reset_type_associations ("application/x-test");
 
   data.expected_info = NULL;
   g_app_info_get_default_for_type_async ("application/x-test", FALSE,
                                          NULL, on_default_for_type_cb, &data);
+  g_main_loop_run (data.loop);
+
+  g_app_info_reset_type_associations ("x-scheme-handler/glib-async");
+
+  data.expected_info = NULL;
+  g_app_info_get_default_for_uri_scheme_async ("glib-async", NULL,
+                                               on_default_for_uri_cb, &data);
   g_main_loop_run (data.loop);
 
   list = g_app_info_get_all_for_type ("application/x-test");
