@@ -1977,6 +1977,106 @@ test_replace (gconstpointer test_data)
 }
 
 static void
+on_new_tmp_done (GObject      *object,
+                 GAsyncResult *result,
+                 gpointer      user_data)
+{
+  GFile *file;
+  GFile *parent;
+  GFileInfo *info;
+  GFileIOStream *iostream;
+  GError *error = NULL;
+  GMainLoop *loop = user_data;
+  gchar *basename;
+  gchar *parent_path;
+
+  g_assert_null (object);
+
+  file = g_file_new_tmp_finish (result, &iostream, &error);
+  g_assert_no_error (error);
+
+  g_assert_true (g_file_query_exists (file, NULL));
+
+  basename = g_file_get_basename (file);
+  g_assert_true (g_str_has_prefix (basename, "g_file_new_tmp_async_"));
+
+  info = g_file_io_stream_query_info (iostream, G_FILE_ATTRIBUTE_STANDARD_TYPE,
+                                      NULL, &error);
+  g_assert_no_error (error);
+
+  g_assert_cmpuint (g_file_info_get_file_type (info), ==, G_FILE_TYPE_REGULAR);
+  g_io_stream_close (G_IO_STREAM (iostream), NULL, &error);
+  g_assert_no_error (error);
+
+  parent = g_file_get_parent (file);
+  parent_path = g_file_get_path (parent);
+
+  g_assert_cmpstr (g_get_tmp_dir (), ==, parent_path);
+
+  g_main_loop_quit (loop);
+
+  g_object_unref (file);
+  g_object_unref (parent);
+  g_object_unref (iostream);
+  g_object_unref (info);
+  g_free (basename);
+  g_free (parent_path);
+}
+
+static void
+on_new_tmp_error (GObject      *object,
+                  GAsyncResult *result,
+                  gpointer      user_data)
+{
+  GFileIOStream *iostream = (GFileIOStream*) &on_new_tmp_error;
+  AsyncErrorData *error_data = user_data;
+
+  g_assert_null (object);
+
+  g_assert_null (g_file_new_tmp_finish (result, &iostream, error_data->error));
+  g_assert_nonnull (error_data->error);
+  g_assert_null (iostream);
+
+  g_main_loop_quit (error_data->loop);
+}
+
+static void
+test_async_new_tmp (void)
+{
+  GMainLoop *loop;
+  GError *error = NULL;
+  GCancellable *cancellable;
+  AsyncErrorData error_data = { .error = &error };
+
+  loop = g_main_loop_new (NULL, TRUE);
+  error_data.loop = loop;
+
+  g_file_new_tmp_async ("g_file_new_tmp_async_XXXXXX",
+                        G_PRIORITY_DEFAULT, NULL,
+                        on_new_tmp_done, loop);
+  g_main_loop_run (loop);
+
+  g_file_new_tmp_async ("g_file_new_tmp_async_invalid_template",
+                        G_PRIORITY_DEFAULT, NULL,
+                        on_new_tmp_error, &error_data);
+  g_main_loop_run (loop);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_FAILED);
+  g_clear_error (&error);
+
+  cancellable = g_cancellable_new ();
+  g_file_new_tmp_async ("g_file_new_tmp_async_cancelled_XXXXXX",
+                        G_PRIORITY_DEFAULT, cancellable,
+                        on_new_tmp_error, &error_data);
+  g_cancellable_cancel (cancellable);
+  g_main_loop_run (loop);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
+  g_clear_object (&cancellable);
+  g_clear_error (&error);
+
+  g_main_loop_unref (loop);
+}
+
+static void
 on_file_deleted (GObject      *object,
 		 GAsyncResult *result,
 		 gpointer      user_data)
@@ -3295,6 +3395,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/file/replace-symlink/using-etag", test_replace_symlink_using_etag);
   g_test_add_data_func ("/file/replace/write-only", GUINT_TO_POINTER (FALSE), test_replace);
   g_test_add_data_func ("/file/replace/read-write", GUINT_TO_POINTER (TRUE), test_replace);
+  g_test_add_func ("/file/async-new-tmp", test_async_new_tmp);
   g_test_add_func ("/file/async-delete", test_async_delete);
   g_test_add_func ("/file/async-make-symlink", test_async_make_symlink);
   g_test_add_func ("/file/copy-preserve-mode", test_copy_preserve_mode);

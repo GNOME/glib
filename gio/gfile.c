@@ -96,6 +96,7 @@
  * - g_file_new_for_uri() if you have a URI.
  * - g_file_new_for_commandline_arg() for a command line argument.
  * - g_file_new_tmp() to create a temporary file from a template.
+ * - g_file_new_tmp_async() to asynchronously create a temporary file.
  * - g_file_parse_name() from a UTF-8 string gotten from g_file_get_parse_name().
  * - g_file_new_build_filename() to create a file from path elements.
  *
@@ -4232,6 +4233,8 @@ g_file_make_symbolic_link_async (GFile               *file,
   GFileIface *iface;
 
   g_return_if_fail (G_IS_FILE (file));
+  g_return_if_fail (symlink_value != NULL);
+  g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
 
   iface = G_FILE_GET_IFACE (file);
 
@@ -6938,6 +6941,147 @@ g_file_new_tmp (const char     *tmpl,
 
   g_object_unref (output);
   g_free (path);
+
+  return file;
+}
+
+typedef struct {
+  GFile *file;
+  GFileIOStream *iostream;
+} NewTmpAsyncData;
+
+static void
+new_tmp_data_free (NewTmpAsyncData *data)
+{
+  g_clear_object (&data->file);
+  g_clear_object (&data->iostream);
+  g_free (data);
+}
+
+static void
+new_tmp_async_thread (GTask         *task,
+                      gpointer       object,
+                      gpointer       task_data,
+                      GCancellable  *cancellable)
+{
+  GFile *file;
+  const char *tmpl = task_data;
+  GFileIOStream *iostream = NULL;
+  GError *error = NULL;
+  NewTmpAsyncData *return_data;
+
+  if (g_task_return_error_if_cancelled (task))
+    return;
+
+  file = g_file_new_tmp (tmpl, &iostream, &error);
+
+  if (!file)
+    {
+      int error_code = G_IO_ERROR_FAILED;
+
+      if (error->domain == G_IO_ERROR)
+        {
+          g_task_return_error (task, g_steal_pointer (&error));
+          return;
+        }
+
+      if (error->domain == G_FILE_ERROR)
+        error_code = g_io_error_from_file_error (error->code);
+
+      g_task_return_new_error (task, G_IO_ERROR, error_code,
+                               _("Failed to create a temporary directory for "
+                                 "template “%s”: %s"),
+                               tmpl, error->message);
+
+      g_clear_error (&error);
+      return;
+    }
+
+  return_data = g_new0 (NewTmpAsyncData, 1);
+  return_data->file = g_steal_pointer (&file);
+  return_data->iostream = g_steal_pointer (&iostream);
+
+  g_task_return_pointer (task, g_steal_pointer (&return_data),
+                         (GDestroyNotify) new_tmp_data_free);
+}
+
+/**
+ * g_file_new_tmp_async:
+ * @tmpl: (type filename) (nullable): Template for the file
+ *   name, as in g_file_open_tmp(), or %NULL for a default template
+ * @io_priority: the [I/O priority][io-priority] of the request
+ * @cancellable: optional #GCancellable object, %NULL to ignore
+ * @callback: (nullable): a #GAsyncReadyCallback to call when the request is done
+ * @user_data: (nullable): data to pass to @callback
+ *
+ * Asynchronously opens a file in the preferred directory for temporary files
+ *  (as returned by g_get_tmp_dir()) as g_file_new_tmp().
+ *
+ * @tmpl should be a string in the GLib file name encoding
+ * containing a sequence of six 'X' characters, and containing no
+ * directory components. If it is %NULL, a default template is used.
+ *
+ * Since: 2.74
+ */
+void
+g_file_new_tmp_async (const char          *tmpl,
+                      int                  io_priority,
+                      GCancellable        *cancellable,
+                      GAsyncReadyCallback  callback,
+                      gpointer             user_data)
+{
+  GTask *task;
+
+  g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
+
+  task = g_task_new (NULL, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_file_new_tmp_async);
+  g_task_set_task_data (task, g_strdup (tmpl), g_free);
+  g_task_set_priority (task, io_priority);
+  g_task_set_check_cancellable (task, TRUE);
+  g_task_run_in_thread (task, new_tmp_async_thread);
+  g_object_unref (task);
+}
+
+/**
+ * g_file_new_tmp_finish:
+ * @result: a #GAsyncResult
+ * @iostream: (out) (not optional) (not nullable) (transfer full): on return, a #GFileIOStream for the created file
+ * @error: a #GError, or %NULL
+ *
+ * Finishes a temporary file creation started by g_file_new_tmp_async().
+ *
+ * Returns: (transfer full): a new #GFile.
+ *   Free the returned object with g_object_unref().
+ *
+ * Since: 2.74
+ */
+GFile *
+g_file_new_tmp_finish (GAsyncResult   *result,
+                       GFileIOStream **iostream,
+                       GError        **error)
+{
+  GFile *file;
+  NewTmpAsyncData *data;
+
+  g_return_val_if_fail (g_task_is_valid (result, NULL), NULL);
+  g_return_val_if_fail (g_task_get_source_tag (G_TASK (result)) ==
+                        g_file_new_tmp_async, NULL);
+  g_return_val_if_fail (iostream != NULL, NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+
+  data = g_task_propagate_pointer (G_TASK (result), error);
+
+  if (!data)
+    {
+      *iostream = NULL;
+      return NULL;
+    }
+
+  file = g_steal_pointer (&data->file);
+  *iostream = g_steal_pointer (&data->iostream);
+
+  new_tmp_data_free (data);
 
   return file;
 }

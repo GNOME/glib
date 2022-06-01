@@ -626,6 +626,16 @@ GLIB_AVAILABLE_IN_2_32
 GFile *                 g_file_new_tmp                    (const char                 *tmpl,
                                                            GFileIOStream             **iostream,
                                                            GError                    **error);
+GLIB_AVAILABLE_IN_2_74
+void                    g_file_new_tmp_async              (const char                 *tmpl,
+                                                           int                         io_priority,
+                                                           GCancellable               *cancellable,
+                                                           GAsyncReadyCallback         callback,
+                                                           gpointer                    user_data);
+GLIB_AVAILABLE_IN_2_74
+GFile *                 g_file_new_tmp_finish             (GAsyncResult               *result,
+                                                           GFileIOStream             **iostream,
+                                                           GError                    **error);
 GLIB_AVAILABLE_IN_ALL
 GFile *                 g_file_parse_name                 (const char                 *parse_name);
 GLIB_AVAILABLE_IN_2_56
