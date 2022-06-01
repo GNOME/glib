@@ -241,6 +241,8 @@ test_g_file_info_modification_time (void)
       g_assert_cmpuint (new_nsecs, ==, nsecs + 100);
       g_assert_cmpuint (new_nsecs, >=, new_usecs * 1000);
       g_assert_cmpuint (new_nsecs, <, (new_usecs + 1) * 1000);
+
+      g_date_time_unref (new_dt_usecs);
     }
 
   /* Clean up. */
@@ -363,6 +365,8 @@ test_g_file_info_access_time (void)
       g_assert_cmpuint (new_nsecs, ==, nsecs + 100);
       g_assert_cmpuint (new_nsecs, >=, new_usecs * 1000);
       g_assert_cmpuint (new_nsecs, <, (new_usecs + 1) * 1000);
+
+      g_date_time_unref (new_dt_usecs);
     }
 
   /* Clean up. */
@@ -496,6 +500,8 @@ test_g_file_info_creation_time (void)
           g_assert_cmpuint (new_nsecs, ==, nsecs + 100);
           g_assert_cmpuint (new_nsecs, >=, new_usecs * 1000);
           g_assert_cmpuint (new_nsecs, <, (new_usecs + 1) * 1000);
+
+          g_date_time_unref (new_dt_usecs);
         }
       else
         {

@@ -1109,3 +1109,19 @@
 	fun:g_hash_table_insert
 	fun:quark_new
 }
+
+{
+	xdg_mime_init_malloc
+	Memcheck:Leak
+	fun:malloc
+	...
+	fun:xdg_mime_init
+}
+
+{
+	xdg_mime_init_calloc
+	Memcheck:Leak
+	fun:calloc
+	...
+	fun:xdg_mime_init
+}

@@ -136,16 +136,6 @@ server_notify_is_running (GObject    *object,
     }
 }
 
-static gboolean
-timeout (gpointer user_data)
-{
-  GNotificationServer *server = user_data;
-
-  g_notification_server_stop (server);
-
-  return G_SOURCE_REMOVE;
-}
-
 static void
 basic (void)
 {
@@ -162,7 +152,6 @@ basic (void)
   g_signal_connect (server, "notification-received", G_CALLBACK (notification_received), &received_count);
   g_signal_connect (server, "notification-removed", G_CALLBACK (notification_removed), &removed_count);
   g_signal_connect (server, "notify::is-running", G_CALLBACK (server_notify_is_running), loop);
-  g_timeout_add_seconds (1, timeout, server);
 
   g_main_loop_run (loop);
 
