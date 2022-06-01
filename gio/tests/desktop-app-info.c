@@ -1053,6 +1053,106 @@ test_default_uri_handler (void)
   g_free (file_path);
 }
 
+static void
+on_launch_default_for_uri_success_cb (GObject      *object,
+                                      GAsyncResult *result,
+                                      gpointer      user_data)
+{
+  GError *error = NULL;
+  gboolean *called = user_data;
+
+  g_assert_true (g_app_info_launch_default_for_uri_finish (result, &error));
+  g_assert_no_error (error);
+
+  *called = TRUE;
+}
+
+static void
+on_launch_default_for_uri_not_found_cb (GObject      *object,
+                                        GAsyncResult *result,
+                                        gpointer      user_data)
+{
+  GError *error = NULL;
+  GMainLoop *loop = user_data;
+
+  g_assert_false (g_app_info_launch_default_for_uri_finish (result, &error));
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);
+  g_clear_error (&error);
+
+  g_main_loop_quit (loop);
+}
+
+static void
+on_launch_default_for_uri_cancelled_cb (GObject      *object,
+                                        GAsyncResult *result,
+                                        gpointer      user_data)
+{
+  GError *error = NULL;
+  GMainLoop *loop = user_data;
+
+  g_assert_false (g_app_info_launch_default_for_uri_finish (result, &error));
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
+  g_clear_error (&error);
+
+  g_main_loop_quit (loop);
+}
+
+static void
+test_default_uri_handler_async (void)
+{
+  GCancellable *cancellable;
+  gchar *file_path = NULL;
+  GAppInfo *info;
+  GMainLoop *loop;
+  gboolean called = FALSE;
+
+  loop = g_main_loop_new (NULL, FALSE);
+  info = create_app_info_toucher ("Touch Handled", "handled-async",
+                                  "x-scheme-handler/glib-async-touch",
+                                  &file_path);
+  g_assert_true (G_IS_APP_INFO (info));
+  g_assert_nonnull (file_path);
+
+  g_app_info_launch_default_for_uri_async ("glib-async-touch://touch-me", NULL,
+                                           NULL,
+                                           on_launch_default_for_uri_success_cb,
+                                           &called);
+
+  while (!g_file_test (file_path, G_FILE_TEST_IS_REGULAR))
+    g_main_context_iteration (NULL, FALSE);
+
+  g_assert_true (called);
+  g_assert_true (g_file_test (file_path, G_FILE_TEST_IS_REGULAR));
+
+  g_unlink (file_path);
+  g_assert_false (g_file_test (file_path, G_FILE_TEST_IS_REGULAR));
+
+  g_app_info_launch_default_for_uri_async ("glib-async-INVALID-touch://touch-me",
+                                           NULL, NULL,
+                                           on_launch_default_for_uri_not_found_cb,
+                                           loop);
+  g_main_loop_run (loop);
+
+  cancellable = g_cancellable_new ();
+  g_app_info_launch_default_for_uri_async ("glib-async-touch://touch-me", NULL,
+                                           cancellable,
+                                           on_launch_default_for_uri_cancelled_cb,
+                                           loop);
+  g_cancellable_cancel (cancellable);
+  g_main_loop_run (loop);
+
+  /* Once started our touch app may take some time before having written the
+   * file, so let's wait a bit here before ensuring that the file has been
+   * created as expected.
+   */
+  g_usleep (G_USEC_PER_SEC / 10);
+  g_assert_false (g_file_test (file_path, G_FILE_TEST_IS_REGULAR));
+
+  g_object_unref (info);
+  g_main_loop_unref (loop);
+  g_free (file_path);
+}
+
 /* Test if Desktop-File Id is correctly formed */
 static void
 test_id (void)
@@ -1088,6 +1188,7 @@ main (int   argc,
   g_test_add_func ("/desktop-app-info/show-in", test_show_in);
   g_test_add_func ("/desktop-app-info/launch-as-manager", test_launch_as_manager);
   g_test_add_func ("/desktop-app-info/launch-default-uri-handler", test_default_uri_handler);
+  g_test_add_func ("/desktop-app-info/launch-default-uri-handler-async", test_default_uri_handler_async);
   g_test_add_func ("/desktop-app-info/id", test_id);
 
   return g_test_run ();

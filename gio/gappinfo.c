@@ -1148,6 +1148,46 @@ launch_default_for_uri_default_handler_cb (GObject      *object,
     launch_default_for_uri_portal_open_uri (g_steal_pointer (&task), g_steal_pointer (&error));
 }
 
+static void
+launch_default_app_for_default_handler (GTask *task)
+{
+  GFile *file;
+  GCancellable *cancellable;
+  LaunchDefaultForUriData *data;
+
+  data = g_task_get_task_data (task);
+  cancellable = g_task_get_cancellable (task);
+  file = g_file_new_for_uri (data->uri);
+
+  g_file_query_default_handler_async (file,
+                                      G_PRIORITY_DEFAULT,
+                                      cancellable,
+                                      launch_default_for_uri_default_handler_cb,
+                                      g_steal_pointer (&task));
+  g_object_unref (file);
+}
+
+static void
+launch_default_app_for_uri_cb (GObject      *object,
+                               GAsyncResult *result,
+                               gpointer      user_data)
+{
+  GTask *task = G_TASK (user_data);
+  GAppInfo *app_info;
+
+  app_info = g_app_info_get_default_for_uri_scheme_finish (result, NULL);
+
+  if (!app_info)
+    {
+      launch_default_app_for_default_handler (g_steal_pointer (&task));
+    }
+  else
+    {
+      launch_default_for_uri_launch_uris (g_steal_pointer (&task),
+                                          g_steal_pointer (&app_info));
+    }
+}
+
 /**
  * g_app_info_launch_default_for_uri_async:
  * @uri: the uri to show
@@ -1178,7 +1218,6 @@ g_app_info_launch_default_for_uri_async (const char          *uri,
 {
   GTask *task;
   char *uri_scheme;
-  GAppInfo *app_info = NULL;
   LaunchDefaultForUriData *data;
 
   g_return_if_fail (uri != NULL);
@@ -1197,24 +1236,18 @@ g_app_info_launch_default_for_uri_async (const char          *uri,
    */
   uri_scheme = g_uri_parse_scheme (uri);
   if (uri_scheme && uri_scheme[0] != '\0')
-    /* FIXME: The following still uses blocking calls. */
-    app_info = g_app_info_get_default_for_uri_scheme (uri_scheme);
-  g_free (uri_scheme);
-
-  if (!app_info)
     {
-      GFile *file;
-
-      file = g_file_new_for_uri (uri);
-      g_file_query_default_handler_async (file,
-                                          G_PRIORITY_DEFAULT,
-                                          cancellable,
-                                          launch_default_for_uri_default_handler_cb,
-                                          g_steal_pointer (&task));
-      g_object_unref (file);
+      g_app_info_get_default_for_uri_scheme_async (uri_scheme,
+                                                   cancellable,
+                                                   launch_default_app_for_uri_cb,
+                                                   g_steal_pointer (&task));
     }
   else
-    launch_default_for_uri_launch_uris (g_steal_pointer (&task), g_steal_pointer (&app_info));
+    {
+      launch_default_app_for_default_handler (g_steal_pointer (&task));
+    }
+
+  g_free (uri_scheme);
 }
 
 /**
