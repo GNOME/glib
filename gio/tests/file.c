@@ -8,6 +8,12 @@
 #include <sys/stat.h>
 #endif
 
+typedef struct
+{
+  GMainLoop *loop;
+  GError **error;
+} AsyncErrorData;
+
 static void
 test_basic_for_file (GFile       *file,
                      const gchar *suffix)
@@ -2013,6 +2019,133 @@ test_async_delete (void)
 }
 
 static void
+on_symlink_done (GObject      *object,
+                 GAsyncResult *result,
+                 gpointer      user_data)
+{
+  GFile *file = (GFile *) object;
+  GError *error = NULL;
+  GMainLoop *loop = user_data;
+
+  g_assert_true (g_file_make_symbolic_link_finish (file, result, &error));
+  g_assert_no_error (error);
+
+  g_main_loop_quit (loop);
+}
+
+static void
+on_symlink_error (GObject      *object,
+                  GAsyncResult *result,
+                  gpointer      user_data)
+{
+  GFile *file = (GFile *) object;
+  GError *error = NULL;
+  AsyncErrorData *data = user_data;
+
+  g_assert_false (g_file_make_symbolic_link_finish (file, result, &error));
+  g_assert_nonnull (error);
+  g_propagate_error (data->error, g_steal_pointer (&error));
+
+  g_main_loop_quit (data->loop);
+}
+
+static void
+test_async_make_symlink (void)
+{
+  GFile *link;
+  GFile *parent_dir;
+  GFile *target;
+  GFileInfo *link_info;
+  GFileIOStream *iostream;
+  GError *error = NULL;
+  GCancellable *cancellable;
+  GMainLoop *loop;
+  AsyncErrorData error_data = {0};
+  gchar *tmpdir_path;
+  gchar *target_path;
+
+  target = g_file_new_tmp ("g_file_symlink_target_XXXXXX", &iostream, &error);
+  g_assert_no_error (error);
+
+  g_io_stream_close ((GIOStream *) iostream, NULL, &error);
+  g_assert_no_error (error);
+  g_object_unref (iostream);
+
+  g_assert_true (g_file_query_exists (target, NULL));
+
+  loop = g_main_loop_new (NULL, TRUE);
+  error_data.loop = loop;
+  error_data.error = &error;
+
+  tmpdir_path = g_dir_make_tmp ("g_file_symlink_XXXXXX", &error);
+  g_assert_no_error (error);
+
+  parent_dir = g_file_new_for_path (tmpdir_path);
+  g_assert_true (g_file_query_exists (parent_dir, NULL));
+
+  link = g_file_get_child (parent_dir, "symlink");
+  g_assert_false (g_file_query_exists (link, NULL));
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*symlink_value*failed*");
+  g_file_make_symbolic_link_async (link, NULL,
+                                   G_PRIORITY_DEFAULT, NULL,
+                                   on_symlink_done, loop);
+  g_test_assert_expected_messages ();
+
+  g_file_make_symbolic_link_async (link, "",
+                                   G_PRIORITY_DEFAULT, NULL,
+                                   on_symlink_error, &error_data);
+  g_main_loop_run (loop);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
+  g_clear_error (&error);
+
+  target_path = g_file_get_path (target);
+  g_file_make_symbolic_link_async (link, target_path,
+                                   G_PRIORITY_DEFAULT, NULL,
+                                   on_symlink_done, loop);
+  g_main_loop_run (loop);
+
+  g_assert_true (g_file_query_exists (link, NULL));
+  link_info = g_file_query_info (link,
+                                 G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK ","
+                                 G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET,
+                                 G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
+                                 NULL,
+                                 &error);
+  g_assert_no_error (error);
+
+  g_assert_true (g_file_info_get_is_symlink (link_info));
+  g_assert_cmpstr (target_path, ==, g_file_info_get_symlink_target (link_info));
+
+  /* Try creating it again, it fails */
+  g_file_make_symbolic_link_async (link, target_path,
+                                   G_PRIORITY_DEFAULT, NULL,
+                                   on_symlink_error, &error_data);
+  g_main_loop_run (loop);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_EXISTS);
+  g_clear_error (&error);
+
+  cancellable = g_cancellable_new ();
+  g_file_make_symbolic_link_async (link, target_path,
+                                   G_PRIORITY_DEFAULT, cancellable,
+                                   on_symlink_error, &error_data);
+  g_cancellable_cancel (cancellable);
+  g_main_loop_run (loop);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
+  g_clear_error (&error);
+  g_clear_object (&cancellable);
+
+  g_main_loop_unref (loop);
+  g_object_unref (target);
+  g_object_unref (parent_dir);
+  g_object_unref (link);
+  g_object_unref (link_info);
+  g_free (tmpdir_path);
+  g_free (target_path);
+}
+
+static void
 test_copy_preserve_mode (void)
 {
 #ifdef G_OS_UNIX
@@ -3163,6 +3296,7 @@ main (int argc, char *argv[])
   g_test_add_data_func ("/file/replace/write-only", GUINT_TO_POINTER (FALSE), test_replace);
   g_test_add_data_func ("/file/replace/read-write", GUINT_TO_POINTER (TRUE), test_replace);
   g_test_add_func ("/file/async-delete", test_async_delete);
+  g_test_add_func ("/file/async-make-symlink", test_async_make_symlink);
   g_test_add_func ("/file/copy-preserve-mode", test_copy_preserve_mode);
   g_test_add_func ("/file/measure", test_measure);
   g_test_add_func ("/file/measure-async", test_measure_async);
