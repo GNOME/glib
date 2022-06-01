@@ -6077,12 +6077,14 @@ g_socket_get_credentials (GSocket   *socket,
                                       G_CREDENTIALS_NATIVE_TYPE,
                                       &cred);
 
+#ifdef LOCAL_PEERPID
             if (getsockopt (socket->priv->fd,
                             SOL_LOCAL,
                             LOCAL_PEERPID,
                             &pid,
                             &optlen) == 0)
               _g_credentials_set_local_peerid (ret, pid);
+#endif
           }
         else
           {
