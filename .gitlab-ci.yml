@@ -221,6 +221,9 @@ valgrind:
             -Dinstalled_tests=true
             _build
     - ninja -C _build
+    # Valgrind doesn’t work when the soft FD limit is set too high
+    # See https://gitlab.gnome.org/GNOME/glib/-/merge_requests/2710
+    - ulimit -Sn 1024
     - bash -x ./.gitlab-ci/run-tests.sh
                  --wrap "valgrind --tool=memcheck --error-exitcode=1 --track-origins=yes --leak-check=full --leak-resolution=high --num-callers=50 --show-leak-kinds=definite,possible --show-error-list=yes --suppressions=${CI_PROJECT_DIR}/tools/glib.supp"
                  --no-suite no-valgrind
