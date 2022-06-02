@@ -7524,6 +7524,36 @@ g_file_query_default_handler (GFile         *file,
 }
 
 static void
+query_default_handler_query_app_info_for_type_cb (GObject      *object,
+                                                  GAsyncResult *result,
+                                                  gpointer      user_data)
+{
+  GTask *task = G_TASK (user_data);
+  GAppInfo *appinfo;
+  GError *error = NULL;
+
+  appinfo = g_app_info_get_default_for_type_finish (result, &error);
+
+  if (appinfo != NULL)
+    {
+      g_task_return_pointer (task, g_steal_pointer (&appinfo), g_object_unref);
+    }
+  else if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
+    {
+      g_task_return_new_error (task,
+                               G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                               "%s", error->message);
+    }
+  else
+    {
+      g_task_return_error (task, g_steal_pointer (&error));
+    }
+
+  g_clear_error (&error);
+  g_object_unref (task);
+}
+
+static void
 query_default_handler_query_info_cb (GObject      *object,
                                      GAsyncResult *result,
                                      gpointer      user_data)
@@ -7533,7 +7563,6 @@ query_default_handler_query_info_cb (GObject      *object,
   GError *error = NULL;
   GFileInfo *info;
   const char *content_type;
-  GAppInfo *appinfo = NULL;
 
   info = g_file_query_info_finish (file, result, &error);
   if (info == NULL)
@@ -7548,27 +7577,30 @@ query_default_handler_query_info_cb (GObject      *object,
     content_type = g_file_info_get_attribute_string (info, G_FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE);
   if (content_type)
     {
+      GCancellable *cancellable = g_task_get_cancellable (task);
       char *path;
 
       /* Don't use is_native(), as we want to support fuse paths if available */
       path = g_file_get_path (file);
 
-      /* FIXME: The following still uses blocking calls. */
-      appinfo = g_app_info_get_default_for_type (content_type,
-                                                 path == NULL);
+      g_app_info_get_default_for_type_async (content_type,
+                                             path == NULL,
+                                             cancellable,
+                                             query_default_handler_query_app_info_for_type_cb,
+                                             g_steal_pointer (&task));
+
       g_free (path);
+    }
+  else
+    {
+      g_task_return_new_error (task,
+                               G_IO_ERROR,
+                               G_IO_ERROR_NOT_SUPPORTED,
+                               _("No application is registered as handling this file"));
     }
 
   g_object_unref (info);
-
-  if (appinfo != NULL)
-    g_task_return_pointer (task, g_steal_pointer (&appinfo), g_object_unref);
-  else
-    g_task_return_new_error (task,
-                             G_IO_ERROR,
-                             G_IO_ERROR_NOT_SUPPORTED,
-                             _("No application is registered as handling this file"));
-  g_object_unref (task);
+  g_clear_object (&task);
 }
 
 /**
