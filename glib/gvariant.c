@@ -4063,7 +4063,7 @@ g_variant_dict_lookup (GVariantDict *dict,
  * returned.  If @expected_type was specified then any non-%NULL return
  * value will have this type.
  *
- * Returns: (transfer full): the value of the dictionary key, or %NULL
+ * Returns: (transfer full) (nullable): the value of the dictionary key, or %NULL
  *
  * Since: 2.40
  **/
