@@ -219,6 +219,31 @@ gboolean
 }
 
 /**
+ * g_atomic_int_exchange:
+ * @atomic: a pointer to a #gint or #guint
+ * @newval: the value to replace with
+ *
+ * Sets the @atomic to @newval and returns the old value from @atomic.
+ *
+ * This exchange is done atomically.
+ *
+ * Think of this operation as an atomic version of
+ * `{ tmp = *atomic; *atomic = val; return tmp; }`.
+ *
+ * This call acts as a full compiler and hardware memory barrier.
+ *
+ * Returns: the value of @atomic before the exchange, signed
+ *
+ * Since: 2.74
+ **/
+gint
+(g_atomic_int_exchange) (gint *atomic,
+                         gint  newval)
+{
+  return g_atomic_int_exchange (atomic, newval);
+}
+
+/**
  * g_atomic_int_add:
  * @atomic: a pointer to a #gint or #guint
  * @val: the value to add
@@ -403,6 +428,31 @@ gboolean
 {
   return g_atomic_pointer_compare_and_exchange ((gpointer *) atomic,
                                                 oldval, newval);
+}
+
+/**
+ * g_atomic_pointer_exchange:
+ * @atomic: a pointer to a #gint or #guint
+ * @newval: the value to replace with
+ *
+ * Sets the @atomic to @newval and returns the old value from @atomic.
+ *
+ * This exchange is done atomically.
+ *
+ * Think of this operation as an atomic version of
+ * `{ tmp = *atomic; *atomic = val; return tmp; }`.
+ *
+ * This call acts as a full compiler and hardware memory barrier.
+ *
+ * Returns: the value of @atomic before the exchange, signed
+ *
+ * Since: 2.74
+ **/
+gpointer
+(g_atomic_pointer_exchange) (void     *atomic,
+                             gpointer  newval)
+{
+  return g_atomic_pointer_exchange ((gpointer *) atomic, newval);
 }
 
 /**
@@ -610,6 +660,13 @@ gboolean
 }
 
 gint
+(g_atomic_int_exchange) (gint *atomic,
+                         gint  newval)
+{
+  return InterlockedExchange (atomic, newval);
+}
+
+gint
 (g_atomic_int_add) (volatile gint *atomic,
                     gint           val)
 {
@@ -663,6 +720,13 @@ gboolean
                                          gpointer       newval)
 {
   return InterlockedCompareExchangePointer (atomic, newval, oldval) == oldval;
+}
+
+gpointer
+(g_atomic_pointer_exchange) (void     *atomic,
+                             gpointer  newval)
+{
+  return InterlockedExchangePointer (atomic, newval);
 }
 
 gssize
@@ -788,6 +852,21 @@ gboolean
 }
 
 gint
+(g_atomic_int_exchange) (gint *atomic,
+                         gint  newval)
+{
+  gint *ptr = atomic;
+  gint oldval;
+
+  pthread_mutex_lock (&g_atomic_lock);
+  oldval = *ptr;
+  *ptr = newval;
+  pthread_mutex_unlock (&g_atomic_lock);
+
+  return oldval;
+}
+
+gint
 (g_atomic_int_add) (volatile gint *atomic,
                     gint           val)
 {
@@ -884,6 +963,21 @@ gboolean
   pthread_mutex_unlock (&g_atomic_lock);
 
   return success;
+}
+
+gpointer
+(g_atomic_pointer_exchange) (void    *atomic,
+                             gpointer newval)
+{
+  gpointer *ptr = atomic;
+  gpointer oldval;
+
+  pthread_mutex_lock (&g_atomic_lock);
+  oldval = *ptr;
+  *ptr = newval;
+  pthread_mutex_unlock (&g_atomic_lock);
+
+  return oldval;
 }
 
 gssize
