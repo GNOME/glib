@@ -2196,18 +2196,10 @@ g_object_new_with_properties (GType          object_type,
           if (!g_object_new_is_valid_property (object_type, pspec, names[i], params, count))
             continue;
           params[count].pspec = pspec;
-
-          /* Init GValue */
-          params[count].value = g_newa0 (GValue, 1);
-          g_value_init (params[count].value, G_VALUE_TYPE (&values[i]));
-
-          g_value_copy (&values[i], params[count].value);
+          params[count].value = (GValue *) &values[i];
           count++;
         }
       object = g_object_new_internal (class, params, count);
-
-      while (count--)
-        g_value_unset (params[count].value);
     }
   else
     object = g_object_new_internal (class, NULL, 0);
