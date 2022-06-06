@@ -322,18 +322,20 @@ g_object_notify_queue_thaw (GObject            *object,
   G_LOCK(notify_lock);
 
   /* Just make sure we never get into some nasty race condition */
-  if (G_UNLIKELY(nqueue->freeze_count == 0)) {
-    G_UNLOCK(notify_lock);
-    g_warning ("%s: property-changed notification for %s(%p) is not frozen",
-               G_STRFUNC, G_OBJECT_TYPE_NAME (object), object);
-    return;
-  }
+  if (G_UNLIKELY (nqueue->freeze_count == 0))
+    {
+      G_UNLOCK (notify_lock);
+      g_warning ("%s: property-changed notification for %s(%p) is not frozen",
+                 G_STRFUNC, G_OBJECT_TYPE_NAME (object), object);
+      return;
+    }
 
   nqueue->freeze_count--;
-  if (nqueue->freeze_count) {
-    G_UNLOCK (notify_lock);
-    return;
-  }
+  if (nqueue->freeze_count)
+    {
+      G_UNLOCK (notify_lock);
+      return;
+    }
 
   pspecs = nqueue->n_pspecs > 16 ? free_me = g_new (GParamSpec*, nqueue->n_pspecs) : pspecs_mem;
 
