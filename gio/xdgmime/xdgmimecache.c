@@ -568,17 +568,17 @@ cache_glob_lookup_suffix (const char *file_name,
       n_entries = GET_UINT32 (cache->buffer, list_offset);
       offset = GET_UINT32 (cache->buffer, list_offset + 4);
 
-      n = cache_glob_node_lookup_suffix (cache, 
-					 n_entries, offset, 
-					 file_name, len,
-					 ignore_case,
-					 mime_types,
-					 n_mime_types);
-      if (n > 0)
-	return n;
+      n += cache_glob_node_lookup_suffix (cache,
+					  n_entries, offset,
+					  file_name, len,
+					  ignore_case,
+					  mime_types + n,
+					  n_mime_types - n);
+      if (n == n_mime_types)
+	break;
     }
 
-  return 0;
+  return n;
 }
 
 static int compare_mime_weight (const void *a, const void *b)
