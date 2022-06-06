@@ -1315,33 +1315,20 @@ g_object_freeze_notify (GObject *object)
   g_object_unref (object);
 }
 
-static GParamSpec *
-get_notify_pspec (GParamSpec *pspec)
+static inline void
+g_object_notify_by_spec_internal (GObject    *object,
+                                  GParamSpec *pspec)
 {
   GParamSpec *redirected;
 
-  /* we don't notify on non-READABLE parameters */
-  if (~pspec->flags & G_PARAM_READABLE)
-    return NULL;
+  if (G_UNLIKELY (~pspec->flags & G_PARAM_READABLE))
+    return;
 
-  /* if the paramspec is redirected, notify on the target */
   redirected = g_param_spec_get_redirect_target (pspec);
   if (redirected != NULL)
-    return redirected;
+    pspec = redirected;
 
-  /* else, notify normally */
-  return pspec;
-}
-
-static inline void
-g_object_notify_by_spec_internal (GObject    *object,
-				  GParamSpec *pspec)
-{
-  GParamSpec *notify_pspec;
-
-  notify_pspec = get_notify_pspec (pspec);
-
-  if (notify_pspec != NULL)
+  if (pspec != NULL)
     {
       GObjectNotifyQueue *nqueue;
 
@@ -1351,13 +1338,13 @@ g_object_notify_by_spec_internal (GObject    *object,
       if (nqueue != NULL)
         {
           /* we're frozen, so add to the queue and release our freeze */
-          g_object_notify_queue_add (object, nqueue, notify_pspec);
+          g_object_notify_queue_add (object, nqueue, pspec);
           g_object_notify_queue_thaw (object, nqueue);
         }
       else
         /* not frozen, so just dispatch the notification directly */
         G_OBJECT_GET_CLASS (object)
-          ->dispatch_properties_changed (object, 1, &notify_pspec);
+          ->dispatch_properties_changed (object, 1, &pspec);
     }
 }
 
