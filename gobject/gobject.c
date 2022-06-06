@@ -1342,9 +1342,15 @@ g_object_notify_by_spec_internal (GObject    *object,
           g_object_notify_queue_thaw (object, nqueue);
         }
       else
-        /* not frozen, so just dispatch the notification directly */
-        G_OBJECT_GET_CLASS (object)
-          ->dispatch_properties_changed (object, 1, &pspec);
+        {
+          g_object_ref (object);
+
+          /* not frozen, so just dispatch the notification directly */
+          G_OBJECT_GET_CLASS (object)
+              ->dispatch_properties_changed (object, 1, &pspec);
+
+          g_object_unref (object);
+        }
     }
 }
 
@@ -1375,7 +1381,6 @@ g_object_notify (GObject     *object,
   if (g_atomic_int_get (&object->ref_count) == 0)
     return;
   
-  g_object_ref (object);
   /* We don't need to get the redirect target
    * (by, e.g. calling g_object_class_find_property())
    * because g_object_notify_queue_add() does that
@@ -1392,7 +1397,6 @@ g_object_notify (GObject     *object,
 	       property_name);
   else
     g_object_notify_by_spec_internal (object, pspec);
-  g_object_unref (object);
 }
 
 /**
@@ -1451,9 +1455,7 @@ g_object_notify_by_pspec (GObject    *object,
   if (g_atomic_int_get (&object->ref_count) == 0)
     return;
 
-  g_object_ref (object);
   g_object_notify_by_spec_internal (object, pspec);
-  g_object_unref (object);
 }
 
 /**
