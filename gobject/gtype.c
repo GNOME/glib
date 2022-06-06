@@ -233,7 +233,9 @@ struct _TypeNode
   guint        n_prerequisites : 9;
   guint        is_classed : 1;
   guint        is_instantiatable : 1;
+  guint        is_final : 1;
   guint        mutatable_check_cache : 1;	/* combines some common path checks */
+
   GType       *children; /* writable with lock */
   TypeData    *data;
   GQuark       qname;
@@ -3909,6 +3911,8 @@ type_add_flags_W (TypeNode  *node,
   dflags = GPOINTER_TO_UINT (type_get_qdata_L (node, static_quark_type_flags));
   dflags |= flags;
   type_set_qdata_W (node, static_quark_type_flags, GUINT_TO_POINTER (dflags));
+
+  node->is_final = (flags & G_TYPE_FLAG_FINAL) != 0;
 }
 
 /**
@@ -4134,9 +4138,12 @@ g_type_check_instance_is_a (GTypeInstance *type_instance,
   
   if (!type_instance || !type_instance->g_class)
     return FALSE;
-  
-  node = lookup_type_node_I (type_instance->g_class->g_type);
+
   iface = lookup_type_node_I (iface_type);
+  if (iface->is_final)
+    return type_instance->g_class->g_type == iface_type;
+
+  node = lookup_type_node_I (type_instance->g_class->g_type);
   check = node && node->is_instantiatable && iface && type_node_conforms_to_U (node, iface, TRUE, FALSE);
   
   return check;
