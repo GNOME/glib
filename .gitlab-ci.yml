@@ -432,9 +432,6 @@ freebsd-13-x86_64:
       - "_build/meson-logs"
 
 macos:
-  # FIXME: Temporarily disabled as the worker is offline
-  # See https://gitlab.gnome.org/Infrastructure/GitLab/-/issues/558
-  when: manual
   extends: .only-origin
   stage: build
   tags:

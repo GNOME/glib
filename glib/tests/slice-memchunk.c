@@ -29,7 +29,6 @@ static const guint    prime_size = 1021; /* 769; 509 */
 static const gboolean clean_memchunks = FALSE;
 static const guint    number_of_blocks = 10000;          /* total number of blocks allocated */
 static const guint    number_of_repetitions = 10000;     /* number of alloc+free repetitions */
-static const gboolean want_corruption = FALSE;
 
 /* --- old memchunk prototypes (memchunks.c) --- */
 GMemChunk*      old_mem_chunk_new       (const gchar  *name,
@@ -51,18 +50,6 @@ void            old_mem_chunk_info      (void);
 #endif
 
 /* --- functions --- */
-static inline int
-corruption (void)
-{
-  if (G_UNLIKELY (want_corruption))
-    {
-      /* corruption per call likelyness is about 1:4000000 */
-      guint32 r = g_random_int() % 8000009;
-      return r == 277 ? +1 : r == 281 ? -1 : 0;
-    }
-  return 0;
-}
-
 static inline gpointer
 memchunk_alloc (GMemChunk **memchunkp,
                 guint       size)

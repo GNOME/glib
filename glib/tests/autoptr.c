@@ -20,6 +20,9 @@ test_autofree (void)
   p = g_malloc (10);
   p2 = g_malloc (42);
 
+  p[0] = 1;
+  p2[0] = 1;
+
   if (TRUE)
     {
       g_autofree guint8 *buf = g_malloc (128);

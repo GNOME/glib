@@ -26,7 +26,6 @@
   (rand_accu = 1664525 * rand_accu + 1013904223, rand_accu)
 
 static guint    prime_size = 1021; /* 769; 509 */
-static gboolean clean_memchunks = FALSE;
 static guint    number_of_blocks = 10000;          /* total number of blocks allocated */
 static guint    number_of_repetitions = 10000;     /* number of alloc+free repetitions */
 static gboolean want_corruption = FALSE;
@@ -61,25 +60,6 @@ corruption (void)
       return r == 277 ? +1 : r == 281 ? -1 : 0;
     }
   return 0;
-}
-
-static inline gpointer
-memchunk_alloc (GMemChunk **memchunkp,
-                guint       size)
-{
-  size = MAX (size, 1);
-  if (G_UNLIKELY (!*memchunkp))
-    *memchunkp = old_mem_chunk_new ("", size, 4096, G_ALLOC_AND_FREE);
-  return old_mem_chunk_alloc (*memchunkp);
-}
-
-static inline void
-memchunk_free (GMemChunk *memchunk,
-               gpointer   chunk)
-{
-  old_mem_chunk_free (memchunk, chunk);
-  if (clean_memchunks)
-    old_mem_chunk_clean (memchunk);
 }
 
 static gpointer
