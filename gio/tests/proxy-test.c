@@ -131,7 +131,7 @@ g_test_proxy_resolver_lookup (GProxyResolver  *resolver,
 
   proxies = g_new (gchar *, 3);
 
-  if (!strncmp (uri, "simple://", 4))
+  if (g_str_has_prefix (uri, "simple://"))
     {
       proxies[0] = g_strdup ("direct://");
       proxies[1] = NULL;
