@@ -1840,6 +1840,18 @@ if cc.get_id() == 'msvc' or cc.get_id() == 'clang-cl' or cc.links(atomictest, na
     # __GCC_HAVE_SYNC_COMPARE_AND_SWAP_4
     glib_conf.set('__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4', true)
   endif
+
+  if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
+    sync_swap_test = '''
+      int main() {
+        int atomic = 2;
+        __sync_swap (&atomic, 2);
+        return 0;
+      }
+    '''
+
+    glib_conf.set('__GCC_HAVE_SYNC_SWAP', cc.links(sync_swap_test, name : 'sync swap'))
+  endif
 else
   have_atomic_lock_free = false
   if host_machine.cpu_family() == 'x86' and cc.links(atomictest, args : '-march=i486')
