@@ -48,12 +48,12 @@ test_once_single_threaded (void)
 
   g_test_summary ("Test g_once() usage from a single thread");
 
-  g_assert (once.status == G_ONCE_STATUS_NOTCALLED);
+  g_assert_cmpint (once.status, ==, G_ONCE_STATUS_NOTCALLED);
 
   res = g_once (&once, do_once, NULL);
   g_assert_cmpint (GPOINTER_TO_INT (res), ==, 1);
 
-  g_assert (once.status == G_ONCE_STATUS_READY);
+  g_assert_cmpint (once.status, ==, G_ONCE_STATUS_READY);
 
   res = g_once (&once, do_once, NULL);
   g_assert_cmpint (GPOINTER_TO_INT (res), ==, 1);
