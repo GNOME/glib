@@ -25,11 +25,11 @@
 #define quick_rand32() \
   (rand_accu = 1664525 * rand_accu + 1013904223, rand_accu)
 
-static guint    prime_size = 1021; /* 769; 509 */
-static gboolean clean_memchunks = FALSE;
-static guint    number_of_blocks = 10000;          /* total number of blocks allocated */
-static guint    number_of_repetitions = 10000;     /* number of alloc+free repetitions */
-static gboolean want_corruption = FALSE;
+static const guint    prime_size = 1021; /* 769; 509 */
+static const gboolean clean_memchunks = FALSE;
+static const guint    number_of_blocks = 10000;          /* total number of blocks allocated */
+static const guint    number_of_repetitions = 10000;     /* number of alloc+free repetitions */
+static const gboolean want_corruption = FALSE;
 
 /* --- old memchunk prototypes (memchunks.c) --- */
 GMemChunk*      old_mem_chunk_new       (const gchar  *name,
