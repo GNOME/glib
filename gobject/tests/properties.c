@@ -173,22 +173,29 @@ test_object_class_init (TestObjectClass *klass)
   properties[PROP_FOO] = g_param_spec_int ("foo", "Foo", "Foo",
                                            -1, G_MAXINT,
                                            0,
-                                           G_PARAM_READWRITE);
+                                           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
   properties[PROP_BAR] = g_param_spec_boolean ("bar", "Bar", "Bar",
                                                FALSE,
-                                               G_PARAM_READWRITE);
+                                               G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
   properties[PROP_BAZ] = g_param_spec_string ("baz", "Baz", "Baz",
                                               NULL,
                                               G_PARAM_READWRITE);
-  properties[PROP_QUUX] = g_param_spec_string ("quux", "quux", "quux",
-                                               NULL,
-                                               G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   gobject_class->set_property = test_object_set_property;
   gobject_class->get_property = test_object_get_property;
   gobject_class->finalize = test_object_finalize;
 
-  g_object_class_install_properties (gobject_class, N_PROPERTIES, properties);
+  g_object_class_install_properties (gobject_class, N_PROPERTIES - 1, properties);
+
+  /* We intentionally install this property separately, to test
+   * that that works, and that property lookup works regardless
+   * how the property was installed.
+   */
+  properties[PROP_QUUX] = g_param_spec_string ("quux", "quux", "quux",
+                                               NULL,
+                                               G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
+
+  g_object_class_install_property (gobject_class, PROP_QUUX, properties[PROP_QUUX]);
 }
 
 static void
@@ -205,11 +212,129 @@ properties_install (void)
 {
   TestObject *obj = g_object_new (test_object_get_type (), NULL);
   GParamSpec *pspec;
+  char *name;
 
   g_assert (properties[PROP_FOO] != NULL);
 
   pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (obj), "foo");
   g_assert (properties[PROP_FOO] == pspec);
+
+  name = g_strdup ("bar");
+  pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (obj), name);
+  g_assert (properties[PROP_BAR] == pspec);
+  g_free (name);
+
+  pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (obj), "baz");
+  g_assert (properties[PROP_BAZ] == pspec);
+
+  pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (obj), "quux");
+  g_assert (properties[PROP_QUUX] == pspec);
+
+  g_object_unref (obj);
+}
+
+typedef struct {
+  GObject parent_instance;
+  int value[16];
+} ManyProps;
+
+typedef GObjectClass ManyPropsClass;
+
+static GParamSpec *props[16];
+
+GType many_props_get_type (void) G_GNUC_CONST;
+
+G_DEFINE_TYPE(ManyProps, many_props, G_TYPE_OBJECT)
+
+static void
+many_props_init (ManyProps *self)
+{
+}
+
+static void
+get_prop (GObject    *object,
+          guint       prop_id,
+          GValue     *value,
+          GParamSpec *pspec)
+{
+  ManyProps *mp = (ManyProps *) object;
+
+  if (prop_id > 0 && prop_id < 13)
+    g_value_set_int (value, mp->value[prop_id]);
+  else
+    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+}
+
+static void
+set_prop (GObject      *object,
+          guint         prop_id,
+          const GValue *value,
+          GParamSpec   *pspec)
+{
+  ManyProps *mp = (ManyProps *) object;
+
+  if (prop_id > 0 && prop_id < 13)
+    mp->value[prop_id] = g_value_get_int (value);
+  else
+    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+}
+
+static void
+many_props_class_init (ManyPropsClass *class)
+{
+  G_OBJECT_CLASS (class)->get_property = get_prop;
+  G_OBJECT_CLASS (class)->set_property = set_prop;
+
+  props[1] = g_param_spec_int ("one", NULL, NULL,
+                               0, G_MAXINT, 0,
+                               G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+  props[2] = g_param_spec_int ("two", NULL, NULL,
+                               0, G_MAXINT, 0,
+                               G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+  props[3] = g_param_spec_int ("three", NULL, NULL,
+                               0, G_MAXINT, 0,
+                               G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+  props[4] = g_param_spec_int ("four", NULL, NULL,
+                               0, G_MAXINT, 0,
+                               G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+  props[5] = g_param_spec_int ("five", NULL, NULL,
+                               0, G_MAXINT, 0,
+                               G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+  props[6] = g_param_spec_int ("six", NULL, NULL,
+                               0, G_MAXINT, 0,
+                               G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+  props[7] = g_param_spec_int ("seven", NULL, NULL,
+                               0, G_MAXINT, 0,
+                               G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+  props[8] = g_param_spec_int ("eight", NULL, NULL,
+                               0, G_MAXINT, 0,
+                               G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+  props[9] = g_param_spec_int ("nine", NULL, NULL,
+                               0, G_MAXINT, 0,
+                               G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+  props[10] = g_param_spec_int ("ten", NULL, NULL,
+                               0, G_MAXINT, 0,
+                               G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+  props[11] = g_param_spec_int ("eleven", NULL, NULL,
+                               0, G_MAXINT, 0,
+                               G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+  props[12] = g_param_spec_int ("twelve", NULL, NULL,
+                               0, G_MAXINT, 0,
+                               G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+  g_object_class_install_properties (G_OBJECT_CLASS (class), 12, props);
+}
+
+static void
+properties_install_many (void)
+{
+  ManyProps *obj = g_object_new (many_props_get_type (), NULL);
+  GParamSpec *pspec;
+
+  pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (obj), "one");
+  g_assert (props[1] == pspec);
+
+  pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (obj), "ten");
+  g_assert (props[10] == pspec);
 
   g_object_unref (obj);
 }
@@ -639,6 +764,7 @@ main (int argc, char *argv[])
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/properties/install", properties_install);
+  g_test_add_func ("/properties/install-many", properties_install_many);
   g_test_add_func ("/properties/notify", properties_notify);
   g_test_add_func ("/properties/notify-queue", properties_notify_queue);
   g_test_add_func ("/properties/construct", properties_construct);
