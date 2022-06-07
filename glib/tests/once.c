@@ -22,8 +22,9 @@
  */
 
 #include <glib.h>
+#include "../gvalgrind.h"
 
-#if GLIB_SIZEOF_VOID_P > 4
+#if GLIB_SIZEOF_VOID_P > 4 && !defined(ENABLE_VALGRIND)
 #define THREADS 1000
 #else
 #define THREADS 100
