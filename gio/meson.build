@@ -261,7 +261,6 @@ settings_headers = files(
 )
 
 settings_sources = files(
-  'gvdb/gvdb-reader.c',
   'gdelayedsettingsbackend.c',
   'gkeyfilesettingsbackend.c',
   'gmemorysettingsbackend.c',
@@ -812,7 +811,8 @@ libgio = library('gio-2.0',
   link_with: internal_deps,
   dependencies : [libz_dep, libdl_dep, libmount_dep, libglib_dep,
                   libgobject_dep, libgmodule_dep, selinux_dep, xattr_dep,
-                  platform_deps, network_libs, libsysprof_capture_dep],
+                  platform_deps, network_libs, libsysprof_capture_dep,
+                  gioenumtypes_dep, gvdb_dep],
   c_args : gio_c_args,
   objc_args : gio_c_args,
   # intl.lib is not compatible with SAFESEH
@@ -961,19 +961,19 @@ gio_querymodules = executable('gio-querymodules', 'gio-querymodules.c', 'giomodu
   dependencies : [libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
 
 glib_compile_schemas = executable('glib-compile-schemas',
-  ['gvdb/gvdb-builder.c', 'glib-compile-schemas.c'],
+  ['glib-compile-schemas.c'],
   install : true,
   # intl.lib is not compatible with SAFESEH
   link_args : noseh_link_args,
-  dependencies : [libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
+  dependencies : [libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep, gvdb_dep])
 
 glib_compile_resources = executable('glib-compile-resources',
-  [gconstructor_as_data_h, 'gvdb/gvdb-builder.c', 'glib-compile-resources.c'],
+  [gconstructor_as_data_h, 'glib-compile-resources.c'],
   install : true,
   c_args : gio_c_args,
   # intl.lib is not compatible with SAFESEH
   link_args : noseh_link_args,
-  dependencies : [libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
+  dependencies : [libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep, gvdb_dep])
 
 # Cannot override those programs in cross compilation case because they are
 # native executables that cannot be run on the build machine.

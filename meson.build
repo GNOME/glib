@@ -2033,6 +2033,9 @@ else
   use_pcre_static_flag = false
 endif
 
+# Import the gvdb sources as a subproject to avoid having the copylib in-tree
+gvdb_dep = dependency('gvdb')
+
 libm = cc.find_library('m', required : false)
 libffi_dep = dependency('libffi', version : '>= 3.0.0', fallback : ['libffi', 'ffi_dep'])
 
