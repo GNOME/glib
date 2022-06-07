@@ -24,7 +24,7 @@ test_types (void)
   guint u, u2;
   gint s, s2;
   gpointer vp, vp2;
-  const char *vp_str;
+  const char *vp_str, *vp_str2;
   const char *volatile vp_str_vol;
   const char *str = "Hello";
   int *ip, *ip2;
@@ -140,10 +140,9 @@ test_types (void)
   gs2 = g_atomic_pointer_xor (&gs, 4);
   g_assert_cmpuint (gs2, ==, 12);
   g_assert_cmpuint (gs, ==, 8);
-  vp2 = g_atomic_pointer_exchange ((gpointer*) &gs, NULL);
-  gs2 = (gsize) vp2;
-  g_assert_cmpuint (gs2, ==, 8);
-  g_assert_null ((gpointer) gs);
+  vp_str2 = g_atomic_pointer_exchange (&vp_str, str);
+  g_assert_cmpstr (vp_str, ==, str);
+  g_assert_null (vp_str2);
 
   g_assert_cmpint (g_atomic_int_get (csp), ==, s);
   g_assert_true (g_atomic_pointer_get ((const gint **) cspp) == csp);
@@ -189,7 +188,7 @@ test_types (void)
   g_assert_cmpint (u, ==, 12);
   u2 = g_atomic_int_xor (&u, 4);
   g_assert_cmpint (u2, ==, 12);
-  u2 = g_atomic_int_exchange (&u, 55);
+  u2 = g_atomic_int_exchange ((gint*) &u, 55);
   g_assert_cmpint (u2, ==, 8);
   g_assert_cmpint (u, ==, 55);
 
@@ -275,7 +274,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
   gs2 = g_atomic_pointer_xor (&gs, 4);
   g_assert_cmpuint (gs2, ==, 12);
   g_assert_cmpuint (gs, ==, 8);
-  vp2 = g_atomic_pointer_exchange ((gpointer*) &gs, NULL);
+  vp2 = g_atomic_pointer_exchange (&gs, NULL);
   gs2 = (gsize) vp2;
   g_assert_cmpuint (gs2, ==, 8);
   g_assert_null ((gpointer) gs);
