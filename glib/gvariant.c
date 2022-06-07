@@ -3484,8 +3484,19 @@ g_variant_builder_init (GVariantBuilder    *builder,
       g_assert_not_reached ();
    }
 
+#ifdef G_ANALYZER_ANALYZING
+  /* Static analysers can’t couple the code in g_variant_builder_init() to the
+   * code in g_variant_builder_end() by GVariantType, so end up assuming that
+   * @offset and @children mismatch and that uninitialised memory is accessed
+   * from @children. At runtime, this is caught by the preconditions at the top
+   * of g_variant_builder_end(). Help the analyser by zero-initialising the
+   * memory to avoid a false positive. */
+  GVSB(builder)->children = g_new0 (GVariant *,
+                                    GVSB(builder)->allocated_children);
+#else
   GVSB(builder)->children = g_new (GVariant *,
                                    GVSB(builder)->allocated_children);
+#endif
 }
 
 static void
