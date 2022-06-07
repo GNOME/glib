@@ -94,7 +94,8 @@ void        _g_closure_invoke_va (GClosure       *closure,
 				  GType          *param_types);
 
 gboolean    _g_object_has_signal_handler     (GObject     *object);
-void        _g_object_set_has_signal_handler (GObject     *object);
+void        _g_object_set_has_signal_handler (GObject     *object,
+                                              guint        signal_id);
 
 /**
  * _G_DEFINE_TYPE_EXTENDED_WITH_PRELUDE:

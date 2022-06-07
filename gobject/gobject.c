@@ -151,6 +151,7 @@
     ((class)->constructor != g_object_constructor)
 #define CLASS_HAS_CUSTOM_CONSTRUCTED(class) \
     ((class)->constructed != g_object_constructed)
+#define CLASS_HAS_NOTIFY(class) ((class)->notify != NULL)
 
 #define CLASS_HAS_DERIVED_CLASS_FLAG 0x2
 #define CLASS_HAS_DERIVED_CLASS(class) \
@@ -168,8 +169,9 @@ enum {
   PROP_NONE
 };
 
-#define OPTIONAL_FLAG_IN_CONSTRUCTION 1<<0
-#define OPTIONAL_FLAG_HAS_SIGNAL_HANDLER 1<<1 /* Set if object ever had a signal handler */
+#define OPTIONAL_FLAG_IN_CONSTRUCTION    (1 << 0)
+#define OPTIONAL_FLAG_HAS_SIGNAL_HANDLER (1 << 1) /* Set if object ever had a signal handler */
+#define OPTIONAL_FLAG_HAS_NOTIFY_HANDLER (1 << 2) /* Same, specifically for "notify" */
 
 #if SIZEOF_INT == 4 && GLIB_SIZEOF_VOID_P == 8
 #define HAVE_OPTIONAL_FLAGS
@@ -1099,7 +1101,7 @@ object_unset_optional_flags (GObject *object,
 }
 
 gboolean
-_g_object_has_signal_handler  (GObject *object)
+_g_object_has_signal_handler (GObject *object)
 {
 #ifdef HAVE_OPTIONAL_FLAGS
   return (object_get_optional_flags (object) & OPTIONAL_FLAG_HAS_SIGNAL_HANDLER) != 0;
@@ -1108,11 +1110,26 @@ _g_object_has_signal_handler  (GObject *object)
 #endif
 }
 
-void
-_g_object_set_has_signal_handler (GObject     *object)
+static inline gboolean
+_g_object_has_notify_handler (GObject *object)
 {
 #ifdef HAVE_OPTIONAL_FLAGS
-  object_set_optional_flags (object, OPTIONAL_FLAG_HAS_SIGNAL_HANDLER);
+  return CLASS_HAS_NOTIFY (G_OBJECT_GET_CLASS (object)) ||
+         (object_get_optional_flags (object) & OPTIONAL_FLAG_HAS_NOTIFY_HANDLER) != 0;
+#else
+  return TRUE;
+#endif
+}
+
+void
+_g_object_set_has_signal_handler (GObject *object,
+                                  guint    signal_id)
+{
+#ifdef HAVE_OPTIONAL_FLAGS
+  guint flags = OPTIONAL_FLAG_HAS_SIGNAL_HANDLER;
+  if (signal_id == gobject_signals[NOTIFY])
+    flags |= OPTIONAL_FLAG_HAS_NOTIFY_HANDLER;
+  object_set_optional_flags (object, flags);
 #endif
 }
 
@@ -1153,9 +1170,9 @@ g_object_init (GObject		*object,
   object->ref_count = 1;
   object->qdata = NULL;
 
-  if (CLASS_HAS_PROPS (class))
+  if (CLASS_HAS_PROPS (class) && CLASS_HAS_NOTIFY (class))
     {
-      /* freeze object's notification queue, g_object_newv() preserves pairedness */
+      /* freeze object's notification queue, g_object_new_internal() preserves pairedness */
       g_object_notify_queue_freeze (object, FALSE);
     }
 
@@ -1344,7 +1361,8 @@ g_object_notify_by_spec_internal (GObject    *object,
 
   param_spec_follow_override (&pspec);
 
-  if (pspec != NULL)
+  if (pspec != NULL &&
+      _g_object_has_notify_handler (object))
     {
       GObjectNotifyQueue *nqueue;
 
@@ -1641,7 +1659,8 @@ object_set_property (GObject             *object,
       g_value_unset (&tmp_value);
     }
 
-  if ((pspec->flags & (G_PARAM_EXPLICIT_NOTIFY|G_PARAM_READABLE)) == G_PARAM_READABLE)
+  if ((pspec->flags & (G_PARAM_EXPLICIT_NOTIFY | G_PARAM_READABLE)) == G_PARAM_READABLE &&
+      nqueue != NULL)
     g_object_notify_queue_add (object, nqueue, pspec);
 }
 
@@ -2048,6 +2067,7 @@ g_object_new_internal (GObjectClass          *class,
 {
   GObjectNotifyQueue *nqueue = NULL;
   GObject *object;
+  guint i;
 
   if G_UNLIKELY (CLASS_HAS_CUSTOM_CONSTRUCTOR (class))
     return g_object_new_with_custom_constructor (class, params, n_params);
@@ -2060,9 +2080,12 @@ g_object_new_internal (GObjectClass          *class,
     {
       GSList *node;
 
-      /* This will have been setup in g_object_init() */
-      nqueue = g_datalist_id_get_data (&object->qdata, quark_notify_queue);
-      g_assert (nqueue != NULL);
+      if (CLASS_HAS_NOTIFY (class))
+        {
+          /* This will have been setup in g_object_init() */
+          nqueue = g_datalist_id_get_data (&object->qdata, quark_notify_queue);
+          g_assert (nqueue != NULL);
+        }
 
       /* We will set exactly n_construct_properties construct
        * properties, but they may come from either the class default
@@ -2095,20 +2118,15 @@ g_object_new_internal (GObjectClass          *class,
   if (CLASS_HAS_CUSTOM_CONSTRUCTED (class))
     class->constructed (object);
 
+  /* Set remaining properties.  The construct properties will
+   * already have been taken, so set only the non-construct ones.
+   */
+  for (i = 0; i < n_params; i++)
+    if (!(params[i].pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY)))
+      object_set_property (object, params[i].pspec, params[i].value, nqueue);
+
   if (nqueue)
-    {
-      guint i;
-
-      /* Set remaining properties.  The construct properties will
-       * already have been taken, so set only the non-construct
-       * ones.
-       */
-      for (i = 0; i < n_params; i++)
-        if (!(params[i].pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY)))
-          object_set_property (object, params[i].pspec, params[i].value, nqueue);
-
-      g_object_notify_queue_thaw (object, nqueue);
-    }
+    g_object_notify_queue_thaw (object, nqueue);
 
   return object;
 }
@@ -2504,7 +2522,7 @@ g_object_setv (GObject       *object,
                const GValue   values[])
 {
   guint i;
-  GObjectNotifyQueue *nqueue;
+  GObjectNotifyQueue *nqueue = NULL;
   GParamSpec *pspec;
   GType obj_type;
 
@@ -2515,7 +2533,10 @@ g_object_setv (GObject       *object,
 
   g_object_ref (object);
   obj_type = G_OBJECT_TYPE (object);
-  nqueue = g_object_notify_queue_freeze (object, FALSE);
+
+  if (_g_object_has_notify_handler (object))
+    nqueue = g_object_notify_queue_freeze (object, FALSE);
+
   for (i = 0; i < n_properties; i++)
     {
       pspec = g_param_spec_pool_lookup (pspec_pool, names[i], obj_type, TRUE);
@@ -2526,7 +2547,9 @@ g_object_setv (GObject       *object,
       object_set_property (object, pspec, &values[i], nqueue);
     }
 
-  g_object_notify_queue_thaw (object, nqueue);
+  if (nqueue)
+    g_object_notify_queue_thaw (object, nqueue);
+
   g_object_unref (object);
 }
 
@@ -2544,14 +2567,16 @@ g_object_set_valist (GObject	 *object,
 		     const gchar *first_property_name,
 		     va_list	  var_args)
 {
-  GObjectNotifyQueue *nqueue;
+  GObjectNotifyQueue *nqueue = NULL;
   const gchar *name;
   
   g_return_if_fail (G_IS_OBJECT (object));
-  
+
   g_object_ref (object);
-  nqueue = g_object_notify_queue_freeze (object, FALSE);
-  
+
+  if (_g_object_has_notify_handler (object))
+    nqueue = g_object_notify_queue_freeze (object, FALSE);
+
   name = first_property_name;
   while (name)
     {
@@ -2588,7 +2613,9 @@ g_object_set_valist (GObject	 *object,
       name = va_arg (var_args, gchar*);
     }
 
-  g_object_notify_queue_thaw (object, nqueue);
+  if (nqueue)
+    g_object_notify_queue_thaw (object, nqueue);
+
   g_object_unref (object);
 }
 
