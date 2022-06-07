@@ -954,6 +954,14 @@ g_object_interface_install_property (gpointer      g_iface,
   (void) install_property_internal (iface_class->g_type, 0, pspec);
 }
 
+/* Inlined version of g_param_spec_get_redirect_target(), for speed */
+static inline void
+param_spec_follow_override (GParamSpec **pspec)
+{
+  if (((GTypeInstance *) (*pspec))->g_class->g_type == G_TYPE_PARAM_OVERRIDE)
+    *pspec = ((GParamSpecOverride *) (*pspec))->overridden;
+}
+
 /**
  * g_object_class_find_property:
  * @oclass: a #GObjectClass
@@ -975,8 +983,8 @@ g_object_class_find_property (GObjectClass *class,
 
   pspec = find_pspec (class, property_name);
 
-  if (pspec && ((GTypeInstance *)pspec)->g_class->g_type == G_TYPE_PARAM_OVERRIDE)
-    pspec = ((GParamSpecOverride *)pspec)->overridden;
+  if (pspec)
+    param_spec_follow_override (&pspec);
 
   return pspec;
 }
@@ -1430,14 +1438,6 @@ g_object_freeze_notify (GObject *object)
   g_object_ref (object);
   g_object_notify_queue_freeze (object, FALSE);
   g_object_unref (object);
-}
-
-/* Inlined version of g_param_spec_get_redirect_target(), for speed */
-static inline void
-param_spec_follow_override (GParamSpec **pspec)
-{
-  if (((GTypeInstance *) (*pspec))->g_class->g_type == G_TYPE_PARAM_OVERRIDE)
-    *pspec = ((GParamSpecOverride *) (*pspec))->overridden;
 }
 
 static inline void
