@@ -1555,9 +1555,14 @@ g_ptr_array_free (GPtrArray *array,
 
   /* if others are holding a reference, preserve the wrapper but
    * do free/return the data
+   *
+   * Coverity doesn’t understand this and assumes it’s a leak, so comment this
+   * out.
    */
+#ifndef __COVERITY__
   if (!g_atomic_ref_count_dec (&rarray->ref_count))
     flags |= PRESERVE_WRAPPER;
+#endif
 
   return ptr_array_free (array, flags);
 }
