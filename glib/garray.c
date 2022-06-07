@@ -1285,7 +1285,7 @@ g_ptr_array_copy (GPtrArray *array,
           new_array->len = array->len;
         }
 
-      ptr_array_null_terminate (rarray);
+      ptr_array_null_terminate ((GRealPtrArray *) new_array);
     }
 
   return new_array;
