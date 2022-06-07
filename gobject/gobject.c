@@ -578,22 +578,25 @@ g_object_do_class_init (GObjectClass *class)
   g_type_add_interface_check (NULL, object_interface_check_properties);
 }
 
+/* Sinks @pspec if it’s a floating ref. */
 static inline gboolean
 install_property_internal (GType       g_type,
 			   guint       property_id,
 			   GParamSpec *pspec)
 {
+  g_param_spec_ref_sink (pspec);
+
   if (g_param_spec_pool_lookup (pspec_pool, pspec->name, g_type, FALSE))
     {
       g_warning ("When installing property: type '%s' already has a property named '%s'",
 		 g_type_name (g_type),
 		 pspec->name);
+      g_param_spec_unref (pspec);
       return FALSE;
     }
 
-  g_param_spec_ref_sink (pspec);
   PARAM_SPEC_SET_PARAM_ID (pspec, property_id);
-  g_param_spec_pool_insert (pspec_pool, pspec, g_type);
+  g_param_spec_pool_insert (pspec_pool, g_steal_pointer (&pspec), g_type);
   return TRUE;
 }
 
@@ -614,6 +617,7 @@ validate_pspec_to_install (GParamSpec *pspec)
   return TRUE;
 }
 
+/* Sinks @pspec if it’s a floating ref. */
 static gboolean
 validate_and_install_class_property (GObjectClass *class,
                                      GType         oclass_type,
@@ -622,7 +626,11 @@ validate_and_install_class_property (GObjectClass *class,
                                      GParamSpec   *pspec)
 {
   if (!validate_pspec_to_install (pspec))
-    return FALSE;
+    {
+      g_param_spec_ref_sink (pspec);
+      g_param_spec_unref (pspec);
+      return FALSE;
+    }
 
   if (pspec->flags & G_PARAM_WRITABLE)
     g_return_val_if_fail (class->set_property != NULL, FALSE);
@@ -838,7 +846,11 @@ g_object_interface_install_property (gpointer      g_iface,
   g_return_if_fail (!G_IS_PARAM_SPEC_OVERRIDE (pspec)); /* paranoid */
 
   if (!validate_pspec_to_install (pspec))
-    return;
+    {
+      g_param_spec_ref_sink (pspec);
+      g_param_spec_unref (pspec);
+      return;
+    }
 
   (void) install_property_internal (iface_class->g_type, 0, pspec);
 }
