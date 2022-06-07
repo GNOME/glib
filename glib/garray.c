@@ -1092,7 +1092,7 @@ static void g_ptr_array_maybe_expand (GRealPtrArray *array,
                                       guint          len);
 
 static void
-ptr_array_null_terminate (GRealPtrArray *rarray)
+ptr_array_maybe_null_terminate (GRealPtrArray *rarray)
 {
   if (G_UNLIKELY (rarray->null_terminated))
     rarray->pdata[rarray->len] = NULL;
@@ -1123,7 +1123,7 @@ ptr_array_new (guint reserved_size,
       g_ptr_array_maybe_expand (array, reserved_size);
       if (null_terminated)
         {
-          /* don't use ptr_array_null_terminate(). It helps the compiler
+          /* don't use ptr_array_maybe_null_terminate(). It helps the compiler
            * to see when @null_terminated is false and thereby inline
            * ptr_array_new() and possibly remove the code entirely. */
           array->pdata[0] = NULL;
@@ -1285,7 +1285,7 @@ g_ptr_array_copy (GPtrArray *array,
           new_array->len = array->len;
         }
 
-      ptr_array_null_terminate (rarray);
+      ptr_array_maybe_null_terminate ((GRealPtrArray *) new_array);
     }
 
   return new_array;
@@ -1688,7 +1688,7 @@ g_ptr_array_set_size  (GPtrArray *array,
 
       rarray->len = length_unsigned;
 
-      ptr_array_null_terminate (rarray);
+      ptr_array_maybe_null_terminate (rarray);
     }
   else if (length_unsigned < rarray->len)
     g_ptr_array_remove_range (array, length_unsigned, rarray->len - length_unsigned);
@@ -1862,7 +1862,7 @@ g_ptr_array_remove_range (GPtrArray *array,
         rarray->pdata[rarray->len + i] = NULL;
     }
   else
-    ptr_array_null_terminate (rarray);
+    ptr_array_maybe_null_terminate (rarray);
 
   return array;
 }
@@ -1963,7 +1963,7 @@ g_ptr_array_add (GPtrArray *array,
 
   rarray->pdata[rarray->len++] = data;
 
-  ptr_array_null_terminate (rarray);
+  ptr_array_maybe_null_terminate (rarray);
 }
 
 /**
@@ -2026,7 +2026,7 @@ g_ptr_array_extend (GPtrArray  *array_to_extend,
 
   rarray_to_extend->len += array->len;
 
-  ptr_array_null_terminate (rarray_to_extend);
+  ptr_array_maybe_null_terminate (rarray_to_extend);
 }
 
 /**
@@ -2097,7 +2097,7 @@ g_ptr_array_insert (GPtrArray *array,
   rarray->len++;
   rarray->pdata[index_] = data;
 
-  ptr_array_null_terminate (rarray);
+  ptr_array_maybe_null_terminate (rarray);
 }
 
 /* Please keep this doc-comment in sync with pointer_array_sort_example()
