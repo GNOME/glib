@@ -209,9 +209,9 @@ test_pollable_unix_pipe (void)
 static void
 test_pollable_unix_pty (void)
 {
+#ifdef HAVE_OPENPTY
   GPollableInputStream *in = NULL;
   GOutputStream *out = NULL;
-#ifdef HAVE_OPENPTY
   int a, b, status;
 #endif
 
