@@ -186,7 +186,7 @@ addition_thread (gpointer value)
 static void
 test_mutex_perf (gconstpointer data)
 {
-  guint n_threads = GPOINTER_TO_UINT (data);
+  const guint n_threads = GPOINTER_TO_UINT (data);
   GThread *threads[THREADS];
   gint64 start_time;
   gdouble rate;
