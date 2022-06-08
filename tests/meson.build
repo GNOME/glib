@@ -12,8 +12,6 @@ test_env.set('MALLOC_PERTURB_', '@0@'.format(random_number % 256))
 
 test_cargs = ['-DG_LOG_DOMAIN="GLib"', '-UG_DISABLE_ASSERT']
 
-subdir('gobject')
-
 test_extra_programs = {
   'assert-msg-test' : {},
 }
