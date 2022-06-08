@@ -485,6 +485,8 @@ g_object_base_class_init (GObjectClass *class)
   class->n_construct_properties = g_slist_length (class->construct_properties);
   class->get_property = NULL;
   class->set_property = NULL;
+  class->pspecs = NULL;
+  class->n_pspecs = 0;
 }
 
 static void
@@ -704,6 +706,75 @@ g_object_class_install_property (GObjectClass *class,
                                               pspec);
 }
 
+typedef struct {
+  const char *name;
+  GParamSpec *pspec;
+} PspecEntry;
+
+static int
+compare_pspec_entry (const void *a,
+                     const void *b)
+{
+  const PspecEntry *ae = a;
+  const PspecEntry *be = b;
+
+  return ae->name < be->name ? -1 : (ae->name > be->name ? 1 : 0);
+}
+
+/* This uses pointer comparisons with @property_name, so
+ * will only work with string literals. */
+static inline GParamSpec *
+find_pspec (GObjectClass *class,
+            const char   *property_name)
+{
+  const PspecEntry *pspecs = (const PspecEntry *)class->pspecs;
+  gsize n_pspecs = class->n_pspecs;
+
+  g_assert (n_pspecs <= G_MAXSSIZE);
+
+  /* The limit for choosing between linear and binary search is
+   * fairly arbitrary.
+   *
+   * Both searches use pointer comparisons against @property_name.
+   * If this function is called with a non-static @property_name,
+   * it will fall through to the g_param_spec_pool_lookup() case.
+   * That’s OK; this is an opportunistic optimisation which relies
+   * on the fact that *most* (but not all) property lookups use
+   * static property names.
+   */
+  if (n_pspecs < 10)
+    {
+      for (gsize i = 0; i < n_pspecs; i++)
+        {
+          if (pspecs[i].name == property_name)
+            return pspecs[i].pspec;
+        }
+    }
+  else
+    {
+      gssize lower = 0;
+      gssize upper = (int)class->n_pspecs - 1;
+      gssize mid;
+
+      while (lower <= upper)
+        {
+          mid = (lower + upper) / 2;
+
+          if (property_name < pspecs[mid].name)
+            upper = mid - 1;
+          else if (property_name > pspecs[mid].name)
+            lower = mid + 1;
+          else
+            return pspecs[mid].pspec;
+        }
+    }
+
+  return g_param_spec_pool_lookup (pspec_pool,
+                                   property_name,
+                                   ((GTypeClass *)class)->g_type,
+                                   TRUE);
+}
+
 /**
  * g_object_class_install_properties:
  * @oclass: a #GObjectClass
@@ -810,6 +881,32 @@ g_object_class_install_properties (GObjectClass  *oclass,
           break;
         }
     }
+
+  /* Save a copy of the pspec array inside the class struct. This
+   * makes it faster to look up pspecs for the class in future when
+   * acting on those properties.
+   *
+   * If a pspec is not in this cache array, calling code will fall
+   * back to using g_param_spec_pool_lookup(), so a pspec not being
+   * in this array is a (potential) performance problem but not a
+   * correctness problem. */
+  if (oclass->pspecs == NULL)
+    {
+      PspecEntry *entries;
+
+      entries = g_new (PspecEntry, n_pspecs - 1);
+
+      for (i = 1; i < n_pspecs; i++)
+        {
+          entries[i - 1].name = pspecs[i]->name;
+          entries[i - 1].pspec = pspecs[i];
+        }
+
+      qsort (entries, n_pspecs - 1, sizeof (PspecEntry), compare_pspec_entry);
+
+      oclass->pspecs = entries;
+      oclass->n_pspecs = n_pspecs - 1;
+    }
 }
 
 /**
@@ -857,6 +954,14 @@ g_object_interface_install_property (gpointer      g_iface,
   (void) install_property_internal (iface_class->g_type, 0, pspec);
 }
 
+/* Inlined version of g_param_spec_get_redirect_target(), for speed */
+static inline void
+param_spec_follow_override (GParamSpec **pspec)
+{
+  if (((GTypeInstance *) (*pspec))->g_class->g_type == G_TYPE_PARAM_OVERRIDE)
+    *pspec = ((GParamSpecOverride *) (*pspec))->overridden;
+}
+
 /**
  * g_object_class_find_property:
  * @oclass: a #GObjectClass
@@ -872,25 +977,16 @@ g_object_class_find_property (GObjectClass *class,
 			      const gchar  *property_name)
 {
   GParamSpec *pspec;
-  GParamSpec *redirect;
-	
+
   g_return_val_if_fail (G_IS_OBJECT_CLASS (class), NULL);
   g_return_val_if_fail (property_name != NULL, NULL);
-  
-  pspec = g_param_spec_pool_lookup (pspec_pool,
-				    property_name,
-				    G_OBJECT_CLASS_TYPE (class),
-				    TRUE);
+
+  pspec = find_pspec (class, property_name);
+
   if (pspec)
-    {
-      redirect = g_param_spec_get_redirect_target (pspec);
-      if (redirect)
-	return redirect;
-      else
-	return pspec;
-    }
-  else
-    return NULL;
+    param_spec_follow_override (&pspec);
+
+  return pspec;
 }
 
 /**
@@ -1342,14 +1438,6 @@ g_object_freeze_notify (GObject *object)
   g_object_ref (object);
   g_object_notify_queue_freeze (object, FALSE);
   g_object_unref (object);
-}
-
-/* Inlined version of g_param_spec_get_redirect_target(), for speed */
-static inline void
-param_spec_follow_override (GParamSpec **pspec)
-{
-  if (((GTypeInstance *) (*pspec))->g_class->g_type == G_TYPE_PARAM_OVERRIDE)
-    *pspec = ((GParamSpecOverride *) (*pspec))->overridden;
 }
 
 static inline void
@@ -2217,8 +2305,8 @@ g_object_new_with_properties (GType          object_type,
       params = g_newa (GObjectConstructParam, n_properties);
       for (i = 0; i < n_properties; i++)
         {
-          GParamSpec *pspec;
-          pspec = g_param_spec_pool_lookup (pspec_pool, names[i], object_type, TRUE);
+          GParamSpec *pspec = find_pspec (class, names[i]);
+
           if (!g_object_new_is_valid_property (object_type, pspec, names[i], params, count))
             continue;
           params[count].pspec = pspec;
@@ -2283,9 +2371,8 @@ g_object_newv (GType       object_type,
 
       for (i = 0; i < n_parameters; i++)
         {
-          GParamSpec *pspec;
+          GParamSpec *pspec = find_pspec (class, parameters[i].name);
 
-          pspec = g_param_spec_pool_lookup (pspec_pool, parameters[i].name, object_type, TRUE);
           if (!g_object_new_is_valid_property (object_type, pspec, parameters[i].name, cparams, j))
             continue;
 
@@ -2356,9 +2443,7 @@ g_object_new_valist (GType        object_type,
       do
         {
           gchar *error = NULL;
-          GParamSpec *pspec;
-
-          pspec = g_param_spec_pool_lookup (pspec_pool, name, object_type, TRUE);
+          GParamSpec *pspec = find_pspec (class, name);
 
           if (!g_object_new_is_valid_property (object_type, pspec, name, params, n_params))
             break;
@@ -2524,7 +2609,7 @@ g_object_setv (GObject       *object,
   guint i;
   GObjectNotifyQueue *nqueue = NULL;
   GParamSpec *pspec;
-  GType obj_type;
+  GObjectClass *class;
 
   g_return_if_fail (G_IS_OBJECT (object));
 
@@ -2532,14 +2617,15 @@ g_object_setv (GObject       *object,
     return;
 
   g_object_ref (object);
-  obj_type = G_OBJECT_TYPE (object);
+
+  class = G_OBJECT_GET_CLASS (object);
 
   if (_g_object_has_notify_handler (object))
     nqueue = g_object_notify_queue_freeze (object, FALSE);
 
   for (i = 0; i < n_properties; i++)
     {
-      pspec = g_param_spec_pool_lookup (pspec_pool, names[i], obj_type, TRUE);
+      pspec = find_pspec (class, names[i]);
 
       if (!g_object_set_is_valid_property (object, pspec, names[i]))
         break;
@@ -2569,6 +2655,7 @@ g_object_set_valist (GObject	 *object,
 {
   GObjectNotifyQueue *nqueue = NULL;
   const gchar *name;
+  GObjectClass *class;
   
   g_return_if_fail (G_IS_OBJECT (object));
 
@@ -2576,6 +2663,8 @@ g_object_set_valist (GObject	 *object,
 
   if (_g_object_has_notify_handler (object))
     nqueue = g_object_notify_queue_freeze (object, FALSE);
+
+  class = G_OBJECT_GET_CLASS (object);
 
   name = first_property_name;
   while (name)
@@ -2585,10 +2674,7 @@ g_object_set_valist (GObject	 *object,
       gchar *error = NULL;
       GTypeValueTable *vtab;
       
-      pspec = g_param_spec_pool_lookup (pspec_pool,
-					name,
-					G_OBJECT_TYPE (object),
-					TRUE);
+      pspec = find_pspec (class, name);
 
       if (!g_object_set_is_valid_property (object, pspec, name))
         break;
@@ -2661,7 +2747,7 @@ g_object_getv (GObject      *object,
 {
   guint i;
   GParamSpec *pspec;
-  GType obj_type;
+  GObjectClass *class;
 
   g_return_if_fail (G_IS_OBJECT (object));
 
@@ -2670,12 +2756,14 @@ g_object_getv (GObject      *object,
 
   g_object_ref (object);
 
+  class = G_OBJECT_GET_CLASS (object);
+
   memset (values, 0, n_properties * sizeof (GValue));
 
-  obj_type = G_OBJECT_TYPE (object);
   for (i = 0; i < n_properties; i++)
     {
-      pspec = g_param_spec_pool_lookup (pspec_pool, names[i], obj_type, TRUE);
+      pspec = find_pspec (class, names[i]);
+
       if (!g_object_get_is_valid_property (object, pspec, names[i]))
         break;
       g_value_init (&values[i], pspec->value_type);
@@ -2705,23 +2793,23 @@ g_object_get_valist (GObject	 *object,
 		     va_list	  var_args)
 {
   const gchar *name;
+  GObjectClass *class;
   
   g_return_if_fail (G_IS_OBJECT (object));
   
   g_object_ref (object);
-  
+
+  class = G_OBJECT_GET_CLASS (object);
+
   name = first_property_name;
-  
+
   while (name)
     {
       GValue value = G_VALUE_INIT;
       GParamSpec *pspec;
       gchar *error;
-      
-      pspec = g_param_spec_pool_lookup (pspec_pool,
-					name,
-					G_OBJECT_TYPE (object),
-					TRUE);
+
+      pspec = find_pspec (class, name);
 
       if (!g_object_get_is_valid_property (object, pspec, name))
         break;
@@ -2881,10 +2969,7 @@ g_object_get_property (GObject	   *object,
   
   g_object_ref (object);
   
-  pspec = g_param_spec_pool_lookup (pspec_pool,
-				    property_name,
-				    G_OBJECT_TYPE (object),
-				    TRUE);
+  pspec = find_pspec (G_OBJECT_GET_CLASS (object), property_name);
 
   if (g_object_get_is_valid_property (object, pspec, property_name))
     {
