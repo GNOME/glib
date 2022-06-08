@@ -72,6 +72,8 @@ static void g_list_store_iface_init (GListModelInterface *iface);
 G_DEFINE_TYPE_WITH_CODE (GListStore, g_list_store, G_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (G_TYPE_LIST_MODEL, g_list_store_iface_init));
 
+static GParamSpec *properties[N_PROPERTIES] = { NULL, };
+
 static void
 g_list_store_items_changed (GListStore *store,
                             guint       position,
@@ -155,9 +157,11 @@ g_list_store_class_init (GListStoreClass *klass)
    *
    * Since: 2.44
    **/
-  g_object_class_install_property (object_class, PROP_ITEM_TYPE,
+  properties[PROP_ITEM_TYPE] = 
     g_param_spec_gtype ("item-type", "", "", G_TYPE_OBJECT,
-                        G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+                        G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+
+  g_object_class_install_properties (object_class, N_PROPERTIES, properties);
 }
 
 static GType
