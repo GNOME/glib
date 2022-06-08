@@ -18,7 +18,7 @@
 #include <math.h>
 #include <string.h>
 #include <glib-object.h>
-#include "testcommon.h"
+#include "../testcommon.h"
 
 #define DEFAULT_TEST_TIME 2 /* seconds */
 

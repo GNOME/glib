@@ -1,3 +1,5 @@
+subdir('performance')
+
 marshalers_h = custom_target('marshalers_h',
   output : 'marshalers.h',
   input : 'marshalers.list',
