@@ -31,6 +31,7 @@ gobject_tests = {
   'accumulator' : {
     'source' : ['accumulator.c', marshalers_h, marshalers_c],
   },
+  'basics-gobject' : {},
   'boxed' : {},
   'cxx' : {
     'source' : ['cxx.cpp'],
