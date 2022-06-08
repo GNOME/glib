@@ -1441,24 +1441,51 @@ static inline void
 g_object_notify_by_spec_internal (GObject    *object,
                                   GParamSpec *pspec)
 {
+#ifdef HAVE_OPTIONAL_FLAGS
+  guint object_flags;
+#endif
+  gboolean has_notify;
+  gboolean in_init;
+
   if (G_UNLIKELY (~pspec->flags & G_PARAM_READABLE))
     return;
 
   param_spec_follow_override (&pspec);
 
-  if (pspec != NULL &&
-      _g_object_has_notify_handler (object))
+#ifdef HAVE_OPTIONAL_FLAGS
+  /* get all flags we need with a single atomic read */
+  object_flags = object_get_optional_flags (object);
+  has_notify = ((object_flags & OPTIONAL_FLAG_HAS_NOTIFY_HANDLER) != 0) ||
+               CLASS_HAS_NOTIFY (G_OBJECT_GET_CLASS (object));
+  in_init = (object_flags & OPTIONAL_FLAG_IN_CONSTRUCTION) != 0;
+#else
+  has_notify = TRUE;
+  in_init = object_in_construction (object);
+#endif
+
+  if (pspec != NULL && has_notify)
     {
       GObjectNotifyQueue *nqueue;
+      gboolean need_thaw = TRUE;
 
       /* conditional freeze: only increase freeze count if already frozen */
       nqueue = g_object_notify_queue_freeze (object, TRUE);
+      if (in_init && !nqueue)
+        {
+          /* We did not freeze the queue in g_object_init, but
+           * we gained a notify handler in instance init, so
+           * now we need to freeze just-in-time
+           */
+          nqueue = g_object_notify_queue_freeze (object, FALSE);
+          need_thaw = FALSE;
+        }
 
       if (nqueue != NULL)
         {
           /* we're frozen, so add to the queue and release our freeze */
           g_object_notify_queue_add (object, nqueue, pspec);
-          g_object_notify_queue_thaw (object, nqueue);
+          if (need_thaw)
+            g_object_notify_queue_thaw (object, nqueue);
         }
       else
         {
@@ -2167,11 +2194,12 @@ g_object_new_internal (GObjectClass          *class,
     {
       GSList *node;
 
-      if (CLASS_HAS_NOTIFY (class))
+      if (_g_object_has_notify_handler (object))
         {
           /* This will have been setup in g_object_init() */
           nqueue = g_datalist_id_get_data (&object->qdata, quark_notify_queue);
-          g_assert (nqueue != NULL);
+          if (!nqueue)
+            nqueue = g_object_notify_queue_freeze (object, FALSE);
         }
 
       /* We will set exactly n_construct_properties construct
