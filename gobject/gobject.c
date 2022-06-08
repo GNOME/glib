@@ -1272,11 +1272,8 @@ g_object_init (GObject		*object,
       g_object_notify_queue_freeze (object, FALSE);
     }
 
-  if (CLASS_HAS_CUSTOM_CONSTRUCTOR (class))
-    {
-      /* mark object in-construction for notify_queue_thaw() and to allow construct-only properties */
-      set_object_in_construction (object);
-    }
+  /* mark object in-construction for notify_queue_thaw() and to allow construct-only properties */
+  set_object_in_construction (object);
 
   GOBJECT_IF_DEBUG (OBJECTS,
     {
@@ -2163,6 +2160,8 @@ g_object_new_internal (GObjectClass          *class,
   object = (GObject *) g_type_create_instance (class->g_type_class.g_type);
 
   g_assert (g_object_is_aligned (object));
+
+  unset_object_in_construction (object);
 
   if (CLASS_HAS_PROPS (class))
     {
