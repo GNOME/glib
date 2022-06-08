@@ -18,7 +18,7 @@
 #include <math.h>
 #include <string.h>
 #include <glib-object.h>
-#include "testcommon.h"
+#include "../testcommon.h"
 
 #define WARM_UP_N_RUNS 50
 #define ESTIMATE_ROUND_TIME_N_RUNS 5

@@ -42,14 +42,3 @@ foreach test_name, extra_args : gobject_tests
   # FIXME? TESTS_ENVIRONMENT = LIBCHARSET_ALIAS_DIR=$(top_builddir)/glib/libcharset
   test(test_name, exe, env : test_env, timeout : timeout, suite : suite)
 endforeach
-
-# Don't install these ones, and keep them out of 'make check' because they take too long...
-executable('performance', 'performance.c',
-    c_args : common_c_args,
-    dependencies : common_deps,
-    install : false)
-
-executable('performance-threaded', 'performance-threaded.c',
-    c_args : common_c_args,
-    dependencies : common_deps,
-    install : false)
