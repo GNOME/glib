@@ -84,6 +84,21 @@ G_DEFINE_INTERFACE (GListModel, g_list_model, G_TYPE_OBJECT)
  * implementation, but typically it will be from the thread that owns
  * the [thread-default main context][g-main-context-push-thread-default]
  * in effect at the time that the model was created.
+ *
+ * Over time, it has established itself as good practice for listmodel
+ * implementations to provide properties `item-type` and `n-items` to
+ * ease working with them. While it is not required, it is recommended
+ * that implementations provide these two properties. They should return
+ * the values of g_list_model_get_item_type() and g_list_model_get_n_items()
+ * respectively and be defined as such:
+ * |[<!-- language="C" -->
+ * properties[PROP_ITEM_TYPE] =
+ *   g_param_spec_gtype ("item-type", "", "", G_TYPE_OBJECT,
+ *                       G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+ * properties[PROP_N_ITEMS] =
+ *   g_param_spec_uint ("n-items", "", "", 0, G_MAXUINT, 0,
+ *                      G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
+ * ]|
  */
 
 /**
