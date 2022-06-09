@@ -2,6 +2,30 @@
 #include <gstdio.h>
 #include <glib-object.h>
 
+#define assert_cmpsource(binding, op, expected_source) G_STMT_START { \
+  GObject *tmp, *tmp2; \
+  tmp = g_binding_dup_source ((binding)); \
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS \
+  tmp2 = g_binding_get_source ((binding)); \
+  G_GNUC_END_IGNORE_DEPRECATIONS \
+  g_assert_nonnull (tmp); \
+  g_assert_true ((gpointer) tmp op (gpointer) (expected_source)); \
+  g_assert_true (tmp == tmp2); \
+  g_object_unref (tmp); \
+} G_STMT_END
+
+#define assert_cmptarget(binding, op, expected_target) G_STMT_START { \
+  GObject *tmp, *tmp2; \
+  tmp = g_binding_dup_target ((binding)); \
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS \
+  tmp2 = g_binding_get_target ((binding)); \
+  G_GNUC_END_IGNORE_DEPRECATIONS \
+  g_assert_nonnull (tmp); \
+  g_assert_true ((gpointer) tmp op (gpointer) (expected_target)); \
+  g_assert_true (tmp == tmp2); \
+  g_object_unref (tmp); \
+} G_STMT_END
+
 typedef struct {
   GTypeInterface g_iface;
 } FooInterface;
@@ -353,7 +377,6 @@ binding_default (void)
 {
   BindingSource *source = g_object_new (binding_source_get_type (), NULL);
   BindingTarget *target = g_object_new (binding_target_get_type (), NULL);
-  GObject *tmp;
   GBinding *binding;
 
   binding = g_object_bind_property (source, "foo",
@@ -361,14 +384,10 @@ binding_default (void)
                                     G_BINDING_DEFAULT);
 
   g_object_add_weak_pointer (G_OBJECT (binding), (gpointer *) &binding);
-  tmp = g_binding_dup_source (binding);
-  g_assert_nonnull (tmp);
-  g_assert_true ((BindingSource *) tmp == source);
-  g_object_unref (tmp);
-  tmp = g_binding_dup_target (binding);
-  g_assert_nonnull (tmp);
-  g_assert_true ((BindingTarget *) tmp == target);
-  g_object_unref (tmp);
+
+  assert_cmpsource (binding, ==, source);
+  assert_cmptarget (binding, ==, target);
+
   g_assert_cmpstr (g_binding_get_source_property (binding), ==, "foo");
   g_assert_cmpstr (g_binding_get_target_property (binding), ==, "bar");
   g_assert_cmpint (g_binding_get_flags (binding), ==, G_BINDING_DEFAULT);
@@ -395,7 +414,6 @@ binding_canonicalisation (void)
   BindingSource *source = g_object_new (binding_source_get_type (), NULL);
   BindingTarget *target = g_object_new (binding_target_get_type (), NULL);
   GBinding *binding;
-  GObject *tmp;
 
   g_test_summary ("Test that bindings set up with non-canonical property names work");
 
@@ -404,14 +422,10 @@ binding_canonicalisation (void)
                                     G_BINDING_DEFAULT);
 
   g_object_add_weak_pointer (G_OBJECT (binding), (gpointer *) &binding);
-  tmp = g_binding_dup_source (binding);
-  g_assert_nonnull (tmp);
-  g_assert_true ((BindingSource *) tmp == source);
-  g_object_unref (tmp);
-  tmp = g_binding_dup_target (binding);
-  g_assert_nonnull (tmp);
-  g_assert_true ((BindingTarget *) tmp == target);
-  g_object_unref (tmp);
+
+  assert_cmpsource (binding, ==, source);
+  assert_cmptarget (binding, ==, target);
+
   g_assert_cmpstr (g_binding_get_source_property (binding), ==, "double-value");
   g_assert_cmpstr (g_binding_get_target_property (binding), ==, "double-value");
   g_assert_cmpint (g_binding_get_flags (binding), ==, G_BINDING_DEFAULT);
