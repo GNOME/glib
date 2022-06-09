@@ -27,6 +27,7 @@
 
 #include "gasyncresult.h"
 #include "ginetaddress.h"
+#include "gioerror.h"
 #include "glibintl.h"
 #include "gnetworkaddress.h"
 #include "gnetworkingprivate.h"
@@ -89,6 +90,20 @@ struct _GProxyAddressEnumeratorPrivate
   gboolean                  supports_hostname;
   GList                    *next_dest_ip;
   GError                   *last_error;
+
+  /* ever_enumerated is TRUE after we've returned a result for the first time
+   * via g_proxy_address_enumerator_next() or _next_async(). If FALSE, we have
+   * never returned yet, and should return an error if returning NULL because
+   * it does not make sense for a proxy resolver to return NULL except on error.
+   * (Whereas a DNS resolver would return NULL with no error to indicate "no
+   * results", a proxy resolver would want to return "direct://" instead, so
+   * NULL without error does not make sense for us.)
+   *
+   * But if ever_enumerated is TRUE, then we must not report any further errors
+   * (except for G_IO_ERROR_CANCELLED), because this is an API contract of
+   * GSocketAddressEnumerator.
+   */
+  gboolean                  ever_enumerated;
 };
 
 G_DEFINE_TYPE_WITH_PRIVATE (GProxyAddressEnumerator, g_proxy_address_enumerator, G_TYPE_SOCKET_ADDRESS_ENUMERATOR)
@@ -173,8 +188,9 @@ g_proxy_address_enumerator_next (GSocketAddressEnumerator  *enumerator,
   GSocketAddress *result = NULL;
   GError *first_error = NULL;
 
-  if (priv->proxies == NULL)
+  if (!priv->ever_enumerated)
     {
+      g_assert (priv->proxies == NULL);
       priv->proxies = g_proxy_resolver_lookup (priv->proxy_resolver,
 					       priv->dest_uri,
 					       cancellable,
@@ -182,7 +198,10 @@ g_proxy_address_enumerator_next (GSocketAddressEnumerator  *enumerator,
       priv->next_proxy = priv->proxies;
 
       if (priv->proxies == NULL)
-	return NULL;
+	{
+	  priv->ever_enumerated = TRUE;
+	  return NULL;
+	}
     }
 
   while (result == NULL && (*priv->next_proxy || priv->addr_enum))
@@ -296,29 +315,37 @@ g_proxy_address_enumerator_next (GSocketAddressEnumerator  *enumerator,
 	}
     }
 
-  if (result == NULL && first_error)
+  if (result == NULL && first_error && (!priv->ever_enumerated || g_error_matches (first_error, G_IO_ERROR, G_IO_ERROR_CANCELLED)))
     g_propagate_error (error, first_error);
   else if (first_error)
     g_error_free (first_error);
 
+  if (result == NULL && error != NULL && *error == NULL && !priv->ever_enumerated)
+    g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED, _("Unspecified proxy lookup failure"));
+
+  priv->ever_enumerated = TRUE;
+
   return result;
 }
-
-
 
 static void
 complete_async (GTask *task)
 {
   GProxyAddressEnumeratorPrivate *priv = g_task_get_task_data (task);
 
-  if (priv->last_error)
+  if (priv->last_error && (!priv->ever_enumerated || g_error_matches (priv->last_error, G_IO_ERROR, G_IO_ERROR_CANCELLED)))
     {
       g_task_return_error (task, priv->last_error);
       priv->last_error = NULL;
     }
+  else if (!priv->ever_enumerated)
+    g_task_return_new_error (task, G_IO_ERROR, G_IO_ERROR_FAILED, _("Unspecified proxy lookup failure"));
   else
     g_task_return_pointer (task, NULL, NULL);
 
+  priv->ever_enumerated = TRUE;
+
+  g_clear_error (&priv->last_error);
   g_object_unref (task);
 }
 
@@ -392,6 +419,7 @@ return_result (GTask *task)
 	}
     }
 
+  priv->ever_enumerated = TRUE;
   g_task_return_pointer (task, result, g_object_unref);
   g_object_unref (task);
 }
