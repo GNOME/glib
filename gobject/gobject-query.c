@@ -83,18 +83,18 @@ show_nodes (GType        type,
 }
 
 static gint
-help (gchar *arg)
+help (const gchar *arg)
 {
-  g_fprintf (stderr, "usage: gobject-query <qualifier> [-r <type>] [-{i|b} \"\"] [-s #] [-{h|x|y}]\n");
-  g_fprintf (stderr, "       -r       specify root type\n");
-  g_fprintf (stderr, "       -n       don't descend type tree\n");
-  g_fprintf (stderr, "       -h       show help\n");
-  g_fprintf (stderr, "       -b       specify indent string\n");
-  g_fprintf (stderr, "       -i       specify incremental indent string\n");
-  g_fprintf (stderr, "       -s       specify line spacing\n");
-  g_fprintf (stderr, "qualifiers:\n");
-  g_fprintf (stderr, "       froots   iterate over fundamental roots\n");
-  g_fprintf (stderr, "       tree     print type tree\n");
+  g_fprintf (stdout, "usage: gobject-query <qualifier> [-r <type>] [-{i|b} \"\"] [-s #] [-{h|x|y}]\n");
+  g_fprintf (stdout, "       -r       specify root type\n");
+  g_fprintf (stdout, "       -n       don't descend type tree\n");
+  g_fprintf (stdout, "       -h       show help\n");
+  g_fprintf (stdout, "       -b       specify indent string\n");
+  g_fprintf (stdout, "       -i       specify incremental indent string\n");
+  g_fprintf (stdout, "       -s       specify line spacing\n");
+  g_fprintf (stdout, "qualifiers:\n");
+  g_fprintf (stdout, "       froots   iterate over fundamental roots\n");
+  g_fprintf (stdout, "       tree     print type tree\n");
   
   return arg != NULL;
 }
