@@ -32,21 +32,12 @@ static FILE *f_out = NULL;
 static GType root = 0;
 static gboolean recursion = TRUE;
 
-#if 0
-#  define	O_SPACE	"\\as"
-#  define	O_ESPACE " "
-#  define	O_BRANCH "\\aE"
-#  define	O_VLINE "\\al"
-#  define	O_LLEAF	"\\aL"
-#  define	O_KEY_FILL "_"
-#else
-#  define	O_SPACE	" "
-#  define	O_ESPACE ""
-#  define	O_BRANCH "+"
-#  define	O_VLINE "|"
-#  define	O_LLEAF	"`"
-#  define	O_KEY_FILL "_"
-#endif
+#define	O_SPACE	" "
+#define	O_ESPACE ""
+#define	O_BRANCH "+"
+#define	O_VLINE "|"
+#define	O_LLEAF	"`"
+#define	O_KEY_FILL "_"
 
 static void
 show_nodes (GType        type,
