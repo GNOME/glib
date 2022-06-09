@@ -102,6 +102,7 @@ endif
 
 python_tests = [
   'genmarshal.py',
+  'gobject-query.py',
   'mkenums.py',
 ]
 
