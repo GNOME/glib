@@ -21,6 +21,7 @@
 
 struct _MySingleton {
   GObject parent_instance;
+  int myint;
 };
 
 #define MY_TYPE_SINGLETON my_singleton_get_type ()
@@ -42,6 +43,15 @@ my_singleton_constructor (GType                  type,
 }
 
 static void
+my_singleton_finalize (GObject *object)
+{
+  g_assert ((GObject *) the_one_and_only == object);
+  the_one_and_only = NULL;
+
+  G_OBJECT_CLASS (my_singleton_parent_class)->finalize (object);
+}
+
+static void
 my_singleton_init (MySingleton *self)
 {
   g_assert_null (the_one_and_only);
@@ -49,9 +59,45 @@ my_singleton_init (MySingleton *self)
 }
 
 static void
+my_singleton_set_property (GObject      *gobject,
+                           guint         prop_id,
+                           const GValue *value,
+                           GParamSpec   *pspec)
+{
+  MySingleton *self = (MySingleton *) gobject;
+
+  g_assert (prop_id == 1);
+
+  self->myint = g_value_get_int (value);
+}
+
+static void
+my_singleton_get_property (GObject    *gobject,
+                           guint       prop_id,
+                           GValue     *value,
+                           GParamSpec *pspec)
+{
+  MySingleton *self = (MySingleton *) gobject;
+
+  g_assert (prop_id == 1);
+
+  g_value_set_int (value, self->myint);
+}
+
+static void
 my_singleton_class_init (MySingletonClass *klass)
 {
-  G_OBJECT_CLASS (klass)->constructor = my_singleton_constructor;
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  object_class->constructor = my_singleton_constructor;
+  object_class->finalize = my_singleton_finalize;
+  object_class->set_property = my_singleton_set_property;
+  object_class->get_property = my_singleton_get_property;
+
+  g_object_class_install_property (G_OBJECT_CLASS (klass), 1,
+                                   g_param_spec_int ("foo", NULL, NULL,
+                                                     0, G_MAXINT, 0,
+                                                     G_PARAM_READWRITE | G_PARAM_CONSTRUCT | G_PARAM_STATIC_STRINGS));
 }
 
 static void
@@ -72,6 +118,22 @@ test_singleton_construction (void)
   g_object_unref (singleton);
 }
 
+static void
+test_singleton_construct_property (void)
+{
+  MySingleton *singleton;
+
+  g_test_summary ("Test that creating a singleton with a construct-time property works");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/2666");
+
+  /* create the singleton and set a property at construction time */
+  singleton = g_object_new (MY_TYPE_SINGLETON, "foo", 1, NULL);
+  g_assert_nonnull (singleton);
+
+  /* shutdown */
+  g_object_unref (singleton);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -79,6 +141,7 @@ main (int   argc,
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/gobject/singleton/construction", test_singleton_construction);
+  g_test_add_func ("/gobject/singleton/construct-property", test_singleton_construct_property);
 
   return g_test_run ();
 }
