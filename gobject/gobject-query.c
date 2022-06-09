@@ -170,11 +170,8 @@ main (gint   argc,
 	{
 	  gen_tree = 1;
 	}
-      else if (strcmp ("-h", argv[i]) == 0)
-	{
-	  return help (NULL);
-	}
-      else if (strcmp ("--help", argv[i]) == 0)
+      else if (strcmp ("-h", argv[i]) == 0 ||
+               strcmp ("--help", argv[i]) == 0)
 	{
 	  return help (NULL);
 	}
