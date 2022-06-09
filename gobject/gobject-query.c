@@ -34,9 +34,9 @@ static gboolean recursion = TRUE;
 
 #define	O_SPACE	" "
 #define	O_ESPACE ""
-#define	O_BRANCH "+"
-#define	O_VLINE "|"
-#define	O_LLEAF	"`"
+#define	O_BRANCH "├"
+#define	O_VLINE "│"
+#define	O_LLEAF	"└"
 #define	O_KEY_FILL "_"
 
 static void
@@ -204,9 +204,13 @@ main (gint   argc,
       for (i = 0; i <= G_TYPE_FUNDAMENTAL_MAX; i += G_TYPE_MAKE_FUNDAMENTAL (1))
 	{
 	  const gchar *name = g_type_name (i);
+          GType sibling = i + G_TYPE_MAKE_FUNDAMENTAL (1);
+
+          if (sibling > G_TYPE_FUNDAMENTAL_MAX || g_type_name (sibling) == NULL)
+            sibling = 0;
 	  
 	  if (name)
-	    show_nodes (i, 0, iindent);
+	    show_nodes (i, sibling, iindent);
 	}
     }
   
