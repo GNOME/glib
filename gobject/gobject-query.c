@@ -32,21 +32,12 @@ static FILE *f_out = NULL;
 static GType root = 0;
 static gboolean recursion = TRUE;
 
-#if 0
-#  define	O_SPACE	"\\as"
-#  define	O_ESPACE " "
-#  define	O_BRANCH "\\aE"
-#  define	O_VLINE "\\al"
-#  define	O_LLEAF	"\\aL"
-#  define	O_KEY_FILL "_"
-#else
-#  define	O_SPACE	" "
-#  define	O_ESPACE ""
-#  define	O_BRANCH "+"
-#  define	O_VLINE "|"
-#  define	O_LLEAF	"`"
-#  define	O_KEY_FILL "_"
-#endif
+#define	O_SPACE	" "
+#define	O_ESPACE ""
+#define	O_BRANCH "├"
+#define	O_VLINE "│"
+#define	O_LLEAF	"└"
+#define	O_KEY_FILL "_"
 
 static void
 show_nodes (GType        type,
@@ -60,10 +51,6 @@ show_nodes (GType        type,
     return;
   
   children = g_type_children (type, NULL);
-  
-  if (type != root)
-    for (i = 0; i < spacing; i++)
-      g_fprintf (f_out, "%s%s\n", indent, O_VLINE);
   
   g_fprintf (f_out, "%s%s%s%s",
 	   indent,
@@ -96,18 +83,18 @@ show_nodes (GType        type,
 }
 
 static gint
-help (gchar *arg)
+help (const gchar *arg)
 {
-  g_fprintf (stderr, "usage: gobject-query <qualifier> [-r <type>] [-{i|b} \"\"] [-s #] [-{h|x|y}]\n");
-  g_fprintf (stderr, "       -r       specify root type\n");
-  g_fprintf (stderr, "       -n       don't descend type tree\n");
-  g_fprintf (stderr, "       -h       guess what ;)\n");
-  g_fprintf (stderr, "       -b       specify indent string\n");
-  g_fprintf (stderr, "       -i       specify incremental indent string\n");
-  g_fprintf (stderr, "       -s       specify line spacing\n");
-  g_fprintf (stderr, "qualifiers:\n");
-  g_fprintf (stderr, "       froots   iterate over fundamental roots\n");
-  g_fprintf (stderr, "       tree     print type tree\n");
+  g_fprintf (stdout, "usage: gobject-query <qualifier> [-r <type>] [-{i|b} \"\"] [-s #] [-{h|x|y}]\n");
+  g_fprintf (stdout, "       -r       specify root type\n");
+  g_fprintf (stdout, "       -n       don't descend type tree\n");
+  g_fprintf (stdout, "       -h       show help\n");
+  g_fprintf (stdout, "       -b       specify indent string\n");
+  g_fprintf (stdout, "       -i       specify incremental indent string\n");
+  g_fprintf (stdout, "       -s       specify line spacing\n");
+  g_fprintf (stdout, "qualifiers:\n");
+  g_fprintf (stdout, "       froots   iterate over fundamental roots\n");
+  g_fprintf (stdout, "       tree     print type tree\n");
   
   return arg != NULL;
 }
@@ -183,11 +170,13 @@ main (gint   argc,
 	{
 	  gen_tree = 1;
 	}
-      else if (strcmp ("-h", argv[i]) == 0)
-	{
-	  return help (NULL);
-	}
-      else if (strcmp ("--help", argv[i]) == 0)
+      else if (strcmp ("--version", argv[i]) == 0)
+        {
+          g_print (PACKAGE_VERSION "\n");
+          return 0;
+        }
+      else if (strcmp ("-h", argv[i]) == 0 ||
+               strcmp ("--help", argv[i]) == 0)
 	{
 	  return help (NULL);
 	}
@@ -213,9 +202,13 @@ main (gint   argc,
       for (i = 0; i <= G_TYPE_FUNDAMENTAL_MAX; i += G_TYPE_MAKE_FUNDAMENTAL (1))
 	{
 	  const gchar *name = g_type_name (i);
+          GType sibling = i + G_TYPE_MAKE_FUNDAMENTAL (1);
+
+          if (sibling > G_TYPE_FUNDAMENTAL_MAX || g_type_name (sibling) == NULL)
+            sibling = 0;
 	  
 	  if (name)
-	    show_nodes (i, 0, iindent);
+	    show_nodes (i, sibling, iindent);
 	}
     }
   
