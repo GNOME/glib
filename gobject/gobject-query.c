@@ -52,10 +52,6 @@ show_nodes (GType        type,
   
   children = g_type_children (type, NULL);
   
-  if (type != root)
-    for (i = 0; i < spacing; i++)
-      g_fprintf (f_out, "%s%s\n", indent, O_VLINE);
-  
   g_fprintf (f_out, "%s%s%s%s",
 	   indent,
 	   sibling ? O_BRANCH : (type != root ? O_LLEAF : O_SPACE),
