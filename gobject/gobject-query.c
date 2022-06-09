@@ -170,6 +170,11 @@ main (gint   argc,
 	{
 	  gen_tree = 1;
 	}
+      else if (strcmp ("--version", argv[i]) == 0)
+        {
+          g_print (PACKAGE_VERSION "\n");
+          return 0;
+        }
       else if (strcmp ("-h", argv[i]) == 0 ||
                strcmp ("--help", argv[i]) == 0)
 	{
