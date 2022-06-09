@@ -523,8 +523,8 @@ typedef enum {
  *     ...
  *   }
  * ]|
- * but should instead treat all unrecognized error codes the same as
- * %G_IO_ERROR_FAILED.
+ * but should instead treat all unrecognized error codes the same
+ * as %G_IO_ERROR_FAILED.
  *
  * See also #GPollableReturn for a cheaper way of returning
  * %G_IO_ERROR_WOULD_BLOCK to callers without allocating a #GError.
