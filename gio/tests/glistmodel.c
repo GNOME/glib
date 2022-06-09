@@ -38,6 +38,13 @@ list_model_get (GListModel *model,
   return g_steal_pointer (&item);
 }
 
+#define assert_cmpitems(store, cmp, n_items) G_STMT_START{ \
+  guint tmp; \
+  g_assert_cmpuint (g_list_model_get_n_items (G_LIST_MODEL (store)), cmp, n_items); \
+  g_object_get (store, "n-items", &tmp, NULL); \
+  g_assert_cmpuint (tmp, cmp, n_items); \
+}G_STMT_END
+
 /* Test that constructing/getting/setting properties on a #GListStore works. */
 static void
 test_store_properties (void)
@@ -88,12 +95,12 @@ test_store_boundaries (void)
   /* don't allow inserting an item past the end ... */
   g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL, "*g_sequence*");
   g_list_store_insert (store, 1, item);
-  g_assert_cmpuint (g_list_model_get_n_items (G_LIST_MODEL (store)), ==, 0);
+  assert_cmpitems (store, ==, 0);
   g_test_assert_expected_messages ();
 
   /* ... except exactly at the end */
   g_list_store_insert (store, 0, item);
-  g_assert_cmpuint (g_list_model_get_n_items (G_LIST_MODEL (store)), ==, 1);
+  assert_cmpitems (store, ==, 1);
 
   /* remove a non-existing item at exactly the end of the list */
   g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL, "*g_sequence*");
@@ -101,7 +108,7 @@ test_store_boundaries (void)
   g_test_assert_expected_messages ();
 
   g_list_store_remove (store, 0);
-  g_assert_cmpuint (g_list_model_get_n_items (G_LIST_MODEL (store)), ==, 0);
+  assert_cmpitems (store, ==, 0);
 
   /* splice beyond the end of the list */
   g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL, "*position*");
@@ -115,13 +122,13 @@ test_store_boundaries (void)
 
   g_list_store_append (store, item);
   g_list_store_splice (store, 0, 1, (gpointer *) &item, 1);
-  g_assert_cmpuint (g_list_model_get_n_items (G_LIST_MODEL (store)), ==, 1);
+  assert_cmpitems (store, ==, 1);
 
   /* remove more items than exist */
   g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL, "*position*");
   g_list_store_splice (store, 0, 5, NULL, 0);
   g_test_assert_expected_messages ();
-  g_assert_cmpuint (g_list_model_get_n_items (G_LIST_MODEL (store)), ==, 1);
+  assert_cmpitems (store, ==, 1);
 
   g_object_unref (store);
   g_assert_finalize_object (item);
@@ -138,7 +145,7 @@ test_store_refcounts (void)
 
   store = g_list_store_new (G_TYPE_MENU_ITEM);
 
-  g_assert_cmpuint (g_list_model_get_n_items (G_LIST_MODEL (store)), ==, 0);
+  assert_cmpitems (store, ==, 0);
   g_assert_null (list_model_get (G_LIST_MODEL (store), 0));
 
   n_items = G_N_ELEMENTS (items);
@@ -152,7 +159,7 @@ test_store_refcounts (void)
       g_assert_nonnull (items[i]);
     }
 
-  g_assert_cmpuint (g_list_model_get_n_items (G_LIST_MODEL (store)), ==, n_items);
+  assert_cmpitems (store, ==, n_items);
   g_assert_null (list_model_get (G_LIST_MODEL (store), n_items));
 
   tmp = list_model_get (G_LIST_MODEL (store), 3);
@@ -162,7 +169,7 @@ test_store_refcounts (void)
   g_list_store_remove (store, 4);
   g_assert_null (items[4]);
   n_items--;
-  g_assert_cmpuint (g_list_model_get_n_items (G_LIST_MODEL (store)), ==, n_items);
+  assert_cmpitems (store, ==, n_items);
   g_assert_null (list_model_get (G_LIST_MODEL (store), n_items));
 
   g_object_unref (store);
@@ -229,7 +236,7 @@ test_store_sorted (void)
       g_free (str);
     }
 
-  g_assert_cmpint (g_list_model_get_n_items (G_LIST_MODEL (store)), ==, 2000);
+  assert_cmpitems (store, ==, 2000);
 
   for (i = 0; i < 1000; i++)
     {
@@ -286,7 +293,7 @@ test_store_splice_replace_middle (void)
 
   /* Add three items through splice */
   g_list_store_splice (store, 0, 0, array->pdata, 3);
-  g_assert_cmpuint (g_list_model_get_n_items (model), ==, 3);
+  assert_cmpitems (store, ==, 3);
 
   item = list_model_get (model, 0);
   g_assert_cmpstr (g_action_get_name (item), ==, "1");
@@ -300,7 +307,7 @@ test_store_splice_replace_middle (void)
 
   /* Replace the middle one with two new items */
   g_list_store_splice (store, 1, 1, array->pdata + 3, 2);
-  g_assert_cmpuint (g_list_model_get_n_items (model), ==, 4);
+  assert_cmpitems (store, ==, 4);
 
   item = list_model_get (model, 0);
   g_assert_cmpstr (g_action_get_name (item), ==, "1");
@@ -342,7 +349,7 @@ test_store_splice_replace_all (void)
   /* Add the first two */
   g_list_store_splice (store, 0, 0, array->pdata, 2);
 
-  g_assert_cmpuint (g_list_model_get_n_items (model), ==, 2);
+  assert_cmpitems (store, ==, 2);
   item = list_model_get (model, 0);
   g_assert_cmpstr (g_action_get_name (item), ==, "1");
   g_object_unref (item);
@@ -353,7 +360,7 @@ test_store_splice_replace_all (void)
   /* Replace all with the last two */
   g_list_store_splice (store, 0, 2, array->pdata + 2, 2);
 
-  g_assert_cmpuint (g_list_model_get_n_items (model), ==, 2);
+  assert_cmpitems (store, ==, 2);
   item = list_model_get (model, 0);
   g_assert_cmpstr (g_action_get_name (item), ==, "3");
   g_object_unref (item);
@@ -378,7 +385,7 @@ test_store_splice_noop (void)
 
   /* splice noop with an empty list */
   g_list_store_splice (store, 0, 0, NULL, 0);
-  g_assert_cmpuint (g_list_model_get_n_items (model), ==, 0);
+  assert_cmpitems (store, ==, 0);
 
   /* splice noop with a non-empty list */
   item = G_ACTION (g_simple_action_new ("1", NULL));
@@ -386,10 +393,10 @@ test_store_splice_noop (void)
   g_object_unref (item);
 
   g_list_store_splice (store, 0, 0, NULL, 0);
-  g_assert_cmpuint (g_list_model_get_n_items (model), ==, 1);
+  assert_cmpitems (store, ==, 1);
 
   g_list_store_splice (store, 1, 0, NULL, 0);
-  g_assert_cmpuint (g_list_model_get_n_items (model), ==, 1);
+  assert_cmpitems (store, ==, 1);
 
   item = list_model_get (model, 0);
   g_assert_cmpstr (g_action_get_name (item), ==, "1");
@@ -454,21 +461,21 @@ test_store_splice_remove_multiple (void)
   g_assert_false (model_array_equal (model, array));
   g_ptr_array_remove_range (array, 0, 2);
   g_assert_true (model_array_equal (model, array));
-  g_assert_cmpuint (g_list_model_get_n_items (model), ==, 8);
+  assert_cmpitems (store, ==, 8);
 
   /* Remove two in the middle */
   g_list_store_splice (store, 2, 2, NULL, 0);
   g_assert_false (model_array_equal (model, array));
   g_ptr_array_remove_range (array, 2, 2);
   g_assert_true (model_array_equal (model, array));
-  g_assert_cmpuint (g_list_model_get_n_items (model), ==, 6);
+  assert_cmpitems (store, ==, 6);
 
   /* Remove two at the end */
   g_list_store_splice (store, 4, 2, NULL, 0);
   g_assert_false (model_array_equal (model, array));
   g_ptr_array_remove_range (array, 4, 2);
   g_assert_true (model_array_equal (model, array));
-  g_assert_cmpuint (g_list_model_get_n_items (model), ==, 4);
+  assert_cmpitems (store, ==, 4);
 
   g_ptr_array_unref (array);
   g_object_unref (store);
@@ -528,24 +535,22 @@ static void
 test_store_remove_all (void)
 {
   GListStore *store;
-  GListModel *model;
   GSimpleAction *item;
 
   store = g_list_store_new (G_TYPE_SIMPLE_ACTION);
-  model = G_LIST_MODEL (store);
 
   /* Test with an empty list */
   g_list_store_remove_all (store);
-  g_assert_cmpuint (g_list_model_get_n_items (model), ==, 0);
+  assert_cmpitems (store, ==, 0);
 
   /* Test with a non-empty list */
   item = g_simple_action_new ("42", NULL);
   g_list_store_append (store, item);
   g_list_store_append (store, item);
   g_object_unref (item);
-  g_assert_cmpuint (g_list_model_get_n_items (model), ==, 2);
+  assert_cmpitems (store, ==, 2);
   g_list_store_remove_all (store);
-  g_assert_cmpuint (g_list_model_get_n_items (model), ==, 0);
+  assert_cmpitems (store, ==, 0);
 
   g_object_unref (store);
 }
@@ -677,6 +682,7 @@ struct ItemsChangedData
   guint removed;
   guint added;
   gboolean called;
+  gboolean notified;
 };
 
 static void
@@ -689,6 +695,7 @@ expect_items_changed (struct ItemsChangedData *expected,
   expected->removed = removed;
   expected->added = added;
   expected->called = FALSE;
+  expected->notified = FALSE;
 }
 
 static void
@@ -705,6 +712,15 @@ on_items_changed (GListModel *model,
   expected->called = TRUE;
 }
 
+static void
+on_notify_n_items (GListModel *model,
+                   GParamSpec *pspec,
+                   struct ItemsChangedData *expected)
+{
+  g_assert_false (expected->notified);
+  expected->notified = TRUE;
+}
+
 /* Test that all operations on the list emit the items-changed signal */
 static void
 test_store_signal_items_changed (void)
@@ -719,11 +735,14 @@ test_store_signal_items_changed (void)
 
   g_object_connect (model, "signal::items-changed",
                     on_items_changed, &expected, NULL);
+  g_object_connect (model, "signal::notify::n-items",
+                    on_notify_n_items, &expected, NULL);
 
   /* Emit the signal manually */
   expect_items_changed (&expected, 0, 0, 0);
   g_list_model_items_changed (model, 0, 0, 0);
   g_assert_true (expected.called);
+  g_assert_false (expected.notified);
 
   /* Append an item */
   expect_items_changed (&expected, 0, 0, 1);
@@ -731,6 +750,7 @@ test_store_signal_items_changed (void)
   g_list_store_append (store, item);
   g_object_unref (item);
   g_assert_true (expected.called);
+  g_assert_true (expected.notified);
 
   /* Insert an item */
   expect_items_changed (&expected, 1, 0, 1);
@@ -738,6 +758,7 @@ test_store_signal_items_changed (void)
   g_list_store_insert (store, 1, item);
   g_object_unref (item);
   g_assert_true (expected.called);
+  g_assert_true (expected.notified);
 
   /* Sort the list */
   expect_items_changed (&expected, 0, 2, 2);
@@ -745,6 +766,7 @@ test_store_signal_items_changed (void)
                      (GCompareDataFunc)list_model_cmp_action_by_name,
                      NULL);
   g_assert_true (expected.called);
+  g_assert_false (expected.notified);
 
   /* Insert sorted */
   expect_items_changed (&expected, 2, 0, 1);
@@ -755,25 +777,38 @@ test_store_signal_items_changed (void)
                               NULL);
   g_object_unref (item);
   g_assert_true (expected.called);
+  g_assert_true (expected.notified);
 
   /* Remove an item */
   expect_items_changed (&expected, 1, 1, 0);
   g_list_store_remove (store, 1);
   g_assert_true (expected.called);
+  g_assert_true (expected.notified);
 
   /* Splice */
   expect_items_changed (&expected, 0, 2, 1);
   item = g_simple_action_new ("4", NULL);
-  g_assert_cmpuint (g_list_model_get_n_items (model), >=, 2);
+  assert_cmpitems (store, >=, 2);
   g_list_store_splice (store, 0, 2, (gpointer)&item, 1);
   g_object_unref (item);
   g_assert_true (expected.called);
+  g_assert_true (expected.notified);
+
+  /* Splice to replace */
+  expect_items_changed (&expected, 0, 1, 1);
+  item = g_simple_action_new ("5", NULL);
+  assert_cmpitems (store, >=, 1);
+  g_list_store_splice (store, 0, 1, (gpointer)&item, 1);
+  g_object_unref (item);
+  g_assert_true (expected.called);
+  g_assert_false (expected.notified);
 
   /* Remove all */
   expect_items_changed (&expected, 0, 1, 0);
-  g_assert_cmpuint (g_list_model_get_n_items (model), ==, 1);
+  assert_cmpitems (store, ==, 1);
   g_list_store_remove_all (store);
   g_assert_true (expected.called);
+  g_assert_true (expected.notified);
 
   g_object_unref (store);
 }
@@ -797,7 +832,7 @@ test_store_past_end (void)
   g_list_store_append (store, item);
   g_object_unref (item);
 
-  g_assert_cmpint (g_list_model_get_n_items (model), ==, 1);
+  assert_cmpitems (store, ==, 1);
   item = g_list_model_get_item (model, 0);
   g_assert_nonnull (item);
   g_object_unref (item);
