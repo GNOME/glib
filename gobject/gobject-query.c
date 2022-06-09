@@ -88,7 +88,7 @@ help (gchar *arg)
   g_fprintf (stderr, "usage: gobject-query <qualifier> [-r <type>] [-{i|b} \"\"] [-s #] [-{h|x|y}]\n");
   g_fprintf (stderr, "       -r       specify root type\n");
   g_fprintf (stderr, "       -n       don't descend type tree\n");
-  g_fprintf (stderr, "       -h       guess what ;)\n");
+  g_fprintf (stderr, "       -h       show help\n");
   g_fprintf (stderr, "       -b       specify indent string\n");
   g_fprintf (stderr, "       -i       specify incremental indent string\n");
   g_fprintf (stderr, "       -s       specify line spacing\n");
