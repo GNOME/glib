@@ -18,27 +18,14 @@
 #include <glib-object.h>
 
 /* --- MySingleton class --- */
-typedef struct {
+
+struct _MySingleton {
   GObject parent_instance;
-} MySingleton;
-typedef struct {
-  GObjectClass parent_class;
-} MySingletonClass;
+};
 
-static GType my_singleton_get_type (void);
-#define MY_TYPE_SINGLETON         (my_singleton_get_type ())
-#define MY_SINGLETON(o) \
-  (G_TYPE_CHECK_INSTANCE_CAST ((o), MY_TYPE_SINGLETON, MySingleton))
-#define MY_IS_SINGLETON(o) \
-  (G_TYPE_CHECK_INSTANCE_TYPE ((o), MY_TYPE_SINGLETON))
-#define MY_SINGLETON_CLASS(c) \
-  (G_TYPE_CHECK_CLASS_CAST ((c), MY_TYPE_SINGLETON, MySingletonClass))
-#define MY_IS_SINGLETON_CLASS(c) \
-  (G_TYPE_CHECK_CLASS_TYPE ((c), MY_TYPE_SINGLETON))
-#define MY_SINGLETON_GET_CLASS(o) \
-  (G_TYPE_INSTANCE_GET_CLASS ((o), MY_TYPE_SINGLETON, MySingletonClass))
-
-G_DEFINE_TYPE (MySingleton, my_singleton, G_TYPE_OBJECT)
+#define MY_TYPE_SINGLETON my_singleton_get_type ()
+G_DECLARE_FINAL_TYPE (MySingleton, my_singleton, MY, SINGLETON, GObject)
+G_DEFINE_FINAL_TYPE (MySingleton, my_singleton, G_TYPE_OBJECT)
 
 static MySingleton *the_one_and_only = NULL;
 
