@@ -18,27 +18,15 @@
 #include <glib-object.h>
 
 /* --- MySingleton class --- */
-typedef struct {
+
+struct _MySingleton {
   GObject parent_instance;
-} MySingleton;
-typedef struct {
-  GObjectClass parent_class;
-} MySingletonClass;
+  int myint;
+};
 
-static GType my_singleton_get_type (void);
-#define MY_TYPE_SINGLETON         (my_singleton_get_type ())
-#define MY_SINGLETON(o) \
-  (G_TYPE_CHECK_INSTANCE_CAST ((o), MY_TYPE_SINGLETON, MySingleton))
-#define MY_IS_SINGLETON(o) \
-  (G_TYPE_CHECK_INSTANCE_TYPE ((o), MY_TYPE_SINGLETON))
-#define MY_SINGLETON_CLASS(c) \
-  (G_TYPE_CHECK_CLASS_CAST ((c), MY_TYPE_SINGLETON, MySingletonClass))
-#define MY_IS_SINGLETON_CLASS(c) \
-  (G_TYPE_CHECK_CLASS_TYPE ((c), MY_TYPE_SINGLETON))
-#define MY_SINGLETON_GET_CLASS(o) \
-  (G_TYPE_INSTANCE_GET_CLASS ((o), MY_TYPE_SINGLETON, MySingletonClass))
-
-G_DEFINE_TYPE (MySingleton, my_singleton, G_TYPE_OBJECT)
+#define MY_TYPE_SINGLETON my_singleton_get_type ()
+G_DECLARE_FINAL_TYPE (MySingleton, my_singleton, MY, SINGLETON, GObject)
+G_DEFINE_FINAL_TYPE (MySingleton, my_singleton, G_TYPE_OBJECT)
 
 static MySingleton *the_one_and_only = NULL;
 
@@ -55,6 +43,15 @@ my_singleton_constructor (GType                  type,
 }
 
 static void
+my_singleton_finalize (GObject *object)
+{
+  g_assert ((GObject *) the_one_and_only == object);
+  the_one_and_only = NULL;
+
+  G_OBJECT_CLASS (my_singleton_parent_class)->finalize (object);
+}
+
+static void
 my_singleton_init (MySingleton *self)
 {
   g_assert_null (the_one_and_only);
@@ -62,15 +59,49 @@ my_singleton_init (MySingleton *self)
 }
 
 static void
-my_singleton_class_init (MySingletonClass *klass)
+my_singleton_set_property (GObject      *gobject,
+                           guint         prop_id,
+                           const GValue *value,
+                           GParamSpec   *pspec)
 {
-  G_OBJECT_CLASS (klass)->constructor = my_singleton_constructor;
+  MySingleton *self = (MySingleton *) gobject;
+
+  g_assert (prop_id == 1);
+
+  self->myint = g_value_get_int (value);
 }
 
-/* --- test program --- */
-int
-main (int   argc,
-      char *argv[])
+static void
+my_singleton_get_property (GObject    *gobject,
+                           guint       prop_id,
+                           GValue     *value,
+                           GParamSpec *pspec)
+{
+  MySingleton *self = (MySingleton *) gobject;
+
+  g_assert (prop_id == 1);
+
+  g_value_set_int (value, self->myint);
+}
+
+static void
+my_singleton_class_init (MySingletonClass *klass)
+{
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  object_class->constructor = my_singleton_constructor;
+  object_class->finalize = my_singleton_finalize;
+  object_class->set_property = my_singleton_set_property;
+  object_class->get_property = my_singleton_get_property;
+
+  g_object_class_install_property (G_OBJECT_CLASS (klass), 1,
+                                   g_param_spec_int ("foo", NULL, NULL,
+                                                     0, G_MAXINT, 0,
+                                                     G_PARAM_READWRITE | G_PARAM_CONSTRUCT | G_PARAM_STATIC_STRINGS));
+}
+
+static void
+test_singleton_construction (void)
 {
   MySingleton *singleton, *obj;
 
@@ -85,5 +116,32 @@ main (int   argc,
 
   /* shutdown */
   g_object_unref (singleton);
-  return 0;
+}
+
+static void
+test_singleton_construct_property (void)
+{
+  MySingleton *singleton;
+
+  g_test_summary ("Test that creating a singleton with a construct-time property works");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/2666");
+
+  /* create the singleton and set a property at construction time */
+  singleton = g_object_new (MY_TYPE_SINGLETON, "foo", 1, NULL);
+  g_assert_nonnull (singleton);
+
+  /* shutdown */
+  g_object_unref (singleton);
+}
+
+int
+main (int   argc,
+      char *argv[])
+{
+  g_test_init (&argc, &argv, NULL);
+
+  g_test_add_func ("/gobject/singleton/construction", test_singleton_construction);
+  g_test_add_func ("/gobject/singleton/construct-property", test_singleton_construct_property);
+
+  return g_test_run ();
 }

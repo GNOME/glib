@@ -2128,7 +2128,7 @@ g_object_new_with_custom_constructor (GObjectClass          *class,
       /* Remember: if it was newly_constructed then g_object_init()
        * already did a freeze, so we now have two.  Release one.
        */
-      if (newly_constructed)
+      if (newly_constructed && CLASS_HAS_NOTIFY (class))
         g_object_notify_queue_thaw (object, nqueue);
     }
 
