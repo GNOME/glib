@@ -67,10 +67,8 @@ my_singleton_class_init (MySingletonClass *klass)
   G_OBJECT_CLASS (klass)->constructor = my_singleton_constructor;
 }
 
-/* --- test program --- */
-int
-main (int   argc,
-      char *argv[])
+static void
+test_singleton_construction (void)
 {
   MySingleton *singleton, *obj;
 
@@ -85,5 +83,15 @@ main (int   argc,
 
   /* shutdown */
   g_object_unref (singleton);
-  return 0;
+}
+
+int
+main (int   argc,
+      char *argv[])
+{
+  g_test_init (&argc, &argv, NULL);
+
+  g_test_add_func ("/gobject/singleton/construction", test_singleton_construction);
+
+  return g_test_run ();
 }
