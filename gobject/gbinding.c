@@ -699,30 +699,6 @@ is_canonical (const gchar *key)
   return (strchr (key, '_') == NULL);
 }
 
-static gboolean
-is_valid_property_name (const gchar *key)
-{
-  const gchar *p;
-
-  /* First character must be a letter. */
-  if ((key[0] < 'A' || key[0] > 'Z') &&
-      (key[0] < 'a' || key[0] > 'z'))
-    return FALSE;
-
-  for (p = key; *p != 0; p++)
-    {
-      const gchar c = *p;
-
-      if (c != '-' && c != '_' &&
-          (c < '0' || c > '9') &&
-          (c < 'A' || c > 'Z') &&
-          (c < 'a' || c > 'z'))
-        return FALSE;
-    }
-
-  return TRUE;
-}
-
 static void
 g_binding_set_property (GObject      *gobject,
                         guint         prop_id,
@@ -1268,10 +1244,10 @@ g_object_bind_property_full (gpointer               source,
 
   g_return_val_if_fail (G_IS_OBJECT (source), NULL);
   g_return_val_if_fail (source_property != NULL, NULL);
-  g_return_val_if_fail (is_valid_property_name (source_property), NULL);
+  g_return_val_if_fail (g_param_spec_is_valid_name (source_property), NULL);
   g_return_val_if_fail (G_IS_OBJECT (target), NULL);
   g_return_val_if_fail (target_property != NULL, NULL);
-  g_return_val_if_fail (is_valid_property_name (target_property), NULL);
+  g_return_val_if_fail (g_param_spec_is_valid_name (target_property), NULL);
 
   if (source == target && g_strcmp0 (source_property, target_property) == 0)
     {
