@@ -1176,6 +1176,21 @@ object_get_optional_flags (GObject *object)
 #endif
 }
 
+/* Variant of object_get_optional_flags for when
+ * we know that we have exclusive access (during
+ * construction)
+ */
+static inline guint
+object_get_optional_flags_X (GObject *object)
+{
+#ifdef HAVE_OPTIONAL_FLAGS
+  GObjectReal *real = (GObjectReal *)object;
+  return real->optional_flags;
+#else
+  return 0;
+#endif
+}
+
 static inline void
 object_set_optional_flags (GObject *object,
                           guint flags)
@@ -1186,13 +1201,29 @@ object_set_optional_flags (GObject *object,
 #endif
 }
 
+/* Variant for when we have exclusive access
+ * (during construction)
+ */
 static inline void
-object_unset_optional_flags (GObject *object,
-                            guint flags)
+object_set_optional_flags_X (GObject *object,
+                             guint flags)
 {
 #ifdef HAVE_OPTIONAL_FLAGS
   GObjectReal *real = (GObjectReal *)object;
-  g_atomic_int_and (&real->optional_flags, ~flags);
+  real->optional_flags |= flags;
+#endif
+}
+
+/* Variant for when we have exclusive access
+ * (during construction)
+ */
+static inline void
+object_unset_optional_flags_X (GObject *object,
+                               guint flags)
+{
+#ifdef HAVE_OPTIONAL_FLAGS
+  GObjectReal *real = (GObjectReal *)object;
+  real->optional_flags &= ~flags;
 #endif
 }
 
@@ -1212,6 +1243,17 @@ _g_object_has_notify_handler (GObject *object)
 #ifdef HAVE_OPTIONAL_FLAGS
   return CLASS_HAS_NOTIFY (G_OBJECT_GET_CLASS (object)) ||
          (object_get_optional_flags (object) & OPTIONAL_FLAG_HAS_NOTIFY_HANDLER) != 0;
+#else
+  return TRUE;
+#endif
+}
+
+static inline gboolean
+_g_object_has_notify_handler_X (GObject *object)
+{
+#ifdef HAVE_OPTIONAL_FLAGS
+  return CLASS_HAS_NOTIFY (G_OBJECT_GET_CLASS (object)) ||
+         (object_get_optional_flags_X (object) & OPTIONAL_FLAG_HAS_NOTIFY_HANDLER) != 0;
 #else
   return TRUE;
 #endif
@@ -1243,7 +1285,7 @@ static inline void
 set_object_in_construction (GObject *object)
 {
 #ifdef HAVE_OPTIONAL_FLAGS
-  object_set_optional_flags (object, OPTIONAL_FLAG_IN_CONSTRUCTION);
+  object_set_optional_flags_X (object, OPTIONAL_FLAG_IN_CONSTRUCTION);
 #else
   g_datalist_id_set_data (&object->qdata, quark_in_construction, object);
 #endif
@@ -1253,7 +1295,7 @@ static inline void
 unset_object_in_construction (GObject *object)
 {
 #ifdef HAVE_OPTIONAL_FLAGS
-  object_unset_optional_flags (object, OPTIONAL_FLAG_IN_CONSTRUCTION);
+  object_unset_optional_flags_X (object, OPTIONAL_FLAG_IN_CONSTRUCTION);
 #else
   g_datalist_id_set_data (&object->qdata, quark_in_construction, NULL);
 #endif
@@ -2132,7 +2174,8 @@ g_object_new_with_custom_constructor (GObjectClass          *class,
 
   if (CLASS_HAS_PROPS (class))
     {
-      if (_g_object_has_notify_handler (object))
+      if ((newly_constructed && _g_object_has_notify_handler_X (object)) ||
+          _g_object_has_notify_handler (object))
         {
           /* This may or may not have been setup in g_object_init().
            * If it hasn't, we do it now.
@@ -2181,7 +2224,7 @@ g_object_new_internal (GObjectClass          *class,
     {
       GSList *node;
 
-      if (_g_object_has_notify_handler (object))
+      if (_g_object_has_notify_handler_X (object))
         {
           /* This may or may not have been setup in g_object_init().
            * If it hasn't, we do it now.
