@@ -2132,28 +2132,15 @@ g_object_new_with_custom_constructor (GObjectClass          *class,
 
   if (CLASS_HAS_PROPS (class))
     {
-      /* If this object was newly_constructed then g_object_init()
-       * froze the queue.  We need to freeze it here in order to get
-       * the handle so that we can thaw it below (otherwise it will
-       * be frozen forever).
-       *
-       * We also want to do a freeze if we have any params to set,
-       * even on a non-newly_constructed object.
-       *
-       * It's possible that we have the case of non-newly created
-       * singleton and all of the passed-in params were construct
-       * properties so n_params > 0 but we will actually set no
-       * properties.  This is a pretty lame case to optimise, so
-       * just ignore it and freeze anyway.
-       */
-      if (newly_constructed || n_params)
-        nqueue = g_object_notify_queue_freeze (object, FALSE);
-
-      /* Remember: if it was newly_constructed then g_object_init()
-       * already did a freeze, so we now have two.  Release one.
-       */
-      if (newly_constructed && CLASS_HAS_NOTIFY (class))
-        g_object_notify_queue_thaw (object, nqueue);
+      if (_g_object_has_notify_handler (object))
+        {
+          /* This may or may not have been setup in g_object_init().
+           * If it hasn't, we do it now.
+           */
+          nqueue = g_datalist_id_get_data (&object->qdata, quark_notify_queue);
+          if (!nqueue)
+            nqueue = g_object_notify_queue_freeze (object, FALSE);
+        }
     }
 
   /* run 'constructed' handler if there is a custom one */
@@ -2196,7 +2183,9 @@ g_object_new_internal (GObjectClass          *class,
 
       if (_g_object_has_notify_handler (object))
         {
-          /* This will have been setup in g_object_init() */
+          /* This may or may not have been setup in g_object_init().
+           * If it hasn't, we do it now.
+           */
           nqueue = g_datalist_id_get_data (&object->qdata, quark_notify_queue);
           if (!nqueue)
             nqueue = g_object_notify_queue_freeze (object, FALSE);
