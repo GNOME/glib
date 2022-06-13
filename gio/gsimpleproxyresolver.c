@@ -537,6 +537,7 @@ g_simple_proxy_resolver_set_default_proxy (GSimpleProxyResolver *resolver,
                                            const gchar          *default_proxy)
 {
   g_return_if_fail (G_IS_SIMPLE_PROXY_RESOLVER (resolver));
+  g_return_if_fail (default_proxy == NULL || g_uri_is_valid (default_proxy, G_URI_FLAGS_NONE, NULL));
 
   g_free (resolver->priv->default_proxy);
   resolver->priv->default_proxy = g_strdup (default_proxy);
