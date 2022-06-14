@@ -322,7 +322,7 @@ test_error_from_errno (void)
 
 #ifdef ENOSYS
   g_assert_cmpuint (g_io_error_from_errno (ENOSYS), ==,
-                    G_IO_ERROR_FAILED);
+                    G_IO_ERROR_NOT_SUPPORTED);
 #endif
 
 #ifdef ENOMSG

@@ -230,6 +230,12 @@ g_io_error_from_errno (gint err_no)
       break;
 #endif
 
+#ifdef ENOSYS
+    case ENOSYS:
+      return G_IO_ERROR_NOT_SUPPORTED;
+      break;
+#endif
+
 #ifdef ETIMEDOUT
     case ETIMEDOUT:
       return G_IO_ERROR_TIMED_OUT;
