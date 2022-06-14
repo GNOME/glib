@@ -479,14 +479,16 @@ test_uri_escape_string (void)
   for (i = 0; i < G_N_ELEMENTS (tests); i++)
     {
       gchar *s = NULL;
+      gchar *escaped = g_strescape (tests[i].unescaped, NULL);
 
-      g_test_message ("Test %" G_GSIZE_FORMAT ": %s", i, tests[i].unescaped);
+      g_test_message ("Test %" G_GSIZE_FORMAT ": %s", i, escaped);
 
       s = g_uri_escape_string (tests[i].unescaped,
                                tests[i].reserved_chars_allowed,
                                tests[i].allow_utf8);
       g_assert_cmpstr (s, ==, tests[i].expected_escaped);
       g_free (s);
+      g_free (escaped);
     }
 }
 
