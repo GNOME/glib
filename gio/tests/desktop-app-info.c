@@ -119,6 +119,23 @@ test_default (void)
   g_assert_cmpstr (g_app_info_get_id (info), ==, g_app_info_get_id (info2));
   g_object_unref (info);
 
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*uri_scheme*failed*");
+  g_assert_null (g_app_info_get_default_for_uri_scheme (NULL));
+  g_test_assert_expected_messages ();
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*uri_scheme*failed*");
+  g_assert_null (g_app_info_get_default_for_uri_scheme (""));
+  g_test_assert_expected_messages ();
+
+  g_app_info_set_as_default_for_type (info3, "x-scheme-handler/glib", &error);
+  g_assert_no_error (error);
+  info = g_app_info_get_default_for_uri_scheme ("glib");
+  g_assert_nonnull (info);
+  g_assert_true (g_app_info_equal (info, info3));
+  g_object_unref (info);
+
   /* now try adding something, but not setting as default */
   g_app_info_add_supports_type (info3, "application/x-test", &error);
   g_assert_no_error (error);
@@ -141,8 +158,12 @@ test_default (void)
 
   /* now clean it all up */
   g_app_info_reset_type_associations ("application/x-test");
+  g_app_info_reset_type_associations ("x-scheme-handler/glib");
 
   list = g_app_info_get_all_for_type ("application/x-test");
+  g_assert_null (list);
+
+  list = g_app_info_get_all_for_type ("x-scheme-handler/glib");
   g_assert_null (list);
 
   g_app_info_delete (info1);

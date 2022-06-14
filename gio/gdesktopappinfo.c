@@ -4626,6 +4626,8 @@ g_app_info_get_default_for_uri_scheme (const char *uri_scheme)
   GAppInfo *app_info;
   char *content_type, *scheme_down;
 
+  g_return_val_if_fail (uri_scheme != NULL && *uri_scheme != '\0', NULL);
+
   scheme_down = g_ascii_strdown (uri_scheme, -1);
   content_type = g_strdup_printf ("x-scheme-handler/%s", scheme_down);
   g_free (scheme_down);
