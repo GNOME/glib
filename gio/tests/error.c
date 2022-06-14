@@ -327,7 +327,7 @@ test_error_from_errno (void)
 
 #ifdef ENOMSG
   g_assert_cmpuint (g_io_error_from_errno (ENOMSG), ==,
-                    G_IO_ERROR_FAILED);
+                    G_IO_ERROR_INVALID_DATA);
 #endif
 
 #ifdef EIDRM
@@ -422,7 +422,7 @@ test_error_from_errno (void)
 
 #ifdef ENODATA
   g_assert_cmpuint (g_io_error_from_errno (ENODATA), ==,
-                    G_IO_ERROR_FAILED);
+                    G_IO_ERROR_INVALID_DATA);
 #endif
 
 #ifdef ETIME
@@ -487,7 +487,7 @@ test_error_from_errno (void)
 
 #ifdef EBADMSG
   g_assert_cmpuint (g_io_error_from_errno (EBADMSG), ==,
-                    G_IO_ERROR_FAILED);
+                    G_IO_ERROR_INVALID_DATA);
 #endif
 
 #ifdef EOVERFLOW

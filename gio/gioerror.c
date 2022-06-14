@@ -156,6 +156,24 @@ g_io_error_from_errno (gint err_no)
       break;
 #endif
 
+#ifdef ENOMSG
+    case ENOMSG:
+      return G_IO_ERROR_INVALID_DATA;
+      break;
+#endif
+
+#ifdef ENODATA
+    case ENODATA:
+      return G_IO_ERROR_INVALID_DATA;
+      break;
+#endif
+
+#ifdef EBADMSG
+    case EBADMSG:
+      return G_IO_ERROR_INVALID_DATA;
+      break;
+#endif
+
 #ifdef EPERM
     case EPERM:
       return G_IO_ERROR_PERMISSION_DENIED;
