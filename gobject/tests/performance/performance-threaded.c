@@ -301,7 +301,7 @@ run_test (const PerformanceTest *test)
       
     threads = g_new (GThread *, n_threads);
     for (i = 0; i < n_threads; i++) {
-      threads[i] = g_thread_create (run_test_thread, (gpointer) test, TRUE, NULL);
+      threads[i] = g_thread_new (NULL, run_test_thread, (gpointer) test);
       g_assert (threads[i] != NULL);
     }
 
