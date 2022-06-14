@@ -1176,25 +1176,52 @@ object_get_optional_flags (GObject *object)
 #endif
 }
 
+/* Variant of object_get_optional_flags for when
+ * we know that we have exclusive access (during
+ * construction)
+ */
+static inline guint
+object_get_optional_flags_X (GObject *object)
+{
+#ifdef HAVE_OPTIONAL_FLAGS
+  GObjectReal *real = (GObjectReal *)object;
+  return real->optional_flags;
+#else
+  return 0;
+#endif
+}
+
+#ifdef HAVE_OPTIONAL_FLAGS
 static inline void
 object_set_optional_flags (GObject *object,
                           guint flags)
 {
-#ifdef HAVE_OPTIONAL_FLAGS
   GObjectReal *real = (GObjectReal *)object;
   g_atomic_int_or (&real->optional_flags, flags);
-#endif
 }
 
+/* Variant for when we have exclusive access
+ * (during construction)
+ */
 static inline void
-object_unset_optional_flags (GObject *object,
-                            guint flags)
+object_set_optional_flags_X (GObject *object,
+                             guint flags)
 {
-#ifdef HAVE_OPTIONAL_FLAGS
   GObjectReal *real = (GObjectReal *)object;
-  g_atomic_int_and (&real->optional_flags, ~flags);
-#endif
+  real->optional_flags |= flags;
 }
+
+/* Variant for when we have exclusive access
+ * (during construction)
+ */
+static inline void
+object_unset_optional_flags_X (GObject *object,
+                               guint flags)
+{
+  GObjectReal *real = (GObjectReal *)object;
+  real->optional_flags &= ~flags;
+}
+#endif
 
 gboolean
 _g_object_has_signal_handler (GObject *object)
@@ -1212,6 +1239,17 @@ _g_object_has_notify_handler (GObject *object)
 #ifdef HAVE_OPTIONAL_FLAGS
   return CLASS_HAS_NOTIFY (G_OBJECT_GET_CLASS (object)) ||
          (object_get_optional_flags (object) & OPTIONAL_FLAG_HAS_NOTIFY_HANDLER) != 0;
+#else
+  return TRUE;
+#endif
+}
+
+static inline gboolean
+_g_object_has_notify_handler_X (GObject *object)
+{
+#ifdef HAVE_OPTIONAL_FLAGS
+  return CLASS_HAS_NOTIFY (G_OBJECT_GET_CLASS (object)) ||
+         (object_get_optional_flags_X (object) & OPTIONAL_FLAG_HAS_NOTIFY_HANDLER) != 0;
 #else
   return TRUE;
 #endif
@@ -1243,7 +1281,7 @@ static inline void
 set_object_in_construction (GObject *object)
 {
 #ifdef HAVE_OPTIONAL_FLAGS
-  object_set_optional_flags (object, OPTIONAL_FLAG_IN_CONSTRUCTION);
+  object_set_optional_flags_X (object, OPTIONAL_FLAG_IN_CONSTRUCTION);
 #else
   g_datalist_id_set_data (&object->qdata, quark_in_construction, object);
 #endif
@@ -1253,7 +1291,7 @@ static inline void
 unset_object_in_construction (GObject *object)
 {
 #ifdef HAVE_OPTIONAL_FLAGS
-  object_unset_optional_flags (object, OPTIONAL_FLAG_IN_CONSTRUCTION);
+  object_unset_optional_flags_X (object, OPTIONAL_FLAG_IN_CONSTRUCTION);
 #else
   g_datalist_id_set_data (&object->qdata, quark_in_construction, NULL);
 #endif
@@ -1272,11 +1310,8 @@ g_object_init (GObject		*object,
       g_object_notify_queue_freeze (object, FALSE);
     }
 
-  if (CLASS_HAS_CUSTOM_CONSTRUCTOR (class))
-    {
-      /* mark object in-construction for notify_queue_thaw() and to allow construct-only properties */
-      set_object_in_construction (object);
-    }
+  /* mark object in-construction for notify_queue_thaw() and to allow construct-only properties */
+  set_object_in_construction (object);
 
   GOBJECT_IF_DEBUG (OBJECTS,
     {
@@ -1444,24 +1479,51 @@ static inline void
 g_object_notify_by_spec_internal (GObject    *object,
                                   GParamSpec *pspec)
 {
+#ifdef HAVE_OPTIONAL_FLAGS
+  guint object_flags;
+#endif
+  gboolean has_notify;
+  gboolean in_init;
+
   if (G_UNLIKELY (~pspec->flags & G_PARAM_READABLE))
     return;
 
   param_spec_follow_override (&pspec);
 
-  if (pspec != NULL &&
-      _g_object_has_notify_handler (object))
+#ifdef HAVE_OPTIONAL_FLAGS
+  /* get all flags we need with a single atomic read */
+  object_flags = object_get_optional_flags (object);
+  has_notify = ((object_flags & OPTIONAL_FLAG_HAS_NOTIFY_HANDLER) != 0) ||
+               CLASS_HAS_NOTIFY (G_OBJECT_GET_CLASS (object));
+  in_init = (object_flags & OPTIONAL_FLAG_IN_CONSTRUCTION) != 0;
+#else
+  has_notify = TRUE;
+  in_init = object_in_construction (object);
+#endif
+
+  if (pspec != NULL && has_notify)
     {
       GObjectNotifyQueue *nqueue;
+      gboolean need_thaw = TRUE;
 
       /* conditional freeze: only increase freeze count if already frozen */
       nqueue = g_object_notify_queue_freeze (object, TRUE);
+      if (in_init && !nqueue)
+        {
+          /* We did not freeze the queue in g_object_init, but
+           * we gained a notify handler in instance init, so
+           * now we need to freeze just-in-time
+           */
+          nqueue = g_object_notify_queue_freeze (object, FALSE);
+          need_thaw = FALSE;
+        }
 
       if (nqueue != NULL)
         {
           /* we're frozen, so add to the queue and release our freeze */
           g_object_notify_queue_add (object, nqueue, pspec);
-          g_object_notify_queue_thaw (object, nqueue);
+          if (need_thaw)
+            g_object_notify_queue_thaw (object, nqueue);
         }
       else
         {
@@ -2108,28 +2170,16 @@ g_object_new_with_custom_constructor (GObjectClass          *class,
 
   if (CLASS_HAS_PROPS (class))
     {
-      /* If this object was newly_constructed then g_object_init()
-       * froze the queue.  We need to freeze it here in order to get
-       * the handle so that we can thaw it below (otherwise it will
-       * be frozen forever).
-       *
-       * We also want to do a freeze if we have any params to set,
-       * even on a non-newly_constructed object.
-       *
-       * It's possible that we have the case of non-newly created
-       * singleton and all of the passed-in params were construct
-       * properties so n_params > 0 but we will actually set no
-       * properties.  This is a pretty lame case to optimise, so
-       * just ignore it and freeze anyway.
-       */
-      if (newly_constructed || n_params)
-        nqueue = g_object_notify_queue_freeze (object, FALSE);
-
-      /* Remember: if it was newly_constructed then g_object_init()
-       * already did a freeze, so we now have two.  Release one.
-       */
-      if (newly_constructed && CLASS_HAS_NOTIFY (class))
-        g_object_notify_queue_thaw (object, nqueue);
+      if ((newly_constructed && _g_object_has_notify_handler_X (object)) ||
+          _g_object_has_notify_handler (object))
+        {
+          /* This may or may not have been setup in g_object_init().
+           * If it hasn't, we do it now.
+           */
+          nqueue = g_datalist_id_get_data (&object->qdata, quark_notify_queue);
+          if (!nqueue)
+            nqueue = g_object_notify_queue_freeze (object, FALSE);
+        }
     }
 
   /* run 'constructed' handler if there is a custom one */
@@ -2164,15 +2214,20 @@ g_object_new_internal (GObjectClass          *class,
 
   g_assert (g_object_is_aligned (object));
 
+  unset_object_in_construction (object);
+
   if (CLASS_HAS_PROPS (class))
     {
       GSList *node;
 
-      if (CLASS_HAS_NOTIFY (class))
+      if (_g_object_has_notify_handler_X (object))
         {
-          /* This will have been setup in g_object_init() */
+          /* This may or may not have been setup in g_object_init().
+           * If it hasn't, we do it now.
+           */
           nqueue = g_datalist_id_get_data (&object->qdata, quark_notify_queue);
-          g_assert (nqueue != NULL);
+          if (!nqueue)
+            nqueue = g_object_notify_queue_freeze (object, FALSE);
         }
 
       /* We will set exactly n_construct_properties construct

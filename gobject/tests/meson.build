@@ -29,6 +29,8 @@ marshalers_c = custom_target('marshalers_c',
 )
 
 gobject_tests = {
+  'notify-init' : {},
+  'notify-init2' : {},
   'qdata' : {},
   'accumulator' : {
     'source' : ['accumulator.c', marshalers_h, marshalers_c],
