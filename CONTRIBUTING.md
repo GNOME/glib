@@ -95,7 +95,8 @@ they are imported into GLib and marked as stable.
 
 Each feature should also come fully documented, and with tests which approach
 full branch coverage of the new code. GLib’s CI system generates code coverage
-reports which are viewable for each merge request.
+reports which are viewable for each merge request. See
+[the testing policy](./docs/testing.md) for more details.
 
 If proposing a large feature or change, it’s better to discuss it (on the
 `#gtk` IRC channel or on [Discourse](https://discourse.gnome.org) before
