@@ -577,7 +577,7 @@ test_error_from_errno (void)
 
 #ifdef ENETDOWN
   g_assert_cmpuint (g_io_error_from_errno (ENETDOWN), ==,
-                    G_IO_ERROR_FAILED);
+                    G_IO_ERROR_NETWORK_UNREACHABLE);
 #endif
 
 #ifdef ECONNABORTED

@@ -291,6 +291,12 @@ g_io_error_from_errno (gint err_no)
       break;
 #endif
 
+#ifdef ENETDOWN
+    case ENETDOWN:
+      return G_IO_ERROR_NETWORK_UNREACHABLE;
+      break;
+#endif
+
 #ifdef ECONNREFUSED
     case ECONNREFUSED:
       return G_IO_ERROR_CONNECTION_REFUSED;
