@@ -383,12 +383,25 @@ test_dbus_properties (void)
   g_clear_object (&bus);
 }
 
+static GLogWriterOutput
+noop_log_writer_cb (GLogLevelFlags   log_level,
+                    const GLogField *fields,
+                    gsize            n_fields,
+                    gpointer         user_data)
+{
+  return G_LOG_WRITER_HANDLED;
+}
+
 int
 main (int   argc,
       char *argv[])
 {
   setlocale (LC_ALL, "");
   g_test_init (&argc, &argv, NULL);
+
+  /* Ignore the log messages, as the debug controller prints one when debug is
+   * enabled/disabled, and if debug is enabled then that will escape to stdout. */
+  g_log_set_writer_func (noop_log_writer_cb, NULL, NULL);
 
   g_test_add_func ("/debug-controller/dbus/basic", test_dbus_basic);
   g_test_add_func ("/debug-controller/dbus/duplicate", test_dbus_duplicate);
