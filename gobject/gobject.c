@@ -1191,14 +1191,13 @@ object_get_optional_flags_X (GObject *object)
 #endif
 }
 
+#ifdef HAVE_OPTIONAL_FLAGS
 static inline void
 object_set_optional_flags (GObject *object,
                           guint flags)
 {
-#ifdef HAVE_OPTIONAL_FLAGS
   GObjectReal *real = (GObjectReal *)object;
   g_atomic_int_or (&real->optional_flags, flags);
-#endif
 }
 
 /* Variant for when we have exclusive access
@@ -1208,10 +1207,8 @@ static inline void
 object_set_optional_flags_X (GObject *object,
                              guint flags)
 {
-#ifdef HAVE_OPTIONAL_FLAGS
   GObjectReal *real = (GObjectReal *)object;
   real->optional_flags |= flags;
-#endif
 }
 
 /* Variant for when we have exclusive access
@@ -1221,11 +1218,10 @@ static inline void
 object_unset_optional_flags_X (GObject *object,
                                guint flags)
 {
-#ifdef HAVE_OPTIONAL_FLAGS
   GObjectReal *real = (GObjectReal *)object;
   real->optional_flags &= ~flags;
-#endif
 }
+#endif
 
 gboolean
 _g_object_has_signal_handler (GObject *object)
