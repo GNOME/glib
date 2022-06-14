@@ -852,6 +852,18 @@ test_replace_symlink (void)
   g_test_message ("Using temporary directory %s", tmpdir_path);
   g_free (tmpdir_path);
 
+  source_file = g_file_get_child (tmpdir, "source");
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*symlink_value*failed*");
+  g_assert_false (g_file_make_symbolic_link (source_file, NULL, NULL, &local_error));
+  g_assert_no_error (local_error);
+  g_test_assert_expected_messages ();
+
+  g_assert_false (g_file_make_symbolic_link (source_file, "", NULL, &local_error));
+  g_assert_error (local_error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
+  g_clear_object (&source_file);
+  g_clear_error (&local_error);
+
   /* Create symlink `source` which points to `target`. */
   source_file = g_file_get_child (tmpdir, "source");
   target_file = g_file_get_child (tmpdir, "target");
