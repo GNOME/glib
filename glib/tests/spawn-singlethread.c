@@ -201,7 +201,7 @@ test_spawn_async_with_fds (void)
     { NO_FD, PIPE, STDOUT_PIPE },  /* Test the same fd for stdout + stderr */
   };
 
-  arg = g_strdup_printf ("thread %d", tnum);
+  arg = g_strdup_printf ("# thread %d\n", tnum);
 
   argv = g_ptr_array_new ();
   g_ptr_array_add (argv, echo_prog_path);
