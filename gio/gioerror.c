@@ -115,6 +115,11 @@ g_io_error_from_errno (gint err_no)
       break;
 #endif
 
+#ifdef ENODEV
+    case ENODEV:
+      return G_IO_ERROR_NO_SUCH_DEVICE;
+#endif
+
 #ifdef EROFS
     case EROFS:
       return G_IO_ERROR_READ_ONLY;

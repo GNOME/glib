@@ -272,7 +272,7 @@ test_error_from_errno (void)
 
 #ifdef ENODEV
   g_assert_cmpint (g_io_error_from_errno (ENODEV), ==,
-                   G_IO_ERROR_FAILED);
+                   G_IO_ERROR_NO_SUCH_DEVICE);
 #endif
 
 #ifdef ENFILE
