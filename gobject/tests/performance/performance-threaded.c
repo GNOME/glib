@@ -231,7 +231,7 @@ run_test_thread (gpointer user_data)
   results = g_array_new (FALSE, FALSE, sizeof (double));
 
   /* Run the test */
-  while (g_timer_elapsed (total, NULL) < test_length)
+  do
     {
       g_timer_reset (timer);
       g_timer_start (timer);
@@ -241,6 +241,7 @@ run_test_thread (gpointer user_data)
       g_array_append_val (results, elapsed);
       test->reset (data);
     }
+  while (g_timer_elapsed (total, NULL) < test_length);
 
   /* Tear down */
   test->teardown (data);
