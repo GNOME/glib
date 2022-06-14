@@ -1465,13 +1465,24 @@ g_object_notify_by_spec_internal (GObject    *object,
         }
       else
         {
+          /*
+           * Coverity doesn’t understand the paired ref/unref here and seems to
+           * ignore the ref, thus reports every call to g_object_notify() as
+           * causing a double-free. That’s incorrect, but I can’t get a model
+           * file to work for avoiding the false positives, so instead comment
+           * out the ref/unref when doing static analysis.
+           */
+#ifndef __COVERITY__
           g_object_ref (object);
+#endif
 
           /* not frozen, so just dispatch the notification directly */
           G_OBJECT_GET_CLASS (object)
               ->dispatch_properties_changed (object, 1, &pspec);
 
+#ifndef __COVERITY__
           g_object_unref (object);
+#endif
         }
     }
 }
