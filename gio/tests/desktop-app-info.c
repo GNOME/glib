@@ -30,21 +30,34 @@
 #include <unistd.h>
 
 static GAppInfo *
-create_app_info (const char *name)
+create_command_line_app_info (const char *name,
+                              const char *command_line,
+                              const char *default_for_type)
 {
-  GError *error;
   GAppInfo *info;
+  GError *error = NULL;
 
-  error = NULL;
-  info = g_app_info_create_from_commandline ("true blah",
+  info = g_app_info_create_from_commandline (command_line,
                                              name,
                                              G_APP_INFO_CREATE_NONE,
                                              &error);
   g_assert_no_error (error);
 
-  /* this is necessary to ensure that the info is saved */
-  g_app_info_set_as_default_for_type (info, "application/x-blah", &error);
+  g_app_info_set_as_default_for_type (info, default_for_type, &error);
   g_assert_no_error (error);
+
+  return g_steal_pointer (&info);
+}
+
+static GAppInfo *
+create_app_info (const char *name)
+{
+  GError *error = NULL;
+  GAppInfo *info;
+
+  info = create_command_line_app_info (name, "true blah", "application/x-blah");
+
+  /* this is necessary to ensure that the info is saved */
   g_app_info_remove_supports_type (info, "application/x-blah", &error);
   g_assert_no_error (error);
   g_app_info_reset_type_associations ("application/x-blah");
@@ -933,6 +946,64 @@ test_launch_as_manager (void)
   g_assert_finalize_object (context);
 }
 
+static GAppInfo *
+create_app_info_toucher (const char  *name,
+                         const char  *touched_file_name,
+                         const char  *handled_type,
+                         char       **out_file_path)
+{
+  GError *error = NULL;
+  GAppInfo *info;
+  gchar *command_line;
+  gchar *file_path;
+  gchar *tmpdir;
+
+  g_assert_nonnull (out_file_path);
+
+  tmpdir = g_dir_make_tmp ("desktop-app-info-launch-XXXXXX", &error);
+  g_assert_no_error (error);
+
+  file_path = g_build_filename (tmpdir, touched_file_name, NULL);
+  command_line = g_strdup_printf ("touch %s", file_path);
+
+  info = create_command_line_app_info (name, command_line, handled_type);
+  *out_file_path = g_steal_pointer (&file_path);
+
+  g_free (tmpdir);
+  g_free (command_line);
+
+  return info;
+}
+
+static void
+test_default_uri_handler (void)
+{
+  GError *error = NULL;
+  gchar *file_path = NULL;
+  GAppInfo *info;
+
+  info = create_app_info_toucher ("Touch Handled", "handled",
+                                  "x-scheme-handler/glib-touch",
+                                  &file_path);
+  g_assert_true (G_IS_APP_INFO (info));
+  g_assert_nonnull (file_path);
+
+  g_assert_true (g_app_info_launch_default_for_uri ("glib-touch://touch-me",
+                                                    NULL, &error));
+  g_assert_no_error (error);
+
+  while (!g_file_test (file_path, G_FILE_TEST_IS_REGULAR));
+  g_assert_true (g_file_test (file_path, G_FILE_TEST_IS_REGULAR));
+
+  g_assert_false (g_app_info_launch_default_for_uri ("glib-INVALID-touch://touch-me",
+                                                     NULL, &error));
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);
+  g_clear_error (&error);
+
+  g_object_unref (info);
+  g_free (file_path);
+}
+
 /* Test if Desktop-File Id is correctly formed */
 static void
 test_id (void)
@@ -967,6 +1038,7 @@ main (int   argc,
   g_test_add_func ("/desktop-app-info/implements", test_implements);
   g_test_add_func ("/desktop-app-info/show-in", test_show_in);
   g_test_add_func ("/desktop-app-info/launch-as-manager", test_launch_as_manager);
+  g_test_add_func ("/desktop-app-info/launch-default-uri-handler", test_default_uri_handler);
   g_test_add_func ("/desktop-app-info/id", test_id);
 
   return g_test_run ();
