@@ -707,6 +707,68 @@ test_error_from_errno (void)
 }
 
 static void
+test_error_from_file_error (void)
+{
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*should not be reached*");
+  g_assert_cmpuint (g_io_error_from_file_error (-1), ==,
+                    G_IO_ERROR_FAILED);
+  g_test_assert_expected_messages ();
+
+  g_assert_cmpuint (g_io_error_from_file_error (G_FILE_ERROR_EXIST), ==,
+                    G_IO_ERROR_EXISTS);
+  g_assert_cmpuint (g_io_error_from_file_error (G_FILE_ERROR_ISDIR), ==,
+                    G_IO_ERROR_IS_DIRECTORY);
+  g_assert_cmpuint (g_io_error_from_file_error (G_FILE_ERROR_ACCES), ==,
+                    G_IO_ERROR_PERMISSION_DENIED);
+  g_assert_cmpuint (g_io_error_from_file_error (G_FILE_ERROR_NAMETOOLONG), ==,
+                    G_IO_ERROR_FILENAME_TOO_LONG);
+  g_assert_cmpuint (g_io_error_from_file_error (G_FILE_ERROR_NOENT), ==,
+                    G_IO_ERROR_NOT_FOUND);
+  g_assert_cmpuint (g_io_error_from_file_error (G_FILE_ERROR_NOTDIR), ==,
+                    G_IO_ERROR_NOT_DIRECTORY);
+  g_assert_cmpuint (g_io_error_from_file_error (G_FILE_ERROR_NXIO), ==,
+                    G_IO_ERROR_NOT_REGULAR_FILE);
+  g_assert_cmpuint (g_io_error_from_file_error (G_FILE_ERROR_NODEV), ==,
+                    G_IO_ERROR_NO_SUCH_DEVICE);
+  g_assert_cmpuint (g_io_error_from_file_error (G_FILE_ERROR_ROFS), ==,
+                    G_IO_ERROR_READ_ONLY);
+  g_assert_cmpuint (g_io_error_from_file_error (G_FILE_ERROR_TXTBSY), ==,
+                    G_IO_ERROR_BUSY);
+  g_assert_cmpuint (g_io_error_from_file_error (G_FILE_ERROR_LOOP), ==,
+                    G_IO_ERROR_TOO_MANY_LINKS);
+  g_assert_cmpuint (g_io_error_from_file_error (G_FILE_ERROR_NOSPC), ==,
+                    G_IO_ERROR_NO_SPACE);
+  g_assert_cmpuint (g_io_error_from_file_error (G_FILE_ERROR_NOMEM), ==,
+                    G_IO_ERROR_NO_SPACE);
+  g_assert_cmpuint (g_io_error_from_file_error (G_FILE_ERROR_MFILE), ==,
+                    G_IO_ERROR_TOO_MANY_OPEN_FILES);
+  g_assert_cmpuint (g_io_error_from_file_error (G_FILE_ERROR_NFILE), ==,
+                    G_IO_ERROR_TOO_MANY_OPEN_FILES);
+  g_assert_cmpuint (g_io_error_from_file_error (G_FILE_ERROR_INVAL), ==,
+                    G_IO_ERROR_INVALID_ARGUMENT);
+  g_assert_cmpuint (g_io_error_from_file_error (G_FILE_ERROR_PIPE), ==,
+                    G_IO_ERROR_BROKEN_PIPE);
+  g_assert_cmpuint (g_io_error_from_file_error (G_FILE_ERROR_AGAIN), ==,
+                    G_IO_ERROR_WOULD_BLOCK);
+  g_assert_cmpuint (g_io_error_from_file_error (G_FILE_ERROR_PERM), ==,
+                    G_IO_ERROR_PERMISSION_DENIED);
+  g_assert_cmpuint (g_io_error_from_file_error (G_FILE_ERROR_NOSYS), ==,
+                    G_IO_ERROR_NOT_SUPPORTED);
+
+  g_assert_cmpuint (g_io_error_from_file_error (G_FILE_ERROR_BADF), ==,
+                    G_IO_ERROR_FAILED);
+  g_assert_cmpuint (g_io_error_from_file_error (G_FILE_ERROR_FAILED), ==,
+                    G_IO_ERROR_FAILED);
+  g_assert_cmpuint (g_io_error_from_file_error (G_FILE_ERROR_FAULT), ==,
+                    G_IO_ERROR_FAILED);
+  g_assert_cmpuint (g_io_error_from_file_error (G_FILE_ERROR_INTR), ==,
+                    G_IO_ERROR_FAILED);
+  g_assert_cmpuint (g_io_error_from_file_error (G_FILE_ERROR_IO), ==,
+                    G_IO_ERROR_FAILED);
+}
+
+static void
 test_error_from_win32_error (void)
 {
 #ifdef G_OS_WIN32
@@ -787,6 +849,7 @@ main (int   argc,
   g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
 
   g_test_add_func ("/error/from-errno", test_error_from_errno);
+  g_test_add_func ("/error/from-file-error", test_error_from_file_error);
   g_test_add_func ("/error/from-win32-error", test_error_from_win32_error);
 
   return g_test_run ();

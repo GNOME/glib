@@ -1,6 +1,7 @@
 /* GIO - GLib Input, Output and Streaming Library
  * 
  * Copyright (C) 2006-2007 Red Hat, Inc.
+ * Copyright (C) 2022 Canonical Ltd.
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  *
@@ -18,6 +19,7 @@
  * Public License along with this library; if not, see <http://www.gnu.org/licenses/>.
  *
  * Author: Alexander Larsson <alexl@redhat.com>
+ * Author: Marco Trevisan <marco.trevisan@canonical.com>
  */
 
 #include "config.h"
@@ -343,6 +345,70 @@ g_io_error_from_errno (gint err_no)
       return G_IO_ERROR_FAILED;
       break;
     }
+}
+
+/**
+ * g_io_error_from_file_error:
+ * @file_error: a #GFileError.
+ *
+ * Converts #GFileError error codes into GIO error codes.
+ *
+ * Returns: #GIOErrorEnum value for the given #GFileError error value.
+ *
+ * Since: 2.74
+ **/
+GIOErrorEnum
+g_io_error_from_file_error (GFileError file_error)
+{
+  switch (file_error)
+  {
+    case G_FILE_ERROR_EXIST:
+      return G_IO_ERROR_EXISTS;
+    case G_FILE_ERROR_ISDIR:
+      return G_IO_ERROR_IS_DIRECTORY;
+    case G_FILE_ERROR_ACCES:
+      return G_IO_ERROR_PERMISSION_DENIED;
+    case G_FILE_ERROR_NAMETOOLONG:
+      return G_IO_ERROR_FILENAME_TOO_LONG;
+    case G_FILE_ERROR_NOENT:
+      return G_IO_ERROR_NOT_FOUND;
+    case G_FILE_ERROR_NOTDIR:
+      return G_IO_ERROR_NOT_DIRECTORY;
+    case G_FILE_ERROR_NXIO:
+      return G_IO_ERROR_NOT_REGULAR_FILE;
+    case G_FILE_ERROR_NODEV:
+      return G_IO_ERROR_NO_SUCH_DEVICE;
+    case G_FILE_ERROR_ROFS:
+      return G_IO_ERROR_READ_ONLY;
+    case G_FILE_ERROR_TXTBSY:
+      return G_IO_ERROR_BUSY;
+    case G_FILE_ERROR_LOOP:
+      return G_IO_ERROR_TOO_MANY_LINKS;
+    case G_FILE_ERROR_NOSPC:
+    case G_FILE_ERROR_NOMEM:
+      return G_IO_ERROR_NO_SPACE;
+    case G_FILE_ERROR_MFILE:
+    case G_FILE_ERROR_NFILE:
+      return G_IO_ERROR_TOO_MANY_OPEN_FILES;
+    case G_FILE_ERROR_INVAL:
+      return G_IO_ERROR_INVALID_ARGUMENT;
+    case G_FILE_ERROR_PIPE:
+      return G_IO_ERROR_BROKEN_PIPE;
+    case G_FILE_ERROR_AGAIN:
+      return G_IO_ERROR_WOULD_BLOCK;
+    case G_FILE_ERROR_PERM:
+      return G_IO_ERROR_PERMISSION_DENIED;
+    case G_FILE_ERROR_NOSYS:
+      return G_IO_ERROR_NOT_SUPPORTED;
+    case G_FILE_ERROR_BADF:
+    case G_FILE_ERROR_FAILED:
+    case G_FILE_ERROR_FAULT:
+    case G_FILE_ERROR_INTR:
+    case G_FILE_ERROR_IO:
+      return G_IO_ERROR_FAILED;
+    default:
+      g_return_val_if_reached (G_IO_ERROR_FAILED);
+  }
 }
 
 #ifdef G_OS_WIN32

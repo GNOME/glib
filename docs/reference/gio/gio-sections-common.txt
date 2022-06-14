@@ -1373,6 +1373,7 @@ g_io_scheduler_job_send_to_mainloop_async
 G_IO_ERROR
 GIOErrorEnum
 g_io_error_from_errno
+g_io_error_from_file_error
 g_io_error_from_win32_error
 <SUBSECTION Standard>
 G_TYPE_IO_ERROR_ENUM
