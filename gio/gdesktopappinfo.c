@@ -3349,11 +3349,16 @@ launch_uris_bus_get_cb (GObject      *object,
           g_task_return_error (task, g_steal_pointer (&error));
           g_object_unref (task);
         }
-      else
+      else if (session_bus)
         g_dbus_connection_flush (session_bus,
                                  cancellable,
                                  launch_uris_flush_cb,
                                  g_steal_pointer (&task));
+      else
+        {
+          g_task_return_boolean (task, TRUE);
+          g_clear_object (&task);
+        }
     }
 
   g_clear_object (&session_bus);
