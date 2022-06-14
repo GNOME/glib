@@ -287,7 +287,7 @@ test_error_from_errno (void)
 
 #ifdef ETXTBSY
   g_assert_cmpint (g_io_error_from_errno (ETXTBSY), ==,
-                   G_IO_ERROR_FAILED);
+                   G_IO_ERROR_BUSY);
 #endif
 
 #ifdef EFBIG
