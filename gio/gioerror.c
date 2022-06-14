@@ -217,6 +217,12 @@ g_io_error_from_errno (gint err_no)
       break;
 #endif
 
+#ifdef ETXTBSY
+    case ETXTBSY:
+      return G_IO_ERROR_BUSY;
+      break;
+#endif
+
 #ifdef EWOULDBLOCK
     case EWOULDBLOCK:
       return G_IO_ERROR_WOULD_BLOCK;
