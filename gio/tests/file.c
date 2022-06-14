@@ -3464,6 +3464,307 @@ test_move_async (void)
   g_free (destination_path);
 }
 
+static GAppInfo *
+create_command_line_app_info (const char *name,
+                              const char *command_line,
+                              const char *default_for_type)
+{
+  GAppInfo *info;
+  GError *error = NULL;
+
+  info = g_app_info_create_from_commandline (command_line,
+                                             name,
+                                             G_APP_INFO_CREATE_NONE,
+                                             &error);
+  g_assert_no_error (error);
+
+  g_app_info_set_as_default_for_type (info, default_for_type, &error);
+  g_assert_no_error (error);
+
+  return g_steal_pointer (&info);
+}
+
+static void
+test_query_default_handler_uri (void)
+{
+  GError *error = NULL;
+  GAppInfo *info;
+  GAppInfo *default_info;
+  GFile *file;
+  GFile *invalid_file;
+
+#ifdef G_OS_WIN32
+  g_test_skip ("Default URI handlers are not currently supported on Windows");
+  return;
+#endif
+
+  info = create_command_line_app_info ("Gio File Handler", "true",
+                                       "x-scheme-handler/gio-file");
+  g_assert_true (G_IS_APP_INFO (info));
+
+  file = g_file_new_for_uri ("gio-file://hello-gio!");
+  default_info = g_file_query_default_handler (file, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_true (g_app_info_equal (default_info, info));
+
+  invalid_file = g_file_new_for_uri ("gio-file-INVALID://goodbye-gio!");
+  g_assert_null (g_file_query_default_handler (invalid_file, NULL, &error));
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);
+  g_clear_error (&error);
+
+  g_app_info_remove_supports_type (info, "x-scheme-handler/gio-file", &error);
+  g_assert_no_error (error);
+  g_app_info_reset_type_associations ("x-scheme-handler/gio-file");
+
+  g_object_unref (default_info);
+  g_object_unref (info);
+  g_object_unref (file);
+  g_object_unref (invalid_file);
+}
+
+static void
+test_query_default_handler_file (void)
+{
+  GError *error = NULL;
+  GAppInfo *info;
+  GAppInfo *default_info;
+  GFile *text_file;
+  GFile *binary_file;
+  GFile *invalid_file;
+  GFileIOStream *iostream;
+  GOutputStream *output_stream;
+  const char buffer[] = "Text file!\n";
+  const guint8 binary_buffer[] = "\xde\xad\xbe\xff";
+
+#ifdef G_OS_WIN32
+  g_test_skip ("Default URI handlers are not currently supported on Windows");
+  return;
+#endif
+
+  text_file = g_file_new_tmp ("query-default-handler-XXXXXX", &iostream, &error);
+  g_assert_no_error (error);
+
+  output_stream = g_io_stream_get_output_stream (G_IO_STREAM (iostream));
+  g_output_stream_write_all (output_stream, buffer, G_N_ELEMENTS (buffer) - 1,
+                             NULL, NULL, &error);
+  g_assert_no_error (error);
+
+  g_output_stream_close (output_stream, NULL, &error);
+  g_assert_no_error (error);
+  g_clear_object (&iostream);
+
+  info = create_command_line_app_info ("Text handler", "true", "text/plain");
+  g_assert_true (G_IS_APP_INFO (info));
+
+  default_info = g_file_query_default_handler (text_file, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_true (g_app_info_equal (default_info, info));
+
+  invalid_file = g_file_new_for_path ("/hopefully/this-does-not-exists");
+  g_assert_null (g_file_query_default_handler (invalid_file, NULL, &error));
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND);
+  g_clear_error (&error);
+
+  binary_file = g_file_new_tmp ("query-default-handler-bin-XXXXXX", &iostream, &error);
+  g_assert_no_error (error);
+
+  output_stream = g_io_stream_get_output_stream (G_IO_STREAM (iostream));
+  g_output_stream_write_all (output_stream, binary_buffer,
+                             G_N_ELEMENTS (binary_buffer),
+                             NULL, NULL, &error);
+  g_assert_no_error (error);
+
+  g_output_stream_close (output_stream, NULL, &error);
+  g_assert_no_error (error);
+  g_clear_object (&iostream);
+
+  g_assert_null (g_file_query_default_handler (binary_file, NULL, &error));
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);
+  g_clear_error (&error);
+
+  g_app_info_remove_supports_type (info, "text/plain", &error);
+  g_assert_no_error (error);
+  g_app_info_reset_type_associations ("text/plain");
+
+  g_object_unref (default_info);
+  g_object_unref (info);
+  g_object_unref (text_file);
+  g_object_unref (binary_file);
+  g_object_unref (invalid_file);
+}
+
+typedef struct {
+  GMainLoop *loop;
+  GAppInfo *info;
+  GError *error;
+} QueryDefaultHandlerData;
+
+static void
+on_query_default (GObject      *source,
+                  GAsyncResult *result,
+                  gpointer      user_data)
+{
+  QueryDefaultHandlerData *data = user_data;
+
+  data->info = g_file_query_default_handler_finish (G_FILE (source), result,
+                                                    &data->error);
+  g_main_loop_quit (data->loop);
+}
+
+static void
+test_query_default_handler_file_async (void)
+{
+  QueryDefaultHandlerData data = {0};
+  GCancellable *cancellable;
+  GAppInfo *info;
+  GFile *text_file;
+  GFile *binary_file;
+  GFile *invalid_file;
+  GFileIOStream *iostream;
+  GOutputStream *output_stream;
+  const char buffer[] = "Text file!\n";
+  const guint8 binary_buffer[] = "\xde\xad\xbe\xff";
+  GError *error = NULL;
+
+#ifdef G_OS_WIN32
+  g_test_skip ("Default URI handlers are not currently supported on Windows");
+  return;
+#endif
+
+  data.loop = g_main_loop_new (NULL, FALSE);
+
+  text_file = g_file_new_tmp ("query-default-handler-XXXXXX", &iostream, &error);
+  g_assert_no_error (error);
+
+  output_stream = g_io_stream_get_output_stream (G_IO_STREAM (iostream));
+  g_output_stream_write_all (output_stream, buffer, G_N_ELEMENTS (buffer) - 1,
+                             NULL, NULL, &error);
+  g_assert_no_error (error);
+
+  g_output_stream_close (output_stream, NULL, &error);
+  g_assert_no_error (error);
+  g_clear_object (&iostream);
+
+  info = create_command_line_app_info ("Text handler", "true", "text/plain");
+  g_assert_true (G_IS_APP_INFO (info));
+
+  g_file_query_default_handler_async (text_file, G_PRIORITY_DEFAULT,
+                                      NULL, on_query_default,
+                                      &data);
+  g_main_loop_run (data.loop);
+  g_assert_no_error (data.error);
+  g_assert_true (g_app_info_equal (data.info, info));
+  g_clear_object (&data.info);
+
+  invalid_file = g_file_new_for_path ("/hopefully/this/.file/does-not-exists");
+  g_file_query_default_handler_async (invalid_file, G_PRIORITY_DEFAULT,
+                                      NULL, on_query_default,
+                                      &data);
+  g_main_loop_run (data.loop);
+  g_assert_null (data.info);
+  g_assert_error (data.error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND);
+  g_clear_error (&data.error);
+
+  cancellable = g_cancellable_new ();
+  g_file_query_default_handler_async (text_file, G_PRIORITY_DEFAULT,
+                                      cancellable, on_query_default,
+                                      &data);
+  g_cancellable_cancel (cancellable);
+  g_main_loop_run (data.loop);
+  g_assert_null (data.info);
+  g_assert_error (data.error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
+  g_clear_error (&data.error);
+
+  binary_file = g_file_new_tmp ("query-default-handler-bin-XXXXXX", &iostream, &error);
+  g_assert_no_error (error);
+
+  output_stream = g_io_stream_get_output_stream (G_IO_STREAM (iostream));
+  g_output_stream_write_all (output_stream, binary_buffer,
+                             G_N_ELEMENTS (binary_buffer),
+                             NULL, NULL, &error);
+  g_assert_no_error (error);
+
+  g_output_stream_close (output_stream, NULL, &error);
+  g_assert_no_error (error);
+  g_clear_object (&iostream);
+
+  g_file_query_default_handler_async (binary_file, G_PRIORITY_DEFAULT,
+                                      NULL, on_query_default,
+                                      &data);
+  g_main_loop_run (data.loop);
+  g_assert_null (data.info);
+  g_assert_error (data.error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);
+  g_clear_error (&data.error);
+
+  g_app_info_remove_supports_type (info, "text/plain", &error);
+  g_assert_no_error (error);
+  g_app_info_reset_type_associations ("text/plain");
+
+  g_main_loop_unref (data.loop);
+  g_object_unref (info);
+  g_object_unref (text_file);
+  g_object_unref (binary_file);
+  g_object_unref (invalid_file);
+}
+
+static void
+test_query_default_handler_uri_async (void)
+{
+  QueryDefaultHandlerData data = {0};
+  GCancellable *cancellable;
+  GAppInfo *info;
+  GFile *file;
+  GFile *invalid_file;
+
+#ifdef G_OS_WIN32
+  g_test_skip ("Default URI handlers are not currently supported on Windows");
+  return;
+#endif
+
+  info = create_command_line_app_info ("Gio File Handler", "true",
+                                       "x-scheme-handler/gio-file");
+  g_assert_true (G_IS_APP_INFO (info));
+
+  data.loop = g_main_loop_new (NULL, FALSE);
+
+  file = g_file_new_for_uri ("gio-file://hello-gio!");
+  g_file_query_default_handler_async (file, G_PRIORITY_DEFAULT,
+                                      NULL, on_query_default,
+                                      &data);
+  g_main_loop_run (data.loop);
+  g_assert_no_error (data.error);
+  g_assert_true (g_app_info_equal (data.info, info));
+  g_clear_object (&data.info);
+
+  invalid_file = g_file_new_for_uri ("gio-file-INVALID://goodbye-gio!");
+  g_file_query_default_handler_async (invalid_file, G_PRIORITY_DEFAULT,
+                                      NULL, on_query_default,
+                                      &data);
+  g_main_loop_run (data.loop);
+  g_assert_null (data.info);
+  g_assert_error (data.error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);
+  g_clear_error (&data.error);
+
+  cancellable = g_cancellable_new ();
+  g_file_query_default_handler_async (file, G_PRIORITY_DEFAULT,
+                                      cancellable, on_query_default,
+                                      &data);
+  g_cancellable_cancel (cancellable);
+  g_main_loop_run (data.loop);
+  g_assert_null (data.info);
+  g_assert_error (data.error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
+  g_clear_error (&data.error);
+
+  g_app_info_remove_supports_type (info, "x-scheme-handler/gio-file", &data.error);
+  g_assert_no_error (data.error);
+  g_app_info_reset_type_associations ("x-scheme-handler/gio-file");
+
+  g_main_loop_unref (data.loop);
+  g_object_unref (info);
+  g_object_unref (file);
+  g_object_unref (invalid_file);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -3511,6 +3812,10 @@ main (int argc, char *argv[])
   g_test_add_func ("/file/writev/async_all-cancellation", test_writev_async_all_cancellation);
   g_test_add_func ("/file/build-attribute-list-for-copy", test_build_attribute_list_for_copy);
   g_test_add_func ("/file/move_async", test_move_async);
+  g_test_add_func ("/file/query-default-handler-file", test_query_default_handler_file);
+  g_test_add_func ("/file/query-default-handler-file-async", test_query_default_handler_file_async);
+  g_test_add_func ("/file/query-default-handler-uri", test_query_default_handler_uri);
+  g_test_add_func ("/file/query-default-handler-uri-async", test_query_default_handler_uri_async);
 
   return g_test_run ();
 }
