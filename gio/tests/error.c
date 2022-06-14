@@ -85,6 +85,11 @@ test_error_from_errno (void)
                    G_IO_ERROR_TOO_MANY_LINKS);
 #endif
 
+#ifdef EMLINK
+  g_assert_cmpint (g_io_error_from_errno (EMLINK), ==,
+                   G_IO_ERROR_TOO_MANY_LINKS);
+#endif
+
 #ifdef ENOSPC
   g_assert_cmpint (g_io_error_from_errno (ENOSPC), ==,
                    G_IO_ERROR_NO_SPACE);
