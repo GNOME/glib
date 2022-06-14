@@ -277,7 +277,7 @@ test_error_from_errno (void)
 
 #ifdef ENFILE
   g_assert_cmpint (g_io_error_from_errno (ENFILE), ==,
-                   G_IO_ERROR_FAILED);
+                   G_IO_ERROR_TOO_MANY_OPEN_FILES);
 #endif
 
 #ifdef ENOTTY
