@@ -72,7 +72,7 @@ g_unix_set_error_from_errno (GError **error,
 
 /**
  * g_unix_open_pipe:
- * @fds: Array of two integers
+ * @fds: (array fixed-size=2): Array of two integers
  * @flags: Bitfield of file descriptor flags, as for fcntl()
  * @error: a #GError
  *
