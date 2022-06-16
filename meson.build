@@ -102,6 +102,30 @@ installed_tests_template_tap = files('tests/template-tap.test.in')
 # Don’t build the tests unless we can run them (either natively, in an exe wrapper, or by installing them for later use)
 build_tests = get_option('tests') and (meson.can_run_host_binaries() or installed_tests_enabled)
 
+# Allow the tests to be easily run under valgrind using --setup=valgrind
+valgrind = find_program('valgrind', required: false)
+if valgrind.found()
+  suppression_file = files('tools' / 'glib.supp')
+
+  add_test_setup('valgrind',
+    exclude_suites: [ 'no-valgrind' ],
+    exe_wrapper: [
+      valgrind,
+      '--tool=memcheck',
+      '--error-exitcode=1',
+      '--track-origins=yes',
+      '--leak-check=full',
+      '--leak-resolution=high',
+      '--num-callers=50',
+      '--show-leak-kinds=definite,possible',
+      '--show-error-list=yes',
+      '--suppressions=@0@'.format(meson.project_source_root() /
+        '@0@'.format(suppression_file[0])),
+    ],
+    timeout_multiplier: 10,
+  )
+endif
+
 add_project_arguments('-D_GNU_SOURCE', language: 'c')
 
 if host_system == 'qnx'
