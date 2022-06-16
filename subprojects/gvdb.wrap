@@ -1,0 +1,8 @@
+[wrap-git]
+directory=gvdb
+url=https://gitlab.gnome.org/GNOME/gvdb.git
+revision=0854af0fdb6d527a8d1999835ac2c5059976c210
+depth=1
+
+[provide]
+dependency_names = gvdb
