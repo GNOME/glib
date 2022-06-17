@@ -29,7 +29,7 @@
 
       On FreeBSD:
       <literallayout>
-        <userinput>env CPPFLAGS="-I/usr/local/include" LDFLAGS="-L/usr/local/lib -Wl,--disable-new-dtags" meson -Dxattr=false -Dinstalled_tests=true -Diconv=external -Db_lundef=false _build</userinput>
+        <userinput>env CPPFLAGS="-I/usr/local/include" LDFLAGS="-L/usr/local/lib -Wl,--disable-new-dtags" meson -Dxattr=false -Dinstalled_tests=true -Db_lundef=false _build</userinput>
         <userinput>ninja -C _build</userinput>
       </literallayout>
     </para>
@@ -98,16 +98,12 @@
         </para>
         <para>
           If your system has an <function>iconv()</function> implementation but
-          you want to use libiconv instead, you can pass the
-          <option>-Diconv=gnu</option> option to <command>meson</command>. This
-          forces libiconv to be used.
-        </para>
-        <para>
-          Note that if you have libiconv installed in your default include
-          search path (for instance, in <filename>/usr/local/</filename>), but
-          don't enable it, you will get an error while compiling GLib because
-          the <filename>iconv.h</filename> that libiconv installs hides the
-          system iconv.
+          you want to use libiconv instead, make sure it is installed to the
+          default compiler header/library search path (for instance, in
+          <filename>/usr/local/</filename>). The <filename>iconv.h</filename>
+          that libiconv installs hides the system iconv. Meson then detects
+          this, recognizes that the system iconv is unusable and the external
+          one is mandatory, and automatically forces it to be used.
         </para>
         <para>
           If you are using the native iconv implementation on Solaris

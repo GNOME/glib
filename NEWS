@@ -1,3 +1,10 @@
+Overview of changes in GLib 2.73.1
+==================================
+
+* Remove the `-Diconv` configure option, as GLib now uses Meson’s built-in logic for
+  finding which iconv implementation to use (work by Eli Schwartz) (!2734)
+
+
 Overview of changes in GLib 2.73.0
 ==================================
 
