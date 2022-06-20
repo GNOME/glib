@@ -161,11 +161,18 @@ _g_atomic_array_update (GAtomicArray *array,
   guint8 *old;
 
   G_LOCK (array);
-  old = g_atomic_pointer_get (&array->data);
+  old = g_atomic_pointer_exchange (&array->data, new_data);
 
+#ifdef G_DISABLE_ASSERT
+  if (old && G_ATOMIC_ARRAY_DATA_SIZE (new_data) < G_ATOMIC_ARRAY_DATA_SIZE (old))
+    {
+      g_atomic_pointer_set (&array->data, old);
+      g_return_if_reached ();
+    }
+#else
   g_assert (old == NULL || G_ATOMIC_ARRAY_DATA_SIZE (old) <= G_ATOMIC_ARRAY_DATA_SIZE (new_data));
+#endif
 
-  g_atomic_pointer_set (&array->data, new_data);
   if (old)
     freelist_free (old);
   G_UNLOCK (array);
