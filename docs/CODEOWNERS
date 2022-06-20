@@ -18,7 +18,7 @@
 # the GLib code base, add yourself here.
 
 # Overall maintainers
-*	@pwithnall @ebassi
+*	@pwithnall @ebassi @3v1n0
 
 # Build system
 meson.build		@xclaesse @nirbheek @pwithnall
