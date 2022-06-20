@@ -1812,6 +1812,15 @@ test_modifiers (void)
   TEST_PRINTF_TIME ( 1, 0, 0, "%-k", "1");
   TEST_PRINTF_TIME ( 1, 0, 0, "%0k", "01");
 
+  TEST_PRINTF_TIME ( 1, 0, 0,  "%l", " 1");
+  TEST_PRINTF_TIME ( 1, 0, 0, "%_l", " 1");
+  TEST_PRINTF_TIME ( 1, 0, 0, "%-l", "1");
+  TEST_PRINTF_TIME ( 1, 0, 0, "%0l", "01");
+  TEST_PRINTF_TIME (23, 0, 0,  "%l", "11");
+  TEST_PRINTF_TIME (23, 0, 0, "%_l", "11");
+  TEST_PRINTF_TIME (23, 0, 0, "%-l", "11");
+  TEST_PRINTF_TIME (23, 0, 0, "%0l", "11");
+
   oldlocale = g_strdup (setlocale (LC_ALL, NULL));
   setlocale (LC_ALL, "fa_IR.utf-8");
 #ifdef HAVE_LANGINFO_OUTDIGIT
