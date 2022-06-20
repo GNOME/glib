@@ -225,8 +225,7 @@ valgrind:
     # See https://gitlab.gnome.org/GNOME/glib/-/merge_requests/2710
     - ulimit -Sn 1024
     - bash -x ./.gitlab-ci/run-tests.sh
-                 --wrap "valgrind --tool=memcheck --error-exitcode=1 --track-origins=yes --leak-check=full --leak-resolution=high --num-callers=50 --show-leak-kinds=definite,possible --show-error-list=yes --suppressions=${CI_PROJECT_DIR}/tools/glib.supp"
-                 --no-suite no-valgrind
+                 --setup valgrind
                  --no-suite slow
   # FIXME: Remove this when we have zero valgrind leaks.
   # https://gitlab.gnome.org/GNOME/glib/issues/333
