@@ -1360,7 +1360,10 @@ g_object_real_dispose (GObject *object)
   };
 
   g_signal_handlers_destroy (object);
-  g_datalist_id_remove_multiple (&object->qdata, keys, G_N_ELEMENTS (keys));
+  /* FIXME: This should be simplified down to a single remove_multiple() call.
+   * See https://gitlab.gnome.org/GNOME/glib/-/issues/2672 */
+  g_datalist_id_remove_multiple (&object->qdata, keys, 1);
+  g_datalist_id_remove_multiple (&object->qdata, keys + 1, 2);
 }
 
 #ifdef G_ENABLE_DEBUG
