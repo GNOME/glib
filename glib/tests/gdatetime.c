@@ -1602,7 +1602,8 @@ GDateTime *__dt = g_date_time_new_local (2009, 10, 24, 0, 0, 0);\
   TEST_PRINTF ("%B", "October");
   TEST_PRINTF ("%d", "24");
   TEST_PRINTF_DATE (2009, 1, 1, "%d", "01");
-  TEST_PRINTF ("%e", "24"); // fixme
+  TEST_PRINTF ("%e", "24");
+  TEST_PRINTF_DATE (2009, 1, 1, "%e", "\u20071");
   TEST_PRINTF_TIME (10, 10, 1.001, "%f", "001000");
   TEST_PRINTF ("%h", "Oct");
   TEST_PRINTF ("%H", "00");
@@ -1611,11 +1612,11 @@ GDateTime *__dt = g_date_time_new_local (2009, 10, 24, 0, 0, 0);\
   TEST_PRINTF_TIME (12, 0, 0, "%I", "12");
   TEST_PRINTF_TIME (15, 0, 0, "%I", "03");
   TEST_PRINTF ("%j", "297");
-  TEST_PRINTF ("%k", " 0");
+  TEST_PRINTF ("%k", "\u20070");
   TEST_PRINTF_TIME (13, 13, 13, "%k", "13");
   TEST_PRINTF ("%l", "12");
   TEST_PRINTF_TIME (12, 0, 0, "%I", "12");
-  TEST_PRINTF_TIME (13, 13, 13, "%l", " 1");
+  TEST_PRINTF_TIME (13, 13, 13, "%l", "\u20071");
   TEST_PRINTF_TIME (10, 13, 13, "%l", "10");
   TEST_PRINTF ("%m", "10");
   TEST_PRINTF ("%M", "00");
@@ -1711,7 +1712,7 @@ test_non_utf8_printf (void)
   TEST_PRINTF_TIME (13, 13, 13, "%k", "13");
   TEST_PRINTF ("%l", "12");
   TEST_PRINTF_TIME (12, 0, 0, "%I", "12");
-  TEST_PRINTF_TIME (13, 13, 13, "%l", " 1");
+  TEST_PRINTF_TIME (13, 13, 13, "%l", "\u20071");
   TEST_PRINTF_TIME (10, 13, 13, "%l", "10");
   TEST_PRINTF ("%m", "10");
   TEST_PRINTF ("%M", "00");
@@ -1780,7 +1781,7 @@ test_modifiers (void)
   TEST_PRINTF_DATE (2009, 1, 21, "%-d", "21");
   TEST_PRINTF_DATE (2009, 1, 21, "%0d", "21");
 
-  TEST_PRINTF_DATE (2009, 1,  1,  "%e", " 1");
+  TEST_PRINTF_DATE (2009, 1,  1,  "%e", "\u20071");
   TEST_PRINTF_DATE (2009, 1,  1, "%_e", " 1");
   TEST_PRINTF_DATE (2009, 1,  1, "%-e", "1");
   TEST_PRINTF_DATE (2009, 1,  1, "%0e", "01");
@@ -1807,10 +1808,19 @@ test_modifiers (void)
   TEST_PRINTF_TIME (23, 0, 0, "%-I", "11");
   TEST_PRINTF_TIME (23, 0, 0, "%0I", "11");
 
-  TEST_PRINTF_TIME ( 1, 0, 0,  "%k", " 1");
+  TEST_PRINTF_TIME ( 1, 0, 0,  "%k", "\u20071");
   TEST_PRINTF_TIME ( 1, 0, 0, "%_k", " 1");
   TEST_PRINTF_TIME ( 1, 0, 0, "%-k", "1");
   TEST_PRINTF_TIME ( 1, 0, 0, "%0k", "01");
+
+  TEST_PRINTF_TIME ( 1, 0, 0,  "%l", "\u20071");
+  TEST_PRINTF_TIME ( 1, 0, 0, "%_l", " 1");
+  TEST_PRINTF_TIME ( 1, 0, 0, "%-l", "1");
+  TEST_PRINTF_TIME ( 1, 0, 0, "%0l", "01");
+  TEST_PRINTF_TIME (23, 0, 0,  "%l", "11");
+  TEST_PRINTF_TIME (23, 0, 0, "%_l", "11");
+  TEST_PRINTF_TIME (23, 0, 0, "%-l", "11");
+  TEST_PRINTF_TIME (23, 0, 0, "%0l", "11");
 
   oldlocale = g_strdup (setlocale (LC_ALL, NULL));
   setlocale (LC_ALL, "fa_IR.utf-8");
@@ -2453,6 +2463,24 @@ test_format_time_mixed_utf8 (gconstpointer data)
 #endif
 }
 
+#ifdef __linux__
+static gchar *
+str_utf8_replace (const gchar *str,
+                  gunichar     from,
+                  gunichar     to)
+{
+  GString *str_out = g_string_new ("");
+
+  for (; *str != '\0'; str = g_utf8_next_char (str))
+    {
+      gunichar c = g_utf8_get_char (str);
+      g_string_append_unichar (str_out, (c == from) ? to : c);
+    }
+
+  return g_string_free (g_steal_pointer (&str_out), FALSE);
+}
+#endif
+
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wformat-y2k"
 static void
@@ -2470,13 +2498,24 @@ test_strftime (void)
       GDateTime *date_time;
       gchar c_str[1000];
       gchar *dt_str;
+      gchar *dt_str_replaced = NULL, *c_str_replaced = NULL;
 
       date_time = g_date_time_new_from_unix_local (t);
       dt_str = g_date_time_format (date_time, TEST_FORMAT);
       strftime (c_str, sizeof c_str, TEST_FORMAT, localtime (&t));
-      g_assert_cmpstr (c_str, ==, dt_str);
+
+      /* Ensure the comparison is done insensitively to spaces.
+       * g_date_time_format() sometimes uses figure spaces (U+2007) whereas
+       * strftime() currently doesn’t, and that’s fine. */
+      dt_str_replaced = str_utf8_replace (dt_str, 0x2007, 0x20);
+      c_str_replaced = str_utf8_replace  (c_str, 0x2007, 0x20);
+
+      g_assert_cmpstr (c_str_replaced, ==, dt_str_replaced);
+
       g_date_time_unref (date_time);
       g_free (dt_str);
+      g_free (dt_str_replaced);
+      g_free (c_str_replaced);
     }
 #endif
 }
