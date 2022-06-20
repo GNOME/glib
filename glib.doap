@@ -54,6 +54,14 @@
     </foaf:Person>
   </maintainer>
 
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Marco Trevisan</foaf:name>
+      <foaf:mbox rdf:resource="mailto:mail@3v1n0.net"/>
+      <gnome:userid>marcotrevi</gnome:userid>
+    </foaf:Person>
+  </maintainer>
+
   <repository>
     <GitRepository>
       <browse rdf:resource="https://gitlab.gnome.org/GNOME/glib/"/>
