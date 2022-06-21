@@ -3402,7 +3402,16 @@ g_signal_emit_valist (gpointer instance,
 
 	  if (closure != NULL)
 	    {
+              /*
+               * Coverity doesn’t understand the paired ref/unref here and seems
+               * to ignore the ref, thus reports every call to g_signal_emit()
+               * as causing a double-free. That’s incorrect, but I can’t get a
+               * model file to work for avoiding the false positives, so instead
+               * comment out the ref/unref when doing static analysis.
+               */
+#ifndef __COVERITY__
 	      g_object_ref (instance);
+#endif
 	      _g_closure_invoke_va (closure,
 				    return_accu,
 				    instance,
@@ -3452,8 +3461,11 @@ g_signal_emit_valist (gpointer instance,
 	  
 	  TRACE(GOBJECT_SIGNAL_EMIT_END(signal_id, detail, instance, instance_type));
 
+          /* See comment above paired ref above */
+#ifndef __COVERITY__
           if (closure != NULL)
             g_object_unref (instance);
+#endif
 
 	  return;
 	}
