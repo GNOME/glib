@@ -282,6 +282,47 @@ if installed_tests_enabled
   )
 endif
 
+python_tests = [
+  'assert-msg-test.py',
+]
+
+executable('assert-msg-test', ['assert-msg-test.c'],
+  c_args : test_cargs,
+  dependencies :  test_deps,
+  install_dir : installed_tests_execdir,
+  install : installed_tests_enabled,
+  win_subsystem : extra_args.get('win_subsystem', 'console'),
+)
+
+foreach test_name : python_tests
+  test(
+    test_name,
+    python,
+    args: ['-B', files(test_name)],
+    env: test_env,
+    suite: ['glib', 'no-valgrind'],
+  )
+
+  if installed_tests_enabled
+    install_data(
+      files(test_name),
+      install_dir: installed_tests_execdir,
+      install_mode: 'rwxr-xr-x',
+    )
+
+    test_conf = configuration_data()
+    test_conf.set('installed_tests_dir', installed_tests_execdir)
+    test_conf.set('program', test_name)
+    test_conf.set('env', '')
+    configure_file(
+      input: installed_tests_template_tap,
+      output: test_name + '.test',
+      install_dir: installed_tests_metadir,
+      configuration: test_conf,
+    )
+  endif
+endforeach
+
 executable('spawn-path-search-helper', 'spawn-path-search-helper.c',
   c_args : test_cargs,
   dependencies : test_deps,

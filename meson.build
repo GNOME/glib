@@ -2346,9 +2346,6 @@ subdir('gthread')
 subdir('gmodule')
 subdir('gio')
 subdir('fuzzing')
-if build_tests
-  subdir('tests')
-endif
 subdir('tools')
 
 # xgettext is optional (on Windows for instance)
