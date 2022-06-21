@@ -581,8 +581,11 @@ gio_sources = files(
   'gzlibdecompressor.c',
   'glistmodel.c',
   'gliststore.c',
-  '../glib/gtrace.c',
 )
+
+if get_option('default_library') != 'static'
+  gio_sources += files ('../glib/gtrace.c')
+endif
 
 gio_sources += appinfo_sources
 gio_sources += contenttype_sources
