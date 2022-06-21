@@ -578,6 +578,70 @@ test_cancellable_disconnect_on_cancelled_callback_hangs (void)
   g_object_unref (cancellable);
 }
 
+static gpointer
+repeatedly_cancelling_thread (gpointer data)
+{
+  GCancellable *cancellable = data;
+  const guint iterations = 10000;
+
+  for (guint i = 0; i < iterations; ++i)
+    g_cancellable_cancel (cancellable);
+
+  return NULL;
+}
+
+static gpointer
+repeatedly_resetting_thread (gpointer data)
+{
+  GCancellable *cancellable = data;
+  const guint iterations = 10000;
+
+  for (guint i = 0; i < iterations; ++i)
+    g_cancellable_reset (cancellable);
+
+  return NULL;
+}
+
+static void
+on_racy_cancellable_cancelled (GCancellable *cancellable,
+                               gpointer data)
+{
+  gboolean *callback_called = data;
+
+  g_assert_true (g_cancellable_is_cancelled (cancellable));
+  g_atomic_int_set (callback_called, TRUE);
+}
+
+static void
+test_cancellable_cancel_reset_races (void)
+{
+  GCancellable *cancellable;
+  GThread *resetting_thread = NULL;
+  GThread *cancelling_thread = NULL;
+  gboolean callback_called = FALSE;
+
+  g_test_summary ("Tests threads racing for cancelling and resetting a GCancellable");
+
+  cancellable = g_cancellable_new ();
+
+  g_cancellable_connect (cancellable, G_CALLBACK (on_racy_cancellable_cancelled),
+                         &callback_called, NULL);
+  g_assert_false (callback_called);
+
+  resetting_thread = g_thread_new ("/cancellable/cancel-reset-races/resetting",
+                                   repeatedly_resetting_thread,
+                                   cancellable);
+  cancelling_thread = g_thread_new ("/cancellable/cancel-reset-races/cancelling",
+                                    repeatedly_cancelling_thread, cancellable);
+
+  g_thread_join (g_steal_pointer (&cancelling_thread));
+  g_thread_join (g_steal_pointer (&resetting_thread));
+
+  g_assert_true (callback_called);
+
+  g_object_unref (cancellable);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -589,6 +653,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/cancellable/poll-fd", test_cancellable_poll_fd);
   g_test_add_func ("/cancellable/poll-fd-cancelled", test_cancellable_cancelled_poll_fd);
   g_test_add_func ("/cancellable/poll-fd-cancelled-threaded", test_cancellable_cancelled_poll_fd_threaded);
+  g_test_add_func ("/cancellable/cancel-reset-races", test_cancellable_cancel_reset_races);
   g_test_add_func ("/cancellable-source/threaded-dispose", test_cancellable_source_threaded_dispose);
 
   return g_test_run ();
