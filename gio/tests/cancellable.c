@@ -728,6 +728,68 @@ test_cancellable_cancel_reset_races (void)
   g_object_unref (cancellable);
 }
 
+static gpointer
+repeatedly_connecting_thread (gpointer data)
+{
+  GCancellable *cancellable = data;
+  const guint iterations = 10000;
+  gboolean callback_ever_called = FALSE;
+
+  for (guint i = 0; i < iterations; ++i)
+    {
+      gboolean callback_called = FALSE;
+      gboolean called;
+      gulong id = g_cancellable_connect (cancellable,
+                                         G_CALLBACK (on_racy_cancellable_cancelled),
+                                         &callback_called, NULL);
+      called = g_atomic_int_get (&callback_called);
+      callback_ever_called |= called;
+      if (g_test_verbose () && called)
+        g_test_message ("Reconnecting cancellation callback called");
+      g_cancellable_disconnect (cancellable, id);
+    }
+
+  if (!callback_ever_called)
+    g_test_incomplete ("We didn't really checked if callbacks is called properly");
+
+  return NULL;
+}
+
+static void
+test_cancellable_cancel_reset_connect_races (void)
+{
+  GCancellable *cancellable;
+  GThread *resetting_thread = NULL;
+  GThread *cancelling_thread = NULL;
+  GThread *connecting_thread = NULL;
+  gboolean callback_called = FALSE;
+
+  g_test_summary ("Tests threads racing for cancelling, connecting and disconnecting "
+                  " and resetting a GCancellable");
+
+  cancellable = g_cancellable_new ();
+
+  g_cancellable_connect (cancellable, G_CALLBACK (on_racy_cancellable_cancelled),
+                         &callback_called, NULL);
+  g_assert_false (callback_called);
+
+  resetting_thread = g_thread_new ("/cancel-reset-connect-races/resetting",
+                                   repeatedly_resetting_thread,
+                                   cancellable);
+  cancelling_thread = g_thread_new ("/cancel-reset-connect-races/cancelling",
+                                    repeatedly_cancelling_thread, cancellable);
+  connecting_thread = g_thread_new ("/cancel-reset-connect-races/connecting",
+                                    repeatedly_connecting_thread, cancellable);
+
+  g_thread_join (g_steal_pointer (&cancelling_thread));
+  g_thread_join (g_steal_pointer (&resetting_thread));
+  g_thread_join (g_steal_pointer (&connecting_thread));
+
+  g_assert_true (callback_called);
+
+  g_object_unref (cancellable);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -741,6 +803,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/cancellable/poll-fd-cancelled", test_cancellable_cancelled_poll_fd);
   g_test_add_func ("/cancellable/poll-fd-cancelled-threaded", test_cancellable_cancelled_poll_fd_threaded);
   g_test_add_func ("/cancellable/cancel-reset-races", test_cancellable_cancel_reset_races);
+  g_test_add_func ("/cancellable/cancel-reset-connect-races", test_cancellable_cancel_reset_connect_races);
   g_test_add_func ("/cancellable-source/threaded-dispose", test_cancellable_source_threaded_dispose);
 
   return g_test_run ();
