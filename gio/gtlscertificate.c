@@ -626,7 +626,7 @@ create_certificate_chain_from_list (GSList       *pem_list,
 
       /* root will point to the last certificate in the file. */
       if (!root)
-        root = cert;
+        root = g_object_ref (cert);
 
       pem = g_slist_next (pem);
     }
@@ -640,6 +640,8 @@ create_certificate_chain_from_list (GSList       *pem_list,
       /* It wasn't a chain, it's just a bunch of unrelated certs. */
       g_clear_object (&cert);
     }
+
+  g_clear_object (&root);
 
   return cert;
 }
