@@ -4,6 +4,97 @@ Overview of changes in GLib 2.73.1
 * Remove the `-Diconv` configure option, as GLib now uses Meson’s built-in logic for
   finding which iconv implementation to use (work by Eli Schwartz) (!2734)
 
+* Move gvdb to a Meson subproject and git submodule to avoid duplicating its
+  source (work by Philip Withnall) (!2733)
+
+* Add `add_test_setup()` in Meson to allow GLib tests to be run under valgrind
+  with correct settings easily, using `meson test --setup=valgrind` (work by
+  Philip Withnall) (!2752)
+
+* Fix deadlocks when disposing non-cancelled inotify `GFileMonitor`s (work by
+  Benjamin Berg) (#1941)
+
+* Fix `file://` requests in webkit2gtk due to incorrect xdgmime update (work by
+  Stephen Jung, Michael Catanzaro, Philip Withnall) (#2639)
+
+* Fix build errors on macOS ≤10.7 for `LOCAL_PEERPID` (work by Christopher Nielsen) (!2707)
+
+* Add new `g_atomic_int_exchange()` and `g_atomic_pointer_exchange()` APIs (work
+  by Marco Trevisan) (!2726)
+
+* Add new `GListStore:n-items` property to allow easy binding in UIs (work by
+  Benjamin Otte) (!2738)
+
+* Performance improvements for GObject construction and destruction (work by
+  Matthias Clasen) (#2661, #2665, #2666, !2678, !2700, !2705, !2712, !2713,
+  !2714, !2715, !2716, !2721, !2722, !2723, !2724, !2725, !2756)
+
+* Use a numeric space (U+2007) for padding with some `g_date_time_format()`
+  placeholders (work by Maksym Hazevych) (#2655)
+
+* Fix a slow memory leak in `GSocketClient` when using long-lived `GCancellable`s
+  (work by Jens Georg) (#2670)
+
+* Bugs fixed:
+ - #1941 disposing a non-cancelled inotify GFileMonitor causes deadlocks
+ - #2639 xdgmime update breaks webkit2gtk file:// requests
+ - #2655 Use the numeric space for the DateTime.format()'s `\%l` specifier
+ - #2656 2.73.0: test suite is failing in `glib:gobject / object` unit
+ - #2661 Speeding up type checks for final types (commit 0ddea2d8e) breaks C++ bindings
+ - #2665 GObject speed up causes gtk3 apps to crash :(
+ - #2666 GObject speedup causes warnings with custom constructors
+ - #2670 Growing memory when using cancellable in g_socket_client_connect_async
+ - !2670 docs: Add a backports policy
+ - !2678 Speed up property lookup
+ - !2681 docs: Add a roadmap policy
+ - !2692 tests: Drop redundant collate test data files
+ - !2694 Restore macOS CI
+ - !2696 Move tests/gobject/testgobject.c to gobject/tests/basics-gobject.c
+ - !2697 Delete tests/gobject/timeloop-closure.c
+ - !2700 gtype: Speed up type checks for final types
+ - !2701 gsocketaddressenumerator: add nullable annotation to the result of `next`
+ - !2702 tests: Fix a potential race condition in pollable test
+ - !2704 tests: Remove various bits of overly-verbose test output
+ - !2705 gobject: Drop an unused quark
+ - !2707 credentials: macos: check for existence of LOCAL_PEERPID
+ - !2710 ci: Try reducing FD soft limit to fix valgrind tests
+ - !2711 tests: Various small test fixes for valgrind
+ - !2712 Improve the GObject performance test
+ - !2713 Simplify g_object_new_with_properties
+ - !2714 Simplify g_object_notify_by_pspec
+ - !2715 Don't inline deprecation warnings
+ - !2716 Don't copy values in g_object_new
+ - !2719 Add nullable annotation to return value of `g_variant_dict_lookup_value`.
+ - !2721 Avoid g_object_ref/unref in some cases
+ - !2722 Avoid g_param_spec_get_redirect_target
+ - !2723 Avoid g_type_class_peek
+ - !2724 gobject: Avoid redundant atomics
+ - !2725 Keep a separate flag for notify handlers
+ - !2726 gatomic: Add APIs to perform atomic int / pointer exchanges
+ - !2729 tests: Reduce number of threads in once test under valgrind
+ - !2730 garray: Fix NULL-termination of GPtrArray copies
+ - !2731 tests: Various static analysis fixes
+ - !2732 gobject: Sink floating pspecs if adding them to a class fails
+ - !2733 build: Move gvdb to a subproject
+ - !2734 meson: simplify iconv/intl lookups using Meson's builtin dependency lookup
+ - !2735 tests: Move GObject performance tests to gobject/tests/performance/
+ - !2738 liststore: add n-items property
+ - !2739 gobject-query: Minor cleanups and add unit tests
+ - !2740 gbinding: Remove some duplicated code for checking property names and improve tests slightly
+ - !2747 gobject: Change GObject notify semantics under static analysis
+ - !2751 glib-unix: Mark GLib.unix_open_pipe fds input array as fixed-size
+ - !2752 build: Use add_test_setup() to allow tests to be run under valgrind
+ - !2753 xdgmime: fix double free
+ - !2754 docs: Add Marco Trevisan as a co-maintainer
+ - !2756 gobject: Fix crash when disposing a GtkAccelGroup
+ - !2758 gio: Don't bundle gtrace in static builds
+ - !2761 gtlscertificate: Hold a ref on the root certificate when building chains
+ - !2762 gsignal: Change signal instance ref semantics under static analysis
+
+* Translation updates:
+ - Georgian
+ - Hebrew
+
 
 Overview of changes in GLib 2.73.0
 ==================================
