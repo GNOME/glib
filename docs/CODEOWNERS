@@ -16,6 +16,11 @@
 #
 # If you want to be responsible for code reviews in specific sections of
 # the GLib code base, add yourself here.
+#
+# Everyone listed in this file is a co-maintainer of GLib, even if they only
+# concern themselves with one section of the code base. All usernames listed
+# here should therefore also be listed in glib.doap, so that GitLab access
+# control is correct.
 
 # Overall maintainers
 *	@pwithnall @ebassi @3v1n0

@@ -31,14 +31,6 @@
 
   <maintainer>
     <foaf:Person>
-      <foaf:name>Allison Ryan Lortie</foaf:name>
-      <foaf:mbox rdf:resource="mailto:desrt@desrt.ca"/>
-      <gnome:userid>desrt</gnome:userid>
-    </foaf:Person>
-  </maintainer>
-
-  <maintainer>
-    <foaf:Person>
       <foaf:name>Philip Withnall</foaf:name>
       <foaf:mbox rdf:resource="mailto:philip@tecnocode.co.uk"/>
       <foaf:mbox rdf:resource="mailto:withnall@endlessm.com"/>
@@ -59,6 +51,126 @@
       <foaf:name>Marco Trevisan</foaf:name>
       <foaf:mbox rdf:resource="mailto:mail@3v1n0.net"/>
       <gnome:userid>marcotrevi</gnome:userid>
+    </foaf:Person>
+  </maintainer>
+
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Sebastian Dröge</foaf:name>
+      <foaf:mbox rdf:resource="mailto:slomo@coaxion.net"/>
+      <gnome:userid>sdroege</gnome:userid>
+    </foaf:Person>
+  </maintainer>
+
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Alexander Larsson</foaf:name>
+      <foaf:mbox rdf:resource="mailto:alexl@redhat.com"/>
+      <gnome:userid>alexl</gnome:userid>
+    </foaf:Person>
+  </maintainer>
+
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Ondrej Holy</foaf:name>
+      <foaf:mbox rdf:resource="mailto:oholy@redhat.com"/>
+      <gnome:userid>oholy</gnome:userid>
+    </foaf:Person>
+  </maintainer>
+
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Simon McVittie</foaf:name>
+      <foaf:mbox rdf:resource="mailto:smcv@collabora.com"/>
+      <gnome:userid>smcv</gnome:userid>
+    </foaf:Person>
+  </maintainer>
+
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Michael Catanzaro</foaf:name>
+      <foaf:mbox rdf:resource="mailto:mcatanzaro@gnome.org"/>
+      <gnome:userid>mcatanzaro</gnome:userid>
+    </foaf:Person>
+  </maintainer>
+
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Patrick Griffis</foaf:name>
+      <foaf:mbox rdf:resource="mailto:pgriffis@igalia.com"/>
+      <gnome:userid>pgriffis</gnome:userid>
+    </foaf:Person>
+  </maintainer>
+
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Jonathan Matthew</foaf:name>
+      <foaf:mbox rdf:resource="mailto:jonathan@d14n.org"/>
+      <gnome:userid>jmatthew</gnome:userid>
+    </foaf:Person>
+  </maintainer>
+
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Antoine Jacoutot</foaf:name>
+      <foaf:mbox rdf:resource="mailto:ajacoutot@gnome.org"/>
+      <gnome:userid>ajacoutot</gnome:userid>
+    </foaf:Person>
+  </maintainer>
+
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Ting-Wei Lan</foaf:name>
+      <foaf:mbox rdf:resource="mailto:lantw@src.gnome.org"/>
+      <gnome:userid>lantw</gnome:userid>
+    </foaf:Person>
+  </maintainer>
+
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Nirbheek Chauhan</foaf:name>
+      <foaf:mbox rdf:resource="mailto:nirbheek.chauhan@gmail.com"/>
+      <gnome:userid>nirbheekc</gnome:userid>
+    </foaf:Person>
+  </maintainer>
+
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Chun-wei Fan</foaf:name>
+      <foaf:mbox rdf:resource="mailto:fanc999@yahoo.com.tw"/>
+      <gnome:userid>fanchunwei</gnome:userid>
+    </foaf:Person>
+  </maintainer>
+
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Christoph Reiter</foaf:name>
+      <foaf:mbox rdf:resource="mailto:reiter.christoph@gmail.com"/>
+      <gnome:userid>creiter</gnome:userid>
+    </foaf:Person>
+  </maintainer>
+
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Руслан Ижбулатов</foaf:name>
+      <foaf:mbox rdf:resource="mailto:lrn1986@gmail.com"/>
+      <gnome:userid>ruslanizhb</gnome:userid>
+    </foaf:Person>
+  </maintainer>
+
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>John Ralls</foaf:name>
+      <foaf:mbox rdf:resource="mailto:jralls@ceridwen.us"/>
+      <gnome:userid>jralls</gnome:userid>
+    </foaf:Person>
+  </maintainer>
+
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Xavier Claessens</foaf:name>
+      <foaf:mbox rdf:resource="mailto:xclaesse@gmail.com"/>
+      <gnome:userid>xclaesse</gnome:userid>
     </foaf:Person>
   </maintainer>
 
