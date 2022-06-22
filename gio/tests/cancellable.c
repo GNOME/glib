@@ -467,6 +467,7 @@ typedef struct {
   GCancellable *cancellable;
   GCallback callback;
   gboolean is_disconnecting;
+  gboolean is_resetting;
   gulong handler_id;
 } ConnectingThreadData;
 
@@ -578,6 +579,91 @@ test_cancellable_disconnect_on_cancelled_callback_hangs (void)
   g_object_unref (cancellable);
 }
 
+static void
+on_cancelled_reset (GCancellable *cancellable,
+                    gpointer data)
+{
+  ConnectingThreadData *thread_data = data;
+
+  g_assert_true (g_cancellable_is_cancelled (cancellable));
+  g_atomic_int_set (&thread_data->is_resetting, TRUE);
+  g_cancellable_reset (cancellable);
+  g_assert_false (g_cancellable_is_cancelled (cancellable));
+  g_atomic_int_set (&thread_data->is_resetting, TRUE);
+}
+
+static void
+test_cancellable_reset_on_cancelled_callback_hangs (void)
+{
+  GCancellable *cancellable;
+  GThread *thread = NULL;
+  GThread *cancelling_thread = NULL;
+  ConnectingThreadData thread_data = {0};
+  GMainLoop *thread_loop;
+  gpointer waited;
+
+  /* While this is not convenient, it's done to ensure that we don't have a
+   * race when trying to cancelling a cancellable that is about to be cancelled
+   * in another thread
+   */
+  g_test_summary ("Tests that trying to reset a cancellable from the "
+                  "cancelled signal callback will result in a deadlock "
+                  "as per #GCancellable::cancelled");
+
+  if (!g_test_undefined ())
+    {
+      g_test_skip ("Skipping testing disallowed behaviour of resetting a "
+                  "cancellable from its callback");
+      return;
+    }
+
+  cancellable = g_cancellable_new ();
+  thread_data.cancellable = cancellable;
+  thread_data.callback = G_CALLBACK (on_cancelled_reset);
+
+  g_assert_false (g_atomic_int_get (&thread_data.is_resetting));
+  g_assert_cmpuint ((gulong) g_atomic_pointer_get (&thread_data.handler_id), ==, 0);
+
+  thread = g_thread_new ("/cancellable/reset-on-cancelled-callback-hangs",
+                         connecting_thread, &thread_data);
+
+  while (!g_atomic_pointer_get (&thread_data.loop))
+    ;
+
+  thread_loop = thread_data.loop;
+  g_assert_cmpuint ((gulong) g_atomic_pointer_get (&thread_data.handler_id), !=, 0);
+
+  /* FIXME: This thread will hang (at least that's what this test wants to
+   *        ensure), but we can't stop it from the caller, unless we'll expose
+   *        pthread_cancel (and similar) to GLib.
+   *        So it will keep hanging till the test process is alive.
+   */
+  cancelling_thread = g_thread_new ("/cancellable/reset-on-cancelled-callback-hangs",
+                                    (GThreadFunc) g_cancellable_cancel,
+                                    cancellable);
+
+  while (!g_cancellable_is_cancelled (cancellable) ||
+         !g_atomic_int_get (&thread_data.is_resetting))
+    ;
+
+  g_assert_true (g_atomic_int_get (&thread_data.is_resetting));
+  g_assert_cmpuint ((gulong) g_atomic_pointer_get (&thread_data.handler_id), >, 0);
+
+  waited = &waited;
+  g_timeout_add_once (100, (GSourceOnceFunc) g_nullify_pointer, &waited);
+  while (waited != NULL)
+    g_main_context_iteration (NULL, TRUE);
+
+  g_assert_true (g_atomic_int_get (&thread_data.is_resetting));
+
+  g_main_loop_quit (thread_loop);
+  g_assert_true (g_atomic_int_get (&thread_data.is_resetting));
+
+  g_thread_join (g_steal_pointer (&thread));
+  g_thread_unref (cancelling_thread);
+  g_object_unref (cancellable);
+}
+
 static gpointer
 repeatedly_cancelling_thread (gpointer data)
 {
@@ -650,6 +736,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/cancellable/multiple-concurrent", test_cancel_multiple_concurrent);
   g_test_add_func ("/cancellable/null", test_cancel_null);
   g_test_add_func ("/cancellable/disconnect-on-cancelled-callback-hangs", test_cancellable_disconnect_on_cancelled_callback_hangs);
+  g_test_add_func ("/cancellable/resets-on-cancel-callback-hangs", test_cancellable_reset_on_cancelled_callback_hangs);
   g_test_add_func ("/cancellable/poll-fd", test_cancellable_poll_fd);
   g_test_add_func ("/cancellable/poll-fd-cancelled", test_cancellable_cancelled_poll_fd);
   g_test_add_func ("/cancellable/poll-fd-cancelled-threaded", test_cancellable_cancelled_poll_fd_threaded);
