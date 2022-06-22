@@ -2052,14 +2052,14 @@ test_credentials_tcp_client (void)
   if (creds != NULL)
     {
       gchar *str = g_credentials_to_string (creds);
-      g_print ("Supported on this OS: %s\n", str);
+      g_test_message ("Supported on this OS: %s", str);
       g_free (str);
       g_clear_object (&creds);
     }
   else
     {
       g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);
-      g_print ("Unsupported on this OS: %s\n", error->message);
+      g_test_message ("Unsupported on this OS: %s", error->message);
       g_clear_error (&error);
     }
 
@@ -2118,14 +2118,14 @@ test_credentials_tcp_server (void)
   if (creds != NULL)
     {
       gchar *str = g_credentials_to_string (creds);
-      g_print ("Supported on this OS: %s\n", str);
+      g_test_message ("Supported on this OS: %s", str);
       g_free (str);
       g_clear_object (&creds);
     }
   else
     {
       g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);
-      g_print ("Unsupported on this OS: %s\n", error->message);
+      g_test_message ("Unsupported on this OS: %s", error->message);
       g_clear_error (&error);
     }
 
@@ -2321,14 +2321,14 @@ test_credentials_unix_socketpair (void)
   if (creds != NULL)
     {
       gchar *str = g_credentials_to_string (creds);
-      g_print ("Supported on this OS: %s\n", str);
+      g_test_message ("Supported on this OS: %s", str);
       g_free (str);
       g_clear_object (&creds);
     }
   else
     {
       g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);
-      g_print ("Unsupported on this OS: %s\n", error->message);
+      g_test_message ("Unsupported on this OS: %s", error->message);
       g_clear_error (&error);
     }
 

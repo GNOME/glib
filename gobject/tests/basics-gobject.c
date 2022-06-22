@@ -91,7 +91,7 @@ print_foo (TestIface   *tiobj,
 {
   if (!string)
     string = "<NULL>";
-  g_print ("Iface-FOO: \"%s\" from %p\n", string, tiobj);
+  g_test_message ("Iface-FOO: \"%s\" from %p", string, tiobj);
 }
 static void
 test_object_test_iface_init (gpointer giface,

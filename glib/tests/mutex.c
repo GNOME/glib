@@ -157,7 +157,7 @@ test_mutex5 (void)
     g_assert (owners[i] == NULL);
 }
 
-#define COUNT_TO 100000000
+static gint count_to = 0;
 
 static gboolean
 do_addition (gint *value)
@@ -167,7 +167,7 @@ do_addition (gint *value)
 
   /* test performance of "good" cases (ie: short critical sections) */
   g_mutex_lock (&lock);
-  if ((more = *value != COUNT_TO))
+  if ((more = *value != count_to))
     if (*value != -1)
       (*value)++;
   g_mutex_unlock (&lock);
@@ -193,6 +193,8 @@ test_mutex_perf (gconstpointer data)
   gint x = -1;
   guint i;
 
+  count_to = g_test_perf () ?  100000000 : 1;
+
   g_assert (n_threads <= G_N_ELEMENTS (threads));
 
   for (i = 0; n_threads > 0 && i < n_threads - 1; i++)
@@ -202,7 +204,7 @@ test_mutex_perf (gconstpointer data)
   start_time = g_get_monotonic_time ();
   g_atomic_int_set (&x, 0);
   addition_thread (&x);
-  g_assert_cmpint (g_atomic_int_get (&x), ==, COUNT_TO);
+  g_assert_cmpint (g_atomic_int_get (&x), ==, count_to);
   rate = g_get_monotonic_time () - start_time;
   rate = x / rate;
 
@@ -223,7 +225,6 @@ main (int argc, char *argv[])
   g_test_add_func ("/thread/mutex4", test_mutex4);
   g_test_add_func ("/thread/mutex5", test_mutex5);
 
-  if (g_test_perf ())
     {
       guint i;
 

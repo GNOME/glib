@@ -22,7 +22,7 @@
 
 #include <glib.h>
 
-#define NUM_ITERATIONS 500000
+static guint num_iterations = 0;
 
 static const char str_ascii[] =
     "The quick brown fox jumps over the lazy dog";
@@ -44,8 +44,8 @@ typedef int (* GrindFunc) (const char *, gsize);
 
 #define GRIND_LOOP_BEGIN                 \
   {                                      \
-    int i;                               \
-    for (i = 0; i < NUM_ITERATIONS; i++)
+    guint i;                             \
+    for (i = 0; i < num_iterations; i++)
 
 #define GRIND_LOOP_END \
   }
@@ -189,7 +189,7 @@ perform (gconstpointer data)
   gdouble result;
 
   len = strlen (str);
-  bytes_ground = (gulong) len * NUM_ITERATIONS;
+  bytes_ground = (gulong) len * num_iterations;
 
   g_test_timer_start ();
 
@@ -232,18 +232,17 @@ main (int argc, char **argv)
 {
   g_test_init (&argc, &argv, NULL);
 
-  if (g_test_perf ())
-    {
-      add_cases ("/utf8/perf/get_char", grind_get_char);
-      add_cases ("/utf8/perf/get_char-backwards", grind_get_char_backwards);
-      add_cases ("/utf8/perf/get_char_validated", grind_get_char_validated);
-      add_cases ("/utf8/perf/utf8_to_ucs4", grind_utf8_to_ucs4);
-      add_cases ("/utf8/perf/utf8_to_ucs4-sized", grind_utf8_to_ucs4_sized);
-      add_cases ("/utf8/perf/utf8_to_ucs4_fast", grind_utf8_to_ucs4_fast);
-      add_cases ("/utf8/perf/utf8_to_ucs4_fast-sized", grind_utf8_to_ucs4_fast_sized);
-      add_cases ("/utf8/perf/utf8_validate", grind_utf8_validate);
-      add_cases ("/utf8/perf/utf8_validate-sized", grind_utf8_validate_sized);
-    }
+  num_iterations = g_test_perf () ? 500000 : 1;
+
+  add_cases ("/utf8/perf/get_char", grind_get_char);
+  add_cases ("/utf8/perf/get_char-backwards", grind_get_char_backwards);
+  add_cases ("/utf8/perf/get_char_validated", grind_get_char_validated);
+  add_cases ("/utf8/perf/utf8_to_ucs4", grind_utf8_to_ucs4);
+  add_cases ("/utf8/perf/utf8_to_ucs4-sized", grind_utf8_to_ucs4_sized);
+  add_cases ("/utf8/perf/utf8_to_ucs4_fast", grind_utf8_to_ucs4_fast);
+  add_cases ("/utf8/perf/utf8_to_ucs4_fast-sized", grind_utf8_to_ucs4_fast_sized);
+  add_cases ("/utf8/perf/utf8_validate", grind_utf8_validate);
+  add_cases ("/utf8/perf/utf8_validate-sized", grind_utf8_validate_sized);
 
   return g_test_run ();
 }
