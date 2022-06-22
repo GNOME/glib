@@ -73,88 +73,20 @@ G_DEFINE_QUARK (g-io-error-quark, g_io_error)
 GIOErrorEnum
 g_io_error_from_errno (gint err_no)
 {
+  GFileError file_error;
+  GIOErrorEnum io_error;
+
+  file_error = g_file_error_from_errno (err_no);
+  io_error = g_io_error_from_file_error (file_error);
+
+  if (io_error != G_IO_ERROR_FAILED)
+    return io_error;
+
   switch (err_no)
     {
-#ifdef EEXIST
-    case EEXIST:
-      return G_IO_ERROR_EXISTS;
-      break;
-#endif
-
-#ifdef EISDIR
-    case EISDIR:
-      return G_IO_ERROR_IS_DIRECTORY;
-      break;
-#endif
-
-#ifdef EACCES
-    case EACCES:
-      return G_IO_ERROR_PERMISSION_DENIED;
-      break;
-#endif
-
-#ifdef ENAMETOOLONG
-    case ENAMETOOLONG:
-      return G_IO_ERROR_FILENAME_TOO_LONG;
-      break;
-#endif
-
-#ifdef ENOENT
-    case ENOENT:
-      return G_IO_ERROR_NOT_FOUND;
-      break;
-#endif
-
-#ifdef ENOTDIR
-    case ENOTDIR:
-      return G_IO_ERROR_NOT_DIRECTORY;
-      break;
-#endif
-
-#ifdef ENXIO
-    case ENXIO:
-      return G_IO_ERROR_NOT_REGULAR_FILE;
-      break;
-#endif
-
-#ifdef ENODEV
-    case ENODEV:
-      return G_IO_ERROR_NO_SUCH_DEVICE;
-#endif
-
-#ifdef EROFS
-    case EROFS:
-      return G_IO_ERROR_READ_ONLY;
-      break;
-#endif
-
 #ifdef EMLINK
     case EMLINK:
       return G_IO_ERROR_TOO_MANY_LINKS;
-      break;
-#endif
-
-#ifdef ELOOP
-    case ELOOP:
-      return G_IO_ERROR_TOO_MANY_LINKS;
-      break;
-#endif
-
-#ifdef ENOSPC
-    case ENOSPC:
-      return G_IO_ERROR_NO_SPACE;
-      break;
-#endif
-
-#ifdef ENOMEM
-    case ENOMEM:
-      return G_IO_ERROR_NO_SPACE;
-      break;
-#endif
-      
-#ifdef EINVAL
-    case EINVAL:
-      return G_IO_ERROR_INVALID_ARGUMENT;
       break;
 #endif
 
@@ -173,12 +105,6 @@ g_io_error_from_errno (gint err_no)
 #ifdef EBADMSG
     case EBADMSG:
       return G_IO_ERROR_INVALID_DATA;
-      break;
-#endif
-
-#ifdef EPERM
-    case EPERM:
-      return G_IO_ERROR_PERMISSION_DENIED;
       break;
 #endif
 
@@ -232,12 +158,6 @@ g_io_error_from_errno (gint err_no)
       break;
 #endif
 
-#ifdef ENOSYS
-    case ENOSYS:
-      return G_IO_ERROR_NOT_SUPPORTED;
-      break;
-#endif
-
 #ifdef ETIMEDOUT
     case ETIMEDOUT:
       return G_IO_ERROR_TIMED_OUT;
@@ -246,12 +166,6 @@ g_io_error_from_errno (gint err_no)
 
 #ifdef EBUSY
     case EBUSY:
-      return G_IO_ERROR_BUSY;
-      break;
-#endif
-
-#ifdef ETXTBSY
-    case ETXTBSY:
       return G_IO_ERROR_BUSY;
       break;
 #endif
@@ -266,18 +180,6 @@ g_io_error_from_errno (gint err_no)
 #if defined (EAGAIN) && (!defined (EWOULDBLOCK) || (EWOULDBLOCK != EAGAIN))
     case EAGAIN:
       return G_IO_ERROR_WOULD_BLOCK;
-      break;
-#endif
-
-#ifdef EMFILE
-    case EMFILE:
-      return G_IO_ERROR_TOO_MANY_OPEN_FILES;
-      break;
-#endif
-
-#ifdef ENFILE
-    case ENFILE:
-      return G_IO_ERROR_TOO_MANY_OPEN_FILES;
       break;
 #endif
 
@@ -308,12 +210,6 @@ g_io_error_from_errno (gint err_no)
 #ifdef ECONNREFUSED
     case ECONNREFUSED:
       return G_IO_ERROR_CONNECTION_REFUSED;
-      break;
-#endif
-
-#ifdef EPIPE
-    case EPIPE:
-      return G_IO_ERROR_BROKEN_PIPE;
       break;
 #endif
 
