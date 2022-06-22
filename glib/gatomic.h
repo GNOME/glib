@@ -412,14 +412,14 @@ G_END_DECLS
     *(preval) = __sync_val_compare_and_swap ((atomic), (oldval), (newval));    \
     (*(preval) == (oldval)) ? TRUE : FALSE;                                    \
   }))
-#if defined(__GCC_HAVE_SYNC_SWAP)
+#if defined(_GLIB_GCC_HAVE_SYNC_SWAP)
 #define g_atomic_int_exchange(atomic, newval) \
   (G_GNUC_EXTENSION ({                                                       \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gint));                     \
     (void) (0 ? *(atomic) ^ (newval) : 1);                                   \
     (gint) __sync_swap ((atomic), (newval));                                 \
   }))
-#else /* defined(__GCC_HAVE_SYNC_SWAP) */
+#else /* defined(_GLIB_GCC_HAVE_SYNC_SWAP) */
   #define g_atomic_int_exchange(atomic, newval) \
   (G_GNUC_EXTENSION ({                                                       \
     gint oldval;                                                             \
@@ -431,7 +431,7 @@ G_END_DECLS
       } while (!__sync_bool_compare_and_swap (atomic, oldval, newval));      \
     oldval;                                                                  \
   }))
-#endif /* defined(__GCC_HAVE_SYNC_SWAP) */
+#endif /* defined(_GLIB_GCC_HAVE_SYNC_SWAP) */
 #define g_atomic_int_add(atomic, val) \
   (G_GNUC_EXTENSION ({                                                       \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gint));                     \
@@ -472,7 +472,7 @@ G_END_DECLS
     *(preval) = __sync_val_compare_and_swap ((atomic), (oldval), (newval));        \
     (*(preval) == (oldval)) ? TRUE : FALSE;                                        \
   }))
-#if defined(__GCC_HAVE_SYNC_SWAP)
+#if defined(_GLIB_GCC_HAVE_SYNC_SWAP)
 #define g_atomic_pointer_exchange(atomic, newval) \
   (G_GNUC_EXTENSION ({                                                       \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gpointer));                 \
@@ -491,7 +491,7 @@ G_END_DECLS
       } while (!__sync_bool_compare_and_swap (atomic, oldval, newval));      \
     oldval;                                                                  \
   }))
-#endif /* defined(__GCC_HAVE_SYNC_SWAP) */
+#endif /* defined(_GLIB_GCC_HAVE_SYNC_SWAP) */
 #define g_atomic_pointer_add(atomic, val) \
   (G_GNUC_EXTENSION ({                                                       \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gpointer));                 \
