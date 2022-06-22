@@ -528,11 +528,8 @@ g_data_remove_internal (GData  **datalist,
               old[found_keys] = *data;
               found_keys++;
 
-              if (data < data_end)
-                {
-                  data_end--;
-                  *data = *data_end;
-                }
+              if (data < --data_end)
+                *data = *data_end;
 
               d->len--;
 
@@ -546,8 +543,10 @@ g_data_remove_internal (GData  **datalist,
                   break;
                 }
             }
-
-          data++;
+          else
+            {
+              data++;
+            }
         }
 
       if (found_keys > 0)
