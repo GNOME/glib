@@ -250,6 +250,46 @@ test_datalist_id (void)
   g_datalist_clear (&list);
 }
 
+static void
+foreach_func (GQuark   key_id,
+              gpointer data,
+              gpointer user_data)
+{
+  int *count = user_data;
+
+  (*count)++;
+}
+
+static void
+test_datalist_id_remove_multiple (void)
+{
+  /* Test that g_datalist_id_remove_multiple() removes all the keys it
+   * is given. */
+  GData *list = NULL;
+  GQuark one = g_quark_from_static_string ("one");
+  GQuark two = g_quark_from_static_string ("two");
+  GQuark three = g_quark_from_static_string ("three");
+  GQuark keys[] = {
+    one,
+    two,
+    three,
+  };
+  int count;
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/issues/2672");
+
+  g_datalist_init (&list);
+  g_datalist_id_set_data (&list, one, GINT_TO_POINTER (1));
+  g_datalist_id_set_data (&list, two, GINT_TO_POINTER (2));
+  g_datalist_id_set_data (&list, three, GINT_TO_POINTER (3));
+
+  g_datalist_id_remove_multiple (&list, keys, G_N_ELEMENTS (keys));
+
+  count = 0;
+  g_datalist_foreach (&list, foreach_func, &count);
+  g_assert_cmpint (count, ==, 0);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -265,6 +305,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/datalist/basic", test_datalist_basic);
   g_test_add_func ("/datalist/id", test_datalist_id);
   g_test_add_func ("/datalist/recursive-clear", test_datalist_clear);
+  g_test_add_func ("/datalist/id-remove-multiple", test_datalist_id_remove_multiple);
 
   return g_test_run ();
 }
