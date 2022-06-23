@@ -2042,6 +2042,7 @@ else
 endif
 
 # Import the gvdb sources as a subproject to avoid having the copylib in-tree
+subproject('gvdb')
 gvdb_dep = dependency('gvdb')
 
 libm = cc.find_library('m', required : false)
