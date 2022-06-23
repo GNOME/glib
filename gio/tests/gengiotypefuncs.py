@@ -25,9 +25,9 @@ for filename in in_files:
     with open(filename, "rb") as f:
         for line in f:
             line = line.rstrip(b"\n").rstrip(b"\r")
-            match = re.search(br"\bg_[a-zA-Z0-9_]*_get_type\b", line)
+            match = re.search(rb"\bg_[a-zA-Z0-9_]*_get_type\b", line)
             if match:
-                func = match.group(0).decode('utf-8')
+                func = match.group(0).decode("utf-8")
                 if func not in funcs:
                     funcs.append(func)
                     if debug:
