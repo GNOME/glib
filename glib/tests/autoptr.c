@@ -430,6 +430,7 @@ rec_mutex_unlocked_thread (gpointer data)
 {
   GRecMutex *rec_mutex = (GRecMutex *) data;
   g_assert_true (g_rec_mutex_trylock (rec_mutex));
+  g_rec_mutex_unlock (rec_mutex);
   return NULL;
 }
 
@@ -444,12 +445,17 @@ test_g_rec_mutex_locker (void)
   if (TRUE)
     {
       g_autoptr(GRecMutexLocker) val = g_rec_mutex_locker_new (&rec_mutex);
+      g_autoptr(GRecMutexLocker) other = NULL;
 
       g_assert_nonnull (val);
 
       /* Verify that the mutex is actually locked */
       thread = g_thread_new ("rec mutex locked", rec_mutex_locked_thread, &rec_mutex);
-      g_thread_join (thread);
+      g_thread_join (g_steal_pointer (&thread));
+
+      other = g_rec_mutex_locker_new (&rec_mutex);
+      thread = g_thread_new ("rec mutex locked", rec_mutex_locked_thread, &rec_mutex);
+      g_thread_join (g_steal_pointer (&thread));
     }
 
   /* Verify that the mutex is unlocked again */

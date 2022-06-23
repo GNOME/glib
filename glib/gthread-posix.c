@@ -195,7 +195,7 @@ g_mutex_init (GMutex *mutex)
  * Calling g_mutex_clear() on a locked mutex leads to undefined
  * behaviour.
  *
- * Sine: 2.32
+ * Since: 2.32
  */
 void
 g_mutex_clear (GMutex *mutex)
@@ -370,7 +370,7 @@ g_rec_mutex_init (GRecMutex *rec_mutex)
  * Calling g_rec_mutex_clear() on a locked recursive mutex leads
  * to undefined behaviour.
  *
- * Sine: 2.32
+ * Since: 2.32
  */
 void
 g_rec_mutex_clear (GRecMutex *rec_mutex)
@@ -527,7 +527,7 @@ g_rw_lock_init (GRWLock *rw_lock)
  * Calling g_rw_lock_clear() when any thread holds the lock
  * leads to undefined behaviour.
  *
- * Sine: 2.32
+ * Since: 2.32
  */
 void
 g_rw_lock_clear (GRWLock *rw_lock)
@@ -1449,9 +1449,16 @@ g_system_thread_set_name (const gchar *name)
  *
  *  1: acquired by one thread only, no contention
  *
- *  > 1: contended
- *
- *
+ *  2: contended
+ */
+
+typedef enum {
+  G_MUTEX_STATE_EMPTY = 0,
+  G_MUTEX_STATE_OWNED,
+  G_MUTEX_STATE_CONTENDED,
+} GMutexState;
+
+ /*
  * As such, attempting to acquire the lock should involve an increment.
  * If we find that the previous value was 0 then we can return
  * immediately.
@@ -1470,13 +1477,13 @@ g_system_thread_set_name (const gchar *name)
 void
 g_mutex_init (GMutex *mutex)
 {
-  mutex->i[0] = 0;
+  mutex->i[0] = G_MUTEX_STATE_EMPTY;
 }
 
 void
 g_mutex_clear (GMutex *mutex)
 {
-  if G_UNLIKELY (mutex->i[0] != 0)
+  if G_UNLIKELY (mutex->i[0] != G_MUTEX_STATE_EMPTY)
     {
       fprintf (stderr, "g_mutex_clear() called on uninitialised or locked mutex\n");
       g_abort ();
@@ -1486,13 +1493,16 @@ g_mutex_clear (GMutex *mutex)
 static void __attribute__((noinline))
 g_mutex_lock_slowpath (GMutex *mutex)
 {
-  /* Set to 2 to indicate contention.  If it was zero before then we
+  /* Set to contended.  If it was empty before then we
    * just acquired the lock.
    *
-   * Otherwise, sleep for as long as the 2 remains...
+   * Otherwise, sleep for as long as the contended state remains...
    */
-  while (exchange_acquire (&mutex->i[0], 2) != 0)
-    syscall (__NR_futex, &mutex->i[0], (gsize) FUTEX_WAIT_PRIVATE, (gsize) 2, NULL);
+  while (exchange_acquire (&mutex->i[0], G_MUTEX_STATE_CONTENDED) != G_MUTEX_STATE_EMPTY)
+    {
+      syscall (__NR_futex, &mutex->i[0], (gsize) FUTEX_WAIT_PRIVATE,
+               G_MUTEX_STATE_CONTENDED, NULL);
+    }
 }
 
 static void __attribute__((noinline))
@@ -1502,7 +1512,7 @@ g_mutex_unlock_slowpath (GMutex *mutex,
   /* We seem to get better code for the uncontended case by splitting
    * this out...
    */
-  if G_UNLIKELY (prev == 0)
+  if G_UNLIKELY (prev == G_MUTEX_STATE_EMPTY)
     {
       fprintf (stderr, "Attempt to unlock mutex that was not locked\n");
       g_abort ();
@@ -1514,8 +1524,10 @@ g_mutex_unlock_slowpath (GMutex *mutex,
 void
 g_mutex_lock (GMutex *mutex)
 {
-  /* 0 -> 1 and we're done.  Anything else, and we need to wait... */
-  if G_UNLIKELY (g_atomic_int_add (&mutex->i[0], 1) != 0)
+  /* empty -> owned and we're done.  Anything else, and we need to wait... */
+  if G_UNLIKELY (!g_atomic_int_compare_and_exchange (&mutex->i[0],
+                                                     G_MUTEX_STATE_EMPTY,
+                                                     G_MUTEX_STATE_OWNED))
     g_mutex_lock_slowpath (mutex);
 }
 
@@ -1524,22 +1536,22 @@ g_mutex_unlock (GMutex *mutex)
 {
   guint prev;
 
-  prev = exchange_release (&mutex->i[0], 0);
+  prev = exchange_release (&mutex->i[0], G_MUTEX_STATE_EMPTY);
 
   /* 1-> 0 and we're done.  Anything else and we need to signal... */
-  if G_UNLIKELY (prev != 1)
+  if G_UNLIKELY (prev != G_MUTEX_STATE_OWNED)
     g_mutex_unlock_slowpath (mutex, prev);
 }
 
 gboolean
 g_mutex_trylock (GMutex *mutex)
 {
-  guint zero = 0;
+  GMutexState empty = G_MUTEX_STATE_EMPTY;
 
   /* We don't want to touch the value at all unless we can move it from
-   * exactly 0 to 1.
+   * exactly empty to owned.
    */
-  return compare_exchange_acquire (&mutex->i[0], &zero, 1);
+  return compare_exchange_acquire (&mutex->i[0], &empty, G_MUTEX_STATE_OWNED);
 }
 
 /* Condition variables are implemented in a rather simple way as well.
