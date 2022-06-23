@@ -372,5 +372,6 @@ main (int   argc,
 	run_test (&tests[i]);
     }
 
+  g_option_context_free (context);
   return 0;
 }
