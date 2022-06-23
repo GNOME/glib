@@ -218,6 +218,7 @@ GQuark g_regex_error_quark (void);
 
 /**
  * GRegexCompileFlags:
+ * @G_REGEX_DEFAULT: No special options set. Since: 2.74
  * @G_REGEX_CASELESS: Letters in the pattern match both upper- and
  *     lowercase letters. This option can be changed within a pattern
  *     by a "(?i)" option setting.
@@ -297,6 +298,7 @@ GQuark g_regex_error_quark (void);
  */
 typedef enum
 {
+  G_REGEX_DEFAULT GLIB_AVAILABLE_ENUMERATOR_IN_2_74 = 0,
   G_REGEX_CASELESS          = 1 << 0,
   G_REGEX_MULTILINE         = 1 << 1,
   G_REGEX_DOTALL            = 1 << 2,
@@ -319,6 +321,7 @@ typedef enum
 
 /**
  * GRegexMatchFlags:
+ * @G_REGEX_MATCH_DEFAULT: No special options set. Since: 2.74
  * @G_REGEX_MATCH_ANCHORED: The pattern is forced to be "anchored", that is,
  *     it is constrained to match only at the first matching point in the
  *     string that is being searched. This effect can also be achieved by
@@ -387,6 +390,7 @@ typedef enum
  * adding a new flag. */
 typedef enum
 {
+  G_REGEX_MATCH_DEFAULT GLIB_AVAILABLE_ENUMERATOR_IN_2_74 = 0,
   G_REGEX_MATCH_ANCHORED         = 1 << 4,
   G_REGEX_MATCH_NOTBOL           = 1 << 7,
   G_REGEX_MATCH_NOTEOL           = 1 << 8,

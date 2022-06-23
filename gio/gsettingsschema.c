@@ -579,10 +579,14 @@ normalise_whitespace (const gchar *orig)
     {
       GRegex *s;
 
-      cleanup[0] = g_regex_new ("^\\s+", 0, 0, 0);
-      cleanup[1] = g_regex_new ("\\s+$", 0, 0, 0);
-      cleanup[2] = g_regex_new ("\\s+", 0, 0, 0);
-      s = g_regex_new ("\\n\\s*\\n+", 0, 0, 0);
+      cleanup[0] = g_regex_new ("^\\s+", G_REGEX_DEFAULT,
+                                G_REGEX_MATCH_DEFAULT, NULL);
+      cleanup[1] = g_regex_new ("\\s+$", G_REGEX_DEFAULT,
+                                G_REGEX_MATCH_DEFAULT, NULL);
+      cleanup[2] = g_regex_new ("\\s+", G_REGEX_DEFAULT,
+                                G_REGEX_MATCH_DEFAULT, NULL);
+      s = g_regex_new ("\\n\\s*\\n+", G_REGEX_DEFAULT,
+                       G_REGEX_MATCH_DEFAULT, NULL);
 
       g_once_init_leave (&splitter, s);
     }

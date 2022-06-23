@@ -296,14 +296,16 @@ test_g_rand (void)
 static void
 test_g_regex (void)
 {
-  g_autoptr(GRegex) val = g_regex_new (".*", 0, 0, NULL);
+  g_autoptr(GRegex) val = g_regex_new (".*", G_REGEX_DEFAULT,
+                                       G_REGEX_MATCH_DEFAULT, NULL);
   g_assert_nonnull (val);
 }
 
 static void
 test_g_match_info (void)
 {
-  g_autoptr(GRegex) regex = g_regex_new (".*", 0, 0, NULL);
+  g_autoptr(GRegex) regex = g_regex_new (".*", G_REGEX_DEFAULT,
+                                         G_REGEX_MATCH_DEFAULT, NULL);
   g_autoptr(GMatchInfo) match = NULL;
 
   if (!g_regex_match (regex, "hello", 0, &match))

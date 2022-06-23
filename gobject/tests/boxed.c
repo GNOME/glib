@@ -281,7 +281,7 @@ test_boxed_regex (void)
   g_value_init (&value, G_TYPE_REGEX);
   g_assert (G_VALUE_HOLDS_BOXED (&value));
 
-  v = g_regex_new ("a+b+", 0, 0, NULL);
+  v = g_regex_new ("a+b+", G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT, NULL);
   g_value_take_boxed (&value, v);
 
   v2 = g_value_get_boxed (&value);
@@ -305,7 +305,7 @@ test_boxed_matchinfo (void)
   g_value_init (&value, G_TYPE_MATCH_INFO);
   g_assert (G_VALUE_HOLDS_BOXED (&value));
 
-  r = g_regex_new ("ab", 0, 0, NULL);
+  r = g_regex_new ("ab", G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT, NULL);
   ret = g_regex_match (r, "blabla abab bla", 0, &info);
   g_assert (ret);
   g_value_take_boxed (&value, info);
