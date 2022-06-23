@@ -85,6 +85,7 @@ typedef enum
 
 typedef enum
 {
+  G_IO_FLAG_NONE GLIB_AVAILABLE_ENUMERATOR_IN_2_74 = 0,
   G_IO_FLAG_APPEND = 1 << 0,
   G_IO_FLAG_NONBLOCK = 1 << 1,
   G_IO_FLAG_IS_READABLE = 1 << 2,	/* Read only flag */
