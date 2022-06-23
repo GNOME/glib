@@ -206,7 +206,9 @@ test_cleanup (void)
   if (!g_test_undefined ())
     return;
 
-  context = g_markup_parse_context_new (&cleanup_parser, 0, NULL, NULL);
+  context = g_markup_parse_context_new (&cleanup_parser,
+                                        G_MARKUP_PARSE_FLAGS_NONE, NULL,
+                                        NULL);
   g_markup_parse_context_parse (context, XML, -1, NULL);
 
   g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
