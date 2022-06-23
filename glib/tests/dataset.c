@@ -283,6 +283,10 @@ test_datalist_id_remove_multiple (void)
   g_datalist_id_set_data (&list, two, GINT_TO_POINTER (2));
   g_datalist_id_set_data (&list, three, GINT_TO_POINTER (3));
 
+  count = 0;
+  g_datalist_foreach (&list, foreach_func, &count);
+  g_assert_cmpint (count, ==, 3);
+
   g_datalist_id_remove_multiple (&list, keys, G_N_ELEMENTS (keys));
 
   count = 0;
