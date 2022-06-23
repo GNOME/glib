@@ -45,6 +45,11 @@ gboolean                g_atomic_int_compare_and_exchange     (volatile gint  *a
                                                                gint            oldval,
                                                                gint            newval);
 GLIB_AVAILABLE_IN_2_74
+gboolean                g_atomic_int_compare_and_exchange_full (gint         *atomic,
+                                                                gint          oldval,
+                                                                gint          newval,
+                                                                gint         *preval);
+GLIB_AVAILABLE_IN_2_74
 gint                    g_atomic_int_exchange                 (gint           *atomic,
                                                                gint            newval);
 GLIB_AVAILABLE_IN_ALL
@@ -69,6 +74,11 @@ GLIB_AVAILABLE_IN_ALL
 gboolean                g_atomic_pointer_compare_and_exchange (volatile void  *atomic,
                                                                gpointer        oldval,
                                                                gpointer        newval);
+GLIB_AVAILABLE_IN_2_74
+gboolean                g_atomic_pointer_compare_and_exchange_full (void     *atomic,
+                                                                    gpointer  oldval,
+                                                                    gpointer  newval,
+                                                                    void     *preval);
 GLIB_AVAILABLE_IN_2_74
 gpointer                g_atomic_pointer_exchange             (void           *atomic,
                                                                gpointer        newval);
@@ -179,6 +189,16 @@ G_END_DECLS
     __atomic_compare_exchange_n ((atomic), (void *) (&(gaicae_oldval)), (newval), FALSE, __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST) ? TRUE : FALSE; \
   }))
 #endif /* defined(glib_typeof) */
+#define g_atomic_int_compare_and_exchange_full(atomic, oldval, newval, preval) \
+  (G_GNUC_EXTENSION ({                                                         \
+    G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gint));                       \
+    G_STATIC_ASSERT (sizeof *(preval) == sizeof (gint));                       \
+    (void) (0 ? *(atomic) ^ (newval) ^ (oldval) ^ *(preval) : 1);              \
+    *(preval) = (oldval);                                                      \
+    __atomic_compare_exchange_n ((atomic), (preval), (newval), FALSE,          \
+                                 __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST)           \
+                                 ? TRUE : FALSE;                               \
+  }))
 #define g_atomic_int_exchange(atomic, newval) \
   (G_GNUC_EXTENSION ({                                                       \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gint));                     \
@@ -237,6 +257,17 @@ G_END_DECLS
     __atomic_compare_exchange_n ((atomic), (void *) (&(gapcae_oldval)), (newval), FALSE, __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST) ? TRUE : FALSE; \
   }))
 #endif /* defined(glib_typeof) */
+#define g_atomic_pointer_compare_and_exchange_full(atomic, oldval, newval, preval) \
+  (G_GNUC_EXTENSION ({                                                             \
+    G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gpointer));                       \
+    G_STATIC_ASSERT (sizeof *(preval) == sizeof (gpointer));                       \
+    (void) (0 ? (gpointer) *(atomic) : NULL);                                      \
+    (void) (0 ? (gpointer) *(preval) : NULL);                                      \
+    *(preval) = (oldval);                                                          \
+    __atomic_compare_exchange_n ((atomic), (preval), (newval), FALSE,              \
+                                 __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST) ?             \
+                                 TRUE : FALSE;                                     \
+  }))
 #define g_atomic_pointer_exchange(atomic, newval) \
   (G_GNUC_EXTENSION ({                                                       \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gpointer));                 \
@@ -373,14 +404,22 @@ G_END_DECLS
     (void) (0 ? *(atomic) ^ (newval) ^ (oldval) : 1);                        \
     __sync_bool_compare_and_swap ((atomic), (oldval), (newval)) ? TRUE : FALSE; \
   }))
-#if defined(__GCC_HAVE_SYNC_SWAP)
+#define g_atomic_int_compare_and_exchange_full(atomic, oldval, newval, preval) \
+  (G_GNUC_EXTENSION ({                                                         \
+    G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gint));                       \
+    G_STATIC_ASSERT (sizeof *(preval) == sizeof (gint));                       \
+    (void) (0 ? *(atomic) ^ (newval) ^ (oldval) ^ *(preval) : 1);              \
+    *(preval) = __sync_val_compare_and_swap ((atomic), (oldval), (newval));    \
+    (*(preval) == (oldval)) ? TRUE : FALSE;                                    \
+  }))
+#if defined(_GLIB_GCC_HAVE_SYNC_SWAP)
 #define g_atomic_int_exchange(atomic, newval) \
   (G_GNUC_EXTENSION ({                                                       \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gint));                     \
     (void) (0 ? *(atomic) ^ (newval) : 1);                                   \
     (gint) __sync_swap ((atomic), (newval));                                 \
   }))
-#else /* defined(__GCC_HAVE_SYNC_SWAP) */
+#else /* defined(_GLIB_GCC_HAVE_SYNC_SWAP) */
   #define g_atomic_int_exchange(atomic, newval) \
   (G_GNUC_EXTENSION ({                                                       \
     gint oldval;                                                             \
@@ -392,7 +431,7 @@ G_END_DECLS
       } while (!__sync_bool_compare_and_swap (atomic, oldval, newval));      \
     oldval;                                                                  \
   }))
-#endif /* defined(__GCC_HAVE_SYNC_SWAP) */
+#endif /* defined(_GLIB_GCC_HAVE_SYNC_SWAP) */
 #define g_atomic_int_add(atomic, val) \
   (G_GNUC_EXTENSION ({                                                       \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gint));                     \
@@ -424,7 +463,16 @@ G_END_DECLS
     (void) (0 ? (gpointer) *(atomic) : NULL);                                \
     __sync_bool_compare_and_swap ((atomic), (oldval), (newval)) ? TRUE : FALSE; \
   }))
-#if defined(__GCC_HAVE_SYNC_SWAP)
+#define g_atomic_pointer_compare_and_exchange_full(atomic, oldval, newval, preval) \
+  (G_GNUC_EXTENSION ({                                                             \
+    G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gpointer));                       \
+    G_STATIC_ASSERT (sizeof *(preval) == sizeof (gpointer));                       \
+    (void) (0 ? (gpointer) *(atomic) : NULL);                                      \
+    (void) (0 ? (gpointer) *(preval) : NULL);                                      \
+    *(preval) = __sync_val_compare_and_swap ((atomic), (oldval), (newval));        \
+    (*(preval) == (oldval)) ? TRUE : FALSE;                                        \
+  }))
+#if defined(_GLIB_GCC_HAVE_SYNC_SWAP)
 #define g_atomic_pointer_exchange(atomic, newval) \
   (G_GNUC_EXTENSION ({                                                       \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gpointer));                 \
@@ -443,7 +491,7 @@ G_END_DECLS
       } while (!__sync_bool_compare_and_swap (atomic, oldval, newval));      \
     oldval;                                                                  \
   }))
-#endif /* defined(__GCC_HAVE_SYNC_SWAP) */
+#endif /* defined(_GLIB_GCC_HAVE_SYNC_SWAP) */
 #define g_atomic_pointer_add(atomic, val) \
   (G_GNUC_EXTENSION ({                                                       \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gpointer));                 \
@@ -483,6 +531,8 @@ G_END_DECLS
   (g_atomic_int_set ((gint *) (atomic), (gint) (newval)))
 #define g_atomic_int_compare_and_exchange(atomic, oldval, newval) \
   (g_atomic_int_compare_and_exchange ((gint *) (atomic), (oldval), (newval)))
+#define g_atomic_int_compare_and_exchange_full(atomic, oldval, newval, preval) \
+  (g_atomic_int_compare_and_exchange_full ((gint *) (atomic), (oldval), (newval), (gint *) (preval)))
 #define g_atomic_int_exchange(atomic, newval) \
   (g_atomic_int_exchange ((gint *) (atomic), (newval)))
 #define g_atomic_int_add(atomic, val) \
@@ -518,6 +568,8 @@ G_END_DECLS
 
 #define g_atomic_pointer_compare_and_exchange(atomic, oldval, newval) \
   (g_atomic_pointer_compare_and_exchange ((atomic), (gpointer) (oldval), (gpointer) (newval)))
+#define g_atomic_pointer_compare_and_exchange_full(atomic, oldval, newval, prevval) \
+  (g_atomic_pointer_compare_and_exchange_full ((atomic), (gpointer) (oldval), (gpointer) (newval), (prevval)))
 #define g_atomic_pointer_exchange(atomic, newval) \
   (g_atomic_pointer_exchange ((atomic), (gpointer) (newval)))
 #define g_atomic_pointer_add(atomic, val) \

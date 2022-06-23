@@ -1874,7 +1874,7 @@ if cc.get_id() == 'msvc' or cc.get_id() == 'clang-cl' or cc.links(atomictest, na
       }
     '''
 
-    glib_conf.set('__GCC_HAVE_SYNC_SWAP', cc.links(sync_swap_test, name : 'sync swap'))
+    glib_conf.set('_GLIB_GCC_HAVE_SYNC_SWAP', cc.links(sync_swap_test, name : 'sync swap'))
   endif
 else
   have_atomic_lock_free = false
