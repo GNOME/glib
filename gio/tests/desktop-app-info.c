@@ -30,21 +30,34 @@
 #include <unistd.h>
 
 static GAppInfo *
-create_app_info (const char *name)
+create_command_line_app_info (const char *name,
+                              const char *command_line,
+                              const char *default_for_type)
 {
-  GError *error;
   GAppInfo *info;
+  GError *error = NULL;
 
-  error = NULL;
-  info = g_app_info_create_from_commandline ("true blah",
+  info = g_app_info_create_from_commandline (command_line,
                                              name,
                                              G_APP_INFO_CREATE_NONE,
                                              &error);
   g_assert_no_error (error);
 
-  /* this is necessary to ensure that the info is saved */
-  g_app_info_set_as_default_for_type (info, "application/x-blah", &error);
+  g_app_info_set_as_default_for_type (info, default_for_type, &error);
   g_assert_no_error (error);
+
+  return g_steal_pointer (&info);
+}
+
+static GAppInfo *
+create_app_info (const char *name)
+{
+  GError *error = NULL;
+  GAppInfo *info;
+
+  info = create_command_line_app_info (name, "true blah", "application/x-blah");
+
+  /* this is necessary to ensure that the info is saved */
   g_app_info_remove_supports_type (info, "application/x-blah", &error);
   g_assert_no_error (error);
   g_app_info_reset_type_associations ("application/x-blah");
@@ -119,6 +132,23 @@ test_default (void)
   g_assert_cmpstr (g_app_info_get_id (info), ==, g_app_info_get_id (info2));
   g_object_unref (info);
 
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*uri_scheme*failed*");
+  g_assert_null (g_app_info_get_default_for_uri_scheme (NULL));
+  g_test_assert_expected_messages ();
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*uri_scheme*failed*");
+  g_assert_null (g_app_info_get_default_for_uri_scheme (""));
+  g_test_assert_expected_messages ();
+
+  g_app_info_set_as_default_for_type (info3, "x-scheme-handler/glib", &error);
+  g_assert_no_error (error);
+  info = g_app_info_get_default_for_uri_scheme ("glib");
+  g_assert_nonnull (info);
+  g_assert_true (g_app_info_equal (info, info3));
+  g_object_unref (info);
+
   /* now try adding something, but not setting as default */
   g_app_info_add_supports_type (info3, "application/x-test", &error);
   g_assert_no_error (error);
@@ -141,6 +171,170 @@ test_default (void)
 
   /* now clean it all up */
   g_app_info_reset_type_associations ("application/x-test");
+  g_app_info_reset_type_associations ("x-scheme-handler/glib");
+
+  list = g_app_info_get_all_for_type ("application/x-test");
+  g_assert_null (list);
+
+  list = g_app_info_get_all_for_type ("x-scheme-handler/glib");
+  g_assert_null (list);
+
+  g_app_info_delete (info1);
+  g_app_info_delete (info2);
+  g_app_info_delete (info3);
+
+  g_object_unref (info1);
+  g_object_unref (info2);
+  g_object_unref (info3);
+}
+
+typedef struct
+{
+  GAppInfo *expected_info;
+  GMainLoop *loop;
+} DefaultForTypeData;
+
+static void
+ensure_default_type_result (GAppInfo           *info,
+                            DefaultForTypeData *data,
+                            GError             *error)
+{
+  if (data->expected_info)
+    {
+      g_assert_nonnull (info);
+      g_assert_no_error (error);
+      g_assert_true (g_app_info_equal (info, data->expected_info));
+    }
+  else
+    {
+      g_assert_null (info);
+      g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND);
+    }
+
+  g_main_loop_quit (data->loop);
+  g_clear_object (&info);
+  g_clear_error (&error);
+}
+
+static void
+on_default_for_type_cb (GObject      *object,
+                        GAsyncResult *result,
+                        gpointer      user_data)
+{
+  GAppInfo *info;
+  GError *error = NULL;
+  DefaultForTypeData *data = user_data;
+
+  g_assert_null (object);
+
+  info = g_app_info_get_default_for_type_finish (result, &error);
+
+  ensure_default_type_result (info, data, error);
+}
+
+static void
+on_default_for_uri_cb (GObject      *object,
+                       GAsyncResult *result,
+                       gpointer      user_data)
+{
+  GAppInfo *info;
+  GError *error = NULL;
+  DefaultForTypeData *data = user_data;
+
+  g_assert_null (object);
+
+  info = g_app_info_get_default_for_uri_scheme_finish (result, &error);
+
+  ensure_default_type_result (info, data, error);
+}
+
+static void
+test_default_async (void)
+{
+  DefaultForTypeData data;
+  GAppInfo *info1, *info2, *info3;
+  GList *list;
+  GError *error = NULL;
+
+  data.loop = g_main_loop_new (NULL, TRUE);
+
+  info1 = create_app_info ("Blah1");
+  info2 = create_app_info ("Blah2");
+  info3 = create_app_info ("Blah3");
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*content_type*failed*");
+  g_app_info_get_default_for_type_async (NULL, FALSE, NULL, NULL, NULL);
+  g_test_assert_expected_messages ();
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*content_type*failed*");
+  g_app_info_get_default_for_type_async ("", FALSE, NULL, NULL, NULL);
+  g_test_assert_expected_messages ();
+
+  g_app_info_set_as_default_for_type (info1, "application/x-test", &error);
+  g_assert_no_error (error);
+
+  g_app_info_set_as_default_for_type (info2, "application/x-test", &error);
+  g_assert_no_error (error);
+
+  data.expected_info = info2;
+  g_app_info_get_default_for_type_async ("application/x-test", FALSE,
+                                         NULL, on_default_for_type_cb, &data);
+  g_main_loop_run (data.loop);
+
+  /* now try adding something, but not setting as default */
+  g_app_info_add_supports_type (info3, "application/x-test", &error);
+  g_assert_no_error (error);
+
+  /* check that info2 is still default */
+  data.expected_info = info2;
+  g_app_info_get_default_for_type_async ("application/x-test", FALSE,
+                                         NULL, on_default_for_type_cb, &data);
+  g_main_loop_run (data.loop);
+
+  /* now remove info1 again */
+  g_app_info_remove_supports_type (info1, "application/x-test", &error);
+  g_assert_no_error (error);
+
+  /* and make sure info2 is still default */
+  data.expected_info = info2;
+  g_app_info_get_default_for_type_async ("application/x-test", FALSE,
+                                         NULL, on_default_for_type_cb, &data);
+  g_main_loop_run (data.loop);
+
+  g_app_info_set_as_default_for_type (info3, "x-scheme-handler/glib-async", &error);
+  g_assert_no_error (error);
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*uri_scheme*failed*");
+  g_assert_null (g_app_info_get_default_for_uri_scheme (NULL));
+  g_test_assert_expected_messages ();
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*uri_scheme*failed*");
+  g_assert_null (g_app_info_get_default_for_uri_scheme (""));
+  g_test_assert_expected_messages ();
+
+  data.expected_info = info3;
+  g_app_info_get_default_for_uri_scheme_async ("glib-async", NULL,
+                                               on_default_for_uri_cb, &data);
+  g_main_loop_run (data.loop);
+
+  /* now clean it all up */
+  g_app_info_reset_type_associations ("application/x-test");
+
+  data.expected_info = NULL;
+  g_app_info_get_default_for_type_async ("application/x-test", FALSE,
+                                         NULL, on_default_for_type_cb, &data);
+  g_main_loop_run (data.loop);
+
+  g_app_info_reset_type_associations ("x-scheme-handler/glib-async");
+
+  data.expected_info = NULL;
+  g_app_info_get_default_for_uri_scheme_async ("glib-async", NULL,
+                                               on_default_for_uri_cb, &data);
+  g_main_loop_run (data.loop);
 
   list = g_app_info_get_all_for_type ("application/x-test");
   g_assert_null (list);
@@ -152,6 +346,8 @@ test_default (void)
   g_object_unref (info1);
   g_object_unref (info2);
   g_object_unref (info3);
+
+  g_main_loop_unref (data.loop);
 }
 
 static void
@@ -799,6 +995,164 @@ test_launch_as_manager (void)
   g_assert_finalize_object (context);
 }
 
+static GAppInfo *
+create_app_info_toucher (const char  *name,
+                         const char  *touched_file_name,
+                         const char  *handled_type,
+                         char       **out_file_path)
+{
+  GError *error = NULL;
+  GAppInfo *info;
+  gchar *command_line;
+  gchar *file_path;
+  gchar *tmpdir;
+
+  g_assert_nonnull (out_file_path);
+
+  tmpdir = g_dir_make_tmp ("desktop-app-info-launch-XXXXXX", &error);
+  g_assert_no_error (error);
+
+  file_path = g_build_filename (tmpdir, touched_file_name, NULL);
+  command_line = g_strdup_printf ("touch %s", file_path);
+
+  info = create_command_line_app_info (name, command_line, handled_type);
+  *out_file_path = g_steal_pointer (&file_path);
+
+  g_free (tmpdir);
+  g_free (command_line);
+
+  return info;
+}
+
+static void
+test_default_uri_handler (void)
+{
+  GError *error = NULL;
+  gchar *file_path = NULL;
+  GAppInfo *info;
+
+  info = create_app_info_toucher ("Touch Handled", "handled",
+                                  "x-scheme-handler/glib-touch",
+                                  &file_path);
+  g_assert_true (G_IS_APP_INFO (info));
+  g_assert_nonnull (file_path);
+
+  g_assert_true (g_app_info_launch_default_for_uri ("glib-touch://touch-me",
+                                                    NULL, &error));
+  g_assert_no_error (error);
+
+  while (!g_file_test (file_path, G_FILE_TEST_IS_REGULAR));
+  g_assert_true (g_file_test (file_path, G_FILE_TEST_IS_REGULAR));
+
+  g_assert_false (g_app_info_launch_default_for_uri ("glib-INVALID-touch://touch-me",
+                                                     NULL, &error));
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);
+  g_clear_error (&error);
+
+  g_object_unref (info);
+  g_free (file_path);
+}
+
+static void
+on_launch_default_for_uri_success_cb (GObject      *object,
+                                      GAsyncResult *result,
+                                      gpointer      user_data)
+{
+  GError *error = NULL;
+  gboolean *called = user_data;
+
+  g_assert_true (g_app_info_launch_default_for_uri_finish (result, &error));
+  g_assert_no_error (error);
+
+  *called = TRUE;
+}
+
+static void
+on_launch_default_for_uri_not_found_cb (GObject      *object,
+                                        GAsyncResult *result,
+                                        gpointer      user_data)
+{
+  GError *error = NULL;
+  GMainLoop *loop = user_data;
+
+  g_assert_false (g_app_info_launch_default_for_uri_finish (result, &error));
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);
+  g_clear_error (&error);
+
+  g_main_loop_quit (loop);
+}
+
+static void
+on_launch_default_for_uri_cancelled_cb (GObject      *object,
+                                        GAsyncResult *result,
+                                        gpointer      user_data)
+{
+  GError *error = NULL;
+  GMainLoop *loop = user_data;
+
+  g_assert_false (g_app_info_launch_default_for_uri_finish (result, &error));
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
+  g_clear_error (&error);
+
+  g_main_loop_quit (loop);
+}
+
+static void
+test_default_uri_handler_async (void)
+{
+  GCancellable *cancellable;
+  gchar *file_path = NULL;
+  GAppInfo *info;
+  GMainLoop *loop;
+  gboolean called = FALSE;
+
+  loop = g_main_loop_new (NULL, FALSE);
+  info = create_app_info_toucher ("Touch Handled", "handled-async",
+                                  "x-scheme-handler/glib-async-touch",
+                                  &file_path);
+  g_assert_true (G_IS_APP_INFO (info));
+  g_assert_nonnull (file_path);
+
+  g_app_info_launch_default_for_uri_async ("glib-async-touch://touch-me", NULL,
+                                           NULL,
+                                           on_launch_default_for_uri_success_cb,
+                                           &called);
+
+  while (!g_file_test (file_path, G_FILE_TEST_IS_REGULAR))
+    g_main_context_iteration (NULL, FALSE);
+
+  g_assert_true (called);
+  g_assert_true (g_file_test (file_path, G_FILE_TEST_IS_REGULAR));
+
+  g_unlink (file_path);
+  g_assert_false (g_file_test (file_path, G_FILE_TEST_IS_REGULAR));
+
+  g_app_info_launch_default_for_uri_async ("glib-async-INVALID-touch://touch-me",
+                                           NULL, NULL,
+                                           on_launch_default_for_uri_not_found_cb,
+                                           loop);
+  g_main_loop_run (loop);
+
+  cancellable = g_cancellable_new ();
+  g_app_info_launch_default_for_uri_async ("glib-async-touch://touch-me", NULL,
+                                           cancellable,
+                                           on_launch_default_for_uri_cancelled_cb,
+                                           loop);
+  g_cancellable_cancel (cancellable);
+  g_main_loop_run (loop);
+
+  /* Once started our touch app may take some time before having written the
+   * file, so let's wait a bit here before ensuring that the file has been
+   * created as expected.
+   */
+  g_usleep (G_USEC_PER_SEC / 10);
+  g_assert_false (g_file_test (file_path, G_FILE_TEST_IS_REGULAR));
+
+  g_object_unref (info);
+  g_main_loop_unref (loop);
+  g_free (file_path);
+}
+
 /* Test if Desktop-File Id is correctly formed */
 static void
 test_id (void)
@@ -824,6 +1178,7 @@ main (int   argc,
 
   g_test_add_func ("/desktop-app-info/delete", test_delete);
   g_test_add_func ("/desktop-app-info/default", test_default);
+  g_test_add_func ("/desktop-app-info/default-async", test_default_async);
   g_test_add_func ("/desktop-app-info/fallback", test_fallback);
   g_test_add_func ("/desktop-app-info/lastused", test_last_used);
   g_test_add_func ("/desktop-app-info/extra-getters", test_extra_getters);
@@ -832,6 +1187,8 @@ main (int   argc,
   g_test_add_func ("/desktop-app-info/implements", test_implements);
   g_test_add_func ("/desktop-app-info/show-in", test_show_in);
   g_test_add_func ("/desktop-app-info/launch-as-manager", test_launch_as_manager);
+  g_test_add_func ("/desktop-app-info/launch-default-uri-handler", test_default_uri_handler);
+  g_test_add_func ("/desktop-app-info/launch-default-uri-handler-async", test_default_uri_handler_async);
   g_test_add_func ("/desktop-app-info/id", test_id);
 
   return g_test_run ();

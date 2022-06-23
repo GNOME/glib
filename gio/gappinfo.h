@@ -246,8 +246,26 @@ void      g_app_info_reset_type_associations     (const char  *content_type);
 GLIB_AVAILABLE_IN_ALL
 GAppInfo *g_app_info_get_default_for_type        (const char  *content_type,
                                                   gboolean     must_support_uris);
+GLIB_AVAILABLE_IN_2_74
+void      g_app_info_get_default_for_type_async  (const char          *content_type,
+                                                  gboolean             must_support_uris,
+                                                  GCancellable        *cancellable,
+                                                  GAsyncReadyCallback  callback,
+                                                  gpointer             user_data);
+GLIB_AVAILABLE_IN_2_74
+GAppInfo *g_app_info_get_default_for_type_finish (GAsyncResult         *result,
+                                                  GError              **error);
 GLIB_AVAILABLE_IN_ALL
 GAppInfo *g_app_info_get_default_for_uri_scheme  (const char  *uri_scheme);
+
+GLIB_AVAILABLE_IN_2_74
+void      g_app_info_get_default_for_uri_scheme_async (const char          *uri_scheme,
+                                                       GCancellable        *cancellable,
+                                                       GAsyncReadyCallback  callback,
+                                                       gpointer             user_data);
+GLIB_AVAILABLE_IN_2_74
+GAppInfo *g_app_info_get_default_for_uri_scheme_finish (GAsyncResult         *result,
+                                                        GError              **error);
 
 GLIB_AVAILABLE_IN_ALL
 gboolean  g_app_info_launch_default_for_uri      (const char              *uri,

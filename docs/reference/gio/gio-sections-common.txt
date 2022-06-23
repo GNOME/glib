@@ -84,6 +84,10 @@ g_file_new_for_uri
 g_file_new_for_commandline_arg
 g_file_new_for_commandline_arg_and_cwd
 g_file_new_tmp
+g_file_new_tmp_async
+g_file_new_tmp_finish
+g_file_new_tmp_dir_async
+g_file_new_tmp_dir_finish
 g_file_parse_name
 g_file_new_build_filename
 g_file_dup
@@ -156,6 +160,8 @@ g_file_make_directory_async
 g_file_make_directory_finish
 g_file_make_directory_with_parents
 g_file_make_symbolic_link
+g_file_make_symbolic_link_async
+g_file_make_symbolic_link_finish
 g_file_query_settable_attributes
 g_file_query_writable_namespaces
 g_file_set_attribute
@@ -1371,6 +1377,7 @@ g_io_scheduler_job_send_to_mainloop_async
 G_IO_ERROR
 GIOErrorEnum
 g_io_error_from_errno
+g_io_error_from_file_error
 g_io_error_from_win32_error
 <SUBSECTION Standard>
 G_TYPE_IO_ERROR_ENUM
@@ -1435,7 +1442,11 @@ g_app_info_get_supported_types
 g_app_info_get_all
 g_app_info_get_all_for_type
 g_app_info_get_default_for_type
+g_app_info_get_default_for_type_async
+g_app_info_get_default_for_type_finish
 g_app_info_get_default_for_uri_scheme
+g_app_info_get_default_for_uri_scheme_async
+g_app_info_get_default_for_uri_scheme_finish
 g_app_info_get_fallback_for_type
 g_app_info_get_recommended_for_type
 g_app_info_launch_default_for_uri

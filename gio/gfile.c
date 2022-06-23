@@ -96,6 +96,8 @@
  * - g_file_new_for_uri() if you have a URI.
  * - g_file_new_for_commandline_arg() for a command line argument.
  * - g_file_new_tmp() to create a temporary file from a template.
+ * - g_file_new_tmp_async() to asynchronously create a temporary file.
+ * - g_file_new_tmp_dir_async() to asynchronously create a temporary directory.
  * - g_file_parse_name() from a UTF-8 string gotten from g_file_get_parse_name().
  * - g_file_new_build_filename() to create a file from path elements.
  *
@@ -269,6 +271,15 @@ static void               g_file_real_make_directory_async        (GFile        
 static gboolean           g_file_real_make_directory_finish       (GFile                  *file,
                                                                    GAsyncResult           *res,
                                                                    GError                **error);
+static void               g_file_real_make_symbolic_link_async    (GFile                  *file,
+                                                                   const char             *symlink_value,
+                                                                   int                     io_priority,
+                                                                   GCancellable           *cancellable,
+                                                                   GAsyncReadyCallback     callback,
+                                                                   gpointer                user_data);
+static gboolean           g_file_real_make_symbolic_link_finish   (GFile                  *file,
+                                                                   GAsyncResult           *result,
+                                                                   GError                **error);
 static void               g_file_real_open_readwrite_async        (GFile                  *file,
                                                                    int                  io_priority,
                                                                    GCancellable           *cancellable,
@@ -399,6 +410,8 @@ g_file_default_init (GFileIface *iface)
   iface->move_finish = g_file_real_move_finish;
   iface->make_directory_async = g_file_real_make_directory_async;
   iface->make_directory_finish = g_file_real_make_directory_finish;
+  iface->make_symbolic_link_async = g_file_real_make_symbolic_link_async;
+  iface->make_symbolic_link_finish = g_file_real_make_symbolic_link_finish;
   iface->open_readwrite_async = g_file_real_open_readwrite_async;
   iface->open_readwrite_finish = g_file_real_open_readwrite_finish;
   iface->create_readwrite_async = g_file_real_create_readwrite_async;
@@ -4154,6 +4167,125 @@ g_file_make_symbolic_link (GFile         *file,
   return (* iface->make_symbolic_link) (file, symlink_value, cancellable, error);
 }
 
+static void
+make_symbolic_link_async_thread (GTask         *task,
+                                 gpointer       object,
+                                 gpointer       task_data,
+                                 GCancellable  *cancellable)
+{
+  const char *symlink_value = task_data;
+  GError *error = NULL;
+
+  if (g_file_make_symbolic_link (G_FILE (object), symlink_value, cancellable, &error))
+    g_task_return_boolean (task, TRUE);
+  else
+    g_task_return_error (task, g_steal_pointer (&error));
+}
+
+static void
+g_file_real_make_symbolic_link_async (GFile               *file,
+                                      const char          *symlink_value,
+                                      int                  io_priority,
+                                      GCancellable        *cancellable,
+                                      GAsyncReadyCallback  callback,
+                                      gpointer             user_data)
+{
+  GTask *task;
+
+  g_return_if_fail (G_IS_FILE (file));
+  g_return_if_fail (symlink_value != NULL);
+  g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
+
+  task = g_task_new (file, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_file_real_make_symbolic_link_async);
+  g_task_set_task_data (task, g_strdup (symlink_value), g_free);
+  g_task_set_priority (task, io_priority);
+
+  g_task_run_in_thread (task, make_symbolic_link_async_thread);
+  g_object_unref (task);
+}
+
+/**
+ * g_file_make_symbolic_link_async:
+ * @file: a #GFile with the name of the symlink to create
+ * @symlink_value: (type filename): a string with the path for the target
+ *   of the new symlink
+ * @io_priority: the [I/O priority][io-priority] of the request
+ * @cancellable: (nullable): optional #GCancellable object,
+ *   %NULL to ignore
+ * @callback: a #GAsyncReadyCallback to call
+ *   when the request is satisfied
+ * @user_data: the data to pass to callback function
+ *
+ * Asynchronously creates a symbolic link named @file which contains the
+ * string @symlink_value.
+ *
+ * Virtual: make_symbolic_link_async
+ * Since: 2.74
+ */
+void
+g_file_make_symbolic_link_async (GFile               *file,
+                                 const char          *symlink_value,
+                                 int                  io_priority,
+                                 GCancellable        *cancellable,
+                                 GAsyncReadyCallback  callback,
+                                 gpointer             user_data)
+{
+  GFileIface *iface;
+
+  g_return_if_fail (G_IS_FILE (file));
+  g_return_if_fail (symlink_value != NULL);
+  g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
+
+  iface = G_FILE_GET_IFACE (file);
+
+  /* Default implementation should always be provided by GFileIface */
+  g_assert (iface->make_symbolic_link_async != NULL);
+
+  (* iface->make_symbolic_link_async) (file, symlink_value, io_priority,
+                                       cancellable, callback, user_data);
+}
+
+static gboolean
+g_file_real_make_symbolic_link_finish (GFile         *file,
+                                       GAsyncResult  *result,
+                                       GError       **error)
+{
+  g_return_val_if_fail (g_task_is_valid (result, file), FALSE);
+
+  return g_task_propagate_boolean (G_TASK (result), error);
+}
+
+/**
+ * g_file_make_symbolic_link_finish:
+ * @file: input #GFile
+ * @result: a #GAsyncResult
+ * @error: a #GError, or %NULL
+ *
+ * Finishes an asynchronous symbolic link creation, started with
+ * g_file_make_symbolic_link_async().
+ *
+ * Virtual: make_symbolic_link_finish
+ * Returns: %TRUE on successful directory creation, %FALSE otherwise.
+ * Since: 2.74
+ */
+gboolean
+g_file_make_symbolic_link_finish (GFile         *file,
+                                  GAsyncResult  *result,
+                                  GError       **error)
+{
+  GFileIface *iface;
+
+  g_return_val_if_fail (G_IS_FILE (file), FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+  iface = G_FILE_GET_IFACE (file);
+  /* Default implementation should always be provided by GFileIface */
+  g_assert (iface->make_symbolic_link_finish != NULL);
+
+  return (* iface->make_symbolic_link_finish) (file, result, error);
+}
+
 /**
  * g_file_delete:
  * @file: input #GFile
@@ -6814,6 +6946,252 @@ g_file_new_tmp (const char     *tmpl,
   return file;
 }
 
+typedef struct {
+  GFile *file;
+  GFileIOStream *iostream;
+} NewTmpAsyncData;
+
+static void
+new_tmp_data_free (NewTmpAsyncData *data)
+{
+  g_clear_object (&data->file);
+  g_clear_object (&data->iostream);
+  g_free (data);
+}
+
+static void
+new_tmp_async_thread (GTask         *task,
+                      gpointer       object,
+                      gpointer       task_data,
+                      GCancellable  *cancellable)
+{
+  GFile *file;
+  const char *tmpl = task_data;
+  GFileIOStream *iostream = NULL;
+  GError *error = NULL;
+  NewTmpAsyncData *return_data;
+
+  if (g_task_return_error_if_cancelled (task))
+    return;
+
+  file = g_file_new_tmp (tmpl, &iostream, &error);
+
+  if (!file)
+    {
+      int error_code = G_IO_ERROR_FAILED;
+
+      if (error->domain == G_IO_ERROR)
+        {
+          g_task_return_error (task, g_steal_pointer (&error));
+          return;
+        }
+
+      if (error->domain == G_FILE_ERROR)
+        error_code = g_io_error_from_file_error (error->code);
+
+      g_task_return_new_error (task, G_IO_ERROR, error_code,
+                               _("Failed to create a temporary directory for "
+                                 "template “%s”: %s"),
+                               tmpl, error->message);
+
+      g_clear_error (&error);
+      return;
+    }
+
+  return_data = g_new0 (NewTmpAsyncData, 1);
+  return_data->file = g_steal_pointer (&file);
+  return_data->iostream = g_steal_pointer (&iostream);
+
+  g_task_return_pointer (task, g_steal_pointer (&return_data),
+                         (GDestroyNotify) new_tmp_data_free);
+}
+
+/**
+ * g_file_new_tmp_async:
+ * @tmpl: (type filename) (nullable): Template for the file
+ *   name, as in g_file_open_tmp(), or %NULL for a default template
+ * @io_priority: the [I/O priority][io-priority] of the request
+ * @cancellable: optional #GCancellable object, %NULL to ignore
+ * @callback: (nullable): a #GAsyncReadyCallback to call when the request is done
+ * @user_data: (nullable): data to pass to @callback
+ *
+ * Asynchronously opens a file in the preferred directory for temporary files
+ *  (as returned by g_get_tmp_dir()) as g_file_new_tmp().
+ *
+ * @tmpl should be a string in the GLib file name encoding
+ * containing a sequence of six 'X' characters, and containing no
+ * directory components. If it is %NULL, a default template is used.
+ *
+ * Since: 2.74
+ */
+void
+g_file_new_tmp_async (const char          *tmpl,
+                      int                  io_priority,
+                      GCancellable        *cancellable,
+                      GAsyncReadyCallback  callback,
+                      gpointer             user_data)
+{
+  GTask *task;
+
+  g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
+
+  task = g_task_new (NULL, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_file_new_tmp_async);
+  g_task_set_task_data (task, g_strdup (tmpl), g_free);
+  g_task_set_priority (task, io_priority);
+  g_task_set_check_cancellable (task, TRUE);
+  g_task_run_in_thread (task, new_tmp_async_thread);
+  g_object_unref (task);
+}
+
+/**
+ * g_file_new_tmp_finish:
+ * @result: a #GAsyncResult
+ * @iostream: (out) (not optional) (not nullable) (transfer full): on return, a #GFileIOStream for the created file
+ * @error: a #GError, or %NULL
+ *
+ * Finishes a temporary file creation started by g_file_new_tmp_async().
+ *
+ * Returns: (transfer full): a new #GFile.
+ *   Free the returned object with g_object_unref().
+ *
+ * Since: 2.74
+ */
+GFile *
+g_file_new_tmp_finish (GAsyncResult   *result,
+                       GFileIOStream **iostream,
+                       GError        **error)
+{
+  GFile *file;
+  NewTmpAsyncData *data;
+
+  g_return_val_if_fail (g_task_is_valid (result, NULL), NULL);
+  g_return_val_if_fail (g_task_get_source_tag (G_TASK (result)) ==
+                        g_file_new_tmp_async, NULL);
+  g_return_val_if_fail (iostream != NULL, NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+
+  data = g_task_propagate_pointer (G_TASK (result), error);
+
+  if (!data)
+    {
+      *iostream = NULL;
+      return NULL;
+    }
+
+  file = g_steal_pointer (&data->file);
+  *iostream = g_steal_pointer (&data->iostream);
+
+  new_tmp_data_free (data);
+
+  return file;
+}
+
+static void
+new_tmp_dir_async_thread (GTask         *task,
+                          gpointer       object,
+                          gpointer       task_data,
+                          GCancellable  *cancellable)
+{
+  gchar *path;
+  const char *tmpl = task_data;
+  GError *error = NULL;
+
+  if (g_task_return_error_if_cancelled (task))
+    return;
+
+  path = g_dir_make_tmp (tmpl, &error);
+
+  if (!path)
+    {
+      int error_code = G_IO_ERROR_FAILED;
+
+      if (error->domain == G_IO_ERROR)
+        {
+          g_task_return_error (task, g_steal_pointer (&error));
+          return;
+        }
+
+      if (error->domain == G_FILE_ERROR)
+        error_code = g_io_error_from_file_error (error->code);
+
+      g_task_return_new_error (task, G_IO_ERROR, error_code,
+                               _("Failed to create a temporary directory for "
+                                 "template “%s”: %s"),
+                               tmpl, error->message);
+
+      g_clear_error (&error);
+      return;
+    }
+
+  g_task_return_pointer (task, g_file_new_for_path (path), g_object_unref);
+
+  g_free (path);
+}
+
+/**
+ * g_file_new_tmp_dir_async:
+ * @tmpl: (type filename) (nullable): Template for the file
+ *   name, as in g_dir_make_tmp(), or %NULL for a default template
+ * @io_priority: the [I/O priority][io-priority] of the request
+ * @cancellable: optional #GCancellable object, %NULL to ignore
+ * @callback: (nullable): a #GAsyncReadyCallback to call when the request is done
+ * @user_data: (nullable): data to pass to @callback
+ *
+ * Asynchronously creates a directory in the preferred directory for
+ * temporary files (as returned by g_get_tmp_dir()) as g_dir_make_tmp().
+ *
+ * @tmpl should be a string in the GLib file name encoding
+ * containing a sequence of six 'X' characters, and containing no
+ * directory components. If it is %NULL, a default template is used.
+ *
+ * Since: 2.74
+ */
+void
+g_file_new_tmp_dir_async (const char          *tmpl,
+                          int                  io_priority,
+                          GCancellable        *cancellable,
+                          GAsyncReadyCallback  callback,
+                          gpointer             user_data)
+{
+  GTask *task;
+
+  g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
+
+  task = g_task_new (NULL, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_file_new_tmp_dir_async);
+  g_task_set_task_data (task, g_strdup (tmpl), g_free);
+  g_task_set_priority (task, io_priority);
+  g_task_set_check_cancellable (task, TRUE);
+  g_task_run_in_thread (task, new_tmp_dir_async_thread);
+  g_object_unref (task);
+}
+
+/**
+ * g_file_new_tmp_dir_finish:
+ * @result: a #GAsyncResult
+ * @error: a #GError, or %NULL
+ *
+ * Finishes a temporary directory creation started by
+ * g_file_new_tmp_dir_async().
+ *
+ * Returns: (transfer full): a new #GFile.
+ *   Free the returned object with g_object_unref().
+ *
+ * Since: 2.74
+ */
+GFile *
+g_file_new_tmp_dir_finish (GAsyncResult  *result,
+                           GError       **error)
+{
+  g_return_val_if_fail (g_task_is_valid (result, NULL), NULL);
+  g_return_val_if_fail (g_task_get_source_tag (G_TASK (result)) ==
+                        g_file_new_tmp_dir_async, NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+
+  return g_task_propagate_pointer (G_TASK (result), error);
+}
+
 /**
  * g_file_parse_name:
  * @parse_name: a file name or path to be parsed
@@ -7146,6 +7524,36 @@ g_file_query_default_handler (GFile         *file,
 }
 
 static void
+query_default_handler_query_app_info_for_type_cb (GObject      *object,
+                                                  GAsyncResult *result,
+                                                  gpointer      user_data)
+{
+  GTask *task = G_TASK (user_data);
+  GAppInfo *appinfo;
+  GError *error = NULL;
+
+  appinfo = g_app_info_get_default_for_type_finish (result, &error);
+
+  if (appinfo != NULL)
+    {
+      g_task_return_pointer (task, g_steal_pointer (&appinfo), g_object_unref);
+    }
+  else if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
+    {
+      g_task_return_new_error (task,
+                               G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                               "%s", error->message);
+    }
+  else
+    {
+      g_task_return_error (task, g_steal_pointer (&error));
+    }
+
+  g_clear_error (&error);
+  g_object_unref (task);
+}
+
+static void
 query_default_handler_query_info_cb (GObject      *object,
                                      GAsyncResult *result,
                                      gpointer      user_data)
@@ -7155,7 +7563,6 @@ query_default_handler_query_info_cb (GObject      *object,
   GError *error = NULL;
   GFileInfo *info;
   const char *content_type;
-  GAppInfo *appinfo = NULL;
 
   info = g_file_query_info_finish (file, result, &error);
   if (info == NULL)
@@ -7170,27 +7577,58 @@ query_default_handler_query_info_cb (GObject      *object,
     content_type = g_file_info_get_attribute_string (info, G_FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE);
   if (content_type)
     {
+      GCancellable *cancellable = g_task_get_cancellable (task);
       char *path;
 
       /* Don't use is_native(), as we want to support fuse paths if available */
       path = g_file_get_path (file);
 
-      /* FIXME: The following still uses blocking calls. */
-      appinfo = g_app_info_get_default_for_type (content_type,
-                                                 path == NULL);
+      g_app_info_get_default_for_type_async (content_type,
+                                             path == NULL,
+                                             cancellable,
+                                             query_default_handler_query_app_info_for_type_cb,
+                                             g_steal_pointer (&task));
+
       g_free (path);
+    }
+  else
+    {
+      g_task_return_new_error (task,
+                               G_IO_ERROR,
+                               G_IO_ERROR_NOT_SUPPORTED,
+                               _("No application is registered as handling this file"));
     }
 
   g_object_unref (info);
+  g_clear_object (&task);
+}
 
-  if (appinfo != NULL)
-    g_task_return_pointer (task, g_steal_pointer (&appinfo), g_object_unref);
+static void
+on_query_default_handler_for_uri_cb (GObject      *object,
+                                     GAsyncResult *result,
+                                     gpointer      user_data)
+{
+  GTask *task = user_data;
+  GAppInfo *app_info;
+
+  app_info = g_app_info_get_default_for_uri_scheme_finish (result, NULL);
+
+  if (app_info)
+    {
+      g_task_return_pointer (task, g_steal_pointer (&app_info), g_object_unref);
+      g_object_unref (task);
+    }
   else
-    g_task_return_new_error (task,
-                             G_IO_ERROR,
-                             G_IO_ERROR_NOT_SUPPORTED,
-                             _("No application is registered as handling this file"));
-  g_object_unref (task);
+    {
+      g_file_query_info_async (g_task_get_source_object (task),
+                               G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE ","
+                               G_FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE,
+                               0,
+                               g_task_get_priority (task),
+                               g_task_get_cancellable (task),
+                               query_default_handler_query_info_cb,
+                               task);
+    }
 }
 
 /**
@@ -7221,21 +7659,13 @@ g_file_query_default_handler_async (GFile              *file,
   uri_scheme = g_file_get_uri_scheme (file);
   if (uri_scheme && uri_scheme[0] != '\0')
     {
-      GAppInfo *appinfo;
-
-      /* FIXME: The following still uses blocking calls. */
-      appinfo = g_app_info_get_default_for_uri_scheme (uri_scheme);
+      g_app_info_get_default_for_uri_scheme_async (uri_scheme,
+                                                   cancellable,
+                                                   on_query_default_handler_for_uri_cb,
+                                                   g_steal_pointer (&task));
       g_free (uri_scheme);
-
-      if (appinfo != NULL)
-        {
-          g_task_return_pointer (task, g_steal_pointer (&appinfo), g_object_unref);
-          g_object_unref (task);
-          return;
-        }
+      return;
     }
-  else
-    g_free (uri_scheme);
 
   g_file_query_info_async (file,
                            G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE ","
@@ -7245,6 +7675,8 @@ g_file_query_default_handler_async (GFile              *file,
                            cancellable,
                            query_default_handler_query_info_cb,
                            g_steal_pointer (&task));
+
+  g_free (uri_scheme);
 }
 
 /**

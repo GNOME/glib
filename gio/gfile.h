@@ -115,8 +115,8 @@ typedef struct _GFileIface    		GFileIface;
  * @make_directory_finish: Finishes making a directory asynchronously.
  * @make_symbolic_link: (nullable): Makes a symbolic link. %NULL if symbolic
  *    links are unsupported.
- * @_make_symbolic_link_async: Asynchronously makes a symbolic link
- * @_make_symbolic_link_finish: Finishes making a symbolic link asynchronously.
+ * @make_symbolic_link_async: Asynchronously makes a symbolic link
+ * @make_symbolic_link_finish: Finishes making a symbolic link asynchronously.
  * @copy: (nullable): Copies a file. %NULL if copying is unsupported, which will
  *     cause `GFile` to use a fallback copy method where it reads from the
  *     source and writes to the destination.
@@ -396,8 +396,15 @@ struct _GFileIface
                                                        const char           *symlink_value,
                                                        GCancellable         *cancellable,
                                                        GError              **error);
-  void                (* _make_symbolic_link_async)   (void);
-  void                (* _make_symbolic_link_finish)  (void);
+  void                (* make_symbolic_link_async)    (GFile                *file,
+                                                       const char           *symlink_value,
+                                                       int                   io_priority,
+                                                       GCancellable         *cancellable,
+                                                       GAsyncReadyCallback   callback,
+                                                       gpointer              user_data);
+  gboolean            (* make_symbolic_link_finish)   (GFile                 *file,
+                                                       GAsyncResult         *result,
+                                                       GError              **error);
 
   gboolean            (* copy)                        (GFile                *source,
                                                        GFile                *destination,
@@ -618,6 +625,25 @@ GFile *                 g_file_new_for_commandline_arg_and_cwd (const gchar     
 GLIB_AVAILABLE_IN_2_32
 GFile *                 g_file_new_tmp                    (const char                 *tmpl,
                                                            GFileIOStream             **iostream,
+                                                           GError                    **error);
+GLIB_AVAILABLE_IN_2_74
+void                    g_file_new_tmp_async              (const char                 *tmpl,
+                                                           int                         io_priority,
+                                                           GCancellable               *cancellable,
+                                                           GAsyncReadyCallback         callback,
+                                                           gpointer                    user_data);
+GLIB_AVAILABLE_IN_2_74
+GFile *                 g_file_new_tmp_finish             (GAsyncResult               *result,
+                                                           GFileIOStream             **iostream,
+                                                           GError                    **error);
+GLIB_AVAILABLE_IN_2_74
+void                    g_file_new_tmp_dir_async          (const char                 *tmpl,
+                                                           int                         io_priority,
+                                                           GCancellable               *cancellable,
+                                                           GAsyncReadyCallback         callback,
+                                                           gpointer                    user_data);
+GLIB_AVAILABLE_IN_2_74
+GFile *                 g_file_new_tmp_dir_finish         (GAsyncResult               *result,
                                                            GError                    **error);
 GLIB_AVAILABLE_IN_ALL
 GFile *                 g_file_parse_name                 (const char                 *parse_name);
@@ -976,6 +1002,17 @@ gboolean                g_file_make_symbolic_link         (GFile                
 							   const char                 *symlink_value,
 							   GCancellable               *cancellable,
 							   GError                    **error);
+GLIB_AVAILABLE_IN_2_74
+void                    g_file_make_symbolic_link_async   (GFile                      *file,
+                                                           const char                 *symlink_value,
+                                                           int                         io_priority,
+                                                           GCancellable               *cancellable,
+                                                           GAsyncReadyCallback         callback,
+                                                           gpointer                    user_data);
+GLIB_AVAILABLE_IN_2_74
+gboolean                g_file_make_symbolic_link_finish  (GFile                      *file,
+                                                           GAsyncResult               *result,
+                                                           GError                    **error);
 GLIB_AVAILABLE_IN_ALL
 GFileAttributeInfoList *g_file_query_settable_attributes  (GFile                      *file,
 							   GCancellable               *cancellable,
