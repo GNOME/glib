@@ -1109,8 +1109,10 @@ test_destroy_target_object (void)
   sender = g_object_new (test_get_type (), NULL);
   target1 = g_object_new (test_get_type (), NULL);
   target2 = g_object_new (test_get_type (), NULL);
-  g_signal_connect_object (sender, "simple", G_CALLBACK (simple_handler1), target1, 0);
-  g_signal_connect_object (sender, "simple", G_CALLBACK (simple_handler2), target2, 0);
+  g_signal_connect_object (sender, "simple", G_CALLBACK (simple_handler1),
+                           target1, G_CONNECT_DEFAULT);
+  g_signal_connect_object (sender, "simple", G_CALLBACK (simple_handler2),
+                           target2, G_CONNECT_DEFAULT);
   g_signal_emit_by_name (sender, "simple");
   g_object_unref (sender);
 }

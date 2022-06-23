@@ -809,7 +809,8 @@ g_local_file_monitor_start (GLocalFileMonitor *local_monitor,
 
       local_monitor->mount_monitor = g_unix_mount_monitor_get ();
       g_signal_connect_object (local_monitor->mount_monitor, "mounts-changed",
-                               G_CALLBACK (g_local_file_monitor_mounts_changed), local_monitor, 0);
+                               G_CALLBACK (g_local_file_monitor_mounts_changed), local_monitor,
+                               G_CONNECT_DEFAULT);
 #endif
     }
 
@@ -924,7 +925,7 @@ g_local_file_monitor_new_in_worker (const gchar           *pathname,
     {
       if (callback)
         g_signal_connect_data (monitor, "changed", G_CALLBACK (callback),
-                               user_data, destroy_user_data, 0  /* flags */);
+                               user_data, destroy_user_data, G_CONNECT_DEFAULT);
 
       g_local_file_monitor_start (monitor, pathname, is_directory, flags, GLIB_PRIVATE_CALL(g_get_worker_context) ());
     }

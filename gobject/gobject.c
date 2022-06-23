@@ -3093,8 +3093,8 @@ g_object_get_property (GObject	   *object,
  *
  * The signal specs expected by this function have the form
  * "modifier::signal_name", where modifier can be one of the following:
- * - signal: equivalent to g_signal_connect_data (..., NULL, 0)
- * - object-signal, object_signal: equivalent to g_signal_connect_object (..., 0)
+ * - signal: equivalent to g_signal_connect_data (..., NULL, G_CONNECT_DEFAULT)
+ * - object-signal, object_signal: equivalent to g_signal_connect_object (..., G_CONNECT_DEFAULT)
  * - swapped-signal, swapped_signal: equivalent to g_signal_connect_data (..., NULL, G_CONNECT_SWAPPED)
  * - swapped_object_signal, swapped-object-signal: equivalent to g_signal_connect_object (..., G_CONNECT_SWAPPED)
  * - signal_after, signal-after: equivalent to g_signal_connect_data (..., NULL, G_CONNECT_AFTER)
@@ -3135,12 +3135,12 @@ g_object_connect (gpointer     _object,
       if (strncmp (signal_spec, "signal::", 8) == 0)
 	g_signal_connect_data (object, signal_spec + 8,
 			       callback, data, NULL,
-			       0);
+			       G_CONNECT_DEFAULT);
       else if (strncmp (signal_spec, "object_signal::", 15) == 0 ||
                strncmp (signal_spec, "object-signal::", 15) == 0)
 	g_signal_connect_object (object, signal_spec + 15,
 				 callback, data,
-				 0);
+				 G_CONNECT_DEFAULT);
       else if (strncmp (signal_spec, "swapped_signal::", 16) == 0 ||
                strncmp (signal_spec, "swapped-signal::", 16) == 0)
 	g_signal_connect_data (object, signal_spec + 16,
