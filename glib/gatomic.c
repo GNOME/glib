@@ -432,7 +432,7 @@ gboolean
 
 /**
  * g_atomic_pointer_exchange:
- * @atomic: a pointer to a #gint or #guint
+ * @atomic: a pointer to a #gpointer-sized value
  * @newval: the value to replace with
  *
  * Sets the @atomic to @newval and returns the old value from @atomic.
@@ -444,7 +444,7 @@ gboolean
  *
  * This call acts as a full compiler and hardware memory barrier.
  *
- * Returns: the value of @atomic before the exchange, signed
+ * Returns: the value of @atomic before the exchange
  *
  * Since: 2.74
  **/
