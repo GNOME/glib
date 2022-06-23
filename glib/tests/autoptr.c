@@ -426,6 +426,7 @@ rec_mutex_unlocked_thread (gpointer data)
 {
   GRecMutex *rec_mutex = (GRecMutex *) data;
   g_assert_true (g_rec_mutex_trylock (rec_mutex));
+  g_rec_mutex_unlock (rec_mutex);
   return NULL;
 }
 
