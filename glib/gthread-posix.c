@@ -193,7 +193,7 @@ g_mutex_init (GMutex *mutex)
  * Calling g_mutex_clear() on a locked mutex leads to undefined
  * behaviour.
  *
- * Sine: 2.32
+ * Since: 2.32
  */
 void
 g_mutex_clear (GMutex *mutex)
@@ -368,7 +368,7 @@ g_rec_mutex_init (GRecMutex *rec_mutex)
  * Calling g_rec_mutex_clear() on a locked recursive mutex leads
  * to undefined behaviour.
  *
- * Sine: 2.32
+ * Since: 2.32
  */
 void
 g_rec_mutex_clear (GRecMutex *rec_mutex)
@@ -525,7 +525,7 @@ g_rw_lock_init (GRWLock *rw_lock)
  * Calling g_rw_lock_clear() when any thread holds the lock
  * leads to undefined behaviour.
  *
- * Sine: 2.32
+ * Since: 2.32
  */
 void
 g_rw_lock_clear (GRWLock *rw_lock)
