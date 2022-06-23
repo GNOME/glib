@@ -70,7 +70,7 @@ test_scanner_error (ScannerFixture *fix,
       exit (0);
     }
 
-  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_passed ();
   g_test_trap_assert_stderr ("*scanner-error-message-test*");
 }

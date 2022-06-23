@@ -144,7 +144,7 @@ test_x11_autolaunch (void)
       return;
     }
 
-  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_stderr_unmatched ("?*");
   g_test_trap_assert_stdout ("hello:this=address-is-from-the,mock=dbus-launch\n");
   g_test_trap_assert_passed ();
@@ -167,7 +167,7 @@ test_xdg_runtime (void)
       return;
     }
 
-  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_stderr_unmatched ("?*");
   g_test_trap_assert_stdout ("unix:path=/tmp/gdbus%2Cunix%2Ctest.*/bus\n");
   g_test_trap_assert_passed ();
@@ -203,7 +203,7 @@ test_win32_autolaunch (void)
       return;
     }
 
-  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
   /* stderr is not checked: coverage prints warnings there */
   g_test_trap_assert_stdout ("nonce-tcp:host=localhost,port=*,noncefile=*\\gdbus-nonce-file-*\n");
   g_test_trap_assert_passed ();

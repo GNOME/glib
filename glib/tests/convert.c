@@ -709,9 +709,11 @@ test_convert_embedded_nul (void)
 static void
 test_locale_to_utf8_embedded_nul (void)
 {
-  g_test_trap_subprocess ("/conversion/locale-to-utf8/embedded-nul/subprocess/utf8", 0, 0);
+  g_test_trap_subprocess ("/conversion/locale-to-utf8/embedded-nul/subprocess/utf8",
+                          0, G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_passed ();
-  g_test_trap_subprocess ("/conversion/locale-to-utf8/embedded-nul/subprocess/iconv", 0, 0);
+  g_test_trap_subprocess ("/conversion/locale-to-utf8/embedded-nul/subprocess/iconv",
+                          0, G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_passed ();
 }
 
@@ -760,9 +762,11 @@ test_locale_to_utf8_embedded_nul_iconv (void)
 static void
 test_locale_from_utf8_embedded_nul (void)
 {
-  g_test_trap_subprocess ("/conversion/locale-from-utf8/embedded-nul/subprocess/utf8", 0, 0);
+  g_test_trap_subprocess ("/conversion/locale-from-utf8/embedded-nul/subprocess/utf8",
+                          0, G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_passed ();
-  g_test_trap_subprocess ("/conversion/locale-from-utf8/embedded-nul/subprocess/iconv", 0, 0);
+  g_test_trap_subprocess ("/conversion/locale-from-utf8/embedded-nul/subprocess/iconv",
+                          0, G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_passed ();
 }
 
@@ -813,9 +817,11 @@ test_locale_from_utf8_embedded_nul_iconv (void)
 static void
 test_filename_to_utf8_embedded_nul (void)
 {
-  g_test_trap_subprocess ("/conversion/filename-to-utf8/embedded-nul/subprocess/utf8", 0, 0);
+  g_test_trap_subprocess ("/conversion/filename-to-utf8/embedded-nul/subprocess/utf8",
+                          0, G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_passed ();
-  g_test_trap_subprocess ("/conversion/filename-to-utf8/embedded-nul/subprocess/iconv", 0, 0);
+  g_test_trap_subprocess ("/conversion/filename-to-utf8/embedded-nul/subprocess/iconv",
+                          0, G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_passed ();
 }
 
@@ -870,9 +876,11 @@ test_filename_to_utf8_embedded_nul_iconv (void)
 static void
 test_filename_from_utf8_embedded_nul (void)
 {
-  g_test_trap_subprocess ("/conversion/filename-from-utf8/embedded-nul/subprocess/utf8", 0, 0);
+  g_test_trap_subprocess ("/conversion/filename-from-utf8/embedded-nul/subprocess/utf8",
+                          0, G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_passed ();
-  g_test_trap_subprocess ("/conversion/filename-from-utf8/embedded-nul/subprocess/iconv", 0, 0);
+  g_test_trap_subprocess ("/conversion/filename-from-utf8/embedded-nul/subprocess/iconv",
+                          0, G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_passed ();
 }
 

@@ -435,7 +435,8 @@ load_comment_for_mime_helper (const char *dir,
   if (!res)
     return NULL;
 
-  context = g_markup_parse_context_new   (&parser, 0, &parse_data, NULL);
+  context = g_markup_parse_context_new (&parser, G_MARKUP_PARSE_FLAGS_NONE,
+                                        &parse_data, NULL);
   res = g_markup_parse_context_parse (context, data, len, NULL);
   g_free (data);
   g_markup_parse_context_free (context);

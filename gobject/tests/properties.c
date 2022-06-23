@@ -582,7 +582,7 @@ properties_testv_with_invalid_property_type (void)
 
       g_object_unref (test_obj);
     }
-  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*WARNING*foo*gint*gchararray*");
 }
@@ -620,7 +620,7 @@ properties_testv_with_invalid_property_names (void)
       g_object_unref (test_obj);
     }
 
-  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*CRITICAL*g_object_new_is_valid_property*boo*");
 }

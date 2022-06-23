@@ -442,10 +442,12 @@ do_fail_on_broken_utf16_2 (void)
 static void
 test_fail_on_broken_utf16 (void)
 {
-  g_test_trap_subprocess ("/appinfo/subprocess/win32-assert-broken-utf16_1", 0, 0);
+  g_test_trap_subprocess ("/appinfo/subprocess/win32-assert-broken-utf16_1", 0,
+                          G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*GLib-GIO:ERROR:*giowin32-private.c:*:_g_win32_extract_executable: assertion failed: (folded)*");
-  g_test_trap_subprocess ("/appinfo/subprocess/win32-assert-broken-utf16_2", 0, 0);
+  g_test_trap_subprocess ("/appinfo/subprocess/win32-assert-broken-utf16_2", 0,
+                          G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*GLib-GIO:ERROR:*giowin32-private.c:*:_g_win32_extract_executable: assertion failed: (folded)*");
 }

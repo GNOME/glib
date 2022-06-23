@@ -1653,7 +1653,7 @@ g_regex_match_simple (const gchar        *pattern,
   GRegex *regex;
   gboolean result;
 
-  regex = g_regex_new (pattern, compile_options, 0, NULL);
+  regex = g_regex_new (pattern, compile_options, G_REGEX_MATCH_DEFAULT, NULL);
   if (!regex)
     return FALSE;
   result = g_regex_match_full (regex, string, -1, 0, match_options, NULL, NULL);
@@ -1692,7 +1692,7 @@ g_regex_match_simple (const gchar        *pattern,
  *   GRegex *regex;
  *   GMatchInfo *match_info;
  *  
- *   regex = g_regex_new ("[A-Z]+", 0, 0, NULL);
+ *   regex = g_regex_new ("[A-Z]+", G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT, NULL);
  *   g_regex_match (regex, string, 0, &match_info);
  *   while (g_match_info_matches (match_info))
  *     {
@@ -1768,7 +1768,7 @@ g_regex_match (const GRegex      *regex,
  *   GMatchInfo *match_info;
  *   GError *error = NULL;
  *   
- *   regex = g_regex_new ("[A-Z]+", 0, 0, NULL);
+ *   regex = g_regex_new ("[A-Z]+", G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT, NULL);
  *   g_regex_match_full (regex, string, -1, 0, 0, &match_info, &error);
  *   while (g_match_info_matches (match_info))
  *     {
@@ -2949,7 +2949,7 @@ g_regex_replace_literal (const GRegex      *regex,
  * g_hash_table_insert (h, "3", "THREE");
  * g_hash_table_insert (h, "4", "FOUR");
  *
- * reg = g_regex_new ("1|2|3|4", 0, 0, NULL);
+ * reg = g_regex_new ("1|2|3|4", G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT, NULL);
  * res = g_regex_replace_eval (reg, text, -1, 0, 0, eval_cb, h, NULL);
  * g_hash_table_destroy (h);
  *

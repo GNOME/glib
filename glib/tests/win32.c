@@ -99,7 +99,8 @@ test_veh_crash_access_violation (void)
 {
   g_unsetenv ("G_DEBUGGER");
   /* Run a test that crashes */
-  g_test_trap_subprocess ("/win32/subprocess/access_violation", 0, 0);
+  g_test_trap_subprocess ("/win32/subprocess/access_violation", 0,
+                          G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_failed ();
 }
 
@@ -108,7 +109,8 @@ test_veh_crash_illegal_instruction (void)
 {
   g_unsetenv ("G_DEBUGGER");
   /* Run a test that crashes */
-  g_test_trap_subprocess ("/win32/subprocess/illegal_instruction", 0, 0);
+  g_test_trap_subprocess ("/win32/subprocess/illegal_instruction", 0,
+                          G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_failed ();
 }
 
@@ -125,7 +127,8 @@ test_veh_debug (void)
   g_setenv ("G_DEBUGGER_OLD_CONSOLE", "1", TRUE);
   g_free (command);
   /* Run a test that crashes and runs a debugger */
-  g_test_trap_subprocess ("/win32/subprocess/debuggee", 0, 0);
+  g_test_trap_subprocess ("/win32/subprocess/debuggee", 0,
+                          G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("Debugger invoked, attaching to*");
 }

@@ -1530,7 +1530,8 @@ g_task_start_task_thread (GTask           *task,
       g_signal_connect_data (task->cancellable, "cancelled",
                              G_CALLBACK (task_thread_cancelled),
                              g_object_ref (task),
-                             task_thread_cancelled_disconnect_notify, 0);
+                             task_thread_cancelled_disconnect_notify,
+                             G_CONNECT_DEFAULT);
     }
 
   if (g_private_get (&task_private))

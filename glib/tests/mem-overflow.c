@@ -139,7 +139,8 @@ mem_overflow (void)
 #define CHECK_SUBPROCESS_FAIL(name) do { \
       if (g_test_undefined ()) \
         { \
-          g_test_trap_subprocess ("/mem/overflow/subprocess/" #name, 0, 0); \
+          g_test_trap_subprocess ("/mem/overflow/subprocess/" #name, 0, \
+                                  G_TEST_SUBPROCESS_DEFAULT); \
           g_test_trap_assert_failed(); \
         } \
     } while (0)
@@ -147,7 +148,8 @@ mem_overflow (void)
 #define CHECK_SUBPROCESS_PASS(name) do { \
       if (g_test_undefined ()) \
         { \
-          g_test_trap_subprocess ("/mem/overflow/subprocess/" #name, 0, 0); \
+          g_test_trap_subprocess ("/mem/overflow/subprocess/" #name, 0, \
+                                  G_TEST_SUBPROCESS_DEFAULT); \
           g_test_trap_assert_passed(); \
         } \
     } while (0)
@@ -208,7 +210,8 @@ empty_alloc (void)
 
   g_assert_cmpint (sizeof (Empty), ==, 0);
 
-  g_test_trap_subprocess ("/mem/empty-alloc/subprocess", 0, 0);
+  g_test_trap_subprocess ("/mem/empty-alloc/subprocess", 0,
+                          G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_passed ();
 }
 #endif

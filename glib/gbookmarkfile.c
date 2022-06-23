@@ -1510,7 +1510,7 @@ g_bookmark_file_parse (GBookmarkFile  *bookmark,
   parse_data->bookmark_file = bookmark;
 
   context = g_markup_parse_context_new (&markup_parser,
-  					0,
+  					G_MARKUP_PARSE_FLAGS_NONE,
   					parse_data,
   					(GDestroyNotify) parse_data_free);
 

@@ -1202,7 +1202,7 @@ test_peer_invalid_server (void)
     }
   else
     {
-      g_test_trap_subprocess (NULL, 0, 0);
+      g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
       g_test_trap_assert_failed ();
       g_test_trap_assert_stderr ("*CRITICAL*G_DBUS_SERVER_FLAGS_ALL*");
     }
@@ -1249,7 +1249,7 @@ test_peer_invalid_conn_stream_sync (void)
     }
   else
     {
-      g_test_trap_subprocess (NULL, 0, 0);
+      g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
       g_test_trap_assert_failed ();
       g_test_trap_assert_stderr ("*CRITICAL*G_DBUS_CONNECTION_FLAGS_ALL*");
     }
@@ -1295,7 +1295,7 @@ test_peer_invalid_conn_stream_async (void)
     }
   else
     {
-      g_test_trap_subprocess (NULL, 0, 0);
+      g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
       g_test_trap_assert_failed ();
       g_test_trap_assert_stderr ("*CRITICAL*G_DBUS_CONNECTION_FLAGS_ALL*");
     }
@@ -1324,7 +1324,7 @@ test_peer_invalid_conn_addr_sync (void)
     }
   else
     {
-      g_test_trap_subprocess (NULL, 0, 0);
+      g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
       g_test_trap_assert_failed ();
       g_test_trap_assert_stderr ("*CRITICAL*G_DBUS_CONNECTION_FLAGS_ALL*");
     }
@@ -1347,7 +1347,7 @@ test_peer_invalid_conn_addr_async (void)
     }
   else
     {
-      g_test_trap_subprocess (NULL, 0, 0);
+      g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
       g_test_trap_assert_failed ();
       g_test_trap_assert_stderr ("*CRITICAL*G_DBUS_CONNECTION_FLAGS_ALL*");
     }

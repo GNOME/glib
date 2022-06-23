@@ -400,7 +400,7 @@ g_io_unix_set_flags (GIOChannel *channel,
 static GIOFlags
 g_io_unix_get_flags (GIOChannel *channel)
 {
-  GIOFlags flags = 0;
+  GIOFlags flags = G_IO_FLAG_NONE;
   glong fcntl_flags;
   GIOUnixChannel *unix_channel = (GIOUnixChannel *) channel;
 

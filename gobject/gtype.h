@@ -1030,6 +1030,8 @@ typedef void     (*GTypeInterfaceCheckFunc)  (gpointer	       check_data,
  */
 typedef enum    /*< skip >*/
 {
+  /* There is no G_TYPE_FUNDAMENTAL_FLAGS_NONE: this is implemented to use
+   * the same bits as GTypeFlags */
   G_TYPE_FLAG_CLASSED           = (1 << 0),
   G_TYPE_FLAG_INSTANTIATABLE    = (1 << 1),
   G_TYPE_FLAG_DERIVABLE         = (1 << 2),
@@ -1037,6 +1039,7 @@ typedef enum    /*< skip >*/
 } GTypeFundamentalFlags;
 /**
  * GTypeFlags:
+ * @G_TYPE_FLAG_NONE: No special flags. Since: 2.74
  * @G_TYPE_FLAG_ABSTRACT: Indicates an abstract type. No instances can be
  *  created for an abstract type
  * @G_TYPE_FLAG_VALUE_ABSTRACT: Indicates an abstract value type, i.e. a type
@@ -1049,6 +1052,7 @@ typedef enum    /*< skip >*/
  */
 typedef enum    /*< skip >*/
 {
+  G_TYPE_FLAG_NONE GLIB_AVAILABLE_ENUMERATOR_IN_2_74 = 0,
   G_TYPE_FLAG_ABSTRACT = (1 << 4),
   G_TYPE_FLAG_VALUE_ABSTRACT = (1 << 5),
   G_TYPE_FLAG_FINAL GLIB_AVAILABLE_ENUMERATOR_IN_2_70 = (1 << 6)
@@ -2180,6 +2184,8 @@ type_name##_get_type_once (void) \
   _G_DEFINE_TYPE_EXTENDED_BEGIN_PRE(TypeName, type_name, TYPE_PARENT) \
   _G_DEFINE_TYPE_EXTENDED_BEGIN_REGISTER(TypeName, type_name, TYPE_PARENT, flags) \
 
+/* Intentionally using (GTypeFlags) 0 instead of G_TYPE_FLAG_NONE here,
+ * to avoid deprecation warnings with older GLIB_VERSION_MAX_ALLOWED */
 #define _G_DEFINE_INTERFACE_EXTENDED_BEGIN(TypeName, type_name, TYPE_PREREQ) \
 \
 static void     type_name##_default_init        (TypeName##Interface *klass); \

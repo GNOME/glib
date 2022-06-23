@@ -946,6 +946,7 @@ g_io_channel_get_line_term (GIOChannel *channel,
  **/
 /**
  * GIOFlags:
+ * @G_IO_FLAG_NONE: no special flags set. Since: 2.74
  * @G_IO_FLAG_APPEND: turns on append mode, corresponds to %O_APPEND
  *     (see the documentation of the UNIX open() syscall)
  * @G_IO_FLAG_NONBLOCK: turns on nonblocking mode, corresponds to

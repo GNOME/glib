@@ -1456,7 +1456,7 @@ initable_init (GInitable     *initable,
                             G_CALLBACK (on_notify_g_name_owner),
                             weak_ref_new (G_OBJECT (manager)),
                             (GClosureNotify) weak_ref_free,
-                            0  /* flags */);
+                            G_CONNECT_DEFAULT);
 
   manager->priv->signal_signal_id =
       g_signal_connect_data (manager->priv->control_proxy,
@@ -1464,7 +1464,7 @@ initable_init (GInitable     *initable,
                             G_CALLBACK (on_control_proxy_g_signal),
                             weak_ref_new (G_OBJECT (manager)),
                             (GClosureNotify) weak_ref_free,
-                            0  /* flags */);
+                            G_CONNECT_DEFAULT);
 
   manager->priv->name_owner = g_dbus_proxy_get_name_owner (manager->priv->control_proxy);
   if (manager->priv->name_owner == NULL && manager->priv->name != NULL)

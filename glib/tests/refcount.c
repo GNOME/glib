@@ -100,7 +100,7 @@ test_grefcount_saturation (void)
       exit (0);
     }
 
-  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
 
 #if defined (G_DISABLE_CHECKS) && defined (__GNUC__)
   /* With checks disabled we don't get any warning */
@@ -193,7 +193,7 @@ test_gatomicrefcount_saturation (void)
       exit (0);
     }
 
-  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
 
 #if defined (G_DISABLE_CHECKS) && defined (__GNUC__)
   /* With checks disabled we don't get any warning */

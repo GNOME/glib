@@ -38,7 +38,7 @@ test_schema (gpointer data)
   gchar *child_name;
 
   child_name = g_strdup_printf ("/gschema/%s%s/subprocess/do_compile", test->name, test->opt ? "/opt" : "");
-  g_test_trap_subprocess (child_name, 0, 0);
+  g_test_trap_subprocess (child_name, 0, G_TEST_SUBPROCESS_DEFAULT);
   g_free (child_name);
 
   if (test->err)

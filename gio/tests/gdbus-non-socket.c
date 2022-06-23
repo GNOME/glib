@@ -222,7 +222,7 @@ test_non_socket (void)
 
   /* This is #ifdef G_OS_UNIX anyway, so just use g_test_trap_fork() */
   G_GNUC_BEGIN_IGNORE_DEPRECATIONS;
-  if (!g_test_trap_fork (0, 0))
+  if (!g_test_trap_fork (0, G_TEST_TRAP_DEFAULT))
     {
       /* parent */
       g_object_unref (streams[0]);

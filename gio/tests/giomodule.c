@@ -80,6 +80,10 @@ test_extension_point (void)
   g_assert (g_io_extension_get_priority (ext) == 10);
 }
 
+#define INHERIT_ALL (G_TEST_SUBPROCESS_INHERIT_STDIN | \
+                     G_TEST_SUBPROCESS_INHERIT_STDOUT | \
+                     G_TEST_SUBPROCESS_INHERIT_STDERR)
+
 static void
 test_module_scan_all (void)
 {
@@ -105,7 +109,7 @@ test_module_scan_all (void)
       g_assert_cmpstr (g_io_extension_get_name (ext), ==, "test-a");
       return;
     }
-  g_test_trap_subprocess (NULL, 0, 7);
+  g_test_trap_subprocess (NULL, 0, INHERIT_ALL);
   g_test_trap_assert_passed ();
 }
 
@@ -136,7 +140,7 @@ test_module_scan_all_with_scope (void)
       g_io_module_scope_free (scope);
       return;
     }
-  g_test_trap_subprocess (NULL, 0, 7);
+  g_test_trap_subprocess (NULL, 0, INHERIT_ALL);
   g_test_trap_assert_passed ();
 }
 

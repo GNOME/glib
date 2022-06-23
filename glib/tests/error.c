@@ -336,7 +336,7 @@ test_extended_duplicate (void)
   if (!g_test_subprocess ())
     {
       /* Spawn a subprocess and expect it to fail. */
-      g_test_trap_subprocess (NULL, 0, 0);
+      g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
       g_test_trap_assert_failed ();
       g_test_trap_assert_stderr ("*CRITICAL*Attempted to register an extended error domain for TestError more than once*");
     }
