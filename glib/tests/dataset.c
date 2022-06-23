@@ -294,13 +294,13 @@ test_datalist_id_remove_multiple (void)
   g_assert_cmpint (count, ==, 0);
 }
 
+static int destroy_index;
+
 static void
 destroy_func (gpointer data)
 {
-  static int i = 0;
-
-  i++;
-  g_assert_cmpint (GPOINTER_TO_INT (data), ==, i);
+  destroy_index++;
+  g_assert_cmpint (GPOINTER_TO_INT (data), ==, destroy_index);
 }
 
 static void
@@ -326,7 +326,10 @@ test_datalist_id_remove_multiple_destroy_order (void)
   g_datalist_id_set_data_full (&list, three, GINT_TO_POINTER (3), destroy_func);
   g_datalist_id_set_data_full (&list, one, GINT_TO_POINTER (1), destroy_func);
 
+  destroy_index = 0;
   g_datalist_id_remove_multiple (&list, keys, G_N_ELEMENTS (keys));
+  /* This verifies that destroy_func() was called three times: */
+  g_assert_cmpint (destroy_index, ==, 3);
 }
 
 int
