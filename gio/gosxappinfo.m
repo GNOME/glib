@@ -587,6 +587,9 @@ g_app_info_create_from_commandline (const char           *commandline,
                                     GAppInfoCreateFlags   flags,
                                     GError              **error)
 {
+  g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                       "Creating an app info from a command line not currently supported");
+
   return NULL;
 }
 
