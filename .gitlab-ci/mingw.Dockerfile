@@ -44,6 +44,7 @@ RUN dnf -y install \
     ncurses-compat-libs \
     ninja-build \
     pcre-devel \
+    pcre2-devel \
     python3 \
     python3-pip \
     python3-wheel \
