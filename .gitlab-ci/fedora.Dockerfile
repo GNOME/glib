@@ -13,6 +13,7 @@ RUN dnf -y update \
     fuse \
     gcc \
     gcc-c++ \
+    gdb \
     gettext \
     git \
     glibc-devel \

@@ -13,6 +13,7 @@ RUN apt-get update -qq && apt-get install --no-install-recommends -qq -y \
     flake8 \
     fuse \
     gcc \
+    gdb \
     g++ \
     gettext \
     git \
