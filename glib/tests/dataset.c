@@ -251,16 +251,6 @@ test_datalist_id (void)
 }
 
 static void
-foreach_func (GQuark   key_id,
-              gpointer data,
-              gpointer user_data)
-{
-  int *count = user_data;
-
-  (*count)++;
-}
-
-static void
 test_datalist_id_remove_multiple (void)
 {
   /* Test that g_datalist_id_remove_multiple() removes all the keys it
@@ -274,7 +264,6 @@ test_datalist_id_remove_multiple (void)
     two,
     three,
   };
-  int count;
 
   g_test_bug ("https://gitlab.gnome.org/GNOME/glib/issues/2672");
 
@@ -283,24 +272,22 @@ test_datalist_id_remove_multiple (void)
   g_datalist_id_set_data (&list, two, GINT_TO_POINTER (2));
   g_datalist_id_set_data (&list, three, GINT_TO_POINTER (3));
 
-  count = 0;
-  g_datalist_foreach (&list, foreach_func, &count);
-  g_assert_cmpint (count, ==, 3);
+  destroy_count = 0;
+  g_datalist_foreach (&list, (GDataForeachFunc) notify, NULL);
+  g_assert_cmpint (destroy_count, ==, 3);
 
   g_datalist_id_remove_multiple (&list, keys, G_N_ELEMENTS (keys));
 
-  count = 0;
-  g_datalist_foreach (&list, foreach_func, &count);
-  g_assert_cmpint (count, ==, 0);
+  destroy_count = 0;
+  g_datalist_foreach (&list, (GDataForeachFunc) notify, NULL);
+  g_assert_cmpint (destroy_count, ==, 0);
 }
-
-static int destroy_index;
 
 static void
 destroy_func (gpointer data)
 {
-  destroy_index++;
-  g_assert_cmpint (GPOINTER_TO_INT (data), ==, destroy_index);
+  destroy_count++;
+  g_assert_cmpint (GPOINTER_TO_INT (data), ==, destroy_count);
 }
 
 static void
@@ -326,10 +313,10 @@ test_datalist_id_remove_multiple_destroy_order (void)
   g_datalist_id_set_data_full (&list, three, GINT_TO_POINTER (3), destroy_func);
   g_datalist_id_set_data_full (&list, one, GINT_TO_POINTER (1), destroy_func);
 
-  destroy_index = 0;
+  destroy_count = 0;
   g_datalist_id_remove_multiple (&list, keys, G_N_ELEMENTS (keys));
   /* This verifies that destroy_func() was called three times: */
-  g_assert_cmpint (destroy_index, ==, 3);
+  g_assert_cmpint (destroy_count, ==, 3);
 }
 
 int
