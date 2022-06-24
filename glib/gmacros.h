@@ -235,11 +235,6 @@
  *
  * Since: 2.58
  */
-/* Note: We can’t annotate this with GLIB_AVAILABLE_MACRO_IN_2_58 because it’s
- * used within the GLib headers in function declarations which are always
- * evaluated when a header is included. This results in warnings in third party
- * code which includes glib.h, even if the third party code doesn’t use the new
- * macro itself. */
 
 #if g_macro__has_attribute(__pure__)
 #define G_GNUC_PURE __attribute__((__pure__))
@@ -254,9 +249,11 @@
 #endif
 
 #if g_macro__has_attribute(__noinline__)
-#define G_GNUC_NO_INLINE __attribute__ ((__noinline__))
+#define G_GNUC_NO_INLINE __attribute__ ((__noinline__)) \
+  GLIB_AVAILABLE_MACRO_IN_2_58
 #else
-#define G_GNUC_NO_INLINE
+#define G_GNUC_NO_INLINE \
+  GLIB_AVAILABLE_MACRO_IN_2_58
 #endif
 
 /**
