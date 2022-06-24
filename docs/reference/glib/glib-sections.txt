@@ -517,6 +517,10 @@ G_NORETURN
 G_NORETURN_FUNCPTR
 
 <SUBSECTION>
+G_ALWAYS_INLINE
+G_NO_INLINE
+
+<SUBSECTION>
 G_N_ELEMENTS
 </SECTION>
 
@@ -782,6 +786,7 @@ g_macro__has_attribute
 g_macro__has_builtin
 g_macro__has_feature
 g_macro__has_extension
+g_macro__has_attribute___always_inline__
 g_macro__has_attribute___alloc_size__
 g_macro__has_attribute___const__
 g_macro__has_attribute___deprecated__
