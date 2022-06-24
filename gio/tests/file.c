@@ -3493,8 +3493,8 @@ test_query_default_handler_uri (void)
   GFile *file;
   GFile *invalid_file;
 
-#ifdef G_OS_WIN32
-  g_test_skip ("Default URI handlers are not currently supported on Windows");
+#if defined(G_OS_WIN32) || defined(__APPLE__)
+  g_test_skip ("Default URI handlers are not currently supported on Windows or macOS");
   return;
 #endif
 
@@ -3536,8 +3536,8 @@ test_query_default_handler_file (void)
   const char buffer[] = "Text file!\n";
   const guint8 binary_buffer[] = "\xde\xad\xbe\xff";
 
-#ifdef G_OS_WIN32
-  g_test_skip ("Default URI handlers are not currently supported on Windows");
+#if defined(G_OS_WIN32) || defined(__APPLE__)
+  g_test_skip ("Default URI handlers are not currently supported on Windows or macOS");
   return;
 #endif
 
@@ -3626,8 +3626,8 @@ test_query_default_handler_file_async (void)
   const guint8 binary_buffer[] = "\xde\xad\xbe\xff";
   GError *error = NULL;
 
-#ifdef G_OS_WIN32
-  g_test_skip ("Default URI handlers are not currently supported on Windows");
+#if defined(G_OS_WIN32) || defined(__APPLE__)
+  g_test_skip ("Default URI handlers are not currently supported on Windows or macOS");
   return;
 #endif
 
@@ -3716,8 +3716,8 @@ test_query_default_handler_uri_async (void)
   GFile *file;
   GFile *invalid_file;
 
-#ifdef G_OS_WIN32
-  g_test_skip ("Default URI handlers are not currently supported on Windows");
+#if defined(G_OS_WIN32) || defined(__APPLE__)
+  g_test_skip ("Default URI handlers are not currently supported on Windows or macOS");
   return;
 #endif
 
