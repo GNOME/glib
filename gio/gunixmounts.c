@@ -1410,17 +1410,13 @@ _g_get_unix_mount_points (void)
 {
   struct fstab *fstab = NULL;
   GUnixMountPoint *mount_point;
-  GList *return_list;
+  GList *return_list = NULL;
+  G_LOCK_DEFINE_STATIC (fsent);
 #ifdef HAVE_SYS_SYSCTL_H
   int usermnt = 0;
   struct stat sb;
 #endif
-  
-  if (!setfsent ())
-    return NULL;
 
-  return_list = NULL;
-  
 #ifdef HAVE_SYS_SYSCTL_H
 #if defined(HAVE_SYSCTLBYNAME)
   {
@@ -1448,7 +1444,14 @@ _g_get_unix_mount_points (void)
   }
 #endif
 #endif
-  
+
+  G_LOCK (fsent);
+  if (!setfsent ())
+    {
+      G_UNLOCK (fsent);
+      return NULL;
+    }
+
   while ((fstab = getfsent ()) != NULL)
     {
       gboolean is_read_only = FALSE;
@@ -1482,9 +1485,10 @@ _g_get_unix_mount_points (void)
 
       return_list = g_list_prepend (return_list, mount_point);
     }
-  
+
   endfsent ();
-  
+  G_UNLOCK (fsent);
+
   return g_list_reverse (return_list);
 }
 /* Interix {{{2 */
