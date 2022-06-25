@@ -1988,7 +1988,7 @@ on_new_tmp_done (GObject      *object,
   GError *error = NULL;
   GMainLoop *loop = user_data;
   gchar *basename;
-  gchar *parent_path;
+  GFile *tmpdir = NULL;
 
   g_assert_null (object);
 
@@ -2009,9 +2009,9 @@ on_new_tmp_done (GObject      *object,
   g_assert_no_error (error);
 
   parent = g_file_get_parent (file);
-  parent_path = g_file_get_path (parent);
+  tmpdir = g_file_new_for_path (g_get_tmp_dir ());
 
-  g_assert_cmpstr (g_get_tmp_dir (), ==, parent_path);
+  g_assert_true (g_file_equal (tmpdir, parent));
 
   g_main_loop_quit (loop);
 
@@ -2020,7 +2020,7 @@ on_new_tmp_done (GObject      *object,
   g_object_unref (iostream);
   g_object_unref (info);
   g_free (basename);
-  g_free (parent_path);
+  g_object_unref (tmpdir);
 }
 
 static void
@@ -2087,7 +2087,7 @@ on_new_tmp_dir_done (GObject      *object,
   GError *error = NULL;
   GMainLoop *loop = user_data;
   gchar *basename;
-  gchar *parent_path;
+  GFile *tmpdir = NULL;
 
   g_assert_null (object);
 
@@ -2106,9 +2106,9 @@ on_new_tmp_dir_done (GObject      *object,
   g_assert_cmpuint (g_file_info_get_file_type (info), ==, G_FILE_TYPE_DIRECTORY);
 
   parent = g_file_get_parent (file);
-  parent_path = g_file_get_path (parent);
+  tmpdir = g_file_new_for_path (g_get_tmp_dir ());
 
-  g_assert_cmpstr (g_get_tmp_dir (), ==, parent_path);
+  g_assert_true (g_file_equal (tmpdir, parent));
 
   g_main_loop_quit (loop);
 
@@ -2116,7 +2116,7 @@ on_new_tmp_dir_done (GObject      *object,
   g_object_unref (parent);
   g_object_unref (info);
   g_free (basename);
-  g_free (parent_path);
+  g_object_unref (tmpdir);
 }
 
 static void
@@ -3493,8 +3493,8 @@ test_query_default_handler_uri (void)
   GFile *file;
   GFile *invalid_file;
 
-#ifdef G_OS_WIN32
-  g_test_skip ("Default URI handlers are not currently supported on Windows");
+#if defined(G_OS_WIN32) || defined(__APPLE__)
+  g_test_skip ("Default URI handlers are not currently supported on Windows or macOS");
   return;
 #endif
 
@@ -3536,8 +3536,8 @@ test_query_default_handler_file (void)
   const char buffer[] = "Text file!\n";
   const guint8 binary_buffer[] = "\xde\xad\xbe\xff";
 
-#ifdef G_OS_WIN32
-  g_test_skip ("Default URI handlers are not currently supported on Windows");
+#if defined(G_OS_WIN32) || defined(__APPLE__)
+  g_test_skip ("Default URI handlers are not currently supported on Windows or macOS");
   return;
 #endif
 
@@ -3626,8 +3626,8 @@ test_query_default_handler_file_async (void)
   const guint8 binary_buffer[] = "\xde\xad\xbe\xff";
   GError *error = NULL;
 
-#ifdef G_OS_WIN32
-  g_test_skip ("Default URI handlers are not currently supported on Windows");
+#if defined(G_OS_WIN32) || defined(__APPLE__)
+  g_test_skip ("Default URI handlers are not currently supported on Windows or macOS");
   return;
 #endif
 
@@ -3716,8 +3716,8 @@ test_query_default_handler_uri_async (void)
   GFile *file;
   GFile *invalid_file;
 
-#ifdef G_OS_WIN32
-  g_test_skip ("Default URI handlers are not currently supported on Windows");
+#if defined(G_OS_WIN32) || defined(__APPLE__)
+  g_test_skip ("Default URI handlers are not currently supported on Windows or macOS");
   return;
 #endif
 
