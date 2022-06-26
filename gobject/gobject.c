@@ -1353,17 +1353,10 @@ g_object_do_get_property (GObject     *object,
 static void
 g_object_real_dispose (GObject *object)
 {
-  GQuark keys[3] = {
-    quark_closure_array,
-    quark_weak_refs,
-    quark_weak_locations,
-  };
-
   g_signal_handlers_destroy (object);
-  /* FIXME: This should be simplified down to a single remove_multiple() call.
-   * See https://gitlab.gnome.org/GNOME/glib/-/issues/2672 */
-  g_datalist_id_remove_multiple (&object->qdata, keys, 1);
-  g_datalist_id_remove_multiple (&object->qdata, keys + 1, 2);
+  g_datalist_id_set_data (&object->qdata, quark_closure_array, NULL);
+  g_datalist_id_set_data (&object->qdata, quark_weak_refs, NULL);
+  g_datalist_id_set_data (&object->qdata, quark_weak_locations, NULL);
 }
 
 #ifdef G_ENABLE_DEBUG
@@ -3888,15 +3881,10 @@ g_object_unref (gpointer _object)
 	}
 
       /* we are still in the process of taking away the last ref */
+      g_datalist_id_set_data (&object->qdata, quark_closure_array, NULL);
       g_signal_handlers_destroy (object);
-      {
-        GQuark keys[3] = {
-          quark_closure_array,
-          quark_weak_refs,
-          quark_weak_locations,
-        };
-        g_datalist_id_remove_multiple (&object->qdata, keys, G_N_ELEMENTS (keys));
-      }
+      g_datalist_id_set_data (&object->qdata, quark_weak_refs, NULL);
+      g_datalist_id_set_data (&object->qdata, quark_weak_locations, NULL);
 
       /* decrement the last reference */
       old_ref = g_atomic_int_add (&object->ref_count, -1);
