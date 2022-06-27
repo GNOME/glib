@@ -504,6 +504,11 @@ g_data_remove_internal (GData  **datalist,
       GDataElt *old, *data, *data_end;
       gsize found_keys;
 
+      /* Allocate an array of GDataElt to hold copies of the elements
+       * that are removed from the datalist. Allow enough space for all
+       * the keys; if a key is not found, the corresponding element of
+       * old is not populated, so we initialize them all to NULL to
+       * detect that case. */
       old = g_newa0 (GDataElt, n_keys);
 
       data = d->data;
@@ -558,6 +563,9 @@ g_data_remove_internal (GData  **datalist,
 
           for (gsize i = 0; i < n_keys; i++)
             {
+              /* If keys[i] was not found, then old[i].destroy is NULL.
+               * Call old[i].destroy() only if keys[i] was found, and
+               * is associated with a destroy notifier: */
               if (old[i].destroy)
                 old[i].destroy (old[i].data);
             }
