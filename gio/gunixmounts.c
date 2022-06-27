@@ -1412,6 +1412,7 @@ _g_get_unix_mount_points (void)
   GUnixMountPoint *mount_point;
   GList *return_list;
 #ifdef HAVE_SYS_SYSCTL_H
+  uid_t uid = getuid ();
   int usermnt = 0;
   struct stat sb;
 #endif
@@ -1462,14 +1463,13 @@ _g_get_unix_mount_points (void)
 
 #ifdef HAVE_SYS_SYSCTL_H
       if (usermnt != 0)
-	{
-	  uid_t uid = getuid ();
-	  if (stat (fstab->fs_file, &sb) == 0)
-	    {
-	      if (uid == 0 || sb.st_uid == uid)
-		is_user_mountable = TRUE;
-	    }
-	}
+        {
+          if (uid == 0 ||
+              (stat (fstab->fs_file, &sb) == 0 && sb.st_uid == uid))
+            {
+              is_user_mountable = TRUE;
+            }
+        }
 #endif
 
       mount_point = create_unix_mount_point (fstab->fs_spec,
