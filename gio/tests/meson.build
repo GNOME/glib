@@ -70,10 +70,7 @@ gio_tests = {
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
     'should_fail' : host_system == 'darwin',
   },
-  'gsubprocess' : {
-    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
-    'should_fail' : host_system == 'darwin',
-  },
+  'gsubprocess' : {},
   'g-file' : {},
   'g-file-info' : {
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
