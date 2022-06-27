@@ -526,11 +526,14 @@ g_data_remove_internal (GData  **datalist,
 
           if (remove)
             {
+              GDataElt *data_last = data_end - 1;
+
               found_keys++;
 
-              if (data < --data_end)
-                *data = *data_end;
+              if (data < data_last)
+                *data = *data_last;
 
+              data_end--;
               d->len--;
 
               /* We don't bother to shrink, but if all data are now gone
