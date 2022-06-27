@@ -158,6 +158,7 @@ g_proxy_resolver_lookup (GProxyResolver  *resolver,
 			 GError         **error)
 {
   GProxyResolverInterface *iface;
+  gchar **proxy_uris;
 
   g_return_val_if_fail (G_IS_PROXY_RESOLVER (resolver), NULL);
   g_return_val_if_fail (uri != NULL, NULL);
@@ -171,7 +172,10 @@ g_proxy_resolver_lookup (GProxyResolver  *resolver,
 
   iface = G_PROXY_RESOLVER_GET_IFACE (resolver);
 
-  return (* iface->lookup) (resolver, uri, cancellable, error);
+  proxy_uris = (* iface->lookup) (resolver, uri, cancellable, error);
+  if (proxy_uris == NULL && error != NULL)
+    g_assert (*error != NULL);
+  return proxy_uris;
 }
 
 /**
@@ -237,10 +241,14 @@ g_proxy_resolver_lookup_finish (GProxyResolver     *resolver,
 				GError            **error)
 {
   GProxyResolverInterface *iface;
+  gchar **proxy_uris;
 
   g_return_val_if_fail (G_IS_PROXY_RESOLVER (resolver), NULL);
 
   iface = G_PROXY_RESOLVER_GET_IFACE (resolver);
 
-  return (* iface->lookup_finish) (resolver, result, error);
+  proxy_uris = (* iface->lookup_finish) (resolver, result, error);
+  if (proxy_uris == NULL && error != NULL)
+    g_assert (*error != NULL);
+  return proxy_uris;
 }
