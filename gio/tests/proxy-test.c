@@ -43,9 +43,14 @@
  * connects to @server_addr anyway).
  *
  * The default GProxyResolver (GTestProxyResolver) looks at its URI
- * and returns [ "direct://" ] for "simple://" URIs, and [
- * proxy_a.uri, proxy_b.uri ] for other URIs. The other GProxyResolver
- * (GTestAltProxyResolver) always returns [ proxy_a.uri ].
+ * and returns [ "direct://" ] for "simple://" URIs, and
+ * [ proxy_a.uri, proxy_b.uri ] for most other URIs. It can also return
+ * invalid results for other URIs (empty://, invalid://,
+ * invalid-then-simple://, and simple-then-invalid://) to test error
+ * handling.
+ *
+ * The other GProxyResolver (GTestAltProxyResolver) always returns
+ * [ proxy_a.uri ].
  */
 
 typedef struct {
@@ -131,10 +136,32 @@ g_test_proxy_resolver_lookup (GProxyResolver  *resolver,
 
   proxies = g_new (gchar *, 3);
 
-  if (!strncmp (uri, "simple://", 4))
+  if (g_str_has_prefix (uri, "simple://"))
     {
       proxies[0] = g_strdup ("direct://");
       proxies[1] = NULL;
+    }
+  else if (g_str_has_prefix (uri, "empty://"))
+    {
+      proxies[0] = g_strdup ("");
+      proxies[1] = NULL;
+    }
+  else if (g_str_has_prefix (uri, "invalid://"))
+    {
+      proxies[0] = g_strdup ("😼");
+      proxies[1] = NULL;
+    }
+  else if (g_str_has_prefix (uri, "invalid-then-simple://"))
+    {
+      proxies[0] = g_strdup ("😼");
+      proxies[1] = g_strdup ("direct://");
+      proxies[2] = NULL;
+    }
+  else if (g_str_has_prefix (uri, "simple-then-invalid://"))
+    {
+      proxies[0] = g_strdup ("direct://");
+      proxies[1] = g_strdup ("😼");
+      proxies[2] = NULL;
     }
   else
     {
@@ -826,11 +853,8 @@ static void
 teardown_test (gpointer fixture,
 	       gconstpointer user_data)
 {
-  if (last_proxies)
-    {
-      g_strfreev (last_proxies);
-      last_proxies = NULL;
-    }
+  g_clear_pointer (&last_proxies, g_strfreev);
+
   g_clear_error (&proxy_a.last_error);
   g_clear_error (&proxy_b.last_error);
 }
@@ -1091,6 +1115,118 @@ test_multiple_async (gpointer fixture,
   assert_multiple (conn);
   do_echo_test (conn);
   g_object_unref (conn);
+}
+
+static void
+test_invalid_uris_sync (gpointer fixture,
+		        gconstpointer user_data)
+{
+  GSocketConnection *conn;
+  gchar *uri;
+  GError *error = NULL;
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/2597");
+
+  /* The empty:// URI causes the proxy resolver to return an empty string. */
+  uri = g_strdup_printf ("empty://127.0.0.1:%u", server.server_port);
+  conn = g_socket_client_connect_to_uri (client, uri, 0, NULL, &error);
+  g_free (uri);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_FAILED);
+  g_assert_null (conn);
+  g_clear_error (&error);
+  g_clear_pointer (&last_proxies, g_strfreev);
+
+  /* The invalid:// URI causes the proxy resolver to return a cat emoji. */
+  uri = g_strdup_printf ("invalid://127.0.0.1:%u", server.server_port);
+  conn = g_socket_client_connect_to_uri (client, uri, 0, NULL, &error);
+  g_free (uri);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_FAILED);
+  g_assert_null (conn);
+  g_clear_error (&error);
+  g_clear_pointer (&last_proxies, g_strfreev);
+
+  /* If the proxy resolver returns an invalid URI before a valid URI,
+   * we should succeed.
+   */
+  uri = g_strdup_printf ("invalid-then-simple://127.0.0.1:%u", server.server_port);
+  conn = g_socket_client_connect_to_uri (client, uri, 0, NULL, &error);
+  g_free (uri);
+  g_assert_no_error (error);
+  do_echo_test (conn);
+  g_object_unref (conn);
+  g_clear_pointer (&last_proxies, g_strfreev);
+
+  /* If the proxy resolver returns a valid URI before an invalid URI,
+   * we should succeed.
+   */
+  uri = g_strdup_printf ("simple-then-invalid://127.0.0.1:%u", server.server_port);
+  conn = g_socket_client_connect_to_uri (client, uri, 0, NULL, &error);
+  g_free (uri);
+  g_assert_no_error (error);
+  do_echo_test (conn);
+  g_object_unref (conn);
+  g_clear_pointer (&last_proxies, g_strfreev);
+}
+
+static void
+test_invalid_uris_async (gpointer fixture,
+		         gconstpointer user_data)
+{
+  GSocketConnection *conn;
+  GError *error = NULL;
+  gchar *uri;
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/2597");
+
+  /* The empty:// URI causes the proxy resolver to return an empty string. */
+  uri = g_strdup_printf ("empty://127.0.0.1:%u", server.server_port);
+  g_socket_client_connect_to_uri_async (client, uri, 0, NULL,
+					async_got_error, &error);
+  g_free (uri);
+  while (error == NULL)
+    g_main_context_iteration (NULL, TRUE);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_FAILED);
+  g_clear_error (&error);
+  g_clear_pointer (&last_proxies, g_strfreev);
+
+  /* The invalid:// URI causes the proxy resolver to return a cat emoji. */
+  uri = g_strdup_printf ("invalid://127.0.0.1:%u", server.server_port);
+  g_socket_client_connect_to_uri_async (client, uri, 0, NULL,
+					async_got_error, &error);
+  g_free (uri);
+  while (error == NULL)
+    g_main_context_iteration (NULL, TRUE);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_FAILED);
+  g_clear_error (&error);
+  g_clear_pointer (&last_proxies, g_strfreev);
+
+  /* If the proxy resolver returns an invalid URI before a valid URI,
+   * we should succeed.
+   */
+  uri = g_strdup_printf ("invalid-then-simple://127.0.0.1:%u", server.server_port);
+  conn = NULL;
+  g_socket_client_connect_to_uri_async (client, uri, 0, NULL,
+					async_got_conn, &conn);
+  g_free (uri);
+  while (conn == NULL)
+    g_main_context_iteration (NULL, TRUE);
+  do_echo_test (conn);
+  g_object_unref (conn);
+  g_clear_pointer (&last_proxies, g_strfreev);
+
+  /* If the proxy resolver returns a valid URI before an invalid URI,
+   * we should succeed.
+   */
+  uri = g_strdup_printf ("simple-then-invalid://127.0.0.1:%u", server.server_port);
+  conn = NULL;
+  g_socket_client_connect_to_uri_async (client, uri, 0, NULL,
+					async_got_conn, &conn);
+  g_free (uri);
+  while (conn == NULL)
+    g_main_context_iteration (NULL, TRUE);
+  do_echo_test (conn);
+  g_object_unref (conn);
+  g_clear_pointer (&last_proxies, g_strfreev);
 }
 
 static void
@@ -1372,6 +1508,8 @@ main (int   argc,
   g_test_add_vtable ("/proxy/single_async", 0, NULL, setup_test, test_single_async, teardown_test);
   g_test_add_vtable ("/proxy/multiple_sync", 0, NULL, setup_test, test_multiple_sync, teardown_test);
   g_test_add_vtable ("/proxy/multiple_async", 0, NULL, setup_test, test_multiple_async, teardown_test);
+  g_test_add_vtable ("/proxy/invalid-uris-sync", 0, NULL, setup_test, test_invalid_uris_sync, teardown_test);
+  g_test_add_vtable ("/proxy/invalid-uris-async", 0, NULL, setup_test, test_invalid_uris_async, teardown_test);
   g_test_add_vtable ("/proxy/dns", 0, NULL, setup_test, test_dns, teardown_test);
   g_test_add_vtable ("/proxy/override", 0, NULL, setup_test, test_override, teardown_test);
   g_test_add_func ("/proxy/enumerator-ports", test_proxy_enumerator_ports);

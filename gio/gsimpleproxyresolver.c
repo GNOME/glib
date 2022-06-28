@@ -417,7 +417,7 @@ g_simple_proxy_resolver_class_init (GSimpleProxyResolverClass *resolver_class)
   object_class->finalize = g_simple_proxy_resolver_finalize;
 
   /**
-   * GSimpleProxyResolver:default-proxy:
+   * GSimpleProxyResolver:default-proxy: (nullable)
    *
    * The default proxy URI that will be used for any URI that doesn't
    * match #GSimpleProxyResolver:ignore-hosts, and doesn't match any
@@ -520,7 +520,7 @@ g_simple_proxy_resolver_new (const gchar  *default_proxy,
 /**
  * g_simple_proxy_resolver_set_default_proxy:
  * @resolver: a #GSimpleProxyResolver
- * @default_proxy: the default proxy to use
+ * @default_proxy: (nullable): the default proxy to use
  *
  * Sets the default proxy on @resolver, to be used for any URIs that
  * don't match #GSimpleProxyResolver:ignore-hosts or a proxy set
@@ -537,6 +537,7 @@ g_simple_proxy_resolver_set_default_proxy (GSimpleProxyResolver *resolver,
                                            const gchar          *default_proxy)
 {
   g_return_if_fail (G_IS_SIMPLE_PROXY_RESOLVER (resolver));
+  g_return_if_fail (default_proxy == NULL || g_uri_is_valid (default_proxy, G_URI_FLAGS_NONE, NULL));
 
   g_free (resolver->priv->default_proxy);
   resolver->priv->default_proxy = g_strdup (default_proxy);
