@@ -1477,35 +1477,40 @@ static void
 test_cwd (void)
 {
   GError *local_error = NULL;
-  GError **error = &local_error;
   GSubprocessLauncher *launcher;
   GSubprocess *proc;
   GPtrArray *args;
   GInputStream *stdout_stream;
   gchar *result;
-  const char *basename;
-  gchar *tmp_lineend;
-  const gchar *tmp_lineend_basename;
+  gsize result_len;
+  const gchar *tmpdir = g_get_tmp_dir ();
+  gchar *tmpdir_basename = NULL, *result_basename = NULL;
 
   args = get_test_subprocess_args ("cwd", NULL);
   launcher = g_subprocess_launcher_new (G_SUBPROCESS_FLAGS_STDOUT_PIPE);
   g_subprocess_launcher_set_flags (launcher, G_SUBPROCESS_FLAGS_STDOUT_PIPE);
-  g_subprocess_launcher_set_cwd (launcher, g_get_tmp_dir ());
-  tmp_lineend = g_strdup_printf ("%s%s", g_get_tmp_dir (), LINEEND);
-  tmp_lineend_basename = g_strrstr (tmp_lineend, G_DIR_SEPARATOR_S);
+  g_subprocess_launcher_set_cwd (launcher, tmpdir);
 
-  proc = g_subprocess_launcher_spawnv (launcher, (const char * const *)args->pdata, error);
+  proc = g_subprocess_launcher_spawnv (launcher, (const char * const *)args->pdata, &local_error);
   g_ptr_array_free (args, TRUE);
   g_assert_no_error (local_error);
 
   stdout_stream = g_subprocess_get_stdout_pipe (proc);
 
-  result = splice_to_string (stdout_stream, error);
+  result = splice_to_string (stdout_stream, &local_error);
+  g_assert_no_error (local_error);
+  result_len = strlen (result);
 
-  basename = g_strrstr (result, G_DIR_SEPARATOR_S);
-  g_assert_nonnull (basename);
-  g_assert_cmpstr (basename, ==, tmp_lineend_basename);
-  g_free (tmp_lineend);
+  /* The result should end with a line ending */
+  g_assert_cmpstr (result + result_len - strlen (LINEEND), ==, LINEEND);
+
+  /* Not sure if the testprog guarantees to return an absolute path for the cwd,
+   * so only compare the basenames. */
+  tmpdir_basename = g_path_get_basename (tmpdir);
+  result_basename = g_path_get_basename (g_strstrip (result));
+  g_assert_cmpstr (tmpdir_basename, ==, result_basename);
+  g_free (tmpdir_basename);
+  g_free (result_basename);
 
   g_free (result);
   g_object_unref (proc);
