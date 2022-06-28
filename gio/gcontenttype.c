@@ -505,7 +505,7 @@ g_content_type_get_description (const gchar *type)
   if (comment != NULL)
     {
       G_UNLOCK (gio_xdgmime);
-      return comment;
+      return g_steal_pointer (&comment);
     }
 
   type_copy = g_strdup (type);
@@ -519,7 +519,7 @@ g_content_type_get_description (const gchar *type)
                        g_strdup (comment));
   G_UNLOCK (gio_xdgmime);
 
-  return comment;
+  return g_steal_pointer (&comment);
 }
 
 /**
