@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-06-23 11:50+0000\n"
-"PO-Revision-Date: 2022-06-24 09:35+0300\n"
+"POT-Creation-Date: 2022-06-28 10:34+0000\n"
+"PO-Revision-Date: 2022-06-28 19:18+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -34,13 +34,11 @@ msgstr ""
 
 #: gio/gappinfo.c:808
 #, c-format
-#| msgid "No default applications for “%s”\n"
 msgid "Failed to find default application for content type ‘%s’"
 msgstr "Не вдалося знайти типову програму для типу даних «%s»"
 
 #: gio/gappinfo.c:868
 #, c-format
-#| msgid "No default applications for “%s”\n"
 msgid "Failed to find default application for URI Scheme ‘%s’"
 msgstr "Не вдалося знайти типову програму для схеми адреси «%s»"
 
@@ -329,13 +327,13 @@ msgstr "Бракує простору для результату"
 
 #: gio/gcharsetconverter.c:344 gio/gdatainputstream.c:850
 #: gio/gdatainputstream.c:1268 glib/gconvert.c:451 glib/gconvert.c:883
-#: glib/giochannel.c:1575 glib/giochannel.c:1617 glib/giochannel.c:2472
+#: glib/giochannel.c:1576 glib/giochannel.c:1618 glib/giochannel.c:2473
 #: glib/gutf8.c:892 glib/gutf8.c:1346
 msgid "Invalid byte sequence in conversion input"
 msgstr "Неправильна послідовність байтів у перетворюваних вхідних даних"
 
 #: gio/gcharsetconverter.c:349 glib/gconvert.c:459 glib/gconvert.c:797
-#: glib/giochannel.c:1582 glib/giochannel.c:2484
+#: glib/giochannel.c:1583 glib/giochannel.c:2485
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Помилка під час перетворення: %s"
@@ -344,7 +342,7 @@ msgstr "Помилка під час перетворення: %s"
 msgid "Cancellable initialization not supported"
 msgstr "Ініціалізація з можливістю скасування не підтримується"
 
-#: gio/gcharsetconverter.c:458 glib/gconvert.c:324 glib/giochannel.c:1403
+#: gio/gcharsetconverter.c:458 glib/gconvert.c:324 glib/giochannel.c:1404
 #, c-format
 msgid "Conversion from character set “%s” to “%s” is not supported"
 msgstr "Підтримки перетворення з набору символів «%s» у «%s» не передбачено"
@@ -354,7 +352,7 @@ msgstr "Підтримки перетворення з набору символ
 msgid "Could not open converter from “%s” to “%s”"
 msgstr "Не вдалося відкрити модуль перетворення з «%s» у «%s»"
 
-#: gio/gcontenttype.c:472
+#: gio/gcontenttype.c:473
 #, c-format
 msgid "%s type"
 msgstr "тип %s"
@@ -1509,7 +1507,6 @@ msgstr "Назви файлів не можуть містити символу 
 
 #: gio/gfile.c:6993 gio/gfile.c:7119
 #, c-format
-#| msgid "Failed to change to directory “%s” (%s)"
 msgid "Failed to create a temporary directory for template “%s”: %s"
 msgstr "Не вдалося створити тимчасовий каталог для шаблону «%s»: %s"
 
@@ -3353,7 +3350,7 @@ msgstr "Помилка при закриванні файла: %s"
 msgid "Error seeking in file: %s"
 msgstr "Помилка при встановленні позиції у файлі: %s"
 
-#: gio/glocalfilemonitor.c:881
+#: gio/glocalfilemonitor.c:882
 msgid "Unable to find default local file monitor type"
 msgstr "Не вдалося знайти типовий різновид монітора локального файла"
 
@@ -3545,6 +3542,10 @@ msgstr "Сума векторів, яку передано до %s, є надт�
 #: gio/goutputstream.c:738 gio/goutputstream.c:1763
 msgid "Source stream is already closed"
 msgstr "Вхідний потік вже закритий"
+
+#: gio/gproxyaddressenumerator.c:324 gio/gproxyaddressenumerator.c:342
+msgid "Unspecified proxy lookup failure"
+msgstr "Невказана помилка при пошуку проксі"
 
 #. Translators: the first placeholder is a domain name, the
 #. * second is an error message
@@ -4431,7 +4432,7 @@ msgstr "Помилка при читанні з файлового дескри�
 msgid "Error closing file descriptor: %s"
 msgstr "Помилка при закритті файлового дескриптора: %s"
 
-#: gio/gunixmounts.c:2811 gio/gunixmounts.c:2864
+#: gio/gunixmounts.c:2815 gio/gunixmounts.c:2868
 msgid "Filesystem root"
 msgstr "Корінь файлової системи"
 
@@ -5139,26 +5140,26 @@ msgstr "Шаблон «%s» не містить XXXXXX"
 msgid "Failed to read the symbolic link “%s”: %s"
 msgstr "Помилка читання символічного посилання «%s»: %s"
 
-#: glib/giochannel.c:1407
+#: glib/giochannel.c:1408
 #, c-format
 msgid "Could not open converter from “%s” to “%s”: %s"
 msgstr "Не вдалося відкрити модуль перетворення з «%s» у «%s»: %s"
 
-#: glib/giochannel.c:1760
+#: glib/giochannel.c:1761
 msgid "Can’t do a raw read in g_io_channel_read_line_string"
 msgstr ""
 "Не вдалося виконати безпосереднє зчитування у функції "
 "g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1807 glib/giochannel.c:2065 glib/giochannel.c:2152
+#: glib/giochannel.c:1808 glib/giochannel.c:2066 glib/giochannel.c:2153
 msgid "Leftover unconverted data in read buffer"
 msgstr "В буфері зчитування лишились не перетворені дані"
 
-#: glib/giochannel.c:1888 glib/giochannel.c:1965
+#: glib/giochannel.c:1889 glib/giochannel.c:1966
 msgid "Channel terminates in a partial character"
 msgstr "Канал завершується на неповному символі"
 
-#: glib/giochannel.c:1951
+#: glib/giochannel.c:1952
 msgid "Can’t do a raw read in g_io_channel_read_to_end"
 msgstr ""
 "Не можна виконувати безпосереднє зчитування у функції "
