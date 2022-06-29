@@ -95,6 +95,7 @@ class TestAssertMessage(unittest.TestCase):
         result = Result(info, out, err)
 
         print("Output:", result.out)
+        print("Error:", result.err)
         return result
 
     def runGdbAssertMessage(self, *args):
@@ -118,13 +119,14 @@ class TestAssertMessage(unittest.TestCase):
             env=env,
             universal_newlines=True,
         )
-        info.check_returncode()
         out = info.stdout.strip()
         err = info.stderr.strip()
 
         result = Result(info, out, err)
 
         print("Output:", result.out)
+        print("Error:", result.err)
+        print(result.info)
         return result
 
     def test_gassert(self):
@@ -146,6 +148,15 @@ class TestAssertMessage(unittest.TestCase):
             tmp.flush()
 
             result = self.runGdbAssertMessage("-x", tmp.name, self.__assert_msg_test)
+
+            # Some CI environments disable ptrace (as they’re running in a
+            # container). If so, skip the test as there’s nothing we can do.
+            if (
+                result.info.returncode != 0
+                and "ptrace: Operation not permitted" in result.err
+            ):
+                self.skipTest("GDB is not functional due to ptrace being disabled")
+
             self.assertEqual(result.info.returncode, 0)
             self.assertIn("$1 = 0x", result.out)
             self.assertIn("assertion failed: (42 < 0)", result.out)
