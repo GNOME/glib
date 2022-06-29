@@ -288,7 +288,9 @@ void	g_flags_complete_type_info (GType	       g_flags_type,
  *
  * Since: 2.74
  */
-#define G_DEFINE_ENUM_VALUE(EnumValue, EnumNick) { EnumValue, #EnumValue, EnumNick }
+#define G_DEFINE_ENUM_VALUE(EnumValue, EnumNick) \
+  { EnumValue, #EnumValue, EnumNick } \
+  GLIB_AVAILABLE_MACRO_IN_2_74
 
 /**
  * G_DEFINE_ENUM_TYPE:
@@ -326,7 +328,8 @@ type_name ## _get_type (void) { \
     g_once_init_leave (&g_define_type__static, g_define_type); \
   } \
   return g_define_type__static; \
-}
+} \
+  GLIB_AVAILABLE_MACRO_IN_2_74
 
 /**
  * G_DEFINE_FLAGS_TYPE:
@@ -368,7 +371,8 @@ type_name ## _get_type (void) { \
     g_once_init_leave (&g_define_type__static, g_define_type); \
   } \
   return g_define_type__static; \
-}
+} \
+  GLIB_AVAILABLE_MACRO_IN_2_74
 
 G_END_DECLS
 
