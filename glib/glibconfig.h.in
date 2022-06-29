@@ -118,8 +118,7 @@ typedef unsigned @glib_intptr_type_define@ guintptr;
 
 @glib_vacopy@
 
-@g_have_iso_c_varargs@
-@g_have_iso_cxx_varargs@
+#define G_HAVE_ISO_VARARGS 1
 
 /* gcc-2.95.x supports both gnu style and ISO varargs, but if -ansi
  * is passed ISO vararg support is turned off, and there is no work
