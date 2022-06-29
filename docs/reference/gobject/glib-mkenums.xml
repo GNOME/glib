@@ -44,6 +44,12 @@ input. The options specified control the text that generated, substituting vario
 keywords enclosed in <literal>@</literal> characters in the templates.
 </para>
 
+<para>Since version 2.74, GLib provides the <literal>G_DEFINE_ENUM_TYPE</literal>
+and <literal>G_DEFINE_FLAGS_TYPE</literal> C pre-processor macros. These macros
+can be used to define a GType for projects that have few, small enumeration
+types without going through the complexities of generating code at build
+time.</para>
+
 <refsect2><title>Production text substitutions</title>
 <para>
 Certain keywords enclosed in <literal>@</literal> characters will be substituted in the

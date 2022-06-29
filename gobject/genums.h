@@ -307,6 +307,10 @@ void	g_flags_complete_type_info (GType	       g_flags_type,
  *   G_DEFINE_ENUM_VALUE (GTK_ORIENTATION_VERTICAL, "vertical"))
  * ]|
  *
+ * For projects that have multiple enumeration types, or enumeration
+ * types with many values, you should consider using glib-mkenums to
+ * generate the type function.
+ *
  * Since: 2.74
  */
 #define G_DEFINE_ENUM_TYPE(TypeName, type_name, values) \
@@ -344,6 +348,10 @@ type_name ## _get_type (void) { \
  *   G_DEFINE_ENUM_VALUE (G_SETTINGS_BIND_GET_NO_CHANGES, "get-no-changes")
  *   G_DEFINE_ENUM_VALUE (G_SETTINGS_BIND_INVERT_BOOLEAN, "invert-boolean"))
  * ]|
+ *
+ * For projects that have multiple enumeration types, or enumeration
+ * types with many values, you should consider using glib-mkenums to
+ * generate the type function.
  *
  * Since: 2.74
  */
