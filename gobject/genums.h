@@ -288,13 +288,13 @@ void	g_flags_complete_type_info (GType	       g_flags_type,
  *
  * Since: 2.74
  */
-#define G_DEFINE_ENUM_VALUE(EnumValue, EnumNick) { EnumValue, #EnumValue, EnumNick },
+#define G_DEFINE_ENUM_VALUE(EnumValue, EnumNick) { EnumValue, #EnumValue, EnumNick }
 
 /**
  * G_DEFINE_ENUM_TYPE:
  * @TypeName: the enumeration type, in `CamelCase`
  * @type_name: the enumeration type prefixed, in `snake_case`
- * @values: a list of enumeration values, defined using G_DEFINE_ENUM_VALUE()
+ * @...: a list of enumeration values, defined using G_DEFINE_ENUM_VALUE()
  *
  * A convenience macro for defining enumeration types.
  *
@@ -303,7 +303,7 @@ void	g_flags_complete_type_info (GType	       g_flags_type,
  *
  * |[<!-- language="C" -->
  * G_DEFINE_ENUM_TYPE (GtkOrientation, gtk_orientation,
- *   G_DEFINE_ENUM_VALUE (GTK_ORIENTATION_HORIZONTAL, "horizontal")
+ *   G_DEFINE_ENUM_VALUE (GTK_ORIENTATION_HORIZONTAL, "horizontal"),
  *   G_DEFINE_ENUM_VALUE (GTK_ORIENTATION_VERTICAL, "vertical"))
  * ]|
  *
@@ -313,13 +313,13 @@ void	g_flags_complete_type_info (GType	       g_flags_type,
  *
  * Since: 2.74
  */
-#define G_DEFINE_ENUM_TYPE(TypeName, type_name, values) \
+#define G_DEFINE_ENUM_TYPE(TypeName, type_name, ...) \
 GType \
 type_name ## _get_type (void) { \
   static gsize g_define_type__static = 0; \
   if (g_once_init_enter (&g_define_type__static)) { \
     static const GEnumValue enum_values[] = { \
-      values \
+      __VA_ARGS__ , \
       { 0, NULL, NULL }, \
     }; \
     GType g_define_type = g_enum_register_static (g_intern_static_string (#TypeName), enum_values); \
@@ -332,7 +332,7 @@ type_name ## _get_type (void) { \
  * G_DEFINE_FLAGS_TYPE:
  * @TypeName: the enumeration type, in `CamelCase`
  * @type_name: the enumeration type prefixed, in `snake_case`
- * @values: a list of enumeration values, defined using G_DEFINE_ENUM_VALUE()
+ * @...: a list of enumeration values, defined using G_DEFINE_ENUM_VALUE()
  *
  * A convenience macro for defining flag types.
  *
@@ -341,11 +341,11 @@ type_name ## _get_type (void) { \
  *
  * |[<!-- language="C" -->
  * G_DEFINE_FLAGS_TYPE (GSettingsBindFlags, g_settings_bind_flags,
- *   G_DEFINE_ENUM_VALUE (G_SETTINGS_BIND_DEFAULT, "default")
- *   G_DEFINE_ENUM_VALUE (G_SETTINGS_BIND_GET, "get")
- *   G_DEFINE_ENUM_VALUE (G_SETTINGS_BIND_SET, "set")
- *   G_DEFINE_ENUM_VALUE (G_SETTINGS_BIND_NO_SENSITIVITY, "no-sensitivity")
- *   G_DEFINE_ENUM_VALUE (G_SETTINGS_BIND_GET_NO_CHANGES, "get-no-changes")
+ *   G_DEFINE_ENUM_VALUE (G_SETTINGS_BIND_DEFAULT, "default"),
+ *   G_DEFINE_ENUM_VALUE (G_SETTINGS_BIND_GET, "get"),
+ *   G_DEFINE_ENUM_VALUE (G_SETTINGS_BIND_SET, "set"),
+ *   G_DEFINE_ENUM_VALUE (G_SETTINGS_BIND_NO_SENSITIVITY, "no-sensitivity"),
+ *   G_DEFINE_ENUM_VALUE (G_SETTINGS_BIND_GET_NO_CHANGES, "get-no-changes"),
  *   G_DEFINE_ENUM_VALUE (G_SETTINGS_BIND_INVERT_BOOLEAN, "invert-boolean"))
  * ]|
  *
@@ -355,13 +355,13 @@ type_name ## _get_type (void) { \
  *
  * Since: 2.74
  */
-#define G_DEFINE_FLAGS_TYPE(TypeName, type_name, values) \
+#define G_DEFINE_FLAGS_TYPE(TypeName, type_name, ...) \
 GType \
 type_name ## _get_type (void) { \
   static gsize g_define_type__static = 0; \
   if (g_once_init_enter (&g_define_type__static)) { \
     static const GFlagsValue flags_values[] = { \
-      values \
+      __VA_ARGS__ , \
       { 0, NULL, NULL }, \
     }; \
     GType g_define_type = g_flags_register_static (g_intern_static_string (#TypeName), flags_values); \

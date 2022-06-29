@@ -167,8 +167,8 @@ typedef enum {
 GType test_enum_get_type (void);
 
 G_DEFINE_ENUM_TYPE (TestEnum, test_enum,
-  G_DEFINE_ENUM_VALUE (TEST_ENUM_FIRST_VALUE, "first-value")
-  G_DEFINE_ENUM_VALUE (TEST_ENUM_SECOND_VALUE, "second-value")
+  G_DEFINE_ENUM_VALUE (TEST_ENUM_FIRST_VALUE, "first-value"),
+  G_DEFINE_ENUM_VALUE (TEST_ENUM_SECOND_VALUE, "second-value"),
   G_DEFINE_ENUM_VALUE (TEST_ENUM_THIRD_VALUE, "third-value"))
 
 static void
@@ -200,9 +200,9 @@ typedef enum {
 GType test_flags_get_type (void);
 
 G_DEFINE_FLAGS_TYPE (TestFlags, test_flags,
-  G_DEFINE_ENUM_VALUE (TEST_FLAGS_DEFAULT, "default")
-  G_DEFINE_ENUM_VALUE (TEST_FLAGS_FIRST, "first")
-  G_DEFINE_ENUM_VALUE (TEST_FLAGS_SECOND, "second")
+  G_DEFINE_ENUM_VALUE (TEST_FLAGS_DEFAULT, "default"),
+  G_DEFINE_ENUM_VALUE (TEST_FLAGS_FIRST, "first"),
+  G_DEFINE_ENUM_VALUE (TEST_FLAGS_SECOND, "second"),
   G_DEFINE_ENUM_VALUE (TEST_FLAGS_THIRD, "third"))
 
 static void
