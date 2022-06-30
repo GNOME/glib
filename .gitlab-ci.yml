@@ -435,6 +435,8 @@ macos:
   tags:
     - macos
   needs: []
+  variables:
+    GIT_SUBMODULE_STRATEGY: normal
   before_script:
     - bash .gitlab-ci/show-execution-environment.sh
     - pip3 install --user meson==0.60.1
