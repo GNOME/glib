@@ -94,14 +94,9 @@ test_thread_stop_unused (void)
 
    g_thread_pool_stop_unused_threads ();
 
-   for (i = 0; i < 5; i++)
-     {
-       if (g_thread_pool_get_num_unused_threads () == 0)
-         break;
-
-       /* Some time for threads to die. */
-       g_usleep (G_USEC_PER_SEC);
-     }
+   /* Wait for threads to die. */
+   while (g_thread_pool_get_num_unused_threads () != 0)
+     g_usleep (100);
 
    g_assert_cmpint (g_thread_pool_get_num_unused_threads (), ==, 0);
 
