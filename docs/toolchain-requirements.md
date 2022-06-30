@@ -40,12 +40,12 @@ features’ are assumed.  Those are detailed below.
 
 GLib additionally requires Python 3 to build.
 
-Varargs macros
+C99 Varargs macros
 ---
 
-_Not a hard requirement._
+_Hard requirement._
 
-GLib can work with either C99 or GNU style varargs macros.
+GLib requires C99 ``__VA_ARG__`` support for both C and C++ compilers.
 
 Symbol visibility control
 ---
