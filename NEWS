@@ -1,3 +1,18 @@
+Overview of changes in GLib 2.72.3
+==================================
+
+* Bugs fixed:
+ - #1941 disposing a non-cancelled inotify GFileMonitor causes deadlocks
+ - #2597 Crash in g_socket_client_enumerator_callback when proxy resolving
+ - #2639 xdgmime update breaks webkit2gtk file:// requests
+ - #2670 Growing memory when using cancellable in g_socket_client_connect_async
+ - !2703 glocalfilemonitor: Avoid file monitor destruction from event thread
+ - !2709 Backport !2707 “credentials: macos: check for existence of LOCAL_PEERPID” to glib-2-72
+ - !2720 Backport !2708 “xdgmime: Fix broken file:// content type lookups for webkitgtk” to glib-2-72
+ - !2750 Backport !2745 “gsocketclient: Fix still-reachable references to cancellables” to glib-2-72
+ - !2787 Backport !2742 “proxyaddressenumerator: set error parameter more thoughtfully” to glib-2-72
+
+
 Overview of changes in GLib 2.72.2
 ==================================
 
