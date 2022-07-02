@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-06-23 11:50+0000\n"
-"PO-Revision-Date: 2022-06-23 16:16+0300\n"
+"POT-Creation-Date: 2022-06-28 10:34+0000\n"
+"PO-Revision-Date: 2022-06-28 14:32+0300\n"
 "Last-Translator: Aleksandr Melman <Alexmelman88@gmail.com>\n"
 "Language-Team: Русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -332,13 +332,13 @@ msgstr "Недостаточно места в целевом расположе
 
 #: gio/gcharsetconverter.c:344 gio/gdatainputstream.c:850
 #: gio/gdatainputstream.c:1268 glib/gconvert.c:451 glib/gconvert.c:883
-#: glib/giochannel.c:1575 glib/giochannel.c:1617 glib/giochannel.c:2472
+#: glib/giochannel.c:1576 glib/giochannel.c:1618 glib/giochannel.c:2473
 #: glib/gutf8.c:892 glib/gutf8.c:1346
 msgid "Invalid byte sequence in conversion input"
 msgstr "Недопустимая последовательность байтов во входных преобразуемых данных"
 
 #: gio/gcharsetconverter.c:349 glib/gconvert.c:459 glib/gconvert.c:797
-#: glib/giochannel.c:1582 glib/giochannel.c:2484
+#: glib/giochannel.c:1583 glib/giochannel.c:2485
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Произошла ошибка при преобразовании: %s"
@@ -347,7 +347,7 @@ msgstr "Произошла ошибка при преобразовании: %s"
 msgid "Cancellable initialization not supported"
 msgstr "Прерываемая инициализация не поддерживается"
 
-#: gio/gcharsetconverter.c:458 glib/gconvert.c:324 glib/giochannel.c:1403
+#: gio/gcharsetconverter.c:458 glib/gconvert.c:324 glib/giochannel.c:1404
 #, c-format
 msgid "Conversion from character set “%s” to “%s” is not supported"
 msgstr "Преобразование из набора символов «%s» в «%s» не поддерживается"
@@ -357,7 +357,7 @@ msgstr "Преобразование из набора символов «%s» �
 msgid "Could not open converter from “%s” to “%s”"
 msgstr "Не удалось открыть преобразователь из «%s» в «%s»"
 
-#: gio/gcontenttype.c:472
+#: gio/gcontenttype.c:473
 #, c-format
 msgid "%s type"
 msgstr "Тип %s"
@@ -3333,7 +3333,7 @@ msgstr "Произошла ошибка при закрытии файла: %s"
 msgid "Error seeking in file: %s"
 msgstr "Произошла ошибка при переходе по файлу: %s"
 
-#: gio/glocalfilemonitor.c:881
+#: gio/glocalfilemonitor.c:882
 msgid "Unable to find default local file monitor type"
 msgstr "Не удалось найти тип монитора локальных файлов по умолчанию"
 
@@ -3526,6 +3526,10 @@ msgstr "Сумма массивов, переданных в «%s» слишко
 #: gio/goutputstream.c:738 gio/goutputstream.c:1763
 msgid "Source stream is already closed"
 msgstr "Исходный поток уже закрыт"
+
+#: gio/gproxyaddressenumerator.c:324 gio/gproxyaddressenumerator.c:342
+msgid "Unspecified proxy lookup failure"
+msgstr "Неуказанный сбой поиска прокси-сервера"
 
 #. Translators: the first placeholder is a domain name, the
 #. * second is an error message
@@ -4402,7 +4406,7 @@ msgstr "Ошибка при чтении из файлового дескрип�
 msgid "Error closing file descriptor: %s"
 msgstr "Ошибка при закрытии файлового дескриптора: %s"
 
-#: gio/gunixmounts.c:2811 gio/gunixmounts.c:2864
+#: gio/gunixmounts.c:2815 gio/gunixmounts.c:2868
 msgid "Filesystem root"
 msgstr "Корень файловой системы"
 
@@ -5113,26 +5117,26 @@ msgstr "Шаблон «%s» не содержит XXXXXX"
 msgid "Failed to read the symbolic link “%s”: %s"
 msgstr "Не удалось прочитать символьную ссылку «%s»: %s"
 
-#: glib/giochannel.c:1407
+#: glib/giochannel.c:1408
 #, c-format
 msgid "Could not open converter from “%s” to “%s”: %s"
 msgstr "Не удалось открыть преобразователь из «%s» в «%s»: %s"
 
-#: glib/giochannel.c:1760
+#: glib/giochannel.c:1761
 msgid "Can’t do a raw read in g_io_channel_read_line_string"
 msgstr ""
 "Невозможно выполнить непосредственное чтение в функции "
 "g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1807 glib/giochannel.c:2065 glib/giochannel.c:2152
+#: glib/giochannel.c:1808 glib/giochannel.c:2066 glib/giochannel.c:2153
 msgid "Leftover unconverted data in read buffer"
 msgstr "В буфере чтения остались непреобразованные данные"
 
-#: glib/giochannel.c:1888 glib/giochannel.c:1965
+#: glib/giochannel.c:1889 glib/giochannel.c:1966
 msgid "Channel terminates in a partial character"
 msgstr "Канал закрывается на неполном символе"
 
-#: glib/giochannel.c:1951
+#: glib/giochannel.c:1952
 msgid "Can’t do a raw read in g_io_channel_read_to_end"
 msgstr ""
 "Невозможно выполнить непосредственное чтение в функции "
