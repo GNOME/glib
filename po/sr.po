@@ -6,31 +6,30 @@
 # Слободан Д. Средојевић <slobo@akrep.be>, 2006.
 # Бранко Кокановић <branko.kokanovic@gmail.com>, 2010.
 # Милош Поповић <gpopac@gmail.com>, 2010–2015.
-# Мирослав Николић <miroslavnikolic@rocketmail.com>, 2011–2022.
 # Марко М. Костић <marko.m.kostic@gmail.com>, 2016.
+# Мирослав Николић <miroslavnikolić@rocketmail.com>, 2011–2022.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: 2.8\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-03-10 19:46+0000\n"
-"PO-Revision-Date: 2022-03-17 07:56+0200\n"
-"Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
-"Language-Team: Serbian <gnome-sr@googlegroups.org>\n"
+"POT-Creation-Date: 2022-05-10 09:00+0000\n"
+"PO-Revision-Date: 2022-07-03 03:56+0200\n"
+"Last-Translator: Мирослав Николић <miroslavnikolić@rocketmail.com>\n"
+"Language-Team: Serbian <српски <gnome-sr@googlegroups.org>>\n"
 "Language: sr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : n"
-"%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2\n"
 "X-Project-Style: gnome\n"
 
 #: gio/gappinfo.c:333
-#| msgid "Setting attribute %s not supported"
 msgid "Setting default applications not supported yet"
 msgstr "Постављање основних програма још није подржано"
 
 #: gio/gappinfo.c:366
-#| msgid "Setting attribute %s not supported"
 msgid "Setting application as last used for type not supported yet"
 msgstr ""
 "Постављање програма као што је последњи пут коришћен за врсту није још "
@@ -298,7 +297,7 @@ msgstr "Ток је већ затворен"
 msgid "Truncate not supported on base stream"
 msgstr "Није подржано сасецање основног тока"
 
-#: gio/gcancellable.c:319 gio/gdbusconnection.c:1873 gio/gdbusprivate.c:1418
+#: gio/gcancellable.c:319 gio/gdbusconnection.c:1857 gio/gdbusprivate.c:1418
 #: gio/gsimpleasyncresult.c:871 gio/gsimpleasyncresult.c:897
 #, c-format
 msgid "Operation was cancelled"
@@ -348,11 +347,11 @@ msgstr "Не могу да покренем претварање из „%s“ �
 msgid "%s type"
 msgstr "%s врста"
 
-#: gio/gcontenttype-win32.c:192
+#: gio/gcontenttype-win32.c:196
 msgid "Unknown type"
 msgstr "Непозната врста"
 
-#: gio/gcontenttype-win32.c:194
+#: gio/gcontenttype-win32.c:198
 #, c-format
 msgid "%s filetype"
 msgstr "%s врста датотеке"
@@ -508,7 +507,6 @@ msgstr "Дата адреса је празна"
 
 #: gio/gdbusaddress.c:1099
 #, c-format
-#| msgid "Cannot spawn a message bus when setuid"
 msgid "Cannot spawn a message bus when AT_SECURE is set"
 msgstr "Не могу да изродим магистралу поруке када је постављено „AT_SECURE“"
 
@@ -533,7 +531,7 @@ msgstr ""
 "Не могу да одредим адресу магистрале сесије (није направљено за овај "
 "оперативни систем)"
 
-#: gio/gdbusaddress.c:1373 gio/gdbusconnection.c:7334
+#: gio/gdbusaddress.c:1373 gio/gdbusconnection.c:7318
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -542,7 +540,7 @@ msgstr ""
 "Не могу да одредим адресу магистрале сесије из променљиве окружења "
 "DBUS_STARTER_BUS_TYPE — непозната вредност „%s“"
 
-#: gio/gdbusaddress.c:1382 gio/gdbusconnection.c:7343
+#: gio/gdbusaddress.c:1382 gio/gdbusconnection.c:7327
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -667,100 +665,100 @@ msgstr "Грешка приликом отварања привеска кључ
 msgid "(Additionally, releasing the lock for “%s” also failed: %s) "
 msgstr "(Додатно, отпуштање кључа са „%s“ такође није успело: %s) "
 
-#: gio/gdbusconnection.c:604 gio/gdbusconnection.c:2418
+#: gio/gdbusconnection.c:588 gio/gdbusconnection.c:2402
 msgid "The connection is closed"
 msgstr "Веза је затворена"
 
-#: gio/gdbusconnection.c:1903
+#: gio/gdbusconnection.c:1887
 msgid "Timeout was reached"
 msgstr "Време је истекло"
 
-#: gio/gdbusconnection.c:2541
+#: gio/gdbusconnection.c:2525
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr "Наишао сам на неподржане ознаке при изградњи клијентског дела везе"
 
-#: gio/gdbusconnection.c:4269 gio/gdbusconnection.c:4623
+#: gio/gdbusconnection.c:4253 gio/gdbusconnection.c:4607
 #, c-format
 msgid ""
 "No such interface “org.freedesktop.DBus.Properties” on object at path %s"
 msgstr ""
 "Нема интерфејса „org.freedesktop.DBus.Properties“ у објекту на путањи %s"
 
-#: gio/gdbusconnection.c:4414
+#: gio/gdbusconnection.c:4398
 #, c-format
 msgid "No such property “%s”"
 msgstr "Нема особине „%s“"
 
-#: gio/gdbusconnection.c:4426
+#: gio/gdbusconnection.c:4410
 #, c-format
 msgid "Property “%s” is not readable"
 msgstr "Особина „%s“ није читљива"
 
-#: gio/gdbusconnection.c:4437
+#: gio/gdbusconnection.c:4421
 #, c-format
 msgid "Property “%s” is not writable"
 msgstr "Није могуће писање особине „%s“"
 
-#: gio/gdbusconnection.c:4457
+#: gio/gdbusconnection.c:4441
 #, c-format
 msgid "Error setting property “%s”: Expected type “%s” but got “%s”"
 msgstr ""
 "Грешка при постављању особине „%s“: Очекивани тип је био „%s“, а добијен је "
 "„%s“"
 
-#: gio/gdbusconnection.c:4562 gio/gdbusconnection.c:4777
-#: gio/gdbusconnection.c:6760
+#: gio/gdbusconnection.c:4546 gio/gdbusconnection.c:4761
+#: gio/gdbusconnection.c:6744
 #, c-format
 msgid "No such interface “%s”"
 msgstr "Нема таквог интерфејса „%s“"
 
-#: gio/gdbusconnection.c:4999 gio/gdbusconnection.c:7274
+#: gio/gdbusconnection.c:4983 gio/gdbusconnection.c:7258
 #, c-format
 msgid "No such interface “%s” on object at path %s"
 msgstr "Нема таквог интерфејса „%s“ у објекту на путањи %s"
 
-#: gio/gdbusconnection.c:5100
+#: gio/gdbusconnection.c:5084
 #, c-format
 msgid "No such method “%s”"
 msgstr "Нема таквог метода „%s“"
 
-#: gio/gdbusconnection.c:5131
+#: gio/gdbusconnection.c:5115
 #, c-format
 msgid "Type of message, “%s”, does not match expected type “%s”"
 msgstr "Тип поруке, „%s“, не одговара очекиваном типу „%s“"
 
-#: gio/gdbusconnection.c:5334
+#: gio/gdbusconnection.c:5318
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Објекат је већ извезен за интерфејс %s на %s"
 
-#: gio/gdbusconnection.c:5561
+#: gio/gdbusconnection.c:5545
 #, c-format
 msgid "Unable to retrieve property %s.%s"
 msgstr "Не могу да добијем особину %s.%s"
 
-#: gio/gdbusconnection.c:5617
+#: gio/gdbusconnection.c:5601
 #, c-format
 msgid "Unable to set property %s.%s"
 msgstr "Не могу да поставим особину %s.%s"
 
-#: gio/gdbusconnection.c:5796
+#: gio/gdbusconnection.c:5780
 #, c-format
 msgid "Method “%s” returned type “%s”, but expected “%s”"
 msgstr "Метод „%s“ је вратио тип „%s“, али је био очекиван „%s“"
 
-#: gio/gdbusconnection.c:6872
+#: gio/gdbusconnection.c:6856
 #, c-format
 msgid "Method “%s” on interface “%s” with signature “%s” does not exist"
 msgstr "Метод „%s“ на интерфејсу „%s“ са потписом „%s“ не постоји"
 
-#: gio/gdbusconnection.c:6993
+#: gio/gdbusconnection.c:6977
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Поддрво је већ извезено за %s"
 
-#: gio/gdbusconnection.c:7282
+#: gio/gdbusconnection.c:7266
 #, c-format
 msgid "Object does not exist at path “%s”"
 msgstr "Објекат не постоји у путањи „%s“"
@@ -1206,7 +1204,6 @@ msgid "Timeout in seconds"
 msgstr "Време истека у секундама"
 
 #: gio/gdbus-tool.c:899
-#| msgid "Show information about locations"
 msgid "Allow interactive authorization"
 msgstr "Дозвољава међудејствено овлашћивање"
 
@@ -1750,7 +1747,7 @@ msgstr "Грешка писања на стандардни излаз"
 #: gio/gio-tool-mkdir.c:48 gio/gio-tool-monitor.c:37 gio/gio-tool-monitor.c:39
 #: gio/gio-tool-monitor.c:41 gio/gio-tool-monitor.c:43
 #: gio/gio-tool-monitor.c:204 gio/gio-tool-mount.c:1199 gio/gio-tool-open.c:70
-#: gio/gio-tool-remove.c:48 gio/gio-tool-rename.c:45 gio/gio-tool-set.c:89
+#: gio/gio-tool-remove.c:48 gio/gio-tool-rename.c:45 gio/gio-tool-set.c:91
 #: gio/gio-tool-trash.c:220 gio/gio-tool-tree.c:239
 msgid "LOCATION"
 msgstr "МЕСТО"
@@ -2258,7 +2255,7 @@ msgstr "Преименујте датотеку."
 msgid "Missing argument"
 msgstr "Недостаје аргумент"
 
-#: gio/gio-tool-rename.c:76 gio/gio-tool-save.c:190 gio/gio-tool-set.c:137
+#: gio/gio-tool-rename.c:76 gio/gio-tool-save.c:190 gio/gio-tool-set.c:139
 msgid "Too many arguments"
 msgstr "Превише аргумената"
 
@@ -2322,31 +2319,31 @@ msgstr "Врста атрибута"
 msgid "TYPE"
 msgstr "ВРСТА"
 
-#: gio/gio-tool-set.c:89
+#: gio/gio-tool-set.c:91
 msgid "ATTRIBUTE"
 msgstr "АТРИБУТ"
 
-#: gio/gio-tool-set.c:89
+#: gio/gio-tool-set.c:91
 msgid "VALUE"
 msgstr "ВРЕДНОСТ"
 
-#: gio/gio-tool-set.c:93
+#: gio/gio-tool-set.c:95
 msgid "Set a file attribute of LOCATION."
 msgstr "Подешава атрибут датотеке за МЕСТО."
 
-#: gio/gio-tool-set.c:113
+#: gio/gio-tool-set.c:115
 msgid "Location not specified"
 msgstr "Није наведено место"
 
-#: gio/gio-tool-set.c:120
+#: gio/gio-tool-set.c:122
 msgid "Attribute not specified"
 msgstr "Није наведен атрибут"
 
-#: gio/gio-tool-set.c:130
+#: gio/gio-tool-set.c:132
 msgid "Value not specified"
 msgstr "Није наведена вредност"
 
-#: gio/gio-tool-set.c:180
+#: gio/gio-tool-set.c:182
 #, c-format
 msgid "Invalid attribute type “%s”"
 msgstr "Неисправна врста атрибута „%s“"
@@ -3326,13 +3323,13 @@ msgstr "Грешка приликом образовања резервне ко
 msgid "Error renaming temporary file: %s"
 msgstr "Грешка приликом преименовања привремене датотеке: %s"
 
-#: gio/glocalfileoutputstream.c:609 gio/glocalfileoutputstream.c:1237
+#: gio/glocalfileoutputstream.c:609 gio/glocalfileoutputstream.c:1239
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "Грешка при сасецању датотеке: %s"
 
 #: gio/glocalfileoutputstream.c:662 gio/glocalfileoutputstream.c:907
-#: gio/glocalfileoutputstream.c:1218 gio/gsubprocess.c:229
+#: gio/glocalfileoutputstream.c:1220 gio/gsubprocess.c:229
 #, c-format
 msgid "Error opening file “%s”: %s"
 msgstr "Грешка отварања датотеке „%s“: %s"
@@ -3487,7 +3484,11 @@ msgstr "Збир вектора достављених у „%s“ је прев
 msgid "Source stream is already closed"
 msgstr "Изворни ток је већ затворен"
 
+#. Translators: the first placeholder is a domain name, the
+#. * second is an error message
 #: gio/gresolver.c:401 gio/gthreadedresolver.c:150 gio/gthreadedresolver.c:168
+#: gio/gthreadedresolver.c:780 gio/gthreadedresolver.c:804
+#: gio/gthreadedresolver.c:829 gio/gthreadedresolver.c:844
 #, c-format
 msgid "Error resolving “%s”: %s"
 msgstr "Грешка у разрешавању „%s“: %s"
@@ -4176,7 +4177,6 @@ msgstr "Нисам успео да направим спојку за везу �
 
 #: gio/gtestdbus.c:619
 #, c-format
-#| msgid "Seek not supported on stream"
 msgid "Pipes are not supported in this platform"
 msgstr "Спојке нису подржане на овој платформи"
 
@@ -4194,22 +4194,41 @@ msgstr "Нисам пронашао исправне адресе"
 msgid "Error reverse-resolving “%s”: %s"
 msgstr "Грешка у обрнутом разрешавању „%s“: %s"
 
-#: gio/gthreadedresolver.c:676 gio/gthreadedresolver.c:755
-#: gio/gthreadedresolver.c:853 gio/gthreadedresolver.c:903
+#. Translators: the placeholder is a DNS record type, such as ‘MX’ or ‘SRV’
+#: gio/gthreadedresolver.c:550 gio/gthreadedresolver.c:572
+#: gio/gthreadedresolver.c:610 gio/gthreadedresolver.c:657
+#: gio/gthreadedresolver.c:686 gio/gthreadedresolver.c:698
+#, c-format
+msgid "Error parsing DNS %s record: malformed DNS packet"
+msgstr "Грешка обраде ДНС „%s“ записа: лош ДНС пакет"
+
+#: gio/gthreadedresolver.c:756 gio/gthreadedresolver.c:893
+#: gio/gthreadedresolver.c:991 gio/gthreadedresolver.c:1041
 #, c-format
 msgid "No DNS record of the requested type for “%s”"
 msgstr "Нема ДНС записа затражене врсте за „%s“"
 
-#: gio/gthreadedresolver.c:681 gio/gthreadedresolver.c:858
+#: gio/gthreadedresolver.c:761 gio/gthreadedresolver.c:996
 #, c-format
 msgid "Temporarily unable to resolve “%s”"
 msgstr "Привремено не могу да разрешим „%s“"
 
-#: gio/gthreadedresolver.c:686 gio/gthreadedresolver.c:863
-#: gio/gthreadedresolver.c:973
+#: gio/gthreadedresolver.c:766 gio/gthreadedresolver.c:1001
+#: gio/gthreadedresolver.c:1111
 #, c-format
 msgid "Error resolving “%s”"
 msgstr "Грешка у разрешивању „%s“"
+
+#: gio/gthreadedresolver.c:780 gio/gthreadedresolver.c:804
+#: gio/gthreadedresolver.c:829 gio/gthreadedresolver.c:844
+msgid "Malformed DNS packet"
+msgstr "Лош ДНС пакет"
+
+#: gio/gthreadedresolver.c:886
+#, c-format
+#| msgid "Failed to read from file “%s”: %s"
+msgid "Failed to parse DNS response for “%s”: "
+msgstr "Нисам успео да обрадим ДНС одговор за „%s“: "
 
 #: gio/gtlscertificate.c:478
 msgid "No PEM-encoded private key found"
@@ -4232,7 +4251,6 @@ msgid "Could not parse PEM-encoded certificate"
 msgstr "Не могу да рашчланим ПЕМ шифровано уверење"
 
 #: gio/gtlscertificate.c:796
-#| msgid "This GTlsBackend does not support creating PKCS #11 certificates"
 msgid "The current TLS backend does not support PKCS #12"
 msgstr "Тренутни ТЛС позадинац не подржава ПКЦС #12"
 
@@ -4263,7 +4281,6 @@ msgid "The password entered is incorrect."
 msgstr "Унешена лозинка је погрешна."
 
 #: gio/gunixconnection.c:125
-#| msgid "Setting attribute %s not supported"
 msgid "Sending FD is not supported"
 msgstr "Слање описника датотеке није подржано"
 
@@ -4294,7 +4311,6 @@ msgid "Received invalid fd"
 msgstr "Примљен је неисправни fd"
 
 #: gio/gunixconnection.c:238
-#| msgid "URIs not supported"
 msgid "Receiving FD is not supported"
 msgstr "Примање описника датотеке није подржано"
 
@@ -5109,7 +5125,6 @@ msgstr "Датотека са кључевима не почиње групом"
 
 #: glib/gkeyfile.c:1394
 #, c-format
-#| msgid "Invalid key name: %s"
 msgid "Invalid key name: %.*s"
 msgstr "Неисправан назив кључа: %.*s"
 
@@ -5934,14 +5949,12 @@ msgstr "Нисам успео да извршим потпроцес „%s“ (%
 
 #: glib/gspawn.c:2550
 #, c-format
-#| msgid "Failed to open file “%s”: open() failed: %s"
 msgid "Failed to open file to remap file descriptor (%s)"
 msgstr ""
 "Нисам успео да отворим датотеку да поново мапирам описника датотеке (%s)"
 
 #: glib/gspawn.c:2558
 #, c-format
-#| msgid "Failed to redirect output or input of child process (%s)"
 msgid "Failed to duplicate file descriptor for child process (%s)"
 msgstr "Нисам успео да удвостручим описника датотеке за изрођени процес (%s)"
 
@@ -5952,7 +5965,6 @@ msgstr "Нисам успео да исцепим потпроцес (%s)"
 
 #: glib/gspawn.c:2575
 #, c-format
-#| msgid "Failed to read data from child process (%s)"
 msgid "Failed to close file descriptor for child process (%s)"
 msgstr "Нисам успео да затворим описника датотеке за изрођени процес (%s)"
 
@@ -5977,7 +5989,6 @@ msgstr "Нисам успео да извршим потпроцес (%s)"
 
 #: glib/gspawn-win32.c:400
 #, c-format
-#| msgid "Failed to fork child process (%s)"
 msgid "Failed to dup() in child process (%s)"
 msgstr "Нисам успео да „dup()“ у изрођеном процесу (%s)"
 
