@@ -1089,6 +1089,52 @@ binding_concurrent_finalizing (void)
     }
 }
 
+static void
+binding_dispose_source (void)
+{
+  /* Test that the source can be disposed */
+  BindingSource *source = g_object_new (binding_source_get_type (), NULL);
+  BindingTarget *target = g_object_new (binding_target_get_type (), NULL);
+  GBinding *binding;
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/2676");
+
+  binding = g_object_bind_property (source, "foo",
+                                    target, "bar",
+                                    G_BINDING_DEFAULT);
+
+  g_object_add_weak_pointer (G_OBJECT (binding), (gpointer *) &binding);
+
+  g_object_run_dispose (G_OBJECT (source));
+  g_assert_null (binding);
+
+  g_object_unref (target);
+  g_object_unref (source);
+}
+
+static void
+binding_dispose_target (void)
+{
+  /* Test that the target can be disposed */
+  BindingSource *source = g_object_new (binding_source_get_type (), NULL);
+  BindingTarget *target = g_object_new (binding_target_get_type (), NULL);
+  GBinding *binding;
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/2676");
+
+  binding = g_object_bind_property (source, "foo",
+                                    target, "bar",
+                                    G_BINDING_DEFAULT);
+
+  g_object_add_weak_pointer (G_OBJECT (binding), (gpointer *) &binding);
+
+  g_object_run_dispose (G_OBJECT (target));
+  g_assert_null (binding);
+
+  g_object_unref (target);
+  g_object_unref (source);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -1111,6 +1157,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/binding/interface", binding_interface);
   g_test_add_func ("/binding/concurrent-unbind", binding_concurrent_unbind);
   g_test_add_func ("/binding/concurrent-finalizing", binding_concurrent_finalizing);
+  g_test_add_func ("/binding/dispose-source", binding_dispose_source);
+  g_test_add_func ("/binding/dispose-target", binding_dispose_target);
 
   return g_test_run ();
 }
