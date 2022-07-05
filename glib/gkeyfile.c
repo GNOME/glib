@@ -3361,7 +3361,7 @@ g_key_file_set_group_comment (GKeyFile     *key_file,
       g_set_error (error, G_KEY_FILE_ERROR,
                    G_KEY_FILE_ERROR_GROUP_NOT_FOUND,
                    _("Key file does not have group “%s”"),
-                   group_name ? group_name : "(null)");
+                   group_name);
 
       return FALSE;
     }
