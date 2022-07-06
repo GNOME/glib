@@ -26,3 +26,11 @@ License: CC0-1.0
 Files: po/*.po
 Copyright: See individual files
 License: LGPL-2.1-or-later
+
+# Subproject wrap files are too simple to be copyrightable, but adding
+# copyright/licensing headers to them will get lost when they’re next updated
+# from wrapdb
+Files:
+ subprojects/*.wrap
+Copyright: Meson Wrap Database (wrapdb) contributors
+License: CC0-1.0
