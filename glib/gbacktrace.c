@@ -323,8 +323,13 @@ stack_trace_sigchld (int signum)
 static inline const char *
 get_strerror (char *buffer, gsize n)
 {
-#ifdef HAVE_STRERROR_R
+#if defined(STRERROR_R_CHAR_P)
   return strerror_r (errno, buffer, n);
+#elif defined(HAVE_STRERROR_R)
+  int ret = strerror_r (errno, buffer, n);
+  if (ret == 0 || ret == EINVAL)
+    return buffer;
+  return NULL;
 #else
   const char *error_str = strerror (errno);
   if (!error_str)
