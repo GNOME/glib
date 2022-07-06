@@ -1313,7 +1313,7 @@ g_ascii_strtoll (const gchar *nptr,
  * ]|
  *
  * Returns: a UTF-8 string describing the error code. If the error code
- *     is unknown, it returns a string like "unknown error (<code>)".
+ *     is unknown, it returns a string like "Unknown error: <code>".
  */
 const gchar *
 g_strerror (gint errnum)
