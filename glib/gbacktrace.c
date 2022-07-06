@@ -45,6 +45,7 @@
 #include <time.h>
 
 #ifdef G_OS_UNIX
+#include <errno.h>
 #include <unistd.h>
 #include <sys/wait.h>
 #ifdef HAVE_SYS_SELECT_H
@@ -175,9 +176,14 @@ g_on_error_query (const gchar *prg_name)
   fflush (stdout);
 
   if (isatty(0) && isatty(1))
-    fgets (buf, 8, stdin);
+    {
+      if (fgets (buf, 8, stdin) == NULL)
+        _exit (0);
+    }
   else
-    strcpy (buf, "E\n");
+    {
+      strcpy (buf, "E\n");
+    }
 
   if ((buf[0] == 'E' || buf[0] == 'e')
       && buf[1] == '\n')
@@ -314,6 +320,59 @@ stack_trace_sigchld (int signum)
 
 #define BUFSIZE 1024
 
+static inline const char *
+get_strerror (char *buffer, gsize n)
+{
+#ifdef HAVE_STRERROR_R
+  return strerror_r (errno, buffer, n);
+#else
+  const char *error_str = strerror (errno);
+  if (!error_str)
+    return NULL;
+
+  strncpy (buffer, error_str, n);
+  return buffer;
+#endif
+}
+
+static gssize
+checked_write (int fd, gconstpointer buf, gsize n)
+{
+  gssize written = write (fd, buf, n);
+
+  if (written == -1)
+    {
+      char msg[BUFSIZE] = {0};
+      char error_str[BUFSIZE / 2] = {0};
+
+      get_strerror (error_str, sizeof (error_str) - 1);
+      snprintf (msg, sizeof (msg) - 1, "Unable to write to fd %d: %s", fd, error_str);
+      perror (msg);
+      _exit (0);
+    }
+
+  return written;
+}
+
+static int
+checked_dup (int fd)
+{
+  int new_fd = dup (fd);
+
+  if (new_fd == -1)
+    {
+      char msg[BUFSIZE] = {0};
+      char error_str[BUFSIZE / 2] = {0};
+
+      get_strerror (error_str, sizeof (error_str) - 1);
+      snprintf (msg, sizeof (msg) - 1, "Unable to duplicate fd %d: %s", fd, error_str);
+      perror (msg);
+      _exit (0);
+    }
+
+  return new_fd;
+}
+
 static void
 stack_trace (const char * const *args)
 {
@@ -351,9 +410,12 @@ stack_trace (const char * const *args)
 	    (void) fcntl (old_err, F_SETFD, getfd | FD_CLOEXEC);
 	}
 
-      close (0); dup (in_fd[0]);   /* set the stdin to the in pipe */
-      close (1); dup (out_fd[1]);  /* set the stdout to the out pipe */
-      close (2); dup (out_fd[1]);  /* set the stderr to the out pipe */
+      close (0);
+      checked_dup (in_fd[0]);   /* set the stdin to the in pipe */
+      close (1);
+      checked_dup (out_fd[1]);  /* set the stdout to the out pipe */
+      close (2);
+      checked_dup (out_fd[1]);  /* set the stderr to the out pipe */
 
       execvp (args[0], (char **) args);      /* exec gdb */
 
@@ -361,7 +423,8 @@ stack_trace (const char * const *args)
       if (old_err != -1)
         {
           close (2);
-          dup (old_err);
+          /* We can ignore the return value here as we're failing anyways */
+          (void) !dup (old_err);
         }
       perror ("exec " DEBUGGER " failed");
       _exit (0);
@@ -376,14 +439,14 @@ stack_trace (const char * const *args)
   FD_SET (out_fd[0], &fdset);
 
 #ifdef USE_LLDB
-  write (in_fd[1], "bt\n", 3);
-  write (in_fd[1], "p x = 0\n", 8);
-  write (in_fd[1], "process detach\n", 15);
-  write (in_fd[1], "quit\n", 5);
+  checked_write (in_fd[1], "bt\n", 3);
+  checked_write (in_fd[1], "p x = 0\n", 8);
+  checked_write (in_fd[1], "process detach\n", 15);
+  checked_write (in_fd[1], "quit\n", 5);
 #else
-  write (in_fd[1], "backtrace\n", 10);
-  write (in_fd[1], "p x = 0\n", 8);
-  write (in_fd[1], "quit\n", 5);
+  checked_write (in_fd[1], "backtrace\n", 10);
+  checked_write (in_fd[1], "p x = 0\n", 8);
+  checked_write (in_fd[1], "quit\n", 5);
 #endif
 
   idx = 0;
