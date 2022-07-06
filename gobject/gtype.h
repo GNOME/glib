@@ -2160,7 +2160,7 @@ type_name##_get_type (void) \
   return static_g_define_type_id; \
 } /* closes type_name##_get_type() */ \
 \
-G_GNUC_NO_INLINE \
+G_NO_INLINE \
 static GType \
 type_name##_get_type_once (void) \
 { \
@@ -2329,7 +2329,7 @@ type_name##_get_type (void) \
   return static_g_define_type_id; \
 } \
 \
-G_GNUC_NO_INLINE \
+G_NO_INLINE \
 static GType \
 type_name##_get_type_once (void) \
 { \
@@ -2366,7 +2366,7 @@ type_name##_get_type (void) \
   return static_g_define_type_id; \
 } \
 \
-G_GNUC_NO_INLINE \
+G_NO_INLINE \
 static GType \
 type_name##_get_type_once (void) \
 { \
@@ -2419,7 +2419,7 @@ type_name##_get_type (void) \
   return static_g_define_type_id; \
 } \
 \
-G_GNUC_NO_INLINE \
+G_NO_INLINE \
 static GType \
 type_name##_get_type_once (void) \
 { \
