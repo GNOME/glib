@@ -157,9 +157,9 @@ test_spawn_childs (void)
   main_loop = g_main_loop_new (NULL, FALSE);
 
 #ifdef G_OS_WIN32
-  system ("cd .");
+  g_assert_no_errno (system ("cd ."));
 #else
-  system ("true");
+  g_assert_no_errno (system ("true"));
 #endif
 
   n_alive = 2;
@@ -200,9 +200,9 @@ test_spawn_childs_threads (void)
   main_loop = g_main_loop_new (NULL, FALSE);
 
 #ifdef G_OS_WIN32
-  system ("cd .");
+  g_assert_no_errno (system ("cd ."));
 #else
-  system ("true");
+  g_assert_no_errno (system ("true"));
 #endif
 
   n_alive = 2;

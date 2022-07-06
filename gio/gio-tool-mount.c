@@ -112,7 +112,8 @@ prompt_for (const char *prompt, const char *default_value, gboolean echo)
 
 #endif
 
-  fgets(data, sizeof (data), stdin);
+  if (!fgets (data, sizeof (data), stdin))
+    g_error ("Failed to read from standard input");
 
 #ifdef HAVE_TERMIOS_H
   if (restore_flags)

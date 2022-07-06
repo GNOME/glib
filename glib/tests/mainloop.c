@@ -1467,8 +1467,8 @@ test_source_unix_fd_api (void)
   gint fds_a[2];
   gint fds_b[2];
 
-  pipe (fds_a);
-  pipe (fds_b);
+  g_assert_cmpint (pipe (fds_a), ==, 0);
+  g_assert_cmpint (pipe (fds_b), ==, 0);
 
   source_a = g_source_new (&no_funcs, sizeof (FlagSource));
   source_b = g_source_new (&no_funcs, sizeof (FlagSource));

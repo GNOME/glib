@@ -1469,7 +1469,7 @@ test_file_test (void)
 
   fd = g_file_open_tmp (NULL, &name, &error);
   g_assert_no_error (error);
-  write (fd, "a", 1);
+  g_assert_cmpint (write (fd, "a", 1), ==, 1);
   g_assert_cmpint (g_fsync (fd), ==, 0);
   close (fd);
 
@@ -1477,7 +1477,7 @@ test_file_test (void)
   result = g_file_test (name, G_FILE_TEST_IS_SYMLINK);
   g_assert_false (result);
 
-  symlink (name, "symlink");
+  g_assert_no_errno (symlink (name, "symlink"));
   result = g_file_test ("symlink", G_FILE_TEST_IS_SYMLINK);
   g_assert_true (result);
   unlink ("symlink");
@@ -1500,7 +1500,7 @@ test_set_contents (void)
 
   fd = g_file_open_tmp (NULL, &name, &error);
   g_assert_no_error (error);
-  write (fd, "a", 1);
+  g_assert_cmpint (write (fd, "a", 1), ==, 1);
   g_assert_cmpint (g_fsync (fd), ==, 0);
   close (fd);
 
@@ -1593,7 +1593,7 @@ test_set_contents_full (void)
 
                 fd = g_file_open_tmp (NULL, &file_name, &error);
                 g_assert_no_error (error);
-                write (fd, "a", 1);
+                g_assert_cmpint (write (fd, "a", 1), ==, 1);
                 g_assert_no_errno (g_fsync (fd));
                 close (fd);
 
@@ -1726,7 +1726,7 @@ test_set_contents_full_read_only_file (void)
    * existing file permissions. */
   fd = g_file_open_tmp (NULL, &file_name, &error);
   g_assert_no_error (error);
-  write (fd, "a", 1);
+  g_assert_cmpint (write (fd, "a", 1), ==, 1);
   g_assert_no_errno (g_fsync (fd));
   close (fd);
   g_assert_no_errno (g_chmod (file_name, 0400)); /* S_IREAD */
@@ -1800,7 +1800,7 @@ test_set_contents_full_read_only_directory (void)
       file_name = g_build_filename (dir_name, "file", NULL);
       fd = g_open (file_name, O_CREAT | O_RDWR, 0644);
       g_assert_cmpint (fd, >=, 0);
-      write (fd, "a", 1);
+      g_assert_cmpint (write (fd, "a", 1), ==, 1);
       g_assert_no_errno (g_fsync (fd));
       close (fd);
 
@@ -1895,8 +1895,8 @@ test_read_link (void)
   g_assert_nonnull (file);
   fclose (file);
 
-  g_assert_cmpint (symlink (filename, link1), ==, 0);
-  g_assert_cmpint (symlink (link1, link2), ==, 0);
+  g_assert_no_errno (symlink (filename, link1));
+  g_assert_no_errno (symlink (link1, link2));
 
   error = NULL;
   data = g_file_read_link (link1, &error);
