@@ -40,7 +40,7 @@ test_pipe (void)
   g_assert (res);
   g_assert_no_error (error);
 
-  write (pipefd[1], "hello", sizeof ("hello"));
+  g_assert_cmpint (write (pipefd[1], "hello", sizeof ("hello")), ==, sizeof ("hello"));
   memset (buf, 0, sizeof (buf));
   bytes_read = read (pipefd[0], buf, sizeof(buf) - 1);
   g_assert_cmpint (bytes_read, >, 0);

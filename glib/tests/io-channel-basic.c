@@ -320,7 +320,7 @@ spawn_process (int children_nb)
       /* Spawn new Unix process */
       cmdline = g_strdup_printf ("%s --child %d:%d &",
                                  exec_name, pipe_to_sub[0], pipe_from_sub[1]);
-      system (cmdline);
+      g_assert_no_errno (system (cmdline));
 #endif
       g_free (cmdline);
 
@@ -375,9 +375,9 @@ run_process (int argc, char *argv[])
         buf[j] = ' ' + ((buflen + j) % 95);
       g_debug ("io-channel-basic: child writing %d+%d bytes to %d",
                (int) (sizeof (i) + sizeof (buflen)), buflen, writefd);
-      write (writefd, &i, sizeof (i));
-      write (writefd, &buflen, sizeof (buflen));
-      write (writefd, buf, buflen);
+      g_assert_cmpint (write (writefd, &i, sizeof (i)), ==, sizeof (i));
+      g_assert_cmpint (write (writefd, &buflen, sizeof (buflen)), ==, sizeof (buflen));
+      g_assert_cmpint (write (writefd, buf, buflen), ==, buflen);
 
 #ifdef G_OS_WIN32
       if (i % 10 == 0)
