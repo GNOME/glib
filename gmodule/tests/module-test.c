@@ -25,6 +25,7 @@
  */
 
 #include <gmodule.h>
+#include <glib/gstdio.h>
 
 #ifdef _MSC_VER
 # define MODULE_FILENAME_PREFIX ""
@@ -205,12 +206,40 @@ test_module_basics (void)
   g_module_close (module_self);
 }
 
+static void
+test_module_invalid_libtool_archive (void)
+{
+  int la_fd;
+  gchar *la_filename = NULL;
+  GModule *module = NULL;
+  GError *local_error = NULL;
+
+  g_test_summary ("Test that opening an invalid .la file fails");
+
+  /* Create an empty temporary file ending in `.la` */
+  la_fd = g_file_open_tmp ("gmodule-invalid-XXXXXX.la", &la_filename, &local_error);
+  g_assert_no_error (local_error);
+  g_assert_true (g_str_has_suffix (la_filename, ".la"));
+  g_close (la_fd, NULL);
+
+  /* Try loading it */
+  module = g_module_open_full (la_filename, 0, &local_error);
+  g_assert_error (local_error, G_MODULE_ERROR, G_MODULE_ERROR_FAILED);
+  g_assert_null (module);
+  g_clear_error (&local_error);
+
+  (void) g_unlink (la_filename);
+
+  g_free (la_filename);
+}
+
 int
 main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/module/basics", test_module_basics);
+  g_test_add_func ("/module/invalid-libtool-archive", test_module_invalid_libtool_archive);
 
   return g_test_run ();
 }
