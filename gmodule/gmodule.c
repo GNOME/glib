@@ -364,7 +364,7 @@ parse_libtool_archive (const gchar* libtool_name)
   if (fd < 0)
     {
       gchar *display_libtool_name = g_filename_display_name (libtool_name);
-      g_module_set_error_unduped (g_strdup_printf ("failed to open libtool archive \"%s\"", display_libtool_name));
+      g_module_set_error_unduped (g_strdup_printf ("failed to open libtool archive ‘%s’", display_libtool_name));
       g_free (display_libtool_name);
       return NULL;
     }
@@ -390,7 +390,7 @@ parse_libtool_archive (const gchar* libtool_name)
 	       G_TOKEN_IDENTIFIER : G_TOKEN_STRING))
 	    {
 	      gchar *display_libtool_name = g_filename_display_name (libtool_name);
-	      g_module_set_error_unduped (g_strdup_printf ("unable to parse libtool archive \"%s\"", display_libtool_name));
+	      g_module_set_error_unduped (g_strdup_printf ("unable to parse libtool archive ‘%s’", display_libtool_name));
 	      g_free (display_libtool_name);
 
 	      g_free (lt_dlname);
@@ -433,7 +433,7 @@ parse_libtool_archive (const gchar* libtool_name)
   if (lt_libdir == NULL || lt_dlname == NULL)
     {
       gchar *display_libtool_name = g_filename_display_name (libtool_name);
-      g_module_set_error_unduped (g_strdup_printf ("unable to parse libtool archive \"%s\"", display_libtool_name));
+      g_module_set_error_unduped (g_strdup_printf ("unable to parse libtool archive ‘%s’", display_libtool_name));
       g_free (display_libtool_name);
 
       return NULL;
