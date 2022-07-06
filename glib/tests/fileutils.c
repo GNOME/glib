@@ -1895,8 +1895,8 @@ test_read_link (void)
   g_assert_nonnull (file);
   fclose (file);
 
-  g_assert_cmpint (symlink (filename, link1), ==, 0);
-  g_assert_cmpint (symlink (link1, link2), ==, 0);
+  g_assert_no_errno (symlink (filename, link1));
+  g_assert_no_errno (symlink (link1, link2));
 
   error = NULL;
   data = g_file_read_link (link1, &error);
