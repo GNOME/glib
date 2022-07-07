@@ -42,6 +42,13 @@
 #define instance_free(s, p) g_slice_free1 ((s), (p))
 #endif
 
+static void
+csv_report (const char *allocator, gint iterations, gdouble time_elapsed)
+{
+  g_test_message ("CSV: %s/%s/%d,%f",
+                  g_test_get_path (), allocator, iterations, time_elapsed);
+}
+
 #define allocate_and_free_many(type, type_size, allocator, N) \
   {                                                           \
     guint i;                                                  \
@@ -66,6 +73,7 @@
                              "Allocated and free'd %u instances of %s "              \
                              "(size: %" G_GSIZE_FORMAT " using %s in %6.5f seconds", \
                              N, #type, (gsize) type_size, #allocator, time_elapsed); \
+    csv_report (#allocator, N, time_elapsed);                                        \
   }
 
 #define test_alloc_many_and_free(type, type_size, allocator, N)                      \
@@ -87,6 +95,7 @@
                              "Allocated %u instances of %s (size: %" G_GSIZE_FORMAT  \
                              ") using %s in %6.5f seconds",                          \
                              N, #type, (gsize) type_size, #allocator, time_elapsed); \
+    csv_report (#allocator, N, time_elapsed);                                        \
                                                                                      \
     g_test_timer_start ();                                                           \
                                                                                      \
@@ -99,10 +108,14 @@
     g_test_minimized_result (time_elapsed,                                           \
                              "Free'd %u instances of %s in %6.5f seconds",           \
                              N, #type, time_elapsed);                                \
+    csv_report ("free", N, time_elapsed);                                            \
+                                                                                     \
     g_test_minimized_result (total_time,                                             \
                              "Allocated and Free'd %u instances of %s using %s "     \
                              "in %6.5f seconds",                                     \
                              N, #type, #allocator, total_time);                      \
+                                                                                     \
+    csv_report (#allocator "+free", N, total_time);                                  \
   }
 
 #define test_allocation_simple_type(type)                                                 \
@@ -157,6 +170,7 @@
                              "Allocated and free'd %u instances of mixed types "      \
                              "(step: %s) using %s in %6.5f seconds",                  \
                              N, #max_steps, #allocator, time_elapsed);                \
+    csv_report (#allocator, N, time_elapsed);                                         \
   }
 
 #define test_allocation_mixed_sizes(max_steps)                     \
@@ -212,6 +226,11 @@ main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
 
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS;
+  g_test_message ("GSlice will use a chunk size of %" G_GINT64_FORMAT,
+                  g_slice_get_config (G_SLICE_CONFIG_CHUNK_SIZES));
+  G_GNUC_END_IGNORE_DEPRECATIONS;
+
   g_test_add_func (TEST_BASENAME "/simple-type/gchar", test_allocation_gchar);
   g_test_add_func (TEST_BASENAME "/simple-type/gshort", test_allocation_gshort);
   g_test_add_func (TEST_BASENAME "/simple-type/glong", test_allocation_glong);
@@ -225,6 +244,9 @@ main (int argc, char *argv[])
   g_test_add_func (TEST_BASENAME "/simple-type/gdouble", test_allocation_gdouble);
   g_test_add_func (TEST_BASENAME "/simple-type/gpointer", test_allocation_gpointer);
 
+  /* FIXME: Depending on the OS we should only test up to the size that the
+   * GSlice would support, otherwise we'd get system allocator anyways.
+   */
   g_test_add_func (TEST_BASENAME "/sized/32", test_allocation_sized_32);
   g_test_add_func (TEST_BASENAME "/sized/64", test_allocation_sized_64);
   g_test_add_func (TEST_BASENAME "/sized/128", test_allocation_sized_128);
