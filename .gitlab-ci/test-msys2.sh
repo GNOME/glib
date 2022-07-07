@@ -43,20 +43,6 @@ meson --werror --buildtype debug _build
 cd _build
 ninja
 
-lcov \
-    --quiet \
-    --config-file "${DIR}"/.lcovrc \
-    --directory "${DIR}/_build" \
-    --capture \
-    --initial \
-    --output-file "${DIR}/_coverage/${CI_JOB_NAME}-baseline.lcov"
-
 # FIXME: fix the test suite
-meson test --timeout-multiplier "${MESON_TEST_TIMEOUT_MULTIPLIER}" --no-suite flaky || true
+meson test --benchmark -v --timeout-multiplier "${MESON_TEST_TIMEOUT_MULTIPLIER}" --no-suite flaky || true
 
-lcov \
-    --quiet \
-    --config-file "${DIR}"/.lcovrc \
-    --directory "${DIR}/_build" \
-    --capture \
-    --output-file "${DIR}/_coverage/${CI_JOB_NAME}.lcov"
