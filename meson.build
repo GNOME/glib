@@ -2389,5 +2389,30 @@ if get_option('man')
   man1_dir = join_paths(glib_prefix, get_option('mandir'), 'man1')
 endif
 
+
+allocate_system = executable('allocators-test-system',
+  'tests/allocators-tests.c',
+  c_args: [
+    '-DG_LOG_DOMAIN="GLib-Benchmark"',
+    '-UG_DISABLE_ASSERT',
+    '-DG_USE_SYSTEM_ALLOCATOR',
+  ],
+  dependencies: libglib_dep,
+  install: false
+)
+
+allocate_gslice = executable('allocators-test-gslice',
+  'tests/allocators-tests.c',
+  c_args: [
+    '-DG_LOG_DOMAIN="GLib-Benchmark"',
+    '-UG_DISABLE_ASSERT',
+  ],
+  dependencies: [libglib_dep],
+  install: false
+)
+
+benchmark('allocate-system', allocate_system, timeout: 1000)
+benchmark('allocate-gslice', allocate_gslice, timeout: 1000)
+
 gnome = import('gnome')
 subdir('docs/reference')
