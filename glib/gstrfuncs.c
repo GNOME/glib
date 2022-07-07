@@ -1313,7 +1313,7 @@ g_ascii_strtoll (const gchar *nptr,
  * ]|
  *
  * Returns: a UTF-8 string describing the error code. If the error code
- *     is unknown, it returns a string like "unknown error (<code>)".
+ *     is unknown, it returns a string like "Unknown error: <code>".
  */
 const gchar *
 g_strerror (gint errnum)
@@ -1336,6 +1336,9 @@ g_strerror (gint errnum)
     {
       gchar buf[1024];
       GError *error = NULL;
+#if defined(HAVE_STRERROR_R) && !defined(STRERROR_R_CHAR_P)
+      int ret;
+#endif
 
 #if defined(G_OS_WIN32)
       strerror_s (buf, sizeof (buf), errnum);
@@ -1345,13 +1348,23 @@ g_strerror (gint errnum)
 #  if defined(STRERROR_R_CHAR_P)
       msg = strerror_r (errnum, buf, sizeof (buf));
 #  else
-      (void) strerror_r (errnum, buf, sizeof (buf));
-      msg = buf;
+      ret = strerror_r (errnum, buf, sizeof (buf));
+      if (ret == 0 || ret == EINVAL)
+        msg = buf;
 #  endif /* HAVE_STRERROR_R */
 #else
       g_strlcpy (buf, strerror (errnum), sizeof (buf));
       msg = buf;
 #endif
+
+      if (!msg)
+        {
+          G_UNLOCK (errors);
+
+          errno = saved_errno;
+          return msg;
+        }
+
       if (!g_get_console_charset (NULL))
         {
           msg = g_locale_to_utf8 (msg, -1, NULL, NULL, &error);
