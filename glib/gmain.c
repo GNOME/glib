@@ -4653,7 +4653,8 @@ g_main_context_add_poll_unlocked (GMainContext *context,
   context->poll_changed = TRUE;
 
   /* Now wake up the main loop if it is waiting in the poll() */
-  g_wakeup_signal (context->wakeup);
+  if (fd != &context->wake_up_rec)
+    g_wakeup_signal (context->wakeup);
 }
 
 /**

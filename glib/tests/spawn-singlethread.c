@@ -295,10 +295,12 @@ test_spawn_async_with_fds (void)
 
       if (test_pipe[1][0] >= 0)
         {
+          gchar *tmp = g_strdup_printf ("# thread %d" LINEEND, tnum);
           /* Check for echo on stdout */
           g_assert_true (data.stdout_done);
-          g_assert_cmpstr (data.stdout_buf->str, ==, arg);
+          g_assert_cmpstr (data.stdout_buf->str, ==, tmp);
           g_io_channel_unref (channel);
+          g_free (tmp);
         }
       g_string_free (data.stdout_buf, TRUE);
 
