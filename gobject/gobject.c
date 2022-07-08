@@ -154,6 +154,10 @@
 #define CLASS_HAS_CUSTOM_CONSTRUCTED(class) \
     ((class)->constructed != g_object_constructed)
 #define CLASS_HAS_NOTIFY(class) ((class)->notify != NULL)
+#define CLASS_HAS_CUSTOM_DISPATCH(class) \
+    ((class)->dispatch_properties_changed != g_object_dispatch_properties_changed)
+#define CLASS_NEEDS_NOTIFY(class) \
+    (CLASS_HAS_NOTIFY(class) || CLASS_HAS_CUSTOM_DISPATCH(class))
 
 #define CLASS_HAS_DERIVED_CLASS_FLAG 0x2
 #define CLASS_HAS_DERIVED_CLASS(class) \
@@ -1239,7 +1243,7 @@ static inline gboolean
 _g_object_has_notify_handler (GObject *object)
 {
 #ifdef HAVE_OPTIONAL_FLAGS
-  return CLASS_HAS_NOTIFY (G_OBJECT_GET_CLASS (object)) ||
+  return CLASS_NEEDS_NOTIFY (G_OBJECT_GET_CLASS (object)) ||
          (object_get_optional_flags (object) & OPTIONAL_FLAG_HAS_NOTIFY_HANDLER) != 0;
 #else
   return TRUE;
@@ -1250,7 +1254,7 @@ static inline gboolean
 _g_object_has_notify_handler_X (GObject *object)
 {
 #ifdef HAVE_OPTIONAL_FLAGS
-  return CLASS_HAS_NOTIFY (G_OBJECT_GET_CLASS (object)) ||
+  return CLASS_NEEDS_NOTIFY (G_OBJECT_GET_CLASS (object)) ||
          (object_get_optional_flags_X (object) & OPTIONAL_FLAG_HAS_NOTIFY_HANDLER) != 0;
 #else
   return TRUE;
@@ -1306,7 +1310,7 @@ g_object_init (GObject		*object,
   object->ref_count = 1;
   object->qdata = NULL;
 
-  if (CLASS_HAS_PROPS (class) && CLASS_HAS_NOTIFY (class))
+  if (CLASS_HAS_PROPS (class) && CLASS_NEEDS_NOTIFY (class))
     {
       /* freeze object's notification queue, g_object_new_internal() preserves pairedness */
       g_object_notify_queue_freeze (object, FALSE);
@@ -1480,7 +1484,7 @@ g_object_notify_by_spec_internal (GObject    *object,
 #ifdef HAVE_OPTIONAL_FLAGS
   guint object_flags;
 #endif
-  gboolean has_notify;
+  gboolean needs_notify;
   gboolean in_init;
 
   if (G_UNLIKELY (~pspec->flags & G_PARAM_READABLE))
@@ -1491,15 +1495,15 @@ g_object_notify_by_spec_internal (GObject    *object,
 #ifdef HAVE_OPTIONAL_FLAGS
   /* get all flags we need with a single atomic read */
   object_flags = object_get_optional_flags (object);
-  has_notify = ((object_flags & OPTIONAL_FLAG_HAS_NOTIFY_HANDLER) != 0) ||
-               CLASS_HAS_NOTIFY (G_OBJECT_GET_CLASS (object));
+  needs_notify = ((object_flags & OPTIONAL_FLAG_HAS_NOTIFY_HANDLER) != 0) ||
+                  CLASS_NEEDS_NOTIFY (G_OBJECT_GET_CLASS (object));
   in_init = (object_flags & OPTIONAL_FLAG_IN_CONSTRUCTION) != 0;
 #else
-  has_notify = TRUE;
+  needs_notify = TRUE;
   in_init = object_in_construction (object);
 #endif
 
-  if (pspec != NULL && has_notify)
+  if (pspec != NULL && needs_notify)
     {
       GObjectNotifyQueue *nqueue;
       gboolean need_thaw = TRUE;
