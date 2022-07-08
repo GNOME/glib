@@ -17,9 +17,10 @@ the discretion of the maintainers, a release may be held for a week or so in
 order to allow a particular merge request to land so that it can be made
 available to distributions or testers more rapidly.
 
-When making a release, all remaining issues and merge requests allocated to the
-milestone for that release should be fixed (potentially delaying the release),
-or rescheduled to a different release, based on the maintainers’ assessment.
+When [making a release](./releasing.md), all remaining issues and merge requests
+allocated to the milestone for that release should be fixed (potentially
+delaying the release), or rescheduled to a different release, based on the
+maintainers’ assessment.
 
 Unstable release planning
 ---
