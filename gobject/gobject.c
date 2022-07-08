@@ -5053,14 +5053,16 @@ g_weak_ref_set (GWeakRef *weak_ref,
       /* Remove the weak ref from the old object */
       if (old_object != NULL)
         {
-          gboolean in_weak_refs_notify;
-
           weak_locations = g_datalist_id_get_data (&old_object->qdata, quark_weak_locations);
-          in_weak_refs_notify = g_datalist_id_get_data (&old_object->qdata, quark_weak_refs) == NULL;
-          /* for it to point to an object, the object must have had it added once */
-          g_assert (weak_locations != NULL || in_weak_refs_notify);
-
-          if (weak_locations != NULL)
+          if (weak_locations == NULL)
+            {
+#ifndef G_DISABLE_ASSERT
+              gboolean in_weak_refs_notify =
+                  g_datalist_id_get_data (&old_object->qdata, quark_weak_refs) == NULL;
+              g_assert (in_weak_refs_notify);
+#endif /* G_DISABLE_ASSERT */
+            }
+          else
             {
               *weak_locations = g_slist_remove (*weak_locations, weak_ref);
 
