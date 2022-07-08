@@ -114,7 +114,9 @@ test_object_class_init (TestObjectClass *klass)
   properties[PROP_FOO] = g_param_spec_int ("foo", "Foo", "Foo",
                                            -1, G_MAXINT,
                                            0,
-                                           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+                                           G_PARAM_READWRITE |
+                                           G_PARAM_STATIC_STRINGS |
+                                           G_PARAM_EXPLICIT_NOTIFY);
 
   gobject_class->set_property = test_object_set_property;
   gobject_class->get_property = test_object_get_property;
@@ -155,6 +157,8 @@ test_custom_dispatch (void)
   g_assert_false (object_has_notify_signal_handlers (obj));
 
   g_assert_cmpint (dispatch_properties_called, ==, 0);
+  g_object_set (obj, "foo", 11, NULL);
+  g_assert_cmpint (dispatch_properties_called, ==, 1);
   g_object_set (obj, "foo", 11, NULL);
   g_assert_cmpint (dispatch_properties_called, ==, 1);
 
