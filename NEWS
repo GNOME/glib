@@ -1,3 +1,108 @@
+Overview of changes in GLib 2.73.2, 12-07-2022
+==============================================
+
+* Replace PCRE1 with PCRE2: This is a major change to drop the libpcre1
+  dependency and use libpcre2 instead, while preserving the behaviour and API of
+  GRegex. G_REGEX_OPTIMIZE and G_REGEX_JAVASCRIPT_COMPAT are now deprecated
+  and became a no-op, while other flags are adapted accordingly to the new API
+  (work by Aleksei Rybalkin, Philipp Withnall) (!2529, #1085)
+
+* Preserve destruction order in gdataset, fixing various crashes during
+  objects disposal (work by Peter Bloomfield) (!2776, #2672, #2676)
+
+* Require C99 __VA_ARGS__ (work by Emmanuele Bassi) (!2791, #2681)
+
+* Add NONE or DEFAULT members to most flags types (work by Simon McVittie) (!2576)
+
+* GFile: Add some missing async APIs (work by Marco Trevisan) (!2717)
+
+* Improve internal and process documentation (work by Philipp Withnall) (!2763)
+
+* Add atomic compare-and-exchange APIs returning previous value (work by Marco
+  Trevisan) (!2766)
+
+* Add G_DEFINE_ENUM_TYPE and G_DEFINE_ENUM_VALUE macros (work by Emmanuele Bassi)
+  (!2788)
+
+* Add platform-independent G_ALWAYS_INLINE and G_NO_INLINE (work by Marco Trevisan)
+  (!2781)
+
+* Use waitid() on pidfds rather than a global SIGCHLD handler (work by Philip
+  Withnall) (!2408)
+
+* Bugs fixed:
+ - #1434 Move tests/* into */tests/
+ - #2216 Chain signal handlers for SIGCHLD
+ - #2597 Crash in g_socket_client_enumerator_callback when proxy resolving
+ - #2659 /maincontext/timeout-once randomly fails
+ - #2681 Set C99's `__VA_ARGS__` as a toolchain hard requirement
+ - #2672 Finalization speedup (commit fa8c7c0da) causes crash in gtk3 demo
+ - #2676 gnome-shell assertion failure with GLib 2.73.1 while
+         g_object_real_dispose() cleans up weak refs
+ - #2687 Regression: in GLib 2.72.3, in gsocketclient/cancellable
+ - !1717 Add lock in _g_get_unix_mount_points() around *fsent() functions
+ - !2408 gmain: Use waitid() on pidfds rather than a global SIGCHLD handler
+ - !2529 gregex: replace pcre1 with pcre2
+ - !2576 Add a NONE or DEFAULT member to most flags-sets
+ - !2667 test: Potentially fix a race in thread-pool-slow test
+ - !2706 Add more SPDX license headers
+ - !2717 gfile (and GAppInfo): Add some missing async APIs and ensure async calls
+         always use them
+ - !2744 fuzzing: Add fuzz test for g_uuid_string_is_valid()
+ - !2748 docs: Add a testing policy
+ - !2749 tests: Various fixes for TAP output of tests
+ - !2755 docs: Sync glib.doap to set of users listed in CODEOWNERS
+ - !2763 docs: Document the release process
+ - !2766 gatomic: Add Compare and Exchange functions that returns the previous value
+ - !2770 Correct documentation of g_atomic_pointer_exchange
+ - !2771 use gvdb as a subproject
+ - !2772 gobject/tests/performance: fix leaks
+ - !2773 gdatetime test: Consistently expect %k to generate a figure space
+ - !2774 tests: Fix type mismatches in new atomic tests when compiling with clang
+ - !2775 gthread: Some code cleanups and fixes
+ - !2776 gdataset: Preserve destruction order
+ - !2779 tests: Fix macOS failures in the file tests
+ - !2781 gmacros: Provide platform-independent G_ALWAYS_INLINE and G_NO_INLINE
+ - !2782 ci: Update CI images to add gdb and pcre2
+ - !2783 _g_get_unix_mount_points(): reduce syscalls inside loop
+ - !2784 Revert "gobject: Use g_datalist_id_remove_multiple"
+ - !2785 tests: Fix incorrect basename comparison in gsubprocess test
+ - !2786 gcontenttype: Fix a potential use-after-free of xdgmime data
+ - !2788 Add G_DEFINE macros for enum and flags types
+ - !2789 gdate: Fix a typo in a code comment
+ - !2790 tests: Skip assert-msg-test.py if gdb is non-functional
+ - !2791 Require C99's __VA_ARGS__
+ - !2792 ci: Ensure git submodules are updated before running macOS CI
+ - !2794 gobject: Don't skip custom dispatch_properties_changed
+ - !2795 gkeyfile: Remove some unreachable code
+ - !2796 gmodule: Improve error handling for invalid .la files
+ - !2797 gio: Add some missing license and copyright headers
+ - !2798 Remove occurrences of unused-results warnings and mark them as errors
+ - !2800 gbacktrace: Handle case of strerror_r returning an int value
+ - !2801 gobject: Small speedup in weak-ref-set
+ - !2802 gobject/tests/custom-dispatch: Add few more tests
+ - !2804 gthreadpool: Ensure all unused threads are really counted as stopped
+ - !2805 gthread-posix: Do not do unguarded and non-atomic assignment of an atomic
+ - !2807 ci: Specify -Wno-overlength-strings on macOS
+         build: Specify -Werror=pointer-sign
+ - !2808 gsocketclient: Fix passing NULL to g_task_get_cancellable()
+ - !2809 gio/tests/desktop-app-info: Wait until the callback is called
+
+* Translation updates:
+ - Lithuanian
+ - Persian
+ - Portuguese
+ - Russian
+ - Serbian
+ - Ukrainian
+
+* Contributors:
+  Aleksandr Melman, Aleksei Rybalkin, Aurimas Černius, Danial Behzadi,
+  Emmanuele Bassi, Emmanuel Fleury, ericLemanissier, Hugo Carvalho,
+  Marc-André Lureau, Marco Trevisan (Treviño), Matthias Clasen,
+  Michael Catanzaro, Michael Vetter, Peter Bloomfield, Philip Withnall,
+  Rozhuk Ivan, Simon McVittie, Yuri Chornoivan, Мирослав Николић
+
 Overview of changes in GLib 2.73.1
 ==================================
 
