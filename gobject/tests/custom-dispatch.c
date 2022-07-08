@@ -139,6 +139,26 @@ object_has_notify_signal_handlers (gpointer instance)
   return g_signal_handler_find (instance, G_SIGNAL_MATCH_ID, signal_id, 0, NULL, NULL, NULL) != 0;
 }
 
+static void
+test_custom_dispatch_init (void)
+{
+  TestObject *obj;
+
+  g_test_summary ("Test that custom dispatch_properties_changed is called "
+                  "on initialization");
+
+  dispatch_properties_called = 0;
+  obj = g_object_new (test_object_get_type (), "foo", 5, NULL);
+
+  g_assert_false (object_has_notify_signal_handlers (obj));
+
+  g_assert_cmpint (dispatch_properties_called, ==, 1);
+  g_object_set (obj, "foo", 11, NULL);
+  g_assert_cmpint (dispatch_properties_called, ==, 2);
+
+  g_object_unref (obj);
+}
+
 /* This instance init behavior is the thing we are testing:
  *
  * 1. Don't connect any notify handlers
@@ -146,12 +166,13 @@ object_has_notify_signal_handlers (gpointer instance)
  * 3. Verify that our custom dispatch_properties_changed is called
  */
 static void
-test_custom_dispatch (void)
+test_custom_dispatch_set (void)
 {
   TestObject *obj;
 
   g_test_summary ("Test that custom dispatch_properties_changed is called regardless of connected notify handlers");
 
+  dispatch_properties_called = 0;
   obj = g_object_new (test_object_get_type (), NULL);
 
   g_assert_false (object_has_notify_signal_handlers (obj));
@@ -170,7 +191,8 @@ main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
 
-  g_test_add_func ("/properties/custom-dispatch", test_custom_dispatch);
+  g_test_add_func ("/properties/custom-dispatch/init", test_custom_dispatch_init);
+  g_test_add_func ("/properties/custom-dispatch/set", test_custom_dispatch_set);
 
   return g_test_run ();
 }
