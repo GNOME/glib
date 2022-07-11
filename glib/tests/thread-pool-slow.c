@@ -80,18 +80,13 @@ test_thread_stop_unused (void)
     g_usleep (100);
 
   g_assert_cmpuint (g_thread_pool_get_num_threads (pool), ==, 0);
+  g_assert_cmpuint (g_thread_pool_get_num_unused_threads (), >, 0);
 
   /* Wait for threads to die. */
-  do {
-    /* We may need to repeat this in case we tried to stop unused threads
-     * while some thread was still active, and not yet marked as non-used,
-     * despite what g_thread_pool_get_num_threads() tells us.
-     * And if this happens the thread will be kept in the unused queue
-     * indefinitely, so we need to stop it again, until we're really done.
-     */
-    g_thread_pool_stop_unused_threads ();
+  g_thread_pool_stop_unused_threads ();
+
+  while (g_thread_pool_get_num_unused_threads () != 0)
     g_usleep (100);
-  } while (g_thread_pool_get_num_unused_threads () != 0);
 
   g_assert_cmpuint (g_thread_pool_get_num_unused_threads (), ==, 0);
 
@@ -101,6 +96,51 @@ test_thread_stop_unused (void)
   g_assert_cmpuint (g_thread_pool_get_num_unused_threads (), ==, 0);
 
   g_thread_pool_free (pool, FALSE, TRUE);
+}
+
+static void
+test_thread_stop_unused_multiple (void)
+{
+  GThreadPool *pools[10];
+  guint i, j;
+  const guint limit = 10;
+  gboolean all_stopped;
+
+  /* Spawn a few threads. */
+  g_thread_pool_set_max_unused_threads (-1);
+
+  for (i = 0; i < G_N_ELEMENTS (pools); i++)
+    {
+      pools[i] = g_thread_pool_new ((GFunc) g_usleep, NULL, -1, FALSE, NULL);
+
+      for (j = 0; j < limit; j++)
+        g_thread_pool_push (pools[i], GUINT_TO_POINTER (100), NULL);
+    }
+
+  all_stopped = FALSE;
+  while (!all_stopped)
+    {
+      all_stopped = TRUE;
+      for (i = 0; i < G_N_ELEMENTS (pools); i++)
+        all_stopped &= (g_thread_pool_get_num_threads (pools[i]) == 0);
+    }
+
+  for (i = 0; i < G_N_ELEMENTS (pools); i++)
+    {
+      g_assert_cmpuint (g_thread_pool_get_num_threads (pools[i]), ==, 0);
+      g_assert_cmpuint (g_thread_pool_get_num_unused_threads (), >, 0);
+    }
+
+  /* Wait for threads to die. */
+  g_thread_pool_stop_unused_threads ();
+
+  while (g_thread_pool_get_num_unused_threads () != 0)
+    g_usleep (100);
+
+  g_assert_cmpuint (g_thread_pool_get_num_unused_threads (), ==, 0);
+
+  for (i = 0; i < G_N_ELEMENTS (pools); i++)
+    g_thread_pool_free (pools[i], FALSE, TRUE);
 }
 
 static void
@@ -344,6 +384,9 @@ test_check_start_and_stop (gpointer user_data)
       test_thread_stop_unused ();
       break;
     case 7:
+      test_thread_stop_unused_multiple ();
+      break;
+    case 8:
       test_thread_idle_time ();
       break;
     default:
@@ -373,7 +416,7 @@ test_check_start_and_stop (gpointer user_data)
     G_UNLOCK (thread_counter_sort);
   }
 
-  if (test_number == 7) {
+  if (test_number == 8) {
     guint idle;
 
     idle = g_thread_pool_get_num_unused_threads ();
