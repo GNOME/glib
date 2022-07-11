@@ -76,33 +76,33 @@ thread_wait_func (gpointer data,
 static void
 test_thread_stop_unused (void)
 {
-   GThreadPool *pool;
-   guint i;
-   guint limit = 100;
-   guint n_threads_executed = 0;
+  GThreadPool *pool;
+  guint i;
+  guint limit = 100;
+  guint n_threads_executed = 0;
 
-   /* Spawn a few threads. */
-   g_thread_pool_set_max_unused_threads (-1);
-   pool = g_thread_pool_new (thread_wait_func, &n_threads_executed, -1, FALSE, NULL);
+  /* Spawn a few threads. */
+  g_thread_pool_set_max_unused_threads (-1);
+  pool = g_thread_pool_new (thread_wait_func, &n_threads_executed, -1, FALSE, NULL);
 
-   for (i = 0; i < limit; i++)
-     g_thread_pool_push (pool, GUINT_TO_POINTER (1000), NULL);
+  for (i = 0; i < limit; i++)
+    g_thread_pool_push (pool, GUINT_TO_POINTER (1000), NULL);
 
-   /* Wait for the threads to migrate. */
-   while ((guint) g_atomic_int_get (&n_threads_executed) < limit)
-     g_usleep (100);
+  /* Wait for the threads to migrate. */
+  while ((guint) g_atomic_int_get (&n_threads_executed) < limit)
+    g_usleep (100);
 
-   g_thread_pool_stop_unused_threads ();
+  g_thread_pool_stop_unused_threads ();
 
-   /* Wait for threads to die. */
-   while (g_thread_pool_get_num_unused_threads () != 0)
-     g_usleep (100);
+  /* Wait for threads to die. */
+  while (g_thread_pool_get_num_unused_threads () != 0)
+    g_usleep (100);
 
-   g_assert_cmpint (g_thread_pool_get_num_unused_threads (), ==, 0);
+  g_assert_cmpint (g_thread_pool_get_num_unused_threads (), ==, 0);
 
-   g_thread_pool_set_max_unused_threads (MAX_THREADS);
+  g_thread_pool_set_max_unused_threads (MAX_THREADS);
 
-   g_thread_pool_free (pool, FALSE, TRUE);
+  g_thread_pool_free (pool, FALSE, TRUE);
 }
 
 static void
