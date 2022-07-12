@@ -10,16 +10,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-06-28 10:34+0000\n"
-"PO-Revision-Date: 2022-06-28 19:18+0300\n"
+"POT-Creation-Date: 2022-07-12 11:46+0000\n"
+"PO-Revision-Date: 2022-07-12 19:25+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<"
+"=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Lokalize 20.12.0\n"
 
 #: gio/gappinfo.c:335
@@ -318,8 +318,7 @@ msgstr "Неправильний об'єкт, не ініціалізовани�
 
 #: gio/gcharsetconverter.c:283 gio/gcharsetconverter.c:311
 msgid "Incomplete multibyte sequence in input"
-msgstr ""
-"Неправильна багатобайтова послідовність у перетворюваних вхідних даних"
+msgstr "Неправильна багатобайтова послідовність у перетворюваних вхідних даних"
 
 #: gio/gcharsetconverter.c:317 gio/gcharsetconverter.c:326
 msgid "Not enough space in destination"
@@ -480,8 +479,7 @@ msgstr ""
 
 #: gio/gdbusaddress.c:653
 #, c-format
-msgid ""
-"Error in address “%s” — the noncefile attribute is missing or malformed"
+msgid "Error in address “%s” — the noncefile attribute is missing or malformed"
 msgstr ""
 "Помилка в адресі «%s» — атрибут не вказано атрибут noncefile або помилкове "
 "форматування атрибута"
@@ -519,8 +517,7 @@ msgstr "Вказана адреса порожня"
 #: gio/gdbusaddress.c:1101
 #, c-format
 msgid "Cannot spawn a message bus when AT_SECURE is set"
-msgstr ""
-"Неможливо породити процес шини повідомлень, якщо встановлено AT_SECURE"
+msgstr "Неможливо породити процес шини повідомлень, якщо встановлено AT_SECURE"
 
 #: gio/gdbusaddress.c:1108
 msgid "Cannot spawn a message bus without a machine-id: "
@@ -597,8 +594,7 @@ msgstr "Помилка при отриманні відомостей для к�
 #, c-format
 msgid ""
 "Permissions on directory “%s” are malformed. Expected mode 0700, got 0%o"
-msgstr ""
-"Помилкові права на каталог «%s». Очікуваний режим — 0700, отримано 0%o"
+msgstr "Помилкові права на каталог «%s». Очікуваний режим — 0700, отримано 0%o"
 
 #: gio/gdbusauthmechanismsha1.c:350 gio/gdbusauthmechanismsha1.c:361
 #, c-format
@@ -1049,8 +1045,7 @@ msgstr "Рядок «%s» не є припустимим GUID D-Bus"
 #: gio/gdbusserver.c:1152
 #, c-format
 msgid "Cannot listen on unsupported transport “%s”"
-msgstr ""
-"Неможливо очікувати на дані на каналі передавання «%s», якого не існує"
+msgstr "Неможливо очікувати на дані на каналі передавання «%s», якого не існує"
 
 #: gio/gdbus-tool.c:113
 #, c-format
@@ -1132,8 +1127,7 @@ msgstr "Вказано декілька кінцевих точок з'єдна�
 #, c-format
 msgid ""
 "Warning: According to introspection data, interface “%s” does not exist\n"
-msgstr ""
-"Попередження: згідно з даними інтроспекції, інтерфейсу «%s» не існує\n"
+msgstr "Попередження: згідно з даними інтроспекції, інтерфейсу «%s» не існує\n"
 
 #: gio/gdbus-tool.c:534
 #, c-format
@@ -1773,7 +1767,7 @@ msgstr "Помилка при записі до стандартного вив�
 #: gio/gio-tool-cat.c:135 gio/gio-tool-info.c:342 gio/gio-tool-list.c:173
 #: gio/gio-tool-mkdir.c:50 gio/gio-tool-monitor.c:39 gio/gio-tool-monitor.c:41
 #: gio/gio-tool-monitor.c:43 gio/gio-tool-monitor.c:45
-#: gio/gio-tool-monitor.c:206 gio/gio-tool-mount.c:1201 gio/gio-tool-open.c:72
+#: gio/gio-tool-monitor.c:206 gio/gio-tool-mount.c:1202 gio/gio-tool-open.c:72
 #: gio/gio-tool-remove.c:50 gio/gio-tool-rename.c:47 gio/gio-tool-set.c:93
 #: gio/gio-tool-trash.c:222 gio/gio-tool-tree.c:241
 msgid "LOCATION"
@@ -1794,7 +1788,7 @@ msgstr ""
 "щось таке: smb://сервер/ресурс/файл.txt."
 
 #: gio/gio-tool-cat.c:164 gio/gio-tool-info.c:373 gio/gio-tool-mkdir.c:78
-#: gio/gio-tool-monitor.c:231 gio/gio-tool-mount.c:1252 gio/gio-tool-open.c:98
+#: gio/gio-tool-monitor.c:231 gio/gio-tool-mount.c:1253 gio/gio-tool-open.c:98
 #: gio/gio-tool-remove.c:74 gio/gio-tool-trash.c:303
 msgid "No locations given"
 msgstr "Не вказано місць"
@@ -2219,19 +2213,19 @@ msgstr "Змонтувати прихований том TCRYPT"
 msgid "Mount a TCRYPT system volume"
 msgstr "Змонтувати системний том TCRYPT"
 
-#: gio/gio-tool-mount.c:267 gio/gio-tool-mount.c:299
+#: gio/gio-tool-mount.c:268 gio/gio-tool-mount.c:300
 msgid "Anonymous access denied"
 msgstr "Анонімний доступ заборонено"
 
-#: gio/gio-tool-mount.c:524
+#: gio/gio-tool-mount.c:525
 msgid "No drive for device file"
 msgstr "Немає диска для файла диска"
 
-#: gio/gio-tool-mount.c:1016
+#: gio/gio-tool-mount.c:1017
 msgid "No volume for given ID"
 msgstr "Немає тому із вказаним ідентифікатором"
 
-#: gio/gio-tool-mount.c:1205
+#: gio/gio-tool-mount.c:1206
 msgid "Mount or unmount the locations."
 msgstr "Змонтувати або демонтувати місця."
 
@@ -2723,8 +2717,7 @@ msgstr "<alias value='%s'/> вже вказано"
 #: gio/glib-compile-schemas.c:606
 #, c-format
 msgid "alias target “%s” is not in enumerated type"
-msgstr ""
-"призначення альтернативної назви «%s» не належить до нумерованого типу"
+msgstr "призначення альтернативної назви «%s» не належить до нумерованого типу"
 
 #: gio/glib-compile-schemas.c:607
 #, c-format
@@ -2757,8 +2750,7 @@ msgstr ""
 #: gio/glib-compile-schemas.c:830
 #, c-format
 msgid "Invalid name “%s”: two successive hyphens (“--”) are not permitted"
-msgstr ""
-"Некоректна назва «%s»: не можна вказувати два дефіси одночасно («--»)."
+msgstr "Некоректна назва «%s»: не можна вказувати два дефіси одночасно («--»)."
 
 #: gio/glib-compile-schemas.c:839
 #, c-format
@@ -4645,25 +4637,25 @@ msgid "The pathname “%s” is not an absolute path"
 msgstr "Шлях «%s» не є абсолютним"
 
 #. Translators: this is the preferred format for expressing the date and the time
-#: glib/gdatetime.c:226
+#: glib/gdatetime.c:228
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
 msgstr "%a %b %e %H:%M:%S %Y"
 
 #. Translators: this is the preferred format for expressing the date
-#: glib/gdatetime.c:229
+#: glib/gdatetime.c:231
 msgctxt "GDateTime"
 msgid "%m/%d/%y"
 msgstr "%m/%d/%y"
 
 #. Translators: this is the preferred format for expressing the time
-#: glib/gdatetime.c:232
+#: glib/gdatetime.c:234
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
 msgstr "%H:%M:%S"
 
 #. Translators: this is the preferred format for expressing 12 hour time
-#: glib/gdatetime.c:235
+#: glib/gdatetime.c:237
 msgctxt "GDateTime"
 msgid "%I:%M:%S %p"
 msgstr "%I:%M:%S %p"
@@ -4684,62 +4676,62 @@ msgstr "%I:%M:%S %p"
 #. * non-European) there is no difference between the standalone and
 #. * complete date form.
 #.
-#: glib/gdatetime.c:274
+#: glib/gdatetime.c:276
 msgctxt "full month name"
 msgid "January"
 msgstr "січень"
 
-#: glib/gdatetime.c:276
+#: glib/gdatetime.c:278
 msgctxt "full month name"
 msgid "February"
 msgstr "лютий"
 
-#: glib/gdatetime.c:278
+#: glib/gdatetime.c:280
 msgctxt "full month name"
 msgid "March"
 msgstr "березень"
 
-#: glib/gdatetime.c:280
+#: glib/gdatetime.c:282
 msgctxt "full month name"
 msgid "April"
 msgstr "квітень"
 
-#: glib/gdatetime.c:282
+#: glib/gdatetime.c:284
 msgctxt "full month name"
 msgid "May"
 msgstr "травень"
 
-#: glib/gdatetime.c:284
+#: glib/gdatetime.c:286
 msgctxt "full month name"
 msgid "June"
 msgstr "червень"
 
-#: glib/gdatetime.c:286
+#: glib/gdatetime.c:288
 msgctxt "full month name"
 msgid "July"
 msgstr "липень"
 
-#: glib/gdatetime.c:288
+#: glib/gdatetime.c:290
 msgctxt "full month name"
 msgid "August"
 msgstr "серпень"
 
-#: glib/gdatetime.c:290
+#: glib/gdatetime.c:292
 msgctxt "full month name"
 msgid "September"
 msgstr "вересень"
 
-#: glib/gdatetime.c:292
+#: glib/gdatetime.c:294
 msgctxt "full month name"
 msgid "October"
 msgstr "жовтень"
 
-#: glib/gdatetime.c:294
+#: glib/gdatetime.c:296
 msgctxt "full month name"
 msgid "November"
 msgstr "листопад"
 
-#: glib/gdatetime.c:296
+#: glib/gdatetime.c:298
 msgctxt "full month name"
 msgid "December"
 msgstr "грудень"
@@ -4761,132 +4753,132 @@ msgstr "грудень"
 #. * other platform.  Here are abbreviated month names in a form
 #. * appropriate when they are used standalone.
 #.
-#: glib/gdatetime.c:328
+#: glib/gdatetime.c:330
 msgctxt "abbreviated month name"
 msgid "Jan"
 msgstr "січ"
 
-#: glib/gdatetime.c:330
+#: glib/gdatetime.c:332
 msgctxt "abbreviated month name"
 msgid "Feb"
 msgstr "лют"
 
-#: glib/gdatetime.c:332
+#: glib/gdatetime.c:334
 msgctxt "abbreviated month name"
 msgid "Mar"
 msgstr "бер"
 
-#: glib/gdatetime.c:334
+#: glib/gdatetime.c:336
 msgctxt "abbreviated month name"
 msgid "Apr"
 msgstr "кві"
 
-#: glib/gdatetime.c:336
+#: glib/gdatetime.c:338
 msgctxt "abbreviated month name"
 msgid "May"
 msgstr "тра"
 
-#: glib/gdatetime.c:338
+#: glib/gdatetime.c:340
 msgctxt "abbreviated month name"
 msgid "Jun"
 msgstr "чер"
 
-#: glib/gdatetime.c:340
+#: glib/gdatetime.c:342
 msgctxt "abbreviated month name"
 msgid "Jul"
 msgstr "лип"
 
-#: glib/gdatetime.c:342
+#: glib/gdatetime.c:344
 msgctxt "abbreviated month name"
 msgid "Aug"
 msgstr "серп"
 
-#: glib/gdatetime.c:344
+#: glib/gdatetime.c:346
 msgctxt "abbreviated month name"
 msgid "Sep"
 msgstr "вер"
 
-#: glib/gdatetime.c:346
+#: glib/gdatetime.c:348
 msgctxt "abbreviated month name"
 msgid "Oct"
 msgstr "жовт"
 
-#: glib/gdatetime.c:348
+#: glib/gdatetime.c:350
 msgctxt "abbreviated month name"
 msgid "Nov"
 msgstr "лист"
 
-#: glib/gdatetime.c:350
+#: glib/gdatetime.c:352
 msgctxt "abbreviated month name"
 msgid "Dec"
 msgstr "груд"
 
-#: glib/gdatetime.c:365
+#: glib/gdatetime.c:367
 msgctxt "full weekday name"
 msgid "Monday"
 msgstr "понеділок"
 
-#: glib/gdatetime.c:367
+#: glib/gdatetime.c:369
 msgctxt "full weekday name"
 msgid "Tuesday"
 msgstr "вівторок"
 
-#: glib/gdatetime.c:369
+#: glib/gdatetime.c:371
 msgctxt "full weekday name"
 msgid "Wednesday"
 msgstr "середа"
 
-#: glib/gdatetime.c:371
+#: glib/gdatetime.c:373
 msgctxt "full weekday name"
 msgid "Thursday"
 msgstr "четвер"
 
-#: glib/gdatetime.c:373
+#: glib/gdatetime.c:375
 msgctxt "full weekday name"
 msgid "Friday"
 msgstr "п'ятниця"
 
-#: glib/gdatetime.c:375
+#: glib/gdatetime.c:377
 msgctxt "full weekday name"
 msgid "Saturday"
 msgstr "субота"
 
-#: glib/gdatetime.c:377
+#: glib/gdatetime.c:379
 msgctxt "full weekday name"
 msgid "Sunday"
 msgstr "неділя"
 
-#: glib/gdatetime.c:392
+#: glib/gdatetime.c:394
 msgctxt "abbreviated weekday name"
 msgid "Mon"
 msgstr "пн"
 
-#: glib/gdatetime.c:394
+#: glib/gdatetime.c:396
 msgctxt "abbreviated weekday name"
 msgid "Tue"
 msgstr "вт"
 
-#: glib/gdatetime.c:396
+#: glib/gdatetime.c:398
 msgctxt "abbreviated weekday name"
 msgid "Wed"
 msgstr "ср"
 
-#: glib/gdatetime.c:398
+#: glib/gdatetime.c:400
 msgctxt "abbreviated weekday name"
 msgid "Thu"
 msgstr "чт"
 
-#: glib/gdatetime.c:400
+#: glib/gdatetime.c:402
 msgctxt "abbreviated weekday name"
 msgid "Fri"
 msgstr "пт"
 
-#: glib/gdatetime.c:402
+#: glib/gdatetime.c:404
 msgctxt "abbreviated weekday name"
 msgid "Sat"
 msgstr "сб"
 
-#: glib/gdatetime.c:404
+#: glib/gdatetime.c:406
 msgctxt "abbreviated weekday name"
 msgid "Sun"
 msgstr "нд"
@@ -4908,62 +4900,62 @@ msgstr "нд"
 #. * (western European, non-European) there is no difference between the
 #. * standalone and complete date form.
 #.
-#: glib/gdatetime.c:468
+#: glib/gdatetime.c:470
 msgctxt "full month name with day"
 msgid "January"
 msgstr "січня"
 
-#: glib/gdatetime.c:470
+#: glib/gdatetime.c:472
 msgctxt "full month name with day"
 msgid "February"
 msgstr "лютого"
 
-#: glib/gdatetime.c:472
+#: glib/gdatetime.c:474
 msgctxt "full month name with day"
 msgid "March"
 msgstr "березня"
 
-#: glib/gdatetime.c:474
+#: glib/gdatetime.c:476
 msgctxt "full month name with day"
 msgid "April"
 msgstr "квітня"
 
-#: glib/gdatetime.c:476
+#: glib/gdatetime.c:478
 msgctxt "full month name with day"
 msgid "May"
 msgstr "травня"
 
-#: glib/gdatetime.c:478
+#: glib/gdatetime.c:480
 msgctxt "full month name with day"
 msgid "June"
 msgstr "червня"
 
-#: glib/gdatetime.c:480
+#: glib/gdatetime.c:482
 msgctxt "full month name with day"
 msgid "July"
 msgstr "липня"
 
-#: glib/gdatetime.c:482
+#: glib/gdatetime.c:484
 msgctxt "full month name with day"
 msgid "August"
 msgstr "серпня"
 
-#: glib/gdatetime.c:484
+#: glib/gdatetime.c:486
 msgctxt "full month name with day"
 msgid "September"
 msgstr "вересня"
 
-#: glib/gdatetime.c:486
+#: glib/gdatetime.c:488
 msgctxt "full month name with day"
 msgid "October"
 msgstr "жовтня"
 
-#: glib/gdatetime.c:488
+#: glib/gdatetime.c:490
 msgctxt "full month name with day"
 msgid "November"
 msgstr "листопада"
 
-#: glib/gdatetime.c:490
+#: glib/gdatetime.c:492
 msgctxt "full month name with day"
 msgid "December"
 msgstr "грудня"
@@ -4985,74 +4977,74 @@ msgstr "грудня"
 #. * month names almost ready to copy and paste here.  In other systems
 #. * due to a bug the result is incorrect in some languages.
 #.
-#: glib/gdatetime.c:555
+#: glib/gdatetime.c:557
 msgctxt "abbreviated month name with day"
 msgid "Jan"
 msgstr "січ"
 
-#: glib/gdatetime.c:557
+#: glib/gdatetime.c:559
 msgctxt "abbreviated month name with day"
 msgid "Feb"
 msgstr "лют"
 
-#: glib/gdatetime.c:559
+#: glib/gdatetime.c:561
 msgctxt "abbreviated month name with day"
 msgid "Mar"
 msgstr "бер"
 
-#: glib/gdatetime.c:561
+#: glib/gdatetime.c:563
 msgctxt "abbreviated month name with day"
 msgid "Apr"
 msgstr "квіт"
 
-#: glib/gdatetime.c:563
+#: glib/gdatetime.c:565
 msgctxt "abbreviated month name with day"
 msgid "May"
 msgstr "трав"
 
-#: glib/gdatetime.c:565
+#: glib/gdatetime.c:567
 msgctxt "abbreviated month name with day"
 msgid "Jun"
 msgstr "черв"
 
-#: glib/gdatetime.c:567
+#: glib/gdatetime.c:569
 msgctxt "abbreviated month name with day"
 msgid "Jul"
 msgstr "лип"
 
-#: glib/gdatetime.c:569
+#: glib/gdatetime.c:571
 msgctxt "abbreviated month name with day"
 msgid "Aug"
 msgstr "серп"
 
-#: glib/gdatetime.c:571
+#: glib/gdatetime.c:573
 msgctxt "abbreviated month name with day"
 msgid "Sep"
 msgstr "вер"
 
-#: glib/gdatetime.c:573
+#: glib/gdatetime.c:575
 msgctxt "abbreviated month name with day"
 msgid "Oct"
 msgstr "жовт"
 
-#: glib/gdatetime.c:575
+#: glib/gdatetime.c:577
 msgctxt "abbreviated month name with day"
 msgid "Nov"
 msgstr "лист"
 
-#: glib/gdatetime.c:577
+#: glib/gdatetime.c:579
 msgctxt "abbreviated month name with day"
 msgid "Dec"
 msgstr "груд"
 
 #. Translators: 'before midday' indicator
-#: glib/gdatetime.c:594
+#: glib/gdatetime.c:596
 msgctxt "GDateTime"
 msgid "AM"
 msgstr "AM"
 
 #. Translators: 'after midday' indicator
-#: glib/gdatetime.c:597
+#: glib/gdatetime.c:599
 msgctxt "GDateTime"
 msgid "PM"
 msgstr "PM"
@@ -5442,8 +5434,7 @@ msgstr "Документ порожній чи містить лише проп�
 
 #: glib/gmarkup.c:1815
 msgid "Document ended unexpectedly just after an open angle bracket “<”"
-msgstr ""
-"Документ раптово закінчився відразу після початкової кутової дужки «<»"
+msgstr "Документ раптово закінчився відразу після початкової кутової дужки «<»"
 
 #: glib/gmarkup.c:1823 glib/gmarkup.c:1868
 #, c-format
@@ -5499,8 +5490,7 @@ msgstr "Документ раптово закінчився у середині
 
 #: glib/gmarkup.c:1888
 msgid "Document ended unexpectedly inside a comment or processing instruction"
-msgstr ""
-"Документ раптово закінчився у середині коментарю чи інструкції обробки"
+msgstr "Документ раптово закінчився у середині коментарю чи інструкції обробки"
 
 #: glib/goption.c:875
 msgid "[OPTION…]"
@@ -5561,243 +5551,183 @@ msgstr "Відсутній аргумент %s"
 msgid "Unknown option %s"
 msgstr "Невідомий параметр %s"
 
-#: glib/gregex.c:257
+#: glib/gregex.c:431
 msgid "corrupted object"
 msgstr "пошкоджений об'єкт"
 
-#: glib/gregex.c:259
-msgid "internal error or corrupted object"
-msgstr "внутрішня помилка або пошкоджений об'єкт"
-
-#: glib/gregex.c:261
+#: glib/gregex.c:433
 msgid "out of memory"
 msgstr "недостатньо пам'яті"
 
-#: glib/gregex.c:266
+#: glib/gregex.c:438
 msgid "backtracking limit reached"
 msgstr "закінчилося обмеження зворотного ходу"
 
-#: glib/gregex.c:278 glib/gregex.c:286
+#: glib/gregex.c:449 glib/gregex.c:695 glib/gregex.c:724
+msgid "internal error"
+msgstr "внутрішня помилка"
+
+#: glib/gregex.c:451
 msgid "the pattern contains items not supported for partial matching"
 msgstr ""
 "шаблон містить елементи, які не підтримуються при пошуку часткової "
 "відповідності"
 
-#: glib/gregex.c:280
-msgid "internal error"
-msgstr "внутрішня помилка"
-
-#: glib/gregex.c:288
+#: glib/gregex.c:453
 msgid "back references as conditions are not supported for partial matching"
 msgstr ""
 "умови у вигляді зворотних посилань при пошуку часткової відповідності не "
 "підтримуються"
 
-#: glib/gregex.c:297
+#: glib/gregex.c:459
 msgid "recursion limit reached"
 msgstr "досягнуто межу рекурсії"
 
-#: glib/gregex.c:299
-msgid "invalid combination of newline flags"
-msgstr "некоректна комбінація ознак переведення рядка"
-
-#: glib/gregex.c:301
+#: glib/gregex.c:461
 msgid "bad offset"
 msgstr "неправильне зміщення"
 
-#: glib/gregex.c:303
-msgid "short utf8"
-msgstr "короткий utf8"
-
-#: glib/gregex.c:305
+#: glib/gregex.c:463
 msgid "recursion loop"
 msgstr "зациклювання рекурсії"
 
-#: glib/gregex.c:309
+#: glib/gregex.c:467
 msgid "unknown error"
 msgstr "невідома помилка"
 
-#: glib/gregex.c:329
+#: glib/gregex.c:484
 msgid "\\ at end of pattern"
 msgstr "\\ наприкінці шаблону"
 
-#: glib/gregex.c:332
+#: glib/gregex.c:488
 msgid "\\c at end of pattern"
 msgstr "\\c наприкінці шаблону"
 
-#: glib/gregex.c:335
+#: glib/gregex.c:493
 msgid "unrecognized character following \\"
 msgstr "нерозпізнаний символ слідує за \\"
 
-#: glib/gregex.c:338
+#: glib/gregex.c:497
 msgid "numbers out of order in {} quantifier"
 msgstr "неправильний порядок чисел у специфікаторі {}"
 
-#: glib/gregex.c:341
+#: glib/gregex.c:501
 msgid "number too big in {} quantifier"
 msgstr "надто велике число у специфікаторі {}"
 
-#: glib/gregex.c:344
+#: glib/gregex.c:505
 msgid "missing terminating ] for character class"
 msgstr "відсутній завершальний символ ] для класу символів"
 
-#: glib/gregex.c:347
+#: glib/gregex.c:509
 msgid "invalid escape sequence in character class"
 msgstr "Неправильна escape-послідовність у класі символів"
 
-#: glib/gregex.c:350
+#: glib/gregex.c:513
 msgid "range out of order in character class"
 msgstr "неправильний порядок у діапазоні у класі символів"
 
-#: glib/gregex.c:353
+#: glib/gregex.c:518
 msgid "nothing to repeat"
 msgstr "немає що повторювати"
 
-#: glib/gregex.c:357
-msgid "unexpected repeat"
-msgstr "неочікуваний повтор"
-
-#: glib/gregex.c:360
+#: glib/gregex.c:522
 msgid "unrecognized character after (? or (?-"
 msgstr "нерозпізнаний символ після (? або (?-"
 
-#: glib/gregex.c:363
+#: glib/gregex.c:526
 msgid "POSIX named classes are supported only within a class"
 msgstr "назви класів у стилі POSIX підтримуються лише у межах класі"
 
-#: glib/gregex.c:366
-msgid "missing terminating )"
-msgstr "відсутній завершальний символ )"
-
-#: glib/gregex.c:369
-msgid "reference to non-existent subpattern"
-msgstr "посилання на вкладений шаблон, якого не існує"
-
-#: glib/gregex.c:372
-msgid "missing ) after comment"
-msgstr "відсутня дужка ) після коментаря"
-
-#: glib/gregex.c:375
-msgid "regular expression is too large"
-msgstr "задовгий регулярний вираз"
-
-#: glib/gregex.c:378
-msgid "failed to get memory"
-msgstr "не вдається отримати пам'ять"
-
-#: glib/gregex.c:382
-msgid ") without opening ("
-msgstr ") без початкової дужки ("
-
-#: glib/gregex.c:386
-msgid "code overflow"
-msgstr "переповнення коду"
-
-#: glib/gregex.c:390
-msgid "unrecognized character after (?<"
-msgstr "нерозпізнаний символ після (?<"
-
-#: glib/gregex.c:393
-msgid "lookbehind assertion is not fixed length"
-msgstr "твердження lookbehind має не фіксовану довжину"
-
-#: glib/gregex.c:396
-msgid "malformed number or name after (?("
-msgstr "неправильне число або назва після (?("
-
-#: glib/gregex.c:399
-msgid "conditional group contains more than two branches"
-msgstr "група умови містить більше ніж дві гілки"
-
-#: glib/gregex.c:402
-msgid "assertion expected after (?("
-msgstr "після (?( очікується твердження"
-
-#. translators: '(?R' and '(?[+-]digits' are both meant as (groups of)
-#. * sequences here, '(?-54' would be an example for the second group.
-#.
-#: glib/gregex.c:409
-msgid "(?R or (?[+-]digits must be followed by )"
-msgstr "(за ?R або (?[+-]цифри має бути вказано дужку )"
-
-#: glib/gregex.c:412
-msgid "unknown POSIX class name"
-msgstr "невідома POSIX-назва класу"
-
-#: glib/gregex.c:415
+#: glib/gregex.c:530
 msgid "POSIX collating elements are not supported"
 msgstr "елементи порівняння у стилі POSIX не підтримуються"
 
-#: glib/gregex.c:418
+#: glib/gregex.c:536
+msgid "missing terminating )"
+msgstr "відсутній завершальний символ )"
+
+#: glib/gregex.c:540
+msgid "reference to non-existent subpattern"
+msgstr "посилання на вкладений шаблон, якого не існує"
+
+#: glib/gregex.c:544
+msgid "missing ) after comment"
+msgstr "відсутня дужка ) після коментаря"
+
+#: glib/gregex.c:548
+msgid "regular expression is too large"
+msgstr "задовгий регулярний вираз"
+
+#: glib/gregex.c:552
+msgid "malformed number or name after (?("
+msgstr "неправильне число або назва після (?("
+
+#: glib/gregex.c:556
+msgid "lookbehind assertion is not fixed length"
+msgstr "твердження lookbehind має не фіксовану довжину"
+
+#: glib/gregex.c:560
+msgid "conditional group contains more than two branches"
+msgstr "група умови містить більше ніж дві гілки"
+
+#: glib/gregex.c:564
+msgid "assertion expected after (?("
+msgstr "після (?( очікується твердження"
+
+#: glib/gregex.c:568
+msgid "a numbered reference must not be zero"
+msgstr "номерне посилання не може бути нулем"
+
+#: glib/gregex.c:572
+msgid "unknown POSIX class name"
+msgstr "невідома POSIX-назва класу"
+
+#: glib/gregex.c:577
 msgid "character value in \\x{...} sequence is too large"
 msgstr "значення символу у послідовності \\x{...} надто велике"
 
-#: glib/gregex.c:421
-msgid "invalid condition (?(0)"
-msgstr "неправильний вираз (?(0)"
-
-#: glib/gregex.c:424
+#: glib/gregex.c:581
 msgid "\\C not allowed in lookbehind assertion"
 msgstr "\\C неприпустимий у твердженні lookbehind"
 
-#: glib/gregex.c:431
-msgid "escapes \\L, \\l, \\N{name}, \\U, and \\u are not supported"
-msgstr "екранування \\L, \\l, \\N{name}, \\U і \\u не підтримується"
-
-#: glib/gregex.c:434
-msgid "recursive call could loop indefinitely"
-msgstr "рекурсивний виклик може увійти у нескінчений цикл"
-
-#: glib/gregex.c:438
-msgid "unrecognized character after (?P"
-msgstr "нерозпізнаний символ після (?P"
-
-#: glib/gregex.c:441
+#: glib/gregex.c:585
 msgid "missing terminator in subpattern name"
 msgstr "відсутній завершальний символ у назві вкладеного шаблону"
 
-#: glib/gregex.c:444
+#: glib/gregex.c:589
 msgid "two named subpatterns have the same name"
 msgstr "два іменовані вкладені шаблони мають однакову назву"
 
-#: glib/gregex.c:447
+#: glib/gregex.c:593
 msgid "malformed \\P or \\p sequence"
 msgstr "неправильна послідовність \\P чи \\p"
 
-#: glib/gregex.c:450
+#: glib/gregex.c:597
 msgid "unknown property name after \\P or \\p"
 msgstr "невідома назва властивості після \\P чи \\p"
 
-#: glib/gregex.c:453
+#: glib/gregex.c:601
 msgid "subpattern name is too long (maximum 32 characters)"
 msgstr "вкладена назва шаблону надто довга (максимум 32 символів)"
 
-#: glib/gregex.c:456
+#: glib/gregex.c:605
 msgid "too many named subpatterns (maximum 10,000)"
 msgstr "надто багато іменованих вкладених шаблонів (максимум 10,000)"
 
-#: glib/gregex.c:459
+#: glib/gregex.c:609
 msgid "octal value is greater than \\377"
 msgstr "вісімкове значення більше ніж \\377"
 
-#: glib/gregex.c:463
-msgid "overran compiling workspace"
-msgstr "переповнення при компіляції робочого простору"
-
-#: glib/gregex.c:467
-msgid "previously-checked referenced subpattern not found"
-msgstr ""
-"раніше перевірений вкладений шаблон, на який йде посилання не знайдений"
-
-#: glib/gregex.c:470
+#: glib/gregex.c:613
 msgid "DEFINE group contains more than one branch"
 msgstr "група DEFINE містить більш ніж одну гілку"
 
-#: glib/gregex.c:473
+#: glib/gregex.c:617
 msgid "inconsistent NEWLINE options"
 msgstr "неузгоджені параметри NEWLINE"
 
-#: glib/gregex.c:476
+#: glib/gregex.c:621
 msgid ""
 "\\g is not followed by a braced, angle-bracketed, or quoted name or number, "
 "or by a plain number"
@@ -5805,132 +5735,120 @@ msgstr ""
 "\\g не супроводжується назвою або числом у дужках, кутових дужках або "
 "лапках, або просто числом"
 
-#: glib/gregex.c:480
-msgid "a numbered reference must not be zero"
-msgstr "номерне посилання не може бути нулем"
-
-#: glib/gregex.c:483
+#: glib/gregex.c:626
 msgid "an argument is not allowed for (*ACCEPT), (*FAIL), or (*COMMIT)"
 msgstr "не можна вказувати параметр для (*ACCEPT), (*FAIL) або (*COMMIT)"
 
-#: glib/gregex.c:486
+#: glib/gregex.c:630
 msgid "(*VERB) not recognized"
 msgstr "значення (*VERB) не розпізнано"
 
-#: glib/gregex.c:489
+#: glib/gregex.c:634
 msgid "number is too big"
 msgstr "завелике число"
 
-#: glib/gregex.c:492
+#: glib/gregex.c:638
 msgid "missing subpattern name after (?&"
 msgstr "немає назви підшаблону після (?&"
 
-#: glib/gregex.c:495
-msgid "digit expected after (?+"
-msgstr "очікувалася цифра після (?+"
-
-#: glib/gregex.c:498
-msgid "] is an invalid data character in JavaScript compatibility mode"
-msgstr "не можна використовувати символ ] у режимі сумісності із JavaScript"
-
-#: glib/gregex.c:501
+#: glib/gregex.c:642
 msgid "different names for subpatterns of the same number are not allowed"
 msgstr ""
 "не припускається використовувати різні імена для підшаблонів з однаковим "
 "номером"
 
-#: glib/gregex.c:504
+#: glib/gregex.c:646
 msgid "(*MARK) must have an argument"
 msgstr "для (*MARK) потрібен параметр"
 
-#: glib/gregex.c:507
+#: glib/gregex.c:650
 msgid "\\c must be followed by an ASCII character"
 msgstr "за \\з повинен бути символ ASCII"
 
-#: glib/gregex.c:510
+#: glib/gregex.c:654
 msgid "\\k is not followed by a braced, angle-bracketed, or quoted name"
 msgstr "за \\k не слідує назва у дужках, кутових дужках або лапках"
 
-#: glib/gregex.c:513
+#: glib/gregex.c:658
 msgid "\\N is not supported in a class"
 msgstr "\\N у класі не підтримується"
 
-#: glib/gregex.c:516
-msgid "too many forward references"
-msgstr "забагато прямих посилань"
-
-#: glib/gregex.c:519
+#: glib/gregex.c:662
 msgid "name is too long in (*MARK), (*PRUNE), (*SKIP), or (*THEN)"
 msgstr "задовга назва у (*MARK), (*PRUNE), (*SKIP) або (*THEN)"
 
-#: glib/gregex.c:522
-msgid "character value in \\u.... sequence is too large"
-msgstr "завелике значення символу у \\u…"
+#: glib/gregex.c:666 glib/gregex.c:799
+msgid "code overflow"
+msgstr "переповнення коду"
 
-#: glib/gregex.c:745 glib/gregex.c:1990
+#: glib/gregex.c:670
+msgid "unrecognized character after (?P"
+msgstr "нерозпізнаний символ після (?P"
+
+#: glib/gregex.c:674
+msgid "overran compiling workspace"
+msgstr "переповнення при компіляції робочого простору"
+
+#: glib/gregex.c:678
+msgid "previously-checked referenced subpattern not found"
+msgstr ""
+"раніше перевірений вкладений шаблон, на який йде посилання не знайдений"
+
+#: glib/gregex.c:798 glib/gregex.c:966 glib/gregex.c:2262
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "Помилка під час пошуку відповідності регулярному виразу %s: %s"
 
-#: glib/gregex.c:1323
+#: glib/gregex.c:1543
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "Бібліотека PCRE не підтримує UTF8"
 
-#: glib/gregex.c:1327
-msgid "PCRE library is compiled without UTF8 properties support"
-msgstr "Бібліотека PCRE не підтримує властивості у кодуванні UTF8"
-
-#: glib/gregex.c:1335
+#: glib/gregex.c:1551
 msgid "PCRE library is compiled with incompatible options"
 msgstr "Бібліотека PCRE зібрана з несумісними параметрами"
 
-#: glib/gregex.c:1364
-#, c-format
-msgid "Error while optimizing regular expression %s: %s"
-msgstr "При оптимізації регулярного виразу %s виникла помилка: %s"
+#: glib/gregex.c:1673
+#| msgid "Error while compiling regular expression %s at char %d: %s"
+msgid "Error while compiling regular expression %s at char %"
+msgstr "Помилка при компіляції регулярного виразу %s на символі %"
 
-#: glib/gregex.c:1444
-#, c-format
-msgid "Error while compiling regular expression %s at char %d: %s"
-msgstr "Помилка при компіляції регулярного виразу %s на символі %d: %s"
-
-#: glib/gregex.c:2429
+#: glib/gregex.c:2706
 msgid "hexadecimal digit or “}” expected"
 msgstr "мало бути використано шістнадцяткову цифру або символ «}»"
 
-#: glib/gregex.c:2445
+#: glib/gregex.c:2722
 msgid "hexadecimal digit expected"
 msgstr "очікується шістнадцяткова цифра"
 
-#: glib/gregex.c:2485
+#: glib/gregex.c:2762
 msgid "missing “<” in symbolic reference"
 msgstr "у символічному посиланні пропущено «<»"
 
-#: glib/gregex.c:2494
+#: glib/gregex.c:2771
 msgid "unfinished symbolic reference"
 msgstr "незакінчене символьне посилання"
 
-#: glib/gregex.c:2501
+#: glib/gregex.c:2778
 msgid "zero-length symbolic reference"
 msgstr "символьне посилання нульової довжини"
 
-#: glib/gregex.c:2512
+#: glib/gregex.c:2789
 msgid "digit expected"
 msgstr "очікується цифра"
 
-#: glib/gregex.c:2530
+#: glib/gregex.c:2807
 msgid "illegal symbolic reference"
 msgstr "некоректне символьне посилання"
 
-#: glib/gregex.c:2593
+#: glib/gregex.c:2870
 msgid "stray final “\\”"
 msgstr "відкидати кінцеві «\\»"
 
-#: glib/gregex.c:2597
+#: glib/gregex.c:2874
 msgid "unknown escape sequence"
 msgstr "невідома escape-послідовність"
 
-#: glib/gregex.c:2607
+#: glib/gregex.c:2884
 #, c-format
 msgid "Error while parsing replacement text “%s” at char %lu: %s"
 msgstr ""
@@ -6097,21 +6015,21 @@ msgstr ""
 "Неочікувана помилка в зчитуванні даних з дочірнього процесу через "
 "g_io_channel_win32_poll() "
 
-#: glib/gstrfuncs.c:3353 glib/gstrfuncs.c:3455
+#: glib/gstrfuncs.c:3366 glib/gstrfuncs.c:3468
 msgid "Empty string is not a number"
 msgstr "Порожній рядок не є числом"
 
-#: glib/gstrfuncs.c:3377
+#: glib/gstrfuncs.c:3390
 #, c-format
 msgid "“%s” is not a signed number"
 msgstr "«%s» не є числом зі знаком"
 
-#: glib/gstrfuncs.c:3387 glib/gstrfuncs.c:3491
+#: glib/gstrfuncs.c:3400 glib/gstrfuncs.c:3504
 #, c-format
 msgid "Number “%s” is out of bounds [%s, %s]"
 msgstr "Число «%s» не належить до діапазону [%s, %s]"
 
-#: glib/gstrfuncs.c:3481
+#: glib/gstrfuncs.c:3494
 #, c-format
 msgid "“%s” is not an unsigned number"
 msgstr "«%s» не є числом без знаку"
@@ -6416,6 +6334,58 @@ msgstr "%.1f ПБ"
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f ЕБ"
+
+#~ msgid "internal error or corrupted object"
+#~ msgstr "внутрішня помилка або пошкоджений об'єкт"
+
+#~ msgid "invalid combination of newline flags"
+#~ msgstr "некоректна комбінація ознак переведення рядка"
+
+#~ msgid "short utf8"
+#~ msgstr "короткий utf8"
+
+#~ msgid "unexpected repeat"
+#~ msgstr "неочікуваний повтор"
+
+#~ msgid "failed to get memory"
+#~ msgstr "не вдається отримати пам'ять"
+
+#~ msgid ") without opening ("
+#~ msgstr ") без початкової дужки ("
+
+#~ msgid "unrecognized character after (?<"
+#~ msgstr "нерозпізнаний символ після (?<"
+
+#~ msgid "(?R or (?[+-]digits must be followed by )"
+#~ msgstr "(за ?R або (?[+-]цифри має бути вказано дужку )"
+
+#~ msgid "invalid condition (?(0)"
+#~ msgstr "неправильний вираз (?(0)"
+
+#~ msgid "escapes \\L, \\l, \\N{name}, \\U, and \\u are not supported"
+#~ msgstr "екранування \\L, \\l, \\N{name}, \\U і \\u не підтримується"
+
+#~ msgid "recursive call could loop indefinitely"
+#~ msgstr "рекурсивний виклик може увійти у нескінчений цикл"
+
+#~ msgid "digit expected after (?+"
+#~ msgstr "очікувалася цифра після (?+"
+
+#~ msgid "] is an invalid data character in JavaScript compatibility mode"
+#~ msgstr "не можна використовувати символ ] у режимі сумісності із JavaScript"
+
+#~ msgid "too many forward references"
+#~ msgstr "забагато прямих посилань"
+
+#~ msgid "character value in \\u.... sequence is too large"
+#~ msgstr "завелике значення символу у \\u…"
+
+#~ msgid "PCRE library is compiled without UTF8 properties support"
+#~ msgstr "Бібліотека PCRE не підтримує властивості у кодуванні UTF8"
+
+#, c-format
+#~ msgid "Error while optimizing regular expression %s: %s"
+#~ msgstr "При оптимізації регулярного виразу %s виникла помилка: %s"
 
 #~ msgid "%.1f MB"
 #~ msgstr "%.1f МБ"
