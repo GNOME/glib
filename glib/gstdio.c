@@ -319,6 +319,8 @@ _g_win32_fill_privatestat (const struct __stat64            *statbuf,
                            DWORD                             reparse_tag,
                            GWin32PrivateStat                *buf)
 {
+  gint32 nsec;
+
   buf->st_dev = statbuf->st_dev;
   buf->st_ino = statbuf->st_ino;
   buf->st_mode = statbuf->st_mode;
@@ -331,9 +333,12 @@ _g_win32_fill_privatestat (const struct __stat64            *statbuf,
 
   buf->reparse_tag = reparse_tag;
 
-  buf->st_ctim.tv_sec = _g_win32_filetime_to_unix_time (&handle_info->ftCreationTime, &buf->st_ctim.tv_nsec);
-  buf->st_mtim.tv_sec = _g_win32_filetime_to_unix_time (&handle_info->ftLastWriteTime, &buf->st_mtim.tv_nsec);
-  buf->st_atim.tv_sec = _g_win32_filetime_to_unix_time (&handle_info->ftLastAccessTime, &buf->st_atim.tv_nsec);
+  buf->st_ctim.tv_sec = _g_win32_filetime_to_unix_time (&handle_info->ftCreationTime, &nsec);
+  buf->st_ctim.tv_nsec = nsec;
+  buf->st_mtim.tv_sec = _g_win32_filetime_to_unix_time (&handle_info->ftLastWriteTime, &nsec);
+  buf->st_mtim.tv_nsec = nsec;
+  buf->st_atim.tv_sec = _g_win32_filetime_to_unix_time (&handle_info->ftLastAccessTime, &nsec);
+  buf->st_atim.tv_nsec = nsec;
 }
 
 /* Read the link data from a symlink/mountpoint represented

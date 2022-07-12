@@ -484,6 +484,7 @@ if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
     '-Werror=declaration-after-statement',
     '-Werror=implicit-function-declaration',
     '-Werror=missing-prototypes',
+    '-Werror=pointer-sign',
   ]
   warning_cxx_args = warning_common_args
   warning_objc_args = warning_c_args
