@@ -1510,6 +1510,7 @@ typedef struct
   GSocketClientAsyncConnectData *data; /* unowned */
   GSource *timeout_source;
   GCancellable *cancellable;
+  GCancellable *task_cancellable;  /* (owned); this is equal to g_task_get_cancellable (ConnectionAttempt.data->task), but with a longer lifetime */
   gulong cancelled_id;
   grefcount ref;
 } ConnectionAttempt;
@@ -1538,7 +1539,8 @@ connection_attempt_unref (gpointer pointer)
       g_clear_object (&attempt->address);
       g_clear_object (&attempt->socket);
       g_clear_object (&attempt->connection);
-      g_cancellable_disconnect (g_task_get_cancellable (attempt->data->task), attempt->cancelled_id);
+      g_cancellable_disconnect (attempt->task_cancellable, attempt->cancelled_id);
+      g_clear_object (&attempt->task_cancellable);
       attempt->cancelled_id = 0;
       g_clear_object (&attempt->cancellable);
       g_clear_object (&attempt->proxy_addr);
@@ -2033,9 +2035,12 @@ g_socket_client_enumerator_callback (GObject      *object,
   data->connection_attempts = g_slist_append (data->connection_attempts, attempt);
 
   if (g_task_get_cancellable (data->task))
-    attempt->cancelled_id =
-        g_cancellable_connect (g_task_get_cancellable (data->task), G_CALLBACK (on_connection_cancelled),
-                               g_object_ref (attempt->cancellable), g_object_unref);
+    {
+      attempt->task_cancellable = g_object_ref (g_task_get_cancellable (data->task));
+      attempt->cancelled_id =
+          g_cancellable_connect (attempt->task_cancellable, G_CALLBACK (on_connection_cancelled),
+                                 g_object_ref (attempt->cancellable), g_object_unref);
+    }
 
   g_socket_connection_set_cached_remote_address ((GSocketConnection *)attempt->connection, address);
   g_debug ("GSocketClient: Starting TCP connection attempt");
