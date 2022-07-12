@@ -1064,9 +1064,6 @@ _g_io_module_get_default (const gchar         *extension_point,
   return g_steal_pointer (&impl);
 }
 
-G_LOCK_DEFINE_STATIC (registered_extensions);
-G_LOCK_DEFINE_STATIC (loaded_dirs);
-
 extern GType g_inotify_file_monitor_get_type (void);
 extern GType g_kqueue_file_monitor_get_type (void);
 extern GType g_win32_file_monitor_get_type (void);
@@ -1181,15 +1178,11 @@ _g_io_win32_get_module (void)
 void
 _g_io_modules_ensure_extension_points_registered (void)
 {
-  static gboolean registered_extensions = FALSE;
+  static gsize registered_extensions = FALSE;
   GIOExtensionPoint *ep;
 
-  G_LOCK (registered_extensions);
-  
-  if (!registered_extensions)
+  if (g_once_init_enter (&registered_extensions))
     {
-      registered_extensions = TRUE;
-      
 #if defined(G_OS_UNIX) && !defined(HAVE_COCOA)
 #if !GLIB_CHECK_VERSION (3, 0, 0)
       ep = g_io_extension_point_register (G_DESKTOP_APP_INFO_LOOKUP_EXTENSION_POINT_NAME);
@@ -1238,9 +1231,9 @@ _g_io_modules_ensure_extension_points_registered (void)
 
       ep = g_io_extension_point_register (G_POWER_PROFILE_MONITOR_EXTENSION_POINT_NAME);
       g_io_extension_point_set_required_type (ep, G_TYPE_POWER_PROFILE_MONITOR);
+
+      g_once_init_leave (&registered_extensions, TRUE);
     }
-  
-  G_UNLOCK (registered_extensions);
 }
 
 static gchar *
@@ -1278,20 +1271,17 @@ get_gio_module_dir (void)
 void
 _g_io_modules_ensure_loaded (void)
 {
-  static gboolean loaded_dirs = FALSE;
+  static gsize loaded_dirs = FALSE;
   const char *module_path;
   GIOModuleScope *scope;
 
   _g_io_modules_ensure_extension_points_registered ();
-  
-  G_LOCK (loaded_dirs);
 
-  if (!loaded_dirs)
+  if (g_once_init_enter (&loaded_dirs))
     {
       gboolean is_setuid = GLIB_PRIVATE_CALL (g_check_setuid) ();
       gchar *module_dir;
 
-      loaded_dirs = TRUE;
       scope = g_io_module_scope_new (G_IO_MODULE_SCOPE_BLOCK_DUPLICATES);
 
       /* First load any overrides, extras (but not if running as setuid!) */
@@ -1375,9 +1365,9 @@ _g_io_modules_ensure_loaded (void)
 #ifdef G_OS_WIN32
       g_type_ensure (_g_win32_network_monitor_get_type ());
 #endif
-    }
 
-  G_UNLOCK (loaded_dirs);
+      g_once_init_leave (&loaded_dirs, TRUE);
+    }
 }
 
 static void
