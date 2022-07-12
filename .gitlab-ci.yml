@@ -562,6 +562,11 @@ dist-job:
   only:
     - tags
   script:
+    # Ignore extra git security checks as we don't care in CI.
+    - git config --global --add safe.directory "${PWD}"
+    - git submodule update --init
+    - for m in $(git submodule foreach -q 'echo $path'); do git config --global --add safe.directory "${PWD}/${m}"; done
+    - meson subprojects download
     - meson ${MESON_COMMON_OPTIONS} --buildtype release -Dgtk_doc=true -Dman=true _build
     - cd _build
     - ninja dist
