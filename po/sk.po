@@ -5630,7 +5630,7 @@ msgstr "zlý ofset"
 msgid "short utf8"
 msgstr "krátke utf8"
 
-# Ide o omyl programátora: case PCRE_ERROR_RECURSELOOP: return _("recursion loop");
+# Ide o omyl programátora: case PCRE2_ERROR_RECURSELOOP: return _("recursion loop");
 #: glib/gregex.c:303
 msgid "recursion loop"
 msgstr "rekurzívna slučka"

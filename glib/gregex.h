@@ -264,7 +264,9 @@ GQuark g_regex_error_quark (void);
  *     in the usual way).
  * @G_REGEX_OPTIMIZE: Optimize the regular expression. If the pattern will
  *     be used many times, then it may be worth the effort to optimize it
- *     to improve the speed of matches.
+ *     to improve the speed of matches. Deprecated in GLib 2.74 which now uses
+ *     libpcre2, which doesn’t require separate optimization of queries. This
+ *     option is now a no-op. Deprecated: 2.74
  * @G_REGEX_FIRSTLINE: Limits an unanchored pattern to match before (or at) the
  *     first newline. Since: 2.34
  * @G_REGEX_DUPNAMES: Names used to identify capturing subpatterns need not
@@ -287,7 +289,8 @@ GQuark g_regex_error_quark (void);
  *     is recognised. If this option is set, then "\R" only recognizes the newline
  *    characters '\r', '\n' and '\r\n'. Since: 2.34
  * @G_REGEX_JAVASCRIPT_COMPAT: Changes behaviour so that it is compatible with
- *     JavaScript rather than PCRE. Since: 2.34
+ *     JavaScript rather than PCRE. Since GLib 2.74 this is no longer supported,
+ *     as libpcre2 does not support it. Since: 2.34 Deprecated: 2.74
  *
  * Flags specifying compile-time options.
  *
@@ -308,7 +311,7 @@ typedef enum
   G_REGEX_UNGREEDY          = 1 << 9,
   G_REGEX_RAW               = 1 << 11,
   G_REGEX_NO_AUTO_CAPTURE   = 1 << 12,
-  G_REGEX_OPTIMIZE          = 1 << 13,
+  G_REGEX_OPTIMIZE GLIB_DEPRECATED_ENUMERATOR_IN_2_74 = 1 << 13,
   G_REGEX_FIRSTLINE         = 1 << 18,
   G_REGEX_DUPNAMES          = 1 << 19,
   G_REGEX_NEWLINE_CR        = 1 << 20,
@@ -316,7 +319,7 @@ typedef enum
   G_REGEX_NEWLINE_CRLF      = G_REGEX_NEWLINE_CR | G_REGEX_NEWLINE_LF,
   G_REGEX_NEWLINE_ANYCRLF   = G_REGEX_NEWLINE_CR | 1 << 22,
   G_REGEX_BSR_ANYCRLF       = 1 << 23,
-  G_REGEX_JAVASCRIPT_COMPAT = 1 << 25
+  G_REGEX_JAVASCRIPT_COMPAT GLIB_DEPRECATED_ENUMERATOR_IN_2_74 = 1 << 25
 } GRegexCompileFlags;
 
 /**

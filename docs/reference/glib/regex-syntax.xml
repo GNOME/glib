@@ -2442,52 +2442,6 @@ processing option does not affect the called subpattern.
 </para>
 </refsect1>
 
-<!-- Callouts are not supported by GRegex
-<refsect1>
-<title>Callouts</title>
-<para>
-Perl has a feature whereby using the sequence (?{...}) causes arbitrary
-Perl code to be obeyed in the middle of matching a regular expression.
-This makes it possible, amongst other things, to extract different substrings that match the same pair of parentheses when there is a repetition.
-</para>
-
-<para>
-PCRE provides a similar feature, but of course it cannot obey arbitrary
-Perl code. The feature is called "callout". The caller of PCRE provides
-an external function by putting its entry point in the global variable
-pcre_callout. By default, this variable contains NULL, which disables
-all calling out.
-</para>
-
-<para>
-Within a regular expression, (?C) indicates the points at which the
-external function is to be called. If you want to identify different
-callout points, you can put a number less than 256 after the letter C.
-The default value is zero. For example, this pattern has two callout
-points:
-</para>
-
-<programlisting>
-(?C1)abc(?C2)def
-</programlisting>
-
-<para>
-If the PCRE_AUTO_CALLOUT flag is passed to pcre_compile(), callouts are
-automatically installed before each item in the pattern. They are all
-numbered 255.
-</para>
-
-<para>
-During matching, when PCRE reaches a callout point (and pcre_callout is
-set), the external function is called. It is provided with the number
-of the callout, the position in the pattern, and, optionally, one item
-of data originally supplied by the caller of pcre_exec(). The callout
-function may cause matching to proceed, to backtrack, or to fail altogether. A complete description of the interface to the callout function
-is given in the pcrecallout documentation.
-</para>
-</refsect1>
--->
-
 <refsect1>
 <title>Copyright</title>
 <para>
