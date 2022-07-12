@@ -167,8 +167,6 @@ g_thread_pool_wait_for_new_pool (void)
   local_max_idle_time = g_atomic_int_get (&max_idle_time);
   last_wakeup_thread_serial = g_atomic_int_get (&wakeup_thread_serial);
 
-  g_atomic_int_inc (&unused_threads);
-
   do
     {
       if ((guint) g_atomic_int_get (&unused_threads) >= local_max_unused_threads)
@@ -236,8 +234,6 @@ g_thread_pool_wait_for_new_pool (void)
         }
     }
   while (pool == wakeup_thread_marker);
-
-  g_atomic_int_add (&unused_threads, -1);
 
   return pool;
 }
@@ -405,12 +401,16 @@ g_thread_pool_thread_proxy (gpointer data)
                 }
             }
 
+          g_atomic_int_inc (&unused_threads);
           g_async_queue_unlock (pool->queue);
 
           if (free_pool)
             g_thread_pool_free_internal (pool);
 
-          if ((pool = g_thread_pool_wait_for_new_pool ()) == NULL)
+          pool = g_thread_pool_wait_for_new_pool ();
+          g_atomic_int_add (&unused_threads, -1);
+
+          if (pool == NULL)
             break;
 
           g_async_queue_lock (pool->queue);
