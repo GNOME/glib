@@ -1265,7 +1265,6 @@ linux_pthread_proxy (void *data)
         g_critical ("Failed to set scheduler settings: %s", g_strerror (errsv));
       else if (res == -1)
         g_debug ("Failed to set scheduler settings: %s", g_strerror (errsv));
-      printed_scheduler_warning = TRUE;
     }
 
   return thread->proxy (data);
