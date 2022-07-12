@@ -18,7 +18,6 @@ pacman --noconfirm -S --needed \
     mingw-w64-$MSYS2_ARCH-gettext \
     mingw-w64-$MSYS2_ARCH-libffi \
     mingw-w64-$MSYS2_ARCH-meson \
-    mingw-w64-$MSYS2_ARCH-pcre \
     mingw-w64-$MSYS2_ARCH-pcre2 \
     mingw-w64-$MSYS2_ARCH-python3 \
     mingw-w64-$MSYS2_ARCH-python-pip \
