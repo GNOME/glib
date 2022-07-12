@@ -1118,7 +1118,7 @@ test_default_uri_handler_async (void)
                                            on_launch_default_for_uri_success_cb,
                                            &called);
 
-  while (!g_file_test (file_path, G_FILE_TEST_IS_REGULAR))
+  while (!g_file_test (file_path, G_FILE_TEST_IS_REGULAR) || !called)
     g_main_context_iteration (NULL, FALSE);
 
   g_assert_true (called);
