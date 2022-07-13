@@ -23,7 +23,7 @@
 
 #include "gsettingsbackendinternal.h"
 #include "gsimplepermission.h"
-#include "giomodule.h"
+#include "giomodule-priv.h"
 
 #import <Foundation/Foundation.h>
 
@@ -46,6 +46,7 @@ struct _GNextstepSettingsBackend
 G_DEFINE_TYPE_WITH_CODE (GNextstepSettingsBackend,
                          g_nextstep_settings_backend,
                          G_TYPE_SETTINGS_BACKEND,
+                         _g_io_modules_ensure_extension_points_registered ();
                          g_io_extension_point_implement (G_SETTINGS_BACKEND_EXTENSION_POINT_NAME,
                                                          g_define_type_id, "nextstep", 90));
 
