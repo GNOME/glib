@@ -74,6 +74,7 @@ _g_ir_module_free (GIrModule *module)
   g_list_free (module->include_modules);
 
   g_hash_table_destroy (module->aliases);
+  g_hash_table_destroy (module->pointer_structures);
   g_hash_table_destroy (module->disguised_structures);
 
   g_slice_free (GIrModule, module);
@@ -142,6 +143,16 @@ add_alias_foreach (gpointer key,
 }
 
 static void
+add_pointer_structure_foreach (gpointer key,
+                               gpointer value,
+                               gpointer data)
+{
+  GIrModule *module = data;
+
+  g_hash_table_replace (module->pointer_structures, g_strdup (key), value);
+}
+
+static void
 add_disguised_structure_foreach (gpointer key,
 				 gpointer value,
 				 gpointer data)
@@ -162,6 +173,9 @@ _g_ir_module_add_include_module (GIrModule  *module,
 			add_alias_foreach,
 			module);
 
+  g_hash_table_foreach (include_module->pointer_structures,
+			add_pointer_structure_foreach,
+			module);
   g_hash_table_foreach (include_module->disguised_structures,
 			add_disguised_structure_foreach,
 			module);

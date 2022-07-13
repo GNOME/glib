@@ -55,8 +55,13 @@ struct _GIrModule
   /* Aliases defined in the module or in included modules */
   GHashTable *aliases;
 
-  /* Structures with the 'disguised' flag (typedef struct _X *X)
-  * in the module or in included modules */
+  /* Structures with the 'pointer' flag (typedef struct _X *X)
+   * in the module or in included modules
+   */
+  GHashTable *pointer_structures;
+  /* Same as 'pointer' structures, but with the deprecated
+   * 'disguised' flag
+   */
   GHashTable *disguised_structures;
 };
 

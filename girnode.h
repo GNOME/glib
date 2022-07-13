@@ -322,6 +322,8 @@ struct _GIrNodeStruct
 
   gboolean deprecated;
   gboolean disguised;
+  gboolean opaque;
+  gboolean pointer;
   gboolean is_gtype_struct;
   gboolean foreign;
 

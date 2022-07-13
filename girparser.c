@@ -114,6 +114,7 @@ struct _ParseContext
   GList *dependencies;
   GHashTable *aliases;
   GHashTable *disguised_structures;
+  GHashTable *pointer_structures;
 
   const char *file_path;
   const char *namespace;
@@ -235,11 +236,20 @@ firstpass_start_element_handler (GMarkupParseContext *context,
     {
       const gchar *name;
       const gchar *disguised;
+      const gchar *pointer;
 
       name = find_attribute ("name", attribute_names, attribute_values);
       disguised = find_attribute ("disguised", attribute_names, attribute_values);
+      pointer = find_attribute ("pointer", attribute_names, attribute_values);
 
-      if (disguised && strcmp (disguised, "1") == 0)
+      if (g_strcmp0 (pointer, "1") == 0)
+        {
+          char *key;
+
+          key = g_strdup_printf ("%s.%s", ctx->namespace, name);
+	  g_hash_table_replace (ctx->pointer_structures, key, GINT_TO_POINTER (1));
+        }
+      else if (g_strcmp0 (disguised, "1") == 0)
 	{
 	  char *key;
 
@@ -660,12 +670,14 @@ resolve_aliases (ParseContext *ctx, const gchar *type)
   return lookup;
 }
 
-static gboolean
-is_disguised_structure (ParseContext *ctx, const gchar *type)
+static void
+is_pointer_or_disguised_structure (ParseContext *ctx,
+                                   const gchar *type,
+                                   gboolean *is_pointer,
+                                   gboolean *is_disguised)
 {
   const gchar *lookup;
   gchar *prefixed;
-  gboolean result;
 
   if (strchr (type, '.') == NULL)
     {
@@ -678,12 +690,12 @@ is_disguised_structure (ParseContext *ctx, const gchar *type)
       prefixed = NULL;
     }
 
-  result = g_hash_table_lookup (ctx->current_module->disguised_structures,
-				lookup) != NULL;
+  if (is_pointer != NULL)
+    *is_pointer = g_hash_table_lookup (ctx->current_module->pointer_structures, lookup) != NULL;
+  if (is_disguised != NULL)
+    *is_disguised = g_hash_table_lookup (ctx->current_module->disguised_structures, lookup) != NULL;
 
   g_free (prefixed);
-
-  return result;
 }
 
 static GIrNodeType *
@@ -2096,12 +2108,22 @@ start_type (GMarkupParseContext *context,
 
       typenode = parse_type (ctx, name);
 
-      /* A 'disguised' structure is one where the c:type is a typedef that
-       * doesn't look like a pointer, but is internally.
+      /* A "pointer" structure is one where the c:type is a typedef that
+       * to a pointer to a structure; we used to call them "disguised"
+       * structures as well.
        */
-      if (typenode->tag == GI_TYPE_TAG_INTERFACE &&
-	  is_disguised_structure (ctx, typenode->giinterface))
-	pointer_depth++;
+      if (typenode->tag == GI_TYPE_TAG_INTERFACE)
+        {
+          gboolean is_pointer = FALSE;
+          gboolean is_disguised = FALSE;
+
+          is_pointer_or_disguised_structure (ctx, typenode->giinterface,
+                                             &is_pointer,
+                                             &is_disguised);
+
+          if (is_pointer || is_disguised)
+	    pointer_depth++;
+        }
 
       if (pointer_depth > 0)
 	typenode->is_pointer = TRUE;
@@ -2558,6 +2580,8 @@ start_struct (GMarkupParseContext *context,
   const gchar *name;
   const gchar *deprecated;
   const gchar *disguised;
+  const gchar *opaque;
+  const gchar *pointer;
   const gchar *gtype_name;
   const gchar *gtype_init;
   const gchar *gtype_struct;
@@ -2579,6 +2603,8 @@ start_struct (GMarkupParseContext *context,
   name = find_attribute ("name", attribute_names, attribute_values);
   deprecated = find_attribute ("deprecated", attribute_names, attribute_values);
   disguised = find_attribute ("disguised", attribute_names, attribute_values);
+  pointer = find_attribute ("pointer", attribute_names, attribute_values);
+  opaque = find_attribute ("opaque", attribute_names, attribute_values);
   gtype_name = find_attribute ("glib:type-name", attribute_names, attribute_values);
   gtype_init = find_attribute ("glib:get-type", attribute_names, attribute_values);
   gtype_struct = find_attribute ("glib:is-gtype-struct-for", attribute_names, attribute_values);
@@ -2611,8 +2637,14 @@ start_struct (GMarkupParseContext *context,
   else
     struct_->deprecated = FALSE;
 
-  if (disguised && strcmp (disguised, "1") == 0)
+  if (g_strcmp0 (disguised, "1") == 0)
     struct_->disguised = TRUE;
+
+  if (g_strcmp0 (pointer, "1") == 0)
+    struct_->pointer = TRUE;
+
+  if (g_strcmp0 (opaque, "1") == 0)
+    struct_->opaque = TRUE;
 
   struct_->is_gtype_struct = gtype_struct != NULL;
 
@@ -3033,7 +3065,9 @@ start_element_handler (GMarkupParseContext *context,
 	      ctx->current_module->aliases = ctx->aliases;
 	      ctx->aliases = NULL;
 	      ctx->current_module->disguised_structures = ctx->disguised_structures;
+	      ctx->current_module->pointer_structures = ctx->pointer_structures;
 	      ctx->disguised_structures = NULL;
+	      ctx->pointer_structures = NULL;
 
 	      for (l = ctx->include_modules; l; l = l->next)
 		_g_ir_module_add_include_module (ctx->current_module, l->data);
@@ -3622,6 +3656,7 @@ _g_ir_parser_parse_string (GIrParser           *parser,
   ctx.include_modules = NULL;
   ctx.aliases = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
   ctx.disguised_structures = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
+  ctx.pointer_structures = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
   ctx.type_depth = 0;
   ctx.dependencies = NULL;
   ctx.current_module = NULL;
@@ -3654,10 +3689,9 @@ _g_ir_parser_parse_string (GIrParser           *parser,
       /* An error occurred before we created a module, so we haven't
        * transferred ownership of these hash tables to the module.
        */
-      if (ctx.aliases != NULL)
-	g_hash_table_destroy (ctx.aliases);
-      if (ctx.disguised_structures != NULL)
-	g_hash_table_destroy (ctx.disguised_structures);
+      g_clear_pointer (&ctx.aliases, g_hash_table_unref);
+      g_clear_pointer (&ctx.disguised_structures, g_hash_table_unref);
+      g_clear_pointer (&ctx.pointer_structures, g_hash_table_unref);
       g_list_free (ctx.include_modules);
     }
 
