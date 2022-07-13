@@ -71,6 +71,12 @@
 #include <sys/syscall.h>
 #include <sys/wait.h>
 #include <linux/wait.h>  /* P_PIDFD */
+#ifndef W_EXITCODE
+#define W_EXITCODE(ret, sig) ((ret) << 8 | (sig))
+#endif
+#ifndef W_STOPCODE
+#define W_STOPCODE(sig)      ((sig) << 8 | 0x7f)
+#endif
 #endif  /* HAVE_PIDFD */
 
 #ifdef G_OS_WIN32
