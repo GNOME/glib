@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 3.12\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-06-30 15:00+0000\n"
-"PO-Revision-Date: 2022-06-30 22:16+0100\n"
+"POT-Creation-Date: 2022-07-12 16:26+0000\n"
+"PO-Revision-Date: 2022-07-13 13:15+0100\n"
 "Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
 "Language-Team: Portuguese <https://l10n.gnome.org/teams/pt/>\n"
 "Language: pt\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.1\n"
+"X-Generator: Poedit 3.1.1\n"
 
 #: gio/gappinfo.c:335
 msgid "Setting default applications not supported yet"
@@ -1758,7 +1758,7 @@ msgstr "Erro ao escrever no stdout"
 #: gio/gio-tool-cat.c:135 gio/gio-tool-info.c:342 gio/gio-tool-list.c:173
 #: gio/gio-tool-mkdir.c:50 gio/gio-tool-monitor.c:39 gio/gio-tool-monitor.c:41
 #: gio/gio-tool-monitor.c:43 gio/gio-tool-monitor.c:45
-#: gio/gio-tool-monitor.c:206 gio/gio-tool-mount.c:1201 gio/gio-tool-open.c:72
+#: gio/gio-tool-monitor.c:206 gio/gio-tool-mount.c:1202 gio/gio-tool-open.c:72
 #: gio/gio-tool-remove.c:50 gio/gio-tool-rename.c:47 gio/gio-tool-set.c:93
 #: gio/gio-tool-trash.c:222 gio/gio-tool-tree.c:241
 msgid "LOCATION"
@@ -1779,7 +1779,7 @@ msgstr ""
 "pode utilizar smb://server/resource/ficheiro.txt como localização."
 
 #: gio/gio-tool-cat.c:164 gio/gio-tool-info.c:373 gio/gio-tool-mkdir.c:78
-#: gio/gio-tool-monitor.c:231 gio/gio-tool-mount.c:1252 gio/gio-tool-open.c:98
+#: gio/gio-tool-monitor.c:231 gio/gio-tool-mount.c:1253 gio/gio-tool-open.c:98
 #: gio/gio-tool-remove.c:74 gio/gio-tool-trash.c:303
 msgid "No locations given"
 msgstr "Nenhuma localização fornecida"
@@ -2200,19 +2200,19 @@ msgstr "Montar uma unidade TCRYPT oculta"
 msgid "Mount a TCRYPT system volume"
 msgstr "Montar uma unidade TCRYPT de sistema"
 
-#: gio/gio-tool-mount.c:267 gio/gio-tool-mount.c:299
+#: gio/gio-tool-mount.c:268 gio/gio-tool-mount.c:300
 msgid "Anonymous access denied"
 msgstr "Acesso anónimo negado"
 
-#: gio/gio-tool-mount.c:524
+#: gio/gio-tool-mount.c:525
 msgid "No drive for device file"
 msgstr "Nenhum volume para o ficheiro de dispositivo"
 
-#: gio/gio-tool-mount.c:1016
+#: gio/gio-tool-mount.c:1017
 msgid "No volume for given ID"
 msgstr "Nenhum volume para o dado ID"
 
-#: gio/gio-tool-mount.c:1205
+#: gio/gio-tool-mount.c:1206
 msgid "Mount or unmount the locations."
 msgstr "Montar ou desmontar localizações."
 
@@ -4103,11 +4103,11 @@ msgstr "Impossível ligar a %s: "
 msgid "Could not connect: "
 msgstr "Impossível ligar: "
 
-#: gio/gsocketclient.c:1204 gio/gsocketclient.c:1805
+#: gio/gsocketclient.c:1204 gio/gsocketclient.c:1807
 msgid "Proxying over a non-TCP connection is not supported."
 msgstr "Não há suporte à realização de proxy sobre ligações não-TCP."
 
-#: gio/gsocketclient.c:1236 gio/gsocketclient.c:1834
+#: gio/gsocketclient.c:1236 gio/gsocketclient.c:1836
 #, c-format
 msgid "Proxy protocol “%s” is not supported."
 msgstr "O protocolo de proxy “%s” não é suportado."
@@ -4603,25 +4603,25 @@ msgid "The pathname “%s” is not an absolute path"
 msgstr "O nome de caminho “%s” não é um caminho absoluto"
 
 #. Translators: this is the preferred format for expressing the date and the time
-#: glib/gdatetime.c:226
+#: glib/gdatetime.c:228
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
 msgstr "%a %d %b %Y %T %Z"
 
 #. Translators: this is the preferred format for expressing the date
-#: glib/gdatetime.c:229
+#: glib/gdatetime.c:231
 msgctxt "GDateTime"
 msgid "%m/%d/%y"
 msgstr "%y/%m/%d"
 
 #. Translators: this is the preferred format for expressing the time
-#: glib/gdatetime.c:232
+#: glib/gdatetime.c:234
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
 msgstr "%H:%M:%S"
 
 #. Translators: this is the preferred format for expressing 12 hour time
-#: glib/gdatetime.c:235
+#: glib/gdatetime.c:237
 msgctxt "GDateTime"
 msgid "%I:%M:%S %p"
 msgstr "%I:%M:%S %p"
@@ -4642,62 +4642,62 @@ msgstr "%I:%M:%S %p"
 #. * non-European) there is no difference between the standalone and
 #. * complete date form.
 #.
-#: glib/gdatetime.c:274
+#: glib/gdatetime.c:276
 msgctxt "full month name"
 msgid "January"
 msgstr "Janeiro"
 
-#: glib/gdatetime.c:276
+#: glib/gdatetime.c:278
 msgctxt "full month name"
 msgid "February"
 msgstr "Fevereiro"
 
-#: glib/gdatetime.c:278
+#: glib/gdatetime.c:280
 msgctxt "full month name"
 msgid "March"
 msgstr "Março"
 
-#: glib/gdatetime.c:280
+#: glib/gdatetime.c:282
 msgctxt "full month name"
 msgid "April"
 msgstr "Abril"
 
-#: glib/gdatetime.c:282
+#: glib/gdatetime.c:284
 msgctxt "full month name"
 msgid "May"
 msgstr "Maio"
 
-#: glib/gdatetime.c:284
+#: glib/gdatetime.c:286
 msgctxt "full month name"
 msgid "June"
 msgstr "Junho"
 
-#: glib/gdatetime.c:286
+#: glib/gdatetime.c:288
 msgctxt "full month name"
 msgid "July"
 msgstr "Julho"
 
-#: glib/gdatetime.c:288
+#: glib/gdatetime.c:290
 msgctxt "full month name"
 msgid "August"
 msgstr "Agosto"
 
-#: glib/gdatetime.c:290
+#: glib/gdatetime.c:292
 msgctxt "full month name"
 msgid "September"
 msgstr "Setembro"
 
-#: glib/gdatetime.c:292
+#: glib/gdatetime.c:294
 msgctxt "full month name"
 msgid "October"
 msgstr "Outubro"
 
-#: glib/gdatetime.c:294
+#: glib/gdatetime.c:296
 msgctxt "full month name"
 msgid "November"
 msgstr "Novembro"
 
-#: glib/gdatetime.c:296
+#: glib/gdatetime.c:298
 msgctxt "full month name"
 msgid "December"
 msgstr "Dezembro"
@@ -4719,132 +4719,132 @@ msgstr "Dezembro"
 #. * other platform.  Here are abbreviated month names in a form
 #. * appropriate when they are used standalone.
 #.
-#: glib/gdatetime.c:328
+#: glib/gdatetime.c:330
 msgctxt "abbreviated month name"
 msgid "Jan"
 msgstr "Jan"
 
-#: glib/gdatetime.c:330
+#: glib/gdatetime.c:332
 msgctxt "abbreviated month name"
 msgid "Feb"
 msgstr "Fev"
 
-#: glib/gdatetime.c:332
+#: glib/gdatetime.c:334
 msgctxt "abbreviated month name"
 msgid "Mar"
 msgstr "Mar"
 
-#: glib/gdatetime.c:334
+#: glib/gdatetime.c:336
 msgctxt "abbreviated month name"
 msgid "Apr"
 msgstr "Abr"
 
-#: glib/gdatetime.c:336
+#: glib/gdatetime.c:338
 msgctxt "abbreviated month name"
 msgid "May"
 msgstr "Mai"
 
-#: glib/gdatetime.c:338
+#: glib/gdatetime.c:340
 msgctxt "abbreviated month name"
 msgid "Jun"
 msgstr "Jun"
 
-#: glib/gdatetime.c:340
+#: glib/gdatetime.c:342
 msgctxt "abbreviated month name"
 msgid "Jul"
 msgstr "Jul"
 
-#: glib/gdatetime.c:342
+#: glib/gdatetime.c:344
 msgctxt "abbreviated month name"
 msgid "Aug"
 msgstr "Ago"
 
-#: glib/gdatetime.c:344
+#: glib/gdatetime.c:346
 msgctxt "abbreviated month name"
 msgid "Sep"
 msgstr "Set"
 
-#: glib/gdatetime.c:346
+#: glib/gdatetime.c:348
 msgctxt "abbreviated month name"
 msgid "Oct"
 msgstr "Out"
 
-#: glib/gdatetime.c:348
+#: glib/gdatetime.c:350
 msgctxt "abbreviated month name"
 msgid "Nov"
 msgstr "Nov"
 
-#: glib/gdatetime.c:350
+#: glib/gdatetime.c:352
 msgctxt "abbreviated month name"
 msgid "Dec"
 msgstr "Dez"
 
-#: glib/gdatetime.c:365
+#: glib/gdatetime.c:367
 msgctxt "full weekday name"
 msgid "Monday"
 msgstr "2ª feira"
 
-#: glib/gdatetime.c:367
+#: glib/gdatetime.c:369
 msgctxt "full weekday name"
 msgid "Tuesday"
 msgstr "3ª feira"
 
-#: glib/gdatetime.c:369
+#: glib/gdatetime.c:371
 msgctxt "full weekday name"
 msgid "Wednesday"
 msgstr "4ª feira"
 
-#: glib/gdatetime.c:371
+#: glib/gdatetime.c:373
 msgctxt "full weekday name"
 msgid "Thursday"
 msgstr "5ª feira"
 
-#: glib/gdatetime.c:373
+#: glib/gdatetime.c:375
 msgctxt "full weekday name"
 msgid "Friday"
 msgstr "6ª feira"
 
-#: glib/gdatetime.c:375
+#: glib/gdatetime.c:377
 msgctxt "full weekday name"
 msgid "Saturday"
 msgstr "Sábado"
 
-#: glib/gdatetime.c:377
+#: glib/gdatetime.c:379
 msgctxt "full weekday name"
 msgid "Sunday"
 msgstr "Domingo"
 
-#: glib/gdatetime.c:392
+#: glib/gdatetime.c:394
 msgctxt "abbreviated weekday name"
 msgid "Mon"
 msgstr "2ª"
 
-#: glib/gdatetime.c:394
+#: glib/gdatetime.c:396
 msgctxt "abbreviated weekday name"
 msgid "Tue"
 msgstr "3ª"
 
-#: glib/gdatetime.c:396
+#: glib/gdatetime.c:398
 msgctxt "abbreviated weekday name"
 msgid "Wed"
 msgstr "4ª"
 
-#: glib/gdatetime.c:398
+#: glib/gdatetime.c:400
 msgctxt "abbreviated weekday name"
 msgid "Thu"
 msgstr "5ª"
 
-#: glib/gdatetime.c:400
+#: glib/gdatetime.c:402
 msgctxt "abbreviated weekday name"
 msgid "Fri"
 msgstr "6ª"
 
-#: glib/gdatetime.c:402
+#: glib/gdatetime.c:404
 msgctxt "abbreviated weekday name"
 msgid "Sat"
 msgstr "Sáb"
 
-#: glib/gdatetime.c:404
+#: glib/gdatetime.c:406
 msgctxt "abbreviated weekday name"
 msgid "Sun"
 msgstr "Dom"
@@ -4866,62 +4866,62 @@ msgstr "Dom"
 #. * (western European, non-European) there is no difference between the
 #. * standalone and complete date form.
 #.
-#: glib/gdatetime.c:468
+#: glib/gdatetime.c:470
 msgctxt "full month name with day"
 msgid "January"
 msgstr "Janeiro"
 
-#: glib/gdatetime.c:470
+#: glib/gdatetime.c:472
 msgctxt "full month name with day"
 msgid "February"
 msgstr "Fevereiro"
 
-#: glib/gdatetime.c:472
+#: glib/gdatetime.c:474
 msgctxt "full month name with day"
 msgid "March"
 msgstr "Março"
 
-#: glib/gdatetime.c:474
+#: glib/gdatetime.c:476
 msgctxt "full month name with day"
 msgid "April"
 msgstr "Abril"
 
-#: glib/gdatetime.c:476
+#: glib/gdatetime.c:478
 msgctxt "full month name with day"
 msgid "May"
 msgstr "Maio"
 
-#: glib/gdatetime.c:478
+#: glib/gdatetime.c:480
 msgctxt "full month name with day"
 msgid "June"
 msgstr "Junho"
 
-#: glib/gdatetime.c:480
+#: glib/gdatetime.c:482
 msgctxt "full month name with day"
 msgid "July"
 msgstr "Julho"
 
-#: glib/gdatetime.c:482
+#: glib/gdatetime.c:484
 msgctxt "full month name with day"
 msgid "August"
 msgstr "Agosto"
 
-#: glib/gdatetime.c:484
+#: glib/gdatetime.c:486
 msgctxt "full month name with day"
 msgid "September"
 msgstr "Setembro"
 
-#: glib/gdatetime.c:486
+#: glib/gdatetime.c:488
 msgctxt "full month name with day"
 msgid "October"
 msgstr "Outubro"
 
-#: glib/gdatetime.c:488
+#: glib/gdatetime.c:490
 msgctxt "full month name with day"
 msgid "November"
 msgstr "Novembro"
 
-#: glib/gdatetime.c:490
+#: glib/gdatetime.c:492
 msgctxt "full month name with day"
 msgid "December"
 msgstr "Dezembro"
@@ -4943,74 +4943,74 @@ msgstr "Dezembro"
 #. * month names almost ready to copy and paste here.  In other systems
 #. * due to a bug the result is incorrect in some languages.
 #.
-#: glib/gdatetime.c:555
+#: glib/gdatetime.c:557
 msgctxt "abbreviated month name with day"
 msgid "Jan"
 msgstr "Jan"
 
-#: glib/gdatetime.c:557
+#: glib/gdatetime.c:559
 msgctxt "abbreviated month name with day"
 msgid "Feb"
 msgstr "Fev"
 
-#: glib/gdatetime.c:559
+#: glib/gdatetime.c:561
 msgctxt "abbreviated month name with day"
 msgid "Mar"
 msgstr "Mar"
 
-#: glib/gdatetime.c:561
+#: glib/gdatetime.c:563
 msgctxt "abbreviated month name with day"
 msgid "Apr"
 msgstr "Abr"
 
-#: glib/gdatetime.c:563
+#: glib/gdatetime.c:565
 msgctxt "abbreviated month name with day"
 msgid "May"
 msgstr "Mai"
 
-#: glib/gdatetime.c:565
+#: glib/gdatetime.c:567
 msgctxt "abbreviated month name with day"
 msgid "Jun"
 msgstr "Jun"
 
-#: glib/gdatetime.c:567
+#: glib/gdatetime.c:569
 msgctxt "abbreviated month name with day"
 msgid "Jul"
 msgstr "Jul"
 
-#: glib/gdatetime.c:569
+#: glib/gdatetime.c:571
 msgctxt "abbreviated month name with day"
 msgid "Aug"
 msgstr "Ago"
 
-#: glib/gdatetime.c:571
+#: glib/gdatetime.c:573
 msgctxt "abbreviated month name with day"
 msgid "Sep"
 msgstr "Set"
 
-#: glib/gdatetime.c:573
+#: glib/gdatetime.c:575
 msgctxt "abbreviated month name with day"
 msgid "Oct"
 msgstr "Out"
 
-#: glib/gdatetime.c:575
+#: glib/gdatetime.c:577
 msgctxt "abbreviated month name with day"
 msgid "Nov"
 msgstr "Nov"
 
-#: glib/gdatetime.c:577
+#: glib/gdatetime.c:579
 msgctxt "abbreviated month name with day"
 msgid "Dec"
 msgstr "Dez"
 
 #. Translators: 'before midday' indicator
-#: glib/gdatetime.c:594
+#: glib/gdatetime.c:596
 msgctxt "GDateTime"
 msgid "AM"
 msgstr "AM"
 
 #. Translators: 'after midday' indicator
-#: glib/gdatetime.c:597
+#: glib/gdatetime.c:599
 msgctxt "GDateTime"
 msgid "PM"
 msgstr "PM"
@@ -5521,240 +5521,181 @@ msgstr "Argumento em falta para %s"
 msgid "Unknown option %s"
 msgstr "Opção %s desconhecida"
 
-#: glib/gregex.c:257
+#: glib/gregex.c:431
 msgid "corrupted object"
 msgstr "objeto corrompido"
 
-#: glib/gregex.c:259
-msgid "internal error or corrupted object"
-msgstr "erro interno ou objeto corrompido"
-
-#: glib/gregex.c:261
+#: glib/gregex.c:433
 msgid "out of memory"
 msgstr "sem memória livre"
 
-#: glib/gregex.c:266
+#: glib/gregex.c:438
 msgid "backtracking limit reached"
 msgstr "limite de retroceder alcançado"
 
-#: glib/gregex.c:278 glib/gregex.c:286
-msgid "the pattern contains items not supported for partial matching"
-msgstr "o padrão contém itens não suportados para comparação parcial"
-
-#: glib/gregex.c:280
+#: glib/gregex.c:449 glib/gregex.c:695 glib/gregex.c:724
 msgid "internal error"
 msgstr "erro interno"
 
-#: glib/gregex.c:288
+#: glib/gregex.c:451
+msgid "the pattern contains items not supported for partial matching"
+msgstr "o padrão contém itens não suportados para comparação parcial"
+
+#: glib/gregex.c:453
 msgid "back references as conditions are not supported for partial matching"
 msgstr ""
 "referências anteriores como condições não são suportadas para comparação "
 "parcial"
 
-#: glib/gregex.c:297
+#: glib/gregex.c:459
 msgid "recursion limit reached"
 msgstr "alcançado o limite de recursividade"
 
-#: glib/gregex.c:299
-msgid "invalid combination of newline flags"
-msgstr "combinação inválida de parâmetros de quebra de linha"
-
-#: glib/gregex.c:301
+#: glib/gregex.c:461
 msgid "bad offset"
 msgstr "desvio inválido"
 
-#: glib/gregex.c:303
-msgid "short utf8"
-msgstr "utf8 curto"
-
-#: glib/gregex.c:305
+#: glib/gregex.c:463
 msgid "recursion loop"
 msgstr "recursão infinita"
 
-#: glib/gregex.c:309
+#: glib/gregex.c:467
 msgid "unknown error"
 msgstr "erro desconhecido"
 
-#: glib/gregex.c:329
+#: glib/gregex.c:484
 msgid "\\ at end of pattern"
 msgstr "\\ no final do padrão"
 
-#: glib/gregex.c:332
+#: glib/gregex.c:488
 msgid "\\c at end of pattern"
 msgstr "\\c no final do padrão"
 
-#: glib/gregex.c:335
+#: glib/gregex.c:493
 msgid "unrecognized character following \\"
 msgstr "carácter desconhecido após \\"
 
-#: glib/gregex.c:338
+#: glib/gregex.c:497
 msgid "numbers out of order in {} quantifier"
 msgstr "números fora da ordem no quantificador {}"
 
-#: glib/gregex.c:341
+#: glib/gregex.c:501
 msgid "number too big in {} quantifier"
 msgstr "número demasiado grande no quantificador {}"
 
-#: glib/gregex.c:344
+#: glib/gregex.c:505
 msgid "missing terminating ] for character class"
 msgstr "falta o ] de fecho da classe de carácter"
 
-#: glib/gregex.c:347
+#: glib/gregex.c:509
 msgid "invalid escape sequence in character class"
 msgstr "sequência de escape inválida na classe de carácter"
 
-#: glib/gregex.c:350
+#: glib/gregex.c:513
 msgid "range out of order in character class"
 msgstr "intervalo fora da ordem na classe de carácter"
 
-#: glib/gregex.c:353
+#: glib/gregex.c:518
 msgid "nothing to repeat"
 msgstr "nada a repetir"
 
-#: glib/gregex.c:357
-msgid "unexpected repeat"
-msgstr "repetição inesperada"
-
-#: glib/gregex.c:360
+#: glib/gregex.c:522
 msgid "unrecognized character after (? or (?-"
 msgstr "carácter desconhecido após (? or (?-"
 
-#: glib/gregex.c:363
+#: glib/gregex.c:526
 msgid "POSIX named classes are supported only within a class"
 msgstr "Classes denominadas POSIX apenas são suportadas dentro de uma classe"
 
-#: glib/gregex.c:366
-msgid "missing terminating )"
-msgstr "falta o ) de fecho"
-
-#: glib/gregex.c:369
-msgid "reference to non-existent subpattern"
-msgstr "referência a padrão inexistente"
-
-#: glib/gregex.c:372
-msgid "missing ) after comment"
-msgstr "falta o ) após o comentário"
-
-#: glib/gregex.c:375
-msgid "regular expression is too large"
-msgstr "expressão regular demasiado extensa"
-
-#: glib/gregex.c:378
-msgid "failed to get memory"
-msgstr "falha ao obter memória"
-
-#: glib/gregex.c:382
-msgid ") without opening ("
-msgstr ") sem um ( de abertura"
-
-#: glib/gregex.c:386
-msgid "code overflow"
-msgstr "código fora dos limites"
-
-#: glib/gregex.c:390
-msgid "unrecognized character after (?<"
-msgstr "carácter desconhecido após (?<"
-
-#: glib/gregex.c:393
-msgid "lookbehind assertion is not fixed length"
-msgstr "asserção de verificação anterior não é de largura fixa"
-
-#: glib/gregex.c:396
-msgid "malformed number or name after (?("
-msgstr "número ou nome mal formado após (?("
-
-#: glib/gregex.c:399
-msgid "conditional group contains more than two branches"
-msgstr "grupo condicional contém mais de dois ramos"
-
-#: glib/gregex.c:402
-msgid "assertion expected after (?("
-msgstr "esperada uma asserção após (?("
-
-#. translators: '(?R' and '(?[+-]digits' are both meant as (groups of)
-#. * sequences here, '(?-54' would be an example for the second group.
-#.
-#: glib/gregex.c:409
-msgid "(?R or (?[+-]digits must be followed by )"
-msgstr "(?R ou (?[+-]números tem de ser seguido de )"
-
-#: glib/gregex.c:412
-msgid "unknown POSIX class name"
-msgstr "nome de classe POSIX desconhecido"
-
-#: glib/gregex.c:415
+#: glib/gregex.c:530
 msgid "POSIX collating elements are not supported"
 msgstr "Não são suportados os elementos de junção POSIX"
 
-#: glib/gregex.c:418
+#: glib/gregex.c:536
+msgid "missing terminating )"
+msgstr "falta o ) de fecho"
+
+#: glib/gregex.c:540
+msgid "reference to non-existent subpattern"
+msgstr "referência a padrão inexistente"
+
+#: glib/gregex.c:544
+msgid "missing ) after comment"
+msgstr "falta o ) após o comentário"
+
+#: glib/gregex.c:548
+msgid "regular expression is too large"
+msgstr "expressão regular demasiado extensa"
+
+#: glib/gregex.c:552
+msgid "malformed number or name after (?("
+msgstr "número ou nome mal formado após (?("
+
+#: glib/gregex.c:556
+msgid "lookbehind assertion is not fixed length"
+msgstr "asserção de verificação anterior não é de largura fixa"
+
+#: glib/gregex.c:560
+msgid "conditional group contains more than two branches"
+msgstr "grupo condicional contém mais de dois ramos"
+
+#: glib/gregex.c:564
+msgid "assertion expected after (?("
+msgstr "esperada uma asserção após (?("
+
+#: glib/gregex.c:568
+msgid "a numbered reference must not be zero"
+msgstr "uma referência numerada não pode ser zero"
+
+#: glib/gregex.c:572
+msgid "unknown POSIX class name"
+msgstr "nome de classe POSIX desconhecido"
+
+#: glib/gregex.c:577
 msgid "character value in \\x{...} sequence is too large"
 msgstr "valor do carácter na sequência \\x{...} é demasiado grande"
 
-#: glib/gregex.c:421
-msgid "invalid condition (?(0)"
-msgstr "condição inválida (?(0)"
-
-#: glib/gregex.c:424
+#: glib/gregex.c:581
 msgid "\\C not allowed in lookbehind assertion"
 msgstr "\\C não é permitido numa asserção de verificação anterior"
 
-#: glib/gregex.c:431
-msgid "escapes \\L, \\l, \\N{name}, \\U, and \\u are not supported"
-msgstr "escapes \\L, \\l, \\N{nome}, \\U, e \\u não são suportados"
-
-#: glib/gregex.c:434
-msgid "recursive call could loop indefinitely"
-msgstr "chamada recursiva pode iterar indefinidamente"
-
-#: glib/gregex.c:438
-msgid "unrecognized character after (?P"
-msgstr "carácter desconhecido após (?P"
-
-#: glib/gregex.c:441
+#: glib/gregex.c:585
 msgid "missing terminator in subpattern name"
 msgstr "falta o terminador no nome do subpadrão"
 
-#: glib/gregex.c:444
+#: glib/gregex.c:589
 msgid "two named subpatterns have the same name"
 msgstr "dois subpadrões denominados têm o mesmo nome"
 
-#: glib/gregex.c:447
+#: glib/gregex.c:593
 msgid "malformed \\P or \\p sequence"
 msgstr "sequência \\P ou \\p mal formada"
 
-#: glib/gregex.c:450
+#: glib/gregex.c:597
 msgid "unknown property name after \\P or \\p"
 msgstr "nome de propriedade desconhecido após \\P ou \\p"
 
-#: glib/gregex.c:453
+#: glib/gregex.c:601
 msgid "subpattern name is too long (maximum 32 characters)"
 msgstr "nome do subpadrão é demasiado extenso (máximo de 32 caracteres)"
 
-#: glib/gregex.c:456
+#: glib/gregex.c:605
 msgid "too many named subpatterns (maximum 10,000)"
 msgstr "demasiados subpadrões denominados (máximo de 10.000)"
 
-#: glib/gregex.c:459
+#: glib/gregex.c:609
 msgid "octal value is greater than \\377"
 msgstr "valor octal é maior do que \\377"
 
-#: glib/gregex.c:463
-msgid "overran compiling workspace"
-msgstr "derramou fora da área de trabalho de compilação"
-
-#: glib/gregex.c:467
-msgid "previously-checked referenced subpattern not found"
-msgstr "subpadrão referenciado previamente verificado não foi encontrado"
-
-#: glib/gregex.c:470
+#: glib/gregex.c:613
 msgid "DEFINE group contains more than one branch"
 msgstr "Grupo DEFINE contém mais de um ramo"
 
-#: glib/gregex.c:473
+#: glib/gregex.c:617
 msgid "inconsistent NEWLINE options"
 msgstr "opções de NEWLINE inconsistentes"
 
-#: glib/gregex.c:476
+#: glib/gregex.c:621
 msgid ""
 "\\g is not followed by a braced, angle-bracketed, or quoted name or number, "
 "or by a plain number"
@@ -5762,133 +5703,118 @@ msgstr ""
 "\\g não é seguido de um nome ou número delimitado por chavetas, parenteses "
 "ou aspas ou um número simples"
 
-#: glib/gregex.c:480
-msgid "a numbered reference must not be zero"
-msgstr "uma referência numerada não pode ser zero"
-
-#: glib/gregex.c:483
+#: glib/gregex.c:626
 msgid "an argument is not allowed for (*ACCEPT), (*FAIL), or (*COMMIT)"
 msgstr "não é permitido um argumento para (*ACCEPT), (*FAIL), ou (*COMMIT)"
 
-#: glib/gregex.c:486
+#: glib/gregex.c:630
 msgid "(*VERB) not recognized"
 msgstr "(*VERB) não é reconhecido"
 
-#: glib/gregex.c:489
+#: glib/gregex.c:634
 msgid "number is too big"
 msgstr "número é demasiado grande"
 
-#: glib/gregex.c:492
+#: glib/gregex.c:638
 msgid "missing subpattern name after (?&"
 msgstr "falta o nome do subpadrão após (?&"
 
-#: glib/gregex.c:495
-msgid "digit expected after (?+"
-msgstr "esperado um dígito após (?+"
-
-#: glib/gregex.c:498
-msgid "] is an invalid data character in JavaScript compatibility mode"
-msgstr ""
-"] é um carácter de dados inválido no modo de compatibilidade JavaScript"
-
-#: glib/gregex.c:501
+#: glib/gregex.c:642
 msgid "different names for subpatterns of the same number are not allowed"
 msgstr "não são permitidos nomes diferentes para subpadrões do mesmo número"
 
-#: glib/gregex.c:504
+#: glib/gregex.c:646
 msgid "(*MARK) must have an argument"
 msgstr "(*MARK) tem de ter um argumento"
 
-#: glib/gregex.c:507
+#: glib/gregex.c:650
 msgid "\\c must be followed by an ASCII character"
 msgstr "\\c não pode ser seguido de um carácter ASCII"
 
-#: glib/gregex.c:510
+#: glib/gregex.c:654
 msgid "\\k is not followed by a braced, angle-bracketed, or quoted name"
 msgstr ""
 "\\k não é seguido de um nome delimitado por chavetas, parenteses angulares "
 "ou aspas"
 
-#: glib/gregex.c:513
+#: glib/gregex.c:658
 msgid "\\N is not supported in a class"
 msgstr "\\N não é suportado numa classe"
 
-#: glib/gregex.c:516
-msgid "too many forward references"
-msgstr "demasiadas referências de reencaminhamento"
-
-#: glib/gregex.c:519
+#: glib/gregex.c:662
 msgid "name is too long in (*MARK), (*PRUNE), (*SKIP), or (*THEN)"
 msgstr "nome é demasiado extenso em (*MARK), (*PRUNE), (*SKIP), ou (*THEN)"
 
-#: glib/gregex.c:522
-msgid "character value in \\u.... sequence is too large"
-msgstr "valor do carácter na sequência \\u.... é demasiado grande"
+#: glib/gregex.c:666 glib/gregex.c:799
+msgid "code overflow"
+msgstr "código fora dos limites"
 
-#: glib/gregex.c:745 glib/gregex.c:1990
+#: glib/gregex.c:670
+msgid "unrecognized character after (?P"
+msgstr "carácter desconhecido após (?P"
+
+#: glib/gregex.c:674
+msgid "overran compiling workspace"
+msgstr "derramou fora da área de trabalho de compilação"
+
+#: glib/gregex.c:678
+msgid "previously-checked referenced subpattern not found"
+msgstr "subpadrão referenciado previamente verificado não foi encontrado"
+
+#: glib/gregex.c:798 glib/gregex.c:966 glib/gregex.c:2262
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "Erro ao comparar a expressão regular %s: %s"
 
-#: glib/gregex.c:1323
+#: glib/gregex.c:1543
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "Biblioteca PCRE está compilada sem suporte UTF8"
 
-#: glib/gregex.c:1327
-msgid "PCRE library is compiled without UTF8 properties support"
-msgstr "Biblioteca PCRE está compilada sem suporte para propriedades UTF8"
-
-#: glib/gregex.c:1335
+#: glib/gregex.c:1551
 msgid "PCRE library is compiled with incompatible options"
 msgstr "Biblioteca PCRE está compilada com opções incompatíveis"
 
-#: glib/gregex.c:1364
-#, c-format
-msgid "Error while optimizing regular expression %s: %s"
-msgstr "Erro ao otimizar a expressão regular %s: %s"
+#: glib/gregex.c:1673
+msgid "Error while compiling regular expression %s at char %"
+msgstr "Erro ao compilar a expressão regular %s no carácter %"
 
-#: glib/gregex.c:1444
-#, c-format
-msgid "Error while compiling regular expression %s at char %d: %s"
-msgstr "Erro ao compilar a expressão regular %s no carácter %d: %s"
-
-#: glib/gregex.c:2429
+#: glib/gregex.c:2706
 msgid "hexadecimal digit or “}” expected"
 msgstr "esperado um dígito hexadecimal ou \"}\""
 
-#: glib/gregex.c:2445
+#: glib/gregex.c:2722
 msgid "hexadecimal digit expected"
 msgstr "esperado um dígito hexadecimal"
 
-#: glib/gregex.c:2485
+#: glib/gregex.c:2762
 msgid "missing “<” in symbolic reference"
 msgstr "falta “<” na referência simbólica"
 
-#: glib/gregex.c:2494
+#: glib/gregex.c:2771
 msgid "unfinished symbolic reference"
 msgstr "referência simbólica por terminar"
 
-#: glib/gregex.c:2501
+#: glib/gregex.c:2778
 msgid "zero-length symbolic reference"
 msgstr "referência simbólica de tamanho zero"
 
-#: glib/gregex.c:2512
+#: glib/gregex.c:2789
 msgid "digit expected"
 msgstr "esperado um dígito"
 
-#: glib/gregex.c:2530
+#: glib/gregex.c:2807
 msgid "illegal symbolic reference"
 msgstr "referência simbólica ilegal"
 
-#: glib/gregex.c:2593
+#: glib/gregex.c:2870
 msgid "stray final “\\”"
 msgstr "“\\” final a mais"
 
-#: glib/gregex.c:2597
+#: glib/gregex.c:2874
 msgid "unknown escape sequence"
 msgstr "sequência de escape desconhecida"
 
-#: glib/gregex.c:2607
+#: glib/gregex.c:2884
 #, c-format
 msgid "Error while parsing replacement text “%s” at char %lu: %s"
 msgstr "Erro ao processar o texto de substituição “%s” no carácter %lu: %s"
@@ -6053,21 +5979,21 @@ msgid ""
 msgstr ""
 "Erro inesperado no g_io_channel_win32_poll() ao ler dados de um sub processo"
 
-#: glib/gstrfuncs.c:3353 glib/gstrfuncs.c:3455
+#: glib/gstrfuncs.c:3366 glib/gstrfuncs.c:3468
 msgid "Empty string is not a number"
 msgstr "Cadeia vazia não é um número"
 
-#: glib/gstrfuncs.c:3377
+#: glib/gstrfuncs.c:3390
 #, c-format
 msgid "“%s” is not a signed number"
 msgstr "“%s” não é um número com sinal"
 
-#: glib/gstrfuncs.c:3387 glib/gstrfuncs.c:3491
+#: glib/gstrfuncs.c:3400 glib/gstrfuncs.c:3504
 #, c-format
 msgid "Number “%s” is out of bounds [%s, %s]"
 msgstr "Número “%s” está fora do limite [%s, %s]"
 
-#: glib/gstrfuncs.c:3481
+#: glib/gstrfuncs.c:3494
 #, c-format
 msgid "“%s” is not an unsigned number"
 msgstr "“%s” não é um valor sem sinal"
@@ -6367,6 +6293,59 @@ msgstr "%.1f PB"
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
+
+#~ msgid "internal error or corrupted object"
+#~ msgstr "erro interno ou objeto corrompido"
+
+#~ msgid "invalid combination of newline flags"
+#~ msgstr "combinação inválida de parâmetros de quebra de linha"
+
+#~ msgid "short utf8"
+#~ msgstr "utf8 curto"
+
+#~ msgid "unexpected repeat"
+#~ msgstr "repetição inesperada"
+
+#~ msgid "failed to get memory"
+#~ msgstr "falha ao obter memória"
+
+#~ msgid ") without opening ("
+#~ msgstr ") sem um ( de abertura"
+
+#~ msgid "unrecognized character after (?<"
+#~ msgstr "carácter desconhecido após (?<"
+
+#~ msgid "(?R or (?[+-]digits must be followed by )"
+#~ msgstr "(?R ou (?[+-]números tem de ser seguido de )"
+
+#~ msgid "invalid condition (?(0)"
+#~ msgstr "condição inválida (?(0)"
+
+#~ msgid "escapes \\L, \\l, \\N{name}, \\U, and \\u are not supported"
+#~ msgstr "escapes \\L, \\l, \\N{nome}, \\U, e \\u não são suportados"
+
+#~ msgid "recursive call could loop indefinitely"
+#~ msgstr "chamada recursiva pode iterar indefinidamente"
+
+#~ msgid "digit expected after (?+"
+#~ msgstr "esperado um dígito após (?+"
+
+#~ msgid "] is an invalid data character in JavaScript compatibility mode"
+#~ msgstr ""
+#~ "] é um carácter de dados inválido no modo de compatibilidade JavaScript"
+
+#~ msgid "too many forward references"
+#~ msgstr "demasiadas referências de reencaminhamento"
+
+#~ msgid "character value in \\u.... sequence is too large"
+#~ msgstr "valor do carácter na sequência \\u.... é demasiado grande"
+
+#~ msgid "PCRE library is compiled without UTF8 properties support"
+#~ msgstr "Biblioteca PCRE está compilada sem suporte para propriedades UTF8"
+
+#, c-format
+#~ msgid "Error while optimizing regular expression %s: %s"
+#~ msgstr "Erro ao otimizar a expressão regular %s: %s"
 
 #, c-format
 #~ msgid "%.1f MB"
