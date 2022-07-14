@@ -51,6 +51,7 @@
 #include "gfileicon.h"
 #include <glib/gstdio.h>
 #include "glibintl.h"
+#include "glib-private.h"
 #include "giomodule-priv.h"
 #include "gappinfo.h"
 #include "gappinfoprivate.h"
@@ -2918,10 +2919,12 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
 
       if (g_once_init_enter (&gio_launch_desktop_path))
         {
-          const gchar *tmp;
+          const gchar *tmp = NULL;
+          gboolean is_setuid = GLIB_PRIVATE_CALL (g_check_setuid) ();
 
           /* Allow test suite to specify path to gio-launch-desktop */
-          tmp = g_getenv ("GIO_LAUNCH_DESKTOP");
+          if (!is_setuid)
+            tmp = g_getenv ("GIO_LAUNCH_DESKTOP");
 
           /* Fall back on usual searching in $PATH */
           if (tmp == NULL)
