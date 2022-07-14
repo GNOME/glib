@@ -4693,35 +4693,77 @@ g_win32_app_info_launch_uwp_internal (GWin32AppInfo           *info,
                                       GWin32AppInfoShellVerb  *shverb,
                                       GError                 **error)
 {
-  DWORD pid;
   IApplicationActivationManager* paam = NULL;
-  gboolean result = TRUE;
+  gboolean com_initialized = FALSE;
+  gboolean result = FALSE;
+  DWORD pid = 0;
   HRESULT hr;
+  const wchar_t *app_canonical_name = (const wchar_t *) info->app->canonical_name;
 
-  hr = CoCreateInstance (&CLSID_ApplicationActivationManager, NULL, CLSCTX_INPROC_SERVER, &IID_IApplicationActivationManager, (void **) &paam);
+  /* ApplicationActivationManager threading model is both,
+   * prefer the multithreaded apartment type, as we don't
+   * need anything of the STA here. */
+  hr = CoInitializeEx (NULL, COINIT_MULTITHREADED);
+  if (SUCCEEDED (hr))
+    com_initialized = TRUE;
+  else if (hr != RPC_E_CHANGED_MODE)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Failed to initialize the COM support library for the thread: 0x%lx", hr);
+      goto cleanup;
+    }
+
+  hr = CoCreateInstance (&CLSID_ApplicationActivationManager, NULL,
+                         CLSCTX_INPROC_SERVER,
+                         &IID_IApplicationActivationManager, (void **) &paam);
   if (FAILED (hr))
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                    "Failed to create ApplicationActivationManager: 0x%lx", hr);
-      return FALSE;
+      goto cleanup;
     }
 
+  /* The Activate methods return a process identifier (PID), so we should consider
+   * those methods as potentially blocking */
   if (items == NULL)
-    hr = IApplicationActivationManager_ActivateApplication (paam, (const wchar_t *) info->app->canonical_name, NULL, AO_NONE, &pid);
+    hr = IApplicationActivationManager_ActivateApplication (paam,
+                                                            app_canonical_name,
+                                                            NULL, AO_NONE,
+                                                            &pid);
   else if (for_files)
-    hr = IApplicationActivationManager_ActivateForFile (paam, (const wchar_t *) info->app->canonical_name, items, shverb->verb_name, &pid);
+    hr = IApplicationActivationManager_ActivateForFile (paam,
+                                                        app_canonical_name,
+                                                        items, shverb->verb_name,
+                                                        &pid);
   else
-    hr = IApplicationActivationManager_ActivateForProtocol (paam, (const wchar_t *) info->app->canonical_name, items, &pid);
+    hr = IApplicationActivationManager_ActivateForProtocol (paam,
+                                                            app_canonical_name,
+                                                            items,
+                                                            &pid);
 
   if (FAILED (hr))
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                    "The app %s failed to launch: 0x%lx",
                    g_win32_appinfo_application_get_some_name (info->app), hr);
-      result = FALSE;
+      goto cleanup;
     }
 
-  IApplicationActivationManager_Release (paam);
+  result = TRUE;
+
+cleanup:
+
+  if (paam)
+    {
+      IApplicationActivationManager_Release (paam);
+      paam = NULL;
+    }
+
+  if (com_initialized)
+    {
+      CoUninitialize ();
+      com_initialized = FALSE;
+    }
 
   return result;
 }
