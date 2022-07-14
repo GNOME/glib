@@ -93,6 +93,7 @@ fedora-x86_64:
     when: always
     expire_in: 1 week
     paths:
+      - "_build/docs/reference/"
       - "_build/config.h"
       - "_build/glib/glibconfig.h"
       - "_build/meson-logs"
@@ -477,8 +478,10 @@ coverage:
   artifacts:
     name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
     expire_in: 1 week
+    expose_as: 'Coverage Report'
     paths:
-      - _coverage/
+      - _coverage/coverage/index.html
+      - _coverage
   before_script:
     - bash .gitlab-ci/show-execution-environment.sh
   script:
