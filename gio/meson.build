@@ -400,7 +400,7 @@ if host_system != 'windows'
     appinfo_sources += files('gdesktopappinfo.c')
     gio_unix_include_headers += files('gdesktopappinfo.h')
 
-    executable('gio-launch-desktop', 'gio-launch-desktop.c',
+    gio_launch_desktop = executable('gio-launch-desktop', 'gio-launch-desktop.c',
       install : true,
       c_args : gio_c_args,
       # intl.lib is not compatible with SAFESEH
