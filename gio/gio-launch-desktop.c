@@ -44,7 +44,7 @@ main (int argc, char *argv[])
     return -1;
 
   r = snprintf (buf, sizeof (buf), "GIO_LAUNCHED_DESKTOP_FILE_PID=%ld", (long) pid);
-  if (r >= sizeof (buf))
+  if (r < 0 || (size_t) r >= sizeof (buf))
     return -1;
 
   putenv (buf);
