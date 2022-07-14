@@ -476,8 +476,12 @@ translate_compile_error (gint *errcode, const gchar **errmsg)
    * Note that there can be more PCRE errors with the same GRegexError
    * and that some PCRE errors are useless for us.
    */
+  gint original_errcode = *errcode;
 
-  switch (*errcode)
+  *errcode = -1;
+  *errmsg = NULL;
+
+  switch (original_errcode)
     {
     case PCRE2_ERROR_END_BACKSLASH:
       *errcode = G_REGEX_ERROR_STRAY_BACKSLASH;
@@ -725,7 +729,7 @@ translate_compile_error (gint *errcode, const gchar **errmsg)
       break;
     }
 
-  g_assert (*errcode != 0);
+  g_assert (*errcode != -1);
   g_assert (*errmsg != NULL);
 }
 
