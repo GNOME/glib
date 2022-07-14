@@ -846,8 +846,8 @@ pkg.generate(libgio,
                'bindir=' + join_paths('${prefix}', get_option('bindir')),
                'giomoduledir=' + pkgconfig_giomodulesdir,
                'gio=' + join_paths('${bindir}', 'gio'),
-               'gio_querymodules=' + join_paths('${bindir}', 'gio-querymodules'),
-               'glib_compile_schemas=' + join_paths('${bindir}', 'glib-compile-schemas'),
+               'gio_querymodules=@0@'.format(pkgconfig_multiarch_bindir / 'gio-querymodules'),
+               'glib_compile_schemas=@0@'.format(pkgconfig_multiarch_bindir / 'glib-compile-schemas'),
                'glib_compile_resources=' + join_paths('${bindir}', 'glib-compile-resources'),
                'gdbus=' + join_paths('${bindir}', 'gdbus'),
                'gdbus_codegen=' + join_paths('${bindir}', 'gdbus-codegen'),
@@ -958,6 +958,7 @@ executable('gresource', 'gresource-tool.c',
 
 gio_querymodules = executable('gio-querymodules', 'gio-querymodules.c', 'giomodule-priv.c',
   install : true,
+  install_dir : multiarch_bindir,
   c_args : gio_c_args,
   # intl.lib is not compatible with SAFESEH
   link_args : noseh_link_args,
@@ -966,6 +967,7 @@ gio_querymodules = executable('gio-querymodules', 'gio-querymodules.c', 'giomodu
 glib_compile_schemas = executable('glib-compile-schemas',
   ['glib-compile-schemas.c'],
   install : true,
+  install_dir : multiarch_bindir,
   # intl.lib is not compatible with SAFESEH
   link_args : noseh_link_args,
   dependencies : [libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep, gvdb_dep])
@@ -1021,6 +1023,25 @@ if enable_systemtap
     configuration : stp_cdata,
     install_dir : tapset_install_dir,
   )
+endif
+
+if multiarch_bindir != get_option('bindir')
+  foreach exe : ['gio-querymodules', 'glib-compile-schemas']
+    if meson.version().version_compare('>=0.61.0')
+      install_symlink(
+        exe,
+        install_dir : get_option('bindir'),
+        pointing_to : get_option('prefix') / multiarch_bindir / exe,
+      )
+    else
+      warning(
+        'Please use Meson >= 0.61.0 or create a symlink @1@ -> @2@ in packaging'.format(
+          get_option('prefix') / get_option('bindir') / exe,
+          get_option('prefix') / multiarch_bindir / exe,
+        )
+      )
+    endif
+  endforeach
 endif
 
 if build_tests
