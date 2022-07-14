@@ -1661,6 +1661,7 @@ regex_compile (const gchar *pattern,
   if (re == NULL)
     {
       GError *tmp_error;
+      gchar *offset_str;
 
       /* Translate the PCRE error code to GRegexError and use a translated
        * error message if possible */
@@ -1669,11 +1670,13 @@ regex_compile (const gchar *pattern,
       /* PCRE uses byte offsets but we want to show character offsets */
       erroffset = g_utf8_pointer_to_offset (pattern, &pattern[erroffset]);
 
+      offset_str = g_strdup_printf ("%" G_GSIZE_FORMAT, erroffset);
       tmp_error = g_error_new (G_REGEX_ERROR, errcode,
-                               _("Error while compiling regular "
-                                 "expression %s at char %" G_GSIZE_FORMAT ": %s"),
-                               pattern, erroffset, errmsg);
+                               _("Error while compiling regular expression ‘%s’ "
+                                 "at char %s: %s"),
+                               pattern, offset_str, errmsg);
       g_propagate_error (error, tmp_error);
+      g_free (offset_str);
 
       return NULL;
     }
