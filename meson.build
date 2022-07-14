@@ -88,11 +88,13 @@ if get_option('multiarch')
   # to an architecture-dependent location, with a compatibility symlink
   # in the PATH.
   multiarch_bindir = get_option('libdir') / 'glib-2.0'
+  multiarch_libexecdir = multiarch_bindir
   pkgconfig_multiarch_bindir = '${libdir}/glib-2.0'
 else
   # For single-architecture distributions, just install them into the PATH
   # as was traditionally done.
   multiarch_bindir = get_option('bindir')
+  multiarch_libexecdir = get_option('libexecdir')
   pkgconfig_multiarch_bindir = '${bindir}'
 endif
 

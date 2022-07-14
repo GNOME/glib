@@ -1,6 +1,7 @@
 gio_c_args = [
   '-DG_LOG_DOMAIN="GLib-GIO"',
   '-DGIO_COMPILATION',
+  '-DGIO_LAUNCH_DESKTOP="@0@"'.format(glib_prefix / multiarch_libexecdir / 'gio-launch-desktop'),
   '-DGIO_MODULE_DIR="@0@"'.format(glib_giomodulesdir),
   '-DLOCALSTATEDIR="@0@"'.format(glib_localstatedir),
 ]
@@ -402,6 +403,7 @@ if host_system != 'windows'
 
     gio_launch_desktop = executable('gio-launch-desktop', 'gio-launch-desktop.c',
       install : true,
+      install_dir : multiarch_libexecdir,
       c_args : gio_c_args,
       # intl.lib is not compatible with SAFESEH
       link_args : noseh_link_args)

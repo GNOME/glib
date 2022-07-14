@@ -2926,6 +2926,10 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
           if (!is_setuid)
             tmp = g_getenv ("GIO_LAUNCH_DESKTOP");
 
+          /* Allow build system to specify path to gio-launch-desktop */
+          if (tmp == NULL && g_file_test (GIO_LAUNCH_DESKTOP, G_FILE_TEST_IS_EXECUTABLE))
+            tmp = GIO_LAUNCH_DESKTOP;
+
           /* Fall back on usual searching in $PATH */
           if (tmp == NULL)
             tmp = "gio-launch-desktop";
