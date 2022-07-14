@@ -10,16 +10,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-07-12 11:46+0000\n"
-"PO-Revision-Date: 2022-07-12 19:25+0300\n"
+"POT-Creation-Date: 2022-07-14 13:15+0000\n"
+"PO-Revision-Date: 2022-07-14 16:30+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<"
-"=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Lokalize 20.12.0\n"
 
 #: gio/gappinfo.c:335
@@ -318,7 +318,8 @@ msgstr "Неправильний об'єкт, не ініціалізовани�
 
 #: gio/gcharsetconverter.c:283 gio/gcharsetconverter.c:311
 msgid "Incomplete multibyte sequence in input"
-msgstr "Неправильна багатобайтова послідовність у перетворюваних вхідних даних"
+msgstr ""
+"Неправильна багатобайтова послідовність у перетворюваних вхідних даних"
 
 #: gio/gcharsetconverter.c:317 gio/gcharsetconverter.c:326
 msgid "Not enough space in destination"
@@ -479,7 +480,8 @@ msgstr ""
 
 #: gio/gdbusaddress.c:653
 #, c-format
-msgid "Error in address “%s” — the noncefile attribute is missing or malformed"
+msgid ""
+"Error in address “%s” — the noncefile attribute is missing or malformed"
 msgstr ""
 "Помилка в адресі «%s» — атрибут не вказано атрибут noncefile або помилкове "
 "форматування атрибута"
@@ -517,7 +519,8 @@ msgstr "Вказана адреса порожня"
 #: gio/gdbusaddress.c:1101
 #, c-format
 msgid "Cannot spawn a message bus when AT_SECURE is set"
-msgstr "Неможливо породити процес шини повідомлень, якщо встановлено AT_SECURE"
+msgstr ""
+"Неможливо породити процес шини повідомлень, якщо встановлено AT_SECURE"
 
 #: gio/gdbusaddress.c:1108
 msgid "Cannot spawn a message bus without a machine-id: "
@@ -594,7 +597,8 @@ msgstr "Помилка при отриманні відомостей для к�
 #, c-format
 msgid ""
 "Permissions on directory “%s” are malformed. Expected mode 0700, got 0%o"
-msgstr "Помилкові права на каталог «%s». Очікуваний режим — 0700, отримано 0%o"
+msgstr ""
+"Помилкові права на каталог «%s». Очікуваний режим — 0700, отримано 0%o"
 
 #: gio/gdbusauthmechanismsha1.c:350 gio/gdbusauthmechanismsha1.c:361
 #, c-format
@@ -1045,7 +1049,8 @@ msgstr "Рядок «%s» не є припустимим GUID D-Bus"
 #: gio/gdbusserver.c:1152
 #, c-format
 msgid "Cannot listen on unsupported transport “%s”"
-msgstr "Неможливо очікувати на дані на каналі передавання «%s», якого не існує"
+msgstr ""
+"Неможливо очікувати на дані на каналі передавання «%s», якого не існує"
 
 #: gio/gdbus-tool.c:113
 #, c-format
@@ -1127,7 +1132,8 @@ msgstr "Вказано декілька кінцевих точок з'єдна�
 #, c-format
 msgid ""
 "Warning: According to introspection data, interface “%s” does not exist\n"
-msgstr "Попередження: згідно з даними інтроспекції, інтерфейсу «%s» не існує\n"
+msgstr ""
+"Попередження: згідно з даними інтроспекції, інтерфейсу «%s» не існує\n"
 
 #: gio/gdbus-tool.c:534
 #, c-format
@@ -2717,7 +2723,8 @@ msgstr "<alias value='%s'/> вже вказано"
 #: gio/glib-compile-schemas.c:606
 #, c-format
 msgid "alias target “%s” is not in enumerated type"
-msgstr "призначення альтернативної назви «%s» не належить до нумерованого типу"
+msgstr ""
+"призначення альтернативної назви «%s» не належить до нумерованого типу"
 
 #: gio/glib-compile-schemas.c:607
 #, c-format
@@ -2750,7 +2757,8 @@ msgstr ""
 #: gio/glib-compile-schemas.c:830
 #, c-format
 msgid "Invalid name “%s”: two successive hyphens (“--”) are not permitted"
-msgstr "Некоректна назва «%s»: не можна вказувати два дефіси одночасно («--»)."
+msgstr ""
+"Некоректна назва «%s»: не можна вказувати два дефіси одночасно («--»)."
 
 #: gio/glib-compile-schemas.c:839
 #, c-format
@@ -4129,13 +4137,13 @@ msgstr "Не вдалося під'єднатися до %s: "
 msgid "Could not connect: "
 msgstr "Не вдалося під'єднатися до: "
 
-#: gio/gsocketclient.c:1204 gio/gsocketclient.c:1805
+#: gio/gsocketclient.c:1204 gio/gsocketclient.c:1807
 msgid "Proxying over a non-TCP connection is not supported."
 msgstr ""
 "Підтримки передавання даних за допомогою проксі-сервера через не-TCP "
 "з'єднання не передбачено."
 
-#: gio/gsocketclient.c:1236 gio/gsocketclient.c:1834
+#: gio/gsocketclient.c:1236 gio/gsocketclient.c:1836
 #, c-format
 msgid "Proxy protocol “%s” is not supported."
 msgstr "Підтримки протоколу проксі «%s» не передбачено."
@@ -5434,7 +5442,8 @@ msgstr "Документ порожній чи містить лише проп�
 
 #: glib/gmarkup.c:1815
 msgid "Document ended unexpectedly just after an open angle bracket “<”"
-msgstr "Документ раптово закінчився відразу після початкової кутової дужки «<»"
+msgstr ""
+"Документ раптово закінчився відразу після початкової кутової дужки «<»"
 
 #: glib/gmarkup.c:1823 glib/gmarkup.c:1868
 #, c-format
@@ -5490,7 +5499,8 @@ msgstr "Документ раптово закінчився у середині
 
 #: glib/gmarkup.c:1888
 msgid "Document ended unexpectedly inside a comment or processing instruction"
-msgstr "Документ раптово закінчився у середині коментарю чи інструкції обробки"
+msgstr ""
+"Документ раптово закінчився у середині коментарю чи інструкції обробки"
 
 #: glib/goption.c:875
 msgid "[OPTION…]"
@@ -5794,7 +5804,7 @@ msgid "previously-checked referenced subpattern not found"
 msgstr ""
 "раніше перевірений вкладений шаблон, на який йде посилання не знайдений"
 
-#: glib/gregex.c:798 glib/gregex.c:966 glib/gregex.c:2262
+#: glib/gregex.c:798 glib/gregex.c:966 glib/gregex.c:2265
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "Помилка під час пошуку відповідності регулярному виразу %s: %s"
@@ -5807,48 +5817,49 @@ msgstr "Бібліотека PCRE не підтримує UTF8"
 msgid "PCRE library is compiled with incompatible options"
 msgstr "Бібліотека PCRE зібрана з несумісними параметрами"
 
-#: glib/gregex.c:1673
-#| msgid "Error while compiling regular expression %s at char %d: %s"
-msgid "Error while compiling regular expression %s at char %"
-msgstr "Помилка при компіляції регулярного виразу %s на символі %"
+#: glib/gregex.c:1675
+#, c-format
+#| msgid "Error while compiling regular expression %s at char %"
+msgid "Error while compiling regular expression ‘%s’ at char %s: %s"
+msgstr "Помилка при компіляції регулярного виразу «%s» на символі %s: %s"
 
-#: glib/gregex.c:2706
+#: glib/gregex.c:2709
 msgid "hexadecimal digit or “}” expected"
 msgstr "мало бути використано шістнадцяткову цифру або символ «}»"
 
-#: glib/gregex.c:2722
+#: glib/gregex.c:2725
 msgid "hexadecimal digit expected"
 msgstr "очікується шістнадцяткова цифра"
 
-#: glib/gregex.c:2762
+#: glib/gregex.c:2765
 msgid "missing “<” in symbolic reference"
 msgstr "у символічному посиланні пропущено «<»"
 
-#: glib/gregex.c:2771
+#: glib/gregex.c:2774
 msgid "unfinished symbolic reference"
 msgstr "незакінчене символьне посилання"
 
-#: glib/gregex.c:2778
+#: glib/gregex.c:2781
 msgid "zero-length symbolic reference"
 msgstr "символьне посилання нульової довжини"
 
-#: glib/gregex.c:2789
+#: glib/gregex.c:2792
 msgid "digit expected"
 msgstr "очікується цифра"
 
-#: glib/gregex.c:2807
+#: glib/gregex.c:2810
 msgid "illegal symbolic reference"
 msgstr "некоректне символьне посилання"
 
-#: glib/gregex.c:2870
+#: glib/gregex.c:2873
 msgid "stray final “\\”"
 msgstr "відкидати кінцеві «\\»"
 
-#: glib/gregex.c:2874
+#: glib/gregex.c:2877
 msgid "unknown escape sequence"
 msgstr "невідома escape-послідовність"
 
-#: glib/gregex.c:2884
+#: glib/gregex.c:2887
 #, c-format
 msgid "Error while parsing replacement text “%s” at char %lu: %s"
 msgstr ""
