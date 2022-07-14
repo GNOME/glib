@@ -47,6 +47,8 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 
+#include "gjournal-private.h"
+
 /*
  * write_all:
  * @fd: a file descriptor
@@ -188,6 +190,9 @@ set_up_journal (const char *argv1)
   const char *identifier;
   const char *slash;
   int fd;
+
+  if (!_g_fd_is_journal (STDOUT_FILENO) && !_g_fd_is_journal (STDERR_FILENO))
+    return;
 
   identifier = getenv ("GIO_LAUNCHED_DESKTOP_FILE");
 

@@ -400,8 +400,14 @@ if host_system != 'windows'
     contenttype_sources += files('gcontenttype.c')
     appinfo_sources += files('gdesktopappinfo.c')
     gio_unix_include_headers += files('gdesktopappinfo.h')
+    launch_desktop_sources = files('gio-launch-desktop.c')
 
-    gio_launch_desktop = executable('gio-launch-desktop', 'gio-launch-desktop.c',
+    if host_system == 'linux'
+      launch_desktop_sources += files('../glib/gjournal-private.c')
+    endif
+
+    gio_launch_desktop = executable('gio-launch-desktop', launch_desktop_sources,
+      include_directories : glibinc,
       install : true,
       install_dir : multiarch_libexecdir,
       c_args : gio_c_args,
