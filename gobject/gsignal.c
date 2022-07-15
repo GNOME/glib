@@ -3172,6 +3172,12 @@ g_signal_has_handler_pending (gpointer instance,
   return has_pending;
 }
 
+static void
+signal_emitv_unlocked (const GValue *instance_and_params,
+                       guint         signal_id,
+                       GQuark        detail,
+                       GValue       *return_value);
+
 /**
  * g_signal_emitv:
  * @instance_and_params: (array): argument list for the signal emission.
@@ -3195,6 +3201,17 @@ g_signal_emitv (const GValue *instance_and_params,
 		GQuark	      detail,
 		GValue       *return_value)
 {
+  SIGNAL_LOCK ();
+  signal_emitv_unlocked (instance_and_params, signal_id, detail, return_value);
+  SIGNAL_UNLOCK ();
+}
+
+static void
+signal_emitv_unlocked (const GValue *instance_and_params,
+                       guint         signal_id,
+                       GQuark        detail,
+                       GValue       *return_value)
+{
   gpointer instance;
   SignalNode *node;
 #ifdef G_ENABLE_DEBUG
@@ -3211,19 +3228,16 @@ g_signal_emitv (const GValue *instance_and_params,
   param_values = instance_and_params + 1;
 #endif
 
-  SIGNAL_LOCK ();
   node = LOOKUP_SIGNAL_NODE (signal_id);
   if (!node || !g_type_is_a (G_TYPE_FROM_INSTANCE (instance), node->itype))
     {
       g_critical ("%s: signal id '%u' is invalid for instance '%p'", G_STRLOC, signal_id, instance);
-      SIGNAL_UNLOCK ();
       return;
     }
 #ifdef G_ENABLE_DEBUG
   if (detail && !(node->flags & G_SIGNAL_DETAILED))
     {
       g_critical ("%s: signal id '%u' does not support detail (%u)", G_STRLOC, signal_id, detail);
-      SIGNAL_UNLOCK ();
       return;
     }
   for (i = 0; i < node->n_params; i++)
@@ -3235,7 +3249,6 @@ g_signal_emitv (const GValue *instance_and_params,
 		    i,
 		    node->name,
 		    G_VALUE_TYPE_NAME (param_values + i));
-	SIGNAL_UNLOCK ();
 	return;
       }
   if (node->return_type != G_TYPE_NONE)
@@ -3246,7 +3259,6 @@ g_signal_emitv (const GValue *instance_and_params,
 		      G_STRLOC,
 		      type_debug_name (node->return_type),
 		      node->name);
-	  SIGNAL_UNLOCK ();
 	  return;
 	}
       else if (!node->accumulator && !G_TYPE_CHECK_VALUE_TYPE (return_value, node->return_type & ~G_SIGNAL_TYPE_STATIC_SCOPE))
@@ -3256,7 +3268,6 @@ g_signal_emitv (const GValue *instance_and_params,
 		      type_debug_name (node->return_type),
 		      node->name,
 		      G_VALUE_TYPE_NAME (return_value));
-	  SIGNAL_UNLOCK ();
 	  return;
 	}
     }
@@ -3283,7 +3294,6 @@ g_signal_emitv (const GValue *instance_and_params,
       if (hlist == NULL || hlist->handlers == NULL)
 	{
 	  /* nothing to do to emit this signal */
-	  SIGNAL_UNLOCK ();
 	  /* g_printerr ("omitting emission of \"%s\"\n", node->name); */
 	  return;
 	}
@@ -3291,6 +3301,7 @@ g_signal_emitv (const GValue *instance_and_params,
 
   SIGNAL_UNLOCK ();
   signal_emit_unlocked_R (node, detail, instance, return_value, instance_and_params);
+  SIGNAL_LOCK ();
 }
 
 static inline gboolean
