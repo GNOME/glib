@@ -1216,12 +1216,17 @@ g_signal_parse_name (const gchar *detailed_signal,
   
   SIGNAL_LOCK ();
   signal_id = signal_parse_name (detailed_signal, itype, &detail, force_detail_quark);
-  SIGNAL_UNLOCK ();
 
   node = signal_id ? LOOKUP_SIGNAL_NODE (signal_id) : NULL;
+
   if (!node || node->destroyed ||
       (detail && !(node->flags & G_SIGNAL_DETAILED)))
-    return FALSE;
+    {
+      SIGNAL_UNLOCK ();
+      return FALSE;
+    }
+
+  SIGNAL_UNLOCK ();
 
   if (signal_id_p)
     *signal_id_p = signal_id;
