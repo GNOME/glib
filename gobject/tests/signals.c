@@ -1130,12 +1130,35 @@ hook_func (GSignalInvocationHint *ihint,
   return TRUE;
 }
 
+static gboolean
+hook_func_removal (GSignalInvocationHint *ihint,
+                   guint                  n_params,
+                   const GValue          *params,
+                   gpointer               data)
+{
+  gint *count = data;
+
+  (*count)++;
+
+  return FALSE;
+}
+
+static void
+simple_handler_remove_hook (GObject *sender,
+                            gpointer data)
+{
+  gulong *hook = data;
+
+  g_signal_remove_emission_hook (simple_id, *hook);
+}
+
 static void
 test_emission_hook (void)
 {
   GObject *test1, *test2;
   gint count = 0;
   gulong hook;
+  gulong connection_id;
 
   test1 = g_object_new (test_get_type (), NULL);
   test2 = g_object_new (test_get_type (), NULL);
@@ -1149,6 +1172,73 @@ test_emission_hook (void)
   g_signal_remove_emission_hook (simple_id, hook);
   g_signal_emit_by_name (test1, "simple");
   g_assert_cmpint (count, ==, 2);
+
+  count = 0;
+  hook = g_signal_add_emission_hook (simple_id, 0, hook_func_removal, &count, NULL);
+  g_assert_cmpint (count, ==, 0);
+  g_signal_emit_by_name (test1, "simple");
+  g_assert_cmpint (count, ==, 1);
+  g_signal_emit_by_name (test2, "simple");
+  g_assert_cmpint (count, ==, 1);
+
+  g_test_expect_message ("GLib-GObject", G_LOG_LEVEL_CRITICAL,
+                         "*simple* had no hook * to remove");
+  g_signal_remove_emission_hook (simple_id, hook);
+  g_test_assert_expected_messages ();
+
+  count = 0;
+  hook = g_signal_add_emission_hook (simple_id, 0, hook_func, &count, NULL);
+  connection_id = g_signal_connect (test1, "simple",
+                                    G_CALLBACK (simple_handler_remove_hook), &hook);
+  g_assert_cmpint (count, ==, 0);
+  g_signal_emit_by_name (test1, "simple");
+  g_assert_cmpint (count, ==, 1);
+  g_signal_emit_by_name (test2, "simple");
+  g_assert_cmpint (count, ==, 1);
+
+  g_test_expect_message ("GLib-GObject", G_LOG_LEVEL_CRITICAL,
+                         "*simple* had no hook * to remove");
+  g_signal_remove_emission_hook (simple_id, hook);
+  g_test_assert_expected_messages ();
+
+  g_clear_signal_handler (&connection_id, test1);
+
+  gulong hooks[10];
+  count = 0;
+
+  for (size_t i = 0; i < G_N_ELEMENTS (hooks); ++i)
+    hooks[i] = g_signal_add_emission_hook (simple_id, 0, hook_func, &count, NULL);
+
+  g_assert_cmpint (count, ==, 0);
+  g_signal_emit_by_name (test1, "simple");
+  g_assert_cmpint (count, ==, 10);
+  g_signal_emit_by_name (test2, "simple");
+  g_assert_cmpint (count, ==, 20);
+
+  for (size_t i = 0; i < G_N_ELEMENTS (hooks); ++i)
+    g_signal_remove_emission_hook (simple_id, hooks[i]);
+
+  g_signal_emit_by_name (test1, "simple");
+  g_assert_cmpint (count, ==, 20);
+
+  count = 0;
+
+  for (size_t i = 0; i < G_N_ELEMENTS (hooks); ++i)
+    hooks[i] = g_signal_add_emission_hook (simple_id, 0, hook_func_removal, &count, NULL);
+
+  g_assert_cmpint (count, ==, 0);
+  g_signal_emit_by_name (test1, "simple");
+  g_assert_cmpint (count, ==, 10);
+  g_signal_emit_by_name (test2, "simple");
+  g_assert_cmpint (count, ==, 10);
+
+  for (size_t i = 0; i < G_N_ELEMENTS (hooks); ++i)
+    {
+      g_test_expect_message ("GLib-GObject", G_LOG_LEVEL_CRITICAL,
+                         "*simple* had no hook * to remove");
+      g_signal_remove_emission_hook (simple_id, hooks[i]);
+      g_test_assert_expected_messages ();
+    }
 
   g_object_unref (test1);
   g_object_unref (test2);

@@ -3299,9 +3299,10 @@ signal_emitv_unlocked (const GValue *instance_and_params,
 	}
     }
 
-  SIGNAL_UNLOCK ();
-  signal_emit_unlocked_R (node, detail, instance, return_value, instance_and_params);
-  SIGNAL_LOCK ();
+  /* Pass a stable node pointer, whose address can't change even if the
+   * g_signal_nodes array gets reallocated. */
+  SignalNode node_copy = *node;
+  signal_emit_unlocked_R (&node_copy, detail, instance, return_value, instance_and_params);
 }
 
 static inline gboolean
@@ -3608,7 +3609,11 @@ signal_emit_valist_unlocked (gpointer instance,
   instance_and_params->g_type = 0;
   g_value_init_from_instance (instance_and_params, instance);
   if (node_copy.return_type == G_TYPE_NONE)
-    signal_emit_unlocked_R (&node_copy, detail, instance, NULL, instance_and_params);
+    {
+      SIGNAL_LOCK ();
+      signal_emit_unlocked_R (&node_copy, detail, instance, NULL, instance_and_params);
+      SIGNAL_UNLOCK ();
+    }
   else
     {
       GValue return_value = G_VALUE_INIT;
@@ -3618,7 +3623,9 @@ signal_emit_valist_unlocked (gpointer instance,
       
       g_value_init (&return_value, rtype);
 
+      SIGNAL_LOCK ();
       signal_emit_unlocked_R (&node_copy, detail, instance, &return_value, instance_and_params);
+      SIGNAL_UNLOCK ();
 
       G_VALUE_LCOPY (&return_value,
 		     var_args,
@@ -3721,6 +3728,24 @@ g_signal_emit_by_name (gpointer     instance,
     }
 }
 
+G_ALWAYS_INLINE static inline GValue *
+maybe_init_accumulator_unlocked (SignalNode *node,
+                                 GValue     *emission_return,
+                                 GValue     *accumulator_value)
+{
+  if (node->accumulator)
+    {
+      if (accumulator_value->g_type)
+        return accumulator_value;
+
+      g_value_init (accumulator_value,
+                    node->return_type & ~G_SIGNAL_TYPE_STATIC_SCOPE);
+      return accumulator_value;
+    }
+
+  return emission_return;
+}
+
 static gboolean
 signal_emit_unlocked_R (SignalNode   *node,
 			GQuark	      detail,
@@ -3737,11 +3762,16 @@ signal_emit_unlocked_R (SignalNode   *node,
   guint signal_id;
   gulong max_sequential_handler_number;
   gboolean return_value_altered = FALSE;
-  
+  guint n_params;
+
   TRACE(GOBJECT_SIGNAL_EMIT(node->signal_id, detail, instance, G_TYPE_FROM_INSTANCE (instance)));
 
-  SIGNAL_LOCK ();
+  /* We expect this function to be called with a stable SignalNode pointer
+   * that cannot change location, so accessing its stable members should
+   * always work even after a lock/unlock.
+   */
   signal_id = node->signal_id;
+  n_params = node->n_params + 1;
 
   if (node->flags & G_SIGNAL_NO_RECURSE)
     {
@@ -3750,20 +3780,10 @@ signal_emit_unlocked_R (SignalNode   *node,
       if (emission_node)
         {
           emission_node->state = EMISSION_RESTART;
-          SIGNAL_UNLOCK ();
           return return_value_altered;
         }
     }
   accumulator = node->accumulator;
-  if (accumulator)
-    {
-      SIGNAL_UNLOCK ();
-      g_value_init (&accu, node->return_type & ~G_SIGNAL_TYPE_STATIC_SCOPE);
-      return_accu = &accu;
-      SIGNAL_LOCK ();
-    }
-  else
-    return_accu = emission_return;
   emission.instance = instance;
   emission.ihint.signal_id = node->signal_id;
   emission.ihint.detail = detail;
@@ -3791,9 +3811,10 @@ signal_emit_unlocked_R (SignalNode   *node,
 
       emission.chain_type = G_TYPE_FROM_INSTANCE (instance);
       SIGNAL_UNLOCK ();
+      return_accu = maybe_init_accumulator_unlocked (node, emission_return, &accu);
       g_closure_invoke (class_closure,
 			return_accu,
-			node->n_params + 1,
+                        n_params,
 			instance_and_params,
 			&emission.ihint);
       if (!accumulate (&emission.ihint, emission_return, &accu, accumulator) &&
@@ -3808,35 +3829,94 @@ signal_emit_unlocked_R (SignalNode   *node,
       else if (emission.state == EMISSION_RESTART)
 	goto EMIT_RESTART;
     }
-  
+
   if (node->emission_hooks)
     {
-      gboolean need_destroy, was_in_call, may_recurse = TRUE;
       GHook *hook;
+      GHook **emission_hooks = NULL;
+      guint8 *hook_returns = NULL;
+      size_t n_emission_hooks = 0;
+      const gboolean may_recurse = TRUE;
+      guint i;
 
       emission.state = EMISSION_HOOK;
+
+      /* Quick check to determine whether any hooks match this emission,
+       * before committing to the more complex work of calling those hooks.
+       */
       hook = g_hook_first_valid (node->emission_hooks, may_recurse);
       while (hook)
 	{
 	  SignalHook *signal_hook = SIGNAL_HOOK (hook);
-	  
+
 	  if (!signal_hook->detail || signal_hook->detail == detail)
-	    {
-	      GSignalEmissionHook hook_func = (GSignalEmissionHook) hook->func;
-	      
-	      was_in_call = G_HOOK_IN_CALL (hook);
-	      hook->flags |= G_HOOK_FLAG_IN_CALL;
-              SIGNAL_UNLOCK ();
-	      need_destroy = !hook_func (&emission.ihint, node->n_params + 1, instance_and_params, hook->data);
-	      SIGNAL_LOCK ();
-	      if (!was_in_call)
-		hook->flags &= ~G_HOOK_FLAG_IN_CALL;
-	      if (need_destroy)
-		g_hook_destroy_link (node->emission_hooks, hook);
-	    }
+            n_emission_hooks += 1;
+
 	  hook = g_hook_next_valid (node->emission_hooks, hook, may_recurse);
 	}
-      
+
+      if G_UNLIKELY (n_emission_hooks > 0)
+        {
+          emission_hooks = g_newa (GHook *, n_emission_hooks);
+          hook_returns = g_newa (guint8, n_emission_hooks);
+
+          /* Re-iterate back through the matching hooks and copy them into
+           * an array which won’t change when we unlock to call the
+           * user-provided hook functions.
+           * These functions may change hook configuration for this signal,
+           * add / remove signal handlers, etc.
+           */
+          hook = g_hook_first_valid (node->emission_hooks, may_recurse);
+          for (i = 0; hook; )
+            {
+              SignalHook *signal_hook = SIGNAL_HOOK (hook);
+
+              if (!signal_hook->detail || signal_hook->detail == detail)
+                emission_hooks[i++] = g_hook_ref (node->emission_hooks, hook);
+
+              hook = g_hook_next_valid (node->emission_hooks, hook, may_recurse);
+            }
+
+            g_assert (i == n_emission_hooks);
+
+            SIGNAL_UNLOCK ();
+
+            for (i = 0; i < n_emission_hooks; ++i)
+              {
+                GSignalEmissionHook hook_func;
+                gboolean need_destroy;
+                guint old_flags;
+
+                hook = emission_hooks[i];
+                hook_func = (GSignalEmissionHook) hook->func;
+
+                old_flags = g_atomic_int_or (&hook->flags, G_HOOK_FLAG_IN_CALL);
+                need_destroy = !hook_func (&emission.ihint, n_params,
+                                           instance_and_params, hook->data);
+
+                if (!(old_flags & G_HOOK_FLAG_IN_CALL))
+                  {
+                    g_atomic_int_compare_and_exchange (&hook->flags,
+                                                       old_flags | G_HOOK_FLAG_IN_CALL,
+                                                       old_flags);
+                  }
+
+                hook_returns[i] = !!need_destroy;
+              }
+
+            SIGNAL_LOCK ();
+
+            for (i = 0; i < n_emission_hooks; i++)
+              {
+                hook = emission_hooks[i];
+
+                g_hook_unref (node->emission_hooks, hook);
+
+                if (hook_returns[i])
+                  g_hook_destroy_link (node->emission_hooks, hook);
+              }
+	}
+
       if (emission.state == EMISSION_RESTART)
 	goto EMIT_RESTART;
     }
@@ -3861,9 +3941,10 @@ signal_emit_unlocked_R (SignalNode   *node,
 		   handler->sequential_number < max_sequential_handler_number)
 	    {
 	      SIGNAL_UNLOCK ();
+	      return_accu = maybe_init_accumulator_unlocked (node, emission_return, &accu);
 	      g_closure_invoke (handler->closure,
 				return_accu,
-				node->n_params + 1,
+                                n_params,
 				instance_and_params,
 				&emission.ihint);
 	      if (!accumulate (&emission.ihint, emission_return, &accu, accumulator) &&
@@ -3900,9 +3981,10 @@ signal_emit_unlocked_R (SignalNode   *node,
       
       emission.chain_type = G_TYPE_FROM_INSTANCE (instance);
       SIGNAL_UNLOCK ();
+      return_accu = maybe_init_accumulator_unlocked (node, emission_return, &accu);
       g_closure_invoke (class_closure,
 			return_accu,
-			node->n_params + 1,
+                        n_params,
 			instance_and_params,
 			&emission.ihint);
       if (!accumulate (&emission.ihint, emission_return, &accu, accumulator) &&
@@ -3932,9 +4014,10 @@ signal_emit_unlocked_R (SignalNode   *node,
 	      handler->sequential_number < max_sequential_handler_number)
 	    {
 	      SIGNAL_UNLOCK ();
+	      return_accu = maybe_init_accumulator_unlocked (node, emission_return, &accu);
 	      g_closure_invoke (handler->closure,
 				return_accu,
-				node->n_params + 1,
+                                n_params,
 				instance_and_params,
 				&emission.ihint);
 	      if (!accumulate (&emission.ihint, emission_return, &accu, accumulator) &&
@@ -3981,7 +4064,7 @@ signal_emit_unlocked_R (SignalNode   *node,
 	}
       g_closure_invoke (class_closure,
 			node->return_type != G_TYPE_NONE ? &accu : NULL,
-			node->n_params + 1,
+                        n_params,
 			instance_and_params,
 			&emission.ihint);
       if (!accumulate (&emission.ihint, emission_return, &accu, accumulator) &&
@@ -4002,7 +4085,6 @@ signal_emit_unlocked_R (SignalNode   *node,
     handler_unref_R (signal_id, instance, handler_list);
   
   emission_pop (&emission);
-  SIGNAL_UNLOCK ();
   if (accumulator)
     g_value_unset (&accu);
 
