@@ -38,9 +38,6 @@ gobject_tests = {
   },
   'basics-gobject' : {},
   'boxed' : {},
-  'cxx' : {
-    'source' : ['cxx.cpp'],
-  },
   'defaultiface' : {
     'source' : ['defaultiface.c', 'testmodule.c'],
   },
@@ -100,6 +97,14 @@ gobject_tests = {
     'c_args' : ['-DTESTNUM=4'],
   },
 }
+
+if have_cxx
+  gobject_tests += {
+    'cxx' : {
+      'source' : ['cxx.cpp'],
+    },
+  }
+endif
 
 if cc.get_id() != 'msvc'
   gobject_tests += {'autoptr' : {}}

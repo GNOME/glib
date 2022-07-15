@@ -15,9 +15,6 @@ glib_tests = {
   'completion' : {},
   'cond' : {},
   'convert' : {},
-  'cxx' : {
-    'source' : ['cxx.cpp'],
-  },
   'dataset' : {},
   'date' : {
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
@@ -157,6 +154,14 @@ glib_tests = {
     'suite' : ['slow'],
   },
 }
+
+if have_cxx
+  glib_tests += {
+    'cxx' : {
+      'source' : ['cxx.cpp'],
+    }
+  }
+endif
 
 if cc.get_id() != 'msvc'
   glib_tests += {'autoptr' : {}}

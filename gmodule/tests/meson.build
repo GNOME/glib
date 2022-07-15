@@ -1,7 +1,4 @@
 gmodule_tests = {
-  'cxx' : {
-    'source' : ['cxx.cpp'],
-  },
   'module-test-library' : {
     'export_dynamic' : true,
     'source': 'module-test.c',
@@ -13,6 +10,14 @@ gmodule_tests = {
     'c_args': ['-DMODULE_TYPE="plugin"'],
   },
 }
+
+if have_cxx
+  gmodule_tests += {
+    'cxx' : {
+      'source' : ['cxx.cpp'],
+    }
+  }
+endif
 
 module_suffix = []
 # Keep the autotools convention for shared module suffix because GModule
