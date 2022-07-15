@@ -3361,10 +3361,9 @@ signal_emit_valist_unlocked (gpointer instance,
                              va_list  var_args)
 {
   GValue *instance_and_params;
-  GType signal_return_type;
   GValue *param_values;
   SignalNode *node;
-  guint i, n_params;
+  guint i;
 
   g_return_val_if_fail (G_TYPE_CHECK_INSTANCE (instance), TRUE);
   g_return_val_if_fail (signal_id > 0, TRUE);
@@ -3385,6 +3384,14 @@ signal_emit_valist_unlocked (gpointer instance,
 
   if (!node->single_va_closure_is_valid)
     node_update_single_va_closure (node);
+
+  /* There's no need to deep copy this, because a SignalNode instance won't
+   * ever be destroyed, given that _g_signals_destroy() is not called in any
+   * real program, however the SignalNode pointer could change, so just store
+   * the struct contents references, so that we won't try to deference a
+   * potentially invalid (or changed) pointer;
+   */
+  SignalNode node_copy = *node;
 
   if (node->single_va_closure != NULL)
     {
@@ -3438,29 +3445,26 @@ signal_emit_valist_unlocked (gpointer instance,
 	    }
 	}
 
-      if (fastpath && closure == NULL && node->return_type == G_TYPE_NONE)
+      if (fastpath && closure == NULL && node_copy.return_type == G_TYPE_NONE)
         return TRUE;
 
       /* Don't allow no-recurse emission as we might have to restart, which means
 	 we will run multiple handlers and thus must ref all arguments */
-      if (closure != NULL && (node->flags & (G_SIGNAL_NO_RECURSE)) != 0)
+      if (closure != NULL && (node_copy.flags & (G_SIGNAL_NO_RECURSE)) != 0)
 	fastpath = FALSE;
       
       if (fastpath)
 	{
-	  SignalAccumulator *accumulator;
 	  Emission emission;
 	  GValue *return_accu, accu = G_VALUE_INIT;
 	  GType instance_type = G_TYPE_FROM_INSTANCE (instance);
 	  GValue emission_return = G_VALUE_INIT;
-          GType rtype = node->return_type & ~G_SIGNAL_TYPE_STATIC_SCOPE;
-	  gboolean static_scope = node->return_type & G_SIGNAL_TYPE_STATIC_SCOPE;
+          GType rtype = node_copy.return_type & ~G_SIGNAL_TYPE_STATIC_SCOPE;
+	  gboolean static_scope = node_copy.return_type & G_SIGNAL_TYPE_STATIC_SCOPE;
 
-	  signal_id = node->signal_id;
-	  accumulator = node->accumulator;
 	  if (rtype == G_TYPE_NONE)
 	    return_accu = NULL;
-	  else if (accumulator)
+	  else if (node_copy.accumulator)
 	    return_accu = &accu;
 	  else
 	    return_accu = &emission_return;
@@ -3476,18 +3480,18 @@ signal_emit_valist_unlocked (gpointer instance,
           if (fastpath_handler)
             handler_ref (fastpath_handler);
 
-	  SIGNAL_UNLOCK ();
-
+	  if (closure != NULL)
+	    {
 	  TRACE(GOBJECT_SIGNAL_EMIT(signal_id, detail, instance, instance_type));
+
+	      SIGNAL_UNLOCK ();
 
 	  if (rtype != G_TYPE_NONE)
 	    g_value_init (&emission_return, rtype);
 
-	  if (accumulator)
-	    g_value_init (&accu, rtype);
+              if (node_copy.accumulator)
+                g_value_init (&accu, rtype);
 
-	  if (closure != NULL)
-	    {
               /*
                * Coverity doesn’t understand the paired ref/unref here and seems
                * to ignore the ref, thus reports every call to g_signal_emit()
@@ -3502,12 +3506,15 @@ signal_emit_valist_unlocked (gpointer instance,
 				    return_accu,
 				    instance,
 				    var_args,
-				    node->n_params,
-				    node->param_types);
-	      accumulate (&emission.ihint, &emission_return, &accu, accumulator);
-	    }
+                                    node_copy.n_params,
+                                    node_copy.param_types);
+	      accumulate (&emission.ihint, &emission_return, &accu, node_copy.accumulator);
 
-	  SIGNAL_LOCK ();
+              if (node_copy.accumulator)
+                g_value_unset (&accu);
+
+              SIGNAL_LOCK ();
+            }
 
 	  emission.chain_type = G_TYPE_NONE;
 	  emission_pop (&emission);
@@ -3517,17 +3524,17 @@ signal_emit_valist_unlocked (gpointer instance,
 
           SIGNAL_UNLOCK ();
 
-	  if (accumulator)
-	    g_value_unset (&accu);
-
 	  if (rtype != G_TYPE_NONE)
 	    {
 	      gchar *error = NULL;
-	      for (i = 0; i < node->n_params; i++)
+              for (i = 0; i < node_copy.n_params; i++)
 		{
-		  GType ptype = node->param_types[i] & ~G_SIGNAL_TYPE_STATIC_SCOPE;
+                  GType ptype = node_copy.param_types[i] & ~G_SIGNAL_TYPE_STATIC_SCOPE;
 		  G_VALUE_COLLECT_SKIP (ptype, var_args);
 		}
+
+              if (closure == NULL)
+                g_value_init (&emission_return, rtype);
 
 	      G_VALUE_LCOPY (&emission_return,
 			     var_args,
@@ -3556,18 +3563,17 @@ signal_emit_valist_unlocked (gpointer instance,
 	  return FALSE;
 	}
     }
+
   SIGNAL_UNLOCK ();
 
-  n_params = node->n_params;
-  signal_return_type = node->return_type;
-  instance_and_params = g_newa0 (GValue, n_params + 1);
+  instance_and_params = g_newa0 (GValue, node_copy.n_params + 1);
   param_values = instance_and_params + 1;
 
-  for (i = 0; i < node->n_params; i++)
+  for (i = 0; i < node_copy.n_params; i++)
     {
       gchar *error;
-      GType ptype = node->param_types[i] & ~G_SIGNAL_TYPE_STATIC_SCOPE;
-      gboolean static_scope = node->param_types[i] & G_SIGNAL_TYPE_STATIC_SCOPE;
+      GType ptype = node_copy.param_types[i] & ~G_SIGNAL_TYPE_STATIC_SCOPE;
+      gboolean static_scope = node_copy.param_types[i] & G_SIGNAL_TYPE_STATIC_SCOPE;
 
       G_VALUE_COLLECT_INIT (param_values + i, ptype,
 			    var_args,
@@ -3590,18 +3596,18 @@ signal_emit_valist_unlocked (gpointer instance,
 
   instance_and_params->g_type = 0;
   g_value_init_from_instance (instance_and_params, instance);
-  if (signal_return_type == G_TYPE_NONE)
-    signal_emit_unlocked_R (node, detail, instance, NULL, instance_and_params);
+  if (node_copy.return_type == G_TYPE_NONE)
+    signal_emit_unlocked_R (&node_copy, detail, instance, NULL, instance_and_params);
   else
     {
       GValue return_value = G_VALUE_INIT;
       gchar *error = NULL;
-      GType rtype = signal_return_type & ~G_SIGNAL_TYPE_STATIC_SCOPE;
-      gboolean static_scope = signal_return_type & G_SIGNAL_TYPE_STATIC_SCOPE;
+      GType rtype = node_copy.return_type & ~G_SIGNAL_TYPE_STATIC_SCOPE;
+      gboolean static_scope = node_copy.return_type & G_SIGNAL_TYPE_STATIC_SCOPE;
       
       g_value_init (&return_value, rtype);
 
-      signal_emit_unlocked_R (node, detail, instance, &return_value, instance_and_params);
+      signal_emit_unlocked_R (&node_copy, detail, instance, &return_value, instance_and_params);
 
       G_VALUE_LCOPY (&return_value,
 		     var_args,
@@ -3619,7 +3625,7 @@ signal_emit_valist_unlocked (gpointer instance,
 	   */
 	}
     }
-  for (i = 0; i < n_params; i++)
+  for (i = 0; i < node_copy.n_params; i++)
     g_value_unset (param_values + i);
   g_value_unset (instance_and_params);
 
