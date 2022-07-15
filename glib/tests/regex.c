@@ -2187,6 +2187,18 @@ pcre2_ge (guint64 major, guint64 minor)
     return (pcre2_major > major) || (pcre2_major == major && pcre2_minor >= minor);
 }
 
+static void
+test_compile_errors (void)
+{
+  GRegex *regex;
+  GError *error = NULL;
+
+  regex = g_regex_new ("\\o{999}", G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT, &error);
+  g_assert_null (regex);
+  g_assert_error (error, G_REGEX_ERROR, G_REGEX_ERROR_COMPILE);
+  g_clear_error (&error);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -2204,6 +2216,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/regex/multiline", test_multiline);
   g_test_add_func ("/regex/explicit-crlf", test_explicit_crlf);
   g_test_add_func ("/regex/max-lookbehind", test_max_lookbehind);
+  g_test_add_func ("/regex/compile-errors", test_compile_errors);
 
   /* TEST_NEW(pattern, compile_opts, match_opts) */
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
