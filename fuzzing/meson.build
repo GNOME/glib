@@ -45,8 +45,12 @@ extra_c_args = cc.get_supported_arguments('-Werror=unused-function')
 
 # Links in a static library provided by oss-fuzz, else a standalone driver.
 # https://google.github.io/oss-fuzz/getting-started/new-project-guide/#buildsh-script-environment
-fuzzing_engine = cxx.find_library('FuzzingEngine', required : get_option('oss_fuzz'))
-if fuzzing_engine.found()
+have_fuzzing_engine = false
+if have_cxx
+  fuzzing_engine = cxx.find_library('FuzzingEngine', required : get_option('oss_fuzz'))
+  have_fuzzing_engine = fuzzing_engine.found()
+endif
+if have_fuzzing_engine
   deps += fuzzing_engine
 else
   extra_sources += 'driver.c'
@@ -61,7 +65,7 @@ foreach target_name : fuzz_targets
   # If the FuzzingEngine isn’t available, build some unit tests to check that
   # the fuzzing files do basically work. This doesn’t do any actual fuzzing though.
   # Pass in the README as an arbitrary fuzzing input, just so we have something.
-  if not fuzzing_engine.found()
+  if not have_fuzzing_engine
     test(target_name, exe,
       args : files('README.md'),
       suite : 'fuzzing',

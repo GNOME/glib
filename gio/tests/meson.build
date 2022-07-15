@@ -58,9 +58,6 @@ gio_tests = {
   },
   'converter-stream' : {},
   'credentials' : {},
-  'cxx' : {
-    'source' : ['cxx.cpp'],
-  },
   'data-input-stream' : {},
   'data-output-stream' : {},
   'error': {},
@@ -126,6 +123,14 @@ gio_tests = {
   },
   'win32-appinfo' : {},
 }
+
+if have_cxx
+  gio_tests += {
+    'cxx' : {
+      'source' : ['cxx.cpp'],
+    },
+  }
+endif
 
 test_extra_programs = {
   'gdbus-connection-flush-helper' : {},

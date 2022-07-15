@@ -1,4 +1,4 @@
-project('glib', 'c', 'cpp',
+project('glib', 'c',
   version : '2.73.2',
   # NOTE: See the policy in docs/meson-version.md before changing the Meson dependency
   meson_version : '>= 0.60.0',
@@ -10,7 +10,10 @@ project('glib', 'c', 'cpp',
 )
 
 cc = meson.get_compiler('c')
-cxx = meson.get_compiler('cpp')
+have_cxx = add_languages('cpp', native: false, required: get_option('oss_fuzz').enabled())
+if have_cxx
+  cxx = meson.get_compiler('cpp')
+endif
 
 cc_can_run = meson.can_run_host_binaries()
 
@@ -529,7 +532,9 @@ else
 endif
 
 add_project_arguments(cc.get_supported_arguments(warning_c_args), language: 'c')
-add_project_arguments(cxx.get_supported_arguments(warning_cxx_args), language: 'cpp')
+if have_cxx
+  add_project_arguments(cxx.get_supported_arguments(warning_cxx_args), language: 'cpp')
+endif
 
 # FIXME: We cannot build some of the GResource tests with -z nodelete, which
 # means we cannot use that flag in add_project_link_arguments(), and must add
@@ -1735,15 +1740,17 @@ if not g_have_iso_c_varargs
   error('GLib requires a C compiler with support for C99 __VA_ARG__ in macros.')
 endif
 
-g_have_iso_cxx_varargs = cxx.compiles('''
-  void some_func (void) {
-    int a(int p1, int p2, int p3);
-    #define call_a(...) a(1,__VA_ARGS__)
-    call_a(2,3);
-  }''', name : 'ISO C99 varargs macros in C++')
+if have_cxx
+  g_have_iso_cxx_varargs = cxx.compiles('''
+    void some_func (void) {
+      int a(int p1, int p2, int p3);
+      #define call_a(...) a(1,__VA_ARGS__)
+      call_a(2,3);
+    }''', name : 'ISO C99 varargs macros in C++')
 
-if not g_have_iso_cxx_varargs
-  error('GLib requires a C++ compiler with support for C99 __VA_ARG__ in macros.')
+  if not g_have_iso_cxx_varargs
+    error('GLib requires a C++ compiler with support for C99 __VA_ARG__ in macros.')
+  endif
 endif
 
 g_have_gnuc_varargs = cc.compiles('''
