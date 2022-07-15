@@ -29,9 +29,6 @@ marshalers_c = custom_target('marshalers_c',
 gobject_tests = {
   'qdata' : {},
   'boxed' : {},
-  'cxx' : {
-    'source' : ['cxx.cpp'],
-  },
   'enums' : {},
   'param' : {},
   'threadtests' : {},
@@ -58,6 +55,14 @@ gobject_tests = {
   'testing' : {},
   'type-flags' : {},
 }
+
+if have_cxx
+  gobject_tests += {
+    'cxx' : {
+      'source' : ['cxx.cpp'],
+    },
+  }
+endif
 
 if cc.get_id() != 'msvc'
   gobject_tests += {'autoptr' : {}}

@@ -1,8 +1,10 @@
-gmodule_tests = {
-  'cxx' : {
-    'source' : ['cxx.cpp'],
-  },
-}
+if have_cxx
+  gmodule_tests = {
+    'cxx' : {
+      'source' : ['cxx.cpp'],
+    },
+  }
+endif
 
 test_env = environment()
 test_env.set('G_TEST_SRCDIR', meson.current_source_dir())
