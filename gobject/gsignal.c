@@ -3312,6 +3312,12 @@ accumulate (GSignalInvocationHint *ihint,
   return continue_emission;
 }
 
+static gboolean
+signal_emit_valist_unlocked (gpointer instance,
+                             guint    signal_id,
+                             GQuark   detail,
+                             va_list  var_args);
+
 /**
  * g_signal_emit_valist: (skip)
  * @instance: (type GObject.TypeInstance): the instance the signal is being
@@ -3334,29 +3340,46 @@ g_signal_emit_valist (gpointer instance,
 		      GQuark   detail,
 		      va_list  var_args)
 {
+  SIGNAL_LOCK ();
+  if (signal_emit_valist_unlocked (instance, signal_id, detail, var_args))
+    SIGNAL_UNLOCK ();
+}
+
+/*<private>
+ * signal_emit_valist_unlocked:
+ * @instance: The instance to emit from
+ * @signal_id: Signal id to emit
+ * @detail: Signal detail
+ * @var_args: Call arguments
+ *
+ * Returns: %TRUE if the signal mutex has been left locked
+ */
+static gboolean
+signal_emit_valist_unlocked (gpointer instance,
+                             guint    signal_id,
+                             GQuark   detail,
+                             va_list  var_args)
+{
   GValue *instance_and_params;
   GType signal_return_type;
   GValue *param_values;
   SignalNode *node;
   guint i, n_params;
 
-  g_return_if_fail (G_TYPE_CHECK_INSTANCE (instance));
-  g_return_if_fail (signal_id > 0);
+  g_return_val_if_fail (G_TYPE_CHECK_INSTANCE (instance), TRUE);
+  g_return_val_if_fail (signal_id > 0, TRUE);
 
-  SIGNAL_LOCK ();
   node = LOOKUP_SIGNAL_NODE (signal_id);
   if (!node || !g_type_is_a (G_TYPE_FROM_INSTANCE (instance), node->itype))
     {
       g_critical ("%s: signal id '%u' is invalid for instance '%p'", G_STRLOC, signal_id, instance);
-      SIGNAL_UNLOCK ();
-      return;
+      return TRUE;
     }
 #ifndef G_DISABLE_CHECKS
   if (detail && !(node->flags & G_SIGNAL_DETAILED))
     {
       g_critical ("%s: signal id '%u' does not support detail (%u)", G_STRLOC, signal_id, detail);
-      SIGNAL_UNLOCK ();
-      return;
+      return TRUE;
     }
 #endif  /* !G_DISABLE_CHECKS */
 
@@ -3416,10 +3439,7 @@ g_signal_emit_valist (gpointer instance,
 	}
 
       if (fastpath && closure == NULL && node->return_type == G_TYPE_NONE)
-	{
-	  SIGNAL_UNLOCK ();
-	  return;
-	}
+        return TRUE;
 
       /* Don't allow no-recurse emission as we might have to restart, which means
 	 we will run multiple handlers and thus must ref all arguments */
@@ -3495,7 +3515,7 @@ g_signal_emit_valist (gpointer instance,
           if (fastpath_handler)
             handler_unref_R (signal_id, instance, fastpath_handler);
 
-	  SIGNAL_UNLOCK ();
+          SIGNAL_UNLOCK ();
 
 	  if (accumulator)
 	    g_value_unset (&accu);
@@ -3533,7 +3553,7 @@ g_signal_emit_valist (gpointer instance,
             g_object_unref (instance);
 #endif
 
-	  return;
+	  return FALSE;
 	}
     }
   SIGNAL_UNLOCK ();
@@ -3564,7 +3584,7 @@ g_signal_emit_valist (gpointer instance,
 	  while (i--)
 	    g_value_unset (param_values + i);
 
-	  return;
+          return FALSE;
 	}
     }
 
@@ -3602,6 +3622,8 @@ g_signal_emit_valist (gpointer instance,
   for (i = 0; i < n_params; i++)
     g_value_unset (param_values + i);
   g_value_unset (instance_and_params);
+
+  return FALSE;
 }
 
 /**
@@ -3663,19 +3685,23 @@ g_signal_emit_by_name (gpointer     instance,
 
   SIGNAL_LOCK ();
   signal_id = signal_parse_name (detailed_signal, itype, &detail, TRUE);
-  SIGNAL_UNLOCK ();
 
   if (signal_id)
     {
       va_list var_args;
 
       va_start (var_args, detailed_signal);
-      g_signal_emit_valist (instance, signal_id, detail, var_args);
+      if (signal_emit_valist_unlocked (instance, signal_id, detail, var_args))
+        SIGNAL_UNLOCK ();
       va_end (var_args);
     }
   else
-    g_critical ("%s: signal name '%s' is invalid for instance '%p' of type '%s'",
-                G_STRLOC, detailed_signal, instance, g_type_name (itype));
+    {
+      SIGNAL_UNLOCK ();
+
+      g_critical ("%s: signal name '%s' is invalid for instance '%p' of type '%s'",
+                  G_STRLOC, detailed_signal, instance, g_type_name (itype));
+    }
 }
 
 static gboolean
