@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 3.12\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-07-12 16:26+0000\n"
-"PO-Revision-Date: 2022-07-13 13:15+0100\n"
+"POT-Creation-Date: 2022-07-14 13:15+0000\n"
+"PO-Revision-Date: 2022-07-15 12:20+0100\n"
 "Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
 "Language-Team: Portuguese <https://l10n.gnome.org/teams/pt/>\n"
 "Language: pt\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: gio/gappinfo.c:335
 msgid "Setting default applications not supported yet"
@@ -5761,7 +5761,7 @@ msgstr "derramou fora da área de trabalho de compilação"
 msgid "previously-checked referenced subpattern not found"
 msgstr "subpadrão referenciado previamente verificado não foi encontrado"
 
-#: glib/gregex.c:798 glib/gregex.c:966 glib/gregex.c:2262
+#: glib/gregex.c:798 glib/gregex.c:966 glib/gregex.c:2265
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "Erro ao comparar a expressão regular %s: %s"
@@ -5774,47 +5774,48 @@ msgstr "Biblioteca PCRE está compilada sem suporte UTF8"
 msgid "PCRE library is compiled with incompatible options"
 msgstr "Biblioteca PCRE está compilada com opções incompatíveis"
 
-#: glib/gregex.c:1673
-msgid "Error while compiling regular expression %s at char %"
-msgstr "Erro ao compilar a expressão regular %s no carácter %"
+#: glib/gregex.c:1675
+#, c-format
+msgid "Error while compiling regular expression ‘%s’ at char %s: %s"
+msgstr "Erro ao compilar a expressão regular '%s' no carácter %s: %s"
 
-#: glib/gregex.c:2706
+#: glib/gregex.c:2709
 msgid "hexadecimal digit or “}” expected"
 msgstr "esperado um dígito hexadecimal ou \"}\""
 
-#: glib/gregex.c:2722
+#: glib/gregex.c:2725
 msgid "hexadecimal digit expected"
 msgstr "esperado um dígito hexadecimal"
 
-#: glib/gregex.c:2762
+#: glib/gregex.c:2765
 msgid "missing “<” in symbolic reference"
 msgstr "falta “<” na referência simbólica"
 
-#: glib/gregex.c:2771
+#: glib/gregex.c:2774
 msgid "unfinished symbolic reference"
 msgstr "referência simbólica por terminar"
 
-#: glib/gregex.c:2778
+#: glib/gregex.c:2781
 msgid "zero-length symbolic reference"
 msgstr "referência simbólica de tamanho zero"
 
-#: glib/gregex.c:2789
+#: glib/gregex.c:2792
 msgid "digit expected"
 msgstr "esperado um dígito"
 
-#: glib/gregex.c:2807
+#: glib/gregex.c:2810
 msgid "illegal symbolic reference"
 msgstr "referência simbólica ilegal"
 
-#: glib/gregex.c:2870
+#: glib/gregex.c:2873
 msgid "stray final “\\”"
 msgstr "“\\” final a mais"
 
-#: glib/gregex.c:2874
+#: glib/gregex.c:2877
 msgid "unknown escape sequence"
 msgstr "sequência de escape desconhecida"
 
-#: glib/gregex.c:2884
+#: glib/gregex.c:2887
 #, c-format
 msgid "Error while parsing replacement text “%s” at char %lu: %s"
 msgstr "Erro ao processar o texto de substituição “%s” no carácter %lu: %s"
