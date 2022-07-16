@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-07-12 16:26+0000\n"
-"PO-Revision-Date: 2022-07-13 01:12+0430\n"
-"Last-Translator: eshagh <eshagh094@gmail.com>\n"
+"POT-Creation-Date: 2022-07-14 13:15+0000\n"
+"PO-Revision-Date: 2022-07-16 18:50+0430\n"
+"Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian <>\n"
 "Language: fa\n"
 "MIME-Version: 1.0\n"
@@ -999,49 +999,49 @@ msgstr "خطا: %s یک مسیر شیء معتبر نیست\n"
 
 #: gio/gdbus-tool.c:406
 msgid "Connect to the system bus"
-msgstr ""
+msgstr "وصل شدن به گذرگاه سامانه"
 
 #: gio/gdbus-tool.c:407
 msgid "Connect to the session bus"
-msgstr ""
+msgstr "وصل شدن به گذرگاه نشست"
 
 #: gio/gdbus-tool.c:408
 msgid "Connect to given D-Bus address"
-msgstr ""
+msgstr "وصل‌شدن به نشانی دی‌باس داده شده"
 
 #: gio/gdbus-tool.c:418
 msgid "Connection Endpoint Options:"
-msgstr ""
+msgstr "گزینه‌های نقطهٔ پایانی اتّصال:"
 
 #: gio/gdbus-tool.c:419
 msgid "Options specifying the connection endpoint"
-msgstr ""
+msgstr "گزینه‌های مشخّص‌کنندهٔ نقطهٔ پایانی اتّصال"
 
 #: gio/gdbus-tool.c:442
 #, c-format
 msgid "No connection endpoint specified"
-msgstr ""
+msgstr "هیچ نقطهٔ پایانی اتّصالی مشخّص نشده"
 
 #: gio/gdbus-tool.c:452
 #, c-format
 msgid "Multiple connection endpoints specified"
-msgstr ""
+msgstr "چندین نقطهٔ پایانی اتّصال مشخّص شده"
 
 #: gio/gdbus-tool.c:525
 #, c-format
 msgid "Warning: According to introspection data, interface “%s” does not exist\n"
-msgstr ""
+msgstr "هشدار: با توجه به داده‌های درون‌نگری، واسط «%s» وجود ندارد\n"
 
 #: gio/gdbus-tool.c:534
 #, c-format
 msgid ""
 "Warning: According to introspection data, method “%s” does not exist on interface "
 "“%s”\n"
-msgstr ""
+msgstr "هشدار: با توجه به داده‌های درون‌نگری، روش «%s» روی واسط «%s» وجود ندارد\n"
 
 #: gio/gdbus-tool.c:596
 msgid "Optional destination for signal (unique name)"
-msgstr ""
+msgstr "مقصد اختیاری برای سیگنال (نام یکتا)"
 
 #: gio/gdbus-tool.c:597
 msgid "Object path to emit signal on"
@@ -5773,7 +5773,7 @@ msgstr ""
 msgid "previously-checked referenced subpattern not found"
 msgstr ""
 
-#: glib/gregex.c:798 glib/gregex.c:966 glib/gregex.c:2262
+#: glib/gregex.c:798 glib/gregex.c:966 glib/gregex.c:2265
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "خطا در هنگام منطبق کردن عبارت باقاعده %s: %s"
@@ -5788,55 +5788,55 @@ msgstr "کتابخانه PCRE بدون پشتیبانی از UTF8 کامپایل
 msgid "PCRE library is compiled with incompatible options"
 msgstr "کتابخانه PCRE بدون پشتیبانی از گزینه‌های UTF8 کامپایل شده است"
 
-#: glib/gregex.c:1673
-#, fuzzy
+#: glib/gregex.c:1675
+#, fuzzy, c-format
 #| msgid "Error while compiling regular expression %s at char %d: %s"
-msgid "Error while compiling regular expression %s at char %"
+msgid "Error while compiling regular expression ‘%s’ at char %s: %s"
 msgstr "خطا در هنگام کامپایل عبارت با قاعده %s در نویسه %Id: %s"
 
-#: glib/gregex.c:2706
+#: glib/gregex.c:2709
 #, fuzzy
 #| msgid "hexadecimal digit or '}' expected"
 msgid "hexadecimal digit or “}” expected"
 msgstr "رقم هگزادسیمال یا «}» مورد انتظار بود"
 
-#: glib/gregex.c:2722
+#: glib/gregex.c:2725
 msgid "hexadecimal digit expected"
 msgstr "رقم هگزادسیمال مورد انتظار بود"
 
-#: glib/gregex.c:2762
+#: glib/gregex.c:2765
 #, fuzzy
 #| msgid "unfinished symbolic reference"
 msgid "missing “<” in symbolic reference"
 msgstr "ارجاع نمادین ناتمام"
 
-#: glib/gregex.c:2771
+#: glib/gregex.c:2774
 msgid "unfinished symbolic reference"
 msgstr "ارجاع نمادین ناتمام"
 
-#: glib/gregex.c:2778
+#: glib/gregex.c:2781
 msgid "zero-length symbolic reference"
 msgstr ""
 
-#: glib/gregex.c:2789
+#: glib/gregex.c:2792
 msgid "digit expected"
 msgstr "انتظار رقم می‌رفت"
 
-#: glib/gregex.c:2807
+#: glib/gregex.c:2810
 msgid "illegal symbolic reference"
 msgstr "ارجاع نمادین غیرقانونی"
 
-#: glib/gregex.c:2870
+#: glib/gregex.c:2873
 #, fuzzy
 #| msgid "stray final '\\'"
 msgid "stray final “\\”"
 msgstr "«\\» پایانی سرگردان"
 
-#: glib/gregex.c:2874
+#: glib/gregex.c:2877
 msgid "unknown escape sequence"
 msgstr ""
 
-#: glib/gregex.c:2884
+#: glib/gregex.c:2887
 #, fuzzy, c-format
 #| msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgid "Error while parsing replacement text “%s” at char %lu: %s"
