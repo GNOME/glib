@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-07-14 13:15+0000\n"
-"PO-Revision-Date: 2022-07-16 18:50+0430\n"
+"POT-Creation-Date: 2022-07-16 14:21+0000\n"
+"PO-Revision-Date: 2022-07-18 00:11+0430\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian <>\n"
 "Language: fa\n"
@@ -1725,7 +1725,7 @@ msgstr ""
 #: gio/gio-tool-monitor.c:231 gio/gio-tool-mount.c:1253 gio/gio-tool-open.c:98
 #: gio/gio-tool-remove.c:74 gio/gio-tool-trash.c:303
 msgid "No locations given"
-msgstr ""
+msgstr "مکانی داده نشده"
 
 #: gio/gio-tool-copy.c:45 gio/gio-tool-move.c:40
 #, fuzzy
@@ -1739,11 +1739,11 @@ msgstr "نمایش پیشرفت"
 
 #: gio/gio-tool-copy.c:47 gio/gio-tool-move.c:42
 msgid "Prompt before overwrite"
-msgstr ""
+msgstr "اعلان پیش از پایمالی"
 
 #: gio/gio-tool-copy.c:48
 msgid "Preserve all attributes"
-msgstr ""
+msgstr "نگه‌داری تمامی مولّفه‌ها"
 
 #: gio/gio-tool-copy.c:49 gio/gio-tool-move.c:43 gio/gio-tool-save.c:51
 #, fuzzy
@@ -1753,30 +1753,30 @@ msgstr "ساخت پرونده پشتیبان شکست خورد"
 
 #: gio/gio-tool-copy.c:50
 msgid "Never follow symbolic links"
-msgstr ""
+msgstr "پیوندهای نمادین هرگز دنبال نشوند"
 
 #: gio/gio-tool-copy.c:51
 msgid "Use default permissions for the destination"
-msgstr ""
+msgstr "استفاده از اجازه‌های پیش‌گزیده برای مقصد"
 
 #: gio/gio-tool-copy.c:76 gio/gio-tool-move.c:69
 #, c-format
 msgid "Transferred %s out of %s (%s/s)"
-msgstr ""
+msgstr "%s از %s منتقل شد (%s/ث)"
 
 #. Translators: commandline placeholder
 #: gio/gio-tool-copy.c:102 gio/gio-tool-move.c:96
 msgid "SOURCE"
-msgstr ""
+msgstr "مبدأ"
 
 #. Translators: commandline placeholder
 #: gio/gio-tool-copy.c:102 gio/gio-tool-move.c:96 gio/gio-tool-save.c:162
 msgid "DESTINATION"
-msgstr ""
+msgstr "مقصد"
 
 #: gio/gio-tool-copy.c:107
 msgid "Copy one or more files from SOURCE to DESTINATION."
-msgstr ""
+msgstr "رونوشت یک یا چند پرونده از مبدأ به مقصد."
 
 #: gio/gio-tool-copy.c:109
 msgid ""
@@ -5539,7 +5539,7 @@ msgstr "حافظه کم است"
 msgid "backtracking limit reached"
 msgstr "محدودیت backtracking فرارسید"
 
-#: glib/gregex.c:449 glib/gregex.c:695 glib/gregex.c:724
+#: glib/gregex.c:449 glib/gregex.c:699 glib/gregex.c:728
 msgid "internal error"
 msgstr "خطا داخلی"
 
@@ -5568,275 +5568,275 @@ msgstr ""
 msgid "unknown error"
 msgstr "خطا نادرست"
 
-#: glib/gregex.c:484
+#: glib/gregex.c:488
 msgid "\\ at end of pattern"
 msgstr "\\ در پایان الگو"
 
-#: glib/gregex.c:488
+#: glib/gregex.c:492
 msgid "\\c at end of pattern"
 msgstr "\\c در پایان الگو"
 
-#: glib/gregex.c:493
+#: glib/gregex.c:497
 #, fuzzy
 #| msgid "unrecognized character follows \\"
 msgid "unrecognized character following \\"
 msgstr "نویسه ناشناخته پس از \\"
 
-#: glib/gregex.c:497
+#: glib/gregex.c:501
 msgid "numbers out of order in {} quantifier"
 msgstr "اعداد بدون ترتیل در کمیت‌سنج {}"
 
-#: glib/gregex.c:501
+#: glib/gregex.c:505
 msgid "number too big in {} quantifier"
 msgstr "اعداد در  کمیت‌سنج {} بسیار بزرگ هستند"
 
-#: glib/gregex.c:505
+#: glib/gregex.c:509
 #, fuzzy
 msgid "missing terminating ] for character class"
 msgstr "کانال با یک نویسهٔ ناتمام پایان می‌یابد"
 
-#: glib/gregex.c:509
+#: glib/gregex.c:513
 #, fuzzy
 msgid "invalid escape sequence in character class"
 msgstr "دنبالهٔ بایتی نامعتبر در ورودی تبدیل"
 
-#: glib/gregex.c:513
+#: glib/gregex.c:517
 msgid "range out of order in character class"
 msgstr "محدوده در کلاس نویسه بدون ترتیب است"
 
-#: glib/gregex.c:518
+#: glib/gregex.c:522
 msgid "nothing to repeat"
 msgstr "چیزی برای تکرار نیست"
 
-#: glib/gregex.c:522
+#: glib/gregex.c:526
 #, fuzzy
 #| msgid "unrecognized character after (?"
 msgid "unrecognized character after (? or (?-"
 msgstr "نویسه ناشناس بعد از (?"
 
-#: glib/gregex.c:526
+#: glib/gregex.c:530
 msgid "POSIX named classes are supported only within a class"
 msgstr ""
 
-#: glib/gregex.c:530
+#: glib/gregex.c:534
 #, fuzzy
 msgid "POSIX collating elements are not supported"
 msgstr "پیوندهای نمادی پشتیبانی نمی‌شوند"
 
-#: glib/gregex.c:536
+#: glib/gregex.c:540
 msgid "missing terminating )"
 msgstr ""
 
-#: glib/gregex.c:540
+#: glib/gregex.c:544
 msgid "reference to non-existent subpattern"
 msgstr ""
 
-#: glib/gregex.c:544
+#: glib/gregex.c:548
 msgid "missing ) after comment"
 msgstr ""
 
-#: glib/gregex.c:548
+#: glib/gregex.c:552
 #, fuzzy
 #| msgid "regular expression too large"
 msgid "regular expression is too large"
 msgstr "عبارت باقاعده بسیار بلند است"
 
-#: glib/gregex.c:552
+#: glib/gregex.c:556
 msgid "malformed number or name after (?("
 msgstr ""
 
-#: glib/gregex.c:556
+#: glib/gregex.c:560
 msgid "lookbehind assertion is not fixed length"
 msgstr ""
 
-#: glib/gregex.c:560
+#: glib/gregex.c:564
 msgid "conditional group contains more than two branches"
 msgstr ""
 
-#: glib/gregex.c:564
+#: glib/gregex.c:568
 msgid "assertion expected after (?("
 msgstr ""
 
-#: glib/gregex.c:568
+#: glib/gregex.c:572
 msgid "a numbered reference must not be zero"
 msgstr ""
 
-#: glib/gregex.c:572
+#: glib/gregex.c:576
 msgid "unknown POSIX class name"
 msgstr "نام کلاس POSIX ناشناخته"
 
-#: glib/gregex.c:577
+#: glib/gregex.c:581
 msgid "character value in \\x{...} sequence is too large"
 msgstr ""
 
-#: glib/gregex.c:581
+#: glib/gregex.c:585
 msgid "\\C not allowed in lookbehind assertion"
 msgstr ""
 
-#: glib/gregex.c:585
+#: glib/gregex.c:589
 msgid "missing terminator in subpattern name"
 msgstr ""
 
-#: glib/gregex.c:589
+#: glib/gregex.c:593
 msgid "two named subpatterns have the same name"
 msgstr ""
 
-#: glib/gregex.c:593
+#: glib/gregex.c:597
 msgid "malformed \\P or \\p sequence"
 msgstr ""
 
-#: glib/gregex.c:597
+#: glib/gregex.c:601
 msgid "unknown property name after \\P or \\p"
 msgstr "خصیصه‌ی ناشناس پس از \\P یا \\p"
 
-#: glib/gregex.c:601
+#: glib/gregex.c:605
 msgid "subpattern name is too long (maximum 32 characters)"
 msgstr ""
 
-#: glib/gregex.c:605
+#: glib/gregex.c:609
 msgid "too many named subpatterns (maximum 10,000)"
 msgstr ""
 
-#: glib/gregex.c:609
+#: glib/gregex.c:613
 msgid "octal value is greater than \\377"
 msgstr ""
 
-#: glib/gregex.c:613
+#: glib/gregex.c:617
 msgid "DEFINE group contains more than one branch"
 msgstr ""
 
-#: glib/gregex.c:617
+#: glib/gregex.c:621
 msgid "inconsistent NEWLINE options"
 msgstr ""
 
-#: glib/gregex.c:621
+#: glib/gregex.c:625
 msgid ""
 "\\g is not followed by a braced, angle-bracketed, or quoted name or number, or by "
 "a plain number"
 msgstr ""
 
-#: glib/gregex.c:626
+#: glib/gregex.c:630
 msgid "an argument is not allowed for (*ACCEPT), (*FAIL), or (*COMMIT)"
 msgstr ""
 
-#: glib/gregex.c:630
+#: glib/gregex.c:634
 msgid "(*VERB) not recognized"
 msgstr ""
 
-#: glib/gregex.c:634
+#: glib/gregex.c:638
 msgid "number is too big"
 msgstr ""
 
-#: glib/gregex.c:638
+#: glib/gregex.c:642
 msgid "missing subpattern name after (?&"
 msgstr ""
 
-#: glib/gregex.c:642
+#: glib/gregex.c:646
 msgid "different names for subpatterns of the same number are not allowed"
 msgstr ""
 
-#: glib/gregex.c:646
+#: glib/gregex.c:650
 msgid "(*MARK) must have an argument"
 msgstr ""
 
-#: glib/gregex.c:650
+#: glib/gregex.c:654
 msgid "\\c must be followed by an ASCII character"
 msgstr ""
 
-#: glib/gregex.c:654
+#: glib/gregex.c:658
 msgid "\\k is not followed by a braced, angle-bracketed, or quoted name"
 msgstr ""
 
-#: glib/gregex.c:658
+#: glib/gregex.c:662
 #, fuzzy
 #| msgid "URIs not supported"
 msgid "\\N is not supported in a class"
 msgstr "آدرس‌ها پشتیبانی نمی‌شود"
 
-#: glib/gregex.c:662
+#: glib/gregex.c:666
 msgid "name is too long in (*MARK), (*PRUNE), (*SKIP), or (*THEN)"
 msgstr ""
 
-#: glib/gregex.c:666 glib/gregex.c:799
+#: glib/gregex.c:670 glib/gregex.c:803
 msgid "code overflow"
 msgstr ""
 
-#: glib/gregex.c:670
+#: glib/gregex.c:674
 msgid "unrecognized character after (?P"
 msgstr "نویسه ناشناس بعد از (?P"
 
-#: glib/gregex.c:674
+#: glib/gregex.c:678
 msgid "overran compiling workspace"
 msgstr ""
 
-#: glib/gregex.c:678
+#: glib/gregex.c:682
 msgid "previously-checked referenced subpattern not found"
 msgstr ""
 
-#: glib/gregex.c:798 glib/gregex.c:966 glib/gregex.c:2265
+#: glib/gregex.c:802 glib/gregex.c:970 glib/gregex.c:2269
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "خطا در هنگام منطبق کردن عبارت باقاعده %s: %s"
 
-#: glib/gregex.c:1543
+#: glib/gregex.c:1547
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "کتابخانه PCRE بدون پشتیبانی از UTF8 کامپایل شده است"
 
-#: glib/gregex.c:1551
+#: glib/gregex.c:1555
 #, fuzzy
 #| msgid "PCRE library is compiled without UTF8 properties support"
 msgid "PCRE library is compiled with incompatible options"
 msgstr "کتابخانه PCRE بدون پشتیبانی از گزینه‌های UTF8 کامپایل شده است"
 
-#: glib/gregex.c:1675
+#: glib/gregex.c:1679
 #, fuzzy, c-format
 #| msgid "Error while compiling regular expression %s at char %d: %s"
 msgid "Error while compiling regular expression ‘%s’ at char %s: %s"
 msgstr "خطا در هنگام کامپایل عبارت با قاعده %s در نویسه %Id: %s"
 
-#: glib/gregex.c:2709
+#: glib/gregex.c:2713
 #, fuzzy
 #| msgid "hexadecimal digit or '}' expected"
 msgid "hexadecimal digit or “}” expected"
 msgstr "رقم هگزادسیمال یا «}» مورد انتظار بود"
 
-#: glib/gregex.c:2725
+#: glib/gregex.c:2729
 msgid "hexadecimal digit expected"
 msgstr "رقم هگزادسیمال مورد انتظار بود"
 
-#: glib/gregex.c:2765
+#: glib/gregex.c:2769
 #, fuzzy
 #| msgid "unfinished symbolic reference"
 msgid "missing “<” in symbolic reference"
 msgstr "ارجاع نمادین ناتمام"
 
-#: glib/gregex.c:2774
+#: glib/gregex.c:2778
 msgid "unfinished symbolic reference"
 msgstr "ارجاع نمادین ناتمام"
 
-#: glib/gregex.c:2781
+#: glib/gregex.c:2785
 msgid "zero-length symbolic reference"
 msgstr ""
 
-#: glib/gregex.c:2792
+#: glib/gregex.c:2796
 msgid "digit expected"
 msgstr "انتظار رقم می‌رفت"
 
-#: glib/gregex.c:2810
+#: glib/gregex.c:2814
 msgid "illegal symbolic reference"
 msgstr "ارجاع نمادین غیرقانونی"
 
-#: glib/gregex.c:2873
+#: glib/gregex.c:2877
 #, fuzzy
 #| msgid "stray final '\\'"
 msgid "stray final “\\”"
 msgstr "«\\» پایانی سرگردان"
 
-#: glib/gregex.c:2877
+#: glib/gregex.c:2881
 msgid "unknown escape sequence"
 msgstr ""
 
-#: glib/gregex.c:2887
+#: glib/gregex.c:2891
 #, fuzzy, c-format
 #| msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgid "Error while parsing replacement text “%s” at char %lu: %s"
