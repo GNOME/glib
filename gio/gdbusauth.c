@@ -808,11 +808,21 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
                 {
                   gchar *data;
                   gsize data_len;
-                  gchar *encoded_data;
+
                   data = _g_dbus_auth_mechanism_client_data_send (mech, &data_len);
-                  encoded_data = _g_dbus_hexencode (data, data_len);
-                  s = g_strdup_printf ("DATA %s\r\n", encoded_data);
-                  g_free (encoded_data);
+
+                  if (data_len == 0)
+                    {
+                      s = g_strdup ("DATA\r\n");
+                    }
+                  else
+                    {
+                      gchar *encoded_data = _g_dbus_hexencode (data, data_len);
+
+                      s = g_strdup_printf ("DATA %s\r\n", encoded_data);
+                      g_free (encoded_data);
+                    }
+
                   g_free (data);
                   debug_print ("CLIENT: writing '%s'", s);
                   if (!g_data_output_stream_put_string (dos, s, cancellable, error))
@@ -1218,13 +1228,21 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
                         gsize data_len;
 
                         data = _g_dbus_auth_mechanism_server_data_send (mech, &data_len);
+
                         if (data != NULL)
                           {
-                            gchar *encoded_data;
+                            if (data_len == 0)
+                              {
+                                s = g_strdup ("DATA\r\n");
+                              }
+                            else
+                              {
+                                gchar *encoded_data = _g_dbus_hexencode (data, data_len);
 
-                            encoded_data = _g_dbus_hexencode (data, data_len);
-                            s = g_strdup_printf ("DATA %s\r\n", encoded_data);
-                            g_free (encoded_data);
+                                s = g_strdup_printf ("DATA %s\r\n", encoded_data);
+                                g_free (encoded_data);
+                              }
+
                             g_free (data);
 
                             debug_print ("SERVER: writing '%s'", s);
