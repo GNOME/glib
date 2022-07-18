@@ -196,6 +196,7 @@ if host_machine.system() != 'windows'
   gio_tests += {
     'file' : {},
     'gdbus-peer-object-manager' : {},
+    'gdbus-sasl' : {},
     'live-g-file' : {},
     'resolver-parsing' : {'dependencies' : [network_libs]},
     'socket-address' : {},
