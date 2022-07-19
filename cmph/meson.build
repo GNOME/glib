@@ -43,6 +43,7 @@ if cc.get_id() != 'msvc'
     '-Wno-cast-align',
     '-Wno-unused-function',
     '-Wno-return-type',
+    '-Wno-sometimes-uninitialized',
   ])
 endif
 
