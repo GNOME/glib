@@ -516,7 +516,7 @@ test_partial (gconstpointer d)
   GRegex *regex;
   GMatchInfo *match_info;
 
-  regex = g_regex_new (data->pattern, G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT, NULL);
+  regex = g_regex_new (data->pattern, data->compile_opts, G_REGEX_MATCH_DEFAULT, NULL);
 
   g_assert (regex != NULL);
 
@@ -534,12 +534,13 @@ test_partial (gconstpointer d)
   g_regex_unref (regex);
 }
 
-#define TEST_PARTIAL_FULL(_pattern, _string, _match_opts, _expected) { \
+#define TEST_PARTIAL_FULL(_pattern, _string, _compile_opts, _match_opts, _expected) { \
   TestMatchData *data;                                          \
   gchar *path;                                                  \
   data = g_new0 (TestMatchData, 1);                             \
   data->pattern = _pattern;                                     \
   data->string = _string;                                       \
+  data->compile_opts = _compile_opts;                           \
   data->match_opts = _match_opts;                               \
   data->expected = _expected;                                   \
   path = g_strdup_printf ("/regex/match/partial/%d", ++total);  \
@@ -547,7 +548,7 @@ test_partial (gconstpointer d)
   g_free (path);                                                \
 }
 
-#define TEST_PARTIAL(_pattern, _string, _expected) TEST_PARTIAL_FULL(_pattern, _string, G_REGEX_MATCH_PARTIAL, _expected)
+#define TEST_PARTIAL(_pattern, _string, _compile_opts, _expected) TEST_PARTIAL_FULL(_pattern, _string, _compile_opts, G_REGEX_MATCH_PARTIAL, _expected)
 
 typedef struct {
   const gchar *pattern;
@@ -1504,7 +1505,7 @@ test_properties (void)
   gchar *str;
 
   error = NULL;
-  regex = g_regex_new ("\\p{L}\\p{Ll}\\p{Lu}\\p{L&}\\p{N}\\p{Nd}", G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT, &error);
+  regex = g_regex_new ("\\p{L}\\p{Ll}\\p{Lu}\\p{L&}\\p{N}\\p{Nd}", G_REGEX_OPTIMIZE, G_REGEX_MATCH_DEFAULT, &error);
   res = g_regex_match (regex, "ppPP01", 0, &match);
   g_assert (res);
   str = g_match_info_fetch (match, 0);
@@ -1525,7 +1526,7 @@ test_class (void)
   gchar *str;
 
   error = NULL;
-  regex = g_regex_new ("[abc\\x{0B1E}\\p{Mn}\\x{0391}-\\x{03A9}]", G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT, &error);
+  regex = g_regex_new ("[abc\\x{0B1E}\\p{Mn}\\x{0391}-\\x{03A9}]", G_REGEX_OPTIMIZE, G_REGEX_MATCH_DEFAULT, &error);
   res = g_regex_match (regex, "a:b:\340\254\236:\333\253:\316\240", 0, &match);
   g_assert (res);
   str = g_match_info_fetch (match, 0);
@@ -1571,7 +1572,7 @@ test_lookahead (void)
   gint start, end;
 
   error = NULL;
-  regex = g_regex_new ("\\w+(?=;)", G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT, &error);
+  regex = g_regex_new ("\\w+(?=;)", G_REGEX_OPTIMIZE, G_REGEX_MATCH_DEFAULT, &error);
   g_assert (regex);
   g_assert_no_error (error);
   res = g_regex_match (regex, "word1 word2: word3;", 0, &match);
@@ -1585,7 +1586,7 @@ test_lookahead (void)
   g_regex_unref (regex);
 
   error = NULL;
-  regex = g_regex_new ("foo(?!bar)", G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT, &error);
+  regex = g_regex_new ("foo(?!bar)", G_REGEX_OPTIMIZE, G_REGEX_MATCH_DEFAULT, &error);
   g_assert (regex);
   g_assert_no_error (error);
   res = g_regex_match (regex, "foobar foobaz", 0, &match);
@@ -1600,7 +1601,7 @@ test_lookahead (void)
   g_regex_unref (regex);
 
   error = NULL;
-  regex = g_regex_new ("(?!bar)foo", G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT, &error);
+  regex = g_regex_new ("(?!bar)foo", G_REGEX_OPTIMIZE, G_REGEX_MATCH_DEFAULT, &error);
   g_assert (regex);
   g_assert_no_error (error);
   res = g_regex_match (regex, "foobar foobaz", 0, &match);
@@ -1633,7 +1634,7 @@ test_lookbehind (void)
   gint start, end;
 
   error = NULL;
-  regex = g_regex_new ("(?<!foo)bar", G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT, &error);
+  regex = g_regex_new ("(?<!foo)bar", G_REGEX_OPTIMIZE, G_REGEX_MATCH_DEFAULT, &error);
   g_assert (regex);
   g_assert_no_error (error);
   res = g_regex_match (regex, "foobar boobar", 0, &match);
@@ -1648,7 +1649,7 @@ test_lookbehind (void)
   g_regex_unref (regex);
 
   error = NULL;
-  regex = g_regex_new ("(?<=bullock|donkey) poo", G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT, &error);
+  regex = g_regex_new ("(?<=bullock|donkey) poo", G_REGEX_OPTIMIZE, G_REGEX_MATCH_DEFAULT, &error);
   g_assert (regex);
   g_assert_no_error (error);
   res = g_regex_match (regex, "don poo, and bullock poo", 0, &match);
@@ -1661,17 +1662,17 @@ test_lookbehind (void)
   g_match_info_free (match);
   g_regex_unref (regex);
 
-  regex = g_regex_new ("(?<!dogs?|cats?) x", G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT, &error);
+  regex = g_regex_new ("(?<!dogs?|cats?) x", G_REGEX_OPTIMIZE, G_REGEX_MATCH_DEFAULT, &error);
   g_assert (regex == NULL);
   g_assert_error (error, G_REGEX_ERROR, G_REGEX_ERROR_VARIABLE_LENGTH_LOOKBEHIND);
   g_clear_error (&error);
 
-  regex = g_regex_new ("(?<=ab(c|de)) foo", G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT, &error);
+  regex = g_regex_new ("(?<=ab(c|de)) foo", G_REGEX_OPTIMIZE, G_REGEX_MATCH_DEFAULT, &error);
   g_assert (regex == NULL);
   g_assert_error (error, G_REGEX_ERROR, G_REGEX_ERROR_VARIABLE_LENGTH_LOOKBEHIND);
   g_clear_error (&error);
 
-  regex = g_regex_new ("(?<=abc|abde)foo", G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT, &error);
+  regex = g_regex_new ("(?<=abc|abde)foo", G_REGEX_OPTIMIZE, G_REGEX_MATCH_DEFAULT, &error);
   g_assert (regex);
   g_assert_no_error (error);
   res = g_regex_match (regex, "abfoo, abdfoo, abcfoo", 0, &match);
@@ -1683,7 +1684,7 @@ test_lookbehind (void)
   g_match_info_free (match);
   g_regex_unref (regex);
 
-  regex = g_regex_new ("^.*+(?<=abcd)", G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT, &error);
+  regex = g_regex_new ("^.*+(?<=abcd)", G_REGEX_OPTIMIZE, G_REGEX_MATCH_DEFAULT, &error);
   g_assert (regex);
   g_assert_no_error (error);
   res = g_regex_match (regex, "abcabcabcabcabcabcabcabcabcd", 0, &match);
@@ -1692,7 +1693,7 @@ test_lookbehind (void)
   g_match_info_free (match);
   g_regex_unref (regex);
 
-  regex = g_regex_new ("(?<=\\d{3})(?<!999)foo", G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT, &error);
+  regex = g_regex_new ("(?<=\\d{3})(?<!999)foo", G_REGEX_OPTIMIZE, G_REGEX_MATCH_DEFAULT, &error);
   g_assert (regex);
   g_assert_no_error (error);
   res = g_regex_match (regex, "999foo 123abcfoo 123foo", 0, &match);
@@ -1704,7 +1705,7 @@ test_lookbehind (void)
   g_match_info_free (match);
   g_regex_unref (regex);
 
-  regex = g_regex_new ("(?<=\\d{3}...)(?<!999)foo", G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT, &error);
+  regex = g_regex_new ("(?<=\\d{3}...)(?<!999)foo", G_REGEX_OPTIMIZE, G_REGEX_MATCH_DEFAULT, &error);
   g_assert (regex);
   g_assert_no_error (error);
   res = g_regex_match (regex, "999foo 123abcfoo 123foo", 0, &match);
@@ -1716,7 +1717,7 @@ test_lookbehind (void)
   g_match_info_free (match);
   g_regex_unref (regex);
 
-  regex = g_regex_new ("(?<=\\d{3}(?!999)...)foo", G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT, &error);
+  regex = g_regex_new ("(?<=\\d{3}(?!999)...)foo", G_REGEX_OPTIMIZE, G_REGEX_MATCH_DEFAULT, &error);
   g_assert (regex);
   g_assert_no_error (error);
   res = g_regex_match (regex, "999foo 123abcfoo 123foo", 0, &match);
@@ -1728,7 +1729,7 @@ test_lookbehind (void)
   g_match_info_free (match);
   g_regex_unref (regex);
 
-  regex = g_regex_new ("(?<=(?<!foo)bar)baz", G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT, &error);
+  regex = g_regex_new ("(?<=(?<!foo)bar)baz", G_REGEX_OPTIMIZE, G_REGEX_MATCH_DEFAULT, &error);
   g_assert (regex);
   g_assert_no_error (error);
   res = g_regex_match (regex, "foobarbaz barfoobaz barbarbaz", 0, &match);
@@ -1753,7 +1754,7 @@ test_subpattern (void)
   gint start;
 
   error = NULL;
-  regex = g_regex_new ("cat(aract|erpillar|)", G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT, &error);
+  regex = g_regex_new ("cat(aract|erpillar|)", G_REGEX_OPTIMIZE, G_REGEX_MATCH_DEFAULT, &error);
   g_assert (regex);
   g_assert_no_error (error);
   g_assert_cmpint (g_regex_get_capture_count (regex), ==, 1);
@@ -1771,7 +1772,7 @@ test_subpattern (void)
   g_match_info_free (match);
   g_regex_unref (regex);
 
-  regex = g_regex_new ("the ((red|white) (king|queen))", G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT, &error);
+  regex = g_regex_new ("the ((red|white) (king|queen))", G_REGEX_OPTIMIZE, G_REGEX_MATCH_DEFAULT, &error);
   g_assert (regex);
   g_assert_no_error (error);
   g_assert_cmpint (g_regex_get_capture_count (regex), ==, 3);
@@ -1795,7 +1796,7 @@ test_subpattern (void)
   g_match_info_free (match);
   g_regex_unref (regex);
 
-  regex = g_regex_new ("the ((?:red|white) (king|queen))", G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT, &error);
+  regex = g_regex_new ("the ((?:red|white) (king|queen))", G_REGEX_OPTIMIZE, G_REGEX_MATCH_DEFAULT, &error);
   g_assert (regex);
   g_assert_no_error (error);
   res = g_regex_match (regex, "the white queen", 0, &match);
@@ -1815,7 +1816,7 @@ test_subpattern (void)
   g_match_info_free (match);
   g_regex_unref (regex);
 
-  regex = g_regex_new ("(?|(Sat)(ur)|(Sun))day (morning|afternoon)", G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT, &error);
+  regex = g_regex_new ("(?|(Sat)(ur)|(Sun))day (morning|afternoon)", G_REGEX_OPTIMIZE, G_REGEX_MATCH_DEFAULT, &error);
   g_assert (regex);
   g_assert_no_error (error);
   g_assert_cmpint (g_regex_get_capture_count (regex), ==, 3);
@@ -1835,7 +1836,7 @@ test_subpattern (void)
   g_match_info_free (match);
   g_regex_unref (regex);
 
-  regex = g_regex_new ("(?|(abc)|(def))\\1", G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT, &error);
+  regex = g_regex_new ("(?|(abc)|(def))\\1", G_REGEX_OPTIMIZE, G_REGEX_MATCH_DEFAULT, &error);
   g_assert (regex);
   g_assert_no_error (error);
   g_assert_cmpint (g_regex_get_max_backref (regex), ==, 1);
@@ -1853,7 +1854,7 @@ test_subpattern (void)
   g_match_info_free (match);
   g_regex_unref (regex);
 
-  regex = g_regex_new ("(?|(abc)|(def))(?1)", G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT, &error);
+  regex = g_regex_new ("(?|(abc)|(def))(?1)", G_REGEX_OPTIMIZE, G_REGEX_MATCH_DEFAULT, &error);
   g_assert (regex);
   g_assert_no_error (error);
   res = g_regex_match (regex, "abcabc abcdef defabc defdef", 0, &match);
@@ -1870,7 +1871,7 @@ test_subpattern (void)
   g_match_info_free (match);
   g_regex_unref (regex);
 
-  regex = g_regex_new ("(?<DN>Mon|Fri|Sun)(?:day)?|(?<DN>Tue)(?:sday)?|(?<DN>Wed)(?:nesday)?|(?<DN>Thu)(?:rsday)?|(?<DN>Sat)(?:urday)?", G_REGEX_DUPNAMES, G_REGEX_MATCH_DEFAULT, &error);
+  regex = g_regex_new ("(?<DN>Mon|Fri|Sun)(?:day)?|(?<DN>Tue)(?:sday)?|(?<DN>Wed)(?:nesday)?|(?<DN>Thu)(?:rsday)?|(?<DN>Sat)(?:urday)?", G_REGEX_OPTIMIZE|G_REGEX_DUPNAMES, G_REGEX_MATCH_DEFAULT, &error);
   g_assert (regex);
   g_assert_no_error (error);
   res = g_regex_match (regex, "Mon Tuesday Wed Saturday", 0, &match);
@@ -1897,7 +1898,7 @@ test_subpattern (void)
   g_match_info_free (match);
   g_regex_unref (regex);
 
-  regex = g_regex_new ("^(a|b\\1)+$", G_REGEX_DUPNAMES, G_REGEX_MATCH_DEFAULT, &error);
+  regex = g_regex_new ("^(a|b\\1)+$", G_REGEX_OPTIMIZE|G_REGEX_DUPNAMES, G_REGEX_MATCH_DEFAULT, &error);
   g_assert (regex);
   g_assert_no_error (error);
   res = g_regex_match (regex, "aaaaaaaaaaaaaaaa", 0, &match);
@@ -1921,7 +1922,7 @@ test_condition (void)
   gboolean res;
 
   error = NULL;
-  regex = g_regex_new ("^(a+)(\\()?[^()]+(?(-1)\\))(b+)$", G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT, &error);
+  regex = g_regex_new ("^(a+)(\\()?[^()]+(?(-1)\\))(b+)$", G_REGEX_OPTIMIZE, G_REGEX_MATCH_DEFAULT, &error);
   g_assert (regex);
   g_assert_no_error (error);
   res = g_regex_match (regex, "a(zzzzzz)b", 0, &match);
@@ -1935,7 +1936,7 @@ test_condition (void)
   g_regex_unref (regex);
 
   error = NULL;
-  regex = g_regex_new ("^(a+)(?<OPEN>\\()?[^()]+(?(<OPEN>)\\))(b+)$", G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT, &error);
+  regex = g_regex_new ("^(a+)(?<OPEN>\\()?[^()]+(?(<OPEN>)\\))(b+)$", G_REGEX_OPTIMIZE, G_REGEX_MATCH_DEFAULT, &error);
   g_assert (regex);
   g_assert_no_error (error);
   res = g_regex_match (regex, "a(zzzzzz)b", 0, &match);
@@ -1948,7 +1949,7 @@ test_condition (void)
   g_match_info_free (match);
   g_regex_unref (regex);
 
-  regex = g_regex_new ("^(a+)(?(+1)\\[|\\<)?[^()]+(\\])?(b+)$", G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT, &error);
+  regex = g_regex_new ("^(a+)(?(+1)\\[|\\<)?[^()]+(\\])?(b+)$", G_REGEX_OPTIMIZE, G_REGEX_MATCH_DEFAULT, &error);
   g_assert (regex);
   g_assert_no_error (error);
   res = g_regex_match (regex, "a[zzzzzz]b", 0, &match);
@@ -1963,7 +1964,7 @@ test_condition (void)
 
   regex = g_regex_new ("(?(DEFINE) (?<byte> 2[0-4]\\d | 25[0-5] | 1\\d\\d | [1-9]?\\d) )"
                        "\\b (?&byte) (\\.(?&byte)){3} \\b",
-                       G_REGEX_EXTENDED, 0, &error);
+                       G_REGEX_OPTIMIZE|G_REGEX_EXTENDED, 0, &error);
   g_assert (regex);
   g_assert_no_error (error);
   res = g_regex_match (regex, "128.0.0.1", 0, &match);
@@ -1982,7 +1983,7 @@ test_condition (void)
 
   regex = g_regex_new ("^(?(?=[^a-z]*[a-z])"
                        "\\d{2}-[a-z]{3}-\\d{2} | \\d{2}-\\d{2}-\\d{2} )$",
-                       G_REGEX_EXTENDED, 0, &error);
+                       G_REGEX_OPTIMIZE|G_REGEX_EXTENDED, 0, &error);
   g_assert (regex);
   g_assert_no_error (error);
   res = g_regex_match (regex, "01-abc-24", 0, &match);
@@ -2015,7 +2016,7 @@ test_recursion (void)
   gint start;
 
   error = NULL;
-  regex = g_regex_new ("\\( ( [^()]++ | (?R) )* \\)", G_REGEX_EXTENDED, G_REGEX_MATCH_DEFAULT, &error);
+  regex = g_regex_new ("\\( ( [^()]++ | (?R) )* \\)", G_REGEX_OPTIMIZE|G_REGEX_EXTENDED, G_REGEX_MATCH_DEFAULT, &error);
   g_assert (regex);
   g_assert_no_error (error);
   res = g_regex_match (regex, "(middle)", 0, &match);
@@ -2032,7 +2033,7 @@ test_recursion (void)
   g_match_info_free (match);
   g_regex_unref (regex);
 
-  regex = g_regex_new ("^( \\( ( [^()]++ | (?1) )* \\) )$", G_REGEX_EXTENDED, G_REGEX_MATCH_DEFAULT, &error);
+  regex = g_regex_new ("^( \\( ( [^()]++ | (?1) )* \\) )$", G_REGEX_OPTIMIZE|G_REGEX_EXTENDED, G_REGEX_MATCH_DEFAULT, &error);
   g_assert (regex);
   g_assert_no_error (error);
   res = g_regex_match (regex, "((((((((((((((((middle))))))))))))))))", 0, &match);
@@ -2045,7 +2046,7 @@ test_recursion (void)
   g_match_info_free (match);
   g_regex_unref (regex);
 
-  regex = g_regex_new ("^(?<pn> \\( ( [^()]++ | (?&pn) )* \\) )$", G_REGEX_EXTENDED, G_REGEX_MATCH_DEFAULT, &error);
+  regex = g_regex_new ("^(?<pn> \\( ( [^()]++ | (?&pn) )* \\) )$", G_REGEX_OPTIMIZE|G_REGEX_EXTENDED, G_REGEX_MATCH_DEFAULT, &error);
   g_assert (regex);
   g_assert_no_error (error);
   g_regex_match (regex, "(aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa()", 0, &match);
@@ -2054,7 +2055,7 @@ test_recursion (void)
   g_match_info_free (match);
   g_regex_unref (regex);
 
-  regex = g_regex_new ("< (?: (?(R) \\d++ | [^<>]*+) | (?R)) * >", G_REGEX_EXTENDED, G_REGEX_MATCH_DEFAULT, &error);
+  regex = g_regex_new ("< (?: (?(R) \\d++ | [^<>]*+) | (?R)) * >", G_REGEX_OPTIMIZE|G_REGEX_EXTENDED, G_REGEX_MATCH_DEFAULT, &error);
   g_assert (regex);
   g_assert_no_error (error);
   res = g_regex_match (regex, "<ab<01<23<4>>>>", 0, &match);
@@ -2073,7 +2074,7 @@ test_recursion (void)
   g_match_info_free (match);
   g_regex_unref (regex);
 
-  regex = g_regex_new ("^((.)(?1)\\2|.)$", G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT, &error);
+  regex = g_regex_new ("^((.)(?1)\\2|.)$", G_REGEX_OPTIMIZE, G_REGEX_MATCH_DEFAULT, &error);
   g_assert (regex);
   g_assert_no_error (error);
   res = g_regex_match (regex, "abcdcba", 0, &match);
@@ -2086,7 +2087,7 @@ test_recursion (void)
   g_match_info_free (match);
   g_regex_unref (regex);
 
-  regex = g_regex_new ("^(?:((.)(?1)\\2|)|((.)(?3)\\4|.))$", G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT, &error);
+  regex = g_regex_new ("^(?:((.)(?1)\\2|)|((.)(?3)\\4|.))$", G_REGEX_OPTIMIZE, G_REGEX_MATCH_DEFAULT, &error);
   g_assert (regex);
   g_assert_no_error (error);
   res = g_regex_match (regex, "abcdcba", 0, &match);
@@ -2099,7 +2100,7 @@ test_recursion (void)
   g_match_info_free (match);
   g_regex_unref (regex);
 
-  regex = g_regex_new ("^\\W*+(?:((.)\\W*+(?1)\\W*+\\2|)|((.)\\W*+(?3)\\W*+\\4|\\W*+.\\W*+))\\W*+$", G_REGEX_CASELESS, G_REGEX_MATCH_DEFAULT, &error);
+  regex = g_regex_new ("^\\W*+(?:((.)\\W*+(?1)\\W*+\\2|)|((.)\\W*+(?3)\\W*+\\4|\\W*+.\\W*+))\\W*+$", G_REGEX_OPTIMIZE|G_REGEX_CASELESS, G_REGEX_MATCH_DEFAULT, &error);
   g_assert (regex);
   g_assert_no_error (error);
   res = g_regex_match (regex, "abcdcba", 0, &match);
@@ -2219,26 +2220,18 @@ main (int argc, char *argv[])
   g_test_add_func ("/regex/compile-errors", test_compile_errors);
 
   /* TEST_NEW(pattern, compile_opts, match_opts) */
-G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   TEST_NEW("[A-Z]+", G_REGEX_CASELESS | G_REGEX_EXTENDED | G_REGEX_OPTIMIZE, G_REGEX_MATCH_NOTBOL | G_REGEX_MATCH_PARTIAL);
-G_GNUC_END_IGNORE_DEPRECATIONS
   TEST_NEW("", G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT);
   TEST_NEW(".*", G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT);
-G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   TEST_NEW(".*", G_REGEX_OPTIMIZE, G_REGEX_MATCH_DEFAULT);
-G_GNUC_END_IGNORE_DEPRECATIONS
   TEST_NEW(".*", G_REGEX_MULTILINE, G_REGEX_MATCH_DEFAULT);
   TEST_NEW(".*", G_REGEX_DOTALL, G_REGEX_MATCH_DEFAULT);
   TEST_NEW(".*", G_REGEX_DOTALL, G_REGEX_MATCH_NOTBOL);
   TEST_NEW("(123\\d*)[a-zA-Z]+(?P<hello>.*)", G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT);
   TEST_NEW("(123\\d*)[a-zA-Z]+(?P<hello>.*)", G_REGEX_CASELESS, G_REGEX_MATCH_DEFAULT);
-G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   TEST_NEW("(123\\d*)[a-zA-Z]+(?P<hello>.*)", G_REGEX_CASELESS | G_REGEX_OPTIMIZE, G_REGEX_MATCH_DEFAULT);
-G_GNUC_END_IGNORE_DEPRECATIONS
   TEST_NEW("(?P<A>x)|(?P<A>y)", G_REGEX_DUPNAMES, G_REGEX_MATCH_DEFAULT);
-G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   TEST_NEW("(?P<A>x)|(?P<A>y)", G_REGEX_DUPNAMES | G_REGEX_OPTIMIZE, G_REGEX_MATCH_DEFAULT);
-G_GNUC_END_IGNORE_DEPRECATIONS
   /* This gives "internal error: code overflow" with pcre 6.0 */
   TEST_NEW("(?i)(?-i)", G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT);
   TEST_NEW ("(?i)a", G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT);
@@ -2249,9 +2242,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
   TEST_NEW ("(?U)[a-z]+", G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT);
 
   /* TEST_NEW_CHECK_FLAGS(pattern, compile_opts, match_ops, real_compile_opts, real_match_opts) */
-G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   TEST_NEW_CHECK_FLAGS ("a", G_REGEX_OPTIMIZE, 0, G_REGEX_OPTIMIZE, 0);
-G_GNUC_END_IGNORE_DEPRECATIONS
   TEST_NEW_CHECK_FLAGS ("a", G_REGEX_RAW, 0, G_REGEX_RAW, 0);
   TEST_NEW_CHECK_FLAGS ("^.*", 0, 0, G_REGEX_ANCHORED, 0);
   TEST_NEW_CHECK_FLAGS ("(*UTF8)a", 0, 0, 0 /* this is the default in GRegex */, 0);
@@ -2540,18 +2531,35 @@ G_GNUC_END_IGNORE_DEPRECATIONS
   TEST_MATCH_COUNT("(a)?(b)", "b", 0, 0, 3);
   TEST_MATCH_COUNT("(a)?(b)", "ab", 0, 0, 3);
 
-  /* TEST_PARTIAL(pattern, string, expected) */
-  TEST_PARTIAL("^ab", "a", TRUE);
-  TEST_PARTIAL("^ab", "xa", FALSE);
-  TEST_PARTIAL("ab", "xa", TRUE);
-  TEST_PARTIAL("ab", "ab", FALSE); /* normal match. */
-  TEST_PARTIAL("a+b", "aa", TRUE);
-  TEST_PARTIAL("(a)+b", "aa", TRUE);
-  TEST_PARTIAL("a?b", "a", TRUE);
+  /* TEST_PARTIAL(pattern, string, expected), no JIT */
+  TEST_PARTIAL("^ab", "a", G_REGEX_DEFAULT, TRUE);
+  TEST_PARTIAL("^ab", "xa", G_REGEX_DEFAULT, FALSE);
+  TEST_PARTIAL("ab", "xa", G_REGEX_DEFAULT, TRUE);
+  TEST_PARTIAL("ab", "ab", G_REGEX_DEFAULT, FALSE); /* normal match. */
+  TEST_PARTIAL("a+b", "aa", G_REGEX_DEFAULT, TRUE);
+  TEST_PARTIAL("(a)+b", "aa", G_REGEX_DEFAULT, TRUE);
+  TEST_PARTIAL("a?b", "a", G_REGEX_DEFAULT, TRUE);
 
-  /* Test soft vs. hard partial matching */
-  TEST_PARTIAL_FULL("cat(fish)?", "cat", G_REGEX_MATCH_PARTIAL_SOFT, FALSE);
-  TEST_PARTIAL_FULL("cat(fish)?", "cat", G_REGEX_MATCH_PARTIAL_HARD, TRUE);
+  /* TEST_PARTIAL(pattern, string, expected) with JIT */
+  TEST_PARTIAL("^ab", "a", G_REGEX_OPTIMIZE, TRUE);
+  TEST_PARTIAL("^ab", "xa", G_REGEX_OPTIMIZE, FALSE);
+  TEST_PARTIAL("ab", "xa", G_REGEX_OPTIMIZE, TRUE);
+  TEST_PARTIAL("ab", "ab", G_REGEX_OPTIMIZE, FALSE); /* normal match. */
+  TEST_PARTIAL("a+b", "aa", G_REGEX_OPTIMIZE, TRUE);
+  TEST_PARTIAL("(a)+b", "aa", G_REGEX_OPTIMIZE, TRUE);
+  TEST_PARTIAL("a?b", "a", G_REGEX_OPTIMIZE, TRUE);
+
+  /* Test soft vs. hard partial matching, no JIT */
+  TEST_PARTIAL_FULL("cat(fish)?", "cat", G_REGEX_DEFAULT, G_REGEX_MATCH_PARTIAL_SOFT, FALSE);
+  TEST_PARTIAL_FULL("cat(fish)?", "cat", G_REGEX_DEFAULT, G_REGEX_MATCH_PARTIAL_HARD, TRUE);
+  TEST_PARTIAL_FULL("ab+", "ab", G_REGEX_DEFAULT, G_REGEX_MATCH_PARTIAL_SOFT, FALSE);
+  TEST_PARTIAL_FULL("ab+", "ab", G_REGEX_DEFAULT, G_REGEX_MATCH_PARTIAL_HARD, TRUE);
+
+  /* Test soft vs. hard partial matching with JIT */
+  TEST_PARTIAL_FULL("cat(fish)?", "cat", G_REGEX_OPTIMIZE, G_REGEX_MATCH_PARTIAL_SOFT, FALSE);
+  TEST_PARTIAL_FULL("cat(fish)?", "cat", G_REGEX_OPTIMIZE, G_REGEX_MATCH_PARTIAL_HARD, TRUE);
+  TEST_PARTIAL_FULL("ab+", "ab", G_REGEX_OPTIMIZE, G_REGEX_MATCH_PARTIAL_SOFT, FALSE);
+  TEST_PARTIAL_FULL("ab+", "ab", G_REGEX_OPTIMIZE, G_REGEX_MATCH_PARTIAL_HARD, TRUE);
 
   /* TEST_SUB_PATTERN(pattern, string, start_position, sub_n, expected_sub,
    * 		      expected_start, expected_end) */

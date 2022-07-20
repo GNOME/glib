@@ -144,7 +144,6 @@
                             PCRE2_NOTBOL |           \
                             PCRE2_NOTEOL |           \
                             PCRE2_NOTEMPTY |         \
-                            PCRE2_PARTIAL_SOFT |     \
                             PCRE2_NEWLINE_CR |       \
                             PCRE2_NEWLINE_LF |       \
                             PCRE2_NEWLINE_CRLF |     \
@@ -195,6 +194,13 @@ struct _GMatchInfo
   pcre2_match_data *match_data;
 };
 
+typedef enum
+{
+  JIT_STATUS_DEFAULT,
+  JIT_STATUS_ENABLED,
+  JIT_STATUS_DISABLED
+} JITStatus;
+
 struct _GRegex
 {
   gint ref_count;               /* the ref count for the immutable part (atomic) */
@@ -203,6 +209,8 @@ struct _GRegex
   GRegexCompileFlags compile_opts;      /* options used at compile time on the pattern, pcre2 values */
   GRegexCompileFlags orig_compile_opts; /* options used at compile time on the pattern, gregex values */
   GRegexMatchFlags match_opts;  /* options used at match time on the regex */
+  gint jit_options;             /* options which were enabled for jit compiler */
+  JITStatus jit_status;         /* indicates the status of jit compiler for this compiled regex */
 };
 
 /* TRUE if ret is an error code, FALSE otherwise. */
@@ -262,10 +270,11 @@ map_to_pcre2_compile_flags (gint pcre1_flags)
   if (pcre1_flags & G_REGEX_BSR_ANYCRLF)
     pcre2_flags |= PCRE2_BSR_ANYCRLF;
 
-  /* these are not available in pcre2 */
-G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  /* these are not available in pcre2, but we use G_REGEX_OPTIMIZE as a special
+   * case to request JIT compilation */
   if (pcre1_flags & G_REGEX_OPTIMIZE)
     pcre2_flags |= 0;
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   if (pcre1_flags & G_REGEX_JAVASCRIPT_COMPAT)
     pcre2_flags |= 0;
 G_GNUC_END_IGNORE_DEPRECATIONS
@@ -291,8 +300,6 @@ map_to_pcre2_match_flags (gint pcre1_flags)
     pcre2_flags |= PCRE2_NOTEOL;
   if (pcre1_flags & G_REGEX_MATCH_NOTEMPTY)
     pcre2_flags |= PCRE2_NOTEMPTY;
-  if (pcre1_flags & G_REGEX_MATCH_PARTIAL)
-    pcre2_flags |= PCRE2_PARTIAL_SOFT;
   if (pcre1_flags & G_REGEX_MATCH_NEWLINE_CR)
     pcre2_flags |= PCRE2_NEWLINE_CR;
   if (pcre1_flags & G_REGEX_MATCH_NEWLINE_LF)
@@ -385,8 +392,6 @@ map_to_pcre1_match_flags (gint pcre2_flags)
     pcre1_flags |= G_REGEX_MATCH_NOTEOL;
   if (pcre2_flags & PCRE2_NOTEMPTY)
     pcre1_flags |= G_REGEX_MATCH_NOTEMPTY;
-  if (pcre2_flags & PCRE2_PARTIAL_SOFT)
-    pcre1_flags |= G_REGEX_MATCH_PARTIAL;
   if (pcre2_flags & PCRE2_NEWLINE_CR)
     pcre1_flags |= G_REGEX_MATCH_NEWLINE_CR;
   if (pcre2_flags & PCRE2_NEWLINE_LF)
@@ -461,6 +466,9 @@ match_error (gint errcode)
       return _("bad offset");
     case PCRE2_ERROR_RECURSELOOP:
       return _("recursion loop");
+    case PCRE2_ERROR_JIT_BADOPTION:
+      /* should not happen in GRegex since we check modes before each match */
+      return _("matching mode is requested that was not compiled for JIT");
     default:
       break;
     }
@@ -817,6 +825,56 @@ recalc_match_offsets (GMatchInfo *match_info,
   return TRUE;
 }
 
+static void
+enable_jit_with_match_options (GRegex *regex,
+                               GRegexMatchFlags match_options)
+{
+  gint old_jit_options, new_jit_options, retval;
+
+  if (!(regex->orig_compile_opts & G_REGEX_OPTIMIZE))
+    return;
+  if (regex->jit_status == JIT_STATUS_DISABLED)
+    return;
+
+  old_jit_options = regex->jit_options;
+  new_jit_options = old_jit_options | PCRE2_JIT_COMPLETE;
+  if (match_options & PCRE2_PARTIAL_HARD)
+    new_jit_options |= PCRE2_JIT_PARTIAL_HARD;
+  if (match_options & PCRE2_PARTIAL_SOFT)
+    new_jit_options |= PCRE2_JIT_PARTIAL_SOFT;
+
+  /* no new options enabled */
+  if (new_jit_options == old_jit_options)
+    return;
+
+  retval = pcre2_jit_compile (regex->pcre_re, new_jit_options);
+  switch (retval)
+    {
+    case 0: /* JIT enabled successfully */
+      regex->jit_status = JIT_STATUS_ENABLED;
+      regex->jit_options = new_jit_options;
+      break;
+    case PCRE2_ERROR_NOMEMORY:
+      g_warning ("JIT compilation was requested with G_REGEX_OPTIMIZE, "
+                 "but JIT was unable to allocate executable memory for the "
+                 "compiler. Falling back to interpretive code.");
+      regex->jit_status = JIT_STATUS_DISABLED;
+      break;
+    case PCRE2_ERROR_JIT_BADOPTION:
+      g_warning ("JIT compilation was requested with G_REGEX_OPTIMIZE, "
+                 "but JIT support is not available. Falling back to "
+                 "interpretive code.");
+      regex->jit_status = JIT_STATUS_DISABLED;
+      break;
+    default:
+      g_warning ("JIT compilation was requested with G_REGEX_OPTIMIZE, "
+                 "but request for JIT support had unexpectedly failed. "
+                 "Falling back to interpretive code.");
+      regex->jit_status = JIT_STATUS_DISABLED;
+      break;
+    }
+}
+
 /**
  * g_match_info_get_regex:
  * @match_info: a #GMatchInfo
@@ -956,13 +1014,28 @@ g_match_info_next (GMatchInfo  *match_info,
     }
 
   opts = map_to_pcre2_match_flags (match_info->regex->match_opts | match_info->match_opts);
-  match_info->matches = pcre2_match (match_info->regex->pcre_re,
-                                     (PCRE2_SPTR8) match_info->string,
-                                     match_info->string_len,
-                                     match_info->pos,
-                                     opts & ~G_REGEX_FLAGS_CONVERTED,
-                                     match_info->match_data,
-                                     match_info->match_context);
+
+  enable_jit_with_match_options (match_info->regex, opts);
+  if (match_info->regex->jit_status == JIT_STATUS_ENABLED)
+    {
+      match_info->matches = pcre2_jit_match (match_info->regex->pcre_re,
+                                             (PCRE2_SPTR8) match_info->string,
+                                             match_info->string_len,
+                                             match_info->pos,
+                                             opts & ~G_REGEX_FLAGS_CONVERTED,
+                                             match_info->match_data,
+                                             match_info->match_context);
+    }
+  else
+    {
+      match_info->matches = pcre2_match (match_info->regex->pcre_re,
+                                         (PCRE2_SPTR8) match_info->string,
+                                         match_info->string_len,
+                                         match_info->pos,
+                                         opts & ~G_REGEX_FLAGS_CONVERTED,
+                                         match_info->match_data,
+                                         match_info->match_context);
+    }
 
   if (IS_PCRE2_ERROR (match_info->matches))
     {
@@ -1582,6 +1655,7 @@ g_regex_new (const gchar         *pattern,
   regex->compile_opts = compile_options;
   regex->orig_compile_opts = orig_compile_opts;
   regex->match_opts = match_options;
+  enable_jit_with_match_options (regex, regex->match_opts);
 
   return regex;
 }
@@ -1836,10 +1910,8 @@ g_regex_get_compile_flags (const GRegex *regex)
 
   g_return_val_if_fail (regex != NULL, 0);
 
-G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   /* Preserve original G_REGEX_OPTIMIZE */
   extra_flags = (regex->orig_compile_opts & G_REGEX_OPTIMIZE);
-G_GNUC_END_IGNORE_DEPRECATIONS
 
   /* Also include the newline options */
   pcre2_pattern_info (regex->pcre_re, PCRE2_INFO_NEWLINE, &info_value);
