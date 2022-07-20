@@ -10,7 +10,7 @@ cache:
     - _ccache/
 
 variables:
-  FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v18"
+  FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v19"
   COVERITY_IMAGE: "registry.gitlab.gnome.org/gnome/glib/coverity:v7"
   DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v13"
   MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v9"
@@ -482,6 +482,10 @@ coverage:
     paths:
       - _coverage/coverage/index.html
       - _coverage
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: _coverage/*-cobertura/cobertura-*.xml
   before_script:
     - bash .gitlab-ci/show-execution-environment.sh
   script:
