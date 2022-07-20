@@ -2241,7 +2241,10 @@ g_regex_match_all_full (const GRegex      *regex,
                                        info->workspace, info->n_workspace);
 
       if (!recalc_match_offsets (info, error))
-        return FALSE;
+        {
+          g_match_info_free (info);
+          return FALSE;
+        }
 
       if (info->matches == PCRE2_ERROR_DFA_WSSIZE)
         {
