@@ -262,11 +262,13 @@ GQuark g_regex_error_quark (void);
  *     followed by "?" behaves as if it were followed by "?:" but named
  *     parentheses can still be used for capturing (and they acquire numbers
  *     in the usual way).
- * @G_REGEX_OPTIMIZE: Optimize the regular expression. If the pattern will
- *     be used many times, then it may be worth the effort to optimize it
- *     to improve the speed of matches. Deprecated in GLib 2.74 which now uses
- *     libpcre2, which doesn’t require separate optimization of queries. This
- *     option is now a no-op. Deprecated: 2.74
+ * @G_REGEX_OPTIMIZE: Since 2.74 and the port to pcre2, requests JIT
+ *     compilation, which, if the just-in-time compiler is available, further
+ *     processes a compiled pattern into machine code that executes much
+ *     faster. However, it comes at the cost of extra processing before the
+ *     match is performed, so it is most beneficial to use this when the same
+ *     compiled pattern is used for matching many times. Before 2.74 this
+ *     option used the built-in non-JIT optimizations in pcre1.
  * @G_REGEX_FIRSTLINE: Limits an unanchored pattern to match before (or at) the
  *     first newline. Since: 2.34
  * @G_REGEX_DUPNAMES: Names used to identify capturing subpatterns need not
@@ -311,7 +313,7 @@ typedef enum
   G_REGEX_UNGREEDY          = 1 << 9,
   G_REGEX_RAW               = 1 << 11,
   G_REGEX_NO_AUTO_CAPTURE   = 1 << 12,
-  G_REGEX_OPTIMIZE GLIB_DEPRECATED_ENUMERATOR_IN_2_74 = 1 << 13,
+  G_REGEX_OPTIMIZE          = 1 << 13,
   G_REGEX_FIRSTLINE         = 1 << 18,
   G_REGEX_DUPNAMES          = 1 << 19,
   G_REGEX_NEWLINE_CR        = 1 << 20,
