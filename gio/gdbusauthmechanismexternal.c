@@ -40,6 +40,7 @@ struct _GDBusAuthMechanismExternalPrivate
   gboolean is_client;
   gboolean is_server;
   GDBusAuthMechanismState state;
+  gboolean empty_data_sent;
 };
 
 static gint                     mechanism_get_priority              (void);
@@ -200,14 +201,24 @@ data_matches_credentials (const gchar  *data,
   if (credentials == NULL)
     goto out;
 
-  if (data == NULL || data_len == 0)
-    goto out;
-
 #if defined(G_OS_UNIX)
   {
     gint64 alleged_uid;
     gchar *endp;
 
+    /* If we were unable to find out the uid, then nothing
+     * can possibly match it.  */
+    if (g_credentials_get_unix_user (credentials, NULL) == (uid_t) -1)
+      goto out;
+
+    /* An empty authorization identity means we want to be
+     * whatever identity the out-of-band credentials say we have
+     * (RFC 4422 appendix A.1). This effectively matches any uid. */
+    if (data == NULL || data_len == 0)
+      {
+        match = TRUE;
+        goto out;
+      }
     /* on UNIX, this is the uid as a string in base 10 */
     alleged_uid = g_ascii_strtoll (data, &endp, 10);
     if (*endp == '\0')
@@ -253,7 +264,9 @@ mechanism_server_initiate (GDBusAuthMechanism   *mechanism,
     }
   else
     {
-      m->priv->state = G_DBUS_AUTH_MECHANISM_STATE_WAITING_FOR_DATA;
+      /* The initial-response optimization was not used, so we need to
+       * send an empty challenge to prompt the client to respond. */
+      m->priv->state = G_DBUS_AUTH_MECHANISM_STATE_HAVE_DATA_TO_SEND;
     }
 }
 
@@ -288,12 +301,22 @@ mechanism_server_data_send (GDBusAuthMechanism   *mechanism,
 
   g_return_val_if_fail (G_IS_DBUS_AUTH_MECHANISM_EXTERNAL (mechanism), NULL);
   g_return_val_if_fail (m->priv->is_server && !m->priv->is_client, NULL);
-  g_return_val_if_fail (m->priv->state == G_DBUS_AUTH_MECHANISM_STATE_HAVE_DATA_TO_SEND, NULL);
 
-  /* can never end up here because we are never in the HAVE_DATA_TO_SEND state */
-  g_assert_not_reached ();
+  if (out_data_len)
+    *out_data_len = 0;
 
-  return NULL;
+  if (m->priv->empty_data_sent)
+    {
+      /* We have already sent an empty data response.
+         Reject the connection.  */
+      m->priv->state = G_DBUS_AUTH_MECHANISM_STATE_REJECTED;
+      return NULL;
+    }
+
+  m->priv->state = G_DBUS_AUTH_MECHANISM_STATE_WAITING_FOR_DATA;
+  m->priv->empty_data_sent = TRUE;
+
+  return g_strdup ("");
 }
 
 static gchar *
