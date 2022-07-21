@@ -5139,6 +5139,71 @@ g_win32_app_info_launch_uris (GAppInfo           *appinfo,
   return res;
 }
 
+typedef struct
+{
+  GList *uris;  /* (element-type utf8) (owned) (nullable) */
+  GAppLaunchContext *context;  /* (owned) (nullable) */
+} LaunchUrisData;
+
+static void
+launch_uris_data_free (LaunchUrisData *data)
+{
+  g_clear_object (&data->context);
+  g_list_free_full (data->uris, g_free);
+  g_free (data);
+}
+
+static void
+launch_uris_async_thread (GTask         *task,
+                          gpointer       source_object,
+                          gpointer       task_data,
+                          GCancellable  *cancellable)
+{
+  GAppInfo *appinfo = G_APP_INFO (source_object);
+  LaunchUrisData *data = task_data;
+  GError *local_error = NULL;
+  gboolean succeeded;
+
+  succeeded = g_app_info_launch_uris (appinfo, data->uris, data->context, &local_error);
+  if (succeeded)
+    g_task_return_boolean (task, TRUE);
+  else
+    g_task_return_error (task, g_steal_pointer (&local_error));
+}
+
+static void
+g_win32_app_info_launch_uris_async (GAppInfo            *appinfo,
+                                    GList               *uris,
+                                    GAppLaunchContext   *context,
+                                    GCancellable        *cancellable,
+                                    GAsyncReadyCallback  callback,
+                                    gpointer             user_data)
+{
+  GTask *task;
+  LaunchUrisData *data;
+
+  task = g_task_new (appinfo, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_win32_app_info_launch_uris_async);
+
+  data = g_new0 (LaunchUrisData, 1);
+  data->uris = g_list_copy_deep (uris, (GCopyFunc) g_strdup, NULL);
+  g_set_object (&data->context, context);
+  g_task_set_task_data (task, g_steal_pointer (&data), (GDestroyNotify) launch_uris_data_free);
+
+  g_task_run_in_thread (task, launch_uris_async_thread);
+  g_object_unref (task);
+}
+
+static gboolean
+g_win32_app_info_launch_uris_finish (GAppInfo *appinfo,
+                                     GAsyncResult *result,
+                                     GError **error)
+{
+  g_return_val_if_fail (g_task_is_valid (result, appinfo), FALSE);
+
+  return g_task_propagate_boolean (G_TASK (result), error);
+}
+
 static gboolean
 g_win32_app_info_should_show (GAppInfo *appinfo)
 {
@@ -5284,6 +5349,8 @@ g_win32_app_info_iface_init (GAppInfoIface *iface)
   iface->supports_uris = g_win32_app_info_supports_uris;
   iface->supports_files = g_win32_app_info_supports_files;
   iface->launch_uris = g_win32_app_info_launch_uris;
+  iface->launch_uris_async = g_win32_app_info_launch_uris_async;
+  iface->launch_uris_finish = g_win32_app_info_launch_uris_finish;
   iface->should_show = g_win32_app_info_should_show;
 /*  iface->set_as_default_for_type = g_win32_app_info_set_as_default_for_type;*/
 /*  iface->set_as_default_for_extension = g_win32_app_info_set_as_default_for_extension;*/
