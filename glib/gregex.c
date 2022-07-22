@@ -855,21 +855,21 @@ enable_jit_with_match_options (GRegex *regex,
       regex->jit_options = new_jit_options;
       break;
     case PCRE2_ERROR_NOMEMORY:
-      g_warning ("JIT compilation was requested with G_REGEX_OPTIMIZE, "
-                 "but JIT was unable to allocate executable memory for the "
-                 "compiler. Falling back to interpretive code.");
+      g_debug ("JIT compilation was requested with G_REGEX_OPTIMIZE, "
+               "but JIT was unable to allocate executable memory for the "
+               "compiler. Falling back to interpretive code.");
       regex->jit_status = JIT_STATUS_DISABLED;
       break;
     case PCRE2_ERROR_JIT_BADOPTION:
-      g_warning ("JIT compilation was requested with G_REGEX_OPTIMIZE, "
-                 "but JIT support is not available. Falling back to "
-                 "interpretive code.");
+      g_debug ("JIT compilation was requested with G_REGEX_OPTIMIZE, "
+               "but JIT support is not available. Falling back to "
+               "interpretive code.");
       regex->jit_status = JIT_STATUS_DISABLED;
       break;
     default:
-      g_warning ("JIT compilation was requested with G_REGEX_OPTIMIZE, "
-                 "but request for JIT support had unexpectedly failed. "
-                 "Falling back to interpretive code.");
+      g_debug ("JIT compilation was requested with G_REGEX_OPTIMIZE, "
+               "but request for JIT support had unexpectedly failed. "
+               "Falling back to interpretive code.");
       regex->jit_status = JIT_STATUS_DISABLED;
       break;
     }
