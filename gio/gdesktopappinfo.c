@@ -2629,7 +2629,7 @@ prepend_terminal_to_vector (int    *argc,
   char **real_argv;
   size_t real_argc;
   size_t i;
-  int term_argc = 2;
+  size_t term_argc;
   char *found_terminal;
   char **the_argv;
   const char *term_arg;
@@ -2681,14 +2681,21 @@ prepend_terminal_to_vector (int    *argc,
       return FALSE;
     }
 
+  /* check if the terminal require an option */
+  term_argc = term_arg ? 2 : 1;
+
   real_argc = term_argc + *argc;
   real_argv = g_new (char *, real_argc + 1);
 
-  real_argv[0] = found_terminal;
-  real_argv[1] = g_strdup (term_arg);
+  i = 0;
+  real_argv[i++] = found_terminal;
 
-  for (i = term_argc; i < real_argc; i++)
-    real_argv[i] = the_argv[i - term_argc];
+  if (term_arg)
+    real_argv[i++] = g_strdup (term_arg);
+
+  g_assert (i == term_argc);
+  for (int j = 0; j < *argc; j++)
+    real_argv[i++] = the_argv[j];
 
   real_argv[i] = NULL;
 
