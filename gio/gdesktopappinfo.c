@@ -2627,12 +2627,27 @@ prepend_terminal_to_vector (int    *argc,
 {
 #ifndef G_OS_WIN32
   char **real_argv;
-  int real_argc;
-  int i, j;
-  char **term_argv = NULL;
-  int term_argc = 0;
-  char *check;
+  size_t real_argc;
+  size_t i;
+  int term_argc = 2;
+  char *found_terminal;
   char **the_argv;
+  const char *term_arg;
+  static const struct {
+    const char *exec;
+    const char *exec_arg;
+  } known_terminals[] = {
+    { "gnome-terminal", "--" },
+    { "mate-terminal", "-x" },
+    { "xfce4-terminal", "-x" },
+    { "tilix", "-e" },
+    { "konsole", "-e" },
+    { "nxterm", "-e" },
+    { "color-xterm", "-e" },
+    { "rxvt", "-e" },
+    { "dtterm", "-e" },
+    { "xterm", "-e" }
+  };
 
   g_return_val_if_fail (argc != NULL, FALSE);
   g_return_val_if_fail (argv != NULL, FALSE);
@@ -2646,69 +2661,34 @@ prepend_terminal_to_vector (int    *argc,
   /* compute size if not given */
   if (*argc < 0)
     {
-      for (i = 0; the_argv[i] != NULL; i++)
+      for ((*argc) = 0; the_argv[*argc] != NULL; (*argc)++)
         ;
-      *argc = i;
     }
 
-  term_argc = 2;
-  term_argv = g_new0 (char *, 3);
-
-  check = g_find_program_in_path ("gnome-terminal");
-  if (check != NULL)
+  for (i = 0, found_terminal = NULL; i < G_N_ELEMENTS (known_terminals); i++)
     {
-      term_argv[0] = check;
-      /* Since 2017, gnome-terminal has preferred `--` over `-x` or `-e`. */
-      term_argv[1] = g_strdup ("--");
+      found_terminal = g_find_program_in_path (known_terminals[i].exec);
+      if (found_terminal != NULL)
+        {
+          term_arg = known_terminals[i].exec_arg;
+          break;
+        }
     }
-  else
+
+  if (found_terminal == NULL)
     {
-      if (check == NULL)
-        check = g_find_program_in_path ("mate-terminal");
-      if (check == NULL)
-        check = g_find_program_in_path ("xfce4-terminal");
-      if (check != NULL)
-        {
-          term_argv[0] = check;
-          /* Note that gnome-terminal takes -x and
-           * as -e in gnome-terminal is broken we use that. */
-          term_argv[1] = g_strdup ("-x");
-        }
-      else
-        {
-          if (check == NULL)
-            check = g_find_program_in_path ("tilix");
-          if (check == NULL)
-            check = g_find_program_in_path ("konsole");
-          if (check == NULL)
-            check = g_find_program_in_path ("nxterm");
-          if (check == NULL)
-            check = g_find_program_in_path ("color-xterm");
-          if (check == NULL)
-            check = g_find_program_in_path ("rxvt");
-          if (check == NULL)
-            check = g_find_program_in_path ("dtterm");
-          if (check == NULL)
-            check = g_find_program_in_path ("xterm");
-          if (check == NULL)
-            {
-              g_debug ("Couldn’t find a known terminal");
-              g_free (term_argv);
-              return FALSE;
-            }
-          term_argv[0] = check;
-          term_argv[1] = g_strdup ("-e");
-        }
+      g_debug ("Couldn’t find a known terminal");
+      return FALSE;
     }
 
   real_argc = term_argc + *argc;
   real_argv = g_new (char *, real_argc + 1);
 
-  for (i = 0; i < term_argc; i++)
-    real_argv[i] = term_argv[i];
+  real_argv[0] = found_terminal;
+  real_argv[1] = g_strdup (term_arg);
 
-  for (j = 0; j < *argc; j++, i++)
-    real_argv[i] = (char *)the_argv[j];
+  for (i = term_argc; i < real_argc; i++)
+    real_argv[i] = the_argv[i - term_argc];
 
   real_argv[i] = NULL;
 
@@ -2716,9 +2696,6 @@ prepend_terminal_to_vector (int    *argc,
   *argv = real_argv;
   *argc = real_argc;
 
-  /* we use g_free here as we sucked all the inner strings
-   * out from it into real_argv */
-  g_free (term_argv);
   return TRUE;
 #else
   return FALSE;
