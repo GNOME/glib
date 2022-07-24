@@ -20,10 +20,10 @@ foreach test_name, extra_args : gobject_tests
   if install
     test_conf = configuration_data()
     test_conf.set('installed_tests_dir', installed_tests_execdir)
-    test_conf.set('program', test_name)
+    test_conf.set('program', '@0@ --seconds 1'.format(test_name))
     test_conf.set('env', '')
     configure_file(
-      input: installed_tests_template_tap,
+      input: installed_tests_template,
       output: test_name + '.test',
       install_dir: installed_tests_metadir,
       configuration: test_conf,

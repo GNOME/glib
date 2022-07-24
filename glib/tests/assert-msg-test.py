@@ -64,7 +64,9 @@ class TestAssertMessage(unittest.TestCase):
                 os.environ["G_TEST_BUILDDIR"], "assert-msg-test"
             )
         else:
-            self.__assert_msg_test = shutil.which("assert-msg-test")
+            self.__assert_msg_test = os.path.join(
+                os.path.dirname(__file__), "assert-msg-test"
+            )
         print("assert-msg-test:", self.__assert_msg_test)
 
     def runAssertMessage(self, *args):
