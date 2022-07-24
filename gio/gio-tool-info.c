@@ -68,11 +68,36 @@ escape_string (const char *in)
   return g_string_free (str, FALSE);
 }
 
+static char *
+flatten_string (const char *in)
+{
+  GString *str;
+  unsigned char c;
+
+  str = g_string_new ("");
+
+  while ((c = *in++) != 0)
+    {
+      switch (c)
+        {
+        case '\n':
+          g_string_append (str, " ↵ ");
+          break;
+
+        default:
+          g_string_append_c (str, c);
+          break;
+        }
+    }
+
+  return g_string_free (str, FALSE);
+}
+
 static void
 show_attributes (GFileInfo *info)
 {
   char **attributes;
-  char *s;
+  char *s, *flatten;
   int i;
 
   attributes = g_file_info_list_attributes (info, NULL);
@@ -112,7 +137,9 @@ show_attributes (GFileInfo *info)
       else
         {
           s = g_file_info_get_attribute_as_string (info, attributes[i]);
-          g_print ("  %s: %s\n", attributes[i], s);
+          flatten = flatten_string (s);
+          g_print ("  %s: %s\n", attributes[i], flatten);
+          g_free (flatten);
           g_free (s);
         }
     }
@@ -123,7 +150,7 @@ static void
 show_info (GFile *file, GFileInfo *info)
 {
   const char *name, *type;
-  char *escaped, *uri;
+  char *escaped, *uri, *flatten;
   goffset size;
   const char *path;
 #ifdef G_OS_UNIX
@@ -132,13 +159,21 @@ show_info (GFile *file, GFileInfo *info)
 
   name = g_file_info_get_display_name (info);
   if (name)
-    /* Translators: This is a noun and represents and attribute of a file */
-    g_print (_("display name: %s\n"), name);
+    {
+      /* Translators: This is a noun and represents and attribute of a file */
+      flatten = flatten_string (name);
+      g_print (_("display name: %s\n"), flatten);
+      g_free (flatten);
+    }
 
   name = g_file_info_get_edit_name (info);
   if (name)
-    /* Translators: This is a noun and represents and attribute of a file */
-    g_print (_("edit name: %s\n"), name);
+    {
+      /* Translators: This is a noun and represents and attribute of a file */
+      flatten = flatten_string (name);
+      g_print (_("display name: %s\n"), flatten);
+      g_free (flatten);
+    }
 
   name = g_file_info_get_name (info);
   if (name)
@@ -171,7 +206,9 @@ show_info (GFile *file, GFileInfo *info)
   path = g_file_peek_path (file);
   if (path)
     {
-      g_print (_("local path: %s\n"), path);
+      flatten = flatten_string (path);
+      g_print (_("local path: %s\n"), flatten);
+      free (flatten);
 
 #ifdef G_OS_UNIX
       entry = g_unix_mount_at (path, NULL);
