@@ -244,7 +244,7 @@ static void
 test_g_markup_parse_context (void)
 {
   g_autoptr(GMarkupParseContext) val = g_markup_parse_context_new (&parser,
-                                                                   G_MARKUP_PARSE_FLAGS_NONE,
+                                                                   G_MARKUP_DEFAULT_FLAGS,
                                                                    NULL, NULL);
   g_assert_nonnull (val);
 }
