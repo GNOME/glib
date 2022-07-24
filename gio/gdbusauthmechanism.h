@@ -93,6 +93,7 @@ struct _GDBusAuthMechanismClass
   /* functions for client-side authentication */
   GDBusAuthMechanismState   (*client_get_state)         (GDBusAuthMechanism   *mechanism);
   gchar                    *(*client_initiate)          (GDBusAuthMechanism   *mechanism,
+                                                         GDBusConnectionFlags  conn_flags,
                                                          gsize                *out_initial_response_len);
   void                      (*client_data_receive)      (GDBusAuthMechanism   *mechanism,
                                                          const gchar          *data,
@@ -140,6 +141,7 @@ void                      _g_dbus_auth_mechanism_server_shutdown          (GDBus
 
 GDBusAuthMechanismState   _g_dbus_auth_mechanism_client_get_state         (GDBusAuthMechanism   *mechanism);
 gchar                    *_g_dbus_auth_mechanism_client_initiate          (GDBusAuthMechanism   *mechanism,
+                                                                           GDBusConnectionFlags  conn_flags,
                                                                            gsize                *out_initial_response_len);
 void                      _g_dbus_auth_mechanism_client_data_receive      (GDBusAuthMechanism   *mechanism,
                                                                            const gchar          *data,

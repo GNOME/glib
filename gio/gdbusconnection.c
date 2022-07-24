@@ -2569,6 +2569,7 @@ initable_init (GInitable     *initable,
       connection->auth = _g_dbus_auth_new (connection->stream);
       connection->guid = _g_dbus_auth_run_client (connection->auth,
                                                   connection->authentication_observer,
+                                                  connection->flags,
                                                   get_offered_capabilities_max (connection),
                                                   &connection->capabilities,
                                                   cancellable,
