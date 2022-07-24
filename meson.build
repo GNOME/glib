@@ -82,6 +82,20 @@ else
   glib_giomodulesdir = join_paths(glib_libdir, 'gio', 'modules')
 endif
 
+if get_option('multiarch')
+  # For multiarch/multilib distributions, install each architecture's
+  # build of executables used in packaging triggers (like gio-querymodules)
+  # to an architecture-dependent location, with a compatibility symlink
+  # in the PATH.
+  multiarch_bindir = get_option('libdir') / 'glib-2.0'
+  pkgconfig_multiarch_bindir = '${libdir}/glib-2.0'
+else
+  # For single-architecture distributions, just install them into the PATH
+  # as was traditionally done.
+  multiarch_bindir = get_option('bindir')
+  pkgconfig_multiarch_bindir = '${bindir}'
+endif
+
 glib_pkgconfigreldir = join_paths(glib_libdir, 'pkgconfig')
 
 if get_option('charsetalias_dir') != ''

@@ -30,6 +30,15 @@ Overview of changes in GLib 2.73.2, 12-07-2022
 * Use waitid() on pidfds rather than a global SIGCHLD handler (work by Philip
   Withnall) (!2408)
 
+* Executables that are invoked when installing other software, typically
+  from packaging system triggers, can now be installed into
+  architecture-dependent locations. Unix OS distributors who install
+  GLib for more than one architecture in parallel (multiarch or multilib
+  installations) should consider building with -Dmultiarch=true, installing
+  the bin/glib-compile-schemas and bin/gio-querymodules symbolic links in
+  packages for the primary architecture, and omitting those symlinks from
+  packages for secondary architectures. (work by Simon McVittie) (!2818)
+
 * Bugs fixed:
  - #1434 Move tests/* into */tests/
  - #2216 Chain signal handlers for SIGCHLD
