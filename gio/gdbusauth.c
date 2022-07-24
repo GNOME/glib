@@ -417,6 +417,7 @@ hexdecode (const gchar  *str,
 static GDBusAuthMechanism *
 client_choose_mech_and_send_initial_response (GDBusAuth           *auth,
                                               GCredentials        *credentials_that_were_sent,
+                                              GDBusConnectionFlags conn_flags,
                                               const gchar* const  *supported_auth_mechs,
                                               GPtrArray           *attempted_auth_mechs,
                                               GDataOutputStream   *dos,
@@ -507,6 +508,7 @@ client_choose_mech_and_send_initial_response (GDBusAuth           *auth,
 
   initial_response_len = 0;
   initial_response = _g_dbus_auth_mechanism_client_initiate (mech,
+                                                             conn_flags,
                                                              &initial_response_len);
 #if 0
   g_printerr ("using auth mechanism with name '%s' of type '%s' with initial response '%s'\n",
@@ -556,6 +558,7 @@ typedef enum
 gchar *
 _g_dbus_auth_run_client (GDBusAuth     *auth,
                          GDBusAuthObserver     *observer,
+                         GDBusConnectionFlags conn_flags,
                          GDBusCapabilityFlags offered_capabilities,
                          GDBusCapabilityFlags *out_negotiated_capabilities,
                          GCancellable  *cancellable,
@@ -573,6 +576,9 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
   GDBusAuthMechanism *mech;
   ClientState state;
   GDBusCapabilityFlags negotiated_capabilities;
+
+  g_return_val_if_fail ((conn_flags & G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT), NULL);
+  g_return_val_if_fail (!(conn_flags & G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER), NULL);
 
   debug_print ("CLIENT: initiating");
 
@@ -667,6 +673,7 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
           g_free (line);
           mech = client_choose_mech_and_send_initial_response (auth,
                                                                credentials,
+                                                               conn_flags,
                                                                (const gchar* const *) supported_auth_mechs,
                                                                attempted_auth_mechs,
                                                                dos,

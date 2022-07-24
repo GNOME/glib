@@ -301,11 +301,13 @@ _g_dbus_auth_mechanism_client_get_state (GDBusAuthMechanism *mechanism)
 }
 
 gchar *
-_g_dbus_auth_mechanism_client_initiate (GDBusAuthMechanism *mechanism,
-                                        gsize              *out_initial_response_len)
+_g_dbus_auth_mechanism_client_initiate (GDBusAuthMechanism   *mechanism,
+                                        GDBusConnectionFlags  conn_flags,
+                                        gsize                *out_initial_response_len)
 {
   g_return_val_if_fail (G_IS_DBUS_AUTH_MECHANISM (mechanism), NULL);
   return G_DBUS_AUTH_MECHANISM_GET_CLASS (mechanism)->client_initiate (mechanism,
+                                                                       conn_flags,
                                                                        out_initial_response_len);
 }
 

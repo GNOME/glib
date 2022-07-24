@@ -1234,6 +1234,9 @@ test_connection_basic (void)
                  flags == G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING);
 
   connection_flags = g_dbus_connection_get_flags (connection);
+  /* Ignore G_DBUS_CONNECTION_FLAGS_CROSS_NAMESPACE, it's an
+   * implementation detail whether we set it */
+  connection_flags &= ~G_DBUS_CONNECTION_FLAGS_CROSS_NAMESPACE;
   g_assert_cmpint (connection_flags, ==,
                    G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT |
                    G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION);

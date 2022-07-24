@@ -1216,6 +1216,12 @@ typedef enum
  * delayed until g_dbus_connection_start_message_processing() is called.
  * @G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER: When authenticating
  * as a server, require the UID of the peer to be the same as the UID of the server. (Since: 2.68)
+ * @G_DBUS_CONNECTION_FLAGS_CROSS_NAMESPACE: When authenticating, try to use
+ *  protocols that work across a Linux user namespace boundary, even if this
+ *  reduces interoperability with older D-Bus implementations. This currently
+ *  affects client-side `EXTERNAL` authentication, for which this flag makes
+ *  connections to a server in another user namespace succeed, but causes
+ *  a deadlock when connecting to a GDBus server older than 2.73.3. Since: 2.74
  *
  * Flags used when creating a new #GDBusConnection.
  *
@@ -1228,7 +1234,8 @@ typedef enum {
   G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS = (1<<2),
   G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION = (1<<3),
   G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING = (1<<4),
-  G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER GLIB_AVAILABLE_ENUMERATOR_IN_2_68 = (1<<5)
+  G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER GLIB_AVAILABLE_ENUMERATOR_IN_2_68 = (1<<5),
+  G_DBUS_CONNECTION_FLAGS_CROSS_NAMESPACE GLIB_AVAILABLE_ENUMERATOR_IN_2_74 = (1<<6)
 } GDBusConnectionFlags;
 
 /**
