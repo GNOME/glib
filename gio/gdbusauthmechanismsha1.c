@@ -119,6 +119,7 @@ static gchar                   *mechanism_server_get_reject_reason  (GDBusAuthMe
 static void                     mechanism_server_shutdown           (GDBusAuthMechanism   *mechanism);
 static GDBusAuthMechanismState  mechanism_client_get_state          (GDBusAuthMechanism   *mechanism);
 static gchar                   *mechanism_client_initiate           (GDBusAuthMechanism   *mechanism,
+                                                                     GDBusConnectionFlags  conn_flags,
                                                                      gsize                *out_initial_response_len);
 static void                     mechanism_client_data_receive       (GDBusAuthMechanism   *mechanism,
                                                                      const gchar          *data,
@@ -1160,6 +1161,7 @@ mechanism_client_get_state (GDBusAuthMechanism   *mechanism)
 
 static gchar *
 mechanism_client_initiate (GDBusAuthMechanism   *mechanism,
+                           GDBusConnectionFlags  conn_flags,
                            gsize                *out_initial_response_len)
 {
   GDBusAuthMechanismSha1 *m = G_DBUS_AUTH_MECHANISM_SHA1 (mechanism);

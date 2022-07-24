@@ -577,8 +577,8 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
   ClientState state;
   GDBusCapabilityFlags negotiated_capabilities;
 
-  g_return_val_if_fail ((connection->flags & G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT), NULL);
-  g_return_val_if_fail (!(connection->flags & G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER), NULL);
+  g_return_val_if_fail ((conn_flags & G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT), NULL);
+  g_return_val_if_fail (!(conn_flags & G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER), NULL);
 
   debug_print ("CLIENT: initiating");
 

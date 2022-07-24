@@ -7369,6 +7369,9 @@ get_uninitialized_connection (GBusType       bus_type,
       ret = g_object_new (G_TYPE_DBUS_CONNECTION,
                           "address", address,
                           "flags", G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT |
+#ifdef __linux__
+                                   G_DBUS_CONNECTION_FLAGS_CROSS_NAMESPACE |
+#endif
                                    G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION,
                           "exit-on-close", TRUE,
                           NULL);
