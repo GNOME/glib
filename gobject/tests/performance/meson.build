@@ -23,7 +23,7 @@ foreach test_name, extra_args : gobject_tests
     test_conf.set('program', test_name)
     test_conf.set('env', '')
     configure_file(
-      input: installed_tests_template_tap,
+      input: installed_tests_template,
       output: test_name + '.test',
       install_dir: installed_tests_metadir,
       configuration: test_conf,
