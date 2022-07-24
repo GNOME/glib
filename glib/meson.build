@@ -336,6 +336,10 @@ else
   platform_deps = []
 endif
 
+if host_system == 'linux'
+  glib_sources += files('gjournal-private.c')
+endif
+
 if glib_have_cocoa
   glib_sources += files('gosxutils.m')
   framework_dep = dependency('appleframeworks', modules : ['Foundation', 'CoreFoundation', 'AppKit'])

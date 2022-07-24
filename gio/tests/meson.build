@@ -149,6 +149,10 @@ test_env.set('G_TEST_SRCDIR', meson.current_source_dir())
 test_env.set('G_TEST_BUILDDIR', meson.current_build_dir())
 test_env.set('GIO_MODULE_DIR', '')
 
+if host_system != 'windows' and not glib_have_cocoa
+  test_env.set('GIO_LAUNCH_DESKTOP', gio_launch_desktop.full_path())
+endif
+
 # Check for libdbus1 - Optional - is only used in the GDBus test cases
 # 1.2.14 required for dbus_message_set_serial
 dbus1_dep = dependency('dbus-1', required : false, version : '>= 1.2.14')

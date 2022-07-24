@@ -202,6 +202,10 @@
 #include "gpattern.h"
 #include "gthreadprivate.h"
 
+#if defined(__linux__) && !defined(__BIONIC__)
+#include "gjournal-private.h"
+#endif
+
 #ifdef G_OS_UNIX
 #include <unistd.h>
 #endif
@@ -2223,32 +2227,10 @@ gboolean
 g_log_writer_is_journald (gint output_fd)
 {
 #if defined(__linux__) && !defined(__BIONIC__)
-  /* FIXME: Use the new journal API for detecting whether we’re writing to the
-   * journal. See: https://github.com/systemd/systemd/issues/2473
-   */
-  union {
-    struct sockaddr_storage storage;
-    struct sockaddr sa;
-    struct sockaddr_un un;
-  } addr;
-  socklen_t addr_len;
-  int err;
-
-  if (output_fd < 0)
-    return FALSE;
-
-  /* Namespaced journals start with `/run/systemd/journal.${name}/` (see
-   * `RuntimeDirectory=systemd/journal.%i` in `systemd-journald@.service`. The
-   * default journal starts with `/run/systemd/journal/`. */
-  memset (&addr, 0, sizeof (addr));
-  addr_len = sizeof(addr);
-  err = getpeername (output_fd, &addr.sa, &addr_len);
-  if (err == 0 && addr.storage.ss_family == AF_UNIX)
-    return (g_str_has_prefix (addr.un.sun_path, "/run/systemd/journal/") ||
-            g_str_has_prefix (addr.un.sun_path, "/run/systemd/journal."));
-#endif
-
+  return _g_fd_is_journal (output_fd);
+#else
   return FALSE;
+#endif
 }
 
 static void escape_string (GString *string);

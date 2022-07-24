@@ -51,6 +51,7 @@
 #include "gfileicon.h"
 #include <glib/gstdio.h>
 #include "glibintl.h"
+#include "glib-private.h"
 #include "giomodule-priv.h"
 #include "gappinfo.h"
 #include "gappinfoprivate.h"
@@ -165,6 +166,7 @@ static const gchar    *desktop_file_dirs_config_dir = NULL;
 static DesktopFileDir *desktop_file_dir_user_config = NULL;  /* (owned) */
 static DesktopFileDir *desktop_file_dir_user_data = NULL;  /* (owned) */
 static GMutex          desktop_file_dir_lock;
+static const gchar    *gio_launch_desktop_path = NULL;
 
 /* Monitor 'changed' signal handler {{{2 */
 static void desktop_file_dir_reset (DesktopFileDir *dir);
@@ -2872,15 +2874,6 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
       char *sn_id = NULL;
       char **wrapped_argv;
       int i;
-      gsize j;
-      const gchar * const wrapper_argv[] =
-        {
-          "/bin/sh",
-          "-e",
-          "-u",
-          "-c", "export GIO_LAUNCHED_DESKTOP_FILE_PID=$$; exec \"$@\"",
-          "sh",  /* argv[0] for sh */
-        };
 
       old_uris = dup_uris;
       if (!expand_application_parameters (info, exec_line, &dup_uris, &argc, &argv, error))
@@ -2924,26 +2917,32 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
           emit_launch_started (launch_context, info, sn_id);
         }
 
-      /* Wrap the @argv in a command which will set the
-       * `GIO_LAUNCHED_DESKTOP_FILE_PID` environment variable. We can’t set this
-       * in @envp along with `GIO_LAUNCHED_DESKTOP_FILE` because we need to know
-       * the PID of the new forked process. We can’t use setenv() between fork()
-       * and exec() because we’d rather use posix_spawn() for speed.
-       *
-       * `sh` should be available on all the platforms that `GDesktopAppInfo`
-       * currently supports (since they are all POSIX). If additional platforms
-       * need to be supported in future, it will probably have to be replaced
-       * with a wrapper program (grep the GLib git history for
-       * `gio-launch-desktop` for an example of this which could be
-       * resurrected). */
-      wrapped_argv = g_new (char *, argc + G_N_ELEMENTS (wrapper_argv) + 1);
+      if (g_once_init_enter (&gio_launch_desktop_path))
+        {
+          const gchar *tmp = NULL;
+          gboolean is_setuid = GLIB_PRIVATE_CALL (g_check_setuid) ();
 
-      for (j = 0; j < G_N_ELEMENTS (wrapper_argv); j++)
-        wrapped_argv[j] = g_strdup (wrapper_argv[j]);
+          /* Allow test suite to specify path to gio-launch-desktop */
+          if (!is_setuid)
+            tmp = g_getenv ("GIO_LAUNCH_DESKTOP");
+
+          /* Allow build system to specify path to gio-launch-desktop */
+          if (tmp == NULL && g_file_test (GIO_LAUNCH_DESKTOP, G_FILE_TEST_IS_EXECUTABLE))
+            tmp = GIO_LAUNCH_DESKTOP;
+
+          /* Fall back on usual searching in $PATH */
+          if (tmp == NULL)
+            tmp = "gio-launch-desktop";
+          g_once_init_leave (&gio_launch_desktop_path, tmp);
+        }
+
+      wrapped_argv = g_new (char *, argc + 2);
+      wrapped_argv[0] = g_strdup (gio_launch_desktop_path);
+
       for (i = 0; i < argc; i++)
-        wrapped_argv[i + G_N_ELEMENTS (wrapper_argv)] = g_steal_pointer (&argv[i]);
+        wrapped_argv[i + 1] = g_steal_pointer (&argv[i]);
 
-      wrapped_argv[i + G_N_ELEMENTS (wrapper_argv)] = NULL;
+      wrapped_argv[i + 1] = NULL;
       g_free (argv);
       argv = NULL;
 
