@@ -20,6 +20,8 @@
  * Authors: Matthias Clasen <mclasen@redhat.com>
  */
 
+#define GLIB_DISABLE_DEPRECATION_WARNINGS
+
 #include "config.h"
 #include "gioenumtypes.h"
 #include <gio.h>

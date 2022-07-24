@@ -1486,7 +1486,7 @@ g_application_class_init (GApplicationClass *class)
     g_param_spec_flags ("flags",
                         P_("Application flags"),
                         P_("Flags specifying the behaviour of the application"),
-                        G_TYPE_APPLICATION_FLAGS, G_APPLICATION_FLAGS_NONE,
+                        G_TYPE_APPLICATION_FLAGS, G_APPLICATION_DEFAULT_FLAGS,
                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (object_class, PROP_RESOURCE_BASE_PATH,

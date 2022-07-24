@@ -391,7 +391,7 @@ properties (void)
                 NULL);
 
   g_assert_cmpstr (id, ==, "org.gtk.TestApplication");
-  g_assert_cmpint (flags, ==, G_APPLICATION_FLAGS_NONE);
+  g_assert_cmpint (flags, ==, G_APPLICATION_DEFAULT_FLAGS);
   g_assert (!registered);
   g_assert_cmpint (timeout, ==, 0);
 
@@ -487,7 +487,7 @@ test_nodbus (void)
   gchar *argv[] = { binpath, NULL };
   GApplication *app;
 
-  app = g_application_new ("org.gtk.Unimportant", G_APPLICATION_FLAGS_NONE);
+  app = g_application_new ("org.gtk.Unimportant", G_APPLICATION_DEFAULT_FLAGS);
   g_signal_connect (app, "activate", G_CALLBACK (nodbus_activate), NULL);
   g_application_run (app, 1, argv);
   g_object_unref (app);
@@ -517,7 +517,7 @@ test_noappid (void)
   gchar *argv[] = { binpath, NULL };
   GApplication *app;
 
-  app = g_application_new (NULL, G_APPLICATION_FLAGS_NONE);
+  app = g_application_new (NULL, G_APPLICATION_DEFAULT_FLAGS);
   g_signal_connect (app, "activate", G_CALLBACK (noappid_activate), NULL);
   g_application_run (app, 1, argv);
   g_object_unref (app);
@@ -561,7 +561,7 @@ test_quit (void)
   c = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
 
   app = g_application_new ("org.gtk.Unimportant",
-                           G_APPLICATION_FLAGS_NONE);
+                           G_APPLICATION_DEFAULT_FLAGS);
   activated = FALSE;
   quitted = FALSE;
   g_signal_connect (app, "activate", G_CALLBACK (quit_activate), NULL);
@@ -613,7 +613,7 @@ test_registered (void)
   RegisteredData registered_data = { FALSE, NULL };
   GApplication *app;
 
-  app = g_application_new (NULL, G_APPLICATION_FLAGS_NONE);
+  app = g_application_new (NULL, G_APPLICATION_DEFAULT_FLAGS);
   g_signal_connect (app, "activate", G_CALLBACK (noappid_activate), NULL);
   g_signal_connect (app, "shutdown", G_CALLBACK (on_registered_shutdown), &registered_data);
   g_signal_connect (app, "notify::is-registered", G_CALLBACK (on_registered_notify), &registered_data);
@@ -693,7 +693,7 @@ test_local_actions (void)
   GApplication *app;
 
   app = g_application_new ("org.gtk.Unimportant",
-                           G_APPLICATION_FLAGS_NONE);
+                           G_APPLICATION_DEFAULT_FLAGS);
   g_signal_connect (app, "activate", G_CALLBACK (on_activate), NULL);
   g_application_run (app, 1, argv);
   g_object_unref (app);
@@ -748,7 +748,7 @@ test_local_command_line (void)
 
   app = g_object_new (test_loc_cmd_app_get_type (),
                       "application-id", "org.gtk.Unimportant",
-                      "flags", G_APPLICATION_FLAGS_NONE,
+                      "flags", G_APPLICATION_DEFAULT_FLAGS,
                       NULL);
   g_application_run (app, 1, argv);
   g_object_unref (app);
@@ -1166,7 +1166,7 @@ test_replace (gconstpointer data)
       bus = g_test_dbus_new (0);
       g_test_dbus_up (bus);
 
-      app = g_application_new ("org.gtk.TestApplication.Replace", allow ? G_APPLICATION_ALLOW_REPLACEMENT : G_APPLICATION_FLAGS_NONE);
+      app = g_application_new ("org.gtk.TestApplication.Replace", allow ? G_APPLICATION_ALLOW_REPLACEMENT : G_APPLICATION_DEFAULT_FLAGS);
       g_application_set_inactivity_timeout (app, 500);
       g_signal_connect (app, "name-lost", G_CALLBACK (name_was_lost), &name_lost);
       g_signal_connect (app, "startup", G_CALLBACK (startup_cb), &data);

@@ -123,7 +123,7 @@ server_notify_is_running (GObject    *object,
     {
       GApplication *app;
 
-      app = g_application_new ("org.gtk.TestApplication", G_APPLICATION_FLAGS_NONE);
+      app = g_application_new ("org.gtk.TestApplication", G_APPLICATION_DEFAULT_FLAGS);
       g_signal_connect (app, "activate", G_CALLBACK (activate_app), NULL);
 
       g_application_run (app, 0, NULL);
