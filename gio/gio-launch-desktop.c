@@ -187,11 +187,16 @@ fail:
 static void
 set_up_journal (const char *argv1)
 {
+  int stdout_is_journal;
+  int stderr_is_journal;
   const char *identifier;
   const char *slash;
   int fd;
 
-  if (!_g_fd_is_journal (STDOUT_FILENO) && !_g_fd_is_journal (STDERR_FILENO))
+  stdout_is_journal = _g_fd_is_journal (STDOUT_FILENO);
+  stderr_is_journal = _g_fd_is_journal (STDERR_FILENO);
+
+  if (!stdout_is_journal && !stderr_is_journal)
     return;
 
   identifier = getenv ("GIO_LAUNCHED_DESKTOP_FILE");
@@ -210,14 +215,14 @@ set_up_journal (const char *argv1)
   if (fd < 0)
     return;
 
-  if (dup2 (fd, STDOUT_FILENO) != STDOUT_FILENO)
+  if (stdout_is_journal && dup2 (fd, STDOUT_FILENO) != STDOUT_FILENO)
     fprintf (stderr,
              "gio-launch-desktop[%d]: Unable to redirect \"%s\" to Journal: %s",
              getpid (),
              identifier,
              strerror (errno));
 
-  if (dup2 (fd, STDERR_FILENO) != STDERR_FILENO)
+  if (stderr_is_journal && dup2 (fd, STDERR_FILENO) != STDERR_FILENO)
     fprintf (stderr,
              "gio-launch-desktop[%d]: Unable to redirect \"%s\" to Journal: %s",
              getpid (),
