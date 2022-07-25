@@ -2493,6 +2493,9 @@ main (int argc, char *argv[])
   TEST_MATCH("[Ǆ]", G_REGEX_CASELESS, 0, "ǆ", -1, 0, 0, TRUE);
   TEST_MATCH("[Ǆ]", G_REGEX_CASELESS, 0, "ǅ", -1, 0, 0, TRUE);
 
+  /* see https://gitlab.gnome.org/GNOME/glib/-/issues/2700 */
+  TEST_MATCH("(\n.+)+", G_REGEX_DEFAULT, 0, "\n \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n", -1, 0, 0, TRUE);
+
   /* TEST_MATCH_NEXT#(pattern, string, string_len, start_position, ...) */
   TEST_MATCH_NEXT0("a", "x", -1, 0);
   TEST_MATCH_NEXT0("a", "ax", -1, 1);
