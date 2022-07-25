@@ -336,6 +336,12 @@ local_sources = files(
   'thumbnail-verify.c',
 )
 
+# {'gio-querymodules' : {dependencies : [...], etc.}}
+gio_programs = {}
+
+# {'gio-query-modules' : executable(...)}
+gio_executables = {}
+
 platform_deps = []
 internal_deps = []
 appinfo_sources = []
@@ -406,13 +412,14 @@ if host_system != 'windows'
       launch_desktop_sources += files('../glib/gjournal-private.c')
     endif
 
-    gio_launch_desktop = executable('gio-launch-desktop', launch_desktop_sources,
-      include_directories : glibinc,
-      install : true,
-      install_dir : multiarch_libexecdir,
-      c_args : gio_c_args,
-      # intl.lib is not compatible with SAFESEH
-      link_args : noseh_link_args)
+    gio_programs += {
+      'gio-launch-desktop' : {
+        'dependencies': [],
+        'include_directories' : glibinc,
+        'install_dir' : multiarch_libexecdir,
+        'sources' : launch_desktop_sources,
+      },
+    }
   endif
 
   subdir('xdgmime')
@@ -957,78 +964,52 @@ gio_tool_sources = [
   'gio-tool-tree.c',
 ]
 
-executable('gio', gio_tool_sources,
-  install : true,
-  c_args : gio_c_args,
-  # intl.lib is not compatible with SAFESEH
-  link_args : noseh_link_args,
-  dependencies : [libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
+gio_programs += {
+  'gio' : {
+    'sources' : gio_tool_sources,
+  },
+  'gresource' : {
+    'c_args' : [],
+    'dependencies' : [libelf, libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep],
+    'sources' : ['gresource-tool.c'],
+  },
+  'gio-querymodules' : {
+    'install_dir' : multiarch_bindir,
+    'override_find_program' : true,
+    'sources' : ['gio-querymodules.c', 'giomodule-priv.c'],
+    'symlink_in_bin' : true,
+  },
+  'glib-compile-schemas' : {
+    'dependencies' : [libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep, gvdb_dep],
+    'override_find_program' : true,
+    'install_dir' : multiarch_bindir,
+    'symlink_in_bin' : true,
+  },
+  'glib-compile-resources' : {
+    'dependencies' : [libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep, gvdb_dep],
+    'override_find_program' : true,
+    'sources' : [gconstructor_as_data_h, 'glib-compile-resources.c'],
+  },
+  'gsettings' : {
+    'sources' : ['gsettings-tool.c'],
+  },
+  'gdbus' : {
+    'sources' : ['gdbus-tool.c'],
+  },
+}
 
-executable('gresource', 'gresource-tool.c',
-  install : true,
-  # intl.lib is not compatible with SAFESEH
-  link_args : noseh_link_args,
-  dependencies : [libelf, libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
-
-gio_querymodules = executable('gio-querymodules', 'gio-querymodules.c', 'giomodule-priv.c',
-  install : true,
-  install_dir : multiarch_bindir,
-  c_args : gio_c_args,
-  # intl.lib is not compatible with SAFESEH
-  link_args : noseh_link_args,
-  dependencies : [libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
-
-glib_compile_schemas = executable('glib-compile-schemas',
-  ['glib-compile-schemas.c'],
-  install : true,
-  install_dir : multiarch_bindir,
-  # intl.lib is not compatible with SAFESEH
-  link_args : noseh_link_args,
-  dependencies : [libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep, gvdb_dep])
-
-glib_compile_resources = executable('glib-compile-resources',
-  [gconstructor_as_data_h, 'glib-compile-resources.c'],
-  install : true,
-  c_args : gio_c_args,
-  # intl.lib is not compatible with SAFESEH
-  link_args : noseh_link_args,
-  dependencies : [libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep, gvdb_dep])
-
-# Cannot override those programs in cross compilation case because they are
-# native executables that cannot be run on the build machine.
-# See https://gitlab.gnome.org/GNOME/glib/issues/1859.
-if meson.can_run_host_binaries()
-  meson.override_find_program('glib-compile-schemas', glib_compile_schemas)
-  meson.override_find_program('glib-compile-resources', glib_compile_resources)
-  meson.override_find_program('gio-querymodules', gio_querymodules)
-endif
-
-executable('gsettings', 'gsettings-tool.c',
-  install : true,
-  c_args : gio_c_args,
-  # intl.lib is not compatible with SAFESEH
-  link_args : noseh_link_args,
-  dependencies : [libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
 install_data('gschema.dtd',
   install_dir : join_paths(get_option('datadir'), schemas_subdir))
 
 install_data(['gschema.loc', 'gschema.its'],
   install_dir : join_paths(get_option('datadir'), 'gettext/its'))
 
-executable('gdbus', 'gdbus-tool.c',
-  install : true,
-  c_args : gio_c_args,
-  # intl.lib is not compatible with SAFESEH
-  link_args : noseh_link_args,
-  dependencies : [libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
-
 if host_system != 'windows' and not glib_have_cocoa
-  executable('gapplication', 'gapplication-tool.c',
-    install : true,
-    c_args : gio_c_args,
-    # intl.lib is not compatible with SAFESEH
-    link_args : noseh_link_args,
-    dependencies : [libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
+  gio_programs += {
+    'gapplication' : {
+      'sources' : ['gapplication-tool.c'],
+    },
+  }
 endif
 
 if enable_systemtap
@@ -1039,24 +1020,54 @@ if enable_systemtap
   )
 endif
 
-if multiarch_bindir != get_option('bindir')
-  foreach exe : ['gio-querymodules', 'glib-compile-schemas']
+foreach name, options : gio_programs
+  install_dir = options.get('install_dir', get_option('bindir'))
+
+  exe = executable(
+    name,
+    options.get('sources', [name + '.c']),
+    c_args : options.get('c_args', gio_c_args),
+    dependencies : options.get(
+      'dependencies',
+      [libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep]
+    ),
+    include_directories : options.get('include_directories', []),
+    install : true,
+    install_dir : install_dir,
+    # intl.lib is not compatible with SAFESEH
+    link_args : noseh_link_args,
+  )
+  gio_executables += { name : exe }
+
+  if install_dir != get_option('bindir') and options.get('symlink_in_bindir', false)
     if meson.version().version_compare('>=0.61.0')
       install_symlink(
-        exe,
+        name,
         install_dir : get_option('bindir'),
-        pointing_to : get_option('prefix') / multiarch_bindir / exe,
+        pointing_to : get_option('prefix') / install_dir / name,
       )
     else
       warning(
         'Please use Meson >= 0.61.0 or create a symlink @1@ -> @2@ in packaging'.format(
-          get_option('prefix') / get_option('bindir') / exe,
-          get_option('prefix') / multiarch_bindir / exe,
+          get_option('prefix') / get_option('bindir') / name,
+          get_option('prefix') / install_dir / name,
         )
       )
     endif
-  endforeach
-endif
+  endif
+
+  # Cannot override those programs in cross compilation case because they are
+  # native executables that cannot be run on the build machine.
+  # See https://gitlab.gnome.org/GNOME/glib/issues/1859.
+  if meson.can_run_host_binaries() and options.get('override_find_program', false)
+    meson.override_find_program(name, exe)
+  endif
+endforeach
+
+# For compatibility with projects that import these variables
+gio_querymodules = gio_executables['gio-querymodules']
+glib_compile_resources = gio_executables['glib-compile-resources']
+glib_compile_schemas = gio_executables['glib-compile-schemas']
 
 if build_tests
     subdir('tests')
