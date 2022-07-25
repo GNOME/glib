@@ -560,8 +560,7 @@ test_boxed_markup (void)
   g_value_init (&value, G_TYPE_MARKUP_PARSE_CONTEXT);
   g_assert (G_VALUE_HOLDS_BOXED (&value));
 
-  c = g_markup_parse_context_new (&parser, G_MARKUP_PARSE_FLAGS_NONE,
-                                  NULL, NULL);
+  c = g_markup_parse_context_new (&parser, G_MARKUP_DEFAULT_FLAGS, NULL, NULL);
   g_value_take_boxed (&value, c);
 
   c2 = g_value_get_boxed (&value);

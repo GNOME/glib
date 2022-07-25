@@ -209,7 +209,7 @@ test_cleanup (void)
     return;
 
   context = g_markup_parse_context_new (&cleanup_parser,
-                                        G_MARKUP_PARSE_FLAGS_NONE, NULL,
+                                        G_MARKUP_DEFAULT_FLAGS, NULL,
                                         NULL);
   g_markup_parse_context_parse (context, XML, -1, NULL);
 

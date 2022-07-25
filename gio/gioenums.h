@@ -1487,7 +1487,9 @@ typedef enum
 
 /**
  * GApplicationFlags:
- * @G_APPLICATION_FLAGS_NONE: Default
+ * @G_APPLICATION_FLAGS_NONE: Default. Deprecated in 2.74, use
+ *   %G_APPLICATION_DEFAULT_FLAGS instead
+ * @G_APPLICATION_DEFAULT_FLAGS: Default flags. Since: 2.74
  * @G_APPLICATION_IS_SERVICE: Run as a service. In this mode, registration
  *      fails if the service is already running, and the application
  *      will initially wait up to 10 seconds for an initial activation
@@ -1529,9 +1531,10 @@ typedef enum
  *
  * Since: 2.28
  **/
-typedef enum
+typedef enum /*< prefix=G_APPLICATION >*/
 {
-  G_APPLICATION_FLAGS_NONE,
+  G_APPLICATION_FLAGS_NONE GLIB_DEPRECATED_ENUMERATOR_IN_2_74_FOR(G_APPLICATION_DEFAULT_FLAGS),
+  G_APPLICATION_DEFAULT_FLAGS GLIB_AVAILABLE_ENUMERATOR_IN_2_74 = 0,
   G_APPLICATION_IS_SERVICE  =          (1 << 0),
   G_APPLICATION_IS_LAUNCHER =          (1 << 1),
 
@@ -1587,7 +1590,7 @@ typedef enum {
 
 /**
  * GTlsCertificateFlags:
- * @G_TLS_CERTIFICATE_FLAGS_NONE: No flags. Since: 2.74
+ * @G_TLS_CERTIFICATE_NO_FLAGS: No flags set. Since: 2.74
  * @G_TLS_CERTIFICATE_UNKNOWN_CA: The signing certificate authority is
  *   not known.
  * @G_TLS_CERTIFICATE_BAD_IDENTITY: The certificate does not match the
@@ -1619,7 +1622,7 @@ typedef enum {
  * Since: 2.28
  */
 typedef enum {
-  G_TLS_CERTIFICATE_FLAGS_NONE GLIB_AVAILABLE_ENUMERATOR_IN_2_74 = 0,
+  G_TLS_CERTIFICATE_NO_FLAGS GLIB_AVAILABLE_ENUMERATOR_IN_2_74 = 0,
   G_TLS_CERTIFICATE_UNKNOWN_CA    = (1 << 0),
   G_TLS_CERTIFICATE_BAD_IDENTITY  = (1 << 1),
   G_TLS_CERTIFICATE_NOT_ACTIVATED = (1 << 2),

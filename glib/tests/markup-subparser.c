@@ -291,8 +291,7 @@ test (gconstpointer user_data)
 
   error = NULL;
   string = g_string_new (NULL);
-  ctx = g_markup_parse_context_new (&parser, G_MARKUP_PARSE_FLAGS_NONE,
-                                    string, NULL);
+  ctx = g_markup_parse_context_new (&parser, G_MARKUP_DEFAULT_FLAGS, string, NULL);
   result = g_markup_parse_context_parse (ctx, tc->markup,
                                          strlen (tc->markup), &error);
   if (result)
