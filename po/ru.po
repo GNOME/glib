@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-07-14 13:15+0000\n"
-"PO-Revision-Date: 2022-07-15 16:44+0300\n"
+"POT-Creation-Date: 2022-07-21 10:10+0000\n"
+"PO-Revision-Date: 2022-07-21 13:27+0300\n"
 "Last-Translator: Aleksandr Melman <Alexmelman88@gmail.com>\n"
 "Language-Team: Русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -583,11 +583,11 @@ msgstr ""
 "Перепробованы все доступные механизмы аутентификации (проведено: %s) "
 "(доступно: %s)"
 
-#: gio/gdbusauth.c:1161
+#: gio/gdbusauth.c:1171
 msgid "User IDs must be the same for peer and server"
 msgstr "Идентификаторы пользователя должны быть и на клиенте и на сервере"
 
-#: gio/gdbusauth.c:1173
+#: gio/gdbusauth.c:1183
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr "Отменено через GDBusAuthObserver::authorize-authenticated-peer"
 
@@ -5540,183 +5540,188 @@ msgstr "Отсутствует аргумент для %s"
 msgid "Unknown option %s"
 msgstr "Неизвестный параметр %s"
 
-#: glib/gregex.c:431
+#: glib/gregex.c:436
 msgid "corrupted object"
 msgstr "повреждённый объект"
 
-#: glib/gregex.c:433
+#: glib/gregex.c:438
 msgid "out of memory"
 msgstr "закончилась память"
 
-#: glib/gregex.c:438
+#: glib/gregex.c:443
 msgid "backtracking limit reached"
 msgstr "достигнут предел обратного хода"
 
-#: glib/gregex.c:449 glib/gregex.c:695 glib/gregex.c:724
+#: glib/gregex.c:454 glib/gregex.c:707 glib/gregex.c:736
 msgid "internal error"
 msgstr "внутренняя ошибка"
 
-#: glib/gregex.c:451
+#: glib/gregex.c:456
 msgid "the pattern contains items not supported for partial matching"
 msgstr ""
 "шаблон содержит элементы, которые не поддерживаются при поиске частичного "
 "совпадения"
 
-#: glib/gregex.c:453
+#: glib/gregex.c:458
 msgid "back references as conditions are not supported for partial matching"
 msgstr ""
 "условия в виде обратных ссылок при поиске частичного совпадения не "
 "поддерживаются"
 
-#: glib/gregex.c:459
+#: glib/gregex.c:464
 msgid "recursion limit reached"
 msgstr "достигнут предел рекурсии"
 
-#: glib/gregex.c:461
+#: glib/gregex.c:466
 msgid "bad offset"
 msgstr "неправильное смещение"
 
-#: glib/gregex.c:463
+#: glib/gregex.c:468
 msgid "recursion loop"
 msgstr "зацикливание рекурсии"
 
-#: glib/gregex.c:467
+#. should not happen in GRegex since we check modes before each match
+#: glib/gregex.c:471
+msgid "matching mode is requested that was not compiled for JIT"
+msgstr "запрашивается режим согласования, который не был скомпилирован для JIT"
+
+#: glib/gregex.c:475
 msgid "unknown error"
 msgstr "неизвестная ошибка"
 
-#: glib/gregex.c:484
+#: glib/gregex.c:496
 msgid "\\ at end of pattern"
 msgstr "\\ в конце шаблона"
 
-#: glib/gregex.c:488
+#: glib/gregex.c:500
 msgid "\\c at end of pattern"
 msgstr "\\c в конце шаблона"
 
-#: glib/gregex.c:493
+#: glib/gregex.c:505
 msgid "unrecognized character following \\"
 msgstr "неопознанный символ следует за \\"
 
-#: glib/gregex.c:497
+#: glib/gregex.c:509
 msgid "numbers out of order in {} quantifier"
 msgstr "числа в квантификаторе {} в неправильном порядке"
 
-#: glib/gregex.c:501
+#: glib/gregex.c:513
 msgid "number too big in {} quantifier"
 msgstr "слишком большое число в квантификаторе {}"
 
-#: glib/gregex.c:505
+#: glib/gregex.c:517
 msgid "missing terminating ] for character class"
 msgstr "отсутствует завершающая ] для класса символов"
 
-#: glib/gregex.c:509
+#: glib/gregex.c:521
 msgid "invalid escape sequence in character class"
 msgstr "неверное экранирование в классе символов"
 
-#: glib/gregex.c:513
+#: glib/gregex.c:525
 msgid "range out of order in character class"
 msgstr "диапазон в классе символов в неправильном порядке"
 
-#: glib/gregex.c:518
+#: glib/gregex.c:530
 msgid "nothing to repeat"
 msgstr "нечего повторять"
 
-#: glib/gregex.c:522
+#: glib/gregex.c:534
 msgid "unrecognized character after (? or (?-"
 msgstr "неопознанный символ после (? или (?-"
 
-#: glib/gregex.c:526
+#: glib/gregex.c:538
 msgid "POSIX named classes are supported only within a class"
 msgstr "Именованные классы POSIX поддерживаются только внутри класса"
 
-#: glib/gregex.c:530
+#: glib/gregex.c:542
 msgid "POSIX collating elements are not supported"
 msgstr "Сортировочные элементы POSIX не поддерживаются"
 
-#: glib/gregex.c:536
+#: glib/gregex.c:548
 msgid "missing terminating )"
 msgstr "отсутствует завершающая )"
 
-#: glib/gregex.c:540
+#: glib/gregex.c:552
 msgid "reference to non-existent subpattern"
 msgstr "ссылка на несуществующий подшаблон"
 
-#: glib/gregex.c:544
+#: glib/gregex.c:556
 msgid "missing ) after comment"
 msgstr "отсутствует ) после комментария"
 
-#: glib/gregex.c:548
+#: glib/gregex.c:560
 msgid "regular expression is too large"
 msgstr "слишком длинное регулярное выражение"
 
-#: glib/gregex.c:552
+#: glib/gregex.c:564
 msgid "malformed number or name after (?("
 msgstr "ошибочное число или имя после (?("
 
-#: glib/gregex.c:556
+#: glib/gregex.c:568
 msgid "lookbehind assertion is not fixed length"
 msgstr "lookbehind-утверждение не имеет фиксированную длину"
 
-#: glib/gregex.c:560
+#: glib/gregex.c:572
 msgid "conditional group contains more than two branches"
 msgstr "условная группа содержит более двух ветвей"
 
-#: glib/gregex.c:564
+#: glib/gregex.c:576
 msgid "assertion expected after (?("
 msgstr "ожидалось утверждение после (?("
 
-#: glib/gregex.c:568
+#: glib/gregex.c:580
 msgid "a numbered reference must not be zero"
 msgstr "номерная ссылка не может быть нулём"
 
-#: glib/gregex.c:572
+#: glib/gregex.c:584
 msgid "unknown POSIX class name"
 msgstr "неизвестное имя класса POSIX"
 
-#: glib/gregex.c:577
+#: glib/gregex.c:589
 msgid "character value in \\x{...} sequence is too large"
 msgstr "слишком большое значение символа в последовательности \\x{…}"
 
-#: glib/gregex.c:581
+#: glib/gregex.c:593
 msgid "\\C not allowed in lookbehind assertion"
 msgstr "\\C запрещено в lookbehind-утверждениях"
 
-#: glib/gregex.c:585
+#: glib/gregex.c:597
 msgid "missing terminator in subpattern name"
 msgstr "отсутствует завершающий символ в имени подшаблона"
 
-#: glib/gregex.c:589
+#: glib/gregex.c:601
 msgid "two named subpatterns have the same name"
 msgstr "два именованных подшаблона имеют одинаковое имя"
 
-#: glib/gregex.c:593
+#: glib/gregex.c:605
 msgid "malformed \\P or \\p sequence"
 msgstr "ошибочная последовательность \\P или \\p"
 
-#: glib/gregex.c:597
+#: glib/gregex.c:609
 msgid "unknown property name after \\P or \\p"
 msgstr "неизвестное имя свойства после \\P или \\p"
 
-#: glib/gregex.c:601
+#: glib/gregex.c:613
 msgid "subpattern name is too long (maximum 32 characters)"
 msgstr "имя подшаблона слишком длинное (не должно превышать 32 символа)"
 
-#: glib/gregex.c:605
+#: glib/gregex.c:617
 msgid "too many named subpatterns (maximum 10,000)"
 msgstr "слишком много именованных подшаблонов (не должно быть больше 10 000)"
 
-#: glib/gregex.c:609
+#: glib/gregex.c:621
 msgid "octal value is greater than \\377"
 msgstr "восьмеричное значение превышает \\377"
 
-#: glib/gregex.c:613
+#: glib/gregex.c:625
 msgid "DEFINE group contains more than one branch"
 msgstr "Группа DEFINE содержит более одной ветви"
 
-#: glib/gregex.c:617
+#: glib/gregex.c:629
 msgid "inconsistent NEWLINE options"
 msgstr "противоречивые параметры NEWLINE"
 
-#: glib/gregex.c:621
+#: glib/gregex.c:633
 msgid ""
 "\\g is not followed by a braced, angle-bracketed, or quoted name or number, "
 "or by a plain number"
@@ -5724,122 +5729,122 @@ msgstr ""
 "за \\g не следует имя или число в скобках, угловых скобках или кавычках, или "
 "просто число"
 
-#: glib/gregex.c:626
+#: glib/gregex.c:638
 msgid "an argument is not allowed for (*ACCEPT), (*FAIL), or (*COMMIT)"
 msgstr "нельзя указать параметр для (*ACCEPT), (*FAIL) или (*COMMIT)"
 
-#: glib/gregex.c:630
+#: glib/gregex.c:642
 msgid "(*VERB) not recognized"
 msgstr "значение (*VERB) не распознано"
 
-#: glib/gregex.c:634
+#: glib/gregex.c:646
 msgid "number is too big"
 msgstr "слишком большое число"
 
-#: glib/gregex.c:638
+#: glib/gregex.c:650
 msgid "missing subpattern name after (?&"
 msgstr "отсутствует имя подшаблона после (?&"
 
-#: glib/gregex.c:642
+#: glib/gregex.c:654
 msgid "different names for subpatterns of the same number are not allowed"
 msgstr ""
 "не допускаются использовать различные имена для подшаблонов с одинаковым "
 "номером"
 
-#: glib/gregex.c:646
+#: glib/gregex.c:658
 msgid "(*MARK) must have an argument"
 msgstr "для (*MARK) требуется параметр"
 
-#: glib/gregex.c:650
+#: glib/gregex.c:662
 msgid "\\c must be followed by an ASCII character"
 msgstr "за \\c должен быть символ ASCII"
 
-#: glib/gregex.c:654
+#: glib/gregex.c:666
 msgid "\\k is not followed by a braced, angle-bracketed, or quoted name"
 msgstr "за \\k не следует имя в скобках, угловых скобках или кавычках"
 
-#: glib/gregex.c:658
+#: glib/gregex.c:670
 msgid "\\N is not supported in a class"
 msgstr "\\N в классе не поддерживается"
 
-#: glib/gregex.c:662
+#: glib/gregex.c:674
 msgid "name is too long in (*MARK), (*PRUNE), (*SKIP), or (*THEN)"
 msgstr "слишком длинное имя в (*MARK), (*PRUNE), (*SKIP) или (*THEN)"
 
-#: glib/gregex.c:666 glib/gregex.c:799
+#: glib/gregex.c:678 glib/gregex.c:811
 msgid "code overflow"
 msgstr "переполнение кода"
 
-#: glib/gregex.c:670
+#: glib/gregex.c:682
 msgid "unrecognized character after (?P"
 msgstr "неопознанный символ после (?P"
 
-#: glib/gregex.c:674
+#: glib/gregex.c:686
 msgid "overran compiling workspace"
 msgstr "переполнение рабочего пространства компиляции"
 
-#: glib/gregex.c:678
+#: glib/gregex.c:690
 msgid "previously-checked referenced subpattern not found"
 msgstr "не найден ранее проверенный подшаблон со ссылкой"
 
-#: glib/gregex.c:798 glib/gregex.c:966 glib/gregex.c:2265
+#: glib/gregex.c:810 glib/gregex.c:1043 glib/gregex.c:2344
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr ""
 "Во время поиска совпадений с регулярным выражением %s возникла ошибка: %s"
 
-#: glib/gregex.c:1543
+#: glib/gregex.c:1620
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "Библиотека PCRE собрана без поддержки UTF-8"
 
-#: glib/gregex.c:1551
+#: glib/gregex.c:1628
 msgid "PCRE library is compiled with incompatible options"
 msgstr "Библиотека PCRE собрана с несовместимыми параметрами"
 
-#: glib/gregex.c:1675
+#: glib/gregex.c:1753
 #, c-format
 msgid "Error while compiling regular expression ‘%s’ at char %s: %s"
 msgstr ""
 "Произошла ошибка при компиляции регулярного выражения '%s' у символа с "
 "номером %s: %s"
 
-#: glib/gregex.c:2709
+#: glib/gregex.c:2788
 msgid "hexadecimal digit or “}” expected"
 msgstr "ожидалась шестнадцатеричная цифра или символ «}»"
 
-#: glib/gregex.c:2725
+#: glib/gregex.c:2804
 msgid "hexadecimal digit expected"
 msgstr "ожидалась шестнадцатеричная цифра"
 
-#: glib/gregex.c:2765
+#: glib/gregex.c:2844
 msgid "missing “<” in symbolic reference"
 msgstr "в символьной ссылке отсутствует «<»"
 
-#: glib/gregex.c:2774
+#: glib/gregex.c:2853
 msgid "unfinished symbolic reference"
 msgstr "незаконченная символьная ссылка"
 
-#: glib/gregex.c:2781
+#: glib/gregex.c:2860
 msgid "zero-length symbolic reference"
 msgstr "символьная ссылка нулевой длины"
 
-#: glib/gregex.c:2792
+#: glib/gregex.c:2871
 msgid "digit expected"
 msgstr "ожидалась цифра"
 
-#: glib/gregex.c:2810
+#: glib/gregex.c:2889
 msgid "illegal symbolic reference"
 msgstr "недопустимая символьная ссылка"
 
-#: glib/gregex.c:2873
+#: glib/gregex.c:2952
 msgid "stray final “\\”"
 msgstr "лишний «\\» в конце"
 
-#: glib/gregex.c:2877
+#: glib/gregex.c:2956
 msgid "unknown escape sequence"
 msgstr "неизвестная экранирующая последовательность"
 
-#: glib/gregex.c:2887
+#: glib/gregex.c:2966
 #, c-format
 msgid "Error while parsing replacement text “%s” at char %lu: %s"
 msgstr ""
