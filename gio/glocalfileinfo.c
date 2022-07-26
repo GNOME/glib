@@ -261,10 +261,12 @@ get_selinux_context (const char            *path,
 #define g_fgetxattr(fd,name,value,size)  fgetxattr(fd,name,value,size,0,0)
 #define g_flistxattr(fd,name,size)       flistxattr(fd,name,size,0)
 #define g_setxattr(path,name,value,size) setxattr(path,name,value,size,0,0)
+#define g_removexattr(path,name) removexattr(path,name,0)
 #else
 #define g_fgetxattr     fgetxattr
 #define g_flistxattr    flistxattr
 #define g_setxattr(path,name,value,size) setxattr(path,name,value,size,0)
+#define g_removexattr(path,name) removexattr(path,name)
 #endif
 
 static gssize
@@ -774,10 +776,10 @@ set_xattr (char                       *filename,
       return FALSE;
     }
 
-  if (attr_value->type != G_FILE_ATTRIBUTE_TYPE_STRING)
+  if (attr_value->type != G_FILE_ATTRIBUTE_TYPE_STRING && attr_value->type != G_FILE_ATTRIBUTE_TYPE_INVALID)
     {
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-                           _("Invalid attribute type (string expected)"));
+                           _("Invalid attribute type (string or invalid expected)"));
       return FALSE;
     }
 
@@ -799,16 +801,27 @@ set_xattr (char                       *filename,
       escaped_attribute += strlen ("xattr-sys::");
       is_user = FALSE;
     }
-  
+
   attribute = hex_unescape_string (escaped_attribute, NULL, &free_attribute);
-  value = hex_unescape_string (attr_value->u.string, &val_len, &free_value);
 
   if (is_user)
     a = g_strconcat ("user.", attribute, NULL);
   else
     a = attribute;
-  
-  res = g_setxattr (filename, a, value, val_len);
+
+  if (attr_value->type == G_FILE_ATTRIBUTE_TYPE_STRING)
+    {
+      value = hex_unescape_string (attr_value->u.string, &val_len, &free_value);
+      res = g_setxattr (filename, a, value, val_len);
+    }
+  else
+    {
+      value = NULL;
+      val_len = 0;
+      free_value = FALSE;
+      res = g_removexattr (filename, a);
+    }
+
   errsv = errno;
   
   if (is_user)

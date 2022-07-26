@@ -1015,7 +1015,7 @@ test_xattrs (void)
 {
   GFile *file = NULL;
   GFileIOStream *stream = NULL;
-  GFileInfo *file_info0 = NULL, *file_info1 = NULL;
+  GFileInfo *file_info0 = NULL, *file_info1 = NULL, *file_info2 = NULL;
   GError *local_error = NULL;
 
   g_test_summary ("Test setting and getting escaped xattrs");
@@ -1037,6 +1037,7 @@ test_xattrs (void)
   g_file_info_set_attribute_string (file_info0, "xattr::escaped", "hello\\x82\\x80\\xbd");
   g_file_info_set_attribute_string (file_info0, "xattr::string", "hi there");
   g_file_info_set_attribute_string (file_info0, "xattr::embedded-nul", "hi\\x00there");
+  g_file_info_set_attribute_string (file_info0, "xattr::deleteme", "this attribute will be deleted");
 
   g_file_set_attributes_from_info (file, file_info0, G_FILE_QUERY_INFO_NONE, NULL, &local_error);
 
@@ -1061,8 +1062,19 @@ test_xattrs (void)
       g_assert_cmpstr (g_file_info_get_attribute_string (file_info1, "xattr::escaped"), ==, "hello\\x82\\x80\\xbd");
       g_assert_cmpstr (g_file_info_get_attribute_string (file_info1, "xattr::string"), ==, "hi there");
       g_assert_cmpstr (g_file_info_get_attribute_string (file_info1, "xattr::embedded-nul"), ==, "hi\\x00there");
+      g_assert_cmpstr (g_file_info_get_attribute_string (file_info1, "xattr::deleteme"), ==, "this attribute will be deleted");
 
       g_object_unref (file_info1);
+
+      /* Check whether removing extended attributes works. */
+      g_file_set_attribute (file, "xattr::deleteme", G_FILE_ATTRIBUTE_TYPE_INVALID, NULL, G_FILE_QUERY_INFO_NONE, NULL, &local_error);
+      g_assert_no_error (local_error);
+      file_info2 = g_file_query_info (file, "xattr::deleteme", G_FILE_QUERY_INFO_NONE, NULL, &local_error);
+      g_assert_no_error (local_error);
+      g_assert_nonnull (file_info2);
+      g_assert_cmpstr (g_file_info_get_attribute_string (file_info2, "xattr::deleteme"), ==, NULL);
+
+      g_object_unref (file_info2);
     }
 
   /* Tidy up. */
