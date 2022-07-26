@@ -10,6 +10,8 @@
 
 #include <limits.h>
 #include <float.h>
+#include <stdint.h>
+
 #mesondefine GLIB_HAVE_ALLOCA_H
 
 /* Specifies that GLib's g_print*() functions wrap the
@@ -39,19 +41,18 @@ G_BEGIN_DECLS
 #define G_MAXLONG	LONG_MAX
 #define G_MAXULONG	ULONG_MAX
 
-typedef signed char gint8;
-typedef unsigned char guint8;
+typedef int8_t gint8;
+typedef uint8_t guint8;
 
-typedef signed @gint16@ gint16;
-typedef unsigned @gint16@ guint16;
+typedef int16_t gint16;
+typedef uint16_t guint16;
 
 #define G_GINT16_MODIFIER @gint16_modifier@
 #define G_GINT16_FORMAT @gint16_format@
 #define G_GUINT16_FORMAT @guint16_format@
 
-
-typedef signed @gint32@ gint32;
-typedef unsigned @gint32@ guint32;
+typedef int32_t gint32;
+typedef uint32_t guint32;
 
 #define G_GINT32_MODIFIER @gint32_modifier@
 #define G_GINT32_FORMAT @gint32_format@
@@ -60,8 +61,8 @@ typedef unsigned @gint32@ guint32;
 
 #define G_HAVE_GINT64 1          /* deprecated, always true */
 
-@glib_extension@typedef signed @gint64@ gint64;
-@glib_extension@typedef unsigned @gint64@ guint64;
+typedef int64_t gint64;
+typedef uint64_t guint64;
 
 #define G_GINT64_CONSTANT(val)	@gint64_constant@
 #define G_GUINT64_CONSTANT(val)	@guint64_constant@
@@ -76,8 +77,9 @@ typedef unsigned @gint32@ guint32;
 #define GLIB_SIZEOF_SIZE_T @glib_size_t@
 #define GLIB_SIZEOF_SSIZE_T @glib_ssize_t@
 
+typedef size_t gsize;
 typedef signed @glib_size_type_define@ gssize;
-typedef unsigned @glib_size_type_define@ gsize;
+
 #define G_GSIZE_MODIFIER @gsize_modifier@
 #define G_GSSIZE_MODIFIER @gssize_modifier@
 #define G_GSIZE_FORMAT @gsize_format@
@@ -87,7 +89,7 @@ typedef unsigned @glib_size_type_define@ gsize;
 #define G_MINSSIZE	G_MIN@glib_msize_type@
 #define G_MAXSSIZE	G_MAX@glib_msize_type@
 
-typedef gint64 goffset;
+typedef int64_t goffset;
 #define G_MINOFFSET	G_MININT64
 #define G_MAXOFFSET	G_MAXINT64
 
@@ -103,8 +105,8 @@ typedef gint64 goffset;
 #define GINT_TO_POINTER(i)	((gpointer) @glib_gpi_cast@ (i))
 #define GUINT_TO_POINTER(u)	((gpointer) @glib_gpui_cast@ (u))
 
-typedef signed @glib_intptr_type_define@ gintptr;
-typedef unsigned @glib_intptr_type_define@ guintptr;
+typedef intptr_t gintptr;
+typedef uintptr_t guintptr;
 
 #define G_GINTPTR_MODIFIER      @gintptr_modifier@
 #define G_GINTPTR_FORMAT        @gintptr_format@
