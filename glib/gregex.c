@@ -1701,7 +1701,7 @@ regex_compile (const gchar *pattern,
   PCRE2_SIZE erroffset;
   gint errcode;
   GRegexCompileFlags nonpcre_compile_options;
-  unsigned long int pcre_compile_options;
+  uint32_t pcre_compile_options;
 
   nonpcre_compile_options = compile_options & G_REGEX_COMPILE_NONPCRE_MASK;
 
