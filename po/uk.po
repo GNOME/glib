@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-07-20 20:48+0000\n"
-"PO-Revision-Date: 2022-07-21 09:21+0300\n"
+"POT-Creation-Date: 2022-07-26 07:58+0000\n"
+"PO-Revision-Date: 2022-07-26 23:02+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -306,7 +306,7 @@ msgstr "Потік вже закрито"
 msgid "Truncate not supported on base stream"
 msgstr "Урізання не підтримується у базовому потоці"
 
-#: gio/gcancellable.c:321 gio/gdbusconnection.c:1859 gio/gdbusprivate.c:1420
+#: gio/gcancellable.c:319 gio/gdbusconnection.c:1859 gio/gdbusprivate.c:1420
 #: gio/gsimpleasyncresult.c:873 gio/gsimpleasyncresult.c:899
 #, c-format
 msgid "Operation was cancelled"
@@ -352,7 +352,7 @@ msgstr "Підтримки перетворення з набору символ
 msgid "Could not open converter from “%s” to “%s”"
 msgstr "Не вдалося відкрити модуль перетворення з «%s» у «%s»"
 
-#: gio/gcontenttype.c:473
+#: gio/gcontenttype.c:472
 #, c-format
 msgid "%s type"
 msgstr "тип %s"
@@ -542,7 +542,7 @@ msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
 "Не вдалося визначити адресу сеансової шини (не реалізовано для цієї ОС)"
 
-#: gio/gdbusaddress.c:1375 gio/gdbusconnection.c:7320
+#: gio/gdbusaddress.c:1375 gio/gdbusconnection.c:7321
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -551,7 +551,7 @@ msgstr ""
 "Не вдалося визначити адресу шини зі значення змінної середовища "
 "DBUS_STARTER_BUS_TYPE — невідоме значення «%s»"
 
-#: gio/gdbusaddress.c:1384 gio/gdbusconnection.c:7329
+#: gio/gdbusaddress.c:1384 gio/gdbusconnection.c:7330
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -572,7 +572,7 @@ msgstr "Неочікувана відсутність вмісту при чит
 msgid "Unexpected lack of content trying to (safely) read a line"
 msgstr "Неочікувана відсутність вмісту при (надійному) читанні рядка"
 
-#: gio/gdbusauth.c:481
+#: gio/gdbusauth.c:482
 #, c-format
 msgid ""
 "Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
@@ -580,32 +580,32 @@ msgstr ""
 "Перепробувані усі доступні механізми автентифікації (проведено: %s) "
 "(доступно: %s)"
 
-#: gio/gdbusauth.c:1171
+#: gio/gdbusauth.c:1178
 msgid "User IDs must be the same for peer and server"
 msgstr "Ідентифікатори користувача для вузла і сервера мають бути однаковими"
 
-#: gio/gdbusauth.c:1183
+#: gio/gdbusauth.c:1190
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr "Скасовано через GDBusAuthObserver::authorize-authenticated-peer"
 
-#: gio/gdbusauthmechanismsha1.c:302
+#: gio/gdbusauthmechanismsha1.c:303
 #, c-format
 msgid "Error when getting information for directory “%s”: %s"
 msgstr "Помилка при отриманні відомостей для каталогу «%s»: %s"
 
-#: gio/gdbusauthmechanismsha1.c:317
+#: gio/gdbusauthmechanismsha1.c:318
 #, c-format
 msgid ""
 "Permissions on directory “%s” are malformed. Expected mode 0700, got 0%o"
 msgstr ""
 "Помилкові права на каталог «%s». Очікуваний режим — 0700, отримано 0%o"
 
-#: gio/gdbusauthmechanismsha1.c:350 gio/gdbusauthmechanismsha1.c:361
+#: gio/gdbusauthmechanismsha1.c:351 gio/gdbusauthmechanismsha1.c:362
 #, c-format
 msgid "Error creating directory “%s”: %s"
 msgstr "Сталася помилка при створенні каталогу «%s»: %s"
 
-#: gio/gdbusauthmechanismsha1.c:363 gio/gfile.c:1095 gio/gfile.c:1333
+#: gio/gdbusauthmechanismsha1.c:364 gio/gfile.c:1095 gio/gfile.c:1333
 #: gio/gfile.c:1471 gio/gfile.c:1709 gio/gfile.c:1764 gio/gfile.c:1822
 #: gio/gfile.c:1906 gio/gfile.c:1963 gio/gfile.c:2027 gio/gfile.c:2082
 #: gio/gfile.c:3787 gio/gfile.c:3927 gio/gfile.c:4339 gio/gfile.c:4809
@@ -615,18 +615,18 @@ msgstr "Сталася помилка при створенні каталогу
 msgid "Operation not supported"
 msgstr "Операція не підтримується"
 
-#: gio/gdbusauthmechanismsha1.c:406
+#: gio/gdbusauthmechanismsha1.c:407
 #, c-format
 msgid "Error opening keyring “%s” for reading: "
 msgstr "Сталася помилка при відкриванні зв'язки ключів «%s» на читання: "
 
-#: gio/gdbusauthmechanismsha1.c:429 gio/gdbusauthmechanismsha1.c:770
+#: gio/gdbusauthmechanismsha1.c:430 gio/gdbusauthmechanismsha1.c:771
 #, c-format
 msgid "Line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr ""
 "Некоректне форматування у рядку %d у зв'язці ключів у «%s» з вмістом «%s»"
 
-#: gio/gdbusauthmechanismsha1.c:443 gio/gdbusauthmechanismsha1.c:784
+#: gio/gdbusauthmechanismsha1.c:444 gio/gdbusauthmechanismsha1.c:785
 #, c-format
 msgid ""
 "First token of line %d of the keyring at “%s” with content “%s” is malformed"
@@ -634,7 +634,7 @@ msgstr ""
 "Некоректне форматування першої лексеми у рядку %d у зв'язці ключів у «%s» з "
 "вмістом «%s»"
 
-#: gio/gdbusauthmechanismsha1.c:457 gio/gdbusauthmechanismsha1.c:798
+#: gio/gdbusauthmechanismsha1.c:458 gio/gdbusauthmechanismsha1.c:799
 #, c-format
 msgid ""
 "Second token of line %d of the keyring at “%s” with content “%s” is malformed"
@@ -642,38 +642,38 @@ msgstr ""
 "Некоректне форматування другої лексеми у рядку %d у зв'язці ключів у «%s» з "
 "вмістом «%s»"
 
-#: gio/gdbusauthmechanismsha1.c:481
+#: gio/gdbusauthmechanismsha1.c:482
 #, c-format
 msgid "Didn’t find cookie with id %d in the keyring at “%s”"
 msgstr "Не вдалося знайти куки з ідентифікатором %d у зв'язці ключів «%s»"
 
-#: gio/gdbusauthmechanismsha1.c:538
+#: gio/gdbusauthmechanismsha1.c:539
 #, c-format
 msgid "Error creating lock file “%s”: %s"
 msgstr "Сталася помилка при створенні файла блокування «%s»: %s"
 
-#: gio/gdbusauthmechanismsha1.c:611
+#: gio/gdbusauthmechanismsha1.c:612
 #, c-format
 msgid "Error deleting stale lock file “%s”: %s"
 msgstr "Сталася помилка при вилученні застарілого файла блокування «%s»: %s"
 
-#: gio/gdbusauthmechanismsha1.c:650
+#: gio/gdbusauthmechanismsha1.c:651
 #, c-format
 msgid "Error closing (unlinked) lock file “%s”: %s"
 msgstr ""
 "Сталася помилка при закриванні (від'єднаного) файла блокування «%s»: %s"
 
-#: gio/gdbusauthmechanismsha1.c:661
+#: gio/gdbusauthmechanismsha1.c:662
 #, c-format
 msgid "Error unlinking lock file “%s”: %s"
 msgstr "Сталася помилка при вилученні файла блокування «%s»: %s"
 
-#: gio/gdbusauthmechanismsha1.c:737
+#: gio/gdbusauthmechanismsha1.c:738
 #, c-format
 msgid "Error opening keyring “%s” for writing: "
 msgstr "Сталася помилка при відкриванні зв'язки ключів «%s» для запису: "
 
-#: gio/gdbusauthmechanismsha1.c:931
+#: gio/gdbusauthmechanismsha1.c:932
 #, c-format
 msgid "(Additionally, releasing the lock for “%s” also failed: %s) "
 msgstr "(Також, не вдалося вивільнити блокування «%s»: %s) "
@@ -691,87 +691,87 @@ msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr "При створенні клієнтського з'єднання виявлено непідтримувані прапорці"
 
-#: gio/gdbusconnection.c:4255 gio/gdbusconnection.c:4609
+#: gio/gdbusconnection.c:4256 gio/gdbusconnection.c:4610
 #, c-format
 msgid ""
 "No such interface “org.freedesktop.DBus.Properties” on object at path %s"
 msgstr ""
 "Інтерфейс «org.freedesktop.DBus.Properties» для шляху об'єкта %s не знайдено"
 
-#: gio/gdbusconnection.c:4400
+#: gio/gdbusconnection.c:4401
 #, c-format
 msgid "No such property “%s”"
 msgstr "Немає властивості «%s»"
 
-#: gio/gdbusconnection.c:4412
+#: gio/gdbusconnection.c:4413
 #, c-format
 msgid "Property “%s” is not readable"
 msgstr "Властивість «%s» недоступна для читання"
 
-#: gio/gdbusconnection.c:4423
+#: gio/gdbusconnection.c:4424
 #, c-format
 msgid "Property “%s” is not writable"
 msgstr "Властивість «%s» недоступна для запису"
 
-#: gio/gdbusconnection.c:4443
+#: gio/gdbusconnection.c:4444
 #, c-format
 msgid "Error setting property “%s”: Expected type “%s” but got “%s”"
 msgstr ""
 "Помилка встановлення властивості «%s». Мало бути використано тип «%s», але "
 "отримано «%s»"
 
-#: gio/gdbusconnection.c:4548 gio/gdbusconnection.c:4763
-#: gio/gdbusconnection.c:6746
+#: gio/gdbusconnection.c:4549 gio/gdbusconnection.c:4764
+#: gio/gdbusconnection.c:6747
 #, c-format
 msgid "No such interface “%s”"
 msgstr "Немає інтерфейсу «%s»"
 
-#: gio/gdbusconnection.c:4985 gio/gdbusconnection.c:7260
+#: gio/gdbusconnection.c:4986 gio/gdbusconnection.c:7261
 #, c-format
 msgid "No such interface “%s” on object at path %s"
 msgstr "Немає інтерфейсу «%s» на об'єкті зі шляхом %s"
 
-#: gio/gdbusconnection.c:5086
+#: gio/gdbusconnection.c:5087
 #, c-format
 msgid "No such method “%s”"
 msgstr "Немає методу «%s»"
 
-#: gio/gdbusconnection.c:5117
+#: gio/gdbusconnection.c:5118
 #, c-format
 msgid "Type of message, “%s”, does not match expected type “%s”"
 msgstr "Тип повідомлення «%s» не збігається з очікуваним типом «%s»"
 
-#: gio/gdbusconnection.c:5320
+#: gio/gdbusconnection.c:5321
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Об'єкт інтерфейсу %s вже експортовано як %s"
 
-#: gio/gdbusconnection.c:5547
+#: gio/gdbusconnection.c:5548
 #, c-format
 msgid "Unable to retrieve property %s.%s"
 msgstr "Не вдалося отримати властивість %s.%s"
 
-#: gio/gdbusconnection.c:5603
+#: gio/gdbusconnection.c:5604
 #, c-format
 msgid "Unable to set property %s.%s"
 msgstr "Не вдалося встановити значення властивості %s.%s"
 
-#: gio/gdbusconnection.c:5782
+#: gio/gdbusconnection.c:5783
 #, c-format
 msgid "Method “%s” returned type “%s”, but expected “%s”"
 msgstr "Метод «%s» повернув тип «%s», але очікувалося «%s»"
 
-#: gio/gdbusconnection.c:6858
+#: gio/gdbusconnection.c:6859
 #, c-format
 msgid "Method “%s” on interface “%s” with signature “%s” does not exist"
 msgstr "Методу «%s» інтерфейсу «%s» з підписом «%s» не існує"
 
-#: gio/gdbusconnection.c:6979
+#: gio/gdbusconnection.c:6980
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Піддерево вже експортовано для %s"
 
-#: gio/gdbusconnection.c:7268
+#: gio/gdbusconnection.c:7269
 #, c-format
 msgid "Object does not exist at path “%s”"
 msgstr "Об'єкта зі шляхом «%s» не існує"
@@ -1342,38 +1342,38 @@ msgstr "Помилка: %s не є припустимим добре відом�
 msgid "Not authorized to change debug settings"
 msgstr "Не уповноважено змінювати параметри діагностики"
 
-#: gio/gdesktopappinfo.c:2180 gio/gdesktopappinfo.c:5114
+#: gio/gdesktopappinfo.c:2182 gio/gdesktopappinfo.c:5113
 msgid "Unnamed"
 msgstr "Без назви"
 
-#: gio/gdesktopappinfo.c:2590
+#: gio/gdesktopappinfo.c:2592
 msgid "Desktop file didn’t specify Exec field"
 msgstr "У desktop-файлі не визначено поля Exec"
 
-#: gio/gdesktopappinfo.c:2898
+#: gio/gdesktopappinfo.c:2891
 msgid "Unable to find terminal required for application"
 msgstr "Неможливо знайти термінал, що потрібен програмі"
 
-#: gio/gdesktopappinfo.c:3632
+#: gio/gdesktopappinfo.c:3631
 #, c-format
 msgid "Can’t create user application configuration folder %s: %s"
 msgstr "Не вдалося створити теку параметрів програми %s: %s"
 
-#: gio/gdesktopappinfo.c:3636
+#: gio/gdesktopappinfo.c:3635
 #, c-format
 msgid "Can’t create user MIME configuration folder %s: %s"
 msgstr "Не вдалося створити теку параметрів MIME %s: %s"
 
-#: gio/gdesktopappinfo.c:3878 gio/gdesktopappinfo.c:3902
+#: gio/gdesktopappinfo.c:3877 gio/gdesktopappinfo.c:3901
 msgid "Application information lacks an identifier"
 msgstr "У інформації про програму не вказано ідентифікатор"
 
-#: gio/gdesktopappinfo.c:4138
+#: gio/gdesktopappinfo.c:4137
 #, c-format
 msgid "Can’t create user desktop file %s"
 msgstr "Не вдалося створити для користувача desktop-файл %s"
 
-#: gio/gdesktopappinfo.c:4274
+#: gio/gdesktopappinfo.c:4273
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Власне визначення %s"
@@ -1770,7 +1770,7 @@ msgid "Error writing to stdout"
 msgstr "Помилка при записі до стандартного виведення (stdout)"
 
 #. Translators: commandline placeholder
-#: gio/gio-tool-cat.c:135 gio/gio-tool-info.c:342 gio/gio-tool-list.c:173
+#: gio/gio-tool-cat.c:135 gio/gio-tool-info.c:379 gio/gio-tool-list.c:173
 #: gio/gio-tool-mkdir.c:50 gio/gio-tool-monitor.c:39 gio/gio-tool-monitor.c:41
 #: gio/gio-tool-monitor.c:43 gio/gio-tool-monitor.c:45
 #: gio/gio-tool-monitor.c:206 gio/gio-tool-mount.c:1202 gio/gio-tool-open.c:72
@@ -1793,7 +1793,7 @@ msgstr ""
 "GIO замість локальних файлів. Наприклад, ви можете вказати як місце\n"
 "щось таке: smb://сервер/ресурс/файл.txt."
 
-#: gio/gio-tool-cat.c:164 gio/gio-tool-info.c:373 gio/gio-tool-mkdir.c:78
+#: gio/gio-tool-cat.c:164 gio/gio-tool-info.c:410 gio/gio-tool-mkdir.c:78
 #: gio/gio-tool-monitor.c:231 gio/gio-tool-mount.c:1253 gio/gio-tool-open.c:98
 #: gio/gio-tool-remove.c:74 gio/gio-tool-trash.c:303
 msgid "No locations given"
@@ -1886,68 +1886,61 @@ msgstr "АТРИБУТИ"
 msgid "Don’t follow symbolic links"
 msgstr "Не переходити за символічними посиланнями"
 
-#: gio/gio-tool-info.c:80
+#: gio/gio-tool-info.c:105
 msgid "attributes:\n"
 msgstr "атрибути:\n"
 
-#. Translators: This is a noun and represents and attribute of a file
-#: gio/gio-tool-info.c:136
+#: gio/gio-tool-info.c:165 gio/gio-tool-info.c:174
 #, c-format
 msgid "display name: %s\n"
 msgstr "показана назва: %s\n"
 
-#. Translators: This is a noun and represents and attribute of a file
-#: gio/gio-tool-info.c:141
-#, c-format
-msgid "edit name: %s\n"
-msgstr "редагована назва: %s\n"
-
-#: gio/gio-tool-info.c:147
+#: gio/gio-tool-info.c:182
 #, c-format
 msgid "name: %s\n"
 msgstr "назва: %s\n"
 
-#: gio/gio-tool-info.c:154
+#: gio/gio-tool-info.c:189
 #, c-format
 msgid "type: %s\n"
 msgstr "тип: %s\n"
 
-#: gio/gio-tool-info.c:160
+#: gio/gio-tool-info.c:195
 msgid "size: "
 msgstr "розмір: "
 
-#: gio/gio-tool-info.c:165
+#: gio/gio-tool-info.c:200
 msgid "hidden\n"
 msgstr "прихований\n"
 
-#: gio/gio-tool-info.c:168
+#: gio/gio-tool-info.c:203
 #, c-format
 msgid "uri: %s\n"
 msgstr "адреса: %s\n"
 
-#: gio/gio-tool-info.c:174
+#: gio/gio-tool-info.c:210
 #, c-format
 msgid "local path: %s\n"
 msgstr "локальний шлях: %s\n"
 
-#: gio/gio-tool-info.c:207
+#: gio/gio-tool-info.c:244
 #, c-format
 msgid "unix mount: %s%s %s %s %s\n"
 msgstr "точка монтування unix: %s%s %s %s %s\n"
 
-#: gio/gio-tool-info.c:288
+#: gio/gio-tool-info.c:325
 msgid "Settable attributes:\n"
 msgstr "Придатні до встановлення атрибути:\n"
 
-#: gio/gio-tool-info.c:312
+#: gio/gio-tool-info.c:349
 msgid "Writable attribute namespaces:\n"
 msgstr "Придатні до запису простори назв атрибутів:\n"
 
-#: gio/gio-tool-info.c:347
+#: gio/gio-tool-info.c:384
 msgid "Show information about locations."
 msgstr "Показати відомості щодо місць."
 
-#: gio/gio-tool-info.c:349
+#: gio/gio-tool-info.c:386
 msgid ""
 "gio info is similar to the traditional ls utility, but using GIO\n"
 "locations instead of local files: for example, you can use something\n"
@@ -3197,138 +3190,139 @@ msgstr "Переміщення між різними точками монтув
 msgid "Could not determine the disk usage of %s: %s"
 msgstr "Не вдалося визначити використання диска %s: %s"
 
-#: gio/glocalfileinfo.c:773
+#: gio/glocalfileinfo.c:775
 msgid "Attribute value must be non-NULL"
 msgstr "Значення атрибута не може бути NULL"
 
-#: gio/glocalfileinfo.c:780
-msgid "Invalid attribute type (string expected)"
-msgstr "Некоректний тип атрибута (очікувався рядок)"
+#: gio/glocalfileinfo.c:782
+#| msgid "Invalid attribute type (string expected)"
+msgid "Invalid attribute type (string or invalid expected)"
+msgstr "Некоректний тип атрибута (очікувався рядок або некоректне значення)"
 
-#: gio/glocalfileinfo.c:787
+#: gio/glocalfileinfo.c:789
 msgid "Invalid extended attribute name"
 msgstr "Неправильна назва розширеного атрибута"
 
-#: gio/glocalfileinfo.c:827
+#: gio/glocalfileinfo.c:840
 #, c-format
 msgid "Error setting extended attribute “%s”: %s"
 msgstr "Помилка при встановленні розширеного атрибута «%s»: %s"
 
-#: gio/glocalfileinfo.c:1725 gio/win32/gwinhttpfile.c:191
+#: gio/glocalfileinfo.c:1738 gio/win32/gwinhttpfile.c:191
 msgid " (invalid encoding)"
 msgstr " (неправильне кодування)"
 
-#: gio/glocalfileinfo.c:1884 gio/glocalfileoutputstream.c:945
+#: gio/glocalfileinfo.c:1897 gio/glocalfileoutputstream.c:945
 #: gio/glocalfileoutputstream.c:997
 #, c-format
 msgid "Error when getting information for file “%s”: %s"
 msgstr "Помилка при отриманні інформації про файл «%s»: %s"
 
-#: gio/glocalfileinfo.c:2150
+#: gio/glocalfileinfo.c:2163
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr "Помилка при отриманні інформації про файловий дескриптор: %s"
 
-#: gio/glocalfileinfo.c:2195
+#: gio/glocalfileinfo.c:2208
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Неправильний тип атрибута (очікувався uint32)"
 
-#: gio/glocalfileinfo.c:2213
+#: gio/glocalfileinfo.c:2226
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Неправильний тип атрибута (очікувався uint64)"
 
-#: gio/glocalfileinfo.c:2232 gio/glocalfileinfo.c:2251
+#: gio/glocalfileinfo.c:2245 gio/glocalfileinfo.c:2264
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Неправильний тип атрибута (очікувався рядок байтів)"
 
-#: gio/glocalfileinfo.c:2298
+#: gio/glocalfileinfo.c:2311
 msgid "Cannot set permissions on symlinks"
 msgstr "Помилка при встановленні прав доступу на символічне посилання"
 
-#: gio/glocalfileinfo.c:2314
+#: gio/glocalfileinfo.c:2327
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Помилка встановлення прав доступу: %s"
 
-#: gio/glocalfileinfo.c:2365
+#: gio/glocalfileinfo.c:2378
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Помилка встановлення власник: %s"
 
-#: gio/glocalfileinfo.c:2388
+#: gio/glocalfileinfo.c:2401
 msgid "symlink must be non-NULL"
 msgstr "символьне посилання не може мати значення NULL"
 
-#: gio/glocalfileinfo.c:2398 gio/glocalfileinfo.c:2417
-#: gio/glocalfileinfo.c:2428
+#: gio/glocalfileinfo.c:2411 gio/glocalfileinfo.c:2430
+#: gio/glocalfileinfo.c:2441
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Помилка при встановленні символічного посилання: %s"
 
-#: gio/glocalfileinfo.c:2407
+#: gio/glocalfileinfo.c:2420
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "помилка при встановленні символічного посилання: файл не є символічним "
 "посиланням"
 
-#: gio/glocalfileinfo.c:2479
+#: gio/glocalfileinfo.c:2492
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld are negative"
 msgstr "Зайві наносекунди %d у часовій позначці UNIX %lld є від'ємними"
 
-#: gio/glocalfileinfo.c:2488
+#: gio/glocalfileinfo.c:2501
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld reach 1 second"
 msgstr ""
 "Зайві наносекунди %d у часовій позначці UNIX %lld досягли значення у одну "
 "секунду"
 
-#: gio/glocalfileinfo.c:2498
+#: gio/glocalfileinfo.c:2511
 #, c-format
 msgid "UNIX timestamp %lld does not fit into 64 bits"
 msgstr "Часова позначка UNIX %lld не вкладається у 64 біти"
 
-#: gio/glocalfileinfo.c:2509
+#: gio/glocalfileinfo.c:2522
 #, c-format
 msgid "UNIX timestamp %lld is outside of the range supported by Windows"
 msgstr ""
 "Часова позначка UNIX %lld лежить поза діапазоном, підтримку якого "
 "передбачено у Windows"
 
-#: gio/glocalfileinfo.c:2612
+#: gio/glocalfileinfo.c:2625
 #, c-format
 msgid "File name “%s” cannot be converted to UTF-16"
 msgstr "Назву файла «%s» неможливо перетворити на назву у кодуванні UTF-16"
 
-#: gio/glocalfileinfo.c:2631
+#: gio/glocalfileinfo.c:2644
 #, c-format
 msgid "File “%s” cannot be opened: Windows Error %lu"
 msgstr "Не вдалося відкрити файл «%s»: помилка Windows %lu"
 
-#: gio/glocalfileinfo.c:2644
+#: gio/glocalfileinfo.c:2657
 #, c-format
 msgid "Error setting modification or access time for file “%s”: %lu"
 msgstr "Помилка при встановленні часу зміни або доступу для файла «%s»: %lu"
 
-#: gio/glocalfileinfo.c:2785 gio/glocalfileinfo.c:2797
+#: gio/glocalfileinfo.c:2798 gio/glocalfileinfo.c:2810
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Помилка при встановленні часу зміни або доступу: %s"
 
-#: gio/glocalfileinfo.c:2820
+#: gio/glocalfileinfo.c:2833
 msgid "SELinux context must be non-NULL"
 msgstr "Контекст SELinux не може значення NULL"
 
-#: gio/glocalfileinfo.c:2827
+#: gio/glocalfileinfo.c:2840
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux не увімкнено у цій системі"
 
-#: gio/glocalfileinfo.c:2837
+#: gio/glocalfileinfo.c:2850
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Помилка при встановленні контексту SELinux: %s"
 
-#: gio/glocalfileinfo.c:2934
+#: gio/glocalfileinfo.c:2947
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Підтримки встановлення атрибута %s не передбачено"
@@ -5793,7 +5787,7 @@ msgstr "\\N у класі не підтримується"
 msgid "name is too long in (*MARK), (*PRUNE), (*SKIP), or (*THEN)"
 msgstr "задовга назва у (*MARK), (*PRUNE), (*SKIP) або (*THEN)"
 
-#: glib/gregex.c:678 glib/gregex.c:811
+#: glib/gregex.c:678 glib/gregex.c:809
 msgid "code overflow"
 msgstr "переповнення коду"
 
@@ -5810,61 +5804,61 @@ msgid "previously-checked referenced subpattern not found"
 msgstr ""
 "раніше перевірений вкладений шаблон, на який йде посилання не знайдений"
 
-#: glib/gregex.c:810 glib/gregex.c:1043 glib/gregex.c:2344
+#: glib/gregex.c:808 glib/gregex.c:1041 glib/gregex.c:2342
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "Помилка під час пошуку відповідності регулярному виразу %s: %s"
 
-#: glib/gregex.c:1620
+#: glib/gregex.c:1618
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "Бібліотека PCRE не підтримує UTF8"
 
-#: glib/gregex.c:1628
+#: glib/gregex.c:1626
 msgid "PCRE library is compiled with incompatible options"
 msgstr "Бібліотека PCRE зібрана з несумісними параметрами"
 
-#: glib/gregex.c:1753
+#: glib/gregex.c:1751
 #, c-format
 msgid "Error while compiling regular expression ‘%s’ at char %s: %s"
 msgstr "Помилка при компіляції регулярного виразу «%s» на символі %s: %s"
 
-#: glib/gregex.c:2788
+#: glib/gregex.c:2786
 msgid "hexadecimal digit or “}” expected"
 msgstr "мало бути використано шістнадцяткову цифру або символ «}»"
 
-#: glib/gregex.c:2804
+#: glib/gregex.c:2802
 msgid "hexadecimal digit expected"
 msgstr "очікується шістнадцяткова цифра"
 
-#: glib/gregex.c:2844
+#: glib/gregex.c:2842
 msgid "missing “<” in symbolic reference"
 msgstr "у символічному посиланні пропущено «<»"
 
-#: glib/gregex.c:2853
+#: glib/gregex.c:2851
 msgid "unfinished symbolic reference"
 msgstr "незакінчене символьне посилання"
 
-#: glib/gregex.c:2860
+#: glib/gregex.c:2858
 msgid "zero-length symbolic reference"
 msgstr "символьне посилання нульової довжини"
 
-#: glib/gregex.c:2871
+#: glib/gregex.c:2869
 msgid "digit expected"
 msgstr "очікується цифра"
 
-#: glib/gregex.c:2889
+#: glib/gregex.c:2887
 msgid "illegal symbolic reference"
 msgstr "некоректне символьне посилання"
 
-#: glib/gregex.c:2952
+#: glib/gregex.c:2950
 msgid "stray final “\\”"
 msgstr "відкидати кінцеві «\\»"
 
-#: glib/gregex.c:2956
+#: glib/gregex.c:2954
 msgid "unknown escape sequence"
 msgstr "невідома escape-послідовність"
 
-#: glib/gregex.c:2966
+#: glib/gregex.c:2964
 #, c-format
 msgid "Error while parsing replacement text “%s” at char %lu: %s"
 msgstr ""
@@ -6350,6 +6344,10 @@ msgstr "%.1f ПБ"
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f ЕБ"
+
+#, c-format
+#~ msgid "edit name: %s\n"
+#~ msgstr "редагована назва: %s\n"
 
 #~ msgid "internal error or corrupted object"
 #~ msgstr "внутрішня помилка або пошкоджений об'єкт"
