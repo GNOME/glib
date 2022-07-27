@@ -4893,8 +4893,25 @@ g_win32_app_info_launch_uwp_internal (GWin32AppInfo           *info,
       goto cleanup;
     }
 
+  /* It's best to instantiate ApplicationActivationManager out-of-proc,
+   * as documented on MSDN:
+   *
+   * An IApplicationActivationManager object creates a thread in its
+   * host process to serve any activated event arguments objects
+   * (LaunchActivatedEventArgs, FileActivatedEventArgs, and Protocol-
+   * ActivatedEventArgs) that are passed to the app. If the calling
+   * process is long-lived, you can create this object in-proc,
+   * based on the assumption that the event arguments will exist long
+   * enough for the target app to use them.
+   * However, if the calling process is spawned only to launch the
+   * target app, it should create the IApplicationActivationManager
+   * object out-of-process, by using CLSCTX_LOCAL_SERVER. This causes
+   * the object to be created in a Dllhost instance that automatically
+   * manages the object's lifetime based on outstanding references to
+   * the activated event argument objects.
+   */
   hr = CoCreateInstance (&CLSID_ApplicationActivationManager, NULL,
-                         CLSCTX_INPROC_SERVER,
+                         CLSCTX_LOCAL_SERVER,
                          &IID_IApplicationActivationManager, (void **) &paam);
   if (FAILED (hr))
     {
