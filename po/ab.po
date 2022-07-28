@@ -1,16 +1,9 @@
-# Copyright (C) 2022 The Abkhazian language development fund named after Bagrat Shinkuba
-# This file is distributed under the same license as the glib package.
-# Нанба Наала <naala-nanba@rambler.ru>, 2022.
-#
-
 msgid ""
 msgstr ""
-"Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
 "POT-Creation-Date: 2022-07-21 10:10+0000\n"
-"PO-Revision-Date: 2022-07-22 16:00+0000\n"
 "Last-Translator: Нанба Наала <naala-nanba@rambler.ru>\n"
-"Language-Team: Abkhazian <LL@li.org>\n"
+"Language-Team: Abkhazian <ab@li.org>\n"
 "Language: ab\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1225,7 +1218,7 @@ msgstr ""
 
 #: gio/gdesktopappinfo.c:2180 gio/gdesktopappinfo.c:5114
 msgid "Unnamed"
-msgstr ""
+msgstr "Ихьӡыдоу"
 
 #: gio/gdesktopappinfo.c:2590
 msgid "Desktop file didn’t specify Exec field"
@@ -1560,7 +1553,7 @@ msgstr ""
 msgid "“version” takes no arguments"
 msgstr ""
 
-#: gio/gio-tool.c:209+gio/gio-tool.c:225+glib/goption.c:871
+#: gio/gio-tool.c:209 gio/gio-tool.c:225 glib/goption.c:871
 msgid "Usage:"
 msgstr "Ахархәара:"
 
@@ -1795,6 +1788,7 @@ msgid "hidden\n"
 msgstr ""
 
 #: gio/gio-tool-info.c:168
+#, c-format
 msgid "uri: %s\n"
 msgstr "uri: %s\n"
 
@@ -2413,6 +2407,7 @@ msgid "Invalid numeric value"
 msgstr ""
 
 #: gio/glib-compile-schemas.c:113
+#, c-format
 msgid "<value nick='%s'/> already specified"
 msgstr "<value nick='%s'/> уажәшьҭа иарбоуп"
 
@@ -2432,6 +2427,7 @@ msgid "<%s> must contain at least one <value>"
 msgstr ""
 
 #: gio/glib-compile-schemas.c:316
+#, c-format
 msgid "<%s> is not contained in the specified range"
 msgstr "<%s>  иарбоу аҵакыра аҳәаақәа ирҭыҵуеит "
 
@@ -2441,10 +2437,12 @@ msgid "<%s> is not a valid member of the specified enumerated type"
 msgstr ""
 
 #: gio/glib-compile-schemas.c:334
+#, c-format
 msgid "<%s> contains string not in the specified flags type"
 msgstr "<%s> иамоуп аҵәаҳәа абираҟ иарбоу аформат еиԥшымкәа "
 
 #: gio/glib-compile-schemas.c:340
+#, c-format
 msgid "<%s> contains a string not in <choices>"
 msgstr "<%s> иамоуп ацәаҳәа  <choices> ахь иаҵанамкуа"
 
@@ -2490,10 +2488,12 @@ msgid "<choices> already specified for this key"
 msgstr "<choices>  иарбоуп ари ацаԥха рзы"
 
 #: gio/glib-compile-schemas.c:514
+#, c-format
 msgid "<choices> not allowed for keys of type “%s”"
 msgstr "<choices> азинра рымаӡам ацаԥхаԥхақәа “%s”рыхкқәа  рзы"
 
 #: gio/glib-compile-schemas.c:530
+#, c-format
 msgid "<choice value='%s'/> already given"
 msgstr "<choice value='%s'/> уажәшьҭа иарбоуп"
 
@@ -2515,16 +2515,19 @@ msgstr ""
 "иашьҭагыланы <choices>"
 
 #: gio/glib-compile-schemas.c:582
+#, c-format
 msgid ""
 "<alias value='%s'/> given when “%s” is already a member of the enumerated "
 "type"
 msgstr "<alias value='%s'/> иарбоуп ,“%s” аҵакы аиқәыԥхьаӡара ишалоугьы"
 
 #: gio/glib-compile-schemas.c:588
+#, c-format
 msgid "<alias value='%s'/> given when <choice value='%s'/> was already given"
 msgstr "<alias value='%s'/> арбан,  <choice value='%s'/> анарбаз ашьҭахь"
 
 #: gio/glib-compile-schemas.c:596
+#, c-format
 msgid "<alias value='%s'/> already specified"
 msgstr "<alias value='%s'/> уажәшьҭа иарбоуп"
 
@@ -2539,6 +2542,7 @@ msgid "alias target “%s” is not in <choices>"
 msgstr ""
 
 #: gio/glib-compile-schemas.c:622
+#, c-format
 msgid "<aliases> must contain at least one <alias>"
 msgstr "<aliases> ирымазароуп акы иагымхаргьы  аҵакы <alias>"
 
@@ -2574,6 +2578,7 @@ msgid "Invalid name “%s”: maximum length is 1024"
 msgstr ""
 
 #: gio/glib-compile-schemas.c:919
+#, c-format
 msgid "<child name='%s'> already specified"
 msgstr "<child name=«%s»> уажәшьҭа иарбоуп"
 
@@ -2582,10 +2587,12 @@ msgid "Cannot add keys to a “list-of” schema"
 msgstr ""
 
 #: gio/glib-compile-schemas.c:956
+#, c-format
 msgid "<key name='%s'> already specified"
 msgstr "<key name=«%s»> уажәшьҭа иарбоуп"
 
 #: gio/glib-compile-schemas.c:974
+#, c-format
 msgid ""
 "<key name='%s'> shadows <key name='%s'> in <schema id='%s'>; use <override> "
 "to modify value"
@@ -2601,6 +2608,7 @@ msgid ""
 msgstr ""
 
 #: gio/glib-compile-schemas.c:1004
+#, c-format
 msgid "<%s id='%s'> not (yet) defined."
 msgstr "<%s id=«%s»> еилкааӡам (макьаана)"
 
@@ -2619,18 +2627,22 @@ msgid "No <key name='%s'> to override"
 msgstr ""
 
 #: gio/glib-compile-schemas.c:1070
+#, c-format
 msgid "<override name='%s'> already specified"
 msgstr "<override name='%s'> уажәшьҭа иарбоуп"
 
 #: gio/glib-compile-schemas.c:1143
+#, c-format
 msgid "<schema id='%s'> already specified"
 msgstr "<schema id='%s'> уажәшьҭа иарбоуп"
 
 #: gio/glib-compile-schemas.c:1155
+#, c-format
 msgid "<schema id='%s'> extends not yet existing schema “%s”"
 msgstr "<schema id='%s'> иарҭбаауеит макьаана иаԥҵам асхема «%s»"
 
 #: gio/glib-compile-schemas.c:1171
+#, c-format
 msgid "<schema id='%s'> is list of not yet existing schema “%s”"
 msgstr "<schema id='%s'> хҩылаас иҟоуп макьаана иаԥҵам асхема «%s»"
 
@@ -2648,9 +2660,10 @@ msgstr ""
 #, c-format
 msgid ""
 "<schema id='%s'> is a list, extending <schema id='%s'> which is not a list"
-msgstr ""
+msgstr "<schema id='%s'> иҟоуп хҩылаас, изырҭбаауа  <schema id='%s'>, ихҩылаам"
 
 #: gio/glib-compile-schemas.c:1209
+#, c-format
 msgid ""
 "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but “%s” "
 "does not extend “%s”"
@@ -2676,6 +2689,7 @@ msgid ""
 msgstr ""
 
 #: gio/glib-compile-schemas.c:1272
+#, c-format
 msgid "<%s id='%s'> already specified"
 msgstr "<%s id='%s'> уажәшьҭа иарбоуп"
 
@@ -5886,7 +5900,9 @@ msgctxt "format-size"
 msgid "%.1f %s"
 msgstr ""
 
+#. Translators: the %s in "%s bytes" will always be replaced by a number.
 #: glib/gutils.c:3046
+#, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
 msgstr[0] "%s баитк"
@@ -5901,6 +5917,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: glib/gutils.c:3092
+#, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
 msgstr[0] "%u баитк"
@@ -5940,60 +5957,3 @@ msgstr ""
 #, c-format
 msgid "%.1f EB"
 msgstr ""
-
-#: gio/glib-compile-schemas.c:1199
-msgctxt "gio/glib-compile-schemas.c:1199"
-msgid ""
-msgstr "<schema id='%s'> иҟоуп хҩылаас, изырҭбаауа  <schema id='%s'>, ихҩылаам"
-
-#: glib/gdatetime.c:226
-msgid "%a %b %e %H:%M:%S %Y"
-msgstr "%a, %-d %b %Y, %H∶%M∶%S"
-
-#: glib/gdatetime.c:232
-msgid "%H:%M:%S"
-msgstr "%H:%M:%S"
-
-#: glib/gdatetime.c:235
-msgid "%I:%M:%S %p"
-msgstr "%-I∶%M∶%S %p"
-
-#: glib/gdatetime.c:280
-msgid "April"
-msgstr "Мшаԥы"
-
-#: glib/gdatetime.c:288
-msgctxt "glib/gdatetime.c:288"
-msgid "August"
-msgstr "Нанҳәа"
-
-#: glib/gdatetime.c:342
-msgctxt "glib/gdatetime.c:342"
-msgid "Aug"
-msgstr "Нан"
-
-#: glib/gdatetime.c:482
-msgctxt "glib/gdatetime.c:482"
-msgid "August"
-msgstr "Нанҳәа"
-
-#: glib/gdatetime.c:569
-msgctxt "glib/gdatetime.c:569"
-msgid "Aug"
-msgstr "Нан"
-
-#: glib/gutils.c:2959
-msgid "%u"
-msgstr "%u"
-
-#: glib/gutils.c:2964
-msgid "%u %s"
-msgstr "%u %s"
-
-#: glib/gutils.c:3000
-msgid "%.1f"
-msgstr "%.1f"
-
-#: glib/gutils.c:3006
-msgid "%.1f %s"
-msgstr "%.1f %s"
