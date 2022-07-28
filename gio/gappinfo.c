@@ -1439,6 +1439,11 @@ g_app_launch_context_class_init (GAppLaunchContextClass *klass)
    * example if the process was launched via D-Bus). The `pid` may not be
    * set at all in subsequent releases.
    *
+   * On Windows, `pid` is guaranteed to be valid only for the duration of the
+   * #GAppLaunchContext::launched signal emission; after the signal is emitted,
+   * GLib will call g_spawn_close_pid(). If you need to keep the #GPid after the
+   * signal has been emitted, then you can duplicate `pid` using `DuplicateHandle()`.
+   *
    * Since: 2.36
    */
   signals[LAUNCHED] = g_signal_new (I_("launched"),

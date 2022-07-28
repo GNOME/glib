@@ -1417,6 +1417,9 @@ g_spawn_command_line_async (const gchar *command_line,
 void
 g_spawn_close_pid (GPid pid)
 {
+  /* CRT functions such as _wspawn* return (HANDLE)-1
+   * on failure, so check also for that value. */
+  if (pid != NULL && pid != (HANDLE) -1)
     CloseHandle (pid);
 }
 

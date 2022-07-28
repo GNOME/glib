@@ -4845,7 +4845,8 @@ g_win32_app_info_launch_internal (GWin32AppInfo      *info,
       if (!g_spawn_async (NULL,
                           argv,
                           envp,
-                          spawn_flags,
+                          spawn_flags |
+                          G_SPAWN_DO_NOT_REAP_CHILD,
                           NULL,
                           NULL,
                           &pid,
@@ -4871,6 +4872,7 @@ g_win32_app_info_launch_internal (GWin32AppInfo      *info,
           g_variant_unref (platform_data);
         }
 
+      g_spawn_close_pid (pid);
       g_strfreev (argv);
       argv = NULL;
     }
