@@ -64,6 +64,10 @@
 #include <direct.h>
 #include <wchar.h>
 
+#ifdef _MSC_VER
+#include <vcruntime.h> /* for _UCRT */
+#endif
+
 #ifndef GSPAWN_HELPER
 #ifdef G_SPAWN_WIN32_DEBUG
   static int debug = 1;
@@ -116,6 +120,53 @@ enum {
 #else
 #define HELPER_PROCESS "gspawn-win32-helper"
 #endif
+
+#ifndef _UCRT
+
+/* The wspawn*e functions are thread-safe only in the Universal
+ * CRT (UCRT). If we are linking against the MSVCRT.dll or the
+ * pre-2015 MSVC runtime (MSVCRXXX.dll), then we have to use a
+ * mutex.
+ */
+
+static GMutex safe_wspawn_e_mutex;
+
+static intptr_t
+safe_wspawnve (int _Mode,
+               const wchar_t *_Filename,
+               const wchar_t *const *_ArgList,
+               const wchar_t *const *_Env)
+{
+  intptr_t ret_val = -1;
+
+  g_mutex_lock (&safe_wspawn_e_mutex);
+  ret_val = _wspawnve (_Mode, _Filename, _ArgList, _Env);
+  g_mutex_unlock (&safe_wspawn_e_mutex);
+
+  return ret_val;
+}
+
+static intptr_t
+safe_wspawnvpe (int _Mode,
+                const wchar_t *_Filename,
+                const wchar_t *const *_ArgList,
+                const wchar_t *const *_Env)
+{
+  intptr_t ret_val = -1;
+
+  g_mutex_lock (&safe_wspawn_e_mutex);
+  ret_val = _wspawnvpe (_Mode, _Filename, _ArgList, _Env);
+  g_mutex_unlock (&safe_wspawn_e_mutex);
+
+  return ret_val;
+}
+
+#else
+
+#define safe_wspawnve _spawnve
+#define safe_wspawnvpe _wspawnvpe
+
+#endif /* _UCRT */
 
 /* This logic has a copy for wchar_t in gspawn-win32-helper.c, protect_wargv() */
 static gchar *
@@ -489,12 +540,12 @@ do_spawn_directly (gint                 *exit_status,
 
   if (flags & G_SPAWN_SEARCH_PATH)
     if (wenvp != NULL)
-      rc = _wspawnvpe (mode, wargv0, (const wchar_t **) wargv, (const wchar_t **) wenvp);
+      rc = safe_wspawnvpe (mode, wargv0, (const wchar_t **) wargv, (const wchar_t **) wenvp);
     else
       rc = _wspawnvp (mode, wargv0, (const wchar_t **) wargv);
   else
     if (wenvp != NULL)
-      rc = _wspawnve (mode, wargv0, (const wchar_t **) wargv, (const wchar_t **) wenvp);
+      rc = safe_wspawnve (mode, wargv0, (const wchar_t **) wargv, (const wchar_t **) wenvp);
     else
       rc = _wspawnv (mode, wargv0, (const wchar_t **) wargv);
 
@@ -833,7 +884,7 @@ fork_exec (gint                  *exit_status,
   g_free (helper_process);
 
   if (wenvp != NULL)
-    rc = _wspawnvpe (P_NOWAIT, whelper, (const wchar_t **) wargv, (const wchar_t **) wenvp);
+    rc = safe_wspawnvpe (P_NOWAIT, whelper, (const wchar_t **) wargv, (const wchar_t **) wenvp);
   else
     rc = _wspawnvp (P_NOWAIT, whelper, (const wchar_t **) wargv);
 
