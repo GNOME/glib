@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-07-26 07:58+0000\n"
-"PO-Revision-Date: 2022-07-26 23:02+0300\n"
+"POT-Creation-Date: 2022-08-01 22:52+0000\n"
+"PO-Revision-Date: 2022-08-02 14:39+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -3195,7 +3195,6 @@ msgid "Attribute value must be non-NULL"
 msgstr "Значення атрибута не може бути NULL"
 
 #: gio/glocalfileinfo.c:782
-#| msgid "Invalid attribute type (string expected)"
 msgid "Invalid attribute type (string or invalid expected)"
 msgstr "Некоректний тип атрибута (очікувався рядок або некоректне значення)"
 
@@ -3563,7 +3562,7 @@ msgstr "Некоректний домен"
 #: gio/gresource.c:683 gio/gresource.c:945 gio/gresource.c:985
 #: gio/gresource.c:1109 gio/gresource.c:1181 gio/gresource.c:1255
 #: gio/gresource.c:1336 gio/gresourcefile.c:478 gio/gresourcefile.c:601
-#: gio/gresourcefile.c:738
+#: gio/gresourcefile.c:752
 #, c-format
 msgid "The resource at “%s” does not exist"
 msgstr "Ресурсу у «%s» не існує"
@@ -3573,12 +3572,16 @@ msgstr "Ресурсу у «%s» не існує"
 msgid "The resource at “%s” failed to decompress"
 msgstr "Не вдалося розпакувати ресурс з «%s»"
 
-#: gio/gresourcefile.c:734
+#: gio/gresourcefile.c:658
+msgid "Resource files cannot be renamed"
+msgstr "Неможливо перейменувати файли ресурсів"
+
+#: gio/gresourcefile.c:748
 #, c-format
 msgid "The resource at “%s” is not a directory"
 msgstr "Ресурс у «%s» не є каталогом"
 
-#: gio/gresourcefile.c:942
+#: gio/gresourcefile.c:956
 msgid "Input stream doesn’t implement seek"
 msgstr "У потоці вхідних даних не передбачено позиціювання"
 
