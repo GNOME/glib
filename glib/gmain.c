@@ -5804,7 +5804,11 @@ g_child_watch_finalize (GSource *source)
   GChildWatchSource *child_watch_source = (GChildWatchSource *) source;
 
   if (child_watch_source->using_pidfd)
-    return;
+    {
+      if (child_watch_source->poll.fd >= 0)
+        close (child_watch_source->poll.fd);
+      return;
+    }
 
   G_LOCK (unix_signal_lock);
   unix_child_watches = g_slist_remove (unix_child_watches, source);
