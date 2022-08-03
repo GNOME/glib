@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 3.12\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-07-26 07:58+0000\n"
-"PO-Revision-Date: 2022-07-26 15:00+0100\n"
+"POT-Creation-Date: 2022-08-01 22:52+0000\n"
+"PO-Revision-Date: 2022-08-03 10:52+0100\n"
 "Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
 "Language-Team: Portuguese <https://l10n.gnome.org/teams/pt/>\n"
 "Language: pt\n"
@@ -3533,7 +3533,7 @@ msgstr "Domínio inválido"
 #: gio/gresource.c:683 gio/gresource.c:945 gio/gresource.c:985
 #: gio/gresource.c:1109 gio/gresource.c:1181 gio/gresource.c:1255
 #: gio/gresource.c:1336 gio/gresourcefile.c:478 gio/gresourcefile.c:601
-#: gio/gresourcefile.c:738
+#: gio/gresourcefile.c:752
 #, c-format
 msgid "The resource at “%s” does not exist"
 msgstr "O recurso em “%s” não existe"
@@ -3543,12 +3543,16 @@ msgstr "O recurso em “%s” não existe"
 msgid "The resource at “%s” failed to decompress"
 msgstr "Falha ao descomprimir o recurso em “%s”"
 
-#: gio/gresourcefile.c:734
+#: gio/gresourcefile.c:658
+msgid "Resource files cannot be renamed"
+msgstr "Os ficheiros de recurso não podem ser renomeados"
+
+#: gio/gresourcefile.c:748
 #, c-format
 msgid "The resource at “%s” is not a directory"
 msgstr "O recurso em “%s” não é um diretório"
 
-#: gio/gresourcefile.c:942
+#: gio/gresourcefile.c:956
 msgid "Input stream doesn’t implement seek"
 msgstr "Fluxo de entrada não implementa procura"
 
