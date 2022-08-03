@@ -62,7 +62,7 @@ test_type_flags_final (void)
   GType final2_type;
 
   /* This is the message we print out when registering the type */
-  g_test_expect_message ("GLib-GObject", G_LOG_LEVEL_WARNING,
+  g_test_expect_message ("GLib-GObject", G_LOG_LEVEL_CRITICAL,
                          "*cannot derive*");
 
   /* This is the message when we fail to return from the GOnce init

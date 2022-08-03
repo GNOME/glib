@@ -843,7 +843,7 @@ binding_fail (void)
                                     G_BINDING_DEFAULT);
   g_object_add_weak_pointer (G_OBJECT (binding), (gpointer *) &binding);
 
-  g_test_expect_message ("GLib-GObject", G_LOG_LEVEL_WARNING,
+  g_test_expect_message ("GLib-GObject", G_LOG_LEVEL_CRITICAL,
                          "*Unable to convert*double*boolean*");
   g_object_set (source, "double-value", 1.0, NULL);
   g_test_assert_expected_messages ();
