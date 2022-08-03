@@ -1,3 +1,115 @@
+Overview of changes in GLib 2.73.3, 05-08-2022
+==============================================
+
+* Revitalize G_REGEX_OPTIMIZE flag and use it to enable PCRE JIT compiler (work
+  by Aleksei Rybalkin) (!2817)
+
+* Fix some regressions due to the PCRE2 port (work
+  by Aleksei Rybalkin, Mamoru TASAKA and Marco Trevisan) (!2814, !2827, #2694,
+  #2699, #2700)
+
+* Fix a pidfd leak that was introduced in the previous release (work by
+  Christian Hergert) (#2708)
+
+* Support compilation without a C++ toolchain (work by James Hilliard) (!2822)
+
+* GDBus: Use namespace-friendly protocol for Linux message buses, and optionally
+  other connections (work by Simon McVittie) (!2832)
+
+* Fix potential races in multi-threaded signal connections handling (work by
+  Marco Trevisan) (!2823)
+
+* Add back gio-launch-desktop to redirect stdout/stderr of launched
+  GDesktopAppInfo's to the journal with proper parent (work by Simon McVittie)
+  (!2818, !2819, #2682)
+
+* Executables that are invoked when installing other software, typically
+  from packaging system triggers, can now be installed into
+  architecture-dependent locations. Unix OS distributors who install
+  GLib for more than one architecture in parallel (multiarch or multilib
+  installations) should consider building with -Dmultiarch=true, installing
+  the bin/glib-compile-schemas and bin/gio-querymodules symbolic links in
+  packages for the primary architecture, and omitting those symlinks from
+  packages for secondary architectures. (work by Simon McVittie) (!2818)
+
+* Some enumerators introduced in previous releases have been changed, for better
+  introspection results:
+  - G_MARKUP_PARSE_FLAGS_NONE renamed to G_MARKUP_DEFAULT_FLAGS
+  - G_TLS_CERTIFICATE_FLAGS_NONE renamed to G_TLS_CERTIFICATE_NO_FLAGS
+  - G_APPLICATION_FLAGS_NONE was deprecated, use G_APPLICATION_DEFAULT_FLAGS now
+  (work by Emmanuele Bassi) (!2835)
+
+* gfileinfo: Implement xattr attribute removal (work by madmurphy) (#1187)
+
+* Add support to --delete option to gio set, to unset a file attribute (work by
+  codeboybebop) (#2588)
+
+* Improve default value of glib_debug option: G_ENABLE_DEBUG will be defined
+  only if using `--buildtype=debug` or enabled via `-Dglib_debug`, but it
+  won't ever be set if an optimized build is requested (specifically if the
+  optimization level is not `0` or `g`) as it may be the case when using
+  `--buildtype=debugoptimized` (work by Michael Catanzaro) (!2851)
+
+* Probably the first revision of any GNOME module ever released from Cuba :)
+
+* Bugs fixed:
+ - #566 support using the PCRE JIT
+ - #1187 xattr add possibility to remove an extended attribute
+ - #2509 g_spawn_*() is not thread-safe on Windows when an environment table is
+   provided
+ - #2542 Flatten line breaks in filenames printed by gio-tool
+ - #2588 gio-tool: -d option to delete attribute
+ - #2682 Launching a GDesktopAppInfo "blames" parent process for its output
+ - #2692 2.73.2: build failure on musl >= 1.2.0
+ - #2694 Recent GRegex changes break vala-language-server compilation
+ - #2699 g_regex_match_all fails on s390x with Fedora glib2-2.73.2-4.fc37
+ - #2700 g_regex_match fails on multiple archs (including x86_64) with Fedora
+ - #2703 Fix GCancellable tests for Windows 64bit
+   glib2-2.73.2-4.fc37
+ - #2705 GResourceFile crashes on `g_file_set_display_name()`
+ - #2708 pidfd leak causes processes to run out of file-descriptors
+ - !2299 GWin32AppInfo: Fix PID reporting in launched signal
+ - !2759 Use atomic exchange operations more
+ - !2812 ci: Setup submodules and subprojects before building on dist
+ - !2813 Add missing extension point register for various settings backends
+ - !2814 gregex: use %s format specifier for localized error message
+ - !2815 giomodule: Use g_once_init_enter/leave to register extensions and load dirs
+ - !2818 gio: Optionally install trigger executables to architecture-specific paths
+ - !2822 meson: fix build without cpp toolchain
+ - !2823 gsignal: Perform signal unlocked handlers block, unblock and disconnect ops
+ - !2825 gioenums: G_IO_ERROR_NO_SUCH_DEVICE is new in 2.74
+ - !2826 GDBus: improve interoperability of SASL handshake
+ - !2827 gregex: Free match info if offset matching recalc failed
+ - !2829 gregex: use g_debug instead of g_warning in case JIT is not available
+ - !2830 goption: Slightly improve the documentation for G_OPTION_FLAG_REVERSE
+ - !2832 GDBus: Use namespace-friendly protocol for Linux message buses, and
+   optionally other connections
+ - !2833 Fix installed-tests failures
+ - !2835 Introduce G_APPLICATION_DEFAULT_FLAGS
+ - !2836 gio-launch-desktop: Only replace fds that point to the Journal
+ - !2851 Improve default value of glib_debug option
+ - !2853 Expose tls-exporter channel binding
+ - !2854 docs: Add --delete option to gio-tool attributes documentation
+
+* Translation updates:
+ - Abkhazian
+ - Basque
+ - Georgian
+ - Hebrew
+ - Persian
+ - Portuguese
+ - Russian
+ - Turkish
+ - Ukrainian
+
+* Contributors:
+  Aleksandr Melman, Aleksei Rybalkin, Asier Sarasua Garmendia, Christian Hergert,
+  codeboybebop, Danial Behzadi, Emin Tufan Çetin, Emmanuele Bassi,
+  Giuseppe Scrivano, Hugo Carvalho, James Hilliard, Luca Bacci, madmurphy,
+  Mamoru TASAKA, Marco Trevisan, Matthias Clasen, Michael Catanzaro,
+  Nart Tlisha, Owen Rafferty, Philip Withnall, Ryan Hope, Simon McVittie,
+  Yosef Or Boczko, Yuri Chornoivan, Zurab Kargareteli.
+
 Overview of changes in GLib 2.73.2, 12-07-2022
 ==============================================
 
@@ -29,15 +141,6 @@ Overview of changes in GLib 2.73.2, 12-07-2022
 
 * Use waitid() on pidfds rather than a global SIGCHLD handler (work by Philip
   Withnall) (!2408)
-
-* Executables that are invoked when installing other software, typically
-  from packaging system triggers, can now be installed into
-  architecture-dependent locations. Unix OS distributors who install
-  GLib for more than one architecture in parallel (multiarch or multilib
-  installations) should consider building with -Dmultiarch=true, installing
-  the bin/glib-compile-schemas and bin/gio-querymodules symbolic links in
-  packages for the primary architecture, and omitting those symlinks from
-  packages for secondary architectures. (work by Simon McVittie) (!2818)
 
 * Bugs fixed:
  - #1434 Move tests/* into */tests/
