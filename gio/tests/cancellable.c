@@ -468,7 +468,7 @@ typedef struct {
   GCallback callback;
   gboolean is_disconnecting;
   gboolean is_resetting;
-  gulong handler_id;
+  gpointer handler_id;
 } ConnectingThreadData;
 
 static void
@@ -496,7 +496,7 @@ connecting_thread (gpointer user_data)
   g_main_context_push_thread_default (context);
   loop = g_main_loop_new (context, FALSE);
 
-  g_atomic_pointer_set (&data->handler_id, handler_id);
+  g_atomic_pointer_set (&data->handler_id, (gpointer) handler_id);
   g_atomic_pointer_set (&data->loop, loop);
   g_main_loop_run (loop);
 
