@@ -1,3 +1,52 @@
+Overview of changes in GLib 2.73.2, 05-08-2022
+==============================================
+
+* Fix some regressions from the PCRE2 port
+
+* Fix a pidfd leak that was introduced in the previous release
+
+* Bugs fixed:
+ - #566 support using the PCRE JIT
+ - #1187 xattr add possibility to remove an extended attribute
+ - #2509 g_spawn_*() is not thread-safe on Windows when an environment table is provided
+ - #2542 Flatten line breaks in filenames printed by gio-tool
+ - #2682 Launching a GDesktopAppInfo "blames" parent process for its output
+ - #2692 2.73.2: build failure on musl >= 1.2.0
+ - #2694 Recent GRegex changes break vala-language-server compilation
+ - #2699 g_regex_match_all fails on s390x with Fedora glib2-2.73.2-4.fc37
+ - #2700 g_regex_match fails on multiple archs (including x86_64) with Fedora glib2-2.73.2-4.fc37
+ - #2705 GResourceFile crashes on `g_file_set_display_name()`
+ - #2708 pidfd leak causes processes to run out of file-descriptors
+ - !2299 GWin32AppInfo: Fix PID reporting in launched signal
+ - !2759 Use atomic exchange operations more
+ - !2812 ci: Setup submodules and subprojects before building on dist
+ - !2813 Add missing extension point register for various settings backends
+ - !2814 gregex: use %s format specifier for localized error message
+ - !2815 giomodule: Use g_once_init_enter/leave to register extensions and load dirs
+ - !2818 gio: Optionally install trigger executables to architecture-specific paths
+ - !2822 meson: fix build without cpp toolchain
+ - !2823 gsignal: Perform signal unlocked handlers block, unblock and disconnect ops
+ - !2825 gioenums: G_IO_ERROR_NO_SUCH_DEVICE is new in 2.74
+ - !2826 GDBus: improve interoperability of SASL handshake
+ - !2827 gregex: Free match info if offset matching recalc failed
+ - !2829 gregex: use g_debug instead of g_warning in case JIT is not available
+ - !2830 goption: Slightly improve the documentation for G_OPTION_FLAG_REVERSE
+ - !2832 GDBus: Use namespace-friendly protocol for Linux message buses, and optionally other connections
+ - !2833 Fix installed-tests failures
+ - !2835 Introduce G_APPLICATION_DEFAULT_FLAGS
+ - !2836 gio-launch-desktop: Only replace fds that point to the Journal
+
+* Translation updates:
+ - Abkhazian
+ - Basque
+ - Georgian
+ - Hebrew
+ - Persian
+ - Portuguese
+ - Russian
+ - Turkish
+ - Ukrainian
+
 Overview of changes in GLib 2.73.2, 12-07-2022
 ==============================================
 
