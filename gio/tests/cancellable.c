@@ -468,14 +468,14 @@ typedef struct {
   GCallback callback;
   gboolean is_disconnecting;
   gboolean is_resetting;
-  gulong handler_id;
+  gpointer handler_id;
 } ConnectingThreadData;
 
 static void
 on_cancellable_connect_disconnect (GCancellable *cancellable,
                                    ConnectingThreadData *data)
 {
-  gulong handler_id = (gulong) g_atomic_pointer_exchange (&data->handler_id, 0);
+  gulong handler_id = (gulong) (guintptr) g_atomic_pointer_exchange (&data->handler_id, 0);
   g_atomic_int_set (&data->is_disconnecting, TRUE);
   g_cancellable_disconnect (cancellable, handler_id);
   g_atomic_int_set (&data->is_disconnecting, FALSE);
@@ -496,7 +496,7 @@ connecting_thread (gpointer user_data)
   g_main_context_push_thread_default (context);
   loop = g_main_loop_new (context, FALSE);
 
-  g_atomic_pointer_set (&data->handler_id, handler_id);
+  g_atomic_pointer_set (&data->handler_id, (gpointer) (guintptr) handler_id);
   g_atomic_pointer_set (&data->loop, loop);
   g_main_loop_run (loop);
 
@@ -537,7 +537,7 @@ test_cancellable_disconnect_on_cancelled_callback_hangs (void)
   thread_data.callback = G_CALLBACK (on_cancellable_connect_disconnect);
 
   g_assert_false (g_atomic_int_get (&thread_data.is_disconnecting));
-  g_assert_cmpuint ((gulong) g_atomic_pointer_get (&thread_data.handler_id), ==, 0);
+  g_assert_cmpuint ((gulong) (guintptr) g_atomic_pointer_get (&thread_data.handler_id), ==, 0);
 
   thread = g_thread_new ("/cancellable/disconnect-on-cancelled-callback-hangs",
                          connecting_thread, &thread_data);
@@ -546,7 +546,7 @@ test_cancellable_disconnect_on_cancelled_callback_hangs (void)
     ;
 
   thread_loop = thread_data.loop;
-  g_assert_cmpuint ((gulong) g_atomic_pointer_get (&thread_data.handler_id), !=, 0);
+  g_assert_cmpuint ((gulong) (guintptr) g_atomic_pointer_get (&thread_data.handler_id), !=, 0);
 
   /* FIXME: This thread will hang (at least that's what this test wants to
    *        ensure), but we can't stop it from the caller, unless we'll expose
@@ -562,7 +562,7 @@ test_cancellable_disconnect_on_cancelled_callback_hangs (void)
     ;
 
   g_assert_true (g_atomic_int_get (&thread_data.is_disconnecting));
-  g_assert_cmpuint ((gulong) g_atomic_pointer_get (&thread_data.handler_id), ==, 0);
+  g_assert_cmpuint ((gulong) (guintptr) g_atomic_pointer_get (&thread_data.handler_id), ==, 0);
 
   waited = &waited;
   g_timeout_add_once (100, (GSourceOnceFunc) g_nullify_pointer, &waited);
@@ -622,7 +622,7 @@ test_cancellable_reset_on_cancelled_callback_hangs (void)
   thread_data.callback = G_CALLBACK (on_cancelled_reset);
 
   g_assert_false (g_atomic_int_get (&thread_data.is_resetting));
-  g_assert_cmpuint ((gulong) g_atomic_pointer_get (&thread_data.handler_id), ==, 0);
+  g_assert_cmpuint ((gulong) (guintptr) g_atomic_pointer_get (&thread_data.handler_id), ==, 0);
 
   thread = g_thread_new ("/cancellable/reset-on-cancelled-callback-hangs",
                          connecting_thread, &thread_data);
@@ -631,7 +631,7 @@ test_cancellable_reset_on_cancelled_callback_hangs (void)
     ;
 
   thread_loop = thread_data.loop;
-  g_assert_cmpuint ((gulong) g_atomic_pointer_get (&thread_data.handler_id), !=, 0);
+  g_assert_cmpuint ((gulong) (guintptr) g_atomic_pointer_get (&thread_data.handler_id), !=, 0);
 
   /* FIXME: This thread will hang (at least that's what this test wants to
    *        ensure), but we can't stop it from the caller, unless we'll expose
@@ -647,7 +647,7 @@ test_cancellable_reset_on_cancelled_callback_hangs (void)
     ;
 
   g_assert_true (g_atomic_int_get (&thread_data.is_resetting));
-  g_assert_cmpuint ((gulong) g_atomic_pointer_get (&thread_data.handler_id), >, 0);
+  g_assert_cmpuint ((gulong) (guintptr) g_atomic_pointer_get (&thread_data.handler_id), >, 0);
 
   waited = &waited;
   g_timeout_add_once (100, (GSourceOnceFunc) g_nullify_pointer, &waited);
