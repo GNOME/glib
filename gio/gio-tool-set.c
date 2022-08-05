@@ -30,10 +30,12 @@
 
 static char *attr_type = "string";
 static gboolean nofollow_symlinks = FALSE;
+static gboolean delete = FALSE;
 
 static const GOptionEntry entries[] = {
   { "type", 't', 0, G_OPTION_ARG_STRING, &attr_type, N_("Type of the attribute"), N_("TYPE") },
   { "nofollow-symlinks", 'n', 0, G_OPTION_ARG_NONE, &nofollow_symlinks, N_("Don’t follow symbolic links"), NULL },
+  { "delete", 'd', 0, G_OPTION_ARG_NONE, &delete, N_("Unset given attribute"), NULL },
   G_OPTION_ENTRY_NULL
 };
 
@@ -127,8 +129,15 @@ handle_set (int argc, char *argv[], gboolean do_help)
     }
 
   attribute = argv[2];
+  if (delete)
+    {
+      type = G_FILE_ATTRIBUTE_TYPE_INVALID;
+    }
+  else
+    {
+      type = attribute_type_from_string (attr_type);
+    }
 
-  type = attribute_type_from_string (attr_type);
   if ((argc < 4) && (type != G_FILE_ATTRIBUTE_TYPE_INVALID))
     {
       show_help (context, _("Value not specified"));
