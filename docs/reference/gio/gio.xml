@@ -682,6 +682,10 @@
                 </listitem>
               </varlistentry>
               <varlistentry>
+                <term><option>-d</option>, <option>--delete</option></term>
+                <listitem><para>Unsets an attribute (same as setting it's type to <literal>unset</literal>).</para></listitem>
+              </varlistentry>
+              <varlistentry>
                 <term><option>-n</option>, <option>--nofollow-symlinks</option></term>
                 <listitem><para>Don’t follow symbolic links.</para></listitem>
               </varlistentry>
