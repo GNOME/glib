@@ -1658,9 +1658,12 @@ typedef enum {
  * @G_TLS_CHANNEL_BINDING_TLS_SERVER_END_POINT:
  *    [`tls-server-end-point`](https://tools.ietf.org/html/rfc5929#section-4)
  *    binding type
+ * @G_TLS_CHANNEL_BINDING_TLS_EXPORTER:
+ *    [`tls-exporter`](https://www.rfc-editor.org/rfc/rfc9266.html) binding
+ *    type. Since: 2.74
  *
  * The type of TLS channel binding data to retrieve from #GTlsConnection
- * or #GDtlsConnection, as documented by RFC 5929. The
+ * or #GDtlsConnection, as documented by RFC 5929 or RFC 9266. The
  * [`tls-unique-for-telnet`](https://tools.ietf.org/html/rfc5929#section-5)
  * binding type is not currently implemented.
  *
@@ -1669,7 +1672,8 @@ typedef enum {
 GLIB_AVAILABLE_TYPE_IN_2_66
 typedef enum {
   G_TLS_CHANNEL_BINDING_TLS_UNIQUE,
-  G_TLS_CHANNEL_BINDING_TLS_SERVER_END_POINT
+  G_TLS_CHANNEL_BINDING_TLS_SERVER_END_POINT,
+  G_TLS_CHANNEL_BINDING_TLS_EXPORTER GLIB_AVAILABLE_ENUMERATOR_IN_2_74,
 } GTlsChannelBindingType;
 
 /**
