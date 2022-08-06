@@ -237,8 +237,7 @@ g_invoke_error_quark (void)
  *    may be %NULL
  * @n_out_args: the length of the @out_args array
  * @return_value: return location for the return value of the
- *    function. If the function returns void, @return_value may be
- *    %NULL
+ *    function.
  * @error: return location for detailed error information, or %NULL
  *
  * Invokes the function described in @info with the given
