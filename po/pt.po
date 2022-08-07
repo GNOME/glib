@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 3.12\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-08-01 22:52+0000\n"
-"PO-Revision-Date: 2022-08-03 10:52+0100\n"
+"POT-Creation-Date: 2022-08-05 19:22+0000\n"
+"PO-Revision-Date: 2022-08-07 21:30+0100\n"
 "Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
 "Language-Team: Portuguese <https://l10n.gnome.org/teams/pt/>\n"
 "Language: pt\n"
@@ -1759,7 +1759,7 @@ msgstr "Erro ao escrever no stdout"
 #: gio/gio-tool-mkdir.c:50 gio/gio-tool-monitor.c:39 gio/gio-tool-monitor.c:41
 #: gio/gio-tool-monitor.c:43 gio/gio-tool-monitor.c:45
 #: gio/gio-tool-monitor.c:206 gio/gio-tool-mount.c:1202 gio/gio-tool-open.c:72
-#: gio/gio-tool-remove.c:50 gio/gio-tool-rename.c:47 gio/gio-tool-set.c:93
+#: gio/gio-tool-remove.c:50 gio/gio-tool-rename.c:47 gio/gio-tool-set.c:95
 #: gio/gio-tool-trash.c:222 gio/gio-tool-tree.c:241
 msgid "LOCATION"
 msgstr "LOCALIZAÇÃO"
@@ -1867,7 +1867,7 @@ msgstr "Os atributos a obter"
 msgid "ATTRIBUTES"
 msgstr "ATRIBUTOS"
 
-#: gio/gio-tool-info.c:42 gio/gio-tool-list.c:40 gio/gio-tool-set.c:36
+#: gio/gio-tool-info.c:42 gio/gio-tool-list.c:40 gio/gio-tool-set.c:37
 msgid "Don’t follow symbolic links"
 msgstr "Não seguir ligações simbólicas"
 
@@ -2260,7 +2260,7 @@ msgstr "Renomear um ficheiro."
 msgid "Missing argument"
 msgstr "Argumento em falta"
 
-#: gio/gio-tool-rename.c:78 gio/gio-tool-save.c:192 gio/gio-tool-set.c:141
+#: gio/gio-tool-rename.c:78 gio/gio-tool-save.c:192 gio/gio-tool-set.c:150
 msgid "Too many arguments"
 msgstr "Demasiados argumentos"
 
@@ -2316,39 +2316,43 @@ msgstr "Ler da entrada predefinida e guardar no DESTINO."
 msgid "No destination given"
 msgstr "Nenhum destino fornecido"
 
-#: gio/gio-tool-set.c:35
+#: gio/gio-tool-set.c:36
 msgid "Type of the attribute"
 msgstr "Tipo do atributo"
 
-#: gio/gio-tool-set.c:35
+#: gio/gio-tool-set.c:36
 msgid "TYPE"
 msgstr "TIPO"
 
-#: gio/gio-tool-set.c:93
+#: gio/gio-tool-set.c:38
+msgid "Unset given attribute"
+msgstr "Atributo dado não definido"
+
+#: gio/gio-tool-set.c:95
 msgid "ATTRIBUTE"
 msgstr "ATRIBUTO"
 
-#: gio/gio-tool-set.c:93
+#: gio/gio-tool-set.c:95
 msgid "VALUE"
 msgstr "VALOR"
 
-#: gio/gio-tool-set.c:97
+#: gio/gio-tool-set.c:99
 msgid "Set a file attribute of LOCATION."
 msgstr "Definir um atributo de ficheiro da LOCALIZAÇÃO."
 
-#: gio/gio-tool-set.c:117
+#: gio/gio-tool-set.c:119
 msgid "Location not specified"
 msgstr "Nenhum localização especificada"
 
-#: gio/gio-tool-set.c:124
+#: gio/gio-tool-set.c:126
 msgid "Attribute not specified"
 msgstr "Nenhum atributo especificado"
 
-#: gio/gio-tool-set.c:134
+#: gio/gio-tool-set.c:143
 msgid "Value not specified"
 msgstr "Valor não especificado"
 
-#: gio/gio-tool-set.c:184
+#: gio/gio-tool-set.c:193
 #, c-format
 msgid "Invalid attribute type “%s”"
 msgstr "Tipo de atributo inválido “%s”"
@@ -4206,7 +4210,7 @@ msgstr "Proxy SOCKSv5 não suporta o tipo de endereço indicado."
 msgid "Unknown SOCKSv5 proxy error."
 msgstr "Erro de proxy SOCKSv5 desconhecido."
 
-#: gio/gtestdbus.c:614 glib/gspawn-win32.c:303
+#: gio/gtestdbus.c:614 glib/gspawn-win32.c:354
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Falha ao criar canal para comunicar com sub processo (%s)"
@@ -5862,7 +5866,7 @@ msgstr "Erro inesperado ao ler dados de sub processo (%s)"
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Erro inesperado em waitpid() (%s)"
 
-#: glib/gspawn.c:1170 glib/gspawn-win32.c:1434
+#: glib/gspawn.c:1170 glib/gspawn-win32.c:1488
 #, c-format
 msgid "Child process exited with code %ld"
 msgstr "Sub processo terminou com o código %ld"
@@ -5882,7 +5886,7 @@ msgstr "Sub processo parado com o sinal %ld"
 msgid "Child process exited abnormally"
 msgstr "O sub processo terminou anormalmente"
 
-#: glib/gspawn.c:1885 glib/gspawn-win32.c:342 glib/gspawn-win32.c:350
+#: glib/gspawn.c:1885 glib/gspawn-win32.c:393 glib/gspawn-win32.c:401
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Falha ao ler de canal acima (%s)"
@@ -5897,7 +5901,7 @@ msgstr "Falha ao criar sub processo “%s” (%s)"
 msgid "Failed to fork (%s)"
 msgstr "Falha ao bifurcar \"fork\" (%s)"
 
-#: glib/gspawn.c:2525 glib/gspawn-win32.c:373
+#: glib/gspawn.c:2525 glib/gspawn-win32.c:424
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
 msgstr "Falha ao ir para o diretório “%s” (%s)"
@@ -5937,46 +5941,46 @@ msgstr "Erro desconhecido ao executar sub processo “%s”"
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Impossível ler dados suficientes de canal pid acima (%s)"
 
-#: glib/gspawn-win32.c:286
+#: glib/gspawn-win32.c:337
 msgid "Failed to read data from child process"
 msgstr "Falha ao ler dados de sub processo"
 
-#: glib/gspawn-win32.c:379 glib/gspawn-win32.c:384 glib/gspawn-win32.c:510
+#: glib/gspawn-win32.c:430 glib/gspawn-win32.c:435 glib/gspawn-win32.c:561
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Falha ao executar sub processo (%s)"
 
-#: glib/gspawn-win32.c:389
+#: glib/gspawn-win32.c:440
 #, c-format
 msgid "Failed to dup() in child process (%s)"
 msgstr "Falha ao dup() no sub processo (%s)"
 
-#: glib/gspawn-win32.c:460
+#: glib/gspawn-win32.c:511
 #, c-format
 msgid "Invalid program name: %s"
 msgstr "Nome de programa inválido: %s"
 
-#: glib/gspawn-win32.c:470 glib/gspawn-win32.c:802
+#: glib/gspawn-win32.c:521 glib/gspawn-win32.c:853
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "Cadeia inválida no vetor de argumentos na posição %d: %s"
 
-#: glib/gspawn-win32.c:481 glib/gspawn-win32.c:818
+#: glib/gspawn-win32.c:532 glib/gspawn-win32.c:869
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "Cadeia inválida no ambiente: %s"
 
-#: glib/gspawn-win32.c:798
+#: glib/gspawn-win32.c:849
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "Pasta de trabalho inválida: %s"
 
-#: glib/gspawn-win32.c:863
+#: glib/gspawn-win32.c:914
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "Falha ao executar aplicação auxiliar (%s)"
 
-#: glib/gspawn-win32.c:1092
+#: glib/gspawn-win32.c:1143
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
