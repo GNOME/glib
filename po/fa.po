@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-08-05 19:22+0000\n"
-"PO-Revision-Date: 2022-08-07 04:02+0430\n"
+"POT-Creation-Date: 2022-08-06 23:33+0000\n"
+"PO-Revision-Date: 2022-08-08 02:08+0430\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian <>\n"
 "Language: fa\n"
@@ -322,7 +322,7 @@ msgstr "خطا در حین تبدیل: %s"
 
 #: gio/gcharsetconverter.c:447 gio/gsocket.c:1151
 msgid "Cancellable initialization not supported"
-msgstr "مقداردهی‌های اولیه‌ی قابل لغو پشتیبانی نمی‌شود"
+msgstr "مقداردهی‌های اولیهٔ قابل لغو پشتیبانی نمی‌شود"
 
 #: gio/gcharsetconverter.c:458 glib/gconvert.c:324 glib/giochannel.c:1404
 #, c-format
@@ -592,32 +592,29 @@ msgid "Didn’t find cookie with id %d in the keyring at “%s”"
 msgstr ""
 
 #: gio/gdbusauthmechanismsha1.c:539
-#, fuzzy, c-format
-#| msgid "Error creating lock file '%s': %s"
+#, c-format
 msgid "Error creating lock file “%s”: %s"
-msgstr "خطا در هنگام ساخت پرونده قفل «%s»: %s"
+msgstr "خطا در ایجاد پرونده قفل «%s»: %s"
 
 #: gio/gdbusauthmechanismsha1.c:612
-#, fuzzy, c-format
+#, c-format
 msgid "Error deleting stale lock file “%s”: %s"
-msgstr "خطا در خواندن پروندهٔ «‎%s»‏: %s"
+msgstr "خطا در حذف پروندهٔ قفل کهنهٔ «‎%s»‏: %s"
 
 #: gio/gdbusauthmechanismsha1.c:651
-#, fuzzy, c-format
+#, c-format
 msgid "Error closing (unlinked) lock file “%s”: %s"
-msgstr "خطا در خواندن پروندهٔ «‎%s»‏: %s"
+msgstr "خطا در بستن پروندهٔ قفل (پیوند نشده) «‎%s»‏: %s"
 
 #: gio/gdbusauthmechanismsha1.c:662
-#, fuzzy, c-format
-#| msgid "Error unlinking lock file '%s': %s"
+#, c-format
 msgid "Error unlinking lock file “%s”: %s"
-msgstr "خطا در هنگام شکستن پیوند پرونده‌ی قفل «%s»: %s"
+msgstr "خطا در پیوند نکردن پروندهٔ قفل «%s»: %s"
 
 #: gio/gdbusauthmechanismsha1.c:738
-#, fuzzy, c-format
-#| msgid "Error opening keyring '%s' for writing: "
+#, c-format
 msgid "Error opening keyring “%s” for writing: "
-msgstr "خطا در هنگام باز کردن دسته‌کلید «%s» برای نوشتن: "
+msgstr "خطا در گشودن دسته‌کلید «%s» برای نوشتن: "
 
 #: gio/gdbusauthmechanismsha1.c:932
 #, c-format
@@ -642,22 +639,19 @@ msgid "No such interface “org.freedesktop.DBus.Properties” on object at path
 msgstr ""
 
 #: gio/gdbusconnection.c:4401
-#, fuzzy, c-format
-#| msgid "No such property '%s'"
+#, c-format
 msgid "No such property “%s”"
-msgstr "همچین خصیصه‌ای وجود ندارد «%s»"
+msgstr "ویژگی «%s» وجود ندارد"
 
 #: gio/gdbusconnection.c:4413
-#, fuzzy, c-format
-#| msgid "Property '%s' is not readable"
+#, c-format
 msgid "Property “%s” is not readable"
-msgstr "خصیصه‌ی «%s» خواندنی نیست"
+msgstr "ویژگی «%s» خواندنی نیست"
 
 #: gio/gdbusconnection.c:4424
-#, fuzzy, c-format
-#| msgid "Property '%s' is not writable"
+#, c-format
 msgid "Property “%s” is not writable"
-msgstr "خصیصه‌ی «%s» قابل نوشتن نیست"
+msgstr "ویژگی «%s» نوشتنی نیست"
 
 #: gio/gdbusconnection.c:4444
 #, c-format
@@ -675,16 +669,14 @@ msgid "No such interface “%s” on object at path %s"
 msgstr ""
 
 #: gio/gdbusconnection.c:5087
-#, fuzzy, c-format
-#| msgid "No such method '%s'"
+#, c-format
 msgid "No such method “%s”"
-msgstr "همچین متدی وجود ندارد «%s»"
+msgstr "روش «%s» وجود ندارد"
 
 #: gio/gdbusconnection.c:5118
-#, fuzzy, c-format
-#| msgid "Type of message, '%s', does not match expected type '%s'"
+#, c-format
 msgid "Type of message, “%s”, does not match expected type “%s”"
-msgstr "نوع پیام، «%s»، با نوع مورد انتظار مطابقت ندارد «%s»"
+msgstr "گونهٔ پیام، «%s»، با گونهٔ مورد انتظار «%s» مطابق نیست"
 
 #: gio/gdbusconnection.c:5321
 #, c-format
@@ -692,16 +684,14 @@ msgid "An object is already exported for the interface %s at %s"
 msgstr "یک شیء از قبل برای واسط %s در %s صادر شده است"
 
 #: gio/gdbusconnection.c:5548
-#, fuzzy, c-format
-#| msgid "Unable to create socket: %s"
+#, c-format
 msgid "Unable to retrieve property %s.%s"
-msgstr "نمی‌توان سوکت را ساخت: %s"
+msgstr "ناتوان در دریافت ویژگی %s.%s"
 
 #: gio/gdbusconnection.c:5604
-#, fuzzy, c-format
-#| msgid "Unable to create socket: %s"
+#, c-format
 msgid "Unable to set property %s.%s"
-msgstr "نمی‌توان سوکت را ساخت: %s"
+msgstr "ناتوان در تنظیم ویژگی %s.%s"
 
 #: gio/gdbusconnection.c:5783
 #, c-format
@@ -779,10 +769,9 @@ msgid "Value nested too deeply"
 msgstr ""
 
 #: gio/gdbusmessage.c:1679
-#, fuzzy, c-format
-#| msgid "Error: %s is not a valid object path\n"
+#, c-format
 msgid "Parsed value “%s” is not a valid D-Bus object path"
-msgstr "خطا: %s یک مسیر شیء معتبر نیست\n"
+msgstr "مقدار تجزیه شدهٔ «%s» مسیر شی D-Bus معتبری نیست"
 
 #: gio/gdbusmessage.c:1703
 #, c-format
@@ -886,10 +875,9 @@ msgid "Message body is empty but signature in the header field is “(%s)”"
 msgstr ""
 
 #: gio/gdbusmessage.c:3479
-#, fuzzy, c-format
-#| msgid "Error return with body of type '%s'"
+#, c-format
 msgid "Error return with body of type “%s”"
-msgstr "خطا در بازگردانی با بدنه‌ای از نوع «%s»"
+msgstr "خطای بازگشت با بدنهٔ گونهٔ «%s»"
 
 #: gio/gdbusmessage.c:3487
 msgid "Error return with empty body"
@@ -906,17 +894,15 @@ msgid "Session dbus not running, and autolaunch failed"
 msgstr ""
 
 #: gio/gdbusprivate.c:2396
-#, fuzzy, c-format
-#| msgid "Unable to trash file: %s"
+#, c-format
 msgid "Unable to get Hardware profile: %s"
-msgstr "نمی‌توان پرونده را به زباله‌دان فرستاد: %s"
+msgstr "ناتوان در گرفتن نمایهٔ سخت‌افزار: %s"
 
 #. Translators: Both placeholders are file paths
 #: gio/gdbusprivate.c:2447
-#, fuzzy, c-format
-#| msgid "Unable to create trash dir %s: %s"
+#, c-format
 msgid "Unable to load %s or %s: "
-msgstr "نمی‌توان شاخه زباله‌دان %s را ساخت: %s"
+msgstr "ناتوان در بار کردن %s یا %s: "
 
 #: gio/gdbusproxy.c:1575
 #, c-format
@@ -936,18 +922,17 @@ msgid ""
 msgstr ""
 
 #: gio/gdbusserver.c:765
-#, fuzzy
 msgid "Abstract namespace not supported"
-msgstr "پیوندهای نمادی پشتیبانی نمی‌شوند"
+msgstr "فضانام انتزاعی پشتیبانی نمی‌شود"
 
 #: gio/gdbusserver.c:857
 msgid "Cannot specify nonce file when creating a server"
 msgstr ""
 
 #: gio/gdbusserver.c:939
-#, fuzzy, c-format
+#, c-format
 msgid "Error writing nonce file at “%s”: %s"
-msgstr "خطا در خواندن پروندهٔ «‎%s»‏: %s"
+msgstr "خطا در خواندن پروندهٔ فعلی «‎%s»‏: %s"
 
 #: gio/gdbusserver.c:1114
 #, c-format
@@ -981,15 +966,14 @@ msgid "Error: %s\n"
 msgstr "خطا: %s\n"
 
 #: gio/gdbus-tool.c:215 gio/gdbus-tool.c:289 gio/gdbus-tool.c:1750
-#, fuzzy, c-format
+#, c-format
 msgid "Error parsing introspection XML: %s\n"
-msgstr "خطا در تجزیهٔ گزینهٔ %s"
+msgstr "خطا در تجزیهٔ XML درون‌نگری %s\n"
 
 #: gio/gdbus-tool.c:253
-#, fuzzy, c-format
-#| msgid "Error: %s is not a valid member name\n"
+#, c-format
 msgid "Error: %s is not a valid name\n"
-msgstr "خطا: %s یک نام عضو معتبر نیست\n"
+msgstr "خطا: %s نام معتبری نیست\n"
 
 #: gio/gdbus-tool.c:258 gio/gdbus-tool.c:748 gio/gdbus-tool.c:1066
 #: gio/gdbus-tool.c:1900 gio/gdbus-tool.c:2140
@@ -1062,30 +1046,27 @@ msgid "Error connecting: %s\n"
 msgstr "خطا در هنگام اتصال: %s\n"
 
 #: gio/gdbus-tool.c:706
-#, fuzzy, c-format
+#, c-format
 msgid "Error: %s is not a valid unique bus name.\n"
-msgstr "نویسهٔ «%s» داخل نام نهادها مجاز نیست"
+msgstr "خطا: %s نام گذرگاه یکتای معتبری نیست\n"
 
 #: gio/gdbus-tool.c:725 gio/gdbus-tool.c:1046 gio/gdbus-tool.c:1880
 msgid "Error: Object path is not specified\n"
 msgstr "خطا: مسیر شیء مشخص نشده است\n"
 
 #: gio/gdbus-tool.c:768
-#, fuzzy
-#| msgid "Error: Method name is not specified\n"
 msgid "Error: Signal name is not specified\n"
-msgstr "خطا: نام متد مشخص نشده است\n"
+msgstr "خطا: نام سیگنال مشخص نشده است\n"
 
 #: gio/gdbus-tool.c:782
-#, fuzzy, c-format
-#| msgid "Error: Method name '%s' is invalid\n"
+#, c-format
 msgid "Error: Signal name “%s” is invalid\n"
-msgstr "خطا: نام متد «%s» نامعتبر است\n"
+msgstr "خطا: نام سیگنال «%s» نامعتبر است\n"
 
 #: gio/gdbus-tool.c:794
 #, c-format
 msgid "Error: %s is not a valid interface name\n"
-msgstr "خطا: %s یم نام واسط معتبر نیست\n"
+msgstr "خطا: %s نام واسط معتبری نیست\n"
 
 #: gio/gdbus-tool.c:800
 #, c-format
@@ -1099,9 +1080,9 @@ msgid "Error parsing parameter %d: %s\n"
 msgstr "خطا در تجزیه پارامتر %Id: %s\n"
 
 #: gio/gdbus-tool.c:869
-#, fuzzy, c-format
+#, c-format
 msgid "Error flushing connection: %s\n"
-msgstr "خطا در حین تبدیل: %s"
+msgstr "خطا در بستن اتّصال: %s\n"
 
 #: gio/gdbus-tool.c:897
 msgid "Destination name to invoke method on"
@@ -1132,31 +1113,28 @@ msgid "Error: Destination is not specified\n"
 msgstr "خطا: مقصد مشخص نشده است\n"
 
 #: gio/gdbus-tool.c:1031 gio/gdbus-tool.c:1871 gio/gdbus-tool.c:2105
-#, fuzzy, c-format
-#| msgid "Error: %s is not a valid member name\n"
+#, c-format
 msgid "Error: %s is not a valid bus name\n"
-msgstr "خطا: %s یک نام عضو معتبر نیست\n"
+msgstr "خطا: %s نام گذرگاه معتبری نیست\n"
 
 #: gio/gdbus-tool.c:1081
 msgid "Error: Method name is not specified\n"
 msgstr "خطا: نام متد مشخص نشده است\n"
 
 #: gio/gdbus-tool.c:1092
-#, fuzzy, c-format
-#| msgid "Error: Method name '%s' is invalid\n"
+#, c-format
 msgid "Error: Method name “%s” is invalid\n"
-msgstr "خطا: نام متد «%s» نامعتبر است\n"
+msgstr "خطا: نام روش «%s» نامعتبر است\n"
 
 #: gio/gdbus-tool.c:1170
-#, fuzzy, c-format
-#| msgid "Error parsing parameter %d of type '%s': %s\n"
+#, c-format
 msgid "Error parsing parameter %d of type “%s”: %s\n"
-msgstr "خطا در هنگام تجزیه پارامتر %Id از نوع «%s»: %s\n"
+msgstr "خطا در تجزیهٔ پارامتر %Id از گونهٔ «%s»: %s\n"
 
 #: gio/gdbus-tool.c:1196
-#, fuzzy, c-format
+#, c-format
 msgid "Error adding handle %d: %s\n"
-msgstr "خطا در خواندن پروندهٔ «‎%s»‏: %s"
+msgstr "خطا در افزودن دستهٔ %Id‏: %s\n"
 
 #: gio/gdbus-tool.c:1696
 msgid "Destination name to introspect"
@@ -1217,25 +1195,21 @@ msgid "Wait for a bus name to appear."
 msgstr ""
 
 #: gio/gdbus-tool.c:2331
-#, fuzzy
-#| msgid "Error: object path not specified.\n"
 msgid "Error: A service to activate for must be specified.\n"
-msgstr "خطا: مسیر شیء مشخص نشده است.\n"
+msgstr "خطا: باید خدمتی برای فعّال کردنش مشخّص شده باشد.\n"
 
 #: gio/gdbus-tool.c:2336
-#, fuzzy
-#| msgid "Error: object path not specified.\n"
 msgid "Error: A service to wait for must be specified.\n"
-msgstr "خطا: مسیر شیء مشخص نشده است.\n"
+msgstr "خطا: باید خدمتی برای منتظرش شدن مشخّص شده باشد.\n"
 
 #: gio/gdbus-tool.c:2341
 msgid "Error: Too many arguments.\n"
 msgstr ""
 
 #: gio/gdbus-tool.c:2349 gio/gdbus-tool.c:2356
-#, fuzzy, c-format
+#, c-format
 msgid "Error: %s is not a valid well-known bus name.\n"
-msgstr "نویسهٔ «%s» داخل نام نهادها مجاز نیست"
+msgstr "خطا: %s نام گذرگاه شناخته شدهٔ معتبری نیست\n"
 
 #: gio/gdebugcontrollerdbus.c:360
 #, c-format
@@ -1252,7 +1226,7 @@ msgstr ""
 
 #: gio/gdesktopappinfo.c:2891
 msgid "Unable to find terminal required for application"
-msgstr "نمی‌توان پایانه‌ی لازم برای این برنامه را پیدا کرد"
+msgstr "نمی‌توان پایانهٔ لازم برای این برنامه را پیدا کرد"
 
 #: gio/gdesktopappinfo.c:3631
 #, c-format
@@ -1269,10 +1243,9 @@ msgid "Application information lacks an identifier"
 msgstr ""
 
 #: gio/gdesktopappinfo.c:4137
-#, fuzzy, c-format
-#| msgid "Failed to create temp file: %s"
+#, c-format
 msgid "Can’t create user desktop file %s"
-msgstr "ساخت پرونده موقت شکست خورد: %s"
+msgstr "نمی‌توان پروندهٔ میزکار کاربر %s را ایجاد کرد"
 
 #: gio/gdesktopappinfo.c:4273
 #, c-format
@@ -1280,35 +1253,27 @@ msgid "Custom definition for %s"
 msgstr ""
 
 #: gio/gdrive.c:419
-#, fuzzy
-#| msgid "volume doesn't implement eject"
 msgid "drive doesn’t implement eject"
-msgstr "جلد قابلیت eject ندارد"
+msgstr "گرداننده eject را پیاده نساخته"
 
 #. Translators: This is an error
 #. * message for drive objects that
 #. * don't implement any of eject or eject_with_operation.
 #: gio/gdrive.c:497
-#, fuzzy
-#| msgid "volume doesn't implement eject or eject_with_operation"
 msgid "drive doesn’t implement eject or eject_with_operation"
-msgstr "جلد قابلیت eject یا eject_with_operation را ندارد"
+msgstr "گرداننده eject یا eject_with_operation را پیاده نساخته"
 
 #: gio/gdrive.c:573
 msgid "drive doesn’t implement polling for media"
 msgstr ""
 
 #: gio/gdrive.c:780
-#, fuzzy
-#| msgid "volume doesn't implement eject"
 msgid "drive doesn’t implement start"
-msgstr "جلد قابلیت eject ندارد"
+msgstr "گرداننده start را پیاده نساخته"
 
 #: gio/gdrive.c:882
-#, fuzzy
-#| msgid "volume doesn't implement eject"
 msgid "drive doesn’t implement stop"
-msgstr "جلد قابلیت eject ندارد"
+msgstr "گرداننده stop را پیاده نساخته"
 
 #: gio/gdtlsconnection.c:1188 gio/gtlsconnection.c:957
 msgid "TLS backend does not implement TLS binding retrieval"
@@ -1323,10 +1288,9 @@ msgid "DTLS support is not available"
 msgstr ""
 
 #: gio/gemblem.c:325
-#, fuzzy, c-format
-#| msgid "Can't handle version %d of GThemedIcon encoding"
+#, c-format
 msgid "Can’t handle version %d of GEmblem encoding"
-msgstr "نمی‌توان با رمزنگاری نسخه %Id GThemedIcon را کار کرد"
+msgstr "نمی‌توان نگارش %Id رمزنگاری GEmblem را مدیریت کرد"
 
 #: gio/gemblem.c:335
 #, c-format
@@ -1334,10 +1298,9 @@ msgid "Malformed number of tokens (%d) in GEmblem encoding"
 msgstr ""
 
 #: gio/gemblemedicon.c:364
-#, fuzzy, c-format
-#| msgid "Can't handle version %d of GThemedIcon encoding"
+#, c-format
 msgid "Can’t handle version %d of GEmblemedIcon encoding"
-msgstr "نمی‌توان با رمزنگاری نسخه %Id GThemedIcon را کار کرد"
+msgstr "نمی‌توان نگارش %Id رمزنگاری GEmblemIcon را مدیریت کرد"
 
 #: gio/gemblemedicon.c:374
 #, c-format
@@ -1357,26 +1320,20 @@ msgid "Containing mount does not exist"
 msgstr ""
 
 #: gio/gfile.c:2641 gio/glocalfile.c:2500
-#, fuzzy
-#| msgid "Can't copy over directory"
 msgid "Can’t copy over directory"
-msgstr "نمی‌توان بر روی شاخه رونوشت کرد"
+msgstr "نمی‌توان روی شاخه رونوشت کرد"
 
 #: gio/gfile.c:2701
-#, fuzzy
-#| msgid "Can't copy directory over directory"
 msgid "Can’t copy directory over directory"
-msgstr "نمي‌توان شاخه را بر روی شاخه رونوشت کرد"
+msgstr "نمی‌توان شاخه را روی شاخه رونوشت کرد"
 
 #: gio/gfile.c:2709
 msgid "Target file exists"
 msgstr "پرونده مقصد وجود دارد"
 
 #: gio/gfile.c:2728
-#, fuzzy
-#| msgid "Can't recursively copy directory"
 msgid "Can’t recursively copy directory"
-msgstr "نمی‌توان بطور پی‌درپی شاخه را رونوشت کرد"
+msgstr "نمی‌توان شاخه را بازگشتی رونوشت کرد"
 
 #: gio/gfile.c:3029
 msgid "Splice not supported"
@@ -1400,10 +1357,8 @@ msgid "Copy (reflink/clone) is not supported or didn’t work"
 msgstr ""
 
 #: gio/gfile.c:3259
-#, fuzzy
-#| msgid "Can't copy special file"
 msgid "Can’t copy special file"
-msgstr "نمی‌توان پرونده خاص را رونوشت کرد"
+msgstr "نمی‌توان پروندهٔ خاص را رونوشت کرد"
 
 #: gio/gfile.c:4153
 msgid "Invalid symlink value given"
@@ -1418,22 +1373,18 @@ msgid "Trash not supported"
 msgstr "زباله پشتیبانی نمی‌شود"
 
 #: gio/gfile.c:4562
-#, fuzzy, c-format
-#| msgid "File names cannot contain '%c'"
+#, c-format
 msgid "File names cannot contain “%c”"
-msgstr "نام پرونده نمی‌تواند حاوی «%c» باشد"
+msgstr "نام‌های پرونده نمی‌توانند شامل «%c» باشند"
 
 #: gio/gfile.c:6993 gio/gfile.c:7119
-#, fuzzy, c-format
-#| msgid "Failed to change to directory '%s' (%s)"
+#, c-format
 msgid "Failed to create a temporary directory for template “%s”: %s"
-msgstr "تغییر به شاخهٔ «%s» شکست خورد (%s)"
+msgstr "شکست در ایجاد شاخه‌ای موقَّتی برای قالب «%s»: %s"
 
 #: gio/gfile.c:7408 gio/gvolume.c:366
-#, fuzzy
-#| msgid "volume doesn't implement eject"
 msgid "volume doesn’t implement mount"
-msgstr "جلد قابلیت eject ندارد"
+msgstr "حجم mount را پیاده نساخته"
 
 #: gio/gfile.c:7522 gio/gfile.c:7599
 msgid "No application is registered as handling this file"
@@ -1453,10 +1404,9 @@ msgid "File enumerator is already closed"
 msgstr ""
 
 #: gio/gfileicon.c:252
-#, fuzzy, c-format
-#| msgid "Can't handle version %d of GThemedIcon encoding"
+#, c-format
 msgid "Can’t handle version %d of GFileIcon encoding"
-msgstr "نمی‌توان با رمزنگاری نسخه %Id GThemedIcon را کار کرد"
+msgstr "نمی‌توان نگارش %Id رمزنگاری GFileIcon را مدیریت کرد"
 
 #: gio/gfileicon.c:262
 msgid "Malformed input data for GFileIcon"
@@ -1488,10 +1438,8 @@ msgid "Bad HTTP proxy reply"
 msgstr "پاسخ بد پیشکار HTTP"
 
 #: gio/ghttpproxy.c:161
-#, fuzzy
-#| msgid "The connection is closed"
 msgid "HTTP proxy connection not allowed"
-msgstr "اتصال بسته شده است"
+msgstr "اتّصال پیشکار HTTP مجاز نیست"
 
 #: gio/ghttpproxy.c:166
 msgid "HTTP proxy authentication failed"
@@ -1502,10 +1450,9 @@ msgid "HTTP proxy authentication required"
 msgstr "نیازمند تأیید هویت پیشکار HTTP"
 
 #: gio/ghttpproxy.c:173
-#, fuzzy, c-format
-#| msgid "The connection is closed"
+#, c-format
 msgid "HTTP proxy connection failed: %i"
-msgstr "اتصال بسته شده است"
+msgstr "اتّصال پیشکار HTTP شکست خورد: %i"
 
 #: gio/ghttpproxy.c:268
 msgid "HTTP proxy response too big"
@@ -1546,10 +1493,8 @@ msgid "Type %s does not implement from_tokens() on the GIcon interface"
 msgstr ""
 
 #: gio/gicon.c:471
-#, fuzzy
-#| msgid "Can't handle version %d of GThemedIcon encoding"
 msgid "Can’t handle the supplied version of the icon encoding"
-msgstr "نمی‌توان با رمزنگاری نسخه %Id GThemedIcon را کار کرد"
+msgstr "نمی‌توان نگارش فراهم شدهٔ رمزنگاری نقشک را مدیریت کرد"
 
 #: gio/ginetaddressmask.c:184
 msgid "No address specified"
@@ -1565,9 +1510,9 @@ msgid "Address has bits set beyond prefix length"
 msgstr ""
 
 #: gio/ginetaddressmask.c:302
-#, fuzzy, c-format
+#, c-format
 msgid "Could not parse “%s” as IP address mask"
-msgstr "نمی‌توان آدرس محلی را دریافت کرد: %s"
+msgstr "نتوانست «%s» را به عنوان نقاب نشانی آی‌پی تجزیه کند"
 
 #: gio/ginetsocketaddress.c:205 gio/ginetsocketaddress.c:222
 #: gio/gnativesocketaddress.c:111 gio/gunixsocketaddress.c:230
@@ -1579,9 +1524,8 @@ msgid "Unsupported socket address"
 msgstr ""
 
 #: gio/ginputstream.c:190
-#, fuzzy
 msgid "Input stream doesn’t implement read"
-msgstr "جلد قابلیت eject ندارد"
+msgstr "جریان ورودی read را پیاده نساخته"
 
 #. Translators: This is an error you get if there is already an
 #. * operation running against this stream when you try to start
@@ -1642,10 +1586,8 @@ msgid "Get or set the handler for a mimetype"
 msgstr ""
 
 #: gio/gio-tool.c:237
-#, fuzzy
-#| msgid "Can't open directory"
 msgid "Create directories"
-msgstr "نمی‌توان شاخه را باز کرد"
+msgstr "ایجاد شاخه‌ها"
 
 #: gio/gio-tool.c:238
 msgid "Monitor files and directories for changes"
@@ -1693,10 +1635,8 @@ msgid "Use %s to get detailed help.\n"
 msgstr ""
 
 #: gio/gio-tool-cat.c:89
-#, fuzzy
-#| msgid "Error writing to file: %s"
 msgid "Error writing to stdout"
-msgstr "خطا در هنگام نوشتن در پرونده: %s"
+msgstr "خطا در نوشتن روی خروجی استاندارد"
 
 #. Translators: commandline placeholder
 #: gio/gio-tool-cat.c:135 gio/gio-tool-info.c:379 gio/gio-tool-list.c:173
@@ -1705,10 +1645,8 @@ msgstr "خطا در هنگام نوشتن در پرونده: %s"
 #: gio/gio-tool-mount.c:1202 gio/gio-tool-open.c:72 gio/gio-tool-remove.c:50
 #: gio/gio-tool-rename.c:47 gio/gio-tool-set.c:95 gio/gio-tool-trash.c:222
 #: gio/gio-tool-tree.c:241
-#, fuzzy
-#| msgid "SECTION"
 msgid "LOCATION"
-msgstr "SECTION"
+msgstr "LOCATION"
 
 #: gio/gio-tool-cat.c:140
 msgid "Concatenate files and print to standard output."
@@ -1728,10 +1666,8 @@ msgid "No locations given"
 msgstr "مکانی داده نشده"
 
 #: gio/gio-tool-copy.c:45 gio/gio-tool-move.c:40
-#, fuzzy
-#| msgid "Target file is a directory"
 msgid "No target directory"
-msgstr "پرونده هدف یک شاخه است"
+msgstr "بدون شاخهٔ مقصد"
 
 #: gio/gio-tool-copy.c:46 gio/gio-tool-move.c:41
 msgid "Show progress"
@@ -1746,10 +1682,8 @@ msgid "Preserve all attributes"
 msgstr "نگه‌داری تمامی مولّفه‌ها"
 
 #: gio/gio-tool-copy.c:49 gio/gio-tool-move.c:43 gio/gio-tool-save.c:51
-#, fuzzy
-#| msgid "Backup file creation failed"
 msgid "Backup existing destination files"
-msgstr "ساخت پرونده پشتیبان شکست خورد"
+msgstr "پشتیبان گیری از پرونده‌های مقصد موجود"
 
 #: gio/gio-tool-copy.c:50
 msgid "Never follow symbolic links"
@@ -1786,10 +1720,9 @@ msgid ""
 msgstr ""
 
 #: gio/gio-tool-copy.c:151
-#, fuzzy, c-format
-#| msgid "Destination name to monitor"
+#, c-format
 msgid "Destination %s is not a directory"
-msgstr "نام مقصد جهت پایش"
+msgstr "مقصد %s یک شاخه نیست"
 
 #: gio/gio-tool-copy.c:198 gio/gio-tool-move.c:188
 #, c-format
@@ -1801,10 +1734,8 @@ msgid "List writable attributes"
 msgstr ""
 
 #: gio/gio-tool-info.c:40
-#, fuzzy
-#| msgid "Error getting filesystem info: %s"
 msgid "Get file system info"
-msgstr "خطا در دریافت اطلاعات سیستم‌پرونده‌: %s"
+msgstr "گرفتن اطَلاعات سامانهٔ پرونده"
 
 #: gio/gio-tool-info.c:41 gio/gio-tool-list.c:37
 msgid "The attributes to get"
@@ -1823,9 +1754,9 @@ msgid "attributes:\n"
 msgstr "مشخصه‌ها:\n"
 
 #: gio/gio-tool-info.c:165 gio/gio-tool-info.c:174
-#, fuzzy, c-format
+#, c-format
 msgid "display name: %s\n"
-msgstr "نام نمایش: %s\n"
+msgstr "نام نمایشی: %s\n"
 
 #: gio/gio-tool-info.c:182
 #, c-format
@@ -1846,10 +1777,9 @@ msgid "hidden\n"
 msgstr "مخفی\n"
 
 #: gio/gio-tool-info.c:203
-#, fuzzy, c-format
-#| msgid "Error: %s\n"
+#, c-format
 msgid "uri: %s\n"
-msgstr "خطا: %s\n"
+msgstr "نشانی: %s\n"
 
 #: gio/gio-tool-info.c:210
 #, c-format
@@ -1898,16 +1828,13 @@ msgid "No desktop file given"
 msgstr ""
 
 #: gio/gio-tool-launch.c:87
-#, fuzzy
-#| msgid "There is no GCredentials support for your platform"
 msgid "The launch command is not currently supported on this platform"
-msgstr "پشتیبانی از GCredentials در پلتفرم شما وجود ندارد"
+msgstr "فرمان launch در حال حاضر روی این بن‌سازه پشتیبانی نمی‌شود"
 
 #: gio/gio-tool-launch.c:100
-#, fuzzy, c-format
-#| msgid "Unable to create trash dir %s: %s"
+#, c-format
 msgid "Unable to load ‘%s‘: %s"
-msgstr "نمی‌توان شاخه زباله‌دان %s را ساخت: %s"
+msgstr "ناتوان در بار کردن «%s»: %s"
 
 #: gio/gio-tool-launch.c:109
 #, c-format
@@ -1915,10 +1842,9 @@ msgid "Unable to load application information for ‘%s‘"
 msgstr ""
 
 #: gio/gio-tool-launch.c:121
-#, fuzzy, c-format
-#| msgid "Error launching application: %s"
+#, c-format
 msgid "Unable to launch application ‘%s’: %s"
-msgstr "خطا در راه‌اندازی برنامه: %s"
+msgstr "ناتوان در اجرای برنامهٔ «%s»: %s"
 
 #: gio/gio-tool-list.c:38 gio/gio-tool-tree.c:34
 msgid "Show hidden files"
@@ -1987,26 +1913,21 @@ msgid "Registered applications:\n"
 msgstr ""
 
 #: gio/gio-tool-mime.c:131
-#, fuzzy
-#| msgid "Can't find application"
 msgid "No registered applications\n"
-msgstr "نمی‌توان برنامه را پیدا کرد"
+msgstr "بدون برنامهٔ ثبت شده\n"
 
 #: gio/gio-tool-mime.c:142
 msgid "Recommended applications:\n"
 msgstr ""
 
 #: gio/gio-tool-mime.c:144
-#, fuzzy
-#| msgid "Can't find application"
 msgid "No recommended applications\n"
-msgstr "نمی‌توان برنامه را پیدا کرد"
+msgstr "بدون برنامهٔ پیشنهادی\n"
 
 #: gio/gio-tool-mime.c:164
-#, fuzzy, c-format
-#| msgid "Failed to read from file '%s': %s"
+#, c-format
 msgid "Failed to load info for handler “%s”"
-msgstr "خواندن از پروندهٔ «‎%s» شکست خورد: %s"
+msgstr "شکست در بارکردن اطّلاعات برای مدیر «%s»"
 
 #: gio/gio-tool-mime.c:170
 #, c-format
@@ -2014,16 +1935,12 @@ msgid "Failed to set “%s” as the default handler for “%s”: %s\n"
 msgstr ""
 
 #: gio/gio-tool-mkdir.c:33
-#, fuzzy
-#| msgid "Can't open directory"
 msgid "Create parent directories"
-msgstr "نمی‌توان شاخه را باز کرد"
+msgstr "ایجاد شاخه‌های والد"
 
 #: gio/gio-tool-mkdir.c:54
-#, fuzzy
-#| msgid "Can't open directory"
 msgid "Create directories."
-msgstr "نمی‌توان شاخه را باز کرد"
+msgstr "ایجاد شاخه‌ها."
 
 #: gio/gio-tool-mkdir.c:56
 msgid ""
@@ -2114,21 +2031,16 @@ msgid "Monitor events"
 msgstr ""
 
 #: gio/gio-tool-mount.c:76
-#, fuzzy
-#| msgid "Show help options"
 msgid "Show extra information"
-msgstr "نمایش گزینه‌های راهنما"
+msgstr "نمایش اطَلاعات اضافی"
 
 #: gio/gio-tool-mount.c:77
 msgid "The numeric PIM when unlocking a VeraCrypt volume"
 msgstr ""
 
 #: gio/gio-tool-mount.c:77
-#, fuzzy
-#| msgctxt "GDateTime"
-#| msgid "PM"
 msgid "PIM"
-msgstr "ب‌ظ"
+msgstr "PIM"
 
 #: gio/gio-tool-mount.c:78
 msgid "Mount a TCRYPT hidden volume"
@@ -2170,10 +2082,9 @@ msgid ""
 msgstr ""
 
 #: gio/gio-tool-move.c:145
-#, fuzzy, c-format
-#| msgid "Target file is a directory"
+#, c-format
 msgid "Target %s is not a directory"
-msgstr "پرونده هدف یک شاخه است"
+msgstr "مقصد %s یک شاخه نیست"
 
 #: gio/gio-tool-open.c:77
 msgid ""
@@ -2198,10 +2109,8 @@ msgid "Rename a file."
 msgstr ""
 
 #: gio/gio-tool-rename.c:72
-#, fuzzy
-#| msgid "Missing argument for %s"
 msgid "Missing argument"
-msgstr "‏%s یک آرگومان کم دارد"
+msgstr "آرگومان غایب"
 
 #: gio/gio-tool-rename.c:78 gio/gio-tool-save.c:192 gio/gio-tool-set.c:150
 msgid "Too many arguments"
@@ -2243,9 +2152,8 @@ msgid "ETAG"
 msgstr ""
 
 #: gio/gio-tool-save.c:115
-#, fuzzy
 msgid "Error reading from standard input"
-msgstr "خطا در خواندن پروندهٔ «‎%s»‏: %s"
+msgstr "خطا در خواندن از ورودی استاندارد"
 
 #. Translators: The "etag" is a token allowing to verify whether a file has been modified
 #: gio/gio-tool-save.c:141
@@ -2269,10 +2177,8 @@ msgid "TYPE"
 msgstr ""
 
 #: gio/gio-tool-set.c:38
-#, fuzzy
-#| msgid "Preserve all attributes"
 msgid "Unset given attribute"
-msgstr "نگه‌داری تمامی مولّفه‌ها"
+msgstr "ناتنظیم صفت اعطایی"
 
 #: gio/gio-tool-set.c:95
 msgid "ATTRIBUTE"
@@ -2287,26 +2193,21 @@ msgid "Set a file attribute of LOCATION."
 msgstr ""
 
 #: gio/gio-tool-set.c:119
-#, fuzzy
-#| msgid "Error: Destination is not specified\n"
 msgid "Location not specified"
-msgstr "خطا: مقصد مشخص نشده است\n"
+msgstr "مکان مشخّص نشده"
 
 #: gio/gio-tool-set.c:126
 msgid "Attribute not specified"
 msgstr ""
 
 #: gio/gio-tool-set.c:143
-#, fuzzy
-#| msgid "No address specified"
 msgid "Value not specified"
-msgstr "هیچ آدرسی مشخص نشده است"
+msgstr "مقدار مشخّص نشده"
 
 #: gio/gio-tool-set.c:193
-#, fuzzy, c-format
-#| msgid "Invalid attribute type (string expected)"
+#, c-format
 msgid "Invalid attribute type “%s”"
-msgstr "نوع مشخصه نامعتبر است (رشته مورد انتظار بود)"
+msgstr "گونهٔ صفت نامعتبر «%s»"
 
 #: gio/gio-tool-trash.c:36
 msgid "Empty the trash"
@@ -2323,16 +2224,12 @@ msgid ""
 msgstr ""
 
 #: gio/gio-tool-trash.c:108
-#, fuzzy
-#| msgid "Unable to find terminal required for application"
 msgid "Unable to find original path"
-msgstr "نمی‌توان پایانه‌ی لازم برای این برنامه را پیدا کرد"
+msgstr "ناتوان در یافتن مسیر اصلی"
 
 #: gio/gio-tool-trash.c:125
-#, fuzzy
-#| msgid "Unable to create socket: %s"
 msgid "Unable to recreate original location: "
-msgstr "نمی‌توان سوکت را ساخت: %s"
+msgstr "ناتوان در بازایجاد مکان اصلی: "
 
 #: gio/gio-tool-trash.c:138
 msgid "Unable to move file to its original location: "
@@ -2376,19 +2273,19 @@ msgid "File %s appears multiple times in the resource"
 msgstr ""
 
 #: gio/glib-compile-resources.c:247
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to locate “%s” in any source directory"
-msgstr "تغییر به شاخهٔ «%s» شکست خورد (%s)"
+msgstr "شکست در یافتن مکان «%s» در هیچ شاخهٔ مبدأیی"
 
 #: gio/glib-compile-resources.c:258
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to locate “%s” in current directory"
-msgstr "تغییر به شاخهٔ «%s» شکست خورد (%s)"
+msgstr "شکست در یافتن مکان «%s» در شاخهٔ کنونی"
 
 #: gio/glib-compile-resources.c:292
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown processing option “%s”"
-msgstr "گزینهٔ نامعلوم %s"
+msgstr "گزینهٔ پردازش ناشناختهٔ «%s»"
 
 #. Translators: the first %s is a gresource XML attribute,
 #. * the second %s is an environment variable, and the third
@@ -2420,10 +2317,8 @@ msgid "Show program version and exit"
 msgstr ""
 
 #: gio/glib-compile-resources.c:822
-#, fuzzy
-#| msgid "name of the output file"
 msgid "Name of the output file"
-msgstr "نام پرونده خروجی"
+msgstr "نام پروندهٔ خروجی"
 
 #: gio/glib-compile-resources.c:823
 msgid ""
@@ -2497,22 +2392,19 @@ msgid "nick must be a minimum of 2 characters"
 msgstr ""
 
 #: gio/glib-compile-schemas.c:105
-#, fuzzy, c-format
-#| msgid "Invalid filename %s"
+#, c-format
 msgid "Invalid numeric value"
-msgstr "نام‌پرونده نامعتبر: %s"
+msgstr "مقدار عددی نامعتبر"
 
 #: gio/glib-compile-schemas.c:113
-#, fuzzy, c-format
-#| msgid "<%s id='%s'> already specified"
+#, c-format
 msgid "<value nick='%s'/> already specified"
-msgstr "<%s id='%s'> از قبل مشخص شده است"
+msgstr "<value nick='%s'/> از پیش مشخّص شده"
 
 #: gio/glib-compile-schemas.c:121
-#, fuzzy, c-format
-#| msgid "<%s id='%s'> already specified"
+#, c-format
 msgid "value='%s' already specified"
-msgstr "<%s id='%s'> از قبل مشخص شده است"
+msgstr "مقدار=«%s» از پیش مشخّص شده"
 
 #: gio/glib-compile-schemas.c:135
 #, c-format
@@ -2581,10 +2473,8 @@ msgid "<choices> cannot be specified for keys tagged as having an enumerated typ
 msgstr ""
 
 #: gio/glib-compile-schemas.c:502
-#, fuzzy
-#| msgid "<%s id='%s'> already specified"
 msgid "<choices> already specified for this key"
-msgstr "<%s id='%s'> از قبل مشخص شده است"
+msgstr "<choices> از پیش برای این کلید مشخّص شده"
 
 #: gio/glib-compile-schemas.c:514
 #, c-format
@@ -2602,10 +2492,8 @@ msgid "<choices> must contain at least one <choice>"
 msgstr ""
 
 #: gio/glib-compile-schemas.c:559
-#, fuzzy
-#| msgid "<%s id='%s'> already specified"
 msgid "<aliases> already specified for this key"
-msgstr "<%s id='%s'> از قبل مشخص شده است"
+msgstr "<aliases> از پیش برای این کلید مشخّص شده"
 
 #: gio/glib-compile-schemas.c:563
 msgid ""
@@ -2625,10 +2513,9 @@ msgid "<alias value='%s'/> given when <choice value='%s'/> was already given"
 msgstr ""
 
 #: gio/glib-compile-schemas.c:596
-#, fuzzy, c-format
-#| msgid "<%s id='%s'> already specified"
+#, c-format
 msgid "<alias value='%s'/> already specified"
-msgstr "<%s id='%s'> از قبل مشخص شده است"
+msgstr "<alias value='%s'/> از پیش مشخّص شده"
 
 #: gio/glib-compile-schemas.c:606
 #, c-format
@@ -2646,8 +2533,6 @@ msgid "<aliases> must contain at least one <alias>"
 msgstr ""
 
 #: gio/glib-compile-schemas.c:799
-#, fuzzy
-#| msgid "empty names are not permitted"
 msgid "Empty names are not permitted"
 msgstr "نام‌های خالی مجاز نیستند"
 
@@ -2712,10 +2597,9 @@ msgid "<%s id='%s'> not (yet) defined."
 msgstr ""
 
 #: gio/glib-compile-schemas.c:1019
-#, fuzzy, c-format
-#| msgid "Invalid attribute type (string expected)"
+#, c-format
 msgid "Invalid GVariant type string “%s”"
-msgstr "نوع مشخصه نامعتبر است (رشته مورد انتظار بود)"
+msgstr "رشتهٔ گونهٔ GVariant نامعتبر «%s»"
 
 #: gio/glib-compile-schemas.c:1049
 msgid "<override> given but schema isn’t extending anything"
@@ -2747,16 +2631,14 @@ msgid "<schema id='%s'> is list of not yet existing schema “%s”"
 msgstr ""
 
 #: gio/glib-compile-schemas.c:1179
-#, fuzzy, c-format
-#| msgid "Can not be a list of a schema with a path"
+#, c-format
 msgid "Cannot be a list of a schema with a path"
-msgstr "نمی‌توان با یک مسیر فهرست یک شِما بود"
+msgstr "نمی‌تواند سیاهه‌ای از یک شما با یک مسیر باشد"
 
 #: gio/glib-compile-schemas.c:1189
-#, fuzzy, c-format
-#| msgid "Can not be a list of a schema with a path"
+#, c-format
 msgid "Cannot extend a schema with a path"
-msgstr "نمی‌توان با یک مسیر فهرست یک شِما بود"
+msgstr "نمی‌تواند شمایی را با یک مسیر گستراند"
 
 #: gio/glib-compile-schemas.c:1199
 #, c-format
@@ -2771,16 +2653,14 @@ msgid ""
 msgstr ""
 
 #: gio/glib-compile-schemas.c:1226
-#, fuzzy, c-format
-#| msgid "a path, if given, must begin and end with a slash"
+#, c-format
 msgid "A path, if given, must begin and end with a slash"
-msgstr "یک مسیر، اگر داده شود، باید با یک خط مورب شروع و خاتمه یابد"
+msgstr "یک مسیر، اگر داده شود، باید با یک اسلش آغاز و پایان یابد"
 
 #: gio/glib-compile-schemas.c:1233
-#, fuzzy, c-format
-#| msgid "the path of a list must end with ':/'"
+#, c-format
 msgid "The path of a list must end with “:/”"
-msgstr "مسیر یک فهرست باید با «:/» خاتمه پیدا کند"
+msgstr "مسیر یک سیاهه باید با «‪:/‬» خاتمه پیدا کند"
 
 #: gio/glib-compile-schemas.c:1242
 #, c-format
@@ -2824,16 +2704,12 @@ msgid "--strict was specified; exiting."
 msgstr ""
 
 #: gio/glib-compile-schemas.c:1847
-#, fuzzy
-#| msgid "This entire file has been ignored.\n"
 msgid "This entire file has been ignored."
-msgstr "تمام پرونده نادیده گرفته شده است.\n"
+msgstr "تمامی این پرونده چشم پوشی شده."
 
 #: gio/glib-compile-schemas.c:1910
-#, fuzzy
-#| msgid "Ignoring this file.\n"
 msgid "Ignoring this file."
-msgstr "نادیده گرفتن این پرونده.\n"
+msgstr "چشم پوشی از این پرونده."
 
 #: gio/glib-compile-schemas.c:1965
 #, c-format
@@ -2906,10 +2782,8 @@ msgid ""
 msgstr ""
 
 #: gio/glib-compile-schemas.c:2175
-#, fuzzy
-#| msgid "Do not write the gschema.compiled file"
 msgid "Where to store the gschemas.compiled file"
-msgstr "بر روی پرونده‌ی gschema.compiled ننویس"
+msgstr "مکان ذخیرهٔ پروندهٔ gschemas.compiled"
 
 #: gio/glib-compile-schemas.c:2176
 msgid "Abort on any errors in schemas"
@@ -2917,7 +2791,7 @@ msgstr "قطع کردن با رخدادِ هر نوع خطا در شِماها"
 
 #: gio/glib-compile-schemas.c:2177
 msgid "Do not write the gschema.compiled file"
-msgstr "بر روی پرونده‌ی gschema.compiled ننویس"
+msgstr "بر روی پروندهٔ gschema.compiled ننویس"
 
 #: gio/glib-compile-schemas.c:2178
 msgid "Do not enforce key name restrictions"
@@ -2931,22 +2805,17 @@ msgid ""
 msgstr ""
 
 #: gio/glib-compile-schemas.c:2228
-#, fuzzy
-#| msgid "You should give exactly one directory name\n"
 msgid "You should give exactly one directory name"
-msgstr "شما باید دقیقا نام یک دایرکتوری را بدهید\n"
+msgstr "باید دقیقأ یک نام شاخه بدهید"
 
 #: gio/glib-compile-schemas.c:2271
-#, fuzzy
-#| msgid "No schema files found: "
 msgid "No schema files found: doing nothing."
-msgstr "هیچ پرونده شماای پیدا نشد:"
+msgstr "هیچ پرونده شمایی پیدا نشد: کاری نمی‌شود."
 
 #: gio/glib-compile-schemas.c:2273
 #, fuzzy
-#| msgid "removed existing output file.\n"
 msgid "No schema files found: removed existing output file."
-msgstr "پرونده خروجی فعلی حذف شد.\n"
+msgstr "هیچ پرونده شمایی پیدا نشد: پروندهٔ خروجی موجود برداشته شد."
 
 #: gio/glocalfile.c:563 gio/win32/gwinhttpfile.c:436
 #, c-format
@@ -3645,7 +3514,7 @@ msgstr "مقدار فراهم شده خارج از محدود مجاز است\n"
 #, fuzzy
 #| msgid "Property '%s' is not writable"
 msgid "The key is not writable\n"
-msgstr "خصیصه‌ی «%s» قابل نوشتن نیست"
+msgstr "خصیصهٔ «%s» قابل نوشتن نیست"
 
 #: gio/gsettings-tool.c:598
 msgid "List the installed (non-relocatable) schemas"
@@ -5697,7 +5566,7 @@ msgstr ""
 
 #: glib/gregex.c:609
 msgid "unknown property name after \\P or \\p"
-msgstr "خصیصه‌ی ناشناس پس از \\P یا \\p"
+msgstr "خصیصهٔ ناشناس پس از \\P یا \\p"
 
 #: glib/gregex.c:613
 msgid "subpattern name is too long (maximum 32 characters)"
