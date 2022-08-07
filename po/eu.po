@@ -10,8 +10,8 @@
 msgid ""
 msgstr "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-07-26 07:58+0000\n"
-"PO-Revision-Date: 2022-07-31 10:00+0100\n"
+"POT-Creation-Date: 2022-08-05 19:22+0000\n"
+"PO-Revision-Date: 2022-08-07 10:00+0100\n"
 "Last-Translator: Asier Sarasua Garmendia <asiersarasua@ni.eus>\n"
 "Language-Team: Basque <librezale@librezale.eus>\n"
 "Language: eu\n"
@@ -1673,7 +1673,7 @@ msgstr "Errorea irteera arruntean (stdout) idaztean"
 #: gio/gio-tool-mkdir.c:50 gio/gio-tool-monitor.c:39 gio/gio-tool-monitor.c:41
 #: gio/gio-tool-monitor.c:43 gio/gio-tool-monitor.c:45
 #: gio/gio-tool-monitor.c:206 gio/gio-tool-mount.c:1202 gio/gio-tool-open.c:72
-#: gio/gio-tool-remove.c:50 gio/gio-tool-rename.c:47 gio/gio-tool-set.c:93
+#: gio/gio-tool-remove.c:50 gio/gio-tool-rename.c:47 gio/gio-tool-set.c:95
 #: gio/gio-tool-trash.c:222 gio/gio-tool-tree.c:241
 msgid "LOCATION"
 msgstr "KOKALEKUA"
@@ -1775,7 +1775,7 @@ msgstr "Atributuak lortzeko"
 msgid "ATTRIBUTES"
 msgstr "ATRIBUTUAK"
 
-#: gio/gio-tool-info.c:42 gio/gio-tool-list.c:40 gio/gio-tool-set.c:36
+#: gio/gio-tool-info.c:42 gio/gio-tool-list.c:40 gio/gio-tool-set.c:37
 msgid "Don’t follow symbolic links"
 msgstr "Ez jarraitu esteka sinbolikoak"
 
@@ -2156,7 +2156,7 @@ msgstr "Aldatu fitxategi-izena."
 msgid "Missing argument"
 msgstr "Argumentua falta da"
 
-#: gio/gio-tool-rename.c:78 gio/gio-tool-save.c:192 gio/gio-tool-set.c:141
+#: gio/gio-tool-rename.c:78 gio/gio-tool-save.c:192 gio/gio-tool-set.c:150
 msgid "Too many arguments"
 msgstr "Argumentu gehiegi"
 
@@ -2212,39 +2212,43 @@ msgstr "Irakurri sarrera estandarretik eta gorde HELBIDEAN."
 msgid "No destination given"
 msgstr "Ez da helbururik eman"
 
-#: gio/gio-tool-set.c:35
+#: gio/gio-tool-set.c:36
 msgid "Type of the attribute"
 msgstr "Atributu mota"
 
-#: gio/gio-tool-set.c:35
+#: gio/gio-tool-set.c:36
 msgid "TYPE"
 msgstr "MOTA"
 
-#: gio/gio-tool-set.c:93
+#: gio/gio-tool-set.c:38
+msgid "Unset given attribute"
+msgstr "Kendu emandako atributua"
+
+#: gio/gio-tool-set.c:95
 msgid "ATTRIBUTE"
 msgstr "ATRIBUTUA"
 
-#: gio/gio-tool-set.c:93
+#: gio/gio-tool-set.c:95
 msgid "VALUE"
 msgstr "BALIOA"
 
-#: gio/gio-tool-set.c:97
+#: gio/gio-tool-set.c:99
 msgid "Set a file attribute of LOCATION."
 msgstr "Ezarri fitxategiaren KOKALEKUA atributua"
 
-#: gio/gio-tool-set.c:117
+#: gio/gio-tool-set.c:119
 msgid "Location not specified"
 msgstr "Ez da kokalekurik zehaztu"
 
-#: gio/gio-tool-set.c:124
+#: gio/gio-tool-set.c:126
 msgid "Attribute not specified"
 msgstr "Ez da atributurik zehaztu"
 
-#: gio/gio-tool-set.c:134
+#: gio/gio-tool-set.c:143
 msgid "Value not specified"
 msgstr "Ez da baliorik zehaztu"
 
-#: gio/gio-tool-set.c:184
+#: gio/gio-tool-set.c:193
 #, c-format
 msgid "Invalid attribute type “%s”"
 msgstr "Baliogabeko ”%s” atributu mota"
@@ -3366,7 +3370,7 @@ msgstr "Baliogabeko domeinua"
 #: gio/gresource.c:683 gio/gresource.c:945 gio/gresource.c:985
 #: gio/gresource.c:1109 gio/gresource.c:1181 gio/gresource.c:1255
 #: gio/gresource.c:1336 gio/gresourcefile.c:478 gio/gresourcefile.c:601
-#: gio/gresourcefile.c:738
+#: gio/gresourcefile.c:752
 #, c-format
 msgid "The resource at “%s” does not exist"
 msgstr "“%s”(e)ko baliabidea ez da existitzen"
@@ -3376,12 +3380,16 @@ msgstr "“%s”(e)ko baliabidea ez da existitzen"
 msgid "The resource at “%s” failed to decompress"
 msgstr "Huts egin du “%s”(e)ko baliabidea deskonprimatzean"
 
-#: gio/gresourcefile.c:734
+#: gio/gresourcefile.c:658
+msgid "Resource files cannot be renamed"
+msgstr "Baliabideen fitxategiari ezin zaio izena aldatu"
+
+#: gio/gresourcefile.c:748
 #, c-format
 msgid "The resource at “%s” is not a directory"
 msgstr "“%s”(e)ko baliabidea ez da direktorio bat"
 
-#: gio/gresourcefile.c:942
+#: gio/gresourcefile.c:956
 msgid "Input stream doesn’t implement seek"
 msgstr "Sarrerako korronteak ez dauka bilaketa inplementatuta"
 
@@ -4019,7 +4027,7 @@ msgstr "SOCKSv5 proxyak ez du emandako helbide mota onartzen."
 msgid "Unknown SOCKSv5 proxy error."
 msgstr "SOCKSv5 proxyaren errore ezezaguna."
 
-#: gio/gtestdbus.c:614 glib/gspawn-win32.c:303
+#: gio/gtestdbus.c:614 glib/gspawn-win32.c:354
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Ezin izan da kanalizazioa sortu prozesu haurrarekin komunikatzeko (%s)"
@@ -5614,7 +5622,7 @@ msgstr "Ustekabeko errorea datuak prozesu umetik irakurtzean (%s)"
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Ustekabeko errorea waitpid()-en (%s)"
 
-#: glib/gspawn.c:1170 glib/gspawn-win32.c:1434
+#: glib/gspawn.c:1170 glib/gspawn-win32.c:1488
 #, c-format
 msgid "Child process exited with code %ld"
 msgstr "Prozesu haurra amaitu da %ld kodearekin"
@@ -5634,7 +5642,7 @@ msgstr "Prozesu haurra %ld seinaleak geldituta"
 msgid "Child process exited abnormally"
 msgstr "Prozesu haurra ustekabean amaituta"
 
-#: glib/gspawn.c:1885 glib/gspawn-win32.c:342 glib/gspawn-win32.c:350
+#: glib/gspawn.c:1885 glib/gspawn-win32.c:393 glib/gspawn-win32.c:401
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Ezin izan da kanalizazio umetik irakurri (%s)"
@@ -5649,7 +5657,7 @@ msgstr "Ezin izan da “%s” prozesu haurra abiarazi (%s)"
 msgid "Failed to fork (%s)"
 msgstr "Ezin da sardetu (%s)"
 
-#: glib/gspawn.c:2525 glib/gspawn-win32.c:373
+#: glib/gspawn.c:2525 glib/gspawn-win32.c:424
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
 msgstr "Ezin izan da “%s” direktoriora aldatu (%s)"
@@ -5689,48 +5697,48 @@ msgstr "Errore ezezaguna “%s” prozesu haurra exekutatzean"
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Ezin izan da nahikoa datu irakurri pid kanalizazio umetik (%s)"
 
-#: glib/gspawn-win32.c:286
+#: glib/gspawn-win32.c:337
 msgid "Failed to read data from child process"
 msgstr "Ezin izan da daturik irakurri prozesu umetik"
 
-#: glib/gspawn-win32.c:379 glib/gspawn-win32.c:384 glib/gspawn-win32.c:510
+#: glib/gspawn-win32.c:430 glib/gspawn-win32.c:435 glib/gspawn-win32.c:561
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Ezin izan da prozesu haurra exekutatu (%s)"
 
-#: glib/gspawn-win32.c:389
+#: glib/gspawn-win32.c:440
 #, c-format
 msgid "Failed to dup() in child process (%s)"
 msgstr "Huts egin du dup() komandoak prozesu haurrean (%s)"
 
 #
-#: glib/gspawn-win32.c:460
+#: glib/gspawn-win32.c:511
 #, c-format
 msgid "Invalid program name: %s"
 msgstr "Programaren izen baliogabea: %s"
 
-#: glib/gspawn-win32.c:470 glib/gspawn-win32.c:802
+#: glib/gspawn-win32.c:521 glib/gspawn-win32.c:853
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "Kate baliogabea %d(e)ko bektorearen argumentuan: %s"
 
-#: glib/gspawn-win32.c:481 glib/gspawn-win32.c:818
+#: glib/gspawn-win32.c:532 glib/gspawn-win32.c:869
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "Kate baliogabea ingurunean: %s"
 
-#: glib/gspawn-win32.c:798
+#: glib/gspawn-win32.c:849
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "Laneko direktorio baliogabea: %s"
 
 #
-#: glib/gspawn-win32.c:863
+#: glib/gspawn-win32.c:914
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "Ezin izan da laguntza-programa exekutatu (%s)"
 
-#: glib/gspawn-win32.c:1092
+#: glib/gspawn-win32.c:1143
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
