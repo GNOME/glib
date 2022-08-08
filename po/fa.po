@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-08-06 23:33+0000\n"
-"PO-Revision-Date: 2022-08-08 02:08+0430\n"
+"POT-Creation-Date: 2022-08-08 10:42+0000\n"
+"PO-Revision-Date: 2022-08-08 16:14+0430\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian <>\n"
 "Language: fa\n"
@@ -2813,7 +2813,6 @@ msgid "No schema files found: doing nothing."
 msgstr "هیچ پرونده شمایی پیدا نشد: کاری نمی‌شود."
 
 #: gio/glib-compile-schemas.c:2273
-#, fuzzy
 msgid "No schema files found: removed existing output file."
 msgstr "هیچ پرونده شمایی پیدا نشد: پروندهٔ خروجی موجود برداشته شد."
 
@@ -2823,10 +2822,9 @@ msgid "Invalid filename %s"
 msgstr "نام پرونده نامعتبر: %s"
 
 #: gio/glocalfile.c:996
-#, fuzzy, c-format
-#| msgid "Error getting filesystem info: %s"
+#, c-format
 msgid "Error getting filesystem info for %s: %s"
-msgstr "خطا در دریافت اطلاعات سیستم‌پرونده‌: %s"
+msgstr "خطا در گرفتن اطّلاعات سامانه‌پرونده‌ برای %s: %s"
 
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
@@ -2838,22 +2836,17 @@ msgid "Containing mount for file %s not found"
 msgstr ""
 
 #: gio/glocalfile.c:1160
-#, fuzzy
-#| msgid "Can't rename root directory"
 msgid "Can’t rename root directory"
-msgstr "نمی‌توان شاخه ریشه را نام‌گذاری مجدد کرد"
+msgstr "نمی‌توان نام شاخهٔ ریشه را عوض کرد"
 
 #: gio/glocalfile.c:1178 gio/glocalfile.c:1201
-#, fuzzy, c-format
-#| msgid "Error reading file %s: %s"
+#, c-format
 msgid "Error renaming file %s: %s"
-msgstr "خطا در خواندن پرونده %s: %s"
+msgstr "خطا در تغییر نام پرونده %s: %s"
 
 #: gio/glocalfile.c:1185
-#, fuzzy
-#| msgid "Can't rename file, filename already exists"
 msgid "Can’t rename file, filename already exists"
-msgstr "نمی‌توان پرونده را مجددا نام‌گذاری کرد، نام پرونده از قبل وجود دارد"
+msgstr "نمی‌توان نام پرونده را عوض کرد. نام پرونده از پیش وجود دارد"
 
 #: gio/glocalfile.c:1198 gio/glocalfile.c:2394 gio/glocalfile.c:2422
 #: gio/glocalfile.c:2561 gio/glocalfileoutputstream.c:658
@@ -2861,34 +2854,29 @@ msgid "Invalid filename"
 msgstr "نام پرونده نامعتبر"
 
 #: gio/glocalfile.c:1366 gio/glocalfile.c:1377
-#, fuzzy, c-format
-#| msgid "Error opening file '%s': %s"
+#, c-format
 msgid "Error opening file %s: %s"
-msgstr "خطا در هنگام باز کردن پرونده «%s»: %s"
+msgstr "خطا در گشودن پروندهٔ %s: %s"
 
 #: gio/glocalfile.c:1502
-#, fuzzy, c-format
-#| msgid "Error removing file: %s"
+#, c-format
 msgid "Error removing file %s: %s"
-msgstr "خطا در حذف پرونده: %s"
+msgstr "خطا در برداشتن پروندهٔ %s: %s"
 
 #: gio/glocalfile.c:1996 gio/glocalfile.c:2007 gio/glocalfile.c:2034
-#, fuzzy, c-format
-#| msgid "Error trashing file: %s"
+#, c-format
 msgid "Error trashing file %s: %s"
-msgstr "خطا در انتقال پرونده به زباله‌دان: %s"
+msgstr "خطا در دور ریختن پروندهٔ %s: %s"
 
 #: gio/glocalfile.c:2054
-#, fuzzy, c-format
-#| msgid "Unable to create trash dir %s: %s"
+#, c-format
 msgid "Unable to create trash directory %s: %s"
-msgstr "نمی‌توان شاخه زباله‌دان %s را ساخت: %s"
+msgstr "ناتوان در ایجاد شاخهٔ زباله‌دان %s: %s"
 
 #: gio/glocalfile.c:2075
-#, fuzzy, c-format
-#| msgid "Failed to change to directory '%s' (%s)"
+#, c-format
 msgid "Unable to find toplevel directory to trash %s"
-msgstr "تغییر به شاخهٔ «%s» شکست خورد (%s)"
+msgstr "ناتوان در یافتن شاخهٔ سطح بالا برای دور ریختن %s"
 
 #: gio/glocalfile.c:2083
 #, c-format
@@ -2896,40 +2884,34 @@ msgid "Trashing on system internal mounts is not supported"
 msgstr ""
 
 #: gio/glocalfile.c:2169 gio/glocalfile.c:2197
-#, fuzzy, c-format
-#| msgid "Unable to create trash dir %s: %s"
+#, c-format
 msgid "Unable to find or create trash directory %s to trash %s"
-msgstr "نمی‌توان شاخه زباله‌دان %s را ساخت: %s"
+msgstr "ناتوان در یافتن یا ایجاد شاخهٔ زباله‌دان %s برای دور ریختن %s"
 
 #: gio/glocalfile.c:2243
-#, fuzzy, c-format
-#| msgid "Unable to create trashing info file: %s"
+#, c-format
 msgid "Unable to create trashing info file for %s: %s"
-msgstr "نمی‌توان پرونده اطلاعات زباله‌دان را ایجاد کرد: %s"
+msgstr "ناتوان در ایجاد پروندهٔ اطّلاعات دور ریختن برای %s: %s"
 
 #: gio/glocalfile.c:2305
-#, fuzzy, c-format
-#| msgid "Unable to trash file: %s"
+#, c-format
 msgid "Unable to trash file %s across filesystem boundaries"
-msgstr "نمی‌توان پرونده را به زباله‌دان فرستاد: %s"
+msgstr "ناتوان در دور ریختن پروندهٔ %s از فرار محدوده‌های سامانه‌پرونده"
 
 #: gio/glocalfile.c:2309 gio/glocalfile.c:2365
-#, fuzzy, c-format
-#| msgid "Unable to trash file: %s"
+#, c-format
 msgid "Unable to trash file %s: %s"
-msgstr "نمی‌توان پرونده را به زباله‌دان فرستاد: %s"
+msgstr "ناتوان در دور ریختن پروندهٔ %s: %s"
 
 #: gio/glocalfile.c:2371
-#, fuzzy, c-format
-#| msgid "Unable to trash file: %s"
+#, c-format
 msgid "Unable to trash file %s"
-msgstr "نمی‌توان پرونده را به زباله‌دان فرستاد: %s"
+msgstr "ناتوان در دور ریختن پروندهٔ %s"
 
 #: gio/glocalfile.c:2397
-#, fuzzy, c-format
-#| msgid "Error creating directory '%s': %s"
+#, c-format
 msgid "Error creating directory %s: %s"
-msgstr "خطا در هنگام ساخت شاخه «%s»: %s"
+msgstr "خطا در ایجاد شاخهٔ %s: %s"
 
 #: gio/glocalfile.c:2426
 #, c-format
@@ -2937,22 +2919,18 @@ msgid "Filesystem does not support symbolic links"
 msgstr "سیستم‌پرونده از پیوندهای نمادین پشتیبانی نمی‌کند"
 
 #: gio/glocalfile.c:2429
-#, fuzzy, c-format
-#| msgid "Error making symbolic link: %s"
+#, c-format
 msgid "Error making symbolic link %s: %s"
-msgstr "خطا در در هنگام ساخت پیوند نمادین: %s"
+msgstr "خطا در ساختن پیوند نمادین %s: %s"
 
 #: gio/glocalfile.c:2472 gio/glocalfile.c:2507 gio/glocalfile.c:2564
-#, fuzzy, c-format
-#| msgid "Error moving file: %s"
+#, c-format
 msgid "Error moving file %s: %s"
-msgstr "خطا در هنگام جابجایی پرونده: %s"
+msgstr "خطا در جابجایی پروندهٔ %s: %s"
 
 #: gio/glocalfile.c:2495
-#, fuzzy
-#| msgid "Can't copy directory over directory"
 msgid "Can’t move directory over directory"
-msgstr "نمي‌توان شاخه را بر روی شاخه رونوشت کرد"
+msgstr "نمی‌توان شاخه را روی شاخه جابه‌جا کرد"
 
 #: gio/glocalfile.c:2521 gio/glocalfileoutputstream.c:1110
 #: gio/glocalfileoutputstream.c:1124 gio/glocalfileoutputstream.c:1139
@@ -2970,31 +2948,26 @@ msgid "Move between mounts not supported"
 msgstr ""
 
 #: gio/glocalfile.c:2728
-#, fuzzy, c-format
-#| msgid "could not get remote address: %s"
+#, c-format
 msgid "Could not determine the disk usage of %s: %s"
-msgstr "نمی‌توان آدرس دوردست را دریافت کرد: %s"
+msgstr "نتوانست استفادهٔ دیسک %s را تشخیص دهد: %s"
 
 #: gio/glocalfileinfo.c:775
-#, fuzzy
 msgid "Attribute value must be non-NULL"
-msgstr "مقدار مشخصه نباید non-NULL باشد"
+msgstr "مقدار صفت باید غیر تهی باشد"
 
 #: gio/glocalfileinfo.c:782
-#, fuzzy
-#| msgid "Invalid attribute type (string expected)"
 msgid "Invalid attribute type (string or invalid expected)"
-msgstr "نوع مشخصه نامعتبر است (رشته مورد انتظار بود)"
+msgstr "گونهٔ صفت نامعتبر (انتظار رشته یا نامعتبر)"
 
 #: gio/glocalfileinfo.c:789
-#, fuzzy
 msgid "Invalid extended attribute name"
-msgstr "نوشتار به‌طور غیرمنتظره‌ای داخل نام یک مشخصه به‌پایان رسید"
+msgstr "نام صفت گستردهٔ نامعتبر"
 
 #: gio/glocalfileinfo.c:840
-#, fuzzy, c-format
+#, c-format
 msgid "Error setting extended attribute “%s”: %s"
-msgstr "خطا در باز کردن شاخهٔ «‎%s»‏: %s"
+msgstr "خطا در تنظیم کردن صفت گستردهٔ «‎%s»‏: %s"
 
 #: gio/glocalfileinfo.c:1738 gio/win32/gwinhttpfile.c:191
 msgid " (invalid encoding)"
@@ -3002,14 +2975,14 @@ msgstr " (کدگذاری نامعتبر)"
 
 #: gio/glocalfileinfo.c:1897 gio/glocalfileoutputstream.c:945
 #: gio/glocalfileoutputstream.c:997
-#, fuzzy, c-format
+#, c-format
 msgid "Error when getting information for file “%s”: %s"
-msgstr "خطا در بازکردن پرونده فعلی «‎%s»‏: %s"
+msgstr "خطا هنگام گرفتن اطّلاعات برای پروندهٔ «%s»: %s"
 
 #: gio/glocalfileinfo.c:2163
-#, fuzzy, c-format
+#, c-format
 msgid "Error when getting information for file descriptor: %s"
-msgstr "خطا در هنگام تنظیم توصیف‌گر پرونده: %s"
+msgstr "خطا هنگام گرفتن اطّلاعات برای توصیفگر پرونده: %s"
 
 #: gio/glocalfileinfo.c:2208
 msgid "Invalid attribute type (uint32 expected)"
@@ -3081,10 +3054,9 @@ msgid "File “%s” cannot be opened: Windows Error %lu"
 msgstr ""
 
 #: gio/glocalfileinfo.c:2657
-#, fuzzy, c-format
-#| msgid "Error setting modification or access time: %s"
+#, c-format
 msgid "Error setting modification or access time for file “%s”: %lu"
-msgstr "خطا در هنگام تنظیم کردن زمان دسترسی یا تغییر: %s"
+msgstr "خطا در تنظیم کردن زمان دسترسی یا تغییر برای پروندهٔ «%s»: %lu"
 
 #: gio/glocalfileinfo.c:2798 gio/glocalfileinfo.c:2810
 #, c-format
@@ -3158,10 +3130,9 @@ msgstr "خطا در هنگام کوتاه کردن پرونده: %s"
 
 #: gio/glocalfileoutputstream.c:664 gio/glocalfileoutputstream.c:909
 #: gio/glocalfileoutputstream.c:1222 gio/gsubprocess.c:231
-#, fuzzy, c-format
-#| msgid "Error opening file '%s': %s"
+#, c-format
 msgid "Error opening file “%s”: %s"
-msgstr "خطا در هنگام باز کردن پرونده «%s»: %s"
+msgstr "خطا در گشودن پروندهٔ «%s»: %s"
 
 #: gio/glocalfileoutputstream.c:959
 msgid "Target file is a directory"
@@ -3218,46 +3189,36 @@ msgstr ""
 #. * message for mount objects that
 #. * don't implement unmount.
 #: gio/gmount.c:401
-#, fuzzy
-#| msgid "volume doesn't implement eject"
 msgid "mount doesn’t implement “unmount”"
-msgstr "جلد قابلیت eject ندارد"
+msgstr "سوار کردن unmount را پیاده نساخته"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
 #: gio/gmount.c:477
-#, fuzzy
-#| msgid "volume doesn't implement eject"
 msgid "mount doesn’t implement “eject”"
-msgstr "جلد قابلیت eject ندارد"
+msgstr "سوار کردن eject را پیاده نساخته"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of unmount or unmount_with_operation.
 #: gio/gmount.c:555
-#, fuzzy
-#| msgid "volume doesn't implement eject or eject_with_operation"
 msgid "mount doesn’t implement “unmount” or “unmount_with_operation”"
-msgstr "جلد قابلیت eject یا eject_with_operation را ندارد"
+msgstr "سوار کردن unmount یا unmount_with_operation را پیاده نساخته"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of eject or eject_with_operation.
 #: gio/gmount.c:640
-#, fuzzy
-#| msgid "volume doesn't implement eject or eject_with_operation"
 msgid "mount doesn’t implement “eject” or “eject_with_operation”"
-msgstr "جلد قابلیت eject یا eject_with_operation را ندارد"
+msgstr "سوار کردن eject یا eject_with_operation را پیاده نساخته"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement remount.
 #: gio/gmount.c:728
-#, fuzzy
-#| msgid "volume doesn't implement eject"
 msgid "mount doesn’t implement “remount”"
-msgstr "جلد قابلیت eject ندارد"
+msgstr "سوار کردن remount را پیاده نساخته"
 
 #. Translators: This is an error
 #. * message for mount objects that
@@ -3297,9 +3258,8 @@ msgid "Could not create network monitor: "
 msgstr "نمی‌توان پایشگر شبکه را ساخت: "
 
 #: gio/gnetworkmonitornetlink.c:185
-#, fuzzy
 msgid "Could not get network status: "
-msgstr "نمی‌توان آدرس دوردست را دریافت کرد: %s"
+msgstr "نتوانست وضعیت شبکه را بگیرد: "
 
 #: gio/gnetworkmonitornm.c:313
 #, c-format
@@ -3312,9 +3272,8 @@ msgid "NetworkManager version too old"
 msgstr ""
 
 #: gio/goutputstream.c:234 gio/goutputstream.c:777
-#, fuzzy
 msgid "Output stream doesn’t implement write"
-msgstr "جلد قابلیت eject ندارد"
+msgstr "جریان خروجی write را پیاده نساخته"
 
 #: gio/goutputstream.c:474 gio/goutputstream.c:1535
 #, c-format
@@ -3334,10 +3293,9 @@ msgstr ""
 #: gio/gresolver.c:403 gio/gthreadedresolver.c:152 gio/gthreadedresolver.c:170
 #: gio/gthreadedresolver.c:782 gio/gthreadedresolver.c:806
 #: gio/gthreadedresolver.c:831 gio/gthreadedresolver.c:846
-#, fuzzy, c-format
-#| msgid "Error resolving '%s': %s"
+#, c-format
 msgid "Error resolving “%s”: %s"
-msgstr "خطا در هنگام برطرف‌سازی «%s»: %s"
+msgstr "خطا در حل «%s»: %s"
 
 #. Translators: The placeholder is for a function name.
 #: gio/gresolver.c:472 gio/gresolver.c:632
@@ -3346,10 +3304,8 @@ msgid "%s not implemented"
 msgstr ""
 
 #: gio/gresolver.c:1001 gio/gresolver.c:1053
-#, fuzzy
-#| msgid "Invalid filename"
 msgid "Invalid domain"
-msgstr "نام پرونده نامعتبر"
+msgstr "دامنهٔ نامعتبر"
 
 #: gio/gresource.c:683 gio/gresource.c:945 gio/gresource.c:985 gio/gresource.c:1109
 #: gio/gresource.c:1181 gio/gresource.c:1255 gio/gresource.c:1336
@@ -3373,9 +3329,8 @@ msgid "The resource at “%s” is not a directory"
 msgstr ""
 
 #: gio/gresourcefile.c:956
-#, fuzzy
 msgid "Input stream doesn’t implement seek"
-msgstr "جلد قابلیت eject ندارد"
+msgstr "جریان ورودی seek را پیاده نساخته"
 
 #: gio/gresource-tool.c:502
 msgid "List sections containing resources in an elf FILE"
@@ -3473,22 +3428,19 @@ msgid "  PATH      A resource path\n"
 msgstr ""
 
 #: gio/gsettings-tool.c:51 gio/gsettings-tool.c:72 gio/gsettings-tool.c:925
-#, fuzzy, c-format
-#| msgid "No such schema '%s'\n"
+#, c-format
 msgid "No such schema “%s”\n"
-msgstr "همجین شِمایی وجود ندارد «%s»\n"
+msgstr "هیچ شمایی چون «%s» وجود ندارد\n"
 
 #: gio/gsettings-tool.c:57
-#, fuzzy, c-format
-#| msgid "Schema '%s' is not relocatable (path must not be specified)\n"
+#, c-format
 msgid "Schema “%s” is not relocatable (path must not be specified)\n"
-msgstr "شِما «%s» قابل جابه‌جایی نیست (مسیر نباید مشخص شود)\n"
+msgstr "شمای «%s» قابل جابه‌جایی نیست (نباید مسیر مشخّص باشد)\n"
 
 #: gio/gsettings-tool.c:78
-#, fuzzy, c-format
-#| msgid "Schema '%s' is relocatable (path must be specified)\n"
+#, c-format
 msgid "Schema “%s” is relocatable (path must be specified)\n"
-msgstr "شِما «%s» قابل جابه‌جایی نیست (مسیر باید مشخص شود)\n"
+msgstr "شمای «%s» قابل جابه‌جایی است (باید مسیر مشخّص باشد)\n"
 
 #: gio/gsettings-tool.c:92
 msgid "Empty path given.\n"
@@ -3511,10 +3463,8 @@ msgid "The provided value is outside of the valid range\n"
 msgstr "مقدار فراهم شده خارج از محدود مجاز است\n"
 
 #: gio/gsettings-tool.c:562
-#, fuzzy
-#| msgid "Property '%s' is not writable"
 msgid "The key is not writable\n"
-msgstr "خصیصهٔ «%s» قابل نوشتن نیست"
+msgstr "کلید نوشتنی نیست\n"
 
 #: gio/gsettings-tool.c:598
 msgid "List the installed (non-relocatable) schemas"
@@ -3653,26 +3603,22 @@ msgid "  VALUE     The value to set\n"
 msgstr ""
 
 #: gio/gsettings-tool.c:792
-#, fuzzy, c-format
-#| msgid "Could not open converter from '%s' to '%s'"
+#, c-format
 msgid "Could not load schemas from %s: %s\n"
-msgstr "نمی‌توان مبدل «%s» به «%s» را باز کرد"
+msgstr "نتوانست شماها را از %s بار کند: %s\n"
 
 #: gio/gsettings-tool.c:804
-#, fuzzy
-#| msgid "No schema files found: "
 msgid "No schemas installed\n"
-msgstr "هیچ پرونده شماای پیدا نشد:"
+msgstr "هیچ شمایی نصب نشده\n"
 
 #: gio/gsettings-tool.c:883
 msgid "Empty schema name given\n"
 msgstr ""
 
 #: gio/gsettings-tool.c:938
-#, fuzzy, c-format
-#| msgid "No such key '%s'\n"
+#, c-format
 msgid "No such key “%s”\n"
-msgstr "همچین کلیدی وجود ندارد «%s»\n"
+msgstr "کلیدی چون «%s» وجود ندارد\n"
 
 #: gio/gsocket.c:419
 msgid "Invalid socket, not initialized"
@@ -3702,10 +3648,8 @@ msgid "Unable to create socket: %s"
 msgstr "نمی‌توان سوکت را ساخت: %s"
 
 #: gio/gsocket.c:679
-#, fuzzy
-#| msgid "Unknown protocol was specified"
 msgid "Unknown family was specified"
-msgstr "پروتکل ناشناسی مشخص شده است"
+msgstr "خانوادهٔ ناشناخته مشخّص شده"
 
 #: gio/gsocket.c:686
 msgid "Unknown protocol was specified"
@@ -3737,21 +3681,21 @@ msgid "could not listen: %s"
 msgstr ""
 
 #: gio/gsocket.c:2217
-#, fuzzy, c-format
+#, c-format
 msgid "Error binding to address %s: %s"
-msgstr "خطا در خواندن پروندهٔ «‎%s»‏: %s"
+msgstr "خطا در چسبیدن به نشانی ‎%s: %s"
 
 #: gio/gsocket.c:2392 gio/gsocket.c:2429 gio/gsocket.c:2539 gio/gsocket.c:2564
 #: gio/gsocket.c:2631 gio/gsocket.c:2689 gio/gsocket.c:2707
-#, fuzzy, c-format
+#, c-format
 msgid "Error joining multicast group: %s"
-msgstr "خطا در راه‌اندازی برنامه: %s"
+msgstr "خطا در پیوستن به گروه چندپخشی: %s"
 
 #: gio/gsocket.c:2393 gio/gsocket.c:2430 gio/gsocket.c:2540 gio/gsocket.c:2565
 #: gio/gsocket.c:2632 gio/gsocket.c:2690 gio/gsocket.c:2708
-#, fuzzy, c-format
+#, c-format
 msgid "Error leaving multicast group: %s"
-msgstr "خطا در راه‌اندازی برنامه: %s"
+msgstr "خطا در ترک گروه چندپخشی: %s"
 
 #: gio/gsocket.c:2394
 msgid "No support for source-specific multicast"
@@ -3793,10 +3737,8 @@ msgid "Connection in progress"
 msgstr "اتصال در حال پیشروی است"
 
 #: gio/gsocket.c:3077
-#, fuzzy
-#| msgid "Unable to get pending error: %s"
 msgid "Unable to get pending error: "
-msgstr "ناتوان در دریافت خطای درانتظار: %s"
+msgstr "ناتوان در دریافت خطای درانتظار: "
 
 #: gio/gsocket.c:3266
 #, c-format
