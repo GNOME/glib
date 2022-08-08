@@ -1121,7 +1121,7 @@ g_tls_certificate_get_issuer (GTlsCertificate  *cert)
  * check a certificate against a CA that is not part of the system
  * CA database.
  *
- * If @cert is valid, %G_TLS_CERTIFICATE_FLAGS_NONE is returned.
+ * If @cert is valid, %G_TLS_CERTIFICATE_NO_FLAGS is returned.
  *
  * If @identity is not %NULL, @cert's name(s) will be compared against
  * it, and %G_TLS_CERTIFICATE_BAD_IDENTITY will be set in the return
