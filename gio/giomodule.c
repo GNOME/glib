@@ -1262,6 +1262,29 @@ get_gio_module_dir (void)
       g_free (install_dir);
 #else
       module_dir = g_strdup (GIO_MODULE_DIR);
+#ifdef __APPLE__
+#include "TargetConditionals.h"
+#if TARGET_OS_OSX
+#include <dlfcn.h>
+      {
+        g_autofree gchar *path = NULL;
+        g_autofree gchar *possible_dir = NULL;
+        Dl_info info;
+
+        if (dladdr (get_gio_module_dir, &info))
+          {
+            /* Gets path to the PREFIX/lib directory */
+            path = g_path_get_dirname (info.dli_fname);
+            possible_dir = g_build_filename (path, "gio", "modules", NULL);
+            if (g_file_test (possible_dir, G_FILE_TEST_IS_DIR))
+              {
+                g_free (module_dir);
+                module_dir = g_steal_pointer (&possible_dir);
+              }
+          }
+      }
+#endif
+#endif
 #endif
     }
 
