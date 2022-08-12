@@ -5110,6 +5110,9 @@ g_win32_app_info_launch_internal (GWin32AppInfo      *info,
 
   do
     {
+      if (from_task && g_task_return_error_if_cancelled (from_task))
+        goto out;
+
       if (!expand_application_parameters (info,
                                           command,
                                           &objs,
@@ -5403,7 +5406,7 @@ launch_uris_async_thread (GTask         *task,
   succeeded = g_win32_app_info_launch_uris_impl (appinfo, data->uris, data->context, task, &local_error);
   if (succeeded)
     g_task_return_boolean (task, TRUE);
-  else
+  else if (!g_task_had_error (task))
     g_task_return_error (task, g_steal_pointer (&local_error));
 }
 
