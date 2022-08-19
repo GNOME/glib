@@ -32,6 +32,8 @@
 #endif
 
 #include <stdarg.h>
+#include <string.h>
+
 #include <glib/gmacros.h>
 #include <glib/gtypes.h>
 #include <glib/gerror.h>
@@ -137,11 +139,35 @@ gchar *               g_strrstr_len    (const gchar  *haystack,
 					const gchar  *needle);
 
 GLIB_AVAILABLE_IN_ALL
-gboolean              g_str_has_suffix (const gchar  *str,
-					const gchar  *suffix);
+gboolean g_str_has_suffix (const gchar *str,
+                           const gchar *suffix);
 GLIB_AVAILABLE_IN_ALL
-gboolean              g_str_has_prefix (const gchar  *str,
-					const gchar  *prefix);
+gboolean g_str_has_prefix (const gchar *str,
+                           const gchar *prefix);
+
+#if defined(__GNUC__) && (__GNUC__ > 2)
+
+#define g_str_has_prefix(STR, PREFIX)                                                     \
+  ((STR != NULL && PREFIX != NULL && __builtin_constant_p (PREFIX)) ? G_GNUC_EXTENSION ({ \
+    const char *const __str = STR;                                                        \
+    const char *const __prefix = PREFIX;                                                  \
+    const size_t __str_len = strlen (__str);                                              \
+    const size_t __prefix_len = strlen (__prefix);                                        \
+    (__str_len >= __prefix_len) ? memcmp (__str, __prefix, __prefix_len) == 0 : FALSE;    \
+  })                                                                                      \
+                                                                    : (g_str_has_prefix) (STR, PREFIX))
+
+#define g_str_has_suffix(STR, SUFFIX)                                                                             \
+  ((STR != NULL && SUFFIX != NULL && __builtin_constant_p (SUFFIX)) ? G_GNUC_EXTENSION ({                         \
+    const char *const __str = STR;                                                                                \
+    const char *const __suffix = SUFFIX;                                                                          \
+    const size_t __str_len = strlen (__str);                                                                      \
+    const size_t __suffix_len = strlen (__suffix);                                                                \
+    (__str_len >= __suffix_len) ? memcmp (__str + __str_len - __suffix_len, __suffix, __suffix_len) == 0 : FALSE; \
+  })                                                                                                              \
+                                                                    : (g_str_has_suffix) (STR, SUFFIX))
+
+#endif
 
 /* String to/from double conversion functions */
 
