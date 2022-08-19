@@ -1200,11 +1200,72 @@ test_strdelimit (void)
   g_free (string);
 }
 
-/* Testing g_str_has_prefix() */
+/* As g_str_has_prefix() is overwritten by a macro when the prefix is
+ * constant, thus we need to use (g_str_has_prefix)() to avoid the
+ * optimization and use the real function. */
 static void
 test_has_prefix (void)
 {
   gboolean res;
+  gchar rand_str[10], rand_prefix[8];
+
+  if (g_test_undefined ())
+    {
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      res = (g_str_has_prefix) ("foo", NULL);
+      g_test_assert_expected_messages ();
+      g_assert_false (res);
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      res = (g_str_has_prefix) (NULL, "foo");
+      g_test_assert_expected_messages ();
+      g_assert_false (res);
+    }
+
+  /* Having a string smaller than the prefix */
+  g_assert_false ((g_str_has_prefix) ("aa", "aaa"));
+
+  /* Force our way to non-inlined function */
+  for (gsize i = 0; i < 7; i++)
+    {
+      rand_str[i] = 'a' + g_random_int () % 26;
+      rand_prefix[i] = rand_str[i];
+    }
+  rand_prefix[7] = '\0';
+  rand_str[7] = 'A';
+  rand_str[8] = 'A';
+  rand_str[9] = '\0';
+  g_assert_true ((g_str_has_prefix) (rand_str, rand_prefix));
+
+  res = (g_str_has_prefix) ("foo", "bar");
+  g_assert_cmpint (res, ==, FALSE);
+
+  res = (g_str_has_prefix) ("foo", "foobar");
+  g_assert_cmpint (res, ==, FALSE);
+
+  res = (g_str_has_prefix) ("foobar", "bar");
+  g_assert_cmpint (res, ==, FALSE);
+
+  res = (g_str_has_prefix) ("foobar", "foo");
+  g_assert_cmpint (res, ==, TRUE);
+
+  res = (g_str_has_prefix) ("foo", "");
+  g_assert_cmpint (res, ==, TRUE);
+
+  res = (g_str_has_prefix) ("foo", "foo");
+  g_assert_cmpint (res, ==, TRUE);
+
+  res = (g_str_has_prefix) ("", "");
+  g_assert_cmpint (res, ==, TRUE);
+}
+
+static void
+test_has_prefix_macro (void)
+{
+  gboolean res;
+  gchar rand_str[10], rand_prefix[8];
 
   if (g_test_undefined ())
     {
@@ -1220,6 +1281,21 @@ test_has_prefix (void)
       g_test_assert_expected_messages ();
       g_assert_false (res);
     }
+
+  /* Having a string smaller than the prefix */
+  g_assert_false (g_str_has_prefix ("aa", "aaa"));
+
+  /* Force our way to non-inlined function */
+  for (gsize i = 0; i < 7; i++)
+    {
+      rand_str[i] = 'a' + g_random_int () % 26;
+      rand_prefix[i] = rand_str[i];
+    }
+  rand_prefix[7] = '\0';
+  rand_str[7] = 'A';
+  rand_str[8] = 'A';
+  rand_str[9] = '\0';
+  g_assert_true (g_str_has_prefix (rand_str, rand_prefix));
 
   res = g_str_has_prefix ("foo", "bar");
   g_assert_cmpint (res, ==, FALSE);
@@ -1243,8 +1319,56 @@ test_has_prefix (void)
   g_assert_cmpint (res, ==, TRUE);
 }
 
+/* As g_str_has_suffix() is overwritten by a macro when the prefix is
+ * constant, thus we need to use (g_str_has_suffix)() to avoid the
+ * optimization and use the real function. */
 static void
 test_has_suffix (void)
+{
+  gboolean res;
+
+  if (g_test_undefined ())
+    {
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      res = (g_str_has_suffix) ("foo", NULL);
+      g_test_assert_expected_messages ();
+      g_assert_false (res);
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      res = (g_str_has_suffix) (NULL, "foo");
+      g_test_assert_expected_messages ();
+      g_assert_false (res);
+    }
+
+  /* Having a string smaller than the suffix */
+  g_assert_false ((g_str_has_suffix) ("aa", "aaa"));
+
+  res = (g_str_has_suffix) ("foo", "bar");
+  g_assert_false (res);
+
+  res = (g_str_has_suffix) ("bar", "foobar");
+  g_assert_false (res);
+
+  res = (g_str_has_suffix) ("foobar", "foo");
+  g_assert_false (res);
+
+  res = (g_str_has_suffix) ("foobar", "bar");
+  g_assert_true (res);
+
+  res = (g_str_has_suffix) ("foo", "");
+  g_assert_true (res);
+
+  res = (g_str_has_suffix) ("foo", "foo");
+  g_assert_true (res);
+
+  res = (g_str_has_suffix) ("", "");
+  g_assert_true (res);
+}
+
+static void
+test_has_suffix_macro (void)
 {
   gboolean res;
 
@@ -1262,6 +1386,9 @@ test_has_suffix (void)
       g_test_assert_expected_messages ();
       g_assert_false (res);
     }
+
+  /* Having a string smaller than the suffix */
+  g_assert_false (g_str_has_suffix ("aa", "aaa"));
 
   res = g_str_has_suffix ("foo", "bar");
   g_assert_false (res);
@@ -2560,7 +2687,9 @@ main (int   argc,
   g_test_add_func ("/strfuncs/ascii_strtod", test_ascii_strtod);
   g_test_add_func ("/strfuncs/bounds-check", test_bounds);
   g_test_add_func ("/strfuncs/has-prefix", test_has_prefix);
+  g_test_add_func ("/strfuncs/has-prefix-macro", test_has_prefix_macro);
   g_test_add_func ("/strfuncs/has-suffix", test_has_suffix);
+  g_test_add_func ("/strfuncs/has-suffix-macro", test_has_suffix_macro);
   g_test_add_func ("/strfuncs/memdup", test_memdup);
   g_test_add_func ("/strfuncs/memdup2", test_memdup2);
   g_test_add_func ("/strfuncs/stpcpy", test_stpcpy);
