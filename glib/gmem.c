@@ -109,10 +109,13 @@ static GMemVTable glib_mem_vtable = {
 /**
  * g_malloc:
  * @n_bytes: the number of bytes to allocate
- * 
+ *
  * Allocates @n_bytes bytes of memory.
  * If @n_bytes is 0 it returns %NULL.
- * 
+ *
+ * If the allocation fails (because the system is out of memory),
+ * the program is terminated.
+ *
  * Returns: a pointer to the allocated memory
  */
 gpointer
@@ -139,10 +142,13 @@ g_malloc (gsize n_bytes)
 /**
  * g_malloc0:
  * @n_bytes: the number of bytes to allocate
- * 
+ *
  * Allocates @n_bytes bytes of memory, initialized to 0's.
  * If @n_bytes is 0 it returns %NULL.
- * 
+ *
+ * If the allocation fails (because the system is out of memory),
+ * the program is terminated.
+ *
  * Returns: a pointer to the allocated memory
  */
 gpointer
@@ -170,13 +176,16 @@ g_malloc0 (gsize n_bytes)
  * g_realloc:
  * @mem: (nullable): the memory to reallocate
  * @n_bytes: new size of the memory in bytes
- * 
+ *
  * Reallocates the memory pointed to by @mem, so that it now has space for
  * @n_bytes bytes of memory. It returns the new address of the memory, which may
  * have been moved. @mem may be %NULL, in which case it's considered to
  * have zero-length. @n_bytes may be 0, in which case %NULL will be returned
  * and @mem will be freed unless it is %NULL.
- * 
+ *
+ * If the allocation fails (because the system is out of memory),
+ * the program is terminated.
+ *
  * Returns: the new address of the allocated memory
  */
 gpointer
@@ -343,10 +352,13 @@ g_try_realloc (gpointer mem,
  * g_malloc_n:
  * @n_blocks: the number of blocks to allocate
  * @n_block_bytes: the size of each block in bytes
- * 
+ *
  * This function is similar to g_malloc(), allocating (@n_blocks * @n_block_bytes) bytes,
  * but care is taken to detect possible overflow during multiplication.
- * 
+ *
+ * If the allocation fails (because the system is out of memory),
+ * the program is terminated.
+ *
  * Since: 2.24
  * Returns: a pointer to the allocated memory
  */
@@ -367,10 +379,13 @@ g_malloc_n (gsize n_blocks,
  * g_malloc0_n:
  * @n_blocks: the number of blocks to allocate
  * @n_block_bytes: the size of each block in bytes
- * 
+ *
  * This function is similar to g_malloc0(), allocating (@n_blocks * @n_block_bytes) bytes,
  * but care is taken to detect possible overflow during multiplication.
- * 
+ *
+ * If the allocation fails (because the system is out of memory),
+ * the program is terminated.
+ *
  * Since: 2.24
  * Returns: a pointer to the allocated memory
  */
@@ -392,10 +407,13 @@ g_malloc0_n (gsize n_blocks,
  * @mem: (nullable): the memory to reallocate
  * @n_blocks: the number of blocks to allocate
  * @n_block_bytes: the size of each block in bytes
- * 
+ *
  * This function is similar to g_realloc(), allocating (@n_blocks * @n_block_bytes) bytes,
  * but care is taken to detect possible overflow during multiplication.
- * 
+ *
+ * If the allocation fails (because the system is out of memory),
+ * the program is terminated.
+ *
  * Since: 2.24
  * Returns: the new address of the allocated memory
  */
@@ -553,6 +571,9 @@ g_mem_profile (void)
  * bytes, but care is taken to align the allocated memory to with the given
  * alignment value. Additionally, it will detect possible overflow during
  * multiplication.
+ *
+ * If the allocation fails (because the system is out of memory),
+ * the program is terminated.
  *
  * Aligned memory allocations returned by this function can only be
  * freed using g_aligned_free().
