@@ -1634,8 +1634,8 @@ _g_param_spec_types_init (void)
 /**
  * g_param_spec_char:
  * @name: canonical name of the property specified
- * @nick: nick name for the property specified
- * @blurb: description of the property specified
+ * @nick: (nullable): nick name for the property specified
+ * @blurb: (nullable): description of the property specified
  * @minimum: minimum value for the property specified
  * @maximum: maximum value for the property specified
  * @default_value: default value for the property specified
@@ -1676,8 +1676,8 @@ g_param_spec_char (const gchar *name,
 /**
  * g_param_spec_uchar:
  * @name: canonical name of the property specified
- * @nick: nick name for the property specified
- * @blurb: description of the property specified
+ * @nick: (nullable): nick name for the property specified
+ * @blurb: (nullable): description of the property specified
  * @minimum: minimum value for the property specified
  * @maximum: maximum value for the property specified
  * @default_value: default value for the property specified
@@ -1718,8 +1718,8 @@ g_param_spec_uchar (const gchar *name,
 /**
  * g_param_spec_boolean:
  * @name: canonical name of the property specified
- * @nick: nick name for the property specified
- * @blurb: description of the property specified
+ * @nick: (nullable): nick name for the property specified
+ * @blurb: (nullable): description of the property specified
  * @default_value: default value for the property specified
  * @flags: flags for the property specified
  *
@@ -1760,8 +1760,8 @@ g_param_spec_boolean (const gchar *name,
 /**
  * g_param_spec_int:
  * @name: canonical name of the property specified
- * @nick: nick name for the property specified
- * @blurb: description of the property specified
+ * @nick: (nullable): nick name for the property specified
+ * @blurb: (nullable): description of the property specified
  * @minimum: minimum value for the property specified
  * @maximum: maximum value for the property specified
  * @default_value: default value for the property specified
@@ -1804,8 +1804,8 @@ g_param_spec_int (const gchar *name,
 /**
  * g_param_spec_uint:
  * @name: canonical name of the property specified
- * @nick: nick name for the property specified
- * @blurb: description of the property specified
+ * @nick: (nullable): nick name for the property specified
+ * @blurb: (nullable): description of the property specified
  * @minimum: minimum value for the property specified
  * @maximum: maximum value for the property specified
  * @default_value: default value for the property specified
@@ -1848,8 +1848,8 @@ g_param_spec_uint (const gchar *name,
 /**
  * g_param_spec_long:
  * @name: canonical name of the property specified
- * @nick: nick name for the property specified
- * @blurb: description of the property specified
+ * @nick: (nullable): nick name for the property specified
+ * @blurb: (nullable): description of the property specified
  * @minimum: minimum value for the property specified
  * @maximum: maximum value for the property specified
  * @default_value: default value for the property specified
@@ -1892,8 +1892,8 @@ g_param_spec_long (const gchar *name,
 /**
  * g_param_spec_ulong:
  * @name: canonical name of the property specified
- * @nick: nick name for the property specified
- * @blurb: description of the property specified
+ * @nick: (nullable): nick name for the property specified
+ * @blurb: (nullable): description of the property specified
  * @minimum: minimum value for the property specified
  * @maximum: maximum value for the property specified
  * @default_value: default value for the property specified
@@ -1937,8 +1937,8 @@ g_param_spec_ulong (const gchar *name,
 /**
  * g_param_spec_int64:
  * @name: canonical name of the property specified
- * @nick: nick name for the property specified
- * @blurb: description of the property specified
+ * @nick: (nullable): nick name for the property specified
+ * @blurb: (nullable): description of the property specified
  * @minimum: minimum value for the property specified
  * @maximum: maximum value for the property specified
  * @default_value: default value for the property specified
@@ -1981,8 +1981,8 @@ g_param_spec_int64 (const gchar *name,
 /**
  * g_param_spec_uint64:
  * @name: canonical name of the property specified
- * @nick: nick name for the property specified
- * @blurb: description of the property specified
+ * @nick: (nullable): nick name for the property specified
+ * @blurb: (nullable): description of the property specified
  * @minimum: minimum value for the property specified
  * @maximum: maximum value for the property specified
  * @default_value: default value for the property specified
@@ -2026,8 +2026,8 @@ g_param_spec_uint64 (const gchar *name,
 /**
  * g_param_spec_unichar:
  * @name: canonical name of the property specified
- * @nick: nick name for the property specified
- * @blurb: description of the property specified
+ * @nick: (nullable): nick name for the property specified
+ * @blurb: (nullable): description of the property specified
  * @default_value: default value for the property specified
  * @flags: flags for the property specified
  *
@@ -2064,8 +2064,8 @@ g_param_spec_unichar (const gchar *name,
 /**
  * g_param_spec_enum:
  * @name: canonical name of the property specified
- * @nick: nick name for the property specified
- * @blurb: description of the property specified
+ * @nick: (nullable): nick name for the property specified
+ * @blurb: (nullable): description of the property specified
  * @enum_type: a #GType derived from %G_TYPE_ENUM
  * @default_value: default value for the property specified
  * @flags: flags for the property specified
@@ -2115,8 +2115,8 @@ g_param_spec_enum (const gchar *name,
 /**
  * g_param_spec_flags:
  * @name: canonical name of the property specified
- * @nick: nick name for the property specified
- * @blurb: description of the property specified
+ * @nick: (nullable): nick name for the property specified
+ * @blurb: (nullable): description of the property specified
  * @flags_type: a #GType derived from %G_TYPE_FLAGS
  * @default_value: default value for the property specified
  * @flags: flags for the property specified
@@ -2166,8 +2166,8 @@ g_param_spec_flags (const gchar *name,
 /**
  * g_param_spec_float:
  * @name: canonical name of the property specified
- * @nick: nick name for the property specified
- * @blurb: description of the property specified
+ * @nick: (nullable): nick name for the property specified
+ * @blurb: (nullable): description of the property specified
  * @minimum: minimum value for the property specified
  * @maximum: maximum value for the property specified
  * @default_value: default value for the property specified
@@ -2210,8 +2210,8 @@ g_param_spec_float (const gchar *name,
 /**
  * g_param_spec_double:
  * @name: canonical name of the property specified
- * @nick: nick name for the property specified
- * @blurb: description of the property specified
+ * @nick: (nullable): nick name for the property specified
+ * @blurb: (nullable): description of the property specified
  * @minimum: minimum value for the property specified
  * @maximum: maximum value for the property specified
  * @default_value: default value for the property specified
@@ -2255,8 +2255,8 @@ g_param_spec_double (const gchar *name,
 /**
  * g_param_spec_string:
  * @name: canonical name of the property specified
- * @nick: nick name for the property specified
- * @blurb: description of the property specified
+ * @nick: (nullable): nick name for the property specified
+ * @blurb: (nullable): description of the property specified
  * @default_value: (nullable): default value for the property specified
  * @flags: flags for the property specified
  *
@@ -2290,8 +2290,8 @@ g_param_spec_string (const gchar *name,
 /**
  * g_param_spec_param:
  * @name: canonical name of the property specified
- * @nick: nick name for the property specified
- * @blurb: description of the property specified
+ * @nick: (nullable): nick name for the property specified
+ * @blurb: (nullable): description of the property specified
  * @param_type: a #GType derived from %G_TYPE_PARAM
  * @flags: flags for the property specified
  *
@@ -2329,8 +2329,8 @@ g_param_spec_param (const gchar *name,
 /**
  * g_param_spec_boxed:
  * @name: canonical name of the property specified
- * @nick: nick name for the property specified
- * @blurb: description of the property specified
+ * @nick: (nullable): nick name for the property specified
+ * @blurb: (nullable): description of the property specified
  * @boxed_type: %G_TYPE_BOXED derived type of this property
  * @flags: flags for the property specified
  *
@@ -2369,8 +2369,8 @@ g_param_spec_boxed (const gchar *name,
 /**
  * g_param_spec_pointer:
  * @name: canonical name of the property specified
- * @nick: nick name for the property specified
- * @blurb: description of the property specified
+ * @nick: (nullable): nick name for the property specified
+ * @blurb: (nullable): description of the property specified
  * @flags: flags for the property specified
  *
  * Creates a new #GParamSpecPointer instance specifying a pointer property.
@@ -2403,8 +2403,8 @@ g_param_spec_pointer (const gchar *name,
 /**
  * g_param_spec_gtype:
  * @name: canonical name of the property specified
- * @nick: nick name for the property specified
- * @blurb: description of the property specified
+ * @nick: (nullable): nick name for the property specified
+ * @blurb: (nullable): description of the property specified
  * @is_a_type: a #GType whose subtypes are allowed as values
  *  of the property (use %G_TYPE_NONE for any type)
  * @flags: flags for the property specified
@@ -2443,8 +2443,8 @@ g_param_spec_gtype (const gchar *name,
 /**
  * g_param_spec_value_array: (skip)
  * @name: canonical name of the property specified
- * @nick: nick name for the property specified
- * @blurb: description of the property specified
+ * @nick: (nullable): nick name for the property specified
+ * @blurb: (nullable): description of the property specified
  * @element_spec: a #GParamSpec describing the elements contained in
  *  arrays of this property, may be %NULL
  * @flags: flags for the property specified
@@ -2490,8 +2490,8 @@ g_param_spec_value_array (const gchar *name,
 /**
  * g_param_spec_object:
  * @name: canonical name of the property specified
- * @nick: nick name for the property specified
- * @blurb: description of the property specified
+ * @nick: (nullable): nick name for the property specified
+ * @blurb: (nullable): description of the property specified
  * @object_type: %G_TYPE_OBJECT derived type of this property
  * @flags: flags for the property specified
  *
@@ -2574,8 +2574,8 @@ g_param_spec_override (const gchar *name,
 /**
  * g_param_spec_variant:
  * @name: canonical name of the property specified
- * @nick: nick name for the property specified
- * @blurb: description of the property specified
+ * @nick: (nullable): nick name for the property specified
+ * @blurb: (nullable): description of the property specified
  * @type: a #GVariantType
  * @default_value: (nullable) (transfer full): a #GVariant of type @type to
  *                 use as the default value, or %NULL
