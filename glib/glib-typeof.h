@@ -34,7 +34,7 @@
  * This symbol is private.
  */
 #undef glib_typeof
-#if !defined(__cplusplus) && (G_GNUC_CHECK_VERSION(4, 8) || defined(__clang__))
+#if (!defined(__cplusplus) || __cplusplus < 201103L) && (G_GNUC_CHECK_VERSION(4, 8) || defined(__clang__))
 #define glib_typeof(t) __typeof__ (t)
 #elif defined(__cplusplus) && __cplusplus >= 201103L && GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_68
 /* C++11 decltype() is close enough for our usage */
