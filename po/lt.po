@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lt\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-06-28 10:34+0000\n"
-"PO-Revision-Date: 2022-07-02 22:02+0300\n"
+"POT-Creation-Date: 2022-08-15 20:23+0000\n"
+"PO-Revision-Date: 2022-08-22 23:17+0300\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -36,13 +36,11 @@ msgstr "Programos nustatymas kaip paskutinės naudotos dar nepalaikomas"
 
 #: gio/gappinfo.c:808
 #, c-format
-#| msgid "No default applications for “%s”\n"
 msgid "Failed to find default application for content type ‘%s’"
 msgstr "Nepavyko rasti turinio tipui „%s“ numatytos programos"
 
 #: gio/gappinfo.c:868
 #, c-format
-#| msgid "No default applications for “%s”\n"
 msgid "Failed to find default application for URI Scheme ‘%s’"
 msgstr "Nepavyko rasti URI schemai „%s“ numatytos programos"
 
@@ -301,7 +299,7 @@ msgstr "Srautas jau užvertas"
 msgid "Truncate not supported on base stream"
 msgstr "Trumpinimas sraute nepalaikomas"
 
-#: gio/gcancellable.c:321 gio/gdbusconnection.c:1859 gio/gdbusprivate.c:1420
+#: gio/gcancellable.c:319 gio/gdbusconnection.c:1859 gio/gdbusprivate.c:1420
 #: gio/gsimpleasyncresult.c:873 gio/gsimpleasyncresult.c:899
 #, c-format
 msgid "Operation was cancelled"
@@ -346,7 +344,7 @@ msgstr "Keitimas iš koduotės „%s“ į koduotę „%s“ nepalaikomas"
 msgid "Could not open converter from “%s” to “%s”"
 msgstr "Nepavyko atverti keitiklio iš „%s“ į „%s“"
 
-#: gio/gcontenttype.c:473
+#: gio/gcontenttype.c:472
 #, c-format
 msgid "%s type"
 msgstr "%s tipas"
@@ -533,7 +531,7 @@ msgstr ""
 "Nepavyko nustatyti sesijos magistralės adreso (nerealizuota šiai operacinei "
 "sistemai)"
 
-#: gio/gdbusaddress.c:1375 gio/gdbusconnection.c:7320
+#: gio/gdbusaddress.c:1375 gio/gdbusconnection.c:7321
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -542,7 +540,7 @@ msgstr ""
 "Nepavyko nustatyti magistralės adreso iš DBUS_STARTER_BUS_TYPE aplinkos "
 "kintamojo - nežinoma reikšmė „%s“"
 
-#: gio/gdbusaddress.c:1384 gio/gdbusconnection.c:7329
+#: gio/gdbusaddress.c:1384 gio/gdbusconnection.c:7330
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -563,7 +561,7 @@ msgstr "Netikėtas turinio trūkumas bandant nuskaityti eilutę"
 msgid "Unexpected lack of content trying to (safely) read a line"
 msgstr "Netikėtas turinio trūkumas bandant (saugiai) nuskaityti eilutę"
 
-#: gio/gdbusauth.c:481
+#: gio/gdbusauth.c:482
 #, c-format
 msgid ""
 "Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
@@ -571,20 +569,20 @@ msgstr ""
 "Baigėsi visi turimi tapatybės patvirtinimo mechanizmai (bandyta: %s) "
 "(turimi: %s)"
 
-#: gio/gdbusauth.c:1161
+#: gio/gdbusauth.c:1178
 msgid "User IDs must be the same for peer and server"
 msgstr "Naudotojų ID turi sutapti porininkui bei serveriui"
 
-#: gio/gdbusauth.c:1173
+#: gio/gdbusauth.c:1190
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr "Atšaukta per GDBusAuthObserver::authorize-authenticated-peer"
 
-#: gio/gdbusauthmechanismsha1.c:302
+#: gio/gdbusauthmechanismsha1.c:303
 #, c-format
 msgid "Error when getting information for directory “%s”: %s"
 msgstr "Klaida gaunant informaciją apie katalogą „%s“: %s"
 
-#: gio/gdbusauthmechanismsha1.c:317
+#: gio/gdbusauthmechanismsha1.c:318
 #, c-format
 msgid ""
 "Permissions on directory “%s” are malformed. Expected mode 0700, got 0%o"
@@ -592,12 +590,12 @@ msgstr ""
 "Katalogo „%s“ leidimai yra suformuoti neteisingai. Tikėtasi mode 0700, gauta "
 "0%o"
 
-#: gio/gdbusauthmechanismsha1.c:350 gio/gdbusauthmechanismsha1.c:361
+#: gio/gdbusauthmechanismsha1.c:351 gio/gdbusauthmechanismsha1.c:362
 #, c-format
 msgid "Error creating directory “%s”: %s"
 msgstr "Klaida kuriant katalogą %s: %s"
 
-#: gio/gdbusauthmechanismsha1.c:363 gio/gfile.c:1095 gio/gfile.c:1333
+#: gio/gdbusauthmechanismsha1.c:364 gio/gfile.c:1095 gio/gfile.c:1333
 #: gio/gfile.c:1471 gio/gfile.c:1709 gio/gfile.c:1764 gio/gfile.c:1822
 #: gio/gfile.c:1906 gio/gfile.c:1963 gio/gfile.c:2027 gio/gfile.c:2082
 #: gio/gfile.c:3787 gio/gfile.c:3927 gio/gfile.c:4339 gio/gfile.c:4809
@@ -607,18 +605,18 @@ msgstr "Klaida kuriant katalogą %s: %s"
 msgid "Operation not supported"
 msgstr "Operacija nepalaikoma"
 
-#: gio/gdbusauthmechanismsha1.c:406
+#: gio/gdbusauthmechanismsha1.c:407
 #, c-format
 msgid "Error opening keyring “%s” for reading: "
 msgstr "Klaida atveriant raktinę „%s“ skaitymui: "
 
-#: gio/gdbusauthmechanismsha1.c:429 gio/gdbusauthmechanismsha1.c:770
+#: gio/gdbusauthmechanismsha1.c:430 gio/gdbusauthmechanismsha1.c:771
 #, c-format
 msgid "Line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr ""
 "%d eilutė raktinės vietoje „%s“ su turiniu „%s“ yra suformuota neteisingai"
 
-#: gio/gdbusauthmechanismsha1.c:443 gio/gdbusauthmechanismsha1.c:784
+#: gio/gdbusauthmechanismsha1.c:444 gio/gdbusauthmechanismsha1.c:785
 #, c-format
 msgid ""
 "First token of line %d of the keyring at “%s” with content “%s” is malformed"
@@ -626,7 +624,7 @@ msgstr ""
 "Pirmoji leksema raktinės %d eilutės vietoje „%s“ su turiniu „%s“ yra "
 "suformuota neteisingai"
 
-#: gio/gdbusauthmechanismsha1.c:457 gio/gdbusauthmechanismsha1.c:798
+#: gio/gdbusauthmechanismsha1.c:458 gio/gdbusauthmechanismsha1.c:799
 #, c-format
 msgid ""
 "Second token of line %d of the keyring at “%s” with content “%s” is malformed"
@@ -634,37 +632,37 @@ msgstr ""
 "Antroji leksema raktinės %d eilutės vietoje „%s“ su turiniu „%s“ yra "
 "suformuota neteisingai"
 
-#: gio/gdbusauthmechanismsha1.c:481
+#: gio/gdbusauthmechanismsha1.c:482
 #, c-format
 msgid "Didn’t find cookie with id %d in the keyring at “%s”"
 msgstr "Nerastas slapukas su id %d raktinės vietoje „%s“"
 
-#: gio/gdbusauthmechanismsha1.c:538
+#: gio/gdbusauthmechanismsha1.c:539
 #, c-format
 msgid "Error creating lock file “%s”: %s"
 msgstr "Klaida kuriant rakinimo failą „%s“: %s"
 
-#: gio/gdbusauthmechanismsha1.c:611
+#: gio/gdbusauthmechanismsha1.c:612
 #, c-format
 msgid "Error deleting stale lock file “%s”: %s"
 msgstr "Klaida trinant nebegaliojantį rakinimo failą „%s“: %s"
 
-#: gio/gdbusauthmechanismsha1.c:650
+#: gio/gdbusauthmechanismsha1.c:651
 #, c-format
 msgid "Error closing (unlinked) lock file “%s”: %s"
 msgstr "Klaida užveriant (nesusietą) rakinimo failą „%s“: %s"
 
-#: gio/gdbusauthmechanismsha1.c:661
+#: gio/gdbusauthmechanismsha1.c:662
 #, c-format
 msgid "Error unlinking lock file “%s”: %s"
 msgstr "Klaida atsiejant rakinimo failą „%s“: %s"
 
-#: gio/gdbusauthmechanismsha1.c:737
+#: gio/gdbusauthmechanismsha1.c:738
 #, c-format
 msgid "Error opening keyring “%s” for writing: "
 msgstr "Klaida atveriant raktinę „%s“ rašymui: "
 
-#: gio/gdbusauthmechanismsha1.c:931
+#: gio/gdbusauthmechanismsha1.c:932
 #, c-format
 msgid "(Additionally, releasing the lock for “%s” also failed: %s) "
 msgstr "(Papildomai, užrakto atlaisvinimas „%s“ taip pat nepavyko: %s) "
@@ -682,85 +680,85 @@ msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr "Nepalaikomi požymiai aptikti konstruojant kliento pusės ryšį"
 
-#: gio/gdbusconnection.c:4255 gio/gdbusconnection.c:4609
+#: gio/gdbusconnection.c:4256 gio/gdbusconnection.c:4610
 #, c-format
 msgid ""
 "No such interface “org.freedesktop.DBus.Properties” on object at path %s"
 msgstr ""
 "Nėra sąsajos „org.freedesktop.DBus.Properties“ objektui, kurio kelias %s"
 
-#: gio/gdbusconnection.c:4400
+#: gio/gdbusconnection.c:4401
 #, c-format
 msgid "No such property “%s”"
 msgstr "Nėra savybės „%s“"
 
-#: gio/gdbusconnection.c:4412
+#: gio/gdbusconnection.c:4413
 #, c-format
 msgid "Property “%s” is not readable"
 msgstr "Savybė „%s“ yra neskaitoma"
 
-#: gio/gdbusconnection.c:4423
+#: gio/gdbusconnection.c:4424
 #, c-format
 msgid "Property “%s” is not writable"
 msgstr "Savybė „%s“ nėra rašoma"
 
-#: gio/gdbusconnection.c:4443
+#: gio/gdbusconnection.c:4444
 #, c-format
 msgid "Error setting property “%s”: Expected type “%s” but got “%s”"
 msgstr "Klaida nustatant savybę „%s“: tikėtasi tipo „%s“, bet gauta „%s“"
 
-#: gio/gdbusconnection.c:4548 gio/gdbusconnection.c:4763
-#: gio/gdbusconnection.c:6746
+#: gio/gdbusconnection.c:4549 gio/gdbusconnection.c:4764
+#: gio/gdbusconnection.c:6747
 #, c-format
 msgid "No such interface “%s”"
 msgstr "Nėra sąsajos „%s“"
 
-#: gio/gdbusconnection.c:4985 gio/gdbusconnection.c:7260
+#: gio/gdbusconnection.c:4986 gio/gdbusconnection.c:7261
 #, c-format
 msgid "No such interface “%s” on object at path %s"
 msgstr "Nėra sąsajos „%s“ objektui, kurio kelias %s"
 
-#: gio/gdbusconnection.c:5086
+#: gio/gdbusconnection.c:5087
 #, c-format
 msgid "No such method “%s”"
 msgstr "Nėra metodo „%s“"
 
-#: gio/gdbusconnection.c:5117
+#: gio/gdbusconnection.c:5118
 #, c-format
 msgid "Type of message, “%s”, does not match expected type “%s”"
 msgstr "Pranešimo tipas „%s“ neatitinka laukiamo tipo „%s“"
 
-#: gio/gdbusconnection.c:5320
+#: gio/gdbusconnection.c:5321
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Jau yra eksportuotas objektas sąsajai %s vietoje %s"
 
-#: gio/gdbusconnection.c:5547
+#: gio/gdbusconnection.c:5548
 #, c-format
 msgid "Unable to retrieve property %s.%s"
 msgstr "Nepavyko gauti savybės: %s.%s"
 
-#: gio/gdbusconnection.c:5603
+#: gio/gdbusconnection.c:5604
 #, c-format
 msgid "Unable to set property %s.%s"
 msgstr "Nepavyko nustatyti savybės: %s.%s"
 
-#: gio/gdbusconnection.c:5782
+#: gio/gdbusconnection.c:5783
 #, c-format
 msgid "Method “%s” returned type “%s”, but expected “%s”"
 msgstr "Metodas „%s“ grąžino tipą „%s“, bet laukta „%s“"
 
-#: gio/gdbusconnection.c:6858
+#: gio/gdbusconnection.c:6859
 #, c-format
 msgid "Method “%s” on interface “%s” with signature “%s” does not exist"
 msgstr "Metodas „%s“ sąsajoje „%s“ su signatūra „%s“ neegzistuoja"
 
-#: gio/gdbusconnection.c:6979
+#: gio/gdbusconnection.c:6980
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Pomedis %s jau yra eksportuotas"
 
-#: gio/gdbusconnection.c:7268
+#: gio/gdbusconnection.c:7269
 #, c-format
 msgid "Object does not exist at path “%s”"
 msgstr "Objekto kelyje „%s“ nėra"
@@ -1325,38 +1323,38 @@ msgstr "Klaida: %s nėra tinkamas gerai žinomas magistralės pavadinimas.\n"
 msgid "Not authorized to change debug settings"
 msgstr "Neleidžiama keisti derinimo nuostatų"
 
-#: gio/gdesktopappinfo.c:2180 gio/gdesktopappinfo.c:5114
+#: gio/gdesktopappinfo.c:2182 gio/gdesktopappinfo.c:5113
 msgid "Unnamed"
 msgstr "Nepavadinta"
 
-#: gio/gdesktopappinfo.c:2590
+#: gio/gdesktopappinfo.c:2592
 msgid "Desktop file didn’t specify Exec field"
 msgstr "Darbalaukio failas nenurodė Exec lauko"
 
-#: gio/gdesktopappinfo.c:2898
+#: gio/gdesktopappinfo.c:2891
 msgid "Unable to find terminal required for application"
 msgstr "Nerastas terminalas, reikalingas programai"
 
-#: gio/gdesktopappinfo.c:3632
+#: gio/gdesktopappinfo.c:3631
 #, c-format
 msgid "Can’t create user application configuration folder %s: %s"
 msgstr "Nepavyko sukurti naudotojo nustatymų aplanko %s: %s"
 
-#: gio/gdesktopappinfo.c:3636
+#: gio/gdesktopappinfo.c:3635
 #, c-format
 msgid "Can’t create user MIME configuration folder %s: %s"
 msgstr "Nepavyko sukurti naudotojo MIME nustatymų aplanko %s: %s"
 
-#: gio/gdesktopappinfo.c:3878 gio/gdesktopappinfo.c:3902
+#: gio/gdesktopappinfo.c:3877 gio/gdesktopappinfo.c:3901
 msgid "Application information lacks an identifier"
 msgstr "Programos informacijai trūksta identifikatoriaus"
 
-#: gio/gdesktopappinfo.c:4138
+#: gio/gdesktopappinfo.c:4137
 #, c-format
 msgid "Can’t create user desktop file %s"
 msgstr "Nepavyko sukurti naudotojo darbalaukio failo %s"
 
-#: gio/gdesktopappinfo.c:4274
+#: gio/gdesktopappinfo.c:4273
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Specialus apibrėžimas %s"
@@ -1490,7 +1488,6 @@ msgstr "Failų pavadinimuose negali būti '%c'"
 
 #: gio/gfile.c:6993 gio/gfile.c:7119
 #, c-format
-#| msgid "Failed to change to directory “%s” (%s)"
 msgid "Failed to create a temporary directory for template “%s”: %s"
 msgstr "Nepavyko sukurti laikinojo aplanko šablonui „%s“: %s"
 
@@ -1754,11 +1751,11 @@ msgid "Error writing to stdout"
 msgstr "Klaida rašant į standartinę išvestį"
 
 #. Translators: commandline placeholder
-#: gio/gio-tool-cat.c:135 gio/gio-tool-info.c:342 gio/gio-tool-list.c:173
+#: gio/gio-tool-cat.c:135 gio/gio-tool-info.c:379 gio/gio-tool-list.c:173
 #: gio/gio-tool-mkdir.c:50 gio/gio-tool-monitor.c:39 gio/gio-tool-monitor.c:41
 #: gio/gio-tool-monitor.c:43 gio/gio-tool-monitor.c:45
-#: gio/gio-tool-monitor.c:206 gio/gio-tool-mount.c:1201 gio/gio-tool-open.c:72
-#: gio/gio-tool-remove.c:50 gio/gio-tool-rename.c:47 gio/gio-tool-set.c:93
+#: gio/gio-tool-monitor.c:206 gio/gio-tool-mount.c:1202 gio/gio-tool-open.c:72
+#: gio/gio-tool-remove.c:50 gio/gio-tool-rename.c:47 gio/gio-tool-set.c:95
 #: gio/gio-tool-trash.c:222 gio/gio-tool-tree.c:241
 msgid "LOCATION"
 msgstr "VIETA"
@@ -1777,8 +1774,8 @@ msgstr ""
 "GIO vietas vietoj vietinių failų: pavyzdžiui, galite kaip vietą naudoti\n"
 "smb://serveris/išteklius/failas.txt."
 
-#: gio/gio-tool-cat.c:164 gio/gio-tool-info.c:373 gio/gio-tool-mkdir.c:78
-#: gio/gio-tool-monitor.c:231 gio/gio-tool-mount.c:1252 gio/gio-tool-open.c:98
+#: gio/gio-tool-cat.c:164 gio/gio-tool-info.c:410 gio/gio-tool-mkdir.c:78
+#: gio/gio-tool-monitor.c:231 gio/gio-tool-mount.c:1253 gio/gio-tool-open.c:98
 #: gio/gio-tool-remove.c:74 gio/gio-tool-trash.c:303
 msgid "No locations given"
 msgstr "Nepateikta vietų"
@@ -1866,72 +1863,65 @@ msgstr "Kuriuos atributus gauti"
 msgid "ATTRIBUTES"
 msgstr "ATRIBUTAI"
 
-#: gio/gio-tool-info.c:42 gio/gio-tool-list.c:40 gio/gio-tool-set.c:36
+#: gio/gio-tool-info.c:42 gio/gio-tool-list.c:40 gio/gio-tool-set.c:37
 msgid "Don’t follow symbolic links"
 msgstr "Nesekti simbolinėmis nuorodomis"
 
-#: gio/gio-tool-info.c:80
+#: gio/gio-tool-info.c:105
 msgid "attributes:\n"
 msgstr "atributai:\n"
 
-#. Translators: This is a noun and represents and attribute of a file
-#: gio/gio-tool-info.c:136
+#: gio/gio-tool-info.c:165 gio/gio-tool-info.c:174
 #, c-format
 msgid "display name: %s\n"
 msgstr "rodomas pavadinimas: %s\n"
 
-#. Translators: This is a noun and represents and attribute of a file
-#: gio/gio-tool-info.c:141
-#, c-format
-msgid "edit name: %s\n"
-msgstr "keičiamas pavadinimas: %s\n"
-
-#: gio/gio-tool-info.c:147
+#: gio/gio-tool-info.c:182
 #, c-format
 msgid "name: %s\n"
 msgstr "pavadinimas: %s\n"
 
-#: gio/gio-tool-info.c:154
+#: gio/gio-tool-info.c:189
 #, c-format
 msgid "type: %s\n"
 msgstr "tipas: %s\n"
 
-#: gio/gio-tool-info.c:160
+#: gio/gio-tool-info.c:195
 msgid "size: "
 msgstr "dydis: "
 
-#: gio/gio-tool-info.c:165
+#: gio/gio-tool-info.c:200
 msgid "hidden\n"
 msgstr "paslėptas\n"
 
-#: gio/gio-tool-info.c:168
+#: gio/gio-tool-info.c:203
 #, c-format
 msgid "uri: %s\n"
 msgstr "uri: %s\n"
 
-#: gio/gio-tool-info.c:174
+#: gio/gio-tool-info.c:210
 #, c-format
 msgid "local path: %s\n"
 msgstr "vietinis kelias: %s\n"
 
-#: gio/gio-tool-info.c:207
+#: gio/gio-tool-info.c:244
 #, c-format
 msgid "unix mount: %s%s %s %s %s\n"
 msgstr "unix prijungimas: %s%s %s %s %s\n"
 
-#: gio/gio-tool-info.c:288
+#: gio/gio-tool-info.c:325
 msgid "Settable attributes:\n"
 msgstr "Nustatomi atributai:\n"
 
-#: gio/gio-tool-info.c:312
+#: gio/gio-tool-info.c:349
 msgid "Writable attribute namespaces:\n"
 msgstr "Rašomų atributų vardų sritys:\n"
 
-#: gio/gio-tool-info.c:347
+#: gio/gio-tool-info.c:384
 msgid "Show information about locations."
 msgstr "Rodyti informaciją apie vietas."
 
-#: gio/gio-tool-info.c:349
+#: gio/gio-tool-info.c:386
 msgid ""
 "gio info is similar to the traditional ls utility, but using GIO\n"
 "locations instead of local files: for example, you can use something\n"
@@ -2199,19 +2189,19 @@ msgstr "Prijungti TCRYPT paslėptą tomą"
 msgid "Mount a TCRYPT system volume"
 msgstr "Prijungti TCRYPT sisteminį tomą"
 
-#: gio/gio-tool-mount.c:267 gio/gio-tool-mount.c:299
+#: gio/gio-tool-mount.c:268 gio/gio-tool-mount.c:300
 msgid "Anonymous access denied"
 msgstr "Neleidžiama anoniminė prieiga"
 
-#: gio/gio-tool-mount.c:524
+#: gio/gio-tool-mount.c:525
 msgid "No drive for device file"
 msgstr "Nėra laikmenos ar įrenginio failo"
 
-#: gio/gio-tool-mount.c:1016
+#: gio/gio-tool-mount.c:1017
 msgid "No volume for given ID"
 msgstr "Nėra laikmenos pateiktam ID"
 
-#: gio/gio-tool-mount.c:1205
+#: gio/gio-tool-mount.c:1206
 msgid "Mount or unmount the locations."
 msgstr "Prijungti ar atjungti vietas."
 
@@ -2266,7 +2256,7 @@ msgstr "Pervadinti failą."
 msgid "Missing argument"
 msgstr "Trūksta argumento"
 
-#: gio/gio-tool-rename.c:78 gio/gio-tool-save.c:192 gio/gio-tool-set.c:141
+#: gio/gio-tool-rename.c:78 gio/gio-tool-save.c:192 gio/gio-tool-set.c:150
 msgid "Too many arguments"
 msgstr "Per daug argumentų"
 
@@ -2322,39 +2312,44 @@ msgstr "Skaityti iš standartinės įvesties ir įrašyti PASKIRTYJE."
 msgid "No destination given"
 msgstr "Nepateikta paskirtis"
 
-#: gio/gio-tool-set.c:35
+#: gio/gio-tool-set.c:36
 msgid "Type of the attribute"
 msgstr "Atributo tipas"
 
-#: gio/gio-tool-set.c:35
+#: gio/gio-tool-set.c:36
 msgid "TYPE"
 msgstr "TYPE"
 
-#: gio/gio-tool-set.c:93
+#: gio/gio-tool-set.c:38
+#| msgid "Set a file attribute"
+msgid "Unset given attribute"
+msgstr "Atstatyti nurodytą atributą"
+
+#: gio/gio-tool-set.c:95
 msgid "ATTRIBUTE"
 msgstr "ATRIBUTAS"
 
-#: gio/gio-tool-set.c:93
+#: gio/gio-tool-set.c:95
 msgid "VALUE"
 msgstr "VERTĖ"
 
-#: gio/gio-tool-set.c:97
+#: gio/gio-tool-set.c:99
 msgid "Set a file attribute of LOCATION."
 msgstr "Nustatyti VIETOS failo atributą."
 
-#: gio/gio-tool-set.c:117
+#: gio/gio-tool-set.c:119
 msgid "Location not specified"
 msgstr "Nenurodyta vieta"
 
-#: gio/gio-tool-set.c:124
+#: gio/gio-tool-set.c:126
 msgid "Attribute not specified"
 msgstr "Nenurodytas atributas"
 
-#: gio/gio-tool-set.c:134
+#: gio/gio-tool-set.c:143
 msgid "Value not specified"
 msgstr "Nenurodyta vieta"
 
-#: gio/gio-tool-set.c:184
+#: gio/gio-tool-set.c:193
 #, c-format
 msgid "Invalid attribute type “%s”"
 msgstr "Netinkamas atributo tipas „%s“"
@@ -3160,132 +3155,133 @@ msgstr "Perkėlimas tarp prijungimo taškų nepalaikomas"
 msgid "Could not determine the disk usage of %s: %s"
 msgstr "Nepavyko nustatyti %s disko naudojimo: %s"
 
-#: gio/glocalfileinfo.c:773
+#: gio/glocalfileinfo.c:775
 msgid "Attribute value must be non-NULL"
 msgstr "Atributo reikšmė turi būti netuščia"
 
-#: gio/glocalfileinfo.c:780
-msgid "Invalid attribute type (string expected)"
-msgstr "netaisyklingas atributo tipas (tikimasi simbolių sekos)"
+#: gio/glocalfileinfo.c:782
+#| msgid "Invalid attribute type (string expected)"
+msgid "Invalid attribute type (string or invalid expected)"
+msgstr "Netaisyklingas atributo tipas (tikimasi simbolių sekos)"
 
-#: gio/glocalfileinfo.c:787
+#: gio/glocalfileinfo.c:789
 msgid "Invalid extended attribute name"
 msgstr "netaisyklingas išplėstinio atributo pavadinimas"
 
-#: gio/glocalfileinfo.c:827
+#: gio/glocalfileinfo.c:840
 #, c-format
 msgid "Error setting extended attribute “%s”: %s"
 msgstr "Klaida nustatant išplėstinį atributą „%s“: %s"
 
-#: gio/glocalfileinfo.c:1725 gio/win32/gwinhttpfile.c:191
+#: gio/glocalfileinfo.c:1738 gio/win32/gwinhttpfile.c:191
 msgid " (invalid encoding)"
 msgstr " (netaisyklinga koduotė)"
 
-#: gio/glocalfileinfo.c:1884 gio/glocalfileoutputstream.c:945
+#: gio/glocalfileinfo.c:1897 gio/glocalfileoutputstream.c:945
 #: gio/glocalfileoutputstream.c:997
 #, c-format
 msgid "Error when getting information for file “%s”: %s"
 msgstr "Klaida gaunant informaciją apie failą „%s“: %s"
 
-#: gio/glocalfileinfo.c:2150
+#: gio/glocalfileinfo.c:2163
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr "Klaida gaunant informaciją failo aprašymui: %s"
 
-#: gio/glocalfileinfo.c:2195
+#: gio/glocalfileinfo.c:2208
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Klaidingas atributo tipas (tikimasi uint32)"
 
-#: gio/glocalfileinfo.c:2213
+#: gio/glocalfileinfo.c:2226
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Klaidingas atributo tipas (tikimasi uint64)"
 
-#: gio/glocalfileinfo.c:2232 gio/glocalfileinfo.c:2251
+#: gio/glocalfileinfo.c:2245 gio/glocalfileinfo.c:2264
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Klaidingas atributo tipas (tikimasi baitų sekos)"
 
-#: gio/glocalfileinfo.c:2298
+#: gio/glocalfileinfo.c:2311
 msgid "Cannot set permissions on symlinks"
 msgstr "Simbolinėms nuorodoms teisių nustatyti negalima"
 
-#: gio/glocalfileinfo.c:2314
+#: gio/glocalfileinfo.c:2327
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Klaida nustatant teises: %s"
 
-#: gio/glocalfileinfo.c:2365
+#: gio/glocalfileinfo.c:2378
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Klaida nustatant savininką: %s"
 
-#: gio/glocalfileinfo.c:2388
+#: gio/glocalfileinfo.c:2401
 msgid "symlink must be non-NULL"
 msgstr "simbolinė nuoroda turi būti netuščia"
 
-#: gio/glocalfileinfo.c:2398 gio/glocalfileinfo.c:2417
-#: gio/glocalfileinfo.c:2428
+#: gio/glocalfileinfo.c:2411 gio/glocalfileinfo.c:2430
+#: gio/glocalfileinfo.c:2441
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Klaida nustatant simbolinę nuorodą: %s"
 
-#: gio/glocalfileinfo.c:2407
+#: gio/glocalfileinfo.c:2420
 msgid "Error setting symlink: file is not a symlink"
 msgstr "Klaida, nustatant simbolinę nuorodą: failas nėra simbolinė nuoroda"
 
-#: gio/glocalfileinfo.c:2479
+#: gio/glocalfileinfo.c:2492
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld are negative"
 msgstr "Papildomos nanosekundės %d UNIX laiko žymai %lld yra neigiamos"
 
-#: gio/glocalfileinfo.c:2488
+#: gio/glocalfileinfo.c:2501
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld reach 1 second"
 msgstr "Papildomos nanosekundės %d UNIX laiko žymai %lld pasiekia 1 sekundę"
 
-#: gio/glocalfileinfo.c:2498
+#: gio/glocalfileinfo.c:2511
 #, c-format
 msgid "UNIX timestamp %lld does not fit into 64 bits"
 msgstr "UNIX laiko žyma %lld netelpa į 64 bitus"
 
-#: gio/glocalfileinfo.c:2509
+#: gio/glocalfileinfo.c:2522
 #, c-format
 msgid "UNIX timestamp %lld is outside of the range supported by Windows"
 msgstr "UNIX laiko žyma %lld yra už Windows palaikomų ribų"
 
-#: gio/glocalfileinfo.c:2612
+#: gio/glocalfileinfo.c:2625
 #, c-format
 msgid "File name “%s” cannot be converted to UTF-16"
 msgstr "Failo pavadinimo „%s“ negalima kontertuoti į UTF-16"
 
-#: gio/glocalfileinfo.c:2631
+#: gio/glocalfileinfo.c:2644
 #, c-format
 msgid "File “%s” cannot be opened: Windows Error %lu"
 msgstr "Failo „%s“ negalima atverti: Windows klaida %lu"
 
-#: gio/glocalfileinfo.c:2644
+#: gio/glocalfileinfo.c:2657
 #, c-format
 msgid "Error setting modification or access time for file “%s”: %lu"
 msgstr "Klaida nustatant pakeitimo arba prieigos laiką failui „%s“: %lu"
 
-#: gio/glocalfileinfo.c:2785 gio/glocalfileinfo.c:2797
+#: gio/glocalfileinfo.c:2798 gio/glocalfileinfo.c:2810
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Klaida nustatant pakeitimo arba prieigos laiką: %s"
 
-#: gio/glocalfileinfo.c:2820
+#: gio/glocalfileinfo.c:2833
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux kontekstas būti nelygus NULL"
 
-#: gio/glocalfileinfo.c:2827
+#: gio/glocalfileinfo.c:2840
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux šioje sistemoje neįjungtas"
 
-#: gio/glocalfileinfo.c:2837
+#: gio/glocalfileinfo.c:2850
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Klaida nustatant SELinux kontekstą: %s"
 
-#: gio/glocalfileinfo.c:2934
+#: gio/glocalfileinfo.c:2947
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Atributo %s nustatymas nepalaikomas"
@@ -3525,7 +3521,7 @@ msgstr "Neteisinga sritis"
 #: gio/gresource.c:683 gio/gresource.c:945 gio/gresource.c:985
 #: gio/gresource.c:1109 gio/gresource.c:1181 gio/gresource.c:1255
 #: gio/gresource.c:1336 gio/gresourcefile.c:478 gio/gresourcefile.c:601
-#: gio/gresourcefile.c:738
+#: gio/gresourcefile.c:752
 #, c-format
 msgid "The resource at “%s” does not exist"
 msgstr "Ištekliaus ties „%s“ nėra"
@@ -3535,12 +3531,16 @@ msgstr "Ištekliaus ties „%s“ nėra"
 msgid "The resource at “%s” failed to decompress"
 msgstr "Ištekliaus ties „%s“ nepavyko išskleisti"
 
-#: gio/gresourcefile.c:734
+#: gio/gresourcefile.c:658
+msgid "Resource files cannot be renamed"
+msgstr "Išteklių failų negalima pervadinti"
+
+#: gio/gresourcefile.c:748
 #, c-format
 msgid "The resource at “%s” is not a directory"
 msgstr "Išteklius ties „%s“ nėra katalogas"
 
-#: gio/gresourcefile.c:942
+#: gio/gresourcefile.c:956
 msgid "Input stream doesn’t implement seek"
 msgstr "Įvesties srautas nerealizuoja nenuoseklaus skaitymo"
 
@@ -4086,11 +4086,11 @@ msgstr "Nepavyko prisijungti prie %s: "
 msgid "Could not connect: "
 msgstr "Nepavyko prisijungti: "
 
-#: gio/gsocketclient.c:1204 gio/gsocketclient.c:1805
+#: gio/gsocketclient.c:1204 gio/gsocketclient.c:1807
 msgid "Proxying over a non-TCP connection is not supported."
 msgstr "Bandymas naudoti proxy ne per TCP ryšį nepalaikomas."
 
-#: gio/gsocketclient.c:1236 gio/gsocketclient.c:1834
+#: gio/gsocketclient.c:1236 gio/gsocketclient.c:1836
 #, c-format
 msgid "Proxy protocol “%s” is not supported."
 msgstr "Tarpinio serverio protokolas „%s“ nepalaikomas."
@@ -4191,7 +4191,7 @@ msgstr "SOCKSv5 proxy nepalaiko pateikto adreso tipo."
 msgid "Unknown SOCKSv5 proxy error."
 msgstr "Nežinoma SOCKSv5 proxy klaida."
 
-#: gio/gtestdbus.c:614 glib/gspawn-win32.c:303
+#: gio/gtestdbus.c:614 glib/gspawn-win32.c:354
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
@@ -4586,25 +4586,25 @@ msgid "The pathname “%s” is not an absolute path"
 msgstr "Kelias „%s“ nėra absoliutus"
 
 #. Translators: this is the preferred format for expressing the date and the time
-#: glib/gdatetime.c:226
+#: glib/gdatetime.c:228
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
 msgstr "%a, %Y m. %b %e d., %H:%M:%S"
 
 #. Translators: this is the preferred format for expressing the date
-#: glib/gdatetime.c:229
+#: glib/gdatetime.c:231
 msgctxt "GDateTime"
 msgid "%m/%d/%y"
 msgstr "%Y-%m-%d"
 
 #. Translators: this is the preferred format for expressing the time
-#: glib/gdatetime.c:232
+#: glib/gdatetime.c:234
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
 msgstr "%H:%M:%S"
 
 #. Translators: this is the preferred format for expressing 12 hour time
-#: glib/gdatetime.c:235
+#: glib/gdatetime.c:237
 msgctxt "GDateTime"
 msgid "%I:%M:%S %p"
 msgstr "%I:%M:%S"
@@ -4625,62 +4625,62 @@ msgstr "%I:%M:%S"
 #. * non-European) there is no difference between the standalone and
 #. * complete date form.
 #.
-#: glib/gdatetime.c:274
+#: glib/gdatetime.c:276
 msgctxt "full month name"
 msgid "January"
 msgstr "sausis"
 
-#: glib/gdatetime.c:276
+#: glib/gdatetime.c:278
 msgctxt "full month name"
 msgid "February"
 msgstr "vasaris"
 
-#: glib/gdatetime.c:278
+#: glib/gdatetime.c:280
 msgctxt "full month name"
 msgid "March"
 msgstr "kovas"
 
-#: glib/gdatetime.c:280
+#: glib/gdatetime.c:282
 msgctxt "full month name"
 msgid "April"
 msgstr "balandis"
 
-#: glib/gdatetime.c:282
+#: glib/gdatetime.c:284
 msgctxt "full month name"
 msgid "May"
 msgstr "gegužė"
 
-#: glib/gdatetime.c:284
+#: glib/gdatetime.c:286
 msgctxt "full month name"
 msgid "June"
 msgstr "birželis"
 
-#: glib/gdatetime.c:286
+#: glib/gdatetime.c:288
 msgctxt "full month name"
 msgid "July"
 msgstr "liepa"
 
-#: glib/gdatetime.c:288
+#: glib/gdatetime.c:290
 msgctxt "full month name"
 msgid "August"
 msgstr "rugpjūtis"
 
-#: glib/gdatetime.c:290
+#: glib/gdatetime.c:292
 msgctxt "full month name"
 msgid "September"
 msgstr "rugsėjis"
 
-#: glib/gdatetime.c:292
+#: glib/gdatetime.c:294
 msgctxt "full month name"
 msgid "October"
 msgstr "spalis"
 
-#: glib/gdatetime.c:294
+#: glib/gdatetime.c:296
 msgctxt "full month name"
 msgid "November"
 msgstr "lapkritis"
 
-#: glib/gdatetime.c:296
+#: glib/gdatetime.c:298
 msgctxt "full month name"
 msgid "December"
 msgstr "gruodis"
@@ -4702,132 +4702,132 @@ msgstr "gruodis"
 #. * other platform.  Here are abbreviated month names in a form
 #. * appropriate when they are used standalone.
 #.
-#: glib/gdatetime.c:328
+#: glib/gdatetime.c:330
 msgctxt "abbreviated month name"
 msgid "Jan"
 msgstr "saus."
 
-#: glib/gdatetime.c:330
+#: glib/gdatetime.c:332
 msgctxt "abbreviated month name"
 msgid "Feb"
 msgstr "vas."
 
-#: glib/gdatetime.c:332
+#: glib/gdatetime.c:334
 msgctxt "abbreviated month name"
 msgid "Mar"
 msgstr "kov."
 
-#: glib/gdatetime.c:334
+#: glib/gdatetime.c:336
 msgctxt "abbreviated month name"
 msgid "Apr"
 msgstr "bal."
 
-#: glib/gdatetime.c:336
+#: glib/gdatetime.c:338
 msgctxt "abbreviated month name"
 msgid "May"
 msgstr "geg."
 
-#: glib/gdatetime.c:338
+#: glib/gdatetime.c:340
 msgctxt "abbreviated month name"
 msgid "Jun"
 msgstr "birž."
 
-#: glib/gdatetime.c:340
+#: glib/gdatetime.c:342
 msgctxt "abbreviated month name"
 msgid "Jul"
 msgstr "liep."
 
-#: glib/gdatetime.c:342
+#: glib/gdatetime.c:344
 msgctxt "abbreviated month name"
 msgid "Aug"
 msgstr "rugp."
 
-#: glib/gdatetime.c:344
+#: glib/gdatetime.c:346
 msgctxt "abbreviated month name"
 msgid "Sep"
 msgstr "rugs."
 
-#: glib/gdatetime.c:346
+#: glib/gdatetime.c:348
 msgctxt "abbreviated month name"
 msgid "Oct"
 msgstr "spal."
 
-#: glib/gdatetime.c:348
+#: glib/gdatetime.c:350
 msgctxt "abbreviated month name"
 msgid "Nov"
 msgstr "lapkr."
 
-#: glib/gdatetime.c:350
+#: glib/gdatetime.c:352
 msgctxt "abbreviated month name"
 msgid "Dec"
 msgstr "gruod."
 
-#: glib/gdatetime.c:365
+#: glib/gdatetime.c:367
 msgctxt "full weekday name"
 msgid "Monday"
 msgstr "Pirmadienis"
 
-#: glib/gdatetime.c:367
+#: glib/gdatetime.c:369
 msgctxt "full weekday name"
 msgid "Tuesday"
 msgstr "Antradienis"
 
-#: glib/gdatetime.c:369
+#: glib/gdatetime.c:371
 msgctxt "full weekday name"
 msgid "Wednesday"
 msgstr "Trečiadienis"
 
-#: glib/gdatetime.c:371
+#: glib/gdatetime.c:373
 msgctxt "full weekday name"
 msgid "Thursday"
 msgstr "Ketvirtadienis"
 
-#: glib/gdatetime.c:373
+#: glib/gdatetime.c:375
 msgctxt "full weekday name"
 msgid "Friday"
 msgstr "Penktadienis"
 
-#: glib/gdatetime.c:375
+#: glib/gdatetime.c:377
 msgctxt "full weekday name"
 msgid "Saturday"
 msgstr "Šeštadienis"
 
-#: glib/gdatetime.c:377
+#: glib/gdatetime.c:379
 msgctxt "full weekday name"
 msgid "Sunday"
 msgstr "Sekmadienis"
 
-#: glib/gdatetime.c:392
+#: glib/gdatetime.c:394
 msgctxt "abbreviated weekday name"
 msgid "Mon"
 msgstr "Pir"
 
-#: glib/gdatetime.c:394
+#: glib/gdatetime.c:396
 msgctxt "abbreviated weekday name"
 msgid "Tue"
 msgstr "Ant"
 
-#: glib/gdatetime.c:396
+#: glib/gdatetime.c:398
 msgctxt "abbreviated weekday name"
 msgid "Wed"
 msgstr "Tre"
 
-#: glib/gdatetime.c:398
+#: glib/gdatetime.c:400
 msgctxt "abbreviated weekday name"
 msgid "Thu"
 msgstr "Ket"
 
-#: glib/gdatetime.c:400
+#: glib/gdatetime.c:402
 msgctxt "abbreviated weekday name"
 msgid "Fri"
 msgstr "Pen"
 
-#: glib/gdatetime.c:402
+#: glib/gdatetime.c:404
 msgctxt "abbreviated weekday name"
 msgid "Sat"
 msgstr "Šeš"
 
-#: glib/gdatetime.c:404
+#: glib/gdatetime.c:406
 msgctxt "abbreviated weekday name"
 msgid "Sun"
 msgstr "Sek"
@@ -4849,62 +4849,62 @@ msgstr "Sek"
 #. * (western European, non-European) there is no difference between the
 #. * standalone and complete date form.
 #.
-#: glib/gdatetime.c:468
+#: glib/gdatetime.c:470
 msgctxt "full month name with day"
 msgid "January"
 msgstr "sausio"
 
-#: glib/gdatetime.c:470
+#: glib/gdatetime.c:472
 msgctxt "full month name with day"
 msgid "February"
 msgstr "vasario"
 
-#: glib/gdatetime.c:472
+#: glib/gdatetime.c:474
 msgctxt "full month name with day"
 msgid "March"
 msgstr "kovo"
 
-#: glib/gdatetime.c:474
+#: glib/gdatetime.c:476
 msgctxt "full month name with day"
 msgid "April"
 msgstr "balandžio"
 
-#: glib/gdatetime.c:476
+#: glib/gdatetime.c:478
 msgctxt "full month name with day"
 msgid "May"
 msgstr "gegužės"
 
-#: glib/gdatetime.c:478
+#: glib/gdatetime.c:480
 msgctxt "full month name with day"
 msgid "June"
 msgstr "birželio"
 
-#: glib/gdatetime.c:480
+#: glib/gdatetime.c:482
 msgctxt "full month name with day"
 msgid "July"
 msgstr "liepos"
 
-#: glib/gdatetime.c:482
+#: glib/gdatetime.c:484
 msgctxt "full month name with day"
 msgid "August"
 msgstr "rugpjūčio"
 
-#: glib/gdatetime.c:484
+#: glib/gdatetime.c:486
 msgctxt "full month name with day"
 msgid "September"
 msgstr "rugsėjo"
 
-#: glib/gdatetime.c:486
+#: glib/gdatetime.c:488
 msgctxt "full month name with day"
 msgid "October"
 msgstr "spalio"
 
-#: glib/gdatetime.c:488
+#: glib/gdatetime.c:490
 msgctxt "full month name with day"
 msgid "November"
 msgstr "lapkričio"
 
-#: glib/gdatetime.c:490
+#: glib/gdatetime.c:492
 msgctxt "full month name with day"
 msgid "December"
 msgstr "gruodžio"
@@ -4926,74 +4926,74 @@ msgstr "gruodžio"
 #. * month names almost ready to copy and paste here.  In other systems
 #. * due to a bug the result is incorrect in some languages.
 #.
-#: glib/gdatetime.c:555
+#: glib/gdatetime.c:557
 msgctxt "abbreviated month name with day"
 msgid "Jan"
 msgstr "saus."
 
-#: glib/gdatetime.c:557
+#: glib/gdatetime.c:559
 msgctxt "abbreviated month name with day"
 msgid "Feb"
 msgstr "vas."
 
-#: glib/gdatetime.c:559
+#: glib/gdatetime.c:561
 msgctxt "abbreviated month name with day"
 msgid "Mar"
 msgstr "kov."
 
-#: glib/gdatetime.c:561
+#: glib/gdatetime.c:563
 msgctxt "abbreviated month name with day"
 msgid "Apr"
 msgstr "bal."
 
-#: glib/gdatetime.c:563
+#: glib/gdatetime.c:565
 msgctxt "abbreviated month name with day"
 msgid "May"
 msgstr "geg."
 
-#: glib/gdatetime.c:565
+#: glib/gdatetime.c:567
 msgctxt "abbreviated month name with day"
 msgid "Jun"
 msgstr "birž."
 
-#: glib/gdatetime.c:567
+#: glib/gdatetime.c:569
 msgctxt "abbreviated month name with day"
 msgid "Jul"
 msgstr "liep."
 
-#: glib/gdatetime.c:569
+#: glib/gdatetime.c:571
 msgctxt "abbreviated month name with day"
 msgid "Aug"
 msgstr "rugp."
 
-#: glib/gdatetime.c:571
+#: glib/gdatetime.c:573
 msgctxt "abbreviated month name with day"
 msgid "Sep"
 msgstr "rugs."
 
-#: glib/gdatetime.c:573
+#: glib/gdatetime.c:575
 msgctxt "abbreviated month name with day"
 msgid "Oct"
 msgstr "spal."
 
-#: glib/gdatetime.c:575
+#: glib/gdatetime.c:577
 msgctxt "abbreviated month name with day"
 msgid "Nov"
 msgstr "lapkr."
 
-#: glib/gdatetime.c:577
+#: glib/gdatetime.c:579
 msgctxt "abbreviated month name with day"
 msgid "Dec"
 msgstr "gruod."
 
 #. Translators: 'before midday' indicator
-#: glib/gdatetime.c:594
+#: glib/gdatetime.c:596
 msgctxt "GDateTime"
 msgid "AM"
 msgstr "AM"
 
 #. Translators: 'after midday' indicator
-#: glib/gdatetime.c:597
+#: glib/gdatetime.c:599
 msgctxt "GDateTime"
 msgid "PM"
 msgstr "PM"
@@ -5497,238 +5497,184 @@ msgstr "%s trūksta argumento"
 msgid "Unknown option %s"
 msgstr "Nežinomas parametras %s"
 
-#: glib/gregex.c:257
+#: glib/gregex.c:436
 msgid "corrupted object"
 msgstr "sugadintas objektas"
 
-#: glib/gregex.c:259
-msgid "internal error or corrupted object"
-msgstr "vidinė klaida arba sugadintas objektas"
-
-#: glib/gregex.c:261
+#: glib/gregex.c:438
 msgid "out of memory"
 msgstr "nebėra atminties"
 
-#: glib/gregex.c:266
+#: glib/gregex.c:443
 msgid "backtracking limit reached"
 msgstr "pasiekta atgalinio sekimo riba"
 
-#: glib/gregex.c:278 glib/gregex.c:286
-msgid "the pattern contains items not supported for partial matching"
-msgstr "šablone yra dalinio atitikimo nepalaikomų elementų"
-
-#: glib/gregex.c:280
+#: glib/gregex.c:454 glib/gregex.c:707 glib/gregex.c:736
 msgid "internal error"
 msgstr "vidinė klaida"
 
-#: glib/gregex.c:288
+#: glib/gregex.c:456
+msgid "the pattern contains items not supported for partial matching"
+msgstr "šablone yra dalinio atitikimo nepalaikomų elementų"
+
+#: glib/gregex.c:458
 msgid "back references as conditions are not supported for partial matching"
 msgstr "atgalinės nuorodos kaip sąlygos nepalaikomos daliniam atitikimui"
 
-#: glib/gregex.c:297
+#: glib/gregex.c:464
 msgid "recursion limit reached"
 msgstr "pasiekta rekursijos riba"
 
-#: glib/gregex.c:299
-msgid "invalid combination of newline flags"
-msgstr "netinkama naujos eilutės vėliavėlių kombinacija"
-
-#: glib/gregex.c:301
+#: glib/gregex.c:466
 msgid "bad offset"
 msgstr "blogas poslinkis"
 
-#: glib/gregex.c:303
-msgid "short utf8"
-msgstr "trumpas utf8"
-
-#: glib/gregex.c:305
+#: glib/gregex.c:468
 msgid "recursion loop"
 msgstr "rekursijos ciklas"
 
-#: glib/gregex.c:309
+#. should not happen in GRegex since we check modes before each match
+#: glib/gregex.c:471
+msgid "matching mode is requested that was not compiled for JIT"
+msgstr "prašoma atitikties veiksena, kuri nebuvo sukompiliuota JIT"
+
+#: glib/gregex.c:475
 msgid "unknown error"
 msgstr "nežinoma klaida"
 
-#: glib/gregex.c:329
+#: glib/gregex.c:496
 msgid "\\ at end of pattern"
 msgstr "\\ šablono pabaigoje"
 
-#: glib/gregex.c:332
+#: glib/gregex.c:500
 msgid "\\c at end of pattern"
 msgstr "\\c šablono pabaigoje"
 
-#: glib/gregex.c:335
+#: glib/gregex.c:505
 msgid "unrecognized character following \\"
 msgstr "neatpažintas simbolis po \\"
 
-#: glib/gregex.c:338
+#: glib/gregex.c:509
 msgid "numbers out of order in {} quantifier"
 msgstr "skaičiai ne iš eilės {} kvantoriuje"
 
-#: glib/gregex.c:341
+#: glib/gregex.c:513
 msgid "number too big in {} quantifier"
 msgstr "skaičius per didelis {} kvantoriuje"
 
-#: glib/gregex.c:344
+#: glib/gregex.c:517
 msgid "missing terminating ] for character class"
 msgstr "trūksta baigiamojo ] simbolio klasei"
 
-#: glib/gregex.c:347
+#: glib/gregex.c:521
 msgid "invalid escape sequence in character class"
 msgstr "klaidinga speciali seka simbolio klasėje"
 
-#: glib/gregex.c:350
+#: glib/gregex.c:525
 msgid "range out of order in character class"
 msgstr "ruožas ne iš eilės simbolio klasėje"
 
-#: glib/gregex.c:353
+#: glib/gregex.c:530
 msgid "nothing to repeat"
 msgstr "nėra ką kartoti"
 
-#: glib/gregex.c:357
-msgid "unexpected repeat"
-msgstr "netikėtas pakartojimas"
-
-#: glib/gregex.c:360
+#: glib/gregex.c:534
 msgid "unrecognized character after (? or (?-"
 msgstr "neatpažintas simbolis po (? arba (?-"
 
-#: glib/gregex.c:363
+#: glib/gregex.c:538
 msgid "POSIX named classes are supported only within a class"
 msgstr "klasės POSIX vardais leidžiamos tik klasių viduje"
 
-#: glib/gregex.c:366
-msgid "missing terminating )"
-msgstr "trūksta baigiamojo )"
-
-#: glib/gregex.c:369
-msgid "reference to non-existent subpattern"
-msgstr "nuoroda į neegzistuojantį pošablonį"
-
-#: glib/gregex.c:372
-msgid "missing ) after comment"
-msgstr "trūksta ) po komentaro"
-
-#: glib/gregex.c:375
-msgid "regular expression is too large"
-msgstr "reguliarioji išraiška per didelė"
-
-#: glib/gregex.c:378
-msgid "failed to get memory"
-msgstr "nepavyko rezervuoti atminties"
-
-#: glib/gregex.c:382
-msgid ") without opening ("
-msgstr ") be atveriamojo ("
-
-#: glib/gregex.c:386
-msgid "code overflow"
-msgstr "kodo perviršis"
-
-#: glib/gregex.c:390
-msgid "unrecognized character after (?<"
-msgstr "neatpažintas simbolis po (?<"
-
-#: glib/gregex.c:393
-msgid "lookbehind assertion is not fixed length"
-msgstr "žiūros atgal teiginys nefiksuoto ilgio"
-
-#: glib/gregex.c:396
-msgid "malformed number or name after (?("
-msgstr "netaisyklingas skaičius ar vardas po (?("
-
-#: glib/gregex.c:399
-msgid "conditional group contains more than two branches"
-msgstr "sąlyginė grupė turi daugiau negu dvi šakas"
-
-#: glib/gregex.c:402
-msgid "assertion expected after (?("
-msgstr "tikimasi teiginio po (?("
-
-#. translators: '(?R' and '(?[+-]digits' are both meant as (groups of)
-#. * sequences here, '(?-54' would be an example for the second group.
-#.
-#: glib/gregex.c:409
-msgid "(?R or (?[+-]digits must be followed by )"
-msgstr "po (?R arba (?[+-]skaitmenys turi būti )"
-
-#: glib/gregex.c:412
-msgid "unknown POSIX class name"
-msgstr "nežinomas POSIX klasės vardas"
-
-#: glib/gregex.c:415
+#: glib/gregex.c:542
 msgid "POSIX collating elements are not supported"
 msgstr "POSIX gretinimo elementai nepalaikomi"
 
-#: glib/gregex.c:418
+#: glib/gregex.c:548
+msgid "missing terminating )"
+msgstr "trūksta baigiamojo )"
+
+#: glib/gregex.c:552
+msgid "reference to non-existent subpattern"
+msgstr "nuoroda į neegzistuojantį pošablonį"
+
+#: glib/gregex.c:556
+msgid "missing ) after comment"
+msgstr "trūksta ) po komentaro"
+
+#: glib/gregex.c:560
+msgid "regular expression is too large"
+msgstr "reguliarioji išraiška per didelė"
+
+#: glib/gregex.c:564
+msgid "malformed number or name after (?("
+msgstr "netaisyklingas skaičius ar vardas po (?("
+
+#: glib/gregex.c:568
+msgid "lookbehind assertion is not fixed length"
+msgstr "žiūros atgal teiginys nefiksuoto ilgio"
+
+#: glib/gregex.c:572
+msgid "conditional group contains more than two branches"
+msgstr "sąlyginė grupė turi daugiau negu dvi šakas"
+
+#: glib/gregex.c:576
+msgid "assertion expected after (?("
+msgstr "tikimasi teiginio po (?("
+
+#: glib/gregex.c:580
+msgid "a numbered reference must not be zero"
+msgstr "numeruota nuoroda turi būti ne nulis"
+
+#: glib/gregex.c:584
+msgid "unknown POSIX class name"
+msgstr "nežinomas POSIX klasės vardas"
+
+#: glib/gregex.c:589
 msgid "character value in \\x{...} sequence is too large"
 msgstr "simbolio reikšmė \\x{…} sekoje per didelė"
 
-#: glib/gregex.c:421
-msgid "invalid condition (?(0)"
-msgstr "netaisyklinga sąlygą (?(0)"
-
-#: glib/gregex.c:424
+#: glib/gregex.c:593
 msgid "\\C not allowed in lookbehind assertion"
 msgstr "\\C neleistinas žiūros atgal teiginyje"
 
-#: glib/gregex.c:431
-msgid "escapes \\L, \\l, \\N{name}, \\U, and \\u are not supported"
-msgstr "pakaitos simboliai \\L, \\l, \\N{name}, \\U, and \\u nepalaikomi"
-
-#: glib/gregex.c:434
-msgid "recursive call could loop indefinitely"
-msgstr "rekursyvus iškvietimas gali veikti be galo"
-
-#: glib/gregex.c:438
-msgid "unrecognized character after (?P"
-msgstr "neatpažintas simbolis po (?P"
-
-#: glib/gregex.c:441
+#: glib/gregex.c:597
 msgid "missing terminator in subpattern name"
 msgstr "trūksta baigiamojo simbolio pošablonio pavadinime"
 
-#: glib/gregex.c:444
+#: glib/gregex.c:601
 msgid "two named subpatterns have the same name"
 msgstr "du vardiniai pošabloniai turi tą patį vardą"
 
-#: glib/gregex.c:447
+#: glib/gregex.c:605
 msgid "malformed \\P or \\p sequence"
 msgstr "netaisyklinga \\P arba \\p seka"
 
-#: glib/gregex.c:450
+#: glib/gregex.c:609
 msgid "unknown property name after \\P or \\p"
 msgstr "nežinomas savybės vardas po \\P arba \\p"
 
-#: glib/gregex.c:453
+#: glib/gregex.c:613
 msgid "subpattern name is too long (maximum 32 characters)"
 msgstr "pošablonio vardas per ilgas (turi būti iki 32 simbolių)"
 
-#: glib/gregex.c:456
+#: glib/gregex.c:617
 msgid "too many named subpatterns (maximum 10,000)"
 msgstr "per daug vardinių pošablonių (iki 10000)"
 
-#: glib/gregex.c:459
+#: glib/gregex.c:621
 msgid "octal value is greater than \\377"
 msgstr "aštuntainė reikšmė didesnė už \\377"
 
-#: glib/gregex.c:463
-msgid "overran compiling workspace"
-msgstr "perpildyta kompiliavimo darbo sritis"
-
-#: glib/gregex.c:467
-msgid "previously-checked referenced subpattern not found"
-msgstr "anksčiau tikrintas nurodytas pošablonis nerastas"
-
-#: glib/gregex.c:470
+#: glib/gregex.c:625
 msgid "DEFINE group contains more than one branch"
 msgstr "DEFINE grupėje yra daugiau negu viena šaka"
 
-#: glib/gregex.c:473
+#: glib/gregex.c:629
 msgid "inconsistent NEWLINE options"
 msgstr "nenuoseklūs NEWLINE parametrai"
 
-#: glib/gregex.c:476
+#: glib/gregex.c:633
 msgid ""
 "\\g is not followed by a braced, angle-bracketed, or quoted name or number, "
 "or by a plain number"
@@ -5736,131 +5682,119 @@ msgstr ""
 "po \\g nėra vardo riestiniuose arba lenktiniuose skliaustuose ar teigiamo "
 "skaičiaus, ar tiesiog skaičiaus"
 
-#: glib/gregex.c:480
-msgid "a numbered reference must not be zero"
-msgstr "numeruota nuoroda turi būti ne nulis"
-
-#: glib/gregex.c:483
+#: glib/gregex.c:638
 msgid "an argument is not allowed for (*ACCEPT), (*FAIL), or (*COMMIT)"
 msgstr "argumentas neleidžiamas veiksmams (*ACCEPT), (*FAIL), ir (*COMMIT)"
 
-#: glib/gregex.c:486
+#: glib/gregex.c:642
 msgid "(*VERB) not recognized"
 msgstr "(*VERB) neatpažintas"
 
-#: glib/gregex.c:489
+#: glib/gregex.c:646
 msgid "number is too big"
 msgstr "numeris per didelis"
 
-#: glib/gregex.c:492
+#: glib/gregex.c:650
 msgid "missing subpattern name after (?&"
 msgstr "trūksta baigiamojo simbolio pošablonio po (?&"
 
-#: glib/gregex.c:495
-msgid "digit expected after (?+"
-msgstr "laukta skaitmens po (?+"
-
-#: glib/gregex.c:498
-msgid "] is an invalid data character in JavaScript compatibility mode"
-msgstr "] yra netinkamas duomenų simbolis JavaScript suderinamumo veiksenoje"
-
-#: glib/gregex.c:501
+#: glib/gregex.c:654
 msgid "different names for subpatterns of the same number are not allowed"
 msgstr "skirtingi vardai to paties skaičiaus pošabloniams nėra leistini"
 
-#: glib/gregex.c:504
+#: glib/gregex.c:658
 msgid "(*MARK) must have an argument"
 msgstr "(*MARK) privalo turėti argumentą"
 
-#: glib/gregex.c:507
+#: glib/gregex.c:662
 msgid "\\c must be followed by an ASCII character"
 msgstr "Po \\c turi būti ASCII simbolis"
 
-#: glib/gregex.c:510
+#: glib/gregex.c:666
 msgid "\\k is not followed by a braced, angle-bracketed, or quoted name"
 msgstr ""
 "po \\k nėra vardo riestiniuose arba lenktiniuose skliaustuose arba kabutėse"
 
-#: glib/gregex.c:513
+#: glib/gregex.c:670
 msgid "\\N is not supported in a class"
 msgstr "\\N nepalaikomas klasėje"
 
-#: glib/gregex.c:516
-msgid "too many forward references"
-msgstr "per daug nuorodų tolyn"
-
-#: glib/gregex.c:519
+#: glib/gregex.c:674
 msgid "name is too long in (*MARK), (*PRUNE), (*SKIP), or (*THEN)"
 msgstr "pavadinimas yra per ilgas (*MARK), (*PRUNE), (*SKIP), ir (*THEN)"
 
-#: glib/gregex.c:522
-msgid "character value in \\u.... sequence is too large"
-msgstr "simbolio reikšmė \\u… sekoje per didelė"
+#: glib/gregex.c:678 glib/gregex.c:809
+msgid "code overflow"
+msgstr "kodo perviršis"
 
-#: glib/gregex.c:745 glib/gregex.c:1990
+#: glib/gregex.c:682
+msgid "unrecognized character after (?P"
+msgstr "neatpažintas simbolis po (?P"
+
+#: glib/gregex.c:686
+msgid "overran compiling workspace"
+msgstr "perpildyta kompiliavimo darbo sritis"
+
+#: glib/gregex.c:690
+msgid "previously-checked referenced subpattern not found"
+msgstr "anksčiau tikrintas nurodytas pošablonis nerastas"
+
+#: glib/gregex.c:808 glib/gregex.c:1041 glib/gregex.c:2342
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "Klaida ieškant reguliariosios išraiškos %s atitikmens: %s"
 
-#: glib/gregex.c:1323
+#: glib/gregex.c:1618
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "PCRE biblioteka sukompiliuota be UTF8 palaikymo"
 
-#: glib/gregex.c:1327
-msgid "PCRE library is compiled without UTF8 properties support"
-msgstr "PCRE biblioteka sukompiliuota be UTF8 ypatybių palaikymo"
-
-#: glib/gregex.c:1335
+#: glib/gregex.c:1626
 msgid "PCRE library is compiled with incompatible options"
 msgstr "PCRE biblioteka sukompiliuota su nesuderinamais parametrais"
 
-#: glib/gregex.c:1364
+#: glib/gregex.c:1751
 #, c-format
-msgid "Error while optimizing regular expression %s: %s"
-msgstr "Klaida, optimizuojant reguliariąją išraišką %s: %s"
+#| msgid "Error while compiling regular expression %s at char %d: %s"
+msgid "Error while compiling regular expression ‘%s’ at char %s: %s"
+msgstr "Klaida kompiliuojanti reguliarią išraišką `%s` ties simboliu %s: %s"
 
-#: glib/gregex.c:1444
-#, c-format
-msgid "Error while compiling regular expression %s at char %d: %s"
-msgstr "Klaida kompiliuojanti reguliarią išraišką %s ties simboliu %d: %s"
-
-#: glib/gregex.c:2429
+#: glib/gregex.c:2786
 msgid "hexadecimal digit or “}” expected"
 msgstr "laukta šešioliktainio skaitmens arba „}“"
 
-#: glib/gregex.c:2445
+#: glib/gregex.c:2802
 msgid "hexadecimal digit expected"
 msgstr "laukta šešioliktainio skaitmens"
 
-#: glib/gregex.c:2485
+#: glib/gregex.c:2842
 msgid "missing “<” in symbolic reference"
 msgstr "simbolinėje nuorodoje trūksta „<“"
 
-#: glib/gregex.c:2494
+#: glib/gregex.c:2851
 msgid "unfinished symbolic reference"
 msgstr "nebaigta simbolinė nuoroda"
 
-#: glib/gregex.c:2501
+#: glib/gregex.c:2858
 msgid "zero-length symbolic reference"
 msgstr "nulinio ilgio simbolinė nuoroda"
 
-#: glib/gregex.c:2512
+#: glib/gregex.c:2869
 msgid "digit expected"
 msgstr "laukta skaitmens"
 
-#: glib/gregex.c:2530
+#: glib/gregex.c:2887
 msgid "illegal symbolic reference"
 msgstr "neleistina simbolinė nuoroda"
 
-#: glib/gregex.c:2593
+#: glib/gregex.c:2950
 msgid "stray final “\\”"
 msgstr "nevietoje galutinis „\\“"
 
-#: glib/gregex.c:2597
+#: glib/gregex.c:2954
 msgid "unknown escape sequence"
 msgstr "nežinoma kaitos seka"
 
-#: glib/gregex.c:2607
+#: glib/gregex.c:2964
 #, c-format
 msgid "Error while parsing replacement text “%s” at char %lu: %s"
 msgstr "Klaida apdorojant pakeitimo tekstą „%s“ ties simboliu %lu: %s"
@@ -5906,7 +5840,7 @@ msgstr "Netikėta klaida skaitant duomenis žiš antrinio proceso (%s)"
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Netikėta waitpid() klaida (%s)"
 
-#: glib/gspawn.c:1170 glib/gspawn-win32.c:1434
+#: glib/gspawn.c:1170 glib/gspawn-win32.c:1488
 #, c-format
 msgid "Child process exited with code %ld"
 msgstr "Vaikinis procesas išėjo su kodu %ld"
@@ -5926,7 +5860,7 @@ msgstr "Vaikinis procesas sustabdytas signalu %ld"
 msgid "Child process exited abnormally"
 msgstr "Vaikinis procesas išėjo nenormaliai"
 
-#: glib/gspawn.c:1885 glib/gspawn-win32.c:342 glib/gspawn-win32.c:350
+#: glib/gspawn.c:1885 glib/gspawn-win32.c:393 glib/gspawn-win32.c:401
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Nepavyko perskaityti duomenų iš antrinio konvejerio (%s)"
@@ -5941,7 +5875,7 @@ msgstr "Nepavyko paleisti antrinio proceso „%s“ (%s)"
 msgid "Failed to fork (%s)"
 msgstr "Nepavyko atskirti (%s)"
 
-#: glib/gspawn.c:2525 glib/gspawn-win32.c:373
+#: glib/gspawn.c:2525 glib/gspawn-win32.c:424
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
 msgstr "Nepavyko pereiti į aplanką „%s“ (%s)"
@@ -5982,46 +5916,46 @@ msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
 "Nepavyko perskaityti reikiamo duomenų kiekio iš antrinio pid konvejerio (%s)"
 
-#: glib/gspawn-win32.c:286
+#: glib/gspawn-win32.c:337
 msgid "Failed to read data from child process"
 msgstr "Nepavyko gauti duomenų iš antrinio proceso"
 
-#: glib/gspawn-win32.c:379 glib/gspawn-win32.c:384 glib/gspawn-win32.c:510
+#: glib/gspawn-win32.c:430 glib/gspawn-win32.c:435 glib/gspawn-win32.c:561
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Nepavyko paleisti antrinio proceso (%s)"
 
-#: glib/gspawn-win32.c:389
+#: glib/gspawn-win32.c:440
 #, c-format
 msgid "Failed to dup() in child process (%s)"
 msgstr "Nepavyko antriniams procesui iškviesti dup() (%s)"
 
-#: glib/gspawn-win32.c:460
+#: glib/gspawn-win32.c:511
 #, c-format
 msgid "Invalid program name: %s"
 msgstr "Netinkamas programos pavadinimas: %s"
 
-#: glib/gspawn-win32.c:470 glib/gspawn-win32.c:802
+#: glib/gspawn-win32.c:521 glib/gspawn-win32.c:853
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "Netinkama seka argumento vektoriuje, pozicijoje %d: %s"
 
-#: glib/gspawn-win32.c:481 glib/gspawn-win32.c:818
+#: glib/gspawn-win32.c:532 glib/gspawn-win32.c:869
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "Netinka seka aplinkoje: %s"
 
-#: glib/gspawn-win32.c:798
+#: glib/gspawn-win32.c:849
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "Netinkamas darbinis katalogas: %s"
 
-#: glib/gspawn-win32.c:863
+#: glib/gspawn-win32.c:914
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "Nepavyko paleisti pagalbinės programos (%s)"
 
-#: glib/gspawn-win32.c:1092
+#: glib/gspawn-win32.c:1143
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -6029,21 +5963,21 @@ msgstr ""
 "Netikėta klaida tarp g_io_channel_win32_poll() funkcijos duomenų skaitymo iš "
 "antrinio proceso metu"
 
-#: glib/gstrfuncs.c:3353 glib/gstrfuncs.c:3455
+#: glib/gstrfuncs.c:3366 glib/gstrfuncs.c:3468
 msgid "Empty string is not a number"
 msgstr "Tuščia simbolių eilutė nėra skaičius"
 
-#: glib/gstrfuncs.c:3377
+#: glib/gstrfuncs.c:3390
 #, c-format
 msgid "“%s” is not a signed number"
 msgstr "„%s“ nėra skaičius su ženklu"
 
-#: glib/gstrfuncs.c:3387 glib/gstrfuncs.c:3491
+#: glib/gstrfuncs.c:3400 glib/gstrfuncs.c:3504
 #, c-format
 msgid "Number “%s” is out of bounds [%s, %s]"
 msgstr "Skaičius „%s“ yra už [%s, %s] ribų"
 
-#: glib/gstrfuncs.c:3481
+#: glib/gstrfuncs.c:3494
 #, c-format
 msgid "“%s” is not an unsigned number"
 msgstr "„%s“ nėra skaičius be ženklo"
@@ -6242,8 +6176,6 @@ msgid "Eib"
 msgstr "Eib"
 
 #: glib/gutils.c:2947
-#| msgid "%u byte"
-#| msgid_plural "%u bytes"
 msgid "byte"
 msgid_plural "bytes"
 msgstr[0] "baitas"
@@ -6251,8 +6183,6 @@ msgstr[1] "baitai"
 msgstr[2] "baitų"
 
 #: glib/gutils.c:2951
-#| msgid "%u bit"
-#| msgid_plural "%u bits"
 msgid "bit"
 msgid_plural "bits"
 msgstr[0] "bitas"
@@ -6279,7 +6209,6 @@ msgstr "%u %s"
 #. * be part of "13.0 MB", but only the number is requested this time.
 #: glib/gutils.c:3000
 #, c-format
-#| msgid "%.1f KB"
 msgctxt "format-size"
 msgid "%.1f"
 msgstr "%.1f"
@@ -6289,7 +6218,6 @@ msgstr "%.1f"
 #. * the unit symbol. An example: "13.0 MB"
 #: glib/gutils.c:3006
 #, c-format
-#| msgid "%.1f kB"
 msgctxt "format-size"
 msgid "%.1f %s"
 msgstr "%.1f %s"
@@ -6354,6 +6282,63 @@ msgstr "%.1f PB"
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
+
+#, c-format
+#~ msgid "edit name: %s\n"
+#~ msgstr "keičiamas pavadinimas: %s\n"
+
+#~ msgid "internal error or corrupted object"
+#~ msgstr "vidinė klaida arba sugadintas objektas"
+
+#~ msgid "invalid combination of newline flags"
+#~ msgstr "netinkama naujos eilutės vėliavėlių kombinacija"
+
+#~ msgid "short utf8"
+#~ msgstr "trumpas utf8"
+
+#~ msgid "unexpected repeat"
+#~ msgstr "netikėtas pakartojimas"
+
+#~ msgid "failed to get memory"
+#~ msgstr "nepavyko rezervuoti atminties"
+
+#~ msgid ") without opening ("
+#~ msgstr ") be atveriamojo ("
+
+#~ msgid "unrecognized character after (?<"
+#~ msgstr "neatpažintas simbolis po (?<"
+
+#~ msgid "(?R or (?[+-]digits must be followed by )"
+#~ msgstr "po (?R arba (?[+-]skaitmenys turi būti )"
+
+#~ msgid "invalid condition (?(0)"
+#~ msgstr "netaisyklinga sąlygą (?(0)"
+
+#~ msgid "escapes \\L, \\l, \\N{name}, \\U, and \\u are not supported"
+#~ msgstr "pakaitos simboliai \\L, \\l, \\N{name}, \\U, and \\u nepalaikomi"
+
+#~ msgid "recursive call could loop indefinitely"
+#~ msgstr "rekursyvus iškvietimas gali veikti be galo"
+
+#~ msgid "digit expected after (?+"
+#~ msgstr "laukta skaitmens po (?+"
+
+#~ msgid "] is an invalid data character in JavaScript compatibility mode"
+#~ msgstr ""
+#~ "] yra netinkamas duomenų simbolis JavaScript suderinamumo veiksenoje"
+
+#~ msgid "too many forward references"
+#~ msgstr "per daug nuorodų tolyn"
+
+#~ msgid "character value in \\u.... sequence is too large"
+#~ msgstr "simbolio reikšmė \\u… sekoje per didelė"
+
+#~ msgid "PCRE library is compiled without UTF8 properties support"
+#~ msgstr "PCRE biblioteka sukompiliuota be UTF8 ypatybių palaikymo"
+
+#, c-format
+#~ msgid "Error while optimizing regular expression %s: %s"
+#~ msgstr "Klaida, optimizuojant reguliariąją išraišką %s: %s"
 
 #, c-format
 #~ msgid "%.1f MB"
