@@ -425,8 +425,8 @@ g_param_spec_is_valid_name (const gchar *name)
  * g_param_spec_internal: (skip)
  * @param_type: the #GType for the property; must be derived from %G_TYPE_PARAM
  * @name: the canonical name of the property
- * @nick: the nickname of the property
- * @blurb: a short description of the property
+ * @nick: (nullable): the nickname of the property
+ * @blurb: (nullable): a short description of the property
  * @flags: a combination of #GParamFlags
  *
  * Creates a new #GParamSpec instance.
@@ -435,11 +435,12 @@ g_param_spec_is_valid_name (const gchar *name)
  * the rules for @name. Names which violate these rules lead to undefined
  * behaviour.
  *
- * Beyond the name, #GParamSpecs have two more descriptive
- * strings associated with them, the @nick, which should be suitable
- * for use as a label for the property in a property editor, and the
- * @blurb, which should be a somewhat longer description, suitable for
- * e.g. a tooltip. The @nick and @blurb should ideally be localized.
+ * Beyond the name, #GParamSpecs have two more descriptive strings, the
+ * @nick and @blurb, which may be used as a localized label and description.
+ * For GTK and related libraries these are considered deprecated and may be
+ * omitted, while for other libraries such as GStreamer and its plugins they
+ * are essential. When in doubt, follow the conventions used in the
+ * surrounding code and supporting libraries.
  *
  * Returns: (type GObject.ParamSpec): (transfer floating): a newly allocated
  *     #GParamSpec instance, which is initially floating
