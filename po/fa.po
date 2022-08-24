@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-08-08 11:45+0000\n"
-"PO-Revision-Date: 2022-08-08 22:14+0430\n"
+"POT-Creation-Date: 2022-08-15 20:23+0000\n"
+"PO-Revision-Date: 2022-08-24 11:48+0430\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian <>\n"
 "Language: fa\n"
@@ -4230,12 +4230,12 @@ msgstr "هیچ گونهٔ MIMEای در نشانک برای نشانی «‎%s»
 #: glib/gbookmarkfile.c:2505
 #, c-format
 msgid "No private flag has been defined in bookmark for URI “%s”"
-msgstr "هیچ پرچم خصوصی‌ای در نشانک برای نشانی «%s» تعریف نشده "
+msgstr "هیچ پرچم خصوصی‌ای در نشانک برای نشانی «%s» تعریف نشده"
 
 #: glib/gbookmarkfile.c:3046
 #, c-format
 msgid "No groups set in bookmark for URI “%s”"
-msgstr "هیچ گروهی در نشانک برای نشانی «‎%s» تعیین نشده "
+msgstr "هیچ گروهی در نشانک برای نشانی «‎%s» تعیین نشده"
 
 #: glib/gbookmarkfile.c:3514 glib/gbookmarkfile.c:3722
 #, c-format
@@ -4717,24 +4717,21 @@ msgid "PM"
 msgstr "ب‌ظ"
 
 #: glib/gdir.c:158
-#, fuzzy, c-format
-#| msgid "Error opening directory '%s': %s"
+#, c-format
 msgid "Error opening directory “%s”: %s"
-msgstr "خطا در باز کردن شاخهٔ «‎%s»‏: %s"
+msgstr "خطا در گشودن شاخهٔ «‎%s»‏: %s"
 
 #: glib/gfileutils.c:735 glib/gfileutils.c:827
-#, fuzzy, c-format
-#| msgid "Could not allocate %lu bytes to read file \"%s\""
+#, c-format
 msgid "Could not allocate %lu byte to read file “%s”"
 msgid_plural "Could not allocate %lu bytes to read file “%s”"
-msgstr[0] "نمی‌توان %Ilu بایت برای خواندن پروندهٔ «‎%s» تخصیص داد"
-msgstr[1] "نمی‌توان %Ilu بایت برای خواندن پروندهٔ «‎%s» تخصیص داد"
+msgstr[0] "نتوانست %Ilu بایت برای خواندن پروندهٔ «‎%s» تخصیص دهد"
+msgstr[1] "نتوانست %Ilu بایت برای خواندن پروندهٔ «‎%s» تخصیص دهد"
 
 #: glib/gfileutils.c:752
-#, fuzzy, c-format
-#| msgid "Error reading file %s: %s"
+#, c-format
 msgid "Error reading file “%s”: %s"
-msgstr "خطا در خواندن پرونده %s: %s"
+msgstr "خطا در خواندن پروندهٔ «%s»: %s"
 
 #: glib/gfileutils.c:788
 #, c-format
@@ -4742,86 +4739,71 @@ msgid "File “%s” is too large"
 msgstr "پروندهٔ «%s» بسیار بزرگ است"
 
 #: glib/gfileutils.c:852
-#, fuzzy, c-format
-#| msgid "Failed to read from file '%s': %s"
+#, c-format
 msgid "Failed to read from file “%s”: %s"
-msgstr "خواندن از پروندهٔ «‎%s» شکست خورد: %s"
+msgstr "شکست در خواندن از پروندهٔ «‎%s»: %s"
 
 #: glib/gfileutils.c:902 glib/gfileutils.c:977 glib/gfileutils.c:1449
-#, fuzzy, c-format
-#| msgid "Failed to open file '%s': %s"
+#, c-format
 msgid "Failed to open file “%s”: %s"
-msgstr "باز کردن پروندهٔ «‎%s» شکست خورد: %s"
+msgstr "شکست در گشودن پروندهٔ «‎%s»: %s"
 
 #: glib/gfileutils.c:915
-#, fuzzy, c-format
-#| msgid "Failed to get attributes of file '%s': fstat() failed: %s"
+#, c-format
 msgid "Failed to get attributes of file “%s”: fstat() failed: %s"
-msgstr "گرفتن مشخصه‌های پروندهٔ «‎%s» شکست خورد: fstat()‎ شکست خورد: %s"
+msgstr "شکست در گرفتن مشخصه‌های پروندهٔ «‎%s»: fstat()‎ شکست خورد: %s"
 
 #: glib/gfileutils.c:946
-#, fuzzy, c-format
-#| msgid "Failed to open file '%s': fdopen() failed: %s"
+#, c-format
 msgid "Failed to open file “%s”: fdopen() failed: %s"
-msgstr "باز کردن پروندهٔ «‎%s» شکست خورد: fdopen()‎ شکست خورد: %s"
+msgstr "شکست در گشودن پروندهٔ «‎%s»: fdopen()‎ شکست خورد: %s"
 
 #: glib/gfileutils.c:1047
-#, fuzzy, c-format
-#| msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
+#, c-format
 msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
-msgstr "تغییر دادن نام پروندهٔ «‎%s» به «‎%s» شکست خورد: g_rename()‎ شکست خورد: %s"
+msgstr "شکست در تغییر نام پروندهٔ «‎%s» به «‎%s»: g_rename()‎ شکست خورد: %s"
 
 #: glib/gfileutils.c:1156
-#, fuzzy, c-format
-#| msgid "Failed to write file '%s': fwrite() failed: %s"
+#, c-format
 msgid "Failed to write file “%s”: write() failed: %s"
-msgstr "نوشتن پروندهٔ «‎%s» شکست خورد: fdwrite()‎ شکست خورد: %s"
+msgstr "شکست در نوشتن پروندهٔ «‎%s»: fdwrite()‎ شکست خورد: %s"
 
 #: glib/gfileutils.c:1177
-#, fuzzy, c-format
-#| msgid "Failed to write file '%s': fsync() failed: %s"
+#, c-format
 msgid "Failed to write file “%s”: fsync() failed: %s"
-msgstr "نوشتن پروندهٔ «‎%s» شکست خورد: fsync()‎ شکست خورد: %s"
+msgstr "شکست در نوشتن پروندهٔ «‎%s»: fsync()‎ شکست خورد: %s"
 
 #: glib/gfileutils.c:1338 glib/gfileutils.c:1753
-#, fuzzy, c-format
-#| msgid "Failed to create file '%s': %s"
+#, c-format
 msgid "Failed to create file “%s”: %s"
-msgstr "ایجاد پروندهٔ «‎%s» شکست خورد: %s"
+msgstr "شکست در ایجاد پروندهٔ «‎%s»: %s"
 
 #: glib/gfileutils.c:1383
-#, fuzzy, c-format
-#| msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
+#, c-format
 msgid "Existing file “%s” could not be removed: g_unlink() failed: %s"
-msgstr "نمی‌توان پروندهٔ موجود «‎%s» را جذف کرد: g_unlink() شکست خورد: %s"
+msgstr "پروندهٔ موجود «‎%s» نتوانست برداشته شود: g_unlink() شکست خورد: %s"
 
 #: glib/gfileutils.c:1718
-#, fuzzy, c-format
-#| msgid "Template '%s' invalid, should not contain a '%s'"
+#, c-format
 msgid "Template “%s” invalid, should not contain a “%s”"
 msgstr "قالب «%s» نامعتبر است، نباید «%s» داشته باشد"
 
 #: glib/gfileutils.c:1731
-#, fuzzy, c-format
-#| msgid "Template '%s' doesn't contain XXXXXX"
+#, c-format
 msgid "Template “%s” doesn’t contain XXXXXX"
-msgstr "قالب «%s» حاوی XXXXXX نیست"
+msgstr "قالب «%s» شامل XXXXXX نیست"
 
 #: glib/gfileutils.c:2291 glib/gfileutils.c:2320
-#, fuzzy, c-format
-#| msgid "Failed to read the symbolic link '%s': %s"
+#, c-format
 msgid "Failed to read the symbolic link “%s”: %s"
-msgstr "خواندن پیوند نمادی «‎%s» شکست خورد: %s"
+msgstr "شکست در خواندن پیوند نمادین «‎%s»: %s"
 
 #: glib/giochannel.c:1408
-#, fuzzy, c-format
-#| msgid "Could not open converter from '%s' to '%s': %s"
+#, c-format
 msgid "Could not open converter from “%s” to “%s”: %s"
-msgstr "نمی‌توان مبدل «%s» به «%s» را باز کرد: %s"
+msgstr "نتوانست تبدیلگر «%s» به «%s» را بگشاید: %s"
 
 #: glib/giochannel.c:1761
-#, fuzzy
-#| msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgid "Can’t do a raw read in g_io_channel_read_line_string"
 msgstr "نمی‌توان در g_io_channel_read_line_string خوانش خام انجام داد"
 
@@ -4834,8 +4816,6 @@ msgid "Channel terminates in a partial character"
 msgstr "کانال با یک نویسهٔ ناتمام پایان می‌یابد"
 
 #: glib/giochannel.c:1952
-#, fuzzy
-#| msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgid "Can’t do a raw read in g_io_channel_read_to_end"
 msgstr "نمی‌توان در g_io_channel_read_to_end خوانش خام انجام داد"
 
@@ -4848,9 +4828,7 @@ msgid "Not a regular file"
 msgstr "پرونده متعارف نیست"
 
 #: glib/gkeyfile.c:1291
-#, fuzzy, c-format
-#| msgid ""
-#| "Key file contains line '%s' which is not a key-value pair, group, or comment"
+#, c-format
 msgid "Key file contains line “%s” which is not a key-value pair, group, or comment"
 msgstr "پرونده کلید حاوی خط «%s» است که جفت کلید‐مقدار، گروه یا توضیح  نیست"
 
@@ -4864,106 +4842,92 @@ msgid "Key file does not start with a group"
 msgstr "پروندهٔ کلید با یک گروه آغاز نمی‌شود"
 
 #: glib/gkeyfile.c:1396
-#, fuzzy, c-format
-#| msgid "Invalid key name: %s"
+#, c-format
 msgid "Invalid key name: %.*s"
-msgstr "نام کلید نامعتبر: %s"
+msgstr "نام کلید نامعتبر: %.*s"
 
 #: glib/gkeyfile.c:1424
-#, fuzzy, c-format
-#| msgid "Key file contains unsupported encoding '%s'"
+#, c-format
 msgid "Key file contains unsupported encoding “%s”"
 msgstr "پروندهٔ کلید حاوی کدگذاری پشتیبانی نشدهٔ «%s» است"
 
 #: glib/gkeyfile.c:1679 glib/gkeyfile.c:1852 glib/gkeyfile.c:3299
 #: glib/gkeyfile.c:3363 glib/gkeyfile.c:3493 glib/gkeyfile.c:3625
 #: glib/gkeyfile.c:3771 glib/gkeyfile.c:4006 glib/gkeyfile.c:4073
-#, fuzzy, c-format
-#| msgid "Key file does not have group '%s'"
+#, c-format
 msgid "Key file does not have group “%s”"
 msgstr "پروندهٔ کلید گروه «%s» را ندارد"
 
 #: glib/gkeyfile.c:1807
-#, fuzzy, c-format
-#| msgid "Key file does not have key '%s' in group '%s'"
+#, c-format
 msgid "Key file does not have key “%s” in group “%s”"
 msgstr "پروندهٔ کلید، کلید «%s» در گروه «%s» را ندارد"
 
 #: glib/gkeyfile.c:1969 glib/gkeyfile.c:2085
-#, fuzzy, c-format
-#| msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
+#, c-format
 msgid "Key file contains key “%s” with value “%s” which is not UTF-8"
-msgstr "پروندهٔ کلید حاوی کلید «%s» با مقدار «%s» است که UTF-8 نیست"
+msgstr "پروندهٔ کلید دارای کلید «%s» با مقدار «%s» است که UTF-8 نیست"
 
 #: glib/gkeyfile.c:1989 glib/gkeyfile.c:2105 glib/gkeyfile.c:2544
-#, fuzzy, c-format
-#| msgid "Key file contains key '%s' which has a value that cannot be interpreted."
+#, c-format
 msgid "Key file contains key “%s” which has a value that cannot be interpreted."
-msgstr "پروندهٔ کلید حاوی کلید «%s» است که دارای مقداری است که قابل تفسیر نیست."
+msgstr "پروندهٔ کلید دارای کلید «%s» است که دارای مقداری است که قابل تفسیر نیست."
 
 #: glib/gkeyfile.c:2759 glib/gkeyfile.c:3128
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Key file contains key “%s” in group “%s” which has a value that cannot be "
 "interpreted."
-msgstr ""
-"پروندهٔ کلید حاوی کلید «%s» در گروه «%s» است که مقداری دارد که قابل تفسیر نیست"
+msgstr "پروندهٔ کلید دارای کلید «%s» در گروه «%s» است که مقداری غیرقابل تفسیر دارد."
 
 #: glib/gkeyfile.c:2837 glib/gkeyfile.c:2914
-#, fuzzy, c-format
+#, c-format
 msgid "Key “%s” in group “%s” has value “%s” where %s was expected"
-msgstr ""
-"پروندهٔ کلید حاوی کلید «%s» در گروه «%s» است که مقداری دارد که قابل تفسیر نیست"
+msgstr "کلید «%s» در گروه «%s» دارای مقدار «%s» است؛ در حالی مه انتظار %s می رفت"
 
 #: glib/gkeyfile.c:4326
 msgid "Key file contains escape character at end of line"
 msgstr "پرونده کلید شامل نویسهٔ گریز در انتهای خط است"
 
 #: glib/gkeyfile.c:4348
-#, fuzzy, c-format
-#| msgid "Key file contains invalid escape sequence '%s'"
+#, c-format
 msgid "Key file contains invalid escape sequence “%s”"
 msgstr "پروندهٔ کلید حاوی دنبالهٔ گریز نامعتبر «%s» است"
 
 #: glib/gkeyfile.c:4493
-#, fuzzy, c-format
-#| msgid "Value '%s' cannot be interpreted as a number."
+#, c-format
 msgid "Value “%s” cannot be interpreted as a number."
-msgstr "مقدار «%s» را نمی‌توان به عدد تفسیر کرد"
+msgstr "مقدار «%s» را نمی‌توان به عدد تفسیر کرد."
 
 #: glib/gkeyfile.c:4507
-#, fuzzy, c-format
-#| msgid "Integer value '%s' out of range"
+#, c-format
 msgid "Integer value “%s” out of range"
 msgstr "مقدار صحیح «%s» خارج از محدوده است"
 
 #: glib/gkeyfile.c:4540
-#, fuzzy, c-format
-#| msgid "Value '%s' cannot be interpreted as a float number."
+#, c-format
 msgid "Value “%s” cannot be interpreted as a float number."
-msgstr "مقدار «%s» را نمی‌توان به عدد اعشاری تفسیر کرد"
+msgstr "مقدار «%s» را نمی‌توان به عدد اعشاری تفسیر کرد."
 
 #: glib/gkeyfile.c:4579
-#, fuzzy, c-format
-#| msgid "Value '%s' cannot be interpreted as a boolean."
+#, c-format
 msgid "Value “%s” cannot be interpreted as a boolean."
-msgstr "مقدار «%s» را نمی‌توان به مقدار بولی تفسیر کرد"
+msgstr "مقدار «%s» را نمی‌توان به مقدار بولی تفسیر کرد."
 
 #: glib/gmappedfile.c:131
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to get attributes of file “%s%s%s%s”: fstat() failed: %s"
-msgstr "گرفتن مشخصه‌های پروندهٔ «‎%s» شکست خورد: fstat()‎ شکست خورد: %s"
+msgstr "شکست در گرفتن مشخصه‌های پروندهٔ «%s%s%s‎%s»: fstat()‎ شکست خورد: %s"
 
 #: glib/gmappedfile.c:197
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to map %s%s%s%s: mmap() failed: %s"
-msgstr "تهیهٔ نقشه از پروندهٔ «‎%s» شکست خورد: mmap()‎ شکست خورد: %s"
+msgstr "شکست در نگاشت %s%s%s%s: mmap()‎ شکست خورد: %s"
 
 #: glib/gmappedfile.c:264
-#, fuzzy, c-format
-#| msgid "Failed to open file '%s': open() failed: %s"
+#, c-format
 msgid "Failed to open file “%s”: open() failed: %s"
-msgstr "باز کردن پروندهٔ «‎%s» شکست خورد: open()‎ شکست خورد: %s"
+msgstr "شکست در گشودن «%s»: ‪open()‬ شکست خورد: %s"
 
 #: glib/gmarkup.c:400 glib/gmarkup.c:442
 #, c-format
@@ -4971,20 +4935,17 @@ msgid "Error on line %d char %d: "
 msgstr "خطا در سطر %Id نویسهٔ %Id:‏ "
 
 #: glib/gmarkup.c:464 glib/gmarkup.c:547
-#, fuzzy, c-format
-#| msgid "Invalid UTF-8 encoded text in name - not valid '%s'"
+#, c-format
 msgid "Invalid UTF-8 encoded text in name — not valid “%s”"
 msgstr "متن کدگذاری‌شدهٔ UTF-8 نامعتبر در نام - «%s» معتبر نیست"
 
 #: glib/gmarkup.c:475
-#, fuzzy, c-format
-#| msgid "'%s' is not a valid name "
+#, c-format
 msgid "“%s” is not a valid name"
 msgstr "نام «%s» معتبر نیست"
 
 #: glib/gmarkup.c:491
-#, fuzzy, c-format
-#| msgid "'%s' is not a valid name: '%c' "
+#, c-format
 msgid "“%s” is not a valid name: “%c”"
 msgstr "نام «%s» معتبر نیست: «%c»"
 
@@ -4994,82 +4955,62 @@ msgid "Error on line %d: %s"
 msgstr "خطا در سطر %Id:‏ %s"
 
 #: glib/gmarkup.c:692
-#, fuzzy, c-format
-#| msgid ""
-#| "Failed to parse '%-.*s', which should have been a digit inside a character "
-#| "reference (&#234; for example) - perhaps the digit is too large"
+#, c-format
 msgid ""
 "Failed to parse “%-.*s”, which should have been a digit inside a character "
 "reference (&#234; for example) — perhaps the digit is too large"
 msgstr ""
-"تجزیهٔ «‎%-.*s»، که باید رقمی داخل یک ارجاع نویسه‌ای (مثل ‎&#234;‎) می‌بود شکست خورد - "
+"شکست در تجزیهٔ «‎%-.*s»، که باید رقمی داخل یک ارجاع نویسه‌ای (مثل ‎&#234;‎) باشد - "
 "شاید رقم خیلی بزرگ است"
 
 #: glib/gmarkup.c:704
-#, fuzzy
-#| msgid ""
-#| "Character reference did not end with a semicolon; most likely you used an "
-#| "ampersand character without intending to start an entity - escape ampersand as "
-#| "&amp;"
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity — escape ampersand as "
 "&amp;"
 msgstr ""
-"ارجاع نویسه‌ای با نقطه‌ویرگول تمام نشده است؛ به احتمال زیاد بدون این که بخواهید "
-"نهادی را آغاز کنید از نویسهٔ & استفاده کرده‌اید - برای نوشتن علامت & از ‎&amp;‎ "
-"استفاده کنید"
+"ارجاع نویسه‌ای با نقطه‌ویرگولی لاتین تمام نشده؛ به احتمال زیاد بدون این که بخواهید "
+"موجودیتی را بیاغازید از نویسهٔ & استفاده کرده‌اید - برای نوشتن علامت & از ‎&amp;‎ "
+"استفاده کنید;"
 
 #: glib/gmarkup.c:730
-#, fuzzy, c-format
-#| msgid "Character reference '%-.*s' does not encode a permitted character"
+#, c-format
 msgid "Character reference “%-.*s” does not encode a permitted character"
 msgstr "ارجاع نویسه‌ای «‎%-.*s» به نویسهٔ مجاز اشاره نمی‌کند"
 
 #: glib/gmarkup.c:768
-#, fuzzy
-#| msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgid "Empty entity “&;” seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
-"نهاد خالی «‎&;‎» مشاهده شد؛ نهادهای معتبر عبارتند از: ‎&amp; &quot; &lt; &gt; &apos;‎"
+"موجودیت خالی «‎&;‎» مشاهده شد؛ موجودیت‌های معتبر عبارتند از: ‎&amp; &quot; &lt; &gt; "
+"&apos;"
 
 #: glib/gmarkup.c:776
-#, fuzzy, c-format
-#| msgid "Entity name '%-.*s' is not known"
+#, c-format
 msgid "Entity name “%-.*s” is not known"
-msgstr "نام نهاد «%-.*s» شناخته شده نیست"
+msgstr "نام موجودیت «%-.*s» شناخته شده نیست"
 
 #: glib/gmarkup.c:781
-#, fuzzy
-#| msgid ""
-#| "Entity did not end with a semicolon; most likely you used an ampersand "
-#| "character without intending to start an entity - escape ampersand as &amp;"
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand character "
 "without intending to start an entity — escape ampersand as &amp;"
 msgstr ""
-"نهاد با یک نقطه‌ویرگول لاتین تمام نشده است؛ به احتمال زیاد بدون این که بخواهید "
-"نهادی را آغاز کنید از نویسهٔ & استفاده کرده‌اید - برای نوشتن علامت & از ‎&amp;‎ "
-"استفاده کنید"
+"موجودیت با نقطه‌ویرگولی لاتین تمام نشده؛ به احتمال زیاد بدون این که بخواهید "
+"موجودیتی را بیاغازید از نویسهٔ & استفاده کرده‌اید - برای نوشتن علامت & از ‎&amp;‎ "
+"استفاده کنید;"
 
 #: glib/gmarkup.c:1195
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "نوشتار باید با یک عنصر (مثلاً <book>) شروع شود"
 
 #: glib/gmarkup.c:1235
-#, fuzzy, c-format
-#| msgid ""
-#| "'%s' is not a valid character following a '<' character; it may not begin an "
-#| "element name"
+#, c-format
 msgid ""
 "“%s” is not a valid character following a “<” character; it may not begin an "
 "element name"
-msgstr "‏«%s» پس از یک نویسهٔ '‎<‎' نویسهٔ مجازی نیست؛ نمی‌شود ابتدای نام یک عنصر باشد"
+msgstr "«%s» پس از یک نویسهٔ '‎<‎' نویسهٔ مجازی نیست؛ نمی‌شود ابتدای نام یک عنصر باشد"
 
 #: glib/gmarkup.c:1278
-#, fuzzy, c-format
-#| msgid ""
-#| "Odd character '%s', expected a '>' character to end the empty-element tag '%s'"
+#, c-format
 msgid ""
 "Odd character “%s”, expected a “>” character to end the empty-element tag “%s”"
 msgstr ""
@@ -5082,19 +5023,13 @@ msgid "Too many attributes in element “%s”"
 msgstr ""
 
 #: glib/gmarkup.c:1368
-#, fuzzy, c-format
-#| msgid ""
-#| "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+#, c-format
 msgid "Odd character “%s”, expected a “=” after attribute name “%s” of element “%s”"
 msgstr ""
 "نویسهٔ غیرعادی «%s»، بعد از نام مشخصهٔ «%s» عنصر «%s» انتظار یک نویسهٔ «=» می‌رفت"
 
 #: glib/gmarkup.c:1410
-#, fuzzy, c-format
-#| msgid ""
-#| "Odd character '%s', expected a '>' or '/' character to end the start tag of "
-#| "element '%s', or optionally an attribute; perhaps you used an invalid "
-#| "character in an attribute name"
+#, c-format
 msgid ""
 "Odd character “%s”, expected a “>” or “/” character to end the start tag of "
 "element “%s”, or optionally an attribute; perhaps you used an invalid character "
@@ -5105,10 +5040,7 @@ msgstr ""
 "کرده باشید"
 
 #: glib/gmarkup.c:1455
-#, fuzzy, c-format
-#| msgid ""
-#| "Odd character '%s', expected an open quote mark after the equals sign when "
-#| "giving value for attribute '%s' of element '%s'"
+#, c-format
 msgid ""
 "Odd character “%s”, expected an open quote mark after the equals sign when giving "
 "value for attribute “%s” of element “%s”"
@@ -5117,15 +5049,12 @@ msgstr ""
 "انتظار یک علامت نقل قول باز می‌رفت"
 
 #: glib/gmarkup.c:1589
-#, fuzzy, c-format
-#| msgid ""
-#| "'%s' is not a valid character following the characters '</'; '%s' may not "
-#| "begin an element name"
+#, c-format
 msgid ""
 "“%s” is not a valid character following the characters “</”; “%s” may not begin "
 "an element name"
 msgstr ""
-"‏«%s» بعد از نویسه‌های «‎</‎» نویسهٔ معتبری نیست؛ «%s» نمی‌تواند ابتدای نام عناصر قرار "
+"«%s» بعد از نویسه‌های «‎</‎» نویسهٔ معتبری نیست؛ «%s» نمی‌تواند ابتدای نام عناصر قرار "
 "بگیرد"
 
 #: glib/gmarkup.c:1627
