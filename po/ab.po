@@ -3,7 +3,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
 "POT-Creation-Date: 2022-07-21 10:10+0000\n"
 "Last-Translator: Нанба Наала <naala-nanba@rambler.ru>\n"
-"Language-Team: Abkhazian <ab@li.org>\n"
+"Language-Team: Abkhazian <daniel.abzakh@gmail.com>\n"
 "Language: ab\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -167,7 +167,7 @@ msgstr ""
 
 #: gio/gapplication-tool.c:137 gio/gio-tool.c:226
 msgid "[ARGS…]"
-msgstr ""
+msgstr "[АҴАҴӶӘҚӘА…]"
 
 #: gio/gapplication-tool.c:138
 #, c-format
@@ -365,7 +365,7 @@ msgstr ""
 #: gio/gdbusaddress.c:177
 #, c-format
 msgid "Meaningless key/value pair combination in address entry “%s”"
-msgstr ""
+msgstr "Иҵакыдоу аилаҵа ацаԥха/ аҵакы аҭыӡҭыԥ «%s» аелемент аҟны"
 
 #: gio/gdbusaddress.c:186
 #, c-format
@@ -1218,7 +1218,7 @@ msgstr ""
 
 #: gio/gdesktopappinfo.c:2180 gio/gdesktopappinfo.c:5114
 msgid "Unnamed"
-msgstr "Ихьӡыдоу"
+msgstr "Хьӡыда"
 
 #: gio/gdesktopappinfo.c:2590
 msgid "Desktop file didn’t specify Exec field"
@@ -1277,7 +1277,7 @@ msgstr ""
 
 #: gio/gdtlsconnection.c:1188 gio/gtlsconnection.c:957
 msgid "TLS backend does not implement TLS binding retrieval"
-msgstr ""
+msgstr "Абиблиотека TLS инанагӡаӡом адгалара TLS binding ахь"
 
 #: gio/gdummytlsbackend.c:197 gio/gdummytlsbackend.c:323
 #: gio/gdummytlsbackend.c:515
@@ -1747,7 +1747,7 @@ msgstr ""
 
 #: gio/gio-tool-info.c:41 gio/gio-tool-list.c:37
 msgid "ATTRIBUTES"
-msgstr ""
+msgstr "АҞАЗШЬАРБАГАҚӘА"
 
 #: gio/gio-tool-info.c:42 gio/gio-tool-list.c:40 gio/gio-tool-set.c:36
 msgid "Don’t follow symbolic links"
@@ -2063,7 +2063,7 @@ msgstr ""
 
 #: gio/gio-tool-mount.c:268 gio/gio-tool-mount.c:300
 msgid "Anonymous access denied"
-msgstr ""
+msgstr "Ахьӡыдоу аҭалара мап ацәкуп"
 
 #: gio/gio-tool-mount.c:525
 msgid "No drive for device file"
@@ -2205,7 +2205,7 @@ msgstr "Аҭыӡтыԥ еилкааӡам"
 
 #: gio/gio-tool-set.c:124
 msgid "Attribute not specified"
-msgstr ""
+msgstr "Аҟазшьарбага еилкааӡам"
 
 #: gio/gio-tool-set.c:134
 msgid "Value not specified"
@@ -2424,7 +2424,7 @@ msgstr ""
 #: gio/glib-compile-schemas.c:160
 #, c-format
 msgid "<%s> must contain at least one <value>"
-msgstr ""
+msgstr " <%s> иамазароуп акы еиҳамзаргьы аҵакы <value>"
 
 #: gio/glib-compile-schemas.c:316
 #, c-format
@@ -3889,6 +3889,8 @@ msgstr ""
 #: gio/gsocks5proxy.c:252
 msgid "SOCKSv5 authentication failed due to wrong username or password."
 msgstr ""
+"Ахаҭареилкаара SOCKSv5 хырқәшахеит иманшәаламкәа ахархәаҩ ииашам ихьыӡ "
+"мамзар иажәамаӡа амашала."
 
 #: gio/gsocks5proxy.c:302
 #, c-format
@@ -3972,7 +3974,7 @@ msgstr ""
 #: gio/gthreadedresolver.c:763 gio/gthreadedresolver.c:998
 #, c-format
 msgid "Temporarily unable to resolve “%s”"
-msgstr ""
+msgstr "Аамҭала «%s» азин аҭара ауам"
 
 #: gio/gthreadedresolver.c:768 gio/gthreadedresolver.c:1003
 #: gio/gthreadedresolver.c:1113
@@ -4279,11 +4281,11 @@ msgstr ""
 
 #: glib/gconvert.c:940
 msgid "Embedded NUL byte in conversion input"
-msgstr ""
+msgstr "Абаит NUL аҵакы змоу аҭаларатә аиҭакра ззухо дыррақәа рҟны"
 
 #: glib/gconvert.c:961
 msgid "Embedded NUL byte in conversion output"
-msgstr ""
+msgstr "Абаит NUL аҵакы змоу аҭыҵратә аиҭакратә дыррақәа рҟны"
 
 #: glib/gconvert.c:1692
 #, c-format
@@ -5434,11 +5436,11 @@ msgstr ""
 
 #: glib/gregex.c:1620
 msgid "PCRE library is compiled without UTF8 support"
-msgstr ""
+msgstr "Абиблиотека PCRE еизгоуп UTF-8 амаҵурада"
 
 #: glib/gregex.c:1628
 msgid "PCRE library is compiled with incompatible options"
-msgstr ""
+msgstr "Абиблиотека PCRE еизгоуп еимарам ахышәарақәа рыла"
 
 #: glib/gregex.c:1753
 #, c-format
