@@ -3261,9 +3261,8 @@ g_desktop_app_info_launch_uris (GAppInfo           *appinfo,
 
 typedef struct
 {
-  GAppInfo *appinfo;
-  GList *uris;
-  GAppLaunchContext *context;
+  GList *uris;  /* (element-type utf8) (owned) (nullable) */
+  GAppLaunchContext *context;  /* (owned) (nullable) */
 } LaunchUrisData;
 
 static void
@@ -3280,13 +3279,13 @@ launch_uris_with_dbus_cb (GObject      *object,
                           gpointer      user_data)
 {
   GTask *task = G_TASK (user_data);
-  GError *error = NULL;
+  GError *local_error = NULL;
 
-  g_dbus_connection_call_finish (G_DBUS_CONNECTION (object), result, &error);
-  if (error != NULL)
+  g_dbus_connection_call_finish (G_DBUS_CONNECTION (object), result, &local_error);
+  if (local_error != NULL)
     {
-      g_dbus_error_strip_remote_error (error);
-      g_task_return_error (task, g_steal_pointer (&error));
+      g_dbus_error_strip_remote_error (local_error);
+      g_task_return_error (task, g_steal_pointer (&local_error));
     }
   else
     g_task_return_boolean (task, TRUE);
@@ -3316,7 +3315,7 @@ launch_uris_bus_get_cb (GObject      *object,
   LaunchUrisData *data = g_task_get_task_data (task);
   GCancellable *cancellable = g_task_get_cancellable (task);
   GDBusConnection *session_bus;
-  GError *error = NULL;
+  GError *local_error = NULL;
 
   session_bus = g_bus_get_finish (result, NULL);
 
@@ -3342,10 +3341,10 @@ launch_uris_bus_get_cb (GObject      *object,
                                                  data->uris, data->context,
                                                  _SPAWN_FLAGS_DEFAULT, NULL,
                                                  NULL, NULL, NULL, -1, -1, -1,
-                                                 &error);
-      if (error != NULL)
+                                                 &local_error);
+      if (local_error != NULL)
         {
-          g_task_return_error (task, g_steal_pointer (&error));
+          g_task_return_error (task, g_steal_pointer (&local_error));
           g_object_unref (task);
         }
       else if (session_bus)
@@ -3379,7 +3378,7 @@ g_desktop_app_info_launch_uris_async (GAppInfo           *appinfo,
 
   data = g_new0 (LaunchUrisData, 1);
   data->uris = g_list_copy_deep (uris, (GCopyFunc) g_strdup, NULL);
-  data->context = (context != NULL) ? g_object_ref (context) : NULL;
+  g_set_object (&data->context, context);
   g_task_set_task_data (task, g_steal_pointer (&data), (GDestroyNotify) launch_uris_data_free);
 
   g_bus_get (G_BUS_TYPE_SESSION, cancellable, launch_uris_bus_get_cb, task);
@@ -3923,40 +3922,40 @@ static void
 run_update_command (char *command,
                     char *subdir)
 {
-        char *argv[3] = {
-                NULL,
-                NULL,
-                NULL,
-        };
-        GPid pid = 0;
-        GError *error = NULL;
+  char *argv[3] = {
+          NULL,
+          NULL,
+          NULL,
+  };
+  GPid pid = 0;
+  GError *local_error = NULL;
 
-        argv[0] = command;
-        argv[1] = g_build_filename (g_get_user_data_dir (), subdir, NULL);
+  argv[0] = command;
+  argv[1] = g_build_filename (g_get_user_data_dir (), subdir, NULL);
 
-        if (g_spawn_async ("/", argv,
-                           NULL,       /* envp */
-                           G_SPAWN_SEARCH_PATH |
-                           G_SPAWN_STDOUT_TO_DEV_NULL |
-                           G_SPAWN_STDERR_TO_DEV_NULL |
-                           G_SPAWN_DO_NOT_REAP_CHILD,
-                           NULL, NULL, /* No setup function */
-                           &pid,
-                           &error))
-          g_child_watch_add (pid, update_program_done, NULL);
-        else
-          {
-            /* If we get an error at this point, it's quite likely the user doesn't
-             * have an installed copy of either 'update-mime-database' or
-             * 'update-desktop-database'.  I don't think we want to popup an error
-             * dialog at this point, so we just do a g_warning to give the user a
-             * chance of debugging it.
-             */
-            g_warning ("%s", error->message);
-            g_error_free (error);
-          }
+  if (g_spawn_async ("/", argv,
+                     NULL,       /* envp */
+                     G_SPAWN_SEARCH_PATH |
+                     G_SPAWN_STDOUT_TO_DEV_NULL |
+                     G_SPAWN_STDERR_TO_DEV_NULL |
+                     G_SPAWN_DO_NOT_REAP_CHILD,
+                     NULL, NULL, /* No setup function */
+                     &pid,
+                     &local_error))
+    g_child_watch_add (pid, update_program_done, NULL);
+  else
+    {
+      /* If we get an error at this point, it's quite likely the user doesn't
+       * have an installed copy of either 'update-mime-database' or
+       * 'update-desktop-database'.  I don't think we want to popup an error
+       * dialog at this point, so we just do a g_warning to give the user a
+       * chance of debugging it.
+       */
+      g_warning ("%s", local_error->message);
+      g_error_free (local_error);
+    }
 
-        g_free (argv[1]);
+  g_free (argv[1]);
 }
 
 static gboolean
