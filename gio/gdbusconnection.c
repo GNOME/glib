@@ -1945,6 +1945,7 @@ g_dbus_connection_send_message_with_reply_unlocked (GDBusConnection     *connect
   if (timeout_msec != G_MAXINT)
     {
       data->timeout_source = g_timeout_source_new (timeout_msec);
+      g_source_set_static_name (data->timeout_source, "[gio] send_message_with_reply_unlocked");
       g_task_attach_source (task, data->timeout_source,
                             (GSourceFunc) send_message_with_reply_timeout_cb);
       g_source_unref (data->timeout_source);
