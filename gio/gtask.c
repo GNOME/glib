@@ -1661,7 +1661,7 @@ g_task_attach_source (GTask       *task,
   g_source_set_callback (source, callback,
                          g_object_ref (task), g_object_unref);
   g_source_set_priority (source, task->priority);
-  if (task->name != NULL)
+  if (task->name != NULL && g_source_get_name (source) == NULL)
     g_source_set_name (source, task->name);
 
   g_source_attach (source, task->context);
