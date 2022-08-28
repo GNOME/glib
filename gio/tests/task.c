@@ -2358,6 +2358,39 @@ test_return_value_first (void)
   g_test_trap_assert_stderr ("*CRITICAL*assertion '!task->ever_returned' failed*");
 }
 
+static gboolean
+source_cb (gpointer user_data)
+{
+  return G_SOURCE_REMOVE;
+}
+
+static void
+test_attach_source_set_name (void)
+{
+  guint calls = 0;
+  GTask *task = NULL;
+  GSource *source = NULL;
+  GSourceFuncs source_funcs = { NULL, NULL, NULL, NULL, NULL, NULL };
+
+  g_test_summary ("Test that attaching a source to a task will set the source’s name if unset");
+
+  task = g_task_new (NULL, NULL, task_complete_cb, &calls);
+  g_task_set_name (task, "test name");
+
+  source = g_source_new (&source_funcs, sizeof (GSource));
+  g_task_attach_source (task, source, source_cb);
+  g_assert_cmpstr (g_source_get_name (source), ==, "test name");
+  g_source_unref (source);
+
+  source = g_source_new (&source_funcs, sizeof (GSource));
+  g_source_set_name (source, "not the task name");
+  g_task_attach_source (task, source, source_cb);
+  g_assert_cmpstr (g_source_get_name (source), ==, "not the task name");
+  g_source_unref (source);
+
+  g_object_unref (task);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -2398,6 +2431,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gtask/return/in-idle/value-first", test_return_in_idle_value_first);
   g_test_add_func ("/gtask/return/error-first", test_return_error_first);
   g_test_add_func ("/gtask/return/value-first", test_return_value_first);
+  g_test_add_func ("/gtask/attach-source/set-name", test_attach_source_set_name);
 
   ret = g_test_run();
 

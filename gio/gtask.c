@@ -1645,7 +1645,8 @@ g_task_run_in_thread_sync (GTask           *task,
  * callback to @callback, with @task as the callback's `user_data`.
  *
  * It will set the @source’s name to the task’s name (as set with
- * g_task_set_name()), if one has been set.
+ * g_task_set_name()), if one has been set on the task and the source doesn’t
+ * yet have a name.
  *
  * This takes a reference on @task until @source is destroyed.
  *
@@ -1661,7 +1662,7 @@ g_task_attach_source (GTask       *task,
   g_source_set_callback (source, callback,
                          g_object_ref (task), g_object_unref);
   g_source_set_priority (source, task->priority);
-  if (task->name != NULL)
+  if (task->name != NULL && g_source_get_name (source) == NULL)
     g_source_set_name (source, task->name);
 
   g_source_attach (source, task->context);
