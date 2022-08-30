@@ -119,6 +119,40 @@ invoke_error_quark (GModule *self, const char *symbol, GError **error)
   return sym ();
 }
 
+/* A simpler version of g_strdup_value_contents(), but with stable
+ * output and less complex semantics
+ */
+static char *
+value_to_string (const GValue *value)
+{
+  if (G_VALUE_HOLDS_STRING (value))
+    {
+      const char *s = g_value_get_string (value);
+
+      if (s == NULL)
+        return g_strdup ("NULL");
+
+      return g_strescape (s, NULL);
+    }
+  else if (g_value_type_transformable (G_VALUE_TYPE (value), G_TYPE_STRING))
+    {
+      GValue tmp = G_VALUE_INIT;
+      char *s;
+
+      g_value_init (&tmp, G_TYPE_STRING);
+      g_value_transform (value, &tmp);
+      s = g_strescape (g_value_get_string (&tmp), NULL);
+      g_value_unset (&tmp);
+
+      if (s == NULL)
+        return g_strdup ("NULL");
+
+      return s;
+    }
+  else
+    return g_strdup ("NULL");
+}
+
 static void
 dump_properties (GType type, GOutputStream *out)
 {
@@ -147,9 +181,18 @@ dump_properties (GType type, GOutputStream *out)
       if (prop->owner_type != type)
 	continue;
 
-      escaped_printf (out, "    <property name=\"%s\" type=\"%s\" flags=\"%d\"/>\n",
-		      prop->name, g_type_name (prop->value_type), prop->flags);
+      const GValue *v = g_param_spec_get_default_value (prop);
+      char *default_value = value_to_string (v);
+
+      escaped_printf (out, "    <property name=\"%s\" type=\"%s\" flags=\"%d\" default-value=\"%s\"/>\n",
+		      prop->name,
+                      g_type_name (prop->value_type),
+                      prop->flags,
+                      default_value);
+
+      g_free (default_value);
     }
+
   g_free (props);
 }
 
