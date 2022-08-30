@@ -203,6 +203,7 @@ g_document_portal_add_documents (GList       *uris,
   else
     {
       ruris = g_list_copy_deep (uris, (GCopyFunc)g_strdup, NULL);
+      g_variant_builder_clear (&builder);
     }
 
 out:
