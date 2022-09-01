@@ -2434,6 +2434,16 @@ main (int argc, char *argv[])
   TEST_NEW_FAIL ("\\k", 0, G_REGEX_ERROR_MISSING_NAME);
   TEST_NEW_FAIL ("a[\\NB]c", 0, G_REGEX_ERROR_NOT_SUPPORTED_IN_CLASS);
   TEST_NEW_FAIL ("(*:0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEFG)XX", 0, G_REGEX_ERROR_NAME_TOO_LONG);
+  /* See https://gitlab.gnome.org/GNOME/gtksourceview/-/issues/278 */
+  TEST_NEW_FAIL ("(?i-x)((?:(?i-x)[^\\x00\\t\\n\\f\\r \"'/<=>\\x{007F}-\\x{009F}" \
+                 "\\x{FDD0}-\\x{FDEF}\\x{FFFE}\\x{FFFF}\\x{1FFFE}\\x{1FFFF}" \
+                 "\\x{2FFFE}\\x{2FFFF}\\x{3FFFE}\\x{3FFFF}\\x{4FFFE}\\x{4FFFF}" \
+                 "\\x{5FFFE}\\x{5FFFF}\\x{6FFFE}\\x{6FFFF}\\x{7FFFE}\\x{7FFFF}" \
+                 "\\x{8FFFE}\\x{8FFFF}\\x{9FFFE}\\x{9FFFF}\\x{AFFFE}\\x{AFFFF}" \
+                 "\\x{BFFFE}\\x{BFFFF}\\x{CFFFE}\\x{CFFFF}\\x{DFFFE}\\x{DFFFF}" \
+                 "\\x{EFFFE}\\x{EFFFF}\\x{FFFFE}\\x{FFFFF}\\x{10FFFE}\\x{10FFFF}]+)" \
+                 "\\s*=\\s*)(\\\")",
+                 G_REGEX_RAW, G_REGEX_ERROR_HEX_CODE_TOO_LARGE);
 
   /* These errors can't really be tested easily:
    * G_REGEX_ERROR_EXPRESSION_TOO_LARGE
