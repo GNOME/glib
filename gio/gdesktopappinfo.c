@@ -3107,6 +3107,9 @@ launch_uris_with_dbus_signal_cb (GObject      *object,
 
   if (data->callback)
     data->callback (object, result, data->user_data);
+  else if (!g_task_had_error (G_TASK (result)))
+    g_variant_unref (g_dbus_connection_call_finish (G_DBUS_CONNECTION (object),
+                                                    result, NULL));
 
   launch_uris_with_dbus_data_free (data);
 }
