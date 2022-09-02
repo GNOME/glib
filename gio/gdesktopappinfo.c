@@ -710,7 +710,7 @@ merge_directory_results (void)
       static_total_results = g_renew (struct search_result, static_total_results, static_total_results_allocated);
     }
 
-  if (static_total_results + static_total_results_size != 0)
+  if (static_search_results_size != 0)
     memcpy (static_total_results + static_total_results_size,
             static_search_results,
             static_search_results_size * sizeof (struct search_result));
