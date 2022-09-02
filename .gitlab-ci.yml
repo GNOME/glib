@@ -212,7 +212,7 @@ valgrind:
   stage: analysis
   needs: []
   variables:
-    MESON_TEST_TIMEOUT_MULTIPLIER: 10
+    MESON_TEST_TIMEOUT_MULTIPLIER: 15
   script:
     - meson ${MESON_COMMON_OPTIONS}
             --werror

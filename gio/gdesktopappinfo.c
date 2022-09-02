@@ -3108,6 +3108,9 @@ launch_uris_with_dbus_signal_cb (GObject      *object,
 
   if (data->callback)
     data->callback (object, result, data->user_data);
+  else if (!g_task_had_error (G_TASK (result)))
+    g_variant_unref (g_dbus_connection_call_finish (G_DBUS_CONNECTION (object),
+                                                    result, NULL));
 
   launch_uris_with_dbus_data_free (data);
 }
@@ -3280,15 +3283,19 @@ launch_uris_with_dbus_cb (GObject      *object,
 {
   GTask *task = G_TASK (user_data);
   GError *local_error = NULL;
+  GVariant *ret;
 
-  g_dbus_connection_call_finish (G_DBUS_CONNECTION (object), result, &local_error);
+  ret = g_dbus_connection_call_finish (G_DBUS_CONNECTION (object), result, &local_error);
   if (local_error != NULL)
     {
       g_dbus_error_strip_remote_error (local_error);
       g_task_return_error (task, g_steal_pointer (&local_error));
     }
   else
-    g_task_return_boolean (task, TRUE);
+    {
+      g_task_return_boolean (task, TRUE);
+      g_variant_unref (ret);
+    }
 
   g_object_unref (task);
 }

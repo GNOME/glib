@@ -119,13 +119,17 @@ request_name_cb (GObject *source,
   GDBusConnection *connection = G_DBUS_CONNECTION (source);
   GError *error = NULL;
   GVariant *var;
+  GVariant *child;
 
   var = g_dbus_connection_call_finish (connection, res, &error);
   g_assert_no_error (error);
-  g_assert_cmpuint (g_variant_get_uint32 (g_variant_get_child_value (var, 0)),
+  child = g_variant_get_child_value (var, 0);
+  g_assert_cmpuint (g_variant_get_uint32 (child),
                     ==, DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER);
 
   release_name (connection, TRUE);
+  g_variant_unref (child);
+  g_variant_unref (var);
 }
 
 static void
@@ -154,11 +158,13 @@ release_name_cb (GObject *source,
   GDBusConnection *connection = G_DBUS_CONNECTION (source);
   GError *error = NULL;
   GVariant *var;
+  GVariant *child;
   int i;
 
   var = g_dbus_connection_call_finish (connection, res, &error);
   g_assert_no_error (error);
-  g_assert_cmpuint (g_variant_get_uint32 (g_variant_get_child_value (var, 0)),
+  child = g_variant_get_child_value (var, 0);
+  g_assert_cmpuint (g_variant_get_uint32 (child),
                     ==, DBUS_RELEASE_NAME_REPLY_RELEASED);
 
   /* generate some rapid NameOwnerChanged signals to try to trigger crashes */
@@ -170,6 +176,8 @@ release_name_cb (GObject *source,
 
   /* wait for dbus-daemon to catch up */
   request_name (connection, TRUE);
+  g_variant_unref (child);
+  g_variant_unref (var);
 }
 
 static void

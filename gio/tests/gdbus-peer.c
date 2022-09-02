@@ -843,6 +843,7 @@ do_test_peer (void)
   error = NULL;
   value = g_dbus_proxy_get_cached_property (proxy, "PeerProperty");
   g_assert_cmpstr (g_variant_get_string (value, NULL), ==, "ThePropertyValue");
+  g_clear_pointer (&value, g_variant_unref);
 
   /* try invoking a method */
   error = NULL;
