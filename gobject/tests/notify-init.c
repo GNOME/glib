@@ -124,8 +124,7 @@ test_object_set_property (GObject *gobject,
   TestObject *tobj = (TestObject *) gobject;
 
   g_assert_cmpint (prop_id, !=, 0);
-  g_assert_cmpint (prop_id, !=, N_PROPERTIES);
-  g_assert (pspec == properties[prop_id]);
+  g_assert_true (prop_id < N_PROPERTIES && pspec == properties[prop_id]);
 
   switch ((TestObjectProperty)prop_id)
     {
@@ -159,8 +158,7 @@ test_object_get_property (GObject *gobject,
   TestObject *tobj = (TestObject *) gobject;
 
   g_assert_cmpint (prop_id, !=, 0);
-  g_assert_cmpint (prop_id, !=, N_PROPERTIES);
-  g_assert (pspec == properties[prop_id]);
+  g_assert_true (prop_id < N_PROPERTIES && pspec == properties[prop_id]);
 
   switch ((TestObjectProperty)prop_id)
     {
