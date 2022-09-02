@@ -360,6 +360,84 @@ test_flatpak_doc_export (void)
   g_object_unref (flatpak_appinfo);
 }
 
+static void
+on_flatpak_launch_invalid_uri_finish (GObject *object,
+                                      GAsyncResult *result,
+                                      gpointer user_data)
+{
+  GApplication *app = user_data;
+  GError *error = NULL;
+
+  g_app_info_launch_uris_finish (G_APP_INFO (object), result, &error);
+  g_assert_no_error (error);
+
+  g_application_release (app);
+}
+
+static void
+on_flatpak_activate_invalid_uri (GApplication *app,
+                                 gpointer user_data)
+{
+  GDesktopAppInfo *flatpak_appinfo = user_data;
+  GList *uris;
+
+  /* The app will be released in on_flatpak_launch_uris_finish */
+  g_application_hold (app);
+
+  uris = g_list_prepend (NULL, "file:///hopefully/an/invalid/path.desktop");
+  g_app_info_launch_uris_async (G_APP_INFO (flatpak_appinfo), uris, NULL,
+                                NULL, on_flatpak_launch_invalid_uri_finish, app);
+  g_list_free (uris);
+}
+
+static void
+on_flatpak_open_invalid_uri (GApplication  *app,
+                             GFile        **files,
+                             gint           n_files,
+                             const char    *hint)
+{
+  GFile *f;
+
+  g_assert_cmpint (n_files, ==, 1);
+  g_test_message ("on_flatpak_open received file '%s'", g_file_peek_path (files[0]));
+
+  /* The file has been exported via the document portal */
+  f = g_file_new_for_uri ("file:///hopefully/an/invalid/path.desktop");
+  g_assert_true (g_file_equal (files[0], f));
+  g_object_unref (f);
+}
+
+static void
+test_flatpak_missing_doc_export (void)
+{
+  const gchar *argv[] = { "myapp", NULL };
+  gchar *desktop_file = NULL;
+  GDesktopAppInfo *flatpak_appinfo;
+  GApplication *app;
+  int status;
+
+  g_test_summary ("Test that files launched via Flatpak apps are made available via the document portal.");
+
+  desktop_file = g_test_build_filename (G_TEST_DIST,
+                                        "org.gtk.test.dbusappinfo.flatpak.desktop",
+                                        NULL);
+  flatpak_appinfo = g_desktop_app_info_new_from_filename (desktop_file);
+  g_assert_nonnull (flatpak_appinfo);
+
+  app = g_application_new ("org.gtk.test.dbusappinfo.flatpak",
+                           G_APPLICATION_HANDLES_OPEN);
+  g_signal_connect (app, "activate", G_CALLBACK (on_flatpak_activate_invalid_uri),
+                    flatpak_appinfo);
+  g_signal_connect (app, "open", G_CALLBACK (on_flatpak_open_invalid_uri), NULL);
+
+  status = g_application_run (app, 1, (gchar **) argv);
+  g_assert_cmpint (status, ==, 0);
+
+  g_object_unref (app);
+  g_object_unref (flatpak_appinfo);
+  g_free (desktop_file);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -367,6 +445,7 @@ main (int argc, char **argv)
 
   g_test_add_func ("/appinfo/dbusappinfo", test_dbus_appinfo);
   g_test_add_func ("/appinfo/flatpak-doc-export", test_flatpak_doc_export);
+  g_test_add_func ("/appinfo/flatpak-missing-doc-export", test_flatpak_missing_doc_export);
 
   return session_bus_run ();
 }
