@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-08-24 07:19+0000\n"
-"PO-Revision-Date: 2022-08-27 10:29+0430\n"
+"POT-Creation-Date: 2022-08-31 23:44+0000\n"
+"PO-Revision-Date: 2022-09-03 16:45+0430\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian <>\n"
 "Language: fa\n"
@@ -29,12 +29,12 @@ msgstr "تنظیم برنامهٔ پیش‌گزیده هنوز پشتیبانی 
 msgid "Setting application as last used for type not supported yet"
 msgstr "تنظیم برنامه به عنوان آخرین استفاده برای گونه هنوز پشتیبانی نمی‌شود"
 
-#: gio/gappinfo.c:808
+#: gio/gappinfo.c:810
 #, c-format
 msgid "Failed to find default application for content type ‘%s’"
 msgstr "شکست در یافتن برنامهٔ پیش‌گزیده برای گونهٔ محتوای «%s»"
 
-#: gio/gappinfo.c:868
+#: gio/gappinfo.c:870
 #, c-format
 msgid "Failed to find default application for URI Scheme ‘%s’"
 msgstr "شکست در یافتن برنامهٔ پیش‌گزیده برای شمای نشانی %s"
@@ -141,7 +141,7 @@ msgstr "FILE"
 
 #: gio/gapplication-tool.c:76
 msgid "Optional relative or absolute filenames, or URIs to open"
-msgstr ""
+msgstr "نام پرونده‌های نسبی یا ثابت یا نشانی‌ها برای گشودن"
 
 #: gio/gapplication-tool.c:77
 msgid "ACTION"
@@ -192,6 +192,8 @@ msgid ""
 "Use “%s help COMMAND” to get detailed help.\n"
 "\n"
 msgstr ""
+"برای گرفتن راهنمای پرجزییات از «%s help COMMAND‬»‌ استفاده کنید.\n"
+"\n"
 
 #: gio/gapplication-tool.c:169
 #, c-format
@@ -199,11 +201,13 @@ msgid ""
 "%s command requires an application id to directly follow\n"
 "\n"
 msgstr ""
+"دستور %s نیازمند شناسهٔ برنامه‌ای برای پیگیری مستقیم است\n"
+"\n"
 
 #: gio/gapplication-tool.c:175
 #, c-format
 msgid "invalid application id: “%s”\n"
-msgstr ""
+msgstr "شناسهٔ برنامهٔ نامعتبر: «%s»\n"
 
 #. Translators: %s is replaced with a command name like 'list-actions'
 #: gio/gapplication-tool.c:186
@@ -212,6 +216,8 @@ msgid ""
 "“%s” takes no arguments\n"
 "\n"
 msgstr ""
+"«%s» هیچ آرگومانی نمی‌گیرد\n"
+"\n"
 
 #: gio/gapplication-tool.c:270
 #, c-format
@@ -225,7 +231,7 @@ msgstr "خطای فرستادن %s پیام به برنامه: %s\n"
 
 #: gio/gapplication-tool.c:321
 msgid "action name must be given after application id\n"
-msgstr ""
+msgstr "نام کنش باید پس از شناسهٔ برنامه داده شود\n"
 
 #: gio/gapplication-tool.c:329
 #, c-format
@@ -233,6 +239,8 @@ msgid ""
 "invalid action name: “%s”\n"
 "action names must consist of only alphanumerics, “-” and “.”\n"
 msgstr ""
+"نام کنش نامعتبر: «%s»\n"
+"نام‌های کنش‌ها باید فقط شامل حرف‌رقم، «-» و «.»‌ باشند\n"
 
 #: gio/gapplication-tool.c:348
 #, c-format
@@ -243,11 +251,11 @@ msgstr ""
 
 #: gio/gapplication-tool.c:360
 msgid "actions accept a maximum of one parameter\n"
-msgstr ""
+msgstr "کنش بیشینه یک پارامتر می‌پذیرد\n"
 
 #: gio/gapplication-tool.c:415
 msgid "list-actions command takes only the application id"
-msgstr ""
+msgstr "دستور کنش‌های سیاهه فقط شناسهٔ برنامه را می‌گیرند"
 
 #: gio/gapplication-tool.c:425
 #, c-format
@@ -350,7 +358,7 @@ msgstr "نوع پرونده %s"
 
 #: gio/gcredentials.c:337
 msgid "GCredentials contains invalid data"
-msgstr ""
+msgstr "دارای داده‌های نامعتبر در GCredentials"
 
 #: gio/gcredentials.c:397 gio/gcredentials.c:688
 msgid "GCredentials is not implemented on this OS"
@@ -370,55 +378,57 @@ msgstr "جعل گواهی روی این سیستم‌عامل ممکن نیست"
 
 #: gio/gdatainputstream.c:306
 msgid "Unexpected early end-of-stream"
-msgstr ""
+msgstr "پایان جریان زودهنگام نامنتظره"
 
 #: gio/gdbusaddress.c:164 gio/gdbusaddress.c:238 gio/gdbusaddress.c:327
 #, c-format
 msgid "Unsupported key “%s” in address entry “%s”"
-msgstr ""
+msgstr "کلید پشتیبانی نشدهٔ «%s» در ورودی نشانی «%s»"
 
 #: gio/gdbusaddress.c:177
 #, c-format
 msgid "Meaningless key/value pair combination in address entry “%s”"
-msgstr ""
+msgstr "ترکیب جفت کلید و مقدار بی‌معنی در ورودی نشانی «%s»"
 
 #: gio/gdbusaddress.c:186
 #, c-format
 msgid ""
 "Address “%s” is invalid (need exactly one of path, dir, tmpdir, or abstract keys)"
 msgstr ""
+"نشانی «%s» نامعتبر است (فقط یکی از کلیدهای path، dir، tmpdir یا abstract را نیاز "
+"دارد)"
 
 #: gio/gdbusaddress.c:253 gio/gdbusaddress.c:264 gio/gdbusaddress.c:279
 #: gio/gdbusaddress.c:342 gio/gdbusaddress.c:353
 #, c-format
 msgid "Error in address “%s” — the “%s” attribute is malformed"
-msgstr ""
+msgstr "خطا در نشانی «%s» — مولّفهٔ «%s» بدریخت است"
 
 #: gio/gdbusaddress.c:423 gio/gdbusaddress.c:682
 #, c-format
 msgid "Unknown or unsupported transport “%s” for address “%s”"
-msgstr ""
+msgstr "جابه‌جایی پشتیبانی نشده یا ناشناختهٔ «%s» برای نشانی «%s»"
 
 #: gio/gdbusaddress.c:467
 #, c-format
 msgid "Address element “%s” does not contain a colon (:)"
-msgstr ""
+msgstr "عنصر نشانی «%s» دارای دونقطه (:) نیست."
 
 #: gio/gdbusaddress.c:476
 #, c-format
 msgid "Transport name in address element “%s” must not be empty"
-msgstr ""
+msgstr "نام جابه‌جایی در عنصر نشانی «%s» نباید خالی باشد"
 
 #: gio/gdbusaddress.c:497
 #, c-format
 msgid ""
 "Key/Value pair %d, “%s”, in address element “%s” does not contain an equal sign"
-msgstr ""
+msgstr "جفت گلید و مقدار %Id، «%s» در عنصر نشانی «%s» دارای علامت مساوی نیست"
 
 #: gio/gdbusaddress.c:508
 #, c-format
 msgid "Key/Value pair %d, “%s”, in address element “%s” must not have an empty key"
-msgstr ""
+msgstr "جفت گلید و مقدار %Id، «%s» در عنصر نشانی «%s» نباید کلیدی خالی داشته باشد"
 
 #: gio/gdbusaddress.c:522
 #, c-format
@@ -432,21 +442,23 @@ msgid ""
 "Error in address “%s” — the unix transport requires exactly one of the keys "
 "“path” or “abstract” to be set"
 msgstr ""
+"خطا در نشانی «%s» — جابه‌جایی یونیکس نیازمند تنظیم بودن دقیقاً یکی از کلیدهای path "
+"یا abstract است"
 
 #: gio/gdbusaddress.c:625
 #, c-format
 msgid "Error in address “%s” — the host attribute is missing or malformed"
-msgstr ""
+msgstr "خطا در نشانی «%s» — مولّفهٔ host غایب یا بدریخت است"
 
 #: gio/gdbusaddress.c:639
 #, c-format
 msgid "Error in address “%s” — the port attribute is missing or malformed"
-msgstr ""
+msgstr "خطا در نشانی «%s» — مولّفهٔ port غایب یا بدریخت است"
 
 #: gio/gdbusaddress.c:653
 #, c-format
 msgid "Error in address “%s” — the noncefile attribute is missing or malformed"
-msgstr ""
+msgstr "خطا در نشانی «%s» — مولّفهٔ noncefile غایب یا بدریخت است"
 
 #: gio/gdbusaddress.c:674
 msgid "Error auto-launching: "
@@ -488,7 +500,7 @@ msgstr ""
 #: gio/gdbusaddress.c:1115
 #, c-format
 msgid "Cannot autolaunch D-Bus without X11 $DISPLAY"
-msgstr ""
+msgstr "نمی‌توان بدون ‪$DISPLAY‬ X11 به طور خودکار D-Bus را اجرا کرد"
 
 #: gio/gdbusaddress.c:1157
 #, c-format
@@ -498,7 +510,7 @@ msgstr "خطا در ایجاد خط فرمان «%s»: "
 #: gio/gdbusaddress.c:1226
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
-msgstr ""
+msgstr "نمی‌توان نشانی گذرگاه نشست را تشخیص داد (برای این سیستم‌عامل پیاده نشده)"
 
 #: gio/gdbusaddress.c:1375 gio/gdbusconnection.c:7321
 #, c-format
@@ -506,12 +518,16 @@ msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable — "
 "unknown value “%s”"
 msgstr ""
+"نمی‌توان نشانی گذرگاه را از متغیّر محیطی DBUS_STARTER_BUS_TYPE تشخیص داد — مقدار "
+"ناشناختهٔ «%s»"
 
 #: gio/gdbusaddress.c:1384 gio/gdbusconnection.c:7330
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
 msgstr ""
+"نمی‌توان نشانی گذرگاه را تشخیص داد؛ چون متغیّر محیطی DBUS_STARTER_BUS_TYPE تنظیم "
+"نشده"
 
 #: gio/gdbusaddress.c:1394
 #, c-format
@@ -520,11 +536,11 @@ msgstr "گونهٔ گذرگاه ناشناخته %d"
 
 #: gio/gdbusauth.c:294
 msgid "Unexpected lack of content trying to read a line"
-msgstr ""
+msgstr "کمبود محتوای نامنتظره هنگام خواندن یک خط"
 
 #: gio/gdbusauth.c:338
 msgid "Unexpected lack of content trying to (safely) read a line"
-msgstr ""
+msgstr "کمبود محتوای نامنتظره هنگام خواندن (امن) یک خط"
 
 #: gio/gdbusauth.c:482
 #, c-format
@@ -534,11 +550,11 @@ msgstr ""
 
 #: gio/gdbusauth.c:1178
 msgid "User IDs must be the same for peer and server"
-msgstr ""
+msgstr "شناسه‌های کاربری باید برای نمونه و کارساز یکی باشد"
 
 #: gio/gdbusauth.c:1190
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
-msgstr ""
+msgstr "لغو شده به دست GDBusAuthObserver::authorize-authenticated-peer"
 
 #: gio/gdbusauthmechanismsha1.c:303
 #, c-format
@@ -548,7 +564,7 @@ msgstr "خطا هنگام گرفتن اطّلاعات برای شاخهٔ «%s»
 #: gio/gdbusauthmechanismsha1.c:318
 #, c-format
 msgid "Permissions on directory “%s” are malformed. Expected mode 0700, got 0%o"
-msgstr ""
+msgstr "اجازه‌های روی «%s» مستقیم بدریختند. انتظار حالت ۰۷۰۰ می‌رفت؛ ۰%Io گرفته شد"
 
 #: gio/gdbusauthmechanismsha1.c:351 gio/gdbusauthmechanismsha1.c:362
 #, c-format
@@ -573,24 +589,24 @@ msgstr "خطا در گشودن دسته‌کلید «%s» برای خواندن:
 #: gio/gdbusauthmechanismsha1.c:430 gio/gdbusauthmechanismsha1.c:771
 #, c-format
 msgid "Line %d of the keyring at “%s” with content “%s” is malformed"
-msgstr ""
+msgstr "خط %Id دسته‌کلید در «%s» با محتوای «%s» بدریخت است"
 
 #: gio/gdbusauthmechanismsha1.c:444 gio/gdbusauthmechanismsha1.c:785
 #, c-format
 msgid ""
 "First token of line %d of the keyring at “%s” with content “%s” is malformed"
-msgstr ""
+msgstr "ژتون نخست خط %Id دسته‌کلید در «%s» با محتوای «%s» بدریخت است"
 
 #: gio/gdbusauthmechanismsha1.c:458 gio/gdbusauthmechanismsha1.c:799
 #, c-format
 msgid ""
 "Second token of line %d of the keyring at “%s” with content “%s” is malformed"
-msgstr ""
+msgstr "ژتون دوم خط %Id دسته‌کلید در «%s» با محتوای «%s» بدریخت است"
 
 #: gio/gdbusauthmechanismsha1.c:482
 #, c-format
 msgid "Didn’t find cookie with id %d in the keyring at “%s”"
-msgstr ""
+msgstr "کوکی با شناسهٔ %Id در دسته کلید موجود در «%s» پیدا نشد"
 
 #: gio/gdbusauthmechanismsha1.c:539
 #, c-format
@@ -620,7 +636,7 @@ msgstr "خطا در گشودن دسته‌کلید «%s» برای نوشتن: "
 #: gio/gdbusauthmechanismsha1.c:932
 #, c-format
 msgid "(Additionally, releasing the lock for “%s” also failed: %s) "
-msgstr ""
+msgstr "(به علاوه، آزاد سازی قفل برا ی «%s» هم شکست خورد: %s) "
 
 #: gio/gdbusconnection.c:590 gio/gdbusconnection.c:2404
 msgid "The connection is closed"
@@ -628,16 +644,16 @@ msgstr "اتصال بسته شده است"
 
 #: gio/gdbusconnection.c:1889
 msgid "Timeout was reached"
-msgstr ""
+msgstr "زمان به پایان رسید"
 
 #: gio/gdbusconnection.c:2527
 msgid "Unsupported flags encountered when constructing a client-side connection"
-msgstr ""
+msgstr "مواجهه با پرچم‌های پشتیبانی نشده هنگام ساخت یک اتّصال سمت کارخواه"
 
 #: gio/gdbusconnection.c:4256 gio/gdbusconnection.c:4610
 #, c-format
 msgid "No such interface “org.freedesktop.DBus.Properties” on object at path %s"
-msgstr ""
+msgstr "واسطی چون org.freedesktop.DBus.Properties روی شی در مسیر %s وجود ندارد"
 
 #: gio/gdbusconnection.c:4401
 #, c-format
@@ -657,17 +673,17 @@ msgstr "ویژگی «%s» نوشتنی نیست"
 #: gio/gdbusconnection.c:4444
 #, c-format
 msgid "Error setting property “%s”: Expected type “%s” but got “%s”"
-msgstr ""
+msgstr "خطای تنظیم مولّفهٔ «%s»: انتظار گونهٔ «%s» می‌رفت؛ ولی «%s» گرفته شد"
 
 #: gio/gdbusconnection.c:4549 gio/gdbusconnection.c:4764 gio/gdbusconnection.c:6747
 #, c-format
 msgid "No such interface “%s”"
-msgstr ""
+msgstr "واسطی چون «%s» وجود ندارد"
 
 #: gio/gdbusconnection.c:4986 gio/gdbusconnection.c:7261
 #, c-format
 msgid "No such interface “%s” on object at path %s"
-msgstr ""
+msgstr "واسطی چون «%s» روی شی در مسیر %s وجود ندارد"
 
 #: gio/gdbusconnection.c:5087
 #, c-format
@@ -697,22 +713,22 @@ msgstr "ناتوان در تنظیم ویژگی %s.%s"
 #: gio/gdbusconnection.c:5783
 #, c-format
 msgid "Method “%s” returned type “%s”, but expected “%s”"
-msgstr ""
+msgstr "روش «%s» گونهٔ «%s» را برگرداند؛ ولی انتظار «%s» می‌رفت"
 
 #: gio/gdbusconnection.c:6859
 #, c-format
 msgid "Method “%s” on interface “%s” with signature “%s” does not exist"
-msgstr ""
+msgstr "روش «%s» روی واسط «%s» با امضای «%s» وجود ندارد"
 
 #: gio/gdbusconnection.c:6980
 #, c-format
 msgid "A subtree is already exported for %s"
-msgstr ""
+msgstr "زیردرختی از پیش برای %s برون‌ریزی شده"
 
 #: gio/gdbusconnection.c:7269
 #, c-format
 msgid "Object does not exist at path “%s”"
-msgstr ""
+msgstr "شی در مسیر «%s» وجود ندارد"
 
 #: gio/gdbusmessage.c:1303
 msgid "type is INVALID"
@@ -720,11 +736,11 @@ msgstr "نوع INVALID است"
 
 #: gio/gdbusmessage.c:1314
 msgid "METHOD_CALL message: PATH or MEMBER header field is missing"
-msgstr ""
+msgstr "پیام METHOD_CALL: زمینهٔ سرایند PATH یا MEMBER وجود ندارد"
 
 #: gio/gdbusmessage.c:1325
 msgid "METHOD_RETURN message: REPLY_SERIAL header field is missing"
-msgstr ""
+msgstr "پیام METHOD_RETURN: زمینهٔ سرایند REPLY_SERIAL وجود ندارد"
 
 #: gio/gdbusmessage.c:1337
 msgid "ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing"
@@ -1219,7 +1235,7 @@ msgstr "خطا: %s نام گذرگاه شناخته شدهٔ معتبری نیس
 msgid "Not authorized to change debug settings"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:2182 gio/gdesktopappinfo.c:5113
+#: gio/gdesktopappinfo.c:2182 gio/gdesktopappinfo.c:5112
 msgid "Unnamed"
 msgstr "بدون‌نام"
 
@@ -1231,26 +1247,26 @@ msgstr ""
 msgid "Unable to find terminal required for application"
 msgstr "نمی‌توان پایانهٔ لازم برای این برنامه را پیدا کرد"
 
-#: gio/gdesktopappinfo.c:3631
+#: gio/gdesktopappinfo.c:3630
 #, c-format
 msgid "Can’t create user application configuration folder %s: %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:3635
+#: gio/gdesktopappinfo.c:3634
 #, c-format
 msgid "Can’t create user MIME configuration folder %s: %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:3877 gio/gdesktopappinfo.c:3901
+#: gio/gdesktopappinfo.c:3876 gio/gdesktopappinfo.c:3900
 msgid "Application information lacks an identifier"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:4137
+#: gio/gdesktopappinfo.c:4136
 #, c-format
 msgid "Can’t create user desktop file %s"
 msgstr "نمی‌توان پروندهٔ میزکار کاربر %s را ایجاد کرد"
 
-#: gio/gdesktopappinfo.c:4273
+#: gio/gdesktopappinfo.c:4272
 #, c-format
 msgid "Custom definition for %s"
 msgstr ""
