@@ -1879,6 +1879,7 @@ test_iso15924 (void)
                            data[i].four_letter_code[2],
                            data[i].four_letter_code[3]);
 
+      g_test_message ("Testing script %s (code %u)", data[i].four_letter_code, code);
       g_assert_cmphex (g_unicode_script_to_iso15924 (data[i].script), ==, code);
       g_assert_cmpint (g_unicode_script_from_iso15924 (code), ==, data[i].script);
     }
