@@ -1506,6 +1506,10 @@ static const guint32 iso15924_tags[] =
   /* not really a Unicode script, but part of ISO 15924 */
     PACK ('Z', 'm', 't', 'h'), /* G_UNICODE_SCRIPT_MATH */
 
+    /* Unicode 15.0 additions */
+    PACK ('K', 'a', 'w', 'i'), /* G_UNICODE_SCRIPT_KAWI */
+    PACK ('N', 'a', 'g', 'm'), /* G_UNICODE_SCRIPT_NAG_MUNDARI */
+
 #undef PACK
 };
 
