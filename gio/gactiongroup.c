@@ -741,8 +741,8 @@ g_action_group_action_state_changed (GActionGroup *action_group,
  * @action_group: a #GActionGroup
  * @action_name: the name of an action in the group
  * @enabled: (out): if the action is presently enabled
- * @parameter_type: (out) (optional): the parameter type, or %NULL if none needed
- * @state_type: (out) (optional): the state type, or %NULL if stateless
+ * @parameter_type: (out) (transfer none) (optional): the parameter type, or %NULL if none needed
+ * @state_type: (out) (transfer none) (optional): the state type, or %NULL if stateless
  * @state_hint: (out) (optional): the state hint, or %NULL if none
  * @state: (out) (optional): the current state, or %NULL if stateless
  *
