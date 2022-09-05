@@ -438,6 +438,8 @@ typedef enum
  * @G_UNICODE_SCRIPT_TOTO:                 Toto. Since: 2.72
  * @G_UNICODE_SCRIPT_VITHKUQI:             Vithkuqi. Since: 2.72
  * @G_UNICODE_SCRIPT_MATH:                 Mathematical notation. Since: 2.72
+ * @G_UNICODE_SCRIPT_KAWI:                 Kawi. Since 2.74
+ * @G_UNICODE_SCRIPT_NAG_MUNDARI:          Nag Mundari. Since 2.74
  *
  * The #GUnicodeScript enumeration identifies different writing
  * systems. The values correspond to the names as defined in the
@@ -646,6 +648,10 @@ typedef enum
 
   /* not really a Unicode script, but part of ISO 15924 */
   G_UNICODE_SCRIPT_MATH,                   /* Zmth */
+
+  /* Unicode 15.0 additions */
+  G_UNICODE_SCRIPT_KAWI GLIB_AVAILABLE_ENUMERATOR_IN_2_74,          /* Kawi */
+  G_UNICODE_SCRIPT_NAG_MUNDARI GLIB_AVAILABLE_ENUMERATOR_IN_2_74,   /* Nag Mundari */
 } GUnicodeScript;
 
 GLIB_AVAILABLE_IN_ALL
