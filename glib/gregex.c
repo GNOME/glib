@@ -1027,7 +1027,7 @@ g_match_info_next (GMatchInfo  *match_info,
 {
   gint prev_match_start;
   gint prev_match_end;
-  gint opts;
+  uint32_t opts;
 
   g_return_val_if_fail (match_info != NULL, FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
@@ -1074,6 +1074,19 @@ g_match_info_next (GMatchInfo  *match_info,
                    _("Error while matching regular expression %s: %s"),
                    match_info->regex->pattern, match_error (match_info->matches));
       return FALSE;
+    }
+  else if (match_info->matches == 0)
+    {
+      /* info->offsets is too small. */
+      match_info->n_offsets *= 2;
+      match_info->offsets = g_realloc_n (match_info->offsets,
+                                         match_info->n_offsets,
+                                         sizeof (gint));
+
+      pcre2_match_data_free (match_info->match_data);
+      match_info->match_data = pcre2_match_data_create (match_info->n_offsets, NULL);
+
+      return g_match_info_next (match_info, error);
     }
   else if (match_info->matches == PCRE2_ERROR_NOMATCH)
     {
