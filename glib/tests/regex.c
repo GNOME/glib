@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2005 - 2006, Marco Barisione <marco@barisione.org>
  * Copyright (C) 2010 Red Hat, Inc.
+ * Copyright (C) 2022, Marco Trevisan <marco.trevisan@canonical.com>
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  *
@@ -2355,7 +2356,13 @@ main (int argc, char *argv[])
 
   /* TEST_NEW_CHECK_FLAGS(pattern, compile_opts, match_ops, real_compile_opts, real_match_opts) */
   TEST_NEW_CHECK_FLAGS ("a", G_REGEX_OPTIMIZE, 0, G_REGEX_OPTIMIZE, 0);
+  TEST_NEW_CHECK_FLAGS ("a", G_REGEX_OPTIMIZE, G_REGEX_MATCH_NOTEMPTY,
+                        G_REGEX_OPTIMIZE, G_REGEX_MATCH_NOTEMPTY);
+  TEST_NEW_CHECK_FLAGS ("a", 0, G_REGEX_MATCH_NEWLINE_ANYCRLF | G_REGEX_MATCH_BSR_ANYCRLF,
+                        G_REGEX_NEWLINE_ANYCRLF | G_REGEX_BSR_ANYCRLF,
+                        G_REGEX_MATCH_NEWLINE_ANYCRLF | G_REGEX_MATCH_BSR_ANYCRLF);
   TEST_NEW_CHECK_FLAGS ("a", G_REGEX_RAW, 0, G_REGEX_RAW, 0);
+  TEST_NEW_CHECK_FLAGS ("(?J)a", 0, 0, G_REGEX_DUPNAMES, 0);
   TEST_NEW_CHECK_FLAGS ("^.*", 0, 0, G_REGEX_ANCHORED, 0);
   TEST_NEW_CHECK_FLAGS ("(*UTF8)a", 0, 0, 0 /* this is the default in GRegex */, 0);
   TEST_NEW_CHECK_FLAGS ("(*UCP)a", 0, 0, 0 /* this always on in GRegex */, 0);
@@ -2561,6 +2568,8 @@ main (int argc, char *argv[])
   TEST_MATCH("^b$", G_REGEX_MULTILINE | G_REGEX_NEWLINE_CR, 0, "a\rb\rc", -1, 0, 0, TRUE);
   TEST_MATCH("^b$", G_REGEX_MULTILINE | G_REGEX_NEWLINE_LF, 0, "a\rb\rc", -1, 0, 0, FALSE);
   TEST_MATCH("^b$", G_REGEX_MULTILINE | G_REGEX_NEWLINE_CRLF, 0, "a\rb\rc", -1, 0, 0, FALSE);
+  TEST_MATCH("^b$", G_REGEX_MULTILINE | G_REGEX_NEWLINE_ANYCRLF, 0, "a\r\nb\nc", -1, 0, 0, TRUE);
+  TEST_MATCH("^b$", G_REGEX_MULTILINE | G_REGEX_NEWLINE_ANYCRLF, 0, "a\r\nb\rc", -1, 0, 0, TRUE);
   TEST_MATCH("^b$", G_REGEX_MULTILINE, G_REGEX_MATCH_NEWLINE_CR, "a\nb\nc", -1, 0, 0, FALSE);
   TEST_MATCH("^b$", G_REGEX_MULTILINE, G_REGEX_MATCH_NEWLINE_LF, "a\nb\nc", -1, 0, 0, TRUE);
   TEST_MATCH("^b$", G_REGEX_MULTILINE, G_REGEX_MATCH_NEWLINE_CRLF, "a\nb\nc", -1, 0, 0, FALSE);
@@ -2570,6 +2579,8 @@ main (int argc, char *argv[])
   TEST_MATCH("^b$", G_REGEX_MULTILINE, G_REGEX_MATCH_NEWLINE_CR, "a\rb\rc", -1, 0, 0, TRUE);
   TEST_MATCH("^b$", G_REGEX_MULTILINE, G_REGEX_MATCH_NEWLINE_LF, "a\rb\rc", -1, 0, 0, FALSE);
   TEST_MATCH("^b$", G_REGEX_MULTILINE, G_REGEX_MATCH_NEWLINE_CRLF, "a\rb\rc", -1, 0, 0, FALSE);
+  TEST_MATCH("^b$", G_REGEX_MULTILINE, G_REGEX_MATCH_NEWLINE_ANYCRLF, "a\r\nb\rc", -1, 0, 0, TRUE);
+  TEST_MATCH("^b$", G_REGEX_MULTILINE, G_REGEX_MATCH_NEWLINE_ANYCRLF, "a\r\nb\nc", -1, 0, 0, TRUE);
 
   TEST_MATCH("^b$", G_REGEX_MULTILINE | G_REGEX_NEWLINE_CR, G_REGEX_MATCH_NEWLINE_ANY, "a\nb\nc", -1, 0, 0, TRUE);
   TEST_MATCH("^b$", G_REGEX_MULTILINE | G_REGEX_NEWLINE_CR, G_REGEX_MATCH_NEWLINE_ANY, "a\rb\rc", -1, 0, 0, TRUE);
@@ -2578,6 +2589,13 @@ main (int argc, char *argv[])
   TEST_MATCH("^b$", G_REGEX_MULTILINE | G_REGEX_NEWLINE_CR, G_REGEX_MATCH_NEWLINE_LF, "a\rb\rc", -1, 0, 0, FALSE);
   TEST_MATCH("^b$", G_REGEX_MULTILINE | G_REGEX_NEWLINE_CR, G_REGEX_MATCH_NEWLINE_CRLF, "a\r\nb\r\nc", -1, 0, 0, TRUE);
   TEST_MATCH("^b$", G_REGEX_MULTILINE | G_REGEX_NEWLINE_CR, G_REGEX_MATCH_NEWLINE_CRLF, "a\rb\rc", -1, 0, 0, FALSE);
+
+  /* See https://gitlab.gnome.org/GNOME/glib/-/issues/2729#note_1544130 */
+  TEST_MATCH("^a$", G_REGEX_MULTILINE, G_REGEX_MATCH_NEWLINE_ANY, "a", -1, 0, 0, TRUE);
+  TEST_MATCH("^a$", G_REGEX_MULTILINE, G_REGEX_MATCH_NEWLINE_LF, "a", -1, 0, 0, TRUE);
+  TEST_MATCH("^a$", G_REGEX_MULTILINE, G_REGEX_MATCH_NEWLINE_CR, "a", -1, 0, 0, TRUE);
+  TEST_MATCH("^a$", G_REGEX_MULTILINE, G_REGEX_MATCH_NEWLINE_CRLF, "a", -1, 0, 0, TRUE);
+  TEST_MATCH("^a$", G_REGEX_MULTILINE, G_REGEX_MATCH_NEWLINE_ANYCRLF, "a", -1, 0, 0, TRUE);
 
   TEST_MATCH("a#\nb", G_REGEX_EXTENDED, 0, "a", -1, 0, 0, FALSE);
   TEST_MATCH("a#\r\nb", G_REGEX_EXTENDED, 0, "a", -1, 0, 0, FALSE);
