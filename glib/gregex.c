@@ -912,7 +912,7 @@ enable_jit_with_match_options (GRegex   *regex,
  * and must not be freed. Use g_regex_ref() if you need to keep it
  * after you free @match_info object.
  *
- * Returns: #GRegex object used in @match_info
+ * Returns: (transfer none): #GRegex object used in @match_info
  *
  * Since: 2.14
  */
