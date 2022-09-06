@@ -2425,9 +2425,15 @@ g_strsplit (const gchar *string,
   g_return_val_if_fail (delimiter[0] != '\0', NULL);
 
   if (max_tokens < 1)
-    max_tokens = G_MAXINT;
+    {
+      max_tokens = G_MAXINT;
+      string_list = g_ptr_array_new ();
+    }
+  else
+    {
+      string_list = g_ptr_array_new_full (max_tokens + 1, NULL);
+    }
 
-  string_list = g_ptr_array_new ();
   remainder = string;
   s = strstr (remainder, delimiter);
   if (s)
