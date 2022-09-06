@@ -2337,13 +2337,6 @@ g_regex_match_all_full (const GRegex      *regex,
                                        info->match_data,
                                        info->match_context,
                                        info->workspace, info->n_workspace);
-
-      if (!recalc_match_offsets (info, error))
-        {
-          g_match_info_free (info);
-          return FALSE;
-        }
-
       if (info->matches == PCRE2_ERROR_DFA_WSSIZE)
         {
           /* info->workspace is too small. */
@@ -2369,6 +2362,11 @@ g_regex_match_all_full (const GRegex      *regex,
           g_set_error (error, G_REGEX_ERROR, G_REGEX_ERROR_MATCH,
                        _("Error while matching regular expression %s: %s"),
                        regex->pattern, match_error (info->matches));
+        }
+      else if (info->matches > 0)
+        {
+          if (!recalc_match_offsets (info, error))
+            info->matches = PCRE2_ERROR_NOMATCH;
         }
     }
 
