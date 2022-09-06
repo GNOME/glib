@@ -806,15 +806,11 @@ match_info_new (const GRegex     *regex,
     {
       /* These values should be enough for most cases, if they are not
        * enough g_regex_match_all_full() will expand them. */
-      match_info->n_offsets = 24;
       match_info->n_workspace = 100;
       match_info->workspace = g_new (gint, match_info->n_workspace);
     }
-  else
-    {
-      match_info->n_offsets = (match_info->n_subpatterns + 1) * 3;
-    }
 
+  match_info->n_offsets = 2;
   match_info->offsets = g_new0 (gint, match_info->n_offsets);
   /* Set an invalid position for the previous match. */
   match_info->offsets[0] = -1;
