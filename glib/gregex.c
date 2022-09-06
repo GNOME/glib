@@ -23,6 +23,7 @@
 
 #include "config.h"
 
+#include <stdint.h>
 #include <string.h>
 
 #define PCRE2_CODE_UNIT_WIDTH 8
@@ -226,12 +227,12 @@ struct _GMatchInfo
   GRegex *regex;                /* the regex */
   uint32_t match_opts;          /* pcre match options used at match time on the regex */
   gint matches;                 /* number of matching sub patterns, guaranteed to be <= (n_subpatterns + 1) if doing a single match (rather than matching all) */
-  gint n_subpatterns;           /* total number of sub patterns in the regex */
+  uint32_t n_subpatterns;       /* total number of sub patterns in the regex */
   gint pos;                     /* position in the string where last match left off */
-  gint  n_offsets;              /* number of offsets */
+  uint32_t n_offsets;           /* number of offsets */
   gint *offsets;                /* array of offsets paired 0,1 ; 2,3 ; 3,4 etc */
   gint *workspace;              /* workspace for pcre2_dfa_match() */
-  gint n_workspace;             /* number of workspace elements */
+  PCRE2_SIZE n_workspace;       /* number of workspace elements */
   const gchar *string;          /* string passed to the match function */
   gssize string_len;            /* length of string, in bytes */
   pcre2_match_context *match_context;
@@ -254,7 +255,7 @@ struct _GRegex
   GRegexCompileFlags orig_compile_opts; /* options used at compile time on the pattern, gregex values */
   uint32_t match_opts;          /* pcre2 options used at match time on the regex */
   GRegexMatchFlags orig_match_opts; /* options used as default match options, gregex values */
-  gint jit_options;             /* options which were enabled for jit compiler */
+  uint32_t jit_options;         /* options which were enabled for jit compiler */
   JITStatus jit_status;         /* indicates the status of jit compiler for this compiled regex */
 };
 
@@ -831,9 +832,9 @@ recalc_match_offsets (GMatchInfo *match_info,
                       GError     **error)
 {
   PCRE2_SIZE *ovector;
-  gint i;
+  uint32_t i;
 
-  if (pcre2_get_ovector_count (match_info->match_data) > G_MAXINT / 2)
+  if (pcre2_get_ovector_count (match_info->match_data) > G_MAXUINT32 / 2)
     {
       g_set_error (error, G_REGEX_ERROR, G_REGEX_ERROR_MATCH,
                    _("Error while matching regular expression %s: %s"),
@@ -858,7 +859,8 @@ static void
 enable_jit_with_match_options (GRegex   *regex,
                                uint32_t  match_options)
 {
-  gint old_jit_options, new_jit_options, retval;
+  gint retval;
+  uint32_t old_jit_options, new_jit_options;
 
   if (!(regex->orig_compile_opts & G_REGEX_OPTIMIZE))
     return;
@@ -1104,7 +1106,8 @@ g_match_info_next (GMatchInfo  *match_info,
       match_info->pos = match_info->offsets[1];
     }
 
-  g_assert (match_info->matches <= match_info->n_subpatterns + 1);
+  g_assert (match_info->matches < 0 ||
+            (uint32_t) match_info->matches <= match_info->n_subpatterns + 1);
 
   /* it's possible to get two identical matches when we are matching
    * empty strings, for instance if the pattern is "(?=[A-Z0-9])" and
@@ -1387,7 +1390,7 @@ g_match_info_fetch_pos (const GMatchInfo *match_info,
   /* make sure the sub expression number they're requesting is less than
    * the total number of sub expressions in the regex. When matching all
    * (g_regex_match_all()), also compare against the number of matches */
-  if (match_num >= MAX (match_info->n_subpatterns + 1, match_info->matches))
+  if ((uint32_t) match_num >= MAX (match_info->n_subpatterns + 1, (uint32_t) match_info->matches))
     return FALSE;
 
   if (start_pos != NULL)
@@ -1797,7 +1800,7 @@ get_pcre2_inline_compile_options (pcre2_code *re,
 
   if (!(compile_options & PCRE2_DUPNAMES))
     {
-      gboolean jchanged = FALSE;
+      uint32_t jchanged = 0;
       pcre2_pattern_info (re, PCRE2_INFO_JCHANGED, &jchanged);
       if (jchanged)
         compile_options |= PCRE2_DUPNAMES;
@@ -1840,7 +1843,7 @@ g_regex_get_pattern (const GRegex *regex)
 gint
 g_regex_get_max_backref (const GRegex *regex)
 {
-  gint value;
+  uint32_t value;
 
   pcre2_pattern_info (regex->pcre_re, PCRE2_INFO_BACKREFMAX, &value);
 
@@ -1860,7 +1863,7 @@ g_regex_get_max_backref (const GRegex *regex)
 gint
 g_regex_get_capture_count (const GRegex *regex)
 {
-  gint value;
+  uint32_t value;
 
   pcre2_pattern_info (regex->pcre_re, PCRE2_INFO_CAPTURECOUNT, &value);
 
@@ -1880,7 +1883,7 @@ g_regex_get_capture_count (const GRegex *regex)
 gboolean
 g_regex_get_has_cr_or_lf (const GRegex *regex)
 {
-  gint value;
+  uint32_t value;
 
   pcre2_pattern_info (regex->pcre_re, PCRE2_INFO_HASCRORLF, &value);
 
@@ -1902,7 +1905,7 @@ g_regex_get_has_cr_or_lf (const GRegex *regex)
 gint
 g_regex_get_max_lookbehind (const GRegex *regex)
 {
-  gint max_lookbehind;
+  uint32_t max_lookbehind;
 
   pcre2_pattern_info (regex->pcre_re, PCRE2_INFO_MAXLOOKBEHIND,
                       &max_lookbehind);
@@ -1927,7 +1930,8 @@ g_regex_get_max_lookbehind (const GRegex *regex)
 GRegexCompileFlags
 g_regex_get_compile_flags (const GRegex *regex)
 {
-  gint extra_flags, info_value;
+  GRegexCompileFlags extra_flags;
+  uint32_t info_value;
 
   g_return_val_if_fail (regex != NULL, 0);
 
