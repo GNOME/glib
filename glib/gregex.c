@@ -832,6 +832,7 @@ recalc_match_offsets (GMatchInfo *match_info,
                       GError     **error)
 {
   PCRE2_SIZE *ovector;
+  uint32_t pre_n_offset;
   uint32_t i;
 
   if (pcre2_get_ovector_count (match_info->match_data) > G_MAXUINT32 / 2)
@@ -842,11 +843,17 @@ recalc_match_offsets (GMatchInfo *match_info,
       return FALSE;
     }
 
+  pre_n_offset = match_info->n_offsets;
   match_info->n_offsets = pcre2_get_ovector_count (match_info->match_data) * 2;
   ovector = pcre2_get_ovector_pointer (match_info->match_data);
-  match_info->offsets = g_realloc_n (match_info->offsets,
-                                     match_info->n_offsets,
-                                     sizeof (gint));
+
+  if (match_info->n_offsets != pre_n_offset)
+    {
+      match_info->offsets = g_realloc_n (match_info->offsets,
+                                         match_info->n_offsets,
+                                         sizeof (gint));
+    }
+
   for (i = 0; i < match_info->n_offsets; i++)
     {
       match_info->offsets[i] = (int) ovector[i];
