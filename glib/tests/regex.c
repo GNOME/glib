@@ -105,7 +105,7 @@ test_new (gconstpointer d)
   data = g_new0 (TestNewData, 1);                                \
   data->pattern = _pattern;                                      \
   data->compile_opts = _compile_opts;                            \
-  data->match_opts = 0;                                          \
+  data->match_opts = _match_opts;                                \
   data->expected_error = 0;                                      \
   data->check_flags = TRUE;                                      \
   data->real_compile_opts = _real_compile_opts;                  \
