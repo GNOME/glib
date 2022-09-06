@@ -184,6 +184,108 @@ test_match_simple (gconstpointer d)
 #define TEST_MATCH_NOTEMPTY_ATSTART(_pattern, _string, _expected) \
   TEST_MATCH_SIMPLE_NAMED("notempty-atstart", _pattern, _string, 0, G_REGEX_MATCH_NOTEMPTY_ATSTART, _expected)
 
+static char *
+compile_options_to_string (GRegexCompileFlags compile_flags)
+{
+  GStrvBuilder *builder = g_strv_builder_new();
+  GStrv strv;
+  char *ret;
+
+  if (compile_flags & G_REGEX_DEFAULT)
+    g_strv_builder_add (builder, "default");
+  if (compile_flags & G_REGEX_CASELESS)
+    g_strv_builder_add (builder, "caseless");
+  if (compile_flags & G_REGEX_MULTILINE)
+    g_strv_builder_add (builder, "multiline");
+  if (compile_flags & G_REGEX_DOTALL)
+    g_strv_builder_add (builder, "dotall");
+  if (compile_flags & G_REGEX_EXTENDED)
+    g_strv_builder_add (builder, "extended");
+  if (compile_flags & G_REGEX_ANCHORED)
+    g_strv_builder_add (builder, "anchored");
+  if (compile_flags & G_REGEX_DOLLAR_ENDONLY)
+    g_strv_builder_add (builder, "dollar-endonly");
+  if (compile_flags & G_REGEX_UNGREEDY)
+    g_strv_builder_add (builder, "ungreedy");
+  if (compile_flags & G_REGEX_RAW)
+    g_strv_builder_add (builder, "raw");
+  if (compile_flags & G_REGEX_NO_AUTO_CAPTURE)
+    g_strv_builder_add (builder, "no-auto-capture");
+  if (compile_flags & G_REGEX_OPTIMIZE)
+    g_strv_builder_add (builder, "optimize");
+  if (compile_flags & G_REGEX_FIRSTLINE)
+    g_strv_builder_add (builder, "firstline");
+  if (compile_flags & G_REGEX_DUPNAMES)
+    g_strv_builder_add (builder, "dupnames");
+  if (compile_flags & G_REGEX_NEWLINE_CR)
+    g_strv_builder_add (builder, "newline-cr");
+  if (compile_flags & G_REGEX_NEWLINE_LF)
+    g_strv_builder_add (builder, "newline-lf");
+  if (compile_flags & G_REGEX_NEWLINE_CRLF)
+    g_strv_builder_add (builder, "newline-crlf");
+  if (compile_flags & G_REGEX_NEWLINE_ANYCRLF)
+    g_strv_builder_add (builder, "newline-anycrlf");
+  if (compile_flags & G_REGEX_BSR_ANYCRLF)
+    g_strv_builder_add (builder, "bsr-anycrlf");
+
+  strv = g_strv_builder_end (builder);
+  ret = g_strjoinv ("|", strv);
+
+  g_strfreev (strv);
+  g_strv_builder_unref (builder);
+
+  return ret;
+}
+
+static char *
+match_options_to_string (GRegexMatchFlags match_flags)
+{
+  GStrvBuilder *builder = g_strv_builder_new();
+  GStrv strv;
+  char *ret;
+
+  if (match_flags & G_REGEX_MATCH_DEFAULT)
+    g_strv_builder_add (builder, "default");
+  if (match_flags & G_REGEX_MATCH_ANCHORED)
+    g_strv_builder_add (builder, "anchored");
+  if (match_flags & G_REGEX_MATCH_NOTBOL)
+    g_strv_builder_add (builder, "notbol");
+  if (match_flags & G_REGEX_MATCH_NOTEOL)
+    g_strv_builder_add (builder, "noteol");
+  if (match_flags & G_REGEX_MATCH_NOTEMPTY)
+    g_strv_builder_add (builder, "notempty");
+  if (match_flags & G_REGEX_MATCH_PARTIAL)
+    g_strv_builder_add (builder, "partial");
+  if (match_flags & G_REGEX_MATCH_NEWLINE_CR)
+    g_strv_builder_add (builder, "newline-cr");
+  if (match_flags & G_REGEX_MATCH_NEWLINE_LF)
+    g_strv_builder_add (builder, "newline-lf");
+  if (match_flags & G_REGEX_MATCH_NEWLINE_CRLF)
+    g_strv_builder_add (builder, "newline-crlf");
+  if (match_flags & G_REGEX_MATCH_NEWLINE_ANY)
+    g_strv_builder_add (builder, "newline-any");
+  if (match_flags & G_REGEX_MATCH_NEWLINE_ANYCRLF)
+    g_strv_builder_add (builder, "newline-anycrlf");
+  if (match_flags & G_REGEX_MATCH_BSR_ANYCRLF)
+    g_strv_builder_add (builder, "bsr-anycrlf");
+  if (match_flags & G_REGEX_MATCH_BSR_ANY)
+    g_strv_builder_add (builder, "bsr-any");
+  if (match_flags & G_REGEX_MATCH_PARTIAL_SOFT)
+    g_strv_builder_add (builder, "partial-soft");
+  if (match_flags & G_REGEX_MATCH_PARTIAL_HARD)
+    g_strv_builder_add (builder, "partial-hard");
+  if (match_flags & G_REGEX_MATCH_NOTEMPTY_ATSTART)
+    g_strv_builder_add (builder, "notempty-atstart");
+
+  strv = g_strv_builder_end (builder);
+  ret = g_strjoinv ("|", strv);
+
+  g_strfreev (strv);
+  g_strv_builder_unref (builder);
+
+  return ret;
+}
+
 static void
 test_match (gconstpointer d)
 {
@@ -191,6 +293,9 @@ test_match (gconstpointer d)
   GRegex *regex;
   gboolean match;
   GError *error = NULL;
+  gchar *compile_opts_str;
+  gchar *match_opts_str;
+  gchar *match_opts2_str;
 
   regex = g_regex_new (data->pattern, data->compile_opts, data->match_opts, &error);
   g_assert (regex != NULL);
@@ -199,31 +304,35 @@ test_match (gconstpointer d)
   match = g_regex_match_full (regex, data->string, data->string_len,
                               data->start_position, data->match_opts2, NULL, NULL);
 
+  compile_opts_str = compile_options_to_string (data->compile_opts);
+  match_opts_str = match_options_to_string (data->match_opts);
+  match_opts2_str = match_options_to_string (data->match_opts2);
+
   if (data->expected)
     {
       if (!match)
-        g_error ("Regex '%s' (with compile options %u and "
-            "match options %u) should have matched '%.*s' "
-            "(of length %d, at position %d, with match options %u) but did not",
-            data->pattern, data->compile_opts, data->match_opts,
+        g_error ("Regex '%s' (with compile options '%s' and "
+            "match options '%s') should have matched '%.*s' "
+            "(of length %d, at position %d, with match options '%s') but did not",
+            data->pattern, compile_opts_str, match_opts_str,
             data->string_len == -1 ? (int) strlen (data->string) :
               (int) data->string_len,
             data->string, (int) data->string_len,
-            data->start_position, data->match_opts2);
+            data->start_position, match_opts2_str);
 
       g_assert_cmpint (match, ==, TRUE);
     }
   else
     {
       if (match)
-        g_error ("Regex '%s' (with compile options %u and "
-            "match options %u) should not have matched '%.*s' "
-            "(of length %d, at position %d, with match options %u) but did",
-            data->pattern, data->compile_opts, data->match_opts,
+        g_error ("Regex '%s' (with compile options '%s' and "
+            "match options '%s') should not have matched '%.*s' "
+            "(of length %d, at position %d, with match options '%s') but did",
+            data->pattern, compile_opts_str, match_opts_str,
             data->string_len == -1 ? (int) strlen (data->string) :
               (int) data->string_len,
             data->string, (int) data->string_len,
-            data->start_position, data->match_opts2);
+            data->start_position, match_opts2_str);
     }
 
   if (data->string_len == -1 && data->start_position == 0)
@@ -232,6 +341,9 @@ test_match (gconstpointer d)
       g_assert_cmpint (match, ==, data->expected);
     }
 
+  g_free (compile_opts_str);
+  g_free (match_opts_str);
+  g_free (match_opts2_str);
   g_regex_unref (regex);
 }
 
