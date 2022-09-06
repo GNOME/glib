@@ -1073,6 +1073,12 @@ g_match_info_next (GMatchInfo  *match_info,
                    match_info->regex->pattern, match_error (match_info->matches));
       return FALSE;
     }
+  else if (match_info->matches == PCRE2_ERROR_NOMATCH)
+    {
+      /* We're done with this match info */
+      match_info->pos = -1;
+      return FALSE;
+    }
   else
     if (!recalc_match_offsets (match_info, error))
       return FALSE;
