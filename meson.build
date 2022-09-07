@@ -2089,6 +2089,7 @@ libz_dep = dependency('zlib')
 # FIXME: glib-gettext.m4 has much more checks to detect broken/uncompatible
 # implementations. This could be extended if issues are found in some platforms.
 libintl_deps = []
+libintl_prefix = '#include <libintl.h>'
 libintl = dependency('intl', required: false, allow_fallback: false)
 if libintl.found()
   # libintl supports different threading APIs, which may not
@@ -2100,11 +2101,11 @@ if libintl.found()
   #
   # Meson's builtin dependency lookup as of 0.60.0 doesn't check for
   # pthread, so we do this manually here.
-  if cc.has_function('ngettext', dependencies : libintl)
+  if cc.has_function('ngettext', dependencies : libintl, prefix: libintl_prefix)
     libintl_deps += [libintl]
   else
     libintl_pthread = cc.find_library('pthread', required : false)
-    if libintl_pthread.found() and cc.has_function('ngettext', dependencies : [libintl, libintl_pthread])
+    if libintl_pthread.found() and cc.has_function('ngettext', dependencies : [libintl, libintl_pthread], prefix: libintl_prefix)
       libintl_deps += [libintl, libintl_pthread]
     else
       libintl = disabler()
@@ -2113,7 +2114,7 @@ if libintl.found()
 endif
 
 if libintl.found()
-  have_bind_textdomain_codeset = cc.has_function('bind_textdomain_codeset', dependencies: libintl_deps)
+  have_bind_textdomain_codeset = cc.has_function('bind_textdomain_codeset', dependencies: libintl_deps, prefix: libintl_prefix)
 else
   libintl = dependency('intl', allow_fallback: true)
   assert(libintl.type_name() == 'internal')
