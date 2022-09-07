@@ -1207,6 +1207,8 @@ typedef struct {
   gint         start_position;
   const gchar *replacement;
   const gchar *expected;
+  GRegexCompileFlags compile_flags;
+  GRegexMatchFlags match_flags;
 } TestReplaceData;
 
 static void
@@ -1215,17 +1217,25 @@ test_replace (gconstpointer d)
   const TestReplaceData *data = d;
   GRegex *regex;
   gchar *res;
+  GError *error = NULL;
 
-  regex = g_regex_new (data->pattern, G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT, NULL);
-  res = g_regex_replace (regex, data->string, -1, data->start_position, data->replacement, 0, NULL);
+  regex = g_regex_new (data->pattern, data->compile_flags, G_REGEX_MATCH_DEFAULT, &error);
+  g_assert_no_error (error);
+
+  res = g_regex_replace (regex, data->string, -1, data->start_position,
+                         data->replacement, data->match_flags, &error);
 
   g_assert_cmpstr (res, ==, data->expected);
 
+  if (data->expected)
+    g_assert_no_error (error);
+
   g_free (res);
   g_regex_unref (regex);
+  g_clear_error (&error);
 }
 
-#define TEST_REPLACE(_pattern, _string, _start_position, _replacement, _expected) { \
+#define TEST_REPLACE_OPTIONS(_pattern, _string, _start_position, _replacement, _expected, _compile_flags, _match_flags) { \
   TestReplaceData *data;                                                \
   gchar *path;                                                          \
   data = g_new0 (TestReplaceData, 1);                                   \
@@ -1234,10 +1244,15 @@ test_replace (gconstpointer d)
   data->start_position = _start_position;                               \
   data->replacement = _replacement;                                     \
   data->expected = _expected;                                           \
+  data->compile_flags = _compile_flags;                                 \
+  data->match_flags = _match_flags;                                     \
   path = g_strdup_printf ("/regex/replace/%d", ++total);                \
   g_test_add_data_func_full (path, data, test_replace, g_free);         \
   g_free (path);                                                        \
 }
+
+#define TEST_REPLACE(_pattern, _string, _start_position, _replacement, _expected) \
+  TEST_REPLACE_OPTIONS (_pattern, _string, _start_position, _replacement, _expected, 0, 0)
 
 static void
 test_replace_lit (gconstpointer d)
