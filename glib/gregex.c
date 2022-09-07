@@ -471,6 +471,7 @@ match_error (gint errcode)
       /* not used by pcre2_match() */
       break;
     case PCRE2_ERROR_MATCHLIMIT:
+    case PCRE2_ERROR_JIT_STACKLIMIT:
       return _("backtracking limit reached");
     case PCRE2_ERROR_CALLOUT:
       /* callouts are not implemented */
@@ -912,8 +913,8 @@ enable_jit_with_match_options (GRegex   *regex,
       break;
     default:
       g_debug ("JIT compilation was requested with G_REGEX_OPTIMIZE, "
-               "but request for JIT support had unexpectedly failed. "
-               "Falling back to interpretive code.");
+               "but request for JIT support had unexpectedly failed (error %d). "
+               "Falling back to interpretive code.", retval);
       regex->jit_status = JIT_STATUS_DISABLED;
       break;
     }
