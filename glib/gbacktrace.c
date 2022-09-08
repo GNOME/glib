@@ -449,6 +449,8 @@ stack_trace (const char * const *args)
   checked_write (in_fd[1], "process detach\n", 15);
   checked_write (in_fd[1], "quit\n", 5);
 #else
+  /* Don't wrap so that lines are not truncated */
+  checked_write (in_fd[1], "set width unlimited\n", 20);
   checked_write (in_fd[1], "backtrace\n", 10);
   checked_write (in_fd[1], "p x = 0\n", 8);
   checked_write (in_fd[1], "quit\n", 5);
