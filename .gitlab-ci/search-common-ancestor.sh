@@ -4,6 +4,9 @@ set -e
 
 ancestor_horizon=28  # days (4 weeks)
 
+# Recently, git is picky about directory ownership. Tell it not to worry.
+git config --global --add safe.directory "$PWD"
+
 # We need to add a new remote for the upstream target branch, since this script
 # could be running in a personal fork of the repository which has out of date
 # branches.
@@ -14,7 +17,6 @@ ancestor_horizon=28  # days (4 weeks)
 if ! git ls-remote --exit-code upstream >/dev/null 2>&1 ; then
     git remote add upstream https://gitlab.gnome.org/GNOME/glib.git
 fi
-git fetch --shallow-since="$(date --date="${ancestor_horizon} days ago" +%Y-%m-%d)" upstream
 
 # Work out the newest common ancestor between the detached HEAD that this CI job
 # has checked out, and the upstream target branch (which will typically be
@@ -25,9 +27,13 @@ git fetch --shallow-since="$(date --date="${ancestor_horizon} days ago" +%Y-%m-%
 # otherwise.
 
 source_branch="${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME:-${CI_COMMIT_BRANCH}}"
-git fetch --shallow-since="$(date --date="${ancestor_horizon} days ago" +%Y-%m-%d)" origin "${source_branch}"
+target_branch="${CI_MERGE_REQUEST_TARGET_BRANCH_NAME:-${CI_DEFAULT_BRANCH}}"
 
-newest_common_ancestor_sha=$(diff --old-line-format='' --new-line-format='' <(git rev-list --first-parent "upstream/${CI_MERGE_REQUEST_TARGET_BRANCH_NAME:-${CI_DEFAULT_BRANCH}}") <(git rev-list --first-parent "origin/${source_branch}") | head -1)
+git fetch --shallow-since="$(date --date="${ancestor_horizon} days ago" +%Y-%m-%d)" origin "${source_branch}"
+git fetch --shallow-since="$(date --date="${ancestor_horizon} days ago" +%Y-%m-%d)" upstream "${target_branch}"
+
+newest_common_ancestor_sha=$(git merge-base "upstream/${target_branch}" "origin/${source_branch}")
+
 if [ -z "${newest_common_ancestor_sha}" ]; then
     echo "Couldn’t find common ancestor with upstream main branch. This typically"
     echo "happens if you branched from main a long time ago. Please update"
