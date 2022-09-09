@@ -201,6 +201,13 @@
                               PCRE2_NEWLINE_CRLF |   \
                               PCRE2_NEWLINE_ANYCRLF)
 
+/* Some match options are not supported when using JIT as stated in the
+ * pcre2jit man page under the «UNSUPPORTED OPTIONS AND PATTERN ITEMS» section:
+ *   https://www.pcre.org/current/doc/html/pcre2jit.html#SEC5
+ */
+#define G_REGEX_PCRE2_JIT_UNSUPPORTED_OPTIONS (PCRE2_ANCHORED | \
+                                               PCRE2_ENDANCHORED)
+
 #define G_REGEX_COMPILE_NEWLINE_MASK (G_REGEX_NEWLINE_CR      | \
                                       G_REGEX_NEWLINE_LF      | \
                                       G_REGEX_NEWLINE_CRLF    | \
@@ -869,7 +876,7 @@ recalc_match_offsets (GMatchInfo *match_info,
   return TRUE;
 }
 
-static void
+static JITStatus
 enable_jit_with_match_options (GRegex   *regex,
                                uint32_t  match_options)
 {
@@ -877,9 +884,13 @@ enable_jit_with_match_options (GRegex   *regex,
   uint32_t old_jit_options, new_jit_options;
 
   if (!(regex->orig_compile_opts & G_REGEX_OPTIMIZE))
-    return;
+    return JIT_STATUS_DISABLED;
+
   if (regex->jit_status == JIT_STATUS_DISABLED)
-    return;
+    return JIT_STATUS_DISABLED;
+
+  if (match_options & G_REGEX_PCRE2_JIT_UNSUPPORTED_OPTIONS)
+    return JIT_STATUS_DISABLED;
 
   old_jit_options = regex->jit_options;
   new_jit_options = old_jit_options | PCRE2_JIT_COMPLETE;
@@ -890,34 +901,34 @@ enable_jit_with_match_options (GRegex   *regex,
 
   /* no new options enabled */
   if (new_jit_options == old_jit_options)
-    return;
+    return regex->jit_status;
 
   retval = pcre2_jit_compile (regex->pcre_re, new_jit_options);
   switch (retval)
     {
     case 0: /* JIT enabled successfully */
-      regex->jit_status = JIT_STATUS_ENABLED;
       regex->jit_options = new_jit_options;
-      break;
+      return JIT_STATUS_ENABLED;
     case PCRE2_ERROR_NOMEMORY:
       g_debug ("JIT compilation was requested with G_REGEX_OPTIMIZE, "
                "but JIT was unable to allocate executable memory for the "
                "compiler. Falling back to interpretive code.");
-      regex->jit_status = JIT_STATUS_DISABLED;
-      break;
+      return JIT_STATUS_DISABLED;
     case PCRE2_ERROR_JIT_BADOPTION:
       g_debug ("JIT compilation was requested with G_REGEX_OPTIMIZE, "
                "but JIT support is not available. Falling back to "
                "interpretive code.");
-      regex->jit_status = JIT_STATUS_DISABLED;
+      return JIT_STATUS_DISABLED;
       break;
     default:
       g_debug ("JIT compilation was requested with G_REGEX_OPTIMIZE, "
                "but request for JIT support had unexpectedly failed (error %d). "
                "Falling back to interpretive code.", retval);
-      regex->jit_status = JIT_STATUS_DISABLED;
+      return JIT_STATUS_DISABLED;
       break;
     }
+
+  return regex->jit_status;
 }
 
 /**
@@ -1039,6 +1050,7 @@ gboolean
 g_match_info_next (GMatchInfo  *match_info,
                    GError     **error)
 {
+  JITStatus jit_status;
   gint prev_match_start;
   gint prev_match_end;
   uint32_t opts;
@@ -1060,8 +1072,8 @@ g_match_info_next (GMatchInfo  *match_info,
 
   opts = match_info->regex->match_opts | match_info->match_opts;
 
-  enable_jit_with_match_options (match_info->regex, opts);
-  if (match_info->regex->jit_status == JIT_STATUS_ENABLED)
+  jit_status = enable_jit_with_match_options (match_info->regex, opts);
+  if (jit_status == JIT_STATUS_ENABLED)
     {
       match_info->matches = pcre2_jit_match (match_info->regex->pcre_re,
                                              (PCRE2_SPTR8) match_info->string,
@@ -1727,7 +1739,7 @@ g_regex_new (const gchar         *pattern,
   regex->orig_compile_opts = compile_options;
   regex->match_opts = pcre_match_options;
   regex->orig_match_opts = match_options;
-  enable_jit_with_match_options (regex, regex->match_opts);
+  regex->jit_status = enable_jit_with_match_options (regex, regex->match_opts);
 
   return regex;
 }

@@ -2334,6 +2334,67 @@ test_compile_errors (void)
   g_clear_error (&error);
 }
 
+static void
+test_jit_unsupported_matching_options (void)
+{
+  GRegex *regex;
+  GMatchInfo *info;
+  gchar *substring;
+
+  regex = g_regex_new ("(\\w+)#(\\w+)", G_REGEX_OPTIMIZE, G_REGEX_MATCH_DEFAULT, NULL);
+
+  g_assert_true (g_regex_match (regex, "aa#bb cc#dd", G_REGEX_MATCH_DEFAULT, &info));
+  g_assert_cmpint (g_match_info_get_match_count (info), ==, 3);
+  substring = g_match_info_fetch (info, 1);
+  g_assert_cmpstr (substring, ==, "aa");
+  g_clear_pointer (&substring, g_free);
+  substring = g_match_info_fetch (info, 2);
+  g_assert_cmpstr (substring, ==, "bb");
+  g_clear_pointer (&substring, g_free);
+  g_assert_true (g_match_info_next (info, NULL));
+  g_assert_cmpint (g_match_info_get_match_count (info), ==, 3);
+  substring = g_match_info_fetch (info, 1);
+  g_assert_cmpstr (substring, ==, "cc");
+  g_clear_pointer (&substring, g_free);
+  substring = g_match_info_fetch (info, 2);
+  g_assert_cmpstr (substring, ==, "dd");
+  g_clear_pointer (&substring, g_free);
+  g_assert_false (g_match_info_next (info, NULL));
+  g_match_info_free (info);
+
+  g_assert_true (g_regex_match (regex, "aa#bb cc#dd", G_REGEX_MATCH_ANCHORED, &info));
+  g_assert_cmpint (g_match_info_get_match_count (info), ==, 3);
+  substring = g_match_info_fetch (info, 1);
+  g_assert_cmpstr (substring, ==, "aa");
+  g_clear_pointer (&substring, g_free);
+  substring = g_match_info_fetch (info, 2);
+  g_assert_cmpstr (substring, ==, "bb");
+  g_clear_pointer (&substring, g_free);
+  g_assert_false (g_match_info_next (info, NULL));
+  g_match_info_free (info);
+
+  g_assert_true (g_regex_match (regex, "aa#bb cc#dd", G_REGEX_MATCH_DEFAULT, &info));
+  g_assert_cmpint (g_match_info_get_match_count (info), ==, 3);
+  substring = g_match_info_fetch (info, 1);
+  g_assert_cmpstr (substring, ==, "aa");
+  g_clear_pointer (&substring, g_free);
+  substring = g_match_info_fetch (info, 2);
+  g_assert_cmpstr (substring, ==, "bb");
+  g_clear_pointer (&substring, g_free);
+  g_assert_true (g_match_info_next (info, NULL));
+  g_assert_cmpint (g_match_info_get_match_count (info), ==, 3);
+  substring = g_match_info_fetch (info, 1);
+  g_assert_cmpstr (substring, ==, "cc");
+  g_clear_pointer (&substring, g_free);
+  substring = g_match_info_fetch (info, 2);
+  g_assert_cmpstr (substring, ==, "dd");
+  g_clear_pointer (&substring, g_free);
+  g_assert_false (g_match_info_next (info, NULL));
+  g_match_info_free (info);
+
+  g_regex_unref (regex);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -2352,6 +2413,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/regex/explicit-crlf", test_explicit_crlf);
   g_test_add_func ("/regex/max-lookbehind", test_max_lookbehind);
   g_test_add_func ("/regex/compile-errors", test_compile_errors);
+  g_test_add_func ("/regex/jit-unsupported-matching", test_jit_unsupported_matching_options);
 
   /* TEST_NEW(pattern, compile_opts, match_opts) */
   TEST_NEW("[A-Z]+", G_REGEX_CASELESS | G_REGEX_EXTENDED | G_REGEX_OPTIMIZE, G_REGEX_MATCH_NOTBOL | G_REGEX_MATCH_PARTIAL);
@@ -2488,6 +2550,7 @@ main (int argc, char *argv[])
   TEST_MATCH_SIMPLE("a", "ab", 0, G_REGEX_MATCH_ANCHORED, TRUE);
   TEST_MATCH_SIMPLE("a", "a", G_REGEX_CASELESS, 0, TRUE);
   TEST_MATCH_SIMPLE("a", "A", G_REGEX_CASELESS, 0, TRUE);
+  TEST_MATCH_SIMPLE("\\C\\C", "ab", G_REGEX_OPTIMIZE | G_REGEX_RAW, 0, TRUE);
   /* These are needed to test extended properties. */
   TEST_MATCH_SIMPLE(AGRAVE, AGRAVE, G_REGEX_CASELESS, 0, TRUE);
   TEST_MATCH_SIMPLE(AGRAVE, AGRAVE_UPPER, G_REGEX_CASELESS, 0, TRUE);
@@ -2947,6 +3010,12 @@ main (int argc, char *argv[])
   TEST_REPLACE("\\S+", "hello world", 0, "\\U-\\0-", "-HELLO- -WORLD-");
   TEST_REPLACE(".", "a", 0, "\\A", NULL);
   TEST_REPLACE(".", "a", 0, "\\g", NULL);
+  TEST_REPLACE_OPTIONS("(\\w+)#(\\w+)", "aa#bb cc#dd", 0, "\\2#\\1", "bb#aa dd#cc",
+                       G_REGEX_OPTIMIZE|G_REGEX_MULTILINE|G_REGEX_CASELESS,
+                       0);
+  TEST_REPLACE_OPTIONS("(\\w+)#(\\w+)", "aa#bb cc#dd", 0, "\\2#\\1", "bb#aa cc#dd",
+                       G_REGEX_OPTIMIZE|G_REGEX_MULTILINE|G_REGEX_CASELESS,
+                       G_REGEX_MATCH_ANCHORED);
 
   /* TEST_REPLACE_LIT(pattern, string, start_position, replacement, expected) */
   TEST_REPLACE_LIT("a", "ababa", 0, "A", "AbAbA");
