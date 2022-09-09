@@ -173,7 +173,24 @@ test_match_simple (gconstpointer d)
   data->compile_opts = _compile_opts;                                   \
   data->match_opts = _match_opts;                                       \
   data->expected = _expected;                                           \
-  path = g_strdup_printf ("/regex/match-%s/%d", _name, ++total);        \
+  total++;                                                              \
+  if (data->compile_opts & G_REGEX_OPTIMIZE)                            \
+    path = g_strdup_printf ("/regex/match-%s-optimized/%d", _name, total); \
+  else                                                                  \
+    path = g_strdup_printf ("/regex/match-%s/%d", _name, total);        \
+  g_test_add_data_func_full (path, data, test_match_simple, g_free);    \
+  g_free (path);                                                        \
+  data = g_memdup2 (data, sizeof (TestMatchData));                      \
+  if (data->compile_opts & G_REGEX_OPTIMIZE)                            \
+    {                                                                   \
+      data->compile_opts &= ~G_REGEX_OPTIMIZE;                          \
+      path = g_strdup_printf ("/regex/match-%s/%d", _name, total);      \
+    }                                                                   \
+  else                                                                  \
+    {                                                                   \
+      data->compile_opts |= G_REGEX_OPTIMIZE;                           \
+      path = g_strdup_printf ("/regex/match-%s-optimized/%d", _name, total); \
+    }                                                                   \
   g_test_add_data_func_full (path, data, test_match_simple, g_free);    \
   g_free (path);                                                        \
 }
@@ -361,7 +378,24 @@ test_match (gconstpointer d)
   data->start_position = _start_position;                               \
   data->match_opts2 = _match_opts2;                                     \
   data->expected = _expected;                                           \
-  path = g_strdup_printf ("/regex/match/%d", ++total);                  \
+  total++;                                                              \
+  if (data->compile_opts & G_REGEX_OPTIMIZE)                            \
+    path = g_strdup_printf ("/regex/match-optimized/%d", total);        \
+  else                                                                  \
+    path = g_strdup_printf ("/regex/match/%d", total);                  \
+  g_test_add_data_func_full (path, data, test_match, g_free);           \
+  g_free (path);                                                        \
+  data = g_memdup2 (data, sizeof (TestMatchData));                      \
+  if (data->compile_opts & G_REGEX_OPTIMIZE)                            \
+    {                                                                   \
+      data->compile_opts &= ~G_REGEX_OPTIMIZE;                          \
+      path = g_strdup_printf ("/regex/match/%d", total);                \
+    }                                                                   \
+  else                                                                  \
+    {                                                                   \
+      data->compile_opts |= G_REGEX_OPTIMIZE;                           \
+      path = g_strdup_printf ("/regex/match-optimized/%d", total);      \
+    }                                                                   \
   g_test_add_data_func_full (path, data, test_match, g_free);           \
   g_free (path);                                                        \
 }
@@ -580,6 +614,7 @@ typedef struct {
   const gchar *pattern;
   const gchar *string;
   gint start_position;
+  GRegexCompileFlags compile_flags;
   GRegexMatchFlags match_opts;
   gint expected_count;
 } TestMatchCountData;
@@ -592,7 +627,8 @@ test_match_count (gconstpointer d)
   GMatchInfo *match_info;
   gint count;
 
-  regex = g_regex_new (data->pattern, G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT, NULL);
+  regex = g_regex_new (data->pattern, data->compile_flags,
+                       G_REGEX_MATCH_DEFAULT, NULL);
 
   g_assert (regex != NULL);
 
@@ -617,7 +653,14 @@ test_match_count (gconstpointer d)
   data->start_position = _start_position;                               \
   data->match_opts = _match_opts;                                       \
   data->expected_count = _expected_count;                               \
-  path = g_strdup_printf ("/regex/match/count/%d", ++total);            \
+  data->compile_flags = G_REGEX_DEFAULT;                                \
+  total++;                                                              \
+  path = g_strdup_printf ("/regex/match/count/%d", total);              \
+  g_test_add_data_func_full (path, data, test_match_count, g_free);     \
+  g_free (path);                                                        \
+  data = g_memdup2 (data, sizeof (TestMatchCountData));                 \
+  data->compile_flags |= G_REGEX_OPTIMIZE;                              \
+  path = g_strdup_printf ("/regex/match/count-optimized/%d", total);    \
   g_test_add_data_func_full (path, data, test_match_count, g_free);     \
   g_free (path);                                                        \
 }
@@ -656,7 +699,24 @@ test_partial (gconstpointer d)
   data->compile_opts = _compile_opts;                           \
   data->match_opts = _match_opts;                               \
   data->expected = _expected;                                   \
-  path = g_strdup_printf ("/regex/match/partial/%d", ++total);  \
+  total++;                                                      \
+  if (data->compile_opts & G_REGEX_OPTIMIZE)                    \
+    path = g_strdup_printf ("/regex/match/partial-optimized/%d", total); \
+  else                                                          \
+    path = g_strdup_printf ("/regex/match/partial%d", total);   \
+  g_test_add_data_func_full (path, data, test_partial, g_free); \
+  g_free (path);                                                \
+  data = g_memdup2 (data, sizeof (TestMatchData));              \
+  if (data->compile_opts & G_REGEX_OPTIMIZE)                    \
+    {                                                           \
+      data->compile_opts &= ~G_REGEX_OPTIMIZE;                  \
+      path = g_strdup_printf ("/regex/match/partial%d", total); \
+    }                                                           \
+  else                                                          \
+    {                                                           \
+      data->compile_opts |= G_REGEX_OPTIMIZE;                   \
+      path = g_strdup_printf ("/regex/match/partial-optimized/%d", total); \
+    }                                                           \
   g_test_add_data_func_full (path, data, test_partial, g_free); \
   g_free (path);                                                \
 }
@@ -666,6 +726,7 @@ test_partial (gconstpointer d)
 typedef struct {
   const gchar *pattern;
   const gchar *string;
+  GRegexCompileFlags compile_flags;
   gint         start_position;
   gint         sub_n;
   const gchar *expected_sub;
@@ -682,7 +743,7 @@ test_sub_pattern (gconstpointer d)
   gchar *sub_expr;
   gint start = UNTOUCHED, end = UNTOUCHED;
 
-  regex = g_regex_new (data->pattern, G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT, NULL);
+  regex = g_regex_new (data->pattern, data->compile_flags, G_REGEX_MATCH_DEFAULT, NULL);
 
   g_assert (regex != NULL);
 
@@ -712,7 +773,14 @@ test_sub_pattern (gconstpointer d)
   data->expected_sub = _expected_sub;                                   \
   data->expected_start = _expected_start;                               \
   data->expected_end = _expected_end;                                   \
-  path = g_strdup_printf ("/regex/match/subpattern/%d", ++total);       \
+  data->compile_flags = G_REGEX_DEFAULT;                                \
+  total++;                                                              \
+  path = g_strdup_printf ("/regex/match/subpattern/%d", total);         \
+  g_test_add_data_func_full (path, data, test_sub_pattern, g_free);     \
+  g_free (path);                                                        \
+  data = g_memdup2 (data, sizeof (TestSubData));                        \
+  data->compile_flags = G_REGEX_OPTIMIZE;                               \
+  path = g_strdup_printf ("/regex/match/subpattern-optimized/%d", total); \
   g_test_add_data_func_full (path, data, test_sub_pattern, g_free);     \
   g_free (path);                                                        \
 }
@@ -1246,7 +1314,24 @@ test_replace (gconstpointer d)
   data->expected = _expected;                                           \
   data->compile_flags = _compile_flags;                                 \
   data->match_flags = _match_flags;                                     \
-  path = g_strdup_printf ("/regex/replace/%d", ++total);                \
+  total++;                                                              \
+  if (data->compile_flags & G_REGEX_OPTIMIZE)                           \
+    path = g_strdup_printf ("/regex/replace-optimized/%d", total);      \
+  else                                                                  \
+    path = g_strdup_printf ("/regex/replace/%d", total);                \
+  g_test_add_data_func_full (path, data, test_replace, g_free);         \
+  g_free (path);                                                        \
+  data = g_memdup2 (data, sizeof (TestReplaceData));                    \
+  if (data->compile_flags & G_REGEX_OPTIMIZE)                           \
+    {                                                                   \
+      data->compile_flags &= ~G_REGEX_OPTIMIZE;                         \
+      path = g_strdup_printf ("/regex/replace/%d", total);              \
+    }                                                                   \
+  else                                                                  \
+    {                                                                   \
+      data->compile_flags |= G_REGEX_OPTIMIZE;                          \
+      path = g_strdup_printf ("/regex/replace-optimized/%d", total);    \
+    }                                                                   \
   g_test_add_data_func_full (path, data, test_replace, g_free);         \
   g_free (path);                                                        \
 }
