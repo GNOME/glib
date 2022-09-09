@@ -435,6 +435,7 @@ if host_system == 'windows'
 else
   gtester = executable('gtester', 'gtester.c',
     install : true,
+    install_tag : 'bin-devel',
     c_args : ['-UG_DISABLE_ASSERT'],
     include_directories : configinc,
     dependencies : [libglib_dep])
@@ -447,6 +448,7 @@ configure_file(
   input: 'gtester-report.in',
   output: 'gtester-report',
   install_dir: get_option('bindir'),
+  install_tag : 'bin-devel',
   configuration: report_conf,
   install_mode: 'rwxr-xr-x'
 )

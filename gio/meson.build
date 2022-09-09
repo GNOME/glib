@@ -410,6 +410,7 @@ if host_system != 'windows'
       include_directories : glibinc,
       install : true,
       install_dir : multiarch_libexecdir,
+      install_tag : 'bin',
       c_args : gio_c_args,
       # intl.lib is not compatible with SAFESEH
       link_args : noseh_link_args)
@@ -959,6 +960,7 @@ gio_tool_sources = [
 
 executable('gio', gio_tool_sources,
   install : true,
+  install_tag : 'bin',
   c_args : gio_c_args,
   # intl.lib is not compatible with SAFESEH
   link_args : noseh_link_args,
@@ -966,6 +968,7 @@ executable('gio', gio_tool_sources,
 
 executable('gresource', 'gresource-tool.c',
   install : true,
+  install_tag : 'bin',
   # intl.lib is not compatible with SAFESEH
   link_args : noseh_link_args,
   dependencies : [libelf, libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
@@ -973,6 +976,7 @@ executable('gresource', 'gresource-tool.c',
 gio_querymodules = executable('gio-querymodules', 'gio-querymodules.c', 'giomodule-priv.c',
   install : true,
   install_dir : multiarch_bindir,
+  install_tag : 'bin',
   c_args : gio_c_args,
   # intl.lib is not compatible with SAFESEH
   link_args : noseh_link_args,
@@ -982,6 +986,7 @@ glib_compile_schemas = executable('glib-compile-schemas',
   ['glib-compile-schemas.c'],
   install : true,
   install_dir : multiarch_bindir,
+  install_tag : 'bin',
   # intl.lib is not compatible with SAFESEH
   link_args : noseh_link_args,
   dependencies : [libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep, gvdb_dep])
@@ -989,6 +994,7 @@ glib_compile_schemas = executable('glib-compile-schemas',
 glib_compile_resources = executable('glib-compile-resources',
   [gconstructor_as_data_h, 'glib-compile-resources.c'],
   install : true,
+  install_tag : 'bin-devel',
   c_args : gio_c_args,
   # intl.lib is not compatible with SAFESEH
   link_args : noseh_link_args,
@@ -1005,6 +1011,7 @@ endif
 
 executable('gsettings', 'gsettings-tool.c',
   install : true,
+  install_tag : 'bin',
   c_args : gio_c_args,
   # intl.lib is not compatible with SAFESEH
   link_args : noseh_link_args,
@@ -1017,6 +1024,7 @@ install_data(['gschema.loc', 'gschema.its'],
 
 executable('gdbus', 'gdbus-tool.c',
   install : true,
+  install_tag : 'bin',
   c_args : gio_c_args,
   # intl.lib is not compatible with SAFESEH
   link_args : noseh_link_args,
@@ -1025,6 +1033,7 @@ executable('gdbus', 'gdbus-tool.c',
 if host_system != 'windows' and not glib_have_cocoa
   executable('gapplication', 'gapplication-tool.c',
     install : true,
+    install_tag : 'bin',
     c_args : gio_c_args,
     # intl.lib is not compatible with SAFESEH
     link_args : noseh_link_args,
