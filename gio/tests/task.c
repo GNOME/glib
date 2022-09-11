@@ -656,6 +656,44 @@ name_callback (GObject      *object,
   g_main_loop_quit (loop);
 }
 
+static void static_name_callback (GObject      *object,
+                                  GAsyncResult *result,
+                                  gpointer      user_data);
+
+static void
+test_static_name (void)
+{
+  GTask *t1 = NULL;
+  char *name1 = NULL;
+  char *orig = "some task";
+
+  t1 = g_task_new (NULL, NULL, static_name_callback, &name1);
+  g_task_set_static_name (t1, orig);
+  g_task_return_boolean (t1, TRUE);
+  g_object_unref (t1);
+
+  g_main_loop_run (loop);
+
+  g_assert_true (name1 == orig);
+}
+
+static void
+static_name_callback (GObject      *object,
+                      GAsyncResult *result,
+                      gpointer      user_data)
+{
+  const char **name_out = user_data;
+  GError *local_error = NULL;
+
+  g_assert_null (*name_out);
+  *name_out = g_task_get_name (G_TASK (result));
+
+  g_task_propagate_boolean (G_TASK (result), &local_error);
+  g_assert_no_error (local_error);
+
+  g_main_loop_quit (loop);
+}
+
 /* test_asynchronous_cancellation: cancelled tasks are returned
  * asynchronously, i.e. not from inside the GCancellable::cancelled
  * handler.
@@ -2379,6 +2417,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gtask/report-error", test_report_error);
   g_test_add_func ("/gtask/priority", test_priority);
   g_test_add_func ("/gtask/name", test_name);
+  g_test_add_func ("/gtask/static-name", test_static_name);
   g_test_add_func ("/gtask/asynchronous-cancellation", test_asynchronous_cancellation);
   g_test_add_func ("/gtask/check-cancellable", test_check_cancellable);
   g_test_add_func ("/gtask/return-if-cancelled", test_return_if_cancelled);
