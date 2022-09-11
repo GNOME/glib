@@ -23,16 +23,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-08-05 19:22+0000\n"
-"PO-Revision-Date: 2022-08-15 16:22-0400\n"
-"Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
+"POT-Creation-Date: 2022-08-31 23:44+0000\n"
+"PO-Revision-Date: 2022-09-11 07:57+0800\n"
+"Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese - China <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.1.1\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"X-Generator: Gtranslator 42.0\n"
 
 #: gio/gappinfo.c:335
 msgid "Setting default applications not supported yet"
@@ -42,12 +42,12 @@ msgstr "暂不支持设置默认应用程序"
 msgid "Setting application as last used for type not supported yet"
 msgstr "暂不支持设置上次用来打开文件类型的应用程序"
 
-#: gio/gappinfo.c:808
+#: gio/gappinfo.c:810
 #, c-format
 msgid "Failed to find default application for content type ‘%s’"
 msgstr "无法找到处理内容类型“%s”的默认应用程序"
 
-#: gio/gappinfo.c:868
+#: gio/gappinfo.c:870
 #, c-format
 msgid "Failed to find default application for URI Scheme ‘%s’"
 msgstr "无法找到处理 URI Scheme“%s”的默认应用程序"
@@ -1267,7 +1267,7 @@ msgstr "错误：%s 不是有效的总线名称。\n"
 msgid "Not authorized to change debug settings"
 msgstr "未获认证以更改调试设置"
 
-#: gio/gdesktopappinfo.c:2182 gio/gdesktopappinfo.c:5113
+#: gio/gdesktopappinfo.c:2182 gio/gdesktopappinfo.c:5112
 msgid "Unnamed"
 msgstr "未命名"
 
@@ -1279,26 +1279,26 @@ msgstr "桌面文件未指定 Exec 字段"
 msgid "Unable to find terminal required for application"
 msgstr "无法找到应用程序需要的终端"
 
-#: gio/gdesktopappinfo.c:3631
+#: gio/gdesktopappinfo.c:3630
 #, c-format
 msgid "Can’t create user application configuration folder %s: %s"
 msgstr "无法创建用户应用程序配置文件夹 %s：%s"
 
-#: gio/gdesktopappinfo.c:3635
+#: gio/gdesktopappinfo.c:3634
 #, c-format
 msgid "Can’t create user MIME configuration folder %s: %s"
 msgstr "无法创建用户 MIME 配置文件夹 %s：%s"
 
-#: gio/gdesktopappinfo.c:3877 gio/gdesktopappinfo.c:3901
+#: gio/gdesktopappinfo.c:3876 gio/gdesktopappinfo.c:3900
 msgid "Application information lacks an identifier"
 msgstr "应用程序信息缺少标志符"
 
-#: gio/gdesktopappinfo.c:4137
+#: gio/gdesktopappinfo.c:4136
 #, c-format
 msgid "Can’t create user desktop file %s"
 msgstr "无法创建用户桌面文件 %s"
 
-#: gio/gdesktopappinfo.c:4273
+#: gio/gdesktopappinfo.c:4272
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s 的自定义"
@@ -5904,122 +5904,122 @@ msgstr "字符超出 UTF-16 范围"
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 kB"
 #: glib/gutils.c:2857
 msgid "kB"
-msgstr ""
+msgstr "kB"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 MB"
 #: glib/gutils.c:2859
 msgid "MB"
-msgstr ""
+msgstr "MB"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 GB"
 #: glib/gutils.c:2861
 msgid "GB"
-msgstr ""
+msgstr "GB"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 TB"
 #: glib/gutils.c:2863
 msgid "TB"
-msgstr ""
+msgstr "TB"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 PB"
 #: glib/gutils.c:2865
 msgid "PB"
-msgstr ""
+msgstr "PB"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 EB"
 #: glib/gutils.c:2867
 msgid "EB"
-msgstr ""
+msgstr "EB"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 KiB"
 #: glib/gutils.c:2871
 msgid "KiB"
-msgstr ""
+msgstr "KiB"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 MiB"
 #: glib/gutils.c:2873
 msgid "MiB"
-msgstr ""
+msgstr "MiB"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 GiB"
 #: glib/gutils.c:2875
 msgid "GiB"
-msgstr ""
+msgstr "GiB"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 TiB"
 #: glib/gutils.c:2877
 msgid "TiB"
-msgstr ""
+msgstr "TiB"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 PiB"
 #: glib/gutils.c:2879
 msgid "PiB"
-msgstr ""
+msgstr "PiB"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 EiB"
 #: glib/gutils.c:2881
 msgid "EiB"
-msgstr ""
+msgstr "EiB"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 kb"
 #: glib/gutils.c:2885
 msgid "kb"
-msgstr ""
+msgstr "kb"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Mb"
 #: glib/gutils.c:2887
 msgid "Mb"
-msgstr ""
+msgstr "Mb"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Gb"
 #: glib/gutils.c:2889
 msgid "Gb"
-msgstr ""
+msgstr "Gb"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Tb"
 #: glib/gutils.c:2891
 msgid "Tb"
-msgstr ""
+msgstr "Tb"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Pb"
 #: glib/gutils.c:2893
 msgid "Pb"
-msgstr ""
+msgstr "Pb"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Eb"
 #: glib/gutils.c:2895
 msgid "Eb"
-msgstr ""
+msgstr "Eb"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Kib"
 #: glib/gutils.c:2899
 msgid "Kib"
-msgstr ""
+msgstr "Kib"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Mib"
 #: glib/gutils.c:2901
 msgid "Mib"
-msgstr ""
+msgstr "Mib"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Gib"
 #: glib/gutils.c:2903
 msgid "Gib"
-msgstr ""
+msgstr "Gib"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Tib"
 #: glib/gutils.c:2905
 msgid "Tib"
-msgstr ""
+msgstr "Tib"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Pib"
 #: glib/gutils.c:2907
 msgid "Pib"
-msgstr ""
+msgstr "Pib"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Eib"
 #: glib/gutils.c:2909
 msgid "Eib"
-msgstr ""
+msgstr "Eib"
 
 #: glib/gutils.c:2947
 msgid "byte"
@@ -6037,7 +6037,7 @@ msgstr[0] "位"
 #, c-format
 msgctxt "format-size"
 msgid "%u"
-msgstr ""
+msgstr "%u"
 
 #. Translators: The first "%u" is replaced with the value, the "%s" with a unit of the value.
 #. * The order can be changed with "%$2s %$1u". An example: "13 bytes"
@@ -6045,7 +6045,7 @@ msgstr ""
 #, c-format
 msgctxt "format-size"
 msgid "%u %s"
-msgstr ""
+msgstr "%u %s"
 
 #. Translators: The "%.1f" is replaced with the size value, like "13.0"; it could
 #. * be part of "13.0 MB", but only the number is requested this time.
