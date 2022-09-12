@@ -25,6 +25,8 @@
 #include <glib/gstdio.h>
 #include <gio/gio.h>
 #include <gio/gdesktopappinfo.h>
+#include <gio/gunixinputstream.h>
+#include <glib-unix.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
@@ -1165,10 +1167,214 @@ test_id (void)
   g_free (result);
 }
 
+static const char *
+get_terminal_divider (const char *terminal_name)
+{
+  if (g_str_equal (terminal_name, "gnome-terminal"))
+    return "--";
+  if (g_str_equal (terminal_name, "tilix"))
+    return "-e";
+  if (g_str_equal (terminal_name, "konsole"))
+    return "-e";
+  if (g_str_equal (terminal_name, "nxterm"))
+    return "-e";
+  if (g_str_equal (terminal_name, "color-xterm"))
+    return "-e";
+  if (g_str_equal (terminal_name, "rxvt"))
+    return "-e";
+  if (g_str_equal (terminal_name, "dtterm"))
+    return "-e";
+  if (g_str_equal (terminal_name, "xterm"))
+    return "-e";
+  if (g_str_equal (terminal_name, "mate-terminal"))
+    return "-x";
+  if (g_str_equal (terminal_name, "xfce4-terminal"))
+    return "-x";
+
+  g_return_val_if_reached (NULL);
+}
+
+static void
+test_launch_uris_with_terminal (gconstpointer data)
+{
+  int fds[2];
+  const char *terminal_exec = data;
+  char *old_path;
+  char *command_line;
+  char *bin_path;
+  char *terminal_path;
+  char *output_fd_path;
+  char *script_contents;
+  char *output_contents;
+  char *sh;
+  GAppInfo *app_info;
+  GList *uris;
+  GList *paths;
+  GStrv output_args;
+  GError *error = NULL;
+  GInputStream *input_stream;
+  GDataInputStream *data_input_stream;
+
+  sh = g_find_program_in_path ("sh");
+  g_assert_nonnull (sh);
+
+  bin_path = g_dir_make_tmp ("bin-path-XXXXXX", &error);
+  g_assert_no_error (error);
+
+  old_path = g_strdup (g_getenv ("PATH"));
+  g_assert_true (g_setenv ("PATH", bin_path, TRUE));
+
+  g_unix_open_pipe (fds, FD_CLOEXEC, &error);
+  g_assert_no_error (error);
+
+  terminal_path = g_build_filename (bin_path, terminal_exec, NULL);
+  output_fd_path = g_strdup_printf (G_DIR_SEPARATOR_S "proc"
+                                    G_DIR_SEPARATOR_S "%" G_PID_FORMAT
+                                    G_DIR_SEPARATOR_S "fd"
+                                    G_DIR_SEPARATOR_S "%d",
+                                    getpid (), fds[0]);
+
+  input_stream = g_unix_input_stream_new (fds[0], TRUE);
+  data_input_stream = g_data_input_stream_new (input_stream);
+  script_contents = g_strdup_printf ("#!%s\n" \
+                                     "out='%s'\n"
+                                     "printf '%%s' \"$*\" > \"$out\"\n"
+                                     "printf '\\n' > \"$out\"\n",
+                                     sh,
+                                     output_fd_path);
+  g_file_set_contents (terminal_path, script_contents, -1, &error);
+  g_assert_no_error (error);
+  g_assert_cmpint (g_chmod (terminal_path, 0500), ==, 0);
+
+  g_test_message ("Fake '%s' terminal created as: %s", terminal_exec, terminal_path);
+
+  command_line = g_strdup_printf ("true %s-argument", terminal_exec);
+  app_info = g_app_info_create_from_commandline (command_line,
+                                                 "Test App on Terminal",
+                                                 G_APP_INFO_CREATE_NEEDS_TERMINAL |
+                                                 G_APP_INFO_CREATE_SUPPORTS_URIS,
+                                                 &error);
+  g_assert_no_error (error);
+
+  paths = g_list_prepend (NULL, bin_path);
+  uris = g_list_prepend (NULL, g_filename_to_uri (bin_path, NULL, &error));
+  g_assert_no_error (error);
+
+  paths = g_list_prepend (paths, (gpointer) g_get_user_data_dir ());
+  uris = g_list_append (uris, g_filename_to_uri (g_get_user_data_dir (), NULL, &error));
+  g_assert_no_error (error);
+
+  g_assert_cmpint (g_list_length (paths), ==, 2);
+  g_app_info_launch_uris (app_info, uris, NULL, &error);
+  g_assert_no_error (error);
+
+  output_contents =
+    g_data_input_stream_read_line (data_input_stream, NULL, NULL, &error);
+  g_assert_no_error (error);
+  g_test_message ("'%s' called with arguments: '%s'", terminal_exec, output_contents);
+
+  output_args = g_strsplit (output_contents, " ", -1);
+  g_clear_pointer (&output_contents, g_free);
+
+  g_assert_cmpuint (g_strv_length (output_args), ==, 4);
+  g_assert_cmpstr (output_args[0], ==, get_terminal_divider (terminal_exec));
+  g_assert_cmpstr (output_args[1], ==, "true");
+  g_assert_cmpstr (output_args[2], ==, command_line + 5);
+  paths = g_list_delete_link (paths,
+    g_list_find_custom (paths, output_args[3], g_str_equal));
+  g_assert_cmpint (g_list_length (paths), ==, 1);
+  g_clear_pointer (&output_args, g_strfreev);
+
+  output_contents =
+    g_data_input_stream_read_line (data_input_stream, NULL, NULL, &error);
+  g_assert_no_error (error);
+  g_test_message ("'%s' called with arguments: '%s'", terminal_exec, output_contents);
+
+  output_args = g_strsplit (output_contents, " ", -1);
+  g_clear_pointer (&output_contents, g_free);
+  g_assert_cmpuint (g_strv_length (output_args), ==, 4);
+  g_assert_cmpstr (output_args[0], ==, get_terminal_divider (terminal_exec));
+  g_assert_cmpstr (output_args[1], ==, "true");
+  g_assert_cmpstr (output_args[2], ==, command_line + 5);
+  paths = g_list_delete_link (paths,
+    g_list_find_custom (paths, output_args[3], g_str_equal));
+  g_assert_cmpint (g_list_length (paths), ==, 0);
+  g_clear_pointer (&output_args, g_strfreev);
+
+  g_assert_null (paths);
+  g_assert_true (g_setenv ("PATH", old_path, TRUE));
+
+  g_close (fds[1], &error);
+  g_assert_no_error (error);
+
+  g_free (sh);
+  g_free (command_line);
+  g_free (bin_path);
+  g_free (terminal_path);
+  g_free (output_fd_path);
+  g_free (script_contents);
+  g_free (old_path);
+  g_clear_pointer (&output_args, g_strfreev);
+  g_clear_pointer (&output_contents, g_free);
+  g_clear_object (&data_input_stream);
+  g_clear_object (&input_stream);
+  g_clear_object (&app_info);
+  g_clear_error (&error);
+  g_clear_list (&paths, NULL);
+  g_clear_list (&uris, g_free);
+}
+
+static void
+test_launch_uris_with_invalid_terminal (void)
+{
+  char *old_path;
+  char *bin_path;
+  GAppInfo *app_info;
+  GError *error = NULL;
+
+  bin_path = g_dir_make_tmp ("bin-path-XXXXXX", &error);
+  g_assert_no_error (error);
+
+  old_path = g_strdup (g_getenv ("PATH"));
+  g_assert_true (g_setenv ("PATH", bin_path, TRUE));
+
+  app_info = g_app_info_create_from_commandline ("true invalid-glib-terminal",
+                                                 "Test App on Invalid Terminal",
+                                                 G_APP_INFO_CREATE_NEEDS_TERMINAL |
+                                                 G_APP_INFO_CREATE_SUPPORTS_URIS,
+                                                 &error);
+  g_assert_no_error (error);
+
+  g_app_info_launch_uris (app_info, NULL, NULL, &error);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_FAILED);
+  g_clear_error (&error);
+
+  g_assert_true (g_setenv ("PATH", old_path, TRUE));
+
+  g_clear_object (&app_info);
+  g_clear_error (&error);
+  g_free (bin_path);
+  g_free (old_path);
+}
+
 int
 main (int   argc,
       char *argv[])
 {
+  guint i;
+  const gchar *supported_terminals[] = {
+    "gnome-terminal",
+    "mate-terminal",
+    "xfce4-terminal",
+    "tilix",
+    "konsole",
+    "nxterm",
+    "color-xterm",
+    "rxvt",
+    "dtterm",
+    "xterm",
+  };
+
   /* While we use %G_TEST_OPTION_ISOLATE_DIRS to create temporary directories
    * for each of the tests, we want to use the system MIME registry, assuming
    * that it exists and correctly has shared-mime-info installed. */
@@ -1190,6 +1396,21 @@ main (int   argc,
   g_test_add_func ("/desktop-app-info/launch-default-uri-handler", test_default_uri_handler);
   g_test_add_func ("/desktop-app-info/launch-default-uri-handler-async", test_default_uri_handler_async);
   g_test_add_func ("/desktop-app-info/id", test_id);
+
+  for (i = 0; i < G_N_ELEMENTS (supported_terminals); i++)
+    {
+      char *path;
+
+      path = g_strdup_printf ("/desktop-app-info/launch-uris-with-terminal/%s",
+                              supported_terminals[i]);
+      g_test_add_data_func (path, supported_terminals[i],
+                            test_launch_uris_with_terminal);
+
+      g_free (path);
+    }
+
+  g_test_add_func ("/desktop-app-info/launch-uris-with-terminal/invalid-glib-terminal",
+                   test_launch_uris_with_invalid_terminal);
 
   return g_test_run ();
 }
