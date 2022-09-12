@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
 "POT-Creation-Date: 2022-08-31 23:44+0000\n"
-"PO-Revision-Date: 2022-09-12 07:46+0200\n"
+"PO-Revision-Date: 2022-09-12 07:48+0200\n"
 "Last-Translator: Daniel Mustieles García <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -4673,7 +4673,7 @@ msgstr "El nombre de la ruta «%s» no es una ruta absoluta"
 #: glib/gdatetime.c:228
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
-msgstr "%a %H:%M:%S, %d- de %B de %Y"
+msgstr "%a %H:%M:%S, %-d de %B de %Y"
 
 #. Translators: this is the preferred format for expressing the date
 #: glib/gdatetime.c:231
