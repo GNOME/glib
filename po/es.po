@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-08-05 19:22+0000\n"
-"PO-Revision-Date: 2022-08-08 12:40+0200\n"
+"POT-Creation-Date: 2022-08-31 23:44+0000\n"
+"PO-Revision-Date: 2022-09-12 07:46+0200\n"
 "Last-Translator: Daniel Mustieles García <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -36,13 +36,13 @@ msgstr ""
 "Establecer aplicación como la usada por última vez para el tipo no está "
 "soportado"
 
-#: gio/gappinfo.c:808
+#: gio/gappinfo.c:810
 #, c-format
 msgid "Failed to find default application for content type ‘%s’"
 msgstr ""
 "Falló al buscar una aplicación predeterminada para el tipo de contenido «%s»"
 
-#: gio/gappinfo.c:868
+#: gio/gappinfo.c:870
 #, c-format
 msgid "Failed to find default application for URI Scheme ‘%s’"
 msgstr ""
@@ -1364,7 +1364,7 @@ msgstr "Error: %s no es un nombre de bus conocido válido\n"
 msgid "Not authorized to change debug settings"
 msgstr "No autorizado para cambiar la configuración de depuración"
 
-#: gio/gdesktopappinfo.c:2182 gio/gdesktopappinfo.c:5113
+#: gio/gdesktopappinfo.c:2182 gio/gdesktopappinfo.c:5112
 msgid "Unnamed"
 msgstr "Sin nombre"
 
@@ -1376,28 +1376,28 @@ msgstr "El archivo de escritorio no especificó el campo Exec"
 msgid "Unable to find terminal required for application"
 msgstr "Imposible encontrar el terminal requerido por la aplicación"
 
-#: gio/gdesktopappinfo.c:3631
+#: gio/gdesktopappinfo.c:3630
 #, c-format
 msgid "Can’t create user application configuration folder %s: %s"
 msgstr ""
 "No se puede crear la carpeta de configuración de la aplicación %s del "
 "usuario: %s"
 
-#: gio/gdesktopappinfo.c:3635
+#: gio/gdesktopappinfo.c:3634
 #, c-format
 msgid "Can’t create user MIME configuration folder %s: %s"
 msgstr "No se puede crear la carpeta de configuración MIME %s del usuario: %s"
 
-#: gio/gdesktopappinfo.c:3877 gio/gdesktopappinfo.c:3901
+#: gio/gdesktopappinfo.c:3876 gio/gdesktopappinfo.c:3900
 msgid "Application information lacks an identifier"
 msgstr "La información de la aplicación carece de un identificador"
 
-#: gio/gdesktopappinfo.c:4137
+#: gio/gdesktopappinfo.c:4136
 #, c-format
 msgid "Can’t create user desktop file %s"
 msgstr "No se puede crear el archivo de escritorio %s del usuario"
 
-#: gio/gdesktopappinfo.c:4273
+#: gio/gdesktopappinfo.c:4272
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Definición personalizada para %s"
@@ -4673,7 +4673,7 @@ msgstr "El nombre de la ruta «%s» no es una ruta absoluta"
 #: glib/gdatetime.c:228
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
-msgstr "%a %H:%M:%S, %e de %B de %Y"
+msgstr "%a %H:%M:%S, %d- de %B de %Y"
 
 #. Translators: this is the preferred format for expressing the date
 #: glib/gdatetime.c:231
