@@ -20,6 +20,7 @@ gdbus_codegen_conf.set('DATADIR', glib_datadir)
 gdbus_codegen = configure_file(input : 'gdbus-codegen.in',
   output : 'gdbus-codegen',
   install_dir : get_option('bindir'),
+  install_tag : 'bin-devel',
   configuration : gdbus_codegen_conf
 )
   # Provide tools for others when we're a subproject and they use the Meson GNOME module

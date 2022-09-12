@@ -80,6 +80,7 @@ foreach tool: python_tools
     output : tool,
     configuration : python_tools_conf,
     install_dir : glib_bindir,
+    install_tag : 'bin-devel',
   )
 
   # Set variables for later use
@@ -154,6 +155,7 @@ meson.override_dependency('gobject-2.0', libgobject_dep)
 
 executable('gobject-query', 'gobject-query.c',
   install : true,
+  install_tag : 'bin-devel',
   dependencies : [libglib_dep, libgobject_dep])
 
 install_data('gobject_gdb.py', install_dir : join_paths(glib_pkgdatadir, 'gdb'))

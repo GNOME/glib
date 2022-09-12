@@ -9,6 +9,7 @@ if have_sh
   gettextize_conf.set('datadir', glib_datadir)
   configure_file(input : 'glib-gettextize.in',
     install_dir : glib_bindir,
+    install_tag : 'bin-devel',
     output : 'glib-gettextize',
     configuration : gettextize_conf)
 endif
