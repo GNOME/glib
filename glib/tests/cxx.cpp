@@ -184,6 +184,35 @@ test_inline_no_inline_macros (void)
   g_assert_true (do_inline_this ());
 }
 
+static void
+clear_boolean_ptr (gboolean *val)
+{
+  *val = TRUE;
+}
+
+static void
+test_clear_pointer (void)
+{
+  gboolean value = FALSE;
+  gboolean *ptr = &value;
+
+  g_assert_true (ptr == &value);
+  g_assert_false (value);
+  g_clear_pointer (&ptr, clear_boolean_ptr);
+  g_assert_null (ptr);
+  g_assert_true (value);
+}
+
+static void
+test_steal_pointer (void)
+{
+  gpointer ptr = &ptr;
+
+  g_assert_true (ptr == &ptr);
+  g_assert_true (g_steal_pointer (&ptr) == &ptr);
+  g_assert_null (ptr);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -201,6 +230,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/C++/atomic-pointer-exchange", test_atomic_pointer_exchange);
   g_test_add_func ("/C++/atomic-int-exchange", test_atomic_int_exchange);
   g_test_add_func ("/C++/inlined-not-inlined-functions", test_inline_no_inline_macros);
+  g_test_add_func ("/C++/clear-pointer", test_clear_pointer);
+  g_test_add_func ("/C++/steal-pointer", test_steal_pointer);
 
   return g_test_run ();
 }
