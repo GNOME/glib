@@ -892,7 +892,9 @@
  *  defined then the current definition is correct.
  */
 #ifndef NULL
-#  ifdef G_CXX_STD_VERSION
+#  if G_CXX_STD_CHECK_VERSION (11)
+#  define NULL        (nullptr)
+#  elif G_CXX_STD_VERSION
 #  define NULL        (0L)
 #  else /* !G_CXX_STD_VERSION */
 #  define NULL        ((void*) 0)
