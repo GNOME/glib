@@ -1388,7 +1388,7 @@ get_content_type (const char          *basename,
 	  int fd, errsv;
 
 	  sniff_length = _g_unix_content_type_get_sniff_len ();
-	  if (sniff_length > 4096)
+	  if (sniff_length == 0 || sniff_length > 4096)
 	    sniff_length = 4096;
 
 #ifdef O_NOATIME	  
