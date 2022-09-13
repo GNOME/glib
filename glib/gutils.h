@@ -439,8 +439,8 @@ g_bit_storage_impl (gulong number)
 #  include <stdlib.h>
 #  define g_abort() abort ()
 #else
-GLIB_AVAILABLE_IN_2_50
-G_NORETURN void g_abort (void) G_ANALYZER_NORETURN;
+G_NORETURN GLIB_AVAILABLE_IN_2_50
+void g_abort (void) G_ANALYZER_NORETURN;
 #endif
 #endif
 
