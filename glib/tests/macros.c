@@ -22,6 +22,12 @@
 
 #include <glib.h>
 
+#ifdef G_CXX_STD_VERSION
+#error G_CXX_STD_VERSION should be undefined in C programs
+#endif
+
+G_STATIC_ASSERT (!G_CXX_STD_CHECK_VERSION (98));
+
 /* Test that G_STATIC_ASSERT_EXPR can be used as an expression */
 static void
 test_assert_static (void)

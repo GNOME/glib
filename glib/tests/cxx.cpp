@@ -19,6 +19,115 @@
 
 #include <glib.h>
 
+#if !defined (G_CXX_STD_VERSION) || !defined (G_CXX_STD_CHECK_VERSION)
+#error G_CXX_STD_VERSION is not defined
+#endif
+
+G_STATIC_ASSERT (G_CXX_STD_VERSION);
+
+#if G_CXX_STD_VERSION >= 199711L
+  G_STATIC_ASSERT (G_CXX_STD_CHECK_VERSION (98));
+  G_STATIC_ASSERT (G_CXX_STD_CHECK_VERSION (199711L));
+  G_STATIC_ASSERT (G_CXX_STD_CHECK_VERSION (03));
+#endif
+
+#if G_CXX_STD_VERSION == 199711L
+  G_STATIC_ASSERT (!G_CXX_STD_CHECK_VERSION (11));
+  G_STATIC_ASSERT (!G_CXX_STD_CHECK_VERSION (201103L));
+  G_STATIC_ASSERT (!G_CXX_STD_CHECK_VERSION (14));
+  G_STATIC_ASSERT (!G_CXX_STD_CHECK_VERSION (201402L));
+  G_STATIC_ASSERT (!G_CXX_STD_CHECK_VERSION (17));
+  G_STATIC_ASSERT (!G_CXX_STD_CHECK_VERSION (201703L));
+  G_STATIC_ASSERT (!G_CXX_STD_CHECK_VERSION (20));
+  G_STATIC_ASSERT (!G_CXX_STD_CHECK_VERSION (202002L));
+#endif
+
+#if G_CXX_STD_VERSION >= 201103L
+  G_STATIC_ASSERT (G_CXX_STD_CHECK_VERSION (98));
+  G_STATIC_ASSERT (G_CXX_STD_CHECK_VERSION (199711L));
+  G_STATIC_ASSERT (G_CXX_STD_CHECK_VERSION (03));
+  G_STATIC_ASSERT (G_CXX_STD_CHECK_VERSION (11));
+  G_STATIC_ASSERT (G_CXX_STD_CHECK_VERSION (201103L));
+#endif
+
+#if G_CXX_STD_VERSION == 201103L
+  G_STATIC_ASSERT (!G_CXX_STD_CHECK_VERSION (14));
+  G_STATIC_ASSERT (!G_CXX_STD_CHECK_VERSION (201402L));
+  G_STATIC_ASSERT (!G_CXX_STD_CHECK_VERSION (17));
+  G_STATIC_ASSERT (!G_CXX_STD_CHECK_VERSION (201703L));
+  G_STATIC_ASSERT (!G_CXX_STD_CHECK_VERSION (20));
+  G_STATIC_ASSERT (!G_CXX_STD_CHECK_VERSION (202002L));
+#endif
+
+#if G_CXX_STD_VERSION >= 201402L
+  G_STATIC_ASSERT (G_CXX_STD_CHECK_VERSION (14));
+  G_STATIC_ASSERT (G_CXX_STD_CHECK_VERSION (201402L));
+#endif
+
+#if G_CXX_STD_VERSION == 201402L
+  G_STATIC_ASSERT (!G_CXX_STD_CHECK_VERSION (17));
+  G_STATIC_ASSERT (!G_CXX_STD_CHECK_VERSION (201703L));
+  G_STATIC_ASSERT (!G_CXX_STD_CHECK_VERSION (20));
+  G_STATIC_ASSERT (!G_CXX_STD_CHECK_VERSION (202002L));
+#endif
+
+#if G_CXX_STD_VERSION >= 201703L
+  G_STATIC_ASSERT (G_CXX_STD_CHECK_VERSION (17));
+  G_STATIC_ASSERT (G_CXX_STD_CHECK_VERSION (201703L));
+#endif
+
+#if G_CXX_STD_VERSION == 201703L
+  G_STATIC_ASSERT (!G_CXX_STD_CHECK_VERSION (20));
+  G_STATIC_ASSERT (!G_CXX_STD_CHECK_VERSION (202002L));
+#endif
+
+#if G_CXX_STD_VERSION >= 202002L
+  G_STATIC_ASSERT (G_CXX_STD_CHECK_VERSION (20));
+  G_STATIC_ASSERT (G_CXX_STD_CHECK_VERSION (202002L));
+#endif
+
+#if G_CXX_STD_VERSION == 202002L
+  G_STATIC_ASSERT (!G_CXX_STD_CHECK_VERSION (23));
+  G_STATIC_ASSERT (!G_CXX_STD_CHECK_VERSION (202300L));
+#endif
+
+#ifdef _G_EXPECTED_CXX_STANDARD
+static void
+test_cpp_standard (void)
+{
+  guint64 std_version = 0;
+
+  if (!g_ascii_string_to_unsigned (_G_EXPECTED_CXX_STANDARD, 10, 0, G_MAXUINT64,
+                                   &std_version, NULL))
+    {
+      g_test_skip ("Expected standard value is non-numeric: "
+                   _G_EXPECTED_CXX_STANDARD);
+      return;
+    }
+
+#if !G_GNUC_CHECK_VERSION (11, 0)
+  if (std_version >= 20)
+    {
+      // See: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93821
+      g_test_skip ("Expected standard version is not properly supported by compiler");
+      return;
+    }
+#endif
+
+  g_test_message ("Checking if '" G_STRINGIFY (G_CXX_STD_VERSION) "' respects "
+                  "the expected  standard version '" _G_EXPECTED_CXX_STANDARD "'");
+  g_assert_true (G_CXX_STD_CHECK_VERSION (std_version));
+
+  if (std_version < 10 || std_version > 90)
+    std_version = 97;
+
+  if (std_version >= 90)
+    g_assert_cmpuint (G_CXX_STD_VERSION, >=, (std_version + 1900) * 100);
+  else
+    g_assert_cmpuint (G_CXX_STD_VERSION, >=, (std_version + 2000) * 100);
+}
+#endif
+
 typedef struct
 {
   int dummy;
@@ -186,12 +295,15 @@ test_steal_pointer (void)
 int
 main (int argc, char *argv[])
 {
-#if __cplusplus >= 201103L
+#if G_CXX_STD_CHECK_VERSION (11)
   g_test_init (&argc, &argv, NULL);
 #else
   g_test_init (&argc, &argv, static_cast<void *>(NULL));
 #endif
 
+#ifdef _G_EXPECTED_CXX_STANDARD
+  g_test_add_func ("/C++/check-standard-" _G_EXPECTED_CXX_STANDARD, test_cpp_standard);
+#endif
   g_test_add_func ("/C++/typeof", test_typeof);
   g_test_add_func ("/C++/atomic-pointer-compare-and-exchange", test_atomic_pointer_compare_and_exchange);
   g_test_add_func ("/C++/atomic-pointer-compare-and-exchange-full", test_atomic_pointer_compare_and_exchange_full);

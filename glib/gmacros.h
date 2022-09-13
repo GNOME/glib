@@ -64,6 +64,31 @@
 #define G_GNUC_EXTENSION
 #endif
 
+#if !defined (__cplusplus)
+
+# undef G_CXX_STD_VERSION
+# define G_CXX_STD_CHECK_VERSION(version) (0)
+
+#else /* defined (__cplusplus) */
+
+# if defined (_MSVC_LANG)
+#  define G_CXX_STD_VERSION (_MSVC_LANG > __cplusplus ? _MSVC_LANG : __cplusplus)
+# else
+#  define G_CXX_STD_VERSION __cplusplus
+# endif /* defined(_MSVC_LANG) */
+
+# define G_CXX_STD_CHECK_VERSION(version) ( \
+  ((version) >= 199711L && (version) <= G_CXX_STD_VERSION) || \
+  ((version) == 98 && G_CXX_STD_VERSION >= 199711L) || \
+  ((version) == 03 && G_CXX_STD_VERSION >= 199711L) || \
+  ((version) == 11 && G_CXX_STD_VERSION >= 201103L) || \
+  ((version) == 14 && G_CXX_STD_VERSION >= 201402L) || \
+  ((version) == 17 && G_CXX_STD_VERSION >= 201703L) || \
+  ((version) == 20 && G_CXX_STD_VERSION >= 202002L) || \
+  0)
+
+#endif /* !defined (__cplusplus) */
+
 /* Every compiler that we target supports inlining, but some of them may
  * complain about it if we don't say "__inline".  If we have C99, or if
  * we are using C++, then we can use "inline" directly.  Unfortunately

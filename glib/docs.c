@@ -2528,6 +2528,44 @@
  */
 
 /**
+ * G_CXX_STD_VERSION:
+ *
+ * The C++ standard version the code is compiling against, it's defined
+ * with the same value of `__cplusplus` for C++ standard compatible
+ * compilers, while it uses `_MSVC_LANG` in MSVC, given that the
+ * standard definition depends on a compilation flag in such compiler.
+ *
+ * This is granted to be undefined when not compiling with a C++ compiler.
+ *
+ * See also: %G_CXX_STD_CHECK_VERSION
+ *
+ * Since: 2.76
+ */
+
+/**
+ * G_CXX_STD_CHECK_VERSION:
+ * @version: The C++ version to be checked for compatibility
+ *
+ * Macro to check if the current compiler supports a specified @version
+ * of the C++ standard. Such value must be numeric and can be provided both
+ * in the short form for the well-known versions (e.g. `11`, `17`...) or in
+ * the complete form otherwise (e.g. `201103L`, `201703L`, `205503L`...).
+ *
+ * When a C compiler is used, the macro is defined and returns always %FALSE.
+ *
+ * This value is compared against %G_CXX_STD_VERSION.
+ *
+ * |[<!-- language="C" -->
+ * #if G_CXX_STD_CHECK_VERSION(20)
+ * #endif
+ * ]|
+ *
+ * Returns: %TRUE if @version is supported by the compiler, %FALSE otherwise
+ *
+ * Since: 2.76
+ */
+
+/**
  * G_LIKELY:
  * @expr: the expression
  *
