@@ -236,11 +236,9 @@ if installed_tests_enabled
   install_subdir('time-zones', install_dir : installed_tests_execdir)
 endif
 
-test_env = environment()
+test_env = environment(common_test_env)
 test_env.set('G_TEST_SRCDIR', meson.current_source_dir())
 test_env.set('G_TEST_BUILDDIR', meson.current_build_dir())
-test_env.set('G_DEBUG', 'gc-friendly')
-test_env.set('MALLOC_CHECK_', '2')
 
 test_deps = [libm, thread_dep, libglib_dep]
 test_cargs = ['-DG_LOG_DOMAIN="GLib"', '-UG_DISABLE_ASSERT']

@@ -2371,6 +2371,10 @@ if want_systemtap and enable_dtrace
   enable_systemtap = true
 endif
 
+common_test_env = [
+  'G_DEBUG=gc-friendly',
+  'MALLOC_CHECK_=2',
+]
 test_timeout = 60
 test_timeout_slow = 180
 
