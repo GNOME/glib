@@ -1205,6 +1205,7 @@ test_dir_make_tmp (void)
   name = g_dir_make_tmp ("testXXXXXXtest", &error);
   g_assert_no_error (error);
   g_assert_true (g_file_test (name, G_FILE_TEST_IS_DIR));
+  g_assert_true (g_str_has_prefix (name, g_getenv ("G_TEST_TMPDIR")));
   ret = g_rmdir (name);
   g_assert_cmpint (ret, ==, 0);
   g_free (name);
@@ -1212,6 +1213,7 @@ test_dir_make_tmp (void)
   name = g_dir_make_tmp (NULL, &error);
   g_assert_no_error (error);
   g_assert_true (g_file_test (name, G_FILE_TEST_IS_DIR));
+  g_assert_true (g_str_has_prefix (name, g_getenv ("G_TEST_TMPDIR")));
   ret = g_rmdir (name);
   g_assert_cmpint (ret, ==, 0);
   g_free (name);
@@ -1238,6 +1240,7 @@ test_file_open_tmp (void)
   g_assert_cmpint (fd, !=, -1);
   g_assert_no_error (error);
   g_assert_nonnull (name);
+  g_assert_true (g_str_has_prefix (name, g_getenv ("G_TEST_TMPDIR")));
   unlink (name);
   g_free (name);
   close (fd);
@@ -1246,6 +1249,7 @@ test_file_open_tmp (void)
   g_assert_cmpint (fd, !=, -1);
   g_assert_no_error (error);
   g_assert_nonnull (name);
+  g_assert_true (g_str_has_prefix (name, g_getenv ("G_TEST_TMPDIR")));
   g_unlink (name);
   g_free (name);
   close (fd);
