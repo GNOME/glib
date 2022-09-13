@@ -4562,6 +4562,7 @@ g_task_set_check_cancellable
 g_task_set_return_on_cancel
 g_task_set_source_tag
 g_task_set_name
+g_task_set_static_name
 <SUBSECTION>
 g_task_report_error
 g_task_report_new_error
