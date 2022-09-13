@@ -2373,6 +2373,7 @@ endif
 
 common_test_env = [
   'G_DEBUG=gc-friendly',
+  'G_ENABLE_DIAGNOSTIC=1',
   'MALLOC_CHECK_=2',
 ]
 test_timeout = 60
