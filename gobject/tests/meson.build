@@ -42,6 +42,7 @@ gobject_tests = {
     'source' : ['defaultiface.c', 'testmodule.c'],
   },
   'deftype' : {},
+  'deprecated-properties' : {},
   'dynamictype' : {
     'source' : ['dynamictype.c', 'testmodule.c'],
   },
