@@ -168,7 +168,7 @@ if have_cxx
       'cxx-@0@'.format(std) : {
         'source' : ['cxx.cpp'],
         'suite' : ['cpp'],
-        'cpp_args' : [arg],
+        'cpp_args' : [arg, '-D_G_EXPECTED_CXX_STANDARD="@0@"'.format(std)],
       },
     }
   endforeach
