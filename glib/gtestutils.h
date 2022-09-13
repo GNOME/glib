@@ -541,8 +541,8 @@ void    g_assertion_message             (const char     *domain,
                                          int             line,
                                          const char     *func,
                                          const char     *message) G_ANALYZER_NORETURN;
-GLIB_AVAILABLE_IN_ALL
 G_NORETURN
+GLIB_AVAILABLE_IN_ALL
 void    g_assertion_message_expr        (const char     *domain,
                                          const char     *file,
                                          int             line,

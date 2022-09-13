@@ -1050,16 +1050,16 @@
  * evaluated when a header is included. This results in warnings in third party
  * code which includes glib.h, even if the third party code doesn’t use the new
  * macro itself. */
-#if g_macro__has_attribute(__noreturn__)
+#if G_CXX_STD_CHECK_VERSION (11)
+  /* Use ISO C++11 syntax when the compiler supports it.  */
+# define G_NORETURN [[noreturn]]
+#elif g_macro__has_attribute(__noreturn__)
   /* For compatibility with G_NORETURN_FUNCPTR on clang, use
      __attribute__((__noreturn__)), not _Noreturn.  */
 # define G_NORETURN __attribute__ ((__noreturn__))
 #elif defined (_MSC_VER) && (1200 <= _MSC_VER)
   /* Use MSVC specific syntax.  */
 # define G_NORETURN __declspec (noreturn)
-  /* Use ISO C++11 syntax when the compiler supports it.  */
-#elif G_CXX_STD_CHECK_VERSION (11)
-# define G_NORETURN [[noreturn]]
   /* Use ISO C11 syntax when the compiler supports it.  */
 #elif defined (__STDC_VERSION__) && __STDC_VERSION__ >= 201112
 # define G_NORETURN _Noreturn
