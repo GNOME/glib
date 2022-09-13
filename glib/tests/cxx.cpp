@@ -100,6 +100,8 @@ test_typeof (void)
   MyObject *obj2 = g_rc_box_acquire (obj);
   g_assert_true (obj2 == obj);
 
+  G_STATIC_ASSERT (sizeof (glib_typeof (*obj)) == sizeof (glib_typeof (*obj2)));
+
   MyObject *obj3 = g_atomic_pointer_get (&obj2);
   g_assert_true (obj3 == obj);
 

@@ -95,7 +95,7 @@
  * Otherwise, we say "__inline" to avoid the warning.
  */
 #define G_CAN_INLINE
-#ifndef __cplusplus
+#ifndef G_CXX_STD_VERSION
 # ifdef _MSC_VER
 #  if (_MSC_VER < 1900)
 #   define G_INLINE_DEFINE_NEEDED
@@ -841,12 +841,10 @@
 #ifndef __GI_SCANNER__ /* The static assert macro really confuses the introspection parser */
 #define G_PASTE_ARGS(identifier1,identifier2) identifier1 ## identifier2
 #define G_PASTE(identifier1,identifier2)      G_PASTE_ARGS (identifier1, identifier2)
-#if !defined(__cplusplus) && defined(__STDC_VERSION__) && \
+#if !defined(G_CXX_STD_VERSION) && defined(__STDC_VERSION__) && \
     (__STDC_VERSION__ >= 201112L || g_macro__has_feature(c_static_assert) || g_macro__has_extension(c_static_assert))
 #define G_STATIC_ASSERT(expr) _Static_assert (expr, "Expression evaluates to false")
-#elif (defined(__cplusplus) && __cplusplus >= 201103L) || \
-      (defined(__cplusplus) && defined (_MSC_VER) && (_MSC_VER >= 1600)) || \
-      (defined (_MSC_VER) && (_MSC_VER >= 1800))
+#elif G_CXX_STD_CHECK_VERSION (11)
 #define G_STATIC_ASSERT(expr) static_assert (expr, "Expression evaluates to false")
 #else
 #ifdef __COUNTER__
@@ -859,14 +857,14 @@
 #endif /* !__GI_SCANNER__ */
 
 /* Provide a string identifying the current code position */
-#if defined(__GNUC__) && (__GNUC__ < 3) && !defined(__cplusplus)
+#if defined (__GNUC__) && (__GNUC__ < 3) && !defined (G_CXX_STD_VERSION)
 #define G_STRLOC	__FILE__ ":" G_STRINGIFY (__LINE__) ":" __PRETTY_FUNCTION__ "()"
 #else
 #define G_STRLOC	__FILE__ ":" G_STRINGIFY (__LINE__)
 #endif
 
 /* Provide a string identifying the current function, non-concatenatable */
-#if defined (__GNUC__) && defined (__cplusplus)
+#if defined (__GNUC__) && defined (G_CXX_STD_VERSION)
 #define G_STRFUNC     ((const char*) (__PRETTY_FUNCTION__))
 #elif defined (__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
 #define G_STRFUNC     ((const char*) (__func__))
@@ -877,7 +875,7 @@
 #endif
 
 /* Guard C code in headers, while including them from C++ */
-#ifdef  __cplusplus
+#ifdef  G_CXX_STD_VERSION
 #define G_BEGIN_DECLS  extern "C" {
 #define G_END_DECLS    }
 #else
@@ -891,11 +889,11 @@
  *  defined then the current definition is correct.
  */
 #ifndef NULL
-#  ifdef __cplusplus
+#  ifdef G_CXX_STD_VERSION
 #  define NULL        (0L)
-#  else /* !__cplusplus */
+#  else /* !G_CXX_STD_VERSION */
 #  define NULL        ((void*) 0)
-#  endif /* !__cplusplus */
+#  endif /* !G_CXX_STD_VERSION */
 #endif
 
 #ifndef	FALSE
@@ -994,7 +992,8 @@
  *
  * Since: 2.60
  */
-#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L && !defined(__cplusplus)
+#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L && \
+    !defined(G_CXX_STD_VERSION)
 #define G_ALIGNOF(type) _Alignof (type) \
   GLIB_AVAILABLE_MACRO_IN_2_60
 #else
@@ -1054,7 +1053,7 @@
   /* Use MSVC specific syntax.  */
 # define G_NORETURN __declspec (noreturn)
   /* Use ISO C++11 syntax when the compiler supports it.  */
-#elif defined (__cplusplus) && __cplusplus >= 201103
+#elif G_CXX_STD_CHECK_VERSION (11)
 # define G_NORETURN [[noreturn]]
   /* Use ISO C11 syntax when the compiler supports it.  */
 #elif defined (__STDC_VERSION__) && __STDC_VERSION__ >= 201112
@@ -1125,7 +1124,7 @@
  * code which includes glib.h, even if the third party code doesn’t use the new
  * macro itself. */
 #if g_macro__has_attribute(__always_inline__)
-# if defined (__cplusplus) && __cplusplus >= 201103L
+# if G_CXX_STD_CHECK_VERSION (11)
     /* Use ISO C++11 syntax when the compiler supports it. */
 #   define G_ALWAYS_INLINE [[gnu::always_inline]]
 # else
@@ -1133,7 +1132,11 @@
 # endif
 #elif defined (_MSC_VER)
   /* Use MSVC specific syntax.  */
-# define G_ALWAYS_INLINE __forceinline
+# if G_CXX_STD_CHECK_VERSION (11)
+#  define G_ALWAYS_INLINE [[msvc::forceinline]]
+# else
+#  define G_ALWAYS_INLINE __forceinline
+# endif
 #else
 # define G_ALWAYS_INLINE /* empty */
 #endif
@@ -1169,16 +1172,20 @@
  * code which includes glib.h, even if the third party code doesn’t use the new
  * macro itself. */
 #if g_macro__has_attribute(__noinline__)
-# if defined (__cplusplus) && __cplusplus >= 201103L
+# if G_CXX_STD_CHECK_VERSION (11)
     /* Use ISO C++11 syntax when the compiler supports it. */
-#   define G_NO_INLINE [[gnu::noinline]]
+#   if defined (__GNUC__)
+#      define G_NO_INLINE [[gnu::noinline]]
+#   elif defined (_MSC_VER)
+#      define G_NO_INLINE [[msvc::noinline]]
+#   endif
 # else
 #   define G_NO_INLINE __attribute__ ((__noinline__))
 # endif
 #elif defined (_MSC_VER) && (1200 <= _MSC_VER)
   /* Use MSVC specific syntax.  */
-# if defined (__cplusplus) && __cplusplus >= 201103L
     /* Use ISO C++11 syntax when the compiler supports it. */
+# if G_CXX_STD_CHECK_VERSION (11)
 #   define G_NO_INLINE [[msvc::noinline]]
 # else
 #   define G_NO_INLINE __declspec (noinline)

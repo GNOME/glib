@@ -34,11 +34,10 @@
  * This symbol is private.
  */
 #undef glib_typeof
-#if (!defined(__cplusplus) || (!defined (_MSVC_LANG) && __cplusplus < 201103L)) && \
+#if !G_CXX_STD_CHECK_VERSION (11) && \
     (G_GNUC_CHECK_VERSION(4, 8) || defined(__clang__))
 #define glib_typeof(t) __typeof__ (t)
-#elif defined(__cplusplus) && \
-      (__cplusplus >= 201103L || (defined (_MSVC_LANG) && _MSVC_LANG > 201103L)) && \
+#elif G_CXX_STD_CHECK_VERSION (11) && \
       GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_68
 /* C++11 decltype() is close enough for our usage */
 #include <type_traits>
