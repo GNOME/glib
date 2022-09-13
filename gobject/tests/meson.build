@@ -102,8 +102,19 @@ if have_cxx
   gobject_tests += {
     'cxx' : {
       'source' : ['cxx.cpp'],
+      'suite' : ['cpp'],
     },
   }
+
+  foreach std, arg: cxx_standards
+    gobject_tests += {
+      'cxx-@0@'.format(std) : {
+        'source' : ['cxx.cpp'],
+        'suite' : ['cpp'],
+        'cpp_args' : [arg],
+      },
+    }
+  endforeach
 endif
 
 if cc.get_id() != 'msvc'
@@ -125,6 +136,7 @@ test_env.set('MALLOC_CHECK_', '2')
 
 test_deps = [libm, thread_dep, libglib_dep, libgobject_dep]
 test_cargs = ['-DG_LOG_DOMAIN="GLib-GObject"', '-UG_DISABLE_ASSERT']
+test_cpp_args = test_cargs
 
 foreach test_name, extra_args : gobject_tests
   source = extra_args.get('source', test_name + '.c')
@@ -145,6 +157,7 @@ foreach test_name, extra_args : gobject_tests
 
   exe = executable(test_name, source,
     c_args : test_cargs + extra_args.get('c_args', []),
+    cpp_args : test_cpp_args + extra_args.get('cpp_args', []),
     dependencies : test_deps + extra_args.get('dependencies', []),
     install_dir: installed_tests_execdir,
     install: install,

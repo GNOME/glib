@@ -27,6 +27,8 @@ if cc.has_header('pty.h')
   endif
 endif
 
+test_cpp_args = test_c_args
+
 if host_machine.system() == 'windows'
   common_gio_tests_deps += [iphlpapi_dep, winsock2, cc.find_library ('secur32')]
 endif
@@ -130,8 +132,19 @@ if have_cxx
   gio_tests += {
     'cxx' : {
       'source' : ['cxx.cpp'],
+      'suite': ['C++'],
     },
   }
+
+  foreach std, arg: cxx_standards
+    gio_tests += {
+      'cxx-@0@'.format(std) : {
+        'source' : ['cxx.cpp'],
+        'suite' : ['cpp'],
+        'cpp_args' : [arg],
+      },
+    }
+  endforeach
 endif
 
 test_extra_programs = {
@@ -853,6 +866,7 @@ foreach test_name, extra_args : gio_tests
 
   exe = executable(test_name, [source, extra_sources],
     c_args : test_c_args + extra_args.get('c_args', []),
+    cpp_args : test_cpp_args + extra_args.get('cpp_args', []),
     dependencies : common_gio_tests_deps + extra_args.get('dependencies', []),
     install_rpath : extra_args.get('install_rpath', ''),
     install_dir: installed_tests_execdir,
