@@ -59,6 +59,8 @@ g_nearest_pow (gsize num)
   return n + 1;
 }
 
+void _g_unset_cached_tmp_dir (void);
+
 G_END_DECLS
 
 #endif /* __G_UTILS_PRIVATE_H__ */

@@ -598,6 +598,7 @@ static  gchar   *g_user_state_dir = NULL;
 static  gchar   *g_user_runtime_dir = NULL;
 static  gchar  **g_system_config_dirs = NULL;
 static  gchar  **g_user_special_dirs = NULL;
+static  gchar   *g_tmp_dir = NULL;
 
 /* fifteen minutes of fame for everybody */
 #define G_USER_DIRS_EXPIRE      15 * 60
@@ -941,6 +942,17 @@ g_get_home_dir (void)
   return home_dir;
 }
 
+void
+_g_unset_cached_tmp_dir (void)
+{
+  G_LOCK (g_utils_global);
+  /* We have to leak the old value, as user code could be retaining pointers
+   * to it. */
+  g_ignore_leak (g_tmp_dir);
+  g_tmp_dir = NULL;
+  G_UNLOCK (g_utils_global);
+}
+
 /**
  * g_get_tmp_dir:
  *
@@ -964,22 +976,33 @@ g_get_home_dir (void)
 const gchar *
 g_get_tmp_dir (void)
 {
-  static gchar *tmp_dir;
+  G_LOCK (g_utils_global);
 
-  if (g_once_init_enter (&tmp_dir))
+  if (g_tmp_dir == NULL)
     {
       gchar *tmp;
 
-#ifdef G_OS_WIN32
-      tmp = g_strdup (g_getenv ("TEMP"));
+      tmp = g_strdup (g_getenv ("G_TEST_TMPDIR"));
 
+      if (tmp == NULL || *tmp == '\0')
+        {
+          g_free (tmp);
+          tmp = g_strdup (g_getenv (
+#ifdef G_OS_WIN32
+            "TEMP"
+#else /* G_OS_WIN32 */
+            "TMPDIR"
+#endif /* G_OS_WIN32 */
+          ));
+        }
+
+#ifdef G_OS_WIN32
       if (tmp == NULL || *tmp == '\0')
         {
           g_free (tmp);
           tmp = get_windows_directory_root ();
         }
 #else /* G_OS_WIN32 */
-      tmp = g_strdup (g_getenv ("TMPDIR"));
 
 #ifdef P_tmpdir
       if (tmp == NULL || *tmp == '\0')
@@ -1000,10 +1023,12 @@ g_get_tmp_dir (void)
         }
 #endif /* !G_OS_WIN32 */
 
-      g_once_init_leave (&tmp_dir, tmp);
+      g_tmp_dir = g_steal_pointer (&tmp);
     }
 
-  return tmp_dir;
+  G_UNLOCK (g_utils_global);
+
+  return g_tmp_dir;
 }
 
 /**
