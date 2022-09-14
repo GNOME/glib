@@ -227,9 +227,6 @@ valgrind:
     - bash -x ./.gitlab-ci/run-tests.sh
                  --setup valgrind
                  --no-suite slow
-  # FIXME: Remove this when we have zero valgrind leaks.
-  # https://gitlab.gnome.org/GNOME/glib/issues/333
-  allow_failure: true
   artifacts:
     reports:
       junit: "_build/meson-logs/testlog-valgrind.junit.xml"
