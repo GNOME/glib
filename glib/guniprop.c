@@ -477,6 +477,14 @@ g_unichar_iswide_bsearch (gunichar ch)
   return FALSE;
 }
 
+static const struct Interval default_wide_blocks[] = {
+  { 0x3400, 0x4dbf },
+  { 0x4e00, 0x9fff },
+  { 0xf900, 0xfaff },
+  { 0x20000, 0x2fffd },
+  { 0x30000, 0x3fffd }
+};
+
 /**
  * g_unichar_iswide:
  * @c: a Unicode character
@@ -491,8 +499,17 @@ g_unichar_iswide (gunichar c)
 {
   if (c < g_unicode_width_table_wide[0].start)
     return FALSE;
-  else
-    return g_unichar_iswide_bsearch (c);
+  else if (g_unichar_iswide_bsearch (c))
+    return TRUE;
+  else if (g_unichar_type (c) == G_UNICODE_UNASSIGNED &&
+           bsearch (GUINT_TO_POINTER (c),
+                    default_wide_blocks,
+                    G_N_ELEMENTS (default_wide_blocks),
+                    sizeof default_wide_blocks[0],
+                    interval_compare))
+    return TRUE;
+
+  return FALSE;
 }
 
 
