@@ -270,7 +270,10 @@ foreach test_name, extra_args : glib_tests
         '@0@-c-@1@'.format(test_name, std) : extra_args + {
           'source' : extra_args.get('source', test_name + '.c'),
           'suite' : ['cc'] + extra_args.get('suite', []),
-          'c_args' : [c_standards.get(std)] + extra_args.get('c_args', []),
+          'c_args' : [
+            c_standards.get(std),
+            '-D_G_EXPECTED_C_STANDARD="@0@"'.format(std)
+          ] + extra_args.get('c_args', []),
         }
       }
     endif
