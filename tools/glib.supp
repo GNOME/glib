@@ -904,6 +904,126 @@
 	fun:desktop_file_dir_unindexed_setup_search
 }
 
+#gutils.c caches system and user dirs and may need to replace them during tests.
+{
+	g_build_user_data_dir
+	Memcheck:Leak
+	match-leak-kinds:definite
+	fun:malloc
+	...
+	fun:g_build_user_data_dir
+}
+
+#gutils.c caches system and user dirs and may need to replace them during tests.
+{
+	g_build_filename
+	Memcheck:Leak
+	match-leak-kinds:definite
+	fun:malloc
+	...
+	fun:g_build_filename
+}
+
+#gutils.c caches system and user dirs and may need to replace them during tests.
+{
+	g_build_home_dir
+	Memcheck:Leak
+	match-leak-kinds:definite
+	fun:malloc
+	...
+	fun:g_build_home_dir
+}
+
+#gutils.c caches system and user dirs and may need to replace them during tests.
+{
+	g_build_path
+	Memcheck:Leak
+	match-leak-kinds:definite
+	fun:malloc
+	...
+	fun:g_build_path
+}
+
+#gutils.c caches system and user dirs and may need to replace them during tests.
+{
+	g_build_system_config_dirs
+	Memcheck:Leak
+	match-leak-kinds:definite
+	fun:realloc
+	...
+	fun:g_build_system_config_dirs
+}
+
+#gutils.c caches system and user dirs and may need to replace them during tests.
+{
+	g_build_system_data_dir
+	Memcheck:Leak
+	match-leak-kinds:definite
+	fun:malloc
+	...
+	fun:g_build_system_data_dir
+}
+
+#gutils.c caches system and user dirs and may need to replace them during tests.
+{
+	g_build_system_data_dirs
+	Memcheck:Leak
+	match-leak-kinds:definite
+	fun:realloc
+	...
+	fun:g_build_system_data_dirs
+}
+
+#gutils.c caches system and user dirs and may need to replace them during tests.
+{
+	g_build_user_cache_dir
+	Memcheck:Leak
+	match-leak-kinds:definite
+	fun:malloc
+	...
+	fun:g_build_user_cache_dir
+}
+
+#gutils.c caches system and user dirs and may need to replace them during tests.
+{
+	g_build_user_config_dir
+	Memcheck:Leak
+	match-leak-kinds:definite
+	fun:malloc
+	...
+	fun:g_build_user_config_dir
+}
+
+#gutils.c caches system and user dirs and may need to replace them during tests.
+{
+	g_build_user_data_dir
+	Memcheck:Leak
+	match-leak-kinds:definite
+	fun:malloc
+	...
+	fun:g_build_user_data_dir
+}
+
+#gutils.c caches system and user dirs and may need to replace them during tests.
+{
+	g_build_user_runtime_dir
+	Memcheck:Leak
+	match-leak-kinds:definite
+	fun:malloc
+	...
+	fun:g_build_user_runtime_dir
+}
+
+#gutils.c caches system and user dirs and may need to replace them during tests.
+{
+	g_build_user_state_dir
+	Memcheck:Leak
+	match-leak-kinds:definite
+	fun:malloc
+	...
+	fun:g_build_user_state_dir
+}
+
 # g_io_extension_point_register() caches a one-time allocation global table of @extension_points.
 {
 	g_io_extension_point_register
