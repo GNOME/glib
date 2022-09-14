@@ -109,19 +109,19 @@
 
 /* Every compiler that we target supports inlining, but some of them may
  * complain about it if we don't say "__inline".  If we have C99, or if
- * we are using C++, then we can use "inline" directly.  Unfortunately
- * Visual Studio does not support __STDC_VERSION__, so we need to check
- * whether we are on Visual Studio 2013 or earlier to see that we need to
- * say "__inline" in C mode.
+ * we are using C++, then we can use "inline" directly.
  * Otherwise, we say "__inline" to avoid the warning.
+ * Unfortunately Visual Studio does not define __STDC_VERSION__ (if not
+ * using /std:cXX) so we need to check whether we are on Visual Studio 2013
+ * or earlier to see whether we need to say "__inline" in C mode.
  */
 #define G_CAN_INLINE
-#ifndef G_CXX_STD_VERSION
+#ifdef G_C_STD_VERSION
 # ifdef _MSC_VER
 #  if (_MSC_VER < 1900)
 #   define G_INLINE_DEFINE_NEEDED
 #  endif
-# elif !defined(__STDC_VERSION__) || (__STDC_VERSION__ < 199900)
+# elif !G_C_STD_CHECK_VERSION (99)
 #  define G_INLINE_DEFINE_NEEDED
 # endif
 #endif
@@ -862,8 +862,8 @@
 #ifndef __GI_SCANNER__ /* The static assert macro really confuses the introspection parser */
 #define G_PASTE_ARGS(identifier1,identifier2) identifier1 ## identifier2
 #define G_PASTE(identifier1,identifier2)      G_PASTE_ARGS (identifier1, identifier2)
-#if !defined(G_CXX_STD_VERSION) && defined(__STDC_VERSION__) && \
-    (__STDC_VERSION__ >= 201112L || g_macro__has_feature(c_static_assert) || g_macro__has_extension(c_static_assert))
+#if (G_C_STD_CHECK_VERSION (11) || \
+     g_macro__has_feature(c_static_assert) || g_macro__has_extension(c_static_assert))
 #define G_STATIC_ASSERT(expr) _Static_assert (expr, "Expression evaluates to false")
 #elif G_CXX_STD_CHECK_VERSION (11)
 #define G_STATIC_ASSERT(expr) static_assert (expr, "Expression evaluates to false")
@@ -873,7 +873,7 @@
 #else
 #define G_STATIC_ASSERT(expr) typedef char G_PASTE (_GStaticAssertCompileTimeAssertion_, __LINE__)[(expr) ? 1 : -1] G_GNUC_UNUSED
 #endif
-#endif /* __STDC_VERSION__ */
+#endif /* G_C_STD_CHECK_VERSION (11) */
 #define G_STATIC_ASSERT_EXPR(expr) ((void) sizeof (char[(expr) ? 1 : -1]))
 #endif /* !__GI_SCANNER__ */
 
@@ -887,7 +887,7 @@
 /* Provide a string identifying the current function, non-concatenatable */
 #if defined (__GNUC__) && defined (G_CXX_STD_VERSION)
 #define G_STRFUNC     ((const char*) (__PRETTY_FUNCTION__))
-#elif defined (__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
+#elif G_C_STD_CHECK_VERSION (99)
 #define G_STRFUNC     ((const char*) (__func__))
 #elif defined (__GNUC__) || (defined(_MSC_VER) && (_MSC_VER > 1300))
 #define G_STRFUNC     ((const char*) (__FUNCTION__))
@@ -1018,8 +1018,7 @@
  *
  * Since: 2.60
  */
-#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L && \
-    !defined(G_CXX_STD_VERSION)
+#if G_C_STD_CHECK_VERSION (11)
 #define G_ALIGNOF(type) _Alignof (type) \
   GLIB_AVAILABLE_MACRO_IN_2_60
 #else
@@ -1082,7 +1081,7 @@
   /* Use MSVC specific syntax.  */
 # define G_NORETURN __declspec (noreturn)
   /* Use ISO C11 syntax when the compiler supports it.  */
-#elif defined (__STDC_VERSION__) && __STDC_VERSION__ >= 201112
+#elif G_C_STD_CHECK_VERSION (11)
 # define G_NORETURN _Noreturn
 #else
 # define G_NORETURN /* empty */
