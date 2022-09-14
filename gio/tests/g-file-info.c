@@ -417,9 +417,7 @@ test_g_file_info_creation_time (void)
                             NULL, &error);
   g_assert_no_error (error);
 
-  /* Check the creation time is retrievable. */
-  dt = g_file_info_get_creation_date_time (info);
-  if (!dt)
+  if (!g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_TIME_CREATED))
     {
       g_test_skip ("Skipping testing creation time as it’s not supported by the kernel");
       g_clear_object (&io_stream);
@@ -428,6 +426,9 @@ test_g_file_info_creation_time (void)
       g_clear_object (&info);
       return;
     }
+
+  /* Check the creation time is retrievable. */
+  dt = g_file_info_get_creation_date_time (info);
 
   /* Try again with microsecond precision. */
   g_clear_object (&info);
