@@ -298,7 +298,8 @@ endif
 # optimization is 0 or g; otherwise, we have a production build.
 glib_debug_cflags = []
 glib_debug = get_option('glib_debug')
-if glib_debug.enabled() or (glib_debug.auto() and get_option('debug') and get_option('optimization') in [ '0', 'g' ])
+if (glib_debug.enabled() or (
+    glib_debug.auto() and get_option('debug') and get_option('optimization') in [ '0', 'g' ]))
   glib_debug_cflags += ['-DG_ENABLE_DEBUG']
   message('Enabling various debug infrastructure')
 else
