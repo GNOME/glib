@@ -2528,6 +2528,47 @@
  */
 
 /**
+ * G_C_STD_VERSION:
+ *
+ * The C standard version the code is compiling against, it's normally
+ * defined with the same value of `__STDC_VERSION__` for C standard
+ * compatible compilers, while it uses the lowest standard version
+ * in pure MSVC, given that in such compiler the definition depends on
+ * a compilation flag.
+ *
+ * This is granted to be undefined when compiling with a C++ compiler.
+ *
+ * See also: %G_C_STD_CHECK_VERSION and %G_CXX_STD_VERSION
+ *
+ * Since: 2.76
+ */
+
+/**
+ * G_C_STD_CHECK_VERSION:
+ * @version: The C version to be checked for compatibility
+ *
+ * Macro to check if the current compiler supports a specified @version
+ * of the C standard. Such value must be numeric and can be provided both
+ * in the short form for the well-known versions (e.g. `90`, `99`...) or in
+ * the complete form otherwise (e.g. `199000L`, `199901L`, `205503L`...).
+ *
+ * When a C++ compiler is used, the macro is defined and returns always %FALSE.
+ *
+ * This value is compared against %G_C_STD_VERSION.
+ *
+ * |[<!-- language="C" -->
+ * #if G_C_STD_CHECK_VERSION(17)
+ * #endif
+ * ]|
+ *
+ * See also: %G_CXX_STD_CHECK_VERSION
+ *
+ * Returns: %TRUE if @version is supported by the compiler, %FALSE otherwise
+ *
+ * Since: 2.76
+ */
+
+/**
  * G_CXX_STD_VERSION:
  *
  * The C++ standard version the code is compiling against, it's defined
@@ -2537,7 +2578,7 @@
  *
  * This is granted to be undefined when not compiling with a C++ compiler.
  *
- * See also: %G_CXX_STD_CHECK_VERSION
+ * See also: %G_CXX_STD_CHECK_VERSION and %G_C_STD_VERSION
  *
  * Since: 2.76
  */
@@ -2559,6 +2600,8 @@
  * #if G_CXX_STD_CHECK_VERSION(20)
  * #endif
  * ]|
+ *
+ * See also: %G_C_STD_CHECK_VERSION
  *
  * Returns: %TRUE if @version is supported by the compiler, %FALSE otherwise
  *

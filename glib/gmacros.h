@@ -69,7 +69,25 @@
 # undef G_CXX_STD_VERSION
 # define G_CXX_STD_CHECK_VERSION(version) (0)
 
+# if defined (__STDC_VERSION__)
+#  define G_C_STD_VERSION __STDC_VERSION__
+# else
+#  define G_C_STD_VERSION 199000L
+# endif /* defined (__STDC_VERSION__) */
+
+# define G_C_STD_CHECK_VERSION(version) ( \
+  ((version) >= 199000L && (version) <= G_C_STD_VERSION) || \
+  ((version) == 89 && G_C_STD_VERSION >= 199000L) || \
+  ((version) == 90 && G_C_STD_VERSION >= 199000L) || \
+  ((version) == 99 && G_C_STD_VERSION >= 199901L) || \
+  ((version) == 11 && G_C_STD_VERSION >= 201112L) || \
+  ((version) == 17 && G_C_STD_VERSION >= 201710L) || \
+  0)
+
 #else /* defined (__cplusplus) */
+
+# undef G_C_STD_VERSION
+# define G_C_STD_CHECK_VERSION(version) (0)
 
 # if defined (_MSVC_LANG)
 #  define G_CXX_STD_VERSION (_MSVC_LANG > __cplusplus ? _MSVC_LANG : __cplusplus)

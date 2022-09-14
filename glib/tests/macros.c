@@ -27,6 +27,81 @@
 #endif
 
 G_STATIC_ASSERT (!G_CXX_STD_CHECK_VERSION (98));
+G_STATIC_ASSERT (G_C_STD_CHECK_VERSION (89));
+G_STATIC_ASSERT (G_C_STD_CHECK_VERSION (90));
+
+#if G_C_STD_VERSION >= 199000L
+  G_STATIC_ASSERT (G_C_STD_CHECK_VERSION (89));
+  G_STATIC_ASSERT (G_C_STD_CHECK_VERSION (90));
+  G_STATIC_ASSERT (G_C_STD_CHECK_VERSION (199000L));
+#endif
+
+#if G_C_STD_VERSION == 198900L
+  G_STATIC_ASSERT (!G_C_STD_CHECK_VERSION (99));
+  G_STATIC_ASSERT (!G_C_STD_CHECK_VERSION (199901L));
+  G_STATIC_ASSERT (!G_C_STD_CHECK_VERSION (11));
+  G_STATIC_ASSERT (!G_C_STD_CHECK_VERSION (201112L));
+  G_STATIC_ASSERT (!G_C_STD_CHECK_VERSION (17));
+  G_STATIC_ASSERT (!G_C_STD_CHECK_VERSION (201710L));
+#endif
+
+#if G_C_STD_VERSION >= 199901L
+  G_STATIC_ASSERT (G_C_STD_CHECK_VERSION (99));
+  G_STATIC_ASSERT (G_C_STD_CHECK_VERSION (199901L));
+#endif
+
+#if G_C_STD_VERSION == 199901L
+  G_STATIC_ASSERT (!G_C_STD_CHECK_VERSION (11));
+  G_STATIC_ASSERT (!G_C_STD_CHECK_VERSION (201112L));
+  G_STATIC_ASSERT (!G_C_STD_CHECK_VERSION (17));
+  G_STATIC_ASSERT (!G_C_STD_CHECK_VERSION (201710L));
+#endif
+
+#if G_C_STD_VERSION >= 201112L
+  G_STATIC_ASSERT (G_C_STD_CHECK_VERSION (11));
+  G_STATIC_ASSERT (G_C_STD_CHECK_VERSION (201112L));
+#endif
+
+#if G_C_STD_VERSION == 201112L
+  G_STATIC_ASSERT (!G_C_STD_CHECK_VERSION (17));
+  G_STATIC_ASSERT (!G_C_STD_CHECK_VERSION (201710L));
+#endif
+
+#if G_C_STD_VERSION >= 201710L
+  G_STATIC_ASSERT (G_C_STD_CHECK_VERSION (17));
+  G_STATIC_ASSERT (G_C_STD_CHECK_VERSION (201710L));
+#endif
+
+#if G_C_STD_VERSION == 201710L
+  G_STATIC_ASSERT (!G_C_STD_CHECK_VERSION (23));
+  G_STATIC_ASSERT (!G_C_STD_CHECK_VERSION (202300L));
+#endif
+
+#ifdef _G_EXPECTED_C_STANDARD
+static void
+test_c_standard (void)
+{
+  guint64 std_version = 0;
+
+  if (!g_ascii_string_to_unsigned (_G_EXPECTED_C_STANDARD, 10, 0, G_MAXUINT64,
+                                   &std_version, NULL))
+    {
+      g_test_skip ("Expected standard value is non-numeric: "
+                   _G_EXPECTED_C_STANDARD);
+      return;
+    }
+
+  g_assert_true (G_C_STD_CHECK_VERSION (std_version));
+
+  if (std_version > 80 && std_version < 99)
+    std_version = 90;
+
+  if (std_version >= 90)
+    g_assert_cmpuint (G_C_STD_VERSION, >=, (std_version + 1900) * 100);
+  else
+    g_assert_cmpuint (G_C_STD_VERSION, >=, (std_version + 2000) * 100);
+}
+#endif
 
 /* Test that G_STATIC_ASSERT_EXPR can be used as an expression */
 static void
@@ -70,6 +145,10 @@ main (int   argc,
       char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
+
+#ifdef _G_EXPECTED_C_STANDARD
+  g_test_add_func ("/C/standard-" _G_EXPECTED_C_STANDARD, test_c_standard);
+#endif
 
   g_test_add_func ("/alignof/fallback", test_alignof_fallback);
   g_test_add_func ("/assert/static", test_assert_static);

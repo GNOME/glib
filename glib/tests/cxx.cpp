@@ -23,7 +23,12 @@
 #error G_CXX_STD_VERSION is not defined
 #endif
 
+#ifdef G_C_STD_VERSION
+#error G_C_STD_VERSION should be undefined in C programs
+#endif
+
 G_STATIC_ASSERT (G_CXX_STD_VERSION);
+G_STATIC_ASSERT (!G_C_STD_CHECK_VERSION (99));
 
 #if G_CXX_STD_VERSION >= 199711L
   G_STATIC_ASSERT (G_CXX_STD_CHECK_VERSION (98));
