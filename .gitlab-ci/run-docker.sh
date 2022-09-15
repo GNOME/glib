@@ -23,6 +23,8 @@ if docker -v |& grep -q podman; then
         # is incompatible with some of the dockerd instances on GitLab
         # CI runners.
         export BUILDAH_FORMAT=docker
+elif getent group docker | grep -q "\b${USER}\b"; then
+        SUDO_CMD=""
 fi
 
 set -e

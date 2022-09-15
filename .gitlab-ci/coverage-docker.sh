@@ -10,6 +10,14 @@ for path in _coverage/*.lcov; do
     lcov --config-file .lcovrc -r "${path}" '*/_build/*' -o "$(pwd)/${path}"
     # Remove any coverage from system files
     lcov --config-file .lcovrc -e "${path}" "$(pwd)/*" -o "$(pwd)/${path}"
+
+    # Convert to cobertura format for gitlab integration
+    cobertura_base="${path/.lcov}-cobertura"
+    cobertura_xml="${cobertura_base}.xml"
+    lcov_cobertura "${path}" --output "${cobertura_xml}"
+    mkdir -p "${cobertura_base}"
+    cobertura-split-by-package.py "${cobertura_xml}" "${cobertura_base}"
+    rm -f "${cobertura_xml}"
 done
 
 genhtml \
