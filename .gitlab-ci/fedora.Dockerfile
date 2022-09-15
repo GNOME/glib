@@ -76,6 +76,9 @@ RUN dnf -y update \
 
 RUN pip3 install meson==0.60.3
 
+COPY install-gitlab-cobertura-tools.sh .
+RUN ./install-gitlab-cobertura-tools.sh
+
 # Set /etc/machine-id as it’s needed for some D-Bus tests
 RUN systemd-machine-id-setup
 
