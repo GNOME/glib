@@ -1194,7 +1194,8 @@ handle_overwrite_open (const char    *filename,
   if (replace_destination_set)
     {
       g_close (fd, NULL);
-      
+      fd = -1;
+
       if (g_unlink (filename) != 0)
 	{
           errsv = errno;
