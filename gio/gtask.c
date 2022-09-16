@@ -1136,7 +1136,7 @@ g_task_get_context (GTask *task)
  *
  * Gets @task's #GCancellable
  *
- * Returns: (transfer none): @task's #GCancellable
+ * Returns: (nullable) (transfer none): @task's #GCancellable
  *
  * Since: 2.36
  */
