@@ -1,3 +1,73 @@
+Overview of changes in GLib 2.74.0, 17-09-2022
+==============================================
+
+* Use EPOLL_CLOEXEC by default (Colin Walters)
+
+* Fixed various regression on GRegex as per the PCRE2 porting (Marco Trevisan)
+
+* Fixed various memory leaks (Sebastian Keller, Marco Trevisan)
+
+* Bugs fixed:
+ - GNOME/gtksourceview#278 Failed to load html.lang after GLib switched to PCRE2
+   (Marco Trevisan (Treviño))
+ - GNOME/gtksourceview#283 GRegex-on-PCRE2 regressions (Marco Trevisan)
+ - #2688 Follow-up from "replace pcre1 with pcre2" (Marco Trevisan (Treviño))
+ - #2713 static_assert is undefined in C99 (wen Rafferty)
+ - #2719 GParamSpec constructors should have nullable annotation on nick/blurb
+   (Andy Holmes)
+ - #2729 GRegex/GMatchInfo related crashes after upgrade to 2.73.2 (Marco
+   Trevisan)
+ - #2733 gio: GVariantBuilder builder leaked in g_document_portal_add_documents
+   when URI list is empty (Sebastian Keller)
+ - #2737 gio mount coredumps on prompt exit since 2.73 (Marco Trevisan)
+ - #2741 Memory errors on GRegex (Marco Trevisan (Treviño))
+ - GNOME/gtk#4400 gtk_show_uri can't open browser on MSYS2 on Windows (Luca
+   Bacci)
+ - !2820 ci: Expose the coverage report and docs as links in the MR's (Marco)
+ - !2855 gtlscertificate: Update reference to G_TLS_CERTIFICATE_NO_FLAGS
+ - !2861 mem: Document OOM behavior for allocations (Matthias Clasen)
+ - !2868 gio-unix: Use EPOLL_CLOEXEC by default (Colin Walters)
+ - !2873 Fix array-bounds compiler warnings with GCC 12 (Emmanuele Bassi)
+ - !2874 tests, GDesktopAppInfo: Fix various GVariant leaks (Marco Trevisan)
+ - !2875 g_strsplit: Use a pre-allocated GArray when max_tokens is provided
+   (Marco Trevisan)
+ - !2876 GActionGroup: Fix ownership transfer annotation for query_action()
+   (Andy Holmes)
+ - !2879 gioenumtypes: Only define GLIB_DISABLE_DEPRECATION_WARNINGS if needed
+   (Marco Trevisan)
+ - !2881 GWin32AppInfo: Add missing g_spawn_close_pid (Luca Bacci)
+ - !2882 meson: Set install_tag on all tools (Xavier Claessens)
+ - !2883 ci: Improve style check script (Matthias Clasen)
+ - !2900 docs: Improve wording in documentation of g_unix_signal_source_new()
+   (Tom Levy)
+
+* Translation updates:
+ - Abkhazian (Nart Tlisha)
+ - Basque (Asier Sarasua Garmendia)
+ - Bulgarian (Alexander Shopov)
+ - Catalan (Jordi Mas)
+ - Chinese (China) (Luming Zh, Boyuan Yang)
+ - Croatian (Goran Vidović)
+ - Czech (Marek Černocký)
+ - Danish (Alan Mortensen)
+ - Finnish (Jiri Grönroos)
+ - French (Claude Paroz)
+ - Galician (Fran Dieguez)
+ - Hungarian (Balázs Úr)
+ - Indonesian (Kukuh Syafaat)
+ - Korean (Changwoo Ryu)
+ - Lithuanian (Aurimas Černius)
+ - Persian (Danial Behzadi)
+ - Polish (Piotr Drąg)
+ - Portuguese (Hugo Carvalho)
+ - Portuguese (Brazil) (Leônidas Araújo)
+ - Russian (Aleksandr Melman)
+ - Slovenian (Matej Urbančič)
+ - Spanish (Daniel Mustieles)
+ - Swedish (Luna Jernberg)
+ - Turkish (Emin Tufan Çetin)
+ - Ukrainian (Yuri Chornoivan)
+
 Overview of changes in GLib 2.73.3, 05-08-2022
 ==============================================
 
