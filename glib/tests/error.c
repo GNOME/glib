@@ -123,12 +123,12 @@ static void
 test_new_valist_invalid_va (gpointer dummy,
                          ...)
 {
-#ifdef __linux__
-  /* Only worth testing this on Linux; if other platforms regress on this legacy
-   * behaviour, we don’t care. In particular, calling g_error_new_valist() with
-   * a %NULL format will crash on FreeBSD as its implementation of vasprintf()
-   * is less forgiving than Linux’s. That’s fine: it’s a programmer error in
-   * either case. */
+#if defined(__linux__) && defined(__GLIBC__)
+  /* Only worth testing this on Linux with glibc; if other platforms regress on
+   * this legacy behaviour, we don’t care. In particular, calling
+   * g_error_new_valist() with a %NULL format will crash on FreeBSD as its
+   * implementation of vasprintf() is less forgiving than Linux’s. That’s
+   * fine: it’s a programmer error in either case. */
   const struct
     {
       GQuark domain;
@@ -182,9 +182,9 @@ test_new_valist_invalid_va (gpointer dummy,
 
       va_end (ap);
     }
-#else  /* if !__linux__ */
-  g_test_skip ("g_error_new_valist() programmer error handling is only relevant on Linux");
-#endif  /* !__linux__ */
+#else  /* if !__linux__ || !__GLIBC__ */
+  g_test_skip ("g_error_new_valist() programmer error handling is only relevant on Linux with glibc");
+#endif /* !__linux__ || ! __GLIBC__ */
 }
 
 static void
