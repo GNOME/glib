@@ -32,6 +32,7 @@ gdbus_codegen_built_files = []
 gdbus_codegen_built_files += configure_file(input : 'config.py.in',
                                             output : 'config.py',
                                             install_dir : codegen_dir,
+                                            install_tag : 'bin-devel',
                                             configuration : gdbus_codegen_conf)
 
 foreach f : gdbus_codegen_files
@@ -39,5 +40,6 @@ foreach f : gdbus_codegen_files
   # and then install it too so that it can be used after installation
   gdbus_codegen_built_files += configure_file(input : f, output : f,
                                               install_dir : codegen_dir,
+                                              install_tag : 'bin-devel',
                                               copy : true)
 endforeach

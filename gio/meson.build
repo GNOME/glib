@@ -800,13 +800,15 @@ if have_bash
   endif
 
   install_data([
-    'completion/gapplication',
-    'completion/gdbus',
-    'completion/gio',
-    'completion/gsettings',
-    'completion/gresource'
-  ],
-  install_dir: bash_comp_inst_dir)
+      'completion/gapplication',
+      'completion/gdbus',
+      'completion/gio',
+      'completion/gsettings',
+      'completion/gresource'
+    ],
+    install_dir: bash_comp_inst_dir,
+    install_tag: 'bin',
+  )
 endif
 
 if enable_dtrace
@@ -1017,10 +1019,14 @@ executable('gsettings', 'gsettings-tool.c',
   link_args : noseh_link_args,
   dependencies : [libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
 install_data('gschema.dtd',
-  install_dir : join_paths(get_option('datadir'), schemas_subdir))
+  install_dir : get_option('datadir') / schemas_subdir,
+  install_tag : 'devel',
+)
 
 install_data(['gschema.loc', 'gschema.its'],
-  install_dir : join_paths(get_option('datadir'), 'gettext/its'))
+  install_dir : get_option('datadir') / 'gettext' / 'its',
+  install_tag : 'devel',
+)
 
 executable('gdbus', 'gdbus-tool.c',
   install : true,

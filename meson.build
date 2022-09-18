@@ -2391,7 +2391,9 @@ endif
 
 # Install m4 macros that other projects use
 install_data('m4macros/glib-2.0.m4', 'm4macros/glib-gettext.m4', 'm4macros/gsettings.m4',
-  install_dir : join_paths(get_option('datadir'), 'aclocal'))
+  install_dir : get_option('datadir') / 'aclocal',
+  install_tag : 'devel',
+)
 
 configure_file(output : 'config.h', configuration : glib_conf)
 
