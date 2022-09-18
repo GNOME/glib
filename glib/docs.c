@@ -2049,7 +2049,7 @@
  *   G_GNUC_END_IGNORE_DEPRECATIONS
  * ]|
  *
- * |[<!-- language="C" --
+ * |[<!-- language="C" -->
  * static void
  * test_deprecated_function (void)
  * {
@@ -2083,7 +2083,7 @@
  * meant to be portable across different compilers and must be placed
  * before the function declaration.
  *
- * |[<!-- language="C" --
+ * |[<!-- language="C" -->
  * G_DEPRECATED
  * int my_mistake (void);
  * ]|
@@ -2100,7 +2100,7 @@
  * is meant to be portable across different compilers and must be placed
  * before the function declaration.
  *
- * |[<!-- language="C" --
+ * |[<!-- language="C" -->
  * G_DEPRECATED_FOR(my_replacement)
  * int my_mistake (void);
  * ]|
