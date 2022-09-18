@@ -1,6 +1,7 @@
 # Turkish translation of Glib.
 # Copyright (C) 2001-2003, 2005, 2007, 2008 Free Software Foundation, Inc.
-#
+# Copyright (C) 2009-2022 glib's COPYRIGHT HOLDER
+# This file is distributed under the same license as the glib package.
 #
 # KEMAL YILMAZ <kyilmaz@uekae.tubitak.gov.tr>, 2001.
 # Arman Aksoy <armish@linux-sevenler.de>, 2003.
@@ -16,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-08-31 23:44+0000\n"
+"POT-Creation-Date: 2022-09-12 05:47+0000\n"
 "PO-Revision-Date: 2022-09-01 21:35+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Türkçe <gnome-turk@gnome.org>\n"
@@ -1299,7 +1300,7 @@ msgstr "Hata: %s geçerli bilinen bir veri yolu adı değil.\n"
 msgid "Not authorized to change debug settings"
 msgstr "Hata ayıklama ayarlarını değiştirmeye yetkili değil"
 
-#: gio/gdesktopappinfo.c:2182 gio/gdesktopappinfo.c:5112
+#: gio/gdesktopappinfo.c:2182 gio/gdesktopappinfo.c:5119
 msgid "Unnamed"
 msgstr "Adlandırılmamış"
 
@@ -1311,26 +1312,26 @@ msgstr "Desktop dosyası Exec alanı belirtmemiş"
 msgid "Unable to find terminal required for application"
 msgstr "Uygulama için gerekli uçbirim bulunamadı"
 
-#: gio/gdesktopappinfo.c:3630
+#: gio/gdesktopappinfo.c:3637
 #, c-format
 msgid "Can’t create user application configuration folder %s: %s"
 msgstr "Kullanıcı uygulaması yapılandırma klasörü %s oluşturulamıyor: %s"
 
-#: gio/gdesktopappinfo.c:3634
+#: gio/gdesktopappinfo.c:3641
 #, c-format
 msgid "Can’t create user MIME configuration folder %s: %s"
 msgstr "Kullanıcı MIME yapılandırma klasörü %s oluşturulamıyor: %s"
 
-#: gio/gdesktopappinfo.c:3876 gio/gdesktopappinfo.c:3900
+#: gio/gdesktopappinfo.c:3883 gio/gdesktopappinfo.c:3907
 msgid "Application information lacks an identifier"
 msgstr "Uygulama bilgisinde tanımlayıcı eksik"
 
-#: gio/gdesktopappinfo.c:4136
+#: gio/gdesktopappinfo.c:4143
 #, c-format
 msgid "Can’t create user desktop file %s"
 msgstr "Kullanıcı masaüstü dosyası %s oluşturulamıyor"
 
-#: gio/gdesktopappinfo.c:4272
+#: gio/gdesktopappinfo.c:4279
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s için özel tanım"
@@ -1731,7 +1732,7 @@ msgstr "stdout’a yazılırken hata"
 #: gio/gio-tool-cat.c:135 gio/gio-tool-info.c:379 gio/gio-tool-list.c:173
 #: gio/gio-tool-mkdir.c:50 gio/gio-tool-monitor.c:39 gio/gio-tool-monitor.c:41
 #: gio/gio-tool-monitor.c:43 gio/gio-tool-monitor.c:45
-#: gio/gio-tool-monitor.c:206 gio/gio-tool-mount.c:1202 gio/gio-tool-open.c:72
+#: gio/gio-tool-monitor.c:206 gio/gio-tool-mount.c:1210 gio/gio-tool-open.c:72
 #: gio/gio-tool-remove.c:50 gio/gio-tool-rename.c:47 gio/gio-tool-set.c:95
 #: gio/gio-tool-trash.c:222 gio/gio-tool-tree.c:241
 msgid "LOCATION"
@@ -1752,7 +1753,7 @@ msgstr ""
 "gibi bir şeyi konum olarak kullanabilirsiniz."
 
 #: gio/gio-tool-cat.c:164 gio/gio-tool-info.c:410 gio/gio-tool-mkdir.c:78
-#: gio/gio-tool-monitor.c:231 gio/gio-tool-mount.c:1253 gio/gio-tool-open.c:98
+#: gio/gio-tool-monitor.c:231 gio/gio-tool-mount.c:1261 gio/gio-tool-open.c:98
 #: gio/gio-tool-remove.c:74 gio/gio-tool-trash.c:303
 msgid "No locations given"
 msgstr "Konum verilmedi"
@@ -2167,19 +2168,19 @@ msgstr "TCRYPT gizli bölümü bağla"
 msgid "Mount a TCRYPT system volume"
 msgstr "TCRYPT sistem bölümü bağla"
 
-#: gio/gio-tool-mount.c:268 gio/gio-tool-mount.c:300
+#: gio/gio-tool-mount.c:276 gio/gio-tool-mount.c:308
 msgid "Anonymous access denied"
 msgstr "Anonim erişim engellendi"
 
-#: gio/gio-tool-mount.c:525
+#: gio/gio-tool-mount.c:533
 msgid "No drive for device file"
 msgstr "Aygıt dosyası için sürücü yok"
 
-#: gio/gio-tool-mount.c:1017
+#: gio/gio-tool-mount.c:1025
 msgid "No volume for given ID"
 msgstr "Bu kimlik için bölüm yok"
 
-#: gio/gio-tool-mount.c:1206
+#: gio/gio-tool-mount.c:1214
 msgid "Mount or unmount the locations."
 msgstr "Konumları bağla veya ayır."
 
@@ -5942,21 +5943,21 @@ msgstr ""
 "Alt süreçten bilgi okurken g_io_channel_win32_poll() işleminde beklenmeyen "
 "hata"
 
-#: glib/gstrfuncs.c:3366 glib/gstrfuncs.c:3468
+#: glib/gstrfuncs.c:3372 glib/gstrfuncs.c:3474
 msgid "Empty string is not a number"
 msgstr "Boş dizge bir sayı değildir"
 
-#: glib/gstrfuncs.c:3390
+#: glib/gstrfuncs.c:3396
 #, c-format
 msgid "“%s” is not a signed number"
 msgstr "“%s” işaretli bir sayı değil"
 
-#: glib/gstrfuncs.c:3400 glib/gstrfuncs.c:3504
+#: glib/gstrfuncs.c:3406 glib/gstrfuncs.c:3510
 #, c-format
 msgid "Number “%s” is out of bounds [%s, %s]"
 msgstr "“%s” sayısı sınırların dışındadır [%s, %s]"
 
-#: glib/gstrfuncs.c:3494
+#: glib/gstrfuncs.c:3500
 #, c-format
 msgid "“%s” is not an unsigned number"
 msgstr "“%s” işaretsiz bir sayı değil"
@@ -6251,387 +6252,3 @@ msgstr "%.1f PB"
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
-
-#, c-format
-#~ msgid "edit name: %s\n"
-#~ msgstr "düzenleme adı: %s\n"
-
-#~ msgid "internal error or corrupted object"
-#~ msgstr "iç hata ya da bozuk nesne"
-
-#~ msgid "invalid combination of newline flags"
-#~ msgstr "yeni satır imlerinin geçersiz birleştirmesi"
-
-#~ msgid "short utf8"
-#~ msgstr "kısa utf8"
-
-#~ msgid "unexpected repeat"
-#~ msgstr "beklenmeyen yineleme"
-
-#~ msgid "failed to get memory"
-#~ msgstr "bellek alma başarısız oldu"
-
-#~ msgid ") without opening ("
-#~ msgstr "( olmadan )"
-
-#~ msgid "unrecognized character after (?<"
-#~ msgstr "(?< sonrası tanımlanmayan karakter"
-
-#~ msgid "(?R or (?[+-]digits must be followed by )"
-#~ msgstr "(?R ya da (?[+-]basamakları ) ile takip etmelidir"
-
-#~ msgid "invalid condition (?(0)"
-#~ msgstr "geçersiz koşul (?(0)"
-
-#~ msgid "escapes \\L, \\l, \\N{name}, \\U, and \\u are not supported"
-#~ msgstr "kaçış karakterleri \\L, \\l, \\N{ad}, \\U ve \\u desteklenmiyor"
-
-#~ msgid "recursive call could loop indefinitely"
-#~ msgstr "yinelemeli çağrı sonsuz döngü yapamadı"
-
-#~ msgid "digit expected after (?+"
-#~ msgstr "(?+ den sonra sayı beklendi"
-
-#~ msgid "] is an invalid data character in JavaScript compatibility mode"
-#~ msgstr "] JavaScript uyumluluk kipinde geçersiz bir veri karakteri"
-
-#~ msgid "too many forward references"
-#~ msgstr "çok fazla yönlendirme kaynağı"
-
-#~ msgid "character value in \\u.... sequence is too large"
-#~ msgstr "\\u.... dizisindeki karakter değeri çok büyük"
-
-#~ msgid "PCRE library is compiled without UTF8 properties support"
-#~ msgstr "PCRE kütüphanesi UTF8 özellikleri desteği olmadan derlenmiş"
-
-#, c-format
-#~ msgid "Error while optimizing regular expression %s: %s"
-#~ msgstr "Düzenli ifade %s eniyilemesinde (optimization) hata: %s"
-
-#, c-format
-#~ msgid "%.1f MB"
-#~ msgstr "%.1f MB"
-
-#, c-format
-#~ msgid "%.1f GB"
-#~ msgstr "%.1f GB"
-
-#, c-format
-#~ msgid "%.1f TB"
-#~ msgstr "%.1f TB"
-
-#, c-format
-#~ msgid "%.1f PB"
-#~ msgstr "%.1f PB"
-
-#, c-format
-#~ msgid "%.1f EB"
-#~ msgstr "%.1f EB"
-
-#, c-format
-#~ msgid "%.1f KiB"
-#~ msgstr "%.1f KiB"
-
-#, c-format
-#~ msgid "%.1f MiB"
-#~ msgstr "%.1f MiB"
-
-#, c-format
-#~ msgid "%.1f GiB"
-#~ msgstr "%.1f GiB"
-
-#, c-format
-#~ msgid "%.1f TiB"
-#~ msgstr "%.1f TiB"
-
-#, c-format
-#~ msgid "%.1f PiB"
-#~ msgstr "%.1f PiB"
-
-#, c-format
-#~ msgid "%.1f EiB"
-#~ msgstr "%.1f EiB"
-
-#, c-format
-#~ msgid "%.1f kb"
-#~ msgstr "%.1f kb"
-
-#, c-format
-#~ msgid "%.1f Mb"
-#~ msgstr "%.1f Mb"
-
-#, c-format
-#~ msgid "%.1f Gb"
-#~ msgstr "%.1f Gb"
-
-#, c-format
-#~ msgid "%.1f Tb"
-#~ msgstr "%.1f Tb"
-
-#, c-format
-#~ msgid "%.1f Pb"
-#~ msgstr "%.1f Pb"
-
-#, c-format
-#~ msgid "%.1f Eb"
-#~ msgstr "%.1f Eb"
-
-#, c-format
-#~ msgid "%.1f Kib"
-#~ msgstr "%.1f Kib"
-
-#, c-format
-#~ msgid "%.1f Mib"
-#~ msgstr "%.1f Mib"
-
-#, c-format
-#~ msgid "%.1f Gib"
-#~ msgstr "%.1f Gib"
-
-#, c-format
-#~ msgid "%.1f Tib"
-#~ msgstr "%.1f Tib"
-
-#, c-format
-#~ msgid "%.1f Pib"
-#~ msgstr "%.1f Pib"
-
-#, c-format
-#~ msgid "%.1f Eib"
-#~ msgstr "%.1f Eib"
-
-#~ msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
-#~ msgstr ""
-#~ "/var/lib/dbus/makine-kimliği veya /etc/makine-kimliği konumuna "
-#~ "yüklenemiyor: "
-
-#~ msgid "Unknown error on connect"
-#~ msgstr "Bağlanırken bilinmeyen bir hata"
-
-#~ msgid "Error in address “%s” — the family attribute is malformed"
-#~ msgstr "“%s” adresinde hata — grup özniteliği hatalı oluşturulmuş"
-
-#~ msgid "Mounted %s at %s\n"
-#~ msgstr "%s, %s konumunda bağlandı\n"
-
-#~ msgid "; ignoring override for this key.\n"
-#~ msgstr "; bu anahtar için üzerine yazma göz ardı ediliyor.\n"
-
-#~ msgid " and --strict was specified; exiting.\n"
-#~ msgstr " ve --strict belirtilmiş; çıkılıyor.\n"
-
-#~ msgid "Ignoring override for this key.\n"
-#~ msgstr "Bu anahtar için üzerine yazma göz ardı ediliyor.\n"
-
-#~ msgid "doing nothing.\n"
-#~ msgstr "hiçbir şey yapılmıyor.\n"
-
-#~ msgid "No such interface '%s'"
-#~ msgstr "'%s' gibi bir arayüz yok"
-
-#~ msgid "No such method '%s'"
-#~ msgstr "'%s' gibi bir yöntem yok"
-
-#~ msgid ""
-#~ "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment "
-#~ "variable - unknown value '%s'"
-#~ msgstr ""
-#~ "DBUS_STARTER_BUS_TYPE ortam değişkeninden veri yolu adresi saptanamıyor - "
-#~ "bilinmeyen değer '%s'"
-
-#~ msgid "[ARGS...]"
-#~ msgstr "[DEĞİŞKENLER...]"
-
-#~ msgid "Failed to create temp file: %s"
-#~ msgstr "Geçici dosya oluşturulamadı: %s"
-
-#~ msgid ""
-#~ "Message has %d file descriptors but the header field indicates %d file "
-#~ "descriptors"
-#~ msgstr ""
-#~ "İleti %d dosya tanımlayıcılarına sahip fakat başlık alanı %d dosya "
-#~ "tanımlayıcılarını gösterir"
-
-#~ msgid "Error: object path not specified.\n"
-#~ msgstr "Hata: Nesne yolu belirtilmedi.\n"
-
-#~ msgid "Error: signal not specified.\n"
-#~ msgstr "Hata: sinyal belirtilmedi.\n"
-
-#~ msgid "Error: signal must be the fully-qualified name.\n"
-#~ msgstr "Hata: sinyal tam nitelikli ad olmalıdır.\n"
-
-#, fuzzy
-#~| msgid "Error setting extended attribute '%s': %s"
-#~ msgid "Error getting writable attributes: %s\n"
-#~ msgstr "Genişletilmiş öznitelik '%s' atanırken hata: %s"
-
-#, fuzzy
-#~| msgid "Error launching application: %s"
-#~ msgid "Error mounting location: %s\n"
-#~ msgstr "Uygulama başlatılırken hata: %s"
-
-#, fuzzy
-#~| msgid "Error connecting: %s\n"
-#~ msgid "Error unmounting mount: %s\n"
-#~ msgstr "Bağlanırken hata: %s\n"
-
-#, fuzzy
-#~| msgid "Error closing unix: %s"
-#~ msgid "Error finding enclosing mount: %s\n"
-#~ msgstr "Unix kapatılırken hata: %s"
-
-#, fuzzy
-#~| msgid "Error setting owner: %s"
-#~ msgid "Error ejecting mount: %s\n"
-#~ msgstr "Sahip atanırken hata: %s"
-
-#, fuzzy
-#~| msgid "Error connecting: %s\n"
-#~ msgid "Error mounting %s: %s\n"
-#~ msgstr "Bağlanırken hata: %s\n"
-
-#, fuzzy
-#~| msgid "Error setting extended attribute '%s': %s"
-#~ msgid "Error setting attribute: %s\n"
-#~ msgstr "Genişletilmiş öznitelik '%s' atanırken hata: %s"
-
-#~ msgid "Error renaming file: %s"
-#~ msgstr "Dosya yeniden adlandırılırken hata: %s"
-
-#~ msgid "Error opening file: %s"
-#~ msgstr "Dosya açılırken hata: %s"
-
-#~ msgid "Error creating directory: %s"
-#~ msgstr "Dizin oluşturulurken hata: %s"
-
-#~ msgid "Error reading file '%s': %s"
-#~ msgstr "'%s' dosyası okunurken hata: %s"
-
-#~ msgid "association changes not supported on win32"
-#~ msgstr "eşleştirme değişimleri win32 üzerinde desteklenmiyor"
-
-#~ msgid "Association creation not supported on win32"
-#~ msgstr "Eşleştirme oluşturulması win32 üzerinde desteklenmiyor"
-
-#~ msgid "Unable to find default local directory monitor type"
-#~ msgstr "Öntanımlı yerel dizin izleme tipi bulunamadı"
-
-#~ msgid "Key file does not have key '%s'"
-#~ msgstr "Anahtar dosyasında '%s' anahtarı yok"
-
-#~ msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
-#~ msgstr "'%s' dosyası yazma için açılamadı: fdopen() başarısızlığı: %s"
-
-#~ msgid "Failed to write file '%s': fflush() failed: %s"
-#~ msgstr "Dosya '%s' yazılamadı: fflush() başarısız: %s"
-
-#~ msgid "Failed to close file '%s': fclose() failed: %s"
-#~ msgstr "'%s' dosyası kapatılamadı: fclose() başarısızlığı: %s"
-
-#~ msgid "workspace limit for empty substrings reached"
-#~ msgstr "boş alt dizgiler için çalışma alanı sınırına ulaşıldı"
-
-#~ msgid "case-changing escapes (\\l, \\L, \\u, \\U) are not allowed here"
-#~ msgstr ""
-#~ "büyük küçük harf değiştiren kaçış karakterleri (\\l, \\L, \\u, \\U) "
-#~ "burada kullanılamaz"
-
-#~ msgid "repeating a DEFINE group is not allowed"
-#~ msgstr "bir DEFINE grubunu tekrarlamaya izin verilmiyor"
-
-#~ msgid "File is empty"
-#~ msgstr "Dosya boş"
-
-#~ msgid ""
-#~ "Key file contains key '%s' which has value that cannot be interpreted."
-#~ msgstr "Anahtar dosyası değeri yorumlanamayan '%s' değerini içeriyor."
-
-#, fuzzy
-#~ msgid "Abnormal program termination spawning command line '%s': %s"
-#~ msgstr ""
-#~ "'%s' komut satırın meydana getirirken program olağan dışı sonlandı: %s"
-
-#, fuzzy
-#~ msgid "Command line '%s' exited with non-zero exit status %d: %s"
-#~ msgstr "Komut satırı '%s', sıfır olmayan bir durum ile kapandı %d: %s"
-
-#, fuzzy
-#~ msgid "Error statting directory '%s': %s"
-#~ msgstr "'%s' dizininin bilgilerini almada (stat) hata: %s"
-
-#~ msgid "This option will be removed soon."
-#~ msgstr "Bu şeçenek yakında kaldırılacak."
-
-#~ msgid "Error stating file '%s': %s"
-#~ msgstr "'%s' dosyası durumlandırılırken hata: %s"
-
-#~ msgid "No service record for '%s'"
-#~ msgstr "'%s' için servis kaydı yok"
-
-#~ msgid "Error connecting: "
-#~ msgstr "Bağlarken hata:"
-
-#~ msgid "Error connecting: %s"
-#~ msgstr "Bağlarken hata: %s"
-
-#, fuzzy
-#~ msgid "SOCKSv4 implementation limits username to %i characters"
-#~ msgstr "SOCKSv4 gerçeklemesi, kullanıcı adını %i karakterle sınırlandırıyor"
-
-#, fuzzy
-#~ msgid "SOCKSv4a implementation limits hostname to %i characters"
-#~ msgstr "SOCKSv4 gerçeklemesi, makine adını %i karakterle sınırlandırıyor"
-
-#, fuzzy
-#~ msgid ""
-#~ "Unexpected option length while checking if SO_PASSCRED is enabled for "
-#~ "socket. Expected %d bytes, got %d"
-#~ msgstr ""
-#~ "SO_PASSCRED'in soket için etkin olup olmadığı kontrol edilirken "
-#~ "beklenmeyen seçenek uzunluğu. %d bayt bekleniyordu, fakat %d bayt bulundu."
-
-#~ msgid "Error reading from unix: %s"
-#~ msgstr "Unix'den okurken hata: %s"
-
-#~ msgid "Error writing to unix: %s"
-#~ msgstr "Unix'e yazılırken hata: %s"
-
-#~ msgctxt "GDateTime"
-#~ msgid "am"
-#~ msgstr "öö"
-
-#~ msgctxt "GDateTime"
-#~ msgid "pm"
-#~ msgstr "ös"
-
-#, fuzzy
-#~ msgid "Type of return value is incorrect, got '%s', expected '%s'"
-#~ msgstr "Dönüş değerinin türü yanlış, '%s' mevcut, fakat '%s' bekleniyordu"
-
-#, fuzzy
-#~ msgid ""
-#~ "Trying to set property %s of type %s but according to the expected "
-#~ "interface the type is %s"
-#~ msgstr ""
-#~ "%2$s türünden %1$s özelliği ayarlanmaya çalışılıyor, fakat beklenen "
-#~ "arayüze göre tür %3$s"
-
-#, fuzzy
-#~| msgid "failed to get memory"
-#~ msgid "Failed to set value\n"
-#~ msgstr "ANAHTAR'ın değerini DEĞER'e ata"
-
-#, fuzzy
-#~ msgid "Do not give error for empty directory"
-#~ msgstr "Dizin dizin üzerine taşınamıyor"
-
-#, fuzzy
-#~ msgid "Invalid UTF-8 sequence in input"
-#~ msgstr "Dönüşüm girdisi içinde geçersiz dizi"
-
-#~ msgid "Reached maximum data array limit"
-#~ msgstr "Azami veri dizisi sınırına ulaşıldı"
-
-#~ msgid "do not hide entries"
-#~ msgstr "girişleri saklama"
