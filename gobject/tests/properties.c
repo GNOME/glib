@@ -582,7 +582,7 @@ properties_testv_with_invalid_property_type (void)
     }
   g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_failed ();
-  g_test_trap_assert_stderr ("*WARNING*foo*gint*gchararray*");
+  g_test_trap_assert_stderr ("*CRITICAL*foo*gint*gchararray*");
 }
 
 

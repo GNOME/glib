@@ -1022,7 +1022,7 @@ g_param_spec_pool_insert (GParamSpecPool *pool,
 	{
 	  if (!strchr (G_CSET_A_2_Z G_CSET_a_2_z G_CSET_DIGITS "-_", *p))
 	    {
-	      g_warning (G_STRLOC ": pspec name \"%s\" contains invalid characters", pspec->name);
+	      g_critical (G_STRLOC ": pspec name \"%s\" contains invalid characters", pspec->name);
 	      return;
 	    }
 	}
@@ -1058,7 +1058,7 @@ g_param_spec_pool_remove (GParamSpecPool *pool,
       if (g_hash_table_remove (pool->hash_table, pspec))
 	g_param_spec_unref (pspec);
       else
-	g_warning (G_STRLOC ": attempt to remove unknown pspec '%s' from pool", pspec->name);
+	g_critical (G_STRLOC ": attempt to remove unknown pspec '%s' from pool", pspec->name);
       g_mutex_unlock (&pool->mutex);
     }
   else

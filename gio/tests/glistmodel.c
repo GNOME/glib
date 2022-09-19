@@ -73,7 +73,7 @@ test_store_non_gobjects (void)
 
   g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_failed ();
-  g_test_trap_assert_stderr ("*WARNING*value * of type 'GType' is invalid or "
+  g_test_trap_assert_stderr ("*CRITICAL*value * of type 'GType' is invalid or "
                              "out of range for property 'item-type'*");
 }
 
