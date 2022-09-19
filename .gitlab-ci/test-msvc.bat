@@ -14,6 +14,7 @@ set args=%args:~1%
 :: FIXME: make warnings fatal
 pip3 install --upgrade --user meson==0.60.3  || goto :error
 meson %args% _build || goto :error
+python .gitlab-ci/check-missing-install-tag.py _build || goto :error
 ninja -C _build || goto :error
 
 :: FIXME: dont ignore test errors
