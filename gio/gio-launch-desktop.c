@@ -121,8 +121,8 @@ journal_stream_fd (const char *identifier,
   /* Arbitrary large size for the sending buffer, from systemd */
   int large_buffer_size = 8 * 1024 * 1024;
 
-  G_STATIC_ASSERT (LOG_EMERG == 0 && "Linux ABI defines LOG_EMERG");
-  G_STATIC_ASSERT (LOG_DEBUG == 7 && "Linux ABI defines LOG_DEBUG");
+  G_STATIC_ASSERT (LOG_EMERG == 0 && sizeof "Linux ABI defines LOG_EMERG");
+  G_STATIC_ASSERT (LOG_DEBUG == 7 && sizeof "Linux ABI defines LOG_DEBUG");
 
   fd = socket (AF_UNIX, SOCK_STREAM | SOCK_CLOEXEC, 0);
 
