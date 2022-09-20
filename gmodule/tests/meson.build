@@ -30,12 +30,14 @@ foreach module : ['moduletestplugin_a', 'moduletestplugin_b']
   shared_module(module + '_plugin', 'lib@0@.c'.format(module),
     dependencies : [libglib_dep, libgmodule_dep],
     install_dir : installed_tests_execdir,
+    install_tag : 'tests',
     install : installed_tests_enabled,
     name_suffix : module_suffix
   )
   shared_library(module + '_library', 'lib@0@.c'.format(module),
     dependencies : [libglib_dep, libgmodule_dep],
     install_dir : installed_tests_execdir,
+    install_tag : 'tests',
     install : installed_tests_enabled,
     name_suffix : module_suffix
   )
@@ -63,6 +65,7 @@ foreach test_name, extra_args : gmodule_tests
       input: installed_tests_template_tap,
       output: test_name + '.test',
       install_dir: installed_tests_metadir,
+      install_tag: 'tests',
       configuration: test_conf
     )
   endif
@@ -73,6 +76,7 @@ foreach test_name, extra_args : gmodule_tests
     dependencies : test_deps + extra_args.get('dependencies', []),
     export_dynamic : extra_args.get('export_dynamic', false),
     install_dir: installed_tests_execdir,
+    install_tag: 'tests',
     install: install,
   )
 

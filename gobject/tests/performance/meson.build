@@ -26,6 +26,7 @@ foreach test_name, extra_args : gobject_tests
       input: installed_tests_template,
       output: test_name + '.test',
       install_dir: installed_tests_metadir,
+      install_tag: 'tests',
       configuration: test_conf,
     )
   endif
@@ -34,6 +35,7 @@ foreach test_name, extra_args : gobject_tests
     c_args : test_cargs + extra_args.get('c_args', []),
     dependencies : test_deps + extra_args.get('dependencies', []),
     install_dir: installed_tests_execdir,
+    install_tag: 'tests',
     install: install,
   )
 
