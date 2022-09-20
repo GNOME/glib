@@ -350,8 +350,7 @@ xdg_mime_set_dirs (const char * const *dirs)
 
   for (i = 0; xdg_dirs != NULL && xdg_dirs[i] != NULL; i++)
     free (xdg_dirs[i]);
-  if (xdg_dirs != NULL)
-    free (xdg_dirs[i]);
+  free (xdg_dirs);
   xdg_dirs = NULL;
 
   if (dirs != NULL)

@@ -1169,8 +1169,9 @@ g_ptr_array_new (void)
  * g_assert (chunk_buffer->len == 0);
  * ]|
  *
- * Returns: (transfer full): the element data, which should be
- *     freed using g_free().
+ * Returns: (transfer full) (nullable): the element data, which should be
+ *     freed using g_free(). This may be %NULL if the array doesn’t have any
+ *     elements (i.e. if `*len` is zero).
  *
  * Since: 2.64
  */
@@ -1307,7 +1308,7 @@ g_array_copy (GArray *array)
  * either via g_ptr_array_unref(), when g_ptr_array_free() is called with
  * @free_segment set to %TRUE or when removing elements.
  *
- * Returns: A new #GPtrArray
+ * Returns: (transfer full): A new #GPtrArray
  *
  * Since: 2.22
  */
@@ -1331,7 +1332,7 @@ g_ptr_array_new_with_free_func (GDestroyNotify element_free_func)
  * g_ptr_array_unref(), when g_ptr_array_free() is called with
  * @free_segment set to %TRUE or when removing elements.
  *
- * Returns: A new #GPtrArray
+ * Returns: (transfer full): A new #GPtrArray
  *
  * Since: 2.30
  */

@@ -119,6 +119,12 @@ g_io_error_from_errno (gint err_no)
       break;
 #endif
 
+#ifdef EMLINK
+    case EMLINK:
+      return G_IO_ERROR_TOO_MANY_LINKS;
+      break;
+#endif
+
 #ifdef ELOOP
     case ELOOP:
       return G_IO_ERROR_TOO_MANY_LINKS;
@@ -207,6 +213,12 @@ g_io_error_from_errno (gint err_no)
 
 #ifdef EBUSY
     case EBUSY:
+      return G_IO_ERROR_BUSY;
+      break;
+#endif
+
+#ifdef ETXTBSY
+    case ETXTBSY:
       return G_IO_ERROR_BUSY;
       break;
 #endif

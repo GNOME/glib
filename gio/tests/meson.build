@@ -58,9 +58,6 @@ gio_tests = {
   },
   'converter-stream' : {},
   'credentials' : {},
-  'cxx' : {
-    'source' : ['cxx.cpp'],
-  },
   'data-input-stream' : {},
   'data-output-stream' : {},
   'fileattributematcher' : {},
@@ -86,10 +83,12 @@ gio_tests = {
   'memory-input-stream' : {},
   'memory-monitor' : {},
   'memory-output-stream' : {},
+  'memory-settings-backend' : {},
   'mount-operation' : {},
   'network-address' : {'extra_sources': ['mock-resolver.c']},
   'network-monitor' : {},
   'network-monitor-race' : {},
+  'null-settings-backend' : {},
   'permission' : {},
   'pollable' : {'dependencies' : [libdl_dep]},
   'power-profile-monitor' : {},
@@ -121,6 +120,14 @@ gio_tests = {
   },
   'win32-appinfo' : {},
 }
+
+if have_cxx
+  gio_tests += {
+    'cxx' : {
+      'source' : ['cxx.cpp'],
+    },
+  }
+endif
 
 test_extra_programs = {
   'gdbus-connection-flush-helper' : {},
