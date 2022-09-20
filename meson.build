@@ -1,5 +1,5 @@
 project('glib', 'c',
-  version : '2.72.3',
+  version : '2.72.4',
   # NOTE: We keep this pinned at 0.52 because that's what Debian Stable ships
   meson_version : '>= 0.52.0',
   default_options : [

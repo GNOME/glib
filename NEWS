@@ -1,3 +1,25 @@
+Overview of changes in GLib 2.72.4
+==================================
+
+* Bugs fixed:
+ - #2634 g_cond_wait_until: returning FALSE immediately on mips24 (Philip
+   Withnall)
+ - #2687 Regression: in GLib 2.72.3, in gsocketclient/cancellable (Philip
+   Withnall)
+ - #2719 GParamSpec constructors should have nullable annotation on nick/blurb
+   (Andy Holmes)
+ - #2733 gio: GVariantBuilder builder leaked in g_document_portal_add_documents
+   when URI list is empty (Sebastian Keller)
+ - !2810 Backport !2808 “gsocketclient: Fix passing NULL to
+   g_task_get_cancellable()” to glib-2-72
+
+* Translation updates:
+ - Czech (Marek Černocký)
+ - Georgian (Zurab Kargareteli)
+ - Hungarian (Balázs Úr)
+ - Serbian (Мирослав Николић)
+ - Spanish (Daniel Mustieles)
+
 Overview of changes in GLib 2.72.3
 ==================================
 
