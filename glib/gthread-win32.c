@@ -356,7 +356,7 @@ g_private_get_impl (GPrivate *key)
             }
 
           /* Ditto, due to the unlocked access on the fast path */
-          if (!g_atomic_pointer_compare_and_exchange (&key->p, NULL, impl))
+          if (!g_atomic_pointer_compare_and_exchange (&key->p, NULL, GUINT_TO_POINTER (impl)))
             g_thread_abort (0, "g_private_get_impl(2)");
         }
       LeaveCriticalSection (&g_private_lock);
