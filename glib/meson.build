@@ -1,5 +1,6 @@
 glibconfig_h = configure_file(input : 'glibconfig.h.in', output : 'glibconfig.h',
   install_dir : join_paths(get_option('libdir'), 'glib-2.0/include'),
+  install_tag : 'devel',
   configuration : glibconfig_conf)
 
 subdir('libcharset')
@@ -453,7 +454,10 @@ configure_file(
   install_mode: 'rwxr-xr-x'
 )
 
-install_data('glib_gdb.py', install_dir : join_paths(glib_pkgdatadir, 'gdb'))
+install_data('glib_gdb.py',
+  install_dir : glib_pkgdatadir / 'gdb',
+  install_tag : 'devel',
+)
 
 # This is needed to make gdb find glib_gdb.py
 env = environment()
@@ -480,6 +484,7 @@ configure_file(
   output: 'libglib-2.0.so.@0@-gdb.py'.format(library_version),
   configuration: gdb_conf,
   install_dir: gdb_install_dir,
+  install_tag: 'devel',
   install: gdb_install,
 )
 
@@ -488,6 +493,7 @@ if enable_systemtap
     output : '@0@.stp'.format(libglib.full_path().split('/').get(-1)),
     configuration : stp_cdata,
     install_dir : tapset_install_dir,
+    install_tag : 'systemtap',
   )
 endif
 

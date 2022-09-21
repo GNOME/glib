@@ -158,7 +158,10 @@ executable('gobject-query', 'gobject-query.c',
   install_tag : 'bin-devel',
   dependencies : [libglib_dep, libgobject_dep])
 
-install_data('gobject_gdb.py', install_dir : join_paths(glib_pkgdatadir, 'gdb'))
+install_data('gobject_gdb.py',
+  install_dir : glib_pkgdatadir / 'gdb',
+  install_tag : 'devel',
+)
 gdb_conf = configuration_data()
 gdb_conf.set('datadir', glib_datadir)
 configure_file(
@@ -166,6 +169,7 @@ configure_file(
   output: 'libgobject-2.0.so.@0@-gdb.py'.format(library_version),
   configuration: gdb_conf,
   install_dir: gdb_install_dir,
+  install_tag: 'devel',
   install: gdb_install,
 )
 
@@ -179,6 +183,7 @@ if enable_systemtap
     output : '@0@.stp'.format(libgobject.full_path().split('/').get(-1)),
     configuration : stp_cdata,
     install_dir : tapset_install_dir,
+    install_tag : 'systemtap',
   )
 endif
 

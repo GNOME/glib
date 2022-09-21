@@ -222,6 +222,7 @@ if host_machine.system() != 'windows'
             name_prefix : '',
             dependencies: libdl_dep,
             install_dir : installed_tests_execdir,
+            install_tag : 'tests',
             install: installed_tests_enabled,
           )
         ],
@@ -419,6 +420,7 @@ if host_machine.system() != 'windows'
       c_args : test_c_args,
       dependencies : common_gio_tests_deps,
       install_dir : installed_tests_execdir,
+      install_tag : 'tests',
       install : installed_tests_enabled)
 
   gio_tests += {
@@ -544,6 +546,7 @@ foreach appinfo_test_desktop_file : appinfo_test_desktop_files
       input: appinfo_test_desktop_file + '.in',
       output: appinfo_test_desktop_file,
       install_dir: installed_tests_execdir,
+      install_tag: 'tests',
       configuration: cdata,
     )
   else
@@ -566,11 +569,24 @@ if installed_tests_enabled
     'org.gtk.test.dbusappinfo.flatpak.desktop',
     'test1.overlay',
     install_dir : installed_tests_execdir,
+    install_tag : 'tests',
   )
-  install_subdir('x-content', install_dir : installed_tests_execdir)
-  install_subdir('desktop-files', install_dir : installed_tests_execdir)
-  install_subdir('thumbnails', install_dir : installed_tests_execdir)
-  install_subdir('cert-tests', install_dir : installed_tests_execdir)
+  install_subdir('x-content',
+    install_dir : installed_tests_execdir,
+    install_tag : 'tests',
+  )
+  install_subdir('desktop-files',
+    install_dir : installed_tests_execdir,
+    install_tag : 'tests',
+  )
+  install_subdir('thumbnails',
+    install_dir : installed_tests_execdir,
+    install_tag : 'tests',
+  )
+  install_subdir('cert-tests',
+    install_dir : installed_tests_execdir,
+    install_tag : 'tests',
+  )
 
   cdata = configuration_data()
   cdata.set('installed_tests_dir', installed_tests_execdir)
@@ -579,10 +595,17 @@ if installed_tests_enabled
     input: installed_tests_template,
     output: 'static-link.test',
     install_dir: installed_tests_metadir,
+    install_tag: 'tests',
     configuration: cdata
   )
-  install_subdir('static-link', install_dir : installed_tests_execdir)
-  install_data('static-link.py', install_dir : installed_tests_execdir)
+  install_subdir('static-link',
+    install_dir : installed_tests_execdir,
+    install_tag : 'tests',
+  )
+  install_data('static-link.py',
+    install_dir : installed_tests_execdir,
+    install_tag : 'tests',
+  )
 
   monitor_tests = [
     'memory-monitor-dbus',
@@ -600,6 +623,7 @@ if installed_tests_enabled
       input: installed_tests_template_tap,
       output: monitor_test + '.test',
       install_dir: installed_tests_metadir,
+      install_tag: 'tests',
       configuration: cdata
     )
     cdata = configuration_data()
@@ -608,6 +632,7 @@ if installed_tests_enabled
       input: monitor_test + '.py.in',
       output: monitor_test + '.py',
       install_dir : installed_tests_execdir,
+      install_tag : 'tests',
       configuration: cdata,
     )
   endforeach
@@ -633,6 +658,7 @@ if meson.can_run_host_binaries()
     link_args : export_dynamic_ldflags,
     dependencies : common_gio_tests_deps,
     install_dir : installed_tests_execdir,
+    install_tag : 'tests',
     install : installed_tests_enabled
   )
 
@@ -654,6 +680,7 @@ if meson.can_run_host_binaries()
                '--internal',
                '@INPUT@'],
     install_dir : installed_tests_execdir,
+    install_tag : 'tests',
     install : installed_tests_enabled)
 
   test_resources2_c = custom_target('test_resources2.c',
@@ -766,6 +793,7 @@ if meson.can_run_host_binaries()
                  '--internal',
                  '@INPUT@'],
       install_dir : installed_tests_execdir,
+      install_tag : 'tests',
       install : installed_tests_enabled)
 
     # Create resource data file
@@ -847,6 +875,7 @@ foreach test_name, extra_args : gio_tests
       input: installed_tests_template_tap,
       output: test_name + '.test',
       install_dir: installed_tests_metadir,
+      install_tag: 'tests',
       configuration: test_conf
     )
   endif
@@ -856,6 +885,7 @@ foreach test_name, extra_args : gio_tests
     dependencies : common_gio_tests_deps + extra_args.get('dependencies', []),
     install_rpath : extra_args.get('install_rpath', ''),
     install_dir: installed_tests_execdir,
+    install_tag: 'tests',
     install: install,
   )
 
@@ -885,6 +915,7 @@ foreach program_name, extra_args : test_extra_programs
       c_args : test_c_args,
       dependencies : common_gio_tests_deps + extra_args.get('dependencies', []),
       install_dir : installed_tests_execdir,
+      install_tag : 'tests',
       install : install,
   )
 endforeach
@@ -902,6 +933,7 @@ foreach test_name : python_tests
     install_data(
       files(test_name),
       install_dir: installed_tests_execdir,
+      install_tag: 'tests',
       install_mode: 'rwxr-xr-x',
     )
 
@@ -913,6 +945,7 @@ foreach test_name : python_tests
       input: installed_tests_template_tap,
       output: test_name + '.test',
       install_dir: installed_tests_metadir,
+      install_tag: 'tests',
       configuration: test_conf,
     )
   endif
@@ -923,6 +956,7 @@ if installed_tests_enabled
   install_data(
     files('taptestrunner.py'),
     install_dir: installed_tests_execdir,
+    install_tag: 'tests',
   )
 endif
 
