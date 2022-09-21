@@ -625,18 +625,20 @@ static void
 test_name (void)
 {
   GTask *t1 = NULL;
+  char *orig = g_strdup ("some task");
   gchar *name1 = NULL;
 
   t1 = g_task_new (NULL, NULL, name_callback, &name1);
-  g_task_set_name (t1, "some task");
+  g_task_set_name (t1, orig);
   g_task_return_boolean (t1, TRUE);
   g_object_unref (t1);
 
   g_main_loop_run (loop);
 
-  g_assert_cmpstr (name1, ==, "some task");
+  g_assert_cmpstr (name1, ==, orig);
 
   g_free (name1);
+  g_free (orig);
 }
 
 static void
@@ -664,8 +666,8 @@ static void
 test_static_name (void)
 {
   GTask *t1 = NULL;
-  char *name1 = NULL;
   char *orig = "some task";
+  char *name1 = NULL;
 
   t1 = g_task_new (NULL, NULL, static_name_callback, &name1);
   g_task_set_static_name (t1, orig);
