@@ -483,7 +483,7 @@ translate_match_error (gint errcode)
       break;
     case PCRE2_ERROR_NULL:
       /* NULL argument, this should not happen in GRegex */
-      g_warning ("A NULL argument was passed to PCRE");
+      g_critical ("A NULL argument was passed to PCRE");
       break;
     case PCRE2_ERROR_BADOPTION:
       return "bad options";
