@@ -185,7 +185,7 @@ test_interface_check (void)
 
   check_called = 0;
   g_type_add_interface_check (&check_called, check_func);
-  o = g_object_new (bazo_get_type (), NULL);
+  o = g_object_ref_sink (g_object_new (bazo_get_type (), NULL));
   g_object_unref (o);
   g_assert_cmpint (check_called, ==, 1);
   g_type_remove_interface_check (&check_called, check_func);
