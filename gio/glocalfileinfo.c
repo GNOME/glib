@@ -2678,7 +2678,6 @@ lazy_stat (char        *filename,
   return res;
 }
 
-
 static gboolean
 set_mtime_atime (char                       *filename,
 		 const GFileAttributeValue  *mtime_value,
@@ -2695,35 +2694,24 @@ set_mtime_atime (char                       *filename,
   guint32 val_nsec = 0;
   struct stat statbuf;
   gboolean got_stat = FALSE;
-  struct timeval times[2] = { {0, 0}, {0, 0} };
 #ifdef HAVE_UTIMENSAT
   struct timespec times_n[2] = { {0, 0}, {0, 0} };
-#endif
   /* ATIME */
   if (atime_value)
     {
       if (!get_uint64 (atime_value, &val, error))
 	return FALSE;
-      times[0].tv_sec = val;
-#if defined (HAVE_UTIMENSAT)
       times_n[0].tv_sec = val;
-#endif
     }
   else
     {
       if (lazy_stat (filename, &statbuf, &got_stat) == 0)
 	{
-	  times[0].tv_sec = statbuf.st_atime;
+          times_n[0].tv_sec = statbuf.st_atime;
 #if defined (HAVE_STRUCT_STAT_ST_ATIMENSEC)
-	  times[0].tv_usec = statbuf.st_atimensec / 1000;
-#if defined (HAVE_UTIMENSAT)
           times_n[0].tv_nsec = statbuf.st_atimensec;
-#endif  /* HAVE_UTIMENSAT */
 #elif defined (HAVE_STRUCT_STAT_ST_ATIM_TV_NSEC)
-	  times[0].tv_usec = statbuf.st_atim.tv_nsec / 1000;
-#if defined (HAVE_UTIMENSAT)
           times_n[0].tv_nsec = statbuf.st_atim.tv_nsec;
-#endif  /* HAVE_UTIMENSAT */
 #endif
 	}
     }
@@ -2732,16 +2720,13 @@ set_mtime_atime (char                       *filename,
     {
       if (!get_uint32 (atime_usec_value, &val_usec, error))
 	return FALSE;
-      times[0].tv_usec = val_usec;
     }
 
   if (atime_nsec_value)
     {
       if (!get_uint32 (atime_nsec_value, &val_nsec, error))
         return FALSE;
-#if defined (HAVE_UTIMENSAT)
       times_n[0].tv_nsec = val_nsec;
-#endif
     }
 
   /* MTIME */
@@ -2749,26 +2734,16 @@ set_mtime_atime (char                       *filename,
     {
       if (!get_uint64 (mtime_value, &val, error))
 	return FALSE;
-      times[1].tv_sec = val;
-#if defined (HAVE_UTIMENSAT)
       times_n[1].tv_sec = val;
-#endif
     }
   else
     {
       if (lazy_stat (filename, &statbuf, &got_stat) == 0)
 	{
-	  times[1].tv_sec = statbuf.st_mtime;
 #if defined (HAVE_STRUCT_STAT_ST_MTIMENSEC)
-	  times[1].tv_usec = statbuf.st_mtimensec / 1000;
-#if defined (HAVE_UTIMENSAT)
           times_n[1].tv_nsec = statbuf.st_mtimensec;
-#endif  /* HAVE_UTIMENSAT */
 #elif defined (HAVE_STRUCT_STAT_ST_MTIM_TV_NSEC)
-	  times[1].tv_usec = statbuf.st_mtim.tv_nsec / 1000;
-#if defined (HAVE_UTIMENSAT)
           times_n[1].tv_nsec = statbuf.st_mtim.tv_nsec;
-#endif  /* HAVE_UTIMENSAT */
 #endif
 	}
     }
@@ -2777,31 +2752,91 @@ set_mtime_atime (char                       *filename,
     {
       if (!get_uint32 (mtime_usec_value, &val_usec, error))
 	return FALSE;
-      times[1].tv_usec = val_usec;
     }
   if (mtime_nsec_value)
     {
       if (!get_uint32 (mtime_nsec_value, &val_nsec, error))
         return FALSE;
-#if defined (HAVE_UTIMENSAT)
       times_n[1].tv_nsec = val_nsec;
-#endif
-    }
-  
-  res = utimes (filename, times);
-  if (res == -1)
-    {
-      int errsv = errno;
-
-      g_set_error (error, G_IO_ERROR,
-		   g_io_error_from_errno (errsv),
-		   _("Error setting modification or access time: %s"),
-		   g_strerror (errsv));
-      return FALSE;
     }
 
-#if defined (HAVE_UTIMENSAT)
   res = utimensat (AT_FDCWD, filename, times_n, 0);
+
+#else /* HAVE_UTIMES */
+
+  struct timeval times[2] = { {0, 0}, {0, 0} };
+
+  /* ATIME */
+  if (atime_value)
+    {
+      if (!get_uint64 (atime_value, &val, error))
+        return FALSE;
+
+      times[0].tv_sec = val;
+    }
+  else
+    {
+      if (lazy_stat (filename, &statbuf, &got_stat) == 0)
+        {
+          times[0].tv_sec = statbuf.st_atime;
+#if defined (HAVE_STRUCT_STAT_ST_ATIMENSEC)
+          times[0].tv_usec = statbuf.st_atimensec / 1000;
+#elif defined (HAVE_STRUCT_STAT_ST_ATIM_TV_NSEC)
+          times[0].tv_usec = statbuf.st_atim.tv_nsec / 1000;
+#endif
+        }
+    }
+
+  if (atime_usec_value)
+    {
+      if (!get_uint32 (atime_usec_value, &val_usec, error))
+        return FALSE;
+      times[0].tv_usec = val_usec;
+    }
+
+  if (atime_nsec_value)
+    {
+      if (!get_uint32 (atime_nsec_value, &val_nsec, error))
+        return FALSE;
+    }
+
+  /* MTIME */
+  if (mtime_value)
+    {
+      if (!get_uint64 (mtime_value, &val, error))
+        return FALSE;
+
+      times[1].tv_sec = val;
+    }
+  else
+    {
+      if (lazy_stat (filename, &statbuf, &got_stat) == 0)
+        {
+          times[1].tv_sec = statbuf.st_mtime;
+#if defined (HAVE_STRUCT_STAT_ST_MTIMENSEC)
+          times[1].tv_usec = statbuf.st_mtimensec / 1000;
+#elif defined (HAVE_STRUCT_STAT_ST_MTIM_TV_NSEC)
+          times[1].tv_usec = statbuf.st_mtim.tv_nsec / 1000;
+#endif
+        }
+    }
+
+  if (mtime_usec_value)
+    {
+      if (!get_uint32 (mtime_usec_value, &val_usec, error))
+        return FALSE;
+      times[1].tv_usec = val_usec;
+    }
+
+  if (mtime_nsec_value)
+    {
+      if (!get_uint32 (mtime_nsec_value, &val_nsec, error))
+        return FALSE;
+    }
+
+  res = utimes (filename, times);
+#endif
+
   if (res == -1)
     {
       int errsv = errno;
@@ -2812,7 +2847,6 @@ set_mtime_atime (char                       *filename,
                    g_strerror (errsv));
       return FALSE;
     }
-#endif
   return TRUE;
 }
 #endif
