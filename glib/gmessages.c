@@ -1642,6 +1642,12 @@ done_query:
  * the code which sets them. For example, custom keys from GLib all have a
  * `GLIB_` prefix.
  *
+ * Note that keys that expect UTF-8 strings (specifically `"MESSAGE"` and
+ * `"GLIB_DOMAIN"`) must be passed as NUL-terminated UTF-8 strings until GLib
+ * version 2.76 because the default log handler did not consider the length of
+ * the `GLogField`. Starting with GLib 2.76 this is fixed and
+ * non-NUL-terminated UTF-8 strings can be passed with their correct length.
+ *
  * The @log_domain will be converted into a `GLIB_DOMAIN` field. @log_level will
  * be converted into a
  * [`PRIORITY`](https://www.freedesktop.org/software/systemd/man/systemd.journal-fields.html#PRIORITY=)
@@ -2268,6 +2274,8 @@ g_log_writer_format_fields (GLogLevelFlags   log_level,
   gsize i;
   const gchar *message = NULL;
   const gchar *log_domain = NULL;
+  gssize message_length = -1;
+  gssize log_domain_length = -1;
   gchar level_prefix[STRING_BUFFER_SIZE];
   GString *gstring;
   gint64 now;
@@ -2281,9 +2289,15 @@ g_log_writer_format_fields (GLogLevelFlags   log_level,
       const GLogField *field = &fields[i];
 
       if (g_strcmp0 (field->key, "MESSAGE") == 0)
-        message = field->value;
+        {
+          message = field->value;
+          message_length = field->length;
+        }
       else if (g_strcmp0 (field->key, "GLIB_DOMAIN") == 0)
-        log_domain = field->value;
+        {
+          log_domain = field->value;
+          log_domain_length = field->length;
+        }
     }
 
   /* Format things. */
@@ -2309,7 +2323,7 @@ g_log_writer_format_fields (GLogLevelFlags   log_level,
 
   if (log_domain != NULL)
     {
-      g_string_append (gstring, log_domain);
+      g_string_append_len (gstring, log_domain, log_domain_length);
       g_string_append_c (gstring, '-');
     }
   g_string_append (gstring, level_prefix);
@@ -2339,7 +2353,7 @@ g_log_writer_format_fields (GLogLevelFlags   log_level,
       GString *msg;
       const gchar *charset;
 
-      msg = g_string_new (message);
+      msg = g_string_new_len (message, message_length);
       escape_string (msg);
 
       if (g_get_console_charset (&charset))
