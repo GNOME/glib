@@ -2542,6 +2542,10 @@ main (int argc, char *argv[])
   TEST_NEW_CHECK_FLAGS ("(*BSR_ANYCRLF)a", 0, 0, G_REGEX_BSR_ANYCRLF, 0);
   TEST_NEW_CHECK_FLAGS ("(*BSR_UNICODE)a", 0, 0, 0 /* this is the default in GRegex */, 0);
   TEST_NEW_CHECK_FLAGS ("(*NO_START_OPT)a", 0, 0, 0 /* not exposed in GRegex */, 0);
+  /* Make sure we ignore deprecated G_REGEX_JAVASCRIPT_COMPAT */
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  TEST_NEW_CHECK_FLAGS ("a", G_REGEX_JAVASCRIPT_COMPAT, 0, 0, 0);
+G_GNUC_END_IGNORE_DEPRECATIONS
 
   /* TEST_NEW_FAIL(pattern, compile_opts, expected_error) */
   TEST_NEW_FAIL("(", 0, G_REGEX_ERROR_UNMATCHED_PARENTHESIS);

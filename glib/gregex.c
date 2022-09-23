@@ -1684,7 +1684,10 @@ g_regex_new (const gchar         *pattern,
 
   g_return_val_if_fail (pattern != NULL, NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
-  g_return_val_if_fail ((compile_options & ~G_REGEX_COMPILE_MASK) == 0, NULL);
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  g_return_val_if_fail ((compile_options & ~(G_REGEX_COMPILE_MASK |
+                                             G_REGEX_JAVASCRIPT_COMPAT)) == 0, NULL);
+G_GNUC_END_IGNORE_DEPRECATIONS
   g_return_val_if_fail ((match_options & ~G_REGEX_MATCH_MASK) == 0, NULL);
 
   if (g_once_init_enter (&initialised))
