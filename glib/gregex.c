@@ -89,18 +89,6 @@
  * unescaped "#" outside a character class is encountered. This indicates
  * a comment that lasts until after the next newline.
  *
- * When setting the %G_REGEX_JAVASCRIPT_COMPAT flag, pattern syntax and pattern
- * matching is changed to be compatible with the way that regular expressions
- * work in JavaScript. More precisely, a lonely ']' character in the pattern
- * is a syntax error; the '\x' escape only allows 0 to 2 hexadecimal digits, and
- * you must use the '\u' escape sequence with 4 hex digits to specify a unicode
- * codepoint instead of '\x' or 'x{....}'. If '\x' or '\u' are not followed by
- * the specified number of hex digits, they match 'x' and 'u' literally; also
- * '\U' always matches 'U' instead of being an error in the pattern. Finally,
- * pattern matching is modified so that back references to an unset subpattern
- * group produces a match with the empty string instead of an error. See
- * pcreapi(3) for more information.
- *
  * Creating and manipulating the same #GRegex structure from different
  * threads is not a problem as #GRegex does not modify its internal
  * state between creation and destruction, on the other hand #GMatchInfo
