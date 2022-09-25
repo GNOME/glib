@@ -894,7 +894,7 @@ param_param_is_valid (GParamSpec   *pspec,
 {
   GParamSpec *param = value->data[0].v_pointer;
 
-  return g_value_type_compatible (G_PARAM_SPEC_TYPE (param), G_PARAM_SPEC_VALUE_TYPE (pspec));
+  return !param || g_value_type_compatible (G_PARAM_SPEC_TYPE (param), G_PARAM_SPEC_VALUE_TYPE (pspec));
 }
 
 static gboolean
