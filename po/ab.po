@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-07-21 10:10+0000\n"
+"POT-Creation-Date: 2022-09-24 17:13+0000\n"
 "Last-Translator: Нанба Наала <naala-nanba@rambler.ru>\n"
 "Language-Team: Abkhazian <daniel.abzakh@gmail.com>\n"
 "Language: ab\n"
@@ -18,19 +18,19 @@ msgstr ""
 msgid "Setting application as last used for type not supported yet"
 msgstr ""
 
-#: gio/gappinfo.c:808
+#: gio/gappinfo.c:810
 #, c-format
 msgid "Failed to find default application for content type ‘%s’"
 msgstr ""
 
-#: gio/gappinfo.c:868
+#: gio/gappinfo.c:870
 #, c-format
 msgid "Failed to find default application for URI Scheme ‘%s’"
 msgstr ""
 
 #: gio/gapplication.c:502
 msgid "GApplication options"
-msgstr ""
+msgstr "АхышәарақәаGApplication"
 
 #: gio/gapplication.c:502
 msgid "Show GApplication options"
@@ -126,7 +126,7 @@ msgstr ""
 #: gio/glib-compile-resources.c:828 gio/glib-compile-resources.c:857
 #: gio/gresource-tool.c:503 gio/gresource-tool.c:569
 msgid "FILE"
-msgstr ""
+msgstr "АФАИЛ"
 
 #: gio/gapplication-tool.c:76
 msgid "Optional relative or absolute filenames, or URIs to open"
@@ -268,21 +268,21 @@ msgstr ""
 #: gio/gbufferedinputstream.c:985 gio/ginputstream.c:1241 gio/giostream.c:302
 #: gio/goutputstream.c:2200
 msgid "Stream is already closed"
-msgstr ""
+msgstr "Аишьҭаца шьҭа иаркуп"
 
 #: gio/gbufferedoutputstream.c:614 gio/gdataoutputstream.c:594
 msgid "Truncate not supported on base stream"
 msgstr ""
 
-#: gio/gcancellable.c:321 gio/gdbusconnection.c:1859 gio/gdbusprivate.c:1420
+#: gio/gcancellable.c:319 gio/gdbusconnection.c:1859 gio/gdbusprivate.c:1420
 #: gio/gsimpleasyncresult.c:873 gio/gsimpleasyncresult.c:899
 #, c-format
 msgid "Operation was cancelled"
-msgstr ""
+msgstr "Аоперациа аԥыхоуп"
 
 #: gio/gcharsetconverter.c:262
 msgid "Invalid object, not initialized"
-msgstr ""
+msgstr "Иақәнагам зҭагылазаашьа арбам аобиект"
 
 #: gio/gcharsetconverter.c:283 gio/gcharsetconverter.c:311
 msgid "Incomplete multibyte sequence in input"
@@ -297,13 +297,13 @@ msgstr ""
 #: glib/giochannel.c:1576 glib/giochannel.c:1618 glib/giochannel.c:2473
 #: glib/gutf8.c:892 glib/gutf8.c:1346
 msgid "Invalid byte sequence in conversion input"
-msgstr ""
+msgstr "Иақәнагам абаитқәа реишьҭагылашьа аиҭеиҭакрақәа реишьҭаҵаҟны"
 
 #: gio/gcharsetconverter.c:349 glib/gconvert.c:459 glib/gconvert.c:797
 #: glib/giochannel.c:1583 glib/giochannel.c:2485
 #, c-format
 msgid "Error during conversion: %s"
-msgstr ""
+msgstr "Иҟалеит агха аиҭеиҭакраан: %s"
 
 #: gio/gcharsetconverter.c:447 gio/gsocket.c:1151
 msgid "Cancellable initialization not supported"
@@ -319,7 +319,7 @@ msgstr ""
 msgid "Could not open converter from “%s” to “%s”"
 msgstr ""
 
-#: gio/gcontenttype.c:473
+#: gio/gcontenttype.c:472
 #, c-format
 msgid "%s type"
 msgstr ""
@@ -489,14 +489,14 @@ msgstr ""
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
 
-#: gio/gdbusaddress.c:1375 gio/gdbusconnection.c:7320
+#: gio/gdbusaddress.c:1375 gio/gdbusconnection.c:7321
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
 "— unknown value “%s”"
 msgstr ""
 
-#: gio/gdbusaddress.c:1384 gio/gdbusconnection.c:7329
+#: gio/gdbusaddress.c:1384 gio/gdbusconnection.c:7330
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -515,37 +515,37 @@ msgstr ""
 msgid "Unexpected lack of content trying to (safely) read a line"
 msgstr ""
 
-#: gio/gdbusauth.c:481
+#: gio/gdbusauth.c:482
 #, c-format
 msgid ""
 "Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
 msgstr ""
 
-#: gio/gdbusauth.c:1171
+#: gio/gdbusauth.c:1178
 msgid "User IDs must be the same for peer and server"
 msgstr ""
 
-#: gio/gdbusauth.c:1183
+#: gio/gdbusauth.c:1190
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr ""
 
-#: gio/gdbusauthmechanismsha1.c:302
+#: gio/gdbusauthmechanismsha1.c:303
 #, c-format
 msgid "Error when getting information for directory “%s”: %s"
 msgstr ""
 
-#: gio/gdbusauthmechanismsha1.c:317
+#: gio/gdbusauthmechanismsha1.c:318
 #, c-format
 msgid ""
 "Permissions on directory “%s” are malformed. Expected mode 0700, got 0%o"
 msgstr ""
 
-#: gio/gdbusauthmechanismsha1.c:350 gio/gdbusauthmechanismsha1.c:361
+#: gio/gdbusauthmechanismsha1.c:351 gio/gdbusauthmechanismsha1.c:362
 #, c-format
 msgid "Error creating directory “%s”: %s"
 msgstr ""
 
-#: gio/gdbusauthmechanismsha1.c:363 gio/gfile.c:1095 gio/gfile.c:1333
+#: gio/gdbusauthmechanismsha1.c:364 gio/gfile.c:1095 gio/gfile.c:1333
 #: gio/gfile.c:1471 gio/gfile.c:1709 gio/gfile.c:1764 gio/gfile.c:1822
 #: gio/gfile.c:1906 gio/gfile.c:1963 gio/gfile.c:2027 gio/gfile.c:2082
 #: gio/gfile.c:3787 gio/gfile.c:3927 gio/gfile.c:4339 gio/gfile.c:4809
@@ -555,59 +555,59 @@ msgstr ""
 msgid "Operation not supported"
 msgstr ""
 
-#: gio/gdbusauthmechanismsha1.c:406
+#: gio/gdbusauthmechanismsha1.c:407
 #, c-format
 msgid "Error opening keyring “%s” for reading: "
 msgstr ""
 
-#: gio/gdbusauthmechanismsha1.c:429 gio/gdbusauthmechanismsha1.c:770
+#: gio/gdbusauthmechanismsha1.c:430 gio/gdbusauthmechanismsha1.c:771
 #, c-format
 msgid "Line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr ""
 
-#: gio/gdbusauthmechanismsha1.c:443 gio/gdbusauthmechanismsha1.c:784
+#: gio/gdbusauthmechanismsha1.c:444 gio/gdbusauthmechanismsha1.c:785
 #, c-format
 msgid ""
 "First token of line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr ""
 
-#: gio/gdbusauthmechanismsha1.c:457 gio/gdbusauthmechanismsha1.c:798
+#: gio/gdbusauthmechanismsha1.c:458 gio/gdbusauthmechanismsha1.c:799
 #, c-format
 msgid ""
 "Second token of line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr ""
 
-#: gio/gdbusauthmechanismsha1.c:481
+#: gio/gdbusauthmechanismsha1.c:482
 #, c-format
 msgid "Didn’t find cookie with id %d in the keyring at “%s”"
 msgstr ""
 
-#: gio/gdbusauthmechanismsha1.c:538
+#: gio/gdbusauthmechanismsha1.c:539
 #, c-format
 msgid "Error creating lock file “%s”: %s"
 msgstr ""
 
-#: gio/gdbusauthmechanismsha1.c:611
+#: gio/gdbusauthmechanismsha1.c:612
 #, c-format
 msgid "Error deleting stale lock file “%s”: %s"
 msgstr ""
 
-#: gio/gdbusauthmechanismsha1.c:650
+#: gio/gdbusauthmechanismsha1.c:651
 #, c-format
 msgid "Error closing (unlinked) lock file “%s”: %s"
 msgstr ""
 
-#: gio/gdbusauthmechanismsha1.c:661
+#: gio/gdbusauthmechanismsha1.c:662
 #, c-format
 msgid "Error unlinking lock file “%s”: %s"
 msgstr ""
 
-#: gio/gdbusauthmechanismsha1.c:737
+#: gio/gdbusauthmechanismsha1.c:738
 #, c-format
 msgid "Error opening keyring “%s” for writing: "
 msgstr ""
 
-#: gio/gdbusauthmechanismsha1.c:931
+#: gio/gdbusauthmechanismsha1.c:932
 #, c-format
 msgid "(Additionally, releasing the lock for “%s” also failed: %s) "
 msgstr ""
@@ -625,84 +625,84 @@ msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr ""
 
-#: gio/gdbusconnection.c:4255 gio/gdbusconnection.c:4609
+#: gio/gdbusconnection.c:4256 gio/gdbusconnection.c:4610
 #, c-format
 msgid ""
 "No such interface “org.freedesktop.DBus.Properties” on object at path %s"
 msgstr ""
 
-#: gio/gdbusconnection.c:4400
+#: gio/gdbusconnection.c:4401
 #, c-format
 msgid "No such property “%s”"
 msgstr ""
 
-#: gio/gdbusconnection.c:4412
+#: gio/gdbusconnection.c:4413
 #, c-format
 msgid "Property “%s” is not readable"
 msgstr ""
 
-#: gio/gdbusconnection.c:4423
+#: gio/gdbusconnection.c:4424
 #, c-format
 msgid "Property “%s” is not writable"
 msgstr ""
 
-#: gio/gdbusconnection.c:4443
+#: gio/gdbusconnection.c:4444
 #, c-format
 msgid "Error setting property “%s”: Expected type “%s” but got “%s”"
 msgstr ""
 
-#: gio/gdbusconnection.c:4548 gio/gdbusconnection.c:4763
-#: gio/gdbusconnection.c:6746
+#: gio/gdbusconnection.c:4549 gio/gdbusconnection.c:4764
+#: gio/gdbusconnection.c:6747
 #, c-format
 msgid "No such interface “%s”"
 msgstr ""
 
-#: gio/gdbusconnection.c:4985 gio/gdbusconnection.c:7260
+#: gio/gdbusconnection.c:4986 gio/gdbusconnection.c:7261
 #, c-format
 msgid "No such interface “%s” on object at path %s"
 msgstr ""
 
-#: gio/gdbusconnection.c:5086
+#: gio/gdbusconnection.c:5087
 #, c-format
 msgid "No such method “%s”"
 msgstr ""
 
-#: gio/gdbusconnection.c:5117
+#: gio/gdbusconnection.c:5118
 #, c-format
 msgid "Type of message, “%s”, does not match expected type “%s”"
 msgstr ""
 
-#: gio/gdbusconnection.c:5320
+#: gio/gdbusconnection.c:5321
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr ""
 
-#: gio/gdbusconnection.c:5547
+#: gio/gdbusconnection.c:5548
 #, c-format
 msgid "Unable to retrieve property %s.%s"
 msgstr ""
 
-#: gio/gdbusconnection.c:5603
+#: gio/gdbusconnection.c:5604
 #, c-format
 msgid "Unable to set property %s.%s"
 msgstr ""
 
-#: gio/gdbusconnection.c:5782
+#: gio/gdbusconnection.c:5783
 #, c-format
 msgid "Method “%s” returned type “%s”, but expected “%s”"
 msgstr ""
 
-#: gio/gdbusconnection.c:6858
+#: gio/gdbusconnection.c:6859
 #, c-format
 msgid "Method “%s” on interface “%s” with signature “%s” does not exist"
 msgstr ""
 
-#: gio/gdbusconnection.c:6979
+#: gio/gdbusconnection.c:6980
 #, c-format
 msgid "A subtree is already exported for %s"
-msgstr ""
+msgstr "Аҵлаҵҟа аекспорт азухьоуп %s азы"
 
-#: gio/gdbusconnection.c:7268
+#: gio/gdbusconnection.c:7269
 #, c-format
 msgid "Object does not exist at path “%s”"
 msgstr ""
@@ -994,11 +994,11 @@ msgstr ""
 
 #: gio/gdbus-tool.c:418
 msgid "Connection Endpoint Options:"
-msgstr ""
+msgstr "Аимадара аҵыхәтәантәи аҭыҧ ахышәарақәа:"
 
 #: gio/gdbus-tool.c:419
 msgid "Options specifying the connection endpoint"
-msgstr ""
+msgstr "Ахышәарақәа,  аимадара аҵыхәтәантәи аҭыԥ  еилызкаауа"
 
 #: gio/gdbus-tool.c:442
 #, c-format
@@ -1216,38 +1216,38 @@ msgstr ""
 msgid "Not authorized to change debug settings"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:2180 gio/gdesktopappinfo.c:5114
+#: gio/gdesktopappinfo.c:2182 gio/gdesktopappinfo.c:5119
 msgid "Unnamed"
 msgstr "Хьӡыда"
 
-#: gio/gdesktopappinfo.c:2590
+#: gio/gdesktopappinfo.c:2592
 msgid "Desktop file didn’t specify Exec field"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:2898
+#: gio/gdesktopappinfo.c:2891
 msgid "Unable to find terminal required for application"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:3632
+#: gio/gdesktopappinfo.c:3637
 #, c-format
 msgid "Can’t create user application configuration folder %s: %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:3636
+#: gio/gdesktopappinfo.c:3641
 #, c-format
 msgid "Can’t create user MIME configuration folder %s: %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:3878 gio/gdesktopappinfo.c:3902
+#: gio/gdesktopappinfo.c:3883 gio/gdesktopappinfo.c:3907
 msgid "Application information lacks an identifier"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:4138
+#: gio/gdesktopappinfo.c:4143
 #, c-format
 msgid "Can’t create user desktop file %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:4274
+#: gio/gdesktopappinfo.c:4279
 #, c-format
 msgid "Custom definition for %s"
 msgstr ""
@@ -1282,11 +1282,11 @@ msgstr "Абиблиотека TLS инанагӡаӡом адгалара TLS b
 #: gio/gdummytlsbackend.c:197 gio/gdummytlsbackend.c:323
 #: gio/gdummytlsbackend.c:515
 msgid "TLS support is not available"
-msgstr ""
+msgstr "TLS адкылара  залшом"
 
 #: gio/gdummytlsbackend.c:425
 msgid "DTLS support is not available"
-msgstr ""
+msgstr " DTLS адкылара залшом "
 
 #: gio/gemblem.c:325
 #, c-format
@@ -1393,7 +1393,7 @@ msgstr ""
 
 #: gio/gfileenumerator.c:214
 msgid "Enumerator is closed"
-msgstr ""
+msgstr "Аиқәыԥхьаӡарага аркуп"
 
 #: gio/gfileenumerator.c:221 gio/gfileenumerator.c:280
 #: gio/gfileenumerator.c:379 gio/gfileenumerator.c:478
@@ -1435,7 +1435,7 @@ msgstr ""
 #: gio/ghttpproxy.c:93 gio/gresolver.c:460 gio/gresolver.c:613
 #: glib/gconvert.c:1829
 msgid "Invalid hostname"
-msgstr ""
+msgstr "Акомпиутер ахьӡ иашаӡам"
 
 #: gio/ghttpproxy.c:145
 msgid "Bad HTTP proxy reply"
@@ -1643,11 +1643,11 @@ msgid "Error writing to stdout"
 msgstr ""
 
 #. Translators: commandline placeholder
-#: gio/gio-tool-cat.c:135 gio/gio-tool-info.c:342 gio/gio-tool-list.c:173
+#: gio/gio-tool-cat.c:135 gio/gio-tool-info.c:379 gio/gio-tool-list.c:173
 #: gio/gio-tool-mkdir.c:50 gio/gio-tool-monitor.c:39 gio/gio-tool-monitor.c:41
 #: gio/gio-tool-monitor.c:43 gio/gio-tool-monitor.c:45
-#: gio/gio-tool-monitor.c:206 gio/gio-tool-mount.c:1202 gio/gio-tool-open.c:72
-#: gio/gio-tool-remove.c:50 gio/gio-tool-rename.c:47 gio/gio-tool-set.c:93
+#: gio/gio-tool-monitor.c:206 gio/gio-tool-mount.c:1210 gio/gio-tool-open.c:72
+#: gio/gio-tool-remove.c:50 gio/gio-tool-rename.c:47 gio/gio-tool-set.c:95
 #: gio/gio-tool-trash.c:222 gio/gio-tool-tree.c:241
 msgid "LOCATION"
 msgstr ""
@@ -1663,8 +1663,8 @@ msgid ""
 "like smb://server/resource/file.txt as location."
 msgstr ""
 
-#: gio/gio-tool-cat.c:164 gio/gio-tool-info.c:373 gio/gio-tool-mkdir.c:78
-#: gio/gio-tool-monitor.c:231 gio/gio-tool-mount.c:1253 gio/gio-tool-open.c:98
+#: gio/gio-tool-cat.c:164 gio/gio-tool-info.c:410 gio/gio-tool-mkdir.c:78
+#: gio/gio-tool-monitor.c:231 gio/gio-tool-mount.c:1261 gio/gio-tool-open.c:98
 #: gio/gio-tool-remove.c:74 gio/gio-tool-trash.c:303
 msgid "No locations given"
 msgstr ""
@@ -1749,72 +1749,65 @@ msgstr ""
 msgid "ATTRIBUTES"
 msgstr "АҞАЗШЬАРБАГАҚӘА"
 
-#: gio/gio-tool-info.c:42 gio/gio-tool-list.c:40 gio/gio-tool-set.c:36
+#: gio/gio-tool-info.c:42 gio/gio-tool-list.c:40 gio/gio-tool-set.c:37
 msgid "Don’t follow symbolic links"
 msgstr ""
 
-#: gio/gio-tool-info.c:80
+#: gio/gio-tool-info.c:105
 msgid "attributes:\n"
 msgstr ""
 
-#. Translators: This is a noun and represents and attribute of a file
-#: gio/gio-tool-info.c:136
+#: gio/gio-tool-info.c:165 gio/gio-tool-info.c:174
 #, c-format
 msgid "display name: %s\n"
 msgstr ""
 
-#. Translators: This is a noun and represents and attribute of a file
-#: gio/gio-tool-info.c:141
-#, c-format
-msgid "edit name: %s\n"
-msgstr ""
-
-#: gio/gio-tool-info.c:147
+#: gio/gio-tool-info.c:182
 #, c-format
 msgid "name: %s\n"
 msgstr ""
 
-#: gio/gio-tool-info.c:154
+#: gio/gio-tool-info.c:189
 #, c-format
 msgid "type: %s\n"
 msgstr ""
 
-#: gio/gio-tool-info.c:160
+#: gio/gio-tool-info.c:195
 msgid "size: "
 msgstr ""
 
-#: gio/gio-tool-info.c:165
+#: gio/gio-tool-info.c:200
 msgid "hidden\n"
 msgstr ""
 
-#: gio/gio-tool-info.c:168
+#: gio/gio-tool-info.c:203
 #, c-format
 msgid "uri: %s\n"
 msgstr "uri: %s\n"
 
-#: gio/gio-tool-info.c:174
+#: gio/gio-tool-info.c:210
 #, c-format
 msgid "local path: %s\n"
 msgstr ""
 
-#: gio/gio-tool-info.c:207
+#: gio/gio-tool-info.c:244
 #, c-format
 msgid "unix mount: %s%s %s %s %s\n"
 msgstr ""
 
-#: gio/gio-tool-info.c:288
+#: gio/gio-tool-info.c:325
 msgid "Settable attributes:\n"
 msgstr ""
 
-#: gio/gio-tool-info.c:312
+#: gio/gio-tool-info.c:349
 msgid "Writable attribute namespaces:\n"
 msgstr ""
 
-#: gio/gio-tool-info.c:347
+#: gio/gio-tool-info.c:384
 msgid "Show information about locations."
 msgstr ""
 
-#: gio/gio-tool-info.c:349
+#: gio/gio-tool-info.c:386
 msgid ""
 "gio info is similar to the traditional ls utility, but using GIO\n"
 "locations instead of local files: for example, you can use something\n"
@@ -2035,7 +2028,7 @@ msgstr ""
 #. Translator: List here is a verb as in 'List all mounts'
 #: gio/gio-tool-mount.c:74
 msgid "List"
-msgstr ""
+msgstr "Ахьӡынҵа"
 
 #: gio/gio-tool-mount.c:75
 msgid "Monitor events"
@@ -2061,19 +2054,19 @@ msgstr ""
 msgid "Mount a TCRYPT system volume"
 msgstr ""
 
-#: gio/gio-tool-mount.c:268 gio/gio-tool-mount.c:300
+#: gio/gio-tool-mount.c:276 gio/gio-tool-mount.c:308
 msgid "Anonymous access denied"
 msgstr "Ахьӡыдоу аҭалара мап ацәкуп"
 
-#: gio/gio-tool-mount.c:525
+#: gio/gio-tool-mount.c:533
 msgid "No drive for device file"
 msgstr ""
 
-#: gio/gio-tool-mount.c:1017
+#: gio/gio-tool-mount.c:1025
 msgid "No volume for given ID"
 msgstr ""
 
-#: gio/gio-tool-mount.c:1206
+#: gio/gio-tool-mount.c:1214
 msgid "Mount or unmount the locations."
 msgstr ""
 
@@ -2123,7 +2116,7 @@ msgstr ""
 msgid "Missing argument"
 msgstr ""
 
-#: gio/gio-tool-rename.c:78 gio/gio-tool-save.c:192 gio/gio-tool-set.c:141
+#: gio/gio-tool-rename.c:78 gio/gio-tool-save.c:192 gio/gio-tool-set.c:150
 msgid "Too many arguments"
 msgstr ""
 
@@ -2179,39 +2172,43 @@ msgstr ""
 msgid "No destination given"
 msgstr ""
 
-#: gio/gio-tool-set.c:35
+#: gio/gio-tool-set.c:36
 msgid "Type of the attribute"
 msgstr ""
 
-#: gio/gio-tool-set.c:35
+#: gio/gio-tool-set.c:36
 msgid "TYPE"
 msgstr ""
 
-#: gio/gio-tool-set.c:93
+#: gio/gio-tool-set.c:38
+msgid "Unset given attribute"
+msgstr ""
+
+#: gio/gio-tool-set.c:95
 msgid "ATTRIBUTE"
 msgstr "АҞАЗШЬАРБАГА"
 
-#: gio/gio-tool-set.c:93
+#: gio/gio-tool-set.c:95
 msgid "VALUE"
 msgstr ""
 
-#: gio/gio-tool-set.c:97
+#: gio/gio-tool-set.c:99
 msgid "Set a file attribute of LOCATION."
 msgstr ""
 
-#: gio/gio-tool-set.c:117
+#: gio/gio-tool-set.c:119
 msgid "Location not specified"
 msgstr "Аҭыӡтыԥ еилкааӡам"
 
-#: gio/gio-tool-set.c:124
+#: gio/gio-tool-set.c:126
 msgid "Attribute not specified"
 msgstr "Аҟазшьарбага еилкааӡам"
 
-#: gio/gio-tool-set.c:134
+#: gio/gio-tool-set.c:143
 msgid "Value not specified"
 msgstr ""
 
-#: gio/gio-tool-set.c:184
+#: gio/gio-tool-set.c:193
 #, c-format
 msgid "Invalid attribute type “%s”"
 msgstr ""
@@ -2424,12 +2421,12 @@ msgstr ""
 #: gio/glib-compile-schemas.c:160
 #, c-format
 msgid "<%s> must contain at least one <value>"
-msgstr " <%s> иамазароуп акы еиҳамзаргьы аҵакы <value>"
+msgstr "<%s> иамазароуп акы еиҳамзаргьы аҵакы <value>"
 
 #: gio/glib-compile-schemas.c:316
 #, c-format
 msgid "<%s> is not contained in the specified range"
-msgstr "<%s>  иарбоу аҵакыра аҳәаақәа ирҭыҵуеит "
+msgstr "<%s>  иарбоу аҵакыра аҳәаақәа ирҭыҵуеит"
 
 #: gio/glib-compile-schemas.c:328
 #, c-format
@@ -2439,7 +2436,7 @@ msgstr ""
 #: gio/glib-compile-schemas.c:334
 #, c-format
 msgid "<%s> contains string not in the specified flags type"
-msgstr "<%s> иамоуп аҵәаҳәа абираҟ иарбоу аформат еиԥшымкәа "
+msgstr "<%s> иамоуп аҵәаҳәа абираҟ иарбоу аформат еиԥшымкәа"
 
 #: gio/glib-compile-schemas.c:340
 #, c-format
@@ -2481,7 +2478,7 @@ msgstr ""
 #: gio/glib-compile-schemas.c:493
 msgid ""
 "<choices> cannot be specified for keys tagged as having an enumerated type"
-msgstr "<choices> ацаԥхақәа аиқәыԥхьаӡара ҳәа иарбоу рзы иарбазар ҟалаӡом "
+msgstr "<choices> ацаԥхақәа аиқәыԥхьаӡара ҳәа иарбоу рзы иарбазар ҟалаӡом"
 
 #: gio/glib-compile-schemas.c:502
 msgid "<choices> already specified for this key"
@@ -2720,7 +2717,7 @@ msgstr ""
 #. Translators: Do not translate "--strict".
 #: gio/glib-compile-schemas.c:1835 gio/glib-compile-schemas.c:1914
 msgid "--strict was specified; exiting."
-msgstr ""
+msgstr "Иарбан ахышәара --strict; аусура ахырқәшара."
 
 #: gio/glib-compile-schemas.c:1847
 msgid "This entire file has been ignored."
@@ -2971,132 +2968,132 @@ msgstr ""
 msgid "Could not determine the disk usage of %s: %s"
 msgstr ""
 
-#: gio/glocalfileinfo.c:773
+#: gio/glocalfileinfo.c:775
 msgid "Attribute value must be non-NULL"
 msgstr ""
 
-#: gio/glocalfileinfo.c:780
-msgid "Invalid attribute type (string expected)"
+#: gio/glocalfileinfo.c:782
+msgid "Invalid attribute type (string or invalid expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:787
+#: gio/glocalfileinfo.c:789
 msgid "Invalid extended attribute name"
 msgstr ""
 
-#: gio/glocalfileinfo.c:827
+#: gio/glocalfileinfo.c:840
 #, c-format
 msgid "Error setting extended attribute “%s”: %s"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1725 gio/win32/gwinhttpfile.c:191
+#: gio/glocalfileinfo.c:1738 gio/win32/gwinhttpfile.c:191
 msgid " (invalid encoding)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1884 gio/glocalfileoutputstream.c:945
+#: gio/glocalfileinfo.c:1897 gio/glocalfileoutputstream.c:945
 #: gio/glocalfileoutputstream.c:997
 #, c-format
 msgid "Error when getting information for file “%s”: %s"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2150
+#: gio/glocalfileinfo.c:2163
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2195
+#: gio/glocalfileinfo.c:2208
 msgid "Invalid attribute type (uint32 expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2213
+#: gio/glocalfileinfo.c:2226
 msgid "Invalid attribute type (uint64 expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2232 gio/glocalfileinfo.c:2251
+#: gio/glocalfileinfo.c:2245 gio/glocalfileinfo.c:2264
 msgid "Invalid attribute type (byte string expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2298
+#: gio/glocalfileinfo.c:2311
 msgid "Cannot set permissions on symlinks"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2314
+#: gio/glocalfileinfo.c:2327
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2365
+#: gio/glocalfileinfo.c:2378
 #, c-format
 msgid "Error setting owner: %s"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2388
+#: gio/glocalfileinfo.c:2401
 msgid "symlink must be non-NULL"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2398 gio/glocalfileinfo.c:2417
-#: gio/glocalfileinfo.c:2428
+#: gio/glocalfileinfo.c:2411 gio/glocalfileinfo.c:2430
+#: gio/glocalfileinfo.c:2441
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2407
+#: gio/glocalfileinfo.c:2420
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2479
+#: gio/glocalfileinfo.c:2492
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld are negative"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2488
+#: gio/glocalfileinfo.c:2501
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld reach 1 second"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2498
+#: gio/glocalfileinfo.c:2511
 #, c-format
 msgid "UNIX timestamp %lld does not fit into 64 bits"
-msgstr ""
+msgstr "Аамҭалатәи адырга UNIX %lld 64 бит иакӡом"
 
-#: gio/glocalfileinfo.c:2509
-#, c-format
+#: gio/glocalfileinfo.c:2522
+#, fuzzy, c-format
 msgid "UNIX timestamp %lld is outside of the range supported by Windows"
-msgstr ""
+msgstr "Аамҭалатәи адырга UNIX %ll d иаҵанакцом Windows зыцхыраауа аҵакыра"
 
-#: gio/glocalfileinfo.c:2612
+#: gio/glocalfileinfo.c:2625
 #, c-format
 msgid "File name “%s” cannot be converted to UTF-16"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2631
+#: gio/glocalfileinfo.c:2644
 #, c-format
 msgid "File “%s” cannot be opened: Windows Error %lu"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2644
+#: gio/glocalfileinfo.c:2657
 #, c-format
 msgid "Error setting modification or access time for file “%s”: %lu"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2785 gio/glocalfileinfo.c:2797
+#: gio/glocalfileinfo.c:2798 gio/glocalfileinfo.c:2810
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2820
+#: gio/glocalfileinfo.c:2833
 msgid "SELinux context must be non-NULL"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2827
+#: gio/glocalfileinfo.c:2840
 msgid "SELinux is not enabled on this system"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2837
+#: gio/glocalfileinfo.c:2850
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2934
+#: gio/glocalfileinfo.c:2947
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr ""
@@ -3143,13 +3140,13 @@ msgstr ""
 msgid "Error renaming temporary file: %s"
 msgstr ""
 
-#: gio/glocalfileoutputstream.c:611 gio/glocalfileoutputstream.c:1241
+#: gio/glocalfileoutputstream.c:611 gio/glocalfileoutputstream.c:1242
 #, c-format
 msgid "Error truncating file: %s"
 msgstr ""
 
 #: gio/glocalfileoutputstream.c:664 gio/glocalfileoutputstream.c:909
-#: gio/glocalfileoutputstream.c:1222 gio/gsubprocess.c:231
+#: gio/glocalfileoutputstream.c:1223 gio/gsubprocess.c:231
 #, c-format
 msgid "Error opening file “%s”: %s"
 msgstr ""
@@ -3166,7 +3163,7 @@ msgstr ""
 msgid "The file was externally modified"
 msgstr ""
 
-#: gio/glocalfileoutputstream.c:1204
+#: gio/glocalfileoutputstream.c:1205
 #, c-format
 msgid "Error removing old file: %s"
 msgstr ""
@@ -3177,7 +3174,7 @@ msgstr ""
 
 #: gio/gmemoryinputstream.c:486
 msgid "Invalid seek request"
-msgstr ""
+msgstr "Аиасразы иақәнагам адҵаалара"
 
 #: gio/gmemoryinputstream.c:510
 msgid "Cannot truncate GMemoryInputStream"
@@ -3330,7 +3327,7 @@ msgstr ""
 #: gio/gresource.c:683 gio/gresource.c:945 gio/gresource.c:985
 #: gio/gresource.c:1109 gio/gresource.c:1181 gio/gresource.c:1255
 #: gio/gresource.c:1336 gio/gresourcefile.c:478 gio/gresourcefile.c:601
-#: gio/gresourcefile.c:738
+#: gio/gresourcefile.c:752
 #, c-format
 msgid "The resource at “%s” does not exist"
 msgstr ""
@@ -3340,12 +3337,16 @@ msgstr ""
 msgid "The resource at “%s” failed to decompress"
 msgstr ""
 
-#: gio/gresourcefile.c:734
+#: gio/gresourcefile.c:658
+msgid "Resource files cannot be renamed"
+msgstr ""
+
+#: gio/gresourcefile.c:748
 #, c-format
 msgid "The resource at “%s” is not a directory"
 msgstr ""
 
-#: gio/gresourcefile.c:942
+#: gio/gresourcefile.c:956
 msgid "Input stream doesn’t implement seek"
 msgstr ""
 
@@ -3933,7 +3934,7 @@ msgstr ""
 msgid "Unknown SOCKSv5 proxy error."
 msgstr ""
 
-#: gio/gtestdbus.c:614 glib/gspawn-win32.c:303
+#: gio/gtestdbus.c:614 glib/gspawn-win32.c:354
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
@@ -5137,7 +5138,7 @@ msgstr ""
 
 #: glib/goption.c:991
 msgid "Help Options:"
-msgstr ""
+msgstr "Аилыркаа ахышәарақәа :"
 
 #: glib/goption.c:992
 msgid "Show help options"
@@ -5149,11 +5150,11 @@ msgstr ""
 
 #: glib/goption.c:1061
 msgid "Application Options:"
-msgstr ""
+msgstr "Аҧшьы ахышәарақәа:"
 
 #: glib/goption.c:1063
 msgid "Options:"
-msgstr ""
+msgstr "Ахышәарақәа:"
 
 #: glib/goption.c:1127 glib/goption.c:1197
 #, c-format
@@ -5190,303 +5191,303 @@ msgstr ""
 msgid "Unknown option %s"
 msgstr ""
 
-#: glib/gregex.c:436
+#: glib/gregex.c:474
 msgid "corrupted object"
 msgstr ""
 
-#: glib/gregex.c:438
+#: glib/gregex.c:476
 msgid "out of memory"
 msgstr ""
 
-#: glib/gregex.c:443
+#: glib/gregex.c:482
 msgid "backtracking limit reached"
 msgstr ""
 
-#: glib/gregex.c:454 glib/gregex.c:707 glib/gregex.c:736
+#: glib/gregex.c:493 glib/gregex.c:746 glib/gregex.c:775
 msgid "internal error"
 msgstr ""
 
-#: glib/gregex.c:456
+#: glib/gregex.c:495
 msgid "the pattern contains items not supported for partial matching"
 msgstr ""
 
-#: glib/gregex.c:458
+#: glib/gregex.c:497
 msgid "back references as conditions are not supported for partial matching"
 msgstr ""
 
-#: glib/gregex.c:464
+#: glib/gregex.c:503
 msgid "recursion limit reached"
 msgstr ""
 
-#: glib/gregex.c:466
+#: glib/gregex.c:505
 msgid "bad offset"
 msgstr ""
 
-#: glib/gregex.c:468
+#: glib/gregex.c:507
 msgid "recursion loop"
 msgstr ""
 
 #. should not happen in GRegex since we check modes before each match
-#: glib/gregex.c:471
+#: glib/gregex.c:510
 msgid "matching mode is requested that was not compiled for JIT"
 msgstr ""
 
-#: glib/gregex.c:475
+#: glib/gregex.c:514
 msgid "unknown error"
 msgstr ""
 
-#: glib/gregex.c:496
+#: glib/gregex.c:535
 msgid "\\ at end of pattern"
 msgstr ""
 
-#: glib/gregex.c:500
+#: glib/gregex.c:539
 msgid "\\c at end of pattern"
 msgstr ""
 
-#: glib/gregex.c:505
+#: glib/gregex.c:544
 msgid "unrecognized character following \\"
 msgstr ""
 
-#: glib/gregex.c:509
+#: glib/gregex.c:548
 msgid "numbers out of order in {} quantifier"
 msgstr ""
 
-#: glib/gregex.c:513
+#: glib/gregex.c:552
 msgid "number too big in {} quantifier"
 msgstr ""
 
-#: glib/gregex.c:517
+#: glib/gregex.c:556
 msgid "missing terminating ] for character class"
 msgstr ""
 
-#: glib/gregex.c:521
+#: glib/gregex.c:560
 msgid "invalid escape sequence in character class"
 msgstr ""
 
-#: glib/gregex.c:525
+#: glib/gregex.c:564
 msgid "range out of order in character class"
 msgstr ""
 
-#: glib/gregex.c:530
+#: glib/gregex.c:569
 msgid "nothing to repeat"
 msgstr ""
 
-#: glib/gregex.c:534
+#: glib/gregex.c:573
 msgid "unrecognized character after (? or (?-"
 msgstr ""
 
-#: glib/gregex.c:538
+#: glib/gregex.c:577
 msgid "POSIX named classes are supported only within a class"
 msgstr ""
 
-#: glib/gregex.c:542
+#: glib/gregex.c:581
 msgid "POSIX collating elements are not supported"
 msgstr ""
 
-#: glib/gregex.c:548
+#: glib/gregex.c:587
 msgid "missing terminating )"
 msgstr ""
 
-#: glib/gregex.c:552
+#: glib/gregex.c:591
 msgid "reference to non-existent subpattern"
 msgstr ""
 
-#: glib/gregex.c:556
+#: glib/gregex.c:595
 msgid "missing ) after comment"
 msgstr ""
 
-#: glib/gregex.c:560
+#: glib/gregex.c:599
 msgid "regular expression is too large"
 msgstr ""
 
-#: glib/gregex.c:564
+#: glib/gregex.c:603
 msgid "malformed number or name after (?("
 msgstr ""
 
-#: glib/gregex.c:568
+#: glib/gregex.c:607
 msgid "lookbehind assertion is not fixed length"
 msgstr ""
 
-#: glib/gregex.c:572
+#: glib/gregex.c:611
 msgid "conditional group contains more than two branches"
 msgstr ""
 
-#: glib/gregex.c:576
+#: glib/gregex.c:615
 msgid "assertion expected after (?("
 msgstr ""
 
-#: glib/gregex.c:580
+#: glib/gregex.c:619
 msgid "a numbered reference must not be zero"
 msgstr ""
 
-#: glib/gregex.c:584
+#: glib/gregex.c:623
 msgid "unknown POSIX class name"
 msgstr ""
 
-#: glib/gregex.c:589
+#: glib/gregex.c:628
 msgid "character value in \\x{...} sequence is too large"
 msgstr ""
 
-#: glib/gregex.c:593
+#: glib/gregex.c:632
 msgid "\\C not allowed in lookbehind assertion"
 msgstr ""
 
-#: glib/gregex.c:597
+#: glib/gregex.c:636
 msgid "missing terminator in subpattern name"
 msgstr ""
 
-#: glib/gregex.c:601
+#: glib/gregex.c:640
 msgid "two named subpatterns have the same name"
 msgstr ""
 
-#: glib/gregex.c:605
+#: glib/gregex.c:644
 msgid "malformed \\P or \\p sequence"
 msgstr ""
 
-#: glib/gregex.c:609
+#: glib/gregex.c:648
 msgid "unknown property name after \\P or \\p"
 msgstr ""
 
-#: glib/gregex.c:613
+#: glib/gregex.c:652
 msgid "subpattern name is too long (maximum 32 characters)"
 msgstr ""
 
-#: glib/gregex.c:617
+#: glib/gregex.c:656
 msgid "too many named subpatterns (maximum 10,000)"
 msgstr ""
 
-#: glib/gregex.c:621
+#: glib/gregex.c:660
 msgid "octal value is greater than \\377"
 msgstr ""
 
-#: glib/gregex.c:625
+#: glib/gregex.c:664
 msgid "DEFINE group contains more than one branch"
 msgstr ""
 
-#: glib/gregex.c:629
+#: glib/gregex.c:668
 msgid "inconsistent NEWLINE options"
 msgstr ""
 
-#: glib/gregex.c:633
+#: glib/gregex.c:672
 msgid ""
 "\\g is not followed by a braced, angle-bracketed, or quoted name or number, "
 "or by a plain number"
 msgstr ""
 
-#: glib/gregex.c:638
+#: glib/gregex.c:677
 msgid "an argument is not allowed for (*ACCEPT), (*FAIL), or (*COMMIT)"
 msgstr ""
 
-#: glib/gregex.c:642
+#: glib/gregex.c:681
 msgid "(*VERB) not recognized"
 msgstr ""
 
-#: glib/gregex.c:646
+#: glib/gregex.c:685
 msgid "number is too big"
 msgstr ""
 
-#: glib/gregex.c:650
+#: glib/gregex.c:689
 msgid "missing subpattern name after (?&"
 msgstr ""
 
-#: glib/gregex.c:654
+#: glib/gregex.c:693
 msgid "different names for subpatterns of the same number are not allowed"
 msgstr ""
 
-#: glib/gregex.c:658
+#: glib/gregex.c:697
 msgid "(*MARK) must have an argument"
 msgstr ""
 
-#: glib/gregex.c:662
+#: glib/gregex.c:701
 msgid "\\c must be followed by an ASCII character"
 msgstr ""
 
-#: glib/gregex.c:666
+#: glib/gregex.c:705
 msgid "\\k is not followed by a braced, angle-bracketed, or quoted name"
 msgstr ""
 
-#: glib/gregex.c:670
+#: glib/gregex.c:709
 msgid "\\N is not supported in a class"
 msgstr ""
 
-#: glib/gregex.c:674
+#: glib/gregex.c:713
 msgid "name is too long in (*MARK), (*PRUNE), (*SKIP), or (*THEN)"
 msgstr ""
 
-#: glib/gregex.c:678 glib/gregex.c:811
+#: glib/gregex.c:717 glib/gregex.c:856
 msgid "code overflow"
 msgstr ""
 
-#: glib/gregex.c:682
+#: glib/gregex.c:721
 msgid "unrecognized character after (?P"
 msgstr ""
 
-#: glib/gregex.c:686
+#: glib/gregex.c:725
 msgid "overran compiling workspace"
 msgstr ""
 
-#: glib/gregex.c:690
+#: glib/gregex.c:729
 msgid "previously-checked referenced subpattern not found"
 msgstr ""
 
-#: glib/gregex.c:810 glib/gregex.c:1043 glib/gregex.c:2344
+#: glib/gregex.c:855 glib/gregex.c:1100 glib/gregex.c:2406
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr ""
 
-#: glib/gregex.c:1620
+#: glib/gregex.c:1696
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "Абиблиотека PCRE еизгоуп UTF-8 амаҵурада"
 
-#: glib/gregex.c:1628
+#: glib/gregex.c:1704
 msgid "PCRE library is compiled with incompatible options"
 msgstr "Абиблиотека PCRE еизгоуп еимарам ахышәарақәа рыла"
 
-#: glib/gregex.c:1753
+#: glib/gregex.c:1813
 #, c-format
 msgid "Error while compiling regular expression ‘%s’ at char %s: %s"
 msgstr ""
 
-#: glib/gregex.c:2788
+#: glib/gregex.c:2848
 msgid "hexadecimal digit or “}” expected"
-msgstr ""
+msgstr "Иазыԥшуп жәаф хыԥхьаӡара змоу аԥхьаӡац, мамзар “}”"
 
-#: glib/gregex.c:2804
+#: glib/gregex.c:2864
 msgid "hexadecimal digit expected"
-msgstr ""
+msgstr "Иазыԥшуп жәаф хыԥхьаӡара змоу аԥхьаӡац"
 
-#: glib/gregex.c:2844
+#: glib/gregex.c:2904
 msgid "missing “<” in symbolic reference"
-msgstr ""
+msgstr "Иазхаӡом “<” асимволтә зхьарԥш аҟны"
 
-#: glib/gregex.c:2853
+#: glib/gregex.c:2913
 msgid "unfinished symbolic reference"
-msgstr ""
+msgstr "Ихырқәшам асимолтә зхьарԥш"
 
-#: glib/gregex.c:2860
+#: glib/gregex.c:2920
 msgid "zero-length symbolic reference"
-msgstr ""
+msgstr "Асимвотә зхьарԥш зоура ноль ыҟоу"
 
-#: glib/gregex.c:2871
+#: glib/gregex.c:2931
 msgid "digit expected"
-msgstr ""
+msgstr "Аԥхьаӡац азҧшра"
 
-#: glib/gregex.c:2889
+#: glib/gregex.c:2949
 msgid "illegal symbolic reference"
-msgstr ""
+msgstr "Иақәнагам асимволтә зхьарԥш"
 
-#: glib/gregex.c:2952
+#: glib/gregex.c:3012
 msgid "stray final “\\”"
 msgstr ""
 
-#: glib/gregex.c:2956
+#: glib/gregex.c:3016
 msgid "unknown escape sequence"
-msgstr ""
+msgstr "Еилкаам икодрку аишьҭагылазаара"
 
-#: glib/gregex.c:2966
+#: glib/gregex.c:3026
 #, c-format
 msgid "Error while parsing replacement text “%s” at char %lu: %s"
-msgstr ""
+msgstr "Аҧсахратә текст  аилыргара агха “%s”  асимвол %lu аҟны : %s"
 
 #: glib/gshell.c:98
 msgid "Quoted text doesn’t begin with a quotation mark"
@@ -5525,7 +5526,7 @@ msgstr ""
 msgid "Unexpected error in waitpid() (%s)"
 msgstr ""
 
-#: glib/gspawn.c:1170 glib/gspawn-win32.c:1434
+#: glib/gspawn.c:1170 glib/gspawn-win32.c:1488
 #, c-format
 msgid "Child process exited with code %ld"
 msgstr ""
@@ -5545,10 +5546,10 @@ msgstr ""
 msgid "Child process exited abnormally"
 msgstr ""
 
-#: glib/gspawn.c:1885 glib/gspawn-win32.c:342 glib/gspawn-win32.c:350
+#: glib/gspawn.c:1885 glib/gspawn-win32.c:393 glib/gspawn-win32.c:401
 #, c-format
 msgid "Failed to read from child pipe (%s)"
-msgstr ""
+msgstr "Иаҿыгоу аканал (%s) аҟынтә аиагара залымшахеит"
 
 #: glib/gspawn.c:2248
 #, c-format
@@ -5560,7 +5561,7 @@ msgstr ""
 msgid "Failed to fork (%s)"
 msgstr ""
 
-#: glib/gspawn.c:2525 glib/gspawn-win32.c:373
+#: glib/gspawn.c:2525 glib/gspawn-win32.c:424
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
 msgstr ""
@@ -5600,66 +5601,66 @@ msgstr ""
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
 
-#: glib/gspawn-win32.c:286
+#: glib/gspawn-win32.c:337
 msgid "Failed to read data from child process"
 msgstr ""
 
-#: glib/gspawn-win32.c:379 glib/gspawn-win32.c:384 glib/gspawn-win32.c:510
+#: glib/gspawn-win32.c:430 glib/gspawn-win32.c:435 glib/gspawn-win32.c:561
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr ""
 
-#: glib/gspawn-win32.c:389
+#: glib/gspawn-win32.c:440
 #, c-format
 msgid "Failed to dup() in child process (%s)"
 msgstr ""
 
-#: glib/gspawn-win32.c:460
+#: glib/gspawn-win32.c:511
 #, c-format
 msgid "Invalid program name: %s"
 msgstr ""
 
-#: glib/gspawn-win32.c:470 glib/gspawn-win32.c:802
+#: glib/gspawn-win32.c:521 glib/gspawn-win32.c:853
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr ""
 
-#: glib/gspawn-win32.c:481 glib/gspawn-win32.c:818
+#: glib/gspawn-win32.c:532 glib/gspawn-win32.c:869
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr ""
 
-#: glib/gspawn-win32.c:798
+#: glib/gspawn-win32.c:849
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr ""
 
-#: glib/gspawn-win32.c:863
+#: glib/gspawn-win32.c:914
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr ""
 
-#: glib/gspawn-win32.c:1092
+#: glib/gspawn-win32.c:1143
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr ""
 
-#: glib/gstrfuncs.c:3366 glib/gstrfuncs.c:3468
+#: glib/gstrfuncs.c:3372 glib/gstrfuncs.c:3474
 msgid "Empty string is not a number"
 msgstr ""
 
-#: glib/gstrfuncs.c:3390
+#: glib/gstrfuncs.c:3396
 #, c-format
 msgid "“%s” is not a signed number"
 msgstr ""
 
-#: glib/gstrfuncs.c:3400 glib/gstrfuncs.c:3504
+#: glib/gstrfuncs.c:3406 glib/gstrfuncs.c:3510
 #, c-format
 msgid "Number “%s” is out of bounds [%s, %s]"
 msgstr ""
 
-#: glib/gstrfuncs.c:3494
+#: glib/gstrfuncs.c:3500
 #, c-format
 msgid "“%s” is not an unsigned number"
 msgstr ""
@@ -5959,3 +5960,3879 @@ msgstr ""
 #, c-format
 msgid "%.1f EB"
 msgstr ""
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#, fuzzy
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#, fuzzy
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#, fuzzy
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#, fuzzy
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#, fuzzy
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#, fuzzy
+
+
+
+#, fuzzy
+
+#, fuzzy
+
+
+
+
+
+
+#, fuzzy
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#, fuzzy
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#, fuzzy
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#, fuzzy
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#, fuzzy
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#, fuzzy
