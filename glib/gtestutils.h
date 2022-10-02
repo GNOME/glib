@@ -238,9 +238,20 @@ typedef void (*GTestFixtureFunc) (gpointer      fixture,
                                         } G_STMT_END
 #endif /* !G_DISABLE_ASSERT */
 
-GLIB_AVAILABLE_IN_ALL
-int     g_strcmp0                       (const char     *str1,
-                                         const char     *str2);
+#ifndef GLIB_INLINE
+#define GLIB_INLINE
+#endif
+
+GLIB_INLINE int
+g_strcmp0 (const char *str1,
+           const char *str2)
+{
+  if (!str1)
+    return -(str1 != str2);
+  if (!str2)
+    return str1 != str2;
+  return strcmp (str1, str2);
+}
 
 /* report performance results */
 GLIB_AVAILABLE_IN_ALL
