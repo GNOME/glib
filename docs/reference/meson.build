@@ -5,6 +5,7 @@ first_version = 26
 last_version = minor_version.is_odd() ? minor_version + 1 : minor_version
 
 ignore_decorators = [
+  'GLIB_INLINE',
   'GLIB_VAR',
   'G_GNUC_INTERNAL',
   'G_GNUC_WARN_UNUSED_RESULT',
