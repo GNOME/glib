@@ -22,6 +22,14 @@ gobject_install_headers = files(
   'gvaluetypes.h',
   'gobjectnotifyqueue.c', # sic
 )
+
+gvisibility_h = configure_file(
+  output: 'gobject-visibility.h',
+  command: [gen_visibility_macros, meson.project_version(), 'visibility-macros', 'GOBJECT', '@OUTPUT@'],
+)
+
+gobject_install_headers += gvisibility_h
+
 install_headers(gobject_install_headers, subdir : 'glib-2.0/gobject')
 
 gobject_sources = files(
@@ -135,7 +143,8 @@ libgobject = library('gobject-2.0',
   install : true,
   include_directories : [configinc],
   dependencies : [libffi_dep, libglib_dep],
-  c_args : ['-DG_LOG_DOMAIN="GLib-GObject"', '-DGOBJECT_COMPILATION'] + glib_hidden_visibility_args,
+  c_args : ['-DG_LOG_DOMAIN="GLib-GObject"', '-DGOBJECT_COMPILATION'],
+  gnu_symbol_visibility : 'hidden',
   link_args : glib_link_flags,
 )
 

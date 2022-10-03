@@ -1227,27 +1227,11 @@
 #define G_UNAVAILABLE(maj,min) G_DEPRECATED
 #endif
 
-#ifndef _GLIB_EXTERN
-#define _GLIB_EXTERN extern
-#endif
-
 /* These macros are used to mark deprecated symbols in GLib headers,
  * and thus have to be exposed in installed headers. But please
  * do *not* use them in other projects. Instead, use G_DEPRECATED
  * or define your own wrappers around it.
  */
-
-#ifdef GLIB_DISABLE_DEPRECATION_WARNINGS
-#define GLIB_DEPRECATED _GLIB_EXTERN
-#define GLIB_DEPRECATED_FOR(f) _GLIB_EXTERN
-#define GLIB_UNAVAILABLE(maj,min) _GLIB_EXTERN
-#define GLIB_UNAVAILABLE_STATIC_INLINE(maj,min)
-#else
-#define GLIB_DEPRECATED G_DEPRECATED _GLIB_EXTERN
-#define GLIB_DEPRECATED_FOR(f) G_DEPRECATED_FOR(f) _GLIB_EXTERN
-#define GLIB_UNAVAILABLE(maj,min) G_UNAVAILABLE(maj,min) _GLIB_EXTERN
-#define GLIB_UNAVAILABLE_STATIC_INLINE(maj,min) G_UNAVAILABLE(maj,min)
-#endif
 
 #if !defined(GLIB_DISABLE_DEPRECATION_WARNINGS) && \
     (G_GNUC_CHECK_VERSION(4, 6) ||                 \

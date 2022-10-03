@@ -66,6 +66,12 @@ gmodule_c = files('gmodule.c')
 
 install_headers([gmodule_h], subdir : 'glib-2.0')
 
+gvisibility_h = configure_file(
+  output: 'gmodule-visibility.h',
+  command: [gen_visibility_macros, meson.project_version(), 'visibility-macros', 'GMODULE', '@OUTPUT@'],
+)
+install_headers(gvisibility_h, subdir : 'glib-2.0/gmodule')
+
 gmodule_sources = [gmodule_c]
 if host_system == 'windows'
   gmodule_win_rc = configure_file(
@@ -85,7 +91,8 @@ libgmodule = library('gmodule-2.0',
   install : true,
   include_directories : [configinc, gmoduleinc],
   dependencies : [libdl_dep, libglib_dep],
-  c_args : ['-DG_LOG_DOMAIN="GModule"'] + glib_hidden_visibility_args,
+  c_args : ['-DG_LOG_DOMAIN="GModule"', '-DGMODULE_COMPILATION'],
+  gnu_symbol_visibility : 'hidden',
   link_args : [glib_link_flags],
 )
 

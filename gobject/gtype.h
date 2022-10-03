@@ -23,7 +23,8 @@
 #error "Only <glib-object.h> can be included directly."
 #endif
 
-#include        <glib.h>
+#include  <glib.h>
+#include <gobject/gobject-visibility.h>
 
 G_BEGIN_DECLS
 

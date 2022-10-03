@@ -28,6 +28,7 @@
 #define __GMODULE_H__
 
 #include <glib.h>
+#include <gmodule/gmodule-visibility.h>
 
 G_BEGIN_DECLS
 

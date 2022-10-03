@@ -3,6 +3,21 @@ glibconfig_h = configure_file(input : 'glibconfig.h.in', output : 'glibconfig.h'
   install_tag : 'devel',
   configuration : glibconfig_conf)
 
+gversionmacros_h = configure_file(
+  input: 'gversionmacros.h.in',
+  output: 'gversionmacros.h',
+  command: [gen_visibility_macros, meson.project_version(), 'versions-macros', '@INPUT@', '@OUTPUT@'],
+)
+
+gvisibility_h = configure_file(
+  output: 'glib-visibility.h',
+  command: [gen_visibility_macros, meson.project_version(), 'visibility-macros', 'GLIB', '@OUTPUT@'],
+)
+
+glib_c_args_internal = [
+  '-DGLIB_COMPILATION',
+]
+
 subdir('libcharset')
 
 # libsysprof-capture support
@@ -212,10 +227,12 @@ glib_sub_headers = files(
   'gvarianttype.h',
   'gvariant.h',
   'gversion.h',
-  'gversionmacros.h',
   'gwin32.h',
   'gprintf.h',
 )
+
+glib_sub_headers += [gversionmacros_h, gvisibility_h]
+
 install_headers(glib_sub_headers, subdir : 'glib-2.0/glib')
 
 deprecated_sources = files(
@@ -368,7 +385,7 @@ if use_pcre2_static_flag
   pcre2_static_args = ['-DPCRE2_STATIC']
 endif
 
-glib_c_args = ['-DG_LOG_DOMAIN="GLib"', '-DGLIB_COMPILATION'] + pcre2_static_args + glib_hidden_visibility_args
+glib_c_args = ['-DG_LOG_DOMAIN="GLib"'] + glib_c_args_internal + pcre2_static_args
 libglib = library('glib-2.0',
   glib_dtrace_obj, glib_dtrace_hdr,
   sources : [deprecated_sources, glib_sources],
@@ -383,6 +400,7 @@ libglib = library('glib-2.0',
   dependencies : [pcre2, thread_dep, librt] + libintl_deps + libiconv + platform_deps + [gnulib_libm_dependency, libm] + [libsysprof_capture_dep],
   c_args : glib_c_args,
   objc_args : glib_c_args,
+  gnu_symbol_visibility : 'hidden',
 )
 
 libglib_dep = declare_dependency(

@@ -37,9 +37,7 @@ foreach i : range(first_version, last_version + 2, 2)
   ]
 endforeach
 
-gtkdoc_common_scan_args = [
-  '--ignore-decorators=' + '|'.join(ignore_decorators),
-]
+ignore_decorators = '|'.join(ignore_decorators)
 
 if get_option('gtk_doc')
   # Check we have the minimum gtk-doc version required. Older versions won't

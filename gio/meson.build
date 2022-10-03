@@ -6,8 +6,6 @@ gio_c_args = [
   '-DLOCALSTATEDIR="@0@"'.format(glib_localstatedir),
 ]
 
-gio_c_args += glib_hidden_visibility_args
-
 # FIXME: Install empty glib_giomodulesdir
 
 gnetworking_h_conf = configuration_data()
@@ -742,6 +740,12 @@ gio_headers = files(
   'gliststore.h',
 )
 
+gvisibility_h = configure_file(
+  output: 'gio-visibility.h',
+  command: [gen_visibility_macros, meson.project_version(), 'visibility-macros', 'GIO', '@OUTPUT@'],
+)
+
+gio_headers += gvisibility_h
 gio_headers += application_headers
 gio_headers += settings_headers
 gio_headers += gdbus_headers
@@ -835,6 +839,7 @@ libgio = library('gio-2.0',
                   gioenumtypes_dep, gvdb_dep],
   c_args : gio_c_args,
   objc_args : gio_c_args,
+  gnu_symbol_visibility : 'hidden',
   # intl.lib is not compatible with SAFESEH
   link_args : [noseh_link_args, glib_link_flags],
 )

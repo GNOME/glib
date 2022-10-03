@@ -28,6 +28,7 @@
 #endif
 
 #include <glib-object.h>
+#include <gio/gio-visibility.h>
 
 G_BEGIN_DECLS
 

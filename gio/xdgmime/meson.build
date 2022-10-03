@@ -14,4 +14,6 @@ xdgmime_lib = static_library('xdgmime',
   include_directories : [configinc],
   pic : true,
   c_args : [ '-DHAVE_CONFIG_H',
-             '-DXDG_PREFIX=_gio_xdg' ] + glib_hidden_visibility_args)
+             '-DXDG_PREFIX=_gio_xdg' ],
+  gnu_symbol_visibility : 'hidden',
+)

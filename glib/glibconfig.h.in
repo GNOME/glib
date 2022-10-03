@@ -12,16 +12,19 @@
 #include <float.h>
 #mesondefine GLIB_HAVE_ALLOCA_H
 
+#mesondefine GLIB_STATIC_COMPILATION
+#mesondefine GOBJECT_STATIC_COMPILATION
+#mesondefine GIO_STATIC_COMPILATION
+#mesondefine GMODULE_STATIC_COMPILATION
+#mesondefine G_INTL_STATIC_COMPILATION
+#mesondefine FFI_STATIC_BUILD
+#include <glib/glib-visibility.h>
+
 /* Specifies that GLib's g_print*() functions wrap the
  * system printf functions.  This is useful to know, for example,
  * when using glibc's register_printf_function().
  */
 #mesondefine GLIB_USING_SYSTEM_PRINTF
-
-#mesondefine GLIB_STATIC_COMPILATION
-#mesondefine GOBJECT_STATIC_COMPILATION
-#mesondefine G_INTL_STATIC_COMPILATION
-#mesondefine FFI_STATIC_BUILD
 
 G_BEGIN_DECLS
 
