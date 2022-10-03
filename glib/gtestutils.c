@@ -35,8 +35,32 @@
  * Since: 2.16
  */
 
+/* We are providing an inline version of g_strcmp0, as well as a regular,
+ * exported library symbol.
+ *
+ * Our approach to this is following the 'C99 strategy' outlined in
+ * https://www.greenend.org.uk/rjk/tech/inline.html:
+ * Provide an inline definition in the header, and put an extern
+ * declaration into one source file (this one), to force the compiler
+ * to emit an instance of the function in this translation unit.
+ *
+ * Since this does not seem to work with msvc, we arrange things so that
+ * in the msvc case, we provide the usual extern declaration in the header
+ * and not expose the inline definition unless the header is included here,
+ * in which case we are defining away the inline to get a regular instance
+ * of the function.
+ */
+
+#ifdef _MSC_VER
+
+#define GLIB_INLINE
+
+#else
+
 GLIB_AVAILABLE_IN_ALL
 int g_strcmp0 (const char *str1, const char *str2);
+
+#endif
 
 #include "gtestutils.h"
 

@@ -238,9 +238,21 @@ typedef void (*GTestFixtureFunc) (gpointer      fixture,
                                         } G_STMT_END
 #endif /* !G_DISABLE_ASSERT */
 
+#if defined(_MSC_VER)
+
+GLIB_AVAILABLE_IN_ALL
+int g_strcmp0 (const char *str1,
+               const char *str2);
+
+#else
+
 #ifndef GLIB_INLINE
-#define GLIB_INLINE
+#define GLIB_INLINE inline
 #endif
+
+#endif
+
+#if defined(GLIB_INLINE) || defined(__GTK_DOC_IGNORE__)
 
 GLIB_INLINE int
 g_strcmp0 (const char *str1,
@@ -252,6 +264,8 @@ g_strcmp0 (const char *str1,
     return str1 != str2;
   return strcmp (str1, str2);
 }
+
+#endif
 
 /* report performance results */
 GLIB_AVAILABLE_IN_ALL
