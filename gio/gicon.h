@@ -44,6 +44,39 @@ G_BEGIN_DECLS
 typedef struct _GIconIface GIconIface;
 
 /**
+ * GIconToTokensFunc:
+ * @icon: The #GIcon
+ * @tokens: (element-type utf8) (out caller-allocates):
+ *   The array to fill with tokens
+ * @out_version: (out): version of serialized tokens
+ *
+ * The prototype of the #GIconIface.to_tokens() virtual function.
+ *
+ * Since: 2.75
+ */
+typedef gboolean (*GIconToTokensFunc) (GIcon     *icon,
+                                       GPtrArray *tokens,
+                                       gint      *out_version);
+
+/**
+ * GIconFromTokensFunc:
+ * @tokens: (array length=num_tokens) (transfer none): The list of tokens
+ * @num_tokens: The number of tokens in @tokens
+ * @version: Version of the serialized tokens
+ * @error: Return location for errors, or %NULL to ignore
+ *
+ * The prototype of the #GIconIface.from_tokens() virtual function.
+ *
+ * Returns: (transfer full): the #GIcon or %NULL on error
+ *
+ * Since: 2.75
+ */
+typedef GIcon * (*GIconFromTokensFunc) (gchar  **tokens,
+                                        gint     num_tokens,
+                                        gint     version,
+                                        GError **error);
+
+/**
  * GIconIface:
  * @g_iface: The parent interface.
  * @hash: A hash for a given #GIcon.
@@ -69,13 +102,8 @@ struct _GIconIface
   guint       (* hash)        (GIcon   *icon);
   gboolean    (* equal)       (GIcon   *icon1,
                                GIcon   *icon2);
-  gboolean    (* to_tokens)   (GIcon   *icon,
-			       GPtrArray *tokens,
-                               gint    *out_version);
-  GIcon *     (* from_tokens) (gchar  **tokens,
-                               gint     num_tokens,
-                               gint     version,
-                               GError **error);
+  GIconToTokensFunc to_tokens;
+  GIconFromTokensFunc from_tokens;
 
   GVariant *  (* serialize)   (GIcon   *icon);
 };
