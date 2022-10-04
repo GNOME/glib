@@ -3497,6 +3497,8 @@ g_date_time_format_iso8601 (GDateTime *datetime)
   gint64 offset;
   gchar *format = "%C%y-%m-%dT%H:%M:%S";
 
+  g_return_val_if_fail (datetime != NULL, NULL);
+
   /* if datetime has sub-second non-zero values below the second precision we
    * should print them as well */
   if (datetime->usec % G_TIME_SPAN_SECOND != 0)
