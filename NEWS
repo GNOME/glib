@@ -1,3 +1,10 @@
+Overview of changes in GLib 2.75.3, UNRELEASED
+==============================================
+
+* Drop the implementation of GSlice, and make the API use the system `malloc()`
+  internally (#1079) (based on investigation work by multiple people)
+
+
 Overview of changes in GLib 2.75.2, 2023-01-06
 ==============================================
 

@@ -165,53 +165,10 @@ How to run and debug your GLib application
   <title><envar>G_SLICE</envar></title>
 
   <para>
-    This environment variable allows reconfiguration of the GSlice
-    memory allocator.
-    <variablelist>
-      <varlistentry>
-        <term>always-malloc</term>
-        <listitem><para>This will cause all slices allocated through
-          g_slice_alloc() and released by g_slice_free1() to be actually
-          allocated via direct calls to g_malloc() and g_free().
-          This is most useful for memory checkers and similar programs that
-          use Boehm GC alike algorithms to produce more accurate results.
-          It can also be in conjunction with debugging features of the system's
-          malloc() implementation such as glibc's MALLOC_CHECK_=2 to debug
-          erroneous slice allocation code, although
-          <literal>debug-blocks</literal> is usually a better suited debugging
-          tool.</para>
-        </listitem>
-      </varlistentry>
-      <varlistentry>
-        <term>debug-blocks</term>
-        <listitem><para>Using this option (present since GLib 2.13) engages
-          extra code which performs sanity checks on the released memory
-          slices. Invalid slice addresses or slice sizes will be reported and
-          lead to a program halt. This option is for debugging scenarios.
-          In particular, client packages sporting their own test suite should
-          <emphasis>always enable this option when running tests</emphasis>.
-          Global slice validation is ensured by storing size and address
-          information for each allocated chunk, and maintaining a global
-          hash table of that data. That way, multi-thread scalability is
-          given up, and memory consumption is increased. However, the
-          resulting code usually performs acceptably well, possibly better
-          than with comparable memory checking carried out using external
-          tools.</para>
-          <para>An example of a memory corruption scenario that cannot be
-          reproduced with <literal>G_SLICE=always-malloc</literal>, but will
-          be caught by <literal>G_SLICE=debug-blocks</literal> is as follows:
-          <programlisting>
-            /* void* gives up type-safety */
-            void *slist = g_slist_alloc ();
-
-            /* corruption: sizeof (GSList) != sizeof (GList) */
-            g_list_free (slist);
-          </programlisting></para>
-        </listitem>
-      </varlistentry>
-    </variablelist>
-    The special value <literal>all</literal> can be used to turn on all options.
-    The special value <literal>help</literal> can be used to print all available options.
+    This environment variable allowed reconfiguration of the GSlice
+    memory allocator. Since GLib 2.76, GSlice uses the system
+    <literal>malloc()</literal> implementation internally, so this variable is
+    ignored.
   </para>
 </formalpara>
 
