@@ -103,7 +103,11 @@ GIO_AVAILABLE_IN_ALL
 GTypeClass*        g_io_extension_ref_class                   (GIOExtension      *extension);
 
 
-/* API for the modules to implement */
+/* API for the modules to implement.
+ * Note that those functions are not implemented by libgio, they are declared
+ * here to be implemented in modules, that's why it uses G_MODULE_EXPORT
+ * instead of GIO_AVAILABLE_IN_ALL.
+ */
 
 /**
  * g_io_module_load: (skip)
@@ -123,7 +127,7 @@ GTypeClass*        g_io_extension_ref_class                   (GIOExtension     
  * statically. The old symbol names continue to be supported, but cannot be used
  * for static builds.
  **/
-GIO_AVAILABLE_IN_ALL
+G_MODULE_EXPORT
 void   g_io_module_load   (GIOModule *module);
 
 /**
@@ -143,7 +147,7 @@ void   g_io_module_load   (GIOModule *module);
  * statically. The old symbol names continue to be supported, but cannot be used
  * for static builds.
  **/
-GIO_AVAILABLE_IN_ALL
+G_MODULE_EXPORT
 void   g_io_module_unload (GIOModule *module);
 
 /**
@@ -187,7 +191,7 @@ void   g_io_module_unload (GIOModule *module);
  *
  * Since: 2.24
  **/
-GIO_AVAILABLE_IN_ALL
+G_MODULE_EXPORT
 char **g_io_module_query (void);
 
 G_END_DECLS

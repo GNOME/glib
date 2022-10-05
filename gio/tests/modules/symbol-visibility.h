@@ -3,7 +3,7 @@
 
 /* This is the same check that's done in configure to create config.h */
 #ifdef _WIN32
-#ifdef GLIB_STATIC_COMPILATION
+#ifdef GLIB_TEST_STATIC_COMPILATION
 #define GLIB_TEST_EXPORT_SYMBOL extern
 #else
 #ifdef _MSC_VER

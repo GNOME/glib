@@ -178,6 +178,11 @@
  * non-default
  * [visibility flag](https://gcc.gnu.org/onlinedocs/gcc/Code-Gen-Options.html#index-fvisibility-1260)
  * such as `hidden`.
+ *
+ * This macro must only be used when compiling a shared module. Modules that
+ * support both shared and static linking should define their own macro that
+ * expands to %G_MODULE_EXPORT when compiling the shared module, but is empty
+ * when compiling the static module on Windows.
  */
 
 /**

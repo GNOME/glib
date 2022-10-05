@@ -35,14 +35,16 @@ G_BEGIN_DECLS
 /* exporting and importing functions, this is special cased
  * to feature Windows dll stubs.
  */
-#define	G_MODULE_IMPORT		extern
-#ifdef G_PLATFORM_WIN32
-#  define	G_MODULE_EXPORT		__declspec(dllexport)
+#if defined(_WIN32) || defined(__CYGWIN__)
+#  define G_MODULE_EXPORT __declspec(dllexport)
+#  define G_MODULE_IMPORT __declspec(dllimport) extern
 #elif __GNUC__ >= 4
-#  define	G_MODULE_EXPORT		__attribute__((visibility("default")))
-#else /* !G_PLATFORM_WIN32 && __GNUC__ < 4 */
-#  define	G_MODULE_EXPORT
-#endif /* !G_PLATFORM_WIN32 */
+#  define G_MODULE_EXPORT __attribute__((visibility("default")))
+#  define G_MODULE_IMPORT extern
+#else /* !defined(_WIN32) && !defined(__CYGWIN__) && __GNUC__ < 4 */
+#  define G_MODULE_EXPORT
+#  define G_MODULE_IMPORT extern
+#endif
 
 /**
  * GModuleFlags:

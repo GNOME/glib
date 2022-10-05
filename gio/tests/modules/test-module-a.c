@@ -20,8 +20,6 @@
  * if advised of the possibility of such damage.
  */
 
-#include "config.h" /* for _GLIB_EXTERN */
-
 #include <gio/gio.h>
 
 #include "symbol-visibility.h"
