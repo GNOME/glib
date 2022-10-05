@@ -7,6 +7,7 @@ typedef struct _TestObject {
   gint foo;
   gboolean bar;
   gchar *baz;
+  GVariant *var;  /* (nullable) (owned) */
   gchar *quux;
 } TestObject;
 
@@ -14,7 +15,7 @@ typedef struct _TestObjectClass {
   GObjectClass parent_class;
 } TestObjectClass;
 
-enum { PROP_0, PROP_FOO, PROP_BAR, PROP_BAZ, PROP_QUUX, N_PROPERTIES };
+enum { PROP_0, PROP_FOO, PROP_BAR, PROP_BAZ, PROP_VAR, PROP_QUUX, N_PROPERTIES };
 
 static GParamSpec *properties[N_PROPERTIES] = { NULL, };
 
@@ -64,6 +65,27 @@ test_object_set_baz (TestObject  *obj,
 }
 
 static void
+test_object_set_var (TestObject *obj,
+                     GVariant   *var)
+{
+  GVariant *new_var = NULL;
+
+  if (var == NULL || obj->var == NULL ||
+      !g_variant_equal (var, obj->var))
+    {
+      /* Note: We deliberately don’t sink @var here, to make sure that
+       * properties_set_property_variant_floating() is testing that GObject
+       * internally sinks variants. */
+      new_var = g_variant_ref (var);
+      g_clear_pointer (&obj->var, g_variant_unref);
+      obj->var = g_steal_pointer (&new_var);
+
+      g_assert (properties[PROP_VAR] != NULL);
+      g_object_notify_by_pspec (G_OBJECT (obj), properties[PROP_VAR]);
+    }
+}
+
+static void
 test_object_set_quux (TestObject  *obj,
                       const gchar *quux)
 {
@@ -83,6 +105,7 @@ test_object_finalize (GObject *gobject)
   TestObject *self = (TestObject *) gobject;
 
   g_free (self->baz);
+  g_clear_pointer (&self->var, g_variant_unref);
   g_free (self->quux);
 
   /* When the ref_count of an object is zero it is still
@@ -120,6 +143,10 @@ test_object_set_property (GObject *gobject,
       test_object_set_baz (tobj, g_value_get_string (value));
       break;
 
+    case PROP_VAR:
+      test_object_set_var (tobj, g_value_get_variant (value));
+      break;
+
     case PROP_QUUX:
       test_object_set_quux (tobj, g_value_get_string (value));
       break;
@@ -154,6 +181,10 @@ test_object_get_property (GObject *gobject,
       g_value_set_string (value, tobj->baz);
       break;
 
+    case PROP_VAR:
+      g_value_set_variant (value, tobj->var);
+      break;
+
     case PROP_QUUX:
       g_value_set_string (value, tobj->quux);
       break;
@@ -178,6 +209,9 @@ test_object_class_init (TestObjectClass *klass)
   properties[PROP_BAZ] = g_param_spec_string ("baz", "Baz", "Baz",
                                               NULL,
                                               G_PARAM_READWRITE);
+  properties[PROP_VAR] = g_param_spec_variant ("var", "Var", "Var",
+                                               G_VARIANT_TYPE_STRING, NULL,
+                                               G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
 
   gobject_class->set_property = test_object_set_property;
   gobject_class->get_property = test_object_get_property;
@@ -224,6 +258,9 @@ properties_install (void)
 
   pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (obj), "baz");
   g_assert (properties[PROP_BAZ] == pspec);
+
+  pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (obj), "var");
+  g_assert (properties[PROP_VAR] == pspec);
 
   pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (obj), "quux");
   g_assert (properties[PROP_QUUX] == pspec);
@@ -710,6 +747,34 @@ properties_get_property (void)
 }
 
 static void
+properties_set_property_variant_floating (void)
+{
+  TestObject *test_obj = NULL;
+  GVariant *owned_floating_variant = NULL;
+  GVariant *floating_variant_ptr = NULL;
+  GVariant *got_variant = NULL;
+
+  g_test_summary ("Test that setting a property to a floating variant consumes the reference");
+
+  test_obj = (TestObject *) g_object_new (test_object_get_type (), NULL);
+
+  owned_floating_variant = floating_variant_ptr = g_variant_new_string ("this variant has only one floating ref");
+  g_assert_true (g_variant_is_floating (floating_variant_ptr));
+
+  g_object_set (test_obj, "var", g_steal_pointer (&owned_floating_variant), NULL);
+
+  /* This assumes that the GObject implementation refs, rather than copies and destroys, the incoming variant */
+  g_assert_false (g_variant_is_floating (floating_variant_ptr));
+
+  g_object_get (test_obj, "var", &got_variant, NULL);
+  g_assert_false (g_variant_is_floating (got_variant));
+  g_assert_cmpvariant (got_variant, floating_variant_ptr);
+
+  g_variant_unref (got_variant);
+  g_object_unref (test_obj);
+}
+
+static void
 properties_testv_notify_queue (void)
 {
   TestObject *test_obj;
@@ -767,6 +832,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/properties/notify-queue", properties_notify_queue);
   g_test_add_func ("/properties/construct", properties_construct);
   g_test_add_func ("/properties/get-property", properties_get_property);
+  g_test_add_func ("/properties/set-property/variant/floating", properties_set_property_variant_floating);
 
   g_test_add_func ("/properties/testv_with_no_properties",
       properties_testv_with_no_properties);
