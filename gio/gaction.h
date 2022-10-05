@@ -58,40 +58,40 @@ struct _GActionInterface
                                                  GVariant *parameter);
 };
 
-GLIB_AVAILABLE_IN_2_30
+GIO_AVAILABLE_IN_2_30
 GType                   g_action_get_type                               (void) G_GNUC_CONST;
 
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 const gchar *           g_action_get_name                               (GAction            *action);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 const GVariantType *    g_action_get_parameter_type                     (GAction            *action);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 const GVariantType *    g_action_get_state_type                         (GAction            *action);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GVariant *              g_action_get_state_hint                         (GAction            *action);
 
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 gboolean                g_action_get_enabled                            (GAction            *action);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GVariant *              g_action_get_state                              (GAction            *action);
 
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 void                    g_action_change_state                           (GAction            *action,
                                                                          GVariant           *value);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 void                    g_action_activate                               (GAction            *action,
                                                                          GVariant           *parameter);
 
-GLIB_AVAILABLE_IN_2_28
+GIO_AVAILABLE_IN_2_28
 gboolean                g_action_name_is_valid                          (const gchar        *action_name);
 
-GLIB_AVAILABLE_IN_2_38
+GIO_AVAILABLE_IN_2_38
 gboolean                g_action_parse_detailed_name                    (const gchar        *detailed_name,
                                                                          gchar             **action_name,
                                                                          GVariant          **target_value,
                                                                          GError            **error);
 
-GLIB_AVAILABLE_IN_2_38
+GIO_AVAILABLE_IN_2_38
 gchar *                 g_action_print_detailed_name                    (const gchar        *action_name,
                                                                          GVariant           *target_value);
 

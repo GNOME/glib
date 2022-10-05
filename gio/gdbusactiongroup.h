@@ -43,10 +43,10 @@ G_BEGIN_DECLS
 #define G_DBUS_ACTION_GROUP_GET_CLASS(inst)                 (G_TYPE_INSTANCE_GET_CLASS ((inst),                      \
                                                              G_TYPE_DBUS_ACTION_GROUP, GDBusActionGroupClass))
 
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GType                   g_dbus_action_group_get_type                  (void) G_GNUC_CONST;
 
-GLIB_AVAILABLE_IN_2_32
+GIO_AVAILABLE_IN_2_32
 GDBusActionGroup *      g_dbus_action_group_get                       (GDBusConnection        *connection,
                                                                        const gchar            *bus_name,
                                                                        const gchar            *object_path);

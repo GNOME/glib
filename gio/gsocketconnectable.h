@@ -65,16 +65,16 @@ struct _GSocketConnectableIface
   gchar                    * (* to_string)       (GSocketConnectable *connectable);
 };
 
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GType                     g_socket_connectable_get_type  (void) G_GNUC_CONST;
 
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GSocketAddressEnumerator *g_socket_connectable_enumerate (GSocketConnectable *connectable);
 
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GSocketAddressEnumerator *g_socket_connectable_proxy_enumerate (GSocketConnectable *connectable);
 
-GLIB_AVAILABLE_IN_2_48
+GIO_AVAILABLE_IN_2_48
 gchar                    *g_socket_connectable_to_string (GSocketConnectable *connectable);
 
 G_END_DECLS

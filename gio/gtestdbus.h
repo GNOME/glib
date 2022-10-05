@@ -41,32 +41,32 @@ G_BEGIN_DECLS
 #define G_IS_TEST_DBUS(obj) \
     (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_TEST_DBUS))
 
-GLIB_AVAILABLE_IN_2_34
+GIO_AVAILABLE_IN_2_34
 GType          g_test_dbus_get_type        (void) G_GNUC_CONST;
 
-GLIB_AVAILABLE_IN_2_34
+GIO_AVAILABLE_IN_2_34
 GTestDBus *    g_test_dbus_new             (GTestDBusFlags flags);
 
-GLIB_AVAILABLE_IN_2_34
+GIO_AVAILABLE_IN_2_34
 GTestDBusFlags g_test_dbus_get_flags       (GTestDBus     *self);
 
-GLIB_AVAILABLE_IN_2_34
+GIO_AVAILABLE_IN_2_34
 const gchar *  g_test_dbus_get_bus_address (GTestDBus     *self);
 
-GLIB_AVAILABLE_IN_2_34
+GIO_AVAILABLE_IN_2_34
 void           g_test_dbus_add_service_dir (GTestDBus     *self,
                                             const gchar   *path);
 
-GLIB_AVAILABLE_IN_2_34
+GIO_AVAILABLE_IN_2_34
 void           g_test_dbus_up              (GTestDBus     *self);
 
-GLIB_AVAILABLE_IN_2_34
+GIO_AVAILABLE_IN_2_34
 void           g_test_dbus_stop            (GTestDBus     *self);
 
-GLIB_AVAILABLE_IN_2_34
+GIO_AVAILABLE_IN_2_34
 void           g_test_dbus_down            (GTestDBus     *self);
 
-GLIB_AVAILABLE_IN_2_34
+GIO_AVAILABLE_IN_2_34
 void           g_test_dbus_unset           (void);
 
 G_END_DECLS

@@ -901,10 +901,10 @@ g_module_build_path (const gchar *directory,
 
 /* Binary compatibility versions. Not for newly compiled code. */
 
-_GLIB_EXTERN GModule *    g_module_open_utf8 (const gchar  *file_name,
-                                              GModuleFlags  flags);
+_GMODULE_EXTERN GModule *    g_module_open_utf8 (const gchar  *file_name,
+                                                 GModuleFlags  flags);
 
-_GLIB_EXTERN const gchar *g_module_name_utf8 (GModule      *module);
+_GMODULE_EXTERN const gchar *g_module_name_utf8 (GModule      *module);
 
 GModule*
 g_module_open_utf8 (const gchar    *file_name,

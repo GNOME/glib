@@ -41,13 +41,13 @@ struct _GOsxAppInfoClass
   GObjectClass parent_class;
 };
 
-GLIB_AVAILABLE_IN_2_52
+GIO_AVAILABLE_IN_2_52
 GType   g_osx_app_info_get_type           (void) G_GNUC_CONST;
 
-GLIB_AVAILABLE_IN_2_52
+GIO_AVAILABLE_IN_2_52
 const char *g_osx_app_info_get_filename   (GOsxAppInfo *info);
 
-GLIB_AVAILABLE_IN_2_52
+GIO_AVAILABLE_IN_2_52
 GList * g_osx_app_info_get_all_for_scheme (const gchar *scheme);
 
 G_END_DECLS

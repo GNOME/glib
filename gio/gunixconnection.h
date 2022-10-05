@@ -56,43 +56,43 @@ struct _GUnixConnection
   GUnixConnectionPrivate *priv;
 };
 
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GType                   g_unix_connection_get_type                      (void);
 
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 gboolean                g_unix_connection_send_fd                       (GUnixConnection      *connection,
                                                                          gint                  fd,
                                                                          GCancellable         *cancellable,
                                                                          GError              **error);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 gint                    g_unix_connection_receive_fd                    (GUnixConnection      *connection,
                                                                          GCancellable         *cancellable,
                                                                          GError              **error);
 
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 gboolean                g_unix_connection_send_credentials              (GUnixConnection      *connection,
                                                                          GCancellable         *cancellable,
                                                                          GError              **error);
-GLIB_AVAILABLE_IN_2_32
+GIO_AVAILABLE_IN_2_32
 void                    g_unix_connection_send_credentials_async        (GUnixConnection      *connection,
                                                                          GCancellable         *cancellable,
                                                                          GAsyncReadyCallback   callback,
                                                                          gpointer              user_data);
-GLIB_AVAILABLE_IN_2_32
+GIO_AVAILABLE_IN_2_32
 gboolean                g_unix_connection_send_credentials_finish       (GUnixConnection      *connection,
                                                                          GAsyncResult         *result,
                                                                          GError              **error);
 
-GLIB_AVAILABLE_IN_2_32
+GIO_AVAILABLE_IN_2_32
 GCredentials           *g_unix_connection_receive_credentials           (GUnixConnection      *connection,
                                                                          GCancellable         *cancellable,
                                                                          GError              **error);
-GLIB_AVAILABLE_IN_2_32
+GIO_AVAILABLE_IN_2_32
 void                    g_unix_connection_receive_credentials_async     (GUnixConnection      *connection,
                                                                          GCancellable         *cancellable,
                                                                          GAsyncReadyCallback   callback,
                                                                          gpointer              user_data);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GCredentials           *g_unix_connection_receive_credentials_finish    (GUnixConnection      *connection,
                                                                          GAsyncResult         *result,
                                                                          GError              **error);

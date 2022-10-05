@@ -50,17 +50,17 @@ struct _GNetworkMonitorBaseClass {
   gpointer padding[8];
 };
 
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GType g_network_monitor_base_get_type (void);
 
 /*< protected >*/
-GLIB_AVAILABLE_IN_2_32
+GIO_AVAILABLE_IN_2_32
 void g_network_monitor_base_add_network    (GNetworkMonitorBase  *monitor,
 					    GInetAddressMask     *network);
-GLIB_AVAILABLE_IN_2_32
+GIO_AVAILABLE_IN_2_32
 void g_network_monitor_base_remove_network (GNetworkMonitorBase  *monitor,
 					    GInetAddressMask     *network);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 void g_network_monitor_base_set_networks   (GNetworkMonitorBase  *monitor,
 					    GInetAddressMask    **networks,
 					    gint                  length);

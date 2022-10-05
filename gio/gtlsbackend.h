@@ -79,35 +79,35 @@ struct _GTlsBackendInterface
   GType          ( *get_dtls_server_connection_type) (void);
 };
 
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GType          g_tls_backend_get_type                   (void) G_GNUC_CONST;
 
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GTlsBackend *  g_tls_backend_get_default                (void);
 
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GTlsDatabase * g_tls_backend_get_default_database       (GTlsBackend *backend);
-GLIB_AVAILABLE_IN_2_60
+GIO_AVAILABLE_IN_2_60
 void           g_tls_backend_set_default_database       (GTlsBackend  *backend,
                                                          GTlsDatabase *database);
 
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 gboolean       g_tls_backend_supports_tls               (GTlsBackend *backend);
-GLIB_AVAILABLE_IN_2_48
+GIO_AVAILABLE_IN_2_48
 gboolean       g_tls_backend_supports_dtls              (GTlsBackend *backend);
 
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GType          g_tls_backend_get_certificate_type       (GTlsBackend *backend);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GType          g_tls_backend_get_client_connection_type (GTlsBackend *backend);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GType          g_tls_backend_get_server_connection_type (GTlsBackend *backend);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GType          g_tls_backend_get_file_database_type     (GTlsBackend *backend);
 
-GLIB_AVAILABLE_IN_2_48
+GIO_AVAILABLE_IN_2_48
 GType          g_tls_backend_get_dtls_client_connection_type (GTlsBackend *backend);
-GLIB_AVAILABLE_IN_2_48
+GIO_AVAILABLE_IN_2_48
 GType          g_tls_backend_get_dtls_server_connection_type (GTlsBackend *backend);
 
 G_END_DECLS

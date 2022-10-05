@@ -35,27 +35,27 @@ G_BEGIN_DECLS
 #define G_DBUS_CONNECTION(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), G_TYPE_DBUS_CONNECTION, GDBusConnection))
 #define G_IS_DBUS_CONNECTION(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_DBUS_CONNECTION))
 
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GType            g_dbus_connection_get_type                   (void) G_GNUC_CONST;
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 void              g_bus_get                    (GBusType             bus_type,
                                                 GCancellable        *cancellable,
                                                 GAsyncReadyCallback  callback,
                                                 gpointer             user_data);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GDBusConnection  *g_bus_get_finish             (GAsyncResult        *res,
                                                 GError             **error);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GDBusConnection  *g_bus_get_sync               (GBusType            bus_type,
                                                 GCancellable       *cancellable,
                                                 GError            **error);
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 void             g_dbus_connection_new                        (GIOStream              *stream,
                                                                const gchar            *guid,
                                                                GDBusConnectionFlags    flags,
@@ -63,10 +63,10 @@ void             g_dbus_connection_new                        (GIOStream        
                                                                GCancellable           *cancellable,
                                                                GAsyncReadyCallback     callback,
                                                                gpointer                user_data);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GDBusConnection *g_dbus_connection_new_finish                 (GAsyncResult           *res,
                                                                GError                **error);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GDBusConnection *g_dbus_connection_new_sync                   (GIOStream              *stream,
                                                                const gchar            *guid,
                                                                GDBusConnectionFlags    flags,
@@ -74,17 +74,17 @@ GDBusConnection *g_dbus_connection_new_sync                   (GIOStream        
                                                                GCancellable           *cancellable,
                                                                GError                **error);
 
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 void             g_dbus_connection_new_for_address            (const gchar            *address,
                                                                GDBusConnectionFlags    flags,
                                                                GDBusAuthObserver      *observer,
                                                                GCancellable           *cancellable,
                                                                GAsyncReadyCallback     callback,
                                                                gpointer                user_data);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GDBusConnection *g_dbus_connection_new_for_address_finish     (GAsyncResult           *res,
                                                                GError                **error);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GDBusConnection *g_dbus_connection_new_for_address_sync       (const gchar            *address,
                                                                GDBusConnectionFlags    flags,
                                                                GDBusAuthObserver      *observer,
@@ -93,73 +93,73 @@ GDBusConnection *g_dbus_connection_new_for_address_sync       (const gchar      
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 void             g_dbus_connection_start_message_processing   (GDBusConnection    *connection);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 gboolean         g_dbus_connection_is_closed                  (GDBusConnection    *connection);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GIOStream       *g_dbus_connection_get_stream                 (GDBusConnection    *connection);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 const gchar     *g_dbus_connection_get_guid                   (GDBusConnection    *connection);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 const gchar     *g_dbus_connection_get_unique_name            (GDBusConnection    *connection);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GCredentials    *g_dbus_connection_get_peer_credentials       (GDBusConnection    *connection);
 
-GLIB_AVAILABLE_IN_2_34
+GIO_AVAILABLE_IN_2_34
 guint32          g_dbus_connection_get_last_serial            (GDBusConnection    *connection);
 
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 gboolean         g_dbus_connection_get_exit_on_close          (GDBusConnection    *connection);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 void             g_dbus_connection_set_exit_on_close          (GDBusConnection    *connection,
                                                                gboolean            exit_on_close);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GDBusCapabilityFlags  g_dbus_connection_get_capabilities      (GDBusConnection    *connection);
-GLIB_AVAILABLE_IN_2_60
+GIO_AVAILABLE_IN_2_60
 GDBusConnectionFlags  g_dbus_connection_get_flags             (GDBusConnection    *connection);
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 void             g_dbus_connection_close                          (GDBusConnection     *connection,
                                                                    GCancellable        *cancellable,
                                                                    GAsyncReadyCallback  callback,
                                                                    gpointer             user_data);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 gboolean         g_dbus_connection_close_finish                   (GDBusConnection     *connection,
                                                                    GAsyncResult        *res,
                                                                    GError             **error);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 gboolean         g_dbus_connection_close_sync                     (GDBusConnection     *connection,
                                                                    GCancellable        *cancellable,
                                                                    GError             **error);
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 void             g_dbus_connection_flush                          (GDBusConnection     *connection,
                                                                    GCancellable        *cancellable,
                                                                    GAsyncReadyCallback  callback,
                                                                    gpointer             user_data);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 gboolean         g_dbus_connection_flush_finish                   (GDBusConnection     *connection,
                                                                    GAsyncResult        *res,
                                                                    GError             **error);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 gboolean         g_dbus_connection_flush_sync                     (GDBusConnection     *connection,
                                                                    GCancellable        *cancellable,
                                                                    GError             **error);
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 gboolean         g_dbus_connection_send_message                   (GDBusConnection     *connection,
                                                                    GDBusMessage        *message,
                                                                    GDBusSendMessageFlags flags,
                                                                    volatile guint32    *out_serial,
                                                                    GError             **error);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 void             g_dbus_connection_send_message_with_reply        (GDBusConnection     *connection,
                                                                    GDBusMessage        *message,
                                                                    GDBusSendMessageFlags flags,
@@ -168,11 +168,11 @@ void             g_dbus_connection_send_message_with_reply        (GDBusConnecti
                                                                    GCancellable        *cancellable,
                                                                    GAsyncReadyCallback  callback,
                                                                    gpointer             user_data);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GDBusMessage    *g_dbus_connection_send_message_with_reply_finish (GDBusConnection     *connection,
                                                                    GAsyncResult        *res,
                                                                    GError             **error);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GDBusMessage    *g_dbus_connection_send_message_with_reply_sync   (GDBusConnection     *connection,
                                                                    GDBusMessage        *message,
                                                                    GDBusSendMessageFlags flags,
@@ -183,7 +183,7 @@ GDBusMessage    *g_dbus_connection_send_message_with_reply_sync   (GDBusConnecti
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 gboolean  g_dbus_connection_emit_signal                       (GDBusConnection    *connection,
                                                                const gchar        *destination_bus_name,
                                                                const gchar        *object_path,
@@ -191,7 +191,7 @@ gboolean  g_dbus_connection_emit_signal                       (GDBusConnection  
                                                                const gchar        *signal_name,
                                                                GVariant           *parameters,
                                                                GError            **error);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 void      g_dbus_connection_call                              (GDBusConnection    *connection,
                                                                const gchar        *bus_name,
                                                                const gchar        *object_path,
@@ -204,11 +204,11 @@ void      g_dbus_connection_call                              (GDBusConnection  
                                                                GCancellable       *cancellable,
                                                                GAsyncReadyCallback callback,
                                                                gpointer            user_data);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GVariant *g_dbus_connection_call_finish                       (GDBusConnection    *connection,
                                                                GAsyncResult       *res,
                                                                GError            **error);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GVariant *g_dbus_connection_call_sync                         (GDBusConnection    *connection,
                                                                const gchar        *bus_name,
                                                                const gchar        *object_path,
@@ -223,7 +223,7 @@ GVariant *g_dbus_connection_call_sync                         (GDBusConnection  
 
 #ifdef G_OS_UNIX
 
-GLIB_AVAILABLE_IN_2_30
+GIO_AVAILABLE_IN_2_30
 void      g_dbus_connection_call_with_unix_fd_list            (GDBusConnection    *connection,
                                                                const gchar        *bus_name,
                                                                const gchar        *object_path,
@@ -237,12 +237,12 @@ void      g_dbus_connection_call_with_unix_fd_list            (GDBusConnection  
                                                                GCancellable       *cancellable,
                                                                GAsyncReadyCallback callback,
                                                                gpointer            user_data);
-GLIB_AVAILABLE_IN_2_30
+GIO_AVAILABLE_IN_2_30
 GVariant *g_dbus_connection_call_with_unix_fd_list_finish     (GDBusConnection    *connection,
                                                                GUnixFDList       **out_fd_list,
                                                                GAsyncResult       *res,
                                                                GError            **error);
-GLIB_AVAILABLE_IN_2_30
+GIO_AVAILABLE_IN_2_30
 GVariant *g_dbus_connection_call_with_unix_fd_list_sync       (GDBusConnection    *connection,
                                                                const gchar        *bus_name,
                                                                const gchar        *object_path,
@@ -402,7 +402,7 @@ struct _GDBusInterfaceVTable
   gpointer padding[8];
 };
 
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 guint            g_dbus_connection_register_object            (GDBusConnection            *connection,
                                                                const gchar                *object_path,
                                                                GDBusInterfaceInfo         *interface_info,
@@ -410,7 +410,7 @@ guint            g_dbus_connection_register_object            (GDBusConnection  
                                                                gpointer                    user_data,
                                                                GDestroyNotify              user_data_free_func,
                                                                GError                    **error);
-GLIB_AVAILABLE_IN_2_46
+GIO_AVAILABLE_IN_2_46
 guint            g_dbus_connection_register_object_with_closures (GDBusConnection         *connection,
                                                                   const gchar             *object_path,
                                                                   GDBusInterfaceInfo      *interface_info,
@@ -418,7 +418,7 @@ guint            g_dbus_connection_register_object_with_closures (GDBusConnectio
                                                                   GClosure                *get_property_closure,
                                                                   GClosure                *set_property_closure,
                                                                   GError                 **error);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 gboolean         g_dbus_connection_unregister_object          (GDBusConnection            *connection,
                                                                guint                       registration_id);
 
@@ -540,7 +540,7 @@ struct _GDBusSubtreeVTable
   gpointer padding[8];
 };
 
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 guint            g_dbus_connection_register_subtree           (GDBusConnection            *connection,
                                                                const gchar                *object_path,
                                                                const GDBusSubtreeVTable   *vtable,
@@ -548,7 +548,7 @@ guint            g_dbus_connection_register_subtree           (GDBusConnection  
                                                                gpointer                    user_data,
                                                                GDestroyNotify              user_data_free_func,
                                                                GError                    **error);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 gboolean         g_dbus_connection_unregister_subtree         (GDBusConnection            *connection,
                                                                guint                       registration_id);
 
@@ -577,7 +577,7 @@ typedef void (*GDBusSignalCallback) (GDBusConnection  *connection,
                                      GVariant         *parameters,
                                      gpointer          user_data);
 
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 guint            g_dbus_connection_signal_subscribe           (GDBusConnection     *connection,
                                                                const gchar         *sender,
                                                                const gchar         *interface_name,
@@ -588,7 +588,7 @@ guint            g_dbus_connection_signal_subscribe           (GDBusConnection  
                                                                GDBusSignalCallback  callback,
                                                                gpointer             user_data,
                                                                GDestroyNotify       user_data_free_func);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 void             g_dbus_connection_signal_unsubscribe         (GDBusConnection     *connection,
                                                                guint                subscription_id);
 
@@ -673,13 +673,13 @@ typedef GDBusMessage *(*GDBusMessageFilterFunction) (GDBusConnection *connection
                                                      gboolean         incoming,
                                                      gpointer         user_data);
 
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 guint g_dbus_connection_add_filter (GDBusConnection            *connection,
                                     GDBusMessageFilterFunction  filter_function,
                                     gpointer                    user_data,
                                     GDestroyNotify              user_data_free_func);
 
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 void  g_dbus_connection_remove_filter (GDBusConnection    *connection,
                                        guint               filter_id);
 

@@ -66,7 +66,7 @@ struct _GLocalFileMonitorClass
 };
 
 #ifdef G_OS_UNIX
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 #endif
 GType           g_local_file_monitor_get_type (void) G_GNUC_CONST;
 
@@ -93,7 +93,7 @@ g_local_file_monitor_new_in_worker (const gchar           *pathname,
                                     GError               **error);
 
 /* for implementations of GLocalFileMonitor */
-GLIB_AVAILABLE_IN_2_44
+GIO_AVAILABLE_IN_2_44
 gboolean
 g_file_monitor_source_handle_event (GFileMonitorSource *fms,
                                     GFileMonitorEvent   event_type,
