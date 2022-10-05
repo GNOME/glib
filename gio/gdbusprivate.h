@@ -23,10 +23,6 @@
 #ifndef __G_DBUS_PRIVATE_H__
 #define __G_DBUS_PRIVATE_H__
 
-#if !defined (GIO_COMPILATION)
-#error "gdbusprivate.h is a private header file."
-#endif
-
 #include <gio/giotypes.h>
 
 G_BEGIN_DECLS

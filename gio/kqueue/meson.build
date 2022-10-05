@@ -10,4 +10,4 @@ kqueue_lib = static_library('kqueue',
   include_directories : [configinc, glibinc, gmoduleinc],
   dependencies : [gioenumtypes_dep],
   pic : true,
-  c_args : gio_c_args)
+  c_args : [gio_c_args, gio_c_args_internal])

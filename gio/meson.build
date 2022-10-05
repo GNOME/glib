@@ -1,9 +1,12 @@
 gio_c_args = [
   '-DG_LOG_DOMAIN="GLib-GIO"',
-  '-DGIO_COMPILATION',
   '-DGIO_LAUNCH_DESKTOP="@0@"'.format(glib_prefix / multiarch_libexecdir / 'gio-launch-desktop'),
   '-DGIO_MODULE_DIR="@0@"'.format(glib_giomodulesdir),
   '-DLOCALSTATEDIR="@0@"'.format(glib_localstatedir),
+]
+
+gio_c_args_internal = [
+  '-DGIO_COMPILATION',
 ]
 
 # FIXME: Install empty glib_giomodulesdir
@@ -837,8 +840,8 @@ libgio = library('gio-2.0',
                   libgobject_dep, libgmodule_dep, selinux_dep, xattr_dep,
                   platform_deps, network_libs, libsysprof_capture_dep,
                   gioenumtypes_dep, gvdb_dep],
-  c_args : gio_c_args,
-  objc_args : gio_c_args,
+  c_args : [gio_c_args, gio_c_args_internal],
+  objc_args : [gio_c_args, gio_c_args_internal],
   gnu_symbol_visibility : 'hidden',
   # intl.lib is not compatible with SAFESEH
   link_args : [noseh_link_args, glib_link_flags],

@@ -24,8 +24,6 @@
 #include <glib.h>
 #include <gstdio.h>
 #include <gi18n.h>
-#include <gioenums.h>
-
 #include <string.h>
 #include <stdio.h>
 #include <locale.h>
@@ -37,6 +35,8 @@
 #include <io.h>
 #endif
 
+#define __GIO_GIO_H_INSIDE__
+#include <gio/gioenums.h>
 #include <gio/gmemoryoutputstream.h>
 #include <gio/gzlibcompressor.h>
 #include <gio/gconverteroutputstream.h>
