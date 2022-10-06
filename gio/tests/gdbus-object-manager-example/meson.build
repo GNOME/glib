@@ -1,4 +1,9 @@
-# FIXME: set UNINSTALLED_GLIB_{SRC|BUILD}DIR=top_{src|build}dir ?
+gvisibility_h = configure_file(
+  output: 'gdbus-example-objectmanager-visibility.h',
+  command: [gen_visibility_macros, '2.0', 'visibility-macros',
+            'GDBUS_OBJECT_MANAGER_EXAMPLE', '@OUTPUT@'],
+)
+
 gdbus_example_objectmanager_xml = files('gdbus-example-objectmanager.xml')
 gdbus_example_objectmanager_generated = custom_target('objectmanager-gen',
   input  : gdbus_example_objectmanager_xml,
@@ -13,8 +18,8 @@ gdbus_example_objectmanager_generated = custom_target('objectmanager-gen',
              '--output-directory', '@OUTDIR@',
              '--generate-c-code', 'objectmanager-gen',
              '--generate-docbook', 'objectmanager-gen',
-             '--symbol-decorator', '_GLIB_EXTERN',
-             '--symbol-decorator-define', 'HAVE_CONFIG_H',
+             '--symbol-decorator', 'GDBUS_OBJECT_MANAGER_EXAMPLE_AVAILABLE_IN_ALL',
+             '--symbol-decorator-header', 'gdbus-example-objectmanager-visibility.h',
              '@INPUT@'])
 
 gdbus_example_objectmanager_rst_gen = custom_target('objectmanager-rst-gen',
@@ -33,9 +38,15 @@ gdbus_example_objectmanager_rst_gen = custom_target('objectmanager-rst-gen',
   ],
 )
 
+extra_c_args = []
+if get_option('default_library') == 'static'
+  extra_c_args = '-DGDBUS_OBJECT_MANAGER_EXAMPLE_STATIC_COMPILATION'
+endif
+
 libgdbus_example_objectmanager = library('gdbus-example-objectmanager',
-    gdbus_example_objectmanager_generated,
-    c_args : test_c_args,
+    gdbus_example_objectmanager_generated, gvisibility_h,
+    c_args : [test_c_args, extra_c_args,
+              '-DGDBUS_OBJECT_MANAGER_EXAMPLE_COMPILATION'],
     dependencies : [libglib_dep, libgmodule_dep, libgobject_dep, libgio_dep],
     install : installed_tests_enabled,
     install_dir : installed_tests_execdir)
@@ -46,4 +57,6 @@ libgdbus_example_objectmanager_dep = declare_dependency(
     gdbus_example_objectmanager_rst_gen[0],
   ],
   link_with : libgdbus_example_objectmanager,
-  dependencies : [libgio_dep])
+  dependencies : [libgio_dep],
+  compile_args : extra_c_args,
+)
