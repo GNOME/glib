@@ -2029,6 +2029,7 @@ gi_ir_node_build_typelib (GIIrNode         *node,
         blob->struct_offset = vfunc->offset;
         blob->reserved2 = 0;
         blob->signature = signature;
+        blob->is_static = vfunc->is_static;
 
         gi_ir_node_build_typelib ((GIIrNode *)vfunc->result->type,
                                   node, build, &signature, offset2, NULL);

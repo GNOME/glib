@@ -243,6 +243,8 @@ struct _GIIrNodeVFunc
   uint8_t instance_transfer_full : 1;
   uint8_t is_async : 1;
 
+  uint8_t is_static : 1;
+
   char *invoker;  /* (owned) */
   char *finish_func;  /* (owned) */
   char *sync_func;  /* (owned) */
