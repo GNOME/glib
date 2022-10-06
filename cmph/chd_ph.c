@@ -579,7 +579,7 @@ static inline cmph_uint8 chd_ph_check_bin_hashing(chd_ph_config_data_t *chd_ph, 
 {
 	register cmph_uint32 bucket_size, i, j;
 	register cmph_uint32 position, probe0_num, probe1_num;
-	register cmph_uint32 m = 0;
+	G_GNUC_UNUSED register cmph_uint32 m = 0;
 	register chd_ph_item_t * item;
 	if(chd_ph->keys_per_bin > 1)
 		memset(chd_ph->occup_table, 0, chd_ph->n);
@@ -596,7 +596,9 @@ static inline cmph_uint8 chd_ph_check_bin_hashing(chd_ph_config_data_t *chd_ph, 
 			probe1_num = disp_table[buckets[i].bucket_id] / chd_ph->n;
 			for(; j > 0; j--)
 			{
+#ifdef DEBUG
 				m++;
+#endif
 				position = (cmph_uint32)((item->f + ((cmph_uint64 )item->h) * probe0_num + probe1_num) % chd_ph->n);
 				if(chd_ph->keys_per_bin > 1)
 				{
