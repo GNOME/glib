@@ -21,7 +21,7 @@ static cmph_uint8 check_for_collisions_h2(fch_config_data_t *fch, fch_buckets_t 
 static void permut(cmph_uint32 * vector, cmph_uint32 n);
 static cmph_uint8 searching(fch_config_data_t *fch, fch_buckets_t *buckets, cmph_uint32 *sorted_indexes);
 
-fch_config_data_t *fch_config_new()
+fch_config_data_t *fch_config_new(void)
 {
 	fch_config_data_t *fch;
 	fch = (fch_config_data_t *)malloc(sizeof(fch_config_data_t));
