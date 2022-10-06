@@ -106,7 +106,7 @@ g_icon_hash (gconstpointer icon)
 }
 
 /**
- * g_icon_equal:
+ * g_icon_equal: (virtual equal)
  * @icon1: (nullable): pointer to the first #GIcon.
  * @icon2: (nullable): pointer to the second #GIcon.
  * 
@@ -646,7 +646,7 @@ g_icon_deserialize (GVariant *value)
 }
 
 /**
- * g_icon_serialize:
+ * g_icon_serialize: (virtual serialize)
  * @icon: a #GIcon
  *
  * Serializes a #GIcon into a #GVariant. An equivalent #GIcon can be retrieved
