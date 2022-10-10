@@ -1644,8 +1644,8 @@ done_query:
  *
  * Note that keys that expect UTF-8 strings (specifically `"MESSAGE"` and
  * `"GLIB_DOMAIN"`) must be passed as NUL-terminated UTF-8 strings until GLib
- * version 2.76 because the default log handler did not consider the length of
- * the `GLogField`. Starting with GLib 2.76 this is fixed and
+ * version 2.74.1 because the default log handler did not consider the length of
+ * the `GLogField`. Starting with GLib 2.74.1 this is fixed and
  * non-NUL-terminated UTF-8 strings can be passed with their correct length.
  *
  * The @log_domain will be converted into a `GLIB_DOMAIN` field. @log_level will
