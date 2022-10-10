@@ -354,7 +354,9 @@ test_unichar_script (void)
     { G_UNICODE_SCRIPT_OLD_UYGHUR,             0x10F70 },
     { G_UNICODE_SCRIPT_TANGSA,                 0x16A70 },
     { G_UNICODE_SCRIPT_TOTO,                   0x1E290 },
-    { G_UNICODE_SCRIPT_VITHKUQI,               0x10570 }
+    { G_UNICODE_SCRIPT_VITHKUQI,               0x10570 },
+    { G_UNICODE_SCRIPT_KAWI,                   0x11F00 },
+    { G_UNICODE_SCRIPT_NAG_MUNDARI,            0x1E4D0 },
   };
   for (i = 0; i < G_N_ELEMENTS (examples); i++)
     g_assert_cmpint (g_unichar_get_script (examples[i].c), ==, examples[i].script);
@@ -1848,7 +1850,11 @@ test_iso15924 (void)
     { G_UNICODE_SCRIPT_OLD_UYGHUR,             "Ougr" },
     { G_UNICODE_SCRIPT_TANGSA,                 "Tnsa" },
     { G_UNICODE_SCRIPT_TOTO,                   "Toto" },
-    { G_UNICODE_SCRIPT_VITHKUQI,               "Vith" }
+    { G_UNICODE_SCRIPT_VITHKUQI,               "Vith" },
+
+    /* Unicode 15.0 additions */
+    { G_UNICODE_SCRIPT_KAWI,                   "Kawi" },
+    { G_UNICODE_SCRIPT_NAG_MUNDARI,            "Nagm" },
   };
   guint i;
 
@@ -1873,6 +1879,7 @@ test_iso15924 (void)
                            data[i].four_letter_code[2],
                            data[i].four_letter_code[3]);
 
+      g_test_message ("Testing script %s (code %u)", data[i].four_letter_code, code);
       g_assert_cmphex (g_unicode_script_to_iso15924 (data[i].script), ==, code);
       g_assert_cmpint (g_unicode_script_from_iso15924 (code), ==, data[i].script);
     }
