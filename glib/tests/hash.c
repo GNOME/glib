@@ -460,6 +460,19 @@ int64_hash_test (void)
 }
 
 static void
+int64_hash_collision_test (void)
+{
+  gint64 m;
+  gint64 n;
+
+  g_test_summary ("Check int64 Hash collisions caused by ignoring high word");
+
+  m = 722;
+  n = ((gint64) 2003 << 32) + 722;
+  g_assert_cmpuint (g_int64_hash (&m), !=, g_int64_hash (&n));
+}
+
+static void
 double_hash_test (void)
 {
   gint       i, rc;
@@ -486,6 +499,27 @@ double_hash_test (void)
     }
 
   g_hash_table_destroy (h);
+}
+
+static void
+double_hash_collision_test (void)
+{
+  gdouble m;
+  gdouble n;
+
+  g_test_summary ("Check double Hash collisions caused by int conversion " \
+                  "and by numbers larger than 2^64-1 (G_MAXUINT64)");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/2771");
+
+  /* Equal when directly converted to integers */
+  m = 0.1;
+  n = 0.2;
+  g_assert_cmpuint (g_double_hash (&m), !=, g_double_hash (&n));
+
+  /* Numbers larger than 2^64-1 (G_MAXUINT64) */
+  m = 1e100;
+  n = 1e200;
+  g_assert_cmpuint (g_double_hash (&m), !=, g_double_hash (&n));
 }
 
 static void
@@ -1715,7 +1749,9 @@ main (int argc, char *argv[])
   g_test_add_func ("/hash/direct2", direct_hash_test2);
   g_test_add_func ("/hash/int", int_hash_test);
   g_test_add_func ("/hash/int64", int64_hash_test);
+  g_test_add_func ("/hash/int64/collisions", int64_hash_collision_test);
   g_test_add_func ("/hash/double", double_hash_test);
+  g_test_add_func ("/hash/double/collisions", double_hash_collision_test);
   g_test_add_func ("/hash/string", string_hash_test);
   g_test_add_func ("/hash/set", set_hash_test);
   g_test_add_func ("/hash/set-ref", set_ref_hash_test);
