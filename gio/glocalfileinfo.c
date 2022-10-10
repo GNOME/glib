@@ -2800,6 +2800,7 @@ set_mtime_atime (char                       *filename,
       return FALSE;
     }
 
+#if defined (HAVE_UTIMENSAT)
   res = utimensat (AT_FDCWD, filename, times_n, 0);
   if (res == -1)
     {
@@ -2811,6 +2812,7 @@ set_mtime_atime (char                       *filename,
                    g_strerror (errsv));
       return FALSE;
     }
+#endif
   return TRUE;
 }
 #endif
