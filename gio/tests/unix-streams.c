@@ -146,7 +146,9 @@ main_thread_skipped (GObject *source, GAsyncResult *res, gpointer user_data)
 
   if (g_cancellable_is_cancelled (main_cancel))
     {
+      g_assert_error (err, G_IO_ERROR, G_IO_ERROR_CANCELLED);
       do_main_cancel (out);
+      g_clear_error (&err);
       return;
     }
 
@@ -180,6 +182,7 @@ main_thread_read (GObject *source, GAsyncResult *res, gpointer user_data)
 
   if (g_cancellable_is_cancelled (main_cancel))
     {
+      g_assert_error (err, G_IO_ERROR, G_IO_ERROR_CANCELLED);
       do_main_cancel (out);
       g_clear_error (&err);
       return;
@@ -217,6 +220,7 @@ main_thread_wrote (GObject *source, GAsyncResult *res, gpointer user_data)
 
   if (g_cancellable_is_cancelled (main_cancel))
     {
+      g_assert_error (err, G_IO_ERROR, G_IO_ERROR_CANCELLED);
       do_main_cancel (out);
       g_clear_error (&err);
       return;
