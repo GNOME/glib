@@ -959,6 +959,8 @@ g_date_time_new_now (GTimeZone *tz)
 {
   gint64 now_us;
 
+  g_return_val_if_fail (tz != NULL, NULL);
+
   now_us = g_get_real_time ();
 
   return g_date_time_new_from_unix (tz, now_us);
