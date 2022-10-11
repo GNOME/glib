@@ -350,6 +350,25 @@ test_param_spec_param (void)
 }
 
 static void
+test_param_spec_null_param (void)
+{
+  GParamSpec *pspec;
+  GValue value = G_VALUE_INIT;
+
+  pspec = g_param_spec_param ("param", NULL, NULL,
+                              G_TYPE_PARAM_POINTER, G_PARAM_READWRITE);
+
+  g_assert_cmpstr (g_param_spec_get_name (pspec), ==, "param");
+
+  g_value_init (&value, G_TYPE_PARAM_POINTER);
+  g_assert_false (g_param_value_is_valid (pspec, &value));
+  g_assert_false (g_param_value_validate (pspec, &value));
+
+  g_value_unset (&value);
+  g_param_spec_unref (pspec);
+}
+
+static void
 test_param_spec_string (void)
 {
   GParamSpec *pspec;
@@ -1654,6 +1673,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/paramspec/double", test_param_spec_double);
   g_test_add_func ("/paramspec/unichar", test_param_spec_unichar);
   g_test_add_func ("/paramspec/param", test_param_spec_param);
+  g_test_add_func ("/paramspec/null-param", test_param_spec_null_param);
   g_test_add_func ("/paramspec/string", test_param_spec_string);
   g_test_add_func ("/paramspec/override", test_param_spec_override);
   g_test_add_func ("/paramspec/gtype", test_param_spec_gtype);
