@@ -49,6 +49,12 @@ if get_option('gtk_doc')
     default_options : ['tests=false'])
 endif
 
+# We cannot built the API reference off of a static library,
+# as symbols might get dropped by the linker
+if get_option('gtk_doc') and get_option('default_library') == 'static'
+  error('The API reference can only be built against a shared library')
+endif
+
 subdir('gio')
 subdir('glib')
 subdir('gobject')
