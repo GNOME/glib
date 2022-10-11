@@ -2690,8 +2690,6 @@ set_mtime_atime (char                       *filename,
 {
   int res;
   guint64 val = 0;
-  guint32 val_usec = 0;
-  guint32 val_nsec = 0;
   struct stat statbuf;
   gboolean got_stat = FALSE;
 #ifdef HAVE_UTIMENSAT
@@ -2715,15 +2713,11 @@ set_mtime_atime (char                       *filename,
 #endif
 	}
     }
-  
-  if (atime_usec_value)
-    {
-      if (!get_uint32 (atime_usec_value, &val_usec, error))
-	return FALSE;
-    }
 
   if (atime_nsec_value)
     {
+      guint32 val_nsec = 0;
+
       if (!get_uint32 (atime_nsec_value, &val_nsec, error))
         return FALSE;
       times_n[0].tv_nsec = val_nsec;
@@ -2747,14 +2741,11 @@ set_mtime_atime (char                       *filename,
 #endif
 	}
     }
-  
-  if (mtime_usec_value)
-    {
-      if (!get_uint32 (mtime_usec_value, &val_usec, error))
-	return FALSE;
-    }
+
   if (mtime_nsec_value)
     {
+      guint32 val_nsec = 0;
+
       if (!get_uint32 (mtime_nsec_value, &val_nsec, error))
         return FALSE;
       times_n[1].tv_nsec = val_nsec;
@@ -2789,15 +2780,12 @@ set_mtime_atime (char                       *filename,
 
   if (atime_usec_value)
     {
+      guint32 val_usec = 0;
+
       if (!get_uint32 (atime_usec_value, &val_usec, error))
         return FALSE;
-      times[0].tv_usec = val_usec;
-    }
 
-  if (atime_nsec_value)
-    {
-      if (!get_uint32 (atime_nsec_value, &val_nsec, error))
-        return FALSE;
+      times[0].tv_usec = val_usec;
     }
 
   /* MTIME */
@@ -2823,15 +2811,12 @@ set_mtime_atime (char                       *filename,
 
   if (mtime_usec_value)
     {
+      guint32 val_usec = 0;
+
       if (!get_uint32 (mtime_usec_value, &val_usec, error))
         return FALSE;
-      times[1].tv_usec = val_usec;
-    }
 
-  if (mtime_nsec_value)
-    {
-      if (!get_uint32 (mtime_nsec_value, &val_nsec, error))
-        return FALSE;
+      times[1].tv_usec = val_usec;
     }
 
   res = utimes (filename, times);
