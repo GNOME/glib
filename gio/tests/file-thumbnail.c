@@ -35,6 +35,8 @@
 static const char * SIZES_NAMES[] = {
   "normal",
   "large",
+  "x-large",
+  "xx-large",
 };
 
 static GFile *
