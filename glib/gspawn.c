@@ -162,8 +162,6 @@ extern char **environ;
  */
 
 
-static void safe_close (gint fd);
-
 static gint g_execute (const gchar  *file,
                        gchar       **argv,
                        gchar       **argv_buffer,
@@ -267,11 +265,9 @@ close_and_invalidate (gint *fd)
 {
   if (*fd < 0)
     return;
-  else
-    {
-      safe_close (*fd);
-      *fd = -1;
-    }
+
+  g_close (*fd, NULL);
+  *fd = -1;
 }
 
 /* Some versions of OS X define READ_OK in public headers */
@@ -1340,30 +1336,11 @@ dupfd_cloexec (int old_fd, int new_fd_min)
 
 /* This function is called between fork() and exec() and hence must be
  * async-signal-safe (see signal-safety(7)). */
-static void
-safe_close (gint fd)
-{
-  /* Note that this function is (also) called after fork(), so it cannot use
-   * g_close().
-   * Note that it is however called both from the parent and the child
-   * process.
-   *
-   * This function returns no error, because there is nothing what the caller
-   * could do with that information. That is even the case for EINTR. See
-   * g_close() about the specialty of EINTR and why that is correct.
-   * If g_close() ever gets extended to handle EINTR specially, then this place
-   * and all other direct calls to close() need updating.
-   */
-  close (fd);
-}
-
-/* This function is called between fork() and exec() and hence must be
- * async-signal-safe (see signal-safety(7)). */
 G_GNUC_UNUSED static int
 close_func (void *data, int fd)
 {
   if (fd >= GPOINTER_TO_INT (data))
-    safe_close (fd);
+    g_close (fd, NULL);
 
   return 0;
 }
@@ -1458,7 +1435,7 @@ safe_fdwalk (int (*cb)(void *data, int fd), void *data)
             }
         }
 
-      safe_close (dir_fd);
+      g_close (dir_fd, NULL);
       return res;
     }
 
