@@ -1426,8 +1426,10 @@ get_thumbnail_attributes (const char     *path,
 {
   GChecksum *checksum;
   char *uri;
-  char *filename;
+  char *filename = NULL;
   char *basename;
+  const char *size_dirs[4] = { "xx-large", "x-large", "large", "normal" };
+  gsize i;
 
   uri = g_filename_to_uri (path, NULL, NULL);
 
@@ -1437,11 +1439,18 @@ get_thumbnail_attributes (const char     *path,
   basename = g_strconcat (g_checksum_get_string (checksum), ".png", NULL);
   g_checksum_free (checksum);
 
-  filename = g_build_filename (g_get_user_cache_dir (),
-                               "thumbnails", "large", basename,
-                               NULL);
+  for (i = 0; i < G_N_ELEMENTS (size_dirs); i++)
+    {
+      filename = g_build_filename (g_get_user_cache_dir (),
+                                   "thumbnails", size_dirs[i], basename,
+                                   NULL);
+      if (g_file_test (filename, G_FILE_TEST_IS_REGULAR))
+        break;
 
-  if (g_file_test (filename, G_FILE_TEST_IS_REGULAR))
+      g_clear_pointer (&filename, g_free);
+    }
+
+  if (filename)
     {
       _g_file_info_set_attribute_byte_string_by_id (info, G_FILE_ATTRIBUTE_ID_THUMBNAIL_PATH, filename);
       _g_file_info_set_attribute_boolean_by_id (info, G_FILE_ATTRIBUTE_ID_THUMBNAIL_IS_VALID,
@@ -1449,32 +1458,17 @@ get_thumbnail_attributes (const char     *path,
     }
   else
     {
-      g_free (filename);
       filename = g_build_filename (g_get_user_cache_dir (),
-                                   "thumbnails", "normal", basename,
+                                   "thumbnails", "fail",
+                                   "gnome-thumbnail-factory",
+                                   basename,
                                    NULL);
 
       if (g_file_test (filename, G_FILE_TEST_IS_REGULAR))
         {
-          _g_file_info_set_attribute_byte_string_by_id (info, G_FILE_ATTRIBUTE_ID_THUMBNAIL_PATH, filename);
+          _g_file_info_set_attribute_boolean_by_id (info, G_FILE_ATTRIBUTE_ID_THUMBNAILING_FAILED, TRUE);
           _g_file_info_set_attribute_boolean_by_id (info, G_FILE_ATTRIBUTE_ID_THUMBNAIL_IS_VALID,
                                                     thumbnail_verify (filename, uri, stat_buf));
-        }
-      else
-        {
-          g_free (filename);
-          filename = g_build_filename (g_get_user_cache_dir (),
-                                       "thumbnails", "fail",
-                                       "gnome-thumbnail-factory",
-                                       basename,
-                                       NULL);
-
-          if (g_file_test (filename, G_FILE_TEST_IS_REGULAR))
-            {
-              _g_file_info_set_attribute_boolean_by_id (info, G_FILE_ATTRIBUTE_ID_THUMBNAILING_FAILED, TRUE);
-              _g_file_info_set_attribute_boolean_by_id (info, G_FILE_ATTRIBUTE_ID_THUMBNAIL_IS_VALID,
-                                                        thumbnail_verify (filename, uri, stat_buf));
-            }
         }
     }
   g_free (basename);

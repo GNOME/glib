@@ -63,6 +63,7 @@ gio_tests = {
   'data-input-stream' : {},
   'data-output-stream' : {},
   'error': {},
+  'file-thumbnail' : {},
   'fileattributematcher' : {},
   'filter-streams' : {},
   'giomodule' : {
