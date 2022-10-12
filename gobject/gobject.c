@@ -1766,7 +1766,8 @@ static inline void
 object_set_property (GObject             *object,
 		     GParamSpec          *pspec,
 		     const GValue        *value,
-		     GObjectNotifyQueue  *nqueue)
+		     GObjectNotifyQueue  *nqueue,
+		     gboolean             user_specified)
 {
   GTypeInstance *inst = (GTypeInstance *) object;
   GObjectClass *class;
@@ -1782,7 +1783,8 @@ object_set_property (GObject             *object,
 
   param_spec_follow_override (&pspec);
 
-  consider_issuing_property_deprecation_warning (pspec);
+  if (user_specified)
+    consider_issuing_property_deprecation_warning (pspec);
 
   pclass = G_PARAM_SPEC_GET_CLASS (pspec);
   if (g_value_type_compatible (G_VALUE_TYPE (value), pspec->value_type) &&
@@ -2202,7 +2204,7 @@ g_object_new_with_custom_constructor (GObjectClass          *class,
   /* set remaining properties */
   for (i = 0; i < n_params; i++)
     if (!(params[i].pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY)))
-      object_set_property (object, params[i].pspec, params[i].value, nqueue);
+      object_set_property (object, params[i].pspec, params[i].value, nqueue, TRUE);
 
   /* If nqueue is non-NULL then we are frozen.  Thaw it. */
   if (nqueue)
@@ -2252,6 +2254,7 @@ g_object_new_internal (GObjectClass          *class,
           const GValue *value;
           GParamSpec *pspec;
           guint j;
+          gboolean user_specified = FALSE;
 
           pspec = node->data;
           value = NULL; /* to silence gcc... */
@@ -2260,13 +2263,14 @@ g_object_new_internal (GObjectClass          *class,
             if (params[j].pspec == pspec)
               {
                 value = params[j].value;
+                user_specified = TRUE;
                 break;
               }
 
           if (value == NULL)
             value = g_param_spec_get_default_value (pspec);
 
-          object_set_property (object, pspec, value, nqueue);
+          object_set_property (object, pspec, value, nqueue, user_specified);
         }
     }
 
@@ -2279,7 +2283,7 @@ g_object_new_internal (GObjectClass          *class,
    */
   for (i = 0; i < n_params; i++)
     if (!(params[i].pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY)))
-      object_set_property (object, params[i].pspec, params[i].value, nqueue);
+      object_set_property (object, params[i].pspec, params[i].value, nqueue, TRUE);
 
   if (nqueue)
     g_object_notify_queue_thaw (object, nqueue);
@@ -2610,7 +2614,7 @@ g_object_constructor (GType                  type,
 	  GParamSpec *pspec = construct_params->pspec;
 
 	  construct_params++;
-	  object_set_property (object, pspec, value, nqueue);
+	  object_set_property (object, pspec, value, nqueue, TRUE);
 	}
       g_object_notify_queue_thaw (object, nqueue);
       /* the notification queue is still frozen from g_object_init(), so
@@ -2698,7 +2702,7 @@ g_object_setv (GObject       *object,
       if (!g_object_set_is_valid_property (object, pspec, names[i]))
         break;
 
-      object_set_property (object, pspec, &values[i], nqueue);
+      object_set_property (object, pspec, &values[i], nqueue, TRUE);
     }
 
   if (nqueue)
@@ -2756,7 +2760,7 @@ g_object_set_valist (GObject	 *object,
 	  break;
 	}
 
-      object_set_property (object, pspec, &value, nqueue);
+      object_set_property (object, pspec, &value, nqueue, TRUE);
 
       /* We open-code g_value_unset() here to avoid the
        * cost of looking up the GTypeValueTable again.
