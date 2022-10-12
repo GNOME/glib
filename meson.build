@@ -2282,7 +2282,7 @@ endif
 
 glib_conf.set('HAVE_PROC_SELF_CMDLINE', have_proc_self_cmdline)
 
-python = import('python').find_installation('python3')
+python = import('python').find_installation()
 # used for '#!/usr/bin/env <name>'
 python_name = 'python3'
 
