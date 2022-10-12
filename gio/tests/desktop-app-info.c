@@ -551,7 +551,11 @@ test_actions (void)
   const char *expected[] = { "frob", "tweak", "twiddle", "broken", NULL };
   const gchar * const *actions;
   GDesktopAppInfo *appinfo;
+  const gchar *tmpdir;
   gchar *name;
+  gchar *frob_path;
+  gchar *tweak_path;
+  gchar *twiddle_path;
 
   appinfo = g_desktop_app_info_new_from_filename (g_test_get_filename (G_TEST_DIST, "appinfo-test-actions.desktop", NULL));
   g_assert_nonnull (appinfo);
@@ -576,17 +580,28 @@ test_actions (void)
   g_assert_true (g_utf8_validate (name, -1, NULL));
   g_free (name);
 
-  unlink ("frob"); unlink ("tweak"); unlink ("twiddle");
+  tmpdir = g_getenv ("G_TEST_TMPDIR");
+  g_assert_nonnull (tmpdir);
+  frob_path = g_build_filename (tmpdir, "frob", NULL);
+  tweak_path = g_build_filename (tmpdir, "tweak", NULL);
+  twiddle_path = g_build_filename (tmpdir, "twiddle", NULL);
+
+  g_assert_false (g_file_test (frob_path, G_FILE_TEST_EXISTS));
+  g_assert_false (g_file_test (tweak_path, G_FILE_TEST_EXISTS));
+  g_assert_false (g_file_test (twiddle_path, G_FILE_TEST_EXISTS));
 
   g_desktop_app_info_launch_action (appinfo, "frob", NULL);
-  wait_for_file ("frob", "tweak", "twiddle");
+  wait_for_file (frob_path, tweak_path, twiddle_path);
 
   g_desktop_app_info_launch_action (appinfo, "tweak", NULL);
-  wait_for_file ("tweak", "frob", "twiddle");
+  wait_for_file (tweak_path, frob_path, twiddle_path);
 
   g_desktop_app_info_launch_action (appinfo, "twiddle", NULL);
-  wait_for_file ("twiddle", "frob", "tweak");
+  wait_for_file (twiddle_path, frob_path, tweak_path);
 
+  g_free (frob_path);
+  g_free (tweak_path);
+  g_free (twiddle_path);
   g_object_unref (appinfo);
 }
 
