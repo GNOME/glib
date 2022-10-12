@@ -227,7 +227,7 @@ if host_machine.system() != 'windows'
   }
 
   # LD_PRELOAD modules don't work so well with AddressSanitizer
-  if have_rtld_next and get_option('b_sanitize') == 'none'
+  if have_rtld_next and get_option('default_library') != 'static' and get_option('b_sanitize') == 'none'
     gio_tests += {
       'gsocketclient-slow' : {
         'depends' : [
@@ -656,25 +656,27 @@ if meson.can_run_host_binaries()
 
   compiler_type = '--compiler=@0@'.format(cc.get_id())
 
-  plugin_resources_c = custom_target('plugin-resources.c',
-    input : 'test4.gresource.xml',
-    output : 'plugin-resources.c',
-    command : [glib_compile_resources,
-               compiler_type,
-               '--target=@OUTPUT@',
-               '--sourcedir=' + meson.current_source_dir(),
-               '--internal',
-               '--generate-source',
-               '--c-name', '_g_plugin',
-               '@INPUT@'])
+  if get_option('default_library') != 'static'
+    plugin_resources_c = custom_target('plugin-resources.c',
+      input : 'test4.gresource.xml',
+      output : 'plugin-resources.c',
+      command : [glib_compile_resources,
+                 compiler_type,
+                 '--target=@OUTPUT@',
+                 '--sourcedir=' + meson.current_source_dir(),
+                 '--internal',
+                 '--generate-source',
+                 '--c-name', '_g_plugin',
+                 '@INPUT@'])
 
-  shared_module('resourceplugin', 'resourceplugin.c', plugin_resources_c,
-    link_args : export_dynamic_ldflags,
-    dependencies : common_gio_tests_deps,
-    install_dir : installed_tests_execdir,
-    install_tag : 'tests',
-    install : installed_tests_enabled
-  )
+    shared_module('resourceplugin', 'resourceplugin.c', plugin_resources_c,
+      link_args : export_dynamic_ldflags,
+      dependencies : common_gio_tests_deps,
+      install_dir : installed_tests_execdir,
+      install_tag : 'tests',
+      install : installed_tests_enabled
+    )
+  endif
 
   # referenced by test2.gresource.xml
   big_test_resource = custom_target(
@@ -976,4 +978,7 @@ if installed_tests_enabled
 endif
 
 subdir('services')
-subdir('modules')
+
+if get_option('default_library') != 'static'
+  subdir('modules')
+endif

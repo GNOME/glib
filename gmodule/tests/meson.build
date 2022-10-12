@@ -37,22 +37,24 @@ if ['darwin', 'ios'].contains(host_machine.system())
   module_suffix = 'so'
 endif
 
-foreach module : ['moduletestplugin_a', 'moduletestplugin_b']
-  shared_module(module + '_plugin', 'lib@0@.c'.format(module),
-    dependencies : [libglib_dep, libgmodule_dep],
-    install_dir : installed_tests_execdir,
-    install_tag : 'tests',
-    install : installed_tests_enabled,
-    name_suffix : module_suffix
-  )
-  shared_library(module + '_library', 'lib@0@.c'.format(module),
-    dependencies : [libglib_dep, libgmodule_dep],
-    install_dir : installed_tests_execdir,
-    install_tag : 'tests',
-    install : installed_tests_enabled,
-    name_suffix : module_suffix
-  )
-endforeach
+if get_option('default_library') != 'static'
+  foreach module : ['moduletestplugin_a', 'moduletestplugin_b']
+    shared_module(module + '_plugin', 'lib@0@.c'.format(module),
+      dependencies : [libglib_dep, libgmodule_dep],
+      install_dir : installed_tests_execdir,
+      install_tag : 'tests',
+      install : installed_tests_enabled,
+      name_suffix : module_suffix
+    )
+    shared_library(module + '_library', 'lib@0@.c'.format(module),
+      dependencies : [libglib_dep, libgmodule_dep],
+      install_dir : installed_tests_execdir,
+      install_tag : 'tests',
+      install : installed_tests_enabled,
+      name_suffix : module_suffix
+    )
+  endforeach
+endif
 
 test_env = environment()
 test_env.set('G_TEST_SRCDIR', meson.current_source_dir())
