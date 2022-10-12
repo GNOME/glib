@@ -326,6 +326,15 @@ typedef gsize GType;
  */
 #define G_TYPE_PATTERN_SPEC (g_pattern_spec_get_type ())
 
+/**
+ * G_TYPE_BOOKMARK_FILE:
+ *
+ * The #GType for a boxed type holding a #GBookmarkFile.
+ *
+ * Since: 2.76
+ */
+#define G_TYPE_BOOKMARK_FILE (g_bookmark_file_get_type ())
+
 GOBJECT_AVAILABLE_IN_ALL
 GType   g_date_get_type            (void) G_GNUC_CONST;
 GOBJECT_AVAILABLE_IN_ALL
@@ -388,6 +397,8 @@ GOBJECT_AVAILABLE_IN_2_68
 GType   g_tree_get_type            (void) G_GNUC_CONST;
 GOBJECT_AVAILABLE_IN_2_70
 GType g_pattern_spec_get_type (void) G_GNUC_CONST;
+GOBJECT_AVAILABLE_IN_2_76
+GType   g_bookmark_file_get_type   (void) G_GNUC_CONST;
 
 GOBJECT_DEPRECATED_FOR('G_TYPE_VARIANT')
 GType   g_variant_get_gtype        (void) G_GNUC_CONST;
