@@ -13,6 +13,14 @@ cc = meson.get_compiler('c')
 have_cxx = add_languages('cpp', native: false, required: get_option('oss_fuzz').enabled())
 if have_cxx
   cxx = meson.get_compiler('cpp')
+  cxx_standards = {}
+
+  foreach std : ['98', '03', '11', '14', '17', '20', '2b', 'latest']
+    arg = (cxx.get_id() == 'msvc' ? '/std:' : '-std=') + 'c++' + std
+    if cxx.has_argument(arg)
+      cxx_standards += { std: arg }
+    endif
+  endforeach
 endif
 
 cc_can_run = meson.can_run_host_binaries()
