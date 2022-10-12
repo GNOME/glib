@@ -162,7 +162,7 @@ extern char **environ;
  */
 
 
-static gint safe_close (gint fd);
+static void safe_close (gint fd);
 
 static gint g_execute (const gchar  *file,
                        gchar       **argv,
@@ -1340,16 +1340,21 @@ dupfd_cloexec (int old_fd, int new_fd_min)
 
 /* This function is called between fork() and exec() and hence must be
  * async-signal-safe (see signal-safety(7)). */
-static gint
+static void
 safe_close (gint fd)
 {
-  gint ret;
-
-  do
-    ret = close (fd);
-  while (ret < 0 && errno == EINTR);
-
-  return ret;
+  /* Note that this function is (also) called after fork(), so it cannot use
+   * g_close().
+   * Note that it is however called both from the parent and the child
+   * process.
+   *
+   * This function returns no error, because there is nothing what the caller
+   * could do with that information. That is even the case for EINTR. See
+   * g_close() about the specialty of EINTR and why that is correct.
+   * If g_close() ever gets extended to handle EINTR specially, then this place
+   * and all other direct calls to close() need updating.
+   */
+  close (fd);
 }
 
 /* This function is called between fork() and exec() and hence must be
@@ -1358,7 +1363,7 @@ G_GNUC_UNUSED static int
 close_func (void *data, int fd)
 {
   if (fd >= GPOINTER_TO_INT (data))
-    (void) safe_close (fd);
+    safe_close (fd);
 
   return 0;
 }
