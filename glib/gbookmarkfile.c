@@ -300,14 +300,27 @@ bookmark_app_info_dump (BookmarkAppInfo *app_info)
 
   name = g_markup_escape_text (app_info->name, -1);
   exec = g_markup_escape_text (app_info->exec, -1);
-  modified = g_date_time_format_iso8601 (app_info->stamp);
   count = g_strdup_printf ("%u", app_info->count);
+
+  if (app_info->stamp)
+    {
+      char *tmp;
+
+      tmp = g_date_time_format_iso8601 (app_info->stamp);
+      modified = g_strconcat (" " BOOKMARK_MODIFIED_ATTRIBUTE "=\"", tmp, "\"",
+                              NULL);
+      g_free (tmp);
+    }
+  else
+    {
+      modified = g_strdup ("");
+    }
 
   retval = g_strconcat ("          "
                         "<" BOOKMARK_NAMESPACE_NAME ":" BOOKMARK_APPLICATION_ELEMENT
                         " " BOOKMARK_NAME_ATTRIBUTE "=\"", name, "\""
-                        " " BOOKMARK_EXEC_ATTRIBUTE "=\"", exec, "\""
-                        " " BOOKMARK_MODIFIED_ATTRIBUTE "=\"", modified, "\""
+                        " " BOOKMARK_EXEC_ATTRIBUTE "=\"", exec, "\"",
+                        modified,
                         " " BOOKMARK_COUNT_ATTRIBUTE "=\"", count, "\"/>\n",
                         NULL);
 
