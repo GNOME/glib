@@ -1422,9 +1422,11 @@ test_get_contents (void)
   GError *error = NULL;
   const gchar *text = "abcdefghijklmnopqrstuvwxyz";
   const gchar *filename = "file-test-get-contents";
+  gsize bytes_written;
 
   f = g_fopen (filename, "w");
-  fwrite (text, 1, strlen (text), f);
+  bytes_written = fwrite (text, 1, strlen (text), f);
+  g_assert_cmpint (bytes_written, ==, strlen (text));
   fclose (f);
 
   if (g_test_undefined ())
