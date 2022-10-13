@@ -187,7 +187,13 @@ typedef unsigned @glib_intptr_type_define@ guintptr;
 #define GLIB_SYSDEF_POLLERR =@g_pollerr@
 #define GLIB_SYSDEF_POLLNVAL =@g_pollnval@
 
+/* No way to disable deprecation warnings for macros, so only emit deprecation
+ * warnings on platforms where usage of this macro is broken */
+#if defined(__APPLE__) || defined(_MSC_VER) || defined(__CYGWIN__)
+#define G_MODULE_SUFFIX "@g_module_suffix@" GLIB_DEPRECATED_MACRO_IN_2_76
+#else
 #define G_MODULE_SUFFIX "@g_module_suffix@"
+#endif
 
 typedef @g_pid_type@ GPid;
 #define G_PID_FORMAT @g_pid_format@

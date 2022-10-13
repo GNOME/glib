@@ -23,10 +23,16 @@
 #include <gio/gio.h>
 #include <glibconfig.h>
 
-#ifdef _MSC_VER
-# define MODULE_FILENAME_PREFIX ""
+#ifdef G_OS_WIN32
+  #ifdef _MSC_VER
+    #define MODULE_FILENAME(x) "" x ".dll"
+  #else
+    #define MODULE_FILENAME(x) "lib" x ".dll"
+  #endif
+#elif defined(G_OS_DARWIN)
+  #define MODULE_FILENAME(x) "lib" x ".dylib"
 #else
-# define MODULE_FILENAME_PREFIX "lib"
+  #define MODULE_FILENAME(x) "lib" x ".so"
 #endif
 
 static void
@@ -131,7 +137,7 @@ test_module_scan_all_with_scope (void)
 
       ep = g_io_extension_point_register ("test-extension-point");
       scope = g_io_module_scope_new (G_IO_MODULE_SCOPE_BLOCK_DUPLICATES);
-      g_io_module_scope_block (scope, MODULE_FILENAME_PREFIX "testmoduleb." G_MODULE_SUFFIX);
+      g_io_module_scope_block (scope, MODULE_FILENAME ("testmoduleb"));
       g_io_modules_scan_all_in_directory_with_scope (g_test_get_filename (G_TEST_BUILT, "modules", NULL), scope);
       list = g_io_extension_point_get_extensions (ep);
       g_assert_cmpint (g_list_length (list), ==, 1);

@@ -66,10 +66,7 @@ gio_tests = {
   'file-thumbnail' : {},
   'fileattributematcher' : {},
   'filter-streams' : {},
-  'giomodule' : {
-    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
-    'should_fail' : host_system == 'darwin',
-  },
+  'giomodule' : {},
   'gsubprocess' : {},
   'g-file' : {},
   'g-file-info' : {},
