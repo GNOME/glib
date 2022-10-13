@@ -1206,22 +1206,19 @@ test_strdelimit (void)
 static void
 test_has_prefix (void)
 {
-  gboolean res;
   gchar rand_str[10], rand_prefix[8];
 
   if (g_test_undefined ())
     {
       g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
                              "*assertion*!= NULL*");
-      res = (g_str_has_prefix) ("foo", NULL);
+      g_assert_false ((g_str_has_prefix) ("foo", NULL));
       g_test_assert_expected_messages ();
-      g_assert_false (res);
 
       g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
                              "*assertion*!= NULL*");
-      res = (g_str_has_prefix) (NULL, "foo");
+      g_assert_false ((g_str_has_prefix) (NULL, "foo"));
       g_test_assert_expected_messages ();
-      g_assert_false (res);
     }
 
   /* Having a string smaller than the prefix */
@@ -1239,26 +1236,19 @@ test_has_prefix (void)
   rand_str[9] = '\0';
   g_assert_true ((g_str_has_prefix) (rand_str, rand_prefix));
 
-  res = (g_str_has_prefix) ("foo", "bar");
-  g_assert_cmpint (res, ==, FALSE);
+  g_assert_false ((g_str_has_prefix) ("foo", "bar"));
 
-  res = (g_str_has_prefix) ("foo", "foobar");
-  g_assert_cmpint (res, ==, FALSE);
+  g_assert_false ((g_str_has_prefix) ("foo", "foobar"));
 
-  res = (g_str_has_prefix) ("foobar", "bar");
-  g_assert_cmpint (res, ==, FALSE);
+  g_assert_false ((g_str_has_prefix) ("foobar", "bar"));
 
-  res = (g_str_has_prefix) ("foobar", "foo");
-  g_assert_cmpint (res, ==, TRUE);
+  g_assert_true ((g_str_has_prefix) ("foobar", "foo"));
 
-  res = (g_str_has_prefix) ("foo", "");
-  g_assert_cmpint (res, ==, TRUE);
+  g_assert_true ((g_str_has_prefix) ("foo", ""));
 
-  res = (g_str_has_prefix) ("foo", "foo");
-  g_assert_cmpint (res, ==, TRUE);
+  g_assert_true ((g_str_has_prefix) ("foo", "foo"));
 
-  res = (g_str_has_prefix) ("", "");
-  g_assert_cmpint (res, ==, TRUE);
+  g_assert_true ((g_str_has_prefix) ("", ""));
 }
 
 static void
@@ -1325,46 +1315,35 @@ test_has_prefix_macro (void)
 static void
 test_has_suffix (void)
 {
-  gboolean res;
-
   if (g_test_undefined ())
     {
       g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
                              "*assertion*!= NULL*");
-      res = (g_str_has_suffix) ("foo", NULL);
+      g_assert_false ((g_str_has_suffix) ("foo", NULL));
       g_test_assert_expected_messages ();
-      g_assert_false (res);
 
       g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
                              "*assertion*!= NULL*");
-      res = (g_str_has_suffix) (NULL, "foo");
+      g_assert_false ((g_str_has_suffix) (NULL, "foo"));
       g_test_assert_expected_messages ();
-      g_assert_false (res);
     }
 
   /* Having a string smaller than the suffix */
   g_assert_false ((g_str_has_suffix) ("aa", "aaa"));
 
-  res = (g_str_has_suffix) ("foo", "bar");
-  g_assert_false (res);
+  g_assert_false ((g_str_has_suffix) ("foo", "bar"));
 
-  res = (g_str_has_suffix) ("bar", "foobar");
-  g_assert_false (res);
+  g_assert_false ((g_str_has_suffix) ("bar", "foobar"));
 
-  res = (g_str_has_suffix) ("foobar", "foo");
-  g_assert_false (res);
+  g_assert_false ((g_str_has_suffix) ("foobar", "foo"));
 
-  res = (g_str_has_suffix) ("foobar", "bar");
-  g_assert_true (res);
+  g_assert_true ((g_str_has_suffix) ("foobar", "bar"));
 
-  res = (g_str_has_suffix) ("foo", "");
-  g_assert_true (res);
+  g_assert_true ((g_str_has_suffix) ("foo", ""));
 
-  res = (g_str_has_suffix) ("foo", "foo");
-  g_assert_true (res);
+  g_assert_true ((g_str_has_suffix) ("foo", "foo"));
 
-  res = (g_str_has_suffix) ("", "");
-  g_assert_true (res);
+  g_assert_true ((g_str_has_suffix) ("", ""));
 }
 
 static void
