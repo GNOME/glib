@@ -31,6 +31,7 @@
 #include <fcntl.h>
 #include <io.h>
 #define pipe(fds) _pipe(fds, 4096, _O_BINARY)
+#include <WinError.h>
 #endif
 
 #ifdef G_OS_WIN32
@@ -112,8 +113,16 @@ test_spawn_basics (void)
                                       NULL, &erroutput, NULL, &err);
   g_assert_no_error (err);
   g_assert_true (result);
+#ifndef G_OS_WIN32
   g_assert_true (g_str_has_prefix (erroutput, "sort: "));
-  g_assert_nonnull (strstr (erroutput, "No such file or directory"));
+  g_assert_nonnull (strstr (erroutput, g_strerror (ENOENT)));
+#else
+  {
+    gchar *file_not_found_message = g_win32_error_message (ERROR_FILE_NOT_FOUND);
+    g_assert_nonnull (strstr (erroutput, file_not_found_message));
+    g_free (file_not_found_message);
+  }
+#endif
 
   g_free (erroutput);
   erroutput = NULL;
