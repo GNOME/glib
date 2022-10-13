@@ -150,6 +150,7 @@ gboolean g_str_has_prefix (const gchar *str,
 #define g_str_has_prefix(STR, PREFIX)                                       \
   (((STR) != NULL && (PREFIX) != NULL && __builtin_constant_p ((PREFIX))) ? \
     G_GNUC_EXTENSION ({                                                     \
+      G_STATIC_ASSERT (sizeof (PREFIX[0]) == sizeof (char));                \
       const char *const __str = ((STR));                                    \
       const char *const __prefix = ((PREFIX));                              \
       const size_t __str_len = strlen (__str);                              \
@@ -163,6 +164,7 @@ gboolean g_str_has_prefix (const gchar *str,
 #define g_str_has_suffix(STR, SUFFIX)                                       \
   (((STR) != NULL && (SUFFIX) != NULL && __builtin_constant_p ((SUFFIX))) ? \
     G_GNUC_EXTENSION ({                                                     \
+      G_STATIC_ASSERT (sizeof (SUFFIX[0]) == sizeof (char));                \
       const char *const __str = ((STR));                                    \
       const char *const __suffix = ((SUFFIX));                              \
       const size_t __str_len = strlen (__str);                              \
