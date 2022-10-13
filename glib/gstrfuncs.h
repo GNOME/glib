@@ -154,7 +154,7 @@ gboolean g_str_has_prefix (const gchar *str,
       const char *const __str = ((STR));                                    \
       const char *const __prefix = ((PREFIX));                              \
       const size_t __str_len = strlen (__str);                              \
-      const size_t __prefix_len = strlen (__prefix);                        \
+      const size_t __prefix_len = (sizeof ((PREFIX)) / sizeof (char)) - 1;  \
       (__str_len >= __prefix_len) ?                                         \
         (memcmp (__str, __prefix, __prefix_len) == 0) : FALSE;              \
     })                                                                      \
@@ -168,7 +168,7 @@ gboolean g_str_has_prefix (const gchar *str,
       const char *const __str = ((STR));                                    \
       const char *const __suffix = ((SUFFIX));                              \
       const size_t __str_len = strlen (__str);                              \
-      const size_t __suffix_len = strlen (__suffix);                        \
+      const size_t __suffix_len = (sizeof ((SUFFIX)) / sizeof (char)) - 1;  \
       (__str_len >= __suffix_len) ?                                         \
         (memcmp (__str + __str_len - __suffix_len,                          \
                  __suffix,                                                  \
