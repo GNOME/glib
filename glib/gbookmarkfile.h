@@ -84,6 +84,9 @@ GBookmarkFile *g_bookmark_file_new                 (void);
 GLIB_AVAILABLE_IN_ALL
 void           g_bookmark_file_free                (GBookmarkFile  *bookmark);
 
+GLIB_AVAILABLE_IN_2_76
+GBookmarkFile *g_bookmark_file_copy                (GBookmarkFile  *bookmark);
+
 GLIB_AVAILABLE_IN_ALL
 gboolean       g_bookmark_file_load_from_file      (GBookmarkFile  *bookmark,
 						    const gchar    *filename,

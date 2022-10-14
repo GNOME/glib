@@ -2152,6 +2152,7 @@ GBookmarkFile
 G_BOOKMARK_FILE_ERROR
 GBookmarkFileError
 g_bookmark_file_new
+g_bookmark_file_copy
 g_bookmark_file_free
 g_bookmark_file_load_from_file
 g_bookmark_file_load_from_data

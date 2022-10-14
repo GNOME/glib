@@ -1245,6 +1245,99 @@ test_file (gconstpointer d)
   g_assert_true (success == (strstr (filename, "fail") == NULL));
 }
 
+static void
+test_file_copy (gconstpointer d)
+{
+  const gchar *filename = d;
+  GBookmarkFile *bookmark_file;
+  GBookmarkFile *copy;
+  gboolean success;
+  gchar *data;
+  gchar *copy_data;
+  gsize length;
+  gsize copy_length;
+  GError *error = NULL;
+
+  bookmark_file = g_bookmark_file_new ();
+  g_assert_nonnull (bookmark_file);
+
+  success = test_load (bookmark_file, filename);
+  g_assert_true (success == (strstr (filename, "fail") == NULL));
+
+  copy = g_bookmark_file_copy (bookmark_file);
+  g_assert_nonnull (copy);
+
+  if (g_str_has_suffix (filename, "fail-08.xbel") ||
+      g_str_has_suffix (filename, "fail-06.xbel") ||
+      g_str_has_suffix (filename, "fail-07.xbel") ||
+      g_str_has_suffix (filename, "fail-09.xbel") ||
+      g_str_has_suffix (filename, "fail-10.xbel") ||
+      g_str_has_suffix (filename, "fail-11.xbel") ||
+      g_str_has_suffix (filename, "fail-39.xbel"))
+    {
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
+                             "*no registered applications*skipping*");
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
+                             "*no registered applications*skipping*");
+    }
+
+  data = g_bookmark_file_to_data (bookmark_file, &length, &error);
+  g_assert_no_error (error);
+
+  copy_data = g_bookmark_file_to_data (copy, &copy_length, &error);
+  g_assert_no_error (error);
+
+  g_test_assert_expected_messages ();
+
+  g_assert_cmpuint (length, ==, copy_length);
+  g_assert_cmpstr (data, ==, copy_data);
+
+  if (success)
+    {
+      GBookmarkFile *modified_copy;
+      gchar *modified_data;
+      gchar *modified_copy_data;
+      gsize modified_length;
+      gsize modified_copy_length;
+
+      test_modify (bookmark_file);
+      test_modify (copy);
+
+      modified_data = g_bookmark_file_to_data (bookmark_file,
+                                               &modified_length,
+                                               &error);
+      g_assert_no_error (error);
+
+      modified_copy_data = g_bookmark_file_to_data (copy,
+                                                    &modified_copy_length,
+                                                    &error);
+      g_assert_no_error (error);
+
+      g_assert_cmpstr (data, !=, modified_data);
+      g_assert_cmpstr (copy_data, !=, modified_copy_data);
+
+      g_free (modified_copy_data);
+      modified_copy = g_bookmark_file_copy (bookmark_file);
+      modified_copy_data = g_bookmark_file_to_data (modified_copy,
+                                                    &modified_copy_length,
+                                                    &error);
+      g_assert_no_error (error);
+
+      g_assert_cmpuint (modified_length, ==, modified_copy_length);
+      g_assert_cmpstr (modified_data, ==, modified_copy_data);
+
+      g_free (modified_data);
+      g_free (modified_copy_data);
+      g_bookmark_file_free (modified_copy);
+    }
+
+  g_bookmark_file_free (bookmark_file);
+  g_bookmark_file_free (copy);
+
+  g_free (data);
+  g_free (copy_data);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -1275,12 +1368,17 @@ main (int argc, char *argv[])
   g_assert_no_error (error);
   while ((name = g_dir_read_name (dir)) != NULL)
     {
+      gchar *filename;
       if (!g_str_has_suffix (name, ".xbel"))
         continue;
 
+      filename = g_test_build_filename (G_TEST_DIST, "bookmarks", name, NULL);
+
       path = g_strdup_printf ("/bookmarks/parse/%s", name);
-      g_test_add_data_func_full (path, g_test_build_filename (G_TEST_DIST, "bookmarks", name, NULL),
-                                 test_file, g_free);
+      g_test_add_data_func_full (path, filename, test_file, g_free);
+      g_free (path);
+      path = g_strdup_printf ("/bookmarks/copy/%s", name);
+      g_test_add_data_func_full (path, g_strdup (filename), test_file_copy, g_free);
       g_free (path);
     }
   g_dir_close (dir);
