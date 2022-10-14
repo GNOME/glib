@@ -21,6 +21,8 @@
  */
 
 #include "config.h"
+
+#define __GIO_GIO_H_INSIDE__
 #include "giomodule.h"
 #include "giomodule-priv.h"
 

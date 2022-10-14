@@ -53,31 +53,31 @@ struct _GInetAddressMaskClass
 
 };
 
-GLIB_AVAILABLE_IN_2_32
+GIO_AVAILABLE_IN_2_32
 GType g_inet_address_mask_get_type (void) G_GNUC_CONST;
 
-GLIB_AVAILABLE_IN_2_32
+GIO_AVAILABLE_IN_2_32
 GInetAddressMask *g_inet_address_mask_new             (GInetAddress      *addr,
 						       guint              length,
 						       GError           **error);
 
-GLIB_AVAILABLE_IN_2_32
+GIO_AVAILABLE_IN_2_32
 GInetAddressMask *g_inet_address_mask_new_from_string (const gchar       *mask_string,
 						       GError           **error);
-GLIB_AVAILABLE_IN_2_32
+GIO_AVAILABLE_IN_2_32
 gchar            *g_inet_address_mask_to_string       (GInetAddressMask  *mask);
 
-GLIB_AVAILABLE_IN_2_32
+GIO_AVAILABLE_IN_2_32
 GSocketFamily     g_inet_address_mask_get_family      (GInetAddressMask  *mask);
-GLIB_AVAILABLE_IN_2_32
+GIO_AVAILABLE_IN_2_32
 GInetAddress     *g_inet_address_mask_get_address     (GInetAddressMask  *mask);
-GLIB_AVAILABLE_IN_2_32
+GIO_AVAILABLE_IN_2_32
 guint             g_inet_address_mask_get_length      (GInetAddressMask  *mask);
 
-GLIB_AVAILABLE_IN_2_32
+GIO_AVAILABLE_IN_2_32
 gboolean          g_inet_address_mask_matches         (GInetAddressMask  *mask,
 						       GInetAddress      *address);
-GLIB_AVAILABLE_IN_2_32
+GIO_AVAILABLE_IN_2_32
 gboolean          g_inet_address_mask_equal           (GInetAddressMask  *mask,
 						       GInetAddressMask  *mask2);
 

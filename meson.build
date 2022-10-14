@@ -210,64 +210,15 @@ if host_system == 'windows' and cc.get_id() != 'msvc' and cc.get_id() != 'clang-
   glib_conf.set('_FILE_OFFSET_BITS', 64)
 endif
 
-# Check for GNU visibility attributes
-g_have_gnuc_visibility = cc.compiles('''
-  void
-  __attribute__ ((visibility ("hidden")))
-       f_hidden (void)
-  {
-  }
-  void
-  __attribute__ ((visibility ("internal")))
-       f_internal (void)
-  {
-  }
-  void
-  __attribute__ ((visibility ("default")))
-       f_default (void)
-  {
-  }
-  int main (void)
-  {
-    f_hidden();
-    f_internal();
-    f_default();
-    return 0;
-  }
-  ''',
-  # Not supported by MSVC, but MSVC also won't support visibility,
-  # so it's OK to pass -Werror explicitly. Replace with
-  # override_options : 'werror=true' once that is supported
-  args: ['-Werror'],
-  name : 'GNU C visibility attributes test')
-
-if g_have_gnuc_visibility
-  glibconfig_conf.set('G_HAVE_GNUC_VISIBILITY', '1')
-endif
-
-# Detect and set symbol visibility
-glib_hidden_visibility_args = []
-if get_option('default_library') != 'static'
-  if host_system == 'windows' or host_system == 'cygwin'
-    if get_option('default_library') != 'shared'
-      error('On Windows default_library must be "shared" or "static" but not "both"')
-    endif
-    glib_conf.set('DLL_EXPORT', true)
-    if cc.get_id() == 'msvc' or cc.get_id() == 'clang-cl'
-      glib_conf.set('_GLIB_EXTERN', '__declspec(dllexport) extern')
-    elif cc.has_argument('-fvisibility=hidden')
-      glib_conf.set('_GLIB_EXTERN', '__attribute__((visibility("default"))) __declspec(dllexport) extern')
-      glib_hidden_visibility_args = ['-fvisibility=hidden']
-    endif
-  elif cc.has_argument('-fvisibility=hidden')
-    glib_conf.set('_GLIB_EXTERN', '__attribute__((visibility("default"))) extern')
-    glib_hidden_visibility_args = ['-fvisibility=hidden']
-  endif
+if get_option('default_library') == 'both' and (host_system == 'windows' or host_system == 'cygwin')
+  error('On Windows default_library must be "shared" or "static" but not "both"')
 endif
 
 if get_option('default_library') == 'static'
   glibconfig_conf.set('GLIB_STATIC_COMPILATION', '1')
   glibconfig_conf.set('GOBJECT_STATIC_COMPILATION', '1')
+  glibconfig_conf.set('GIO_STATIC_COMPILATION', '1')
+  glibconfig_conf.set('GMODULE_STATIC_COMPILATION', '1')
   glibconfig_conf.set('G_INTL_STATIC_COMPILATION', '1')
   glibconfig_conf.set('FFI_STATIC_BUILD', '1')
 endif
@@ -2384,13 +2335,13 @@ test_timeout_slow = 180
 
 pkg = import('pkgconfig')
 windows = import('windows')
+subdir('tools')
 subdir('glib')
 subdir('gobject')
 subdir('gthread')
 subdir('gmodule')
 subdir('gio')
 subdir('fuzzing')
-subdir('tools')
 
 # xgettext is optional (on Windows for instance)
 if find_program('xgettext', required : get_option('nls')).found()

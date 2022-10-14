@@ -74,19 +74,19 @@ struct _GActionEntry
   gsize padding[3];
 };
 
-GLIB_AVAILABLE_IN_2_32
+GIO_AVAILABLE_IN_2_32
 GType                   g_action_map_get_type                           (void) G_GNUC_CONST;
 
-GLIB_AVAILABLE_IN_2_32
+GIO_AVAILABLE_IN_2_32
 GAction *               g_action_map_lookup_action                      (GActionMap         *action_map,
                                                                          const gchar        *action_name);
-GLIB_AVAILABLE_IN_2_32
+GIO_AVAILABLE_IN_2_32
 void                    g_action_map_add_action                         (GActionMap         *action_map,
                                                                          GAction            *action);
-GLIB_AVAILABLE_IN_2_32
+GIO_AVAILABLE_IN_2_32
 void                    g_action_map_remove_action                      (GActionMap         *action_map,
                                                                          const gchar        *action_name);
-GLIB_AVAILABLE_IN_2_32
+GIO_AVAILABLE_IN_2_32
 void                    g_action_map_add_action_entries                 (GActionMap         *action_map,
                                                                          const GActionEntry *entries,
                                                                          gint                n_entries,

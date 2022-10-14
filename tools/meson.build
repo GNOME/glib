@@ -22,3 +22,5 @@ if host_system != 'windows'
     install_tag : 'devel',
   )
 endif
+
+gen_visibility_macros = find_program('gen-visibility-macros.py')

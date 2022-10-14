@@ -53,7 +53,7 @@ G_BEGIN_DECLS
  *
  * Since: 2.68
  */
-#define G_DBUS_METHOD_INVOCATION_HANDLED TRUE GLIB_AVAILABLE_MACRO_IN_2_68
+#define G_DBUS_METHOD_INVOCATION_HANDLED TRUE GIO_AVAILABLE_MACRO_IN_2_68
 
 /**
  * G_DBUS_METHOD_INVOCATION_UNHANDLED:
@@ -68,65 +68,65 @@ G_BEGIN_DECLS
  *
  * Since: 2.68
  */
-#define G_DBUS_METHOD_INVOCATION_UNHANDLED FALSE GLIB_AVAILABLE_MACRO_IN_2_68
+#define G_DBUS_METHOD_INVOCATION_UNHANDLED FALSE GIO_AVAILABLE_MACRO_IN_2_68
 
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GType                  g_dbus_method_invocation_get_type             (void) G_GNUC_CONST;
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 const gchar           *g_dbus_method_invocation_get_sender           (GDBusMethodInvocation *invocation);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 const gchar           *g_dbus_method_invocation_get_object_path      (GDBusMethodInvocation *invocation);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 const gchar           *g_dbus_method_invocation_get_interface_name   (GDBusMethodInvocation *invocation);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 const gchar           *g_dbus_method_invocation_get_method_name      (GDBusMethodInvocation *invocation);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 const GDBusMethodInfo *g_dbus_method_invocation_get_method_info      (GDBusMethodInvocation *invocation);
-GLIB_AVAILABLE_IN_2_38
+GIO_AVAILABLE_IN_2_38
 const GDBusPropertyInfo *g_dbus_method_invocation_get_property_info  (GDBusMethodInvocation *invocation);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GDBusConnection       *g_dbus_method_invocation_get_connection       (GDBusMethodInvocation *invocation);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GDBusMessage          *g_dbus_method_invocation_get_message          (GDBusMethodInvocation *invocation);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GVariant              *g_dbus_method_invocation_get_parameters       (GDBusMethodInvocation *invocation);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 gpointer               g_dbus_method_invocation_get_user_data        (GDBusMethodInvocation *invocation);
 
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 void                   g_dbus_method_invocation_return_value         (GDBusMethodInvocation *invocation,
                                                                       GVariant              *parameters);
 #ifdef G_OS_UNIX
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 void                   g_dbus_method_invocation_return_value_with_unix_fd_list (GDBusMethodInvocation *invocation,
                                                                                 GVariant              *parameters,
                                                                                 GUnixFDList           *fd_list);
 #endif /* G_OS_UNIX */
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 void                   g_dbus_method_invocation_return_error         (GDBusMethodInvocation *invocation,
                                                                       GQuark                 domain,
                                                                       gint                   code,
                                                                       const gchar           *format,
                                                                       ...) G_GNUC_PRINTF(4, 5);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 void                   g_dbus_method_invocation_return_error_valist  (GDBusMethodInvocation *invocation,
                                                                       GQuark                 domain,
                                                                       gint                   code,
                                                                       const gchar           *format,
                                                                       va_list                var_args)
                                                                       G_GNUC_PRINTF(4, 0);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 void                   g_dbus_method_invocation_return_error_literal (GDBusMethodInvocation *invocation,
                                                                       GQuark                 domain,
                                                                       gint                   code,
                                                                       const gchar           *message);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 void                   g_dbus_method_invocation_return_gerror        (GDBusMethodInvocation *invocation,
                                                                       const GError          *error);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 void                   g_dbus_method_invocation_take_error           (GDBusMethodInvocation *invocation,
                                                                       GError                *error);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 void                   g_dbus_method_invocation_return_dbus_error    (GDBusMethodInvocation *invocation,
                                                                       const gchar           *error_name,
                                                                       const gchar           *error_message);

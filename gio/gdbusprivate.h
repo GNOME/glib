@@ -23,10 +23,6 @@
 #ifndef __G_DBUS_PRIVATE_H__
 #define __G_DBUS_PRIVATE_H__
 
-#if !defined (GIO_COMPILATION)
-#error "gdbusprivate.h is a private header file."
-#endif
-
 #include <gio/giotypes.h>
 
 G_BEGIN_DECLS
@@ -119,7 +115,7 @@ gchar *_g_dbus_win32_get_user_sid (void);
  * Initially this function was introduces for usage with rundll,
  * so the signature is kept rundll-compatible, though parameters aren't used.
  */
-_GLIB_EXTERN void __stdcall
+_GIO_EXTERN void __stdcall
 g_win32_run_session_bus (void* hwnd, void* hinst, const char* cmdline, int cmdshow);
 gchar *_g_dbus_win32_get_session_address_dbus_launch (GError **error);
 #endif

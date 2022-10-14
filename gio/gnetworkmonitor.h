@@ -66,32 +66,32 @@ struct _GNetworkMonitorInterface {
 				GError              **error);
 };
 
-GLIB_AVAILABLE_IN_2_32
+GIO_AVAILABLE_IN_2_32
 GType                 g_network_monitor_get_type              (void) G_GNUC_CONST;
-GLIB_AVAILABLE_IN_2_32
+GIO_AVAILABLE_IN_2_32
 GNetworkMonitor      *g_network_monitor_get_default           (void);
 
-GLIB_AVAILABLE_IN_2_32
+GIO_AVAILABLE_IN_2_32
 gboolean              g_network_monitor_get_network_available (GNetworkMonitor     *monitor);
 
-GLIB_AVAILABLE_IN_2_46
+GIO_AVAILABLE_IN_2_46
 gboolean              g_network_monitor_get_network_metered   (GNetworkMonitor     *monitor);
 
-GLIB_AVAILABLE_IN_2_44
+GIO_AVAILABLE_IN_2_44
 GNetworkConnectivity  g_network_monitor_get_connectivity      (GNetworkMonitor     *monitor);
 
-GLIB_AVAILABLE_IN_2_32
+GIO_AVAILABLE_IN_2_32
 gboolean              g_network_monitor_can_reach             (GNetworkMonitor     *monitor,
                                                                GSocketConnectable  *connectable,
                                                                GCancellable        *cancellable,
                                                                GError             **error);
-GLIB_AVAILABLE_IN_2_32
+GIO_AVAILABLE_IN_2_32
 void                  g_network_monitor_can_reach_async       (GNetworkMonitor     *monitor,
                                                                GSocketConnectable  *connectable,
                                                                GCancellable        *cancellable,
                                                                GAsyncReadyCallback  callback,
                                                                gpointer             user_data);
-GLIB_AVAILABLE_IN_2_32
+GIO_AVAILABLE_IN_2_32
 gboolean              g_network_monitor_can_reach_finish      (GNetworkMonitor     *monitor,
                                                                GAsyncResult        *result,
                                                                GError             **error);

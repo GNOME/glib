@@ -6,8 +6,6 @@
  * g_io_module*() symbols, is defined to be _GLIB_EXTERN,
  * which must be overridden to export the symbols.
  */
-#include "modules/symbol-visibility.h"
-#define _GLIB_EXTERN GLIB_TEST_EXPORT_SYMBOL
 
 #include <gio/gio.h>
 

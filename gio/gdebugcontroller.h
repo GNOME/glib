@@ -50,7 +50,7 @@ G_BEGIN_DECLS
  * Since: 2.72
  */
 #define G_TYPE_DEBUG_CONTROLLER             (g_debug_controller_get_type ())
-GLIB_AVAILABLE_IN_2_72
+GIO_AVAILABLE_IN_2_72
 G_DECLARE_INTERFACE(GDebugController, g_debug_controller, g, debug_controller, GObject)
 
 #define G_DEBUG_CONTROLLER(o)               (G_TYPE_CHECK_INSTANCE_CAST ((o), G_TYPE_DEBUG_CONTROLLER, GDebugController))
@@ -70,9 +70,9 @@ struct _GDebugControllerInterface {
   GTypeInterface g_iface;
 };
 
-GLIB_AVAILABLE_IN_2_72
+GIO_AVAILABLE_IN_2_72
 gboolean               g_debug_controller_get_debug_enabled     (GDebugController *self);
-GLIB_AVAILABLE_IN_2_72
+GIO_AVAILABLE_IN_2_72
 void                   g_debug_controller_set_debug_enabled     (GDebugController *self,
                                                                  gboolean          debug_enabled);
 

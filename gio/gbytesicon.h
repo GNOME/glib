@@ -40,13 +40,13 @@ G_BEGIN_DECLS
  *
  * Gets an icon for a #GBytes. Implements #GLoadableIcon.
  **/
-GLIB_AVAILABLE_IN_2_38
+GIO_AVAILABLE_IN_2_38
 GType   g_bytes_icon_get_type   (void) G_GNUC_CONST;
 
-GLIB_AVAILABLE_IN_2_38
+GIO_AVAILABLE_IN_2_38
 GIcon * g_bytes_icon_new        (GBytes     *bytes);
 
-GLIB_AVAILABLE_IN_2_38
+GIO_AVAILABLE_IN_2_38
 GBytes * g_bytes_icon_get_bytes (GBytesIcon *icon);
 
 G_END_DECLS

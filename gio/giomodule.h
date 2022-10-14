@@ -34,11 +34,11 @@ G_BEGIN_DECLS
 
 typedef struct _GIOModuleScope GIOModuleScope;
 
-GLIB_AVAILABLE_IN_2_30
+GIO_AVAILABLE_IN_2_30
 GIOModuleScope *   g_io_module_scope_new     (GIOModuleScopeFlags  flags);
-GLIB_AVAILABLE_IN_2_30
+GIO_AVAILABLE_IN_2_30
 void               g_io_module_scope_free    (GIOModuleScope      *scope);
-GLIB_AVAILABLE_IN_2_30
+GIO_AVAILABLE_IN_2_30
 void               g_io_module_scope_block   (GIOModuleScope      *scope,
                                               const gchar         *basename);
 
@@ -56,54 +56,58 @@ void               g_io_module_scope_block   (GIOModuleScope      *scope,
  **/
 typedef struct _GIOModuleClass GIOModuleClass;
 
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GType              g_io_module_get_type                       (void) G_GNUC_CONST;
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GIOModule         *g_io_module_new                            (const gchar       *filename);
 
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 void               g_io_modules_scan_all_in_directory         (const char        *dirname);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GList             *g_io_modules_load_all_in_directory         (const gchar       *dirname);
 
-GLIB_AVAILABLE_IN_2_30
+GIO_AVAILABLE_IN_2_30
 void               g_io_modules_scan_all_in_directory_with_scope   (const gchar       *dirname,
                                                                     GIOModuleScope    *scope);
-GLIB_AVAILABLE_IN_2_30
+GIO_AVAILABLE_IN_2_30
 GList             *g_io_modules_load_all_in_directory_with_scope   (const gchar       *dirname,
                                                                     GIOModuleScope    *scope);
 
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GIOExtensionPoint *g_io_extension_point_register              (const char        *name);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GIOExtensionPoint *g_io_extension_point_lookup                (const char        *name);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 void               g_io_extension_point_set_required_type     (GIOExtensionPoint *extension_point,
 							       GType              type);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GType              g_io_extension_point_get_required_type     (GIOExtensionPoint *extension_point);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GList             *g_io_extension_point_get_extensions        (GIOExtensionPoint *extension_point);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GIOExtension *     g_io_extension_point_get_extension_by_name (GIOExtensionPoint *extension_point,
 							       const char        *name);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GIOExtension *     g_io_extension_point_implement             (const char        *extension_point_name,
 							       GType              type,
 							       const char        *extension_name,
 							       gint               priority);
 
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GType              g_io_extension_get_type                    (GIOExtension      *extension);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 const char *       g_io_extension_get_name                    (GIOExtension      *extension);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 gint               g_io_extension_get_priority                (GIOExtension      *extension);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GTypeClass*        g_io_extension_ref_class                   (GIOExtension      *extension);
 
 
-/* API for the modules to implement */
+/* API for the modules to implement.
+ * Note that those functions are not implemented by libgio, they are declared
+ * here to be implemented in modules, that's why it uses G_MODULE_EXPORT
+ * instead of GIO_AVAILABLE_IN_ALL.
+ */
 
 /**
  * g_io_module_load: (skip)
@@ -123,7 +127,7 @@ GTypeClass*        g_io_extension_ref_class                   (GIOExtension     
  * statically. The old symbol names continue to be supported, but cannot be used
  * for static builds.
  **/
-GLIB_AVAILABLE_IN_ALL
+G_MODULE_EXPORT
 void   g_io_module_load   (GIOModule *module);
 
 /**
@@ -143,7 +147,7 @@ void   g_io_module_load   (GIOModule *module);
  * statically. The old symbol names continue to be supported, but cannot be used
  * for static builds.
  **/
-GLIB_AVAILABLE_IN_ALL
+G_MODULE_EXPORT
 void   g_io_module_unload (GIOModule *module);
 
 /**
@@ -187,7 +191,7 @@ void   g_io_module_unload (GIOModule *module);
  *
  * Since: 2.24
  **/
-GLIB_AVAILABLE_IN_ALL
+G_MODULE_EXPORT
 char **g_io_module_query (void);
 
 G_END_DECLS

@@ -8,6 +8,7 @@ if get_option('gtk_doc')
     'gobject_trace.h',
     'gtype-private.h',
     'glib-enumtypes.h',
+    'gobject-visibility.h',
   ]
 
   docpath = join_paths(glib_datadir, 'gtk-doc', 'html')
@@ -28,7 +29,8 @@ if get_option('gtk_doc')
     dependencies : [libgobject_dep, libglib_dep],
     include_directories : [gtkdocincl],
     src_dir : 'gobject',
-    scan_args : gtkdoc_common_scan_args + [
+    scan_args : [
+      '--ignore-decorators=' + '|'.join(ignore_decorators.replace('GLIB', 'GOBJECT')),
       '--rebuild-types',
       '--ignore-headers=' + ' '.join(ignore_headers),
     ],

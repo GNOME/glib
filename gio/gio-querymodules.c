@@ -21,7 +21,8 @@
  */
 
 #include "config.h"
-#include "giomodule.h"
+
+#include <gio/gio.h>
 #include "giomodule-priv.h"
 
 #include <gstdio.h>

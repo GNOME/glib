@@ -160,7 +160,7 @@ typedef enum
   G_PARAM_CONSTRUCT_ONLY      = 1 << 3,
   G_PARAM_LAX_VALIDATION      = 1 << 4,
   G_PARAM_STATIC_NAME	      = 1 << 5,
-  G_PARAM_PRIVATE GLIB_DEPRECATED_ENUMERATOR_IN_2_26 = G_PARAM_STATIC_NAME,
+  G_PARAM_PRIVATE GOBJECT_DEPRECATED_ENUMERATOR_IN_2_26 = G_PARAM_STATIC_NAME,
   G_PARAM_STATIC_NICK	      = 1 << 6,
   G_PARAM_STATIC_BLURB	      = 1 << 7,
   /* User defined flags go here */
@@ -201,7 +201,7 @@ typedef enum
 /* --- typedefs & structures --- */
 typedef struct _GParamSpec      GParamSpec;
 typedef struct _GParamSpecClass GParamSpecClass;
-typedef struct _GParameter	GParameter GLIB_DEPRECATED_TYPE_IN_2_54;
+typedef struct _GParameter	GParameter GOBJECT_DEPRECATED_TYPE_IN_2_54;
 typedef struct _GParamSpecPool  GParamSpecPool;
 /**
  * GParamSpec: (ref-func g_param_spec_ref_sink) (unref-func g_param_spec_unref) (set-value-func g_value_set_param) (get-value-func g_value_get_param)
@@ -289,82 +289,82 @@ struct _GParameter /* auxiliary structure for _setv() variants */
 {
   const gchar *name;
   GValue       value;
-} GLIB_DEPRECATED_TYPE_IN_2_54;
+} GOBJECT_DEPRECATED_TYPE_IN_2_54;
 
 
 /* --- prototypes --- */
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 GParamSpec*	g_param_spec_ref		(GParamSpec    *pspec);
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 void		g_param_spec_unref		(GParamSpec    *pspec);
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 void		g_param_spec_sink		(GParamSpec    *pspec);
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 GParamSpec*	g_param_spec_ref_sink   	(GParamSpec    *pspec);
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 gpointer        g_param_spec_get_qdata		(GParamSpec    *pspec,
 						 GQuark         quark);
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 void            g_param_spec_set_qdata		(GParamSpec    *pspec,
 						 GQuark         quark,
 						 gpointer       data);
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 void            g_param_spec_set_qdata_full	(GParamSpec    *pspec,
 						 GQuark         quark,
 						 gpointer       data,
 						 GDestroyNotify destroy);
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 gpointer        g_param_spec_steal_qdata	(GParamSpec    *pspec,
 						 GQuark         quark);
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 GParamSpec*     g_param_spec_get_redirect_target (GParamSpec   *pspec);
 
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 void		g_param_value_set_default	(GParamSpec    *pspec,
 						 GValue	       *value);
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 gboolean	g_param_value_defaults		(GParamSpec    *pspec,
 						 const GValue  *value);
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 gboolean	g_param_value_validate		(GParamSpec    *pspec,
 						 GValue	       *value);
-GLIB_AVAILABLE_IN_2_74
+GOBJECT_AVAILABLE_IN_2_74
 gboolean        g_param_value_is_valid          (GParamSpec    *pspec,
                                                  const GValue  *value);
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 gboolean	g_param_value_convert		(GParamSpec    *pspec,
 						 const GValue  *src_value,
 						 GValue	       *dest_value,
 						 gboolean	strict_validation);
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 gint		g_param_values_cmp		(GParamSpec    *pspec,
 						 const GValue  *value1,
 						 const GValue  *value2);
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 const gchar *   g_param_spec_get_name           (GParamSpec    *pspec);
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 const gchar *   g_param_spec_get_nick           (GParamSpec    *pspec);
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 const gchar *   g_param_spec_get_blurb          (GParamSpec    *pspec);
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 void            g_value_set_param               (GValue	       *value,
 						 GParamSpec    *param);
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 GParamSpec*     g_value_get_param               (const GValue  *value);
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 GParamSpec*     g_value_dup_param               (const GValue  *value);
 
 
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 void           g_value_take_param               (GValue        *value,
 					         GParamSpec    *param);
-GLIB_DEPRECATED_FOR(g_value_take_param)
+GOBJECT_DEPRECATED_FOR(g_value_take_param)
 void           g_value_set_param_take_ownership (GValue        *value,
                                                  GParamSpec    *param);
-GLIB_AVAILABLE_IN_2_36
+GOBJECT_AVAILABLE_IN_2_36
 const GValue *  g_param_spec_get_default_value  (GParamSpec    *pspec);
 
-GLIB_AVAILABLE_IN_2_46
+GOBJECT_AVAILABLE_IN_2_46
 GQuark          g_param_spec_get_name_quark     (GParamSpec    *pspec);
 
 /* --- convenience functions --- */
@@ -412,11 +412,11 @@ struct _GParamSpecTypeInfo
 					 const GValue *value1,
 					 const GValue *value2);
 };
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 GType	g_param_type_register_static	(const gchar		  *name,
 					 const GParamSpecTypeInfo *pspec_info);
 
-GLIB_AVAILABLE_IN_2_66
+GOBJECT_AVAILABLE_IN_2_66
 gboolean g_param_spec_is_valid_name    (const gchar              *name);
 
 /* For registering builting types */
@@ -426,30 +426,30 @@ GType  _g_param_type_register_static_constant (const gchar              *name,
 
 
 /* --- protected --- */
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 gpointer	g_param_spec_internal		(GType	        param_type,
 						 const gchar   *name,
 						 const gchar   *nick,
 						 const gchar   *blurb,
 						 GParamFlags    flags);
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 GParamSpecPool* g_param_spec_pool_new		(gboolean	type_prefixing);
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 void		g_param_spec_pool_insert	(GParamSpecPool	*pool,
 						 GParamSpec	*pspec,
 						 GType		 owner_type);
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 void		g_param_spec_pool_remove	(GParamSpecPool	*pool,
 						 GParamSpec	*pspec);
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 GParamSpec*	g_param_spec_pool_lookup	(GParamSpecPool	*pool,
 						 const gchar	*param_name,
 						 GType		 owner_type,
 						 gboolean	 walk_ancestors);
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 GList*		g_param_spec_pool_list_owned	(GParamSpecPool	*pool,
 						 GType		 owner_type);
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 GParamSpec**	g_param_spec_pool_list		(GParamSpecPool	*pool,
 						 GType		 owner_type,
 						 guint		*n_pspecs_p);

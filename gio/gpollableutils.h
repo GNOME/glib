@@ -29,15 +29,15 @@
 
 G_BEGIN_DECLS
 
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GSource *g_pollable_source_new       (GObject        *pollable_stream);
 
-GLIB_AVAILABLE_IN_2_34
+GIO_AVAILABLE_IN_2_34
 GSource *g_pollable_source_new_full  (gpointer        pollable_stream,
 				      GSource        *child_source,
 				      GCancellable   *cancellable);
 
-GLIB_AVAILABLE_IN_2_34
+GIO_AVAILABLE_IN_2_34
 gssize   g_pollable_stream_read      (GInputStream   *stream,
 				      void           *buffer,
 				      gsize           count,
@@ -45,14 +45,14 @@ gssize   g_pollable_stream_read      (GInputStream   *stream,
 				      GCancellable   *cancellable,
 				      GError        **error);
 
-GLIB_AVAILABLE_IN_2_34
+GIO_AVAILABLE_IN_2_34
 gssize   g_pollable_stream_write     (GOutputStream  *stream,
 				      const void     *buffer,
 				      gsize           count,
 				      gboolean        blocking,
 				      GCancellable   *cancellable,
 				      GError        **error);
-GLIB_AVAILABLE_IN_2_34
+GIO_AVAILABLE_IN_2_34
 gboolean g_pollable_stream_write_all (GOutputStream  *stream,
 				      const void     *buffer,
 				      gsize           count,

@@ -584,27 +584,4 @@ typedef gint gatomicrefcount;  /* should be accessed only using atomics */
 
 G_END_DECLS
 
-/* We prefix variable declarations so they can
- * properly get exported in Windows DLLs.
- */
-#ifndef GLIB_VAR
-#  ifdef G_PLATFORM_WIN32
-#    ifdef GLIB_STATIC_COMPILATION
-#      define GLIB_VAR extern
-#    else /* !GLIB_STATIC_COMPILATION */
-#      ifdef GLIB_COMPILATION
-#        ifdef DLL_EXPORT
-#          define GLIB_VAR extern __declspec(dllexport)
-#        else /* !DLL_EXPORT */
-#          define GLIB_VAR extern
-#        endif /* !DLL_EXPORT */
-#      else /* !GLIB_COMPILATION */
-#        define GLIB_VAR extern __declspec(dllimport)
-#      endif /* !GLIB_COMPILATION */
-#    endif /* !GLIB_STATIC_COMPILATION */
-#  else /* !G_PLATFORM_WIN32 */
-#    define GLIB_VAR _GLIB_EXTERN
-#  endif /* !G_PLATFORM_WIN32 */
-#endif /* GLIB_VAR */
-
 #endif /* __G_TYPES_H__ */

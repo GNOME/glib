@@ -98,6 +98,7 @@ if get_option('gtk_doc')
     'gwin32volumemonitor.h',
     'thumbnail-verify.h',
     'xdp-dbus.h',
+    'gio-visibility.h',
   ]
 
   sections_files = files('gio-sections-common.txt')
@@ -187,7 +188,8 @@ if get_option('gtk_doc')
     mode : 'none',
     dependencies : [libgio_dep, libgobject_dep, libglib_dep],
     src_dir : 'gio',
-    scan_args : gtkdoc_common_scan_args + [
+    scan_args : [
+      '--ignore-decorators=' + ignore_decorators.replace('GLIB', 'GIO'),
       '--rebuild-types',
       '--ignore-headers=' + ' '.join(ignore_headers),
     ],

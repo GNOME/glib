@@ -326,70 +326,70 @@ typedef gsize GType;
  */
 #define G_TYPE_PATTERN_SPEC (g_pattern_spec_get_type ())
 
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 GType   g_date_get_type            (void) G_GNUC_CONST;
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 GType   g_strv_get_type            (void) G_GNUC_CONST;
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 GType   g_gstring_get_type         (void) G_GNUC_CONST;
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 GType   g_hash_table_get_type      (void) G_GNUC_CONST;
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 GType   g_array_get_type           (void) G_GNUC_CONST;
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 GType   g_byte_array_get_type      (void) G_GNUC_CONST;
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 GType   g_ptr_array_get_type       (void) G_GNUC_CONST;
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 GType   g_bytes_get_type           (void) G_GNUC_CONST;
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 GType   g_variant_type_get_gtype   (void) G_GNUC_CONST;
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 GType   g_regex_get_type           (void) G_GNUC_CONST;
-GLIB_AVAILABLE_IN_2_30
+GOBJECT_AVAILABLE_IN_2_30
 GType   g_match_info_get_type      (void) G_GNUC_CONST;
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 GType   g_error_get_type           (void) G_GNUC_CONST;
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 GType   g_date_time_get_type       (void) G_GNUC_CONST;
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 GType   g_time_zone_get_type       (void) G_GNUC_CONST;
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 GType   g_io_channel_get_type      (void) G_GNUC_CONST;
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 GType   g_io_condition_get_type    (void) G_GNUC_CONST;
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 GType   g_variant_builder_get_type (void) G_GNUC_CONST;
-GLIB_AVAILABLE_IN_2_40
+GOBJECT_AVAILABLE_IN_2_40
 GType   g_variant_dict_get_type    (void) G_GNUC_CONST;
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 GType   g_key_file_get_type        (void) G_GNUC_CONST;
-GLIB_AVAILABLE_IN_2_30
+GOBJECT_AVAILABLE_IN_2_30
 GType   g_main_loop_get_type       (void) G_GNUC_CONST;
-GLIB_AVAILABLE_IN_2_30
+GOBJECT_AVAILABLE_IN_2_30
 GType   g_main_context_get_type    (void) G_GNUC_CONST;
-GLIB_AVAILABLE_IN_2_30
+GOBJECT_AVAILABLE_IN_2_30
 GType   g_source_get_type          (void) G_GNUC_CONST;
-GLIB_AVAILABLE_IN_2_36
+GOBJECT_AVAILABLE_IN_2_36
 GType   g_pollfd_get_type          (void) G_GNUC_CONST;
-GLIB_AVAILABLE_IN_2_36
+GOBJECT_AVAILABLE_IN_2_36
 GType   g_thread_get_type          (void) G_GNUC_CONST;
-GLIB_AVAILABLE_IN_2_36
+GOBJECT_AVAILABLE_IN_2_36
 GType   g_checksum_get_type        (void) G_GNUC_CONST;
-GLIB_AVAILABLE_IN_2_36
+GOBJECT_AVAILABLE_IN_2_36
 GType   g_markup_parse_context_get_type (void) G_GNUC_CONST;
-GLIB_AVAILABLE_IN_2_40
+GOBJECT_AVAILABLE_IN_2_40
 GType   g_mapped_file_get_type (void) G_GNUC_CONST;
-GLIB_AVAILABLE_IN_2_44
+GOBJECT_AVAILABLE_IN_2_44
 GType   g_option_group_get_type    (void) G_GNUC_CONST;
-GLIB_AVAILABLE_IN_2_66
+GOBJECT_AVAILABLE_IN_2_66
 GType   g_uri_get_type             (void) G_GNUC_CONST;
-GLIB_AVAILABLE_IN_2_68
+GOBJECT_AVAILABLE_IN_2_68
 GType   g_tree_get_type            (void) G_GNUC_CONST;
-GLIB_AVAILABLE_IN_2_70
+GOBJECT_AVAILABLE_IN_2_70
 GType g_pattern_spec_get_type (void) G_GNUC_CONST;
 
-GLIB_DEPRECATED_FOR('G_TYPE_VARIANT')
+GOBJECT_DEPRECATED_FOR('G_TYPE_VARIANT')
 GType   g_variant_get_gtype        (void) G_GNUC_CONST;
 
 G_END_DECLS

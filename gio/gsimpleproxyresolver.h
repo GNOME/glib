@@ -66,22 +66,22 @@ struct _GSimpleProxyResolverClass
   void (*_g_reserved5) (void);
 };
 
-GLIB_AVAILABLE_IN_2_36
+GIO_AVAILABLE_IN_2_36
 GType           g_simple_proxy_resolver_get_type          (void) G_GNUC_CONST;
 
-GLIB_AVAILABLE_IN_2_36
+GIO_AVAILABLE_IN_2_36
 GProxyResolver *g_simple_proxy_resolver_new               (const gchar           *default_proxy,
                                                            gchar                **ignore_hosts);
 
-GLIB_AVAILABLE_IN_2_36
+GIO_AVAILABLE_IN_2_36
 void            g_simple_proxy_resolver_set_default_proxy (GSimpleProxyResolver  *resolver,
                                                            const gchar           *default_proxy);
 
-GLIB_AVAILABLE_IN_2_36
+GIO_AVAILABLE_IN_2_36
 void            g_simple_proxy_resolver_set_ignore_hosts  (GSimpleProxyResolver  *resolver,
                                                            gchar                **ignore_hosts);
 
-GLIB_AVAILABLE_IN_2_36
+GIO_AVAILABLE_IN_2_36
 void            g_simple_proxy_resolver_set_uri_proxy     (GSimpleProxyResolver  *resolver,
                                                            const gchar           *uri_scheme,
                                                            const gchar           *proxy);

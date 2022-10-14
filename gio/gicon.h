@@ -80,23 +80,23 @@ struct _GIconIface
   GVariant *  (* serialize)   (GIcon   *icon);
 };
 
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GType    g_icon_get_type  (void) G_GNUC_CONST;
 
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 guint    g_icon_hash            (gconstpointer  icon);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 gboolean g_icon_equal           (GIcon         *icon1,
                                  GIcon         *icon2);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 gchar   *g_icon_to_string       (GIcon         *icon);
-GLIB_AVAILABLE_IN_ALL
+GIO_AVAILABLE_IN_ALL
 GIcon   *g_icon_new_for_string  (const gchar   *str,
                                  GError       **error);
 
-GLIB_AVAILABLE_IN_2_38
+GIO_AVAILABLE_IN_2_38
 GVariant * g_icon_serialize     (GIcon         *icon);
-GLIB_AVAILABLE_IN_2_38
+GIO_AVAILABLE_IN_2_38
 GIcon *    g_icon_deserialize   (GVariant      *value);
 
 G_END_DECLS

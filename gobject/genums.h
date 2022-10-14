@@ -217,39 +217,39 @@ struct _GFlagsValue
 
 
 /* --- prototypes --- */
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 GEnumValue*	g_enum_get_value		(GEnumClass	*enum_class,
 						 gint		 value);
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 GEnumValue*	g_enum_get_value_by_name	(GEnumClass	*enum_class,
 						 const gchar	*name);
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 GEnumValue*	g_enum_get_value_by_nick	(GEnumClass	*enum_class,
 						 const gchar	*nick);
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 GFlagsValue*	g_flags_get_first_value		(GFlagsClass	*flags_class,
 						 guint		 value);
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 GFlagsValue*	g_flags_get_value_by_name	(GFlagsClass	*flags_class,
 						 const gchar	*name);
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 GFlagsValue*	g_flags_get_value_by_nick	(GFlagsClass	*flags_class,
 						 const gchar	*nick);
-GLIB_AVAILABLE_IN_2_54
+GOBJECT_AVAILABLE_IN_2_54
 gchar          *g_enum_to_string                (GType           g_enum_type,
                                                  gint            value);
-GLIB_AVAILABLE_IN_2_54
+GOBJECT_AVAILABLE_IN_2_54
 gchar          *g_flags_to_string               (GType           flags_type,
                                                  guint           value);
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 void            g_value_set_enum        	(GValue         *value,
 						 gint            v_enum);
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 gint            g_value_get_enum        	(const GValue   *value);
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 void            g_value_set_flags       	(GValue         *value,
 						 guint           v_flags);
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 guint           g_value_get_flags       	(const GValue   *value);
 
 
@@ -258,20 +258,20 @@ guint           g_value_get_flags       	(const GValue   *value);
 /* const_static_values is a NULL terminated array of enum/flags
  * values that is taken over!
  */
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 GType	g_enum_register_static	   (const gchar	      *name,
 				    const GEnumValue  *const_static_values);
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 GType	g_flags_register_static	   (const gchar	      *name,
 				    const GFlagsValue *const_static_values);
 /* functions to complete the type information
  * for enums/flags implemented by plugins
  */
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 void	g_enum_complete_type_info  (GType	       g_enum_type,
 				    GTypeInfo	      *info,
 				    const GEnumValue  *const_values);
-GLIB_AVAILABLE_IN_ALL
+GOBJECT_AVAILABLE_IN_ALL
 void	g_flags_complete_type_info (GType	       g_flags_type,
 				    GTypeInfo	      *info,
 				    const GFlagsValue *const_values);
@@ -292,7 +292,7 @@ void	g_flags_complete_type_info (GType	       g_flags_type,
  */
 #define G_DEFINE_ENUM_VALUE(EnumValue, EnumNick) \
   { EnumValue, #EnumValue, EnumNick } \
-  GLIB_AVAILABLE_MACRO_IN_2_74
+  GOBJECT_AVAILABLE_MACRO_IN_2_74
 
 /**
  * G_DEFINE_ENUM_TYPE:
@@ -331,7 +331,7 @@ type_name ## _get_type (void) { \
   } \
   return g_define_type__static; \
 } \
-  GLIB_AVAILABLE_MACRO_IN_2_74
+  GOBJECT_AVAILABLE_MACRO_IN_2_74
 
 /**
  * G_DEFINE_FLAGS_TYPE:
@@ -374,7 +374,7 @@ type_name ## _get_type (void) { \
   } \
   return g_define_type__static; \
 } \
-  GLIB_AVAILABLE_MACRO_IN_2_74
+  GOBJECT_AVAILABLE_MACRO_IN_2_74
 
 G_END_DECLS
 
