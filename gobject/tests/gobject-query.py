@@ -69,7 +69,8 @@ class TestGobjectQuery(unittest.TestCase):
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             env=env,
-            universal_newlines=True,
+            text=True,
+            encoding='utf-8',
         )
         info.check_returncode()
         out = info.stdout.strip()
