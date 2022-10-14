@@ -1190,6 +1190,10 @@
 #define G_UNLIKELY(expr) (expr)
 #endif
 
+#if __GNUC__ >= 4 && !defined(_WIN32) && !defined(__CYGWIN__)
+#define G_HAVE_GNUC_VISIBILITY 1
+#endif
+
 /* GLIB_CANNOT_IGNORE_DEPRECATIONS is defined above for compilers that do not
  * have a way to temporarily suppress deprecation warnings. In these cases,
  * suppress the deprecated attribute altogether (otherwise a simple #include
