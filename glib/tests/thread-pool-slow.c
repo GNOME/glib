@@ -291,7 +291,7 @@ test_thread_sort (gboolean sort)
   }
 
   g_assert_cmpint (g_thread_pool_get_max_threads (pool), ==, (gint) max_threads);
-  g_assert_cmpuint (g_thread_pool_get_num_threads (pool), ==,
+  g_assert_cmpuint (g_thread_pool_get_num_threads (pool), <=,
                     (guint) g_thread_pool_get_max_threads (pool));
   g_thread_pool_free (pool, TRUE, TRUE);
 }
