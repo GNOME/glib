@@ -10,6 +10,11 @@ import argparse
 import textwrap
 from pathlib import Path
 
+
+# Disable line length warnings as wrapping the C code templates would be hard
+# flake8: noqa: E501
+
+
 def gen_versions_macros(args, current_minor_version):
     with args.out_path.open('w', encoding='utf-8') as ofile, \
          args.in_path.open('r', encoding='utf-8') as ifile:
