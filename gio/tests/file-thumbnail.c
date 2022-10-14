@@ -207,26 +207,25 @@ test_valid_thumbnail_size (gconstpointer data)
 {
   GFile *source;
   GFile *thumbnail;
+  GFile *f;
   GError *error = NULL;
   GFileInfo *info;
   const gchar *size = data;
-  char *thumbnail_path;
 
   thumbnail = create_thumbnail_from_test_file ("valid.png", size, &source);
   info = g_file_query_info (source, THUMBNAILS_ATTRIBS, G_FILE_QUERY_INFO_NONE,
                             NULL, &error);
   g_assert_no_error (error);
 
-  thumbnail_path = g_file_get_path (thumbnail);
-
   g_assert_true (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_THUMBNAIL_PATH));
   g_assert_true (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID));
   g_assert_false (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_THUMBNAILING_FAILED));
 
+  f = g_file_new_for_path (g_file_info_get_attribute_byte_string (info, G_FILE_ATTRIBUTE_THUMBNAIL_PATH));
   g_assert_cmpstr (
-    g_file_info_get_attribute_byte_string (info, G_FILE_ATTRIBUTE_THUMBNAIL_PATH),
+    g_file_peek_path (f),
     ==,
-    thumbnail_path
+    g_file_peek_path (thumbnail)
   );
 
   /* TODO: We can't really test this without having a proper thumbnail created
@@ -238,7 +237,7 @@ test_valid_thumbnail_size (gconstpointer data)
   g_clear_object (&thumbnail);
   g_clear_error (&error);
   g_clear_object (&info);
-  g_free (thumbnail_path);
+  g_clear_object (&f);
 }
 
 static void
@@ -310,7 +309,7 @@ test_thumbnails_size_priority (void)
   for (i = 0; i < G_N_ELEMENTS (SIZES_NAMES); i++)
     {
       GFile *thumbnail = create_thumbnail (source, SIZES_NAMES[i]);
-      gchar *thumbnail_path = g_file_get_path (thumbnail);
+      GFile *f;
 
       g_ptr_array_add (sized_thumbnails, thumbnail);
 
@@ -322,14 +321,15 @@ test_thumbnails_size_priority (void)
       g_assert_true (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID));
       g_assert_false (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_THUMBNAILING_FAILED));
 
+      f = g_file_new_for_path (g_file_info_get_attribute_byte_string (info, G_FILE_ATTRIBUTE_THUMBNAIL_PATH));
       g_assert_cmpstr (
-        g_file_info_get_attribute_byte_string (info, G_FILE_ATTRIBUTE_THUMBNAIL_PATH),
+        g_file_peek_path (f),
         ==,
-        thumbnail_path
+        g_file_peek_path (thumbnail)
       );
 
-      g_free (thumbnail_path);
       g_clear_object (&info);
+      g_clear_object (&f);
     }
 
   g_assert_cmpuint (sized_thumbnails->len, ==, G_N_ELEMENTS (SIZES_NAMES));
@@ -339,7 +339,7 @@ test_thumbnails_size_priority (void)
     {
       GFile *thumbnail = g_ptr_array_index (sized_thumbnails, i - 1);
       GFile *less_priority_thumbnail = g_ptr_array_index (sized_thumbnails, i - 2);
-      gchar *thumbnail_path = g_file_get_path (less_priority_thumbnail);
+      GFile *f;
 
       g_file_delete (thumbnail, NULL, &error);
       g_assert_no_error (error);
@@ -352,14 +352,15 @@ test_thumbnails_size_priority (void)
       g_assert_true (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID));
       g_assert_false (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_THUMBNAILING_FAILED));
 
+      f = g_file_new_for_path (g_file_info_get_attribute_byte_string (info, G_FILE_ATTRIBUTE_THUMBNAIL_PATH));
       g_assert_cmpstr (
-        g_file_info_get_attribute_byte_string (info, G_FILE_ATTRIBUTE_THUMBNAIL_PATH),
+        g_file_peek_path (f),
         ==,
-        thumbnail_path
+        g_file_peek_path (less_priority_thumbnail)
       );
 
-      g_free (thumbnail_path);
       g_clear_object (&info);
+      g_clear_object (&f);
     }
 
   /* And now let's remove the last valid one, so that failed should have priority */
