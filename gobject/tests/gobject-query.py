@@ -55,12 +55,6 @@ class TestGobjectQuery(unittest.TestCase):
 
     def runGobjectQuery(self, *args):
         argv = [self.__gobject_query]
-
-        # shebang lines are not supported on native
-        # Windows consoles
-        if os.name == "nt":
-            argv.insert(0, sys.executable)
-
         argv.extend(args)
         print("Running:", argv)
 
