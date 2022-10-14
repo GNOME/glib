@@ -59,13 +59,16 @@ class TestAssertMessage(unittest.TestCase):
         self.__gdb = shutil.which("gdb")
         self.timeout_seconds = 10  # seconds per test
 
+        ext = ""
+        if os.name == "nt":
+            ext = ".exe"
         if "G_TEST_BUILDDIR" in os.environ:
             self.__assert_msg_test = os.path.join(
-                os.environ["G_TEST_BUILDDIR"], "assert-msg-test"
+                os.environ["G_TEST_BUILDDIR"], "assert-msg-test" + ext
             )
         else:
             self.__assert_msg_test = os.path.join(
-                os.path.dirname(__file__), "assert-msg-test"
+                os.path.dirname(__file__), "assert-msg-test" + ext
             )
         print("assert-msg-test:", self.__assert_msg_test)
 
