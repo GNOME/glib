@@ -1834,7 +1834,9 @@ g_hash_table_steal (GHashTable    *hash_table,
  *
  * If found, the stolen key and value are removed from the hash table without
  * calling the key and value destroy functions, and ownership is transferred to
- * the caller of this method; as with g_hash_table_steal().
+ * the caller of this method, as with g_hash_table_steal(). That is the case
+ * regardless whether @stolen_key or @stolen_value output parameters are
+ * requested.
  *
  * You can pass %NULL for @lookup_key, provided the hash and equal functions
  * of @hash_table are %NULL-safe.
