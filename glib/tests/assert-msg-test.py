@@ -74,10 +74,6 @@ class TestAssertMessage(unittest.TestCase):
 
     def runAssertMessage(self, *args):
         argv = [self.__assert_msg_test]
-        # shebang lines are not supported on native
-        # Windows consoles
-        if os.name == "nt":
-            argv.insert(0, sys.executable)
         argv.extend(args)
         print("Running:", argv)
 
