@@ -97,7 +97,10 @@ test_spawn_basics (void)
                                       &output, &erroutput, NULL, &err);
   g_assert_no_error (err);
   g_assert_true (result);
-  g_assert_cmpstr (output, ==, "line 2\nline first\nline last\n");
+  if (strchr (output, '\r') != NULL)
+    g_assert_cmpstr (output, ==, "line 2\r\nline first\r\nline last\r\n");
+  else
+    g_assert_cmpstr (output, ==, "line 2\nline first\nline last\n");
   g_assert_cmpstr (erroutput, ==, "");
 
   g_free (output);
