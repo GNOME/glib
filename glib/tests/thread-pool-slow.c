@@ -274,7 +274,7 @@ test_thread_sort (gboolean sort)
   if (sort) {
     g_thread_pool_set_sort_function (pool,
 				     test_thread_sort_compare_func,
-				     GUINT_TO_POINTER (69));
+				     NULL);
   }
 
   for (i = 0; i < limit; i++) {
