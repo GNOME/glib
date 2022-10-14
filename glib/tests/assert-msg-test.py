@@ -134,7 +134,10 @@ class TestAssertMessage(unittest.TestCase):
         """Test running g_assert() and fail the program."""
         result = self.runAssertMessage()
 
-        self.assertEqual(result.info.returncode, -6)
+        if os.name == "nt":
+            self.assertEqual(result.info.returncode, 3)
+        else:
+            self.assertEqual(result.info.returncode, -6)
         self.assertIn("assertion failed: (42 < 0)", result.out)
 
     def test_gdb_gassert(self):
