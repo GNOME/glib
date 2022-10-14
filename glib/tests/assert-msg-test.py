@@ -146,12 +146,14 @@ class TestAssertMessage(unittest.TestCase):
             self.skipTest("GDB is not installed, skipping this test!")
 
         with tempfile.NamedTemporaryFile(
-            prefix="assert-msg-test-", suffix=".gdb", mode="w"
+            prefix="assert-msg-test-", suffix=".gdb", mode="w", delete=False
         ) as tmp:
-            tmp.write(GDB_SCRIPT)
-            tmp.flush()
-
-            result = self.runGdbAssertMessage("-x", tmp.name, self.__assert_msg_test)
+            try:
+                tmp.write(GDB_SCRIPT)
+                tmp.close()
+                result = self.runGdbAssertMessage("-x", tmp.name, self.__assert_msg_test)
+            finally:
+                os.unlink(tmp.name)
 
             # Some CI environments disable ptrace (as they’re running in a
             # container). If so, skip the test as there’s nothing we can do.
