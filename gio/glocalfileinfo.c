@@ -2441,6 +2441,26 @@ set_symlink (char                       *filename,
 }
 #endif
 
+#if defined (HAVE_UTIMES) || defined (HAVE_UTIMENSAT) || defined(G_OS_WIN32)
+static int
+lazy_stat (const char  *filename,
+           GStatBuf    *statbuf,
+           gboolean    *called_stat)
+{
+  int res;
+
+  if (*called_stat)
+    return 0;
+
+  res = g_stat (filename, statbuf);
+
+  if (res == 0)
+    *called_stat = TRUE;
+
+  return res;
+}
+#endif
+
 #if defined (G_OS_WIN32)
 /* From
  * https://support.microsoft.com/en-ca/help/167296/how-to-convert-a-unix-time-t-to-a-win32-filetime-or-systemtime
@@ -2546,6 +2566,8 @@ set_mtime_atime (const char                 *filename,
   FILETIME *p_mtime = NULL;
   FILETIME *p_atime = NULL;
   DWORD gle;
+  GStatBuf statbuf;
+  gboolean got_stat = FALSE;
 
   /* ATIME */
   if (atime_value)
@@ -2554,30 +2576,44 @@ set_mtime_atime (const char                 *filename,
         return FALSE;
       val_usec = 0;
       val_nsec = 0;
-      if (atime_usec_value &&
-          !get_uint32 (atime_usec_value, &val_usec, error))
-        return FALSE;
-
-      /* Convert to nanoseconds. Clamp the usec value if it’s going to overflow,
-       * as %G_MAXINT32 will trigger a ‘too big’ error in
-       * _g_win32_unix_time_to_filetime() anyway. */
-      val_nsec = (val_usec > G_MAXINT32 / 1000) ? G_MAXINT32 : (val_usec * 1000);
-
-      if (atime_nsec_value &&
-          !get_uint32 (atime_nsec_value, &val_nsec, error))
-	      return FALSE;
-      if (val_nsec > 0)
-        {
-          if (!_g_win32_unix_time_to_filetime (val, val_nsec, &atime, error))
-            return FALSE;
-        }
-      else
-        {
-          if (!_g_win32_unix_time_to_filetime (val, val_usec, &atime, error))
-            return FALSE;
-        }
-      p_atime = &atime;
     }
+  else
+    {
+      if (lazy_stat (filename, &statbuf, &got_stat) == 0)
+	{
+          val = statbuf.st_atime;
+#if defined (HAVE_STRUCT_STAT_ST_ATIMENSEC)
+          val_nsec = statbuf.st_atimensec;
+#elif defined (HAVE_STRUCT_STAT_ST_ATIM_TV_NSEC)
+          val_nsec = statbuf.st_atim.tv_nsec;
+#endif
+	}
+    }
+
+  if (atime_usec_value &&
+      !get_uint32 (atime_usec_value, &val_usec, error))
+    return FALSE;
+
+  /* Convert to nanoseconds. Clamp the usec value if it’s going to overflow,
+   * as %G_MAXINT32 will trigger a ‘too big’ error in
+   * _g_win32_unix_time_to_filetime() anyway. */
+  val_nsec = (val_usec > G_MAXINT32 / 1000) ? G_MAXINT32 : (val_usec * 1000);
+
+  if (atime_nsec_value &&
+      !get_uint32 (atime_nsec_value, &val_nsec, error))
+    return FALSE;
+  if (val_nsec > 0)
+    {
+      if (!_g_win32_unix_time_to_filetime (val, val_nsec, &atime, error))
+        return FALSE;
+    }
+  else
+    {
+      if (!_g_win32_unix_time_to_filetime (val, val_usec, &atime, error))
+        return FALSE;
+    }
+
+  p_atime = &atime;
 
   /* MTIME */
   if (mtime_value)
@@ -2586,30 +2622,43 @@ set_mtime_atime (const char                 *filename,
 	return FALSE;
       val_usec = 0;
       val_nsec = 0;
-      if (mtime_usec_value &&
-          !get_uint32 (mtime_usec_value, &val_usec, error))
-        return FALSE;
-
-      /* Convert to nanoseconds. Clamp the usec value if it’s going to overflow,
-       * as %G_MAXINT32 will trigger a ‘too big’ error in
-       * _g_win32_unix_time_to_filetime() anyway. */
-      val_nsec = (val_usec > G_MAXINT32 / 1000) ? G_MAXINT32 : (val_usec * 1000);
-
-      if (mtime_nsec_value &&
-          !get_uint32 (mtime_nsec_value, &val_nsec, error))
-	      return FALSE;
-      if (val_nsec > 0)
-        {
-          if (!_g_win32_unix_time_to_filetime (val, val_nsec, &mtime, error))
-            return FALSE;
-        }
-      else
-        {
-          if (!_g_win32_unix_time_to_filetime (val, val_usec, &mtime, error))
-            return FALSE;
-        }
-      p_mtime = &mtime;
     }
+  else
+    {
+      if (lazy_stat (filename, &statbuf, &got_stat) == 0)
+	{
+          val = statbuf.st_mtime;
+#if defined (HAVE_STRUCT_STAT_ST_MTIMENSEC)
+          val_nsec = statbuf.st_mtimensec;
+#elif defined (HAVE_STRUCT_STAT_ST_MTIM_TV_NSEC)
+          val_nsec = statbuf.st_mtim.tv_nsec;
+#endif
+	}
+    }
+
+  if (mtime_usec_value &&
+      !get_uint32 (mtime_usec_value, &val_usec, error))
+    return FALSE;
+
+  /* Convert to nanoseconds. Clamp the usec value if it’s going to overflow,
+   * as %G_MAXINT32 will trigger a ‘too big’ error in
+   * _g_win32_unix_time_to_filetime() anyway. */
+  val_nsec = (val_usec > G_MAXINT32 / 1000) ? G_MAXINT32 : (val_usec * 1000);
+
+  if (mtime_nsec_value &&
+      !get_uint32 (mtime_nsec_value, &val_nsec, error))
+    return FALSE;
+  if (val_nsec > 0)
+    {
+      if (!_g_win32_unix_time_to_filetime (val, val_nsec, &mtime, error))
+        return FALSE;
+    }
+  else
+    {
+      if (!_g_win32_unix_time_to_filetime (val, val_usec, &mtime, error))
+        return FALSE;
+    }
+  p_mtime = &mtime;
 
   filename_utf16 = g_utf8_to_utf16 (filename, -1, NULL, NULL, error);
 
@@ -2654,24 +2703,6 @@ set_mtime_atime (const char                 *filename,
   return res;
 }
 #elif defined (HAVE_UTIMES) || defined (HAVE_UTIMENSAT)
-static int
-lazy_stat (char        *filename, 
-           struct stat *statbuf, 
-           gboolean    *called_stat)
-{
-  int res;
-
-  if (*called_stat)
-    return 0;
-  
-  res = g_stat (filename, statbuf);
-  
-  if (res == 0)
-    *called_stat = TRUE;
-  
-  return res;
-}
-
 static gboolean
 set_mtime_atime (char                       *filename,
 		 const GFileAttributeValue  *mtime_value,
@@ -2684,7 +2715,7 @@ set_mtime_atime (char                       *filename,
 {
   int res;
   guint64 val = 0;
-  struct stat statbuf;
+  GStatBuf statbuf;
   gboolean got_stat = FALSE;
 #ifdef HAVE_UTIMENSAT
   struct timespec times_n[2] = { {0, 0}, {0, 0} };
