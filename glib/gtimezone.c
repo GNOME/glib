@@ -41,6 +41,10 @@
 #include "gdate.h"
 #include "genviron.h"
 
+#ifdef G_OS_UNIX
+#include "gstdio.h"
+#endif
+
 #ifdef G_OS_WIN32
 
 #define STRICT
@@ -532,16 +536,43 @@ zone_identifier_unix (void)
   gchar *canonical_path = NULL;
   GError *read_link_err = NULL;
   const gchar *tzdir;
+  gboolean not_a_symlink_to_zoneinfo = FALSE;
+  struct stat file_status;
 
   /* Resolve the actual timezone pointed to by /etc/localtime. */
   resolved_identifier = g_file_read_link ("/etc/localtime", &read_link_err);
+
+  if (resolved_identifier != NULL)
+    {
+      if (g_lstat (resolved_identifier, &file_status) == 0)
+        {
+          if ((file_status.st_mode & S_IFMT) != S_IFREG)
+            {
+              /* Some systems (e.g. toolbox containers) make /etc/localtime be a symlink
+               * to a symlink.
+               *
+               * Rather than try to cope with that, just ignore /etc/localtime and use
+               * the fallback code to read timezone from /etc/timezone
+               */
+              g_clear_pointer (&resolved_identifier, g_free);
+              not_a_symlink_to_zoneinfo = TRUE;
+            }
+        }
+      else
+        {
+          g_clear_pointer (&resolved_identifier, g_free);
+        }
+    }
+  else
+    {
+      not_a_symlink_to_zoneinfo = g_error_matches (read_link_err,
+                                                   G_FILE_ERROR,
+                                                   G_FILE_ERROR_INVAL);
+      g_clear_error (&read_link_err);
+    }
+
   if (resolved_identifier == NULL)
     {
-      gboolean not_a_symlink = g_error_matches (read_link_err,
-                                                G_FILE_ERROR,
-                                                G_FILE_ERROR_INVAL);
-      g_clear_error (&read_link_err);
-
       /* if /etc/localtime is not a symlink, try:
        *  - /var/db/zoneinfo : 'tzsetup' program on FreeBSD and
        *    DragonflyBSD stores the timezone chosen by the user there.
@@ -551,17 +582,17 @@ zone_identifier_unix (void)
        *    as a last-ditch effort to parse the TZ= setting from within
        *    /etc/default/init
        */
-      if (not_a_symlink && (g_file_get_contents ("/var/db/zoneinfo",
-                                                 &resolved_identifier,
-                                                 NULL, NULL) ||
-                            g_file_get_contents ("/etc/timezone",
-                                                 &resolved_identifier,
-                                                 NULL, NULL)
+      if (not_a_symlink_to_zoneinfo && (g_file_get_contents ("/var/db/zoneinfo",
+                                                             &resolved_identifier,
+                                                             NULL, NULL) ||
+                                        g_file_get_contents ("/etc/timezone",
+                                                             &resolved_identifier,
+                                                             NULL, NULL)
 #if defined(__sun) && defined(__SVR4)
-                                                             ||
-                            (resolved_identifier = zone_identifier_illumos ())
+                                        ||
+                                        (resolved_identifier = zone_identifier_illumos ())
 #endif
-                                                             ))
+                                            ))
         g_strchomp (resolved_identifier);
       else
         {
