@@ -336,6 +336,20 @@ test_initially_unowned (void)
   g_assert_cmpint (obj->ref_count, ==, 1);
 
   g_object_unref (obj);
+
+  if (g_test_undefined ())
+    {
+      obj = g_object_new (G_TYPE_INITIALLY_UNOWNED, NULL);
+
+#ifdef G_ENABLE_DEBUG
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "A floating object GInitiallyUnowned * was finalized*");
+#endif
+      g_object_unref (obj);
+#ifdef G_ENABLE_DEBUG
+      g_test_assert_expected_messages ();
+#endif
+    }
 }
 
 static void
@@ -944,6 +958,8 @@ int
 main (int argc, char **argv)
 {
   g_test_init (&argc, &argv, NULL);
+
+  g_setenv ("G_ENABLE_DIAGNOSTIC", "1", TRUE);
 
   g_test_add_func ("/type/fundamentals", test_fundamentals);
   g_test_add_func ("/type/qdata", test_type_qdata);

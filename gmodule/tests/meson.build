@@ -56,11 +56,9 @@ if get_option('default_library') != 'static'
   endforeach
 endif
 
-test_env = environment()
+test_env = environment(common_test_env)
 test_env.set('G_TEST_SRCDIR', meson.current_source_dir())
 test_env.set('G_TEST_BUILDDIR', meson.current_build_dir())
-test_env.set('G_DEBUG', 'gc-friendly')
-test_env.set('MALLOC_CHECK_', '2')
 
 test_deps = [libm, thread_dep, libglib_dep, libgmodule_dep]
 test_cargs = ['-DG_LOG_DOMAIN="GModule"', '-UG_DISABLE_ASSERT']

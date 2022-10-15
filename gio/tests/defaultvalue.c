@@ -193,6 +193,9 @@ main (int argc, char **argv)
   g_setenv ("GIO_USE_VFS", "local", TRUE);
   g_setenv ("GSETTINGS_BACKEND", "memory", TRUE);
 
+  /* Disable deprecation warnings when we poke at deprecated properties */
+  g_setenv ("G_ENABLE_DIAGNOSTIC", "0", TRUE);
+
   g_test_init (&argc, &argv, NULL);
 
   /* Create one test bus for all tests, as we have a lot of very small
