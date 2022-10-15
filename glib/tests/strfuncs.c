@@ -2546,6 +2546,33 @@ test_ascii_string_to_number_pathological (void)
   g_assert_cmpint (svalue, ==, G_MININT64);
 }
 
+static void
+test_set_str (void)
+{
+  char *str = NULL;
+
+  g_assert_false (g_set_str (&str, NULL));
+  g_assert_null (str);
+
+  g_assert_true (g_set_str (&str, ""));
+  g_assert_false (g_set_str (&str, ""));
+  g_assert_nonnull (str);
+  g_assert_true ((gpointer)str != (gpointer)"");
+  g_assert_cmpstr (str, ==, "");
+
+  g_assert_true (g_set_str (&str, NULL));
+  g_assert_null (str);
+
+  g_assert_true (g_set_str (&str, ""));
+  g_assert_true (g_set_str (&str, "test"));
+  g_assert_cmpstr (str, ==, "test");
+
+  g_assert_true (g_set_str (&str, &str[2]));
+  g_assert_cmpstr (str, ==, "st");
+
+  g_free (str);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -2563,6 +2590,7 @@ main (int   argc,
   g_test_add_func ("/strfuncs/has-suffix", test_has_suffix);
   g_test_add_func ("/strfuncs/memdup", test_memdup);
   g_test_add_func ("/strfuncs/memdup2", test_memdup2);
+  g_test_add_func ("/strfuncs/set_str", test_set_str);
   g_test_add_func ("/strfuncs/stpcpy", test_stpcpy);
   g_test_add_func ("/strfuncs/str_match_string", test_str_match_string);
   g_test_add_func ("/strfuncs/str_tokenize_and_fold", test_str_tokenize_and_fold);

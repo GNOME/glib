@@ -1464,6 +1464,7 @@ utimbuf
 <TITLE>String Utility Functions</TITLE>
 <FILE>string_utils</FILE>
 <INCLUDE>glib.h,glib/gprintf.h</INCLUDE>
+g_set_str
 g_strdup
 g_strndup
 g_strdupv
