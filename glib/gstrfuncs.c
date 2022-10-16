@@ -1362,7 +1362,7 @@ g_strerror (gint errnum)
           G_UNLOCK (errors);
 
           errno = saved_errno;
-          return msg;
+          return NULL;
         }
 
       if (!g_get_console_charset (NULL))
