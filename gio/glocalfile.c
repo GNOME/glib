@@ -787,6 +787,7 @@ get_mount_info (GFileInfo             *fs_info,
   dev_t *dev;
   GUnixMountEntry *mount;
   guint64 cache_time;
+  gboolean is_remote = FALSE;
 
   if (g_lstat (path, &buf) != 0)
     return;
@@ -823,6 +824,8 @@ get_mount_info (GFileInfo             *fs_info,
 	{
 	  if (g_unix_mount_is_readonly (mount))
 	    mount_info |= MOUNT_INFO_READONLY;
+          if (is_remote_fs_type (g_unix_mount_get_fs_type (mount)))
+            is_remote = TRUE;
 	  
 	  g_unix_mount_free (mount);
 	}
@@ -838,8 +841,14 @@ get_mount_info (GFileInfo             *fs_info,
       G_UNLOCK (mount_info_hash);
     }
 
-  if (mount_info & MOUNT_INFO_READONLY)
+  if (mount_info & MOUNT_INFO_READONLY &&
+      g_file_attribute_matcher_matches (matcher,
+                                        G_FILE_ATTRIBUTE_FILESYSTEM_READONLY))
     g_file_info_set_attribute_boolean (fs_info, G_FILE_ATTRIBUTE_FILESYSTEM_READONLY, TRUE);
+
+  if (g_file_attribute_matcher_matches (matcher,
+                                        G_FILE_ATTRIBUTE_FILESYSTEM_REMOTE))
+    g_file_info_set_attribute_boolean (fs_info, G_FILE_ATTRIBUTE_FILESYSTEM_REMOTE, is_remote);
 }
 
 #endif
@@ -1085,7 +1094,9 @@ g_local_file_query_filesystem_info (GFile         *file,
 #endif /* G_OS_WIN32 */
 
   if (g_file_attribute_matcher_matches (attribute_matcher,
-					G_FILE_ATTRIBUTE_FILESYSTEM_READONLY))
+                                        G_FILE_ATTRIBUTE_FILESYSTEM_READONLY) ||
+      g_file_attribute_matcher_matches (attribute_matcher,
+                                        G_FILE_ATTRIBUTE_FILESYSTEM_REMOTE))
     {
 #ifdef G_OS_WIN32
       get_filesystem_readonly (info, local->filename);
@@ -1093,13 +1104,6 @@ g_local_file_query_filesystem_info (GFile         *file,
       get_mount_info (info, local->filename, attribute_matcher);
 #endif /* G_OS_WIN32 */
     }
-
-#ifndef G_OS_WIN32
-  if (g_file_attribute_matcher_matches (attribute_matcher,
-                                        G_FILE_ATTRIBUTE_FILESYSTEM_REMOTE))
-    g_file_info_set_attribute_boolean (info, G_FILE_ATTRIBUTE_FILESYSTEM_REMOTE,
-                                       is_remote_fs_type (fstype));
-#endif
 
   g_file_attribute_matcher_unref (attribute_matcher);
   
@@ -2602,6 +2606,8 @@ is_remote_fs_type (const gchar *fsname)
       if (strcmp (fsname, "smb") == 0)
         return TRUE;
       if (strcmp (fsname, "smb2") == 0)
+        return TRUE;
+      if (strcmp (fsname, "fuse.sshfs") == 0)
         return TRUE;
     }
 
