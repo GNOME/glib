@@ -2501,7 +2501,7 @@ const gchar *    g_type_name_from_class         (GTypeClass	*g_class);
 
 
 /* --- implementation bits --- */
-#if (defined(G_DISABLE_CAST_CHECKS) && G_DISABLE_CAST_CHECKS != 0) || (!defined(G_DISABLE_CAST_CHECKS) && defined(__OPTIMIZE__))
+#if defined(G_DISABLE_CAST_CHECKS) || defined(__OPTIMIZE__)
 #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) ip)
 #  define _G_TYPE_CCC(cp, gt, ct)       ((ct*) cp)
 #else
