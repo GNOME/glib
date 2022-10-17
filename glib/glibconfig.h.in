@@ -18,7 +18,6 @@
 #mesondefine GMODULE_STATIC_COMPILATION
 #mesondefine G_INTL_STATIC_COMPILATION
 #mesondefine FFI_STATIC_BUILD
-#include <glib/glib-visibility.h>
 
 /* Specifies that GLib's g_print*() functions wrap the
  * system printf functions.  This is useful to know, for example,
