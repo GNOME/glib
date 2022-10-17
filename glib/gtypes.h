@@ -34,6 +34,10 @@
 #include <glibconfig.h>
 #include <glib/gmacros.h>
 #include <glib/gversionmacros.h>
+
+/* Must be included after the 3 headers above */
+#include <glib/glib-visibility.h>
+
 #include <time.h>
 
 G_BEGIN_DECLS
