@@ -144,9 +144,9 @@ main_thread_skipped (GObject *source, GAsyncResult *res, gpointer user_data)
 
   nskipped = g_input_stream_skip_finish (in, res, &err);
 
-  if (g_cancellable_is_cancelled (main_cancel))
+  if (g_error_matches (err, G_IO_ERROR, G_IO_ERROR_CANCELLED))
     {
-      g_assert_error (err, G_IO_ERROR, G_IO_ERROR_CANCELLED);
+      g_assert_true (g_cancellable_is_cancelled (main_cancel));
       do_main_cancel (out);
       g_clear_error (&err);
       return;
@@ -180,9 +180,9 @@ main_thread_read (GObject *source, GAsyncResult *res, gpointer user_data)
 
   nread = g_input_stream_read_finish (in, res, &err);
 
-  if (g_cancellable_is_cancelled (main_cancel))
+  if (g_error_matches (err, G_IO_ERROR, G_IO_ERROR_CANCELLED))
     {
-      g_assert_error (err, G_IO_ERROR, G_IO_ERROR_CANCELLED);
+      g_assert_true (g_cancellable_is_cancelled (main_cancel));
       do_main_cancel (out);
       g_clear_error (&err);
       return;
@@ -218,9 +218,9 @@ main_thread_wrote (GObject *source, GAsyncResult *res, gpointer user_data)
 
   nwrote = g_output_stream_write_finish (out, res, &err);
 
-  if (g_cancellable_is_cancelled (main_cancel))
+  if (g_error_matches (err, G_IO_ERROR, G_IO_ERROR_CANCELLED))
     {
-      g_assert_error (err, G_IO_ERROR, G_IO_ERROR_CANCELLED);
+      g_assert_true (g_cancellable_is_cancelled (main_cancel));
       do_main_cancel (out);
       g_clear_error (&err);
       return;
