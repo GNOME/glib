@@ -1757,6 +1757,8 @@ g_utime (const gchar    *filename,
  * attempt to correctly handle %EINTR, which has platform-specific
  * semantics.
  *
+ * It is a bug to call this function with an invalid file descriptor.
+ *
  * Returns: %TRUE on success, %FALSE if there was an error.
  *
  * Since: 2.36
@@ -1766,26 +1768,54 @@ g_close (gint       fd,
          GError   **error)
 {
   int res;
+
   res = close (fd);
-  /* Just ignore EINTR for now; a retry loop is the wrong thing to do
-   * on Linux at least.  Anyone who wants to add a conditional check
-   * for e.g. HP-UX is welcome to do so later...
-   *
-   * http://lkml.indiana.edu/hypermail/linux/kernel/0509.1/0877.html
-   * https://bugzilla.gnome.org/show_bug.cgi?id=682819
-   * http://utcc.utoronto.ca/~cks/space/blog/unix/CloseEINTR
-   * https://sites.google.com/site/michaelsafyan/software-engineering/checkforeintrwheninvokingclosethinkagain
-   */
-  if (G_UNLIKELY (res == -1 && errno == EINTR))
-    return TRUE;
-  else if (res == -1)
+
+  if (res == -1)
     {
       int errsv = errno;
+
+      if (errsv == EINTR)
+        {
+          /* Just ignore EINTR for now; a retry loop is the wrong thing to do
+           * on Linux at least.  Anyone who wants to add a conditional check
+           * for e.g. HP-UX is welcome to do so later...
+           *
+           * https://lwn.net/Articles/576478/
+           * http://lkml.indiana.edu/hypermail/linux/kernel/0509.1/0877.html
+           * https://bugzilla.gnome.org/show_bug.cgi?id=682819
+           * http://utcc.utoronto.ca/~cks/space/blog/unix/CloseEINTR
+           * https://sites.google.com/site/michaelsafyan/software-engineering/checkforeintrwheninvokingclosethinkagain
+           */
+          return TRUE;
+        }
+
       g_set_error_literal (error, G_FILE_ERROR,
                            g_file_error_from_errno (errsv),
                            g_strerror (errsv));
+
+      if (errsv == EBADF)
+        {
+          if (fd >= 0)
+            {
+              /* Closing an non-negative, invalid file descriptor is a bug. The bug is
+               * not necessarily in the caller of g_close(), but somebody else
+               * might have wrongly closed fd. In any case, there is a serious bug
+               * somewhere. */
+              g_critical ("g_close(fd:%d) failed with EBADF. The tracking of file descriptors got messed up", fd);
+            }
+          else
+            {
+              /* Closing a negative "file descriptor" is less problematic. It's still a nonsensical action
+               * from the caller. Assert against that too. */
+              g_critical ("g_close(fd:%d) failed with EBADF. This is not a valid file descriptor", fd);
+            }
+        }
+
       errno = errsv;
+
       return FALSE;
     }
+
   return TRUE;
 }
