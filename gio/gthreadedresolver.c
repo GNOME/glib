@@ -579,6 +579,22 @@ parse_res_srv (const guint8  *answer,
   GETSHORT (weight, *p);
   GETSHORT (port, *p);
 
+  /* RFC 2782 says (on page 4) that “Unless and until permitted by future
+   * standards action, name compression is not to be used for this field.”, so
+   * technically we shouldn’t be expanding names here for SRV records.
+   *
+   * However, other DNS resolvers (such as systemd[1]) do, and it seems in
+   * keeping with the principle of being liberal in what you accept and strict
+   * in what you emit. It also seems harmless.
+   *
+   * An earlier version of the RFC, RFC 2052 (now obsolete) specified that name
+   * compression *was* to be used for SRV targets[2].
+   *
+   * See discussion on https://gitlab.gnome.org/GNOME/glib/-/issues/2622.
+   *
+   * [1]: https://github.com/yuwata/systemd/blob/2d23cc3c07c49722ce93170737b3efd2692a2d08/src/resolve/resolved-dns-packet.c#L1674
+   * [2]: https://datatracker.ietf.org/doc/html/rfc2052#page-3
+   */
   if (!expand_name ("SRV", answer, end, p, namebuf, sizeof (namebuf), error))
     return NULL;
 
