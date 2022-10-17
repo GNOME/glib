@@ -59,22 +59,21 @@ class TestAssertMessage(unittest.TestCase):
         self.__gdb = shutil.which("gdb")
         self.timeout_seconds = 10  # seconds per test
 
+        ext = ""
+        if os.name == "nt":
+            ext = ".exe"
         if "G_TEST_BUILDDIR" in os.environ:
             self.__assert_msg_test = os.path.join(
-                os.environ["G_TEST_BUILDDIR"], "assert-msg-test"
+                os.environ["G_TEST_BUILDDIR"], "assert-msg-test" + ext
             )
         else:
             self.__assert_msg_test = os.path.join(
-                os.path.dirname(__file__), "assert-msg-test"
+                os.path.dirname(__file__), "assert-msg-test" + ext
             )
         print("assert-msg-test:", self.__assert_msg_test)
 
     def runAssertMessage(self, *args):
         argv = [self.__assert_msg_test]
-        # shebang lines are not supported on native
-        # Windows consoles
-        if os.name == "nt":
-            argv.insert(0, sys.executable)
         argv.extend(args)
         print("Running:", argv)
 
@@ -135,7 +134,10 @@ class TestAssertMessage(unittest.TestCase):
         """Test running g_assert() and fail the program."""
         result = self.runAssertMessage()
 
-        self.assertEqual(result.info.returncode, -6)
+        if os.name == "nt":
+            self.assertEqual(result.info.returncode, 3)
+        else:
+            self.assertEqual(result.info.returncode, -6)
         self.assertIn("assertion failed: (42 < 0)", result.out)
 
     def test_gdb_gassert(self):
@@ -144,12 +146,14 @@ class TestAssertMessage(unittest.TestCase):
             self.skipTest("GDB is not installed, skipping this test!")
 
         with tempfile.NamedTemporaryFile(
-            prefix="assert-msg-test-", suffix=".gdb", mode="w"
+            prefix="assert-msg-test-", suffix=".gdb", mode="w", delete=False
         ) as tmp:
-            tmp.write(GDB_SCRIPT)
-            tmp.flush()
-
-            result = self.runGdbAssertMessage("-x", tmp.name, self.__assert_msg_test)
+            try:
+                tmp.write(GDB_SCRIPT)
+                tmp.close()
+                result = self.runGdbAssertMessage("-x", tmp.name, self.__assert_msg_test)
+            finally:
+                os.unlink(tmp.name)
 
             # Some CI environments disable ptrace (as they’re running in a
             # container). If so, skip the test as there’s nothing we can do.

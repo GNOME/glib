@@ -252,10 +252,10 @@ test_icon (void)
       names = g_themed_icon_get_names (G_THEMED_ICON (icon));
 #ifdef __APPLE__
       g_assert_true (g_strv_contains (names, "text-*"));
+#elif defined(G_OS_WIN32)
+      g_assert_cmpuint (g_strv_length ((GStrv) names), >, 0);
 #else
-#ifndef G_OS_WIN32
       g_assert_true (g_strv_contains (names, "text-plain"));
-#endif
       g_assert_true (g_strv_contains (names, "text-x-generic"));
 #endif
     }
