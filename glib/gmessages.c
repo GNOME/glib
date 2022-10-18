@@ -3159,6 +3159,7 @@ _g_log_fallback_handler (const gchar   *log_domain,
   write_string (stream, level_prefix);
   write_string (stream, ": ");
   write_string (stream, message);
+  write_string (stream, "\n");
 }
 
 static void
