@@ -552,7 +552,7 @@ on_source_notify (GObject          *source,
     {
       binding->is_frozen = TRUE;
 
-      g_param_value_validate (binding->target_pspec, &to_value);
+      (void) g_param_value_validate (binding->target_pspec, &to_value);
       g_object_set_property (target, binding->target_pspec->name, &to_value);
 
       binding->is_frozen = FALSE;
@@ -620,7 +620,7 @@ on_target_notify (GObject          *target,
     {
       binding->is_frozen = TRUE;
 
-      g_param_value_validate (binding->source_pspec, &to_value);
+      (void) g_param_value_validate (binding->source_pspec, &to_value);
       g_object_set_property (source, binding->source_pspec->name, &to_value);
 
       binding->is_frozen = FALSE;

@@ -947,7 +947,7 @@ enable_jit_with_match_options (GRegex   *regex,
       break;
     }
 
-  return regex->jit_status;
+  g_assert_not_reached ();
 }
 
 /**
