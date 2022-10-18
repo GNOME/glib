@@ -1259,8 +1259,7 @@ test_launch_uris_with_terminal (gconstpointer data)
   data_input_stream = g_data_input_stream_new (input_stream);
   script_contents = g_strdup_printf ("#!%s\n" \
                                      "out='%s'\n"
-                                     "printf '%%s' \"$*\" > \"$out\"\n"
-                                     "printf '\\n' > \"$out\"\n",
+                                     "printf '%%s\\n' \"$*\" > \"$out\"\n",
                                      sh,
                                      output_fd_path);
   g_file_set_contents (terminal_path, script_contents, -1, &error);
