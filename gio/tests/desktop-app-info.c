@@ -1214,10 +1214,6 @@ get_terminal_divider (const char *terminal_name)
 static void
 test_launch_uris_with_terminal (gconstpointer data)
 {
-#if defined(__FreeBSD__)
-  /* FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/2781 */
-  g_test_skip ("/proc pipe sharing currently doesn’t work reliably on FreeBSD CI");
-#else
   int fds[2];
   const char *terminal_exec = data;
   char *old_path;
@@ -1250,10 +1246,10 @@ test_launch_uris_with_terminal (gconstpointer data)
 
   terminal_path = g_build_filename (bin_path, terminal_exec, NULL);
   output_fd_path = g_strdup_printf (G_DIR_SEPARATOR_S "proc"
-                                    G_DIR_SEPARATOR_S "%" G_PID_FORMAT
+                                    G_DIR_SEPARATOR_S "self"
                                     G_DIR_SEPARATOR_S "fd"
                                     G_DIR_SEPARATOR_S "%d",
-                                    getpid (), fds[0]);
+                                    fds[0]);
 
   input_stream = g_unix_input_stream_new (fds[0], TRUE);
   data_input_stream = g_data_input_stream_new (input_stream);
@@ -1342,7 +1338,6 @@ test_launch_uris_with_terminal (gconstpointer data)
   g_clear_error (&error);
   g_clear_list (&paths, NULL);
   g_clear_list (&uris, g_free);
-#endif
 }
 
 static void
