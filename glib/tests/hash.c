@@ -1283,8 +1283,9 @@ test_steal_extended (void)
   g_assert_true (g_hash_table_steal_extended (hash, "a", (gpointer *) &stolen_key,
                                               (gpointer *) &stolen_value));
   g_assert_cmpstr (stolen_key, ==, "a");
-  g_assert_cmpstr (stolen_value, ==, NULL);
+  g_assert_cmpstr (stolen_value, ==, "a");
   g_clear_pointer (&stolen_key, g_free);
+  stolen_value = NULL;
 
   g_assert_true (g_hash_table_steal_extended (hash, "b", (gpointer *) &stolen_key,
                                               NULL));
@@ -1299,8 +1300,9 @@ test_steal_extended (void)
   g_assert_true (g_hash_table_steal_extended (hash, "d", (gpointer *) &stolen_key,
                                               (gpointer *) &stolen_value));
   g_assert_cmpstr (stolen_key, ==, "d");
-  g_assert_cmpstr (stolen_value, ==, NULL);
+  g_assert_cmpstr (stolen_value, ==, "d");
   g_clear_pointer (&stolen_key, g_free);
+  stolen_value = NULL;
 
   /* So far, the GHashTable was used like a set (g_hash_table_add()), where all key/values were
    * identical. Adding one entry where key/value differs, blows the internal representation
