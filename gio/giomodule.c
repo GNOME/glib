@@ -581,8 +581,10 @@ g_io_modules_scan_all_in_directory_with_scope (const char     *dirname,
 	      if (g_type_module_use (G_TYPE_MODULE (module)))
 		g_type_module_unuse (G_TYPE_MODULE (module)); /* Unload */
 	      else
-                g_printerr ("Failed to load module: %s\n", path);
-              g_object_unref (module);
+		{
+		  g_printerr ("Failed to load module: %s\n", path);
+		  g_object_unref (module);
+		}
 	    }
 
 	  g_free (path);
