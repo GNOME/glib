@@ -30,6 +30,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 static GAppInfo *
 create_command_line_app_info (const char *name,
@@ -1182,7 +1184,6 @@ test_id (void)
   g_free (result);
 }
 
-#if !defined(__FreeBSD__)
 static const char *
 get_terminal_divider (const char *terminal_name)
 {
@@ -1209,16 +1210,13 @@ get_terminal_divider (const char *terminal_name)
 
   g_return_val_if_reached (NULL);
 }
-#endif
 
 static void
 test_launch_uris_with_terminal (gconstpointer data)
 {
-#if defined(__FreeBSD__)
-  /* FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/2781 */
-  g_test_skip ("/proc pipe sharing currently doesn’t work reliably on FreeBSD CI");
-#else
-  int fds[2];
+  int fd;
+  int ret;
+  int flags;
   const char *terminal_exec = data;
   char *old_path;
   char *command_line;
@@ -1226,7 +1224,7 @@ test_launch_uris_with_terminal (gconstpointer data)
   char *terminal_path;
   char *output_fd_path;
   char *script_contents;
-  char *output_contents;
+  char *output_contents = NULL;
   char *sh;
   GAppInfo *app_info;
   GList *uris;
@@ -1245,17 +1243,26 @@ test_launch_uris_with_terminal (gconstpointer data)
   old_path = g_strdup (g_getenv ("PATH"));
   g_assert_true (g_setenv ("PATH", bin_path, TRUE));
 
-  g_unix_open_pipe (fds, FD_CLOEXEC, &error);
-  g_assert_no_error (error);
-
   terminal_path = g_build_filename (bin_path, terminal_exec, NULL);
-  output_fd_path = g_strdup_printf (G_DIR_SEPARATOR_S "proc"
-                                    G_DIR_SEPARATOR_S "%" G_PID_FORMAT
-                                    G_DIR_SEPARATOR_S "fd"
-                                    G_DIR_SEPARATOR_S "%d",
-                                    getpid (), fds[0]);
+  output_fd_path = g_build_filename (bin_path, "fifo", NULL);
 
-  input_stream = g_unix_input_stream_new (fds[0], TRUE);
+  ret = mkfifo (output_fd_path, 0600);
+
+  g_assert_cmpint (ret, ==, 0);
+
+  fd = g_open (output_fd_path, O_RDONLY | O_CLOEXEC | O_NONBLOCK, 0);
+
+  g_assert_cmpint (fd, >=, 0);
+
+  flags = fcntl (fd, F_GETFL);
+
+  g_assert_cmpint (flags, >=, 0);
+
+  ret = fcntl (fd, F_SETFL,  flags & ~O_NONBLOCK);
+
+  g_assert_cmpint (ret, ==, 0);
+
+  input_stream = g_unix_input_stream_new (fd, TRUE);
   data_input_stream = g_data_input_stream_new (input_stream);
   script_contents = g_strdup_printf ("#!%s\n" \
                                      "out='%s'\n"
@@ -1288,10 +1295,19 @@ test_launch_uris_with_terminal (gconstpointer data)
   g_app_info_launch_uris (app_info, uris, NULL, &error);
   g_assert_no_error (error);
 
-  output_contents =
-    g_data_input_stream_read_line (data_input_stream, NULL, NULL, &error);
-  g_assert_no_error (error);
+  while (output_contents == NULL)
+    {
+      output_contents =
+        g_data_input_stream_read_upto (data_input_stream, "\n", 1, NULL, NULL, &error);
+      g_assert_no_error (error);
+
+      if (output_contents == NULL)
+        g_usleep (G_USEC_PER_SEC / 10);
+    }
   g_test_message ("'%s' called with arguments: '%s'", terminal_exec, output_contents);
+
+  g_data_input_stream_read_byte (data_input_stream, NULL, &error);
+  g_assert_no_error (error);
 
   output_args = g_strsplit (output_contents, " ", -1);
   g_clear_pointer (&output_contents, g_free);
@@ -1305,10 +1321,19 @@ test_launch_uris_with_terminal (gconstpointer data)
   g_assert_cmpint (g_list_length (paths), ==, 1);
   g_clear_pointer (&output_args, g_strfreev);
 
-  output_contents =
-    g_data_input_stream_read_line (data_input_stream, NULL, NULL, &error);
-  g_assert_no_error (error);
+  while (output_contents == NULL)
+    {
+      output_contents =
+        g_data_input_stream_read_upto (data_input_stream, "\n", 1, NULL, NULL, &error);
+      g_assert_no_error (error);
+
+      if (output_contents == NULL)
+        g_usleep (G_USEC_PER_SEC / 10);
+    }
   g_test_message ("'%s' called with arguments: '%s'", terminal_exec, output_contents);
+
+  g_data_input_stream_read_byte (data_input_stream, NULL, &error);
+  g_assert_no_error (error);
 
   output_args = g_strsplit (output_contents, " ", -1);
   g_clear_pointer (&output_contents, g_free);
@@ -1324,7 +1349,7 @@ test_launch_uris_with_terminal (gconstpointer data)
   g_assert_null (paths);
   g_assert_true (g_setenv ("PATH", old_path, TRUE));
 
-  g_close (fds[1], &error);
+  g_close (fd, &error);
   g_assert_no_error (error);
 
   g_free (sh);
@@ -1342,7 +1367,6 @@ test_launch_uris_with_terminal (gconstpointer data)
   g_clear_error (&error);
   g_clear_list (&paths, NULL);
   g_clear_list (&uris, g_free);
-#endif
 }
 
 static void
