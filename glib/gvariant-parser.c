@@ -2231,6 +2231,16 @@ typedecl_parse (TokenStream  *stream,
           return NULL;
         }
 
+      if (g_variant_type_string_get_depth_ (token + 1) > max_depth)
+        {
+          token_stream_set_error (stream, error, TRUE,
+                                  G_VARIANT_PARSE_ERROR_RECURSION,
+                                  "type declaration recurses too deeply");
+          g_free (token);
+
+          return NULL;
+        }
+
       type = g_variant_type_new (token + 1);
 
       if (!g_variant_type_is_definite (type))
