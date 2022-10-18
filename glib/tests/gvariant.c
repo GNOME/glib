@@ -4189,6 +4189,36 @@ test_parser_recursion (void)
   g_free (silly_dict);
 }
 
+/* Test that #GVariants which recurse too deeply through use of typedecls are
+ * rejected. This is a sneaky way to multiply the number of objects in a text
+ * representation of a #GVariant without making the text-form proportionately
+ * long. It uses a typedecl to nest one of the elements deeply within nested
+ * maybes, while keeping all the other elements un-nested in the text form. It
+ * relies on g_variant_parse() not being provided with a concrete type for the
+ * top-level #GVariant. */
+static void
+test_parser_recursion_typedecls (void)
+{
+  GVariant *value = NULL;
+  GError *local_error = NULL;
+  const guint recursion_depth = G_VARIANT_MAX_RECURSION_DEPTH - 1;
+  gchar *silly_type = g_malloc0 (recursion_depth + 2 /* trailing `u` and then nul */);
+  gchar *silly_array = NULL;
+  gsize i;
+
+  for (i = 0; i < recursion_depth; i++)
+    silly_type[i] = 'm';
+  silly_type[recursion_depth] = 'u';
+
+  silly_array = g_strdup_printf ("[1,2,3,@%s 0]", silly_type);
+
+  value = g_variant_parse (NULL, silly_array, NULL, NULL, &local_error);
+  g_assert_error (local_error, G_VARIANT_PARSE_ERROR, G_VARIANT_PARSE_ERROR_RECURSION);
+  g_assert_null (value);
+  g_error_free (local_error);
+  g_free (silly_array);
+}
+
 static void
 test_parse_bad_format_char (void)
 {
@@ -5163,6 +5193,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gvariant/parser", test_parses);
   g_test_add_func ("/gvariant/parser/integer-bounds", test_parser_integer_bounds);
   g_test_add_func ("/gvariant/parser/recursion", test_parser_recursion);
+  g_test_add_func ("/gvariant/parser/recursion/typedecls", test_parser_recursion_typedecls);
   g_test_add_func ("/gvariant/parse-failures", test_parse_failures);
   g_test_add_func ("/gvariant/parse-positional", test_parse_positional);
   g_test_add_func ("/gvariant/parse/subprocess/bad-format-char", test_parse_bad_format_char);
