@@ -23,7 +23,7 @@
 
 #include <gio/gio.h>
 
-#if defined(G_OS_UNIX) && !defined(HAVE_COCOA)
+#if defined(G_OS_UNIX) && !defined(G_OS_DARWIN)
 #include <gio/gdesktopappinfo.h>
 #endif
 

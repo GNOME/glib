@@ -58,7 +58,7 @@ test_guess (void)
 
   /* Sadly win32 & OSX just don't have as large and robust of a mime type database as Linux */
 #ifndef G_OS_WIN32
-#ifndef __APPLE__
+#ifndef G_OS_DARWIN
   res = g_content_type_guess ("foo", data, sizeof (data) - 1, &uncertain);
   expected = g_content_type_from_mime_type ("text/plain");
   g_assert_content_type_equals (expected, res);
@@ -111,7 +111,7 @@ test_guess (void)
   g_assert_false (uncertain);
   g_free (res);
   g_free (expected);
-#endif /* __APPLE__ */
+#endif /* G_OS_DARWIN */
 
   res = g_content_type_guess (NULL, (guchar *)"%!PS-Adobe-2.0 EPSF-1.2", 23, &uncertain);
   expected = g_content_type_from_mime_type ("image/x-eps");
@@ -175,7 +175,7 @@ test_list (void)
   gchar *plain;
   gchar *xml;
 
-#ifdef __APPLE__
+#ifdef G_OS_DARWIN
   g_test_skip ("The OSX backend does not implement g_content_types_get_registered()");
   return;
 #endif
@@ -250,7 +250,7 @@ test_icon (void)
       const gchar *const *names;
 
       names = g_themed_icon_get_names (G_THEMED_ICON (icon));
-#ifdef __APPLE__
+#ifdef G_OS_DARWIN
       g_assert_true (g_strv_contains (names, "text-*"));
 #elif defined(G_OS_WIN32)
       g_assert_cmpuint (g_strv_length ((GStrv) names), >, 0);
@@ -274,7 +274,7 @@ test_icon (void)
       g_assert_true (g_strv_contains (names, "text-x-generic"));
 #else
       g_assert_true (g_strv_contains (names, "application-rtf"));
-#ifndef __APPLE__
+#ifndef G_OS_DARWIN
       g_assert_true (g_strv_contains (names, "x-office-document"));
 #endif
 #endif
@@ -298,7 +298,7 @@ test_symbolic_icon (void)
       const gchar *const *names;
 
       names = g_themed_icon_get_names (G_THEMED_ICON (icon));
-#ifdef __APPLE__
+#ifdef G_OS_DARWIN
       g_assert_true (g_strv_contains (names, "text-*-symbolic"));
       g_assert_true (g_strv_contains (names, "text-*"));
 #else
@@ -321,7 +321,7 @@ test_symbolic_icon (void)
       names = g_themed_icon_get_names (G_THEMED_ICON (icon));
       g_assert_true (g_strv_contains (names, "application-rtf-symbolic"));
       g_assert_true (g_strv_contains (names, "application-rtf"));
-#ifndef __APPLE__
+#ifndef G_OS_DARWIN
       g_assert_true (g_strv_contains (names, "x-office-document-symbolic"));
       g_assert_true (g_strv_contains (names, "x-office-document"));
 #endif
@@ -344,7 +344,7 @@ test_tree (void)
   gchar **types;
   gsize i;
 
-#if defined(__APPLE__) || defined(G_OS_WIN32)
+#if defined(G_OS_DARWIN) || defined(G_OS_WIN32)
   g_test_skip ("The OSX & Windows backends do not implement g_content_type_guess_for_tree()");
   return;
 #endif
@@ -370,7 +370,7 @@ test_type_is_a_special_case (void)
   /* Everything but the inode type is application/octet-stream */
   res = g_content_type_is_a ("inode/directory", "application/octet-stream");
   g_assert_false (res);
-#if !defined(__APPLE__) && !defined(G_OS_WIN32)
+#if !defined(G_OS_DARWIN) && !defined(G_OS_WIN32)
   res = g_content_type_is_a ("anything", "application/octet-stream");
   g_assert_true (res);
 #endif
@@ -388,7 +388,7 @@ test_guess_svg_from_data (void)
   gboolean uncertain = TRUE;
   gchar *res = g_content_type_guess (NULL, (guchar *)svgfilecontent,
                                      sizeof (svgfilecontent) - 1, &uncertain);
-#ifdef __APPLE__
+#ifdef G_OS_DARWIN
   g_assert_cmpstr (res, ==, "public.svg-image");
 #elif defined(G_OS_WIN32)
   g_test_skip ("svg type detection from content is not implemented on WIN32");
@@ -402,7 +402,7 @@ test_guess_svg_from_data (void)
 static void
 test_mime_from_content (void)
 {
-#ifdef __APPLE__
+#ifdef G_OS_DARWIN
   gchar *mime_type;
   mime_type = g_content_type_get_mime_type ("com.microsoft.bmp");
   g_assert_cmpstr (mime_type, ==, "image/bmp");

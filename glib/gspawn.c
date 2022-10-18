@@ -1493,7 +1493,7 @@ safe_fdwalk (int (*cb)(void *data, int fd), void *data)
   if (getrlimit (RLIMIT_NOFILE, &rl) == 0 && rl.rlim_max != RLIM_INFINITY)
     open_max = rl.rlim_max;
 #endif
-#if defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__APPLE__)
+#if defined(__FreeBSD__) || defined(__OpenBSD__) || defined(G_OS_DARWIN)
   /* Use sysconf() function provided by the system if it is known to be
    * async-signal safe.
    *

@@ -897,7 +897,7 @@ test_upper_bound (void)
   g_assert_cmpint (res, ==, 20);
 }
 
-#if !defined(__APPLE__) && !defined(__FreeBSD__)
+#if !defined(G_OS_DARWIN) && !defined(__FreeBSD__)
 static gint test_vasprintf_va (gchar       **string,
                                const gchar  *format,
                                ...) G_GNUC_PRINTF (2, 3);
@@ -917,19 +917,19 @@ test_vasprintf_va (gchar       **string,
 
   return len;
 }
-#endif  /* !defined(__APPLE__) && !defined(__FreeBSD__) */
+#endif  /* !defined(G_OS_DARWIN) && !defined(__FreeBSD__) */
 
 static void
 test_vasprintf_invalid_format_placeholder (void)
 {
-#if !defined(__APPLE__) && !defined(__FreeBSD__)
+#if !defined(G_OS_DARWIN) && !defined(__FreeBSD__)
   gint len = 0;
   gchar *buf = "some non-null string";
 #endif
 
   g_test_summary ("Test error handling for invalid format placeholder in g_vasprintf()");
 
-#if !defined(__APPLE__) && !defined(__FreeBSD__)
+#if !defined(G_OS_DARWIN) && !defined(__FreeBSD__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wformat"
 #pragma GCC diagnostic ignored "-Wformat-extra-args"

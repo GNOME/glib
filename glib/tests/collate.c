@@ -235,7 +235,7 @@ const gchar *sorted2[] = {
 const gchar *file_sorted2[] = {
   /* Filename collation in OS X follows Finder style which gives
    * a slightly different order from usual Linux locales. */
-#ifdef HAVE_CARBON
+#ifdef G_OS_DARWIN
   "a-.a",
   "a.a",
   "aa.a",

@@ -725,7 +725,7 @@ test_strftime (void)
 #else
     { "%B", "January" },
     { "%b", "Jan" },
-#if defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__APPLE__)
+#if defined(__FreeBSD__) || defined(__OpenBSD__) || defined(G_OS_DARWIN)
     { "%C", "00" },
     { "%c", "Mon Jan  1 00:00:00 0001" },
     { "%E", "E" },

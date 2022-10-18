@@ -2314,7 +2314,7 @@ type_name##_get_type (void) \
 /* Only use this in non-C++ on GCC >= 2.7, except for Darwin/ppc64.
  * See https://bugzilla.gnome.org/show_bug.cgi?id=647145
  */
-#if !defined (__cplusplus) && (G_GNUC_CHECK_VERSION(2, 7)) && !(defined (__APPLE__) && defined (__ppc64__))
+#if !defined (__cplusplus) && (G_GNUC_CHECK_VERSION(2, 7)) && !(defined (G_OS_DARWIN) && defined (__ppc64__))
 #define _G_DEFINE_BOXED_TYPE_BEGIN(TypeName, type_name, copy_func, free_func) \
 static GType type_name##_get_type_once (void); \
 \
