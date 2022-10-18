@@ -3556,7 +3556,11 @@ test_query_zero_length_content_type (void)
                        NULL, &error);
   g_assert_no_error (error);
 
+#ifndef HAVE_COCOA
   g_assert_cmpstr (g_file_info_get_content_type (file_info), ==, "text/plain");
+#else
+  g_assert_cmpstr (g_file_info_get_content_type (file_info), ==, "public.text");
+#endif
 
   g_clear_object (&file_info);
   g_clear_object (&empty_file);
