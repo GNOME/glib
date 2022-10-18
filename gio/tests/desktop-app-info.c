@@ -1184,7 +1184,6 @@ test_id (void)
   g_free (result);
 }
 
-#if !defined(__FreeBSD__)
 static const char *
 get_terminal_divider (const char *terminal_name)
 {
@@ -1211,15 +1210,10 @@ get_terminal_divider (const char *terminal_name)
 
   g_return_val_if_reached (NULL);
 }
-#endif
 
 static void
 test_launch_uris_with_terminal (gconstpointer data)
 {
-#if defined(__FreeBSD__)
-  /* FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/2781 */
-  g_test_skip ("/proc pipe sharing currently doesn’t work reliably on FreeBSD CI");
-#else
   int fd;
   int ret;
   int flags;
@@ -1373,7 +1367,6 @@ test_launch_uris_with_terminal (gconstpointer data)
   g_clear_error (&error);
   g_clear_list (&paths, NULL);
   g_clear_list (&uris, g_free);
-#endif
 }
 
 static void
