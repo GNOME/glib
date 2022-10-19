@@ -573,21 +573,21 @@ struct _GTask {
   gboolean thread_cancelled;
 
   /* Protected by the lock when task is threaded: */
-  gboolean thread_complete : 1;
-  gboolean return_on_cancel : 1;
-  gboolean : 0;
+  guint thread_complete : 1;
+  guint return_on_cancel : 1;
+  guint : 0;
 
   /* Unprotected, but written to when task runs in thread: */
-  gboolean completed : 1;
-  gboolean had_error : 1;
-  gboolean result_set : 1;
-  gboolean ever_returned : 1;
-  gboolean : 0;
+  guint completed : 1;
+  guint had_error : 1;
+  guint result_set : 1;
+  guint ever_returned : 1;
+  guint : 0;
 
   /* Read-only once task runs in thread: */
-  gboolean check_cancellable : 1;
-  gboolean synchronous : 1;
-  gboolean blocking_other_task : 1;
+  guint check_cancellable : 1;
+  guint synchronous : 1;
+  guint blocking_other_task : 1;
 
   GError *error;
   union {
