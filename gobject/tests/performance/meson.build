@@ -40,6 +40,10 @@ foreach test_name, extra_args : gobject_tests
   timeout = suite.contains('slow') ? test_timeout_slow : test_timeout
   args = extra_args.get('args', [])
 
+  if extra_args.get('can_fail', false)
+    suite += 'failing'
+  endif
+
   test(test_name, exe,
     env : test_env,
     timeout : timeout,

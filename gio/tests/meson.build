@@ -149,9 +149,9 @@ test_extra_programs = {
   'gsubprocess-testprog' : {},
 }
 
-python_tests = [
-  'codegen.py',
-]
+python_tests = {
+  'codegen.py' : {},
+}
 
 test_env = environment(common_test_env)
 test_env.set('G_TEST_SRCDIR', meson.current_source_dir())
@@ -907,6 +907,10 @@ foreach test_name, extra_args : gio_tests
     local_test_env.append(var, value)
   endforeach
 
+  if extra_args.get('can_fail', false)
+    suite += 'failing'
+  endif
+
   test(test_name, exe,
     env : local_test_env,
     timeout : timeout,
@@ -930,13 +934,19 @@ foreach program_name, extra_args : test_extra_programs
   )
 endforeach
 
-foreach test_name : python_tests
+foreach test_name, extra_args : python_tests
+  suite = ['gio', 'no-valgrind']
+
+  if extra_args.get('can_fail', false)
+    suite += 'failing'
+  endif
+
   test(
     test_name,
     python,
     args: ['-B', files(test_name)],
     env: test_env,
-    suite: ['gio', 'no-valgrind'],
+    suite: suite,
   )
 
   if installed_tests_enabled

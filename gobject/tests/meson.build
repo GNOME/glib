@@ -123,11 +123,11 @@ if cc.get_id() != 'msvc'
   gobject_tests += {'autoptr' : {}}
 endif
 
-python_tests = [
-  'genmarshal.py',
-  'gobject-query.py',
-  'mkenums.py',
-]
+python_tests = {
+  'genmarshal.py' : {},
+  'gobject-query.py' : {},
+  'mkenums.py' : {},
+}
 
 test_env = environment(common_test_env)
 test_env.set('G_TEST_SRCDIR', meson.current_source_dir())
@@ -167,6 +167,10 @@ foreach test_name, extra_args : gobject_tests
   suite = ['gobject'] + extra_args.get('suite', [])
   timeout = suite.contains('slow') ? test_timeout_slow : test_timeout
 
+  if extra_args.get('can_fail', false)
+    suite += 'failing'
+  endif
+
   # FIXME: https://gitlab.gnome.org/GNOME/glib/issues/1316
   # aka https://bugs.debian.org/880883
   if test_name == 'closure-refcount' and ['arm', 'aarch64'].contains(host_machine.cpu_family())
@@ -176,13 +180,19 @@ foreach test_name, extra_args : gobject_tests
   test(test_name, exe, env : test_env, timeout : timeout, suite : suite)
 endforeach
 
-foreach test_name : python_tests
+foreach test_name, extra_args : python_tests
+  suite = ['gobject', 'no-valgrind']
+
+  if extra_args.get('can_fail', false)
+    suite += 'failing'
+  endif
+
   test(
     test_name,
     python,
     args: ['-B', files(test_name)],
     env: test_env,
-    suite: ['gobject', 'no-valgrind'],
+    suite: suite,
   )
 
   if installed_tests_enabled
