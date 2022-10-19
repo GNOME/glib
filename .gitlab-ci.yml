@@ -93,7 +93,6 @@ fedora-x86_64:
     when: always
     expire_in: 1 week
     paths:
-      - "_build/docs/reference/"
       - "_build/config.h"
       - "_build/glib/glibconfig.h"
       - "_build/meson-logs"
