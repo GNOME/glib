@@ -243,10 +243,15 @@ else
     glib_os += 'G_WITH_CYGWIN'
   elif host_system in ['darwin', 'ios']
     glib_os += 'G_OS_DARWIN'
+    glib_os += 'G_OS_BSD'
   elif host_system == 'freebsd'
     glib_os += 'G_OS_FREEBSD'
   elif host_system == 'openbsd'
     glib_os += 'G_OS_OPENBSD'
+  endif
+
+  if host_system.to_lower().endswith('bsd')
+    glib_os += 'G_OS_BSD'
   endif
 endif
 glib_os_defines = []

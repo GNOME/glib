@@ -40,6 +40,9 @@
 # ifndef G_OS_FREEBSD
   #error "G_OS_FREEBSD is not defined"
 # endif
+# ifndef G_OS_BSD
+  #error "G_OS_BSD is not defined"
+# endif
 #endif
 
 #if defined (__OpenBSD__)
@@ -48,6 +51,9 @@
 # endif
 # ifndef G_OS_OPENBSD
   #error "G_OS_OPENBSD is not defined"
+# endif
+# ifndef G_OS_BSD
+  #error "G_OS_BSD is not defined"
 # endif
 #endif
 
@@ -58,10 +64,17 @@
 # ifndef G_OS_DARWIN
   #error "G_OS_DARWIN is not defined"
 # endif
+# ifndef G_OS_BSD
+  #error "G_OS_BSD is not defined"
+# endif
 #endif
 
 #if defined (G_OS_UNIX) && defined (G_OS_WIN32)
   #error "G_OS_WIN32 and G_OS_UNIX should not be defined together"
+#endif
+
+#if (defined (G_OS_LINUX) || !defined (G_OS_UNIX)) && defined (G_OS_BSD)
+  #error "G_OS_BSD should not be defined"
 #endif
 
 /* Test that G_STATIC_ASSERT_EXPR can be used as an expression */

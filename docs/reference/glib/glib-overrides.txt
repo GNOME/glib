@@ -197,6 +197,11 @@ GCond *cond
 # Definitions for different operating systems
 
 <MACRO>
+<NAME>G_OS_BSD</NAME>
+#define G_OS_BSD
+</MACRO>
+
+<MACRO>
 <NAME>G_OS_FREEBSD</NAME>
 #define G_OS_FREEBSD
 </MACRO>

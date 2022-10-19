@@ -1475,7 +1475,7 @@ safe_fdwalk (int (*cb)(void *data, int fd), void *data)
   if (getrlimit (RLIMIT_NOFILE, &rl) == 0 && rl.rlim_max != RLIM_INFINITY)
     open_max = rl.rlim_max;
 #endif
-#if defined(G_OS_FREEBSD) || defined(G_OS_OPENBSD) || defined(G_OS_DARWIN)
+#ifdef G_OS_BSD
   /* Use sysconf() function provided by the system if it is known to be
    * async-signal safe.
    *
@@ -1490,7 +1490,7 @@ safe_fdwalk (int (*cb)(void *data, int fd), void *data)
    */
   if (open_max < 0)
     open_max = sysconf (_SC_OPEN_MAX);
-#endif
+#endif /*  G_OS_BSD */
   /* Hardcoded fallback: the default process hard limit in Linux as of 2020 */
   if (open_max < 0)
     open_max = 4096;

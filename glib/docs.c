@@ -1648,12 +1648,23 @@
  */
 
 /**
+ * G_OS_BSD:
+ *
+ * This macro is defined only on BSD operating systems. So you can bracket
+ * BSD-specific code in `\#ifdef G_OS_BSD`.
+ *
+ * Note that %G_OS_UNIX is also set.
+ *
+ * Since: 2.76
+ */
+
+/**
  * G_OS_DARWIN:
  *
  * This macro is defined only on Apple operating systems (macOS or iOS).
  * So you can bracket Apple-specific code in `\#ifdef G_OS_DARWIN`.
  *
- * Note that %G_OS_UNIX is also set.
+ * Note that %G_OS_UNIX and %G_OS_BSD is also set.
  *
  * Since: 2.76
  */
@@ -1664,7 +1675,7 @@
  * This macro is defined only on FreeBSD operating system. So you can bracket
  * FreeBSD-specific code in `\#ifdef G_OS_FREEBSD`.
  *
- * Note that %G_OS_UNIX is also set.
+ * Note that %G_OS_UNIX and %G_OS_BSD is also set.
  *
  * Since: 2.76
  */
@@ -1686,7 +1697,7 @@
  * This macro is defined only on OpenBSD operating system. So you can bracket
  * OpenBSD-specific code in `\#ifdef G_OS_OPENBSD`.
  *
- * Note that %G_OS_UNIX is also set.
+ * Note that %G_OS_UNIX and %G_OS_BSD is also set.
  *
  * Since: 2.76
  */
