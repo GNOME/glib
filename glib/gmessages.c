@@ -601,7 +601,12 @@ static void
 write_string (FILE        *stream,
 	      const gchar *string)
 {
-  fputs (string, stream);
+  if (fputs (string, stream) == EOF)
+    {
+      /* Something failed, but it's not an error we can handle at glib level
+       * so let's just continue without the compiler blaming us
+       */
+    }
 }
 
 static void
@@ -612,8 +617,12 @@ write_string_sized (FILE        *stream,
   /* Is it nul-terminated? */
   if (length < 0)
     write_string (stream, string);
-  else
-    fwrite (string, 1, length, stream);
+  else if (fwrite (string, 1, length, stream) < (size_t) length)
+    {
+      /* Something failed, but it's not an error we can handle at glib level
+       * so let's just continue without the compiler blaming us
+       */
+    }
 }
 
 static GLogDomain*
@@ -3331,6 +3340,35 @@ g_set_print_handler (GPrintFunc func)
   return old_print_func;
 }
 
+static void
+print_string (FILE        *stream,
+              const gchar *string)
+{
+  const gchar *charset;
+  int ret;
+
+  if (g_get_console_charset (&charset))
+    {
+      /* charset is UTF-8 already */
+      ret = fputs (string, stream);
+    }
+  else
+    {
+      gchar *converted_string = strdup_convert (string, charset);
+
+      ret = fputs (converted_string, stream);
+      g_free (converted_string);
+    }
+
+  /* In case of failure we can just return early, but there's nothing else
+   * we can do at this level
+   */
+  if (ret == EOF)
+    return;
+
+  fflush (stream);
+}
+
 /**
  * g_print:
  * @format: the message format. See the printf() documentation
@@ -3368,20 +3406,8 @@ g_print (const gchar *format,
   if (local_glib_print_func)
     local_glib_print_func (string);
   else
-    {
-      const gchar *charset;
+    print_string (stdout, string);
 
-      if (g_get_console_charset (&charset))
-        fputs (string, stdout); /* charset is UTF-8 already */
-      else
-        {
-          gchar *lstring = strdup_convert (string, charset);
-
-          fputs (lstring, stdout);
-          g_free (lstring);
-        }
-      fflush (stdout);
-    }
   g_free (string);
 }
 
@@ -3447,20 +3473,8 @@ g_printerr (const gchar *format,
   if (local_glib_printerr_func)
     local_glib_printerr_func (string);
   else
-    {
-      const gchar *charset;
+    print_string (stderr, string);
 
-      if (g_get_console_charset (&charset))
-        fputs (string, stderr); /* charset is UTF-8 already */
-      else
-        {
-          gchar *lstring = strdup_convert (string, charset);
-
-          fputs (lstring, stderr);
-          g_free (lstring);
-        }
-      fflush (stderr);
-    }
   g_free (string);
 }
 
