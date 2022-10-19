@@ -221,11 +221,27 @@ if host_system == 'windows' and cc.get_id() != 'msvc' and cc.get_id() != 'clang-
   glib_conf.set('_FILE_OFFSET_BITS', 64)
 endif
 
-if get_option('default_library') == 'both' and (host_system == 'windows' or host_system == 'cygwin')
+glib_build_shared = false
+glib_build_static = false
+if get_option('default_library') == 'both'
+  glib_build_static = true
+  glib_build_shared = true
+elif get_option('default_library') == 'static'
+  glib_build_static = true
+elif get_option('default_library') == 'shared'
+  glib_build_shared = true
+endif
+
+glib_build_both = glib_build_static and glib_build_shared
+glib_build_static_only = glib_build_static and not glib_build_shared
+glib_build_shared_only = glib_build_shared and not glib_build_static
+
+if glib_build_shared and glib_build_static and (
+  host_system == 'windows' or host_system == 'cygwin')
   error('On Windows default_library must be "shared" or "static" but not "both"')
 endif
 
-if get_option('default_library') == 'static'
+if glib_build_static_only
   glibconfig_conf.set('GLIB_STATIC_COMPILATION', '1')
   glibconfig_conf.set('GOBJECT_STATIC_COMPILATION', '1')
   glibconfig_conf.set('GIO_STATIC_COMPILATION', '1')

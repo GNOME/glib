@@ -38,7 +38,7 @@ if ['darwin', 'ios'].contains(host_machine.system())
   module_suffix = 'so'
 endif
 
-if get_option('default_library') != 'static'
+if glib_build_shared
   foreach module : ['moduletestplugin_a', 'moduletestplugin_b']
     shared_module(module + '_plugin', 'lib@0@.c'.format(module),
       dependencies : [libglib_dep, libgmodule_dep],

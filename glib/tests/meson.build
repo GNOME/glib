@@ -205,7 +205,7 @@ else
     'include' : {},
     'unix' : {},
   }
-  if have_rtld_next and get_option('default_library') != 'static'
+  if have_rtld_next and glib_build_shared
     glib_tests += {
       'gutils-user-database' : {
         'depends' : [
