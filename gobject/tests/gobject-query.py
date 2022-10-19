@@ -24,7 +24,6 @@ import collections
 import os
 import shutil
 import subprocess
-import sys
 import unittest
 
 import taptestrunner
@@ -70,7 +69,7 @@ class TestGobjectQuery(unittest.TestCase):
             stderr=subprocess.PIPE,
             env=env,
             text=True,
-            encoding='utf-8',
+            encoding="utf-8",
         )
         info.check_returncode()
         out = info.stdout.strip()
