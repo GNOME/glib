@@ -152,7 +152,8 @@ test_extra_programs = {
 }
 
 python_tests = {
-  'codegen.py' : {},
+  # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/2764
+  'codegen.py' : { 'can_fail' : host_system == 'freebsd' },
 }
 
 test_env = environment(common_test_env)
