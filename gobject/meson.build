@@ -23,16 +23,20 @@ gobject_install_headers = files(
   'gobjectnotifyqueue.c', # sic
 )
 
-gvisibility_h = configure_file(
+gobject_sources = []
+
+gvisibility_h = custom_target(
   output: 'gobject-visibility.h',
   command: [gen_visibility_macros, meson.project_version(), 'visibility-macros', 'GOBJECT', '@OUTPUT@'],
+  install: true,
+  install_dir: glib_includedir / 'gobject',
+  install_tag : 'devel',
 )
-
-gobject_install_headers += gvisibility_h
+gobject_sources += gvisibility_h
 
 install_headers(gobject_install_headers, subdir : 'glib-2.0/gobject')
 
-gobject_sources = files(
+gobject_sources += files(
   'gatomicarray.c',
   'gbinding.c',
   'gbindinggroup.c',
@@ -128,8 +132,6 @@ glib_enumtypes_c = custom_target('glib_enumtypes_c',
              '--template', files('glib-enumtypes.c.template'),
              '@INPUT@'])
 
-glib_enumtypes_dep = declare_dependency(sources : [glib_enumtypes_h])
-
 # Expose as variable to be used by gobject-introspection
 # when it includes GLib as a subproject
 glib_types_h = files('glib-types.h')
@@ -159,7 +161,9 @@ pkg.generate(libgobject,
 
 libgobject_dep = declare_dependency(link_with : libgobject,
   include_directories : [gobjectinc],
-  dependencies : [libglib_dep, glib_enumtypes_dep])
+  sources : [gvisibility_h, glib_enumtypes_h],
+  dependencies : [libglib_dep],
+)
 meson.override_dependency('gobject-2.0', libgobject_dep)
 
 executable('gobject-query', 'gobject-query.c',
