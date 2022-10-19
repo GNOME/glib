@@ -230,18 +230,24 @@ endif
 # This makes G_PLATFORM_WIN32 a synonym for
 # G_OS_WIN32.
 if host_system == 'windows'
-  glib_os = '''#define G_OS_WIN32
-#define G_PLATFORM_WIN32'''
-elif host_system == 'cygwin'
-  glib_os = '''#define G_OS_UNIX
-#define G_WITH_CYGWIN'''
-elif host_system in ['darwin', 'ios']
-  glib_os = '''#define G_OS_UNIX
-#define G_OS_DARWIN'''
+  glib_os = [
+    'G_OS_WIN32',
+    'G_PLATFORM_WIN32',
+  ]
 else
-  glib_os = '#define G_OS_UNIX'
+  glib_os = ['G_OS_UNIX']
+
+  if host_system == 'cygwin'
+    glib_os += 'G_WITH_CYGWIN'
+  elif host_system in ['darwin', 'ios']
+    glib_os += 'G_OS_DARWIN'
+  endif
 endif
-glibconfig_conf.set('glib_os', glib_os)
+glib_os_defines = []
+foreach os : glib_os
+  glib_os_defines += '#define @0@'.format(os)
+endforeach
+glibconfig_conf.set('glib_os', '\n'.join(glib_os_defines))
 
 # We need to know the CRT being used to determine what .lib files we need on
 # Visual Studio for dependencies that don't normally come with pkg-config files
