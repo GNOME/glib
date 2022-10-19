@@ -3,11 +3,13 @@ gmodule_tests = {
     'export_dynamic' : true,
     'source': 'module-test.c',
     'c_args': ['-DMODULE_TYPE="library"'],
+    'can_fail': glib_static_build and host_system == 'windows',
   },
   'module-test-plugin' : {
     'export_dynamic' : true,
     'source': 'module-test.c',
     'c_args': ['-DMODULE_TYPE="plugin"'],
+    'can_fail': glib_static_build and host_system == 'windows',
   },
 }
 
@@ -93,11 +95,12 @@ foreach test_name, extra_args : gmodule_tests
     install: install,
   )
 
+  suite = ['gmodule'] + extra_args.get('suite', [])
+  timeout = suite.contains('slow') ? test_timeout_slow : test_timeout
+
   if extra_args.get('can_fail', false)
     suite += 'failing'
   endif
 
-  suite = ['gmodule'] + extra_args.get('suite', [])
-  timeout = suite.contains('slow') ? test_timeout_slow : test_timeout
   test(test_name, exe, env : test_env, timeout : timeout, suite : suite)
 endforeach

@@ -17,8 +17,7 @@ meson %args% _build || goto :error
 python .gitlab-ci/check-missing-install-tag.py _build || goto :error
 ninja -C _build || goto :error
 
-:: FIXME: dont ignore test errors
-meson test -C _build --timeout-multiplier %MESON_TEST_TIMEOUT_MULTIPLIER%
+meson test -C _build --timeout-multiplier %MESON_TEST_TIMEOUT_MULTIPLIER% || goto :error
 meson test -C _build --timeout-multiplier %MESON_TEST_TIMEOUT_MULTIPLIER% --setup=unstable_tests --suite=failing --suite=flaky
 
 :: FIXME: can we get code coverage support?

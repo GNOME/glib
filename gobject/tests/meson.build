@@ -124,7 +124,9 @@ endif
 
 python_tests = {
   'genmarshal.py' : {},
-  'gobject-query.py' : {},
+  'gobject-query.py' : {
+    'can_fail' : host_system == 'windows',
+  },
   'mkenums.py' : {},
 }
 
