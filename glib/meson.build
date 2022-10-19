@@ -1,20 +1,28 @@
 glib_sub_includedir = glib_includedir / 'glib'
+glib_sources = []
 
 glibconfig_h = configure_file(input : 'glibconfig.h.in', output : 'glibconfig.h',
   install_dir : join_paths(get_option('libdir'), 'glib-2.0/include'),
   install_tag : 'devel',
   configuration : glibconfig_conf)
 
-gversionmacros_h = configure_file(
+gversionmacros_h = custom_target(
   input: 'gversionmacros.h.in',
   output: 'gversionmacros.h',
   command: [gen_visibility_macros, meson.project_version(), 'versions-macros', '@INPUT@', '@OUTPUT@'],
+  install: true,
+  install_dir: glib_sub_includedir,
 )
 
-gvisibility_h = configure_file(
+gvisibility_h = custom_target(
   output: 'glib-visibility.h',
   command: [gen_visibility_macros, meson.project_version(), 'visibility-macros', 'GLIB', '@OUTPUT@'],
+  install: true,
+  install_dir: glib_sub_includedir,
 )
+
+glib_built_headers = [gversionmacros_h, gvisibility_h]
+glib_sources += glib_built_headers
 
 glib_c_args_internal = [
   '-DGLIB_COMPILATION',
@@ -234,8 +242,6 @@ glib_sub_headers = files(
   'gprintf.h',
 )
 
-glib_sub_headers += [gversionmacros_h, gvisibility_h]
-
 install_headers(glib_sub_headers, install_dir : glib_sub_includedir)
 
 deprecated_sources = files(
@@ -246,7 +252,7 @@ deprecated_sources = files(
   'deprecated/gthread-deprecated.c'
 )
 
-glib_sources = files(
+glib_sources += files(
   'garcbox.c',
   'garray.c',
   'gasyncqueue.c',
@@ -419,6 +425,7 @@ libglib = library('glib-2.0',
 libglib_dep = declare_dependency(
   link_with : libglib,
   dependencies : libintl_deps,
+  sources : glib_built_headers,
   # We sadly need to export configinc here because everyone includes <glib/*.h>
   include_directories : [configinc, glibinc])
 

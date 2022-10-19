@@ -68,13 +68,14 @@ gmodule_c = files('gmodule.c')
 
 install_headers([gmodule_h], install_dir : glib_includedir)
 
-gvisibility_h = configure_file(
+gvisibility_h = custom_target(
   output: 'gmodule-visibility.h',
   command: [gen_visibility_macros, meson.project_version(), 'visibility-macros', 'GMODULE', '@OUTPUT@'],
+  install: true,
+  install_dir: g_module_includedir,
 )
-install_headers(gvisibility_h, install_dir : g_module_includedir)
 
-gmodule_sources = [gmodule_c]
+gmodule_sources = [gmodule_c, gvisibility_h]
 if host_system == 'windows'
   gmodule_win_rc = configure_file(
     input: 'gmodule.rc.in',
@@ -133,6 +134,7 @@ pkg.generate(libraries : [libgmodule, export_dynamic_ldflags],
 
 libgmodule_dep = declare_dependency(link_with : libgmodule,
   include_directories : [gmoduleinc],
+  sources : [gvisibility_h],
   dependencies : [libglib_dep])
 
 meson.override_dependency('gmodule-no-export-2.0', libgmodule_dep)

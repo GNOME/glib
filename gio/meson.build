@@ -745,12 +745,14 @@ gio_headers = files(
   'gliststore.h',
 )
 
-gvisibility_h = configure_file(
+gvisibility_h = custom_target(
   output: 'gio-visibility.h',
   command: [gen_visibility_macros, meson.project_version(), 'visibility-macros', 'GIO', '@OUTPUT@'],
+  install: true,
+  install_dir: gio_includedir,
 )
+gio_sources += gvisibility_h
 
-gio_headers += gvisibility_h
 gio_headers += application_headers
 gio_headers += settings_headers
 gio_headers += gdbus_headers
@@ -859,6 +861,7 @@ schemas_subdir = join_paths('glib-2.0', 'schemas')
 
 libgio_dep = declare_dependency(link_with : libgio,
   dependencies : [libgmodule_dep, libgobject_dep, gioenumtypes_dep],
+  sources: gvisibility_h,
   include_directories : [gioinc],
   variables : [
     'schemasdir=' + join_paths(glib_datadir, schemas_subdir),
