@@ -70,7 +70,7 @@ gio_tests = {
   'gsubprocess' : {},
   'g-file' : {},
   'g-file-info' : {
-    'can_fail' : host_system == 'windows',
+    'can_fail' : host_system == 'windows' and cc.get_id() != 'gcc',
   },
   'g-icon' : {},
   'gdbus-addresses' : {},

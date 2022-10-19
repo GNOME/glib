@@ -119,7 +119,9 @@ glib_tests = {
   'spawn-singlethread' : {
     'dependencies' : [winsock2],
   },
-  'spawn-test' : {},
+  'spawn-test' : {
+    'can_fail': host_system == 'windows' and cc.get_id() == 'gcc',
+  },
   'strfuncs' : {},
   'string' : {},
   'strvbuilder' : {},
