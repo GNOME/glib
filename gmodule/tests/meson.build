@@ -4,11 +4,13 @@ gmodule_tests = {
     'export_dynamic' : true,
     'source': 'module-test.c',
     'c_args': ['-DMODULE_TYPE="library"'],
+    'can_fail': glib_build_static and host_system == 'windows',
   },
   'module-test-plugin' : {
     'export_dynamic' : true,
     'source': 'module-test.c',
     'c_args': ['-DMODULE_TYPE="plugin"'],
+    'can_fail': glib_build_static and host_system == 'windows',
   },
 }
 

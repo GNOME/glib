@@ -29,6 +29,7 @@ glib_tests = {
   'fileutils' : {},
   'gdatetime' : {
     'suite' : ['slow'],
+    'can_fail' : host_system == 'windows',
   },
   'guuid' : {},
   'gvariant' : {
@@ -111,7 +112,9 @@ glib_tests = {
   'slice-eager-freeing' : {},
   'slist' : {},
   'sort' : {},
-  'spawn-multithreaded' : {},
+  'spawn-multithreaded' : {
+    'can_fail': glib_build_static and host_system == 'windows',
+  },
   'spawn-path-search' : {},
   'spawn-singlethread' : {
     'dependencies' : [winsock2],
@@ -319,7 +322,9 @@ if installed_tests_enabled
 endif
 
 python_tests = {
-  'assert-msg-test.py' : {},
+  'assert-msg-test.py' : {
+    'can_fail' : host_system == 'windows',
+  },
 }
 
 executable('assert-msg-test', ['assert-msg-test.c'],

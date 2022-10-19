@@ -69,7 +69,9 @@ gio_tests = {
   'giomodule' : {},
   'gsubprocess' : {},
   'g-file' : {},
-  'g-file-info' : {},
+  'g-file-info' : {
+    'can_fail' : host_system == 'windows',
+  },
   'g-icon' : {},
   'gdbus-addresses' : {},
   'gdbus-message' : {},
@@ -78,6 +80,7 @@ gio_tests = {
     'install_rpath' : installed_tests_execdir,
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
     'should_fail' : host_system == 'darwin',
+    'can_fail' : host_system == 'windows',
   },
   'inet-address' : {},
   'io-stream' : {},
