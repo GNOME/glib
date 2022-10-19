@@ -3525,6 +3525,40 @@ test_query_default_handler_uri (void)
 }
 
 static void
+test_query_zero_length_content_type (void)
+{
+  GFile *empty_file;
+  GFileInfo *file_info;
+  GError *error = NULL;
+  GFileIOStream *iostream;
+
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=755795");
+  /* This is historic behaviour. See:
+   * - https://gitlab.gnome.org/GNOME/glib/-/blob/2.74.0/gio/glocalfileinfo.c#L1360-1369
+   * - https://bugzilla.gnome.org/show_bug.cgi?id=755795 */
+  g_test_summary ("empty files should always be considered text/plain");
+
+  empty_file = g_file_new_tmp ("empty-file-XXXXXX", &iostream, &error);
+  g_assert_no_error (error);
+
+  g_io_stream_close (G_IO_STREAM (iostream), NULL, &error);
+  g_assert_no_error (error);
+  g_clear_object (&iostream);
+
+  file_info =
+    g_file_query_info (empty_file,
+                       G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
+                       G_FILE_QUERY_INFO_NONE,
+                       NULL, &error);
+  g_assert_no_error (error);
+
+  g_assert_cmpstr (g_file_info_get_content_type (file_info), ==, "text/plain");
+
+  g_clear_object (&file_info);
+  g_clear_object (&empty_file);
+}
+
+static void
 test_query_default_handler_file (void)
 {
   GError *error = NULL;
@@ -3551,6 +3585,9 @@ test_query_default_handler_file (void)
                              NULL, NULL, &error);
   g_assert_no_error (error);
 
+  g_output_stream_flush (output_stream, NULL, &error);
+  g_assert_no_error (error);
+
   g_output_stream_close (output_stream, NULL, &error);
   g_assert_no_error (error);
   g_clear_object (&iostream);
@@ -3574,6 +3611,9 @@ test_query_default_handler_file (void)
   g_output_stream_write_all (output_stream, binary_buffer,
                              G_N_ELEMENTS (binary_buffer),
                              NULL, NULL, &error);
+  g_assert_no_error (error);
+
+  g_output_stream_flush (output_stream, NULL, &error);
   g_assert_no_error (error);
 
   g_output_stream_close (output_stream, NULL, &error);
@@ -3772,7 +3812,7 @@ main (int argc, char *argv[])
 {
   setlocale (LC_ALL, "");
 
-  g_test_init (&argc, &argv, NULL);
+  g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
 
   g_test_add_func ("/file/basic", test_basic);
   g_test_add_func ("/file/build-filename", test_build_filename);
@@ -3814,6 +3854,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/file/writev/async_all-cancellation", test_writev_async_all_cancellation);
   g_test_add_func ("/file/build-attribute-list-for-copy", test_build_attribute_list_for_copy);
   g_test_add_func ("/file/move_async", test_move_async);
+  g_test_add_func ("/file/query-zero-length-content-type", test_query_zero_length_content_type);
   g_test_add_func ("/file/query-default-handler-file", test_query_default_handler_file);
   g_test_add_func ("/file/query-default-handler-file-async", test_query_default_handler_file_async);
   g_test_add_func ("/file/query-default-handler-uri", test_query_default_handler_uri);
