@@ -21,7 +21,6 @@ gvisibility_h = custom_target(
   command: [gen_visibility_macros, meson.project_version(), 'visibility-macros', 'GLIB', '@OUTPUT@'],
   install: true,
   install_dir: glib_sub_includedir,
-  install_tag : 'devel',
 )
 
 glib_built_headers = [gversionmacros_h, gvisibility_h]

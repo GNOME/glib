@@ -750,7 +750,6 @@ gvisibility_h = custom_target(
   command: [gen_visibility_macros, meson.project_version(), 'visibility-macros', 'GIO', '@OUTPUT@'],
   install: true,
   install_dir: gio_includedir,
-  install_tag : 'devel',
 )
 gio_sources += gvisibility_h
 

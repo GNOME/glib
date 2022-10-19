@@ -32,7 +32,6 @@ gvisibility_h = custom_target(
   command: [gen_visibility_macros, meson.project_version(), 'visibility-macros', 'GOBJECT', '@OUTPUT@'],
   install: true,
   install_dir: gobject_includedir,
-  install_tag : 'devel',
 )
 gobject_sources += gvisibility_h
 
