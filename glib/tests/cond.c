@@ -272,7 +272,7 @@ test_wait_until (void)
   g_cond_clear (&local_cond);
 }
 
-#ifdef __linux__
+#ifdef G_OS_LINUX
 
 #include <pthread.h>
 #include <signal.h>

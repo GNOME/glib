@@ -1075,7 +1075,7 @@ test_replace_symlink_using_etag (void)
 /* FIXME: These tests have only been checked on Linux. Most of them are probably
  * applicable on Windows, too, but that has not been tested yet.
  * See https://gitlab.gnome.org/GNOME/glib/-/issues/2325 */
-#ifdef __linux__
+#ifdef G_OS_LINUX
 
 /* Different kinds of file which create_test_file() can create. */
 typedef enum
@@ -1308,7 +1308,7 @@ check_test_file (GFile             *test_file,
   g_free (target_basename);
 }
 
-#endif  /* __linux__ */
+#endif  /* G_OS_LINUX */
 
 /* A big test for g_file_replace() and g_file_replace_readwrite(). The
  * @test_data is a boolean: %TRUE to test g_file_replace_readwrite(), %FALSE to
@@ -1329,7 +1329,7 @@ check_test_file (GFile             *test_file,
 static void
 test_replace (gconstpointer test_data)
 {
-#ifdef __linux__
+#ifdef G_OS_LINUX
   gboolean read_write = GPOINTER_TO_UINT (test_data);
   const gchar *new_contents = "this is a new test message which should be written to source";
   const gchar *original_source_contents = "this is some test content in source";
@@ -1973,7 +1973,7 @@ test_replace (gconstpointer test_data)
       g_clear_object (&source_file);
       g_clear_object (&tmpdir);
     }
-#else  /* if !__linux__ */
+#else  /* if !G_OS_LINUX */
   g_test_skip ("File replacement tests can only be run on Linux");
 #endif
 }

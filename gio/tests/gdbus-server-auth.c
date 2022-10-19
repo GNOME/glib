@@ -242,7 +242,7 @@ assert_expected_uid_pid (InteropFlags flags,
     }
   else    /* We should prefer EXTERNAL whenever it is allowed. */
     {
-#ifdef __linux__
+#ifdef G_OS_LINUX
       /* We know that both GDBus and libdbus support full credentials-passing
        * on Linux. */
       g_assert_cmpint (uid, ==, getuid ());

@@ -642,10 +642,10 @@ test_resource_manual2 (void)
 static void
 test_resource_binary_linked (void)
 {
-  #ifndef __linux__
+  #ifndef G_OS_LINUX
   g_test_skip ("--external-data test only works on Linux");
   return;
-  #else /* if __linux__ */
+  #else /* if G_OS_LINUX */
   GError *error = NULL;
   gboolean found;
   gsize size;
@@ -669,7 +669,7 @@ test_resource_binary_linked (void)
   g_assert_cmpint (size, ==, 6);
   g_assert_cmpstr (g_bytes_get_data (data, NULL), ==, "test1\n");
   g_bytes_unref (data);
-  #endif /* if __linux__ */
+  #endif /* if G_OS_LINUX */
 }
 
 /* Test resource whose xml file starts with more than one digit

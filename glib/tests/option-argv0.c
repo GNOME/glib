@@ -62,7 +62,7 @@ test_platform_argv0 (void)
    */
 #if !defined HAVE_PROC_SELF_CMDLINE && \
     !defined __OpenBSD__ && \
-    !defined __linux && \
+    !defined G_OS_LINUX && \
     !defined G_OS_WIN32
   fatal_errors = FALSE;
 #endif

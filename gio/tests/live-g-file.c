@@ -1457,7 +1457,7 @@ main (int argc, char *argv[])
       g_test_add_data_func ("/live-g-file/test_unix_is_mountpoint/sysroot",
                             "/",
                             test_unix_is_mountpoint);
-#ifdef __linux__
+#ifdef G_OS_LINUX
       g_test_add_data_func ("/live-g-file/test_unix_is_mountpoint/proc",
                             "/proc",
                             test_unix_is_mountpoint);

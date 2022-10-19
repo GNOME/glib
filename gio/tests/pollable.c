@@ -34,7 +34,7 @@
 
 /* openpty() is non-standard and might not be available on all kernels
  * and libc implementations, but glibc on Linux definitely has it */
-#if defined(__linux__) && defined(__GNUC__) && !defined(HAVE_OPENPTY)
+#if defined(G_OS_LINUX) && defined(__GNUC__) && !defined(HAVE_OPENPTY)
 #error Should have been able to find openpty on GNU/Linux
 #endif
 

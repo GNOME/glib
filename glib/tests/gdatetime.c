@@ -2465,7 +2465,7 @@ test_format_time_mixed_utf8 (gconstpointer data)
 #endif
 }
 
-#ifdef __linux__
+#ifdef G_OS_LINUX
 static gchar *
 str_utf8_replace (const gchar *str,
                   gunichar     from,
@@ -2488,7 +2488,7 @@ str_utf8_replace (const gchar *str,
 static void
 test_strftime (void)
 {
-#ifdef __linux__
+#ifdef G_OS_LINUX
 #define TEST_FORMAT \
   "a%a A%A b%b B%B c%c C%C d%d e%e F%F g%g G%G h%h H%H I%I j%j m%m M%M " \
   "n%n p%p r%r R%R S%S t%t T%T u%u V%V w%w x%x X%X y%y Y%Y z%z Z%Z %%"

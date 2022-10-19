@@ -123,7 +123,7 @@ static void
 test_new_valist_invalid_va (gpointer dummy,
                          ...)
 {
-#if defined(__linux__) && defined(__GLIBC__)
+#if defined(G_OS_LINUX) && defined(__GLIBC__)
   /* Only worth testing this on Linux with glibc; if other platforms regress on
    * this legacy behaviour, we don’t care. In particular, calling
    * g_error_new_valist() with a %NULL format will crash on FreeBSD as its
@@ -182,9 +182,9 @@ test_new_valist_invalid_va (gpointer dummy,
 
       va_end (ap);
     }
-#else  /* if !__linux__ || !__GLIBC__ */
+#else  /* if !G_OS_LINUX || !__GLIBC__ */
   g_test_skip ("g_error_new_valist() programmer error handling is only relevant on Linux with glibc");
-#endif /* !__linux__ || ! __GLIBC__ */
+#endif /* !G_OS_LINUX || ! __GLIBC__ */
 }
 
 static void

@@ -26,10 +26,10 @@
 
 #if defined (__linux__) || defined (__linux) || defined (__gnu_linux__)
 # ifndef G_OS_UNIX
-  G_STATIC_ASSERT (FALSE);
+  #error "G_OS_UNIX is not defined"
 # endif
 # ifndef G_OS_LINUX
-  G_STATIC_ASSERT (FALSE);
+  #error "G_OS_LINUX is not defined"
 # endif
 #endif
 
