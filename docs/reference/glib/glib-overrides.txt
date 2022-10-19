@@ -197,6 +197,11 @@ GCond *cond
 # Definitions for different operating systems
 
 <MACRO>
+<NAME>G_OS_FREEBSD</NAME>
+#define G_OS_FREEBSD
+</MACRO>
+
+<MACRO>
 <NAME>G_OS_DARWIN</NAME>
 #define G_OS_DARWIN
 </MACRO>
@@ -204,6 +209,11 @@ GCond *cond
 <MACRO>
 <NAME>G_OS_LINUX</NAME>
 #define G_OS_LINUX
+</MACRO>
+
+<MACRO>
+<NAME>G_OS_OPENBSD</NAME>
+#define G_OS_OPENBSD
 </MACRO>
 
 <MACRO>

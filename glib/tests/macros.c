@@ -33,6 +33,24 @@
 # endif
 #endif
 
+#if defined (__FreeBSD__) || defined (__FreeBSD_kernel__)
+# ifndef G_OS_UNIX
+  #error "G_OS_UNIX is not defined"
+# endif
+# ifndef G_OS_FREEBSD
+  #error "G_OS_FREEBSD is not defined"
+# endif
+#endif
+
+#if defined (__OpenBSD__)
+# ifndef G_OS_UNIX
+  #error "G_OS_UNIX is not defined"
+# endif
+# ifndef G_OS_OPENBSD
+  #error "G_OS_OPENBSD is not defined"
+# endif
+#endif
+
 #if defined (__APPLE__) || defined (HAVE_COCOA) || defined (HAVE_CARBON)
 # ifndef G_OS_UNIX
   #error "G_OS_UNIX is not defined"

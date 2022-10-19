@@ -61,7 +61,7 @@ test_platform_argv0 (void)
    * and make them call g_test_skip() instead.
    */
 #if !defined HAVE_PROC_SELF_CMDLINE && \
-    !defined __OpenBSD__ && \
+    !defined G_OS_OPENBSD && \
     !defined G_OS_LINUX && \
     !defined G_OS_WIN32
   fatal_errors = FALSE;

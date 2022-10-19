@@ -1659,10 +1659,32 @@
  */
 
 /**
+ * G_OS_FREEBSD:
+ *
+ * This macro is defined only on FreeBSD operating system. So you can bracket
+ * FreeBSD-specific code in `\#ifdef G_OS_FREEBSD`.
+ *
+ * Note that %G_OS_UNIX is also set.
+ *
+ * Since: 2.76
+ */
+
+/**
  * G_OS_LINUX:
  *
  * This macro is defined only on Linux operating systems. So you can bracket
  * Linux-specific code in `\#ifdef G_OS_LINUX`.
+ *
+ * Note that %G_OS_UNIX is also set.
+ *
+ * Since: 2.76
+ */
+
+/**
+ * G_OS_OPENBSD:
+ *
+ * This macro is defined only on OpenBSD operating system. So you can bracket
+ * OpenBSD-specific code in `\#ifdef G_OS_OPENBSD`.
  *
  * Note that %G_OS_UNIX is also set.
  *

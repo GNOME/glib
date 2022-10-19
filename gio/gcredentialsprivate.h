@@ -114,8 +114,7 @@
 #define G_CREDENTIALS_SPOOFING_SUPPORTED 1
 #define G_CREDENTIALS_HAS_PID 1
 
-#elif defined(__FreeBSD__)                                  || \
-      defined(__FreeBSD_kernel__) /* Debian GNU/kFreeBSD */ || \
+#elif defined(G_OS_FREEBSD)                                 || \
       defined(__GNU__)            /* GNU Hurd */            || \
       defined(__DragonFly__)      /* DragonFly BSD */
 #define G_CREDENTIALS_SUPPORTED 1
@@ -141,7 +140,7 @@
 #define G_CREDENTIALS_SPOOFING_SUPPORTED 1
 #define G_CREDENTIALS_HAS_PID 1
 
-#elif defined(__OpenBSD__)
+#elif defined(G_OS_OPENBSD)
 #define G_CREDENTIALS_SUPPORTED 1
 #define G_CREDENTIALS_USE_OPENBSD_SOCKPEERCRED 1
 #define G_CREDENTIALS_NATIVE_TYPE G_CREDENTIALS_TYPE_OPENBSD_SOCKPEERCRED

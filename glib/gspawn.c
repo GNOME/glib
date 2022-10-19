@@ -1475,7 +1475,7 @@ safe_fdwalk (int (*cb)(void *data, int fd), void *data)
   if (getrlimit (RLIMIT_NOFILE, &rl) == 0 && rl.rlim_max != RLIM_INFINITY)
     open_max = rl.rlim_max;
 #endif
-#if defined(__FreeBSD__) || defined(__OpenBSD__) || defined(G_OS_DARWIN)
+#if defined(G_OS_FREEBSD) || defined(G_OS_OPENBSD) || defined(G_OS_DARWIN)
   /* Use sysconf() function provided by the system if it is known to be
    * async-signal safe.
    *
@@ -1534,7 +1534,7 @@ safe_fdwalk_set_cloexec (int lowfd)
 static int
 safe_closefrom (int lowfd)
 {
-#if defined(__FreeBSD__) || defined(__OpenBSD__) || \
+#if defined(G_OS_FREEBSD) || defined(G_OS_OPENBSD) || \
   (defined(__sun__) && defined(F_CLOSEFROM))
   /* Use closefrom function provided by the system if it is known to be
    * async-signal safe.
