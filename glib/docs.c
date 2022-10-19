@@ -1659,6 +1659,17 @@
  */
 
 /**
+ * G_OS_LINUX:
+ *
+ * This macro is defined only on Linux operating systems. So you can bracket
+ * Linux-specific code in `\#ifdef G_OS_LINUX`.
+ *
+ * Note that %G_OS_UNIX is also set.
+ *
+ * Since: 2.76
+ */
+
+/**
  * G_OS_WIN32:
  *
  * This macro is defined only on Windows. So you can bracket

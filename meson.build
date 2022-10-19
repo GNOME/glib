@@ -237,7 +237,9 @@ if host_system == 'windows'
 else
   glib_os = ['G_OS_UNIX']
 
-  if host_system == 'cygwin'
+  if host_system == 'linux'
+    glib_os += 'G_OS_LINUX'
+  elif host_system == 'cygwin'
     glib_os += 'G_WITH_CYGWIN'
   elif host_system in ['darwin', 'ios']
     glib_os += 'G_OS_DARWIN'

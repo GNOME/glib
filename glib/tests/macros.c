@@ -24,6 +24,15 @@
 
 #include <glib.h>
 
+#if defined (__linux__) || defined (__linux) || defined (__gnu_linux__)
+# ifndef G_OS_UNIX
+  G_STATIC_ASSERT (FALSE);
+# endif
+# ifndef G_OS_LINUX
+  G_STATIC_ASSERT (FALSE);
+# endif
+#endif
+
 #if defined (__APPLE__) || defined (HAVE_COCOA) || defined (HAVE_CARBON)
 # ifndef G_OS_UNIX
   #error "G_OS_UNIX is not defined"
@@ -31,6 +40,10 @@
 # ifndef G_OS_DARWIN
   #error "G_OS_DARWIN is not defined"
 # endif
+#endif
+
+#if defined (G_OS_UNIX) && defined (G_OS_WIN32)
+  #error "G_OS_WIN32 and G_OS_UNIX should not be defined together"
 #endif
 
 /* Test that G_STATIC_ASSERT_EXPR can be used as an expression */

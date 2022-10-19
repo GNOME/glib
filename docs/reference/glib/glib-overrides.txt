@@ -202,6 +202,11 @@ GCond *cond
 </MACRO>
 
 <MACRO>
+<NAME>G_OS_LINUX</NAME>
+#define G_OS_LINUX
+</MACRO>
+
+<MACRO>
 <NAME>G_OS_UNIX</NAME>
 #define G_OS_UNIX
 </MACRO>
