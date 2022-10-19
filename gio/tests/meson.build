@@ -225,7 +225,7 @@ if host_machine.system() != 'windows'
   }
 
   # LD_PRELOAD modules don't work so well with AddressSanitizer
-  if have_rtld_next and get_option('default_library') != 'static' and get_option('b_sanitize') == 'none'
+  if have_rtld_next and not glib_static_build and get_option('b_sanitize') == 'none'
     gio_tests += {
       'gsocketclient-slow' : {
         'depends' : [
@@ -654,7 +654,7 @@ if meson.can_run_host_binaries()
 
   compiler_type = '--compiler=@0@'.format(cc.get_id())
 
-  if get_option('default_library') != 'static'
+  if not glib_static_build
     plugin_resources_c = custom_target('plugin-resources.c',
       input : 'test4.gresource.xml',
       output : 'plugin-resources.c',
@@ -987,6 +987,6 @@ endif
 
 subdir('services')
 
-if get_option('default_library') != 'static'
+if not glib_static_build
   subdir('modules')
 endif

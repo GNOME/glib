@@ -346,7 +346,7 @@ glib_sources += files(
 platform_deps = []
 
 if host_system == 'windows'
-  if get_option('default_library') == 'shared'
+  if not glib_static_build
     glib_win_rc = configure_file(
       input: 'glib.rc.in',
       output: 'glib.rc',

@@ -225,7 +225,8 @@ if get_option('default_library') == 'both' and (host_system == 'windows' or host
   error('On Windows default_library must be "shared" or "static" but not "both"')
 endif
 
-if get_option('default_library') == 'static'
+glib_static_build = get_option('default_library') == 'static'
+if glib_static_build
   glibconfig_conf.set('GLIB_STATIC_COMPILATION', '1')
   glibconfig_conf.set('GOBJECT_STATIC_COMPILATION', '1')
   glibconfig_conf.set('GIO_STATIC_COMPILATION', '1')
