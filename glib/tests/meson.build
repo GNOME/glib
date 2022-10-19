@@ -296,6 +296,11 @@ foreach test_name, extra_args : glib_tests
 
   suite = ['glib'] + extra_args.get('suite', [])
   timeout = suite.contains('slow') ? test_timeout_slow : test_timeout
+
+  if extra_args.get('can_fail', false)
+    suite += 'failing'
+  endif
+
   test(test_name, exe,
     env : test_env,
     timeout : timeout,
@@ -312,9 +317,9 @@ if installed_tests_enabled
   )
 endif
 
-python_tests = [
-  'assert-msg-test.py',
-]
+python_tests = {
+  'assert-msg-test.py' : {},
+}
 
 executable('assert-msg-test', ['assert-msg-test.c'],
   c_args : test_cargs,
@@ -325,13 +330,19 @@ executable('assert-msg-test', ['assert-msg-test.c'],
   win_subsystem : extra_args.get('win_subsystem', 'console'),
 )
 
-foreach test_name : python_tests
+foreach test_name, extra_args : python_tests
+  suite = ['glib', 'no-valgrind']
+
+  if extra_args.get('can_fail', false)
+    suite += 'failing'
+  endif
+
   test(
     test_name,
     python,
     args: ['-B', files(test_name)],
     env: test_env,
-    suite: ['glib', 'no-valgrind'],
+    suite: suite,
   )
 
   if installed_tests_enabled

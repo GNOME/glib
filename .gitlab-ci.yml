@@ -88,7 +88,9 @@ fedora-x86_64:
     - lcov --config-file .lcovrc --directory _build --capture --output-file "_coverage/${CI_JOB_NAME}.lcov"
   artifacts:
     reports:
-      junit: "_build/meson-logs/testlog.junit.xml"
+      junit:
+        - _build/meson-logs/testlog.junit.xml
+        - _build/meson-logs/testlog-*.junit.xml
     name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
     when: always
     expire_in: 1 week
@@ -129,7 +131,9 @@ debian-stable-x86_64:
     - .gitlab-ci/run-tests.sh
   artifacts:
     reports:
-      junit: "_build/meson-logs/testlog.junit.xml"
+      junit:
+        - _build/meson-logs/testlog.junit.xml
+        - _build/meson-logs/testlog-*.junit.xml
     name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
     when: always
     expire_in: 1 week
@@ -195,7 +199,9 @@ G_DISABLE_ASSERT:
     - bash -x ./.gitlab-ci/run-tests.sh
   artifacts:
     reports:
-      junit: "_build/meson-logs/testlog.junit.xml"
+      junit:
+        - _build/meson-logs/testlog.junit.xml
+        - _build/meson-logs/testlog-*.junit.xml
     name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
     when: always
     expire_in: 1 week
@@ -270,7 +276,9 @@ cross-mingw64:
     - ninja -C _build
   artifacts:
     reports:
-      junit: "_build/meson-logs/testlog.junit.xml"
+      junit:
+        - _build/meson-logs/testlog.junit.xml
+        - _build/meson-logs/testlog-*.junit.xml
     name: "glib-${env:CI_JOB_NAME}-${env:CI_COMMIT_REF_NAME}"
     when: always
     expire_in: 1 week
@@ -297,7 +305,9 @@ msys2-mingw32:
     - C:\msys64\usr\bin\bash -lc "bash -x ./.gitlab-ci/test-msys2.sh"
   artifacts:
     reports:
-      junit: "_build/meson-logs/testlog.junit.xml"
+      junit:
+        - _build/meson-logs/testlog.junit.xml
+        - _build/meson-logs/testlog-*.junit.xml
     name: "glib-${env:CI_JOB_NAME}-${env:CI_COMMIT_REF_NAME}"
     when: always
     expire_in: 1 week
@@ -320,7 +330,9 @@ vs2017-x64:
                                --python.purelibdir=C:\Python37\site-packages
   artifacts:
     reports:
-      junit: "_build/meson-logs/testlog.junit.xml"
+      junit:
+        - _build/meson-logs/testlog.junit.xml
+        - _build/meson-logs/testlog-*.junit.xml
     name: "glib-${env:CI_JOB_NAME}-${env:CI_COMMIT_REF_NAME}"
     when: always
     expire_in: 1 week
@@ -348,7 +360,9 @@ vs2017-x64-static:
                                --python.purelibdir=C:\Python37\site-packages
   artifacts:
     reports:
-      junit: "_build/meson-logs/testlog.junit.xml"
+      junit:
+        - _build/meson-logs/testlog.junit.xml
+        - _build/meson-logs/testlog-*.junit.xml
     name: "glib-${env:CI_JOB_NAME}-${env:CI_COMMIT_REF_NAME}"
     when: always
     expire_in: 1 week
@@ -390,7 +404,9 @@ freebsd-12-x86_64:
     - bash -x ./.gitlab-ci/run-tests.sh
   artifacts:
     reports:
-      junit: "_build/meson-logs/testlog.junit.xml"
+      junit:
+        - _build/meson-logs/testlog.junit.xml
+        - _build/meson-logs/testlog-*.junit.xml
     name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
     when: always
     expire_in: 1 week
@@ -417,7 +433,9 @@ freebsd-13-x86_64:
     - bash -x ./.gitlab-ci/run-tests.sh
   artifacts:
     reports:
-      junit: "_build/meson-logs/testlog.junit.xml"
+      junit:
+        - _build/meson-logs/testlog.junit.xml
+        - _build/meson-logs/testlog-*.junit.xml
     name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
     when: always
     expire_in: 1 week
@@ -457,7 +475,9 @@ macos:
     - .gitlab-ci/run-tests.sh
   artifacts:
     reports:
-      junit: "_build/meson-logs/testlog.junit.xml"
+      junit:
+        - _build/meson-logs/testlog.junit.xml
+        - _build/meson-logs/testlog-*.junit.xml
     name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
     when: always
     expire_in: 1 week

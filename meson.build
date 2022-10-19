@@ -129,13 +129,24 @@ installed_tests_template_tap = files('tests/template-tap.test.in')
 # Don’t build the tests unless we can run them (either natively, in an exe wrapper, or by installing them for later use)
 build_tests = get_option('tests') and (meson.can_run_host_binaries() or installed_tests_enabled)
 
+add_test_setup('default',
+  is_default: true,
+  exclude_suites: ['flaky', 'failing'],
+)
+
+add_test_setup('unstable_tests',
+  # Empty test setup, used for having different results set for flaky tests
+  # Sadly we can't use (https://github.com/mesonbuild/meson/issues/10934):
+  #suites: ['flaky', 'unstable']
+)
+
 # Allow the tests to be easily run under valgrind using --setup=valgrind
 valgrind = find_program('valgrind', required: false)
 if valgrind.found()
   suppression_file = files('tools' / 'glib.supp')
 
   add_test_setup('valgrind',
-    exclude_suites: [ 'no-valgrind' ],
+    exclude_suites: [ 'no-valgrind', 'flaky' ],
     exe_wrapper: [
       valgrind,
       '--tool=memcheck',
@@ -2337,6 +2348,7 @@ common_test_env = [
   'G_ENABLE_DIAGNOSTIC=1',
   'MALLOC_CHECK_=2',
 ]
+
 test_timeout = 60
 test_timeout_slow = 180
 
