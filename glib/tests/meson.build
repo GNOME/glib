@@ -18,12 +18,12 @@ glib_tests = {
   'dataset' : {},
   'date' : {
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
-    'should_fail' : host_system == 'darwin',
+    'can_fail' : host_system == 'darwin',
   },
   'dir' : {},
   'environment' : {
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
-    'should_fail' : host_system == 'darwin',
+    'can_fail' : host_system == 'darwin',
   },
   'error' : {},
   'fileutils' : {},
