@@ -46,7 +46,7 @@ giotypefuncs_inc = custom_target(
 gio_tests = {
   'appmonitor' : {
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
-    'should_fail' : host_system == 'darwin',
+    'can_fail' : host_system == 'darwin',
   },
   'async-close-output-stream' : {},
   'async-splice-output-stream' : {},
@@ -56,7 +56,7 @@ gio_tests = {
   'contexts' : {},
   'contenttype' : {
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392 / https://gitlab.gnome.org/GNOME/glib/-/issues/1251
-    'should_fail' : host_system == 'darwin',
+    'can_fail' : host_system == 'darwin',
   },
   'converter-stream' : {},
   'credentials' : {},
@@ -79,8 +79,7 @@ gio_tests = {
     'dependencies' : [libgdbus_example_objectmanager_dep],
     'install_rpath' : installed_tests_execdir,
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
-    'should_fail' : host_system == 'darwin',
-    'can_fail' : host_system == 'windows',
+    'can_fail' : host_system in ['darwin', 'windows'],
   },
   'inet-address' : {},
   'io-stream' : {},
@@ -104,7 +103,7 @@ gio_tests = {
   'sleepy-stream' : {},
   'socket' : {
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
-    'should_fail' : host_system == 'darwin',
+    'can_fail' : host_system == 'darwin',
   },
   'socket-listener' : {},
   'socket-service' : {},
@@ -122,7 +121,7 @@ gio_tests = {
   'unix-fd' : {},
   'gdbus-address-get-session' : {
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
-    'should_fail' : host_system == 'darwin',
+    'can_fail' : host_system == 'darwin',
   },
   'win32-appinfo' : {},
 }
