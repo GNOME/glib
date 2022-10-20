@@ -135,17 +135,19 @@ common_test_env = [
   'MALLOC_CHECK_=2',
 ]
 
-test_timeout = 60
-test_timeout_slow = 180
+test_timeout = 30
+test_timeout_slow = 90
 
 add_test_setup('default',
   is_default: true,
   exclude_suites: ['flaky', 'failing'],
   env: common_test_env,
+  timeout_multiplier: 2,
 )
 
 add_test_setup('unstable_tests',
   env: common_test_env,
+  timeout_multiplier: 2,
   # Empty test setup, used for having different results set for flaky tests
   # Sadly we can't use (https://github.com/mesonbuild/meson/issues/10934):
   #suites: ['flaky', 'unstable']
@@ -172,7 +174,7 @@ if valgrind.found()
         '@0@'.format(suppression_file[0])),
     ],
     env: common_test_env,
-    timeout_multiplier: 10,
+    timeout_multiplier: 20,
   )
 endif
 
