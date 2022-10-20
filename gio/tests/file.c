@@ -2472,10 +2472,14 @@ get_size_from_du (const gchar *path, guint64 *size)
   GError *error = NULL;
   gchar *du_path = NULL;
 
-  /* If we can’t find du, don’t try and run the test. */
+#ifndef HAVE_COCOA
   du_path = g_find_program_in_path ("du");
+#endif
+
+  /* If we can’t find du, don’t try and run the test. */
   if (du_path == NULL)
     return FALSE;
+
   g_free (du_path);
 
   du = g_subprocess_new (G_SUBPROCESS_FLAGS_STDOUT_PIPE,
@@ -3552,7 +3556,11 @@ test_query_zero_length_content_type (void)
                        NULL, &error);
   g_assert_no_error (error);
 
+#ifndef HAVE_COCOA
   g_assert_cmpstr (g_file_info_get_content_type (file_info), ==, "text/plain");
+#else
+  g_assert_cmpstr (g_file_info_get_content_type (file_info), ==, "public.text");
+#endif
 
   g_clear_object (&file_info);
   g_clear_object (&empty_file);
