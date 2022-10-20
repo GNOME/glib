@@ -2404,3 +2404,69 @@ endif
 
 gnome = import('gnome')
 subdir('docs/reference')
+
+summary({
+  'host cpu' : host_machine.cpu_family(),
+  'host endian' : host_machine.endian(),
+  'host system' : host_system,
+  'C Compiler' : cc.get_id(),
+  'C++ Compiler' : have_cxx ? cxx.get_id() : 'none',
+  'static build' : glib_static_build,
+}, section: 'Build environment')
+
+if build_machine.system() != host_system
+  summary({
+    'build cpu' : build_machine.cpu_family(),
+    'build endian' : build_machine.endian(),
+    'build system' : build_machine.system(),
+  }, section: 'Build environment')
+endif
+
+summary({
+  'prefix' : glib_prefix,
+  'bindir' : glib_bindir,
+  'libexecdir' : glib_libexecdir,
+  'pkgdatadir' : glib_pkgdatadir,
+  'datadir' : glib_datadir,
+  'includedir' : glib_includedir,
+  'giomodulesdir' : glib_giomodulesdir,
+  'localstatedir' : glib_localstatedir,
+}, section: 'Directories')
+
+if get_option('multiarch')
+  summary({
+    'multiarch bindir' : glib_bindir,
+    'multiarch libexecdir' : glib_libexecdir,
+  }, section: 'Directories')
+endif
+
+if enable_systemtap
+  summary('tapset dir', get_option('tapset_install_dir'), section: 'Directories')
+endif
+
+if host_system == 'linux'
+  summary({
+    'selinux' : selinux_dep.found(),
+    'libmount' : libmount_dep.found(),
+  }, section: 'Options')
+endif
+
+summary({
+  'xattr' : xattr_dep.length() > 0,
+  'man' : get_option('man'),
+  'dtrace' : get_option('dtrace'),
+  'systemtap' : enable_systemtap,
+  'sysprof' : libsysprof_capture_dep.found(),
+  'gtk_doc' : get_option('gtk_doc'),
+  'bsymbolic_functions' : get_option('bsymbolic_functions'),
+  'force_posix_threads' : get_option('force_posix_threads'),
+  'tests' : get_option('tests'),
+  'installed_tests' : get_option('installed_tests'),
+  'nls' : get_option('nls'),
+  'oss_fuzz' : get_option('oss_fuzz'),
+  'glib_debug' : get_option('glib_debug'),
+  'glib_assert' : get_option('glib_assert'),
+  'glib_checks' : get_option('glib_checks'),
+  'libelf' : get_option('libelf'),
+  'multiarch' : get_option('multiarch'),
+}, section: 'Options')
