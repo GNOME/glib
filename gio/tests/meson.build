@@ -156,7 +156,7 @@ python_tests = {
   'codegen.py' : { 'can_fail' : host_system == 'freebsd' },
 }
 
-test_env = environment(common_test_env)
+test_env = environment()
 test_env.set('G_TEST_SRCDIR', meson.current_source_dir())
 test_env.set('G_TEST_BUILDDIR', meson.current_build_dir())
 test_env.set('GIO_MODULE_DIR', '')
