@@ -129,12 +129,23 @@ installed_tests_template_tap = files('tests/template-tap.test.in')
 # Don’t build the tests unless we can run them (either natively, in an exe wrapper, or by installing them for later use)
 build_tests = get_option('tests') and (meson.can_run_host_binaries() or installed_tests_enabled)
 
+common_test_env = [
+  'G_DEBUG=gc-friendly',
+  'G_ENABLE_DIAGNOSTIC=1',
+  'MALLOC_CHECK_=2',
+]
+
+test_timeout = 60
+test_timeout_slow = 180
+
 add_test_setup('default',
   is_default: true,
   exclude_suites: ['flaky', 'failing'],
+  env: common_test_env,
 )
 
 add_test_setup('unstable_tests',
+  env: common_test_env,
   # Empty test setup, used for having different results set for flaky tests
   # Sadly we can't use (https://github.com/mesonbuild/meson/issues/10934):
   #suites: ['flaky', 'unstable']
@@ -160,6 +171,7 @@ if valgrind.found()
       '--suppressions=@0@'.format(meson.project_source_root() /
         '@0@'.format(suppression_file[0])),
     ],
+    env: common_test_env,
     timeout_multiplier: 10,
   )
 endif
@@ -2343,15 +2355,6 @@ if want_systemtap and enable_dtrace
   stp_cdata.set('LT_REVISION', micro_version)
   enable_systemtap = true
 endif
-
-common_test_env = [
-  'G_DEBUG=gc-friendly',
-  'G_ENABLE_DIAGNOSTIC=1',
-  'MALLOC_CHECK_=2',
-]
-
-test_timeout = 60
-test_timeout_slow = 180
 
 pkg = import('pkgconfig')
 windows = import('windows')
