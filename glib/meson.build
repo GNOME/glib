@@ -5,6 +5,7 @@ glibconfig_h = configure_file(input : 'glibconfig.h.in', output : 'glibconfig.h'
   install_dir : join_paths(get_option('libdir'), 'glib-2.0/include'),
   install_tag : 'devel',
   configuration : glibconfig_conf)
+glib_sources += glibconfig_h
 
 gversionmacros_h = custom_target(
   input: 'gversionmacros.h.in',
