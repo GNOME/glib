@@ -1749,8 +1749,9 @@ g_utime (const gchar    *filename,
  * @fd: A file descriptor
  * @error: a #GError
  *
- * This wraps the close() call; in case of error, %errno will be
+ * This wraps the close() call. In case of error, %errno will be
  * preserved, but the error will also be stored as a #GError in @error.
+ * In case of success, %errno is undefined.
  *
  * Besides using #GError, there is another major reason to prefer this
  * function over the call provided by the system; on Unix, it will
@@ -1758,6 +1759,9 @@ g_utime (const gchar    *filename,
  * semantics.
  *
  * It is a bug to call this function with an invalid file descriptor.
+ *
+ * Since 2.76, this function is guaranteed to be async-signal-safe if (and only
+ * if) @error is %NULL and @fd is a valid open file descriptor.
  *
  * Returns: %TRUE on success, %FALSE if there was an error.
  *
@@ -1769,6 +1773,9 @@ g_close (gint       fd,
 {
   int res;
 
+  /* Important: if @error is NULL, we must not do anything that is
+   * not async-signal-safe.
+   */
   res = close (fd);
 
   if (res == -1)
@@ -1790,12 +1797,17 @@ g_close (gint       fd,
           return TRUE;
         }
 
-      g_set_error_literal (error, G_FILE_ERROR,
-                           g_file_error_from_errno (errsv),
-                           g_strerror (errsv));
+      if (error)
+        {
+          g_set_error_literal (error, G_FILE_ERROR,
+                               g_file_error_from_errno (errsv),
+                               g_strerror (errsv));
+        }
 
       if (errsv == EBADF)
         {
+          /* There is a bug. Fail an assertion. Note that this function is supposed to be
+           * async-signal-safe, but in case an assertion fails, all bets are already off. */
           if (fd >= 0)
             {
               /* Closing an non-negative, invalid file descriptor is a bug. The bug is
