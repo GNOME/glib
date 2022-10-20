@@ -85,7 +85,7 @@ g_icon_default_init (GIconInterface *iface)
 
 /**
  * g_icon_hash:
- * @icon: (not nullable): #gconstpointer to an icon object.
+ * @icon: (not nullable) (type Gio.Icon): #gconstpointer to an icon object.
  * 
  * Gets a hash for an icon.
  *
@@ -106,7 +106,7 @@ g_icon_hash (gconstpointer icon)
 }
 
 /**
- * g_icon_equal:
+ * g_icon_equal: (virtual equal)
  * @icon1: (nullable): pointer to the first #GIcon.
  * @icon2: (nullable): pointer to the second #GIcon.
  * 
@@ -204,7 +204,6 @@ g_icon_to_string_tokenized (GIcon *icon, GString *s)
  * - If @icon is a #GThemedIcon with exactly one name and no fallbacks,
  *   the encoding is simply the name (such as `network-server`).
  *
- * Virtual: to_tokens
  * Returns: (nullable): An allocated NUL-terminated UTF8 string or
  * %NULL if @icon can't be serialized. Use g_free() to free.
  *
@@ -646,7 +645,7 @@ g_icon_deserialize (GVariant *value)
 }
 
 /**
- * g_icon_serialize:
+ * g_icon_serialize: (virtual serialize)
  * @icon: a #GIcon
  *
  * Serializes a #GIcon into a #GVariant. An equivalent #GIcon can be retrieved
