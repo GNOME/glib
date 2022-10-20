@@ -26,10 +26,10 @@
 
 #if defined (__APPLE__) || defined (HAVE_COCOA) || defined (HAVE_CARBON)
 # ifndef G_OS_UNIX
-  G_STATIC_ASSERT (FALSE);
+  #error "G_OS_UNIX is not defined"
 # endif
 # ifndef G_OS_DARWIN
-  G_STATIC_ASSERT (FALSE);
+  #error "G_OS_DARWIN is not defined"
 # endif
 #endif
 
