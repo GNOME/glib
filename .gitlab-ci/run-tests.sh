@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 
 ./.gitlab-ci/check-missing-install-tag.py _build
 
