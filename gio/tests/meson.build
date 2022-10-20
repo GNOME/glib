@@ -67,7 +67,9 @@ gio_tests = {
   'fileattributematcher' : {},
   'filter-streams' : {},
   'giomodule' : {},
-  'gsubprocess' : {},
+  'gsubprocess' : {
+    'suite': host_system == 'windows' ? ['flaky'] : [],
+  },
   'g-file' : {},
   'g-file-info' : {
     'can_fail' : host_system == 'windows' and cc.get_id() != 'gcc',

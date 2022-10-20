@@ -114,6 +114,7 @@ glib_tests = {
   'sort' : {},
   'spawn-multithreaded' : {
     'can_fail': glib_build_static and host_system == 'windows',
+    'suite': host_system == 'windows' ? ['flaky'] : [],
   },
   'spawn-path-search' : {},
   'spawn-singlethread' : {
