@@ -24,7 +24,6 @@ import collections
 import os
 import shutil
 import subprocess
-import sys
 import tempfile
 import unittest
 
@@ -151,7 +150,9 @@ class TestAssertMessage(unittest.TestCase):
             try:
                 tmp.write(GDB_SCRIPT)
                 tmp.close()
-                result = self.runGdbAssertMessage("-x", tmp.name, self.__assert_msg_test)
+                result = self.runGdbAssertMessage(
+                    "-x", tmp.name, self.__assert_msg_test
+                )
             finally:
                 os.unlink(tmp.name)
 
