@@ -307,7 +307,7 @@ test_g_file_info_access_time (void)
   g_assert_nonnull (dt_usecs);
 
   ts = g_date_time_difference (dt_usecs, dt);
-  g_assert_cmpint (ts, >, 0);
+  g_assert_cmpint (ts, >=, 0);
   g_assert_cmpint (ts, <, G_USEC_PER_SEC);
 
   /* Try again with nanosecond precision. */
@@ -442,7 +442,7 @@ test_g_file_info_creation_time (void)
   g_assert_nonnull (dt_usecs);
 
   ts = g_date_time_difference (dt_usecs, dt);
-  g_assert_cmpint (ts, >, 0);
+  g_assert_cmpint (ts, >=, 0);
   g_assert_cmpint (ts, <, G_USEC_PER_SEC);
 
   /* Try again with nanosecond precision. */
