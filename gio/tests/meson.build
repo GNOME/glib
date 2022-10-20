@@ -70,7 +70,9 @@ gio_tests = {
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
     'can_fail' : host_system == 'darwin',
   },
-  'gsubprocess' : {},
+  'gsubprocess' : {
+    'suite': host_system == 'windows' ? ['flaky'] : [],
+  },
   'g-file' : {},
   'g-file-info' : {
     'can_fail' : host_system == 'windows' and cc.get_id() != 'gcc',
