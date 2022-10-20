@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -ex
 
 export PATH="/c/msys64/$MSYSTEM/bin:$PATH"
 if [[ "$MSYSTEM" == "MINGW32" ]]; then
