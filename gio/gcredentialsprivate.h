@@ -160,7 +160,7 @@
 #define G_CREDENTIALS_SOCKET_GET_CREDENTIALS_SUPPORTED 1
 #define G_CREDENTIALS_HAS_PID 1
 
-#elif defined(__APPLE__)
+#elif defined(G_OS_DARWIN)
 #include <sys/ucred.h>
 #define G_CREDENTIALS_SUPPORTED 1
 #define G_CREDENTIALS_USE_APPLE_XUCRED 1
@@ -182,6 +182,6 @@ void _g_credentials_set_local_peerid (GCredentials *credentials,
 #define G_CREDENTIALS_SOCKET_GET_CREDENTIALS_SUPPORTED 1
 #define G_CREDENTIALS_HAS_PID 1
 
-#endif
+#endif /* defined(G_OS_DARWIN) */
 
 #endif /* __G_CREDENTIALS_PRIVATE_H__ */

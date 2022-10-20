@@ -1648,6 +1648,17 @@
  */
 
 /**
+ * G_OS_DARWIN:
+ *
+ * This macro is defined only on Apple operating systems (macOS or iOS).
+ * So you can bracket Apple-specific code in `\#ifdef G_OS_DARWIN`.
+ *
+ * Note that %G_OS_UNIX is also set.
+ *
+ * Since: 2.76
+ */
+
+/**
  * G_OS_WIN32:
  *
  * This macro is defined only on Windows. So you can bracket

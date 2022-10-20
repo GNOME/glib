@@ -1806,7 +1806,7 @@ g_close (gint       fd,
                * Disabling the message for now until someone with access to a
                * macOS machine can investigate.
                * See https://gitlab.gnome.org/GNOME/glib/-/issues/2785 */
-#ifndef HAVE_COCOA
+#ifndef G_OS_DARWIN
               g_critical ("g_close(fd:%d) failed with EBADF. The tracking of file descriptors got messed up", fd);
 #endif
             }

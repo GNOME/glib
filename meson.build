@@ -235,6 +235,9 @@ if host_system == 'windows'
 elif host_system == 'cygwin'
   glib_os = '''#define G_OS_UNIX
 #define G_WITH_CYGWIN'''
+elif host_system in ['darwin', 'ios']
+  glib_os = '''#define G_OS_UNIX
+#define G_OS_DARWIN'''
 else
   glib_os = '#define G_OS_UNIX'
 endif

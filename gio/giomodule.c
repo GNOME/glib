@@ -61,7 +61,7 @@
 #endif
 #include <glib/gstdio.h>
 
-#if defined(G_OS_UNIX) && !defined(HAVE_COCOA)
+#if defined(G_OS_UNIX) && !defined(G_OS_DARWIN)
 #include "gdesktopappinfo.h"
 #endif
 #ifdef HAVE_COCOA
@@ -1185,7 +1185,7 @@ _g_io_modules_ensure_extension_points_registered (void)
 
   if (g_once_init_enter (&registered_extensions))
     {
-#if defined(G_OS_UNIX) && !defined(HAVE_COCOA)
+#if defined(G_OS_UNIX) && !defined(G_OS_DARWIN)
 #if !GLIB_CHECK_VERSION (3, 0, 0)
       ep = g_io_extension_point_register (G_DESKTOP_APP_INFO_LOOKUP_EXTENSION_POINT_NAME);
       g_io_extension_point_set_required_type (ep, G_TYPE_DESKTOP_APP_INFO_LOOKUP);
@@ -1264,7 +1264,7 @@ get_gio_module_dir (void)
       g_free (install_dir);
 #else
       module_dir = g_strdup (GIO_MODULE_DIR);
-#ifdef __APPLE__
+#ifdef G_OS_DARWIN
 #include "TargetConditionals.h"
 #if TARGET_OS_OSX
 #include <dlfcn.h>
@@ -1286,7 +1286,7 @@ get_gio_module_dir (void)
           }
       }
 #endif
-#endif
+#endif /* G_OS_DARWIN */
 #endif
     }
 

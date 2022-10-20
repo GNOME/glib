@@ -2486,7 +2486,7 @@ g_application_run (GApplication  *application,
                  sizeof (arguments[0]) * (argc + 1));
       }
   }
-#elif defined(__APPLE__)
+#elif defined(G_OS_DARWIN)
   {
     gint i, j;
 

@@ -247,7 +247,7 @@ assert_expected_uid_pid (InteropFlags flags,
        * on Linux. */
       g_assert_cmpint (uid, ==, getuid ());
       g_assert_cmpint (pid, ==, getpid ());
-#elif defined(__APPLE__)
+#elif defined(G_OS_DARWIN)
       /* We know (or at least suspect) that both GDBus and libdbus support
        * passing the uid only on macOS. */
       g_assert_cmpint (uid, ==, getuid ());
