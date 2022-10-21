@@ -617,7 +617,11 @@
  * An unsigned integer type of the result of the `sizeof` operator,
  * corresponding to the `size_t` type defined in C99.
  *
- * It is usually 32 bit wide on a 32-bit platform and 64 bit wide
+ * The standard `size_t` type should be preferred in new code, unless
+ * consistency with pre-existing APIs requires `gsize`
+ * (see below for more details).
+ *
+ * `gsize` is usually 32 bit wide on a 32-bit platform and 64 bit wide
  * on a 64-bit platform. Values of this type can range from 0 to
  * %G_MAXSIZE.
  *
@@ -632,12 +636,36 @@
  *
  * To print or scan values of this type, use
  * %G_GSIZE_MODIFIER and/or %G_GSIZE_FORMAT.
+ *
+ * Note that on platforms where more than one standard integer type is
+ * the same size, `size_t` and `gsize` are always the same size but are
+ * not necessarily implemented by the same standard integer type.
+ * For example, on an ILP32 platform where `int`, `long` and pointers
+ * are all 32-bit, `size_t` might be `unsigned long` while `gsize`
+ * might be `unsigned int`.
+ * This can result in compiler warnings or unexpected C++ name-mangling
+ * if the two types are used inconsistently.
+ *
+ * As a result, changing a type from `gsize` to `size_t` in existing APIs
+ * might be an incompatible API or ABI change, especially if C++
+ * is involved. The safe option is to leave existing APIs using the same type
+ * that they have historically used, and only use the standard C types in
+ * new APIs.
+ *
+ * Similar considerations apply to all the fixed-size types
+ * (#gint8, #guint8, #gint16, #guint16, #gint32, #guint32, #gint64,
+ * #guint64 and #goffset), as well as #gintptr and #guintptr.
+ * Types that are 32 bits or larger are particularly likely to be
+ * affected by this.
  */
 
 /**
  * G_MAXSIZE:
  *
  * The maximum value which can be held in a #gsize.
+ *
+ * This is the same as standard C `SIZE_MAX` (available since C99),
+ * which should be preferred in new code.
  *
  * Since: 2.4
  */
@@ -649,6 +677,11 @@
  * for scanning and printing values of type #gsize. It
  * is a string literal.
  *
+ * Note that this is not necessarily the correct modifier to scan or
+ * print a `size_t`, even though the in-memory representation is the
+ * same. The Standard C `"z"` modifier should be used for `size_t`,
+ * assuming a C99-compliant `printf` implementation is available.
+ *
  * Since: 2.6
  */
 
@@ -657,6 +690,11 @@
  *
  * This is the platform dependent conversion specifier for scanning
  * and printing values of type #gsize. See also %G_GINT16_FORMAT.
+ *
+ * Note that this is not necessarily the correct format to scan or
+ * print a `size_t`, even though the in-memory representation is the
+ * same. The standard C `"zu"` format should be used for `size_t`,
+ * assuming a C99-compliant `printf` implementation is available.
  *
  * Since: 2.6
  */
