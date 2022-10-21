@@ -834,6 +834,14 @@
  * Corresponds to the C99 type intptr_t,
  * a signed integer type that can hold any pointer.
  *
+ * The standard `intptr_t` type should be preferred in new code, unless
+ * consistency with pre-existing APIs requires `gintptr`.
+ * Note that `intptr_t` and `gintptr` might be implemented by different
+ * standard integer types of the same size. See #gsize for more details.
+ *
+ * #gintptr is not guaranteed to be the same type or the same size as #gssize,
+ * even though they are the same on many CPU architectures.
+ *
  * To print or scan values of this type, use
  * %G_GINTPTR_MODIFIER and/or %G_GINTPTR_FORMAT.
  *
@@ -847,6 +855,12 @@
  * for scanning and printing values of type #gintptr or #guintptr.
  * It is a string literal.
  *
+ * Note that this is not necessarily the correct modifier to scan or
+ * print an `intptr_t`, even though the in-memory representation is the
+ * same.
+ * Standard C macros like `PRIdPTR` and `SCNdPTR` should be used for
+ * `intptr_t`.
+ *
  * Since: 2.22
  */
 
@@ -856,6 +870,12 @@
  * This is the platform dependent conversion specifier for scanning
  * and printing values of type #gintptr.
  *
+ * Note that this is not necessarily the correct format to scan or
+ * print an `intptr_t`, even though the in-memory representation is the
+ * same.
+ * Standard C macros like `PRIdPTR` and `SCNdPTR` should be used for
+ * `intptr_t`.
+ *
  * Since: 2.22
  */
 
@@ -864,6 +884,14 @@
  *
  * Corresponds to the C99 type uintptr_t,
  * an unsigned integer type that can hold any pointer.
+ *
+ * The standard `uintptr_t` type should be preferred in new code, unless
+ * consistency with pre-existing APIs requires `guintptr`.
+ * Note that `uintptr_t` and `guintptr` might be implemented by different
+ * standard integer types of the same size. See #gsize for more details.
+ *
+ * #guintptr is not guaranteed to be the same type or the same size as #gsize,
+ * even though they are the same on many CPU architectures.
  *
  * To print or scan values of this type, use
  * %G_GINTPTR_MODIFIER and/or %G_GUINTPTR_FORMAT.
@@ -876,6 +904,12 @@
  *
  * This is the platform dependent conversion specifier
  * for scanning and printing values of type #guintptr.
+ *
+ * Note that this is not necessarily the correct format to scan or
+ * print a `uintptr_t`, even though the in-memory representation is the
+ * same.
+ * Standard C macros like `PRIuPTR` and `SCNuPTR` should be used for
+ * `uintptr_t`.
  *
  * Since: 2.22
  */
