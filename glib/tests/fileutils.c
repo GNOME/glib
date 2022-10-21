@@ -2453,6 +2453,81 @@ test_win32_zero_terminate_symlink (void)
 
 #endif
 
+static void
+assert_fd_was_closed (int fd)
+{
+  /* We can't tell a fd was really closed without behaving as though it
+   * was still valid */
+  if (g_test_undefined ())
+    {
+      int result = g_fsync (fd);
+      int errsv = errno;
+
+      g_assert_cmpint (result, !=, 0);
+      g_assert_cmpint (errsv, ==, EBADF);
+    }
+}
+
+static void
+test_clear_fd (void)
+{
+  char *name = NULL;
+  GError *error = NULL;
+  int fd;
+  int copy_of_fd;
+
+#ifdef g_autofree
+  g_test_summary ("Test g_clear_fd() and g_autofd");
+#else
+  g_test_summary ("Test g_clear_fd() (g_autofd unsupported by this compiler)");
+#endif
+
+  /* g_clear_fd() normalizes any negative number to -1 */
+  fd = -23;
+  g_clear_fd (&fd, &error);
+  g_assert_cmpint (fd, ==, -1);
+  g_assert_no_error (error);
+
+  /* Nothing special about g_file_open_tmp, it's just a convenient way
+   * to get an open fd */
+  fd = g_file_open_tmp (NULL, &name, &error);
+  g_assert_cmpint (fd, !=, -1);
+  g_assert_no_error (error);
+  g_assert_nonnull (name);
+  copy_of_fd = fd;
+  g_clear_fd (&fd, &error);
+  g_assert_cmpint (fd, ==, -1);
+  g_assert_no_error (error);
+  assert_fd_was_closed (copy_of_fd);
+  g_unlink (name);
+  g_free (name);
+
+  /* g_clear_fd() is idempotent */
+  g_clear_fd (&fd, &error);
+  g_assert_cmpint (fd, ==, -1);
+  g_assert_no_error (error);
+
+#ifdef g_autofree
+  fd = g_file_open_tmp (NULL, &name, &error);
+  g_assert_cmpint (fd, !=, -1);
+  g_assert_no_error (error);
+  g_assert_nonnull (name);
+
+    {
+      g_autofd int close_me = fd;
+      g_autofd int was_never_set = -42;
+
+      /* This avoids clang warnings about the variables being unused */
+      g_test_message ("Will be closed by autocleanup: %d, %d",
+                      close_me, was_never_set);
+    }
+
+  assert_fd_was_closed (fd);
+  g_unlink (name);
+  g_free (name);
+#endif
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -2489,6 +2564,7 @@ main (int   argc,
   g_test_add_func ("/fileutils/read-link", test_read_link);
   g_test_add_func ("/fileutils/stdio-wrappers", test_stdio_wrappers);
   g_test_add_func ("/fileutils/fopen-modes", test_fopen_modes);
+  g_test_add_func ("/fileutils/clear-fd", test_clear_fd);
 
   return g_test_run ();
 }

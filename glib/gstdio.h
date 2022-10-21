@@ -178,6 +178,38 @@ GLIB_AVAILABLE_IN_2_36
 gboolean g_close (gint       fd,
                   GError   **error);
 
+GLIB_AVAILABLE_STATIC_INLINE_IN_2_76
+static inline gboolean
+g_clear_fd (int     *fd_ptr,
+            GError **error)
+{
+  int fd = *fd_ptr;
+
+  *fd_ptr = -1;
+
+  if (fd < 0)
+    return TRUE;
+
+  return g_close (fd, error);
+}
+
+/* g_autofd should be defined on the same compilers where g_autofree is
+ * This avoids duplicating the feature-detection here. */
+#ifdef g_autofree
+/* Not public API */
+static inline void
+_g_clear_fd_ignore_error (int *fd_ptr)
+{
+  if (!g_clear_fd (fd_ptr, NULL))
+    {
+      /* Do nothing: we ignore all errors, except for EBADF which
+       * is a programming error, checked for by g_close(). */
+    }
+}
+
+#define g_autofd _GLIB_CLEANUP(_g_clear_fd_ignore_error)
+#endif
+
 G_END_DECLS
 
 #endif /* __G_STDIO_H__ */
