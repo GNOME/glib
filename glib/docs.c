@@ -775,12 +775,17 @@
  * A signed integer type that is used for file offsets,
  * corresponding to the POSIX type `off_t` as if compiling with
  * `_FILE_OFFSET_BITS` set to 64. #goffset is always 64 bits wide, even on
- * 32-bit architectures.
+ * 32-bit architectures, and even if `off_t` is only 32 bits.
  * Values of this type can range from %G_MINOFFSET to
  * %G_MAXOFFSET.
  *
  * To print or scan values of this type, use
  * %G_GOFFSET_MODIFIER and/or %G_GOFFSET_FORMAT.
+ *
+ * On platforms with more than one 64-bit standard integer type,
+ * even if `off_t` is also 64 bits in size, `goffset` and `off_t` are not
+ * necessarily implemented by the same 64-bit integer type.
+ * See #gsize for more details of what this implies.
  *
  * Since: 2.14
  */
@@ -804,6 +809,9 @@
  * for scanning and printing values of type #goffset. It is a string
  * literal. See also %G_GINT64_MODIFIER.
  *
+ * This modifier should only be used with #goffset values, and not
+ * with `off_t`, which is not necessarily the same type or even the same size.
+ *
  * Since: 2.20
  */
 
@@ -812,6 +820,9 @@
  *
  * This is the platform dependent conversion specifier for scanning
  * and printing values of type #goffset. See also %G_GINT64_FORMAT.
+ *
+ * This format should only be used with #goffset values, and not
+ * with `off_t`, which is not necessarily the same type or even the same size.
  *
  * Since: 2.20
  */
