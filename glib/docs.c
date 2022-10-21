@@ -703,9 +703,22 @@
  * gssize:
  *
  * A signed variant of #gsize, corresponding to the
- * ssize_t defined on most platforms.
+ * `ssize_t` defined in POSIX or the similar `SSIZE_T` in Windows.
+ *
+ * In new platform-specific code, consider using `ssize_t` or `SSIZE_T`
+ * directly.
+ *
  * Values of this type can range from %G_MINSSIZE
  * to %G_MAXSSIZE.
+ *
+ * Note that on platforms where `ssize_t` is implemented, `ssize_t` and
+ * `gssize` might be implemented by different standard integer types
+ * of the same size. Similarly, on Windows, `SSIZE_T` and `gssize`
+ * might be implemented by different standard integer types of the same
+ * size. See #gsize for more details.
+ *
+ * This type is also not guaranteed to be the same as standard C
+ * `ptrdiff_t`, although they are the same on many platforms.
  *
  * To print or scan values of this type, use
  * %G_GSSIZE_MODIFIER and/or %G_GSSIZE_FORMAT.
@@ -733,6 +746,11 @@
  * This is the platform dependent conversion specifier for scanning
  * and printing values of type #gssize. See also %G_GINT16_FORMAT.
  *
+ * Note that this is not necessarily the correct format to scan or print
+ * a POSIX `ssize_t` or a Windows `SSIZE_T`, even though the in-memory
+ * representation is the same.
+ * On POSIX platforms, the `"zd"` format should be used for `ssize_t`.
+ *
  * Since: 2.6
  */
 
@@ -742,6 +760,11 @@
  * The platform dependent length modifier for conversion specifiers
  * for scanning and printing values of type #gssize. It
  * is a string literal.
+ *
+ * Note that this is not necessarily the correct modifier to scan or print
+ * a POSIX `ssize_t` or a Windows `SSIZE_T`, even though the in-memory
+ * representation is the same.
+ * On POSIX platforms, the `"z"` modifier should be used for `ssize_t`.
  *
  * Since: 2.6
  */
