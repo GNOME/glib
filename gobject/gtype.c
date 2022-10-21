@@ -145,7 +145,7 @@
 				    G_TYPE_FLAG_INSTANTIATABLE | \
 				    G_TYPE_FLAG_DERIVABLE | \
 				    G_TYPE_FLAG_DEEP_DERIVABLE)
-#define	TYPE_FLAG_MASK		   (G_TYPE_FLAG_ABSTRACT | G_TYPE_FLAG_VALUE_ABSTRACT | G_TYPE_FLAG_FINAL)
+#define	TYPE_FLAG_MASK		   (G_TYPE_FLAG_ABSTRACT | G_TYPE_FLAG_VALUE_ABSTRACT | G_TYPE_FLAG_FINAL | G_TYPE_FLAG_DEPRECATED)
 #define	SIZEOF_FUNDAMENTAL_INFO	   ((gssize) MAX (MAX (sizeof (GTypeFundamentalInfo), \
 						       sizeof (gpointer)), \
                                                   sizeof (glong)))
@@ -1824,6 +1824,47 @@ type_iface_blow_holder_info_Wm (TypeNode *iface,
     }
 }
 
+static void
+maybe_issue_deprecation_warning (GType type)
+{
+  static GHashTable *already_warned_table;
+  static const gchar *enable_diagnostic;
+  static GMutex already_warned_lock;
+  gboolean already;
+  const char *name;
+
+  if (g_once_init_enter (&enable_diagnostic))
+    {
+      const gchar *value = g_getenv ("G_ENABLE_DIAGNOSTIC");
+
+      if (!value)
+        value = "0";
+
+      g_once_init_leave (&enable_diagnostic, value);
+    }
+
+  if (enable_diagnostic[0] == '0')
+    return;
+
+  g_mutex_lock (&already_warned_lock);
+
+  if (already_warned_table == NULL)
+    already_warned_table = g_hash_table_new (NULL, NULL);
+
+  name = g_type_name (type);
+
+  already = g_hash_table_contains (already_warned_table, (gpointer) name);
+  if (!already)
+    g_hash_table_add (already_warned_table, (gpointer) name);
+
+  g_mutex_unlock (&already_warned_lock);
+
+  if (!already)
+    g_warning ("The type %s is deprecated and shouldn’t be used "
+               "any more. It may be removed in a future version.",
+               name);
+}
+
 /* We use the system allocator on UNIX-y systems, where we know we have
  * access to a decent allocator. On other systems, we fall back to the
  * slice allocator, as we know its performance profile
@@ -1883,7 +1924,11 @@ g_type_create_instance (GType type)
       g_error ("cannot create instance of abstract (non-instantiatable) type '%s'",
 		 type_descriptive_name_I (type));
     }
-  
+  if (G_UNLIKELY (G_TYPE_IS_DEPRECATED (type)))
+    {
+      maybe_issue_deprecation_warning (type);
+    }
+
   class = g_type_class_ref (type);
 
   /* We allocate the 'private' areas before the normal instance data, in
