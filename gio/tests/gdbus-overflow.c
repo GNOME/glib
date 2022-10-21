@@ -219,13 +219,8 @@ main (int   argc,
 
   if (is_unix)
     {
-      if (g_unix_socket_address_abstract_names_supported ())
-	tmp_address = g_strdup ("unix:tmpdir=/tmp/gdbus-test-");
-      else
-	{
-	  tmpdir = g_dir_make_tmp ("gdbus-test-XXXXXX", NULL);
-	  tmp_address = g_strdup_printf ("unix:tmpdir=%s", tmpdir);
-	}
+      tmpdir = g_dir_make_tmp ("gdbus-test-XXXXXX", NULL);
+      tmp_address = g_strdup_printf ("unix:tmpdir=%s", tmpdir);
     }
   else
     tmp_address = g_strdup ("nonce-tcp:");

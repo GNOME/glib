@@ -1618,13 +1618,8 @@ initable_init (GInitable     *initable,
   if (daemon->address == NULL)
     {
 #ifdef G_OS_UNIX
-      if (g_unix_socket_address_abstract_names_supported ())
-	daemon->address = g_strdup ("unix:tmpdir=/tmp/gdbus-daemon");
-      else
-	{
-	  daemon->tmpdir = g_dir_make_tmp ("gdbus-daemon-XXXXXX", NULL);
-	  daemon->address = g_strdup_printf ("unix:tmpdir=%s", daemon->tmpdir);
-	}
+      daemon->tmpdir = g_dir_make_tmp ("gdbus-daemon-XXXXXX", NULL);
+      daemon->address = g_strdup_printf ("unix:tmpdir=%s", daemon->tmpdir);
       flags |= G_DBUS_SERVER_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER;
 #else
       /* Don’t require authentication on Windows as that hasn’t been
