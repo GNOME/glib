@@ -89,7 +89,24 @@ G_STATIC_ASSERT (sizeof (void *) == GLIB_SIZEOF_VOID_P);
 G_STATIC_ASSERT (sizeof (gintptr) == sizeof (void *));
 G_STATIC_ASSERT (sizeof (guintptr) == sizeof (void *));
 
+G_STATIC_ASSERT (sizeof (short) == sizeof (gshort));
+G_STATIC_ASSERT (G_MINSHORT == SHRT_MIN);
+G_STATIC_ASSERT (G_MAXSHORT == SHRT_MAX);
+G_STATIC_ASSERT (sizeof (unsigned short) == sizeof (gushort));
+G_STATIC_ASSERT (G_MAXUSHORT == USHRT_MAX);
+
+G_STATIC_ASSERT (sizeof (int) == sizeof (gint));
+G_STATIC_ASSERT (G_MININT == INT_MIN);
+G_STATIC_ASSERT (G_MAXINT == INT_MAX);
+G_STATIC_ASSERT (sizeof (unsigned int) == sizeof (guint));
+G_STATIC_ASSERT (G_MAXUINT == UINT_MAX);
+
 G_STATIC_ASSERT (sizeof (long) == GLIB_SIZEOF_LONG);
+G_STATIC_ASSERT (sizeof (long) == sizeof (glong));
+G_STATIC_ASSERT (G_MINLONG == LONG_MIN);
+G_STATIC_ASSERT (G_MAXLONG == LONG_MAX);
+G_STATIC_ASSERT (sizeof (unsigned long) == sizeof (gulong));
+G_STATIC_ASSERT (G_MAXULONG == ULONG_MAX);
 
 G_STATIC_ASSERT (G_HAVE_GINT64 == 1);
 
