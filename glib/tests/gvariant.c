@@ -4880,9 +4880,20 @@ test_stack_dict_init (void)
   GVariantIter iter;
   gchar *key;
   GVariant *value;
+  const gchar *str_value;
+
+  g_assert_true (g_variant_dict_lookup (&dict, "foo", "&s", &str_value, NULL));
+  g_assert_cmpstr (str_value, ==, "FOO");
+  g_assert_true (g_variant_dict_lookup (&dict, "bar", "&s", &str_value, NULL));
+  g_assert_cmpstr (str_value, ==, "BAR");
 
   g_variant_dict_insert_value (&dict, "baz", g_variant_new_string ("BAZ"));
   g_variant_dict_insert_value (&dict, "quux", g_variant_new_string ("QUUX"));
+
+  g_assert_true (g_variant_dict_lookup (&dict, "baz", "&s", &str_value, NULL));
+  g_assert_cmpstr (str_value, ==, "BAZ");
+  g_assert_true (g_variant_dict_lookup (&dict, "quux", "&s", &str_value, NULL));
+  g_assert_cmpstr (str_value, ==, "QUUX");
 
   variant = g_variant_ref_sink (g_variant_dict_end (&dict));
   g_assert_nonnull (variant);
