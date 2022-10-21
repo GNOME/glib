@@ -1829,7 +1829,12 @@
  *
  * Returns the offset, in bytes, of a member of a struct.
  *
- * Returns: the offset of @member from the start of @struct_type
+ * Consider using standard C `offsetof()`, available since at least C89
+ * and C++98, in new code (but note that `offsetof()` returns a `size_t`
+ * rather than a `long`).
+ *
+ * Returns: the offset of @member from the start of @struct_type,
+ *  as a value of type #glong.
  */
 
 /**
