@@ -993,12 +993,6 @@ test_launch_as_manager (void)
   gboolean launched = FALSE;
   GAppLaunchContext *context;
 
-  if (g_getenv ("DISPLAY") == NULL || g_getenv ("DISPLAY")[0] == '\0')
-    {
-      g_test_skip ("No DISPLAY.  Skipping test.");
-      return;
-    }
-
   path = g_test_get_filename (G_TEST_BUILT, "appinfo-test.desktop", NULL);
   appinfo = g_desktop_app_info_new_from_filename (path);
 
