@@ -959,6 +959,26 @@ on_launch_started (GAppLaunchContext *context, GAppInfo *info, GVariant *platfor
   *invoked = TRUE;
 }
 
+static void
+on_launched (GAppLaunchContext *context, GAppInfo *info, GVariant *platform_data, gpointer data)
+{
+  gboolean *launched = data;
+  GVariantDict dict;
+  int pid;
+
+  g_assert_true (G_IS_APP_LAUNCH_CONTEXT (context));
+  g_assert_true (G_IS_APP_INFO (info));
+  g_assert_nonnull (platform_data);
+  g_variant_dict_init (&dict, platform_data);
+  g_assert_true (g_variant_dict_lookup (&dict, "pid", "i", &pid, NULL));
+  g_assert_cmpint (pid, >, 1);
+
+  g_assert_false (*launched);
+  *launched = TRUE;
+
+  g_variant_dict_clear (&dict);
+}
+
 /* Test g_desktop_app_info_launch_uris_as_manager() and
  * g_desktop_app_info_launch_uris_as_manager_with_fds()
  */
@@ -970,6 +990,7 @@ test_launch_as_manager (void)
   gboolean retval;
   const gchar *path;
   gboolean invoked = FALSE;
+  gboolean launched = FALSE;
   GAppLaunchContext *context;
 
   if (g_getenv ("DISPLAY") == NULL || g_getenv ("DISPLAY")[0] == '\0')
@@ -991,6 +1012,9 @@ test_launch_as_manager (void)
   g_signal_connect (context, "launch-started",
                     G_CALLBACK (on_launch_started),
                     &invoked);
+  g_signal_connect (context, "launched",
+                    G_CALLBACK (on_launched),
+                    &launched);
   retval = g_desktop_app_info_launch_uris_as_manager (appinfo, NULL, context, 0,
                                                       NULL, NULL,
                                                       NULL, NULL,
@@ -998,8 +1022,10 @@ test_launch_as_manager (void)
   g_assert_no_error (error);
   g_assert_true (retval);
   g_assert_true (invoked);
+  g_assert_true (launched);
 
   invoked = FALSE;
+  launched = FALSE;
   retval = g_desktop_app_info_launch_uris_as_manager_with_fds (appinfo,
                                                                NULL, context, 0,
                                                                NULL, NULL,
@@ -1009,6 +1035,7 @@ test_launch_as_manager (void)
   g_assert_no_error (error);
   g_assert_true (retval);
   g_assert_true (invoked);
+  g_assert_true (launched);
 
   g_object_unref (appinfo);
   g_assert_finalize_object (context);
