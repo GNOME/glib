@@ -725,14 +725,7 @@ try_unix (GDBusServer  *server,
       for (n = 0; n < 8; n++)
         g_string_append_c (s, random_ascii ());
 
-      /* prefer abstract namespace if available for tmpdir: addresses
-       * abstract namespace is disallowed for dir: addresses */
-      if (tmpdir != NULL && g_unix_socket_address_abstract_names_supported ())
-        address = g_unix_socket_address_new_with_type (s->str,
-                                                       -1,
-                                                       G_UNIX_SOCKET_ADDRESS_ABSTRACT);
-      else
-        address = g_unix_socket_address_new (s->str);
+      address = g_unix_socket_address_new (s->str);
       g_string_free (s, TRUE);
 
       local_error = NULL;
