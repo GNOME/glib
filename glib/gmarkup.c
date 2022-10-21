@@ -2530,7 +2530,7 @@ g_markup_vprintf_escaped (const gchar *format,
 
   /* Use them to format the arguments
    */
-  G_VA_COPY (args2, args);
+  va_copy (args2, args);
 
   output1 = g_strdup_vprintf (format1->str, args);
 
