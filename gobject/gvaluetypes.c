@@ -388,12 +388,8 @@ value_collect_variant (GValue	  *value,
 {
   if (!collect_values[0].v_pointer)
     value->data[0].v_pointer = NULL;
-  else if (collect_flags & G_VALUE_NOCOPY_CONTENTS)
-    {
-      value->data[0].v_pointer = collect_values[0].v_pointer;
-      value->data[1].v_uint = G_VALUE_NOCOPY_CONTENTS;
-    }
   else
+    /* never honour G_VALUE_NOCOPY_CONTENTS for ref-counted types */
     value->data[0].v_pointer = g_variant_ref_sink (collect_values[0].v_pointer);
 
   return NULL;
