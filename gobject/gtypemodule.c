@@ -101,7 +101,7 @@ g_type_module_dispose (GObject *object)
   
   if (module->type_infos || module->interface_infos)
     {
-      g_critical (G_STRLOC ": unsolicitated invocation of g_object_run_dispose() on GTypeModule");
+      g_warning (G_STRLOC ": unsolicitated invocation of g_object_run_dispose() on GTypeModule");
 
       g_object_ref (object);
     }
@@ -259,9 +259,9 @@ g_type_module_use (GTypeModule *module)
 	  ModuleTypeInfo *type_info = tmp_list->data;
 	  if (!type_info->loaded)
 	    {
-	      g_critical ("plugin '%s' failed to register type '%s'",
-			  module->name ? module->name : "(unknown)",
-			  g_type_name (type_info->type));
+	      g_warning ("plugin '%s' failed to register type '%s'",
+			 module->name ? module->name : "(unknown)",
+			 g_type_name (type_info->type));
 	      module->use_count--;
 	      return FALSE;
 	    }
@@ -315,8 +315,9 @@ g_type_module_use_plugin (GTypePlugin *plugin)
 
   if (!g_type_module_use (module))
     {
-      g_error ("Fatal error - Could not reload previously loaded plugin '%s'",
-		module->name ? module->name : "(unknown)");
+      g_warning ("Fatal error - Could not reload previously loaded plugin '%s'",
+		 module->name ? module->name : "(unknown)");
+      exit (1);
     }
 }
 
@@ -405,7 +406,7 @@ g_type_module_register_type (GTypeModule     *module,
 
       if (old_plugin != G_TYPE_PLUGIN (module))
 	{
-	  g_critical ("Two different plugins tried to register '%s'.", type_name);
+	  g_warning ("Two different plugins tried to register '%s'.", type_name);
 	  return 0;
 	}
     }
@@ -418,10 +419,10 @@ g_type_module_register_type (GTypeModule     *module,
 	{
 	  const gchar *parent_type_name = g_type_name (parent_type);
 	  
-	  g_critical ("Type '%s' recreated with different parent type."
-		      "(was '%s', now '%s')", type_name,
-		      g_type_name (module_type_info->parent_type),
-		      parent_type_name ? parent_type_name : "(unknown)");
+	  g_warning ("Type '%s' recreated with different parent type."
+		     "(was '%s', now '%s')", type_name,
+		     g_type_name (module_type_info->parent_type),
+		     parent_type_name ? parent_type_name : "(unknown)");
 	  return 0;
 	}
 
@@ -487,14 +488,14 @@ g_type_module_add_interface (GTypeModule          *module,
 
       if (!old_plugin)
 	{
-	  g_critical ("Interface '%s' for '%s' was previously registered statically or for a parent type.",
-		      g_type_name (interface_type), g_type_name (instance_type));
+	  g_warning ("Interface '%s' for '%s' was previously registered statically or for a parent type.",
+		     g_type_name (interface_type), g_type_name (instance_type));
 	  return;
 	}
       else if (old_plugin != G_TYPE_PLUGIN (module))
 	{
-	  g_critical ("Two different plugins tried to register interface '%s' for '%s'.",
-		      g_type_name (interface_type), g_type_name (instance_type));
+	  g_warning ("Two different plugins tried to register interface '%s' for '%s'.",
+		     g_type_name (interface_type), g_type_name (instance_type));
 	  return;
 	}
       
