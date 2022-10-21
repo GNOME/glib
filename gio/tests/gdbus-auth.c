@@ -63,17 +63,10 @@ server_new_for_mechanism (const gchar *allowed_mechanism)
   guid = g_dbus_generate_guid ();
 
 #ifdef G_OS_UNIX
-  if (g_unix_socket_address_abstract_names_supported ())
-    {
-      addr = g_strdup ("unix:tmpdir=/tmp/gdbus-test-");
-    }
-  else
-    {
-      gchar *tmpdir;
-      tmpdir = g_dir_make_tmp ("gdbus-test-XXXXXX", NULL);
-      addr = g_strdup_printf ("unix:tmpdir=%s", tmpdir);
-      g_free (tmpdir);
-    }
+  gchar *tmpdir;
+  tmpdir = g_dir_make_tmp ("gdbus-test-XXXXXX", NULL);
+  addr = g_strdup_printf ("unix:tmpdir=%s", tmpdir);
+  g_free (tmpdir);
 #else
   addr = g_strdup ("nonce-tcp:");
 #endif

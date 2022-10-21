@@ -831,13 +831,8 @@ service_thread_func (gpointer user_data)
   flags = G_DBUS_SERVER_FLAGS_NONE;
 
 #ifdef G_OS_UNIX
-  if (g_unix_socket_address_abstract_names_supported ())
-    address = g_strdup ("unix:tmpdir=/tmp/test-dbus-peer");
-  else
-    {
-      tmpdir = g_dir_make_tmp ("test-dbus-peer-XXXXXX", NULL);
-      address = g_strdup_printf ("unix:tmpdir=%s", tmpdir);
-    }
+  tmpdir = g_dir_make_tmp ("test-dbus-peer-XXXXXX", NULL);
+  address = g_strdup_printf ("unix:tmpdir=%s", tmpdir);
 #else
   address = g_strdup ("nonce-tcp:");
   flags |= G_DBUS_SERVER_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS;
