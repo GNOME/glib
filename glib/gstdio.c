@@ -1749,8 +1749,9 @@ g_utime (const gchar    *filename,
  * @fd: A file descriptor
  * @error: a #GError
  *
- * This wraps the close() call; in case of error, %errno will be
+ * This wraps the close() call. In case of error, %errno will be
  * preserved, but the error will also be stored as a #GError in @error.
+ * In case of success, %errno is undefined.
  *
  * Besides using #GError, there is another major reason to prefer this
  * function over the call provided by the system; on Unix, it will
@@ -1766,24 +1767,38 @@ g_close (gint       fd,
          GError   **error)
 {
   int res;
-  res = close (fd);
-  /* Just ignore EINTR for now; a retry loop is the wrong thing to do
-   * on Linux at least.  Anyone who wants to add a conditional check
-   * for e.g. HP-UX is welcome to do so later...
-   *
-   * http://lkml.indiana.edu/hypermail/linux/kernel/0509.1/0877.html
-   * https://bugzilla.gnome.org/show_bug.cgi?id=682819
-   * http://utcc.utoronto.ca/~cks/space/blog/unix/CloseEINTR
-   * https://sites.google.com/site/michaelsafyan/software-engineering/checkforeintrwheninvokingclosethinkagain
+
+  /* Important: if @error is NULL, we must not do anything that is
+   * not async-signal-safe.
    */
-  if (G_UNLIKELY (res == -1 && errno == EINTR))
-    return TRUE;
-  else if (res == -1)
+  res = close (fd);
+
+  if (res == -1)
     {
       int errsv = errno;
-      g_set_error_literal (error, G_FILE_ERROR,
-                           g_file_error_from_errno (errsv),
-                           g_strerror (errsv));
+
+      if (errsv == EINTR)
+        {
+          /* Just ignore EINTR for now; a retry loop is the wrong thing to do
+           * on Linux at least.  Anyone who wants to add a conditional check
+           * for e.g. HP-UX is welcome to do so later...
+           *
+           * https://lwn.net/Articles/576478/
+           * http://lkml.indiana.edu/hypermail/linux/kernel/0509.1/0877.html
+           * https://bugzilla.gnome.org/show_bug.cgi?id=682819
+           * http://utcc.utoronto.ca/~cks/space/blog/unix/CloseEINTR
+           * https://sites.google.com/site/michaelsafyan/software-engineering/checkforeintrwheninvokingclosethinkagain
+           */
+          return TRUE;
+        }
+
+      if (error)
+        {
+          g_set_error_literal (error, G_FILE_ERROR,
+                               g_file_error_from_errno (errsv),
+                               g_strerror (errsv));
+        }
+
       errno = errsv;
       return FALSE;
     }
