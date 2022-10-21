@@ -1910,6 +1910,9 @@
  *
  * Each invocation of `G_VA_COPY (ap1, ap2)` must be matched with a
  * corresponding `va_end (ap1)` call in the same function.
+ *
+ * This is equivalent to standard C `va_copy()`, available since C99
+ * and C++11, which should be preferred in new code.
  */
 
 /**
