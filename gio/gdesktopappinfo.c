@@ -2963,6 +2963,7 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
 
           g_free (sn_id);
           g_list_free (launched_uris);
+          g_clear_pointer (&wrapped_argv, g_strfreev);
 
           goto out;
         }
