@@ -1130,6 +1130,58 @@ test_launch_as_manager (void)
   g_assert_finalize_object (context);
 }
 
+static void
+test_launch_as_manager_fail (void)
+{
+  GAppLaunchContext *context;
+  GDesktopAppInfo *appinfo;
+  GError *error = NULL;
+  gboolean retval;
+  const gchar *path;
+  gboolean launch_started = FALSE;
+  gboolean launched = FALSE;
+  gboolean failed = FALSE;
+
+  g_test_summary ("Tests that launch-errors are properly handled, we force " \
+                  "this by using invalid FD's values when launching as manager");
+
+  path = g_test_get_filename (G_TEST_BUILT, "appinfo-test.desktop", NULL);
+  appinfo = g_desktop_app_info_new_from_filename (path);
+
+  if (appinfo == NULL)
+    {
+      g_test_skip ("appinfo-test binary not installed");
+      return;
+    }
+
+  context = g_object_new (test_launch_context_get_type (), NULL);
+  g_signal_connect (context, "launch-started",
+                    G_CALLBACK (on_launch_started),
+                    &launch_started);
+  g_signal_connect (context, "launched",
+                    G_CALLBACK (on_launched),
+                    &launched);
+  g_signal_connect (context, "launch-failed",
+                    G_CALLBACK (on_launch_failed),
+                    &failed);
+
+  retval = g_desktop_app_info_launch_uris_as_manager_with_fds (appinfo,
+                                                               NULL, context, 0,
+                                                               NULL, NULL,
+                                                               NULL, NULL,
+                                                               3000, 3001, 3002,
+                                                               &error);
+  g_assert_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED);
+  g_assert_false (retval);
+  g_assert_true (launch_started);
+  g_assert_false (launched);
+  g_assert_true (failed);
+
+  g_clear_error (&error);
+  g_object_unref (appinfo);
+  g_assert_finalize_object (context);
+}
+
 static GAppInfo *
 create_app_info_toucher (const char  *name,
                          const char  *touched_file_name,
@@ -1554,6 +1606,7 @@ main (int   argc,
   g_test_add_func ("/desktop-app-info/implements", test_implements);
   g_test_add_func ("/desktop-app-info/show-in", test_show_in);
   g_test_add_func ("/desktop-app-info/launch-as-manager", test_launch_as_manager);
+  g_test_add_func ("/desktop-app-info/launch-as-manager/fail", test_launch_as_manager_fail);
   g_test_add_func ("/desktop-app-info/launch-default-uri-handler", test_default_uri_handler);
   g_test_add_func ("/desktop-app-info/launch-default-uri-handler-async", test_default_uri_handler_async);
   g_test_add_func ("/desktop-app-info/id", test_id);
