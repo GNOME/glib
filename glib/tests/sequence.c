@@ -122,7 +122,7 @@ check_integrity (SequenceInfo *info)
 {
   GList *list;
   GSequenceIter *iter;
-  int i;
+  unsigned int i;
 
   g_sequence_check (info->sequence);
 
@@ -149,6 +149,7 @@ check_integrity (SequenceInfo *info)
       i++;
     }
 
+  g_assert_cmpuint (i, ==, info->n_items);
   g_assert (info->n_items == g_queue_get_length (info->queue));
   g_assert ((guint) g_sequence_get_length (info->sequence) == info->n_items);
 }
