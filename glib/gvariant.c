@@ -5879,7 +5879,9 @@ g_variant_deep_copy (GVariant *value)
  * marked as trusted and a new reference to it is returned.
  *
  * If @value is found not to be in normal form then a new trusted
- * #GVariant is created with the same value as @value.
+ * #GVariant is created with the same value as @value. The non-normal parts of
+ * @value will be replaced with default values which are guaranteed to be in
+ * normal form.
  *
  * It makes sense to call this function if you've received #GVariant
  * data from untrusted sources and you want to ensure your serialised
