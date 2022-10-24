@@ -870,6 +870,23 @@ if meson.can_run_host_binaries()
   }
 endif
 
+test_extra_programs_targets = {}
+foreach program_name, extra_args : test_extra_programs
+  source = extra_args.get('source', program_name + '.c')
+  extra_sources = extra_args.get('extra_sources', [])
+  install = installed_tests_enabled and extra_args.get('install', true)
+  test_extra_programs_targets += {
+    program_name : executable(program_name,
+      sources: [source, extra_sources],
+      c_args : test_c_args,
+      dependencies : common_gio_tests_deps + extra_args.get('dependencies', []),
+      install_dir : installed_tests_execdir,
+      install_tag : 'tests',
+      install : install,
+    )
+  }
+endforeach
+
 foreach test_name, extra_args : gio_tests
   source = extra_args.get('source', test_name + '.c')
   extra_sources = extra_args.get('extra_sources', [])
@@ -911,6 +928,11 @@ foreach test_name, extra_args : gio_tests
   suite = ['gio'] + extra_args.get('suite', [])
   timeout = suite.contains('slow') ? test_timeout_slow : test_timeout
   local_test_env = test_env
+  depends = [extra_args.get('depends', [])]
+
+  foreach program : extra_args.get('extra_programs', [])
+    depends += test_extra_programs_targets[program]
+  endforeach
 
   foreach var, value : extra_args.get('env', {})
     local_test_env.append(var, value)
@@ -925,34 +947,27 @@ foreach test_name, extra_args : gio_tests
     timeout : timeout,
     suite : suite,
     is_parallel : extra_args.get('is_parallel', true),
-    depends : extra_args.get('depends', []),
+    depends : depends,
     should_fail : extra_args.get('should_fail', false),
   )
 endforeach
 
-foreach program_name, extra_args : test_extra_programs
-  source = extra_args.get('source', program_name + '.c')
-  extra_sources = extra_args.get('extra_sources', [])
-  install = installed_tests_enabled and extra_args.get('install', true)
-  executable(program_name, [source, extra_sources],
-      c_args : test_c_args,
-      dependencies : common_gio_tests_deps + extra_args.get('dependencies', []),
-      install_dir : installed_tests_execdir,
-      install_tag : 'tests',
-      install : install,
-  )
-endforeach
-
 foreach test_name, extra_args : python_tests
+  depends = [extra_args.get('depends', [])]
   suite = ['gio', 'no-valgrind']
 
   if extra_args.get('can_fail', false)
     suite += 'failing'
   endif
 
+  foreach program : extra_args.get('extra_programs', [])
+    depends += test_extra_programs_targets[program]
+  endforeach
+
   test(
     test_name,
     python,
+    depends: depends,
     args: ['-B', files(test_name)],
     env: test_env,
     suite: suite,
