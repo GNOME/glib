@@ -2496,7 +2496,9 @@ g_int64_equal (gconstpointer v1,
 guint
 g_int64_hash (gconstpointer v)
 {
-  return (guint) ((const guint) (*(guint64 *) v >> 32)) ^ (*(const guint *) v);
+  const guint64 *bits = v;
+
+  return (guint) ((*bits >> 32) ^ (*bits & 0xffffffffU));
 }
 
 /**
@@ -2537,5 +2539,8 @@ g_double_equal (gconstpointer v1,
 guint
 g_double_hash (gconstpointer v)
 {
-  return (guint) ((const guint) (*(guint64 *) v >> 32)) ^ (*(const guint *) v);
+  /* Same as g_int64_hash() */
+  const guint64 *bits = v;
+
+  return (guint) ((*bits >> 32) ^ (*bits & 0xffffffffU));
 }
