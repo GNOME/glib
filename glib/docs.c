@@ -515,12 +515,21 @@
 /**
  * gsize:
  *
- * An unsigned integer type of the result of the sizeof operator,
- * corresponding to the size_t type defined in C99.
- * This type is wide enough to hold the numeric value of a pointer,
- * so it is usually 32 bit wide on a 32-bit platform and 64 bit wide
+ * An unsigned integer type of the result of the `sizeof` operator,
+ * corresponding to the `size_t` type defined in C99.
+ *
+ * It is usually 32 bit wide on a 32-bit platform and 64 bit wide
  * on a 64-bit platform. Values of this type can range from 0 to
  * %G_MAXSIZE.
+ *
+ * This type is wide enough to hold the size of the largest possible
+ * memory allocation, but is not guaranteed to be wide enough to hold
+ * the numeric value of a pointer: on platforms that use tagged pointers,
+ * such as [CHERI](https://cheri-cpu.org/), pointers can be numerically
+ * larger than the size of the address space.
+ * If the numeric value of a pointer needs to be stored in an integer
+ * without information loss, use the standard C types `intptr_t` or
+ * `uintptr_t`, or the similar GLib types #gintptr or #guintptr.
  *
  * To print or scan values of this type, use
  * %G_GSIZE_MODIFIER and/or %G_GSIZE_FORMAT.
