@@ -687,6 +687,7 @@ run_apps (const gchar *command,
   argv[2] = g_strdup (arg);
   argv[3] = NULL;
 
+  g_assert_true (g_file_test (argv[0], G_FILE_TEST_IS_EXECUTABLE));
   envp = g_get_environ ();
 
   if (with_usr)
@@ -1084,12 +1085,7 @@ test_launch_as_manager (void)
 
   path = g_test_get_filename (G_TEST_BUILT, "appinfo-test.desktop", NULL);
   appinfo = g_desktop_app_info_new_from_filename (path);
-
-  if (appinfo == NULL)
-    {
-      g_test_skip ("appinfo-test binary not installed");
-      return;
-    }
+  g_assert_true (G_IS_APP_INFO (appinfo));
 
   context = g_object_new (test_launch_context_get_type (), NULL);
   g_signal_connect (context, "launch-started",
@@ -1147,12 +1143,7 @@ test_launch_as_manager_fail (void)
 
   path = g_test_get_filename (G_TEST_BUILT, "appinfo-test.desktop", NULL);
   appinfo = g_desktop_app_info_new_from_filename (path);
-
-  if (appinfo == NULL)
-    {
-      g_test_skip ("appinfo-test binary not installed");
-      return;
-    }
+  g_assert_true (G_IS_APP_INFO (appinfo));
 
   context = g_object_new (test_launch_context_get_type (), NULL);
   g_signal_connect (context, "launch-started",

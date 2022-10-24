@@ -256,10 +256,12 @@ if host_machine.system() != 'windows'
     gio_tests += {
       'appinfo' : {
         'install' : false,
+        'extra_programs' : ['appinfo-test'],
       },
       'desktop-app-info' : {
         'install' : false,
         'depends' : gio_launch_desktop,
+        'extra_programs' : ['apps', 'appinfo-test'],
       },
     }
   endif
