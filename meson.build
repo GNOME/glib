@@ -2307,11 +2307,21 @@ if want_dtrace
   dtrace_obj_gen = generator(dtrace,
     output : '@BASENAME@.o',
     arguments : ['-G', '-s', '@INPUT@', '-o', '@OUTPUT@'])
-  # FIXME: $(SED) -e "s,define STAP_HAS_SEMAPHORES 1,undef STAP_HAS_SEMAPHORES,"
-  #               -e "s,define _SDT_HAS_SEMAPHORES 1,undef _SDT_HAS_SEMAPHORES,"
-  dtrace_hdr_gen = generator(dtrace,
+  dtrace_hdr_gen = generator(python,
     output : '@BASENAME@.h',
-    arguments : ['-h', '-s', '@INPUT@', '-o', '@OUTPUT@'])
+    arguments : ['-c', '''
+import subprocess, sys
+subprocess.run(sys.argv[1:], check=True)
+output = sys.argv[6]
+with open(output) as f:
+  contents = f.read()
+contents = contents.replace("define STAP_HAS_SEMAPHORES 1",
+  "undef STAP_HAS_SEMAPHORES")
+contents = contents.replace("define _SDT_HAS_SEMAPHORES 1",
+  "undef _SDT_HAS_SEMAPHORES")
+with open(output, "w") as f:
+  f.write(contents)
+''', dtrace.full_path(), '-h', '-s', '@INPUT@', '-o', '@OUTPUT@'])
   glib_conf.set('HAVE_DTRACE', 1)
   enable_dtrace = true
 endif
