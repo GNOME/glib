@@ -362,6 +362,12 @@ endif
 
 gnulib_sources += other_needed_math_sources
 
+# g-gnulib.h includes glib.h that requires some headers to be generated
+gnulib_sources += [
+  'g-gnulib.h',
+  glib_built_headers,
+]
+
 gnulib_lib = static_library('gnulib', gnulib_sources,
   dependencies : [libm],
   include_directories : [configinc, glibinc, include_directories ('.')],

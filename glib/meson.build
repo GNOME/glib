@@ -1,18 +1,30 @@
+glib_sources = []
+
 glibconfig_h = configure_file(input : 'glibconfig.h.in', output : 'glibconfig.h',
   install_dir : join_paths(get_option('libdir'), 'glib-2.0/include'),
   install_tag : 'devel',
   configuration : glibconfig_conf)
+glib_sources += glibconfig_h
 
-gversionmacros_h = configure_file(
+gversionmacros_h = custom_target(
   input: 'gversionmacros.h.in',
   output: 'gversionmacros.h',
   command: [gen_visibility_macros, meson.project_version(), 'versions-macros', '@INPUT@', '@OUTPUT@'],
+  install: true,
+  install_dir: glib_includedir,
+  install_tag : 'devel',
 )
 
-gvisibility_h = configure_file(
+gvisibility_h = custom_target(
   output: 'glib-visibility.h',
   command: [gen_visibility_macros, meson.project_version(), 'visibility-macros', 'GLIB', '@OUTPUT@'],
+  install: true,
+  install_dir: glib_includedir / 'glib',
+  install_tag : 'devel',
 )
+
+glib_built_headers = [gversionmacros_h, gvisibility_h]
+glib_sources += glib_built_headers
 
 glib_c_args_internal = [
   '-DGLIB_COMPILATION',
@@ -231,8 +243,6 @@ glib_sub_headers = files(
   'gprintf.h',
 )
 
-glib_sub_headers += [gversionmacros_h, gvisibility_h]
-
 install_headers(glib_sub_headers, subdir : 'glib-2.0/glib')
 
 deprecated_sources = files(
@@ -243,7 +253,7 @@ deprecated_sources = files(
   'deprecated/gthread-deprecated.c'
 )
 
-glib_sources = files(
+glib_sources += files(
   'garcbox.c',
   'garray.c',
   'gasyncqueue.c',
@@ -397,7 +407,17 @@ libglib = library('glib-2.0',
   link_args : [noseh_link_args, glib_link_flags, win32_ldflags],
   include_directories : configinc,
   link_with: [charset_lib, gnulib_lib],
-  dependencies : [pcre2, thread_dep, librt] + libintl_deps + libiconv + platform_deps + [gnulib_libm_dependency, libm] + [libsysprof_capture_dep],
+  dependencies : [
+    gnulib_libm_dependency,
+    libiconv,
+    libintl_deps,
+    libm,
+    librt,
+    libsysprof_capture_dep,
+    pcre2,
+    platform_deps,
+    thread_dep,
+  ],
   c_args : glib_c_args,
   objc_args : glib_c_args,
   gnu_symbol_visibility : 'hidden',
@@ -406,6 +426,7 @@ libglib = library('glib-2.0',
 libglib_dep = declare_dependency(
   link_with : libglib,
   dependencies : libintl_deps,
+  sources : glib_built_headers,
   # We sadly need to export configinc here because everyone includes <glib/*.h>
   include_directories : [configinc, glibinc])
 
