@@ -544,6 +544,13 @@ zone_identifier_unix (void)
 
   if (resolved_identifier != NULL)
     {
+      if (!g_path_is_absolute (resolved_identifier))
+        {
+          gchar *absolute_resolved_identifier = g_build_filename ("/etc", resolved_identifier, NULL);
+          g_free (resolved_identifier);
+          resolved_identifier = g_steal_pointer (&absolute_resolved_identifier);
+        }
+
       if (g_lstat (resolved_identifier, &file_status) == 0)
         {
           if ((file_status.st_mode & S_IFMT) != S_IFREG)
