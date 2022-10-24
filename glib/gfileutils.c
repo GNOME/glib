@@ -2256,8 +2256,27 @@ g_build_filename (const gchar *first_element,
  * @error: return location for a #GError
  *
  * Reads the contents of the symbolic link @filename like the POSIX
- * readlink() function.  The returned string is in the encoding used
+ * readlink() function.
+ *
+ * The returned string is in the encoding used
  * for filenames. Use g_filename_to_utf8() to convert it to UTF-8.
+ *
+ * The returned string may also be a relative path. Use g_build_filename() to
+ * convert it to an absolute path:
+ * |[
+ * g_autoptr(GError) local_error = NULL;
+ * g_autofree gchar *link_target = g_file_read_link ("/etc/localtime", &local_error);
+ *
+ * if (local_error != NULL)
+ *   g_error ("Error reading link: %s", local_error->message);
+ *
+ * if (!g_path_is_absolute (link_target))
+ *   {
+ *     g_autofree gchar *absolute_link_target = g_build_filename ("/etc", link_target, NULL);
+ *     g_free (link_target);
+ *     link_target = g_steal_pointer (&absolute_link_target);
+ *   }
+ * ]|
  *
  * Returns: (type filename) (transfer full): A newly-allocated string with
  *     the contents of the symbolic link, or %NULL if an error occurred.
