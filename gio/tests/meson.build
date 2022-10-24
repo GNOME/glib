@@ -348,6 +348,7 @@ if host_machine.system() != 'windows'
     ]
 
     extra_sources = ['gdbus-sessionbus.c', 'gdbus-tests.c']
+    extra_programs = ['gdbus-testserver']
 
     gio_tests += {
       'actions' : {
@@ -357,31 +358,53 @@ if host_machine.system() != 'windows'
       'gdbus-auth' : {'extra_sources' : extra_sources},
       'gdbus-bz627724' : {'extra_sources' : extra_sources},
       'gdbus-close-pending' : {'extra_sources' : extra_sources},
-      'gdbus-connection' : {'extra_sources' : extra_sources},
-      'gdbus-connection-loss' : {'extra_sources' : extra_sources},
-      'gdbus-connection-slow' : {'extra_sources' : extra_sources},
+      'gdbus-connection' : {
+        'extra_sources' : extra_sources,
+        'extra_programs': extra_programs,
+      },
+      'gdbus-connection-loss' : {
+        'extra_sources' : extra_sources,
+        'extra_programs': extra_programs,
+      },
+      'gdbus-connection-slow' : {
+        'extra_sources' : extra_sources,
+        'extra_programs': extra_programs,
+      },
       'gdbus-error' : {'extra_sources' : extra_sources},
       'gdbus-exit-on-close' : {'extra_sources' : extra_sources},
       'gdbus-export' : {
         'extra_sources' : extra_sources,
         'suite' : ['slow'],
       },
-      'gdbus-introspection' : {'extra_sources' : extra_sources},
+      'gdbus-introspection' : {
+        'extra_sources' : extra_sources,
+        'extra_programs': extra_programs,
+      },
       'gdbus-method-invocation' : {'extra_sources' : extra_sources},
       'gdbus-names' : {'extra_sources' : extra_sources},
-      'gdbus-proxy' : {'extra_sources' : extra_sources},
+      'gdbus-proxy' : {
+        'extra_sources' : extra_sources,
+        'extra_programs': extra_programs,
+      },
       'gdbus-proxy-threads' : {
         'extra_sources' : extra_sources,
         'dependencies' : [dbus1_dep],
       },
-      'gdbus-proxy-unique-name' : {'extra_sources' : extra_sources},
-      'gdbus-proxy-well-known-name' : {'extra_sources' : extra_sources},
+      'gdbus-proxy-unique-name' : {
+        'extra_sources' : extra_sources,
+        'extra_programs': extra_programs,
+      },
+      'gdbus-proxy-well-known-name' : {
+        'extra_sources' : extra_sources,
+        'extra_programs': extra_programs,
+      },
       'gdbus-test-codegen' : {
         'extra_sources' : [extra_sources, gdbus_test_codegen_generated, gdbus_test_codegen_generated_interface_info],
         'c_args' : ['-DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_32'],
       },
       'gdbus-threading' : {
         'extra_sources' : extra_sources,
+        'extra_programs': extra_programs,
         'suite' : ['slow'],
       },
       'gmenumodel' : {
