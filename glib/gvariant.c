@@ -5806,14 +5806,13 @@ g_variant_deep_copy (GVariant *value)
     case G_VARIANT_CLASS_VARIANT:
       {
         GVariantBuilder builder;
-        GVariantIter iter;
-        GVariant *child;
+        gsize i, n_children;
 
         g_variant_builder_init (&builder, g_variant_get_type (value));
-        g_variant_iter_init (&iter, value);
 
-        while ((child = g_variant_iter_next_value (&iter)))
+        for (i = 0, n_children = g_variant_n_children (value); i < n_children; i++)
           {
+            GVariant *child = g_variant_get_child_value (value, i);
             g_variant_builder_add_value (&builder, g_variant_deep_copy (child));
             g_variant_unref (child);
           }
