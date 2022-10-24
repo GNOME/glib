@@ -2593,20 +2593,21 @@ static void
 test_set_str (void)
 {
   char *str = NULL;
+  const char *empty_str = "";
 
   g_assert_false (g_set_str (&str, NULL));
   g_assert_null (str);
 
-  g_assert_true (g_set_str (&str, ""));
-  g_assert_false (g_set_str (&str, ""));
+  g_assert_true (g_set_str (&str, empty_str));
+  g_assert_false (g_set_str (&str, empty_str));
   g_assert_nonnull (str);
-  g_assert_true ((gpointer)str != (gpointer)"");
-  g_assert_cmpstr (str, ==, "");
+  g_assert_true ((gpointer)str != (gpointer)empty_str);
+  g_assert_cmpstr (str, ==, empty_str);
 
   g_assert_true (g_set_str (&str, NULL));
   g_assert_null (str);
 
-  g_assert_true (g_set_str (&str, ""));
+  g_assert_true (g_set_str (&str, empty_str));
   g_assert_true (g_set_str (&str, "test"));
   g_assert_cmpstr (str, ==, "test");
 
