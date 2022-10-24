@@ -899,6 +899,8 @@ endif
 
 dlopen_dlsym_test_code = '''
 #include <dlfcn.h>
+#include <stdio.h>
+int r;
 int glib_underscore_test (void) { return 42; }
 int main (int argc, char ** argv) {
   void *f1 = (void*)0, *f2 = (void*)0, *handle;
@@ -907,7 +909,8 @@ int main (int argc, char ** argv) {
     f1 = dlsym (handle, "glib_underscore_test");
     f2 = dlsym (handle, "_glib_underscore_test");
   }
-  return (!f2 || f1);
+  r = (!f2 || f1) ? puts ("1") : puts ("0");
+  return r > 0 ? 0 : r;
 }'''
 libdl_dep = []
 if cc.links(dlopen_dlsym_test_code, name : 'dlopen() and dlsym() in system libraries')
