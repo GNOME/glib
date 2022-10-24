@@ -69,6 +69,7 @@ gio_tests = {
   'giomodule' : {},
   'gsubprocess' : {
     'suite': host_system == 'windows' ? ['flaky'] : [],
+    'extra_programs': ['gsubprocess-testprog'],
   },
   'g-file' : {},
   'g-file-info' : {
