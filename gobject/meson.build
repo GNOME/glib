@@ -1,3 +1,5 @@
+gobject_includedir = glib_includedir / 'gobject'
+
 gobject_install_headers = files(
   'gobject-autocleanups.h',
   'glib-types.h',
@@ -29,12 +31,12 @@ gvisibility_h = custom_target(
   output: 'gobject-visibility.h',
   command: [gen_visibility_macros, meson.project_version(), 'visibility-macros', 'GOBJECT', '@OUTPUT@'],
   install: true,
-  install_dir: glib_includedir / 'gobject',
+  install_dir: gobject_includedir,
   install_tag : 'devel',
 )
 gobject_sources += gvisibility_h
 
-install_headers(gobject_install_headers, subdir : 'glib-2.0/gobject')
+install_headers(gobject_install_headers, install_dir : gobject_includedir)
 
 gobject_sources += files(
   'gatomicarray.c',
