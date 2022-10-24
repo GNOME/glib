@@ -1231,6 +1231,7 @@ random_instance_assert (RandomInstance *instance,
   GRand *rand;
   gsize i;
 
+  g_assert_true (size == 0 || buffer != NULL);
   g_assert_cmpint ((gsize) buffer & ALIGN_BITS & instance->alignment, ==, 0);
   g_assert_cmpint (size, ==, instance->size);
 
@@ -1457,10 +1458,13 @@ test_maybe (void)
         g_variant_serialiser_serialise (serialised,
                                         random_instance_filler,
                                         (gpointer *) &instance, 1);
+
         child = g_variant_serialised_get_child (serialised, 0);
         g_assert_true (child.type_info == instance->type_info);
-        random_instance_assert (instance, child.data, child.size);
+        if (child.data != NULL)  /* could be NULL if element is non-normal */
+          random_instance_assert (instance, child.data, child.size);
         g_variant_type_info_unref (child.type_info);
+
         flavoured_free (serialised.data, flavour);
       }
   }
@@ -1593,7 +1597,8 @@ test_array (void)
 
             child = g_variant_serialised_get_child (serialised, i);
             g_assert_true (child.type_info == instances[i]->type_info);
-            random_instance_assert (instances[i], child.data, child.size);
+            if (child.data != NULL)  /* could be NULL if element is non-normal */
+              random_instance_assert (instances[i], child.data, child.size);
             g_variant_type_info_unref (child.type_info);
           }
 
@@ -1759,7 +1764,8 @@ test_tuple (void)
 
             child = g_variant_serialised_get_child (serialised, i);
             g_assert_true (child.type_info == instances[i]->type_info);
-            random_instance_assert (instances[i], child.data, child.size);
+            if (child.data != NULL)  /* could be NULL if element is non-normal */
+              random_instance_assert (instances[i], child.data, child.size);
             g_variant_type_info_unref (child.type_info);
           }
 
