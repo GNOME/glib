@@ -402,7 +402,10 @@ if host_machine.system() != 'windows'
         'extra_sources' : [extra_sources, gdbus_test_codegen_generated_min_required_2_64, gdbus_test_codegen_generated_interface_info],
         'c_args' : ['-DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_64'],
       },
-      'gapplication' : {'extra_sources' : extra_sources},
+      'gapplication' : {
+        'extra_sources' : extra_sources,
+        'extra_programs': ['basic-application'],
+      },
     }
 
     if not glib_have_cocoa
