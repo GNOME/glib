@@ -259,6 +259,7 @@ if host_machine.system() != 'windows'
       },
       'desktop-app-info' : {
         'install' : false,
+        'depends' : gio_launch_desktop,
       },
     }
   endif
