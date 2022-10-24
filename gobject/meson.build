@@ -1,3 +1,5 @@
+gobject_includedir = glib_includedir / 'gobject'
+
 gobject_install_headers = files(
   'gobject-autocleanups.h',
   'glib-types.h',
@@ -30,7 +32,7 @@ gvisibility_h = configure_file(
 
 gobject_install_headers += gvisibility_h
 
-install_headers(gobject_install_headers, subdir : 'glib-2.0/gobject')
+install_headers(gobject_install_headers, install_dir : gobject_includedir)
 
 gobject_sources = files(
   'gatomicarray.c',

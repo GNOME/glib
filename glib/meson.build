@@ -1,3 +1,5 @@
+glib_sub_includedir = glib_includedir / 'glib'
+
 glibconfig_h = configure_file(input : 'glibconfig.h.in', output : 'glibconfig.h',
   install_dir : join_paths(get_option('libdir'), 'glib-2.0/include'),
   install_tag : 'devel',
@@ -134,7 +136,7 @@ glib_headers = files(
   'glib-unix.h',
   'glib-object.h',
 )
-install_headers(glib_headers, subdir : 'glib-2.0')
+install_headers(glib_headers, install_dir : glib_includedir)
 
 # Expose as variable to be used by gobject-introspection
 # when it includes GLib as a subproject
@@ -148,7 +150,8 @@ glib_deprecated_headers = files(
   'deprecated/grel.h',
   'deprecated/gthread.h',
 )
-install_headers(glib_deprecated_headers, subdir : 'glib-2.0/glib/deprecated')
+install_headers(glib_deprecated_headers,
+  install_dir : glib_sub_includedir / 'deprecated')
 
 glib_sub_headers = files(
   'glib-autocleanups.h',
@@ -233,7 +236,7 @@ glib_sub_headers = files(
 
 glib_sub_headers += [gversionmacros_h, gvisibility_h]
 
-install_headers(glib_sub_headers, subdir : 'glib-2.0/glib')
+install_headers(glib_sub_headers, install_dir : glib_sub_includedir)
 
 deprecated_sources = files(
   'deprecated/gallocator.c',
