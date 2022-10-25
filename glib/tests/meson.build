@@ -268,6 +268,23 @@ if installed_tests_enabled
   )
 endif
 
+test_extra_programs = {
+  'assert-msg-test' : {},
+  'spawn-path-search-helper' : {},
+  'spawn-test-helper' : {},
+  'testing-helper' : {},
+  # test-spawn-echo helper binary required by the spawn tests above
+  'test-spawn-echo' : {},
+}
+
+if host_machine.system() == 'windows'
+  # test-spawn-sleep helper binary required by the spawn tests above
+  test_extra_programs += {
+    'test-spawn-sleep' : {},
+    'spawn-test-win32-gui' : { 'win_subsystem': 'windows' },
+  }
+endif
+
 test_env = environment()
 test_env.set('G_TEST_SRCDIR', meson.current_source_dir())
 test_env.set('G_TEST_BUILDDIR', meson.current_build_dir())
@@ -275,6 +292,27 @@ test_env.set('G_TEST_BUILDDIR', meson.current_build_dir())
 test_deps = [libm, thread_dep, libglib_dep]
 test_cargs = ['-DG_LOG_DOMAIN="GLib"', '-UG_DISABLE_ASSERT']
 test_cpp_args = test_cargs
+
+test_extra_programs_targets = {}
+foreach program_name, extra_args : test_extra_programs
+  source = extra_args.get('source', program_name + '.c')
+  extra_sources = extra_args.get('extra_sources', [])
+  install = installed_tests_enabled and extra_args.get('install', true)
+  test_extra_programs_targets += {
+    program_name : executable(program_name,
+      sources: [source, extra_sources],
+      c_args : test_cargs,
+      cpp_args: test_cpp_args,
+      dependencies : test_deps + extra_args.get('dependencies', []),
+      install_dir : installed_tests_execdir,
+      install_tag : 'tests',
+      install : install,
+      win_subsystem : extra_args.get('win_subsystem', 'console'),
+    )
+  }
+endforeach
+
+subdir('path-test-subdir')
 
 foreach test_name, extra_args : glib_tests
   source = extra_args.get('source', test_name + '.c')
@@ -304,6 +342,7 @@ foreach test_name, extra_args : glib_tests
     install: install,
   )
 
+  depends = [extra_args.get('depends', [])]
   suite = ['glib'] + extra_args.get('suite', [])
   timeout = suite.contains('slow') ? test_timeout_slow : test_timeout
 
@@ -311,7 +350,12 @@ foreach test_name, extra_args : glib_tests
     suite += 'failing'
   endif
 
+  foreach program : extra_args.get('extra_programs', [])
+    depends += test_extra_programs_targets[program]
+  endforeach
+
   test(test_name, exe,
+    depends : depends,
     env : test_env,
     timeout : timeout,
     suite : suite,
@@ -333,25 +377,22 @@ python_tests = {
   },
 }
 
-executable('assert-msg-test', ['assert-msg-test.c'],
-  c_args : test_cargs,
-  dependencies :  test_deps,
-  install_dir : installed_tests_execdir,
-  install_tag : 'tests',
-  install : installed_tests_enabled,
-  win_subsystem : extra_args.get('win_subsystem', 'console'),
-)
-
 foreach test_name, extra_args : python_tests
+  depends = [extra_args.get('depends', [])]
   suite = ['glib', 'no-valgrind']
 
   if extra_args.get('can_fail', false)
     suite += 'failing'
   endif
 
+  foreach program : extra_args.get('extra_programs', [])
+    depends += test_extra_programs_targets[program]
+  endforeach
+
   test(
     test_name,
     python,
+    depends: depends,
     args: ['-B', files(test_name)],
     env: test_env,
     suite: suite,
@@ -379,58 +420,6 @@ foreach test_name, extra_args : python_tests
   endif
 endforeach
 
-executable('spawn-path-search-helper', 'spawn-path-search-helper.c',
-  c_args : test_cargs,
-  dependencies : test_deps,
-  install_dir: installed_tests_execdir,
-  install_tag: 'tests',
-  install: installed_tests_enabled,
-)
-
-executable('spawn-test-helper', 'spawn-test-helper.c',
-  c_args : test_cargs,
-  dependencies : test_deps,
-  install_dir: installed_tests_execdir,
-  install_tag: 'tests',
-  install: installed_tests_enabled,
-)
-
-# test-spawn-echo helper binary required by the spawn tests above
-executable('test-spawn-echo', 'test-spawn-echo.c',
-  c_args : test_cargs,
-  dependencies : test_deps,
-  install_dir: installed_tests_execdir,
-  install_tag: 'tests',
-  install: installed_tests_enabled,
-)
-
-if host_machine.system() == 'windows'
-  # test-spawn-sleep helper binary required by the spawn tests above
-  executable('test-spawn-sleep', 'test-spawn-sleep.c',
-    c_args : test_cargs,
-    dependencies : test_deps,
-    install_dir: installed_tests_execdir,
-    install_tag: 'tests',
-    install: installed_tests_enabled,
-  )
-  executable('spawn-test-win32-gui', 'spawn-test-win32-gui.c',
-    c_args : test_cargs,
-    dependencies : test_deps,
-    install_dir: installed_tests_execdir,
-    install_tag: 'tests',
-    install: installed_tests_enabled,
-    win_subsystem: 'windows',
-  )
-endif
-
-executable('testing-helper', 'testing-helper.c',
-  c_args : test_cargs,
-  dependencies : test_deps,
-  install_dir: installed_tests_execdir,
-  install_tag: 'tests',
-  install: installed_tests_enabled,
-)
-
 # some testing of gtester functionality
 if meson.can_run_host_binaries() and host_system != 'windows'
   xmllint = find_program('xmllint', required: false)
@@ -448,4 +437,3 @@ if meson.can_run_host_binaries() and host_system != 'windows'
   endif
 endif
 
-subdir('path-test-subdir')
