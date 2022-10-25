@@ -1440,7 +1440,7 @@ test_maybe (void)
 
     for (flavour = 0; flavour < 8; flavour += alignment)
       {
-        GVariantSerialised serialised;
+        GVariantSerialised serialised = { 0, };
         GVariantSerialised child;
 
         serialised.type_info = type_info;
@@ -1564,7 +1564,7 @@ test_array (void)
 
     for (flavour = 0; flavour < 8; flavour += alignment)
       {
-        GVariantSerialised serialised;
+        GVariantSerialised serialised = { 0, };
 
         serialised.type_info = array_info;
         serialised.data = flavoured_malloc (needed_size, flavour);
@@ -1728,7 +1728,7 @@ test_tuple (void)
 
     for (flavour = 0; flavour < 8; flavour += alignment)
       {
-        GVariantSerialised serialised;
+        GVariantSerialised serialised = { 0, };
 
         serialised.type_info = type_info;
         serialised.data = flavoured_malloc (needed_size, flavour);
@@ -1823,7 +1823,7 @@ test_variant (void)
 
     for (flavour = 0; flavour < 8; flavour += alignment)
       {
-        GVariantSerialised serialised;
+        GVariantSerialised serialised = { 0, };
         GVariantSerialised child;
 
         serialised.type_info = type_info;
@@ -2270,7 +2270,7 @@ serialise_tree (TreeInstance       *tree,
 static void
 test_byteswap (void)
 {
-  GVariantSerialised one, two;
+  GVariantSerialised one = { 0, }, two = { 0, };
   TreeInstance *tree;
 
   tree = tree_instance_new (NULL, 3);
@@ -2344,7 +2344,7 @@ test_serialiser_children (void)
 static void
 test_fuzz (gdouble *fuzziness)
 {
-  GVariantSerialised serialised;
+  GVariantSerialised serialised = { 0, };
   TreeInstance *tree;
 
   /* make an instance */

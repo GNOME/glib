@@ -6002,7 +6002,7 @@ g_variant_byteswap (GVariant *value)
   if (alignment)
     /* (potentially) contains multi-byte numeric data */
     {
-      GVariantSerialised serialised;
+      GVariantSerialised serialised = { 0, };
       GVariant *trusted;
       GBytes *bytes;
 
