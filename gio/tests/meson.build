@@ -699,6 +699,7 @@ endif
 
 if meson.can_run_host_binaries()
 
+  resource_plugin = []
   compiler_type = '--compiler=@0@'.format(cc.get_id())
 
   if glib_build_shared
@@ -714,7 +715,8 @@ if meson.can_run_host_binaries()
                  '--c-name', '_g_plugin',
                  '@INPUT@'])
 
-    shared_module('resourceplugin', 'resourceplugin.c', plugin_resources_c,
+    resource_plugin += shared_module('resourceplugin',
+      sources: ['resourceplugin.c', plugin_resources_c],
       link_args : export_dynamic_ldflags,
       dependencies : common_gio_tests_deps,
       install_dir : installed_tests_execdir,
@@ -907,6 +909,7 @@ if meson.can_run_host_binaries()
   gio_tests += {
     'resources' : {
       'extra_sources' : resources_extra_sources,
+      'depends' : resource_plugin,
     },
   }
 endif
