@@ -42,6 +42,10 @@ giotypefuncs_inc = custom_target(
   input : gio_headers + [gioenumtypes_h] + gobject_install_headers,
   command: [gengiotypefuncs_prog, '@OUTPUT@', '@INPUT@'])
 
+if glib_build_shared
+  subdir('modules')
+endif
+
 #  Test programs buildable on all platforms
 gio_tests = {
   'appmonitor' : {
@@ -66,7 +70,9 @@ gio_tests = {
   'file-thumbnail' : {},
   'fileattributematcher' : {},
   'filter-streams' : {},
-  'giomodule' : {},
+  'giomodule' : {
+    'depends' : glib_build_shared ? [libtestmodulea, libtestmoduleb] : [],
+  },
   'gsubprocess' : {
     'suite': host_system == 'windows' ? ['flaky'] : [],
     'extra_programs': ['gsubprocess-testprog'],
@@ -1037,7 +1043,3 @@ if installed_tests_enabled
 endif
 
 subdir('services')
-
-if glib_build_shared
-  subdir('modules')
-endif
