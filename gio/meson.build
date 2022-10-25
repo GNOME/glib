@@ -9,6 +9,8 @@ gio_c_args_internal = [
   '-DGIO_COMPILATION',
 ]
 
+gio_includedir = glib_includedir / 'gio'
+
 # FIXME: Install empty glib_giomodulesdir
 
 gnetworking_h_conf = configuration_data()
@@ -169,7 +171,7 @@ gnetworking_h_conf.set('NAMESER_COMPAT_INCLUDE', gnetworking_h_nameser_compat_in
 
 gnetworking_h = configure_file(input : 'gnetworking.h.in',
                                output : 'gnetworking.h',
-                               install_dir : join_paths(get_option('includedir'), 'glib-2.0/gio'),
+                               install_dir : gio_includedir,
                                configuration : gnetworking_h_conf)
 
 gdbus_headers = files(
@@ -747,15 +749,14 @@ gvisibility_h = custom_target(
   output: 'gio-visibility.h',
   command: [gen_visibility_macros, meson.project_version(), 'visibility-macros', 'GIO', '@OUTPUT@'],
   install: true,
-  install_dir: glib_includedir / 'gio',
-  install_tag : 'devel',
+  install_dir: gio_includedir,
 )
 gio_sources += gvisibility_h
 
 gio_headers += application_headers
 gio_headers += settings_headers
 gio_headers += gdbus_headers
-install_headers(gio_headers, subdir : 'glib-2.0/gio/')
+install_headers(gio_headers, install_dir : gio_includedir)
 
 # We can't use gnome.mkenums() because the GNOME module looks for glib-mkenums
 # in PATH, which means you can't bootstrap glib with its own glib-mkenums.
@@ -764,7 +765,7 @@ gioenumtypes_h = custom_target('gioenumtypes_h',
   capture : true,
   input : gio_headers,
   install : true,
-  install_dir : join_paths(get_option('includedir'), 'glib-2.0/gio'),
+  install_dir : gio_includedir,
   command : [python, glib_mkenums,
              '--template', files('gioenumtypes.h.template'),
              '@INPUT@', gnetworking_h])
