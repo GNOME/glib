@@ -1205,6 +1205,74 @@ g_variant_get_child_value (GVariant *value,
 }
 
 /**
+ * g_variant_maybe_get_child_value:
+ * @value: a container #GVariant
+ * @index_: the index of the child to fetch
+ *
+ * Reads a child item out of a container #GVariant instance, if it is in normal
+ * form. If it is not in normal form, return %NULL.
+ *
+ * This function behaves the same as g_variant_get_child_value(), except that it
+ * returns %NULL if the child is not in normal form. g_variant_get_child_value()
+ * would instead return a new default value of the correct type.
+ *
+ * This is intended to be used internally to avoid unnecessary #GVariant
+ * allocations.
+ *
+ * The returned value is never floating.  You should free it with
+ * g_variant_unref() when you're done with it.
+ *
+ * This function is O(1).
+ *
+ * Returns: (transfer full): the child at the specified index
+ *
+ * Since: 2.74
+ */
+GVariant *
+g_variant_maybe_get_child_value (GVariant *value,
+                                 gsize     index_)
+{
+  g_return_val_if_fail (index_ < g_variant_n_children (value), NULL);
+  g_return_val_if_fail (value->depth < G_MAXSIZE, NULL);
+
+  if (~g_atomic_int_get (&value->state) & STATE_SERIALISED)
+    {
+      g_variant_lock (value);
+
+      if (~value->state & STATE_SERIALISED)
+        {
+          GVariant *child;
+
+          child = g_variant_ref (value->contents.tree.children[index_]);
+          g_variant_unlock (value);
+
+          return child;
+        }
+
+      g_variant_unlock (value);
+    }
+
+  {
+    GVariantSerialised serialised = g_variant_to_serialised (value);
+    GVariantSerialised s_child;
+
+    /* get the serializer to extract the serialized data for the child
+     * from the serialized data for the container
+     */
+    s_child = g_variant_serialised_get_child (serialised, index_);
+
+    if (!(value->state & STATE_TRUSTED) && s_child.data == NULL)
+      {
+        g_variant_type_info_unref (s_child.type_info);
+        return NULL;
+      }
+
+    g_variant_type_info_unref (s_child.type_info);
+    return g_variant_get_child_value (value, index_);
+  }
+}
+
+/**
  * g_variant_store:
  * @value: the #GVariant to store
  * @data: (not nullable): the location to store the serialised data at
