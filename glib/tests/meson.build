@@ -118,18 +118,30 @@ glib_tests = {
   'spawn-multithreaded' : {
     'can_fail': glib_build_static and host_system == 'windows',
     'suite': host_system == 'windows' ? ['flaky'] : [],
+    'extra_programs' : ['test-spawn-echo'] + (
+      host_machine.system() == 'windows' ? ['test-spawn-sleep'] : []),
   },
-  'spawn-path-search' : {},
+  'spawn-path-search' : {
+    'extra_programs' : [
+      'spawn-path-search-helper',
+      'spawn-test-helper',
+      'spawn-test-helper-subdir',
+    ],
+  },
   'spawn-singlethread' : {
     'dependencies' : [winsock2],
+    'extra_programs' : ['test-spawn-echo'],
   },
   'spawn-test' : {
     'can_fail': host_system == 'windows' and cc.get_id() == 'gcc',
+    'extra_programs' : host_machine.system() == 'windows' ? ['spawn-test-win32-gui'] : [],
   },
   'strfuncs' : {},
   'string' : {},
   'strvbuilder' : {},
-  'testing' : {},
+  'testing' : {
+    'extra_programs' : ['testing-helper'],
+  },
   'test-printf' : {},
   'thread' : {},
   'thread-deprecated' : {},
@@ -374,6 +386,7 @@ endif
 python_tests = {
   'assert-msg-test.py' : {
     'can_fail' : host_system == 'windows',
+    'extra_programs': ['assert-msg-test'],
   },
 }
 
