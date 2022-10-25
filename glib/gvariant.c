@@ -5954,6 +5954,7 @@ g_variant_byteswap (GVariant *value)
       serialised.data = g_malloc (serialised.size);
       serialised.depth = g_variant_get_depth (trusted);
       serialised.ordered_offsets_up_to = G_MAXSIZE;  /* operating on the normal form */
+      serialised.checked_offsets_up_to = G_MAXSIZE;
       g_variant_store (trusted, serialised.data);
       g_variant_unref (trusted);
 

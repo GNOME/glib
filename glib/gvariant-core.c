@@ -69,6 +69,7 @@ struct _GVariant
       GBytes *bytes;
       gconstpointer data;
       gsize ordered_offsets_up_to;
+      gsize checked_offsets_up_to;
     } serialised;
 
     struct
@@ -180,6 +181,24 @@ struct _GVariant
  *                             offsets may be out of bounds for this value or
  *                             may imply that the data overlaps the frame
  *                             offsets themselves.
+ *
+ *                             This field is only relevant for arrays of non
+ *                             fixed width types and for tuples.
+ *
+ *     .checked_offsets_up_to: Similarly to .ordered_offsets_up_to, this stores
+ *                             the index of the highest element, n, whose frame
+ *                             offsets (and all the preceding frame offsets)
+ *                             have been checked for validity.
+ *
+ *                             It is always the case that
+ *                             .checked_offsets_up_to ≥ .ordered_offsets_up_to.
+ *
+ *                             If .checked_offsets_up_to == .ordered_offsets_up_to,
+ *                             then a bad offset has not been found so far.
+ *
+ *                             If .checked_offsets_up_to > .ordered_offsets_up_to,
+ *                             then a bad offset has been found at
+ *                             (.ordered_offsets_up_to + 1).
  *
  *                             This field is only relevant for arrays of non
  *                             fixed width types and for tuples.
@@ -388,6 +407,7 @@ g_variant_to_serialised (GVariant *value)
       value->size,
       value->depth,
       value->contents.serialised.ordered_offsets_up_to,
+      value->contents.serialised.checked_offsets_up_to,
     };
     return serialised;
   }
@@ -420,6 +440,7 @@ g_variant_serialise (GVariant *value,
   serialised.data = data;
   serialised.depth = value->depth;
   serialised.ordered_offsets_up_to = 0;
+  serialised.checked_offsets_up_to = 0;
 
   children = (gpointer *) value->contents.tree.children;
   n_children = value->contents.tree.n_children;
@@ -466,10 +487,12 @@ g_variant_fill_gvs (GVariantSerialised *serialised,
   if (value->state & STATE_SERIALISED)
     {
       serialised->ordered_offsets_up_to = value->contents.serialised.ordered_offsets_up_to;
+      serialised->checked_offsets_up_to = value->contents.serialised.checked_offsets_up_to;
     }
   else
     {
       serialised->ordered_offsets_up_to = 0;
+      serialised->checked_offsets_up_to = 0;
     }
 
   if (serialised->data)
@@ -515,6 +538,7 @@ g_variant_ensure_serialised (GVariant *value)
       value->contents.serialised.data = g_bytes_get_data (bytes, NULL);
       value->contents.serialised.bytes = bytes;
       value->contents.serialised.ordered_offsets_up_to = G_MAXSIZE;
+      value->contents.serialised.checked_offsets_up_to = G_MAXSIZE;
       value->state |= STATE_SERIALISED;
     }
 }
@@ -596,6 +620,7 @@ g_variant_new_from_bytes (const GVariantType *type,
   serialised.data = (guchar *) g_bytes_get_data (bytes, &serialised.size);
   serialised.depth = 0;
   serialised.ordered_offsets_up_to = trusted ? G_MAXSIZE : 0;
+  serialised.checked_offsets_up_to = trusted ? G_MAXSIZE : 0;
 
   if (!g_variant_serialised_check (serialised))
     {
@@ -647,6 +672,7 @@ g_variant_new_from_bytes (const GVariantType *type,
     }
 
   value->contents.serialised.ordered_offsets_up_to = trusted ? G_MAXSIZE : 0;
+  value->contents.serialised.checked_offsets_up_to = trusted ? G_MAXSIZE : 0;
 
   g_clear_pointer (&owned_bytes, g_bytes_unref);
 
@@ -1144,6 +1170,7 @@ g_variant_get_child_value (GVariant *value,
 
     /* Update the cached ordered_offsets_up_to, since @serialised will be thrown away when this function exits */
     value->contents.serialised.ordered_offsets_up_to = MAX (value->contents.serialised.ordered_offsets_up_to, serialised.ordered_offsets_up_to);
+    value->contents.serialised.checked_offsets_up_to = MAX (value->contents.serialised.checked_offsets_up_to, serialised.checked_offsets_up_to);
 
     /* Check whether this would cause nesting too deep. If so, return a fake
      * child. The only situation we expect this to happen in is with a variant,
@@ -1171,6 +1198,7 @@ g_variant_get_child_value (GVariant *value,
       g_bytes_ref (value->contents.serialised.bytes);
     child->contents.serialised.data = s_child.data;
     child->contents.serialised.ordered_offsets_up_to = s_child.ordered_offsets_up_to;
+    child->contents.serialised.checked_offsets_up_to = s_child.checked_offsets_up_to;
 
     return child;
   }

@@ -120,6 +120,8 @@
  *
  * @depth has no restrictions; the depth of a top-level serialised #GVariant is
  * zero, and it increases for each level of nested child.
+ *
+ * @checked_offsets_up_to is always ≥ @ordered_offsets_up_to
  */
 
 /* < private >
@@ -145,6 +147,9 @@ g_variant_serialised_check (GVariantSerialised serialised)
     return FALSE;
   else if (fixed_size == 0 &&
            !(serialised.size == 0 || serialised.data != NULL))
+    return FALSE;
+
+  if (serialised.ordered_offsets_up_to > serialised.checked_offsets_up_to)
     return FALSE;
 
   /* Depending on the native alignment requirements of the machine, the
@@ -266,6 +271,7 @@ gvs_fixed_sized_maybe_get_child (GVariantSerialised value,
   g_variant_type_info_ref (value.type_info);
   value.depth++;
   value.ordered_offsets_up_to = 0;
+  value.checked_offsets_up_to = 0;
 
   return value;
 }
@@ -297,7 +303,7 @@ gvs_fixed_sized_maybe_serialise (GVariantSerialised        value,
 {
   if (n_children)
     {
-      GVariantSerialised child = { NULL, value.data, value.size, value.depth + 1, 0 };
+      GVariantSerialised child = { NULL, value.data, value.size, value.depth + 1, 0, 0 };
 
       gvs_filler (&child, children[0]);
     }
@@ -320,6 +326,7 @@ gvs_fixed_sized_maybe_is_normal (GVariantSerialised value)
       value.type_info = g_variant_type_info_element (value.type_info);
       value.depth++;
       value.ordered_offsets_up_to = 0;
+      value.checked_offsets_up_to = 0;
 
       return g_variant_serialised_is_normal (value);
     }
@@ -362,6 +369,7 @@ gvs_variable_sized_maybe_get_child (GVariantSerialised value,
 
   value.depth++;
   value.ordered_offsets_up_to = 0;
+  value.checked_offsets_up_to = 0;
 
   return value;
 }
@@ -392,7 +400,7 @@ gvs_variable_sized_maybe_serialise (GVariantSerialised        value,
 {
   if (n_children)
     {
-      GVariantSerialised child = { NULL, value.data, value.size - 1, value.depth + 1, 0 };
+      GVariantSerialised child = { NULL, value.data, value.size - 1, value.depth + 1, 0, 0 };
 
       /* write the data for the child.  */
       gvs_filler (&child, children[0]);
@@ -413,6 +421,7 @@ gvs_variable_sized_maybe_is_normal (GVariantSerialised value)
   value.size--;
   value.depth++;
   value.ordered_offsets_up_to = 0;
+  value.checked_offsets_up_to = 0;
 
   return g_variant_serialised_is_normal (value);
 }
@@ -739,39 +748,46 @@ gvs_variable_sized_array_get_child (GVariantSerialised value,
 
   /* If the requested @index_ is beyond the set of indices whose framing offsets
    * have been checked, check the remaining offsets to see whether they’re
-   * normal (in order, no overlapping array elements). */
-  if (index_ > value.ordered_offsets_up_to)
+   * normal (in order, no overlapping array elements).
+   *
+   * Don’t bother checking if the highest known-good offset is lower than the
+   * highest checked offset, as that means there’s an invalid element at that
+   * index, so there’s no need to check further. */
+  if (index_ > value.checked_offsets_up_to &&
+      value.ordered_offsets_up_to == value.checked_offsets_up_to)
     {
       switch (offsets.offset_size)
         {
         case 1:
           {
             value.ordered_offsets_up_to = find_unordered_guint8 (
-                offsets.array, value.ordered_offsets_up_to, index_ + 1);
+                offsets.array, value.checked_offsets_up_to, index_ + 1);
             break;
           }
         case 2:
           {
             value.ordered_offsets_up_to = find_unordered_guint16 (
-                offsets.array, value.ordered_offsets_up_to, index_ + 1);
+                offsets.array, value.checked_offsets_up_to, index_ + 1);
             break;
           }
         case 4:
           {
             value.ordered_offsets_up_to = find_unordered_guint32 (
-                offsets.array, value.ordered_offsets_up_to, index_ + 1);
+                offsets.array, value.checked_offsets_up_to, index_ + 1);
             break;
           }
         case 8:
           {
             value.ordered_offsets_up_to = find_unordered_guint64 (
-                offsets.array, value.ordered_offsets_up_to, index_ + 1);
+                offsets.array, value.checked_offsets_up_to, index_ + 1);
             break;
           }
         default:
           /* gvs_get_offset_size() only returns maximum 8 */
           g_assert_not_reached ();
         }
+
+      value.checked_offsets_up_to = index_;
     }
 
   if (index_ > value.ordered_offsets_up_to)
@@ -916,6 +932,7 @@ gvs_variable_sized_array_is_normal (GVariantSerialised value)
 
   /* All offsets have now been checked. */
   value.ordered_offsets_up_to = G_MAXSIZE;
+  value.checked_offsets_up_to = G_MAXSIZE;
 
   return TRUE;
 }
@@ -1040,14 +1057,15 @@ gvs_tuple_get_child (GVariantSerialised value,
    * all the tuple *elements* here, not just all the framing offsets, since
    * tuples contain a mix of elements which use framing offsets and ones which
    * don’t. None of them are allowed to overlap. */
-  if (index_ > value.ordered_offsets_up_to)
+  if (index_ > value.checked_offsets_up_to &&
+      value.ordered_offsets_up_to == value.checked_offsets_up_to)
     {
       gsize i, prev_i_end = 0;
 
-      if (value.ordered_offsets_up_to > 0)
-        gvs_tuple_get_member_bounds (value, value.ordered_offsets_up_to - 1, offset_size, NULL, &prev_i_end);
+      if (value.checked_offsets_up_to > 0)
+        gvs_tuple_get_member_bounds (value, value.checked_offsets_up_to - 1, offset_size, NULL, &prev_i_end);
 
-      for (i = value.ordered_offsets_up_to; i <= index_; i++)
+      for (i = value.checked_offsets_up_to; i <= index_; i++)
         {
           gsize i_start, i_end;
 
@@ -1060,6 +1078,7 @@ gvs_tuple_get_child (GVariantSerialised value,
         }
 
       value.ordered_offsets_up_to = i - 1;
+      value.checked_offsets_up_to = index_;
     }
 
   if (index_ > value.ordered_offsets_up_to)
@@ -1257,6 +1276,7 @@ gvs_tuple_is_normal (GVariantSerialised value)
 
   /* All element bounds have been checked above. */
   value.ordered_offsets_up_to = G_MAXSIZE;
+  value.checked_offsets_up_to = G_MAXSIZE;
 
   {
     gsize fixed_size;

@@ -41,6 +41,15 @@ typedef struct
    * Even when dealing with tuples, @ordered_offsets_up_to is an element index,
    * rather than an index into the frame offsets. */
   gsize             ordered_offsets_up_to;
+
+  /* Similar to @ordered_offsets_up_to. This gives the index of the child element
+   * whose frame offset is the highest in the offset table which has been
+   * checked so far.
+   *
+   * This is always ≥ @ordered_offsets_up_to. It is always an element index.
+   *
+   * See documentation in gvariant-core.c for `struct GVariant` for details. */
+  gsize             checked_offsets_up_to;
 } GVariantSerialised;
 
 /* deserialisation */

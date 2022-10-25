@@ -1284,6 +1284,7 @@ random_instance_filler (GVariantSerialised *serialised,
 
   serialised->depth = 0;
   serialised->ordered_offsets_up_to = 0;
+  serialised->checked_offsets_up_to = 0;
 
   g_assert_true (serialised->type_info == instance->type_info);
   g_assert_cmpuint (serialised->size, ==, instance->size);
@@ -1451,6 +1452,7 @@ test_maybe (void)
         serialised.size = needed_size;
         serialised.depth = 0;
         serialised.ordered_offsets_up_to = 0;
+        serialised.checked_offsets_up_to = 0;
 
         g_variant_serialiser_serialise (serialised,
                                         random_instance_filler,
@@ -1575,6 +1577,7 @@ test_array (void)
         serialised.size = needed_size;
         serialised.depth = 0;
         serialised.ordered_offsets_up_to = 0;
+        serialised.checked_offsets_up_to = 0;
 
         g_variant_serialiser_serialise (serialised, random_instance_filler,
                                         (gpointer *) instances, n_children);
@@ -1740,6 +1743,7 @@ test_tuple (void)
         serialised.size = needed_size;
         serialised.depth = 0;
         serialised.ordered_offsets_up_to = 0;
+        serialised.checked_offsets_up_to = 0;
 
         g_variant_serialiser_serialise (serialised, random_instance_filler,
                                         (gpointer *) instances, n_children);
@@ -1837,6 +1841,7 @@ test_variant (void)
         serialised.size = needed_size;
         serialised.depth = 0;
         serialised.ordered_offsets_up_to = 0;
+        serialised.checked_offsets_up_to = 0;
 
         g_variant_serialiser_serialise (serialised, random_instance_filler,
                                         (gpointer *) &instance, 1);
