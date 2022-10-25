@@ -435,6 +435,7 @@ if host_machine.system() != 'windows'
       gio_tests += {
         'dbus-appinfo' : {
           'extra_sources' : extra_sources,
+          'extra_programs' : ['fake-document-portal'],
         },
       }
     endif
