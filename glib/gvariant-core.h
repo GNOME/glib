@@ -38,4 +38,7 @@ GVariantTypeInfo *      g_variant_get_type_info                         (GVarian
 
 gsize                   g_variant_get_depth                             (GVariant            *value);
 
+GVariant *              g_variant_maybe_get_child_value                 (GVariant            *value,
+                                                                         gsize                index_);
+
 #endif /* __G_VARIANT_CORE_H__ */
