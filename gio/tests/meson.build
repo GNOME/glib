@@ -388,7 +388,10 @@ if host_machine.system() != 'windows'
         'extra_programs': extra_programs,
       },
       'gdbus-method-invocation' : {'extra_sources' : extra_sources},
-      'gdbus-names' : {'extra_sources' : extra_sources},
+      'gdbus-names' : {
+        'extra_sources' : extra_sources,
+        'extra_programs' : ['fake-service-name'],
+      },
       'gdbus-proxy' : {
         'extra_sources' : extra_sources,
         'extra_programs': extra_programs,
