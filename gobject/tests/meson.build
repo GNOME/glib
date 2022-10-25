@@ -183,6 +183,7 @@ foreach test_name, extra_args : gobject_tests
 endforeach
 
 foreach test_name, extra_args : python_tests
+  depends = [extra_args.get('depends', [])]
   suite = ['gobject', 'no-valgrind']
 
   if extra_args.get('can_fail', false)
@@ -192,6 +193,7 @@ foreach test_name, extra_args : python_tests
   test(
     test_name,
     python,
+    depends: depends,
     args: ['-B', files(test_name)],
     env: test_env,
     suite: suite,
