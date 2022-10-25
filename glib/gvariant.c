@@ -5800,7 +5800,6 @@ g_variant_deep_copy (GVariant *value)
   switch (g_variant_classify (value))
     {
     case G_VARIANT_CLASS_MAYBE:
-    case G_VARIANT_CLASS_ARRAY:
     case G_VARIANT_CLASS_TUPLE:
     case G_VARIANT_CLASS_DICT_ENTRY:
     case G_VARIANT_CLASS_VARIANT:
@@ -5816,6 +5815,71 @@ g_variant_deep_copy (GVariant *value)
             g_variant_builder_add_value (&builder, g_variant_deep_copy (child));
             g_variant_unref (child);
           }
+
+        return g_variant_builder_end (&builder);
+      }
+
+    case G_VARIANT_CLASS_ARRAY:
+      {
+        GVariantBuilder builder;
+        gsize i, n_children;
+        GVariant *first_invalid_child_deep_copy = NULL;
+
+        /* Arrays are in theory treated the same as maybes, tuples, dict entries
+         * and variants, and could be another case in the above block of code.
+         *
+         * However, they have the property that when dealing with non-normal
+         * data (which is the only time g_variant_deep_copy() is currently
+         * called) in a variable-sized array, the code above can easily end up
+         * creating many default child values in order to return an array which
+         * is of the right length and type, but without containing non-normal
+         * data. This can happen if the offset table for the array is malformed.
+         *
+         * In this case, the code above would end up allocating the same default
+         * value for each one of the child indexes beyond the first malformed
+         * entry in the offset table. This can end up being a lot of identical
+         * allocations of default values, particularly if the non-normal array
+         * is crafted maliciously.
+         *
+         * Avoid that problem by returning a new reference to the same default
+         * value for every child after the first invalid one. This results in
+         * returning an equivalent array, in normal form and trusted — but with
+         * significantly fewer memory allocations.
+         *
+         * See https://gitlab.gnome.org/GNOME/glib/-/issues/2540 */
+
+        g_variant_builder_init (&builder, g_variant_get_type (value));
+
+        for (i = 0, n_children = g_variant_n_children (value); i < n_children; i++)
+          {
+            /* Try maybe_get_child_value() first; if it returns NULL, this child
+             * is non-normal. get_child_value() would have constructed and
+             * returned a default value in that case. */
+            GVariant *child = g_variant_maybe_get_child_value (value, i);
+
+            if (child != NULL)
+              {
+                /* Non-normal children may not always be contiguous, as they may
+                 * be non-normal for reasons other than invalid offset table
+                 * entries. As they are all the same type, they will all have
+                 * the same default value though, so keep that around. */
+                g_variant_builder_add_value (&builder, g_variant_deep_copy (child));
+              }
+            else if (child == NULL && first_invalid_child_deep_copy != NULL)
+              {
+                g_variant_builder_add_value (&builder, first_invalid_child_deep_copy);
+              }
+            else if (child == NULL)
+              {
+                child = g_variant_get_child_value (value, i);
+                first_invalid_child_deep_copy = g_variant_ref_sink (g_variant_deep_copy (child));
+                g_variant_builder_add_value (&builder, first_invalid_child_deep_copy);
+              }
+
+            g_clear_pointer (&child, g_variant_unref);
+          }
+
+        g_clear_pointer (&first_invalid_child_deep_copy, g_variant_unref);
 
         return g_variant_builder_end (&builder);
       }
