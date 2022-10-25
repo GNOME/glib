@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-09-28 08:39+0000\n"
-"PO-Revision-Date: 2022-10-03 11:08+0200\n"
+"POT-Creation-Date: 2022-10-16 12:25+0000\n"
+"PO-Revision-Date: 2022-10-25 13:42+0200\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <f.t.public@gmail.com>\n"
 "Language: fur\n"
@@ -2789,6 +2789,8 @@ msgid ""
 "Exactly one of “type”, “enum” or “flags” must be specified as an attribute "
 "to <key>"
 msgstr ""
+"Si scugne specificâ in mût esat dome un tra “type”, “enum” o “flags” tant "
+"che atribût a <key>"
 
 #: gio/glib-compile-schemas.c:1004
 #, c-format
@@ -3208,117 +3210,117 @@ msgstr "Non di atribût estês no valit"
 msgid "Error setting extended attribute “%s”: %s"
 msgstr "Erôr tal stabilî l'atribût estês “%s”: %s"
 
-#: gio/glocalfileinfo.c:1738 gio/win32/gwinhttpfile.c:191
+#: gio/glocalfileinfo.c:1732 gio/win32/gwinhttpfile.c:191
 msgid " (invalid encoding)"
 msgstr " (codifiche no valide)"
 
-#: gio/glocalfileinfo.c:1897 gio/glocalfileoutputstream.c:945
+#: gio/glocalfileinfo.c:1891 gio/glocalfileoutputstream.c:945
 #: gio/glocalfileoutputstream.c:997
 #, c-format
 msgid "Error when getting information for file “%s”: %s"
 msgstr "Erôr dilunc il recupar des informazions pal file “%s”: %s"
 
-#: gio/glocalfileinfo.c:2163
+#: gio/glocalfileinfo.c:2157
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr "Erôr dilunc il recupar des informazions pal descritôr dal file: %s"
 
-#: gio/glocalfileinfo.c:2208
+#: gio/glocalfileinfo.c:2202
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Gjenar di atribût no valit (si spietave uint32)"
 
-#: gio/glocalfileinfo.c:2226
+#: gio/glocalfileinfo.c:2220
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Gjenar di atribût no valit (si spietave uint64)"
 
-#: gio/glocalfileinfo.c:2245 gio/glocalfileinfo.c:2264
+#: gio/glocalfileinfo.c:2239 gio/glocalfileinfo.c:2258
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Gjenar di atribût no valit (si spietave une stringhe di byte)"
 
-#: gio/glocalfileinfo.c:2311
+#: gio/glocalfileinfo.c:2305
 msgid "Cannot set permissions on symlinks"
 msgstr "Impussibil stabilî i permès sui colegaments simbolics"
 
-#: gio/glocalfileinfo.c:2327
+#: gio/glocalfileinfo.c:2321
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Erôr tal stabilî i permès: %s"
 
-#: gio/glocalfileinfo.c:2378
+#: gio/glocalfileinfo.c:2372
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Erôr tal stabilî il proprietari: %s"
 
-#: gio/glocalfileinfo.c:2401
+#: gio/glocalfileinfo.c:2395
 msgid "symlink must be non-NULL"
 msgstr "i colegaments simbolics a scugnin jessi diviers di NULL"
 
-#: gio/glocalfileinfo.c:2411 gio/glocalfileinfo.c:2430
-#: gio/glocalfileinfo.c:2441
+#: gio/glocalfileinfo.c:2405 gio/glocalfileinfo.c:2424
+#: gio/glocalfileinfo.c:2435
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Erôr tal stabilî il colegament simbolic: %s"
 
-#: gio/glocalfileinfo.c:2420
+#: gio/glocalfileinfo.c:2414
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "Erôr tal stabilî il colegament simbolic: il file nol è un colegament simbolic"
 
-#: gio/glocalfileinfo.c:2492
+#: gio/glocalfileinfo.c:2486
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld are negative"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2501
+#: gio/glocalfileinfo.c:2495
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld reach 1 second"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2511
+#: gio/glocalfileinfo.c:2505
 #, c-format
 msgid "UNIX timestamp %lld does not fit into 64 bits"
 msgstr "La marche temporâl di UNIX %lld no sta tai 64 bits"
 
-#: gio/glocalfileinfo.c:2522
+#: gio/glocalfileinfo.c:2516
 #, c-format
 msgid "UNIX timestamp %lld is outside of the range supported by Windows"
 msgstr ""
 "La marche temporâl di UNIX %lld e sta fûr dal interval supuartât di Windows"
 
-#: gio/glocalfileinfo.c:2625
+#: gio/glocalfileinfo.c:2619
 #, c-format
 msgid "File name “%s” cannot be converted to UTF-16"
 msgstr "Nol è pussibil convertî a UTF-16 il non dal file “%s”"
 
-#: gio/glocalfileinfo.c:2644
+#: gio/glocalfileinfo.c:2638
 #, c-format
 msgid "File “%s” cannot be opened: Windows Error %lu"
 msgstr "Nol è pussibil vierzi il file “%s”: erôr di Windows %lu"
 
-#: gio/glocalfileinfo.c:2657
+#: gio/glocalfileinfo.c:2651
 #, c-format
 msgid "Error setting modification or access time for file “%s”: %lu"
 msgstr "Erôr tal stabilî la ore di modifiche o di acès pal file “%s”: %lu"
 
-#: gio/glocalfileinfo.c:2798 gio/glocalfileinfo.c:2810
+#: gio/glocalfileinfo.c:2825
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Erôr tal stabilî la ore di modifiche o acès: %s"
 
-#: gio/glocalfileinfo.c:2833
+#: gio/glocalfileinfo.c:2848
 msgid "SELinux context must be non-NULL"
 msgstr "Il contest SELinux al scugne jessi diviers di NULL"
 
-#: gio/glocalfileinfo.c:2840
+#: gio/glocalfileinfo.c:2855
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux nol è abilitât su chest sisteme"
 
-#: gio/glocalfileinfo.c:2850
+#: gio/glocalfileinfo.c:2865
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Erôr tal stabilî il contest SELinux: %s"
 
-#: gio/glocalfileinfo.c:2947
+#: gio/glocalfileinfo.c:2962
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "La configurazion dal atribût %s no je supuartade"
@@ -3524,7 +3526,7 @@ msgstr "Il flus di jessude nol implemente la scriture"
 #: gio/goutputstream.c:474 gio/goutputstream.c:1535
 #, c-format
 msgid "Sum of vectors passed to %s too large"
-msgstr ""
+msgstr "La sume dai vetôrs passade a %s e je masse grande"
 
 #: gio/goutputstream.c:738 gio/goutputstream.c:1763
 msgid "Source stream is already closed"
@@ -3845,6 +3847,28 @@ msgid ""
 "Use “gsettings help COMMAND” to get detailed help.\n"
 "\n"
 msgstr ""
+"Ûs:\n"
+"  gsettings --version\n"
+"  gsettings [--schemadir SCHEMEDIR] COMANT [ARGS…]\n"
+"\n"
+"Comants:\n"
+"  help                      Mostre cheste informazion\n"
+"  list-schemas              Liste i schemis instalâts\n"
+"  list-relocatable-schemas  Liste i schemis riposizionabii\n"
+"  list-keys                 Liste lis clâfs intun scheme\n"
+"  list-children             Liste i fîs di un scheme\n"
+"  list-recursively          Liste lis clâfs e i valôrs, in mût ricorsîf\n"
+"  range                     Al interoghe l'interval di une clâf\n"
+"  describe                  Al interoghe la descrizion di une clâf\n"
+"  get                       Oten il valôr di une clâf\n"
+"  set                       Stabilìs il valôr di une clâf\n"
+"  reset                     Ripristine il valôr di une clâf\n"
+"  reset-recursively         Ripristine ducj i valôrs intun dât scheme\n"
+"  writable                  Controle se su pues scrivi une clâf\n"
+"  monitor                   Ten di voli lis modifichis\n"
+"\n"
+"Dopre “gsettings help COMANT” par otignî un jutori detaiât.\n"
+"\n"
 
 #: gio/gsettings-tool.c:710
 #, c-format
@@ -3855,6 +3879,11 @@ msgid ""
 "%s\n"
 "\n"
 msgstr ""
+"Ûs:\n"
+"  gsettings [--schemadir SCHEMEDIR] %s %s\n"
+"\n"
+"%s\n"
+"\n"
 
 #: gio/gsettings-tool.c:716
 msgid "  SCHEMADIR A directory to search for additional schemas\n"
@@ -3918,7 +3947,7 @@ msgstr "I/O dal socket scjadût"
 #: gio/gsocket.c:586
 #, c-format
 msgid "creating GSocket from fd: %s"
-msgstr ""
+msgstr "daûr a crea GSocket dal fd: %s"
 
 #: gio/gsocket.c:615 gio/gsocket.c:679 gio/gsocket.c:686
 #, c-format
@@ -4054,7 +4083,7 @@ msgstr "Impussibil inviâ il messaç: %s"
 
 #: gio/gsocket.c:4818 gio/gsocket.c:4834 gio/gsocket.c:4847
 msgid "Message vectors too large"
-msgstr ""
+msgstr "I vetôrs dal messaç a son masse grancj"
 
 #: gio/gsocket.c:4863 gio/gsocket.c:4865 gio/gsocket.c:5012 gio/gsocket.c:5097
 #: gio/gsocket.c:5275 gio/gsocket.c:5315 gio/gsocket.c:5317
@@ -4316,8 +4345,8 @@ msgstr "L'inviâ FD nol è supuartât"
 #, c-format
 msgid "Expecting 1 control message, got %d"
 msgid_plural "Expecting 1 control message, got %d"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Si spietave 1 messaç di control, si 'nd à vût %d"
+msgstr[1] "Si spietave 1 messaç di control, si 'nd à vûts %d"
 
 #: gio/gunixconnection.c:196 gio/gunixconnection.c:610
 msgid "Unexpected type of ancillary data"
@@ -4450,7 +4479,7 @@ msgstr "Direzions di scoltâ"
 
 #: gio/tests/gdbus-daemon.c:19
 msgid "Ignored, for compat with GTestDbus"
-msgstr ""
+msgstr "Ignorât, par compatibilitât cun GTestDbus"
 
 #: gio/tests/gdbus-daemon.c:20
 msgid "Print address"
@@ -5115,6 +5144,7 @@ msgstr "Impussibil eseguî une leture grese in g_io_channel_read_to_end"
 #: glib/gkeyfile.c:796
 msgid "Valid key file could not be found in search dirs"
 msgstr ""
+"Nol è stât pussibil cjatâ tes cartelis di ricercje un file di clâf valit"
 
 #: glib/gkeyfile.c:833
 msgid "Not a regular file"
@@ -5125,15 +5155,17 @@ msgstr "Nol è un file regolâr"
 msgid ""
 "Key file contains line “%s” which is not a key-value pair, group, or comment"
 msgstr ""
+"Il file de clâf al conten la rie “%s” che no je une cubie clâf-valôr, grup o "
+"coment"
 
 #: glib/gkeyfile.c:1348
 #, c-format
 msgid "Invalid group name: %s"
-msgstr ""
+msgstr "Non di grup no valit: %s"
 
 #: glib/gkeyfile.c:1372
 msgid "Key file does not start with a group"
-msgstr ""
+msgstr "Il file de clâf nol scomence cuntun grup"
 
 #: glib/gkeyfile.c:1396
 #, c-format
@@ -5143,30 +5175,32 @@ msgstr "Non de clâf no valit: %.*s"
 #: glib/gkeyfile.c:1424
 #, c-format
 msgid "Key file contains unsupported encoding “%s”"
-msgstr ""
+msgstr "Il file de clâf al conten la codifiche no supuartade “%s”"
 
 #: glib/gkeyfile.c:1679 glib/gkeyfile.c:1852 glib/gkeyfile.c:3299
 #: glib/gkeyfile.c:3363 glib/gkeyfile.c:3493 glib/gkeyfile.c:3625
 #: glib/gkeyfile.c:3771 glib/gkeyfile.c:4006 glib/gkeyfile.c:4073
 #, c-format
 msgid "Key file does not have group “%s”"
-msgstr ""
+msgstr "Il file de clâf nol à il grup “%s”"
 
 #: glib/gkeyfile.c:1807
 #, c-format
 msgid "Key file does not have key “%s” in group “%s”"
-msgstr ""
+msgstr "Il file de clâf nol à la clâf “%s” tal grup “%s”"
 
 #: glib/gkeyfile.c:1969 glib/gkeyfile.c:2085
 #, c-format
 msgid "Key file contains key “%s” with value “%s” which is not UTF-8"
-msgstr ""
+msgstr "Il file de clâf al conten la clâf “%s” cun valôr “%s” che nol è UTF-8"
 
 #: glib/gkeyfile.c:1989 glib/gkeyfile.c:2105 glib/gkeyfile.c:2544
 #, c-format
 msgid ""
 "Key file contains key “%s” which has a value that cannot be interpreted."
 msgstr ""
+"Il file de clâf al conten la clâf “%s” che e à un valôr che no si rive a "
+"interpretâ."
 
 #: glib/gkeyfile.c:2759 glib/gkeyfile.c:3128
 #, c-format
@@ -5469,301 +5503,301 @@ msgstr ""
 msgid "Unknown option %s"
 msgstr "Opzion %s no cognossude"
 
-#: glib/gregex.c:462
+#: glib/gregex.c:479
 msgid "corrupted object"
 msgstr "ogjet ruvinât"
 
-#: glib/gregex.c:464
+#: glib/gregex.c:481
 msgid "out of memory"
 msgstr "memorie finide"
 
-#: glib/gregex.c:470
+#: glib/gregex.c:487
 msgid "backtracking limit reached"
 msgstr ""
 
-#: glib/gregex.c:481 glib/gregex.c:734 glib/gregex.c:763
+#: glib/gregex.c:498
 msgid "internal error"
 msgstr "erôr interni"
 
-#: glib/gregex.c:483
+#: glib/gregex.c:500
 msgid "the pattern contains items not supported for partial matching"
 msgstr ""
 
-#: glib/gregex.c:485
+#: glib/gregex.c:502
 msgid "back references as conditions are not supported for partial matching"
 msgstr ""
 
-#: glib/gregex.c:491
+#: glib/gregex.c:508
 msgid "recursion limit reached"
 msgstr ""
 
-#: glib/gregex.c:493
+#: glib/gregex.c:510
 msgid "bad offset"
 msgstr ""
 
-#: glib/gregex.c:495
+#: glib/gregex.c:512
 msgid "recursion loop"
 msgstr ""
 
 #. should not happen in GRegex since we check modes before each match
-#: glib/gregex.c:498
+#: glib/gregex.c:515
 msgid "matching mode is requested that was not compiled for JIT"
 msgstr ""
 
-#: glib/gregex.c:502
+#: glib/gregex.c:536 glib/gregex.c:1838
 msgid "unknown error"
 msgstr "erôr no cognossût"
 
-#: glib/gregex.c:523
+#: glib/gregex.c:557
 msgid "\\ at end of pattern"
 msgstr ""
 
-#: glib/gregex.c:527
+#: glib/gregex.c:561
 msgid "\\c at end of pattern"
 msgstr ""
 
-#: glib/gregex.c:532
+#: glib/gregex.c:566
 msgid "unrecognized character following \\"
 msgstr ""
 
-#: glib/gregex.c:536
+#: glib/gregex.c:570
 msgid "numbers out of order in {} quantifier"
 msgstr ""
 
-#: glib/gregex.c:540
+#: glib/gregex.c:574
 msgid "number too big in {} quantifier"
 msgstr ""
 
-#: glib/gregex.c:544
+#: glib/gregex.c:578
 msgid "missing terminating ] for character class"
 msgstr ""
 
-#: glib/gregex.c:548
+#: glib/gregex.c:582
 msgid "invalid escape sequence in character class"
 msgstr ""
 
-#: glib/gregex.c:552
+#: glib/gregex.c:586
 msgid "range out of order in character class"
 msgstr ""
 
-#: glib/gregex.c:557
+#: glib/gregex.c:591
 msgid "nothing to repeat"
 msgstr "nuie di ce ripeti"
 
-#: glib/gregex.c:561
+#: glib/gregex.c:595
 msgid "unrecognized character after (? or (?-"
 msgstr ""
 
-#: glib/gregex.c:565
+#: glib/gregex.c:599
 msgid "POSIX named classes are supported only within a class"
 msgstr ""
 
-#: glib/gregex.c:569
+#: glib/gregex.c:603
 msgid "POSIX collating elements are not supported"
 msgstr ""
 
-#: glib/gregex.c:575
+#: glib/gregex.c:609
 msgid "missing terminating )"
 msgstr ""
 
-#: glib/gregex.c:579
+#: glib/gregex.c:613
 msgid "reference to non-existent subpattern"
 msgstr ""
 
-#: glib/gregex.c:583
+#: glib/gregex.c:617
 msgid "missing ) after comment"
 msgstr ""
 
-#: glib/gregex.c:587
+#: glib/gregex.c:621
 msgid "regular expression is too large"
 msgstr "la espression regolâr e je masse largje"
 
-#: glib/gregex.c:591
+#: glib/gregex.c:625
 msgid "malformed number or name after (?("
 msgstr "non o numar malformât dopo (?("
 
-#: glib/gregex.c:595
+#: glib/gregex.c:629
 msgid "lookbehind assertion is not fixed length"
 msgstr ""
 
-#: glib/gregex.c:599
+#: glib/gregex.c:633
 msgid "conditional group contains more than two branches"
 msgstr ""
 
-#: glib/gregex.c:603
+#: glib/gregex.c:637
 msgid "assertion expected after (?("
 msgstr ""
 
-#: glib/gregex.c:607
+#: glib/gregex.c:641
 msgid "a numbered reference must not be zero"
 msgstr "un riferiment numerât nol pues jessi zero"
 
-#: glib/gregex.c:611
+#: glib/gregex.c:645
 msgid "unknown POSIX class name"
 msgstr "non di classe POSIX no cognossût"
 
-#: glib/gregex.c:616
+#: glib/gregex.c:650
 msgid "character value in \\x{...} sequence is too large"
 msgstr ""
 
-#: glib/gregex.c:620
+#: glib/gregex.c:654
 msgid "\\C not allowed in lookbehind assertion"
 msgstr ""
 
-#: glib/gregex.c:624
+#: glib/gregex.c:658
 msgid "missing terminator in subpattern name"
 msgstr ""
 
-#: glib/gregex.c:628
+#: glib/gregex.c:662
 msgid "two named subpatterns have the same name"
 msgstr ""
 
-#: glib/gregex.c:632
+#: glib/gregex.c:666
 msgid "malformed \\P or \\p sequence"
 msgstr "secuence \\P o \\p malformade"
 
-#: glib/gregex.c:636
+#: glib/gregex.c:670
 msgid "unknown property name after \\P or \\p"
 msgstr ""
 
-#: glib/gregex.c:640
+#: glib/gregex.c:674
 msgid "subpattern name is too long (maximum 32 characters)"
 msgstr ""
 
-#: glib/gregex.c:644
+#: glib/gregex.c:678
 msgid "too many named subpatterns (maximum 10,000)"
 msgstr ""
 
-#: glib/gregex.c:648
+#: glib/gregex.c:682
 msgid "octal value is greater than \\377"
 msgstr "il valôr otâl al è plui grant di \\377"
 
-#: glib/gregex.c:652
+#: glib/gregex.c:686
 msgid "DEFINE group contains more than one branch"
 msgstr ""
 
-#: glib/gregex.c:656
+#: glib/gregex.c:690
 msgid "inconsistent NEWLINE options"
 msgstr ""
 
-#: glib/gregex.c:660
+#: glib/gregex.c:694
 msgid ""
 "\\g is not followed by a braced, angle-bracketed, or quoted name or number, "
 "or by a plain number"
 msgstr ""
 
-#: glib/gregex.c:665
+#: glib/gregex.c:699
 msgid "an argument is not allowed for (*ACCEPT), (*FAIL), or (*COMMIT)"
 msgstr ""
 
-#: glib/gregex.c:669
+#: glib/gregex.c:703
 msgid "(*VERB) not recognized"
 msgstr ""
 
-#: glib/gregex.c:673
+#: glib/gregex.c:707
 msgid "number is too big"
 msgstr "il numar al è masse grant"
 
-#: glib/gregex.c:677
+#: glib/gregex.c:711
 msgid "missing subpattern name after (?&"
 msgstr ""
 
-#: glib/gregex.c:681
+#: glib/gregex.c:715
 msgid "different names for subpatterns of the same number are not allowed"
 msgstr ""
 
-#: glib/gregex.c:685
+#: glib/gregex.c:719
 msgid "(*MARK) must have an argument"
 msgstr ""
 
-#: glib/gregex.c:689
+#: glib/gregex.c:723
 msgid "\\c must be followed by an ASCII character"
 msgstr ""
 
-#: glib/gregex.c:693
+#: glib/gregex.c:727
 msgid "\\k is not followed by a braced, angle-bracketed, or quoted name"
 msgstr ""
 
-#: glib/gregex.c:697
+#: glib/gregex.c:731
 msgid "\\N is not supported in a class"
 msgstr "\\N nol è supuartât intune classe"
 
-#: glib/gregex.c:701
+#: glib/gregex.c:735
 msgid "name is too long in (*MARK), (*PRUNE), (*SKIP), or (*THEN)"
 msgstr "non masse lunc in (*MARK), (*PRUNE), (*SKIP), or (*THEN)"
 
-#: glib/gregex.c:705 glib/gregex.c:844
+#: glib/gregex.c:739 glib/gregex.c:875
 msgid "code overflow"
 msgstr ""
 
-#: glib/gregex.c:709
+#: glib/gregex.c:743
 msgid "unrecognized character after (?P"
 msgstr "caratar no ricognossût dopo (?P"
 
-#: glib/gregex.c:713
+#: glib/gregex.c:747
 msgid "overran compiling workspace"
 msgstr ""
 
-#: glib/gregex.c:717
+#: glib/gregex.c:751
 msgid "previously-checked referenced subpattern not found"
 msgstr ""
 
-#: glib/gregex.c:843 glib/gregex.c:1088 glib/gregex.c:2397
+#: glib/gregex.c:874 glib/gregex.c:1121 glib/gregex.c:2444
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr ""
 
-#: glib/gregex.c:1687
+#: glib/gregex.c:1721
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "La librarie PCRE e je compilade cence supuart UTF8"
 
-#: glib/gregex.c:1695
+#: glib/gregex.c:1729
 msgid "PCRE library is compiled with incompatible options"
 msgstr "La librarie PCRE e je compilade cun opzions incompatibilis"
 
-#: glib/gregex.c:1804
+#: glib/gregex.c:1847
 #, fuzzy, c-format
 #| msgid "Error while compiling regular expression %s at char %d: %s"
 msgid "Error while compiling regular expression ‘%s’ at char %s: %s"
 msgstr "Erôr intal compilâ la espression regolâr %s al caratar %d: %s"
 
-#: glib/gregex.c:2839
+#: glib/gregex.c:2887
 msgid "hexadecimal digit or “}” expected"
 msgstr "si spietave une cifre esadecimâl o “}”"
 
-#: glib/gregex.c:2855
+#: glib/gregex.c:2903
 msgid "hexadecimal digit expected"
 msgstr "si spietave une cifre esadecimâl"
 
-#: glib/gregex.c:2895
+#: glib/gregex.c:2943
 msgid "missing “<” in symbolic reference"
 msgstr "al mancje “%” intal riferiment simbolic"
 
-#: glib/gregex.c:2904
+#: glib/gregex.c:2952
 msgid "unfinished symbolic reference"
 msgstr "riferiment simbolic no finît"
 
-#: glib/gregex.c:2911
+#: glib/gregex.c:2959
 msgid "zero-length symbolic reference"
 msgstr "riferiment simbolic di lungjece zero"
 
-#: glib/gregex.c:2922
+#: glib/gregex.c:2970
 msgid "digit expected"
 msgstr "si spietave une cifre"
 
-#: glib/gregex.c:2940
+#: glib/gregex.c:2988
 msgid "illegal symbolic reference"
 msgstr "riferiment simbolic ilegâl"
 
-#: glib/gregex.c:3003
+#: glib/gregex.c:3051
 msgid "stray final “\\”"
 msgstr "pierdude la “\\” finâl"
 
-#: glib/gregex.c:3007
+#: glib/gregex.c:3055
 msgid "unknown escape sequence"
 msgstr "secuence di escape no cognossude"
 
-#: glib/gregex.c:3017
+#: glib/gregex.c:3065
 #, c-format
 msgid "Error while parsing replacement text “%s” at char %lu: %s"
 msgstr "Erôr tal analizâ il test di sostituzion “%s” al caratar %lu: %s"
