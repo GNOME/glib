@@ -1183,6 +1183,7 @@ g_variant_get_child_value (GVariant *value,
         G_VARIANT_MAX_RECURSION_DEPTH - value->depth)
       {
         g_assert (g_variant_is_of_type (value, G_VARIANT_TYPE_VARIANT));
+        g_variant_type_info_unref (s_child.type_info);
         return g_variant_new_tuple (NULL, 0);
       }
 
