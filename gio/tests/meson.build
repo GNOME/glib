@@ -487,6 +487,7 @@ if host_machine.system() != 'windows'
         'c_args' : ['-DSRCDIR="@0@"'.format(meson.current_source_dir()),
                     '-DTEST_LOCALE_PATH="@0@"'.format(test_mo_dir)],
         'install' : false,
+        'depends' : glib_compile_schemas,
       },
     }
   endif
