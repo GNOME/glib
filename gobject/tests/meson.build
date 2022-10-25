@@ -126,6 +126,7 @@ endif
 python_tests = {
   'genmarshal.py' : {},
   'gobject-query.py' : {
+    'depends' : gobject_query,
     'can_fail' : host_system == 'windows',
   },
   'mkenums.py' : {},
