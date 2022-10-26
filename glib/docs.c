@@ -80,126 +80,209 @@
 /**
  * gpointer:
  *
- * An untyped pointer.
- * #gpointer looks better and is easier to use than void*.
+ * An untyped pointer, exactly equivalent to `void *`.
+ *
+ * The standard C `void *` type should usually be preferred in
+ * new code, but `gpointer` can be used in contexts where a type name
+ * must be a single word, such as in the g_type_name() of %G_TYPE_POINTER
+ * or when generating a family of function names for multiple types
+ * using macros.
  */
 
 /**
  * gconstpointer:
  *
- * An untyped pointer to constant data.
+ * An untyped pointer to constant data, exactly equivalent to `const void *`.
+ *
  * The data pointed to should not be changed.
  *
  * This is typically used in function prototypes to indicate
  * that the data pointed to will not be altered by the function.
+ *
+ * The standard C `const void *` type should usually be preferred in
+ * new code, but `gconstpointer` can be used in contexts where a type name
+ * must be a single word.
  */
 
 /**
  * gchar:
  *
- * Corresponds to the standard C char type.
+ * Equivalent to the standard C `char` type.
+ *
+ * This type only exists for symmetry with `guchar`.
+ * The standard C `char` type should be preferred in new code.
  */
 
 /**
  * guchar:
  *
- * Corresponds to the standard C unsigned char type.
+ * Equivalent to the standard C `unsigned char` type.
+ *
+ * The standard C `unsigned char` type should usually be preferred in
+ * new code, but `guchar` can be used in contexts where a type name
+ * must be a single word, such as in the g_type_name() of %G_TYPE_UCHAR
+ * or when generating a family of function names for multiple types
+ * using macros.
  */
 
 /**
  * gint:
  *
- * Corresponds to the standard C int type.
- * Values of this type can range from %G_MININT to %G_MAXINT.
+ * Equivalent to the standard C `int` type.
+ *
+ * Values of this type can range from `INT_MIN` to `INT_MAX`,
+ * or equivalently from %G_MININT to %G_MAXINT.
+ *
+ * This type only exists for symmetry with `guint`.
+ * The standard C `int` type should be preferred in new code.
  */
 
 /**
  * G_MININT:
  *
  * The minimum value which can be held in a #gint.
+ *
+ * This is the same as standard C `INT_MIN`, which is available since C99
+ * and should be preferred in new code.
  */
 
 /**
  * G_MAXINT:
  *
  * The maximum value which can be held in a #gint.
+ *
+ * This is the same as standard C `INT_MAX`, which is available since C99
+ * and should be preferred in new code.
  */
 
 /**
  * guint:
  *
- * Corresponds to the standard C unsigned int type.
- * Values of this type can range from 0 to %G_MAXUINT.
+ * Equivalent to the standard C `unsigned int` type.
+ *
+ * Values of this type can range from 0 to `UINT_MAX`,
+ * or equivalently 0 to %G_MAXUINT.
+ *
+ * The standard C `unsigned int` type should usually be preferred in
+ * new code, but `guint` can be used in contexts where a type name
+ * must be a single word, such as in the g_type_name() of %G_TYPE_UINT
+ * or when generating a family of function names for multiple types
+ * using macros.
  */
 
 /**
  * G_MAXUINT:
  *
  * The maximum value which can be held in a #guint.
+ *
+ * This is the same as standard C `UINT_MAX`, which is available since C99
+ * and should be preferred in new code.
  */
 
 /**
  * gshort:
  *
- * Corresponds to the standard C short type.
- * Values of this type can range from %G_MINSHORT to %G_MAXSHORT.
+ * Equivalent to the standard C `short` type.
+ *
+ * Values of this type can range from `SHRT_MIN` to `SHRT_MAX`,
+ * or equivalently %G_MINSHORT to %G_MAXSHORT.
+ *
+ * This type only exists for symmetry with `gushort`.
+ * The standard C `short` type should be preferred in new code.
  */
 
 /**
  * G_MINSHORT:
  *
  * The minimum value which can be held in a #gshort.
+ *
+ * This is the same as standard C `SHRT_MIN`, which is available since C99
+ * and should be preferred in new code.
  */
 
 /**
  * G_MAXSHORT:
  *
  * The maximum value which can be held in a #gshort.
+ *
+ * This is the same as standard C `SHRT_MAX`, which is available since C99
+ * and should be preferred in new code.
  */
 
 /**
  * gushort:
  *
- * Corresponds to the standard C unsigned short type.
- * Values of this type can range from 0 to %G_MAXUSHORT.
+ * Equivalent to the standard C `unsigned short` type.
+ *
+ * Values of this type can range from 0 to `USHRT_MAX`,
+ * or equivalently from 0 to %G_MAXUSHORT.
+ *
+ * The standard C `unsigned short` type should usually be preferred in
+ * new code, but `gushort` can be used in contexts where a type name
+ * must be a single word, such as when generating a family of function
+ * names for multiple types using macros.
  */
 
 /**
  * G_MAXUSHORT:
  *
  * The maximum value which can be held in a #gushort.
+ *
+ * This is the same as standard C `USHRT_MAX`, which is available since C99
+ * and should be preferred in new code.
  */
 
 /**
  * glong:
  *
- * Corresponds to the standard C long type.
- * Values of this type can range from %G_MINLONG to %G_MAXLONG.
+ * Equivalent to the standard C `long` type.
+ *
+ * Values of this type can range from `LONG_MIN` to `LONG_MAX`,
+ * or equivalently %G_MINLONG to %G_MAXLONG.
+ *
+ * This type only exists for symmetry with `gulong`.
+ * The standard C `long` type should be preferred in new code.
  */
 
 /**
  * G_MINLONG:
  *
  * The minimum value which can be held in a #glong.
+ *
+ * This is the same as standard C `LONG_MIN`, which is available since C99
+ * and should be preferred in new code.
  */
 
 /**
  * G_MAXLONG:
  *
  * The maximum value which can be held in a #glong.
+ *
+ * This is the same as standard C `ULONG_MAX`, which is available since C99
+ * and should be preferred in new code.
  */
 
 /**
  * gulong:
  *
- * Corresponds to the standard C unsigned long type.
+ * Equivalent to the standard C `unsigned long` type.
+ *
  * Values of this type can range from 0 to %G_MAXULONG.
+ *
+ * The standard C `unsigned long` type should usually be preferred in
+ * new code, but `gulong` can be used in contexts where a type name
+ * must be a single word, such as in the g_type_name() of %G_TYPE_ULONG
+ * or when generating a family of function names for multiple types
+ * using macros.
  */
 
 /**
  * G_MAXULONG:
  *
  * The maximum value which can be held in a #gulong.
+ *
+ * This is the same as standard C `ULONG_MAX`, which is available since C99
+ * and should be preferred in new code.
  */
 
 /**
@@ -471,8 +554,10 @@
 /**
  * gfloat:
  *
- * Corresponds to the standard C float type.
- * Values of this type can range from -%G_MAXFLOAT to %G_MAXFLOAT.
+ * Equivalent to the standard C `float` type.
+ *
+ * Values of this type can range from `-FLT_MAX` to `FLT_MAX`,
+ * or equivalently from -%G_MAXFLOAT to %G_MAXFLOAT.
  */
 
 /**
@@ -482,19 +567,27 @@
  *
  * If you are interested in the smallest value which can be held
  * in a #gfloat, use -%G_MAXFLOAT.
+ *
+ * This is the same as standard C `FLT_MIN`, which is available since C99
+ * and should be preferred in new code.
  */
 
 /**
  * G_MAXFLOAT:
  *
  * The maximum value which can be held in a #gfloat.
+ *
+ * This is the same as standard C `FLT_MAX`, which is available since C99
+ * and should be preferred in new code.
  */
 
 /**
  * gdouble:
  *
- * Corresponds to the standard C double type.
- * Values of this type can range from -%G_MAXDOUBLE to %G_MAXDOUBLE.
+ * Equivalent to the standard C `double` type.
+ *
+ * Values of this type can range from `-DBL_MAX` to `DBL_MAX`,
+ * or equivalently from -%G_MAXDOUBLE to %G_MAXDOUBLE.
  */
 
 /**
@@ -504,12 +597,18 @@
  *
  * If you are interested in the smallest value which can be held
  * in a #gdouble, use -%G_MAXDOUBLE.
+ *
+ * This is the same as standard C `DBL_MIN`, which is available since C99
+ * and should be preferred in new code.
  */
 
 /**
  * G_MAXDOUBLE:
  *
  * The maximum value which can be held in a #gdouble.
+ *
+ * This is the same as standard C `DBL_MAX`, which is available since C99
+ * and should be preferred in new code.
  */
 
 /**
