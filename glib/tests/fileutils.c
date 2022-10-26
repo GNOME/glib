@@ -751,8 +751,8 @@ test_mkdir_with_parents (void)
 
 #ifndef G_OS_WIN32
   g_assert_cmpint (g_mkdir_with_parents ("/usr/b/c", 0), ==, -1);
-  /* EPERM may be returned if the filesystem as a whole is read-only */
-  if (errno != EPERM)
+  /* EPERM or EROFS may be returned if the filesystem as a whole is read-only */
+  if (errno != EPERM && errno != EROFS)
     g_assert_cmpint (errno, ==, EACCES);
 #endif
 
