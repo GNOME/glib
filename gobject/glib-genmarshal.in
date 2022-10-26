@@ -671,7 +671,7 @@ def generate_body(retval, params, prefix, va_marshal=False):
             body += ['  va_list args_copy;']
             body += ['']
 
-            body += ['  G_VA_COPY (args_copy, args);']
+            body += ['  va_copy (args_copy, args);']
 
             for idx, arg in enumerate(get_args):
                 ctype = IN_ARGS[arg]['ctype']

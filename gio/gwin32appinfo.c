@@ -858,7 +858,7 @@ build_registry_pathv (gunichar2 *output, gsize output_size, va_list components)
   if (output == NULL)
     return FALSE;
 
-  G_VA_COPY (lentest, components);
+  va_copy (lentest, components);
 
   for (length = 0, component = va_arg (lentest, gunichar2 *);
        component != NULL;

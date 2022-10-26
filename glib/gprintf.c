@@ -360,7 +360,7 @@ g_vasprintf (gchar      **string,
   {
     va_list args2;
 
-    G_VA_COPY (args2, args);
+    va_copy (args2, args);
 
     *string = g_new (gchar, g_printf_string_upper_bound (format, args));
 

@@ -497,7 +497,7 @@ class TestGenmarshal(unittest.TestCase):
               gpointer arg0;
               va_list args_copy;
 
-              G_VA_COPY (args_copy, args);
+              va_copy (args_copy, args);
               arg0 = (gpointer) va_arg (args_copy, gpointer);
               if ((param_types[0] & G_SIGNAL_TYPE_STATIC_SCOPE) == 0 && arg0 != NULL)
                 arg0 = g_variant_ref_sink (arg0);
@@ -639,7 +639,7 @@ class TestGenmarshal(unittest.TestCase):
               gpointer arg0;
               va_list args_copy;
 
-              G_VA_COPY (args_copy, args);
+              va_copy (args_copy, args);
               arg0 = (gpointer) va_arg (args_copy, gpointer);
               if ((param_types[0] & G_SIGNAL_TYPE_STATIC_SCOPE) == 0 && arg0 != NULL)
                 arg0 = g_strdup (arg0);
@@ -782,7 +782,7 @@ class TestGenmarshal(unittest.TestCase):
               gpointer arg0;
               va_list args_copy;
 
-              G_VA_COPY (args_copy, args);
+              va_copy (args_copy, args);
               arg0 = (gpointer) va_arg (args_copy, gpointer);
               if ((param_types[0] & G_SIGNAL_TYPE_STATIC_SCOPE) == 0 && arg0 != NULL)
                 arg0 = g_param_spec_ref (arg0);

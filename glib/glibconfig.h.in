@@ -118,6 +118,7 @@ typedef unsigned @glib_intptr_type_define@ guintptr;
 
 @glib_os@
 
+#define G_VA_COPY va_copy
 @glib_vacopy@
 
 #define G_HAVE_ISO_VARARGS 1

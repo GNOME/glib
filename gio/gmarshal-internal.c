@@ -125,7 +125,7 @@ _g_cclosure_marshal_BOOLEAN__OBJECTv (GClosure *closure,
   gpointer arg0;
   va_list args_copy;
 
-  G_VA_COPY (args_copy, args);
+  va_copy (args_copy, args);
   arg0 = (gpointer) va_arg (args_copy, gpointer);
   if (arg0 != NULL)
     arg0 = g_object_ref (arg0);
@@ -216,7 +216,7 @@ _g_cclosure_marshal_BOOLEAN__OBJECT_FLAGSv (GClosure *closure,
   guint arg1;
   va_list args_copy;
 
-  G_VA_COPY (args_copy, args);
+  va_copy (args_copy, args);
   arg0 = (gpointer) va_arg (args_copy, gpointer);
   if (arg0 != NULL)
     arg0 = g_object_ref (arg0);
@@ -309,7 +309,7 @@ _g_cclosure_marshal_BOOLEAN__OBJECT_OBJECTv (GClosure *closure,
   gpointer arg1;
   va_list args_copy;
 
-  G_VA_COPY (args_copy, args);
+  va_copy (args_copy, args);
   arg0 = (gpointer) va_arg (args_copy, gpointer);
   if (arg0 != NULL)
     arg0 = g_object_ref (arg0);
@@ -406,7 +406,7 @@ _g_cclosure_marshal_BOOLEAN__POINTER_INTv (GClosure *closure,
   gint arg1;
   va_list args_copy;
 
-  G_VA_COPY (args_copy, args);
+  va_copy (args_copy, args);
   arg0 = (gpointer) va_arg (args_copy, gpointer);
   arg1 = (gint) va_arg (args_copy, gint);
   va_end (args_copy);
@@ -494,7 +494,7 @@ _g_cclosure_marshal_BOOLEAN__STRINGv (GClosure *closure,
 
   g_return_if_fail (return_value != NULL);
 
-  G_VA_COPY (args_copy, args);
+  va_copy (args_copy, args);
   arg0 = (gpointer) va_arg (args_copy, gpointer);
   if ((param_types[0] & G_SIGNAL_TYPE_STATIC_SCOPE) == 0 && arg0 != NULL)
     arg0 = g_strdup (arg0);
@@ -579,7 +579,7 @@ _g_cclosure_marshal_BOOLEAN__UINTv (GClosure *closure,
   guint arg0;
   va_list args_copy;
 
-  G_VA_COPY (args_copy, args);
+  va_copy (args_copy, args);
   arg0 = (guint) va_arg (args_copy, guint);
   va_end (args_copy);
 
@@ -737,7 +737,7 @@ _g_cclosure_marshal_INT__BOXEDv (GClosure *closure,
   gpointer arg0;
   va_list args_copy;
 
-  G_VA_COPY (args_copy, args);
+  va_copy (args_copy, args);
   arg0 = (gpointer) va_arg (args_copy, gpointer);
   if ((param_types[0] & G_SIGNAL_TYPE_STATIC_SCOPE) == 0 && arg0 != NULL)
     arg0 = g_boxed_copy (param_types[0] & ~G_SIGNAL_TYPE_STATIC_SCOPE, arg0);
@@ -824,7 +824,7 @@ _g_cclosure_marshal_INT__OBJECTv (GClosure *closure,
   gpointer arg0;
   va_list args_copy;
 
-  G_VA_COPY (args_copy, args);
+  va_copy (args_copy, args);
   arg0 = (gpointer) va_arg (args_copy, gpointer);
   if (arg0 != NULL)
     arg0 = g_object_ref (arg0);
@@ -910,7 +910,7 @@ _g_cclosure_marshal_VOID__BOOLEAN_BOXEDv (GClosure *closure,
   gpointer arg1;
   va_list args_copy;
 
-  G_VA_COPY (args_copy, args);
+  va_copy (args_copy, args);
   arg0 = (gboolean) va_arg (args_copy, gboolean);
   arg1 = (gpointer) va_arg (args_copy, gpointer);
   if ((param_types[1] & G_SIGNAL_TYPE_STATIC_SCOPE) == 0 && arg1 != NULL)
@@ -995,7 +995,7 @@ _g_cclosure_marshal_VOID__ENUM_OBJECTv (GClosure *closure,
   gpointer arg1;
   va_list args_copy;
 
-  G_VA_COPY (args_copy, args);
+  va_copy (args_copy, args);
   arg0 = (gint) va_arg (args_copy, gint);
   arg1 = (gpointer) va_arg (args_copy, gpointer);
   if (arg1 != NULL)
@@ -1084,7 +1084,7 @@ _g_cclosure_marshal_VOID__ENUM_OBJECT_OBJECTv (GClosure *closure,
   gpointer arg2;
   va_list args_copy;
 
-  G_VA_COPY (args_copy, args);
+  va_copy (args_copy, args);
   arg0 = (gint) va_arg (args_copy, gint);
   arg1 = (gpointer) va_arg (args_copy, gpointer);
   if (arg1 != NULL)
@@ -1179,7 +1179,7 @@ _g_cclosure_marshal_VOID__INT_INT_INTv (GClosure *closure,
   gint arg2;
   va_list args_copy;
 
-  G_VA_COPY (args_copy, args);
+  va_copy (args_copy, args);
   arg0 = (gint) va_arg (args_copy, gint);
   arg1 = (gint) va_arg (args_copy, gint);
   arg2 = (gint) va_arg (args_copy, gint);
@@ -1263,7 +1263,7 @@ _g_cclosure_marshal_VOID__OBJECT_OBJECTv (GClosure *closure,
   gpointer arg1;
   va_list args_copy;
 
-  G_VA_COPY (args_copy, args);
+  va_copy (args_copy, args);
   arg0 = (gpointer) va_arg (args_copy, gpointer);
   if (arg0 != NULL)
     arg0 = g_object_ref (arg0);
@@ -1356,7 +1356,7 @@ _g_cclosure_marshal_VOID__OBJECT_OBJECT_ENUMv (GClosure *closure,
   gint arg2;
   va_list args_copy;
 
-  G_VA_COPY (args_copy, args);
+  va_copy (args_copy, args);
   arg0 = (gpointer) va_arg (args_copy, gpointer);
   if (arg0 != NULL)
     arg0 = g_object_ref (arg0);
@@ -1459,7 +1459,7 @@ _g_cclosure_marshal_VOID__OBJECT_OBJECT_STRING_STRING_VARIANTv (GClosure *closur
   gpointer arg4;
   va_list args_copy;
 
-  G_VA_COPY (args_copy, args);
+  va_copy (args_copy, args);
   arg0 = (gpointer) va_arg (args_copy, gpointer);
   if (arg0 != NULL)
     arg0 = g_object_ref (arg0);
@@ -1574,7 +1574,7 @@ _g_cclosure_marshal_VOID__OBJECT_OBJECT_VARIANT_BOXEDv (GClosure *closure,
   gpointer arg3;
   va_list args_copy;
 
-  G_VA_COPY (args_copy, args);
+  va_copy (args_copy, args);
   arg0 = (gpointer) va_arg (args_copy, gpointer);
   if (arg0 != NULL)
     arg0 = g_object_ref (arg0);
@@ -1675,7 +1675,7 @@ _g_cclosure_marshal_VOID__OBJECT_VARIANTv (GClosure *closure,
   gpointer arg1;
   va_list args_copy;
 
-  G_VA_COPY (args_copy, args);
+  va_copy (args_copy, args);
   arg0 = (gpointer) va_arg (args_copy, gpointer);
   if (arg0 != NULL)
     arg0 = g_object_ref (arg0);
@@ -1768,7 +1768,7 @@ _g_cclosure_marshal_VOID__POINTER_INT_STRINGv (GClosure *closure,
   gpointer arg2;
   va_list args_copy;
 
-  G_VA_COPY (args_copy, args);
+  va_copy (args_copy, args);
   arg0 = (gpointer) va_arg (args_copy, gpointer);
   arg1 = (gint) va_arg (args_copy, gint);
   arg2 = (gpointer) va_arg (args_copy, gpointer);
@@ -1855,7 +1855,7 @@ _g_cclosure_marshal_VOID__STRING_BOOLEANv (GClosure *closure,
   gboolean arg1;
   va_list args_copy;
 
-  G_VA_COPY (args_copy, args);
+  va_copy (args_copy, args);
   arg0 = (gpointer) va_arg (args_copy, gpointer);
   if ((param_types[0] & G_SIGNAL_TYPE_STATIC_SCOPE) == 0 && arg0 != NULL)
     arg0 = g_strdup (arg0);
@@ -1940,7 +1940,7 @@ _g_cclosure_marshal_VOID__STRING_BOXEDv (GClosure *closure,
   gpointer arg1;
   va_list args_copy;
 
-  G_VA_COPY (args_copy, args);
+  va_copy (args_copy, args);
   arg0 = (gpointer) va_arg (args_copy, gpointer);
   if ((param_types[0] & G_SIGNAL_TYPE_STATIC_SCOPE) == 0 && arg0 != NULL)
     arg0 = g_strdup (arg0);
@@ -2033,7 +2033,7 @@ _g_cclosure_marshal_VOID__STRING_BOXED_BOXEDv (GClosure *closure,
   gpointer arg2;
   va_list args_copy;
 
-  G_VA_COPY (args_copy, args);
+  va_copy (args_copy, args);
   arg0 = (gpointer) va_arg (args_copy, gpointer);
   if ((param_types[0] & G_SIGNAL_TYPE_STATIC_SCOPE) == 0 && arg0 != NULL)
     arg0 = g_strdup (arg0);
@@ -2132,7 +2132,7 @@ _g_cclosure_marshal_VOID__STRING_INT64_INT64v (GClosure *closure,
   gint64 arg2;
   va_list args_copy;
 
-  G_VA_COPY (args_copy, args);
+  va_copy (args_copy, args);
   arg0 = (gpointer) va_arg (args_copy, gpointer);
   if ((param_types[0] & G_SIGNAL_TYPE_STATIC_SCOPE) == 0 && arg0 != NULL)
     arg0 = g_strdup (arg0);
@@ -2227,7 +2227,7 @@ _g_cclosure_marshal_VOID__STRING_STRING_STRING_FLAGSv (GClosure *closure,
   guint arg3;
   va_list args_copy;
 
-  G_VA_COPY (args_copy, args);
+  va_copy (args_copy, args);
   arg0 = (gpointer) va_arg (args_copy, gpointer);
   if ((param_types[0] & G_SIGNAL_TYPE_STATIC_SCOPE) == 0 && arg0 != NULL)
     arg0 = g_strdup (arg0);
@@ -2328,7 +2328,7 @@ _g_cclosure_marshal_VOID__STRING_STRING_VARIANTv (GClosure *closure,
   gpointer arg2;
   va_list args_copy;
 
-  G_VA_COPY (args_copy, args);
+  va_copy (args_copy, args);
   arg0 = (gpointer) va_arg (args_copy, gpointer);
   if ((param_types[0] & G_SIGNAL_TYPE_STATIC_SCOPE) == 0 && arg0 != NULL)
     arg0 = g_strdup (arg0);
@@ -2423,7 +2423,7 @@ _g_cclosure_marshal_VOID__STRING_VARIANTv (GClosure *closure,
   gpointer arg1;
   va_list args_copy;
 
-  G_VA_COPY (args_copy, args);
+  va_copy (args_copy, args);
   arg0 = (gpointer) va_arg (args_copy, gpointer);
   if ((param_types[0] & G_SIGNAL_TYPE_STATIC_SCOPE) == 0 && arg0 != NULL)
     arg0 = g_strdup (arg0);
@@ -2516,7 +2516,7 @@ _g_cclosure_marshal_VOID__UINT_UINT_UINTv (GClosure *closure,
   guint arg2;
   va_list args_copy;
 
-  G_VA_COPY (args_copy, args);
+  va_copy (args_copy, args);
   arg0 = (guint) va_arg (args_copy, guint);
   arg1 = (guint) va_arg (args_copy, guint);
   arg2 = (guint) va_arg (args_copy, guint);
@@ -2600,7 +2600,7 @@ _g_cclosure_marshal_VOID__VARIANT_BOXEDv (GClosure *closure,
   gpointer arg1;
   va_list args_copy;
 
-  G_VA_COPY (args_copy, args);
+  va_copy (args_copy, args);
   arg0 = (gpointer) va_arg (args_copy, gpointer);
   if ((param_types[0] & G_SIGNAL_TYPE_STATIC_SCOPE) == 0 && arg0 != NULL)
     arg0 = g_variant_ref_sink (arg0);

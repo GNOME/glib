@@ -1646,38 +1646,11 @@ else
 endif
 
 # === va_copy checks ===
-# we currently check for all three va_copy possibilities, so we get
-# all results in config.log for bug reports.
 
-va_copy_func = ''
-foreach try_func : [ '__va_copy', 'va_copy' ]
-  if cc.compiles('''#include <stdarg.h>
-                    #include <stdlib.h>
-                    #ifdef _MSC_VER
-                    # include "msvc_recommended_pragmas.h"
-                    #endif
-                    void f (int i, ...) {
-                    va_list args1, args2;
-                    va_start (args1, i);
-                    @0@ (args2, args1);
-                    if (va_arg (args2, int) != 42 || va_arg (args1, int) != 42)
-                      exit (1);
-                    va_end (args1); va_end (args2);
-                    }
-                    int main() {
-                      f (0, 42);
-                      return 0;
-                    }'''.format(try_func),
-                    name : try_func + ' check')
-    va_copy_func = try_func
-  endif
-endforeach
-if va_copy_func != ''
-  glib_conf.set('G_VA_COPY', va_copy_func)
-  glib_vacopy = '#define G_VA_COPY ' + va_copy_func
-else
-  glib_vacopy = '/* #undef G_VA_COPY */'
-endif
+glib_vacopy = ''
+
+# We check for G_VA_COPY_AS_ARRAY for historical reasons, but we no longer
+# use it: use Standard C va_copy() instead.
 
 va_list_val_copy_prog = '''
   #include <stdarg.h>
