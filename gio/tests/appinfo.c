@@ -16,12 +16,6 @@ test_launch_for_app_info (GAppInfo *appinfo)
   const gchar *path;
   gchar *uri;
 
-  if (g_getenv ("DISPLAY") == NULL || g_getenv ("DISPLAY")[0] == '\0')
-    {
-      g_test_skip ("No DISPLAY set");
-      return;
-    }
-
   success = g_app_info_launch (appinfo, NULL, NULL, &error);
   g_assert_no_error (error);
   g_assert_true (success);

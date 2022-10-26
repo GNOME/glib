@@ -33,6 +33,62 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
+G_DECLARE_FINAL_TYPE (TestLaunchContext, test_launch_context, TEST,
+                      LAUNCH_CONTEXT, GAppLaunchContext);
+
+struct _TestLaunchContext {
+  GAppLaunchContext parent;
+
+  char *overriden_startup_notify_id;
+};
+
+struct _TestLaunchContextClass {
+  GAppLaunchContextClass parent;
+};
+
+G_DEFINE_FINAL_TYPE (TestLaunchContext, test_launch_context,
+                     G_TYPE_APP_LAUNCH_CONTEXT);
+
+static void
+test_launch_context_init (TestLaunchContext *test_context)
+{
+}
+
+static char *
+test_launch_context_get_startup_notify_id (GAppLaunchContext *context,
+                                           GAppInfo *app_info,
+                                           GList *files)
+{
+  TestLaunchContext *test_context = TEST_LAUNCH_CONTEXT (context);
+
+  if (test_context->overriden_startup_notify_id)
+    return g_strdup (test_context->overriden_startup_notify_id);
+
+  if (g_app_info_get_id (app_info))
+    return g_strdup (g_app_info_get_id (app_info));
+
+  if (g_app_info_get_display_name (app_info))
+    return g_strdup (g_app_info_get_display_name (app_info));
+
+  return g_strdup (g_app_info_get_commandline (app_info));
+}
+
+static void
+test_launch_context_get_startup_notify_dispose (GObject *object)
+{
+  TestLaunchContext *test_context = TEST_LAUNCH_CONTEXT (object);
+
+  g_clear_pointer (&test_context->overriden_startup_notify_id, g_free);
+  G_OBJECT_CLASS (test_launch_context_parent_class)->dispose (object);
+}
+
+static void
+test_launch_context_class_init (TestLaunchContextClass *klass)
+{
+  G_APP_LAUNCH_CONTEXT_CLASS (klass)->get_startup_notify_id = test_launch_context_get_startup_notify_id;
+  G_OBJECT_CLASS (klass)->dispose = test_launch_context_get_startup_notify_dispose;
+}
+
 static GAppInfo *
 create_command_line_app_info (const char *name,
                               const char *command_line,
@@ -951,9 +1007,61 @@ on_launch_started (GAppLaunchContext *context, GAppInfo *info, GVariant *platfor
   gboolean *invoked = data;
 
   g_assert_true (G_IS_APP_LAUNCH_CONTEXT (context));
+
+  if (TEST_IS_LAUNCH_CONTEXT (context))
+    {
+      GVariantDict dict;
+      const char *sni;
+      char *expected_sni;
+
+      g_assert_nonnull (platform_data);
+      g_variant_dict_init (&dict, platform_data);
+      g_assert_true (
+        g_variant_dict_lookup (&dict, "startup-notification-id", "&s", &sni));
+      expected_sni = g_app_launch_context_get_startup_notify_id (context, info, NULL);
+      g_assert_cmpstr (sni, ==, expected_sni);
+
+      g_free (expected_sni);
+      g_variant_dict_clear (&dict);
+    }
+  else
+    {
+      /* Our default context doesn't fill in any platform data */
+      g_assert_null (platform_data);
+    }
+
+  g_assert_false (*invoked);
+  *invoked = TRUE;
+}
+
+static void
+on_launched (GAppLaunchContext *context, GAppInfo *info, GVariant *platform_data, gpointer data)
+{
+  gboolean *launched = data;
+  GVariantDict dict;
+  int pid;
+
+  g_assert_true (G_IS_APP_LAUNCH_CONTEXT (context));
   g_assert_true (G_IS_APP_INFO (info));
-  /* Our default context doesn't fill in any platform data */
-  g_assert_null (platform_data);
+  g_assert_nonnull (platform_data);
+  g_variant_dict_init (&dict, platform_data);
+  g_assert_true (g_variant_dict_lookup (&dict, "pid", "i", &pid, NULL));
+  g_assert_cmpint (pid, >, 1);
+
+  g_assert_false (*launched);
+  *launched = TRUE;
+
+  g_variant_dict_clear (&dict);
+}
+
+static void
+on_launch_failed (GAppLaunchContext *context, const char *startup_notify_id, gpointer data)
+{
+  gboolean *invoked = data;
+
+  g_assert_true (G_IS_APP_LAUNCH_CONTEXT (context));
+  g_assert_nonnull (startup_notify_id);
+  g_test_message ("Application launch failed: %s", startup_notify_id);
 
   g_assert_false (*invoked);
   *invoked = TRUE;
@@ -970,13 +1078,9 @@ test_launch_as_manager (void)
   gboolean retval;
   const gchar *path;
   gboolean invoked = FALSE;
+  gboolean launched = FALSE;
+  gboolean failed = FALSE;
   GAppLaunchContext *context;
-
-  if (g_getenv ("DISPLAY") == NULL || g_getenv ("DISPLAY")[0] == '\0')
-    {
-      g_test_skip ("No DISPLAY.  Skipping test.");
-      return;
-    }
 
   path = g_test_get_filename (G_TEST_BUILT, "appinfo-test.desktop", NULL);
   appinfo = g_desktop_app_info_new_from_filename (path);
@@ -987,10 +1091,16 @@ test_launch_as_manager (void)
       return;
     }
 
-  context = g_app_launch_context_new ();
+  context = g_object_new (test_launch_context_get_type (), NULL);
   g_signal_connect (context, "launch-started",
                     G_CALLBACK (on_launch_started),
                     &invoked);
+  g_signal_connect (context, "launched",
+                    G_CALLBACK (on_launched),
+                    &launched);
+  g_signal_connect (context, "launch-failed",
+                    G_CALLBACK (on_launch_failed),
+                    &failed);
   retval = g_desktop_app_info_launch_uris_as_manager (appinfo, NULL, context, 0,
                                                       NULL, NULL,
                                                       NULL, NULL,
@@ -998,8 +1108,12 @@ test_launch_as_manager (void)
   g_assert_no_error (error);
   g_assert_true (retval);
   g_assert_true (invoked);
+  g_assert_true (launched);
+  g_assert_false (failed);
 
   invoked = FALSE;
+  launched = FALSE;
+  failed = FALSE;
   retval = g_desktop_app_info_launch_uris_as_manager_with_fds (appinfo,
                                                                NULL, context, 0,
                                                                NULL, NULL,
@@ -1009,7 +1123,61 @@ test_launch_as_manager (void)
   g_assert_no_error (error);
   g_assert_true (retval);
   g_assert_true (invoked);
+  g_assert_true (launched);
+  g_assert_false (failed);
 
+  g_object_unref (appinfo);
+  g_assert_finalize_object (context);
+}
+
+static void
+test_launch_as_manager_fail (void)
+{
+  GAppLaunchContext *context;
+  GDesktopAppInfo *appinfo;
+  GError *error = NULL;
+  gboolean retval;
+  const gchar *path;
+  gboolean launch_started = FALSE;
+  gboolean launched = FALSE;
+  gboolean failed = FALSE;
+
+  g_test_summary ("Tests that launch-errors are properly handled, we force " \
+                  "this by using invalid FD's values when launching as manager");
+
+  path = g_test_get_filename (G_TEST_BUILT, "appinfo-test.desktop", NULL);
+  appinfo = g_desktop_app_info_new_from_filename (path);
+
+  if (appinfo == NULL)
+    {
+      g_test_skip ("appinfo-test binary not installed");
+      return;
+    }
+
+  context = g_object_new (test_launch_context_get_type (), NULL);
+  g_signal_connect (context, "launch-started",
+                    G_CALLBACK (on_launch_started),
+                    &launch_started);
+  g_signal_connect (context, "launched",
+                    G_CALLBACK (on_launched),
+                    &launched);
+  g_signal_connect (context, "launch-failed",
+                    G_CALLBACK (on_launch_failed),
+                    &failed);
+
+  retval = g_desktop_app_info_launch_uris_as_manager_with_fds (appinfo,
+                                                               NULL, context, 0,
+                                                               NULL, NULL,
+                                                               NULL, NULL,
+                                                               3000, 3001, 3002,
+                                                               &error);
+  g_assert_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED);
+  g_assert_false (retval);
+  g_assert_true (launch_started);
+  g_assert_false (launched);
+  g_assert_true (failed);
+
+  g_clear_error (&error);
   g_object_unref (appinfo);
   g_assert_finalize_object (context);
 }
@@ -1438,6 +1606,7 @@ main (int   argc,
   g_test_add_func ("/desktop-app-info/implements", test_implements);
   g_test_add_func ("/desktop-app-info/show-in", test_show_in);
   g_test_add_func ("/desktop-app-info/launch-as-manager", test_launch_as_manager);
+  g_test_add_func ("/desktop-app-info/launch-as-manager/fail", test_launch_as_manager_fail);
   g_test_add_func ("/desktop-app-info/launch-default-uri-handler", test_default_uri_handler);
   g_test_add_func ("/desktop-app-info/launch-default-uri-handler-async", test_default_uri_handler_async);
   g_test_add_func ("/desktop-app-info/id", test_id);
