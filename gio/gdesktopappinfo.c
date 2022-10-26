@@ -2638,6 +2638,7 @@ prepend_terminal_to_vector (int    *argc,
     const char *exec_arg;
   } known_terminals[] = {
     { "xdg-terminal-exec", NULL },
+    { "kgx", "-e" },
     { "gnome-terminal", "--" },
     { "mate-terminal", "-x" },
     { "xfce4-terminal", "-x" },
