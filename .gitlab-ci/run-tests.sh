@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 ./.gitlab-ci/check-missing-install-tag.py _build
 
 meson test \

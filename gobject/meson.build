@@ -32,6 +32,8 @@ gvisibility_h = custom_target(
   command: [gen_visibility_macros, meson.project_version(), 'visibility-macros', 'GOBJECT', '@OUTPUT@'],
   install: true,
   install_dir: gobject_includedir,
+  # FIXME: Not needed with Meson >= 0.64.0
+  install_tag: 'devel',
 )
 gobject_sources += gvisibility_h
 
@@ -120,6 +122,7 @@ glib_enumtypes_h = custom_target('glib_enumtypes_h',
   input : glib_enumtypes_input_headers,
   install : true,
   install_dir : join_paths(get_option('includedir'), 'glib-2.0/gobject'),
+  install_tag: 'devel',
   command : [python, glib_mkenums,
              '--template', files('glib-enumtypes.h.template'),
              '@INPUT@'])

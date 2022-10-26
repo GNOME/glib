@@ -73,6 +73,8 @@ gvisibility_h = custom_target(
   command: [gen_visibility_macros, meson.project_version(), 'visibility-macros', 'GMODULE', '@OUTPUT@'],
   install: true,
   install_dir: g_module_includedir,
+  # FIXME: Not needed with Meson >= 0.64.0
+  install_tag: 'devel',
 )
 
 gmodule_sources = [gmodule_c, gvisibility_h]
