@@ -20,23 +20,50 @@
 
 #include "config.h"
 
+#include "glib-private.h"
 #include "gportalsupport.h"
 #include "gsandbox.h"
 
+static GSandboxType sandbox_type = G_SANDBOX_TYPE_UNKNOWN;
 static gboolean use_portal;
 static gboolean network_available;
 static gboolean dconf_access;
 
+static gboolean
+snap_plug_is_connected (const gchar *plug_name)
+{
+  const gchar *argv[] = { "snapctl", "is-connected", plug_name, NULL };
+  gint wait_status;
+
+  /* Bail out if our process is privileged - we don't want to pass those
+   * privileges to snapctl. It could be overridden using PATH and this would
+   * allow arbitrary code execution.
+   */
+  if (GLIB_PRIVATE_CALL (g_check_setuid) ())
+    return FALSE;
+
+  if (!g_spawn_sync (NULL, (gchar **) argv, NULL,
+                     G_SPAWN_SEARCH_PATH |
+                         G_SPAWN_STDOUT_TO_DEV_NULL |
+                         G_SPAWN_STDERR_TO_DEV_NULL,
+                     NULL, NULL, NULL, NULL, &wait_status,
+                     NULL))
+    return FALSE;
+
+  return g_spawn_check_wait_status (wait_status, NULL);
+}
+
 static void
 sandbox_info_read (void)
 {
-  static gsize flatpak_info_read = 0;
-  GSandboxType sandbox_type;
+  static gsize sandbox_info_is_read = 0;
 
-  if (!g_once_init_enter (&flatpak_info_read))
+  /* Sandbox type and Flatpak info is static, so only read once */
+  if (!g_once_init_enter (&sandbox_info_is_read))
     return;
 
   sandbox_type = glib_get_sandbox_type ();
+
   switch (sandbox_type)
     {
     case G_SANDBOX_TYPE_FLATPAK:
@@ -72,8 +99,9 @@ sandbox_info_read (void)
         g_key_file_unref (keyfile);
       }
       break;
-    case G_SANDBOX_TYPE_UNKNOWN:
     case G_SANDBOX_TYPE_SNAP:
+      break;
+    case G_SANDBOX_TYPE_UNKNOWN:
       {
         const char *var;
 
@@ -86,13 +114,17 @@ sandbox_info_read (void)
       break;
     }
 
-  g_once_init_leave (&flatpak_info_read, 1);
+  g_once_init_leave (&sandbox_info_is_read, 1);
 }
 
 gboolean
 glib_should_use_portal (void)
 {
   sandbox_info_read ();
+
+  if (sandbox_type == G_SANDBOX_TYPE_SNAP)
+    return snap_plug_is_connected ("desktop");
+
   return use_portal;
 }
 
@@ -100,6 +132,17 @@ gboolean
 glib_network_available_in_sandbox (void)
 {
   sandbox_info_read ();
+
+  if (sandbox_type == G_SANDBOX_TYPE_SNAP)
+    {
+      /* FIXME: This is inefficient doing multiple calls to check connections.
+       * See https://github.com/snapcore/snapd/pull/12301 for a proposed
+       * improvement to snapd for this.
+       */
+      return snap_plug_is_connected ("desktop") ||
+        snap_plug_is_connected ("network-status");
+    }
+
   return network_available;
 }
 
@@ -107,5 +150,9 @@ gboolean
 glib_has_dconf_access_in_sandbox (void)
 {
   sandbox_info_read ();
+
+  if (sandbox_type == G_SANDBOX_TYPE_SNAP)
+    return snap_plug_is_connected ("gsettings");
+
   return dconf_access;
 }
