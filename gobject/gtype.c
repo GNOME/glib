@@ -4774,7 +4774,7 @@ g_type_add_instance_private (GType class_gtype,
    * hide it behind a macro. the function will return the private size, instead
    * of the offset, which will be stored inside a static variable defined by
    * the G_DEFINE_TYPE_EXTENDED() macro. the G_DEFINE_TYPE_EXTENDED() macro will
-   * check the variable and call g_type_class_add_instance_private(), which
+   * check the variable and call g_type_class_adjust_private_offset(), which
    * will use the data size and actually register the private data, then
    * return the computed offset of the private data, which will be stored
    * inside the static variable, so we can use it to retrieve the pointer
@@ -4783,7 +4783,7 @@ g_type_add_instance_private (GType class_gtype,
    * once all our code has been migrated to the new idiomatic form of private
    * data registration, we will change the g_type_add_instance_private()
    * function to actually perform the registration and return the offset
-   * of the private data; g_type_class_add_instance_private() already checks
+   * of the private data; g_type_class_adjust_private_offset() already checks
    * if the passed argument is negative (meaning that it's an offset in the
    * GTypeInstance allocation) and becomes a no-op if that's the case. this
    * should make the migration fully transparent even if we're effectively
