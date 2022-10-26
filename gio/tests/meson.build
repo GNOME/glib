@@ -856,8 +856,6 @@ if meson.can_run_host_binaries()
   gio_tests += {
     'resources' : {
       'extra_sources' : resources_extra_sources,
-      # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
-      'should_fail' : host_system == 'darwin',
     },
   }
 endif

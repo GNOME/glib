@@ -805,7 +805,11 @@ test_uri_query_info (void)
   g_assert_nonnull (content_type);
   mime_type = g_content_type_get_mime_type (content_type);
   g_assert_nonnull (mime_type);
+#ifdef G_OS_DARWIN
+  g_assert_cmpstr (mime_type, ==, "text/*");
+#else
   g_assert_cmpstr (mime_type, ==, "text/plain");
+#endif
   g_free (mime_type);
 
   g_object_unref (info);
