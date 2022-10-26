@@ -1454,6 +1454,8 @@ g_creat
 g_chdir
 g_utime
 g_close
+g_clear_fd
+g_autofd
 
 <SUBSECTION Private>
 g_file_error_quark
