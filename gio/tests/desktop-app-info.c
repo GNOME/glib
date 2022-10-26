@@ -1187,6 +1187,8 @@ test_id (void)
 static const char *
 get_terminal_divider (const char *terminal_name)
 {
+  if (g_str_equal (terminal_name, "xdg-terminal-exec"))
+    return NULL;
   if (g_str_equal (terminal_name, "gnome-terminal"))
     return "--";
   if (g_str_equal (terminal_name, "tilix"))
@@ -1217,6 +1219,7 @@ test_launch_uris_with_terminal (gconstpointer data)
   int fd;
   int ret;
   int flags;
+  int terminal_divider_arg_length;
   const char *terminal_exec = data;
   char *old_path;
   char *command_line;
@@ -1312,12 +1315,21 @@ test_launch_uris_with_terminal (gconstpointer data)
   output_args = g_strsplit (output_contents, " ", -1);
   g_clear_pointer (&output_contents, g_free);
 
-  g_assert_cmpuint (g_strv_length (output_args), ==, 4);
-  g_assert_cmpstr (output_args[0], ==, get_terminal_divider (terminal_exec));
-  g_assert_cmpstr (output_args[1], ==, "true");
-  g_assert_cmpstr (output_args[2], ==, command_line + 5);
+  terminal_divider_arg_length = (get_terminal_divider (terminal_exec) != NULL) ? 1 : 0;
+  g_assert_cmpuint (g_strv_length (output_args), ==, 3 + terminal_divider_arg_length);
+  if (terminal_divider_arg_length == 1)
+    {
+      g_assert_cmpstr (output_args[0], ==, get_terminal_divider (terminal_exec));
+      g_assert_cmpstr (output_args[1], ==, "true");
+      g_assert_cmpstr (output_args[2], ==, command_line + 5);
+    }
+  else
+    {
+      g_assert_cmpstr (output_args[0], ==, "true");
+      g_assert_cmpstr (output_args[1], ==, command_line + 5);
+    }
   paths = g_list_delete_link (paths,
-    g_list_find_custom (paths, output_args[3], g_str_equal));
+    g_list_find_custom (paths, output_args[2 + terminal_divider_arg_length], g_str_equal));
   g_assert_cmpint (g_list_length (paths), ==, 1);
   g_clear_pointer (&output_args, g_strfreev);
 
@@ -1337,12 +1349,20 @@ test_launch_uris_with_terminal (gconstpointer data)
 
   output_args = g_strsplit (output_contents, " ", -1);
   g_clear_pointer (&output_contents, g_free);
-  g_assert_cmpuint (g_strv_length (output_args), ==, 4);
-  g_assert_cmpstr (output_args[0], ==, get_terminal_divider (terminal_exec));
-  g_assert_cmpstr (output_args[1], ==, "true");
-  g_assert_cmpstr (output_args[2], ==, command_line + 5);
+  g_assert_cmpuint (g_strv_length (output_args), ==, 3 + terminal_divider_arg_length);
+  if (terminal_divider_arg_length > 0)
+    {
+      g_assert_cmpstr (output_args[0], ==, get_terminal_divider (terminal_exec));
+      g_assert_cmpstr (output_args[1], ==, "true");
+      g_assert_cmpstr (output_args[2], ==, command_line + 5);
+    }
+  else
+    {
+      g_assert_cmpstr (output_args[0], ==, "true");
+      g_assert_cmpstr (output_args[1], ==, command_line + 5);
+    }
   paths = g_list_delete_link (paths,
-    g_list_find_custom (paths, output_args[3], g_str_equal));
+    g_list_find_custom (paths, output_args[2 + terminal_divider_arg_length], g_str_equal));
   g_assert_cmpint (g_list_length (paths), ==, 0);
   g_clear_pointer (&output_args, g_strfreev);
 
@@ -1408,6 +1428,7 @@ main (int   argc,
 {
   guint i;
   const gchar *supported_terminals[] = {
+    "xdg-terminal-exec",
     "gnome-terminal",
     "mate-terminal",
     "xfce4-terminal",
