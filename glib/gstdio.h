@@ -190,7 +190,10 @@ g_clear_fd (int     *fd_ptr,
   if (fd < 0)
     return TRUE;
 
+  /* Suppress "Not available before" warning */
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   return g_close (fd, error);
+  G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 /* g_autofd should be defined on the same compilers where g_autofree is
@@ -200,14 +203,17 @@ g_clear_fd (int     *fd_ptr,
 static inline void
 _g_clear_fd_ignore_error (int *fd_ptr)
 {
+  /* Suppress "Not available before" warning */
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   if (!g_clear_fd (fd_ptr, NULL))
     {
       /* Do nothing: we ignore all errors, except for EBADF which
        * is a programming error, checked for by g_close(). */
     }
+  G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
-#define g_autofd _GLIB_CLEANUP(_g_clear_fd_ignore_error)
+#define g_autofd _GLIB_CLEANUP(_g_clear_fd_ignore_error) GLIB_AVAILABLE_MACRO_IN_2_76
 #endif
 
 G_END_DECLS

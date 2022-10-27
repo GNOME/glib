@@ -56,6 +56,7 @@ glib_tests = {
   'markup-collect' : {},
   'markup-escape' : {},
   'markup-subparser' : {},
+  'max-version' : {'install' : false},
   'memchunk' : {},
   'mem-overflow' : {
     'link_args' : cc.get_id() == 'gcc' and cc.version().version_compare('> 6')
