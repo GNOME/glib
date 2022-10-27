@@ -47,6 +47,7 @@ gobject_tests = {
     'source' : ['dynamictype.c', 'testmodule.c'],
   },
   'enums' : {},
+  'max-version' : {'install': false},
   'override' : {},
   'param' : {},
   'references' : {},

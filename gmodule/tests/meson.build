@@ -1,4 +1,5 @@
 gmodule_tests = {
+  'max-version' : {'install': false},
   'module-test-library' : {
     'export_dynamic' : true,
     'source': 'module-test.c',

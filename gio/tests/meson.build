@@ -84,6 +84,7 @@ gio_tests = {
   },
   'inet-address' : {},
   'io-stream' : {},
+  'max-version' : {'install' : false},
   'memory-input-stream' : {},
   'memory-monitor' : {},
   'memory-output-stream' : {},
