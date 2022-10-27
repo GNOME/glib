@@ -5116,6 +5116,86 @@ test_normal_checking_array_offsets2 (void)
   g_variant_unref (variant);
 }
 
+/* Test that an otherwise-valid serialised GVariant is considered non-normal if
+ * its offset table entries are too wide.
+ *
+ * See §2.3.6 (Framing Offsets) of the GVariant specification. */
+static void
+test_normal_checking_array_offsets_minimal_sized (void)
+{
+  GVariantBuilder builder;
+  gsize i;
+  GVariant *aay_constructed = NULL;
+  const guint8 *data = NULL;
+  guint8 *data_owned = NULL;
+  GVariant *aay_deserialised = NULL;
+  GVariant *aay_normalised = NULL;
+
+  /* Construct an array of type aay, consisting of 128 elements which are each
+   * an empty array, i.e. `[[] * 128]`. This is chosen because the inner
+   * elements are variable sized (making the outer array variable sized, so it
+   * must have an offset table), but they are also zero-sized when serialised.
+   * So the serialised representation of @aay_constructed consists entirely of
+   * its offset table, which is entirely zeroes.
+   *
+   * The array is chosen to be 128 elements long because that means offset
+   * table entries which are 1 byte long. If the elements in the array were
+   * non-zero-sized (to the extent that the overall array is ≥256 bytes long),
+   * the offset table entries would end up being 2 bytes long. */
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("aay"));
+
+  for (i = 0; i < 128; i++)
+    g_variant_builder_add_value (&builder, g_variant_new_array (G_VARIANT_TYPE_BYTE, NULL, 0));
+
+  aay_constructed = g_variant_builder_end (&builder);
+
+  /* Verify that the constructed array is in normal form, and its serialised
+   * form is `b'\0' * 128`. */
+  g_assert_true (g_variant_is_normal_form (aay_constructed));
+  g_assert_cmpuint (g_variant_n_children (aay_constructed), ==, 128);
+  g_assert_cmpuint (g_variant_get_size (aay_constructed), ==, 128);
+
+  data = g_variant_get_data (aay_constructed);
+  for (i = 0; i < g_variant_get_size (aay_constructed); i++)
+    g_assert_cmpuint (data[i], ==, 0);
+
+  /* Construct a serialised `aay` GVariant which is `b'\0' * 256`. This has to
+   * be a non-normal form of `[[] * 128]`, with 2-byte-long offset table
+   * entries, because each offset table entry has to be able to reference all of
+   * the byte boundaries in the container. All the entries in the offset table
+   * are zero, so all the elements of the array are zero-sized. */
+  data = data_owned = g_malloc0 (256);
+  aay_deserialised = g_variant_new_from_data (G_VARIANT_TYPE ("aay"),
+                                              data,
+                                              256,
+                                              FALSE,
+                                              g_free,
+                                              g_steal_pointer (&data_owned));
+
+  g_assert_false (g_variant_is_normal_form (aay_deserialised));
+  g_assert_cmpuint (g_variant_n_children (aay_deserialised), ==, 128);
+  g_assert_cmpuint (g_variant_get_size (aay_deserialised), ==, 256);
+
+  data = g_variant_get_data (aay_deserialised);
+  for (i = 0; i < g_variant_get_size (aay_deserialised); i++)
+    g_assert_cmpuint (data[i], ==, 0);
+
+  /* Get its normal form. That should change the serialised size. */
+  aay_normalised = g_variant_get_normal_form (aay_deserialised);
+
+  g_assert_true (g_variant_is_normal_form (aay_normalised));
+  g_assert_cmpuint (g_variant_n_children (aay_normalised), ==, 128);
+  g_assert_cmpuint (g_variant_get_size (aay_normalised), ==, 128);
+
+  data = g_variant_get_data (aay_normalised);
+  for (i = 0; i < g_variant_get_size (aay_normalised); i++)
+    g_assert_cmpuint (data[i], ==, 0);
+
+  g_variant_unref (aay_normalised);
+  g_variant_unref (aay_deserialised);
+  g_variant_unref (aay_constructed);
+}
+
 /* Test that a tuple with invalidly large values in its offset table is
  * normalised successfully without looping infinitely. */
 static void
@@ -5310,6 +5390,98 @@ test_normal_checking_tuple_offsets4 (void)
   g_variant_unref (variant);
 }
 
+/* Test that an otherwise-valid serialised GVariant is considered non-normal if
+ * its offset table entries are too wide.
+ *
+ * See §2.3.6 (Framing Offsets) of the GVariant specification. */
+static void
+test_normal_checking_tuple_offsets_minimal_sized (void)
+{
+  GString *type_string = NULL;
+  GVariantBuilder builder;
+  gsize i;
+  GVariant *ray_constructed = NULL;
+  const guint8 *data = NULL;
+  guint8 *data_owned = NULL;
+  GVariant *ray_deserialised = NULL;
+  GVariant *ray_normalised = NULL;
+
+  /* Construct a tuple of type (ay…ay), consisting of 129 members which are each
+   * an empty array, i.e. `([] * 129)`. This is chosen because the inner
+   * members are variable sized, so the outer tuple must have an offset table,
+   * but they are also zero-sized when serialised. So the serialised
+   * representation of @ray_constructed consists entirely of its offset table,
+   * which is entirely zeroes.
+   *
+   * The tuple is chosen to be 129 members long because that means it has 128
+   * offset table entries which are 1 byte long each. If the members in the
+   * tuple were non-zero-sized (to the extent that the overall tuple is ≥256
+   * bytes long), the offset table entries would end up being 2 bytes long.
+   *
+   * 129 members are used unlike 128 array elements in
+   * test_normal_checking_array_offsets_minimal_sized(), because the last member
+   * in a tuple never needs an offset table entry. */
+  type_string = g_string_new ("");
+  g_string_append_c (type_string, '(');
+  for (i = 0; i < 129; i++)
+    g_string_append (type_string, "ay");
+  g_string_append_c (type_string, ')');
+
+  g_variant_builder_init (&builder, G_VARIANT_TYPE (type_string->str));
+
+  for (i = 0; i < 129; i++)
+    g_variant_builder_add_value (&builder, g_variant_new_array (G_VARIANT_TYPE_BYTE, NULL, 0));
+
+  ray_constructed = g_variant_builder_end (&builder);
+
+  /* Verify that the constructed tuple is in normal form, and its serialised
+   * form is `b'\0' * 128`. */
+  g_assert_true (g_variant_is_normal_form (ray_constructed));
+  g_assert_cmpuint (g_variant_n_children (ray_constructed), ==, 129);
+  g_assert_cmpuint (g_variant_get_size (ray_constructed), ==, 128);
+
+  data = g_variant_get_data (ray_constructed);
+  for (i = 0; i < g_variant_get_size (ray_constructed); i++)
+    g_assert_cmpuint (data[i], ==, 0);
+
+  /* Construct a serialised `(ay…ay)` GVariant which is `b'\0' * 256`. This has
+   * to be a non-normal form of `([] * 129)`, with 2-byte-long offset table
+   * entries, because each offset table entry has to be able to reference all of
+   * the byte boundaries in the container. All the entries in the offset table
+   * are zero, so all the members of the tuple are zero-sized. */
+  data = data_owned = g_malloc0 (256);
+  ray_deserialised = g_variant_new_from_data (G_VARIANT_TYPE (type_string->str),
+                                              data,
+                                              256,
+                                              FALSE,
+                                              g_free,
+                                              g_steal_pointer (&data_owned));
+
+  g_assert_false (g_variant_is_normal_form (ray_deserialised));
+  g_assert_cmpuint (g_variant_n_children (ray_deserialised), ==, 129);
+  g_assert_cmpuint (g_variant_get_size (ray_deserialised), ==, 256);
+
+  data = g_variant_get_data (ray_deserialised);
+  for (i = 0; i < g_variant_get_size (ray_deserialised); i++)
+    g_assert_cmpuint (data[i], ==, 0);
+
+  /* Get its normal form. That should change the serialised size. */
+  ray_normalised = g_variant_get_normal_form (ray_deserialised);
+
+  g_assert_true (g_variant_is_normal_form (ray_normalised));
+  g_assert_cmpuint (g_variant_n_children (ray_normalised), ==, 129);
+  g_assert_cmpuint (g_variant_get_size (ray_normalised), ==, 128);
+
+  data = g_variant_get_data (ray_normalised);
+  for (i = 0; i < g_variant_get_size (ray_normalised); i++)
+    g_assert_cmpuint (data[i], ==, 0);
+
+  g_variant_unref (ray_normalised);
+  g_variant_unref (ray_deserialised);
+  g_variant_unref (ray_constructed);
+  g_string_free (type_string, TRUE);
+}
+
 /* Test that an empty object path is normalised successfully to the base object
  * path, ‘/’. */
 static void
@@ -5457,6 +5629,8 @@ main (int argc, char **argv)
                    test_normal_checking_array_offsets);
   g_test_add_func ("/gvariant/normal-checking/array-offsets2",
                    test_normal_checking_array_offsets2);
+  g_test_add_func ("/gvariant/normal-checking/array-offsets/minimal-sized",
+                   test_normal_checking_array_offsets_minimal_sized);
   g_test_add_func ("/gvariant/normal-checking/tuple-offsets",
                    test_normal_checking_tuple_offsets);
   g_test_add_func ("/gvariant/normal-checking/tuple-offsets2",
@@ -5465,6 +5639,8 @@ main (int argc, char **argv)
                    test_normal_checking_tuple_offsets3);
   g_test_add_func ("/gvariant/normal-checking/tuple-offsets4",
                    test_normal_checking_tuple_offsets4);
+  g_test_add_func ("/gvariant/normal-checking/tuple-offsets/minimal-sized",
+                   test_normal_checking_tuple_offsets_minimal_sized);
   g_test_add_func ("/gvariant/normal-checking/empty-object-path",
                    test_normal_checking_empty_object_path);
 
