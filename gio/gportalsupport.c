@@ -28,7 +28,7 @@ static gboolean network_available;
 static gboolean dconf_access;
 
 static void
-read_flatpak_info (void)
+sandbox_info_read (void)
 {
   static gsize flatpak_info_read = 0;
   GSandboxType sandbox_type;
@@ -92,20 +92,20 @@ read_flatpak_info (void)
 gboolean
 glib_should_use_portal (void)
 {
-  read_flatpak_info ();
+  sandbox_info_read ();
   return use_portal;
 }
 
 gboolean
 glib_network_available_in_sandbox (void)
 {
-  read_flatpak_info ();
+  sandbox_info_read ();
   return network_available;
 }
 
 gboolean
 glib_has_dconf_access_in_sandbox (void)
 {
-  read_flatpak_info ();
+  sandbox_info_read ();
   return dconf_access;
 }
