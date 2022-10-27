@@ -6026,14 +6026,16 @@ g_variant_byteswap (GVariant *value)
       g_variant_serialised_byteswap (serialised);
 
       bytes = g_bytes_new_take (serialised.data, serialised.size);
-      new = g_variant_new_from_bytes (g_variant_get_type (value), bytes, TRUE);
+      new = g_variant_ref_sink (g_variant_new_from_bytes (g_variant_get_type (value), bytes, TRUE));
       g_bytes_unref (bytes);
     }
   else
     /* contains no multi-byte data */
-    new = value;
+    new = g_variant_get_normal_form (value);
 
-  return g_variant_ref_sink (new);
+  g_assert (g_variant_is_trusted (new));
+
+  return g_steal_pointer (&new);
 }
 
 /**

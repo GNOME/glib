@@ -3827,6 +3827,29 @@ test_gv_byteswap (void)
 }
 
 static void
+test_gv_byteswap_non_normal_non_aligned (void)
+{
+  const guint8 data[] = { 0x02 };
+  GVariant *v = NULL;
+  GVariant *v_byteswapped = NULL;
+
+  g_test_summary ("Test that calling g_variant_byteswap() on a variant which "
+                  "is in non-normal form and doesn’t need byteswapping returns "
+                  "the same variant in normal form.");
+
+  v = g_variant_new_from_data (G_VARIANT_TYPE_BOOLEAN, data, sizeof (data), FALSE, NULL, NULL);
+  g_assert_false (g_variant_is_normal_form (v));
+
+  v_byteswapped = g_variant_byteswap (v);
+  g_assert_true (g_variant_is_normal_form (v_byteswapped));
+
+  g_assert_cmpvariant (v, v_byteswapped);
+
+  g_variant_unref (v);
+  g_variant_unref (v_byteswapped);
+}
+
+static void
 test_parser (void)
 {
   TreeInstance *tree;
@@ -5594,6 +5617,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gvariant/builder-memory", test_builder_memory);
   g_test_add_func ("/gvariant/hashing", test_hashing);
   g_test_add_func ("/gvariant/byteswap", test_gv_byteswap);
+  g_test_add_func ("/gvariant/byteswap/non-normal-non-aligned", test_gv_byteswap_non_normal_non_aligned);
   g_test_add_func ("/gvariant/parser", test_parses);
   g_test_add_func ("/gvariant/parser/integer-bounds", test_parser_integer_bounds);
   g_test_add_func ("/gvariant/parser/recursion", test_parser_recursion);
