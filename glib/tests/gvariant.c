@@ -2288,24 +2288,67 @@ serialise_tree (TreeInstance       *tree,
 static void
 test_byteswap (void)
 {
-  GVariantSerialised one = { 0, }, two = { 0, };
+  GVariantSerialised one = { 0, }, two = { 0, }, three = { 0, };
   TreeInstance *tree;
+  GVariant *one_variant = NULL;
+  GVariant *two_variant = NULL;
+  GVariant *two_byteswapped = NULL;
+  GVariant *three_variant = NULL;
+  GVariant *three_byteswapped = NULL;
+  guint8 *three_data_copy = NULL;
+  gsize three_size_copy = 0;
 
+  /* Write a tree out twice, once normally and once byteswapped. */
   tree = tree_instance_new (NULL, 3);
   serialise_tree (tree, &one);
 
+  one_variant = g_variant_new_from_data (G_VARIANT_TYPE (g_variant_type_info_get_type_string (one.type_info)),
+                                         one.data, one.size, FALSE, NULL, NULL);
+
   i_am_writing_byteswapped = TRUE;
   serialise_tree (tree, &two);
+  serialise_tree (tree, &three);
   i_am_writing_byteswapped = FALSE;
 
-  g_variant_serialised_byteswap (two);
+  /* Swap the first byteswapped one back using the function we want to test. */
+  two_variant = g_variant_new_from_data (G_VARIANT_TYPE (g_variant_type_info_get_type_string (two.type_info)),
+                                         two.data, two.size, FALSE, NULL, NULL);
+  two_byteswapped = g_variant_byteswap (two_variant);
 
-  g_assert_cmpmem (one.data, one.size, two.data, two.size);
-  g_assert_cmpuint (one.depth, ==, two.depth);
+  /* Make the second byteswapped one non-normal (hopefully), and then byteswap
+   * it back using the function we want to test in its non-normal mode.
+   * This might not work because it’s not necessarily possible to make an
+   * arbitrary random variant non-normal. Adding a single zero byte to the end
+   * often makes something non-normal but still readable. */
+  three_size_copy = three.size + 1;
+  three_data_copy = g_malloc (three_size_copy);
+  memcpy (three_data_copy, three.data, three.size);
+  three_data_copy[three.size] = '\0';
 
+  three_variant = g_variant_new_from_data (G_VARIANT_TYPE (g_variant_type_info_get_type_string (three.type_info)),
+                                           three_data_copy, three_size_copy, FALSE, NULL, NULL);
+  three_byteswapped = g_variant_byteswap (three_variant);
+
+  /* Check they’re the same. We can always compare @one_variant and
+   * @two_byteswapped. We can only compare @two_byteswapped and
+   * @three_byteswapped if @two_variant and @three_variant are equal: in that
+   * case, the corruption to @three_variant was enough to make it non-normal but
+   * not enough to change its value. */
+  g_assert_cmpvariant (one_variant, two_byteswapped);
+
+  if (g_variant_equal (two_variant, three_variant))
+    g_assert_cmpvariant (two_byteswapped, three_byteswapped);
+
+  g_variant_unref (three_byteswapped);
+  g_variant_unref (three_variant);
+  g_variant_unref (two_byteswapped);
+  g_variant_unref (two_variant);
+  g_variant_unref (one_variant);
   tree_instance_free (tree);
   g_free (one.data);
   g_free (two.data);
+  g_free (three.data);
+  g_free (three_data_copy);
 }
 
 static void
