@@ -288,7 +288,13 @@
 /**
  * gint8:
  *
- * A signed integer guaranteed to be 8 bits on all platforms.
+ * A signed integer guaranteed to be 8 bits on all platforms,
+ * similar to the standard C `int8_t`.
+ *
+ * The `int8_t` type should be preferred in new code, unless
+ * consistency with pre-existing APIs requires use of `gint8`
+ * (see #gsize for more details).
+ *
  * Values of this type can range from %G_MININT8 (= -128) to
  * %G_MAXINT8 (= 127).
  */
@@ -298,13 +304,22 @@
  *
  * The maximum value which can be held in a #gint8.
  *
+ * This is the same as standard C `INT8_MAX`, which should be
+ * preferred in new code.
+ *
  * Since: 2.4
  */
 
 /**
  * guint8:
  *
- * An unsigned integer guaranteed to be 8 bits on all platforms.
+ * An unsigned integer guaranteed to be 8 bits on all platforms,
+ * similar to the standard C `uint8_t`.
+ *
+ * The `uint8_t` type should be preferred in new code, unless
+ * consistency with pre-existing APIs requires use of `guint8`
+ * (see #gsize for more details).
+ *
  * Values of this type can range from 0 to %G_MAXUINT8 (= 255).
  */
 
@@ -313,13 +328,22 @@
  *
  * The maximum value which can be held in a #guint8.
  *
+ * This is the same as standard C `UINT8_MAX`, which should be
+ * preferred in new code.
+ *
  * Since: 2.4
  */
 
 /**
  * gint16:
  *
- * A signed integer guaranteed to be 16 bits on all platforms.
+ * A signed integer guaranteed to be 16 bits on all platforms,
+ * similar to the standard C `int16_t`.
+ *
+ * The `int16_t` type should be preferred in new code, unless
+ * consistency with pre-existing APIs requires use of `gint16`
+ * (see #gsize for more details).
+ *
  * Values of this type can range from %G_MININT16 (= -32,768) to
  * %G_MAXINT16 (= 32,767).
  *
@@ -331,6 +355,9 @@
  * G_MAXINT16:
  *
  * The maximum value which can be held in a #gint16.
+ *
+ * This is the same as standard C `INT16_MAX`, which should be
+ * preferred in new code.
  *
  * Since: 2.4
  */
@@ -350,6 +377,10 @@
  * g_print ("%#" G_GINT16_MODIFIER "x", value);
  * ]|
  *
+ * This is not necessarily the correct modifier for printing and scanning
+ * `int16_t` values, even though the in-memory representation is the same.
+ * Standard C macros like `PRId16` and `SCNd16` should be used for `int16_t`.
+ *
  * Since: 2.4
  */
 
@@ -367,13 +398,23 @@
  * sscanf ("42", "%" G_GINT16_FORMAT, &in)
  * out = in * 1000;
  * g_print ("%" G_GINT32_FORMAT, out);
+ *
+ * This is not necessarily the correct format for printing and scanning
+ * `int16_t` values, even though the in-memory representation is the same.
+ * Standard C macros like `PRId16` and `SCNd16` should be used for `int16_t`.
  * ]|
  */
 
 /**
  * guint16:
  *
- * An unsigned integer guaranteed to be 16 bits on all platforms.
+ * An unsigned integer guaranteed to be 16 bits on all platforms,
+ * similar to the standard C `uint16_t`.
+ *
+ * The `uint16_t` type should be preferred in new code, unless
+ * consistency with pre-existing APIs requires use of `guint16`
+ * (see #gsize for more details).
+ *
  * Values of this type can range from 0 to %G_MAXUINT16 (= 65,535).
  *
  * To print or scan values of this type, use
@@ -385,6 +426,9 @@
  *
  * The maximum value which can be held in a #guint16.
  *
+ * This is the same as standard C `UINT16_MAX`, which should be
+ * preferred in new code.
+ *
  * Since: 2.4
  */
 
@@ -393,23 +437,43 @@
  *
  * This is the platform dependent conversion specifier for scanning
  * and printing values of type #guint16. See also %G_GINT16_FORMAT
+ *
+ * This is not necessarily the correct modifier for printing and scanning
+ * `uint16_t` values, even though the in-memory representation is the same.
+ * Standard C macros like `PRIu16` and `SCNu16` should be used for `uint16_t`.
  */
 
 /**
  * gint32:
  *
  * A signed integer guaranteed to be 32 bits on all platforms.
+ *
+ * The `int32_t` type should be preferred in new code, unless
+ * consistency with pre-existing APIs requires use of `gint16`
+ * (see #gsize for more details).
+ *
  * Values of this type can range from %G_MININT32 (= -2,147,483,648)
  * to %G_MAXINT32 (= 2,147,483,647).
  *
  * To print or scan values of this type, use
  * %G_GINT32_MODIFIER and/or %G_GINT32_FORMAT.
+ *
+ * Note that on platforms with more than one 32-bit standard integer type,
+ * `gint32` and `int32_t` are not necessarily implemented by the same
+ * 32-bit integer type.
+ * For example, on an ILP32 platform where `int` and `long` are both 32-bit,
+ * it might be the case that one of these types is `int` and the other
+ * is `long`.
+ * See #gsize for more details of what this implies.
  */
 
 /**
  * G_MAXINT32:
  *
  * The maximum value which can be held in a #gint32.
+ *
+ * This is the same as standard C `INT32_MAX`, which should be
+ * preferred in new code.
  *
  * Since: 2.4
  */
@@ -421,6 +485,10 @@
  * for scanning and printing values of type #gint32 or #guint32. It
  * is a string literal. See also %G_GINT16_MODIFIER.
  *
+ * This is not necessarily the correct modifier for printing and scanning
+ * `int32_t` values, even though the in-memory representation is the same.
+ * Standard C macros like `PRId32` and `SCNd32` should be used for `int32_t`.
+ *
  * Since: 2.4
  */
 
@@ -429,22 +497,40 @@
  *
  * This is the platform dependent conversion specifier for scanning
  * and printing values of type #gint32. See also %G_GINT16_FORMAT.
+ *
+ * This is not necessarily the correct modifier for printing and scanning
+ * `int32_t` values, even though the in-memory representation is the same.
+ * Standard C macros like `PRId32` and `SCNd32` should be used for `int32_t`.
  */
 
 /**
  * guint32:
  *
- * An unsigned integer guaranteed to be 32 bits on all platforms.
+ * An unsigned integer guaranteed to be 32 bits on all platforms,
+ * similar to the standard C `uint32_t`.
+ *
+ * The `uint32_t` type should be preferred in new code, unless
+ * consistency with pre-existing APIs requires use of `guint32`
+ * (see #gsize for more details).
+ *
  * Values of this type can range from 0 to %G_MAXUINT32 (= 4,294,967,295).
  *
  * To print or scan values of this type, use
  * %G_GINT32_MODIFIER and/or %G_GUINT32_FORMAT.
+ *
+ * Note that on platforms with more than one 32-bit standard integer type,
+ * `guint32` and `uint32_t` are not necessarily implemented by the same
+ * 32-bit integer type.
+ * See #gsize for more details of what this implies.
  */
 
 /**
  * G_MAXUINT32:
  *
  * The maximum value which can be held in a #guint32.
+ *
+ * This is the same as standard C `UINT32_MAX`, which should be
+ * preferred in new code.
  *
  * Since: 2.4
  */
@@ -454,18 +540,36 @@
  *
  * This is the platform dependent conversion specifier for scanning
  * and printing values of type #guint32. See also %G_GINT16_FORMAT.
+ *
+ * This is not necessarily the correct modifier for printing and scanning
+ * `uint32_t` values, even though the in-memory representation is the same.
+ * Standard C macros like `PRIu32` and `SCNu32` should be used for `uint32_t`.
  */
 
 /**
  * gint64:
  *
- * A signed integer guaranteed to be 64 bits on all platforms.
+ * A signed integer guaranteed to be 64 bits on all platforms,
+ * similar to the standard C `int64_t`.
+ *
+ * The `int64_t` type should be preferred in new code, unless
+ * consistency with pre-existing APIs requires use of `gint64`
+ * (see #gsize for more details).
+ *
  * Values of this type can range from %G_MININT64
  * (= -9,223,372,036,854,775,808) to %G_MAXINT64
  * (= 9,223,372,036,854,775,807).
  *
  * To print or scan values of this type, use
  * %G_GINT64_MODIFIER and/or %G_GINT64_FORMAT.
+ *
+ * Note that on platforms with more than one 64-bit standard integer type,
+ * `gint64` and `int64_t` are not necessarily implemented by the same
+ * 64-bit integer type.
+ * For example, on a platform where both `long` and `long long` are 64-bit,
+ * it might be the case that one of those types is used for `gint64`
+ * and the other is used for `int64_t`.
+ * See #gsize for more details of what this implies.
  */
 
 /**
@@ -485,6 +589,10 @@
  * though the types are supported. On such platforms %G_GINT64_MODIFIER
  * is not defined.
  *
+ * This is not necessarily the correct modifier for printing and scanning
+ * `int64_t` values, even though the in-memory representation is the same.
+ * Standard C macros like `PRId64` and `SCNd64` should be used for `int64_t`.
+ *
  * Since: 2.4
  */
 
@@ -500,23 +608,41 @@
  * if %G_GINT64_FORMAT is defined. Due to its weak error handling, scanf()
  * is not recommended for parsing anyway; consider using g_ascii_strtoull()
  * instead.
+ *
+ * This is not necessarily the correct format for printing and scanning
+ * `int64_t` values, even though the in-memory representation is the same.
+ * Standard C macros like `PRId64` and `SCNd64` should be used for `int64_t`.
  */
 
 /**
  * guint64:
  *
- * An unsigned integer guaranteed to be 64-bits on all platforms.
+ * An unsigned integer guaranteed to be 64-bits on all platforms,
+ * similar to the standard C `uint64_t` type.
+ *
+ * The `uint64_t` type should be preferred in new code, unless
+ * consistency with pre-existing APIs requires use of `guint64`
+ * (see #gsize for more details).
+ *
  * Values of this type can range from 0 to %G_MAXUINT64
  * (= 18,446,744,073,709,551,615).
  *
  * To print or scan values of this type, use
  * %G_GINT64_MODIFIER and/or %G_GUINT64_FORMAT.
+ *
+ * Note that on platforms with more than one 64-bit standard integer type,
+ * `guint64` and `uint64_t` are not necessarily implemented by the same
+ * 64-bit integer type.
+ * See #gsize for more details of what this implies.
  */
 
 /**
  * G_MAXUINT64:
  *
  * The maximum value which can be held in a #guint64.
+ *
+ * This is the same as standard C `UINT64_MAX`, which should be
+ * preferred in new code.
  */
 
 /**
@@ -531,6 +657,10 @@
  * if %G_GINT64_FORMAT is defined. Due to its weak error handling, scanf()
  * is not recommended for parsing anyway; consider using g_ascii_strtoull()
  * instead.
+ *
+ * This is not necessarily the correct modifier for printing and scanning
+ * `uint64_t` values, even though the in-memory representation is the same.
+ * Standard C macros like `PRIu64` and `SCNu64` should be used for `uint64_t`.
  */
 
 /**
@@ -539,6 +669,9 @@
  *
  * This macro is used to insert 64-bit integer literals
  * into the source code.
+ *
+ * It is similar to the standard C `INT64_C` macro,
+ * which should be preferred in new code.
  */
 
 /**
@@ -547,6 +680,9 @@
  *
  * This macro is used to insert 64-bit unsigned integer
  * literals into the source code.
+ *
+ * It is similar to the standard C `UINT64_C` macro,
+ * which should be preferred in new code.
  *
  * Since: 2.10
  */
