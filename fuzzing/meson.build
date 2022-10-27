@@ -35,6 +35,7 @@ fuzz_targets = [
   'fuzz_uri_parse_params',
   'fuzz_uuid_string_is_valid',
   'fuzz_variant_binary',
+  'fuzz_variant_binary_byteswap',
   'fuzz_variant_text',
 ]
 

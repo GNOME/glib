@@ -5982,6 +5982,7 @@ g_variant_get_normal_form (GVariant *value)
  * bytes and containers containing only these things (recursively).
  *
  * The returned value is always in normal form and is marked as trusted.
+ * A full, not floating, reference is returned.
  *
  * Returns: (transfer full): the byteswapped form of @value
  *
