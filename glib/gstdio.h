@@ -207,7 +207,7 @@ _g_clear_fd_ignore_error (int *fd_ptr)
     }
 }
 
-#define g_autofd _GLIB_CLEANUP(_g_clear_fd_ignore_error)
+#define g_autofd _GLIB_CLEANUP(_g_clear_fd_ignore_error) GLIB_AVAILABLE_MACRO_IN_2_76
 #endif
 
 G_END_DECLS
