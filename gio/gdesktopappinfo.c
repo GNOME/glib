@@ -2648,7 +2648,7 @@ prepend_terminal_to_vector (int    *argc,
     { "rxvt", "-e" },
     { "dtterm", "-e" },
     { "xterm", "-e" },
-    { "kgx", "-e" }
+    { "kgx", "-e" },
   };
 
   g_return_val_if_fail (argc != NULL, FALSE);
