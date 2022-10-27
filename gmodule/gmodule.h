@@ -138,7 +138,7 @@ const gchar *         g_module_name          (GModule      *module);
  *
  * No checks are made that the file exists, or is of correct type.
  */
-GMODULE_AVAILABLE_IN_ALL
+GMODULE_DEPRECATED_IN_2_76
 gchar*                g_module_build_path    (const gchar  *directory,
 					      const gchar  *module_name);
 

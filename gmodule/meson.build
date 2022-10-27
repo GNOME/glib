@@ -77,7 +77,8 @@ gvisibility_h = custom_target(
   install_tag: 'devel',
 )
 
-gmodule_sources = [gmodule_c, gvisibility_h]
+gmodule_sources = [gmodule_c, gvisibility_h, 'gmodule-deprecated.c']
+
 if host_system == 'windows'
   gmodule_win_rc = configure_file(
     input: 'gmodule.rc.in',

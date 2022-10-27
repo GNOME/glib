@@ -28,7 +28,6 @@ gvisibility_h = custom_target(
 
 glib_built_headers = [gversionmacros_h, gvisibility_h]
 glib_sources += glib_built_headers
-
 glib_c_args_internal = [
   '-DGLIB_COMPILATION',
 ]
