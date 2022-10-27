@@ -22,7 +22,7 @@ def main():
         for target in install_plan.values():
             for info in target.values():
                 if not info["tag"]:
-                    print('Missing install_tag for', info["destination"])
+                    print("Missing install_tag for", info["destination"])
                     success = False
     return 0 if success else 1
 
