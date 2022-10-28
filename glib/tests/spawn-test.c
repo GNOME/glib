@@ -225,7 +225,7 @@ test_spawn_stdio_overwrite (void)
   char **envp = g_get_environ ();
   enum OpenState { OPENED = 0, CLOSED = 1, DONE = 2 } stdin_state, stdout_state, stderr_state, output_return_state, error_return_state;
 
-  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/2055");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/16");
 
   old_stdin_fd = dup (STDIN_FILENO);
   old_stdout_fd = dup (STDOUT_FILENO);
