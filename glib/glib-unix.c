@@ -116,8 +116,7 @@ g_unix_open_pipe (int     *fds,
         close (old_fds[0]);
         close (old_fds[1]);
 
-        if (!result)
-          g_unix_set_error_from_errno (error, errno);
+        return result;
       }
     else if (ecode == 0)
       return TRUE;
@@ -134,9 +133,6 @@ g_unix_open_pipe (int     *fds,
       gboolean result = g_unix_open_pipe (fds, flags, error);
       close (old_fds[0]);
       close (old_fds[1]);
-
-      if (!result)
-        g_unix_set_error_from_errno (error, errno);
 
       return result;
     }
