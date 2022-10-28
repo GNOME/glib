@@ -542,33 +542,36 @@ if host_machine.system() != 'windows'
 endif
 
 appinfo_test_desktop_files = [
-  'appinfo-test-gnome.desktop',
-  'appinfo-test-notgnome.desktop',
-  'appinfo-test.desktop',
-  'appinfo-test2.desktop',
+  'appinfo-test-gnome',
+  'appinfo-test-notgnome',
+  'appinfo-test',
+  'appinfo-test2',
 ]
 
-cdata = configuration_data()
-if installed_tests_enabled
-  cdata.set('installed_tests_dir', installed_tests_execdir)
-else
-  cdata.set('installed_tests_dir', meson.current_build_dir())
-endif
-
 foreach appinfo_test_desktop_file : appinfo_test_desktop_files
+  input_desktop_file = appinfo_test_desktop_file + '.desktop.in'
+  output_desktop_file = appinfo_test_desktop_file + '.desktop'
+  configure_file(
+    input: input_desktop_file,
+    output: output_desktop_file,
+    configuration: {
+      'installed_tests_dir' : meson.current_build_dir(),
+    },
+  )
+
   if installed_tests_enabled
-    configure_file(
-      input: appinfo_test_desktop_file + '.in',
-      output: appinfo_test_desktop_file,
+    installed_desktop = configure_file(
+      input: input_desktop_file,
+      output: appinfo_test_desktop_file + '-installed.desktop',
+      configuration: {
+        'installed_tests_dir' : installed_tests_execdir,
+      },
+    )
+
+    install_data(installed_desktop,
       install_dir: installed_tests_execdir,
       install_tag: 'tests',
-      configuration: cdata,
-    )
-  else
-    configure_file(
-      input: appinfo_test_desktop_file + '.in',
-      output: appinfo_test_desktop_file,
-      configuration: cdata,
+      rename: output_desktop_file,
     )
   endif
 endforeach
