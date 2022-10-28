@@ -108,17 +108,6 @@ g_unix_open_pipe (int     *fds,
     ecode = pipe2 (fds, pipe2_flags);
     if (ecode == -1 && errno != ENOSYS)
       return g_unix_set_error_from_errno (error, errno);
-    /* Don't reassign pipes to stdin, stdout, stderr if closed meanwhile */
-    else if (fds[0] < 3 || fds[1] < 3)
-      {
-        int old_fds[2] = { fds[0], fds[1] };
-        gboolean result = g_unix_open_pipe (fds, flags, error);
-        close (old_fds[0]);
-        close (old_fds[1]);
-
-        if (!result)
-          g_unix_set_error_from_errno (error, errno);
-      }
     else if (ecode == 0)
       return TRUE;
     /* Fall through on -ENOSYS, we must be running on an old kernel */
@@ -127,19 +116,6 @@ g_unix_open_pipe (int     *fds,
   ecode = pipe (fds);
   if (ecode == -1)
     return g_unix_set_error_from_errno (error, errno);
-  /* Don't reassign pipes to stdin, stdout, stderr if closed meanwhile */
-  else if (fds[0] < 3 || fds[1] < 3)
-    {
-      int old_fds[2] = { fds[0], fds[1] };
-      gboolean result = g_unix_open_pipe (fds, flags, error);
-      close (old_fds[0]);
-      close (old_fds[1]);
-
-      if (!result)
-        g_unix_set_error_from_errno (error, errno);
-
-      return result;
-    }
 
   if (flags == 0)
     return TRUE;
