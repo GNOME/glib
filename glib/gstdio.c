@@ -1788,6 +1788,8 @@ g_close (gint       fd,
            * on Linux at least.  Anyone who wants to add a conditional check
            * for e.g. HP-UX is welcome to do so later...
            *
+           * close_func_with_invalid_fds() in gspawn.c has similar logic.
+           *
            * https://lwn.net/Articles/576478/
            * http://lkml.indiana.edu/hypermail/linux/kernel/0509.1/0877.html
            * https://bugzilla.gnome.org/show_bug.cgi?id=682819

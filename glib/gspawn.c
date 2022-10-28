@@ -1338,13 +1338,46 @@ dupfd_cloexec (int old_fd, int new_fd_min)
   return fd;
 }
 
-/* This function is called between fork() and exec() and hence must be
- * async-signal-safe (see signal-safety(7)). */
+/* fdwalk()-compatible callback to close a valid fd.
+ * It is an error to pass an invalid fd (causing EBADF) to this function.
+ *
+ * This function is called between fork() and exec() and hence must be
+ * async-signal-safe (see signal-safety(7)).
+ */
 G_GNUC_UNUSED static int
 close_func (void *data, int fd)
 {
   if (fd >= GPOINTER_TO_INT (data))
     g_close (fd, NULL);
+
+  return 0;
+}
+
+/* fdwalk()-compatible callback to close a fd for non-compliant
+ * implementations of fdwalk() that potentially pass already
+ * closed fds.
+ *
+ * It is not an error to pass an invalid fd to this function.
+ *
+ * This function is called between fork() and exec() and hence must be
+ * async-signal-safe (see signal-safety(7)).
+ */
+G_GNUC_UNUSED static int
+close_func_with_invalid_fds (void *data, int fd)
+{
+  /* We use close and not g_close here because on some platforms, we
+   * don't know how to close only valid, open file descriptors, so we
+   * have to pass bad fds to close too. g_close warns if given a bad
+   * fd.
+   *
+   * This function returns no error, because there is nothing that the caller
+   * could do with that information. That is even the case for EINTR. See
+   * g_close() about the specialty of EINTR and why that is correct.
+   * If g_close() ever gets extended to handle EINTR specially, then this place
+   * should get updated to do the same handling.
+   */
+  if (fd >= GPOINTER_TO_INT (data))
+    close (fd);
 
   return 0;
 }
@@ -1404,18 +1437,14 @@ safe_fdwalk (int (*cb)(void *data, int fd), void *data)
   return fdwalk (cb, data);
 #else
   /* Fallback implementation of fdwalk. It should be async-signal safe, but it
-   * may be slow on non-Linux operating systems, especially on systems allowing
-   * very high number of open file descriptors.
+   * may fail on non-Linux operating systems. See safe_fdwalk_with_invalid_fds
+   * for a slower alternative.
    */
-  gint open_max = -1;
-  gint fd;
-  gint res = 0;
-  
-#if 0 && defined(HAVE_SYS_RESOURCE_H)
-  struct rlimit rl;
-#endif
 
 #ifdef __linux__
+  gint fd;
+  gint res = 0;
+
   /* Avoid use of opendir/closedir since these are not async-signal-safe. */
   int dir_fd = open ("/proc/self/fd", O_RDONLY | O_DIRECTORY);
   if (dir_fd >= 0)
@@ -1443,7 +1472,8 @@ safe_fdwalk (int (*cb)(void *data, int fd), void *data)
       return res;
     }
 
-  /* If /proc is not mounted or not accessible we fall back to the old
+  /* If /proc is not mounted or not accessible we fail here and rely on
+   * safe_fdwalk_with_invalid_fds to fall back to the old
    * rlimit trick. */
 
 #endif
@@ -1459,6 +1489,8 @@ safe_fdwalk (int (*cb)(void *data, int fd), void *data)
  * fcntl(fd, F_PREVFD)
  * - return highest allocated file descriptor < fd.
  */
+  gint fd;
+  gint res = 0;
 
   open_max = fcntl (INT_MAX, F_PREVFD); /* find the maximum fd */
   if (open_max < 0) /* No open files */
@@ -1467,9 +1499,31 @@ safe_fdwalk (int (*cb)(void *data, int fd), void *data)
   for (fd = -1; (fd = fcntl (fd, F_NEXTFD, open_max)) != -1; )
     if ((res = cb (data, fd)) != 0 || fd == open_max)
       break;
-#else
+
+  return res;
+#endif
+
+  errno = ENOSYS;
+  return -1;
+#endif
+}
+
+/* This function is called between fork() and exec() and hence must be
+ * async-signal-safe (see signal-safety(7)). */
+static int
+safe_fdwalk_with_invalid_fds (int (*cb)(void *data, int fd), void *data)
+{
+  /* Fallback implementation of fdwalk. It should be async-signal safe, but it
+   * may be slow, especially on systems allowing very high number of open file
+   * descriptors.
+   */
+  gint open_max = -1;
+  gint fd;
+  gint res = 0;
 
 #if 0 && defined(HAVE_SYS_RESOURCE_H)
+  struct rlimit rl;
+
   /* Use getrlimit() function provided by the system if it is known to be
    * async-signal safe.
    *
@@ -1502,10 +1556,8 @@ safe_fdwalk (int (*cb)(void *data, int fd), void *data)
   for (fd = 0; fd < open_max; fd++)
       if ((res = cb (data, fd)) != 0)
           break;
-#endif
 
   return res;
-#endif
 }
 
 /* This function is called between fork() and exec() and hence must be
@@ -1513,6 +1565,8 @@ safe_fdwalk (int (*cb)(void *data, int fd), void *data)
 static int
 safe_fdwalk_set_cloexec (int lowfd)
 {
+  int ret;
+
 #if defined(HAVE_CLOSE_RANGE) && defined(CLOSE_RANGE_CLOEXEC)
   /* close_range() is available in Linux since kernel 5.9, and on FreeBSD at
    * around the same time. It was designed for use in async-signal-safe
@@ -1524,11 +1578,17 @@ safe_fdwalk_set_cloexec (int lowfd)
    * Handle ENOSYS in case it’s supported in libc but not the kernel; if so,
    * fall back to safe_fdwalk(). Handle EINVAL in case `CLOSE_RANGE_CLOEXEC`
    * is not supported. */
-  int ret = close_range (lowfd, G_MAXUINT, CLOSE_RANGE_CLOEXEC);
+  ret = close_range (lowfd, G_MAXUINT, CLOSE_RANGE_CLOEXEC);
   if (ret == 0 || !(errno == ENOSYS || errno == EINVAL))
     return ret;
 #endif  /* HAVE_CLOSE_RANGE */
-  return safe_fdwalk (set_cloexec, GINT_TO_POINTER (lowfd));
+
+  ret = safe_fdwalk (set_cloexec, GINT_TO_POINTER (lowfd));
+
+  if (ret < 0 && errno == ENOSYS)
+    ret = safe_fdwalk_with_invalid_fds (set_cloexec, GINT_TO_POINTER (lowfd));
+
+  return ret;
 }
 
 /* This function is called between fork() and exec() and hence must be
@@ -1538,6 +1598,8 @@ safe_fdwalk_set_cloexec (int lowfd)
 static int
 safe_closefrom (int lowfd)
 {
+  int ret;
+
 #if defined(__FreeBSD__) || defined(__OpenBSD__) || \
   (defined(__sun__) && defined(F_CLOSEFROM))
   /* Use closefrom function provided by the system if it is known to be
@@ -1577,11 +1639,16 @@ safe_closefrom (int lowfd)
    *
    * Handle ENOSYS in case it’s supported in libc but not the kernel; if so,
    * fall back to safe_fdwalk(). */
-  int ret = close_range (lowfd, G_MAXUINT, 0);
+  ret = close_range (lowfd, G_MAXUINT, 0);
   if (ret == 0 || errno != ENOSYS)
     return ret;
 #endif  /* HAVE_CLOSE_RANGE */
-  return safe_fdwalk (close_func, GINT_TO_POINTER (lowfd));
+  ret = safe_fdwalk (close_func, GINT_TO_POINTER (lowfd));
+
+  if (ret < 0 && errno == ENOSYS)
+    ret = safe_fdwalk_with_invalid_fds (close_func_with_invalid_fds, GINT_TO_POINTER (lowfd));
+
+  return ret;
 #endif
 }
 
