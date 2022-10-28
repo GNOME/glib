@@ -70,6 +70,11 @@
 #include "glibintl.h"
 #include "glib-unix.h"
 
+#ifdef __APPLE__
+#include <libproc.h>
+#include <sys/proc_info.h>
+#endif
+
 #define INHERITS_OR_NULL_STDIN  (G_SPAWN_STDIN_FROM_DEV_NULL | G_SPAWN_CHILD_INHERITS_STDIN)
 #define INHERITS_OR_NULL_STDOUT (G_SPAWN_STDOUT_TO_DEV_NULL | G_SPAWN_CHILD_INHERITS_STDOUT)
 #define INHERITS_OR_NULL_STDERR (G_SPAWN_STDERR_TO_DEV_NULL | G_SPAWN_CHILD_INHERITS_STDERR)
@@ -1533,7 +1538,7 @@ safe_fdwalk_with_invalid_fds (int (*cb)(void *data, int fd), void *data)
   if (getrlimit (RLIMIT_NOFILE, &rl) == 0 && rl.rlim_max != RLIM_INFINITY)
     open_max = rl.rlim_max;
 #endif
-#if defined(__FreeBSD__) || defined(__OpenBSD__) || defined(G_OS_DARWIN)
+#if defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__APPLE__)
   /* Use sysconf() function provided by the system if it is known to be
    * async-signal safe.
    *
@@ -1552,6 +1557,36 @@ safe_fdwalk_with_invalid_fds (int (*cb)(void *data, int fd), void *data)
   /* Hardcoded fallback: the default process hard limit in Linux as of 2020 */
   if (open_max < 0)
     open_max = 4096;
+
+#if defined(__APPLE__)
+  /* proc_pidinfo isn't documented as async-signal-safe but looking at the implementation
+   * in the darwin tree here:
+   *
+   * https://opensource.apple.com/source/Libc/Libc-498/darwin/libproc.c.auto.html
+   *
+   * It's just a thin wrapper around a syscall, so it's probably okay.
+   */
+  {
+    char buffer[open_max * PROC_PIDLISTFD_SIZE];
+    ssize_t buffer_size;
+
+    buffer_size = proc_pidinfo (getpid (), PROC_PIDLISTFDS, 0, buffer, sizeof (buffer));
+
+    if (buffer_size > 0 &&
+        sizeof (buffer) >= (size_t) buffer_size &&
+        (buffer_size % PROC_PIDLISTFD_SIZE) == 0)
+      {
+        const struct proc_fdinfo *fd_info = (const struct proc_fdinfo *) buffer;
+        size_t number_of_fds = (size_t) buffer_size / PROC_PIDLISTFD_SIZE;
+
+        for (size_t i = 0; i < number_of_fds; i++)
+          if ((res = cb (data, fd_info[i].proc_fd)) != 0)
+            break;
+
+        return res;
+      }
+  }
+#endif
 
   for (fd = 0; fd < open_max; fd++)
       if ((res = cb (data, fd)) != 0)
