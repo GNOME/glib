@@ -116,10 +116,16 @@ G_STATIC_ASSERT (sizeof (size_t) == GLIB_SIZEOF_SIZE_T);
 G_STATIC_ASSERT (sizeof (size_t) == GLIB_SIZEOF_SSIZE_T);
 G_STATIC_ASSERT (sizeof (gsize) == GLIB_SIZEOF_SSIZE_T);
 G_STATIC_ASSERT (sizeof (gsize) == sizeof (size_t));
+G_STATIC_ASSERT (G_MAXSIZE == SIZE_MAX);
 /* Again this is size_t not ssize_t, because ssize_t is POSIX, not C99 */
 G_STATIC_ASSERT (sizeof (gssize) == sizeof (size_t));
 G_STATIC_ASSERT (G_ALIGNOF (gsize) == G_ALIGNOF (size_t));
 G_STATIC_ASSERT (G_ALIGNOF (gssize) == G_ALIGNOF (size_t));
+/* We assume that GSIZE_TO_POINTER is reversible by GPOINTER_TO_SIZE
+ * without losing information.
+ * However, we do not assume that GPOINTER_TO_SIZE can store an arbitrary
+ * pointer in a gsize (known to be false on CHERI). */
+G_STATIC_ASSERT (sizeof (size_t) <= sizeof (void *));
 
 /* goffset is always 64-bit, even if off_t is only 32-bit
  * (compiling without large-file-support on 32-bit) */
@@ -135,6 +141,9 @@ G_STATIC_ASSERT (sizeof (gintptr) == sizeof (intptr_t));
 G_STATIC_ASSERT (sizeof (guintptr) == sizeof (uintptr_t));
 G_STATIC_ASSERT (G_ALIGNOF (gintptr) == G_ALIGNOF (intptr_t));
 G_STATIC_ASSERT (G_ALIGNOF (guintptr) == G_ALIGNOF (uintptr_t));
+/* True by definition */
+G_STATIC_ASSERT (sizeof (gintptr) >= sizeof (void *));
+G_STATIC_ASSERT (sizeof (guintptr) >= sizeof (void *));
 
 G_STATIC_ASSERT (sizeof (gint8) == sizeof (int8_t));
 G_STATIC_ASSERT (sizeof (guint8) == sizeof (uint8_t));
