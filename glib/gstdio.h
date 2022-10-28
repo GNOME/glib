@@ -23,6 +23,7 @@
 
 #include <glib/gprintf.h>
 
+#include <errno.h>
 #include <sys/stat.h>
 
 G_BEGIN_DECLS
@@ -199,19 +200,28 @@ g_clear_fd (int     *fd_ptr,
 /* g_autofd should be defined on the same compilers where g_autofree is
  * This avoids duplicating the feature-detection here. */
 #ifdef g_autofree
+#ifndef __GTK_DOC_IGNORE__
 /* Not public API */
 static inline void
 _g_clear_fd_ignore_error (int *fd_ptr)
 {
+  /* Don't overwrite thread-local errno if closing the fd fails */
+  int errsv = errno;
+
   /* Suppress "Not available before" warning */
   G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+
   if (!g_clear_fd (fd_ptr, NULL))
     {
       /* Do nothing: we ignore all errors, except for EBADF which
        * is a programming error, checked for by g_close(). */
     }
+
   G_GNUC_END_IGNORE_DEPRECATIONS
+
+  errno = errsv;
 }
+#endif
 
 #define g_autofd _GLIB_CLEANUP(_g_clear_fd_ignore_error) GLIB_AVAILABLE_MACRO_IN_2_76
 #endif
