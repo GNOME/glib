@@ -32,6 +32,7 @@
 #include <string.h>
 #include <stdlib.h>   /* for fdwalk */
 #include <dirent.h>
+#include <unistd.h>
 
 #ifdef HAVE_SPAWN_H
 #include <spawn.h>
@@ -72,6 +73,9 @@
 #define INHERITS_OR_NULL_STDIN  (G_SPAWN_STDIN_FROM_DEV_NULL | G_SPAWN_CHILD_INHERITS_STDIN)
 #define INHERITS_OR_NULL_STDOUT (G_SPAWN_STDOUT_TO_DEV_NULL | G_SPAWN_CHILD_INHERITS_STDOUT)
 #define INHERITS_OR_NULL_STDERR (G_SPAWN_STDERR_TO_DEV_NULL | G_SPAWN_CHILD_INHERITS_STDERR)
+
+#define IS_STD_FILENO(_fd) ((_fd >= STDIN_FILENO) && (_fd <= STDERR_FILENO))
+#define IS_VALID_FILENO(_fd) (_fd >= 0)
 
 /* posix_spawn() is assumed the fastest way to spawn, but glibc's
  * implementation was buggy before glibc 2.24, so avoid it on old versions.
@@ -1597,6 +1601,30 @@ safe_dup2 (gint fd1, gint fd2)
 
 /* This function is called between fork() and exec() and hence must be
  * async-signal-safe (see signal-safety(7)). */
+static gboolean
+relocate_fd_out_of_standard_range (gint *fd)
+{
+  gint ret = -1;
+  const int min_fileno = STDERR_FILENO + 1;
+
+  do
+    ret = fcntl (*fd, F_DUPFD, min_fileno);
+  while (ret < 0 && errno == EINTR);
+
+  /* Note we don't need to close the old fd, because the caller is expected
+   * to close fds in the standard range itself.
+   */
+  if (ret >= min_fileno)
+    {
+      *fd = ret;
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
+/* This function is called between fork() and exec() and hence must be
+ * async-signal-safe (see signal-safety(7)). */
 static gint
 safe_open (const char *path, gint mode)
 {
@@ -1653,17 +1681,42 @@ do_exec (gint                  child_err_report_fd,
   if (working_directory && chdir (working_directory) < 0)
     write_err_and_exit (child_err_report_fd,
                         CHILD_CHDIR_FAILED);
-  
-  /* Redirect pipes as required */
-  if (stdin_fd >= 0)
+
+  /* It's possible the caller assigned stdin to an fd with a
+   * file number that is supposed to be reserved for
+   * stdout or stderr.
+   *
+   * If so, move it up out of the standard range, so it doesn't
+   * cause a conflict.
+   */
+  if (IS_STD_FILENO (stdin_fd) && stdin_fd != STDIN_FILENO)
+    {
+      int old_fd = stdin_fd;
+
+      if (!relocate_fd_out_of_standard_range (&stdin_fd))
+        write_err_and_exit (child_err_report_fd, CHILD_DUPFD_FAILED);
+
+      if (stdout_fd == old_fd)
+        stdout_fd = stdin_fd;
+
+      if (stderr_fd == old_fd)
+        stderr_fd = stdin_fd;
+    }
+
+  /* Redirect pipes as required
+   *
+   * There are two cases where we don't need to do the redirection
+   * 1. Where the associated file descriptor is cleared/invalid
+   * 2. When the associated file descriptor is already given the
+   * correct file number.
+   */
+  if (IS_VALID_FILENO (stdin_fd) && stdin_fd != STDIN_FILENO)
     {
       if (safe_dup2 (stdin_fd, 0) < 0)
         write_err_and_exit (child_err_report_fd,
                             CHILD_DUPFD_FAILED);
 
-      if (!((stdout_fd >= 0 || stdout_to_null) && stdin_fd == 1) &&
-          !((stderr_fd >= 0 || stderr_to_null) && stdin_fd == 2))
-        set_cloexec (GINT_TO_POINTER(0), stdin_fd);
+      set_cloexec (GINT_TO_POINTER(0), stdin_fd);
     }
   else if (!child_inherits_stdin)
     {
@@ -1678,15 +1731,30 @@ do_exec (gint                  child_err_report_fd,
       close_and_invalidate (&read_null);
     }
 
-  if (stdout_fd >= 0)
+  /* Like with stdin above, it's possible the caller assigned
+   * stdout to an fd with a file number that's intruding on the
+   * standard range.
+   *
+   * If so, move it out of the way, too.
+   */
+  if (IS_STD_FILENO (stdout_fd) && stdout_fd != STDOUT_FILENO)
+    {
+      int old_fd = stdout_fd;
+
+      if (!relocate_fd_out_of_standard_range (&stdout_fd))
+        write_err_and_exit (child_err_report_fd, CHILD_DUPFD_FAILED);
+
+      if (stderr_fd == old_fd)
+        stderr_fd = stdout_fd;
+    }
+
+  if (IS_VALID_FILENO (stdout_fd) && stdout_fd != STDOUT_FILENO)
     {
       if (safe_dup2 (stdout_fd, 1) < 0)
         write_err_and_exit (child_err_report_fd,
                             CHILD_DUPFD_FAILED);
 
-      if (!((stdin_fd >= 0 || !child_inherits_stdin) && stdout_fd == 0) &&
-          !((stderr_fd >= 0 || stderr_to_null) && stdout_fd == 2))
-        set_cloexec (GINT_TO_POINTER(0), stdout_fd);
+      set_cloexec (GINT_TO_POINTER(0), stdout_fd);
     }
   else if (stdout_to_null)
     {
@@ -1700,15 +1768,25 @@ do_exec (gint                  child_err_report_fd,
       close_and_invalidate (&write_null);
     }
 
-  if (stderr_fd >= 0)
+  if (IS_STD_FILENO (stderr_fd) && stderr_fd != STDERR_FILENO)
+    {
+      if (!relocate_fd_out_of_standard_range (&stderr_fd))
+        write_err_and_exit (child_err_report_fd, CHILD_DUPFD_FAILED);
+    }
+
+  /* Like with stdin/stdout above, it's possible the caller assigned
+   * stderr to an fd with a file number that's intruding on the
+   * standard range.
+   *
+   * Make sure it's out of the way, also.
+   */
+  if (IS_VALID_FILENO (stderr_fd) && stderr_fd != STDERR_FILENO)
     {
       if (safe_dup2 (stderr_fd, 2) < 0)
         write_err_and_exit (child_err_report_fd,
                             CHILD_DUPFD_FAILED);
 
-      if (!((stdin_fd >= 0 || !child_inherits_stdin) && stderr_fd == 0) &&
-          !((stdout_fd >= 0 || stdout_to_null) && stderr_fd == 1))
-        set_cloexec (GINT_TO_POINTER(0), stderr_fd);
+      set_cloexec (GINT_TO_POINTER(0), stderr_fd);
     }
   else if (stderr_to_null)
     {
