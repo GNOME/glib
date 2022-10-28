@@ -1845,6 +1845,10 @@ g_close (gint       fd,
  * anything.
  * In both cases, set @fd_ptr to `-1` before returning.
  *
+ * Like g_close(), if closing the file descriptor fails, the error is
+ * stored in both %errno and @error. If this function succeeds,
+ * %errno is undefined.
+ *
  * It is a programming error for @fd_ptr to point to a non-negative
  * number that is not a valid file descriptor.
  *
