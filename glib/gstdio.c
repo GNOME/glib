@@ -1849,6 +1849,9 @@ g_close (gint       fd,
  * stored in both %errno and @error. If this function succeeds,
  * %errno is undefined.
  *
+ * This function is async-signal-safe if @error is %NULL and @fd_ptr
+ * points to either a negative number or a valid file descriptor.
+ *
  * It is a programming error for @fd_ptr to point to a non-negative
  * number that is not a valid file descriptor.
  *
@@ -1901,6 +1904,9 @@ g_close (gint       fd,
  * Otherwise, this macro has similar constraints as g_autoptr(): it is
  * only supported on GCC and clang, and the variable must be initialized
  * (to either a valid file descriptor or a negative number).
+ *
+ * Using this macro is async-signal-safe if the constraints described above
+ * are met, so it can be used in a signal handler or after `fork()`.
  *
  * Any error from closing the file descriptor when it goes out of scope
  * is ignored. Use g_clear_fd() if error-checking is required.
