@@ -30,6 +30,7 @@
 
 #include "glib-unix.h"
 #include "gmain-internal.h"
+#include "gstdio.h"
 
 #include <string.h>
 #include <sys/types.h>
@@ -68,6 +69,59 @@ g_unix_set_error_from_errno (GError **error,
                        g_strerror (saved_errno));
   errno = saved_errno;
   return FALSE;
+}
+
+static gboolean
+move_pipe_fds_away_from_standard_io_range (int     *fds,
+                                           GError **error)
+{
+  int i;
+  gboolean result = TRUE;
+
+  /* For backward compatibilty with buggy apps, still make sure
+   * the standard fd slots get used up with something harmless
+   */
+  for (i = 0; i < 2; i++)
+    {
+      int open_flags = 0;
+      int ret;
+      g_autofd int dev_null = -1;
+
+      switch (fds[i])
+        {
+        case STDIN_FILENO:
+          open_flags = O_RDONLY;
+          break;
+        case STDOUT_FILENO:
+        case STDERR_FILENO:
+          open_flags = O_WRONLY;
+          break;
+        default:
+          continue;
+        }
+
+      dev_null = g_open ("/dev/null", open_flags, 0);
+
+      if (dev_null < 0)
+        {
+          g_unix_set_error_from_errno (error, errno);
+          result = FALSE;
+          break;
+        }
+
+      do
+        ret = dup2 (g_steal_fd (&dev_null), fds[i]);
+      while (ret < 0 && (errno == EINTR || errno == EBUSY));
+
+      if (ret < 0)
+        {
+          g_unix_set_error_from_errno (error, errno);
+          result = FALSE;
+          break;
+        }
+    }
+
+  return result;
 }
 
 /**
@@ -111,10 +165,14 @@ g_unix_open_pipe (int     *fds,
     /* Don't reassign pipes to stdin, stdout, stderr if closed meanwhile */
     else if (fds[0] < 3 || fds[1] < 3)
       {
-        int old_fds[2] = { fds[0], fds[1] };
-        gboolean result = g_unix_open_pipe (fds, flags, error);
-        close (old_fds[0]);
-        close (old_fds[1]);
+        gboolean result;
+
+        result = move_pipe_fds_away_from_standard_io_range (fds, error);
+
+        if (!result)
+          return FALSE;
+
+        result = g_unix_open_pipe (fds, flags, error);
 
         return result;
       }
@@ -129,10 +187,14 @@ g_unix_open_pipe (int     *fds,
   /* Don't reassign pipes to stdin, stdout, stderr if closed meanwhile */
   else if (fds[0] < 3 || fds[1] < 3)
     {
-      int old_fds[2] = { fds[0], fds[1] };
-      gboolean result = g_unix_open_pipe (fds, flags, error);
-      close (old_fds[0]);
-      close (old_fds[1]);
+      gboolean result;
+
+      result = move_pipe_fds_away_from_standard_io_range (fds, error);
+
+      if (!result)
+        return FALSE;
+
+      result = g_unix_open_pipe (fds, flags, error);
 
       return result;
     }
