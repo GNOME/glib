@@ -370,6 +370,8 @@ _g_ir_node_free (GIrNode *node)
 	g_free (node->name);
 	g_free (struct_->gtype_name);
 	g_free (struct_->gtype_init);
+        g_free (struct_->copy_func);
+        g_free (struct_->free_func);
 
 	for (l = struct_->members; l; l = l->next)
 	  _g_ir_node_free ((GIrNode *)l->data);
@@ -403,6 +405,8 @@ _g_ir_node_free (GIrNode *node)
 	g_free (node->name);
 	g_free (union_->gtype_name);
 	g_free (union_->gtype_init);
+        g_free (union_->copy_func);
+        g_free (union_->free_func);
 
 	_g_ir_node_free ((GIrNode *)union_->discriminator_type);
 	for (l = union_->members; l; l = l->next)
@@ -755,6 +759,10 @@ _g_ir_node_get_full_size_internal (GIrNode *parent,
 	  size += ALIGN_VALUE (strlen (struct_->gtype_name) + 1, 4);
 	if (struct_->gtype_init)
 	  size += ALIGN_VALUE (strlen (struct_->gtype_init) + 1, 4);
+	if (struct_->copy_func)
+	  size += ALIGN_VALUE (strlen (struct_->copy_func) + 1, 4);
+	if (struct_->free_func)
+	  size += ALIGN_VALUE (strlen (struct_->free_func) + 1, 4);
 	for (l = struct_->members; l; l = l->next)
 	  size += _g_ir_node_get_full_size_internal (node, (GIrNode *)l->data);
       }
@@ -855,6 +863,10 @@ _g_ir_node_get_full_size_internal (GIrNode *parent,
 	  size += ALIGN_VALUE (strlen (union_->gtype_name) + 1, 4);
 	if (union_->gtype_init)
 	  size += ALIGN_VALUE (strlen (union_->gtype_init) + 1, 4);
+	if (union_->copy_func)
+	  size += ALIGN_VALUE (strlen (union_->copy_func) + 1, 4);
+	if (union_->free_func)
+	  size += ALIGN_VALUE (strlen (union_->free_func) + 1, 4);
 	for (l = union_->members; l; l = l->next)
 	  size += _g_ir_node_get_full_size_internal (node, (GIrNode *)l->data);
 	for (l = union_->discriminators; l; l = l->next)
@@ -1956,6 +1968,11 @@ _g_ir_node_build_typelib (GIrNode         *node,
 	    blob->gtype_init = 0;
 	  }
 
+        if (struct_->copy_func)
+          blob->copy_func = _g_ir_write_string (struct_->copy_func, strings, data, offset2);
+        if (struct_->free_func)
+          blob->free_func = _g_ir_write_string (struct_->free_func, strings, data, offset2);
+
 	blob->n_fields = 0;
 	blob->n_methods = 0;
 
@@ -2039,6 +2056,11 @@ _g_ir_node_build_typelib (GIrNode         *node,
 	blob->n_functions = 0;
 
 	blob->discriminator_offset = union_->discriminator_offset;
+
+        if (union_->copy_func)
+          blob->copy_func = _g_ir_write_string (union_->copy_func, strings, data, offset2);
+        if (union_->free_func)
+          blob->free_func = _g_ir_write_string (union_->free_func, strings, data, offset2);
 
 	/* We don't support Union discriminators right now. */
 	/*

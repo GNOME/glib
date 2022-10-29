@@ -642,6 +642,7 @@ write_struct_info (const gchar  *namespace,
   const gchar *name;
   const gchar *type_name;
   const gchar *type_init;
+  const gchar *func;
   gboolean deprecated;
   gboolean is_gtype_struct;
   gboolean foreign;
@@ -675,6 +676,14 @@ write_struct_info (const gchar  *namespace,
   is_gtype_struct = g_struct_info_is_gtype_struct (info);
   if (is_gtype_struct)
     xml_printf (file, " glib:is-gtype-struct=\"1\"");
+
+  func = g_struct_info_get_copy_function (info);
+  if (func)
+    xml_printf (file, " copy-function=\"%s\"", func);
+
+  func = g_struct_info_get_free_function (info);
+  if (func)
+    xml_printf (file, " free-function=\"%s\"", func);
 
   write_attributes (file, (GIBaseInfo*) info);
 
@@ -1237,6 +1246,7 @@ write_union_info (const gchar *namespace,
   const gchar *name;
   const gchar *type_name;
   const gchar *type_init;
+  const gchar *func;
   gboolean deprecated;
   gint i;
   gint size;
@@ -1259,6 +1269,14 @@ write_union_info (const gchar *namespace,
   size = g_union_info_get_size (info);
   if (file->show_all && size >= 0)
     xml_printf (file, " size=\"%d\"", size);
+
+  func = g_union_info_get_copy_function (info);
+  if (func)
+    xml_printf (file, " copy-function=\"%s\"", func);
+
+  func = g_union_info_get_free_function (info);
+  if (func)
+    xml_printf (file, " free-function=\"%s\"", func);
 
   write_attributes (file, (GIBaseInfo*) info);
 

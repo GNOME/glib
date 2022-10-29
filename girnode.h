@@ -328,6 +328,9 @@ struct _GIrNodeStruct
   gchar *gtype_name;
   gchar *gtype_init;
 
+  gchar *copy_func;
+  gchar *free_func;
+
   gint alignment;
   gint size;
 
@@ -345,6 +348,9 @@ struct _GIrNodeUnion
 
   gchar *gtype_name;
   gchar *gtype_init;
+
+  gchar *copy_func;
+  gchar *free_func;
 
   gint alignment;
   gint size;

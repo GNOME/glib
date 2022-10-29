@@ -75,7 +75,12 @@ gboolean         g_struct_info_is_gtype_struct (GIStructInfo *info);
 GI_AVAILABLE_IN_ALL
 gboolean         g_struct_info_is_foreign      (GIStructInfo *info);
 
-G_END_DECLS
+GI_AVAILABLE_IN_1_76
+const char *     g_struct_info_get_copy_function (GIStructInfo *info);
 
+GI_AVAILABLE_IN_1_76
+const char *     g_struct_info_get_free_function (GIStructInfo *info);
+
+G_END_DECLS
 
 #endif  /* __GISTRUCTINFO_H__ */

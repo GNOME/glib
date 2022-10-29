@@ -792,8 +792,10 @@ typedef struct {
  * @size: The size of the struct in bytes.
  * @n_fields: TODO
  * @n_methods: TODO
- * @reserved2: Reserved for future use.
- * @reserved3: Reserved for future use.
+ * @copy_func: String pointing to a function which can be called to copy
+ *   the contents of this struct type
+ * @free_func: String pointing to a function which can be called to free
+ *   the contents of this struct type
  *
  * TODO
  */
@@ -817,8 +819,8 @@ typedef struct {
   guint16   n_fields;
   guint16   n_methods;
 
-  guint32   reserved2;
-  guint32   reserved3;
+  guint32   copy_func;
+  guint32   free_func;
 } StructBlob;
 
 /**
@@ -835,8 +837,10 @@ typedef struct {
  * @size: TODO
  * @n_fields: Length of the arrays
  * @n_functions: TODO
- * @reserved2: Reserved for future use.
- * @reserved3: Reserved for future use.
+ * @copy_func: String pointing to a function which can be called to copy
+ *   the contents of this union type
+ * @free_func: String pointing to a function which can be called to free
+ *   the contents of this union type
  * @discriminator_offset: Offset from the beginning of the union where the
  *   discriminator of a discriminated union is located. The value 0xFFFF
  *   indicates that the discriminator offset is unknown.
@@ -861,8 +865,8 @@ typedef struct {
   guint16      n_fields;
   guint16      n_functions;
 
-  guint32      reserved2;
-  guint32      reserved3;
+  guint32      copy_func;
+  guint32      free_func;
 
   gint32       discriminator_offset;
   SimpleTypeBlob discriminator_type;

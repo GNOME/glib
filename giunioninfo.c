@@ -267,3 +267,57 @@ g_union_info_get_alignment (GIUnionInfo *info)
 
   return blob->alignment;
 }
+
+/**
+ * g_union_info_get_copy_function:
+ * @info: a union information blob
+ *
+ * Retrieves the name of the copy function for @info, if any is set.
+ *
+ * Returns: (transfer none) (nullable): the name of the copy function
+ *
+ * Since: 1.76
+ */
+const char *
+g_union_info_get_copy_function (GIUnionInfo *info)
+{
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  UnionBlob *blob;
+
+  g_return_val_if_fail (info != NULL, NULL);
+  g_return_val_if_fail (GI_IS_UNION_INFO (info), NULL);
+
+  blob = (UnionBlob *)&rinfo->typelib->data[rinfo->offset];
+
+  if (blob->copy_func)
+    return g_typelib_get_string (rinfo->typelib, blob->copy_func);
+
+  return NULL;
+}
+
+/**
+ * g_union_info_get_free_function:
+ * @info: a union information blob
+ *
+ * Retrieves the name of the free function for @info, if any is set.
+ *
+ * Returns: (transfer none) (nullable): the name of the free function
+ *
+ * Since: 1.76
+ */
+const char *
+g_union_info_get_free_function (GIUnionInfo *info)
+{
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  UnionBlob *blob;
+
+  g_return_val_if_fail (info != NULL, NULL);
+  g_return_val_if_fail (GI_IS_UNION_INFO (info), NULL);
+
+  blob = (UnionBlob *)&rinfo->typelib->data[rinfo->offset];
+
+  if (blob->free_func)
+    return g_typelib_get_string (rinfo->typelib, blob->free_func);
+
+  return NULL;
+}

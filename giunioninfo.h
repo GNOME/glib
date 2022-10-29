@@ -77,6 +77,12 @@ gsize            g_union_info_get_size                 (GIUnionInfo *info);
 GI_AVAILABLE_IN_ALL
 gsize            g_union_info_get_alignment            (GIUnionInfo *info);
 
+GI_AVAILABLE_IN_1_76
+const char *     g_union_info_get_copy_function        (GIUnionInfo *info);
+
+GI_AVAILABLE_IN_1_76
+const char *     g_union_info_get_free_function        (GIUnionInfo *info);
+
 G_END_DECLS
 
 

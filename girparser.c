@@ -477,7 +477,9 @@ parse_basic (const char *str)
 
 static GIrNodeType *
 parse_type_internal (GIrModule *module,
-		     const gchar *str, char **next, gboolean in_glib,
+		     const gchar *str,
+                     char **next,
+                     gboolean in_glib,
 		     gboolean in_gobject)
 {
   const BasicTypeInfo *basic;
@@ -2560,6 +2562,8 @@ start_struct (GMarkupParseContext *context,
   const gchar *gtype_init;
   const gchar *gtype_struct;
   const gchar *foreign;
+  const gchar *copy_func;
+  const gchar *free_func;
   GIrNodeStruct *struct_;
 
   if (!(strcmp (element_name, "record") == 0 &&
@@ -2579,6 +2583,8 @@ start_struct (GMarkupParseContext *context,
   gtype_init = find_attribute ("glib:get-type", attribute_names, attribute_values);
   gtype_struct = find_attribute ("glib:is-gtype-struct-for", attribute_names, attribute_values);
   foreign = find_attribute ("foreign", attribute_names, attribute_values);
+  copy_func = find_attribute ("copy-function", attribute_names, attribute_values);
+  free_func = find_attribute ("free-function", attribute_names, attribute_values);
 
   if (name == NULL && ctx->node_stack == NULL)
     {
@@ -2615,6 +2621,9 @@ start_struct (GMarkupParseContext *context,
 
   struct_->foreign = (g_strcmp0 (foreign, "1") == 0);
 
+  struct_->copy_func = g_strdup (copy_func);
+  struct_->free_func = g_strdup (free_func);
+
   if (ctx->node_stack == NULL)
     ctx->current_module->entries =
       g_list_append (ctx->current_module->entries, struct_);
@@ -2634,6 +2643,8 @@ start_union (GMarkupParseContext *context,
   const gchar *deprecated;
   const gchar *typename;
   const gchar *typeinit;
+  const gchar *copy_func;
+  const gchar *free_func;
   GIrNodeUnion *union_;
 
   if (!(strcmp (element_name, "union") == 0 &&
@@ -2650,6 +2661,8 @@ start_union (GMarkupParseContext *context,
   deprecated = find_attribute ("deprecated", attribute_names, attribute_values);
   typename = find_attribute ("glib:type-name", attribute_names, attribute_values);
   typeinit = find_attribute ("glib:get-type", attribute_names, attribute_values);
+  copy_func = find_attribute ("copy-function", attribute_names, attribute_values);
+  free_func = find_attribute ("free-function", attribute_names, attribute_values);
 
   if (name == NULL && ctx->node_stack == NULL)
     {
@@ -2663,6 +2676,8 @@ start_union (GMarkupParseContext *context,
   ((GIrNode *)union_)->name = g_strdup (name ? name : "");
   union_->gtype_name = g_strdup (typename);
   union_->gtype_init = g_strdup (typeinit);
+  union_->copy_func = g_strdup (copy_func);
+  union_->free_func = g_strdup (free_func);
   if (deprecated)
     union_->deprecated = TRUE;
   else
