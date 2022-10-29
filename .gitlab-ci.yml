@@ -318,6 +318,28 @@ msys2-mingw32:
       - _build/meson-logs
       - _coverage/
 
+msys2-clang64:
+  extends: .only-schedules
+  stage: build
+  tags:
+    - win32-ps
+  needs: []
+  variables:
+    MSYSTEM: "CLANG64"
+    CHERE_INVOKING: "yes"
+  script:
+    - C:\msys64\usr\bin\pacman --noconfirm -Syyuu --ask 20
+    - C:\msys64\usr\bin\bash .gitlab-ci/show-execution-environment.sh
+    - C:\msys64\usr\bin\bash -lc "bash -x ./.gitlab-ci/test-msys2.sh"
+  artifacts:
+    reports:
+      junit: "_build/meson-logs/testlog.junit.xml"
+    name: "glib-${env:CI_JOB_NAME}-${env:CI_COMMIT_REF_NAME}"
+    when: always
+    expire_in: 1 week
+    paths:
+      - _build/meson-logs
+
 vs2017-x64:
   extends: .only-default
   stage: build
