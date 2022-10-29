@@ -1143,7 +1143,7 @@ write_to_file (const gchar  *contents,
     {
       gssize s;
 
-      s = write (fd, contents, MIN (length, G_MAXSSIZE));
+      s = write (fd, contents, MIN (length, G_MAXSIZE));
 
       if (s < 0)
         {
