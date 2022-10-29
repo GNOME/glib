@@ -34,21 +34,12 @@ test_typeof (void)
   MyObject *obj3 = g_atomic_pointer_get (&obj2);
   g_assert_true (obj3 == obj);
 
-#if __cplusplus >= 201103L
-  MyObject *obj4 = nullptr;
-#else
   MyObject *obj4 = NULL;
-#endif
   g_atomic_pointer_set (&obj4, obj3);
   g_assert_true (obj4 == obj);
 
-#if __cplusplus >= 201103L
-  MyObject *obj5 = nullptr;
-  g_atomic_pointer_compare_and_exchange (&obj5, nullptr, obj4);
-#else
   MyObject *obj5 = NULL;
   g_atomic_pointer_compare_and_exchange (&obj5, NULL, obj4);
-#endif
   g_assert_true (obj5 == obj);
 
   MyObject *obj6 = g_steal_pointer (&obj5);
@@ -195,11 +186,7 @@ test_steal_pointer (void)
 int
 main (int argc, char *argv[])
 {
-#if __cplusplus >= 201103L
-  g_test_init (&argc, &argv, nullptr);
-#else
   g_test_init (&argc, &argv, NULL);
-#endif
 
   g_test_add_func ("/C++/typeof", test_typeof);
   g_test_add_func ("/C++/atomic-pointer-compare-and-exchange", test_atomic_pointer_compare_and_exchange);

@@ -870,10 +870,17 @@
  */
 #ifndef NULL
 #  ifdef __cplusplus
-#  define NULL        (0L)
+#    if __cplusplus >= 201103L
+#      define NULL (nullptr)
+#    else
+#      define NULL (0L)
+#    endif /* __cplusplus >= 201103L */
 #  else /* !__cplusplus */
 #  define NULL        ((void*) 0)
 #  endif /* !__cplusplus */
+#elif defined (__cplusplus) && __cplusplus >= 201103L
+#  undef NULL
+#  define NULL (nullptr)
 #endif
 
 #ifndef	FALSE
