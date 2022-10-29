@@ -34,7 +34,6 @@ export CCACHE_BASEDIR CCACHE_DIR
 pip3 install --upgrade --user meson==0.60.3
 
 PATH="$(cygpath "$USERPROFILE")/.local/bin:$HOME/.local/bin:$PATH"
-CFLAGS="-coverage -ftest-coverage -fprofile-arcs"
 DIR="$(pwd)"
 export PATH CFLAGS
 
@@ -42,20 +41,24 @@ meson --werror --buildtype debug _build
 cd _build
 ninja
 
-lcov \
-    --quiet \
-    --config-file "${DIR}"/.lcovrc \
-    --directory "${DIR}/_build" \
-    --capture \
-    --initial \
-    --output-file "${DIR}/_coverage/${CI_JOB_NAME}-baseline.lcov"
+if [[ "$CFLAGS" == *"-coverage"* ]]; then
+    lcov \
+        --quiet \
+        --config-file "${DIR}"/.lcovrc \
+        --directory "${DIR}/_build" \
+        --capture \
+        --initial \
+        --output-file "${DIR}/_coverage/${CI_JOB_NAME}-baseline.lcov"
+fi
 
 # FIXME: fix the test suite
 meson test --timeout-multiplier "${MESON_TEST_TIMEOUT_MULTIPLIER}" --no-suite flaky || true
 
-lcov \
-    --quiet \
-    --config-file "${DIR}"/.lcovrc \
-    --directory "${DIR}/_build" \
-    --capture \
-    --output-file "${DIR}/_coverage/${CI_JOB_NAME}.lcov"
+if [[ "$CFLAGS" == *"-coverage"* ]]; then
+    lcov \
+        --quiet \
+        --config-file "${DIR}"/.lcovrc \
+        --directory "${DIR}/_build" \
+        --capture \
+        --output-file "${DIR}/_coverage/${CI_JOB_NAME}.lcov"
+fi

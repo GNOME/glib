@@ -303,6 +303,7 @@ msys2-mingw32:
   variables:
     MSYSTEM: "MINGW32"
     CHERE_INVOKING: "yes"
+    CFLAGS: -coverage -ftest-coverage -fprofile-arcs
   script:
     - C:\msys64\usr\bin\pacman --noconfirm -Syyuu --ask 20
     - C:\msys64\usr\bin\bash .gitlab-ci/show-execution-environment.sh
