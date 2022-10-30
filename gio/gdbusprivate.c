@@ -61,6 +61,11 @@
 #include "gwin32sid.h"
 #endif
 
+#ifdef G_OS_DARWIN
+#include <CoreFoundation/CoreFoundation.h>
+#include <IOKit/IOKitLib.h>
+#endif
+
 #include "glibintl.h"
 
 static gboolean _g_dbus_worker_do_initial_read (gpointer data);
@@ -2424,9 +2429,10 @@ _g_dbus_get_machine_id (GError **error)
   return res;
 #else
   gchar *ret = NULL;
-  GError *first_error = NULL;
   gsize i;
   gboolean non_zero = FALSE;
+#if !defined (HAVE_DARWIN_IOKIT)
+  GError *first_error = NULL;
 
   /* Copy what dbus.git does: allow the /var/lib path to be configurable at
    * build time, but hard-code the system-wide machine ID path in /etc. */
@@ -2452,6 +2458,46 @@ _g_dbus_get_machine_id (GError **error)
   /* ignore the error from the first try, if any */
   g_clear_error (&first_error);
 
+#else /* defined (HAVE_DARWIN_IOKIT) */
+  CFStringRef io_platform_uuid;
+  io_service_t service;
+  const char *platform_uuid;
+  size_t platform_uuid_length;
+
+  service =
+    IOServiceGetMatchingService (kIOMainPortDefault,
+                                 IOServiceMatching ("IOPlatformExpertDevice"));
+  io_platform_uuid =
+    IORegistryEntryCreateCFProperty (service, CFSTR ("IOPlatformUUID"),
+                                     kCFAllocatorDefault, 0);
+  platform_uuid = CFStringGetCStringPtr (io_platform_uuid, kCFStringEncodingASCII);
+  if (platform_uuid == NULL)
+    {
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                           "Failed to get IOPlatformUUID from "
+                           "IOPlatformExpertDevice");
+      g_clear_pointer (&io_platform_uuid, CFRelease);
+      IOObjectRelease (service);
+      return NULL;
+    }
+
+  platform_uuid_length = strlen (platform_uuid);
+  ret = g_new0 (char, platform_uuid_length + 2);
+
+  size_t j = 0;
+  for (i = 0; i < platform_uuid_length; i++)
+    {
+      if (g_ascii_isxdigit (platform_uuid[i]))
+        ret[j++] = g_ascii_tolower (platform_uuid[i]);
+    }
+
+  ret[j] = '\n';
+
+  g_clear_pointer (&io_platform_uuid, CFRelease);
+  IOObjectRelease (service);
+
+#endif /* !defined (HAVE_DARWIN_IOKIT) */
+
   /* Validate the machine ID. From `man 5 machine-id`:
    * > The machine ID is a single newline-terminated, hexadecimal, 32-character,
    * > lowercase ID. When decoded from hexadecimal, this corresponds to a
@@ -2469,9 +2515,14 @@ _g_dbus_get_machine_id (GError **error)
 
   if (i != 32 || ret[i] != '\n' || ret[i + 1] != '\0' || !non_zero)
     {
+#if !defined (HAVE_DARWIN_IOKIT)
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                    "Invalid machine ID in %s or %s",
                    var_lib_path, etc_path);
+#else /* defined (HAVE_DARWIN_IOKIT) */
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                           "Invalid machine ID from IOPlatformUUID");
+#endif /* !defined (HAVE_DARWIN_IOKIT) */
       g_free (ret);
       return NULL;
     }

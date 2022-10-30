@@ -395,7 +395,11 @@ if host_system != 'windows'
         'CoreFoundation',
         'Foundation',
       ],
-      required : glib_have_cocoa,
+      required : glib_have_cocoa or glib_have_darwin_iokit,
+    )
+    platform_deps += dependency('appleframeworks',
+      modules : [ 'IOKit' ],
+      required : glib_have_darwin_iokit,
     )
   endif
 

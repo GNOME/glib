@@ -843,6 +843,7 @@ endif
 glib_have_mac_os_10_9_or_later = false
 glib_have_carbon = false
 glib_have_cocoa = false
+glib_have_darwin_iokit = false
 if host_system == 'darwin'
   add_languages('objc', native: false, required: true)
   objcc = meson.get_compiler('objc')
@@ -853,6 +854,15 @@ if host_system == 'darwin'
   glib_have_carbon = objcc.compiles('''#include <Carbon/Carbon.h>
                                        #include <CoreServices/CoreServices.h>''',
                                     name : 'Mac OS X Carbon support')
+
+  glib_have_darwin_iokit = objcc.compiles(
+    '''#include <CoreFoundation/CoreFoundation.h>
+       #include <IOKit/IOKitLib.h>''',
+  name : 'Darwin IOKit support')
+
+  if glib_have_darwin_iokit
+    glib_conf.set('HAVE_DARWIN_IOKIT', true)
+  endif
 
   if glib_have_carbon
     glib_conf.set('HAVE_CARBON', true)
