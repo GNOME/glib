@@ -117,10 +117,7 @@ gio_tests = {
   'tls-database' : {'extra_sources' : ['gtesttlsbackend.c']},
   'tls-bindings' : {'extra_sources' : ['gtesttlsbackend.c']},
   'unix-fd' : {},
-  'gdbus-address-get-session' : {
-    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
-    'should_fail' : host_system == 'darwin',
-  },
+  'gdbus-address-get-session' : {},
   'win32-appinfo' : {},
 }
 

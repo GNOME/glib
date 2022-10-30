@@ -393,7 +393,14 @@ if host_system != 'windows'
     settings_sources += files('gnextstepsettingsbackend.m')
     contenttype_sources += files('gosxcontenttype.m')
     appinfo_sources += files('gosxappinfo.m')
-    framework_dep = dependency('appleframeworks', modules : ['Foundation', 'CoreFoundation', 'AppKit'])
+    framework_dep = dependency('appleframeworks',
+      modules : [
+        'AppKit',
+        'CoreFoundation',
+        'Foundation',
+        'IOKit',
+      ],
+    )
     platform_deps += [framework_dep]
     if glib_have_os_x_9_or_later
       unix_sources += files('gcocoanotificationbackend.m')
