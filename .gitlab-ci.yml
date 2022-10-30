@@ -451,6 +451,7 @@ macos:
     CFLAGS: '-Wno-overlength-strings'
   before_script:
     - bash .gitlab-ci/show-execution-environment.sh
+    - ioreg -rd1 -c IOPlatformExpertDevice || true
     - pip3 install --user meson==0.60.1
     - pip3 install --user ninja
     - export PATH=/Users/gitlabrunner/Library/Python/3.7/bin:$PATH
