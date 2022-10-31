@@ -369,16 +369,17 @@ if host_system != 'windows'
   )
 
   portal_sources = [files(
-    'gdocumentportal.c',
-    'gopenuriportal.c',
-    'gmemorymonitorportal.c',
-    'gnetworkmonitorportal.c',
-    'gpowerprofilemonitorportal.c',
-    'gproxyresolverportal.c',
-    'gtrashportal.c',
-    'gportalsupport.c',
-    'gportalnotificationbackend.c',
-    'gsandbox.c'),
+      'gdocumentportal.c',
+      'gopenuriportal.c',
+      'gmemorymonitorportal.c',
+      'gnetworkmonitorportal.c',
+      'gpowerprofilemonitorportal.c',
+      'gproxyresolverportal.c',
+      'gtrashportal.c',
+      'gportalsupport.c',
+      'gportalnotificationbackend.c',
+      'gsandbox.c',
+    ),
     xdp_dbus_generated
   ]
 
