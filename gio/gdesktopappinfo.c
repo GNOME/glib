@@ -1864,6 +1864,7 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
   if (try_exec && try_exec[0] != '\0')
     {
       char *t;
+      /* Use the desktop file path (if any) as working dir to search program */
       t = g_find_program_for_path (try_exec, NULL, path);
       if (t == NULL)
         {
@@ -1896,6 +1897,7 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
           /* Since @exec is not an empty string, there must be at least one
            * argument, so dereferencing argv[0] should return non-NULL. */
           g_assert (argc > 0);
+          /* Use the desktop file path (if any) as working dir to search program */
           t = g_find_program_for_path (argv[0], NULL, path);
           g_strfreev (argv);
 
@@ -2631,8 +2633,10 @@ expand_application_parameters (GDesktopAppInfo   *info,
 }
 
 static gboolean
-prepend_terminal_to_vector (int    *argc,
-                            char ***argv)
+prepend_terminal_to_vector (int          *argc,
+                            char       ***argv,
+                            const char   *path,
+                            const char   *working_dir)
 {
 #ifndef G_OS_WIN32
   char **real_argv;
@@ -2678,7 +2682,8 @@ prepend_terminal_to_vector (int    *argc,
 
   for (i = 0, found_terminal = NULL; i < G_N_ELEMENTS (known_terminals); i++)
     {
-      found_terminal = g_find_program_in_path (known_terminals[i].exec);
+      found_terminal = g_find_program_for_path (known_terminals[i].exec,
+                                                path, working_dir);
       if (found_terminal != NULL)
         {
           term_arg = known_terminals[i].exec_arg;
@@ -2880,7 +2885,9 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
         launched_uris = g_list_prepend (launched_uris, iter->data);
       launched_uris = g_list_reverse (launched_uris);
 
-      if (info->terminal && !prepend_terminal_to_vector (&argc, &argv))
+      if (info->terminal && !prepend_terminal_to_vector (&argc, &argv,
+                                                         g_environ_getenv (envp, "PATH"),
+                                                         info->path))
         {
           g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                                _("Unable to find terminal required for application"));
