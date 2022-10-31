@@ -2466,7 +2466,8 @@ _g_dbus_get_machine_id (GError **error)
   size_t platform_uuid_length;
 
   matching = IOServiceMatching ("IOPlatformExpertDevice");
-  service = IOServiceGetMatchingService (kIOMasterPortDefault, matching);
+  service = IOServiceGetMatchingService (kIOMasterPortDefault,
+                                         g_steal_pointer (&matching));
   io_platform_uuid =
     IORegistryEntryCreateCFProperty (service, CFSTR ("IOPlatformUUID"),
                                      kCFAllocatorDefault, 0);
