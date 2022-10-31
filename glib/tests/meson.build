@@ -26,7 +26,10 @@ glib_tests = {
     'can_fail' : host_system == 'darwin',
   },
   'error' : {},
-  'fileutils' : {},
+  'fileutils' : {
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/2800
+    'can_fail' : host_system == 'windows' and cc.get_id() == 'msvc',
+  },
   'gdatetime' : {
     'suite' : ['slow'],
     'can_fail' : host_system == 'windows',
