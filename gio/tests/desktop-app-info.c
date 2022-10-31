@@ -1697,6 +1697,102 @@ test_app_path_wrong (void)
   g_clear_object (&appinfo);
 }
 
+static void
+test_launch_startup_notify_fail (void)
+{
+  GAppInfo *app_info;
+  GAppLaunchContext *context;
+  GError *error = NULL;
+  gboolean launch_started;
+  gboolean launch_failed;
+  gboolean launched;
+  GList *uris;
+
+  app_info = g_app_info_create_from_commandline ("this-must-not-exist‼",
+                                                 "failing app",
+                                                 G_APP_INFO_CREATE_NONE |
+                                                 G_APP_INFO_CREATE_SUPPORTS_STARTUP_NOTIFICATION,
+                                                 &error);
+  g_assert_no_error (error);
+
+  context = g_object_new (test_launch_context_get_type (), NULL);
+  g_signal_connect (context, "launch-started",
+                    G_CALLBACK (on_launch_started),
+                    &launch_started);
+  g_signal_connect (context, "launched",
+                    G_CALLBACK (on_launch_started),
+                    &launched);
+  g_signal_connect (context, "launch-failed",
+                    G_CALLBACK (on_launch_failed),
+                    &launch_failed);
+
+  launch_started = FALSE;
+  launch_failed = FALSE;
+  launched = FALSE;
+  uris = g_list_prepend (NULL, g_file_new_for_uri ("foo://bar"));
+  uris = g_list_prepend (uris, g_file_new_for_uri ("bar://foo"));
+  g_assert_false (g_app_info_launch (app_info, uris, context, &error));
+  g_assert_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_NOENT);
+  g_assert_true (launch_started);
+  g_assert_true (launch_failed);
+  g_assert_false (launched);
+
+  g_clear_error (&error);
+  g_clear_object (&app_info);
+  g_clear_object (&context);
+  g_clear_list (&uris, g_object_unref);
+}
+
+static void
+test_launch_fail (void)
+{
+  GAppInfo *app_info;
+  GError *error = NULL;
+
+  app_info = g_app_info_create_from_commandline ("this-must-not-exist‼",
+                                                 "failing app",
+                                                 G_APP_INFO_CREATE_NONE,
+                                                 &error);
+  g_assert_no_error (error);
+
+  g_assert_false (g_app_info_launch (app_info, NULL, NULL, &error));
+  g_assert_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_NOENT);
+
+  g_clear_error (&error);
+  g_clear_object (&app_info);
+}
+
+static void
+test_launch_fail_absolute_path (void)
+{
+  GAppInfo *app_info;
+  GError *error = NULL;
+
+  app_info = g_app_info_create_from_commandline ("/nothing/of/this-must-exist‼",
+                                                 NULL,
+                                                 G_APP_INFO_CREATE_NONE,
+                                                 &error);
+  g_assert_no_error (error);
+
+  g_assert_false (g_app_info_launch (app_info, NULL, NULL, &error));
+  g_assert_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_NOENT);
+
+  g_clear_error (&error);
+  g_clear_object (&app_info);
+
+  app_info = g_app_info_create_from_commandline ("/",
+                                                 NULL,
+                                                 G_APP_INFO_CREATE_NONE,
+                                                 &error);
+  g_assert_no_error (error);
+
+  g_assert_false (g_app_info_launch (app_info, NULL, NULL, &error));
+  g_assert_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_NOENT);
+
+  g_clear_error (&error);
+  g_clear_object (&app_info);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -1736,6 +1832,9 @@ main (int   argc,
   g_test_add_func ("/desktop-app-info/show-in", test_show_in);
   g_test_add_func ("/desktop-app-info/app-path", test_app_path);
   g_test_add_func ("/desktop-app-info/app-path/wrong", test_app_path_wrong);
+  g_test_add_func ("/desktop-app-info/launch/fail", test_launch_fail);
+  g_test_add_func ("/desktop-app-info/launch/fail-absolute-path", test_launch_fail_absolute_path);
+  g_test_add_func ("/desktop-app-info/launch/fail-startup-notify", test_launch_startup_notify_fail);
   g_test_add_func ("/desktop-app-info/launch-as-manager", test_launch_as_manager);
   g_test_add_func ("/desktop-app-info/launch-as-manager/fail", test_launch_as_manager_fail);
   g_test_add_func ("/desktop-app-info/launch-default-uri-handler", test_default_uri_handler);

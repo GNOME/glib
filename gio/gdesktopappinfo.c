@@ -2919,6 +2919,46 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
           emit_launch_started (launch_context, info, sn_id);
         }
 
+      g_assert (argc > 0);
+
+      if (!g_path_is_absolute (argv[0]) ||
+          !g_file_test (argv[0], G_FILE_TEST_IS_EXECUTABLE) ||
+          g_file_test (argv[0], G_FILE_TEST_IS_DIR))
+        {
+          char *program = g_steal_pointer (&argv[0]);
+          char *program_path = NULL;
+
+          if (!g_path_is_absolute (program))
+            {
+              const char *env_path = g_environ_getenv (envp, "PATH");
+
+              program_path = g_find_program_for_path (program,
+                                                      env_path,
+                                                      info->path);
+            }
+
+          if (program_path)
+            {
+              argv[0] = g_steal_pointer (&program_path);
+            }
+          else
+            {
+              if (sn_id)
+                g_app_launch_context_launch_failed (launch_context, sn_id);
+
+              g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_NOENT,
+                           _("Program ‘%s’ not found in $PATH"),
+                           program);
+
+              g_free (program);
+              g_clear_pointer (&sn_id, g_free);
+              g_clear_list (&launched_uris, NULL);
+              goto out;
+            }
+
+          g_free (program);
+        }
+
       if (g_once_init_enter (&gio_launch_desktop_path))
         {
           const gchar *tmp = NULL;
