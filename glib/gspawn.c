@@ -1614,7 +1614,7 @@ enum
   CHILD_CHDIR_FAILED,
   CHILD_EXEC_FAILED,
   CHILD_OPEN_FAILED,
-  CHILD_DUP2_FAILED,
+  CHILD_DUPFD_FAILED,
   CHILD_FORK_FAILED,
   CHILD_CLOSE_FAILED,
 };
@@ -1659,7 +1659,7 @@ do_exec (gint                  child_err_report_fd,
     {
       if (safe_dup2 (stdin_fd, 0) < 0)
         write_err_and_exit (child_err_report_fd,
-                            CHILD_DUP2_FAILED);
+                            CHILD_DUPFD_FAILED);
 
       if (!((stdout_fd >= 0 || stdout_to_null) && stdin_fd == 1) &&
           !((stderr_fd >= 0 || stderr_to_null) && stdin_fd == 2))
@@ -1674,7 +1674,7 @@ do_exec (gint                  child_err_report_fd,
                             CHILD_OPEN_FAILED);
       if (safe_dup2 (read_null, 0) < 0)
         write_err_and_exit (child_err_report_fd,
-                            CHILD_DUP2_FAILED);
+                            CHILD_DUPFD_FAILED);
       close_and_invalidate (&read_null);
     }
 
@@ -1682,7 +1682,7 @@ do_exec (gint                  child_err_report_fd,
     {
       if (safe_dup2 (stdout_fd, 1) < 0)
         write_err_and_exit (child_err_report_fd,
-                            CHILD_DUP2_FAILED);
+                            CHILD_DUPFD_FAILED);
 
       if (!((stdin_fd >= 0 || !child_inherits_stdin) && stdout_fd == 0) &&
           !((stderr_fd >= 0 || stderr_to_null) && stdout_fd == 2))
@@ -1696,7 +1696,7 @@ do_exec (gint                  child_err_report_fd,
                             CHILD_OPEN_FAILED);
       if (safe_dup2 (write_null, 1) < 0)
         write_err_and_exit (child_err_report_fd,
-                            CHILD_DUP2_FAILED);
+                            CHILD_DUPFD_FAILED);
       close_and_invalidate (&write_null);
     }
 
@@ -1704,7 +1704,7 @@ do_exec (gint                  child_err_report_fd,
     {
       if (safe_dup2 (stderr_fd, 2) < 0)
         write_err_and_exit (child_err_report_fd,
-                            CHILD_DUP2_FAILED);
+                            CHILD_DUPFD_FAILED);
 
       if (!((stdin_fd >= 0 || !child_inherits_stdin) && stderr_fd == 0) &&
           !((stdout_fd >= 0 || stdout_to_null) && stderr_fd == 1))
@@ -1718,7 +1718,7 @@ do_exec (gint                  child_err_report_fd,
                             CHILD_OPEN_FAILED);
       if (safe_dup2 (write_null, 2) < 0)
         write_err_and_exit (child_err_report_fd,
-                            CHILD_DUP2_FAILED);
+                            CHILD_DUPFD_FAILED);
       close_and_invalidate (&write_null);
     }
 
@@ -1732,7 +1732,7 @@ do_exec (gint                  child_err_report_fd,
       if (child_setup == NULL && n_fds == 0)
         {
           if (safe_dup2 (child_err_report_fd, 3) < 0)
-            write_err_and_exit (child_err_report_fd, CHILD_DUP2_FAILED);
+            write_err_and_exit (child_err_report_fd, CHILD_DUPFD_FAILED);
           set_cloexec (GINT_TO_POINTER (0), 3);
           if (safe_closefrom (4) < 0)
             write_err_and_exit (child_err_report_fd, CHILD_CLOSE_FAILED);
@@ -1768,7 +1768,7 @@ do_exec (gint                  child_err_report_fd,
       if (max_target_fd == G_MAXINT)
         {
           errno = EINVAL;
-          write_err_and_exit (child_err_report_fd, CHILD_DUP2_FAILED);
+          write_err_and_exit (child_err_report_fd, CHILD_DUPFD_FAILED);
         }
 
       /* If we're doing remapping fd assignments, we need to handle
@@ -1782,7 +1782,7 @@ do_exec (gint                  child_err_report_fd,
             {
               source_fds[i] = dupfd_cloexec (source_fds[i], max_target_fd + 1);
               if (source_fds[i] < 0)
-                write_err_and_exit (child_err_report_fd, CHILD_DUP2_FAILED);
+                write_err_and_exit (child_err_report_fd, CHILD_DUPFD_FAILED);
             }
         }
 
@@ -1804,11 +1804,11 @@ do_exec (gint                  child_err_report_fd,
                 {
                   child_err_report_fd = dupfd_cloexec (child_err_report_fd, max_target_fd + 1);
                   if (child_err_report_fd < 0)
-                    write_err_and_exit (child_err_report_fd, CHILD_DUP2_FAILED);
+                    write_err_and_exit (child_err_report_fd, CHILD_DUPFD_FAILED);
                 }
 
               if (safe_dup2 (source_fds[i], target_fds[i]) < 0)
-                write_err_and_exit (child_err_report_fd, CHILD_DUP2_FAILED);
+                write_err_and_exit (child_err_report_fd, CHILD_DUPFD_FAILED);
 
               close_and_invalidate (&source_fds[i]);
             }
@@ -2528,7 +2528,7 @@ fork_exec (gboolean              intermediate_child,
                            g_strerror (buf[1]));
               break;
 
-            case CHILD_DUP2_FAILED:
+            case CHILD_DUPFD_FAILED:
               g_set_error (error,
                            G_SPAWN_ERROR,
                            G_SPAWN_ERROR_FAILED,
