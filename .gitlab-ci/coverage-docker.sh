@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -ex
 
 # Fixup Windows paths
 python3 ./.gitlab-ci/fixup-cov-paths.py _coverage/*.lcov

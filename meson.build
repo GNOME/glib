@@ -129,13 +129,37 @@ installed_tests_template_tap = files('tests/template-tap.test.in')
 # Don’t build the tests unless we can run them (either natively, in an exe wrapper, or by installing them for later use)
 build_tests = get_option('tests') and (meson.can_run_host_binaries() or installed_tests_enabled)
 
+common_test_env = [
+  'G_DEBUG=gc-friendly',
+  'G_ENABLE_DIAGNOSTIC=1',
+  'MALLOC_CHECK_=2',
+]
+
+test_timeout = 30
+test_timeout_slow = 90
+
+add_test_setup('default',
+  is_default: true,
+  exclude_suites: ['flaky', 'failing'],
+  env: common_test_env,
+  timeout_multiplier: 2,
+)
+
+add_test_setup('unstable_tests',
+  env: common_test_env,
+  timeout_multiplier: 2,
+  # Empty test setup, used for having different results set for flaky tests
+  # Sadly we can't use (https://github.com/mesonbuild/meson/issues/10934):
+  #suites: ['flaky', 'unstable']
+)
+
 # Allow the tests to be easily run under valgrind using --setup=valgrind
 valgrind = find_program('valgrind', required: false)
 if valgrind.found()
   suppression_file = files('tools' / 'glib.supp')
 
   add_test_setup('valgrind',
-    exclude_suites: [ 'no-valgrind' ],
+    exclude_suites: [ 'no-valgrind', 'flaky' ],
     exe_wrapper: [
       valgrind,
       '--tool=memcheck',
@@ -149,7 +173,8 @@ if valgrind.found()
       '--suppressions=@0@'.format(meson.project_source_root() /
         '@0@'.format(suppression_file[0])),
     ],
-    timeout_multiplier: 10,
+    env: common_test_env,
+    timeout_multiplier: 20,
   )
 endif
 
@@ -210,11 +235,27 @@ if host_system == 'windows' and cc.get_id() != 'msvc' and cc.get_id() != 'clang-
   glib_conf.set('_FILE_OFFSET_BITS', 64)
 endif
 
-if get_option('default_library') == 'both' and (host_system == 'windows' or host_system == 'cygwin')
+glib_build_shared = false
+glib_build_static = false
+if get_option('default_library') == 'both'
+  glib_build_static = true
+  glib_build_shared = true
+elif get_option('default_library') == 'static'
+  glib_build_static = true
+elif get_option('default_library') == 'shared'
+  glib_build_shared = true
+endif
+
+glib_build_both = glib_build_static and glib_build_shared
+glib_build_static_only = glib_build_static and not glib_build_shared
+glib_build_shared_only = glib_build_shared and not glib_build_static
+
+if glib_build_shared and glib_build_static and (
+  host_system == 'windows' or host_system == 'cygwin')
   error('On Windows default_library must be "shared" or "static" but not "both"')
 endif
 
-if get_option('default_library') == 'static'
+if glib_build_static_only
   glibconfig_conf.set('GLIB_STATIC_COMPILATION', '1')
   glibconfig_conf.set('GOBJECT_STATIC_COMPILATION', '1')
   glibconfig_conf.set('GIO_STATIC_COMPILATION', '1')
@@ -2306,14 +2347,6 @@ if want_systemtap and enable_dtrace
   enable_systemtap = true
 endif
 
-common_test_env = [
-  'G_DEBUG=gc-friendly',
-  'G_ENABLE_DIAGNOSTIC=1',
-  'MALLOC_CHECK_=2',
-]
-test_timeout = 60
-test_timeout_slow = 180
-
 pkg = import('pkgconfig')
 windows = import('windows')
 subdir('tools')
@@ -2360,3 +2393,70 @@ endif
 
 gnome = import('gnome')
 subdir('docs/reference')
+
+summary({
+  'host cpu' : host_machine.cpu_family(),
+  'host endian' : host_machine.endian(),
+  'host system' : host_system,
+  'C Compiler' : cc.get_id(),
+  'C++ Compiler' : have_cxx ? cxx.get_id() : 'none',
+  'shared build' : glib_build_shared,
+  'static build' : glib_build_static,
+}, section: 'Build environment')
+
+if build_machine.system() != host_system
+  summary({
+    'build cpu' : build_machine.cpu_family(),
+    'build endian' : build_machine.endian(),
+    'build system' : build_machine.system(),
+  }, section: 'Build environment')
+endif
+
+summary({
+  'prefix' : glib_prefix,
+  'bindir' : glib_bindir,
+  'libexecdir' : glib_libexecdir,
+  'pkgdatadir' : glib_pkgdatadir,
+  'datadir' : glib_datadir,
+  'includedir' : glib_includedir,
+  'giomodulesdir' : glib_giomodulesdir,
+  'localstatedir' : glib_localstatedir,
+}, section: 'Directories')
+
+if get_option('multiarch')
+  summary({
+    'multiarch bindir' : glib_bindir,
+    'multiarch libexecdir' : glib_libexecdir,
+  }, section: 'Directories')
+endif
+
+if enable_systemtap
+  summary('tapset dir', get_option('tapset_install_dir'), section: 'Directories')
+endif
+
+if host_system == 'linux'
+  summary({
+    'selinux' : selinux_dep.found(),
+    'libmount' : libmount_dep.found(),
+  }, section: 'Options')
+endif
+
+summary({
+  'xattr' : xattr_dep.length() > 0,
+  'man' : get_option('man'),
+  'dtrace' : get_option('dtrace'),
+  'systemtap' : enable_systemtap,
+  'sysprof' : libsysprof_capture_dep.found(),
+  'gtk_doc' : get_option('gtk_doc'),
+  'bsymbolic_functions' : get_option('bsymbolic_functions'),
+  'force_posix_threads' : get_option('force_posix_threads'),
+  'tests' : get_option('tests'),
+  'installed_tests' : get_option('installed_tests'),
+  'nls' : get_option('nls'),
+  'oss_fuzz' : get_option('oss_fuzz'),
+  'glib_debug' : get_option('glib_debug'),
+  'glib_assert' : get_option('glib_assert'),
+  'glib_checks' : get_option('glib_checks'),
+  'libelf' : get_option('libelf'),
+  'multiarch' : get_option('multiarch'),
+}, section: 'Options')

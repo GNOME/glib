@@ -601,7 +601,7 @@ gio_sources = files(
   'gliststore.c',
 )
 
-if get_option('default_library') != 'static'
+if glib_build_shared
   gio_sources += files ('../glib/gtrace.c')
 endif
 

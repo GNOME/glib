@@ -46,7 +46,7 @@ giotypefuncs_inc = custom_target(
 gio_tests = {
   'appmonitor' : {
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
-    'should_fail' : host_system == 'darwin',
+    'can_fail' : host_system == 'darwin',
   },
   'async-close-output-stream' : {},
   'async-splice-output-stream' : {},
@@ -56,7 +56,7 @@ gio_tests = {
   'contexts' : {},
   'contenttype' : {
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392 / https://gitlab.gnome.org/GNOME/glib/-/issues/1251
-    'should_fail' : host_system == 'darwin',
+    'can_fail' : host_system == 'darwin',
   },
   'converter-stream' : {},
   'credentials' : {},
@@ -67,9 +67,13 @@ gio_tests = {
   'fileattributematcher' : {},
   'filter-streams' : {},
   'giomodule' : {},
-  'gsubprocess' : {},
+  'gsubprocess' : {
+    'suite': host_system == 'windows' ? ['flaky'] : [],
+  },
   'g-file' : {},
-  'g-file-info' : {},
+  'g-file-info' : {
+    'can_fail' : host_system == 'windows' and cc.get_id() != 'gcc',
+  },
   'g-icon' : {},
   'gdbus-addresses' : {},
   'gdbus-message' : {},
@@ -77,7 +81,7 @@ gio_tests = {
     'dependencies' : [libgdbus_example_objectmanager_dep],
     'install_rpath' : installed_tests_execdir,
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
-    'should_fail' : host_system == 'darwin',
+    'can_fail' : host_system in ['darwin', 'windows'],
   },
   'inet-address' : {},
   'io-stream' : {},
@@ -101,7 +105,7 @@ gio_tests = {
   'sleepy-stream' : {},
   'socket' : {
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
-    'should_fail' : host_system == 'darwin',
+    'can_fail' : host_system == 'darwin',
   },
   'socket-listener' : {},
   'socket-service' : {},
@@ -119,7 +123,7 @@ gio_tests = {
   'unix-fd' : {},
   'gdbus-address-get-session' : {
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
-    'should_fail' : host_system == 'darwin',
+    'can_fail' : host_system == 'darwin',
   },
   'win32-appinfo' : {},
 }
@@ -149,11 +153,12 @@ test_extra_programs = {
   'gsubprocess-testprog' : {},
 }
 
-python_tests = [
-  'codegen.py',
-]
+python_tests = {
+  # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/2764
+  'codegen.py' : { 'can_fail' : host_system == 'freebsd' },
+}
 
-test_env = environment(common_test_env)
+test_env = environment()
 test_env.set('G_TEST_SRCDIR', meson.current_source_dir())
 test_env.set('G_TEST_BUILDDIR', meson.current_build_dir())
 test_env.set('GIO_MODULE_DIR', '')
@@ -222,7 +227,7 @@ if host_machine.system() != 'windows'
   }
 
   # LD_PRELOAD modules don't work so well with AddressSanitizer
-  if have_rtld_next and get_option('default_library') != 'static' and get_option('b_sanitize') == 'none'
+  if have_rtld_next and glib_build_shared and get_option('b_sanitize') == 'none'
     gio_tests += {
       'gsocketclient-slow' : {
         'depends' : [
@@ -651,7 +656,7 @@ if meson.can_run_host_binaries()
 
   compiler_type = '--compiler=@0@'.format(cc.get_id())
 
-  if get_option('default_library') != 'static'
+  if glib_build_shared
     plugin_resources_c = custom_target('plugin-resources.c',
       input : 'test4.gresource.xml',
       output : 'plugin-resources.c',
@@ -907,6 +912,10 @@ foreach test_name, extra_args : gio_tests
     local_test_env.append(var, value)
   endforeach
 
+  if extra_args.get('can_fail', false)
+    suite += 'failing'
+  endif
+
   test(test_name, exe,
     env : local_test_env,
     timeout : timeout,
@@ -930,13 +939,19 @@ foreach program_name, extra_args : test_extra_programs
   )
 endforeach
 
-foreach test_name : python_tests
+foreach test_name, extra_args : python_tests
+  suite = ['gio', 'no-valgrind']
+
+  if extra_args.get('can_fail', false)
+    suite += 'failing'
+  endif
+
   test(
     test_name,
     python,
     args: ['-B', files(test_name)],
     env: test_env,
-    suite: ['gio', 'no-valgrind'],
+    suite: suite,
   )
 
   if installed_tests_enabled
@@ -972,6 +987,6 @@ endif
 
 subdir('services')
 
-if get_option('default_library') != 'static'
+if glib_build_shared
   subdir('modules')
 endif

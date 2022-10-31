@@ -39,7 +39,7 @@ gdbus_example_objectmanager_rst_gen = custom_target('objectmanager-rst-gen',
 )
 
 extra_c_args = []
-if get_option('default_library') == 'static'
+if glib_build_static_only
   extra_c_args = '-DGDBUS_OBJECT_MANAGER_EXAMPLE_STATIC_COMPILATION'
 endif
 

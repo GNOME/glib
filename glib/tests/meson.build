@@ -18,17 +18,21 @@ glib_tests = {
   'dataset' : {},
   'date' : {
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
-    'should_fail' : host_system == 'darwin',
+    'can_fail' : host_system == 'darwin',
   },
   'dir' : {},
   'environment' : {
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
-    'should_fail' : host_system == 'darwin',
+    'can_fail' : host_system == 'darwin',
   },
   'error' : {},
-  'fileutils' : {},
+  'fileutils' : {
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/2800
+    'can_fail' : host_system == 'windows' and cc.get_id() == 'msvc',
+  },
   'gdatetime' : {
     'suite' : ['slow'],
+    'can_fail' : host_system == 'windows',
   },
   'guuid' : {},
   'gvariant' : {
@@ -111,12 +115,17 @@ glib_tests = {
   'slice-eager-freeing' : {},
   'slist' : {},
   'sort' : {},
-  'spawn-multithreaded' : {},
+  'spawn-multithreaded' : {
+    'can_fail': glib_build_static and host_system == 'windows',
+    'suite': host_system == 'windows' ? ['flaky'] : [],
+  },
   'spawn-path-search' : {},
   'spawn-singlethread' : {
     'dependencies' : [winsock2],
   },
-  'spawn-test' : {},
+  'spawn-test' : {
+    'can_fail': host_system == 'windows' and cc.get_id() == 'gcc',
+  },
   'strfuncs' : {},
   'string' : {},
   'strvbuilder' : {},
@@ -205,7 +214,7 @@ else
     'include' : {},
     'unix' : {},
   }
-  if have_rtld_next and get_option('default_library') != 'static'
+  if have_rtld_next and glib_build_shared
     glib_tests += {
       'gutils-user-database' : {
         'depends' : [
@@ -259,7 +268,7 @@ if installed_tests_enabled
   )
 endif
 
-test_env = environment(common_test_env)
+test_env = environment()
 test_env.set('G_TEST_SRCDIR', meson.current_source_dir())
 test_env.set('G_TEST_BUILDDIR', meson.current_build_dir())
 
@@ -297,6 +306,11 @@ foreach test_name, extra_args : glib_tests
 
   suite = ['glib'] + extra_args.get('suite', [])
   timeout = suite.contains('slow') ? test_timeout_slow : test_timeout
+
+  if extra_args.get('can_fail', false)
+    suite += 'failing'
+  endif
+
   test(test_name, exe,
     env : test_env,
     timeout : timeout,
@@ -313,9 +327,11 @@ if installed_tests_enabled
   )
 endif
 
-python_tests = [
-  'assert-msg-test.py',
-]
+python_tests = {
+  'assert-msg-test.py' : {
+    'can_fail' : host_system == 'windows',
+  },
+}
 
 executable('assert-msg-test', ['assert-msg-test.c'],
   c_args : test_cargs,
@@ -326,13 +342,19 @@ executable('assert-msg-test', ['assert-msg-test.c'],
   win_subsystem : extra_args.get('win_subsystem', 'console'),
 )
 
-foreach test_name : python_tests
+foreach test_name, extra_args : python_tests
+  suite = ['glib', 'no-valgrind']
+
+  if extra_args.get('can_fail', false)
+    suite += 'failing'
+  endif
+
   test(
     test_name,
     python,
     args: ['-B', files(test_name)],
     env: test_env,
-    suite: ['glib', 'no-valgrind'],
+    suite: suite,
   )
 
   if installed_tests_enabled

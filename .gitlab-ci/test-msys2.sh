@@ -54,8 +54,9 @@ if [[ "$CFLAGS" == *"-coverage"* ]]; then
         --output-file "${DIR}/_coverage/${CI_JOB_NAME}-baseline.lcov"
 fi
 
-# FIXME: fix the test suite
-meson test --timeout-multiplier "${MESON_TEST_TIMEOUT_MULTIPLIER}" --no-suite flaky || true
+meson test --timeout-multiplier "${MESON_TEST_TIMEOUT_MULTIPLIER}"
+meson test --timeout-multiplier "${MESON_TEST_TIMEOUT_MULTIPLIER}" \
+    --setup=unstable_tests --suite=failing --suite=flaky || true
 
 if [[ "$CFLAGS" == *"-coverage"* ]]; then
     lcov \
