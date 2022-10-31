@@ -1578,6 +1578,64 @@ test_launch_uris_with_invalid_terminal (void)
   g_free (old_path);
 }
 
+static void
+test_app_path (void)
+{
+  GDesktopAppInfo *appinfo;
+  const char *desktop_path;
+
+  desktop_path = g_test_get_filename (G_TEST_BUILT, "appinfo-test-path.desktop", NULL);
+  appinfo = g_desktop_app_info_new_from_filename (desktop_path);
+
+  g_assert_true (G_IS_DESKTOP_APP_INFO (appinfo));
+
+  g_clear_object (&appinfo);
+}
+
+static void
+test_app_path_wrong (void)
+{
+  GKeyFile *key_file;
+  GDesktopAppInfo *appinfo;
+  const gchar bad_try_exec_file_contents[] =
+    "[Desktop Entry]\n"
+    "Type=Application\n"
+    "Name=appinfo-test\n"
+    "TryExec=appinfo-test\n"
+    "Path=this-must-not-exist‼\n"
+    "Exec=true\n";
+  const gchar bad_exec_file_contents[] =
+    "[Desktop Entry]\n"
+    "Type=Application\n"
+    "Name=appinfo-test\n"
+    "TryExec=true\n"
+    "Path=this-must-not-exist‼\n"
+    "Exec=appinfo-test\n";
+
+  g_assert_true (
+    g_file_test (g_test_get_filename (G_TEST_BUILT, "appinfo-test", NULL),
+      G_FILE_TEST_IS_REGULAR | G_FILE_TEST_IS_EXECUTABLE));
+
+  key_file = g_key_file_new ();
+
+  g_assert_true (
+    g_key_file_load_from_data (key_file, bad_try_exec_file_contents, -1,
+                               G_KEY_FILE_NONE, NULL));
+
+  appinfo = g_desktop_app_info_new_from_keyfile (key_file);
+  g_assert_false (G_IS_DESKTOP_APP_INFO (appinfo));
+
+  g_assert_true (
+    g_key_file_load_from_data (key_file, bad_exec_file_contents, -1,
+                               G_KEY_FILE_NONE, NULL));
+
+  appinfo = g_desktop_app_info_new_from_keyfile (key_file);
+  g_assert_false (G_IS_DESKTOP_APP_INFO (appinfo));
+
+  g_clear_pointer (&key_file, g_key_file_unref);
+  g_clear_object (&appinfo);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -1615,6 +1673,8 @@ main (int   argc,
   g_test_add_func ("/desktop-app-info/search", test_search);
   g_test_add_func ("/desktop-app-info/implements", test_implements);
   g_test_add_func ("/desktop-app-info/show-in", test_show_in);
+  g_test_add_func ("/desktop-app-info/app-path", test_app_path);
+  g_test_add_func ("/desktop-app-info/app-path/wrong", test_app_path_wrong);
   g_test_add_func ("/desktop-app-info/launch-as-manager", test_launch_as_manager);
   g_test_add_func ("/desktop-app-info/launch-as-manager/fail", test_launch_as_manager_fail);
   g_test_add_func ("/desktop-app-info/launch-default-uri-handler", test_default_uri_handler);

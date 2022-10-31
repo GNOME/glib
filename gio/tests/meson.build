@@ -628,6 +628,7 @@ endif
 appinfo_test_desktop_files = [
   'appinfo-test-gnome',
   'appinfo-test-notgnome',
+  'appinfo-test-path',
   'appinfo-test',
   'appinfo-test2',
 ]

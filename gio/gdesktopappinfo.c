@@ -56,6 +56,7 @@
 #include "gappinfo.h"
 #include "gappinfoprivate.h"
 #include "glocalfilemonitor.h"
+#include "gutilsprivate.h"
 
 #ifdef G_OS_UNIX
 #include "gdocumentportal.h"
@@ -1830,6 +1831,7 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
   char *type;
   char *try_exec;
   char *exec;
+  char *path;
   gboolean bus_activatable;
 
   start_group = g_key_file_get_start_group (key_file);
@@ -1851,6 +1853,10 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
     }
   g_free (type);
 
+  path = g_key_file_get_string (key_file,
+                                G_KEY_FILE_DESKTOP_GROUP,
+                                G_KEY_FILE_DESKTOP_KEY_PATH, NULL);
+
   try_exec = g_key_file_get_string (key_file,
                                     G_KEY_FILE_DESKTOP_GROUP,
                                     G_KEY_FILE_DESKTOP_KEY_TRY_EXEC,
@@ -1858,9 +1864,10 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
   if (try_exec && try_exec[0] != '\0')
     {
       char *t;
-      t = g_find_program_in_path (try_exec);
+      t = g_find_program_for_path (try_exec, NULL, path);
       if (t == NULL)
         {
+          g_free (path);
           g_free (try_exec);
           return FALSE;
         }
@@ -1877,6 +1884,7 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
       char **argv;
       if (!g_shell_parse_argv (exec, &argc, &argv, NULL))
         {
+          g_free (path);
           g_free (exec);
           g_free (try_exec);
           return FALSE;
@@ -1888,11 +1896,12 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
           /* Since @exec is not an empty string, there must be at least one
            * argument, so dereferencing argv[0] should return non-NULL. */
           g_assert (argc > 0);
-          t = g_find_program_in_path (argv[0]);
+          t = g_find_program_for_path (argv[0], NULL, path);
           g_strfreev (argv);
 
           if (t == NULL)
             {
+              g_free (path);
               g_free (exec);
               g_free (try_exec);
               return FALSE;
@@ -1912,7 +1921,7 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
   info->not_show_in = g_key_file_get_string_list (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_NOT_SHOW_IN, NULL, NULL);
   info->try_exec = try_exec;
   info->exec = exec;
-  info->path = g_key_file_get_string (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_PATH, NULL);
+  info->path = g_steal_pointer (&path);
   info->terminal = g_key_file_get_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_TERMINAL, NULL) != FALSE;
   info->startup_notify = g_key_file_get_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_STARTUP_NOTIFY, NULL) != FALSE;
   info->no_fuse = g_key_file_get_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP, "X-GIO-NoFuse", NULL) != FALSE;
