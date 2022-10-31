@@ -186,7 +186,11 @@ test_steal_pointer (void)
 int
 main (int argc, char *argv[])
 {
+#if __cplusplus >= 201103L
   g_test_init (&argc, &argv, NULL);
+#else
+  g_test_init (&argc, &argv, static_cast<void *>(NULL));
+#endif
 
   g_test_add_func ("/C++/typeof", test_typeof);
   g_test_add_func ("/C++/atomic-pointer-compare-and-exchange", test_atomic_pointer_compare_and_exchange);

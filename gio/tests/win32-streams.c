@@ -40,7 +40,8 @@ static gpointer
 writer_thread (gpointer user_data)
 {
   GOutputStream *out;
-  gssize nwrote, offset;
+  gssize nwrote;
+  size_t offset;
   GError *err = NULL;
   HANDLE out_handle;
 
@@ -58,7 +59,7 @@ writer_thread (gpointer user_data)
       g_usleep (10);
 
       offset = 0;
-      while (offset < (gssize) sizeof (DATA))
+      while (offset < sizeof (DATA))
 	{
 	  nwrote = g_output_stream_write (out, DATA + offset,
 					  sizeof (DATA) - offset,

@@ -3,6 +3,13 @@
 extra_gnulib_args = cc.get_supported_arguments([
   '-Wno-format-nonliteral', '-Wno-duplicated-branches'])
 
+if host_system == 'windows' and cc.get_id() == 'clang'
+  extra_gnulib_args += cc.get_supported_arguments([
+    '-Wno-unused-but-set-variable',
+    '-Wno-implicit-fallthrough',
+  ])
+endif
+
 math_h_config = configuration_data ()
 
 unneeded_funcs = [

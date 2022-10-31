@@ -1,29 +1,24 @@
 #!/bin/bash
 
-set -e
+set -ex
 
 export PATH="/c/msys64/$MSYSTEM/bin:$PATH"
-if [[ "$MSYSTEM" == "MINGW32" ]]; then
-    export MSYS2_ARCH="i686"
-else
-    export MSYS2_ARCH="x86_64"
-fi
 
 pacman --noconfirm -Suy
 
 pacman --noconfirm -S --needed \
     base-devel \
     lcov \
-    mingw-w64-$MSYS2_ARCH-ccache \
-    mingw-w64-$MSYS2_ARCH-gettext \
-    mingw-w64-$MSYS2_ARCH-libffi \
-    mingw-w64-$MSYS2_ARCH-meson \
-    mingw-w64-$MSYS2_ARCH-pcre2 \
-    mingw-w64-$MSYS2_ARCH-python3 \
-    mingw-w64-$MSYS2_ARCH-python-pip \
-    mingw-w64-$MSYS2_ARCH-toolchain \
-    mingw-w64-$MSYS2_ARCH-zlib \
-    mingw-w64-$MSYS2_ARCH-libelf
+    "${MINGW_PACKAGE_PREFIX}"-ccache \
+    "${MINGW_PACKAGE_PREFIX}"-gettext \
+    "${MINGW_PACKAGE_PREFIX}"-libffi \
+    "${MINGW_PACKAGE_PREFIX}"-meson \
+    "${MINGW_PACKAGE_PREFIX}"-pcre2 \
+    "${MINGW_PACKAGE_PREFIX}"-python3 \
+    "${MINGW_PACKAGE_PREFIX}"-python-pip \
+    "${MINGW_PACKAGE_PREFIX}"-toolchain \
+    "${MINGW_PACKAGE_PREFIX}"-zlib \
+    "${MINGW_PACKAGE_PREFIX}"-libelf
 
 mkdir -p _coverage
 mkdir -p _ccache
@@ -34,28 +29,39 @@ export CCACHE_BASEDIR CCACHE_DIR
 pip3 install --upgrade --user meson==0.60.3
 
 PATH="$(cygpath "$USERPROFILE")/.local/bin:$HOME/.local/bin:$PATH"
-CFLAGS="-coverage -ftest-coverage -fprofile-arcs"
 DIR="$(pwd)"
 export PATH CFLAGS
 
-meson --werror --buildtype debug _build
+if [[ "$MSYSTEM" == "CLANG64" ]]; then
+    # FIXME: fix the clang build warnings
+    # shellcheck disable=SC2086
+    meson ${MESON_COMMON_OPTIONS} _build
+else
+    # shellcheck disable=SC2086
+    meson ${MESON_COMMON_OPTIONS} --werror _build
+fi
+
 cd _build
 ninja
 
-lcov \
-    --quiet \
-    --config-file "${DIR}"/.lcovrc \
-    --directory "${DIR}/_build" \
-    --capture \
-    --initial \
-    --output-file "${DIR}/_coverage/${CI_JOB_NAME}-baseline.lcov"
+if [[ "$CFLAGS" == *"-coverage"* ]]; then
+    lcov \
+        --quiet \
+        --config-file "${DIR}"/.lcovrc \
+        --directory "${DIR}/_build" \
+        --capture \
+        --initial \
+        --output-file "${DIR}/_coverage/${CI_JOB_NAME}-baseline.lcov"
+fi
 
 # FIXME: fix the test suite
 meson test --timeout-multiplier "${MESON_TEST_TIMEOUT_MULTIPLIER}" --no-suite flaky || true
 
-lcov \
-    --quiet \
-    --config-file "${DIR}"/.lcovrc \
-    --directory "${DIR}/_build" \
-    --capture \
-    --output-file "${DIR}/_coverage/${CI_JOB_NAME}.lcov"
+if [[ "$CFLAGS" == *"-coverage"* ]]; then
+    lcov \
+        --quiet \
+        --config-file "${DIR}"/.lcovrc \
+        --directory "${DIR}/_build" \
+        --capture \
+        --output-file "${DIR}/_coverage/${CI_JOB_NAME}.lcov"
+fi
