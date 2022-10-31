@@ -68,6 +68,7 @@ if get_option('gtk_doc')
     'gproxyresolverportal.h',
     'gregistrysettingsbackend.h',
     'gresourcefile.h',
+    'gsandbox.h',
     'gsettingsbackendinternal.h',
     'gsettings-mapping.h',
     'gsettingsschema-internal.h',

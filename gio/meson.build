@@ -377,7 +377,8 @@ if host_system != 'windows'
     'gproxyresolverportal.c',
     'gtrashportal.c',
     'gportalsupport.c',
-    'gportalnotificationbackend.c'),
+    'gportalnotificationbackend.c',
+    'gsandbox.c'),
     xdp_dbus_generated
   ]
 
