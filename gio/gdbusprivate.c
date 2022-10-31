@@ -2492,7 +2492,7 @@ _g_dbus_get_machine_id (GError **error)
   ret[j] = '\n';
 
   IOObjectRelease (service);
-  CFRelease (io_platform_uuid);
+  g_clear_pointer (&io_platform_uuid, CFRelease);
 
 #endif /* !defined (HAVE_COCOA) */
 
