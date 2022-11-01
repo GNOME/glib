@@ -840,7 +840,7 @@ if host_system == 'linux'
   endif
 endif
 
-glib_have_os_x_9_or_later = false
+glib_have_mac_os_10_9_or_later = false
 glib_have_carbon = false
 glib_have_cocoa = false
 if host_system == 'darwin'
@@ -856,11 +856,11 @@ if host_system == 'darwin'
 
   if glib_have_carbon
     glib_conf.set('HAVE_CARBON', true)
-    glib_have_os_x_9_or_later = objcc.compiles('''#include <AvailabilityMacros.h>
+    glib_have_mac_os_10_9_or_later = objcc.compiles('''#include <AvailabilityMacros.h>
                                                   #if MAC_OS_X_VERSION_MIN_REQUIRED < 1090
                                                   #error Compiling for minimum OS X version before 10.9
                                                   #endif''',
-                                               name : 'OS X 9 or later')
+                                               name : 'OS X 10.9 or later')
   endif
 
   # Mac OS X Cocoa support

@@ -395,7 +395,7 @@ if host_system != 'windows'
     appinfo_sources += files('gosxappinfo.m')
     framework_dep = dependency('appleframeworks', modules : ['Foundation', 'CoreFoundation', 'AppKit'])
     platform_deps += [framework_dep]
-    if glib_have_os_x_9_or_later
+    if glib_have_mac_os_10_9_or_later
       unix_sources += files('gcocoanotificationbackend.m')
     endif
     application_headers += files('gosxappinfo.h')
