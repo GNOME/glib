@@ -35,6 +35,7 @@
 /* Test our stdio wrappers here; this disables redefining (e.g.) g_open() to open() */
 #define G_STDIO_WRAP_ON_UNIX
 #include <glib/gstdio.h>
+#include "glib-private.h"
 
 #ifdef G_OS_UNIX
 #include <unistd.h>
@@ -2462,8 +2463,13 @@ assert_fd_was_closed (int fd)
    * was still valid */
   if (g_test_undefined ())
     {
-      int result = g_fsync (fd);
-      int errsv = errno;
+      int result, errsv;
+      GWin32InvalidParameterHandler handler;
+
+      GLIB_PRIVATE_CALL (g_win32_push_empty_invalid_parameter_handler) (&handler);
+      result = g_fsync (fd);
+      errsv = errno;
+      GLIB_PRIVATE_CALL (g_win32_pop_invalid_parameter_handler) (&handler);
 
       g_assert_cmpint (result, !=, 0);
       g_assert_cmpint (errsv, ==, EBADF);
