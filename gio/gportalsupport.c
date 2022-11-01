@@ -56,7 +56,7 @@ read_flatpak_info (void)
             shared = g_key_file_get_string_list (keyfile, "Context", "shared", NULL, NULL);
             if (shared)
               {
-                network_available = g_strv_contains ((const char * const *)shared, "network");
+                network_available = g_strv_contains ((const char *const *) shared, "network");
                 g_strfreev (shared);
               }
 
