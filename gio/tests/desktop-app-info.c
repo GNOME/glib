@@ -1292,6 +1292,7 @@ test_default_uri_handler_async (void)
   GAppInfo *info;
   GMainLoop *loop;
   gboolean called = FALSE;
+  gint64 start_time, touch_time;
 
   loop = g_main_loop_new (NULL, FALSE);
   info = create_app_info_toucher ("Touch Handled", "handled-async",
@@ -1300,6 +1301,7 @@ test_default_uri_handler_async (void)
   g_assert_true (G_IS_APP_INFO (info));
   g_assert_nonnull (file_path);
 
+  start_time = g_get_real_time ();
   g_app_info_launch_default_for_uri_async ("glib-async-touch://touch-me", NULL,
                                            NULL,
                                            on_launch_default_for_uri_success_cb,
@@ -1308,6 +1310,7 @@ test_default_uri_handler_async (void)
   while (!g_file_test (file_path, G_FILE_TEST_IS_REGULAR) || !called)
     g_main_context_iteration (NULL, FALSE);
 
+  touch_time = g_get_real_time () - start_time;
   g_assert_true (called);
   g_assert_true (g_file_test (file_path, G_FILE_TEST_IS_REGULAR));
 
@@ -1328,11 +1331,13 @@ test_default_uri_handler_async (void)
   g_cancellable_cancel (cancellable);
   g_main_loop_run (loop);
 
-  /* Once started our touch app may take some time before having written the
-   * file, so let's wait a bit here before ensuring that the file has been
-   * created as expected.
+  /* If started, our touch app would take some time to actually write the
+   * file to disk, so let's wait a bit here to ensure that the file isn't
+   * inadvertently getting created when a launch operation is canceled up
+   * front. Give it 3× as long as the successful case took, to allow for 
+   * some variance.
    */
-  g_usleep (G_USEC_PER_SEC / 10);
+  g_usleep (touch_time * 3);
   g_assert_false (g_file_test (file_path, G_FILE_TEST_IS_REGULAR));
 
   g_object_unref (info);
