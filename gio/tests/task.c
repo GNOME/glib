@@ -625,18 +625,40 @@ static void
 test_name (void)
 {
   GTask *t1 = NULL;
+  char *orig = g_strdup ("some task");
   gchar *name1 = NULL;
 
   t1 = g_task_new (NULL, NULL, name_callback, &name1);
-  g_task_set_name (t1, "some task");
+  (g_task_set_name) (t1, orig);
   g_task_return_boolean (t1, TRUE);
   g_object_unref (t1);
 
   g_main_loop_run (loop);
 
-  g_assert_cmpstr (name1, ==, "some task");
+  g_assert_cmpstr (name1, ==, orig);
 
   g_free (name1);
+  g_free (orig);
+}
+
+static void
+test_name_macro_wrapper (void)
+{
+  GTask *t1 = NULL;
+  char *orig = g_strdup ("some task");
+  gchar *name1 = NULL;
+
+  t1 = g_task_new (NULL, NULL, name_callback, &name1);
+  g_task_set_name (t1, orig);
+  g_task_return_boolean (t1, TRUE);
+  g_object_unref (t1);
+
+  g_main_loop_run (loop);
+
+  g_assert_cmpstr (name1, ==, orig);
+
+  g_free (name1);
+  g_free (orig);
 }
 
 static void
@@ -649,6 +671,44 @@ name_callback (GObject      *object,
 
   g_assert_null (*name_out);
   *name_out = g_strdup (g_task_get_name (G_TASK (result)));
+
+  g_task_propagate_boolean (G_TASK (result), &local_error);
+  g_assert_no_error (local_error);
+
+  g_main_loop_quit (loop);
+}
+
+static void static_name_callback (GObject      *object,
+                                  GAsyncResult *result,
+                                  gpointer      user_data);
+
+static void
+test_static_name (void)
+{
+  GTask *t1 = NULL;
+  char *orig = "some task";
+  char *name1 = NULL;
+
+  t1 = g_task_new (NULL, NULL, static_name_callback, &name1);
+  g_task_set_static_name (t1, orig);
+  g_task_return_boolean (t1, TRUE);
+  g_object_unref (t1);
+
+  g_main_loop_run (loop);
+
+  g_assert_true (name1 == orig);
+}
+
+static void
+static_name_callback (GObject      *object,
+                      GAsyncResult *result,
+                      gpointer      user_data)
+{
+  const char **name_out = user_data;
+  GError *local_error = NULL;
+
+  g_assert_null (*name_out);
+  *name_out = g_task_get_name (G_TASK (result));
 
   g_task_propagate_boolean (G_TASK (result), &local_error);
   g_assert_no_error (local_error);
@@ -2358,6 +2418,39 @@ test_return_value_first (void)
   g_test_trap_assert_stderr ("*CRITICAL*assertion '!task->ever_returned' failed*");
 }
 
+static gboolean
+source_cb (gpointer user_data)
+{
+  return G_SOURCE_REMOVE;
+}
+
+static void
+test_attach_source_set_name (void)
+{
+  guint calls = 0;
+  GTask *task = NULL;
+  GSource *source = NULL;
+  GSourceFuncs source_funcs = { NULL, NULL, NULL, NULL, NULL, NULL };
+
+  g_test_summary ("Test that attaching a source to a task will set the source’s name if unset");
+
+  task = g_task_new (NULL, NULL, task_complete_cb, &calls);
+  g_task_set_name (task, "test name");
+
+  source = g_source_new (&source_funcs, sizeof (GSource));
+  g_task_attach_source (task, source, source_cb);
+  g_assert_cmpstr (g_source_get_name (source), ==, "test name");
+  g_source_unref (source);
+
+  source = g_source_new (&source_funcs, sizeof (GSource));
+  g_source_set_name (source, "not the task name");
+  g_task_attach_source (task, source, source_cb);
+  g_assert_cmpstr (g_source_get_name (source), ==, "not the task name");
+  g_source_unref (source);
+
+  g_object_unref (task);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -2379,6 +2472,8 @@ main (int argc, char **argv)
   g_test_add_func ("/gtask/report-error", test_report_error);
   g_test_add_func ("/gtask/priority", test_priority);
   g_test_add_func ("/gtask/name", test_name);
+  g_test_add_func ("/gtask/name/macro-wrapper", test_name_macro_wrapper);
+  g_test_add_func ("/gtask/static-name", test_static_name);
   g_test_add_func ("/gtask/asynchronous-cancellation", test_asynchronous_cancellation);
   g_test_add_func ("/gtask/check-cancellable", test_check_cancellable);
   g_test_add_func ("/gtask/return-if-cancelled", test_return_if_cancelled);
@@ -2398,6 +2493,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gtask/return/in-idle/value-first", test_return_in_idle_value_first);
   g_test_add_func ("/gtask/return/error-first", test_return_error_first);
   g_test_add_func ("/gtask/return/value-first", test_return_value_first);
+  g_test_add_func ("/gtask/attach-source/set-name", test_attach_source_set_name);
 
   ret = g_test_run();
 

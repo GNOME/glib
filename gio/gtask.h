@@ -79,6 +79,9 @@ void          g_task_set_source_tag        (GTask               *task,
 GIO_AVAILABLE_IN_2_60
 void          g_task_set_name              (GTask               *task,
                                             const gchar         *name);
+GIO_AVAILABLE_IN_2_76
+void          g_task_set_static_name       (GTask               *task,
+                                            const gchar         *name);
 
 /* Macro wrapper to set the task name when setting the source tag. */
 #if GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_60
@@ -86,8 +89,20 @@ void          g_task_set_name              (GTask               *task,
   GTask *_task = (task); \
   (g_task_set_source_tag) (_task, tag); \
   if (g_task_get_name (_task) == NULL) \
-    g_task_set_name (_task, G_STRINGIFY (tag)); \
+    g_task_set_static_name (_task, G_STRINGIFY (tag)); \
 } G_STMT_END
+#endif
+
+#if GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_76
+#if defined (__GNUC__) && (__GNUC__ >= 2)
+#define g_task_set_name(task, name) G_STMT_START { \
+  GTask *_task = (task); \
+  if (__builtin_constant_p (name)) \
+    g_task_set_static_name (_task, name); \
+  else \
+    g_task_set_name (_task, name); \
+} G_STMT_END
+#endif
 #endif
 
 GIO_AVAILABLE_IN_2_36
