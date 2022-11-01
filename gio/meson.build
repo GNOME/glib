@@ -389,11 +389,21 @@ if host_system != 'windows'
     'gunixoutputstream.h',
   )
 
+  if host_system == 'darwin'
+    platform_deps += dependency('appleframeworks',
+      modules : [
+        'CoreFoundation',
+        'Foundation',
+      ],
+      required : glib_have_cocoa,
+    )
+  endif
+
   if glib_have_cocoa
     settings_sources += files('gnextstepsettingsbackend.m')
     contenttype_sources += files('gosxcontenttype.m')
     appinfo_sources += files('gosxappinfo.m')
-    framework_dep = dependency('appleframeworks', modules : ['Foundation', 'CoreFoundation', 'AppKit'])
+    framework_dep = dependency('appleframeworks', modules : ['AppKit'])
     platform_deps += [framework_dep]
     if glib_have_mac_os_10_9_or_later
       unix_sources += files('gcocoanotificationbackend.m')
