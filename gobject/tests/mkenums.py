@@ -649,7 +649,7 @@ comment: {standard_bottom_comment}
             "ENUM",
             "ENUM_VALUE_PUBLIC2",
             "public2",
-            "0",
+            "1",
         )
 
     def test_available_in(self):
