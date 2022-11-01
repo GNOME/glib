@@ -113,10 +113,10 @@ if get_option('man')
 endif
 
 # GVariant specification is currently standalone
-rst2html5 = find_program('rst2html5', required: false)
+rst2html5 = find_program('rst2html5', 'rst2html5.py', required: false)
 
 if rst2html5.found()
-  spec_path = join_paths(glib_datadir, 'doc', 'glib-2.0')
+  spec_path = glib_datadir / 'doc' / 'glib-2.0'
 
   figures = files(
     'gvariant-byte-boundaries.svg',
