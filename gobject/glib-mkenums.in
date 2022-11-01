@@ -143,7 +143,7 @@ enumname_prefix = ''        # prefix of $enumname
 enumindex = 0               # Global enum counter
 firstenum = 1               # Is this the first enumeration per file?
 entries = []                # [ name, val ] for each entry
-sandbox = None              # sandbox for safe evaluation of expressions
+c_namespace = {}            # C symbols namespace.
 
 output = ''                 # Filename to write result into
 
@@ -489,7 +489,7 @@ if len(fhead) > 0:
     write_output(prod)
 
 def process_file(curfilename):
-    global entries, flags, seenbitshift, seenprivate, enum_prefix
+    global entries, flags, seenbitshift, seenprivate, enum_prefix, c_namespace
     firstenum = True
 
     try:
@@ -729,7 +729,7 @@ def process_file(curfilename):
                         if num is not None:
                             # use sandboxed evaluation as a reasonable
                             # approximation to C constant folding
-                            inum = eval(num, {}, {})
+                            inum = eval(num, {}, c_namespace)
 
                             # make sure it parsed to an integer
                             if not isinstance(inum, int):
@@ -738,6 +738,7 @@ def process_file(curfilename):
                         else:
                             num = next_num
 
+                        c_namespace[name] = num
                         tmp_prod = tmp_prod.replace('\u0040valuenum\u0040', str(num))
                         next_num = int(num) + 1
 
