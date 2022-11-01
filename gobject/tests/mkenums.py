@@ -730,6 +730,35 @@ comment: {standard_bottom_comment}
             "4",
         )
 
+    def test_enum_symbolic_expression(self):
+        """Test use of symbol in value expression."""
+        h_contents = """
+        typedef enum {
+          /*< private >*/
+          ENUM_VALUE_PRIVATE = 5,
+          /*< public >*/
+          ENUM_VALUE_PUBLIC = ENUM_VALUE_PRIVATE + 2,
+        } TestSymbolicEnum;
+        """
+
+        result = self.runMkenumsWithHeader(h_contents)
+        self.assertEqual("", result.err)
+        self.assertSingleEnum(
+            result,
+            "TestSymbolicEnum",
+            "test_symbolic_enum",
+            "TEST_SYMBOLIC_ENUM",
+            "SYMBOLIC_ENUM",
+            "TEST",
+            "",
+            "enum",
+            "Enum",
+            "ENUM",
+            "ENUM_VALUE_PUBLIC",
+            "public",
+            "7",
+        )
+
 
 class TestRspMkenums(TestMkenums):
     """Run all tests again in @rspfile mode"""
