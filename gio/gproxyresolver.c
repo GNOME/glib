@@ -245,6 +245,9 @@ g_proxy_resolver_lookup_finish (GProxyResolver     *resolver,
 
   g_return_val_if_fail (G_IS_PROXY_RESOLVER (resolver), NULL);
 
+  if (g_async_result_is_tagged (result, g_proxy_resolver_lookup_async))
+    return g_task_propagate_pointer (G_TASK (result), error);
+
   iface = G_PROXY_RESOLVER_GET_IFACE (resolver);
 
   proxy_uris = (* iface->lookup_finish) (resolver, result, error);
