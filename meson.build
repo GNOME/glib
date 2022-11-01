@@ -704,17 +704,9 @@ foreach f : functions
 endforeach
 
 # Check that stpcpy() is usable; must use header.
-# cc.has_function() in some cases (clang, gcc 10+) assumes that if the
-# compiler provides a builtin of the same name that the function exists, while
-# it's in fact not provided by any header or library. This is true for
-# stpcpy() on Windows using clang and gcc as well as posix_memalign() using
-# gcc on Windows. Skip these checks on Windows for now to avoid false
-# positives. See https://github.com/mesonbuild/meson/pull/7116,
-# https://github.com/mesonbuild/meson/issues/3672 and
+# See:
 # https://github.com/mesonbuild/meson/issues/5628.
-# FIXME: Once meson no longer returns success for stpcpy() and
-# posix_memalign() on Windows using GCC and clang we can remove this.
-if host_system != 'windows' and cc.has_function('stpcpy', prefix : '#include <string.h>')
+if cc.has_function('stpcpy', prefix : '#include <string.h>')
   glib_conf.set('HAVE_STPCPY', 1)
 endif
 
@@ -941,6 +933,8 @@ endif
 
 dlopen_dlsym_test_code = '''
 #include <dlfcn.h>
+#include <stdio.h>
+int r;
 int glib_underscore_test (void) { return 42; }
 int main (int argc, char ** argv) {
   void *f1 = (void*)0, *f2 = (void*)0, *handle;
@@ -949,7 +943,8 @@ int main (int argc, char ** argv) {
     f1 = dlsym (handle, "glib_underscore_test");
     f2 = dlsym (handle, "_glib_underscore_test");
   }
-  return (!f2 || f1);
+  r = (!f2 || f1) ? puts ("1") : puts ("0");
+  return r > 0 ? 0 : r;
 }'''
 libdl_dep = []
 if cc.links(dlopen_dlsym_test_code, name : 'dlopen() and dlsym() in system libraries')
@@ -2322,11 +2317,21 @@ if want_dtrace
   dtrace_obj_gen = generator(dtrace,
     output : '@BASENAME@.o',
     arguments : ['-G', '-s', '@INPUT@', '-o', '@OUTPUT@'])
-  # FIXME: $(SED) -e "s,define STAP_HAS_SEMAPHORES 1,undef STAP_HAS_SEMAPHORES,"
-  #               -e "s,define _SDT_HAS_SEMAPHORES 1,undef _SDT_HAS_SEMAPHORES,"
-  dtrace_hdr_gen = generator(dtrace,
+  dtrace_hdr_gen = generator(python,
     output : '@BASENAME@.h',
-    arguments : ['-h', '-s', '@INPUT@', '-o', '@OUTPUT@'])
+    arguments : ['-c', '''
+import subprocess, sys
+subprocess.run(sys.argv[1:], check=True)
+output = sys.argv[6]
+with open(output) as f:
+  contents = f.read()
+contents = contents.replace("define STAP_HAS_SEMAPHORES 1",
+  "undef STAP_HAS_SEMAPHORES")
+contents = contents.replace("define _SDT_HAS_SEMAPHORES 1",
+  "undef _SDT_HAS_SEMAPHORES")
+with open(output, "w") as f:
+  f.write(contents)
+''', dtrace.full_path(), '-h', '-s', '@INPUT@', '-o', '@OUTPUT@'])
   glib_conf.set('HAVE_DTRACE', 1)
   enable_dtrace = true
 endif
