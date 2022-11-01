@@ -21,6 +21,7 @@
 #include "config.h"
 
 #include "gportalsupport.h"
+#include "gsandbox.h"
 
 static gboolean use_portal;
 static gboolean network_available;
@@ -30,52 +31,59 @@ static void
 read_flatpak_info (void)
 {
   static gsize flatpak_info_read = 0;
-  const gchar *path = "/.flatpak-info";
+  GSandboxType sandbox_type;
 
   if (!g_once_init_enter (&flatpak_info_read))
     return;
 
-  if (g_file_test (path, G_FILE_TEST_EXISTS))
+  sandbox_type = glib_get_sandbox_type ();
+  switch (sandbox_type)
     {
-      GKeyFile *keyfile;
+    case G_SANDBOX_TYPE_FLATPAK:
+      {
+        GKeyFile *keyfile;
 
-      use_portal = TRUE;
-      network_available = FALSE;
-      dconf_access = FALSE;
-
-      keyfile = g_key_file_new ();
-      if (g_key_file_load_from_file (keyfile, path, G_KEY_FILE_NONE, NULL))
-        {
-          char **shared = NULL;
-          char *dconf_policy = NULL;
-
-          shared = g_key_file_get_string_list (keyfile, "Context", "shared", NULL, NULL);
-          if (shared)
-            {
-              network_available = g_strv_contains ((const char * const *)shared, "network");
-              g_strfreev (shared);
-            }
-
-          dconf_policy = g_key_file_get_string (keyfile, "Session Bus Policy", "ca.desrt.dconf", NULL);
-          if (dconf_policy)
-            {
-              if (strcmp (dconf_policy, "talk") == 0)
-                dconf_access = TRUE;
-              g_free (dconf_policy);
-            }
-        }
-
-      g_key_file_unref (keyfile);
-    }
-  else
-    {
-      const char *var;
-
-      var = g_getenv ("GTK_USE_PORTAL");
-      if (var && var[0] == '1')
         use_portal = TRUE;
-      network_available = TRUE;
-      dconf_access = TRUE;
+        network_available = FALSE;
+        dconf_access = FALSE;
+
+        keyfile = g_key_file_new ();
+        if (g_key_file_load_from_file (keyfile, "/.flatpak-info", G_KEY_FILE_NONE, NULL))
+          {
+            char **shared = NULL;
+            char *dconf_policy = NULL;
+
+            shared = g_key_file_get_string_list (keyfile, "Context", "shared", NULL, NULL);
+            if (shared)
+              {
+                network_available = g_strv_contains ((const char *const *) shared, "network");
+                g_strfreev (shared);
+              }
+
+            dconf_policy = g_key_file_get_string (keyfile, "Session Bus Policy", "ca.desrt.dconf", NULL);
+            if (dconf_policy)
+              {
+                if (strcmp (dconf_policy, "talk") == 0)
+                  dconf_access = TRUE;
+                g_free (dconf_policy);
+              }
+          }
+
+        g_key_file_unref (keyfile);
+      }
+      break;
+    case G_SANDBOX_TYPE_UNKNOWN:
+    case G_SANDBOX_TYPE_SNAP:
+      {
+        const char *var;
+
+        var = g_getenv ("GTK_USE_PORTAL");
+        if (var && var[0] == '1')
+          use_portal = TRUE;
+        network_available = TRUE;
+        dconf_access = TRUE;
+      }
+      break;
     }
 
   g_once_init_leave (&flatpak_info_read, 1);
