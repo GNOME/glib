@@ -20,7 +20,6 @@
 
 #include <string.h>
 
-#define GLIB_VERSION_MIN_REQUIRED GLIB_VERSION_2_34
 #include <gio/gio.h>
 
 /* Overview:
@@ -194,6 +193,7 @@ g_test_proxy_resolver_lookup_async (GProxyResolver      *resolver,
   proxies = g_proxy_resolver_lookup (resolver, uri, cancellable, &error);
 
   task = g_task_new (resolver, NULL, callback, user_data);
+  g_task_set_source_tag (task, g_test_proxy_resolver_lookup_async);
   if (proxies == NULL)
     g_task_return_error (task, error);
   else
@@ -207,6 +207,9 @@ g_test_proxy_resolver_lookup_finish (GProxyResolver     *resolver,
 				     GAsyncResult       *result,
 				     GError            **error)
 {
+  g_assert_true (g_task_is_valid (result, resolver));
+  g_assert_true (g_task_get_source_tag (G_TASK (result)) == g_test_proxy_resolver_lookup_async);
+
   return g_task_propagate_pointer (G_TASK (result), error);
 }
 
@@ -917,6 +920,18 @@ async_got_error (GObject      *source,
   g_assert (*error != NULL);
 }
 
+static void
+async_resolver_got_error (GObject      *source,
+                          GAsyncResult *result,
+                          gpointer      user_data)
+{
+  GError **error = user_data;
+
+  g_assert (error != NULL && *error == NULL);
+  g_proxy_resolver_lookup_finish (G_PROXY_RESOLVER (source),
+				  result, error);
+  g_assert (*error != NULL);
+}
 
 static void
 assert_direct (GSocketConnection *conn)
@@ -1166,13 +1181,24 @@ test_invalid_uris_sync (gpointer fixture,
   do_echo_test (conn);
   g_object_unref (conn);
   g_clear_pointer (&last_proxies, g_strfreev);
+
+  /* Trying to use something that is not a URI at all should fail. */
+  conn = g_socket_client_connect_to_uri (client, "asdf", 0, NULL, &error);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
+  g_clear_error (&error);
+  g_clear_pointer (&last_proxies, g_strfreev);
+
+  /* Should still fail if using GProxyResolver directly. */
+  g_proxy_resolver_lookup (g_proxy_resolver_get_default (), "asdf", NULL, &error);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
+  g_clear_error (&error);
 }
 
 static void
 test_invalid_uris_async (gpointer fixture,
 		         gconstpointer user_data)
 {
-  GSocketConnection *conn;
+  GSocketConnection *conn = NULL;
   GError *error = NULL;
   gchar *uri;
 
@@ -1204,29 +1230,44 @@ test_invalid_uris_async (gpointer fixture,
    * we should succeed.
    */
   uri = g_strdup_printf ("invalid-then-simple://127.0.0.1:%u", server.server_port);
-  conn = NULL;
   g_socket_client_connect_to_uri_async (client, uri, 0, NULL,
 					async_got_conn, &conn);
   g_free (uri);
   while (conn == NULL)
     g_main_context_iteration (NULL, TRUE);
   do_echo_test (conn);
-  g_object_unref (conn);
+  g_clear_object (&conn);
   g_clear_pointer (&last_proxies, g_strfreev);
 
   /* If the proxy resolver returns a valid URI before an invalid URI,
    * we should succeed.
    */
   uri = g_strdup_printf ("simple-then-invalid://127.0.0.1:%u", server.server_port);
-  conn = NULL;
   g_socket_client_connect_to_uri_async (client, uri, 0, NULL,
 					async_got_conn, &conn);
   g_free (uri);
   while (conn == NULL)
     g_main_context_iteration (NULL, TRUE);
   do_echo_test (conn);
-  g_object_unref (conn);
+  g_clear_object (&conn);
   g_clear_pointer (&last_proxies, g_strfreev);
+
+  /* Trying to use something that is not a URI at all should fail. */
+  g_socket_client_connect_to_uri_async (client, "asdf", 0, NULL,
+                                        async_got_error, &error);
+  while (error == NULL)
+    g_main_context_iteration (NULL, TRUE);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
+  g_clear_error (&error);
+  g_clear_pointer (&last_proxies, g_strfreev);
+
+  /* Should still fail if using GProxyResolver directly. */
+  g_proxy_resolver_lookup_async (g_proxy_resolver_get_default (), "asdf", NULL,
+                                 async_resolver_got_error, &error);
+  while (error == NULL)
+    g_main_context_iteration (NULL, TRUE);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
+  g_clear_error (&error);
 }
 
 static void
