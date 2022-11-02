@@ -591,7 +591,7 @@ until this property becomes true. These bytes will never result in confusion wit
 to locating framing offsets or the end of a variable-sized child because, by definition,
 neither of these things occur inside fixed-sized structures.
 
-Figure 2.4 depicts a structure of type ``(nsns)`` and value ``[257, 'xx', 514, '']``. One
+The figure above depicts a structure of type ``(nsns)`` and value ``[257, 'xx', 514, '']``. One
 framing offset exists for the one non-fixed-sized item that is not the final item (namely,
 the string ``'xx'``). The process of “rounding up” to find the start of the second integer
 is indicated.
