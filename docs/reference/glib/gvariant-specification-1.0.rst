@@ -1327,7 +1327,7 @@ Given a few “intuitive” lemmas, we can prove that the reduction rules are so
 
 **Lemma 3**
    .. math::
-      \forall{c}, (0 ↑ c) = 0
+      \forall{c}: (0 ↑ c) = 0
 
 Addition Rule
 ^^^^^^^^^^^^^
