@@ -89,10 +89,12 @@ The Basic Types
    of UTF-8 is expected and encouraged.
 
 **Object Path**
-   A D-Bus object path, exactly as described in the D-Bus specification.
+   A D-Bus object path, exactly as described in the
+   `D-Bus specification <https://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-marshaling-object-path>`__.
 
 **Signature**
-   A D-Bus signature string, exactly as described in the D-Bus specification. As this type
+   A D-Bus signature string, exactly as described in the
+   `D-Bus specification <https://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-marshaling-signature>`__. As this type
    has been preserved solely for compatibility with D-Bus, all of the D-Bus restrictions
    on the range of values of this type apply (eg: nesting depth and maximum length
    restrictions).
