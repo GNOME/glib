@@ -1,7 +1,7 @@
 /* custom-dispatch.c: Test GObjectClass.dispatch_properties_changed
  * Copyright (C) 2022 Red Hat, Inc.
  *
- * SPDX-License-Identifier: LGPL-2.1-or-later
+ * SPDX-License-Identifier: LicenseRef-old-glib-tests
  *
  * This work is provided "as is"; redistribution and modification
  * in whole or in part, in any medium, physical or electronic is
