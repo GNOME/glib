@@ -223,13 +223,13 @@ format for GVariant.
 To do so, however, would conflict with a number of requirements that were established
 for GVariant.
 
-Most fundamentally, requirement would be violated. DBus messages are encoded in such
+Most fundamentally, the requirements would be violated. DBus messages are encoded in such
 a way that in order to fetch the 100th item out of an array you first have to iterate over
 the first 99 items to discover where the 100th item lies. A side effect of this iteration
-would be a violation of requirement .
+would be a violation of the requirements.
 
 Additionally, using the DBus serialisation format with an API like that mandated by
-requirement would likely imply a violation of requirement due to the fact that subparts
+the requirements would likely imply a violation of the requirements due to the fact that subparts
 of DBus messages can change meaning when subjected to different starting alignments.
 This is discussed in more detail in `Simple Containment`_.
 
@@ -303,7 +303,7 @@ equivalently, length) of each child element.
 
 This property permits a container to be deconstructed into child values simply by
 referencing a subsequence of the byte sequence of the container as the value of the
-child which is an effective way of satisfying requirement .
+child which is an effective way of satisfying the requirements.
 
 This property is not the case for the DBus serialisation format. In many cases (for
 example, arrays) the encoding of a child value of a DBus message will change depending
@@ -316,7 +316,7 @@ direction.
 Alignment
 ---------
 
-In order to satisfy requirement , we must provide programmers with a pointer that they
+In order to satisfy the requirement, we must provide programmers with a pointer that they
 can comfortably use. On many machines, programmers cannot directly dereference
 unaligned values, and even on machines where they can, there is often a performance
 hit.
@@ -384,7 +384,7 @@ Endianness
 ----------
 
 Although the framing offsets of serialised data are always stored in little-endian byte
-order, the data visible to the user (via the interface mandated by requirement ) is
+order, the data visible to the user (via the interface mandated by the requirements) is
 allowed to be in either big or little-endian byte order. This is referred to as the “encoding
 byte order”. When transmitting messages, this byte order should be specified if not
 explicitly agreed upon.
@@ -739,7 +739,7 @@ serialised data is not in normal form. Normally this would result in an error be
 An Argument Against Errors
 --------------------------
 
-Requirement XXX forbids us from scanning the entirety of the serialised byte sequence
+The requirements forbids us from scanning the entirety of the serialised byte sequence
 at load time; we can not check for normality and issue errors at this time. This leaves
 any errors that might occur to be raised as exceptions as the values are accessed.
 
