@@ -197,11 +197,6 @@ GCond *cond
 # Definitions for different operating systems
 
 <MACRO>
-<NAME>G_OS_DARWIN</NAME>
-#define G_OS_DARWIN
-</MACRO>
-
-<MACRO>
 <NAME>G_OS_UNIX</NAME>
 #define G_OS_UNIX
 </MACRO>
