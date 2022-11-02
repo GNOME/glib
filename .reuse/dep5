@@ -34,3 +34,10 @@ Files:
  subprojects/*.wrap
 Copyright: Meson Wrap Database (wrapdb) contributors
 License: CC0-1.0
+
+# SVG files do contain the licensing metadata, but `reuse` can’t extract it
+# yet. The canonical licensing information for these files is in their internal
+# metadata.
+Files: docs/reference/glib/gvariant-*.svg
+Copyright: 2022 Philip Withnall
+License: CC-BY-SA-3.0

@@ -1,4 +1,11 @@
 .. sectnum::
+.. meta::
+   :copyright: Copyright 2007 Allison Karlitskaya
+   :license: CC-BY-SA-3.0
+..
+   This has to be duplicated from above to make it machine-readable by `reuse`:
+   SPDX-FileCopyrightText: 2007 Allison Karlitskaya
+   SPDX-License-Identifier: CC-BY-SA-3.0
 
 ==========================
 GVariant Specification 1.0
