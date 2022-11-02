@@ -2,6 +2,8 @@
  * Copyright (C) 2018 Canonical Ltd
  * Authors: Marco Trevisan <marco@ubuntu.com>
  *
+ * SPDX-License-Identifier: LicenseRef-old-glib-tests
+ *
  * This work is provided "as is"; redistribution and modification
  * in whole or in part, in any medium, physical or electronic is
  * permitted without restriction.
