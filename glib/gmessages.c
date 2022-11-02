@@ -2112,7 +2112,7 @@ g_log_writer_supports_color (gint output_fd)
 #ifdef G_OS_WIN32
   gboolean result = FALSE;
 
-#if (defined (_MSC_VER) && _MSC_VER >= 1400)
+#ifdef USE_INVALID_PARAMETER_HANDLER
   _invalid_parameter_handler oldHandler, newHandler;
   int prev_report_mode = 0;
 #endif
@@ -2143,7 +2143,7 @@ g_log_writer_supports_color (gint output_fd)
    */
 #ifdef G_OS_WIN32
 
-#if (defined (_MSC_VER) && _MSC_VER >= 1400)
+#ifdef USE_INVALID_PARAMETER_HANDLER
   /* Set up our empty invalid parameter handler, for isatty(),
    * in case of bad fd's passed in for isatty(), so that
    * msvcrt80.dll+ won't abort the program
@@ -2185,7 +2185,7 @@ g_log_writer_supports_color (gint output_fd)
     result = win32_is_pipe_tty (output_fd);
 
 reset_invalid_param_handler:
-#if defined (_MSC_VER) && (_MSC_VER >= 1400)
+#ifdef USE_INVALID_PARAMETER_HANDLER
       _CrtSetReportMode(_CRT_ASSERT, prev_report_mode);
       _set_invalid_parameter_handler (oldHandler);
 #endif

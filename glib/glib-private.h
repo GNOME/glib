@@ -121,6 +121,12 @@ GMainContext *          g_get_worker_context            (void);
 gboolean                g_check_setuid                  (void);
 GMainContext *          g_main_context_new_with_next_id (guint next_id);
 
+#if (defined (HAVE__SET_THREAD_LOCAL_INVALID_PARAMETER_HANDLER) || \
+     defined (HAVE__SET_INVALID_PARAMETER_HANDLER)) && \
+    defined (HAVE__CRT_SET_REPORT_MODE)
+# define USE_INVALID_PARAMETER_HANDLER
+#endif
+
 #ifdef G_OS_WIN32
 GLIB_AVAILABLE_IN_ALL
 gchar *_glib_get_locale_dir    (void);

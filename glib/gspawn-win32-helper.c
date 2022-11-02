@@ -33,7 +33,7 @@
  * Please see http://msdn.microsoft.com/zh-tw/library/ks2530z6%28v=vs.80%29.aspx
  * for an explanation on this.
  */
-#if (defined (_MSC_VER) && _MSC_VER >= 1400)
+#ifdef USE_INVALID_PARAMETER_HANDLER
 #include <crtdbg.h>
 #endif
 
@@ -168,7 +168,7 @@ checked_dup2 (int oldfd, int newfd, int report_fd)
   return newfd;
 }
 
-#if (defined (_MSC_VER) && _MSC_VER >= 1400)
+#ifdef USE_INVALID_PARAMETER_HANDLER
 /*
  * This is the (empty) invalid parameter handler
  * that is used for Visual C++ 2005 (and later) builds
@@ -221,7 +221,7 @@ main (int ignored_argc, char **ignored_argv)
   wchar_t **wargv;
   char c;
 
-#if (defined (_MSC_VER) && _MSC_VER >= 1400)
+#ifdef USE_INVALID_PARAMETER_HANDLER
   /* set up our empty invalid parameter handler */
   _invalid_parameter_handler oldHandler, newHandler;
   newHandler = myInvalidParameterHandler;
