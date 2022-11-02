@@ -28,7 +28,7 @@ Types
 *****
 
 As per requirement, GVariant must be substantially compatible with the D-Bus message
-bus system (as specified in [DBus]).
+bus system (as specified in the `D-Bus specification <https://dbus.freedesktop.org/doc/dbus-specification.html>`__).
 
 To this end, the type system used in GVariant is almost identical to that used by D-Bus.
 Some very minimal changes were made, however, in order to provide for a better system
