@@ -2018,13 +2018,10 @@
  * - Linux kernel and GNU user-space: `\#if defined(__linux__) && defined(__GLIBC__)`
  * - FreeBSD kernel (any libc, including glibc): `\#ifdef __FreeBSD_kernel__`
  * - FreeBSD kernel and user-space: `\#ifdef __FreeBSD__`
+ * - Apple operating systems (macOS, iOS, tvOS), regardless of whether
+ *   Cocoa/Carbon toolkits are available: `\#ifdef __APPLE__`
  *
  * See <https://sourceforge.net/p/predef/wiki/OperatingSystems/> for more.
- *
- * GLib defines OS-detection macros for some categories of systems
- * that can be less straightforward to detect, such as %G_OS_DARWIN, but
- * intentionally does not provide its own equivalents of macros like
- * `__linux__`.
  */
 
 /**
