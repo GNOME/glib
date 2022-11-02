@@ -192,6 +192,7 @@
 #include "gcharset.h"
 #include "gconvert.h"
 #include "genviron.h"
+#include "glib-private.h"
 #include "gmain.h"
 #include "gmem.h"
 #include "gprintfint.h"
@@ -217,22 +218,6 @@
 
 #ifndef ENABLE_VIRTUAL_TERMINAL_PROCESSING
 #define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004
-#endif
-
-#if defined (_MSC_VER) && (_MSC_VER >=1400)
-/* This is ugly, but we need it for isatty() in case we have bad fd's,
- * otherwise Windows will abort() the program on msvcrt80.dll and later
- */
-#include <crtdbg.h>
-
-_GLIB_EXTERN void
-myInvalidParameterHandler(const wchar_t *expression,
-                          const wchar_t *function,
-                          const wchar_t *file,
-                          unsigned int   line,
-                          uintptr_t      pReserved)
-{
-}
 #endif
 
 #include "gwin32.h"
@@ -2111,12 +2096,7 @@ g_log_writer_supports_color (gint output_fd)
 {
 #ifdef G_OS_WIN32
   gboolean result = FALSE;
-
-#if (defined (_MSC_VER) && _MSC_VER >= 1400)
-  _invalid_parameter_handler oldHandler, newHandler;
-  int prev_report_mode = 0;
-#endif
-
+  GWin32InvalidParameterHandler handler;
 #endif
 
   g_return_val_if_fail (output_fd >= 0, FALSE);
@@ -2143,17 +2123,7 @@ g_log_writer_supports_color (gint output_fd)
    */
 #ifdef G_OS_WIN32
 
-#if (defined (_MSC_VER) && _MSC_VER >= 1400)
-  /* Set up our empty invalid parameter handler, for isatty(),
-   * in case of bad fd's passed in for isatty(), so that
-   * msvcrt80.dll+ won't abort the program
-   */
-  newHandler = myInvalidParameterHandler;
-  oldHandler = _set_invalid_parameter_handler (newHandler);
-
-  /* Disable the message box for assertions. */
-  prev_report_mode = _CrtSetReportMode(_CRT_ASSERT, 0);
-#endif
+  g_win32_push_empty_invalid_parameter_handler (&handler);
 
   if (g_win32_check_windows_version (10, 0, 0, G_WIN32_OS_ANY))
     {
@@ -2185,10 +2155,7 @@ g_log_writer_supports_color (gint output_fd)
     result = win32_is_pipe_tty (output_fd);
 
 reset_invalid_param_handler:
-#if defined (_MSC_VER) && (_MSC_VER >= 1400)
-      _CrtSetReportMode(_CRT_ASSERT, prev_report_mode);
-      _set_invalid_parameter_handler (oldHandler);
-#endif
+  g_win32_pop_invalid_parameter_handler (&handler);
 
   return result;
 #else
