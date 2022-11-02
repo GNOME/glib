@@ -1112,7 +1112,7 @@ structure, :math:`s`:
 .. math::
    ((↑3);\ (+24);\ (↑1);\ (+2);\ (↑2))\ s
 
-Of course, no sane C compiler saves this computation to be performed at each access.
+Of course, no modern C compiler saves this computation to be performed at each access.
 Instead, the compiler performs the computation at the time of the structure definition
 and builds a table containing the starting offset and size of each item in the structure.
 Because every item in the structure is of a fixed size and because the start address of
