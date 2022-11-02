@@ -126,9 +126,9 @@
 #undef PLAT_amd64_solaris
 
 
-#if defined(G_OS_DARWIN) && defined(__i386__)
+#if defined(__APPLE__) && defined(__i386__)
 #  define PLAT_x86_darwin 1
-#elif defined(G_OS_DARWIN) && defined(__x86_64__)
+#elif defined(__APPLE__) && defined(__x86_64__)
 #  define PLAT_amd64_darwin 1
 #elif (defined(__MINGW32__) && defined(__i386__)) \
       || defined(__CYGWIN32__) \

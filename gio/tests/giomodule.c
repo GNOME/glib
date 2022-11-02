@@ -31,7 +31,7 @@
   #else
     #define MODULE_FILENAME(x) "lib" x ".dll"
   #endif
-#elif defined(G_OS_DARWIN)
+#elif defined(__APPLE__)
   #define MODULE_FILENAME(x) "lib" x ".dylib"
 #else
   #define MODULE_FILENAME(x) "lib" x ".so"

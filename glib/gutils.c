@@ -1414,7 +1414,7 @@ get_windows_version (gboolean with_windows)
 }
 #endif
 
-#if defined (G_OS_UNIX) && !defined (G_OS_DARWIN)
+#if defined (G_OS_UNIX) && !defined (__APPLE__)
 static gchar *
 get_os_info_from_os_release (const gchar *key_name,
                              const gchar *buffer)
@@ -1543,7 +1543,7 @@ get_os_info_from_uname (const gchar *key_name)
   else
     return NULL;
 }
-#endif  /* defined (G_OS_UNIX) && !defined (G_OS_DARWIN) */
+#endif  /* defined (G_OS_UNIX) && !defined (__APPLE__) */
 
 /**
  * g_get_os_info:
@@ -1566,7 +1566,7 @@ get_os_info_from_uname (const gchar *key_name)
 gchar *
 g_get_os_info (const gchar *key_name)
 {
-#if defined (G_OS_DARWIN)
+#if defined (__APPLE__)
   if (g_strcmp0 (key_name, G_OS_INFO_KEY_NAME) == 0)
     return g_strdup ("macOS");
   else
@@ -2080,7 +2080,7 @@ g_get_user_runtime_dir (void)
   return user_runtime_dir;
 }
 
-#ifdef G_OS_DARWIN
+#ifdef HAVE_COCOA
 
 /* Implemented in gutils-macos.m */
 void load_user_special_dirs_macos (gchar **table);

@@ -77,7 +77,7 @@ static void stack_trace (const char * const *args);
 #endif
 
 /* Default to using LLDB for backtraces on macOS. */
-#ifdef G_OS_DARWIN
+#ifdef __APPLE__
 #define USE_LLDB
 #endif
 

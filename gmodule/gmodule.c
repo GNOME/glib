@@ -618,7 +618,7 @@ g_module_open_full (const gchar   *file_name,
          * .dylib and .dll in those cases. */
         prefixes[prefix_idx++] = "";
   #endif
-  #ifdef G_OS_DARWIN
+  #ifdef __APPLE__
       if (!g_str_has_suffix (basename, ".dylib") &&
           !g_str_has_suffix (basename, ".so"))
         {
