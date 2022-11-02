@@ -959,7 +959,7 @@ A brief description is provided for why a value deserialises to the given value.
 
    has a value of ``'foo'``.
 
-**String with embedded nul but none at end**
+**String with Embedded Nul but None at End**
    With type ``'s'``::
 
       'f 'o 'o \0   'b 'a 'r
@@ -970,7 +970,7 @@ A brief description is provided for why a value deserialises to the given value.
    the empty string is used as the value. This includes the case where a nul is present
    elsewhere in the string.
 
-**Wrong size for fixed-size maybe**
+**Wrong Size for Fixed-Size Maybe**
    With type ``'mi'``::
 
       33 44 55 66   77 88
@@ -980,7 +980,7 @@ A brief description is provided for why a value deserialises to the given value.
    The only possible way for a value with type ``'mi'`` to be ``Just`` is for its serialised form
    to be exactly 4 bytes.
 
-**Wrong size for fixed-width array**
+**Wrong Size for Fixed-Width Array**
    With type ``'a(yy)'``::
 
       03 04 05 06 07
@@ -990,7 +990,7 @@ A brief description is provided for why a value deserialises to the given value.
    With each array element as a pair of bytes, the serialised size of the array should be
    a multiple of two. Since this is not the case, the value of the array is the empty array.
 
-**Start or end boundary of child falls outside the container**
+**Start or End Boundary of Child Falls Outside the Container**
    With type ``'(as)'``::
 
       'f 'o 'o \0   'b 'a 'r \0   'b 'a 'z \0   04 10 0c
@@ -1003,7 +1003,7 @@ A brief description is provided for why a value deserialises to the given value.
    also the start of the 3rd array element. As a result, both of these elements are given
    their default value (the empty string).
 
-**End boundary precedes start boundary**
+**End Boundary Precedes Start Boundary**
    With type ``'(as)'``::
 
       'f 'o 'o \0   'b 'a 'r \0   'b 'a 'z \0   04 00 0c
@@ -1017,7 +1017,7 @@ A brief description is provided for why a value deserialises to the given value.
    first element, however, and when assessing its value, the embedded nul character
    causes it to be cut off at ``'foo'``.
 
-**Insufficient space for structure framing offsets**
+**Insufficient Space for Structure Framing Offsets**
    With type ``'(ayayayayay)'``::
 
       03 02 01
