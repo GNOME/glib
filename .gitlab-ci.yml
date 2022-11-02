@@ -13,7 +13,7 @@ cache:
 variables:
   FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v19"
   COVERITY_IMAGE: "registry.gitlab.gnome.org/gnome/glib/coverity:v7"
-  DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v13"
+  DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v14"
   MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v9"
   MESON_TEST_TIMEOUT_MULTIPLIER: 4
   G_MESSAGES_DEBUG: all
@@ -71,6 +71,17 @@ sh-and-py-check:
     changes:
       - "**/*.py"
       - "**/*.sh"
+
+style-check-mandatory:
+  extends: .only-default
+  image: $DEBIAN_IMAGE
+  stage: style-check
+  allow_failure: false
+  script:
+    - .gitlab-ci/run-reuse.sh
+  variables:
+    # The submodules are needed for `reuse lint` to work properly
+    GIT_SUBMODULE_STRATEGY: "normal"
 
 fedora-x86_64:
   extends:
