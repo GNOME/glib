@@ -19,6 +19,7 @@
  */
 
 #ifndef __G_PORTAL_SUPPORT_H__
+#define __G_PORTAL_SUPPORT_H__
 
 #include <glib.h>
 
