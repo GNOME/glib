@@ -11,6 +11,18 @@
 GVariant Specification 1.0
 ==========================
 
+.. rubric:: Revision History
+
+Notable changes between versions are listed here. For the full set of changes
+and diffs, see the `commit log <https://gitlab.gnome.org/GNOME/glib/-/blob/main/docs/reference/glib/gvariant-specification-1.0.rst>`_.
+
+**Version 1.0, 2007 and 2022-11-01**
+   - Convert the original PDF GVariant Specification to version control
+   - No semantic or formatting changes
+**Version 1.0.1, 2022-11-02**
+   - Formatting improvements
+   - No semantic changes
+
 *****
 Types
 *****
