@@ -1,5 +1,7 @@
 /* Copyright (C) 2005 Imendio AB
  *
+ * SPDX-License-Identifier: LicenseRef-old-glib-tests
+ *
  * This software is provided "as is"; redistribution and modification
  * is permitted, provided that the following disclaimer is retained.
  *

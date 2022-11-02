@@ -2,6 +2,8 @@
  * Copyright © 2020 Canonical Ltd.
  * Copyright © 2021 Alexandros Theodotou
  *
+ * SPDX-License-Identifier: LicenseRef-old-glib-tests
+ *
  * This work is provided "as is"; redistribution and modification
  * in whole or in part, in any medium, physical or electronic is
  * permitted without restriction.

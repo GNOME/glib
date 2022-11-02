@@ -1,6 +1,8 @@
 /* g_once_init_*() test
  * Copyright (C) 2007 Tim Janik
  *
+ * SPDX-License-Identifier: LicenseRef-old-glib-tests
+ *
  * This work is provided "as is"; redistribution and modification
  * in whole or in part, in any medium, physical or electronic is
  * permitted without restriction.
