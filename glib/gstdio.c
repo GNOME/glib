@@ -1788,6 +1788,8 @@ g_close (gint       fd,
            * on Linux at least.  Anyone who wants to add a conditional check
            * for e.g. HP-UX is welcome to do so later...
            *
+           * close_func_with_invalid_fds() in gspawn.c has similar logic.
+           *
            * https://lwn.net/Articles/576478/
            * http://lkml.indiana.edu/hypermail/linux/kernel/0509.1/0877.html
            * https://bugzilla.gnome.org/show_bug.cgi?id=682819
@@ -1814,13 +1816,7 @@ g_close (gint       fd,
                * not necessarily in the caller of g_close(), but somebody else
                * might have wrongly closed fd. In any case, there is a serious bug
                * somewhere. */
-              /* FIXME: This causes a number of unit test failures on macOS.
-               * Disabling the message for now until someone with access to a
-               * macOS machine can investigate.
-               * See https://gitlab.gnome.org/GNOME/glib/-/issues/2785 */
-#ifndef G_OS_DARWIN
               g_critical ("g_close(fd:%d) failed with EBADF. The tracking of file descriptors got messed up", fd);
-#endif
             }
           else
             {

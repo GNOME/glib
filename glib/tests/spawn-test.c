@@ -27,6 +27,10 @@
 #include <glib.h>
 #include <glib/gstdio.h>
 
+#ifdef G_OS_UNIX
+#include <unistd.h>
+#endif
+
 #ifdef G_OS_WIN32
 #include <fcntl.h>
 #include <io.h>
@@ -208,6 +212,118 @@ test_spawn_basics (void)
 #endif
 }
 
+#ifdef G_OS_UNIX
+static void
+test_spawn_stdio_overwrite (void)
+{
+  gboolean result;
+  int ret;
+  GError *error = NULL;
+  int old_stdin_fd = -1;
+  int old_stdout_fd = -1;
+  int old_stderr_fd = -1;
+  char **envp = g_get_environ ();
+  enum OpenState { OPENED = 0, CLOSED = 1, DONE = 2 } stdin_state, stdout_state, stderr_state, output_return_state, error_return_state;
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/16");
+
+  old_stdin_fd = dup (STDIN_FILENO);
+  old_stdout_fd = dup (STDOUT_FILENO);
+  old_stderr_fd = dup (STDERR_FILENO);
+
+  for (output_return_state = OPENED; output_return_state != DONE; output_return_state++)
+    for (error_return_state = OPENED; error_return_state != DONE; error_return_state++)
+      for (stdin_state = OPENED; stdin_state != DONE; stdin_state++)
+        for (stdout_state = OPENED; stdout_state != DONE; stdout_state++)
+          for (stderr_state = OPENED; stderr_state != DONE; stderr_state++)
+    {
+        char *command_line = NULL;
+        char **argv = NULL;
+        gchar *standard_output = NULL;
+        gchar *standard_error = NULL;
+
+        g_test_message ("Fetching GSpawn result %s%s%s with stdin %s, stdout %s, stderr %s",
+                        output_return_state == OPENED? "output" : "",
+                        output_return_state == OPENED && error_return_state == OPENED? " and " : "",
+                        error_return_state == OPENED? "error output" : "",
+                        stdin_state == CLOSED? "already closed" : "open",
+                        stdout_state == CLOSED? "already closed" : "open",
+                        stderr_state == CLOSED? "already closed" : "open");
+
+        if (stdin_state == CLOSED)
+          {
+            g_close (STDIN_FILENO, &error);
+            g_assert_no_error (error);
+          }
+
+        if (stdout_state == CLOSED)
+          {
+            g_close (STDOUT_FILENO, &error);
+            g_assert_no_error (error);
+          }
+
+        if (stderr_state == CLOSED)
+          {
+            g_close (STDERR_FILENO, &error);
+            g_assert_no_error (error);
+          }
+
+        command_line = g_strdup_printf ("/bin/sh -c '%s%s%s'",
+                                        output_return_state == OPENED? "echo stdout": "",
+                                        output_return_state == OPENED && error_return_state == OPENED? ";" : "",
+                                        error_return_state == OPENED? "echo stderr >&2": "");
+        g_shell_parse_argv (command_line, NULL, &argv, &error);
+        g_assert_no_error (error);
+
+        g_clear_pointer (&command_line, g_free);
+
+        result = g_spawn_sync (NULL,
+                               argv, envp, G_SPAWN_SEARCH_PATH_FROM_ENVP,
+                               NULL, NULL,
+                               output_return_state == OPENED? &standard_output : NULL,
+                               error_return_state == OPENED? &standard_error: NULL,
+                               NULL,
+                               &error);
+        g_clear_pointer (&argv, g_strfreev);
+
+        ret = dup2 (old_stderr_fd, STDERR_FILENO);
+        g_assert_cmpint (ret, ==, STDERR_FILENO);
+
+        ret = dup2 (old_stdout_fd, STDOUT_FILENO);
+        g_assert_cmpint (ret, ==, STDOUT_FILENO);
+
+        ret = dup2 (old_stdin_fd, STDIN_FILENO);
+        g_assert_cmpint (ret, ==, STDIN_FILENO);
+
+        g_assert_no_error (error);
+        g_assert_true (result);
+
+        if (output_return_state == OPENED)
+          {
+            g_assert_cmpstr (standard_output, ==, "stdout\n");
+            g_clear_pointer (&standard_output, g_free);
+          }
+
+        if (error_return_state == OPENED)
+          {
+            g_assert_cmpstr (standard_error, ==, "stderr\n");
+            g_clear_pointer (&standard_error, g_free);
+          }
+    }
+
+  g_clear_fd (&old_stdin_fd, &error);
+  g_assert_no_error (error);
+
+  g_clear_fd (&old_stdout_fd, &error);
+  g_assert_no_error (error);
+
+  g_clear_fd (&old_stderr_fd, &error);
+  g_assert_no_error (error);
+
+  g_clear_pointer (&envp, g_strfreev);
+}
+#endif
+
 int
 main (int   argc,
       char *argv[])
@@ -219,6 +335,9 @@ main (int   argc,
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/spawn/basics", test_spawn_basics);
+#ifdef G_OS_UNIX
+  g_test_add_func ("/spawn/stdio-overwrite", test_spawn_stdio_overwrite);
+#endif
 
   return g_test_run ();
 }

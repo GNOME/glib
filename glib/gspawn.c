@@ -32,6 +32,7 @@
 #include <string.h>
 #include <stdlib.h>   /* for fdwalk */
 #include <dirent.h>
+#include <unistd.h>
 
 #ifdef HAVE_SPAWN_H
 #include <spawn.h>
@@ -72,6 +73,9 @@
 #define INHERITS_OR_NULL_STDIN  (G_SPAWN_STDIN_FROM_DEV_NULL | G_SPAWN_CHILD_INHERITS_STDIN)
 #define INHERITS_OR_NULL_STDOUT (G_SPAWN_STDOUT_TO_DEV_NULL | G_SPAWN_CHILD_INHERITS_STDOUT)
 #define INHERITS_OR_NULL_STDERR (G_SPAWN_STDERR_TO_DEV_NULL | G_SPAWN_CHILD_INHERITS_STDERR)
+
+#define IS_STD_FILENO(_fd) ((_fd >= STDIN_FILENO) && (_fd <= STDERR_FILENO))
+#define IS_VALID_FILENO(_fd) (_fd >= 0)
 
 /* posix_spawn() is assumed the fastest way to spawn, but glibc's
  * implementation was buggy before glibc 2.24, so avoid it on old versions.
@@ -1334,13 +1338,46 @@ dupfd_cloexec (int old_fd, int new_fd_min)
   return fd;
 }
 
-/* This function is called between fork() and exec() and hence must be
- * async-signal-safe (see signal-safety(7)). */
+/* fdwalk()-compatible callback to close a valid fd.
+ * It is an error to pass an invalid fd (causing EBADF) to this function.
+ *
+ * This function is called between fork() and exec() and hence must be
+ * async-signal-safe (see signal-safety(7)).
+ */
 G_GNUC_UNUSED static int
 close_func (void *data, int fd)
 {
   if (fd >= GPOINTER_TO_INT (data))
     g_close (fd, NULL);
+
+  return 0;
+}
+
+/* fdwalk()-compatible callback to close a fd for non-compliant
+ * implementations of fdwalk() that potentially pass already
+ * closed fds.
+ *
+ * It is not an error to pass an invalid fd to this function.
+ *
+ * This function is called between fork() and exec() and hence must be
+ * async-signal-safe (see signal-safety(7)).
+ */
+G_GNUC_UNUSED static int
+close_func_with_invalid_fds (void *data, int fd)
+{
+  /* We use close and not g_close here because on some platforms, we
+   * don't know how to close only valid, open file descriptors, so we
+   * have to pass bad fds to close too. g_close warns if given a bad
+   * fd.
+   *
+   * This function returns no error, because there is nothing that the caller
+   * could do with that information. That is even the case for EINTR. See
+   * g_close() about the specialty of EINTR and why that is correct.
+   * If g_close() ever gets extended to handle EINTR specially, then this place
+   * should get updated to do the same handling.
+   */
+  if (fd >= GPOINTER_TO_INT (data))
+    close (fd);
 
   return 0;
 }
@@ -1400,18 +1437,14 @@ safe_fdwalk (int (*cb)(void *data, int fd), void *data)
   return fdwalk (cb, data);
 #else
   /* Fallback implementation of fdwalk. It should be async-signal safe, but it
-   * may be slow on non-Linux operating systems, especially on systems allowing
-   * very high number of open file descriptors.
+   * may fail on non-Linux operating systems. See safe_fdwalk_with_invalid_fds
+   * for a slower alternative.
    */
-  gint open_max = -1;
-  gint fd;
-  gint res = 0;
-  
-#if 0 && defined(HAVE_SYS_RESOURCE_H)
-  struct rlimit rl;
-#endif
 
 #ifdef __linux__
+  gint fd;
+  gint res = 0;
+
   /* Avoid use of opendir/closedir since these are not async-signal-safe. */
   int dir_fd = open ("/proc/self/fd", O_RDONLY | O_DIRECTORY);
   if (dir_fd >= 0)
@@ -1439,7 +1472,8 @@ safe_fdwalk (int (*cb)(void *data, int fd), void *data)
       return res;
     }
 
-  /* If /proc is not mounted or not accessible we fall back to the old
+  /* If /proc is not mounted or not accessible we fail here and rely on
+   * safe_fdwalk_with_invalid_fds to fall back to the old
    * rlimit trick. */
 
 #endif
@@ -1455,6 +1489,8 @@ safe_fdwalk (int (*cb)(void *data, int fd), void *data)
  * fcntl(fd, F_PREVFD)
  * - return highest allocated file descriptor < fd.
  */
+  gint fd;
+  gint res = 0;
 
   open_max = fcntl (INT_MAX, F_PREVFD); /* find the maximum fd */
   if (open_max < 0) /* No open files */
@@ -1463,9 +1499,31 @@ safe_fdwalk (int (*cb)(void *data, int fd), void *data)
   for (fd = -1; (fd = fcntl (fd, F_NEXTFD, open_max)) != -1; )
     if ((res = cb (data, fd)) != 0 || fd == open_max)
       break;
-#else
+
+  return res;
+#endif
+
+  errno = ENOSYS;
+  return -1;
+#endif
+}
+
+/* This function is called between fork() and exec() and hence must be
+ * async-signal-safe (see signal-safety(7)). */
+static int
+safe_fdwalk_with_invalid_fds (int (*cb)(void *data, int fd), void *data)
+{
+  /* Fallback implementation of fdwalk. It should be async-signal safe, but it
+   * may be slow, especially on systems allowing very high number of open file
+   * descriptors.
+   */
+  gint open_max = -1;
+  gint fd;
+  gint res = 0;
 
 #if 0 && defined(HAVE_SYS_RESOURCE_H)
+  struct rlimit rl;
+
   /* Use getrlimit() function provided by the system if it is known to be
    * async-signal safe.
    *
@@ -1498,10 +1556,8 @@ safe_fdwalk (int (*cb)(void *data, int fd), void *data)
   for (fd = 0; fd < open_max; fd++)
       if ((res = cb (data, fd)) != 0)
           break;
-#endif
 
   return res;
-#endif
 }
 
 /* This function is called between fork() and exec() and hence must be
@@ -1509,6 +1565,8 @@ safe_fdwalk (int (*cb)(void *data, int fd), void *data)
 static int
 safe_fdwalk_set_cloexec (int lowfd)
 {
+  int ret;
+
 #if defined(HAVE_CLOSE_RANGE) && defined(CLOSE_RANGE_CLOEXEC)
   /* close_range() is available in Linux since kernel 5.9, and on FreeBSD at
    * around the same time. It was designed for use in async-signal-safe
@@ -1520,11 +1578,17 @@ safe_fdwalk_set_cloexec (int lowfd)
    * Handle ENOSYS in case it’s supported in libc but not the kernel; if so,
    * fall back to safe_fdwalk(). Handle EINVAL in case `CLOSE_RANGE_CLOEXEC`
    * is not supported. */
-  int ret = close_range (lowfd, G_MAXUINT, CLOSE_RANGE_CLOEXEC);
+  ret = close_range (lowfd, G_MAXUINT, CLOSE_RANGE_CLOEXEC);
   if (ret == 0 || !(errno == ENOSYS || errno == EINVAL))
     return ret;
 #endif  /* HAVE_CLOSE_RANGE */
-  return safe_fdwalk (set_cloexec, GINT_TO_POINTER (lowfd));
+
+  ret = safe_fdwalk (set_cloexec, GINT_TO_POINTER (lowfd));
+
+  if (ret < 0 && errno == ENOSYS)
+    ret = safe_fdwalk_with_invalid_fds (set_cloexec, GINT_TO_POINTER (lowfd));
+
+  return ret;
 }
 
 /* This function is called between fork() and exec() and hence must be
@@ -1534,6 +1598,8 @@ safe_fdwalk_set_cloexec (int lowfd)
 static int
 safe_closefrom (int lowfd)
 {
+  int ret;
+
 #if defined(__FreeBSD__) || defined(__OpenBSD__) || \
   (defined(__sun__) && defined(F_CLOSEFROM))
   /* Use closefrom function provided by the system if it is known to be
@@ -1573,11 +1639,16 @@ safe_closefrom (int lowfd)
    *
    * Handle ENOSYS in case it’s supported in libc but not the kernel; if so,
    * fall back to safe_fdwalk(). */
-  int ret = close_range (lowfd, G_MAXUINT, 0);
+  ret = close_range (lowfd, G_MAXUINT, 0);
   if (ret == 0 || errno != ENOSYS)
     return ret;
 #endif  /* HAVE_CLOSE_RANGE */
-  return safe_fdwalk (close_func, GINT_TO_POINTER (lowfd));
+  ret = safe_fdwalk (close_func, GINT_TO_POINTER (lowfd));
+
+  if (ret < 0 && errno == ENOSYS)
+    ret = safe_fdwalk_with_invalid_fds (close_func_with_invalid_fds, GINT_TO_POINTER (lowfd));
+
+  return ret;
 #endif
 }
 
@@ -1593,6 +1664,30 @@ safe_dup2 (gint fd1, gint fd2)
   while (ret < 0 && (errno == EINTR || errno == EBUSY));
 
   return ret;
+}
+
+/* This function is called between fork() and exec() and hence must be
+ * async-signal-safe (see signal-safety(7)). */
+static gboolean
+relocate_fd_out_of_standard_range (gint *fd)
+{
+  gint ret = -1;
+  const int min_fileno = STDERR_FILENO + 1;
+
+  do
+    ret = fcntl (*fd, F_DUPFD, min_fileno);
+  while (ret < 0 && errno == EINTR);
+
+  /* Note we don't need to close the old fd, because the caller is expected
+   * to close fds in the standard range itself.
+   */
+  if (ret >= min_fileno)
+    {
+      *fd = ret;
+      return TRUE;
+    }
+
+  return FALSE;
 }
 
 /* This function is called between fork() and exec() and hence must be
@@ -1614,7 +1709,7 @@ enum
   CHILD_CHDIR_FAILED,
   CHILD_EXEC_FAILED,
   CHILD_OPEN_FAILED,
-  CHILD_DUP2_FAILED,
+  CHILD_DUPFD_FAILED,
   CHILD_FORK_FAILED,
   CHILD_CLOSE_FAILED,
 };
@@ -1653,17 +1748,42 @@ do_exec (gint                  child_err_report_fd,
   if (working_directory && chdir (working_directory) < 0)
     write_err_and_exit (child_err_report_fd,
                         CHILD_CHDIR_FAILED);
-  
-  /* Redirect pipes as required */
-  if (stdin_fd >= 0)
+
+  /* It's possible the caller assigned stdin to an fd with a
+   * file number that is supposed to be reserved for
+   * stdout or stderr.
+   *
+   * If so, move it up out of the standard range, so it doesn't
+   * cause a conflict.
+   */
+  if (IS_STD_FILENO (stdin_fd) && stdin_fd != STDIN_FILENO)
+    {
+      int old_fd = stdin_fd;
+
+      if (!relocate_fd_out_of_standard_range (&stdin_fd))
+        write_err_and_exit (child_err_report_fd, CHILD_DUPFD_FAILED);
+
+      if (stdout_fd == old_fd)
+        stdout_fd = stdin_fd;
+
+      if (stderr_fd == old_fd)
+        stderr_fd = stdin_fd;
+    }
+
+  /* Redirect pipes as required
+   *
+   * There are two cases where we don't need to do the redirection
+   * 1. Where the associated file descriptor is cleared/invalid
+   * 2. When the associated file descriptor is already given the
+   * correct file number.
+   */
+  if (IS_VALID_FILENO (stdin_fd) && stdin_fd != STDIN_FILENO)
     {
       if (safe_dup2 (stdin_fd, 0) < 0)
         write_err_and_exit (child_err_report_fd,
-                            CHILD_DUP2_FAILED);
+                            CHILD_DUPFD_FAILED);
 
-      if (!((stdout_fd >= 0 || stdout_to_null) && stdin_fd == 1) &&
-          !((stderr_fd >= 0 || stderr_to_null) && stdin_fd == 2))
-        set_cloexec (GINT_TO_POINTER(0), stdin_fd);
+      set_cloexec (GINT_TO_POINTER(0), stdin_fd);
     }
   else if (!child_inherits_stdin)
     {
@@ -1674,19 +1794,34 @@ do_exec (gint                  child_err_report_fd,
                             CHILD_OPEN_FAILED);
       if (safe_dup2 (read_null, 0) < 0)
         write_err_and_exit (child_err_report_fd,
-                            CHILD_DUP2_FAILED);
+                            CHILD_DUPFD_FAILED);
       close_and_invalidate (&read_null);
     }
 
-  if (stdout_fd >= 0)
+  /* Like with stdin above, it's possible the caller assigned
+   * stdout to an fd with a file number that's intruding on the
+   * standard range.
+   *
+   * If so, move it out of the way, too.
+   */
+  if (IS_STD_FILENO (stdout_fd) && stdout_fd != STDOUT_FILENO)
+    {
+      int old_fd = stdout_fd;
+
+      if (!relocate_fd_out_of_standard_range (&stdout_fd))
+        write_err_and_exit (child_err_report_fd, CHILD_DUPFD_FAILED);
+
+      if (stderr_fd == old_fd)
+        stderr_fd = stdout_fd;
+    }
+
+  if (IS_VALID_FILENO (stdout_fd) && stdout_fd != STDOUT_FILENO)
     {
       if (safe_dup2 (stdout_fd, 1) < 0)
         write_err_and_exit (child_err_report_fd,
-                            CHILD_DUP2_FAILED);
+                            CHILD_DUPFD_FAILED);
 
-      if (!((stdin_fd >= 0 || !child_inherits_stdin) && stdout_fd == 0) &&
-          !((stderr_fd >= 0 || stderr_to_null) && stdout_fd == 2))
-        set_cloexec (GINT_TO_POINTER(0), stdout_fd);
+      set_cloexec (GINT_TO_POINTER(0), stdout_fd);
     }
   else if (stdout_to_null)
     {
@@ -1696,19 +1831,29 @@ do_exec (gint                  child_err_report_fd,
                             CHILD_OPEN_FAILED);
       if (safe_dup2 (write_null, 1) < 0)
         write_err_and_exit (child_err_report_fd,
-                            CHILD_DUP2_FAILED);
+                            CHILD_DUPFD_FAILED);
       close_and_invalidate (&write_null);
     }
 
-  if (stderr_fd >= 0)
+  if (IS_STD_FILENO (stderr_fd) && stderr_fd != STDERR_FILENO)
+    {
+      if (!relocate_fd_out_of_standard_range (&stderr_fd))
+        write_err_and_exit (child_err_report_fd, CHILD_DUPFD_FAILED);
+    }
+
+  /* Like with stdin/stdout above, it's possible the caller assigned
+   * stderr to an fd with a file number that's intruding on the
+   * standard range.
+   *
+   * Make sure it's out of the way, also.
+   */
+  if (IS_VALID_FILENO (stderr_fd) && stderr_fd != STDERR_FILENO)
     {
       if (safe_dup2 (stderr_fd, 2) < 0)
         write_err_and_exit (child_err_report_fd,
-                            CHILD_DUP2_FAILED);
+                            CHILD_DUPFD_FAILED);
 
-      if (!((stdin_fd >= 0 || !child_inherits_stdin) && stderr_fd == 0) &&
-          !((stdout_fd >= 0 || stdout_to_null) && stderr_fd == 1))
-        set_cloexec (GINT_TO_POINTER(0), stderr_fd);
+      set_cloexec (GINT_TO_POINTER(0), stderr_fd);
     }
   else if (stderr_to_null)
     {
@@ -1718,7 +1863,7 @@ do_exec (gint                  child_err_report_fd,
                             CHILD_OPEN_FAILED);
       if (safe_dup2 (write_null, 2) < 0)
         write_err_and_exit (child_err_report_fd,
-                            CHILD_DUP2_FAILED);
+                            CHILD_DUPFD_FAILED);
       close_and_invalidate (&write_null);
     }
 
@@ -1732,7 +1877,7 @@ do_exec (gint                  child_err_report_fd,
       if (child_setup == NULL && n_fds == 0)
         {
           if (safe_dup2 (child_err_report_fd, 3) < 0)
-            write_err_and_exit (child_err_report_fd, CHILD_DUP2_FAILED);
+            write_err_and_exit (child_err_report_fd, CHILD_DUPFD_FAILED);
           set_cloexec (GINT_TO_POINTER (0), 3);
           if (safe_closefrom (4) < 0)
             write_err_and_exit (child_err_report_fd, CHILD_CLOSE_FAILED);
@@ -1768,7 +1913,7 @@ do_exec (gint                  child_err_report_fd,
       if (max_target_fd == G_MAXINT)
         {
           errno = EINVAL;
-          write_err_and_exit (child_err_report_fd, CHILD_DUP2_FAILED);
+          write_err_and_exit (child_err_report_fd, CHILD_DUPFD_FAILED);
         }
 
       /* If we're doing remapping fd assignments, we need to handle
@@ -1782,7 +1927,7 @@ do_exec (gint                  child_err_report_fd,
             {
               source_fds[i] = dupfd_cloexec (source_fds[i], max_target_fd + 1);
               if (source_fds[i] < 0)
-                write_err_and_exit (child_err_report_fd, CHILD_DUP2_FAILED);
+                write_err_and_exit (child_err_report_fd, CHILD_DUPFD_FAILED);
             }
         }
 
@@ -1804,11 +1949,11 @@ do_exec (gint                  child_err_report_fd,
                 {
                   child_err_report_fd = dupfd_cloexec (child_err_report_fd, max_target_fd + 1);
                   if (child_err_report_fd < 0)
-                    write_err_and_exit (child_err_report_fd, CHILD_DUP2_FAILED);
+                    write_err_and_exit (child_err_report_fd, CHILD_DUPFD_FAILED);
                 }
 
               if (safe_dup2 (source_fds[i], target_fds[i]) < 0)
-                write_err_and_exit (child_err_report_fd, CHILD_DUP2_FAILED);
+                write_err_and_exit (child_err_report_fd, CHILD_DUPFD_FAILED);
 
               close_and_invalidate (&source_fds[i]);
             }
@@ -2528,7 +2673,7 @@ fork_exec (gboolean              intermediate_child,
                            g_strerror (buf[1]));
               break;
 
-            case CHILD_DUP2_FAILED:
+            case CHILD_DUPFD_FAILED:
               g_set_error (error,
                            G_SPAWN_ERROR,
                            G_SPAWN_ERROR_FAILED,

@@ -26,8 +26,11 @@
 #include "config.h"
 
 #include "glib-unix.h"
+#include "gstdio.h"
+
 #include <string.h>
 #include <pwd.h>
+#include <unistd.h>
 
 static void
 test_pipe (void)
@@ -52,6 +55,43 @@ test_pipe (void)
   close (pipefd[1]);
 
   g_assert (g_str_has_prefix (buf, "hello"));
+}
+
+static void
+test_pipe_stdio_overwrite (void)
+{
+  GError *error = NULL;
+  int pipefd[2], ret;
+  gboolean res;
+  int stdin_fd;
+
+
+  g_test_summary ("Test that g_unix_open_pipe() will use the first available FD, even if it’s stdin/stdout/stderr");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/2795");
+
+  stdin_fd = dup (STDIN_FILENO);
+  g_assert_cmpint (stdin_fd, >, 0);
+
+  g_close (STDIN_FILENO, &error);
+  g_assert_no_error (error);
+
+  res = g_unix_open_pipe (pipefd, FD_CLOEXEC, &error);
+  g_assert_no_error (error);
+  g_assert_true (res);
+
+  g_assert_cmpint (pipefd[0], ==, STDIN_FILENO);
+
+  g_close (pipefd[0], &error);
+  g_assert_no_error (error);
+
+  g_close (pipefd[1], &error);
+  g_assert_no_error (error);
+
+  ret = dup2 (stdin_fd, STDIN_FILENO);
+  g_assert_cmpint (ret, >=, 0);
+
+  g_close (stdin_fd, &error);
+  g_assert_no_error (error);
 }
 
 static void
@@ -339,6 +379,7 @@ main (int   argc,
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/glib-unix/pipe", test_pipe);
+  g_test_add_func ("/glib-unix/pipe-stdio-overwrite", test_pipe_stdio_overwrite);
   g_test_add_func ("/glib-unix/error", test_error);
   g_test_add_func ("/glib-unix/nonblocking", test_nonblocking);
   g_test_add_func ("/glib-unix/sighup", test_sighup);
