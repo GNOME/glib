@@ -453,7 +453,7 @@ as two bytes — “ay”. Is this a single byte, ``'a'``, or an empty array of 
 Maybes
 ------
 
-Maybes are encoded differently depending on if their element type is fixed-sized not.
+Maybes are encoded differently depending on if their element type is fixed-sized or not.
 
 The alignment of a maybe type is always equal to the alignment of its element type.
 
