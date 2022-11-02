@@ -1039,8 +1039,7 @@ This chapter contains information about the serialisation format that is not par
 specification.
 
 This information discusses issues that will arise during implementation of the serialisation
-format. Certainly, the issues discussed in this chapter have had an impact on the GVariant
-implementation discussed in Chapter .
+format.
 
 An unfortunate observation is made about the safety of byteswapping operations and a
 method is given (along with proof of correctness) that random accesses to the contents of
