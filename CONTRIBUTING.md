@@ -137,7 +137,7 @@ $ cd glib
 have a GNOME account, you can skip the fork, and use the following instead:
 
 ```sh
-$ git clone git@gitlab.gnome.org:GNOME/glib.git
+$ git clone git@ssh.gitlab.gnome.org:GNOME/glib.git
 $ cd glib
 ```
 
