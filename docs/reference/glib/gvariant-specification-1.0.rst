@@ -1219,19 +1219,23 @@ table, given as an array of 4-tuples.
 
 .. code-block:: python
 
-   def generate_table (items):
+   def generate_table(items):
        (i, a, b, c) = (-1, 0, 0, 0)
        table = []
+
        for (d, e) in items:
            if d <= b:
                (a, b, c) = (a, b, align(c, d))      # merge rule #1
            else:
                (a, b, c) = (a + align(c, b), d, 0)  # merge rule #2
+
            table.append ((i, a, b, c))
+
            if e == -1:                              # item is not fixed-sized
                (i, a, b, c) = (i + 1, 0, 0, 0)
            else:
                (a, b, c) = (a, b, c + e)            # merge rule #3
+
        return table
 
 It is assumed that ``align(a, b)`` computes :math:`(a ↑ b)`.
