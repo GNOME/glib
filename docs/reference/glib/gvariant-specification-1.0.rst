@@ -15,54 +15,54 @@ GVariant Specification 1.0
 Types
 *****
 
-As per requirement, GVariant must be substantially compatible with the DBus message
+As per requirement, GVariant must be substantially compatible with the D-Bus message
 bus system (as specified in [DBus]).
 
-To this end, the type system used in GVariant is almost identical to that used by DBus.
+To this end, the type system used in GVariant is almost identical to that used by D-Bus.
 Some very minimal changes were made, however, in order to provide for a better system
 while still remaining highly compatible; specifically, every message that can by sent over
-DBus can be represented as a GVariant.
+D-Bus can be represented as a GVariant.
 
-Some baggage has been carried in from DBus that would not otherwise have been present
+Some baggage has been carried in from D-Bus that would not otherwise have been present
 in the type system if it were designed from scratch. The object path and signature types,
-for example, are highly DBus-specific and would not be present in a general-purpose type
+for example, are highly D-Bus-specific and would not be present in a general-purpose type
 system if it were to be created from scratch.
 
-Differences from DBus
-=====================
+Differences from D-Bus
+======================
 
 In order to increase conceptual clarity some limitations have been lifted, allowing calls
 to “never fail” instead of having to check for these special cases.
 
- * Whereas DBus limits the maximum depth of container type nesting, GVariant makes
+ * Whereas D-Bus limits the maximum depth of container type nesting, GVariant makes
    no such limitations; nesting is supported to arbitrary depths.
- * Whereas DBus limits the maximum complexity of its messages by imposing a
+ * Whereas D-Bus limits the maximum complexity of its messages by imposing a
    limitation on the “signature string” to be no more than 255 characters, GVariant
    makes no such limitation; type strings of arbitrary length are supported, allowing
    for the creation of values with arbitrarily complex types.
- * Whereas DBus allows dictionary entry types to appear only as the element type of
+ * Whereas D-Bus allows dictionary entry types to appear only as the element type of
    an array type, GVariant makes no such limitation; dictionary entry types may exist
    on their own or as children of any other type constructor.
- * Whereas DBus requires structure types to contain at least one child type, GVariant
+ * Whereas D-Bus requires structure types to contain at least one child type, GVariant
    makes no such limitation; the unit type is a perfectly valid type in GVariant.
 
-Some of the limitations of DBus were imposed as security considerations (for example,
+Some of the limitations of D-Bus were imposed as security considerations (for example,
 to bound the depth of recursion that may result from processing a message from an
 untrusted sender). If GVariant is used in ways that are sensitive to these considerations
 then programmers should employ checks for these cases upon entry of values into the
 program from an untrusted source.
 
-Additionally, DBus has no type constructor for expressing the concept of nullability [#f1]_. To
+Additionally, D-Bus has no type constructor for expressing the concept of nullability [#f1]_. To
 this end, the Maybe type constructor (represented by m in type strings) has been added.
 
-Some of these changes are under consideration for inclusion into DBus [#f2]_.
+Some of these changes are under consideration for inclusion into D-Bus [#f2]_.
 
 .. [#f1] A “nullable type” is a type that, in addition to containing its normal range of values, also contains a
          special value outside of that range, called ``NULL``, ``Nothing``, ``None`` or similar. In most languages with reference
          or pointer types, these types are nullable. Some languages have the ability to have nullable versions of
          any type (for example, “``Maybe Int``” in Haskell and “``int? i;``” in C#).
 .. [#f2] Considerable discussion has been made in face-to-face meetings and some discussion has also occured
-         on the DBus mailing list: http://lists.freedesktop.org/archives/dbus/2007-August/008290.html
+         on the D-Bus mailing list: http://lists.freedesktop.org/archives/dbus/2007-August/008290.html
 
 Enumeration of Types
 ====================
@@ -89,11 +89,11 @@ The Basic Types
    of UTF-8 is expected and encouraged.
 
 **Object Path**
-   A DBus object path, exactly as described in the DBus specification.
+   A D-Bus object path, exactly as described in the D-Bus specification.
 
 **Signature**
-   A DBus signature string, exactly as described in the DBus specification. As this type
-   has been preserved solely for compatibility with DBus, all of the DBus restrictions
+   A D-Bus signature string, exactly as described in the D-Bus specification. As this type
+   has been preserved solely for compatibility with D-Bus, all of the D-Bus restrictions
    on the range of values of this type apply (eg: nesting depth and maximum length
    restrictions).
 
@@ -119,7 +119,7 @@ Container Types
    The structure type constructor allows the creation of structure types corresponding
    to the provided element types. These “structures” are actually closer to tuples in the
    sense that their fields are not named, but “structure” is used because that is what
-   the DBus specification calls them.
+   the D-Bus specification calls them.
 
    The structure type constructor is the only type constructor that is variadic — any
    natural number of types may be given (including zero and one).
@@ -127,7 +127,7 @@ Container Types
 **Dictionary entry**
    The dictionary entry type constructor allows the creation of a special sort of structure
    which, when used as the element type of an array, implies that the content of the array
-   is a list of key/value pairs. For compatibility with DBus, this binary type constructor
+   is a list of key/value pairs. For compatibility with D-Bus, this binary type constructor
    requires a basic type as its first argument (which by convention is seen to be the key)
    but any type is acceptable for the second argument (by convention, the value).
 
@@ -138,12 +138,12 @@ Container Types
 Type Strings
 ============
 
-Just as with DBus, a concise string representation is used to express types.
+Just as with D-Bus, a concise string representation is used to express types.
 
 In GVariant, which deals directly with values as first order objects, a type string (by that
 name) is a string representing a single type.
 
-Contrast this with “signature strings” [#f3]_ in DBus, which apply to messages, and contain
+Contrast this with “signature strings” [#f3]_ in D-Bus, which apply to messages, and contain
 zero or more types (corresponding to the arguments of the message).
 
 .. [#f3] Compare with the whence parameter to the ``lseek()`` system call.
@@ -213,24 +213,24 @@ Serialisation Format
 This chapter describes the serialisation format that is used by GVariant. This serialisation
 format is newly developed and described for the first time here.
 
-Why not DBus?
-=============
+Why not D-Bus?
+==============
 
-Since GVariant is largely compatible with DBus, it would make sense to use the
-serialisation format of DBus (plus modifications where appropriate) as the serialisation
+Since GVariant is largely compatible with D-Bus, it would make sense to use the
+serialisation format of D-Bus (plus modifications where appropriate) as the serialisation
 format for GVariant.
 
 To do so, however, would conflict with a number of requirements that were established
 for GVariant.
 
-Most fundamentally, the requirements would be violated. DBus messages are encoded in such
+Most fundamentally, the requirements would be violated. D-Bus messages are encoded in such
 a way that in order to fetch the 100th item out of an array you first have to iterate over
 the first 99 items to discover where the 100th item lies. A side effect of this iteration
 would be a violation of the requirements.
 
-Additionally, using the DBus serialisation format with an API like that mandated by
+Additionally, using the D-Bus serialisation format with an API like that mandated by
 the requirements would likely imply a violation of the requirements due to the fact that subparts
-of DBus messages can change meaning when subjected to different starting alignments.
+of D-Bus messages can change meaning when subjected to different starting alignments.
 This is discussed in more detail in `Simple Containment`_.
 
 Notation
@@ -305,8 +305,8 @@ This property permits a container to be deconstructed into child values simply b
 referencing a subsequence of the byte sequence of the container as the value of the
 child which is an effective way of satisfying the requirements.
 
-This property is not the case for the DBus serialisation format. In many cases (for
-example, arrays) the encoding of a child value of a DBus message will change depending
+This property is not the case for the D-Bus serialisation format. In many cases (for
+example, arrays) the encoding of a child value of a D-Bus message will change depending
 on the context in which that value appears. As an example: in the case of an array of
 doubles, should the value immediately preceding the array end on an offset that is an
 even multiple of 8 then the array will contain 4 padding bytes that it would not contain
@@ -857,7 +857,7 @@ these problems then it is not in normal form.
    byte then the default value is used.
 
 **Invalid Signature**
-   If the serialised form of a signature string is not a valid DBus signature followed by
+   If the serialised form of a signature string is not a valid D-Bus signature followed by
    a zero byte then the default value is used.
 
 **Wrong Size for Fixed Size Maybe**
