@@ -49,7 +49,7 @@ variables:
     - bash .gitlab-ci/show-execution-environment.sh
     - cp -r $HOME/subprojects/* subprojects/
 
-style-check-diff:
+style-check-advisory:
   extends: .only-default
   image: $DEBIAN_IMAGE
   stage: style-check
@@ -607,7 +607,7 @@ pages:
   stage: deploy
   only:
     - main
-  needs: ['coverage', 'style-check-diff']
+  needs: ['coverage', 'style-check-advisory']
   script:
     - mv _coverage/ public/
   artifacts:
