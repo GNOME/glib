@@ -2485,12 +2485,14 @@ test_clear_fd_ebadf (void)
   int copy_of_fd;
   int errsv;
   gboolean ret;
+  GWin32InvalidParameterHandler handler;
 
   /* We're going to trigger a programming error: attmpting to close a
    * fd that was already closed. Make criticals non-fatal. */
   g_assert_true (g_test_undefined ());
   g_log_set_always_fatal (G_LOG_FATAL_MASK);
   g_log_set_fatal_mask ("GLib", G_LOG_FATAL_MASK);
+  GLIB_PRIVATE_CALL (g_win32_push_empty_invalid_parameter_handler) (&handler);
 
   fd = g_file_open_tmp (NULL, &name, &error);
   g_assert_cmpint (fd, !=, -1);
@@ -2532,6 +2534,8 @@ test_clear_fd_ebadf (void)
   errsv = errno;
   g_assert_cmpint (errsv, ==, EILSEQ);
 #endif
+
+  GLIB_PRIVATE_CALL (g_win32_pop_invalid_parameter_handler) (&handler);
 }
 
 static void
