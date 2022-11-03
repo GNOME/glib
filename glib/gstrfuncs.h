@@ -148,39 +148,54 @@ gboolean             (g_str_has_prefix) (const gchar *str,
 
 #if G_GNUC_CHECK_VERSION (2, 0)
 
-/* A note on the 'x + !x' terms: These are added to workaround a false
- * warning in gcc 10< which is ignoring the check 'x != NULL' that is
- * set outside of the G_GNUC_EXTENSION scope. Without 'x + !x' it
- * would complain that x may be NULL where strlen() and memcmp()
- * both require non-null arguments. */
-
 #define g_str_has_prefix(STR, PREFIX)                                   \
-  ((STR != NULL && PREFIX != NULL && __builtin_constant_p (PREFIX)) ?   \
-   G_GNUC_EXTENSION ({                                                  \
-       const char *const __str = STR;                                   \
-       const char *const __prefix = PREFIX;                             \
-       const size_t __str_len = strlen (__str + !__str);                \
-       const size_t __prefix_len = strlen (__prefix + !__prefix);       \
-       (__str_len >= __prefix_len) ?                                    \
-         memcmp (__str + !__str,                                        \
-                 __prefix + !__prefix, __prefix_len) == 0 : FALSE;      \
-     })                                                                 \
-   :                                                                    \
-   (g_str_has_prefix) (STR, PREFIX))
+  (__builtin_constant_p (PREFIX)?                                       \
+    G_GNUC_EXTENSION ({                                                 \
+       const char * const __str = (STR);                                \
+       const char * const __prefix = (PREFIX);                          \
+                                                                        \
+       (G_UNLIKELY (__str == NULL || __prefix == NULL) ?                \
+         (g_str_has_prefix) (__str, __prefix)                           \
+       :                                                                \
+         ({                                                             \
+            const size_t __str_len = strlen (__str);                    \
+            const size_t __prefix_len = strlen (__prefix);              \
+            ((__str_len >= __prefix_len) ?                              \
+              memcmp (__str, __prefix, __prefix_len) == 0               \
+            :                                                           \
+              FALSE                                                     \
+            );                                                          \
+         })                                                             \
+       );                                                               \
+    })                                                                  \
+  :                                                                     \
+    (g_str_has_prefix) (STR, PREFIX)                                    \
+  )
 
 #define g_str_has_suffix(STR, SUFFIX)                                   \
-  ((STR != NULL && SUFFIX != NULL && __builtin_constant_p (SUFFIX)) ?   \
-   G_GNUC_EXTENSION ({                                                  \
-       const char *const __str = STR;                                   \
-       const char *const __suffix = SUFFIX;                             \
-       const size_t __str_len = strlen (__str + !__str);                \
-       const size_t __suffix_len = strlen (__suffix + !__suffix);       \
-       (__str_len >= __suffix_len) ?                                    \
-         memcmp (__str + !__str + __str_len - __suffix_len,             \
-                 __suffix + !__suffix, __suffix_len) == 0 : FALSE;      \
-     })                                                                 \
-   :                                                                    \
-   (g_str_has_suffix) (STR, SUFFIX))
+  (__builtin_constant_p (SUFFIX)?                                       \
+    G_GNUC_EXTENSION ({                                                 \
+       const char * const __str = STR;                                  \
+       const char * const __suffix = SUFFIX;                            \
+                                                                        \
+       ((__str == NULL || __suffix == NULL) ?                           \
+         (g_str_has_suffix) (__str, __suffix)                           \
+       :                                                                \
+         ({                                                             \
+            const size_t __str_len = strlen (__str);                    \
+            const size_t __suffix_len = strlen (__suffix);              \
+            ((__str_len >= __suffix_len) ?                              \
+              memcmp (__str + __str_len - __suffix_len,                 \
+                       __suffix, __suffix_len) == 0                     \
+            :                                                           \
+              FALSE                                                     \
+            );                                                          \
+         })                                                             \
+       );                                                               \
+    })                                                                  \
+  :                                                                     \
+    (g_str_has_suffix) (STR, SUFFIX)                                    \
+  )
 
 #endif /* G_GNUC_CHECK_VERSION (2, 0) */
 
