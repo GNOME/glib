@@ -1361,12 +1361,8 @@ get_content_type (const char          *basename,
     {
       /* Don't sniff zero-length files in order to avoid reading files
        * that appear normal but are not (eg: files in /proc and /sys)
-       *
-       * Note that we need to return text/plain here so that
-       * newly-created text files are opened by the text editor.
-       * See https://bugzilla.gnome.org/show_bug.cgi?id=755795
        */
-      return g_content_type_from_mime_type ("text/plain");
+      return g_content_type_from_mime_type ("application/x-zerosize");
     }
 #endif
 #ifdef S_ISSOCK
