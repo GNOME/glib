@@ -148,6 +148,12 @@ gboolean             (g_str_has_prefix) (const gchar *str,
 
 #if G_GNUC_CHECK_VERSION (2, 0)
 
+/* This macro is defeat a false -Wnonnull warning in GCC.
+ * Without it, it thinks strlen and memcmp may be getting passed NULL
+ * despite the explicit check for NULL right above the calls.
+ */
+#define _G_STR_NONNULL(x) (x + !x)
+
 #define g_str_has_prefix(STR, PREFIX)                                         \
   (__builtin_constant_p (PREFIX)?                                             \
     G_GNUC_EXTENSION ({                                                       \
@@ -159,11 +165,11 @@ gboolean             (g_str_has_prefix) (const gchar *str,
            __result = (g_str_has_prefix) (__str, __prefix);                   \
        else                                                                   \
          {                                                                    \
-            const size_t __str_len = strlen (__str);                          \
-            const size_t __prefix_len = strlen (__prefix);                    \
+            const size_t __str_len = strlen (_G_STR_NONNULL (__str));         \
+            const size_t __prefix_len = strlen (_G_STR_NONNULL (__prefix));   \
             if (__str_len >= __prefix_len)                                    \
-              __result = memcmp (__str,                                       \
-                                 __prefix,                                    \
+              __result = memcmp (_G_STR_NONNULL (__str),                      \
+                                 _G_STR_NONNULL (__prefix),                   \
                                  __prefix_len) == 0;                          \
          }                                                                    \
          __result;                                                            \
@@ -183,11 +189,12 @@ gboolean             (g_str_has_prefix) (const gchar *str,
          __result = (g_str_has_suffix) (__str, __suffix);                     \
        else                                                                   \
          {                                                                    \
-            const size_t __str_len = strlen (__str);                          \
-            const size_t __suffix_len = strlen (__suffix);                    \
+            const size_t __str_len = strlen (_G_STR_NONNULL (__str));         \
+            const size_t __suffix_len = strlen (_G_STR_NONNULL (__suffix));   \
             if (__str_len >= __suffix_len)                                    \
               __result = memcmp (__str + __str_len - __suffix_len,            \
-                                 __suffix, __suffix_len) == 0;                \
+                                 _G_STR_NONNULL (__suffix),                   \
+                                 __suffix_len) == 0;                          \
          }                                                                    \
          __result;                                                            \
     })                                                                        \
