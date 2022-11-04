@@ -84,7 +84,7 @@ void          g_task_set_static_name       (GTask               *task,
                                             const gchar         *name);
 
 /* Macro wrapper to set the task name when setting the source tag. */
-#if GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_60
+#if GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_76
 #define g_task_set_source_tag(task, tag) G_STMT_START { \
   GTask *_task = (task); \
   (g_task_set_source_tag) (_task, tag); \
