@@ -1264,6 +1264,9 @@ test_has_prefix_macro (void)
   g_assert_true (g_str_has_prefix ("foo", ""));
   g_assert_true (g_str_has_prefix ("foo", "foo"));
   g_assert_true (g_str_has_prefix ("", ""));
+
+  /* Testing the nested G_UNLIKELY */
+  g_assert_false (G_UNLIKELY (g_str_has_prefix ("foo", "aaa")));
 }
 
 /* Testing g_str_has_suffix() function avoiding the optimizing macro */
