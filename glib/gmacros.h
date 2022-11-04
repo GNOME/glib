@@ -1181,15 +1181,16 @@
  * putting assignments in g_return_if_fail ().  
  */
 #if G_GNUC_CHECK_VERSION(2, 0) && defined(__OPTIMIZE__)
-#define _G_BOOLEAN_EXPR(expr)                   \
+#define _G_BOOLEAN_EXPR_IMPL(uniq, expr)        \
  G_GNUC_EXTENSION ({                            \
-   int _g_boolean_var_;                         \
+   int G_PASTE (_g_boolean_var_, uniq);         \
    if (expr)                                    \
-      _g_boolean_var_ = 1;                      \
+      G_PASTE (_g_boolean_var_, uniq) = 1;      \
    else                                         \
-      _g_boolean_var_ = 0;                      \
-   _g_boolean_var_;                             \
+      G_PASTE (_g_boolean_var_, uniq) = 0;      \
+   G_PASTE (_g_boolean_var_, uniq);             \
 })
+#define _G_BOOLEAN_EXPR(expr) _G_BOOLEAN_EXPR_IMPL (__COUNTER__, expr)
 #define G_LIKELY(expr) (__builtin_expect (_G_BOOLEAN_EXPR(expr), 1))
 #define G_UNLIKELY(expr) (__builtin_expect (_G_BOOLEAN_EXPR(expr), 0))
 #else
