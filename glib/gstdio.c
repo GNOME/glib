@@ -1795,6 +1795,9 @@ g_close (gint       fd,
            * https://bugzilla.gnome.org/show_bug.cgi?id=682819
            * http://utcc.utoronto.ca/~cks/space/blog/unix/CloseEINTR
            * https://sites.google.com/site/michaelsafyan/software-engineering/checkforeintrwheninvokingclosethinkagain
+           *
+           * `close$NOCANCEL()` in gstdioprivate.h, on macOS, ensures that the fd is
+           * closed even if it did return EINTR.
            */
           return TRUE;
         }
