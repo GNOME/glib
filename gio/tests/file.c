@@ -2472,7 +2472,7 @@ get_size_from_du (const gchar *path, guint64 *size)
   GError *error = NULL;
   gchar *du_path = NULL;
 
-#ifndef G_OS_DARWIN
+#ifndef __APPLE__
   du_path = g_find_program_in_path ("du");
 #endif
 
@@ -3499,7 +3499,7 @@ test_query_default_handler_uri (void)
   GFile *file;
   GFile *invalid_file;
 
-#if defined(G_OS_WIN32) || defined(G_OS_DARWIN)
+#if defined(G_OS_WIN32) || defined(__APPLE__)
   g_test_skip ("Default URI handlers are not currently supported on Windows or macOS");
   return;
 #endif
@@ -3556,7 +3556,7 @@ test_query_zero_length_content_type (void)
                        NULL, &error);
   g_assert_no_error (error);
 
-#ifndef G_OS_DARWIN
+#ifndef __APPLE__
   g_assert_cmpstr (g_file_info_get_content_type (file_info), ==, "text/plain");
 #else
   g_assert_cmpstr (g_file_info_get_content_type (file_info), ==, "public.text");
@@ -3580,7 +3580,7 @@ test_query_default_handler_file (void)
   const char buffer[] = "Text file!\n";
   const guint8 binary_buffer[] = "\xde\xad\xbe\xff";
 
-#if defined(G_OS_WIN32) || defined(G_OS_DARWIN)
+#if defined(G_OS_WIN32) || defined(__APPLE__)
   g_test_skip ("Default URI handlers are not currently supported on Windows or macOS");
   return;
 #endif
@@ -3676,7 +3676,7 @@ test_query_default_handler_file_async (void)
   const guint8 binary_buffer[] = "\xde\xad\xbe\xff";
   GError *error = NULL;
 
-#if defined(G_OS_WIN32) || defined(G_OS_DARWIN)
+#if defined(G_OS_WIN32) || defined(__APPLE__)
   g_test_skip ("Default URI handlers are not currently supported on Windows or macOS");
   return;
 #endif
@@ -3766,7 +3766,7 @@ test_query_default_handler_uri_async (void)
   GFile *file;
   GFile *invalid_file;
 
-#if defined(G_OS_WIN32) || defined(G_OS_DARWIN)
+#if defined(G_OS_WIN32) || defined(__APPLE__)
   g_test_skip ("Default URI handlers are not currently supported on Windows or macOS");
   return;
 #endif

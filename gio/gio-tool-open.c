@@ -23,7 +23,7 @@
 
 #include <gio/gio.h>
 
-#if defined(G_OS_UNIX) && !defined(G_OS_DARWIN)
+#if defined(G_OS_UNIX) && !defined(__APPLE__)
 #include <gio/gdesktopappinfo.h>
 #endif
 

@@ -35,7 +35,7 @@ static gboolean
 is_valid_module_name (const gchar *basename)
 {
 #if !defined(G_OS_WIN32) && !defined(G_WITH_CYGWIN)
-  #if defined(G_OS_DARWIN)
+  #if defined(__APPLE__)
   return g_str_has_prefix (basename, "lib") &&
          (g_str_has_suffix (basename, ".so") ||
           g_str_has_suffix (basename, ".dylib"));

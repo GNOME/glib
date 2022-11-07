@@ -1380,7 +1380,7 @@ get_content_type (const char          *basename,
 
       content_type = g_content_type_guess (basename, NULL, 0, &result_uncertain);
       
-#if !defined(G_OS_WIN32) && !defined(G_OS_DARWIN)
+#if !defined(G_OS_WIN32) && !defined(__APPLE__)
       if (!fast && result_uncertain && path != NULL)
 	{
 	  guchar sniff_buffer[4096];

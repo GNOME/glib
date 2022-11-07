@@ -1694,14 +1694,14 @@ test_non_utf8_printf (void)
    */
   TEST_PRINTF ("%a", "\345\234\237");
   TEST_PRINTF ("%A", "\345\234\237\346\233\234\346\227\245");
-#ifndef G_OS_DARWIN /* OSX just returns the number */
+#ifndef __APPLE__ /* OSX just returns the number */
   TEST_PRINTF ("%b", "10\346\234\210");
 #endif
   TEST_PRINTF ("%B", "10\346\234\210");
   TEST_PRINTF ("%d", "24");
   TEST_PRINTF_DATE (2009, 1, 1, "%d", "01");
   TEST_PRINTF ("%e", "24"); // fixme
-#ifndef G_OS_DARWIN /* OSX just returns the number */
+#ifndef __APPLE__ /* OSX just returns the number */
   TEST_PRINTF ("%h", "10\346\234\210");
 #endif
   TEST_PRINTF ("%H", "00");
@@ -1718,7 +1718,7 @@ test_non_utf8_printf (void)
   TEST_PRINTF_TIME (10, 13, 13, "%l", "10");
   TEST_PRINTF ("%m", "10");
   TEST_PRINTF ("%M", "00");
-#ifndef G_OS_DARWIN /* OSX returns latin "AM", not japanese */
+#ifndef __APPLE__ /* OSX returns latin "AM", not japanese */
   TEST_PRINTF ("%p", "\345\215\210\345\211\215");
   TEST_PRINTF_TIME (13, 13, 13, "%p", "\345\215\210\345\276\214");
   TEST_PRINTF ("%P", "\345\215\210\345\211\215");
@@ -1731,7 +1731,7 @@ test_non_utf8_printf (void)
   TEST_PRINTF ("%S", "00");
   TEST_PRINTF ("%t", "	");
   TEST_PRINTF ("%u", "6");
-#ifndef G_OS_DARWIN /* OSX returns YYYY/MM/DD in ASCII */
+#ifndef __APPLE__ /* OSX returns YYYY/MM/DD in ASCII */
   TEST_PRINTF ("%x", "2009\345\271\26410\346\234\21024\346\227\245");
 #endif
   TEST_PRINTF ("%X", "00\346\231\20200\345\210\20600\347\247\222");

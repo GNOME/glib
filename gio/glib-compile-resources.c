@@ -735,7 +735,7 @@ get_compiler_id (const char *compiler)
 #ifdef G_OS_UNIX
       const char *compiler_env = g_getenv ("CC");
 
-# ifdef G_OS_DARWIN
+# ifdef __APPLE__
       if (compiler_env == NULL || *compiler_env == '\0')
         compiler = "clang";
       else

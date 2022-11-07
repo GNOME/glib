@@ -61,14 +61,14 @@
 #endif
 #include <glib/gstdio.h>
 
-#if defined(G_OS_UNIX) && !defined(G_OS_DARWIN)
+#if defined(G_OS_UNIX) && !defined(__APPLE__)
 #include "gdesktopappinfo.h"
 #endif
 #ifdef HAVE_COCOA
 #include "gosxappinfo.h"
 #endif
 
-#ifdef HAVE_COCOA
+#ifdef __APPLE__
 #include <AvailabilityMacros.h>
 #endif
 
@@ -430,7 +430,7 @@ is_valid_module_name (const gchar        *basename,
   gboolean result;
 
 #if !defined(G_OS_WIN32) && !defined(G_WITH_CYGWIN)
-  #if defined(G_OS_DARWIN)
+  #if defined(__APPLE__)
   if (!g_str_has_prefix (basename, "lib") ||
       !(g_str_has_suffix (basename, ".so") ||
         g_str_has_suffix (basename, ".dylib")))
@@ -1192,7 +1192,7 @@ _g_io_modules_ensure_extension_points_registered (void)
 
   if (g_once_init_enter (&registered_extensions))
     {
-#if defined(G_OS_UNIX) && !defined(G_OS_DARWIN)
+#if defined(G_OS_UNIX) && !defined(__APPLE__)
 #if !GLIB_CHECK_VERSION (3, 0, 0)
       ep = g_io_extension_point_register (G_DESKTOP_APP_INFO_LOOKUP_EXTENSION_POINT_NAME);
       g_io_extension_point_set_required_type (ep, G_TYPE_DESKTOP_APP_INFO_LOOKUP);
@@ -1271,7 +1271,7 @@ get_gio_module_dir (void)
       g_free (install_dir);
 #else
       module_dir = g_strdup (GIO_MODULE_DIR);
-#ifdef G_OS_DARWIN
+#ifdef __APPLE__
 #include "TargetConditionals.h"
 #if TARGET_OS_OSX
 #include <dlfcn.h>
@@ -1293,7 +1293,7 @@ get_gio_module_dir (void)
           }
       }
 #endif
-#endif /* G_OS_DARWIN */
+#endif
 #endif
     }
 

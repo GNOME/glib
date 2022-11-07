@@ -692,7 +692,7 @@ g_credentials_set_unix_user (GCredentials    *credentials,
   return ret;
 }
 
-#ifdef G_OS_DARWIN
+#ifdef __APPLE__
 void
 _g_credentials_set_local_peerid (GCredentials *credentials,
                                  pid_t         pid)
@@ -702,6 +702,6 @@ _g_credentials_set_local_peerid (GCredentials *credentials,
 
   credentials->pid = pid;
 }
-#endif /* G_OS_DARWIN */
+#endif /* __APPLE__ */
 
 #endif /* G_OS_UNIX */

@@ -741,7 +741,7 @@ test_os_info (void)
 {
   gchar *name;
   gchar *contents = NULL;
-#if defined (G_OS_UNIX) && !(defined (G_OS_WIN32) || defined (G_OS_DARWIN))
+#if defined (G_OS_UNIX) && !(defined (G_OS_WIN32) || defined (__APPLE__))
   struct utsname info;
 #endif
 
@@ -751,7 +751,7 @@ test_os_info (void)
                   G_OS_INFO_KEY_NAME,
                   name == NULL ? "(null)" : name);
 
-#if defined (G_OS_WIN32) || defined (G_OS_DARWIN)
+#if defined (G_OS_WIN32) || defined (__APPLE__)
   /* These OSs have a special case so NAME should always succeed */
   g_assert_nonnull (name);
 #elif defined (G_OS_UNIX)
