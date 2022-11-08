@@ -1466,7 +1466,7 @@ g_variant_serialiser_serialise (GVariantSerialised        serialised,
  *
  * Determines how much memory would be needed to serialize this value.
  *
- * This function is only resonsible for performing calculations for the
+ * This function is only responsible for performing calculations for the
  * top-level container.  @gvs_filler is called on each child of the
  * container in order to determine its size.
  */
