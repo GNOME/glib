@@ -4217,6 +4217,7 @@ test_parser_recursion_typedecls (void)
   g_assert_null (value);
   g_error_free (local_error);
   g_free (silly_array);
+  g_free (silly_type);
 }
 
 static void

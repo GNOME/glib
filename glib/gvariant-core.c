@@ -604,7 +604,7 @@ g_variant_new_from_bytes (const GVariantType *type,
  * @type: a #GVariantType
  * @children: an array of #GVariant pointers.  Consumed.
  * @n_children: the length of @children
- * @trusted: %TRUE if every child in @children in trusted
+ * @trusted: %TRUE if every child in @children is trusted
  *
  * Constructs a new tree-mode #GVariant instance.  This is the inner
  * interface for creation of new serialized values that gets called from
