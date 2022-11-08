@@ -649,7 +649,7 @@ comment: {standard_bottom_comment}
             "ENUM",
             "ENUM_VALUE_PUBLIC2",
             "public2",
-            "0",
+            "1",
         )
 
     def test_available_in(self):
@@ -728,6 +728,35 @@ comment: {standard_bottom_comment}
             "G_DBUS_SERVER_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER",
             "user",
             "4",
+        )
+
+    def test_enum_symbolic_expression(self):
+        """Test use of symbol in value expression."""
+        h_contents = """
+        typedef enum {
+          /*< private >*/
+          ENUM_VALUE_PRIVATE = 5,
+          /*< public >*/
+          ENUM_VALUE_PUBLIC = ENUM_VALUE_PRIVATE + 2,
+        } TestSymbolicEnum;
+        """
+
+        result = self.runMkenumsWithHeader(h_contents)
+        self.assertEqual("", result.err)
+        self.assertSingleEnum(
+            result,
+            "TestSymbolicEnum",
+            "test_symbolic_enum",
+            "TEST_SYMBOLIC_ENUM",
+            "SYMBOLIC_ENUM",
+            "TEST",
+            "",
+            "enum",
+            "Enum",
+            "ENUM",
+            "ENUM_VALUE_PUBLIC",
+            "public",
+            "7",
         )
 
 
