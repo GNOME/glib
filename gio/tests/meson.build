@@ -42,6 +42,10 @@ giotypefuncs_inc = custom_target(
   input : gio_headers + [gioenumtypes_h] + gobject_install_headers,
   command: [gengiotypefuncs_prog, '@OUTPUT@', '@INPUT@'])
 
+if glib_build_shared
+  subdir('modules')
+endif
+
 #  Test programs buildable on all platforms
 gio_tests = {
   'appmonitor' : {
@@ -66,9 +70,12 @@ gio_tests = {
   'file-thumbnail' : {},
   'fileattributematcher' : {},
   'filter-streams' : {},
-  'giomodule' : {},
+  'giomodule' : {
+    'depends' : glib_build_shared ? [libtestmodulea, libtestmoduleb] : [],
+  },
   'gsubprocess' : {
     'suite': host_system == 'windows' ? ['flaky'] : [],
+    'extra_programs': ['gsubprocess-testprog'],
   },
   'g-file' : {},
   'g-file-info' : {
@@ -125,6 +132,7 @@ gio_tests = {
   'tls-bindings' : {'extra_sources' : ['gtesttlsbackend.c']},
   'unix-fd' : {},
   'gdbus-address-get-session' : {
+    'extra_programs': host_system != 'windows' ? ['dbus-launch'] : [],
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
     'can_fail' : host_system == 'darwin',
   },
@@ -259,9 +267,12 @@ if host_machine.system() != 'windows'
     gio_tests += {
       'appinfo' : {
         'install' : false,
+        'extra_programs' : ['appinfo-test'],
       },
       'desktop-app-info' : {
         'install' : false,
+        'depends' : gio_launch_desktop,
+        'extra_programs' : ['apps', 'appinfo-test'],
       },
     }
   endif
@@ -347,6 +358,7 @@ if host_machine.system() != 'windows'
     ]
 
     extra_sources = ['gdbus-sessionbus.c', 'gdbus-tests.c']
+    extra_programs = ['gdbus-testserver']
 
     gio_tests += {
       'actions' : {
@@ -356,31 +368,56 @@ if host_machine.system() != 'windows'
       'gdbus-auth' : {'extra_sources' : extra_sources},
       'gdbus-bz627724' : {'extra_sources' : extra_sources},
       'gdbus-close-pending' : {'extra_sources' : extra_sources},
-      'gdbus-connection' : {'extra_sources' : extra_sources},
-      'gdbus-connection-loss' : {'extra_sources' : extra_sources},
-      'gdbus-connection-slow' : {'extra_sources' : extra_sources},
+      'gdbus-connection' : {
+        'extra_sources' : extra_sources,
+        'extra_programs': extra_programs,
+      },
+      'gdbus-connection-loss' : {
+        'extra_sources' : extra_sources,
+        'extra_programs': extra_programs,
+      },
+      'gdbus-connection-slow' : {
+        'extra_sources' : extra_sources,
+        'extra_programs': extra_programs + ['gdbus-connection-flush-helper'],
+      },
       'gdbus-error' : {'extra_sources' : extra_sources},
       'gdbus-exit-on-close' : {'extra_sources' : extra_sources},
       'gdbus-export' : {
         'extra_sources' : extra_sources,
         'suite' : ['slow'],
       },
-      'gdbus-introspection' : {'extra_sources' : extra_sources},
+      'gdbus-introspection' : {
+        'extra_sources' : extra_sources,
+        'extra_programs': extra_programs,
+      },
       'gdbus-method-invocation' : {'extra_sources' : extra_sources},
-      'gdbus-names' : {'extra_sources' : extra_sources},
-      'gdbus-proxy' : {'extra_sources' : extra_sources},
+      'gdbus-names' : {
+        'extra_sources' : extra_sources,
+        'extra_programs' : ['fake-service-name'],
+      },
+      'gdbus-proxy' : {
+        'extra_sources' : extra_sources,
+        'extra_programs': extra_programs,
+      },
       'gdbus-proxy-threads' : {
         'extra_sources' : extra_sources,
         'dependencies' : [dbus1_dep],
       },
-      'gdbus-proxy-unique-name' : {'extra_sources' : extra_sources},
-      'gdbus-proxy-well-known-name' : {'extra_sources' : extra_sources},
+      'gdbus-proxy-unique-name' : {
+        'extra_sources' : extra_sources,
+        'extra_programs': extra_programs,
+      },
+      'gdbus-proxy-well-known-name' : {
+        'extra_sources' : extra_sources,
+        'extra_programs': extra_programs,
+      },
       'gdbus-test-codegen' : {
         'extra_sources' : [extra_sources, gdbus_test_codegen_generated, gdbus_test_codegen_generated_interface_info],
         'c_args' : ['-DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_32'],
       },
       'gdbus-threading' : {
         'extra_sources' : extra_sources,
+        'extra_programs': extra_programs,
         'suite' : ['slow'],
       },
       'gmenumodel' : {
@@ -401,13 +438,17 @@ if host_machine.system() != 'windows'
         'extra_sources' : [extra_sources, gdbus_test_codegen_generated_min_required_2_64, gdbus_test_codegen_generated_interface_info],
         'c_args' : ['-DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_64'],
       },
-      'gapplication' : {'extra_sources' : extra_sources},
+      'gapplication' : {
+        'extra_sources' : extra_sources,
+        'extra_programs': ['basic-application'],
+      },
     }
 
     if not glib_have_cocoa
       gio_tests += {
         'dbus-appinfo' : {
           'extra_sources' : extra_sources,
+          'extra_programs' : ['fake-document-portal'],
         },
       }
     endif
@@ -459,6 +500,7 @@ if host_machine.system() != 'windows'
         'c_args' : ['-DSRCDIR="@0@"'.format(meson.current_source_dir()),
                     '-DTEST_LOCALE_PATH="@0@"'.format(test_mo_dir)],
         'install' : false,
+        'depends' : glib_compile_schemas,
       },
     }
   endif
@@ -544,33 +586,36 @@ if host_machine.system() != 'windows'
 endif
 
 appinfo_test_desktop_files = [
-  'appinfo-test-gnome.desktop',
-  'appinfo-test-notgnome.desktop',
-  'appinfo-test.desktop',
-  'appinfo-test2.desktop',
+  'appinfo-test-gnome',
+  'appinfo-test-notgnome',
+  'appinfo-test',
+  'appinfo-test2',
 ]
 
-cdata = configuration_data()
-if installed_tests_enabled
-  cdata.set('installed_tests_dir', installed_tests_execdir)
-else
-  cdata.set('installed_tests_dir', meson.current_build_dir())
-endif
-
 foreach appinfo_test_desktop_file : appinfo_test_desktop_files
+  input_desktop_file = appinfo_test_desktop_file + '.desktop.in'
+  output_desktop_file = appinfo_test_desktop_file + '.desktop'
+  configure_file(
+    input: input_desktop_file,
+    output: output_desktop_file,
+    configuration: {
+      'installed_tests_dir' : meson.current_build_dir(),
+    },
+  )
+
   if installed_tests_enabled
-    configure_file(
-      input: appinfo_test_desktop_file + '.in',
-      output: appinfo_test_desktop_file,
+    installed_desktop = configure_file(
+      input: input_desktop_file,
+      output: appinfo_test_desktop_file + '-installed.desktop',
+      configuration: {
+        'installed_tests_dir' : installed_tests_execdir,
+      },
+    )
+
+    install_data(installed_desktop,
       install_dir: installed_tests_execdir,
       install_tag: 'tests',
-      configuration: cdata,
-    )
-  else
-    configure_file(
-      input: appinfo_test_desktop_file + '.in',
-      output: appinfo_test_desktop_file,
-      configuration: cdata,
+      rename: output_desktop_file,
     )
   endif
 endforeach
@@ -657,6 +702,7 @@ endif
 
 if meson.can_run_host_binaries()
 
+  resource_plugin = []
   compiler_type = '--compiler=@0@'.format(cc.get_id())
 
   if glib_build_shared
@@ -672,7 +718,8 @@ if meson.can_run_host_binaries()
                  '--c-name', '_g_plugin',
                  '@INPUT@'])
 
-    shared_module('resourceplugin', 'resourceplugin.c', plugin_resources_c,
+    resource_plugin += shared_module('resourceplugin',
+      sources: ['resourceplugin.c', plugin_resources_c],
       link_args : export_dynamic_ldflags,
       dependencies : common_gio_tests_deps,
       install_dir : installed_tests_execdir,
@@ -865,9 +912,27 @@ if meson.can_run_host_binaries()
   gio_tests += {
     'resources' : {
       'extra_sources' : resources_extra_sources,
+      'depends' : resource_plugin,
     },
   }
 endif
+
+test_extra_programs_targets = {}
+foreach program_name, extra_args : test_extra_programs
+  source = extra_args.get('source', program_name + '.c')
+  extra_sources = extra_args.get('extra_sources', [])
+  install = installed_tests_enabled and extra_args.get('install', true)
+  test_extra_programs_targets += {
+    program_name : executable(program_name,
+      sources: [source, extra_sources],
+      c_args : test_c_args,
+      dependencies : common_gio_tests_deps + extra_args.get('dependencies', []),
+      install_dir : installed_tests_execdir,
+      install_tag : 'tests',
+      install : install,
+    )
+  }
+endforeach
 
 foreach test_name, extra_args : gio_tests
   source = extra_args.get('source', test_name + '.c')
@@ -910,6 +975,11 @@ foreach test_name, extra_args : gio_tests
   suite = ['gio'] + extra_args.get('suite', [])
   timeout = suite.contains('slow') ? test_timeout_slow : test_timeout
   local_test_env = test_env
+  depends = [extra_args.get('depends', [])]
+
+  foreach program : extra_args.get('extra_programs', [])
+    depends += test_extra_programs_targets[program]
+  endforeach
 
   foreach var, value : extra_args.get('env', {})
     local_test_env.append(var, value)
@@ -924,34 +994,27 @@ foreach test_name, extra_args : gio_tests
     timeout : timeout,
     suite : suite,
     is_parallel : extra_args.get('is_parallel', true),
-    depends : extra_args.get('depends', []),
+    depends : depends,
     should_fail : extra_args.get('should_fail', false),
   )
 endforeach
 
-foreach program_name, extra_args : test_extra_programs
-  source = extra_args.get('source', program_name + '.c')
-  extra_sources = extra_args.get('extra_sources', [])
-  install = installed_tests_enabled and extra_args.get('install', true)
-  executable(program_name, [source, extra_sources],
-      c_args : test_c_args,
-      dependencies : common_gio_tests_deps + extra_args.get('dependencies', []),
-      install_dir : installed_tests_execdir,
-      install_tag : 'tests',
-      install : install,
-  )
-endforeach
-
 foreach test_name, extra_args : python_tests
+  depends = [extra_args.get('depends', [])]
   suite = ['gio', 'no-valgrind']
 
   if extra_args.get('can_fail', false)
     suite += 'failing'
   endif
 
+  foreach program : extra_args.get('extra_programs', [])
+    depends += test_extra_programs_targets[program]
+  endforeach
+
   test(
     test_name,
     python,
+    depends: depends,
     args: ['-B', files(test_name)],
     env: test_env,
     suite: suite,
@@ -989,7 +1052,3 @@ if installed_tests_enabled
 endif
 
 subdir('services')
-
-if glib_build_shared
-  subdir('modules')
-endif

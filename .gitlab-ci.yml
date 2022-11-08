@@ -139,7 +139,6 @@ debian-stable-x86_64:
             --libdir=lib
             -Dsystemtap=true
             -Ddtrace=true
-            -Dinstalled_tests=true
             _build
     - ninja -C _build
     - .gitlab-ci/run-tests.sh

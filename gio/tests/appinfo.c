@@ -56,12 +56,7 @@ test_launch (void)
 
   path = g_test_get_filename (G_TEST_BUILT, "appinfo-test.desktop", NULL);
   appinfo = (GAppInfo*)g_desktop_app_info_new_from_filename (path);
-
-  if (appinfo == NULL)
-    {
-      g_test_skip ("appinfo-test binary not installed");
-      return;
-    }
+  g_assert_true (G_IS_APP_INFO (appinfo));
 
   test_launch_for_app_info (appinfo);
   g_object_unref (appinfo);
@@ -220,12 +215,7 @@ test_show_in (void)
 
   path = g_test_get_filename (G_TEST_BUILT, "appinfo-test.desktop", NULL);
   appinfo = (GAppInfo*)g_desktop_app_info_new_from_filename (path);
-
-  if (appinfo == NULL)
-    {
-      g_test_skip ("appinfo-test binary not installed");
-      return;
-    }
+  g_assert_true (G_IS_APP_INFO (appinfo));
 
   g_assert_true (g_app_info_should_show (appinfo));
   g_object_unref (appinfo);
