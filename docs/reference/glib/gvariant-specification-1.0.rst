@@ -1,61 +1,80 @@
 .. sectnum::
+.. meta::
+   :copyright: Copyright 2007 Allison Karlitskaya
+   :license: CC-BY-SA-3.0
+..
+   This has to be duplicated from above to make it machine-readable by `reuse`:
+   SPDX-FileCopyrightText: 2007 Allison Karlitskaya
+   SPDX-License-Identifier: CC-BY-SA-3.0
 
 ==========================
 GVariant Specification 1.0
 ==========================
 
+.. rubric:: Revision History
+
+Notable changes between versions are listed here. For the full set of changes
+and diffs, see the `commit log <https://gitlab.gnome.org/GNOME/glib/-/blob/main/docs/reference/glib/gvariant-specification-1.0.rst>`_.
+
+**Version 1.0, 2007 and 2022-11-01**
+   - Convert the original PDF GVariant Specification to version control
+   - No semantic or formatting changes
+**Version 1.0.1, 2022-11-02**
+   - Formatting improvements
+   - No semantic changes
+
 *****
 Types
 *****
 
-As per requirement, GVariant must be substantially compatible with the DBus message
-bus system (as specified in [DBus]).
+As per requirement, GVariant must be substantially compatible with the D-Bus message
+bus system (as specified in the `D-Bus specification <https://dbus.freedesktop.org/doc/dbus-specification.html>`__).
 
-To this end, the type system used in GVariant is almost identical to that used by DBus.
+To this end, the type system used in GVariant is almost identical to that used by D-Bus.
 Some very minimal changes were made, however, in order to provide for a better system
 while still remaining highly compatible; specifically, every message that can by sent over
-DBus can be represented as a GVariant.
+D-Bus can be represented as a GVariant.
 
-Some baggage has been carried in from DBus that would not otherwise have been present
+Some baggage has been carried in from D-Bus that would not otherwise have been present
 in the type system if it were designed from scratch. The object path and signature types,
-for example, are highly DBus-specific and would not be present in a general-purpose type
+for example, are highly D-Bus-specific and would not be present in a general-purpose type
 system if it were to be created from scratch.
 
-Differences from DBus
-=====================
+Differences from D-Bus
+======================
 
 In order to increase conceptual clarity some limitations have been lifted, allowing calls
 to “never fail” instead of having to check for these special cases.
 
- * Whereas DBus limits the maximum depth of container type nesting, GVariant makes
+ * Whereas D-Bus limits the maximum depth of container type nesting, GVariant makes
    no such limitations; nesting is supported to arbitrary depths.
- * Whereas DBus limits the maximum complexity of its messages by imposing a
+ * Whereas D-Bus limits the maximum complexity of its messages by imposing a
    limitation on the “signature string” to be no more than 255 characters, GVariant
    makes no such limitation; type strings of arbitrary length are supported, allowing
    for the creation of values with arbitrarily complex types.
- * Whereas DBus allows dictionary entry types to appear only as the element type of
+ * Whereas D-Bus allows dictionary entry types to appear only as the element type of
    an array type, GVariant makes no such limitation; dictionary entry types may exist
    on their own or as children of any other type constructor.
- * Whereas DBus requires structure types to contain at least one child type, GVariant
+ * Whereas D-Bus requires structure types to contain at least one child type, GVariant
    makes no such limitation; the unit type is a perfectly valid type in GVariant.
 
-Some of the limitations of DBus were imposed as security considerations (for example,
+Some of the limitations of D-Bus were imposed as security considerations (for example,
 to bound the depth of recursion that may result from processing a message from an
 untrusted sender). If GVariant is used in ways that are sensitive to these considerations
 then programmers should employ checks for these cases upon entry of values into the
 program from an untrusted source.
 
-Additionally, DBus has no type constructor for expressing the concept of nullability [#f1]_. To
+Additionally, D-Bus has no type constructor for expressing the concept of nullability [#f1]_. To
 this end, the Maybe type constructor (represented by m in type strings) has been added.
 
-Some of these changes are under consideration for inclusion into DBus [#f2]_.
+Some of these changes are under consideration for inclusion into D-Bus [#f2]_.
 
 .. [#f1] A “nullable type” is a type that, in addition to containing its normal range of values, also contains a
          special value outside of that range, called ``NULL``, ``Nothing``, ``None`` or similar. In most languages with reference
          or pointer types, these types are nullable. Some languages have the ability to have nullable versions of
          any type (for example, “``Maybe Int``” in Haskell and “``int? i;``” in C#).
 .. [#f2] Considerable discussion has been made in face-to-face meetings and some discussion has also occured
-         on the DBus mailing list: http://lists.freedesktop.org/archives/dbus/2007-August/008290.html
+         on the D-Bus mailing list: http://lists.freedesktop.org/archives/dbus/2007-August/008290.html
 
 Enumeration of Types
 ====================
@@ -82,11 +101,13 @@ The Basic Types
    of UTF-8 is expected and encouraged.
 
 **Object Path**
-   A DBus object path, exactly as described in the DBus specification.
+   A D-Bus object path, exactly as described in the
+   `D-Bus specification <https://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-marshaling-object-path>`__.
 
 **Signature**
-   A DBus signature string, exactly as described in the DBus specification. As this type
-   has been preserved solely for compatibility with DBus, all of the DBus restrictions
+   A D-Bus signature string, exactly as described in the
+   `D-Bus specification <https://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-marshaling-signature>`__. As this type
+   has been preserved solely for compatibility with D-Bus, all of the D-Bus restrictions
    on the range of values of this type apply (eg: nesting depth and maximum length
    restrictions).
 
@@ -112,7 +133,7 @@ Container Types
    The structure type constructor allows the creation of structure types corresponding
    to the provided element types. These “structures” are actually closer to tuples in the
    sense that their fields are not named, but “structure” is used because that is what
-   the DBus specification calls them.
+   the D-Bus specification calls them.
 
    The structure type constructor is the only type constructor that is variadic — any
    natural number of types may be given (including zero and one).
@@ -120,7 +141,7 @@ Container Types
 **Dictionary entry**
    The dictionary entry type constructor allows the creation of a special sort of structure
    which, when used as the element type of an array, implies that the content of the array
-   is a list of key/value pairs. For compatibility with DBus, this binary type constructor
+   is a list of key/value pairs. For compatibility with D-Bus, this binary type constructor
    requires a basic type as its first argument (which by convention is seen to be the key)
    but any type is acceptable for the second argument (by convention, the value).
 
@@ -131,12 +152,12 @@ Container Types
 Type Strings
 ============
 
-Just as with DBus, a concise string representation is used to express types.
+Just as with D-Bus, a concise string representation is used to express types.
 
 In GVariant, which deals directly with values as first order objects, a type string (by that
 name) is a string representing a single type.
 
-Contrast this with “signature strings” [#f3]_ in DBus, which apply to messages, and contain
+Contrast this with “signature strings” [#f3]_ in D-Bus, which apply to messages, and contain
 zero or more types (corresponding to the arguments of the message).
 
 .. [#f3] Compare with the whence parameter to the ``lseek()`` system call.
@@ -206,24 +227,24 @@ Serialisation Format
 This chapter describes the serialisation format that is used by GVariant. This serialisation
 format is newly developed and described for the first time here.
 
-Why not DBus?
-=============
+Why not D-Bus?
+==============
 
-Since GVariant is largely compatible with DBus, it would make sense to use the
-serialisation format of DBus (plus modifications where appropriate) as the serialisation
+Since GVariant is largely compatible with D-Bus, it would make sense to use the
+serialisation format of D-Bus (plus modifications where appropriate) as the serialisation
 format for GVariant.
 
 To do so, however, would conflict with a number of requirements that were established
 for GVariant.
 
-Most fundamentally, requirement would be violated. DBus messages are encoded in such
+Most fundamentally, the requirements would be violated. D-Bus messages are encoded in such
 a way that in order to fetch the 100th item out of an array you first have to iterate over
 the first 99 items to discover where the 100th item lies. A side effect of this iteration
-would be a violation of requirement .
+would be a violation of the requirements.
 
-Additionally, using the DBus serialisation format with an API like that mandated by
-requirement would likely imply a violation of requirement due to the fact that subparts
-of DBus messages can change meaning when subjected to different starting alignments.
+Additionally, using the D-Bus serialisation format with an API like that mandated by
+the requirements would likely imply a violation of the requirements due to the fact that subparts
+of D-Bus messages can change meaning when subjected to different starting alignments.
 This is discussed in more detail in `Simple Containment`_.
 
 Notation
@@ -296,10 +317,10 @@ equivalently, length) of each child element.
 
 This property permits a container to be deconstructed into child values simply by
 referencing a subsequence of the byte sequence of the container as the value of the
-child which is an effective way of satisfying requirement .
+child which is an effective way of satisfying the requirements.
 
-This property is not the case for the DBus serialisation format. In many cases (for
-example, arrays) the encoding of a child value of a DBus message will change depending
+This property is not the case for the D-Bus serialisation format. In many cases (for
+example, arrays) the encoding of a child value of a D-Bus message will change depending
 on the context in which that value appears. As an example: in the case of an array of
 doubles, should the value immediately preceding the array end on an offset that is an
 even multiple of 8 then the array will contain 4 padding bytes that it would not contain
@@ -309,7 +330,7 @@ direction.
 Alignment
 ---------
 
-In order to satisfy requirement , we must provide programmers with a pointer that they
+In order to satisfy the requirement, we must provide programmers with a pointer that they
 can comfortably use. On many machines, programmers cannot directly dereference
 unaligned values, and even on machines where they can, there is often a performance
 hit.
@@ -377,7 +398,7 @@ Endianness
 ----------
 
 Although the framing offsets of serialised data are always stored in little-endian byte
-order, the data visible to the user (via the interface mandated by requirement ) is
+order, the data visible to the user (via the interface mandated by the requirements) is
 allowed to be in either big or little-endian byte order. This is referred to as the “encoding
 byte order”. When transmitting messages, this byte order should be specified if not
 explicitly agreed upon.
@@ -446,7 +467,7 @@ as two bytes — “ay”. Is this a single byte, ``'a'``, or an empty array of 
 Maybes
 ------
 
-Maybes are encoded differently depending on if their element type is fixed-sized not.
+Maybes are encoded differently depending on if their element type is fixed-sized or not.
 
 The alignment of a maybe type is always equal to the alignment of its element type.
 
@@ -584,7 +605,7 @@ until this property becomes true. These bytes will never result in confusion wit
 to locating framing offsets or the end of a variable-sized child because, by definition,
 neither of these things occur inside fixed-sized structures.
 
-Figure 2.4 depicts a structure of type ``(nsns)`` and value ``[257, 'xx', 514, '']``. One
+The figure above depicts a structure of type ``(nsns)`` and value ``[257, 'xx', 514, '']``. One
 framing offset exists for the one non-fixed-sized item that is not the final item (namely,
 the string ``'xx'``). The process of “rounding up” to find the start of the second integer
 is indicated.
@@ -732,7 +753,7 @@ serialised data is not in normal form. Normally this would result in an error be
 An Argument Against Errors
 --------------------------
 
-Requirement XXX forbids us from scanning the entirety of the serialised byte sequence
+The requirements forbids us from scanning the entirety of the serialised byte sequence
 at load time; we can not check for normality and issue errors at this time. This leaves
 any errors that might occur to be raised as exceptions as the values are accessed.
 
@@ -850,7 +871,7 @@ these problems then it is not in normal form.
    byte then the default value is used.
 
 **Invalid Signature**
-   If the serialised form of a signature string is not a valid DBus signature followed by
+   If the serialised form of a signature string is not a valid D-Bus signature followed by
    a zero byte then the default value is used.
 
 **Wrong Size for Fixed Size Maybe**
@@ -952,7 +973,7 @@ A brief description is provided for why a value deserialises to the given value.
 
    has a value of ``'foo'``.
 
-**String with embedded nul but none at end**
+**String with Embedded Nul but None at End**
    With type ``'s'``::
 
       'f 'o 'o \0   'b 'a 'r
@@ -963,7 +984,7 @@ A brief description is provided for why a value deserialises to the given value.
    the empty string is used as the value. This includes the case where a nul is present
    elsewhere in the string.
 
-**Wrong size for fixed-size maybe**
+**Wrong Size for Fixed-Size Maybe**
    With type ``'mi'``::
 
       33 44 55 66   77 88
@@ -973,7 +994,7 @@ A brief description is provided for why a value deserialises to the given value.
    The only possible way for a value with type ``'mi'`` to be ``Just`` is for its serialised form
    to be exactly 4 bytes.
 
-**Wrong size for fixed-width array**
+**Wrong Size for Fixed-Width Array**
    With type ``'a(yy)'``::
 
       03 04 05 06 07
@@ -983,7 +1004,7 @@ A brief description is provided for why a value deserialises to the given value.
    With each array element as a pair of bytes, the serialised size of the array should be
    a multiple of two. Since this is not the case, the value of the array is the empty array.
 
-**Start or end boundary of child falls outside the container**
+**Start or End Boundary of Child Falls Outside the Container**
    With type ``'(as)'``::
 
       'f 'o 'o \0   'b 'a 'r \0   'b 'a 'z \0   04 10 0c
@@ -996,7 +1017,7 @@ A brief description is provided for why a value deserialises to the given value.
    also the start of the 3rd array element. As a result, both of these elements are given
    their default value (the empty string).
 
-**End boundary precedes start boundary**
+**End Boundary Precedes Start Boundary**
    With type ``'(as)'``::
 
       'f 'o 'o \0   'b 'a 'r \0   'b 'a 'z \0   04 00 0c
@@ -1010,7 +1031,7 @@ A brief description is provided for why a value deserialises to the given value.
    first element, however, and when assessing its value, the embedded nul character
    causes it to be cut off at ``'foo'``.
 
-**Insufficient space for structure framing offsets**
+**Insufficient Space for Structure Framing Offsets**
    With type ``'(ayayayayay)'``::
 
       03 02 01
@@ -1032,8 +1053,7 @@ This chapter contains information about the serialisation format that is not par
 specification.
 
 This information discusses issues that will arise during implementation of the serialisation
-format. Certainly, the issues discussed in this chapter have had an impact on the GVariant
-implementation discussed in Chapter .
+format.
 
 An unfortunate observation is made about the safety of byteswapping operations and a
 method is given (along with proof of correctness) that random accesses to the contents of
@@ -1106,7 +1126,7 @@ structure, :math:`s`:
 .. math::
    ((↑3);\ (+24);\ (↑1);\ (+2);\ (↑2))\ s
 
-Of course, no sane C compiler saves this computation to be performed at each access.
+Of course, no modern C compiler saves this computation to be performed at each access.
 Instead, the compiler performs the computation at the time of the structure definition
 and builds a table containing the starting offset and size of each item in the structure.
 Because every item in the structure is of a fixed size and because the start address of
@@ -1213,19 +1233,23 @@ table, given as an array of 4-tuples.
 
 .. code-block:: python
 
-   def generate_table (items):
+   def generate_table(items):
        (i, a, b, c) = (-1, 0, 0, 0)
        table = []
+
        for (d, e) in items:
            if d <= b:
                (a, b, c) = (a, b, align(c, d))      # merge rule #1
            else:
                (a, b, c) = (a + align(c, b), d, 0)  # merge rule #2
+
            table.append ((i, a, b, c))
+
            if e == -1:                              # item is not fixed-sized
                (i, a, b, c) = (i + 1, 0, 0, 0)
            else:
                (a, b, c) = (a, b, c + e)            # merge rule #3
+
        return table
 
 It is assumed that ``align(a, b)`` computes :math:`(a ↑ b)`.
@@ -1317,7 +1341,7 @@ Given a few “intuitive” lemmas, we can prove that the reduction rules are so
 
 **Lemma 3**
    .. math::
-      \forall{c}, (0 ↑ c) = 0
+      \forall{c}: (0 ↑ c) = 0
 
 Addition Rule
 ^^^^^^^^^^^^^
