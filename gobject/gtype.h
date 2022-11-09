@@ -390,6 +390,19 @@ G_BEGIN_DECLS
  */
 #define G_TYPE_IS_FINAL(type)                   (g_type_test_flags ((type), G_TYPE_FLAG_FINAL)) GOBJECT_AVAILABLE_MACRO_IN_2_70
 
+/**
+ * G_TYPE_IS_DEPRECATED:
+ * @type: a #GType value
+ *
+ * Checks if @type is deprecated. Instantiating a deprecated type will
+ * trigger a warning if running with `G_ENABLE_DIAGNOSTIC=1`.
+ *
+ * Returns: %TRUE if the type is deprecated
+ *
+ * Since: 2.76
+ */
+#define G_TYPE_IS_DEPRECATED(type)                   (g_type_test_flags ((type), G_TYPE_FLAG_DEPRECATED)) GOBJECT_AVAILABLE_MACRO_IN_2_76
+
 
 /* Typedefs
  */
@@ -1050,6 +1063,9 @@ typedef enum    /*< skip >*/
  *  g_value_init()
  * @G_TYPE_FLAG_FINAL: Indicates a final type. A final type is a non-derivable
  *  leaf node in a deep derivable type hierarchy tree. Since: 2.70
+ * @G_TYPE_FLAG_DEPRECATED: The type is deprecated and may be removed in a
+ *  future version. A warning will be emitted if it is instantiated while
+ *  running with `G_ENABLE_DIAGNOSTIC=1`. Since 2.76
  * 
  * Bit masks used to check or determine characteristics of a type.
  */
@@ -1058,7 +1074,8 @@ typedef enum    /*< skip >*/
   G_TYPE_FLAG_NONE GOBJECT_AVAILABLE_ENUMERATOR_IN_2_74 = 0,
   G_TYPE_FLAG_ABSTRACT = (1 << 4),
   G_TYPE_FLAG_VALUE_ABSTRACT = (1 << 5),
-  G_TYPE_FLAG_FINAL GOBJECT_AVAILABLE_ENUMERATOR_IN_2_70 = (1 << 6)
+  G_TYPE_FLAG_FINAL GOBJECT_AVAILABLE_ENUMERATOR_IN_2_70 = (1 << 6),
+  G_TYPE_FLAG_DEPRECATED GOBJECT_AVAILABLE_ENUMERATOR_IN_2_76 = (1 << 7)
 } GTypeFlags;
 /**
  * GTypeInfo:

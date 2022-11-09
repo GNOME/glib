@@ -77,12 +77,72 @@ test_type_flags_final (void)
   g_test_assert_expected_messages ();
 }
 
+#define TEST_TYPE_DEPRECATED (test_deprecated_get_type())
+G_DECLARE_FINAL_TYPE (TestDeprecated, test_deprecated, TEST, DEPRECATED, GObject)
+
+struct _TestDeprecated
+{
+  GObject parent_instance;
+};
+
+struct _TestDeprecatedClass
+{
+  GObjectClass parent_class;
+};
+
+G_DEFINE_TYPE_EXTENDED (TestDeprecated, test_deprecated, G_TYPE_OBJECT, G_TYPE_FLAG_FINAL | G_TYPE_FLAG_DEPRECATED, {})
+
+static void
+test_deprecated_class_init (TestDeprecatedClass *klass)
+{
+}
+
+static void
+test_deprecated_init (TestDeprecated *self)
+{
+}
+
+static void
+test_type_flags_deprecated (void)
+{
+  GType deprecated_type;
+  GObject *deprecated_object = NULL;
+
+  g_test_summary ("Test that trying to instantiate a deprecated type results in a warning.");
+
+  /* This is the message we print out when registering the type */
+  g_test_expect_message ("GLib-GObject", G_LOG_LEVEL_WARNING,
+                         "*The type TestDeprecated is deprecated and shouldn’t be used any more*");
+
+  /* The type itself should not be considered invalid. */
+  deprecated_type = TEST_TYPE_DEPRECATED;
+  g_assert_false (deprecated_type == G_TYPE_INVALID);
+  g_assert_true (G_TYPE_IS_DEPRECATED (deprecated_type));
+
+  /* Instantiating it should work, but emit a warning. */
+  deprecated_object = g_object_new (deprecated_type, NULL);
+  g_assert_nonnull (deprecated_object);
+
+  g_test_assert_expected_messages ();
+
+  g_object_unref (deprecated_object);
+
+  /* Instantiating it again should not emit a second warning. */
+  deprecated_object = g_object_new (deprecated_type, NULL);
+  g_assert_nonnull (deprecated_object);
+
+  g_test_assert_expected_messages ();
+
+  g_object_unref (deprecated_object);
+}
+
 int
 main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/type/flags/final", test_type_flags_final);
+  g_test_add_func ("/type/flags/deprecated", test_type_flags_deprecated);
 
   return g_test_run ();
 }
