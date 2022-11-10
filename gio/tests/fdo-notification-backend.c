@@ -83,6 +83,228 @@ test_construction (void)
   g_clear_object (&bus);
 }
 
+static void
+daemon_method_call_cb (GDBusConnection       *connection,
+                       const gchar           *sender,
+                       const gchar           *object_path,
+                       const gchar           *interface_name,
+                       const gchar           *method_name,
+                       GVariant              *parameters,
+                       GDBusMethodInvocation *invocation,
+                       gpointer               user_data)
+{
+  GDBusMethodInvocation **current_method_invocation_out = user_data;
+
+  g_assert_null (*current_method_invocation_out);
+  *current_method_invocation_out = g_steal_pointer (&invocation);
+
+  g_main_context_wakeup (NULL);
+}
+
+static void
+name_acquired_or_lost_cb (GDBusConnection *connection,
+                          const gchar     *name,
+                          gpointer         user_data)
+{
+  gboolean *name_acquired = user_data;
+
+  *name_acquired = !*name_acquired;
+
+  g_main_context_wakeup (NULL);
+}
+
+static void
+dbus_activate_action_cb (GSimpleAction *action,
+                         GVariant      *parameter,
+                         gpointer       user_data)
+{
+  guint *n_activations = user_data;
+
+  *n_activations = *n_activations + 1;
+  g_main_context_wakeup (NULL);
+}
+
+static void
+assert_send_notification (GNotificationBackend   *backend,
+                          GDBusMethodInvocation **current_method_invocation,
+                          guint32                 notify_id)
+{
+  GNotification *notification = NULL;
+
+  notification = g_notification_new ("Some Notification");
+  G_NOTIFICATION_BACKEND_GET_CLASS (backend)->send_notification (backend, "notification1", notification);
+  g_clear_object (&notification);
+
+  while (*current_method_invocation == NULL)
+    g_main_context_iteration (NULL, TRUE);
+
+  g_assert_cmpstr (g_dbus_method_invocation_get_interface_name (*current_method_invocation), ==, "org.freedesktop.Notifications");
+  g_assert_cmpstr (g_dbus_method_invocation_get_method_name (*current_method_invocation), ==, "Notify");
+  g_dbus_method_invocation_return_value (g_steal_pointer (current_method_invocation), g_variant_new ("(u)", notify_id));
+}
+
+static void
+assert_emit_action_invoked (GDBusConnection *daemon_connection,
+                            GVariant        *parameters)
+{
+  GError *local_error = NULL;
+
+  g_dbus_connection_emit_signal (daemon_connection,
+                                 NULL,
+                                 "/org/freedesktop/Notifications",
+                                 "org.freedesktop.Notifications",
+                                 "ActionInvoked",
+                                 parameters,
+                                 &local_error);
+  g_assert_no_error (local_error);
+}
+
+static void
+test_dbus_activate_action (void)
+{
+  /* Very trimmed down version of
+   * https://specifications.freedesktop.org/notification-spec/notification-spec-latest.html */
+  const GDBusArgInfo daemon_notify_in_app_name = { -1, "AppName", "s", NULL };
+  const GDBusArgInfo daemon_notify_in_replaces_id = { -1, "ReplacesId", "u", NULL };
+  const GDBusArgInfo daemon_notify_in_app_icon = { -1, "AppIcon", "s", NULL };
+  const GDBusArgInfo daemon_notify_in_summary = { -1, "Summary", "s", NULL };
+  const GDBusArgInfo daemon_notify_in_body = { -1, "Body", "s", NULL };
+  const GDBusArgInfo daemon_notify_in_actions = { -1, "Actions", "as", NULL };
+  const GDBusArgInfo daemon_notify_in_hints = { -1, "Hints", "a{sv}", NULL };
+  const GDBusArgInfo daemon_notify_in_expire_timeout = { -1, "ExpireTimeout", "i", NULL };
+  const GDBusArgInfo *daemon_notify_in_args[] =
+    {
+      &daemon_notify_in_app_name,
+      &daemon_notify_in_replaces_id,
+      &daemon_notify_in_app_icon,
+      &daemon_notify_in_summary,
+      &daemon_notify_in_body,
+      &daemon_notify_in_actions,
+      &daemon_notify_in_hints,
+      &daemon_notify_in_expire_timeout,
+      NULL
+    };
+  const GDBusArgInfo daemon_notify_out_id = { -1, "Id", "u", NULL };
+  const GDBusArgInfo *daemon_notify_out_args[] = { &daemon_notify_out_id, NULL };
+  const GDBusMethodInfo daemon_notify_info = { -1, "Notify", (GDBusArgInfo **) daemon_notify_in_args, (GDBusArgInfo **) daemon_notify_out_args, NULL };
+  const GDBusMethodInfo *daemon_methods[] = { &daemon_notify_info, NULL };
+  const GDBusInterfaceInfo daemon_interface_info = { -1, "org.freedesktop.Notifications", (GDBusMethodInfo **) daemon_methods, NULL, NULL, NULL };
+
+  GTestDBus *bus = NULL;
+  GDBusConnection *daemon_connection = NULL;
+  guint daemon_object_id = 0, daemon_name_id = 0;
+  const GDBusInterfaceVTable vtable = { daemon_method_call_cb, NULL, NULL, { NULL, } };
+  GDBusMethodInvocation *current_method_invocation = NULL;
+  GApplication *app = NULL;
+  GNotificationBackend *backend = NULL;
+  guint32 notify_id;
+  GError *local_error = NULL;
+  const GActionEntry entries[] =
+    {
+      { "undo", dbus_activate_action_cb, NULL, NULL,      NULL, { 0 } },
+      { "lang", dbus_activate_action_cb, "s",  "'latin'", NULL, { 0 } },
+    };
+  guint n_activations = 0;
+  gboolean name_acquired = FALSE;
+
+  g_test_summary ("Test how the backend handles valid and invalid ActionInvoked signals from the daemon");
+
+  /* Set up a test session bus and connection. */
+  bus = g_test_dbus_new (G_TEST_DBUS_NONE);
+  g_test_dbus_up (bus);
+
+  /* Create a mock org.freedesktop.Notifications daemon */
+  daemon_connection = g_dbus_connection_new_for_address_sync (g_test_dbus_get_bus_address (bus),
+                                                              G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT |
+                                                              G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION,
+                                                              NULL, NULL, &local_error);
+  g_assert_no_error (local_error);
+
+  daemon_object_id = g_dbus_connection_register_object (daemon_connection,
+                                                        "/org/freedesktop/Notifications",
+                                                        (GDBusInterfaceInfo *) &daemon_interface_info,
+                                                        &vtable,
+                                                        &current_method_invocation, NULL, &local_error);
+  g_assert_no_error (local_error);
+
+  daemon_name_id = g_bus_own_name_on_connection (daemon_connection,
+                                                 "org.freedesktop.Notifications",
+                                                 G_BUS_NAME_OWNER_FLAGS_DO_NOT_QUEUE,
+                                                 name_acquired_or_lost_cb,
+                                                 name_acquired_or_lost_cb,
+                                                 &name_acquired, NULL);
+
+  while (!name_acquired)
+    g_main_context_iteration (NULL, TRUE);
+
+  /* Construct our FDO backend under test */
+  backend = construct_backend (&app);
+  g_action_map_add_action_entries (G_ACTION_MAP (app), entries, G_N_ELEMENTS (entries), &n_activations);
+
+  /* Send a notification to ensure that the backend is listening for D-Bus action signals. */
+  notify_id = 1233;
+  assert_send_notification (backend, &current_method_invocation, ++notify_id);
+
+  /* Send a valid fake action signal. */
+  n_activations = 0;
+  assert_emit_action_invoked (daemon_connection, g_variant_new ("(us)", notify_id, "app.undo"));
+
+  while (n_activations == 0)
+    g_main_context_iteration (NULL, TRUE);
+
+  g_assert_cmpuint (n_activations, ==, 1);
+
+  /* Send a valid fake action signal with a target. We have to create a new
+   * notification first, as invoking an action on a notification removes it, and
+   * the GLib implementation of org.freedesktop.Notifications doesn’t currently
+   * support the `resident` hint to avoid that. */
+  assert_send_notification (backend, &current_method_invocation, ++notify_id);
+  n_activations = 0;
+  assert_emit_action_invoked (daemon_connection, g_variant_new ("(us)", notify_id, "app.lang::spanish"));
+
+  while (n_activations == 0)
+    g_main_context_iteration (NULL, TRUE);
+
+  g_assert_cmpuint (n_activations, ==, 1);
+
+  /* Send a series of invalid action signals, followed by one valid one which
+   * we should be able to detect. */
+  assert_send_notification (backend, &current_method_invocation, ++notify_id);
+  n_activations = 0;
+  assert_emit_action_invoked (daemon_connection, g_variant_new ("(us)", notify_id, "app.nonexistent"));
+  assert_emit_action_invoked (daemon_connection, g_variant_new ("(us)", notify_id, "app.lang(13)"));
+  assert_emit_action_invoked (daemon_connection, g_variant_new ("(us)", notify_id, "app.undo::should-have-no-parameter"));
+  assert_emit_action_invoked (daemon_connection, g_variant_new ("(us)", notify_id, "app.lang"));
+  assert_emit_action_invoked (daemon_connection, g_variant_new ("(us)", notify_id, "undo"));  /* no `app.` prefix */
+  assert_emit_action_invoked (daemon_connection, g_variant_new ("(us)", notify_id, "app.lang("));  /* invalid parse format */
+  assert_emit_action_invoked (daemon_connection, g_variant_new ("(us)", notify_id, "app.undo"));
+
+  while (n_activations == 0)
+    g_main_context_iteration (NULL, TRUE);
+
+  g_assert_cmpuint (n_activations, ==, 1);
+
+  /* Shut down. */
+  g_assert_null (current_method_invocation);
+
+  g_application_quit (app);
+  g_clear_object (&app);
+  g_clear_object (&backend);
+
+  g_dbus_connection_unregister_object (daemon_connection, daemon_object_id);
+  g_bus_unown_name (daemon_name_id);
+
+  g_dbus_connection_flush_sync (daemon_connection, NULL, &local_error);
+  g_assert_no_error (local_error);
+  g_dbus_connection_close_sync (daemon_connection, NULL, &local_error);
+  g_assert_no_error (local_error);
+
+  g_clear_object (&daemon_connection);
+
+  g_test_dbus_down (bus);
+  g_clear_object (&bus);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -98,6 +320,7 @@ main (int   argc,
   g_test_dbus_unset ();
 
   g_test_add_func ("/fdo-notification-backend/construction", test_construction);
+  g_test_add_func ("/fdo-notification-backend/dbus/activate-action", test_dbus_activate_action);
 
   return g_test_run ();
 }
