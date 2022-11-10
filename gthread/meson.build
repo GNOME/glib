@@ -36,3 +36,7 @@ pkg.generate(libgthread,
 
 libgthread_dep = declare_dependency(link_with : libgthread)
 meson.override_dependency('gthread-2.0', libgthread_dep)
+
+if build_tests
+  subdir('tests')
+endif
