@@ -144,8 +144,19 @@ activate_action (GFdoNotificationBackend *backend,
   if (name != NULL &&
       g_str_has_prefix (name, "app."))
     {
-      g_action_group_activate_action (G_ACTION_GROUP (g_backend->application), name + 4, parameter);
-      return TRUE;
+      const GVariantType *parameter_type = NULL;
+      const gchar *action_name = name + strlen ("app.");
+
+      /* @name and @parameter come as untrusted input over D-Bus, so validate them first */
+      if (g_action_group_query_action (G_ACTION_GROUP (g_backend->application),
+                                       action_name, NULL, &parameter_type,
+                                       NULL, NULL, NULL) &&
+          ((parameter_type == NULL && parameter == NULL) ||
+           (parameter_type != NULL && parameter != NULL && g_variant_is_of_type (parameter, parameter_type))))
+        {
+          g_action_group_activate_action (G_ACTION_GROUP (g_backend->application), action_name, parameter);
+          return TRUE;
+        }
     }
   else if (name == NULL)
     {
