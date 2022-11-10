@@ -190,6 +190,22 @@ strv_set_equal (const gchar * const *strv, ...)
   return res;
 }
 
+static void
+ensure_state (GActionGroup *group,
+              const gchar  *action_name,
+              const gchar  *expected)
+{
+  GVariant *value;
+  gchar *printed;
+
+  value = g_action_group_get_action_state (group, action_name);
+  printed = g_variant_print (value, TRUE);
+  g_variant_unref (value);
+
+  g_assert_cmpstr (printed, ==, expected);
+  g_free (printed);
+}
+
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 
 static void
@@ -1031,22 +1047,6 @@ verify_changed (const gchar *log_entry)
 }
 
 static void
-ensure_state (GSimpleActionGroup *group,
-              const gchar        *action_name,
-              const gchar        *expected)
-{
-  GVariant *value;
-  gchar *printed;
-
-  value = g_action_group_get_action_state (G_ACTION_GROUP (group), action_name);
-  printed = g_variant_print (value, TRUE);
-  g_variant_unref (value);
-
-  g_assert_cmpstr (printed, ==, expected);
-  g_free (printed);
-}
-
-static void
 test_property_actions (void)
 {
   GSimpleActionGroup *group;
@@ -1106,11 +1106,11 @@ test_property_actions (void)
   g_object_unref (client);
   g_object_unref (app);
 
-  ensure_state (group, "app-id", "'org.gtk.test'");
-  ensure_state (group, "keepalive", "uint32 0");
-  ensure_state (group, "tls", "false");
-  ensure_state (group, "disable-proxy", "false");
-  ensure_state (group, "type", "'stream'");
+  ensure_state (G_ACTION_GROUP (group), "app-id", "'org.gtk.test'");
+  ensure_state (G_ACTION_GROUP (group), "keepalive", "uint32 0");
+  ensure_state (G_ACTION_GROUP (group), "tls", "false");
+  ensure_state (G_ACTION_GROUP (group), "disable-proxy", "false");
+  ensure_state (G_ACTION_GROUP (group), "type", "'stream'");
 
   verify_changed (NULL);
 
@@ -1118,88 +1118,88 @@ test_property_actions (void)
   g_action_group_change_action_state (G_ACTION_GROUP (group), "app-id", g_variant_new ("s", "org.gtk.test2"));
   verify_changed ("app-id:'org.gtk.test2'");
   g_assert_cmpstr (g_application_get_application_id (app), ==, "org.gtk.test2");
-  ensure_state (group, "app-id", "'org.gtk.test2'");
+  ensure_state (G_ACTION_GROUP (group), "app-id", "'org.gtk.test2'");
 
   g_action_group_activate_action (G_ACTION_GROUP (group), "app-id", g_variant_new ("s", "org.gtk.test3"));
   verify_changed ("app-id:'org.gtk.test3'");
   g_assert_cmpstr (g_application_get_application_id (app), ==, "org.gtk.test3");
-  ensure_state (group, "app-id", "'org.gtk.test3'");
+  ensure_state (G_ACTION_GROUP (group), "app-id", "'org.gtk.test3'");
 
   g_application_set_application_id (app, "org.gtk.test");
   verify_changed ("app-id:'org.gtk.test'");
-  ensure_state (group, "app-id", "'org.gtk.test'");
+  ensure_state (G_ACTION_GROUP (group), "app-id", "'org.gtk.test'");
 
   /* uint tests */
   g_action_group_change_action_state (G_ACTION_GROUP (group), "keepalive", g_variant_new ("u", 1234));
   verify_changed ("keepalive:uint32 1234");
   g_assert_cmpuint (g_application_get_inactivity_timeout (app), ==, 1234);
-  ensure_state (group, "keepalive", "uint32 1234");
+  ensure_state (G_ACTION_GROUP (group), "keepalive", "uint32 1234");
 
   g_action_group_activate_action (G_ACTION_GROUP (group), "keepalive", g_variant_new ("u", 5678));
   verify_changed ("keepalive:uint32 5678");
   g_assert_cmpuint (g_application_get_inactivity_timeout (app), ==, 5678);
-  ensure_state (group, "keepalive", "uint32 5678");
+  ensure_state (G_ACTION_GROUP (group), "keepalive", "uint32 5678");
 
   g_application_set_inactivity_timeout (app, 0);
   verify_changed ("keepalive:uint32 0");
-  ensure_state (group, "keepalive", "uint32 0");
+  ensure_state (G_ACTION_GROUP (group), "keepalive", "uint32 0");
 
   /* bool tests */
   g_action_group_change_action_state (G_ACTION_GROUP (group), "tls", g_variant_new ("b", TRUE));
   verify_changed ("tls:true");
   g_assert_true (g_socket_client_get_tls (client));
-  ensure_state (group, "tls", "true");
+  ensure_state (G_ACTION_GROUP (group), "tls", "true");
 
   g_action_group_change_action_state (G_ACTION_GROUP (group), "disable-proxy", g_variant_new ("b", TRUE));
   verify_changed ("disable-proxy:true");
-  ensure_state (group, "disable-proxy", "true");
+  ensure_state (G_ACTION_GROUP (group), "disable-proxy", "true");
   g_assert_false (g_socket_client_get_enable_proxy (client));
 
   /* test toggle true->false */
   g_action_group_activate_action (G_ACTION_GROUP (group), "tls", NULL);
   verify_changed ("tls:false");
   g_assert_false (g_socket_client_get_tls (client));
-  ensure_state (group, "tls", "false");
+  ensure_state (G_ACTION_GROUP (group), "tls", "false");
 
   /* and now back false->true */
   g_action_group_activate_action (G_ACTION_GROUP (group), "tls", NULL);
   verify_changed ("tls:true");
   g_assert_true (g_socket_client_get_tls (client));
-  ensure_state (group, "tls", "true");
+  ensure_state (G_ACTION_GROUP (group), "tls", "true");
 
   g_socket_client_set_tls (client, FALSE);
   verify_changed ("tls:false");
-  ensure_state (group, "tls", "false");
+  ensure_state (G_ACTION_GROUP (group), "tls", "false");
 
   /* now do the same for the inverted action */
   g_action_group_activate_action (G_ACTION_GROUP (group), "disable-proxy", NULL);
   verify_changed ("disable-proxy:false");
   g_assert_true (g_socket_client_get_enable_proxy (client));
-  ensure_state (group, "disable-proxy", "false");
+  ensure_state (G_ACTION_GROUP (group), "disable-proxy", "false");
 
   g_action_group_activate_action (G_ACTION_GROUP (group), "disable-proxy", NULL);
   verify_changed ("disable-proxy:true");
   g_assert_false (g_socket_client_get_enable_proxy (client));
-  ensure_state (group, "disable-proxy", "true");
+  ensure_state (G_ACTION_GROUP (group), "disable-proxy", "true");
 
   g_socket_client_set_enable_proxy (client, TRUE);
   verify_changed ("disable-proxy:false");
-  ensure_state (group, "disable-proxy", "false");
+  ensure_state (G_ACTION_GROUP (group), "disable-proxy", "false");
 
   /* enum tests */
   g_action_group_change_action_state (G_ACTION_GROUP (group), "type", g_variant_new ("s", "datagram"));
   verify_changed ("type:'datagram'");
   g_assert_cmpint (g_socket_client_get_socket_type (client), ==, G_SOCKET_TYPE_DATAGRAM);
-  ensure_state (group, "type", "'datagram'");
+  ensure_state (G_ACTION_GROUP (group), "type", "'datagram'");
 
   g_action_group_activate_action (G_ACTION_GROUP (group), "type", g_variant_new ("s", "stream"));
   verify_changed ("type:'stream'");
   g_assert_cmpint (g_socket_client_get_socket_type (client), ==, G_SOCKET_TYPE_STREAM);
-  ensure_state (group, "type", "'stream'");
+  ensure_state (G_ACTION_GROUP (group), "type", "'stream'");
 
   g_socket_client_set_socket_type (client, G_SOCKET_TYPE_SEQPACKET);
   verify_changed ("type:'seqpacket'");
-  ensure_state (group, "type", "'seqpacket'");
+  ensure_state (G_ACTION_GROUP (group), "type", "'seqpacket'");
 
   /* Check some error cases... */
   g_test_expect_message ("GLib-GIO", G_LOG_LEVEL_CRITICAL, "*non-existent*");
