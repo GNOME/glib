@@ -783,6 +783,7 @@ test_dbus_export (void)
     g_main_context_iteration (NULL, TRUE);
 
   v = g_dbus_connection_call_finish (bus, async_result, &error);
+  g_assert_no_error (error);
   g_assert_nonnull (v);
   g_variant_get (v, "(^a&s)", &actions);
   g_assert_cmpuint (g_strv_length (actions), ==, G_N_ELEMENTS (exported_entries));
@@ -808,6 +809,7 @@ test_dbus_export (void)
     g_main_context_iteration (NULL, TRUE);
 
   v = g_dbus_connection_call_finish (bus, async_result, &error);
+  g_assert_no_error (error);
   g_assert_nonnull (v);
   /* FIXME: there's an extra level of tuplelization in here */
   g_variant_get (v, "((bgav))", &enabled, &param, &iter);
