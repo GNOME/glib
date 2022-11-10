@@ -1194,6 +1194,441 @@ test_replace (gconstpointer data)
     }
 }
 
+static void
+dbus_activate_cb (GApplication *app,
+                  gpointer      user_data)
+{
+  guint *n_activations = user_data;
+
+  *n_activations = *n_activations + 1;
+  g_main_context_wakeup (NULL);
+}
+
+static void dbus_startup_reply_cb (GObject      *source_object,
+                                   GAsyncResult *result,
+                                   gpointer      user_data);
+
+static void
+dbus_startup_cb (GApplication *app,
+                 gpointer      user_data)
+{
+  GDBusConnection *connection = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
+  GDBusMessage *message = G_DBUS_MESSAGE (user_data);
+
+  g_assert_nonnull (connection);
+
+  g_dbus_connection_send_message_with_reply (connection, message,
+                                             G_DBUS_SEND_MESSAGE_FLAGS_NONE, -1,
+                                             NULL, NULL,
+                                             dbus_startup_reply_cb, g_object_ref (app));
+
+  g_clear_object (&connection);
+}
+
+static void
+dbus_startup_reply_cb (GObject      *source_object,
+                       GAsyncResult *result,
+                       gpointer      user_data)
+{
+  GDBusConnection *connection = G_DBUS_CONNECTION (source_object);
+  GApplication *app = G_APPLICATION (user_data);
+  GDBusMessage *reply = NULL;
+  GError *local_error = NULL;
+
+  reply = g_dbus_connection_send_message_with_reply_finish (connection, result, &local_error);
+  g_assert_no_error (local_error);
+
+  /* Nothing to check on the reply for now. */
+  g_clear_object (&reply);
+
+  g_application_release (app);
+  g_clear_object (&app);
+}
+
+static void
+test_dbus_activate (void)
+{
+  GTestDBus *bus = NULL;
+  GVariantBuilder builder;
+  GDBusMessage *message = NULL;
+  GPtrArray *messages = NULL;  /* (element-type GDBusMessage) (owned) */
+  gsize i;
+
+  g_test_summary ("Test that calling the Activate D-Bus method works");
+
+  /* Try various different messages */
+  messages = g_ptr_array_new_with_free_func (g_object_unref);
+
+  /* Via org.gtk.Application */
+  message = g_dbus_message_new_method_call ("org.gtk.TestApplication.Activate",
+                                            "/org/gtk/TestApplication/Activate",
+                                            "org.gtk.Application",
+                                            "Activate");
+  g_dbus_message_set_body (message, g_variant_new ("(a{sv})", NULL));
+  g_ptr_array_add (messages, g_steal_pointer (&message));
+
+  /* Via org.freedesktop.Application */
+  message = g_dbus_message_new_method_call ("org.gtk.TestApplication.Activate",
+                                            "/org/gtk/TestApplication/Activate",
+                                            "org.freedesktop.Application",
+                                            "Activate");
+  g_dbus_message_set_body (message, g_variant_new ("(a{sv})", NULL));
+  g_ptr_array_add (messages, g_steal_pointer (&message));
+
+  /* With some platform data */
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("a{sv}"));
+  g_variant_builder_add (&builder, "{sv}", "cwd", g_variant_new_bytestring ("/home/henry"));
+
+  message = g_dbus_message_new_method_call ("org.gtk.TestApplication.Activate",
+                                            "/org/gtk/TestApplication/Activate",
+                                            "org.gtk.Application",
+                                            "Activate");
+  g_dbus_message_set_body (message, g_variant_new ("(a{sv})", &builder));
+  g_ptr_array_add (messages, g_steal_pointer (&message));
+
+  /* Try each message */
+  bus = g_test_dbus_new (G_TEST_DBUS_NONE);
+  g_test_dbus_up (bus);
+
+  for (i = 0; i < messages->len; i++)
+    {
+      GApplication *app = NULL;
+      gulong activate_id, startup_id;
+      guint n_activations = 0;
+
+      g_test_message ("Message %" G_GSIZE_FORMAT, i);
+
+      app = g_application_new ("org.gtk.TestApplication.Activate", G_APPLICATION_DEFAULT_FLAGS);
+      activate_id = g_signal_connect (app, "activate", G_CALLBACK (dbus_activate_cb), &n_activations);
+      startup_id = g_signal_connect (app, "startup", G_CALLBACK (dbus_startup_cb), messages->pdata[i]);
+
+      g_application_hold (app);
+      g_application_run (app, 0, NULL);
+
+      /* It’ll be activated once as normal, and once due to the D-Bus call */
+      g_assert_cmpuint (n_activations, ==, 2);
+
+      g_signal_handler_disconnect (app, startup_id);
+      g_signal_handler_disconnect (app, activate_id);
+      g_clear_object (&app);
+    }
+
+  g_ptr_array_unref (messages);
+
+  g_test_dbus_down (bus);
+  g_clear_object (&bus);
+}
+
+static void
+dbus_activate_noop_cb (GApplication *app,
+                       gpointer      user_data)
+{
+  /* noop */
+}
+
+static void
+dbus_open_cb (GApplication *app,
+              gpointer      files,
+              int           n_files,
+              char         *hint,
+              gpointer      user_data)
+{
+  guint *n_opens = user_data;
+
+  *n_opens = *n_opens + 1;
+  g_main_context_wakeup (NULL);
+}
+
+static void
+test_dbus_open (void)
+{
+  GTestDBus *bus = NULL;
+  GVariantBuilder builder, builder2;
+  GDBusMessage *message = NULL;
+  GPtrArray *messages = NULL;  /* (element-type GDBusMessage) (owned) */
+  gsize i;
+
+  g_test_summary ("Test that calling the Open D-Bus method works");
+
+  /* Try various different messages */
+  messages = g_ptr_array_new_with_free_func (g_object_unref);
+
+  /* Via org.gtk.Application */
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("as"));
+  g_variant_builder_add (&builder, "s", "file:///home/henry/test");
+
+  message = g_dbus_message_new_method_call ("org.gtk.TestApplication.Open",
+                                            "/org/gtk/TestApplication/Open",
+                                            "org.gtk.Application",
+                                            "Open");
+  g_dbus_message_set_body (message, g_variant_new ("(assa{sv})", &builder, "hint", NULL));
+  g_ptr_array_add (messages, g_steal_pointer (&message));
+
+  /* Via org.freedesktop.Application (which has no hint parameter) */
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("as"));
+  g_variant_builder_add (&builder, "s", "file:///home/henry/test");
+
+  message = g_dbus_message_new_method_call ("org.gtk.TestApplication.Open",
+                                            "/org/gtk/TestApplication/Open",
+                                            "org.freedesktop.Application",
+                                            "Open");
+  g_dbus_message_set_body (message, g_variant_new ("(asa{sv})", &builder, NULL));
+  g_ptr_array_add (messages, g_steal_pointer (&message));
+
+  /* With some platform data and more than one file */
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("as"));
+  g_variant_builder_add (&builder, "s", "file:///home/henry/test");
+  g_variant_builder_add (&builder, "s", "file:///home/henry/test2");
+
+  g_variant_builder_init (&builder2, G_VARIANT_TYPE ("a{sv}"));
+  g_variant_builder_add (&builder2, "{sv}", "cwd", g_variant_new_bytestring ("/home/henry"));
+
+  message = g_dbus_message_new_method_call ("org.gtk.TestApplication.Open",
+                                            "/org/gtk/TestApplication/Open",
+                                            "org.gtk.Application",
+                                            "Open");
+  g_dbus_message_set_body (message, g_variant_new ("(assa{sv})", &builder, "", &builder2));
+  g_ptr_array_add (messages, g_steal_pointer (&message));
+
+  /* No files */
+  message = g_dbus_message_new_method_call ("org.gtk.TestApplication.Open",
+                                            "/org/gtk/TestApplication/Open",
+                                            "org.gtk.Application",
+                                            "Open");
+  g_dbus_message_set_body (message, g_variant_new ("(assa{sv})", NULL, "", NULL));
+  g_ptr_array_add (messages, g_steal_pointer (&message));
+
+  /* Try each message */
+  bus = g_test_dbus_new (G_TEST_DBUS_NONE);
+  g_test_dbus_up (bus);
+
+  for (i = 0; i < messages->len; i++)
+    {
+      GApplication *app = NULL;
+      gulong activate_id, open_id, startup_id;
+      guint n_opens = 0;
+
+      g_test_message ("Message %" G_GSIZE_FORMAT, i);
+
+      app = g_application_new ("org.gtk.TestApplication.Open", G_APPLICATION_HANDLES_OPEN);
+      activate_id = g_signal_connect (app, "activate", G_CALLBACK (dbus_activate_noop_cb), NULL);
+      open_id = g_signal_connect (app, "open", G_CALLBACK (dbus_open_cb), &n_opens);
+      startup_id = g_signal_connect (app, "startup", G_CALLBACK (dbus_startup_cb), messages->pdata[i]);
+
+      g_application_hold (app);
+      g_application_run (app, 0, NULL);
+
+      g_assert_cmpuint (n_opens, ==, 1);
+
+      g_signal_handler_disconnect (app, startup_id);
+      g_signal_handler_disconnect (app, open_id);
+      g_signal_handler_disconnect (app, activate_id);
+      g_clear_object (&app);
+    }
+
+  g_ptr_array_unref (messages);
+
+  g_test_dbus_down (bus);
+  g_clear_object (&bus);
+}
+
+static void
+dbus_command_line_cb (GApplication            *app,
+                      GApplicationCommandLine *command_line,
+                      gpointer                 user_data)
+{
+  guint *n_command_lines = user_data;
+
+  *n_command_lines = *n_command_lines + 1;
+  g_main_context_wakeup (NULL);
+}
+
+static void
+test_dbus_command_line (void)
+{
+  GTestDBus *bus = NULL;
+  GVariantBuilder builder;
+  GDBusMessage *message = NULL;
+  GPtrArray *messages = NULL;  /* (element-type GDBusMessage) (owned) */
+  gsize i;
+
+  g_test_summary ("Test that calling the CommandLine D-Bus method works");
+
+  /* Try various different messages */
+  messages = g_ptr_array_new_with_free_func (g_object_unref);
+
+  /* Via org.gtk.Application */
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("aay"));
+  g_variant_builder_add (&builder, "^ay", "test-program");
+  g_variant_builder_add (&builder, "^ay", "--open");
+  g_variant_builder_add (&builder, "^ay", "/path/to/something");
+
+  message = g_dbus_message_new_method_call ("org.gtk.TestApplication.CommandLine",
+                                            "/org/gtk/TestApplication/CommandLine",
+                                            "org.gtk.Application",
+                                            "CommandLine");
+  g_dbus_message_set_body (message, g_variant_new ("(oaaya{sv})",
+                                                   "/my/org/gtk/private/CommandLine",
+                                                   &builder, NULL));
+  g_ptr_array_add (messages, g_steal_pointer (&message));
+
+  /* Try each message */
+  bus = g_test_dbus_new (G_TEST_DBUS_NONE);
+  g_test_dbus_up (bus);
+
+  for (i = 0; i < messages->len; i++)
+    {
+      GApplication *app = NULL;
+      gulong activate_id, command_line_id, startup_id;
+      guint n_command_lines = 0;
+
+      g_test_message ("Message %" G_GSIZE_FORMAT, i);
+
+      app = g_application_new ("org.gtk.TestApplication.CommandLine", G_APPLICATION_HANDLES_COMMAND_LINE);
+      activate_id = g_signal_connect (app, "activate", G_CALLBACK (dbus_activate_noop_cb), NULL);
+      command_line_id = g_signal_connect (app, "command-line", G_CALLBACK (dbus_command_line_cb), &n_command_lines);
+      startup_id = g_signal_connect (app, "startup", G_CALLBACK (dbus_startup_cb), messages->pdata[i]);
+
+      g_application_hold (app);
+      g_application_run (app, 0, NULL);
+
+      /* It’s called once for handling the local command line on startup, and again
+       * for the D-Bus call */
+      g_assert_cmpuint (n_command_lines, ==, 2);
+
+      g_signal_handler_disconnect (app, startup_id);
+      g_signal_handler_disconnect (app, command_line_id);
+      g_signal_handler_disconnect (app, activate_id);
+      g_clear_object (&app);
+    }
+
+  g_ptr_array_unref (messages);
+
+  g_test_dbus_down (bus);
+  g_clear_object (&bus);
+}
+
+static void
+dbus_activate_action_cb (GSimpleAction *action,
+                         GVariant      *parameter,
+                         gpointer       user_data)
+{
+  guint *n_activations = user_data;
+
+  *n_activations = *n_activations + 1;
+  g_main_context_wakeup (NULL);
+}
+
+static void
+test_dbus_activate_action (void)
+{
+  GTestDBus *bus = NULL;
+  GVariantBuilder builder;
+  struct
+    {
+      GDBusMessage *message;  /* (not nullable) (owned) */
+      guint n_expected_activations;
+    } messages[6];
+  gsize i;
+
+  g_test_summary ("Test that calling the ActivateAction D-Bus method works");
+
+  /* Action without parameter */
+  messages[0].message = g_dbus_message_new_method_call ("org.gtk.TestApplication.ActivateAction",
+                                                        "/org/gtk/TestApplication/ActivateAction",
+                                                        "org.freedesktop.Application",
+                                                        "ActivateAction");
+  g_dbus_message_set_body (messages[0].message, g_variant_new ("(sava{sv})", "undo", NULL, NULL));
+  messages[0].n_expected_activations = 1;
+
+  /* Action with parameter */
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("av"));
+  g_variant_builder_add (&builder, "v", g_variant_new_string ("spanish"));
+
+  messages[1].message = g_dbus_message_new_method_call ("org.gtk.TestApplication.ActivateAction",
+                                                        "/org/gtk/TestApplication/ActivateAction",
+                                                        "org.freedesktop.Application",
+                                                        "ActivateAction");
+  g_dbus_message_set_body (messages[1].message, g_variant_new ("(sava{sv})", "lang", &builder, NULL));
+  messages[1].n_expected_activations = 1;
+
+  /* Action with unexpected parameter */
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("av"));
+  g_variant_builder_add (&builder, "v", g_variant_new_string ("should not be passed"));
+
+  messages[2].message = g_dbus_message_new_method_call ("org.gtk.TestApplication.ActivateAction",
+                                                        "/org/gtk/TestApplication/ActivateAction",
+                                                        "org.freedesktop.Application",
+                                                        "ActivateAction");
+  g_dbus_message_set_body (messages[2].message, g_variant_new ("(sava{sv})", "undo", &builder, NULL));
+  messages[2].n_expected_activations = 0;
+
+  /* Action without required parameter */
+  messages[3].message = g_dbus_message_new_method_call ("org.gtk.TestApplication.ActivateAction",
+                                                        "/org/gtk/TestApplication/ActivateAction",
+                                                        "org.freedesktop.Application",
+                                                        "ActivateAction");
+  g_dbus_message_set_body (messages[3].message, g_variant_new ("(sava{sv})", "lang", NULL, NULL));
+  messages[3].n_expected_activations = 0;
+
+  /* Action with wrong parameter type */
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("av"));
+  g_variant_builder_add (&builder, "v", g_variant_new_uint32 (42));
+
+  messages[4].message = g_dbus_message_new_method_call ("org.gtk.TestApplication.ActivateAction",
+                                                        "/org/gtk/TestApplication/ActivateAction",
+                                                        "org.freedesktop.Application",
+                                                        "ActivateAction");
+  g_dbus_message_set_body (messages[4].message, g_variant_new ("(sava{sv})", "lang", &builder, NULL));
+  messages[4].n_expected_activations = 0;
+
+  /* Nonexistent action */
+  messages[5].message = g_dbus_message_new_method_call ("org.gtk.TestApplication.ActivateAction",
+                                                        "/org/gtk/TestApplication/ActivateAction",
+                                                        "org.freedesktop.Application",
+                                                        "ActivateAction");
+  g_dbus_message_set_body (messages[5].message, g_variant_new ("(sava{sv})", "nonexistent", NULL, NULL));
+  messages[5].n_expected_activations = 0;
+
+  /* Try each message */
+  bus = g_test_dbus_new (G_TEST_DBUS_NONE);
+  g_test_dbus_up (bus);
+
+  for (i = 0; i < G_N_ELEMENTS (messages); i++)
+    {
+      GApplication *app = NULL;
+      gulong activate_id, startup_id;
+      const GActionEntry entries[] =
+        {
+          { "undo", dbus_activate_action_cb, NULL, NULL,      NULL, { 0 } },
+          { "lang", dbus_activate_action_cb,  "s",  "'latin'", NULL, { 0 } },
+        };
+      guint n_activations = 0;
+
+      g_test_message ("Message %" G_GSIZE_FORMAT, i);
+
+      app = g_application_new ("org.gtk.TestApplication.ActivateAction", G_APPLICATION_DEFAULT_FLAGS);
+      activate_id = g_signal_connect (app, "activate", G_CALLBACK (dbus_activate_noop_cb), NULL);
+      startup_id = g_signal_connect (app, "startup", G_CALLBACK (dbus_startup_cb), messages[i].message);
+
+      /* Export some actions. */
+      g_action_map_add_action_entries (G_ACTION_MAP (app), entries, G_N_ELEMENTS (entries), &n_activations);
+
+      g_application_hold (app);
+      g_application_run (app, 0, NULL);
+
+      g_assert_cmpuint (n_activations, ==, messages[i].n_expected_activations);
+
+      g_signal_handler_disconnect (app, startup_id);
+      g_signal_handler_disconnect (app, activate_id);
+      g_clear_object (&app);
+      g_clear_object (&messages[i].message);
+    }
+
+  g_test_dbus_down (bus);
+  g_clear_object (&bus);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -1225,6 +1660,10 @@ main (int argc, char **argv)
   g_test_add_func ("/gapplication/api", test_api);
   g_test_add_data_func ("/gapplication/replace", GINT_TO_POINTER (TRUE), test_replace);
   g_test_add_data_func ("/gapplication/no-replace", GINT_TO_POINTER (FALSE), test_replace);
+  g_test_add_func ("/gapplication/dbus/activate", test_dbus_activate);
+  g_test_add_func ("/gapplication/dbus/open", test_dbus_open);
+  g_test_add_func ("/gapplication/dbus/command-line", test_dbus_command_line);
+  g_test_add_func ("/gapplication/dbus/activate-action", test_dbus_activate_action);
 
   return g_test_run ();
 }
