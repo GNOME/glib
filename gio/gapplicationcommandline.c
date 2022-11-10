@@ -507,6 +507,9 @@ g_application_command_line_get_arguments (GApplicationCommandLine *cmdline,
  * If no options were sent then an empty dictionary is returned so that
  * you don't need to check for %NULL.
  *
+ * The data has been passed via an untrusted external process, so the types of
+ * all values must be checked before being used.
+ *
  * Returns: (transfer none): a #GVariantDict with the options
  *
  * Since: 2.40

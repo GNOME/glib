@@ -673,6 +673,8 @@ add_packed_option (GApplication *application,
  * inspected and modified.  If %G_APPLICATION_HANDLES_COMMAND_LINE is
  * set, then the resulting dictionary is sent to the primary instance,
  * where g_application_command_line_get_options_dict() will return it.
+ * As it has been passed outside the process at this point, the types of all
+ * values in the options dict must be checked before being used.
  * This "packing" is done according to the type of the argument --
  * booleans for normal flags, strings for strings, bytestrings for
  * filenames, etc.  The packing only occurs if the flag is given (ie: we
