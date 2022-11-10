@@ -1447,7 +1447,7 @@ static void
 test_dbus_command_line (void)
 {
   GTestDBus *bus = NULL;
-  GVariantBuilder builder;
+  GVariantBuilder builder, builder2;
   GDBusMessage *message = NULL;
   GPtrArray *messages = NULL;  /* (element-type GDBusMessage) (owned) */
   gsize i;
@@ -1470,6 +1470,46 @@ test_dbus_command_line (void)
   g_dbus_message_set_body (message, g_variant_new ("(oaaya{sv})",
                                                    "/my/org/gtk/private/CommandLine",
                                                    &builder, NULL));
+  g_ptr_array_add (messages, g_steal_pointer (&message));
+
+  /* With platform data */
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("aay"));
+  g_variant_builder_add (&builder, "^ay", "test-program");
+  g_variant_builder_add (&builder, "^ay", "--open");
+  g_variant_builder_add (&builder, "^ay", "/path/to/something");
+
+  g_variant_builder_init (&builder2, G_VARIANT_TYPE ("a{sv}"));
+  g_variant_builder_add (&builder2, "{sv}", "cwd", g_variant_new_bytestring ("/home"));
+  g_variant_builder_add_parsed (&builder2, "{'environ', <@aay [ b'HOME=/home/bloop', b'PATH=/blah']>}");
+  g_variant_builder_add_parsed (&builder2, "{'options', <{'a': <@u 32>, 'b': <'bloop'>}>}");
+
+  message = g_dbus_message_new_method_call ("org.gtk.TestApplication.CommandLine",
+                                            "/org/gtk/TestApplication/CommandLine",
+                                            "org.gtk.Application",
+                                            "CommandLine");
+  g_dbus_message_set_body (message, g_variant_new ("(oaaya{sv})",
+                                                   "/my/org/gtk/private/CommandLine",
+                                                   &builder, &builder2));
+  g_ptr_array_add (messages, g_steal_pointer (&message));
+
+  /* With invalid typed platform data */
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("aay"));
+  g_variant_builder_add (&builder, "^ay", "test-program");
+  g_variant_builder_add (&builder, "^ay", "--open");
+  g_variant_builder_add (&builder, "^ay", "/path/to/something");
+
+  g_variant_builder_init (&builder2, G_VARIANT_TYPE ("a{sv}"));
+  g_variant_builder_add (&builder2, "{sv}", "cwd", g_variant_new_string ("/home should be a bytestring"));
+  g_variant_builder_add_parsed (&builder2, "{'environ', <['HOME=should be a bytestring', 'PATH=this also']>}");
+  g_variant_builder_add_parsed (&builder2, "{'options', <['should be a', 'dict']>}");
+
+  message = g_dbus_message_new_method_call ("org.gtk.TestApplication.CommandLine",
+                                            "/org/gtk/TestApplication/CommandLine",
+                                            "org.gtk.Application",
+                                            "CommandLine");
+  g_dbus_message_set_body (message, g_variant_new ("(oaaya{sv})",
+                                                   "/my/org/gtk/private/CommandLine",
+                                                   &builder, &builder2));
   g_ptr_array_add (messages, g_steal_pointer (&message));
 
   /* Try each message */
