@@ -210,6 +210,7 @@ libdbus_call_task_cb (GTask *task,
                                                                    libdbus_call->call,
                                                                    -1,
                                                                    &libdbus_call->error);
+  g_task_return_boolean (task, TRUE);
 }
 #endif /* HAVE_DBUS1 */
 

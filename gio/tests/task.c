@@ -2451,6 +2451,44 @@ test_attach_source_set_name (void)
   g_object_unref (task);
 }
 
+static void
+test_finalize_without_return (void)
+{
+  GTask *task = NULL;
+  guint n_calls = 0;
+
+  /* With a callback set. */
+  task = g_task_new (NULL, NULL, task_complete_cb, &n_calls);
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "GTask * (source object: *, source tag: *) finalized without "
+                         "ever returning (using g_task_return_*()). This potentially "
+                         "indicates a bug in the program.");
+  g_object_unref (task);
+  g_test_assert_expected_messages ();
+
+  /* With a callback and task name set. */
+  task = g_task_new (NULL, NULL, task_complete_cb, &n_calls);
+  g_task_set_static_name (task, "oogly boogly");
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "GTask oogly boogly (source object: *, source tag: *) finalized without "
+                         "ever returning (using g_task_return_*()). This potentially "
+                         "indicates a bug in the program.");
+  g_object_unref (task);
+  g_test_assert_expected_messages ();
+
+  /* Without a callback set. */
+  task = g_task_new (NULL, NULL, NULL, NULL);
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_DEBUG,
+                         "GTask * (source object: *, source tag: *) finalized without "
+                         "ever returning (using g_task_return_*()). This potentially "
+                         "indicates a bug in the program.");
+  g_object_unref (task);
+  g_test_assert_expected_messages ();
+}
+
 int
 main (int argc, char **argv)
 {
@@ -2494,6 +2532,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gtask/return/error-first", test_return_error_first);
   g_test_add_func ("/gtask/return/value-first", test_return_value_first);
   g_test_add_func ("/gtask/attach-source/set-name", test_attach_source_set_name);
+  g_test_add_func ("/gtask/finalize-without-return", test_finalize_without_return);
 
   ret = g_test_run();
 
