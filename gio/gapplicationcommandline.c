@@ -260,20 +260,20 @@ grok_platform_data (GApplicationCommandLine *cmdline)
   g_variant_iter_init (&iter, cmdline->priv->platform_data);
 
   while (g_variant_iter_loop (&iter, "{&sv}", &key, &value))
-    if (strcmp (key, "cwd") == 0)
+    if (strcmp (key, "cwd") == 0 && g_variant_is_of_type (value, G_VARIANT_TYPE_BYTESTRING))
       {
         if (!cmdline->priv->cwd)
           cmdline->priv->cwd = g_variant_dup_bytestring (value, NULL);
       }
 
-    else if (strcmp (key, "environ") == 0)
+    else if (strcmp (key, "environ") == 0 && g_variant_is_of_type (value, G_VARIANT_TYPE_BYTESTRING_ARRAY))
       {
         if (!cmdline->priv->environ)
           cmdline->priv->environ =
             g_variant_dup_bytestring_array (value, NULL);
       }
 
-    else if (strcmp (key, "options") == 0)
+    else if (strcmp (key, "options") == 0 && g_variant_is_of_type (value, G_VARIANT_TYPE_VARDICT))
       {
         if (!cmdline->priv->options)
           cmdline->priv->options = g_variant_ref (value);
@@ -795,6 +795,9 @@ g_application_command_line_get_exit_status (GApplicationCommandLine *cmdline)
  * context in which the invocation occurred.  It typically contains
  * information like the current working directory and the startup
  * notification ID.
+ *
+ * It comes from an untrusted external process and hence the types of all
+ * values must be validated before being used.
  *
  * For local invocation, it will be %NULL.
  *
