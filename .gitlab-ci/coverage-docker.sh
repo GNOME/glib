@@ -10,6 +10,12 @@ for path in _coverage/*.lcov; do
     lcov --config-file .lcovrc -r "${path}" '*/_build/*' -o "$(pwd)/${path}"
     # Remove any coverage from system files
     lcov --config-file .lcovrc -e "${path}" "$(pwd)/*" -o "$(pwd)/${path}"
+    # Remove coverage from the fuzz tests, since they are run on a separate CI system
+    lcov --config-file .lcovrc -r "${path}" "*/fuzzing/*" -o "$(pwd)/${path}"
+    # Remove coverage from copylibs and subprojects
+    for lib in xdgmime libcharset gnulib; do
+        lcov --config-file .lcovrc -r "${path}" "*/${lib}/*" -o "$(pwd)/${path}"
+    done
 
     # Convert to cobertura format for gitlab integration
     cobertura_base="${path/.lcov}-cobertura"
