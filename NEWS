@@ -1,4 +1,4 @@
-Overview of changes in GLib 2.74.0, 17-09-2022
+Overview of changes in GLib 2.74.0, 2022-09-17
 ==============================================
 
 * Use EPOLL_CLOEXEC by default (Colin Walters)
@@ -68,7 +68,7 @@ Overview of changes in GLib 2.74.0, 17-09-2022
  - Turkish (Emin Tufan Çetin)
  - Ukrainian (Yuri Chornoivan)
 
-Overview of changes in GLib 2.73.3, 05-08-2022
+Overview of changes in GLib 2.73.3, 2022-08-05
 ==============================================
 
 * Revitalize G_REGEX_OPTIMIZE flag and use it to enable PCRE JIT compiler (work
@@ -180,7 +180,7 @@ Overview of changes in GLib 2.73.3, 05-08-2022
   Nart Tlisha, Owen Rafferty, Philip Withnall, Ryan Hope, Simon McVittie,
   Yosef Or Boczko, Yuri Chornoivan, Zurab Kargareteli.
 
-Overview of changes in GLib 2.73.2, 12-07-2022
+Overview of changes in GLib 2.73.2, 2022-07-12
 ==============================================
 
 * Replace PCRE1 with PCRE2: This is a major change to drop the libpcre1
