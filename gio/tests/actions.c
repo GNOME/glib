@@ -837,9 +837,189 @@ test_dbus_export (void)
   g_variant_unref (v);
   g_clear_object (&async_result);
 
+  /* check that activating a parameterless action over D-Bus works */
+  g_assert_cmpint (activation_count ("undo"), ==, 0);
+
+  g_dbus_connection_call (bus,
+                          g_dbus_connection_get_unique_name (bus),
+                          "/",
+                          "org.gtk.Actions",
+                          "Activate",
+                          g_variant_new ("(sava{sv})", "undo", NULL, NULL),
+                          NULL,
+                          0,
+                          G_MAXINT,
+                          NULL,
+                          async_result_cb,
+                          &async_result);
+
+  while (async_result == NULL)
+    g_main_context_iteration (NULL, TRUE);
+
+  v = g_dbus_connection_call_finish (bus, async_result, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (v);
+  g_assert_true (g_variant_is_of_type (v, G_VARIANT_TYPE_UNIT));
+  g_variant_unref (v);
+  g_clear_object (&async_result);
+
+  g_assert_cmpint (activation_count ("undo"), ==, 1);
+
+  /* check that activating a parameterful action over D-Bus works */
+  g_assert_cmpint (activation_count ("lang"), ==, 0);
+  ensure_state (G_ACTION_GROUP (group), "lang", "'latin'");
+
+  g_dbus_connection_call (bus,
+                          g_dbus_connection_get_unique_name (bus),
+                          "/",
+                          "org.gtk.Actions",
+                          "Activate",
+                          g_variant_new ("(s@ava{sv})", "lang", g_variant_new_parsed ("[<'spanish'>]"), NULL),
+                          NULL,
+                          0,
+                          G_MAXINT,
+                          NULL,
+                          async_result_cb,
+                          &async_result);
+
+  while (async_result == NULL)
+    g_main_context_iteration (NULL, TRUE);
+
+  v = g_dbus_connection_call_finish (bus, async_result, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (v);
+  g_assert_true (g_variant_is_of_type (v, G_VARIANT_TYPE_UNIT));
+  g_variant_unref (v);
+  g_clear_object (&async_result);
+
+  g_assert_cmpint (activation_count ("lang"), ==, 1);
+  ensure_state (G_ACTION_GROUP (group), "lang", "'spanish'");
+
+  /* check that various error conditions are rejected */
+  {
+  struct
+    {
+      const gchar *action_name;
+      GVariant *parameter;  /* (owned floating) (nullable) */
+    }
+  activate_error_conditions[] =
+    {
+      { "nope", NULL },  /* non-existent action */
+      { "lang", g_variant_new_parsed ("[<@u 4>]") },  /* wrong parameter type */
+      { "lang", NULL },  /* parameter missing */
+      { "undo", g_variant_new_parsed ("[<'silly'>]") },  /* extraneous parameter */
+    };
+
+  for (gsize i = 0; i < G_N_ELEMENTS (activate_error_conditions); i++)
+    {
+      GVariant *parameter = g_steal_pointer (&activate_error_conditions[i].parameter);
+      const gchar *type_string = (parameter != NULL) ? "(s@ava{sv})" : "(sava{sv})";
+
+      g_dbus_connection_call (bus,
+                              g_dbus_connection_get_unique_name (bus),
+                              "/",
+                              "org.gtk.Actions",
+                              "Activate",
+                              g_variant_new (type_string,
+                                             activate_error_conditions[i].action_name,
+                                             g_steal_pointer (&parameter),
+                                             NULL),
+                              NULL,
+                              0,
+                              G_MAXINT,
+                              NULL,
+                              async_result_cb,
+                              &async_result);
+
+      while (async_result == NULL)
+        g_main_context_iteration (NULL, TRUE);
+
+      v = g_dbus_connection_call_finish (bus, async_result, &error);
+      g_assert_error (error, G_DBUS_ERROR, G_DBUS_ERROR_INVALID_ARGS);
+      g_assert_null (v);
+      g_clear_error (&error);
+      g_clear_object (&async_result);
+    }
+  }
+
+  /* check that setting an action’s state over D-Bus works */
+  g_assert_cmpint (activation_count ("lang"), ==, 1);
+  ensure_state (G_ACTION_GROUP (group), "lang", "'spanish'");
+
+  g_dbus_connection_call (bus,
+                          g_dbus_connection_get_unique_name (bus),
+                          "/",
+                          "org.gtk.Actions",
+                          "SetState",
+                          g_variant_new ("(sva{sv})", "lang", g_variant_new_string ("portuguese"), NULL),
+                          NULL,
+                          0,
+                          G_MAXINT,
+                          NULL,
+                          async_result_cb,
+                          &async_result);
+
+  while (async_result == NULL)
+    g_main_context_iteration (NULL, TRUE);
+
+  v = g_dbus_connection_call_finish (bus, async_result, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (v);
+  g_assert_true (g_variant_is_of_type (v, G_VARIANT_TYPE_UNIT));
+  g_variant_unref (v);
+  g_clear_object (&async_result);
+
+  g_assert_cmpint (activation_count ("lang"), ==, 1);
+  ensure_state (G_ACTION_GROUP (group), "lang", "'portuguese'");
+
+  /* check that various error conditions are rejected */
+  {
+  struct
+    {
+      const gchar *action_name;
+      GVariant *state;  /* (owned floating) (not nullable) */
+    }
+  set_state_error_conditions[] =
+    {
+      { "nope", g_variant_new_string ("hello") },  /* non-existent action */
+      { "undo", g_variant_new_string ("not stateful") },  /* not a stateful action */
+      { "lang", g_variant_new_uint32 (3) },  /* wrong state type */
+    };
+
+  for (gsize i = 0; i < G_N_ELEMENTS (set_state_error_conditions); i++)
+    {
+      g_dbus_connection_call (bus,
+                              g_dbus_connection_get_unique_name (bus),
+                              "/",
+                              "org.gtk.Actions",
+                              "SetState",
+                              g_variant_new ("(s@va{sv})",
+                                             set_state_error_conditions[i].action_name,
+                                             g_variant_new_variant (g_steal_pointer (&set_state_error_conditions[i].state)),
+                                             NULL),
+                              NULL,
+                              0,
+                              G_MAXINT,
+                              NULL,
+                              async_result_cb,
+                              &async_result);
+
+      while (async_result == NULL)
+        g_main_context_iteration (NULL, TRUE);
+
+      v = g_dbus_connection_call_finish (bus, async_result, &error);
+      g_assert_error (error, G_DBUS_ERROR, G_DBUS_ERROR_INVALID_ARGS);
+      g_assert_null (v);
+      g_clear_error (&error);
+      g_clear_object (&async_result);
+    }
+  }
+
   /* test that the initial transfer works */
   g_assert_true (G_IS_DBUS_ACTION_GROUP (proxy));
-  g_assert_true (compare_action_groups (G_ACTION_GROUP (group), G_ACTION_GROUP (proxy)));
+  while (!compare_action_groups (G_ACTION_GROUP (group), G_ACTION_GROUP (proxy)))
+    g_main_context_iteration (NULL, TRUE);
+  n_actions_state_changed = 0;
 
   /* test that various changes get propagated from group to proxy */
   n_actions_added = 0;
