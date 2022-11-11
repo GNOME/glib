@@ -48,6 +48,7 @@ endif
 
 #  Test programs buildable on all platforms
 gio_tests = {
+  'application-command-line': {},
   'appmonitor' : {
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
     'can_fail' : host_system == 'darwin',
