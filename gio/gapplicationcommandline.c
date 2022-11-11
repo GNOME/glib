@@ -795,7 +795,7 @@ g_application_command_line_get_exit_status (GApplicationCommandLine *cmdline)
  *
  * For local invocation, it will be %NULL.
  *
- * Returns: (nullable): the platform data, or %NULL
+ * Returns: (nullable) (transfer full): the platform data, or %NULL
  *
  * Since: 2.28
  **/
