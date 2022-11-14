@@ -30,7 +30,14 @@ G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 static void
 test_thread_deprecated_init (void)
 {
-  const GThreadFunctions functions = { NULL, };
+  const GThreadFunctions functions = {
+    NULL, NULL, NULL, NULL,
+    NULL, NULL, NULL, NULL,
+    NULL, NULL, NULL, NULL,
+    NULL, NULL, NULL, NULL,
+    NULL, NULL, NULL, NULL,
+    NULL
+  };
 
   /* Should be a no-op. */
   g_thread_init (NULL);
