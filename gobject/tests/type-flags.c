@@ -141,6 +141,8 @@ main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
 
+  g_setenv ("G_ENABLE_DIAGNOSTIC", "1", TRUE);
+
   g_test_add_func ("/type/flags/final", test_type_flags_final);
   g_test_add_func ("/type/flags/deprecated", test_type_flags_deprecated);
 
