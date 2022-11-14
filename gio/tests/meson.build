@@ -405,6 +405,7 @@ if host_machine.system() != 'windows'
         'extra_sources' : extra_sources,
         'suite' : ['slow'],
       },
+      'fdo-notification-backend': {},
       'gdbus-auth' : {'extra_sources' : extra_sources},
       'gdbus-bz627724' : {'extra_sources' : extra_sources},
       'gdbus-close-pending' : {'extra_sources' : extra_sources},
