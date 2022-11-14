@@ -495,6 +495,8 @@ if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
     '-Werror=missing-include-dirs',
     '-Werror=pointer-arith',
     '-Werror=unused-result',
+    # Missing field initializers have a well-defined meaning
+    '-Wno-missing-field-initializers',
   ]
 
   warning_c_args = warning_common_args + [
