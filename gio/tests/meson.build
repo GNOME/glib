@@ -700,7 +700,9 @@ if installed_tests_enabled
   endforeach
 endif
 
-if meson.can_run_host_binaries()
+# FIXME: Work around Meson not automatically using exe_wrapper around glib_compile_resources
+# https://github.com/mesonbuild/meson/issues/11029 
+if not meson.is_cross_build()
 
   resource_plugin = []
   compiler_type = '--compiler=@0@'.format(cc.get_id())

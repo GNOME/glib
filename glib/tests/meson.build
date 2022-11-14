@@ -431,7 +431,9 @@ foreach test_name, extra_args : python_tests
 endforeach
 
 # some testing of gtester functionality
-if meson.can_run_host_binaries() and host_system != 'windows'
+# FIXME: Work around Meson not automatically using exe_wrapper around gtester
+# https://github.com/mesonbuild/meson/issues/11029
+if not meson.is_cross_build() and host_system != 'windows'
   xmllint = find_program('xmllint', required: false)
   if xmllint.found()
     tmpsample_xml = custom_target('tmpsample.xml',
