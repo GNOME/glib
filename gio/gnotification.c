@@ -102,7 +102,7 @@ struct _GNotification
   gchar *category;
   GPtrArray *buttons;
   gchar *default_action;
-  GVariant *default_action_target;
+  GVariant *default_action_target;  /* (nullable) (owned), not floating */
 };
 
 typedef struct
@@ -615,10 +615,16 @@ g_notification_get_button_with_action (GNotification *notification,
 /*< private >
  * g_notification_get_default_action:
  * @notification: a #GNotification
- * @action: (nullable): return location for the default action
- * @target: (nullable): return location for the target of the default action
+ * @action: (out) (optional) (nullable) (transfer full): return location for the
+ *   default action, or %NULL if unset
+ * @target: (out) (optional) (nullable) (transfer full): return location for the
+ *   target of the default action, or %NULL if unset
  *
  * Gets the action and target for the default action of @notification.
+ *
+ * If this function returns %TRUE, @action is guaranteed to be set to a non-%NULL
+ * value (if a pointer is passed to @action). @target may still return a %NULL
+ * value, as the default action may have no target.
  *
  * Returns: %TRUE if @notification has a default action
  */
@@ -736,7 +742,7 @@ g_notification_set_default_action_and_target (GNotification *notification,
  * application-wide action (start with "app.").
  *
  * If @target is non-%NULL, @action will be activated with @target as
- * its parameter.
+ * its parameter. If @target is floating, it will be consumed.
  *
  * When no default action is set, the application that the notification
  * was sent on is activated.
