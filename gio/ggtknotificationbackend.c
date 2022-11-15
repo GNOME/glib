@@ -50,7 +50,7 @@ g_gtk_notification_backend_is_supported (void)
   GVariant *reply;
 
   /* Find out if the notification server is running. This is a
-   * synchronous call because gio extension points don't support asnyc
+   * synchronous call because gio extension points don't support async
    * backend verification. This is only run once and only contacts the
    * dbus daemon. */
 
