@@ -29,8 +29,22 @@
 G_DEFINE_TYPE (GNotificationBackend, g_notification_backend, G_TYPE_OBJECT)
 
 static void
+g_notification_backend_dispose (GObject *obj)
+{
+  GNotificationBackend *backend = G_NOTIFICATION_BACKEND (obj);
+
+  backend->application = NULL;  /* no reference held, but clear the pointer anyway to avoid it dangling */
+  g_clear_object (&backend->dbus_connection);
+
+  G_OBJECT_CLASS (g_notification_backend_parent_class)->dispose (obj);
+}
+
+static void
 g_notification_backend_class_init (GNotificationBackendClass *class)
 {
+  GObjectClass *object_class = G_OBJECT_CLASS (class);
+
+  object_class->dispose = g_notification_backend_dispose;
 }
 
 static void
