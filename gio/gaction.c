@@ -467,6 +467,12 @@ g_action_name_is_valid (const gchar *action_name)
  * For strings, this third format must be used if target value is
  * empty or contains characters other than alphanumerics, `-` and `.`.
  *
+ * If this function returns %TRUE, a non-%NULL value is guaranteed to be returned
+ * in @action_name (if a pointer is passed in). A %NULL value may still be
+ * returned in @target_value, as the @detailed_name may not contain a target.
+ *
+ * If returned, the #GVariant in @target_value is guaranteed to not be floating.
+ *
  * Returns: %TRUE if successful, else %FALSE with @error set
  *
  * Since: 2.38
