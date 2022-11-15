@@ -63,8 +63,8 @@ typedef struct
   GFdoNotificationBackend *backend;
   gchar *id;
   guint32 notify_id;
-  gchar *default_action;
-  GVariant *default_action_target;
+  gchar *default_action;  /* (nullable) (owned) */
+  GVariant *default_action_target;  /* (nullable) (owned), not floating */
 } FreedesktopNotification;
 
 static void
@@ -137,6 +137,9 @@ activate_action (GFdoNotificationBackend *backend,
                  GVariant                *parameter)
 {
   GNotificationBackend *g_backend = G_NOTIFICATION_BACKEND (backend);
+
+  /* Callers should not provide a floating variant here */
+  g_assert (parameter == NULL || !g_variant_is_floating (parameter));
 
   if (name)
     {
