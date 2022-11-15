@@ -355,11 +355,11 @@ g_notification_set_urgent (GNotification *notification,
  * g_notification_get_category:
  * @notification: a #GNotification
  *
- * Gets the cateogry of @notification.
+ * Gets the category of @notification.
  *
  * This will be %NULL if no category is set.
  *
- * Returns: (nullable): the cateogry of @notification
+ * Returns: (nullable): the category of @notification
  *
  * Since: 2.70
  */
