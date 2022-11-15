@@ -437,8 +437,9 @@ g_action_name_is_valid (const gchar *action_name)
 /**
  * g_action_parse_detailed_name:
  * @detailed_name: a detailed action name
- * @action_name: (out): the action name
- * @target_value: (out): the target value, or %NULL for no target
+ * @action_name: (out) (optional) (not nullable) (transfer full): the action name
+ * @target_value: (out) (optional) (nullable) (transfer full): the target value,
+ *   or %NULL for no target
  * @error: a pointer to a %NULL #GError, or %NULL
  *
  * Parses a detailed action name into its separate name and target
