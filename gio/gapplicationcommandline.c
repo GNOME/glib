@@ -497,7 +497,7 @@ g_application_command_line_get_arguments (GApplicationCommandLine *cmdline,
  * g_application_command_line_get_options_dict:
  * @cmdline: a #GApplicationCommandLine
  *
- * Gets the options there were passed to g_application_command_line().
+ * Gets the options that were passed to g_application_command_line().
  *
  * If you did not override local_command_line() then these are the same
  * options that were parsed according to the #GOptionEntrys added to the
