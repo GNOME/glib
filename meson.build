@@ -2349,6 +2349,7 @@ if want_systemtap and enable_dtrace
   enable_systemtap = true
 endif
 
+fs = import('fs')
 pkg = import('pkgconfig')
 windows = import('windows')
 subdir('tools')
