@@ -2,6 +2,7 @@
  * Copyright © 2010, 2011, 2013, 2014 Codethink Limited
  * Copyright © 2010, 2011, 2012, 2013, 2015 Red Hat, Inc.
  * Copyright © 2012 Pavel Vasin
+ * Copyright © 2022 Endless OS Foundation, LLC
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  *
@@ -644,11 +645,13 @@ compare_action_groups (GActionGroup *a, GActionGroup *b)
 }
 
 static gboolean
-stop_loop (gpointer data)
+timeout_cb (gpointer user_data)
 {
-  GMainLoop *loop = data;
+  gboolean *timed_out = user_data;
 
-  g_main_loop_quit (loop);
+  g_assert_false (*timed_out);
+  *timed_out = TRUE;
+  g_main_context_wakeup (NULL);
 
   return G_SOURCE_REMOVE;
 }
@@ -664,96 +667,16 @@ static GActionEntry exported_entries[] = {
 };
 
 static void
-list_cb (GObject      *source,
-         GAsyncResult *res,
-         gpointer      user_data)
+async_result_cb (GObject      *source,
+                 GAsyncResult *res,
+                 gpointer      user_data)
 {
-  GDBusConnection *bus = G_DBUS_CONNECTION (source);
-  GMainLoop *loop = user_data;
-  GError *error = NULL;
-  GVariant *v;
-  gchar **actions;
+  GAsyncResult **result_out = user_data;
 
-  v = g_dbus_connection_call_finish (bus, res, &error);
-  g_assert_nonnull (v);
-  g_variant_get (v, "(^a&s)", &actions);
-  g_assert_cmpint (g_strv_length (actions), ==, G_N_ELEMENTS (exported_entries));
-  g_free (actions);
-  g_variant_unref (v);
-  g_main_loop_quit (loop);
-}
+  g_assert_null (*result_out);
+  *result_out = g_object_ref (res);
 
-static gboolean
-call_list (gpointer user_data)
-{
-  GDBusConnection *bus;
-
-  bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
-  g_dbus_connection_call (bus,
-                          g_dbus_connection_get_unique_name (bus),
-                          "/",
-                          "org.gtk.Actions",
-                          "List",
-                          NULL,
-                          NULL,
-                          0,
-                          G_MAXINT,
-                          NULL,
-                          list_cb,
-                          user_data);
-  g_object_unref (bus);
-
-  return G_SOURCE_REMOVE;
-}
-
-static void
-describe_cb (GObject      *source,
-             GAsyncResult *res,
-             gpointer      user_data)
-{
-  GDBusConnection *bus = G_DBUS_CONNECTION (source);
-  GMainLoop *loop = user_data;
-  GError *error = NULL;
-  GVariant *v;
-  gboolean enabled;
-  gchar *param;
-  GVariantIter *iter;
-
-  v = g_dbus_connection_call_finish (bus, res, &error);
-  g_assert_nonnull (v);
-  /* FIXME: there's an extra level of tuplelization in here */
-  g_variant_get (v, "((bgav))", &enabled, &param, &iter);
-  g_assert_true (enabled);
-  g_assert_cmpstr (param, ==, "");
-  g_assert_cmpint (g_variant_iter_n_children (iter), ==, 0);
-  g_free (param);
-  g_variant_iter_free (iter);
-  g_variant_unref (v);
-
-  g_main_loop_quit (loop);
-}
-
-static gboolean
-call_describe (gpointer user_data)
-{
-  GDBusConnection *bus;
-
-  bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
-  g_dbus_connection_call (bus,
-                          g_dbus_connection_get_unique_name (bus),
-                          "/",
-                          "org.gtk.Actions",
-                          "Describe",
-                          g_variant_new ("(s)", "copy"),
-                          NULL,
-                          0,
-                          G_MAXINT,
-                          NULL,
-                          describe_cb,
-                          user_data);
-  g_object_unref (bus);
-
-  return G_SOURCE_REMOVE;
+  g_main_context_wakeup (NULL);
 }
 
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
@@ -800,15 +723,16 @@ test_dbus_export (void)
   GSimpleActionGroup *group;
   GDBusActionGroup *proxy;
   GSimpleAction *action;
-  GMainLoop *loop;
   GError *error = NULL;
   GVariant *v;
   guint id;
   gchar **actions;
   guint n_actions_added = 0, n_actions_enabled_changed = 0, n_actions_removed = 0, n_actions_state_changed = 0;
   gulong added_signal_id, enabled_changed_signal_id, removed_signal_id, state_changed_signal_id;
-
-  loop = g_main_loop_new (NULL, FALSE);
+  gboolean enabled;
+  gchar *param;
+  GVariantIter *iter;
+  GAsyncResult *async_result = NULL;
 
   session_bus_up ();
   bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
@@ -842,12 +766,60 @@ test_dbus_export (void)
   g_strfreev (actions);
 
   /* check that calling "List" works too */
-  g_idle_add (call_list, loop);
-  g_main_loop_run (loop);
+  g_dbus_connection_call (bus,
+                          g_dbus_connection_get_unique_name (bus),
+                          "/",
+                          "org.gtk.Actions",
+                          "List",
+                          NULL,
+                          NULL,
+                          0,
+                          G_MAXINT,
+                          NULL,
+                          async_result_cb,
+                          &async_result);
+
+  while (async_result == NULL)
+    g_main_context_iteration (NULL, TRUE);
+
+  v = g_dbus_connection_call_finish (bus, async_result, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (v);
+  g_variant_get (v, "(^a&s)", &actions);
+  g_assert_cmpuint (g_strv_length (actions), ==, G_N_ELEMENTS (exported_entries));
+  g_free (actions);
+  g_variant_unref (v);
+  g_clear_object (&async_result);
 
   /* check that calling "Describe" works */
-  g_idle_add (call_describe, loop);
-  g_main_loop_run (loop);
+  g_dbus_connection_call (bus,
+                          g_dbus_connection_get_unique_name (bus),
+                          "/",
+                          "org.gtk.Actions",
+                          "Describe",
+                          g_variant_new ("(s)", "copy"),
+                          NULL,
+                          0,
+                          G_MAXINT,
+                          NULL,
+                          async_result_cb,
+                          &async_result);
+
+  while (async_result == NULL)
+    g_main_context_iteration (NULL, TRUE);
+
+  v = g_dbus_connection_call_finish (bus, async_result, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (v);
+  /* FIXME: there's an extra level of tuplelization in here */
+  g_variant_get (v, "((bgav))", &enabled, &param, &iter);
+  g_assert_true (enabled);
+  g_assert_cmpstr (param, ==, "");
+  g_assert_cmpint (g_variant_iter_n_children (iter), ==, 0);
+  g_free (param);
+  g_variant_iter_free (iter);
+  g_variant_unref (v);
+  g_clear_object (&async_result);
 
   /* test that the initial transfer works */
   g_assert_true (G_IS_DBUS_ACTION_GROUP (proxy));
@@ -931,7 +903,6 @@ test_dbus_export (void)
   g_signal_handler_disconnect (proxy, state_changed_signal_id);
   g_object_unref (proxy);
   g_object_unref (group);
-  g_main_loop_unref (loop);
   g_object_unref (bus);
 
   session_bus_down ();
@@ -1016,9 +987,7 @@ test_bug679509 (void)
 {
   GDBusConnection *bus;
   GDBusActionGroup *proxy;
-  GMainLoop *loop;
-
-  loop = g_main_loop_new (NULL, FALSE);
+  gboolean timed_out = FALSE;
 
   session_bus_up ();
   bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
@@ -1027,10 +996,10 @@ test_bug679509 (void)
   g_strfreev (g_action_group_list_actions (G_ACTION_GROUP (proxy)));
   g_object_unref (proxy);
 
-  g_timeout_add (100, stop_loop, loop);
-  g_main_loop_run (loop);
+  g_timeout_add (100, timeout_cb, &timed_out);
+  while (!timed_out)
+    g_main_context_iteration (NULL, TRUE);
 
-  g_main_loop_unref (loop);
   g_object_unref (bus);
 
   session_bus_down ();

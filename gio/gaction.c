@@ -437,8 +437,9 @@ g_action_name_is_valid (const gchar *action_name)
 /**
  * g_action_parse_detailed_name:
  * @detailed_name: a detailed action name
- * @action_name: (out): the action name
- * @target_value: (out): the target value, or %NULL for no target
+ * @action_name: (out) (optional) (not nullable) (transfer full): the action name
+ * @target_value: (out) (optional) (nullable) (transfer full): the target value,
+ *   or %NULL for no target
  * @error: a pointer to a %NULL #GError, or %NULL
  *
  * Parses a detailed action name into its separate name and target
@@ -448,23 +449,29 @@ g_action_name_is_valid (const gchar *action_name)
  *
  * The first format is used to represent an action name with no target
  * value and consists of just an action name containing no whitespace
- * nor the characters ':', '(' or ')'.  For example: "app.action".
+ * nor the characters `:`, `(` or `)`.  For example: `app.action`.
  *
  * The second format is used to represent an action with a target value
- * that is a non-empty string consisting only of alphanumerics, plus '-'
- * and '.'.  In that case, the action name and target value are
- * separated by a double colon ("::").  For example:
- * "app.action::target".
+ * that is a non-empty string consisting only of alphanumerics, plus `-`
+ * and `.`.  In that case, the action name and target value are
+ * separated by a double colon (`::`).  For example:
+ * `app.action::target`.
  *
  * The third format is used to represent an action with any type of
  * target value, including strings.  The target value follows the action
- * name, surrounded in parens.  For example: "app.action(42)".  The
+ * name, surrounded in parens.  For example: `app.action(42)`.  The
  * target value is parsed using g_variant_parse().  If a tuple-typed
  * value is desired, it must be specified in the same way, resulting in
- * two sets of parens, for example: "app.action((1,2,3))".  A string
- * target can be specified this way as well: "app.action('target')".
- * For strings, this third format must be used if * target value is
- * empty or contains characters other than alphanumerics, '-' and '.'.
+ * two sets of parens, for example: `app.action((1,2,3))`.  A string
+ * target can be specified this way as well: `app.action('target')`.
+ * For strings, this third format must be used if target value is
+ * empty or contains characters other than alphanumerics, `-` and `.`.
+ *
+ * If this function returns %TRUE, a non-%NULL value is guaranteed to be returned
+ * in @action_name (if a pointer is passed in). A %NULL value may still be
+ * returned in @target_value, as the @detailed_name may not contain a target.
+ *
+ * If returned, the #GVariant in @target_value is guaranteed to not be floating.
  *
  * Returns: %TRUE if successful, else %FALSE with @error set
  *
