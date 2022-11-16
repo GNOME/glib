@@ -1,7 +1,7 @@
 project('glib', 'c',
   version : '2.75.1',
   # NOTE: See the policy in docs/meson-version.md before changing the Meson dependency
-  meson_version : '>= 0.60.0',
+  meson_version : '>= 0.64.0',
   default_options : [
     'buildtype=debugoptimized',
     'warning_level=3',

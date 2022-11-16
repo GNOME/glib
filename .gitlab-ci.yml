@@ -11,10 +11,10 @@ cache:
     - _ccache/
 
 variables:
-  FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v19"
-  COVERITY_IMAGE: "registry.gitlab.gnome.org/gnome/glib/coverity:v7"
-  DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v14"
-  MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v9"
+  FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v20"
+  COVERITY_IMAGE: "registry.gitlab.gnome.org/gnome/glib/coverity:v8"
+  DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v15"
+  MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v10"
   MESON_TEST_TIMEOUT_MULTIPLIER: 4
   G_MESSAGES_DEBUG: all
   MESON_COMMON_OPTIONS: "--buildtype debug --wrap-mode=nodownload --fatal-meson-warnings"
@@ -441,6 +441,9 @@ freebsd-12-x86_64:
     LANG: C.UTF-8
   before_script:
     - bash .gitlab-ci/show-execution-environment.sh
+    - python3 -m ensurepip --user
+    - /var/tmp/gitlab_runner/.local/bin/pip3 install --user meson==0.64.0
+    - export PATH=/var/tmp/gitlab_runner/.local/bin:$PATH
   script:
     # We cannot use -Wl,--no-undefined because GLib uses 'environ' variable.
     # FreeBSD supports xattr, but its API is different from Linux xattr.
@@ -474,6 +477,9 @@ freebsd-13-x86_64:
     LANG: C.UTF-8
   before_script:
     - bash .gitlab-ci/show-execution-environment.sh
+    - python3 -m ensurepip --user
+    - /var/tmp/gitlab_runner/.local/bin/pip3 install --user meson==0.64.0
+    - export PATH=/var/tmp/gitlab_runner/.local/bin:$PATH
   script:
     - meson ${MESON_COMMON_OPTIONS} --localstatedir=/var -Db_lundef=false -Dxattr=false _build
     - ninja -C _build
@@ -505,7 +511,7 @@ macos:
     CFLAGS: '-Wno-overlength-strings'
   before_script:
     - bash .gitlab-ci/show-execution-environment.sh
-    - pip3 install --user meson==0.60.1
+    - pip3 install --user meson==0.64.0
     - pip3 install --user ninja
     - export PATH=/Users/gitlabrunner/Library/Python/3.7/bin:$PATH
   script:

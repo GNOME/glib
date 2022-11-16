@@ -66,7 +66,7 @@ RUN locale-gen de_DE.UTF-8 \
 
 ENV LANG=C.UTF-8 LANGUAGE=C.UTF-8 LC_ALL=C.UTF-8
 
-RUN pip3 install meson==0.60.3
+RUN pip3 install meson==0.64.0
 
 # FIXME: Once we use Debian Bookworm, we can just install the `reuse` package
 RUN pip3 install reuse==1.0.0
