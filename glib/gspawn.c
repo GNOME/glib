@@ -1343,21 +1343,6 @@ dupfd_cloexec (int old_fd, int new_fd_min)
   return fd;
 }
 
-/* fdwalk()-compatible callback to close a valid fd.
- * It is an error to pass an invalid fd (causing EBADF) to this function.
- *
- * This function is called between fork() and exec() and hence must be
- * async-signal-safe (see signal-safety(7)).
- */
-G_GNUC_UNUSED static int
-close_func (void *data, int fd)
-{
-  if (fd >= GPOINTER_TO_INT (data))
-    g_close (fd, NULL);
-
-  return 0;
-}
-
 /* fdwalk()-compatible callback to close a fd for non-compliant
  * implementations of fdwalk() that potentially pass already
  * closed fds.
@@ -1678,7 +1663,7 @@ safe_closefrom (int lowfd)
   if (ret == 0 || errno != ENOSYS)
     return ret;
 #endif  /* HAVE_CLOSE_RANGE */
-  ret = safe_fdwalk (close_func, GINT_TO_POINTER (lowfd));
+  ret = safe_fdwalk (close_func_with_invalid_fds, GINT_TO_POINTER (lowfd));
 
   if (ret < 0 && errno == ENOSYS)
     ret = safe_fdwalk_with_invalid_fds (close_func_with_invalid_fds, GINT_TO_POINTER (lowfd));
