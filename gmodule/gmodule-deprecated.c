@@ -5,7 +5,10 @@
  * to continue using G_MODULE_SUFFIX in the implementation of
  * g_module_build_path() which is also deprecated API.
  */
+#ifndef GLIB_DISABLE_DEPRECATION_WARNINGS
 #define GLIB_DISABLE_DEPRECATION_WARNINGS
+#endif
+
 #include <glib.h>
 
 #if (G_MODULE_IMPL == G_MODULE_IMPL_AR) || (G_MODULE_IMPL == G_MODULE_IMPL_DL)
