@@ -2208,13 +2208,15 @@ g_io_channel_write_chars (GIOChannel   *channel,
   gssize wrote_bytes = 0;
 
   g_return_val_if_fail (channel != NULL, G_IO_STATUS_ERROR);
+  g_return_val_if_fail (buf != NULL || count == 0, G_IO_STATUS_ERROR);
   g_return_val_if_fail ((error == NULL) || (*error == NULL),
 			G_IO_STATUS_ERROR);
   g_return_val_if_fail (channel->is_writeable, G_IO_STATUS_ERROR);
 
-  if ((count < 0) && buf)
-    count = strlen (buf);
-  count_unsigned = count;
+  if (count < 0)
+    count_unsigned = strlen (buf);
+  else
+    count_unsigned = count;
 
   if (count_unsigned == 0)
     {
@@ -2223,8 +2225,7 @@ g_io_channel_write_chars (GIOChannel   *channel,
       return G_IO_STATUS_NORMAL;
     }
 
-  g_return_val_if_fail (buf != NULL, G_IO_STATUS_ERROR);
-  g_return_val_if_fail (count_unsigned > 0, G_IO_STATUS_ERROR);
+  g_assert (count_unsigned > 0);
 
   /* Raw write case */
 
