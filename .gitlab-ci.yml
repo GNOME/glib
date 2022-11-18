@@ -91,7 +91,7 @@ fedora-x86_64:
   stage: build
   needs: []
   variables:
-    CFLAGS: "-coverage -ftest-coverage -fprofile-arcs -Wnonnull"
+    CFLAGS: "-coverage -ftest-coverage -fprofile-arcs"
   script:
     - meson ${MESON_COMMON_OPTIONS}
             --werror
@@ -139,8 +139,6 @@ debian-stable-x86_64:
   image: $DEBIAN_IMAGE
   stage: build
   needs: []
-  variables:
-    CFLAGS: "-Wnonnull"
   script:
     - meson ${MESON_COMMON_OPTIONS}
             --werror
