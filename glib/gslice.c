@@ -212,7 +212,7 @@
 #endif
 
 /* special helpers to avoid gmessage.c dependency */
-static void mem_error (const char *format, ...) G_GNUC_PRINTF (1,2);
+G_NORETURN static void mem_error (const char *format, ...) G_GNUC_PRINTF (1,2) G_ANALYZER_NORETURN;
 #define mem_assert(cond)    do { if (G_LIKELY (cond)) ; else mem_error ("assertion failed: %s", #cond); } while (0)
 
 /* --- structures --- */
