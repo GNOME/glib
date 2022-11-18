@@ -757,11 +757,15 @@ on_communicate_complete (GObject               *proc,
     {
       if (data->is_utf8)
         {
+          g_assert_nonnull (stdout_str);
           stdout_data = (guint8*)stdout_str;
           stdout_len = strlen (stdout_str);
         }
       else
-        stdout_data = g_bytes_get_data (stdout_bytes, &stdout_len);
+        {
+          g_assert_nonnull (stdout_bytes);
+          stdout_data = g_bytes_get_data (stdout_bytes, &stdout_len);
+        }
 
       g_assert_cmpmem (stdout_data, stdout_len, "# hello world" LINEEND, 13 + strlen (LINEEND));
     }
