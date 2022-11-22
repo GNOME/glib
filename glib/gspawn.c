@@ -1412,6 +1412,8 @@ filename_to_fd (const char *p)
 }
 #endif
 
+static int safe_fdwalk_with_invalid_fds (int (*cb)(void *data, int fd), void *data);
+
 /* This function is called between fork() and exec() and hence must be
  * async-signal-safe (see signal-safety(7)). */
 static int
@@ -1493,8 +1495,7 @@ safe_fdwalk (int (*cb)(void *data, int fd), void *data)
   return res;
 #endif
 
-  errno = ENOSYS;
-  return -1;
+  return safe_fdwalk_with_invalid_fds (cb, data);
 #endif
 }
 
@@ -1605,9 +1606,6 @@ safe_fdwalk_set_cloexec (int lowfd)
 
   ret = safe_fdwalk (set_cloexec, GINT_TO_POINTER (lowfd));
 
-  if (ret < 0 && errno == ENOSYS)
-    ret = safe_fdwalk_with_invalid_fds (set_cloexec, GINT_TO_POINTER (lowfd));
-
   return ret;
 }
 
@@ -1664,9 +1662,6 @@ safe_closefrom (int lowfd)
     return ret;
 #endif  /* HAVE_CLOSE_RANGE */
   ret = safe_fdwalk (close_func_with_invalid_fds, GINT_TO_POINTER (lowfd));
-
-  if (ret < 0 && errno == ENOSYS)
-    ret = safe_fdwalk_with_invalid_fds (close_func_with_invalid_fds, GINT_TO_POINTER (lowfd));
 
   return ret;
 #endif
