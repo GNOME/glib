@@ -30,6 +30,7 @@
 
 #include "gasyncqueue.h"
 #include "gasyncqueueprivate.h"
+#include "glib-private.h"
 #include "gmain.h"
 #include "gtestutils.h"
 #include "gthreadprivate.h"
@@ -649,9 +650,12 @@ g_thread_pool_new_full (GFunc           func,
         }
       else
         {
+          GThread *pool_spawner = NULL;
+
           spawn_thread_queue = g_async_queue_new ();
           g_cond_init (&spawn_thread_cond);
-          g_thread_new ("pool-spawner", g_thread_pool_spawn_thread, NULL);
+          pool_spawner = g_thread_new ("pool-spawner", g_thread_pool_spawn_thread, NULL);
+          g_ignore_leak (pool_spawner);
         }
     }
   G_UNLOCK (init);
