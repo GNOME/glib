@@ -2178,6 +2178,31 @@ test_transliteration (void)
   g_free (out);
 }
 
+static void
+test_str_equal (void)
+{
+  const guchar *unsigned_a = (const guchar *) "a";
+
+  g_test_summary ("Test macro and function forms of g_str_equal()");
+
+  /* Test function form. */
+  g_assert_true ((g_str_equal) ("a", "a"));
+  g_assert_false ((g_str_equal) ("a", "b"));
+
+  /* Test macro form. */
+  g_assert_true (g_str_equal ("a", "a"));
+  g_assert_false (g_str_equal ("a", "b"));
+
+  /* As g_str_equal() is defined for use with GHashTable, it takes gconstpointer
+   * arguments, so can historically accept unsigned arguments. We need to
+   * continue to support that. */
+  g_assert_true ((g_str_equal) (unsigned_a, "a"));
+  g_assert_false ((g_str_equal) (unsigned_a, "b"));
+
+  g_assert_true (g_str_equal (unsigned_a, "a"));
+  g_assert_false (g_str_equal (unsigned_a, "b"));
+}
+
 /* Testing g_strv_contains() function with various cases */
 static void
 test_strv_contains (void)
@@ -2676,6 +2701,7 @@ main (int   argc,
   g_test_add_func ("/strfuncs/strv-length", test_strv_length);
   g_test_add_func ("/strfuncs/test-is-to-digit", test_is_to_digit);
   g_test_add_func ("/strfuncs/transliteration", test_transliteration);
+  g_test_add_func ("/strfuncs/str-equal", test_str_equal);
 
   return g_test_run();
 }
