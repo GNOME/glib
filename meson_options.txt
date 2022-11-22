@@ -4,12 +4,6 @@ option('runtime_libdir',
        description : 'install runtime libraries relative to libdir',
        deprecated: true)
 
-option('iconv',
-       type : 'combo',
-       choices : ['auto', 'libc', 'external'],
-       value : 'auto',
-       deprecated: true,)
-
 option('charsetalias_dir',
        type : 'string',
        value : '',
