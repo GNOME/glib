@@ -3537,10 +3537,14 @@ test_query_zero_length_content_type (void)
   GFileIOStream *iostream;
 
   g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=755795");
-  /* This is historic behaviour. See:
+  /* Historically, GLib used to explicitly consider zero-size files as text/plain,
+   * so they opened in a text editor. In 2.76, we changed that to application/x-zerosize,
+   * because that’s what xdgmime uses:
    * - https://gitlab.gnome.org/GNOME/glib/-/blob/2.74.0/gio/glocalfileinfo.c#L1360-1369
-   * - https://bugzilla.gnome.org/show_bug.cgi?id=755795 */
-  g_test_summary ("empty files should always be considered text/plain");
+   * - https://bugzilla.gnome.org/show_bug.cgi?id=755795
+   * - https://gitlab.gnome.org/GNOME/glib/-/issues/2777
+   */
+  g_test_summary ("empty files should always be considered application/x-zerosize");
 
   empty_file = g_file_new_tmp ("empty-file-XXXXXX", &iostream, &error);
   g_assert_no_error (error);
@@ -3557,7 +3561,7 @@ test_query_zero_length_content_type (void)
   g_assert_no_error (error);
 
 #ifndef __APPLE__
-  g_assert_cmpstr (g_file_info_get_content_type (file_info), ==, "text/plain");
+  g_assert_cmpstr (g_file_info_get_content_type (file_info), ==, "application/x-zerosize");
 #else
   g_assert_cmpstr (g_file_info_get_content_type (file_info), ==, "public.text");
 #endif

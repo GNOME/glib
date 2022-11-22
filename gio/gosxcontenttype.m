@@ -419,6 +419,12 @@ g_content_type_from_mime_type (const gchar *mime_type)
   if (strcmp (mime_type, "text/plain") == 0)
     return g_strdup ("public.text");
 
+  /* I don’t know of an appropriate equivalent for application/x-zerosize, but
+   * historically GLib has returned public.text for zero-sized files, so let’s
+   * continue doing that. */
+  if (strcmp (mime_type, "application/x-zerosize") == 0)
+    return g_strdup ("public.text");
+
   /* Non standard type */
   if (strcmp (mime_type, "application/x-executable") == 0)
     return g_strdup ("public.executable");
