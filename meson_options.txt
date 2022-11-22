@@ -1,7 +1,8 @@
 option('runtime_libdir',
        type : 'string',
        value : '',
-       description : 'install runtime libraries relative to libdir')
+       description : 'install runtime libraries relative to libdir',
+       deprecated: true)
 
 option('iconv',
        type : 'combo',
