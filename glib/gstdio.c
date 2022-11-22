@@ -1839,7 +1839,7 @@ g_close (gint       fd,
 
 /**
  * g_clear_fd: (skip)
- * @fd_ptr: (not nullable): a pointer to a file descriptor
+ * @fd_ptr: (not optional) (inout) (transfer full): a pointer to a file descriptor
  * @error: Used to return an error on failure
  *
  * If @fd_ptr points to a file descriptor, close it and return
