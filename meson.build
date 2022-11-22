@@ -10,6 +10,15 @@ project('glib', 'c',
 )
 
 cc = meson.get_compiler('c')
+c_standards = {}
+
+foreach std : ['90', '99', '11', '17']
+  arg = (cc.get_id() == 'msvc' ? '/std:' : '-std=') + 'c' + std
+  if cc.has_argument(arg)
+    c_standards += { std: arg }
+  endif
+endforeach
+
 have_cxx = add_languages('cpp', native: false, required: get_option('oss_fuzz').enabled())
 if have_cxx
   cxx = meson.get_compiler('cpp')

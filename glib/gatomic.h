@@ -170,7 +170,7 @@ G_END_DECLS
     (void) (0 ? *(atomic) ^ *(atomic) : 1);                                  \
     __atomic_fetch_sub ((atomic), 1, __ATOMIC_SEQ_CST) == 1;                 \
   }))
-#if defined(glib_typeof) && defined(__cplusplus)
+#if defined(glib_typeof) && defined(G_CXX_STD_VERSION)
 /* See comments below about equivalent g_atomic_pointer_compare_and_exchange()
  * shenanigans for type-safety when compiling in C++ mode. */
 #define g_atomic_int_compare_and_exchange(atomic, oldval, newval) \
@@ -180,7 +180,7 @@ G_END_DECLS
     (void) (0 ? *(atomic) ^ (newval) ^ (oldval) : 1);                        \
     __atomic_compare_exchange_n ((atomic), &gaicae_oldval, (newval), FALSE, __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST) ? TRUE : FALSE; \
   }))
-#else /* if !(defined(glib_typeof) && defined(__cplusplus)) */
+#else /* if !(defined(glib_typeof) && defined(G_CXX_STD_VERSION)) */
 #define g_atomic_int_compare_and_exchange(atomic, oldval, newval) \
   (G_GNUC_EXTENSION ({                                                       \
     gint gaicae_oldval = (oldval);                                           \
@@ -230,7 +230,7 @@ G_END_DECLS
     (guint) __atomic_fetch_xor ((atomic), (val), __ATOMIC_SEQ_CST);          \
   }))
 
-#if defined(glib_typeof) && defined(__cplusplus)
+#if defined(glib_typeof) && defined(G_CXX_STD_VERSION)
 /* This is typesafe because we check we can assign oldval to the type of
  * (*atomic). Unfortunately it can only be done in C++ because gcc/clang warn
  * when atomic is volatile and not oldval, or when atomic is gsize* and oldval
@@ -248,7 +248,7 @@ G_END_DECLS
     (void) (0 ? (gpointer) *(atomic) : NULL);                                \
     __atomic_compare_exchange_n ((atomic), &gapcae_oldval, (newval), FALSE, __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST) ? TRUE : FALSE; \
   }))
-#else /* if !(defined(glib_typeof) && defined(__cplusplus) */
+#else /* if !(defined(glib_typeof) && defined(G_CXX_STD_VERSION) */
 #define g_atomic_pointer_compare_and_exchange(atomic, oldval, newval) \
   (G_GNUC_EXTENSION ({                                                       \
     G_STATIC_ASSERT (sizeof (oldval) == sizeof (gpointer));                  \

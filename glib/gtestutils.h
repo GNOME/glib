@@ -195,7 +195,7 @@ typedef void (*GTestFixtureFunc) (gpointer      fixture,
                                         } G_STMT_END
 
 /* Use nullptr in C++ to catch misuse of these macros. */
-#if defined(__cplusplus) && __cplusplus >= 201100L
+#if G_CXX_STD_CHECK_VERSION (11)
 #define g_assert_null(expr)             G_STMT_START { if G_LIKELY ((expr) == nullptr) ; else \
                                                g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
                                                                     "'" #expr "' should be nullptr"); \
@@ -541,8 +541,8 @@ void    g_assertion_message             (const char     *domain,
                                          int             line,
                                          const char     *func,
                                          const char     *message) G_ANALYZER_NORETURN;
-GLIB_AVAILABLE_IN_ALL
 G_NORETURN
+GLIB_AVAILABLE_IN_ALL
 void    g_assertion_message_expr        (const char     *domain,
                                          const char     *file,
                                          int             line,

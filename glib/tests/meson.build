@@ -3,6 +3,7 @@ glib_tests = {
   'asyncqueue' : {},
   'atomic' : {
     'c_args' : cc.get_id() == 'gcc' ? ['-Wstrict-aliasing=2'] : [],
+    'c_standards': c_standards.keys(),
   },
   'base64' : {},
   'bitlock' : {},
@@ -48,7 +49,9 @@ glib_tests = {
   'keyfile' : {},
   'list' : {},
   'logging' : {},
-  'macros' : {},
+  'macros' : {
+    'c_standards': c_standards.keys(),
+  },
   'mainloop' : {},
   'mappedfile' : {},
   'mapping' : {},
@@ -152,7 +155,9 @@ glib_tests = {
   'utf8-pointer' : {},
   'utf8-validate' : {},
   'utf8-misc' : {},
-  'utils' : {},
+  'utils' : {
+    'c_standards': c_standards.keys(),
+  },
   'unicode' : {},
   'unicode-encoding' : {},
   'unicode-normalize': {},
@@ -187,7 +192,7 @@ if have_cxx
       'cxx-@0@'.format(std) : {
         'source' : ['cxx.cpp'],
         'suite' : ['cpp'],
-        'cpp_args' : [arg],
+        'cpp_args' : [arg, '-D_G_EXPECTED_CXX_STANDARD="@0@"'.format(std)],
       },
     }
   endforeach
@@ -293,6 +298,23 @@ if host_machine.system() == 'windows'
     'spawn-test-win32-gui' : { 'win_subsystem': 'windows' },
   }
 endif
+
+foreach test_name, extra_args : glib_tests
+  foreach std: extra_args.get('c_standards', [])
+    if c_standards.has_key(std)
+      glib_tests += {
+        '@0@-c-@1@'.format(test_name, std) : extra_args + {
+          'source' : extra_args.get('source', test_name + '.c'),
+          'suite' : ['cc'] + extra_args.get('suite', []),
+          'c_args' : [
+            c_standards.get(std),
+            '-D_G_EXPECTED_C_STANDARD="@0@"'.format(std)
+          ] + extra_args.get('c_args', []),
+        }
+      }
+    endif
+  endforeach
+endforeach
 
 test_env = environment()
 test_env.set('G_TEST_SRCDIR', meson.current_source_dir())

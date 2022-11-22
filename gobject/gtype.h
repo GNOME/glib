@@ -412,7 +412,7 @@ G_BEGIN_DECLS
  * A numerical value which represents the unique identifier of a registered
  * type.
  */
-#if     GLIB_SIZEOF_SIZE_T != GLIB_SIZEOF_LONG || !defined __cplusplus
+#if     GLIB_SIZEOF_SIZE_T != GLIB_SIZEOF_LONG || !defined (G_CXX_STD_VERSION)
 typedef gsize                           GType;
 #else   /* for historic reasons, C++ links against gulong GTypes */
 typedef gulong                          GType;
@@ -2331,7 +2331,8 @@ type_name##_get_type (void) \
 /* Only use this in non-C++ on GCC >= 2.7, except for Darwin/ppc64.
  * See https://bugzilla.gnome.org/show_bug.cgi?id=647145
  */
-#if !defined (__cplusplus) && (G_GNUC_CHECK_VERSION(2, 7)) && !(defined (__APPLE__) && defined (__ppc64__))
+#if !defined (G_CXX_STD_VERSION) && (G_GNUC_CHECK_VERSION(2, 7)) && \
+    !(defined (__APPLE__) && defined (__ppc64__))
 #define _G_DEFINE_BOXED_TYPE_BEGIN(TypeName, type_name, copy_func, free_func) \
 static GType type_name##_get_type_once (void); \
 \
