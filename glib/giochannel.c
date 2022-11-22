@@ -2267,7 +2267,7 @@ g_io_channel_write_chars (GIOChannel   *channel,
   if (!channel->write_buf)
     channel->write_buf = g_string_sized_new (channel->buf_size);
 
-  while (wrote_bytes < count)
+  while (wrote_bytes < count_unsigned)
     {
       gsize space_in_buf;
 
