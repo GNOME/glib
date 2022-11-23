@@ -54,7 +54,7 @@ msgstr "GApplication 옵션을 표시합니다"
 
 #: gio/gapplication.c:547
 msgid "Enter GApplication service mode (use from D-Bus service files)"
-msgstr "GApplication 서비스 모드로 들어갑니다 (D-버스 서비스 파일에서 사용)"
+msgstr "GApplication 서비스 모드로 들어갑니다 (D-Bus 서비스 파일에서 사용)"
 
 #: gio/gapplication.c:559
 msgid "Override the application’s ID"
@@ -79,7 +79,7 @@ msgstr "버전 출력"
 
 #: gio/gapplication-tool.c:52 gio/gsettings-tool.c:592
 msgid "Print version information and exit"
-msgstr "버전 정보를 표시하고 끝납니다"
+msgstr "버전 정보를 표시하고 종료합니다"
 
 #: gio/gapplication-tool.c:55
 msgid "List applications"
@@ -88,7 +88,7 @@ msgstr "프로그램 목록"
 #: gio/gapplication-tool.c:56
 msgid "List the installed D-Bus activatable applications (by .desktop files)"
 msgstr ""
-"D-버스로 동작할 수 있는(.desktop 파일 사용) 프로그램의 설치 목록을 봅니다"
+"D-Bus로 동작할 수 있는(.desktop 파일 사용) 프로그램의 설치 목록을 봅니다"
 
 #: gio/gapplication-tool.c:59
 msgid "Launch an application"
@@ -137,7 +137,7 @@ msgstr "자세한 도움말을 표시하는 명령"
 
 #: gio/gapplication-tool.c:75
 msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
-msgstr "D-버스 형식의 프로그램 ID (예: org.example.viewer)"
+msgstr "D-Bus 형식의 프로그램 ID (예: org.example.viewer)"
 
 #: gio/gapplication-tool.c:76 gio/glib-compile-resources.c:822
 #: gio/glib-compile-resources.c:828 gio/glib-compile-resources.c:857
@@ -230,7 +230,7 @@ msgstr ""
 #: gio/gapplication-tool.c:270
 #, c-format
 msgid "unable to connect to D-Bus: %s\n"
-msgstr "D-버스에 연결할 수 없습니다: %s\n"
+msgstr "D-Bus에 연결할 수 없습니다: %s\n"
 
 #: gio/gapplication-tool.c:290
 #, c-format
