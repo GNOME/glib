@@ -1,4 +1,4 @@
-FROM registry.gitlab.gnome.org/gnome/glib/fedora:v18
+FROM registry.gitlab.gnome.org/gnome/glib/fedora:v20
 
 ARG COVERITY_SCAN_PROJECT_NAME
 ARG COVERITY_SCAN_TOKEN
