@@ -9,6 +9,8 @@ project('glib', 'c',
   ]
 )
 
+gnome = import('gnome')
+
 cc = meson.get_compiler('c')
 c_standards = {}
 

@@ -19,6 +19,8 @@
  * Author: Ryan Lortie <desrt@desrt.ca>
  */
 
+#pragma once
+
 #if !defined (__GIO_GIO_H_INSIDE__) && !defined (GIO_COMPILATION)
 #error "Only <gio/gio.h> can be included directly."
 #endif
