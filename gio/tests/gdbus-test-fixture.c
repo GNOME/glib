@@ -80,7 +80,7 @@ int
 main (int   argc,
       char *argv[])
 {
-  g_test_init (&argc, &argv, NULL);
+  g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
 
   /* This test simply ensures that we can bring the GTestDBus up and down a hand
    * full of times in a row, each time successfully activating the in-tree service
