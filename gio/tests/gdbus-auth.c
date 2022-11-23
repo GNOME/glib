@@ -287,7 +287,7 @@ main (int   argc,
 
   temp_dbus_keyrings_setup ();
 
-  g_test_init (&argc, &argv, NULL);
+  g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
 
   g_test_add_func ("/gdbus/auth/client/EXTERNAL",         auth_client_external);
   g_test_add_func ("/gdbus/auth/client/DBUS_COOKIE_SHA1", auth_client_dbus_cookie_sha1);

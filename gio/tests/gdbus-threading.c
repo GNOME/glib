@@ -677,7 +677,7 @@ main (int   argc,
   gint ret;
   gchar *path;
 
-  g_test_init (&argc, &argv, NULL);
+  g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
 
   session_bus_up ();
 

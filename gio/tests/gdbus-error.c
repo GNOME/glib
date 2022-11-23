@@ -260,7 +260,7 @@ int
 main (int   argc,
       char *argv[])
 {
-  g_test_init (&argc, &argv, NULL);
+  g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
 
   g_test_add_func ("/gdbus/registered-errors", test_registered_errors);
   g_test_add_func ("/gdbus/unregistered-errors", test_unregistered_errors);

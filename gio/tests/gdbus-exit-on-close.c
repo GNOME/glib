@@ -201,7 +201,7 @@ main (int   argc,
 {
   gint i;
 
-  g_test_init (&argc, &argv, NULL);
+  g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
 
   for (i = 0; cases[i].name != NULL; i++)
     {

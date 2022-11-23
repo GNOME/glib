@@ -217,7 +217,7 @@ main (int   argc,
 {
   setlocale (LC_ALL, "C");
 
-  g_test_init (&argc, &argv, NULL);
+  g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
 
   g_test_add_func ("/gdbus/message/lock", message_lock);
   g_test_add_func ("/gdbus/message/copy", message_copy);

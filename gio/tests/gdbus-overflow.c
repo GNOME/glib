@@ -209,7 +209,7 @@ main (int   argc,
   GDBusNodeInfo *introspection_data = NULL;
   gchar *tmpdir = NULL;
 
-  g_test_init (&argc, &argv, NULL);
+  g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
 
   introspection_data = g_dbus_node_info_new_for_xml (test_interface_introspection_xml, NULL);
   g_assert (introspection_data != NULL);
