@@ -22,26 +22,92 @@
 
 #include "gsandbox.h"
 
+#include <string.h>
+
+#define SNAP_CONFINEMENT_PREFIX "confinement:"
+
 static gboolean
 is_flatpak (void)
 {
-  return g_file_test ("/.flatpak-info", G_FILE_TEST_EXISTS);
+  const char *flatpak_info = "/.flatpak-info";
+  gboolean found;
+
+#ifdef G_PORTAL_SUPPORT_TEST
+        char *test_key_file =
+          g_build_filename (g_get_user_runtime_dir (), flatpak_info, NULL);
+        flatpak_info = test_key_file;
+#endif
+
+  found = g_file_test (flatpak_info, G_FILE_TEST_EXISTS);
+
+#ifdef G_PORTAL_SUPPORT_TEST
+  g_clear_pointer (&test_key_file, g_free);
+#endif
+
+  return found;
+}
+
+static gchar *
+get_snap_confinement (const char  *snap_yaml,
+                      GError     **error)
+{
+  char *confinement = NULL;
+  char *yaml_contents;
+
+  if (g_file_get_contents (snap_yaml, &yaml_contents, NULL, error))
+    {
+      const char *line = yaml_contents;
+
+      do
+        {
+          if (g_str_has_prefix (line, SNAP_CONFINEMENT_PREFIX))
+            break;
+
+          line = strchr (line, '\n');
+          if (line)
+            line += 1;
+        }
+      while (line != NULL);
+
+      if (line)
+        {
+          const char *start = line + strlen (SNAP_CONFINEMENT_PREFIX);
+          const char *end = strchr (start, '\n');
+
+          confinement =
+            g_strstrip (end ? g_strndup (start, end-start) : g_strdup (start));
+        }
+
+      g_free (yaml_contents);
+    }
+
+  return g_steal_pointer (&confinement);
 }
 
 static gboolean
 is_snap (void)
 {
+  GError *error = NULL;
   const gchar *snap_path;
   gchar *yaml_path;
+  char *confinement;
   gboolean result;
 
   snap_path = g_getenv ("SNAP");
   if (snap_path == NULL)
     return FALSE;
 
+  result = FALSE;
   yaml_path = g_build_filename (snap_path, "meta", "snap.yaml", NULL);
-  result = g_file_test (yaml_path, G_FILE_TEST_EXISTS);
+  confinement = get_snap_confinement (yaml_path, &error);
   g_free (yaml_path);
+
+  /* Classic snaps are de-facto no sandboxed apps, so we can ignore them */
+  if (!error && g_strcmp0 (confinement, "classic") != 0)
+    result = TRUE;
+
+  g_clear_error (&error);
+  g_free (confinement);
 
   return result;
 }

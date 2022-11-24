@@ -17,6 +17,8 @@
  * Public License along with this library; if not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "portal-support-utils.h"
+
 #include "../gsandbox.h"
 #include <gio/gio.h>
 #include <glib/gstdio.h>
@@ -30,40 +32,57 @@ test_sandbox_none (void)
 static void
 test_sandbox_snap (void)
 {
-  gchar *temp_dir, *snap_path, *snap_version_path, *meta_path, *yaml_path;
-  GError *error = NULL;
+  const char *temp_dir;
+  gchar *snap_path;
 
-  temp_dir = g_dir_make_tmp ("gio-test-sandbox_XXXXXX", &error);
-  g_assert_no_error (error);
-  snap_path = g_build_filename (temp_dir, "snap", NULL);
-  snap_version_path = g_build_filename (snap_path, "current", NULL);
-  meta_path = g_build_filename (snap_version_path, "meta", NULL);
-  yaml_path = g_build_filename (meta_path, "snap.yaml", NULL);
-  g_mkdir_with_parents (meta_path, 0700);
-  g_file_set_contents (yaml_path, "", -1, NULL);
-  g_setenv ("SNAP", snap_version_path, TRUE);
+  temp_dir = g_getenv ("G_TEST_TMPDIR");
+  g_assert_nonnull (temp_dir);
+
+  snap_path = g_build_filename (temp_dir, "snap", "current", NULL);
+  create_fake_snap_yaml (snap_path, FALSE);
+  g_setenv ("SNAP", snap_path, TRUE);
 
   g_assert_cmpint (glib_get_sandbox_type (), ==, G_SANDBOX_TYPE_SNAP);
 
   g_unsetenv ("SNAP");
-  g_unlink (yaml_path);
-  g_rmdir (meta_path);
-  g_rmdir (snap_version_path);
-  g_rmdir (snap_path);
-  g_rmdir (temp_dir);
-  g_free (temp_dir);
   g_free (snap_path);
-  g_free (meta_path);
-  g_free (yaml_path);
+}
+
+static void
+test_sandbox_snap_classic (void)
+{
+  const char *temp_dir;
+  char *snap_path;
+
+  temp_dir = g_getenv ("G_TEST_TMPDIR");
+  g_assert_nonnull (temp_dir);
+
+  snap_path = g_build_filename (temp_dir, "snap", "current", NULL);
+  create_fake_snap_yaml (snap_path, TRUE);
+  g_setenv ("SNAP", snap_path, TRUE);
+
+  g_assert_cmpint (glib_get_sandbox_type (), ==, G_SANDBOX_TYPE_UNKNOWN);
+
+  g_unsetenv ("SNAP");
+  g_free (snap_path);
+}
+
+static void
+test_sandbox_flatpak (void)
+{
+  create_fake_flatpak_info (g_get_user_runtime_dir (), NULL, NULL);
+  g_assert_cmpint (glib_get_sandbox_type (), ==, G_SANDBOX_TYPE_FLATPAK);
 }
 
 int
 main (int argc, char **argv)
 {
-  g_test_init (&argc, &argv, NULL);
+  g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
 
   g_test_add_func ("/sandbox/none", test_sandbox_none);
   g_test_add_func ("/sandbox/snap", test_sandbox_snap);
+  g_test_add_func ("/sandbox/classic-snap", test_sandbox_snap_classic);
+  g_test_add_func ("/sandbox/flatpak", test_sandbox_flatpak);
 
   return g_test_run ();
 }

@@ -108,7 +108,8 @@ gio_tests = {
   'proxy-test' : {},
   'readwrite' : {},
   'sandbox' : {
-    'source': ['sandbox.c', '../gsandbox.c'],
+    'extra_sources': ['../gsandbox.c', 'portal-support-utils.c'],
+    'c_args': ['-DG_PORTAL_SUPPORT_TEST'],
   },
   'simple-async-result' : {},
   'simple-proxy' : {},
@@ -227,6 +228,45 @@ if host_machine.system() != 'windows'
     'gdbus-peer-object-manager' : {},
     'gdbus-sasl' : {},
     'live-g-file' : {},
+    'portal-support-flatpak-none' : {
+      'extra_sources': ['../gportalsupport.c', '../gsandbox.c', 'portal-support-utils.c'],
+      'c_args': ['-DG_PORTAL_SUPPORT_TEST'],
+      'suite': ['portal-support'],
+    },
+    'portal-support-flatpak-full' : {
+      'extra_sources': ['../gportalsupport.c', '../gsandbox.c', 'portal-support-utils.c'],
+      'c_args': ['-DG_PORTAL_SUPPORT_TEST'],
+      'suite': ['portal-support'],
+    },
+    'portal-support-flatpak-network-only' : {
+      'extra_sources': ['../gportalsupport.c', '../gsandbox.c', 'portal-support-utils.c'],
+      'c_args': ['-DG_PORTAL_SUPPORT_TEST'],
+      'suite': ['portal-support'],
+    },
+    'portal-support-flatpak-gsettings-only' : {
+      'extra_sources': ['../gportalsupport.c', '../gsandbox.c', 'portal-support-utils.c'],
+      'c_args': ['-DG_PORTAL_SUPPORT_TEST'],
+      'suite': ['portal-support'],
+    },
+    'portal-support-none' : {
+      'extra_sources': ['../gportalsupport.c', '../gsandbox.c'],
+      'c_args': ['-DG_PORTAL_SUPPORT_TEST'],
+      'suite': ['portal-support'],
+    },
+    'portal-support-env-var' : {
+      'extra_sources': ['../gportalsupport.c', '../gsandbox.c'],
+      'suite': ['portal-support'],
+    },
+    'portal-support-snap' : {
+      'extra_sources': ['../gportalsupport.c', '../gsandbox.c', 'portal-support-utils.c'],
+      'c_args': ['-DG_PORTAL_SUPPORT_TEST'],
+      'suite': ['portal-support'],
+    },
+    'portal-support-snap-classic' : {
+      'extra_sources': ['../gportalsupport.c', '../gsandbox.c', 'portal-support-utils.c'],
+      'c_args': ['-DG_PORTAL_SUPPORT_TEST'],
+      'suite': ['portal-support'],
+    },
     'resolver-parsing' : {'dependencies' : [network_libs]},
     'socket-address' : {},
     'stream-rw_all' : {},
