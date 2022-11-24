@@ -1,3 +1,39 @@
+Overview of changes in GLib 2.74.2
+==================================
+
+* Fix `GVariant` type depths checks on text format variants (work by Philip Withnall) (#2782)
+
+* Fix an obscure corner case with FD handling in `g_spawn_*()` when a process
+  has already closed the standard I/O FDs (work by Ray Strode) (#2795)
+
+* Fix regression in type checking on `const` arguments to `g_str_equal()` (#2809)
+
+* Bugs fixed:
+  - #2782 GVariant type depth not checked on typedecls in text format variants
+    (Philip Withnall)
+  - #2795 [regression] gnome-keyring-daemon uses 100% CPU with glib-2.74.1 (Ray
+    Strode)
+  - #2799 Wrong GTask tag on error return path in
+    g_proxy_resolver_lookup_async() (Michael Catanzaro)
+  - #2809 g_str_equal switched to stricter API (typing) (Philip Withnall)
+  - !3017 Backport !3008 “gio/gdesktopappinfo: Free the wrapped argv array on
+    launch failure” to glib-2-74
+  - !3038 Backport !3035 “portal: Fix broken header guard” to glib-2-74
+  - !3039 Backport !3029 “Revert "Handling collision between standard i/o file
+    descriptors and newly created ones" ” to glib-2-74
+  - !3046 Backport !3045 “gproxyresolver: lookup_finish() should better parallel
+    lookup_async()” to glib-2-74
+  - !3063 Backport !3061 “gvariant-parser: Speed up maybe_wrapper() by an order
+    of magnitude” to glib-2-74
+  - !3084 Backport !3082 “gstrfuncs: Fix regression in types accepted by
+    g_str_equal()” to glib-2-74
+
+* Translation updates:
+  - Abkhazian (Nart Tlisha)
+  - Dutch (Nathan Follens)
+  - Serbian (Мирослав Николић)
+
+
 Overview of changes in GLib 2.74.1
 ==================================
 
