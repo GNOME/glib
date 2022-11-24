@@ -308,8 +308,7 @@ if host_machine.system() != 'windows'
         input :   ['test-codegen.xml'],
         output :  ['gdbus-test-codegen-generated.h',
                    'gdbus-test-codegen-generated.c'],
-        depends : gdbus_codegen_depends,
-        depend_files : gdbus_codegen_depend_files,
+        depend_files : gdbus_codegen_built_files,
         command : [python, gdbus_codegen,
                    '--interface-prefix', 'org.project.',
                    '--output-directory', '@OUTDIR@',
@@ -325,8 +324,7 @@ if host_machine.system() != 'windows'
         input :   ['test-codegen.xml'],
         output :  ['gdbus-test-codegen-generated-min-required-2-64.h',
                    'gdbus-test-codegen-generated-min-required-2-64.c'],
-        depends : gdbus_codegen_depends,
-        depend_files : gdbus_codegen_depend_files,
+        depend_files : gdbus_codegen_built_files,
         command : [python, gdbus_codegen,
                    '--glib-min-required', '2.64',
                    '--interface-prefix', 'org.project.',
@@ -342,8 +340,7 @@ if host_machine.system() != 'windows'
       custom_target('gdbus-test-codegen-generated-interface-info-h',
           input :   ['test-codegen.xml'],
           output :  ['gdbus-test-codegen-generated-interface-info.h'],
-          depends : gdbus_codegen_depends,
-          depend_files : gdbus_codegen_depend_files,
+          depend_files : gdbus_codegen_built_files,
           command : [python, gdbus_codegen,
                      '--interface-info-header',
                      annotate_args,
@@ -352,8 +349,7 @@ if host_machine.system() != 'windows'
       custom_target('gdbus-test-codegen-generated-interface-info-c',
           input :   ['test-codegen.xml'],
           output :  ['gdbus-test-codegen-generated-interface-info.c'],
-          depends : gdbus_codegen_depends,
-          depend_files : gdbus_codegen_depend_files,
+          depend_files : gdbus_codegen_built_files,
           command : [python, gdbus_codegen,
                      '--interface-info-body',
                      annotate_args,
@@ -461,8 +457,7 @@ if host_machine.system() != 'windows'
         input :   ['../org.freedesktop.portal.Documents.xml'],
         output :  ['fake-document-portal-generated.h',
                    'fake-document-portal-generated.c'],
-        depends : gdbus_codegen_depends,
-        depend_files : gdbus_codegen_depend_files,
+        depend_files : gdbus_codegen_built_files,
         command : [python, gdbus_codegen,
                    '--interface-prefix', 'org.freedesktop.portal.',
                    '--output-directory', '@OUTDIR@',
@@ -742,9 +737,6 @@ if not meson.is_cross_build()
     output : ['gresource-big-test.txt'],
     command : [python, '@INPUT0@', '@OUTPUT@'])
 
-  # referenced by test.gresource.xml
-  test_generated_txt = fs.copyfile('test1.txt', 'test-generated.txt')
-
   test_gresource = custom_target('test.gresource',
     input : 'test.gresource.xml',
     output : 'test.gresource',
@@ -755,7 +747,6 @@ if not meson.is_cross_build()
                '--sourcedir=' + meson.current_build_dir(),
                '--internal',
                '@INPUT@'],
-    depends: test_generated_txt,
     install_dir : installed_tests_execdir,
     install_tag : 'tests',
     install : installed_tests_enabled)
@@ -824,6 +815,12 @@ if not meson.is_cross_build()
                '--generate',
                '--manual-register',
                '@INPUT@'])
+
+  # referenced by test.gresource.xml
+  test_generated_txt = configure_file(input : 'test1.txt',
+    output : 'test-generated.txt',
+    copy : true,
+  )
 
   resources_extra_sources = [
     test_gresource,

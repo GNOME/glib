@@ -155,7 +155,11 @@ if get_option('gtk_doc')
     command : [concat_files_helper, '@OUTPUT@', '@INPUT@'],
   )
 
-  fs.copyfile(platform_file, 'gio-docs-platform.xml')
+  configure_file(
+    output : 'gio-docs-platform.xml',
+    input : platform_file,
+    copy : true,
+  )
 
   content_files = [
     'overview.xml',
