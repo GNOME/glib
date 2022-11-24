@@ -33,6 +33,10 @@ test_sandbox_snap (void)
   const char *temp_dir;
   gchar *snap_path, *meta_path, *yaml_path;
   GError *error = NULL;
+  const char *contents = "name: glib-test-portal-support\n"
+                         "title: GLib Portal Support Test\n"
+                         "version: 2.76\n"
+                         "summary: Test it works\n";
 
   temp_dir = g_getenv ("G_TEST_TMPDIR");
   g_assert_nonnull (temp_dir);
@@ -41,11 +45,42 @@ test_sandbox_snap (void)
   meta_path = g_build_filename (snap_path, "meta", NULL);
   yaml_path = g_build_filename (meta_path, "snap.yaml", NULL);
   g_mkdir_with_parents (meta_path, 0700);
-  g_file_set_contents (yaml_path, "", -1, &error);
+  g_file_set_contents (yaml_path, contents, -1, &error);
   g_assert_no_error (error);
   g_setenv ("SNAP", snap_path, TRUE);
 
   g_assert_cmpint (glib_get_sandbox_type (), ==, G_SANDBOX_TYPE_SNAP);
+
+  g_unsetenv ("SNAP");
+  g_free (snap_path);
+  g_free (meta_path);
+  g_free (yaml_path);
+}
+
+static void
+test_sandbox_snap_classic (void)
+{
+  GError *error = NULL;
+  const char *temp_dir;
+  char *snap_path, *meta_path, *yaml_path;
+  const char *contents = "name: glib-test-portal-support\n"
+                         "title: GLib Portal Support Test\n"
+                         "version: 2.76\n"
+                         "summary: Test it works\n"
+                         "confinement: classic\n";
+
+  temp_dir = g_getenv ("G_TEST_TMPDIR");
+  g_assert_nonnull (temp_dir);
+
+  snap_path = g_build_filename (temp_dir, "snap", "current", NULL);
+  meta_path = g_build_filename (snap_path, "meta", NULL);
+  yaml_path = g_build_filename (meta_path, "snap.yaml", NULL);
+  g_mkdir_with_parents (meta_path, 0700);
+  g_file_set_contents (yaml_path, contents, -1, &error);
+  g_assert_no_error (error);
+  g_setenv ("SNAP", snap_path, TRUE);
+
+  g_assert_cmpint (glib_get_sandbox_type (), ==, G_SANDBOX_TYPE_UNKNOWN);
 
   g_unsetenv ("SNAP");
   g_free (snap_path);
@@ -60,6 +95,7 @@ main (int argc, char **argv)
 
   g_test_add_func ("/sandbox/none", test_sandbox_none);
   g_test_add_func ("/sandbox/snap", test_sandbox_snap);
+  g_test_add_func ("/sandbox/classic-snap", test_sandbox_snap_classic);
 
   return g_test_run ();
 }
