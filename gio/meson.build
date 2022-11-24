@@ -765,16 +765,29 @@ gio_headers += settings_headers
 gio_headers += gdbus_headers
 install_headers(gio_headers, install_dir : gio_includedir)
 
-mkenums_header_prefix = '#include <gio/gio-visibility.h>'
-gioenumtypes = gnome.mkenums_simple('gioenumtypes',
-  sources : gio_headers,
-  decorator : 'GIO_AVAILABLE_IN_ALL',
-  body_prefix : mkenums_body_prefix,
-  header_prefix : mkenums_header_prefix,
-  install_header : true,
-  install_dir : join_paths(get_option('includedir'), 'glib-2.0/gio'),
-)
-gioenumtypes_h = gioenumtypes[1]
+# We can't use gnome.mkenums() because the GNOME module looks for glib-mkenums
+# in PATH, which means you can't bootstrap glib with its own glib-mkenums.
+gioenumtypes_h = custom_target('gioenumtypes_h',
+  output : 'gioenumtypes.h',
+  capture : true,
+  input : gio_headers,
+  install : true,
+  install_dir : gio_includedir,
+  # FIXME: Not needed with Meson >= 0.64.0
+  install_tag: 'devel',
+  command : [python, glib_mkenums,
+             '--template', files('gioenumtypes.h.template'),
+             '@INPUT@', gnetworking_h])
+
+gioenumtypes_c = custom_target('gioenumtypes_c',
+  output : 'gioenumtypes.c',
+  capture : true,
+  input : gio_headers,
+  depends : [gioenumtypes_h],
+  command : [python, glib_mkenums,
+             '--template', files('gioenumtypes.c.template'),
+             '@INPUT@', gnetworking_h])
+
 gioenumtypes_dep = declare_dependency(sources : [gioenumtypes_h, glib_enumtypes_h, gvisibility_h])
 
 # inotify
@@ -827,7 +840,7 @@ else
 endif
 
 libgio = library('gio-2.0',
-  gioenumtypes, gnetworking_h, gio_sources,
+  gioenumtypes_h, gioenumtypes_c, gnetworking_h, gio_sources,
   gio_dtrace_hdr, gio_dtrace_obj,
   version : library_version,
   soversion : soversion,

@@ -109,32 +109,39 @@ endforeach
 #
 # For now, we only include gunicode.h here, since GScriptType is needed for
 # Pango. More headers can be added as needed in future.
+#
+# We can't use gnome.mkenums() because the GNOME module looks for glib-mkenums
+# in PATH, which means you can't bootstrap glib with its own glib-mkenums.
 glib_enumtypes_input_headers = files(
   '../glib/gunicode.h',
 )
 
-mkenums_body_prefix = '''
-  #ifndef GLIB_DISABLE_DEPRECATION_WARNINGS
-  #define GLIB_DISABLE_DEPRECATION_WARNINGS
-  #endif
-  #include "config.h"
-'''
-
-glib_enumtypes = gnome.mkenums_simple('glib-enumtypes',
-  sources : glib_enumtypes_input_headers,
-  decorator : 'GOBJECT_AVAILABLE_IN_2_60',
-  body_prefix : mkenums_body_prefix,
-  install_header : true,
+glib_enumtypes_h = custom_target('glib_enumtypes_h',
+  output : 'glib-enumtypes.h',
+  capture : true,
+  input : glib_enumtypes_input_headers,
+  install : true,
   install_dir : join_paths(get_option('includedir'), 'glib-2.0/gobject'),
-)
-glib_enumtypes_h = glib_enumtypes[1]
+  install_tag: 'devel',
+  command : [python, glib_mkenums,
+             '--template', files('glib-enumtypes.h.template'),
+             '@INPUT@'])
+
+glib_enumtypes_c = custom_target('glib_enumtypes_c',
+  output : 'glib-enumtypes.c',
+  capture : true,
+  input : glib_enumtypes_input_headers,
+  depends : [glib_enumtypes_h],
+  command : [python, glib_mkenums,
+             '--template', files('glib-enumtypes.c.template'),
+             '@INPUT@'])
 
 # Expose as variable to be used by gobject-introspection
 # when it includes GLib as a subproject
 glib_types_h = files('glib-types.h')
 
 libgobject = library('gobject-2.0',
-  gobject_dtrace_obj, gobject_dtrace_hdr, glib_enumtypes,
+  gobject_dtrace_obj, gobject_dtrace_hdr, glib_enumtypes_h, glib_enumtypes_c,
   sources : gobject_sources,
   version : library_version,
   soversion : soversion,
