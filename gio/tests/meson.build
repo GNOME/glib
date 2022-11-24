@@ -227,6 +227,22 @@ if host_machine.system() != 'windows'
     'gdbus-peer-object-manager' : {},
     'gdbus-sasl' : {},
     'live-g-file' : {},
+    'portal-support-none' : {
+      'extra_sources': ['../gportalsupport.c', '../gsandbox.c'],
+      'suite': ['portal-support'],
+    },
+    'portal-support-env-var' : {
+      'extra_sources': ['../gportalsupport.c', '../gsandbox.c'],
+      'suite': ['portal-support'],
+    },
+    'portal-support-snap' : {
+      'extra_sources': ['../gportalsupport.c', '../gsandbox.c', 'portal-support-utils.c'],
+      'suite': ['portal-support'],
+    },
+    'portal-support-snap-classic' : {
+      'extra_sources': ['../gportalsupport.c', '../gsandbox.c', 'portal-support-utils.c'],
+      'suite': ['portal-support'],
+    },
     'resolver-parsing' : {'dependencies' : [network_libs]},
     'socket-address' : {},
     'stream-rw_all' : {},
