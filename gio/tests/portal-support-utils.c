@@ -85,3 +85,57 @@ create_fake_snap_yaml (const char *snap_path,
   g_free (yaml_path);
   g_free (yaml_contents);
 }
+
+void
+create_fake_flatpak_info_from_key_file (const char *root_path,
+                                        GKeyFile   *key_file)
+{
+  GError *error = NULL;
+  char *key_file_path;
+
+  g_assert_nonnull (root_path);
+
+  key_file_path = g_build_filename (root_path, ".flatpak-info", NULL);
+  g_test_message ("Creating .flatpak-info in %s", key_file_path);
+  g_key_file_save_to_file (key_file, key_file_path, &error);
+  g_assert_no_error (error);
+
+  g_free (key_file_path);
+}
+
+void
+create_fake_flatpak_info (const char  *root_path,
+                          const GStrv shared_context,
+                          const char  *dconf_dbus_policy)
+{
+  GKeyFile *key_file;
+
+  key_file = g_key_file_new ();
+
+  /* File format is defined at:
+   *  https://docs.flatpak.org/en/latest/flatpak-command-reference.html
+   */
+  g_key_file_set_string (key_file, "Application", "name",
+                         "org.gnome.GLib.Test.Flatpak");
+  g_key_file_set_string (key_file, "Application", "runtime",
+                         "org.gnome.Platform/x86_64/44");
+  g_key_file_set_string (key_file, "Application", "sdk",
+                         "org.gnome.Sdk/x86_64/44");
+
+  if (shared_context)
+    {
+      g_key_file_set_string_list (key_file, "Context", "shared",
+                                  (const char * const *) shared_context,
+                                  g_strv_length (shared_context));
+    }
+
+  if (dconf_dbus_policy)
+    {
+      g_key_file_set_string (key_file, "Session Bus Policy", "ca.desrt.dconf",
+                             dconf_dbus_policy);
+    }
+
+  create_fake_flatpak_info_from_key_file (root_path, key_file);
+
+  g_key_file_free (key_file);
+}

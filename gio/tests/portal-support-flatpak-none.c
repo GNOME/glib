@@ -21,17 +21,27 @@
  * Author: Marco Trevisan <marco.trevisan@canonical.com>
  */
 
-#include <glib.h>
+#include "portal-support-utils.h"
 
-void create_fake_snap_yaml (const char *snap_path,
-                            gboolean is_classic);
+#include "../gportalsupport.h"
+#include <gio/gio.h>
 
-void create_fake_snapctl (const char *path,
-                          const char *supported_op);
+static void
+test_portal_support_flatpak_none (void)
+{
+  create_fake_flatpak_info (g_get_user_runtime_dir (), NULL, NULL);
 
-void create_fake_flatpak_info (const char  *root_path,
-                               const GStrv shared_context,
-                               const char  *dconf_dbus_policy);
+  g_assert_true (glib_should_use_portal ());
+  g_assert_false (glib_network_available_in_sandbox ());
+  g_assert_false (glib_has_dconf_access_in_sandbox ());
+}
 
-void create_fake_flatpak_info_from_key_file (const char *root_path,
-                                             GKeyFile   *key_file);
+int
+main (int argc, char **argv)
+{
+  g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
+
+  g_test_add_func ("/portal-support/flatpak/none", test_portal_support_flatpak_none);
+
+  return g_test_run ();
+}

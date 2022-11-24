@@ -77,13 +77,21 @@ sandbox_info_read (void)
     case G_SANDBOX_TYPE_FLATPAK:
       {
         GKeyFile *keyfile;
+        const char *keyfile_path = "/.flatpak-info";
 
         use_portal = TRUE;
         network_available = FALSE;
         dconf_access = FALSE;
 
         keyfile = g_key_file_new ();
-        if (g_key_file_load_from_file (keyfile, "/.flatpak-info", G_KEY_FILE_NONE, NULL))
+
+#ifdef G_PORTAL_SUPPORT_TEST
+        char *test_key_file =
+          g_build_filename (g_get_user_runtime_dir (), keyfile_path, NULL);
+        keyfile_path = test_key_file;
+#endif
+
+        if (g_key_file_load_from_file (keyfile, keyfile_path, G_KEY_FILE_NONE, NULL))
           {
             char **shared = NULL;
             char *dconf_policy = NULL;
@@ -103,6 +111,10 @@ sandbox_info_read (void)
                 g_free (dconf_policy);
               }
           }
+
+#ifdef G_PORTAL_SUPPORT_TEST
+        g_clear_pointer (&test_key_file, g_free);
+#endif
 
         g_key_file_unref (keyfile);
       }

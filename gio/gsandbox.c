@@ -29,7 +29,22 @@
 static gboolean
 is_flatpak (void)
 {
-  return g_file_test ("/.flatpak-info", G_FILE_TEST_EXISTS);
+  const char *flatpak_info = "/.flatpak-info";
+  gboolean found;
+
+#ifdef G_PORTAL_SUPPORT_TEST
+        char *test_key_file =
+          g_build_filename (g_get_user_runtime_dir (), flatpak_info, NULL);
+        flatpak_info = test_key_file;
+#endif
+
+  found = g_file_test (flatpak_info, G_FILE_TEST_EXISTS);
+
+#ifdef G_PORTAL_SUPPORT_TEST
+  g_clear_pointer (&test_key_file, g_free);
+#endif
+
+  return found;
 }
 
 static gchar *

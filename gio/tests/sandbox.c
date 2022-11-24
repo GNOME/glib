@@ -67,6 +67,13 @@ test_sandbox_snap_classic (void)
   g_free (snap_path);
 }
 
+static void
+test_sandbox_flatpak (void)
+{
+  create_fake_flatpak_info (g_get_user_runtime_dir (), NULL, NULL);
+  g_assert_cmpint (glib_get_sandbox_type (), ==, G_SANDBOX_TYPE_FLATPAK);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -75,6 +82,7 @@ main (int argc, char **argv)
   g_test_add_func ("/sandbox/none", test_sandbox_none);
   g_test_add_func ("/sandbox/snap", test_sandbox_snap);
   g_test_add_func ("/sandbox/classic-snap", test_sandbox_snap_classic);
+  g_test_add_func ("/sandbox/flatpak", test_sandbox_flatpak);
 
   return g_test_run ();
 }
