@@ -29,21 +29,29 @@ static gboolean use_portal;
 static gboolean network_available;
 static gboolean dconf_access;
 
+#ifdef G_PORTAL_SUPPORT_TEST
+static const char *snapctl = "snapctl";
+#else
+static const char *snapctl = "/usr/bin/snapctl";
+#endif
+
 static gboolean
 snap_plug_is_connected (const gchar *plug_name)
 {
-  const gchar *argv[] = { "snapctl", "is-connected", plug_name, NULL };
   gint wait_status;
+  const gchar *argv[] = { snapctl, "is-connected", plug_name, NULL };
 
   /* Bail out if our process is privileged - we don't want to pass those
-   * privileges to snapctl. It could be overridden using PATH and this would
+   * privileges to snapctl. It could be overridden and this would
    * allow arbitrary code execution.
    */
   if (GLIB_PRIVATE_CALL (g_check_setuid) ())
     return FALSE;
 
   if (!g_spawn_sync (NULL, (gchar **) argv, NULL,
+#ifdef G_PORTAL_SUPPORT_TEST
                      G_SPAWN_SEARCH_PATH |
+#endif
                          G_SPAWN_STDOUT_TO_DEV_NULL |
                          G_SPAWN_STDERR_TO_DEV_NULL,
                      NULL, NULL, NULL, NULL, &wait_status,

@@ -229,6 +229,7 @@ if host_machine.system() != 'windows'
     'live-g-file' : {},
     'portal-support-none' : {
       'extra_sources': ['../gportalsupport.c', '../gsandbox.c'],
+      'c_args': ['-DG_PORTAL_SUPPORT_TEST'],
       'suite': ['portal-support'],
     },
     'portal-support-env-var' : {
@@ -237,10 +238,12 @@ if host_machine.system() != 'windows'
     },
     'portal-support-snap' : {
       'extra_sources': ['../gportalsupport.c', '../gsandbox.c', 'portal-support-utils.c'],
+      'c_args': ['-DG_PORTAL_SUPPORT_TEST'],
       'suite': ['portal-support'],
     },
     'portal-support-snap-classic' : {
       'extra_sources': ['../gportalsupport.c', '../gsandbox.c', 'portal-support-utils.c'],
+      'c_args': ['-DG_PORTAL_SUPPORT_TEST'],
       'suite': ['portal-support'],
     },
     'resolver-parsing' : {'dependencies' : [network_libs]},
