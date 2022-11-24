@@ -108,7 +108,7 @@ gio_tests = {
   'proxy-test' : {},
   'readwrite' : {},
   'sandbox' : {
-    'source': ['sandbox.c', '../gsandbox.c'],
+    'extra_sources': ['../gsandbox.c', 'portal-support-utils.c'],
   },
   'simple-async-result' : {},
   'simple-proxy' : {},
