@@ -2895,7 +2895,10 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
                                                                   G_APP_INFO (info),
                                                                   launched_files);
               if (sn_id)
-                envp = g_environ_setenv (envp, "DESKTOP_STARTUP_ID", sn_id, TRUE);
+                {
+                  envp = g_environ_setenv (envp, "DESKTOP_STARTUP_ID", sn_id, TRUE);
+                  envp = g_environ_setenv (envp, "XDG_ACTIVATION_TOKEN", sn_id, TRUE);
+                }
             }
 
           g_list_free_full (launched_files, g_object_unref);
@@ -3032,7 +3035,10 @@ g_desktop_app_info_make_platform_data (GDesktopAppInfo   *info,
 
           sn_id = g_app_launch_context_get_startup_notify_id (launch_context, G_APP_INFO (info), launched_files);
           if (sn_id)
-            g_variant_builder_add (&builder, "{sv}", "desktop-startup-id", g_variant_new_take_string (sn_id));
+            {
+              g_variant_builder_add (&builder, "{sv}", "desktop-startup-id", g_variant_new_string (sn_id));
+              g_variant_builder_add (&builder, "{sv}", "activation-token", g_variant_new_take_string (g_steal_pointer (&sn_id)));
+            }
         }
 
       g_list_free_full (launched_files, g_object_unref);
