@@ -3444,7 +3444,7 @@ is_signal_data_for_name_lost_or_acquired (SignalData *signal_data)
  * @user_data_free_func: (nullable): function to free @user_data with when
  *     subscription is removed or %NULL
  *
- * Subscribes to signals on @connection and invokes @callback with a whenever
+ * Subscribes to signals on @connection and invokes @callback whenever
  * the signal is received. Note that @callback will be invoked in the 
  * [thread-default main context][g-main-context-push-thread-default]
  * of the thread you are calling this method from.
