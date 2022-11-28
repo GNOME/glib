@@ -1992,7 +1992,7 @@ g_object_get_type (void)
  * @object_type: the type id of the #GObject subtype to instantiate
  * @first_property_name: the name of the first property
  * @...: the value of the first property, followed optionally by more
- *  name/value pairs, followed by %NULL
+ *   name/value pairs, followed by %NULL
  *
  * Creates a new instance of a #GObject subtype and sets its properties.
  *
@@ -2002,22 +2002,22 @@ g_object_get_type (void)
  * per g_type_create_instance().
  *
  * Note that in C, small integer types in variable argument lists are promoted
- * up to #gint or #guint as appropriate, and read back accordingly. #gint is 32
- * bits on every platform on which GLib is currently supported. This means that
- * you can use C expressions of type #gint with g_object_new() and properties of
- * type #gint or #guint or smaller. Specifically, you can use integer literals
+ * up to `gint` or `guint` as appropriate, and read back accordingly. `gint` is
+ * 32 bits on every platform on which GLib is currently supported. This means that
+ * you can use C expressions of type `gint` with g_object_new() and properties of
+ * type `gint` or `guint` or smaller. Specifically, you can use integer literals
  * with these property types.
  *
- * When using property types of #gint64 or #guint64, you must ensure that the
+ * When using property types of `gint64` or `guint64`, you must ensure that the
  * value that you provide is 64 bit. This means that you should use a cast or
  * make use of the %G_GINT64_CONSTANT or %G_GUINT64_CONSTANT macros.
  *
- * Similarly, #gfloat is promoted to #gdouble, so you must ensure that the value
- * you provide is a #gdouble, even for a property of type #gfloat.
+ * Similarly, `gfloat` is promoted to `gdouble`, so you must ensure that the value
+ * you provide is a `gdouble`, even for a property of type `gfloat`.
  *
  * Since GLib 2.72, all #GObjects are guaranteed to be aligned to at least the
- * alignment of the largest basic GLib type (typically this is #guint64 or
- * #gdouble). If you need larger alignment for an element in a #GObject, you
+ * alignment of the largest basic GLib type (typically this is `guint64` or
+ * `gdouble`). If you need larger alignment for an element in a #GObject, you
  * should allocate it on the heap (aligned), or arrange for your #GObject to be
  * appropriately padded.
  *
