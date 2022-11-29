@@ -285,7 +285,8 @@ g_array_sized_new (gboolean zero_terminated,
   if (array->zero_terminated || reserved_size != 0)
     {
       g_array_maybe_expand (array, reserved_size);
-      g_array_zero_terminate(array);
+      g_assert (array->data != NULL);
+      g_array_zero_terminate (array);
     }
 
   return (GArray*) array;
@@ -1120,7 +1121,10 @@ ptr_array_new (guint reserved_size,
       if (G_LIKELY (reserved_size < G_MAXUINT) &&
           null_terminated)
         reserved_size++;
+
       g_ptr_array_maybe_expand (array, reserved_size);
+      g_assert (array->pdata != NULL);
+
       if (null_terminated)
         {
           /* don't use ptr_array_maybe_null_terminate(). It helps the compiler
