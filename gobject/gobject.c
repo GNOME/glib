@@ -3791,7 +3791,7 @@ g_object_unref (gpointer _object)
   /* here we want to atomically do: if (ref_count>1) { ref_count--; return; } */
   old_ref = g_atomic_int_get (&object->ref_count);
  retry_atomic_decrement1:
-  if (old_ref > 1)
+  while (old_ref > 1)
     {
       /* valid if last 2 refs are owned by this call to unref and the toggle_ref */
       gboolean has_toggle_ref = OBJECT_HAS_TOGGLE_REF (object);
@@ -3799,15 +3799,17 @@ g_object_unref (gpointer _object)
       if (!g_atomic_int_compare_and_exchange_full ((int *)&object->ref_count,
                                                    old_ref, old_ref - 1,
                                                    &old_ref))
-	goto retry_atomic_decrement1;
+        continue;
 
       TRACE (GOBJECT_OBJECT_UNREF(object,G_TYPE_FROM_INSTANCE(object),old_ref));
 
       /* if we went from 2->1 we need to notify toggle refs if any */
       if (old_ref == 2 && has_toggle_ref) /* The last ref being held in this case is owned by the toggle_ref */
 	toggle_refs_notify (object, TRUE);
+
+      return;
     }
-  else
+
     {
       GSList **weak_locations;
       GObjectNotifyQueue *nqueue;
