@@ -779,6 +779,240 @@ test_toggle_ref (void)
   g_object_remove_toggle_ref (obj, toggle_notify, &c);
 }
 
+G_DECLARE_FINAL_TYPE (DisposeReffingObject, dispose_reffing_object,
+                      DISPOSE, REFFING_OBJECT, GObject)
+
+typedef enum
+{
+  PROP_INT_PROP = 1,
+  N_PROPS,
+} DisposeReffingObjectProperty;
+
+static GParamSpec *dispose_reffing_object_properties[N_PROPS] = {0};
+
+struct _DisposeReffingObject
+{
+  GObject parent;
+
+  GToggleNotify toggle_notify;
+  Count actual;
+  Count expected;
+  unsigned disposing_refs;
+
+  GCallback notify_handler;
+  unsigned notify_called;
+
+  int int_prop;
+
+  GWeakRef *weak_ref;
+};
+
+G_DEFINE_TYPE (DisposeReffingObject, dispose_reffing_object, G_TYPE_OBJECT)
+
+static void
+on_object_notify (GObject    *object,
+                  GParamSpec *pspec,
+                  void       *data)
+{
+  DisposeReffingObject *obj = DISPOSE_REFFING_OBJECT (object);
+
+  obj->notify_called++;
+}
+
+static void
+dispose_reffing_object_dispose (GObject *object)
+{
+  DisposeReffingObject *obj = DISPOSE_REFFING_OBJECT (object);
+
+  g_assert_cmpint (object->ref_count, ==, 1);
+  g_assert_cmpint (obj->actual.count, ==, obj->expected.count);
+
+  for (unsigned i = 0; i < obj->disposing_refs; ++i)
+    {
+      if (i == 0)
+        {
+          g_object_add_toggle_ref (object, obj->toggle_notify, &obj->actual);
+        }
+      else
+        {
+          obj->actual.should_be_last = FALSE;
+          g_object_ref (obj);
+          g_assert_cmpint (obj->actual.count, ==, obj->expected.count);
+        }
+
+      obj->actual.should_be_last = TRUE;
+    }
+
+  G_OBJECT_CLASS (dispose_reffing_object_parent_class)->dispose (object);
+
+  if (obj->notify_handler)
+    {
+      unsigned old_notify_called = obj->notify_called;
+
+      g_assert_cmpuint (g_signal_handler_find (object, G_SIGNAL_MATCH_FUNC,
+                        0, 0, NULL, obj->notify_handler, NULL), ==, 0);
+
+      g_signal_connect (object, "notify", G_CALLBACK (obj->notify_handler), NULL);
+
+      /* This would trigger a toggle notification, but is not something we may
+       * want with https://gitlab.gnome.org/GNOME/glib/-/merge_requests/2377
+       * so, we only test this in case we have more than one ref
+       */
+      if (obj->toggle_notify == toggle_notify)
+        g_assert_cmpint (obj->disposing_refs, >, 1);
+
+      g_object_notify (object, "int-prop");
+      g_assert_cmpuint (obj->notify_called, ==, old_notify_called);
+    }
+
+  g_assert_cmpint (obj->actual.count, ==, obj->expected.count);
+}
+
+static void
+dispose_reffing_object_init (DisposeReffingObject *connector)
+{
+}
+
+static void
+dispose_reffing_object_set_property (GObject *object,
+                                     guint property_id,
+                                     const GValue *value,
+                                     GParamSpec *pspec)
+{
+  DisposeReffingObject *obj = DISPOSE_REFFING_OBJECT (object);
+
+  switch ((DisposeReffingObjectProperty) property_id)
+    {
+    case PROP_INT_PROP:
+      obj->int_prop = g_value_get_int (value);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+      break;
+    }
+}
+
+static void
+dispose_reffing_object_get_property (GObject *object,
+                                     guint property_id,
+                                     GValue *value,
+                                     GParamSpec *pspec)
+{
+  DisposeReffingObject *obj = DISPOSE_REFFING_OBJECT (object);
+
+  switch ((DisposeReffingObjectProperty) property_id)
+    {
+    case PROP_INT_PROP:
+      g_value_set_int (value, obj->int_prop);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+      break;
+    }
+}
+
+static void
+dispose_reffing_object_class_init (DisposeReffingObjectClass *klass)
+{
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  dispose_reffing_object_properties[PROP_INT_PROP] =
+      g_param_spec_int ("int-prop", "int-prop", "int-prop",
+                        G_MININT, G_MAXINT,
+                        0,
+                        G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+
+  object_class->dispose = dispose_reffing_object_dispose;
+  object_class->set_property = dispose_reffing_object_set_property;
+  object_class->get_property = dispose_reffing_object_get_property;
+
+  g_object_class_install_properties (object_class, N_PROPS,
+                                     dispose_reffing_object_properties);
+}
+
+static void
+test_toggle_ref_on_dispose (void)
+{
+  DisposeReffingObject *obj;
+  gpointer disposed_checker = &obj;
+
+  /* This tests wants to ensure that an object that gets re-referenced
+   * (one or multiple times) during its dispose virtual function:
+   *  - Notifies all the queued "notify" signal handlers
+   *  - Notifies toggle notifications if any
+   *  - It does not get finalized
+   */
+
+  obj = g_object_new (dispose_reffing_object_get_type (), NULL);
+  obj->toggle_notify = toggle_notify;
+  obj->notify_handler = G_CALLBACK (on_object_notify);
+  g_object_add_weak_pointer (G_OBJECT (obj), &disposed_checker);
+
+  /* Convert to toggle notification */
+  g_object_add_toggle_ref (G_OBJECT (obj), obj->toggle_notify, &obj->actual);
+  g_assert_cmpint (obj->actual.count, ==, 0);
+
+  obj->actual.should_be_last = TRUE;
+  obj->notify_handler = G_CALLBACK (on_object_notify);
+  g_object_unref (obj);
+  g_assert_cmpint (obj->actual.count, ==, 1);
+  g_assert_cmpuint (obj->notify_called, ==, 0);
+
+  /* Remove the toggle reference, making it to dispose and resurrect again */
+  obj->disposing_refs = 1;
+  obj->expected.count = 1;
+  obj->notify_handler = NULL; /* FIXME: enable it when !2377 is in */
+  g_object_remove_toggle_ref (G_OBJECT (obj), obj->toggle_notify, NULL);
+  g_assert_cmpint (obj->actual.count, ==, 2);
+  g_assert_cmpuint (obj->notify_called, ==, 0);
+
+  g_assert_null (disposed_checker);
+  g_assert_cmpint (g_atomic_int_get (&G_OBJECT (obj)->ref_count), ==,
+                   obj->disposing_refs);
+
+  /* Object has been disposed, but is still alive, so add another weak pointer */
+  disposed_checker = &obj;
+  g_object_add_weak_pointer (G_OBJECT (obj), &disposed_checker);
+
+  /* Remove the toggle reference, making it to dispose and resurrect with
+   * more references than before, so that no toggle notify is called
+   */
+  obj->disposing_refs = 3;
+  obj->expected.count = 2;
+  obj->notify_handler = G_CALLBACK (on_object_notify);
+  g_object_remove_toggle_ref (G_OBJECT (obj), obj->toggle_notify, NULL);
+  g_assert_cmpint (obj->actual.count, ==, 2);
+  g_assert_cmpint (obj->notify_called, ==, 1);
+  obj->expected.count = obj->actual.count;
+
+  g_assert_null (disposed_checker);
+  g_assert_cmpint (g_atomic_int_get (&G_OBJECT (obj)->ref_count), ==,
+                   obj->disposing_refs);
+
+  disposed_checker = &obj;
+  g_object_add_weak_pointer (G_OBJECT (obj), &disposed_checker);
+
+  /* Now remove the first added reference */
+  obj->disposing_refs = 0;
+  g_object_unref (obj);
+  g_assert_nonnull (disposed_checker);
+  g_assert_cmpint (g_atomic_int_get (&G_OBJECT (obj)->ref_count), ==, 2);
+  g_assert_cmpint (obj->actual.count, ==, 2);
+  g_assert_cmpint (obj->notify_called, ==, 1);
+
+  /* And the toggle one */
+  obj->actual.should_be_last = TRUE;
+  obj->notify_handler = NULL;
+  g_object_remove_toggle_ref (G_OBJECT (obj), obj->toggle_notify, NULL);
+  g_assert_nonnull (disposed_checker);
+  g_assert_cmpint (g_atomic_int_get (&G_OBJECT (obj)->ref_count), ==, 1);
+  g_assert_cmpint (obj->actual.count, ==, 2);
+  obj->expected.count = obj->actual.count;
+
+  g_clear_object (&obj);
+  g_assert_null (disposed_checker);
+}
+
 static gboolean global_destroyed;
 static gint global_value;
 
@@ -982,6 +1216,7 @@ main (int argc, char **argv)
   g_test_add_func ("/object/weak-ref/on-run-dispose", test_weak_ref_on_run_dispose);
   g_test_add_func ("/object/weak-ref/on-toggle-notify", test_weak_ref_on_toggle_notify);
   g_test_add_func ("/object/toggle-ref", test_toggle_ref);
+  g_test_add_func ("/object/toggle-ref/ref-on-dispose", test_toggle_ref_on_dispose);
   g_test_add_func ("/object/qdata", test_object_qdata);
   g_test_add_func ("/object/qdata2", test_object_qdata2);
 
