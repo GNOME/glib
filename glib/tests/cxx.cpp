@@ -299,6 +299,28 @@ test_steal_pointer (void)
   g_assert_null (ptr);
 }
 
+static void
+test_str_equal (void)
+{
+  const char *str_a = "a";
+  char *str_b = g_strdup ("b");
+  gconstpointer str_a_ptr = str_a, str_b_ptr = str_b;
+  const unsigned char *str_c = (const unsigned char *) "c";
+
+  g_test_summary ("Test typechecking and casting of arguments to g_str_equal() macro in C++");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/2820");
+
+  /* We don’t actually care what the comparisons do at runtime. What we’re
+   * checking here is that the types don’t emit warnings at compile time. */
+  g_assert_true (g_str_equal ("a", str_a));
+  g_assert_false (g_str_equal ("a", str_b));
+  g_assert_true (g_str_equal (str_a, str_a_ptr));
+  g_assert_false (g_str_equal (str_a_ptr, str_b_ptr));
+  g_assert_false (g_str_equal (str_c, str_b));
+
+  g_free (str_b);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -321,6 +343,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/C++/inlined-not-inlined-functions", test_inline_no_inline_macros);
   g_test_add_func ("/C++/clear-pointer", test_clear_pointer);
   g_test_add_func ("/C++/steal-pointer", test_steal_pointer);
+  g_test_add_func ("/C++/str-equal", test_str_equal);
 
   return g_test_run ();
 }
