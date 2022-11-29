@@ -3794,7 +3794,6 @@ g_object_unref (gpointer _object)
   while (old_ref > 1)
     {
       /* valid if last 2 refs are owned by this call to unref and the toggle_ref */
-      gboolean has_toggle_ref = OBJECT_HAS_TOGGLE_REF (object);
 
       if (!g_atomic_int_compare_and_exchange_full ((int *)&object->ref_count,
                                                    old_ref, old_ref - 1,
@@ -3804,8 +3803,11 @@ g_object_unref (gpointer _object)
       TRACE (GOBJECT_OBJECT_UNREF(object,G_TYPE_FROM_INSTANCE(object),old_ref));
 
       /* if we went from 2->1 we need to notify toggle refs if any */
-      if (old_ref == 2 && has_toggle_ref) /* The last ref being held in this case is owned by the toggle_ref */
-	toggle_refs_notify (object, TRUE);
+      if (old_ref == 2 && OBJECT_HAS_TOGGLE_REF (object))
+        {
+          /* The last ref being held in this case is owned by the toggle_ref */
+          toggle_refs_notify (object, TRUE);
+        }
 
       return;
     }
