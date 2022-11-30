@@ -14,6 +14,14 @@ option('gio_module_dir',
        value : '',
        description : 'load gio modules from this directory (default to \'libdir/gio/modules\' if unset)')
 
+# FIXME: Deliberately not named runstatedir to avoid colliding with
+# https://github.com/mesonbuild/meson/issues/4141; port to that when Meson
+# supports it
+option('runtime_dir',
+       type: 'string',
+       value: '',
+       description: 'Directory for transient runtime state [default: /run]')
+
 option('selinux',
        type : 'feature',
        value : 'auto',

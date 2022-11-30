@@ -125,6 +125,17 @@ endif
 
 glib_localstatedir = glib_prefix / get_option('localstatedir')
 
+if get_option('runtime_dir') != ''
+  glib_runstatedir = glib_prefix / get_option('runtime_dir')
+else
+  # While we’d normally prefix directories like this with, for example,
+  # glib_localstatedir, `/run` is a bit different in that it’s for runtime state
+  # rather than data files, so it’s typically functionally useless to use a
+  # prefixed version. No other processes will be using it. So we default to the
+  # unprefixed system `/run` directory.
+  glib_runstatedir = '/run'
+endif
+
 installed_tests_metadir = join_paths(glib_datadir, 'installed-tests', meson.project_name())
 installed_tests_execdir = join_paths(glib_libexecdir, 'installed-tests', meson.project_name())
 installed_tests_enabled = get_option('installed_tests')
@@ -2106,6 +2117,7 @@ glib_conf.set('HAVE_GETTEXT', 1)
 glib_conf.set_quoted('GLIB_LOCALE_DIR', join_paths(glib_datadir, 'locale'))
 
 glib_conf.set_quoted('GLIB_LOCALSTATEDIR', glib_localstatedir)
+glib_conf.set_quoted('GLIB_RUNSTATEDIR', glib_runstatedir)
 
 # libmount is only used by gio, but we need to fetch the libs to generate the
 # pkg-config file below
@@ -2446,6 +2458,7 @@ summary({
   'includedir' : glib_includedir,
   'giomodulesdir' : glib_giomodulesdir,
   'localstatedir' : glib_localstatedir,
+  'runstatedir' : glib_runstatedir,
 }, section: 'Directories')
 
 if get_option('multiarch')
