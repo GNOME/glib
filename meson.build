@@ -123,11 +123,7 @@ else
   glib_charsetaliasdir = glib_libdir
 endif
 
-glib_localstatedir = get_option('localstatedir')
-if not glib_localstatedir.startswith('/')
-  # See https://mesonbuild.com/Builtin-options.html#directories
-  glib_localstatedir = join_paths(glib_prefix, glib_localstatedir)
-endif
+glib_localstatedir = glib_prefix / get_option('localstatedir')
 
 installed_tests_metadir = join_paths(glib_datadir, 'installed-tests', meson.project_name())
 installed_tests_execdir = join_paths(glib_libexecdir, 'installed-tests', meson.project_name())
