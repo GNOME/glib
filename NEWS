@@ -1,3 +1,15 @@
+UNRELEASED CHANGES
+==================
+
+* Change the default D-Bus system bus socket address from
+  `/var/run/dbus/system_bus_socket` to `/run/dbus/system_bus_socket`, in line
+  with changes in dbus.git. This can now be overridden by passing
+  `-Druntime_dir=/some/path` at configure time — the default is `/run`, which
+  should work for all users except distributions where `/run` is not equivalent
+  to `/var/run`. OS distributors should check that this configured path matches
+  the runtime directory configured for their D-Bus daemon. (!3101)
+
+
 Overview of changes in GLib 2.75.0, 2022-11-10
 ==============================================
 

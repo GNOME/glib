@@ -1339,8 +1339,10 @@ g_dbus_address_get_for_bus_sync (GBusType       bus_type,
         {
           /* While the D-Bus specification says this must be `/var/run/dbus/system_bus_socket`,
            * a footnote allows it to use localstatedir:
-           * https://dbus.freedesktop.org/doc/dbus-specification.html#ftn.id-1.13.6.4.3.3 */
-          ret = g_strdup ("unix:path=" GLIB_LOCALSTATEDIR "/run/dbus/system_bus_socket");
+           * https://dbus.freedesktop.org/doc/dbus-specification.html#ftn.id-1.13.6.4.3.3
+           * or, on systems where /run is the same as /var/run, runstatedir:
+           * https://gitlab.freedesktop.org/dbus/dbus/-/merge_requests/209 */
+          ret = g_strdup ("unix:path=" GLIB_RUNSTATEDIR "/dbus/system_bus_socket");
         }
       break;
 
