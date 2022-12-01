@@ -1,3 +1,15 @@
+Overview of changes in GLib 2.74.3
+==================================
+
+* Fix regression in type checking `g_str_equal()` from C++ projects (#2820)
+
+* Bugs fixed:
+  - #2820 g_str_equal: New macro version breaks compilation in C++ projects
+    (Philip Withnall)
+  - !3096 Backport !3094 “gstrfuncs: Fix regression in C++ types accepted by
+    g_str_equal()” to glib-2-74
+
+
 Overview of changes in GLib 2.74.2
 ==================================
 
