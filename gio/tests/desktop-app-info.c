@@ -867,9 +867,11 @@ test_search (void)
   assert_search ("image viewer", "", TRUE, TRUE, NULL, NULL);
 
   /* There're "flatpak" apps (clocks) installed as well - they should *not*
-   * match the prefix command ("/bin/sh") in the Exec= line though.
+   * match the prefix command ("/bin/sh") in the Exec= line though. However,
+   * with substring matching, Image Viewer (eog) should be in result list
+   * because it contains "Slideshow" in its keywords.
    */
-  assert_search ("sh", "gnome-terminal.desktop\n", TRUE, FALSE, NULL, NULL);
+  assert_search ("sh", "eog.desktop gnome-terminal.desktop\n", TRUE, FALSE, NULL, NULL);
 
   /* "frobnicator.desktop" is ignored by get_all() because the binary is
    * missing, but search should still find it (to avoid either stale results
@@ -884,11 +886,11 @@ test_search (void)
   assert_search ("files file fil fi f", "nautilus.desktop\n"
                                         "gedit.desktop\n", TRUE, TRUE, NULL, NULL);
 
-  /* "con" will match "connect" and "contacts" on name but dconf only on
-   * the "config" keyword
+  /* With substring match, "con" match dconf, contacts, nautilus-classic (which
+   * has a name called "Desktop Icons"), nautilus-connect-server (which has a
+   * name called "Connect to Server").
    */
-  assert_search ("con", "nautilus-connect-server.desktop gnome-contacts.desktop\n"
-                        "dconf-editor.desktop\n", TRUE, TRUE, NULL, NULL);
+  assert_search ("con", "dconf-editor.desktop gnome-contacts.desktop nautilus-classic.desktop nautilus-connect-server.desktop\n", TRUE, TRUE, NULL, NULL);
 
   /* "gnome" will match "eye of gnome" from the user's directory, plus
    * matching "GNOME Clocks" X-GNOME-FullName.  It's only a comment on

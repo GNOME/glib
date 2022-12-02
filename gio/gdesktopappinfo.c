@@ -1224,7 +1224,7 @@ desktop_file_dir_unindexed_search (DesktopFileDir  *dir,
     {
       MemoryIndexEntry *mie = value;
 
-      if (!g_str_has_prefix (key, search_token))
+      if (strstr (key, search_token) == NULL)
         continue;
 
       while (mie)
