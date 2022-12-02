@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-10-16 12:25+0000\n"
+"POT-Creation-Date: 2022-11-24 12:35+0000\n"
 "Last-Translator: Нанба Наала <naala-nanba@rambler.ru>\n"
 "Language-Team: Abkhazian <daniel.abzakh@gmail.com>\n"
 "Language: ab\n"
@@ -113,7 +113,7 @@ msgstr ""
 #: gio/gapplication-tool.c:74 gio/gapplication-tool.c:137 gio/gdbus-tool.c:108
 #: gio/gio-tool.c:226
 msgid "COMMAND"
-msgstr ""
+msgstr "АДҴА"
 
 #: gio/gapplication-tool.c:74
 msgid "The command to print detailed help for"
@@ -1217,7 +1217,7 @@ msgstr ""
 msgid "Not authorized to change debug settings"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:2182 gio/gdesktopappinfo.c:5119
+#: gio/gdesktopappinfo.c:2182 gio/gdesktopappinfo.c:5120
 msgid "Unnamed"
 msgstr "Хьӡыда"
 
@@ -1229,26 +1229,26 @@ msgstr ""
 msgid "Unable to find terminal required for application"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:3637
+#: gio/gdesktopappinfo.c:3638
 #, c-format
 msgid "Can’t create user application configuration folder %s: %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:3641
+#: gio/gdesktopappinfo.c:3642
 #, c-format
 msgid "Can’t create user MIME configuration folder %s: %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:3883 gio/gdesktopappinfo.c:3907
+#: gio/gdesktopappinfo.c:3884 gio/gdesktopappinfo.c:3908
 msgid "Application information lacks an identifier"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:4143
+#: gio/gdesktopappinfo.c:4144
 #, c-format
 msgid "Can’t create user desktop file %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:4279
+#: gio/gdesktopappinfo.c:4280
 #, c-format
 msgid "Custom definition for %s"
 msgstr ""
@@ -1366,7 +1366,7 @@ msgstr ""
 msgid "Invalid symlink value given"
 msgstr ""
 
-#: gio/gfile.c:4163 glib/gfileutils.c:2335
+#: gio/gfile.c:4163 glib/gfileutils.c:2354
 msgid "Symbolic links not supported"
 msgstr ""
 
@@ -3041,60 +3041,60 @@ msgstr ""
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2486
+#: gio/glocalfileinfo.c:2506
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld are negative"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2495
+#: gio/glocalfileinfo.c:2515
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld reach 1 second"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2505
+#: gio/glocalfileinfo.c:2525
 #, c-format
 msgid "UNIX timestamp %lld does not fit into 64 bits"
 msgstr "Аамҭалатәи адырга UNIX %lld 64 бит иакӡом"
 
-#: gio/glocalfileinfo.c:2516
+#: gio/glocalfileinfo.c:2536
 #, fuzzy, c-format
 msgid "UNIX timestamp %lld is outside of the range supported by Windows"
 msgstr "Аамҭалатәи адырга UNIX %ll d иаҵанакцом Windows зыцхыраауа аҵакыра"
 
-#: gio/glocalfileinfo.c:2619
+#: gio/glocalfileinfo.c:2668
 #, c-format
 msgid "File name “%s” cannot be converted to UTF-16"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2638
+#: gio/glocalfileinfo.c:2687
 #, c-format
 msgid "File “%s” cannot be opened: Windows Error %lu"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2651
+#: gio/glocalfileinfo.c:2700
 #, c-format
 msgid "Error setting modification or access time for file “%s”: %lu"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2825
+#: gio/glocalfileinfo.c:2856
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2848
+#: gio/glocalfileinfo.c:2879
 msgid "SELinux context must be non-NULL"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2855
+#: gio/glocalfileinfo.c:2886
 msgid "SELinux is not enabled on this system"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2865
+#: gio/glocalfileinfo.c:2896
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2962
+#: gio/glocalfileinfo.c:2993
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr ""
@@ -4809,7 +4809,7 @@ msgstr ""
 msgid "Template “%s” doesn’t contain XXXXXX"
 msgstr ""
 
-#: glib/gfileutils.c:2291 glib/gfileutils.c:2320
+#: glib/gfileutils.c:2310 glib/gfileutils.c:2339
 #, c-format
 msgid "Failed to read the symbolic link “%s”: %s"
 msgstr ""
@@ -5512,92 +5512,92 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr ""
 
-#: glib/gspawn.c:314
+#: glib/gspawn.c:310
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr ""
 
-#: glib/gspawn.c:466
+#: glib/gspawn.c:462
 #, c-format
 msgid "Unexpected error in reading data from a child process (%s)"
 msgstr ""
 
-#: glib/gspawn.c:551
+#: glib/gspawn.c:547
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr ""
 
-#: glib/gspawn.c:1170 glib/gspawn-win32.c:1488
+#: glib/gspawn.c:1166 glib/gspawn-win32.c:1488
 #, c-format
 msgid "Child process exited with code %ld"
 msgstr ""
 
-#: glib/gspawn.c:1178
+#: glib/gspawn.c:1174
 #, c-format
 msgid "Child process killed by signal %ld"
 msgstr ""
 
-#: glib/gspawn.c:1185
+#: glib/gspawn.c:1181
 #, c-format
 msgid "Child process stopped by signal %ld"
 msgstr ""
 
-#: glib/gspawn.c:1192
+#: glib/gspawn.c:1188
 #, c-format
 msgid "Child process exited abnormally"
 msgstr ""
 
-#: glib/gspawn.c:1885 glib/gspawn-win32.c:393 glib/gspawn-win32.c:401
+#: glib/gspawn.c:1867 glib/gspawn-win32.c:393 glib/gspawn-win32.c:401
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Иаҿыгоу аканал (%s) аҟынтә аиагара залымшахеит"
 
-#: glib/gspawn.c:2248
+#: glib/gspawn.c:2230
 #, c-format
 msgid "Failed to spawn child process “%s” (%s)"
 msgstr ""
 
-#: glib/gspawn.c:2365
+#: glib/gspawn.c:2347
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr ""
 
-#: glib/gspawn.c:2525 glib/gspawn-win32.c:424
+#: glib/gspawn.c:2507 glib/gspawn-win32.c:424
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
 msgstr ""
 
-#: glib/gspawn.c:2535
+#: glib/gspawn.c:2517
 #, c-format
 msgid "Failed to execute child process “%s” (%s)"
 msgstr ""
 
-#: glib/gspawn.c:2545
+#: glib/gspawn.c:2527
 #, c-format
 msgid "Failed to open file to remap file descriptor (%s)"
 msgstr ""
 
-#: glib/gspawn.c:2553
+#: glib/gspawn.c:2535
 #, c-format
 msgid "Failed to duplicate file descriptor for child process (%s)"
 msgstr ""
 
-#: glib/gspawn.c:2562
+#: glib/gspawn.c:2544
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr ""
 
-#: glib/gspawn.c:2570
+#: glib/gspawn.c:2552
 #, c-format
 msgid "Failed to close file descriptor for child process (%s)"
 msgstr ""
 
-#: glib/gspawn.c:2578
+#: glib/gspawn.c:2560
 #, c-format
 msgid "Unknown error executing child process “%s”"
 msgstr ""
 
-#: glib/gspawn.c:2602
+#: glib/gspawn.c:2584
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
@@ -5961,868 +5961,3 @@ msgstr ""
 #, c-format
 msgid "%.1f EB"
 msgstr ""
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#, fuzzy
