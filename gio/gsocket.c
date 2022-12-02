@@ -461,7 +461,7 @@ g_socket_details_from_fd (GSocket *socket)
     struct sockaddr sa;
   } address;
   gint fd;
-  guint addrlen;
+  socklen_t addrlen;
   int value, family;
   int errsv;
 
@@ -503,7 +503,7 @@ g_socket_details_from_fd (GSocket *socket)
   if (addrlen > 0)
     {
       g_assert (G_STRUCT_OFFSET (struct sockaddr, sa_family) +
-		sizeof address.storage.ss_family <= addrlen);
+		(socklen_t) sizeof address.storage.ss_family <= addrlen);
       family = address.storage.ss_family;
     }
   else
@@ -1990,7 +1990,7 @@ g_socket_get_local_address (GSocket  *socket,
     struct sockaddr_storage storage;
     struct sockaddr sa;
   } buffer;
-  guint len = sizeof (buffer);
+  socklen_t len = sizeof (buffer);
 
   g_return_val_if_fail (G_IS_SOCKET (socket), NULL);
 
@@ -2026,7 +2026,7 @@ g_socket_get_remote_address (GSocket  *socket,
     struct sockaddr_storage storage;
     struct sockaddr sa;
   } buffer;
-  guint len = sizeof (buffer);
+  socklen_t len = sizeof (buffer);
 
   g_return_val_if_fail (G_IS_SOCKET (socket), NULL);
 
@@ -4679,7 +4679,7 @@ input_message_from_msghdr (const struct msghdr  *msg,
     GPtrArray *my_messages = NULL;
     struct cmsghdr *cmsg;
 
-    if (msg->msg_controllen >= sizeof (struct cmsghdr))
+    if (msg->msg_controllen >= (socklen_t) sizeof (struct cmsghdr))
       {
         g_assert (message->control_messages != NULL);
         for (cmsg = CMSG_FIRSTHDR (msg);
@@ -6220,7 +6220,7 @@ g_socket_get_option (GSocket  *socket,
 		     gint     *value,
 		     GError  **error)
 {
-  guint size;
+  socklen_t size;
 
   g_return_val_if_fail (G_IS_SOCKET (socket), FALSE);
 
