@@ -461,7 +461,7 @@ g_socket_details_from_fd (GSocket *socket)
     struct sockaddr sa;
   } address;
   gint fd;
-  guint addrlen;
+  socklen_t addrlen;
   int value, family;
   int errsv;
 
@@ -1990,7 +1990,7 @@ g_socket_get_local_address (GSocket  *socket,
     struct sockaddr_storage storage;
     struct sockaddr sa;
   } buffer;
-  guint len = sizeof (buffer);
+  socklen_t len = sizeof (buffer);
 
   g_return_val_if_fail (G_IS_SOCKET (socket), NULL);
 
@@ -2026,7 +2026,7 @@ g_socket_get_remote_address (GSocket  *socket,
     struct sockaddr_storage storage;
     struct sockaddr sa;
   } buffer;
-  guint len = sizeof (buffer);
+  socklen_t len = sizeof (buffer);
 
   g_return_val_if_fail (G_IS_SOCKET (socket), NULL);
 
@@ -6220,7 +6220,7 @@ g_socket_get_option (GSocket  *socket,
 		     gint     *value,
 		     GError  **error)
 {
-  guint size;
+  socklen_t size;
 
   g_return_val_if_fail (G_IS_SOCKET (socket), FALSE);
 
