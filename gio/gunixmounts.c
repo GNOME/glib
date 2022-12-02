@@ -266,10 +266,12 @@ g_unix_is_mount_path_system_internal (const char *mount_path)
     "/var",
     "/var/crash",
     "/var/local",
+    GLIB_LOCALSTATEDIR,
     "/var/log",
     "/var/log/audit", /* https://bugzilla.redhat.com/show_bug.cgi?id=333041 */
     "/var/mail",
     "/var/run",
+    GLIB_RUNSTATEDIR,
     "/var/tmp",       /* https://bugzilla.redhat.com/show_bug.cgi?id=335241 */
     "/proc",
     "/sbin",
