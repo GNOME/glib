@@ -2400,6 +2400,9 @@ g_signal_get_invocation_hint (gpointer instance)
  *
  * Connects a closure to a signal for a particular object.
  *
+ * If @closure is a floating reference (see g_closure_sink()), this function
+ * takes ownership of @closure.
+ *
  * Returns: the handler ID (always greater than 0 for successful connections)
  */
 gulong
@@ -2461,6 +2464,9 @@ g_signal_connect_closure_by_id (gpointer  instance,
  *  default handler of the signal.
  *
  * Connects a closure to a signal for a particular object.
+ *
+ * If @closure is a floating reference (see g_closure_sink()), this function
+ * takes ownership of @closure.
  *
  * Returns: the handler ID (always greater than 0 for successful connections)
  */
