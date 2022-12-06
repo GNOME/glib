@@ -2205,16 +2205,18 @@ g_io_channel_write_chars (GIOChannel   *channel,
 {
   gsize count_unsigned;
   GIOStatus status;
-  gssize wrote_bytes = 0;
+  gsize wrote_bytes = 0;
 
   g_return_val_if_fail (channel != NULL, G_IO_STATUS_ERROR);
+  g_return_val_if_fail (buf != NULL || count == 0, G_IO_STATUS_ERROR);
   g_return_val_if_fail ((error == NULL) || (*error == NULL),
 			G_IO_STATUS_ERROR);
   g_return_val_if_fail (channel->is_writeable, G_IO_STATUS_ERROR);
 
-  if ((count < 0) && buf)
-    count = strlen (buf);
-  count_unsigned = count;
+  if (count < 0)
+    count_unsigned = strlen (buf);
+  else
+    count_unsigned = count;
 
   if (count_unsigned == 0)
     {
@@ -2223,8 +2225,7 @@ g_io_channel_write_chars (GIOChannel   *channel,
       return G_IO_STATUS_NORMAL;
     }
 
-  g_return_val_if_fail (buf != NULL, G_IO_STATUS_ERROR);
-  g_return_val_if_fail (count_unsigned > 0, G_IO_STATUS_ERROR);
+  g_assert (count_unsigned > 0);
 
   /* Raw write case */
 
@@ -2266,7 +2267,7 @@ g_io_channel_write_chars (GIOChannel   *channel,
   if (!channel->write_buf)
     channel->write_buf = g_string_sized_new (channel->buf_size);
 
-  while (wrote_bytes < count)
+  while (wrote_bytes < count_unsigned)
     {
       gsize space_in_buf;
 
@@ -2312,7 +2313,11 @@ g_io_channel_write_chars (GIOChannel   *channel,
 
       if (!channel->encoding)
         {
-          gssize write_this = MIN (space_in_buf, count_unsigned - wrote_bytes);
+          gsize write_this = MIN (space_in_buf, count_unsigned - wrote_bytes);
+
+          /* g_string_append_len() takes a gssize, so don’t overflow it*/
+          if (write_this > G_MAXSSIZE)
+            write_this = G_MAXSSIZE;
 
           g_string_append_len (channel->write_buf, buf, write_this);
           buf += write_this;
@@ -2475,7 +2480,10 @@ reconvert:
                       g_warning ("Illegal sequence due to partial character "
                                  "at the end of a previous write.");
                     else
-                      wrote_bytes += from_buf_len - left_len - from_buf_old_len;
+                      {
+                        g_assert (from_buf_len >= left_len + from_buf_old_len);
+                        wrote_bytes += from_buf_len - left_len - from_buf_old_len;
+                      }
                     if (bytes_written)
                       *bytes_written = wrote_bytes;
                     channel->partial_write_buf[0] = '\0';
