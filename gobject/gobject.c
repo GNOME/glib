@@ -3786,23 +3786,29 @@ g_object_unref (gpointer _object)
   g_return_if_fail (G_IS_OBJECT (object));
   
   /* here we want to atomically do: if (ref_count>1) { ref_count--; return; } */
- retry_atomic_decrement1:
   old_ref = g_atomic_int_get (&object->ref_count);
-  if (old_ref > 1)
+ retry_atomic_decrement1:
+  while (old_ref > 1)
     {
       /* valid if last 2 refs are owned by this call to unref and the toggle_ref */
-      gboolean has_toggle_ref = OBJECT_HAS_TOGGLE_REF (object);
 
-      if (!g_atomic_int_compare_and_exchange ((int *)&object->ref_count, old_ref, old_ref - 1))
-	goto retry_atomic_decrement1;
+      if (!g_atomic_int_compare_and_exchange_full ((int *)&object->ref_count,
+                                                   old_ref, old_ref - 1,
+                                                   &old_ref))
+        continue;
 
       TRACE (GOBJECT_OBJECT_UNREF(object,G_TYPE_FROM_INSTANCE(object),old_ref));
 
       /* if we went from 2->1 we need to notify toggle refs if any */
-      if (old_ref == 2 && has_toggle_ref) /* The last ref being held in this case is owned by the toggle_ref */
-	toggle_refs_notify (object, TRUE);
+      if (old_ref == 2 && OBJECT_HAS_TOGGLE_REF (object))
+        {
+          /* The last ref being held in this case is owned by the toggle_ref */
+          toggle_refs_notify (object, TRUE);
+        }
+
+      return;
     }
-  else
+
     {
       GSList **weak_locations;
       GObjectNotifyQueue *nqueue;
@@ -3865,24 +3871,29 @@ g_object_unref (gpointer _object)
       TRACE (GOBJECT_OBJECT_DISPOSE_END(object,G_TYPE_FROM_INSTANCE(object), 1));
 
       /* may have been re-referenced meanwhile */
-    retry_atomic_decrement2:
       old_ref = g_atomic_int_get ((int *)&object->ref_count);
-      if (old_ref > 1)
+
+      while (old_ref > 1)
         {
           /* valid if last 2 refs are owned by this call to unref and the toggle_ref */
-          gboolean has_toggle_ref = OBJECT_HAS_TOGGLE_REF (object);
 
-          if (!g_atomic_int_compare_and_exchange ((int *)&object->ref_count, old_ref, old_ref - 1))
-	    goto retry_atomic_decrement2;
+          if (!g_atomic_int_compare_and_exchange_full ((int *)&object->ref_count,
+                                                       old_ref, old_ref - 1,
+                                                       &old_ref))
+            continue;
+
+          TRACE (GOBJECT_OBJECT_UNREF (object, G_TYPE_FROM_INSTANCE (object), old_ref));
 
           /* emit all notifications that have been queued during dispose() */
           g_object_notify_queue_thaw (object, nqueue);
 
-	  TRACE (GOBJECT_OBJECT_UNREF(object,G_TYPE_FROM_INSTANCE(object),old_ref));
-
           /* if we went from 2->1 we need to notify toggle refs if any */
-          if (old_ref == 2 && has_toggle_ref) /* The last ref being held in this case is owned by the toggle_ref */
-	    toggle_refs_notify (object, TRUE);
+          if (old_ref == 2 && OBJECT_HAS_TOGGLE_REF (object) &&
+              g_atomic_int_get ((int *)&object->ref_count) == 1)
+            {
+              /* The last ref being held in this case is owned by the toggle_ref */
+              toggle_refs_notify (object, TRUE);
+            }
 
 	  return;
 	}
