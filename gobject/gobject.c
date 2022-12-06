@@ -1468,9 +1468,7 @@ void
 g_object_freeze_notify (GObject *object)
 {
   g_return_if_fail (G_IS_OBJECT (object));
-
-  if (g_atomic_int_get (&object->ref_count) == 0)
-    return;
+  g_return_if_fail (g_atomic_int_get (&object->ref_count) > 0);
 
   g_object_ref (object);
   g_object_notify_queue_freeze (object, FALSE);
@@ -1670,9 +1668,8 @@ g_object_thaw_notify (GObject *object)
   GObjectNotifyQueue *nqueue;
   
   g_return_if_fail (G_IS_OBJECT (object));
-  if (g_atomic_int_get (&object->ref_count) == 0)
-    return;
-  
+  g_return_if_fail (g_atomic_int_get (&object->ref_count) > 0);
+
   g_object_ref (object);
 
   /* FIXME: Freezing is the only way to get at the notify queue.
