@@ -206,10 +206,20 @@ g_wakeup_get_pollfd (GWakeup *wakeup,
 void
 g_wakeup_acknowledge (GWakeup *wakeup)
 {
-  char buffer[16];
-
   /* read until it is empty */
-  while (read (wakeup->fds[0], buffer, sizeof buffer) == sizeof buffer);
+
+  if (wakeup->fds[1] == -1)
+    {
+      uint64_t value;
+
+      while (read (wakeup->fds[0], &value, sizeof (value)) == sizeof (value));
+    }
+  else
+    {
+      uint8_t value;
+
+      while (read (wakeup->fds[0], &value, sizeof (value)) == sizeof (value));
+    }
 }
 
 /**
@@ -233,7 +243,7 @@ g_wakeup_signal (GWakeup *wakeup)
 
   if (wakeup->fds[1] == -1)
     {
-      guint64 one = 1;
+      uint64_t one = 1;
 
       /* eventfd() case. It requires a 64-bit counter increment value to be
        * written. */
@@ -243,7 +253,7 @@ g_wakeup_signal (GWakeup *wakeup)
     }
   else
     {
-      guint8 one = 1;
+      uint8_t one = 1;
 
       /* Non-eventfd() case. Only a single byte needs to be written, and it can
        * have an arbitrary value. */
