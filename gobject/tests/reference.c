@@ -1110,14 +1110,14 @@ test_toggle_ref_and_notify_on_dispose (void)
   obj->expected.count = 5;
   obj->notify_handler = G_CALLBACK (on_object_notify_switch_to_toggle_ref);
   g_object_unref (obj);
-  g_assert_cmpint (obj->actual.count, ==, 6);
+  g_assert_cmpint (obj->actual.count, ==, 7);
   g_assert_cmpuint (obj->notify_called, ==, 3);
 
   disposed_checker = &obj;
   g_object_add_weak_pointer (G_OBJECT (obj), &disposed_checker);
 
   obj->disposing_refs = 0;
-  obj->expected.count = 6;
+  obj->expected.count = 7;
   g_clear_object (&obj);
   g_assert_null (disposed_checker);
 }
