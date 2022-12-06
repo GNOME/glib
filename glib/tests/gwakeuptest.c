@@ -1,12 +1,5 @@
 #include <glib.h>
 #include <glib/gwakeup.h>
-#ifdef G_OS_UNIX
-#include <unistd.h>
-#endif
-
-#ifdef _WIN32
-static void alarm (int sec) { }
-#endif
 
 static gboolean
 check_signaled (GWakeup *wakeup)
@@ -31,9 +24,6 @@ test_semantics (void)
 {
   GWakeup *wakeup;
   gint i;
-
-  /* prevent the test from deadlocking */
-  alarm (60);
 
   wakeup = g_wakeup_new ();
   g_assert (!check_signaled (wakeup));
@@ -66,9 +56,6 @@ test_semantics (void)
   g_assert (!check_signaled (wakeup));
 
   g_wakeup_free (wakeup);
-
-  /* cancel the alarm */
-  alarm (0);
 }
 
 struct token
@@ -213,9 +200,6 @@ test_threaded (void)
 {
   gint i;
 
-  /* make sure we don't block forever */
-  alarm (60);
-
   /* simple mainloop test based on GWakeup.
    *
    * create a bunch of contexts and a thread to 'run' each one.  create
@@ -252,9 +236,6 @@ test_threaded (void)
     }
 
   g_wakeup_free (last_token_wakeup);
-
-  /* cancel alarm */
-  alarm (0);
 }
 
 int
