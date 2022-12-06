@@ -3885,10 +3885,10 @@ g_object_unref (gpointer _object)
                                                        &old_ref))
             continue;
 
+          TRACE (GOBJECT_OBJECT_UNREF (object, G_TYPE_FROM_INSTANCE (object), old_ref));
+
           /* emit all notifications that have been queued during dispose() */
           g_object_notify_queue_thaw (object, nqueue);
-
-	  TRACE (GOBJECT_OBJECT_UNREF(object,G_TYPE_FROM_INSTANCE(object),old_ref));
 
           /* if we went from 2->1 we need to notify toggle refs if any */
           if (old_ref == 2 && OBJECT_HAS_TOGGLE_REF (object) &&
