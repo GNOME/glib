@@ -426,10 +426,6 @@ g_simple_proxy_resolver_class_init (GSimpleProxyResolverClass *resolver_class)
    * Note that as a special case, if this URI starts with
    * "socks://", #GSimpleProxyResolver will treat it as referring
    * to all three of the socks5, socks4a, and socks4 proxy types.
-   *
-   * If you are making an HTTP or HTTPS proxy resolver, you must explicitly
-   * add the port to the URI even if the default port is used. For example:
-   * `https://example.com:443` or `http://example.com:80`.
    */
   g_object_class_install_property (object_class, PROP_DEFAULT_PROXY,
 				   g_param_spec_string ("default-proxy",
