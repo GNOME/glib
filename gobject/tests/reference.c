@@ -798,6 +798,7 @@ struct _DisposeReffingObject
   Count actual;
   Count expected;
   unsigned disposing_refs;
+  gboolean disposing_refs_all_normal;
 
   GCallback notify_handler;
   unsigned notify_called;
@@ -829,7 +830,7 @@ dispose_reffing_object_dispose (GObject *object)
 
   for (unsigned i = 0; i < obj->disposing_refs; ++i)
     {
-      if (i == 0)
+      if (i == 0 && !obj->disposing_refs_all_normal)
         {
           g_object_add_toggle_ref (object, obj->toggle_notify, &obj->actual);
         }
@@ -1009,6 +1010,114 @@ test_toggle_ref_on_dispose (void)
   g_assert_cmpint (obj->actual.count, ==, 2);
   obj->expected.count = obj->actual.count;
 
+  g_clear_object (&obj);
+  g_assert_null (disposed_checker);
+}
+
+static void
+toggle_notify_counter (gpointer  data,
+                       GObject  *obj,
+                       gboolean  is_last)
+{
+  Count *c = data;
+  c->count++;
+}
+
+static void
+on_object_notify_switch_to_normal_ref (GObject    *object,
+                                       GParamSpec *pspec,
+                                       void       *data)
+{
+  DisposeReffingObject *obj = DISPOSE_REFFING_OBJECT (object);
+
+  obj->notify_called++;
+
+  g_object_ref (object);
+  g_object_remove_toggle_ref (object, obj->toggle_notify, NULL);
+}
+
+static void
+on_object_notify_switch_to_toggle_ref (GObject    *object,
+                                       GParamSpec *pspec,
+                                       void       *data)
+{
+  DisposeReffingObject *obj = DISPOSE_REFFING_OBJECT (object);
+
+  obj->notify_called++;
+
+  g_object_add_toggle_ref (object, obj->toggle_notify, &obj->actual);
+  g_object_unref (object);
+}
+
+static void
+test_toggle_ref_and_notify_on_dispose (void)
+{
+  DisposeReffingObject *obj;
+  gpointer disposed_checker = &obj;
+
+  /* This tests wants to ensure that toggle signal emission during dispose
+   * is properly working if the object is revitalized by adding new references.
+   * It also wants to check that toggle notifications are not happening if a
+   * notify handler is removing them at this phase.
+   */
+
+  obj = g_object_new (dispose_reffing_object_get_type (), NULL);
+  obj->toggle_notify = toggle_notify_counter;
+  g_object_add_weak_pointer (G_OBJECT (obj), &disposed_checker);
+
+  /* Convert to toggle notification */
+  g_object_add_toggle_ref (G_OBJECT (obj), obj->toggle_notify, &obj->actual);
+  g_assert_cmpint (obj->actual.count, ==, 0);
+
+  obj->notify_handler = G_CALLBACK (on_object_notify);
+  g_object_unref (obj);
+  g_assert_cmpint (obj->actual.count, ==, 1);
+  g_assert_cmpuint (obj->notify_called, ==, 0);
+
+  disposed_checker = &obj;
+  g_object_add_weak_pointer (G_OBJECT (obj), &disposed_checker);
+
+  /* Check that notification is triggered after being queued */
+  obj->disposing_refs = 1;
+  obj->expected.count = 1;
+  obj->notify_handler = G_CALLBACK (on_object_notify);
+  g_object_remove_toggle_ref (G_OBJECT (obj), obj->toggle_notify, NULL);
+   /* FIXME: adjust the count to 1 when !2377 is in */
+  g_assert_cmpint (obj->actual.count, ==, 4);
+  g_assert_cmpuint (obj->notify_called, ==, 1);
+
+  disposed_checker = &obj;
+  g_object_add_weak_pointer (G_OBJECT (obj), &disposed_checker);
+
+  /* Check that notification is triggered after being queued, but no toggle
+   * notification is happening if notify handler switches to normal reference
+   */
+  obj->disposing_refs = 1;
+  obj->expected.count = 4;
+  obj->notify_handler = G_CALLBACK (on_object_notify_switch_to_normal_ref);
+  g_object_remove_toggle_ref (G_OBJECT (obj), obj->toggle_notify, NULL);
+  g_assert_cmpint (obj->actual.count, ==, 5);
+  g_assert_cmpuint (obj->notify_called, ==, 2);
+
+  disposed_checker = &obj;
+  g_object_add_weak_pointer (G_OBJECT (obj), &disposed_checker);
+
+  /* Check that notification is triggered after being queued, but that toggle
+   * is happening if notify handler switched to toggle reference
+   */
+  obj->disposing_refs = 1;
+  obj->disposing_refs_all_normal = TRUE;
+  obj->expected.count = 5;
+  obj->notify_handler = G_CALLBACK (on_object_notify_switch_to_toggle_ref);
+  g_object_unref (obj);
+  g_assert_cmpint (obj->actual.count, ==, 6);
+  g_assert_cmpuint (obj->notify_called, ==, 3);
+
+  disposed_checker = &obj;
+  g_object_add_weak_pointer (G_OBJECT (obj), &disposed_checker);
+
+  obj->disposing_refs = 0;
+  obj->expected.count = 6;
   g_clear_object (&obj);
   g_assert_null (disposed_checker);
 }
@@ -1217,6 +1326,7 @@ main (int argc, char **argv)
   g_test_add_func ("/object/weak-ref/on-toggle-notify", test_weak_ref_on_toggle_notify);
   g_test_add_func ("/object/toggle-ref", test_toggle_ref);
   g_test_add_func ("/object/toggle-ref/ref-on-dispose", test_toggle_ref_on_dispose);
+  g_test_add_func ("/object/toggle-ref/ref-and-notify-on-dispose", test_toggle_ref_and_notify_on_dispose);
   g_test_add_func ("/object/qdata", test_object_qdata);
   g_test_add_func ("/object/qdata2", test_object_qdata2);
 
