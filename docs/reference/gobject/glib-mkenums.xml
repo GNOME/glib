@@ -65,7 +65,7 @@ typedef enum
 </programlisting></informalexample>
 <variablelist>
 <varlistentry>
-<term><literal>@EnumName@</literal>></term>
+<term><literal>@EnumName@</literal></term>
 <listitem><para>
 The name of the enum currently being processed, enum names are assumed to be
 properly namespaced and to use mixed capitalization to separate
