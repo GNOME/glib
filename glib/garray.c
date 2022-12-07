@@ -1072,7 +1072,7 @@ struct _GRealPtrArray
   guint           len;
   guint           alloc;
   gatomicrefcount ref_count;
-  guint8          null_terminated; /* always either 0 or 1, so it can be added to array lengths */
+  guint8          null_terminated : 1; /* always either 0 or 1, so it can be added to array lengths */
   GDestroyNotify  element_free_func;
 };
 
