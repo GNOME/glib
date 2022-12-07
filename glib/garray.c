@@ -1151,6 +1151,53 @@ g_ptr_array_new (void)
 }
 
 /**
+ * g_ptr_array_new_take: (skip)
+ * @data: (array length=len) (transfer full) (nullable): an array of pointers,
+ *    or %NULL for an empty array
+ * @len: the number of pointers in @data
+ * @element_free_func: (nullable): A function to free elements on @array
+ *   destruction or %NULL
+ *
+ * Creates a new #GPtrArray with @data as pointers, @len as length and a
+ * reference count of 1.
+ *
+ * This avoids having to copy such data manually. @data will eventually be
+ * freed using g_free(), so must have been allocated with a suitable allocator.
+ *
+ * It also sets @element_free_func for freeing each element when the array is
+ * destroyed either via g_ptr_array_unref(), when g_ptr_array_free() is called
+ * with @free_segment set to %TRUE or when removing elements.
+ *
+ * Do not use it if @len is greater than %G_MAXUINT. #GPtrArray
+ * stores the length of its data in #guint, which may be shorter than
+ * #gsize.
+ *
+ * Returns: (transfer full): A new #GPtrArray
+ *
+ * Since: 2.76
+ */
+GPtrArray *
+g_ptr_array_new_take (gpointer       *data,
+                      gsize           len,
+                      GDestroyNotify  element_free_func)
+{
+  GPtrArray *array;
+  GRealPtrArray *rarray;
+
+  g_return_val_if_fail (data != NULL || len == 0, NULL);
+  g_return_val_if_fail (len <= G_MAXUINT, NULL);
+
+  array = ptr_array_new (0, element_free_func, FALSE);
+  rarray = (GRealPtrArray *)array;
+
+  rarray->pdata = g_steal_pointer (&data);
+  rarray->len = len;
+  rarray->alloc = len;
+
+  return array;
+}
+
+/**
  * g_ptr_array_steal:
  * @array: a #GPtrArray.
  * @len: (optional) (out): pointer to retrieve the number of
