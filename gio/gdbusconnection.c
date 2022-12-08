@@ -4870,8 +4870,6 @@ g_dbus_connection_list_registered_unlocked (GDBusConnection *connection,
   const gchar *object_path;
   gsize path_len;
   GHashTable *set;
-  GList *keys;
-  GList *l;
 
   CONNECTION_ENSURE_LOCK (connection);
 
@@ -4889,12 +4887,8 @@ g_dbus_connection_list_registered_unlocked (GDBusConnection *connection,
   while (g_hash_table_iter_next (&hash_iter, (gpointer) &object_path, NULL))
     maybe_add_path (path, path_len, object_path, set);
 
-  p = g_ptr_array_new ();
-  keys = g_hash_table_get_keys (set);
-  for (l = keys; l != NULL; l = l->next)
-    g_ptr_array_add (p, l->data);
+  p = g_hash_table_steal_all_keys (set);
   g_hash_table_unref (set);
-  g_list_free (keys);
 
   g_ptr_array_add (p, NULL);
   ret = (gchar **) g_ptr_array_free (p, FALSE);
