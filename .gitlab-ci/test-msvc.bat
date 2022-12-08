@@ -22,7 +22,7 @@ meson test -C _build --timeout-multiplier %MESON_TEST_TIMEOUT_MULTIPLIER% --setu
 
 :: Workaround meson issue https://github.com/mesonbuild/meson/issues/9894
 python -c "n = '_build/meson-logs/testlog.junit.xml'; c = open(n, 'rb').read().replace(b'\x1b', b''); open(n, 'wb').write(c)" || goto :error
-python -c "n = '_build/meson-logs/testlog-unstable_tests.junit.xml'; c = open(n, 'rb').read().replace(b'\x1b', b''); open(n, 'wb').write(c)" || goto :error
+python -c "n = '_build/meson-logs/testlog-unstable_tests.junit.xml'; c = open(n, 'rb').read().replace(b'\x1b', b''); open(n, 'wb').write(c)"
 
 :: FIXME: can we get code coverage support?
 
