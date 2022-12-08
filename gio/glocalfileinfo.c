@@ -1417,19 +1417,90 @@ get_content_type (const char          *basename,
   
 }
 
+typedef enum {
+  THUMBNAIL_SIZE_AUTO,
+  THUMBNAIL_SIZE_NORMAL,
+  THUMBNAIL_SIZE_LARGE,
+  THUMBNAIL_SIZE_XLARGE,
+  THUMBNAIL_SIZE_XXLARGE,
+  THUMBNAIL_SIZE_LAST,
+} ThumbnailSize;
+
+static const char *
+get_thumbnail_dirname_from_size (ThumbnailSize size)
+{
+  switch (size)
+    {
+    case THUMBNAIL_SIZE_AUTO:
+      return NULL;
+      break;
+    case THUMBNAIL_SIZE_NORMAL:
+      return "normal";
+      break;
+    case THUMBNAIL_SIZE_LARGE:
+      return "large";
+      break;
+    case THUMBNAIL_SIZE_XLARGE:
+      return "x-large";
+      break;
+    case THUMBNAIL_SIZE_XXLARGE:
+      return "xx-large";
+      break;
+    default:
+      g_assert_not_reached ();
+    }
+
+  g_return_val_if_reached (NULL);
+}
+
 /* @stat_buf is the pre-calculated result of stat(path), or %NULL if that failed. */
 static void
 get_thumbnail_attributes (const char     *path,
                           GFileInfo      *info,
-                          const GLocalFileStat *stat_buf)
+                          const GLocalFileStat *stat_buf,
+                          ThumbnailSize   size)
 {
   GChecksum *checksum;
+  const char *dirname;
   char *uri;
   char *filename = NULL;
   char *basename;
-  const char *size_dirs[4] = { "xx-large", "x-large", "large", "normal" };
-  gsize i;
+  guint32 failed_attr_id;
+  guint32 is_valid_attr_id;
+  guint32 path_attr_id;
 
+  switch (size)
+    {
+    case THUMBNAIL_SIZE_AUTO:
+      failed_attr_id = G_FILE_ATTRIBUTE_ID_THUMBNAILING_FAILED;
+      is_valid_attr_id = G_FILE_ATTRIBUTE_ID_THUMBNAIL_IS_VALID;
+      path_attr_id = G_FILE_ATTRIBUTE_ID_THUMBNAIL_PATH;
+      break;
+    case THUMBNAIL_SIZE_NORMAL:
+      failed_attr_id = G_FILE_ATTRIBUTE_ID_THUMBNAILING_FAILED_NORMAL;
+      is_valid_attr_id = G_FILE_ATTRIBUTE_ID_THUMBNAIL_IS_VALID_NORMAL;
+      path_attr_id = G_FILE_ATTRIBUTE_ID_THUMBNAIL_PATH_NORMAL;
+      break;
+    case THUMBNAIL_SIZE_LARGE:
+      failed_attr_id = G_FILE_ATTRIBUTE_ID_THUMBNAILING_FAILED_LARGE;
+      is_valid_attr_id = G_FILE_ATTRIBUTE_ID_THUMBNAIL_IS_VALID_LARGE;
+      path_attr_id = G_FILE_ATTRIBUTE_ID_THUMBNAIL_PATH_LARGE;
+      break;
+    case THUMBNAIL_SIZE_XLARGE:
+      failed_attr_id = G_FILE_ATTRIBUTE_ID_THUMBNAILING_FAILED_XLARGE;
+      is_valid_attr_id = G_FILE_ATTRIBUTE_ID_THUMBNAIL_IS_VALID_XLARGE;
+      path_attr_id = G_FILE_ATTRIBUTE_ID_THUMBNAIL_PATH_XLARGE;
+      break;
+    case THUMBNAIL_SIZE_XXLARGE:
+      failed_attr_id = G_FILE_ATTRIBUTE_ID_THUMBNAILING_FAILED_XXLARGE;
+      is_valid_attr_id = G_FILE_ATTRIBUTE_ID_THUMBNAIL_IS_VALID_XXLARGE;
+      path_attr_id = G_FILE_ATTRIBUTE_ID_THUMBNAIL_PATH_XXLARGE;
+      break;
+    default:
+      g_assert_not_reached ();
+    }
+
+  dirname = get_thumbnail_dirname_from_size (size);
   uri = g_filename_to_uri (path, NULL, NULL);
 
   checksum = g_checksum_new (G_CHECKSUM_MD5);
@@ -1438,21 +1509,37 @@ get_thumbnail_attributes (const char     *path,
   basename = g_strconcat (g_checksum_get_string (checksum), ".png", NULL);
   g_checksum_free (checksum);
 
-  for (i = 0; i < G_N_ELEMENTS (size_dirs); i++)
+  if (dirname)
     {
       filename = g_build_filename (g_get_user_cache_dir (),
-                                   "thumbnails", size_dirs[i], basename,
+                                   "thumbnails", dirname, basename,
                                    NULL);
-      if (g_file_test (filename, G_FILE_TEST_IS_REGULAR))
-        break;
 
-      g_clear_pointer (&filename, g_free);
+      if (!g_file_test (filename, G_FILE_TEST_IS_REGULAR))
+        g_clear_pointer (&filename, g_free);
+    }
+  else
+    {
+      gssize i;
+
+      for (i = THUMBNAIL_SIZE_LAST - 1; i >= 0 ; i--)
+        {
+          filename = g_build_filename (g_get_user_cache_dir (),
+                                       "thumbnails",
+                                       get_thumbnail_dirname_from_size (i),
+                                       basename,
+                                      NULL);
+          if (g_file_test (filename, G_FILE_TEST_IS_REGULAR))
+            break;
+
+          g_clear_pointer (&filename, g_free);
+        }
     }
 
   if (filename)
     {
-      _g_file_info_set_attribute_byte_string_by_id (info, G_FILE_ATTRIBUTE_ID_THUMBNAIL_PATH, filename);
-      _g_file_info_set_attribute_boolean_by_id (info, G_FILE_ATTRIBUTE_ID_THUMBNAIL_IS_VALID,
+      _g_file_info_set_attribute_byte_string_by_id (info, path_attr_id, filename);
+      _g_file_info_set_attribute_boolean_by_id (info, is_valid_attr_id,
                                                 thumbnail_verify (filename, uri, stat_buf));
     }
   else
@@ -1465,11 +1552,12 @@ get_thumbnail_attributes (const char     *path,
 
       if (g_file_test (filename, G_FILE_TEST_IS_REGULAR))
         {
-          _g_file_info_set_attribute_boolean_by_id (info, G_FILE_ATTRIBUTE_ID_THUMBNAILING_FAILED, TRUE);
-          _g_file_info_set_attribute_boolean_by_id (info, G_FILE_ATTRIBUTE_ID_THUMBNAIL_IS_VALID,
+          _g_file_info_set_attribute_boolean_by_id (info, failed_attr_id, TRUE);
+          _g_file_info_set_attribute_boolean_by_id (info, is_valid_attr_id,
                                                     thumbnail_verify (filename, uri, stat_buf));
         }
     }
+
   g_free (basename);
   g_free (filename);
   g_free (uri);
@@ -2108,10 +2196,47 @@ _g_local_file_info_get (const char             *basename,
       _g_file_attribute_matcher_matches_id (attribute_matcher,
                                             G_FILE_ATTRIBUTE_ID_THUMBNAILING_FAILED))
     {
-      if (stat_ok)
-          get_thumbnail_attributes (path, info, &statbuf);
-      else
-          get_thumbnail_attributes (path, info, NULL);
+      get_thumbnail_attributes (path, info, stat_ok ? &statbuf : NULL, THUMBNAIL_SIZE_AUTO);
+    }
+
+  if (_g_file_attribute_matcher_matches_id (attribute_matcher,
+                                            G_FILE_ATTRIBUTE_ID_THUMBNAIL_PATH_NORMAL) ||
+      _g_file_attribute_matcher_matches_id (attribute_matcher,
+                                            G_FILE_ATTRIBUTE_ID_THUMBNAIL_IS_VALID_NORMAL) ||
+      _g_file_attribute_matcher_matches_id (attribute_matcher,
+                                            G_FILE_ATTRIBUTE_ID_THUMBNAILING_FAILED_NORMAL))
+    {
+      get_thumbnail_attributes (path, info, stat_ok ? &statbuf : NULL, THUMBNAIL_SIZE_NORMAL);
+    }
+
+  if (_g_file_attribute_matcher_matches_id (attribute_matcher,
+                                            G_FILE_ATTRIBUTE_ID_THUMBNAIL_PATH_LARGE) ||
+      _g_file_attribute_matcher_matches_id (attribute_matcher,
+                                            G_FILE_ATTRIBUTE_ID_THUMBNAIL_IS_VALID_LARGE) ||
+      _g_file_attribute_matcher_matches_id (attribute_matcher,
+                                            G_FILE_ATTRIBUTE_ID_THUMBNAILING_FAILED_LARGE))
+    {
+      get_thumbnail_attributes (path, info, stat_ok ? &statbuf : NULL, THUMBNAIL_SIZE_LARGE);
+    }
+
+  if (_g_file_attribute_matcher_matches_id (attribute_matcher,
+                                            G_FILE_ATTRIBUTE_ID_THUMBNAIL_PATH_XLARGE) ||
+      _g_file_attribute_matcher_matches_id (attribute_matcher,
+                                            G_FILE_ATTRIBUTE_ID_THUMBNAIL_IS_VALID_XLARGE) ||
+      _g_file_attribute_matcher_matches_id (attribute_matcher,
+                                            G_FILE_ATTRIBUTE_ID_THUMBNAILING_FAILED_XLARGE))
+    {
+      get_thumbnail_attributes (path, info, stat_ok ? &statbuf : NULL, THUMBNAIL_SIZE_XLARGE);
+    }
+
+  if (_g_file_attribute_matcher_matches_id (attribute_matcher,
+                                            G_FILE_ATTRIBUTE_ID_THUMBNAIL_PATH_XXLARGE) ||
+      _g_file_attribute_matcher_matches_id (attribute_matcher,
+                                            G_FILE_ATTRIBUTE_ID_THUMBNAIL_IS_VALID_XXLARGE) ||
+      _g_file_attribute_matcher_matches_id (attribute_matcher,
+                                            G_FILE_ATTRIBUTE_ID_THUMBNAILING_FAILED_XXLARGE))
+    {
+      get_thumbnail_attributes (path, info, stat_ok ? &statbuf : NULL, THUMBNAIL_SIZE_XXLARGE);
     }
 
   vfs = g_vfs_get_default ();

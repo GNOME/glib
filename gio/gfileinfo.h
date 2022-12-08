@@ -917,7 +917,7 @@ typedef struct _GFileInfoClass   GFileInfoClass;
  * G_FILE_ATTRIBUTE_THUMBNAIL_PATH:
  *
  * A key in the "thumbnail" namespace for getting the path to the thumbnail
- * image.
+ * image with the biggest size available.
  *
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BYTE_STRING.
  **/
@@ -948,6 +948,182 @@ typedef struct _GFileInfoClass   GFileInfoClass;
  * Since: 2.40
  */
 #define G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID "thumbnail::is-valid"        /* boolean */
+
+/**
+ * G_FILE_ATTRIBUTE_THUMBNAIL_PATH_NORMAL:
+ *
+ * A key in the "thumbnail" namespace for getting the path to the normal
+ * thumbnail image.
+ *
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BYTE_STRING.
+ *
+ * Since: 2.76
+ */
+#define G_FILE_ATTRIBUTE_THUMBNAIL_PATH_NORMAL "thumbnail::path-normal"  /* bytestring */
+/**
+ * G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_NORMAL:
+ *
+ * A key in the "thumbnail" namespace for checking if thumbnailing failed
+ * for the normal image.
+ *
+ * This attribute is %TRUE if thumbnailing failed.
+ *
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
+ *
+ * Since: 2.76
+ */
+#define G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_NORMAL "thumbnail::failed-normal"  /* boolean */
+/**
+ * G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_NORMAL:
+ *
+ * A key in the "thumbnail" namespace for checking whether the normal
+ * thumbnail is outdated.
+ *
+ * This attribute is %TRUE if the normal thumbnail is up-to-date with the file
+ * it represents, and %FALSE if the file has been modified since the thumbnail
+ * was generated.
+ *
+ * If %G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_NORMAL is %TRUE and this attribute
+ * is %FALSE, it indicates that thumbnailing may be attempted again and may
+ * succeed.
+ *
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
+ *
+ * Since: 2.76
+ */
+#define G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_NORMAL "thumbnail::is-valid-normal"  /* boolean */
+
+/**
+ * G_FILE_ATTRIBUTE_THUMBNAIL_PATH_LARGE:
+ *
+ * A key in the "thumbnail" namespace for getting the path to the large
+ * thumbnail image.
+ *
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BYTE_STRING.
+ *
+ * Since: 2.76
+ */
+#define G_FILE_ATTRIBUTE_THUMBNAIL_PATH_LARGE "thumbnail::path-large"  /* bytestring */
+/**
+ * G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_LARGE:
+ *
+ * A key in the "thumbnail" namespace for checking if thumbnailing failed
+ * for the large image.
+ *
+ * This attribute is %TRUE if thumbnailing failed.
+ *
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
+ *
+ * Since: 2.76
+ */
+#define G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_LARGE "thumbnail::failed-large"  /* boolean */
+/**
+ * G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_LARGE:
+ *
+ * A key in the "thumbnail" namespace for checking whether the large
+ * thumbnail is outdated.
+ *
+ * This attribute is %TRUE if the large thumbnail is up-to-date with the file
+ * it represents, and %FALSE if the file has been modified since the thumbnail
+ * was generated.
+ *
+ * If %G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_LARGE is %TRUE and this attribute
+ * is %FALSE, it indicates that thumbnailing may be attempted again and may
+ * succeed.
+ *
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
+ *
+ * Since: 2.76
+ */
+#define G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_LARGE "thumbnail::is-valid-large" /* boolean */
+
+/**
+ * G_FILE_ATTRIBUTE_THUMBNAIL_PATH_XLARGE:
+ *
+ * A key in the "thumbnail" namespace for getting the path to the x-large
+ * thumbnail image.
+ *
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BYTE_STRING.
+ *
+ * Since: 2.76
+ */
+#define G_FILE_ATTRIBUTE_THUMBNAIL_PATH_XLARGE "thumbnail::path-xlarge"  /* bytestring */
+/**
+ * G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_XLARGE:
+ *
+ * A key in the "thumbnail" namespace for checking if thumbnailing failed
+ * for the x-large image.
+ *
+ * This attribute is %TRUE if thumbnailing failed.
+ *
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
+ *
+ * Since: 2.76
+ */
+#define G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_XLARGE "thumbnail::failed-xlarge"  /* boolean */
+/**
+ * G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_XLARGE:
+ *
+ * A key in the "thumbnail" namespace for checking whether the x-large
+ * thumbnail is outdated.
+ *
+ * This attribute is %TRUE if the x-large thumbnail is up-to-date with the file
+ * it represents, and %FALSE if the file has been modified since the thumbnail
+ * was generated.
+ *
+ * If %G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_XLARGE is %TRUE and this attribute
+ * is %FALSE, it indicates that thumbnailing may be attempted again and may
+ * succeed.
+ *
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
+ *
+ * Since: 2.76
+ */
+#define G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_XLARGE "thumbnail::is-valid-xlarge"  /* boolean */
+
+/**
+ * G_FILE_ATTRIBUTE_THUMBNAIL_PATH_XXLARGE:
+ *
+ * A key in the "thumbnail" namespace for getting the path to the xx-large
+ * thumbnail image.
+ *
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BYTE_STRING.
+ *
+ * Since: 2.76
+ */
+#define G_FILE_ATTRIBUTE_THUMBNAIL_PATH_XXLARGE "thumbnail::path-xxlarge"  /* bytestring */
+/**
+ * G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_XXLARGE:
+ *
+ * A key in the "thumbnail" namespace for checking if thumbnailing failed
+ * for the xx-large image.
+ *
+ * This attribute is %TRUE if thumbnailing failed.
+ *
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
+ *
+ * Since: 2.76
+ */
+#define G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_XXLARGE "thumbnail::failed-xxlarge"  /* boolean */
+/**
+ * G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_XXLARGE:
+ *
+ * A key in the "thumbnail" namespace for checking whether the xx-large
+ * thumbnail is outdated.
+ *
+ * This attribute is %TRUE if the x-large thumbnail is up-to-date with the file
+ * it represents, and %FALSE if the file has been modified since the thumbnail
+ * was generated.
+ *
+ * If %G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_XXLARGE is %TRUE and this attribute
+ * is %FALSE, it indicates that thumbnailing may be attempted again and may
+ * succeed.
+ *
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
+ *
+ * Since: 2.76
+ */
+#define G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_XXLARGE "thumbnail::is-valid-xxlarge"  /* boolean */
 
 /* Preview */
 
