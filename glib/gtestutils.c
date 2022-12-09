@@ -866,6 +866,7 @@ static gchar      *test_run_seedstr = NULL;
 G_LOCK_DEFINE_STATIC (test_run_rand);
 static GRand      *test_run_rand = NULL;
 static gchar      *test_run_name = "";
+static gchar      *test_run_name_path = "";
 static GSList    **test_filename_free_list;
 static guint       test_run_forks = 0;
 static guint       test_run_count = 0;
@@ -1448,7 +1449,7 @@ test_do_isolate_dirs (GError **error)
    * deep. Add a `.dirs` directory to contain all the paths we create, and
    * guarantee none of them clash with test paths below the current one — test
    * paths may not contain components starting with `.`. */
-  subdir = g_build_filename (test_tmpdir, test_run_name, ".dirs", NULL);
+  subdir = g_build_filename (test_tmpdir, test_run_name_path, ".dirs", NULL);
 
   /* We have to create the runtime directory (because it must be bound to
    * the session lifetime, which we consider to be the lifetime of the unit
@@ -1520,7 +1521,7 @@ test_rm_isolate_dirs (void)
   if (!test_isolate_dirs)
     return;
 
-  subdir = g_build_filename (test_tmpdir, test_run_name, NULL);
+  subdir = g_build_filename (test_tmpdir, test_run_name_path, NULL);
   rm_rf (subdir);
   g_free (subdir);
 }
@@ -3005,6 +3006,7 @@ g_test_run_suite_internal (GTestSuite *suite,
 {
   guint n_bad = 0;
   gchar *old_name = test_run_name;
+  gchar *old_name_path = test_run_name_path;
   GSList *iter;
 
   g_return_val_if_fail (suite != NULL, -1);
@@ -3016,12 +3018,14 @@ g_test_run_suite_internal (GTestSuite *suite,
       GTestCase *tc = iter->data;
 
       test_run_name = g_build_path ("/", old_name, tc->name, NULL);
+      test_run_name_path = g_build_path (G_DIR_SEPARATOR_S, old_name_path, tc->name, NULL);
       if (test_should_run (test_run_name, path))
         {
           if (!test_case_run (tc))
             n_bad++;
         }
       g_free (test_run_name);
+      g_free (test_run_name_path);
     }
 
   for (iter = suite->suites; iter; iter = iter->next)
@@ -3029,6 +3033,7 @@ g_test_run_suite_internal (GTestSuite *suite,
       GTestSuite *ts = iter->data;
 
       test_run_name = g_build_path ("/", old_name, ts->name, NULL);
+      test_run_name_path = g_build_path (G_DIR_SEPARATOR_S, old_name_path, ts->name, NULL);
       if (test_prefix_extended) {
         if (!path || path_has_prefix (test_run_name, path))
           n_bad += g_test_run_suite_internal (ts, test_run_name);
@@ -3039,9 +3044,11 @@ g_test_run_suite_internal (GTestSuite *suite,
       }
 
       g_free (test_run_name);
+      g_free (test_run_name_path);
     }
 
   test_run_name = old_name;
+  test_run_name_path = old_name_path;
 
   g_test_log (G_TEST_LOG_STOP_SUITE, suite->name, NULL, 0, NULL);
 
@@ -3103,6 +3110,7 @@ g_test_run_suite (GTestSuite *suite)
   test_count = g_test_suite_count (suite);
 
   test_run_name = g_strdup_printf ("/%s", suite->name);
+  test_run_name_path = g_build_path (G_DIR_SEPARATOR_S, suite->name, NULL);
 
   if (test_paths)
     {
@@ -3114,8 +3122,8 @@ g_test_run_suite (GTestSuite *suite)
   else
     n_bad = g_test_run_suite_internal (suite, NULL);
 
-  g_free (test_run_name);
-  test_run_name = NULL;
+  g_clear_pointer (&test_run_name, g_free);
+  g_clear_pointer (&test_run_name_path, g_free);
 
   return n_bad;
 }
@@ -4455,6 +4463,8 @@ g_test_get_filename (GTestFileType  file_type,
  * e.g. g_test_add() when the test was added.
  *
  * This function returns a valid string only within a test function.
+ *
+ * Note that this is a test path, not a file system path.
  *
  * Returns: the test path for the test currently being run
  *
