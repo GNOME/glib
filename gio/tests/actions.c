@@ -190,6 +190,22 @@ strv_set_equal (const gchar * const *strv, ...)
   return res;
 }
 
+static void
+ensure_state (GActionGroup *group,
+              const gchar  *action_name,
+              const gchar  *expected)
+{
+  GVariant *value;
+  gchar *printed;
+
+  value = g_action_group_get_action_state (group, action_name);
+  printed = g_variant_print (value, TRUE);
+  g_variant_unref (value);
+
+  g_assert_cmpstr (printed, ==, expected);
+  g_free (printed);
+}
+
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 
 static void
@@ -821,9 +837,185 @@ test_dbus_export (void)
   g_variant_unref (v);
   g_clear_object (&async_result);
 
+  /* check that activating a parameterless action over D-Bus works */
+  g_assert_cmpint (activation_count ("undo"), ==, 0);
+
+  g_dbus_connection_call (bus,
+                          g_dbus_connection_get_unique_name (bus),
+                          "/",
+                          "org.gtk.Actions",
+                          "Activate",
+                          g_variant_new ("(sava{sv})", "undo", NULL, NULL),
+                          NULL,
+                          0,
+                          G_MAXINT,
+                          NULL,
+                          async_result_cb,
+                          &async_result);
+
+  while (async_result == NULL)
+    g_main_context_iteration (NULL, TRUE);
+
+  v = g_dbus_connection_call_finish (bus, async_result, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (v);
+  g_assert_true (g_variant_is_of_type (v, G_VARIANT_TYPE_UNIT));
+  g_variant_unref (v);
+  g_clear_object (&async_result);
+
+  g_assert_cmpint (activation_count ("undo"), ==, 1);
+
+  /* check that activating a parameterful action over D-Bus works */
+  g_assert_cmpint (activation_count ("lang"), ==, 0);
+  ensure_state (G_ACTION_GROUP (group), "lang", "'latin'");
+
+  g_dbus_connection_call (bus,
+                          g_dbus_connection_get_unique_name (bus),
+                          "/",
+                          "org.gtk.Actions",
+                          "Activate",
+                          g_variant_new ("(s@ava{sv})", "lang", g_variant_new_parsed ("[<'spanish'>]"), NULL),
+                          NULL,
+                          0,
+                          G_MAXINT,
+                          NULL,
+                          async_result_cb,
+                          &async_result);
+
+  while (async_result == NULL)
+    g_main_context_iteration (NULL, TRUE);
+
+  v = g_dbus_connection_call_finish (bus, async_result, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (v);
+  g_assert_true (g_variant_is_of_type (v, G_VARIANT_TYPE_UNIT));
+  g_variant_unref (v);
+  g_clear_object (&async_result);
+
+  g_assert_cmpint (activation_count ("lang"), ==, 1);
+  ensure_state (G_ACTION_GROUP (group), "lang", "'spanish'");
+
+  /* check that various error conditions are rejected */
+  struct
+    {
+      const gchar *action_name;
+      GVariant *parameter;  /* (owned floating) (nullable) */
+    }
+  activate_error_conditions[] =
+    {
+      { "nope", NULL },  /* non-existent action */
+      { "lang", g_variant_new_parsed ("[<@u 4>]") },  /* wrong parameter type */
+      { "lang", NULL },  /* parameter missing */
+      { "undo", g_variant_new_parsed ("[<'silly'>]") },  /* extraneous parameter */
+    };
+
+  for (gsize i = 0; i < G_N_ELEMENTS (activate_error_conditions); i++)
+    {
+      GVariant *parameter = g_steal_pointer (&activate_error_conditions[i].parameter);
+      const gchar *type_string = (parameter != NULL) ? "(s@ava{sv})" : "(sava{sv})";
+
+      g_dbus_connection_call (bus,
+                              g_dbus_connection_get_unique_name (bus),
+                              "/",
+                              "org.gtk.Actions",
+                              "Activate",
+                              g_variant_new (type_string,
+                                             activate_error_conditions[i].action_name,
+                                             g_steal_pointer (&parameter),
+                                             NULL),
+                              NULL,
+                              0,
+                              G_MAXINT,
+                              NULL,
+                              async_result_cb,
+                              &async_result);
+
+      while (async_result == NULL)
+        g_main_context_iteration (NULL, TRUE);
+
+      v = g_dbus_connection_call_finish (bus, async_result, &error);
+      g_assert_error (error, G_DBUS_ERROR, G_DBUS_ERROR_INVALID_ARGS);
+      g_assert_null (v);
+      g_clear_error (&error);
+      g_clear_object (&async_result);
+    }
+
+  /* check that setting an action’s state over D-Bus works */
+  g_assert_cmpint (activation_count ("lang"), ==, 1);
+  ensure_state (G_ACTION_GROUP (group), "lang", "'spanish'");
+
+  g_dbus_connection_call (bus,
+                          g_dbus_connection_get_unique_name (bus),
+                          "/",
+                          "org.gtk.Actions",
+                          "SetState",
+                          g_variant_new ("(sva{sv})", "lang", g_variant_new_string ("portuguese"), NULL),
+                          NULL,
+                          0,
+                          G_MAXINT,
+                          NULL,
+                          async_result_cb,
+                          &async_result);
+
+  while (async_result == NULL)
+    g_main_context_iteration (NULL, TRUE);
+
+  v = g_dbus_connection_call_finish (bus, async_result, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (v);
+  g_assert_true (g_variant_is_of_type (v, G_VARIANT_TYPE_UNIT));
+  g_variant_unref (v);
+  g_clear_object (&async_result);
+
+  g_assert_cmpint (activation_count ("lang"), ==, 1);
+  ensure_state (G_ACTION_GROUP (group), "lang", "'portuguese'");
+
+  /* check that various error conditions are rejected */
+  struct
+    {
+      const gchar *action_name;
+      GVariant *state;  /* (owned floating) (not nullable) */
+    }
+  set_state_error_conditions[] =
+    {
+      { "nope", g_variant_new_string ("hello") },  /* non-existent action */
+      { "undo", g_variant_new_string ("not stateful") },  /* not a stateful action */
+      { "lang", g_variant_new_uint32 (3) },  /* wrong state type */
+    };
+
+  for (gsize i = 0; i < G_N_ELEMENTS (set_state_error_conditions); i++)
+    {
+      g_dbus_connection_call (bus,
+                              g_dbus_connection_get_unique_name (bus),
+                              "/",
+                              "org.gtk.Actions",
+                              "SetState",
+                              g_variant_new ("(s@va{sv})",
+                                             set_state_error_conditions[i].action_name,
+                                             g_variant_new_variant (g_steal_pointer (&set_state_error_conditions[i].state)),
+                                             NULL),
+                              NULL,
+                              0,
+                              G_MAXINT,
+                              NULL,
+                              async_result_cb,
+                              &async_result);
+
+      while (async_result == NULL)
+        g_main_context_iteration (NULL, TRUE);
+
+      v = g_dbus_connection_call_finish (bus, async_result, &error);
+      g_assert_error (error, G_DBUS_ERROR, G_DBUS_ERROR_INVALID_ARGS);
+      g_assert_null (v);
+      g_clear_error (&error);
+      g_clear_object (&async_result);
+    }
+
   /* test that the initial transfer works */
   g_assert_true (G_IS_DBUS_ACTION_GROUP (proxy));
-  g_assert_true (compare_action_groups (G_ACTION_GROUP (group), G_ACTION_GROUP (proxy)));
+  while (!compare_action_groups (G_ACTION_GROUP (group), G_ACTION_GROUP (proxy)))
+    g_main_context_iteration (NULL, TRUE);
+  n_actions_state_changed = 0;
 
   /* test that various changes get propagated from group to proxy */
   n_actions_added = 0;
@@ -1031,22 +1223,6 @@ verify_changed (const gchar *log_entry)
 }
 
 static void
-ensure_state (GSimpleActionGroup *group,
-              const gchar        *action_name,
-              const gchar        *expected)
-{
-  GVariant *value;
-  gchar *printed;
-
-  value = g_action_group_get_action_state (G_ACTION_GROUP (group), action_name);
-  printed = g_variant_print (value, TRUE);
-  g_variant_unref (value);
-
-  g_assert_cmpstr (printed, ==, expected);
-  g_free (printed);
-}
-
-static void
 test_property_actions (void)
 {
   GSimpleActionGroup *group;
@@ -1106,11 +1282,11 @@ test_property_actions (void)
   g_object_unref (client);
   g_object_unref (app);
 
-  ensure_state (group, "app-id", "'org.gtk.test'");
-  ensure_state (group, "keepalive", "uint32 0");
-  ensure_state (group, "tls", "false");
-  ensure_state (group, "disable-proxy", "false");
-  ensure_state (group, "type", "'stream'");
+  ensure_state (G_ACTION_GROUP (group), "app-id", "'org.gtk.test'");
+  ensure_state (G_ACTION_GROUP (group), "keepalive", "uint32 0");
+  ensure_state (G_ACTION_GROUP (group), "tls", "false");
+  ensure_state (G_ACTION_GROUP (group), "disable-proxy", "false");
+  ensure_state (G_ACTION_GROUP (group), "type", "'stream'");
 
   verify_changed (NULL);
 
@@ -1118,88 +1294,88 @@ test_property_actions (void)
   g_action_group_change_action_state (G_ACTION_GROUP (group), "app-id", g_variant_new ("s", "org.gtk.test2"));
   verify_changed ("app-id:'org.gtk.test2'");
   g_assert_cmpstr (g_application_get_application_id (app), ==, "org.gtk.test2");
-  ensure_state (group, "app-id", "'org.gtk.test2'");
+  ensure_state (G_ACTION_GROUP (group), "app-id", "'org.gtk.test2'");
 
   g_action_group_activate_action (G_ACTION_GROUP (group), "app-id", g_variant_new ("s", "org.gtk.test3"));
   verify_changed ("app-id:'org.gtk.test3'");
   g_assert_cmpstr (g_application_get_application_id (app), ==, "org.gtk.test3");
-  ensure_state (group, "app-id", "'org.gtk.test3'");
+  ensure_state (G_ACTION_GROUP (group), "app-id", "'org.gtk.test3'");
 
   g_application_set_application_id (app, "org.gtk.test");
   verify_changed ("app-id:'org.gtk.test'");
-  ensure_state (group, "app-id", "'org.gtk.test'");
+  ensure_state (G_ACTION_GROUP (group), "app-id", "'org.gtk.test'");
 
   /* uint tests */
   g_action_group_change_action_state (G_ACTION_GROUP (group), "keepalive", g_variant_new ("u", 1234));
   verify_changed ("keepalive:uint32 1234");
   g_assert_cmpuint (g_application_get_inactivity_timeout (app), ==, 1234);
-  ensure_state (group, "keepalive", "uint32 1234");
+  ensure_state (G_ACTION_GROUP (group), "keepalive", "uint32 1234");
 
   g_action_group_activate_action (G_ACTION_GROUP (group), "keepalive", g_variant_new ("u", 5678));
   verify_changed ("keepalive:uint32 5678");
   g_assert_cmpuint (g_application_get_inactivity_timeout (app), ==, 5678);
-  ensure_state (group, "keepalive", "uint32 5678");
+  ensure_state (G_ACTION_GROUP (group), "keepalive", "uint32 5678");
 
   g_application_set_inactivity_timeout (app, 0);
   verify_changed ("keepalive:uint32 0");
-  ensure_state (group, "keepalive", "uint32 0");
+  ensure_state (G_ACTION_GROUP (group), "keepalive", "uint32 0");
 
   /* bool tests */
   g_action_group_change_action_state (G_ACTION_GROUP (group), "tls", g_variant_new ("b", TRUE));
   verify_changed ("tls:true");
   g_assert_true (g_socket_client_get_tls (client));
-  ensure_state (group, "tls", "true");
+  ensure_state (G_ACTION_GROUP (group), "tls", "true");
 
   g_action_group_change_action_state (G_ACTION_GROUP (group), "disable-proxy", g_variant_new ("b", TRUE));
   verify_changed ("disable-proxy:true");
-  ensure_state (group, "disable-proxy", "true");
+  ensure_state (G_ACTION_GROUP (group), "disable-proxy", "true");
   g_assert_false (g_socket_client_get_enable_proxy (client));
 
   /* test toggle true->false */
   g_action_group_activate_action (G_ACTION_GROUP (group), "tls", NULL);
   verify_changed ("tls:false");
   g_assert_false (g_socket_client_get_tls (client));
-  ensure_state (group, "tls", "false");
+  ensure_state (G_ACTION_GROUP (group), "tls", "false");
 
   /* and now back false->true */
   g_action_group_activate_action (G_ACTION_GROUP (group), "tls", NULL);
   verify_changed ("tls:true");
   g_assert_true (g_socket_client_get_tls (client));
-  ensure_state (group, "tls", "true");
+  ensure_state (G_ACTION_GROUP (group), "tls", "true");
 
   g_socket_client_set_tls (client, FALSE);
   verify_changed ("tls:false");
-  ensure_state (group, "tls", "false");
+  ensure_state (G_ACTION_GROUP (group), "tls", "false");
 
   /* now do the same for the inverted action */
   g_action_group_activate_action (G_ACTION_GROUP (group), "disable-proxy", NULL);
   verify_changed ("disable-proxy:false");
   g_assert_true (g_socket_client_get_enable_proxy (client));
-  ensure_state (group, "disable-proxy", "false");
+  ensure_state (G_ACTION_GROUP (group), "disable-proxy", "false");
 
   g_action_group_activate_action (G_ACTION_GROUP (group), "disable-proxy", NULL);
   verify_changed ("disable-proxy:true");
   g_assert_false (g_socket_client_get_enable_proxy (client));
-  ensure_state (group, "disable-proxy", "true");
+  ensure_state (G_ACTION_GROUP (group), "disable-proxy", "true");
 
   g_socket_client_set_enable_proxy (client, TRUE);
   verify_changed ("disable-proxy:false");
-  ensure_state (group, "disable-proxy", "false");
+  ensure_state (G_ACTION_GROUP (group), "disable-proxy", "false");
 
   /* enum tests */
   g_action_group_change_action_state (G_ACTION_GROUP (group), "type", g_variant_new ("s", "datagram"));
   verify_changed ("type:'datagram'");
   g_assert_cmpint (g_socket_client_get_socket_type (client), ==, G_SOCKET_TYPE_DATAGRAM);
-  ensure_state (group, "type", "'datagram'");
+  ensure_state (G_ACTION_GROUP (group), "type", "'datagram'");
 
   g_action_group_activate_action (G_ACTION_GROUP (group), "type", g_variant_new ("s", "stream"));
   verify_changed ("type:'stream'");
   g_assert_cmpint (g_socket_client_get_socket_type (client), ==, G_SOCKET_TYPE_STREAM);
-  ensure_state (group, "type", "'stream'");
+  ensure_state (G_ACTION_GROUP (group), "type", "'stream'");
 
   g_socket_client_set_socket_type (client, G_SOCKET_TYPE_SEQPACKET);
   verify_changed ("type:'seqpacket'");
-  ensure_state (group, "type", "'seqpacket'");
+  ensure_state (G_ACTION_GROUP (group), "type", "'seqpacket'");
 
   /* Check some error cases... */
   g_test_expect_message ("GLib-GIO", G_LOG_LEVEL_CRITICAL, "*non-existent*");

@@ -131,7 +131,7 @@ g_fdo_notification_backend_find_notification_by_notify_id (GFdoNotificationBacke
   return NULL;
 }
 
-static void
+static gboolean
 activate_action (GFdoNotificationBackend *backend,
                  const gchar             *name,
                  GVariant                *parameter)
@@ -141,15 +141,30 @@ activate_action (GFdoNotificationBackend *backend,
   /* Callers should not provide a floating variant here */
   g_assert (parameter == NULL || !g_variant_is_floating (parameter));
 
-  if (name)
+  if (name != NULL &&
+      g_str_has_prefix (name, "app."))
     {
-      if (g_str_has_prefix (name, "app."))
-        g_action_group_activate_action (G_ACTION_GROUP (g_backend->application), name + 4, parameter);
+      const GVariantType *parameter_type = NULL;
+      const gchar *action_name = name + strlen ("app.");
+
+      /* @name and @parameter come as untrusted input over D-Bus, so validate them first */
+      if (g_action_group_query_action (G_ACTION_GROUP (g_backend->application),
+                                       action_name, NULL, &parameter_type,
+                                       NULL, NULL, NULL) &&
+          ((parameter_type == NULL && parameter == NULL) ||
+           (parameter_type != NULL && parameter != NULL && g_variant_is_of_type (parameter, parameter_type))))
+        {
+          g_action_group_activate_action (G_ACTION_GROUP (g_backend->application), action_name, parameter);
+          return TRUE;
+        }
     }
-  else
+  else if (name == NULL)
     {
       g_application_activate (g_backend->application);
+      return TRUE;
     }
+
+  return FALSE;
 }
 
 static void
@@ -165,6 +180,7 @@ notify_signal (GDBusConnection *connection,
   guint32 id = 0;
   const gchar *action = NULL;
   FreedesktopNotification *n;
+  gboolean notification_closed = TRUE;
 
   if (g_str_equal (signal_name, "NotificationClosed") &&
       g_variant_is_of_type (parameters, G_VARIANT_TYPE ("(uu)")))
@@ -187,29 +203,39 @@ notify_signal (GDBusConnection *connection,
     {
       if (g_str_equal (action, "default"))
         {
-          activate_action (backend, n->default_action, n->default_action_target);
+          if (!activate_action (backend, n->default_action, n->default_action_target))
+            notification_closed = FALSE;
         }
       else
         {
-          gchar *name;
-          GVariant *target;
+          gchar *name = NULL;
+          GVariant *target = NULL;
 
-          if (g_action_parse_detailed_name (action, &name, &target, NULL))
-            {
-              activate_action (backend, name, target);
-              g_free (name);
-              if (target)
-                g_variant_unref (target);
-            }
+          if (!g_action_parse_detailed_name (action, &name, &target, NULL) ||
+              !activate_action (backend, name, target))
+            notification_closed = FALSE;
+
+          g_free (name);
+          g_clear_pointer (&target, g_variant_unref);
         }
     }
 
-  /* Get the notification again in case the action redrew it */
-  n = g_fdo_notification_backend_find_notification_by_notify_id (backend, id);
-  if (n != NULL)
+  /* Remove the notification, as it’s either been explicitly closed
+   * (`NotificationClosed` signal) or has been closed as a result of activating
+   * an action successfully. GLib doesn’t currently support the `resident` hint
+   * on notifications which would allow them to stay around after having an
+   * action invoked on them (see
+   * https://specifications.freedesktop.org/notification-spec/notification-spec-latest.html#idm45877717456448)
+   *
+   * First, get the notification again in case the action redrew it */
+  if (notification_closed)
     {
-      backend->notifications = g_slist_remove (backend->notifications, n);
-      freedesktop_notification_free (n);
+      n = g_fdo_notification_backend_find_notification_by_notify_id (backend, id);
+      if (n != NULL)
+        {
+          backend->notifications = g_slist_remove (backend->notifications, n);
+          freedesktop_notification_free (n);
+        }
     }
 }
 

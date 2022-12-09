@@ -95,8 +95,11 @@ struct _GApplicationClass
                                                      gchar                   ***arguments,
                                                      int                       *exit_status);
 
+  /* @platform_data comes from an external process and is untrusted. All value types
+   * must be validated before being used. */
   void                      (* before_emit)         (GApplication              *application,
                                                      GVariant                  *platform_data);
+  /* Same as for @before_emit. */
   void                      (* after_emit)          (GApplication              *application,
                                                      GVariant                  *platform_data);
   void                      (* add_platform_data)   (GApplication              *application,
