@@ -1,5 +1,6 @@
 /* GObject - GLib Type, Object, Parameter and Signal Library
  * Copyright (C) 2009 Red Hat, Inc.
+ * Copyright (C) 2022 Canonical Ltd.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -907,6 +908,156 @@ test_emission_handled_teardown (PerformanceTest *test,
 }
 
 /*************************************************************
+ * Test object notify performance (common code)
+ *************************************************************/
+
+#define NUM_NOTIFY_PER_ROUND 10000
+
+struct NotifyTest {
+  GObject *object;
+  unsigned n_checks;
+};
+
+static void
+test_notify_run (PerformanceTest *test,
+                 void *_data)
+{
+  struct NotifyTest *data = _data;
+  GObject *object = data->object;
+
+  for (unsigned i = 0; i < data->n_checks; i++)
+    g_object_notify (object, "val1");
+}
+
+static void
+test_notify_by_pspec_run (PerformanceTest *test,
+                          void *_data)
+{
+  struct NotifyTest *data = _data;
+  GObject *object = data->object;
+
+  for (unsigned i = 0; i < data->n_checks; i++)
+    g_object_notify_by_pspec (object, pspecs[PROP_VAL1]);
+}
+
+/*************************************************************
+ * Test notify unhandled performance
+ *************************************************************/
+
+static void *
+test_notify_unhandled_setup (PerformanceTest *test)
+{
+  struct NotifyTest *data;
+
+  data = g_new0 (struct NotifyTest, 1);
+  data->object = g_object_new (COMPLEX_TYPE_OBJECT, NULL);
+  return data;
+}
+
+static void
+test_notify_unhandled_init (PerformanceTest *test,
+                            void *_data,
+                            double factor)
+{
+  struct NotifyTest *data = _data;
+
+  data->n_checks = factor * NUM_NOTIFY_PER_ROUND;
+}
+
+static void
+test_notify_unhandled_finish (PerformanceTest *test,
+                              void *data)
+{
+}
+
+static void
+test_notify_unhandled_print_result (PerformanceTest *test,
+                                    void *_data,
+                                    double time)
+{
+  struct NotifyTest *data = _data;
+
+  g_print ("Notify (unhandled) per second: %.0f\n",
+           data->n_checks / time);
+}
+
+static void
+test_notify_unhandled_teardown (PerformanceTest *test,
+                                void *_data)
+{
+  struct NotifyTest *data = _data;
+
+  g_object_unref (data->object);
+  g_free (data);
+}
+
+/*************************************************************
+ * Test notify handled performance
+ *************************************************************/
+
+static void
+test_notify_handled_handler (ComplexObject *obj, GParamSpec *pspec, void *data)
+{
+}
+
+static void *
+test_notify_handled_setup (PerformanceTest *test)
+{
+  struct NotifyTest *data;
+
+  data = g_new0 (struct NotifyTest, 1);
+  data->object = g_object_new (COMPLEX_TYPE_OBJECT, NULL);
+
+  g_signal_connect (data->object, "notify::val1",
+                    G_CALLBACK (test_notify_handled_handler), data);
+  g_signal_connect (data->object, "notify::val2",
+                    G_CALLBACK (test_notify_handled_handler), data);
+
+  return data;
+}
+
+static void
+test_notify_handled_init (PerformanceTest *test,
+                          void *_data,
+                          double factor)
+{
+  struct NotifyTest *data = _data;
+
+  data->n_checks = factor * NUM_NOTIFY_PER_ROUND;
+}
+
+static void
+test_notify_handled_finish (PerformanceTest *test,
+                            void *data)
+{
+}
+
+static void
+test_notify_handled_print_result (PerformanceTest *test,
+                                  void *_data,
+                                  double time)
+{
+  struct NotifyTest *data = _data;
+
+  g_print ("Notify per second: %.0f\n",
+           data->n_checks / time);
+}
+
+static void
+test_notify_handled_teardown (PerformanceTest *test,
+                              void *_data)
+{
+  struct NotifyTest *data = _data;
+
+  g_assert_cmpuint (
+    g_signal_handlers_disconnect_by_func (data->object,
+                                          test_notify_handled_handler,
+                                          data), ==, 2);
+  g_object_unref (data->object);
+  g_free (data);
+}
+
+/*************************************************************
  * Test object refcount performance
  *************************************************************/
 
@@ -1162,6 +1313,46 @@ static PerformanceTest tests[] = {
     test_emission_handled_finish,
     test_emission_handled_teardown,
     test_emission_handled_print_result
+  },
+  {
+    "notify-unhandled",
+    complex_object_get_type,
+    test_notify_unhandled_setup,
+    test_notify_unhandled_init,
+    test_notify_run,
+    test_notify_unhandled_finish,
+    test_notify_unhandled_teardown,
+    test_notify_unhandled_print_result
+  },
+  {
+    "notify-by-pspec-unhandled",
+    complex_object_get_type,
+    test_notify_unhandled_setup,
+    test_notify_unhandled_init,
+    test_notify_by_pspec_run,
+    test_notify_unhandled_finish,
+    test_notify_unhandled_teardown,
+    test_notify_unhandled_print_result
+  },
+  {
+    "notify-handled",
+    complex_object_get_type,
+    test_notify_handled_setup,
+    test_notify_handled_init,
+    test_notify_run,
+    test_notify_handled_finish,
+    test_notify_handled_teardown,
+    test_notify_handled_print_result
+  },
+  {
+    "notify-by-pspec-handled",
+    complex_object_get_type,
+    test_notify_handled_setup,
+    test_notify_handled_init,
+    test_notify_by_pspec_run,
+    test_notify_handled_finish,
+    test_notify_handled_teardown,
+    test_notify_handled_print_result
   },
   {
     "refcount",
