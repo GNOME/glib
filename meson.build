@@ -894,6 +894,15 @@ if cc.compiles('''#include <linux/futex.h>
                }''', name : 'futex(2) system call')
   glib_conf.set('HAVE_FUTEX', 1)
 endif
+if cc.compiles('''#include <linux/futex.h>
+               #include <sys/syscall.h>
+               #include <unistd.h>
+               int main (int argc, char ** argv) {
+                 syscall (__NR_futex_time64, NULL, FUTEX_WAKE, FUTEX_WAIT);
+                 return 0;
+               }''', name : 'futex(2) system call')
+  glib_conf.set('HAVE_FUTEX_TIME64', 1)
+endif
 
 # Check for eventfd(2)
 if cc.links('''#include <sys/eventfd.h>
