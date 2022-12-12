@@ -61,6 +61,22 @@ test_type_flags_final (void)
 {
   GType final2_type;
 
+  g_assert_true (G_TYPE_IS_FINAL (TEST_TYPE_FINAL));
+  g_assert_true (g_type_test_flags (TEST_TYPE_FINAL, G_TYPE_FLAG_FINAL));
+  g_assert_true (G_TYPE_IS_CLASSED (TEST_TYPE_FINAL));
+  g_assert_true (g_type_test_flags (TEST_TYPE_FINAL, G_TYPE_FLAG_CLASSED));
+  g_assert_true (G_TYPE_IS_INSTANTIATABLE (TEST_TYPE_FINAL));
+  g_assert_true (g_type_test_flags (TEST_TYPE_FINAL, G_TYPE_FLAG_INSTANTIATABLE));
+  g_assert_true (g_type_test_flags (TEST_TYPE_FINAL,
+                                    G_TYPE_FLAG_FINAL |
+                                    G_TYPE_FLAG_CLASSED |
+                                    G_TYPE_FLAG_INSTANTIATABLE));
+  g_assert_false (g_type_test_flags (TEST_TYPE_FINAL,
+                                     G_TYPE_FLAG_FINAL |
+                                     G_TYPE_FLAG_CLASSED |
+                                     G_TYPE_FLAG_DEPRECATED |
+                                     G_TYPE_FLAG_INSTANTIATABLE));
+
   /* This is the message we print out when registering the type */
   g_test_expect_message ("GLib-GObject", G_LOG_LEVEL_CRITICAL,
                          "*cannot derive*");
@@ -103,6 +119,22 @@ test_deprecated_init (TestDeprecated *self)
 }
 
 static void
+test_type_flags_final_instance_check (void)
+{
+  TestFinal *final;
+
+  final = g_object_new (TEST_TYPE_FINAL, NULL);
+  g_assert_true (g_type_check_instance_is_a ((GTypeInstance *) final,
+                                              TEST_TYPE_FINAL));
+  g_assert_false (g_type_check_instance_is_a ((GTypeInstance *) final,
+                                              TEST_TYPE_DEPRECATED));
+  g_assert_true (g_type_check_instance_is_a ((GTypeInstance *) final,
+                                              G_TYPE_OBJECT));
+
+  g_clear_object (&final);
+}
+
+static void
 test_type_flags_deprecated (void)
 {
   GType deprecated_type;
@@ -119,6 +151,21 @@ test_type_flags_deprecated (void)
   g_assert_false (deprecated_type == G_TYPE_INVALID);
   g_assert_true (G_TYPE_IS_DEPRECATED (deprecated_type));
 
+  g_assert_true (G_TYPE_IS_FINAL (deprecated_type));
+  g_assert_true (g_type_test_flags (deprecated_type, G_TYPE_FLAG_FINAL));
+
+  g_assert_true (g_type_test_flags (deprecated_type,
+                                    G_TYPE_FLAG_DEPRECATED |
+                                    G_TYPE_FLAG_CLASSED |
+                                    G_TYPE_FLAG_FINAL |
+                                    G_TYPE_FLAG_INSTANTIATABLE));
+  g_assert_false (g_type_test_flags (deprecated_type,
+                                     G_TYPE_FLAG_DEPRECATED |
+                                     G_TYPE_FLAG_CLASSED |
+                                     G_TYPE_FLAG_FINAL |
+                                     G_TYPE_FLAG_ABSTRACT |
+                                     G_TYPE_FLAG_INSTANTIATABLE));
+
   /* Instantiating it should work, but emit a warning. */
   deprecated_object = g_object_new (deprecated_type, NULL);
   g_assert_nonnull (deprecated_object);
@@ -130,6 +177,13 @@ test_type_flags_deprecated (void)
   /* Instantiating it again should not emit a second warning. */
   deprecated_object = g_object_new (deprecated_type, NULL);
   g_assert_nonnull (deprecated_object);
+
+  g_assert_true (g_type_check_instance_is_a ((GTypeInstance *) deprecated_object,
+                                              TEST_TYPE_DEPRECATED));
+  g_assert_true (g_type_check_instance_is_a ((GTypeInstance *) deprecated_object,
+                                              G_TYPE_OBJECT));
+  g_assert_false (g_type_check_instance_is_a ((GTypeInstance *) deprecated_object,
+                                              TEST_TYPE_FINAL));
 
   g_test_assert_expected_messages ();
 
@@ -144,6 +198,7 @@ main (int argc, char *argv[])
   g_setenv ("G_ENABLE_DIAGNOSTIC", "1", TRUE);
 
   g_test_add_func ("/type/flags/final", test_type_flags_final);
+  g_test_add_func ("/type/flags/final/instance-check", test_type_flags_final_instance_check);
   g_test_add_func ("/type/flags/deprecated", test_type_flags_deprecated);
 
   return g_test_run ();
