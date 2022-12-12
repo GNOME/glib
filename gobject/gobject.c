@@ -1468,7 +1468,17 @@ void
 g_object_freeze_notify (GObject *object)
 {
   g_return_if_fail (G_IS_OBJECT (object));
-  g_return_if_fail (g_atomic_int_get (&object->ref_count) > 0);
+
+#ifndef G_DISABLE_CHECKS
+  if (G_UNLIKELY (g_atomic_int_get (&object->ref_count) == 0))
+    {
+      g_critical ("Attempting to freeze the notification queue for object %s[%p]; "
+                  "Property notification does not work during instance finalization.",
+                  G_OBJECT_TYPE_NAME (object),
+                  object);
+      return;
+    }
+#endif
 
   g_object_ref (object);
   g_object_notify_queue_freeze (object, FALSE);
@@ -1668,7 +1678,18 @@ g_object_thaw_notify (GObject *object)
   GObjectNotifyQueue *nqueue;
   
   g_return_if_fail (G_IS_OBJECT (object));
-  g_return_if_fail (g_atomic_int_get (&object->ref_count) > 0);
+
+#ifndef G_DISABLE_CHECKS
+  if (G_UNLIKELY (g_atomic_int_get (&object->ref_count) == 0))
+    {
+      g_critical ("Attempting to thaw the notification queue for object %s[%p]; "
+                  "Property notification does not work during instance finalization.",
+                  G_OBJECT_TYPE_NAME (object),
+                  object);
+      return;
+    }
+#endif
+
 
   g_object_ref (object);
 
