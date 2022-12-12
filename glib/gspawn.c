@@ -2334,6 +2334,9 @@ fork_exec (gboolean              intermediate_child,
     {
       if (!g_unix_open_pipe (stdin_pipe, pipe_flags, error))
         goto cleanup_and_fail;
+      if (_g_spawn_invalid_source_fd (stdin_pipe[0], source_fds, n_fds, error) ||
+          _g_spawn_invalid_source_fd (stdin_pipe[1], source_fds, n_fds, error))
+        goto cleanup_and_fail;
       child_close_fds[n_child_close_fds++] = stdin_pipe[1];
       stdin_fd = stdin_pipe[0];
     }
@@ -2342,6 +2345,9 @@ fork_exec (gboolean              intermediate_child,
     {
       if (!g_unix_open_pipe (stdout_pipe, pipe_flags, error))
         goto cleanup_and_fail;
+      if (_g_spawn_invalid_source_fd (stdout_pipe[0], source_fds, n_fds, error) ||
+          _g_spawn_invalid_source_fd (stdout_pipe[1], source_fds, n_fds, error))
+        goto cleanup_and_fail;
       child_close_fds[n_child_close_fds++] = stdout_pipe[0];
       stdout_fd = stdout_pipe[1];
     }
@@ -2349,6 +2355,9 @@ fork_exec (gboolean              intermediate_child,
   if (stderr_pipe_out != NULL)
     {
       if (!g_unix_open_pipe (stderr_pipe, pipe_flags, error))
+        goto cleanup_and_fail;
+      if (_g_spawn_invalid_source_fd (stderr_pipe[0], source_fds, n_fds, error) ||
+          _g_spawn_invalid_source_fd (stderr_pipe[1], source_fds, n_fds, error))
         goto cleanup_and_fail;
       child_close_fds[n_child_close_fds++] = stderr_pipe[0];
       stderr_fd = stderr_pipe[1];
@@ -2491,9 +2500,18 @@ fork_exec (gboolean              intermediate_child,
 
   if (!g_unix_open_pipe (child_err_report_pipe, pipe_flags, error))
     goto cleanup_and_fail;
-
-  if (intermediate_child && !g_unix_open_pipe (child_pid_report_pipe, pipe_flags, error))
+  if (_g_spawn_invalid_source_fd (child_err_report_pipe[0], source_fds, n_fds, error) ||
+      _g_spawn_invalid_source_fd (child_err_report_pipe[1], source_fds, n_fds, error))
     goto cleanup_and_fail;
+
+  if (intermediate_child)
+    {
+      if (!g_unix_open_pipe (child_pid_report_pipe, pipe_flags, error))
+        goto cleanup_and_fail;
+      if (_g_spawn_invalid_source_fd (child_pid_report_pipe[0], source_fds, n_fds, error) ||
+          _g_spawn_invalid_source_fd (child_pid_report_pipe[1], source_fds, n_fds, error))
+        goto cleanup_and_fail;
+    }
   
   pid = fork ();
 
