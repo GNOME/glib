@@ -102,7 +102,7 @@ class TestAssertMessage(unittest.TestCase):
         if self.__gdb is None:
             return Result(None, "", "")
 
-        argv = ["gdb", "--batch"]
+        argv = ["gdb", "-n", "--batch"]
         argv.extend(args)
         print("Running:", argv)
 
