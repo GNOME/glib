@@ -146,6 +146,13 @@
 				    G_TYPE_FLAG_DERIVABLE | \
 				    G_TYPE_FLAG_DEEP_DERIVABLE)
 #define	TYPE_FLAG_MASK		   (G_TYPE_FLAG_ABSTRACT | G_TYPE_FLAG_VALUE_ABSTRACT | G_TYPE_FLAG_FINAL | G_TYPE_FLAG_DEPRECATED)
+
+/* List the flags that are directly accessible via the TypeNode struct flags */
+#define	NODE_FLAG_MASK ( \
+  G_TYPE_FLAG_CLASSED | \
+  G_TYPE_FLAG_INSTANTIATABLE | \
+  G_TYPE_FLAG_FINAL)
+
 #define	SIZEOF_FUNDAMENTAL_INFO	   ((gssize) MAX (MAX (sizeof (GTypeFundamentalInfo), \
 						       sizeof (gpointer)), \
                                                   sizeof (glong)))
@@ -3994,6 +4001,20 @@ g_type_test_flags (GType type,
   node = lookup_type_node_I (type);
   if (node)
     {
+      if ((flags & ~NODE_FLAG_MASK) == 0)
+        {
+          if (flags & G_TYPE_FLAG_CLASSED)
+            result |= node->is_classed;
+
+          if (flags & G_TYPE_FLAG_INSTANTIATABLE)
+            result |= node->is_instantiatable;
+
+          if (flags & G_TYPE_FLAG_FINAL)
+            result |= node->is_final;
+
+          return result;
+        }
+
       guint fflags = flags & TYPE_FUNDAMENTAL_FLAG_MASK;
       guint tflags = flags & TYPE_FLAG_MASK;
       
