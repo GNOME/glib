@@ -797,6 +797,13 @@ check_derivation_I (GType        parent_type,
 		  type_descriptive_name_I (parent_type));
       return FALSE;
     }
+  if (pnode->is_final)
+    {
+      g_critical ("cannot derive '%s' from final parent type '%s'",
+                  type_name,
+                  NODE_NAME (pnode));
+      return FALSE;
+    }
   finfo = type_node_fundamental_info_I (pnode);
   /* ensure flat derivability */
   if (!(finfo->type_flags & G_TYPE_FLAG_DERIVABLE))
@@ -813,13 +820,6 @@ check_derivation_I (GType        parent_type,
       g_critical ("cannot derive '%s' from non-fundamental parent type '%s'",
 		  type_name,
 		  NODE_NAME (pnode));
-      return FALSE;
-    }
-  if ((G_TYPE_FLAG_FINAL & GPOINTER_TO_UINT (type_get_qdata_L (pnode, static_quark_type_flags))) == G_TYPE_FLAG_FINAL)
-    {
-      g_critical ("cannot derive '%s' from final parent type '%s'",
-                  type_name,
-                  NODE_NAME (pnode));
       return FALSE;
     }
   
