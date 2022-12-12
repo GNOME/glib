@@ -1058,6 +1058,147 @@ test_notify_handled_teardown (PerformanceTest *test,
 }
 
 /*************************************************************
+ * Test object set performance
+ *************************************************************/
+
+#define NUM_SET_PER_ROUND 10000
+
+struct SetTest {
+  GObject *object;
+  unsigned n_checks;
+};
+
+static void
+test_set_run (PerformanceTest *test,
+              void *_data)
+{
+  struct SetTest *data = _data;
+  GObject *object = data->object;
+
+  for (unsigned i = 0; i < data->n_checks; i++)
+    g_object_set (object, "val1", i, NULL);
+}
+
+static void *
+test_set_setup (PerformanceTest *test)
+{
+  struct SetTest *data;
+
+  data = g_new0 (struct SetTest, 1);
+  data->object = g_object_new (COMPLEX_TYPE_OBJECT, NULL);
+
+  return data;
+}
+
+static void
+test_set_init (PerformanceTest *test,
+               void *_data,
+               double factor)
+{
+  struct SetTest *data = _data;
+
+  data->n_checks = factor * NUM_SET_PER_ROUND;
+}
+
+static void
+test_set_finish (PerformanceTest *test,
+                 void *data)
+{
+}
+
+static void
+test_set_print_result (PerformanceTest *test,
+                       void *_data,
+                       double time)
+{
+  struct SetTest *data = _data;
+
+  g_print ("Property set per second: %.0f\n",
+           data->n_checks / time);
+}
+
+static void
+test_set_teardown (PerformanceTest *test,
+                   void *_data)
+{
+  struct SetTest *data = _data;
+
+  g_object_unref (data->object);
+  g_free (data);
+}
+
+/*************************************************************
+ * Test object get performance
+ *************************************************************/
+
+#define NUM_GET_PER_ROUND 10000
+
+struct GetTest {
+  GObject *object;
+  unsigned n_checks;
+};
+
+static void
+test_get_run (PerformanceTest *test,
+              void *_data)
+{
+  struct GetTest *data = _data;
+  GObject *object = data->object;
+  int val;
+
+  for (unsigned i = 0; i < data->n_checks; i++)
+    g_object_get (object, "val1", &val, NULL);
+}
+
+static void *
+test_get_setup (PerformanceTest *test)
+{
+  struct GetTest *data;
+
+  data = g_new0 (struct GetTest, 1);
+  data->object = g_object_new (COMPLEX_TYPE_OBJECT, NULL);
+
+  return data;
+}
+
+static void
+test_get_init (PerformanceTest *test,
+               void *_data,
+               double factor)
+{
+  struct GetTest *data = _data;
+
+  data->n_checks = factor * NUM_GET_PER_ROUND;
+}
+
+static void
+test_get_finish (PerformanceTest *test,
+                 void *data)
+{
+}
+
+static void
+test_get_print_result (PerformanceTest *test,
+                       void *_data,
+                       double time)
+{
+  struct GetTest *data = _data;
+
+  g_print ("Property get per second: %.0f\n",
+           data->n_checks / time);
+}
+
+static void
+test_get_teardown (PerformanceTest *test,
+                   gpointer _data)
+{
+  struct GetTest *data = _data;
+
+  g_object_unref (data->object);
+  g_free (data);
+}
+
+/*************************************************************
  * Test object refcount performance
  *************************************************************/
 
@@ -1353,6 +1494,26 @@ static PerformanceTest tests[] = {
     test_notify_handled_finish,
     test_notify_handled_teardown,
     test_notify_handled_print_result
+  },
+  {
+    "property-set",
+    complex_object_get_type,
+    test_set_setup,
+    test_set_init,
+    test_set_run,
+    test_set_finish,
+    test_set_teardown,
+    test_set_print_result
+  },
+  {
+    "property-get",
+    complex_object_get_type,
+    test_get_setup,
+    test_get_init,
+    test_get_run,
+    test_get_finish,
+    test_get_teardown,
+    test_get_print_result
   },
   {
     "refcount",
