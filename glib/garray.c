@@ -1198,6 +1198,52 @@ g_ptr_array_new_take (gpointer       *data,
 }
 
 /**
+ * g_ptr_array_new_take_null_terminated: (skip)
+ * @data: (array zero-terminated=1) (transfer full) (nullable): an array
+ *  of pointers, %NULL terminated, or %NULL for an empty array
+ * @element_free_func: (nullable): a function to free elements on @array
+ *   destruction or %NULL
+ *
+ * Creates a new #GPtrArray with @data as pointers, computing the length of it
+ * and setting the reference count to 1.
+ *
+ * This avoids having to copy such data manually.
+ *
+ * The length is calculated by iterating through @data until the first %NULL
+ * element is found.
+ *
+ * It also sets @element_free_func for freeing each element when the array is
+ * destroyed either via g_ptr_array_unref(), when g_ptr_array_free() is called
+ * with @free_segment set to %TRUE or when removing elements.
+ *
+ * Do not use it if the @data length is greater than %G_MAXUINT. #GPtrArray
+ * stores the length of its data in #guint, which may be shorter than
+ * #gsize.
+ *
+ * Returns: (transfer full): A new #GPtrArray
+ *
+ * Since: 2.76
+ */
+GPtrArray *
+g_ptr_array_new_take_null_terminated (gpointer       *data,
+                                      GDestroyNotify  element_free_func)
+{
+  GPtrArray *array;
+  gsize len = 0;
+
+  if (data != NULL)
+    {
+      for (gsize i = 0; data[i] != NULL; ++i)
+        len += 1;
+    }
+
+  array = g_ptr_array_new_take (g_steal_pointer (&data), len, element_free_func);
+  ((GRealPtrArray *)array)->null_terminated = TRUE;
+
+  return array;
+}
+
+/**
  * g_ptr_array_steal:
  * @array: a #GPtrArray.
  * @len: (optional) (out): pointer to retrieve the number of

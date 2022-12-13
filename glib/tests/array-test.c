@@ -1155,6 +1155,174 @@ pointer_array_new_take_with_free_func (void)
 }
 
 static void
+pointer_array_new_take_null_terminated (void)
+{
+  const size_t array_size = 10000;
+  GPtrArray *gparray;
+  gpointer *pdata;
+  gpointer *old_pdata_copy;
+  gsize len;
+
+  gparray = g_ptr_array_new_null_terminated (array_size, NULL, TRUE);
+  g_assert_true (g_ptr_array_is_null_terminated (gparray));
+
+  for (size_t i = 0; i < array_size; i++)
+    g_ptr_array_add (gparray, GUINT_TO_POINTER (i + 1));
+
+  assert_ptr_array_null_terminated (gparray, TRUE);
+  pdata = g_ptr_array_steal (gparray, &len);
+  g_assert_cmpuint (array_size, ==, len);
+  g_assert_nonnull (pdata);
+  g_clear_pointer (&gparray, g_ptr_array_unref);
+
+  old_pdata_copy = g_memdup2 (pdata, len * sizeof (gpointer));
+  gparray = g_ptr_array_new_take_null_terminated (g_steal_pointer (&pdata), NULL);
+  g_assert_true (g_ptr_array_is_null_terminated (gparray));
+  assert_ptr_array_null_terminated (gparray, TRUE);
+  g_assert_cmpuint (gparray->len, ==, array_size);
+
+  g_assert_cmpuint (GPOINTER_TO_UINT (g_ptr_array_index (gparray, 0)), ==, 1);
+  g_assert_cmpuint (GPOINTER_TO_UINT (g_ptr_array_index (gparray, 10)), ==, 11);
+
+  g_assert_cmpmem (old_pdata_copy, array_size * sizeof (gpointer),
+                   gparray->pdata, array_size * sizeof (gpointer));
+
+  g_ptr_array_add (gparray, GUINT_TO_POINTER (55));
+  assert_ptr_array_null_terminated (gparray, TRUE);
+
+  g_ptr_array_insert (gparray, 0, GUINT_TO_POINTER (33));
+  assert_ptr_array_null_terminated (gparray, TRUE);
+
+  g_assert_cmpuint (gparray->len, ==, array_size + 2);
+  g_assert_cmpuint (GPOINTER_TO_UINT (g_ptr_array_index (gparray, 0)), ==, 33);
+  g_assert_cmpuint (
+    GPOINTER_TO_UINT (g_ptr_array_index (gparray, gparray->len - 1)), ==, 55);
+
+  g_ptr_array_remove_index (gparray, 0);
+  g_assert_cmpuint (gparray->len, ==, array_size + 1);
+  assert_ptr_array_null_terminated (gparray, TRUE);
+
+  g_ptr_array_remove_index (gparray, gparray->len - 1);
+  g_assert_cmpuint (gparray->len, ==, array_size);
+  assert_ptr_array_null_terminated (gparray, TRUE);
+
+  g_assert_cmpmem (old_pdata_copy, array_size * sizeof (gpointer),
+                   gparray->pdata, array_size * sizeof (gpointer));
+
+  g_ptr_array_unref (gparray);
+  g_free (old_pdata_copy);
+}
+
+static void
+pointer_array_new_take_null_terminated_empty (void)
+{
+  GPtrArray *gparray;
+  const gpointer *data = (gpointer []) { NULL };
+
+  gparray = g_ptr_array_new_take_null_terminated (
+    g_memdup2 (data, sizeof (gpointer)), NULL);
+  g_assert_true (g_ptr_array_is_null_terminated (gparray));
+  assert_ptr_array_null_terminated (gparray, TRUE);
+  g_assert_cmpuint (gparray->len, ==, 0);
+
+  g_clear_pointer (&gparray, g_ptr_array_unref);
+
+  gparray = g_ptr_array_new_take_null_terminated (NULL, NULL);
+  g_assert_true (g_ptr_array_is_null_terminated (gparray));
+  assert_ptr_array_null_terminated (gparray, TRUE);
+  g_assert_cmpuint (gparray->len, ==, 0);
+
+  g_clear_pointer (&gparray, g_ptr_array_unref);
+}
+
+static void
+pointer_array_new_take_null_terminated_with_free_func (void)
+{
+  const size_t array_size = 10000;
+  GPtrArray *gparray;
+  gpointer *pdata;
+  gpointer *old_pdata_copy;
+  gsize len;
+
+  gparray = g_ptr_array_new_null_terminated (array_size, g_free, TRUE);
+  g_assert_true (g_ptr_array_is_null_terminated (gparray));
+
+  for (size_t i = 0; i < array_size; i++)
+    g_ptr_array_add (gparray, g_strdup_printf ("%" G_GSIZE_FORMAT, i));
+
+  assert_ptr_array_null_terminated (gparray, TRUE);
+
+  pdata = g_ptr_array_steal (gparray, &len);
+  g_assert_cmpuint (array_size, ==, len);
+  g_assert_nonnull (pdata);
+  g_clear_pointer (&gparray, g_ptr_array_unref);
+
+  old_pdata_copy = g_memdup2 (pdata, len * sizeof (gpointer));
+  gparray = g_ptr_array_new_take_null_terminated (g_steal_pointer (&pdata), g_free);
+  g_assert_true (g_ptr_array_is_null_terminated (gparray));
+  assert_ptr_array_null_terminated (gparray, TRUE);
+  g_assert_cmpuint (gparray->len, ==, array_size);
+
+  g_assert_cmpstr ((const char *) g_ptr_array_index (gparray, 0), ==, "0");
+  g_assert_cmpstr ((const char *) g_ptr_array_index (gparray, 101), ==, "101");
+
+  g_assert_cmpmem (old_pdata_copy, array_size * sizeof (gpointer),
+                   gparray->pdata, array_size * sizeof (gpointer));
+
+  g_ptr_array_add (gparray, g_strdup_printf ("%d", 55));
+  assert_ptr_array_null_terminated (gparray, TRUE);
+
+  g_ptr_array_insert (gparray, 0, g_strdup_printf ("%d", 33));
+  assert_ptr_array_null_terminated (gparray, TRUE);
+
+  g_assert_cmpuint (gparray->len, ==, array_size + 2);
+  g_assert_cmpstr ((const char *) g_ptr_array_index (gparray, 0), ==, "33");
+  g_assert_cmpstr (
+    (const char *) g_ptr_array_index (gparray, gparray->len - 1), ==, "55");
+
+  g_ptr_array_remove_index (gparray, 0);
+  g_assert_cmpuint (gparray->len, ==, array_size + 1);
+  assert_ptr_array_null_terminated (gparray, TRUE);
+
+  g_ptr_array_remove_index (gparray, gparray->len - 1);
+  g_assert_cmpuint (gparray->len, ==, array_size);
+  assert_ptr_array_null_terminated (gparray, TRUE);
+
+  g_assert_cmpmem (old_pdata_copy, array_size * sizeof (gpointer),
+                   gparray->pdata, array_size * sizeof (gpointer));
+
+  g_ptr_array_unref (gparray);
+  g_free (old_pdata_copy);
+}
+
+static void
+pointer_array_new_take_null_terminated_from_gstrv (void)
+{
+  GPtrArray *gparray;
+  char *joined;
+
+  gparray = g_ptr_array_new_take_null_terminated (
+    (gpointer) g_strsplit ("A.dot.separated.string", ".", -1), g_free);
+
+  g_assert_cmpstr (
+    (const char *) g_ptr_array_index (gparray, 0), ==, "A");
+  g_assert_cmpstr (
+    (const char *) g_ptr_array_index (gparray, 1), ==, "dot");
+  g_assert_cmpstr (
+    (const char *) g_ptr_array_index (gparray, 2), ==, "separated");
+  g_assert_cmpstr (
+    (const char *) g_ptr_array_index (gparray, 3), ==, "string");
+
+  g_assert_null (g_ptr_array_index (gparray, 4));
+
+  joined = g_strjoinv (".", (char **) gparray->pdata);
+  g_assert_cmpstr (joined, ==, "A.dot.separated.string");
+
+  g_ptr_array_unref (gparray);
+  g_free (joined);
+}
+
+static void
 pointer_array_ref_count (gconstpointer test_data)
 {
   const gboolean null_terminated = GPOINTER_TO_INT (test_data);
@@ -2331,6 +2499,10 @@ main (int argc, char *argv[])
   g_test_add_func ("/pointerarray/new-take/empty", pointer_array_new_take_empty);
   g_test_add_func ("/pointerarray/new-take/overflow", pointer_array_new_take_overflow);
   g_test_add_func ("/pointerarray/new-take/with-free-func", pointer_array_new_take_with_free_func);
+  g_test_add_func ("/pointerarray/new-take-null-terminated", pointer_array_new_take_null_terminated);
+  g_test_add_func ("/pointerarray/new-take-null-terminated/empty", pointer_array_new_take_null_terminated_empty);
+  g_test_add_func ("/pointerarray/new-take-null-terminated/with-free-func", pointer_array_new_take_null_terminated_with_free_func);
+  g_test_add_func ("/pointerarray/new-take-null-terminated/from-gstrv", pointer_array_new_take_null_terminated_from_gstrv);
   g_test_add_data_func ("/pointerarray/ref-count/not-null-terminated", GINT_TO_POINTER (0), pointer_array_ref_count);
   g_test_add_data_func ("/pointerarray/ref-count/null-terminated", GINT_TO_POINTER (1), pointer_array_ref_count);
   g_test_add_func ("/pointerarray/free-func", pointer_array_free_func);

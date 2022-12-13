@@ -162,6 +162,9 @@ GLIB_AVAILABLE_IN_2_74
 GPtrArray* g_ptr_array_new_null_terminated (guint          reserved_size,
                                             GDestroyNotify element_free_func,
                                             gboolean       null_terminated);
+GLIB_AVAILABLE_IN_2_76
+GPtrArray* g_ptr_array_new_take_null_terminated  (gpointer       *data,
+                                                  GDestroyNotify  element_free_func);
 GLIB_AVAILABLE_IN_ALL
 gpointer*  g_ptr_array_free               (GPtrArray        *array,
 					   gboolean          free_seg);
