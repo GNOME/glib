@@ -5852,28 +5852,92 @@ g_variant_iter_loop (GVariantIter *iter,
 
 /* Serialized data {{{1 */
 static GVariant *
-g_variant_deep_copy (GVariant *value)
+g_variant_deep_copy (GVariant *value,
+                     gboolean  byteswap)
 {
   switch (g_variant_classify (value))
     {
     case G_VARIANT_CLASS_MAYBE:
-    case G_VARIANT_CLASS_ARRAY:
     case G_VARIANT_CLASS_TUPLE:
     case G_VARIANT_CLASS_DICT_ENTRY:
     case G_VARIANT_CLASS_VARIANT:
       {
         GVariantBuilder builder;
-        GVariantIter iter;
-        GVariant *child;
+        gsize i, n_children;
 
         g_variant_builder_init (&builder, g_variant_get_type (value));
-        g_variant_iter_init (&iter, value);
 
-        while ((child = g_variant_iter_next_value (&iter)))
+        for (i = 0, n_children = g_variant_n_children (value); i < n_children; i++)
           {
-            g_variant_builder_add_value (&builder, g_variant_deep_copy (child));
+            GVariant *child = g_variant_get_child_value (value, i);
+            g_variant_builder_add_value (&builder, g_variant_deep_copy (child, byteswap));
             g_variant_unref (child);
           }
+
+        return g_variant_builder_end (&builder);
+      }
+
+    case G_VARIANT_CLASS_ARRAY:
+      {
+        GVariantBuilder builder;
+        gsize i, n_children;
+        GVariant *first_invalid_child_deep_copy = NULL;
+
+        /* Arrays are in theory treated the same as maybes, tuples, dict entries
+         * and variants, and could be another case in the above block of code.
+         *
+         * However, they have the property that when dealing with non-normal
+         * data (which is the only time g_variant_deep_copy() is currently
+         * called) in a variable-sized array, the code above can easily end up
+         * creating many default child values in order to return an array which
+         * is of the right length and type, but without containing non-normal
+         * data. This can happen if the offset table for the array is malformed.
+         *
+         * In this case, the code above would end up allocating the same default
+         * value for each one of the child indexes beyond the first malformed
+         * entry in the offset table. This can end up being a lot of identical
+         * allocations of default values, particularly if the non-normal array
+         * is crafted maliciously.
+         *
+         * Avoid that problem by returning a new reference to the same default
+         * value for every child after the first invalid one. This results in
+         * returning an equivalent array, in normal form and trusted — but with
+         * significantly fewer memory allocations.
+         *
+         * See https://gitlab.gnome.org/GNOME/glib/-/issues/2540 */
+
+        g_variant_builder_init (&builder, g_variant_get_type (value));
+
+        for (i = 0, n_children = g_variant_n_children (value); i < n_children; i++)
+          {
+            /* Try maybe_get_child_value() first; if it returns NULL, this child
+             * is non-normal. get_child_value() would have constructed and
+             * returned a default value in that case. */
+            GVariant *child = g_variant_maybe_get_child_value (value, i);
+
+            if (child != NULL)
+              {
+                /* Non-normal children may not always be contiguous, as they may
+                 * be non-normal for reasons other than invalid offset table
+                 * entries. As they are all the same type, they will all have
+                 * the same default value though, so keep that around. */
+                g_variant_builder_add_value (&builder, g_variant_deep_copy (child, byteswap));
+              }
+            else if (child == NULL && first_invalid_child_deep_copy != NULL)
+              {
+                g_variant_builder_add_value (&builder, first_invalid_child_deep_copy);
+              }
+            else if (child == NULL)
+              {
+                child = g_variant_get_child_value (value, i);
+                first_invalid_child_deep_copy = g_variant_ref_sink (g_variant_deep_copy (child, byteswap));
+                g_variant_builder_add_value (&builder, first_invalid_child_deep_copy);
+              }
+
+            g_clear_pointer (&child, g_variant_unref);
+          }
+
+        g_clear_pointer (&first_invalid_child_deep_copy, g_variant_unref);
 
         return g_variant_builder_end (&builder);
       }
@@ -5885,28 +5949,63 @@ g_variant_deep_copy (GVariant *value)
       return g_variant_new_byte (g_variant_get_byte (value));
 
     case G_VARIANT_CLASS_INT16:
-      return g_variant_new_int16 (g_variant_get_int16 (value));
+      if (byteswap)
+        return g_variant_new_int16 (GUINT16_SWAP_LE_BE (g_variant_get_int16 (value)));
+      else
+        return g_variant_new_int16 (g_variant_get_int16 (value));
 
     case G_VARIANT_CLASS_UINT16:
-      return g_variant_new_uint16 (g_variant_get_uint16 (value));
+      if (byteswap)
+        return g_variant_new_uint16 (GUINT16_SWAP_LE_BE (g_variant_get_uint16 (value)));
+      else
+        return g_variant_new_uint16 (g_variant_get_uint16 (value));
 
     case G_VARIANT_CLASS_INT32:
-      return g_variant_new_int32 (g_variant_get_int32 (value));
+      if (byteswap)
+        return g_variant_new_int32 (GUINT32_SWAP_LE_BE (g_variant_get_int32 (value)));
+      else
+        return g_variant_new_int32 (g_variant_get_int32 (value));
 
     case G_VARIANT_CLASS_UINT32:
-      return g_variant_new_uint32 (g_variant_get_uint32 (value));
+      if (byteswap)
+        return g_variant_new_uint32 (GUINT32_SWAP_LE_BE (g_variant_get_uint32 (value)));
+      else
+        return g_variant_new_uint32 (g_variant_get_uint32 (value));
 
     case G_VARIANT_CLASS_INT64:
-      return g_variant_new_int64 (g_variant_get_int64 (value));
+      if (byteswap)
+        return g_variant_new_int64 (GUINT64_SWAP_LE_BE (g_variant_get_int64 (value)));
+      else
+        return g_variant_new_int64 (g_variant_get_int64 (value));
 
     case G_VARIANT_CLASS_UINT64:
-      return g_variant_new_uint64 (g_variant_get_uint64 (value));
+      if (byteswap)
+        return g_variant_new_uint64 (GUINT64_SWAP_LE_BE (g_variant_get_uint64 (value)));
+      else
+        return g_variant_new_uint64 (g_variant_get_uint64 (value));
 
     case G_VARIANT_CLASS_HANDLE:
-      return g_variant_new_handle (g_variant_get_handle (value));
+      if (byteswap)
+        return g_variant_new_handle (GUINT32_SWAP_LE_BE (g_variant_get_handle (value)));
+      else
+        return g_variant_new_handle (g_variant_get_handle (value));
 
     case G_VARIANT_CLASS_DOUBLE:
-      return g_variant_new_double (g_variant_get_double (value));
+      if (byteswap)
+        {
+          /* We have to convert the double to a uint64 here using a union,
+           * because a cast will round it numerically. */
+          union
+            {
+              guint64 u64;
+              gdouble dbl;
+            } u1, u2;
+          u1.dbl = g_variant_get_double (value);
+          u2.u64 = GUINT64_SWAP_LE_BE (u1.u64);
+          return g_variant_new_double (u2.dbl);
+        }
+      else
+        return g_variant_new_double (g_variant_get_double (value));
 
     case G_VARIANT_CLASS_STRING:
       return g_variant_new_string (g_variant_get_string (value, NULL));
@@ -5936,7 +6035,9 @@ g_variant_deep_copy (GVariant *value)
  * marked as trusted and a new reference to it is returned.
  *
  * If @value is found not to be in normal form then a new trusted
- * #GVariant is created with the same value as @value.
+ * #GVariant is created with the same value as @value. The non-normal parts of
+ * @value will be replaced with default values which are guaranteed to be in
+ * normal form.
  *
  * It makes sense to call this function if you've received #GVariant
  * data from untrusted sources and you want to ensure your serialized
@@ -5961,7 +6062,7 @@ g_variant_get_normal_form (GVariant *value)
   if (g_variant_is_normal_form (value))
     return g_variant_ref (value);
 
-  trusted = g_variant_deep_copy (value);
+  trusted = g_variant_deep_copy (value, FALSE);
   g_assert (g_variant_is_trusted (trusted));
 
   return g_variant_ref_sink (trusted);
@@ -5981,6 +6082,11 @@ g_variant_get_normal_form (GVariant *value)
  * contain multi-byte numeric data.  That include strings, booleans,
  * bytes and containers containing only these things (recursively).
  *
+ * While this function can safely handle untrusted, non-normal data, it is
+ * recommended to check whether the input is in normal form beforehand, using
+ * g_variant_is_normal_form(), and to reject non-normal inputs if your
+ * application can be strict about what inputs it rejects.
+ *
  * The returned value is always in normal form and is marked as trusted.
  * A full, not floating, reference is returned.
  *
@@ -5999,32 +6105,38 @@ g_variant_byteswap (GVariant *value)
 
   g_variant_type_info_query (type_info, &alignment, NULL);
 
-  if (alignment)
-    /* (potentially) contains multi-byte numeric data */
+  if (alignment && g_variant_is_normal_form (value))
     {
-      GVariantSerialised serialised;
-      GVariant *trusted;
+      /* (potentially) contains multi-byte numeric data, but is also already in
+       * normal form so we can use a faster byteswapping codepath on the
+       * serialised data */
+      GVariantSerialised serialised = { 0, };
       GBytes *bytes;
 
-      trusted = g_variant_get_normal_form (value);
-      serialised.type_info = g_variant_get_type_info (trusted);
-      serialised.size = g_variant_get_size (trusted);
+      serialised.type_info = g_variant_get_type_info (value);
+      serialised.size = g_variant_get_size (value);
       serialised.data = g_malloc (serialised.size);
-      serialised.depth = g_variant_get_depth (trusted);
-      g_variant_store (trusted, serialised.data);
-      g_variant_unref (trusted);
+      serialised.depth = g_variant_get_depth (value);
+      serialised.ordered_offsets_up_to = G_MAXSIZE;  /* operating on the normal form */
+      serialised.checked_offsets_up_to = G_MAXSIZE;
+      g_variant_store (value, serialised.data);
 
       g_variant_serialised_byteswap (serialised);
 
       bytes = g_bytes_new_take (serialised.data, serialised.size);
-      new = g_variant_new_from_bytes (g_variant_get_type (value), bytes, TRUE);
+      new = g_variant_ref_sink (g_variant_new_from_bytes (g_variant_get_type (value), bytes, TRUE));
       g_bytes_unref (bytes);
     }
+  else if (alignment)
+    /* (potentially) contains multi-byte numeric data */
+    new = g_variant_ref_sink (g_variant_deep_copy (value, TRUE));
   else
     /* contains no multi-byte data */
-    new = value;
+    new = g_variant_get_normal_form (value);
 
-  return g_variant_ref_sink (new);
+  g_assert (g_variant_is_trusted (new));
+
+  return g_steal_pointer (&new);
 }
 
 /**
