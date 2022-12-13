@@ -251,7 +251,7 @@ test_method_invocation_return_method_call (GDBusConnection       *connection,
 
       if (g_str_equal (action, "Valid") ||
           g_str_equal (action, "WrongNumber"))
-        g_dbus_method_invocation_return_value_with_unix_fd_list (invocation, g_variant_new ("(h)"), list);
+        g_dbus_method_invocation_return_value_with_unix_fd_list (invocation, g_variant_new ("(h)", 0), list);
       else
         g_assert_not_reached ();
 
