@@ -327,8 +327,13 @@ test_spawn_async_with_invalid_fds (void)
   gboolean retval;
   gsize i;
 
-  /* this is very likely going to conflict with the internal fds, if not then skip */
-  for (i = 3; i < G_N_ELEMENTS (source_fds); i++)
+  /* Create an identity mapping from [0, …, 999]. This is very likely going to
+   * conflict with the internal FDs, as it covers a lot of the FD space
+   * (including stdin, stdout and stderr, though we don’t care about them in
+   * this test).
+   *
+   * Skip the test if we somehow avoid a collision. */
+  for (i = 0; i < G_N_ELEMENTS (source_fds); i++)
     source_fds[i] = i;
 
   retval = g_spawn_async_with_pipes_and_fds (NULL, argv, NULL, G_SPAWN_DEFAULT,
