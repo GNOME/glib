@@ -171,6 +171,11 @@ GPtrArray* g_ptr_array_new_null_terminated (guint          reserved_size,
 GLIB_AVAILABLE_IN_2_76
 GPtrArray* g_ptr_array_new_take_null_terminated  (gpointer       *data,
                                                   GDestroyNotify  element_free_func);
+GLIB_AVAILABLE_IN_2_76
+GPtrArray* g_ptr_array_new_from_null_terminated_array (gpointer       *data,
+                                                       GCopyFunc       copy_func,
+                                                       gpointer        copy_func_user_data,
+                                                       GDestroyNotify  element_free_func);
 GLIB_AVAILABLE_IN_ALL
 gpointer*  g_ptr_array_free               (GPtrArray        *array,
 					   gboolean          free_seg);

@@ -2718,6 +2718,7 @@ g_ptr_array_new_null_terminated
 g_ptr_array_new_take
 g_ptr_array_new_take_null_terminated
 g_ptr_array_new_from_array
+g_ptr_array_new_from_null_terminated_array
 g_ptr_array_set_free_func
 g_ptr_array_is_null_terminated
 g_ptr_array_ref
