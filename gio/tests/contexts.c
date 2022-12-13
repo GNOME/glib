@@ -81,7 +81,7 @@ idle_start_test1_thread (gpointer loop)
   g_mutex_lock (&test1_mutex);
   thread = g_thread_new ("test1", test1_thread, NULL);
 
-  time = g_get_monotonic_time () + 2 * G_TIME_SPAN_SECOND;
+  time = g_get_monotonic_time () + 20 * G_TIME_SPAN_SECOND;
   while (!test1_done)
     {
       io_completed = g_cond_wait_until (&test1_cond, &test1_mutex, time);
