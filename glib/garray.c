@@ -1207,7 +1207,8 @@ g_ptr_array_new_take (gpointer       *data,
  * Creates a new #GPtrArray with @data as pointers, computing the length of it
  * and setting the reference count to 1.
  *
- * This avoids having to copy such data manually.
+ * This avoids having to copy such data manually. @data will eventually be
+ * freed using g_free(), so must have been allocated with a suitable allocator.
  *
  * The length is calculated by iterating through @data until the first %NULL
  * element is found.
@@ -1239,6 +1240,69 @@ g_ptr_array_new_take_null_terminated (gpointer       *data,
 
   array = g_ptr_array_new_take (g_steal_pointer (&data), len, element_free_func);
   ((GRealPtrArray *)array)->null_terminated = TRUE;
+
+  return array;
+}
+
+/**
+ * g_ptr_array_new_from_array: (skip)
+ * @data: (array length=len) (transfer none) (nullable): an array of pointers,
+ * or %NULL for an empty array
+ * @len: the number of pointers in @data
+ * @copy_func: (nullable): a copy function used to copy every element in the
+ *   array or %NULL.
+ * @copy_func_user_data: user data passed to @copy_func, or %NULL
+ * @element_free_func: (nullable): a function to free elements on @array
+ *   destruction or %NULL
+ *
+ * Creates a new #GPtrArray, copying @len pointers from @data, and setting
+ * the array’s reference count to 1.
+ *
+ * This avoids having to manually add each element one by one.
+ *
+ * If @copy_func is provided, then it is used to copy each element before
+ * adding them to the new array. If it is %NULL then the pointers are copied
+ * directly.
+ *
+ * It also sets @element_free_func for freeing each element when the array is
+ * destroyed either via g_ptr_array_unref(), when g_ptr_array_free() is called
+ * with @free_segment set to %TRUE or when removing elements.
+ *
+ * Do not use it if @len is greater than %G_MAXUINT. #GPtrArray
+ * stores the length of its data in #guint, which may be shorter than
+ * #gsize.
+ *
+ * Returns: (transfer full): A new #GPtrArray
+ *
+ * Since: 2.76
+ */
+GPtrArray *
+g_ptr_array_new_from_array (gpointer       *data,
+                            gsize           len,
+                            GCopyFunc       copy_func,
+                            gpointer        copy_func_user_data,
+                            GDestroyNotify  element_free_func)
+{
+  GPtrArray *array;
+  GRealPtrArray *rarray;
+
+  g_return_val_if_fail (data != NULL || len == 0, NULL);
+  g_return_val_if_fail (len <= G_MAXUINT, NULL);
+
+  array = ptr_array_new (len, element_free_func, FALSE);
+  rarray = (GRealPtrArray *)array;
+
+  if (copy_func != NULL)
+    {
+      for (gsize i = 0; i < len; i++)
+        rarray->pdata[i] = copy_func (data[i], copy_func_user_data);
+    }
+  else
+    {
+      memcpy (rarray->pdata, data, len * sizeof (gpointer));
+    }
+
+  rarray->len = len;
 
   return array;
 }

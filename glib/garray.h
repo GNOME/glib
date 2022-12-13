@@ -146,6 +146,12 @@ GLIB_AVAILABLE_IN_2_76
 GPtrArray* g_ptr_array_new_take           (gpointer         *data,
                                            gsize             len,
                                            GDestroyNotify    element_free_func);
+GLIB_AVAILABLE_IN_2_76
+GPtrArray* g_ptr_array_new_from_array     (gpointer         *data,
+                                           gsize             len,
+                                           GCopyFunc         copy_func,
+                                           gpointer          copy_func_user_data,
+                                           GDestroyNotify    element_free_func);
 GLIB_AVAILABLE_IN_2_64
 gpointer*   g_ptr_array_steal              (GPtrArray        *array,
                                             gsize            *len);
