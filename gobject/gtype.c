@@ -146,6 +146,13 @@
 				    G_TYPE_FLAG_DERIVABLE | \
 				    G_TYPE_FLAG_DEEP_DERIVABLE)
 #define	TYPE_FLAG_MASK		   (G_TYPE_FLAG_ABSTRACT | G_TYPE_FLAG_VALUE_ABSTRACT | G_TYPE_FLAG_FINAL | G_TYPE_FLAG_DEPRECATED)
+
+/* List the flags that are directly accessible via the TypeNode struct flags */
+#define	NODE_FLAG_MASK ( \
+  G_TYPE_FLAG_CLASSED | \
+  G_TYPE_FLAG_INSTANTIATABLE | \
+  G_TYPE_FLAG_FINAL)
+
 #define	SIZEOF_FUNDAMENTAL_INFO	   ((gssize) MAX (MAX (sizeof (GTypeFundamentalInfo), \
 						       sizeof (gpointer)), \
                                                   sizeof (glong)))
@@ -233,7 +240,9 @@ struct _TypeNode
   guint        n_prerequisites : 9;
   guint        is_classed : 1;
   guint        is_instantiatable : 1;
+  guint        is_final : 1;
   guint        mutatable_check_cache : 1;	/* combines some common path checks */
+
   GType       *children; /* writable with lock */
   TypeData    *data;
   GQuark       qname;
@@ -788,6 +797,13 @@ check_derivation_I (GType        parent_type,
 		  type_descriptive_name_I (parent_type));
       return FALSE;
     }
+  if (pnode->is_final)
+    {
+      g_critical ("cannot derive '%s' from final parent type '%s'",
+                  type_name,
+                  NODE_NAME (pnode));
+      return FALSE;
+    }
   finfo = type_node_fundamental_info_I (pnode);
   /* ensure flat derivability */
   if (!(finfo->type_flags & G_TYPE_FLAG_DERIVABLE))
@@ -804,13 +820,6 @@ check_derivation_I (GType        parent_type,
       g_critical ("cannot derive '%s' from non-fundamental parent type '%s'",
 		  type_name,
 		  NODE_NAME (pnode));
-      return FALSE;
-    }
-  if ((G_TYPE_FLAG_FINAL & GPOINTER_TO_UINT (type_get_qdata_L (pnode, static_quark_type_flags))) == G_TYPE_FLAG_FINAL)
-    {
-      g_critical ("cannot derive '%s' from final parent type '%s'",
-                  type_name,
-                  NODE_NAME (pnode));
       return FALSE;
     }
   
@@ -3909,6 +3918,8 @@ type_add_flags_W (TypeNode  *node,
   dflags = GPOINTER_TO_UINT (type_get_qdata_L (node, static_quark_type_flags));
   dflags |= flags;
   type_set_qdata_W (node, static_quark_type_flags, GUINT_TO_POINTER (dflags));
+
+  node->is_final = (flags & G_TYPE_FLAG_FINAL) != 0;
 }
 
 /**
@@ -3990,6 +4001,20 @@ g_type_test_flags (GType type,
   node = lookup_type_node_I (type);
   if (node)
     {
+      if ((flags & ~NODE_FLAG_MASK) == 0)
+        {
+          if (flags & G_TYPE_FLAG_CLASSED)
+            result |= node->is_classed;
+
+          if (flags & G_TYPE_FLAG_INSTANTIATABLE)
+            result |= node->is_instantiatable;
+
+          if (flags & G_TYPE_FLAG_FINAL)
+            result |= node->is_final;
+
+          return result;
+        }
+
       guint fflags = flags & TYPE_FUNDAMENTAL_FLAG_MASK;
       guint tflags = flags & TYPE_FLAG_MASK;
       
@@ -4134,9 +4159,12 @@ g_type_check_instance_is_a (GTypeInstance *type_instance,
   
   if (!type_instance || !type_instance->g_class)
     return FALSE;
-  
-  node = lookup_type_node_I (type_instance->g_class->g_type);
+
   iface = lookup_type_node_I (iface_type);
+  if (iface->is_final)
+    return type_instance->g_class->g_type == iface_type;
+
+  node = lookup_type_node_I (type_instance->g_class->g_type);
   check = node && node->is_instantiatable && iface && type_node_conforms_to_U (node, iface, TRUE, FALSE);
   
   return check;
