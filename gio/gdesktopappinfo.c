@@ -56,6 +56,7 @@
 #include "gappinfo.h"
 #include "gappinfoprivate.h"
 #include "glocalfilemonitor.h"
+#include "gutilsprivate.h"
 
 #ifdef G_OS_UNIX
 #include "gdocumentportal.h"
@@ -1830,6 +1831,7 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
   char *type;
   char *try_exec;
   char *exec;
+  char *path;
   gboolean bus_activatable;
 
   start_group = g_key_file_get_start_group (key_file);
@@ -1851,6 +1853,10 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
     }
   g_free (type);
 
+  path = g_key_file_get_string (key_file,
+                                G_KEY_FILE_DESKTOP_GROUP,
+                                G_KEY_FILE_DESKTOP_KEY_PATH, NULL);
+
   try_exec = g_key_file_get_string (key_file,
                                     G_KEY_FILE_DESKTOP_GROUP,
                                     G_KEY_FILE_DESKTOP_KEY_TRY_EXEC,
@@ -1858,9 +1864,11 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
   if (try_exec && try_exec[0] != '\0')
     {
       char *t;
-      t = g_find_program_in_path (try_exec);
+      /* Use the desktop file path (if any) as working dir to search program */
+      t = g_find_program_for_path (try_exec, NULL, path);
       if (t == NULL)
         {
+          g_free (path);
           g_free (try_exec);
           return FALSE;
         }
@@ -1877,6 +1885,7 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
       char **argv;
       if (!g_shell_parse_argv (exec, &argc, &argv, NULL))
         {
+          g_free (path);
           g_free (exec);
           g_free (try_exec);
           return FALSE;
@@ -1888,11 +1897,13 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
           /* Since @exec is not an empty string, there must be at least one
            * argument, so dereferencing argv[0] should return non-NULL. */
           g_assert (argc > 0);
-          t = g_find_program_in_path (argv[0]);
+          /* Use the desktop file path (if any) as working dir to search program */
+          t = g_find_program_for_path (argv[0], NULL, path);
           g_strfreev (argv);
 
           if (t == NULL)
             {
+              g_free (path);
               g_free (exec);
               g_free (try_exec);
               return FALSE;
@@ -1912,7 +1923,7 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
   info->not_show_in = g_key_file_get_string_list (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_NOT_SHOW_IN, NULL, NULL);
   info->try_exec = try_exec;
   info->exec = exec;
-  info->path = g_key_file_get_string (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_PATH, NULL);
+  info->path = g_steal_pointer (&path);
   info->terminal = g_key_file_get_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_TERMINAL, NULL) != FALSE;
   info->startup_notify = g_key_file_get_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_STARTUP_NOTIFY, NULL) != FALSE;
   info->no_fuse = g_key_file_get_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP, "X-GIO-NoFuse", NULL) != FALSE;
@@ -2622,8 +2633,10 @@ expand_application_parameters (GDesktopAppInfo   *info,
 }
 
 static gboolean
-prepend_terminal_to_vector (int    *argc,
-                            char ***argv)
+prepend_terminal_to_vector (int          *argc,
+                            char       ***argv,
+                            const char   *path,
+                            const char   *working_dir)
 {
 #ifndef G_OS_WIN32
   char **real_argv;
@@ -2669,7 +2682,8 @@ prepend_terminal_to_vector (int    *argc,
 
   for (i = 0, found_terminal = NULL; i < G_N_ELEMENTS (known_terminals); i++)
     {
-      found_terminal = g_find_program_in_path (known_terminals[i].exec);
+      found_terminal = g_find_program_for_path (known_terminals[i].exec,
+                                                path, working_dir);
       if (found_terminal != NULL)
         {
           term_arg = known_terminals[i].exec_arg;
@@ -2871,7 +2885,9 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
         launched_uris = g_list_prepend (launched_uris, iter->data);
       launched_uris = g_list_reverse (launched_uris);
 
-      if (info->terminal && !prepend_terminal_to_vector (&argc, &argv))
+      if (info->terminal && !prepend_terminal_to_vector (&argc, &argv,
+                                                         g_environ_getenv (envp, "PATH"),
+                                                         info->path))
         {
           g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                                _("Unable to find terminal required for application"));
@@ -2901,6 +2917,46 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
           g_list_free_full (launched_files, g_object_unref);
 
           emit_launch_started (launch_context, info, sn_id);
+        }
+
+      g_assert (argc > 0);
+
+      if (!g_path_is_absolute (argv[0]) ||
+          !g_file_test (argv[0], G_FILE_TEST_IS_EXECUTABLE) ||
+          g_file_test (argv[0], G_FILE_TEST_IS_DIR))
+        {
+          char *program = g_steal_pointer (&argv[0]);
+          char *program_path = NULL;
+
+          if (!g_path_is_absolute (program))
+            {
+              const char *env_path = g_environ_getenv (envp, "PATH");
+
+              program_path = g_find_program_for_path (program,
+                                                      env_path,
+                                                      info->path);
+            }
+
+          if (program_path)
+            {
+              argv[0] = g_steal_pointer (&program_path);
+            }
+          else
+            {
+              if (sn_id)
+                g_app_launch_context_launch_failed (launch_context, sn_id);
+
+              g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_NOENT,
+                           _("Program ‘%s’ not found in $PATH"),
+                           program);
+
+              g_free (program);
+              g_clear_pointer (&sn_id, g_free);
+              g_clear_list (&launched_uris, NULL);
+              goto out;
+            }
+
+          g_free (program);
         }
 
       if (g_once_init_enter (&gio_launch_desktop_path))
