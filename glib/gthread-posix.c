@@ -1248,7 +1248,6 @@ static void *
 linux_pthread_proxy (void *data)
 {
   GThreadPosix *thread = data;
-  static gboolean printed_scheduler_warning = FALSE;  /* (atomic) */
 
   /* Set scheduler settings first if requested */
   if (thread->scheduler_settings)
@@ -1261,10 +1260,8 @@ linux_pthread_proxy (void *data)
       tid = (pid_t) syscall (SYS_gettid);
       res = syscall (SYS_sched_setattr, tid, thread->scheduler_settings->attr, flags);
       errsv = errno;
-      if (res == -1 && g_atomic_int_compare_and_exchange (&printed_scheduler_warning, FALSE, TRUE))
-        g_critical ("Failed to set scheduler settings: %s", g_strerror (errsv));
-      else if (res == -1)
-        g_debug ("Failed to set scheduler settings: %s", g_strerror (errsv));
+      if (res == -1)
+        g_error ("Failed to set scheduler settings: %s", g_strerror (errsv));
     }
 
   return thread->proxy (data);
