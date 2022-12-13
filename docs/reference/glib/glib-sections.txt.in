@@ -2680,6 +2680,8 @@ g_string_chunk_free
 <FILE>arrays</FILE>
 GArray
 g_array_new
+g_array_new_take
+g_array_new_take_zero_terminated
 g_array_steal
 g_array_sized_new
 g_array_copy

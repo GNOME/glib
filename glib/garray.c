@@ -35,6 +35,7 @@
 
 #include "garray.h"
 
+#include "galloca.h"
 #include "gbytes.h"
 #include "ghash.h"
 #include "gslice.h"
@@ -188,6 +189,119 @@ g_array_new (gboolean zero_terminated,
 #endif
 
   return g_array_sized_new (zero_terminated, clear, elt_size, 0);
+}
+
+/**
+ * g_array_new_take: (skip)
+ * @data: (array length=len) (transfer full) (nullable): an array of
+ *   elements of @element_size, or %NULL for an empty array
+ * @len: the number of elements in @data
+ * @clear: %TRUE if #GArray elements should be automatically cleared
+ *     to 0 when they are allocated
+ * @element_size: the size of each element in bytes
+ *
+ * Creates a new #GArray with @data as array data, @len as length and a
+ * reference count of 1.
+ *
+ * This avoids having to copy the data manually, when it can just be
+ * inherited. @data will eventually be freed using g_free(), so must
+ * have been allocated with a suitable allocator.
+ *
+ * In case the elements need to be cleared when the array is freed, use
+ * g_array_set_clear_func() to set a #GDestroyNotify function to perform
+ * such task.
+ *
+ * Do not use it if @len or @element_size are greater than %G_MAXUINT.
+ * #GArray stores the length of its data in #guint, which may be shorter
+ * than #gsize.
+ *
+ * Returns: (transfer full): A new #GArray
+ *
+ * Since: 2.76
+ */
+GArray *
+g_array_new_take (gpointer  data,
+                  gsize     len,
+                  gboolean  clear,
+                  gsize     element_size)
+{
+  GRealArray *rarray;
+  GArray *array;
+
+  g_return_val_if_fail (data != NULL || len == 0, NULL);
+  g_return_val_if_fail (len <= G_MAXUINT, NULL);
+  g_return_val_if_fail (element_size <= G_MAXUINT, NULL);
+
+  array = g_array_sized_new (FALSE, clear, element_size, 0);
+  rarray = (GRealArray *) array;
+  rarray->data = (guint8 *) g_steal_pointer (&data);
+  rarray->len = len;
+  rarray->elt_capacity = len;
+
+  return array;
+}
+
+/**
+ * g_array_new_take_zero_terminated: (skip)
+ * @data: (array zero-terminated=1): an array of elements of @element_size
+ * @clear: %TRUE if #GArray elements should be automatically cleared
+ *     to 0 when they are allocated
+ * @element_size: the size of each element in bytes
+ *
+ * Creates a new #GArray with @data as array data, computing the length of it
+ * and setting the reference count to 1.
+ *
+ * This avoids having to copy the data manually, when it can just be
+ * inherited. @data will eventually be freed using g_free(), so must
+ * have been allocated with a suitable allocator.
+ *
+ * The length is calculated by iterating through @data until the first %NULL
+ * element is found.
+ *
+ * In case the elements need to be cleared when the array is freed, use
+ * g_array_set_clear_func() to set a #GDestroyNotify function to perform
+ * such task.
+ *
+ * Do not use it if @data length or @element_size are greater than %G_MAXUINT.
+ * #GArray stores the length of its data in #guint, which may be shorter
+ * than #gsize.
+ *
+ * Returns: (transfer full): A new #GArray
+ *
+ * Since: 2.76
+ */
+GArray *
+g_array_new_take_zero_terminated (gpointer  data,
+                                  gboolean  clear,
+                                  gsize     element_size)
+{
+  GArray *array;
+  gsize len = 0;
+
+  g_return_val_if_fail (element_size <= G_MAXUINT, NULL);
+
+  if (data != NULL)
+    {
+      guint8 *array_data = data;
+
+      for (gsize i = 0; ; ++i)
+        {
+          const guint8 *element_start = array_data + (i * element_size);
+
+          if (*element_start == 0 &&
+              memcmp (element_start, element_start + 1, element_size - 1) == 0)
+            break;
+
+          len += 1;
+        }
+    }
+
+  g_return_val_if_fail (len <= G_MAXUINT, NULL);
+
+  array = g_array_new_take (data, len, clear, element_size);
+  ((GRealArray *)array)->zero_terminated = TRUE;
+
+  return array;
 }
 
 /**

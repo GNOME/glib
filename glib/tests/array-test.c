@@ -142,6 +142,196 @@ array_new_zero_terminated (void)
   g_free (out_str);
 }
 
+static void
+array_new_take (void)
+{
+  const size_t array_size = 10000;
+  GArray *garray;
+  gpointer *data;
+  gpointer *old_data_copy;
+  gsize len;
+
+  garray = g_array_new (FALSE, FALSE, sizeof (size_t));
+  for (size_t i = 0; i < array_size; i++)
+    g_array_append_val (garray, i);
+
+  data = g_array_steal (garray, &len);
+  g_assert_cmpuint (array_size, ==, len);
+  g_assert_nonnull (data);
+  g_clear_pointer (&garray, g_array_unref);
+
+  old_data_copy = g_memdup2 (data, len * sizeof (size_t));
+  garray = g_array_new_take (g_steal_pointer (&data), len, FALSE, sizeof (size_t));
+  g_assert_cmpuint (garray->len, ==, array_size);
+
+  g_assert_cmpuint (g_array_index (garray, size_t, 0), ==, 0);
+  g_assert_cmpuint (g_array_index (garray, size_t, 10), ==, 10);
+
+  g_assert_cmpmem (old_data_copy, array_size * sizeof (size_t),
+                   garray->data, array_size * sizeof (size_t));
+
+  size_t val = 55;
+  g_array_append_val (garray, val);
+  val = 33;
+  g_array_prepend_val (garray, val);
+
+  g_assert_cmpuint (garray->len, ==, array_size + 2);
+  g_assert_cmpuint (g_array_index (garray, size_t, 0), ==, 33);
+  g_assert_cmpuint (g_array_index (garray, size_t, garray->len - 1), ==, 55);
+
+  g_array_remove_index (garray, 0);
+  g_assert_cmpuint (garray->len, ==, array_size + 1);
+  g_array_remove_index (garray, garray->len - 1);
+  g_assert_cmpuint (garray->len, ==, array_size);
+
+  g_assert_cmpmem (old_data_copy, array_size * sizeof (size_t),
+                   garray->data, array_size * sizeof (size_t));
+
+  g_array_unref (garray);
+  g_free (old_data_copy);
+}
+
+static void
+array_new_take_empty (void)
+{
+  GArray *garray;
+  size_t empty_array[] = {0};
+
+  garray = g_array_new_take (
+    g_memdup2 (&empty_array, sizeof (size_t)), 0, FALSE, sizeof (size_t));
+  g_assert_cmpuint (garray->len, ==, 0);
+
+  g_clear_pointer (&garray, g_array_unref);
+
+  garray = g_array_new_take (NULL, 0, FALSE, sizeof (size_t));
+  g_assert_cmpuint (garray->len, ==, 0);
+
+  g_clear_pointer (&garray, g_array_unref);
+}
+
+static void
+array_new_take_zero_terminated (void)
+{
+  size_t array_size = 10000;
+  GArray *garray;
+  gpointer *data;
+  gpointer *old_data_copy;
+  gsize len;
+
+  garray = g_array_new (TRUE, FALSE, sizeof (size_t));
+  for (size_t i = 1; i <= array_size; i++)
+    g_array_append_val (garray, i);
+
+  data = g_array_steal (garray, &len);
+  g_assert_cmpuint (array_size, ==, len);
+  g_assert_nonnull (data);
+  g_clear_pointer (&garray, g_array_unref);
+
+  old_data_copy = g_memdup2 (data, len * sizeof (size_t));
+  garray = g_array_new_take_zero_terminated (
+    g_steal_pointer (&data), FALSE, sizeof (size_t));
+  g_assert_cmpuint (garray->len, ==, array_size);
+  g_assert_cmpuint (g_array_index (garray, size_t, garray->len), ==, 0);
+
+  g_assert_cmpuint (g_array_index (garray, size_t, 0), ==, 1);
+  g_assert_cmpuint (g_array_index (garray, size_t, 10), ==, 11);
+
+  g_assert_cmpmem (old_data_copy, array_size * sizeof (size_t),
+                   garray->data, array_size * sizeof (size_t));
+
+  size_t val = 55;
+  g_array_append_val (garray, val);
+  val = 33;
+  g_array_prepend_val (garray, val);
+
+  g_assert_cmpuint (garray->len, ==, array_size + 2);
+  g_assert_cmpuint (g_array_index (garray, size_t, 0), ==, 33);
+  g_assert_cmpuint (g_array_index (garray, size_t, garray->len - 1), ==, 55);
+
+  g_array_remove_index (garray, 0);
+  g_assert_cmpuint (garray->len, ==, array_size + 1);
+  g_array_remove_index (garray, garray->len - 1);
+  g_assert_cmpuint (garray->len, ==, array_size);
+  g_assert_cmpuint (g_array_index (garray, size_t, garray->len), ==, 0);
+
+  g_assert_cmpmem (old_data_copy, array_size * sizeof (size_t),
+                   garray->data, array_size * sizeof (size_t));
+
+  g_clear_pointer (&garray, g_array_unref);
+  g_clear_pointer (&old_data_copy, g_free);
+
+  array_size = G_MAXUINT8;
+  garray = g_array_new (TRUE, FALSE, sizeof (guint8));
+  for (guint8 i = 1; i < array_size; i++)
+    g_array_append_val (garray, i);
+
+  val = G_MAXUINT8 / 2;
+  g_array_append_val (garray, val);
+
+  data = g_array_steal (garray, &len);
+  g_assert_cmpuint (array_size, ==, len);
+  g_assert_nonnull (data);
+  g_clear_pointer (&garray, g_array_unref);
+
+  old_data_copy = g_memdup2 (data, len * sizeof (guint8));
+  garray = g_array_new_take_zero_terminated (
+    g_steal_pointer (&data), FALSE, sizeof (guint8));
+  g_assert_cmpuint (garray->len, ==, array_size);
+  g_assert_cmpuint (g_array_index (garray, guint8, garray->len), ==, 0);
+
+  g_assert_cmpuint (g_array_index (garray, guint8, 0), ==, 1);
+  g_assert_cmpuint (g_array_index (garray, guint8, 10), ==, 11);
+
+  g_assert_cmpmem (old_data_copy, array_size * sizeof (guint8),
+                   garray->data, array_size * sizeof (guint8));
+
+  val = 55;
+  g_array_append_val (garray, val);
+  val = 33;
+  g_array_prepend_val (garray, val);
+
+  g_assert_cmpuint (garray->len, ==, array_size + 2);
+  g_assert_cmpuint (g_array_index (garray, guint8, 0), ==, 33);
+  g_assert_cmpuint (g_array_index (garray, guint8, garray->len - 1), ==, 55);
+
+  g_array_remove_index (garray, 0);
+  g_assert_cmpuint (garray->len, ==, array_size + 1);
+  g_array_remove_index (garray, garray->len - 1);
+  g_assert_cmpuint (garray->len, ==, array_size);
+  g_assert_cmpuint (g_array_index (garray, guint8, garray->len), ==, 0);
+
+  g_assert_cmpmem (old_data_copy, array_size * sizeof (guint8),
+                   garray->data, array_size * sizeof (guint8));
+
+  g_clear_pointer (&garray, g_array_unref);
+  g_clear_pointer (&old_data_copy, g_free);
+}
+
+static void
+array_new_take_overflow (void)
+{
+#if SIZE_WIDTH <= UINT_WIDTH
+  g_test_skip ("Overflow test requires UINT_WIDTH > SIZE_WIDTH.");
+#else
+  if (!g_test_undefined ())
+      return;
+
+  /* Check for overflow should happen before data is accessed. */
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion 'len <= G_MAXUINT' failed");
+  g_assert_null (
+    g_array_new_take (
+      (gpointer) (int []) { 0 }, (gsize) G_MAXUINT + 1, FALSE, sizeof (int)));
+  g_test_assert_expected_messages ();
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion 'element_size <= G_MAXUINT' failed");
+  g_assert_null (
+    g_array_new_take (NULL, 0, FALSE, (gsize) G_MAXUINT + 1));
+  g_test_assert_expected_messages ();
+#endif
+}
+
 /* Check g_array_steal() function */
 static void
 array_steal (void)
@@ -2790,6 +2980,10 @@ main (int argc, char *argv[])
 
   /* array tests */
   g_test_add_func ("/array/new/zero-terminated", array_new_zero_terminated);
+  g_test_add_func ("/array/new/take", array_new_take);
+  g_test_add_func ("/array/new/take/empty", array_new_take_empty);
+  g_test_add_func ("/array/new/take/overflow", array_new_take_overflow);
+  g_test_add_func ("/array/new/take-zero-terminated", array_new_take_zero_terminated);
   g_test_add_func ("/array/ref-count", array_ref_count);
   g_test_add_func ("/array/steal", array_steal);
   g_test_add_func ("/array/clear-func", array_clear_func);

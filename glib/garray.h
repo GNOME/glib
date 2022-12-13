@@ -72,6 +72,15 @@ GLIB_AVAILABLE_IN_ALL
 GArray* g_array_new               (gboolean          zero_terminated,
 				   gboolean          clear_,
 				   guint             element_size);
+GLIB_AVAILABLE_IN_2_76
+GArray* g_array_new_take          (gpointer          data,
+                                   gsize             len,
+                                   gboolean          clear,
+                                   gsize             element_size);
+GLIB_AVAILABLE_IN_2_76
+GArray* g_array_new_take_zero_terminated (gpointer  data,
+                                          gboolean  clear,
+                                          gsize     element_size);
 GLIB_AVAILABLE_IN_2_64
 gpointer g_array_steal            (GArray           *array,
                                    gsize            *len);
