@@ -4328,6 +4328,7 @@ g_power_profile_level_get_type
 
 <SECTION>
 <FILE>gmenuexporter</FILE>
+G_MENU_EXPORTER_MAX_SECTION_SIZE
 g_dbus_connection_export_menu_model
 g_dbus_connection_unexport_menu_model
 </SECTION>

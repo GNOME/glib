@@ -27,6 +27,19 @@
 
 G_BEGIN_DECLS
 
+/**
+ * G_MENU_EXPORTER_MAX_SECTION_SIZE:
+ *
+ * The maximum number of entries in a menu section supported by
+ * g_dbus_connection_export_menu_model().
+ *
+ * The exact value of the limit may change in future GLib versions.
+ *
+ * Since: 2.76
+ */
+#define G_MENU_EXPORTER_MAX_SECTION_SIZE 1000 \
+  GIO_AVAILABLE_MACRO_IN_2_76
+
 GIO_AVAILABLE_IN_2_32
 guint                   g_dbus_connection_export_menu_model             (GDBusConnection  *connection,
                                                                          const gchar      *object_path,

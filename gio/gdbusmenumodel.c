@@ -23,6 +23,7 @@
 
 #include "gdbusmenumodel.h"
 
+#include "gmenuexporter.h"
 #include "gmenumodel.h"
 
 /* Prelude {{{1 */
@@ -580,6 +581,8 @@ g_dbus_menu_group_deactivate (GDBusMenuGroup *group)
     }
 }
 
+/* @menu_id, @position, @removed and @added are all untrusted since they can
+ * come from an external process. */
 static void
 g_dbus_menu_group_changed (GDBusMenuGroup *group,
                            guint           menu_id,
@@ -593,6 +596,20 @@ g_dbus_menu_group_changed (GDBusMenuGroup *group,
   GSequence *items;
   GVariant *item;
   gint n_added;
+  gint n_items;
+
+  /* Caller has to check this. */
+  g_assert (g_variant_is_of_type (added, G_VARIANT_TYPE ("aa{sv}")));
+
+  n_added = g_variant_n_children (added);
+
+  if (position < 0 || position >= G_MENU_EXPORTER_MAX_SECTION_SIZE ||
+      removed < 0 || removed >= G_MENU_EXPORTER_MAX_SECTION_SIZE ||
+      n_added >= G_MENU_EXPORTER_MAX_SECTION_SIZE)
+    {
+      g_warning ("invalid arguments");
+      return;
+    }
 
   /* We could have signals coming to us when we're not active (due to
    * some other process having subscribed to this group) or when we're
@@ -611,9 +628,17 @@ g_dbus_menu_group_changed (GDBusMenuGroup *group,
       g_hash_table_insert (group->menus, GINT_TO_POINTER (menu_id), items);
     }
 
-  point = g_sequence_get_iter_at_pos (items, position + removed);
+  /* Don’t need to worry about overflow due to the low value of
+   * %G_MENU_EXPORTER_MAX_SECTION_SIZE. */
+  n_items = g_sequence_get_length (items);
+  if (position + removed > n_items ||
+      n_items - removed + n_added > G_MENU_EXPORTER_MAX_SECTION_SIZE)
+    {
+      g_warning ("invalid arguments");
+      return;
+    }
 
-  g_return_if_fail (point != NULL);
+  point = g_sequence_get_iter_at_pos (items, position + removed);
 
   if (removed)
     {
@@ -623,7 +648,7 @@ g_dbus_menu_group_changed (GDBusMenuGroup *group,
       g_sequence_remove_range (start, point);
     }
 
-  n_added = g_variant_iter_init (&iter, added);
+  g_variant_iter_init (&iter, added);
   while (g_variant_iter_loop (&iter, "@a{sv}", &item))
     g_sequence_insert_before (point, g_dbus_menu_group_create_item (item));
 
