@@ -28,6 +28,18 @@
 #include "gdbusnamewatching.h"
 #include "gdbuserror.h"
 
+/*
+ * G_MENU_EXPORTER_MAX_SECTION_SIZE:
+ *
+ * The maximum number of entries in a menu section supported by
+ * g_dbus_connection_export_menu_model().
+ *
+ * The exact value of the limit may change in future GLib versions.
+ *
+ * Since: 2.76
+ */
+#define G_MENU_EXPORTER_MAX_SECTION_SIZE 1000
+
 /**
  * SECTION:gmenuexporter
  * @title: GMenuModel exporter
@@ -252,10 +264,17 @@ g_menu_exporter_menu_items_changed (GMenuModel *model,
   GMenuExporterMenu *menu = user_data;
   GSequenceIter *point;
   gint i;
+  gint n_items;
 
   g_assert (menu->model == model);
   g_assert (menu->item_links != NULL);
-  g_assert (position + removed <= g_sequence_get_length (menu->item_links));
+
+  n_items = g_sequence_get_length (menu->item_links);
+  g_assert (position >= 0 && position < G_MENU_EXPORTER_MAX_SECTION_SIZE);
+  g_assert (removed >= 0 && removed < G_MENU_EXPORTER_MAX_SECTION_SIZE);
+  g_assert (added < G_MENU_EXPORTER_MAX_SECTION_SIZE);
+  g_assert (position + removed <= n_items);
+  g_assert (n_items - removed + added < G_MENU_EXPORTER_MAX_SECTION_SIZE);
 
   point = g_sequence_get_iter_at_pos (menu->item_links, position + removed);
   g_sequence_remove_range (g_sequence_get_iter_at_pos (menu->item_links, position), point);
@@ -769,6 +788,10 @@ g_menu_exporter_method_call (GDBusConnection       *connection,
  * An object path can only have one menu model exported on it. If this
  * constraint is violated, the export will fail and 0 will be
  * returned (with @error set accordingly).
+ *
+ * Exporting menus with sections containing more than
+ * 1000 items is not supported and results in
+ * undefined behavior.
  *
  * You can unexport the menu model using
  * g_dbus_connection_unexport_menu_model() with the return value of
