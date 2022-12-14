@@ -1684,7 +1684,12 @@ void
           g_free (tmpl);
 
           /* Propagate the temporary directory to subprocesses. */
-          g_setenv ("G_TEST_TMPDIR", test_isolate_dirs_tmpdir, TRUE);
+          if (!g_setenv ("G_TEST_TMPDIR", test_isolate_dirs_tmpdir, TRUE))
+            {
+              g_printerr ("%s: Failed to set environment variable ‘%s’\n",
+                          (*argv)[0], "G_TEST_TMPDIR");
+              exit (1);
+            }
 
           /* And clear the traditional environment variables so subprocesses
            * spawned by the code under test can’t trash anything. If a test
@@ -1710,7 +1715,14 @@ void
               gsize i;
 
               for (i = 0; i < G_N_ELEMENTS (overridden_environment_variables); i++)
-                g_setenv (overridden_environment_variables[i], "/dev/null", TRUE);
+                {
+                  if (!g_setenv (overridden_environment_variables[i], "/dev/null", TRUE))
+                    {
+                      g_printerr ("%s: Failed to set environment variable ‘%s’\n",
+                                  (*argv)[0], overridden_environment_variables[i]);
+                      exit (1);
+                    }
+                }
             }
         }
 
