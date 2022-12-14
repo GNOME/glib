@@ -1207,6 +1207,7 @@ dbus_activate_cb (GApplication *app,
 static void dbus_startup_reply_cb (GObject      *source_object,
                                    GAsyncResult *result,
                                    gpointer      user_data);
+static gboolean dbus_startup_reply_idle_cb (gpointer user_data);
 
 static void
 dbus_startup_cb (GApplication *app,
@@ -1241,8 +1242,19 @@ dbus_startup_reply_cb (GObject      *source_object,
   /* Nothing to check on the reply for now. */
   g_clear_object (&reply);
 
+  /* Release the app in an idle callback, so there’s time to process other
+   * pending sources first. */
+  g_idle_add_full (G_PRIORITY_LOW, dbus_startup_reply_idle_cb, g_steal_pointer (&app), g_object_unref);
+}
+
+static gboolean
+dbus_startup_reply_idle_cb (gpointer user_data)
+{
+  GApplication *app = G_APPLICATION (user_data);
+
   g_application_release (app);
-  g_clear_object (&app);
+
+  return G_SOURCE_REMOVE;
 }
 
 static void
