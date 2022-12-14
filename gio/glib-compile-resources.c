@@ -1196,7 +1196,7 @@ main (int argc, char **argv)
 	       "#include <gio/gio.h>\n"
 	       "\n"
 	       "#if defined (__ELF__) && ( __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 6))\n"
-	       "# define SECTION __attribute__ ((section (\".gresource.%s\"), aligned (8)))\n"
+	       "# define SECTION __attribute__ ((section (\".gresource.%s\"), aligned (sizeof(void *) > 8 ? sizeof(void *) : 8)))\n"
 	       "#else\n"
 	       "# define SECTION\n"
 	       "#endif\n"
