@@ -421,9 +421,11 @@ G_BEGIN_DECLS
  * A numerical value which represents the unique identifier of a registered
  * type.
  */
-#if     GLIB_SIZEOF_SIZE_T != GLIB_SIZEOF_LONG || !defined (G_CXX_STD_VERSION)
+#if     GLIB_SIZEOF_VOID_P > GLIB_SIZEOF_SIZE_T
+typedef guintptr                        GType;
+#elif     GLIB_SIZEOF_SIZE_T != GLIB_SIZEOF_LONG || !defined (G_CXX_STD_VERSION)
 typedef gsize                           GType;
-#else   /* for historic reasons, C++ links against gulong GTypes */
+#else   /* for historic reasons, C++ on non-Morello/CHERI systems links against gulong GTypes */
 typedef gulong                          GType;
 #endif
 typedef struct _GValue                  GValue;
