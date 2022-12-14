@@ -1340,7 +1340,9 @@ align_malloc (gsize size)
   gpointer mem;
 
 #ifdef HAVE_POSIX_MEMALIGN
-  if (posix_memalign (&mem, 8, size))
+  /* posix_memalign() requires the alignment to be a multiple of
+   * sizeof(void*), and a power of 2. */
+  if (posix_memalign (&mem, MAX (sizeof (void *), 8), size))
     g_error ("posix_memalign failed");
 #else
   /* NOTE: there may be platforms that lack posix_memalign() and also
