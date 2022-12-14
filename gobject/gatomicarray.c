@@ -76,13 +76,14 @@ freelist_alloc (gsize size, gboolean reuse)
 	}
     }
 
-  real_size = sizeof (gsize) + MAX (size, sizeof (FreeListNode));
+  real_size = sizeof (GAtomicArrayMetadata) + MAX (size, sizeof (FreeListNode));
   mem = g_slice_alloc (real_size);
-  mem = ((char *) mem) + sizeof (gsize);
+  mem = ((char *) mem) + sizeof (GAtomicArrayMetadata);
   G_ATOMIC_ARRAY_DATA_SIZE (mem) = size;
 
 #if ENABLE_VALGRIND
-  VALGRIND_MALLOCLIKE_BLOCK (mem, real_size - sizeof (gsize), FALSE, FALSE);
+  VALGRIND_MALLOCLIKE_BLOCK (mem, real_size - sizeof (GAtomicArrayMetadata),
+                             FALSE, FALSE);
 #endif
 
   return mem;
