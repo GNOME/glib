@@ -1222,7 +1222,7 @@ param_gtype_set_default (GParamSpec *pspec,
 {
   GParamSpecGType *tspec = G_PARAM_SPEC_GTYPE (pspec);
 
-  value->data[0].v_pointer = GSIZE_TO_POINTER (tspec->is_a_type);
+  value->data[0].v_pointer = GTYPE_TO_POINTER (tspec->is_a_type);
 }
 
 static gboolean
@@ -1230,7 +1230,7 @@ param_gtype_is_valid (GParamSpec   *pspec,
                       const GValue *value)
 {
   GParamSpecGType *tspec = G_PARAM_SPEC_GTYPE (pspec);
-  GType gtype = GPOINTER_TO_SIZE (value->data[0].v_pointer);
+  GType gtype = GPOINTER_TO_TYPE (value->data[0].v_pointer);
   
   return tspec->is_a_type == G_TYPE_NONE ||
          g_type_is_a (gtype, tspec->is_a_type);
@@ -1241,12 +1241,12 @@ param_gtype_validate (GParamSpec *pspec,
 		      GValue     *value)
 {
   GParamSpecGType *tspec = G_PARAM_SPEC_GTYPE (pspec);
-  GType gtype = GPOINTER_TO_SIZE (value->data[0].v_pointer);
+  GType gtype = GPOINTER_TO_TYPE (value->data[0].v_pointer);
   guint changed = 0;
   
   if (tspec->is_a_type != G_TYPE_NONE && !g_type_is_a (gtype, tspec->is_a_type))
     {
-      value->data[0].v_pointer = GSIZE_TO_POINTER (tspec->is_a_type);
+      value->data[0].v_pointer = GTYPE_TO_POINTER (tspec->is_a_type);
       changed++;
     }
   
@@ -1258,8 +1258,8 @@ param_gtype_values_cmp (GParamSpec   *pspec,
 			const GValue *value1,
 			const GValue *value2)
 {
-  GType p1 = GPOINTER_TO_SIZE (value1->data[0].v_pointer);
-  GType p2 = GPOINTER_TO_SIZE (value2->data[0].v_pointer);
+  GType p1 = GPOINTER_TO_TYPE (value1->data[0].v_pointer);
+  GType p2 = GPOINTER_TO_TYPE (value2->data[0].v_pointer);
 
   /* not much to compare here, try to at least provide stable lesser/greater result */
 

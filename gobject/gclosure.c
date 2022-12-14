@@ -1175,7 +1175,7 @@ g_signal_type_cclosure_new (GType    itype,
   g_return_val_if_fail (G_TYPE_IS_CLASSED (itype) || G_TYPE_IS_INTERFACE (itype), NULL);
   g_return_val_if_fail (struct_offset >= sizeof (GTypeClass), NULL);
   
-  closure = g_closure_new_simple (sizeof (GClosure), (gpointer) itype);
+  closure = g_closure_new_simple (sizeof (GClosure), GTYPE_TO_POINTER (itype));
   if (G_TYPE_IS_INTERFACE (itype))
     {
       g_closure_set_meta_marshal (closure, GUINT_TO_POINTER (struct_offset), g_type_iface_meta_marshal);

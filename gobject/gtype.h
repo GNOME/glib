@@ -2710,6 +2710,27 @@ const gchar *    g_type_name_from_class         (GTypeClass	*g_class);
  */
 #define	G_TYPE_FLAG_RESERVED_ID_BIT	((GType) (1 << 0))
 
+/**
+ * GPOINTER_TO_TYPE:
+ * @p: The pointer to convert to a #GType
+ *
+ * This macro should be used instead of GPOINTER_TO_SIZE() to ensure
+ * portability since #GType is not guaranteed to be the same as #gsize.
+ *
+ * Since: 2.80
+ */
+#define GPOINTER_TO_TYPE(p) ((GType) (guintptr) (p)) GOBJECT_AVAILABLE_MACRO_IN_2_80
+/**
+ * GTYPE_TO_POINTER:
+ * @t: The #GType to convert to a pointer
+ *
+ * This macro should be used instead of GSIZE_TO_POINTER() to ensure
+ * portability since #GType is not guaranteed to be the same as #gsize.
+ *
+ * Since: 2.80
+ */
+#define GTYPE_TO_POINTER(t) ((gpointer) (guintptr) (t)) GOBJECT_AVAILABLE_MACRO_IN_2_80
+
 G_END_DECLS
 
 #endif /* __G_TYPE_H__ */
