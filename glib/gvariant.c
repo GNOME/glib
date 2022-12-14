@@ -2951,6 +2951,8 @@ struct heap_iter
   gsize magic;
 };
 
+G_STATIC_ASSERT (sizeof (struct heap_iter) <= sizeof (GVariantIter));
+
 #define GVSI(i)                 ((struct stack_iter *) (i))
 #define GVHI(i)                 ((struct heap_iter *) (i))
 #define GVSI_MAGIC              ((gsize) 3579507750u)

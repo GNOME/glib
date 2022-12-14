@@ -270,7 +270,7 @@ GVariant *                      g_variant_new_from_data                 (const G
 typedef struct _GVariantIter GVariantIter;
 struct _GVariantIter {
   /*< private >*/
-  gsize x[16];
+  guintptr x[16];
 };
 
 GLIB_AVAILABLE_IN_ALL
