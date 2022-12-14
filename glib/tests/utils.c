@@ -451,7 +451,9 @@ test_find_program (void)
   g_assert (res != NULL);
   g_free (res);
 
-  cwd = g_get_current_dir ();
+  /* Resolve any symlinks in the CWD as that breaks the test e.g.
+   * with the FreeBSD /home/ -> /usr/home symlink. */
+  cwd = realpath (".", NULL);
   absolute_path = g_find_program_in_path ("sh");
   relative_path = g_strdup (absolute_path);
   for (i = 0; cwd[i] != '\0'; i++)
