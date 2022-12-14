@@ -292,7 +292,7 @@ typedef struct
   gpointer     dummy2;
   gint         position;
   gboolean     dummy3;
-  gint         version;
+  gintptr      version;
 } RealIter;
 
 G_STATIC_ASSERT (sizeof (GHashTableIter) == sizeof (RealIter));
