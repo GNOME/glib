@@ -32,6 +32,7 @@
 #endif
 
 #include <glib/gtypes.h>
+#include <glib/garray.h>
 #include <glib/glist.h>
 
 G_BEGIN_DECLS
@@ -129,6 +130,11 @@ GList *     g_hash_table_get_values        (GHashTable     *hash_table);
 GLIB_AVAILABLE_IN_2_40
 gpointer *  g_hash_table_get_keys_as_array (GHashTable     *hash_table,
                                             guint          *length);
+GLIB_AVAILABLE_IN_2_76
+GPtrArray * g_hash_table_get_keys_as_ptr_array (GHashTable *hash_table);
+
+GLIB_AVAILABLE_IN_2_76
+GPtrArray * g_hash_table_get_values_as_ptr_array (GHashTable *hash_table);
 
 GLIB_AVAILABLE_IN_ALL
 void        g_hash_table_iter_init         (GHashTableIter *iter,

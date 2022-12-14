@@ -2274,6 +2274,45 @@ g_hash_table_get_keys_as_array (GHashTable *hash_table,
 }
 
 /**
+ * g_hash_table_get_keys_as_ptr_array: (skip)
+ * @hash_table: a #GHashTable
+ *
+ * Retrieves every key inside @hash_table, as a #GPtrArray.
+ * The returned data is valid until changes to the hash release those keys.
+ *
+ * This iterates over every entry in the hash table to build its return value.
+ * To iterate over the entries in a #GHashTable more efficiently, use a
+ * #GHashTableIter.
+ *
+ * You should always unref the returned array with g_ptr_array_unref().
+ *
+ * Returns: (transfer container): a #GPtrArray containing each key from
+ * the table. Unref with with g_ptr_array_unref() when done.
+ *
+ * Since: 2.76
+ **/
+GPtrArray *
+g_hash_table_get_keys_as_ptr_array (GHashTable *hash_table)
+{
+  GPtrArray *array;
+
+  g_return_val_if_fail (hash_table != NULL, NULL);
+
+  array = g_ptr_array_sized_new (hash_table->size);
+  for (gsize i = 0; i < hash_table->size; ++i)
+    {
+      if (HASH_IS_REAL (hash_table->hashes[i]))
+        {
+          g_ptr_array_add (array, g_hash_table_fetch_key_or_value (
+            hash_table->keys, i, hash_table->have_big_keys));
+        }
+    }
+  g_assert (array->len == (guint) hash_table->nnodes);
+
+  return array;
+}
+
+/**
  * g_hash_table_get_values:
  * @hash_table: a #GHashTable
  *
@@ -2307,6 +2346,45 @@ g_hash_table_get_values (GHashTable *hash_table)
     }
 
   return retval;
+}
+
+/**
+ * g_hash_table_get_values_as_ptr_array: (skip)
+ * @hash_table: a #GHashTable
+ *
+ * Retrieves every value inside @hash_table, as a #GPtrArray.
+ * The returned data is valid until changes to the hash release those values.
+ *
+ * This iterates over every entry in the hash table to build its return value.
+ * To iterate over the entries in a #GHashTable more efficiently, use a
+ * #GHashTableIter.
+ *
+ * You should always unref the returned array with g_ptr_array_unref().
+ *
+ * Returns: (transfer container): a #GPtrArray containing each value from
+ * the table. Unref with with g_ptr_array_unref() when done.
+ *
+ * Since: 2.76
+ **/
+GPtrArray *
+g_hash_table_get_values_as_ptr_array (GHashTable *hash_table)
+{
+  GPtrArray *array;
+
+  g_return_val_if_fail (hash_table != NULL, NULL);
+
+  array = g_ptr_array_sized_new (hash_table->size);
+  for (gsize i = 0; i < hash_table->size; ++i)
+    {
+      if (HASH_IS_REAL (hash_table->hashes[i]))
+        {
+          g_ptr_array_add (array, g_hash_table_fetch_key_or_value (
+            hash_table->values, i, hash_table->have_big_values));
+        }
+    }
+  g_assert (array->len == (guint) hash_table->nnodes);
+
+  return array;
 }
 
 /* Hash functions.

@@ -1692,6 +1692,63 @@ test_set_to_strv (void)
   g_strfreev (strv);
 }
 
+static void
+test_set_get_keys_as_ptr_array (void)
+{
+  GHashTable *set;
+  GPtrArray *array;
+
+  set = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
+  g_hash_table_add (set, g_strdup ("xyz"));
+  g_hash_table_add (set, g_strdup ("xyz"));
+  g_hash_table_add (set, g_strdup ("abc"));
+
+  array = g_hash_table_get_keys_as_ptr_array (set);
+  g_hash_table_steal_all (set);
+  g_hash_table_unref (set);
+  g_ptr_array_set_free_func (array, g_free);
+
+  g_assert_cmpint (array->len, ==, 2);
+  g_ptr_array_add (array, NULL);
+
+  g_assert_true (
+    g_strv_equal ((const gchar * const[]) { "xyz", "abc", NULL },
+                  (const gchar * const*) array->pdata) ||
+    g_strv_equal ((const gchar * const[]) { "abc", "xyz", NULL },
+                  (const gchar * const*) array->pdata)
+  );
+
+  g_clear_pointer (&array, g_ptr_array_unref);
+}
+
+static void
+test_set_get_values_as_ptr_array (void)
+{
+  GHashTable *table;
+  GPtrArray *array;
+
+  table = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
+  g_hash_table_insert (table, g_strdup ("xyz"), GUINT_TO_POINTER (0));
+  g_hash_table_insert (table, g_strdup ("xyz"), GUINT_TO_POINTER (1));
+  g_hash_table_insert (table, g_strdup ("abc"), GUINT_TO_POINTER (2));
+
+  array = g_hash_table_get_values_as_ptr_array (table);
+  g_clear_pointer (&table, g_hash_table_unref);
+
+  g_assert_cmpint (array->len, ==, 2);
+  g_assert_true (g_ptr_array_find (array, GUINT_TO_POINTER (1), NULL));
+  g_assert_true (g_ptr_array_find (array, GUINT_TO_POINTER (2), NULL));
+
+  g_assert_true (
+    memcmp ((gpointer []) { GUINT_TO_POINTER (1), GUINT_TO_POINTER (2) },
+            array->pdata, array->len * sizeof (gpointer)) == 0 ||
+    memcmp ((gpointer []) { GUINT_TO_POINTER (2), GUINT_TO_POINTER (1) },
+            array->pdata, array->len * sizeof (gpointer)) == 0
+  );
+
+  g_clear_pointer (&array, g_ptr_array_unref);
+}
+
 static gboolean
 is_prime (guint p)
 {
@@ -1774,6 +1831,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/hash/iter-replace", test_iter_replace);
   g_test_add_func ("/hash/set-insert-corruption", test_set_insert_corruption);
   g_test_add_func ("/hash/set-to-strv", test_set_to_strv);
+  g_test_add_func ("/hash/get-keys-as-ptr-array", test_set_get_keys_as_ptr_array);
+  g_test_add_func ("/hash/get-values-as-ptr-array", test_set_get_values_as_ptr_array);
   g_test_add_func ("/hash/primes", test_primes);
 
   return g_test_run ();
