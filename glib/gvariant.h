@@ -304,9 +304,9 @@ struct _GVariantBuilder {
     struct {
       gsize partial_magic;
       const GVariantType *type;
-      gsize y[14];
+      guintptr y[14];
     } s;
-    gsize x[16];
+    guintptr x[16];
   } u;
 };
 
@@ -453,9 +453,9 @@ struct _GVariantDict {
     struct {
       GVariant *asv;
       gsize partial_magic;
-      gsize y[14];
+      guintptr y[14];
     } s;
-    gsize x[16];
+    guintptr x[16];
   } u;
 };
 
