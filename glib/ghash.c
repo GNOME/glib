@@ -1942,6 +1942,80 @@ g_hash_table_steal_all (GHashTable *hash_table)
   g_hash_table_maybe_resize (hash_table);
 }
 
+/**
+ * g_hash_table_steal_all_keys: (skip)
+ * @hash_table: a #GHashTable
+ *
+ * Removes all keys and their associated values from a #GHashTable
+ * without calling the key destroy functions, returning the keys
+ * as a #GPtrArray with the free func set to the @hash_table key
+ * destroy function.
+ *
+ * Returns: (transfer container): a #GPtrArray containing each key of
+ * the table. Unref with with g_ptr_array_unref() when done.
+ *
+ * Since: 2.76
+ */
+GPtrArray *
+g_hash_table_steal_all_keys (GHashTable *hash_table)
+{
+  GPtrArray *array;
+  GDestroyNotify key_destroy_func;
+
+  g_return_val_if_fail (hash_table != NULL, NULL);
+
+  array = g_hash_table_get_keys_as_ptr_array (hash_table);
+
+  /* Ignore the key destroy notify calls during removal, and use it for the
+   * array elements instead, but restore it after the hash table has been
+   * cleared, so that newly added keys will continue using it.
+   */
+  key_destroy_func = g_steal_pointer (&hash_table->key_destroy_func);
+  g_ptr_array_set_free_func (array, key_destroy_func);
+
+  g_hash_table_remove_all (hash_table);
+  hash_table->key_destroy_func = g_steal_pointer (&key_destroy_func);
+
+  return array;
+}
+
+/**
+ * g_hash_table_steal_all_values: (skip)
+ * @hash_table: a #GHashTable
+ *
+ * Removes all keys and their associated values from a #GHashTable
+ * without calling the value destroy functions, returning the values
+ * as a #GPtrArray with the free func set to the @hash_table value
+ * destroy function.
+ *
+ * Returns: (transfer container): a #GPtrArray containing each value of
+ * the table. Unref with with g_ptr_array_unref() when done.
+ *
+ * Since: 2.76
+ */
+GPtrArray *
+g_hash_table_steal_all_values (GHashTable *hash_table)
+{
+  GPtrArray *array;
+  GDestroyNotify value_destroy_func;
+
+  g_return_val_if_fail (hash_table != NULL, NULL);
+
+  array = g_hash_table_get_values_as_ptr_array (hash_table);
+
+  /* Ignore the value destroy notify calls during removal, and use it for the
+   * array elements instead, but restore it after the hash table has been
+   * cleared, so that newly added values will continue using it.
+   */
+  value_destroy_func = g_steal_pointer (&hash_table->value_destroy_func);
+  g_ptr_array_set_free_func (array, value_destroy_func);
+
+  g_hash_table_remove_all (hash_table);
+  hash_table->value_destroy_func = g_steal_pointer (&value_destroy_func);
+
+  return array;
+}
+
 /*
  * g_hash_table_foreach_remove_or_steal:
  * @hash_table: a #GHashTable

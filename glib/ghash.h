@@ -94,6 +94,10 @@ gboolean    g_hash_table_steal_extended    (GHashTable     *hash_table,
                                             gpointer       *stolen_value);
 GLIB_AVAILABLE_IN_ALL
 void        g_hash_table_steal_all         (GHashTable     *hash_table);
+GLIB_AVAILABLE_IN_2_76
+GPtrArray * g_hash_table_steal_all_keys    (GHashTable     *hash_table);
+GLIB_AVAILABLE_IN_2_76
+GPtrArray * g_hash_table_steal_all_values  (GHashTable     *hash_table);
 GLIB_AVAILABLE_IN_ALL
 gpointer    g_hash_table_lookup            (GHashTable     *hash_table,
                                             gconstpointer   key);
