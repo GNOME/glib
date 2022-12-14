@@ -317,6 +317,12 @@ print_paths (GDBusConnection *c,
   ;
 }
 
+static gint
+ptr_strcmp0 (const gchar **a, const gchar **b)
+{
+  return g_strcmp0 (*a, *b);
+}
+
 static void
 print_names (GDBusConnection *c,
              gboolean         include_unique_names)
@@ -326,8 +332,7 @@ print_names (GDBusConnection *c,
   GVariantIter *iter;
   gchar *str;
   GHashTable *name_set;
-  GList *keys;
-  GList *l;
+  GPtrArray *keys;
 
   name_set = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 
@@ -379,17 +384,17 @@ print_names (GDBusConnection *c,
   g_variant_iter_free (iter);
   g_variant_unref (result);
 
-  keys = g_hash_table_get_keys (name_set);
-  keys = g_list_sort (keys, (GCompareFunc) g_strcmp0);
-  for (l = keys; l != NULL; l = l->next)
+  keys = g_hash_table_steal_all_keys (name_set);
+  g_ptr_array_sort (keys, (GCompareFunc) ptr_strcmp0);
+  for (guint i = 0; i < keys->len; ++i)
     {
-      const gchar *name = l->data;
+      const gchar *name = g_ptr_array_index (keys, i);
       if (!include_unique_names && g_str_has_prefix (name, ":"))
         continue;
 
       g_print ("%s \n", name);
     }
-  g_list_free (keys);
+  g_clear_pointer (&keys, g_ptr_array_unref);
 
  out:
   g_hash_table_unref (name_set);
