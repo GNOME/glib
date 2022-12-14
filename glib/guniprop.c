@@ -573,7 +573,7 @@ g_unichar_toupper (gunichar c)
       gunichar val = ATTTABLE (c >> 8, c & 0xff);
       if (val >= 0x1000000)
 	{
-	  const gchar *p = special_case_table + val - 0x1000000;
+          const gchar *p = special_case_table + (val - 0x1000000);
           val = g_utf8_get_char (p);
 	}
       /* Some lowercase letters, e.g., U+000AA, FEMININE ORDINAL INDICATOR,
@@ -613,8 +613,8 @@ g_unichar_tolower (gunichar c)
       gunichar val = ATTTABLE (c >> 8, c & 0xff);
       if (val >= 0x1000000)
 	{
-	  const gchar *p = special_case_table + val - 0x1000000;
-	  return g_utf8_get_char (p);
+          const gchar *p = special_case_table + (val - 0x1000000);
+          return g_utf8_get_char (p);
 	}
       else
 	{
