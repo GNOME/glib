@@ -63,9 +63,7 @@ are then:
 ## Security Announcements
 
 Security announcements are made publicly via the
-[`distributor` tag on discourse.gnome.org](https://discourse.gnome.org/tag/distributor)
-and cross-posted to the
-[distributor-list](https://mail.gnome.org/mailman/listinfo/distributor-list).
+[`distributor` tag on discourse.gnome.org](https://discourse.gnome.org/tag/distributor).
 
 Announcements for security issues with wide applicability or high impact may
 additionally be made via
