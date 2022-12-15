@@ -115,6 +115,7 @@ foreach test_name, extra_args : gmodule_tests
 
   test(test_name,
     exe,
+    protocol : extra_args.get('protocol', test_protocol),
     depends : depends,
     env : test_env,
     timeout : timeout,

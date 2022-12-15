@@ -44,5 +44,11 @@ foreach test_name, extra_args : gthread_tests
     suite += 'failing'
   endif
 
-  test(test_name, exe, env : test_env, timeout : timeout, suite : suite)
+  test(test_name,
+    exe,
+    protocol : extra_args.get('protocol', test_protocol),
+    env : test_env,
+    timeout : timeout,
+    suite : suite,
+  )
 endforeach
