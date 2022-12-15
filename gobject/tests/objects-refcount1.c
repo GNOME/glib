@@ -15,10 +15,27 @@
 typedef struct _GTest GTest;
 typedef struct _GTestClass GTestClass;
 
+#if G_GNUC_CHECK_VERSION (4, 0)
+/* Increase the alignment of GTest to check whether
+ * G_TYPE_CHECK_INSTANCE_CAST() would trigger a "-Wcast-align=strict" warning.
+ * That would happen, when trying to cast a "GObject*" to "GTest*", if latter
+ * has larger alignment.
+ *
+ * Note that merely adding a int64 field to GTest does not increase the
+ * alignment above 4 bytes on i386, hence use the __attribute__((__aligned__())).
+ */
+#define _GTest_increase_alignment __attribute__((__aligned__(__alignof(gint64))))
+#else
+#define _GTest_increase_alignment
+#endif
+
 struct _GTest
 {
   GObject object;
-};
+
+  /* See _GTest_increase_alignment. */
+  long double increase_alignment2;
+} _GTest_increase_alignment;
 
 struct _GTestClass
 {
