@@ -386,7 +386,7 @@ foreach test_name, extra_args : glib_tests
   )
 
   depends = [extra_args.get('depends', [])]
-  suite = ['glib'] + extra_args.get('suite', [])
+  suite = ['glib', 'core'] + extra_args.get('suite', [])
   timeout = suite.contains('slow') ? test_timeout_slow : test_timeout
 
   if extra_args.get('can_fail', false)
@@ -432,7 +432,7 @@ endif
 
 foreach test_name, extra_args : python_tests
   depends = [extra_args.get('depends', [])]
-  suite = ['glib', 'no-valgrind']
+  suite = ['glib', 'core', 'no-valgrind']
 
   if extra_args.get('can_fail', false)
     suite += 'failing'
@@ -488,7 +488,7 @@ if not meson.is_cross_build() and host_system != 'windows'
     test('gtester-xmllint-check', xmllint,
       args : ['--noout', tmpsample_xml],
       env : test_env,
-      suite : ['glib'],
+      suite : ['glib', 'core'],
     )
   endif
 endif
