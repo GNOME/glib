@@ -41,7 +41,7 @@ gobject_tests = {
   'defaultiface' : {
     'source' : ['defaultiface.c', 'testmodule.c'],
   },
-  'deftype' : {},
+  'deftype' : { 'protocol': 'exitcode' },
   'deprecated-properties' : {},
   'dynamictype' : {
     'source' : ['dynamictype.c', 'testmodule.c'],
@@ -109,6 +109,7 @@ gobject_tests = {
 if have_cxx
   gobject_tests += {
     'cxx' : {
+      'protocol': 'exitcode',
       'source' : ['cxx.cpp'],
       'suite' : ['cpp'],
     },
@@ -117,6 +118,7 @@ if have_cxx
   foreach std, arg: cxx_standards
     gobject_tests += {
       'cxx-@0@'.format(std) : {
+        'protocol': 'exitcode',
         'source' : ['cxx.cpp'],
         'suite' : ['cpp'],
         'cpp_args' : [arg],
