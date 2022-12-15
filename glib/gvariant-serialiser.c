@@ -984,7 +984,8 @@ gvs_tuple_get_member_bounds (GVariantSerialised  value,
 
   member_info = g_variant_type_info_member_info (value.type_info, index_);
 
-  if (member_info->i + 1)
+  if (member_info->i + 1 &&
+      offset_size * (member_info->i + 1) <= value.size)
     member_start = gvs_read_unaligned_le (value.data + value.size -
                                           offset_size * (member_info->i + 1),
                                           offset_size);
@@ -995,7 +996,8 @@ gvs_tuple_get_member_bounds (GVariantSerialised  value,
   member_start &= member_info->b;
   member_start |= member_info->c;
 
-  if (member_info->ending_type == G_VARIANT_MEMBER_ENDING_LAST)
+  if (member_info->ending_type == G_VARIANT_MEMBER_ENDING_LAST &&
+      offset_size * (member_info->i + 1) <= value.size)
     member_end = value.size - offset_size * (member_info->i + 1);
 
   else if (member_info->ending_type == G_VARIANT_MEMBER_ENDING_FIXED)
@@ -1006,10 +1008,14 @@ gvs_tuple_get_member_bounds (GVariantSerialised  value,
       member_end = member_start + fixed_size;
     }
 
-  else /* G_VARIANT_MEMBER_ENDING_OFFSET */
+  else if (member_info->ending_type == G_VARIANT_MEMBER_ENDING_OFFSET &&
+           offset_size * (member_info->i + 2) <= value.size)
     member_end = gvs_read_unaligned_le (value.data + value.size -
                                         offset_size * (member_info->i + 2),
                                         offset_size);
+
+  else  /* invalid */
+    member_end = G_MAXSIZE;
 
   if (out_member_start != NULL)
     *out_member_start = member_start;
