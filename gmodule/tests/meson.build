@@ -5,6 +5,7 @@ gmodule_tests = {
 if have_cxx
   gmodule_tests += {
     'cxx' : {
+      'protocol': 'exitcode',
       'source' : ['cxx.cpp'],
       'suite' : ['cpp'],
     }
@@ -13,6 +14,7 @@ if have_cxx
   foreach std, arg: cxx_standards
     gmodule_tests += {
       'cxx-@0@'.format(std) : {
+        'protocol': 'exitcode',
         'source' : ['cxx.cpp'],
         'suite' : ['cpp'],
         'cpp_args' : [arg],
