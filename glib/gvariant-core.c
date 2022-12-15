@@ -1198,8 +1198,8 @@ g_variant_get_child_value (GVariant *value,
     child->contents.serialised.bytes =
       g_bytes_ref (value->contents.serialised.bytes);
     child->contents.serialised.data = s_child.data;
-    child->contents.serialised.ordered_offsets_up_to = s_child.ordered_offsets_up_to;
-    child->contents.serialised.checked_offsets_up_to = s_child.checked_offsets_up_to;
+    child->contents.serialised.ordered_offsets_up_to = (value->state & STATE_TRUSTED) ? G_MAXSIZE : s_child.ordered_offsets_up_to;
+    child->contents.serialised.checked_offsets_up_to = (value->state & STATE_TRUSTED) ? G_MAXSIZE : s_child.checked_offsets_up_to;
 
     return child;
   }
