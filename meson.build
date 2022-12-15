@@ -151,6 +151,10 @@ common_test_env = [
   'MALLOC_CHECK_=2',
 ]
 
+# Note: this may cause the tests output not to be printed when running in
+# verbose mode, see https://github.com/mesonbuild/meson/issues/11185
+# Can be changed it to 'exitcode' if required during development.
+test_protocol = 'tap'
 test_timeout = 30
 test_timeout_slow = 90
 

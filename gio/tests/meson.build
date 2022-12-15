@@ -1035,6 +1035,7 @@ foreach test_name, extra_args : gio_tests
   endif
 
   test(test_name, exe,
+    protocol : extra_args.get('protocol', test_protocol),
     env : local_test_env,
     timeout : timeout,
     suite : suite,
@@ -1059,6 +1060,7 @@ foreach test_name, extra_args : python_tests
   test(
     test_name,
     python,
+    protocol : extra_args.get('protocol', test_protocol),
     depends: depends,
     args: ['-B', files(test_name)],
     env: test_env,

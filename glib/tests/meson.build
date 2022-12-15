@@ -398,6 +398,7 @@ foreach test_name, extra_args : glib_tests
   endforeach
 
   test(test_name, exe,
+    protocol : extra_args.get('protocol', test_protocol),
     depends : depends,
     env : test_env,
     timeout : timeout,
@@ -444,6 +445,7 @@ foreach test_name, extra_args : python_tests
   test(
     test_name,
     python,
+    protocol : extra_args.get('protocol', test_protocol),
     depends: depends,
     args: ['-B', files(test_name)],
     env: test_env,

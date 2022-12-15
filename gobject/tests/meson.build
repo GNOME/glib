@@ -186,7 +186,13 @@ foreach test_name, extra_args : gobject_tests
     timeout = timeout * 10
   endif
 
-  test(test_name, exe, env : test_env, timeout : timeout, suite : suite)
+  test(test_name,
+    exe,
+    protocol : extra_args.get('protocol', test_protocol),
+    env : test_env,
+    timeout : timeout,
+    suite : suite,
+  )
 endforeach
 
 foreach test_name, extra_args : python_tests
@@ -200,6 +206,7 @@ foreach test_name, extra_args : python_tests
   test(
     test_name,
     python,
+    protocol : extra_args.get('protocol', test_protocol),
     depends: depends,
     args: ['-B', files(test_name)],
     env: test_env,
