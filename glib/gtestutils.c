@@ -901,6 +901,7 @@ static const char *test_built_files_dir;        /* points into test_argv0_dirnam
 static char       *test_initial_cwd = NULL;
 static gboolean    test_in_forked_child = FALSE;
 static gboolean    test_in_subprocess = FALSE;
+static gboolean    test_is_subtest = FALSE;
 static GTestConfig mutable_test_config_vars = {
   FALSE,        /* test_initialized */
   TRUE,         /* test_quick */
@@ -994,9 +995,16 @@ g_test_log (GTestLogType lbit,
     {
     case G_TEST_LOG_START_BINARY:
       if (test_tap_log)
-        g_print ("# random seed: %s\n", string2);
+        {
+          if (!test_in_forked_child && !test_is_subtest)
+            g_print ("TAP version 13\n");
+
+          g_print ("# random seed: %s\n", string2);
+        }
       else if (g_test_verbose ())
-        g_print ("GTest: random seed: %s\n", string2);
+        {
+          g_print ("GTest: random seed: %s\n", string2);
+        }
       break;
     case G_TEST_LOG_START_SUITE:
       if (test_tap_log)
@@ -1643,6 +1651,17 @@ void
 
   if (!g_get_prgname() && !no_g_set_prgname)
     g_set_prgname ((*argv)[0]);
+
+  if (g_getenv ("G_TEST_ROOT_PROCESS"))
+    {
+      test_is_subtest = TRUE;
+    }
+  else if (!g_setenv ("G_TEST_ROOT_PROCESS", test_argv0 ? test_argv0 : "root", TRUE))
+    {
+      g_printerr ("%s: Failed to set environment variable ‘%s’\n",
+                  test_argv0, "G_TEST_ROOT_PROCESS");
+      exit (1);
+    }
 
   /* Set up the temporary directory for isolating the test. We have to do this
    * early, as we want the return values from g_get_user_data_dir() (and

@@ -35,6 +35,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define TAP_VERSION G_STRINGIFY (13)
+
 /* test assertion variants */
 static void
 test_assertions_bad_cmpvariant_types (void)
@@ -1089,6 +1091,7 @@ test_tap (void)
   GError *error = NULL;
   int status;
   gchar *output;
+  char **envp;
 
   testing_helper = g_test_get_filename (G_TEST_BUILT, "testing-helper" EXEEXT, NULL);
 
@@ -1099,7 +1102,12 @@ test_tap (void)
   g_ptr_array_add (argv, "--tap");
   g_ptr_array_add (argv, NULL);
 
-  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+  /* Remove the G_TEST_ROOT_PROCESS env so it will be considered a standalone test */
+  envp = g_get_environ ();
+  g_assert_nonnull (g_environ_getenv (envp, "G_TEST_ROOT_PROCESS"));
+  envp = g_environ_unsetenv (g_steal_pointer (&envp), "G_TEST_ROOT_PROCESS");
+
+  g_spawn_sync (NULL, (char **) argv->pdata, envp,
                 G_SPAWN_STDERR_TO_DEV_NULL,
                 NULL, NULL, &output, NULL, &status,
                 &error);
@@ -1107,6 +1115,7 @@ test_tap (void)
 
   g_spawn_check_wait_status (status, &error);
   g_assert_no_error (error);
+  g_assert_true (g_str_has_prefix (output, "TAP version " TAP_VERSION));
   g_assert_nonnull (strstr (output, "\nok 1 /pass\n"));
   g_free (output);
   g_ptr_array_unref (argv);
@@ -1118,7 +1127,7 @@ test_tap (void)
   g_ptr_array_add (argv, "--tap");
   g_ptr_array_add (argv, NULL);
 
-  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+  g_spawn_sync (NULL, (char **) argv->pdata, envp,
                 G_SPAWN_STDERR_TO_DEV_NULL,
                 NULL, NULL, &output, NULL, &status,
                 &error);
@@ -1126,6 +1135,7 @@ test_tap (void)
 
   g_spawn_check_wait_status (status, &error);
   g_assert_no_error (error);
+  g_assert_true (g_str_has_prefix (output, "TAP version " TAP_VERSION));
   g_assert_nonnull (strstr (output, "\nok 1 /skip # SKIP not enough tea\n"));
   g_free (output);
   g_ptr_array_unref (argv);
@@ -1137,7 +1147,7 @@ test_tap (void)
   g_ptr_array_add (argv, "--tap");
   g_ptr_array_add (argv, NULL);
 
-  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+  g_spawn_sync (NULL, (char **) argv->pdata, envp,
                 G_SPAWN_STDERR_TO_DEV_NULL,
                 NULL, NULL, &output, NULL, &status,
                 &error);
@@ -1145,6 +1155,7 @@ test_tap (void)
 
   g_spawn_check_wait_status (status, &error);
   g_assert_no_error (error);
+  g_assert_true (g_str_has_prefix (output, "TAP version " TAP_VERSION));
   g_assert_nonnull (strstr (output, "\nok 1 /skip-printf # SKIP not enough coffee\n"));
   g_free (output);
   g_ptr_array_unref (argv);
@@ -1156,7 +1167,7 @@ test_tap (void)
   g_ptr_array_add (argv, "--tap");
   g_ptr_array_add (argv, NULL);
 
-  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+  g_spawn_sync (NULL, (char **) argv->pdata, envp,
                 G_SPAWN_STDERR_TO_DEV_NULL,
                 NULL, NULL, &output, NULL, &status,
                 &error);
@@ -1164,6 +1175,7 @@ test_tap (void)
 
   g_spawn_check_wait_status (status, &error);
   g_assert_no_error (error);
+  g_assert_true (g_str_has_prefix (output, "TAP version " TAP_VERSION));
   g_assert_nonnull (strstr (output, "\nnot ok 1 /incomplete # TODO mind reading not implemented yet\n"));
   g_free (output);
   g_ptr_array_unref (argv);
@@ -1175,7 +1187,7 @@ test_tap (void)
   g_ptr_array_add (argv, "--tap");
   g_ptr_array_add (argv, NULL);
 
-  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+  g_spawn_sync (NULL, (char **) argv->pdata, envp,
                 G_SPAWN_STDERR_TO_DEV_NULL,
                 NULL, NULL, &output, NULL, &status,
                 &error);
@@ -1183,6 +1195,7 @@ test_tap (void)
 
   g_spawn_check_wait_status (status, &error);
   g_assert_no_error (error);
+  g_assert_true (g_str_has_prefix (output, "TAP version " TAP_VERSION));
   g_assert_nonnull (strstr (output, "\nnot ok 1 /incomplete-printf # TODO telekinesis not implemented yet\n"));
   g_free (output);
   g_ptr_array_unref (argv);
@@ -1194,7 +1207,7 @@ test_tap (void)
   g_ptr_array_add (argv, "--tap");
   g_ptr_array_add (argv, NULL);
 
-  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+  g_spawn_sync (NULL, (char **) argv->pdata, envp,
                 G_SPAWN_STDERR_TO_DEV_NULL,
                 NULL, NULL, &output, NULL, &status,
                 &error);
@@ -1202,6 +1215,7 @@ test_tap (void)
 
   g_spawn_check_wait_status (status, &error);
   g_assert_error (error, G_SPAWN_EXIT_ERROR, 1);
+  g_assert_true (g_str_has_prefix (output, "TAP version " TAP_VERSION));
   g_assert_nonnull (strstr (output, "\nnot ok 1 /fail\n"));
   g_free (output);
   g_clear_error (&error);
@@ -1214,7 +1228,7 @@ test_tap (void)
   g_ptr_array_add (argv, "--tap");
   g_ptr_array_add (argv, NULL);
 
-  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+  g_spawn_sync (NULL, (char **) argv->pdata, envp,
                 G_SPAWN_STDERR_TO_DEV_NULL,
                 NULL, NULL, &output, NULL, &status,
                 &error);
@@ -1222,6 +1236,7 @@ test_tap (void)
 
   g_spawn_check_wait_status (status, &error);
   g_assert_error (error, G_SPAWN_EXIT_ERROR, 1);
+  g_assert_true (g_str_has_prefix (output, "TAP version " TAP_VERSION));
   g_assert_nonnull (strstr (output, "\nnot ok 1 /fail-printf - this test intentionally left failing\n"));
   g_free (output);
   g_clear_error (&error);
@@ -1234,7 +1249,7 @@ test_tap (void)
   g_ptr_array_add (argv, "--tap");
   g_ptr_array_add (argv, NULL);
 
-  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+  g_spawn_sync (NULL, (char **) argv->pdata, envp,
                 G_SPAWN_STDOUT_TO_DEV_NULL | G_SPAWN_STDERR_TO_DEV_NULL,
                 NULL, NULL, NULL, NULL, &status,
                 &error);
@@ -1252,7 +1267,7 @@ test_tap (void)
   g_ptr_array_add (argv, "--tap");
   g_ptr_array_add (argv, NULL);
 
-  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+  g_spawn_sync (NULL, (char **) argv->pdata, envp,
                 G_SPAWN_STDOUT_TO_DEV_NULL | G_SPAWN_STDERR_TO_DEV_NULL,
                 NULL, NULL, NULL, NULL, &status,
                 &error);
@@ -1272,11 +1287,12 @@ test_tap (void)
   g_ptr_array_add (argv, "2");
   g_ptr_array_add (argv, NULL);
 
-  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+  g_spawn_sync (NULL, (char **) argv->pdata, envp,
                 G_SPAWN_STDERR_TO_DEV_NULL,
                 NULL, NULL, &output, NULL, &status,
                 &error);
   g_assert_no_error (error);
+  g_assert_true (g_str_has_prefix (output, "TAP version " TAP_VERSION));
   g_assert_nonnull (strstr (output, "1..10\n"));
   g_assert_nonnull (strstr (output, "\nok 1 /a # SKIP\n"));
   g_assert_nonnull (strstr (output, "\nok 2 /b # SKIP\n"));
@@ -1304,11 +1320,12 @@ test_tap (void)
   g_ptr_array_add (argv, "0");
   g_ptr_array_add (argv, NULL);
 
-  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+  g_spawn_sync (NULL, (char **) argv->pdata, envp,
                 G_SPAWN_STDERR_TO_DEV_NULL,
                 NULL, NULL, &output, NULL, &status,
                 &error);
   g_assert_no_error (error);
+  g_assert_true (g_str_has_prefix (output, "TAP version " TAP_VERSION));
   g_assert_nonnull (strstr (output, "1..10\n"));
   g_assert_nonnull (strstr (output, "\nok 1 /a\n"));
   g_assert_nonnull (strstr (output, "\nok 2 /b\n"));
@@ -1336,11 +1353,12 @@ test_tap (void)
   g_ptr_array_add (argv, "11");
   g_ptr_array_add (argv, NULL);
 
-  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+  g_spawn_sync (NULL, (char **) argv->pdata, envp,
                 G_SPAWN_STDERR_TO_DEV_NULL,
                 NULL, NULL, &output, NULL, &status,
                 &error);
   g_assert_no_error (error);
+  g_assert_true (g_str_has_prefix (output, "TAP version " TAP_VERSION));
   g_assert_nonnull (strstr (output, "1..10\n"));
   g_assert_nonnull (strstr (output, "\nok 1 /a # SKIP\n"));
   g_assert_nonnull (strstr (output, "\nok 2 /b # SKIP\n"));
@@ -1372,11 +1390,12 @@ test_tap (void)
   g_ptr_array_add (argv, "/b");
   g_ptr_array_add (argv, NULL);
 
-  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+  g_spawn_sync (NULL, (char **) argv->pdata, envp,
                 G_SPAWN_STDERR_TO_DEV_NULL,
                 NULL, NULL, &output, NULL, &status,
                 &error);
   g_assert_no_error (error);
+  g_assert_true (g_str_has_prefix (output, "TAP version " TAP_VERSION));
   g_assert_nonnull (strstr (output, "\nok 1 /c/a\n"));
   g_assert_nonnull (strstr (output, "\nok 2 /c/a\n"));
   g_assert_nonnull (strstr (output, "\nok 3 /b\n"));
@@ -1403,11 +1422,12 @@ test_tap (void)
   g_ptr_array_add (argv, "/b");
   g_ptr_array_add (argv, NULL);
 
-  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+  g_spawn_sync (NULL, (char **) argv->pdata, envp,
                 G_SPAWN_STDERR_TO_DEV_NULL,
                 NULL, NULL, &output, NULL, &status,
                 &error);
   g_assert_no_error (error);
+  g_assert_true (g_str_has_prefix (output, "TAP version " TAP_VERSION));
   g_assert_nonnull (strstr (output, "\nok 1 /c/a\n"));
   g_assert_nonnull (strstr (output, "\nok 2 /c/a\n"));
   g_assert_nonnull (strstr (output, "\nok 3 /b\n"));
@@ -1433,11 +1453,12 @@ test_tap (void)
   g_ptr_array_add (argv, "/b/b");
   g_ptr_array_add (argv, NULL);
 
-  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+  g_spawn_sync (NULL, (char **) argv->pdata, envp,
                 G_SPAWN_STDERR_TO_DEV_NULL,
                 NULL, NULL, &output, NULL, &status,
                 &error);
   g_assert_no_error (error);
+  g_assert_true (g_str_has_prefix (output, "TAP version " TAP_VERSION));
   g_assert_nonnull (strstr (output, "\nok 1 /b/b\n"));
   g_assert_nonnull (strstr (output, "\nok 2 /b/b/a\n"));
   g_assert_nonnull (strstr (output, "\n1..2\n"));
@@ -1461,13 +1482,14 @@ test_tap (void)
   g_ptr_array_add (argv, "/b");
   g_ptr_array_add (argv, NULL);
 
-  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+  g_spawn_sync (NULL, (char **) argv->pdata, envp,
                 G_SPAWN_STDERR_TO_DEV_NULL,
                 NULL, NULL, &output, NULL, &status,
                 &error);
   g_assert_no_error (error);
   g_spawn_check_wait_status (status, &error);
   g_assert_nonnull (error);
+  g_assert_false (g_str_has_prefix (output, "TAP version " TAP_VERSION));
   g_assert_nonnull (strstr (output, "do not mix [-r | --run-prefix] with '-p'\n"));
   g_clear_error (&error);
 
@@ -1489,11 +1511,12 @@ test_tap (void)
   g_ptr_array_add (argv, "/c/a");
   g_ptr_array_add (argv, NULL);
 
-  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+  g_spawn_sync (NULL, (char **) argv->pdata, envp,
                 G_SPAWN_STDERR_TO_DEV_NULL,
                 NULL, NULL, &output, NULL, &status,
                 &error);
   g_assert_no_error (error);
+  g_assert_true (g_str_has_prefix (output, "TAP version " TAP_VERSION));
   g_assert_nonnull (strstr (output, "1..10\n"));
   g_assert_nonnull (strstr (output, "\nok 1 /a # SKIP by request"));
   g_assert_nonnull (strstr (output, "\nok 2 /b # SKIP by request"));
@@ -1527,11 +1550,12 @@ test_tap (void)
   g_ptr_array_add (argv, "/c/a");
   g_ptr_array_add (argv, NULL);
 
-  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+  g_spawn_sync (NULL, (char **) argv->pdata, envp,
                 G_SPAWN_STDERR_TO_DEV_NULL,
                 NULL, NULL, &output, NULL, &status,
                 &error);
   g_assert_no_error (error);
+  g_assert_true (g_str_has_prefix (output, "TAP version " TAP_VERSION));
   g_assert_nonnull (strstr (output, "1..10\n"));
   g_assert_nonnull (strstr (output, "\nok 1 /a # SKIP by request"));
   g_assert_nonnull (strstr (output, "\nok 2 /b\n"));
@@ -1564,18 +1588,20 @@ test_tap (void)
   g_ptr_array_add (argv, "/c/a");
   g_ptr_array_add (argv, NULL);
 
-  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+  g_spawn_sync (NULL, (char **) argv->pdata, envp,
                 G_SPAWN_STDERR_TO_DEV_NULL,
                 NULL, NULL, &output, NULL, &status,
                 &error);
   g_assert_no_error (error);
   g_spawn_check_wait_status (status, &error);
   g_assert_nonnull (error);
+  g_assert_false (g_str_has_prefix (output, "TAP version " TAP_VERSION));
   g_assert_nonnull (strstr (output, "do not mix [-x | --skip-prefix] with '-s'\n"));
   g_clear_error (&error);
 
   g_free (output);
   g_ptr_array_unref (argv);
+  g_strfreev (envp);
 }
 
 static void
