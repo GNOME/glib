@@ -50,6 +50,8 @@ struct _GCancellablePrivate
   /* Access to fields below is protected by cancellable_mutex. */
   guint cancelled_running : 1;
   guint cancelled_running_waiting : 1;
+  unsigned cancelled_emissions;
+  unsigned cancelled_emissions_waiting : 1;
 
   guint fd_refcount;
   GWakeup *wakeup;
@@ -267,9 +269,14 @@ g_cancellable_reset (GCancellable *cancellable)
 
   priv = cancellable->priv;
 
-  while (priv->cancelled_running)
+  while (priv->cancelled_running || priv->cancelled_emissions > 0)
     {
-      priv->cancelled_running_waiting = TRUE;
+      if (priv->cancelled_running)
+        priv->cancelled_running_waiting = TRUE;
+
+      if (priv->cancelled_emissions > 0)
+        priv->cancelled_emissions_waiting = TRUE;
+
       g_cond_wait (&cancellable_cond, &cancellable_mutex);
     }
 
@@ -571,15 +578,26 @@ g_cancellable_connect (GCancellable   *cancellable,
       void (*_callback) (GCancellable *cancellable,
                          gpointer      user_data);
 
-      g_mutex_unlock (&cancellable_mutex);
-
       _callback = (void *)callback;
       id = 0;
+
+      cancellable->priv->cancelled_emissions++;
+
+      g_mutex_unlock (&cancellable_mutex);
 
       _callback (cancellable, data);
 
       if (data_destroy_func)
         data_destroy_func (data);
+
+      g_mutex_lock (&cancellable_mutex);
+
+      if (cancellable->priv->cancelled_emissions_waiting)
+        g_cond_broadcast (&cancellable_cond);
+
+      cancellable->priv->cancelled_emissions--;
+
+      g_mutex_unlock (&cancellable_mutex);
     }
   else
     {
@@ -630,9 +648,14 @@ g_cancellable_disconnect (GCancellable  *cancellable,
 
   priv = cancellable->priv;
 
-  while (priv->cancelled_running)
+  while (priv->cancelled_running || priv->cancelled_emissions)
     {
-      priv->cancelled_running_waiting = TRUE;
+      if (priv->cancelled_running)
+        priv->cancelled_running_waiting = TRUE;
+
+      if (priv->cancelled_emissions)
+        priv->cancelled_emissions_waiting = TRUE;
+
       g_cond_wait (&cancellable_cond, &cancellable_mutex);
     }
 
