@@ -473,17 +473,21 @@ g_dbus_object_skeleton_get_interfaces (GDBusObject *_object)
 void
 g_dbus_object_skeleton_flush (GDBusObjectSkeleton *object)
 {
-  GList *to_flush, *l;
+  GPtrArray *to_flush;
 
   g_mutex_lock (&object->priv->lock);
-  to_flush = g_hash_table_get_values (object->priv->map_name_to_iface);
-  g_list_foreach (to_flush, (GFunc) g_object_ref, NULL);
+  to_flush = g_hash_table_get_values_as_ptr_array (object->priv->map_name_to_iface);
+  g_ptr_array_foreach (to_flush, (GFunc) g_object_ref, NULL);
+  g_ptr_array_set_free_func (to_flush, g_object_unref);
   g_mutex_unlock (&object->priv->lock);
 
-  for (l = to_flush; l != NULL; l = l->next)
-    g_dbus_interface_skeleton_flush (G_DBUS_INTERFACE_SKELETON (l->data));
+  for (guint i = 0; i < to_flush->len; ++i)
+    {
+      g_dbus_interface_skeleton_flush (
+        G_DBUS_INTERFACE_SKELETON (g_ptr_array_index (to_flush, i)));
+    }
 
-  g_list_free_full (to_flush, g_object_unref);
+  g_clear_pointer (&to_flush, g_ptr_array_unref);
 }
 
 static void

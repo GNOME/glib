@@ -130,24 +130,22 @@ is_valid_unix (const gchar  *address_entry,
                GError      **error)
 {
   gboolean ret;
-  GList *keys;
-  GList *l;
+  GPtrArray *keys;
   const gchar *path;
   const gchar *dir;
   const gchar *tmpdir;
   const gchar *abstract;
 
   ret = FALSE;
-  keys = NULL;
   path = NULL;
   dir = NULL;
   tmpdir = NULL;
   abstract = NULL;
 
-  keys = g_hash_table_get_keys (key_value_pairs);
-  for (l = keys; l != NULL; l = l->next)
+  keys = g_hash_table_get_keys_as_ptr_array (key_value_pairs);
+  for (guint i = 0; i < keys->len; ++i)
     {
-      const gchar *key = l->data;
+      const gchar *key = g_ptr_array_index (keys, i);
       if (g_strcmp0 (key, "path") == 0)
         path = g_hash_table_lookup (key_value_pairs, key);
       else if (g_strcmp0 (key, "dir") == 0)
@@ -191,7 +189,7 @@ is_valid_unix (const gchar  *address_entry,
   ret = TRUE;
 
  out:
-  g_list_free (keys);
+  g_ptr_array_unref (keys);
 
   return ret;
 }
@@ -202,8 +200,7 @@ is_valid_nonce_tcp (const gchar  *address_entry,
                     GError      **error)
 {
   gboolean ret;
-  GList *keys;
-  GList *l;
+  GPtrArray *keys;
   const gchar *host;
   const gchar *port;
   const gchar *family;
@@ -212,16 +209,15 @@ is_valid_nonce_tcp (const gchar  *address_entry,
   gchar *endp;
 
   ret = FALSE;
-  keys = NULL;
   host = NULL;
   port = NULL;
   family = NULL;
   nonce_file = NULL;
 
-  keys = g_hash_table_get_keys (key_value_pairs);
-  for (l = keys; l != NULL; l = l->next)
+  keys = g_hash_table_get_keys_as_ptr_array (key_value_pairs);
+  for (guint i = 0; i < keys->len; ++i)
     {
-      const gchar *key = l->data;
+      const gchar *key = g_ptr_array_index (keys, i);
       if (g_strcmp0 (key, "host") == 0)
         host = g_hash_table_lookup (key_value_pairs, key);
       else if (g_strcmp0 (key, "port") == 0)
@@ -284,7 +280,7 @@ is_valid_nonce_tcp (const gchar  *address_entry,
   ret = TRUE;
 
  out:
-  g_list_free (keys);
+  g_ptr_array_unref (keys);
 
   return ret;
 }
@@ -295,8 +291,7 @@ is_valid_tcp (const gchar  *address_entry,
               GError      **error)
 {
   gboolean ret;
-  GList *keys;
-  GList *l;
+  GPtrArray *keys;
   const gchar *host;
   const gchar *port;
   const gchar *family;
@@ -304,15 +299,14 @@ is_valid_tcp (const gchar  *address_entry,
   gchar *endp;
 
   ret = FALSE;
-  keys = NULL;
   host = NULL;
   port = NULL;
   family = NULL;
 
-  keys = g_hash_table_get_keys (key_value_pairs);
-  for (l = keys; l != NULL; l = l->next)
+  keys = g_hash_table_get_keys_as_ptr_array (key_value_pairs);
+  for (guint i = 0; i < keys->len; ++i)
     {
-      const gchar *key = l->data;
+      const gchar *key = g_ptr_array_index (keys, i);
       if (g_strcmp0 (key, "host") == 0)
         host = g_hash_table_lookup (key_value_pairs, key);
       else if (g_strcmp0 (key, "port") == 0)
@@ -363,7 +357,7 @@ is_valid_tcp (const gchar  *address_entry,
   ret= TRUE;
 
  out:
-  g_list_free (keys);
+  g_ptr_array_unref (keys);
 
   return ret;
 }

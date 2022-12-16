@@ -1094,24 +1094,27 @@ g_dbus_message_set_header (GDBusMessage             *message,
 guchar *
 g_dbus_message_get_header_fields (GDBusMessage  *message)
 {
-  GList *keys;
-  guchar *ret;
-  guint num_keys;
-  GList *l;
-  guint n;
+  GPtrArray *keys;
+  GArray *array;
 
   g_return_val_if_fail (G_IS_DBUS_MESSAGE (message), NULL);
 
-  keys = g_hash_table_get_keys (message->headers);
-  num_keys = g_list_length (keys);
-  ret = g_new (guchar, num_keys + 1);
-  for (l = keys, n = 0; l != NULL; l = l->next, n++)
-    ret[n] = GPOINTER_TO_UINT (l->data);
-  g_assert (n == num_keys);
-  ret[n] = G_DBUS_MESSAGE_HEADER_FIELD_INVALID;
-  g_list_free (keys);
+  keys = g_hash_table_get_keys_as_ptr_array (message->headers);
+  array = g_array_sized_new (FALSE, FALSE, sizeof (guchar), keys->len + 1);
 
-  return ret;
+  for (guint i = 0; i < keys->len; ++i)
+    {
+      guchar val = GPOINTER_TO_UINT (g_ptr_array_index (keys, i));
+      g_array_append_val (array, val);
+    }
+
+  g_assert (array->len == keys->len);
+  g_clear_pointer (&keys, g_ptr_array_unref);
+
+  guchar invalid_field = G_DBUS_MESSAGE_HEADER_FIELD_INVALID;
+  g_array_append_val (array, invalid_field);
+
+  return (guchar *) g_array_free (array, FALSE);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */

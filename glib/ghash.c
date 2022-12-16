@@ -1942,6 +1942,80 @@ g_hash_table_steal_all (GHashTable *hash_table)
   g_hash_table_maybe_resize (hash_table);
 }
 
+/**
+ * g_hash_table_steal_all_keys: (skip)
+ * @hash_table: a #GHashTable
+ *
+ * Removes all keys and their associated values from a #GHashTable
+ * without calling the key destroy functions, returning the keys
+ * as a #GPtrArray with the free func set to the @hash_table key
+ * destroy function.
+ *
+ * Returns: (transfer container): a #GPtrArray containing each key of
+ * the table. Unref with with g_ptr_array_unref() when done.
+ *
+ * Since: 2.76
+ */
+GPtrArray *
+g_hash_table_steal_all_keys (GHashTable *hash_table)
+{
+  GPtrArray *array;
+  GDestroyNotify key_destroy_func;
+
+  g_return_val_if_fail (hash_table != NULL, NULL);
+
+  array = g_hash_table_get_keys_as_ptr_array (hash_table);
+
+  /* Ignore the key destroy notify calls during removal, and use it for the
+   * array elements instead, but restore it after the hash table has been
+   * cleared, so that newly added keys will continue using it.
+   */
+  key_destroy_func = g_steal_pointer (&hash_table->key_destroy_func);
+  g_ptr_array_set_free_func (array, key_destroy_func);
+
+  g_hash_table_remove_all (hash_table);
+  hash_table->key_destroy_func = g_steal_pointer (&key_destroy_func);
+
+  return array;
+}
+
+/**
+ * g_hash_table_steal_all_values: (skip)
+ * @hash_table: a #GHashTable
+ *
+ * Removes all keys and their associated values from a #GHashTable
+ * without calling the value destroy functions, returning the values
+ * as a #GPtrArray with the free func set to the @hash_table value
+ * destroy function.
+ *
+ * Returns: (transfer container): a #GPtrArray containing each value of
+ * the table. Unref with with g_ptr_array_unref() when done.
+ *
+ * Since: 2.76
+ */
+GPtrArray *
+g_hash_table_steal_all_values (GHashTable *hash_table)
+{
+  GPtrArray *array;
+  GDestroyNotify value_destroy_func;
+
+  g_return_val_if_fail (hash_table != NULL, NULL);
+
+  array = g_hash_table_get_values_as_ptr_array (hash_table);
+
+  /* Ignore the value destroy notify calls during removal, and use it for the
+   * array elements instead, but restore it after the hash table has been
+   * cleared, so that newly added values will continue using it.
+   */
+  value_destroy_func = g_steal_pointer (&hash_table->value_destroy_func);
+  g_ptr_array_set_free_func (array, value_destroy_func);
+
+  g_hash_table_remove_all (hash_table);
+  hash_table->value_destroy_func = g_steal_pointer (&value_destroy_func);
+
+  return array;
+}
+
 /*
  * g_hash_table_foreach_remove_or_steal:
  * @hash_table: a #GHashTable
@@ -2274,6 +2348,45 @@ g_hash_table_get_keys_as_array (GHashTable *hash_table,
 }
 
 /**
+ * g_hash_table_get_keys_as_ptr_array: (skip)
+ * @hash_table: a #GHashTable
+ *
+ * Retrieves every key inside @hash_table, as a #GPtrArray.
+ * The returned data is valid until changes to the hash release those keys.
+ *
+ * This iterates over every entry in the hash table to build its return value.
+ * To iterate over the entries in a #GHashTable more efficiently, use a
+ * #GHashTableIter.
+ *
+ * You should always unref the returned array with g_ptr_array_unref().
+ *
+ * Returns: (transfer container): a #GPtrArray containing each key from
+ * the table. Unref with with g_ptr_array_unref() when done.
+ *
+ * Since: 2.76
+ **/
+GPtrArray *
+g_hash_table_get_keys_as_ptr_array (GHashTable *hash_table)
+{
+  GPtrArray *array;
+
+  g_return_val_if_fail (hash_table != NULL, NULL);
+
+  array = g_ptr_array_sized_new (hash_table->size);
+  for (gsize i = 0; i < hash_table->size; ++i)
+    {
+      if (HASH_IS_REAL (hash_table->hashes[i]))
+        {
+          g_ptr_array_add (array, g_hash_table_fetch_key_or_value (
+            hash_table->keys, i, hash_table->have_big_keys));
+        }
+    }
+  g_assert (array->len == (guint) hash_table->nnodes);
+
+  return array;
+}
+
+/**
  * g_hash_table_get_values:
  * @hash_table: a #GHashTable
  *
@@ -2307,6 +2420,45 @@ g_hash_table_get_values (GHashTable *hash_table)
     }
 
   return retval;
+}
+
+/**
+ * g_hash_table_get_values_as_ptr_array: (skip)
+ * @hash_table: a #GHashTable
+ *
+ * Retrieves every value inside @hash_table, as a #GPtrArray.
+ * The returned data is valid until changes to the hash release those values.
+ *
+ * This iterates over every entry in the hash table to build its return value.
+ * To iterate over the entries in a #GHashTable more efficiently, use a
+ * #GHashTableIter.
+ *
+ * You should always unref the returned array with g_ptr_array_unref().
+ *
+ * Returns: (transfer container): a #GPtrArray containing each value from
+ * the table. Unref with with g_ptr_array_unref() when done.
+ *
+ * Since: 2.76
+ **/
+GPtrArray *
+g_hash_table_get_values_as_ptr_array (GHashTable *hash_table)
+{
+  GPtrArray *array;
+
+  g_return_val_if_fail (hash_table != NULL, NULL);
+
+  array = g_ptr_array_sized_new (hash_table->size);
+  for (gsize i = 0; i < hash_table->size; ++i)
+    {
+      if (HASH_IS_REAL (hash_table->hashes[i]))
+        {
+          g_ptr_array_add (array, g_hash_table_fetch_key_or_value (
+            hash_table->values, i, hash_table->have_big_values));
+        }
+    }
+  g_assert (array->len == (guint) hash_table->nnodes);
+
+  return array;
 }
 
 /* Hash functions.

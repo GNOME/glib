@@ -1355,13 +1355,11 @@ on_notify_g_name_owner (GObject    *object,
 
   if (g_strcmp0 (old_name_owner, new_name_owner) != 0)
     {
-      GList *l;
-      GList *proxies;
+      GPtrArray *proxies;
 
       /* remote manager changed; nuke all local proxies  */
-      proxies = g_hash_table_get_values (manager->priv->map_object_path_to_object_proxy);
-      g_list_foreach (proxies, (GFunc) g_object_ref, NULL);
-      g_hash_table_remove_all (manager->priv->map_object_path_to_object_proxy);
+      proxies = g_hash_table_steal_all_values (
+        manager->priv->map_object_path_to_object_proxy);
 
       g_mutex_unlock (&manager->priv->lock);
 
@@ -1371,12 +1369,13 @@ on_notify_g_name_owner (GObject    *object,
        */
       g_object_notify (G_OBJECT (manager), "name-owner");
 
-      for (l = proxies; l != NULL; l = l->next)
+      for (guint i = 0; i < proxies->len; ++i)
         {
-          GDBusObjectProxy *object_proxy = G_DBUS_OBJECT_PROXY (l->data);
+          GDBusObjectProxy *object_proxy =
+            G_DBUS_OBJECT_PROXY (g_ptr_array_index (proxies, i));
           g_signal_emit_by_name (manager, "object-removed", object_proxy);
         }
-      g_list_free_full (proxies, g_object_unref);
+      g_clear_pointer (&proxies, g_ptr_array_unref);
 
       /* nuke local filter */
       maybe_unsubscribe_signals (manager);
