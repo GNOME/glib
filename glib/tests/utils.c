@@ -1086,13 +1086,13 @@ test_aligned_mem (void)
 
   g_test_summary ("Aligned memory allocator");
 
-  a = g_aligned_alloc (0, sizeof(int), 8);
+  a = g_aligned_alloc (0, sizeof (int), MAX (sizeof (void *), 8));
   g_assert_null (a);
 
-  a = g_aligned_alloc0 (0, sizeof(int), 8);
+  a = g_aligned_alloc0 (0, sizeof (int), MAX (sizeof (void *), 8));
   g_assert_null (a);
 
-  a = g_aligned_alloc (16, 0, 8);
+  a = g_aligned_alloc (16, 0, MAX (sizeof (void *), 8));
   g_assert_null (a);
 
 #define CHECK_SUBPROCESS_FAIL(name,msg) do { \
