@@ -49,18 +49,18 @@ thread_func (void *arg)
       int bytes, f, t;
       char *mem;
 
-      if (rand() % (N_ALLOCS / 20) == 0)
+      if (g_random_int_range (0, N_ALLOCS / 20) == 0)
         g_test_message ("%c", 'a' - 1 + td->thread_id);
 
       /* allocate block of random size and randomly fill */
-      bytes = rand() % MAX_BLOCK_SIZE + 1;
+      bytes = g_random_int_range (0, MAX_BLOCK_SIZE + 1);
       mem = g_slice_alloc (bytes);
 
       for (f = 0; f < bytes; f++)
-        mem[f] = rand();
+        mem[f] = (char) g_random_int ();
 
       /* associate block with random thread */
-      t = rand() % N_THREADS;
+      t = g_random_int_range (0, N_THREADS);
       g_mutex_lock (&tdata[t].to_free_mutex);
       tdata[t].to_free[tdata[t].n_to_free] = mem;
       tdata[t].bytes_to_free[tdata[t].n_to_free] = bytes;
@@ -68,9 +68,9 @@ thread_func (void *arg)
       g_mutex_unlock (&tdata[t].to_free_mutex);
 
       /* shuffle thread execution order every once in a while */
-      if (rand() % 97 == 0)
+      if (g_random_int_range (0, 97) == 0)
         {
-          if (rand() % 2)
+          if (g_random_boolean ())
             g_thread_yield();   /* concurrent shuffling for single core */
           else
             g_usleep (1000);    /* concurrent shuffling for multi core */
