@@ -76,7 +76,13 @@ gobject_tests = {
   'signalgroup' : {},
   'testing' : {},
   'type-flags' : {},
-  'objects-refcount1' : {},
+  'objects-refcount1' : {
+    'c_args': cc.get_supported_arguments([
+      '-DG_DISABLE_CAST_CHECKS',
+      '-Werror',
+      '-Wcast-align=strict',
+    ]),
+  },
   'objects-refcount2' : {'suite' : ['slow']},
   'properties-refcount1' : {},
   'properties-refcount2' : {'suite' : ['slow']},
