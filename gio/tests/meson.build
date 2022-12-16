@@ -146,7 +146,7 @@ if have_cxx
     'cxx' : {
       'protocol': 'exitcode',
       'source' : ['cxx.cpp'],
-      'suite': ['C++'],
+      'suite': ['cpp'],
     },
   }
 
