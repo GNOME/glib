@@ -714,17 +714,19 @@ gvs_variable_sized_array_n_children (GVariantSerialised value)
 /* Find the index of the first out-of-order element in @data, assuming that
  * @data is an array of elements of given @type, starting at index @start and
  * containing a further @len-@start elements. */
-#define DEFINE_FIND_UNORDERED(type) \
+#define DEFINE_FIND_UNORDERED(type, le_to_native) \
   static gsize \
   find_unordered_##type (const guint8 *data, gsize start, gsize len) \
   { \
     gsize off; \
-    type current, previous; \
+    type current_le, previous_le, current, previous; \
     \
-    memcpy (&previous, data + start * sizeof (current), sizeof (current)); \
+    memcpy (&previous_le, data + start * sizeof (current), sizeof (current)); \
+    previous = le_to_native (previous_le); \
     for (off = (start + 1) * sizeof (current); off < len * sizeof (current); off += sizeof (current)) \
       { \
-        memcpy (&current, data + off, sizeof (current)); \
+        memcpy (&current_le, data + off, sizeof (current)); \
+        current = le_to_native (current_le); \
         if (current < previous) \
           break; \
         previous = current; \
@@ -732,10 +734,11 @@ gvs_variable_sized_array_n_children (GVariantSerialised value)
     return off / sizeof (current) - 1; \
   }
 
-DEFINE_FIND_UNORDERED (guint8);
-DEFINE_FIND_UNORDERED (guint16);
-DEFINE_FIND_UNORDERED (guint32);
-DEFINE_FIND_UNORDERED (guint64);
+#define NO_CONVERSION(x) (x)
+DEFINE_FIND_UNORDERED (guint8, NO_CONVERSION);
+DEFINE_FIND_UNORDERED (guint16, GUINT16_FROM_LE);
+DEFINE_FIND_UNORDERED (guint32, GUINT32_FROM_LE);
+DEFINE_FIND_UNORDERED (guint64, GUINT64_FROM_LE);
 
 static GVariantSerialised
 gvs_variable_sized_array_get_child (GVariantSerialised value,
