@@ -4122,8 +4122,10 @@ g_test_trap_assertions (const char     *domain,
 
       logged_child_output = logged_child_output || log_child_output (process_id);
 
-      msg = g_strdup_printf ("stdout of child process (%s) %s: %s\nstdout was:\n%s",
-                             process_id, match_error, stdout_pattern, test_trap_last_stdout);
+      g_test_message ("stdout was:\n%s", test_trap_last_stdout);
+
+      msg = g_strdup_printf ("stdout of child process (%s) %s: %s",
+                             process_id, match_error, stdout_pattern);
       g_assertion_message (domain, file, line, func, msg);
       g_free (msg);
     }
@@ -4133,8 +4135,10 @@ g_test_trap_assertions (const char     *domain,
 
       logged_child_output = logged_child_output || log_child_output (process_id);
 
-      msg = g_strdup_printf ("stderr of child process (%s) %s: %s\nstderr was:\n%s",
-                             process_id, match_error, stderr_pattern, test_trap_last_stderr);
+      g_test_message ("stderr was:\n%s", test_trap_last_stderr);
+
+      msg = g_strdup_printf ("stderr of child process (%s) %s: %s",
+                             process_id, match_error, stderr_pattern);
       g_assertion_message (domain, file, line, func, msg);
       g_free (msg);
     }
