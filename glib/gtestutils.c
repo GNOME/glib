@@ -3295,9 +3295,10 @@ gtest_default_log_handler (const gchar    *log_domain,
 
   msg = g_strjoinv ("", (gchar**) strv);
   g_test_log (fatal ? G_TEST_LOG_ERROR : G_TEST_LOG_MESSAGE, msg, NULL, 0, NULL);
-  g_log_default_handler (log_domain, log_level, message, unused_data);
-
   g_free (msg);
+
+  if (!test_tap_log)
+    g_log_default_handler (log_domain, log_level, message, unused_data);
 }
 
 void
