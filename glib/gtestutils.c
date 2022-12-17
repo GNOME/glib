@@ -1000,7 +1000,7 @@ g_test_log (GTestLogType lbit,
     case G_TEST_LOG_START_BINARY:
       if (test_tap_log)
         {
-          if (!test_in_forked_child && !test_is_subtest)
+          if (!test_is_subtest && !test_in_subprocess && !test_in_forked_child)
             g_print ("TAP version 13\n");
 
           g_print ("# random seed: %s\n", string2);
@@ -1018,7 +1018,7 @@ g_test_log (GTestLogType lbit,
           if (string1[0] != 0)
             g_print ("# Start of %s tests\n", string1);
           else if (test_paths == NULL)
-            g_print ("1..%d\n", test_count);
+            g_print ("%s1..%d\n", test_is_subtest ? "# " : "", test_count);
         }
       break;
     case G_TEST_LOG_STOP_SUITE:
@@ -1030,7 +1030,7 @@ g_test_log (GTestLogType lbit,
           if (string1[0] != 0)
             g_print ("# End of %s tests\n", string1);
           else if (test_paths != NULL)
-            g_print ("1..%d\n", test_run_count);
+            g_print ("%s1..%d\n", test_is_subtest ? "# " : "", test_run_count);
         }
       break;
     case G_TEST_LOG_STOP_CASE:
@@ -1051,6 +1051,9 @@ g_test_log (GTestLogType lbit,
           else
             tap_output = g_string_new ("ok");
 
+          if (test_is_subtest)
+            g_string_prepend (tap_output, "# ");
+
           g_string_append_printf (tap_output, " %d %s", test_run_count, string1);
           if (result == G_TEST_RUN_INCOMPLETE)
             g_string_append_printf (tap_output, " # TODO %s", string2 ? string2 : "");
@@ -1060,7 +1063,7 @@ g_test_log (GTestLogType lbit,
             g_string_append_printf (tap_output, " - %s", string2);
 
           g_print ("%s\n", tap_output->str);
-          g_string_free (tap_output, TRUE);
+          g_string_free (g_steal_pointer (&tap_output), TRUE);
         }
       else if (g_test_verbose ())
         g_print ("GTest: result: %s\n", g_test_result_names[result]);
@@ -1069,7 +1072,7 @@ g_test_log (GTestLogType lbit,
       if (fail && test_mode_fatal)
         {
           if (test_tap_log)
-            g_print ("Bail out!\n");
+            g_print ("%sBail out!\n", test_is_subtest ? "# " : "");
           g_abort ();
         }
       if (result == G_TEST_RUN_SKIPPED || result == G_TEST_RUN_INCOMPLETE)
@@ -1077,7 +1080,10 @@ g_test_log (GTestLogType lbit,
       break;
     case G_TEST_LOG_SKIP_CASE:
       if (test_tap_log)
-          g_print ("ok %d %s # SKIP\n", test_run_count, string1);
+        {
+          g_print ("%sok %d %s # SKIP\n", test_is_subtest ? "# " : "",
+                   test_run_count, string1);
+        }
       break;
     case G_TEST_LOG_MIN_RESULT:
       if (test_tap_log)
@@ -1129,7 +1135,7 @@ g_test_log (GTestLogType lbit,
       break;
     case G_TEST_LOG_ERROR:
       if (test_tap_log)
-        g_print ("Bail out! %s\n", string1);
+        g_print ("%sBail out! %s\n", test_is_subtest ? "# " : "", string1);
       else if (g_test_verbose ())
         g_print ("(ERROR: %s)\n", string1);
       break;
