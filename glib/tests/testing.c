@@ -1670,7 +1670,7 @@ test_tap_message (void)
   g_spawn_check_wait_status (status, &error);
   g_assert_no_error (error);
 
-  const char *expected_tap_header = "\n1..1\n";
+  const char *expected_tap_header = "\n# 1..1\n";
   const char *interesting_lines = strstr (output, expected_tap_header);
   g_assert_nonnull (interesting_lines);
   interesting_lines += strlen (expected_tap_header);
