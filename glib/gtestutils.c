@@ -58,6 +58,7 @@
 #include "glib-private.h"
 #include "gutilsprivate.h"
 
+#define TAP_SUBTEST_PREFIX "    "  /* a 4-space indented line */
 
 /**
  * SECTION:testing
@@ -994,16 +995,23 @@ g_test_log (GTestLogType lbit,
   gchar *astrings[3] = { NULL, NULL, NULL };
   guint8 *dbuffer;
   guint32 dbufferlen;
+  gboolean is_subtest;
+  const char *tap_prefix;
+
+  is_subtest = test_is_subtest || test_in_forked_child || test_in_subprocess;
+  tap_prefix = test_tap_log && is_subtest ? TAP_SUBTEST_PREFIX : "";
 
   switch (lbit)
     {
     case G_TEST_LOG_START_BINARY:
       if (test_tap_log)
         {
-          if (!test_is_subtest && !test_in_subprocess && !test_in_forked_child)
-            g_print ("TAP version 13\n");
+          if (!is_subtest)
+            g_print ("TAP version 14\n");
+          else
+            g_print ("# Subtest: %s\n", test_argv0);
 
-          g_print ("# random seed: %s\n", string2);
+          g_print ("%s# random seed: %s\n", tap_prefix, string2);
         }
       else if (g_test_verbose ())
         {
@@ -1016,9 +1024,9 @@ g_test_log (GTestLogType lbit,
           /* We only print the TAP "plan" (1..n) ahead of time if we did
            * not use the -p option to select specific tests to be run. */
           if (string1[0] != 0)
-            g_print ("# Start of %s tests\n", string1);
+            g_print ("%s# Start of %s tests\n", tap_prefix, string1);
           else if (test_paths == NULL)
-            g_print ("%s1..%d\n", test_is_subtest ? "# " : "", test_count);
+            g_print ("%s1..%d\n", tap_prefix, test_count);
         }
       break;
     case G_TEST_LOG_STOP_SUITE:
@@ -1028,9 +1036,9 @@ g_test_log (GTestLogType lbit,
            * we were using -p, we need to print how many tests we ran at
            * the end instead. */
           if (string1[0] != 0)
-            g_print ("# End of %s tests\n", string1);
+            g_print ("%s# End of %s tests\n", tap_prefix, string1);
           else if (test_paths != NULL)
-            g_print ("%s1..%d\n", test_is_subtest ? "# " : "", test_run_count);
+            g_print ("%s1..%d\n", tap_prefix, test_run_count);
         }
       break;
     case G_TEST_LOG_STOP_CASE:
@@ -1051,8 +1059,8 @@ g_test_log (GTestLogType lbit,
           else
             tap_output = g_string_new ("ok");
 
-          if (test_is_subtest)
-            g_string_prepend (tap_output, "# ");
+          if (is_subtest)
+            g_string_prepend (tap_output, TAP_SUBTEST_PREFIX);
 
           g_string_append_printf (tap_output, " %d %s", test_run_count, string1);
           if (result == G_TEST_RUN_INCOMPLETE)
@@ -1072,7 +1080,7 @@ g_test_log (GTestLogType lbit,
       if (fail && test_mode_fatal)
         {
           if (test_tap_log)
-            g_print ("%sBail out!\n", test_is_subtest ? "# " : "");
+            g_print ("Bail out!\n");
           g_abort ();
         }
       if (result == G_TEST_RUN_SKIPPED || result == G_TEST_RUN_INCOMPLETE)
@@ -1081,19 +1089,19 @@ g_test_log (GTestLogType lbit,
     case G_TEST_LOG_SKIP_CASE:
       if (test_tap_log)
         {
-          g_print ("%sok %d %s # SKIP\n", test_is_subtest ? "# " : "",
+          g_print ("%sok %d %s # SKIP\n", tap_prefix,
                    test_run_count, string1);
         }
       break;
     case G_TEST_LOG_MIN_RESULT:
       if (test_tap_log)
-        g_print ("# min perf: %s\n", string1);
+        g_print ("%s# min perf: %s\n", tap_prefix, string1);
       else if (g_test_verbose ())
         g_print ("(MINPERF:%s)\n", string1);
       break;
     case G_TEST_LOG_MAX_RESULT:
       if (test_tap_log)
-        g_print ("# max perf: %s\n", string1);
+        g_print ("%s# max perf: %s\n", tap_prefix, string1);
       else if (g_test_verbose ())
         g_print ("(MAXPERF:%s)\n", string1);
       break;
@@ -1101,7 +1109,7 @@ g_test_log (GTestLogType lbit,
       if (test_tap_log)
         {
           if (strchr (string1, '\n') == NULL)
-            g_print ("# %s\n", string1);
+            g_print ("%s# %s\n", tap_prefix, string1);
           else
             {
               GString *output = g_string_new (NULL);
@@ -1110,6 +1118,7 @@ g_test_log (GTestLogType lbit,
               do
                 {
                   const char *next = strchr (line, '\n');
+                  g_string_append (output, tap_prefix);
                   g_string_append (output, "# ");
 
                   if (next)
@@ -1142,7 +1151,12 @@ g_test_log (GTestLogType lbit,
           while ((line = strchr (line, '\n')))
               *(line++) = ' ';
 
-          g_print ("%sBail out! %s\n", test_is_subtest ? "# " : "", g_strstrip (message));
+          if (is_subtest)
+            g_print ("%sBail out! %s\nBail out!\n", tap_prefix, message);
+          else
+            g_print ("Bail out! %s\n", message);
+
+          g_free (message);
         }
       else if (g_test_verbose ())
         {
