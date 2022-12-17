@@ -64,7 +64,7 @@ struct _GPtrArray
  * order by moving the last element to the position of the removed.
  */
 
-#if defined (glib_typeof) && GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_76
+#if defined (glib_typeof) && GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_76 && defined (__GNUC__)
   #define g_array_append_val(a, v)                   \
     (G_GNUC_EXTENSION ({                             \
       glib_typeof ((v)) gaa_val_ = (v);              \
