@@ -32,7 +32,6 @@
 #endif
 
 #include <glib/gtypes.h>
-#include <glib/glib-typeof.h>
 
 G_BEGIN_DECLS
 
@@ -64,35 +63,9 @@ struct _GPtrArray
  * order by moving the last element to the position of the removed.
  */
 
-#if defined (glib_typeof) && GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_76 && defined (__GNUC__)
-  #define g_array_append_val(a, v)                   \
-    (G_GNUC_EXTENSION ({                             \
-      glib_typeof ((v)) gaa_val_ = (v);              \
-      g_array_append_vals ((a), &gaa_val_, 1);       \
-    }))
-
-  #define g_array_prepend_val(a, v)                  \
-    (G_GNUC_EXTENSION ({                             \
-      glib_typeof ((v)) gap_val_ = (v);              \
-      g_array_prepend_vals ((a), &gap_val_, 1);      \
-    }))
-
-  #define g_array_insert_val(a, i, v)                \
-    (G_GNUC_EXTENSION ({                             \
-      glib_typeof ((v)) gai_val_ = (v);              \
-      g_array_insert_vals ((a), (i), &gai_val_, 1);  \
-    }))
-#else /* !defined (glib_typeof) || GLIB_VERSION_MIN_REQUIRED < GLIB_VERSION_2_76 */
-  #define g_array_append_val(a, v)                   \
-    g_array_append_vals ((a), &((v)), 1)
-
-  #define g_array_prepend_val(a, v)                  \
-    g_array_prepend_vals ((a), &((v)), 1)
-
-  #define g_array_insert_val(a, i, v)                \
-    g_array_insert_vals ((a), (i), &((v)), 1)
-#endif
-
+#define g_array_append_val(a,v)	  g_array_append_vals (a, &(v), 1)
+#define g_array_prepend_val(a,v)  g_array_prepend_vals (a, &(v), 1)
+#define g_array_insert_val(a,i,v) g_array_insert_vals (a, i, &(v), 1)
 #define g_array_index(a,t,i)      (((t*) (void *) (a)->data) [(i)])
 
 GLIB_AVAILABLE_IN_ALL
