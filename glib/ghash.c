@@ -260,8 +260,8 @@ struct _GHashTable
   gsize            size;
   gint             mod;
   guint            mask;
-  gint             nnodes;
-  gint             noccupied;  /* nnodes + tombstones */
+  guint            nnodes;
+  guint            noccupied;  /* nnodes + tombstones */
 
   guint            have_big_keys : 1;
   guint            have_big_values : 1;
@@ -548,6 +548,7 @@ g_hash_table_remove_node (GHashTable   *hash_table,
   g_hash_table_assign_key_or_value (hash_table->keys, i, hash_table->have_big_keys, NULL);
   g_hash_table_assign_key_or_value (hash_table->values, i, hash_table->have_big_values, NULL);
 
+  g_assert (hash_table->nnodes > 0);
   hash_table->nnodes--;
 
   if (notify && hash_table->key_destroy_func)
@@ -909,8 +910,8 @@ g_hash_table_resize (GHashTable *hash_table)
 static inline void
 g_hash_table_maybe_resize (GHashTable *hash_table)
 {
-  gint noccupied = hash_table->noccupied;
-  gint size = hash_table->size;
+  gsize noccupied = hash_table->noccupied;
+  gsize size = hash_table->size;
 
   if ((size > hash_table->nnodes * 4 && size > 1 << HASH_TABLE_MIN_SHIFT) ||
       (size <= noccupied + (noccupied / 16)))
@@ -2338,7 +2339,7 @@ g_hash_table_get_keys_as_array (GHashTable *hash_table,
       if (HASH_IS_REAL (hash_table->hashes[i]))
         result[j++] = g_hash_table_fetch_key_or_value (hash_table->keys, i, hash_table->have_big_keys);
     }
-  g_assert_cmpint (j, ==, hash_table->nnodes);
+  g_assert (j == hash_table->nnodes);
   result[j] = NULL;
 
   if (length)
@@ -2381,7 +2382,7 @@ g_hash_table_get_keys_as_ptr_array (GHashTable *hash_table)
             hash_table->keys, i, hash_table->have_big_keys));
         }
     }
-  g_assert (array->len == (guint) hash_table->nnodes);
+  g_assert (array->len == hash_table->nnodes);
 
   return array;
 }
@@ -2456,7 +2457,7 @@ g_hash_table_get_values_as_ptr_array (GHashTable *hash_table)
             hash_table->values, i, hash_table->have_big_values));
         }
     }
-  g_assert (array->len == (guint) hash_table->nnodes);
+  g_assert (array->len == hash_table->nnodes);
 
   return array;
 }
