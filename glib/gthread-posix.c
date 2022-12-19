@@ -74,7 +74,7 @@
 #include <sys/syscall.h>
 #endif
 
-#if defined(HAVE_FUTEX) && \
+#if (defined(HAVE_FUTEX) || defined(HAVE_FUTEX_TIME64)) && \
     (defined(HAVE_STDATOMIC_H) || defined(__ATOMIC_SEQ_CST))
 #define USE_NATIVE_MUTEX
 #endif
@@ -1394,15 +1394,6 @@ g_system_thread_set_name (const gchar *name)
 /* {{{1 GMutex and GCond futex implementation */
 
 #if defined(USE_NATIVE_MUTEX)
-
-#include <linux/futex.h>
-#include <sys/syscall.h>
-
-#ifndef FUTEX_WAIT_PRIVATE
-#define FUTEX_WAIT_PRIVATE FUTEX_WAIT
-#define FUTEX_WAKE_PRIVATE FUTEX_WAKE
-#endif
-
 /* We should expand the set of operations available in gatomic once we
  * have better C11 support in GCC in common distributions (ie: 4.9).
  *
@@ -1497,8 +1488,8 @@ g_mutex_lock_slowpath (GMutex *mutex)
    */
   while (exchange_acquire (&mutex->i[0], G_MUTEX_STATE_CONTENDED) != G_MUTEX_STATE_EMPTY)
     {
-      syscall (__NR_futex, &mutex->i[0], (gsize) FUTEX_WAIT_PRIVATE,
-               G_MUTEX_STATE_CONTENDED, NULL);
+      g_futex_simple (&mutex->i[0], (gsize) FUTEX_WAIT_PRIVATE,
+                      G_MUTEX_STATE_CONTENDED, NULL);
     }
 }
 
@@ -1516,7 +1507,7 @@ g_mutex_unlock_slowpath (GMutex *mutex,
       g_abort ();
     }
 
-  syscall (__NR_futex, &mutex->i[0], (gsize) FUTEX_WAKE_PRIVATE, (gsize) 1, NULL);
+  g_futex_simple (&mutex->i[0], (gsize) FUTEX_WAKE_PRIVATE, (gsize) 1, NULL);
 }
 
 void
@@ -1584,7 +1575,7 @@ g_cond_wait (GCond  *cond,
   guint sampled = (guint) g_atomic_int_get (&cond->i[0]);
 
   g_mutex_unlock (mutex);
-  syscall (__NR_futex, &cond->i[0], (gsize) FUTEX_WAIT_PRIVATE, (gsize) sampled, NULL);
+  g_futex_simple (&cond->i[0], (gsize) FUTEX_WAIT_PRIVATE, (gsize) sampled, NULL);
   g_mutex_lock (mutex);
 }
 
@@ -1593,7 +1584,7 @@ g_cond_signal (GCond *cond)
 {
   g_atomic_int_inc (&cond->i[0]);
 
-  syscall (__NR_futex, &cond->i[0], (gsize) FUTEX_WAKE_PRIVATE, (gsize) 1, NULL);
+  g_futex_simple (&cond->i[0], (gsize) FUTEX_WAKE_PRIVATE, (gsize) 1, NULL);
 }
 
 void
@@ -1601,7 +1592,7 @@ g_cond_broadcast (GCond *cond)
 {
   g_atomic_int_inc (&cond->i[0]);
 
-  syscall (__NR_futex, &cond->i[0], (gsize) FUTEX_WAKE_PRIVATE, (gsize) INT_MAX, NULL);
+  g_futex_simple (&cond->i[0], (gsize) FUTEX_WAKE_PRIVATE, (gsize) INT_MAX, NULL);
 }
 
 gboolean
@@ -1611,12 +1602,6 @@ g_cond_wait_until (GCond  *cond,
 {
   struct timespec now;
   struct timespec span;
-#ifdef __NR_futex_time64
-  long span_arg[2];
-  G_STATIC_ASSERT (sizeof (span_arg[0]) == 4);
-#else
-  struct timespec span_arg;
-#endif
 
   guint sampled;
   int res;
@@ -1637,37 +1622,82 @@ g_cond_wait_until (GCond  *cond,
   if (span.tv_sec < 0)
     return FALSE;
 
-  /* On x32 (ILP32 ABI on x86_64) and potentially sparc64, the raw futex()
-   * syscall takes a 32-bit timespan argument *regardless* of whether userspace
-   * is using 32-bit or 64-bit `struct timespec`. This means that we can’t
-   * unconditionally pass a `struct timespec` pointer into the syscall.
+  /* `struct timespec` as defined by the libc headers does not necessarily
+   * have any relation to the one used by the kernel for the `futex` syscall.
    *
-   * Assume that any such platform is new enough to define the
-   * `__NR_futex_time64` workaround syscall (which accepts 64-bit timespecs,
-   * introduced in kernel 5.1), and use that as a proxy for whether to pass in
-   * `long[2]` or `struct timespec`.
+   * Specifically, the libc headers might use 64-bit `time_t` while the kernel
+   * headers use 32-bit `__kernel_old_time_t` on certain systems.
    *
-   * As per https://lwn.net/Articles/776427/, the `time64` syscalls only exist
-   * on 32-bit platforms, so in this case `sizeof(long)` should always be
-   * 32 bits.
+   * To get around this problem we
+   *   a) check if `futex_time64` is available, which only exists on 32-bit
+   *      platforms and always uses 64-bit `time_t`.
+   *   b) otherwise (or if that returns `ENOSYS`), we call the normal `futex`
+   *      syscall with the `struct timespec` used by the kernel, which uses
+   *      `__kernel_long_t` for both its fields. We use that instead of
+   *      `__kernel_old_time_t` because it is equivalent and available in the
+   *      kernel headers for a longer time.
    *
-   * Don’t bother actually calling `__NR_futex_time64` as the `span` is relative
-   * and hence very unlikely to overflow, even if using 32-bit longs.
+   * Also some 32-bit systems do not define `__NR_futex` at all and only
+   * define `__NR_futex_time64`.
    */
-#ifdef __NR_futex_time64
-  span_arg[0] = span.tv_sec;
-  span_arg[1] = span.tv_nsec;
-#else
-  span_arg = span;
-#endif
 
   sampled = cond->i[0];
   g_mutex_unlock (mutex);
-  res = syscall (__NR_futex, &cond->i[0], (gsize) FUTEX_WAIT_PRIVATE, (gsize) sampled, &span_arg);
-  success = (res < 0 && errno == ETIMEDOUT) ? FALSE : TRUE;
-  g_mutex_lock (mutex);
 
-  return success;
+#ifdef __NR_futex_time64
+  {
+    struct
+    {
+      gint64 tv_sec;
+      gint64 tv_nsec;
+    } span_arg;
+
+    span_arg.tv_sec = span.tv_sec;
+    span_arg.tv_nsec = span.tv_nsec;
+
+    res = syscall (__NR_futex_time64, &cond->i[0], (gsize) FUTEX_WAIT_PRIVATE, (gsize) sampled, &span_arg);
+
+    /* If the syscall does not exist (`ENOSYS`), we retry again below with the
+     * normal `futex` syscall. This can happen if newer kernel headers are
+     * used than the kernel that is actually running.
+     */
+#  ifdef __NR_futex
+    if (res >= 0 || errno != ENOSYS)
+#  endif /* defined(__NR_futex) */
+      {
+        success = (res < 0 && errno == ETIMEDOUT) ? FALSE : TRUE;
+        g_mutex_lock (mutex);
+
+        return success;
+      }
+  }
+#endif
+
+#ifdef __NR_futex
+  {
+    struct
+    {
+      __kernel_long_t tv_sec;
+      __kernel_long_t tv_nsec;
+    } span_arg;
+
+    /* Make sure to only ever call this if the end time actually fits into the target type */
+    if (G_UNLIKELY (sizeof (__kernel_long_t) < 8 && span.tv_sec > G_MAXINT32))
+      g_error ("%s: Can’t wait for more than %us", G_STRFUNC, G_MAXINT32);
+
+    span_arg.tv_sec = span.tv_sec;
+    span_arg.tv_nsec = span.tv_nsec;
+
+    res = syscall (__NR_futex, &cond->i[0], (gsize) FUTEX_WAIT_PRIVATE, (gsize) sampled, &span_arg);
+    success = (res < 0 && errno == ETIMEDOUT) ? FALSE : TRUE;
+    g_mutex_lock (mutex);
+
+    return success;
+  }
+#endif /* defined(__NR_futex) */
+
+  /* We can't end up here because of the checks above */
+  g_assert_not_reached ();
 }
 
 #endif
