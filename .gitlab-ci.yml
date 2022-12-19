@@ -461,10 +461,7 @@ freebsd-12-x86_64:
       - "_build/meson-logs"
 
 freebsd-13-x86_64:
-  # FIXME: Temporarily only run the FreeBSD 13 CI on a schedule, rather than on
-  # every commit to origin, because it’s broken:
-  # https://gitlab.gnome.org/Infrastructure/GitLab/-/issues/594
-  extends: .only-schedules
+  extends: .only-origin
   stage: build
   tags:
     - freebsd-13
