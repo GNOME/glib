@@ -2447,7 +2447,7 @@ g_ptr_array_insert (GPtrArray *array,
  *
  * Sorts the array, using @compare_func which should be a qsort()-style
  * comparison function (returns less than zero for first arg is less
- * than second arg, zero for equal, greater than zero if irst arg is
+ * than second arg, zero for equal, greater than zero if first arg is
  * greater than second arg).
  *
  * Note that the comparison function for g_ptr_array_sort() doesn't
