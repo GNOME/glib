@@ -317,12 +317,6 @@ print_paths (GDBusConnection *c,
   ;
 }
 
-static gint
-ptr_strcmp0 (const gchar **a, const gchar **b)
-{
-  return g_strcmp0 (*a, *b);
-}
-
 static void
 print_names (GDBusConnection *c,
              gboolean         include_unique_names)
@@ -385,7 +379,7 @@ print_names (GDBusConnection *c,
   g_variant_unref (result);
 
   keys = g_hash_table_steal_all_keys (name_set);
-  g_ptr_array_sort (keys, (GCompareFunc) ptr_strcmp0);
+  g_ptr_array_sort_values (keys, (GCompareFunc) g_strcmp0);
   for (guint i = 0; i < keys->len; ++i)
     {
       const gchar *name = g_ptr_array_index (keys, i);

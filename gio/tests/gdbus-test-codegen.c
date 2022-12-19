@@ -1551,12 +1551,6 @@ typedef struct
   guint num_interface_removed_signals;
 } OMData;
 
-static gint
-my_pstrcmp (const gchar **a, const gchar **b)
-{
-  return g_strcmp0 (*a, *b);
-}
-
 static void
 om_check_interfaces_added (const gchar *signal_name,
                            GVariant *parameters,
@@ -1597,8 +1591,10 @@ om_check_interfaces_added (const gchar *signal_name,
       g_ptr_array_add (interfaces_in_message, (gpointer) iface_name);
     }
   g_assert_cmpint (interfaces_in_message->len, ==, interfaces->len);
-  g_ptr_array_sort (interfaces, (GCompareFunc) my_pstrcmp);
-  g_ptr_array_sort (interfaces_in_message, (GCompareFunc) my_pstrcmp);
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  g_ptr_array_sort_values (interfaces, (GCompareFunc) g_strcmp0);
+  g_ptr_array_sort_values (interfaces_in_message, (GCompareFunc) g_strcmp0);
+  G_GNUC_END_IGNORE_DEPRECATIONS
   for (n = 0; n < interfaces->len; n++)
     g_assert_cmpstr (interfaces->pdata[n], ==, interfaces_in_message->pdata[n]);
   g_ptr_array_unref (interfaces_in_message);
@@ -1646,8 +1642,10 @@ om_check_interfaces_removed (const gchar *signal_name,
       g_ptr_array_add (interfaces_in_message, (gpointer) iface_name);
     }
   g_assert_cmpint (interfaces_in_message->len, ==, interfaces->len);
-  g_ptr_array_sort (interfaces, (GCompareFunc) my_pstrcmp);
-  g_ptr_array_sort (interfaces_in_message, (GCompareFunc) my_pstrcmp);
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  g_ptr_array_sort_values (interfaces, (GCompareFunc) g_strcmp0);
+  g_ptr_array_sort_values (interfaces_in_message, (GCompareFunc) g_strcmp0);
+  G_GNUC_END_IGNORE_DEPRECATIONS
   for (n = 0; n < interfaces->len; n++)
     g_assert_cmpstr (interfaces->pdata[n], ==, interfaces_in_message->pdata[n]);
   g_ptr_array_unref (interfaces_in_message);

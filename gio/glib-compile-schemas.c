@@ -1869,8 +1869,8 @@ static gint
 compare_strings (gconstpointer a,
                  gconstpointer b)
 {
-  gchar *one = *(gchar **) a;
-  gchar *two = *(gchar **) b;
+  const gchar *one = a;
+  const gchar *two = a;
   gint cmp;
 
   cmp = g_str_has_suffix (two, ".enums.xml") -
@@ -2278,10 +2278,10 @@ main (int argc, char **argv)
           retval = 0;
           goto done;
         }
-      g_ptr_array_sort (files, compare_strings);
+      g_ptr_array_sort_values (files, compare_strings);
       g_ptr_array_add (files, NULL);
 
-      g_ptr_array_sort (overrides, compare_strings);
+      g_ptr_array_sort_values (overrides, compare_strings);
       g_ptr_array_add (overrides, NULL);
 
       schema_files = (char **) g_ptr_array_free (files, FALSE);

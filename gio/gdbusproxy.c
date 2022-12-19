@@ -631,13 +631,6 @@ g_dbus_proxy_init (GDBusProxy *proxy)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-static gint
-property_name_sort_func (const gchar **a,
-                         const gchar **b)
-{
-  return g_strcmp0 (*a, *b);
-}
-
 /**
  * g_dbus_proxy_get_cached_property_names:
  * @proxy: A #GDBusProxy.
@@ -672,7 +665,7 @@ g_dbus_proxy_get_cached_property_names (GDBusProxy  *proxy)
   g_hash_table_iter_init (&iter, proxy->priv->properties);
   while (g_hash_table_iter_next (&iter, (gpointer) &key, NULL))
     g_ptr_array_add (p, g_strdup (key));
-  g_ptr_array_sort (p, (GCompareFunc) property_name_sort_func);
+  g_ptr_array_sort_values (p, (GCompareFunc) g_strcmp0);
   g_ptr_array_add (p, NULL);
 
   names = (gchar **) g_ptr_array_free (p, FALSE);
