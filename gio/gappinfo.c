@@ -577,9 +577,9 @@ g_app_info_get_icon (GAppInfo *appinfo)
  * environment variable with the path of the launched desktop file and
  * `GIO_LAUNCHED_DESKTOP_FILE_PID` to the process id of the launched
  * process. This can be used to ignore `GIO_LAUNCHED_DESKTOP_FILE`,
- * should it be inherited by further processes. The `DISPLAY` and
- * `DESKTOP_STARTUP_ID` environment variables are also set, based
- * on information provided in @context.
+ * should it be inherited by further processes. The `DISPLAY`,
+ * `XDG_ACTIVATION_TOKEN` and `DESKTOP_STARTUP_ID` environment
+ * variables are also set, based on information provided in @context.
  *
  * Returns: %TRUE on successful launch, %FALSE otherwise.
  **/
@@ -1594,10 +1594,18 @@ g_app_launch_context_get_display (GAppLaunchContext *context,
  * @files: (element-type GFile): a #GList of of #GFile objects
  * 
  * Initiates startup notification for the application and returns the
- * `DESKTOP_STARTUP_ID` for the launched operation, if supported.
+ * `XDG_ACTIVATION_TOKEN` or `DESKTOP_STARTUP_ID` for the launched operation,
+ * if supported.
  *
- * Startup notification IDs are defined in the 
- * [FreeDesktop.Org Startup Notifications standard](http://standards.freedesktop.org/startup-notification-spec/startup-notification-latest.txt).
+ * The returned token may be referred to equivalently as an ‘activation token’
+ * (using Wayland terminology) or a ‘startup sequence ID’ (using X11 terminology).
+ * The two [are interoperable](https://gitlab.freedesktop.org/wayland/wayland-protocols/-/blob/main/staging/xdg-activation/x11-interoperation.rst).
+ *
+ * Activation tokens are defined in the [XDG Activation Protocol](https://wayland.app/protocols/xdg-activation-v1),
+ * and startup notification IDs are defined in the 
+ * [freedesktop.org Startup Notification Protocol](http://standards.freedesktop.org/startup-notification-spec/startup-notification-latest.txt).
+ *
+ * Support for the XDG Activation Protocol was added in GLib 2.76.
  *
  * Returns: (nullable): a startup notification ID for the application, or %NULL if
  *     not supported.

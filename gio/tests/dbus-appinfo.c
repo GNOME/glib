@@ -226,13 +226,24 @@ test_application_before_emit (GApplication *application,
                               GVariant     *platform_data)
 {
   const gchar *startup_id;
+  gsize i;
 
   g_assert (!saw_startup_id);
 
-  if (!g_variant_lookup (platform_data, "desktop-startup-id", "&s", &startup_id))
-    return;
+  const gchar *startup_id_keys[] = {
+    "desktop-startup-id",
+    "activation-token",
+    NULL,
+  };
 
-  g_assert_cmpstr (startup_id, ==, "expected startup id");
+  for (i = 0; startup_id_keys[i] != NULL; i++)
+    {
+      if (!g_variant_lookup (platform_data, startup_id_keys[i], "&s", &startup_id))
+        return;
+
+      g_assert_cmpstr (startup_id, ==, "expected startup id");
+    }
+
   saw_startup_id = TRUE;
 }
 

@@ -304,6 +304,9 @@ app_get_platform_data (void)
   if ((startup_id = g_getenv ("DESKTOP_STARTUP_ID")))
     g_variant_builder_add (&builder, "{sv}", "desktop-startup-id", g_variant_new_string (startup_id));
 
+  if ((startup_id = g_getenv ("XDG_ACTIVATION_TOKEN")))
+    g_variant_builder_add (&builder, "{sv}", "activation-token", g_variant_new_string (startup_id));
+
   return g_variant_builder_end (&builder);
 }
 
