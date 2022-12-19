@@ -509,14 +509,8 @@ array_free (GRealArray     *array,
  * size automatically if necessary.
  *
  * g_array_append_val() is a macro which uses a reference to the value
- * parameter @v.
- * Until version 2.76 this meant that you could not use it with literal
- * values such as `27`. You had to use variables.
- *
- * Starting with version 2.76, if the compiler supports the `typeof` operator
- * you can use it with both variables and literal values.
- * However, it may be required to use the proper suffix (such as `15L`
- * or `55UL`) or to explicitly cast the value to the #GArray elements type.
+ * parameter @v. This means that you cannot use it with literal values
+ * such as "27". You must use variables.
  *
  * Returns: the #GArray
  */

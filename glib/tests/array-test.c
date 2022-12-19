@@ -31,7 +31,6 @@
 #include <string.h>
 #include "glib.h"
 
-
 /* Test data to be passed to any function which calls g_array_new(), providing
  * the parameters for that call. Most #GArray tests should be repeated for all
  * possible values of #ArrayTestData. */
@@ -205,16 +204,8 @@ array_append_val (gconstpointer test_data)
   gint *segment;
 
   garray = g_array_new (config->zero_terminated, config->clear_, sizeof (gint));
-  for (i = 0; i < 10000 - 1; i++)
+  for (i = 0; i < 10000; i++)
     g_array_append_val (garray, i);
-
-#if defined (glib_typeof)
-  g_array_append_val (garray, 10000 - 1);
-#else
-  i = 10000 - 1;
-  g_array_append_val (garray, i);
-#endif
-
   assert_int_array_zero_terminated (config, garray);
 
   for (i = 0; i < 10000; i++)
@@ -227,17 +218,6 @@ array_append_val (gconstpointer test_data)
     g_assert_cmpint (segment[10000], ==, 0);
 
   g_free (segment);
-
-  garray = g_array_new (config->zero_terminated, config->clear_, sizeof (gsize));
-#if defined (glib_typeof)
-  g_array_append_val (garray, (gsize) 123);
-#else
-  i = 123;
-  g_array_append_val (garray, i);
-#endif
-
-  g_assert_cmpuint (g_array_index (garray, gsize, 0), ==, 123);
-  g_array_unref (garray);
 }
 
 /* Check that g_array_prepend_val() works correctly for various #GArray
@@ -250,16 +230,8 @@ array_prepend_val (gconstpointer test_data)
   gint i;
 
   garray = g_array_new (config->zero_terminated, config->clear_, sizeof (gint));
-  for (i = 0; i < 99; i++)
+  for (i = 0; i < 100; i++)
     g_array_prepend_val (garray, i);
-
-#if defined (glib_typeof)
-  g_array_prepend_val (garray, 99);
-#else
-  i = 99;
-  g_array_prepend_val (garray, i);
-#endif
-
   assert_int_array_zero_terminated (config, garray);
 
   for (i = 0; i < 100; i++)
@@ -330,7 +302,7 @@ array_insert_vals (gconstpointer test_data)
   const gint expected_vals2[] = { 0, 2, 3, 1 };
   const gint expected_vals3[] = { 0, 2, 3, 1, 4 };
   const gint expected_vals4[] = { 5, 0, 2, 3, 1, 4 };
-  const gint expected_vals5[] = { 5, 0, 2, 55, 3, 1, 4, 0, 0, 0, 0, 6, 7 };
+  const gint expected_vals5[] = { 5, 0, 2, 3, 1, 4, 0, 0, 0, 0, 6, 7 };
 
   /* Set up an array. */
   garray = g_array_new (config->zero_terminated, config->clear_, sizeof (gint));
@@ -371,14 +343,6 @@ array_insert_vals (gconstpointer test_data)
   g_assert_true (garray == garray_out);
   assert_int_array_equal (garray, expected_vals4, G_N_ELEMENTS (expected_vals4));
   assert_int_array_zero_terminated (config, garray);
-
-  /* Insert an element in the middle */
-#if defined (glib_typeof)
-  g_array_insert_val (garray, garray->len / 2, 55);
-#else
-  i = 55;
-  g_array_insert_val (garray, garray->len / 2, i);
-#endif
 
   /* Insert some elements off the end of the array. The behaviour here depends
    * on whether the array clears entries. */
@@ -769,13 +733,7 @@ test_array_binary_search (void)
 
   /* Testing array of size 1 */
   garray = g_array_sized_new (FALSE, FALSE, sizeof (guint), 1);
-#if defined (glib_typeof)
-  g_array_prepend_val (garray, 1u);
-#else
   i = 1;
-  g_array_prepend_val (garray, i);
-#endif
-
   g_array_append_val (garray, i);
 
   g_assert_true (g_array_binary_search (garray, &i, cmpint, NULL));
