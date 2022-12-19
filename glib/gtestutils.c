@@ -1690,6 +1690,7 @@ void
                           (*argv)[0], "G_TEST_TMPDIR");
               exit (1);
             }
+          _g_unset_cached_tmp_dir ();
 
           /* And clear the traditional environment variables so subprocesses
            * spawned by the code under test can’t trash anything. If a test

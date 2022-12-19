@@ -840,6 +840,19 @@
 	fun:g_set_user_dirs
 }
 
+# _g_unset_cached_tmp_dir() deliberately leaks the previous cached g_get_tmp_dir() values.
+# These will not all be reachable on exit.
+{
+	g_get_tmp_dir
+	Memcheck:Leak
+	match-leak-kinds:definite,reachable
+	fun:malloc
+	...
+	fun:g_get_tmp_dir
+	...
+	fun:g_test_init
+}
+
 # g_get_system_data_dirs() caches a one-time allocation
 {
 	g_get_system_data_dirs
