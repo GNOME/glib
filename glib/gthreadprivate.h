@@ -40,6 +40,55 @@ struct  _GRealThread
 
 /* system thread implementation (gthread-posix.c, gthread-win32.c) */
 
+#if defined(HAVE_FUTEX) || defined(HAVE_FUTEX_TIME64)
+#include <linux/futex.h>
+#include <sys/syscall.h>
+#include <unistd.h>
+
+#ifndef FUTEX_WAIT_PRIVATE
+#define FUTEX_WAIT_PRIVATE FUTEX_WAIT
+#define FUTEX_WAKE_PRIVATE FUTEX_WAKE
+#endif
+
+/* Wrapper macro to call `futex_time64` and/or `futex` with simple
+ * parameters and without returning the return value.
+ *
+ * If the `futex_time64` syscall does not exist (`ENOSYS`), we retry again
+ * with the normal `futex` syscall. This can happen if newer kernel headers
+ * are used than the kernel that is actually running.
+ *
+ * This must not be called with a timeout parameter as that differs
+ * in size between the two syscall variants!
+ */
+#if defined(__NR_futex) && defined(__NR_futex_time64)
+#define g_futex_simple(uaddr, futex_op, ...)                                     \
+  G_STMT_START                                                                   \
+  {                                                                              \
+    int res = syscall (__NR_futex_time64, uaddr, (gsize) futex_op, __VA_ARGS__); \
+    if (res < 0 && errno == ENOSYS)                                              \
+      syscall (__NR_futex, uaddr, (gsize) futex_op, __VA_ARGS__);                \
+  }                                                                              \
+  G_STMT_END
+#elif defined(__NR_futex_time64)
+#define g_futex_simple(uaddr, futex_op, ...)                           \
+  G_STMT_START                                                         \
+  {                                                                    \
+    syscall (__NR_futex_time64, uaddr, (gsize) futex_op, __VA_ARGS__); \
+  }                                                                    \
+  G_STMT_END
+#elif defined(__NR_futex)
+#define g_futex_simple(uaddr, futex_op, ...)                    \
+  G_STMT_START                                                  \
+  {                                                             \
+    syscall (__NR_futex, uaddr, (gsize) futex_op, __VA_ARGS__); \
+  }                                                             \
+  G_STMT_END
+#else /* !defined(__NR_futex) && !defined(__NR_futex_time64) */
+#error "Neither __NR_futex nor __NR_futex_time64 are defined but were found by meson"
+#endif /* defined(__NR_futex) && defined(__NR_futex_time64) */
+
+#endif
+
 /* Platform-specific scheduler settings for a thread */
 typedef struct
 {
