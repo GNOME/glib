@@ -1618,6 +1618,18 @@ safe_closefrom (int lowfd)
 {
   int ret;
 
+#if defined(HAVE_CLOSE_RANGE)
+  /* close_range() is available in Linux since kernel 5.9, and on FreeBSD at
+   * around the same time. It was designed for use in async-signal-safe
+   * situations: https://bugs.python.org/issue38061
+   *
+   * Handle ENOSYS in case it’s supported in libc but not the kernel; if so,
+   * fall back to safe_fdwalk(). */
+  ret = close_range (lowfd, G_MAXUINT, 0);
+  if (ret == 0 || errno != ENOSYS)
+    return ret;
+#endif  /* HAVE_CLOSE_RANGE */
+
 #if defined(__FreeBSD__) || defined(__OpenBSD__) || \
   (defined(__sun__) && defined(F_CLOSEFROM))
   /* Use closefrom function provided by the system if it is known to be
@@ -1649,18 +1661,6 @@ safe_closefrom (int lowfd)
    */
   return fcntl (lowfd, F_CLOSEM);
 #else
-
-#if defined(HAVE_CLOSE_RANGE)
-  /* close_range() is available in Linux since kernel 5.9, and on FreeBSD at
-   * around the same time. It was designed for use in async-signal-safe
-   * situations: https://bugs.python.org/issue38061
-   *
-   * Handle ENOSYS in case it’s supported in libc but not the kernel; if so,
-   * fall back to safe_fdwalk(). */
-  ret = close_range (lowfd, G_MAXUINT, 0);
-  if (ret == 0 || errno != ENOSYS)
-    return ret;
-#endif  /* HAVE_CLOSE_RANGE */
   ret = safe_fdwalk (close_func_with_invalid_fds, GINT_TO_POINTER (lowfd));
 
   return ret;
