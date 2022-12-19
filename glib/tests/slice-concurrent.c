@@ -53,7 +53,7 @@ thread_func (void *arg)
         g_test_message ("%c", 'a' - 1 + td->thread_id);
 
       /* allocate block of random size and randomly fill */
-      bytes = g_random_int_range (0, MAX_BLOCK_SIZE + 1);
+      bytes = g_random_int_range (0, MAX_BLOCK_SIZE) + 1;
       mem = g_slice_alloc (bytes);
 
       for (f = 0; f < bytes; f++)
