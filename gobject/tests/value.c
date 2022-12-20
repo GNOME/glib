@@ -719,6 +719,7 @@ test_value_transform_object (void)
 
           g_value_init (&src, types[s]);
           g_value_set_object (&src, object);
+          g_value_set_object (&src, g_value_get_object (&src));
 
           for (d = 0; d < G_N_ELEMENTS (types); d++)
             {

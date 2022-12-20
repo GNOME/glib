@@ -4502,8 +4502,11 @@ g_value_set_object (GValue   *value,
 	
   g_return_if_fail (G_VALUE_HOLDS_OBJECT (value));
 
+  if G_UNLIKELY (value->data[0].v_pointer == v_object)
+    return;
+
   old = value->data[0].v_pointer;
-  
+
   if (v_object)
     {
       g_return_if_fail (G_IS_OBJECT (v_object));
