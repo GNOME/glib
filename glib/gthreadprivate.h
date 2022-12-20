@@ -41,6 +41,7 @@ struct  _GRealThread
 /* system thread implementation (gthread-posix.c, gthread-win32.c) */
 
 #if defined(HAVE_FUTEX) || defined(HAVE_FUTEX_TIME64)
+#include <errno.h>
 #include <linux/futex.h>
 #include <sys/syscall.h>
 #include <unistd.h>
