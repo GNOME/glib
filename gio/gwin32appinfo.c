@@ -4334,10 +4334,25 @@ expand_macro_single (char macro, file_or_uri *obj)
     case '8':
     case '9':
       /* TODO: handle 'l' and 'd' differently (longname and desktop name) */
-      if (obj->uri)
-        result = g_strdup (obj->uri);
-      else if (obj->file)
-        result = g_strdup (obj->file);
+      if (obj->file)
+        {
+          result = g_strdup (obj->file);
+        }
+      else if (obj->uri)
+        {
+          const char *prefix = "file:///";
+          const size_t prefix_len = strlen (prefix);
+
+          if (g_str_has_prefix (obj->uri, prefix) == 0 && obj->uri[prefix_len] != 0)
+            {
+              GFile *file = g_file_new_for_uri (obj->uri);
+              result = g_file_get_path (file);
+              g_object_unref (file);
+            }
+
+          if (!result)
+            result = g_strdup (obj->uri);
+        }
       break;
     case 'u':
     case 'U':
