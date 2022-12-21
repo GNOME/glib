@@ -21,6 +21,7 @@
 #include "config.h"
 
 #include "glib-private.h"
+#include "gresource.h"
 #include "gsettingsschema-internal.h"
 #include "gsettings.h"
 
@@ -156,6 +157,20 @@ struct _GSettingsSchema
   gint ref_count;
 };
 
+/*
+ * @G_SETTINGS_SCHEMA_SOURCE_FILE: The schema source was created from a path or directory
+ * @G_SETTINGS_SCHEMA_SOURCE_RESOURCE: The schema source was created from a resource
+ * @G_SETTINGS_SCHEMA_SOURCE_BYTES: The schema source was created from #GBytes
+ *
+ * Type of a #GSettingsSchemaSource. It indicates how the source was created.
+ */
+typedef enum
+{
+    G_SETTINGS_SCHEMA_SOURCE_FILE,
+    G_SETTINGS_SCHEMA_SOURCE_RESOURCE,
+    G_SETTINGS_SCHEMA_SOURCE_BYTES
+} GSettingsSchemaSourceType;
+
 /**
  * G_TYPE_SETTINGS_SCHEMA_SOURCE:
  *
@@ -184,7 +199,18 @@ G_DEFINE_BOXED_TYPE (GSettingsSchema, g_settings_schema, g_settings_schema_ref, 
 struct _GSettingsSchemaSource
 {
   GSettingsSchemaSource *parent;
-  gchar *directory;
+
+  GSettingsSchemaSourceType type;
+  union {
+    struct {
+      char *directory;
+    } file;
+    struct {
+      char *path;
+      GResourceLookupFlags lookup_flags;
+    } resource;
+  } type_data;
+
   GvdbTable *table;
   GHashTable **text_tables;
 
@@ -230,7 +256,18 @@ g_settings_schema_source_unref (GSettingsSchemaSource *source)
       if (source->parent)
         g_settings_schema_source_unref (source->parent);
       gvdb_table_free (source->table);
-      g_free (source->directory);
+
+      switch (source->type)
+        {
+        case G_SETTINGS_SCHEMA_SOURCE_FILE:
+          g_free (source->type_data.file.directory);
+          break;
+        case G_SETTINGS_SCHEMA_SOURCE_RESOURCE:
+          g_free(source->type_data.resource.path);
+          break;
+        default:
+          break;
+        }
 
       if (source->text_tables)
         {
@@ -282,6 +319,8 @@ g_settings_schema_source_unref (GSettingsSchemaSource *source)
  * @parent should probably be given as the default schema source, as
  * returned by g_settings_schema_source_get_default().
  *
+ * Returns: (transfer full): a new #GSettingsSchemaSource, or %NULL
+ *
  * Since: 2.32
  **/
 GSettingsSchemaSource *
@@ -291,22 +330,158 @@ g_settings_schema_source_new_from_directory (const gchar            *directory,
                                              GError                **error)
 {
   GSettingsSchemaSource *source;
-  GvdbTable *table;
   gchar *filename;
 
   filename = g_build_filename (directory, "gschemas.compiled", NULL);
-  table = gvdb_table_new (filename, trusted, error);
+  source = g_settings_schema_source_new_from_path (filename, parent, trusted, error);
   g_free (filename);
 
+  return source;
+}
+
+/**
+ * g_settings_schema_source_new_from_path:
+ * @path: (type filename): the filename of a compiled schema source
+ * @parent: (nullable): a #GSettingsSchemaSource, or %NULL
+ * @trusted: %TRUE, if the directory is trusted
+ * @error: a pointer to a #GError pointer set to %NULL, or %NULL
+ *
+ * Almost identical to g_settings_schema_source_new_from_directory() but
+ * takes a path to a compiled schema file directly instead of to the
+ * directory it is in.
+ *
+ * Returns: (transfer full): a new #GSettingsSchemaSource, or %NULL
+ *
+ * Since: 2.78
+ **/
+GSettingsSchemaSource *
+g_settings_schema_source_new_from_path (const gchar            *path,
+                                        GSettingsSchemaSource  *parent,
+                                        gboolean                trusted,
+                                        GError                **error)
+{
+  GSettingsSchemaSource *source;
+  GvdbTable *table;
+
+  g_return_val_if_fail (path != NULL, NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+
+  table = gvdb_table_new (path, trusted, error);
   if (table == NULL)
     return NULL;
 
-  source = g_slice_new (GSettingsSchemaSource);
-  source->directory = g_strdup (directory);
+  source = g_slice_new0 (GSettingsSchemaSource);
   source->parent = parent ? g_settings_schema_source_ref (parent) : NULL;
-  source->text_tables = NULL;
   source->table = table;
   source->ref_count = 1;
+  source->type = G_SETTINGS_SCHEMA_SOURCE_FILE;
+  source->type_data.file.directory = g_path_get_dirname (path);
+
+  return source;
+}
+
+/**
+ * g_settings_schema_source_new_from_bytes:
+ * @bytes: a #GBytes
+ * @parent: (nullable): a #GSettingsSchemaSource, or %NULL
+ * @trusted: %TRUE, if the data is trusted
+ * @error: a pointer to a #GError pointer set to %NULL, or %NULL
+ *
+ * Attempts to create a new schema source corresponding to the contents
+ * of @bytes, which should contain the data as produced by the
+ * [glib-compile-schemas][glib-compile-schemas] tool.
+ *
+ * This should only be used in standalone applications and should not
+ * be used in situations where settings are shared with other applications.
+ *
+ * Note that g_settings_schema_key_get_summary() and
+ * g_settings_schema_key_get_description() will always return %NULL for
+ * a #GSettingsSchemaKey belonging to a #GSettingsSchema created from a
+ * schema source returned by this function.
+ *
+ * See g_settings_schema_source_new_from_directory() for more information.
+ *
+ * Returns: (transfer full) (nullable): a new #GSettingsSchemaSource, or %NULL
+ *
+ * Since: 2.78
+ **/
+GSettingsSchemaSource *
+g_settings_schema_source_new_from_bytes (GBytes                 *bytes,
+                                         GSettingsSchemaSource  *parent,
+                                         gboolean                trusted,
+                                         GError                **error)
+{
+  GSettingsSchemaSource *source;
+  GvdbTable *table;
+
+  g_return_val_if_fail (bytes != NULL, NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+
+  table = gvdb_table_new_from_bytes (bytes, trusted, error);
+  if (table == NULL)
+    return NULL;
+
+  source = g_slice_new0 (GSettingsSchemaSource);
+  source->parent = parent ? g_settings_schema_source_ref (parent) : NULL;
+  source->table = table;
+  source->ref_count = 1;
+  source->type = G_SETTINGS_SCHEMA_SOURCE_BYTES;
+
+  return source;
+}
+
+/**
+ * g_settings_schema_source_new_from_resource:
+ * @path: the resource path
+ * @lookup_flags: A #GResourceLookupFlags
+ * @parent: (nullable): a #GSettingsSchemaSource, or %NULL
+ * @trusted: %TRUE, if the resource is trusted
+ * @error: a pointer to a #GError pointer set to %NULL, or %NULL
+ *
+ * Attempts to create a new schema source corresponding to the contents
+ * of the given resource, which should contain the data as produced by the
+ * [glib-compile-schemas][glib-compile-schemas] tool.
+ *
+ * This should only be used in standalone applications and should not
+ * be used in situations where settings are shared with other applications.
+ *
+ * Note that for g_settings_schema_key_get_summary() and
+ * g_settings_schema_key_get_description() to work, an XML schema resource
+ * $path.xml must be present.
+ *
+ * See g_settings_schema_source_new_from_directory() for more information.
+ *
+ * Returns: (transfer full): a new #GSettingsSchemaSource, or %NULL
+ *
+ * Since: 2.78
+ **/
+GSettingsSchemaSource *
+g_settings_schema_source_new_from_resource (const gchar            *path,
+                                            GResourceLookupFlags   lookup_flags,
+                                            GSettingsSchemaSource  *parent,
+                                            gboolean                trusted,
+                                            GError                **error)
+{
+  GSettingsSchemaSource *source;
+  GBytes *bytes;
+
+  g_return_val_if_fail (path != NULL, NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+
+  bytes = g_resources_lookup_data (path, lookup_flags, error);
+  if (bytes == NULL)
+    return NULL;
+
+  source = g_settings_schema_source_new_from_bytes (bytes, parent, trusted, error);
+  if (source == NULL) {
+    g_bytes_unref (bytes);
+    return NULL;
+  }
+  g_bytes_unref (bytes);
+
+  source->type = G_SETTINGS_SCHEMA_SOURCE_RESOURCE;
+  source->type_data.resource.path = g_strdup (path);
+  source->type_data.resource.lookup_flags = lookup_flags;
 
   return source;
 }
@@ -680,12 +855,35 @@ text (GMarkupParseContext  *context,
 }
 
 static void
-parse_into_text_tables (const gchar *directory,
+parse_into_text_tables (const char  *data,
+                        gsize        size,
                         GHashTable  *summaries,
                         GHashTable  *descriptions)
 {
   GMarkupParser parser = { start_element, end_element, text, NULL, NULL };
   TextTableParseInfo info = { summaries, descriptions, NULL, NULL, NULL, NULL };
+  GMarkupParseContext *context;
+
+  context = g_markup_parse_context_new (&parser, G_MARKUP_TREAT_CDATA_AS_TEXT, &info, NULL);
+  /* Ignore errors here, this is best effort only. */
+  if (g_markup_parse_context_parse (context, data, size, NULL))
+    (void) g_markup_parse_context_end_parse (context, NULL);
+  g_markup_parse_context_free (context);
+
+  /* Clean up dangling stuff in case there was an error. */
+  g_slist_free_full (info.gettext_domain, g_free);
+  g_slist_free_full (info.schema_id, g_free);
+  g_slist_free_full (info.key_name, g_free);
+
+  if (info.string)
+    g_string_free (info.string, TRUE);
+}
+
+static void
+parse_into_text_tables_directory (const gchar *directory,
+                                  GHashTable  *summaries,
+                                  GHashTable  *descriptions)
+{
   const gchar *basename;
   GDir *dir;
 
@@ -699,29 +897,7 @@ parse_into_text_tables (const gchar *directory,
       filename = g_build_filename (directory, basename, NULL);
       if (g_file_get_contents (filename, &contents, &size, NULL))
         {
-          GMarkupParseContext *context;
-
-          context = g_markup_parse_context_new (&parser, G_MARKUP_TREAT_CDATA_AS_TEXT, &info, NULL);
-          /* Ignore errors here, this is best effort only. */
-          if (g_markup_parse_context_parse (context, contents, size, NULL))
-            (void) g_markup_parse_context_end_parse (context, NULL);
-          g_markup_parse_context_free (context);
-
-          /* Clean up dangling stuff in case there was an error. */
-          g_slist_free_full (info.gettext_domain, g_free);
-          g_slist_free_full (info.schema_id, g_free);
-          g_slist_free_full (info.key_name, g_free);
-
-          info.gettext_domain = NULL;
-          info.schema_id = NULL;
-          info.key_name = NULL;
-
-          if (info.string)
-            {
-              g_string_free (info.string, TRUE);
-              info.string = NULL;
-            }
-
+          parse_into_text_tables (contents, size, summaries, descriptions);
           g_free (contents);
         }
 
@@ -729,6 +905,68 @@ parse_into_text_tables (const gchar *directory,
     }
   
   g_dir_close (dir);
+}
+
+static void
+parse_into_text_tables_resource (const char           *path,
+                                 GResourceLookupFlags  lookup_flags,
+                                 GHashTable           *summaries,
+                                 GHashTable           *descriptions)
+{
+  char *xml_path;
+  GError *error = NULL;
+  GBytes *bytes;
+  const char *data;
+  gsize size, i;
+  char **resources;
+
+  /* First try loading the XML schema data from @path + '.xml'. */
+  xml_path = g_strdup_printf ("%s.xml", path);
+  bytes = g_resources_lookup_data (xml_path, lookup_flags, &error);
+  g_free (xml_path);
+  if (bytes)
+    {
+      data = g_bytes_get_data (bytes, &size);
+      parse_into_text_tables (data, size, summaries, descriptions);
+      g_bytes_unref (bytes);
+      return;
+    }
+
+  if (!g_error_matches (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND))
+    {
+      g_error_free (error);
+      return;
+    }
+  g_error_free (error);
+
+  /* If there is no singular @path + '.xml' resource, try to load all
+   * resources from under the @path + '.xml/' path.
+   */
+  xml_path = g_strdup_printf ("%s.xml/", path);
+  resources = g_resources_enumerate_children (xml_path, lookup_flags, NULL);
+  if (!resources)
+    {
+      g_free (xml_path);
+      return;
+    }
+
+  for (i = 0; resources[i] != NULL; i++)
+    {
+      char *child_path;
+
+      child_path = g_strconcat (xml_path, resources[i], NULL);
+      bytes = g_resources_lookup_data (child_path, lookup_flags, NULL);
+      g_free (child_path);
+      if (!bytes)
+        continue;
+
+      data = g_bytes_get_data (bytes, &size);
+      parse_into_text_tables (data, size, summaries, descriptions);
+      g_bytes_unref (bytes);
+    }
+
+  g_free (xml_path);
+  g_strfreev (resources);
 }
 
 static GHashTable **
@@ -742,8 +980,19 @@ g_settings_schema_source_get_text_tables (GSettingsSchemaSource *source)
       text_tables[0] = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, (GDestroyNotify) g_hash_table_unref);
       text_tables[1] = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, (GDestroyNotify) g_hash_table_unref);
 
-      if (source->directory)
-        parse_into_text_tables (source->directory, text_tables[0], text_tables[1]);
+      if (source->type == G_SETTINGS_SCHEMA_SOURCE_FILE)
+        {
+          parse_into_text_tables_directory (source->type_data.file.directory, text_tables[0], text_tables[1]);
+        }
+      else if (source->type == G_SETTINGS_SCHEMA_SOURCE_RESOURCE)
+        {
+          parse_into_text_tables_resource (source->type_data.resource.path, source->type_data.resource.lookup_flags,
+                                           text_tables[0], text_tables[1]);
+        }
+      else if (source->type == G_SETTINGS_SCHEMA_SOURCE_BYTES)
+        {
+          /* Nothing to do in this case. */
+        }
 
       g_once_init_leave_pointer (&source->text_tables, text_tables);
     }
@@ -1704,6 +1953,12 @@ g_settings_schema_key_get_name (GSettingsSchemaKey *key)
  * If no summary has been provided in the schema for @key, returns
  * %NULL.
  *
+ * This function only works on keys belonging to a #GSettingsSchema
+ * created from a #GSettingsSchemaSource created with
+ * g_settings_schema_source_new_from_directory() or
+ * g_settings_schema_source_new_from_path(), and requires the source
+ * XML file to be present in the same directory as the compiled schema.
+ *
  * The summary is a short description of the purpose of the key; usually
  * one short sentence.  Summaries can be translated and the value
  * returned from this function is is the current locale.
@@ -1737,6 +1992,12 @@ g_settings_schema_key_get_summary (GSettingsSchemaKey *key)
  *
  * If no description has been provided in the schema for @key, returns
  * %NULL.
+ *
+ * This function only works on keys belonging to a #GSettingsSchema
+ * created from a #GSettingsSchemaSource created with
+ * g_settings_schema_source_new_from_directory() or
+ * g_settings_schema_source_new_from_path(), and requires the source
+ * XML file to be present in the same directory as the compiled schema.
  *
  * The description can be one sentence to several paragraphs in length.
  * Paragraphs are delimited with a double newline.  Descriptions can be

@@ -23,6 +23,7 @@
 
 #include <glib-object.h>
 #include <gio/gio-visibility.h>
+#include <gio/gioenums.h>
 
 G_BEGIN_DECLS
 
@@ -43,6 +44,25 @@ void                    g_settings_schema_source_unref                  (GSettin
 
 GIO_AVAILABLE_IN_2_32
 GSettingsSchemaSource * g_settings_schema_source_new_from_directory     (const gchar            *directory,
+                                                                         GSettingsSchemaSource  *parent,
+                                                                         gboolean                trusted,
+                                                                         GError                **error);
+
+GIO_AVAILABLE_IN_2_78
+GSettingsSchemaSource * g_settings_schema_source_new_from_path          (const gchar            *path,
+                                                                         GSettingsSchemaSource  *parent,
+                                                                         gboolean                trusted,
+                                                                         GError                **error);
+
+GIO_AVAILABLE_IN_2_78
+GSettingsSchemaSource * g_settings_schema_source_new_from_bytes         (GBytes                 *bytes,
+                                                                         GSettingsSchemaSource  *parent,
+                                                                         gboolean                trusted,
+                                                                         GError                **error);
+
+GIO_AVAILABLE_IN_2_78
+GSettingsSchemaSource * g_settings_schema_source_new_from_resource      (const gchar            *path,
+                                                                         GResourceLookupFlags   lookup_flags,
                                                                          GSettingsSchemaSource  *parent,
                                                                          gboolean                trusted,
                                                                          GError                **error);

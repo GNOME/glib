@@ -2,6 +2,13 @@
   <schema id="org.gtk.schemasourcecheck">
     <key name="enabled" type="b">
       <default>true</default>
+      <summary>Boolean setting test</summary>
+      <description>
+        Setting to test boolean settings
+      </description>
+    </key>
+    <key name="nosummary" type="b">
+      <default>true</default>
     </key>
     <child name="child" schema="org.gtk.schemasourcecheck" />
   </schema>

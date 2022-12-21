@@ -1,0 +1,14 @@
+<gresources>
+    <gresource>
+        <file>schema-source-corrupt/gschemas.compiled</file>
+    </gresource>
+    <gresource>
+        <file>schema-source-empty/gschemas.compiled</file>
+    </gresource>
+    <gresource>
+        <file>schema-source/gschemas.compiled</file>
+    </gresource>
+    <gresource>
+        <file alias="schema-source/gschemas.compiled.xml">schema-source/org.gtk.schemasourcecheck.gschema.xml</file>
+    </gresource>
+</gresources>

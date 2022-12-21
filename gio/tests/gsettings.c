@@ -2811,7 +2811,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 static void
-test_schema_source (void)
+test_schema_source_directory (void)
 {
   GSettingsSchemaSource *parent;
   GSettingsSchemaSource *source;
@@ -2907,6 +2907,325 @@ test_schema_source (void)
   g_settings_schema_unref (schema);
 
   g_settings_schema_source_unref (source);
+  g_object_unref (backend);
+}
+
+static void
+test_schema_source_path (void)
+{
+  GSettingsSchemaSource *parent;
+  GSettingsSchemaSource *source;
+  GSettingsBackend *backend;
+  GSettingsSchema *schema;
+  GError *error = NULL;
+  GSettings *settings, *child;
+  gboolean enabled;
+
+  backend = g_settings_backend_get_default ();
+
+  /* make sure it fails properly */
+  parent = g_settings_schema_source_get_default ();
+  source = g_settings_schema_source_new_from_path ("/path/that/does/not/exist/gschemas.compiled", parent,  TRUE, &error);
+  g_assert_null (source);
+  g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_NOENT);
+  g_clear_error (&error);
+
+  /* Test error handling of corrupt compiled files. */
+  source = g_settings_schema_source_new_from_path ("schema-source-corrupt/gschemas.compiled", parent, TRUE, &error);
+  g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_INVAL);
+  g_assert_null (source);
+  g_clear_error (&error);
+
+  /* Test error handling of empty compiled files. */
+  source = g_settings_schema_source_new_from_path ("schema-source-empty/gschemas.compiled", parent, TRUE, &error);
+  g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_INVAL);
+  g_assert_null (source);
+  g_clear_error (&error);
+
+  /* create a source with the parent */
+  source = g_settings_schema_source_new_from_path ("schema-source/gschemas.compiled", parent, TRUE, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (source);
+
+  /* check recursive lookups are working */
+  schema = g_settings_schema_source_lookup (source, "org.gtk.test", TRUE);
+  g_assert_nonnull (schema);
+  g_settings_schema_unref (schema);
+
+  /* check recursive lookups for non-existent schemas */
+  schema = g_settings_schema_source_lookup (source, "org.gtk.doesnotexist", TRUE);
+  g_assert_null (schema);
+
+  /* check non-recursive for schema that only exists in lower layers */
+  schema = g_settings_schema_source_lookup (source, "org.gtk.test", FALSE);
+  g_assert_null (schema);
+
+  /* check non-recursive lookup for non-existent */
+  schema = g_settings_schema_source_lookup (source, "org.gtk.doesnotexist", FALSE);
+  g_assert_null (schema);
+
+  /* check non-recursive for schema that exists in toplevel */
+  schema = g_settings_schema_source_lookup (source, "org.gtk.schemasourcecheck", FALSE);
+  g_assert_nonnull (schema);
+  g_settings_schema_unref (schema);
+
+  /* check recursive for schema that exists in toplevel */
+  schema = g_settings_schema_source_lookup (source, "org.gtk.schemasourcecheck", TRUE);
+  g_assert_nonnull (schema);
+
+  /* try to use it for something */
+  settings = g_settings_new_full (schema, backend, "/test/");
+  g_settings_schema_unref (schema);
+  enabled = FALSE;
+  g_settings_get (settings, "enabled", "b", &enabled);
+  g_assert_true (enabled);
+
+  /* Check that child schemas are resolved from the correct schema source, see glib#1884 */
+  child = g_settings_get_child (settings, "child");
+  g_settings_get (settings, "enabled", "b", &enabled);
+
+  g_object_unref (child);
+  g_object_unref (settings);
+  g_settings_schema_source_unref (source);
+
+  /* try again, but with no parent */
+  source = g_settings_schema_source_new_from_path ("schema-source/gschemas.compiled", NULL, FALSE, NULL);
+  g_assert_nonnull (source);
+
+  /* should not find it this time, even if recursive... */
+  schema = g_settings_schema_source_lookup (source, "org.gtk.test", FALSE);
+  g_assert_null (schema);
+  schema = g_settings_schema_source_lookup (source, "org.gtk.test", TRUE);
+  g_assert_null (schema);
+
+  /* should still find our own... */
+  schema = g_settings_schema_source_lookup (source, "org.gtk.schemasourcecheck", TRUE);
+  g_assert_nonnull (schema);
+  g_settings_schema_unref (schema);
+  schema = g_settings_schema_source_lookup (source, "org.gtk.schemasourcecheck", FALSE);
+  g_assert_nonnull (schema);
+  g_settings_schema_unref (schema);
+
+  g_settings_schema_source_unref (source);
+  g_object_unref (backend);
+}
+
+static void
+test_schema_source_bytes (void)
+{
+  GSettingsSchemaSource *parent;
+  GSettingsSchemaSource *source;
+  GSettingsBackend *backend;
+  GSettingsSchema *schema;
+  GError *error = NULL;
+  GSettings *settings, *child;
+  gboolean enabled;
+  GFile *corrupt_schema_file, *empty_schema_file, *normal_schema_file;
+  GBytes *corrupt_schema_bytes, *empty_schema_bytes, *normal_schema_bytes;
+
+  backend = g_settings_backend_get_default ();
+
+  parent = g_settings_schema_source_get_default ();
+
+  /* Read the schemas into bytes */
+  corrupt_schema_file = g_file_new_for_path("schema-source-corrupt/gschemas.compiled");
+  corrupt_schema_bytes = g_file_load_bytes(corrupt_schema_file, NULL, NULL, NULL);
+  empty_schema_file = g_file_new_for_path("schema-source-empty/gschemas.compiled");
+  empty_schema_bytes = g_file_load_bytes(empty_schema_file, NULL, NULL, NULL);
+  normal_schema_file = g_file_new_for_path("schema-source/gschemas.compiled");
+  normal_schema_bytes = g_file_load_bytes(normal_schema_file, NULL, NULL, NULL);
+
+  /* Test error handling of corrupt compiled files. */
+  source = g_settings_schema_source_new_from_bytes (corrupt_schema_bytes, parent, TRUE, &error);
+  g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_INVAL);
+  g_assert_null (source);
+  g_clear_error (&error);
+
+  /* Test error handling of empty compiled files. */
+  source = g_settings_schema_source_new_from_bytes (empty_schema_bytes, parent, TRUE, &error);
+  g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_INVAL);
+  g_assert_null (source);
+  g_clear_error (&error);
+
+  /* create a source with the parent */
+  source = g_settings_schema_source_new_from_bytes (normal_schema_bytes, parent, TRUE, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (source);
+
+  /* check recursive lookups are working */
+  schema = g_settings_schema_source_lookup (source, "org.gtk.test", TRUE);
+  g_assert_nonnull (schema);
+  g_settings_schema_unref (schema);
+
+  /* check recursive lookups for non-existent schemas */
+  schema = g_settings_schema_source_lookup (source, "org.gtk.doesnotexist", TRUE);
+  g_assert_null (schema);
+
+  /* check non-recursive for schema that only exists in lower layers */
+  schema = g_settings_schema_source_lookup (source, "org.gtk.test", FALSE);
+  g_assert_null (schema);
+
+  /* check non-recursive lookup for non-existent */
+  schema = g_settings_schema_source_lookup (source, "org.gtk.doesnotexist", FALSE);
+  g_assert_null (schema);
+
+  /* check non-recursive for schema that exists in toplevel */
+  schema = g_settings_schema_source_lookup (source, "org.gtk.schemasourcecheck", FALSE);
+  g_assert_nonnull (schema);
+  g_settings_schema_unref (schema);
+
+  /* check recursive for schema that exists in toplevel */
+  schema = g_settings_schema_source_lookup (source, "org.gtk.schemasourcecheck", TRUE);
+  g_assert_nonnull (schema);
+
+  /* try to use it for something */
+  settings = g_settings_new_full (schema, backend, "/test/");
+  g_settings_schema_unref (schema);
+  enabled = FALSE;
+  g_settings_get (settings, "enabled", "b", &enabled);
+  g_assert_true (enabled);
+
+  /* Check that child schemas are resolved from the correct schema source, see glib#1884 */
+  child = g_settings_get_child (settings, "child");
+  g_settings_get (settings, "enabled", "b", &enabled);
+
+  g_object_unref (child);
+  g_object_unref (settings);
+  g_settings_schema_source_unref (source);
+  g_bytes_unref(empty_schema_bytes);
+  g_object_unref(empty_schema_file);
+  g_bytes_unref(corrupt_schema_bytes);
+  g_object_unref(corrupt_schema_file);
+
+  /* try again, but with no parent */
+  source = g_settings_schema_source_new_from_bytes (normal_schema_bytes, NULL, FALSE, NULL);
+  g_assert_nonnull (source);
+
+  /* should not find it this time, even if recursive... */
+  schema = g_settings_schema_source_lookup (source, "org.gtk.test", FALSE);
+  g_assert_null (schema);
+  schema = g_settings_schema_source_lookup (source, "org.gtk.test", TRUE);
+  g_assert_null (schema);
+
+  /* should still find our own... */
+  schema = g_settings_schema_source_lookup (source, "org.gtk.schemasourcecheck", TRUE);
+  g_assert_nonnull (schema);
+  g_settings_schema_unref (schema);
+  schema = g_settings_schema_source_lookup (source, "org.gtk.schemasourcecheck", FALSE);
+  g_assert_nonnull (schema);
+  g_settings_schema_unref (schema);
+
+  g_settings_schema_source_unref (source);
+  g_bytes_unref(normal_schema_bytes);
+  g_object_unref(normal_schema_file);
+
+  g_object_unref (backend);
+}
+
+static void
+test_schema_source_resource (void)
+{
+  GSettingsSchemaSource *parent;
+  GSettingsSchemaSource *source;
+  GSettingsBackend *backend;
+  GSettingsSchema *schema;
+  GSettingsSchemaKey *key;
+  GError *error = NULL;
+  GSettings *settings, *child;
+  gboolean enabled;
+
+  backend = g_settings_backend_get_default ();
+
+  parent = g_settings_schema_source_get_default ();
+
+  /* Test error handling of corrupt compiled files. */
+  source = g_settings_schema_source_new_from_resource ("/schema-source-corrupt/gschemas.compiled", G_RESOURCE_LOOKUP_FLAGS_NONE, parent, TRUE, &error);
+  g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_INVAL);
+  g_assert_null (source);
+  g_clear_error (&error);
+
+  /* Test error handling of empty compiled files. */
+  source = g_settings_schema_source_new_from_resource ("/schema-source-empty/gschemas.compiled", G_RESOURCE_LOOKUP_FLAGS_NONE, parent, TRUE, &error);
+  g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_INVAL);
+  g_assert_null (source);
+  g_clear_error (&error);
+
+  /* create a source with the parent */
+  source = g_settings_schema_source_new_from_resource ("/schema-source/gschemas.compiled", G_RESOURCE_LOOKUP_FLAGS_NONE, parent, TRUE, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (source);
+
+  /* check recursive lookups are working */
+  schema = g_settings_schema_source_lookup (source, "org.gtk.test", TRUE);
+  g_assert_nonnull (schema);
+  g_settings_schema_unref (schema);
+
+  /* check recursive lookups for non-existent schemas */
+  schema = g_settings_schema_source_lookup (source, "org.gtk.doesnotexist", TRUE);
+  g_assert_null (schema);
+
+  /* check non-recursive for schema that only exists in lower layers */
+  schema = g_settings_schema_source_lookup (source, "org.gtk.test", FALSE);
+  g_assert_null (schema);
+
+  /* check non-recursive lookup for non-existent */
+  schema = g_settings_schema_source_lookup (source, "org.gtk.doesnotexist", FALSE);
+  g_assert_null (schema);
+
+  /* check non-recursive for schema that exists in toplevel */
+  schema = g_settings_schema_source_lookup (source, "org.gtk.schemasourcecheck", FALSE);
+  g_assert_nonnull (schema);
+  g_settings_schema_unref (schema);
+
+  /* check recursive for schema that exists in toplevel */
+  schema = g_settings_schema_source_lookup (source, "org.gtk.schemasourcecheck", TRUE);
+  g_assert_nonnull (schema);
+
+  /* check summary and description lookup */
+  key = g_settings_schema_get_key (schema, "enabled");
+  g_assert_cmpstr (g_settings_schema_key_get_summary (key), ==, "Boolean setting test");
+  g_assert_cmpstr (g_settings_schema_key_get_description (key), ==, "Setting to test boolean settings");
+  g_settings_schema_key_unref (key);
+  key = g_settings_schema_get_key (schema, "nosummary");
+  g_assert_null (g_settings_schema_key_get_summary (key));
+  g_assert_null (g_settings_schema_key_get_description (key));
+  g_settings_schema_key_unref (key);
+
+  /* try to use it for something */
+  settings = g_settings_new_full (schema, backend, "/test/");
+  g_settings_schema_unref (schema);
+  enabled = FALSE;
+  g_settings_get (settings, "enabled", "b", &enabled);
+  g_assert_true (enabled);
+
+  /* Check that child schemas are resolved from the correct schema source, see glib#1884 */
+  child = g_settings_get_child (settings, "child");
+  g_settings_get (settings, "enabled", "b", &enabled);
+
+  g_object_unref (child);
+  g_object_unref (settings);
+  g_settings_schema_source_unref (source);
+
+  /* try again, but with no parent */
+  source = g_settings_schema_source_new_from_resource ("/schema-source/gschemas.compiled", G_RESOURCE_LOOKUP_FLAGS_NONE, NULL, TRUE, &error);
+  g_assert_nonnull (source);
+
+  /* should not find it this time, even if recursive... */
+  schema = g_settings_schema_source_lookup (source, "org.gtk.test", FALSE);
+  g_assert_null (schema);
+  schema = g_settings_schema_source_lookup (source, "org.gtk.test", TRUE);
+  g_assert_null (schema);
+
+  /* should still find our own... */
+  schema = g_settings_schema_source_lookup (source, "org.gtk.schemasourcecheck", TRUE);
+  g_assert_nonnull (schema);
+  g_settings_schema_unref (schema);
+  schema = g_settings_schema_source_lookup (source, "org.gtk.schemasourcecheck", FALSE);
+  g_assert_nonnull (schema);
+  g_settings_schema_unref (schema);
+
+  g_settings_schema_source_unref (source);
+
   g_object_unref (backend);
 }
 
@@ -3269,6 +3588,7 @@ main (int argc, char *argv[])
   gchar *schema_text;
   gchar *override_text;
   gchar *enums;
+  GResource *loaded_resource;
   gint result;
   const KeyfileTestData keyfile_test_data_explicit_path = { "/tests/", "root", "tests", "/" };
   const KeyfileTestData keyfile_test_data_empty_path = { "/", "root", "root", "/" };
@@ -3296,6 +3616,7 @@ main (int argc, char *argv[])
       GError *local_error = NULL;
       char *subprocess_stdout = NULL;
 
+      gboolean rv;
       /* A GVDB header is 6 guint32s, and requires a magic number in the first
        * two guint32s. A set of zero bytes of a greater length is considered
        * corrupt. */
@@ -3329,6 +3650,10 @@ main (int argc, char *argv[])
       g_assert_true (g_file_set_contents ("org.gtk.test.gschema.override", override_text, -1, NULL));
       g_free (override_text);
 
+      g_assert_true (g_file_get_contents (SRCDIR "/schema_from_resource_test.gresource.xml", &override_text, NULL, NULL));
+      g_assert_true (g_file_set_contents ("schema_from_resource_test.gresource.xml", override_text, -1, NULL));
+      g_free (override_text);
+
       g_remove ("gschemas.compiled");
       /* #GLIB_COMPILE_SCHEMAS is defined in meson.build */
       g_assert_true (g_spawn_command_line_sync (GLIB_COMPILE_SCHEMAS " --targetdir=. "
@@ -3342,6 +3667,7 @@ main (int argc, char *argv[])
       g_assert_cmpint (result, ==, 0);
 
       g_remove ("schema-source/gschemas.compiled");
+      g_remove ("schema-source/org.gtk.schemasourcecheck.gschema.xml");
       g_mkdir ("schema-source", 0777);
       g_assert_true (g_spawn_command_line_sync (GLIB_COMPILE_SCHEMAS " --targetdir=schema-source "
                                                 "--schema-file=" SRCDIR "/org.gtk.schemasourcecheck.gschema.xml",
@@ -3350,6 +3676,10 @@ main (int argc, char *argv[])
         g_test_message ("%s", subprocess_stdout);
       g_clear_pointer (&subprocess_stdout, g_free);
       g_assert_cmpint (result, ==, 0);
+
+      g_assert_true (g_file_get_contents (SRCDIR "/org.gtk.schemasourcecheck.gschema.xml", &override_text, NULL, NULL));
+      g_assert_true (g_file_set_contents ("schema-source/org.gtk.schemasourcecheck.gschema.xml", override_text, -1, NULL));
+      g_free (override_text);
 
       g_remove ("schema-source-corrupt/gschemas.compiled");
       g_mkdir ("schema-source-corrupt", 0777);
@@ -3365,6 +3695,23 @@ main (int argc, char *argv[])
                            "", 0,
                            &local_error);
       g_assert_no_error (local_error);
+
+      /* #GLIB_COMPILE_RESOURCES is defined in meson.build */
+      rv = g_spawn_command_line_sync (GLIB_COMPILE_RESOURCES
+                                      " schema_from_resource_test.gresource.xml "
+                                      "--target=schema_from_resource_test.gresource",
+                                      NULL, NULL, &result, &local_error);
+      g_assert_no_error (local_error);
+      g_assert_true (rv);
+      rv = g_spawn_check_wait_status (result, &local_error);
+      g_assert_no_error (local_error);
+      g_assert_true (rv);
+      g_remove ("schema_from_resource_test.gresource.xml");
+
+      loaded_resource = g_resource_load ("schema_from_resource_test.gresource", &local_error);
+      g_remove ("schema_from_resource_test.gresource");
+      g_assert_no_error (local_error);
+      g_resources_register (loaded_resource);
    }
 
   g_test_add_func ("/gsettings/basic", test_basic);
@@ -3437,7 +3784,10 @@ main (int argc, char *argv[])
   g_test_add_func ("/gsettings/list-schemas", test_list_schemas);
   g_test_add_func ("/gsettings/mapped", test_get_mapped);
   g_test_add_func ("/gsettings/get-range", test_get_range);
-  g_test_add_func ("/gsettings/schema-source", test_schema_source);
+  g_test_add_func ("/gsettings/schema-source/directory", test_schema_source_directory);
+  g_test_add_func ("/gsettings/schema-source/path", test_schema_source_path);
+  g_test_add_func ("/gsettings/schema-source/bytes", test_schema_source_bytes);
+  g_test_add_func ("/gsettings/schema-source/resource", test_schema_source_resource);
   g_test_add_func ("/gsettings/schema-list-keys", test_schema_list_keys);
   g_test_add_func ("/gsettings/actions", test_actions);
   g_test_add_func ("/gsettings/null-backend", test_null_backend);
