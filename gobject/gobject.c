@@ -4396,18 +4396,15 @@ g_value_object_init (GValue *value)
 static void
 g_value_object_free_value (GValue *value)
 {
-  if (value->data[0].v_pointer)
-    g_object_unref (value->data[0].v_pointer);
+  g_clear_object ((GObject**) &value->data[0].v_pointer);
 }
 
 static void
 g_value_object_copy_value (const GValue *src_value,
 			   GValue	*dest_value)
 {
-  if (src_value->data[0].v_pointer)
-    dest_value->data[0].v_pointer = g_object_ref (src_value->data[0].v_pointer);
-  else
-    dest_value->data[0].v_pointer = NULL;
+  g_set_object ((GObject**) &dest_value->data[0].v_pointer,
+                src_value->data[0].v_pointer);
 }
 
 static void
@@ -4499,24 +4496,23 @@ g_value_set_object (GValue   *value,
 		    gpointer  v_object)
 {
   GObject *old;
-	
+
   g_return_if_fail (G_VALUE_HOLDS_OBJECT (value));
 
-  old = value->data[0].v_pointer;
-  
+  if G_UNLIKELY (value->data[0].v_pointer == v_object)
+    return;
+
+  old = g_steal_pointer (&value->data[0].v_pointer);
+
   if (v_object)
     {
       g_return_if_fail (G_IS_OBJECT (v_object));
       g_return_if_fail (g_value_type_compatible (G_OBJECT_TYPE (v_object), G_VALUE_TYPE (value)));
 
-      value->data[0].v_pointer = v_object;
-      g_object_ref (value->data[0].v_pointer);
+      value->data[0].v_pointer = g_object_ref (v_object);
     }
-  else
-    value->data[0].v_pointer = NULL;
-  
-  if (old)
-    g_object_unref (old);
+
+  g_clear_object (&old);
 }
 
 /**
@@ -4556,18 +4552,14 @@ g_value_take_object (GValue  *value,
 {
   g_return_if_fail (G_VALUE_HOLDS_OBJECT (value));
 
-  if (value->data[0].v_pointer)
-    {
-      g_object_unref (value->data[0].v_pointer);
-      value->data[0].v_pointer = NULL;
-    }
+  g_clear_object ((GObject **) &value->data[0].v_pointer);
 
   if (v_object)
     {
       g_return_if_fail (G_IS_OBJECT (v_object));
       g_return_if_fail (g_value_type_compatible (G_OBJECT_TYPE (v_object), G_VALUE_TYPE (value)));
 
-      value->data[0].v_pointer = v_object; /* we take over the reference count */
+      value->data[0].v_pointer = g_steal_pointer (&v_object);
     }
 }
 
