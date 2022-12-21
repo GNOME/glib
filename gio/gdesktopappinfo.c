@@ -456,6 +456,14 @@ const gchar desktop_key_match_category[N_DESKTOP_KEYS] = {
   [DESKTOP_KEY_Comment]          = 6
 };
 
+typedef enum {
+  /* Lower numbers have higher priority.
+   * Prefix match should put before substring match.
+   */
+  MATCH_TYPE_PREFIX = 1,
+  MATCH_TYPE_SUBSTRING = 2
+} MatchType;
+
 /* Common prefix commands to ignore from Exec= lines */
 const char * const exec_key_match_blocklist[] = {
   "bash",
@@ -537,6 +545,7 @@ struct search_result
 {
   const gchar *app_name;
   gint         category;
+  gint         match_type;
 };
 
 static struct search_result *static_token_results;
@@ -558,13 +567,20 @@ compare_results (gconstpointer a,
   const struct search_result *rb = b;
 
   if (ra->app_name < rb->app_name)
-    return -1;
-
+    {
+      return -1;
+    }
   else if (ra->app_name > rb->app_name)
-    return 1;
-
+    {
+      return 1;
+    }
   else
-    return ra->category - rb->category;
+    {
+      if (ra->category == rb->category)
+        return ra->match_type - rb->match_type;
+
+      return ra->category - rb->category;
+    }
 }
 
 static gint
@@ -574,12 +590,19 @@ compare_categories (gconstpointer a,
   const struct search_result *ra = a;
   const struct search_result *rb = b;
 
+  /* Also compare match types so we can put prefix match in a group while
+   * substring match in another group.
+   */
+  if (ra->category == rb->category)
+    return ra->match_type - rb->match_type;
+
   return ra->category - rb->category;
 }
 
 static void
 add_token_result (const gchar *app_name,
-                  guint16      category)
+                  guint16      category,
+                  guint16      match_type)
 {
   if G_UNLIKELY (static_token_results_size == static_token_results_allocated)
     {
@@ -589,6 +612,7 @@ add_token_result (const gchar *app_name,
 
   static_token_results[static_token_results_size].app_name = app_name;
   static_token_results[static_token_results_size].category = category;
+  static_token_results[static_token_results_size].match_type = match_type;
   static_token_results_size++;
 }
 
@@ -672,10 +696,22 @@ merge_token_results (gboolean first)
                *
                * Category should be the worse of the two (ie:
                * numerically larger).
+               *
+               * Match type should also be the worse, so if an app has two
+               * prefix matches it will has higher priority than one prefix
+               * matches and one substring matches, for example, LibreOffice
+               * Writer should be higher priority than LibreOffice Draw with
+               * `lib w`.
+               *
+               * (This ignores the difference between partly prefix matches and
+               * all substring matches, however most time we just focus on exact
+               * prefix matches, who cares the 10th-20th search results?)
                */
               static_search_results[j].app_name = static_search_results[k].app_name;
               static_search_results[j].category = MAX (static_search_results[k].category,
                                                        static_token_results[i].category);
+              static_search_results[j].match_type = MAX (static_search_results[k].match_type,
+                                                         static_token_results[i].match_type);
               j++;
             }
         }
@@ -1224,13 +1260,24 @@ desktop_file_dir_unindexed_search (DesktopFileDir  *dir,
   while (g_hash_table_iter_next (&iter, &key, &value))
     {
       MemoryIndexEntry *mie = value;
+      const char *p;
+      MatchType match_type;
 
-      if (strstr (key, search_token) == NULL)
+      /* strstr(haystack, needle) returns haystack if needle is empty, so if
+       * needle is not empty and return value equals to haystack means a prefix
+       * match.
+       */
+      p = strstr (key, search_token);
+      if (p == NULL)
         continue;
+      else if (p == key && search_token != NULL && *search_token != '\0')
+        match_type = MATCH_TYPE_PREFIX;
+      else
+        match_type = MATCH_TYPE_SUBSTRING;
 
       while (mie)
         {
-          add_token_result (mie->app_name, mie->match_category);
+          add_token_result (mie->app_name, mie->match_category, match_type);
           mie = mie->next;
         }
     }
@@ -4776,9 +4823,10 @@ g_desktop_app_info_search (const gchar *search_string)
 {
   gchar **search_tokens;
   gint last_category = -1;
+  gint last_match_type = -1;
   gchar ***results;
-  gint n_categories = 0;
-  gint start_of_category;
+  gint n_groups = 0;
+  gint start_of_group;
   gint i, j;
   guint k;
 
@@ -4800,36 +4848,41 @@ g_desktop_app_info_search (const gchar *search_string)
 
   sort_total_search_results ();
 
-  /* Count the total number of unique categories */
+  /* Count the total number of unique categories and match types */
   for (i = 0; i < static_total_results_size; i++)
-    if (static_total_results[i].category != last_category)
+    if (static_total_results[i].category != last_category ||
+        static_total_results[i].match_type != last_match_type)
       {
         last_category = static_total_results[i].category;
-        n_categories++;
+        last_match_type = static_total_results[i].match_type;
+        n_groups++;
       }
 
-  results = g_new (gchar **, n_categories + 1);
+  results = g_new (gchar **, n_groups + 1);
 
   /* Start loading into the results list */
-  start_of_category = 0;
-  for (i = 0; i < n_categories; i++)
+  start_of_group = 0;
+  for (i = 0; i < n_groups; i++)
     {
-      gint n_items_in_category = 0;
+      gint n_items_in_group = 0;
       gint this_category;
+      gint this_match_type;
       gint j;
 
-      this_category = static_total_results[start_of_category].category;
+      this_category = static_total_results[start_of_group].category;
+      this_match_type = static_total_results[start_of_group].match_type;
 
-      while (start_of_category + n_items_in_category < static_total_results_size &&
-             static_total_results[start_of_category + n_items_in_category].category == this_category)
-        n_items_in_category++;
+      while (start_of_group + n_items_in_group < static_total_results_size &&
+             static_total_results[start_of_group + n_items_in_group].category == this_category &&
+             static_total_results[start_of_group + n_items_in_group].match_type == this_match_type)
+        n_items_in_group++;
 
-      results[i] = g_new (gchar *, n_items_in_category + 1);
-      for (j = 0; j < n_items_in_category; j++)
-        results[i][j] = g_strdup (static_total_results[start_of_category + j].app_name);
+      results[i] = g_new (gchar *, n_items_in_group + 1);
+      for (j = 0; j < n_items_in_group; j++)
+        results[i][j] = g_strdup (static_total_results[start_of_group + j].app_name);
       results[i][j] = NULL;
 
-      start_of_category += n_items_in_category;
+      start_of_group += n_items_in_group;
     }
   results[i] = NULL;
 
