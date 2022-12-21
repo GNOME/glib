@@ -403,7 +403,7 @@ test_GDateTime_new_from_timeval (void)
   dt = g_date_time_new_from_timeval_local (&tv);
 
   if (g_test_verbose ())
-    g_printerr ("\nDT%04d-%02d-%02dT%02d:%02d:%02d%s\n",
+    g_test_message ("DT%04d-%02d-%02dT%02d:%02d:%02d%s",
              g_date_time_get_year (dt),
              g_date_time_get_month (dt),
              g_date_time_get_day_of_month (dt),
@@ -501,7 +501,7 @@ test_GDateTime_new_from_timeval_utc (void)
   dt = g_date_time_new_from_timeval_utc (&tv);
 
   if (g_test_verbose ())
-    g_printerr ("\nDT%04d-%02d-%02dT%02d:%02d:%02d%s\n",
+    g_test_message ("DT%04d-%02d-%02dT%02d:%02d:%02d%s",
              g_date_time_get_year (dt),
              g_date_time_get_month (dt),
              g_date_time_get_day_of_month (dt),
@@ -2097,7 +2097,7 @@ test_all_dates (void)
             dt = g_date_time_new (timezone, year, month, day, 0, 0, 0);
 
 #if 0
-            g_printerr ("%04d-%02d-%02d = %04d-W%02d-%d = %04d-%03d\n",
+            g_test_message ("%04d-%02d-%02d = %04d-W%02d-%d = %04d-%03d",
                      year, month, day,
                      week_year, week_num, weekday,
                      year, day_of_year);
@@ -2384,7 +2384,7 @@ check_and_set_locale (int          category,
   setlocale (category, name);
   if (strstr (setlocale (category, NULL), name) == NULL)
     {
-      g_print ("Unavailable '%s' locale\n", name);
+      g_test_message ("Unavailable '%s' locale", name);
       g_test_skip ("required locale not available, skipping tests");
       return FALSE;
     }
