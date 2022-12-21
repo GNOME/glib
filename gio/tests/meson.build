@@ -44,6 +44,7 @@ giotypefuncs_inc = custom_target(
 
 #  Test programs buildable on all platforms
 gio_tests = {
+  'application-command-line': {},
   'appmonitor' : {
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
     'should_fail' : host_system == 'darwin',
@@ -350,6 +351,7 @@ if host_machine.system() != 'windows'
         'extra_sources' : extra_sources,
         'suite' : ['slow'],
       },
+      'fdo-notification-backend': {},
       'gdbus-auth' : {'extra_sources' : extra_sources},
       'gdbus-bz627724' : {'extra_sources' : extra_sources},
       'gdbus-close-pending' : {'extra_sources' : extra_sources},

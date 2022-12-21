@@ -286,12 +286,38 @@ g_application_impl_method_call (GDBusConnection       *connection,
       GVariant *platform_data;
       GVariantIter *iter;
       const gchar *name;
+      const GVariantType *parameter_type = NULL;
 
       /* Only on the freedesktop interface */
 
       g_variant_get (parameters, "(&sav@a{sv})", &name, &iter, &platform_data);
       g_variant_iter_next (iter, "v", &parameter);
       g_variant_iter_free (iter);
+
+      /* Check the action exists and the parameter type matches. */
+      if (!g_action_group_query_action (impl->exported_actions,
+                                        name, NULL, &parameter_type,
+                                        NULL, NULL, NULL))
+        {
+          g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR, G_DBUS_ERROR_INVALID_ARGS,
+                                                 "Unknown action ‘%s’", name);
+          g_clear_pointer (&parameter, g_variant_unref);
+          g_variant_unref (platform_data);
+          return;
+        }
+
+      if (!((parameter_type == NULL && parameter == NULL) ||
+            (parameter_type != NULL && parameter != NULL && g_variant_is_of_type (parameter, parameter_type))))
+        {
+          g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR, G_DBUS_ERROR_INVALID_ARGS,
+                                                 "Invalid parameter for action ‘%s’: expected type %s but got type %s",
+                                                 name,
+                                                 (parameter_type != NULL) ? (const gchar *) parameter_type : "()",
+                                                 (parameter != NULL) ? g_variant_get_type_string (parameter) : "()");
+          g_clear_pointer (&parameter, g_variant_unref);
+          g_variant_unref (platform_data);
+          return;
+        }
 
       class->before_emit (impl->app, platform_data);
       g_action_group_activate_action (impl->exported_actions, name, parameter);

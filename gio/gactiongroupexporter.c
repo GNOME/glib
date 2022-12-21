@@ -433,10 +433,36 @@ org_gtk_Actions_method_call (GDBusConnection       *connection,
       GVariant *platform_data;
       GVariantIter *iter;
       const gchar *name;
+      const GVariantType *parameter_type = NULL;
 
       g_variant_get (parameters, "(&sav@a{sv})", &name, &iter, &platform_data);
       g_variant_iter_next (iter, "v", &parameter);
       g_variant_iter_free (iter);
+
+      /* Check the action exists and the parameter type matches. */
+      if (!g_action_group_query_action (exporter->action_group,
+                                        name, NULL, &parameter_type,
+                                        NULL, NULL, NULL))
+        {
+          g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR, G_DBUS_ERROR_INVALID_ARGS,
+                                                 "Unknown action ‘%s’", name);
+          g_clear_pointer (&parameter, g_variant_unref);
+          g_variant_unref (platform_data);
+          return;
+        }
+
+      if (!((parameter_type == NULL && parameter == NULL) ||
+            (parameter_type != NULL && parameter != NULL && g_variant_is_of_type (parameter, parameter_type))))
+        {
+          g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR, G_DBUS_ERROR_INVALID_ARGS,
+                                                 "Invalid parameter for action ‘%s’: expected type %s but got type %s",
+                                                 name,
+                                                 (parameter_type != NULL) ? (const gchar *) parameter_type : "()",
+                                                 (parameter != NULL) ? g_variant_get_type_string (parameter) : "()");
+          g_clear_pointer (&parameter, g_variant_unref);
+          g_variant_unref (platform_data);
+          return;
+        }
 
       if (G_IS_REMOTE_ACTION_GROUP (exporter->action_group))
         g_remote_action_group_activate_action_full (G_REMOTE_ACTION_GROUP (exporter->action_group),
@@ -455,8 +481,42 @@ org_gtk_Actions_method_call (GDBusConnection       *connection,
       GVariant *platform_data;
       const gchar *name;
       GVariant *state;
+      const GVariantType *state_type = NULL;
 
       g_variant_get (parameters, "(&sv@a{sv})", &name, &state, &platform_data);
+
+      /* Check the action exists and the state type matches. */
+      if (!g_action_group_query_action (exporter->action_group,
+                                        name, NULL, NULL,
+                                        &state_type, NULL, NULL))
+        {
+          g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR, G_DBUS_ERROR_INVALID_ARGS,
+                                                 "Unknown action ‘%s’", name);
+          g_variant_unref (state);
+          g_variant_unref (platform_data);
+          return;
+        }
+
+      if (state_type == NULL)
+        {
+          g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR, G_DBUS_ERROR_INVALID_ARGS,
+                                                 "Cannot change state of action ‘%s’ as it is stateless", name);
+          g_variant_unref (state);
+          g_variant_unref (platform_data);
+          return;
+        }
+
+      if (!g_variant_is_of_type (state, state_type))
+        {
+          g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR, G_DBUS_ERROR_INVALID_ARGS,
+                                                 "Invalid state for action ‘%s’: expected type %s but got type %s",
+                                                 name,
+                                                 (const gchar *) state_type,
+                                                 g_variant_get_type_string (state));
+          g_variant_unref (state);
+          g_variant_unref (platform_data);
+          return;
+        }
 
       if (G_IS_REMOTE_ACTION_GROUP (exporter->action_group))
         g_remote_action_group_change_action_state_full (G_REMOTE_ACTION_GROUP (exporter->action_group),
