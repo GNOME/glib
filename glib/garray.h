@@ -72,6 +72,15 @@ GLIB_AVAILABLE_IN_ALL
 GArray* g_array_new               (gboolean          zero_terminated,
 				   gboolean          clear_,
 				   guint             element_size);
+GLIB_AVAILABLE_IN_2_76
+GArray* g_array_new_take          (gpointer          data,
+                                   gsize             len,
+                                   gboolean          clear,
+                                   gsize             element_size);
+GLIB_AVAILABLE_IN_2_76
+GArray* g_array_new_take_zero_terminated (gpointer  data,
+                                          gboolean  clear,
+                                          gsize     element_size);
 GLIB_AVAILABLE_IN_2_64
 gpointer g_array_steal            (GArray           *array,
                                    gsize            *len);
@@ -142,6 +151,16 @@ GLIB_AVAILABLE_IN_ALL
 GPtrArray* g_ptr_array_new                (void);
 GLIB_AVAILABLE_IN_ALL
 GPtrArray* g_ptr_array_new_with_free_func (GDestroyNotify    element_free_func);
+GLIB_AVAILABLE_IN_2_76
+GPtrArray* g_ptr_array_new_take           (gpointer         *data,
+                                           gsize             len,
+                                           GDestroyNotify    element_free_func);
+GLIB_AVAILABLE_IN_2_76
+GPtrArray* g_ptr_array_new_from_array     (gpointer         *data,
+                                           gsize             len,
+                                           GCopyFunc         copy_func,
+                                           gpointer          copy_func_user_data,
+                                           GDestroyNotify    element_free_func);
 GLIB_AVAILABLE_IN_2_64
 gpointer*   g_ptr_array_steal              (GPtrArray        *array,
                                             gsize            *len);
@@ -158,6 +177,14 @@ GLIB_AVAILABLE_IN_2_74
 GPtrArray* g_ptr_array_new_null_terminated (guint          reserved_size,
                                             GDestroyNotify element_free_func,
                                             gboolean       null_terminated);
+GLIB_AVAILABLE_IN_2_76
+GPtrArray* g_ptr_array_new_take_null_terminated  (gpointer       *data,
+                                                  GDestroyNotify  element_free_func);
+GLIB_AVAILABLE_IN_2_76
+GPtrArray* g_ptr_array_new_from_null_terminated_array (gpointer       *data,
+                                                       GCopyFunc       copy_func,
+                                                       gpointer        copy_func_user_data,
+                                                       GDestroyNotify  element_free_func);
 GLIB_AVAILABLE_IN_ALL
 gpointer*  g_ptr_array_free               (GPtrArray        *array,
 					   gboolean          free_seg);
