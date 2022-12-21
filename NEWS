@@ -1,3 +1,54 @@
+Overview of changes in GLib 2.74.4
+==================================
+
+* Fix missing input validation in `GDBusMenuModel` (work by Lars Uebernickel) (#861)
+
+* Various GVariant security fixes when handling untrusted data (work by
+  William Manley, Philip Withnall, Simon McVittie) (#2121, #2540, #2794, #2797,
+  #2839, #2840, #2841)
+
+* Bugs fixed:
+  - #861 insufficient input validation in GDBusMenuModel (Lars Uebernickel)
+  - #2121 GVariant deserialisation does not match spec for non-normal data
+    (William Manley, Philip Withnall)
+  - #2540 Parsing serialized GVariants can blow up run-time and memory (Philip
+    Withnall)
+  - #2794 GVariant offset table entry size is not checked in is_normal() (Philip
+    Withnall)
+  - #2797 g_variant_byteswap() can take a long time with some non-normal inputs
+    (Philip Withnall)
+  - #2835 gio/gapplication test fails with test_dbus_activate: assertion failed
+    (n_activations == 2): (1 == 2) (Philip Withnall)
+  - #2839 [bisected] GVariant test regression on big-endian architectures (Simon
+    McVittie)
+  - #2840 fuzz_variant_binary_byteswap: Heap-buffer-overflow in
+    g_variant_serialised_get_child (Philip Withnall)
+  - #2841 fuzz_variant_text: Timeout in fuzz_variant_text (Philip Withnall)
+  - #2852 alpine/musl: catching signals from a subprocess triggers
+    GLib:ERROR:../glib/gmain.c:5569:siginfo_t_to_wait_status: code should not be
+    reached (Philip Withnall)
+  - !3114 Backport !3113 “gaction: Validate actions activated over D-Bus” to
+    glib-2-74
+  - !3126 Backport !3125 “Various fixes to normal form handling in GVariant” to
+    glib-2-74
+  - !3134 Backport !3133 “gmenumodel: disallow exporting large menus on the bus”
+    to glib-2-74
+  - !3138 Backport !3136 “gvariant-serialiser: Convert endianness of offsets” to
+    glib-2-74
+  - !3153 Backport !3120 “glib/gthread-posix: Conditionally use `futex` and/or
+    `futex_time64` syscalls...” to glib-2-74
+  - !3161 Backport !3158 ”gmain: Define fallback values for siginfo_t constants
+    for musl” to glib-2-74
+  - !3164 Backport !3163 “gvariant: Check offset table doesn’t fall outside
+    variant bounds and speed up text parsing” to glib-2-74
+
+* Translation updates:
+  - Abkhazian (Nart Tlisha)
+  - Belarusian (Vasil Pupkin)
+  - Georgian (Ekaterine Papava)
+  - Interlingue (Olga Smirnova)
+
+
 Overview of changes in GLib 2.74.3
 ==================================
 
