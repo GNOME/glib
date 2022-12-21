@@ -3833,8 +3833,7 @@ signal_emit_unlocked_R (SignalNode   *node,
   if (node->emission_hooks)
     {
       GHook *hook;
-      GHook **emission_hooks = NULL;
-      guint8 *hook_returns = NULL;
+      GHook *static_emission_hooks[3];
       size_t n_emission_hooks = 0;
       const gboolean may_recurse = TRUE;
       guint i;
@@ -3843,6 +3842,8 @@ signal_emit_unlocked_R (SignalNode   *node,
 
       /* Quick check to determine whether any hooks match this emission,
        * before committing to the more complex work of calling those hooks.
+       * We save a few of them into a static array, to try to avoid further
+       * allocations.
        */
       hook = g_hook_first_valid (node->emission_hooks, may_recurse);
       while (hook)
@@ -3850,34 +3851,70 @@ signal_emit_unlocked_R (SignalNode   *node,
 	  SignalHook *signal_hook = SIGNAL_HOOK (hook);
 
 	  if (!signal_hook->detail || signal_hook->detail == detail)
-            n_emission_hooks += 1;
+            {
+              if (n_emission_hooks < G_N_ELEMENTS (static_emission_hooks))
+                {
+                  static_emission_hooks[n_emission_hooks] =
+                    g_hook_ref (node->emission_hooks, hook);
+                }
+
+              n_emission_hooks += 1;
+            }
 
 	  hook = g_hook_next_valid (node->emission_hooks, hook, may_recurse);
 	}
 
+      /* Re-iterate back through the matching hooks and copy them into
+       * an array which won’t change when we unlock to call the
+       * user-provided hook functions.
+       * These functions may change hook configuration for this signal,
+       * add / remove signal handlers, etc.
+       */
       if G_UNLIKELY (n_emission_hooks > 0)
         {
-          emission_hooks = g_newa (GHook *, n_emission_hooks);
-          hook_returns = g_newa (guint8, n_emission_hooks);
+          guint8 static_hook_returns[G_N_ELEMENTS (static_emission_hooks)];
+          GHook **emission_hooks = NULL;
+          guint8 *hook_returns = NULL;
 
-          /* Re-iterate back through the matching hooks and copy them into
-           * an array which won’t change when we unlock to call the
-           * user-provided hook functions.
-           * These functions may change hook configuration for this signal,
-           * add / remove signal handlers, etc.
-           */
-          hook = g_hook_first_valid (node->emission_hooks, may_recurse);
-          for (i = 0; hook; )
+          if G_LIKELY (n_emission_hooks <= G_N_ELEMENTS (static_emission_hooks))
             {
-              SignalHook *signal_hook = SIGNAL_HOOK (hook);
-
-              if (!signal_hook->detail || signal_hook->detail == detail)
-                emission_hooks[i++] = g_hook_ref (node->emission_hooks, hook);
-
-              hook = g_hook_next_valid (node->emission_hooks, hook, may_recurse);
+              emission_hooks = static_emission_hooks;
+              hook_returns = static_hook_returns;
             }
+          else
+            {
+              emission_hooks = g_newa (GHook *, n_emission_hooks);
+              hook_returns = g_newa (guint8, n_emission_hooks);
 
-            g_assert (i == n_emission_hooks);
+              /* We can't just memcpy the ones we have in the static array,
+               * to the alloca()'d one because otherwise we'd get an invalid
+               * ID assertion during unref
+               */
+              i = 0;
+              for (hook = g_hook_first_valid (node->emission_hooks, may_recurse);
+                   hook != NULL;
+                   hook = g_hook_next_valid (node->emission_hooks, hook, may_recurse))
+                {
+                  SignalHook *signal_hook = SIGNAL_HOOK (hook);
+
+                  if (!signal_hook->detail || signal_hook->detail == detail)
+                    {
+                       if (i < G_N_ELEMENTS (static_emission_hooks))
+                         {
+                            emission_hooks[i] = g_steal_pointer (&static_emission_hooks[i]);
+                            g_assert (emission_hooks[i] == hook);
+                         }
+                       else
+                         {
+                            emission_hooks[i] = g_hook_ref (node->emission_hooks, hook);
+                         }
+
+                      i += 1;
+                    }
+                }
+
+               g_assert (i == n_emission_hooks);
+            }
 
             SIGNAL_UNLOCK ();
 
