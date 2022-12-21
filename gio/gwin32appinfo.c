@@ -5298,14 +5298,18 @@ make_item_array (gboolean   for_files,
         }
 
       hr = SHParseDisplayName (file_or_uri_utf16, NULL, &item_ids[i], 0, NULL);
-      g_free (file_or_uri_utf16);
 
       if (FAILED (hr))
         {
           g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                       "File or URI `%S' cannot be parsed by SHParseDisplayName: 0x%lx", file_or_uri_utf16, hr);
+                       "File or URI `%S' cannot be parsed by SHParseDisplayName: 0x%lx",
+                       file_or_uri_utf16, hr);
+
+          g_free (file_or_uri_utf16);
           break;
         }
+
+      g_free (file_or_uri_utf16);
     }
 
   if (i == count)
