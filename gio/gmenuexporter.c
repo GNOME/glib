@@ -252,12 +252,16 @@ g_menu_exporter_menu_items_changed (GMenuModel *model,
   GMenuExporterMenu *menu = user_data;
   GSequenceIter *point;
   gint i;
+#ifndef G_DISABLE_ASSERT
   gint n_items;
+#endif
 
   g_assert (menu->model == model);
   g_assert (menu->item_links != NULL);
 
+#ifndef G_DISABLE_ASSERT
   n_items = g_sequence_get_length (menu->item_links);
+#endif
   g_assert (position >= 0 && position < G_MENU_EXPORTER_MAX_SECTION_SIZE);
   g_assert (removed >= 0 && removed < G_MENU_EXPORTER_MAX_SECTION_SIZE);
   g_assert (added < G_MENU_EXPORTER_MAX_SECTION_SIZE);
