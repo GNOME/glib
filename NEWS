@@ -1,5 +1,33 @@
-UNRELEASED CHANGES
-==================
+Overview of changes in GLib 2.75.1, 2022-12-21
+==============================================
+
+* Add new `GFileInfo` properties for large thumbnails (work by Matthias Clasen) (#621)
+
+* Fix missing input validation in `GDBusMenuModel` (work by Lars Uebernickel) (#861)
+
+* Change default `g_desktop_app_info_search()` algorithm to include substring
+  matches (work by Alynx Zhou) (#1152)
+
+* Various GVariant security fixes when handling untrusted data (work by
+  William Manley, Philip Withnall, Simon McVittie) (#2121, #2540, #2794, #2797,
+  #2839, #2840, #2841)
+
+* Add support for XDG Activation protocol in `GAppLaunchContext` (work by
+  Ilya Fedin) (#2709)
+
+* Return `application/x-zerosize` rather than `text/plain` as content type for
+  empty files (work by Philip Withnall) (#2777)
+
+* Deprecate `-Druntime_libdir` configure option because it was unused (work by
+  Philip Withnall) (#2786)
+
+* Check for snap plugs when accessing portals (work by Robert Ancell) (!3020)
+
+* Add `GArray` and `GPtrArray` constructors to take or copy C arrays (work by
+  Marco Trevisan) (!3128)
+
+* Add `GHashTable` methods to get and steal hash table keys and values as
+  `GPtrArray`s (work by Marco Trevisan) (!3130)
 
 * Change the default D-Bus system bus socket address from
   `/var/run/dbus/system_bus_socket` to `/run/dbus/system_bus_socket`, in line
@@ -7,7 +35,133 @@ UNRELEASED CHANGES
   `-Druntime_dir=/some/path` at configure time — the default is `/run`, which
   should work for all users except distributions where `/run` is not equivalent
   to `/var/run`. OS distributors should check that this configured path matches
-  the runtime directory configured for their D-Bus daemon. (!3101)
+  the runtime directory configured for their D-Bus daemon. (work by
+  Roman Stratiienko, Philip Withnall) (!3095, !3101)
+
+* Bugs fixed:
+  - #621 file-info: catch thumbnail files in large directory as well (Matthias
+    Clasen)
+  - #861 insufficient input validation in GDBusMenuModel (Lars Uebernickel)
+  - #1152 Application search algorithm (g_desktop_app_info_search()) should use
+    fuzzy matching (Alynx Zhou)
+  - #1904 gaction: remote triggered crashes
+  - #2121 GVariant deserialisation does not match spec for non-normal data
+    (Philip Withnall, William Manley)
+  - #2540 Parsing serialized GVariants can blow up run-time and memory (Philip
+    Withnall)
+  - #2709 Add support for XDG_ACTIVATION_TOKEN/XDG Activation protocol in
+    GAppLaunchContext (Ilya Fedin)
+  - #2777 Return application/x-zerosize for empty file content types rather than
+    text/plain (Philip Withnall)
+  - #2786 runtime_libdir and iconv options documented and exposed but not
+    effective? (Philip Withnall)
+  - #2793 Introspection annotations for g_clear_pointer() and g_clear_fd() might
+    not be correct (Philip Withnall)
+  - #2794 GVariant offset table entry size is not checked in is_normal() (Philip
+    Withnall)
+  - #2797 g_variant_byteswap() can take a long time with some non-normal inputs
+    (Philip Withnall)
+  - #2809 g_str_equal switched to stricter API (typing) (Philip Withnall)
+  - #2811 Internal inotify symbols exposed in 2.75.0 ABI (Simon McVittie)
+  - #2812 CI failing on macOS: -Werror,-Wmissing-field-initializers (Simon
+    McVittie)
+  - #2820 g_str_equal: New macro version breaks compilation in C++ projects
+    (Philip Withnall)
+  - #2821 GObject webpage documentation is mis-formatted during generation
+    (Emmanuele Bassi)
+  - #2835 gio/gapplication test fails with test_dbus_activate: assertion failed
+    (n_activations == 2): (1 == 2) (Philip Withnall)
+  - #2836 Conditional jump on uninitialised value in spawn-singlethread (Philip
+    Withnall)
+  - #2837 Assertion failure in contexts test (Philip Withnall)
+  - #2839 [bisected] GVariant test regression on big-endian architectures (Simon
+    McVittie)
+  - #2840 fuzz_variant_binary_byteswap: Heap-buffer-overflow in
+    g_variant_serialised_get_child (Philip Withnall)
+  - #2841 fuzz_variant_text: Timeout in fuzz_variant_text (Philip Withnall)
+  - #2845 MSVC: Build failure with g_array_append_val() in C++ mode
+  - #2846 Follow-up from "garray: Add support adding literal values" — doesn’t
+    work with clang (Emmanuele Bassi)
+  - #2852 alpine/musl: catching signals from a subprocess triggers
+    GLib:ERROR:../glib/gmain.c:5569:siginfo_t_to_wait_status: code should not be
+    reached (Philip Withnall)
+  - !385 gtask: Warn if a GTask is finalised without returning
+  - !2479 glib/spawn: check user source_fds doesn't contain private fds
+  - !2728 gtype: Speed up type checking for final types
+  - !2764 GCancellable: Ensure it is always cancelled on connect callback
+  - !2886 gtestutils: Use $G_TEST_TMPDIR as temporary directory when defined
+  - !2895 Expose C and C++ standard versions and add macros to check them
+  - !2917 meson: Use gnome.mkenum_simple()
+  - !2992 glib/tests: Add test to check that we abort on low-memory
+  - !3020 portal: Check for snap plugs before accessing portals
+  - !3042 gdesktopappinfo: Fail early if trying to launch an invalid executable
+    and always use desktop Path and context $PATH
+  - !3064 ci: Exclude copylibs and fuzz tests from code coverage
+  - !3065 tests: Add some trivial tests for g_thread_init()
+  - !3067 tests/meson.build: do not use can_run_host_binaries()
+  - !3068 gio: Fix missing visibility header dependency
+  - !3070 type-flags test: Force G_ENABLE_DIAGNOSTIC=1 to be set
+  - !3073 Misc docs fixes and test improvements in GAction and
+    GNotificationBackend
+  - !3075 gmodule: Fix redeclaration of symbol
+  - !3076 gspawn: Ignore invalid FDs when using safe_fdwalk()
+  - !3077 build: Bump Meson dependency to 0.64.0
+  - !3078 build: Move -Wnonnull flag to meson.build
+  - !3079 giochannel: Clarify assertions in g_io_channel_write_chars()
+  - !3080 A few test improvements for scan-build
+  - !3081 gthreadpool: Mark an explicit leak as to be ignored
+  - !3083 tests: Remove a manual timeout from desktop-app-info test
+  - !3086 gmacros: Use C++ namespaces attribute specifier sequences for msvc
+  - !3088 tests: Add G_TEST_OPTION_ISOLATE_DIRS to almost all gdbus tests
+  - !3089 Revert dependency bump to use Meson 0.64
+  - !3091 Fix doc typo in g_dbus_connection_signal_subscribe
+  - !3092 Fix gmodule/COPYING symlink path
+  - !3095 gdbusaddress: Form default system dbus path using meson definitions
+  - !3097 garray: Add assertions to help static analysis
+  - !3098 gobject: Use compare and exchange full to re-read old ref value
+  - !3099 gsocketcontrolmessage: add nullable annotation to deserialize return
+  - !3100 gsimpleproxyresolver: Make explicit that a port is needed for
+    HTTP/HTTPS
+  - !3101 gdbusaddress: Use runstatedir rather than localstatedir
+  - !3103 gclosure: Documentation improvements around floating closures
+  - !3105 gsocket: use socklen_t in more places to fix build under cygwin
+  - !3106 gobject: Check for valid ref counting via g_return_if_fail
+  - !3107 gdesktopappinfo: Group search results by both categories and match
+    types
+  - !3108 gwakeuptest: Do not rely on alarm() to stop tests on timeout
+  - !3112 docs: Remove a stray > in the glib-mkenums man page
+  - !3115 ci: Don’t fail if testlog-unstable_tests.junit.xml doesn’t exist on
+    MSVC
+  - !3116 docs: Remove HACKING
+  - !3117 tests: fix assert-msg-test with custom gdbinit
+  - !3119 Improve notification queue warning
+  - !3120 glib/gthread-posix: Conditionally use `futex` and/or `futex_time64`
+    syscalls...
+  - !3124 More gobject performance tests
+  - !3127 docs: Update SECURITY to stop mentioning a deprecated mailing list
+  - !3128 garray: Add more G(Ptr)Array constructors to take or copy C arrays
+  - !3129 garray: Add support adding literal values
+  - !3130 ghash: Add APIs to get (and steal) hash table keys and values as
+    GPtrArray
+  - !3132 gtestutils: Check for failure to setenv() and return
+  - !3139 gtype: avoid "-Wcast-align" warning with optimized
+    G_TYPE_CHECK_INSTANCE_CAST()
+  - !3141 tests/slice-concurrent.c: avoid using rand() from multiple threads
+  - !3142 tests/gdbus-method-invocation: Fix missing g_variant_new() argument
+  - !3144 gspawn.c: prefer close_range() on FreeBSD if available
+  - !3145 tests/gvariant.c: ensure posix_memalign alignment argument is correct
+  - !3147 ci: Temporarily only run the FreeBSD 13 CI on a schedule
+  - !3148 ghash: Use unsigned types for number of nodes and occupied ones
+  - !3151 Revert "ci: Temporarily only run the FreeBSD 13 CI on a schedule"
+  - !3152 tests: Fix stall/deadlock in slice-concurrent on macOS CI
+  - !3156 gobject: Some GValue setting code cleanups
+  - !3157 gthread-posix: need to #include <errno.h>
+  - !3159 gmenuexporter: Fix warning of unused n_items when building with
+    G_DISABLE_ASSERT
+
+* Translation updates:
+  - Interlingue (Olga Smirnova)
+  - Serbian (Мирослав Николић)
 
 
 Overview of changes in GLib 2.75.0, 2022-11-10
