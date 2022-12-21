@@ -79,6 +79,16 @@
 #ifndef W_STOPCODE
 #define W_STOPCODE(sig)      ((sig) << 8 | 0x7f)
 #endif
+#ifndef WCOREFLAG
+/* musl doesn’t define WCOREFLAG while glibc does. Unfortunately, there’s no way
+ * to detect we’re building against musl, so just define it and hope.
+ * See https://git.musl-libc.org/cgit/musl/tree/include/sys/wait.h#n51 */
+#define WCOREFLAG 0x80
+#endif
+#ifndef __W_CONTINUED
+/* Same as above, for musl */
+#define __W_CONTINUED 0xffff
+#endif
 #endif  /* HAVE_PIDFD */
 
 #ifdef G_OS_WIN32
@@ -5563,17 +5573,9 @@ siginfo_t_to_wait_status (const siginfo_t *info)
     case CLD_KILLED:
       return W_EXITCODE (0, info->si_status);
     case CLD_DUMPED:
-#ifdef WCOREFLAG
       return W_EXITCODE (0, info->si_status | WCOREFLAG);
-#else
-      g_assert_not_reached ();
-#endif
     case CLD_CONTINUED:
-#ifdef __W_CONTINUED
       return __W_CONTINUED;
-#else
-      g_assert_not_reached ();
-#endif
     case CLD_STOPPED:
     case CLD_TRAPPED:
     default:
