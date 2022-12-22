@@ -4880,10 +4880,15 @@ emit_launch_failed (GAppLaunchContext *context,
     }
 }
 
+static IShellItemArray *
+make_item_array (gboolean   for_files,
+                 GList     *objs,
+                 GError   **error);
+
 static gboolean
 g_win32_app_info_launch_uwp_internal (GWin32AppInfo           *info,
                                       gboolean                 for_files,
-                                      IShellItemArray         *items,
+                                      GList                   *objs,  /* (element-type file_or_uri) */
                                       GWin32AppInfoShellVerb  *shverb,
                                       GAppLaunchContext       *launch_context,
                                       GTask                   *from_task,
@@ -4892,9 +4897,17 @@ g_win32_app_info_launch_uwp_internal (GWin32AppInfo           *info,
   IApplicationActivationManager* paam = NULL;
   gboolean com_initialized = FALSE;
   gboolean result = FALSE;
+  IShellItemArray *items = NULL;
   DWORD process_id = 0;
   HRESULT hr;
   const wchar_t *app_canonical_name = (const wchar_t *) info->app->canonical_name;
+
+  if (objs)
+    {
+      items = make_item_array (for_files, objs, error);
+      if (!items)
+        goto cleanup;
+    }
 
   /* ApplicationActivationManager threading model is both,
    * prefer the multithreaded apartment type, as we don't
@@ -4940,7 +4953,7 @@ g_win32_app_info_launch_uwp_internal (GWin32AppInfo           *info,
 
   /* The Activate methods return a process identifier (PID), so we should consider
    * those methods as potentially blocking */
-  if (items == NULL)
+  if (objs == NULL)
     hr = IApplicationActivationManager_ActivateApplication (paam,
                                                             app_canonical_name,
                                                             NULL, AO_NONE,
@@ -5030,15 +5043,20 @@ cleanup:
       com_initialized = FALSE;
     }
 
+  if (items)
+    {
+      IShellItemArray_Release (items);
+      items = NULL;
+    }
+
   return result;
 }
 
 
 static gboolean
 g_win32_app_info_launch_internal (GWin32AppInfo      *info,
-                                  GList              *objs, /* non-UWP only */
+                                  GList              *objs,  /* (element-type file_or_uri) */
                                   gboolean            for_files, /* UWP only */
-                                  IShellItemArray    *items, /* UWP only */
                                   GAppLaunchContext  *launch_context,
                                   GSpawnFlags         spawn_flags,
                                   GTask              *from_task,
@@ -5083,7 +5101,7 @@ g_win32_app_info_launch_internal (GWin32AppInfo      *info,
   if (info->app->is_uwp)
     return g_win32_app_info_launch_uwp_internal (info,
                                                  for_files,
-                                                 items,
+                                                 objs,
                                                  shverb,
                                                  launch_context,
                                                  from_task,
@@ -5243,7 +5261,7 @@ g_win32_app_info_supports_files (GAppInfo *appinfo)
 
 static IShellItemArray *
 make_item_array (gboolean   for_files,
-                 GList     *files_or_uris,
+                 GList     *objs,  /* (element-type file_or_uri) */
                  GError   **error)
 {
   ITEMIDLIST **item_ids;
@@ -5253,19 +5271,20 @@ make_item_array (gboolean   for_files,
   gsize i;
   HRESULT hr;
 
-  count = g_list_length (files_or_uris);
+  count = g_list_length (objs);
 
   items = NULL;
   item_ids = g_new (ITEMIDLIST*, count);
 
-  for (i = 0, p = files_or_uris; p != NULL; p = p->next, i++)
+  for (i = 0, p = objs; p != NULL; p = p->next, i++)
     {
+      file_or_uri *obj = (file_or_uri*) p->data;
       wchar_t *file_or_uri_utf16;
 
       if (!for_files)
-        file_or_uri_utf16 = g_utf8_to_utf16 ((gchar *) p->data, -1, NULL, NULL, error);
+        file_or_uri_utf16 = g_utf8_to_utf16 (obj->uri, -1, NULL, NULL, error);
       else
-        file_or_uri_utf16 = g_utf8_to_utf16 (g_file_peek_path (G_FILE (p->data)), -1, NULL, NULL, error);
+        file_or_uri_utf16 = g_utf8_to_utf16 (obj->file, -1, NULL, NULL, error);
 
       if (file_or_uri_utf16 == NULL)
         break;
@@ -5336,38 +5355,19 @@ make_item_array (gboolean   for_files,
 
 static gboolean
 g_win32_app_info_launch_uris_impl (GAppInfo           *appinfo,
-                                   GList              *uris,
+                                   GList              *uris,  /* (element-type utf8) */
                                    GAppLaunchContext  *launch_context,
                                    GTask              *from_task,
                                    GError            **error)
 {
   gboolean res = FALSE;
   gboolean do_files;
-  GList *objs;
+  GList *objs = NULL;
   GWin32AppInfo *info = G_WIN32_APP_INFO (appinfo);
-
-  if (info->app != NULL && info->app->is_uwp)
-    {
-      IShellItemArray *items = NULL;
-
-      if (uris)
-        {
-          items = make_item_array (FALSE, uris, error);
-          if (items == NULL)
-            return res;
-        }
-
-      res = g_win32_app_info_launch_internal (info, NULL, FALSE, items, launch_context, 0, from_task, error);
-
-      if (items != NULL)
-        IShellItemArray_Release (items);
-
-      return res;
-    }
+  gboolean is_uwp;
 
   do_files = g_win32_app_info_supports_files (appinfo);
 
-  objs = NULL;
   while (uris)
     {
       file_or_uri *obj;
@@ -5389,14 +5389,16 @@ g_win32_app_info_launch_uris_impl (GAppInfo           *appinfo,
       objs = g_list_prepend (objs, obj);
       uris = uris->next;
     }
-
   objs = g_list_reverse (objs);
+
+  is_uwp = (info->app != NULL && info->app->is_uwp);
 
   res = g_win32_app_info_launch_internal (info,
                                           objs,
                                           FALSE,
-                                          NULL,
                                           launch_context,
+                                          is_uwp ?
+                                          0 :
                                           G_SPAWN_SEARCH_PATH,
                                           from_task,
                                           error);
@@ -5491,37 +5493,18 @@ g_win32_app_info_should_show (GAppInfo *appinfo)
 
 static gboolean
 g_win32_app_info_launch (GAppInfo           *appinfo,
-                         GList              *files,
+                         GList              *files,  /* (element-type GFile) */
                          GAppLaunchContext  *launch_context,
                          GError            **error)
 {
   gboolean res = FALSE;
   gboolean do_uris;
-  GList *objs;
+  GList *objs = NULL;
   GWin32AppInfo *info = G_WIN32_APP_INFO (appinfo);
-
-  if (info->app != NULL && info->app->is_uwp)
-    {
-      IShellItemArray *items = NULL;
-
-      if (files)
-        {
-          items = make_item_array (TRUE, files, error);
-          if (items == NULL)
-            return res;
-        }
-
-      res = g_win32_app_info_launch_internal (info, NULL, TRUE, items, launch_context, 0, NULL, error);
-
-      if (items != NULL)
-        IShellItemArray_Release (items);
-
-      return res;
-    }
+  gboolean is_uwp;
 
   do_uris = g_win32_app_info_supports_uris (appinfo);
 
-  objs = NULL;
   while (files)
     {
       file_or_uri *obj;
@@ -5534,14 +5517,16 @@ g_win32_app_info_launch (GAppInfo           *appinfo,
       objs = g_list_prepend (objs, obj);
       files = files->next;
     }
-
   objs = g_list_reverse (objs);
+
+  is_uwp = (info->app != NULL && info->app->is_uwp);
 
   res = g_win32_app_info_launch_internal (info,
                                           objs,
                                           TRUE,
-                                          NULL,
                                           launch_context,
+                                          is_uwp ?
+                                          0 :
                                           G_SPAWN_SEARCH_PATH,
                                           NULL,
                                           error);
