@@ -4880,94 +4880,68 @@ emit_launch_failed (GAppLaunchContext *context,
     }
 }
 
-static IShellItemArray *
-make_item_array (gboolean   for_files,
-                 GList     *objs,
-                 GError   **error);
+typedef enum
+{
+  /* PLAIN: just open the application, without arguments of any kind
+   *        corresponds to: LaunchActivatedEventArgs */
+  UWP_ACTIVATION_TYPE_PLAIN,
+
+  /* FILE: open the applications passing a set of files
+   *       corresponds to: FileActivatedEventArgs */
+  UWP_ACTIVATION_TYPE_FILE,
+
+  /* PROTOCOL: open the application passing a URI which describe an
+               app activity
+   *           corresponds to: ProtocolActivatedEventArgs */
+  UWP_ACTIVATION_TYPE_PROTOCOL,
+} UwpActivationType;
 
 static gboolean
-g_win32_app_info_launch_uwp_internal (GWin32AppInfo           *info,
-                                      gboolean                 for_files,
-                                      GList                   *objs,  /* (element-type file_or_uri) */
-                                      GWin32AppInfoShellVerb  *shverb,
-                                      GAppLaunchContext       *launch_context,
-                                      GTask                   *from_task,
-                                      GError                 **error)
+g_win32_app_info_launch_uwp_single (IApplicationActivationManager  *app_activation_manager,
+                                    UwpActivationType               activation_type,
+                                    IShellItemArray                *items,
+                                    const wchar_t                  *verb,
+                                    GWin32AppInfo                  *info,
+                                    GAppLaunchContext              *launch_context,
+                                    GTask                          *from_task,
+                                    GError                        **error)
 {
-  IApplicationActivationManager* paam = NULL;
-  gboolean com_initialized = FALSE;
-  gboolean result = FALSE;
-  IShellItemArray *items = NULL;
+  const wchar_t *canonical_name = (const wchar_t *) info->app->canonical_name;
   DWORD process_id = 0;
-  HRESULT hr;
-  const wchar_t *app_canonical_name = (const wchar_t *) info->app->canonical_name;
-
-  if (objs)
-    {
-      items = make_item_array (for_files, objs, error);
-      if (!items)
-        goto cleanup;
-    }
-
-  /* ApplicationActivationManager threading model is both,
-   * prefer the multithreaded apartment type, as we don't
-   * need anything of the STA here. */
-  hr = CoInitializeEx (NULL, COINIT_MULTITHREADED);
-  if (SUCCEEDED (hr))
-    com_initialized = TRUE;
-  else if (hr != RPC_E_CHANGED_MODE)
-    {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                   "Failed to initialize the COM support library for the thread: 0x%lx", hr);
-      goto cleanup;
-    }
-
-  /* It's best to instantiate ApplicationActivationManager out-of-proc,
-   * as documented on MSDN:
-   *
-   * An IApplicationActivationManager object creates a thread in its
-   * host process to serve any activated event arguments objects
-   * (LaunchActivatedEventArgs, FileActivatedEventArgs, and Protocol-
-   * ActivatedEventArgs) that are passed to the app. If the calling
-   * process is long-lived, you can create this object in-proc,
-   * based on the assumption that the event arguments will exist long
-   * enough for the target app to use them.
-   * However, if the calling process is spawned only to launch the
-   * target app, it should create the IApplicationActivationManager
-   * object out-of-process, by using CLSCTX_LOCAL_SERVER. This causes
-   * the object to be created in a Dllhost instance that automatically
-   * manages the object's lifetime based on outstanding references to
-   * the activated event argument objects.
-   */
-  hr = CoCreateInstance (&CLSID_ApplicationActivationManager, NULL,
-                         CLSCTX_LOCAL_SERVER,
-                         &IID_IApplicationActivationManager, (void **) &paam);
-  if (FAILED (hr))
-    {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                   "Failed to create ApplicationActivationManager: 0x%lx", hr);
-      goto cleanup;
-    }
+  HRESULT hr = S_OK;
 
   emit_launch_started (launch_context, info, from_task);
 
   /* The Activate methods return a process identifier (PID), so we should consider
    * those methods as potentially blocking */
-  if (objs == NULL)
-    hr = IApplicationActivationManager_ActivateApplication (paam,
-                                                            app_canonical_name,
-                                                            NULL, AO_NONE,
-                                                            &process_id);
-  else if (for_files)
-    hr = IApplicationActivationManager_ActivateForFile (paam,
-                                                        app_canonical_name,
-                                                        items, shverb->verb_name,
-                                                        &process_id);
-  else
-    hr = IApplicationActivationManager_ActivateForProtocol (paam,
-                                                            app_canonical_name,
-                                                            items,
-                                                            &process_id);
+
+  switch (activation_type)
+    {
+    case UWP_ACTIVATION_TYPE_PLAIN:
+      g_assert (items == NULL);
+
+      hr = IApplicationActivationManager_ActivateApplication (app_activation_manager,
+                                                              canonical_name,
+                                                              NULL, AO_NONE,
+                                                              &process_id);
+      break;
+    case UWP_ACTIVATION_TYPE_PROTOCOL:
+      g_assert (items != NULL);
+
+      hr = IApplicationActivationManager_ActivateForProtocol (app_activation_manager,
+                                                              canonical_name,
+                                                              items,
+                                                              &process_id);
+      break;
+    case UWP_ACTIVATION_TYPE_FILE:
+      g_assert (items != NULL);
+
+      hr = IApplicationActivationManager_ActivateForFile (app_activation_manager,
+                                                          canonical_name,
+                                                          items, verb,
+                                                          &process_id);
+      break;
+    }
 
   if (FAILED (hr))
     {
@@ -4977,9 +4951,10 @@ g_win32_app_info_launch_uwp_internal (GWin32AppInfo           *info,
 
       emit_launch_failed (launch_context, info, from_task);
 
-      goto cleanup;
+      return FALSE;
     }
-  else if (launch_context)
+
+  if (launch_context)
     {
       DWORD access_rights = 0;
       HANDLE process_handle = NULL;
@@ -5027,7 +5002,118 @@ g_win32_app_info_launch_uwp_internal (GWin32AppInfo           *info,
       g_spawn_close_pid ((GPid) process_handle);
     }
 
-  result = TRUE;
+  return TRUE;
+}
+
+static IShellItemArray *
+make_item_array (gboolean   for_files,
+                 GList     *objs,
+                 GError   **error);
+
+static gboolean
+g_win32_app_info_launch_uwp_internal (GWin32AppInfo           *info,
+                                      gboolean                 for_files,
+                                      GList                   *objs,  /* (element-type file_or_uri) */
+                                      GWin32AppInfoShellVerb  *shverb,
+                                      GAppLaunchContext       *launch_context,
+                                      GTask                   *from_task,
+                                      GError                 **error)
+{
+  IApplicationActivationManager *paam = NULL;
+  gboolean com_initialized = FALSE;
+  gboolean result = FALSE;
+  HRESULT hr;
+
+  /* ApplicationActivationManager threading model is both,
+   * prefer the multithreaded apartment type, as we don't
+   * need anything of the STA here. */
+  hr = CoInitializeEx (NULL, COINIT_MULTITHREADED);
+  if (SUCCEEDED (hr))
+    com_initialized = TRUE;
+  else if (hr != RPC_E_CHANGED_MODE)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Failed to initialize the COM support library for the thread: 0x%lx", hr);
+      goto cleanup;
+    }
+
+  /* It's best to instantiate ApplicationActivationManager out-of-proc,
+   * as documented on MSDN:
+   *
+   * An IApplicationActivationManager object creates a thread in its
+   * host process to serve any activated event arguments objects
+   * (LaunchActivatedEventArgs, FileActivatedEventArgs, and Protocol-
+   * ActivatedEventArgs) that are passed to the app. If the calling
+   * process is long-lived, you can create this object in-proc,
+   * based on the assumption that the event arguments will exist long
+   * enough for the target app to use them.
+   * However, if the calling process is spawned only to launch the
+   * target app, it should create the IApplicationActivationManager
+   * object out-of-process, by using CLSCTX_LOCAL_SERVER. This causes
+   * the object to be created in a Dllhost instance that automatically
+   * manages the object's lifetime based on outstanding references to
+   * the activated event argument objects.
+   */
+  hr = CoCreateInstance (&CLSID_ApplicationActivationManager, NULL,
+                         CLSCTX_LOCAL_SERVER,
+                         &IID_IApplicationActivationManager, (void **) &paam);
+  if (FAILED (hr))
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Failed to create ApplicationActivationManager: 0x%lx", hr);
+      goto cleanup;
+    }
+
+  if (!objs)
+    {
+      result = g_win32_app_info_launch_uwp_single (paam, UWP_ACTIVATION_TYPE_PLAIN, NULL, NULL,
+                                                   info, launch_context, from_task, error);
+    }
+  else if (for_files)
+    {
+      IShellItemArray *items = make_item_array (TRUE, objs, error);
+
+      if (!items)
+        goto cleanup;
+
+      result = g_win32_app_info_launch_uwp_single (paam, UWP_ACTIVATION_TYPE_FILE, items,
+                                                   shverb->verb_name,
+                                                   info, launch_context, from_task, error);
+
+      IShellItemArray_Release (items);
+    }
+  else
+    {
+      gboolean outcome = TRUE;
+      GList *l;
+
+      for (l = objs; l != NULL; l = l->next)
+        {
+          IShellItemArray *item;
+          GList single;
+
+          single.data = l->data;
+          single.prev = NULL;
+          single.next = NULL;
+
+          item = make_item_array (FALSE, &single, error);
+
+          if (!item)
+            {
+              outcome = FALSE;
+              continue;
+            }
+
+          if (!g_win32_app_info_launch_uwp_single (paam, UWP_ACTIVATION_TYPE_PROTOCOL,
+                                                   item, shverb->verb_name, info,
+                                                   launch_context, from_task, error))
+            outcome = FALSE;
+
+          IShellItemArray_Release (item);
+        }
+
+      result = outcome;
+    }
 
 cleanup:
 
@@ -5041,12 +5127,6 @@ cleanup:
     {
       CoUninitialize ();
       com_initialized = FALSE;
-    }
-
-  if (items)
-    {
-      IShellItemArray_Release (items);
-      items = NULL;
     }
 
   return result;
