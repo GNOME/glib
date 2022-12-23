@@ -5005,10 +5005,22 @@ g_win32_app_info_launch_uwp_single (IApplicationActivationManager  *app_activati
   return TRUE;
 }
 
+static gboolean
+g_win32_app_info_supports_files (GAppInfo *appinfo);
+
 static IShellItemArray *
 make_item_array (gboolean   for_files,
                  GList     *objs,
                  GError   **error);
+
+static inline GList
+make_single_entry_list (gpointer data)
+{
+  GList l = { NULL, NULL, NULL };
+  l.data = data;
+
+  return l;
+}
 
 static gboolean
 g_win32_app_info_launch_uwp_internal (GWin32AppInfo           *info,
@@ -5084,19 +5096,39 @@ g_win32_app_info_launch_uwp_internal (GWin32AppInfo           *info,
     }
   else
     {
+      gboolean supports_files;
+      gboolean supports_file_uris;
       gboolean outcome = TRUE;
       GList *l;
 
+      supports_files = g_win32_app_info_supports_files (G_APP_INFO (info));
+      supports_file_uris = info->app &&
+                           info->app->supported_urls &&
+                           g_hash_table_lookup (info->app->supported_urls, "file");
+
       for (l = objs; l != NULL; l = l->next)
         {
-          IShellItemArray *item;
-          GList single;
+          file_or_uri *obj = (file_or_uri*) l->data;
+          GList single = make_single_entry_list (obj);
+          IShellItemArray *item = NULL;
+          UwpActivationType type;
 
-          single.data = l->data;
-          single.prev = NULL;
-          single.next = NULL;
+          /* Most UWP applications support opening files but do not support
+           * the file:// protocol in URI's. That's because the UWP platform
+           * has a specific activation for files (see FileActivatedEventArgs)
+           * which is different from protocol activation. Here we check for
+           * that. */
 
-          item = make_item_array (FALSE, &single, error);
+          if (!supports_file_uris && supports_files && obj->file)
+            {
+              type = UWP_ACTIVATION_TYPE_FILE;
+              item = make_item_array (TRUE, &single, error);
+            }
+          else
+            {
+              type = UWP_ACTIVATION_TYPE_PROTOCOL;
+              item = make_item_array (FALSE, &single, error);
+            }
 
           if (!item)
             {
@@ -5104,7 +5136,7 @@ g_win32_app_info_launch_uwp_internal (GWin32AppInfo           *info,
               continue;
             }
 
-          if (!g_win32_app_info_launch_uwp_single (paam, UWP_ACTIVATION_TYPE_PROTOCOL,
+          if (!g_win32_app_info_launch_uwp_single (paam, type,
                                                    item, shverb->verb_name, info,
                                                    launch_context, from_task, error))
             outcome = FALSE;
