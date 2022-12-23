@@ -36,6 +36,7 @@ struct _GWin32PackageExtGroup
 typedef gboolean (*GWin32PackageParserCallback)(gpointer         user_data,
                                                 const gunichar2 *full_package_name,
                                                 const gunichar2 *package_name,
+                                                const gunichar2 *display_name,
                                                 const gunichar2 *app_user_model_id,
                                                 gboolean         show_in_applist,
                                                 GPtrArray       *supported_extgroups,
