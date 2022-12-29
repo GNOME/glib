@@ -2236,8 +2236,6 @@ g_local_file_trash (GFile         *file,
 
   if (fd == -1)
     {
-      errsv = errno;
-
       g_free (filesdir);
       g_free (topdir);
       g_free (trashname);
