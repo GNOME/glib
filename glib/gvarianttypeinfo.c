@@ -247,8 +247,6 @@ g_variant_type_info_query (GVariantTypeInfo *info,
                            guint            *alignment,
                            gsize            *fixed_size)
 {
-  g_variant_type_info_check (info, 0);
-
   if (alignment)
     *alignment = info->alignment;
 
