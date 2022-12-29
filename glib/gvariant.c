@@ -2213,15 +2213,16 @@ g_variant_print_string (GVariant *value,
                         GString  *string,
                         gboolean  type_annotate)
 {
+  const gchar *value_type_string = g_variant_get_type_string (value);
+
   if G_UNLIKELY (string == NULL)
     string = g_string_new (NULL);
 
-  switch (g_variant_classify (value))
+  switch (value_type_string[0])
     {
     case G_VARIANT_CLASS_MAYBE:
       if (type_annotate)
-        g_string_append_printf (string, "@%s ",
-                                g_variant_get_type_string (value));
+        g_string_append_printf (string, "@%s ", value_type_string);
 
       if (g_variant_n_children (value))
         {
@@ -2265,7 +2266,7 @@ g_variant_print_string (GVariant *value,
        * if the first two characters are 'ay' then it's a bytestring.
        * under certain conditions we print those as strings.
        */
-      if (g_variant_get_type_string (value)[1] == 'y')
+      if (value_type_string[1] == 'y')
         {
           const gchar *str;
           gsize size;
@@ -2307,7 +2308,7 @@ g_variant_print_string (GVariant *value,
        * dictionary entries (ie: a dictionary) so we print that
        * differently.
        */
-      if (g_variant_get_type_string (value)[1] == '{')
+      if (value_type_string[1] == '{')
         /* dictionary */
         {
           const gchar *comma = "";
@@ -2316,8 +2317,7 @@ g_variant_print_string (GVariant *value,
           if ((n = g_variant_n_children (value)) == 0)
             {
               if (type_annotate)
-                g_string_append_printf (string, "@%s ",
-                                        g_variant_get_type_string (value));
+                g_string_append_printf (string, "@%s ", value_type_string);
               g_string_append (string, "{}");
               break;
             }
@@ -2353,8 +2353,7 @@ g_variant_print_string (GVariant *value,
           if ((n = g_variant_n_children (value)) == 0)
             {
               if (type_annotate)
-                g_string_append_printf (string, "@%s ",
-                                        g_variant_get_type_string (value));
+                g_string_append_printf (string, "@%s ", value_type_string);
               g_string_append (string, "[]");
               break;
             }
