@@ -1138,11 +1138,13 @@ GVariant *
 g_variant_get_child_value (GVariant *value,
                            gsize     index_)
 {
-  g_return_val_if_fail (index_ < g_variant_n_children (value), NULL);
   g_return_val_if_fail (value->depth < G_MAXSIZE, NULL);
 
   if (~g_atomic_int_get (&value->state) & STATE_SERIALISED)
     {
+      /* g_variant_serialised_get_child() does its own checks on index_ */
+      g_return_val_if_fail (index_ < g_variant_n_children (value), NULL);
+
       g_variant_lock (value);
 
       if (~value->state & STATE_SERIALISED)
@@ -1233,11 +1235,13 @@ GVariant *
 g_variant_maybe_get_child_value (GVariant *value,
                                  gsize     index_)
 {
-  g_return_val_if_fail (index_ < g_variant_n_children (value), NULL);
   g_return_val_if_fail (value->depth < G_MAXSIZE, NULL);
 
   if (~g_atomic_int_get (&value->state) & STATE_SERIALISED)
     {
+      /* g_variant_serialised_get_child() does its own checks on index_ */
+      g_return_val_if_fail (index_ < g_variant_n_children (value), NULL);
+
       g_variant_lock (value);
 
       if (~value->state & STATE_SERIALISED)
