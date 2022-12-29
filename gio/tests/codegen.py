@@ -411,6 +411,26 @@ G_END_DECLS
             xml_data = f.readlines()
             self.assertTrue(len(xml_data) != 0)
 
+    def test_generate_md(self):
+        """Test the basic functionality of the markdown generator."""
+        xml_contents = """
+        <node>
+          <interface name="org.project.Bar.Frobnicator">
+            <method name="RandomMethod"/>
+          </interface>
+        </node>
+        """
+        res = self.runCodegenWithInterface(
+            xml_contents,
+            "--generate-md",
+            "test",
+        )
+        self.assertEqual("", res.err)
+        self.assertEqual("", res.out)
+        with open("test-org.project.Bar.Frobnicator.md", "r") as f:
+            rst = f.readlines()
+            self.assertTrue(len(rst) != 0)
+
     def test_generate_rst(self):
         """Test the basic functionality of the rst generator."""
         xml_contents = """

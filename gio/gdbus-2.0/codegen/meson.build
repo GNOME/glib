@@ -3,6 +3,7 @@ gdbus_codegen_files = [
   'codegen.py',
   'codegen_main.py',
   'codegen_docbook.py',
+  'codegen_md.py',
   'codegen_rst.py',
   'dbustypes.py',
   'parser.py',
