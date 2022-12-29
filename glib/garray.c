@@ -1371,6 +1371,7 @@ ptr_array_new_from_array (gpointer       *data,
   GPtrArray *array;
   GRealPtrArray *rarray;
 
+  g_assert (data != NULL || len == 0);
   g_assert (len <= G_MAXUINT);
 
   array = ptr_array_new (len, element_free_func, null_terminated);
@@ -1478,6 +1479,7 @@ g_ptr_array_new_from_null_terminated_array (gpointer       *data,
         len += 1;
     }
 
+  g_assert (data != NULL || len == 0);
   g_return_val_if_fail (len <= G_MAXUINT, NULL);
 
   return ptr_array_new_from_array (
