@@ -2038,7 +2038,8 @@ else
   libiconv = dependency('iconv')
 endif
 
-pcre2 = dependency('libpcre2-8', version: '>= 10.32', required : false)
+pcre2_req = '>=10.32'
+pcre2 = dependency('libpcre2-8', version: pcre2_req, required: false, allow_fallback: false)
 if not pcre2.found()
   if cc.get_id() == 'msvc' or cc.get_id() == 'clang-cl'
   # MSVC: Search for the PCRE2 library by the configuration, which corresponds
@@ -2054,7 +2055,7 @@ endif
 
 # Try again with the fallback
 if not pcre2.found()
-  pcre2 = dependency('libpcre2-8', required : true, fallback : ['pcre2', 'libpcre2_8'])
+  pcre2 = dependency('libpcre2-8', version: pcre2_req, allow_fallback: true, fallback: ['pcre2', 'libpcre2_8'])
   use_pcre2_static_flag = true
 elif host_system == 'windows'
   pcre2_static = cc.links('''#define PCRE2_STATIC
