@@ -2056,7 +2056,10 @@ endif
 # Try again with the fallback
 if not pcre2.found()
   pcre2 = dependency('libpcre2-8', version: pcre2_req, allow_fallback: true)
-  use_pcre2_static_flag = true
+  assert(pcre2.type_name() == 'internal')
+  # static flags are automatically enabled by the subproject if it's built
+  # with default_library=static
+  use_pcre2_static_flag = false
 elif host_system == 'windows'
   pcre2_static = cc.links('''#define PCRE2_STATIC
                              #define PCRE2_CODE_UNIT_WIDTH 8
