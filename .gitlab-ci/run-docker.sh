@@ -15,16 +15,17 @@ read_arg() {
     fi
 }
 
-SUDO_CMD="sudo"
-if docker -v |& grep -q podman; then
+if type -p podman; then
         # Using podman
-        SUDO_CMD=""
+        DOCKER_CMD="podman"
         # Docker is actually implemented by podman, and its OCI output
         # is incompatible with some of the dockerd instances on GitLab
         # CI runners.
         export BUILDAH_FORMAT=docker
 elif getent group docker | grep -q "\b${USER}\b"; then
-        SUDO_CMD=""
+        DOCKER_CMD="docker"
+else
+        DOCKER_CMD="sudo docker"
 fi
 
 set -e
@@ -103,7 +104,7 @@ TAG="registry.gitlab.gnome.org/gnome/glib/${base}:${base_version}"
 
 if [ $build == 1 ]; then
         echo -e "\\e[1;32mBUILDING\\e[0m: ${base} as ${TAG}"
-        $SUDO_CMD docker build \
+        $DOCKER_CMD build \
                 --build-arg HOST_USER_ID="$UID" \
                 --build-arg COVERITY_SCAN_PROJECT_NAME="${COVERITY_SCAN_PROJECT_NAME}" \
                 --build-arg COVERITY_SCAN_TOKEN="${COVERITY_SCAN_TOKEN}" \
@@ -116,16 +117,16 @@ if [ $push == 1 ]; then
         echo -e "\\e[1;32mPUSHING\\e[0m: ${base} as ${TAG}"
 
         if [ $no_login == 0 ]; then
-                $SUDO_CMD docker login registry.gitlab.gnome.org
+                $DOCKER_CMD login registry.gitlab.gnome.org
         fi
 
-        $SUDO_CMD docker push $TAG
+        $DOCKER_CMD push $TAG
         exit $?
 fi
 
 if [ $run == 1 ]; then
         echo -e "\\e[1;32mRUNNING\\e[0m: ${base} as ${TAG}"
-        $SUDO_CMD docker run \
+        $DOCKER_CMD run \
                 --rm \
                 --volume "$(pwd)/..:/home/user/app" \
                 --workdir "/home/user/app" \
