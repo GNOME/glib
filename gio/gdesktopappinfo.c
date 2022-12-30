@@ -1253,6 +1253,8 @@ desktop_file_dir_unindexed_search (DesktopFileDir  *dir,
   GHashTableIter iter;
   gpointer key, value;
 
+  g_assert (search_token != NULL);
+
   if (!dir->memory_index)
     desktop_file_dir_unindexed_setup_search (dir);
 
@@ -1270,7 +1272,7 @@ desktop_file_dir_unindexed_search (DesktopFileDir  *dir,
       p = strstr (key, search_token);
       if (p == NULL)
         continue;
-      else if (p == key && search_token != NULL && *search_token != '\0')
+      else if (p == key && *search_token != '\0')
         match_type = MATCH_TYPE_PREFIX;
       else
         match_type = MATCH_TYPE_SUBSTRING;
