@@ -2055,7 +2055,7 @@ endif
 
 # Try again with the fallback
 if not pcre2.found()
-  pcre2 = dependency('libpcre2-8', version: pcre2_req, allow_fallback: true, fallback: ['pcre2', 'libpcre2_8'])
+  pcre2 = dependency('libpcre2-8', version: pcre2_req, allow_fallback: true)
   use_pcre2_static_flag = true
 elif host_system == 'windows'
   pcre2_static = cc.links('''#define PCRE2_STATIC
@@ -2078,7 +2078,7 @@ subproject('gvdb')
 gvdb_dep = dependency('gvdb')
 
 libm = cc.find_library('m', required : false)
-libffi_dep = dependency('libffi', version : '>= 3.0.0', fallback : ['libffi', 'ffi_dep'])
+libffi_dep = dependency('libffi', version : '>= 3.0.0')
 
 libz_dep = dependency('zlib')
 
