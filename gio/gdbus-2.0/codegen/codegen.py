@@ -2364,8 +2364,17 @@ class CodeGenerator:
                 "{\n" % (p.arg.ctype_in, i.name_lower, p.name_lower, i.camel_name)
             )
             self.outfile.write(
+                "  g_return_val_if_fail (%sIS_%s (object), %s);\n"
+                "\n"
                 "  return %s%s_GET_IFACE (object)->get_%s (object);\n"
-                % (i.ns_upper, i.name_upper, p.name_lower)
+                % (
+                    i.ns_upper,
+                    i.name_upper,
+                    p.arg.ctype_in_default_value,
+                    i.ns_upper,
+                    i.name_upper,
+                    p.name_lower,
+                )
             )
             self.outfile.write("}\n")
             self.outfile.write("\n")
@@ -3100,9 +3109,6 @@ class CodeGenerator:
 
         # property vfuncs
         for p in i.properties:
-            nul_value = "0"
-            if p.arg.free_func is not None:
-                nul_value = "NULL"
             self.outfile.write(
                 "static %s\n"
                 "%s_proxy_get_%s (%s *object)\n"
@@ -3119,7 +3125,7 @@ class CodeGenerator:
                     i.ns_upper,
                     i.name_upper,
                     p.arg.ctype_in,
-                    nul_value,
+                    p.arg.ctype_in_default_value,
                 )
             )
             # For some property types, we have to free the returned

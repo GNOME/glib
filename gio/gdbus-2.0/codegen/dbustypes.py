@@ -76,6 +76,7 @@ class Arg:
         self.ctype_in_g = "GVariant *"
         self.ctype_in = "GVariant *"
         self.ctype_in_dup = "GVariant *"
+        self.ctype_in_default_value = "NULL"
         self.ctype_out = "GVariant **"
         self.gtype = "G_TYPE_VARIANT"
         self.free_func = "g_variant_unref"
@@ -91,6 +92,7 @@ class Arg:
             if self.signature == "b":
                 self.ctype_in_g = "gboolean "
                 self.ctype_in = "gboolean "
+                self.ctype_in_default_value = "FALSE"
                 self.ctype_out = "gboolean *"
                 self.gtype = "G_TYPE_BOOLEAN"
                 self.free_func = None
@@ -101,6 +103,7 @@ class Arg:
             elif self.signature == "y":
                 self.ctype_in_g = "guchar "
                 self.ctype_in = "guchar "
+                self.ctype_in_default_value = "'\\0'"
                 self.ctype_out = "guchar *"
                 self.gtype = "G_TYPE_UCHAR"
                 self.free_func = None
@@ -111,6 +114,7 @@ class Arg:
             elif self.signature == "n":
                 self.ctype_in_g = "gint "
                 self.ctype_in = "gint16 "
+                self.ctype_in_default_value = "0"
                 self.ctype_out = "gint16 *"
                 self.gtype = "G_TYPE_INT"
                 self.free_func = None
@@ -121,6 +125,7 @@ class Arg:
             elif self.signature == "q":
                 self.ctype_in_g = "guint "
                 self.ctype_in = "guint16 "
+                self.ctype_in_default_value = "0"
                 self.ctype_out = "guint16 *"
                 self.gtype = "G_TYPE_UINT"
                 self.free_func = None
@@ -131,6 +136,7 @@ class Arg:
             elif self.signature == "i":
                 self.ctype_in_g = "gint "
                 self.ctype_in = "gint "
+                self.ctype_in_default_value = "0"
                 self.ctype_out = "gint *"
                 self.gtype = "G_TYPE_INT"
                 self.free_func = None
@@ -141,6 +147,7 @@ class Arg:
             elif self.signature == "u":
                 self.ctype_in_g = "guint "
                 self.ctype_in = "guint "
+                self.ctype_in_default_value = "0"
                 self.ctype_out = "guint *"
                 self.gtype = "G_TYPE_UINT"
                 self.free_func = None
@@ -151,6 +158,7 @@ class Arg:
             elif self.signature == "x":
                 self.ctype_in_g = "gint64 "
                 self.ctype_in = "gint64 "
+                self.ctype_in_default_value = "0"
                 self.ctype_out = "gint64 *"
                 self.gtype = "G_TYPE_INT64"
                 self.free_func = None
@@ -162,6 +170,7 @@ class Arg:
                 self.ctype_in_g = "guint64 "
                 self.ctype_in = "guint64 "
                 self.ctype_out = "guint64 *"
+                self.ctype_in_default_value = "0"
                 self.gtype = "G_TYPE_UINT64"
                 self.free_func = None
                 self.format_in = "t"
@@ -171,6 +180,7 @@ class Arg:
             elif self.signature == "d":
                 self.ctype_in_g = "gdouble "
                 self.ctype_in = "gdouble "
+                self.ctype_in_default_value = "0.0"
                 self.ctype_out = "gdouble *"
                 self.gtype = "G_TYPE_DOUBLE"
                 self.free_func = None
@@ -182,6 +192,7 @@ class Arg:
                 self.ctype_in_g = "const gchar *"
                 self.ctype_in = "const gchar *"
                 self.ctype_in_dup = "gchar *"
+                self.ctype_in_default_value = "NULL"
                 self.ctype_out = "gchar **"
                 self.gtype = "G_TYPE_STRING"
                 self.free_func = "g_free"
@@ -193,6 +204,7 @@ class Arg:
                 self.ctype_in_g = "const gchar *"
                 self.ctype_in = "const gchar *"
                 self.ctype_in_dup = "gchar *"
+                self.ctype_in_default_value = "NULL"
                 self.ctype_out = "gchar **"
                 self.gtype = "G_TYPE_STRING"
                 self.free_func = "g_free"
@@ -204,6 +216,7 @@ class Arg:
                 self.ctype_in_g = "const gchar *"
                 self.ctype_in = "const gchar *"
                 self.ctype_in_dup = "gchar *"
+                self.ctype_in_default_value = "NULL"
                 self.ctype_out = "gchar **"
                 self.gtype = "G_TYPE_STRING"
                 self.free_func = "g_free"
@@ -214,6 +227,7 @@ class Arg:
             elif self.signature == "ay":
                 self.ctype_in_g = "const gchar *"
                 self.ctype_in = "const gchar *"
+                self.ctype_in_default_value = "NULL"
                 self.ctype_in_dup = "gchar *"
                 self.ctype_out = "gchar **"
                 self.gtype = "G_TYPE_STRING"
@@ -226,6 +240,7 @@ class Arg:
                 self.ctype_in_g = "const gchar *const *"
                 self.ctype_in = "const gchar *const *"
                 self.ctype_in_dup = "gchar **"
+                self.ctype_in_default_value = "NULL"
                 self.ctype_out = "gchar ***"
                 self.gtype = "G_TYPE_STRV"
                 self.free_func = "g_strfreev"
@@ -238,6 +253,7 @@ class Arg:
                 self.ctype_in_g = "const gchar *const *"
                 self.ctype_in = "const gchar *const *"
                 self.ctype_in_dup = "gchar **"
+                self.ctype_in_default_value = "NULL"
                 self.ctype_out = "gchar ***"
                 self.gtype = "G_TYPE_STRV"
                 self.free_func = "g_strfreev"
@@ -250,6 +266,7 @@ class Arg:
                 self.ctype_in_g = "const gchar *const *"
                 self.ctype_in = "const gchar *const *"
                 self.ctype_in_dup = "gchar **"
+                self.ctype_in_default_value = "NULL"
                 self.ctype_out = "gchar ***"
                 self.gtype = "G_TYPE_STRV"
                 self.free_func = "g_strfreev"
