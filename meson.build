@@ -2090,7 +2090,7 @@ libz_dep = dependency('zlib')
 # FIXME: glib-gettext.m4 has much more checks to detect broken/uncompatible
 # implementations. This could be extended if issues are found in some platforms.
 libintl_deps = []
-libintl = dependency('intl', required: false)
+libintl = dependency('intl', required: false, allow_fallback: false)
 if libintl.found()
   # libintl supports different threading APIs, which may not
   # require additional flags, but it defaults to using pthreads if
@@ -2116,7 +2116,8 @@ endif
 if libintl.found()
   have_bind_textdomain_codeset = cc.has_function('bind_textdomain_codeset', dependencies: libintl_deps)
 else
-  libintl = subproject('proxy-libintl').get_variable('intl_dep')
+  libintl = dependency('intl', allow_fallback: true)
+  assert(libintl.type_name() == 'internal')
   libintl_deps = [libintl]
   have_bind_textdomain_codeset = true  # proxy-libintl supports it
 endif
