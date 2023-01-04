@@ -10,7 +10,7 @@ warned.
 
 For prebuilt binaries (DLLs and EXEs) and developer packages (headers,
 import libraries) of GLib, Pango, GTK+ etc for Windows, go to
-https://www.gtk.org/download/windows.php . They are for "native"
+https://www.gtk.org/docs/installations/windows/ . They are for "native"
 Windows meaning they use the Win32 API and Microsoft C runtime library
 only. No POSIX (Unix) emulation layer like Cygwin is involved.
 
