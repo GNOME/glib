@@ -348,14 +348,18 @@ g_find_program_for_path (const char *program,
 	  !g_file_test (program, G_FILE_TEST_IS_DIR))
         {
           gchar *out = NULL;
-          char *cwd;
 
           if (g_path_is_absolute (program))
-            return g_strdup (program);
+            {
+              out = g_strdup (program);
+            }
+          else
+            {
+              char *cwd = g_get_current_dir ();
+              out = g_build_filename (cwd, program, NULL);
+              g_free (cwd);
+            }
 
-          cwd = g_get_current_dir ();
-          out = g_build_filename (cwd, program, NULL);
-          g_free (cwd);
           g_free (program_path);
 
           return g_steal_pointer (&out);
@@ -499,6 +503,8 @@ g_find_program_for_path (const char *program,
             ret = g_build_filename (cwd, startp, NULL);
             g_free (cwd);
           }
+
+          g_free (program_path);
           g_free (startp_path);
           g_free (freeme);
 #ifdef G_OS_WIN32
@@ -510,7 +516,8 @@ g_find_program_for_path (const char *program,
       g_free (startp_path);
     }
   while (*p++ != '\0');
-  
+
+  g_free (program_path);
   g_free (freeme);
 #ifdef G_OS_WIN32
   g_free ((gchar *) path_copy);
