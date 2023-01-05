@@ -2883,6 +2883,7 @@ set_mtime_atime (char                       *filename,
     {
       if (lazy_stat (filename, &statbuf, &got_stat) == 0)
 	{
+          times_n[1].tv_sec = statbuf.st_mtime;
 #if defined (HAVE_STRUCT_STAT_ST_MTIMENSEC)
           times_n[1].tv_nsec = statbuf.st_mtimensec;
 #elif defined (HAVE_STRUCT_STAT_ST_MTIM_TV_NSEC)
