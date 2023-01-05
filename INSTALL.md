@@ -87,7 +87,7 @@ in the file:
 
 Or online at:
 
- https://developer.gnome.org/glib/stable/glib-building.html
+ https://docs.gtk.org/glib/building.html
 
 
 Installation directories
@@ -127,4 +127,4 @@ in the file:
 
 Or online at:
 
- https://developer.gnome.org/glib/stable/glib-cross-compiling.html
+ https://docs.gtk.org/glib/cross-compiling.html
