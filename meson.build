@@ -2038,7 +2038,8 @@ else
   libiconv = dependency('iconv')
 endif
 
-pcre2 = dependency('libpcre2-8', version: '>= 10.32', required : false)
+pcre2_req = '>=10.32'
+pcre2 = dependency('libpcre2-8', version: pcre2_req, required: false, allow_fallback: false)
 if not pcre2.found()
   if cc.get_id() == 'msvc' or cc.get_id() == 'clang-cl'
   # MSVC: Search for the PCRE2 library by the configuration, which corresponds
@@ -2054,8 +2055,11 @@ endif
 
 # Try again with the fallback
 if not pcre2.found()
-  pcre2 = dependency('libpcre2-8', required : true, fallback : ['pcre2', 'libpcre2_8'])
-  use_pcre2_static_flag = true
+  pcre2 = dependency('libpcre2-8', version: pcre2_req, allow_fallback: true)
+  assert(pcre2.type_name() == 'internal')
+  # static flags are automatically enabled by the subproject if it's built
+  # with default_library=static
+  use_pcre2_static_flag = false
 elif host_system == 'windows'
   pcre2_static = cc.links('''#define PCRE2_STATIC
                              #define PCRE2_CODE_UNIT_WIDTH 8
@@ -2077,7 +2081,7 @@ subproject('gvdb')
 gvdb_dep = dependency('gvdb')
 
 libm = cc.find_library('m', required : false)
-libffi_dep = dependency('libffi', version : '>= 3.0.0', fallback : ['libffi', 'ffi_dep'])
+libffi_dep = dependency('libffi', version : '>= 3.0.0')
 
 libz_dep = dependency('zlib')
 
@@ -2086,7 +2090,7 @@ libz_dep = dependency('zlib')
 # FIXME: glib-gettext.m4 has much more checks to detect broken/uncompatible
 # implementations. This could be extended if issues are found in some platforms.
 libintl_deps = []
-libintl = dependency('intl', required: false)
+libintl = dependency('intl', required: false, allow_fallback: false)
 if libintl.found()
   # libintl supports different threading APIs, which may not
   # require additional flags, but it defaults to using pthreads if
@@ -2112,7 +2116,8 @@ endif
 if libintl.found()
   have_bind_textdomain_codeset = cc.has_function('bind_textdomain_codeset', dependencies: libintl_deps)
 else
-  libintl = subproject('proxy-libintl').get_variable('intl_dep')
+  libintl = dependency('intl', allow_fallback: true)
+  assert(libintl.type_name() == 'internal')
   libintl_deps = [libintl]
   have_bind_textdomain_codeset = true  # proxy-libintl supports it
 endif

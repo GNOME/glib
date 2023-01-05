@@ -5,7 +5,7 @@
 GitLab CI jobs run in a Docker image, defined here. To update that image
 (perhaps to install some more packages):
 
-1. Edit `.gitlab-ci/Dockerfile` with the changes you want
+1. Edit `.gitlab-ci/*.Dockerfile` with the changes you want
 1. Run `.gitlab-ci/run-docker.sh build --base=debian-stable --base-version=1` to
    build the new image (bump the version from the latest listed for that `base`
    on https://gitlab.gnome.org/GNOME/glib/container_registry). If rebuilding the
@@ -23,5 +23,5 @@ GitLab CI jobs run in a Docker image, defined here. To update that image
 1. Edit `.gitlab-ci.yml` (in the root of this repository) to use your new
    image
 
-[pat]: https://gitlab.gnome.org/profile/personal_access_tokens
+[pat]: https://gitlab.gnome.org/-/profile/personal_access_tokens
 [cs]: https://scan.coverity.com/

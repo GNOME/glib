@@ -11,10 +11,10 @@ cache:
     - _ccache/
 
 variables:
-  FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v19"
+  FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v20"
   COVERITY_IMAGE: "registry.gitlab.gnome.org/gnome/glib/coverity:v7"
   DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v14"
-  MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v9"
+  MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v10"
   MESON_TEST_TIMEOUT_MULTIPLIER: 4
   G_MESSAGES_DEBUG: all
   MESON_COMMON_OPTIONS: "--buildtype debug --wrap-mode=nodownload --fatal-meson-warnings"
