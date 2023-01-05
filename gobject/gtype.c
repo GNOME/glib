@@ -4161,7 +4161,7 @@ g_type_check_instance_is_a (GTypeInstance *type_instance,
     return FALSE;
 
   iface = lookup_type_node_I (iface_type);
-  if (iface->is_final)
+  if (iface && iface->is_final)
     return type_instance->g_class->g_type == iface_type;
 
   node = lookup_type_node_I (type_instance->g_class->g_type);

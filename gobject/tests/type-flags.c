@@ -130,6 +130,8 @@ test_type_flags_final_instance_check (void)
                                               TEST_TYPE_DEPRECATED));
   g_assert_true (g_type_check_instance_is_a ((GTypeInstance *) final,
                                               G_TYPE_OBJECT));
+  g_assert_false (g_type_check_instance_is_a ((GTypeInstance *) final,
+                                              G_TYPE_INVALID));
 
   g_clear_object (&final);
 }
@@ -184,6 +186,8 @@ test_type_flags_deprecated (void)
                                               G_TYPE_OBJECT));
   g_assert_false (g_type_check_instance_is_a ((GTypeInstance *) deprecated_object,
                                               TEST_TYPE_FINAL));
+  g_assert_false (g_type_check_instance_is_a ((GTypeInstance *) deprecated_object,
+                                              G_TYPE_INVALID));
 
   g_test_assert_expected_messages ();
 
