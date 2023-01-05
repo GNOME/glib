@@ -495,12 +495,12 @@ g_strnfill (gsize length,
  * @dest: destination buffer.
  * @src: source string.
  *
- * Copies a nul-terminated string into the dest buffer, include the
- * trailing nul, and return a pointer to the trailing nul byte.
- * This is useful for concatenating multiple strings together
- * without having to repeatedly scan for the end.
+ * Copies a nul-terminated string into the destination buffer, including
+ * the trailing nul byte, and returns a pointer to the trailing nul byte
+ * in `dest`.  The return value is useful for concatenating multiple
+ * strings without having to repeatedly scan for the end.
  *
- * Returns: a pointer to trailing nul byte.
+ * Returns: a pointer to the trailing nul byte in `dest`.
  **/
 gchar *
 g_stpcpy (gchar       *dest,
