@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-11-24 12:35+0000\n"
+"POT-Creation-Date: 2022-12-12 00:16+0000\n"
 "Last-Translator: Нанба Наала <naala-nanba@rambler.ru>\n"
 "Language-Team: Abkhazian <daniel.abzakh@gmail.com>\n"
 "Language: ab\n"
@@ -64,7 +64,7 @@ msgstr ""
 
 #: gio/gapplication-tool.c:52 gio/gsettings-tool.c:592
 msgid "Print version information and exit"
-msgstr ""
+msgstr "Аверисиа иазкны аинформациа аарԥшны аҭыҵра"
 
 #: gio/gapplication-tool.c:55
 msgid "List applications"
@@ -164,7 +164,7 @@ msgstr ""
 #: gio/gapplication-tool.c:118 gio/gresource-tool.c:559
 #: gio/gsettings-tool.c:713
 msgid "Arguments:\n"
-msgstr ""
+msgstr "Аҵаҵӷәқәа:\n"
 
 #: gio/gapplication-tool.c:137 gio/gio-tool.c:226
 msgid "[ARGS…]"
@@ -1756,7 +1756,7 @@ msgstr ""
 
 #: gio/gio-tool-info.c:105
 msgid "attributes:\n"
-msgstr ""
+msgstr "Аҟазшьарбагақәа:\n"
 
 #: gio/gio-tool-info.c:165 gio/gio-tool-info.c:174
 #, c-format
@@ -3092,29 +3092,29 @@ msgstr ""
 #: gio/glocalfileinfo.c:2896
 #, c-format
 msgid "Error setting SELinux context: %s"
-msgstr ""
+msgstr "Аконтекста SELinux: %s ақәыргылараан иҟалеит агха"
 
 #: gio/glocalfileinfo.c:2993
 #, c-format
 msgid "Setting attribute %s not supported"
-msgstr ""
+msgstr "Аҟазшьарбага %s ақәыргылара  аднакылаӡом"
 
 #: gio/glocalfileinputstream.c:165 gio/glocalfileoutputstream.c:803
 #, c-format
 msgid "Error reading from file: %s"
-msgstr ""
+msgstr "Иҟалеит агха афаил аҟынтә аҧхьарааан: %s"
 
 #: gio/glocalfileinputstream.c:196 gio/glocalfileoutputstream.c:355
 #: gio/glocalfileoutputstream.c:449
 #, c-format
 msgid "Error closing file: %s"
-msgstr ""
+msgstr "Иҟалеит агха афаил аркраан: %s"
 
 #: gio/glocalfileinputstream.c:274 gio/glocalfileoutputstream.c:565
 #: gio/glocalfileoutputstream.c:1188
 #, c-format
 msgid "Error seeking in file: %s"
-msgstr ""
+msgstr "Иҟалеит агха афаил ала аиасраан: %s"
 
 #: gio/glocalfilemonitor.c:882
 msgid "Unable to find default local file monitor type"
@@ -3124,41 +3124,41 @@ msgstr ""
 #: gio/glocalfileoutputstream.c:336 gio/glocalfileoutputstream.c:824
 #, c-format
 msgid "Error writing to file: %s"
-msgstr ""
+msgstr "Иҟалеит агха афаил ахь анҵараан: %s"
 
 #: gio/glocalfileoutputstream.c:382
 #, c-format
 msgid "Error removing old backup link: %s"
-msgstr ""
+msgstr "Иҟалеит агха ижәытәу арезервтә зхьарҧшра аныхраан: %s"
 
 #: gio/glocalfileoutputstream.c:396 gio/glocalfileoutputstream.c:409
 #, c-format
 msgid "Error creating backup copy: %s"
-msgstr ""
+msgstr "Иҟалеит агха арезервтә копиа аҧҵараан: %s"
 
 #: gio/glocalfileoutputstream.c:427
 #, c-format
 msgid "Error renaming temporary file: %s"
-msgstr ""
+msgstr "Иҟалеит агха аамҭалатәи афаил ахьӡ аҧсахраан: %s"
 
 #: gio/glocalfileoutputstream.c:611 gio/glocalfileoutputstream.c:1242
 #, c-format
 msgid "Error truncating file: %s"
-msgstr ""
+msgstr "Иҟалеит агха афаил авырффараан: %s"
 
 #: gio/glocalfileoutputstream.c:664 gio/glocalfileoutputstream.c:909
 #: gio/glocalfileoutputstream.c:1223 gio/gsubprocess.c:231
 #, c-format
 msgid "Error opening file “%s”: %s"
-msgstr ""
+msgstr "Иҟалеит агха афаил аартраан «%s»: %s"
 
 #: gio/glocalfileoutputstream.c:959
 msgid "Target file is a directory"
-msgstr ""
+msgstr "Ахықәкыратә фаил хьӡынҵаӡам"
 
 #: gio/glocalfileoutputstream.c:973
 msgid "Target file is not a regular file"
-msgstr ""
+msgstr "Ахықәкыратә фаил имаоиоу фаилӡам"
 
 #: gio/glocalfileoutputstream.c:1015
 msgid "The file was externally modified"
