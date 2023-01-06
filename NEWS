@@ -1,3 +1,35 @@
+Overview of changes in GLib 2.75.2, 2023-01-06
+==============================================
+
+* Add `g_ptr_array_sort_values()` and `g_ptr_array_sort_values_with_data()` APIs
+  (work by Marco Trevisan) (!3155)
+
+* Some fixes for activation of UWP apps on Windows (work by Luca Bacci) (#2843, !3167)
+
+* Support Markdown output from `gdbus-codegen` (work by Guido Günther) (!3171)
+
+* Bugs fixed:
+  - #2871 Leak in g_find_program_for_path() (Philip Withnall)
+  - #2843 gtk_show_uri can't open browser on MSYS2 on Windows (Luca Bacci)
+  - #2857 Grammar issue in documentation glib stpcpy (Peter Bloomfield)
+  - !3155 garray: Add g_ptr_array_sort_values[_with_data]() wrappers
+  - !3162 gobject: Add a missing NULL check for the return from
+    lookup_type_node_I()
+  - !3167 GWin32AppInfo: Fixes for UWP (packaged) apps activation
+  - !3169 GLocalFile: Delete redundant error saving statement
+  - !3170 GLocalFile: add error handle for trash info file writing
+  - !3171 codegen: Support markdown suitable for gi-docgen
+  - !3173 gdesktopappinfo: Drop an unnecessary NULL check
+  - !3174 garray: Add some additional length assertions
+  - !3175 codegen: Check parameter before calling its interface method
+  - !3177 Various fixes for how we interact with subproject dependencies
+  - !3178 glocalfileinfo: Don't reset mtime tv_sec when setting tv_usec
+  - !3181 INSTALL.md,README.win32.md: Actualize links
+
+* Translation updates:
+  - Turkish (Sabri Ünal)
+
+
 Overview of changes in GLib 2.75.1, 2022-12-21
 ==============================================
 
