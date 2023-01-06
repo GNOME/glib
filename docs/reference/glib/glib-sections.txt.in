@@ -2742,6 +2742,8 @@ g_ptr_array_steal_index
 g_ptr_array_steal_index_fast
 g_ptr_array_sort
 g_ptr_array_sort_with_data
+g_ptr_array_sort_values
+g_ptr_array_sort_values_with_data
 g_ptr_array_set_size
 g_ptr_array_index
 g_ptr_array_free

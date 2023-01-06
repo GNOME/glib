@@ -2454,7 +2454,10 @@ g_ptr_array_insert (GPtrArray *array,
  *
  * Note that the comparison function for g_ptr_array_sort() doesn't
  * take the pointers from the array as arguments, it takes pointers to
- * the pointers in the array. Here is a full example of usage:
+ * the pointers in the array.
+ *
+ * Use g_ptr_array_sort_with_data() if you want to use normal
+ * #GCompareFuncs, otherwise here is a full example of use:
  *
  * |[<!-- language="C" -->
  * typedef struct
@@ -2511,7 +2514,10 @@ g_ptr_array_sort (GPtrArray    *array,
  *
  * Note that the comparison function for g_ptr_array_sort_with_data()
  * doesn't take the pointers from the array as arguments, it takes
- * pointers to the pointers in the array. Here is a full example of use:
+ * pointers to the pointers in the array.
+ *
+ * Use g_ptr_array_sort_with_data() if you want to use normal
+ * #GCompareDataFuncs, otherwise here is a full example of use:
  *
  * |[<!-- language="C" -->
  * typedef enum { SORT_NAME, SORT_SIZE } SortMode;
@@ -2573,6 +2579,80 @@ g_ptr_array_sort_with_data (GPtrArray        *array,
                        sizeof (gpointer),
                        compare_func,
                        user_data);
+}
+
+static inline gint
+compare_ptr_array_values (gconstpointer a, gconstpointer b, gpointer user_data)
+{
+  gconstpointer aa = *((gconstpointer *) a);
+  gconstpointer bb = *((gconstpointer *) b);
+  GCompareFunc compare_func = user_data;
+
+  return compare_func (aa, bb);
+}
+
+/**
+ * g_ptr_array_sort_values:
+ * @array: a #GPtrArray
+ * @compare_func: a #GCompareFunc comparison function
+ *
+ * Sorts the array, using @compare_func which should be a qsort()-style
+ * comparison function (returns less than zero for first arg is less
+ * than second arg, zero for equal, greater than zero if first arg is
+ * greater than second arg).
+ *
+ * This is guaranteed to be a stable sort.
+ *
+ * Since: 2.76
+ */
+void
+g_ptr_array_sort_values (GPtrArray    *array,
+                         GCompareFunc  compare_func)
+{
+  g_ptr_array_sort_with_data (array, compare_ptr_array_values, compare_func);
+}
+
+typedef struct
+{
+  GCompareDataFunc compare_func;
+  gpointer user_data;
+} GPtrArraySortValuesData;
+
+static inline gint
+compare_ptr_array_values_with_data (gconstpointer a,
+                                    gconstpointer b,
+                                    gpointer      user_data)
+{
+  gconstpointer aa = *((gconstpointer *) a);
+  gconstpointer bb = *((gconstpointer *) b);
+  GPtrArraySortValuesData *data = user_data;
+
+  return data->compare_func (aa, bb, data->user_data);
+}
+
+/**
+ * g_ptr_array_sort_values_with_data:
+ * @array: a #GPtrArray
+ * @compare_func: a #GCompareDataFunc comparison function
+ * @user_data: data to pass to @compare_func
+ *
+ * Like g_ptr_array_sort_values(), but the comparison function has an extra
+ * user data argument.
+ *
+ * This is guaranteed to be a stable sort.
+ *
+ * Since: 2.76
+ */
+void
+g_ptr_array_sort_values_with_data (GPtrArray        *array,
+                                   GCompareDataFunc  compare_func,
+                                   gpointer          user_data)
+{
+  g_ptr_array_sort_with_data (array, compare_ptr_array_values_with_data,
+                              &(GPtrArraySortValuesData){
+                                  .compare_func = compare_func,
+                                  .user_data = user_data,
+                              });
 }
 
 /**

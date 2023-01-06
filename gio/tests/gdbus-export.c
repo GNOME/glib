@@ -347,8 +347,8 @@ static gint
 compare_strings (gconstpointer a,
                  gconstpointer b)
 {
-  const gchar *sa = *(const gchar **) a;
-  const gchar *sb = *(const gchar **) b;
+  const gchar *sa = a;
+  const gchar *sb = b;
 
   /* Array terminator must sort last */
   if (sa == NULL)
@@ -413,7 +413,7 @@ get_nodes_at (GDBusConnection  *c,
   g_dbus_node_info_unref (node_info);
 
   /* Nodes are semantically unordered; sort array so tests can rely on order */
-  g_ptr_array_sort (p, compare_strings);
+  g_ptr_array_sort_values (p, compare_strings);
 
   return (gchar **) g_ptr_array_free (p, FALSE);
 }

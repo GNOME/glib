@@ -242,6 +242,13 @@ GLIB_AVAILABLE_IN_ALL
 void       g_ptr_array_sort_with_data     (GPtrArray        *array,
 					   GCompareDataFunc  compare_func,
 					   gpointer          user_data);
+GLIB_AVAILABLE_IN_2_76
+void       g_ptr_array_sort_values        (GPtrArray        *array,
+                                           GCompareFunc      compare_func);
+GLIB_AVAILABLE_IN_2_76
+void       g_ptr_array_sort_values_with_data (GPtrArray        *array,
+                                              GCompareDataFunc  compare_func,
+                                              gpointer          user_data);
 GLIB_AVAILABLE_IN_ALL
 void       g_ptr_array_foreach            (GPtrArray        *array,
 					   GFunc             func,

@@ -2255,12 +2255,24 @@ pointer_array_extend_and_steal (void)
 }
 
 static gint
+ptr_compare_values (gconstpointer p1, gconstpointer p2)
+{
+  return GPOINTER_TO_INT (p1) - GPOINTER_TO_INT (p2);
+}
+
+static gint
 ptr_compare (gconstpointer p1, gconstpointer p2)
 {
   gpointer i1 = *(gpointer*)p1;
   gpointer i2 = *(gpointer*)p2;
 
-  return GPOINTER_TO_INT (i1) - GPOINTER_TO_INT (i2);
+  return ptr_compare_values (i1, i2);
+}
+
+static gint
+ptr_compare_values_data (gconstpointer p1, gconstpointer p2, gpointer data)
+{
+  return GPOINTER_TO_INT (p1) - GPOINTER_TO_INT (p2);
 }
 
 static gint
@@ -2269,7 +2281,7 @@ ptr_compare_data (gconstpointer p1, gconstpointer p2, gpointer data)
   gpointer i1 = *(gpointer*)p1;
   gpointer i2 = *(gpointer*)p2;
 
-  return GPOINTER_TO_INT (i1) - GPOINTER_TO_INT (i2);
+  return ptr_compare_values_data (i1, i2, data);
 }
 
 static void
@@ -2464,6 +2476,204 @@ pointer_array_sort_with_data (void)
     g_ptr_array_add (gparray, GINT_TO_POINTER (g_random_int_range (0, 10000)));
 
   g_ptr_array_sort_with_data (gparray, ptr_compare_data, NULL);
+
+  prev = -1;
+  for (i = 0; i < 10000; i++)
+    {
+      cur = GPOINTER_TO_INT (g_ptr_array_index (gparray, i));
+      g_assert_cmpint (prev, <=, cur);
+      prev = cur;
+    }
+
+  g_ptr_array_free (gparray, TRUE);
+}
+
+static void
+pointer_array_sort_values (void)
+{
+  GPtrArray *gparray;
+  gint i;
+  gint val;
+  gint prev, cur;
+
+  gparray = g_ptr_array_new ();
+
+  /* Sort empty array */
+  g_ptr_array_sort_values (gparray, ptr_compare_values);
+
+  for (i = 0; i < 10000; i++)
+    {
+      val = g_random_int_range (0, 10000);
+      g_ptr_array_add (gparray, GINT_TO_POINTER (val));
+    }
+
+  g_ptr_array_sort_values (gparray, ptr_compare_values);
+
+  prev = -1;
+  for (i = 0; i < 10000; i++)
+    {
+      cur = GPOINTER_TO_INT (g_ptr_array_index (gparray, i));
+      g_assert_cmpint (prev, <=, cur);
+      prev = cur;
+    }
+
+  g_clear_pointer (&gparray, g_ptr_array_unref);
+
+  gparray = g_ptr_array_new ();
+
+  g_ptr_array_add (gparray, "dddd");
+  g_ptr_array_add (gparray, "cccc");
+  g_ptr_array_add (gparray, NULL);
+  g_ptr_array_add (gparray, "bbbb");
+  g_ptr_array_add (gparray, "aaaa");
+
+  g_ptr_array_sort_values (gparray, (GCompareFunc) g_strcmp0);
+
+  i = 0;
+  g_assert_cmpstr (g_ptr_array_index (gparray, i++), ==, NULL);
+  g_assert_cmpstr (g_ptr_array_index (gparray, i++), ==, "aaaa");
+  g_assert_cmpstr (g_ptr_array_index (gparray, i++), ==, "bbbb");
+  g_assert_cmpstr (g_ptr_array_index (gparray, i++), ==, "cccc");
+  g_assert_cmpstr (g_ptr_array_index (gparray, i++), ==, "dddd");
+
+  g_clear_pointer (&gparray, g_ptr_array_unref);
+}
+
+static gint
+sort_filelist_values (gconstpointer a, gconstpointer b)
+{
+  const FileListEntry *entry1 = a;
+  const FileListEntry *entry2 = b;
+
+  return g_ascii_strcasecmp (entry1->name, entry2->name);
+}
+
+static void
+pointer_array_sort_values_example (void)
+{
+  GPtrArray *file_list = NULL;
+  FileListEntry *entry;
+
+  file_list = g_ptr_array_new_with_free_func (file_list_entry_free);
+
+  entry = g_new0 (FileListEntry, 1);
+  entry->name = g_strdup ("README");
+  entry->size = 42;
+  g_ptr_array_add (file_list, g_steal_pointer (&entry));
+
+  entry = g_new0 (FileListEntry, 1);
+  entry->name = g_strdup ("empty");
+  entry->size = 0;
+  g_ptr_array_add (file_list, g_steal_pointer (&entry));
+
+  entry = g_new0 (FileListEntry, 1);
+  entry->name = g_strdup ("aardvark");
+  entry->size = 23;
+  g_ptr_array_add (file_list, g_steal_pointer (&entry));
+
+  g_ptr_array_sort_values (file_list, sort_filelist_values);
+
+  g_assert_cmpuint (file_list->len, ==, 3);
+  entry = g_ptr_array_index (file_list, 0);
+  g_assert_cmpstr (entry->name, ==, "aardvark");
+  entry = g_ptr_array_index (file_list, 1);
+  g_assert_cmpstr (entry->name, ==, "empty");
+  entry = g_ptr_array_index (file_list, 2);
+  g_assert_cmpstr (entry->name, ==, "README");
+
+  g_ptr_array_unref (file_list);
+}
+
+static gint
+sort_filelist_how_values (gconstpointer a, gconstpointer b, gpointer user_data)
+{
+  gint order;
+  const SortMode sort_mode = GPOINTER_TO_INT (user_data);
+  const FileListEntry *entry1 = a;
+  const FileListEntry *entry2 = b;
+
+  switch (sort_mode)
+    {
+    case SORT_NAME:
+      order = g_ascii_strcasecmp (entry1->name, entry2->name);
+      break;
+    case SORT_SIZE:
+      order = entry1->size - entry2->size;
+      break;
+    default:
+      order = 0;
+      break;
+    }
+  return order;
+}
+
+static void
+pointer_array_sort_values_with_data_example (void)
+{
+  GPtrArray *file_list = NULL;
+  FileListEntry *entry;
+  SortMode sort_mode;
+
+  file_list = g_ptr_array_new_with_free_func (file_list_entry_free);
+
+  entry = g_new0 (FileListEntry, 1);
+  entry->name = g_strdup ("README");
+  entry->size = 42;
+  g_ptr_array_add (file_list, g_steal_pointer (&entry));
+
+  entry = g_new0 (FileListEntry, 1);
+  entry->name = g_strdup ("empty");
+  entry->size = 0;
+  g_ptr_array_add (file_list, g_steal_pointer (&entry));
+
+  entry = g_new0 (FileListEntry, 1);
+  entry->name = g_strdup ("aardvark");
+  entry->size = 23;
+  g_ptr_array_add (file_list, g_steal_pointer (&entry));
+
+  sort_mode = SORT_NAME;
+  g_ptr_array_sort_values_with_data (file_list, sort_filelist_how_values,
+                                     GINT_TO_POINTER (sort_mode));
+
+  g_assert_cmpuint (file_list->len, ==, 3);
+  entry = g_ptr_array_index (file_list, 0);
+  g_assert_cmpstr (entry->name, ==, "aardvark");
+  entry = g_ptr_array_index (file_list, 1);
+  g_assert_cmpstr (entry->name, ==, "empty");
+  entry = g_ptr_array_index (file_list, 2);
+  g_assert_cmpstr (entry->name, ==, "README");
+
+  sort_mode = SORT_SIZE;
+  g_ptr_array_sort_values_with_data (file_list, sort_filelist_how_values,
+                                     GINT_TO_POINTER (sort_mode));
+
+  g_assert_cmpuint (file_list->len, ==, 3);
+  entry = g_ptr_array_index (file_list, 0);
+  g_assert_cmpstr (entry->name, ==, "empty");
+  entry = g_ptr_array_index (file_list, 1);
+  g_assert_cmpstr (entry->name, ==, "aardvark");
+  entry = g_ptr_array_index (file_list, 2);
+  g_assert_cmpstr (entry->name, ==, "README");
+
+  g_ptr_array_unref (file_list);
+}
+
+static void
+pointer_array_sort_values_with_data (void)
+{
+  GPtrArray *gparray;
+  gint i;
+  gint prev, cur;
+
+  gparray = g_ptr_array_new ();
+
+  /* Sort empty array */
+  g_ptr_array_sort_values_with_data (gparray, ptr_compare_values_data, NULL);
+
+  for (i = 0; i < 10000; i++)
+    g_ptr_array_add (gparray, GINT_TO_POINTER (g_random_int_range (0, 10000)));
+
+  g_ptr_array_sort_values_with_data (gparray, ptr_compare_values_data, NULL);
 
   prev = -1;
   for (i = 0; i < 10000; i++)
@@ -3040,6 +3250,10 @@ main (int argc, char *argv[])
   g_test_add_func ("/pointerarray/sort/example", pointer_array_sort_example);
   g_test_add_func ("/pointerarray/sort-with-data", pointer_array_sort_with_data);
   g_test_add_func ("/pointerarray/sort-with-data/example", pointer_array_sort_with_data_example);
+  g_test_add_func ("/pointerarray/sort-values", pointer_array_sort_values);
+  g_test_add_func ("/pointerarray/sort-values/example", pointer_array_sort_values_example);
+  g_test_add_func ("/pointerarray/sort-values-with-data", pointer_array_sort_values_with_data);
+  g_test_add_func ("/pointerarray/sort-values-with-data/example", pointer_array_sort_values_with_data_example);
   g_test_add_func ("/pointerarray/find/empty", pointer_array_find_empty);
   g_test_add_func ("/pointerarray/find/non-empty", pointer_array_find_non_empty);
   g_test_add_func ("/pointerarray/remove-range", pointer_array_remove_range);

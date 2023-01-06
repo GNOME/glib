@@ -572,13 +572,7 @@ test_store_splice_wrong_type (void)
 }
 
 static gint
-ptr_array_cmp_action_by_name (GAction **a, GAction **b)
-{
-  return g_strcmp0 (g_action_get_name (*a), g_action_get_name (*b));
-}
-
-static gint
-list_model_cmp_action_by_name (GAction *a, GAction *b, gpointer user_data)
+cmp_action_by_name (GAction *a, GAction *b, gpointer user_data)
 {
   return g_strcmp0 (g_action_get_name (a), g_action_get_name (b));
 }
@@ -606,16 +600,16 @@ test_store_sort (void)
   g_ptr_array_add (array, g_simple_action_new ("1", NULL));
 
   /* Sort an empty list */
-  g_list_store_sort (store, (GCompareDataFunc)list_model_cmp_action_by_name, NULL);
+  g_list_store_sort (store, (GCompareDataFunc) cmp_action_by_name, NULL);
 
   /* Add all */
   g_list_store_splice (store, 0, 0, array->pdata, array->len);
   g_assert_true (model_array_equal (model, array));
 
   /* Sort both and check if the result is the same */
-  g_ptr_array_sort (array, (GCompareFunc)ptr_array_cmp_action_by_name);
+  g_ptr_array_sort_values (array, (GCompareFunc)cmp_action_by_name);
   g_assert_false (model_array_equal (model, array));
-  g_list_store_sort (store, (GCompareDataFunc)list_model_cmp_action_by_name, NULL);
+  g_list_store_sort (store, (GCompareDataFunc) cmp_action_by_name, NULL);
   g_assert_true (model_array_equal (model, array));
 
   g_ptr_array_unref (array);
@@ -763,7 +757,7 @@ test_store_signal_items_changed (void)
   /* Sort the list */
   expect_items_changed (&expected, 0, 2, 2);
   g_list_store_sort (store,
-                     (GCompareDataFunc)list_model_cmp_action_by_name,
+                     (GCompareDataFunc) cmp_action_by_name,
                      NULL);
   g_assert_true (expected.called);
   g_assert_false (expected.notified);
@@ -773,7 +767,7 @@ test_store_signal_items_changed (void)
   item = g_simple_action_new ("3", NULL);
   g_list_store_insert_sorted (store,
                               item,
-                              (GCompareDataFunc)list_model_cmp_action_by_name,
+                              (GCompareDataFunc) cmp_action_by_name,
                               NULL);
   g_object_unref (item);
   g_assert_true (expected.called);
