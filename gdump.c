@@ -137,20 +137,22 @@ value_to_string (const GValue *value)
   else if (g_value_type_transformable (G_VALUE_TYPE (value), G_TYPE_STRING))
     {
       GValue tmp = G_VALUE_INIT;
-      char *s;
+      char *s = NULL;
 
       g_value_init (&tmp, G_TYPE_STRING);
-      g_value_transform (value, &tmp);
-      s = g_strescape (g_value_get_string (&tmp), NULL);
+
+      if (g_value_transform (value, &tmp))
+        s = g_strescape (g_value_get_string (&tmp), NULL);
+
       g_value_unset (&tmp);
 
       if (s == NULL)
-        return g_strdup ("NULL");
+        return NULL;
 
       return s;
     }
   else
-    return g_strdup ("NULL");
+    return NULL;
 }
 
 static void
@@ -184,11 +186,21 @@ dump_properties (GType type, GOutputStream *out)
       const GValue *v = g_param_spec_get_default_value (prop);
       char *default_value = value_to_string (v);
 
-      escaped_printf (out, "    <property name=\"%s\" type=\"%s\" flags=\"%d\" default-value=\"%s\"/>\n",
-		      prop->name,
-                      g_type_name (prop->value_type),
-                      prop->flags,
-                      default_value);
+      if (default_value != NULL)
+        {
+          escaped_printf (out, "    <property name=\"%s\" type=\"%s\" flags=\"%d\" default-value=\"%s\"/>\n",
+                          prop->name,
+                          g_type_name (prop->value_type),
+                          prop->flags,
+                          default_value);
+        }
+      else
+        {
+          escaped_printf (out, "    <property name=\"%s\" type=\"%s\" flags=\"%d\"/>\n",
+                          prop->name,
+                          g_type_name (prop->value_type),
+                          prop->flags);
+        }
 
       g_free (default_value);
     }
