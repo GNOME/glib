@@ -941,7 +941,7 @@ if not meson.is_cross_build()
       input : test_resources_binary,
       output : 'test_resources2.o',
       command : [objcopy,
-                 '--strip-all',
+                 '--strip-debug',
                  '--add-symbol', underscore + '_g_binary_test1_resource_data=.data:0',
                  '@INPUT@',
                  '@OUTPUT@'])
