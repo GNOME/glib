@@ -24,6 +24,7 @@
 #endif
 
 #include <glib.h>
+#include <gobject/gobject-visibility.h>
 
 G_BEGIN_DECLS
 
