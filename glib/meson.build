@@ -17,7 +17,7 @@ gversionmacros_h = custom_target(
   install_tag: 'devel',
 )
 
-gvisibility_h = custom_target(
+glib_visibility_h = custom_target(
   output: 'glib-visibility.h',
   command: [gen_visibility_macros, meson.project_version(), 'visibility-macros', 'GLIB', '@OUTPUT@'],
   install: true,
@@ -26,7 +26,7 @@ gvisibility_h = custom_target(
   install_tag: 'devel',
 )
 
-glib_built_headers = [gversionmacros_h, gvisibility_h]
+glib_built_headers = [gversionmacros_h, glib_visibility_h]
 glib_sources += glib_built_headers
 glib_c_args_internal = [
   '-DGLIB_COMPILATION',
