@@ -172,7 +172,7 @@ typedef void            (*GFreeFunc)            (gpointer       data);
 /**
  * GTranslateFunc:
  * @str: the untranslated string
- * @user_data: user data specified when installing the function, e.g.
+ * @data: user data specified when installing the function, e.g.
  *  in g_option_group_set_translate_func()
  * 
  * The type of functions which are used to translate user-visible
@@ -182,7 +182,7 @@ typedef void            (*GFreeFunc)            (gpointer       data);
  *  The returned string is owned by GLib and must not be freed.
  */
 typedef const gchar *   (*GTranslateFunc)       (const gchar   *str,
-						 gpointer       user_data);
+						 gpointer       data);
 
 
 /* Define some mathematical constants that aren't available
