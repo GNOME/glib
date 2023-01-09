@@ -1870,7 +1870,7 @@ compare_strings (gconstpointer a,
                  gconstpointer b)
 {
   const gchar *one = a;
-  const gchar *two = a;
+  const gchar *two = b;
   gint cmp;
 
   cmp = g_str_has_suffix (two, ".enums.xml") -
