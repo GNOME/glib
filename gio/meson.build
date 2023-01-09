@@ -748,7 +748,7 @@ gio_headers = files(
   'gliststore.h',
 )
 
-gvisibility_h = custom_target(
+gio_visibility_h = custom_target(
   output: 'gio-visibility.h',
   command: [gen_visibility_macros, meson.project_version(), 'visibility-macros', 'GIO', '@OUTPUT@'],
   install: true,
@@ -756,7 +756,7 @@ gvisibility_h = custom_target(
   # FIXME: Not needed with Meson >= 0.64.0
   install_tag: 'devel',
 )
-gio_sources += gvisibility_h
+gio_sources += gio_visibility_h
 
 gio_headers += application_headers
 gio_headers += settings_headers
@@ -786,7 +786,7 @@ gioenumtypes_c = custom_target('gioenumtypes_c',
              '--template', files('gioenumtypes.c.template'),
              '@INPUT@', gnetworking_h])
 
-gioenumtypes_dep = declare_dependency(sources : [gioenumtypes_h, glib_enumtypes_h, gvisibility_h])
+gioenumtypes_dep = declare_dependency(sources : [gioenumtypes_h, glib_enumtypes_h, gio_visibility_h])
 
 # inotify
 if glib_conf.has('HAVE_SYS_INOTIFY_H') and have_func_inotify_init1

@@ -27,7 +27,7 @@ gobject_install_headers = files(
 
 gobject_sources = []
 
-gvisibility_h = custom_target(
+gobject_visibility_h = custom_target(
   output: 'gobject-visibility.h',
   command: [gen_visibility_macros, meson.project_version(), 'visibility-macros', 'GOBJECT', '@OUTPUT@'],
   install: true,
@@ -35,7 +35,7 @@ gvisibility_h = custom_target(
   # FIXME: Not needed with Meson >= 0.64.0
   install_tag: 'devel',
 )
-gobject_sources += gvisibility_h
+gobject_sources += gobject_visibility_h
 
 install_headers(gobject_install_headers, install_dir : gobject_includedir)
 
@@ -165,7 +165,7 @@ pkg.generate(libgobject,
 
 libgobject_dep = declare_dependency(link_with : libgobject,
   include_directories : [gobjectinc],
-  sources : [gvisibility_h, glib_enumtypes_h],
+  sources : [gobject_visibility_h, glib_enumtypes_h],
   dependencies : [libglib_dep],
 )
 meson.override_dependency('gobject-2.0', libgobject_dep)
