@@ -50,7 +50,7 @@ typedef struct _GTreeNode GTreeNode;
 
 typedef gboolean (*GTraverseFunc) (gpointer  key,
                                    gpointer  value,
-                                   gpointer  user_data);
+                                   gpointer  data);
 
 /**
  * GTraverseNodeFunc:

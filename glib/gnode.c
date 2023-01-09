@@ -868,7 +868,7 @@ g_node_depth_traverse_level (GNode             *node,
 /**
  * GNodeTraverseFunc:
  * @node: a #GNode.
- * @user_data: user data passed to g_node_traverse().
+ * @data: user data passed to g_node_traverse().
  *
  * Specifies the type of function passed to g_node_traverse(). The
  * function is called with each of the nodes visited, together with the
@@ -1245,7 +1245,7 @@ g_node_last_sibling (GNode *node)
 /**
  * GNodeForeachFunc:
  * @node: a #GNode.
- * @user_data: user data passed to g_node_children_foreach().
+ * @data: user data passed to g_node_children_foreach().
  *
  * Specifies the type of function passed to g_node_children_foreach().
  * The function is called with each child node, together with the user

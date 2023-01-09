@@ -46,7 +46,7 @@ typedef enum
   G_THREAD_ERROR_AGAIN /* Resource temporarily unavailable */
 } GThreadError;
 
-typedef gpointer (*GThreadFunc) (gpointer user_data);
+typedef gpointer (*GThreadFunc) (gpointer data);
 
 typedef struct _GThread         GThread;
 

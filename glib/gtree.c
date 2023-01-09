@@ -1197,7 +1197,7 @@ g_tree_foreach_node (GTree             *tree,
  * GTraverseFunc:
  * @key: a key of a #GTree node
  * @value: the value corresponding to the key
- * @user_data: user data passed to g_tree_traverse()
+ * @data: user data passed to g_tree_traverse()
  *
  * Specifies the type of function passed to g_tree_traverse(). It is
  * passed the key and value of each node, together with the @user_data

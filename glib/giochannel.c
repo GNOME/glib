@@ -679,7 +679,7 @@ g_io_add_watch_full (GIOChannel    *channel,
  * GIOFunc:
  * @source: the #GIOChannel event source
  * @condition: the condition which has been satisfied
- * @user_data: user data set in g_io_add_watch() or g_io_add_watch_full()
+ * @data: user data set in g_io_add_watch() or g_io_add_watch_full()
  *
  * Specifies the type of function passed to g_io_add_watch() or
  * g_io_add_watch_full(), which is called when the requested condition

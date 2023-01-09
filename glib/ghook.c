@@ -584,7 +584,7 @@ g_hook_list_invoke_check (GHookList *hook_list,
 /**
  * GHookCheckMarshaller:
  * @hook: a #GHook
- * @user_data: user data
+ * @marshal_data: user data
  *
  * Defines the type of function used by g_hook_list_marshal_check().
  *
@@ -636,7 +636,7 @@ g_hook_list_marshal_check (GHookList	       *hook_list,
 /**
  * GHookMarshaller:
  * @hook: a #GHook
- * @user_data: user data
+ * @marshal_data: user data
  *
  * Defines the type of function used by g_hook_list_marshal().
  */
@@ -793,7 +793,7 @@ g_hook_get (GHookList *hook_list,
 /**
  * GHookFindFunc:
  * @hook: a #GHook
- * @user_data: user data passed to g_hook_find_func()
+ * @data: user data passed to g_hook_find_func()
  *
  * Defines the type of the function passed to g_hook_find().
  *
