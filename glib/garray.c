@@ -1026,7 +1026,7 @@ g_array_sort_with_data (GArray           *farray,
  *
  * This example defines a comparison function and search an element in a #GArray:
  * |[<!-- language="C" -->
- * static gint*
+ * static gint
  * cmpint (gconstpointer a, gconstpointer b)
  * {
  *   const gint *_a = a;
