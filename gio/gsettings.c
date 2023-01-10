@@ -3226,6 +3226,9 @@ g_settings_action_get_state (GAction *action)
     value = g_settings_schema_key_get_translated_default (&gsa->key);
 
   if (value == NULL)
+    value = g_settings_schema_key_get_per_desktop_default (&gsa->key);
+
+  if (value == NULL)
     value = g_variant_ref (gsa->key.default_value);
 
   return value;
