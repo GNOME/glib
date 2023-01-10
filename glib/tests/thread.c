@@ -147,7 +147,8 @@ test_thread4 (void)
   nl.rlim_cur = 1;
 
   if (prlimit (getpid (), RLIMIT_NPROC, &nl, &ol) != 0)
-    g_error ("prlimit failed: %s", g_strerror (errno));
+    g_error ("setting RLIMIT_NPROC to {cur=%ld,max=%ld} failed: %s",
+             (long) nl.rlim_cur, (long) nl.rlim_max, g_strerror (errno));
 
   error = NULL;
   thread = g_thread_try_new ("a", thread1_func, NULL, &error);
