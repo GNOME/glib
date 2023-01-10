@@ -1387,6 +1387,9 @@ ptr_array_new_from_array (gpointer       *data,
       memcpy (rarray->pdata, data, len * sizeof (gpointer));
     }
 
+  if (null_terminated && rarray->pdata != NULL)
+    rarray->pdata[len] = NULL;
+
   rarray->len = len;
 
   return array;
