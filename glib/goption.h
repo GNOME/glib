@@ -138,8 +138,8 @@ typedef enum
  *  single dash followed by a single letter (for a short name) or two dashes
  *  followed by a long option name.
  * @value: The value to be parsed.
- * @user_data: User data added to the #GOptionGroup containing the option when
- *  it was created with g_option_group_new()
+ * @data: User data added to the #GOptionGroup containing the option when it
+ *  was created with g_option_group_new()
  * @error: A return location for errors. The error code %G_OPTION_ERROR_FAILED
  *  is intended to be used for errors in #GOptionArgFunc callbacks.
  * 
@@ -151,15 +151,15 @@ typedef enum
  */
 typedef gboolean (*GOptionArgFunc) (const gchar    *option_name,
 				    const gchar    *value,
-				    gpointer        user_data,
+				    gpointer        data,
 				    GError        **error);
 
 /**
  * GOptionParseFunc:
  * @context: The active #GOptionContext
  * @group: The group to which the function belongs
- * @user_data: User data added to the #GOptionGroup containing the option when
- *  it was created with g_option_group_new()
+ * @data: User data added to the #GOptionGroup containing the option when it
+ *  was created with g_option_group_new()
  * @error: A return location for error details
  * 
  * The type of function that can be called before and after parsing. 
@@ -169,22 +169,22 @@ typedef gboolean (*GOptionArgFunc) (const gchar    *option_name,
  */
 typedef gboolean (*GOptionParseFunc) (GOptionContext *context,
 				      GOptionGroup   *group,
-				      gpointer	      user_data,
+				      gpointer	      data,
 				      GError        **error);
 
 /**
  * GOptionErrorFunc:
  * @context: The active #GOptionContext
  * @group: The group to which the function belongs
- * @user_data: User data added to the #GOptionGroup containing the option when
- *  it was created with g_option_group_new()
+ * @data: User data added to the #GOptionGroup containing the option when it
+ *  was created with g_option_group_new()
  * @error: The #GError containing details about the parse error
  * 
  * The type of function to be used as callback when a parse error occurs.
  */
 typedef void (*GOptionErrorFunc) (GOptionContext *context,
 				  GOptionGroup   *group,
-				  gpointer        user_data,
+				  gpointer        data,
 				  GError        **error);
 
 /**

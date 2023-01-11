@@ -263,7 +263,7 @@ typedef struct _GVolumeMonitor                GVolumeMonitor;
  * GAsyncReadyCallback:
  * @source_object: (nullable): the object the asynchronous operation was started with.
  * @res: a #GAsyncResult.
- * @user_data: user data passed to the callback.
+ * @data: user data passed to the callback.
  *
  * Type definition for a function that will be called back when an asynchronous
  * operation within GIO has been completed. #GAsyncReadyCallback
@@ -280,13 +280,13 @@ typedef struct _GVolumeMonitor                GVolumeMonitor;
  **/
 typedef void (*GAsyncReadyCallback) (GObject *source_object,
 				     GAsyncResult *res,
-				     gpointer user_data);
+				     gpointer data);
 
 /**
  * GFileProgressCallback:
  * @current_num_bytes: the current number of bytes in the operation.
  * @total_num_bytes: the total number of bytes in the operation.
- * @user_data: user data passed to the callback.
+ * @data: user data passed to the callback.
  *
  * When doing file operations that may take a while, such as moving
  * a file or copying a file, a progress callback is used to pass how
@@ -294,13 +294,13 @@ typedef void (*GAsyncReadyCallback) (GObject *source_object,
  **/
 typedef void (*GFileProgressCallback) (goffset current_num_bytes,
                                        goffset total_num_bytes,
-                                       gpointer user_data);
+                                       gpointer data);
 
 /**
  * GFileReadMoreCallback:
  * @file_contents: the data as currently read.
  * @file_size: the size of the data currently read.
- * @user_data: data passed to the callback.
+ * @callback_data: data passed to the callback.
  *
  * When loading the partial contents of a file with g_file_load_partial_contents_async(),
  * it may become necessary to determine if any more data from the file should be loaded.
@@ -311,7 +311,7 @@ typedef void (*GFileProgressCallback) (goffset current_num_bytes,
  **/
 typedef gboolean (* GFileReadMoreCallback) (const char *file_contents,
                                             goffset file_size,
-                                            gpointer user_data);
+                                            gpointer callback_data);
 
 /**
  * GFileMeasureProgressCallback:
@@ -319,7 +319,7 @@ typedef gboolean (* GFileReadMoreCallback) (const char *file_contents,
  * @current_size: the current cumulative size measurement
  * @num_dirs: the number of directories visited so far
  * @num_files: the number of non-directory files encountered
- * @user_data: the data passed to the original request for this callback
+ * @data: the data passed to the original request for this callback
  *
  * This callback type is used by g_file_measure_disk_usage() to make
  * periodic progress reports when measuring the amount of disk spaced
@@ -355,13 +355,13 @@ typedef void (* GFileMeasureProgressCallback) (gboolean reporting,
                                                guint64  current_size,
                                                guint64  num_dirs,
                                                guint64  num_files,
-                                               gpointer user_data);
+                                               gpointer data);
 
 /**
  * GIOSchedulerJobFunc:
  * @job: a #GIOSchedulerJob.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @user_data: the data to pass to callback function
+ * @data: data passed to the callback function
  *
  * I/O Job function.
  *
@@ -373,7 +373,7 @@ typedef void (* GFileMeasureProgressCallback) (gboolean reporting,
  **/
 typedef gboolean (*GIOSchedulerJobFunc) (GIOSchedulerJob *job,
 					 GCancellable    *cancellable,
-					 gpointer         user_data);
+					 gpointer         data);
 
 /**
  * GSimpleAsyncThreadFunc:
@@ -392,7 +392,7 @@ typedef void (*GSimpleAsyncThreadFunc) (GSimpleAsyncResult *res,
  * GSocketSourceFunc:
  * @socket: the #GSocket
  * @condition: the current condition at the source fired.
- * @user_data: data passed in by the user.
+ * @data: data passed in by the user.
  *
  * This is the function type of the callback used for the #GSource
  * returned by g_socket_create_source().
@@ -403,13 +403,13 @@ typedef void (*GSimpleAsyncThreadFunc) (GSimpleAsyncResult *res,
  */
 typedef gboolean (*GSocketSourceFunc) (GSocket *socket,
 				       GIOCondition condition,
-				       gpointer user_data);
+				       gpointer data);
 
 /**
  * GDatagramBasedSourceFunc:
  * @datagram_based: the #GDatagramBased
  * @condition: the current condition at the source fired
- * @user_data: data passed in by the user
+ * @data: data passed in by the user
  *
  * This is the function type of the callback used for the #GSource
  * returned by g_datagram_based_create_source().
@@ -421,7 +421,7 @@ typedef gboolean (*GSocketSourceFunc) (GSocket *socket,
  */
 typedef gboolean (*GDatagramBasedSourceFunc) (GDatagramBased *datagram_based,
                                               GIOCondition    condition,
-                                              gpointer        user_data);
+                                              gpointer        data);
 
 /**
  * GInputVector:
@@ -573,7 +573,7 @@ typedef struct _GDBusNodeInfo                 GDBusNodeInfo;
 /**
  * GCancellableSourceFunc:
  * @cancellable: the #GCancellable
- * @user_data: data passed in by the user.
+ * @data: data passed in by the user.
  *
  * This is the function type of the callback used for the #GSource
  * returned by g_cancellable_source_new().
@@ -583,12 +583,12 @@ typedef struct _GDBusNodeInfo                 GDBusNodeInfo;
  * Since: 2.28
  */
 typedef gboolean (*GCancellableSourceFunc) (GCancellable *cancellable,
-					    gpointer      user_data);
+					    gpointer      data);
 
 /**
  * GPollableSourceFunc:
  * @pollable_stream: the #GPollableInputStream or #GPollableOutputStream
- * @user_data: data passed in by the user.
+ * @data: data passed in by the user.
  *
  * This is the function type of the callback used for the #GSource
  * returned by g_pollable_input_stream_create_source() and
@@ -599,7 +599,7 @@ typedef gboolean (*GCancellableSourceFunc) (GCancellable *cancellable,
  * Since: 2.28
  */
 typedef gboolean (*GPollableSourceFunc) (GObject  *pollable_stream,
-					 gpointer  user_data);
+					 gpointer  data);
 
 typedef struct _GDBusInterface              GDBusInterface; /* Dummy typedef */
 typedef struct _GDBusInterfaceSkeleton      GDBusInterfaceSkeleton;
@@ -615,7 +615,7 @@ typedef struct _GDBusObjectManagerServer    GDBusObjectManagerServer;
  * @manager: A #GDBusObjectManagerClient.
  * @object_path: The object path of the remote object.
  * @interface_name: (nullable): The interface name of the remote object or %NULL if a #GDBusObjectProxy #GType is requested.
- * @user_data: User data.
+ * @data: data passed in by the user.
  *
  * Function signature for a function used to determine the #GType to
  * use for an interface proxy (if @interface_name is not %NULL) or
@@ -634,7 +634,7 @@ typedef struct _GDBusObjectManagerServer    GDBusObjectManagerServer;
 typedef GType (*GDBusProxyTypeFunc) (GDBusObjectManagerClient   *manager,
                                      const gchar                *object_path,
                                      const gchar                *interface_name,
-                                     gpointer                    user_data);
+                                     gpointer                    data);
 
 typedef struct _GTestDBus GTestDBus;
 

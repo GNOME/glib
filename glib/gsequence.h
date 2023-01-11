@@ -34,7 +34,7 @@ typedef struct _GSequenceNode  GSequenceIter;
 
 typedef gint (* GSequenceIterCompareFunc) (GSequenceIter *a,
                                            GSequenceIter *b,
-                                           gpointer       user_data);
+                                           gpointer       data);
 
 
 /* GSequence */

@@ -474,7 +474,7 @@
 
 /**
  * GThreadFunc:
- * @user_data: data passed to the thread
+ * @data: data passed to the thread
  *
  * Specifies the type of the @func functions passed to g_thread_new()
  * or g_thread_try_new().

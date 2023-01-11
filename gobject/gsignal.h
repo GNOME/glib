@@ -60,7 +60,7 @@ typedef GVaClosureMarshal		 GSignalCVaMarshaller;
  *  the instance on which the signal was emitted.
  * @param_values: (array length=n_param_values): the instance on which
  *  the signal was emitted, followed by the parameters of the emission.
- * @user_data: user data associated with the hook.
+ * @data: user data associated with the hook.
  * 
  * A simple function pointer to get invoked when the signal is emitted.
  *
@@ -75,14 +75,14 @@ typedef GVaClosureMarshal		 GSignalCVaMarshaller;
 typedef gboolean (*GSignalEmissionHook) (GSignalInvocationHint *ihint,
 					 guint			n_param_values,
 					 const GValue	       *param_values,
-					 gpointer		user_data);
+					 gpointer		data);
 /**
  * GSignalAccumulator:
  * @ihint: Signal invocation hint, see #GSignalInvocationHint.
  * @return_accu: Accumulator to collect callback return values in, this
  *  is the return value of the current signal emission.
  * @handler_return: A #GValue holding the return value of the signal handler.
- * @user_data: Callback data that was specified when creating the signal.
+ * @data: Callback data that was specified when creating the signal.
  * 
  * The signal accumulator is a special callback function that can be used
  * to collect return values of the various callbacks that are called
@@ -103,7 +103,7 @@ typedef gboolean (*GSignalEmissionHook) (GSignalInvocationHint *ihint,
 typedef gboolean (*GSignalAccumulator)	(GSignalInvocationHint *ihint,
 					 GValue		       *return_accu,
 					 const GValue	       *handler_return,
-					 gpointer               user_data);
+					 gpointer               data);
 
 
 /* --- run, match and connect types --- */
