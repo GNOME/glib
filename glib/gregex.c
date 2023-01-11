@@ -1492,8 +1492,8 @@ get_matched_substring_number (const GMatchInfo *match_info,
 
   for (entry = (guchar*) first; entry <= (guchar*) last; entry += entrysize)
     {
-      gint n = (entry[0] << 8) + entry[1];
-      if (match_info->offsets[n*2] >= 0)
+      guint n = (entry[0] << 8) + entry[1];
+      if (n * 2 < match_info->n_offsets && match_info->offsets[n * 2] >= 0)
         return n;
     }
 
