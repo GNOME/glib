@@ -521,6 +521,7 @@ static gboolean       g_log_debug_enabled = FALSE;  /* (atomic) */
 /* --- functions --- */
 
 static void _g_log_abort (gboolean breakpoint);
+static FILE * log_level_to_file (GLogLevelFlags log_level);
 
 static void
 _g_log_abort (gboolean breakpoint)
@@ -1202,8 +1203,6 @@ mklevel_prefix (gchar          level_prefix[STRING_BUFFER_SIZE],
                 GLogLevelFlags log_level,
                 gboolean       use_color)
 {
-  gboolean to_stdout = !gmessages_use_stderr;
-
   /* we may not call _any_ GLib functions here */
 
   strcpy (level_prefix, log_level_to_color (log_level, use_color));
@@ -1212,19 +1211,15 @@ mklevel_prefix (gchar          level_prefix[STRING_BUFFER_SIZE],
     {
     case G_LOG_LEVEL_ERROR:
       strcat (level_prefix, "ERROR");
-      to_stdout = FALSE;
       break;
     case G_LOG_LEVEL_CRITICAL:
       strcat (level_prefix, "CRITICAL");
-      to_stdout = FALSE;
       break;
     case G_LOG_LEVEL_WARNING:
       strcat (level_prefix, "WARNING");
-      to_stdout = FALSE;
       break;
     case G_LOG_LEVEL_MESSAGE:
       strcat (level_prefix, "Message");
-      to_stdout = FALSE;
       break;
     case G_LOG_LEVEL_INFO:
       strcat (level_prefix, "INFO");
@@ -1254,7 +1249,7 @@ mklevel_prefix (gchar          level_prefix[STRING_BUFFER_SIZE],
   if ((log_level & G_LOG_FLAG_FATAL) != 0 && !g_test_initialized ())
     win32_keep_fatal_message = TRUE;
 #endif
-  return to_stdout ? stdout : stderr;
+  return log_level_to_file (log_level);
 }
 
 typedef struct {
