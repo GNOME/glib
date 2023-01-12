@@ -26,7 +26,7 @@ WinMain (struct HINSTANCE__ *hInstance,
     }
   else if (__argc <= 2)
     {
-      printf ("This is stdout\n");
+      printf ("# This is stdout\n");
       fflush (stdout);
       
       fprintf (stderr, "This is stderr\n");
@@ -41,36 +41,36 @@ WinMain (struct HINSTANCE__ *hInstance,
 
       if (infd < 0 || outfd < 0)
 	{
-	  printf ("spawn-test-win32-gui: illegal fds on command line %s",
+          fprintf (stderr, "spawn-test-win32-gui: illegal fds on command line %s\n",
 		      lpszCmdLine);
 	  exit (1);
 	}
 
       n = strlen ("Hello there");
       if (write (outfd, &n, sizeof (n)) == -1 ||
-	  write (outfd, "Hello there", n) == -1)
+	  write (outfd, "Hello there\n", n) == -1)
 	{
 	  int errsv = errno;
-	  printf ("spawn-test-win32-gui: Write error: %s", strerror (errsv));
+          fprintf (stderr, "spawn-test-win32-gui: Write error: %s\n", strerror (errsv));
 	  exit (1);
 	}
 
       if ((k = read (infd, &n, sizeof (n))) != sizeof (n))
 	{
-	  printf ("spawn-test-win32-gui: Got only %d bytes, wanted %d",
+          fprintf (stderr, "spawn-test-win32-gui: Got only %d bytes, wanted %d\n",
 		   k, (int)sizeof (n));
 	  exit (1);
 	}
 
-      printf ("spawn-test-win32-gui: Parent says %d bytes to read", n);
+      fprintf (stderr, "spawn-test-win32-gui: Parent says %d bytes to read\n", n);
 
       if ((k = read (infd, buf, n)) != n)
 	{
 	  int errsv = errno;
 	  if (k == -1)
-	    printf ("spawn-test-win32-gui: Read error: %s", strerror (errsv));
+            fprintf (stderr, "spawn-test-win32-gui: Read error: %s\n", strerror (errsv));
 	  else
-	    printf ("spawn-test-win32-gui: Got only %d bytes", k);
+            fprintf (stderr, "spawn-test-win32-gui: Got only %d bytes\n", k);
 	  exit (1);
 	}
 
@@ -79,7 +79,7 @@ WinMain (struct HINSTANCE__ *hInstance,
 	  write (outfd, "See ya", n) == -1)
 	{
 	  int errsv = errno;
-	  printf ("spawn-test-win32-gui: Write error: %s", strerror (errsv));
+          fprintf (stderr, "spawn-test-win32-gui: Write error: %s\n", strerror (errsv));
 	  exit (1);
 	}
     }

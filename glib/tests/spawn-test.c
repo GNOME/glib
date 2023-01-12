@@ -136,7 +136,7 @@ test_spawn_basics (void)
   g_test_message ("Running spawn-test-win32-gui in various ways.");
 
   g_test_message ("First asynchronously (without wait).");
-  g_snprintf (full_cmdline, sizeof (full_cmdline), "'%s' 1", spawn_binary);
+  g_snprintf (full_cmdline, sizeof (full_cmdline), "'%s'", spawn_binary);
   result = g_spawn_command_line_async (full_cmdline, &err);
   g_assert_no_error (err);
   g_assert_true (result);
@@ -148,7 +148,7 @@ test_spawn_basics (void)
 
   g_assert_no_error (err);
   g_assert_true (result);
-  g_assert_cmpstr (output, ==, "This is stdout\r\n");
+  g_assert_cmpstr (output, ==, "# This is stdout\r\n");
   g_assert_cmpstr (erroutput, ==, "This is stderr\r\n");
 
   g_free (output);
