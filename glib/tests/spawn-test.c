@@ -149,7 +149,7 @@ test_spawn_basics (void)
 
   g_assert_no_error (err);
   g_assert_true (result);
-  g_assert_cmpstr (output, ==, "This is stdout\r\n");
+  g_assert_cmpstr (output, ==, "# This is stdout\r\n");
   g_assert_cmpstr (erroutput, ==, "This is stderr\r\n");
 
   g_free (output);
