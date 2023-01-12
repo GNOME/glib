@@ -674,6 +674,23 @@ test_expected_messages (void)
 }
 
 static void
+test_messages (void)
+{
+  g_test_trap_subprocess ("/misc/messages/subprocess/use-stderr", 0,
+                          G_TEST_SUBPROCESS_DEFAULT);
+  g_test_trap_assert_stderr ("*message is in stderr*");
+  g_test_trap_assert_stderr ("*warning is in stderr*");
+  g_test_trap_has_passed ();
+}
+
+static void
+test_messages_use_stderr (void)
+{
+  g_message ("message is in stderr");
+  g_warning ("warning is in stderr");
+}
+
+static void
 test_expected_messages_debug (void)
 {
   g_test_expect_message ("Test", G_LOG_LEVEL_WARNING, "warning message");
@@ -2701,6 +2718,9 @@ main (int   argc,
   g_test_add_func ("/misc/expected-messages/subprocess/unexpected-extra-warning", test_expected_messages_unexpected_extra_warning);
   g_test_add_func ("/misc/expected-messages/expect-error", test_expected_messages_expect_error);
   g_test_add_func ("/misc/expected-messages/skip-debug", test_expected_messages_debug);
+
+  g_test_add_func ("/misc/messages", test_messages);
+  g_test_add_func ("/misc/messages/subprocess/use-stderr", test_messages_use_stderr);
 
   g_test_add_func ("/misc/dash-p", test_dash_p);
   g_test_add_func ("/misc/dash-p/child", test_dash_p_child);
