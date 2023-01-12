@@ -1686,6 +1686,8 @@ main (int argc, char **argv)
 {
   g_setenv ("LC_ALL", "C", TRUE);
 
+  g_log_writer_default_set_use_stderr (TRUE);
+
   g_test_init (&argc, &argv, NULL);
 
   if (!g_test_subprocess ())

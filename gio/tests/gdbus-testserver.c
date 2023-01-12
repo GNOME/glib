@@ -843,6 +843,8 @@ main (int argc, char *argv[])
 {
   guint owner_id;
 
+  g_log_writer_default_set_use_stderr (TRUE);
+
   introspection_data = g_dbus_node_info_new_for_xml (introspection_xml, NULL);
   properties = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, (GDestroyNotify)g_variant_unref);
   g_hash_table_insert (properties, g_strdup ("y"), g_variant_ref_sink (g_variant_new_byte (1)));
