@@ -112,6 +112,24 @@ How to run and debug your GLib application
   </para>
 </formalpara>
 
+<formalpara id="G_MESSAGES_USE_STDERR">
+  <title><envar>G_MESSAGES_USE_STDERR</envar></title>
+
+  <para>
+    Set it to `1` in order to use `stderr` by default to write messages of
+    levels %G_LOG_LEVEL_INFO and %G_LOG_LEVEL_DEBUG (that by default are
+    written to `stdin`).
+  </para>
+  <para>
+    This value can be overridden by applications using
+    g_log_writer_default_set_use_stderr().
+  </para>
+  <para>
+    This environment variable only affects the default log handler,
+    g_log_default_handler().
+  </para>
+</formalpara>
+
 <formalpara id="G-DEBUG:CAPS">
   <title><envar>G_DEBUG</envar></title>
 

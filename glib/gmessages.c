@@ -1169,6 +1169,20 @@ static const gchar *log_level_to_color (GLogLevelFlags log_level,
 static const gchar *color_reset        (gboolean       use_color);
 
 static gboolean gmessages_use_stderr = FALSE;
+static gsize gmessages_use_stderr_initialized = 0;
+
+static inline gboolean
+g_messages_use_stderr (void)
+{
+  if (g_once_init_enter (&gmessages_use_stderr_initialized))
+    {
+      gmessages_use_stderr = g_strcmp0 (
+        g_getenv ("G_MESSAGES_USE_STDERR"), "1") == 0;
+      g_once_init_leave (&gmessages_use_stderr_initialized, TRUE);
+    }
+
+  return gmessages_use_stderr;
+}
 
 /**
  * g_log_writer_default_set_use_stderr:
@@ -1195,6 +1209,10 @@ void
 g_log_writer_default_set_use_stderr (gboolean use_stderr)
 {
   g_return_if_fail (g_thread_n_created () == 0);
+
+  if (g_once_init_enter (&gmessages_use_stderr_initialized))
+    g_once_init_leave (&gmessages_use_stderr_initialized, TRUE);
+
   gmessages_use_stderr = use_stderr;
 }
 
@@ -1478,7 +1496,7 @@ log_level_to_priority (GLogLevelFlags log_level)
 static FILE *
 log_level_to_file (GLogLevelFlags log_level)
 {
-  if (gmessages_use_stderr)
+  if G_UNLIKELY (g_messages_use_stderr ())
     return stderr;
 
   if (log_level & (G_LOG_LEVEL_ERROR | G_LOG_LEVEL_CRITICAL |
