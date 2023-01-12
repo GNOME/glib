@@ -2480,6 +2480,39 @@ test_jit_unsupported_matching_options (void)
   g_regex_unref (regex);
 }
 
+static void
+test_unmatched_named_subpattern (void)
+{
+  GRegex *regex = NULL;
+  GMatchInfo *match_info = NULL;
+  const char *string = "Test";
+
+  g_test_summary ("Test that unmatched subpatterns can still be queried");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/2881");
+
+  regex = g_regex_new ("((?<Key>[^\\s\"'\\=]+)|\"(?<Key>[^\"]*)\"|'(?<Key>[^']*)')"
+                       "(?:\\=((?<Value>[^\\s\"']+)|\"(?<Value>[^\"]*)\"|'(?<Value>[^']*)'))?",
+                       G_REGEX_DUPNAMES, 0, NULL);
+
+  g_assert_true (g_regex_match (regex, string, 0, &match_info));
+
+  while (g_match_info_matches (match_info))
+    {
+      char *key = g_match_info_fetch_named (match_info, "Key");
+      char *value = g_match_info_fetch_named (match_info, "Value");
+
+      g_assert_cmpstr (key, ==, "Test");
+      g_assert_cmpstr (value, ==, "");
+
+      g_free (key);
+      g_free (value);
+      g_match_info_next (match_info, NULL);
+    }
+
+  g_match_info_unref (match_info);
+  g_regex_unref (regex);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -2499,6 +2532,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/regex/max-lookbehind", test_max_lookbehind);
   g_test_add_func ("/regex/compile-errors", test_compile_errors);
   g_test_add_func ("/regex/jit-unsupported-matching", test_jit_unsupported_matching_options);
+  g_test_add_func ("/regex/unmatched-named-subpattern", test_unmatched_named_subpattern);
 
   /* TEST_NEW(pattern, compile_opts, match_opts) */
   TEST_NEW("[A-Z]+", G_REGEX_CASELESS | G_REGEX_EXTENDED | G_REGEX_OPTIMIZE, G_REGEX_MATCH_NOTBOL | G_REGEX_MATCH_PARTIAL);
