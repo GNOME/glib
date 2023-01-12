@@ -1310,6 +1310,65 @@ check_test_file (GFile             *test_file,
 
 #endif  /* __linux__ */
 
+#ifdef __linux__
+/*
+ * check_cap_dac_override:
+ * @tmpdir: A temporary directory in which we can create and delete files
+ *
+ * Check whether the current process can bypass DAC permissions.
+ *
+ * Traditionally, "privileged" processes (those with effective uid 0)
+ * could do this (and bypass many other checks), and "unprivileged"
+ * processes could not.
+ *
+ * In Linux, the special powers of euid 0 are divided into many
+ * capabilities: see `capabilities(7)`. The one we are interested in
+ * here is `CAP_DAC_OVERRIDE`.
+ *
+ * We do this generically instead of actually looking at the capability
+ * bits, so that the right thing will happen on non-Linux Unix
+ * implementations, in particular if they have something equivalent to
+ * but not identical to Linux permissions.
+ *
+ * Returns: %TRUE if we have Linux `CAP_DAC_OVERRIDE` or equivalent
+ *  privileges
+ */
+static gboolean
+check_cap_dac_override (const char *tmpdir)
+{
+  gchar *dac_denies_write;
+  gchar *inside;
+  gboolean have_cap;
+
+  dac_denies_write = g_build_filename (tmpdir, "dac-denies-write", NULL);
+  inside = g_build_filename (dac_denies_write, "inside", NULL);
+
+  g_assert_no_errno (mkdir (dac_denies_write, S_IRWXU));
+  g_assert_no_errno (chmod (dac_denies_write, 0));
+
+  if (mkdir (inside, S_IRWXU) == 0)
+    {
+      g_test_message ("Looks like we have CAP_DAC_OVERRIDE or equivalent");
+      g_assert_no_errno (rmdir (inside));
+      have_cap = TRUE;
+    }
+  else
+    {
+      int saved_errno = errno;
+
+      g_test_message ("We do not have CAP_DAC_OVERRIDE or equivalent");
+      g_assert_cmpint (saved_errno, ==, EACCES);
+      have_cap = FALSE;
+    }
+
+  g_assert_no_errno (chmod (dac_denies_write, S_IRWXU));
+  g_assert_no_errno (rmdir (dac_denies_write));
+  g_free (dac_denies_write);
+  g_free (inside);
+  return have_cap;
+}
+#endif
+
 /* A big test for g_file_replace() and g_file_replace_readwrite(). The
  * @test_data is a boolean: %TRUE to test g_file_replace_readwrite(), %FALSE to
  * test g_file_replace(). The test setup and checks are identical for both
@@ -1350,6 +1409,7 @@ test_replace (gconstpointer test_data)
       guint setup_source_mode;
       FileTestSetupType setup_backup_type;
       guint setup_backup_mode;
+      gboolean skip_if_cap_dac_override;
 
       /* Expected results. */
       gboolean expected_success;
@@ -1373,7 +1433,7 @@ test_replace (gconstpointer test_data)
       {
         FALSE, G_FILE_CREATE_NONE, NULL,
         FILE_TEST_SETUP_TYPE_NONEXISTENT, 0,
-        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0,
+        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0, FALSE,
         TRUE, 0, 0,
         1, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
         FILE_TEST_SETUP_TYPE_NONEXISTENT, 0, NULL,
@@ -1381,7 +1441,7 @@ test_replace (gconstpointer test_data)
       {
         FALSE, G_FILE_CREATE_NONE, NULL,
         FILE_TEST_SETUP_TYPE_REGULAR_EMPTY, default_public_mode,
-        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, FALSE,
         TRUE, 0, 0,
         2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_backup_contents,
@@ -1389,7 +1449,7 @@ test_replace (gconstpointer test_data)
       {
         FALSE, G_FILE_CREATE_NONE, NULL,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
-        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, FALSE,
         TRUE, 0, 0,
         2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_backup_contents,
@@ -1397,7 +1457,7 @@ test_replace (gconstpointer test_data)
       {
         FALSE, G_FILE_CREATE_NONE, NULL,
         FILE_TEST_SETUP_TYPE_DIRECTORY, 0,
-        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, FALSE,
         FALSE, G_IO_ERROR, G_IO_ERROR_IS_DIRECTORY,
         2, FILE_TEST_SETUP_TYPE_DIRECTORY, 0, NULL,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_backup_contents,
@@ -1405,7 +1465,7 @@ test_replace (gconstpointer test_data)
       {
         FALSE, G_FILE_CREATE_NONE, NULL,
         FILE_TEST_SETUP_TYPE_SOCKET, default_public_mode,
-        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, FALSE,
         FALSE, G_IO_ERROR, G_IO_ERROR_NOT_REGULAR_FILE,
         2, FILE_TEST_SETUP_TYPE_SOCKET, default_public_mode, NULL,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_backup_contents,
@@ -1413,7 +1473,7 @@ test_replace (gconstpointer test_data)
       {
         FALSE, G_FILE_CREATE_NONE, NULL,
         FILE_TEST_SETUP_TYPE_SYMLINK_DANGLING, 0,
-        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, FALSE,
         TRUE, 0, 0,
         3, FILE_TEST_SETUP_TYPE_SYMLINK_VALID, default_public_mode, "source-target",
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_backup_contents,
@@ -1421,7 +1481,7 @@ test_replace (gconstpointer test_data)
       {
         FALSE, G_FILE_CREATE_NONE, NULL,
         FILE_TEST_SETUP_TYPE_SYMLINK_VALID, default_public_mode,
-        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, FALSE,
         TRUE, 0, 0,
         3, FILE_TEST_SETUP_TYPE_SYMLINK_VALID, default_public_mode, "source-target",
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_backup_contents,
@@ -1432,7 +1492,7 @@ test_replace (gconstpointer test_data)
       {
         FALSE, G_FILE_CREATE_NONE, "incorrect etag",
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
-        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, FALSE,
         FALSE, G_IO_ERROR, G_IO_ERROR_WRONG_ETAG,
         2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_source_contents,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_backup_contents,
@@ -1444,7 +1504,7 @@ test_replace (gconstpointer test_data)
       {
         TRUE, G_FILE_CREATE_NONE, NULL,
         FILE_TEST_SETUP_TYPE_NONEXISTENT, 0,
-        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0,
+        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0, FALSE,
         TRUE, 0, 0,
         1, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
         FILE_TEST_SETUP_TYPE_NONEXISTENT, 0, NULL,
@@ -1452,7 +1512,7 @@ test_replace (gconstpointer test_data)
       {
         TRUE, G_FILE_CREATE_NONE, NULL,
         FILE_TEST_SETUP_TYPE_REGULAR_EMPTY, default_public_mode,
-        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, FALSE,
         TRUE, 0, 0,
         2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
         FILE_TEST_SETUP_TYPE_REGULAR_EMPTY, default_public_mode, NULL,
@@ -1460,7 +1520,7 @@ test_replace (gconstpointer test_data)
       {
         TRUE, G_FILE_CREATE_NONE, NULL,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
-        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, FALSE,
         TRUE, 0, 0,
         2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_source_contents,
@@ -1468,7 +1528,7 @@ test_replace (gconstpointer test_data)
       {
         TRUE, G_FILE_CREATE_NONE, NULL,
         FILE_TEST_SETUP_TYPE_DIRECTORY, 0,
-        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, FALSE,
         FALSE, G_IO_ERROR, G_IO_ERROR_IS_DIRECTORY,
         2, FILE_TEST_SETUP_TYPE_DIRECTORY, 0, NULL,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_backup_contents,
@@ -1476,7 +1536,7 @@ test_replace (gconstpointer test_data)
       {
         TRUE, G_FILE_CREATE_NONE, NULL,
         FILE_TEST_SETUP_TYPE_SOCKET, default_public_mode,
-        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, FALSE,
         FALSE, G_IO_ERROR, G_IO_ERROR_NOT_REGULAR_FILE,
         2, FILE_TEST_SETUP_TYPE_SOCKET, default_public_mode, NULL,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_backup_contents,
@@ -1484,7 +1544,7 @@ test_replace (gconstpointer test_data)
       {
         TRUE, G_FILE_CREATE_NONE, NULL,
         FILE_TEST_SETUP_TYPE_SYMLINK_DANGLING, 0,
-        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, FALSE,
         TRUE, 0, 0,
         /* The final situation here is a bit odd; the backup file is a bit
          * pointless as the original source file was a dangling symlink.
@@ -1500,7 +1560,7 @@ test_replace (gconstpointer test_data)
       {
         TRUE, G_FILE_CREATE_NONE, NULL,
         FILE_TEST_SETUP_TYPE_SYMLINK_VALID, default_public_mode,
-        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, FALSE,
         TRUE, 0, 0,
         /* FIXME: The permissions for the backup file are just the default umask,
          * but should probably be the same as the permissions for the source
@@ -1516,7 +1576,7 @@ test_replace (gconstpointer test_data)
       {
         TRUE, G_FILE_CREATE_NONE, NULL,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
-        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0,
+        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0, FALSE,
         TRUE, 0, 0,
         2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_source_contents,
@@ -1524,7 +1584,7 @@ test_replace (gconstpointer test_data)
       {
         TRUE, G_FILE_CREATE_NONE, NULL,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
-        FILE_TEST_SETUP_TYPE_REGULAR_EMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_EMPTY, default_public_mode, FALSE,
         TRUE, 0, 0,
         2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_source_contents,
@@ -1532,7 +1592,7 @@ test_replace (gconstpointer test_data)
       {
         TRUE, G_FILE_CREATE_NONE, NULL,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
-        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, FALSE,
         TRUE, 0, 0,
         2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_source_contents,
@@ -1540,7 +1600,7 @@ test_replace (gconstpointer test_data)
       {
         TRUE, G_FILE_CREATE_NONE, NULL,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
-        FILE_TEST_SETUP_TYPE_DIRECTORY, 0,
+        FILE_TEST_SETUP_TYPE_DIRECTORY, 0, FALSE,
         FALSE, G_IO_ERROR, G_IO_ERROR_CANT_CREATE_BACKUP,
         2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_source_contents,
         FILE_TEST_SETUP_TYPE_DIRECTORY, 0, NULL,
@@ -1548,7 +1608,7 @@ test_replace (gconstpointer test_data)
       {
         TRUE, G_FILE_CREATE_NONE, NULL,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
-        FILE_TEST_SETUP_TYPE_SOCKET, default_public_mode,
+        FILE_TEST_SETUP_TYPE_SOCKET, default_public_mode, FALSE,
         TRUE, 0, 0,
         2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_source_contents,
@@ -1556,7 +1616,7 @@ test_replace (gconstpointer test_data)
       {
         TRUE, G_FILE_CREATE_NONE, NULL,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
-        FILE_TEST_SETUP_TYPE_SYMLINK_DANGLING, 0,
+        FILE_TEST_SETUP_TYPE_SYMLINK_DANGLING, 0, FALSE,
         TRUE, 0, 0,
         2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_source_contents,
@@ -1564,7 +1624,7 @@ test_replace (gconstpointer test_data)
       {
         TRUE, G_FILE_CREATE_NONE, NULL,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
-        FILE_TEST_SETUP_TYPE_SYMLINK_VALID, default_public_mode,
+        FILE_TEST_SETUP_TYPE_SYMLINK_VALID, default_public_mode, FALSE,
         TRUE, 0, 0,
         /* the third file is `source~-target`, the original target of the old
          * backup symlink */
@@ -1578,7 +1638,7 @@ test_replace (gconstpointer test_data)
       {
         FALSE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
         FILE_TEST_SETUP_TYPE_NONEXISTENT, 0,
-        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0,
+        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0, FALSE,
         TRUE, 0, 0,
         1, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
         FILE_TEST_SETUP_TYPE_NONEXISTENT, 0, NULL,
@@ -1586,7 +1646,7 @@ test_replace (gconstpointer test_data)
       {
         FALSE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
         FILE_TEST_SETUP_TYPE_REGULAR_EMPTY, default_public_mode,
-        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, FALSE,
         TRUE, 0, 0,
         2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_backup_contents,
@@ -1594,7 +1654,7 @@ test_replace (gconstpointer test_data)
       {
         FALSE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
-        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, FALSE,
         TRUE, 0, 0,
         2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_backup_contents,
@@ -1602,7 +1662,7 @@ test_replace (gconstpointer test_data)
       {
         FALSE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
         FILE_TEST_SETUP_TYPE_DIRECTORY, 0,
-        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, FALSE,
         FALSE, G_IO_ERROR, G_IO_ERROR_IS_DIRECTORY,
         2, FILE_TEST_SETUP_TYPE_DIRECTORY, 0, NULL,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_backup_contents,
@@ -1610,7 +1670,7 @@ test_replace (gconstpointer test_data)
       {
         FALSE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
         FILE_TEST_SETUP_TYPE_SOCKET, default_public_mode,
-        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, FALSE,
         FALSE, G_IO_ERROR, G_IO_ERROR_NOT_REGULAR_FILE,
         2, FILE_TEST_SETUP_TYPE_SOCKET, default_public_mode, NULL,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_backup_contents,
@@ -1618,7 +1678,7 @@ test_replace (gconstpointer test_data)
       {
         FALSE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
         FILE_TEST_SETUP_TYPE_SYMLINK_DANGLING, 0,
-        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, FALSE,
         TRUE, 0, 0,
         2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_backup_contents,
@@ -1626,7 +1686,7 @@ test_replace (gconstpointer test_data)
       {
         FALSE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
         FILE_TEST_SETUP_TYPE_SYMLINK_VALID, default_public_mode,
-        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, FALSE,
         TRUE, 0, 0,
         /* the third file is `source-target`, the original target of the old
          * source file */
@@ -1640,7 +1700,7 @@ test_replace (gconstpointer test_data)
       {
         FALSE, G_FILE_CREATE_REPLACE_DESTINATION, "incorrect etag",
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
-        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, FALSE,
         FALSE, G_IO_ERROR, G_IO_ERROR_WRONG_ETAG,
         2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_source_contents,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_backup_contents,
@@ -1653,7 +1713,7 @@ test_replace (gconstpointer test_data)
       {
         TRUE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
         FILE_TEST_SETUP_TYPE_NONEXISTENT, 0,
-        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0,
+        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0, FALSE,
         TRUE, 0, 0,
         1, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
         FILE_TEST_SETUP_TYPE_NONEXISTENT, 0, NULL,
@@ -1661,7 +1721,7 @@ test_replace (gconstpointer test_data)
       {
         TRUE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
         FILE_TEST_SETUP_TYPE_REGULAR_EMPTY, default_public_mode,
-        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, FALSE,
         TRUE, 0, 0,
         2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
         FILE_TEST_SETUP_TYPE_REGULAR_EMPTY, default_public_mode, NULL,
@@ -1669,7 +1729,7 @@ test_replace (gconstpointer test_data)
       {
         TRUE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
-        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, FALSE,
         TRUE, 0, 0,
         2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_source_contents,
@@ -1677,7 +1737,7 @@ test_replace (gconstpointer test_data)
       {
         TRUE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
         FILE_TEST_SETUP_TYPE_DIRECTORY, 0,
-        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, FALSE,
         FALSE, G_IO_ERROR, G_IO_ERROR_IS_DIRECTORY,
         2, FILE_TEST_SETUP_TYPE_DIRECTORY, 0, NULL,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_backup_contents,
@@ -1685,7 +1745,7 @@ test_replace (gconstpointer test_data)
       {
         TRUE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
         FILE_TEST_SETUP_TYPE_SOCKET, default_public_mode,
-        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, FALSE,
         FALSE, G_IO_ERROR, G_IO_ERROR_NOT_REGULAR_FILE,
         2, FILE_TEST_SETUP_TYPE_SOCKET, default_public_mode, NULL,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_backup_contents,
@@ -1693,7 +1753,7 @@ test_replace (gconstpointer test_data)
       {
         TRUE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
         FILE_TEST_SETUP_TYPE_SYMLINK_DANGLING, 0,
-        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, FALSE,
         TRUE, 0, 0,
         2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
         FILE_TEST_SETUP_TYPE_SYMLINK_DANGLING, 0, "source-target",
@@ -1701,7 +1761,7 @@ test_replace (gconstpointer test_data)
       {
         TRUE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
         FILE_TEST_SETUP_TYPE_SYMLINK_VALID, default_public_mode,
-        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, FALSE,
         TRUE, 0, 0,
         /* the third file is `source-target`, the original target of the old
          * source file */
@@ -1716,7 +1776,7 @@ test_replace (gconstpointer test_data)
       {
         TRUE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
-        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0,
+        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0, FALSE,
         TRUE, 0, 0,
         2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_source_contents,
@@ -1724,7 +1784,7 @@ test_replace (gconstpointer test_data)
       {
         TRUE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
-        FILE_TEST_SETUP_TYPE_REGULAR_EMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_EMPTY, default_public_mode, FALSE,
         TRUE, 0, 0,
         2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_source_contents,
@@ -1732,7 +1792,7 @@ test_replace (gconstpointer test_data)
       {
         TRUE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
-        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, FALSE,
         TRUE, 0, 0,
         2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_source_contents,
@@ -1740,7 +1800,7 @@ test_replace (gconstpointer test_data)
       {
         TRUE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
-        FILE_TEST_SETUP_TYPE_DIRECTORY, 0,
+        FILE_TEST_SETUP_TYPE_DIRECTORY, 0, FALSE,
         FALSE, G_IO_ERROR, G_IO_ERROR_CANT_CREATE_BACKUP,
         2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_source_contents,
         FILE_TEST_SETUP_TYPE_DIRECTORY, 0, NULL,
@@ -1748,7 +1808,7 @@ test_replace (gconstpointer test_data)
       {
         TRUE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
-        FILE_TEST_SETUP_TYPE_SOCKET, default_public_mode,
+        FILE_TEST_SETUP_TYPE_SOCKET, default_public_mode, FALSE,
         TRUE, 0, 0,
         2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_source_contents,
@@ -1756,7 +1816,7 @@ test_replace (gconstpointer test_data)
       {
         TRUE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
-        FILE_TEST_SETUP_TYPE_SYMLINK_DANGLING, 0,
+        FILE_TEST_SETUP_TYPE_SYMLINK_DANGLING, 0, FALSE,
         TRUE, 0, 0,
         2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_source_contents,
@@ -1764,7 +1824,7 @@ test_replace (gconstpointer test_data)
       {
         TRUE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
-        FILE_TEST_SETUP_TYPE_SYMLINK_VALID, default_public_mode,
+        FILE_TEST_SETUP_TYPE_SYMLINK_VALID, default_public_mode, FALSE,
         TRUE, 0, 0,
         /* the third file is `source~-target`, the original target of the old
          * backup symlink */
@@ -1776,7 +1836,7 @@ test_replace (gconstpointer test_data)
       {
         FALSE, G_FILE_CREATE_PRIVATE, NULL,
         FILE_TEST_SETUP_TYPE_NONEXISTENT, 0,
-        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0,
+        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0, FALSE,
         TRUE, 0, 0,
         1, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_private_mode, new_contents,
         FILE_TEST_SETUP_TYPE_NONEXISTENT, 0, NULL,
@@ -1784,7 +1844,7 @@ test_replace (gconstpointer test_data)
       {
         FALSE, G_FILE_CREATE_PRIVATE, NULL,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
-        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0,
+        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0, FALSE,
         TRUE, 0, 0,
         /* the file isn’t being replaced, so it should keep its existing permissions */
         1, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
@@ -1793,7 +1853,7 @@ test_replace (gconstpointer test_data)
       {
         FALSE, G_FILE_CREATE_PRIVATE | G_FILE_CREATE_REPLACE_DESTINATION, NULL,
         FILE_TEST_SETUP_TYPE_NONEXISTENT, 0,
-        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0,
+        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0, FALSE,
         TRUE, 0, 0,
         1, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_private_mode, new_contents,
         FILE_TEST_SETUP_TYPE_NONEXISTENT, 0, NULL,
@@ -1801,18 +1861,21 @@ test_replace (gconstpointer test_data)
       {
         FALSE, G_FILE_CREATE_PRIVATE | G_FILE_CREATE_REPLACE_DESTINATION, NULL,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
-        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0,
+        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0, FALSE,
         TRUE, 0, 0,
         1, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_private_mode, new_contents,
         FILE_TEST_SETUP_TYPE_NONEXISTENT, 0, NULL,
       },
 
       /* make the initial source file unreadable, so the replace operation
-       * should fail */
+       * should fail
+       *
+       * Permissions are ignored if we have CAP_DAC_OVERRIDE or equivalent,
+       * and in particular if we're root. In this scenario,we need to skip it */
       {
         FALSE, G_FILE_CREATE_NONE, NULL,
         FILE_TEST_SETUP_TYPE_REGULAR_EMPTY, 0  /* most restrictive permissions */,
-        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0,
+        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0, TRUE,
         FALSE, G_IO_ERROR, G_IO_ERROR_PERMISSION_DENIED,
         1, FILE_TEST_SETUP_TYPE_REGULAR_EMPTY, 0, NULL,
         FILE_TEST_SETUP_TYPE_NONEXISTENT, 0, NULL,
@@ -1844,6 +1907,19 @@ test_replace (gconstpointer test_data)
       tmpdir = g_file_new_for_path (tmpdir_path);
 
       g_test_message ("Test %" G_GSIZE_FORMAT ", using temporary directory %s", i, tmpdir_path);
+
+      if (tests[i].skip_if_cap_dac_override && check_cap_dac_override (tmpdir_path))
+        {
+          g_test_message ("Skipping test as process has CAP_DAC_OVERRIDE capability and the test checks permissions");
+
+          g_file_delete (tmpdir, NULL, &local_error);
+          g_assert_no_error (local_error);
+          g_clear_object (&tmpdir);
+          g_free (tmpdir_path);
+
+          continue;
+        }
+
       g_free (tmpdir_path);
 
       /* Set up the test directory. */
