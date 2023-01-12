@@ -3007,6 +3007,8 @@ main (int argc, char *argv[])
   if (!g_test_subprocess ())
     {
       GError *local_error = NULL;
+      char *subprocess_stdout = NULL;
+
       /* A GVDB header is 6 guint32s, and requires a magic number in the first
        * two guint32s. A set of zero bytes of a greater length is considered
        * corrupt. */
@@ -3046,14 +3048,20 @@ main (int argc, char *argv[])
                                                 "--schema-file=org.gtk.test.enums.xml "
                                                 "--schema-file=org.gtk.test.gschema.xml "
                                                 "--override-file=org.gtk.test.gschema.override",
-                                                NULL, NULL, &result, NULL));
+                                                &subprocess_stdout, NULL, &result, NULL));
+      if (subprocess_stdout && *g_strstrip (subprocess_stdout) != '\0')
+        g_test_message ("%s", subprocess_stdout);
+      g_clear_pointer (&subprocess_stdout, g_free);
       g_assert_cmpint (result, ==, 0);
 
       g_remove ("schema-source/gschemas.compiled");
       g_mkdir ("schema-source", 0777);
       g_assert_true (g_spawn_command_line_sync (GLIB_COMPILE_SCHEMAS " --targetdir=schema-source "
                                                 "--schema-file=" SRCDIR "/org.gtk.schemasourcecheck.gschema.xml",
-                                                NULL, NULL, &result, NULL));
+                                                &subprocess_stdout, NULL, &result, NULL));
+      if (subprocess_stdout && *g_strstrip (subprocess_stdout) != '\0')
+        g_test_message ("%s", subprocess_stdout);
+      g_clear_pointer (&subprocess_stdout, g_free);
       g_assert_cmpint (result, ==, 0);
 
       g_remove ("schema-source-corrupt/gschemas.compiled");
