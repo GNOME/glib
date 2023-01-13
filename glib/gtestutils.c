@@ -1681,12 +1681,16 @@ void
     }
   va_end (args);
 
-  /* setup random seed string */
-  g_snprintf (seedstr, sizeof (seedstr), "R02S%08x%08x%08x%08x", g_random_int(), g_random_int(), g_random_int(), g_random_int());
-  test_run_seedstr = seedstr;
-
   /* parse args, sets up mode, changes seed, etc. */
   parse_args (argc, argv);
+
+  if (test_run_seedstr == NULL)
+    {
+      /* setup random seed string */
+      g_snprintf (seedstr, sizeof (seedstr), "R02S%08x%08x%08x%08x",
+                  g_random_int(), g_random_int(), g_random_int(), g_random_int());
+      test_run_seedstr = seedstr;
+    }
 
   if (!g_get_prgname() && !no_g_set_prgname)
     g_set_prgname ((*argv)[0]);
