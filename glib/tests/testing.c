@@ -1642,6 +1642,60 @@ test_tap_summary (void)
 }
 
 static void
+test_tap_message (void)
+{
+  const char *testing_helper;
+  GPtrArray *argv;
+  GError *error = NULL;
+  int status;
+  gchar *output;
+  char **output_lines;
+
+  g_test_summary ("Test the output of g_test_message() from the TAP output of a test.");
+
+  testing_helper = g_test_get_filename (G_TEST_BUILT, "testing-helper" EXEEXT, NULL);
+
+  argv = g_ptr_array_new ();
+  g_ptr_array_add (argv, (char *) testing_helper);
+  g_ptr_array_add (argv, "message");
+  g_ptr_array_add (argv, "--tap");
+  g_ptr_array_add (argv, NULL);
+
+  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+                G_SPAWN_STDERR_TO_DEV_NULL,
+                NULL, NULL, &output, NULL, &status,
+                &error);
+  g_assert_no_error (error);
+
+  g_spawn_check_wait_status (status, &error);
+  g_assert_no_error (error);
+
+  const char *expected_tap_header = "\n1..1\n";
+  const char *interesting_lines = strstr (output, expected_tap_header);
+  g_assert_nonnull (interesting_lines);
+  interesting_lines += strlen (expected_tap_header);
+
+  output_lines = g_strsplit (interesting_lines, "\n", -1);
+  g_assert_cmpuint (g_strv_length (output_lines), >=, 10);
+
+  guint i = 0;
+  g_assert_cmpstr (output_lines[i++], ==, "# Tests that single line message works");
+  g_assert_cmpstr (output_lines[i++], ==, "# Tests that multi");
+  g_assert_cmpstr (output_lines[i++], ==, "# line");
+  g_assert_cmpstr (output_lines[i++], ==, "# message");
+  g_assert_cmpstr (output_lines[i++], ==, "# works");
+  g_assert_cmpstr (output_lines[i++], ==, "# Tests that multi");
+  g_assert_cmpstr (output_lines[i++], ==, "# line");
+  g_assert_cmpstr (output_lines[i++], ==, "# message");
+  g_assert_cmpstr (output_lines[i++], ==, "# works with trailing too");
+  g_assert_cmpstr (output_lines[i++], ==, "# ");
+
+  g_free (output);
+  g_strfreev (output_lines);
+  g_ptr_array_unref (argv);
+}
+
+static void
 test_init_no_argv0 (void)
 {
   const char *testing_helper;
@@ -1771,6 +1825,7 @@ main (int   argc,
 
   g_test_add_func ("/tap", test_tap);
   g_test_add_func ("/tap/summary", test_tap_summary);
+  g_test_add_func ("/tap/message", test_tap_message);
 
   g_test_add_func ("/init/no_argv0", test_init_no_argv0);
 
