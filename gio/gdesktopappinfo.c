@@ -3552,11 +3552,11 @@ g_desktop_app_info_launch (GAppInfo           *appinfo,
  * @uris: (element-type utf8): List of URIs
  * @launch_context: (nullable): a #GAppLaunchContext
  * @spawn_flags: #GSpawnFlags, used for each process
- * @user_setup: (scope async) (nullable): a #GSpawnChildSetupFunc, used once
+ * @user_setup: (scope async) (nullable) (closure user_setup_data): a #GSpawnChildSetupFunc, used once
  *     for each process.
- * @user_setup_data: (closure user_setup) (nullable): User data for @user_setup
- * @pid_callback: (scope call) (nullable): Callback for child processes
- * @pid_callback_data: (closure pid_callback) (nullable): User data for @callback
+ * @user_setup_data: User data for @user_setup
+ * @pid_callback: (scope call) (nullable) (closure pid_callback_data): Callback for child processes
+ * @pid_callback_data: User data for @callback
  * @stdin_fd: file descriptor to use for child's stdin, or -1
  * @stdout_fd: file descriptor to use for child's stdout, or -1
  * @stderr_fd: file descriptor to use for child's stderr, or -1
