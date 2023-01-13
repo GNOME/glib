@@ -83,8 +83,8 @@ static void
 test_message (void)
 {
   g_test_message ("Tests that single line message works");
-  g_test_message ("Tests that multi\nline\nmessage\nworks");
-  g_test_message ("Tests that multi\nline\nmessage\nworks with trailing too\n");
+  g_test_message ("Tests that multi\n\nline\nmessage\nworks");
+  g_test_message ("\nTests that multi\nline\nmessage\nworks with leading and trailing too\n");
 }
 
 int
