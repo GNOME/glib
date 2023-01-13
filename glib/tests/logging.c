@@ -3,6 +3,12 @@
 #define G_LOG_USE_STRUCTURED 1
 #include <glib.h>
 
+#ifdef G_OS_WIN32
+#define LINE_END "\r\n"
+#else
+#define LINE_END "\n"
+#endif
+
 /* Test g_warn macros */
 static void
 test_warnings (void)
@@ -362,13 +368,25 @@ test_print_handler (void)
   GPrintFunc old_print_handler;
 
   old_print_handler = g_set_print_handler (my_print_handler);
-  g_assert (old_print_handler == NULL);
+  g_assert_nonnull (old_print_handler);
 
   my_print_count = 0;
   g_print ("bu ba");
   g_assert_cmpint (my_print_count, ==, 1);
 
   g_set_print_handler (NULL);
+
+  if (g_test_subprocess ())
+    {
+      old_print_handler ("default handler\n");
+      g_print ("bu ba\n");
+      return;
+    }
+
+  g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
+  g_test_trap_assert_stdout ("*default handler" LINE_END "*");
+  g_test_trap_assert_stdout ("*bu ba" LINE_END "*");
+  g_test_trap_has_passed ();
 }
 
 static void
@@ -377,13 +395,25 @@ test_printerr_handler (void)
   GPrintFunc old_printerr_handler;
 
   old_printerr_handler = g_set_printerr_handler (my_print_handler);
-  g_assert (old_printerr_handler == NULL);
+  g_assert_nonnull (old_printerr_handler);
 
   my_print_count = 0;
   g_printerr ("bu ba");
   g_assert_cmpint (my_print_count, ==, 1);
 
   g_set_printerr_handler (NULL);
+
+  if (g_test_subprocess ())
+    {
+      old_printerr_handler ("default handler\n");
+      g_printerr ("bu ba\n");
+      return;
+    }
+
+  g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
+  g_test_trap_assert_stderr ("*default handler" LINE_END "*");
+  g_test_trap_assert_stderr ("*bu ba" LINE_END "*");
+  g_test_trap_has_passed ();
 }
 
 static char *fail_str = "foo";
