@@ -1034,7 +1034,7 @@ g_test_log (GTestLogType lbit,
       fail = result == G_TEST_RUN_FAILURE;
       if (test_tap_log)
         {
-          const gchar *ok;
+          GString *tap_output;
 
           /* The TAP representation for an expected failure starts with
            * "not ok", even though it does not actually count as failing
@@ -1043,19 +1043,20 @@ g_test_log (GTestLogType lbit,
            * for which GTestResult does not currently have a
            * representation. */
           if (fail || result == G_TEST_RUN_INCOMPLETE)
-            ok = "not ok";
+            tap_output = g_string_new ("not ok");
           else
-            ok = "ok";
+            tap_output = g_string_new ("ok");
 
-          g_print ("%s %d %s", ok, test_run_count, string1);
+          g_string_append_printf (tap_output, " %d %s", test_run_count, string1);
           if (result == G_TEST_RUN_INCOMPLETE)
-            g_print (" # TODO %s\n", string2 ? string2 : "");
+            g_string_append_printf (tap_output, " # TODO %s", string2 ? string2 : "");
           else if (result == G_TEST_RUN_SKIPPED)
-            g_print (" # SKIP %s\n", string2 ? string2 : "");
+            g_string_append_printf (tap_output, " # SKIP %s", string2 ? string2 : "");
           else if (result == G_TEST_RUN_FAILURE && string2 != NULL)
-            g_print (" - %s\n", string2);
-          else
-            g_print ("\n");
+            g_string_append_printf (tap_output, " - %s", string2);
+
+          g_print ("%s\n", tap_output->str);
+          g_string_free (tap_output, TRUE);
         }
       else if (g_test_verbose ())
         g_print ("GTest: result: %s\n", g_test_result_names[result]);
