@@ -79,6 +79,14 @@ test_summary (void)
                   "it in the TAP output later.");
 }
 
+static void
+test_message (void)
+{
+  g_test_message ("Tests that single line message works");
+  g_test_message ("Tests that multi\nline\nmessage\nworks");
+  g_test_message ("Tests that multi\nline\nmessage\nworks with trailing too\n");
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -184,6 +192,10 @@ main (int   argc,
   else if (g_strcmp0 (argv1, "summary") == 0)
     {
       g_test_add_func ("/summary", test_summary);
+    }
+  else if (g_strcmp0 (argv1, "message") == 0)
+    {
+      g_test_add_func ("/message", test_message);
     }
   else
     {
