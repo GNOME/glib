@@ -1676,18 +1676,20 @@ test_tap_message (void)
   interesting_lines += strlen (expected_tap_header);
 
   output_lines = g_strsplit (interesting_lines, "\n", -1);
-  g_assert_cmpuint (g_strv_length (output_lines), >=, 10);
+  g_assert_cmpuint (g_strv_length (output_lines), >=, 12);
 
   guint i = 0;
   g_assert_cmpstr (output_lines[i++], ==, "# Tests that single line message works");
   g_assert_cmpstr (output_lines[i++], ==, "# Tests that multi");
+  g_assert_cmpstr (output_lines[i++], ==, "# ");
   g_assert_cmpstr (output_lines[i++], ==, "# line");
   g_assert_cmpstr (output_lines[i++], ==, "# message");
   g_assert_cmpstr (output_lines[i++], ==, "# works");
+  g_assert_cmpstr (output_lines[i++], ==, "# ");
   g_assert_cmpstr (output_lines[i++], ==, "# Tests that multi");
   g_assert_cmpstr (output_lines[i++], ==, "# line");
   g_assert_cmpstr (output_lines[i++], ==, "# message");
-  g_assert_cmpstr (output_lines[i++], ==, "# works with trailing too");
+  g_assert_cmpstr (output_lines[i++], ==, "# works with leading and trailing too");
   g_assert_cmpstr (output_lines[i++], ==, "# ");
 
   g_free (output);

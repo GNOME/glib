@@ -1094,17 +1094,34 @@ g_test_log (GTestLogType lbit,
     case G_TEST_LOG_MESSAGE:
       if (test_tap_log)
         {
-          if (strstr (string1, "\n") == NULL)
+          if (strchr (string1, '\n') == NULL)
             g_print ("# %s\n", string1);
           else
             {
-              char **lines = g_strsplit (string1, "\n", -1);
-              gsize i;
+              GString *output = g_string_new (NULL);
+              const char *line = string1;
 
-              for (i = 0; lines[i] != NULL; i++)
-                g_print ("# %s\n", lines[i]);
+              do
+                {
+                  const char *next = strchr (line, '\n');
+                  g_string_append (output, "# ");
 
-              g_strfreev (lines);
+                  if (next)
+                    {
+                      g_string_append_len (output, line, next - line + 1);
+                      line = next + 1;
+                    }
+                  else
+                    {
+                      g_string_append (output, line);
+                      g_string_append_c (output, '\n');
+                      line = next;
+                    }
+                }
+              while (line != NULL);
+
+              g_print ("%s", output->str);
+              g_string_free (g_steal_pointer (&output), TRUE);
             }
         }
       else if (g_test_verbose ())
