@@ -3023,7 +3023,12 @@ test_should_run (const char *test_path,
         return TRUE;
 
       if (g_test_verbose ())
-        g_print ("GTest: skipping: %s\n", test_run_name);
+        {
+          if (test_tap_log)
+            g_print ("# skipping: %s\n", test_run_name);
+          else
+            g_print ("GTest: skipping: %s\n", test_run_name);
+        }
       return FALSE;
     }
 
@@ -3867,7 +3872,12 @@ g_test_trap_subprocess (const char           *test_path,
     }
 
   if (g_test_verbose ())
-    g_print ("GTest: subprocess: %s\n", test_path);
+    {
+      if (test_tap_log)
+        g_print ("# subprocess: %s\n", test_path);
+      else
+        g_print ("GTest: subprocess: %s\n", test_path);
+    }
 
   test_trap_clear ();
   test_trap_last_subprocess = g_strdup (test_path);

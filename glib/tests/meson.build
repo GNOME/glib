@@ -140,6 +140,7 @@ glib_tests = {
   'string' : {},
   'strvbuilder' : {},
   'testing' : {
+    'args': [ '--verbose' ],
     'extra_programs' : ['testing-helper'],
   },
   'test-printf' : {},
@@ -398,6 +399,7 @@ foreach test_name, extra_args : glib_tests
   endforeach
 
   test(test_name, exe,
+    args: extra_args.get('args', []),
     protocol : extra_args.get('protocol', test_protocol),
     depends : depends,
     env : test_env,
