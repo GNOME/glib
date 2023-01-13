@@ -950,6 +950,7 @@ g_test_log_send (guint         n_bytes,
     {
       GTestLogBuffer *lbuffer = g_test_log_buffer_new ();
       GTestLogMsg *msg;
+      GString *output;
       guint ui;
       g_test_log_buffer_push (lbuffer, n_bytes, buffer);
       msg = g_test_log_buffer_pop (lbuffer);
@@ -957,22 +958,25 @@ g_test_log_send (guint         n_bytes,
       g_warn_if_fail (lbuffer->data->len == 0);
       g_test_log_buffer_free (lbuffer);
       /* print message */
-      g_printerr ("{*LOG(%s)", g_test_log_type_name (msg->log_type));
+      output = g_string_new (NULL);
+      g_string_printf (output, "{*LOG(%s)", g_test_log_type_name (msg->log_type));
       for (ui = 0; ui < msg->n_strings; ui++)
-        g_printerr (":{%s}", msg->strings[ui]);
+        g_string_append_printf (output, ":{%s}", msg->strings[ui]);
       if (msg->n_nums)
         {
-          g_printerr (":(");
+          g_string_append (output, ":(");
           for (ui = 0; ui < msg->n_nums; ui++)
             {
               if ((long double) (long) msg->nums[ui] == msg->nums[ui])
-                g_printerr ("%s%ld", ui ? ";" : "", (long) msg->nums[ui]);
+                g_string_append_printf (output, "%s%ld", ui ? ";" : "", (long) msg->nums[ui]);
               else
-                g_printerr ("%s%.16g", ui ? ";" : "", (double) msg->nums[ui]);
+                g_string_append_printf (output, "%s%.16g", ui ? ";" : "", (double) msg->nums[ui]);
             }
-          g_printerr (")");
+          g_string_append_c (output, ')');
         }
-      g_printerr (":LOG*}\n");
+      g_string_append (output, ":LOG*}");
+      g_printerr ("%s\n", output->str);
+      g_string_free (output, TRUE);
       g_test_log_msg_free (msg);
     }
 }
