@@ -678,7 +678,7 @@ g_subprocess_launcher_close (GSubprocessLauncher *self)
 /**
  * g_subprocess_launcher_set_child_setup: (skip)
  * @self: a #GSubprocessLauncher
- * @child_setup: a #GSpawnChildSetupFunc to use as the child setup function
+ * @child_setup: (closure user_data): a #GSpawnChildSetupFunc to use as the child setup function
  * @user_data: user data for @child_setup
  * @destroy_notify: a #GDestroyNotify for @user_data
  *
