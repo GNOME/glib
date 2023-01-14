@@ -374,18 +374,20 @@ test_print_handler (void)
   g_print ("bu ba");
   g_assert_cmpint (my_print_count, ==, 1);
 
-  g_set_print_handler (NULL);
-
   if (g_test_subprocess ())
     {
+      g_set_print_handler (NULL);
       old_print_handler ("default handler\n");
       g_print ("bu ba\n");
       return;
     }
 
+  g_set_print_handler (old_print_handler);
   g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_stdout ("*default handler" LINE_END "*");
   g_test_trap_assert_stdout ("*bu ba" LINE_END "*");
+  g_test_trap_assert_stdout_unmatched ("*# default handler" LINE_END "*");
+  g_test_trap_assert_stdout_unmatched ("*# bu ba" LINE_END "*");
   g_test_trap_has_passed ();
 }
 
@@ -401,15 +403,15 @@ test_printerr_handler (void)
   g_printerr ("bu ba");
   g_assert_cmpint (my_print_count, ==, 1);
 
-  g_set_printerr_handler (NULL);
-
   if (g_test_subprocess ())
     {
+      g_set_printerr_handler (NULL);
       old_printerr_handler ("default handler\n");
       g_printerr ("bu ba\n");
       return;
     }
 
+  g_set_printerr_handler (old_printerr_handler);
   g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_stderr ("*default handler" LINE_END "*");
   g_test_trap_assert_stderr ("*bu ba" LINE_END "*");
