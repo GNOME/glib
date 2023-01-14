@@ -2886,6 +2886,7 @@ static void
 test_per_desktop (void)
 {
   GSettings *settings;
+  GAction *action_string;
   TestObject *obj;
   gpointer p;
   gchar *str;
@@ -2918,6 +2919,10 @@ test_per_desktop (void)
   g_assert_cmpstr (str, ==, "GNOME");
   g_free (str);
 
+  action_string = g_settings_create_action (settings, "desktop");
+  check_and_free (g_action_get_state (action_string), "'GNOME'");
+
+  g_clear_object (&action_string);
   g_object_unref (settings);
   g_object_unref (obj);
 }
@@ -2929,6 +2934,7 @@ static void
 test_per_desktop_subprocess (void)
 {
   GSettings *settings;
+  GAction *action_string;
   TestObject *obj;
   gpointer p;
   gchar *str;
@@ -2956,6 +2962,10 @@ test_per_desktop_subprocess (void)
   g_assert_cmpstr (str, ==, "GNOME Classic");
   g_free (str);
 
+  action_string = g_settings_create_action (settings, "desktop");
+  check_and_free (g_action_get_state (action_string), "'GNOME Classic'");
+
+  g_clear_object (&action_string);
   g_object_unref (settings);
   g_object_unref (obj);
 }
