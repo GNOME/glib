@@ -195,13 +195,6 @@ free_list_node (GMarkupParseContext *context, GSList *node)
   context->spare_list_nodes = g_slist_concat (node, context->spare_list_nodes);
 }
 
-static inline void
-string_blank (GString *string)
-{
-  string->str[0] = '\0';
-  string->len = 0;
-}
-
 /**
  * g_markup_parse_context_new:
  * @parser: a #GMarkupParser
@@ -856,7 +849,7 @@ release_chunk (GMarkupParseContext *context, GString *str)
       g_string_free (str, TRUE);
       return;
     }
-  string_blank (str);
+  g_string_truncate (str, 0);
   node = get_list_node (context, str);
   context->spare_chunks = g_slist_concat (node, context->spare_chunks);
 }
@@ -889,7 +882,7 @@ static inline void
 truncate_partial (GMarkupParseContext *context)
 {
   if (context->partial_chunk != NULL)
-    string_blank (context->partial_chunk);
+    g_string_truncate (context->partial_chunk, 0);
 }
 
 static inline const gchar*
