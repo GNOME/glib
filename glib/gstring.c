@@ -75,22 +75,29 @@
  */
 
 static void
-g_string_maybe_expand (GString *string,
-                       gsize    len)
+g_string_expand (GString *string,
+                 gsize    len)
 {
   /* Detect potential overflow */
   if G_UNLIKELY ((G_MAXSIZE - string->len - 1) < len)
     g_error ("adding %" G_GSIZE_FORMAT " to string would overflow", len);
 
-  if (string->len + len >= string->allocated_len)
-    {
-      string->allocated_len = g_nearest_pow (string->len + len + 1);
-      /* If the new size is bigger than G_MAXSIZE / 2, only allocate enough
-       * memory for this string and don't over-allocate. */
-      if (string->allocated_len == 0)
-        string->allocated_len = string->len + len + 1;
-      string->str = g_realloc (string->str, string->allocated_len);
-    }
+  string->allocated_len = g_nearest_pow (string->len + len + 1);
+  /* If the new size is bigger than G_MAXSIZE / 2, only allocate enough
+   * memory for this string and don't over-allocate.
+   */
+  if (string->allocated_len == 0)
+    string->allocated_len = string->len + len + 1;
+
+  string->str = g_realloc (string->str, string->allocated_len);
+}
+
+static inline void
+g_string_maybe_expand (GString *string,
+                       gsize    len)
+{
+  if (G_UNLIKELY (string->len + len >= string->allocated_len))
+    g_string_expand (string, len);
 }
 
 /**
@@ -113,7 +120,7 @@ g_string_sized_new (gsize dfl_size)
   string->len   = 0;
   string->str   = NULL;
 
-  g_string_maybe_expand (string, MAX (dfl_size, 64));
+  g_string_expand (string, MAX (dfl_size, 64));
   string->str[0] = 0;
 
   return string;
