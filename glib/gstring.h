@@ -163,8 +163,10 @@ GString*     g_string_append_uri_escaped (GString         *string,
                                           const gchar     *reserved_chars_allowed,
                                           gboolean         allow_utf8);
 
-/* -- optimize g_strig_append_c --- */
+#ifndef __GTK_DOC_IGNORE__
+
 #ifdef G_CAN_INLINE
+G_ALWAYS_INLINE
 static inline GString*
 g_string_append_c_inline (GString *gstring,
                           gchar    c)
@@ -180,6 +182,7 @@ g_string_append_c_inline (GString *gstring,
 }
 #define g_string_append_c(gstr,c)       g_string_append_c_inline (gstr, c)
 
+G_ALWAYS_INLINE
 static inline GString *
 g_string_append_len_inline (GString    *gstring,
                             const char *val,
@@ -204,6 +207,7 @@ g_string_append_len_inline (GString    *gstring,
 }
 #define g_string_append_len(gstr,val,len) g_string_append_len_inline (gstr, val, len)
 
+G_ALWAYS_INLINE
 static inline GString *
 g_string_truncate_inline (GString *gstring,
                           gsize    len)
@@ -223,6 +227,7 @@ g_string_truncate_inline (GString *gstring,
 
 #endif /* G_CAN_INLINE */
 
+#endif /* __GTK_DOC_IGNORE__ */
 
 GLIB_DEPRECATED
 GString *g_string_down (GString *string);
