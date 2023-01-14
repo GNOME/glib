@@ -206,17 +206,35 @@ static void
 test_string_append (void)
 {
   GString *string;
+  char *tmp;
+  int i;
+
+  tmp = g_strdup ("more");
 
   /* append */
   string = g_string_new ("firsthalf");
-  g_string_append (string, "lasthalf");
+  g_string_append (string, "last");
+  (g_string_append) (string, "half");
+
   g_assert_cmpstr (string->str, ==, "firsthalflasthalf");
+
+  i = 0;
+  g_string_append (string, &tmp[i++]);
+  (g_string_append) (string, &tmp[i++]);
+  g_assert_true (i == 2);
+
+  g_assert_cmpstr (string->str, ==, "firsthalflasthalfmoreore");
+
   g_string_free (string, TRUE);
 
   /* append_len */
   string = g_string_new ("firsthalf");
-  g_string_append_len (string, "lasthalfjunkjunk", strlen ("lasthalf"));
-  g_assert_cmpstr (string->str, ==, "firsthalflasthalf");
+  g_string_append_len (string, "lasthalfjunkjunk", strlen ("last"));
+  (g_string_append_len) (string, "halfjunkjunk", strlen ("half"));
+  g_string_append_len (string, "more", -1);
+  (g_string_append_len) (string, "ore", -1);
+
+  g_assert_cmpstr (string->str, ==, "firsthalflasthalfmoreore");
   g_string_free (string, TRUE);
 }
 
