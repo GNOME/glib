@@ -193,8 +193,11 @@ test_string_append_c (void)
     else
       (g_string_append_c) (string, 'a'+(i%26));
 
-  g_assert((strlen("hi pete!") + 10000) == string->len);
-  g_assert((strlen("hi pete!") + 10000) == strlen(string->str));
+  g_assert_true ((strlen("hi pete!") + 10000) == string->len);
+  g_assert_true ((strlen("hi pete!") + 10000) == strlen(string->str));
+
+  for (i = 0; i < 10000; i++)
+    g_assert_true (string->str[strlen ("Hi pete!") + i] == 'a' + (i%26));
 
   g_string_free (string, TRUE);
 }
