@@ -436,7 +436,7 @@ test_string_truncate (void)
   g_assert (string->len == strlen("testing"));
   g_assert_cmpstr (string->str, ==, "testing");
 
-  g_string_truncate (string, 4);
+  (g_string_truncate) (string, 4);
   g_assert (string->len == 4);
   g_assert_cmpstr (string->str, ==, "test");
 
