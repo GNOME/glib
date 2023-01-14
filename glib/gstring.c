@@ -539,8 +539,8 @@ g_string_append_uri_escaped (GString     *string,
  * Returns: (transfer none): @string
  */
 GString *
-g_string_append (GString     *string,
-                 const gchar *val)
+(g_string_append) (GString     *string,
+                   const gchar *val)
 {
   return g_string_insert_len (string, -1, val, -1);
 }
@@ -564,9 +564,9 @@ g_string_append (GString     *string,
  * Returns: (transfer none): @string
  */
 GString *
-g_string_append_len (GString     *string,
-                     const gchar *val,
-                     gssize       len)
+(g_string_append_len) (GString     *string,
+                       const gchar *val,
+                       gssize       len)
 {
   return g_string_insert_len (string, -1, val, len);
 }
@@ -581,10 +581,9 @@ g_string_append_len (GString     *string,
  *
  * Returns: (transfer none): @string
  */
-#undef g_string_append_c
 GString *
-g_string_append_c (GString *string,
-                   gchar    c)
+(g_string_append_c) (GString *string,
+                     gchar    c)
 {
   g_return_val_if_fail (string != NULL, NULL);
 

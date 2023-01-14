@@ -35,6 +35,7 @@
 #include <glib/gunicode.h>
 #include <glib/gbytes.h>
 #include <glib/gutils.h>  /* for G_CAN_INLINE */
+#include <string.h>
 
 G_BEGIN_DECLS
 
@@ -178,6 +179,36 @@ g_string_append_c_inline (GString *gstring,
   return gstring;
 }
 #define g_string_append_c(gstr,c)       g_string_append_c_inline (gstr, c)
+
+static inline GString *
+g_string_append_len_inline (GString    *gstring,
+                            const char *val,
+                            gssize      len)
+{
+  if (len < 0)
+    len = strlen (val);
+
+  if (G_LIKELY (gstring->len + len < gstring->allocated_len))
+    {
+      char *end = gstring->str + gstring->len;
+      if (G_LIKELY (val + len <= end || val > end + len))
+        memcpy (end, val, len);
+      else
+        memmove (end, val, len);
+      gstring->len += len;
+      gstring->str[gstring->len] = 0;
+      return gstring;
+    }
+  else
+    return g_string_insert_len (gstring, -1, val, len);
+}
+#define g_string_append_len(gstr,val,len) g_string_append_len_inline (gstr, val, len)
+
+#if G_GNUC_CHECK_VERSION (2, 0)
+
+#define g_string_append(gstr,val) g_string_append_len (gstr, val, __builtin_constant_p (val) ? (gssize) strlen (val) : (gssize) -1)
+#endif
+
 #endif /* G_CAN_INLINE */
 
 
