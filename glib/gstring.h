@@ -204,9 +204,21 @@ g_string_append_len_inline (GString    *gstring,
 }
 #define g_string_append_len(gstr,val,len) g_string_append_len_inline (gstr, val, len)
 
+static inline GString *
+g_string_truncate_inline (GString *gstring,
+                          gsize    len)
+{
+  gstring->len = MIN (len, gstring->len);
+  gstring->str[gstring->len] = '\0';
+  return gstring;
+}
+
+#define g_string_truncate(gstr,len) g_string_truncate_inline (gstr, len)
+
 #if G_GNUC_CHECK_VERSION (2, 0)
 
 #define g_string_append(gstr,val) g_string_append_len (gstr, val, __builtin_constant_p (val) ? (gssize) strlen (val) : (gssize) -1)
+
 #endif
 
 #endif /* G_CAN_INLINE */

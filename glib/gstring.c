@@ -358,8 +358,8 @@ g_string_assign (GString     *string,
  * Returns: (transfer none): @string
  */
 GString *
-g_string_truncate (GString *string,
-                   gsize    len)
+(g_string_truncate) (GString *string,
+                     gsize    len)
 {
   g_return_val_if_fail (string != NULL, NULL);
 
