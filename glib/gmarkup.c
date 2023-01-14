@@ -881,7 +881,7 @@ add_to_partial (GMarkupParseContext *context,
     }
 
   if (text_start != text_end)
-    g_string_insert_len (context->partial_chunk, -1,
+    g_string_append_len (context->partial_chunk,
                          text_start, text_end - text_start);
 }
 
