@@ -848,7 +848,12 @@ static void     gtest_default_log_handler       (const gchar    *log_domain,
                                                  GLogLevelFlags  log_level,
                                                  const gchar    *message,
                                                  gpointer        unused_data);
-
+static void     g_test_default_print            (const char *format,
+                                                 ...) G_GNUC_PRINTF (1, 2);
+static void     g_test_tap_print                (gboolean    commented,
+                                                 unsigned    subtest_level,
+                                                 const char *format,
+                                                 ...) G_GNUC_PRINTF (3, 4);
 
 static const char * const g_test_result_names[] = {
   "OK",
@@ -915,8 +920,90 @@ static GTestConfig mutable_test_config_vars = {
 };
 const GTestConfig * const g_test_config_vars = &mutable_test_config_vars;
 static gboolean  no_g_set_prgname = FALSE;
+static GPrintFunc g_default_print_func = NULL;
+
 
 /* --- functions --- */
+static inline gboolean
+is_subtest (void)
+{
+  return test_is_subtest || test_in_forked_child || test_in_subprocess;
+}
+
+static void
+g_test_print_handler_full (const gchar *string,
+                           gboolean     use_tap_format,
+                           gboolean     is_tap_comment,
+                           unsigned     subtest_level)
+{
+  g_assert (string != NULL);
+
+  if (G_LIKELY (use_tap_format) && strchr (string, '\n') != NULL)
+    {
+      static gboolean last_had_final_newline = TRUE;
+      GString *output = g_string_new_len (NULL, strlen (string) + 2);
+      const char *line = string;
+
+      do
+        {
+          const char *next = strchr (line, '\n');
+
+          if (last_had_final_newline && (next || *line != '\0'))
+            {
+              for (unsigned l = 0; l < subtest_level; ++l)
+                g_string_append (output, TAP_SUBTEST_PREFIX);
+
+              if G_LIKELY (is_tap_comment)
+                g_string_append (output, "# ");
+            }
+
+          if (next)
+            {
+              next += 1; /* Include the newline */
+              g_string_append_len (output, line, next - line);
+            }
+          else
+            {
+              g_string_append (output, line);
+              last_had_final_newline = (*line == '\0');
+            }
+
+          line = next;
+        }
+      while (line != NULL);
+
+      g_default_print_func (output->str);
+      g_string_free (g_steal_pointer (&output), TRUE);
+    }
+  else
+    {
+      g_default_print_func (string);
+    }
+}
+
+static void
+g_test_print_handler (const gchar *string)
+{
+  g_test_print_handler_full (string, test_tap_log, TRUE, is_subtest () ? 1 : 0);
+}
+
+static void
+g_test_tap_print (gboolean    commented,
+                  unsigned    subtest_level,
+                  const char *format,
+                  ...)
+{
+  va_list args;
+  char *string;
+
+  va_start (args, format);
+  string = g_strdup_vprintf (format, args);
+  va_end (args);
+
+  g_test_print_handler_full (string, TRUE, commented, subtest_level);
+  g_free (string);
+}
+
 const char*
 g_test_log_type_name (GTestLogType log_type)
 {
@@ -997,23 +1084,33 @@ g_test_log (GTestLogType lbit,
   gchar *astrings[3] = { NULL, NULL, NULL };
   guint8 *dbuffer;
   guint32 dbufferlen;
-  gboolean is_subtest;
-  const char *tap_prefix;
+  unsigned subtest_level;
 
-  is_subtest = test_is_subtest || test_in_forked_child || test_in_subprocess;
-  tap_prefix = test_tap_log && is_subtest ? TAP_SUBTEST_PREFIX : "";
+  if (g_once_init_enter (&g_default_print_func))
+    {
+      g_once_init_leave (&g_default_print_func,
+                         g_set_print_handler (g_test_print_handler));
+      g_assert_nonnull (g_default_print_func);
+    }
+
+  subtest_level = is_subtest () ? 1 : 0;
 
   switch (lbit)
     {
     case G_TEST_LOG_START_BINARY:
       if (test_tap_log)
         {
-          if (!is_subtest)
-            g_print ("TAP version 13\n");
+          if (!is_subtest ())
+            {
+              g_test_tap_print (FALSE, 0, "TAP version 13\n");
+            }
           else
-            g_print ("# Subtest: %s\n", test_argv0);
+            {
+              g_test_tap_print (TRUE, subtest_level > 0 ? subtest_level - 1 : 0,
+                                "Subtest: %s\n", test_argv0);
+            }
 
-          g_print ("%s# random seed: %s\n", tap_prefix, string2);
+          g_print ("random seed: %s\n", string2);
         }
       else if (g_test_verbose ())
         {
@@ -1026,9 +1123,9 @@ g_test_log (GTestLogType lbit,
           /* We only print the TAP "plan" (1..n) ahead of time if we did
            * not use the -p option to select specific tests to be run. */
           if (string1[0] != 0)
-            g_print ("%s# Start of %s tests\n", tap_prefix, string1);
+            g_print ("Start of %s tests\n", string1);
           else if (test_paths == NULL)
-            g_print ("%s1..%d\n", tap_prefix, test_count);
+            g_test_tap_print (FALSE, subtest_level, "1..%d\n", test_count);
         }
       break;
     case G_TEST_LOG_STOP_SUITE:
@@ -1038,9 +1135,9 @@ g_test_log (GTestLogType lbit,
            * we were using -p, we need to print how many tests we ran at
            * the end instead. */
           if (string1[0] != 0)
-            g_print ("%s# End of %s tests\n", tap_prefix, string1);
+            g_print ("End of %s tests\n", string1);
           else if (test_paths != NULL)
-            g_print ("%s1..%d\n", tap_prefix, test_run_count);
+            g_test_tap_print (FALSE, subtest_level, "1..%d\n", test_run_count);
         }
       break;
     case G_TEST_LOG_STOP_CASE:
@@ -1061,7 +1158,7 @@ g_test_log (GTestLogType lbit,
           else
             tap_output = g_string_new ("ok");
 
-          if (is_subtest)
+          if (is_subtest ())
             g_string_prepend (tap_output, TAP_SUBTEST_PREFIX);
 
           g_string_append_printf (tap_output, " %d %s", test_run_count, string1);
@@ -1072,7 +1169,8 @@ g_test_log (GTestLogType lbit,
           else if (result == G_TEST_RUN_FAILURE && string2 != NULL)
             g_string_append_printf (tap_output, " - %s", string2);
 
-          g_print ("%s\n", tap_output->str);
+          g_string_append_c (tap_output, '\n');
+          g_default_print_func (tap_output->str);
           g_string_free (g_steal_pointer (&tap_output), TRUE);
         }
       else if (g_test_verbose ())
@@ -1082,7 +1180,7 @@ g_test_log (GTestLogType lbit,
       if (fail && test_mode_fatal)
         {
           if (test_tap_log)
-            g_print ("%sBail out!\n", tap_prefix);
+            g_test_tap_print (FALSE, 0, "Bail out!\n");
           g_abort ();
         }
       if (result == G_TEST_RUN_SKIPPED || result == G_TEST_RUN_INCOMPLETE)
@@ -1091,62 +1189,31 @@ g_test_log (GTestLogType lbit,
     case G_TEST_LOG_SKIP_CASE:
       if (test_tap_log)
         {
-          g_print ("%sok %d %s # SKIP\n", tap_prefix,
-                   test_run_count, string1);
+          g_test_tap_print (FALSE, subtest_level, "ok %d %s # SKIP\n",
+                            test_run_count, string1);
         }
       break;
     case G_TEST_LOG_MIN_RESULT:
       if (test_tap_log)
-        g_print ("%s# min perf: %s\n", tap_prefix, string1);
+        g_print ("min perf: %s\n", string1);
       else if (g_test_verbose ())
         g_print ("(MINPERF:%s)\n", string1);
       break;
     case G_TEST_LOG_MAX_RESULT:
       if (test_tap_log)
-        g_print ("%s# max perf: %s\n", tap_prefix, string1);
+        g_print ("max perf: %s\n", string1);
       else if (g_test_verbose ())
         g_print ("(MAXPERF:%s)\n", string1);
       break;
     case G_TEST_LOG_MESSAGE:
       if (test_tap_log)
-        {
-          if (strchr (string1, '\n') == NULL)
-            g_print ("%s# %s\n", tap_prefix, string1);
-          else
-            {
-              GString *output = g_string_new (NULL);
-              const char *line = string1;
-
-              do
-                {
-                  const char *next = strchr (line, '\n');
-                  g_string_append (output, tap_prefix);
-                  g_string_append (output, "# ");
-
-                  if (next)
-                    {
-                      g_string_append_len (output, line, next - line + 1);
-                      line = next + 1;
-                    }
-                  else
-                    {
-                      g_string_append (output, line);
-                      g_string_append_c (output, '\n');
-                      line = next;
-                    }
-                }
-              while (line != NULL);
-
-              g_print ("%s", output->str);
-              g_string_free (g_steal_pointer (&output), TRUE);
-            }
-        }
+        g_print ("%s\n", string1);
       else if (g_test_verbose ())
         g_print ("(MSG: %s)\n", string1);
       break;
     case G_TEST_LOG_ERROR:
       if (test_tap_log)
-        g_print ("%sBail out! %s\n", tap_prefix, string1);
+        g_test_tap_print (FALSE, 0, "Bail out! %s\n", string1);
       else if (g_test_verbose ())
         g_print ("(ERROR: %s)\n", string1);
       break;
@@ -3067,7 +3134,7 @@ test_should_run (const char *test_path,
       if (g_test_verbose ())
         {
           if (test_tap_log)
-            g_print ("# skipping: %s\n", test_run_name);
+            g_print ("skipping: %s\n", test_run_name);
           else
             g_print ("GTest: skipping: %s\n", test_run_name);
         }
@@ -3917,7 +3984,7 @@ g_test_trap_subprocess (const char           *test_path,
   if (g_test_verbose ())
     {
       if (test_tap_log)
-        g_print ("# subprocess: %s\n", test_path);
+        g_print ("subprocess: %s\n", test_path);
       else
         g_print ("GTest: subprocess: %s\n", test_path);
     }

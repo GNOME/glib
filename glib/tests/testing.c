@@ -2429,6 +2429,107 @@ test_tap_subtest_message (void)
 }
 
 static void
+test_tap_print (void)
+{
+  const char *testing_helper;
+  GPtrArray *argv;
+  GError *error = NULL;
+  int status;
+  gchar *output;
+  char **output_lines;
+  char **envp;
+
+  g_test_summary ("Test the output of g_print() from the TAP output of a test.");
+
+  testing_helper = g_test_get_filename (G_TEST_BUILT, "testing-helper" EXEEXT, NULL);
+
+  argv = g_ptr_array_new ();
+  g_ptr_array_add (argv, (char *) testing_helper);
+  g_ptr_array_add (argv, "print");
+  g_ptr_array_add (argv, "--tap");
+  g_ptr_array_add (argv, NULL);
+
+  /* Remove the G_TEST_ROOT_PROCESS env so it will be considered a standalone test */
+  envp = g_get_environ ();
+  g_assert_nonnull (g_environ_getenv (envp, "G_TEST_ROOT_PROCESS"));
+  envp = g_environ_unsetenv (g_steal_pointer (&envp), "G_TEST_ROOT_PROCESS");
+
+  g_spawn_sync (NULL, (char **) argv->pdata, envp,
+                G_SPAWN_STDERR_TO_DEV_NULL,
+                NULL, NULL, &output, NULL, &status,
+                &error);
+  g_assert_no_error (error);
+
+  g_spawn_check_wait_status (status, &error);
+  g_assert_no_error (error);
+
+  const char *expected_tap_header = "\n1..1\n";
+  const char *interesting_lines = strstr (output, expected_tap_header);
+  g_assert_nonnull (interesting_lines);
+  interesting_lines += strlen (expected_tap_header);
+
+  output_lines = g_strsplit (interesting_lines, "\n", -1);
+  g_assert_cmpuint (g_strv_length (output_lines), >=, 3);
+
+  guint i = 0;
+  g_assert_cmpstr (output_lines[i++], ==, "# Tests that single line message works");
+  g_assert_cmpstr (output_lines[i++], ==, "# test that multiple");
+  g_assert_cmpstr (output_lines[i++], ==, "# lines can be written separately");
+
+  g_free (output);
+  g_strfreev (envp);
+  g_strfreev (output_lines);
+  g_ptr_array_unref (argv);
+}
+
+static void
+test_tap_subtest_print (void)
+{
+  const char *testing_helper;
+  GPtrArray *argv;
+  GError *error = NULL;
+  int status;
+  gchar *output;
+  char **output_lines;
+
+  g_test_summary ("Test the output of g_test_print() from the TAP output of a sub-test.");
+
+  testing_helper = g_test_get_filename (G_TEST_BUILT, "testing-helper" EXEEXT, NULL);
+
+  argv = g_ptr_array_new ();
+  g_ptr_array_add (argv, (char *) testing_helper);
+  g_ptr_array_add (argv, "print");
+  g_ptr_array_add (argv, "--tap");
+  g_ptr_array_add (argv, NULL);
+
+  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+                G_SPAWN_STDERR_TO_DEV_NULL,
+                NULL, NULL, &output, NULL, &status,
+                &error);
+  g_assert_no_error (error);
+
+  g_spawn_check_wait_status (status, &error);
+  g_assert_no_error (error);
+
+  const char *expected_tap_header = "\n" TAP_SUBTEST_PREFIX "1..1\n";
+  const char *interesting_lines = strstr (output, expected_tap_header);
+  g_assert_nonnull (interesting_lines);
+  interesting_lines += strlen (expected_tap_header);
+
+  output_lines = g_strsplit (interesting_lines, "\n", -1);
+  g_assert_cmpuint (g_strv_length (output_lines), >=, 3);
+
+  guint i = 0;
+  g_assert_cmpstr (output_lines[i++], ==, TAP_SUBTEST_PREFIX "# Tests that single line message works");
+  g_assert_cmpstr (output_lines[i++], ==, TAP_SUBTEST_PREFIX "# test that multiple");
+  g_assert_cmpstr (output_lines[i++], ==, TAP_SUBTEST_PREFIX "# lines can be written separately");
+
+  g_free (output);
+  g_strfreev (output_lines);
+  g_ptr_array_unref (argv);
+}
+
+static void
 test_init_no_argv0 (void)
 {
   const char *testing_helper;
@@ -2565,6 +2666,8 @@ main (int   argc,
   g_test_add_func ("/tap/subtest/summary", test_tap_subtest_summary);
   g_test_add_func ("/tap/message", test_tap_message);
   g_test_add_func ("/tap/subtest/message", test_tap_subtest_message);
+  g_test_add_func ("/tap/print", test_tap_print);
+  g_test_add_func ("/tap/subtest/print", test_tap_subtest_print);
 
   g_test_add_func ("/init/no_argv0", test_init_no_argv0);
 

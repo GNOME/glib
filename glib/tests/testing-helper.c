@@ -87,6 +87,16 @@ test_message (void)
   g_test_message ("\nTests that multi\nline\nmessage\nworks with leading and trailing too\n");
 }
 
+static void
+test_print (void)
+{
+  g_print ("Tests that single line message works\n");
+  g_print ("test that multiple\nlines ");
+  g_print ("can be ");
+  g_print ("written ");
+  g_print ("separately\n");
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -196,6 +206,10 @@ main (int   argc,
   else if (g_strcmp0 (argv1, "message") == 0)
     {
       g_test_add_func ("/message", test_message);
+    }
+  else if (g_strcmp0 (argv1, "print") == 0)
+    {
+      g_test_add_func ("/print", test_print);
     }
   else
     {
