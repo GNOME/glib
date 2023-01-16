@@ -1143,7 +1143,13 @@ write_to_file (const gchar  *contents,
     {
       gssize s;
 
-      s = write (fd, contents, MIN (length, G_MAXSSIZE));
+#ifdef G_OS_WIN32
+      /* 'write' on windows uses int types, so limit count to G_MAXINT */
+      s = write (fd, contents, MIN (length, (gsize) G_MAXINT));
+#else
+      /* Limit count to G_MAXSSIZE to fit into the return value. */
+      s = write (fd, contents, MIN (length, (gsize) G_MAXSSIZE));
+#endif
 
       if (s < 0)
         {
