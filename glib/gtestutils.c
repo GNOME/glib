@@ -849,10 +849,8 @@ static void     gtest_default_log_handler       (const gchar    *log_domain,
                                                  GLogLevelFlags  log_level,
                                                  const gchar    *message,
                                                  gpointer        unused_data);
-static void     g_test_default_print            (const char *format,
-                                                 ...) G_GNUC_PRINTF (1, 2);
-static void     g_test_tap_print                (gboolean    commented,
-                                                 unsigned    subtest_level,
+static void     g_test_tap_print                (unsigned    subtest_level,
+                                                 gboolean    commented,
                                                  const char *format,
                                                  ...) G_GNUC_PRINTF (3, 4);
 
@@ -989,8 +987,8 @@ g_test_print_handler (const gchar *string)
 }
 
 static void
-g_test_tap_print (gboolean    commented,
-                  unsigned    subtest_level,
+g_test_tap_print (unsigned    subtest_level,
+                  gboolean    commented,
                   const char *format,
                   ...)
 {
@@ -1103,11 +1101,11 @@ g_test_log (GTestLogType lbit,
         {
           if (!is_subtest ())
             {
-              g_test_tap_print (FALSE, 0, "TAP version 13\n");
+              g_test_tap_print (0, FALSE, "TAP version 13\n");
             }
           else
             {
-              g_test_tap_print (TRUE, subtest_level > 0 ? subtest_level - 1 : 0,
+              g_test_tap_print (subtest_level > 0 ? subtest_level - 1 : 0, TRUE,
                                 "Subtest: %s\n", test_argv0);
             }
 
@@ -1126,7 +1124,7 @@ g_test_log (GTestLogType lbit,
           if (string1[0] != 0)
             g_print ("Start of %s tests\n", string1);
           else if (test_paths == NULL)
-            g_test_tap_print (FALSE, subtest_level, "1..%d\n", test_count);
+            g_test_tap_print (subtest_level, FALSE, "1..%d\n", test_count);
         }
       break;
     case G_TEST_LOG_STOP_SUITE:
@@ -1138,7 +1136,7 @@ g_test_log (GTestLogType lbit,
           if (string1[0] != 0)
             g_print ("End of %s tests\n", string1);
           else if (test_paths != NULL)
-            g_test_tap_print (FALSE, subtest_level, "1..%d\n", test_run_count);
+            g_test_tap_print (subtest_level, FALSE, "1..%d\n", test_run_count);
         }
       break;
     case G_TEST_LOG_STOP_CASE:
@@ -1181,7 +1179,7 @@ g_test_log (GTestLogType lbit,
       if (fail && test_mode_fatal)
         {
           if (test_tap_log)
-            g_test_tap_print (FALSE, 0, "Bail out!\n");
+            g_test_tap_print (0, FALSE, "Bail out!\n");
           g_abort ();
         }
       if (result == G_TEST_RUN_SKIPPED || result == G_TEST_RUN_INCOMPLETE)
@@ -1190,7 +1188,7 @@ g_test_log (GTestLogType lbit,
     case G_TEST_LOG_SKIP_CASE:
       if (test_tap_log)
         {
-          g_test_tap_print (FALSE, subtest_level, "ok %d %s # SKIP\n",
+          g_test_tap_print (subtest_level, FALSE, "ok %d %s # SKIP\n",
                             test_run_count, string1);
         }
       break;
@@ -1214,7 +1212,7 @@ g_test_log (GTestLogType lbit,
       break;
     case G_TEST_LOG_ERROR:
       if (test_tap_log)
-        g_test_tap_print (FALSE, 0, "Bail out! %s\n", string1);
+        g_test_tap_print (0, FALSE, "Bail out! %s\n", string1);
       else if (g_test_verbose ())
         g_print ("(ERROR: %s)\n", string1);
       break;
