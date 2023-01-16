@@ -2530,6 +2530,112 @@ test_tap_subtest_print (void)
 }
 
 static void
+test_tap_subtest_stdout (void)
+{
+  const char *testing_helper;
+  GPtrArray *argv;
+  GError *error = NULL;
+  int status;
+  gchar *output;
+  char **output_lines;
+
+  g_test_summary ("Test the stdout from the TAP output of a sub-test.");
+
+  testing_helper = g_test_get_filename (G_TEST_BUILT, "testing-helper" EXEEXT, NULL);
+
+  argv = g_ptr_array_new ();
+  g_ptr_array_add (argv, (char *) testing_helper);
+  g_ptr_array_add (argv, "subprocess-stdout");
+  g_ptr_array_add (argv, "--tap");
+  g_ptr_array_add (argv, NULL);
+
+  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+                G_SPAWN_STDERR_TO_DEV_NULL,
+                NULL, NULL, &output, NULL, &status,
+                &error);
+  g_assert_no_error (error);
+
+  g_spawn_check_wait_status (status, &error);
+  g_assert_no_error (error);
+
+  const char *expected_tap_header = "\n" TAP_SUBTEST_PREFIX "1..1\n";
+  const char *interesting_lines = strstr (output, expected_tap_header);
+  g_assert_nonnull (interesting_lines);
+
+  interesting_lines = strstr (interesting_lines, TAP_SUBTEST_PREFIX "# /sub-stdout");
+  g_assert_nonnull (interesting_lines);
+
+  output_lines = g_strsplit (interesting_lines, "\n", -1);
+  g_assert_cmpuint (g_strv_length (output_lines), >=, 5);
+
+  guint i = 0;
+  g_assert_cmpstr (output_lines[i++], ==,
+                   TAP_SUBTEST_PREFIX "# /sub-stdout: Tests that single line message works");
+  g_assert_cmpstr (output_lines[i++], ==,
+                   TAP_SUBTEST_PREFIX "# test that multiple");
+  g_assert_cmpstr (output_lines[i++], ==,
+                   TAP_SUBTEST_PREFIX "# lines can be written separately");
+  g_assert_cmpstr (output_lines[i++], ==,
+                   TAP_SUBTEST_PREFIX "# And another line has been put");
+  g_assert_cmpstr (output_lines[i++], ==,
+                   TAP_SUBTEST_PREFIX "ok 1 /sub-stdout");
+
+  g_free (output);
+  g_strfreev (output_lines);
+  g_ptr_array_unref (argv);
+}
+
+static void
+test_tap_subtest_stdout_no_new_line (void)
+{
+  const char *testing_helper;
+  GPtrArray *argv;
+  GError *error = NULL;
+  int status;
+  gchar *output;
+  char **output_lines;
+
+  g_test_summary ("Test the stdout from the TAP output of a sub-test.");
+
+  testing_helper = g_test_get_filename (G_TEST_BUILT, "testing-helper" EXEEXT, NULL);
+
+  argv = g_ptr_array_new ();
+  g_ptr_array_add (argv, (char *) testing_helper);
+  g_ptr_array_add (argv, "subprocess-stdout-no-nl");
+  g_ptr_array_add (argv, "--tap");
+  g_ptr_array_add (argv, NULL);
+
+  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+                G_SPAWN_STDERR_TO_DEV_NULL,
+                NULL, NULL, &output, NULL, &status,
+                &error);
+  g_assert_no_error (error);
+
+  g_spawn_check_wait_status (status, &error);
+  g_assert_no_error (error);
+
+  const char *expected_tap_header = "\n" TAP_SUBTEST_PREFIX "1..1\n";
+  const char *interesting_lines = strstr (output, expected_tap_header);
+  g_assert_nonnull (interesting_lines);
+
+  interesting_lines = strstr (interesting_lines, TAP_SUBTEST_PREFIX "# /sub-stdout-no-nl");
+  g_assert_nonnull (interesting_lines);
+
+  output_lines = g_strsplit (interesting_lines, "\n", -1);
+  g_assert_cmpuint (g_strv_length (output_lines), >=, 2);
+
+  guint i = 0;
+  g_assert_cmpstr (output_lines[i++], ==,
+                   TAP_SUBTEST_PREFIX "# /sub-stdout-no-nl: A message without trailing new line");
+  g_assert_cmpstr (output_lines[i++], ==,
+                   TAP_SUBTEST_PREFIX "ok 1 /sub-stdout-no-nl");
+
+  g_free (output);
+  g_strfreev (output_lines);
+  g_ptr_array_unref (argv);
+}
+
+static void
 test_tap_error (void)
 {
   const char *testing_helper;
@@ -2856,6 +2962,8 @@ main (int   argc,
   g_test_add_func ("/tap/subtest/message", test_tap_subtest_message);
   g_test_add_func ("/tap/print", test_tap_print);
   g_test_add_func ("/tap/subtest/print", test_tap_subtest_print);
+  g_test_add_func ("/tap/subtest/stdout", test_tap_subtest_stdout);
+  g_test_add_func ("/tap/subtest/stdout-no-new-line", test_tap_subtest_stdout_no_new_line);
   g_test_add_func ("/tap/error", test_tap_error);
   g_test_add_func ("/tap/subtest/error", test_tap_subtest_error);
   g_test_add_func ("/tap/error-and-pass", test_tap_error_and_pass);

@@ -1173,7 +1173,7 @@ g_test_log (GTestLogType lbit,
         }
       else if (g_test_verbose ())
         g_print ("GTest: result: %s\n", g_test_result_names[result]);
-      else if (!g_test_quiet ())
+      else if (!g_test_quiet () && !test_in_subprocess)
         g_print ("%s\n", g_test_result_names[result]);
       if (fail && test_mode_fatal)
         {
@@ -3696,7 +3696,10 @@ child_read (GIOChannel *io, GIOCondition cond, gpointer user_data)
     {
       g_string_append_len (data->stdout_str, buf, nread);
       if (data->echo_stdout)
-        echo_file = stdout;
+        {
+          if G_UNLIKELY (!test_tap_log)
+            echo_file = stdout;
+        }
     }
   else
     {
@@ -3776,6 +3779,22 @@ wait_for_child (GPid pid,
   g_main_loop_run (data.loop);
   g_main_loop_unref (data.loop);
   g_main_context_unref (context);
+
+  if (echo_stdout && test_tap_log && data.stdout_str->len > 0)
+    {
+      gboolean added_newline = FALSE;
+
+      if (data.stdout_str->str[data.stdout_str->len - 1] != '\n')
+        {
+          g_string_append_c (data.stdout_str, '\n');
+          added_newline = TRUE;
+        }
+
+      g_test_print_handler_full (data.stdout_str->str, TRUE, TRUE, 1);
+
+      if (added_newline)
+        g_string_truncate (data.stdout_str, data.stdout_str->len - 1);
+    }
 
   test_trap_last_pid = pid;
   test_trap_last_status = data.child_status;

@@ -20,6 +20,7 @@
 
 #include <glib.h>
 #include <locale.h>
+#include <stdio.h>
 #ifdef G_OS_WIN32
 #include <fcntl.h>
 #include <io.h>
@@ -101,6 +102,45 @@ test_print (void)
   g_print ("can be ");
   g_print ("written ");
   g_print ("separately\n");
+}
+
+static void
+test_subprocess_stdout (void)
+{
+  if (g_test_subprocess ())
+    {
+      printf ("Tests that single line message works\n");
+      printf ("test that multiple\nlines ");
+      printf ("can be ");
+      printf ("written ");
+      printf ("separately\n");
+
+      puts ("And another line has been put");
+
+      return;
+    }
+
+  g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_INHERIT_STDOUT);
+  g_test_trap_has_passed ();
+
+  g_test_trap_assert_stdout ("/sub-stdout: Tests that single line message works\n*");
+  g_test_trap_assert_stdout ("*\ntest that multiple\nlines can be written separately\n*");
+  g_test_trap_assert_stdout ("*\nAnd another line has been put\n*");
+}
+
+static void
+test_subprocess_stdout_no_nl (void)
+{
+  if (g_test_subprocess ())
+    {
+      printf ("A message without trailing new line");
+      return;
+    }
+
+  g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_INHERIT_STDOUT);
+  g_test_trap_has_passed ();
+
+  g_test_trap_assert_stdout ("/sub-stdout-no-nl: A message without trailing new line");
 }
 
 int
@@ -226,9 +266,25 @@ main (int   argc,
     {
       g_test_add_func ("/print", test_print);
     }
+  else if (g_strcmp0 (argv1, "subprocess-stdout") == 0)
+    {
+      g_test_add_func ("/sub-stdout", test_subprocess_stdout);
+    }
+  else if (g_strcmp0 (argv1, "subprocess-stdout-no-nl") == 0)
+    {
+      g_test_add_func ("/sub-stdout-no-nl", test_subprocess_stdout_no_nl);
+    }
   else
     {
-      g_assert_not_reached ();
+      if (g_test_subprocess ())
+        {
+          g_test_add_func ("/sub-stdout", test_subprocess_stdout);
+          g_test_add_func ("/sub-stdout-no-nl", test_subprocess_stdout_no_nl);
+        }
+      else
+        {
+          g_assert_not_reached ();
+        }
     }
 
   return g_test_run ();
