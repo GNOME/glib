@@ -3777,7 +3777,7 @@ wait_for_child (GPid pid,
           added_newline = TRUE;
         }
 
-      g_test_print_handler_full (data.stdout_str->str, TRUE, 1);
+      g_test_print_handler_full (data.stdout_str->str, TRUE, TRUE, 1);
 
       if (added_newline)
         g_string_truncate (data.stdout_str, data.stdout_str->len - 1);
