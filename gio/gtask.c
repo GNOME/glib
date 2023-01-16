@@ -542,6 +542,24 @@
  *   having come from the `_async()` wrapper
  *   function (for "short-circuit" results, such as when passing
  *   0 to g_input_stream_read_async()).
+ *
+ * ## Thread-safety considerations
+ *
+ * Due to some infelicities in the API design, there is a
+ * thread-safety concern that users of GTask have to be aware of:
+ *
+ * If the `main` thread drops its last reference to the source object
+ * or the task data before the task is finalized, then the finalizers
+ * of these objects may be called on the worker thread.
+ *
+ * This is a problem if the finalizers use non-threadsafe API, and
+ * can lead to hard-to-debug crashes. Possible workarounds include:
+ *
+ * - Clear task data in a signal handler for `notify::completed`
+ *
+ * - Keep iterating a main context in the main thread and defer
+ *   dropping the reference to the source object to that main
+ *   context when the task is finalized
  */
 
 /**
