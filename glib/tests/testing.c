@@ -1698,6 +1698,88 @@ test_tap_message (void)
 }
 
 static void
+test_tap_error (void)
+{
+  const char *testing_helper;
+  GPtrArray *argv;
+  GError *error = NULL;
+  int status;
+  gchar *output;
+
+  g_test_summary ("Test that g_error() generates Bail out TAP output of a test.");
+
+  testing_helper = g_test_get_filename (G_TEST_BUILT, "testing-helper" EXEEXT, NULL);
+
+  argv = g_ptr_array_new ();
+  g_ptr_array_add (argv, (char *) testing_helper);
+  g_ptr_array_add (argv, "error");
+  g_ptr_array_add (argv, "--tap");
+  g_ptr_array_add (argv, NULL);
+
+  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+                G_SPAWN_STDERR_TO_DEV_NULL,
+                NULL, NULL, &output, NULL, &status,
+                &error);
+  g_assert_no_error (error);
+
+  g_spawn_check_wait_status (status, &error);
+  g_assert_nonnull (error);
+
+  const char *expected_tap_header = "\n# 1..1\n";
+  const char *interesting_lines = strstr (output, expected_tap_header);
+  g_assert_nonnull (interesting_lines);
+  interesting_lines += strlen (expected_tap_header);
+
+  g_assert_cmpstr (interesting_lines, ==, "# Bail out! GLib-FATAL-ERROR: This should error out\n"
+                   "Because it's just wrong!\n");
+
+  g_free (output);
+  g_ptr_array_unref (argv);
+  g_clear_error (&error);
+}
+
+static void
+test_tap_error_and_pass (void)
+{
+  const char *testing_helper;
+  GPtrArray *argv;
+  GError *error = NULL;
+  int status;
+  gchar *output;
+
+  g_test_summary ("Test that g_error() generates Bail out TAP output of a test.");
+
+  testing_helper = g_test_get_filename (G_TEST_BUILT, "testing-helper" EXEEXT, NULL);
+
+  argv = g_ptr_array_new ();
+  g_ptr_array_add (argv, (char *) testing_helper);
+  g_ptr_array_add (argv, "error-and-pass");
+  g_ptr_array_add (argv, "--tap");
+  g_ptr_array_add (argv, NULL);
+
+  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+                G_SPAWN_STDERR_TO_DEV_NULL,
+                NULL, NULL, &output, NULL, &status,
+                &error);
+  g_assert_no_error (error);
+
+  g_spawn_check_wait_status (status, &error);
+  g_assert_nonnull (error);
+
+  const char *expected_tap_header = "\n# 1..2\n";
+  const char *interesting_lines = strstr (output, expected_tap_header);
+  g_assert_nonnull (interesting_lines);
+  interesting_lines += strlen (expected_tap_header);
+
+  g_assert_cmpstr (interesting_lines, ==, "# Bail out! GLib-FATAL-ERROR: This should error out\n"
+                   "Because it's just wrong!\n");
+
+  g_free (output);
+  g_ptr_array_unref (argv);
+  g_clear_error (&error);
+}
+
+static void
 test_init_no_argv0 (void)
 {
   const char *testing_helper;
@@ -1828,6 +1910,8 @@ main (int   argc,
   g_test_add_func ("/tap", test_tap);
   g_test_add_func ("/tap/summary", test_tap_summary);
   g_test_add_func ("/tap/message", test_tap_message);
+  g_test_add_func ("/tap/error", test_tap_error);
+  g_test_add_func ("/tap/error-and-pass", test_tap_error_and_pass);
 
   g_test_add_func ("/init/no_argv0", test_init_no_argv0);
 

@@ -52,6 +52,12 @@ test_fail (void)
 }
 
 static void
+test_error (void)
+{
+  g_error ("This should error out\nBecause it's just wrong!");
+}
+
+static void
 test_fail_printf (void)
 {
   g_test_fail_printf ("this test intentionally left failing");
@@ -156,6 +162,15 @@ main (int   argc,
   else if (g_strcmp0 (argv1, "fail") == 0)
     {
       g_test_add_func ("/fail", test_fail);
+    }
+  else if (g_strcmp0 (argv1, "error") == 0)
+    {
+      g_test_add_func ("/error", test_error);
+    }
+  else if (g_strcmp0 (argv1, "error-and-pass") == 0)
+    {
+      g_test_add_func ("/error", test_error);
+      g_test_add_func ("/pass", test_pass);
     }
   else if (g_strcmp0 (argv1, "fail-printf") == 0)
     {
