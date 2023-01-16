@@ -386,6 +386,8 @@ test_print_handler (void)
   g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_stdout ("*default handler" LINE_END "*");
   g_test_trap_assert_stdout ("*bu ba" LINE_END "*");
+  g_test_trap_assert_stdout_unmatched ("*# default handler" LINE_END "*");
+  g_test_trap_assert_stdout_unmatched ("*# bu ba" LINE_END "*");
   g_test_trap_has_passed ();
 }
 
