@@ -3223,10 +3223,7 @@ g_settings_action_get_state (GAction *action)
   value = g_settings_read_from_backend (gsa->settings, &gsa->key, FALSE, FALSE);
 
   if (value == NULL)
-    value = g_settings_schema_key_get_translated_default (&gsa->key);
-
-  if (value == NULL)
-    value = g_variant_ref (gsa->key.default_value);
+    value = g_settings_schema_key_get_default_value (&gsa->key);
 
   return value;
 }
