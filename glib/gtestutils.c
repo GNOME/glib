@@ -242,7 +242,8 @@
  * Automake template provided by GLib. Note, however, that since GLib 2.62,
  * [gtester][gtester] and [gtester-report][gtester-report] have been deprecated
  * in favour of using TAP. The `--tap` argument to tests is enabled by default
- * as of GLib 2.62.
+ * as of GLib 2.62. Since GLib 2.76, `--no-tap` can be used to revert this
+ * behavior.
  */
 
 /**
@@ -1285,6 +1286,11 @@ parse_args (gint    *argc_p,
           test_tap_log = TRUE;
           argv[i] = NULL;
         }
+      else if (strcmp (argv[i], "--no-tap") == 0)
+        {
+          test_tap_log = FALSE;
+          argv[i] = NULL;
+        }
       else if (strcmp ("--GTestLogFD", argv[i]) == 0 || strncmp ("--GTestLogFD=", argv[i], 13) == 0)
         {
           gchar *equal = argv[i] + 12;
@@ -1487,6 +1493,7 @@ parse_args (gint    *argc_p,
                   "                                 Unlike the -s option (which only skips the exact TESTPATH), this option will \n"
                   "                                 skip all the tests that begins with PREFIX).\n"
                   "  --seed=SEEDSTRING              Start tests with random seed SEEDSTRING\n"
+                  "  --no-tap                       Do not use TAP output\n"
                   "  --debug-log                    debug test logging output\n"
                   "  -q, --quiet                    Run tests quietly\n"
                   "  --verbose                      Run tests verbosely\n",
