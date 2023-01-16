@@ -1135,9 +1135,19 @@ g_test_log (GTestLogType lbit,
       break;
     case G_TEST_LOG_ERROR:
       if (test_tap_log)
-        g_print ("%sBail out! %s\n", test_is_subtest ? "# " : "", string1);
+        {
+          char *message = g_strdup (string1);
+          char *line = message;
+
+          while ((line = strchr (line, '\n')))
+              *(line++) = ' ';
+
+          g_print ("%sBail out! %s\n", test_is_subtest ? "# " : "", g_strstrip (message));
+        }
       else if (g_test_verbose ())
-        g_print ("(ERROR: %s)\n", string1);
+        {
+          g_print ("(ERROR: %s)\n", string1);
+        }
       break;
     default: ;
     }

@@ -54,7 +54,7 @@ test_fail (void)
 static void
 test_error (void)
 {
-  g_error ("This should error out\nBecause it's just wrong!");
+  g_error ("This should error out\nBecause it's just\nwrong!");
 }
 
 static void

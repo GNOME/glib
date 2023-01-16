@@ -1730,7 +1730,7 @@ test_tap_error (void)
   g_assert_nonnull (interesting_lines);
   interesting_lines += strlen (expected_tap_header);
 
-  g_assert_cmpstr (interesting_lines, ==, "# Bail out! GLib-FATAL-ERROR: This should error out\n"
+  g_assert_cmpstr (interesting_lines, ==, "# Bail out! GLib-FATAL-ERROR: This should error out "
                    "Because it's just wrong!\n");
 
   g_free (output);
@@ -1771,7 +1771,7 @@ test_tap_error_and_pass (void)
   g_assert_nonnull (interesting_lines);
   interesting_lines += strlen (expected_tap_header);
 
-  g_assert_cmpstr (interesting_lines, ==, "# Bail out! GLib-FATAL-ERROR: This should error out\n"
+  g_assert_cmpstr (interesting_lines, ==, "# Bail out! GLib-FATAL-ERROR: This should error out "
                    "Because it's just wrong!\n");
 
   g_free (output);
