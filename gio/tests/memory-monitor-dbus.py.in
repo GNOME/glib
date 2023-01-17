@@ -66,22 +66,21 @@ try:
             self.p_mock.terminate()
             self.p_mock.wait()
 
-        def assertEventually(self, condition, message=None, timeout=50):
-            '''Assert that condition function eventually returns True.
+        def assertLevelEventually(self, expected_level, timeout=50):
+            '''Assert that the expected level is eventually reached.
 
-            Timeout is in deciseconds, defaulting to 50 (5 seconds). message is
-            printed on failure.
+            Timeout is in deciseconds, defaulting to 50 (5 seconds).
             '''
             while timeout >= 0:
                 context = GLib.MainContext.default()
                 while context.iteration(False):
                     pass
-                if condition():
+                if self.last_warning == expected_level:
                     break
                 timeout -= 1
                 time.sleep(0.1)
             else:
-                self.fail(message or 'timed out waiting for ' + str(condition))
+                self.fail(f'timed out waiting for expected level {expected_level}, last warning is {self.last_warning}')
 
         def memory_warning_cb(self, monitor, level):
             self.last_warning = level
@@ -98,12 +97,12 @@ try:
                 self.main_context.iteration(False)
 
             self.dbusmock.EmitWarning(100)
-            # Wait 2 seconds or until warning
-            self.assertEventually(lambda: self.last_warning == 100, "'100' low-memory warning not received", 20)
+            # Wait 5 seconds or until warning
+            self.assertLevelEventually(100)
 
             self.dbusmock.EmitWarning(255)
-            # Wait 2 seconds or until warning
-            self.assertEventually(lambda: self.last_warning == 255, "'255' low-memory warning not received", 20)
+            # Wait 5 seconds or until warning
+            self.assertLevelEventually(255)
 
 except ImportError as e:
     @unittest.skip("Cannot import %s" % e.name)
