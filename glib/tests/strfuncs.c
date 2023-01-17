@@ -505,6 +505,11 @@ test_strdup (void)
   g_assert_nonnull (str);
   g_assert_cmpstr (str, ==, GLIB_TEST_STRING);
   g_free (str);
+
+  str = g_strdup ("");
+  g_assert_cmpint (str[0], ==, '\0');
+  g_assert_cmpstr (str, ==, "");
+  g_clear_pointer (&str, g_free);
 }
 
 /* Testing g_strndup() function with various positive and negative cases */
