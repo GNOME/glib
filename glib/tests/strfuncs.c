@@ -1238,6 +1238,14 @@ test_has_prefix (void)
 static void
 test_has_prefix_macro (void)
 {
+  #if G_GNUC_CHECK_VERSION (2, 0)
+    #ifndef g_str_has_prefix
+      #error g_str_has_prefix() should be defined as a macro in this platform!
+    #endif
+  #else
+    g_test_incomplete ("g_str_has_prefix() is not inlined in this platform");
+  #endif
+
   if (g_test_undefined ())
     {
       g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
@@ -1305,6 +1313,14 @@ test_has_suffix (void)
 static void
 test_has_suffix_macro (void)
 {
+  #if G_GNUC_CHECK_VERSION (2, 0)
+    #ifndef g_str_has_suffix
+      #error g_str_has_suffix() should be defined as a macro in this platform!
+    #endif
+  #else
+    g_test_incomplete ("g_str_has_suffix() is not inlined in this platform");
+  #endif
+
   if (g_test_undefined ())
     {
       g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
