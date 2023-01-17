@@ -521,6 +521,10 @@ static gboolean       g_log_debug_enabled = FALSE;  /* (atomic) */
 /* --- functions --- */
 
 static void _g_log_abort (gboolean breakpoint);
+static inline const char * format_string (const char *format,
+                                          va_list     args,
+                                          char      **out_allocated_string)
+                                          G_GNUC_PRINTF (1, 0);
 
 static void
 _g_log_abort (gboolean breakpoint)
@@ -1294,7 +1298,8 @@ g_logv (const gchar   *log_domain,
 {
   gboolean was_fatal = (log_level & G_LOG_FLAG_FATAL) != 0;
   gboolean was_recursion = (log_level & G_LOG_FLAG_RECURSION) != 0;
-  gchar buffer[1025], *msg, *msg_alloc = NULL;
+  char buffer[1025], *msg_alloc = NULL;
+  const char *msg;
   gint i;
 
   log_level &= G_LOG_LEVEL_MASK;
@@ -1312,7 +1317,9 @@ g_logv (const gchar   *log_domain,
       msg = buffer;
     }
   else
-    msg = msg_alloc = g_strdup_vprintf (format, args);
+    {
+      msg = format_string (format, args, &msg_alloc);
+    }
 
   if (expected_messages)
     {
@@ -1783,7 +1790,7 @@ g_log_structured (const gchar    *log_domain,
     }
   else
     {
-      message = message_allocated = g_strdup_vprintf (format, args);
+      message = format_string (format, args, &message_allocated);
     }
 
   /* Add MESSAGE, PRIORITY and GLIB_DOMAIN. */
@@ -2027,7 +2034,7 @@ g_log_structured_standard (const gchar    *log_domain,
     }
   else
     {
-      fields[4].value = message_allocated = g_strdup_vprintf (message_format, args);
+      fields[4].value = format_string (message_format, args, &message_allocated);
     }
 
   va_end (args);
@@ -3336,6 +3343,28 @@ print_string (FILE        *stream,
   fflush (stream);
 }
 
+G_ALWAYS_INLINE static inline const char *
+format_string (const char *format,
+               va_list     args,
+               char      **out_allocated_string)
+{
+#ifdef G_ENABLE_DEBUG
+  g_assert (out_allocated_string != NULL);
+#endif
+
+  /* If there is no formatting to be done, avoid an allocation */
+  if (strchr (format, '%') == NULL)
+    {
+      *out_allocated_string = NULL;
+      return format;
+    }
+  else
+    {
+      *out_allocated_string = g_strdup_vprintf (format, args);
+      return *out_allocated_string;
+    }
+}
+
 /**
  * g_print:
  * @format: the message format. See the printf() documentation
@@ -3357,13 +3386,14 @@ g_print (const gchar *format,
          ...)
 {
   va_list args;
-  gchar *string;
+  const gchar *string;
+  gchar *free_me = NULL;
   GPrintFunc local_glib_print_func;
 
   g_return_if_fail (format != NULL);
 
   va_start (args, format);
-  string = g_strdup_vprintf (format, args);
+  string = format_string (format, args, &free_me);
   va_end (args);
 
   g_mutex_lock (&g_messages_lock);
@@ -3375,7 +3405,7 @@ g_print (const gchar *format,
   else
     print_string (stdout, string);
 
-  g_free (string);
+  g_free (free_me);
 }
 
 /**
@@ -3424,13 +3454,14 @@ g_printerr (const gchar *format,
             ...)
 {
   va_list args;
-  gchar *string;
+  const char *string;
+  char *free_me = NULL;
   GPrintFunc local_glib_printerr_func;
 
   g_return_if_fail (format != NULL);
 
   va_start (args, format);
-  string = g_strdup_vprintf (format, args);
+  string = format_string (format, args, &free_me);
   va_end (args);
 
   g_mutex_lock (&g_messages_lock);
@@ -3442,7 +3473,7 @@ g_printerr (const gchar *format,
   else
     print_string (stderr, string);
 
-  g_free (string);
+  g_free (free_me);
 }
 
 /**
