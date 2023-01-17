@@ -40,7 +40,7 @@
 #include "guriprivate.h"
 #include "gprintf.h"
 #include "gutilsprivate.h"
-
+#include "gfileutilsprivate.h"
 
 /**
  * SECTION:strings
@@ -1271,4 +1271,39 @@ g_string_append_printf (GString     *string,
   va_start (args, format);
   g_string_append_vprintf (string, format, args);
   va_end (args);
+}
+
+/**
+ * g_string_append_filename:
+ * @string: a #GString
+ * @first_element: (type filename): the first element in the path
+ * @...: remaining elements in path, terminated by %NULL
+ *
+ * Appends a filename to @string that is created from a series of
+ * elements using the correct separator for filenames.
+ *
+ * This is similar to g_build_filename().
+ *
+ * Returns: (transfer none): the #GString
+ *
+ * Since: 2.76
+ */
+GString *
+g_string_append_filename (GString            *string,
+                          const char         *first_element,
+                          ...)
+{
+  va_list args;
+
+  va_start (args, first_element);
+
+#ifndef G_OS_WIN32
+  g_build_path_va (string, G_DIR_SEPARATOR_S, first_element, &args, NULL);
+#else
+  g_build_pathname_va (string, first_element, &args, NULL);
+#endif
+
+  va_end (args);
+
+  return string;
 }

@@ -2636,6 +2636,7 @@ g_string_append_c
 g_string_append_unichar
 g_string_append_len
 g_string_append_uri_escaped
+g_string_append_filename
 g_string_prepend
 g_string_prepend_c
 g_string_prepend_unichar

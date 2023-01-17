@@ -163,6 +163,11 @@ GString*     g_string_append_uri_escaped (GString         *string,
                                           const gchar     *reserved_chars_allowed,
                                           gboolean         allow_utf8);
 
+GLIB_AVAILABLE_IN_2_76
+GString *    g_string_append_filename (GString            *string,
+                                       const char         *first_element,
+                                       ...) G_GNUC_NULL_TERMINATED;
+
 #ifndef __GTK_DOC_IGNORE__
 
 #ifdef G_CAN_INLINE
