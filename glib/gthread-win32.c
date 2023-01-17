@@ -463,19 +463,9 @@ g_thread_win32_proxy (gpointer data)
   return 0;
 }
 
-gboolean
-g_system_thread_get_scheduler_settings (GThreadSchedulerSettings *scheduler_settings)
-{
-  HANDLE current_thread = GetCurrentThread ();
-  scheduler_settings->thread_prio = GetThreadPriority (current_thread);
-
-  return TRUE;
-}
-
 GRealThread *
 g_system_thread_new (GThreadFunc proxy,
                      gulong stack_size,
-                     const GThreadSchedulerSettings *scheduler_settings,
                      const char *name,
                      GThreadFunc func,
                      gpointer data,
@@ -515,16 +505,10 @@ g_system_thread_new (GThreadFunc proxy,
    * On Windows, by default all new threads are created with NORMAL thread
    * priority.
    */
-
-  if (scheduler_settings)
-    {
-      thread_prio = scheduler_settings->thread_prio;
-    }
-  else
-    {
-      HANDLE current_thread = GetCurrentThread ();
-      thread_prio = GetThreadPriority (current_thread);
-    }
+  {
+    HANDLE current_thread = GetCurrentThread ();
+    thread_prio = GetThreadPriority (current_thread);
+  }
 
   if (thread_prio == THREAD_PRIORITY_ERROR_RETURN)
     {
