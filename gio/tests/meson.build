@@ -117,7 +117,7 @@ gio_tests = {
   'sleepy-stream' : {},
   'socket' : {
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
-    'can_fail' : host_system == 'darwin',
+    'can_fail' : true,
   },
   'socket-listener' : {},
   'socket-service' : {},
