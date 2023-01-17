@@ -1861,13 +1861,13 @@ g_dir_make_tmp (const gchar  *tmpl,
     return fulltemplate;
 }
 
-static gchar *
-g_build_path_va (const gchar  *separator,
+static void
+g_build_path_va (GString      *result,
+                 const gchar  *separator,
 		 const gchar  *first_element,
 		 va_list      *args,
 		 gchar       **str_array)
 {
-  GString *result;
   gint separator_len = strlen (separator);
   gboolean is_first = TRUE;
   gboolean have_leading = FALSE;
@@ -1875,8 +1875,6 @@ g_build_path_va (const gchar  *separator,
   const gchar *next_element;
   const gchar *last_trailing = NULL;
   gint i = 0;
-
-  result = g_string_new (NULL);
 
   if (str_array)
     next_element = str_array[i++];
@@ -1952,15 +1950,12 @@ g_build_path_va (const gchar  *separator,
 
   if (single_element)
     {
-      g_string_free (result, TRUE);
-      return g_strdup (single_element);
+      g_string_append (result, single_element);
     }
   else
     {
       if (last_trailing)
 	g_string_append (result, last_trailing);
-  
-      return g_string_free (result, FALSE);
     }
 }
 
@@ -1983,10 +1978,16 @@ gchar *
 g_build_pathv (const gchar  *separator,
 	       gchar       **args)
 {
+  GString *string;
+
   if (!args)
     return NULL;
 
-  return g_build_path_va (separator, NULL, NULL, args);
+  string = g_string_new (NULL);
+
+  g_build_path_va (string, separator, NULL, NULL, args);
+
+  return g_string_free (string, FALSE);
 }
 
 
@@ -2031,29 +2032,33 @@ g_build_path (const gchar *separator,
 	      const gchar *first_element,
 	      ...)
 {
-  gchar *str;
+  GString *string;
   va_list args;
 
   g_return_val_if_fail (separator != NULL, NULL);
 
   va_start (args, first_element);
-  str = g_build_path_va (separator, first_element, &args, NULL);
+
+  string = g_string_new (NULL);
+
+  g_build_path_va (string, separator, first_element, &args, NULL);
+
   va_end (args);
 
-  return str;
+  return g_string_free (string, FALSE);
 }
 
 #ifdef G_OS_WIN32
 
-static gchar *
-g_build_pathname_va (const gchar  *first_element,
+static void
+g_build_pathname_va (GString      *result,
+                     const gchar  *first_element,
 		     va_list      *args,
 		     gchar       **str_array)
 {
   /* Code copied from g_build_pathv(), and modified to use two
    * alternative single-character separators.
    */
-  GString *result;
   gboolean is_first = TRUE;
   gboolean have_leading = FALSE;
   const gchar *single_element = NULL;
@@ -2061,8 +2066,6 @@ g_build_pathname_va (const gchar  *first_element,
   const gchar *last_trailing = NULL;
   gchar current_separator = '\\';
   gint i = 0;
-
-  result = g_string_new (NULL);
 
   if (str_array)
     next_element = str_array[i++];
@@ -2145,15 +2148,12 @@ g_build_pathname_va (const gchar  *first_element,
 
   if (single_element)
     {
-      g_string_free (result, TRUE);
-      return g_strdup (single_element);
+      g_string_append (result, single_element);
     }
   else
     {
       if (last_trailing)
 	g_string_append (result, last_trailing);
-  
-      return g_string_free (result, FALSE);
     }
 }
 
@@ -2164,15 +2164,17 @@ g_build_filename_va (const gchar  *first_argument,
                      va_list      *args,
                      gchar       **str_array)
 {
-  gchar *str;
+  GString *string;
+
+  string = g_string_new (NULL);
 
 #ifndef G_OS_WIN32
-  str = g_build_path_va (G_DIR_SEPARATOR_S, first_argument, args, str_array);
+  g_build_path_va (string, G_DIR_SEPARATOR_S, first_argument, args, str_array);
 #else
-  str = g_build_pathname_va (first_argument, args, str_array);
+  g_build_pathname_va (string, first_argument, args, str_array);
 #endif
 
-  return str;
+  return g_string_free (string, FALSE);
 }
 
 /**
