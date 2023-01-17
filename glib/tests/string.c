@@ -226,6 +226,7 @@ test_string_append (void)
   g_assert_cmpstr (string->str, ==, "firsthalflasthalfmoreore");
 
   g_string_free (string, TRUE);
+  g_free (tmp);
 
   /* append_len */
   string = g_string_new ("firsthalf");
