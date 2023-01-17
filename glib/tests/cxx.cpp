@@ -304,6 +304,7 @@ test_str_equal (void)
 {
   const char *str_a = "a";
   char *str_b = g_strdup ("b");
+  char *str_null = g_strdup (NULL);
   gconstpointer str_a_ptr = str_a, str_b_ptr = str_b;
   const unsigned char *str_c = (const unsigned char *) "c";
 
@@ -317,10 +318,36 @@ test_str_equal (void)
   g_assert_true (g_str_equal (str_a, str_a_ptr));
   g_assert_false (g_str_equal (str_a_ptr, str_b_ptr));
   g_assert_false (g_str_equal (str_c, str_b));
+  g_assert_cmpstr (str_b, !=, str_null);
 
   g_free (str_b);
 }
 
+static void
+test_strdup (void)
+{
+  gchar *str;
+
+  g_assert_null ((g_strdup) (NULL));
+
+  str = (g_strdup) ("C++ is cool too!");
+  g_assert_nonnull (str);
+  g_assert_cmpstr (str, ==, "C++ is cool too!");
+  g_free (str);
+}
+
+static void
+test_strdup_macro (void)
+{
+  gchar *str;
+
+  g_assert_null (g_strdup (NULL));
+
+  str = g_strdup ("C++ is cool too!");
+  g_assert_nonnull (str);
+  g_assert_cmpstr (str, ==, "C++ is cool too!");
+  g_free (str);
+}
 
 static void
 test_string_append (void)
@@ -444,6 +471,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/C++/clear-pointer", test_clear_pointer);
   g_test_add_func ("/C++/steal-pointer", test_steal_pointer);
   g_test_add_func ("/C++/str-equal", test_str_equal);
+  g_test_add_func ("/C++/strdup", test_strdup);
+  g_test_add_func ("/C++/strdup/macro", test_strdup_macro);
   g_test_add_func ("/C++/string-append", test_string_append);
 
   return g_test_run ();

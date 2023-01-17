@@ -352,12 +352,12 @@ get_C_locale (void)
  * Returns: a newly-allocated copy of @str
  */
 gchar*
-g_strdup (const gchar *str)
+(g_strdup) (const gchar *str)
 {
   gchar *new_str;
   gsize length;
 
-  if (str)
+  if G_LIKELY (str)
     {
       length = strlen (str) + 1;
       new_str = g_new (char, length);
