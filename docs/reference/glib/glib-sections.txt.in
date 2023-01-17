@@ -2652,6 +2652,8 @@ g_string_truncate
 g_string_set_size
 g_string_free
 g_string_free_to_bytes
+g_string_init
+g_string_free
 
 <SUBSECTION>
 g_string_up

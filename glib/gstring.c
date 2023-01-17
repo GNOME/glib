@@ -59,6 +59,10 @@
  * characters in the data.  Conceptually then, #GString is like a
  * #GByteArray with the addition of many convenience methods for text,
  * and a guaranteed nul terminator.
+ *
+ * GString can be used as a heap-allocated object, using g_string_new()
+ * and g_string_free(), or as a stack-allocated struct, using g_string_init()
+ * and g_string_clear().
  */
 
 /**
@@ -70,6 +74,7 @@
  *   terminating nul byte.
  * @allocated_len: the number of bytes that can be stored in the
  *   string before it needs to be reallocated. May be larger than @len.
+ * @buf: preallocated memory for @str
  *
  * The GString struct contains the public fields of a GString.
  */
@@ -82,6 +87,9 @@ g_string_expand (GString *string,
   if G_UNLIKELY ((G_MAXSIZE - string->len - 1) < len)
     g_error ("adding %" G_GSIZE_FORMAT " to string would overflow", len);
 
+  if (string->str == NULL)
+    g_string_init (string);
+
   string->allocated_len = g_nearest_pow (string->len + len + 1);
   /* If the new size is bigger than G_MAXSIZE / 2, only allocate enough
    * memory for this string and don't over-allocate.
@@ -89,7 +97,14 @@ g_string_expand (GString *string,
   if (string->allocated_len == 0)
     string->allocated_len = string->len + len + 1;
 
-  string->str = g_realloc (string->str, string->allocated_len);
+  if (string->str != string->buf)
+    string->str = g_realloc (string->str, string->allocated_len);
+  else
+    {
+      string->str = g_malloc (string->allocated_len);
+      memcpy (string->str, string->buf, string->len);
+      string->str[string->len] = 0;
+    }
 }
 
 static inline void
@@ -98,6 +113,23 @@ g_string_maybe_expand (GString *string,
 {
   if (G_UNLIKELY (string->len + len >= string->allocated_len))
     g_string_expand (string, len);
+}
+
+/**
+ * g_string_init:
+ * @string: an uninitialized #GString
+ *
+ * Initializes @string.
+ *
+ * This function should be used to initialize a stack-allocated
+ * GString struct.
+ *
+ * Since: 2.76
+ */
+void
+(g_string_init) (GString *string)
+{
+  g_string_init_inline (string);
 }
 
 /**
@@ -116,12 +148,8 @@ g_string_sized_new (gsize dfl_size)
 {
   GString *string = g_slice_new (GString);
 
-  string->allocated_len = 0;
-  string->len   = 0;
-  string->str   = NULL;
-
-  g_string_expand (string, MAX (dfl_size, 64));
-  string->str[0] = 0;
+  g_string_init (string);
+  g_string_maybe_expand (string, dfl_size);
 
   return string;
 }
@@ -190,6 +218,29 @@ g_string_new_len (const gchar *init,
 }
 
 /**
+ * g_string_clear:
+ * @string: (transfer full): a #GString
+ * @free_segment: if %TRUE, the actual character data is freed as well
+ *
+ * Clears a stack-allocated GString struct.
+ *
+ * If @free_segment is %TRUE it also frees the character data.
+ * If it's %FALSE, the caller gains ownership of the buffer and
+ * must free it after use with g_free().
+ *
+ * Returns: (nullable): the character data of @string
+ *    (i.e. %NULL if @free_segment is %TRUE)
+ *
+ * Since: 2.76
+ */
+char *
+(g_string_clear) (GString  *string,
+                  gboolean  free_segment)
+{
+  return g_string_clear_inline (string, free_segment);
+}
+
+/**
  * g_string_free:
  * @string: (transfer full): a #GString
  * @free_segment: if %TRUE, the actual character data is freed as well
@@ -210,13 +261,7 @@ g_string_free (GString  *string,
 
   g_return_val_if_fail (string != NULL, NULL);
 
-  if (free_segment)
-    {
-      g_free (string->str);
-      segment = NULL;
-    }
-  else
-    segment = string->str;
+  segment = g_string_clear (string, free_segment);
 
   g_slice_free (GString, string);
 

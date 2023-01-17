@@ -629,6 +629,44 @@ test_string_replace (void)
     }
 }
 
+static void
+test_string_on_stack (void)
+{
+  GString string;
+  char *s;
+
+  g_string_init (&string);
+
+  g_assert_cmpstr (string.str, ==, "");
+  g_assert_cmpint (string.len, ==, 0);
+  g_assert_true (string.str == string.buf);
+
+  g_string_append_printf (&string, "Three %s", "cheese");
+  g_assert_cmpstr (string.str, ==, "Three cheese");
+  g_string_append (&string, " and a big banana");
+  g_assert_cmpstr (string.str, ==, "Three cheese and a big banana");
+
+  g_string_assign (&string, "On a hot summer night, would you offer your throat to the wolf with red roses?");
+  g_assert_cmpstr (string.str, ==, "On a hot summer night, would you offer your throat to the wolf with red roses?");
+
+  g_string_clear (&string, TRUE);
+
+  g_assert_cmpstr (string.str, ==, "");
+  g_assert_cmpint (string.len, ==, 0);
+  g_assert_true (string.str == string.buf);
+
+  g_string_append_printf (&string, "Three %s", "cheese");
+  g_assert_cmpstr (string.str, ==, "Three cheese");
+  g_string_append (&string, " and a big banana");
+  g_assert_cmpstr (string.str, ==, "Three cheese and a big banana");
+
+  s = (g_string_clear) (&string, FALSE);
+
+  g_assert_cmpstr (s, ==, "Three cheese and a big banana");
+
+  g_free (s);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -655,6 +693,7 @@ main (int   argc,
   g_test_add_func ("/string/test-string-set-size", test_string_set_size);
   g_test_add_func ("/string/test-string-to-bytes", test_string_to_bytes);
   g_test_add_func ("/string/test-string-replace", test_string_replace);
+  g_test_add_func ("/string/test-string-on-stack", test_string_on_stack);
 
   return g_test_run();
 }

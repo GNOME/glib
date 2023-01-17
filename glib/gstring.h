@@ -35,9 +35,12 @@
 #include <glib/gunicode.h>
 #include <glib/gbytes.h>
 #include <glib/gutils.h>  /* for G_CAN_INLINE */
+#include <glib/gstrfuncs.h>
 #include <string.h>
 
 G_BEGIN_DECLS
+
+#define G_STRING_PREALLOC 64
 
 typedef struct _GString         GString;
 
@@ -46,6 +49,7 @@ struct _GString
   gchar  *str;
   gsize len;
   gsize allocated_len;
+  char buf[G_STRING_PREALLOC];
 };
 
 GLIB_AVAILABLE_IN_ALL
@@ -163,9 +167,54 @@ GString*     g_string_append_uri_escaped (GString         *string,
                                           const gchar     *reserved_chars_allowed,
                                           gboolean         allow_utf8);
 
+GLIB_AVAILABLE_IN_2_76
+void         g_string_init            (GString            *string);
+
+GLIB_AVAILABLE_IN_2_76
+char *       g_string_clear           (GString            *string,
+                                       gboolean            free_segment);
+
 #ifndef __GTK_DOC_IGNORE__
 
 #ifdef G_CAN_INLINE
+G_ALWAYS_INLINE
+static inline void
+g_string_init_inline (GString *string)
+{
+  string->str = string->buf;
+  string->len = 0;
+  string->allocated_len = G_STRING_PREALLOC;
+  string->str[0] = 0;
+}
+#define g_string_init(gstr) g_string_init_inline (gstr)
+
+G_ALWAYS_INLINE
+static inline char *
+g_string_clear_inline (GString  *string,
+                       gboolean  free_segment)
+{
+  char *segment;
+
+  if (free_segment)
+    {
+      if (string->str != string->buf)
+        g_free (string->str);
+      segment = NULL;
+    }
+  else
+    {
+      if (string->str != string->buf)
+        segment = string->str;
+      else
+        segment = (char *) g_memdup2 (string->str, string->len + 1);
+    }
+
+  g_string_init (string);
+
+  return segment;
+}
+#define g_string_clear(gstr, free_segment) g_string_clear_inline (gstr, free_segment)
+
 G_ALWAYS_INLINE
 static inline GString*
 g_string_append_c_inline (GString *gstring,
@@ -216,7 +265,6 @@ g_string_truncate_inline (GString *gstring,
   gstring->str[gstring->len] = '\0';
   return gstring;
 }
-
 #define g_string_truncate(gstr,len) g_string_truncate_inline (gstr, len)
 
 #if G_GNUC_CHECK_VERSION (2, 0)
