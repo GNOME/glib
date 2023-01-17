@@ -798,7 +798,9 @@ test_l10n (void)
       str = NULL;
     }
   else
-    g_printerr ("warning: translation is not working... skipping test. ");
+    {
+      g_test_skip ("translation is not working");
+    }
 
   g_setenv ("LC_MESSAGES", locale, TRUE);
   setlocale (LC_MESSAGES, locale);
@@ -843,7 +845,7 @@ test_l10n_context (void)
   if (g_str_equal (dgettext ("test", "\"Unnamed\""), "\"Unbenannt\""))
     settings_assert_cmpstr (settings, "backspace", ==, "Löschen");
   else
-    g_printerr ("warning: translation is not working... skipping test.  ");
+    g_test_skip ("translation is not working");
 
   g_setenv ("LC_MESSAGES", locale, TRUE);
   setlocale (LC_MESSAGES, locale);
