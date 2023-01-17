@@ -167,7 +167,6 @@ debian-stable-x86_64:
 installed-tests:
   extends:
     - .build-linux
-    - .only-schedules
   image: $FEDORA_IMAGE
   stage: build
   needs: []
