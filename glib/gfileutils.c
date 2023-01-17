@@ -20,6 +20,7 @@
 
 #include "config.h"
 #include "glibconfig.h"
+#include "gfileutilsprivate.h"
 
 #include <sys/stat.h>
 #include <stdio.h>
@@ -1861,7 +1862,7 @@ g_dir_make_tmp (const gchar  *tmpl,
     return fulltemplate;
 }
 
-static void
+void
 g_build_path_va (GString      *result,
                  const gchar  *separator,
 		 const gchar  *first_element,
@@ -2050,7 +2051,7 @@ g_build_path (const gchar *separator,
 
 #ifdef G_OS_WIN32
 
-static void
+void
 g_build_pathname_va (GString      *result,
                      const gchar  *first_element,
 		     va_list      *args,
