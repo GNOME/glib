@@ -2241,6 +2241,9 @@ g_build_filenamev (gchar **args)
  * path. If the first element is a relative path, the result will
  * be a relative path.
  *
+ * See g_string_append_filename() as an alternative if you are building
+ * multiple filenames in a loop.
+ *
  * Returns: (type filename) (transfer full): a newly-allocated string that
  *     must be freed with g_free().
  **/
