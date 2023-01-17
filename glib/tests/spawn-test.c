@@ -123,6 +123,7 @@ test_spawn_basics (void)
 #else
   {
     gchar *file_not_found_message = g_win32_error_message (ERROR_FILE_NOT_FOUND);
+    g_test_message ("sort output: %s\nExpected message: %s", erroutput, file_not_found_message);
     g_assert_nonnull (strstr (erroutput, file_not_found_message));
     g_free (file_not_found_message);
   }
