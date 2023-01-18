@@ -14,6 +14,7 @@ __license__ = 'LGPL 3+'
 import unittest
 import sys
 import subprocess
+import tempfile
 import fcntl
 import os
 import time
@@ -37,6 +38,10 @@ try:
             klass.start_system_bus()
             klass.dbus_con = klass.get_dbus(True)
 
+            klass.workdir = tempfile.mkdtemp(prefix='memory-monitor-dbus')
+            klass.start_monitor()
+            klass.addClassCleanup(klass.stop_monitor)
+
         def setUp(self):
             try:
                 Gio.MemoryMonitor
@@ -59,6 +64,37 @@ try:
             self.memory_monitor.connect("low-memory-warning", self.memory_warning_cb)
             self.mainloop = GLib.MainLoop()
             self.main_context = self.mainloop.get_context()
+
+        @classmethod
+        def start_monitor(klass):
+            '''Start dbus-monitor'''
+
+            # You can rename the log file to *.log if you want to see it on test
+            # case failures
+            klass.monitor_log = open(os.path.join(klass.workdir, 'dbus-monitor.log'), 'wb', buffering=0)
+            klass.monitor = subprocess.Popen(['dbus-monitor', '--monitor'],
+                                             stdout=klass.monitor_log,
+                                             stderr=subprocess.STDOUT)
+
+        @classmethod
+        def stop_monitor(klass):
+            '''Stop dbus-monitor'''
+
+            assert klass.monitor
+            klass.stop_process(klass.monitor)
+
+            klass.monitor_log.flush()
+            klass.monitor_log.close()
+
+        @classmethod
+        def stop_process(cls, proc, timeout=1):
+            proc.terminate()
+            try:
+                proc.wait(timeout)
+            except:
+                print("Killing %d (%s) after timeout of %f seconds" % (proc.pid, proc.args[0], timeout))
+                proc.kill()
+                proc.wait()
 
         def tearDown(self):
             self.p_mock.terminate()
