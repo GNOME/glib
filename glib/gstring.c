@@ -235,7 +235,7 @@ g_string_free (GString  *string,
  * The caller gains ownership of the buffer and
  * must free it after use with g_free().
  *
- * Returns: (transfer full): the character data of @String
+ * Returns: (transfer full): the character data of @string
  *
  * Since: 2.76
  */
