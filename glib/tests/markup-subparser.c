@@ -83,9 +83,8 @@ subparser_end (GMarkupParseContext  *ctx,
   char *result;
 
   string = g_markup_parse_context_pop (ctx);
-  result = string->str;
 
-  g_string_free (string, FALSE);
+  result = g_string_free (string, FALSE);
   strings_allocated--;
 
   if (result == NULL || result[0] == '\0')
@@ -156,9 +155,7 @@ replay_parser_end (GMarkupParseContext  *ctx,
       return NULL;
     }
 
-  result = string->str;
-
-  g_string_free (string, FALSE);
+  result = g_string_free (string, FALSE);
   strings_allocated--;
 
   if (result == NULL || result[0] == '\0')
