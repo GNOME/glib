@@ -39,6 +39,7 @@ try:
         @classmethod
         def setUpClass(klass):
             klass.start_system_bus()
+            klass.start_session_bus()
             klass.dbus_con = klass.get_dbus(True)
             # Start session bus so that xdg-desktop-portal can run on it
             klass.start_session_bus()

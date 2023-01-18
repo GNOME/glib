@@ -37,6 +37,7 @@ try:
         @classmethod
         def setUpClass(klass):
             klass.start_system_bus()
+            klass.start_session_bus()
             klass.dbus_con = klass.get_dbus(True)
 
         def setUp(self):
