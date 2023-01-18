@@ -51,10 +51,10 @@ typedef struct
   int       is_dir;
 } kqueue_sub;
 
-gboolean _kqsub_start_watching (kqueue_sub *sub);
+gboolean _kqsub_start_watching (const kqueue_sub *sub);
 void _kh_dir_diff    (kqueue_sub *sub, gboolean handle_deleted);
-void _km_add_missing (kqueue_sub *sub);
+void _km_add_missing (const kqueue_sub *sub);
 gboolean _km_scan_missing (kqueue_sub *check_this_sub_only);
-void _km_remove      (kqueue_sub *sub);
+void _km_remove      (const kqueue_sub *sub);
 
 #endif /* __KQUEUE_HELPER_H */
