@@ -72,7 +72,7 @@ try:
             # You can rename the log file to *.log if you want to see it on test
             # case failures
             klass.monitor_log = open(os.path.join(klass.workdir, 'dbus-monitor.log'), 'wb', buffering=0)
-            klass.monitor = subprocess.Popen(['dbus-monitor', '--monitor'],
+            klass.monitor = subprocess.Popen(['dbus-monitor', '--monitor', '--system'],
                                              stdout=klass.monitor_log,
                                              stderr=subprocess.STDOUT)
 
