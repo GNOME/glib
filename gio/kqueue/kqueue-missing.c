@@ -115,7 +115,7 @@ _kh_file_appeared_cb (kqueue_sub *sub)
  * Returns: %FALSE if no missing files left, %TRUE otherwise.
  **/
 gboolean
-_km_scan_missing (kqueue_sub *check_this_sub_only)
+_km_scan_missing (const kqueue_sub *check_this_sub_only)
 {
   GSList *head;
   GSList *not_missing = NULL;
