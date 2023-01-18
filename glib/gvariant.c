@@ -2213,20 +2213,22 @@ g_variant_print_string (GVariant *value,
                         GString  *string,
                         gboolean  type_annotate)
 {
+  const gchar *value_type_string = g_variant_get_type_string (value);
+
   if G_UNLIKELY (string == NULL)
     string = g_string_new (NULL);
 
-  switch (g_variant_classify (value))
+  switch (value_type_string[0])
     {
     case G_VARIANT_CLASS_MAYBE:
       if (type_annotate)
-        g_string_append_printf (string, "@%s ",
-                                g_variant_get_type_string (value));
+        g_string_append_printf (string, "@%s ", value_type_string);
 
       if (g_variant_n_children (value))
         {
-          gchar *printed_child;
-          GVariant *element;
+          const GVariantType *base_type;
+          guint i, depth;
+          GVariant *element = NULL;
 
           /* Nested maybes:
            *
@@ -2240,19 +2242,36 @@ g_variant_print_string (GVariant *value,
            * "just" is actually exactly the case where we have a nested
            * Nothing.
            *
-           * Instead of searching for that nested Nothing, we just print
-           * the contained value into a separate string and see if we
-           * end up with "nothing" at the end of it.  If so, we need to
-           * add "just" at our level.
+           * Search for the nested Nothing, to save a lot of recursion if there
+           * are multiple levels of maybes.
            */
-          element = g_variant_get_child_value (value, 0);
-          printed_child = g_variant_print (element, FALSE);
-          g_variant_unref (element);
+          for (depth = 0, base_type = g_variant_get_type (value);
+               g_variant_type_is_maybe (base_type);
+               depth++, base_type = g_variant_type_element (base_type));
 
-          if (g_str_has_suffix (printed_child, "nothing"))
-            g_string_append (string, "just ");
-          g_string_append (string, printed_child);
-          g_free (printed_child);
+          element = g_variant_ref (value);
+          for (i = 0; i < depth && element != NULL; i++)
+            {
+              GVariant *new_element = g_variant_n_children (element) ? g_variant_get_child_value (element, 0) : NULL;
+              g_variant_unref (element);
+              element = g_steal_pointer (&new_element);
+            }
+
+          if (element == NULL)
+            {
+              /* One of the maybes was Nothing, so print out the right number of
+               * justs. */
+              for (; i > 1; i--)
+                g_string_append (string, "just ");
+              g_string_append (string, "nothing");
+            }
+          else
+            {
+              /* There are no Nothings, so print out the child with no prefixes. */
+              g_variant_print_string (element, string, FALSE);
+            }
+
+          g_clear_pointer (&element, g_variant_unref);
         }
       else
         g_string_append (string, "nothing");
@@ -2265,7 +2284,7 @@ g_variant_print_string (GVariant *value,
        * if the first two characters are 'ay' then it's a bytestring.
        * under certain conditions we print those as strings.
        */
-      if (g_variant_get_type_string (value)[1] == 'y')
+      if (value_type_string[1] == 'y')
         {
           const gchar *str;
           gsize size;
@@ -2307,7 +2326,7 @@ g_variant_print_string (GVariant *value,
        * dictionary entries (ie: a dictionary) so we print that
        * differently.
        */
-      if (g_variant_get_type_string (value)[1] == '{')
+      if (value_type_string[1] == '{')
         /* dictionary */
         {
           const gchar *comma = "";
@@ -2316,8 +2335,7 @@ g_variant_print_string (GVariant *value,
           if ((n = g_variant_n_children (value)) == 0)
             {
               if (type_annotate)
-                g_string_append_printf (string, "@%s ",
-                                        g_variant_get_type_string (value));
+                g_string_append_printf (string, "@%s ", value_type_string);
               g_string_append (string, "{}");
               break;
             }
@@ -2353,8 +2371,7 @@ g_variant_print_string (GVariant *value,
           if ((n = g_variant_n_children (value)) == 0)
             {
               if (type_annotate)
-                g_string_append_printf (string, "@%s ",
-                                        g_variant_get_type_string (value));
+                g_string_append_printf (string, "@%s ", value_type_string);
               g_string_append (string, "[]");
               break;
             }
