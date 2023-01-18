@@ -709,8 +709,10 @@ key_state_serialise (KeyState *state)
               gsize size;
               gsize i;
 
-              data = state->strinfo->str;
+
               size = state->strinfo->len;
+              data = g_string_free (state->strinfo, FALSE);
+              state->strinfo = NULL;
 
               words = data;
               for (i = 0; i < size / sizeof (guint32); i++)
@@ -719,9 +721,6 @@ key_state_serialise (KeyState *state)
               array = g_variant_new_from_data (G_VARIANT_TYPE ("au"),
                                                data, size, TRUE,
                                                g_free, data);
-
-              g_string_free (state->strinfo, FALSE);
-              state->strinfo = NULL;
 
               g_variant_builder_add (&builder, "(y@au)",
                                      state->is_flags ? 'f' :
