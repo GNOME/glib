@@ -2652,6 +2652,7 @@ g_string_truncate
 g_string_set_size
 g_string_free
 g_string_free_to_bytes
+g_string_free_and_steal
 
 <SUBSECTION>
 g_string_up
