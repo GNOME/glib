@@ -34,6 +34,7 @@
 #include <glib/gtypes.h>
 #include <glib/gunicode.h>
 #include <glib/gbytes.h>
+#include <glib/gstrfuncs.h>
 #include <glib/gutils.h>  /* for G_CAN_INLINE */
 #include <string.h>
 
@@ -188,6 +189,12 @@ g_string_append_len_inline (GString    *gstring,
                             const char *val,
                             gssize      len)
 {
+  if G_UNLIKELY (gstring == NULL)
+    return g_string_append_len (gstring, val, len);
+
+  if G_UNLIKELY (val == NULL)
+    return (len != 0) ? g_string_append_len (gstring, val, len) : gstring;
+
   if (len < 0)
     len = strlen (val);
 
@@ -221,9 +228,19 @@ g_string_truncate_inline (GString *gstring,
 
 #if G_GNUC_CHECK_VERSION (2, 0)
 
-#define g_string_append(gstr,val) g_string_append_len (gstr, val, __builtin_constant_p (val) ? (gssize) strlen (val) : (gssize) -1)
+#define g_string_append(gstr, val)                  \
+  (__builtin_constant_p (val) ?                     \
+    G_GNUC_EXTENSION ({                             \
+      const char * const __val = (val);             \
+      g_string_append_len (gstr, __val,             \
+        G_LIKELY (__val != NULL) ?                  \
+          (gssize) strlen (_G_STR_NONNULL (__val))  \
+        : (gssize) -1);                             \
+    })                                              \
+    :                                               \
+    g_string_append_len (gstr, val, (gssize) -1))
 
-#endif
+#endif /* G_GNUC_CHECK_VERSION (2, 0) */
 
 #endif /* G_CAN_INLINE */
 
