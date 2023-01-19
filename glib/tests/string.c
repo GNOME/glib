@@ -630,6 +630,32 @@ test_string_replace (void)
     }
 }
 
+static void
+test_string_steal (void)
+{
+  GString *string;
+  char *str;
+
+  string = g_string_new ("One");
+  g_string_append (string, ", two");
+  g_string_append (string, ", three");
+  g_string_append_c (string, '.');
+
+  str = g_string_free (string, FALSE);
+
+  g_assert_cmpstr (str, ==, "One, two, three.");
+  g_free (str);
+
+  string = g_string_new ("1");
+  g_string_append (string, " 2");
+  g_string_append (string, " 3");
+
+  str = g_string_free_and_steal (string);
+
+  g_assert_cmpstr (str, ==, "1 2 3");
+  g_free (str);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -656,6 +682,7 @@ main (int   argc,
   g_test_add_func ("/string/test-string-set-size", test_string_set_size);
   g_test_add_func ("/string/test-string-to-bytes", test_string_to_bytes);
   g_test_add_func ("/string/test-string-replace", test_string_replace);
+  g_test_add_func ("/string/test-string-steal", test_string_steal);
 
   return g_test_run();
 }

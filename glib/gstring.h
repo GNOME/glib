@@ -58,6 +58,8 @@ GString*     g_string_sized_new         (gsize            dfl_size);
 GLIB_AVAILABLE_IN_ALL
 gchar*       g_string_free              (GString         *string,
                                          gboolean         free_segment);
+GLIB_AVAILABLE_IN_2_76
+gchar*       g_string_free_and_steal    (GString         *string) G_GNUC_WARN_UNUSED_RESULT;
 GLIB_AVAILABLE_IN_2_34
 GBytes*      g_string_free_to_bytes     (GString         *string);
 GLIB_AVAILABLE_IN_ALL

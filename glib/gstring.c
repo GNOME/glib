@@ -199,6 +199,9 @@ g_string_new_len (const gchar *init,
  * it's %FALSE, the caller gains ownership of the buffer and must
  * free it after use with g_free().
  *
+ * Instead of passing %FALSE to this function, consider using
+ * g_string_free_and_steal().
+ *
  * Returns: (nullable): the character data of @string
  *          (i.e. %NULL if @free_segment is %TRUE)
  */
@@ -221,6 +224,25 @@ g_string_free (GString  *string,
   g_slice_free (GString, string);
 
   return segment;
+}
+
+/**
+ * g_string_free_and_steal:
+ * @string: (transfer full): a #GString
+ *
+ * Frees the memory allocated for the #GString.
+ *
+ * The caller gains ownership of the buffer and
+ * must free it after use with g_free().
+ *
+ * Returns: (transfer full): the character data of @string
+ *
+ * Since: 2.76
+ */
+gchar *
+g_string_free_and_steal (GString *string)
+{
+  return g_string_free (string, FALSE);
 }
 
 /**
