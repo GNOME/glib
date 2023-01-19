@@ -1,3 +1,28 @@
+Overview of changes in GLib 2.74.5
+==================================
+
+* Bugs fixed:
+  - #2843 gtk_show_uri can't open browser on MSYS2 on Windows (Luca Bacci)
+  - #2881 Invalid read of size 4 in get_matched_substring_number (Philip
+    Withnall)
+  - #2883 g_file_set_contents fails on mingw64 with "no error" if file size >
+    INT_MAX (CCode)
+  - !3165 gthread-posix: need to #include <errno.h>
+  - !3166 Backport !3160 “GWin32AppInfo: Check for local file path first” to
+    glib-2-74
+  - !3182 Backport !3178 “glocalfileinfo: Don't reset mtime tv_sec when setting
+    tv_usec” to glib-2-74
+  - !3197 Backport !3194 “gregex: Prevent invalid memory access for unmatched
+    subpatterns” to glib-2-74
+  - !3204 Backport !3200 “gfileutils: Use 'write' with 'count' <= max value of
+    its return type” to glib-2-74
+  - !3214 Backport !3213 “gvariant: Optimise g_variant_print() for nested
+    maybes” to glib-2-74
+
+* Translation updates:
+  - Abkhazian (Nart Tlisha)
+
+
 Overview of changes in GLib 2.74.4
 ==================================
 
