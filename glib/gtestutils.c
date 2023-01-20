@@ -58,6 +58,7 @@
 #include "glib-private.h"
 #include "gutilsprivate.h"
 
+#define TAP_VERSION G_STRINGIFY (13)
 /* FIXME: Remove '#' prefix when we'll depend on a meson version supporting TAP 14
  * See https://gitlab.gnome.org/GNOME/glib/-/issues/2885 */
 #define TAP_SUBTEST_PREFIX "#    "  /* a 4-space indented line */
@@ -1100,7 +1101,7 @@ g_test_log (GTestLogType lbit,
         {
           if (!is_subtest ())
             {
-              g_test_tap_print (0, FALSE, "TAP version 13\n");
+              g_test_tap_print (0, FALSE, "TAP version " TAP_VERSION "\n");
             }
           else
             {
