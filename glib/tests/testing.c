@@ -2722,8 +2722,7 @@ test_tap_subtest_error (void)
 
   g_assert_cmpstr (interesting_lines, ==,
                    TAP_SUBTEST_PREFIX "Bail out! GLib-FATAL-ERROR: This should error out "
-                   "Because it's just wrong!\n"
-                   "Bail out!\n");
+                   "Because it's just wrong!\n");
 
   g_free (output);
   g_ptr_array_unref (argv);
@@ -2815,8 +2814,7 @@ test_tap_subtest_error_and_pass (void)
 
   g_assert_cmpstr (interesting_lines, ==,
                    TAP_SUBTEST_PREFIX "Bail out! GLib-FATAL-ERROR: This should error out "
-                   "Because it's just wrong!\n"
-                   "Bail out!\n");
+                   "Because it's just wrong!\n");
 
   g_free (output);
   g_ptr_array_unref (argv);

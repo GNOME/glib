@@ -1219,16 +1219,7 @@ g_test_log (GTestLogType lbit,
           while ((line = strchr (line, '\n')))
               *(line++) = ' ';
 
-          if (is_subtest ())
-            {
-              g_test_tap_print (subtest_level, FALSE, "Bail out! %s\n", message);
-              g_test_tap_print (0, FALSE, "Bail out!\n");
-            }
-          else
-            {
-              g_test_tap_print (0, FALSE, "Bail out! %s\n", message);
-            }
-
+          g_test_tap_print (subtest_level, FALSE, "Bail out! %s\n", message);
           g_free (message);
         }
       else if (g_test_verbose ())
