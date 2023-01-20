@@ -1219,7 +1219,26 @@ g_test_log (GTestLogType lbit,
           while ((line = strchr (line, '\n')))
               *(line++) = ' ';
 
-          g_test_tap_print (subtest_level, FALSE, "Bail out! %s\n", message);
+          if (message)
+            message = g_strstrip (message);
+
+          if (test_run_name && *test_run_name != '\0')
+            {
+              if (message && *message != '\0')
+                g_test_tap_print (subtest_level, FALSE, "not ok %s - %s\n",
+                                  test_run_name, message);
+              else
+                g_test_tap_print (subtest_level, FALSE, "not ok %s\n",
+                                  test_run_name);
+
+              g_clear_pointer (&message, g_free);
+            }
+
+          if (message && *message != '\0')
+            g_test_tap_print (subtest_level, FALSE, "Bail out! %s\n", message);
+          else
+            g_test_tap_print (subtest_level, FALSE, "Bail out!\n");
+
           g_free (message);
         }
       else if (g_test_verbose ())
