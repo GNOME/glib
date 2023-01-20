@@ -17,8 +17,8 @@ meson %args% _build || goto :error
 python .gitlab-ci/check-missing-install-tag.py _build || goto :error
 ninja -C _build || goto :error
 
-meson test -C _build --timeout-multiplier %MESON_TEST_TIMEOUT_MULTIPLIER% || goto :error
-meson test -C _build --timeout-multiplier %MESON_TEST_TIMEOUT_MULTIPLIER% --setup=unstable_tests --suite=failing --suite=flaky
+meson test -v -C _build --timeout-multiplier %MESON_TEST_TIMEOUT_MULTIPLIER% || goto :error
+meson test -v -C _build --timeout-multiplier %MESON_TEST_TIMEOUT_MULTIPLIER% --setup=unstable_tests --suite=failing --suite=flaky
 
 :: Workaround meson issue https://github.com/mesonbuild/meson/issues/9894
 python -c "n = '_build/meson-logs/testlog.junit.xml'; c = open(n, 'rb').read().replace(b'\x1b', b''); open(n, 'wb').write(c)" || goto :error
