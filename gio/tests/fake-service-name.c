@@ -98,6 +98,8 @@ main (gint argc, gchar *argv[])
 {
   guint id;
 
+  g_log_writer_default_set_use_stderr (TRUE);
+
   loop = g_main_loop_new (NULL, FALSE);
   introspection_data = g_dbus_node_info_new_for_xml (introspection_xml, NULL);
   g_assert (introspection_data != NULL);

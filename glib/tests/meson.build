@@ -140,6 +140,7 @@ glib_tests = {
   'string' : {},
   'strvbuilder' : {},
   'testing' : {
+    'args': [ '--verbose' ],
     'extra_programs' : ['testing-helper'],
   },
   'test-printf' : {},
@@ -386,7 +387,7 @@ foreach test_name, extra_args : glib_tests
   )
 
   depends = [extra_args.get('depends', [])]
-  suite = ['glib'] + extra_args.get('suite', [])
+  suite = ['glib', 'core'] + extra_args.get('suite', [])
   timeout = suite.contains('slow') ? test_timeout_slow : test_timeout
 
   if extra_args.get('can_fail', false)
@@ -398,6 +399,8 @@ foreach test_name, extra_args : glib_tests
   endforeach
 
   test(test_name, exe,
+    args: extra_args.get('args', []),
+    protocol : extra_args.get('protocol', test_protocol),
     depends : depends,
     env : test_env,
     timeout : timeout,
@@ -431,7 +434,7 @@ endif
 
 foreach test_name, extra_args : python_tests
   depends = [extra_args.get('depends', [])]
-  suite = ['glib', 'no-valgrind']
+  suite = ['glib', 'core', 'no-valgrind']
 
   if extra_args.get('can_fail', false)
     suite += 'failing'
@@ -444,6 +447,7 @@ foreach test_name, extra_args : python_tests
   test(
     test_name,
     python,
+    protocol : extra_args.get('protocol', test_protocol),
     depends: depends,
     args: ['-B', files(test_name)],
     env: test_env,
@@ -486,7 +490,7 @@ if not meson.is_cross_build() and host_system != 'windows'
     test('gtester-xmllint-check', xmllint,
       args : ['--noout', tmpsample_xml],
       env : test_env,
-      suite : ['glib'],
+      suite : ['glib', 'core'],
     )
   endif
 endif

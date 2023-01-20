@@ -3,6 +3,12 @@
 #define G_LOG_USE_STRUCTURED 1
 #include <glib.h>
 
+#ifdef G_OS_WIN32
+#define LINE_END "\r\n"
+#else
+#define LINE_END "\n"
+#endif
+
 /* Test g_warn macros */
 static void
 test_warnings (void)
@@ -61,16 +67,45 @@ test_default_handler_error (void)
 }
 
 static void
-test_default_handler_critical (void)
+test_default_handler_error_stderr (void)
 {
+  g_log_writer_default_set_use_stderr (FALSE);
+  g_log_set_default_handler (g_log_default_handler, NULL);
+  g_error ("message1");
+  exit (0);
+}
+
+static void
+test_default_handler_critical_stderr (void)
+{
+  g_log_writer_default_set_use_stderr (TRUE);
   g_log_set_default_handler (g_log_default_handler, NULL);
   g_critical ("message2");
   exit (0);
 }
 
 static void
+test_default_handler_critical (void)
+{
+  g_log_writer_default_set_use_stderr (FALSE);
+  g_log_set_default_handler (g_log_default_handler, NULL);
+  g_critical ("message2");
+  exit (0);
+}
+
+static void
+test_default_handler_warning_stderr (void)
+{
+  g_log_writer_default_set_use_stderr (TRUE);
+  g_log_set_default_handler (g_log_default_handler, NULL);
+  g_warning ("message3");
+  exit (0);
+}
+
+static void
 test_default_handler_warning (void)
 {
+  g_log_writer_default_set_use_stderr (FALSE);
   g_log_set_default_handler (g_log_default_handler, NULL);
   g_warning ("message3");
   exit (0);
@@ -79,6 +114,16 @@ test_default_handler_warning (void)
 static void
 test_default_handler_message (void)
 {
+  g_log_writer_default_set_use_stderr (FALSE);
+  g_log_set_default_handler (g_log_default_handler, NULL);
+  g_message ("message4");
+  exit (0);
+}
+
+static void
+test_default_handler_message_stderr (void)
+{
+  g_log_writer_default_set_use_stderr (TRUE);
   g_log_set_default_handler (g_log_default_handler, NULL);
   g_message ("message4");
   exit (0);
@@ -87,6 +132,16 @@ test_default_handler_message (void)
 static void
 test_default_handler_info (void)
 {
+  g_log_writer_default_set_use_stderr (FALSE);
+  g_log_set_default_handler (g_log_default_handler, NULL);
+  g_log (G_LOG_DOMAIN, G_LOG_LEVEL_INFO, "message5");
+  exit (0);
+}
+
+static void
+test_default_handler_info_stderr (void)
+{
+  g_log_writer_default_set_use_stderr (TRUE);
   g_log_set_default_handler (g_log_default_handler, NULL);
   g_log (G_LOG_DOMAIN, G_LOG_LEVEL_INFO, "message5");
   exit (0);
@@ -95,6 +150,7 @@ test_default_handler_info (void)
 static void
 test_default_handler_bar_info (void)
 {
+  g_log_writer_default_set_use_stderr (FALSE);
   g_log_set_default_handler (g_log_default_handler, NULL);
 
   g_setenv ("G_MESSAGES_DEBUG", "foo bar baz", TRUE);
@@ -106,6 +162,7 @@ test_default_handler_bar_info (void)
 static void
 test_default_handler_baz_debug (void)
 {
+  g_log_writer_default_set_use_stderr (FALSE);
   g_log_set_default_handler (g_log_default_handler, NULL);
 
   g_setenv ("G_MESSAGES_DEBUG", "foo bar baz", TRUE);
@@ -117,6 +174,7 @@ test_default_handler_baz_debug (void)
 static void
 test_default_handler_debug (void)
 {
+  g_log_writer_default_set_use_stderr (FALSE);
   g_log_set_default_handler (g_log_default_handler, NULL);
 
   g_setenv ("G_MESSAGES_DEBUG", "all", TRUE);
@@ -192,6 +250,7 @@ test_default_handler_would_drop (void)
 static void
 test_default_handler_0x400 (void)
 {
+  g_log_writer_default_set_use_stderr (FALSE);
   g_log_set_default_handler (g_log_default_handler, NULL);
   g_log (G_LOG_DOMAIN, 1<<10, "message7");
   exit (0);
@@ -205,7 +264,17 @@ test_default_handler (void)
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*ERROR*message1*");
 
+  g_test_trap_subprocess ("/logging/default-handler/subprocess/error-stderr", 0,
+                          G_TEST_SUBPROCESS_DEFAULT);
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*ERROR*message1*");
+
   g_test_trap_subprocess ("/logging/default-handler/subprocess/critical", 0,
+                          G_TEST_SUBPROCESS_DEFAULT);
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*CRITICAL*message2*");
+
+  g_test_trap_subprocess ("/logging/default-handler/subprocess/critical-stderr", 0,
                           G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*CRITICAL*message2*");
@@ -215,7 +284,17 @@ test_default_handler (void)
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*WARNING*message3*");
 
+  g_test_trap_subprocess ("/logging/default-handler/subprocess/warning-stderr", 0,
+                          G_TEST_SUBPROCESS_DEFAULT);
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*WARNING*message3*");
+
   g_test_trap_subprocess ("/logging/default-handler/subprocess/message", 0,
+                          G_TEST_SUBPROCESS_DEFAULT);
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stderr ("*Message*message4*");
+
+  g_test_trap_subprocess ("/logging/default-handler/subprocess/message-stderr", 0,
                           G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_passed ();
   g_test_trap_assert_stderr ("*Message*message4*");
@@ -224,6 +303,11 @@ test_default_handler (void)
                           G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_passed ();
   g_test_trap_assert_stdout_unmatched ("*INFO*message5*");
+
+  g_test_trap_subprocess ("/logging/default-handler/subprocess/info-stderr", 0,
+                          G_TEST_SUBPROCESS_DEFAULT);
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stderr_unmatched ("*INFO*message5*");
 
   g_test_trap_subprocess ("/logging/default-handler/subprocess/bar-info", 0,
                           G_TEST_SUBPROCESS_DEFAULT);
@@ -284,13 +368,27 @@ test_print_handler (void)
   GPrintFunc old_print_handler;
 
   old_print_handler = g_set_print_handler (my_print_handler);
-  g_assert (old_print_handler == NULL);
+  g_assert_nonnull (old_print_handler);
 
   my_print_count = 0;
   g_print ("bu ba");
   g_assert_cmpint (my_print_count, ==, 1);
 
-  g_set_print_handler (NULL);
+  if (g_test_subprocess ())
+    {
+      g_set_print_handler (NULL);
+      old_print_handler ("default handler\n");
+      g_print ("bu ba\n");
+      return;
+    }
+
+  g_set_print_handler (old_print_handler);
+  g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
+  g_test_trap_assert_stdout ("*default handler" LINE_END "*");
+  g_test_trap_assert_stdout ("*bu ba" LINE_END "*");
+  g_test_trap_assert_stdout_unmatched ("*# default handler" LINE_END "*");
+  g_test_trap_assert_stdout_unmatched ("*# bu ba" LINE_END "*");
+  g_test_trap_has_passed ();
 }
 
 static void
@@ -299,13 +397,25 @@ test_printerr_handler (void)
   GPrintFunc old_printerr_handler;
 
   old_printerr_handler = g_set_printerr_handler (my_print_handler);
-  g_assert (old_printerr_handler == NULL);
+  g_assert_nonnull (old_printerr_handler);
 
   my_print_count = 0;
   g_printerr ("bu ba");
   g_assert_cmpint (my_print_count, ==, 1);
 
-  g_set_printerr_handler (NULL);
+  if (g_test_subprocess ())
+    {
+      g_set_printerr_handler (NULL);
+      old_printerr_handler ("default handler\n");
+      g_printerr ("bu ba\n");
+      return;
+    }
+
+  g_set_printerr_handler (old_printerr_handler);
+  g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
+  g_test_trap_assert_stderr ("*default handler" LINE_END "*");
+  g_test_trap_assert_stderr ("*bu ba" LINE_END "*");
+  g_test_trap_has_passed ();
 }
 
 static char *fail_str = "foo";
@@ -746,10 +856,15 @@ main (int argc, char *argv[])
 
   g_test_add_func ("/logging/default-handler", test_default_handler);
   g_test_add_func ("/logging/default-handler/subprocess/error", test_default_handler_error);
+  g_test_add_func ("/logging/default-handler/subprocess/error-stderr", test_default_handler_error_stderr);
   g_test_add_func ("/logging/default-handler/subprocess/critical", test_default_handler_critical);
+  g_test_add_func ("/logging/default-handler/subprocess/critical-stderr", test_default_handler_critical_stderr);
   g_test_add_func ("/logging/default-handler/subprocess/warning", test_default_handler_warning);
+  g_test_add_func ("/logging/default-handler/subprocess/warning-stderr", test_default_handler_warning_stderr);
   g_test_add_func ("/logging/default-handler/subprocess/message", test_default_handler_message);
+  g_test_add_func ("/logging/default-handler/subprocess/message-stderr", test_default_handler_message_stderr);
   g_test_add_func ("/logging/default-handler/subprocess/info", test_default_handler_info);
+  g_test_add_func ("/logging/default-handler/subprocess/info-stderr", test_default_handler_info_stderr);
   g_test_add_func ("/logging/default-handler/subprocess/bar-info", test_default_handler_bar_info);
   g_test_add_func ("/logging/default-handler/subprocess/baz-debug", test_default_handler_baz_debug);
   g_test_add_func ("/logging/default-handler/subprocess/debug", test_default_handler_debug);

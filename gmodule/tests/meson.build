@@ -5,6 +5,7 @@ gmodule_tests = {
 if have_cxx
   gmodule_tests += {
     'cxx' : {
+      'protocol': 'exitcode',
       'source' : ['cxx.cpp'],
       'suite' : ['cpp'],
     }
@@ -13,6 +14,7 @@ if have_cxx
   foreach std, arg: cxx_standards
     gmodule_tests += {
       'cxx-@0@'.format(std) : {
+        'protocol': 'exitcode',
         'source' : ['cxx.cpp'],
         'suite' : ['cpp'],
         'cpp_args' : [arg],
@@ -115,6 +117,7 @@ foreach test_name, extra_args : gmodule_tests
 
   test(test_name,
     exe,
+    protocol : extra_args.get('protocol', test_protocol),
     depends : depends,
     env : test_env,
     timeout : timeout,

@@ -204,11 +204,11 @@ print_buckets (gint   buckets[],
 
   for (i = 0; i < count; i++)
     if (i < count - 1)
-      g_print ("%-4lld-%4lld|", i == 0 ? 0 : bucket_limits[i - 1], bucket_limits[i] - 1);
+      g_printerr ("%-4lld-%4lld|", i == 0 ? 0 : bucket_limits[i - 1], bucket_limits[i] - 1);
     else
-      g_print ("  >= %-4lld|", bucket_limits[i - 1]);
+      g_printerr ("  >= %-4lld|", bucket_limits[i - 1]);
 
-  g_print ("\n");
+  g_printerr ("\n");
 
   for (i = 0; i < count; i++)
     {
@@ -225,17 +225,17 @@ print_buckets (gint   buckets[],
         len = 4;
       padding = 9 - len;
       for (j = 0; j < padding / 2; j++)
-        g_print (" ");
+        g_printerr (" ");
       if (buckets[i] != 0)
-        g_print ("%*d", len, buckets[i]);
+        g_printerr ("%*d", len, buckets[i]);
       else
-        g_print (" ");
+        g_printerr (" ");
       for (j = padding / 2; j < padding; j++)
-        g_print (" ");
-      g_print (" ");
+        g_printerr (" ");
+      g_printerr (" ");
     }
 
-  g_print ("\n\n");
+  g_printerr ("\n\n");
 }
 
 static void
@@ -281,7 +281,7 @@ test_gpoll (void)
     }
 
   times_avg /= NUM_POLLEES;
-  g_print ("\nempty poll time:\n%4lldns - %4lldns, average %4lldns\n", times_min, times_max, times_avg);
+  g_printerr ("\nempty poll time:\n%4lldns - %4lldns, average %4lldns\n", times_min, times_max, times_avg);
   print_buckets (buckets, bucket_limits, BUCKET_COUNT);
 
   times_avg = 0;
@@ -336,7 +336,7 @@ test_gpoll (void)
     }
 
   times_avg /= NUM_POLLEES;
-  g_print ("1-socket + msg poll time:\n%4lldns - %4lldns, average %4lldns\n", times_min, times_max, times_avg);
+  g_printerr ("1-socket + msg poll time:\n%4lldns - %4lldns, average %4lldns\n", times_min, times_max, times_avg);
   print_buckets (buckets, bucket_limits, BUCKET_COUNT);
 
   times_avg = 0;
@@ -384,7 +384,7 @@ test_gpoll (void)
     }
 
   times_avg /= NUM_POLLEES;
-  g_print ("1-socket poll time:\n%4lldns - %4lldns, average %4lldns\n", times_min, times_max, times_avg);
+  g_printerr ("1-socket poll time:\n%4lldns - %4lldns, average %4lldns\n", times_min, times_max, times_avg);
   print_buckets (buckets, bucket_limits, BUCKET_COUNT);
 
   times_avg = 0;
@@ -433,7 +433,7 @@ test_gpoll (void)
     }
 
   times_avg /= NUM_POLLEES;
-  g_print ("half-socket poll time:\n%4lldns - %4lldns, average %4lldns\n", times_min, times_max, times_avg);
+  g_printerr ("half-socket poll time:\n%4lldns - %4lldns, average %4lldns\n", times_min, times_max, times_avg);
   print_buckets (buckets, bucket_limits, BUCKET_COUNT);
 
   times_avg = 0;
@@ -491,7 +491,7 @@ test_gpoll (void)
     }
 
   times_avg /= NUM_POLLEES;
-  g_print ("half-socket + msg poll time:\n%4lldns - %4lldns, average %4lldns\n", times_min, times_max, times_avg);
+  g_printerr ("half-socket + msg poll time:\n%4lldns - %4lldns, average %4lldns\n", times_min, times_max, times_avg);
   print_buckets (buckets, bucket_limits, BUCKET_COUNT);
 
   times_avg = 0;
@@ -540,7 +540,7 @@ test_gpoll (void)
     }
 
   times_avg /= NUM_POLLEES;
-  g_print ("%d-socket poll time: \n%4lldns - %4lldns, average %4lldns\n", NUM_POLLEES, times_min, times_max, times_avg);
+  g_printerr ("%d-socket poll time: \n%4lldns - %4lldns, average %4lldns\n", NUM_POLLEES, times_min, times_max, times_avg);
   print_buckets (buckets, bucket_limits, BUCKET_COUNT);
 
   activatable = 0;
@@ -599,7 +599,7 @@ test_gpoll (void)
     }
 
   times_avg /= NUM_POLLEES;
-  g_print ("variable socket number + msg poll time: \n%4lldns - %4lldns, average %4lldns\n", times_min, times_max, times_avg);
+  g_printerr ("variable socket number + msg poll time: \n%4lldns - %4lldns, average %4lldns\n", times_min, times_max, times_avg);
   print_buckets (buckets, bucket_limits, BUCKET_COUNT);
 
   cleanup_sockets (sockets, opp_sockets, NUM_POLLEES);

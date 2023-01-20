@@ -20,6 +20,7 @@
 
 #include <glib.h>
 #include <locale.h>
+#include <stdio.h>
 #ifdef G_OS_WIN32
 #include <fcntl.h>
 #include <io.h>
@@ -52,6 +53,12 @@ test_fail (void)
 }
 
 static void
+test_error (void)
+{
+  g_error ("This should error out\nBecause it's just\nwrong!");
+}
+
+static void
 test_fail_printf (void)
 {
   g_test_fail_printf ("this test intentionally left failing");
@@ -77,6 +84,63 @@ test_summary (void)
   g_test_summary ("Tests that g_test_summary() works with TAP, by outputting a "
                   "known summary message in testing-helper, and checking for "
                   "it in the TAP output later.");
+}
+
+static void
+test_message (void)
+{
+  g_test_message ("Tests that single line message works");
+  g_test_message ("Tests that multi\n\nline\nmessage\nworks");
+  g_test_message ("\nTests that multi\nline\nmessage\nworks with leading and trailing too\n");
+}
+
+static void
+test_print (void)
+{
+  g_print ("Tests that single line message works\n");
+  g_print ("test that multiple\nlines ");
+  g_print ("can be ");
+  g_print ("written ");
+  g_print ("separately\n");
+}
+
+static void
+test_subprocess_stdout (void)
+{
+  if (g_test_subprocess ())
+    {
+      printf ("Tests that single line message works\n");
+      printf ("test that multiple\nlines ");
+      printf ("can be ");
+      printf ("written ");
+      printf ("separately\n");
+
+      puts ("And another line has been put");
+
+      return;
+    }
+
+  g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_INHERIT_STDOUT);
+  g_test_trap_has_passed ();
+
+  g_test_trap_assert_stdout ("/sub-stdout: Tests that single line message works\n*");
+  g_test_trap_assert_stdout ("*\ntest that multiple\nlines can be written separately\n*");
+  g_test_trap_assert_stdout ("*\nAnd another line has been put\n*");
+}
+
+static void
+test_subprocess_stdout_no_nl (void)
+{
+  if (g_test_subprocess ())
+    {
+      printf ("A message without trailing new line");
+      return;
+    }
+
+  g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_INHERIT_STDOUT);
+  g_test_trap_has_passed ();
+
+  g_test_trap_assert_stdout ("/sub-stdout-no-nl: A message without trailing new line");
 }
 
 int
@@ -149,6 +213,15 @@ main (int   argc,
     {
       g_test_add_func ("/fail", test_fail);
     }
+  else if (g_strcmp0 (argv1, "error") == 0)
+    {
+      g_test_add_func ("/error", test_error);
+    }
+  else if (g_strcmp0 (argv1, "error-and-pass") == 0)
+    {
+      g_test_add_func ("/error", test_error);
+      g_test_add_func ("/pass", test_pass);
+    }
   else if (g_strcmp0 (argv1, "fail-printf") == 0)
     {
       g_test_add_func ("/fail-printf", test_fail_printf);
@@ -185,9 +258,33 @@ main (int   argc,
     {
       g_test_add_func ("/summary", test_summary);
     }
+  else if (g_strcmp0 (argv1, "message") == 0)
+    {
+      g_test_add_func ("/message", test_message);
+    }
+  else if (g_strcmp0 (argv1, "print") == 0)
+    {
+      g_test_add_func ("/print", test_print);
+    }
+  else if (g_strcmp0 (argv1, "subprocess-stdout") == 0)
+    {
+      g_test_add_func ("/sub-stdout", test_subprocess_stdout);
+    }
+  else if (g_strcmp0 (argv1, "subprocess-stdout-no-nl") == 0)
+    {
+      g_test_add_func ("/sub-stdout-no-nl", test_subprocess_stdout_no_nl);
+    }
   else
     {
-      g_assert_not_reached ();
+      if (g_test_subprocess ())
+        {
+          g_test_add_func ("/sub-stdout", test_subprocess_stdout);
+          g_test_add_func ("/sub-stdout-no-nl", test_subprocess_stdout_no_nl);
+        }
+      else
+        {
+          g_assert_not_reached ();
+        }
     }
 
   return g_test_run ();

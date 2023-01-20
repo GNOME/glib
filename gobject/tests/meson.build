@@ -41,7 +41,7 @@ gobject_tests = {
   'defaultiface' : {
     'source' : ['defaultiface.c', 'testmodule.c'],
   },
-  'deftype' : {},
+  'deftype' : { 'protocol': 'exitcode' },
   'deprecated-properties' : {},
   'dynamictype' : {
     'source' : ['dynamictype.c', 'testmodule.c'],
@@ -109,6 +109,7 @@ gobject_tests = {
 if have_cxx
   gobject_tests += {
     'cxx' : {
+      'protocol': 'exitcode',
       'source' : ['cxx.cpp'],
       'suite' : ['cpp'],
     },
@@ -117,6 +118,7 @@ if have_cxx
   foreach std, arg: cxx_standards
     gobject_tests += {
       'cxx-@0@'.format(std) : {
+        'protocol': 'exitcode',
         'source' : ['cxx.cpp'],
         'suite' : ['cpp'],
         'cpp_args' : [arg],
@@ -186,7 +188,13 @@ foreach test_name, extra_args : gobject_tests
     timeout = timeout * 10
   endif
 
-  test(test_name, exe, env : test_env, timeout : timeout, suite : suite)
+  test(test_name,
+    exe,
+    protocol : extra_args.get('protocol', test_protocol),
+    env : test_env,
+    timeout : timeout,
+    suite : suite,
+  )
 endforeach
 
 foreach test_name, extra_args : python_tests
@@ -200,6 +208,7 @@ foreach test_name, extra_args : python_tests
   test(
     test_name,
     python,
+    protocol : extra_args.get('protocol', test_protocol),
     depends: depends,
     args: ['-B', files(test_name)],
     env: test_env,

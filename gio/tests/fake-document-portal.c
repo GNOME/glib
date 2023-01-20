@@ -125,6 +125,8 @@ main (gint argc, gchar *argv[])
   GMainLoop *loop;
   guint id;
 
+  g_log_writer_default_set_use_stderr (TRUE);
+
   loop = g_main_loop_new (NULL, FALSE);
 
   id = g_bus_own_name (G_BUS_TYPE_SESSION,
