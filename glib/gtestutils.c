@@ -58,6 +58,7 @@
 #include "glib-private.h"
 #include "gutilsprivate.h"
 
+#define TAP_VERSION G_STRINGIFY (13)
 /* FIXME: Remove '#' prefix when we'll depend on a meson version supporting TAP 14
  * See https://gitlab.gnome.org/GNOME/glib/-/issues/2885 */
 #define TAP_SUBTEST_PREFIX "#    "  /* a 4-space indented line */
@@ -1100,7 +1101,7 @@ g_test_log (GTestLogType lbit,
         {
           if (!is_subtest ())
             {
-              g_test_tap_print (0, FALSE, "TAP version 13\n");
+              g_test_tap_print (0, FALSE, "TAP version " TAP_VERSION "\n");
             }
           else
             {
@@ -1218,15 +1219,25 @@ g_test_log (GTestLogType lbit,
           while ((line = strchr (line, '\n')))
               *(line++) = ' ';
 
-          if (is_subtest ())
+          if (message)
+            message = g_strstrip (message);
+
+          if (test_run_name && *test_run_name != '\0')
             {
-              g_test_tap_print (subtest_level, FALSE, "Bail out! %s\n", message);
-              g_test_tap_print (0, FALSE, "Bail out!\n");
+              if (message && *message != '\0')
+                g_test_tap_print (subtest_level, FALSE, "not ok %s - %s\n",
+                                  test_run_name, message);
+              else
+                g_test_tap_print (subtest_level, FALSE, "not ok %s\n",
+                                  test_run_name);
+
+              g_clear_pointer (&message, g_free);
             }
+
+          if (message && *message != '\0')
+            g_test_tap_print (subtest_level, FALSE, "Bail out! %s\n", message);
           else
-            {
-              g_test_tap_print (0, FALSE, "Bail out! %s\n", message);
-            }
+            g_test_tap_print (subtest_level, FALSE, "Bail out!\n");
 
           g_free (message);
         }
