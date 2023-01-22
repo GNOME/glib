@@ -1,6 +1,6 @@
 # Turkish translation of Glib.
 # Copyright (C) 2001-2003, 2005, 2007, 2008 Free Software Foundation, Inc.
-# Copyright (C) 2009-2022 glib's COPYRIGHT HOLDER
+# Copyright (C) 2009-2023 glib's COPYRIGHT HOLDER
 # This file is distributed under the same license as the glib package.
 #
 # KEMAL YILMAZ <kyilmaz@uekae.tubitak.gov.tr>, 2001.
@@ -12,22 +12,22 @@
 # Muhammet Kara <muhammetk@gmail.com>, 2011, 2014, 2015, 2016.
 # Serdar Sağlam <teknomobil@yandex.com>, 2019.
 # Emin Tufan Çetin <etcetin@gmail.com>, 2017, 2018, 2019, 2020, 2021, 2022.
-# Sabri Ünal <libreajans@gmail.com>, 2022.
+# Sabri Ünal <libreajans@gmail.com>, 2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
 "POT-Creation-Date: 2022-10-12 14:41+0000\n"
-"PO-Revision-Date: 2022-12-21 14:06+0300\n"
-"Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
+"PO-Revision-Date: 2022-09-01 21:35+0300\n"
+"Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Türkçe <gnome-turk@gnome.org>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.0.1\n"
 "X-POOTLE-MTIME: 1433280446.000000\n"
 
 #: gio/gappinfo.c:335
@@ -2347,7 +2347,7 @@ msgid ""
 "directory)"
 msgstr ""
 "Bir dosyayı çöpten kendi özgün konumuna geri yükle (büyük olasılıkla dizini "
-"yeniden yaratacak)"
+"yeniden oluşturacak)"
 
 #: gio/gio-tool-trash.c:108
 msgid "Unable to find original path"
@@ -2355,7 +2355,7 @@ msgstr "Özgün yol bulunamadı"
 
 #: gio/gio-tool-trash.c:125
 msgid "Unable to recreate original location: "
-msgstr "Özgün konum yeniden yaratılamadı: "
+msgstr "Özgün konum yeniden oluşturulamadı: "
 
 #: gio/gio-tool-trash.c:138
 msgid "Unable to move file to its original location: "
@@ -4180,7 +4180,7 @@ msgstr "Bilinmeyen SOCKSv5 vekil hatası."
 #: gio/gtestdbus.c:614 glib/gspawn-win32.c:354
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
-msgstr "Alt süreçle haberleşme için boru yaratılamadı (%s)"
+msgstr "Alt süreçle haberleşme için boru oluşturulamadı (%s)"
 
 #: gio/gtestdbus.c:621
 #, c-format
@@ -4262,7 +4262,7 @@ msgstr "Var olan TLS arka ucu PKCS #12 desteklemiyor"
 
 #: gio/gtlscertificate.c:1017
 msgid "This GTlsBackend does not support creating PKCS #11 certificates"
-msgstr "GTlsBackend, PKCS #11 sertifikası yaratmayı desteklemiyor"
+msgstr "GTlsBackend, PKCS #11 sertifikası oluşturmayı desteklemiyor"
 
 #: gio/gtlspassword.c:113
 msgid ""
@@ -5825,22 +5825,22 @@ msgstr "waitpid() (%s) içinde beklenmeyen hata"
 #: glib/gspawn.c:1170 glib/gspawn-win32.c:1488
 #, c-format
 msgid "Child process exited with code %ld"
-msgstr "Alt süreç %ld kodu ile sonlandı"
+msgstr "Alt işlem %ld kodu ile sonlandı"
 
 #: glib/gspawn.c:1178
 #, c-format
 msgid "Child process killed by signal %ld"
-msgstr "Alt süreç, %ld sinyali ile sonlandı"
+msgstr "Alt işlem, %ld sinyali ile sonlandı"
 
 #: glib/gspawn.c:1185
 #, c-format
 msgid "Child process stopped by signal %ld"
-msgstr "Alt süreç %ld sinyali ile durduruldu"
+msgstr "Alt işlem %ld sinyali ile durduruldu"
 
 #: glib/gspawn.c:1192
 #, c-format
 msgid "Child process exited abnormally"
-msgstr "Alt süreç anormal biçimde sonlandı"
+msgstr "Alt işlem anormal bir biçimde sonlandı"
 
 #: glib/gspawn.c:1885 glib/gspawn-win32.c:393 glib/gspawn-win32.c:401
 #, c-format
@@ -5904,7 +5904,7 @@ msgstr "Alt süreçten bilgi okuma başarısızlığı"
 #: glib/gspawn-win32.c:430 glib/gspawn-win32.c:435 glib/gspawn-win32.c:561
 #, c-format
 msgid "Failed to execute child process (%s)"
-msgstr "Alt süreç yürütülemedi (%s)"
+msgstr "Alt süreç yürütme başarısızlığı (%s)"
 
 #: glib/gspawn-win32.c:440
 #, c-format
