@@ -406,6 +406,8 @@ g_win32_mount_get_icon (GMount *mount)
         {
           win32_mount->icon = g_themed_icon_new_with_default_fallbacks (_win32_drive_type_to_icon (win32_mount->drive_type, FALSE));
 	}
+
+      g_free (wfn);
     }
 
   return g_object_ref (win32_mount->icon);
