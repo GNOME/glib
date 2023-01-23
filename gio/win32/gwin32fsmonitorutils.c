@@ -316,6 +316,7 @@ g_win32_fs_monitor_init (GWin32FSMonitorPrivate *monitor,
                                          wcsdup (wshortname);
             }
 
+          g_free (wfullpath);
           g_free (fullpath);
         }
       else
