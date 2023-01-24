@@ -263,14 +263,12 @@ test_pollable_unix_file (void)
 static void
 test_pollable_unix_nulldev (void)
 {
-  int fd;
-
   g_test_summary ("Test that /dev/null is not considered pollable, but only if "
                   "on a system where we are able to tell it apart from devices "
                   "that actually implement poll");
 
 #if defined (HAVE_EPOLL_CREATE) || defined (HAVE_KQUEUE)
-  fd = g_open ("/dev/null", O_RDWR, 0);
+  int fd = g_open ("/dev/null", O_RDWR, 0);
   g_assert_cmpint (fd, !=, -1);
 
   g_assert_not_pollable (fd);
