@@ -1382,6 +1382,18 @@ typedef struct {
   TerminalLaunchType type;
 } TerminalLaunchData;
 
+static TerminalLaunchData *
+terminal_launch_data_new (const char *exec, TerminalLaunchType type)
+{
+  TerminalLaunchData *d = NULL;
+
+  d = g_new0 (TerminalLaunchData, 1);
+  d->exec = exec;
+  d->type = type;
+
+  return d;
+}
+
 static void
 test_launch_uris_with_terminal (gconstpointer data)
 {
@@ -1849,27 +1861,26 @@ main (int   argc,
 
       path = g_strdup_printf ("/desktop-app-info/launch-uris-with-terminal/with-path/%s",
                               supported_terminals[i]);
-      g_test_add_data_func (path, &(TerminalLaunchData) {
-                            .exec = supported_terminals[i],
-                            .type = TERMINAL_LAUNCH_TYPE_COMMAND_LINE_WITH_PATH_OVERRIDE,
-                            }, test_launch_uris_with_terminal);
-
-      g_free (path);
+      g_test_add_data_func_full (path,
+                                 terminal_launch_data_new (supported_terminals[i],
+                                                           TERMINAL_LAUNCH_TYPE_COMMAND_LINE_WITH_PATH_OVERRIDE),
+                                 test_launch_uris_with_terminal, g_free);
+      g_clear_pointer (&path, g_free);
 
       path = g_strdup_printf ("/desktop-app-info/launch-uris-with-terminal/with-context/%s",
                               supported_terminals[i]);
-      g_test_add_data_func (path, &(TerminalLaunchData) {
-                            .exec = supported_terminals[i],
-                            .type = TERMINAL_LAUNCH_TYPE_COMMAND_LINE_WITH_CONTEXT,
-                            }, test_launch_uris_with_terminal);
+      g_test_add_data_func_full (path,
+                                 terminal_launch_data_new (supported_terminals[i],
+                                                           TERMINAL_LAUNCH_TYPE_COMMAND_LINE_WITH_CONTEXT),
+                                 test_launch_uris_with_terminal, g_free);
       g_clear_pointer (&path, g_free);
 
       path = g_strdup_printf ("/desktop-app-info/launch-uris-with-terminal/with-desktop-path/%s",
                               supported_terminals[i]);
-      g_test_add_data_func (path, &(TerminalLaunchData) {
-                            .exec = supported_terminals[i],
-                            .type = TERMINAL_LAUNCH_TYPE_KEY_FILE_WITH_PATH,
-                            }, test_launch_uris_with_terminal);
+      g_test_add_data_func_full (path,
+                                 terminal_launch_data_new (supported_terminals[i],
+                                                           TERMINAL_LAUNCH_TYPE_KEY_FILE_WITH_PATH),
+                                 test_launch_uris_with_terminal, g_free);
       g_clear_pointer (&path, g_free);
     }
 
