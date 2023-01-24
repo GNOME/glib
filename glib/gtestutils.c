@@ -1214,13 +1214,16 @@ g_test_log (GTestLogType lbit,
       if (test_tap_log)
         {
           char *message = g_strdup (string1);
-          char *line = message;
-
-          while ((line = strchr (line, '\n')))
-              *(line++) = ' ';
 
           if (message)
-            message = g_strstrip (message);
+            {
+              char *line = message;
+
+              while ((line = strchr (line, '\n')))
+                  *(line++) = ' ';
+
+              message = g_strstrip (message);
+            }
 
           if (test_run_name && *test_run_name != '\0')
             {
