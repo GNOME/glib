@@ -505,7 +505,7 @@
 {
 	g-system-thread-init-malloc
 	Memcheck:Leak
-	match-leak-kinds:possible,reachable
+	match-leak-kinds:possible,reachable,definite
 	fun:malloc
 	...
 	fun:g_system_thread_new
