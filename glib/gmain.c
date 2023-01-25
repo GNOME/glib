@@ -4495,13 +4495,13 @@ g_main_loop_run (GMainLoop *loop)
   /* Hold a reference in case the loop is unreffed from a callback function */
   g_atomic_int_inc (&loop->ref_count);
 
-  if (!g_main_context_acquire (loop->context))
+  LOCK_CONTEXT (loop->context);
+
+  if (!g_main_context_acquire_unlocked (loop->context))
     {
       gboolean got_ownership = FALSE;
       
       /* Another thread owns this context */
-      LOCK_CONTEXT (loop->context);
-
       g_atomic_int_set (&loop->is_running, TRUE);
 
       while (g_atomic_int_get (&loop->is_running) && !got_ownership)
@@ -4511,17 +4511,16 @@ g_main_loop_run (GMainLoop *loop)
       
       if (!g_atomic_int_get (&loop->is_running))
 	{
-	  UNLOCK_CONTEXT (loop->context);
 	  if (got_ownership)
-	    g_main_context_release (loop->context);
+	    g_main_context_release_unlocked (loop->context);
+
+	  UNLOCK_CONTEXT (loop->context);
 	  g_main_loop_unref (loop);
 	  return;
 	}
 
       g_assert (got_ownership);
     }
-  else
-    LOCK_CONTEXT (loop->context);
 
   if (loop->context->in_check_or_prepare)
     {
@@ -4535,9 +4534,9 @@ g_main_loop_run (GMainLoop *loop)
   while (g_atomic_int_get (&loop->is_running))
     g_main_context_iterate_unlocked (loop->context, TRUE, TRUE, self);
 
+  g_main_context_release_unlocked (loop->context);
+
   UNLOCK_CONTEXT (loop->context);
-  
-  g_main_context_release (loop->context);
   
   g_main_loop_unref (loop);
 }
