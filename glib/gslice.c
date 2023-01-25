@@ -38,15 +38,15 @@
  *
  * GSlice was a space-efficient and multi-processing scalable way to allocate
  * equal sized pieces of memory. Since GLib 2.76, its implementation has been
- * removed and it calls g_malloc() and g_free(), because the performance of the
- * system-default allocators has improved on all platforms since GSlice was
- * written.
+ * removed and it calls g_malloc() and g_free_sized(), because the performance
+ * of the system-default allocators has improved on all platforms since GSlice
+ * was written.
  *
  * The GSlice APIs have not been deprecated, as they are widely in use and doing
  * so would be very disruptive for little benefit.
  *
- * New code should be written using g_new()/g_malloc() and g_free(). There is no
- * particular benefit in porting existing code away from
+ * New code should be written using g_new()/g_malloc() and g_free_sized() or
+ * g_free(). There is no particular benefit in porting existing code away from
  * g_slice_new()/g_slice_free() unless it’s being rewritten anyway.
  *
  * Here is an example for using the slice allocator:
@@ -322,7 +322,8 @@ g_slice_copy (gsize         mem_size,
  *
  * If @mem_block is %NULL, this function does nothing.
  *
- * Since GLib 2.76 this always uses the system free() implementation internally.
+ * Since GLib 2.76 this always uses the system free_sized() implementation
+ * internally.
  *
  * Since: 2.10
  */
@@ -332,7 +333,7 @@ g_slice_free1 (gsize    mem_size,
 {
   if (G_UNLIKELY (g_mem_gc_friendly))
     memset (mem_block, 0, mem_size);
-  g_free (mem_block);
+  g_free_sized (mem_block, mem_size);
   TRACE (GLIB_SLICE_FREE((void*)mem_block, mem_size));
 }
 
@@ -353,7 +354,8 @@ g_slice_free1 (gsize    mem_size,
  *
  * If @mem_chain is %NULL, this function does nothing.
  *
- * Since GLib 2.76 this always uses the system free() implementation internally.
+ * Since GLib 2.76 this always uses the system free_sized() implementation
+ * internally.
  *
  * Since: 2.10
  */
@@ -369,7 +371,7 @@ g_slice_free_chain_with_offset (gsize    mem_size,
       slice = *(gpointer *) (current + next_offset);
       if (G_UNLIKELY (g_mem_gc_friendly))
         memset (current, 0, mem_size);
-      g_free (current);
+      g_free_sized (current, mem_size);
     }
 }
 
