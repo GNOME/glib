@@ -913,7 +913,7 @@ g_io_channel_set_line_term (GIOChannel	*channel,
 /**
  * g_io_channel_get_line_term:
  * @channel: a #GIOChannel
- * @length: a location to return the length of the line terminator
+ * @length: (out) (optional): a location to return the length of the line terminator
  *
  * This returns the string that #GIOChannel uses to determine
  * where in the file a line break occurs. A value of %NULL
