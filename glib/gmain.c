@@ -3512,6 +3512,9 @@ g_main_dispatch (GMainContext *context)
  * You must be the owner of a context before you
  * can call g_main_context_prepare(), g_main_context_query(),
  * g_main_context_check(), g_main_context_dispatch().
+ *
+ * Since 2.76 @context can be %NULL to use the global-default
+ * main context.
  * 
  * Returns: %TRUE if the operation succeeded, and
  *   this thread is now the owner of @context.
@@ -3865,7 +3868,8 @@ g_main_context_prepare (GMainContext *context,
 
 /**
  * g_main_context_query:
- * @context: a #GMainContext
+ * @context: (nullable): a #GMainContext (if %NULL, the global-default
+ *   main context will be used)
  * @max_priority: maximum priority source to check
  * @timeout_: (out): location to store timeout to be used in polling
  * @fds: (out caller-allocates) (array length=n_fds): location to
@@ -3894,6 +3898,9 @@ g_main_context_query (GMainContext *context,
   gint n_poll;
   GPollRec *pollrec, *lastpollrec;
   gushort events;
+
+  if (context == NULL)
+    context = g_main_context_default ();
   
   LOCK_CONTEXT (context);
 
@@ -3960,7 +3967,8 @@ g_main_context_query (GMainContext *context,
 
 /**
  * g_main_context_check:
- * @context: a #GMainContext
+ * @context: (nullable): a #GMainContext (if %NULL, the global-default
+ *   main context will be used)
  * @max_priority: the maximum numerical priority of sources to check
  * @fds: (array length=n_fds): array of #GPollFD's that was passed to
  *       the last call to g_main_context_query()
@@ -3973,6 +3981,9 @@ g_main_context_query (GMainContext *context,
  *
  * You must have successfully acquired the context with
  * g_main_context_acquire() before you may call this function.
+ *
+ * Since 2.76 @context can be %NULL to use the global-default
+ * main context.
  *
  * Returns: %TRUE if some sources are ready to be dispatched.
  **/
@@ -3987,6 +3998,9 @@ g_main_context_check (GMainContext *context,
   GPollRec *pollrec;
   gint n_ready = 0;
   gint i;
+
+  if (context == NULL)
+    context = g_main_context_default ();
    
   LOCK_CONTEXT (context);
 
@@ -4163,16 +4177,23 @@ g_main_context_check (GMainContext *context,
 
 /**
  * g_main_context_dispatch:
- * @context: a #GMainContext
+ * @context: (nullable): a #GMainContext (if %NULL, the global-default
+ *   main context will be used)
  *
  * Dispatches all pending sources.
  *
  * You must have successfully acquired the context with
  * g_main_context_acquire() before you may call this function.
+ *
+ * Since 2.76 @context can be %NULL to use the global-default
+ * main context.
  **/
 void
 g_main_context_dispatch (GMainContext *context)
 {
+  if (context == NULL)
+    context = g_main_context_default ();
+
   LOCK_CONTEXT (context);
 
   TRACE (GLIB_MAIN_CONTEXT_BEFORE_DISPATCH (context));
