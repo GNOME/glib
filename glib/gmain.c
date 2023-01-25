@@ -3605,9 +3605,6 @@ g_main_context_wait_internal (GMainContext *context,
   GThread *self = G_THREAD_SELF;
   gboolean loop_internal_waiter;
   
-  if (context == NULL)
-    context = g_main_context_default ();
-
   loop_internal_waiter = (mutex == &context->mutex);
   
   if (!loop_internal_waiter)
