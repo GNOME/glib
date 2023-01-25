@@ -2538,7 +2538,8 @@ g_main_context_find_source_by_funcs_user_data (GMainContext *context,
 
 /**
  * g_main_context_find_source_by_user_data:
- * @context: a #GMainContext
+ * @context: (nullable): a #GMainContext (if %NULL, the global-default
+ *   main context will be used)
  * @user_data: the user_data for the callback.
  * 
  * Finds a source with the given user data for the callback.  If
@@ -3498,7 +3499,8 @@ g_main_dispatch (GMainContext *context)
 
 /**
  * g_main_context_acquire:
- * @context: a #GMainContext
+ * @context: (nullable): a #GMainContext (if %NULL, the global-default
+ *   main context will be used)
  * 
  * Tries to become the owner of the specified context.
  * If some other thread is the owner of the context,
@@ -3549,7 +3551,8 @@ g_main_context_acquire (GMainContext *context)
 
 /**
  * g_main_context_release:
- * @context: a #GMainContext
+ * @context: (nullable): a #GMainContext (if %NULL, the global-default
+ *   main context will be used)
  * 
  * Releases ownership of a context previously acquired by this thread
  * with g_main_context_acquire(). If the context was acquired multiple
@@ -3645,7 +3648,8 @@ g_main_context_wait_internal (GMainContext *context,
 
 /**
  * g_main_context_wait:
- * @context: a #GMainContext
+ * @context: (nullable): a #GMainContext (if %NULL, the global-default
+ *   main context will be used)
  * @cond: a condition variable
  * @mutex: a mutex, currently held
  *
@@ -3684,7 +3688,8 @@ g_main_context_wait (GMainContext *context,
 
 /**
  * g_main_context_prepare:
- * @context: a #GMainContext
+ * @context: (nullable): a #GMainContext (if %NULL, the global-default
+ *   main context will be used)
  * @priority: (out) (optional): location to store priority of highest priority
  *            source already ready.
  *
@@ -4695,7 +4700,8 @@ g_main_context_add_poll_unlocked (GMainContext *context,
 
 /**
  * g_main_context_remove_poll:
- * @context:a #GMainContext 
+ * @context: (nullable): a #GMainContext (if %NULL, the global-default
+ *   main context will be used)
  * @fd: a #GPollFD descriptor previously added with g_main_context_add_poll()
  * 
  * Removes file descriptor from the set of file descriptors to be
@@ -4817,7 +4823,8 @@ g_source_get_time (GSource *source)
 
 /**
  * g_main_context_set_poll_func:
- * @context: a #GMainContext
+ * @context: (nullable): a #GMainContext (if %NULL, the global-default
+ *   main context will be used)
  * @func: the function to call to poll all file descriptors
  * 
  * Sets the function to use to handle polling of file descriptors. It
@@ -4849,7 +4856,8 @@ g_main_context_set_poll_func (GMainContext *context,
 
 /**
  * g_main_context_get_poll_func:
- * @context: a #GMainContext
+ * @context: (nullable): a #GMainContext (if %NULL, the global-default
+ *   main context will be used)
  * 
  * Gets the poll function set by g_main_context_set_poll_func().
  * 
@@ -4874,7 +4882,8 @@ g_main_context_get_poll_func (GMainContext *context)
 
 /**
  * g_main_context_wakeup:
- * @context: a #GMainContext
+ * @context: (nullable): a #GMainContext (if %NULL, the global-default
+ *   main context will be used)
  * 
  * If @context is currently blocking in g_main_context_iteration()
  * waiting for a source to become ready, cause it to stop blocking
@@ -4920,7 +4929,8 @@ g_main_context_wakeup (GMainContext *context)
 
 /**
  * g_main_context_is_owner:
- * @context: a #GMainContext
+ * @context: (nullable): a #GMainContext (if %NULL, the global-default
+ *   main context will be used)
  * 
  * Determines whether this thread holds the (recursive)
  * ownership of this #GMainContext. This is useful to
