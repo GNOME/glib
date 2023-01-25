@@ -181,7 +181,9 @@ g_string_append_c_inline (GString *gstring,
     g_string_insert_c (gstring, -1, c);
   return gstring;
 }
-#define g_string_append_c(gstr,c)       g_string_append_c_inline (gstr, c)
+
+#define g_string_append_c(gstr,c) \
+  g_string_append_c_inline (gstr, c)
 
 G_ALWAYS_INLINE
 static inline GString *
@@ -212,7 +214,9 @@ g_string_append_len_inline (GString    *gstring,
   else
     return g_string_insert_len (gstring, -1, val, len);
 }
-#define g_string_append_len(gstr,val,len) g_string_append_len_inline (gstr, val, len)
+
+#define g_string_append_len(gstr, val, len) \
+  g_string_append_len_inline (gstr, val, len)
 
 G_ALWAYS_INLINE
 static inline GString *
@@ -224,7 +228,8 @@ g_string_truncate_inline (GString *gstring,
   return gstring;
 }
 
-#define g_string_truncate(gstr,len) g_string_truncate_inline (gstr, len)
+#define g_string_truncate(gstr, len) \
+  g_string_truncate_inline (gstr, len)
 
 #if G_GNUC_CHECK_VERSION (2, 0)
 
