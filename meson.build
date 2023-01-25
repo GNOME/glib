@@ -614,6 +614,8 @@ functions = [
   'fchmod',
   'fchown',
   'fdwalk',
+  'free_aligned_sized',
+  'free_sized',
   'fsync',
   'getauxval',
   'getc_unlocked',

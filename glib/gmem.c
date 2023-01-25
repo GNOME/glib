@@ -220,6 +220,9 @@ g_realloc (gpointer mem,
  * 
  * Frees the memory pointed to by @mem.
  *
+ * If you know the allocated size of @mem, calling g_free_sized() may be faster,
+ * depending on the libc implementation in use.
+ *
  * If @mem is %NULL it simply returns, so there is no need to check @mem
  * against %NULL before calling this function.
  */
@@ -228,6 +231,33 @@ g_free (gpointer mem)
 {
   free (mem);
   TRACE(GLIB_MEM_FREE((void*) mem));
+}
+
+/**
+ * g_free_sized:
+ * @mem: (nullable): the memory to free
+ * @size: size of @mem, in bytes
+ *
+ * Frees the memory pointed to by @mem, assuming it is has the given @size.
+ *
+ * If @mem is %NULL this is a no-op (and @size is ignored).
+ *
+ * It is an error if @size doesn’t match the size passed when @mem was
+ * allocated. @size is passed to this function to allow optimizations in the
+ * allocator. If you don’t know the allocation size, use g_free() instead.
+ *
+ * Since: 2.76
+ */
+void
+g_free_sized (void   *mem,
+              size_t  size)
+{
+#ifdef HAVE_FREE_SIZED
+  free_sized (mem, size);
+#else
+  free (mem);
+#endif
+  TRACE (GLIB_MEM_FREE ((void*) mem));
 }
 
 /**
@@ -578,7 +608,7 @@ g_mem_profile (void)
  * the program is terminated.
  *
  * Aligned memory allocations returned by this function can only be
- * freed using g_aligned_free().
+ * freed using g_aligned_free_sized() or g_aligned_free().
  *
  * Returns: (transfer full): the allocated memory
  *
@@ -701,4 +731,34 @@ void
 g_aligned_free (gpointer mem)
 {
   aligned_free (mem);
+}
+
+/**
+ * g_aligned_free_sized:
+ * @mem: (nullable): the memory to free
+ * @alignment: alignment of @mem
+ * @size: size of @mem, in bytes
+ *
+ * Frees the memory pointed to by @mem, assuming it is has the given @size and
+ * @alignment.
+ *
+ * If @mem is %NULL this is a no-op (and @size is ignored).
+ *
+ * It is an error if @size doesn’t match the size, or @alignment doesn’t match
+ * the alignment, passed when @mem was allocated. @size and @alignment are
+ * passed to this function to allow optimizations in the allocator. If you
+ * don’t know either of them, use g_aligned_free() instead.
+ *
+ * Since: 2.76
+ */
+void
+g_aligned_free_sized (void   *mem,
+                      size_t  alignment,
+                      size_t  size)
+{
+#ifdef HAVE_FREE_ALIGNED_SIZED
+  free_aligned_sized (mem, alignment, size);
+#else
+  aligned_free (mem);
+#endif
 }

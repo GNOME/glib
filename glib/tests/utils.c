@@ -1143,6 +1143,39 @@ test_aligned_mem_zeroed (void)
 }
 
 static void
+test_aligned_mem_free_sized (void)
+{
+  gsize n_blocks = 10;
+  guint *p;
+
+  g_test_summary ("Check that g_aligned_free_sized() works");
+
+  p = g_aligned_alloc (n_blocks, sizeof (*p), 16);
+  g_assert_nonnull (p);
+
+  g_aligned_free_sized (p, sizeof (*p), n_blocks * 16);
+
+  /* NULL should be ignored */
+  g_aligned_free_sized (NULL, sizeof (*p), n_blocks * 16);
+}
+
+static void
+test_free_sized (void)
+{
+  gpointer p;
+
+  g_test_summary ("Check that g_free_sized() works");
+
+  p = g_malloc (123);
+  g_assert_nonnull (p);
+
+  g_free_sized (p, 123);
+
+  /* NULL should be ignored */
+  g_free_sized (NULL, 123);
+}
+
+static void
 test_nullify (void)
 {
   gpointer p = &test_nullify;
@@ -1317,6 +1350,8 @@ main (int   argc,
   g_test_add_func ("/utils/aligned-mem/subprocess/aligned_alloc_nmov", aligned_alloc_nmov);
   g_test_add_func ("/utils/aligned-mem/alignment", test_aligned_mem_alignment);
   g_test_add_func ("/utils/aligned-mem/zeroed", test_aligned_mem_zeroed);
+  g_test_add_func ("/utils/aligned-mem/free-sized", test_aligned_mem_free_sized);
+  g_test_add_func ("/utils/free-sized", test_free_sized);
   g_test_add_func ("/utils/nullify", test_nullify);
   g_test_add_func ("/utils/atexit", test_atexit);
   g_test_add_func ("/utils/check-setuid", test_check_setuid);

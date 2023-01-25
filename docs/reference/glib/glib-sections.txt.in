@@ -1082,6 +1082,7 @@ g_try_realloc_n
 
 <SUBSECTION>
 g_free
+g_free_sized
 g_clear_pointer
 g_steal_pointer
 g_mem_gc_friendly
@@ -1096,6 +1097,7 @@ g_newa0
 g_aligned_alloc
 g_aligned_alloc0
 g_aligned_free
+g_aligned_free_sized
 
 <SUBSECTION>
 g_memmove
