@@ -350,6 +350,30 @@ test_strdup_macro (void)
 }
 
 static void
+test_str_has_prefix (void)
+{
+  g_assert_true ((g_str_has_prefix) ("C++ is cool!", "C++"));
+}
+
+static void
+test_str_has_prefix_macro (void)
+{
+  g_assert_true (g_str_has_prefix ("C++ is cool!", "C++"));
+}
+
+static void
+test_str_has_suffix (void)
+{
+  g_assert_true ((g_str_has_suffix) ("C++ is cool!", "cool!"));
+}
+
+static void
+test_str_has_suffix_macro (void)
+{
+  g_assert_true (g_str_has_suffix ("C++ is cool!", "cool!"));
+}
+
+static void
 test_string_append (void)
 {
   GString *string;
@@ -473,6 +497,10 @@ main (int argc, char *argv[])
   g_test_add_func ("/C++/str-equal", test_str_equal);
   g_test_add_func ("/C++/strdup", test_strdup);
   g_test_add_func ("/C++/strdup/macro", test_strdup_macro);
+  g_test_add_func ("/C++/str-has-prefix", test_str_has_prefix);
+  g_test_add_func ("/C++/str-has-prefix/macro", test_str_has_prefix_macro);
+  g_test_add_func ("/C++/str-has-suffix", test_str_has_suffix);
+  g_test_add_func ("/C++/str-has-suffix/macro", test_str_has_suffix_macro);
   g_test_add_func ("/C++/string-append", test_string_append);
 
   return g_test_run ();

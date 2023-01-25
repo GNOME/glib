@@ -21,8 +21,47 @@
 
 #include <gio/gio.h>
 
-int
-main ()
+static void
+test_name (void)
 {
-  return 0;
+  GTask *task = NULL;
+  char *orig = g_strdup ("some task");
+
+  task = g_task_new (NULL, NULL, NULL, NULL);
+  (g_task_set_name) (task, orig);
+  g_assert_cmpstr (g_task_get_name (task), ==, "some task");
+
+  (g_task_set_name) (task, "some other name");
+  g_assert_cmpstr (g_task_get_name (task), ==, "some other name");
+
+  g_clear_object (&task);
+  g_free (orig);
+}
+
+static void
+test_name_macro_wrapper (void)
+{
+  GTask *task = NULL;
+  char *orig = g_strdup ("some task");
+
+  task = g_task_new (NULL, NULL, NULL, NULL);
+  g_task_set_name (task, orig);
+  g_assert_cmpstr (g_task_get_name (task), ==, "some task");
+
+  g_task_set_name (task, "some other name");
+  g_assert_cmpstr (g_task_get_name (task), ==, "some other name");
+
+  g_clear_object (&task);
+  g_free (orig);
+}
+
+int
+main (int argc, char **argv)
+{
+  g_test_init (&argc, &argv, NULL);
+
+  g_test_add_func ("/gtask/name", test_name);
+  g_test_add_func ("/gtask/name/macro-wrapper", test_name_macro_wrapper);
+
+  return g_test_run ();
 }
