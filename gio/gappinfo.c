@@ -263,6 +263,10 @@ g_app_info_get_description (GAppInfo *appinfo)
  * 
  * Gets the executable's name for the installed application.
  *
+ * This is intended to be used for debugging or labelling what program is going
+ * to be run. To launch the executable, use g_app_info_launch() and related
+ * functions, rather than spawning the return value from this function.
+ *
  * Returns: (type filename): a string containing the @appinfo's application
  * binaries name
  **/
