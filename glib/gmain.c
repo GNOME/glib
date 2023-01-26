@@ -787,12 +787,12 @@ g_main_context_new_with_flags (GMainContextFlags flags)
 /**
  * g_main_context_default:
  *
- * Returns the global default main context. This is the main context
+ * Returns the global-default main context. This is the main context
  * used for main loop functions when a main loop is not explicitly
  * specified, and corresponds to the "main" main loop. See also
  * g_main_context_get_thread_default().
  *
- * Returns: (transfer none): the global default main context.
+ * Returns: (transfer none): the global-default main context.
  **/
 GMainContext *
 g_main_context_default (void)
@@ -809,7 +809,7 @@ g_main_context_default (void)
 
 #ifdef G_MAIN_POLL_DEBUG
       if (_g_main_poll_debug)
-        g_print ("default context=%p\n", context);
+        g_print ("global-default main context=%p\n", context);
 #endif
 
       g_once_init_leave (&default_main_context, context);
@@ -840,14 +840,15 @@ static GPrivate thread_context_stack = G_PRIVATE_INIT (free_context_stack);
 
 /**
  * g_main_context_push_thread_default:
- * @context: (nullable): a #GMainContext, or %NULL for the global default context
+ * @context: (nullable): a #GMainContext, or %NULL for the global-default
+ *   main context
  *
  * Acquires @context and sets it as the thread-default context for the
  * current thread. This will cause certain asynchronous operations
  * (such as most [gio][gio]-based I/O) which are
  * started in this thread to run under @context and deliver their
  * results to its main loop, rather than running under the global
- * default context in the main thread. Note that calling this function
+ * default main context in the main thread. Note that calling this function
  * changes the context returned by g_main_context_get_thread_default(),
  * not the one returned by g_main_context_default(), so it does not affect
  * the context used by functions like g_idle_add().
@@ -911,7 +912,8 @@ g_main_context_push_thread_default (GMainContext *context)
 
 /**
  * g_main_context_pop_thread_default:
- * @context: (nullable): a #GMainContext object, or %NULL
+ * @context: (nullable): a #GMainContext, or %NULL for the global-default
+ *   main context
  *
  * Pops @context off the thread-default context stack (verifying that
  * it was on the top of the stack).
@@ -956,7 +958,7 @@ g_main_context_pop_thread_default (GMainContext *context)
  * g_main_context_ref_thread_default() instead.
  *
  * Returns: (transfer none) (nullable): the thread-default #GMainContext, or
- * %NULL if the thread-default context is the global default context.
+ * %NULL if the thread-default context is the global-default main context.
  *
  * Since: 2.22
  **/
@@ -979,7 +981,7 @@ g_main_context_get_thread_default (void)
  * g_main_context_get_thread_default(), but also adds a reference to
  * it with g_main_context_ref(). In addition, unlike
  * g_main_context_get_thread_default(), if the thread-default context
- * is the global default context, this will return that #GMainContext
+ * is the global-default context, this will return that #GMainContext
  * (with a ref added to it) rather than returning %NULL.
  *
  * Returns: (transfer full): the thread-default #GMainContext. Unref
@@ -1336,7 +1338,8 @@ g_source_attach_unlocked (GSource      *source,
 /**
  * g_source_attach:
  * @source: a #GSource
- * @context: (nullable): a #GMainContext (if %NULL, the default context will be used)
+ * @context: (nullable): a #GMainContext (if %NULL, the global-default
+ *   main context will be used)
  * 
  * Adds a #GSource to a @context so that it will be executed within
  * that context. Remove it by calling g_source_destroy().
@@ -2442,7 +2445,8 @@ g_source_unref (GSource *source)
 
 /**
  * g_main_context_find_source_by_id:
- * @context: (nullable): a #GMainContext (if %NULL, the default context will be used)
+ * @context: (nullable): a #GMainContext (if %NULL, the global-default
+ *   main context will be used)
  * @source_id: the source ID, as returned by g_source_get_id().
  *
  * Finds a #GSource given a pair of context and ID.
@@ -2483,7 +2487,8 @@ g_main_context_find_source_by_id (GMainContext *context,
 
 /**
  * g_main_context_find_source_by_funcs_user_data:
- * @context: (nullable): a #GMainContext (if %NULL, the default context will be used).
+ * @context: (nullable): a #GMainContext (if %NULL, the global-default
+ *   main context will be used).
  * @funcs: the @source_funcs passed to g_source_new().
  * @user_data: the user data from the callback.
  * 
@@ -4260,7 +4265,8 @@ g_main_context_iterate (GMainContext *context,
 
 /**
  * g_main_context_pending:
- * @context: (nullable): a #GMainContext (if %NULL, the default context will be used)
+ * @context: (nullable): a #GMainContext (if %NULL, the global-default
+ *   main context will be used)
  *
  * Checks if any sources have pending events for the given context.
  * 
@@ -4283,7 +4289,8 @@ g_main_context_pending (GMainContext *context)
 
 /**
  * g_main_context_iteration:
- * @context: (nullable): a #GMainContext (if %NULL, the default context will be used) 
+ * @context: (nullable): a #GMainContext (if %NULL, the global-default
+ *   main context will be used)
  * @may_block: whether the call may block.
  *
  * Runs a single iteration for the given main loop. This involves
@@ -4318,7 +4325,8 @@ g_main_context_iteration (GMainContext *context, gboolean may_block)
 
 /**
  * g_main_loop_new:
- * @context: (nullable): a #GMainContext  (if %NULL, the default context will be used).
+ * @context: (nullable): a #GMainContext  (if %NULL, the global-default
+ *   main context will be used).
  * @is_running: set to %TRUE to indicate that the loop is running. This
  * is not very important since calling g_main_loop_run() will set this to
  * %TRUE anyway.
@@ -4612,7 +4620,8 @@ g_main_context_poll (GMainContext *context,
 
 /**
  * g_main_context_add_poll:
- * @context: (nullable): a #GMainContext (or %NULL for the default context)
+ * @context: (nullable): a #GMainContext (or %NULL for the global-default
+ *   main context)
  * @fd: a #GPollFD structure holding information about a file
  *      descriptor to watch.
  * @priority: the priority for this file descriptor which should be
@@ -6300,14 +6309,15 @@ g_idle_remove_by_data (gpointer data)
 
 /**
  * g_main_context_invoke:
- * @context: (nullable): a #GMainContext, or %NULL
+ * @context: (nullable): a #GMainContext, or %NULL for the global-default
+ *   main context
  * @function: function to call
  * @data: data to pass to @function
  *
  * Invokes a function in such a way that @context is owned during the
  * invocation of @function.
  *
- * If @context is %NULL then the global default main context — as
+ * If @context is %NULL then the global-default main context — as
  * returned by g_main_context_default() — is used.
  *
  * If @context is owned by the current thread, @function is called
@@ -6340,7 +6350,8 @@ g_main_context_invoke (GMainContext *context,
 
 /**
  * g_main_context_invoke_full:
- * @context: (nullable): a #GMainContext, or %NULL
+ * @context: (nullable): a #GMainContext, or %NULL for the global-default
+ *   main context
  * @priority: the priority at which to run @function
  * @function: function to call
  * @data: data to pass to @function
