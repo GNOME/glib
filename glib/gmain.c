@@ -567,7 +567,7 @@ GSourceFuncs g_idle_funcs =
 
 /**
  * g_main_context_ref:
- * @context: a #GMainContext
+ * @context: (not nullable): a #GMainContext
  * 
  * Increases the reference count on a #GMainContext object by one.
  *
@@ -595,7 +595,7 @@ poll_rec_list_free (GMainContext *context,
 
 /**
  * g_main_context_unref:
- * @context: a #GMainContext
+ * @context: (not nullable): a #GMainContext
  * 
  * Decreases the reference count on a #GMainContext object by one. If
  * the result is zero, free the context and free all associated memory.
