@@ -3584,7 +3584,7 @@ g_regex_escape_nul (const gchar *string,
 
 /**
  * g_regex_escape_string:
- * @string: (array length=length): the string to escape
+ * @string: the string to escape
  * @length: the length of @string, in bytes, or -1 if @string is nul-terminated
  *
  * Escapes the special characters used for regular expressions
