@@ -313,15 +313,33 @@ g_mkdir_with_parents (const gchar *pathname,
  *
  * You should never use g_file_test() to test whether it is safe
  * to perform an operation, because there is always the possibility
- * of the condition changing before you actually perform the operation.
+ * of the condition changing before you actually perform the operation,
+ * see [TOCTOU](https://en.wikipedia.org/wiki/Time-of-check_to_time-of-use).
+ *
  * For example, you might think you could use %G_FILE_TEST_IS_SYMLINK
  * to know whether it is safe to write to a file without being
  * tricked into writing into a different location. It doesn't work!
+ *
  * |[<!-- language="C" -->
  *  // DON'T DO THIS
  *  if (!g_file_test (filename, G_FILE_TEST_IS_SYMLINK)) 
  *    {
  *      fd = g_open (filename, O_WRONLY);
+ *      // write to fd
+ *    }
+ *
+ *  // DO THIS INSTEAD
+ *  fd = g_open (filename, O_WRONLY);
+ *  if (fd == -1)
+ *    {
+ *      // check error
+ *      if (errno == ELOOP)
+ *        // file is a symlink and can be ignored
+ *      else
+ *        // handle errors as before
+ *    }
+ *  else
+ *    {
  *      // write to fd
  *    }
  * ]|
