@@ -147,12 +147,13 @@ gboolean             (g_str_has_prefix) (const gchar *str,
                                          const gchar *prefix);
 
 #if G_GNUC_CHECK_VERSION (2, 0)
+#if !defined (__GTK_DOC_IGNORE__) && !defined (__GI_SCANNER__)
 
 /* This macro is defeat a false -Wnonnull warning in GCC.
  * Without it, it thinks strlen and memcmp may be getting passed NULL
  * despite the explicit check for NULL right above the calls.
  */
-#define _G_STR_NONNULL(x) (x + !x)
+#define _G_STR_NONNULL(x) ((x) + !(x))
 
 #define g_str_has_prefix(STR, PREFIX)                                         \
   (__builtin_constant_p (PREFIX)?                                             \
@@ -202,6 +203,24 @@ gboolean             (g_str_has_prefix) (const gchar *str,
     (g_str_has_suffix) (STR, SUFFIX)                                          \
   )
 
+#define g_strdup(STR)                                                         \
+  (__builtin_constant_p ((STR)) ?                                             \
+    (G_LIKELY ((STR) != NULL) ?                                               \
+      G_GNUC_EXTENSION ({                                                     \
+        const char *const ___str = ((STR));                                   \
+        const char *const __str = _G_STR_NONNULL (___str);                    \
+        const size_t __str_len = strlen (__str) + 1;                          \
+        char *__dup_str = (char *) g_malloc (__str_len);                      \
+        (char *) memcpy (__dup_str, __str, __str_len);                        \
+      })                                                                      \
+      :                                                                       \
+      (char *) (NULL)                                                         \
+    )                                                                         \
+    :                                                                         \
+    (g_strdup) ((STR))                                                        \
+  )
+
+#endif /* !defined (__GTK_DOC_IGNORE__) && !defined (__GI_SCANNER__) */
 #endif /* G_GNUC_CHECK_VERSION (2, 0) */
 
 /* String to/from double conversion functions */
@@ -277,7 +296,7 @@ gchar*                g_strup          (gchar       *string);
  * ought to be freed with g_free from the caller at some point.
  */
 GLIB_AVAILABLE_IN_ALL
-gchar*	              g_strdup	       (const gchar *str) G_GNUC_MALLOC;
+gchar*	             (g_strdup)        (const gchar *str) G_GNUC_MALLOC;
 GLIB_AVAILABLE_IN_ALL
 gchar*	              g_strdup_printf  (const gchar *format,
 					...) G_GNUC_PRINTF (1, 2) G_GNUC_MALLOC;

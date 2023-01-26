@@ -499,12 +499,58 @@ test_strdup (void)
 {
   gchar *str;
 
+  g_assert_null ((g_strdup) (NULL));
+
+  str = (g_strdup) (GLIB_TEST_STRING);
+  g_assert_nonnull (str);
+  g_assert_cmpstr (str, ==, GLIB_TEST_STRING);
+
+  char *other_str = (g_strdup) (str);
+  g_free (str);
+
+  g_assert_nonnull (other_str);
+  g_assert_cmpstr (other_str, ==, GLIB_TEST_STRING);
+  g_clear_pointer (&other_str, g_free);
+
+  str = (g_strdup) ("");
+  g_assert_cmpint (str[0], ==, '\0');
+  g_assert_cmpstr (str, ==, "");
+  g_clear_pointer (&str, g_free);
+}
+
+static void
+test_strdup_inline (void)
+{
+  gchar *str;
+
+  #if G_GNUC_CHECK_VERSION (2, 0)
+    #ifndef g_strdup
+      #error g_strdup() should be defined as a macro in this platform!
+    #endif
+  #else
+    g_test_incomplete ("g_strdup() is not inlined in this platform");
+  #endif
+
+  /* Testing inline version of g_strdup() function with various positive and
+   * negative cases */
+
   g_assert_null (g_strdup (NULL));
 
   str = g_strdup (GLIB_TEST_STRING);
   g_assert_nonnull (str);
   g_assert_cmpstr (str, ==, GLIB_TEST_STRING);
-  g_free (str);
+
+  char *other_str = g_strdup (str);
+  g_clear_pointer (&str, g_free);
+
+  g_assert_nonnull (other_str);
+  g_assert_cmpstr (other_str, ==, GLIB_TEST_STRING);
+  g_clear_pointer (&other_str, g_free);
+
+  str = g_strdup ("");
+  g_assert_cmpint (str[0], ==, '\0');
+  g_assert_cmpstr (str, ==, "");
+  g_clear_pointer (&str, g_free);
 }
 
 /* Testing g_strndup() function with various positive and negative cases */
@@ -1238,6 +1284,14 @@ test_has_prefix (void)
 static void
 test_has_prefix_macro (void)
 {
+  #if G_GNUC_CHECK_VERSION (2, 0)
+    #ifndef g_str_has_prefix
+      #error g_str_has_prefix() should be defined as a macro in this platform!
+    #endif
+  #else
+    g_test_incomplete ("g_str_has_prefix() is not inlined in this platform");
+  #endif
+
   if (g_test_undefined ())
     {
       g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
@@ -1305,6 +1359,14 @@ test_has_suffix (void)
 static void
 test_has_suffix_macro (void)
 {
+  #if G_GNUC_CHECK_VERSION (2, 0)
+    #ifndef g_str_has_suffix
+      #error g_str_has_suffix() should be defined as a macro in this platform!
+    #endif
+  #else
+    g_test_incomplete ("g_str_has_suffix() is not inlined in this platform");
+  #endif
+
   if (g_test_undefined ())
     {
       g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
@@ -2677,6 +2739,7 @@ main (int   argc,
   g_test_add_func ("/strfuncs/strconcat", test_strconcat);
   g_test_add_func ("/strfuncs/strdelimit", test_strdelimit);
   g_test_add_func ("/strfuncs/strdup", test_strdup);
+  g_test_add_func ("/strfuncs/strdup/inline", test_strdup_inline);
   g_test_add_func ("/strfuncs/strdup-printf", test_strdup_printf);
   g_test_add_func ("/strfuncs/strdupv", test_strdupv);
   g_test_add_func ("/strfuncs/strerror", test_strerror);
