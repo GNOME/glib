@@ -113,7 +113,7 @@ g_unichar_combining_class (gunichar uc)
 
 /**
  * g_unicode_canonical_ordering:
- * @string: a UCS-4 encoded string.
+ * @string: (array length=len) (element-type gunichar): a UCS-4 encoded string.
  * @len: the maximum length of @string to use.
  *
  * Computes the canonical ordering of a string in-place.  

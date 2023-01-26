@@ -923,7 +923,7 @@ g_utf8_to_ucs4 (const gchar *str,
 
 /**
  * g_ucs4_to_utf8:
- * @str: a UCS-4 encoded string
+ * @str: (array length=len) (element-type gunichar): a UCS-4 encoded string
  * @len: the maximum length (number of characters) of @str to use. 
  *     If @len < 0, then the string is nul-terminated.
  * @items_read: (out) (optional): location to store number of
@@ -997,7 +997,7 @@ g_ucs4_to_utf8 (const gunichar *str,
 
 /**
  * g_utf16_to_utf8:
- * @str: a UTF-16 encoded string
+ * @str: (array length=len) (element-type guint16): a UTF-16 encoded string
  * @len: the maximum length (number of #gunichar2) of @str to use. 
  *     If @len < 0, then the string is nul-terminated.
  * @items_read: (out) (optional): location to store number of
@@ -1153,7 +1153,7 @@ g_utf16_to_utf8 (const gunichar2  *str,
 
 /**
  * g_utf16_to_ucs4:
- * @str: a UTF-16 encoded string
+ * @str: (array length=len) (element-type guint16): a UTF-16 encoded string
  * @len: the maximum length (number of #gunichar2) of @str to use. 
  *     If @len < 0, then the string is nul-terminated.
  * @items_read: (out) (optional): location to store number of
@@ -1408,7 +1408,7 @@ g_utf8_to_utf16 (const gchar *str,
 
 /**
  * g_ucs4_to_utf16:
- * @str: a UCS-4 encoded string
+ * @str: (array length=len) (element-type gunichar): a UCS-4 encoded string
  * @len: the maximum length (number of characters) of @str to use. 
  *     If @len < 0, then the string is nul-terminated.
  * @items_read: (out) (optional): location to store number of
