@@ -163,7 +163,7 @@ safe_wspawnvpe (int _Mode,
 
 #else
 
-#define safe_wspawnve _spawnve
+#define safe_wspawnve _wspawnve
 #define safe_wspawnvpe _wspawnvpe
 
 #endif /* _UCRT */
