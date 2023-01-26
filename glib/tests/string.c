@@ -225,6 +225,26 @@ test_string_append (void)
 
   g_assert_cmpstr (string->str, ==, "firsthalflasthalfmoreore");
 
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*string != NULL*failed*");
+  g_assert_null (g_string_append (NULL, NULL));
+  g_test_assert_expected_messages ();
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*string != NULL*failed*");
+  g_assert_null ((g_string_append) (NULL, NULL));
+  g_test_assert_expected_messages ();
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*val != NULL*failed*");
+  g_assert_true (g_string_append (string, NULL) == string);
+  g_test_assert_expected_messages ();
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*val != NULL*failed*");
+  g_assert_true ((g_string_append) (string, NULL) == string);
+  g_test_assert_expected_messages ();
+
   g_string_free (string, TRUE);
   g_free (tmp);
 
@@ -234,6 +254,39 @@ test_string_append (void)
   (g_string_append_len) (string, "halfjunkjunk", strlen ("half"));
   g_string_append_len (string, "more", -1);
   (g_string_append_len) (string, "ore", -1);
+
+  g_assert_true (g_string_append_len (string, NULL, 0) == string);
+  g_assert_true ((g_string_append_len) (string, NULL, 0) == string);
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*string != NULL*failed*");
+  g_assert_null (g_string_append_len (NULL, NULL, -1));
+  g_test_assert_expected_messages ();
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*string != NULL*failed*");
+  g_assert_null ((g_string_append_len) (NULL, NULL, -1));
+  g_test_assert_expected_messages ();
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*val != NULL*failed*");
+  g_assert_true (g_string_append_len (string, NULL, -1) == string);
+  g_test_assert_expected_messages ();
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*val != NULL*failed*");
+  g_assert_true ((g_string_append_len) (string, NULL, -1) == string);
+  g_test_assert_expected_messages ();
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*val != NULL*failed*");
+  g_assert_true (g_string_append_len (string, NULL, 1) == string);
+  g_test_assert_expected_messages ();
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*val != NULL*failed*");
+  g_assert_true ((g_string_append_len) (string, NULL, 1) == string);
+  g_test_assert_expected_messages ();
 
   g_assert_cmpstr (string->str, ==, "firsthalflasthalfmoreore");
   g_string_free (string, TRUE);
