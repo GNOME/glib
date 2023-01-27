@@ -3019,11 +3019,18 @@
  * }
  * ]|
  *
- * g_print(), g_printerr() and g_set_print_handler() are intended to be used for
+ * g_print() and g_printerr() are intended to be used for
  * output from command line applications, since they output to standard output
  * and standard error by default — whereas functions like g_message() and
  * g_log() may be redirected to special purpose message windows, files, or the
  * system journal.
+ *
+ * If the console encoding is not UTF-8 (as specified by g_get_console_charset())
+ * then these functions convert the message first. Any Unicode
+ * characters not defined by that charset are replaced by `'?'`. On Linux,
+ * setlocale() must be called early in main() to load the encoding. This behaviour
+ * can be changed by providing custom handlers to g_set_print_handler(),
+ * g_set_printerr_handler() and g_log_set_handler().
  */
 
 /* Windows Compatibility Functions {{{1 */
