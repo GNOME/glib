@@ -188,7 +188,8 @@ charset_cache_free (gpointer data)
  *
  * On Linux, the character set is found by consulting nl_langinfo() if
  * available. If not, the environment variables `LC_ALL`, `LC_CTYPE`, `LANG`
- * and `CHARSET` are queried in order.
+ * and `CHARSET` are queried in order. nl_langinfo() returns the C locale if
+ * no locale has been loaded by setlocale().
  *
  * The return value is %TRUE if the locale's encoding is UTF-8, in that
  * case you can perhaps avoid calling g_convert().

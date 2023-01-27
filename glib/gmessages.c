@@ -3293,8 +3293,8 @@ g_log_default_handler (const gchar   *log_domain,
  * default GLib handler if %NULL.
  *
  * Any messages passed to g_print() will be output via
- * the new handler. The default handler simply outputs
- * the message to stdout. By providing your own handler
+ * the new handler. The default handler outputs
+ * the encoded message to stdout. By providing your own handler
  * you can redirect the output, to a GTK+ widget or a
  * log file for example.
  *
@@ -3389,7 +3389,7 @@ g_default_printerr_func (const gchar *string)
  * @...: the parameters to insert into the format string
  *
  * Outputs a formatted message via the print handler.
- * The default print handler simply outputs the message to stdout, without
+ * The default print handler outputs the encoded message to stdout, without
  * appending a trailing new-line character. Typically, @format should end with
  * its own new-line character.
  *
@@ -3431,7 +3431,7 @@ g_print (const gchar *format,
  * or resets it to the default GLib handler if %NULL.
  *
  * Any messages passed to g_printerr() will be output via
- * the new handler. The default handler simply outputs the
+ * the new handler. The default handler outputs the encoded
  * message to stderr. By providing your own handler you can
  * redirect the output, to a GTK+ widget or a log file for
  * example.
@@ -3464,7 +3464,7 @@ g_set_printerr_handler (GPrintFunc func)
  * @...: the parameters to insert into the format string
  *
  * Outputs a formatted message via the error message handler.
- * The default handler simply outputs the message to stderr, without appending
+ * The default handler outputs the encoded message to stderr, without appending
  * a trailing new-line character. Typically, @format should end with its own
  * new-line character.
  *
