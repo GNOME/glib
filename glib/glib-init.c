@@ -126,7 +126,18 @@ G_STATIC_ASSERT (G_ALIGNOF (gssize) == G_ALIGNOF (size_t));
  * However, we do not assume that GPOINTER_TO_SIZE can store an arbitrary
  * pointer in a gsize (known to be false on CHERI). */
 G_STATIC_ASSERT (sizeof (size_t) <= sizeof (void *));
-
+/* Standard C does not guarantee that size_t is the same as uintptr_t,
+ * but GLib currently assumes they are the same: see
+ * <https://gitlab.gnome.org/GNOME/glib/-/issues/2842>.
+ *
+ * To enable working on bringup for new architectures these assertions
+ * can be disabled with -DG_ENABLE_EXPERIMENTAL_ABI_COMPILATION.
+ *
+ * FIXME: remove these assertions once the API/ABI has stabilized. */
+#ifndef G_ENABLE_EXPERIMENTAL_ABI_COMPILATION
+G_STATIC_ASSERT (sizeof (size_t) == sizeof (uintptr_t));
+G_STATIC_ASSERT (G_ALIGNOF (size_t) == G_ALIGNOF (uintptr_t));
+#endif
 /* goffset is always 64-bit, even if off_t is only 32-bit
  * (compiling without large-file-support on 32-bit) */
 G_STATIC_ASSERT (sizeof (goffset) == sizeof (gint64));
