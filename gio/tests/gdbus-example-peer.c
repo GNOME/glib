@@ -147,7 +147,6 @@ on_new_connection (GDBusServer *server,
   else
     s = g_credentials_to_string (credentials);
 
-
   g_print ("Client connected.\n"
            "Peer credentials: %s\n"
            "Negotiated capabilities: unix-fd-passing=%d\n",
@@ -164,6 +163,8 @@ on_new_connection (GDBusServer *server,
                                                        NULL,  /* user_data_free_func */
                                                        NULL); /* GError** */
   g_assert (registration_id > 0);
+
+  g_free (s);
 
   return TRUE;
 }
@@ -266,10 +267,14 @@ main (int argc, char *argv[])
   g_option_context_add_main_entries (opt_context, opt_entries, NULL);
   if (!g_option_context_parse (opt_context, &argc, &argv, &error))
     {
+      g_option_context_free (opt_context);
       g_printerr ("Error parsing options: %s\n", error->message);
       g_error_free (error);
       goto out;
     }
+
+  g_option_context_free (opt_context);
+
   if (opt_address == NULL)
     {
       g_printerr ("Incorrect usage, try --help.\n");
@@ -373,6 +378,8 @@ main (int argc, char *argv[])
                                            -1,
                                            NULL,
                                            &error);
+      g_free (greeting);
+
       if (value == NULL)
         {
           g_printerr ("Error invoking HelloWorld(): %s\n", error->message);
@@ -390,5 +397,7 @@ main (int argc, char *argv[])
   ret = 0;
 
  out:
+  g_free (opt_address);
+
   return ret;
 }
