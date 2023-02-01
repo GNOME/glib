@@ -206,8 +206,8 @@ g_string_new_len (const gchar *init,
  *          (i.e. %NULL if @free_segment is %TRUE)
  */
 gchar *
-g_string_free (GString  *string,
-               gboolean  free_segment)
+(g_string_free) (GString  *string,
+                 gboolean  free_segment)
 {
   gchar *segment;
 
@@ -242,7 +242,7 @@ g_string_free (GString  *string,
 gchar *
 g_string_free_and_steal (GString *string)
 {
-  return g_string_free (string, FALSE);
+  return (g_string_free) (string, FALSE);
 }
 
 /**

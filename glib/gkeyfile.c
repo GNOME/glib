@@ -3546,10 +3546,7 @@ g_key_file_get_key_comment (GKeyFile     *key_file,
     }
 
   if (string != NULL)
-    {
-      comment = string->str;
-      g_string_free (string, FALSE);
-    }
+    comment = g_string_free_and_steal (g_steal_pointer (&string));
   else
     comment = NULL;
 

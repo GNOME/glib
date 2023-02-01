@@ -21,6 +21,7 @@
 
 #include "config.h"
 
+#include <stdint.h>
 
 /* gwakeup.c is special -- GIO and some test cases include it.  As such,
  * it cannot include other glib headers without triggering the single

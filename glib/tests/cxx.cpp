@@ -472,6 +472,35 @@ test_string_append (void)
   g_string_free (string, TRUE);
 }
 
+static void
+test_string_free (void)
+{
+  GString *str;
+  gchar *data;
+
+  g_test_message ("Test that g_string_free() macro compiles and doesn’t "
+                  "cause any compiler warnings in C++ mode");
+
+  /* Test that g_string_free (_, TRUE) does not cause a warning if
+   * its return value is unused. */
+  str = g_string_new ("test");
+  g_string_free (str, TRUE);
+
+  /* Test that g_string_free (_, FALSE) does not emit a warning if
+   * its return value is used. */
+  str = g_string_new ("test");
+  data = g_string_free (str, FALSE);
+  g_free (data);
+
+  /* Test that g_string_free () with an expression that is always FALSE
+   * at runtime, but the compiler can't know it, does not cause any
+   * warnings if its return value is unused. */
+  str = g_string_new ("test");
+  data = str->str;
+  g_string_free (str, g_test_get_path ()[0] == 0);
+  g_free (data);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -502,6 +531,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/C++/str-has-suffix", test_str_has_suffix);
   g_test_add_func ("/C++/str-has-suffix/macro", test_str_has_suffix_macro);
   g_test_add_func ("/C++/string-append", test_string_append);
+  g_test_add_func ("/C++/string-free", test_string_free);
 
   return g_test_run ();
 }
