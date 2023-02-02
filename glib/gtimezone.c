@@ -709,7 +709,7 @@ init_zone_from_iana_info (GTimeZone *gtz,
   const struct tzhead *header = header_data;
   GTimeZone *footertz = NULL;
   guint extra_time_count = 0, extra_type_count = 0;
-  gint64 last_explicit_transition_time;
+  gint64 last_explicit_transition_time = 0;
 
   g_return_if_fail (size >= sizeof (struct tzhead) &&
                     memcmp (header, "TZif", 4) == 0);
