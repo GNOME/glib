@@ -77,6 +77,7 @@ glib_tests = {
     'source' : 'overflow.c',
     'c_args' : ['-D_GLIB_TEST_OVERFLOW_FALLBACK'],
   },
+  'pathbuf' : {},
   'pattern' : {},
   'private' : {},
   'protocol' : {},
