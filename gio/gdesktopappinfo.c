@@ -3157,7 +3157,7 @@ typedef struct
   GDesktopAppInfo     *info; /* (owned) */
   GAppLaunchContext   *launch_context; /* (owned) (nullable) */
   GAsyncReadyCallback  callback;
-  gchar               *startup_id; /* (owned) */
+  gchar               *startup_id; /* (owned) (nullable) */
   gpointer             user_data;
 } LaunchUrisWithDBusData;
 
@@ -3182,7 +3182,10 @@ launch_uris_with_dbus_signal_cb (GObject      *object,
   if (data->launch_context)
     {
       if (g_task_had_error (G_TASK (result)))
-        g_app_launch_context_launch_failed (data->launch_context, data->startup_id);
+        {
+          if (data->startup_id != NULL)
+            g_app_launch_context_launch_failed (data->launch_context, data->startup_id);
+        }
       else
         {
           GVariant *platform_data;
