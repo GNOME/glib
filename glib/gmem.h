@@ -72,6 +72,9 @@ typedef struct _GMemVTable GMemVTable;
 
 GLIB_AVAILABLE_IN_ALL
 void	 g_free	          (gpointer	 mem);
+GLIB_AVAILABLE_IN_2_76
+void     g_free_sized     (gpointer      mem,
+                           size_t        size);
 
 GLIB_AVAILABLE_IN_2_34
 void     g_clear_pointer  (gpointer      *pp,
@@ -123,6 +126,10 @@ gpointer g_aligned_alloc0 (gsize         n_blocks,
                            gsize         alignment) G_GNUC_WARN_UNUSED_RESULT G_GNUC_ALLOC_SIZE2(1,2);
 GLIB_AVAILABLE_IN_2_72
 void     g_aligned_free   (gpointer      mem);
+GLIB_AVAILABLE_IN_2_76
+void     g_aligned_free_sized (gpointer  mem,
+                               size_t    alignment,
+                               size_t    size);
 
 #if defined(glib_typeof) && GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_58
 #define g_clear_pointer(pp, destroy)                     \
