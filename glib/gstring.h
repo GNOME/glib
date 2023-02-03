@@ -187,7 +187,8 @@ static inline GString*
 g_string_append_c_inline (GString *gstring,
                           gchar    c)
 {
-  if (G_LIKELY (gstring->len + 1 < gstring->allocated_len))
+  if (G_LIKELY (gstring != NULL &&
+                gstring->len + 1 < gstring->allocated_len))
     {
       gstring->str[gstring->len++] = c;
       gstring->str[gstring->len] = 0;
