@@ -513,7 +513,7 @@ g_path_buf_set_extension  (GPathBuf   *buf,
  * g_path_buf_to_path:
  * @buf: a path buffer
  *
- * Retrieves the path from the path buffer.
+ * Retrieves the built path from the path buffer.
  *
  * If the path buffer is empty, this function returns `NULL`.
  *
