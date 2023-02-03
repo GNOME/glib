@@ -223,11 +223,17 @@ g_realloc (gpointer mem,
  * If you know the allocated size of @mem, calling g_free_sized() may be faster,
  * depending on the libc implementation in use.
  *
+ * Starting from GLib 2.78, this may happen automatically in case a GCC
+ * compatible compiler is used with some optimization level and the allocated
+ * size is known at compile time (see [documentation of
+ * `__builtin_object_size()`](https://gcc.gnu.org/onlinedocs/gcc/Object-Size-Checking.html)
+ * to understand its caveats).
+ *
  * If @mem is %NULL it simply returns, so there is no need to check @mem
  * against %NULL before calling this function.
  */
 void
-g_free (gpointer mem)
+(g_free) (gpointer mem)
 {
   free (mem);
   TRACE(GLIB_MEM_FREE((void*) mem));
@@ -245,6 +251,10 @@ g_free (gpointer mem)
  * It is an error if @size doesn’t match the size passed when @mem was
  * allocated. @size is passed to this function to allow optimizations in the
  * allocator. If you don’t know the allocation size, use g_free() instead.
+ *
+ * In case a GCC compatible compiler is used, this function may be used
+ * automatically via g_free() if the allocated size is known at compile time,
+ * since GLib 2.78.
  *
  * Since: 2.76
  */
