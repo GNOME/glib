@@ -331,7 +331,7 @@ void
 g_slice_free1 (gsize    mem_size,
                gpointer mem_block)
 {
-  if (G_UNLIKELY (g_mem_gc_friendly))
+  if (G_UNLIKELY (g_mem_gc_friendly && mem_block))
     memset (mem_block, 0, mem_size);
   g_free_sized (mem_block, mem_size);
   TRACE (GLIB_SLICE_FREE((void*)mem_block, mem_size));
