@@ -356,7 +356,6 @@ struct _InstanceData
   gpointer           class;
   guint16            instance_size;
   guint16            private_size;
-  guint16            n_preallocs;
   GInstanceInitFunc  instance_init;
 };
 
@@ -915,7 +914,7 @@ check_type_info_I (TypeNode        *pnode,
   
   /* check instance members */
   if (!(finfo->type_flags & G_TYPE_FLAG_INSTANTIATABLE) &&
-      (info->instance_size || info->n_preallocs || info->instance_init))
+      (info->instance_size || info->instance_init))
     {
       if (pnode)
 	g_critical ("cannot instantiate '%s', derived from non-instantiatable parent type '%s'",
@@ -1158,7 +1157,6 @@ type_data_make_W (TypeNode              *node,
       data->instance.class_private_size = 0;
       if (pnode)
         data->instance.class_private_size = pnode->data->instance.class_private_size;
-      data->instance.n_preallocs = MIN (info->n_preallocs, 1024);
       data->instance.instance_init = info->instance_init;
     }
   else if (node->is_classed) /* only classed */
