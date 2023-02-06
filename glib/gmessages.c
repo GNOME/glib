@@ -3310,14 +3310,8 @@ g_log_default_handler (const gchar   *log_domain,
 GPrintFunc
 g_set_print_handler (GPrintFunc func)
 {
-  GPrintFunc old_print_func;
-
-  g_mutex_lock (&g_messages_lock);
-  old_print_func = glib_print_func;
-  glib_print_func = func ? func : g_default_print_func;
-  g_mutex_unlock (&g_messages_lock);
-
-  return old_print_func;
+  return g_atomic_pointer_exchange (&glib_print_func,
+                                    func ? func : g_default_print_func);
 }
 
 static void
@@ -3414,10 +3408,7 @@ g_print (const gchar *format,
   string = format_string (format, args, &free_me);
   va_end (args);
 
-  g_mutex_lock (&g_messages_lock);
-  local_glib_print_func = glib_print_func;
-  g_mutex_unlock (&g_messages_lock);
-
+  local_glib_print_func = g_atomic_pointer_get (&glib_print_func);
   local_glib_print_func (string);
   g_free (free_me);
 }
@@ -3448,14 +3439,8 @@ g_print (const gchar *format,
 GPrintFunc
 g_set_printerr_handler (GPrintFunc func)
 {
-  GPrintFunc old_printerr_func;
-
-  g_mutex_lock (&g_messages_lock);
-  old_printerr_func = glib_printerr_func;
-  glib_printerr_func = func ? func : g_default_printerr_func;
-  g_mutex_unlock (&g_messages_lock);
-
-  return old_printerr_func;
+  return g_atomic_pointer_exchange (&glib_printerr_func,
+                                    func ? func : g_default_printerr_func);
 }
 
 /**
@@ -3487,10 +3472,7 @@ g_printerr (const gchar *format,
   string = format_string (format, args, &free_me);
   va_end (args);
 
-  g_mutex_lock (&g_messages_lock);
-  local_glib_printerr_func = glib_printerr_func;
-  g_mutex_unlock (&g_messages_lock);
-
+  local_glib_printerr_func = g_atomic_pointer_get (&glib_printerr_func);
   local_glib_printerr_func (string);
   g_free (free_me);
 }
