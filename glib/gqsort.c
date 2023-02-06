@@ -128,23 +128,23 @@ msort_with_tmp (const struct msort_param *p, void *b, size_t n)
     case 2:
       while (n1 > 0 && n2 > 0)
 	{
-	  unsigned long *tmpl = (unsigned long *) tmp;
-	  unsigned long *bl;
+	  guintptr *tmpl = (guintptr *) tmp;
+	  guintptr *bl;
 
 	  tmp += s;
 	  if ((*cmp) (b1, b2, arg) <= 0)
 	    {
-	      bl = (unsigned long *) b1;
+	      bl = (guintptr *) b1;
 	      b1 += s;
 	      --n1;
 	    }
 	  else
 	    {
-	      bl = (unsigned long *) b2;
+	      bl = (guintptr *) b2;
 	      b2 += s;
 	      --n2;
 	    }
-	  while (tmpl < (unsigned long *) tmp)
+	  while (tmpl < (guintptr *) tmp)
 	    *tmpl++ = *bl++;
 	}
       break;
@@ -265,15 +265,15 @@ msort_r (void *b, size_t n, size_t s, GCompareDataFunc cmp, void *arg)
   else
     {
       if ((s & (sizeof (guint32) - 1)) == 0
-	  && (guintptr) b % ALIGNOF_GUINT32 == 0)
+	  && (gsize) (guintptr) b % G_ALIGNOF(guint32) == 0)
 	{
 	  if (s == sizeof (guint32))
 	    p.var = 0;
 	  else if (s == sizeof (guint64)
-		   && (guintptr) b % ALIGNOF_GUINT64 == 0)
+		   && (gsize) (guintptr) b % G_ALIGNOF(guint64) == 0)
 	    p.var = 1;
-	  else if ((s & (sizeof (unsigned long) - 1)) == 0
-		   && (guintptr) b % ALIGNOF_UNSIGNED_LONG == 0)
+	  else if ((s & (sizeof (void *) - 1)) == 0
+		   && (gsize) (guintptr) b % G_ALIGNOF(void *) == 0)
 	    p.var = 2;
 	}
       msort_with_tmp (&p, b, n);

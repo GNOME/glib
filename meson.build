@@ -1479,8 +1479,6 @@ long_long_align = cc.alignment('long long')
 # be 64-bit in C99, and it is available on all supported compilers
 sizet_align = cc.alignment('size_t')
 
-glib_conf.set('ALIGNOF_UNSIGNED_LONG', long_align)
-
 glib_conf.set('SIZEOF_CHAR', char_size)
 glib_conf.set('SIZEOF_INT', int_size)
 glib_conf.set('SIZEOF_SHORT', short_size)
@@ -1534,7 +1532,6 @@ glibconfig_conf.set('gint32', gint32)
 glibconfig_conf.set_quoted('gint32_modifier', gint32_modifier)
 glibconfig_conf.set_quoted('gint32_format', gint32_format)
 glibconfig_conf.set_quoted('guint32_format', guint32_format)
-glib_conf.set('ALIGNOF_GUINT32', guint32_align)
 
 if int_size == 8
   gint64 = 'int'
@@ -1573,7 +1570,6 @@ glibconfig_conf.set_quoted('gint64_format', gint64_format)
 glibconfig_conf.set_quoted('guint64_format', guint64_format)
 glibconfig_conf.set('gint64_constant', gint64_constant)
 glibconfig_conf.set('guint64_constant', guint64_constant)
-glib_conf.set('ALIGNOF_GUINT64', guint64_align)
 
 if host_system == 'windows'
   glibconfig_conf.set('g_pid_type', 'void*')
