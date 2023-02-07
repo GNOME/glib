@@ -8,7 +8,7 @@ inotify_sources = [
 ]
 
 inotify_lib = static_library('inotify',
-  sources : inotify_sources,
+  sources : [inotify_sources, gmodule_visibility_h],
   include_directories : [configinc, glibinc, gmoduleinc],
   dependencies : [gioenumtypes_dep, libglib_dep, libgobject_dep],
   gnu_symbol_visibility : 'hidden',
