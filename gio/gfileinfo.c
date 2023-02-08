@@ -874,7 +874,7 @@ _g_file_info_get_attribute_value (GFileInfo  *info,
  * @info: a #GFileInfo.
  * @attribute: a file attribute key.
  *
- * Gets the value of a attribute, formatted as a string.
+ * Gets the value of an attribute, formatted as a string.
  * This escapes things as needed to make the string valid
  * UTF-8.
  *
@@ -2870,7 +2870,7 @@ g_file_attribute_matcher_unref (GFileAttributeMatcher *matcher)
  * @matcher: a #GFileAttributeMatcher.
  * @attribute: a file attribute key.
  *
- * Checks if a attribute matcher only matches a given attribute. Always
+ * Checks if an attribute matcher only matches a given attribute. Always
  * returns %FALSE if "*" was used when creating the matcher.
  *
  * Returns: %TRUE if the matcher only matches @attribute. %FALSE otherwise.
