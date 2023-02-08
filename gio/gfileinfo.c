@@ -1490,6 +1490,21 @@ g_file_info_set_attribute_int64  (GFileInfo  *info,
 }
 
 /* Helper getters */
+#define get_required_attribute(value_ptr, info, attribute_name, error_value) \
+  G_STMT_START { \
+    static guint32 attr = 0; \
+\
+    if (attr == 0) \
+      attr = lookup_attribute (attribute_name); \
+\
+    *value_ptr = g_file_info_find_value (info, attr); \
+    if (G_UNLIKELY (*value_ptr == NULL)) \
+      { \
+        g_critical ("GFileInfo created without " attribute_name); \
+        g_return_val_if_reached (error_value); \
+      } \
+  } G_STMT_END
+
 /**
  * g_file_info_get_deletion_date:
  * @info: a #GFileInfo.
@@ -1543,15 +1558,11 @@ g_file_info_get_deletion_date (GFileInfo *info)
 GFileType
 g_file_info_get_file_type (GFileInfo *info)
 {
-  static guint32 attr = 0;
   GFileAttributeValue *value;
 
   g_return_val_if_fail (G_IS_FILE_INFO (info), G_FILE_TYPE_UNKNOWN);
 
-  if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_TYPE);
-
-  value = g_file_info_find_value (info, attr);
+  get_required_attribute (&value, info, G_FILE_ATTRIBUTE_STANDARD_TYPE, G_FILE_TYPE_UNKNOWN);
   return (GFileType)_g_file_attribute_value_get_uint32 (value);
 }
 
@@ -1569,15 +1580,11 @@ g_file_info_get_file_type (GFileInfo *info)
 gboolean
 g_file_info_get_is_hidden (GFileInfo *info)
 {
-  static guint32 attr = 0;
   GFileAttributeValue *value;
 
   g_return_val_if_fail (G_IS_FILE_INFO (info), FALSE);
 
-  if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN);
-
-  value = g_file_info_find_value (info, attr);
+  get_required_attribute (&value, info, G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN, FALSE);
   return _g_file_attribute_value_get_boolean (value);
 }
 
@@ -1595,15 +1602,11 @@ g_file_info_get_is_hidden (GFileInfo *info)
 gboolean
 g_file_info_get_is_backup (GFileInfo *info)
 {
-  static guint32 attr = 0;
   GFileAttributeValue *value;
 
   g_return_val_if_fail (G_IS_FILE_INFO (info), FALSE);
 
-  if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_IS_BACKUP);
-
-  value = g_file_info_find_value (info, attr);
+  get_required_attribute (&value, info, G_FILE_ATTRIBUTE_STANDARD_IS_BACKUP, FALSE);
   return _g_file_attribute_value_get_boolean (value);
 }
 
@@ -1621,15 +1624,11 @@ g_file_info_get_is_backup (GFileInfo *info)
 gboolean
 g_file_info_get_is_symlink (GFileInfo *info)
 {
-  static guint32 attr = 0;
   GFileAttributeValue *value;
 
   g_return_val_if_fail (G_IS_FILE_INFO (info), FALSE);
 
-  if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK);
-
-  value = g_file_info_find_value (info, attr);
+  get_required_attribute (&value, info, G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK, FALSE);
   return _g_file_attribute_value_get_boolean (value);
 }
 
@@ -1647,15 +1646,11 @@ g_file_info_get_is_symlink (GFileInfo *info)
 const char *
 g_file_info_get_name (GFileInfo *info)
 {
-  static guint32 attr = 0;
   GFileAttributeValue *value;
 
   g_return_val_if_fail (G_IS_FILE_INFO (info), NULL);
 
-  if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_NAME);
-
-  value = g_file_info_find_value (info, attr);
+  get_required_attribute (&value, info, G_FILE_ATTRIBUTE_STANDARD_NAME, NULL);
   return _g_file_attribute_value_get_byte_string (value);
 }
 
@@ -1673,15 +1668,11 @@ g_file_info_get_name (GFileInfo *info)
 const char *
 g_file_info_get_display_name (GFileInfo *info)
 {
-  static guint32 attr = 0;
   GFileAttributeValue *value;
 
   g_return_val_if_fail (G_IS_FILE_INFO (info), NULL);
 
-  if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME);
-
-  value = g_file_info_find_value (info, attr);
+  get_required_attribute (&value, info, G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME, NULL);
   return _g_file_attribute_value_get_string (value);
 }
 
@@ -1699,15 +1690,11 @@ g_file_info_get_display_name (GFileInfo *info)
 const char *
 g_file_info_get_edit_name (GFileInfo *info)
 {
-  static guint32 attr = 0;
   GFileAttributeValue *value;
 
   g_return_val_if_fail (G_IS_FILE_INFO (info), NULL);
 
-  if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_EDIT_NAME);
-
-  value = g_file_info_find_value (info, attr);
+  get_required_attribute (&value, info, G_FILE_ATTRIBUTE_STANDARD_EDIT_NAME, NULL);
   return _g_file_attribute_value_get_string (value);
 }
 
@@ -1725,16 +1712,13 @@ g_file_info_get_edit_name (GFileInfo *info)
 GIcon *
 g_file_info_get_icon (GFileInfo *info)
 {
-  static guint32 attr = 0;
   GFileAttributeValue *value;
   GObject *obj;
 
   g_return_val_if_fail (G_IS_FILE_INFO (info), NULL);
 
-  if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_ICON);
+  get_required_attribute (&value, info, G_FILE_ATTRIBUTE_STANDARD_ICON, NULL);
 
-  value = g_file_info_find_value (info, attr);
   obj = _g_file_attribute_value_get_object (value);
   if (G_IS_ICON (obj))
     return G_ICON (obj);
@@ -1757,16 +1741,13 @@ g_file_info_get_icon (GFileInfo *info)
 GIcon *
 g_file_info_get_symbolic_icon (GFileInfo *info)
 {
-  static guint32 attr = 0;
   GFileAttributeValue *value;
   GObject *obj;
 
   g_return_val_if_fail (G_IS_FILE_INFO (info), NULL);
 
-  if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON);
+  get_required_attribute (&value, info, G_FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON, NULL);
 
-  value = g_file_info_find_value (info, attr);
   obj = _g_file_attribute_value_get_object (value);
   if (G_IS_ICON (obj))
     return G_ICON (obj);
@@ -1788,15 +1769,11 @@ g_file_info_get_symbolic_icon (GFileInfo *info)
 const char *
 g_file_info_get_content_type (GFileInfo *info)
 {
-  static guint32 attr = 0;
   GFileAttributeValue *value;
 
   g_return_val_if_fail (G_IS_FILE_INFO (info), NULL);
 
-  if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE);
-
-  value = g_file_info_find_value (info, attr);
+  get_required_attribute (&value, info, G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE, NULL);
   return _g_file_attribute_value_get_string (value);
 }
 
@@ -1816,15 +1793,11 @@ g_file_info_get_content_type (GFileInfo *info)
 goffset
 g_file_info_get_size (GFileInfo *info)
 {
-  static guint32 attr = 0;
   GFileAttributeValue *value;
 
   g_return_val_if_fail (G_IS_FILE_INFO (info), (goffset) 0);
 
-  if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_SIZE);
-
-  value = g_file_info_find_value (info, attr);
+  get_required_attribute (&value, info, G_FILE_ATTRIBUTE_STANDARD_SIZE, (goffset) 0);
   return (goffset) _g_file_attribute_value_get_uint64 (value);
 }
 
@@ -1861,6 +1834,13 @@ g_file_info_get_modification_time (GFileInfo *info,
     }
 
   value = g_file_info_find_value (info, attr_mtime);
+
+  if (G_UNLIKELY (value == NULL))
+    {
+      g_critical ("GFileInfo created without " G_FILE_ATTRIBUTE_TIME_MODIFIED);
+      g_return_if_reached ();
+    }
+
   result->tv_sec = _g_file_attribute_value_get_uint64 (value);
   value = g_file_info_find_value (info, attr_mtime_usec);
   result->tv_usec = _g_file_attribute_value_get_uint32 (value);
@@ -2028,15 +2008,11 @@ g_file_info_get_creation_date_time (GFileInfo *info)
 const char *
 g_file_info_get_symlink_target (GFileInfo *info)
 {
-  static guint32 attr = 0;
   GFileAttributeValue *value;
 
   g_return_val_if_fail (G_IS_FILE_INFO (info), NULL);
 
-  if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET);
-
-  value = g_file_info_find_value (info, attr);
+  get_required_attribute (&value, info, G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET, NULL);
   return _g_file_attribute_value_get_byte_string (value);
 }
 
@@ -2055,15 +2031,11 @@ g_file_info_get_symlink_target (GFileInfo *info)
 const char *
 g_file_info_get_etag (GFileInfo *info)
 {
-  static guint32 attr = 0;
   GFileAttributeValue *value;
 
   g_return_val_if_fail (G_IS_FILE_INFO (info), NULL);
 
-  if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_ETAG_VALUE);
-
-  value = g_file_info_find_value (info, attr);
+  get_required_attribute (&value, info, G_FILE_ATTRIBUTE_ETAG_VALUE, NULL);
   return _g_file_attribute_value_get_string (value);
 }
 
@@ -2082,15 +2054,11 @@ g_file_info_get_etag (GFileInfo *info)
 gint32
 g_file_info_get_sort_order (GFileInfo *info)
 {
-  static guint32 attr = 0;
   GFileAttributeValue *value;
 
   g_return_val_if_fail (G_IS_FILE_INFO (info), 0);
 
-  if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER);
-
-  value = g_file_info_find_value (info, attr);
+  get_required_attribute (&value, info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER, 0);
   return _g_file_attribute_value_get_int32 (value);
 }
 
