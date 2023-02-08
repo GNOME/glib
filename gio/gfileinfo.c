@@ -1578,7 +1578,7 @@ g_file_info_get_is_hidden (GFileInfo *info)
     attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN);
 
   value = g_file_info_find_value (info, attr);
-  return (GFileType)_g_file_attribute_value_get_boolean (value);
+  return _g_file_attribute_value_get_boolean (value);
 }
 
 /**
@@ -1604,7 +1604,7 @@ g_file_info_get_is_backup (GFileInfo *info)
     attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_IS_BACKUP);
 
   value = g_file_info_find_value (info, attr);
-  return (GFileType)_g_file_attribute_value_get_boolean (value);
+  return _g_file_attribute_value_get_boolean (value);
 }
 
 /**
@@ -1630,7 +1630,7 @@ g_file_info_get_is_symlink (GFileInfo *info)
     attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK);
 
   value = g_file_info_find_value (info, attr);
-  return (GFileType)_g_file_attribute_value_get_boolean (value);
+  return _g_file_attribute_value_get_boolean (value);
 }
 
 /**
