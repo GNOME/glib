@@ -53,6 +53,11 @@
  * g_file_info_get_attribute_byte_string().This optimization will matter
  * only if calling the API in a tight loop.
  *
+ * It is an error to call these accessors without specifying their required file
+ * attributes when creating the #GFileInfo. Use g_file_info_has_attribute() or
+ * g_file_info_list_attributes() to check what attributes are specified for a
+ * #GFileInfo.
+ *
  * #GFileAttributeMatcher allows for searching through a #GFileInfo for
  * attributes.
  **/
@@ -1490,8 +1495,8 @@ g_file_info_set_attribute_int64  (GFileInfo  *info,
  * @info: a #GFileInfo.
  *
  * Returns the #GDateTime representing the deletion date of the file, as
- * available in G_FILE_ATTRIBUTE_TRASH_DELETION_DATE. If the
- * G_FILE_ATTRIBUTE_TRASH_DELETION_DATE attribute is unset, %NULL is returned.
+ * available in %G_FILE_ATTRIBUTE_TRASH_DELETION_DATE. If the
+ * %G_FILE_ATTRIBUTE_TRASH_DELETION_DATE attribute is unset, %NULL is returned.
  *
  * Returns: (nullable): a #GDateTime, or %NULL.
  *
@@ -1530,6 +1535,9 @@ g_file_info_get_deletion_date (GFileInfo *info)
  * Gets a file's type (whether it is a regular file, symlink, etc).
  * This is different from the file's content type, see g_file_info_get_content_type().
  *
+ * It is an error to call this if the #GFileInfo does not contain
+ * %G_FILE_ATTRIBUTE_STANDARD_TYPE.
+ *
  * Returns: a #GFileType for the given file.
  **/
 GFileType
@@ -1552,6 +1560,9 @@ g_file_info_get_file_type (GFileInfo *info)
  * @info: a #GFileInfo.
  *
  * Checks if a file is hidden.
+ *
+ * It is an error to call this if the #GFileInfo does not contain
+ * %G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN.
  *
  * Returns: %TRUE if the file is a hidden file, %FALSE otherwise.
  **/
@@ -1576,6 +1587,9 @@ g_file_info_get_is_hidden (GFileInfo *info)
  *
  * Checks if a file is a backup file.
  *
+ * It is an error to call this if the #GFileInfo does not contain
+ * %G_FILE_ATTRIBUTE_STANDARD_IS_BACKUP.
+ *
  * Returns: %TRUE if file is a backup file, %FALSE otherwise.
  **/
 gboolean
@@ -1598,6 +1612,9 @@ g_file_info_get_is_backup (GFileInfo *info)
  * @info: a #GFileInfo.
  *
  * Checks if a file is a symlink.
+ *
+ * It is an error to call this if the #GFileInfo does not contain
+ * %G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK.
  *
  * Returns: %TRUE if the given @info is a symlink.
  **/
@@ -1622,6 +1639,9 @@ g_file_info_get_is_symlink (GFileInfo *info)
  *
  * Gets the name for a file. This is guaranteed to always be set.
  *
+ * It is an error to call this if the #GFileInfo does not contain
+ * %G_FILE_ATTRIBUTE_STANDARD_NAME.
+ *
  * Returns: (type filename) (not nullable): a string containing the file name.
  **/
 const char *
@@ -1644,6 +1664,9 @@ g_file_info_get_name (GFileInfo *info)
  * @info: a #GFileInfo.
  *
  * Gets a display name for a file. This is guaranteed to always be set.
+ *
+ * It is an error to call this if the #GFileInfo does not contain
+ * %G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME.
  *
  * Returns: (not nullable): a string containing the display name.
  **/
@@ -1668,6 +1691,9 @@ g_file_info_get_display_name (GFileInfo *info)
  *
  * Gets the edit name for a file.
  *
+ * It is an error to call this if the #GFileInfo does not contain
+ * %G_FILE_ATTRIBUTE_STANDARD_EDIT_NAME.
+ *
  * Returns: a string containing the edit name.
  **/
 const char *
@@ -1690,6 +1716,9 @@ g_file_info_get_edit_name (GFileInfo *info)
  * @info: a #GFileInfo.
  *
  * Gets the icon for a file.
+ *
+ * It is an error to call this if the #GFileInfo does not contain
+ * %G_FILE_ATTRIBUTE_STANDARD_ICON.
  *
  * Returns: (nullable) (transfer none): #GIcon for the given @info.
  **/
@@ -1717,6 +1746,9 @@ g_file_info_get_icon (GFileInfo *info)
  * @info: a #GFileInfo.
  *
  * Gets the symbolic icon for a file.
+ *
+ * It is an error to call this if the #GFileInfo does not contain
+ * %G_FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON.
  *
  * Returns: (nullable) (transfer none): #GIcon for the given @info.
  *
@@ -1747,6 +1779,9 @@ g_file_info_get_symbolic_icon (GFileInfo *info)
  *
  * Gets the file's content type.
  *
+ * It is an error to call this if the #GFileInfo does not contain
+ * %G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE.
+ *
  * Returns: (nullable): a string containing the file's content type,
  * or %NULL if unknown.
  **/
@@ -1773,6 +1808,9 @@ g_file_info_get_content_type (GFileInfo *info)
  * the %G_FILE_ATTRIBUTE_STANDARD_SIZE attribute and is converted
  * from #guint64 to #goffset before returning the result.
  *
+ * It is an error to call this if the #GFileInfo does not contain
+ * %G_FILE_ATTRIBUTE_STANDARD_SIZE.
+ *
  * Returns: a #goffset containing the file's size (in bytes).
  **/
 goffset
@@ -1797,6 +1835,10 @@ g_file_info_get_size (GFileInfo *info)
  *
  * Gets the modification time of the current @info and sets it
  * in @result.
+ *
+ * It is an error to call this if the #GFileInfo does not contain
+ * %G_FILE_ATTRIBUTE_TIME_MODIFIED. If %G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC is
+ * provided it will be used too.
  *
  * Deprecated: 2.62: Use g_file_info_get_modification_date_time() instead, as
  *    #GTimeVal is deprecated due to the year 2038 problem.
@@ -1832,9 +1874,10 @@ G_GNUC_END_IGNORE_DEPRECATIONS
  * Gets the modification time of the current @info and returns it as a
  * #GDateTime.
  *
- * This requires the %G_FILE_ATTRIBUTE_TIME_MODIFIED attribute. If
- * %G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC is provided, the resulting #GDateTime
- * will have microsecond precision.
+ * It is an error to call this if the #GFileInfo does not contain
+ * %G_FILE_ATTRIBUTE_TIME_MODIFIED. If %G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC is
+ * provided, the resulting #GDateTime will additionally have microsecond
+ * precision.
  *
  * If nanosecond precision is needed, %G_FILE_ATTRIBUTE_TIME_MODIFIED_NSEC must
  * be queried separately using g_file_info_get_attribute_uint32().
@@ -1880,9 +1923,10 @@ g_file_info_get_modification_date_time (GFileInfo *info)
  * Gets the access time of the current @info and returns it as a
  * #GDateTime.
  *
- * This requires the %G_FILE_ATTRIBUTE_TIME_ACCESS attribute. If
- * %G_FILE_ATTRIBUTE_TIME_ACCESS_USEC is provided, the resulting #GDateTime
- * will have microsecond precision.
+ * It is an error to call this if the #GFileInfo does not contain
+ * %G_FILE_ATTRIBUTE_TIME_ACCESS. If %G_FILE_ATTRIBUTE_TIME_ACCESS_USEC is
+ * provided, the resulting #GDateTime will additionally have microsecond
+ * precision.
  *
  * If nanosecond precision is needed, %G_FILE_ATTRIBUTE_TIME_ACCESS_NSEC must
  * be queried separately using g_file_info_get_attribute_uint32().
@@ -1928,9 +1972,10 @@ g_file_info_get_access_date_time (GFileInfo *info)
  * Gets the creation time of the current @info and returns it as a
  * #GDateTime.
  *
- * This requires the %G_FILE_ATTRIBUTE_TIME_CREATED attribute. If
- * %G_FILE_ATTRIBUTE_TIME_CREATED_USEC is provided, the resulting #GDateTime
- * will have microsecond precision.
+ * It is an error to call this if the #GFileInfo does not contain
+ * %G_FILE_ATTRIBUTE_TIME_CREATED. If %G_FILE_ATTRIBUTE_TIME_CREATED_USEC is
+ * provided, the resulting #GDateTime will additionally have microsecond
+ * precision.
  *
  * If nanosecond precision is needed, %G_FILE_ATTRIBUTE_TIME_CREATED_NSEC must
  * be queried separately using g_file_info_get_attribute_uint32().
@@ -1975,6 +2020,9 @@ g_file_info_get_creation_date_time (GFileInfo *info)
  *
  * Gets the symlink target for a given #GFileInfo.
  *
+ * It is an error to call this if the #GFileInfo does not contain
+ * %G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET.
+ *
  * Returns: (nullable): a string containing the symlink target.
  **/
 const char *
@@ -1999,6 +2047,9 @@ g_file_info_get_symlink_target (GFileInfo *info)
  * Gets the [entity tag][gfile-etag] for a given
  * #GFileInfo. See %G_FILE_ATTRIBUTE_ETAG_VALUE.
  *
+ * It is an error to call this if the #GFileInfo does not contain
+ * %G_FILE_ATTRIBUTE_ETAG_VALUE.
+ *
  * Returns: (nullable): a string containing the value of the "etag:value" attribute.
  **/
 const char *
@@ -2022,6 +2073,9 @@ g_file_info_get_etag (GFileInfo *info)
  *
  * Gets the value of the sort_order attribute from the #GFileInfo.
  * See %G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER.
+ *
+ * It is an error to call this if the #GFileInfo does not contain
+ * %G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER.
  *
  * Returns: a #gint32 containing the value of the "standard::sort_order" attribute.
  **/
