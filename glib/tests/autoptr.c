@@ -619,6 +619,30 @@ test_refstring (void)
 }
 
 static void
+test_pathbuf (void)
+{
+#if defined(G_OS_UNIX)
+  g_autoptr(GPathBuf) buf1 = g_path_buf_new_from_path ("/bin/sh");
+  g_auto(GPathBuf) buf2 = G_PATH_BUF_INIT;
+
+  g_path_buf_push (&buf2, "/bin/sh");
+#elif defined(G_OS_WIN32)
+  g_autoptr(GPathBuf) buf1 = g_path_buf_new_from_path ("C:\\windows\\system32.dll");
+  g_auto(GPathBuf) buf2 = G_PATH_BUF_INIT;
+
+  g_path_buf_push (&buf2, "C:\\windows\\system32.dll");
+#else
+  g_test_skip ("Unsupported platform");
+  return;
+#endif
+
+  g_autofree char *path1 = g_path_buf_to_path (buf1);
+  g_autofree char *path2 = g_path_buf_to_path (&buf2);
+
+  g_assert_cmpstr (path1, ==, path2);
+}
+
+static void
 mark_freed (gpointer ptr)
 {
   gboolean *freed = ptr;
@@ -772,6 +796,7 @@ main (int argc, gchar *argv[])
   g_test_add_func ("/autoptr/g_variant_type", test_g_variant_type);
   g_test_add_func ("/autoptr/strv", test_strv);
   g_test_add_func ("/autoptr/refstring", test_refstring);
+  g_test_add_func ("/autoptr/pathbuf", test_pathbuf);
   g_test_add_func ("/autoptr/autolist", test_autolist);
   g_test_add_func ("/autoptr/autoslist", test_autoslist);
   g_test_add_func ("/autoptr/autoqueue", test_autoqueue);
