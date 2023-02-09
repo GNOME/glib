@@ -67,6 +67,12 @@ test_pathbuf_init (void)
   g_assert_null (g_path_buf_to_path (allocated));
   g_assert_null (g_path_buf_free_to_path (allocated));
 
+  allocated = g_path_buf_new_from_path ("/bin/sh");
+  g_path_buf_init_from_path (&cmp, "/bin/sh");
+  g_assert_path_buf_equal (allocated, &cmp);
+  g_path_buf_clear (&cmp);
+  g_path_buf_free (allocated);
+
   g_path_buf_init_from_path (&buf, "/usr/bin/bash");
   allocated = g_path_buf_copy (&buf);
   g_assert_path_buf_equal (allocated, allocated);
