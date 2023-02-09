@@ -141,9 +141,6 @@ G_STATIC_ASSERT (sizeof (gintptr) == sizeof (intptr_t));
 G_STATIC_ASSERT (sizeof (guintptr) == sizeof (uintptr_t));
 G_STATIC_ASSERT (G_ALIGNOF (gintptr) == G_ALIGNOF (intptr_t));
 G_STATIC_ASSERT (G_ALIGNOF (guintptr) == G_ALIGNOF (uintptr_t));
-/* True by definition */
-G_STATIC_ASSERT (sizeof (gintptr) >= sizeof (void *));
-G_STATIC_ASSERT (sizeof (guintptr) >= sizeof (void *));
 
 G_STATIC_ASSERT (sizeof (gint8) == sizeof (int8_t));
 G_STATIC_ASSERT (sizeof (guint8) == sizeof (uint8_t));
