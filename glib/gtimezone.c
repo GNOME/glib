@@ -445,9 +445,7 @@ zone_for_constant_offset (GTimeZone *gtz, const gchar *name)
   gtz->transitions = NULL;
 }
 
-#ifdef G_OS_UNIX
-
-#if defined(__sun) && defined(__SVR4)
+#if defined(G_OS_UNIX) && defined(__sun) && defined(__SVR4)
 /*
  * only used by Illumos distros or Solaris < 11: parse the /etc/default/init
  * text file looking for TZ= followed by the timezone, possibly quoted
@@ -513,6 +511,7 @@ zone_identifier_illumos (void)
 }
 #endif /* defined(__sun) && defined(__SRVR) */
 
+#ifdef G_OS_UNIX
 /*
  * returns the path to the top of the Olson zoneinfo timezone hierarchy.
  */
