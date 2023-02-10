@@ -329,7 +329,7 @@ g_mkdir_with_parents (const gchar *pathname,
  *    }
  *
  *  // DO THIS INSTEAD
- *  fd = g_open (filename, O_WRONLY);
+ *  fd = g_open (filename, O_WRONLY | O_NOFOLLOW);
  *  if (fd == -1)
  *    {
  *      // check error
