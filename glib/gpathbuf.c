@@ -288,8 +288,12 @@ g_path_buf_copy (GPathBuf *buf)
  *
  * If @path is absolute, it replaces the current path.
  *
- * If @path contains `G_DIR_SEPARATOR_S`, the buffer is extended by
+ * If @path contains a directory separator, the buffer is extended by
  * as many elements the path provides.
+ *
+ * On Windows, both forward slashes and backslashes are treated as
+ * directory separators. On other platforms, %G_DIR_SEPARATOR_S is the
+ * only directory separator.
  *
  * |[<!-- language="C" -->
  * GPathBuf buf, cmp;
@@ -323,7 +327,11 @@ g_path_buf_push (GPathBuf   *buf,
 
   if (g_path_is_absolute (path))
     {
+#ifdef G_OS_WIN32
+      char **elements = g_strsplit_set (path, "\\/", -1);
+#else
       char **elements = g_strsplit (path, G_DIR_SEPARATOR_S, -1);
+#endif
 
 #ifdef G_OS_UNIX
       /* strsplit() will add an empty element for the leading root,
@@ -514,6 +522,9 @@ g_path_buf_set_extension  (GPathBuf   *buf,
  * @buf: a path buffer
  *
  * Retrieves the built path from the path buffer.
+ *
+ * On Windows, the result contains backslashes as directory separators,
+ * even if forward slashes were used in input.
  *
  * If the path buffer is empty, this function returns `NULL`.
  *

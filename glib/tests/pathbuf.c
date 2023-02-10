@@ -88,9 +88,12 @@ test_pathbuf_init (void)
   GPathBuf buf;
   char *path;
 
-  g_path_buf_init_from_path (&buf, "C:\\windows\\system32.dll");
+  /* Forward slashes and backslashes are treated as interchangeable
+   * on input... */
+  g_path_buf_init_from_path (&buf, "C:\\windows/system32.dll");
   path = g_path_buf_clear_to_path (&buf);
   g_assert_nonnull (path);
+  /* ... and normalized to backslashes on output */
   g_assert_cmpstr (path, ==, "C:\\windows\\system32.dll");
   g_free (path);
 
@@ -164,7 +167,7 @@ test_pathbuf_push_pop (void)
   g_path_buf_push (&buf, "system32.dll");
 
   g_test_message ("Popping a path component");
-  g_path_buf_init_from_path (&cmp, "C:\\windows\\system32.dll");
+  g_path_buf_init_from_path (&cmp, "C:\\windows/system32.dll");
   g_assert_path_buf_equal (&buf, &cmp);
   g_path_buf_clear (&cmp);
 
