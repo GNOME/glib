@@ -11,40 +11,40 @@
 # Kaan Özdinçer <kaanozdincer@gmail.com>, 2015.
 # Muhammet Kara <muhammetk@gmail.com>, 2011, 2014, 2015, 2016.
 # Serdar Sağlam <teknomobil@yandex.com>, 2019.
-# Emin Tufan Çetin <etcetin@gmail.com>, 2017, 2018, 2019, 2020, 2021, 2022, 2023.
 # Sabri Ünal <libreajans@gmail.com>, 2023.
+# Emin Tufan Çetin <etcetin@gmail.com>, 2017-2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2023-01-24 20:37+0000\n"
-"PO-Revision-Date: 2023-01-25 02:43+0300\n"
+"POT-Creation-Date: 2023-02-13 18:29+0000\n"
+"PO-Revision-Date: 2023-02-13 22:38+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
-"Language-Team: Türkçe <gnome-turk@gnome.org>\n"
+"Language-Team: Turkish <gnome-turk@gnome.org>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.0.1\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"X-Generator: Gtranslator 42.0\n"
 "X-POOTLE-MTIME: 1433280446.000000\n"
 
-#: gio/gappinfo.c:335
+#: gio/gappinfo.c:339
 msgid "Setting default applications not supported yet"
 msgstr "Öntanımlı uygulama belirleme henüz desteklenmiyor"
 
-#: gio/gappinfo.c:368
+#: gio/gappinfo.c:372
 msgid "Setting application as last used for type not supported yet"
 msgstr ""
 "Uygulamayı tür için son kullanılan olarak belirleme henüz desteklenmiyor"
 
-#: gio/gappinfo.c:810
+#: gio/gappinfo.c:814
 #, c-format
 msgid "Failed to find default application for content type ‘%s’"
 msgstr "‘%s’ içerik türü için öntanımlı uygulama bulunamadı"
 
-#: gio/gappinfo.c:870
+#: gio/gappinfo.c:874
 #, c-format
 msgid "Failed to find default application for URI Scheme ‘%s’"
 msgstr "‘%s’ URI Şeması için öntanımlı uygulama bulunamadı"
@@ -1457,7 +1457,7 @@ msgstr "Özel dosya kopyalanamıyor"
 msgid "Invalid symlink value given"
 msgstr "Geçersiz simgesel bağ değeri verildi"
 
-#: gio/gfile.c:4163 glib/gfileutils.c:2359
+#: gio/gfile.c:4163 glib/gfileutils.c:2392
 msgid "Symbolic links not supported"
 msgstr "Simgesel bağlar desteklenmiyor"
 
@@ -2390,7 +2390,7 @@ msgstr "Simgesel bağlantıları, bağları ve kısayolları takip et"
 msgid "List contents of directories in a tree-like format."
 msgstr "Dizinlerin içeriklerini ağaç benzeri biçimde listele."
 
-#: gio/glib-compile-resources.c:142 gio/glib-compile-schemas.c:1516
+#: gio/glib-compile-resources.c:142 gio/glib-compile-schemas.c:1513
 #, c-format
 msgid "Element <%s> not allowed inside <%s>"
 msgstr "<%2$s> içinde <%1$s> ögesine izin verilmiyor"
@@ -2445,7 +2445,7 @@ msgstr "%s dosyası sıkıştırma hatası"
 msgid "text may not appear inside <%s>"
 msgstr "<%s> içinde metin bulunamaz"
 
-#: gio/glib-compile-resources.c:821 gio/glib-compile-schemas.c:2174
+#: gio/glib-compile-resources.c:821 gio/glib-compile-schemas.c:2171
 msgid "Show program version and exit"
 msgstr "Programın sürümünü göster ve çık"
 
@@ -2461,8 +2461,8 @@ msgstr ""
 "DOSYAʼda belirtilen dosyaların yükleneceği dizinler (öntanımlı: geçerli "
 "dizin)"
 
-#: gio/glib-compile-resources.c:823 gio/glib-compile-schemas.c:2175
-#: gio/glib-compile-schemas.c:2204
+#: gio/glib-compile-resources.c:823 gio/glib-compile-schemas.c:2172
+#: gio/glib-compile-schemas.c:2201
 msgid "DIRECTORY"
 msgstr "DİZİN"
 
@@ -2686,16 +2686,16 @@ msgstr "takma ad hedefi “%s”, <choices> içinde değil"
 msgid "<aliases> must contain at least one <alias>"
 msgstr "<aliases> en az bir <alias> içermelidir"
 
-#: gio/glib-compile-schemas.c:799
+#: gio/glib-compile-schemas.c:796
 msgid "Empty names are not permitted"
 msgstr "Boş adlara izin verilmiyor"
 
-#: gio/glib-compile-schemas.c:809
+#: gio/glib-compile-schemas.c:806
 #, c-format
 msgid "Invalid name “%s”: names must begin with a lowercase letter"
 msgstr "Geçersiz ad “%s”: adlar küçük harf ile başlamalıdır"
 
-#: gio/glib-compile-schemas.c:821
+#: gio/glib-compile-schemas.c:818
 #, c-format
 msgid ""
 "Invalid name “%s”: invalid character “%c”; only lowercase letters, numbers "
@@ -2704,36 +2704,36 @@ msgstr ""
 "Geçesiz ad “%s”: geçersiz karakter “%c”; yalnızca küçük harfler, sayılar ve "
 "tire (“-”) imi kullanılabilir"
 
-#: gio/glib-compile-schemas.c:830
+#: gio/glib-compile-schemas.c:827
 #, c-format
 msgid "Invalid name “%s”: two successive hyphens (“--”) are not permitted"
 msgstr "Geçesiz ad “%s”: birbirini izleyen iki tire (“--”) kullanılamaz"
 
-#: gio/glib-compile-schemas.c:839
+#: gio/glib-compile-schemas.c:836
 #, c-format
 msgid "Invalid name “%s”: the last character may not be a hyphen (“-”)"
 msgstr "Geçesiz ad “%s”: son karakter tire (“-”) olamaz."
 
-#: gio/glib-compile-schemas.c:847
+#: gio/glib-compile-schemas.c:844
 #, c-format
 msgid "Invalid name “%s”: maximum length is 1024"
 msgstr "Geçesiz ad “%s”: olabilecek azami uzunluk 1024"
 
-#: gio/glib-compile-schemas.c:919
+#: gio/glib-compile-schemas.c:916
 #, c-format
 msgid "<child name='%s'> already specified"
 msgstr "<child name='%s'> zaten belirtilmiş"
 
-#: gio/glib-compile-schemas.c:945
+#: gio/glib-compile-schemas.c:942
 msgid "Cannot add keys to a “list-of” schema"
 msgstr "“list-of” şemasına anahtarlar eklenemiyor"
 
-#: gio/glib-compile-schemas.c:956
+#: gio/glib-compile-schemas.c:953
 #, c-format
 msgid "<key name='%s'> already specified"
 msgstr "<key name='%s'> zaten belirtilmiş"
 
-#: gio/glib-compile-schemas.c:974
+#: gio/glib-compile-schemas.c:971
 #, c-format
 msgid ""
 "<key name='%s'> shadows <key name='%s'> in <schema id='%s'>; use <override> "
@@ -2742,7 +2742,7 @@ msgstr ""
 "<key name='%1$s'> dizgesi <schema id='%3$s'> içindeki <key name='%2$s'> "
 "dizgesini gölgeler; değerleri değiştirmek için <override> kullanın"
 
-#: gio/glib-compile-schemas.c:985
+#: gio/glib-compile-schemas.c:982
 #, c-format
 msgid ""
 "Exactly one of “type”, “enum” or “flags” must be specified as an attribute "
@@ -2751,63 +2751,63 @@ msgstr ""
 "<key>’e “type”, “enum”, ya da “flags” özniteliklerinden bir tanesi "
 "kesinlikle belirtilmelidir"
 
-#: gio/glib-compile-schemas.c:1004
+#: gio/glib-compile-schemas.c:1001
 #, c-format
 msgid "<%s id='%s'> not (yet) defined."
 msgstr "<%s id='%s'> (henüz) tanımlanmamış."
 
-#: gio/glib-compile-schemas.c:1019
+#: gio/glib-compile-schemas.c:1016
 #, c-format
 msgid "Invalid GVariant type string “%s”"
 msgstr "Geçersiz GVariant tür dizgesi “%s”"
 
-#: gio/glib-compile-schemas.c:1049
+#: gio/glib-compile-schemas.c:1046
 msgid "<override> given but schema isn’t extending anything"
 msgstr "<override> verildi, ancak şema hiçbir şeyi genişletmiyor"
 
-#: gio/glib-compile-schemas.c:1062
+#: gio/glib-compile-schemas.c:1059
 #, c-format
 msgid "No <key name='%s'> to override"
 msgstr "Üzerine yazılacak hiçbir <key name='%s'> yok"
 
-#: gio/glib-compile-schemas.c:1070
+#: gio/glib-compile-schemas.c:1067
 #, c-format
 msgid "<override name='%s'> already specified"
 msgstr "<override name='%s'> zaten belirtilmiş"
 
-#: gio/glib-compile-schemas.c:1143
+#: gio/glib-compile-schemas.c:1140
 #, c-format
 msgid "<schema id='%s'> already specified"
 msgstr "<schema id='%s'> zaten belirtilmiş"
 
-#: gio/glib-compile-schemas.c:1155
+#: gio/glib-compile-schemas.c:1152
 #, c-format
 msgid "<schema id='%s'> extends not yet existing schema “%s”"
 msgstr "<schema id='%s'> henüz var olmayan “%s” şemasını genişletir"
 
-#: gio/glib-compile-schemas.c:1171
+#: gio/glib-compile-schemas.c:1168
 #, c-format
 msgid "<schema id='%s'> is list of not yet existing schema “%s”"
 msgstr "<schema id='%s'> henüz var olmayan “%s” şemasının bir listesidir"
 
-#: gio/glib-compile-schemas.c:1179
+#: gio/glib-compile-schemas.c:1176
 #, c-format
 msgid "Cannot be a list of a schema with a path"
 msgstr "Yolu olan bir şemanın listesi olamaz"
 
-#: gio/glib-compile-schemas.c:1189
+#: gio/glib-compile-schemas.c:1186
 #, c-format
 msgid "Cannot extend a schema with a path"
 msgstr "Şema bir yol ile genişletilemez"
 
-#: gio/glib-compile-schemas.c:1199
+#: gio/glib-compile-schemas.c:1196
 #, c-format
 msgid ""
 "<schema id='%s'> is a list, extending <schema id='%s'> which is not a list"
 msgstr ""
 "<schema id='%s'>, liste olmayan <schema id='%s'> 'i genişleten bir listedir"
 
-#: gio/glib-compile-schemas.c:1209
+#: gio/glib-compile-schemas.c:1206
 #, c-format
 msgid ""
 "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but “%s” "
@@ -2816,17 +2816,17 @@ msgstr ""
 "<schema id='%s' list-of='%s'>, <schema id='%s' list-of='%s'> ’i genişletir; "
 "ancak “%s”, “%s”i genişletemez"
 
-#: gio/glib-compile-schemas.c:1226
+#: gio/glib-compile-schemas.c:1223
 #, c-format
 msgid "A path, if given, must begin and end with a slash"
 msgstr "Eğer verilmişse, yol, mutlaka bir taksim ile başlayıp bitmeli"
 
-#: gio/glib-compile-schemas.c:1233
+#: gio/glib-compile-schemas.c:1230
 #, c-format
 msgid "The path of a list must end with “:/”"
 msgstr "Listenin yolu mutlaka “:/” ile bitmelidir"
 
-#: gio/glib-compile-schemas.c:1242
+#: gio/glib-compile-schemas.c:1239
 #, c-format
 msgid ""
 "Warning: Schema “%s” has path “%s”.  Paths starting with “/apps/”, “/"
@@ -2835,49 +2835,49 @@ msgstr ""
 "Uyarı: “%s” şeması “%s” yoluna sahip.  “/apps/”, “/desktop/” veya “/system/” "
 "ile başlayan yollar artık kullanılmamaktadır."
 
-#: gio/glib-compile-schemas.c:1272
+#: gio/glib-compile-schemas.c:1269
 #, c-format
 msgid "<%s id='%s'> already specified"
 msgstr "<%s id='%s'> zaten belirtilmiş"
 
-#: gio/glib-compile-schemas.c:1422 gio/glib-compile-schemas.c:1438
+#: gio/glib-compile-schemas.c:1419 gio/glib-compile-schemas.c:1435
 #, c-format
 msgid "Only one <%s> element allowed inside <%s>"
 msgstr "<%s> içinde yalnızca bir <%s> ögesi bulunabilir"
 
-#: gio/glib-compile-schemas.c:1520
+#: gio/glib-compile-schemas.c:1517
 #, c-format
 msgid "Element <%s> not allowed at the top level"
 msgstr "<%s> ögesine en üst düzeyde izin verilmez"
 
-#: gio/glib-compile-schemas.c:1538
+#: gio/glib-compile-schemas.c:1535
 msgid "Element <default> is required in <key>"
 msgstr "<default> ögesi <key> içinde zorunludur"
 
-#: gio/glib-compile-schemas.c:1628
+#: gio/glib-compile-schemas.c:1625
 #, c-format
 msgid "Text may not appear inside <%s>"
 msgstr "<%s> içinde metin bulunamayabilir"
 
-#: gio/glib-compile-schemas.c:1696
+#: gio/glib-compile-schemas.c:1693
 #, c-format
 msgid "Warning: undefined reference to <schema id='%s'/>"
 msgstr "Uyarı: <schema id='%s'/> ’e tanımlanmamış referans"
 
 #. Translators: Do not translate "--strict".
-#: gio/glib-compile-schemas.c:1835 gio/glib-compile-schemas.c:1914
+#: gio/glib-compile-schemas.c:1832 gio/glib-compile-schemas.c:1911
 msgid "--strict was specified; exiting."
 msgstr "--strict belirtildi; çıkılıyor."
 
-#: gio/glib-compile-schemas.c:1847
+#: gio/glib-compile-schemas.c:1844
 msgid "This entire file has been ignored."
 msgstr "Bu dosyanın tümü görmezden gelindi."
 
-#: gio/glib-compile-schemas.c:1910
+#: gio/glib-compile-schemas.c:1907
 msgid "Ignoring this file."
 msgstr "Bu dosya görmezden geliniyor."
 
-#: gio/glib-compile-schemas.c:1965
+#: gio/glib-compile-schemas.c:1962
 #, c-format
 msgid ""
 "No such key “%s” in schema “%s” as specified in override file “%s”; ignoring "
@@ -2886,7 +2886,7 @@ msgstr ""
 "“%3$s” dosyasında üzerine yazılacağı belirtilen “%2$s” şemasında “%1$s” gibi "
 "bir anahtar yok; bu anahtar için üstüne yazma görmezden geliniyor."
 
-#: gio/glib-compile-schemas.c:1973
+#: gio/glib-compile-schemas.c:1970
 #, c-format
 msgid ""
 "No such key “%s” in schema “%s” as specified in override file “%s” and --"
@@ -2895,7 +2895,7 @@ msgstr ""
 "“%3$s” dosyasında üzerine yazılacağı belirtilen “%2$s” şemasında “%1$s” gibi "
 "bir anahtar yok ve --strict belirtildi; çıkılıyor."
 
-#: gio/glib-compile-schemas.c:1995
+#: gio/glib-compile-schemas.c:1992
 #, c-format
 msgid ""
 "Cannot provide per-desktop overrides for localized key “%s” in schema "
@@ -2905,7 +2905,7 @@ msgstr ""
 "sağlanamıyor (üstüne yazma dosyası “%s”); bu anahtar için üstüne yazma göz "
 "ardı ediliyor."
 
-#: gio/glib-compile-schemas.c:2004
+#: gio/glib-compile-schemas.c:2001
 #, c-format
 msgid ""
 "Cannot provide per-desktop overrides for localized key “%s” in schema "
@@ -2914,7 +2914,7 @@ msgstr ""
 "“%s” şemasında “%s” yerleşik anahtarı için masaüstü başına üstüne yazma "
 "sağlanamıyor (üstüne yazma dosyası “%s”) ve --strict belirtildi; çıkılıyor."
 
-#: gio/glib-compile-schemas.c:2028
+#: gio/glib-compile-schemas.c:2025
 #, c-format
 msgid ""
 "Error parsing key “%s” in schema “%s” as specified in override file “%s”: "
@@ -2924,7 +2924,7 @@ msgstr ""
 "anahtarı ayrıştırmada hata: %4$s. Bu anahtar için üzerine yazma görmezden "
 "geliniyor."
 
-#: gio/glib-compile-schemas.c:2040
+#: gio/glib-compile-schemas.c:2037
 #, c-format
 msgid ""
 "Error parsing key “%s” in schema “%s” as specified in override file “%s”: "
@@ -2933,7 +2933,7 @@ msgstr ""
 "“%3$s” dosyasında üzerine yazılacağı belirtilen “%2$s” şemasında “%1$s” "
 "anahtarı ayrıştırmada hata: %4$s. --strict belirtildi; çıkılıyor."
 
-#: gio/glib-compile-schemas.c:2067
+#: gio/glib-compile-schemas.c:2064
 #, c-format
 msgid ""
 "Override for key “%s” in schema “%s” in override file “%s” is outside the "
@@ -2943,7 +2943,7 @@ msgstr ""
 "üzerine yazma, şemada verilen aralığın dışındadır; bu anahtar için üstüne "
 "yazma görmezden geliniyor."
 
-#: gio/glib-compile-schemas.c:2077
+#: gio/glib-compile-schemas.c:2074
 #, c-format
 msgid ""
 "Override for key “%s” in schema “%s” in override file “%s” is outside the "
@@ -2953,7 +2953,7 @@ msgstr ""
 "üzerine yazma, şemada verilen aralığın dışındadır ve --strict belirtildi; "
 "çıkılıyor."
 
-#: gio/glib-compile-schemas.c:2103
+#: gio/glib-compile-schemas.c:2100
 #, c-format
 msgid ""
 "Override for key “%s” in schema “%s” in override file “%s” is not in the "
@@ -2963,7 +2963,7 @@ msgstr ""
 "geçerli seçenekler listesinde değildir; bu anahtar için üstüne yazma göz "
 "ardı ediliyor."
 
-#: gio/glib-compile-schemas.c:2113
+#: gio/glib-compile-schemas.c:2110
 #, c-format
 msgid ""
 "Override for key “%s” in schema “%s” in override file “%s” is not in the "
@@ -2972,23 +2972,23 @@ msgstr ""
 "“%3$s” dosyasındaki “%2$s” şemasının “%1$s” anahtarının üzerine yazma, "
 "geçerli seçenekler listesinde değildir ve --strict belirtildi; çıkılıyor."
 
-#: gio/glib-compile-schemas.c:2175
+#: gio/glib-compile-schemas.c:2172
 msgid "Where to store the gschemas.compiled file"
 msgstr "gschemas.compiled dosyasının saklanacağı yer"
 
-#: gio/glib-compile-schemas.c:2176
+#: gio/glib-compile-schemas.c:2173
 msgid "Abort on any errors in schemas"
 msgstr "Şemalardaki herhangi bir hatada iptal et"
 
-#: gio/glib-compile-schemas.c:2177
+#: gio/glib-compile-schemas.c:2174
 msgid "Do not write the gschema.compiled file"
 msgstr "gschema.compiled dosyasını yazma"
 
-#: gio/glib-compile-schemas.c:2178
+#: gio/glib-compile-schemas.c:2175
 msgid "Do not enforce key name restrictions"
 msgstr "Anahtar adı kısıtlamalarını zorlama"
 
-#: gio/glib-compile-schemas.c:2207
+#: gio/glib-compile-schemas.c:2204
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
@@ -2998,15 +2998,15 @@ msgstr ""
 "Şema dosyalarının .gschema.xml uzantısına sahip olmaları gerekir,\n"
 "ve önbellek dosyası gschemas.compiled olarak anılır."
 
-#: gio/glib-compile-schemas.c:2228
+#: gio/glib-compile-schemas.c:2225
 msgid "You should give exactly one directory name"
 msgstr "Tam olarak bir adet dizin adı vermelisiniz"
 
-#: gio/glib-compile-schemas.c:2271
+#: gio/glib-compile-schemas.c:2268
 msgid "No schema files found: doing nothing."
 msgstr "Hiç şema dosyası bulunamadı: hiçbir şey yapılmıyor."
 
-#: gio/glib-compile-schemas.c:2273
+#: gio/glib-compile-schemas.c:2270
 msgid "No schema files found: removed existing output file."
 msgstr "Hiç şema dosyası bulunamadı: var olan çıktı dosyası kaldırıldı."
 
@@ -4987,81 +4987,81 @@ msgstr "ÖS"
 msgid "Error opening directory “%s”: %s"
 msgstr "“%s” dizini açılamadı: %s"
 
-#: glib/gfileutils.c:735 glib/gfileutils.c:827
+#: glib/gfileutils.c:753 glib/gfileutils.c:845
 #, c-format
 msgid "Could not allocate %lu byte to read file “%s”"
 msgid_plural "Could not allocate %lu bytes to read file “%s”"
 msgstr[0] "%lu bayt “%s” dosyasını okumak için ayrılamadı"
 
-#: glib/gfileutils.c:752
+#: glib/gfileutils.c:770
 #, c-format
 msgid "Error reading file “%s”: %s"
 msgstr "“%s” dosyası okuma hatası: %s"
 
-#: glib/gfileutils.c:788
+#: glib/gfileutils.c:806
 #, c-format
 msgid "File “%s” is too large"
 msgstr "“%s” dosyası çok büyük"
 
-#: glib/gfileutils.c:852
+#: glib/gfileutils.c:870
 #, c-format
 msgid "Failed to read from file “%s”: %s"
 msgstr "“%s” dosyasından okuma başarısız: %s"
 
-#: glib/gfileutils.c:902 glib/gfileutils.c:977 glib/gfileutils.c:1454
+#: glib/gfileutils.c:920 glib/gfileutils.c:995 glib/gfileutils.c:1472
 #, c-format
 msgid "Failed to open file “%s”: %s"
 msgstr "“%s” dosyasını açma başarısız: %s"
 
-#: glib/gfileutils.c:915
+#: glib/gfileutils.c:933
 #, c-format
 msgid "Failed to get attributes of file “%s”: fstat() failed: %s"
 msgstr ""
 "“%s” dosyasının özniteliklerini alma başarısız: fstat() başarısızlığı: %s"
 
-#: glib/gfileutils.c:946
+#: glib/gfileutils.c:964
 #, c-format
 msgid "Failed to open file “%s”: fdopen() failed: %s"
 msgstr "“%s” dosyasını açma başarısız: fdopen() başarısızlığı: %s"
 
-#: glib/gfileutils.c:1047
+#: glib/gfileutils.c:1065
 #, c-format
 msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
 msgstr ""
 "“%s” dosyasının adı “%s” olarak değiştirilirken hata: g_rename() "
 "başarısızlığı: %s"
 
-#: glib/gfileutils.c:1161
+#: glib/gfileutils.c:1179
 #, c-format
 msgid "Failed to write file “%s”: write() failed: %s"
 msgstr "“%s” dosyasına yazılamadı: write() başarısız: %s"
 
-#: glib/gfileutils.c:1182
+#: glib/gfileutils.c:1200
 #, c-format
 msgid "Failed to write file “%s”: fsync() failed: %s"
 msgstr "“%s” dosyasına yazılamadı: fsync() başarısız: %s"
 
-#: glib/gfileutils.c:1343 glib/gfileutils.c:1758
+#: glib/gfileutils.c:1361 glib/gfileutils.c:1776
 #, c-format
 msgid "Failed to create file “%s”: %s"
 msgstr "“%s” dosyasını oluşturma başarısız: %s"
 
-#: glib/gfileutils.c:1388
+#: glib/gfileutils.c:1406
 #, c-format
 msgid "Existing file “%s” could not be removed: g_unlink() failed: %s"
 msgstr "Var olan dosya “%s” kaldırılamadı: g_unlink() başarısızlığı: %s"
 
-#: glib/gfileutils.c:1723
+#: glib/gfileutils.c:1741
 #, c-format
 msgid "Template “%s” invalid, should not contain a “%s”"
 msgstr "“%s” şablonu geçersiz, “%s” içermemeli"
 
-#: glib/gfileutils.c:1736
+#: glib/gfileutils.c:1754
 #, c-format
 msgid "Template “%s” doesn’t contain XXXXXX"
 msgstr "“%s” şablonu XXXXXX içermiyor"
 
-#: glib/gfileutils.c:2315 glib/gfileutils.c:2344
+#: glib/gfileutils.c:2348 glib/gfileutils.c:2377
 #, c-format
 msgid "Failed to read the symbolic link “%s”: %s"
 msgstr "“%s” simgesel bağını okuma başarısız: %s"
@@ -5123,8 +5123,8 @@ msgid "Key file contains unsupported encoding “%s”"
 msgstr "Anahtar dosya desteklenmeyen “%s” kodlamasını içeriyor"
 
 #: glib/gkeyfile.c:1679 glib/gkeyfile.c:1852 glib/gkeyfile.c:3299
-#: glib/gkeyfile.c:3363 glib/gkeyfile.c:3493 glib/gkeyfile.c:3625
-#: glib/gkeyfile.c:3771 glib/gkeyfile.c:4006 glib/gkeyfile.c:4073
+#: glib/gkeyfile.c:3363 glib/gkeyfile.c:3493 glib/gkeyfile.c:3622
+#: glib/gkeyfile.c:3768 glib/gkeyfile.c:4003 glib/gkeyfile.c:4070
 #, c-format
 msgid "Key file does not have group “%s”"
 msgstr "Anahtar dosyasında “%s” kümesi yok"
@@ -5162,31 +5162,31 @@ msgstr ""
 "“%2$s” kümesindeki “%1$s” anahtarı “%4$s” değerine sahip olması beklenirken "
 "“%3$s” değerine sahip"
 
-#: glib/gkeyfile.c:4326
+#: glib/gkeyfile.c:4323
 msgid "Key file contains escape character at end of line"
 msgstr "Anahtar dosyası satır sonunda çıkış karakteri içeriyor"
 
-#: glib/gkeyfile.c:4348
+#: glib/gkeyfile.c:4345
 #, c-format
 msgid "Key file contains invalid escape sequence “%s”"
 msgstr "“%s” anahtar dosyası geçersiz çıkış dizisi içeriyor"
 
-#: glib/gkeyfile.c:4493
+#: glib/gkeyfile.c:4490
 #, c-format
 msgid "Value “%s” cannot be interpreted as a number."
 msgstr "“%s” değeri bir sayı olarak yorumlanamıyor."
 
-#: glib/gkeyfile.c:4507
+#: glib/gkeyfile.c:4504
 #, c-format
 msgid "Integer value “%s” out of range"
 msgstr "“%s”, tamsayı değeri aralık dışında"
 
-#: glib/gkeyfile.c:4540
+#: glib/gkeyfile.c:4537
 #, c-format
 msgid "Value “%s” cannot be interpreted as a float number."
 msgstr "“%s” değeri bir gerçel sayı olarak yorumlanamıyor."
 
-#: glib/gkeyfile.c:4579
+#: glib/gkeyfile.c:4576
 #, c-format
 msgid "Value “%s” cannot be interpreted as a boolean."
 msgstr "“%s” değeri mantıksal değer olarak yorumlanamıyor."
@@ -5901,6 +5901,11 @@ msgstr "Alt süreç “%s” çalıştırılırken bilinmeyen hata oluştu"
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Alt süreç borusundan yeterli bilgi okunamadı (%s)"
+
+#: glib/gspawn-private.h:134
+#, c-format
+msgid "Invalid source FDs argument"
+msgstr "Geçersiz kaynak FD argümanı"
 
 #: glib/gspawn-win32.c:337
 msgid "Failed to read data from child process"
