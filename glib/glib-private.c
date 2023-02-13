@@ -67,6 +67,8 @@ glib__private__ (void)
 
     g_win32_push_empty_invalid_parameter_handler,
     g_win32_pop_invalid_parameter_handler,
+
+    g_find_program_for_path,
   };
 
   return &table;

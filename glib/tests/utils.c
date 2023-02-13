@@ -487,6 +487,14 @@ test_find_program (void)
   g_assert (res == NULL);
 }
 
+static char *
+find_program_for_path (const char *program,
+                       const char *path,
+                       const char *working_dir)
+{
+  return GLIB_PRIVATE_CALL(g_find_program_for_path) (program, path, working_dir);
+}
+
 static void
 test_find_program_for_path (void)
 {
@@ -517,9 +525,9 @@ test_find_program_for_path (void)
   g_assert_true (g_file_test (exe_path, G_FILE_TEST_IS_EXECUTABLE));
 
   g_assert_null (g_find_program_in_path (command_to_find));
-  g_assert_null (g_find_program_for_path (command_to_find, NULL, NULL));
+  g_assert_null (find_program_for_path (command_to_find, NULL, NULL));
 
-  found_path = g_find_program_for_path (command_to_find, path, NULL);
+  found_path = find_program_for_path (command_to_find, path, NULL);
 #ifdef __APPLE__
   g_assert_nonnull (found_path);
   g_assert_true (g_str_has_suffix (found_path, exe_path));
@@ -528,7 +536,7 @@ test_find_program_for_path (void)
 #endif
   g_clear_pointer (&found_path, g_free);
 
-  found_path = g_find_program_for_path (command_to_find, path, path);
+  found_path = find_program_for_path (command_to_find, path, path);
 #ifdef __APPLE__
   g_assert_nonnull (found_path);
   g_assert_true (g_str_has_suffix (found_path, exe_path));
@@ -537,7 +545,7 @@ test_find_program_for_path (void)
 #endif
   g_clear_pointer (&found_path, g_free);
 
-  found_path = g_find_program_for_path (command_to_find, NULL, path);
+  found_path = find_program_for_path (command_to_find, NULL, path);
 #ifdef __APPLE__
   g_assert_nonnull (found_path);
   g_assert_true (g_str_has_suffix (found_path, exe_path));
@@ -546,7 +554,7 @@ test_find_program_for_path (void)
 #endif
   g_clear_pointer (&found_path, g_free);
 
-  found_path = g_find_program_for_path (command_to_find, "::", path);
+  found_path = find_program_for_path (command_to_find, "::", path);
 #ifdef __APPLE__
   g_assert_nonnull (found_path);
   g_assert_true (g_str_has_suffix (found_path, exe_path));
@@ -558,7 +566,7 @@ test_find_program_for_path (void)
   old_cwd = g_get_current_dir ();
   g_chdir (path);
   found_path =
-    g_find_program_for_path (command_to_find,
+    find_program_for_path (command_to_find,
       G_SEARCHPATH_SEPARATOR_S G_SEARCHPATH_SEPARATOR_S, NULL);
   g_chdir (old_cwd);
   g_clear_pointer (&old_cwd, g_free);
@@ -573,7 +581,7 @@ test_find_program_for_path (void)
   old_cwd = g_get_current_dir ();
   g_chdir (tmp);
   found_path =
-    g_find_program_for_path (command_to_find,
+    find_program_for_path (command_to_find,
       G_SEARCHPATH_SEPARATOR_S G_SEARCHPATH_SEPARATOR_S, "sub-path");
   g_chdir (old_cwd);
   g_clear_pointer (&old_cwd, g_free);
@@ -586,10 +594,10 @@ test_find_program_for_path (void)
   g_clear_pointer (&found_path, g_free);
 
   g_assert_null (
-    g_find_program_for_path (command_to_find,
+    find_program_for_path (command_to_find,
       G_SEARCHPATH_SEPARATOR_S G_SEARCHPATH_SEPARATOR_S, "other-sub-path"));
 
-  found_path = g_find_program_for_path (command_to_find,
+  found_path = find_program_for_path (command_to_find,
     G_SEARCHPATH_SEPARATOR_S "sub-path" G_SEARCHPATH_SEPARATOR_S, tmp);
 #ifdef __APPLE__
   g_assert_nonnull (found_path);
@@ -599,23 +607,23 @@ test_find_program_for_path (void)
 #endif
   g_clear_pointer (&found_path, g_free);
 
-  g_assert_null (g_find_program_for_path (command_to_find,
+  g_assert_null (find_program_for_path (command_to_find,
     G_SEARCHPATH_SEPARATOR_S "other-sub-path" G_SEARCHPATH_SEPARATOR_S, tmp));
 
 #ifdef G_OS_UNIX
-  found_path = g_find_program_for_path ("sh", NULL, tmp);
+  found_path = find_program_for_path ("sh", NULL, tmp);
   g_assert_nonnull (found_path);
   g_clear_pointer (&found_path, g_free);
 
   old_cwd = g_get_current_dir ();
   g_chdir ("/");
-  found_path = g_find_program_for_path ("sh", "sbin:bin:usr/bin:usr/sbin", NULL);
+  found_path = find_program_for_path ("sh", "sbin:bin:usr/bin:usr/sbin", NULL);
   g_chdir (old_cwd);
   g_clear_pointer (&old_cwd, g_free);
   g_assert_nonnull (found_path);
   g_clear_pointer (&found_path, g_free);
 
-  found_path = g_find_program_for_path ("sh", "sbin:bin:usr/bin:usr/sbin", "/");
+  found_path = find_program_for_path ("sh", "sbin:bin:usr/bin:usr/sbin", "/");
   g_assert_nonnull (found_path);
   g_clear_pointer (&found_path, g_free);
 #endif /* G_OS_UNIX */
