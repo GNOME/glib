@@ -1914,7 +1914,7 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
     {
       char *t;
       /* Use the desktop file path (if any) as working dir to search program */
-      t = g_find_program_for_path (try_exec, NULL, path);
+      t = GLIB_PRIVATE_CALL (g_find_program_for_path) (try_exec, NULL, path);
       if (t == NULL)
         {
           g_free (path);
@@ -1947,7 +1947,7 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
            * argument, so dereferencing argv[0] should return non-NULL. */
           g_assert (argc > 0);
           /* Use the desktop file path (if any) as working dir to search program */
-          t = g_find_program_for_path (argv[0], NULL, path);
+          t = GLIB_PRIVATE_CALL (g_find_program_for_path) (argv[0], NULL, path);
           g_strfreev (argv);
 
           if (t == NULL)
@@ -2731,8 +2731,8 @@ prepend_terminal_to_vector (int          *argc,
 
   for (i = 0, found_terminal = NULL; i < G_N_ELEMENTS (known_terminals); i++)
     {
-      found_terminal = g_find_program_for_path (known_terminals[i].exec,
-                                                path, working_dir);
+      found_terminal = GLIB_PRIVATE_CALL (g_find_program_for_path) (known_terminals[i].exec,
+                                                                    path, working_dir);
       if (found_terminal != NULL)
         {
           term_arg = known_terminals[i].exec_arg;
@@ -2984,9 +2984,9 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
             {
               const char *env_path = g_environ_getenv (envp, "PATH");
 
-              program_path = g_find_program_for_path (program,
-                                                      env_path,
-                                                      info->path);
+              program_path = GLIB_PRIVATE_CALL (g_find_program_for_path) (program,
+                                                                          env_path,
+                                                                          info->path);
             }
 
           if (program_path)

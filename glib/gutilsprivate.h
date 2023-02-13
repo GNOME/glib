@@ -28,14 +28,8 @@
 
 G_BEGIN_DECLS
 
-GLIB_AVAILABLE_IN_2_60
 void g_set_user_dirs (const gchar *first_dir_type,
                       ...) G_GNUC_NULL_TERMINATED;
-
-GLIB_AVAILABLE_IN_2_76
-char * g_find_program_for_path (const char *program,
-                                const char *path,
-                                const char *working_dir);
 
 /* Returns the smallest power of 2 greater than or equal to n,
  * or 0 if such power does not fit in a gsize

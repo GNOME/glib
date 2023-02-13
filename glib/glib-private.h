@@ -154,6 +154,10 @@ typedef struct _GWin32InvalidParameterHandler GWin32InvalidParameterHandler;
 void g_win32_push_empty_invalid_parameter_handler (GWin32InvalidParameterHandler *items);
 void g_win32_pop_invalid_parameter_handler (GWin32InvalidParameterHandler *items);
 
+char *g_find_program_for_path (const char *program,
+                               const char *path,
+                               const char *working_dir);
+
 #define GLIB_PRIVATE_CALL(symbol) (glib__private__()->symbol)
 
 
@@ -212,6 +216,11 @@ typedef struct {
   void (* g_win32_push_empty_invalid_parameter_handler) (GWin32InvalidParameterHandler *items);
 
   void (* g_win32_pop_invalid_parameter_handler)        (GWin32InvalidParameterHandler *items);
+
+  /* See gutils.c */
+  char *(* g_find_program_for_path) (const char *program,
+                                     const char *path,
+                                     const char *working_dir);
 
   /* Add other private functions here, initialize them in glib-private.c */
 } GLibPrivateVTable;
