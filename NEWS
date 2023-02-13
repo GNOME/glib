@@ -1,8 +1,141 @@
-Overview of changes in GLib 2.75.3, UNRELEASED
+Overview of changes in GLib 2.75.3, 2023-02-13
 ==============================================
 
 * Drop the implementation of GSlice, and make the API use the system `malloc()`
   internally (#1079) (based on investigation work by multiple people)
+
+* Use a thread-spawning thread to keep thread scheduler settings consistent;
+  fixes GThreadPool critical warnings due to failing to set scheduler settings
+  in some situations (#2769, work by Sebastian Dröge and others)
+
+* GIR annotation improvements for multiple APIs (#2827, #2894, #2895, #2897,
+  !3198, !3234, !3236, !3238, !3245, !3266, work by multiple people)
+
+* Optimise printing of nested maybes in `g_variant_print()` (#2862, work by Philip Withnall)
+
+* Use `tap` test protocol within GLib, and support TAP 13/14 (!3140, work by Marco Trevisan)
+
+* Fix a regression in glib-compile-schemas 2.75.2 causing schemas and override
+  files to be sorted incorrectly (!3188, spotted by John Wudrick, work by Philip Withnall)
+
+* Support per-desktop overrides in `GSettingsAction` (!3193, work by Philip Withnall)
+
+* Various optimisations to `GString` (!3199, work by Matthias Clasen and Marco Trevisan)
+
+* Reduce allocations in message printing functions if there’s nothing to format (!3205, work by Marco Trevisan)
+
+* Add inline version of `g_strdup()`, allowing the compiler to do `NULL` folding
+  and constant folding on `strlen()` calls (!3209, work by Marco Trevisan)
+
+* Add a `GPathBuf` API for building and manipulating file paths (!3216, work by Emmanuele Bassi)
+
+* Add `g_string_free_and_steal()` and use it to warn on unused results from
+  `g_string_free (_, FALSE)` (!3219, !3226, work by Matthias Clasen and Sergey Bugaev)
+
+* Add `g_free_sized()` and `g_aligned_free_sized()` to mirror the upcoming
+  `free_sized()` function in C23; use these if porting away from `g_slice_free()`
+  (!3231, work by Philip Withnall)
+
+* Fix underspecified dependencies on generated headers in `meson.build`, which
+  should reduce spurious build failures (!3260, work by Eli Schwartz)
+
+* Bugs fixed:
+  - #1079 Investigate dropping or deprecating the GSlice allocator (Natanael
+    Copa)
+  - #2769 GThreadPool crashes with: Failed to set scheduler settings: Operation
+    not permitted (Sebastian Dröge)
+  - #2827 Callback parameters get wrong attributes in gir files
+  - #2862 fuzz_variant_text: Timeout in fuzz_variant_text when printing nested
+    maybes
+  - #2876 g_find_program_for_path is public ABI but not declared in a public
+    header (Philip Withnall)
+  - #2877 glib/tests/array-
+    test.c:1828:pointer_array_new_from_null_terminated_array_from_gstrv:
+    'g_ptr_array_index (gparray, 4)' should be NULL (Simon McVittie)
+  - #2881 Invalid read of size 4 in get_matched_substring_number (Philip
+    Withnall)
+  - #2883 g_file_set_contents fails on mingw64 with "no error" if file size >
+    INT_MAX (CCode)
+  - #2890 g_string_append() macro evaluates arguments multiple times (Marco
+    Trevisan (Treviño))
+  - #2891 Memory leak in "gio/win32/gwin32fsmonitorutils.c" (Philip Withnall)
+  - #2892 Memory leak in "gio/gwin32mount.c" (Philip Withnall)
+  - #2894 g_value_take_string: wrong ownership transfer info in GIR (Lukáš
+    Tyrychtr)
+  - #2895 g_io_channel_get_line_term: wrong GIR (Bart Jacobs)
+  - #2897 g_time_zone_adjust_time: GIR says gint64 but it's gint64* (Bart
+    Jacobs)
+  - #2898 g_print replaces non-ascii characters with question mark
+  - #2900 msys2-clang64: g_spawn_[a]sync() fails in clang builds when envp is
+    not NULL
+  - #2901 g_app_info_get_executable doesn't work well on latest Ubuntu with
+    Firefox installed as snap
+  - #2908 Crash when creating GtkTextView with G_DEBUG=gc-friendly (Marco
+    Trevisan (Treviño))
+  - #2914 Should GPathBuf split on both directions of slashes on Windows? (Simon
+    McVittie)
+  - GNOME/gimp#9094 devel: None of the extensions and plugins load in Clang
+    builds
+  - !3140 meson: Use 'tap' test protocol and support TAP 13/14
+  - !3184 build: Don't overwrite build variables
+  - !3185 Include gobject-visibility.h in glib-types.h
+  - !3187 tests/desktop-app-info: fix stack-use-after-scope
+  - !3188 glib-compile-schemas: Fix typo in comparison function
+  - !3189 docs: Fix return type in cmpint
+  - !3191 tests: Improve error message if setting max processes to 1 fails
+  - !3192 garray: Avoid calling memcpy with no items
+  - !3193 gsettings: Support per-desktop overrides in GSettingsAction
+  - !3196 gio/tests/file.c:Fix expectations when running as root
+  - !3198 Fix a couple of `closure` annotations
+  - !3199 Some GString optimizations
+  - !3203 GTask: Document issues
+  - !3205 gmessages: Avoid strings duplication if there's nothing to format
+  - !3206 tests: Add a test print to spawn-test on Windows
+  - !3207 tests: Fix a minor leak in the GString tests
+  - !3209 gstrfuncs: Add inline version of g_strdup()
+  - !3216 Add GPathBuf
+  - !3219 Add g_string_free_and_steal
+  - !3221 TAP: some further cleanups
+  - !3223 Add a few suppressions to glib.supp and fix a minor bug in
+    gapplication test
+  - !3224 gtestutils: Fix a potential NULL pointer dereference in g_test_log()
+  - !3225 tests: Temporarily disable socket test due to a kernel bug
+  - !3226 Make g_string_free (_, FALSE) warn on unused result
+  - !3231 gmem: Add g_free_sized() and g_aligned_free_sized()
+  - !3234 GMainContext: Use nullable context in docs (and in some missing code)
+  - !3236 g_regex_escape_string: bad GIR: utf8[] -> utf8
+  - !3238 Fix GIR: gunichar -> gunichar[]
+  - !3242 GAtomicArray: Ensure metadata does not misalign the payload
+  - !3243 Allow using msort_r CHERI-enabled architectures
+  - !3245 gio: converter: Forbid null out arguments
+  - !3246 tests: Fix a few minor leaks in gdbus-example-peer
+  - !3247 tests: Fix a minor leak in the cxx string append tests
+  - !3248 timezone: Fix a compiler warning
+  - !3249 gstring: Avoid warnings from inline functions
+  - !3250 ci: Temporarily only run the FreeBSD 13 CI on a schedule
+  - !3251 Revert "gtype: Use the system allocator on UNIX" and use g_free_sized
+    instead
+  - !3256 Remove n_preallocs field from InstanceData
+  - !3258 Revert "ci: Temporarily only run the FreeBSD 13 CI on a schedule"
+  - !3259 gmessages: use g_atomic_pointer to access handlers for
+    g_print()/g_printerr()
+  - !3260 fix underspecified dependencies on generated headers
+  - !3262 Add a (temporary) assertion that sizeof(gsize) == sizeof(guintptr)
+  - !3263 Revert "glib-init: Add more static assertions for gintptr, guintptr"
+  - !3265 fileutils: Make some sample code detect symlinks as intended
+  - !3266 Avoid some warnings from GObject-Introspection
+  - !3268 po: Add missing header file to POTFILES.in
+
+* Translation updates:
+  - Belarusian (Vasil Pupkin)
+  - Galician (Fran Dieguez)
+  - Georgian (Ekaterine Papava)
+  - Hebrew (Yosef Or Boczko)
+  - Indonesian (Kukuh Syafaat)
+  - Portuguese (Hugo Carvalho)
+  - Russian (Aleksandr Melman)
+  - Turkish (Sabri Ünal, Emin Tufan Çetin)
+  - Ukrainian (Yuri Chornoivan)
 
 
 Overview of changes in GLib 2.75.2, 2023-01-06
