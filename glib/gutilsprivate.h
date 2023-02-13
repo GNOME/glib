@@ -28,7 +28,6 @@
 
 G_BEGIN_DECLS
 
-GLIB_AVAILABLE_IN_2_60
 void g_set_user_dirs (const gchar *first_dir_type,
                       ...) G_GNUC_NULL_TERMINATED;
 
