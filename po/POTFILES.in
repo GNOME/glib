@@ -196,6 +196,7 @@ glib/goption.c
 glib/gregex.c
 glib/gshell.c
 glib/gspawn.c
+glib/gspawn-private.h
 glib/gspawn-win32.c
 glib/gstrfuncs.c
 glib/guri.c
