@@ -265,8 +265,8 @@ array_new_take_zero_terminated (void)
   for (guint8 i = 1; i < array_size; i++)
     g_array_append_val (garray, i);
 
-  val = G_MAXUINT8 / 2;
-  g_array_append_val (garray, val);
+  guint8 byte_val = G_MAXUINT8 / 2;
+  g_array_append_val (garray, byte_val);
 
   data = g_array_steal (garray, &len);
   g_assert_cmpuint (array_size, ==, len);
@@ -285,10 +285,10 @@ array_new_take_zero_terminated (void)
   g_assert_cmpmem (old_data_copy, array_size * sizeof (guint8),
                    garray->data, array_size * sizeof (guint8));
 
-  val = 55;
-  g_array_append_val (garray, val);
-  val = 33;
-  g_array_prepend_val (garray, val);
+  byte_val = 55;
+  g_array_append_val (garray, byte_val);
+  byte_val = 33;
+  g_array_prepend_val (garray, byte_val);
 
   g_assert_cmpuint (garray->len, ==, array_size + 2);
   g_assert_cmpuint (g_array_index (garray, guint8, 0), ==, 33);
