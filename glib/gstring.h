@@ -207,6 +207,8 @@ g_string_append_len_inline (GString    *gstring,
                             const char *val,
                             gssize      len)
 {
+  gsize len_unsigned;
+
   if G_UNLIKELY (gstring == NULL)
     return g_string_append_len (gstring, val, len);
 
@@ -214,16 +216,18 @@ g_string_append_len_inline (GString    *gstring,
     return (len != 0) ? g_string_append_len (gstring, val, len) : gstring;
 
   if (len < 0)
-    len = strlen (val);
+    len_unsigned = strlen (val);
+  else
+    len_unsigned = (gsize) len;
 
-  if (G_LIKELY (gstring->len + len < gstring->allocated_len))
+  if (G_LIKELY (gstring->len + len_unsigned < gstring->allocated_len))
     {
       char *end = gstring->str + gstring->len;
-      if (G_LIKELY (val + len <= end || val > end + len))
-        memcpy (end, val, len);
+      if (G_LIKELY (val + len_unsigned <= end || val > end + len_unsigned))
+        memcpy (end, val, len_unsigned);
       else
-        memmove (end, val, len);
-      gstring->len += len;
+        memmove (end, val, len_unsigned);
+      gstring->len += len_unsigned;
       gstring->str[gstring->len] = 0;
       return gstring;
     }
