@@ -82,7 +82,7 @@ typedef void (*GTestFixtureFunc) (gpointer      fixture,
                                         } G_STMT_END
 #define g_assert_cmpmem(m1, l1, m2, l2) G_STMT_START {\
                                              gconstpointer __m1 = m1, __m2 = m2; \
-                                             int __l1 = l1, __l2 = l2; \
+                                             size_t __l1 = (size_t) l1, __l2 = (size_t) l2; \
                                              if (__l1 != 0 && __m1 == NULL) \
                                                g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
                                                                     "assertion failed (" #l1 " == 0 || " #m1 " != NULL)"); \
