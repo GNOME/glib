@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2023-02-13 18:29+0000\n"
-"PO-Revision-Date: 2023-02-13 21:30+0200\n"
+"POT-Creation-Date: 2023-02-15 16:30+0000\n"
+"PO-Revision-Date: 2023-02-15 19:37+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -580,11 +580,16 @@ msgstr ""
 "Перепробувані усі доступні механізми автентифікації (проведено: %s) "
 "(доступно: %s)"
 
-#: gio/gdbusauth.c:1178
+#: gio/gdbusauth.c:1045
+#| msgid "Unexpected lack of content trying to read a line"
+msgid "Unexpected lack of content trying to read a byte"
+msgstr "Неочікувана відсутність вмісту при читанні байта"
+
+#: gio/gdbusauth.c:1195
 msgid "User IDs must be the same for peer and server"
 msgstr "Ідентифікатори користувача для вузла і сервера мають бути однаковими"
 
-#: gio/gdbusauth.c:1190
+#: gio/gdbusauth.c:1207
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr "Скасовано через GDBusAuthObserver::authorize-authenticated-peer"
 
@@ -5992,7 +5997,6 @@ msgstr "Не вдалося зчитати достатню кількість �
 
 #: glib/gspawn-private.h:134
 #, c-format
-#| msgid "Invalid seek request"
 msgid "Invalid source FDs argument"
 msgstr "Неправильний аргумент дескрипторів файлів джерела"
 
