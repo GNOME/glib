@@ -102,9 +102,9 @@ test_string_new (void)
   string2 = g_string_new_len ("foobar", 3);
 
   g_assert_cmpstr (string1->str, ==, "foo");
-  g_assert_cmpint (string1->len, ==, 3);
+  g_assert_cmpuint (string1->len, ==, 3);
   g_assert_cmpstr (string2->str, ==, "foo");
-  g_assert_cmpint (string2->len, ==, 3);
+  g_assert_cmpuint (string2->len, ==, 3);
 
   g_string_free (string1, TRUE);
   g_string_free (string2, TRUE);
@@ -183,7 +183,7 @@ static void
 test_string_append_c (void)
 {
   GString *string;
-  gint i;
+  guint i;
 
   string = g_string_new ("hi pete!");
 
@@ -197,7 +197,7 @@ test_string_append_c (void)
   g_assert_true ((strlen("hi pete!") + 10000) == strlen(string->str));
 
   for (i = 0; i < 10000; i++)
-    g_assert_true (string->str[strlen ("Hi pete!") + i] == 'a' + (i%26));
+    g_assert_true (string->str[strlen ("Hi pete!") + i] == 'a' + (gchar) (i%26));
 
   g_string_free (string, TRUE);
 }
@@ -593,7 +593,7 @@ test_string_set_size (void)
   g_string_set_size (s, 30);
 
   g_assert_cmpstr (s->str, ==, "foo");
-  g_assert_cmpint (s->len, ==, 30);
+  g_assert_cmpuint (s->len, ==, 30);
 
   g_string_free (s, TRUE);
 }
@@ -613,7 +613,7 @@ test_string_to_bytes (void)
 
   byte_data = g_bytes_get_data (bytes, &byte_len);
 
-  g_assert_cmpint (byte_len, ==, 7);
+  g_assert_cmpuint (byte_len, ==, 7);
 
   g_assert_cmpmem (byte_data, byte_len, "foo-bar", 7);
 
