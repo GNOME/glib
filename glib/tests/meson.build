@@ -129,6 +129,11 @@ glib_tests = {
   },
   'strfuncs' : {},
   'string' : {},
+  'string-macro' : {
+    'source' : 'string.c',
+    'c_args' : cc.get_id() == 'gcc' ? ['-Werror=sign-conversion'] : [],
+    'install' : false,
+  },
   'strvbuilder' : {},
   'testing' : {
     'args': [ '--verbose' ],
