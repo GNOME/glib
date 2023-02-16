@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2023-02-13 18:29+0000\n"
-"PO-Revision-Date: 2023-02-14 09:34+0700\n"
+"POT-Creation-Date: 2023-02-15 16:30+0000\n"
+"PO-Revision-Date: 2023-02-16 10:29+0700\n"
 "Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
 "Language-Team: Indonesian <gnome@i15n.org>\n"
 "Language: id\n"
@@ -564,11 +564,15 @@ msgstr ""
 "Menghabiskan semua mekanisme autentikasi yang tersedia (dicoba: %s) "
 "(tersedia: %s)"
 
-#: gio/gdbusauth.c:1178
+#: gio/gdbusauth.c:1045
+msgid "Unexpected lack of content trying to read a byte"
+msgstr "Ketiadaan isi yang tak diharapkan ketika membaca suatu bita"
+
+#: gio/gdbusauth.c:1195
 msgid "User IDs must be the same for peer and server"
 msgstr "ID Pengguna harus sama untuk rakan (peer) dan peladen"
 
-#: gio/gdbusauth.c:1190
+#: gio/gdbusauth.c:1207
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr "Dibatalkan melalui GDBusAuthObserver::authorize-authenticated-peer"
 
