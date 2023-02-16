@@ -292,6 +292,8 @@ cross-mingw64:
     - .cross-build-linux
     - .only-default
   image: $MINGW_IMAGE
+  variables:
+    PYTHONUTF8: "1"
   script:
     # FIXME: Add --werror
     - meson ${MESON_COMMON_OPTIONS} --cross-file=/opt/cross_file_mingw64.txt _build
@@ -322,6 +324,7 @@ msys2-mingw32:
     MSYSTEM: "MINGW32"
     CHERE_INVOKING: "yes"
     CFLAGS: -coverage -ftest-coverage -fprofile-arcs
+    PYTHONUTF8: "1"
   script:
     - C:\msys64\usr\bin\pacman --noconfirm -Syyuu --ask 20
     - C:\msys64\usr\bin\bash .gitlab-ci/show-execution-environment.sh
@@ -347,6 +350,7 @@ msys2-clang64:
   variables:
     MSYSTEM: "CLANG64"
     CHERE_INVOKING: "yes"
+    PYTHONUTF8: "1"
   script:
     - C:\msys64\usr\bin\pacman --noconfirm -Syyuu --ask 20
     - C:\msys64\usr\bin\bash .gitlab-ci/show-execution-environment.sh
@@ -366,6 +370,8 @@ vs2017-x64:
   tags:
     - win32-ps
   needs: []
+  variables:
+    PYTHONUTF8: "1"
   script:
     # FIXME: These should use --wrap-mode=nodownload but the Windows CI machines
     # aren’t currently set up for that.
@@ -395,6 +401,8 @@ vs2017-x64-static:
   tags:
     - win32-ps
   needs: []
+  variables:
+    PYTHONUTF8: "1"
   script:
     # FIXME: These should use --wrap-mode=nodownload but the Windows CI machines
     # aren’t currently set up for that.
