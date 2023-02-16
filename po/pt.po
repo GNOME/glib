@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 3.12\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2023-02-13 18:29+0000\n"
-"PO-Revision-Date: 2023-02-14 11:56+0000\n"
+"POT-Creation-Date: 2023-02-15 16:30+0000\n"
+"PO-Revision-Date: 2023-02-16 18:33+0000\n"
 "Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
 "Language-Team: Portuguese <https://l10n.gnome.org/teams/pt/>\n"
 "Language: pt\n"
@@ -571,12 +571,16 @@ msgstr ""
 "Esgotados todos os mecanismos de autenticação disponíveis (tentados: %s) "
 "(disponíveis: %s)"
 
-#: gio/gdbusauth.c:1178
+#: gio/gdbusauth.c:1045
+msgid "Unexpected lack of content trying to read a byte"
+msgstr "Falta de conteúdo inesperada ao tentar ler um byte"
+
+#: gio/gdbusauth.c:1195
 msgid "User IDs must be the same for peer and server"
 msgstr ""
 "As IDs dos utilizadores devem ser as mesmas para os pares e para o servidor"
 
-#: gio/gdbusauth.c:1190
+#: gio/gdbusauth.c:1207
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr "Cancelado via GDBusAuthObserver::authorize-authenticated-peer"
 
