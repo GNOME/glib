@@ -32,14 +32,33 @@
 #endif
 
 #ifdef G_OS_WIN32
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
 #include <fcntl.h>
 #include <io.h>
 #define pipe(fds) _pipe(fds, 4096, _O_BINARY)
-#include <WinError.h>
 #endif
 
 #ifdef G_OS_WIN32
 static gchar *dirname = NULL;
+#endif
+
+#ifdef G_OS_WIN32
+static char *
+get_system_directory (void)
+{
+  wchar_t path_utf16[MAX_PATH] = {0};
+  char *path = NULL;
+
+  if (!GetSystemDirectoryW (path_utf16, G_N_ELEMENTS (path_utf16)))
+    g_error ("%s failed with error code %u", "GetSystemWindowsDirectory",
+             (unsigned int) GetLastError ());
+
+  path = g_utf16_to_utf8 (path_utf16, -1, NULL, NULL, NULL);
+  g_assert_nonnull (path);
+
+  return path;
+}
 #endif
 
 static void
@@ -54,12 +73,16 @@ test_spawn_basics (void)
   char buf[100];
   int pipedown[2], pipeup[2];
   gchar **argv = NULL;
+  gchar *system_directory;
   gchar spawn_binary[1000] = {0};
   gchar full_cmdline[1000] = {0};
+#endif
+
+#ifdef G_OS_WIN32
+  system_directory = get_system_directory ();
 
   g_snprintf (spawn_binary, sizeof (spawn_binary),
               "%s\\spawn-test-win32-gui.exe", dirname);
-  g_free (dirname);
 #endif
 
   err = NULL;
@@ -93,15 +116,26 @@ test_spawn_basics (void)
   /* Running sort synchronously, collecting its output. 'sort' command
    * is selected because it is non-builtin command on both unix and
    * win32 with well-defined stdout behaviour.
+   * On win32 we use an absolute path to the system-provided sort.exe
+   * because a different sort.exe may be available in PATH. This is
+   * important e.g for the MSYS2 environment, which provides coreutils
+   * sort.exe
    */
   g_file_set_contents ("spawn-test-created-file.txt",
                        "line first\nline 2\nline last\n", -1, &err);
   g_assert_no_error(err);
 
+#ifndef G_OS_WIN32
   result = g_spawn_command_line_sync ("sort spawn-test-created-file.txt",
                                       &output, &erroutput, NULL, &err);
+#else
+  g_snprintf (full_cmdline, sizeof (full_cmdline),
+              "'%s\\sort.exe' spawn-test-created-file.txt", system_directory);
+  result = g_spawn_command_line_sync (full_cmdline, &output, &erroutput, NULL, &err);
+#endif
   g_assert_no_error (err);
   g_assert_true (result);
+  g_assert_nonnull (output);
   if (strchr (output, '\r') != NULL)
     g_assert_cmpstr (output, ==, "line 2\r\nline first\r\nline last\r\n");
   else
@@ -113,14 +147,22 @@ test_spawn_basics (void)
   g_free (erroutput);
   erroutput = NULL;
 
+#ifndef G_OS_WIN32
   result = g_spawn_command_line_sync ("sort non-existing-file.txt",
                                       NULL, &erroutput, NULL, &err);
+#else
+  g_snprintf (full_cmdline, sizeof (full_cmdline),
+              "'%s\\sort.exe' non-existing-file.txt", system_directory);
+  result = g_spawn_command_line_sync (full_cmdline, NULL, &erroutput, NULL, &err);
+#endif
   g_assert_no_error (err);
   g_assert_true (result);
 #ifndef G_OS_WIN32
+  /* Test against output of coreutils sort */
   g_assert_true (g_str_has_prefix (erroutput, "sort: "));
   g_assert_nonnull (strstr (erroutput, g_strerror (ENOENT)));
 #else
+  /* Test against output of windows sort */
   {
     gchar *file_not_found_message = g_win32_error_message (ERROR_FILE_NOT_FOUND);
     g_test_message ("sort output: %s\nExpected message: %s", erroutput, file_not_found_message);
@@ -128,7 +170,6 @@ test_spawn_basics (void)
     g_free (file_not_found_message);
   }
 #endif
-
   g_free (erroutput);
   erroutput = NULL;
   g_unlink ("spawn-test-created-file.txt");
@@ -210,6 +251,10 @@ test_spawn_basics (void)
 
   buf[n] = '\0';
   g_assert_cmpstr (buf, ==, "See ya");
+#endif
+
+#ifdef G_OS_WIN32
+  g_free (system_directory);
 #endif
 }
 
@@ -329,6 +374,8 @@ int
 main (int   argc,
       char *argv[])
 {
+  int ret_val;
+
 #ifdef G_OS_WIN32
   dirname = g_path_get_dirname (argv[0]);
 #endif
@@ -340,5 +387,10 @@ main (int   argc,
   g_test_add_func ("/spawn/stdio-overwrite", test_spawn_stdio_overwrite);
 #endif
 
-  return g_test_run ();
+  ret_val = g_test_run ();
+
+#ifdef G_OS_WIN32
+  g_free (dirname);
+#endif
+  return ret_val;
 }
