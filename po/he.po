@@ -14,32 +14,32 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.he\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2023-01-24 20:37+0000\n"
-"PO-Revision-Date: 2023-01-25 10:16+0200\n"
-"Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
+"POT-Creation-Date: 2023-02-15 16:30+0000\n"
+"PO-Revision-Date: 2023-02-17 11:51+0200\n"
+"Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <>\n"
 "Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n==2 ? 1 : n>10 && n%10==0 ? "
-"2 : 3)\n"
-"X-Generator: Gtranslator 42.0\n"
+"2 : 3);\n"
+"X-Generator: Poedit 3.2.2\n"
 
-#: gio/gappinfo.c:335
+#: gio/gappinfo.c:339
 msgid "Setting default applications not supported yet"
 msgstr "Setting default applications not supported yet"
 
-#: gio/gappinfo.c:368
+#: gio/gappinfo.c:372
 msgid "Setting application as last used for type not supported yet"
 msgstr "Setting application as last used for type not supported yet"
 
-#: gio/gappinfo.c:810
+#: gio/gappinfo.c:814
 #, c-format
 msgid "Failed to find default application for content type ‘%s’"
 msgstr "Failed to find default application for content type ‘%s’"
 
-#: gio/gappinfo.c:870
+#: gio/gappinfo.c:874
 #, c-format
 msgid "Failed to find default application for URI Scheme ‘%s’"
 msgstr "Failed to find default application for URI Scheme ‘%s’"
@@ -549,7 +549,7 @@ msgstr ""
 #: gio/gdbusaddress.c:1393
 #, c-format
 msgid "Unknown bus type %d"
-msgstr "Unknown bus type %d"
+msgstr "סוג אפיק לא ידוע %d"
 
 #: gio/gdbusauth.c:294
 msgid "Unexpected lack of content trying to read a line"
@@ -566,11 +566,15 @@ msgid ""
 msgstr ""
 "Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
 
-#: gio/gdbusauth.c:1178
-msgid "User IDs must be the same for peer and server"
-msgstr "User IDs must be the same for peer and server"
+#: gio/gdbusauth.c:1045
+msgid "Unexpected lack of content trying to read a byte"
+msgstr "העדר הקשר בלתי צפוי בניסיון לקרוא בית"
 
-#: gio/gdbusauth.c:1190
+#: gio/gdbusauth.c:1195
+msgid "User IDs must be the same for peer and server"
+msgstr "מזהי המשתמשים חייבים להיות זהים לעמית ולשרת"
+
+#: gio/gdbusauth.c:1207
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 
@@ -759,7 +763,7 @@ msgstr "Object does not exist at path “%s”"
 
 #: gio/gdbusmessage.c:1306
 msgid "type is INVALID"
-msgstr "type is INVALID"
+msgstr "הסוג שגוי"
 
 #: gio/gdbusmessage.c:1317
 msgid "METHOD_CALL message: PATH or MEMBER header field is missing"
@@ -1048,7 +1052,7 @@ msgstr ""
 #: gio/gdbus-tool.c:1733
 #, c-format
 msgid "Error: %s\n"
-msgstr "Error: %s\n"
+msgstr "שגיאה: %s\n"
 
 #: gio/gdbus-tool.c:215 gio/gdbus-tool.c:289 gio/gdbus-tool.c:1749
 #, c-format
@@ -1132,7 +1136,7 @@ msgstr "Emit a signal."
 #: gio/gdbus-tool.c:2068 gio/gdbus-tool.c:2288
 #, c-format
 msgid "Error connecting: %s\n"
-msgstr "Error connecting: %s\n"
+msgstr "שגיאת התחברות: %s\n"
 
 #: gio/gdbus-tool.c:705
 #, c-format
@@ -1235,7 +1239,7 @@ msgstr "Object path to introspect"
 
 #: gio/gdbus-tool.c:1697
 msgid "Print XML"
-msgstr "Print XML"
+msgstr "הצגת XML"
 
 #: gio/gdbus-tool.c:1698
 msgid "Introspect children"
@@ -1309,7 +1313,7 @@ msgstr "Not authorized to change debug settings"
 
 #: gio/gdesktopappinfo.c:2242 gio/gdesktopappinfo.c:5223
 msgid "Unnamed"
-msgstr "Unnamed"
+msgstr "ללא שם"
 
 #: gio/gdesktopappinfo.c:2652
 msgid "Desktop file didn’t specify Exec field"
@@ -1426,7 +1430,7 @@ msgstr "Can’t copy directory over directory"
 
 #: gio/gfile.c:2709
 msgid "Target file exists"
-msgstr "Target file exists"
+msgstr "קובץ יעד קיים"
 
 #: gio/gfile.c:2728
 msgid "Can’t recursively copy directory"
@@ -1461,7 +1465,7 @@ msgstr "Can’t copy special file"
 msgid "Invalid symlink value given"
 msgstr "Invalid symlink value given"
 
-#: gio/gfile.c:4163 glib/gfileutils.c:2359
+#: gio/gfile.c:4163 glib/gfileutils.c:2392
 msgid "Symbolic links not supported"
 msgstr "Symbolic links not supported"
 
@@ -1531,7 +1535,7 @@ msgstr "Truncate not supported on stream"
 #: gio/ghttpproxy.c:93 gio/gresolver.c:460 gio/gresolver.c:613
 #: glib/gconvert.c:1829
 msgid "Invalid hostname"
-msgstr "Invalid hostname"
+msgstr "שם מארח שגוי"
 
 #: gio/ghttpproxy.c:145
 msgid "Bad HTTP proxy reply"
@@ -2389,7 +2393,7 @@ msgstr "Follow symbolic links, mounts and shortcuts"
 msgid "List contents of directories in a tree-like format."
 msgstr "List contents of directories in a tree-like format."
 
-#: gio/glib-compile-resources.c:142 gio/glib-compile-schemas.c:1516
+#: gio/glib-compile-resources.c:142 gio/glib-compile-schemas.c:1513
 #, c-format
 msgid "Element <%s> not allowed inside <%s>"
 msgstr "Element <%s> not allowed inside <%s>"
@@ -2444,7 +2448,7 @@ msgstr "Error compressing file %s"
 msgid "text may not appear inside <%s>"
 msgstr "text may not appear inside <%s>"
 
-#: gio/glib-compile-resources.c:821 gio/glib-compile-schemas.c:2174
+#: gio/glib-compile-resources.c:821 gio/glib-compile-schemas.c:2171
 msgid "Show program version and exit"
 msgstr "Show program version and exit"
 
@@ -2460,8 +2464,8 @@ msgstr ""
 "The directories to load files referenced in FILE from (default: current "
 "directory)"
 
-#: gio/glib-compile-resources.c:823 gio/glib-compile-schemas.c:2175
-#: gio/glib-compile-schemas.c:2204
+#: gio/glib-compile-resources.c:823 gio/glib-compile-schemas.c:2172
+#: gio/glib-compile-schemas.c:2201
 msgid "DIRECTORY"
 msgstr "DIRECTORY"
 
@@ -2682,16 +2686,16 @@ msgstr "alias target “%s” is not in <choices>"
 msgid "<aliases> must contain at least one <alias>"
 msgstr "<aliases> must contain at least one <alias>"
 
-#: gio/glib-compile-schemas.c:799
+#: gio/glib-compile-schemas.c:796
 msgid "Empty names are not permitted"
 msgstr "Empty names are not permitted"
 
-#: gio/glib-compile-schemas.c:809
+#: gio/glib-compile-schemas.c:806
 #, c-format
 msgid "Invalid name “%s”: names must begin with a lowercase letter"
 msgstr "Invalid name “%s”: names must begin with a lowercase letter"
 
-#: gio/glib-compile-schemas.c:821
+#: gio/glib-compile-schemas.c:818
 #, c-format
 msgid ""
 "Invalid name “%s”: invalid character “%c”; only lowercase letters, numbers "
@@ -2700,36 +2704,36 @@ msgstr ""
 "Invalid name “%s”: invalid character “%c”; only lowercase letters, numbers "
 "and hyphen (“-”) are permitted"
 
-#: gio/glib-compile-schemas.c:830
+#: gio/glib-compile-schemas.c:827
 #, c-format
 msgid "Invalid name “%s”: two successive hyphens (“--”) are not permitted"
 msgstr "Invalid name “%s”: two successive hyphens (“--”) are not permitted"
 
-#: gio/glib-compile-schemas.c:839
+#: gio/glib-compile-schemas.c:836
 #, c-format
 msgid "Invalid name “%s”: the last character may not be a hyphen (“-”)"
 msgstr "Invalid name “%s”: the last character may not be a hyphen (“-”)"
 
-#: gio/glib-compile-schemas.c:847
+#: gio/glib-compile-schemas.c:844
 #, c-format
 msgid "Invalid name “%s”: maximum length is 1024"
 msgstr "Invalid name “%s”: maximum length is 1024"
 
-#: gio/glib-compile-schemas.c:919
+#: gio/glib-compile-schemas.c:916
 #, c-format
 msgid "<child name='%s'> already specified"
 msgstr "<child name='%s'> already specified"
 
-#: gio/glib-compile-schemas.c:945
+#: gio/glib-compile-schemas.c:942
 msgid "Cannot add keys to a “list-of” schema"
 msgstr "Cannot add keys to a “list-of” schema"
 
-#: gio/glib-compile-schemas.c:956
+#: gio/glib-compile-schemas.c:953
 #, c-format
 msgid "<key name='%s'> already specified"
 msgstr "<key name='%s'> already specified"
 
-#: gio/glib-compile-schemas.c:974
+#: gio/glib-compile-schemas.c:971
 #, c-format
 msgid ""
 "<key name='%s'> shadows <key name='%s'> in <schema id='%s'>; use <override> "
@@ -2738,7 +2742,7 @@ msgstr ""
 "<key name='%s'> shadows <key name='%s'> in <schema id='%s'>; use <override> "
 "to modify value"
 
-#: gio/glib-compile-schemas.c:985
+#: gio/glib-compile-schemas.c:982
 #, c-format
 msgid ""
 "Exactly one of “type”, “enum” or “flags” must be specified as an attribute "
@@ -2747,63 +2751,63 @@ msgstr ""
 "Exactly one of “type”, “enum” or “flags” must be specified as an attribute "
 "to <key>"
 
-#: gio/glib-compile-schemas.c:1004
+#: gio/glib-compile-schemas.c:1001
 #, c-format
 msgid "<%s id='%s'> not (yet) defined."
 msgstr "<%s id='%s'> not (yet) defined."
 
-#: gio/glib-compile-schemas.c:1019
+#: gio/glib-compile-schemas.c:1016
 #, c-format
 msgid "Invalid GVariant type string “%s”"
 msgstr "Invalid GVariant type string “%s”"
 
-#: gio/glib-compile-schemas.c:1049
+#: gio/glib-compile-schemas.c:1046
 msgid "<override> given but schema isn’t extending anything"
 msgstr "<override> given but schema isn’t extending anything"
 
-#: gio/glib-compile-schemas.c:1062
+#: gio/glib-compile-schemas.c:1059
 #, c-format
 msgid "No <key name='%s'> to override"
 msgstr "No <key name='%s'> to override"
 
-#: gio/glib-compile-schemas.c:1070
+#: gio/glib-compile-schemas.c:1067
 #, c-format
 msgid "<override name='%s'> already specified"
 msgstr "<override name='%s'> already specified"
 
-#: gio/glib-compile-schemas.c:1143
+#: gio/glib-compile-schemas.c:1140
 #, c-format
 msgid "<schema id='%s'> already specified"
 msgstr "<schema id='%s'> already specified"
 
-#: gio/glib-compile-schemas.c:1155
+#: gio/glib-compile-schemas.c:1152
 #, c-format
 msgid "<schema id='%s'> extends not yet existing schema “%s”"
 msgstr "<schema id='%s'> extends not yet existing schema “%s”"
 
-#: gio/glib-compile-schemas.c:1171
+#: gio/glib-compile-schemas.c:1168
 #, c-format
 msgid "<schema id='%s'> is list of not yet existing schema “%s”"
 msgstr "<schema id='%s'> is list of not yet existing schema “%s”"
 
-#: gio/glib-compile-schemas.c:1179
+#: gio/glib-compile-schemas.c:1176
 #, c-format
 msgid "Cannot be a list of a schema with a path"
 msgstr "Cannot be a list of a schema with a path"
 
-#: gio/glib-compile-schemas.c:1189
+#: gio/glib-compile-schemas.c:1186
 #, c-format
 msgid "Cannot extend a schema with a path"
 msgstr "Cannot extend a schema with a path"
 
-#: gio/glib-compile-schemas.c:1199
+#: gio/glib-compile-schemas.c:1196
 #, c-format
 msgid ""
 "<schema id='%s'> is a list, extending <schema id='%s'> which is not a list"
 msgstr ""
 "<schema id='%s'> is a list, extending <schema id='%s'> which is not a list"
 
-#: gio/glib-compile-schemas.c:1209
+#: gio/glib-compile-schemas.c:1206
 #, c-format
 msgid ""
 "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but “%s” "
@@ -2812,17 +2816,17 @@ msgstr ""
 "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but “%s” "
 "does not extend “%s”"
 
-#: gio/glib-compile-schemas.c:1226
+#: gio/glib-compile-schemas.c:1223
 #, c-format
 msgid "A path, if given, must begin and end with a slash"
 msgstr "A path, if given, must begin and end with a slash"
 
-#: gio/glib-compile-schemas.c:1233
+#: gio/glib-compile-schemas.c:1230
 #, c-format
 msgid "The path of a list must end with “:/”"
 msgstr "The path of a list must end with “:/”"
 
-#: gio/glib-compile-schemas.c:1242
+#: gio/glib-compile-schemas.c:1239
 #, c-format
 msgid ""
 "Warning: Schema “%s” has path “%s”.  Paths starting with “/apps/”, “/"
@@ -2831,49 +2835,49 @@ msgstr ""
 "Warning: Schema “%s” has path “%s”.  Paths starting with “/apps/”, “/"
 "desktop/” or “/system/” are deprecated."
 
-#: gio/glib-compile-schemas.c:1272
+#: gio/glib-compile-schemas.c:1269
 #, c-format
 msgid "<%s id='%s'> already specified"
 msgstr "<%s id='%s'> already specified"
 
-#: gio/glib-compile-schemas.c:1422 gio/glib-compile-schemas.c:1438
+#: gio/glib-compile-schemas.c:1419 gio/glib-compile-schemas.c:1435
 #, c-format
 msgid "Only one <%s> element allowed inside <%s>"
 msgstr "Only one <%s> element allowed inside <%s>"
 
-#: gio/glib-compile-schemas.c:1520
+#: gio/glib-compile-schemas.c:1517
 #, c-format
 msgid "Element <%s> not allowed at the top level"
 msgstr "Element <%s> not allowed at the top level"
 
-#: gio/glib-compile-schemas.c:1538
+#: gio/glib-compile-schemas.c:1535
 msgid "Element <default> is required in <key>"
 msgstr "Element <default> is required in <key>"
 
-#: gio/glib-compile-schemas.c:1628
+#: gio/glib-compile-schemas.c:1625
 #, c-format
 msgid "Text may not appear inside <%s>"
 msgstr "Text may not appear inside <%s>"
 
-#: gio/glib-compile-schemas.c:1696
+#: gio/glib-compile-schemas.c:1693
 #, c-format
 msgid "Warning: undefined reference to <schema id='%s'/>"
 msgstr "Warning: undefined reference to <schema id='%s'/>"
 
 #. Translators: Do not translate "--strict".
-#: gio/glib-compile-schemas.c:1835 gio/glib-compile-schemas.c:1914
+#: gio/glib-compile-schemas.c:1832 gio/glib-compile-schemas.c:1911
 msgid "--strict was specified; exiting."
 msgstr "--strict was specified; exiting."
 
-#: gio/glib-compile-schemas.c:1847
+#: gio/glib-compile-schemas.c:1844
 msgid "This entire file has been ignored."
 msgstr "This entire file has been ignored."
 
-#: gio/glib-compile-schemas.c:1910
+#: gio/glib-compile-schemas.c:1907
 msgid "Ignoring this file."
 msgstr "Ignoring this file."
 
-#: gio/glib-compile-schemas.c:1965
+#: gio/glib-compile-schemas.c:1962
 #, c-format
 msgid ""
 "No such key “%s” in schema “%s” as specified in override file “%s”; ignoring "
@@ -2882,7 +2886,7 @@ msgstr ""
 "No such key “%s” in schema “%s” as specified in override file “%s”; ignoring "
 "override for this key."
 
-#: gio/glib-compile-schemas.c:1973
+#: gio/glib-compile-schemas.c:1970
 #, c-format
 msgid ""
 "No such key “%s” in schema “%s” as specified in override file “%s” and --"
@@ -2891,7 +2895,7 @@ msgstr ""
 "No such key “%s” in schema “%s” as specified in override file “%s” and --"
 "strict was specified; exiting."
 
-#: gio/glib-compile-schemas.c:1995
+#: gio/glib-compile-schemas.c:1992
 #, c-format
 msgid ""
 "Cannot provide per-desktop overrides for localized key “%s” in schema "
@@ -2900,7 +2904,7 @@ msgstr ""
 "Cannot provide per-desktop overrides for localized key “%s” in schema "
 "“%s” (override file “%s”); ignoring override for this key."
 
-#: gio/glib-compile-schemas.c:2004
+#: gio/glib-compile-schemas.c:2001
 #, c-format
 msgid ""
 "Cannot provide per-desktop overrides for localized key “%s” in schema "
@@ -2909,7 +2913,7 @@ msgstr ""
 "Cannot provide per-desktop overrides for localized key “%s” in schema "
 "“%s” (override file “%s”) and --strict was specified; exiting."
 
-#: gio/glib-compile-schemas.c:2028
+#: gio/glib-compile-schemas.c:2025
 #, c-format
 msgid ""
 "Error parsing key “%s” in schema “%s” as specified in override file “%s”: "
@@ -2918,7 +2922,7 @@ msgstr ""
 "Error parsing key “%s” in schema “%s” as specified in override file “%s”: "
 "%s. Ignoring override for this key."
 
-#: gio/glib-compile-schemas.c:2040
+#: gio/glib-compile-schemas.c:2037
 #, c-format
 msgid ""
 "Error parsing key “%s” in schema “%s” as specified in override file “%s”: "
@@ -2927,7 +2931,7 @@ msgstr ""
 "Error parsing key “%s” in schema “%s” as specified in override file “%s”: "
 "%s. --strict was specified; exiting."
 
-#: gio/glib-compile-schemas.c:2067
+#: gio/glib-compile-schemas.c:2064
 #, c-format
 msgid ""
 "Override for key “%s” in schema “%s” in override file “%s” is outside the "
@@ -2936,7 +2940,7 @@ msgstr ""
 "Override for key “%s” in schema “%s” in override file “%s” is outside the "
 "range given in the schema; ignoring override for this key."
 
-#: gio/glib-compile-schemas.c:2077
+#: gio/glib-compile-schemas.c:2074
 #, c-format
 msgid ""
 "Override for key “%s” in schema “%s” in override file “%s” is outside the "
@@ -2945,7 +2949,7 @@ msgstr ""
 "Override for key “%s” in schema “%s” in override file “%s” is outside the "
 "range given in the schema and --strict was specified; exiting."
 
-#: gio/glib-compile-schemas.c:2103
+#: gio/glib-compile-schemas.c:2100
 #, c-format
 msgid ""
 "Override for key “%s” in schema “%s” in override file “%s” is not in the "
@@ -2954,7 +2958,7 @@ msgstr ""
 "Override for key “%s” in schema “%s” in override file “%s” is not in the "
 "list of valid choices; ignoring override for this key."
 
-#: gio/glib-compile-schemas.c:2113
+#: gio/glib-compile-schemas.c:2110
 #, c-format
 msgid ""
 "Override for key “%s” in schema “%s” in override file “%s” is not in the "
@@ -2963,23 +2967,23 @@ msgstr ""
 "Override for key “%s” in schema “%s” in override file “%s” is not in the "
 "list of valid choices and --strict was specified; exiting."
 
-#: gio/glib-compile-schemas.c:2175
+#: gio/glib-compile-schemas.c:2172
 msgid "Where to store the gschemas.compiled file"
 msgstr "Where to store the gschemas.compiled file"
 
-#: gio/glib-compile-schemas.c:2176
+#: gio/glib-compile-schemas.c:2173
 msgid "Abort on any errors in schemas"
 msgstr "Abort on any errors in schemas"
 
-#: gio/glib-compile-schemas.c:2177
+#: gio/glib-compile-schemas.c:2174
 msgid "Do not write the gschema.compiled file"
 msgstr "Do not write the gschema.compiled file"
 
-#: gio/glib-compile-schemas.c:2178
+#: gio/glib-compile-schemas.c:2175
 msgid "Do not enforce key name restrictions"
 msgstr "Do not enforce key name restrictions"
 
-#: gio/glib-compile-schemas.c:2207
+#: gio/glib-compile-schemas.c:2204
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
@@ -2989,15 +2993,15 @@ msgstr ""
 "Schema files are required to have the extension .gschema.xml,\n"
 "and the cache file is called gschemas.compiled."
 
-#: gio/glib-compile-schemas.c:2228
+#: gio/glib-compile-schemas.c:2225
 msgid "You should give exactly one directory name"
 msgstr "You should give exactly one directory name"
 
-#: gio/glib-compile-schemas.c:2271
+#: gio/glib-compile-schemas.c:2268
 msgid "No schema files found: doing nothing."
 msgstr "No schema files found: doing nothing."
 
-#: gio/glib-compile-schemas.c:2273
+#: gio/glib-compile-schemas.c:2270
 msgid "No schema files found: removed existing output file."
 msgstr "No schema files found: removed existing output file."
 
@@ -4985,7 +4989,7 @@ msgstr "PM"
 msgid "Error opening directory “%s”: %s"
 msgstr "Error opening directory “%s”: %s"
 
-#: glib/gfileutils.c:735 glib/gfileutils.c:827
+#: glib/gfileutils.c:753 glib/gfileutils.c:845
 #, c-format
 msgid "Could not allocate %lu byte to read file “%s”"
 msgid_plural "Could not allocate %lu bytes to read file “%s”"
@@ -4994,72 +4998,72 @@ msgstr[1] "‫Could not allocate %lu bytes to read file “%s”"
 msgstr[2] "‫Could not allocate %lu bytes to read file “%s”"
 msgstr[3] "‫Could not allocate %lu bytes to read file “%s”"
 
-#: glib/gfileutils.c:752
+#: glib/gfileutils.c:770
 #, c-format
 msgid "Error reading file “%s”: %s"
 msgstr "Error reading file “%s”: %s"
 
-#: glib/gfileutils.c:788
+#: glib/gfileutils.c:806
 #, c-format
 msgid "File “%s” is too large"
 msgstr "File “%s” is too large"
 
-#: glib/gfileutils.c:852
+#: glib/gfileutils.c:870
 #, c-format
 msgid "Failed to read from file “%s”: %s"
 msgstr "Failed to read from file “%s”: %s"
 
-#: glib/gfileutils.c:902 glib/gfileutils.c:977 glib/gfileutils.c:1454
+#: glib/gfileutils.c:920 glib/gfileutils.c:995 glib/gfileutils.c:1472
 #, c-format
 msgid "Failed to open file “%s”: %s"
 msgstr "Failed to open file “%s”: %s"
 
-#: glib/gfileutils.c:915
+#: glib/gfileutils.c:933
 #, c-format
 msgid "Failed to get attributes of file “%s”: fstat() failed: %s"
 msgstr "Failed to get attributes of file “%s”: fstat() failed: %s"
 
-#: glib/gfileutils.c:946
+#: glib/gfileutils.c:964
 #, c-format
 msgid "Failed to open file “%s”: fdopen() failed: %s"
 msgstr "Failed to open file “%s”: fdopen() failed: %s"
 
-#: glib/gfileutils.c:1047
+#: glib/gfileutils.c:1065
 #, c-format
 msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
 msgstr "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
 
-#: glib/gfileutils.c:1161
+#: glib/gfileutils.c:1179
 #, c-format
 msgid "Failed to write file “%s”: write() failed: %s"
 msgstr "Failed to write file “%s”: write() failed: %s"
 
-#: glib/gfileutils.c:1182
+#: glib/gfileutils.c:1200
 #, c-format
 msgid "Failed to write file “%s”: fsync() failed: %s"
 msgstr "Failed to write file “%s”: fsync() failed: %s"
 
-#: glib/gfileutils.c:1343 glib/gfileutils.c:1758
+#: glib/gfileutils.c:1361 glib/gfileutils.c:1776
 #, c-format
 msgid "Failed to create file “%s”: %s"
 msgstr "Failed to create file “%s”: %s"
 
-#: glib/gfileutils.c:1388
+#: glib/gfileutils.c:1406
 #, c-format
 msgid "Existing file “%s” could not be removed: g_unlink() failed: %s"
 msgstr "Existing file “%s” could not be removed: g_unlink() failed: %s"
 
-#: glib/gfileutils.c:1723
+#: glib/gfileutils.c:1741
 #, c-format
 msgid "Template “%s” invalid, should not contain a “%s”"
 msgstr "Template “%s” invalid, should not contain a “%s”"
 
-#: glib/gfileutils.c:1736
+#: glib/gfileutils.c:1754
 #, c-format
 msgid "Template “%s” doesn’t contain XXXXXX"
 msgstr "Template “%s” doesn’t contain XXXXXX"
 
-#: glib/gfileutils.c:2315 glib/gfileutils.c:2344
+#: glib/gfileutils.c:2348 glib/gfileutils.c:2377
 #, c-format
 msgid "Failed to read the symbolic link “%s”: %s"
 msgstr "Failed to read the symbolic link “%s”: %s"
@@ -5120,8 +5124,8 @@ msgid "Key file contains unsupported encoding “%s”"
 msgstr "Key file contains unsupported encoding “%s”"
 
 #: glib/gkeyfile.c:1679 glib/gkeyfile.c:1852 glib/gkeyfile.c:3299
-#: glib/gkeyfile.c:3363 glib/gkeyfile.c:3493 glib/gkeyfile.c:3625
-#: glib/gkeyfile.c:3771 glib/gkeyfile.c:4006 glib/gkeyfile.c:4073
+#: glib/gkeyfile.c:3363 glib/gkeyfile.c:3493 glib/gkeyfile.c:3622
+#: glib/gkeyfile.c:3768 glib/gkeyfile.c:4003 glib/gkeyfile.c:4070
 #, c-format
 msgid "Key file does not have group “%s”"
 msgstr "Key file does not have group “%s”"
@@ -5157,31 +5161,31 @@ msgstr ""
 msgid "Key “%s” in group “%s” has value “%s” where %s was expected"
 msgstr "Key “%s” in group “%s” has value “%s” where %s was expected"
 
-#: glib/gkeyfile.c:4326
+#: glib/gkeyfile.c:4323
 msgid "Key file contains escape character at end of line"
 msgstr "Key file contains escape character at end of line"
 
-#: glib/gkeyfile.c:4348
+#: glib/gkeyfile.c:4345
 #, c-format
 msgid "Key file contains invalid escape sequence “%s”"
 msgstr "Key file contains invalid escape sequence “%s”"
 
-#: glib/gkeyfile.c:4493
+#: glib/gkeyfile.c:4490
 #, c-format
 msgid "Value “%s” cannot be interpreted as a number."
 msgstr "Value “%s” cannot be interpreted as a number."
 
-#: glib/gkeyfile.c:4507
+#: glib/gkeyfile.c:4504
 #, c-format
 msgid "Integer value “%s” out of range"
 msgstr "Integer value “%s” out of range"
 
-#: glib/gkeyfile.c:4540
+#: glib/gkeyfile.c:4537
 #, c-format
 msgid "Value “%s” cannot be interpreted as a float number."
 msgstr "Value “%s” cannot be interpreted as a float number."
 
-#: glib/gkeyfile.c:4579
+#: glib/gkeyfile.c:4576
 #, c-format
 msgid "Value “%s” cannot be interpreted as a boolean."
 msgstr "Value “%s” cannot be interpreted as a boolean."
@@ -5887,6 +5891,11 @@ msgstr "Unknown error executing child process “%s”"
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Failed to read enough data from child pid pipe (%s)"
+
+#: glib/gspawn-private.h:134
+#, c-format
+msgid "Invalid source FDs argument"
+msgstr "ארגומנט שגוי למקור מתארי קבצים (FDs)"
 
 #: glib/gspawn-win32.c:337
 msgid "Failed to read data from child process"
