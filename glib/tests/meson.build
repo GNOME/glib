@@ -124,7 +124,6 @@ glib_tests = {
     'extra_programs' : ['test-spawn-echo'],
   },
   'spawn-test' : {
-    'can_fail': host_system == 'windows' and cc.get_id() == 'gcc',
     'extra_programs' : host_machine.system() == 'windows' ? ['spawn-test-win32-gui'] : [],
   },
   'strfuncs' : {},
