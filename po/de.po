@@ -11,7 +11,7 @@
 # Tobias Endrigkeit <tobiasendrigkeit@googlemail.com>, 2012.
 # Bernd Homuth <dev@hmt.im>, 2015.
 # Wolfgang Stöggl <c72578@yahoo.de>, 2011, 2015-2016.
-# Tim Sabsch <tim@sabsch.com>, 2019-2022.
+# Tim Sabsch <tim@sabsch.com>, 2019-2023.
 # Mario Blättermann <mario.blaettermann@gmail.com>, 2010-2013, 2015-2018, 2020-2021.
 # Philipp Kiemle <philipp.kiemle@gmail.com>, 2021-2022.
 # Jürgen Benvenuti <gastornis@posteo.org>, 2022.
@@ -20,16 +20,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2022-09-22 12:38+0000\n"
-"PO-Revision-Date: 2022-09-24 20:17+0200\n"
-"Last-Translator: Jürgen Benvenuti <gastornis@posteo.org>\n"
+"POT-Creation-Date: 2023-01-25 17:59+0000\n"
+"PO-Revision-Date: 2023-02-18 14:47+0100\n"
+"Last-Translator: Tim Sabsch <tim@sabsch.com>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.2.2\n"
 
 #: gio/gappinfo.c:335
 msgid "Setting default applications not supported yet"
@@ -1355,7 +1355,7 @@ msgstr "Fehler: %s ist kein gültiger, bekannter Bus-Name\n"
 msgid "Not authorized to change debug settings"
 msgstr "Nicht berechtigt, Fehlerdiagnose-Einstellungen zu ändern"
 
-#: gio/gdesktopappinfo.c:2182 gio/gdesktopappinfo.c:5119
+#: gio/gdesktopappinfo.c:2182 gio/gdesktopappinfo.c:5120
 msgid "Unnamed"
 msgstr "Unbenannt"
 
@@ -1367,29 +1367,29 @@ msgstr "Desktop-Datei hat kein Exec-Feld angegeben"
 msgid "Unable to find terminal required for application"
 msgstr "Für die Anwendung benötigtes Terminal konnte nicht gefunden werden"
 
-#: gio/gdesktopappinfo.c:3637
+#: gio/gdesktopappinfo.c:3638
 #, c-format
 msgid "Can’t create user application configuration folder %s: %s"
 msgstr ""
 "Konfigurationsordner %s für Benutzeranwendungen konnte nicht erstellt "
 "werden: %s"
 
-#: gio/gdesktopappinfo.c:3641
+#: gio/gdesktopappinfo.c:3642
 #, c-format
 msgid "Can’t create user MIME configuration folder %s: %s"
 msgstr ""
 "MIME-Konfigurationsordner %s des Benutzers konnte nicht erstellt werden: %s"
 
-#: gio/gdesktopappinfo.c:3883 gio/gdesktopappinfo.c:3907
+#: gio/gdesktopappinfo.c:3884 gio/gdesktopappinfo.c:3908
 msgid "Application information lacks an identifier"
 msgstr "Den Anwendungsinformationen fehlt ein Bezeichner"
 
-#: gio/gdesktopappinfo.c:4143
+#: gio/gdesktopappinfo.c:4144
 #, c-format
 msgid "Can’t create user desktop file %s"
 msgstr "Benutzer-Desktop-Datei %s kann nicht erstellt werden"
 
-#: gio/gdesktopappinfo.c:4279
+#: gio/gdesktopappinfo.c:4280
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Benutzerdefinition für %s"
@@ -1508,7 +1508,7 @@ msgstr "Spezielle Datei kann nicht kopiert werden"
 msgid "Invalid symlink value given"
 msgstr "Ungültiger Wert für symbolische Verknüpfung angegeben"
 
-#: gio/gfile.c:4163 glib/gfileutils.c:2335
+#: gio/gfile.c:4163 glib/gfileutils.c:2360
 msgid "Symbolic links not supported"
 msgstr "Symbolische Verknüpfungen nicht unterstützt"
 
@@ -3247,121 +3247,121 @@ msgstr "Ungültiger erweiterter Attributname"
 msgid "Error setting extended attribute “%s”: %s"
 msgstr "Fehler beim Setzen des erweiterten Attributs »%s«: %s"
 
-#: gio/glocalfileinfo.c:1738 gio/win32/gwinhttpfile.c:191
+#: gio/glocalfileinfo.c:1732 gio/win32/gwinhttpfile.c:191
 msgid " (invalid encoding)"
 msgstr " (ungültige Kodierung)"
 
-#: gio/glocalfileinfo.c:1897 gio/glocalfileoutputstream.c:945
+#: gio/glocalfileinfo.c:1891 gio/glocalfileoutputstream.c:945
 #: gio/glocalfileoutputstream.c:997
 #, c-format
 msgid "Error when getting information for file “%s”: %s"
 msgstr "Fehler beim Holen der Informationen für Datei »%s«: %s"
 
-#: gio/glocalfileinfo.c:2163
+#: gio/glocalfileinfo.c:2157
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr "Fehler beim Holen der Informationen für Dateideskriptor: %s"
 
-#: gio/glocalfileinfo.c:2208
+#: gio/glocalfileinfo.c:2202
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Ungültiger Attributtyp (»uint32« erwartet)"
 
-#: gio/glocalfileinfo.c:2226
+#: gio/glocalfileinfo.c:2220
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Ungültiger Attributtyp (»uint64« erwartet)"
 
-#: gio/glocalfileinfo.c:2245 gio/glocalfileinfo.c:2264
+#: gio/glocalfileinfo.c:2239 gio/glocalfileinfo.c:2258
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Ungültiger Attributtyp (»byte string« erwartet)"
 
-#: gio/glocalfileinfo.c:2311
+#: gio/glocalfileinfo.c:2305
 msgid "Cannot set permissions on symlinks"
 msgstr ""
 "Zugriffsrechte für symbolische Verknüpfungen können nicht gesetzt werden"
 
-#: gio/glocalfileinfo.c:2327
+#: gio/glocalfileinfo.c:2321
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Fehler beim Setzen der Zugriffsrechte: %s"
 
-#: gio/glocalfileinfo.c:2378
+#: gio/glocalfileinfo.c:2372
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Fehler beim Setzen des Besitzers: %s"
 
-#: gio/glocalfileinfo.c:2401
+#: gio/glocalfileinfo.c:2395
 msgid "symlink must be non-NULL"
 msgstr "Symbolische Verknüpfung darf nicht NULL sein"
 
-#: gio/glocalfileinfo.c:2411 gio/glocalfileinfo.c:2430
-#: gio/glocalfileinfo.c:2441
+#: gio/glocalfileinfo.c:2405 gio/glocalfileinfo.c:2424
+#: gio/glocalfileinfo.c:2435
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Fehler beim Setzen der symbolischen Verknüpfung: %s"
 
-#: gio/glocalfileinfo.c:2420
+#: gio/glocalfileinfo.c:2414
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "Fehler beim Setzen der symbolischen Verknüpfung: Datei ist keine symbolische "
 "Verknüpfung"
 
-#: gio/glocalfileinfo.c:2492
+#: gio/glocalfileinfo.c:2506
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld are negative"
 msgstr "Zusätzliche Nanosekunden %d für UNIX-Zeitstempel %lld sind negativ"
 
-#: gio/glocalfileinfo.c:2501
+#: gio/glocalfileinfo.c:2515
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld reach 1 second"
 msgstr ""
 "Zusätzliche Nanosekunden %d für UNIX-Zeitstempel %lld erreichen 1 Sekunde"
 
-#: gio/glocalfileinfo.c:2511
+#: gio/glocalfileinfo.c:2525
 #, c-format
 msgid "UNIX timestamp %lld does not fit into 64 bits"
 msgstr "UNIX-Zeitstempel %lld passt nicht in 64 Bit"
 
-#: gio/glocalfileinfo.c:2522
+#: gio/glocalfileinfo.c:2536
 #, c-format
 msgid "UNIX timestamp %lld is outside of the range supported by Windows"
 msgstr ""
 "UNIX-Zeitstempel %lld ist außerhalb des von Windows unterstützten Bereichs"
 
-#: gio/glocalfileinfo.c:2625
+#: gio/glocalfileinfo.c:2668
 #, c-format
 msgid "File name “%s” cannot be converted to UTF-16"
 msgstr "Dateiname »%s« kann nicht nach UTF-16 konvertiert werden"
 
-#: gio/glocalfileinfo.c:2644
+#: gio/glocalfileinfo.c:2687
 #, c-format
 msgid "File “%s” cannot be opened: Windows Error %lu"
 msgstr "Datei »%s« kann nicht geöffnet werden: Windows-Fehler %lu"
 
-#: gio/glocalfileinfo.c:2657
+#: gio/glocalfileinfo.c:2700
 #, c-format
 msgid "Error setting modification or access time for file “%s”: %lu"
 msgstr ""
 "Fehler beim Setzen der Änderungs- oder Zugriffszeit für Datei »%s«: %lu"
 
-#: gio/glocalfileinfo.c:2798 gio/glocalfileinfo.c:2810
+#: gio/glocalfileinfo.c:2857
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Fehler beim Setzen der Zugriffsrechte oder der Zugriffszeit: %s"
 
-#: gio/glocalfileinfo.c:2833
+#: gio/glocalfileinfo.c:2880
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux-Kontext darf nicht NULL sein"
 
-#: gio/glocalfileinfo.c:2840
+#: gio/glocalfileinfo.c:2887
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux ist auf diesem System nicht aktiviert"
 
-#: gio/glocalfileinfo.c:2850
+#: gio/glocalfileinfo.c:2897
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Fehler beim Setzen des SELinux-Kontexts: %s"
 
-#: gio/glocalfileinfo.c:2947
+#: gio/glocalfileinfo.c:2994
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Setzen des Attributs %s nicht unterstützt"
@@ -5124,7 +5124,7 @@ msgstr "Datei »%s« ist zu groß"
 msgid "Failed to read from file “%s”: %s"
 msgstr "Aus der Datei »%s« konnte nicht gelesen werden: %s"
 
-#: glib/gfileutils.c:902 glib/gfileutils.c:977 glib/gfileutils.c:1449
+#: glib/gfileutils.c:902 glib/gfileutils.c:977 glib/gfileutils.c:1455
 #, c-format
 msgid "Failed to open file “%s”: %s"
 msgstr "Datei »%s« konnte nicht geöffnet werden: %s"
@@ -5148,40 +5148,40 @@ msgstr ""
 "Datei »%s« konnte nicht in »%s« umbenannt werden: g_rename() ist "
 "gescheitert: %s"
 
-#: glib/gfileutils.c:1156
+#: glib/gfileutils.c:1162
 #, c-format
 msgid "Failed to write file “%s”: write() failed: %s"
 msgstr "Schreiben der Datei »%s« schlug fehl: write() ist gescheitert: %s"
 
-#: glib/gfileutils.c:1177
+#: glib/gfileutils.c:1183
 #, c-format
 msgid "Failed to write file “%s”: fsync() failed: %s"
 msgstr ""
 "Datei »%s« konnte nicht geschrieben werden: fsync() ist gescheitert: %s"
 
-#: glib/gfileutils.c:1338 glib/gfileutils.c:1753
+#: glib/gfileutils.c:1344 glib/gfileutils.c:1759
 #, c-format
 msgid "Failed to create file “%s”: %s"
 msgstr "Datei »%s« konnte nicht angelegt werden: %s"
 
-#: glib/gfileutils.c:1383
+#: glib/gfileutils.c:1389
 #, c-format
 msgid "Existing file “%s” could not be removed: g_unlink() failed: %s"
 msgstr ""
 "Die vorhandene Datei »%s« konnte nicht entfernt werden: g_unlink() ist "
 "gescheitert: %s"
 
-#: glib/gfileutils.c:1718
+#: glib/gfileutils.c:1724
 #, c-format
 msgid "Template “%s” invalid, should not contain a “%s”"
 msgstr "Vorlage »%s« ungültig, sollte kein »%s« enthalten"
 
-#: glib/gfileutils.c:1731
+#: glib/gfileutils.c:1737
 #, c-format
 msgid "Template “%s” doesn’t contain XXXXXX"
 msgstr "Vorlage »%s« enthält nicht XXXXXX"
 
-#: glib/gfileutils.c:2291 glib/gfileutils.c:2320
+#: glib/gfileutils.c:2316 glib/gfileutils.c:2345
 #, c-format
 msgid "Failed to read the symbolic link “%s”: %s"
 msgstr "Die symbolische Verknüpfung »%s« konnte nicht gelesen werden: %s"
@@ -5617,190 +5617,191 @@ msgstr "Für %s wird ein Argument benötigt"
 msgid "Unknown option %s"
 msgstr "Unbekannte Option %s"
 
-#: glib/gregex.c:474
+#: glib/gregex.c:479
 msgid "corrupted object"
 msgstr "Beschädigtes Objekt"
 
-#: glib/gregex.c:476
+#: glib/gregex.c:481
 msgid "out of memory"
 msgstr "Nicht genügend freier Speicher"
 
-#: glib/gregex.c:482
+#: glib/gregex.c:487
 msgid "backtracking limit reached"
 msgstr "Rückverfolgungsgrenze wurde erreicht"
 
-#: glib/gregex.c:493 glib/gregex.c:746 glib/gregex.c:775
+#: glib/gregex.c:498
 msgid "internal error"
 msgstr "Interner Fehler"
 
-#: glib/gregex.c:495
+#: glib/gregex.c:500
 msgid "the pattern contains items not supported for partial matching"
 msgstr ""
 "Der Ausdruck enthält Elemente, die teilweise Übereinstimmung nicht "
 "unterstützen"
 
-#: glib/gregex.c:497
+#: glib/gregex.c:502
 msgid "back references as conditions are not supported for partial matching"
 msgstr ""
 "Rückreferenzen als Bedingungen werden für teilweise Übereinstimmung nicht "
 "unterstützt"
 
-#: glib/gregex.c:503
+#: glib/gregex.c:508
 msgid "recursion limit reached"
 msgstr "Rekursionslimit wurde erreicht"
 
-#: glib/gregex.c:505
+#: glib/gregex.c:510
 msgid "bad offset"
 msgstr "fehlerhafter Versatz"
 
-#: glib/gregex.c:507
+#: glib/gregex.c:512
 msgid "recursion loop"
 msgstr "Rekursionsschleife"
 
 #. should not happen in GRegex since we check modes before each match
-#: glib/gregex.c:510
+#: glib/gregex.c:515
 msgid "matching mode is requested that was not compiled for JIT"
 msgstr ""
+"Übereinstimmungsmodus wurde angefragt, der nicht für JIT kompiliert ist"
 
-#: glib/gregex.c:514
+#: glib/gregex.c:536 glib/gregex.c:1838
 msgid "unknown error"
 msgstr "Unbekannter Fehler"
 
-#: glib/gregex.c:535
+#: glib/gregex.c:557
 msgid "\\ at end of pattern"
 msgstr "\\ am Ende des Ausdrucks"
 
-#: glib/gregex.c:539
+#: glib/gregex.c:561
 msgid "\\c at end of pattern"
 msgstr "\\c am Ende des Ausdrucks"
 
-#: glib/gregex.c:544
+#: glib/gregex.c:566
 msgid "unrecognized character following \\"
 msgstr "Unbekanntes Zeichen nach \\"
 
 # CHECK
-#: glib/gregex.c:548
+#: glib/gregex.c:570
 msgid "numbers out of order in {} quantifier"
 msgstr "Ziffern wirkungslos in {}-Quantifizierer"
 
-#: glib/gregex.c:552
+#: glib/gregex.c:574
 msgid "number too big in {} quantifier"
 msgstr "Ziffer zu groß in {}-Quantifizierer"
 
-#: glib/gregex.c:556
+#: glib/gregex.c:578
 msgid "missing terminating ] for character class"
 msgstr "Terminierendes ] für Zeichenklasse fehlt"
 
-#: glib/gregex.c:560
+#: glib/gregex.c:582
 msgid "invalid escape sequence in character class"
 msgstr "Ungültige Escape-Sequenz in Zeichenklasse"
 
 # CHECK
-#: glib/gregex.c:564
+#: glib/gregex.c:586
 msgid "range out of order in character class"
 msgstr "Bereich wirkungslos in Zeichenklasse"
 
-#: glib/gregex.c:569
+#: glib/gregex.c:591
 msgid "nothing to repeat"
 msgstr "Nichts zum Wiederholen"
 
-#: glib/gregex.c:573
+#: glib/gregex.c:595
 msgid "unrecognized character after (? or (?-"
 msgstr "Unbekanntes Zeichen nach (? oder (?-"
 
-#: glib/gregex.c:577
+#: glib/gregex.c:599
 msgid "POSIX named classes are supported only within a class"
 msgstr "POSIX-benannte Klassen werden nur innerhalb einer Klasse unterstützt"
 
-#: glib/gregex.c:581
+#: glib/gregex.c:603
 msgid "POSIX collating elements are not supported"
 msgstr "POSIX-Elementverknüpfungen nicht unterstützt"
 
-#: glib/gregex.c:587
+#: glib/gregex.c:609
 msgid "missing terminating )"
 msgstr "Abschließende ) fehlt"
 
-#: glib/gregex.c:591
+#: glib/gregex.c:613
 msgid "reference to non-existent subpattern"
 msgstr "Referenz auf nicht existierenden Unterausdruck"
 
-#: glib/gregex.c:595
+#: glib/gregex.c:617
 msgid "missing ) after comment"
 msgstr "fehlende ) nach Kommentar"
 
-#: glib/gregex.c:599
+#: glib/gregex.c:621
 msgid "regular expression is too large"
 msgstr "Regulärer Ausdruck zu groß"
 
-#: glib/gregex.c:603
+#: glib/gregex.c:625
 msgid "malformed number or name after (?("
 msgstr "Falsch formatierte Zahl oder Name nach (?("
 
-#: glib/gregex.c:607
+#: glib/gregex.c:629
 msgid "lookbehind assertion is not fixed length"
 msgstr "Rückblickende Annahme hat keine feste Länge"
 
-#: glib/gregex.c:611
+#: glib/gregex.c:633
 msgid "conditional group contains more than two branches"
 msgstr "Bedingte Gruppe enthält mehr als zwei Verzweigungen"
 
-#: glib/gregex.c:615
+#: glib/gregex.c:637
 msgid "assertion expected after (?("
 msgstr "Annahme erwartet nach (?("
 
-#: glib/gregex.c:619
+#: glib/gregex.c:641
 msgid "a numbered reference must not be zero"
 msgstr "Eine nummerierte Referenz darf nicht Null sein"
 
-#: glib/gregex.c:623
+#: glib/gregex.c:645
 msgid "unknown POSIX class name"
 msgstr "Unbekannter POSIX-Klassenname"
 
-#: glib/gregex.c:628
+#: glib/gregex.c:650
 msgid "character value in \\x{...} sequence is too large"
 msgstr "Wert in \\x{…}-Sequenz ist zu groß"
 
-#: glib/gregex.c:632
+#: glib/gregex.c:654
 msgid "\\C not allowed in lookbehind assertion"
 msgstr "\\C nicht erlaubt in rückblickender Annahme"
 
-#: glib/gregex.c:636
+#: glib/gregex.c:658
 msgid "missing terminator in subpattern name"
 msgstr "Terminierung im Namen des Unterausdrucks fehlt"
 
-#: glib/gregex.c:640
+#: glib/gregex.c:662
 msgid "two named subpatterns have the same name"
 msgstr "Zwei benannte Unterausdrücke haben den gleichen Namen"
 
-#: glib/gregex.c:644
+#: glib/gregex.c:666
 msgid "malformed \\P or \\p sequence"
 msgstr "Fehlerhafte \\P- oder \\p-Sequenz"
 
-#: glib/gregex.c:648
+#: glib/gregex.c:670
 msgid "unknown property name after \\P or \\p"
 msgstr "Unbekannte Eigenschaftsname nach \\P oder \\p"
 
-#: glib/gregex.c:652
+#: glib/gregex.c:674
 msgid "subpattern name is too long (maximum 32 characters)"
 msgstr "Name des Unterausdrucks ist zu lang (maximal 32 Zeichen)"
 
-#: glib/gregex.c:656
+#: glib/gregex.c:678
 msgid "too many named subpatterns (maximum 10,000)"
 msgstr "Zu viele benannte Unterausdrücke (maximal 10.000)"
 
-#: glib/gregex.c:660
+#: glib/gregex.c:682
 msgid "octal value is greater than \\377"
 msgstr "Oktaler Wert ist größer als \\377"
 
-#: glib/gregex.c:664
+#: glib/gregex.c:686
 msgid "DEFINE group contains more than one branch"
 msgstr "DEFINE-Gruppe enthält mehr als eine Verzweigung"
 
-#: glib/gregex.c:668
+#: glib/gregex.c:690
 msgid "inconsistent NEWLINE options"
 msgstr "Inkonsistente NEWLINE-Optionen"
 
-#: glib/gregex.c:672
+#: glib/gregex.c:694
 msgid ""
 "\\g is not followed by a braced, angle-bracketed, or quoted name or number, "
 "or by a plain number"
@@ -5808,124 +5809,124 @@ msgstr ""
 "Auf \\g folgt kein eingeklammerter, in eckigen Klammern eingeklammerter oder "
 "zitierter Name oder eine Zahl oder eine einfache Zahl"
 
-#: glib/gregex.c:677
+#: glib/gregex.c:699
 msgid "an argument is not allowed for (*ACCEPT), (*FAIL), or (*COMMIT)"
 msgstr "Ein Argument ist für (*ACCEPT), (*FAIL), oder (*COMMIT) nicht erlaubt"
 
-#: glib/gregex.c:681
+#: glib/gregex.c:703
 msgid "(*VERB) not recognized"
 msgstr "(*VERB) nicht erkannt"
 
-#: glib/gregex.c:685
+#: glib/gregex.c:707
 msgid "number is too big"
 msgstr "Zahl ist zu groß"
 
-#: glib/gregex.c:689
+#: glib/gregex.c:711
 msgid "missing subpattern name after (?&"
 msgstr "Name des Unterausdrucks nach (?& fehlt"
 
-#: glib/gregex.c:693
+#: glib/gregex.c:715
 msgid "different names for subpatterns of the same number are not allowed"
 msgstr ""
 "Verschiedene Namen für Unterausdrücke der gleichen Nummer sind nicht erlaubt"
 
-#: glib/gregex.c:697
+#: glib/gregex.c:719
 msgid "(*MARK) must have an argument"
 msgstr "(*MARK) benötigt ein Argument"
 
-#: glib/gregex.c:701
+#: glib/gregex.c:723
 msgid "\\c must be followed by an ASCII character"
 msgstr "Auf \\c muss ein ASCII-Zeichen folgen"
 
-#: glib/gregex.c:705
+#: glib/gregex.c:727
 msgid "\\k is not followed by a braced, angle-bracketed, or quoted name"
 msgstr ""
 "Auf \\k folgt kein eingeklammerter, in eckigen Klammern eingeklammerter oder "
 "zitierter Name"
 
-#: glib/gregex.c:709
+#: glib/gregex.c:731
 msgid "\\N is not supported in a class"
 msgstr "\\N wird in einer Klasse nicht unterstützt"
 
-#: glib/gregex.c:713
+#: glib/gregex.c:735
 msgid "name is too long in (*MARK), (*PRUNE), (*SKIP), or (*THEN)"
 msgstr "Name ist zu lang in (*MARK), (*PRUNE), (*SKIP), oder (*THEN)"
 
-#: glib/gregex.c:717 glib/gregex.c:856
+#: glib/gregex.c:739 glib/gregex.c:875
 msgid "code overflow"
 msgstr "Code-Überlauf"
 
-#: glib/gregex.c:721
+#: glib/gregex.c:743
 msgid "unrecognized character after (?P"
 msgstr "Unbekanntes Zeichen nach (?P"
 
-#: glib/gregex.c:725
+#: glib/gregex.c:747
 msgid "overran compiling workspace"
 msgstr "Überlauf beim Kompilieren des Arbeitsbereichs"
 
-#: glib/gregex.c:729
+#: glib/gregex.c:751
 msgid "previously-checked referenced subpattern not found"
 msgstr ""
 "Bereits geprüfter, referenzierter Unterausdruck konnte nicht gefunden werden"
 
-#: glib/gregex.c:855 glib/gregex.c:1100 glib/gregex.c:2406
+#: glib/gregex.c:874 glib/gregex.c:1121 glib/gregex.c:2444
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "Fehler beim Anwenden des regulären Ausdrucks %s: %s"
 
-#: glib/gregex.c:1696
+#: glib/gregex.c:1721
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "PCRE-Bibliothek wurde ohne UTF8-Unterstützung kompiliert"
 
-#: glib/gregex.c:1704
+#: glib/gregex.c:1729
 msgid "PCRE library is compiled with incompatible options"
 msgstr ""
 "PCRE-Bibliothek wurde mit Unterstützung für nicht-kompatible Optionen "
 "kompiliert"
 
-#: glib/gregex.c:1813
+#: glib/gregex.c:1847
 #, c-format
 msgid "Error while compiling regular expression ‘%s’ at char %s: %s"
 msgstr ""
 "Fehler beim Kompilieren des regulären Ausdrucks »%s« bei Zeichen %s: %s"
 
-#: glib/gregex.c:2848
+#: glib/gregex.c:2887
 msgid "hexadecimal digit or “}” expected"
 msgstr "Hexadezimalzahl oder »}« erwartet"
 
-#: glib/gregex.c:2864
+#: glib/gregex.c:2903
 msgid "hexadecimal digit expected"
 msgstr "Hexadezimalzahl erwartet"
 
-#: glib/gregex.c:2904
+#: glib/gregex.c:2943
 msgid "missing “<” in symbolic reference"
 msgstr "Fehlendes »<» in symbolischer Referenz"
 
-#: glib/gregex.c:2913
+#: glib/gregex.c:2952
 msgid "unfinished symbolic reference"
 msgstr "Unvollendete symbolische Referenz"
 
-#: glib/gregex.c:2920
+#: glib/gregex.c:2959
 msgid "zero-length symbolic reference"
 msgstr "Symbolische Referenz der Länge 0"
 
-#: glib/gregex.c:2931
+#: glib/gregex.c:2970
 msgid "digit expected"
 msgstr "Ziffer erwartet"
 
-#: glib/gregex.c:2949
+#: glib/gregex.c:2988
 msgid "illegal symbolic reference"
 msgstr "Illegale symbolische Referenz"
 
-#: glib/gregex.c:3012
+#: glib/gregex.c:3051
 msgid "stray final “\\”"
 msgstr "Verirrtes abschließendes »\\«"
 
-#: glib/gregex.c:3016
+#: glib/gregex.c:3055
 msgid "unknown escape sequence"
 msgstr "Unbekannte Escape-Sequenz"
 
-#: glib/gregex.c:3026
+#: glib/gregex.c:3065
 #, c-format
 msgid "Error while parsing replacement text “%s” at char %lu: %s"
 msgstr "Fehler beim Verarbeiten des Ersetzungstextes »%s« an Zeichen %lu: %s"
@@ -5956,96 +5957,96 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Text war leer (oder enthielt nur Leerraum)"
 
-#: glib/gspawn.c:314
+#: glib/gspawn.c:310
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Daten vom Kindprozess konnten nicht gelesen werden (%s)"
 
-#: glib/gspawn.c:466
+#: glib/gspawn.c:462
 #, c-format
 msgid "Unexpected error in reading data from a child process (%s)"
 msgstr "Unerwarteter Fehler beim Lesen von Daten eines Kindprozesses (%s)"
 
-#: glib/gspawn.c:551
+#: glib/gspawn.c:547
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Unerwarteter Fehler in waitpid() (%s)"
 
-#: glib/gspawn.c:1170 glib/gspawn-win32.c:1488
+#: glib/gspawn.c:1166 glib/gspawn-win32.c:1488
 #, c-format
 msgid "Child process exited with code %ld"
 msgstr "Der Kindprozess wurde mit Status %ld beendet"
 
-#: glib/gspawn.c:1178
+#: glib/gspawn.c:1174
 #, c-format
 msgid "Child process killed by signal %ld"
 msgstr "Der Kindprozess wurde mit Signal %ld beendet"
 
-#: glib/gspawn.c:1185
+#: glib/gspawn.c:1181
 #, c-format
 msgid "Child process stopped by signal %ld"
 msgstr "Der Kindprozess wurde mit Signal %ld beendet"
 
-#: glib/gspawn.c:1192
+#: glib/gspawn.c:1188
 #, c-format
 msgid "Child process exited abnormally"
 msgstr "Der Kindprozess wurde gewaltsam beendet"
 
-#: glib/gspawn.c:1885 glib/gspawn-win32.c:393 glib/gspawn-win32.c:401
+#: glib/gspawn.c:1867 glib/gspawn-win32.c:393 glib/gspawn-win32.c:401
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Lesen aus Weiterleitung zum Kind (%s) gescheitert"
 
-#: glib/gspawn.c:2248
+#: glib/gspawn.c:2230
 #, c-format
 msgid "Failed to spawn child process “%s” (%s)"
 msgstr "Abspalten des Kindprozesses »%s« gescheitert (%s)"
 
-#: glib/gspawn.c:2365
+#: glib/gspawn.c:2347
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Abspalten gescheitert (%s)"
 
-#: glib/gspawn.c:2525 glib/gspawn-win32.c:424
+#: glib/gspawn.c:2507 glib/gspawn-win32.c:424
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
 msgstr "In Ordner »%s« (%s) konnte nicht gewechselt werden"
 
-#: glib/gspawn.c:2535
+#: glib/gspawn.c:2517
 #, c-format
 msgid "Failed to execute child process “%s” (%s)"
 msgstr "Kindprozess »%s« konnte nicht ausgeführt werden (%s)"
 
-#: glib/gspawn.c:2545
+#: glib/gspawn.c:2527
 #, c-format
 msgid "Failed to open file to remap file descriptor (%s)"
 msgstr ""
 "Öffnen der Datei zur Neuzuweisung des Datei-Deskriptors ist fehlgeschlagen "
 "(%s)"
 
-#: glib/gspawn.c:2553
+#: glib/gspawn.c:2535
 #, c-format
 msgid "Failed to duplicate file descriptor for child process (%s)"
 msgstr ""
 "Duplizieren des Datei-Deskriptors für Kindprozess ist fehlgeschlagen (%s)"
 
-#: glib/gspawn.c:2562
+#: glib/gspawn.c:2544
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Abspalten des Kindprozesses gescheitert (%s)"
 
-#: glib/gspawn.c:2570
+#: glib/gspawn.c:2552
 #, c-format
 msgid "Failed to close file descriptor for child process (%s)"
 msgstr ""
 "Schließen des Datei-Deskriptors des Kindprozesses ist fehlgeschlagen (%s)"
 
-#: glib/gspawn.c:2578
+#: glib/gspawn.c:2560
 #, c-format
 msgid "Unknown error executing child process “%s”"
 msgstr "Unbekannter Fehler beim Ausführen des Kindprozesses »%s«"
 
-#: glib/gspawn.c:2602
+#: glib/gspawn.c:2584
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
