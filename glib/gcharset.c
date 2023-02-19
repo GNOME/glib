@@ -446,7 +446,7 @@ read_aliases (const gchar *file,
   FILE *fp;
   char buf[256];
 
-  fp = fopen (file,"r");
+  fp = fopen (file, "re");
   if (!fp)
     return;
   while (fgets (buf, 256, fp))
