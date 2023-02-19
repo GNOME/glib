@@ -50,6 +50,7 @@
 
 #ifdef G_OS_UNIX
 #include "glib-unix.h"
+#include "glib-unixprivate.h"
 #endif
 
 /* -------------------------------------------------------------------------- */
@@ -248,7 +249,7 @@ watcher_init (void)
       gint pipe_fds[2];
 
       /* fork a child to clean up when we are killed */
-      if (pipe (pipe_fds) != 0)
+      if (!g_unix_open_pipe_internal (pipe_fds, TRUE))
         {
           errsv = errno;
           g_warning ("pipe() failed: %s", g_strerror (errsv));
