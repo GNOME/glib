@@ -38,6 +38,7 @@ if get_option('gtk_doc')
     'gutilsprivate.h',
     'gvalgrind.h',
     'dirent.h',
+    'glib-unixprivate.h',
     'glib-visibility.h',
     'gmodule-visibility.h',
   ]
