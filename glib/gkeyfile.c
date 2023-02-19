@@ -53,6 +53,10 @@
 
 #endif  /* G_OS_WIN23 */
 
+#ifndef O_CLOEXEC
+#define O_CLOEXEC 0
+#endif
+
 #include "gconvert.h"
 #include "gdataset.h"
 #include "gerror.h"
@@ -761,7 +765,7 @@ find_file_in_data_dirs (const gchar   *file,
           path = g_build_filename (data_dir, sub_dir,
                                    candidate_file, NULL);
 
-          fd = g_open (path, O_RDONLY, 0);
+          fd = g_open (path, O_RDONLY | O_CLOEXEC, 0);
 
           if (fd == -1)
             {
@@ -917,7 +921,7 @@ g_key_file_load_from_file (GKeyFile       *key_file,
   g_return_val_if_fail (key_file != NULL, FALSE);
   g_return_val_if_fail (file != NULL, FALSE);
 
-  fd = g_open (file, O_RDONLY, 0);
+  fd = g_open (file, O_RDONLY | O_CLOEXEC, 0);
   errsv = errno;
 
   if (fd == -1)

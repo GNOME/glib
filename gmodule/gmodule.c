@@ -45,6 +45,10 @@
 #include <io.h>		/* For open() and close() prototypes. */
 #endif
 
+#ifndef O_CLOEXEC
+#define O_CLOEXEC 0
+#endif
+
 #include "gmoduleconf.h"
 #include "gstdio.h"
 
@@ -388,7 +392,7 @@ parse_libtool_archive (const gchar* libtool_name)
   GTokenType token;
   GScanner *scanner;
   
-  int fd = g_open (libtool_name, O_RDONLY, 0);
+  int fd = g_open (libtool_name, O_RDONLY | O_CLOEXEC, 0);
   if (fd < 0)
     {
       gchar *display_libtool_name = g_filename_display_name (libtool_name);

@@ -50,6 +50,10 @@
 
 #endif
 
+#ifndef O_CLOEXEC
+#define O_CLOEXEC 0
+#endif
+
 #include "gconvert.h"
 #include "gerror.h"
 #include "gfileutils.h"
@@ -252,7 +256,7 @@ g_mapped_file_new (const gchar  *filename,
   g_return_val_if_fail (filename != NULL, NULL);
   g_return_val_if_fail (!error || *error == NULL, NULL);
 
-  fd = g_open (filename, (writable ? O_RDWR : O_RDONLY) | _O_BINARY, 0);
+  fd = g_open (filename, (writable ? O_RDWR : O_RDONLY) | _O_BINARY | O_CLOEXEC, 0);
   if (fd == -1)
     {
       int save_errno = errno;
