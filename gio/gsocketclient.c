@@ -2057,7 +2057,7 @@ g_socket_client_enumerator_callback (GObject      *object,
  * @connectable: a #GSocketConnectable specifying the remote address.
  * @cancellable: (nullable): a #GCancellable, or %NULL
  * @callback: (scope async): a #GAsyncReadyCallback
- * @user_data: (closure): user data for the callback
+ * @user_data: user data for the callback
  *
  * This is the asynchronous version of g_socket_client_connect().
  *
@@ -2162,7 +2162,7 @@ g_socket_client_connect_async (GSocketClient       *client,
  * @default_port: the default port to connect to
  * @cancellable: (nullable): a #GCancellable, or %NULL
  * @callback: (scope async): a #GAsyncReadyCallback
- * @user_data: (closure): user data for the callback
+ * @user_data: user data for the callback
  *
  * This is the asynchronous version of g_socket_client_connect_to_host().
  *
@@ -2208,7 +2208,7 @@ g_socket_client_connect_to_host_async (GSocketClient        *client,
  * @service: the name of the service to connect to
  * @cancellable: (nullable): a #GCancellable, or %NULL
  * @callback: (scope async): a #GAsyncReadyCallback
- * @user_data: (closure): user data for the callback
+ * @user_data: user data for the callback
  *
  * This is the asynchronous version of
  * g_socket_client_connect_to_service().
@@ -2239,7 +2239,7 @@ g_socket_client_connect_to_service_async (GSocketClient       *client,
  * @default_port: the default port to connect to
  * @cancellable: (nullable): a #GCancellable, or %NULL
  * @callback: (scope async): a #GAsyncReadyCallback
- * @user_data: (closure): user data for the callback
+ * @user_data: user data for the callback
  *
  * This is the asynchronous version of g_socket_client_connect_to_uri().
  *

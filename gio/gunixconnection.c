@@ -416,8 +416,9 @@ send_credentials_async_thread (GTask         *task,
  * g_unix_connection_send_credentials_async:
  * @connection: A #GUnixConnection.
  * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
- * @callback: (scope async): a #GAsyncReadyCallback to call when the request is satisfied
- * @user_data: (closure): the data to pass to callback function
+ * @callback: (scope async): a #GAsyncReadyCallback
+ *   to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * Asynchronously send credentials.
  *
@@ -689,8 +690,9 @@ receive_credentials_async_thread (GTask         *task,
  * g_unix_connection_receive_credentials_async:
  * @connection: A #GUnixConnection.
  * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
- * @callback: (scope async): a #GAsyncReadyCallback to call when the request is satisfied
- * @user_data: (closure): the data to pass to callback function
+ * @callback: (scope async): a #GAsyncReadyCallback
+ *   to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * Asynchronously receive credentials.
  *

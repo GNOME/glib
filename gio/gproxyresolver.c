@@ -184,7 +184,7 @@ g_proxy_resolver_lookup (GProxyResolver  *resolver,
  * @uri: a URI representing the destination to connect to
  * @cancellable: (nullable): a #GCancellable, or %NULL
  * @callback: (scope async): callback to call after resolution completes
- * @user_data: (closure): data for @callback
+ * @user_data: data for @callback
  *
  * Asynchronous lookup of proxy. See g_proxy_resolver_lookup() for more
  * details.

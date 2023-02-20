@@ -254,9 +254,9 @@ g_network_monitor_real_can_reach_async (GNetworkMonitor     *monitor,
  * @monitor: a #GNetworkMonitor
  * @connectable: a #GSocketConnectable
  * @cancellable: (nullable): a #GCancellable, or %NULL
- * @callback: (scope async): a #GAsyncReadyCallback to call when the
- *     request is satisfied
- * @user_data: (closure): the data to pass to callback function
+ * @callback: (scope async): a #GAsyncReadyCallback
+ *     to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * Asynchronously attempts to determine whether or not the host
  * pointed to by @connectable can be reached, without actually

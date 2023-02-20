@@ -135,9 +135,9 @@ g_socket_address_enumerator_real_next_async (GSocketAddressEnumerator *enumerato
  * g_socket_address_enumerator_next_async:
  * @enumerator: a #GSocketAddressEnumerator
  * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
- * @callback: (scope async): a #GAsyncReadyCallback to call when the request
- *     is satisfied
- * @user_data: (closure): the data to pass to callback function
+ * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback to call
+ *   when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * Asynchronously retrieves the next #GSocketAddress from @enumerator
  * and then calls @callback, which must call

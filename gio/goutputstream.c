@@ -979,8 +979,9 @@ async_ready_write_callback_wrapper (GObject      *source_object,
  * @count: the number of bytes to write
  * @io_priority: the io priority of the request.
  * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
- * @callback: (scope async): callback to call when the request is satisfied
- * @user_data: (closure): the data to pass to callback function
+ * @callback: (scope async): a #GAsyncReadyCallback
+ *     to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * Request an asynchronous write of @count bytes from @buffer into 
  * the stream. When the operation is finished @callback will be called.
@@ -1173,8 +1174,9 @@ write_all_async_thread (GTask        *task,
  * @count: the number of bytes to write
  * @io_priority: the io priority of the request
  * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore
- * @callback: (scope async): callback to call when the request is satisfied
- * @user_data: (closure): the data to pass to callback function
+ * @callback: (scope async): a #GAsyncReadyCallback
+ *     to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * Request an asynchronous write of @count bytes from @buffer into
  * the stream. When the operation is finished @callback will be called.
@@ -1283,8 +1285,9 @@ g_output_stream_write_all_finish (GOutputStream  *stream,
  * @n_vectors: the number of vectors to write
  * @io_priority: the I/O priority of the request.
  * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
- * @callback: (scope async): callback to call when the request is satisfied
- * @user_data: (closure): the data to pass to callback function
+ * @callback: (scope async): a #GAsyncReadyCallback
+ *     to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * Request an asynchronous write of the bytes contained in @n_vectors @vectors into
  * the stream. When the operation is finished @callback will be called.
@@ -1477,8 +1480,9 @@ writev_all_async_thread (GTask        *task,
  * @n_vectors: the number of vectors to write
  * @io_priority: the I/O priority of the request
  * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore
- * @callback: (scope async): callback to call when the request is satisfied
- * @user_data: (closure): the data to pass to callback function
+ * @callback: (scope async): a #GAsyncReadyCallback
+ *     to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * Request an asynchronous write of the bytes contained in the @n_vectors @vectors into
  * the stream. When the operation is finished @callback will be called.
@@ -1623,8 +1627,9 @@ write_bytes_callback (GObject      *stream,
  * @bytes: The bytes to write
  * @io_priority: the io priority of the request.
  * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
- * @callback: (scope async): callback to call when the request is satisfied
- * @user_data: (closure): the data to pass to callback function
+ * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
+ *   to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * This function is similar to g_output_stream_write_async(), but
  * takes a #GBytes as input.  Due to the refcounted nature of #GBytes,
@@ -1724,8 +1729,9 @@ async_ready_splice_callback_wrapper (GObject      *source_object,
  * @flags: a set of #GOutputStreamSpliceFlags.
  * @io_priority: the io priority of the request.
  * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore. 
- * @callback: (scope async): a #GAsyncReadyCallback. 
- * @user_data: (closure): user data passed to @callback.
+ * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
+ *   to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  * 
  * Splices a stream asynchronously.
  * When the operation is finished @callback will be called.
@@ -1840,8 +1846,9 @@ async_ready_flush_callback_wrapper (GObject      *source_object,
  * @stream: a #GOutputStream.
  * @io_priority: the io priority of the request.
  * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
- * @callback: (scope async): a #GAsyncReadyCallback to call when the request is satisfied
- * @user_data: (closure): the data to pass to callback function
+ * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
+ *   to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  * 
  * Forces an asynchronous write of all user-space buffered data for
  * the given @stream.
@@ -1999,8 +2006,9 @@ real_close_async_cb (GObject      *source_object,
  * @stream: A #GOutputStream.
  * @io_priority: the io priority of the request.
  * @cancellable: (nullable): optional cancellable object
- * @callback: (scope async): callback to call when the request is satisfied
- * @user_data: (closure): the data to pass to callback function
+ * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
+ *   to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * Requests an asynchronous close of the stream, releasing resources 
  * related to it. When the operation is finished @callback will be 

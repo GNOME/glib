@@ -314,8 +314,9 @@ next_async_callback_wrapper (GObject      *source_object,
  * @num_files: the number of file info objects to request
  * @io_priority: the [I/O priority][io-priority] of the request
  * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
- * @callback: (scope async): a #GAsyncReadyCallback to call when the request is satisfied
- * @user_data: (closure): the data to pass to callback function
+ * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
+ *   to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * Request information for a number of files from the enumerator asynchronously.
  * When all I/O for the operation is finished the @callback will be called with
@@ -485,8 +486,9 @@ close_async_callback_wrapper (GObject      *source_object,
  * @enumerator: a #GFileEnumerator.
  * @io_priority: the [I/O priority][io-priority] of the request
  * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
- * @callback: (scope async): a #GAsyncReadyCallback to call when the request is satisfied
- * @user_data: (closure): the data to pass to callback function
+ * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
+ *   to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * Asynchronously closes the file enumerator. 
  *

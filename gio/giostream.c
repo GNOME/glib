@@ -464,8 +464,9 @@ async_ready_close_callback_wrapper (GObject      *source_object,
  * @stream: a #GIOStream
  * @io_priority: the io priority of the request
  * @cancellable: (nullable): optional cancellable object
- * @callback: (scope async): callback to call when the request is satisfied
- * @user_data: (closure): the data to pass to callback function
+ * @callback: (scope async): a #GAsyncReadyCallback
+ *   to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * Requests an asynchronous close of the stream, releasing resources
  * related to it. When the operation is finished @callback will be
@@ -829,8 +830,9 @@ splice_cancelled_cb (GCancellable *cancellable,
  * @flags: a set of #GIOStreamSpliceFlags.
  * @io_priority: the io priority of the request.
  * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
- * @callback: (scope async): a #GAsyncReadyCallback.
- * @user_data: (closure): user data passed to @callback.
+ * @callback: (scope async): a #GAsyncReadyCallback
+ *   to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * Asynchronously splice the output stream of @stream1 to the input stream of
  * @stream2, and splice the output stream of @stream2 to the input stream of

@@ -835,7 +835,7 @@ accept_ready (GSocket      *accept_socket,
  * @listener: a #GSocketListener
  * @cancellable: (nullable): a #GCancellable, or %NULL
  * @callback: (scope async): a #GAsyncReadyCallback
- * @user_data: (closure): user data for the callback
+ * @user_data: user data for the callback
  *
  * This is the asynchronous version of g_socket_listener_accept_socket().
  *
@@ -910,7 +910,7 @@ g_socket_listener_accept_socket_finish (GSocketListener  *listener,
  * @listener: a #GSocketListener
  * @cancellable: (nullable): a #GCancellable, or %NULL
  * @callback: (scope async): a #GAsyncReadyCallback
- * @user_data: (closure): user data for the callback
+ * @user_data: user data for the callback
  *
  * This is the asynchronous version of g_socket_listener_accept().
  *
