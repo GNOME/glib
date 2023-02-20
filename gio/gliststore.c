@@ -530,7 +530,7 @@ simple_equal (gconstpointer a,
 /**
  * g_list_store_find_with_equal_func:
  * @store: a #GListStore
- * @item: (type GObject): an item
+ * @item: (type GObject) (nullable): an item
  * @equal_func: (scope call): A custom equality check function
  * @position: (out) (optional): the first position of @item, if it was found.
  *
@@ -538,6 +538,10 @@ simple_equal (gconstpointer a,
  * comparing them with @equal_func until the first occurrence of @item which
  * matches. If @item was not found, then @position will not be set, and this
  * method will return %FALSE.
+ *
+ * @item is always passed as second parameter to @equal_func.
+ *
+ * Since GLib 2.76 it is possible to pass `NULL` for @item.
  *
  * Returns: Whether @store contains @item. If it was found, @position will be
  * set to the position where @item occurred for the first time.
@@ -559,13 +563,17 @@ g_list_store_find_with_equal_func (GListStore *store,
 /**
  * g_list_store_find_with_equal_func_full:
  * @store: a #GListStore
- * @item: (type GObject): an item
+ * @item: (type GObject) (nullable): an item
  * @equal_func: (scope call): A custom equality check function
  * @user_data: (closure): user data for @equal_func
  * @position: (out) (optional): the first position of @item, if it was found.
  *
  * Like g_list_store_find_with_equal_func() but with an additional @user_data
  * that is passed to @equal_func.
+ *
+ * @item is always passed as second parameter to @equal_func.
+ *
+ * Since GLib 2.76 it is possible to pass `NULL` for @item.
  *
  * Returns: Whether @store contains @item. If it was found, @position will be
  * set to the position where @item occurred for the first time.
@@ -582,7 +590,7 @@ g_list_store_find_with_equal_func_full (GListStore     *store,
   GSequenceIter *iter, *begin, *end;
 
   g_return_val_if_fail (G_IS_LIST_STORE (store), FALSE);
-  g_return_val_if_fail (g_type_is_a (G_OBJECT_TYPE (item), store->item_type),
+  g_return_val_if_fail (item == NULL || g_type_is_a (G_OBJECT_TYPE (item), store->item_type),
                         FALSE);
   g_return_val_if_fail (equal_func != NULL, FALSE);
 
