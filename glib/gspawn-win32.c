@@ -65,7 +65,9 @@
 #include <wchar.h>
 
 #ifdef _MSC_VER
+#ifdef HAVE_VCRUNTIME_H
 #include <vcruntime.h> /* for _UCRT */
+#endif
 #endif
 
 #ifndef GSPAWN_HELPER
@@ -163,8 +165,85 @@ safe_wspawnvpe (int _Mode,
 
 #else
 
-#define safe_wspawnve _wspawnve
-#define safe_wspawnvpe _wspawnvpe
+/**< private >
+ * ensure_cmd_environment:
+ *
+ * Workaround for an issue in the universal C Runtime library (UCRT). This adds
+ * a custom environment variable to this process's environment block that looks
+ * like the cmd.exe's shell-related environment variables, i.e the name starts
+ * with an equal sign character: '='. This is needed because the UCRT may crash
+ * if those environment variables are missing from the calling process's block.
+ *
+ * Reference:
+ *
+ * https://developercommunity.visualstudio.com/t/UCRT-Crash-in-_wspawne-functions/10262748
+ */
+static void
+ensure_cmd_environment (void)
+{
+  static gsize initialization_value = 0;
+
+  if (g_once_init_enter (&initialization_value))
+    {
+      wchar_t *block = GetEnvironmentStringsW ();
+      gboolean have_cmd_environment = FALSE;
+
+      if (block)
+        {
+          const wchar_t *p = block;
+
+          while (*p != L'\0')
+            {
+              if (*p == L'=')
+                {
+                  have_cmd_environment = TRUE;
+                  break;
+                }
+
+              p += wcslen (p) + 1;
+            }
+
+          if (!FreeEnvironmentStringsW (block))
+            g_warning ("%s failed with error code %u",
+                       "FreeEnvironmentStrings",
+                       (guint) GetLastError ());
+        }
+
+      if (!have_cmd_environment)
+        {
+          if (!SetEnvironmentVariableW (L"=GLIB", L"GLIB"))
+            {
+              g_critical ("%s failed with error code %u",
+                          "SetEnvironmentVariable",
+                          (guint) GetLastError ());
+            }
+        }
+
+      g_once_init_leave (&initialization_value, 1);
+    }
+}
+
+static intptr_t
+safe_wspawnve (int                   _mode,
+               const wchar_t *       _filename,
+               const wchar_t *const *_args,
+               const wchar_t *const *_env)
+{
+  ensure_cmd_environment ();
+
+  return _wspawnve (_mode, _filename, _args, _env);;
+}
+
+static intptr_t
+safe_wspawnvpe (int                   _mode,
+                const wchar_t *       _filename,
+                const wchar_t *const *_args,
+                const wchar_t *const *_env)
+{
+  ensure_cmd_environment ();
+
+  return _wspawnvpe (_mode, _filename, _args, _env);
+}
 
 #endif /* _UCRT */
 
@@ -685,13 +764,6 @@ fork_exec (gint                  *exit_status,
     }
 
   argc = protect_argv (argv, &protected_argv);
-
-  /*
-   * FIXME: Workaround broken spawnvpe functions that SEGV when "=X:="
-   * environment variables are missing. Calling chdir() will set the magic
-   * environment variable again.
-   */
-  _chdir (".");
 
   if (stdin_fd == -1 && stdout_fd == -1 && stderr_fd == -1 &&
       (flags & G_SPAWN_CHILD_INHERITS_STDIN) &&
