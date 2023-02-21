@@ -45,6 +45,7 @@
 #include <time.h>
 
 #ifdef G_OS_UNIX
+#include "glib-unixprivate.h"
 #include <errno.h>
 #include <unistd.h>
 #include <sys/wait.h>
@@ -397,7 +398,8 @@ stack_trace (const char * const *args)
   stack_trace_done = FALSE;
   signal (SIGCHLD, stack_trace_sigchld);
 
-  if ((pipe (in_fd) == -1) || (pipe (out_fd) == -1))
+  if (!g_unix_open_pipe_internal (in_fd, TRUE) ||
+      !g_unix_open_pipe_internal (out_fd, TRUE))
     {
       perror ("unable to open pipe");
       _exit (0);

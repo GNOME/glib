@@ -2858,6 +2858,9 @@ g_socket_accept (GSocket       *socket,
 		 GCancellable  *cancellable,
 		 GError       **error)
 {
+#ifdef HAVE_ACCEPT4
+  gboolean try_accept4 = TRUE;
+#endif
   GSocket *new_socket;
   gint ret;
 
@@ -2871,7 +2874,28 @@ g_socket_accept (GSocket       *socket,
 
   while (TRUE)
     {
-      if ((ret = accept (socket->priv->fd, NULL, 0)) < 0)
+      gboolean try_accept = TRUE;
+
+#ifdef HAVE_ACCEPT4
+      if (try_accept4)
+        {
+          ret = accept4 (socket->priv->fd, NULL, 0, SOCK_CLOEXEC);
+          if (ret < 0 && errno == ENOSYS)
+            {
+              try_accept4 = FALSE;
+            }
+          else
+            {
+              try_accept = FALSE;
+            }
+        }
+
+      g_assert (try_accept4 || try_accept);
+#endif
+      if (try_accept)
+        ret = accept (socket->priv->fd, NULL, 0);
+
+      if (ret < 0)
 	{
 	  int errsv = get_socket_errno ();
 

@@ -44,6 +44,10 @@
 #include <fcntl.h>
 #include <glib/gstdio.h>
 
+#ifndef O_CLOEXEC
+#define O_CLOEXEC 0
+#endif
+
 #include "giochannel.h"
 
 #include "gerror.h"
@@ -527,7 +531,7 @@ g_io_channel_new_file (const gchar *filename,
 
   create_mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH;
 
-  fid = g_open (filename, flags, create_mode);
+  fid = g_open (filename, flags | O_CLOEXEC, create_mode);
   if (fid == -1)
     {
       int err = errno;

@@ -37,6 +37,10 @@
 #include "gwin32sid.h"
 #endif
 
+#ifndef O_CLOEXEC
+#define O_CLOEXEC 0
+#endif
+
 #include "gdbusauthmechanismsha1.h"
 #include "gcredentials.h"
 #include "gdbuserror.h"
@@ -519,7 +523,7 @@ create_lock_exclusive (const gchar  *lock_path,
   int errsv;
   gint ret;
 
-  ret = g_open (lock_path, O_CREAT | O_EXCL, 0600);
+  ret = g_open (lock_path, O_CREAT | O_EXCL | O_CLOEXEC, 0600);
   errsv = errno;
   if (ret < 0)
     {

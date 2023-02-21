@@ -51,6 +51,10 @@
 #define O_BINARY 0
 #endif
 
+#ifndef O_CLOEXEC
+#define O_CLOEXEC 0
+#endif
+
 #include "gfileattribute.h"
 #include "glocalfile.h"
 #include "glocalfileinfo.h"
@@ -1352,7 +1356,7 @@ g_local_file_read (GFile         *file,
   int fd, ret;
   GLocalFileStat buf;
   
-  fd = g_open (local->filename, O_RDONLY|O_BINARY, 0);
+  fd = g_open (local->filename, O_RDONLY | O_BINARY | O_CLOEXEC, 0);
   if (fd == -1)
     {
       int errsv = errno;
@@ -2227,7 +2231,7 @@ g_local_file_trash (GFile         *file,
     infofile = g_build_filename (infodir, infoname, NULL);
     g_free (infoname);
 
-    fd = g_open (infofile, O_CREAT | O_EXCL, 0666);
+    fd = g_open (infofile, O_CREAT | O_EXCL | O_CLOEXEC, 0666);
     errsv = errno;
   } while (fd == -1 && errsv == EEXIST);
 
@@ -2881,9 +2885,9 @@ g_local_file_measure_size_of_file (gint           parent_fd,
 
 #ifdef AT_FDCWD
 #ifdef HAVE_OPEN_O_DIRECTORY
-      dir_fd = openat (parent_fd, name->data, O_RDONLY|O_DIRECTORY);
+      dir_fd = openat (parent_fd, name->data, O_RDONLY | O_DIRECTORY | O_CLOEXEC);
 #else
-      dir_fd = openat (parent_fd, name->data, O_RDONLY);
+      dir_fd = openat (parent_fd, name->data, O_RDONLY | O_CLOEXEC);
 #endif
       errsv = errno;
       if (dir_fd < 0)

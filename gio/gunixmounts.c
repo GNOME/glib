@@ -3166,7 +3166,7 @@ _resolve_dev_root (void)
           /* see if device with similar major:minor as /dev/root is mention
            * in /etc/mtab (it usually is) 
            */
-          f = fopen ("/etc/mtab", "r");
+          f = fopen ("/etc/mtab", "re");
           if (f != NULL) 
             {
 	      struct mntent *entp;

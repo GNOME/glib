@@ -32,6 +32,10 @@
 #include <fcntl.h>
 #include <string.h>
 
+#ifndef O_CLOEXEC
+#define O_CLOEXEC 0
+#endif
+
 #include <glib-object.h>
 #include <glib/gfileutils.h>
 #include <gio/gfilemonitor.h>
@@ -583,7 +587,7 @@ _kqsub_start_watching (kqueue_sub *sub)
   struct stat st;
   struct kevent ev;
 
-  sub->fd = open (sub->filename, O_KQFLAG);
+  sub->fd = open (sub->filename, O_KQFLAG | O_CLOEXEC);
   if (sub->fd == -1)
       return FALSE;
 

@@ -606,6 +606,7 @@ if host_system == 'windows'
 endif
 
 functions = [
+  'accept4',
   'close_range',
   'endmntent',
   'endservent',

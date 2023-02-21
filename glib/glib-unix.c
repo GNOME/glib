@@ -23,12 +23,8 @@
 
 #include "config.h"
 
-/* To make bionic export pipe2() */
-#ifndef _GNU_SOURCE
-#define _GNU_SOURCE 1
-#endif
-
 #include "glib-unix.h"
+#include "glib-unixprivate.h"
 #include "gmain-internal.h"
 
 #include <string.h>
@@ -94,48 +90,13 @@ g_unix_open_pipe (int     *fds,
                   int      flags,
                   GError **error)
 {
-  int ecode;
-
   /* We only support FD_CLOEXEC */
   g_return_val_if_fail ((flags & (FD_CLOEXEC)) == flags, FALSE);
 
-#ifdef HAVE_PIPE2
-  {
-    int pipe2_flags = 0;
-    if (flags & FD_CLOEXEC)
-      pipe2_flags |= O_CLOEXEC;
-    /* Atomic */
-    ecode = pipe2 (fds, pipe2_flags);
-    if (ecode == -1 && errno != ENOSYS)
-      return g_unix_set_error_from_errno (error, errno);
-    else if (ecode == 0)
-      return TRUE;
-    /* Fall through on -ENOSYS, we must be running on an old kernel */
-  }
-#endif
-  ecode = pipe (fds);
-  if (ecode == -1)
+  if (!g_unix_open_pipe_internal (fds,
+                                  (flags & FD_CLOEXEC) != 0))
     return g_unix_set_error_from_errno (error, errno);
 
-  if (flags == 0)
-    return TRUE;
-
-  ecode = fcntl (fds[0], F_SETFD, flags);
-  if (ecode == -1)
-    {
-      int saved_errno = errno;
-      close (fds[0]);
-      close (fds[1]);
-      return g_unix_set_error_from_errno (error, saved_errno);
-    }
-  ecode = fcntl (fds[1], F_SETFD, flags);
-  if (ecode == -1)
-    {
-      int saved_errno = errno;
-      close (fds[0]);
-      close (fds[1]);
-      return g_unix_set_error_from_errno (error, saved_errno);
-    }
   return TRUE;
 }
 

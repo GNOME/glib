@@ -92,6 +92,10 @@
 #endif
 #endif
 
+#ifndef O_CLOEXEC
+#define O_CLOEXEC 0
+#endif
+
 #include "glocalfileinfo.h"
 #include "gioerror.h"
 #include "gthemedicon.h"
@@ -1391,11 +1395,11 @@ get_content_type (const char          *basename,
 	    sniff_length = 4096;
 
 #ifdef O_NOATIME	  
-          fd = g_open (path, O_RDONLY | O_NOATIME, 0);
+          fd = g_open (path, O_RDONLY | O_NOATIME | O_CLOEXEC, 0);
           errsv = errno;
           if (fd < 0 && errsv == EPERM)
 #endif
-	    fd = g_open (path, O_RDONLY, 0);
+	    fd = g_open (path, O_RDONLY | O_CLOEXEC, 0);
 
 	  if (fd != -1)
 	    {
