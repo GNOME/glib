@@ -76,9 +76,11 @@ test_spawn_basics (void)
   gchar *system_directory;
   gchar spawn_binary[1000] = {0};
   gchar full_cmdline[1000] = {0};
-#endif
+  const LCID old_lcid = GetThreadUILanguage ();
+  const unsigned int initial_cp = GetConsoleOutputCP ();
 
-#ifdef G_OS_WIN32
+  SetConsoleOutputCP (437); /* 437 means en-US codepage */
+  SetThreadUILanguage (MAKELCID (MAKELANGID (LANG_ENGLISH, SUBLANG_ENGLISH_US), SORT_DEFAULT));
   system_directory = get_system_directory ();
 
   g_snprintf (spawn_binary, sizeof (spawn_binary),
@@ -254,6 +256,8 @@ test_spawn_basics (void)
 #endif
 
 #ifdef G_OS_WIN32
+  SetThreadUILanguage (old_lcid);
+  SetConsoleOutputCP (initial_cp); /* 437 means en-US codepage */
   g_free (system_directory);
 #endif
 }
