@@ -1351,7 +1351,7 @@ g_file_set_contents_full (const gchar            *filename,
       tmp_filename = g_strdup_printf ("%s.XXXXXX", filename);
 
       errno = 0;
-      fd = g_mkstemp_full (tmp_filename, O_RDWR | O_BINARY, mode);
+      fd = g_mkstemp_full (tmp_filename, O_RDWR | O_BINARY | O_CLOEXEC, mode);
 
       if (fd == -1)
         {
@@ -1704,7 +1704,7 @@ g_mkstemp_full (gchar *tmpl,
 gint
 g_mkstemp (gchar *tmpl)
 {
-  return g_mkstemp_full (tmpl, O_RDWR | O_BINARY, 0600);
+  return g_mkstemp_full (tmpl, O_RDWR | O_BINARY | O_CLOEXEC, 0600);
 }
 
 static gint
@@ -1826,7 +1826,7 @@ g_file_open_tmp (const gchar  *tmpl,
 
   result = g_get_tmp_name (tmpl, &fulltemplate,
                            wrap_g_open,
-                           O_CREAT | O_EXCL | O_RDWR | O_BINARY,
+                           O_CREAT | O_EXCL | O_RDWR | O_BINARY | O_CLOEXEC,
                            0600,
                            error);
   if (result != -1)
