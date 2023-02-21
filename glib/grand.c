@@ -230,7 +230,7 @@ g_rand_new (void)
 
       do
 	{
-	  dev_urandom = fopen("/dev/urandom", "rb");
+	  dev_urandom = fopen ("/dev/urandom", "rbe");
 	}
       while G_UNLIKELY (dev_urandom == NULL && errno == EINTR);
 
