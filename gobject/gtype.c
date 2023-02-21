@@ -3425,7 +3425,7 @@ g_type_default_interface_unref (gpointer g_iface)
  * other validly registered type ID, but randomized type IDs should
  * not be passed in and will most likely lead to a crash.
  *
- * Returns: static type name or %NULL
+ * Returns: (nullable): static type name or %NULL
  */
 const gchar *
 g_type_name (GType type)
