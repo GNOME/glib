@@ -894,7 +894,7 @@ struct _MessageToWriteData
   gsize         blob_size;
 
   gsize         total_written;
-  GTask        *task;
+  GTask        *task;  /* (owned) and (nullable) before writing starts and after g_task_return_*() is called */
 };
 
 static void
@@ -903,6 +903,11 @@ message_to_write_data_free (MessageToWriteData *data)
   _g_dbus_worker_unref (data->worker);
   g_clear_object (&data->message);
   g_free (data->blob);
+
+  /* The task must either not have been created, or have been created, returned
+   * and finalised by now. */
+  g_assert (data->task == NULL);
+
   g_slice_free (MessageToWriteData, data);
 }
 
@@ -921,14 +926,14 @@ write_message_async_cb (GObject      *source_object,
                         gpointer      user_data)
 {
   MessageToWriteData *data = user_data;
-  GTask *task;
   gssize bytes_written;
   GError *error;
 
-  /* Note: we can't access data->task after calling g_task_return_* () because the
-   * callback can free @data and we're not completing in idle. So use a copy of the pointer.
-   */
-  task = data->task;
+  /* The ownership of @data is a bit odd in this function: it’s (transfer full)
+   * when the function is called, but the code paths which call g_task_return_*()
+   * on @data->task will indirectly cause it to be freed, because @data is
+   * always guaranteed to be the user_data in the #GTask. So that’s why it looks
+   * like @data is not always freed on every code path in this function. */
 
   error = NULL;
   bytes_written = g_output_stream_write_finish (G_OUTPUT_STREAM (source_object),
@@ -936,8 +941,9 @@ write_message_async_cb (GObject      *source_object,
                                                 &error);
   if (bytes_written == -1)
     {
+      GTask *task = g_steal_pointer (&data->task);
       g_task_return_error (task, error);
-      g_object_unref (task);
+      g_clear_object (&task);
       goto out;
     }
   g_assert (bytes_written > 0); /* zero is never returned */
@@ -948,8 +954,9 @@ write_message_async_cb (GObject      *source_object,
   g_assert (data->total_written <= data->blob_size);
   if (data->total_written == data->blob_size)
     {
+      GTask *task = g_steal_pointer (&data->task);
       g_task_return_boolean (task, TRUE);
-      g_object_unref (task);
+      g_clear_object (&task);
       goto out;
     }
 
@@ -986,16 +993,14 @@ write_message_continue_writing (MessageToWriteData *data)
 {
   GOutputStream *ostream;
 #ifdef G_OS_UNIX
-  GTask *task;
   GUnixFDList *fd_list;
 #endif
 
-#ifdef G_OS_UNIX
-  /* Note: we can't access data->task after calling g_task_return_* () because the
-   * callback can free @data and we're not completing in idle. So use a copy of the pointer.
-   */
-  task = data->task;
-#endif
+  /* The ownership of @data is a bit odd in this function: it’s (transfer full)
+   * when the function is called, but the code paths which call g_task_return_*()
+   * on @data->task will indirectly cause it to be freed, because @data is
+   * always guaranteed to be the user_data in the #GTask. So that’s why it looks
+   * like @data is not always freed on every code path in this function. */
 
   ostream = g_io_stream_get_output_stream (data->worker->stream);
 #ifdef G_OS_UNIX
@@ -1024,11 +1029,12 @@ write_message_continue_writing (MessageToWriteData *data)
         {
           if (!(data->worker->capabilities & G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING))
             {
+              GTask *task = g_steal_pointer (&data->task);
               g_task_return_new_error (task,
                                        G_IO_ERROR,
                                        G_IO_ERROR_FAILED,
                                        "Tried sending a file descriptor but remote peer does not support this capability");
-              g_object_unref (task);
+              g_clear_object (&task);
               goto out;
             }
           control_message = g_unix_fd_message_new_with_fd_list (fd_list);
@@ -1065,9 +1071,13 @@ write_message_continue_writing (MessageToWriteData *data)
               g_error_free (error);
               goto out;
             }
-          g_task_return_error (task, error);
-          g_object_unref (task);
-          goto out;
+          else
+            {
+              GTask *task = g_steal_pointer (&data->task);
+              g_task_return_error (task, error);
+              g_clear_object (&task);
+              goto out;
+            }
         }
       g_assert (bytes_written > 0); /* zero is never returned */
 
@@ -1077,8 +1087,9 @@ write_message_continue_writing (MessageToWriteData *data)
       g_assert (data->total_written <= data->blob_size);
       if (data->total_written == data->blob_size)
         {
+          GTask *task = g_steal_pointer (&data->task);
           g_task_return_boolean (task, TRUE);
-          g_object_unref (task);
+          g_clear_object (&task);
           goto out;
         }
 
@@ -1093,12 +1104,13 @@ write_message_continue_writing (MessageToWriteData *data)
           /* We were trying to write byte 0 of the message, which needs
            * the fd list to be attached to it, but this connection doesn't
            * support doing that. */
+          GTask *task = g_steal_pointer (&data->task);
           g_task_return_new_error (task,
                                    G_IO_ERROR,
                                    G_IO_ERROR_FAILED,
                                    "Tried sending a file descriptor on unsupported stream of type %s",
                                    g_type_name (G_TYPE_FROM_INSTANCE (ostream)));
-          g_object_unref (task);
+          g_clear_object (&task);
           goto out;
         }
 #endif
