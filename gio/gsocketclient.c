@@ -1469,7 +1469,7 @@ typedef struct
   GCancellable *enumeration_parent_cancellable;  /* (nullable) (owned) */
   gulong enumeration_cancelled_id;
 
-  GSList *connection_attempts;
+  GSList *connection_attempts;  /* (element-type ConnectionAttempt) (owned) */
   GSList *successful_connections;
   SocketClientErrorInfo *error_info;
 
@@ -1874,7 +1874,7 @@ g_socket_client_connected_callback (GObject      *source,
 				    GAsyncResult *result,
 				    gpointer      user_data)
 {
-  ConnectionAttempt *attempt = user_data;
+  ConnectionAttempt *attempt = g_steal_pointer (&user_data);
   GSocketClientAsyncConnectData *data = attempt->data;
 
   if (task_completed_or_cancelled (data) || g_cancellable_is_cancelled (attempt->cancellable))
@@ -2032,7 +2032,7 @@ g_socket_client_enumerator_callback (GObject      *object,
 
   g_source_set_callback (attempt->timeout_source, on_connection_attempt_timeout, attempt, NULL);
   g_source_attach (attempt->timeout_source, g_task_get_context (data->task));
-  data->connection_attempts = g_slist_append (data->connection_attempts, attempt);
+  data->connection_attempts = g_slist_append (data->connection_attempts, connection_attempt_ref (attempt));
 
   if (g_task_get_cancellable (data->task))
     {
@@ -2048,7 +2048,7 @@ g_socket_client_enumerator_callback (GObject      *object,
   g_socket_connection_connect_async (G_SOCKET_CONNECTION (attempt->connection),
 				     address,
 				     attempt->cancellable,
-				     g_socket_client_connected_callback, connection_attempt_ref (attempt));
+				     g_socket_client_connected_callback, attempt  /* transfer full */);
 }
 
 /**
