@@ -585,7 +585,7 @@ _g_get_unix_mounts (void)
   
   read_file = get_mtab_read_file ();
 
-  file = setmntent (read_file, "r");
+  file = setmntent (read_file, "re");
   if (file == NULL)
     return NULL;
 
@@ -727,7 +727,7 @@ _g_get_unix_mounts (void)
   
   read_file = get_mtab_read_file ();
   
-  file = setmntent (read_file, "r");
+  file = setmntent (read_file, "re");
   if (file == NULL)
     return NULL;
   
@@ -1114,7 +1114,7 @@ _g_get_unix_mount_points (void)
   
   read_file = get_fstab_file ();
   
-  file = setmntent (read_file, "r");
+  file = setmntent (read_file, "re");
   if (file == NULL)
     return NULL;
 
@@ -1203,7 +1203,7 @@ _g_get_unix_mount_points (void)
   
   read_file = get_fstab_file ();
   
-  file = setmntent (read_file, "r");
+  file = setmntent (read_file, "re");
   if (file == NULL)
     return NULL;
 
@@ -1378,7 +1378,7 @@ _g_get_unix_mount_points (void)
   
   read_file = get_fstab_file ();
   
-  file = setmntent (read_file, "r");
+  file = setmntent (read_file, "re");
   if (file == NULL)
     return NULL;
   
