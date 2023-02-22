@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2023-02-15 16:30+0000\n"
-"PO-Revision-Date: 2023-02-16 17:35+0300\n"
+"POT-Creation-Date: 2023-02-21 12:58+0000\n"
+"PO-Revision-Date: 2023-02-20 17:58+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
 "Language: tr\n"
@@ -391,17 +391,17 @@ msgstr "Bu işletim sisteminde kimlik sızdırma olanaksızdır"
 msgid "Unexpected early end-of-stream"
 msgstr "Beklenmeyen erken akış-sonu"
 
-#: gio/gdbusaddress.c:162 gio/gdbusaddress.c:234 gio/gdbusaddress.c:321
+#: gio/gdbusaddress.c:168 gio/gdbusaddress.c:240 gio/gdbusaddress.c:327
 #, c-format
 msgid "Unsupported key “%s” in address entry “%s”"
 msgstr "“%2$s” adres girdisinde desteklenmeyen anahtar “%1$s”"
 
-#: gio/gdbusaddress.c:175
+#: gio/gdbusaddress.c:181
 #, c-format
 msgid "Meaningless key/value pair combination in address entry “%s”"
 msgstr "“%s” adres girdisinde anlamsız anahtar/değer çifti birleşimi"
 
-#: gio/gdbusaddress.c:184
+#: gio/gdbusaddress.c:190
 #, c-format
 msgid ""
 "Address “%s” is invalid (need exactly one of path, dir, tmpdir, or abstract "
@@ -409,28 +409,28 @@ msgid ""
 msgstr ""
 "“%s” adresi geçersiz (tam bir yol, dir, tmpdir veya soyut anahtarlar gerekir)"
 
-#: gio/gdbusaddress.c:249 gio/gdbusaddress.c:260 gio/gdbusaddress.c:275
-#: gio/gdbusaddress.c:336 gio/gdbusaddress.c:347
+#: gio/gdbusaddress.c:255 gio/gdbusaddress.c:266 gio/gdbusaddress.c:281
+#: gio/gdbusaddress.c:342 gio/gdbusaddress.c:353
 #, c-format
 msgid "Error in address “%s” — the “%s” attribute is malformed"
 msgstr "“%s” adresinde hata — “%s” özniteliği hatalı oluşturulmuş"
 
-#: gio/gdbusaddress.c:417 gio/gdbusaddress.c:676
+#: gio/gdbusaddress.c:423 gio/gdbusaddress.c:682
 #, c-format
 msgid "Unknown or unsupported transport “%s” for address “%s”"
 msgstr "“%2$s” adresi için bilinmeyen ya da desteklenmeyen aktarım “%1$s”"
 
-#: gio/gdbusaddress.c:461
+#: gio/gdbusaddress.c:467
 #, c-format
 msgid "Address element “%s” does not contain a colon (:)"
 msgstr "Adres ögesi “%s” iki nokta üst üste (:) içermez"
 
-#: gio/gdbusaddress.c:470
+#: gio/gdbusaddress.c:476
 #, c-format
 msgid "Transport name in address element “%s” must not be empty"
 msgstr "“%s” adres ögesindeki aktarım adı boş olmamalı"
 
-#: gio/gdbusaddress.c:491
+#: gio/gdbusaddress.c:497
 #, c-format
 msgid ""
 "Key/Value pair %d, “%s”, in address element “%s” does not contain an equal "
@@ -439,7 +439,7 @@ msgstr ""
 "“%3$s” adres ögesi içindeki, Anahtar/Değer çifti %1$d, “%2$s” eşittir imi "
 "içermiyor"
 
-#: gio/gdbusaddress.c:502
+#: gio/gdbusaddress.c:508
 #, c-format
 msgid ""
 "Key/Value pair %d, “%s”, in address element “%s” must not have an empty key"
@@ -447,7 +447,7 @@ msgstr ""
 "“%3$s” adres ögesi içindeki, Anahtar/Değer çifti %1$d, “%2$s” boş anahtar "
 "olmamalıdır"
 
-#: gio/gdbusaddress.c:516
+#: gio/gdbusaddress.c:522
 #, c-format
 msgid ""
 "Error unescaping key or value in Key/Value pair %d, “%s”, in address element "
@@ -456,7 +456,7 @@ msgstr ""
 "“%3$s” adres ögesindeki, Anahtar/Değer çifti %1$d, “%2$s” içinde ters kaçış "
 "tuşu veya değeri hatası"
 
-#: gio/gdbusaddress.c:584
+#: gio/gdbusaddress.c:590
 #, c-format
 msgid ""
 "Error in address “%s” — the unix transport requires exactly one of the keys "
@@ -465,78 +465,78 @@ msgstr ""
 "“%s” adresinde hata — unix aktarımı, “path” veya “abstract” anahtarlarından "
 "bir tanesinin kesinlikle ayarlanmış olmasını gerektirir"
 
-#: gio/gdbusaddress.c:619
+#: gio/gdbusaddress.c:625
 #, c-format
 msgid "Error in address “%s” — the host attribute is missing or malformed"
 msgstr "“%s” adresinde hata — host özniteliği eksik ya da hatalı oluşturulmuş"
 
-#: gio/gdbusaddress.c:633
+#: gio/gdbusaddress.c:639
 #, c-format
 msgid "Error in address “%s” — the port attribute is missing or malformed"
 msgstr ""
 "“%s” adresinde hata — bağlantı noktası özniteliği eksik ya da hatalı "
 "oluşturulmuş"
 
-#: gio/gdbusaddress.c:647
+#: gio/gdbusaddress.c:653
 #, c-format
 msgid "Error in address “%s” — the noncefile attribute is missing or malformed"
 msgstr ""
 "“%s” adresinde hata — noncefile özniteliği eksik ya da hatalı oluşturulmuş"
 
-#: gio/gdbusaddress.c:668
+#: gio/gdbusaddress.c:674
 msgid "Error auto-launching: "
 msgstr "Kendiliğinden başlatmada hata: "
 
-#: gio/gdbusaddress.c:721
+#: gio/gdbusaddress.c:727
 #, c-format
 msgid "Error opening nonce file “%s”: %s"
 msgstr "Tek seferlik dosya “%s” açılırken hata: %s"
 
-#: gio/gdbusaddress.c:740
+#: gio/gdbusaddress.c:746
 #, c-format
 msgid "Error reading from nonce file “%s”: %s"
 msgstr "Tek seferlik dosya “%s” okunurken hata: %s"
 
-#: gio/gdbusaddress.c:749
+#: gio/gdbusaddress.c:755
 #, c-format
 msgid "Error reading from nonce file “%s”, expected 16 bytes, got %d"
 msgstr "Tek seferlik dosya “%s” okunurken hata, beklenen 16 bayt, alınan %d"
 
-#: gio/gdbusaddress.c:767
+#: gio/gdbusaddress.c:773
 #, c-format
 msgid "Error writing contents of nonce file “%s” to stream:"
 msgstr "“%s” tek seferlik dosyasının akış için içeriklerini yazmada hata:"
 
-#: gio/gdbusaddress.c:982
+#: gio/gdbusaddress.c:988
 msgid "The given address is empty"
 msgstr "Verilen adres boş"
 
-#: gio/gdbusaddress.c:1095
+#: gio/gdbusaddress.c:1101
 #, c-format
 msgid "Cannot spawn a message bus when AT_SECURE is set"
 msgstr "AT_SECURE belirtildiğinde ileti veri yolu oluşturulamaz"
 
-#: gio/gdbusaddress.c:1102
+#: gio/gdbusaddress.c:1108
 msgid "Cannot spawn a message bus without a machine-id: "
 msgstr "machine-id olmadan ileti veri yolu oluşturulamıyor: "
 
-#: gio/gdbusaddress.c:1109
+#: gio/gdbusaddress.c:1115
 #, c-format
 msgid "Cannot autolaunch D-Bus without X11 $DISPLAY"
 msgstr "X11 $DISPLAY olmadan D-BUS kendiliğinden başlatılamaz"
 
-#: gio/gdbusaddress.c:1151
+#: gio/gdbusaddress.c:1157
 #, c-format
 msgid "Error spawning command line “%s”: "
 msgstr "“%s” komut satırı oluşturulurken hata: "
 
-#: gio/gdbusaddress.c:1220
+#: gio/gdbusaddress.c:1226
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
 "Oturum veri yolu adresi saptanamıyor (bu işletim sistemi için uygulanmadı)"
 
-#: gio/gdbusaddress.c:1374 gio/gdbusconnection.c:7316
+#: gio/gdbusaddress.c:1380 gio/gdbusconnection.c:7316
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -545,7 +545,7 @@ msgstr ""
 "DBUS_STARTER_BUS_TYPE ortam değişkeninden veri yolu adresi saptanamıyor — "
 "bilinmeyen değer “%s”"
 
-#: gio/gdbusaddress.c:1383 gio/gdbusconnection.c:7325
+#: gio/gdbusaddress.c:1389 gio/gdbusconnection.c:7325
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -553,7 +553,7 @@ msgstr ""
 "DBUS_STARTER_BUS_TYPE ortam değişkenine değer atanmadığından dolayı veri "
 "yolu adresi belirlenemiyor"
 
-#: gio/gdbusaddress.c:1393
+#: gio/gdbusaddress.c:1399
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "Bilinmeyen veriyolu türü %d"
@@ -586,12 +586,12 @@ msgstr "Kullanıcı kimlikleri eş ve sunucu için aynı olmalıdır"
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr "GDBusAuthObserver::authorize-authenticated-peer yolu ile iptal edildi"
 
-#: gio/gdbusauthmechanismsha1.c:303
+#: gio/gdbusauthmechanismsha1.c:307
 #, c-format
 msgid "Error when getting information for directory “%s”: %s"
 msgstr "“%s” dizini için bilgi alınırken hata: %s"
 
-#: gio/gdbusauthmechanismsha1.c:318
+#: gio/gdbusauthmechanismsha1.c:322
 #, c-format
 msgid ""
 "Permissions on directory “%s” are malformed. Expected mode 0700, got 0%o"
@@ -599,12 +599,12 @@ msgstr ""
 "“%s” dizini üzerindeki izinler bozulmuştur. 0700 kipi beklenmiştir, ama 0%o "
 "alınmıştır"
 
-#: gio/gdbusauthmechanismsha1.c:351 gio/gdbusauthmechanismsha1.c:362
+#: gio/gdbusauthmechanismsha1.c:355 gio/gdbusauthmechanismsha1.c:366
 #, c-format
 msgid "Error creating directory “%s”: %s"
 msgstr "“%s” dizini oluşturulurken hata: %s"
 
-#: gio/gdbusauthmechanismsha1.c:364 gio/gfile.c:1095 gio/gfile.c:1333
+#: gio/gdbusauthmechanismsha1.c:368 gio/gfile.c:1095 gio/gfile.c:1333
 #: gio/gfile.c:1471 gio/gfile.c:1709 gio/gfile.c:1764 gio/gfile.c:1822
 #: gio/gfile.c:1906 gio/gfile.c:1963 gio/gfile.c:2027 gio/gfile.c:2082
 #: gio/gfile.c:3787 gio/gfile.c:3927 gio/gfile.c:4339 gio/gfile.c:4809
@@ -614,17 +614,17 @@ msgstr "“%s” dizini oluşturulurken hata: %s"
 msgid "Operation not supported"
 msgstr "İşlem desteklenmiyor"
 
-#: gio/gdbusauthmechanismsha1.c:407
+#: gio/gdbusauthmechanismsha1.c:411
 #, c-format
 msgid "Error opening keyring “%s” for reading: "
 msgstr "Okumak için “%s” anahtarlığı açılırken hata: "
 
-#: gio/gdbusauthmechanismsha1.c:430 gio/gdbusauthmechanismsha1.c:771
+#: gio/gdbusauthmechanismsha1.c:434 gio/gdbusauthmechanismsha1.c:775
 #, c-format
 msgid "Line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr "“%3$s” içerikli “%2$s” konumundaki anahtarlığın %1$d. satırı bozulmuş"
 
-#: gio/gdbusauthmechanismsha1.c:444 gio/gdbusauthmechanismsha1.c:785
+#: gio/gdbusauthmechanismsha1.c:448 gio/gdbusauthmechanismsha1.c:789
 #, c-format
 msgid ""
 "First token of line %d of the keyring at “%s” with content “%s” is malformed"
@@ -632,7 +632,7 @@ msgstr ""
 "“%3$s” içerikli “%2$s” konumundaki anahtarlığın %1$d. satırının ilk "
 "belirteci bozulmuş"
 
-#: gio/gdbusauthmechanismsha1.c:458 gio/gdbusauthmechanismsha1.c:799
+#: gio/gdbusauthmechanismsha1.c:462 gio/gdbusauthmechanismsha1.c:803
 #, c-format
 msgid ""
 "Second token of line %d of the keyring at “%s” with content “%s” is malformed"
@@ -640,40 +640,40 @@ msgstr ""
 "“%3$s” içerikli “%2$s” konumundaki anahtarlığın %1$d. satırının ikinci "
 "belirteci bozulmuş"
 
-#: gio/gdbusauthmechanismsha1.c:482
+#: gio/gdbusauthmechanismsha1.c:486
 #, c-format
 msgid "Didn’t find cookie with id %d in the keyring at “%s”"
 msgstr "“%2$s” konumundaki anahtarlıkta %1$d kimlikli çerez bulunamadı"
 
-#: gio/gdbusauthmechanismsha1.c:539
+#: gio/gdbusauthmechanismsha1.c:543
 #, c-format
 msgid "Error creating lock file “%s”: %s"
 msgstr "Kilit dosyası “%s” oluşturulurken hata: %s"
 
-#: gio/gdbusauthmechanismsha1.c:612
+#: gio/gdbusauthmechanismsha1.c:616
 #, c-format
 msgid "Error deleting stale lock file “%s”: %s"
 msgstr "Eski kilit dosyası “%s” silinirken hata: %s"
 
-#: gio/gdbusauthmechanismsha1.c:651
+#: gio/gdbusauthmechanismsha1.c:655
 #, c-format
 msgid "Error closing (unlinked) lock file “%s”: %s"
 msgstr "(Bağlantısı olmayan) kilit dosyası “%s” kapatılırken hata: %s"
 
-#: gio/gdbusauthmechanismsha1.c:662
+#: gio/gdbusauthmechanismsha1.c:666
 #, c-format
 msgid "Error unlinking lock file “%s”: %s"
 msgstr "“%s” kilit dosyasının bağlantısı kaldırılırken hata: %s"
 
-#: gio/gdbusauthmechanismsha1.c:738
+#: gio/gdbusauthmechanismsha1.c:742
 #, c-format
 msgid "Error opening keyring “%s” for writing: "
 msgstr "“%s” anahtarlığını yazma için açarken hata: "
 
-#: gio/gdbusauthmechanismsha1.c:932
+#: gio/gdbusauthmechanismsha1.c:936
 #, c-format
 msgid "(Additionally, releasing the lock for “%s” also failed: %s) "
-msgstr "(Ayrıca, “%s” için kilidi açma başarısız oldu: %s) "
+msgstr "(Ayrıca, “%s” için kilit açılamadı: %s) "
 
 #: gio/gdbusconnection.c:590 gio/gdbusconnection.c:2405
 msgid "The connection is closed"
@@ -966,7 +966,7 @@ msgstr "(Pencereyi kapatmak için herhangi bir karakter girin)\n"
 #: gio/gdbusprivate.c:2373
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
-msgstr "Dbus oturumu çalışmıyor ve kendiliğinden başlatma başarısız oldu"
+msgstr "Dbus oturumu çalışmıyor ve kendiliğinden başlatılamadı"
 
 #: gio/gdbusprivate.c:2396
 #, c-format
@@ -1414,7 +1414,7 @@ msgstr "GEmblemedIcon için bir Gemblem beklendi"
 msgid "Containing mount does not exist"
 msgstr "Bağlama yok"
 
-#: gio/gfile.c:2641 gio/glocalfile.c:2511
+#: gio/gfile.c:2641 gio/glocalfile.c:2515
 msgid "Can’t copy over directory"
 msgstr "Dizin üzerine kopyalanamıyor"
 
@@ -3014,12 +3014,12 @@ msgstr "Hiç şema dosyası bulunamadı: hiçbir şey yapılmıyor."
 msgid "No schema files found: removed existing output file."
 msgstr "Hiç şema dosyası bulunamadı: var olan çıktı dosyası kaldırıldı."
 
-#: gio/glocalfile.c:563 gio/win32/gwinhttpfile.c:436
+#: gio/glocalfile.c:567 gio/win32/gwinhttpfile.c:436
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Geçersiz dosya adı %s"
 
-#: gio/glocalfile.c:1005
+#: gio/glocalfile.c:1009
 #, c-format
 msgid "Error getting filesystem info for %s: %s"
 msgstr "%s için dosya sistemi bilgisi alınırken hata: %s"
@@ -3028,255 +3028,255 @@ msgstr "%s için dosya sistemi bilgisi alınırken hata: %s"
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
 #.
-#: gio/glocalfile.c:1141
+#: gio/glocalfile.c:1145
 #, c-format
 msgid "Containing mount for file %s not found"
 msgstr "%s dosyası için bağlama bulunamadı"
 
-#: gio/glocalfile.c:1164
+#: gio/glocalfile.c:1168
 msgid "Can’t rename root directory"
 msgstr "Kök dizini yeniden adlandırılamaz"
 
-#: gio/glocalfile.c:1182 gio/glocalfile.c:1205
+#: gio/glocalfile.c:1186 gio/glocalfile.c:1209
 #, c-format
 msgid "Error renaming file %s: %s"
 msgstr "%s dosyası yeniden adlandırılırken hata: %s"
 
-#: gio/glocalfile.c:1189
+#: gio/glocalfile.c:1193
 msgid "Can’t rename file, filename already exists"
 msgstr "Dosya yeniden adlandırılamıyor, dosya adı zaten var"
 
-#: gio/glocalfile.c:1202 gio/glocalfile.c:2405 gio/glocalfile.c:2433
-#: gio/glocalfile.c:2572 gio/glocalfileoutputstream.c:658
+#: gio/glocalfile.c:1206 gio/glocalfile.c:2409 gio/glocalfile.c:2437
+#: gio/glocalfile.c:2576 gio/glocalfileoutputstream.c:658
 msgid "Invalid filename"
 msgstr "Geçersiz dosya adı"
 
-#: gio/glocalfile.c:1370 gio/glocalfile.c:1381
+#: gio/glocalfile.c:1374 gio/glocalfile.c:1385
 #, c-format
 msgid "Error opening file %s: %s"
 msgstr "%s dosyası açılırken hata: %s"
 
-#: gio/glocalfile.c:1506
+#: gio/glocalfile.c:1510
 #, c-format
 msgid "Error removing file %s: %s"
 msgstr "%s dosyası silinirken hata: %s"
 
-#: gio/glocalfile.c:2000 gio/glocalfile.c:2011 gio/glocalfile.c:2038
+#: gio/glocalfile.c:2004 gio/glocalfile.c:2015 gio/glocalfile.c:2042
 #, c-format
 msgid "Error trashing file %s: %s"
 msgstr "%s dosyası çöpe atılırken hata: %s"
 
-#: gio/glocalfile.c:2058
+#: gio/glocalfile.c:2062
 #, c-format
 msgid "Unable to create trash directory %s: %s"
 msgstr "Çöp dizini %s oluşturulamadı: %s"
 
-#: gio/glocalfile.c:2079
+#: gio/glocalfile.c:2083
 #, c-format
 msgid "Unable to find toplevel directory to trash %s"
 msgstr "%s çöpe atmak için en üst seviye dizin bulunamıyor"
 
-#: gio/glocalfile.c:2087
+#: gio/glocalfile.c:2091
 #, c-format
 msgid "Trashing on system internal mounts is not supported"
 msgstr "Sistem iç bağlarına çöpleme desteklenmiyor"
 
-#: gio/glocalfile.c:2173 gio/glocalfile.c:2201
+#: gio/glocalfile.c:2177 gio/glocalfile.c:2205
 #, c-format
 msgid "Unable to find or create trash directory %s to trash %s"
 msgstr "%2$s çöpe atılırken %1$s çöp dizini bulunamıyor ya da oluşturulamıyor"
 
-#: gio/glocalfile.c:2245
+#: gio/glocalfile.c:2249
 #, c-format
 msgid "Unable to create trashing info file for %s: %s"
 msgstr "%s için çöp bilgi dosyası oluşturulamıyor: %s"
 
-#: gio/glocalfile.c:2316
+#: gio/glocalfile.c:2320
 #, c-format
 msgid "Unable to trash file %s across filesystem boundaries"
 msgstr "%s dosyası, dosya sistemi sınırları dışına, çöpe atılamıyor"
 
-#: gio/glocalfile.c:2320 gio/glocalfile.c:2376
+#: gio/glocalfile.c:2324 gio/glocalfile.c:2380
 #, c-format
 msgid "Unable to trash file %s: %s"
 msgstr "%s dosyası çöpe atılamıyor: %s"
 
-#: gio/glocalfile.c:2382
+#: gio/glocalfile.c:2386
 #, c-format
 msgid "Unable to trash file %s"
 msgstr "%s dosyası çöpe atılamıyor"
 
-#: gio/glocalfile.c:2408
+#: gio/glocalfile.c:2412
 #, c-format
 msgid "Error creating directory %s: %s"
 msgstr "%s dizini oluşturulurken hata: %s"
 
-#: gio/glocalfile.c:2437
+#: gio/glocalfile.c:2441
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "Dosya sistemi simgesel bağları desteklemiyor"
 
-#: gio/glocalfile.c:2440
+#: gio/glocalfile.c:2444
 #, c-format
 msgid "Error making symbolic link %s: %s"
 msgstr "%s simgesel bağlantısı yapılırken hata: %s"
 
-#: gio/glocalfile.c:2483 gio/glocalfile.c:2518 gio/glocalfile.c:2575
+#: gio/glocalfile.c:2487 gio/glocalfile.c:2522 gio/glocalfile.c:2579
 #, c-format
 msgid "Error moving file %s: %s"
 msgstr "%s dosyası taşınırken hata: %s"
 
-#: gio/glocalfile.c:2506
+#: gio/glocalfile.c:2510
 msgid "Can’t move directory over directory"
 msgstr "Dizin dizin üzerine taşınamıyor"
 
-#: gio/glocalfile.c:2532 gio/glocalfileoutputstream.c:1110
+#: gio/glocalfile.c:2536 gio/glocalfileoutputstream.c:1110
 #: gio/glocalfileoutputstream.c:1124 gio/glocalfileoutputstream.c:1139
 #: gio/glocalfileoutputstream.c:1156 gio/glocalfileoutputstream.c:1170
 msgid "Backup file creation failed"
-msgstr "Yedek dosyası oluşturma başarısız oldu"
+msgstr "Yedek dosyası oluşturulamadı"
 
-#: gio/glocalfile.c:2551
+#: gio/glocalfile.c:2555
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Hedef dosya silerken hata: %s"
 
-#: gio/glocalfile.c:2565
+#: gio/glocalfile.c:2569
 msgid "Move between mounts not supported"
 msgstr "Bağlı sistemler arasında taşıma desteklenmiyor"
 
-#: gio/glocalfile.c:2741
+#: gio/glocalfile.c:2745
 #, c-format
 msgid "Could not determine the disk usage of %s: %s"
 msgstr "%s’in disk kullanımı saptanamadı: %s"
 
-#: gio/glocalfileinfo.c:775
+#: gio/glocalfileinfo.c:779
 msgid "Attribute value must be non-NULL"
 msgstr "Öznitelik değeri NULL olmamalı"
 
-#: gio/glocalfileinfo.c:782
+#: gio/glocalfileinfo.c:786
 msgid "Invalid attribute type (string or invalid expected)"
 msgstr "Geçersiz öznitelik türü (dizge veya geçersiz beklendi)"
 
-#: gio/glocalfileinfo.c:789
+#: gio/glocalfileinfo.c:793
 msgid "Invalid extended attribute name"
 msgstr "Geçersiz genişletilmiş öznitelik adı"
 
-#: gio/glocalfileinfo.c:840
+#: gio/glocalfileinfo.c:844
 #, c-format
 msgid "Error setting extended attribute “%s”: %s"
 msgstr "“%s” genişletilmiş özniteliği atanırken hata: %s"
 
-#: gio/glocalfileinfo.c:1819 gio/win32/gwinhttpfile.c:191
+#: gio/glocalfileinfo.c:1823 gio/win32/gwinhttpfile.c:191
 msgid " (invalid encoding)"
 msgstr " (geçersiz kodlama)"
 
-#: gio/glocalfileinfo.c:1978 gio/glocalfileoutputstream.c:945
+#: gio/glocalfileinfo.c:1982 gio/glocalfileoutputstream.c:945
 #: gio/glocalfileoutputstream.c:997
 #, c-format
 msgid "Error when getting information for file “%s”: %s"
 msgstr "“%s” dosyası için bilgi alınırken hata: %s"
 
-#: gio/glocalfileinfo.c:2281
+#: gio/glocalfileinfo.c:2285
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr "Dosya tanımlayıcı için bilgi alındığında hata: %s"
 
-#: gio/glocalfileinfo.c:2326
+#: gio/glocalfileinfo.c:2330
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Geçersiz öznitelik türü (uint32 beklendi)"
 
-#: gio/glocalfileinfo.c:2344
+#: gio/glocalfileinfo.c:2348
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Geçersiz öznitelik türü (uint64 beklendi)"
 
-#: gio/glocalfileinfo.c:2363 gio/glocalfileinfo.c:2382
+#: gio/glocalfileinfo.c:2367 gio/glocalfileinfo.c:2386
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Geçersiz öznitelik türü (byte dizisi beklendi)"
 
-#: gio/glocalfileinfo.c:2429
+#: gio/glocalfileinfo.c:2433
 msgid "Cannot set permissions on symlinks"
 msgstr "Simgesel bağlar üzerindeki yetkiler ayarlanamıyor"
 
-#: gio/glocalfileinfo.c:2445
+#: gio/glocalfileinfo.c:2449
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "İzinler atanırken hata: %s"
 
-#: gio/glocalfileinfo.c:2496
+#: gio/glocalfileinfo.c:2500
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Sahip atanırken hata: %s"
 
-#: gio/glocalfileinfo.c:2519
+#: gio/glocalfileinfo.c:2523
 msgid "symlink must be non-NULL"
 msgstr "simgesel bağ NULL olmamalı"
 
-#: gio/glocalfileinfo.c:2529 gio/glocalfileinfo.c:2548
-#: gio/glocalfileinfo.c:2559
+#: gio/glocalfileinfo.c:2533 gio/glocalfileinfo.c:2552
+#: gio/glocalfileinfo.c:2563
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Simgesel bağ atanırken hata: %s"
 
-#: gio/glocalfileinfo.c:2538
+#: gio/glocalfileinfo.c:2542
 msgid "Error setting symlink: file is not a symlink"
 msgstr "Simgesel bağ atanırken hata: dosya bir simgesel bağ değil"
 
-#: gio/glocalfileinfo.c:2630
+#: gio/glocalfileinfo.c:2634
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld are negative"
 msgstr "UNIX zaman damgası %2$lld için %1$d ek nanosaniye negatif"
 
-#: gio/glocalfileinfo.c:2639
+#: gio/glocalfileinfo.c:2643
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld reach 1 second"
 msgstr "UNIX zaman damgası %2$lld için %1$d ek nano saniye 1 saniyeye ulaştı"
 
-#: gio/glocalfileinfo.c:2649
+#: gio/glocalfileinfo.c:2653
 #, c-format
 msgid "UNIX timestamp %lld does not fit into 64 bits"
 msgstr "UNIX zaman damgası %lld 64 bit’e sığmıyor"
 
-#: gio/glocalfileinfo.c:2660
+#: gio/glocalfileinfo.c:2664
 #, c-format
 msgid "UNIX timestamp %lld is outside of the range supported by Windows"
 msgstr ""
 "UNIX zaman damgası %lld Windows tarafından desteklenen aralığın dışında"
 
-#: gio/glocalfileinfo.c:2792
+#: gio/glocalfileinfo.c:2796
 #, c-format
 msgid "File name “%s” cannot be converted to UTF-16"
 msgstr "“%s” dosya adı UTF-16’ya dönüştürülemedi"
 
-#: gio/glocalfileinfo.c:2811
+#: gio/glocalfileinfo.c:2815
 #, c-format
 msgid "File “%s” cannot be opened: Windows Error %lu"
 msgstr "“%s” dosyası açılamadı: Windows Hatası %lu"
 
-#: gio/glocalfileinfo.c:2824
+#: gio/glocalfileinfo.c:2828
 #, c-format
 msgid "Error setting modification or access time for file “%s”: %lu"
 msgstr "“%s” dosyasına değiştirme veya erişim süresi atanırken hata: %lu"
 
-#: gio/glocalfileinfo.c:2981
+#: gio/glocalfileinfo.c:2985
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Değiştirme veya erişim süresi atanırken hata: %s"
 
-#: gio/glocalfileinfo.c:3004
+#: gio/glocalfileinfo.c:3008
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux bağlamı NULL olmamalı"
 
-#: gio/glocalfileinfo.c:3011
+#: gio/glocalfileinfo.c:3015
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux bu sistede etkin değil"
 
-#: gio/glocalfileinfo.c:3021
+#: gio/glocalfileinfo.c:3025
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "SELinux bağlamı atanırken hata: %s"
 
-#: gio/glocalfileinfo.c:3118
+#: gio/glocalfileinfo.c:3122
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Öznitelik %s ataması desteklenmiyor"
@@ -3369,7 +3369,7 @@ msgstr "Bellek çıktı akışı yeniden boyutlandırılamaz"
 
 #: gio/gmemoryoutputstream.c:586
 msgid "Failed to resize memory output stream"
-msgstr "Hafız çıktı açışı yeniden boyutlandırma başarısız oldu"
+msgstr "Bellek çıktı akışı yeniden boyutlandırılamadı"
 
 #: gio/gmemoryoutputstream.c:665
 msgid ""
@@ -3894,13 +3894,13 @@ msgstr "Geçersiz yuva, başlatılmadı"
 #: gio/gsocket.c:426
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
-msgstr "Geçersiz yuva, başlatma başarısız oldu: %s"
+msgstr "Geçersiz yuva, başlatılamadı: %s"
 
 #: gio/gsocket.c:434
 msgid "Socket is already closed"
 msgstr "Yuva zaten kapalı"
 
-#: gio/gsocket.c:449 gio/gsocket.c:3201 gio/gsocket.c:4434 gio/gsocket.c:4492
+#: gio/gsocket.c:449 gio/gsocket.c:3225 gio/gsocket.c:4458 gio/gsocket.c:4516
 msgid "Socket I/O timed out"
 msgstr "Yuva G/Ç zaman aşımı"
 
@@ -3995,74 +3995,74 @@ msgstr "IPv4 kaynağa-özgü çok yöne yayın desteklenmiyor"
 msgid "No support for IPv6 source-specific multicast"
 msgstr "IPv6 kaynağa-özgü çok yöne yayın desteklenmiyor"
 
-#: gio/gsocket.c:2900
+#: gio/gsocket.c:2924
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Bağlantı kabul edilirken hata: %s"
 
-#: gio/gsocket.c:3026
+#: gio/gsocket.c:3050
 msgid "Connection in progress"
-msgstr "Bağlantı devam ediyor"
+msgstr "Bağlantı sürüyor"
 
-#: gio/gsocket.c:3077
+#: gio/gsocket.c:3101
 msgid "Unable to get pending error: "
 msgstr "Bekleyen hata alınamadı: "
 
-#: gio/gsocket.c:3266
+#: gio/gsocket.c:3290
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Veri alırken hata: %s"
 
-#: gio/gsocket.c:3463
+#: gio/gsocket.c:3487
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Veri gönderirken hata: %s"
 
-#: gio/gsocket.c:3650
+#: gio/gsocket.c:3674
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "Yuva kapatılamadı: %s"
 
-#: gio/gsocket.c:3731
+#: gio/gsocket.c:3755
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Yuva kapatılırken hata: %s"
 
-#: gio/gsocket.c:4427
+#: gio/gsocket.c:4451
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Yuva durumu bekleniyor: %s"
 
-#: gio/gsocket.c:4817 gio/gsocket.c:4833 gio/gsocket.c:4846
+#: gio/gsocket.c:4841 gio/gsocket.c:4857 gio/gsocket.c:4870
 #, c-format
 msgid "Unable to send message: %s"
 msgstr "İleti gönderilemedi: %s"
 
-#: gio/gsocket.c:4818 gio/gsocket.c:4834 gio/gsocket.c:4847
+#: gio/gsocket.c:4842 gio/gsocket.c:4858 gio/gsocket.c:4871
 msgid "Message vectors too large"
 msgstr "İleti vektörleri çok geniş"
 
-#: gio/gsocket.c:4863 gio/gsocket.c:4865 gio/gsocket.c:5012 gio/gsocket.c:5097
-#: gio/gsocket.c:5275 gio/gsocket.c:5315 gio/gsocket.c:5317
+#: gio/gsocket.c:4887 gio/gsocket.c:4889 gio/gsocket.c:5036 gio/gsocket.c:5121
+#: gio/gsocket.c:5299 gio/gsocket.c:5339 gio/gsocket.c:5341
 #, c-format
 msgid "Error sending message: %s"
 msgstr "İleti gönderme hatası: %s"
 
-#: gio/gsocket.c:5039
+#: gio/gsocket.c:5063
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "GSocketControlMessage Windows işletim sisteminde desteklenmiyor"
 
-#: gio/gsocket.c:5512 gio/gsocket.c:5588 gio/gsocket.c:5814
+#: gio/gsocket.c:5536 gio/gsocket.c:5612 gio/gsocket.c:5838
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "İleti alma hatası: %s"
 
-#: gio/gsocket.c:6099 gio/gsocket.c:6110 gio/gsocket.c:6173
+#: gio/gsocket.c:6123 gio/gsocket.c:6134 gio/gsocket.c:6197
 #, c-format
 msgid "Unable to read socket credentials: %s"
 msgstr "Yuva kimliği okunamadı : %s"
 
-#: gio/gsocket.c:6182
+#: gio/gsocket.c:6206
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "bu işletim sistemi için g_socket_get_credentials uygulanmadı"
 
@@ -4142,8 +4142,7 @@ msgstr "Kullanıcı adı ya da parola SOCKSv5 iletişim kuralı için çok uzun.
 #: gio/gsocks5proxy.c:252
 msgid "SOCKSv5 authentication failed due to wrong username or password."
 msgstr ""
-"Yanlış kullanıcı adı ya da paroladan dolayı SOCKSv5 kimlik doğrulaması "
-"başarısız oldu."
+"Yanlış kullanıcı adı ya da paroladan dolayı SOCKSv5 kimlik doğrulanamadı."
 
 #: gio/gsocks5proxy.c:302
 #, c-format
@@ -4186,12 +4185,12 @@ msgstr "SOCKSv5 vekil sunucusu verilen adres türünü desteklemiyor."
 msgid "Unknown SOCKSv5 proxy error."
 msgstr "Bilinmeyen SOCKSv5 vekil hatası."
 
-#: gio/gtestdbus.c:614 glib/gspawn-win32.c:354
+#: gio/gtestdbus.c:615 glib/gspawn-win32.c:354
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Alt süreçle haberleşme için boru oluşturulamadı (%s)"
 
-#: gio/gtestdbus.c:621
+#: gio/gtestdbus.c:622
 #, c-format
 msgid "Pipes are not supported in this platform"
 msgstr "Borular bu platformda desteklenmiyor"
@@ -4518,7 +4517,7 @@ msgstr "“%s” adında hiçbir uygulama “%s” için yer imi kaydetmedi"
 #: glib/gbookmarkfile.c:3863
 #, c-format
 msgid "Failed to expand exec line “%s” with URI “%s”"
-msgstr "Exec satırı “%s”, “%s” URI’si ile genişletilirken başarısız olundu"
+msgstr "Exec satırı “%s”, “%s” URI’si ile genişletilemedi"
 
 #: glib/gconvert.c:470
 msgid "Unrepresentable character in conversion input"
@@ -5010,30 +5009,28 @@ msgstr "“%s” dosyası çok büyük"
 #: glib/gfileutils.c:870
 #, c-format
 msgid "Failed to read from file “%s”: %s"
-msgstr "“%s” dosyasından okuma başarısız: %s"
+msgstr "“%s” dosyasından okunamadı: %s"
 
 #: glib/gfileutils.c:920 glib/gfileutils.c:995 glib/gfileutils.c:1472
 #, c-format
 msgid "Failed to open file “%s”: %s"
-msgstr "“%s” dosyasını açma başarısız: %s"
+msgstr "“%s” dosyası açılamadı: %s"
 
 #: glib/gfileutils.c:933
 #, c-format
 msgid "Failed to get attributes of file “%s”: fstat() failed: %s"
-msgstr ""
-"“%s” dosyasının özniteliklerini alma başarısız: fstat() başarısızlığı: %s"
+msgstr "“%s” dosyasının öznitelikleri alınamadı: fstat() başarısız: %s"
 
 #: glib/gfileutils.c:964
 #, c-format
 msgid "Failed to open file “%s”: fdopen() failed: %s"
-msgstr "“%s” dosyasını açma başarısız: fdopen() başarısızlığı: %s"
+msgstr "“%s” dosyası açılamadı: fdopen() başarısız: %s"
 
 #: glib/gfileutils.c:1065
 #, c-format
 msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
 msgstr ""
-"“%s” dosyasının adı “%s” olarak değiştirilirken hata: g_rename() "
-"başarısızlığı: %s"
+"“%s” dosyasının adı “%s” olarak değiştirilemedi: g_rename() başarısız: %s"
 
 #: glib/gfileutils.c:1179
 #, c-format
@@ -5048,7 +5045,7 @@ msgstr "“%s” dosyasına yazılamadı: fsync() başarısız: %s"
 #: glib/gfileutils.c:1361 glib/gfileutils.c:1776
 #, c-format
 msgid "Failed to create file “%s”: %s"
-msgstr "“%s” dosyasını oluşturma başarısız: %s"
+msgstr "“%s” dosyası oluşturulamadı: %s"
 
 #: glib/gfileutils.c:1406
 #, c-format
@@ -5068,7 +5065,7 @@ msgstr "“%s” şablonu XXXXXX içermiyor"
 #: glib/gfileutils.c:2348 glib/gfileutils.c:2377
 #, c-format
 msgid "Failed to read the symbolic link “%s”: %s"
-msgstr "“%s” simgesel bağını okuma başarısız: %s"
+msgstr "“%s” simgesel bağı okunamadı: %s"
 
 #: glib/giochannel.c:1408
 #, c-format
@@ -5091,15 +5088,15 @@ msgstr "Kanal kısmi bir karakterde sonlanıyor"
 msgid "Can’t do a raw read in g_io_channel_read_to_end"
 msgstr "g_io_channel_read_to_end içinde ham okuma başarısız"
 
-#: glib/gkeyfile.c:796
+#: glib/gkeyfile.c:800
 msgid "Valid key file could not be found in search dirs"
 msgstr "Arama dizinlerinde geçerli anahtar dosyası bulunamadı"
 
-#: glib/gkeyfile.c:833
+#: glib/gkeyfile.c:837
 msgid "Not a regular file"
 msgstr "Normal dosya değil"
 
-#: glib/gkeyfile.c:1291
+#: glib/gkeyfile.c:1295
 #, c-format
 msgid ""
 "Key file contains line “%s” which is not a key-value pair, group, or comment"
@@ -5107,50 +5104,50 @@ msgstr ""
 "Anahtar dosyası; anahtar-değer çifti, küme veya yorum olmayan “%s” satırını "
 "içeriyor"
 
-#: glib/gkeyfile.c:1348
+#: glib/gkeyfile.c:1352
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "Geçersiz küme adı: %s"
 
-#: glib/gkeyfile.c:1372
+#: glib/gkeyfile.c:1376
 msgid "Key file does not start with a group"
 msgstr "Anahtar dosyası kümeyle başlamıyor"
 
-#: glib/gkeyfile.c:1396
+#: glib/gkeyfile.c:1400
 #, c-format
 msgid "Invalid key name: %.*s"
 msgstr "Geçersiz anahtar adı: %.*s"
 
-#: glib/gkeyfile.c:1424
+#: glib/gkeyfile.c:1428
 #, c-format
 msgid "Key file contains unsupported encoding “%s”"
 msgstr "Anahtar dosya desteklenmeyen “%s” kodlamasını içeriyor"
 
-#: glib/gkeyfile.c:1679 glib/gkeyfile.c:1852 glib/gkeyfile.c:3299
-#: glib/gkeyfile.c:3363 glib/gkeyfile.c:3493 glib/gkeyfile.c:3622
-#: glib/gkeyfile.c:3768 glib/gkeyfile.c:4003 glib/gkeyfile.c:4070
+#: glib/gkeyfile.c:1683 glib/gkeyfile.c:1856 glib/gkeyfile.c:3303
+#: glib/gkeyfile.c:3367 glib/gkeyfile.c:3497 glib/gkeyfile.c:3626
+#: glib/gkeyfile.c:3772 glib/gkeyfile.c:4007 glib/gkeyfile.c:4074
 #, c-format
 msgid "Key file does not have group “%s”"
 msgstr "Anahtar dosyasında “%s” kümesi yok"
 
-#: glib/gkeyfile.c:1807
+#: glib/gkeyfile.c:1811
 #, c-format
 msgid "Key file does not have key “%s” in group “%s”"
 msgstr "Anahtar dosyası, “%2$s” kümesinde “%1$s” anahtarı içermiyor"
 
-#: glib/gkeyfile.c:1969 glib/gkeyfile.c:2085
+#: glib/gkeyfile.c:1973 glib/gkeyfile.c:2089
 #, c-format
 msgid "Key file contains key “%s” with value “%s” which is not UTF-8"
 msgstr "Anahtar dosyası, UTF-8 olmayan “%s” anahtarını “%s” değeriyle içeriyor"
 
-#: glib/gkeyfile.c:1989 glib/gkeyfile.c:2105 glib/gkeyfile.c:2544
+#: glib/gkeyfile.c:1993 glib/gkeyfile.c:2109 glib/gkeyfile.c:2548
 #, c-format
 msgid ""
 "Key file contains key “%s” which has a value that cannot be interpreted."
 msgstr ""
 "Anahtar dosyası yorumlanamayan bir değere sahip olan “%s” anahtarını içerir."
 
-#: glib/gkeyfile.c:2759 glib/gkeyfile.c:3128
+#: glib/gkeyfile.c:2763 glib/gkeyfile.c:3132
 #, c-format
 msgid ""
 "Key file contains key “%s” in group “%s” which has a value that cannot be "
@@ -5159,57 +5156,57 @@ msgstr ""
 "“%2$s” kümesindeki anahtar dosyası, yorumlanamayan “%1$s” anahtarını "
 "içeriyor."
 
-#: glib/gkeyfile.c:2837 glib/gkeyfile.c:2914
+#: glib/gkeyfile.c:2841 glib/gkeyfile.c:2918
 #, c-format
 msgid "Key “%s” in group “%s” has value “%s” where %s was expected"
 msgstr ""
 "“%2$s” kümesindeki “%1$s” anahtarı “%4$s” değerine sahip olması beklenirken "
 "“%3$s” değerine sahip"
 
-#: glib/gkeyfile.c:4323
+#: glib/gkeyfile.c:4327
 msgid "Key file contains escape character at end of line"
 msgstr "Anahtar dosyası satır sonunda çıkış karakteri içeriyor"
 
-#: glib/gkeyfile.c:4345
+#: glib/gkeyfile.c:4349
 #, c-format
 msgid "Key file contains invalid escape sequence “%s”"
 msgstr "“%s” anahtar dosyası geçersiz çıkış dizisi içeriyor"
 
-#: glib/gkeyfile.c:4490
+#: glib/gkeyfile.c:4494
 #, c-format
 msgid "Value “%s” cannot be interpreted as a number."
 msgstr "“%s” değeri bir sayı olarak yorumlanamıyor."
 
-#: glib/gkeyfile.c:4504
+#: glib/gkeyfile.c:4508
 #, c-format
 msgid "Integer value “%s” out of range"
 msgstr "“%s”, tamsayı değeri aralık dışında"
 
-#: glib/gkeyfile.c:4537
+#: glib/gkeyfile.c:4541
 #, c-format
 msgid "Value “%s” cannot be interpreted as a float number."
 msgstr "“%s” değeri bir gerçel sayı olarak yorumlanamıyor."
 
-#: glib/gkeyfile.c:4576
+#: glib/gkeyfile.c:4580
 #, c-format
 msgid "Value “%s” cannot be interpreted as a boolean."
 msgstr "“%s” değeri mantıksal değer olarak yorumlanamıyor."
 
-#: glib/gmappedfile.c:131
+#: glib/gmappedfile.c:135
 #, c-format
 msgid "Failed to get attributes of file “%s%s%s%s”: fstat() failed: %s"
 msgstr ""
-"“%s%s%s%s” dosyasının özniteliklerini alma başarısız: fstat() hatası: %s"
+"“%s%s%s%s” dosyasının özniteliklerini alma başarısız: fstat() başarısız: %s"
 
-#: glib/gmappedfile.c:197
+#: glib/gmappedfile.c:201
 #, c-format
 msgid "Failed to map %s%s%s%s: mmap() failed: %s"
-msgstr "%s%s%s%s için eşleme oluşturulamadı: mmap() hatası: %s"
+msgstr "%s%s%s%s için eşleme oluşturulamadı: mmap() başarısız: %s"
 
-#: glib/gmappedfile.c:264
+#: glib/gmappedfile.c:268
 #, c-format
 msgid "Failed to open file “%s”: open() failed: %s"
-msgstr "“%s” dosyası açılamadı: open() başarısızlığı: %s"
+msgstr "“%s” dosyası açılamadı: open() başarısız: %s"
 
 #: glib/gmarkup.c:393 glib/gmarkup.c:435
 #, c-format
@@ -5819,7 +5816,7 @@ msgstr "Metin boştu (veya yalnızca boşluk içeriyordu)"
 #: glib/gspawn.c:319
 #, c-format
 msgid "Failed to read data from child process (%s)"
-msgstr "Alt süreçten bilgi okuma başarısızlığı (%s)"
+msgstr "Alt süreçten bilgi okunamadı (%s)"
 
 #: glib/gspawn.c:471
 #, c-format
@@ -5854,27 +5851,27 @@ msgstr "Alt işlem anormal bir biçimde sonlandı"
 #: glib/gspawn.c:2027 glib/gspawn-win32.c:393 glib/gspawn-win32.c:401
 #, c-format
 msgid "Failed to read from child pipe (%s)"
-msgstr "Alt süreç borusundan okuma başarısızlığı (%s)"
+msgstr "Alt süreç borusundan okunamadı (%s)"
 
 #: glib/gspawn.c:2399
 #, c-format
 msgid "Failed to spawn child process “%s” (%s)"
-msgstr "“%s” alt süreci üretme başarısız (%s)"
+msgstr "“%s” alt süreci üretilemedi (%s)"
 
 #: glib/gspawn.c:2525
 #, c-format
 msgid "Failed to fork (%s)"
-msgstr "Çatallama başarısızlığı (%s)"
+msgstr "Çatallamadı (%s)"
 
 #: glib/gspawn.c:2685 glib/gspawn-win32.c:424
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
-msgstr "“%s” dizinine değiştirme başarısızlığı (%s)"
+msgstr "“%s” dizinine değiştirilemedi (%s)"
 
 #: glib/gspawn.c:2695
 #, c-format
 msgid "Failed to execute child process “%s” (%s)"
-msgstr "“%s” alt süreci çalıştırılırken hata oluştu (%s)"
+msgstr "“%s” alt süreç çalıştırılamadı (%s)"
 
 #: glib/gspawn.c:2705
 #, c-format
@@ -5894,7 +5891,7 @@ msgstr "Alt süreç çatallanamadı (%s)"
 #: glib/gspawn.c:2730
 #, c-format
 msgid "Failed to close file descriptor for child process (%s)"
-msgstr "Alt süreç için dosya tanımlayıcının kapatılması başarısız (%s)"
+msgstr "Alt süreç için dosya tanımlayıcı kapatılamadı (%s)"
 
 #: glib/gspawn.c:2738
 #, c-format
@@ -5913,12 +5910,12 @@ msgstr "Geçersiz kaynak FD argümanı"
 
 #: glib/gspawn-win32.c:337
 msgid "Failed to read data from child process"
-msgstr "Alt süreçten bilgi okuma başarısızlığı"
+msgstr "Alt süreçten bilgi okunamadı"
 
 #: glib/gspawn-win32.c:430 glib/gspawn-win32.c:435 glib/gspawn-win32.c:561
 #, c-format
 msgid "Failed to execute child process (%s)"
-msgstr "Alt süreç yürütme başarısızlığı (%s)"
+msgstr "Alt süreç çalıştırılamadı (%s)"
 
 #: glib/gspawn-win32.c:440
 #, c-format
