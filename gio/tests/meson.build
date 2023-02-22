@@ -928,12 +928,8 @@ if not meson.is_cross_build()
     test_resources_binary = custom_target('test_resources.o',
       input : test_gresource_binary,
       output : 'test_resources.o',
-      command : [ld,
-                 '-z', 'noexecstack',
-                 '-r',
-                 '-b','binary',
-                 '@INPUT@',
-                 '-o','@OUTPUT@'])
+      command : cc.cmd_array() + ['-Wl,-z,noexecstack', '-r', '-Wl,-b,binary',
+                                  '@INPUT@', '-o','@OUTPUT@'])
 
     # Rename symbol to match the one in the C file
     if cc.get_id() == 'gcc' and host_system == 'windows'
@@ -945,7 +941,7 @@ if not meson.is_cross_build()
       input : test_resources_binary,
       output : 'test_resources2.o',
       command : [objcopy,
-                 '--strip-all',
+                 '--strip-debug',
                  '--add-symbol', underscore + '_g_binary_test1_resource_data=.data:0',
                  '@INPUT@',
                  '@OUTPUT@'])
