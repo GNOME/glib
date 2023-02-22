@@ -53,6 +53,11 @@
  * g_file_info_get_attribute_byte_string().This optimization will matter
  * only if calling the API in a tight loop.
  *
+ * It is an error to call these accessors without specifying their required file
+ * attributes when creating the #GFileInfo. Use g_file_info_has_attribute() or
+ * g_file_info_list_attributes() to check what attributes are specified for a
+ * #GFileInfo.
+ *
  * #GFileAttributeMatcher allows for searching through a #GFileInfo for
  * attributes.
  **/
@@ -869,7 +874,7 @@ _g_file_info_get_attribute_value (GFileInfo  *info,
  * @info: a #GFileInfo.
  * @attribute: a file attribute key.
  *
- * Gets the value of a attribute, formatted as a string.
+ * Gets the value of an attribute, formatted as a string.
  * This escapes things as needed to make the string valid
  * UTF-8.
  *
@@ -1485,13 +1490,28 @@ g_file_info_set_attribute_int64  (GFileInfo  *info,
 }
 
 /* Helper getters */
+#define get_required_attribute(value_ptr, info, attribute_name, error_value) \
+  G_STMT_START { \
+    static guint32 attr = 0; \
+\
+    if (attr == 0) \
+      attr = lookup_attribute (attribute_name); \
+\
+    *value_ptr = g_file_info_find_value (info, attr); \
+    if (G_UNLIKELY (*value_ptr == NULL)) \
+      { \
+        g_critical ("GFileInfo created without " attribute_name); \
+        g_return_val_if_reached (error_value); \
+      } \
+  } G_STMT_END
+
 /**
  * g_file_info_get_deletion_date:
  * @info: a #GFileInfo.
  *
  * Returns the #GDateTime representing the deletion date of the file, as
- * available in G_FILE_ATTRIBUTE_TRASH_DELETION_DATE. If the
- * G_FILE_ATTRIBUTE_TRASH_DELETION_DATE attribute is unset, %NULL is returned.
+ * available in %G_FILE_ATTRIBUTE_TRASH_DELETION_DATE. If the
+ * %G_FILE_ATTRIBUTE_TRASH_DELETION_DATE attribute is unset, %NULL is returned.
  *
  * Returns: (nullable): a #GDateTime, or %NULL.
  *
@@ -1530,20 +1550,19 @@ g_file_info_get_deletion_date (GFileInfo *info)
  * Gets a file's type (whether it is a regular file, symlink, etc).
  * This is different from the file's content type, see g_file_info_get_content_type().
  *
+ * It is an error to call this if the #GFileInfo does not contain
+ * %G_FILE_ATTRIBUTE_STANDARD_TYPE.
+ *
  * Returns: a #GFileType for the given file.
  **/
 GFileType
 g_file_info_get_file_type (GFileInfo *info)
 {
-  static guint32 attr = 0;
   GFileAttributeValue *value;
 
   g_return_val_if_fail (G_IS_FILE_INFO (info), G_FILE_TYPE_UNKNOWN);
 
-  if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_TYPE);
-
-  value = g_file_info_find_value (info, attr);
+  get_required_attribute (&value, info, G_FILE_ATTRIBUTE_STANDARD_TYPE, G_FILE_TYPE_UNKNOWN);
   return (GFileType)_g_file_attribute_value_get_uint32 (value);
 }
 
@@ -1553,21 +1572,20 @@ g_file_info_get_file_type (GFileInfo *info)
  *
  * Checks if a file is hidden.
  *
+ * It is an error to call this if the #GFileInfo does not contain
+ * %G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN.
+ *
  * Returns: %TRUE if the file is a hidden file, %FALSE otherwise.
  **/
 gboolean
 g_file_info_get_is_hidden (GFileInfo *info)
 {
-  static guint32 attr = 0;
   GFileAttributeValue *value;
 
   g_return_val_if_fail (G_IS_FILE_INFO (info), FALSE);
 
-  if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN);
-
-  value = g_file_info_find_value (info, attr);
-  return (GFileType)_g_file_attribute_value_get_boolean (value);
+  get_required_attribute (&value, info, G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN, FALSE);
+  return _g_file_attribute_value_get_boolean (value);
 }
 
 /**
@@ -1576,21 +1594,20 @@ g_file_info_get_is_hidden (GFileInfo *info)
  *
  * Checks if a file is a backup file.
  *
+ * It is an error to call this if the #GFileInfo does not contain
+ * %G_FILE_ATTRIBUTE_STANDARD_IS_BACKUP.
+ *
  * Returns: %TRUE if file is a backup file, %FALSE otherwise.
  **/
 gboolean
 g_file_info_get_is_backup (GFileInfo *info)
 {
-  static guint32 attr = 0;
   GFileAttributeValue *value;
 
   g_return_val_if_fail (G_IS_FILE_INFO (info), FALSE);
 
-  if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_IS_BACKUP);
-
-  value = g_file_info_find_value (info, attr);
-  return (GFileType)_g_file_attribute_value_get_boolean (value);
+  get_required_attribute (&value, info, G_FILE_ATTRIBUTE_STANDARD_IS_BACKUP, FALSE);
+  return _g_file_attribute_value_get_boolean (value);
 }
 
 /**
@@ -1599,21 +1616,20 @@ g_file_info_get_is_backup (GFileInfo *info)
  *
  * Checks if a file is a symlink.
  *
+ * It is an error to call this if the #GFileInfo does not contain
+ * %G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK.
+ *
  * Returns: %TRUE if the given @info is a symlink.
  **/
 gboolean
 g_file_info_get_is_symlink (GFileInfo *info)
 {
-  static guint32 attr = 0;
   GFileAttributeValue *value;
 
   g_return_val_if_fail (G_IS_FILE_INFO (info), FALSE);
 
-  if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK);
-
-  value = g_file_info_find_value (info, attr);
-  return (GFileType)_g_file_attribute_value_get_boolean (value);
+  get_required_attribute (&value, info, G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK, FALSE);
+  return _g_file_attribute_value_get_boolean (value);
 }
 
 /**
@@ -1622,20 +1638,19 @@ g_file_info_get_is_symlink (GFileInfo *info)
  *
  * Gets the name for a file. This is guaranteed to always be set.
  *
+ * It is an error to call this if the #GFileInfo does not contain
+ * %G_FILE_ATTRIBUTE_STANDARD_NAME.
+ *
  * Returns: (type filename) (not nullable): a string containing the file name.
  **/
 const char *
 g_file_info_get_name (GFileInfo *info)
 {
-  static guint32 attr = 0;
   GFileAttributeValue *value;
 
   g_return_val_if_fail (G_IS_FILE_INFO (info), NULL);
 
-  if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_NAME);
-
-  value = g_file_info_find_value (info, attr);
+  get_required_attribute (&value, info, G_FILE_ATTRIBUTE_STANDARD_NAME, NULL);
   return _g_file_attribute_value_get_byte_string (value);
 }
 
@@ -1645,20 +1660,19 @@ g_file_info_get_name (GFileInfo *info)
  *
  * Gets a display name for a file. This is guaranteed to always be set.
  *
+ * It is an error to call this if the #GFileInfo does not contain
+ * %G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME.
+ *
  * Returns: (not nullable): a string containing the display name.
  **/
 const char *
 g_file_info_get_display_name (GFileInfo *info)
 {
-  static guint32 attr = 0;
   GFileAttributeValue *value;
 
   g_return_val_if_fail (G_IS_FILE_INFO (info), NULL);
 
-  if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME);
-
-  value = g_file_info_find_value (info, attr);
+  get_required_attribute (&value, info, G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME, NULL);
   return _g_file_attribute_value_get_string (value);
 }
 
@@ -1668,20 +1682,19 @@ g_file_info_get_display_name (GFileInfo *info)
  *
  * Gets the edit name for a file.
  *
+ * It is an error to call this if the #GFileInfo does not contain
+ * %G_FILE_ATTRIBUTE_STANDARD_EDIT_NAME.
+ *
  * Returns: a string containing the edit name.
  **/
 const char *
 g_file_info_get_edit_name (GFileInfo *info)
 {
-  static guint32 attr = 0;
   GFileAttributeValue *value;
 
   g_return_val_if_fail (G_IS_FILE_INFO (info), NULL);
 
-  if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_EDIT_NAME);
-
-  value = g_file_info_find_value (info, attr);
+  get_required_attribute (&value, info, G_FILE_ATTRIBUTE_STANDARD_EDIT_NAME, NULL);
   return _g_file_attribute_value_get_string (value);
 }
 
@@ -1691,21 +1704,21 @@ g_file_info_get_edit_name (GFileInfo *info)
  *
  * Gets the icon for a file.
  *
+ * It is an error to call this if the #GFileInfo does not contain
+ * %G_FILE_ATTRIBUTE_STANDARD_ICON.
+ *
  * Returns: (nullable) (transfer none): #GIcon for the given @info.
  **/
 GIcon *
 g_file_info_get_icon (GFileInfo *info)
 {
-  static guint32 attr = 0;
   GFileAttributeValue *value;
   GObject *obj;
 
   g_return_val_if_fail (G_IS_FILE_INFO (info), NULL);
 
-  if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_ICON);
+  get_required_attribute (&value, info, G_FILE_ATTRIBUTE_STANDARD_ICON, NULL);
 
-  value = g_file_info_find_value (info, attr);
   obj = _g_file_attribute_value_get_object (value);
   if (G_IS_ICON (obj))
     return G_ICON (obj);
@@ -1718,6 +1731,9 @@ g_file_info_get_icon (GFileInfo *info)
  *
  * Gets the symbolic icon for a file.
  *
+ * It is an error to call this if the #GFileInfo does not contain
+ * %G_FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON.
+ *
  * Returns: (nullable) (transfer none): #GIcon for the given @info.
  *
  * Since: 2.34
@@ -1725,16 +1741,13 @@ g_file_info_get_icon (GFileInfo *info)
 GIcon *
 g_file_info_get_symbolic_icon (GFileInfo *info)
 {
-  static guint32 attr = 0;
   GFileAttributeValue *value;
   GObject *obj;
 
   g_return_val_if_fail (G_IS_FILE_INFO (info), NULL);
 
-  if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON);
+  get_required_attribute (&value, info, G_FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON, NULL);
 
-  value = g_file_info_find_value (info, attr);
   obj = _g_file_attribute_value_get_object (value);
   if (G_IS_ICON (obj))
     return G_ICON (obj);
@@ -1747,21 +1760,20 @@ g_file_info_get_symbolic_icon (GFileInfo *info)
  *
  * Gets the file's content type.
  *
+ * It is an error to call this if the #GFileInfo does not contain
+ * %G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE.
+ *
  * Returns: (nullable): a string containing the file's content type,
  * or %NULL if unknown.
  **/
 const char *
 g_file_info_get_content_type (GFileInfo *info)
 {
-  static guint32 attr = 0;
   GFileAttributeValue *value;
 
   g_return_val_if_fail (G_IS_FILE_INFO (info), NULL);
 
-  if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE);
-
-  value = g_file_info_find_value (info, attr);
+  get_required_attribute (&value, info, G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE, NULL);
   return _g_file_attribute_value_get_string (value);
 }
 
@@ -1773,20 +1785,19 @@ g_file_info_get_content_type (GFileInfo *info)
  * the %G_FILE_ATTRIBUTE_STANDARD_SIZE attribute and is converted
  * from #guint64 to #goffset before returning the result.
  *
+ * It is an error to call this if the #GFileInfo does not contain
+ * %G_FILE_ATTRIBUTE_STANDARD_SIZE.
+ *
  * Returns: a #goffset containing the file's size (in bytes).
  **/
 goffset
 g_file_info_get_size (GFileInfo *info)
 {
-  static guint32 attr = 0;
   GFileAttributeValue *value;
 
   g_return_val_if_fail (G_IS_FILE_INFO (info), (goffset) 0);
 
-  if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_SIZE);
-
-  value = g_file_info_find_value (info, attr);
+  get_required_attribute (&value, info, G_FILE_ATTRIBUTE_STANDARD_SIZE, (goffset) 0);
   return (goffset) _g_file_attribute_value_get_uint64 (value);
 }
 
@@ -1797,6 +1808,10 @@ g_file_info_get_size (GFileInfo *info)
  *
  * Gets the modification time of the current @info and sets it
  * in @result.
+ *
+ * It is an error to call this if the #GFileInfo does not contain
+ * %G_FILE_ATTRIBUTE_TIME_MODIFIED. If %G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC is
+ * provided it will be used too.
  *
  * Deprecated: 2.62: Use g_file_info_get_modification_date_time() instead, as
  *    #GTimeVal is deprecated due to the year 2038 problem.
@@ -1819,6 +1834,13 @@ g_file_info_get_modification_time (GFileInfo *info,
     }
 
   value = g_file_info_find_value (info, attr_mtime);
+
+  if (G_UNLIKELY (value == NULL))
+    {
+      g_critical ("GFileInfo created without " G_FILE_ATTRIBUTE_TIME_MODIFIED);
+      g_return_if_reached ();
+    }
+
   result->tv_sec = _g_file_attribute_value_get_uint64 (value);
   value = g_file_info_find_value (info, attr_mtime_usec);
   result->tv_usec = _g_file_attribute_value_get_uint32 (value);
@@ -1832,9 +1854,10 @@ G_GNUC_END_IGNORE_DEPRECATIONS
  * Gets the modification time of the current @info and returns it as a
  * #GDateTime.
  *
- * This requires the %G_FILE_ATTRIBUTE_TIME_MODIFIED attribute. If
- * %G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC is provided, the resulting #GDateTime
- * will have microsecond precision.
+ * It is an error to call this if the #GFileInfo does not contain
+ * %G_FILE_ATTRIBUTE_TIME_MODIFIED. If %G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC is
+ * provided, the resulting #GDateTime will additionally have microsecond
+ * precision.
  *
  * If nanosecond precision is needed, %G_FILE_ATTRIBUTE_TIME_MODIFIED_NSEC must
  * be queried separately using g_file_info_get_attribute_uint32().
@@ -1880,9 +1903,10 @@ g_file_info_get_modification_date_time (GFileInfo *info)
  * Gets the access time of the current @info and returns it as a
  * #GDateTime.
  *
- * This requires the %G_FILE_ATTRIBUTE_TIME_ACCESS attribute. If
- * %G_FILE_ATTRIBUTE_TIME_ACCESS_USEC is provided, the resulting #GDateTime
- * will have microsecond precision.
+ * It is an error to call this if the #GFileInfo does not contain
+ * %G_FILE_ATTRIBUTE_TIME_ACCESS. If %G_FILE_ATTRIBUTE_TIME_ACCESS_USEC is
+ * provided, the resulting #GDateTime will additionally have microsecond
+ * precision.
  *
  * If nanosecond precision is needed, %G_FILE_ATTRIBUTE_TIME_ACCESS_NSEC must
  * be queried separately using g_file_info_get_attribute_uint32().
@@ -1928,9 +1952,10 @@ g_file_info_get_access_date_time (GFileInfo *info)
  * Gets the creation time of the current @info and returns it as a
  * #GDateTime.
  *
- * This requires the %G_FILE_ATTRIBUTE_TIME_CREATED attribute. If
- * %G_FILE_ATTRIBUTE_TIME_CREATED_USEC is provided, the resulting #GDateTime
- * will have microsecond precision.
+ * It is an error to call this if the #GFileInfo does not contain
+ * %G_FILE_ATTRIBUTE_TIME_CREATED. If %G_FILE_ATTRIBUTE_TIME_CREATED_USEC is
+ * provided, the resulting #GDateTime will additionally have microsecond
+ * precision.
  *
  * If nanosecond precision is needed, %G_FILE_ATTRIBUTE_TIME_CREATED_NSEC must
  * be queried separately using g_file_info_get_attribute_uint32().
@@ -1975,20 +2000,19 @@ g_file_info_get_creation_date_time (GFileInfo *info)
  *
  * Gets the symlink target for a given #GFileInfo.
  *
+ * It is an error to call this if the #GFileInfo does not contain
+ * %G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET.
+ *
  * Returns: (nullable): a string containing the symlink target.
  **/
 const char *
 g_file_info_get_symlink_target (GFileInfo *info)
 {
-  static guint32 attr = 0;
   GFileAttributeValue *value;
 
   g_return_val_if_fail (G_IS_FILE_INFO (info), NULL);
 
-  if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET);
-
-  value = g_file_info_find_value (info, attr);
+  get_required_attribute (&value, info, G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET, NULL);
   return _g_file_attribute_value_get_byte_string (value);
 }
 
@@ -1999,20 +2023,19 @@ g_file_info_get_symlink_target (GFileInfo *info)
  * Gets the [entity tag][gfile-etag] for a given
  * #GFileInfo. See %G_FILE_ATTRIBUTE_ETAG_VALUE.
  *
+ * It is an error to call this if the #GFileInfo does not contain
+ * %G_FILE_ATTRIBUTE_ETAG_VALUE.
+ *
  * Returns: (nullable): a string containing the value of the "etag:value" attribute.
  **/
 const char *
 g_file_info_get_etag (GFileInfo *info)
 {
-  static guint32 attr = 0;
   GFileAttributeValue *value;
 
   g_return_val_if_fail (G_IS_FILE_INFO (info), NULL);
 
-  if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_ETAG_VALUE);
-
-  value = g_file_info_find_value (info, attr);
+  get_required_attribute (&value, info, G_FILE_ATTRIBUTE_ETAG_VALUE, NULL);
   return _g_file_attribute_value_get_string (value);
 }
 
@@ -2023,20 +2046,19 @@ g_file_info_get_etag (GFileInfo *info)
  * Gets the value of the sort_order attribute from the #GFileInfo.
  * See %G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER.
  *
+ * It is an error to call this if the #GFileInfo does not contain
+ * %G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER.
+ *
  * Returns: a #gint32 containing the value of the "standard::sort_order" attribute.
  **/
 gint32
 g_file_info_get_sort_order (GFileInfo *info)
 {
-  static guint32 attr = 0;
   GFileAttributeValue *value;
 
   g_return_val_if_fail (G_IS_FILE_INFO (info), 0);
 
-  if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER);
-
-  value = g_file_info_find_value (info, attr);
+  get_required_attribute (&value, info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER, 0);
   return _g_file_attribute_value_get_int32 (value);
 }
 
@@ -2816,7 +2838,7 @@ g_file_attribute_matcher_unref (GFileAttributeMatcher *matcher)
  * @matcher: a #GFileAttributeMatcher.
  * @attribute: a file attribute key.
  *
- * Checks if a attribute matcher only matches a given attribute. Always
+ * Checks if an attribute matcher only matches a given attribute. Always
  * returns %FALSE if "*" was used when creating the matcher.
  *
  * Returns: %TRUE if the matcher only matches @attribute. %FALSE otherwise.

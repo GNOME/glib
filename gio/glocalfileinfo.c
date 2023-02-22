@@ -2028,6 +2028,8 @@ _g_local_file_info_get (const char             *basename,
 	    symlink_broken = TRUE;
 	}
     }
+  else
+    g_file_info_set_is_symlink (info, FALSE);
 
   if (stat_ok)
     set_info_from_stat (info, &statbuf, attribute_matcher);
@@ -2041,10 +2043,10 @@ _g_local_file_info_get (const char             *basename,
   if (_g_file_attribute_matcher_matches_id (attribute_matcher,
 					    G_FILE_ATTRIBUTE_ID_STANDARD_IS_HIDDEN))
     {
-      if (basename != NULL &&
-          (basename[0] == '.' ||
-           file_is_hidden (path, basename)))
-        g_file_info_set_is_hidden (info, TRUE);
+      g_file_info_set_is_hidden (info,
+                                 (basename != NULL &&
+                                  (basename[0] == '.' ||
+                                   file_is_hidden (path, basename))));
     }
 
   if (basename != NULL && basename[strlen (basename) -1] == '~' &&

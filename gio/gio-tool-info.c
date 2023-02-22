@@ -196,7 +196,8 @@ show_info (GFile *file, GFileInfo *info)
       g_print (" %"G_GUINT64_FORMAT"\n", (guint64)size);
     }
 
-  if (g_file_info_get_is_hidden (info))
+  if (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN) &&
+      g_file_info_get_is_hidden (info))
     g_print (_("hidden\n"));
 
   uri = g_file_get_uri (file);
