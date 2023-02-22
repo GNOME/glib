@@ -129,17 +129,6 @@ test_new_valist_invalid_va (gpointer dummy,
    * g_error_new_valist() with a %NULL format will crash on FreeBSD as its
    * implementation of vasprintf() is less forgiving than Linux’s. That’s
    * fine: it’s a programmer error in either case. */
-  const struct
-    {
-      GQuark domain;
-      const gchar *format;
-    }
-  tests[] =
-    {
-      { G_MARKUP_ERROR, NULL },
-      { 0, "Message" },
-    };
-  gsize i;
 
   g_test_summary ("Test that g_error_new_valist() rejects invalid input");
 
@@ -149,12 +138,31 @@ test_new_valist_invalid_va (gpointer dummy,
       return;
     }
 
-  for (i = 0; i < G_N_ELEMENTS (tests); i++)
+    {
+      GError *error = NULL;
+      va_list ap;
+
+      va_start (ap, dummy);
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
+#pragma GCC diagnostic ignored "-Wformat-extra-args"
+
+      g_test_expect_message (G_LOG_DOMAIN,
+                             G_LOG_LEVEL_CRITICAL,
+                             "*g_error_new_valist: assertion 'format != NULL' failed*");
+      error = g_error_new_valist (G_MARKUP_ERROR, G_MARKUP_ERROR_EMPTY, NULL, ap);
+      g_test_assert_expected_messages ();
+      g_assert_null (error);
+
+#pragma GCC diagnostic pop
+
+      va_end (ap);
+    }
+
     {
       GError *error = NULL, *error_copy = NULL;
       va_list ap;
-
-      g_test_message ("Test %" G_GSIZE_FORMAT, i);
 
       va_start (ap, dummy);
 
@@ -164,7 +172,7 @@ test_new_valist_invalid_va (gpointer dummy,
       g_test_expect_message (G_LOG_DOMAIN,
                              G_LOG_LEVEL_WARNING,
                              "*g_error_new_valist: runtime check failed*");
-      error = g_error_new_valist (tests[i].domain, G_MARKUP_ERROR_EMPTY, tests[i].format, ap);
+      error = g_error_new_valist (0, G_MARKUP_ERROR_EMPTY, "Message", ap);
       g_test_assert_expected_messages ();
       g_assert_nonnull (error);
 

@@ -755,13 +755,14 @@ g_error_new_valist (GQuark       domain,
                     const gchar *format,
                     va_list      args)
 {
+  g_return_val_if_fail (format != NULL, NULL);
+
   /* Historically, GError allowed this (although it was never meant to work),
    * and it has significant use in the wild, which g_return_val_if_fail
    * would break. It should maybe g_return_val_if_fail in GLib 4.
    * (GNOME#660371, GNOME#560482)
    */
   g_warn_if_fail (domain != 0);
-  g_warn_if_fail (format != NULL);
 
   return g_error_new_steal (domain, code, g_strdup_vprintf (format, args), NULL);
 }
@@ -887,9 +888,10 @@ g_error_copy (const GError *error)
   ErrorDomainInfo info;
 
   g_return_val_if_fail (error != NULL, NULL);
-  /* See g_error_new_valist for why these don't return */
+  g_return_val_if_fail (error->message != NULL, NULL);
+
+  /* See g_error_new_valist for why this doesn’t return */
   g_warn_if_fail (error->domain != 0);
-  g_warn_if_fail (error->message != NULL);
 
   copy = g_error_new_steal (error->domain,
                             error->code,
