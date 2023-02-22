@@ -179,9 +179,15 @@ GString*     g_string_append_uri_escaped (GString         *string,
                                           const gchar     *reserved_chars_allowed,
                                           gboolean         allow_utf8);
 
+#ifdef G_CAN_INLINE
+
+#if defined (_MSC_VER) && !defined (__clang__)
+#pragma warning (push)
+#pragma warning (disable : 4141) /* silence "warning C4141: 'inline' used more than once" */
+#endif
+
 #ifndef __GTK_DOC_IGNORE__
 
-#ifdef G_CAN_INLINE
 G_ALWAYS_INLINE
 static inline GString*
 g_string_append_c_inline (GString *gstring,
@@ -267,9 +273,13 @@ g_string_truncate_inline (GString *gstring,
 
 #endif /* G_GNUC_CHECK_VERSION (2, 0) */
 
-#endif /* G_CAN_INLINE */
-
 #endif /* __GTK_DOC_IGNORE__ */
+
+#if defined (_MSC_VER) && !defined (__clang__)
+#pragma warning (pop) /* #pragma warning (disable : 4141) */
+#endif
+
+#endif /* G_CAN_INLINE */
 
 GLIB_DEPRECATED
 GString *g_string_down (GString *string);

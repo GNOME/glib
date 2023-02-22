@@ -1157,7 +1157,7 @@
 # endif
 #elif defined (_MSC_VER)
   /* Use MSVC specific syntax.  */
-# if G_CXX_STD_CHECK_VERSION (11) && _MSC_VER >= 1927
+# if G_CXX_STD_CHECK_VERSION (20) && _MSC_VER >= 1927
 #  define G_ALWAYS_INLINE [[msvc::forceinline]]
 # else
 #  define G_ALWAYS_INLINE __forceinline
@@ -1202,7 +1202,7 @@
 #   if defined (__GNUC__)
 #      define G_NO_INLINE [[gnu::noinline]]
 #   elif defined (_MSC_VER)
-#      if _MSC_VER >= 1927
+#      if G_CXX_STD_CHECK_VERSION (20) && _MSC_VER >= 1927
 #        define G_NO_INLINE [[msvc::noinline]]
 #      else
 #        define G_NO_INLINE __declspec (noinline)
@@ -1214,7 +1214,7 @@
 #elif defined (_MSC_VER) && (1200 <= _MSC_VER)
   /* Use MSVC specific syntax.  */
     /* Use ISO C++11 syntax when the compiler supports it. */
-# if G_CXX_STD_CHECK_VERSION (11) && _MSC_VER >= 1927
+# if G_CXX_STD_CHECK_VERSION (20) && _MSC_VER >= 1927
 #   define G_NO_INLINE [[msvc::noinline]]
 # else
 #   define G_NO_INLINE __declspec (noinline)
