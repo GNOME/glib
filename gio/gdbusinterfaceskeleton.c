@@ -462,14 +462,17 @@ typedef struct
 {
   gint ref_count;  /* (atomic) */
   GDBusInterfaceMethodCallFunc  method_call_func;
-  GDBusMethodInvocation        *invocation;
+  GDBusMethodInvocation        *invocation;  /* (owned) */
 } DispatchData;
 
 static void
 dispatch_data_unref (DispatchData *data)
 {
   if (g_atomic_int_dec_and_test (&data->ref_count))
-    g_slice_free (DispatchData, data);
+    {
+      g_clear_object (&data->invocation);
+      g_slice_free (DispatchData, data);
+    }
 }
 
 static DispatchData *
@@ -628,7 +631,7 @@ g_dbus_interface_method_dispatch_helper (GDBusInterfaceSkeleton       *interface
 
       data = g_slice_new0 (DispatchData);
       data->method_call_func = method_call_func;
-      data->invocation = invocation;
+      data->invocation = g_object_ref (invocation);
       data->ref_count = 1;
 
       task = g_task_new (interface, NULL, NULL, NULL);
