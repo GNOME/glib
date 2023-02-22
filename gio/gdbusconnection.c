@@ -433,7 +433,7 @@ struct _GDBusConnection
   GDBusConnectionFlags flags;
 
   /* Map used for managing method replies, protected by @lock */
-  GHashTable *map_method_serial_to_task;  /* guint32 -> GTask* */
+  GHashTable *map_method_serial_to_task;  /* guint32 -> owned GTask* */
 
   /* Maps used for managing signal subscription, protected by @lock */
   GHashTable *map_rule_to_signal_data;                      /* match rule (gchar*)    -> SignalData */
@@ -1067,7 +1067,7 @@ g_dbus_connection_init (GDBusConnection *connection)
   g_mutex_init (&connection->lock);
   g_mutex_init (&connection->init_lock);
 
-  connection->map_method_serial_to_task = g_hash_table_new (g_direct_hash, g_direct_equal);
+  connection->map_method_serial_to_task = g_hash_table_new_full (g_direct_hash, g_direct_equal, NULL, g_object_unref);
 
   connection->map_rule_to_signal_data = g_hash_table_new (g_str_hash,
                                                           g_str_equal);
@@ -1759,7 +1759,7 @@ send_message_data_free (SendMessageData *data)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-/* can be called from any thread with lock held; @task is (transfer full) */
+/* can be called from any thread with lock held; @task is (transfer none) */
 static void
 send_message_with_reply_cleanup (GTask *task, gboolean remove)
 {
@@ -1789,13 +1789,11 @@ send_message_with_reply_cleanup (GTask *task, gboolean remove)
                                               GUINT_TO_POINTER (data->serial));
       g_warn_if_fail (removed);
     }
-
-  g_object_unref (task);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-/* Called from GDBus worker thread with lock held; @task is (transfer full). */
+/* Called from GDBus worker thread with lock held; @task is (transfer none). */
 static void
 send_message_data_deliver_reply_unlocked (GTask           *task,
                                           GDBusMessage    *reply)
@@ -1813,7 +1811,7 @@ send_message_data_deliver_reply_unlocked (GTask           *task,
   ;
 }
 
-/* Called from a user thread, lock is not held */
+/* Called from a user thread, lock is not held; @task is (transfer none) */
 static void
 send_message_data_deliver_error (GTask      *task,
                                  GQuark      domain,
@@ -1830,7 +1828,10 @@ send_message_data_deliver_error (GTask      *task,
       return;
     }
 
+  /* Hold a ref on @task as send_message_with_reply_cleanup() will remove it
+   * from the task map and could end up dropping the last reference */
   g_object_ref (task);
+
   send_message_with_reply_cleanup (task, TRUE);
   CONNECTION_UNLOCK (connection);
 
@@ -2363,7 +2364,8 @@ on_worker_message_about_to_be_sent (GDBusWorker  *worker,
   return message;
 }
 
-/* called with connection lock held, in GDBusWorker thread */
+/* called with connection lock held, in GDBusWorker thread
+ * @key, @value and @user_data are (transfer none) */
 static gboolean
 cancel_method_on_close (gpointer key, gpointer value, gpointer user_data)
 {
