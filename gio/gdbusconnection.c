@@ -3751,7 +3751,7 @@ g_dbus_connection_signal_unsubscribe (GDBusConnection *connection,
 typedef struct
 {
   SignalSubscriber    *subscriber;  /* (owned) */
-  GDBusMessage        *message;
+  GDBusMessage        *message;  /* (owned) */
   GDBusConnection     *connection;
   const gchar         *sender;  /* (nullable) for peer-to-peer connections */
   const gchar         *path;
@@ -3815,7 +3815,7 @@ emit_signal_instance_in_idle_cb (gpointer data)
 static void
 signal_instance_free (SignalInstance *signal_instance)
 {
-  g_object_unref (signal_instance->message);
+  g_clear_object (&signal_instance->message);
   g_object_unref (signal_instance->connection);
   signal_subscriber_unref (signal_instance->subscriber);
   g_free (signal_instance);
@@ -4227,7 +4227,7 @@ has_object_been_unregistered (GDBusConnection    *connection,
 typedef struct
 {
   GDBusConnection *connection;
-  GDBusMessage *message;
+  GDBusMessage *message;  /* (owned) */
   gpointer user_data;
   const gchar *property_name;
   const GDBusInterfaceVTable *vtable;
@@ -4241,7 +4241,7 @@ static void
 property_data_free (PropertyData *data)
 {
   g_object_unref (data->connection);
-  g_object_unref (data->message);
+  g_clear_object (&data->message);
   g_free (data);
 }
 
@@ -4583,7 +4583,7 @@ handle_getset_property (GDBusConnection *connection,
 typedef struct
 {
   GDBusConnection *connection;
-  GDBusMessage *message;
+  GDBusMessage *message;  /* (owned) */
   gpointer user_data;
   const GDBusInterfaceVTable *vtable;
   GDBusInterfaceInfo *interface_info;
@@ -4595,7 +4595,7 @@ static void
 property_get_all_data_free (PropertyGetAllData *data)
 {
   g_object_unref (data->connection);
-  g_object_unref (data->message);
+  g_clear_object (&data->message);
   g_free (data);
 }
 
@@ -6823,7 +6823,7 @@ typedef struct
 static void
 subtree_deferred_data_free (SubtreeDeferredData *data)
 {
-  g_object_unref (data->message);
+  g_clear_object (&data->message);
   exported_subtree_unref (data->es);
   g_free (data);
 }
