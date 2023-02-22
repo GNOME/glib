@@ -36,7 +36,7 @@ foreach test_name, extra_args : gobject_tests
     install: install,
   )
 
-  suite = ['gobject', 'performance'] + extra_args.get('suite', [])
+  suite = ['gobject', 'performance', 'no-valgrind'] + extra_args.get('suite', [])
   timeout = suite.contains('slow') ? test_timeout_slow : test_timeout
   args = extra_args.get('args', [])
 
