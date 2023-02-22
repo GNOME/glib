@@ -3356,6 +3356,7 @@ static gboolean
 uwp_package_cb (gpointer         user_data,
                 const gunichar2 *full_package_name,
                 const gunichar2 *package_name,
+                const gunichar2 *display_name,
                 const gunichar2 *app_user_model_id,
                 gboolean         show_in_applist,
                 GPtrArray       *supported_extgroups,
@@ -3383,6 +3384,13 @@ uwp_package_cb (gpointer         user_data,
                         TRUE,
                         FALSE,
                         TRUE);
+
+  if (!app->pretty_name && !app->pretty_name_u8 && display_name)
+    {
+      char *display_name_u8 = g_utf16_to_utf8 (display_name, -1, NULL, NULL, NULL);
+      app->pretty_name = g_wcsdup (display_name, -1);
+      app->pretty_name_u8 = g_steal_pointer (&display_name_u8);
+    }
 
   extensions_considered = 0;
 

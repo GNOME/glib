@@ -141,6 +141,7 @@ struct _xml_sax_state
   gsize          package_index;
   const wchar_t *wcs_full_name;
   const wchar_t *wcs_name;
+  const wchar_t *wcs_display_name;
   HSTRING        package_family;
 
   gboolean       applist;
@@ -322,17 +323,20 @@ g_win32_package_parser_enum_packages (GWin32PackageParserCallback   callback,
     {
       IUnknown *item = NULL;
       IPackage *ipackage = NULL;
+      IPackage2 *ipackage2 = NULL;
       IPackageId *ipackageid = NULL;
       IUnknown *package_install_location = NULL;
       IStorageItem *storage_item = NULL;
       HSTRING path = NULL;
       HSTRING name = NULL;
       HSTRING full_name = NULL;
+      HSTRING display_name = NULL;
       HSTRING package_family = NULL;
       size_t manifest_filename_size;
       const wchar_t *wcs_path;
       const wchar_t *wcs_full_name;
       const wchar_t *wcs_name;
+      const wchar_t *wcs_display_name;
       wchar_t *manifest_filename = NULL;
 
 #define canned_com_error_handler_pkg(function_name_literal, where_to_go) \
@@ -353,6 +357,9 @@ g_win32_package_parser_enum_packages (GWin32PackageParserCallback   callback,
       hr = IUnknown_QueryInterface (item, &IID_IPackage, (void **) &ipackage);
       canned_com_error_handler_pkg ("IUnknown_QueryInterface(IID_IPackage)", package_cleanup);
 
+      hr = IUnknown_QueryInterface (item, &IID_IPackage2, (void **) &ipackage2);
+      canned_com_error_handler_pkg ("IUnknown_QueryInterface(IID_IPackage2)", package_cleanup);
+
       hr = IPackage_get_Id (ipackage, &ipackageid);
       canned_com_error_handler_pkg ("IPackage_get_Id()", package_cleanup);
 
@@ -362,8 +369,12 @@ g_win32_package_parser_enum_packages (GWin32PackageParserCallback   callback,
       hr = IPackageId_get_Name (ipackageid, &name);
       canned_com_error_handler_pkg ("IPackageId_get_Name()", package_cleanup);
 
+      hr = IPackage2_get_DisplayName (ipackage2, &display_name);
+      canned_com_error_handler_pkg ("IPackage2_get_DisplayName()", package_cleanup);
+
       wcs_full_name = LoadedWindowsGetStringRawBuffer (full_name, NULL);
       wcs_name = LoadedWindowsGetStringRawBuffer (name, NULL);
+      wcs_display_name = LoadedWindowsGetStringRawBuffer (display_name, NULL);
 
 #define canned_com_error_handler_pkg_named(function_name_literal, where_to_go) \
       do \
@@ -402,6 +413,7 @@ g_win32_package_parser_enum_packages (GWin32PackageParserCallback   callback,
       sax->package_index = package_index;
       sax->wcs_full_name = wcs_full_name;
       sax->wcs_name = wcs_name;
+      sax->wcs_display_name = wcs_display_name;
       sax->package_family = package_family;
       sax->applist = TRUE;
       sax->exit_early = FALSE;
@@ -426,21 +438,25 @@ g_win32_package_parser_enum_packages (GWin32PackageParserCallback   callback,
 
       if (path)
         LoadedWindowsDeleteString (path);
-      if (storage_item)
-        (void) IStorageItem_Release (storage_item);
-      if (package_install_location)
-        (void) IUnknown_Release (package_install_location);
-      if (ipackage)
-        (void) IPackage_Release (ipackage);
-      if (item)
-        (void) IUnknown_Release (item);
-
       if (package_family)
         LoadedWindowsDeleteString (package_family);
+      if (display_name)
+        LoadedWindowsDeleteString (display_name);
       if (name)
         LoadedWindowsDeleteString (name);
       if (full_name)
         LoadedWindowsDeleteString (full_name);
+
+      if (storage_item)
+        (void) IStorageItem_Release (storage_item);
+      if (package_install_location)
+        (void) IUnknown_Release (package_install_location);
+      if (ipackage2)
+        (void) IPackage2_Release (ipackage2);
+      if (ipackage)
+        (void) IPackage_Release (ipackage);
+      if (item)
+        (void) IUnknown_Release (item);
 
       if (ipackageid)
         (void) IPackageId_Release (ipackageid);
@@ -791,8 +807,8 @@ xml_parser_iteration (struct _xml_sax_state  *sax,
         {
           if (sax->application_usermodelid != NULL)
             sax->exit_early = !sax->callback (sax->user_data, sax->wcs_full_name, sax->wcs_name,
-                                              sax->application_usermodelid, sax->applist,
-                                              sax->supported_extgroups, sax->supported_protocols);
+                                              sax->wcs_display_name, sax->application_usermodelid,
+                                              sax->applist, sax->supported_extgroups, sax->supported_protocols);
           g_clear_pointer (&sax->supported_extgroups, g_ptr_array_unref);
           g_clear_pointer (&sax->supported_protocols, g_ptr_array_unref);
           sax->supported_protocols = g_ptr_array_new_full (0, (GDestroyNotify) g_free);

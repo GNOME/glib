@@ -4,15 +4,42 @@
  *
  * This file is part of the w64 mingw-runtime package.
  * No warranty is given; refer to https://github.com/kinke/mingw-w64-crt/blob/master/DISCLAIMER.PD.
+ *
+ * Additional code derived from the windows-rs repository on GitHub
+ * (https://github.com/microsoft/windows-rs) with the MIT license:
+ *
+ * MIT License
+ *
+ * Copyright (c) Microsoft Corporation.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE
  */
 
 typedef interface IPackageManager IPackageManager;
 typedef interface IPackage IPackage;
 typedef interface IPackageId IPackageId;
 typedef interface IPackageVersion IPackageVersion;
+typedef interface IPackage2 IPackage2;
 
 DEFINE_GUID(IID_IPackageManager, 0x9A7D4B65, 0x5E8F, 0x4FC7, 0xA2, 0xE5, 0x7F, 0x69, 0x25, 0xCB, 0x8B, 0x53);
 DEFINE_GUID(IID_IPackage, 0x163C792F, 0xBD75, 0x413C, 0xBF, 0x23, 0xB1, 0xFE, 0x7B, 0x95, 0xD8, 0x25);
+DEFINE_GUID(IID_IPackage2, 0xA6612fb6, 0x7688, 0x4ACE, 0x95, 0xFB, 0x35, 0x95, 0x38, 0xE7, 0xAA, 0x01);
 
 /* IPackageManager */
 typedef struct IPackageManagerVtbl {
@@ -270,3 +297,86 @@ interface IPackage {
 #define IPackage_get_InstalledLocation(This,value) (This)->lpVtbl->get_InstalledLocation(This,value)
 #define IPackage_get_IsFramework(This,value) (This)->lpVtbl->get_IsFramework(This,value)
 #define IPackage_get_Dependencies(This,value) (This)->lpVtbl->get_Dependencies(This,value)
+
+/* IPackage2 */
+typedef struct IPackage2Vtbl {
+  BEGIN_INTERFACE
+
+  /*** IUnknown methods ***/
+  HRESULT (STDMETHODCALLTYPE *QueryInterface)(
+    IPackage2  *This,
+    REFIID      riid,
+    void      **ppvObject);
+
+  ULONG (STDMETHODCALLTYPE *AddRef)(
+    IPackage2  *This);
+
+  ULONG (STDMETHODCALLTYPE *Release)(
+    IPackage2  *This);
+
+  /*** IInspectable methods ***/
+  HRESULT (STDMETHODCALLTYPE *GetIids)(
+    IPackage2  *This,
+    UINT32     *count,
+    IID       **ids);
+
+  HRESULT (STDMETHODCALLTYPE *GetRuntimeClassName)(
+    IPackage2  *This,
+    HSTRING    *className);
+
+  HRESULT (STDMETHODCALLTYPE *GetTrustLevel)(
+    IPackage2  *This,
+    TrustLevel *trustLevel);
+
+  /*** IPackage2 methods ***/
+  HRESULT (STDMETHODCALLTYPE *get_DisplayName)(
+    IPackage2  *This,
+    HSTRING    *value);
+
+  HRESULT (STDMETHODCALLTYPE *get_PublisherDisplayName)(
+    IPackage2  *This,
+    HSTRING    *value);
+
+  HRESULT (STDMETHODCALLTYPE *get_Description)(
+    IPackage2  *This,
+    HSTRING    *value);
+
+  HRESULT (STDMETHODCALLTYPE *get_Logo)(
+    IPackage2  *This,
+    void      **value);
+
+  HRESULT (STDMETHODCALLTYPE *get_IsResourcePackage)(
+    IPackage2  *This,
+    UCHAR      *value);
+
+  HRESULT (STDMETHODCALLTYPE *get_IsBundle)(
+    IPackage2  *This,
+    UCHAR      *value);
+
+  HRESULT (STDMETHODCALLTYPE *get_IsDevelopmentMode)(
+    IPackage2  *This,
+    UCHAR      *value);
+
+  END_INTERFACE
+} IPackage2Vtbl;
+
+interface IPackage2 {
+  CONST_VTBL IPackage2Vtbl* lpVtbl;
+};
+
+/*** IUnknown methods ***/
+#define IPackage2_QueryInterface(This,riid,ppvObject) (This)->lpVtbl->QueryInterface(This,riid,ppvObject)
+#define IPackage2_AddRef(This) (This)->lpVtbl->AddRef(This)
+#define IPackage2_Release(This) (This)->lpVtbl->Release(This)
+/*** IInspectable methods ***/
+#define IPackage2_GetIids(This,count,ids) (This)->lpVtbl->GetIids(This,count,ids)
+#define IPackage2_GetRuntimeClassName(This,name) (This)->lpVtbl->GetRuntimeClassName(This,name)
+#define IPackage2_GetTrustLevel(This,level) (This)->lpVtbl->GetTrustLevel(This,level)
+/*** IPackage2 methods ***/
+#define IPackage2_get_DisplayName(This,value) (This)->lpVtbl->get_DisplayName(This,value)
+#define IPackage2_get_PublisherDisplayName(This,value) (This)->lpVtbl->get_PublisherDisplayName(This,value)
+#define IPackage2_get_Description(This,value) (This)->lpVtbl->get_Description(This,value)
+#define IPackage2_get_Logo(This,value) (This)->lpVtbl->get_Logo(This,value)
+#define IPackage2_get_IsResourcePackage(This,value) (This)->lpVtbl->get_IsResourcePackage(This,value)
+#define IPackage2_get_IsBundle(This,value) (This)->lpVtbl->get_IsBundle(This,value)
+#define IPackage2_get_IsDevelopmentMode(This,value) (This)->lpVtbl->get_IsDevelopmentMode(This,value)
