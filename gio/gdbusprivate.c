@@ -980,7 +980,7 @@ on_socket_ready (GSocket      *socket,
 {
   MessageToWriteData *data = g_steal_pointer (&user_data);
   write_message_continue_writing (g_steal_pointer (&data));
-  return FALSE; /* remove source */
+  return G_SOURCE_REMOVE;
 }
 #endif
 
