@@ -889,7 +889,7 @@ _g_dbus_worker_do_initial_read (gpointer data)
 struct _MessageToWriteData
 {
   GDBusWorker  *worker;
-  GDBusMessage *message;
+  GDBusMessage *message;  /* (owned) */
   gchar        *blob;
   gsize         blob_size;
 
@@ -901,8 +901,7 @@ static void
 message_to_write_data_free (MessageToWriteData *data)
 {
   _g_dbus_worker_unref (data->worker);
-  if (data->message)
-    g_object_unref (data->message);
+  g_clear_object (&data->message);
   g_free (data->blob);
   g_slice_free (MessageToWriteData, data);
 }
