@@ -919,13 +919,14 @@ static void write_message_continue_writing (MessageToWriteData *data);
  *
  * write-lock is not held on entry
  * output_pending is PENDING_WRITE on entry
+ * @user_data is (transfer full)
  */
 static void
 write_message_async_cb (GObject      *source_object,
                         GAsyncResult *res,
                         gpointer      user_data)
 {
-  MessageToWriteData *data = user_data;
+  MessageToWriteData *data = g_steal_pointer (&user_data);
   gssize bytes_written;
   GError *error;
 
@@ -960,7 +961,7 @@ write_message_async_cb (GObject      *source_object,
       goto out;
     }
 
-  write_message_continue_writing (data);
+  write_message_continue_writing (g_steal_pointer (&data));
 
  out:
   ;
@@ -977,8 +978,8 @@ on_socket_ready (GSocket      *socket,
                  GIOCondition  condition,
                  gpointer      user_data)
 {
-  MessageToWriteData *data = user_data;
-  write_message_continue_writing (data);
+  MessageToWriteData *data = g_steal_pointer (&user_data);
+  write_message_continue_writing (g_steal_pointer (&data));
   return FALSE; /* remove source */
 }
 #endif
@@ -987,6 +988,7 @@ on_socket_ready (GSocket      *socket,
  *
  * write-lock is not held on entry
  * output_pending is PENDING_WRITE on entry
+ * @data is (transfer full)
  */
 static void
 write_message_continue_writing (MessageToWriteData *data)
@@ -1064,7 +1066,7 @@ write_message_continue_writing (MessageToWriteData *data)
                                                data->worker->cancellable);
               g_source_set_callback (source,
                                      (GSourceFunc) on_socket_ready,
-                                     data,
+                                     g_steal_pointer (&data),
                                      NULL); /* GDestroyNotify */
               g_source_attach (source, g_main_context_get_thread_default ());
               g_source_unref (source);
@@ -1093,7 +1095,7 @@ write_message_continue_writing (MessageToWriteData *data)
           goto out;
         }
 
-      write_message_continue_writing (data);
+      write_message_continue_writing (g_steal_pointer (&data));
     }
 #endif
   else
@@ -1121,7 +1123,7 @@ write_message_continue_writing (MessageToWriteData *data)
                                    G_PRIORITY_DEFAULT,
                                    data->worker->cancellable,
                                    write_message_async_cb,
-                                   data);
+                                   data);  /* steal @data */
     }
 #ifdef G_OS_UNIX
  out:
@@ -1144,7 +1146,7 @@ write_message_async (GDBusWorker         *worker,
   g_task_set_source_tag (data->task, write_message_async);
   g_task_set_name (data->task, "[gio] D-Bus write message");
   data->total_written = 0;
-  write_message_continue_writing (data);
+  write_message_continue_writing (g_steal_pointer (&data));
 }
 
 /* called in private thread shared by all GDBusConnection instances (with write-lock held) */
@@ -1333,6 +1335,7 @@ prepare_flush_unlocked (GDBusWorker *worker)
  *
  * write-lock is not held on entry
  * output_pending is PENDING_WRITE on entry
+ * @user_data is (transfer full)
  */
 static void
 write_message_cb (GObject       *source_object,
@@ -1551,7 +1554,7 @@ continue_writing (GDBusWorker *worker)
       write_message_async (worker,
                            data,
                            write_message_cb,
-                           data);
+                           data);  /* takes ownership of @data as user_data */
     }
 }
 
