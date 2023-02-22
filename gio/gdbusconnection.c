@@ -1751,7 +1751,7 @@ typedef struct
 
   gulong cancellable_handler_id;
 
-  GSource *timeout_source;
+  GSource *timeout_source;  /* (owned) (nullable) */
 
   gboolean delivered;
 } SendMessageData;
@@ -1760,6 +1760,7 @@ typedef struct
 static void
 send_message_data_free (SendMessageData *data)
 {
+  /* These should already have been cleared by send_message_with_reply_cleanup(). */
   g_assert (data->timeout_source == NULL);
   g_assert (data->cancellable_handler_id == 0);
 
@@ -1784,7 +1785,7 @@ send_message_with_reply_cleanup (GTask *task, gboolean remove)
   if (data->timeout_source != NULL)
     {
       g_source_destroy (data->timeout_source);
-      data->timeout_source = NULL;
+      g_clear_pointer (&data->timeout_source, g_source_unref);
     }
   if (data->cancellable_handler_id > 0)
     {
@@ -1888,7 +1889,7 @@ send_message_with_reply_timeout_cb (gpointer user_data)
 
   send_message_data_deliver_error (task, G_IO_ERROR, G_IO_ERROR_TIMED_OUT,
                                    _("Timeout was reached"));
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -1949,7 +1950,6 @@ g_dbus_connection_send_message_with_reply_unlocked (GDBusConnection     *connect
       g_source_set_static_name (data->timeout_source, "[gio] send_message_with_reply_unlocked");
       g_task_attach_source (task, data->timeout_source,
                             (GSourceFunc) send_message_with_reply_timeout_cb);
-      g_source_unref (data->timeout_source);
     }
 
   g_hash_table_insert (connection->map_method_serial_to_task,
