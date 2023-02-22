@@ -4592,7 +4592,7 @@ typedef struct
 } PropertyGetAllData;
 
 static void
-property_get_all_data_free (PropertyData *data)
+property_get_all_data_free (PropertyGetAllData *data)
 {
   g_object_unref (data->connection);
   g_object_unref (data->message);
