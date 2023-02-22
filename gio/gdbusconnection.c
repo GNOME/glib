@@ -1828,7 +1828,7 @@ send_message_data_deliver_reply_unlocked (GTask           *task,
   ;
 }
 
-/* Called from a user thread, lock is not held */
+/* Called from a user thread, lock is not held; @task is (transfer full) */
 static void
 send_message_data_deliver_error (GTask      *task,
                                  GQuark      domain,
@@ -1855,13 +1855,14 @@ send_message_data_deliver_error (GTask      *task,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-/* Called from a user thread, lock is not held; @task is (transfer full) */
+/* Called from a user thread, lock is not held; @task is (transfer none) */
 static gboolean
 send_message_with_reply_cancelled_idle_cb (gpointer user_data)
 {
   GTask *task = user_data;
 
-  send_message_data_deliver_error (task, G_IO_ERROR, G_IO_ERROR_CANCELLED,
+  g_object_ref (task);
+  send_message_data_deliver_error (g_steal_pointer (&task), G_IO_ERROR, G_IO_ERROR_CANCELLED,
                                    _("Operation was cancelled"));
   return G_SOURCE_REMOVE;
 }
@@ -1887,13 +1888,14 @@ send_message_with_reply_cancelled_cb (GCancellable *cancellable,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-/* Called from a user thread, lock is not held; @task is (transfer full) */
+/* Called from a user thread, lock is not held; @task is (transfer none) */
 static gboolean
 send_message_with_reply_timeout_cb (gpointer user_data)
 {
   GTask *task = user_data;
 
-  send_message_data_deliver_error (task, G_IO_ERROR, G_IO_ERROR_TIMED_OUT,
+  g_object_ref (task);
+  send_message_data_deliver_error (g_steal_pointer (&task), G_IO_ERROR, G_IO_ERROR_TIMED_OUT,
                                    _("Timeout was reached"));
   return FALSE;
 }
