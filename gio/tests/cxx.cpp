@@ -58,7 +58,11 @@ test_name_macro_wrapper (void)
 int
 main (int argc, char **argv)
 {
+#if G_CXX_STD_CHECK_VERSION (11)
   g_test_init (&argc, &argv, NULL);
+#else
+  g_test_init (&argc, &argv, static_cast<void *>(NULL));
+#endif
 
   g_test_add_func ("/gtask/name", test_name);
   g_test_add_func ("/gtask/name/macro-wrapper", test_name_macro_wrapper);
