@@ -1,3 +1,10 @@
+Overview of changes in GLib 2.75.4, YYYY-MM-DD
+==============================================
+
+* Emit a critical warning when acquiring the notification queue during GObject
+  finalization. A type's `finalize()` implementation should not call public
+  API that emits property notifications. (!3119, work by Marco Trevisan and Emmanuele Bassi)
+
 Overview of changes in GLib 2.75.3, 2023-02-13
 ==============================================
 
