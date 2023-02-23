@@ -1,3 +1,14 @@
+Overview of changes in GLib 2.74.6
+==================================
+
+* Bugs fixed:
+  - !3239 Backport !3237 “Fix safe_wspawnve #define” to glib-2-74
+
+* Translation updates:
+  - Georgian (Ekaterine Papava)
+  - German (Tim Sabsch)
+
+
 Overview of changes in GLib 2.74.5
 ==================================
 
