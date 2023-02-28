@@ -517,10 +517,10 @@ macos:
     # macOS limit string lengths to 4095B — pcre2_error.c has a string of length
     # 4380B
     # Prevent accidental usage of too-new macOS APIs
-    CFLAGS: '-Wno-overlength-strings -Wunguarded-availability-new -mmacosx-version-min=10.13'
-    CXXFLAGS: '-Wunguarded-availability-new -mmacosx-version-min=10.13'
-    OBJCFLAGS: '-Wunguarded-availability-new -mmacosx-version-min=10.13'
-    OBJCXXFLAGS: '-Wunguarded-availability-new -mmacosx-version-min=10.13'
+    CFLAGS: '-Wno-overlength-strings -Wunguarded-availability-new -mmacosx-version-min=10.7'
+    CXXFLAGS: '-Wunguarded-availability-new -mmacosx-version-min=10.7'
+    OBJCFLAGS: '-Wunguarded-availability-new -mmacosx-version-min=10.7'
+    OBJCXXFLAGS: '-Wunguarded-availability-new -mmacosx-version-min=10.7'
   before_script:
     - bash .gitlab-ci/show-execution-environment.sh
     - pip3 install --user meson==1.0.0
