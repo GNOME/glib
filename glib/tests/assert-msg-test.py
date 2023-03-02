@@ -158,9 +158,9 @@ class TestAssertMessage(unittest.TestCase):
 
             # Some CI environments disable ptrace (as they’re running in a
             # container). If so, skip the test as there’s nothing we can do.
-            if (
-                result.info.returncode != 0
-                and "ptrace: Operation not permitted" in result.err
+            if result.info.returncode != 0 and (
+                "ptrace: Operation not permitted" in result.err
+                or "warning: opening /proc/PID/mem file for lwp" in result.err
             ):
                 self.skipTest("GDB is not functional due to ptrace being disabled")
 
