@@ -1750,6 +1750,7 @@ typedef struct
   guint32 serial;
 
   gulong cancellable_handler_id;
+  GSource *cancelled_idle_source;  /* (owned) (nullable) */
 
   GSource *timeout_source;
 
@@ -1790,6 +1791,11 @@ send_message_with_reply_cleanup (GTask *task, gboolean remove)
     {
       g_cancellable_disconnect (g_task_get_cancellable (task), data->cancellable_handler_id);
       data->cancellable_handler_id = 0;
+    }
+  if (data->cancelled_idle_source != NULL)
+    {
+      g_source_destroy (data->cancelled_idle_source);
+      g_clear_pointer (&data->cancelled_idle_source, g_source_unref);
     }
 
   if (remove)
@@ -1857,7 +1863,7 @@ send_message_with_reply_cancelled_idle_cb (gpointer user_data)
 
   send_message_data_deliver_error (task, G_IO_ERROR, G_IO_ERROR_CANCELLED,
                                    _("Operation was cancelled"));
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }
 
 /* Can be called from any thread with or without lock held */
@@ -1866,15 +1872,17 @@ send_message_with_reply_cancelled_cb (GCancellable *cancellable,
                                       gpointer      user_data)
 {
   GTask *task = user_data;
-  GSource *idle_source;
+  SendMessageData *data = g_task_get_task_data (task);
 
   /* postpone cancellation to idle handler since we may be called directly
    * via g_cancellable_connect() (e.g. holding lock)
    */
-  idle_source = g_idle_source_new ();
-  g_source_set_static_name (idle_source, "[gio] send_message_with_reply_cancelled_idle_cb");
-  g_task_attach_source (task, idle_source, send_message_with_reply_cancelled_idle_cb);
-  g_source_unref (idle_source);
+  if (data->cancelled_idle_source != NULL)
+    return;
+
+  data->cancelled_idle_source = g_idle_source_new ();
+  g_source_set_static_name (data->cancelled_idle_source, "[gio] send_message_with_reply_cancelled_idle_cb");
+  g_task_attach_source (task, data->cancelled_idle_source, send_message_with_reply_cancelled_idle_cb);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
