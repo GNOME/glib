@@ -1042,7 +1042,7 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
             g_set_error_literal (error,
                                  G_IO_ERROR,
                                  G_IO_ERROR_FAILED,
-                                 _ ("Unexpected lack of content trying to read a byte"));
+                                 _ ("Unexpected lack of content trying to read a line"));
           else
             g_propagate_error (error, local_error);
           goto out;
