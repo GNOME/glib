@@ -5048,7 +5048,7 @@ schedule_method_call (GDBusConnection            *connection,
   g_source_set_priority (idle_source, G_PRIORITY_DEFAULT);
   g_source_set_callback (idle_source,
                          call_in_idle_cb,
-                         invocation,
+                         g_steal_pointer (&invocation),
                          g_object_unref);
   g_source_set_static_name (idle_source, "[gio, " __FILE__ "] call_in_idle_cb");
   g_source_attach (idle_source, main_context);

@@ -461,16 +461,18 @@ dbus_interface_interface_init (GDBusInterfaceIface *iface)
 typedef struct
 {
   gint ref_count;  /* (atomic) */
-  GDBusInterfaceSkeleton       *interface;
   GDBusInterfaceMethodCallFunc  method_call_func;
-  GDBusMethodInvocation        *invocation;
+  GDBusMethodInvocation        *invocation;  /* (owned) */
 } DispatchData;
 
 static void
 dispatch_data_unref (DispatchData *data)
 {
   if (g_atomic_int_dec_and_test (&data->ref_count))
-    g_slice_free (DispatchData, data);
+    {
+      g_clear_object (&data->invocation);
+      g_slice_free (DispatchData, data);
+    }
 }
 
 static DispatchData *
@@ -502,16 +504,17 @@ dispatch_in_thread_func (GTask        *task,
                          GCancellable *cancellable)
 {
   DispatchData *data = task_data;
+  GDBusInterfaceSkeleton *interface = g_task_get_source_object (task);
   GDBusInterfaceSkeletonFlags flags;
   GDBusObject *object;
   gboolean authorized;
 
-  g_mutex_lock (&data->interface->priv->lock);
-  flags = data->interface->priv->flags;
-  object = data->interface->priv->object;
+  g_mutex_lock (&interface->priv->lock);
+  flags = interface->priv->flags;
+  object = interface->priv->object;
   if (object != NULL)
     g_object_ref (object);
-  g_mutex_unlock (&data->interface->priv->lock);
+  g_mutex_unlock (&interface->priv->lock);
 
   /* first check on the enclosing object (if any), then the interface */
   authorized = TRUE;
@@ -519,13 +522,13 @@ dispatch_in_thread_func (GTask        *task,
     {
       g_signal_emit_by_name (object,
                              "authorize-method",
-                             data->interface,
+                             interface,
                              data->invocation,
                              &authorized);
     }
   if (authorized)
     {
-      g_signal_emit (data->interface,
+      g_signal_emit (interface,
                      signals[G_AUTHORIZE_METHOD_SIGNAL],
                      0,
                      data->invocation,
@@ -627,9 +630,8 @@ g_dbus_interface_method_dispatch_helper (GDBusInterfaceSkeleton       *interface
       DispatchData *data;
 
       data = g_slice_new0 (DispatchData);
-      data->interface = interface;
       data->method_call_func = method_call_func;
-      data->invocation = invocation;
+      data->invocation = g_object_ref (invocation);
       data->ref_count = 1;
 
       task = g_task_new (interface, NULL, NULL, NULL);
