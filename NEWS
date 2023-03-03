@@ -1,9 +1,64 @@
-Overview of changes in GLib 2.75.4, YYYY-MM-DD
+Overview of changes in GLib 2.75.4, 2023-03-03
 ==============================================
 
 * Emit a critical warning when acquiring the notification queue during GObject
   finalization. A type's `finalize()` implementation should not call public
   API that emits property notifications. (!3119, work by Marco Trevisan and Emmanuele Bassi)
+
+* Bugs fixed:
+  - #2720 Fails to create resource.o with LLVM ld
+  - #2905 [MSVC] gstring.h: warning C4141: 'inline': used more than once
+  - #2907 g_file_info_get_name returns NULL in contradiction to docs (Philip
+    Withnall)
+  - #2913 `glib:glib / error` fails with Glibc-2.37 (Philip Withnall)
+  - #2915 Python tests fail on Windows when an environment variable contains
+    non-ASCII characters (Luca Bacci)
+  - #2916 gdbus: Never buffer reads during server authentication
+  - #2918 2.75.3: array-test fails on big-endian CPUs (Simon McVittie)
+  - #2919 2.75.3: g_string_append_len_inline: error: implicit conversion changes
+    signedness
+  - #2924 Use-after-free of GDBusMethodInvocation in GDBusInterfaceSkeleton
+    (Philip Withnall)
+  - !3168 GWin32AppInfo: Retrieve display name for UWP / Packaged apps
+  - !3273 Revert "Revert "tests: Temporarily disable socket test due to a kernel
+    bug""
+  - !3275 tests: Add a -Wsign-conversion test for gstring.h
+  - !3279 tests: Don’t run the GObject performance tests under valgrind
+  - !3280 ci: Use Meson 1.0.0 on Windows and macOS CI builds
+  - !3281 tests: Remove custom printerr logging from live-g-file
+  - !3282 spawn-test: Use an absolute path to the system sort.exe on Windows
+  - !3283 Make sure new file descriptors have close-on-exec flag set on them in
+    a race-free way
+  - !3284 Allow passing a `NULL` item to `g_list_store_find_with_equal_func()`
+  - !3288 spawn-test: Fix running on non-English Windows
+  - !3290 g_type_name: Fix return annotation
+  - !3292 Close-on-exec flag few missed places
+  - !3294 gio/tests/cxx.cpp: fix missing sentinel for musl
+  - !3295 tests: Add some missing g_thread_join() calls to onceinit test
+  - !3296 gdbusconnection: Explicitly destroy an idle source on cleanup
+  - !3299 Update the NEWS file
+  - !3301 GObject: Add nullable annotations
+  - !3304 tests: Skip assert-msg-test.py if gdb fails
+  - !3305 Fix a memory leak in g_strerror
+
+* Translation updates:
+  - Basque (Asier Sarasua Garmendia)
+  - Danish (Alan Mortensen)
+  - Galician (Fran Dieguez)
+  - Georgian (Ekaterine Papava)
+  - German (Tim Sabsch)
+  - Hebrew (Yaron Shahrabani)
+  - Hungarian (Balázs Úr)
+  - Indonesian (Kukuh Syafaat)
+  - Lithuanian (Aurimas Černius)
+  - Portuguese (Hugo Carvalho)
+  - Serbian (Марко Костић)
+  - Slovenian (Matej Urbančič)
+  - Spanish (Daniel)
+  - Swedish (Anders Jonsson)
+  - Turkish (Sabri Ünal, Emin Tufan Çetin)
+  - Ukrainian (Yuri Chornoivan)
+
 
 Overview of changes in GLib 2.75.3, 2023-02-13
 ==============================================
