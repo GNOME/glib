@@ -1929,7 +1929,7 @@ _g_local_file_has_trash_dir (const char *dirname, dev_t dir_dev)
   return res;
 }
 
-#ifdef G_OS_UNIX
+#ifndef G_OS_WIN32
 gboolean
 _g_local_file_is_lost_found_dir (const char *path, dev_t path_dev)
 {

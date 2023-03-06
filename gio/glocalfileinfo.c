@@ -2034,11 +2034,6 @@ _g_local_file_info_get (const char             *basename,
   if (stat_ok)
     set_info_from_stat (info, &statbuf, attribute_matcher);
 
-#ifdef G_OS_UNIX
-  if (stat_ok && _g_local_file_is_lost_found_dir (path, _g_stat_dev (&statbuf)))
-    g_file_info_set_is_hidden (info, TRUE);
-#endif
-
 #ifndef G_OS_WIN32
   if (_g_file_attribute_matcher_matches_id (attribute_matcher,
 					    G_FILE_ATTRIBUTE_ID_STANDARD_IS_HIDDEN))
@@ -2046,7 +2041,9 @@ _g_local_file_info_get (const char             *basename,
       g_file_info_set_is_hidden (info,
                                  (basename != NULL &&
                                   (basename[0] == '.' ||
-                                   file_is_hidden (path, basename))));
+                                   file_is_hidden (path, basename) ||
+                                   (stat_ok &&
+                                    _g_local_file_is_lost_found_dir (path, _g_stat_dev (&statbuf))))));
     }
 
   if (basename != NULL && basename[strlen (basename) -1] == '~' &&
