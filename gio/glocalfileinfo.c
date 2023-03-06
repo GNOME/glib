@@ -2049,9 +2049,10 @@ _g_local_file_info_get (const char             *basename,
                                    file_is_hidden (path, basename))));
     }
 
-  if (basename != NULL && basename[strlen (basename) -1] == '~' &&
-      (stat_ok && S_ISREG (_g_stat_mode (&statbuf))))
-    _g_file_info_set_attribute_boolean_by_id (info, G_FILE_ATTRIBUTE_ID_STANDARD_IS_BACKUP, TRUE);
+  _g_file_info_set_attribute_boolean_by_id (info,
+                                            G_FILE_ATTRIBUTE_ID_STANDARD_IS_BACKUP,
+                                            basename != NULL && basename[strlen (basename) - 1] == '~' &&
+                                                (stat_ok && S_ISREG (_g_stat_mode (&statbuf))));
 #else
   if (statbuf.attributes & FILE_ATTRIBUTE_HIDDEN)
     g_file_info_set_is_hidden (info, TRUE);
