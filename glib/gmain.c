@@ -3592,8 +3592,22 @@ g_main_context_release (GMainContext *context)
 {
   if (context == NULL)
     context = g_main_context_default ();
-  
+
   LOCK_CONTEXT (context);
+
+#ifndef G_DISABLE_CHECKS
+  if (G_UNLIKELY (context->owner != G_THREAD_SELF || context->owner_count == 0))
+    {
+      GThread *context_owner = context->owner;
+      guint context_owner_count = context->owner_count;
+
+      UNLOCK_CONTEXT (context);
+
+      g_critical ("g_main_context_release() called on a context (%p, owner %p, "
+                  "owner count %u) which is not acquired by the current thread",
+                  context, context_owner, context_owner_count);
+    }
+#endif  /* !G_DISABLE_CHECKS */
 
   g_main_context_release_unlocked (context);
 
