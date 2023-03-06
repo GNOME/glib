@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2023-02-21 12:58+0000\n"
-"PO-Revision-Date: 2023-02-20 17:58+0300\n"
+"POT-Creation-Date: 2023-03-02 14:20+0000\n"
+"PO-Revision-Date: 2023-03-06 16:10+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
 "Language: tr\n"
@@ -308,7 +308,7 @@ msgstr "Akış zaten kapalı"
 msgid "Truncate not supported on base stream"
 msgstr "Taban akış üzerinde sonunun kesilmesi desteklenmiyor"
 
-#: gio/gcancellable.c:326 gio/gdbusconnection.c:1859 gio/gdbusprivate.c:1420
+#: gio/gcancellable.c:326 gio/gdbusconnection.c:1865 gio/gdbusprivate.c:1420
 #: gio/gsimpleasyncresult.c:873 gio/gsimpleasyncresult.c:899
 #, c-format
 msgid "Operation was cancelled"
@@ -536,7 +536,7 @@ msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
 "Oturum veri yolu adresi saptanamıyor (bu işletim sistemi için uygulanmadı)"
 
-#: gio/gdbusaddress.c:1380 gio/gdbusconnection.c:7316
+#: gio/gdbusaddress.c:1380 gio/gdbusconnection.c:7324
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -545,7 +545,7 @@ msgstr ""
 "DBUS_STARTER_BUS_TYPE ortam değişkeninden veri yolu adresi saptanamıyor — "
 "bilinmeyen değer “%s”"
 
-#: gio/gdbusaddress.c:1389 gio/gdbusconnection.c:7325
+#: gio/gdbusaddress.c:1389 gio/gdbusconnection.c:7333
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -629,8 +629,8 @@ msgstr "“%3$s” içerikli “%2$s” konumundaki anahtarlığın %1$d. satır
 msgid ""
 "First token of line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr ""
-"“%3$s” içerikli “%2$s” konumundaki anahtarlığın %1$d. satırının ilk "
-"belirteci bozulmuş"
+"“%3$s” içerikli “%2$s” konumundaki anahtarlığın %1$d. satırının ilk jetonu "
+"bozulmuş"
 
 #: gio/gdbusauthmechanismsha1.c:462 gio/gdbusauthmechanismsha1.c:803
 #, c-format
@@ -638,7 +638,7 @@ msgid ""
 "Second token of line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr ""
 "“%3$s” içerikli “%2$s” konumundaki anahtarlığın %1$d. satırının ikinci "
-"belirteci bozulmuş"
+"jetonu bozulmuş"
 
 #: gio/gdbusauthmechanismsha1.c:486
 #, c-format
@@ -675,99 +675,99 @@ msgstr "“%s” anahtarlığını yazma için açarken hata: "
 msgid "(Additionally, releasing the lock for “%s” also failed: %s) "
 msgstr "(Ayrıca, “%s” için kilit açılamadı: %s) "
 
-#: gio/gdbusconnection.c:590 gio/gdbusconnection.c:2405
+#: gio/gdbusconnection.c:590 gio/gdbusconnection.c:2413
 msgid "The connection is closed"
 msgstr "Bağlantı kapalı"
 
-#: gio/gdbusconnection.c:1889
+#: gio/gdbusconnection.c:1897
 msgid "Timeout was reached"
 msgstr "Zaman aşımı gerçekleşti"
 
-#: gio/gdbusconnection.c:2528
+#: gio/gdbusconnection.c:2536
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr ""
 "İstemci taraflı bağlantı kurulurken desteklenmeyen etiketlerle karşılaşıldı"
 
-#: gio/gdbusconnection.c:4257 gio/gdbusconnection.c:4611
+#: gio/gdbusconnection.c:4265 gio/gdbusconnection.c:4619
 #, c-format
 msgid ""
 "No such interface “org.freedesktop.DBus.Properties” on object at path %s"
 msgstr ""
 "%s yolundaki nesnede “org.freedesktop.DBus.Properties” gibi bir arayüz yok"
 
-#: gio/gdbusconnection.c:4402
+#: gio/gdbusconnection.c:4410
 #, c-format
 msgid "No such property “%s”"
 msgstr "“%s” gibi bir özellik yok"
 
-#: gio/gdbusconnection.c:4414
+#: gio/gdbusconnection.c:4422
 #, c-format
 msgid "Property “%s” is not readable"
 msgstr "“%s” özelliği okunabilir değil"
 
-#: gio/gdbusconnection.c:4425
+#: gio/gdbusconnection.c:4433
 #, c-format
 msgid "Property “%s” is not writable"
 msgstr "“%s” özelliği yazılabilir değil"
 
-#: gio/gdbusconnection.c:4445
+#: gio/gdbusconnection.c:4453
 #, c-format
 msgid "Error setting property “%s”: Expected type “%s” but got “%s”"
 msgstr "“%s” özelliği ayarlanırken hata: “%s” türü beklendi, “%s” elde edildi"
 
-#: gio/gdbusconnection.c:4550 gio/gdbusconnection.c:4765
-#: gio/gdbusconnection.c:6742
+#: gio/gdbusconnection.c:4558 gio/gdbusconnection.c:4773
+#: gio/gdbusconnection.c:6750
 #, c-format
 msgid "No such interface “%s”"
 msgstr "“%s” gibi bir arabirim yok"
 
-#: gio/gdbusconnection.c:4981 gio/gdbusconnection.c:7256
+#: gio/gdbusconnection.c:4989 gio/gdbusconnection.c:7264
 #, c-format
 msgid "No such interface “%s” on object at path %s"
 msgstr "%2$s yolundaki nesnede “%1$s” gibi bir arayüz yok"
 
-#: gio/gdbusconnection.c:5082
+#: gio/gdbusconnection.c:5090
 #, c-format
 msgid "No such method “%s”"
 msgstr "“%s” gibi bir anahtar yok"
 
-#: gio/gdbusconnection.c:5113
+#: gio/gdbusconnection.c:5121
 #, c-format
 msgid "Type of message, “%s”, does not match expected type “%s”"
 msgstr "“%s” iletisinin türü, beklenen “%s” türü ile örtüşmüyor"
 
-#: gio/gdbusconnection.c:5316
+#: gio/gdbusconnection.c:5324
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "%2$s konumundaki %1$s arayüzü için bir nesne zaten dışa aktarıldı"
 
-#: gio/gdbusconnection.c:5543
+#: gio/gdbusconnection.c:5551
 #, c-format
 msgid "Unable to retrieve property %s.%s"
 msgstr "%s.%s özelliği alınamadı"
 
-#: gio/gdbusconnection.c:5599
+#: gio/gdbusconnection.c:5607
 #, c-format
 msgid "Unable to set property %s.%s"
 msgstr "%s.%s özelliği ayarlanamadı"
 
-#: gio/gdbusconnection.c:5778
+#: gio/gdbusconnection.c:5786
 #, c-format
 msgid "Method “%s” returned type “%s”, but expected “%s”"
 msgstr "“%s” yöntemi “%s” türü döndürdü, ancak “%s” bekleniyordu"
 
-#: gio/gdbusconnection.c:6854
+#: gio/gdbusconnection.c:6862
 #, c-format
 msgid "Method “%s” on interface “%s” with signature “%s” does not exist"
 msgstr "“%3$s” imzalı “%2$s” arayüzü üzerinde “%1$s” yöntemi yok"
 
-#: gio/gdbusconnection.c:6975
+#: gio/gdbusconnection.c:6983
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "%s için bir alt ağaç zaten dışa aktarılmış"
 
-#: gio/gdbusconnection.c:7264
+#: gio/gdbusconnection.c:7272
 #, c-format
 msgid "Object does not exist at path “%s”"
 msgstr "Nesne, “%s” yolunda yok"
@@ -1390,7 +1390,7 @@ msgstr "GEmblem kodlamasının %d sürümü işlenemiyor"
 #: gio/gemblem.c:335
 #, c-format
 msgid "Malformed number of tokens (%d) in GEmblem encoding"
-msgstr "GEmblem kodlaması içerisinde bozuk belirteç sayısı (%d)"
+msgstr "GEmblem kodlaması içerisinde bozuk jeton sayısı (%d)"
 
 #: gio/gemblemedicon.c:364
 #, c-format
@@ -1400,7 +1400,7 @@ msgstr "GEmblemedIcon kodlamasının %d sürümü işlenemiyor"
 #: gio/gemblemedicon.c:374
 #, c-format
 msgid "Malformed number of tokens (%d) in GEmblemedIcon encoding"
-msgstr "GEmblemedIcon kodlaması içerisinde bozuk belirteç sayısı (%d)"
+msgstr "GEmblemedIcon kodlaması içerisinde bozuk jeton sayısı (%d)"
 
 #: gio/gemblemedicon.c:397
 msgid "Expected a GEmblem for GEmblemedIcon"
@@ -1565,7 +1565,7 @@ msgstr "HTTP vekil sunucusu bağlantıyı beklenmedik biçimde kesti."
 #: gio/gicon.c:299
 #, c-format
 msgid "Wrong number of tokens (%d)"
-msgstr "Yanlış belirteç sayısı (%d)"
+msgstr "Yanlış jeton sayısı (%d)"
 
 #: gio/gicon.c:319
 #, c-format
@@ -1739,7 +1739,7 @@ msgid "Error writing to stdout"
 msgstr "stdout’a yazılırken hata"
 
 #. Translators: commandline placeholder
-#: gio/gio-tool-cat.c:135 gio/gio-tool-info.c:379 gio/gio-tool-list.c:173
+#: gio/gio-tool-cat.c:135 gio/gio-tool-info.c:380 gio/gio-tool-list.c:173
 #: gio/gio-tool-mkdir.c:50 gio/gio-tool-monitor.c:39 gio/gio-tool-monitor.c:41
 #: gio/gio-tool-monitor.c:43 gio/gio-tool-monitor.c:45
 #: gio/gio-tool-monitor.c:206 gio/gio-tool-mount.c:1210 gio/gio-tool-open.c:72
@@ -1762,7 +1762,7 @@ msgstr ""
 "yerine GIO konumlarını kullanır: örneğin, smb://sunucu/kaynak/dosya.txt\n"
 "gibi bir şeyi konum olarak kullanabilirsiniz."
 
-#: gio/gio-tool-cat.c:164 gio/gio-tool-info.c:410 gio/gio-tool-mkdir.c:78
+#: gio/gio-tool-cat.c:164 gio/gio-tool-info.c:411 gio/gio-tool-mkdir.c:78
 #: gio/gio-tool-monitor.c:231 gio/gio-tool-mount.c:1261 gio/gio-tool-open.c:98
 #: gio/gio-tool-remove.c:74 gio/gio-tool-trash.c:303
 msgid "No locations given"
@@ -1878,38 +1878,38 @@ msgstr "tür: %s\n"
 msgid "size: "
 msgstr "boyut: "
 
-#: gio/gio-tool-info.c:200
+#: gio/gio-tool-info.c:201
 msgid "hidden\n"
 msgstr "gizli\n"
 
-#: gio/gio-tool-info.c:203
+#: gio/gio-tool-info.c:204
 #, c-format
 msgid "uri: %s\n"
 msgstr "uri: %s\n"
 
-#: gio/gio-tool-info.c:210
+#: gio/gio-tool-info.c:211
 #, c-format
 msgid "local path: %s\n"
 msgstr "yerel yol: %s\n"
 
-#: gio/gio-tool-info.c:244
+#: gio/gio-tool-info.c:245
 #, c-format
 msgid "unix mount: %s%s %s %s %s\n"
 msgstr "unix bağlaması: %s%s %s %s %s\n"
 
-#: gio/gio-tool-info.c:325
+#: gio/gio-tool-info.c:326
 msgid "Settable attributes:\n"
 msgstr "Belirlenebilir öznitelikler:\n"
 
-#: gio/gio-tool-info.c:349
+#: gio/gio-tool-info.c:350
 msgid "Writable attribute namespaces:\n"
 msgstr "Yazılabilir öznitelik ad boşlukları:\n"
 
-#: gio/gio-tool-info.c:384
+#: gio/gio-tool-info.c:385
 msgid "Show information about locations."
 msgstr "Konumlar hakkında bilgi göster."
 
-#: gio/gio-tool-info.c:386
+#: gio/gio-tool-info.c:387
 msgid ""
 "gio info is similar to the traditional ls utility, but using GIO\n"
 "locations instead of local files: for example, you can use something\n"
@@ -3177,106 +3177,106 @@ msgstr " (geçersiz kodlama)"
 msgid "Error when getting information for file “%s”: %s"
 msgstr "“%s” dosyası için bilgi alınırken hata: %s"
 
-#: gio/glocalfileinfo.c:2285
+#: gio/glocalfileinfo.c:2287
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr "Dosya tanımlayıcı için bilgi alındığında hata: %s"
 
-#: gio/glocalfileinfo.c:2330
+#: gio/glocalfileinfo.c:2332
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Geçersiz öznitelik türü (uint32 beklendi)"
 
-#: gio/glocalfileinfo.c:2348
+#: gio/glocalfileinfo.c:2350
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Geçersiz öznitelik türü (uint64 beklendi)"
 
-#: gio/glocalfileinfo.c:2367 gio/glocalfileinfo.c:2386
+#: gio/glocalfileinfo.c:2369 gio/glocalfileinfo.c:2388
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Geçersiz öznitelik türü (byte dizisi beklendi)"
 
-#: gio/glocalfileinfo.c:2433
+#: gio/glocalfileinfo.c:2435
 msgid "Cannot set permissions on symlinks"
 msgstr "Simgesel bağlar üzerindeki yetkiler ayarlanamıyor"
 
-#: gio/glocalfileinfo.c:2449
+#: gio/glocalfileinfo.c:2451
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "İzinler atanırken hata: %s"
 
-#: gio/glocalfileinfo.c:2500
+#: gio/glocalfileinfo.c:2502
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Sahip atanırken hata: %s"
 
-#: gio/glocalfileinfo.c:2523
+#: gio/glocalfileinfo.c:2525
 msgid "symlink must be non-NULL"
 msgstr "simgesel bağ NULL olmamalı"
 
-#: gio/glocalfileinfo.c:2533 gio/glocalfileinfo.c:2552
-#: gio/glocalfileinfo.c:2563
+#: gio/glocalfileinfo.c:2535 gio/glocalfileinfo.c:2554
+#: gio/glocalfileinfo.c:2565
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Simgesel bağ atanırken hata: %s"
 
-#: gio/glocalfileinfo.c:2542
+#: gio/glocalfileinfo.c:2544
 msgid "Error setting symlink: file is not a symlink"
 msgstr "Simgesel bağ atanırken hata: dosya bir simgesel bağ değil"
 
-#: gio/glocalfileinfo.c:2634
+#: gio/glocalfileinfo.c:2636
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld are negative"
 msgstr "UNIX zaman damgası %2$lld için %1$d ek nanosaniye negatif"
 
-#: gio/glocalfileinfo.c:2643
+#: gio/glocalfileinfo.c:2645
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld reach 1 second"
 msgstr "UNIX zaman damgası %2$lld için %1$d ek nano saniye 1 saniyeye ulaştı"
 
-#: gio/glocalfileinfo.c:2653
+#: gio/glocalfileinfo.c:2655
 #, c-format
 msgid "UNIX timestamp %lld does not fit into 64 bits"
 msgstr "UNIX zaman damgası %lld 64 bit’e sığmıyor"
 
-#: gio/glocalfileinfo.c:2664
+#: gio/glocalfileinfo.c:2666
 #, c-format
 msgid "UNIX timestamp %lld is outside of the range supported by Windows"
 msgstr ""
 "UNIX zaman damgası %lld Windows tarafından desteklenen aralığın dışında"
 
-#: gio/glocalfileinfo.c:2796
+#: gio/glocalfileinfo.c:2798
 #, c-format
 msgid "File name “%s” cannot be converted to UTF-16"
 msgstr "“%s” dosya adı UTF-16’ya dönüştürülemedi"
 
-#: gio/glocalfileinfo.c:2815
+#: gio/glocalfileinfo.c:2817
 #, c-format
 msgid "File “%s” cannot be opened: Windows Error %lu"
 msgstr "“%s” dosyası açılamadı: Windows Hatası %lu"
 
-#: gio/glocalfileinfo.c:2828
+#: gio/glocalfileinfo.c:2830
 #, c-format
 msgid "Error setting modification or access time for file “%s”: %lu"
 msgstr "“%s” dosyasına değiştirme veya erişim süresi atanırken hata: %lu"
 
-#: gio/glocalfileinfo.c:2985
+#: gio/glocalfileinfo.c:2987
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Değiştirme veya erişim süresi atanırken hata: %s"
 
-#: gio/glocalfileinfo.c:3008
+#: gio/glocalfileinfo.c:3010
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux bağlamı NULL olmamalı"
 
-#: gio/glocalfileinfo.c:3015
+#: gio/glocalfileinfo.c:3017
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux bu sistede etkin değil"
 
-#: gio/glocalfileinfo.c:3025
+#: gio/glocalfileinfo.c:3027
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "SELinux bağlamı atanırken hata: %s"
 
-#: gio/glocalfileinfo.c:3122
+#: gio/glocalfileinfo.c:3124
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Öznitelik %s ataması desteklenmiyor"
