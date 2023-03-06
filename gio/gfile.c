@@ -7783,7 +7783,7 @@ g_file_load_contents (GFile         *file,
                                              NULL);
       if (info)
         {
-          *etag_out = g_strdup (g_file_info_get_etag (info));
+          *etag_out = g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_ETAG_VALUE) ? g_strdup (g_file_info_get_etag (info)) : NULL;
           g_object_unref (info);
         }
     }
@@ -7857,7 +7857,7 @@ load_contents_fstat_callback (GObject      *obj,
                                                 stat_res, NULL);
   if (info)
     {
-      data->etag = g_strdup (g_file_info_get_etag (info));
+      data->etag = g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_ETAG_VALUE) ? g_strdup (g_file_info_get_etag (info)) : NULL;
       g_object_unref (info);
     }
 
