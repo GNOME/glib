@@ -173,6 +173,7 @@
 #define g_macro__has_attribute(x) g_macro__has_attribute_##x
 
 #define g_macro__has_attribute___alloc_size__ G_GNUC_CHECK_VERSION (4, 3)
+#define g_macro__has_attribute___always_inline__ G_GNUC_CHECK_VERSION (2, 0)
 #define g_macro__has_attribute___const__ G_GNUC_CHECK_VERSION (2, 4)
 #define g_macro__has_attribute___deprecated__ G_GNUC_CHECK_VERSION (3, 1)
 #define g_macro__has_attribute___format__ G_GNUC_CHECK_VERSION (2, 4)
