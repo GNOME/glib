@@ -3100,6 +3100,9 @@ link_handlers_to_unregistered_apps (void)
           if (handler_verb->app != NULL)
             continue;
 
+          if (handler_verb->executable_folded == NULL)
+            continue;
+
           handler_exe_basename = g_utf8_find_basename (handler_verb->executable_folded, -1);
           g_hash_table_iter_init (&app_iter, apps_by_id);
 
@@ -3118,6 +3121,9 @@ link_handlers_to_unregistered_apps (void)
                   GWin32PrivateStat app_verb_exec_info;
                   const gchar *app_exe_basename;
                   app_verb = _verb_idx (app->verbs, ai);
+
+                  if (app_verb->executable_folded == NULL)
+                    continue;
 
                   app_exe_basename = g_utf8_find_basename (app_verb->executable_folded, -1);
 
