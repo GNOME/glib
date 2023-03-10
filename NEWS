@@ -1,3 +1,28 @@
+Overview of changes in GLib 2.76.0, 2023-03-10
+==============================================
+
+* Fix several regressions in handling `GFileInfo` attributes (#2932, #2934,
+  work by Ondrej Holy and Philip Withnall)
+
+* Bugs fixed:
+  - #2932 ETAG_VALUE not set in GFileInfo when requested (Philip Withnall)
+  - #2934 File attributes are not set when their value is FALSE/NULL (Philip
+    Withnall)
+  - !3309 gfile: Fix file size detection when copying on btrfs
+  - !3310 glocalfileinfo: Mark the lost+found dir as hidden again
+  - !3311 glocalfileinfo: Ensure that is-backup is always set
+
+* Translation updates:
+  - Bulgarian (Alexander Shopov)
+  - Catalan (Jordi Mas i Hernandez)
+  - Czech (Marek Černocký)
+  - German (Tim Sabsch)
+  - Korean (Changwoo Ryu)
+  - Polish (Piotr Drąg)
+  - Russian (Aleksandr Melman)
+  - Turkish (Sabri Ünal)
+
+
 Overview of changes in GLib 2.75.4, 2023-03-03
 ==============================================
 
