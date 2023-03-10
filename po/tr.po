@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2023-03-02 14:20+0000\n"
-"PO-Revision-Date: 2023-03-06 16:10+0300\n"
+"POT-Creation-Date: 2023-03-07 15:34+0000\n"
+"PO-Revision-Date: 2023-03-10 21:37+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
 "Language: tr\n"
@@ -607,10 +607,10 @@ msgstr "“%s” dizini oluşturulurken hata: %s"
 #: gio/gdbusauthmechanismsha1.c:368 gio/gfile.c:1095 gio/gfile.c:1333
 #: gio/gfile.c:1471 gio/gfile.c:1709 gio/gfile.c:1764 gio/gfile.c:1822
 #: gio/gfile.c:1906 gio/gfile.c:1963 gio/gfile.c:2027 gio/gfile.c:2082
-#: gio/gfile.c:3787 gio/gfile.c:3927 gio/gfile.c:4339 gio/gfile.c:4809
-#: gio/gfile.c:5220 gio/gfile.c:5305 gio/gfile.c:5395 gio/gfile.c:5492
-#: gio/gfile.c:5579 gio/gfile.c:5680 gio/gfile.c:8809 gio/gfile.c:8899
-#: gio/gfile.c:8983 gio/win32/gwinhttpfile.c:453
+#: gio/gfile.c:3797 gio/gfile.c:3937 gio/gfile.c:4349 gio/gfile.c:4819
+#: gio/gfile.c:5230 gio/gfile.c:5315 gio/gfile.c:5405 gio/gfile.c:5502
+#: gio/gfile.c:5589 gio/gfile.c:5690 gio/gfile.c:8819 gio/gfile.c:8909
+#: gio/gfile.c:8993 gio/win32/gwinhttpfile.c:453
 msgid "Operation not supported"
 msgstr "İşlem desteklenmiyor"
 
@@ -1439,51 +1439,51 @@ msgstr "Splice desteklenmiyor"
 msgid "Error splicing file: %s"
 msgstr "Dosya uç uca eklenirken hata: %s"
 
-#: gio/gfile.c:3185
+#: gio/gfile.c:3195
 msgid "Copy (reflink/clone) between mounts is not supported"
 msgstr ""
 "Bağlı sistemler arasında kopyalama (referans bağlantı/çoğaltmak) "
 "desteklenmiyor"
 
-#: gio/gfile.c:3189
+#: gio/gfile.c:3199
 msgid "Copy (reflink/clone) is not supported or invalid"
 msgstr "Kopyalama desteklenmiyor ya da geçersiz"
 
-#: gio/gfile.c:3194
+#: gio/gfile.c:3204
 msgid "Copy (reflink/clone) is not supported or didn’t work"
 msgstr "Kopyalama (bağlama/klonlama) destenlenmiyor ya da çalışmadı"
 
-#: gio/gfile.c:3259
+#: gio/gfile.c:3269
 msgid "Can’t copy special file"
 msgstr "Özel dosya kopyalanamıyor"
 
-#: gio/gfile.c:4153
+#: gio/gfile.c:4163
 msgid "Invalid symlink value given"
 msgstr "Geçersiz simgesel bağ değeri verildi"
 
-#: gio/gfile.c:4163 glib/gfileutils.c:2392
+#: gio/gfile.c:4173 glib/gfileutils.c:2392
 msgid "Symbolic links not supported"
 msgstr "Simgesel bağlar desteklenmiyor"
 
-#: gio/gfile.c:4450
+#: gio/gfile.c:4460
 msgid "Trash not supported"
 msgstr "Çöp desteklenmiyor"
 
-#: gio/gfile.c:4562
+#: gio/gfile.c:4572
 #, c-format
 msgid "File names cannot contain “%c”"
 msgstr "Dosya adları “%c” içeremez"
 
-#: gio/gfile.c:6993 gio/gfile.c:7119
+#: gio/gfile.c:7003 gio/gfile.c:7129
 #, c-format
 msgid "Failed to create a temporary directory for template “%s”: %s"
 msgstr "“%s” şablonu için geçici dizin oluşturulamadı: %s"
 
-#: gio/gfile.c:7408 gio/gvolume.c:366
+#: gio/gfile.c:7418 gio/gvolume.c:366
 msgid "volume doesn’t implement mount"
 msgstr "bölüm, bağlamayı yerine getirmiyor"
 
-#: gio/gfile.c:7522 gio/gfile.c:7599
+#: gio/gfile.c:7532 gio/gfile.c:7609
 msgid "No application is registered as handling this file"
 msgstr "Bu dosyayı işleme amacıyla kayıtlı uygulama yok"
 
@@ -2147,7 +2147,7 @@ msgstr ""
 
 #: gio/gio-tool-mount.c:72
 msgid "Use an anonymous user when authenticating"
-msgstr "Yetkilendirirken anonim bir kullanıcı kullan"
+msgstr "Kimlik doğrularken anonim kullanıcı kullan"
 
 #. Translator: List here is a verb as in 'List all mounts'
 #: gio/gio-tool-mount.c:74
@@ -3177,106 +3177,106 @@ msgstr " (geçersiz kodlama)"
 msgid "Error when getting information for file “%s”: %s"
 msgstr "“%s” dosyası için bilgi alınırken hata: %s"
 
-#: gio/glocalfileinfo.c:2287
+#: gio/glocalfileinfo.c:2288
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr "Dosya tanımlayıcı için bilgi alındığında hata: %s"
 
-#: gio/glocalfileinfo.c:2332
+#: gio/glocalfileinfo.c:2333
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Geçersiz öznitelik türü (uint32 beklendi)"
 
-#: gio/glocalfileinfo.c:2350
+#: gio/glocalfileinfo.c:2351
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Geçersiz öznitelik türü (uint64 beklendi)"
 
-#: gio/glocalfileinfo.c:2369 gio/glocalfileinfo.c:2388
+#: gio/glocalfileinfo.c:2370 gio/glocalfileinfo.c:2389
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Geçersiz öznitelik türü (byte dizisi beklendi)"
 
-#: gio/glocalfileinfo.c:2435
+#: gio/glocalfileinfo.c:2436
 msgid "Cannot set permissions on symlinks"
 msgstr "Simgesel bağlar üzerindeki yetkiler ayarlanamıyor"
 
-#: gio/glocalfileinfo.c:2451
+#: gio/glocalfileinfo.c:2452
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "İzinler atanırken hata: %s"
 
-#: gio/glocalfileinfo.c:2502
+#: gio/glocalfileinfo.c:2503
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Sahip atanırken hata: %s"
 
-#: gio/glocalfileinfo.c:2525
+#: gio/glocalfileinfo.c:2526
 msgid "symlink must be non-NULL"
 msgstr "simgesel bağ NULL olmamalı"
 
-#: gio/glocalfileinfo.c:2535 gio/glocalfileinfo.c:2554
-#: gio/glocalfileinfo.c:2565
+#: gio/glocalfileinfo.c:2536 gio/glocalfileinfo.c:2555
+#: gio/glocalfileinfo.c:2566
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Simgesel bağ atanırken hata: %s"
 
-#: gio/glocalfileinfo.c:2544
+#: gio/glocalfileinfo.c:2545
 msgid "Error setting symlink: file is not a symlink"
 msgstr "Simgesel bağ atanırken hata: dosya bir simgesel bağ değil"
 
-#: gio/glocalfileinfo.c:2636
+#: gio/glocalfileinfo.c:2637
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld are negative"
 msgstr "UNIX zaman damgası %2$lld için %1$d ek nanosaniye negatif"
 
-#: gio/glocalfileinfo.c:2645
+#: gio/glocalfileinfo.c:2646
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld reach 1 second"
 msgstr "UNIX zaman damgası %2$lld için %1$d ek nano saniye 1 saniyeye ulaştı"
 
-#: gio/glocalfileinfo.c:2655
+#: gio/glocalfileinfo.c:2656
 #, c-format
 msgid "UNIX timestamp %lld does not fit into 64 bits"
 msgstr "UNIX zaman damgası %lld 64 bit’e sığmıyor"
 
-#: gio/glocalfileinfo.c:2666
+#: gio/glocalfileinfo.c:2667
 #, c-format
 msgid "UNIX timestamp %lld is outside of the range supported by Windows"
 msgstr ""
 "UNIX zaman damgası %lld Windows tarafından desteklenen aralığın dışında"
 
-#: gio/glocalfileinfo.c:2798
+#: gio/glocalfileinfo.c:2799
 #, c-format
 msgid "File name “%s” cannot be converted to UTF-16"
 msgstr "“%s” dosya adı UTF-16’ya dönüştürülemedi"
 
-#: gio/glocalfileinfo.c:2817
+#: gio/glocalfileinfo.c:2818
 #, c-format
 msgid "File “%s” cannot be opened: Windows Error %lu"
 msgstr "“%s” dosyası açılamadı: Windows Hatası %lu"
 
-#: gio/glocalfileinfo.c:2830
+#: gio/glocalfileinfo.c:2831
 #, c-format
 msgid "Error setting modification or access time for file “%s”: %lu"
 msgstr "“%s” dosyasına değiştirme veya erişim süresi atanırken hata: %lu"
 
-#: gio/glocalfileinfo.c:2987
+#: gio/glocalfileinfo.c:2988
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Değiştirme veya erişim süresi atanırken hata: %s"
 
-#: gio/glocalfileinfo.c:3010
+#: gio/glocalfileinfo.c:3011
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux bağlamı NULL olmamalı"
 
-#: gio/glocalfileinfo.c:3017
+#: gio/glocalfileinfo.c:3018
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux bu sistede etkin değil"
 
-#: gio/glocalfileinfo.c:3027
+#: gio/glocalfileinfo.c:3028
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "SELinux bağlamı atanırken hata: %s"
 
-#: gio/glocalfileinfo.c:3124
+#: gio/glocalfileinfo.c:3125
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Öznitelik %s ataması desteklenmiyor"
@@ -3513,8 +3513,8 @@ msgstr "Geçersiz alan adı"
 
 #: gio/gresource.c:683 gio/gresource.c:945 gio/gresource.c:985
 #: gio/gresource.c:1109 gio/gresource.c:1181 gio/gresource.c:1255
-#: gio/gresource.c:1336 gio/gresourcefile.c:478 gio/gresourcefile.c:601
-#: gio/gresourcefile.c:752
+#: gio/gresource.c:1336 gio/gresourcefile.c:478 gio/gresourcefile.c:602
+#: gio/gresourcefile.c:753
 #, c-format
 msgid "The resource at “%s” does not exist"
 msgstr "“%s” konumundaki kaynak yok"
@@ -3524,16 +3524,16 @@ msgstr "“%s” konumundaki kaynak yok"
 msgid "The resource at “%s” failed to decompress"
 msgstr "“%s” konumundaki kaynak açılamadı"
 
-#: gio/gresourcefile.c:658
+#: gio/gresourcefile.c:659
 msgid "Resource files cannot be renamed"
 msgstr "Kaynak dosyalar yeniden adlandırılamaz"
 
-#: gio/gresourcefile.c:748
+#: gio/gresourcefile.c:749
 #, c-format
 msgid "The resource at “%s” is not a directory"
 msgstr "“%s” konumundaki kaynak bir dizin değildir"
 
-#: gio/gresourcefile.c:956
+#: gio/gresourcefile.c:957
 msgid "Input stream doesn’t implement seek"
 msgstr "Girdi akışı aramayı yerine getirmiyor"
 
@@ -5955,21 +5955,21 @@ msgstr ""
 "Alt süreçten bilgi okurken g_io_channel_win32_poll() işleminde beklenmeyen "
 "hata"
 
-#: glib/gstrfuncs.c:3370 glib/gstrfuncs.c:3472
+#: glib/gstrfuncs.c:3373 glib/gstrfuncs.c:3475
 msgid "Empty string is not a number"
 msgstr "Boş dizge bir sayı değildir"
 
-#: glib/gstrfuncs.c:3394
+#: glib/gstrfuncs.c:3397
 #, c-format
 msgid "“%s” is not a signed number"
 msgstr "“%s” işaretli bir sayı değil"
 
-#: glib/gstrfuncs.c:3404 glib/gstrfuncs.c:3508
+#: glib/gstrfuncs.c:3407 glib/gstrfuncs.c:3511
 #, c-format
 msgid "Number “%s” is out of bounds [%s, %s]"
 msgstr "“%s” sayısı sınırların dışındadır [%s, %s]"
 
-#: glib/gstrfuncs.c:3498
+#: glib/gstrfuncs.c:3501
 #, c-format
 msgid "“%s” is not an unsigned number"
 msgstr "“%s” işaretsiz bir sayı değil"
