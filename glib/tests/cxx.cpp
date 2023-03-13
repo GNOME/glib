@@ -350,6 +350,36 @@ test_strdup_macro (void)
 }
 
 static void
+test_strdup_macro_qualified (void)
+{
+  gchar *str;
+
+  g_assert_null (::g_strdup (NULL));
+
+  str = ::g_strdup ("C++ is cool too!");
+  g_assert_nonnull (str);
+  g_assert_cmpstr (str, ==, "C++ is cool too!");
+  g_free (str);
+}
+
+static void
+test_strdup_macro_nested_initializer (void)
+{
+  struct
+  {
+    char *p, *q;
+  } strings = {
+    g_strdup (NULL),
+    g_strdup ("C++ is cool too!"),
+  };
+
+  g_assert_null (strings.p);
+  g_assert_nonnull (strings.q);
+  g_assert_cmpstr (strings.q, ==, "C++ is cool too!");
+  g_free (strings.q);
+}
+
+static void
 test_str_has_prefix (void)
 {
   g_assert_true ((g_str_has_prefix) ("C++ is cool!", "C++"));
@@ -527,6 +557,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/C++/str-equal", test_str_equal);
   g_test_add_func ("/C++/strdup", test_strdup);
   g_test_add_func ("/C++/strdup/macro", test_strdup_macro);
+  g_test_add_func ("/C++/strdup/macro/qualified", test_strdup_macro_qualified);
+  g_test_add_func ("/C++/strdup/macro/nested-initializer", test_strdup_macro_nested_initializer);
   g_test_add_func ("/C++/str-has-prefix", test_str_has_prefix);
   g_test_add_func ("/C++/str-has-prefix/macro", test_str_has_prefix_macro);
   g_test_add_func ("/C++/str-has-suffix", test_str_has_suffix);
