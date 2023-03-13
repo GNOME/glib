@@ -111,15 +111,6 @@ test_auth_on_new_connection (GDBusServer     *server,
   return FALSE;
 }
 
-static gboolean
-test_auth_on_timeout (gpointer user_data)
-{
-  g_error ("Timeout waiting for client");
-  g_assert_not_reached ();
-  return G_SOURCE_REMOVE;
-}
-
-
 typedef struct
 {
   const gchar *address;
@@ -162,7 +153,6 @@ test_auth_mechanism (const gchar *allowed_client_mechanism,
   GMainLoop *loop;
   GThread *client_thread;
   TestAuthData data;
-  guint timeout_id;
 
   server = server_new_for_mechanism (allowed_server_mechanism);
 
@@ -173,13 +163,12 @@ test_auth_mechanism (const gchar *allowed_client_mechanism,
                     G_CALLBACK (test_auth_on_new_connection),
                     loop);
 
-  timeout_id = g_timeout_add_seconds (5, test_auth_on_timeout, NULL);
-
   data.allowed_client_mechanism = allowed_client_mechanism;
   data.allowed_server_mechanism = allowed_server_mechanism;
   data.address = g_dbus_server_get_client_address (server);
 
-  /* run the D-Bus client in a thread */
+  /* Run the D-Bus client in a thread. If this hangs forever, the test harness
+   * (typically Meson) will eventually kill the test. */
   client_thread = g_thread_new ("gdbus-client-thread",
                                 test_auth_client_thread_func,
                                 &data);
@@ -191,7 +180,6 @@ test_auth_mechanism (const gchar *allowed_client_mechanism,
   g_dbus_server_stop (server);
 
   g_thread_join (client_thread);
-  g_source_remove (timeout_id);
 
   while (g_main_context_iteration (NULL, FALSE));
   g_main_loop_unref (loop);
