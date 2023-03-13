@@ -911,7 +911,7 @@ test_deprecated (void)
 
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 
-  now = time (NULL);
+  now = g_get_real_time () / G_USEC_PER_SEC;
   file = g_bookmark_file_new ();
 
   /* added */
