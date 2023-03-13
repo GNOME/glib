@@ -288,7 +288,7 @@ test_extra_programs = {
   'test-spawn-echo' : {},
 }
 
-if have_dlopen_dlsym
+if have_dlopen_dlsym and have_rtld_next
   test_extra_programs += {
     'messages-low-memory' : {
       'dependencies' : libdl_dep,
