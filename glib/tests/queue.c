@@ -228,7 +228,7 @@ random_test (gconstpointer d)
     LINK_INDEX, UNLINK, DELETE_LINK, LAST_OP
   } QueueOp;
 
-#define N_ITERATIONS 500000
+  const guint n_iterations = g_test_thorough () ? 500000 : 100000;
 #define N_QUEUES 3
 
 #define RANDOM_QUEUE() &(queues[g_random_int_range(0, N_QUEUES)])
@@ -256,7 +256,7 @@ random_test (gconstpointer d)
       queues[i].length = 0;
     }
 
-  for (i = 0; i < N_ITERATIONS; ++i)
+  for (i = 0; i < n_iterations; ++i)
     {
       int j;
       QueueInfo *qinf = RANDOM_QUEUE();
