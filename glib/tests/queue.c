@@ -1,3 +1,24 @@
+/*
+ * Copyright 1999 Jeff Garzik
+ * Copyright 1999 Tim Janik
+ * Copyright 2004 Soeren Sandmann
+ * Copyright 2006 Martyn James Russell
+ * Copyright 2004, 2005, 2010, 2019 Red Hat, Inc.
+ * Copyright 2011 Samsung
+ * Copyright 2018 Tapasweni Pathak
+ * Copyright 2019 Endless Mobile, Inc.
+ * Copyright 2020 Emmanuel Fleury
+ *
+ * SPDX-License-Identifier: LGPL-2.1-or-later
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * See the included COPYING file for more information.
+ */
+
 #undef G_DISABLE_ASSERT
 #undef G_LOG_DOMAIN
 
