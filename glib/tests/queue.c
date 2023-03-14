@@ -166,10 +166,10 @@ compare_int (gconstpointer a, gconstpointer b, gpointer data)
     return -1;
 }
 
-static gint
+static guint
 get_random_position (GQueue *queue, gboolean allow_offlist)
 {
-  int n;
+  guint n;
   enum { OFF_QUEUE, HEAD, TAIL, MIDDLE, LAST } where;
 
   if (allow_offlist)
@@ -190,8 +190,10 @@ get_random_position (GQueue *queue, gboolean allow_offlist)
     case TAIL:
       if (allow_offlist)
         n = queue->length;
-      else
+      else if (queue->length > 0)
         n = queue->length - 1;
+      else
+        n = 0;
       break;
 
     case MIDDLE:
@@ -229,9 +231,8 @@ random_test (gconstpointer d)
   } QueueOp;
 
   const guint n_iterations = g_test_thorough () ? 500000 : 100000;
-#define N_QUEUES 3
 
-#define RANDOM_QUEUE() &(queues[g_random_int_range(0, N_QUEUES)])
+#define RANDOM_QUEUE() &(queues[g_random_int_range(0, G_N_ELEMENTS (queues))])
 
   typedef struct QueueInfo QueueInfo;
   struct QueueInfo
@@ -242,13 +243,13 @@ random_test (gconstpointer d)
     guint length;
   };
 
-  gint i;
+  guint i;
   QueueOp op;
-  QueueInfo queues[N_QUEUES];
+  QueueInfo queues[3];
 
   g_random_set_seed (seed);
 
-  for (i = 0; i < N_QUEUES; ++i)
+  for (i = 0; i < G_N_ELEMENTS (queues); ++i)
     {
       queues[i].queue = g_queue_new ();
       queues[i].head = NULL;
@@ -258,7 +259,7 @@ random_test (gconstpointer d)
 
   for (i = 0; i < n_iterations; ++i)
     {
-      int j;
+      guint j;
       QueueInfo *qinf = RANDOM_QUEUE();
       GQueue *q = qinf->queue;
       op = g_random_int_range (IS_EMPTY, LAST_OP);
@@ -401,7 +402,7 @@ random_test (gconstpointer d)
           break;
         case PUSH_NTH:
           {
-            int pos = get_random_position (q, TRUE);
+            guint pos = get_random_position (q, TRUE);
             int x = g_random_int_range (0, 236546);
             g_queue_push_nth (q, GINT_TO_POINTER (x), pos);
             if (qinf->head && qinf->head->prev)
@@ -434,16 +435,16 @@ random_test (gconstpointer d)
         case POP_NTH:
           if (!g_queue_is_empty (q))
             {
-              int n = get_random_position (q, TRUE);
+              guint n = get_random_position (q, TRUE);
               gpointer elm = g_queue_peek_nth (q, n);
 
-              if (n == (int) (q->length - 1))
+              if (n == q->length - 1)
                 qinf->tail = qinf->tail->prev;
 
               if (n == 0)
                 qinf->head = qinf->head->next;
 
-              if (n >= 0 && (guint) n < q->length)
+              if (n < q->length)
                 qinf->length--;
 
               g_assert_true (elm == g_queue_pop_nth (q, n));
@@ -464,14 +465,15 @@ random_test (gconstpointer d)
         case PEEK_NTH:
           if (g_queue_is_empty (q))
             {
-              for (j = -10; j < 10; ++j)
-                g_assert_null (g_queue_peek_nth (q, j));
+              int k;
+              for (k = -10; k < 10; ++k)
+                g_assert_null (g_queue_peek_nth (q, (guint) k));
             }
           else
             {
               GList *list;
-              int n = get_random_position (q, TRUE);
-              if (n < 0 || (guint) n >= q->length)
+              guint n = get_random_position (q, TRUE);
+              if (n >= q->length)
                 {
                   g_assert_null (g_queue_peek_nth (q, n));
                 }
@@ -617,7 +619,7 @@ random_test (gconstpointer d)
         case PUSH_NTH_LINK:
           {
             GList *link = g_list_prepend (NULL, GINT_TO_POINTER (i));
-            gint n = get_random_position (q, TRUE);
+            guint n = get_random_position (q, TRUE);
             g_queue_push_nth_link (q, n, link);
 
             if (qinf->head && qinf->head->prev)
@@ -656,9 +658,9 @@ random_test (gconstpointer d)
             g_assert_null (g_queue_pop_nth_link (q, 200));
           else
             {
-              int n = get_random_position (q, FALSE);
+              guint n = get_random_position (q, FALSE);
 
-              if (n == (int) (g_queue_get_length (q) - 1))
+              if (n == g_queue_get_length (q) - 1)
                 qinf->tail = qinf->tail->prev;
 
               if (n == 0)
@@ -686,7 +688,7 @@ random_test (gconstpointer d)
             g_assert_null (g_queue_peek_nth_link (q, 1000));
           else
             {
-              gint n = get_random_position (q, FALSE);
+              guint n = get_random_position (q, FALSE);
               GList *link;
 
               link = q->head;
@@ -699,7 +701,7 @@ random_test (gconstpointer d)
         case UNLINK:
           if (!g_queue_is_empty (q))
             {
-              gint n = g_random_int_range (0, g_queue_get_length (q));
+              guint n = g_random_int_range (0, g_queue_get_length (q));
               GList *link;
 
               link = q->head;
@@ -719,7 +721,7 @@ random_test (gconstpointer d)
         case DELETE_LINK:
           if (!g_queue_is_empty (q))
             {
-              gint n = g_random_int_range (0, g_queue_get_length (q));
+              guint n = g_random_int_range (0, g_queue_get_length (q));
               GList *link;
 
               link = q->head;
@@ -749,11 +751,11 @@ random_test (gconstpointer d)
       g_assert_true (qinf->tail == q->tail);
       g_assert_cmpuint (qinf->length, ==, q->length);
 
-      for (j = 0; j < N_QUEUES; ++j)
+      for (j = 0; j < G_N_ELEMENTS (queues); ++j)
         check_integrity (queues[j].queue);
     }
 
-  for (i = 0; i < N_QUEUES; ++i)
+  for (i = 0; i < G_N_ELEMENTS (queues); ++i)
     g_queue_free (queues[i].queue);
 }
 
