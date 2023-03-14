@@ -169,7 +169,6 @@ compare_int (gconstpointer a, gconstpointer b, gpointer data)
 static guint
 get_random_position (GQueue *queue, gboolean allow_offlist)
 {
-  guint n;
   enum { OFF_QUEUE, HEAD, TAIL, MIDDLE, LAST } where;
 
   if (allow_offlist)
@@ -180,37 +179,28 @@ get_random_position (GQueue *queue, gboolean allow_offlist)
   switch (where)
     {
     case OFF_QUEUE:
-      n = g_random_int ();
-      break;
+      return g_random_int ();
 
     case HEAD:
-      n = 0;
-      break;
+      return 0;
 
     case TAIL:
       if (allow_offlist)
-        n = queue->length;
+        return queue->length;
       else if (queue->length > 0)
-        n = queue->length - 1;
+        return queue->length - 1;
       else
-        n = 0;
-      break;
+        return 0;
 
     case MIDDLE:
       if (queue->length == 0)
-        n = 0;
+        return 0;
       else
-        n = g_random_int_range (0, queue->length);
-      break;
+        return g_random_int_range (0, queue->length);
 
     default:
-      g_assert_not_reached();
-      n = 100;
-      break;
-
+      g_assert_not_reached ();
     }
-
-  return n;
 }
 
 static void
