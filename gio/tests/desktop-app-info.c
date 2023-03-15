@@ -1807,6 +1807,56 @@ test_launch_fail_absolute_path (void)
   g_clear_object (&app_info);
 }
 
+static void
+async_result_cb (GObject      *source_object,
+                 GAsyncResult *result,
+                 gpointer      user_data)
+{
+  GAsyncResult **result_out = user_data;
+
+  g_assert (*result_out == NULL);
+  *result_out = g_object_ref (result);
+  g_main_context_wakeup (g_main_context_get_thread_default ());
+}
+
+static void
+test_launch_fail_dbus (void)
+{
+  GTestDBus *bus = NULL;
+  GDesktopAppInfo *app_info = NULL;
+  GAppLaunchContext *context = NULL;
+  GAsyncResult *result = NULL;
+  GError *error = NULL;
+
+  /* Set up a test session bus to ensure that launching the app happens using
+   * D-Bus rather than spawning. */
+  bus = g_test_dbus_new (G_TEST_DBUS_NONE);
+  g_test_dbus_up (bus);
+
+  app_info = g_desktop_app_info_new_from_filename (g_test_get_filename (G_TEST_DIST, "org.gtk.test.dbusappinfo.desktop", NULL));
+  g_assert_nonnull (app_info);
+
+  g_assert_true (g_desktop_app_info_has_key (app_info, "DBusActivatable"));
+
+  context = g_app_launch_context_new ();
+
+  g_app_info_launch_uris_async (G_APP_INFO (app_info), NULL, context, NULL, async_result_cb, &result);
+
+  while (result == NULL)
+    g_main_context_iteration (NULL, TRUE);
+
+  g_assert_false (g_app_info_launch_uris_finish (G_APP_INFO (app_info), result, &error));
+  g_assert_error (error, G_DBUS_ERROR, G_DBUS_ERROR_SERVICE_UNKNOWN);
+
+  g_test_dbus_down (bus);
+  g_clear_object (&bus);
+
+  g_clear_error (&error);
+  g_clear_object (&result);
+  g_clear_object (&context);
+  g_clear_object (&app_info);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -1849,6 +1899,7 @@ main (int   argc,
   g_test_add_func ("/desktop-app-info/launch/fail", test_launch_fail);
   g_test_add_func ("/desktop-app-info/launch/fail-absolute-path", test_launch_fail_absolute_path);
   g_test_add_func ("/desktop-app-info/launch/fail-startup-notify", test_launch_startup_notify_fail);
+  g_test_add_func ("/desktop-app-info/launch/fail-dbus", test_launch_fail_dbus);
   g_test_add_func ("/desktop-app-info/launch-as-manager", test_launch_as_manager);
   g_test_add_func ("/desktop-app-info/launch-as-manager/fail", test_launch_as_manager_fail);
   g_test_add_func ("/desktop-app-info/launch-default-uri-handler", test_default_uri_handler);
