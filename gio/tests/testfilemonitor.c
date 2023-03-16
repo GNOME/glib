@@ -1087,6 +1087,36 @@ test_finalize_in_callback (Fixture       *fixture,
   g_object_unref (file);
 }
 
+static void
+test_root (Fixture       *fixture,
+           gconstpointer  user_data)
+{
+  GFile *file = NULL;
+  GFileMonitor *monitor = NULL;
+  GError *local_error = NULL;
+
+  g_test_summary ("Test that GFileMonitor can monitor the root directory.");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/merge_requests/3241");
+
+#if defined(G_OS_UNIX)
+  file = g_file_new_for_path ("/");
+#elif defined(G_OS_WIN32)
+  file = g_file_new_for_path ("C:\\");
+#else
+  g_test_skip ("Unsupported root directory");
+  return;
+#endif
+
+  /* We can’t test for any monitor events, but we can at least check that this
+   * doesn’t crash or error. */
+  monitor = g_file_monitor_directory (file, G_FILE_MONITOR_NONE, NULL, &local_error);
+  g_assert_no_error (local_error);
+  g_assert_nonnull (monitor);
+
+  g_clear_object (&monitor);
+  g_clear_object (&file);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -1099,6 +1129,7 @@ main (int argc, char *argv[])
   g_test_add ("/monitor/cross-dir-moves", Fixture, NULL, setup, test_cross_dir_moves, teardown);
   g_test_add ("/monitor/file/hard-links", Fixture, NULL, setup, test_file_hard_links, teardown);
   g_test_add ("/monitor/finalize-in-callback", Fixture, NULL, setup, test_finalize_in_callback, teardown);
+  g_test_add ("/monitor/root", Fixture, NULL, setup, test_root, teardown);
 
   return g_test_run ();
 }
