@@ -204,23 +204,6 @@ gboolean             (g_str_has_prefix) (const gchar *str,
     (g_str_has_suffix) (STR, SUFFIX)                                          \
   )
 
-#define g_strdup(STR)                                                         \
-  (__builtin_constant_p ((STR)) ?                                             \
-    (G_LIKELY ((STR) != NULL) ?                                               \
-      G_GNUC_EXTENSION ({                                                     \
-        const char *const ___str = ((STR));                                   \
-        const char *const __str = _G_STR_NONNULL (___str);                    \
-        const size_t __str_len = strlen (__str) + 1;                          \
-        char *__dup_str = (char *) g_malloc (__str_len);                      \
-        (char *) memcpy (__dup_str, __str, __str_len);                        \
-      })                                                                      \
-      :                                                                       \
-      (char *) (NULL)                                                         \
-    )                                                                         \
-    :                                                                         \
-    (g_strdup) ((STR))                                                        \
-  )
-
 #endif /* !defined (__GI_SCANNER__) */
 #endif /* !defined (__GTK_DOC_IGNORE__) */
 #endif /* G_GNUC_CHECK_VERSION (2, 0) */
@@ -317,6 +300,32 @@ gchar*	              g_strconcat      (const gchar *string1,
 GLIB_AVAILABLE_IN_ALL
 gchar*                g_strjoin	       (const gchar  *separator,
 					...) G_GNUC_MALLOC G_GNUC_NULL_TERMINATED;
+
+#if G_GNUC_CHECK_VERSION(2, 0)
+#ifndef __GTK_DOC_IGNORE__
+#ifndef __GI_SCANNER__
+
+G_ALWAYS_INLINE static inline char *
+g_strdup_inline (const char *str)
+{
+  if (__builtin_constant_p (!str) && !str)
+    return NULL;
+
+  if (__builtin_constant_p (!!str) && !!str && __builtin_constant_p (strlen (str)))
+    {
+      const size_t len = strlen (str) + 1;
+      char *dup_str = (char *) g_malloc (len);
+      return (char *) memcpy (dup_str, str, len);
+    }
+
+  return g_strdup (str);
+}
+
+#define g_strdup(x) g_strdup_inline (x)
+
+#endif /* !defined (__GI_SCANNER__) */
+#endif /* !defined (__GTK_DOC_IGNORE__) */
+#endif /* G_GNUC_CHECK_VERSION (2, 0) */
 
 /* Make a copy of a string interpreting C string -style escape
  * sequences. Inverse of g_strescape. The recognized sequences are \b
