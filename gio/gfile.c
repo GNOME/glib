@@ -2807,6 +2807,11 @@ g_file_build_attribute_list_for_copy (GFile                  *file,
   first = TRUE;
   s = g_string_new ("");
 
+  /* Always query the source file size, even though we can’t set that on the
+   * destination. This is useful for the copy functions. */
+  first = FALSE;
+  g_string_append (s, G_FILE_ATTRIBUTE_STANDARD_SIZE);
+
   if (attributes)
     {
       for (i = 0; i < attributes->n_infos; i++)
@@ -3042,6 +3047,7 @@ retry:
 
 static gboolean
 splice_stream_with_progress (GInputStream           *in,
+                             GFileInfo              *in_info,
                              GOutputStream          *out,
                              GCancellable           *cancellable,
                              GFileProgressCallback   progress_callback,
@@ -3085,10 +3091,8 @@ splice_stream_with_progress (GInputStream           *in,
   /* avoid performance impact of querying total size when it's not needed */
   if (progress_callback)
     {
-      struct stat sbuf;
-
-      if (fstat (fd_in, &sbuf) == 0)
-        total_size = sbuf.st_size;
+      g_assert (g_file_info_has_attribute (in_info, G_FILE_ATTRIBUTE_STANDARD_SIZE));
+      total_size = g_file_info_get_size (in_info);
     }
 
   if (total_size == -1)
@@ -3151,6 +3155,7 @@ splice_stream_with_progress (GInputStream           *in,
 #ifdef __linux__
 static gboolean
 btrfs_reflink_with_progress (GInputStream           *in,
+                             GFileInfo              *in_info,
                              GOutputStream          *out,
                              GFileInfo              *info,
                              GCancellable           *cancellable,
@@ -3169,10 +3174,8 @@ btrfs_reflink_with_progress (GInputStream           *in,
   /* avoid performance impact of querying total size when it's not needed */
   if (progress_callback)
     {
-      struct stat sbuf;
-
-      if (fstat (fd_in, &sbuf) == 0)
-        total_size = sbuf.st_size;
+      g_assert (g_file_info_has_attribute (in_info, G_FILE_ATTRIBUTE_STANDARD_SIZE));
+      total_size = g_file_info_get_size (in_info);
     }
 
   if (total_size == -1)
@@ -3376,7 +3379,7 @@ file_copy_fallback (GFile                  *source,
     {
       GError *reflink_err = NULL;
 
-      if (!btrfs_reflink_with_progress (in, out, info, cancellable,
+      if (!btrfs_reflink_with_progress (in, info, out, info, cancellable,
                                         progress_callback, progress_callback_data,
                                         &reflink_err))
         {
@@ -3403,7 +3406,7 @@ file_copy_fallback (GFile                  *source,
     {
       GError *splice_err = NULL;
 
-      if (!splice_stream_with_progress (in, out, cancellable,
+      if (!splice_stream_with_progress (in, info, out, cancellable,
                                         progress_callback, progress_callback_data,
                                         &splice_err))
         {
