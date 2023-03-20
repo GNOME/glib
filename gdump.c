@@ -125,6 +125,9 @@ invoke_error_quark (GModule *self, const char *symbol, GError **error)
 static char *
 value_to_string (const GValue *value)
 {
+  if (value == NULL)
+    return NULL;
+
   if (G_VALUE_HOLDS_STRING (value))
     {
       const char *s = g_value_get_string (value);
@@ -186,7 +189,7 @@ dump_properties (GType type, GOutputStream *out)
       const GValue *v = g_param_spec_get_default_value (prop);
       char *default_value = value_to_string (v);
 
-      if (default_value != NULL)
+      if (v != NULL && default_value != NULL)
         {
           escaped_printf (out, "    <property name=\"%s\" type=\"%s\" flags=\"%d\" default-value=\"%s\"/>\n",
                           prop->name,
