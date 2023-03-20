@@ -388,9 +388,33 @@ _g_utf8_normalize_wc (const gchar    *str,
   while ((max_len < 0 || p < str + max_len) && *p)
     {
       const gchar *decomp;
-      gunichar wc = g_utf8_get_char (p);
+      const char *next, *between;
+      gunichar wc;
 
-      if (wc >= SBase && wc < SBase + SCount)
+      next = g_utf8_next_char (p);
+      /* Avoid reading truncated multibyte characters
+         which run past the end of the buffer */
+      if (max_len < 0)
+        {
+          /* Does the character contain a NUL terminator? */
+          for (between = &p[1]; between < next; between++)
+            {
+              if (G_UNLIKELY (!*between))
+                return NULL;
+            }
+        }
+      else
+        {
+          if (G_UNLIKELY (next > str + max_len))
+            return NULL;
+        }
+      wc = g_utf8_get_char (p);
+
+      if (G_UNLIKELY (wc == (gunichar) -1))
+        {
+          return NULL;
+        }
+      else if (wc >= SBase && wc < SBase + SCount)
         {
           gsize result_len;
           decompose_hangul (wc, NULL, &result_len);
@@ -406,7 +430,7 @@ _g_utf8_normalize_wc (const gchar    *str,
             n_wc++;
         }
 
-      p = g_utf8_next_char (p);
+      p = next;
     }
 
   wc_buffer = g_new (gunichar, n_wc + 1);
@@ -548,10 +572,13 @@ g_utf8_normalize (const gchar    *str,
 		  GNormalizeMode  mode)
 {
   gunichar *result_wc = _g_utf8_normalize_wc (str, len, mode);
-  gchar *result;
+  gchar *result = NULL;
 
-  result = g_ucs4_to_utf8 (result_wc, -1, NULL, NULL, NULL);
-  g_free (result_wc);
+  if (G_LIKELY (result_wc != NULL))
+    {
+      result = g_ucs4_to_utf8 (result_wc, -1, NULL, NULL, NULL);
+      g_free (result_wc);
+    }
 
   return result;
 }
