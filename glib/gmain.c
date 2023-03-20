@@ -2405,6 +2405,8 @@ g_source_remove (guint tag)
   source = g_main_context_find_source_by_id (NULL, tag);
   if (source)
     g_source_destroy (source);
+  else
+    g_critical ("Source ID %u was not found when attempting to remove it", tag);
 
   return source != NULL;
 }
