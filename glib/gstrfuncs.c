@@ -2768,7 +2768,7 @@ g_strjoin (const gchar *separator,
  *
  * Searches the string @haystack for the first occurrence
  * of the string @needle, limiting the length of the search
- * to @haystack_len.
+ * to @haystack_len or a nul terminator byte (whichever is reached first).
  *
  * Returns: a pointer to the found occurrence, or
  *    %NULL if not found.
