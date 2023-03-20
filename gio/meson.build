@@ -930,7 +930,7 @@ endif
 
 # Dependencies used by executables below
 have_libelf = false
-libelf = dependency('libelf', version : '>= 0.8.12', required : get_option ('libelf'))
+libelf = dependency('libelf', version : '>= 0.8.12', required : false)
 if libelf.found()
   have_libelf = true
 else
