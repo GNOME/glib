@@ -119,6 +119,27 @@ invoke_error_quark (GModule *self, const char *symbol, GError **error)
   return sym ();
 }
 
+static char *
+value_transform_to_string (const GValue *value)
+{
+  GValue tmp = G_VALUE_INIT;
+  char *s = NULL;
+
+  g_value_init (&tmp, G_TYPE_STRING);
+
+  if (g_value_transform (value, &tmp))
+    {
+      const char *str = g_value_get_string (&tmp);
+
+      if (str != NULL)
+        s = g_strescape (str, NULL);
+    }
+
+  g_value_unset (&tmp);
+
+  return s;
+}
+
 /* A simpler version of g_strdup_value_contents(), but with stable
  * output and less complex semantics
  */
@@ -137,25 +158,35 @@ value_to_string (const GValue *value)
 
       return g_strescape (s, NULL);
     }
-  else if (g_value_type_transformable (G_VALUE_TYPE (value), G_TYPE_STRING))
-    {
-      GValue tmp = G_VALUE_INIT;
-      char *s = NULL;
-
-      g_value_init (&tmp, G_TYPE_STRING);
-
-      if (g_value_transform (value, &tmp))
-        s = g_strescape (g_value_get_string (&tmp), NULL);
-
-      g_value_unset (&tmp);
-
-      if (s == NULL)
-        return NULL;
-
-      return s;
-    }
   else
-    return NULL;
+    {
+      GType value_type = G_VALUE_TYPE (value);
+
+      switch (G_TYPE_FUNDAMENTAL (value_type))
+        {
+        case G_TYPE_BOXED:
+          if (g_value_get_boxed (value) == NULL)
+            return NULL;
+          else
+            return value_transform_to_string (value);
+          break;
+
+        case G_TYPE_OBJECT:
+          if (g_value_get_object (value) == NULL)
+            return NULL;
+          else
+            return value_transform_to_string (value);
+          break;
+
+        case G_TYPE_POINTER:
+          return NULL;
+
+        default:
+          return value_transform_to_string (value);
+        }
+    }
+
+  return NULL;
 }
 
 static void
