@@ -332,6 +332,49 @@ next_async_callback_wrapper (GObject      *source_object,
  * If a request is cancelled the callback will be called with
  * %G_IO_ERROR_CANCELLED.
  *
+ * This leads to the following pseudo-code usage:
+ * |[
+ * g_autoptr(GFile) dir = get_directory ();
+ * g_autoptr(GFileEnumerator) enumerator = NULL;
+ * g_autolist(GFileInfo) files = NULL;
+ * g_autoptr(GError) local_error = NULL;
+ *
+ * enumerator = yield g_file_enumerate_children_async (dir,
+ *                                                     G_FILE_ATTRIBUTE_STANDARD_NAME ","
+ *                                                     G_FILE_ATTRIBUTE_STANDARD_TYPE,
+ *                                                     G_FILE_QUERY_INFO_NONE,
+ *                                                     G_PRIORITY_DEFAULT,
+ *                                                     cancellable,
+ *                                                     …,
+ *                                                     &local_error);
+ * if (enumerator == NULL)
+ *   g_error ("Error enumerating: %s", local_error->message);
+ *
+ * // Loop until no files are returned, either because the end of the enumerator
+ * // has been reached, or an error was returned.
+ * do
+ *   {
+ *     files = yield g_file_enumerator_next_files_async (enumerator,
+ *                                                       5,  // number of files to request
+ *                                                       G_PRIORITY_DEFAULT,
+ *                                                       cancellable,
+ *                                                       …,
+ *                                                       &local_error);
+ *
+ *     // Process the returned files, but don’t assume that exactly 5 were returned.
+ *     for (GList *l = files; l != NULL; l = l->next)
+ *       {
+ *         GFileInfo *info = l->data;
+ *         handle_file_info (info);
+ *       }
+ *   }
+ * while (files != NULL);
+ *
+ * if (local_error != NULL &&
+ *     !g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+ *   g_error ("Error while enumerating: %s", local_error->message);
+ * ]|
+ *
  * During an async request no other sync and async calls are allowed, and will
  * result in %G_IO_ERROR_PENDING errors. 
  *
