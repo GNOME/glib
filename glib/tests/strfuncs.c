@@ -2459,6 +2459,7 @@ test_ascii_string_to_number_usual (void)
                                          &value64,
                                          &error);
       g_test_assert_expected_messages ();
+      g_assert_false (result);
 
       g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
                              "*assertion \'base >= 2 && base <= 36\'*");
@@ -2469,6 +2470,7 @@ test_ascii_string_to_number_usual (void)
                                          &value64,
                                          &error);
       g_test_assert_expected_messages ();
+      g_assert_false (result);
 
       g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
                              "*assertion \'base >= 2 && base <= 36\'*");
@@ -2479,6 +2481,7 @@ test_ascii_string_to_number_usual (void)
                                          &value64,
                                          &error);
       g_test_assert_expected_messages ();
+      g_assert_false (result);
 
       g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
                              "*assertion \'min <= max\'*");
@@ -2489,6 +2492,7 @@ test_ascii_string_to_number_usual (void)
                                          &value64,
                                          &error);
       g_test_assert_expected_messages ();
+      g_assert_false (result);
     }
 
   /* Catching first part of (error == NULL || *error == NULL) */
@@ -2498,6 +2502,7 @@ test_ascii_string_to_number_usual (void)
                                      data->max,
                                      &value64,
                                      NULL);
+  g_assert_true (result);
 
   /*** g_ascii_string_to_unsigned() ***/
   data = &test_data[12]; /* Setting data to unsigned data */
@@ -2513,6 +2518,7 @@ test_ascii_string_to_number_usual (void)
                                            &valueu64,
                                            &error);
       g_test_assert_expected_messages ();
+      g_assert_false (result);
 
       g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
                              "*assertion \'base >= 2 && base <= 36\'*");
@@ -2523,6 +2529,7 @@ test_ascii_string_to_number_usual (void)
                                            &valueu64,
                                            &error);
       g_test_assert_expected_messages ();
+      g_assert_false (result);
 
       g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
                              "*assertion \'base >= 2 && base <= 36\'*");
@@ -2533,6 +2540,7 @@ test_ascii_string_to_number_usual (void)
                                            &valueu64,
                                            &error);
       g_test_assert_expected_messages ();
+      g_assert_false (result);
 
       g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
                              "*assertion \'min <= max\'*");
@@ -2543,6 +2551,7 @@ test_ascii_string_to_number_usual (void)
                                            &valueu64,
                                            &error);
       g_test_assert_expected_messages ();
+      g_assert_false (result);
     }
 
   /* Catching first part of (error == NULL || *error == NULL) */
@@ -2552,6 +2561,7 @@ test_ascii_string_to_number_usual (void)
                                        data->max,
                                        &valueu64,
                                        NULL);
+  g_assert_false (result);
 
   /* Testing usual cases */
   for (idx = 0; idx < G_N_ELEMENTS (test_data); ++idx)
