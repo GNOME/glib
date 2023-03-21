@@ -4036,7 +4036,8 @@ g_variant_dict_init (GVariantDict *dict,
  *
  * This function is a wrapper around g_variant_dict_lookup_value() and
  * g_variant_get().  In the case that %NULL would have been returned,
- * this function returns %FALSE.  Otherwise, it unpacks the returned
+ * this function returns %FALSE and does not modify the values of the arguments
+ * passed in to @....  Otherwise, it unpacks the returned
  * value and returns %TRUE.
  *
  * @format_string determines the C types that are used for unpacking the
