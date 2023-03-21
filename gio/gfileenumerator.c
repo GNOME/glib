@@ -318,22 +318,24 @@ next_async_callback_wrapper (GObject      *source_object,
  * @user_data: (closure): the data to pass to callback function
  *
  * Request information for a number of files from the enumerator asynchronously.
- * When all i/o for the operation is finished the @callback will be called with
+ * When all I/O for the operation is finished the @callback will be called with
  * the requested information. 
  *
  * See the documentation of #GFileEnumerator for information about the
  * order of returned files.
  *
- * The callback can be called with less than @num_files files in case of error
- * or at the end of the enumerator. In case of a partial error the callback will
- * be called with any succeeding items and no error, and on the next request the
- * error will be reported. If a request is cancelled the callback will be called
- * with %G_IO_ERROR_CANCELLED.
+ * Once the end of the enumerator is reached, or if an error occurs, the
+ * @callback will be called with an empty list. In this case, the previous call
+ * to g_file_enumerator_next_files_async() will typically have returned fewer
+ * than @num_files items.
+ *
+ * If a request is cancelled the callback will be called with
+ * %G_IO_ERROR_CANCELLED.
  *
  * During an async request no other sync and async calls are allowed, and will
  * result in %G_IO_ERROR_PENDING errors. 
  *
- * Any outstanding i/o request with higher priority (lower numerical value) will
+ * Any outstanding I/O request with higher priority (lower numerical value) will
  * be executed before an outstanding request with lower priority. Default
  * priority is %G_PRIORITY_DEFAULT.
  **/
