@@ -1500,8 +1500,8 @@ g_file_info_set_attribute_int64  (GFileInfo  *info,
     *value_ptr = g_file_info_find_value (info, attr); \
     if (G_UNLIKELY (*value_ptr == NULL)) \
       { \
-        g_critical ("GFileInfo created without " attribute_name); \
-        g_return_val_if_reached (error_value); \
+        g_debug ("GFileInfo created without " attribute_name); \
+        return error_value; \
       } \
   } G_STMT_END
 
@@ -1837,9 +1837,9 @@ g_file_info_get_modification_time (GFileInfo *info,
 
   if (G_UNLIKELY (value == NULL))
     {
-      g_critical ("GFileInfo created without " G_FILE_ATTRIBUTE_TIME_MODIFIED);
+      g_debug ("GFileInfo created without " G_FILE_ATTRIBUTE_TIME_MODIFIED);
       result->tv_sec = result->tv_usec = 0;
-      g_return_if_reached ();
+      return;
     }
 
   result->tv_sec = _g_file_attribute_value_get_uint64 (value);
