@@ -150,6 +150,10 @@ glib_headers = files(
 )
 install_headers(glib_headers, install_dir : glib_includedir)
 
+if host_system == 'windows'
+  install_headers([ 'msvc_recommended_pragmas.h' ], install_dir : glib_includedir)
+endif
+
 # Expose as variable to be used by gobject-introspection
 # when it includes GLib as a subproject
 glib_unix_h = files('glib-unix.h')
