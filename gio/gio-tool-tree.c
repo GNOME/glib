@@ -95,7 +95,9 @@ do_tree (GFile *f, unsigned int level, guint64 pattern)
       info_list = NULL;
       while ((info = g_file_enumerator_next_file (enumerator, NULL, NULL)) != NULL)
 	{
-	  if (g_file_info_get_is_hidden (info) && !show_hidden)
+	  if (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN) &&
+	      g_file_info_get_is_hidden (info) &&
+	      !show_hidden)
 	    {
 	      g_object_unref (info);
 	    }
@@ -151,7 +153,8 @@ do_tree (GFile *f, unsigned int level, guint64 pattern)
 		}
 	      else
 		{
-		  if (g_file_info_get_is_symlink (info))
+		  if (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK) &&
+		      g_file_info_get_is_symlink (info))
 		    {
 		      const char *target;
 		      target = g_file_info_get_symlink_target (info);
@@ -162,7 +165,9 @@ do_tree (GFile *f, unsigned int level, guint64 pattern)
 	      g_print ("\n");
 
 	      if ((type & G_FILE_TYPE_DIRECTORY) &&
-		  (follow_symlinks || !g_file_info_get_is_symlink (info)))
+		  (follow_symlinks ||
+		   !(g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK) &&
+		     g_file_info_get_is_symlink (info))))
 		{
 		  guint64 new_pattern;
 		  GFile *child;

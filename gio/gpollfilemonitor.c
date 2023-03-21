@@ -94,7 +94,9 @@ calc_event_type (GFileInfo *last,
       g_strcmp0 (g_file_info_get_etag (last), g_file_info_get_etag (new)) != 0)
     return G_FILE_MONITOR_EVENT_CHANGED;
   
-  if (g_file_info_get_size (last) != g_file_info_get_size (new))
+  if (g_file_info_has_attribute (last, G_FILE_ATTRIBUTE_STANDARD_SIZE) &&
+      g_file_info_has_attribute (new, G_FILE_ATTRIBUTE_STANDARD_SIZE) &&
+      g_file_info_get_size (last) != g_file_info_get_size (new))
     return G_FILE_MONITOR_EVENT_CHANGED;
 
   return -1;

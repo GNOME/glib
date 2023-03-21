@@ -1838,6 +1838,7 @@ g_file_info_get_modification_time (GFileInfo *info,
   if (G_UNLIKELY (value == NULL))
     {
       g_critical ("GFileInfo created without " G_FILE_ATTRIBUTE_TIME_MODIFIED);
+      result->tv_sec = result->tv_usec = 0;
       g_return_if_reached ();
     }
 

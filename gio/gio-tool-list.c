@@ -54,10 +54,12 @@ show_file_listing (GFileInfo *info, GFile *parent)
   gboolean first_attr;
   GFile *child;
 
-  if ((g_file_info_get_is_hidden (info)) && !show_hidden)
+  if (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN) &&
+      g_file_info_get_is_hidden (info) &&
+      !show_hidden)
     return;
 
-  if (print_display_names)
+  if (print_display_names && g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME))
     name = g_file_info_get_display_name (info);
   else
     name = g_file_info_get_name (info);
@@ -71,7 +73,8 @@ show_file_listing (GFileInfo *info, GFile *parent)
     g_object_unref (child);
   }
 
-  size = g_file_info_get_size (info);
+  size = g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_SIZE) ?
+         g_file_info_get_size (info) : 0;
   type = file_type_to_string (g_file_info_get_file_type (info));
   if (show_long)
     g_print ("%s\t%"G_GUINT64_FORMAT"\t(%s)", print_uris? uri: name, (guint64)size, type);
