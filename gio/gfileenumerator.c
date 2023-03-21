@@ -318,22 +318,67 @@ next_async_callback_wrapper (GObject      *source_object,
  * @user_data: (closure): the data to pass to callback function
  *
  * Request information for a number of files from the enumerator asynchronously.
- * When all i/o for the operation is finished the @callback will be called with
+ * When all I/O for the operation is finished the @callback will be called with
  * the requested information. 
  *
  * See the documentation of #GFileEnumerator for information about the
  * order of returned files.
  *
- * The callback can be called with less than @num_files files in case of error
- * or at the end of the enumerator. In case of a partial error the callback will
- * be called with any succeeding items and no error, and on the next request the
- * error will be reported. If a request is cancelled the callback will be called
- * with %G_IO_ERROR_CANCELLED.
+ * Once the end of the enumerator is reached, or if an error occurs, the
+ * @callback will be called with an empty list. In this case, the previous call
+ * to g_file_enumerator_next_files_async() will typically have returned fewer
+ * than @num_files items.
+ *
+ * If a request is cancelled the callback will be called with
+ * %G_IO_ERROR_CANCELLED.
+ *
+ * This leads to the following pseudo-code usage:
+ * |[
+ * g_autoptr(GFile) dir = get_directory ();
+ * g_autoptr(GFileEnumerator) enumerator = NULL;
+ * g_autolist(GFileInfo) files = NULL;
+ * g_autoptr(GError) local_error = NULL;
+ *
+ * enumerator = yield g_file_enumerate_children_async (dir,
+ *                                                     G_FILE_ATTRIBUTE_STANDARD_NAME ","
+ *                                                     G_FILE_ATTRIBUTE_STANDARD_TYPE,
+ *                                                     G_FILE_QUERY_INFO_NONE,
+ *                                                     G_PRIORITY_DEFAULT,
+ *                                                     cancellable,
+ *                                                     …,
+ *                                                     &local_error);
+ * if (enumerator == NULL)
+ *   g_error ("Error enumerating: %s", local_error->message);
+ *
+ * // Loop until no files are returned, either because the end of the enumerator
+ * // has been reached, or an error was returned.
+ * do
+ *   {
+ *     files = yield g_file_enumerator_next_files_async (enumerator,
+ *                                                       5,  // number of files to request
+ *                                                       G_PRIORITY_DEFAULT,
+ *                                                       cancellable,
+ *                                                       …,
+ *                                                       &local_error);
+ *
+ *     // Process the returned files, but don’t assume that exactly 5 were returned.
+ *     for (GList *l = files; l != NULL; l = l->next)
+ *       {
+ *         GFileInfo *info = l->data;
+ *         handle_file_info (info);
+ *       }
+ *   }
+ * while (files != NULL);
+ *
+ * if (local_error != NULL &&
+ *     !g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+ *   g_error ("Error while enumerating: %s", local_error->message);
+ * ]|
  *
  * During an async request no other sync and async calls are allowed, and will
  * result in %G_IO_ERROR_PENDING errors. 
  *
- * Any outstanding i/o request with higher priority (lower numerical value) will
+ * Any outstanding I/O request with higher priority (lower numerical value) will
  * be executed before an outstanding request with lower priority. Default
  * priority is %G_PRIORITY_DEFAULT.
  **/
