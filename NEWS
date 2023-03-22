@@ -1,3 +1,44 @@
+Overview of changes in GLib 2.76.1, 2023-03-22
+==============================================
+
+* Fix build failures in third party C++ projects using `g_strdup()` via C++
+  qualified symbol lookup (#2936, work by Xi Ruoyao)
+
+* Downgrade critical warnings from `GFileInfo` about missing attributes to debug
+  messages, as it was affecting too many apps; the critical warnings will be
+  reinstated early in the 2.78 cycle, so apps should continue to fix their
+  ambiguous use of `GFileInfo` API (#2948, work by Philip Withnall)
+
+* Bugs fixed:
+  - #159 g_strstr_len() ignores haystack_len (Philip Withnall)
+  - #352 Docs for g_file_enumerator_next_files_async () are unclear about end
+    condition (Owen Taylor)
+  - #919 g_variant_dict_lookup is unclear about what happens on failure (Philip
+    Withnall)
+  - #2922 GWin32AppInfo: Missing NULL string check (Luca Bacci)
+  - #2936 Possible regression in 2.75.3 when used from C++ due to g_strdup
+    becoming a macro
+  - #2943 Meson fails TAP test when g_test_message is called before g_test_init
+    (Philip Withnall)
+  - #2948 gio list triggers 'GFileInfo created without …' warnings for trash,
+    smb and google-drive GVFS backends (Philip Withnall)
+  - !3241 inotify: Avoid empty root directory string
+  - !3315 tests: Change the time function used in the bookmark tests
+  - !3318 gmacros: Add GCC < 5 fallback for __always_inline__
+  - !3319 fuzzing: do not build tests if build_tests is false
+  - !3321 tests: only build messages-low-memory if RTLD_NEXT is available
+  - !3323 tests: Fix timeout sources in gdbus-auth and gapplication tests
+  - !3324 tests: Reduce number of iterations in queue test
+  - !3325 gdesktopappinfo: Add a missing NULL check
+  - !3330 tests: Check a few results in strfuncs tests
+  - !3338 gfileinfo: Temporarily downgrade missing attribute criticals to debugs
+
+* Translation updates:
+  - French (Guillaume Bernard)
+  - Persian (Danial Behzadi)
+  - Turkish (Sabri Ünal)
+
+
 Overview of changes in GLib 2.76.0, 2023-03-10
 ==============================================
 
