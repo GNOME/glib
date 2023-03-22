@@ -76,22 +76,24 @@ delete_app (gpointer data)
   g_remove (path);
 }
 
-static gboolean changed_fired;
-
 static void
-changed_cb (GAppInfoMonitor *monitor, GMainLoop *loop)
+changed_cb (GAppInfoMonitor *monitor,
+            gpointer         user_data)
 {
-  changed_fired = TRUE;
-  g_main_loop_quit (loop);
+  gboolean *changed_fired = user_data;
+
+  *changed_fired = TRUE;
+  g_main_context_wakeup (g_main_context_get_thread_default ());
 }
 
 static gboolean
-quit_loop (gpointer data)
+timeout_cb (gpointer user_data)
 {
-  GMainLoop *loop = data;
+  gboolean *timed_out = user_data;
 
-  if (g_main_loop_is_running (loop))
-    g_main_loop_quit (loop);
+  g_assert (!timed_out);
+  *timed_out = TRUE;
+  g_main_context_wakeup (g_main_context_get_thread_default ());
 
   return G_SOURCE_REMOVE;
 }
@@ -104,10 +106,11 @@ test_app_monitor (Fixture       *fixture,
 #ifdef G_OS_UNIX
   gchar *app_path;
   GAppInfoMonitor *monitor;
-  GMainLoop *loop;
   GMainContext *context = NULL;  /* use the global default main context */
   GSource *timeout_source = NULL;
   GDesktopAppInfo *app = NULL;
+  gboolean changed_fired = FALSE;
+  gboolean timed_out = FALSE;
 
   app_path = g_build_filename (fixture->applications_dir, "app.desktop", NULL);
 
@@ -115,16 +118,17 @@ test_app_monitor (Fixture       *fixture,
   g_list_free_full (g_app_info_get_all (), g_object_unref);
 
   monitor = g_app_info_monitor_get ();
-  loop = g_main_loop_new (context, FALSE);
 
-  g_signal_connect (monitor, "changed", G_CALLBACK (changed_cb), loop);
+  g_signal_connect (monitor, "changed", G_CALLBACK (changed_cb), &changed_fired);
 
   g_idle_add (create_app, app_path);
   timeout_source = g_timeout_source_new_seconds (3);
-  g_source_set_callback (timeout_source, quit_loop, loop, NULL);
+  g_source_set_callback (timeout_source, timeout_cb, &timed_out, NULL);
   g_source_attach (timeout_source, NULL);
 
-  g_main_loop_run (loop);
+  while (!changed_fired && !timed_out)
+    g_main_context_iteration (context, TRUE);
+
   g_assert_true (changed_fired);
   changed_fired = FALSE;
 
@@ -138,18 +142,18 @@ test_app_monitor (Fixture       *fixture,
   g_clear_object (&app);
 
   timeout_source = g_timeout_source_new_seconds (3);
-  g_source_set_callback (timeout_source, quit_loop, loop, NULL);
+  g_source_set_callback (timeout_source, timeout_cb, &timed_out, NULL);
   g_source_attach (timeout_source, NULL);
 
   delete_app (app_path);
 
-  g_main_loop_run (loop);
+  while (!changed_fired && !timed_out)
+    g_main_context_iteration (context, TRUE);
 
   g_assert_true (changed_fired);
 
   g_source_destroy (timeout_source);
   g_clear_pointer (&timeout_source, g_source_unref);
-  g_main_loop_unref (loop);
   g_remove (app_path);
 
   g_object_unref (monitor);
