@@ -22,6 +22,10 @@
 #include <gio/gio.h>
 #include <gstdio.h>
 
+#ifdef G_OS_UNIX
+#include <gio/gdesktopappinfo.h>
+#endif
+
 typedef struct
 {
   gchar *applications_dir;
@@ -45,6 +49,7 @@ teardown (Fixture       *fixture,
   g_clear_pointer (&fixture->applications_dir, g_free);
 }
 
+#ifdef G_OS_UNIX
 static gboolean
 create_app (gpointer data)
 {
@@ -90,19 +95,17 @@ quit_loop (gpointer data)
 
   return G_SOURCE_REMOVE;
 }
+#endif  /* G_OS_UNIX */
 
 static void
 test_app_monitor (Fixture       *fixture,
                   gconstpointer  user_data)
 {
+#ifdef G_OS_UNIX
   gchar *app_path;
   GAppInfoMonitor *monitor;
   GMainLoop *loop;
-
-#ifdef G_OS_WIN32
-  g_test_skip (".desktop monitor on win32");
-  return;
-#endif
+  GDesktopAppInfo *app = NULL;
 
   app_path = g_build_filename (fixture->applications_dir, "app.desktop", NULL);
 
@@ -121,8 +124,11 @@ test_app_monitor (Fixture       *fixture,
   g_assert_true (changed_fired);
   changed_fired = FALSE;
 
-  /* FIXME: this shouldn't be required */
-  g_list_free_full (g_app_info_get_all (), g_object_unref);
+  /* Check that the app is now queryable. This has the side-effect of re-arming
+   * the #GAppInfoMonitor::changed signal for the next part of the test. */
+  app = g_desktop_app_info_new ("app.desktop");
+  g_assert_nonnull (app);
+  g_clear_object (&app);
 
   g_timeout_add_seconds (3, quit_loop, loop);
 
@@ -138,6 +144,9 @@ test_app_monitor (Fixture       *fixture,
   g_object_unref (monitor);
 
   g_free (app_path);
+#else  /* if !G_OS_UNIX */
+  g_test_skip (".desktop monitor on win32");
+#endif  /* !G_OS_UNIX */
 }
 
 int
