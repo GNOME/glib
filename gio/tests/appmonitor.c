@@ -118,7 +118,7 @@ test_app_monitor (Fixture       *fixture,
   g_timeout_add_seconds (3, quit_loop, loop);
 
   g_main_loop_run (loop);
-  g_assert (changed_fired);
+  g_assert_true (changed_fired);
   changed_fired = FALSE;
 
   /* FIXME: this shouldn't be required */
@@ -130,7 +130,7 @@ test_app_monitor (Fixture       *fixture,
 
   g_main_loop_run (loop);
 
-  g_assert (changed_fired);
+  g_assert_true (changed_fired);
 
   g_main_loop_unref (loop);
   g_remove (app_path);
