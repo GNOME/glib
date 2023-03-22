@@ -117,6 +117,8 @@ test_app_monitor (Fixture       *fixture,
   /* FIXME: this shouldn't be required */
   g_list_free_full (g_app_info_get_all (), g_object_unref);
 
+  /* Create an app monitor and check that its ::changed signal is emitted when
+   * a new app is installed. */
   monitor = g_app_info_monitor_get ();
 
   g_signal_connect (monitor, "changed", G_CALLBACK (changed_cb), &changed_fired);
@@ -141,6 +143,7 @@ test_app_monitor (Fixture       *fixture,
   g_assert_nonnull (app);
   g_clear_object (&app);
 
+  /* Now check that ::changed is emitted when an app is uninstalled. */
   timeout_source = g_timeout_source_new_seconds (3);
   g_source_set_callback (timeout_source, timeout_cb, &timed_out, NULL);
   g_source_attach (timeout_source, NULL);
