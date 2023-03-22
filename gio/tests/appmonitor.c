@@ -105,6 +105,8 @@ test_app_monitor (Fixture       *fixture,
   gchar *app_path;
   GAppInfoMonitor *monitor;
   GMainLoop *loop;
+  GMainContext *context = NULL;  /* use the global default main context */
+  GSource *timeout_source = NULL;
   GDesktopAppInfo *app = NULL;
 
   app_path = g_build_filename (fixture->applications_dir, "app.desktop", NULL);
@@ -113,16 +115,21 @@ test_app_monitor (Fixture       *fixture,
   g_list_free_full (g_app_info_get_all (), g_object_unref);
 
   monitor = g_app_info_monitor_get ();
-  loop = g_main_loop_new (NULL, FALSE);
+  loop = g_main_loop_new (context, FALSE);
 
   g_signal_connect (monitor, "changed", G_CALLBACK (changed_cb), loop);
 
   g_idle_add (create_app, app_path);
-  g_timeout_add_seconds (3, quit_loop, loop);
+  timeout_source = g_timeout_source_new_seconds (3);
+  g_source_set_callback (timeout_source, quit_loop, loop, NULL);
+  g_source_attach (timeout_source, NULL);
 
   g_main_loop_run (loop);
   g_assert_true (changed_fired);
   changed_fired = FALSE;
+
+  g_source_destroy (timeout_source);
+  g_clear_pointer (&timeout_source, g_source_unref);
 
   /* Check that the app is now queryable. This has the side-effect of re-arming
    * the #GAppInfoMonitor::changed signal for the next part of the test. */
@@ -130,7 +137,9 @@ test_app_monitor (Fixture       *fixture,
   g_assert_nonnull (app);
   g_clear_object (&app);
 
-  g_timeout_add_seconds (3, quit_loop, loop);
+  timeout_source = g_timeout_source_new_seconds (3);
+  g_source_set_callback (timeout_source, quit_loop, loop, NULL);
+  g_source_attach (timeout_source, NULL);
 
   delete_app (app_path);
 
@@ -138,6 +147,8 @@ test_app_monitor (Fixture       *fixture,
 
   g_assert_true (changed_fired);
 
+  g_source_destroy (timeout_source);
+  g_clear_pointer (&timeout_source, g_source_unref);
   g_main_loop_unref (loop);
   g_remove (app_path);
 
