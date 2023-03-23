@@ -38,6 +38,11 @@
  * interfacing with a non-GIO API that expects
  * UNIX-file-descriptor-style asynchronous I/O rather than GIO-style.
  *
+ * Some classes may implement #GPollableOutputStream but have only certain
+ * instances of that class be pollable. If g_pollable_output_stream_can_poll()
+ * returns %FALSE, then the behavior of other #GPollableOutputStream methods is
+ * undefined.
+ *
  * Since: 2.28
  */
 
@@ -105,6 +110,9 @@ g_pollable_output_stream_can_poll (GPollableOutputStream *stream)
  * g_pollable_output_stream_write_nonblocking(), which will return a
  * %G_IO_ERROR_WOULD_BLOCK error rather than blocking.
  *
+ * The behaviour of this method is undefined if
+ * g_pollable_output_stream_can_poll() returns %FALSE for @stream.
+ *
  * Returns: %TRUE if @stream is writable, %FALSE if not. If an error
  *   has occurred on @stream, this will result in
  *   g_pollable_output_stream_is_writable() returning %TRUE, and the
@@ -133,6 +141,9 @@ g_pollable_output_stream_is_writable (GPollableOutputStream *stream)
  * the stream may not actually be writable even after the source
  * triggers, so you should use g_pollable_output_stream_write_nonblocking()
  * rather than g_output_stream_write() from the callback.
+ *
+ * The behaviour of this method is undefined if
+ * g_pollable_output_stream_can_poll() returns %FALSE for @stream.
  *
  * Returns: (transfer full): a new #GSource
  *
@@ -251,6 +262,9 @@ g_pollable_output_stream_default_writev_nonblocking (GPollableOutputStream  *str
  * transports like D/TLS require that you re-send the same @buffer and
  * @count in the next write call.
  *
+ * The behaviour of this method is undefined if
+ * g_pollable_output_stream_can_poll() returns %FALSE for @stream.
+ *
  * Virtual: write_nonblocking
  * Returns: the number of bytes written, or -1 on error (including
  *   %G_IO_ERROR_WOULD_BLOCK).
@@ -318,6 +332,9 @@ g_pollable_output_stream_write_nonblocking (GPollableOutputStream  *stream,
  * Also note that if %G_POLLABLE_RETURN_WOULD_BLOCK is returned some underlying
  * transports like D/TLS require that you re-send the same @vectors and
  * @n_vectors in the next write call.
+ *
+ * The behaviour of this method is undefined if
+ * g_pollable_output_stream_can_poll() returns %FALSE for @stream.
  *
  * Virtual: writev_nonblocking
  *
