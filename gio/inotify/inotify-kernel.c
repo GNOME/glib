@@ -377,6 +377,7 @@ ik_source_new (gboolean (* callback) (ik_event_t *event))
   };
   InotifyKernelSource *iks;
   GSource *source;
+  gboolean should_set_nonblock = FALSE;
 
   source = g_source_new (&source_funcs, sizeof (InotifyKernelSource));
   iks = (InotifyKernelSource *) source;
@@ -384,17 +385,23 @@ ik_source_new (gboolean (* callback) (ik_event_t *event))
   g_source_set_static_name (source, "inotify kernel source");
 
   iks->unmatched_moves = g_hash_table_new (NULL, NULL);
-  iks->fd = inotify_init1 (IN_CLOEXEC);
+  iks->fd = inotify_init1 (IN_CLOEXEC | IN_NONBLOCK);
 
   if (iks->fd < 0)
-    iks->fd = inotify_init ();
+    {
+      should_set_nonblock = TRUE;
+      iks->fd = inotify_init ();
+    }
 
   if (iks->fd >= 0)
     {
       GError *error = NULL;
 
-      g_unix_set_fd_nonblocking (iks->fd, TRUE, &error);
-      g_assert_no_error (error);
+      if (should_set_nonblock)
+        {
+          g_unix_set_fd_nonblocking (iks->fd, TRUE, &error);
+          g_assert_no_error (error);
+        }
 
       iks->fd_tag = g_source_add_unix_fd (source, iks->fd, G_IO_IN);
     }
