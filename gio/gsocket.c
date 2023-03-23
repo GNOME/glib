@@ -603,7 +603,7 @@ socket_set_nonblock (int fd)
 #ifndef G_OS_WIN32
   if (!g_unix_set_fd_nonblocking (fd, TRUE, &error))
     {
-      g_warning ("Error setting socket nonblocking: %s", error->message);
+      g_warning ("Error setting socket to nonblocking mode: %s", error->message);
       g_clear_error (&error);
     }
 #else
