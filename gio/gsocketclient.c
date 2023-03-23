@@ -1727,6 +1727,10 @@ G_GNUC_BEGIN_IGNORE_DEPRECATIONS
                                                     data->client->priv->tls_validation_flags);
 G_GNUC_END_IGNORE_DEPRECATIONS
       g_socket_client_emit_event (data->client, G_SOCKET_CLIENT_TLS_HANDSHAKING, data->connectable, G_IO_STREAM (tlsconn));
+
+      /* This operation will time out if the underlying #GSocket times out on
+       * any part of the TLS handshake. It does not have a higher-level
+       * timeout. */
       g_tls_connection_handshake_async (G_TLS_CONNECTION (tlsconn),
 					G_PRIORITY_DEFAULT,
 					g_task_get_cancellable (data->task),
@@ -1854,6 +1858,12 @@ try_next_successful_connection (GSocketClientAsyncConnectData *data)
 
       g_socket_client_emit_event (data->client, G_SOCKET_CLIENT_PROXY_NEGOTIATING, data->connectable, attempt->connection);
       g_debug ("GSocketClient: Starting proxy connection");
+
+      /* FIXME: The #GProxy implementations do not have well-defined timeout
+       * behaviour, so this operation may theoretically never complete or time
+       * out. In practice, all #GProxy implementations use a #GSocket and a
+       * default timeout on that will eventually be hit. But there is no
+       * higher-level timeout. */
       g_proxy_connect_async (proxy,
                              connection,
                              proxy_addr,
@@ -2079,6 +2089,10 @@ g_socket_client_enumerator_callback (GObject      *object,
   g_socket_connection_set_cached_remote_address ((GSocketConnection *)attempt->connection, address);
   g_debug ("GSocketClient: Starting TCP connection attempt");
   g_socket_client_emit_event (data->client, G_SOCKET_CLIENT_CONNECTING, data->connectable, attempt->connection);
+
+  /* If client->priv->timeout is set, this async operation will time out after
+   * then. Otherwise it will continue until the kernel timeouts for a
+   * non-blocking connect() call (if any) are hit. */
   g_socket_connection_connect_async (G_SOCKET_CONNECTION (attempt->connection),
 				     address,
 				     attempt->cancellable,
