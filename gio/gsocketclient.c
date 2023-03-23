@@ -1799,6 +1799,8 @@ task_completed_or_cancelled (GSocketClientAsyncConnectData *data)
     return FALSE;
 }
 
+/* Returns %TRUE if it’s popped a connection of data->successful_connections and
+ * successfully started the next ongoing async operation for that connection. */
 static gboolean
 try_next_successful_connection (GSocketClientAsyncConnectData *data)
 {
@@ -1884,13 +1886,15 @@ try_next_connection_or_finish (GSocketClientAsyncConnectData *data,
   if (data->connection_in_progress)
     return;
 
-  /* Keep trying successful connections until one works, each iteration pops one */
+  /* Try to pop and make progress on the next successful_connection. */
   while (data->successful_connections)
     {
       if (try_next_successful_connection (data))
         return;
     }
 
+  /* If there are no more successful_connections which we can make progress on,
+   * try the next address enumeration. */
   if (!data->enumeration_completed)
     {
       enumerator_next_async (data, FALSE);
