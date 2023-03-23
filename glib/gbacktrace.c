@@ -398,8 +398,8 @@ stack_trace (const char * const *args)
   stack_trace_done = FALSE;
   signal (SIGCHLD, stack_trace_sigchld);
 
-  if (!g_unix_open_pipe_internal (in_fd, TRUE) ||
-      !g_unix_open_pipe_internal (out_fd, TRUE))
+  if (!g_unix_open_pipe_internal (in_fd, TRUE, FALSE) ||
+      !g_unix_open_pipe_internal (out_fd, TRUE, FALSE))
     {
       perror ("unable to open pipe");
       _exit (0);
