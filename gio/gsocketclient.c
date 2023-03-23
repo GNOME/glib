@@ -1501,7 +1501,10 @@ typedef struct
   GSList *successful_connections;
   SocketClientErrorInfo *error_info;
 
-  gboolean enumerated_at_least_once;
+  /* Number of times g_socket_address_enumerator_next_async() has successfully
+   * returned an address. */
+  guint n_addresses_enumerated;
+
   gboolean enumeration_completed;
   gboolean connection_in_progress;
   gboolean completed;
@@ -1660,7 +1663,7 @@ enumerator_next_async (GSocketClientAsyncConnectData *data,
   if (add_task_ref)
     g_object_ref (data->task);
 
-  if (!data->enumerated_at_least_once)
+  if (data->n_addresses_enumerated == 0)
     g_socket_client_emit_event (data->client, G_SOCKET_CLIENT_RESOLVING, data->connectable, NULL);
   g_debug ("GSocketClient: Starting new address enumeration");
   g_socket_address_enumerator_next_async (data->enumerator,
@@ -2015,8 +2018,8 @@ g_socket_client_enumerator_callback (GObject      *object,
 
          If this fails and nothing is in progress then we will complete task here.
        */
-      if ((data->enumerated_at_least_once && !data->connection_attempts && !data->connection_in_progress) ||
-          !data->enumerated_at_least_once)
+      if ((data->n_addresses_enumerated > 0 && !data->connection_attempts && !data->connection_in_progress) ||
+          data->n_addresses_enumerated == 0)
         {
           g_debug ("GSocketClient: Address enumeration failed: %s",
                    data->error_info->tmp_error ? data->error_info->tmp_error->message : NULL);
@@ -2031,12 +2034,11 @@ g_socket_client_enumerator_callback (GObject      *object,
     }
 
   g_debug ("GSocketClient: Address enumeration succeeded");
-  if (!data->enumerated_at_least_once)
-    {
-      g_socket_client_emit_event (data->client, G_SOCKET_CLIENT_RESOLVED,
-				  data->connectable, NULL);
-      data->enumerated_at_least_once = TRUE;
-    }
+  if (data->n_addresses_enumerated == 0)
+    g_socket_client_emit_event (data->client, G_SOCKET_CLIENT_RESOLVED,
+                                data->connectable, NULL);
+
+  data->n_addresses_enumerated++;
 
   socket = create_socket (data->client, address, &data->error_info->tmp_error);
   if (socket == NULL)
