@@ -20,7 +20,7 @@
  */
 
 /**
- * SECTION:option
+ * SECTION:goptioncontext
  * @Short_description: parses commandline options
  * @Title: Commandline option parser
  *

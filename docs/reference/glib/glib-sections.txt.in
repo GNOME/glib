@@ -1353,7 +1353,7 @@ g_shell_error_quark
 
 <SECTION>
 <TITLE>Commandline option parser</TITLE>
-<FILE>option</FILE>
+<FILE>goptioncontext</FILE>
 GOptionError
 G_OPTION_ERROR
 GOptionArgFunc
