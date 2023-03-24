@@ -146,12 +146,50 @@ test_unicode_normalize (void)
   g_string_free (buffer, TRUE);
 }
 
+static void
+test_unicode_normalize_invalid (void)
+{
+  /* g_utf8_normalize() should return NULL for all of these invalid inputs */
+  const struct
+  {
+    gssize max_len;
+    const gchar *str;
+  } test_vectors[] = {
+    /* input ending with truncated multibyte encoding */
+    { -1, "\xC0" },
+    { 1, "\xC0\x80" },
+    { -1, "\xE0\x80" },
+    { 2, "\xE0\x80\x80" },
+    { -1, "\xF0\x80\x80" },
+    { 3, "\xF0\x80\x80\x80" },
+    { -1, "\xF8\x80\x80\x80" },
+    { 4, "\xF8\x80\x80\x80\x80" },
+    { 3, "\x20\xE2\x84\xAA" },
+    { -1, "\x20\xE2\x00\xAA" },
+    { -1, "\xC0\x80\xE0\x80" },
+    { 4, "\xC0\x80\xE0\x80\x80" },
+    /* input containing invalid multibyte encoding */
+    { -1, "\xED\x85\x9C\xED\x15\x9C\xED\x85\x9C" },
+  };
+  gsize i;
+
+  for (i = 0; i < G_N_ELEMENTS (test_vectors); i++)
+    {
+      g_test_message ("Invalid UTF-8 vector %" G_GSIZE_FORMAT, i);
+      g_assert_null (g_utf8_normalize (test_vectors[i].str,
+                                       test_vectors[i].max_len,
+                                       G_NORMALIZE_ALL));
+    }
+}
+
 int
 main (int argc, char **argv)
 {
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/unicode/normalize", test_unicode_normalize);
+  g_test_add_func ("/unicode/normalize-invalid",
+                   test_unicode_normalize_invalid);
 
   return g_test_run ();
 }
