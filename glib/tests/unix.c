@@ -456,12 +456,6 @@ test_child_wait (void)
       g_assert_cmpint (errsv, ==, ECHILD);
       g_assert_cmpint (pid2, <, 0);
     }
-  else if (errsv == ECHILD)
-    {
-      /* FIXME: This is a bug. We didn't get the callback from the child
-       * watcher, but still the child is already reaped. */
-      g_assert_cmpint (pid2, <, 0);
-    }
   else
     {
       g_assert_cmpint (errsv, ==, 0);
