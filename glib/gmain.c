@@ -5430,31 +5430,30 @@ dispatch_unix_signals_unlocked (void)
       for (node = unix_child_watches; node; node = node->next)
         {
           GChildWatchSource *source = node->data;
+          pid_t pid;
 
-          if (!source->using_pidfd &&
-              !g_atomic_int_get (&source->child_exited))
+          if (g_atomic_int_get (&source->child_exited))
+             continue;
+
+          do
             {
-              pid_t pid;
-              do
-                {
-                  g_assert (source->pid > 0);
+              g_assert (source->pid > 0);
 
-                  pid = waitpid (source->pid, &source->child_status, WNOHANG);
-                  if (pid > 0)
-                    {
-                      g_atomic_int_set (&source->child_exited, TRUE);
-                      wake_source ((GSource *) source);
-                    }
-                  else if (pid == -1 && errno == ECHILD)
-                    {
-                      g_warning ("GChildWatchSource: Exit status of a child process was requested but ECHILD was received by waitpid(). See the documentation of g_child_watch_source_new() for possible causes.");
-                      source->child_status = 0;
-                      g_atomic_int_set (&source->child_exited, TRUE);
-                      wake_source ((GSource *) source);
-                    }
+              pid = waitpid (source->pid, &source->child_status, WNOHANG);
+              if (pid > 0)
+                {
+                  g_atomic_int_set (&source->child_exited, TRUE);
+                  wake_source ((GSource *) source);
                 }
-              while (pid == -1 && errno == EINTR);
+              else if (pid == -1 && errno == ECHILD)
+                {
+                  g_warning ("GChildWatchSource: Exit status of a child process was requested but ECHILD was received by waitpid(). See the documentation of g_child_watch_source_new() for possible causes.");
+                  source->child_status = 0;
+                  g_atomic_int_set (&source->child_exited, TRUE);
+                  wake_source ((GSource *) source);
+                }
             }
+          while (pid == -1 && errno == EINTR);
         }
     }
 
