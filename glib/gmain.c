@@ -350,11 +350,11 @@ struct _GChildWatchSource
 {
   GSource     source;
   GPid        pid;
-  /* @poll is always used on Windows, and used on Unix iff @using_pidfd is set: */
+  /* @poll is always used on Windows.
+   * On Unix, poll.fd will be negative if PIDFD is unavailable. */
   GPollFD     poll;
 #ifndef G_OS_WIN32
   gboolean child_maybe_exited; /* (atomic) */
-  gboolean using_pidfd;
 #endif /* G_OS_WIN32 */
 };
 
@@ -5251,7 +5251,10 @@ g_child_watch_prepare (GSource *source,
 
     child_watch_source = (GChildWatchSource *) source;
 
-    return !child_watch_source->using_pidfd && g_atomic_int_get (&child_watch_source->child_maybe_exited);
+    if (child_watch_source->poll.fd >= 0)
+      return FALSE;
+
+    return g_atomic_int_get (&child_watch_source->child_maybe_exited);
   }
 #endif /* G_OS_WIN32 */
 }
@@ -5268,7 +5271,7 @@ g_child_watch_check (GSource *source)
   child_exited = child_watch_source->poll.revents & G_IO_IN;
 #else /* G_OS_WIN32 */
 #ifdef HAVE_PIDFD
-  if (child_watch_source->using_pidfd)
+  if (child_watch_source->poll.fd >= 0)
     {
       child_exited = child_watch_source->poll.revents & G_IO_IN;
       return child_exited;
@@ -5286,10 +5289,9 @@ g_child_watch_finalize (GSource *source)
 #ifndef G_OS_WIN32
   GChildWatchSource *child_watch_source = (GChildWatchSource *) source;
 
-  if (child_watch_source->using_pidfd)
+  if (child_watch_source->poll.fd >= 0)
     {
-      if (child_watch_source->poll.fd >= 0)
-        close (child_watch_source->poll.fd);
+      close (child_watch_source->poll.fd);
       return;
     }
 
@@ -5637,7 +5639,7 @@ g_child_watch_dispatch (GSource    *source,
     wait_status = -1;
 
 #ifdef HAVE_PIDFD
-    if (child_watch_source->using_pidfd)
+    if (child_watch_source->poll.fd >= 0)
       {
         siginfo_t child_info = {
           0,
@@ -5822,17 +5824,15 @@ g_child_watch_source_new (GPid pid)
    * better than SIGCHLD.
    */
   child_watch_source->poll.fd = (int) syscall (SYS_pidfd_open, pid, 0);
-  errsv = errno;
 
   if (child_watch_source->poll.fd >= 0)
     {
-      child_watch_source->using_pidfd = TRUE;
       child_watch_source->poll.events = G_IO_IN;
       g_source_add_poll (source, &child_watch_source->poll);
-
       return source;
     }
 
+  errsv = errno;
   g_debug ("pidfd_open(%" G_PID_FORMAT ") failed with error: %s",
            pid, g_strerror (errsv));
   /* Fall through; likely the kernel isn’t new enough to support pidfd_open() */
@@ -5841,6 +5841,7 @@ g_child_watch_source_new (GPid pid)
   /* We can do that without atomic, as the source is not yet added in
    * unix_child_watches (which we do next under a lock). */
   child_watch_source->child_maybe_exited = TRUE;
+  child_watch_source->poll.fd = -1;
 
   G_LOCK (unix_signal_lock);
   ref_unix_signal_handler_unlocked (SIGCHLD);
