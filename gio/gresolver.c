@@ -57,6 +57,12 @@
  * making it easy to connect to a remote host/service.
  */
 
+typedef enum {
+  PROP_TIMEOUT = 1,
+} GResolverProperty;
+
+static GParamSpec *props[PROP_TIMEOUT + 1] = { NULL, };
+
 enum {
   RELOAD,
   LAST_SIGNAL
@@ -65,11 +71,11 @@ enum {
 static guint signals[LAST_SIGNAL] = { 0 };
 
 struct _GResolverPrivate {
+  unsigned timeout_ms;
+
 #ifdef G_OS_UNIX
   GMutex mutex;
   time_t resolv_conf_timestamp;  /* protected by @mutex */
-#else
-  int dummy;
 #endif
 };
 
@@ -152,6 +158,42 @@ g_resolver_real_lookup_service_finish (GResolver            *resolver,
 }
 
 static void
+g_resolver_get_property (GObject    *object,
+                         guint       prop_id,
+                         GValue     *value,
+                         GParamSpec *pspec)
+{
+  GResolver *self = G_RESOLVER (object);
+
+  switch ((GResolverProperty) prop_id)
+    {
+    case PROP_TIMEOUT:
+      g_value_set_uint (value, g_resolver_get_timeout (self));
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+    }
+}
+
+static void
+g_resolver_set_property (GObject      *object,
+                         guint         prop_id,
+                         const GValue *value,
+                         GParamSpec   *pspec)
+{
+  GResolver *self = G_RESOLVER (object);
+
+  switch ((GResolverProperty) prop_id)
+    {
+    case PROP_TIMEOUT:
+      g_resolver_set_timeout (self, g_value_get_uint (value));
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+    }
+}
+
+static void
 g_resolver_finalize (GObject *object)
 {
 #ifdef G_OS_UNIX
@@ -168,12 +210,39 @@ g_resolver_class_init (GResolverClass *resolver_class)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (resolver_class);
 
+  object_class->get_property = g_resolver_get_property;
+  object_class->set_property = g_resolver_set_property;
   object_class->finalize = g_resolver_finalize;
 
   /* Automatically pass these over to the lookup_records methods */
   resolver_class->lookup_service = g_resolver_real_lookup_service;
   resolver_class->lookup_service_async = g_resolver_real_lookup_service_async;
   resolver_class->lookup_service_finish = g_resolver_real_lookup_service_finish;
+
+  /**
+   * GResolver:timeout:
+   *
+   * The timeout applied to all resolver lookups, in milliseconds.
+   *
+   * This may be changed through the lifetime of the #GResolver. The new value
+   * will apply to any lookups started after the change, but not to any
+   * already-ongoing lookups.
+   *
+   * If this is `0`, no timeout is applied to lookups.
+   *
+   * No timeout was applied to lookups before this property was added in
+   * GLib 2.78.
+   *
+   * Since: 2.78
+   */
+  props[PROP_TIMEOUT] =
+    g_param_spec_uint ("timeout",
+                       P_("Timeout"),
+                       P_("Timeout (ms) applied to all resolver lookups"),
+                       0, G_MAXUINT, 0,
+                       G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS | G_PARAM_EXPLICIT_NOTIFY);
+
+  g_object_class_install_properties (object_class, G_N_ELEMENTS (props), props);
 
   /**
    * GResolver::reload:
@@ -1242,6 +1311,49 @@ g_resolver_get_serial (GResolver *resolver)
 #endif
 
   return result;
+}
+
+/**
+ * g_resolver_get_timeout:
+ * @resolver: a #GResolver
+ *
+ * Get the timeout applied to all resolver lookups. See #GResolver:timeout.
+ *
+ * Returns: the resolver timeout, in milliseconds, or `0` for no timeout
+ * Since: 2.78
+ */
+unsigned
+g_resolver_get_timeout (GResolver *resolver)
+{
+  GResolverPrivate *priv = g_resolver_get_instance_private (resolver);
+
+  g_return_val_if_fail (G_IS_RESOLVER (resolver), 0);
+
+  return priv->timeout_ms;
+}
+
+/**
+ * g_resolver_set_timeout:
+ * @resolver: a #GResolver
+ * @timeout_ms: timeout in milliseconds, or `0` for no timeouts
+ *
+ * Set the timeout applied to all resolver lookups. See #GResolver:timeout.
+ *
+ * Since: 2.78
+ */
+void
+g_resolver_set_timeout (GResolver *resolver,
+                        unsigned   timeout_ms)
+{
+  GResolverPrivate *priv = g_resolver_get_instance_private (resolver);
+
+  g_return_if_fail (G_IS_RESOLVER (resolver));
+
+  if (priv->timeout_ms == timeout_ms)
+    return;
+
+  priv->timeout_ms = timeout_ms;
+  g_object_notify_by_pspec (G_OBJECT (resolver), props[PROP_TIMEOUT]);
 }
 
 /**

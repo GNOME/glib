@@ -277,6 +277,11 @@ GList     *g_resolver_lookup_records_finish            (GResolver               
 GIO_AVAILABLE_IN_ALL
 void       g_resolver_free_targets                     (GList                     *targets);
 
+GIO_AVAILABLE_IN_2_78
+unsigned   g_resolver_get_timeout                      (GResolver                 *resolver);
+GIO_AVAILABLE_IN_2_78
+void       g_resolver_set_timeout                      (GResolver                 *resolver,
+                                                        unsigned                   timeout_ms);
 
 /**
  * G_RESOLVER_ERROR:
