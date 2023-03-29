@@ -85,7 +85,7 @@
     <xi:include href="xml/guri.xml" />
     <xi:include href="xml/ghostutils.xml" />
     <xi:include href="xml/shell.xml" />
-    <xi:include href="xml/option.xml" />
+    <xi:include href="xml/goptioncontext.xml" />
     <xi:include href="xml/patterns.xml" />
     <xi:include href="xml/gregex.xml" />
     <xi:include href="regex-syntax.xml" />
