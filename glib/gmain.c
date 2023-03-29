@@ -5268,12 +5268,12 @@ g_child_watch_check (GSource *source)
   child_watch_source = (GChildWatchSource *) source;
 
 #ifdef G_OS_WIN32
-  child_exited = child_watch_source->poll.revents & G_IO_IN;
+  child_exited = !!(child_watch_source->poll.revents & G_IO_IN);
 #else /* G_OS_WIN32 */
 #ifdef HAVE_PIDFD
   if (child_watch_source->poll.fd >= 0)
     {
-      child_exited = child_watch_source->poll.revents & G_IO_IN;
+      child_exited = !!(child_watch_source->poll.revents & G_IO_IN);
       return child_exited;
     }
 #endif /* HAVE_PIDFD */
