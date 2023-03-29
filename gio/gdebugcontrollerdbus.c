@@ -50,9 +50,10 @@
  * #GDebugController:debug-enabled and, by default, g_log_get_debug_enabled().
  * default.
  *
- * By default, all processes will be able to call `SetDebugEnabled()`. If this
- * process is privileged, or might expose sensitive information in its debug
- * output, you may want to restrict the ability to enable debug output to
+ * By default, no processes are allowed to call `SetDebugEnabled()` unless a
+ * #GDebugControllerDBus::authorize signal handler is installed. This is because
+ * the process may be privileged, or might expose sensitive information in its
+ * debug output. You may want to restrict the ability to enable debug output to
  * privileged users or processes.
  *
  * One option is to install a D-Bus security policy which restricts access to
