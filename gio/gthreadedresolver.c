@@ -38,6 +38,10 @@
 #include "gsocketaddress.h"
 #include "gsrvtarget.h"
 
+struct _GThreadedResolver
+{
+  GResolver parent_instance;
+};
 
 G_DEFINE_TYPE (GThreadedResolver, g_threaded_resolver, G_TYPE_RESOLVER)
 
