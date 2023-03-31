@@ -313,7 +313,7 @@ msgstr "Основният поток не може да се съкращава
 #: gio/gsimpleasyncresult.c:873 gio/gsimpleasyncresult.c:899
 #, c-format
 msgid "Operation was cancelled"
-msgstr "Действието е прекратено"
+msgstr "Действието е отменено"
 
 #: gio/gcharsetconverter.c:262
 msgid "Invalid object, not initialized"
