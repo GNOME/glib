@@ -141,7 +141,7 @@
  *   g_value_set_boxed (value, mystruct);
  *   // [... your code ....]
  *   g_value_unset (value);
- *   g_value_free (value);
+ *   g_free (value);
  * }
  * ]|
  */
