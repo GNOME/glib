@@ -4357,7 +4357,7 @@ expand_macro_single (char macro, file_or_uri *obj)
           const char *prefix = "file:///";
           const size_t prefix_len = strlen (prefix);
 
-          if (g_str_has_prefix (obj->uri, prefix) == 0 && obj->uri[prefix_len] != 0)
+          if (g_str_has_prefix (obj->uri, prefix) && obj->uri[prefix_len] != 0)
             {
               GFile *file = g_file_new_for_uri (obj->uri);
               result = g_file_get_path (file);
