@@ -676,6 +676,58 @@ g_task_init (GTask *task)
   task->check_cancellable = TRUE;
 }
 
+#ifdef G_ENABLE_DEBUG
+G_LOCK_DEFINE_STATIC (task_list);
+static GPtrArray *task_list = NULL;
+
+void
+g_task_print_alive_tasks (void)
+{
+  GString *message_str = g_string_new ("");
+
+  G_LOCK (task_list);
+
+  if (task_list != NULL)
+    {
+      g_string_append_printf (message_str, "%u GTasks still alive:", task_list->len);
+      for (guint i = 0; i < task_list->len; i++)
+        {
+          GTask *task = g_ptr_array_index (task_list, i);
+          const gchar *name = g_task_get_name (task);
+          g_string_append_printf (message_str,
+                                  "\n • GTask %p, %s, ref count: %u, ever_returned: %u, completed: %u",
+                                  task, (name != NULL) ? name : "(no name set)",
+                                  ((GObject *) task)->ref_count,
+                                  task->ever_returned, task->completed);
+        }
+    }
+  else
+    {
+      g_string_append (message_str, "No GTasks still alive");
+    }
+
+  G_UNLOCK (task_list);
+
+  g_message ("%s", message_str->str);
+  g_string_free (message_str, TRUE);
+}
+
+static void
+g_task_constructed (GObject *object)
+{
+  GTask *task = G_TASK (object);
+
+  G_OBJECT_CLASS (g_task_parent_class)->constructed (object);
+
+  /* Track pending tasks for debugging purposes */
+  G_LOCK (task_list);
+  if (G_UNLIKELY (task_list == NULL))
+    task_list = g_ptr_array_new ();
+  g_ptr_array_add (task_list, task);
+  G_UNLOCK (task_list);
+}
+#endif  /* G_ENABLE_DEBUG */
+
 static void
 g_task_finalize (GObject *object)
 {
@@ -731,6 +783,16 @@ g_task_finalize (GObject *object)
       g_mutex_clear (&task->lock);
       g_cond_clear (&task->cond);
     }
+
+  /* Track pending tasks for debugging purposes */
+#ifdef G_ENABLE_DEBUG
+  G_LOCK (task_list);
+  g_assert (task_list != NULL);
+  g_ptr_array_remove_fast (task_list, task);
+  if (G_UNLIKELY (task_list->len == 0))
+    g_clear_pointer (&task_list, g_ptr_array_unref);
+  G_UNLOCK (task_list);
+#endif  /* G_ENABLE_DEBUG */
 
   G_OBJECT_CLASS (g_task_parent_class)->finalize (object);
 }
@@ -2316,6 +2378,9 @@ g_task_class_init (GTaskClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
+#ifdef G_ENABLE_DEBUG
+  gobject_class->constructed = g_task_constructed;
+#endif
   gobject_class->get_property = g_task_get_property;
   gobject_class->finalize = g_task_finalize;
 
