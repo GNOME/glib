@@ -17,8 +17,8 @@ endif
 if host_system != 'windows'
   # Install Valgrind suppression file (except on Windows,
   # as Valgrind is currently not supported on Windows)
-  install_data('glib.supp',
-    install_dir : get_option('datadir') / 'glib-2.0' / 'valgrind',
+  install_data(fs.name(valgrind_suppression_file),
+    install_dir : get_option('datadir') / valgrind_suppression_file_install_subdir,
     install_tag : 'devel',
   )
 endif
