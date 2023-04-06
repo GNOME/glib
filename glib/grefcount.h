@@ -50,6 +50,60 @@ GLIB_AVAILABLE_IN_2_58
 gboolean        g_atomic_ref_count_compare      (gatomicrefcount *arc,
                                                  gint             val);
 
+/**
+ * G_REF_COUNT_INIT:
+ *
+ * Evaluates to the initial reference count for `grefcount`.
+ *
+ * This macro is useful for initializing `grefcount` fields inside
+ * structures, for instance:
+ *
+ * |[<!-- language="C" -->
+ * typedef struct {
+ *   grefcount ref_count;
+ *   char *name;
+ *   char *address;
+ * } Person;
+ *
+ * static const Person default_person = {
+ *   .ref_count = G_REF_COUNT_INIT,
+ *   .name = "Default name",
+ *   .address = "Default address",
+ * };
+ * ]|
+ *
+ * Since: 2.78
+ */
+#define G_REF_COUNT_INIT          -1 \
+  GLIB_AVAILABLE_MACRO_IN_2_78
+
+/**
+ * G_ATOMIC_REF_COUNT_INIT:
+ *
+ * Evaluates to the initial reference count for `gatomicrefcount`.
+ *
+ * This macro is useful for initializing `gatomicrefcount` fields inside
+ * structures, for instance:
+ *
+ * |[<!-- language="C" -->
+ * typedef struct {
+ *   gatomicrefcount ref_count;
+ *   char *name;
+ *   char *address;
+ * } Person;
+ *
+ * static const Person default_person = {
+ *   .ref_count = G_ATOMIC_REF_COUNT_INIT,
+ *   .name = "Default name",
+ *   .address = "Default address",
+ * };
+ * ]|
+ *
+ * Since: 2.78
+ */
+#define G_ATOMIC_REF_COUNT_INIT   1 \
+  GLIB_AVAILABLE_MACRO_IN_2_78
+
 /* On GCC we can use __extension__ to inline the API without using
  * ancillary functions; we only do this when disabling checks, as
  * it disables warnings when saturating the reference counters
