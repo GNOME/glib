@@ -578,7 +578,9 @@ g_win32_check_windows_version (const gint major,
 
   /* Check for Service Pack Version >= 0 */
   g_return_val_if_fail (spver >= 0, FALSE);
-  g_return_val_if_fail (_g_win32_call_rtl_version (&osverinfo), FALSE);
+
+  if (!_g_win32_call_rtl_version (&osverinfo))
+    return FALSE;
 
   /* check the OS and Service Pack Versions */
   if (osverinfo.dwMajorVersion > (DWORD) major)
