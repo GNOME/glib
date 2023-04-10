@@ -1523,16 +1523,18 @@ g_cond_wait_until (GCond  *cond,
    * have any relation to the one used by the kernel for the `futex` syscall.
    *
    * Specifically, the libc headers might use 64-bit `time_t` while the kernel
-   * headers use 32-bit `__kernel_old_time_t` on certain systems.
+   * headers use 32-bit types on certain systems.
    *
    * To get around this problem we
    *   a) check if `futex_time64` is available, which only exists on 32-bit
    *      platforms and always uses 64-bit `time_t`.
    *   b) otherwise (or if that returns `ENOSYS`), we call the normal `futex`
-   *      syscall with the `struct timespec` used by the kernel, which uses
-   *      `__kernel_long_t` for both its fields. We use that instead of
-   *      `__kernel_old_time_t` because it is equivalent and available in the
-   *      kernel headers for a longer time.
+   *      syscall with the `struct timespec` used by the kernel. By default, we
+   *      use `__kernel_long_t` for both its fields, which is equivalent to
+   *      `__kernel_old_time_t` and is available in the kernel headers for a
+   *      longer time.
+   *   c) With very old headers (~2.6.x), `__kernel_long_t` is not available, and
+   *      we use an older definition that uses `__kernel_time_t` and `long`.
    *
    * Also some 32-bit systems do not define `__NR_futex` at all and only
    * define `__NR_futex_time64`.
@@ -1572,14 +1574,24 @@ g_cond_wait_until (GCond  *cond,
 
 #ifdef __NR_futex
   {
+#  ifdef __kernel_long_t
+#    define KERNEL_SPAN_SEC_TYPE __kernel_long_t
     struct
     {
       __kernel_long_t tv_sec;
       __kernel_long_t tv_nsec;
     } span_arg;
-
+#  else
+    /* Very old kernel headers: version 2.6.32 and thereabouts */
+#    define KERNEL_SPAN_SEC_TYPE __kernel_time_t
+    struct
+    {
+      __kernel_time_t tv_sec;
+      long            tv_nsec;
+    } span_arg;
+#  endif
     /* Make sure to only ever call this if the end time actually fits into the target type */
-    if (G_UNLIKELY (sizeof (__kernel_long_t) < 8 && span.tv_sec > G_MAXINT32))
+    if (G_UNLIKELY (sizeof (KERNEL_SPAN_SEC_TYPE) < 8 && span.tv_sec > G_MAXINT32))
       g_error ("%s: Can’t wait for more than %us", G_STRFUNC, G_MAXINT32);
 
     span_arg.tv_sec = span.tv_sec;
@@ -1591,6 +1603,7 @@ g_cond_wait_until (GCond  *cond,
 
     return success;
   }
+#  undef KERNEL_SPAN_SEC_TYPE
 #endif /* defined(__NR_futex) */
 
   /* We can't end up here because of the checks above */
