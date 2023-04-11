@@ -3304,7 +3304,7 @@ g_socket_receive_with_timeout (GSocket       *socket,
  * @socket: a #GSocket
  * @buffer: (array length=size) (element-type guint8) (out caller-allocates):
  *     a buffer to read data into (which should be at least @size bytes long).
- * @size: the number of bytes you want to read from the socket
+ * @size: (in): the number of bytes you want to read from the socket
  * @cancellable: (nullable): a %GCancellable or %NULL
  * @error: #GError for error reporting, or %NULL to ignore.
  *
@@ -3354,7 +3354,7 @@ g_socket_receive (GSocket       *socket,
  * @socket: a #GSocket
  * @buffer: (array length=size) (element-type guint8) (out caller-allocates):
  *     a buffer to read data into (which should be at least @size bytes long).
- * @size: the number of bytes you want to read from the socket
+ * @size: (in): the number of bytes you want to read from the socket
  * @blocking: whether to do blocking or non-blocking I/O
  * @cancellable: (nullable): a %GCancellable or %NULL
  * @error: #GError for error reporting, or %NULL to ignore.
