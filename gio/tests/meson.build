@@ -929,7 +929,7 @@ if not meson.is_cross_build()
       input : test_gresource_binary,
       output : 'test_resources.o',
       command : cc.cmd_array() + ['-Wl,-z,noexecstack', '-r', '-Wl,-b,binary',
-                                  '@INPUT@', '-o','@OUTPUT@'])
+                                  '-nostdlib', '@INPUT@', '-o','@OUTPUT@'])
 
     # Rename symbol to match the one in the C file
     if cc.get_id() == 'gcc' and host_system == 'windows'
