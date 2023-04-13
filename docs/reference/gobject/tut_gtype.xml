@@ -599,7 +599,7 @@ B *b;
                   <row>
                     <!--entry>First call to <function><link linkend="g-type-create-instance">g_type_create_instance</link></function> for target type</entry-->
                     <entry>interface initialization, see 
-                      <xref linkend="gtype-non-instantiatable-classed-init"/></entry>
+                      <xref linkend="gtype-non-instantiatable-non-classed-init"/></entry>
                     <entry></entry>
                   </row>
                   <row>
@@ -610,7 +610,7 @@ B *b;
                   <row>
                     <entry morerows="2">Last call to <function><link linkend="g-type-free-instance">g_type_free_instance</link></function> for target type</entry>
                     <entry>interface destruction, see
-                      <xref linkend="gtype-non-instantiatable-classed-dest"/></entry>
+                      <xref linkend="gtype-non-instantiatable-non-classed-dest"/></entry>
                     <entry></entry>
                   </row>
                   <row>
@@ -633,8 +633,8 @@ B *b;
 
       </sect1>
 
-      <sect1 id="gtype-non-instantiatable-classed">
-        <title>Non-instantiatable classed types: interfaces</title>
+      <sect1 id="gtype-non-instantiatable-non-classed">
+        <title>Non-instantiatable non-classed types: interfaces</title>
 
         <para>
           This section covers the theory behind interfaces. See
@@ -649,7 +649,7 @@ B *b;
           be seen as a playback interface. Once you know what they do, you can
           control your CD player, MP3 player or anything that uses these symbols.
           To declare an interface you have to register a non-instantiatable
-          classed type which derives from 
+          non-classed type which derives from
           <link linkend="GTypeInterface"><type>GTypeInterface</type></link>. The following piece of code declares such an interface.
 <informalexample><programlisting>
 #define VIEWER_TYPE_EDITABLE viewer_editable_get_type ()
@@ -792,7 +792,7 @@ struct _GInterfaceInfo
 </programlisting></informalexample>
         </para>
 
-        <sect2 id="gtype-non-instantiatable-classed-init">
+        <sect2 id="gtype-non-instantiatable-non-classed-init">
           <title>Interface Initialization</title>
 
           <para>
@@ -937,7 +937,7 @@ viewer_editable_default_init (ViewerEditableInterface *iface)
         
         </sect2>
         
-        <sect2 id="gtype-non-instantiatable-classed-dest">
+        <sect2 id="gtype-non-instantiatable-non-classed-dest">
           <title>Interface Destruction</title>
 
           <para>
@@ -955,7 +955,7 @@ viewer_editable_default_init (ViewerEditableInterface *iface)
 
           <para>
             Again, it is important to understand, as in 
-            <xref linkend="gtype-non-instantiatable-classed-init"/>,
+            <xref linkend="gtype-non-instantiatable-non-classed-init"/>,
               that both <function>interface_finalize</function> and <function>base_finalize</function>
               are invoked exactly once for the destruction of each implementation of an interface. Thus,
               if you were to use one of these functions, you would need to use a static integer variable

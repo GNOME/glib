@@ -268,7 +268,7 @@ G_BEGIN_DECLS
  * 
  * Checks if @type is a fundamental type.
  *
- * Returns: %TRUE on success
+ * Returns: %TRUE is @type is fundamental
  */
 #define G_TYPE_IS_FUNDAMENTAL(type)             ((type) <= G_TYPE_FUNDAMENTAL_MAX)
 /**
@@ -279,7 +279,7 @@ G_BEGIN_DECLS
  * inherited) from another type (this holds true for all non-fundamental
  * types).
  *
- * Returns: %TRUE on success
+ * Returns: %TRUE if @type is derived
  */
 #define G_TYPE_IS_DERIVED(type)                 ((type) > G_TYPE_FUNDAMENTAL_MAX)
 /**
@@ -295,7 +295,7 @@ G_BEGIN_DECLS
  * with the difference that GType interfaces are not derivable (but see
  * g_type_interface_add_prerequisite() for an alternative).
  *
- * Returns: %TRUE on success
+ * Returns: %TRUE if @type is an interface
  */
 #define G_TYPE_IS_INTERFACE(type)               (G_TYPE_FUNDAMENTAL (type) == G_TYPE_INTERFACE)
 /**
@@ -304,7 +304,16 @@ G_BEGIN_DECLS
  * 
  * Checks if @type is a classed type.
  *
- * Returns: %TRUE on success
+ * A classed type has an associated #GTypeClass which can be derived to store
+ * class-wide virtual function pointers and data for all instances of the type.
+ * This allows for subclassing. All #GObjects are classed; none of the scalar
+ * fundamental types built into GLib are classed.
+ *
+ * Interfaces are not classed: while their #GTypeInterface struct could be
+ * considered similar to #GTypeClass, and classes can derive interfaces,
+ * #GTypeInterface doesn’t allow for subclassing.
+ *
+ * Returns: %TRUE if @type is classed
  */
 #define G_TYPE_IS_CLASSED(type)                 (g_type_test_flags ((type), G_TYPE_FLAG_CLASSED))
 /**
@@ -314,7 +323,7 @@ G_BEGIN_DECLS
  * Checks if @type can be instantiated.  Instantiation is the
  * process of creating an instance (object) of this type.
  *
- * Returns: %TRUE on success
+ * Returns: %TRUE if @type is instantiatable
  */
 #define G_TYPE_IS_INSTANTIATABLE(type)          (g_type_test_flags ((type), G_TYPE_FLAG_INSTANTIATABLE))
 /**
@@ -324,7 +333,7 @@ G_BEGIN_DECLS
  * Checks if @type is a derivable type.  A derivable type can
  * be used as the base class of a flat (single-level) class hierarchy.
  *
- * Returns: %TRUE on success
+ * Returns: %TRUE if @type is derivable
  */
 #define G_TYPE_IS_DERIVABLE(type)               (g_type_test_flags ((type), G_TYPE_FLAG_DERIVABLE))
 /**
@@ -334,7 +343,7 @@ G_BEGIN_DECLS
  * Checks if @type is a deep derivable type.  A deep derivable type
  * can be used as the base class of a deep (multi-level) class hierarchy.
  *
- * Returns: %TRUE on success
+ * Returns: %TRUE if @type is deep derivable
  */
 #define G_TYPE_IS_DEEP_DERIVABLE(type)          (g_type_test_flags ((type), G_TYPE_FLAG_DEEP_DERIVABLE))
 /**
@@ -345,7 +354,7 @@ G_BEGIN_DECLS
  * instantiated and is normally used as an abstract base class for
  * derived classes.
  *
- * Returns: %TRUE on success
+ * Returns: %TRUE if @type is abstract
  */
 #define G_TYPE_IS_ABSTRACT(type)                (g_type_test_flags ((type), G_TYPE_FLAG_ABSTRACT))
 /**
@@ -356,7 +365,7 @@ G_BEGIN_DECLS
  * a value table, but can't be used for g_value_init() and is normally used as
  * an abstract base type for derived value types.
  *
- * Returns: %TRUE on success
+ * Returns: %TRUE if @type is an abstract value type
  */
 #define G_TYPE_IS_VALUE_ABSTRACT(type)          (g_type_test_flags ((type), G_TYPE_FLAG_VALUE_ABSTRACT))
 /**
@@ -365,7 +374,7 @@ G_BEGIN_DECLS
  * 
  * Checks if @type is a value type and can be used with g_value_init(). 
  *
- * Returns: %TRUE on success
+ * Returns: %TRUE if @type is a value type
  */
 #define G_TYPE_IS_VALUE_TYPE(type)              (g_type_check_is_value_type (type))
 /**
@@ -374,7 +383,7 @@ G_BEGIN_DECLS
  * 
  * Checks if @type has a #GTypeValueTable.
  *
- * Returns: %TRUE on success
+ * Returns: %TRUE if @type has a value table
  */
 #define G_TYPE_HAS_VALUE_TABLE(type)            (g_type_value_table_peek (type) != NULL)
 /**
@@ -384,7 +393,7 @@ G_BEGIN_DECLS
  * Checks if @type is a final type. A final type cannot be derived any
  * further.
  *
- * Returns: %TRUE on success
+ * Returns: %TRUE if @type is final
  *
  * Since: 2.70
  */
@@ -497,7 +506,7 @@ struct _GTypeQuery
  * 
  * This macro should only be used in type implementations.
  *
- * Returns: %TRUE on success
+ * Returns: %TRUE if @instance is valid
  */
 #define G_TYPE_CHECK_INSTANCE(instance)				(_G_TYPE_CHI ((GTypeInstance*) (instance)))
 /**
@@ -525,7 +534,7 @@ struct _GTypeQuery
  * 
  * This macro should only be used in type implementations.
  *
- * Returns: %TRUE on success
+ * Returns: %TRUE if @instance is an instance of @g_type
  */
 #define G_TYPE_CHECK_INSTANCE_TYPE(instance, g_type)            (_G_TYPE_CIT ((instance), (g_type)))
 /**
@@ -538,7 +547,7 @@ struct _GTypeQuery
  *
  * This macro should only be used in type implementations.
  *
- * Returns: %TRUE on success
+ * Returns: %TRUE if @instance is an instance of @g_type
  */
 #define G_TYPE_CHECK_INSTANCE_FUNDAMENTAL_TYPE(instance, g_type)            (_G_TYPE_CIFT ((instance), (g_type)))
 /**
@@ -594,7 +603,7 @@ struct _GTypeQuery
  * 
  * This macro should only be used in type implementations.
  *
- * Returns: %TRUE on success
+ * Returns: %TRUE if @g_class is a class structure of @g_type
  */
 #define G_TYPE_CHECK_CLASS_TYPE(g_class, g_type)                (_G_TYPE_CCT ((g_class), (g_type)))
 /**
@@ -606,7 +615,7 @@ struct _GTypeQuery
  * 
  * This macro should only be used in type implementations.
  *
- * Returns: %TRUE on success
+ * Returns: %TRUE if @value is initialized
  */
 #define G_TYPE_CHECK_VALUE(value)				(_G_TYPE_CHV ((value)))
 /**
@@ -619,7 +628,7 @@ struct _GTypeQuery
  * 
  * This macro should only be used in type implementations.
  *
- * Returns: %TRUE on success
+ * Returns: %TRUE if @value has been initialized to hold values of type @g_type
  */
 #define G_TYPE_CHECK_VALUE_TYPE(value, g_type)			(_G_TYPE_CVH ((value), (g_type)))
 /**
