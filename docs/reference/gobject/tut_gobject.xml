@@ -294,7 +294,7 @@ ViewerFile *file = g_object_new (VIEWER_TYPE_FILE, NULL);
         memory will be freed or returned to the object pool for this type.
         Once the object has been freed, if it was the last instance of the type, the type's class
         will be destroyed as described in <xref linkend="gtype-instantiatable-classed"/> and
-          <xref linkend="gtype-non-instantiatable-classed"/>.
+          <xref linkend="gtype-non-instantiatable-non-classed"/>.
       </para>
 
       <para>

@@ -304,6 +304,15 @@ G_BEGIN_DECLS
  * 
  * Checks if @type is a classed type.
  *
+ * A classed type has an associated #GTypeClass which can be derived to store
+ * class-wide virtual function pointers and data for all instances of the type.
+ * This allows for subclassing. All #GObjects are classed; none of the scalar
+ * fundamental types built into GLib are classed.
+ *
+ * Interfaces are not classed: while their #GTypeInterface struct could be
+ * considered similar to #GTypeClass, and classes can derive interfaces,
+ * #GTypeInterface doesn’t allow for subclassing.
+ *
  * Returns: %TRUE if @type is classed
  */
 #define G_TYPE_IS_CLASSED(type)                 (g_type_test_flags ((type), G_TYPE_FLAG_CLASSED))
