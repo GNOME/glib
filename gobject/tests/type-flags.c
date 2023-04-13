@@ -3,6 +3,42 @@
 
 #include <glib-object.h>
 
+typedef struct
+{
+  GTypeInterface g_iface;
+} TestInterfaceInterface;
+
+GType test_interface_get_type (void);
+#define TEST_TYPE_INTERFACE test_interface_get_type ()
+G_DEFINE_INTERFACE (TestInterface, test_interface, G_TYPE_INVALID)
+
+static void
+test_interface_default_init (TestInterfaceInterface *iface)
+{
+}
+
+static void
+test_type_flags_interface (void)
+{
+  g_assert_false (G_TYPE_IS_ABSTRACT (TEST_TYPE_INTERFACE));
+  g_assert_false (g_type_test_flags (TEST_TYPE_INTERFACE, G_TYPE_FLAG_ABSTRACT));
+
+  g_assert_false (G_TYPE_IS_CLASSED (TEST_TYPE_INTERFACE));
+  g_assert_false (g_type_test_flags (TEST_TYPE_INTERFACE, G_TYPE_FLAG_CLASSED));
+
+  g_assert_false (G_TYPE_IS_DEEP_DERIVABLE (TEST_TYPE_INTERFACE));
+  g_assert_false (g_type_test_flags (TEST_TYPE_INTERFACE, G_TYPE_FLAG_DEEP_DERIVABLE));
+
+  g_assert_true (G_TYPE_IS_DERIVABLE (TEST_TYPE_INTERFACE));
+  g_assert_true (g_type_test_flags (TEST_TYPE_INTERFACE, G_TYPE_FLAG_DERIVABLE));
+
+  g_assert_false (G_TYPE_IS_FINAL (TEST_TYPE_INTERFACE));
+  g_assert_false (g_type_test_flags (TEST_TYPE_INTERFACE, G_TYPE_FLAG_FINAL));
+
+  g_assert_false (G_TYPE_IS_INSTANTIATABLE (TEST_TYPE_INTERFACE));
+  g_assert_false (g_type_test_flags (TEST_TYPE_INTERFACE, G_TYPE_FLAG_INSTANTIATABLE));
+}
+
 #define TEST_TYPE_FINAL (test_final_get_type())
 G_DECLARE_FINAL_TYPE (TestFinal, test_final, TEST, FINAL, GObject)
 
@@ -201,6 +237,7 @@ main (int argc, char *argv[])
 
   g_setenv ("G_ENABLE_DIAGNOSTIC", "1", TRUE);
 
+  g_test_add_func ("/type/flags/interface", test_type_flags_interface);
   g_test_add_func ("/type/flags/final", test_type_flags_final);
   g_test_add_func ("/type/flags/final/instance-check", test_type_flags_final_instance_check);
   g_test_add_func ("/type/flags/deprecated", test_type_flags_deprecated);
