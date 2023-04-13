@@ -1,5 +1,30 @@
+/* GLib testing framework examples and tests
+ *
+ * Copyright © 2013 Red Hat, Inc.
+ * Copyright © 2015, 2017, 2018 Endless Mobile, Inc.
+ *
+ * SPDX-License-Identifier: LGPL-2.1-or-later
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General
+ * Public License along with this library; if not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include <gio/gio.h>
 #include <gstdio.h>
+
+#ifdef G_OS_UNIX
+#include <gio/gdesktopappinfo.h>
+#endif
 
 typedef struct
 {
@@ -24,6 +49,7 @@ teardown (Fixture       *fixture,
   g_clear_pointer (&fixture->applications_dir, g_free);
 }
 
+#ifdef G_OS_UNIX
 static gboolean
 create_app (gpointer data)
 {
@@ -50,73 +76,95 @@ delete_app (gpointer data)
   g_remove (path);
 }
 
-static gboolean changed_fired;
-
 static void
-changed_cb (GAppInfoMonitor *monitor, GMainLoop *loop)
+changed_cb (GAppInfoMonitor *monitor,
+            gpointer         user_data)
 {
-  changed_fired = TRUE;
-  g_main_loop_quit (loop);
+  gboolean *changed_fired = user_data;
+
+  *changed_fired = TRUE;
+  g_main_context_wakeup (g_main_context_get_thread_default ());
 }
 
 static gboolean
-quit_loop (gpointer data)
+timeout_cb (gpointer user_data)
 {
-  GMainLoop *loop = data;
+  gboolean *timed_out = user_data;
 
-  if (g_main_loop_is_running (loop))
-    g_main_loop_quit (loop);
+  g_assert (!timed_out);
+  *timed_out = TRUE;
+  g_main_context_wakeup (g_main_context_get_thread_default ());
 
   return G_SOURCE_REMOVE;
 }
+#endif  /* G_OS_UNIX */
 
 static void
 test_app_monitor (Fixture       *fixture,
                   gconstpointer  user_data)
 {
+#ifdef G_OS_UNIX
   gchar *app_path;
   GAppInfoMonitor *monitor;
-  GMainLoop *loop;
-
-#ifdef G_OS_WIN32
-  g_test_skip (".desktop monitor on win32");
-  return;
-#endif
+  GMainContext *context = NULL;  /* use the global default main context */
+  GSource *timeout_source = NULL;
+  GDesktopAppInfo *app = NULL;
+  gboolean changed_fired = FALSE;
+  gboolean timed_out = FALSE;
 
   app_path = g_build_filename (fixture->applications_dir, "app.desktop", NULL);
 
   /* FIXME: this shouldn't be required */
   g_list_free_full (g_app_info_get_all (), g_object_unref);
 
+  /* Create an app monitor and check that its ::changed signal is emitted when
+   * a new app is installed. */
   monitor = g_app_info_monitor_get ();
-  loop = g_main_loop_new (NULL, FALSE);
 
-  g_signal_connect (monitor, "changed", G_CALLBACK (changed_cb), loop);
+  g_signal_connect (monitor, "changed", G_CALLBACK (changed_cb), &changed_fired);
 
   g_idle_add (create_app, app_path);
-  g_timeout_add_seconds (3, quit_loop, loop);
+  timeout_source = g_timeout_source_new_seconds (3);
+  g_source_set_callback (timeout_source, timeout_cb, &timed_out, NULL);
+  g_source_attach (timeout_source, NULL);
 
-  g_main_loop_run (loop);
-  g_assert (changed_fired);
+  while (!changed_fired && !timed_out)
+    g_main_context_iteration (context, TRUE);
+
+  g_assert_true (changed_fired);
   changed_fired = FALSE;
 
-  /* FIXME: this shouldn't be required */
-  g_list_free_full (g_app_info_get_all (), g_object_unref);
+  g_source_destroy (timeout_source);
+  g_clear_pointer (&timeout_source, g_source_unref);
 
-  g_timeout_add_seconds (3, quit_loop, loop);
+  /* Check that the app is now queryable. This has the side-effect of re-arming
+   * the #GAppInfoMonitor::changed signal for the next part of the test. */
+  app = g_desktop_app_info_new ("app.desktop");
+  g_assert_nonnull (app);
+  g_clear_object (&app);
+
+  /* Now check that ::changed is emitted when an app is uninstalled. */
+  timeout_source = g_timeout_source_new_seconds (3);
+  g_source_set_callback (timeout_source, timeout_cb, &timed_out, NULL);
+  g_source_attach (timeout_source, NULL);
 
   delete_app (app_path);
 
-  g_main_loop_run (loop);
+  while (!changed_fired && !timed_out)
+    g_main_context_iteration (context, TRUE);
 
-  g_assert (changed_fired);
+  g_assert_true (changed_fired);
 
-  g_main_loop_unref (loop);
+  g_source_destroy (timeout_source);
+  g_clear_pointer (&timeout_source, g_source_unref);
   g_remove (app_path);
 
   g_object_unref (monitor);
 
   g_free (app_path);
+#else  /* if !G_OS_UNIX */
+  g_test_skip (".desktop monitor on win32");
+#endif  /* !G_OS_UNIX */
 }
 
 int
