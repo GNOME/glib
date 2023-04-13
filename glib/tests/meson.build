@@ -281,6 +281,7 @@ endif
 
 test_extra_programs = {
   'assert-msg-test' : {},
+  'markup-example' : {'install' : false},
   'spawn-path-search-helper' : {},
   'spawn-test-helper' : {},
   'testing-helper' : {},

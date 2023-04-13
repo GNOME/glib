@@ -85,6 +85,11 @@
  * - Character references
  *
  * - Sections marked as CDATA
+
+ * ## An example parser # {#example}
+ *
+ * Here is an example for a markup parser:
+ * [markup-example.c](https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/glib/tests/markup-example.c)
  */
 
 G_DEFINE_QUARK (g-markup-error-quark, g_markup_error)
