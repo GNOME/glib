@@ -2305,15 +2305,15 @@ if host_system == 'windows'
   # Autotools explicitly removed --Wl,--export-all-symbols from windows builds,
   # with no explanation. Do the same here for now but this could be revisited if
   # if causes issues.
-  export_dynamic_ldflags = []
+  export_dynamic_cflags = []
 elif host_system == 'cygwin'
-  export_dynamic_ldflags = ['-Wl,--export-all-symbols']
+  export_dynamic_cflags = ['-Wl,--export-all-symbols']
 elif host_system in ['darwin', 'ios']
-  export_dynamic_ldflags = []
+  export_dynamic_cflags = []
 elif host_system == 'sunos'
-  export_dynamic_ldflags = []
+  export_dynamic_cflags = []
 else
-  export_dynamic_ldflags = ['-Wl,--export-dynamic']
+  export_dynamic_cflags = ['-Wl,--export-dynamic']
 endif
 
 win32_cflags = []
