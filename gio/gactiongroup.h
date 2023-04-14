@@ -156,7 +156,7 @@ gboolean                g_action_group_query_action                     (GAction
                                                                          const GVariantType **parameter_type,
                                                                          const GVariantType **state_type,
                                                                          GVariant           **state_hint,
-                                                                         GVariant           **state);
+                                                                         GVariant           **state) G_GNUC_WARN_UNUSED_RESULT;
 
 G_END_DECLS
 

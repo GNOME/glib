@@ -133,9 +133,10 @@ static gboolean
 g_action_group_real_get_action_enabled (GActionGroup *action_group,
                                         const gchar  *action_name)
 {
-  gboolean enabled = FALSE;
+  gboolean enabled;
 
-  g_action_group_query_action (action_group, action_name, &enabled, NULL, NULL, NULL, NULL);
+  if (!g_action_group_query_action (action_group, action_name, &enabled, NULL, NULL, NULL, NULL))
+    return FALSE;
 
   return enabled;
 }
@@ -144,9 +145,10 @@ static const GVariantType *
 g_action_group_real_get_action_parameter_type (GActionGroup *action_group,
                                                const gchar  *action_name)
 {
-  const GVariantType *type = NULL;
+  const GVariantType *type;
 
-  g_action_group_query_action (action_group, action_name, NULL, &type, NULL, NULL, NULL);
+  if (!g_action_group_query_action (action_group, action_name, NULL, &type, NULL, NULL, NULL))
+    return NULL;
 
   return type;
 }
@@ -155,9 +157,10 @@ static const GVariantType *
 g_action_group_real_get_action_state_type (GActionGroup *action_group,
                                            const gchar  *action_name)
 {
-  const GVariantType *type = NULL;
+  const GVariantType *type;
 
-  g_action_group_query_action (action_group, action_name, NULL, NULL, &type, NULL, NULL);
+  if (!g_action_group_query_action (action_group, action_name, NULL, NULL, &type, NULL, NULL))
+    return NULL;
 
   return type;
 }
@@ -166,9 +169,10 @@ static GVariant *
 g_action_group_real_get_action_state_hint (GActionGroup *action_group,
                                            const gchar  *action_name)
 {
-  GVariant *hint = NULL;
+  GVariant *hint;
 
-  g_action_group_query_action (action_group, action_name, NULL, NULL, NULL, &hint, NULL);
+  if (!g_action_group_query_action (action_group, action_name, NULL, NULL, NULL, &hint, NULL))
+    return NULL;
 
   return hint;
 }
@@ -177,9 +181,10 @@ static GVariant *
 g_action_group_real_get_action_state (GActionGroup *action_group,
                                       const gchar  *action_name)
 {
-  GVariant *state = NULL;
+  GVariant *state;
 
-  g_action_group_query_action (action_group, action_name, NULL, NULL, NULL, NULL, &state);
+  if (!g_action_group_query_action (action_group, action_name, NULL, NULL, NULL, NULL, &state))
+    return NULL;
 
   return state;
 }
