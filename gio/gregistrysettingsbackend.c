@@ -19,13 +19,11 @@
  * Author: Sam Thursfield <ssssam@gmail.com>
  */
 
-/* GRegistryBackend implementation notes:
+/* GRegistrySettingsBackend implementation notes:
  *
- *   - All settings are stored under the path:
- *       HKEY_CURRENT_USER\Software\GSettings\
- *     This means all settings are per-user. Permissions and system-wide
- *     defaults are not implemented and will probably always be out of scope of
- *     the Windows port of GLib.
+ *   - All settings are stored under the registry path given at construction
+ *     time. Permissions and system-wide defaults are not implemented and will
+ *     probably always be out of scope of the Windows port of GLib.
  *
  *   - The registry type system is limited. Most GVariant types are stored as
  *     literals via g_variant_print/parse(). Strings are stored without the
@@ -93,7 +91,10 @@
 
 #include "gregistrysettingsbackend.h"
 #include "gsettingsbackend.h"
+#include "gsettingsbackendinternal.h"
 #include "giomodule-priv.h"
+
+#include <glibintl.h>
 
 #include <windows.h>
 
@@ -154,17 +155,22 @@ typedef struct
   HANDLE message_sent_event, message_received_event;
 } WatchThreadState;
 
-#define G_TYPE_REGISTRY_BACKEND      (g_registry_backend_get_type ())
-#define G_REGISTRY_BACKEND(inst)     (G_TYPE_CHECK_INSTANCE_CAST ((inst),         \
-                                      G_TYPE_REGISTRY_BACKEND, GRegistryBackend))
-#define G_IS_REGISTRY_BACKEND(inst)  (G_TYPE_CHECK_INSTANCE_TYPE ((inst),         \
-                                      G_TYPE_REGISTRY_BACKEND))
+#define G_TYPE_REGISTRY_SETTINGS_BACKEND      (g_registry_settings_backend_get_type ())
+#define G_REGISTRY_SETTINGS_BACKEND(inst)     (G_TYPE_CHECK_INSTANCE_CAST ((inst),         \
+                                               G_TYPE_REGISTRY_SETTINGS_BACKEND, GRegistrySettingsBackend))
+#define G_IS_REGISTRY_SETTINGS_BACKEND(inst)  (G_TYPE_CHECK_INSTANCE_TYPE ((inst),         \
+                                               G_TYPE_REGISTRY_SETTINGS_BACKEND))
 
-typedef GSettingsBackendClass GRegistryBackendClass;
+typedef enum {
+  PROP_REGISTRY_KEY = 1,
+} GRegistrySettingsBackendProperty;
+
+typedef GSettingsBackendClass GRegistrySettingsBackendClass;
 
 typedef struct {
   GSettingsBackend parent_instance;
 
+  HKEY base_key;
   gchar *base_path;
   gunichar2 *base_pathw;
 
@@ -174,10 +180,10 @@ typedef struct {
   GNode *cache_root;
 
   WatchThreadState *watch;
-} GRegistryBackend;
+} GRegistrySettingsBackend;
 
-G_DEFINE_TYPE_WITH_CODE (GRegistryBackend,
-                         g_registry_backend,
+G_DEFINE_TYPE_WITH_CODE (GRegistrySettingsBackend,
+                         g_registry_settings_backend,
                          G_TYPE_SETTINGS_BACKEND,
                          _g_io_modules_ensure_extension_points_registered ();
                          g_io_extension_point_implement (G_SETTINGS_BACKEND_EXTENSION_POINT_NAME,
@@ -231,8 +237,8 @@ g_message_win32_error (DWORD        result_code,
   g_free (win32_message);
 }
 
-/* Make gsettings key into a registry path & value pair. 
- * 
+/* Make gsettings key into a registry path & value pair.
+ *
  * Note that the return value *only* needs freeing - registry_value_name
  * is a pointer to further inside the same block of memory.
  */
@@ -319,6 +325,59 @@ handle_read_error (LONG         result,
                            path_name, value_name);
 }
 
+typedef struct {
+  HKEY handle;
+  const char *name;
+} HandleNamePair;
+
+static const HandleNamePair predefined_key_names[] = {
+  { HKEY_CLASSES_ROOT, "HKEY_CLASSES_ROOT" },
+  { HKEY_CURRENT_CONFIG, "HKEY_CURRENT_CONFIG" },
+  { HKEY_CURRENT_USER, "HKEY_CURRENT_USER" },
+  { HKEY_LOCAL_MACHINE, "HKEY_LOCAL_MACHINE" },
+  { HKEY_USERS, "HKEY_USERS" }
+};
+
+static const gchar*
+predefined_key_to_string (HKEY key)
+{
+  for (gsize i = 0; i < G_N_ELEMENTS (predefined_key_names); i++)
+    {
+      if (predefined_key_names[i].handle == key)
+        return predefined_key_names[i].name;
+    }
+
+  g_warning ("gregistrysettingsbackend: unexpected root key (%p)", key);
+  return "";
+}
+
+static const gchar*
+split_registry_path (const gchar *full_path,
+                     HKEY        *root_key)
+{
+  g_assert (full_path != NULL);
+
+  for (gsize i = 0; i < G_N_ELEMENTS (predefined_key_names); i++)
+    {
+      const gchar *root_name = predefined_key_names[i].name;
+
+      if (g_str_has_prefix (full_path, root_name))
+        {
+          const gchar *rest = full_path + strlen (root_name);
+
+          if (*rest == '\\')
+            {
+              if (root_key != NULL)
+                *root_key = predefined_key_names[i].handle;
+
+              return ++rest;
+            }
+        }
+    }
+
+  return NULL;
+}
+
 /***************************************************************************
  * Cache of registry values
  ***************************************************************************/
@@ -381,7 +440,7 @@ typedef struct
   /* Number of times g_settings_subscribe has been called for this location
    * (I guess you can't subscribe more than 16383 times) */
   gint32 subscription_count : 14;
-  
+
   gint32 ref_count : 9;
 
   gint32 readable : 1;
@@ -693,7 +752,7 @@ registry_cache_update_node (GNode        *cache_node,
       cache_item->value = registry_value;
       return TRUE;
     }
- 
+
   switch (registry_value.type)
     {
     case REG_DWORD:
@@ -742,7 +801,7 @@ registry_cache_update_node (GNode        *cache_node,
           }
       }
     default:
-      g_warning ("gregistrybackend: registry_cache_update_node: Unhandled value type");
+      g_warning ("gregistrysettingsbackend: registry_cache_update_node: Unhandled value type");
       return FALSE;
     }
 }
@@ -838,12 +897,12 @@ registry_read (HKEY           hpath,
 }
 
 static GVariant *
-g_registry_backend_read (GSettingsBackend   *backend,
-                         const gchar        *key_name,
-                         const GVariantType *expected_type,
-                         gboolean            default_value)
+g_registry_settings_backend_read (GSettingsBackend   *backend,
+                                  const gchar        *key_name,
+                                  const GVariantType *expected_type,
+                                  gboolean            default_value)
 {
-  GRegistryBackend *self = G_REGISTRY_BACKEND (backend);
+  GRegistrySettingsBackend *self = G_REGISTRY_SETTINGS_BACKEND (backend);
   GNode *cache_node;
   RegistryValue registry_value;
   GVariant *gsettings_value = NULL;
@@ -924,16 +983,16 @@ g_registry_backend_read (GSettingsBackend   *backend,
 
 typedef struct
 {
-  GRegistryBackend *self;
+  GRegistrySettingsBackend *self;
   HKEY hroot;
 } RegistryWrite;
 
 static gboolean
-g_registry_backend_write_one (const char *key_name,
-                              GVariant   *variant,
-                              gpointer    user_data)
+g_registry_settings_backend_write_one (const char *key_name,
+                                       GVariant   *variant,
+                                       gpointer    user_data)
 {
-  GRegistryBackend *self;
+  GRegistrySettingsBackend *self;
   RegistryWrite *action;
   RegistryValue value;
   HKEY hroot;
@@ -952,7 +1011,7 @@ g_registry_backend_write_one (const char *key_name,
 
   type_string = g_variant_get_type_string (variant);
   action = user_data;
-  self = G_REGISTRY_BACKEND (action->self);
+  self = G_REGISTRY_SETTINGS_BACKEND (action->self);
   hroot = action->hroot;
 
   value.type = REG_NONE;
@@ -1002,7 +1061,7 @@ g_registry_backend_write_one (const char *key_name,
 
   /* First update the cache, because the value may not have changed and we can
    * save a write.
-   * 
+   *
    * If 'value' has changed then its memory will not be freed by update_node(),
    * because it will be stored in the node.
    */
@@ -1030,7 +1089,7 @@ g_registry_backend_write_one (const char *key_name,
   result = RegCreateKeyExW (hroot, path_namew, 0, NULL, 0, KEY_WRITE, NULL, &hpath, NULL);
   if (result != ERROR_SUCCESS)
     {
-      g_message_win32_error (result, "gregistrybackend: opening key %s failed",
+      g_message_win32_error (result, "gregistrysettingsbackend: opening key %s failed",
                              path_name + 1);
       registry_value_free (value);
       g_free (path_namew);
@@ -1065,7 +1124,8 @@ g_registry_backend_write_one (const char *key_name,
   result = RegSetValueExW (hpath, value_namew, 0, value.type, value_data, value_data_size);
 
   if (result != ERROR_SUCCESS)
-    g_message_win32_error (result, "gregistrybackend: setting value %s\\%s\\%s failed.\n",
+    g_message_win32_error (result, "gregistrysettingsbackend: setting value %s\\%s\\%s\\%s failed.\n",
+                           predefined_key_to_string (self->base_key),
                            self->base_path, path_name, value_name);
 
   /* If the write fails then it will seem like the value has changed until the
@@ -1081,32 +1141,34 @@ g_registry_backend_write_one (const char *key_name,
   return FALSE;
 }
 
-/* The dconf write policy is to do the write while making out it succeeded, 
+/* The dconf write policy is to do the write while making out it succeeded,
  * and then backtrack if it didn't. The registry functions are synchronous so
  * we can't do that. */
 
 static gboolean
-g_registry_backend_write (GSettingsBackend *backend,
-                          const gchar      *key_name,
-                          GVariant         *value,
-                          gpointer          origin_tag)
+g_registry_settings_backend_write (GSettingsBackend *backend,
+                                   const gchar      *key_name,
+                                   GVariant         *value,
+                                   gpointer          origin_tag)
 {
-  GRegistryBackend *self = G_REGISTRY_BACKEND (backend);
+  GRegistrySettingsBackend *self = G_REGISTRY_SETTINGS_BACKEND (backend);
   LONG result;
   HKEY hroot;
   RegistryWrite action;
 
-  result = RegCreateKeyExW (HKEY_CURRENT_USER, self->base_pathw, 0, NULL, 0,
+  result = RegCreateKeyExW (self->base_key, self->base_pathw, 0, NULL, 0,
                             KEY_WRITE, NULL, &hroot, NULL);
   if (result != ERROR_SUCCESS)
     {
-      trace ("Error opening/creating key %s.\n", self->base_path);
+      trace ("Error opening/creating key %s\\%s.\n",
+             predefined_key_to_string (self->base_key),
+             self->base_path);
       return FALSE;
     }
 
   action.self = self;
   action.hroot = hroot;
-  g_registry_backend_write_one (key_name, value, &action);
+  g_registry_settings_backend_write_one (key_name, value, &action);
   g_settings_backend_changed (backend, key_name, origin_tag);
 
   RegCloseKey (hroot);
@@ -1115,26 +1177,28 @@ g_registry_backend_write (GSettingsBackend *backend,
 }
 
 static gboolean
-g_registry_backend_write_tree (GSettingsBackend *backend,
-                               GTree            *values,
-                               gpointer          origin_tag)
+g_registry_settings_backend_write_tree (GSettingsBackend *backend,
+                                        GTree            *values,
+                                        gpointer          origin_tag)
 {
-  GRegistryBackend *self = G_REGISTRY_BACKEND (backend);
+  GRegistrySettingsBackend *self = G_REGISTRY_SETTINGS_BACKEND (backend);
   LONG result;
   HKEY hroot;
   RegistryWrite action;
 
-  result = RegCreateKeyExW (HKEY_CURRENT_USER, self->base_pathw, 0, NULL, 0,
+  result = RegCreateKeyExW (self->base_key, self->base_pathw, 0, NULL, 0,
                             KEY_WRITE, NULL, &hroot, NULL);
   if (result != ERROR_SUCCESS)
     {
-      trace ("Error opening/creating key %s.\n", self->base_path);
+      trace ("Error opening/creating key %s\\%s.\n",
+             predefined_key_to_string (self->base_key),
+             self->base_path);
       return FALSE;
     }
 
   action.self =  self;
   action.hroot = hroot;
-  g_tree_foreach (values, (GTraverseFunc)g_registry_backend_write_one,
+  g_tree_foreach (values, (GTraverseFunc)g_registry_settings_backend_write_one,
                   &action);
 
   g_settings_backend_changed_tree (backend, values, origin_tag);
@@ -1144,11 +1208,11 @@ g_registry_backend_write_tree (GSettingsBackend *backend,
 }
 
 static void
-g_registry_backend_reset (GSettingsBackend *backend,
-                          const gchar      *key_name,
-                          gpointer          origin_tag)
+g_registry_settings_backend_reset (GSettingsBackend *backend,
+                                   const gchar      *key_name,
+                                   gpointer          origin_tag)
 {
-  GRegistryBackend *self = G_REGISTRY_BACKEND (backend);
+  GRegistrySettingsBackend *self = G_REGISTRY_SETTINGS_BACKEND (backend);
   gchar *path_name;
   gunichar2 *path_namew;
   gchar *value_name = NULL;
@@ -1168,12 +1232,14 @@ g_registry_backend_reset (GSettingsBackend *backend,
   path_name = parse_key (key_name, self->base_path, &value_name);
   path_namew = g_utf8_to_utf16 (path_name, -1, NULL, NULL, NULL);
 
-  result = RegOpenKeyExW (HKEY_CURRENT_USER, path_namew, 0, KEY_SET_VALUE, &hpath);
+  result = RegOpenKeyExW (self->base_key, path_namew, 0, KEY_SET_VALUE, &hpath);
   g_free (path_namew);
 
   if (result != ERROR_SUCCESS)
     {
-      g_message_win32_error (result, "Registry: resetting key '%s'", path_name);
+      g_message_win32_error (result, "Registry: resetting key '%s\\%s'",
+                             predefined_key_to_string (self->base_key),
+                             path_name);
       g_free (path_name);
       return;
     }
@@ -1186,7 +1252,9 @@ g_registry_backend_reset (GSettingsBackend *backend,
 
   if (result != ERROR_SUCCESS)
     {
-      g_message_win32_error (result, "Registry: resetting key '%s'", path_name);
+      g_message_win32_error (result, "Registry: resetting key '%s\\%s'",
+                             predefined_key_to_string (self->base_key),
+                             path_name);
       g_free (path_name);
       return;
     }
@@ -1197,10 +1265,10 @@ g_registry_backend_reset (GSettingsBackend *backend,
 }
 
 static gboolean
-g_registry_backend_get_writable (GSettingsBackend *backend,
-                                 const gchar      *key_name)
+g_registry_settings_backend_get_writable (GSettingsBackend *backend,
+                                          const gchar      *key_name)
 {
-  GRegistryBackend *self = G_REGISTRY_BACKEND (backend);
+  GRegistrySettingsBackend *self = G_REGISTRY_SETTINGS_BACKEND (backend);
   gchar *path_name;
   gunichar2 *path_namew;
   gchar *value_name = NULL;
@@ -1214,13 +1282,14 @@ g_registry_backend_get_writable (GSettingsBackend *backend,
    * of a problem since at the end of the day we have to create it anyway
    * to read or to write from it
    */
-  result = RegCreateKeyExW (HKEY_CURRENT_USER, path_namew, 0, NULL, 0,
+  result = RegCreateKeyExW (self->base_key, path_namew, 0, NULL, 0,
                             KEY_WRITE, NULL, &hpath, NULL);
   g_free (path_namew);
 
   if (result != ERROR_SUCCESS)
     {
-      trace ("Error opening/creating key to check writability: %s.\n",
+      trace ("Error opening/creating key to check writability: %s\\%s.\n",
+             predefined_key_to_string (self->base_key),
              path_name);
       g_free (path_name);
 
@@ -1291,7 +1360,7 @@ registry_cache_destroy_tree (GNode            *node,
 /* One of these is sent down the pipe when something happens in the registry. */
 typedef struct
 {
-  GRegistryBackend *self;
+  GRegistrySettingsBackend *self;
   gchar *prefix;          /* prefix is a gsettings path, all items are subkeys of this. */
   GPtrArray *items;       /* each item is a subkey below prefix that has changed. */
 } RegistryEvent;
@@ -1348,9 +1417,9 @@ registry_cache_remove_deleted (GNode    *node,
 }
 
 /* Update cache from registry, and optionally report on the changes.
- * 
+ *
  * This function is sometimes called from the watch thread, with no locking. It
- * does call g_registry_backend functions, but this is okay because they only
+ * does call g_registry_settings_backend functions, but this is okay because they only
  * access self->base which is constant.
  *
  * When looking at this code bear in mind the terminology: in the registry, keys
@@ -1362,13 +1431,13 @@ registry_cache_remove_deleted (GNode    *node,
  *                   there are notifications that are watching them.
  */
 static void
-registry_cache_update (GRegistryBackend *self,
-                       HKEY              hpath,
-                       const gchar      *prefix,
-                       const gchar      *partial_key_name,
-                       GNode            *cache_node,
-                       int               n_watches,
-                       RegistryEvent    *event)
+registry_cache_update (GRegistrySettingsBackend *self,
+                       HKEY                      hpath,
+                       const gchar              *prefix,
+                       const gchar              *partial_key_name,
+                       GNode                    *cache_node,
+                       int                       n_watches,
+                       RegistryEvent            *event)
 {
   gunichar2 bufferw[MAX_KEY_NAME_LENGTH + 1];
   gchar *buffer;
@@ -1439,7 +1508,7 @@ registry_cache_update (GRegistryBackend *self,
     }
 
   if (result != ERROR_NO_MORE_ITEMS)
-    g_message_win32_error (result, "gregistrybackend: error enumerating subkeys for cache.");
+    g_message_win32_error (result, "gregistrysettingsbackend: error enumerating subkeys for cache.");
 
   /* Enumerate each value at 'path' and check if it has changed */
   i = 0;
@@ -1512,7 +1581,7 @@ registry_cache_update (GRegistryBackend *self,
     }
 
   if (result != ERROR_NO_MORE_ITEMS)
-    g_message_win32_error (result, "gregistrybackend: error enumerating values for cache");
+    g_message_win32_error (result, "gregistrysettingsbackend: error enumerating values for cache");
 
   /* Any nodes now left unreadable must have been deleted, remove them from cache */
   g_node_children_foreach (cache_node, G_TRAVERSE_ALL,
@@ -1572,7 +1641,7 @@ _free_watch (WatchThreadState *self,
   prefix = g_ptr_array_index (self->prefixes, index);
 
   trace ("Freeing watch %i [%s]\n", index, prefix);
- 
+
   /* These can be NULL if the watch was already dead, this can happen when eg.
    * a key is deleted but GSettings is still subscribed to it - the watch is
    * kept alive so that the unsubscribe function works properly, but does not
@@ -1583,7 +1652,7 @@ _free_watch (WatchThreadState *self,
 
   if (cache_node != NULL)
     {
-      //registry_cache_dump (G_REGISTRY_BACKEND (self->owner)->cache_root, NULL);
+      //registry_cache_dump (G_REGISTRY_SETTINGS_BACKEND (self->owner)->cache_root, NULL);
       registry_cache_unref_tree (cache_node);
     }
 
@@ -1803,14 +1872,14 @@ watch_thread_function (LPVOID parameter)
            * likely to block (only when changing notification subscriptions).
            */
           event = g_slice_new (RegistryEvent);
-          event->self = G_REGISTRY_BACKEND (g_object_ref (self->owner));
+          event->self = G_REGISTRY_SETTINGS_BACKEND (g_object_ref (self->owner));
           event->prefix = g_strdup (prefix);
           event->items = g_ptr_array_new_with_free_func (g_free);
 
-          EnterCriticalSection (G_REGISTRY_BACKEND (self->owner)->cache_lock);
-          registry_cache_update (G_REGISTRY_BACKEND (self->owner), hpath,
+          EnterCriticalSection (G_REGISTRY_SETTINGS_BACKEND (self->owner)->cache_lock);
+          registry_cache_update (G_REGISTRY_SETTINGS_BACKEND (self->owner), hpath,
                                  prefix, NULL, cache_node, 0, event);
-          LeaveCriticalSection (G_REGISTRY_BACKEND (self->owner)->cache_lock);
+          LeaveCriticalSection (G_REGISTRY_SETTINGS_BACKEND (self->owner)->cache_lock);
 
           if (event->items->len > 0)
             g_idle_add ((GSourceFunc) watch_handler, event);
@@ -1833,7 +1902,7 @@ watch_thread_function (LPVOID parameter)
 }
 
 static gboolean
-watch_start (GRegistryBackend *self)
+watch_start (GRegistrySettingsBackend *self)
 {
   WatchThreadState *watch;
 
@@ -1850,7 +1919,7 @@ watch_start (GRegistryBackend *self)
   watch->message_received_event = CreateEvent (NULL, FALSE, FALSE, NULL);
   if (watch->message_sent_event == NULL || watch->message_received_event == NULL)
     {
-      g_message_win32_error (GetLastError (), "gregistrybackend: Failed to create sync objects.");
+      g_message_win32_error (GetLastError (), "gregistrysettingsbackend: Failed to create sync objects.");
       goto fail;
     }
 
@@ -1858,7 +1927,7 @@ watch_start (GRegistryBackend *self)
   watch->thread = CreateThread (NULL, 1024, watch_thread_function, watch, 0, NULL);
   if (watch->thread == NULL)
     {
-      g_message_win32_error (GetLastError (), "gregistrybackend: Failed to create notify watch thread.");
+      g_message_win32_error (GetLastError (), "gregistrysettingsbackend: Failed to create notify watch thread.");
       goto fail;
     }
 
@@ -1880,7 +1949,7 @@ fail:
 
 /* This function assumes you hold the message lock! */
 static void
-watch_stop_unlocked (GRegistryBackend *self)
+watch_stop_unlocked (GRegistrySettingsBackend *self)
 {
   WatchThreadState *watch = self->watch;
   DWORD result;
@@ -1897,7 +1966,7 @@ watch_stop_unlocked (GRegistryBackend *self)
   result = WaitForSingleObject (watch->message_received_event, INFINITE);
   if (result != WAIT_OBJECT_0)
     {
-      g_warning ("gregistrybackend: unable to stop watch thread.");
+      g_warning ("gregistrysettingsbackend: unable to stop watch thread.");
       return;
     }
 
@@ -1914,10 +1983,10 @@ watch_stop_unlocked (GRegistryBackend *self)
 }
 
 static gboolean
-watch_add_notify (GRegistryBackend *self,
-                  HANDLE            event,
-                  HKEY              hpath,
-                  gchar            *gsettings_prefix)
+watch_add_notify (GRegistrySettingsBackend *self,
+                  HANDLE                    event,
+                  HKEY                      hpath,
+                  gchar                    *gsettings_prefix)
 {
   WatchThreadState *watch = self->watch;
   GNode *cache_node;
@@ -1942,7 +2011,7 @@ watch_add_notify (GRegistryBackend *self,
       g_warn_if_reached ();
       return FALSE;
     }
-  
+
   cache_item = cache_node->data;
 
   cache_item->subscription_count++;
@@ -1987,8 +2056,8 @@ watch_add_notify (GRegistryBackend *self,
 }
 
 static void
-watch_remove_notify (GRegistryBackend *self,
-                     const gchar      *key_name)
+watch_remove_notify (GRegistrySettingsBackend *self,
+                     const gchar              *key_name)
 {
   WatchThreadState *watch = self->watch;
   LONG result;
@@ -2025,10 +2094,10 @@ watch_remove_notify (GRegistryBackend *self,
  * key. Our job is easier because keys and values are separate.
  */
 static void
-g_registry_backend_subscribe (GSettingsBackend *backend,
-                              const char       *key_name)
+g_registry_settings_backend_subscribe (GSettingsBackend *backend,
+                                       const char       *key_name)
 {
-  GRegistryBackend *self = G_REGISTRY_BACKEND (backend);
+  GRegistrySettingsBackend *self = G_REGISTRY_SETTINGS_BACKEND (backend);
   gchar *path_name;
   gunichar2 *path_namew;
   gchar *value_name = NULL;
@@ -2062,13 +2131,13 @@ g_registry_backend_subscribe (GSettingsBackend *backend,
 
   /* Give the caller the benefit of the doubt if the key doesn't exist and create it. The caller
    * is almost certainly a new g_settings with this path as base path. */
-  result = RegCreateKeyExW (HKEY_CURRENT_USER, path_namew, 0, NULL, 0, KEY_READ, NULL, &hpath,
+  result = RegCreateKeyExW (self->base_key, path_namew, 0, NULL, 0, KEY_READ, NULL, &hpath,
                             NULL);
   g_free (path_namew);
 
   if (result != ERROR_SUCCESS)
     {
-      g_message_win32_error (result, "gregistrybackend: Unable to subscribe to key %s.", key_name);
+      g_message_win32_error (result, "gregistrysettingsbackend: Unable to subscribe to key %s.", key_name);
       g_atomic_int_inc (&self->watch->watches_remaining);
       return;
     }
@@ -2076,7 +2145,7 @@ g_registry_backend_subscribe (GSettingsBackend *backend,
   event = CreateEvent (NULL, FALSE, FALSE, NULL);
   if (event == NULL)
     {
-      g_message_win32_error (result, "gregistrybackend: CreateEvent failed.");
+      g_message_win32_error (result, "gregistrysettingsbackend: CreateEvent failed.");
       g_atomic_int_inc (&self->watch->watches_remaining);
       RegCloseKey (hpath);
       return;
@@ -2093,12 +2162,12 @@ g_registry_backend_subscribe (GSettingsBackend *backend,
 }
 
 static void
-g_registry_backend_unsubscribe (GSettingsBackend *backend,
-                                const char       *key_name)
+g_registry_settings_backend_unsubscribe (GSettingsBackend *backend,
+                                         const char       *key_name)
 {
   trace ("unsubscribe: %s.\n", key_name);
 
-  watch_remove_notify (G_REGISTRY_BACKEND (backend), key_name);
+  watch_remove_notify (G_REGISTRY_SETTINGS_BACKEND (backend), key_name);
 }
 
 /********************************************************************************
@@ -2106,9 +2175,9 @@ g_registry_backend_unsubscribe (GSettingsBackend *backend,
  ********************************************************************************/
 
 static void
-g_registry_backend_finalize (GObject *object)
+g_registry_settings_backend_finalize (GObject *object)
 {
-  GRegistryBackend *self = G_REGISTRY_BACKEND (object);
+  GRegistrySettingsBackend *self = G_REGISTRY_SETTINGS_BACKEND (object);
   RegistryCacheItem *item;
 
   item = self->cache_root->data;
@@ -2131,29 +2200,136 @@ g_registry_backend_finalize (GObject *object)
 }
 
 static void
-g_registry_backend_class_init (GRegistryBackendClass *class)
+g_registry_settings_backend_constructed (GObject *object)
+{
+  GRegistrySettingsBackend *self = G_REGISTRY_SETTINGS_BACKEND (object);
+
+  if (self->base_key == NULL || self->base_path == NULL || self->base_pathw == NULL)
+    {
+      self->base_key = HKEY_CURRENT_USER;
+      self->base_path = g_strdup ("Software\\GSettings");
+      self->base_pathw = g_utf8_to_utf16 (self->base_path, -1, NULL, NULL, NULL);
+    }
+}
+
+static void
+g_registry_settings_backend_get_property (GObject    *object,
+                                          guint       prop_id,
+                                          GValue     *value,
+                                          GParamSpec *pspec)
+{
+  GRegistrySettingsBackend *self = G_REGISTRY_SETTINGS_BACKEND (object);
+
+  switch ((GRegistrySettingsBackendProperty) prop_id)
+    {
+    case PROP_REGISTRY_KEY:
+      g_value_take_string (value,
+                           g_strdup_printf ("%s\\%s",
+                                            predefined_key_to_string (self->base_key),
+                                            self->base_path));
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+g_registry_settings_backend_set_property (GObject      *object,
+                                          guint         prop_id,
+                                          const GValue *value,
+                                          GParamSpec   *pspec)
+{
+  GRegistrySettingsBackend *self = G_REGISTRY_SETTINGS_BACKEND (object);
+  const gchar *reg_path;
+
+  switch ((GRegistrySettingsBackendProperty) prop_id)
+    {
+    case PROP_REGISTRY_KEY:
+      /* Construct only. */
+      g_assert (self->base_key == NULL);
+      g_assert (self->base_path == NULL);
+      g_assert (self->base_pathw == NULL);
+
+      reg_path = g_value_get_string (value);
+      if (reg_path != NULL)
+        {
+          HKEY base_key;
+          const gchar *base_path = split_registry_path (reg_path, &base_key);
+
+          if (base_path != NULL)
+            {
+              gunichar2 *base_pathw = g_utf8_to_utf16 (base_path, -1, NULL, NULL, NULL);
+
+              if (base_pathw != NULL)
+                {
+                  self->base_key = g_steal_pointer (&base_key);
+                  self->base_path = g_strdup (base_path);
+                  self->base_pathw = g_steal_pointer (&base_pathw);
+                }
+              else
+                g_warning ("gregistrysettingsbackend: invalid base registry path '%s'", reg_path);
+            }
+          else
+            g_warning ("gregistrysettingsbackend: base registry path '%s' does not start with a valid root key", reg_path);
+        }
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+g_registry_settings_backend_class_init (GRegistrySettingsBackendClass *class)
 {
   GSettingsBackendClass *backend_class = G_SETTINGS_BACKEND_CLASS (class);
   GObjectClass *object_class = G_OBJECT_CLASS (class);
 
-  object_class->finalize = g_registry_backend_finalize;
+  object_class->finalize = g_registry_settings_backend_finalize;
+  object_class->constructed = g_registry_settings_backend_constructed;
+  object_class->get_property = g_registry_settings_backend_get_property;
+  object_class->set_property = g_registry_settings_backend_set_property;
 
-  backend_class->read = g_registry_backend_read;
-  backend_class->write = g_registry_backend_write;
-  backend_class->write_tree = g_registry_backend_write_tree;
-  backend_class->reset = g_registry_backend_reset;
-  backend_class->get_writable = g_registry_backend_get_writable;
-  backend_class->subscribe = g_registry_backend_subscribe;
-  backend_class->unsubscribe = g_registry_backend_unsubscribe;
+  backend_class->read = g_registry_settings_backend_read;
+  backend_class->write = g_registry_settings_backend_write;
+  backend_class->write_tree = g_registry_settings_backend_write_tree;
+  backend_class->reset = g_registry_settings_backend_reset;
+  backend_class->get_writable = g_registry_settings_backend_get_writable;
+  backend_class->subscribe = g_registry_settings_backend_subscribe;
+  backend_class->unsubscribe = g_registry_settings_backend_unsubscribe;
+
+  /**
+   * GRegistrySettingsBackend:registry-key:
+   *
+   * The location where settings are stored in the registry. Must
+   * start with one of the following:
+   * - `HKEY_CLASSES_ROOT`
+   * - `HKEY_CURRENT_CONFIG`
+   * - `HKEY_CURRENT_USER`
+   * - `HKEY_LOCAL_MACHINE`
+   * - `HKEY_USERS`
+   *
+   * Defaults to `HKEY_CURRENT_USER\Software\GSettings`.
+   *
+   * Since: 2.78
+   */
+  g_object_class_install_property (object_class,
+                                   PROP_REGISTRY_KEY,
+                                   g_param_spec_string ("registry-key",
+                                                        P_("Root registry key"),
+                                                        P_("The path to the registry key where settings are stored"),
+                                                        "HKEY_CURRENT_USER\\Software\\GSettings",
+                                                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY |
+                                                        G_PARAM_STATIC_STRINGS));
 }
 
 static void
-g_registry_backend_init (GRegistryBackend *self)
+g_registry_settings_backend_init (GRegistrySettingsBackend *self)
 {
   RegistryCacheItem *item;
-
-  self->base_path = g_strdup_printf ("Software\\GSettings");
-  self->base_pathw = g_utf8_to_utf16 (self->base_path, -1, NULL, NULL, NULL);
 
   item = g_slice_new (RegistryCacheItem);
   item->value.type = REG_NONE;
@@ -2166,4 +2342,26 @@ g_registry_backend_init (GRegistryBackend *self)
   InitializeCriticalSection (self->cache_lock);
 
   self->watch = NULL;
+}
+
+/**
+ * g_registry_settings_backend_new:
+ * @registry_key: (nullable): the path to the registry key where
+ *                settings are stored, or %NULL.
+ *
+ * If @registry_key is %NULL then the default path
+ * `HKEY_CURRENT_USER\Software\GSettings` is used.
+ *
+ * Returns: (transfer full): a registry-backed #GSettingsBackend
+ *
+ * Since: 2.78
+ **/
+GSettingsBackend *
+g_registry_settings_backend_new (const gchar *registry_key)
+{
+  g_return_val_if_fail (registry_key == NULL || split_registry_path (registry_key, NULL), NULL);
+
+  return G_SETTINGS_BACKEND (g_object_new (G_TYPE_REGISTRY_SETTINGS_BACKEND,
+                                           "registry-key", registry_key,
+                                           NULL));
 }

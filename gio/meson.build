@@ -276,10 +276,6 @@ settings_sources = files(
   'gsettings.c',
 )
 
-if host_system == 'windows'
-  settings_sources += files('gregistrysettingsbackend.c')
-endif
-
 application_headers = files(
   'gapplication.h',
   'gapplicationcommandline.h',
@@ -444,6 +440,7 @@ else
 
   win32_sources += files(
     'gmemorymonitorwin32.c',
+    'gregistrysettingsbackend.c',
     'gwin32registrykey.c',
     'gwin32mount.c',
     'gwin32volumemonitor.c',
@@ -467,6 +464,7 @@ else
   win32_sources += [gio_win_res]
 
   gio_win32_include_headers = files(
+    'gregistrysettingsbackend.h',
     'gwin32inputstream.h',
     'gwin32outputstream.h',
   )

@@ -24,7 +24,9 @@
 
 #include <glib-object.h>
 
-GType g_registry_backend_get_type (void);
+#include <gio/gsettingsbackend.h>
 
+GIO_AVAILABLE_IN_2_78
+GSettingsBackend *      g_registry_settings_backend_new     (const gchar     *registry_key);
 
 #endif /* __G_REGISTRY_SETTINGS_BACKEND_H__ */
