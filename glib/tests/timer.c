@@ -346,6 +346,29 @@ test_timeval_to_iso8601_overflow (void)
   g_assert_null (out);
 }
 
+static void
+test_usleep_with_zero_wait (void)
+{
+  GTimer *timer;
+  gdouble elapsed0, elapsed1;
+
+  timer = g_timer_new ();
+
+  g_timer_start (timer);
+  g_usleep (0);
+  elapsed0 = g_timer_elapsed (timer, NULL);
+  g_timer_stop (timer);
+
+  g_timer_start (timer);
+  g_usleep (1);
+  elapsed1 = g_timer_elapsed (timer, NULL);
+  g_timer_stop (timer);
+
+  g_assert_cmpfloat (elapsed0, <=, elapsed1);
+
+  g_clear_pointer (&timer, g_timer_destroy);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -360,6 +383,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/timeval/from-iso8601", test_timeval_from_iso8601);
   g_test_add_func ("/timeval/to-iso8601", test_timeval_to_iso8601);
   g_test_add_func ("/timeval/to-iso8601/overflow", test_timeval_to_iso8601_overflow);
+  g_test_add_func ("/usleep/with-zero-wait", test_usleep_with_zero_wait);
 
   return g_test_run ();
 }
