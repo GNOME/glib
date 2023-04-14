@@ -2951,6 +2951,8 @@ struct heap_iter
   gsize magic;
 };
 
+G_STATIC_ASSERT (sizeof (struct heap_iter) <= sizeof (GVariantIter));
+
 #define GVSI(i)                 ((struct stack_iter *) (i))
 #define GVHI(i)                 ((struct heap_iter *) (i))
 #define GVSI_MAGIC              ((gsize) 3579507750u)
@@ -3220,7 +3222,7 @@ struct heap_builder
 
 /* Just to make sure that by adding a union to GVariantBuilder, we
  * didn't accidentally change ABI. */
-G_STATIC_ASSERT (sizeof (GVariantBuilder) == sizeof (gsize[16]));
+G_STATIC_ASSERT (sizeof (GVariantBuilder) == sizeof (guintptr[16]));
 
 static gboolean
 ensure_valid_builder (GVariantBuilder *builder)
@@ -3907,7 +3909,7 @@ struct heap_dict
 
 /* Just to make sure that by adding a union to GVariantDict, we didn't
  * accidentally change ABI. */
-G_STATIC_ASSERT (sizeof (GVariantDict) == sizeof (gsize[16]));
+G_STATIC_ASSERT (sizeof (GVariantDict) == sizeof (guintptr[16]));
 
 static gboolean
 ensure_valid_dict (GVariantDict *dict)

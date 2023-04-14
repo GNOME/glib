@@ -251,7 +251,8 @@
 #define BIG_ENTRY_SIZE (SIZEOF_VOID_P)
 #define SMALL_ENTRY_SIZE (SIZEOF_INT)
 
-#if SMALL_ENTRY_SIZE < BIG_ENTRY_SIZE
+/* NB: The USE_SMALL_ARRAYS code assumes pointers are at most 8 bytes. */
+#if SMALL_ENTRY_SIZE < BIG_ENTRY_SIZE && BIG_ENTRY_SIZE <= 8
 # define USE_SMALL_ARRAYS
 #endif
 
@@ -292,7 +293,7 @@ typedef struct
   gpointer     dummy2;
   gint         position;
   gboolean     dummy3;
-  gint         version;
+  gintptr      version;
 } RealIter;
 
 G_STATIC_ASSERT (sizeof (GHashTableIter) == sizeof (RealIter));
