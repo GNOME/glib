@@ -1,3 +1,22 @@
+Overview of changes in GLib 2.74.7
+==================================
+
+* Bugs fixed:
+  - #2922 GWin32AppInfo: Missing NULL string check (Luca Bacci)
+  - #2924 Use-after-free of GDBusMethodInvocation in GDBusInterfaceSkeleton
+    (Philip Withnall)
+  - #2972 GtkFileLauncher: generated paths not recognized on Win32 (Luca Bacci)
+  - !3298 Backport !3297 “gdbusinterfaceskeleton: Fix a use-after-free of a
+    GDBusMethodInvocation” to glib-2-74
+  - !3300 Backport !3272 “gdbus: Never buffer reads during server
+    authentication” to glib-2-74
+  - !3303 gdbus: Fix an accidental string freeze break
+  - !3307 tests: Skip assert-msg-test.py if gdb fails
+  - !3320 Backport !3317 “GWin32AppInfo: Add NULL string checks” to glib-2-74
+  - !3360 Backport !3359 “GWin32AppInfo: Fix g_str_has_prefix() check” to
+    glib-2-74
+
+
 Overview of changes in GLib 2.74.6
 ==================================
 
