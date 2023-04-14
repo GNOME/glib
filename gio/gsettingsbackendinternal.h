@@ -95,4 +95,8 @@ GType                   g_keyfile_settings_backend_get_type             (void);
 GType                   g_nextstep_settings_backend_get_type            (void);
 #endif
 
+#ifdef G_OS_WIN32
+GType                   g_registry_settings_backend_get_type            (void);
+#endif
+
 #endif  /* __G_SETTINGS_BACKEND_INTERNAL_H__ */

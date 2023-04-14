@@ -110,3 +110,13 @@ G_WIN32_REGISTRY_KEY_GET_CLASS
 G_TYPE_WIN32_REGISTRY_SUBKEY_ITER
 G_TYPE_WIN32_REGISTRY_VALUE_ITER
 </SECTION>
+
+<SECTION>
+<FILE>gregistrysettingsbackend</FILE>
+<TITLE>GRegistrySettingsBackend</TITLE>
+GRegistrySettingsBackend
+g_registry_settings_backend_new
+
+<SUBSECTION Private>
+g_registry_settings_backend_get_type
+</SECTION>

@@ -1355,7 +1355,7 @@ _g_io_modules_ensure_loaded (void)
 #ifdef G_OS_WIN32
       g_type_ensure (_g_win32_volume_monitor_get_type ());
       g_type_ensure (g_win32_file_monitor_get_type ());
-      g_type_ensure (g_registry_backend_get_type ());
+      g_type_ensure (g_registry_settings_backend_get_type ());
 #endif
 #ifdef HAVE_COCOA
       g_type_ensure (g_nextstep_settings_backend_get_type ());
