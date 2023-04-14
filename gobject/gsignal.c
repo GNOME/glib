@@ -2951,10 +2951,13 @@ signal_handlers_foreach_matched_unlocked_R (gpointer             instance,
  * the criteria values are passed as arguments. A handler must match on all
  * flags set in @mask to be blocked (i.e. the match is conjunctive).
  *
- * Passing at least one of the %G_SIGNAL_MATCH_CLOSURE, %G_SIGNAL_MATCH_FUNC
+ * Passing at least one of the %G_SIGNAL_MATCH_ID, %G_SIGNAL_MATCH_CLOSURE,
+ * %G_SIGNAL_MATCH_FUNC
  * or %G_SIGNAL_MATCH_DATA match flags is required for successful matches.
  * If no handlers were found, 0 is returned, the number of blocked handlers
  * otherwise.
+ *
+ * Support for %G_SIGNAL_MATCH_ID was added in GLib 2.78.
  *
  * Returns: The number of handlers that matched.
  */
@@ -2972,7 +2975,7 @@ g_signal_handlers_block_matched (gpointer         instance,
   g_return_val_if_fail (G_TYPE_CHECK_INSTANCE (instance), 0);
   g_return_val_if_fail ((mask & ~G_SIGNAL_MATCH_MASK) == 0, 0);
   
-  if (mask & (G_SIGNAL_MATCH_CLOSURE | G_SIGNAL_MATCH_FUNC | G_SIGNAL_MATCH_DATA))
+  if (mask & (G_SIGNAL_MATCH_ID | G_SIGNAL_MATCH_CLOSURE | G_SIGNAL_MATCH_FUNC | G_SIGNAL_MATCH_DATA))
     {
       SIGNAL_LOCK ();
       n_handlers =
@@ -3003,11 +3006,14 @@ g_signal_handlers_block_matched (gpointer         instance,
  * the criteria values are passed as arguments. A handler must match on all
  * flags set in @mask to be unblocked (i.e. the match is conjunctive).
  *
- * Passing at least one of the %G_SIGNAL_MATCH_CLOSURE, %G_SIGNAL_MATCH_FUNC
+ * Passing at least one of the %G_SIGNAL_MATCH_ID, %G_SIGNAL_MATCH_CLOSURE,
+ * %G_SIGNAL_MATCH_FUNC
  * or %G_SIGNAL_MATCH_DATA match flags is required for successful matches.
  * If no handlers were found, 0 is returned, the number of unblocked handlers
  * otherwise. The match criteria should not apply to any handlers that are
  * not currently blocked.
+ *
+ * Support for %G_SIGNAL_MATCH_ID was added in GLib 2.78.
  *
  * Returns: The number of handlers that matched.
  */
@@ -3025,7 +3031,7 @@ g_signal_handlers_unblock_matched (gpointer         instance,
   g_return_val_if_fail (G_TYPE_CHECK_INSTANCE (instance), 0);
   g_return_val_if_fail ((mask & ~G_SIGNAL_MATCH_MASK) == 0, 0);
   
-  if (mask & (G_SIGNAL_MATCH_CLOSURE | G_SIGNAL_MATCH_FUNC | G_SIGNAL_MATCH_DATA))
+  if (mask & (G_SIGNAL_MATCH_ID | G_SIGNAL_MATCH_CLOSURE | G_SIGNAL_MATCH_FUNC | G_SIGNAL_MATCH_DATA))
     {
       SIGNAL_LOCK ();
       n_handlers =
@@ -3056,10 +3062,13 @@ g_signal_handlers_unblock_matched (gpointer         instance,
  * the criteria values are passed as arguments. A handler must match on all
  * flags set in @mask to be disconnected (i.e. the match is conjunctive).
  *
- * Passing at least one of the %G_SIGNAL_MATCH_CLOSURE, %G_SIGNAL_MATCH_FUNC or
+ * Passing at least one of the %G_SIGNAL_MATCH_ID, %G_SIGNAL_MATCH_CLOSURE,
+ * %G_SIGNAL_MATCH_FUNC or
  * %G_SIGNAL_MATCH_DATA match flags is required for successful
  * matches.  If no handlers were found, 0 is returned, the number of
  * disconnected handlers otherwise.
+ *
+ * Support for %G_SIGNAL_MATCH_ID was added in GLib 2.78.
  *
  * Returns: The number of handlers that matched.
  */
@@ -3077,7 +3086,7 @@ g_signal_handlers_disconnect_matched (gpointer         instance,
   g_return_val_if_fail (G_TYPE_CHECK_INSTANCE (instance), 0);
   g_return_val_if_fail ((mask & ~G_SIGNAL_MATCH_MASK) == 0, 0);
   
-  if (mask & (G_SIGNAL_MATCH_CLOSURE | G_SIGNAL_MATCH_FUNC | G_SIGNAL_MATCH_DATA))
+  if (mask & (G_SIGNAL_MATCH_ID | G_SIGNAL_MATCH_CLOSURE | G_SIGNAL_MATCH_FUNC | G_SIGNAL_MATCH_DATA))
     {
       SIGNAL_LOCK ();
       n_handlers =
