@@ -173,7 +173,7 @@ show_info (GFile *file, GFileInfo *info)
     {
       /* Translators: This is a noun and represents and attribute of a file */
       flatten = flatten_string (name);
-      g_print (_("display name: %s\n"), flatten);
+      g_print (_("edit name: %s\n"), flatten);
       g_free (flatten);
     }
 
