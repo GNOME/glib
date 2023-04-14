@@ -249,7 +249,7 @@ watcher_init (void)
       gint pipe_fds[2];
 
       /* fork a child to clean up when we are killed */
-      if (!g_unix_open_pipe_internal (pipe_fds, TRUE))
+      if (!g_unix_open_pipe_internal (pipe_fds, TRUE, FALSE))
         {
           errsv = errno;
           g_warning ("pipe() failed: %s", g_strerror (errsv));

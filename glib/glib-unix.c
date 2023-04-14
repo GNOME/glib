@@ -74,11 +74,16 @@ g_unix_set_error_from_errno (GError **error,
  *
  * Similar to the UNIX pipe() call, but on modern systems like Linux
  * uses the pipe2() system call, which atomically creates a pipe with
- * the configured flags. The only supported flag currently is
- * %FD_CLOEXEC. If for example you want to configure %O_NONBLOCK, that
- * must still be done separately with fcntl().
+ * the configured flags.
  *
- * This function does not take %O_CLOEXEC, it takes %FD_CLOEXEC as if
+ * As of GLib 2.78, the supported flags are `FD_CLOEXEC` and `O_NONBLOCK`. Prior
+ * to GLib 2.78, only `FD_CLOEXEC` was supported — if you wanted to configure
+ * `O_NONBLOCK` then that had to be done separately with `fcntl()`.
+ *
+ * It is a programmer error to call this function with unsupported flags, and a
+ * critical warning will be raised.
+ *
+ * This function does not take `O_CLOEXEC`, it takes `FD_CLOEXEC` as if
  * for fcntl(); these are different on Linux/glibc.
  *
  * Returns: %TRUE on success, %FALSE if not (and errno will be set).
@@ -90,11 +95,12 @@ g_unix_open_pipe (int     *fds,
                   int      flags,
                   GError **error)
 {
-  /* We only support FD_CLOEXEC */
-  g_return_val_if_fail ((flags & (FD_CLOEXEC)) == flags, FALSE);
+  /* We only support FD_CLOEXEC and O_NONBLOCK */
+  g_return_val_if_fail ((flags & (FD_CLOEXEC | O_NONBLOCK)) == flags, FALSE);
 
   if (!g_unix_open_pipe_internal (fds,
-                                  (flags & FD_CLOEXEC) != 0))
+                                  (flags & FD_CLOEXEC) != 0,
+                                  (flags & O_NONBLOCK) != 0))
     return g_unix_set_error_from_errno (error, errno);
 
   return TRUE;
