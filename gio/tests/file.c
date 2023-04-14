@@ -2515,75 +2515,10 @@ test_copy_preserve_mode (void)
 #endif
 }
 
-static gchar *
-splice_to_string (GInputStream   *stream,
-                  GError        **error)
-{
-  GMemoryOutputStream *buffer = NULL;
-  char *ret = NULL;
-
-  buffer = (GMemoryOutputStream*)g_memory_output_stream_new (NULL, 0, g_realloc, g_free);
-  if (g_output_stream_splice ((GOutputStream*)buffer, stream, 0, NULL, error) < 0)
-    goto out;
-
-  if (!g_output_stream_write ((GOutputStream*)buffer, "\0", 1, NULL, error))
-    goto out;
-
-  if (!g_output_stream_close ((GOutputStream*)buffer, NULL, error))
-    goto out;
-
-  ret = g_memory_output_stream_steal_data (buffer);
- out:
-  g_clear_object (&buffer);
-  return ret;
-}
-
-static gboolean
-get_size_from_du (const gchar *path, guint64 *size)
-{
-  GSubprocess *du;
-  gboolean ok;
-  gchar *result;
-  gchar *endptr;
-  GError *error = NULL;
-  gchar *du_path = NULL;
-
-#ifndef __APPLE__
-  du_path = g_find_program_in_path ("du");
-#endif
-
-  /* If we can’t find du, don’t try and run the test. */
-  if (du_path == NULL)
-    return FALSE;
-
-  g_free (du_path);
-
-  du = g_subprocess_new (G_SUBPROCESS_FLAGS_STDOUT_PIPE,
-                         &error,
-                         "du", "--bytes", "-s", path, NULL);
-  g_assert_no_error (error);
-
-  result = splice_to_string (g_subprocess_get_stdout_pipe (du), &error);
-  g_assert_no_error (error);
-
-  *size = g_ascii_strtoll (result, &endptr, 10);
-
-  g_subprocess_wait (du, NULL, &error);
-  g_assert_no_error (error);
-
-  ok = g_subprocess_get_successful (du);
-
-  g_object_unref (du);
-  g_free (result);
-
-  return ok;
-}
-
 static void
 test_measure (void)
 {
   GFile *file;
-  guint64 size;
   guint64 num_bytes;
   guint64 num_dirs;
   guint64 num_files;
@@ -2593,12 +2528,6 @@ test_measure (void)
 
   path = g_test_build_filename (G_TEST_DIST, "desktop-files", NULL);
   file = g_file_new_for_path (path);
-
-  if (!get_size_from_du (path, &size))
-    {
-      g_test_message ("du not found or fail to run, skipping byte measurement");
-      size = 0;
-    }
 
   ok = g_file_measure_disk_usage (file,
                                   G_FILE_MEASURE_APPARENT_SIZE,
@@ -2612,8 +2541,7 @@ test_measure (void)
   g_assert_true (ok);
   g_assert_no_error (error);
 
-  if (size > 0)
-    g_assert_cmpuint (num_bytes, ==, size);
+  g_assert_cmpuint (num_bytes, ==, 74478);
   g_assert_cmpuint (num_dirs, ==, 6);
   g_assert_cmpuint (num_files, ==, 32);
 
@@ -2665,8 +2593,7 @@ measure_done (GObject      *source,
   g_assert_true (ok);
   g_assert_no_error (error);
 
-  if (data->expected_bytes > 0)
-    g_assert_cmpuint (data->expected_bytes, ==, num_bytes);
+  g_assert_cmpuint (data->expected_bytes, ==, num_bytes);
   g_assert_cmpuint (data->expected_dirs, ==, num_dirs);
   g_assert_cmpuint (data->expected_files, ==, num_files);
 
@@ -2695,15 +2622,9 @@ test_measure_async (void)
 
   path = g_test_build_filename (G_TEST_DIST, "desktop-files", NULL);
   file = g_file_new_for_path (path);
-
-  if (!get_size_from_du (path, &data->expected_bytes))
-    {
-      g_test_message ("du not found or fail to run, skipping byte measurement");
-      data->expected_bytes = 0;
-    }
-
   g_free (path);
 
+  data->expected_bytes = 74478;
   data->expected_dirs = 6;
   data->expected_files = 32;
 

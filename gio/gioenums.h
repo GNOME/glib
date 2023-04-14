@@ -224,6 +224,9 @@ typedef enum {
  *   sizes.  Normally, the block-size is used, if available, as this is a
  *   more accurate representation of disk space used.
  *   Compare with `du --apparent-size`.
+ *   Since GLib 2.78. and similarly to `du` since GNU Coreutils 9.2, this will
+ *   ignore the sizes of file types other than regular files and links, as the
+ *   sizes of other file types are not specified in a standard way.
  * @G_FILE_MEASURE_NO_XDEV: Do not cross mount point boundaries.
  *   Compare with `du -x`.
  *
