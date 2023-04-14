@@ -529,8 +529,6 @@ struct _GKeyFileGroup
 {
   const gchar *name;  /* NULL for above first group (which will be comments) */
 
-  GKeyFileKeyValuePair *comment; /* Special comment that is stuck to the top of a group */
-
   GList *key_value_pairs;
 
   /* Used in parallel with key_value_pairs for
@@ -579,7 +577,8 @@ static void                  g_key_file_add_key                (GKeyFile        
 								const gchar            *key,
 								const gchar            *value);
 static void                  g_key_file_add_group              (GKeyFile               *key_file,
-								const gchar            *group_name);
+								const gchar            *group_name,
+								gboolean                created);
 static gboolean              g_key_file_is_group_name          (const gchar *name);
 static gboolean              g_key_file_is_key_name            (const gchar *name,
                                                                 gsize        len);
@@ -1354,7 +1353,7 @@ g_key_file_parse_group (GKeyFile     *key_file,
       return;
     }
 
-  g_key_file_add_group (key_file, group_name);
+  g_key_file_add_group (key_file, group_name, FALSE);
   g_free (group_name);
 }
 
@@ -1609,14 +1608,6 @@ g_key_file_to_data (GKeyFile  *key_file,
       GKeyFileGroup *group;
 
       group = (GKeyFileGroup *) group_node->data;
-
-      /* separate groups by at least an empty line */
-      if (data_string->len >= 2 &&
-          data_string->str[data_string->len - 2] != '\n')
-        g_string_append_c (data_string, '\n');
-
-      if (group->comment != NULL)
-        g_string_append_printf (data_string, "%s\n", group->comment->value);
 
       if (group->name != NULL)
         g_string_append_printf (data_string, "[%s]\n", group->name);
@@ -1902,7 +1893,7 @@ g_key_file_set_value (GKeyFile    *key_file,
 
   if (!group)
     {
-      g_key_file_add_group (key_file, group_name);
+      g_key_file_add_group (key_file, group_name, TRUE);
       group = (GKeyFileGroup *) key_file->groups->data;
 
       g_key_file_add_key (key_file, group, key, value);
@@ -3350,47 +3341,6 @@ g_key_file_set_key_comment (GKeyFile     *key_file,
 }
 
 static gboolean
-g_key_file_set_group_comment (GKeyFile     *key_file,
-                              const gchar  *group_name,
-                              const gchar  *comment,
-                              GError      **error)
-{
-  GKeyFileGroup *group;
-  
-  g_return_val_if_fail (group_name != NULL && g_key_file_is_group_name (group_name), FALSE);
-
-  group = g_key_file_lookup_group (key_file, group_name);
-  if (!group)
-    {
-      g_set_error (error, G_KEY_FILE_ERROR,
-                   G_KEY_FILE_ERROR_GROUP_NOT_FOUND,
-                   _("Key file does not have group “%s”"),
-                   group_name);
-
-      return FALSE;
-    }
-
-  /* First remove any existing comment
-   */
-  if (group->comment)
-    {
-      g_key_file_key_value_pair_free (group->comment);
-      group->comment = NULL;
-    }
-
-  if (comment == NULL)
-    return TRUE;
-
-  /* Now we can add our new comment
-   */
-  group->comment = g_new (GKeyFileKeyValuePair, 1);
-  group->comment->key = NULL;
-  group->comment->value = g_key_file_parse_comment_as_value (key_file, comment);
-
-  return TRUE;
-}
-
-static gboolean
 g_key_file_set_top_comment (GKeyFile     *key_file,
                             const gchar  *comment,
                             GError      **error)
@@ -3419,9 +3369,63 @@ g_key_file_set_top_comment (GKeyFile     *key_file,
   pair = g_new (GKeyFileKeyValuePair, 1);
   pair->key = NULL;
   pair->value = g_key_file_parse_comment_as_value (key_file, comment);
-  
+
   group->key_value_pairs =
     g_list_prepend (group->key_value_pairs, pair);
+
+  return TRUE;
+}
+
+static gboolean
+g_key_file_set_group_comment (GKeyFile     *key_file,
+                              const gchar  *group_name,
+                              const gchar  *comment,
+                              GError      **error)
+{
+  GKeyFileGroup *group;
+  GList *group_node;
+  GKeyFileKeyValuePair *pair;
+  
+  g_return_val_if_fail (group_name != NULL && g_key_file_is_group_name (group_name), FALSE);
+
+  group = g_key_file_lookup_group (key_file, group_name);
+  if (!group)
+    {
+      g_set_error (error, G_KEY_FILE_ERROR,
+                   G_KEY_FILE_ERROR_GROUP_NOT_FOUND,
+                   _("Key file does not have group “%s”"),
+                   group_name);
+
+      return FALSE;
+    }
+
+  if (group == key_file->start_group)
+    return g_key_file_set_top_comment (key_file, comment, error);
+
+  /* First remove any existing comment
+   */
+  group_node = g_key_file_lookup_group_node (key_file, group_name);
+  group = group_node->next->data;
+  for (GList *lp = group->key_value_pairs; lp != NULL; )
+    {
+      GList *lnext = lp->next;
+      pair = lp->data;
+      if (pair->key != NULL)
+        break;
+
+      g_key_file_remove_key_value_pair_node (key_file, group, lp);
+      lp = lnext;
+    }
+
+  if (comment == NULL)
+    return TRUE;
+
+  /* Now we can add our new comment
+   */
+  pair = g_new (GKeyFileKeyValuePair, 1);
+  pair->key = NULL;
+  pair->value = g_key_file_parse_comment_as_value (key_file, comment);
+  group->key_value_pairs = g_list_prepend (group->key_value_pairs, pair);
 
   return TRUE;
 }
@@ -3629,9 +3633,6 @@ g_key_file_get_group_comment (GKeyFile     *key_file,
       return NULL;
     }
 
-  if (group->comment)
-    return g_strdup (group->comment->value);
-  
   group_node = g_key_file_lookup_group_node (key_file, group_name);
   group_node = group_node->next;
   group = (GKeyFileGroup *)group_node->data;  
@@ -3826,7 +3827,8 @@ g_key_file_has_key (GKeyFile     *key_file,
 
 static void
 g_key_file_add_group (GKeyFile    *key_file,
-		      const gchar *group_name)
+		      const gchar *group_name,
+		      gboolean created)
 {
   GKeyFileGroup *group;
 
@@ -3847,7 +3849,22 @@ g_key_file_add_group (GKeyFile    *key_file,
   key_file->current_group = group;
 
   if (key_file->start_group == NULL)
-    key_file->start_group = group;
+    {
+      key_file->start_group = group;
+    }
+  else if (!(key_file->flags & G_KEY_FILE_KEEP_COMMENTS) || created)
+    {
+      /* separate groups by a blank line if we don't keep comments or group is created */
+      GKeyFileGroup *next_group = key_file->groups->next->data;
+      if (next_group->key_value_pairs == NULL ||
+          ((GKeyFileKeyValuePair *) next_group->key_value_pairs->data)->key != NULL)
+        {
+          GKeyFileKeyValuePair *pair = g_new (GKeyFileKeyValuePair, 1);
+          pair->key = NULL;
+          pair->value = g_strdup ("");
+          next_group->key_value_pairs = g_list_prepend (next_group->key_value_pairs, pair);
+        }
+    }
 
   if (!key_file->group_hash)
     key_file->group_hash = g_hash_table_new (g_str_hash, g_str_equal);
@@ -3957,12 +3974,6 @@ g_key_file_remove_group_node (GKeyFile *key_file,
     }
 
   g_warn_if_fail (group->key_value_pairs == NULL);
-
-  if (group->comment)
-    {
-      g_key_file_key_value_pair_free (group->comment);
-      group->comment = NULL;
-    }
 
   if (group->lookup_map)
     {
