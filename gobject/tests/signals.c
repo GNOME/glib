@@ -1487,6 +1487,11 @@ test_block_handler (void)
 
   g_signal_handlers_unblock_matched (test2, G_SIGNAL_MATCH_FUNC, 0, 0, NULL, test_handler, NULL);
 
+  /* Match types are conjunctive */
+  g_assert_cmpuint (g_signal_handlers_block_matched (test1, G_SIGNAL_MATCH_FUNC | G_SIGNAL_MATCH_DATA, 0, 0, NULL, test_handler, "will not match"), ==, 0);
+  g_assert_cmpuint (g_signal_handlers_block_matched (test1, G_SIGNAL_MATCH_FUNC | G_SIGNAL_MATCH_DATA, 0, 0, NULL, test_handler, &count1), ==, 1);
+  g_assert_cmpuint (g_signal_handlers_unblock_matched (test1, G_SIGNAL_MATCH_FUNC | G_SIGNAL_MATCH_DATA, 0, 0, NULL, test_handler, &count1), ==, 1);
+
   g_object_unref (test1);
   g_object_unref (test2);
 }
