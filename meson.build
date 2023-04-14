@@ -37,7 +37,7 @@ cc_can_run = meson.can_run_host_binaries()
 if cc.get_argument_syntax() == 'msvc'
   # Ignore several spurious warnings for things glib does very commonly
   # (also for clang-cl)
-  add_project_arguments('/FImsvc_recommended_pragmas.h',language : 'c')
+  add_project_arguments('/FIglib/msvc_recommended_pragmas.h', language : 'c')
 endif
 
 if cc.get_id() == 'msvc'
@@ -2419,10 +2419,6 @@ if host_system == 'windows'
 endif
 
 configure_file(output : 'config.h', configuration : glib_conf)
-
-if host_system == 'windows'
-  install_headers([ 'msvc_recommended_pragmas.h' ], install_dir : glib_includedir)
-endif
 
 if get_option('man')
   xsltproc = find_program('xsltproc', required : true)
