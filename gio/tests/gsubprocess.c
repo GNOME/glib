@@ -1288,14 +1288,12 @@ test_communicate_utf8_invalid (void)
   g_object_unref (proc);
 }
 
-static gboolean
+static void
 send_terminate (gpointer   user_data)
 {
   GSubprocess *proc = user_data;
 
   g_subprocess_force_exit (proc);
-
-  return FALSE;
 }
 
 static void
@@ -1341,7 +1339,7 @@ test_terminate (void)
 
   g_subprocess_wait_async (proc, NULL, on_request_quit_exited, loop);
 
-  g_timeout_add_seconds (3, send_terminate, proc);
+  g_timeout_add_seconds_once (3, send_terminate, proc);
 
   g_main_loop_run (loop);
 
@@ -1350,14 +1348,12 @@ test_terminate (void)
 }
 
 #ifdef G_OS_UNIX
-static gboolean
+static void
 send_signal (gpointer user_data)
 {
   GSubprocess *proc = user_data;
 
   g_subprocess_send_signal (proc, SIGKILL);
-
-  return FALSE;
 }
 
 static void
@@ -1378,7 +1374,7 @@ test_signal (void)
 
   g_subprocess_wait_async (proc, NULL, on_request_quit_exited, loop);
 
-  g_timeout_add_seconds (3, send_signal, proc);
+  g_timeout_add_seconds_once (3, send_signal, proc);
 
   g_main_loop_run (loop);
 

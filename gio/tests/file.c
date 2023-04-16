@@ -452,15 +452,13 @@ created_cb (GObject      *source,
                                data);
 }
 
-static gboolean
+static void
 stop_timeout (gpointer user_data)
 {
   CreateDeleteData *data = user_data;
 
   data->timed_out = TRUE;
   g_main_context_wakeup (data->context);
-
-  return G_SOURCE_REMOVE;
 }
 
 /*
@@ -518,7 +516,7 @@ test_create_delete (gconstpointer d)
 
   /* Use the global default main context */
   data->context = NULL;
-  data->timeout = g_timeout_add_seconds (10, stop_timeout, data);
+  data->timeout = g_timeout_add_seconds_once (10, stop_timeout, data);
 
   g_file_create_async (data->file, 0, 0, NULL, created_cb, data);
 
