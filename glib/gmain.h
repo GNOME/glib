@@ -800,6 +800,10 @@ GLIB_AVAILABLE_IN_ALL
 guint    g_timeout_add_seconds      (guint           interval,
                                      GSourceFunc     function,
                                      gpointer        data);
+GLIB_AVAILABLE_IN_2_78
+guint    g_timeout_add_seconds_once (guint           interval,
+                                     GSourceOnceFunc function,
+                                     gpointer        data);
 GLIB_AVAILABLE_IN_ALL
 guint    g_child_watch_add_full     (gint            priority,
                                      GPid            pid,

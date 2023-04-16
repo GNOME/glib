@@ -20,6 +20,12 @@ unreachable_callback (gpointer data)
 }
 
 static void
+unreachable_void_callback (gpointer data)
+{
+  g_assert_not_reached ();
+}
+
+static void
 test_seconds (void)
 {
   guint id;
@@ -49,6 +55,19 @@ test_seconds (void)
   g_main_loop_unref (loop);
 
   g_source_remove (id);
+}
+
+static void
+test_seconds_once (void)
+{
+  /* Use the same principle as in test_seconds() */
+  loop = g_main_loop_new (NULL, FALSE);
+
+  g_timeout_add_once (2100, stop_waiting, NULL);
+  g_timeout_add_seconds_once (21475, unreachable_void_callback, NULL);
+
+  g_main_loop_run (loop);
+  g_main_loop_unref (loop);
 }
 
 static void
@@ -192,6 +211,7 @@ main (int argc, char *argv[])
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/timeout/seconds", test_seconds);
+  g_test_add_func ("/timeout/seconds-once", test_seconds_once);
   g_test_add_func ("/timeout/weeks-overflow", test_weeks_overflow);
   g_test_add_func ("/timeout/far-future-ready-time", test_far_future_ready_time);
   g_test_add_func ("/timeout/rounding", test_rounding);

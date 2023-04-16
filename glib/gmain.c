@@ -5471,6 +5471,26 @@ g_timeout_add_seconds (guint       interval,
   return g_timeout_add_seconds_full (G_PRIORITY_DEFAULT, interval, function, data, NULL);
 }
 
+/**
+ * g_timeout_add_seconds_once:
+ * @interval: the time after which the function will be called, in seconds
+ * @function: function to call
+ * @data: data to pass to @function
+ *
+ * This function behaves like g_timeout_add_once() but with a range in seconds.
+ *
+ * Returns: the ID (greater than 0) of the event source
+ *
+ * Since: 2.78
+ */
+guint
+g_timeout_add_seconds_once (guint           interval,
+                            GSourceOnceFunc function,
+                            gpointer        data)
+{
+  return timeout_add_full (G_PRIORITY_DEFAULT, interval, TRUE, TRUE, (GSourceFunc) function, data, NULL);
+}
+
 /* Child watch functions */
 
 #ifdef G_OS_WIN32
