@@ -5410,21 +5410,7 @@ g_timeout_add_seconds_full (gint           priority,
                             gpointer       data,
                             GDestroyNotify notify)
 {
-  GSource *source;
-  guint id;
-
-  g_return_val_if_fail (function != NULL, 0);
-
-  source = g_timeout_source_new_seconds (interval);
-
-  if (priority != G_PRIORITY_DEFAULT)
-    g_source_set_priority (source, priority);
-
-  g_source_set_callback (source, function, data, notify);
-  id = g_source_attach (source, NULL);
-  g_source_unref (source);
-
-  return id;
+  return timeout_add_full (priority, interval, TRUE, FALSE, function, data, notify);
 }
 
 /**
