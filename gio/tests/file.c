@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <gio/gio.h>
 #include <gio/gfiledescriptorbased.h>
+#include <glib/gstdio.h>
 #ifdef G_OS_UNIX
 #include <sys/stat.h>
 #endif
@@ -2742,7 +2743,8 @@ test_load_bytes (void)
   len = strlen ("test_load_bytes");
   ret = write (fd, "test_load_bytes", len);
   g_assert_cmpint (ret, ==, len);
-  close (fd);
+  g_clear_fd (&fd, &error);
+  g_assert_no_error (error);
 
   file = g_file_new_for_path (filename);
   bytes = g_file_load_bytes (file, NULL, NULL, &error);
@@ -2785,6 +2787,7 @@ test_load_bytes_async (void)
 {
   LoadBytesAsyncData data = { 0 };
   gchar filename[] = "g_file_load_bytes_XXXXXX";
+  GError *error = NULL;
   int len;
   int fd;
   int ret;
@@ -2794,7 +2797,8 @@ test_load_bytes_async (void)
   len = strlen ("test_load_bytes_async");
   ret = write (fd, "test_load_bytes_async", len);
   g_assert_cmpint (ret, ==, len);
-  close (fd);
+  g_clear_fd (&fd, &error);
+  g_assert_no_error (error);
 
   data.main_loop = g_main_loop_new (NULL, FALSE);
   data.file = g_file_new_for_path (filename);
