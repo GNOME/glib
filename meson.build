@@ -9,6 +9,8 @@ project('glib', 'c',
   ]
 )
 
+fs = import('fs')
+
 cc = meson.get_compiler('c')
 c_standards = {}
 
@@ -175,9 +177,10 @@ add_test_setup('unstable_tests',
 
 # Allow the tests to be easily run under valgrind using --setup=valgrind
 valgrind = find_program('valgrind', required: false)
-if valgrind.found()
-  suppression_file = files('tools' / 'glib.supp')
+valgrind_suppression_file = files('tools' / 'glib.supp')[0]
+valgrind_suppression_file_install_subdir = 'glib-2.0' / 'valgrind'
 
+if valgrind.found()
   add_test_setup('valgrind',
     exclude_suites: [ 'no-valgrind', 'flaky' ],
     exe_wrapper: [
@@ -191,7 +194,7 @@ if valgrind.found()
       '--show-leak-kinds=definite,possible',
       '--show-error-list=yes',
       '--suppressions=@0@'.format(meson.project_source_root() /
-        '@0@'.format(suppression_file[0])),
+        '@0@'.format(valgrind_suppression_file)),
     ],
     env: common_test_env,
     timeout_multiplier: 20,
@@ -2285,9 +2288,11 @@ if not python_version.version_compare(python_version_req)
 endif
 
 # Determine which user environment-dependent files that we want to install
-have_bash = find_program('bash', required : false).found() # For completion scripts
+bash = find_program('bash', required : false)
+have_bash = bash.found() # For completion scripts
 bash_comp_dep = dependency('bash-completion', version: '>=2.0', required: false)
 have_sh = find_program('sh', required : false).found() # For glib-gettextize
+have_pkg_config = find_program('pkg-config', required: false).found()
 
 # Some installed tests require a custom environment
 env_program = find_program('env', required: installed_tests_enabled)

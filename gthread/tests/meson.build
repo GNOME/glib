@@ -52,3 +52,22 @@ foreach test_name, extra_args : gthread_tests
     suite : suite,
   )
 endforeach
+
+if have_bash and have_pkg_config
+  test('gthread-2.0-pkg-config',
+    bash,
+    args: [
+      '-xe', '-c',
+      '\n'.join([
+        'pkg-config --validate gthread-2.0',
+        'test "$(pkg-config --modversion gthread-2.0)" = "@0@"'.format(glib_version),
+        'test "$(pkg-config --variable=prefix gthread-2.0)" = "@0@"'.format(
+          get_option('prefix')),
+      ]),
+    ],
+    suite: ['gthread', 'no-valgrind', 'pkg-config'],
+    env: {
+      'PKG_CONFIG_PATH': meson.project_build_root() / 'meson-private',
+    },
+  )
+endif

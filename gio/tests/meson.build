@@ -1096,4 +1096,72 @@ if installed_tests_enabled
   )
 endif
 
+if have_bash and have_pkg_config
+  prefix = get_option('prefix')
+  if prefix.endswith(':/')
+    prefix += '/'
+  endif
+
+  pkg_config_tests = [
+    'pkg-config --validate gio-2.0',
+    'test "$(pkg-config --modversion gio-2.0)" = "@0@"'.format(glib_version),
+    'test "$(pkg-config --variable=prefix gio-2.0)" = "@0@"'.format(
+      get_option('prefix')),
+    'test "$(pkg-config --variable=datadir gio-2.0)" = "@0@"'.format(
+      prefix / get_option('datadir')),
+    'test "$(pkg-config --variable=schemasdir gio-2.0)" = "@0@"'.format(
+      prefix / get_option('datadir') / schemas_subdir),
+    'test "$(pkg-config --variable=giomoduledir gio-2.0)" = "@0@"'.format(
+      get_option('gio_module_dir') != '' ?
+        prefix / get_option('gio_module_dir') :
+        prefix / get_option('libdir') / 'gio' / 'modules'),
+  ]
+
+  gio_binaries = [
+    'gio',
+    'gio-querymodules',
+    'glib-compile-schemas',
+    'glib-compile-resources',
+    'gdbus',
+    'gdbus-codegen',
+    'gresource',
+    'gsettings',
+  ]
+
+  foreach binary: gio_binaries
+    pkg_config_tests += [
+      'test "$(pkg-config --variable=@0@ gio-2.0)" = "@1@"'.format(
+        binary.underscorify(),
+        prefix / get_option('bindir') / binary)
+    ]
+  endforeach
+
+  test('gio-2.0-pkg-config',
+    bash,
+    args: [ '-xe', '-c', '\n'.join(pkg_config_tests) ],
+    suite: ['gio', 'no-valgrind', 'pkg-config'],
+    env: {
+      'PKG_CONFIG_PATH': meson.project_build_root() / 'meson-private',
+    },
+  )
+
+  platform_module = host_system == 'windows' ? 'gio-windows-2.0' : 'gio-unix-2.0'
+  pkg_config_tests = [
+    'pkg-config --validate ' + platform_module,
+    'test "$(pkg-config --modversion @0@)" = "@1@"'.format(platform_module,
+      glib_version),
+    'test "$(pkg-config --variable=prefix @0@)" = "@1@"'.format(platform_module,
+      get_option('prefix')),
+  ]
+
+  test(platform_module + '-pkg-config',
+    bash,
+    args: [ '-xe', '-c', '\n'.join(pkg_config_tests) ],
+    suite: ['gio', 'no-valgrind', 'pkg-config'],
+    env: {
+      'PKG_CONFIG_PATH': meson.project_build_root() / 'meson-private',
+    },
+  )
+endif
+
 subdir('services')
