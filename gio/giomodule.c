@@ -1273,7 +1273,9 @@ get_gio_module_dir (void)
       module_dir = g_strdup (GIO_MODULE_DIR);
 #ifdef __APPLE__
 #include "TargetConditionals.h"
-#if TARGET_OS_OSX
+/* Only auto-relocate on macOS, not watchOS etc; older macOS SDKs only define TARGET_OS_MAC */
+#if (defined (TARGET_OS_OSX) && TARGET_OS_OSX) || \
+     (!defined (TARGET_OS_OSX) && defined (TARGET_OS_MAC) && TARGET_OS_MAC)
 #include <dlfcn.h>
       {
         g_autofree gchar *path = NULL;
