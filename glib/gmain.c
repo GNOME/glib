@@ -4522,10 +4522,12 @@ g_main_loop_run (GMainLoop *loop)
       g_assert (got_ownership);
     }
 
-  if (loop->context->in_check_or_prepare)
+  if G_UNLIKELY (loop->context->in_check_or_prepare)
     {
       g_warning ("g_main_loop_run(): called recursively from within a source's "
 		 "check() or prepare() member, iteration not possible.");
+      g_main_context_release_unlocked (loop->context);
+      UNLOCK_CONTEXT (loop->context);
       g_main_loop_unref (loop);
       return;
     }
