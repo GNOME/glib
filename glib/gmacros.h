@@ -918,9 +918,6 @@
 #  else
 #    define NULL ((void*) 0)
 #  endif /* G_CXX_STD_CHECK_VERSION (11) */
-#elif G_CXX_STD_CHECK_VERSION (11)
-#  undef NULL
-#  define NULL (nullptr)
 #endif
 
 #ifndef	FALSE
