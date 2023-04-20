@@ -195,7 +195,7 @@ test_mutex_perf (gconstpointer data)
   gint x = -1;
   guint i;
 
-  count_to = g_test_perf () ?  100000000 : 1;
+  count_to = g_test_perf () ?  100000000 : n_threads + 1;
 
   g_assert (n_threads <= G_N_ELEMENTS (threads));
 

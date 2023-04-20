@@ -204,7 +204,7 @@ test_mutex_perf (gconstpointer data)
 
   n_threads = c / 256;
   depth = c % 256;
-  count_to = g_test_perf () ? 100000000 : 1;
+  count_to = g_test_perf () ? 100000000 : n_threads + 1;
 
   for (i = 0; i < n_threads - 1; i++)
     threads[i] = g_thread_new ("test", addition_thread, &x);
