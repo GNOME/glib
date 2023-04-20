@@ -22,7 +22,7 @@
 #include <gio/gio.h>
 #include <gstdio.h>
 
-#ifdef G_OS_UNIX
+#if defined (G_OS_UNIX) && !defined (__APPLE__)
 #include <gio/gdesktopappinfo.h>
 #endif
 
@@ -49,7 +49,7 @@ teardown (Fixture       *fixture,
   g_clear_pointer (&fixture->applications_dir, g_free);
 }
 
-#ifdef G_OS_UNIX
+#if defined (G_OS_UNIX) && !defined (__APPLE__)
 static gboolean
 create_app (gpointer data)
 {
@@ -97,13 +97,13 @@ timeout_cb (gpointer user_data)
 
   return G_SOURCE_REMOVE;
 }
-#endif  /* G_OS_UNIX */
+#endif  /* defined (G_OS_UNIX) && !defined (__APPLE__) */
 
 static void
 test_app_monitor (Fixture       *fixture,
                   gconstpointer  user_data)
 {
-#ifdef G_OS_UNIX
+#if defined (G_OS_UNIX) && !defined (__APPLE__)
   gchar *app_path;
   GAppInfoMonitor *monitor;
   GMainContext *context = NULL;  /* use the global default main context */
@@ -162,9 +162,11 @@ test_app_monitor (Fixture       *fixture,
   g_object_unref (monitor);
 
   g_free (app_path);
-#else  /* if !G_OS_UNIX */
+#elif defined (__APPLE__)
+  g_test_skip (".desktop monitor on macos");
+#else  /* if !(defined (G_OS_UNIX) && !defined (__APPLE__)) */
   g_test_skip (".desktop monitor on win32");
-#endif  /* !G_OS_UNIX */
+#endif  /* !(defined (G_OS_UNIX) && !defined (__APPLE__)) */
 }
 
 int
