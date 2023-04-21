@@ -1,3 +1,48 @@
+Overview of changes in GLib 2.76.2, 2023-04-21
+==============================================
+
+* Fixed various build failures in less common setups (#2861 by Philip Withnall,
+  #2973 by Marco Trevisan)
+
+* Fix launching files in Windows via GtkFileLauncher (#2972 by Luca Bacci)
+
+* Bugs fixed:
+  - #95 GMarkupParser documentation completion (David King)
+  - #252 Disagreement between runtime and docs on whether interfaces are
+    "classed" (Philip Withnall)
+  - #322 gdbus-example-proxy-subclass.c is not complete. (Colin Walters)
+  - #799 GAppInfoMonitor documentation deficiencies (Philip Withnall)
+  - #2861 Check for __kernel_long_t when enabling futex()
+  - #2864 Documentation mentions non-existing function `g_value_free` (Philip
+    Withnall)
+  - #2952 Not clear that GPollableInputStream methods are undefined if
+    can_poll() returns FALSE (Philip Withnall)
+  - #2953 Missing docs for GOption (commandline parser) (Sam Thursfield)
+  - #2960 GDebugControllerDBus wrong default in documentation (Philip Withnall)
+  - #2963 Probably wrong information regarding G_PLATFORM_WIN32 in
+    README.win32.md
+  - #2966 Multiple Definition Error When Generating gio/tests/test5.gresource
+    (Dan Yeaw)
+  - #2969 user docs: GLib.DateTime.format: broken highlighting (Philip Withnall)
+  - #2972 GtkFileLauncher: generated paths not recognized on Win32 (Luca Bacci)
+  - #2973 Build failed due to NULL pointer redefinition in C++ (Marco Trevisan)
+  - #2982 Build randomly fails with: 'gmodule/gmodule-visibility.h' file not
+    found (Marco Trevisan)
+  - !3326 unicode: add tests for g_utf8_normalize() and empty strings
+  - !3333 build: Drop old .gitignore files from test directories
+  - !3344 tools: Drop check-abis.sh script
+  - !3345 docs: Drop section about default branch renaming from README.md
+  - !3351 tests: Update Unicode normalisation tests from Unicode 15
+  - !3357 Make clang++ happier when using G_STATIC_ASSERT
+  - !3365 gwin32: Avoid use of function call with side effect in g_return_*
+    macro
+  - !3377 gsignal: Clarify documentation for GSignalMatchType matching
+
+* Translation updates:
+  - Bulgarian (Alexander Shopov)
+  - Chinese (China) (Boyuan Yang)
+
+
 Overview of changes in GLib 2.76.1, 2023-03-22
 ==============================================
 
