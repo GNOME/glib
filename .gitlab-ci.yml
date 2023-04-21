@@ -190,7 +190,7 @@ macos:
             --wrap-mode=default
             --werror
             _build
-    - ninja -C _build
+    # - ninja -C _build
     - .gitlab-ci/run-tests.sh
   artifacts:
     reports:
