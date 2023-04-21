@@ -17,7 +17,8 @@ meson test -v \
         -C _build \
         --suite=core
 ret=$?
-git diff | patch -Rp1 || true
+#git diff | patch -Rp1 || true
+git stash
 
 exit $ret
 EOF
