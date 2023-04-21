@@ -1352,8 +1352,8 @@ g_variant_new_printf (const gchar *format_string,
  * g_variant_new_object_path:
  * @object_path: a normal C nul-terminated string
  *
- * Creates a D-Bus object path #GVariant with the contents of @string.
- * @string must be a valid D-Bus object path.  Use
+ * Creates a D-Bus object path #GVariant with the contents of @object_path.
+ * @object_path must be a valid D-Bus object path.  Use
  * g_variant_is_object_path() if you're not sure.
  *
  * Returns: (transfer none): a floating reference to a new object path #GVariant instance
