@@ -4,13 +4,23 @@ set -ex
 
 ./.gitlab-ci/check-missing-install-tag.py _build
 
-meson test -v \
-        -C _build \
-        --timeout-multiplier "${MESON_TEST_TIMEOUT_MULTIPLIER}" \
-        "$@"
+git fetch origin main
+git fetch --tags
+git bisect start
+git bisect good 2.76.1
+git bisect bad origin/main
 
-# Run only the flaky tests, so we can log the failures but without hard failing
+cat <<"EOF" > /tmp/bisect.sh
+# git show d296e9455976f1bcf62a83750606befff72aa06e | patch -f -p1 || true
+echo "int main(void) { return 77; }" > gio/tests/appmonitor.c
 meson test -v \
         -C _build \
-        --timeout-multiplier "${MESON_TEST_TIMEOUT_MULTIPLIER}" \
-        "$@" --setup=unstable_tests --suite=failing --suite=flaky || true
+        rec-mutex
+ret=$?
+git diff | patch -Rp1 || true
+
+exit $ret
+EOF
+
+chmod +x /tmp/bisect.sh
+git bisect run bash -x /tmp/bisect.sh
