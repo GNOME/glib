@@ -170,6 +170,7 @@ macos:
   needs: []
   variables:
     GIT_SUBMODULE_STRATEGY: normal
+    GIT_STRATEGY: clone
     # libpcre2 gets built as a subproject, but the default Clang options on
     # macOS limit string lengths to 4095B — pcre2_error.c has a string of length
     # 4380B
