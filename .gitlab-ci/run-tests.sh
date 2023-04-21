@@ -15,7 +15,7 @@ cat <<"EOF" > /tmp/bisect.sh
 echo "int main(void) { return 77; }" > gio/tests/appmonitor.c
 meson test -v \
         -C _build \
-        rec-mutex
+        --suite=core
 ret=$?
 git diff | patch -Rp1 || true
 
