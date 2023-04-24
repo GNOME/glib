@@ -3689,12 +3689,14 @@ g_ref_count_init
 g_ref_count_inc
 g_ref_count_dec
 g_ref_count_compare
+G_REF_COUNT_INIT
 <SUBSECTION>
 gatomicrefcount
 g_atomic_ref_count_init
 g_atomic_ref_count_inc
 g_atomic_ref_count_dec
 g_atomic_ref_count_compare
+G_ATOMIC_REF_COUNT_INIT
 </SECTION>
 
 <SECTION>
