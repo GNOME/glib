@@ -3525,7 +3525,7 @@ g_main_dispatch (GMainContext *context)
  *
  * You must be the owner of a context before you
  * can call g_main_context_prepare(), g_main_context_query(),
- * g_main_context_check(), g_main_context_dispatch().
+ * g_main_context_check(), g_main_context_dispatch(), g_main_context_release().
  *
  * Since 2.76 @context can be %NULL to use the global-default
  * main context.
@@ -3583,14 +3583,31 @@ g_main_context_acquire_unlocked (GMainContext *context)
  * with g_main_context_acquire(). If the context was acquired multiple
  * times, the ownership will be released only when g_main_context_release()
  * is called as many times as it was acquired.
+ *
+ * You must have successfully acquired the context with
+ * g_main_context_acquire() before you may call this function.
  **/
 void
 g_main_context_release (GMainContext *context)
 {
   if (context == NULL)
     context = g_main_context_default ();
-  
+
   LOCK_CONTEXT (context);
+
+#ifndef G_DISABLE_CHECKS
+  if (G_UNLIKELY (context->owner != G_THREAD_SELF || context->owner_count == 0))
+    {
+      GThread *context_owner = context->owner;
+      guint context_owner_count = context->owner_count;
+
+      UNLOCK_CONTEXT (context);
+
+      g_critical ("g_main_context_release() called on a context (%p, owner %p, "
+                  "owner count %u) which is not acquired by the current thread",
+                  context, context_owner, context_owner_count);
+    }
+#endif  /* !G_DISABLE_CHECKS */
 
   g_main_context_release_unlocked (context);
 
