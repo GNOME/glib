@@ -2071,6 +2071,9 @@ g_socket_client_enumerator_callback (GObject      *object,
   attempt->connection = (GIOStream *)g_socket_connection_factory_create_connection (socket);
   attempt->timeout_source = g_timeout_source_new (HAPPY_EYEBALLS_CONNECTION_ATTEMPT_TIMEOUT_MS);
 
+  g_debug ("%s: starting connection attempt %p for GSocketClientAsyncConnectData %p",
+           G_STRFUNC, attempt, data);
+
   if (G_IS_PROXY_ADDRESS (address) && data->client->priv->enable_proxy)
     attempt->proxy_addr = g_object_ref (G_PROXY_ADDRESS (address));
 
@@ -2199,6 +2202,10 @@ g_socket_client_connect_async (GSocketClient       *client,
           g_cancellable_connect (cancellable, G_CALLBACK (on_connection_cancelled),
                                  g_object_ref (data->enumeration_cancellable), g_object_unref);
     }
+
+  g_debug ("%s: starting new g_socket_client_connect_async() with GTask %p "
+           "and GSocketClientAsyncConnectData %p",
+           G_STRFUNC, data->task, data);
 
   enumerator_next_async (data, FALSE);
 }
