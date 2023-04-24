@@ -254,6 +254,10 @@ lookup_by_name_with_flags_async (GResolver                *resolver,
 
   data = lookup_data_new (hostname, flags_to_family (flags));
   task = g_task_new (resolver, cancellable, callback, user_data);
+
+  g_debug ("%s: starting new lookup for %s with GTask %p, LookupData %p",
+           G_STRFUNC, hostname, task, data);
+
   g_task_set_source_tag (task, lookup_by_name_with_flags_async);
   g_task_set_name (task, "[gio] resolver lookup");
   g_task_set_task_data (task, data, (GDestroyNotify)lookup_data_free);
