@@ -446,11 +446,25 @@ static void g_source_set_priority_unlocked      (GSource      *source,
 static void g_child_source_remove_internal      (GSource      *child_source,
                                                  GMainContext *context);
 
-static void g_main_context_poll                 (GMainContext *context,
-						 gint          timeout,
-						 gint          priority,
-						 GPollFD      *fds,
-						 gint          n_fds);
+static gboolean g_main_context_acquire_unlocked (GMainContext *context);
+static void g_main_context_release_unlocked     (GMainContext *context);
+static gboolean g_main_context_prepare_unlocked (GMainContext *context,
+                                                 gint         *priority);
+static gint g_main_context_query_unlocked       (GMainContext *context,
+                                                 gint          max_priority,
+                                                 gint         *timeout,
+                                                 GPollFD      *fds,
+                                                 gint          n_fds);
+static gboolean g_main_context_check_unlocked   (GMainContext *context,
+                                                 gint          max_priority,
+                                                 GPollFD      *fds,
+                                                 gint          n_fds);
+static void g_main_context_dispatch_unlocked    (GMainContext *context);
+static void g_main_context_poll_unlocked        (GMainContext *context,
+                                                 int           timeout,
+                                                 int           priority,
+                                                 GPollFD      *fds,
+                                                 int           n_fds);
 static void g_main_context_add_poll_unlocked    (GMainContext *context,
 						 gint          priority,
 						 GPollFD      *fd);
@@ -3523,12 +3537,23 @@ gboolean
 g_main_context_acquire (GMainContext *context)
 {
   gboolean result = FALSE;
-  GThread *self = G_THREAD_SELF;
 
   if (context == NULL)
     context = g_main_context_default ();
   
   LOCK_CONTEXT (context);
+
+  result = g_main_context_acquire_unlocked (context);
+
+  UNLOCK_CONTEXT (context); 
+
+  return result;
+}
+
+static gboolean
+g_main_context_acquire_unlocked (GMainContext *context)
+{
+  GThread *self = G_THREAD_SELF;
 
   if (!context->owner)
     {
@@ -3540,16 +3565,13 @@ g_main_context_acquire (GMainContext *context)
   if (context->owner == self)
     {
       context->owner_count++;
-      result = TRUE;
+      return TRUE;
     }
   else
     {
       TRACE (GLIB_MAIN_CONTEXT_ACQUIRE (context, FALSE  /* failure */));
+      return FALSE;
     }
-
-  UNLOCK_CONTEXT (context); 
-
-  return result;
 }
 
 /**
@@ -3570,6 +3592,14 @@ g_main_context_release (GMainContext *context)
   
   LOCK_CONTEXT (context);
 
+  g_main_context_release_unlocked (context);
+
+  UNLOCK_CONTEXT (context);
+}
+
+static void
+g_main_context_release_unlocked (GMainContext *context)
+{
   context->owner_count--;
   if (context->owner_count == 0)
     {
@@ -3592,8 +3622,6 @@ g_main_context_release (GMainContext *context)
 	    g_mutex_unlock (waiter->mutex);
 	}
     }
-
-  UNLOCK_CONTEXT (context); 
 }
 
 static gboolean
@@ -3706,16 +3734,29 @@ gboolean
 g_main_context_prepare (GMainContext *context,
 			gint         *priority)
 {
-  guint i;
-  gint n_ready = 0;
-  gint current_priority = G_MAXINT;
-  GSource *source;
-  GSourceIter iter;
+  gboolean ready;
 
   if (context == NULL)
     context = g_main_context_default ();
   
   LOCK_CONTEXT (context);
+
+  ready = g_main_context_prepare_unlocked (context, priority);
+
+  UNLOCK_CONTEXT (context);
+  
+  return ready;
+}
+
+static gboolean
+g_main_context_prepare_unlocked (GMainContext *context,
+                                 gint         *priority)
+{
+  guint i;
+  gint n_ready = 0;
+  gint current_priority = G_MAXINT;
+  GSource *source;
+  GSourceIter iter;
 
   context->time_is_fresh = FALSE;
 
@@ -3723,7 +3764,6 @@ g_main_context_prepare (GMainContext *context,
     {
       g_warning ("g_main_context_prepare() called recursively from within a source's check() or "
 		 "prepare() member.");
-      UNLOCK_CONTEXT (context);
       return FALSE;
     }
 
@@ -3736,7 +3776,6 @@ g_main_context_prepare (GMainContext *context,
       if (dispatch)
 	g_main_dispatch (context, &current_time);
       
-      UNLOCK_CONTEXT (context);
       return TRUE;
     }
 #endif
@@ -3854,8 +3893,6 @@ g_main_context_prepare (GMainContext *context,
   g_source_iter_clear (&iter);
 
   TRACE (GLIB_MAIN_CONTEXT_AFTER_PREPARE (context, current_priority, n_ready));
-
-  UNLOCK_CONTEXT (context);
   
   if (priority)
     *priority = current_priority;
@@ -3893,14 +3930,30 @@ g_main_context_query (GMainContext *context,
 		      gint          n_fds)
 {
   gint n_poll;
-  GPollRec *pollrec, *lastpollrec;
-  gushort events;
 
   if (context == NULL)
     context = g_main_context_default ();
   
   LOCK_CONTEXT (context);
 
+  n_poll = g_main_context_query_unlocked (context, max_priority, timeout, fds, n_fds);
+
+  UNLOCK_CONTEXT (context);
+
+  return n_poll;
+}
+
+static gint
+g_main_context_query_unlocked (GMainContext *context,
+                               gint          max_priority,
+                               gint         *timeout,
+                               GPollFD      *fds,
+                               gint          n_fds)
+{
+  gint n_poll;
+  GPollRec *pollrec, *lastpollrec;
+  gushort events;
+  
   TRACE (GLIB_MAIN_CONTEXT_BEFORE_QUERY (context, max_priority));
 
   /* fds is filled sequentially from poll_records. Since poll_records
@@ -3957,8 +4010,6 @@ g_main_context_query (GMainContext *context,
   TRACE (GLIB_MAIN_CONTEXT_AFTER_QUERY (context, context->timeout,
                                         fds, n_poll));
 
-  UNLOCK_CONTEXT (context);
-
   return n_poll;
 }
 
@@ -3990,6 +4041,23 @@ g_main_context_check (GMainContext *context,
 		      GPollFD      *fds,
 		      gint          n_fds)
 {
+  gboolean ready;
+   
+  LOCK_CONTEXT (context);
+
+  ready = g_main_context_check_unlocked (context, max_priority, fds, n_fds);
+
+  UNLOCK_CONTEXT (context);
+
+  return ready;
+}
+
+static gboolean
+g_main_context_check_unlocked (GMainContext *context,
+                               gint          max_priority,
+                               GPollFD      *fds,
+                               gint          n_fds)
+{
   GSource *source;
   GSourceIter iter;
   GPollRec *pollrec;
@@ -3999,13 +4067,10 @@ g_main_context_check (GMainContext *context,
   if (context == NULL)
     context = g_main_context_default ();
    
-  LOCK_CONTEXT (context);
-
   if (context->in_check_or_prepare)
     {
       g_warning ("g_main_context_check() called recursively from within a source's check() or "
 		 "prepare() member.");
-      UNLOCK_CONTEXT (context);
       return FALSE;
     }
 
@@ -4031,7 +4096,6 @@ g_main_context_check (GMainContext *context,
     {
       TRACE (GLIB_MAIN_CONTEXT_AFTER_CHECK (context, 0));
 
-      UNLOCK_CONTEXT (context);
       return FALSE;
     }
 
@@ -4167,8 +4231,6 @@ g_main_context_check (GMainContext *context,
 
   TRACE (GLIB_MAIN_CONTEXT_AFTER_CHECK (context, n_ready));
 
-  UNLOCK_CONTEXT (context);
-
   return n_ready > 0;
 }
 
@@ -4193,6 +4255,14 @@ g_main_context_dispatch (GMainContext *context)
 
   LOCK_CONTEXT (context);
 
+  g_main_context_dispatch_unlocked (context);
+
+  UNLOCK_CONTEXT (context);
+}
+
+static void
+g_main_context_dispatch_unlocked (GMainContext *context)
+{
   TRACE (GLIB_MAIN_CONTEXT_BEFORE_DISPATCH (context));
 
   if (context->pending_dispatches->len > 0)
@@ -4201,16 +4271,14 @@ g_main_context_dispatch (GMainContext *context)
     }
 
   TRACE (GLIB_MAIN_CONTEXT_AFTER_DISPATCH (context));
-
-  UNLOCK_CONTEXT (context);
 }
 
 /* HOLDS context lock */
 static gboolean
-g_main_context_iterate (GMainContext *context,
-			gboolean      block,
-			gboolean      dispatch,
-			GThread      *self)
+g_main_context_iterate_unlocked (GMainContext *context,
+                                 gboolean      block,
+                                 gboolean      dispatch,
+                                 GThread      *self)
 {
   gint max_priority = 0;
   gint timeout;
@@ -4219,15 +4287,11 @@ g_main_context_iterate (GMainContext *context,
   GPollFD *fds = NULL;
   gint64 begin_time_nsec G_GNUC_UNUSED;
 
-  UNLOCK_CONTEXT (context);
-
   begin_time_nsec = G_TRACE_CURRENT_TIME;
 
-  if (!g_main_context_acquire (context))
+  if (!g_main_context_acquire_unlocked (context))
     {
       gboolean got_ownership;
-
-      LOCK_CONTEXT (context);
 
       if (!block)
 	return FALSE;
@@ -4239,8 +4303,6 @@ g_main_context_iterate (GMainContext *context,
       if (!got_ownership)
 	return FALSE;
     }
-  else
-    LOCK_CONTEXT (context);
   
   if (!context->cached_poll_array)
     {
@@ -4251,37 +4313,32 @@ g_main_context_iterate (GMainContext *context,
   allocated_nfds = context->cached_poll_array_size;
   fds = context->cached_poll_array;
   
-  UNLOCK_CONTEXT (context);
-
-  g_main_context_prepare (context, &max_priority); 
+  g_main_context_prepare_unlocked (context, &max_priority);
   
-  while ((nfds = g_main_context_query (context, max_priority, &timeout, fds, 
-				       allocated_nfds)) > allocated_nfds)
+  while ((nfds = g_main_context_query_unlocked (
+            context, max_priority, &timeout, fds,
+            allocated_nfds)) > allocated_nfds)
     {
-      LOCK_CONTEXT (context);
       g_free (fds);
       context->cached_poll_array_size = allocated_nfds = nfds;
       context->cached_poll_array = fds = g_new (GPollFD, nfds);
-      UNLOCK_CONTEXT (context);
     }
 
   if (!block)
     timeout = 0;
   
-  g_main_context_poll (context, timeout, max_priority, fds, nfds);
+  g_main_context_poll_unlocked (context, timeout, max_priority, fds, nfds);
   
-  some_ready = g_main_context_check (context, max_priority, fds, nfds);
+  some_ready = g_main_context_check_unlocked (context, max_priority, fds, nfds);
   
   if (dispatch)
-    g_main_context_dispatch (context);
+    g_main_context_dispatch_unlocked (context);
   
-  g_main_context_release (context);
+  g_main_context_release_unlocked (context);
 
   g_trace_mark (begin_time_nsec, G_TRACE_CURRENT_TIME - begin_time_nsec,
                 "GLib", "g_main_context_iterate",
                 "Context %p, %s ⇒ %s", context, block ? "blocking" : "non-blocking", some_ready ? "dispatched" : "nothing");
-
-  LOCK_CONTEXT (context);
 
   return some_ready;
 }
@@ -4304,7 +4361,7 @@ g_main_context_pending (GMainContext *context)
     context = g_main_context_default();
 
   LOCK_CONTEXT (context);
-  retval = g_main_context_iterate (context, FALSE, FALSE, G_THREAD_SELF);
+  retval = g_main_context_iterate_unlocked (context, FALSE, FALSE, G_THREAD_SELF);
   UNLOCK_CONTEXT (context);
   
   return retval;
@@ -4340,7 +4397,7 @@ g_main_context_iteration (GMainContext *context, gboolean may_block)
     context = g_main_context_default();
   
   LOCK_CONTEXT (context);
-  retval = g_main_context_iterate (context, may_block, TRUE, G_THREAD_SELF);
+  retval = g_main_context_iterate_unlocked (context, may_block, TRUE, G_THREAD_SELF);
   UNLOCK_CONTEXT (context);
   
   return retval;
@@ -4438,13 +4495,13 @@ g_main_loop_run (GMainLoop *loop)
   /* Hold a reference in case the loop is unreffed from a callback function */
   g_atomic_int_inc (&loop->ref_count);
 
-  if (!g_main_context_acquire (loop->context))
+  LOCK_CONTEXT (loop->context);
+
+  if (!g_main_context_acquire_unlocked (loop->context))
     {
       gboolean got_ownership = FALSE;
       
       /* Another thread owns this context */
-      LOCK_CONTEXT (loop->context);
-
       g_atomic_int_set (&loop->is_running, TRUE);
 
       while (g_atomic_int_get (&loop->is_running) && !got_ownership)
@@ -4454,33 +4511,34 @@ g_main_loop_run (GMainLoop *loop)
       
       if (!g_atomic_int_get (&loop->is_running))
 	{
-	  UNLOCK_CONTEXT (loop->context);
 	  if (got_ownership)
-	    g_main_context_release (loop->context);
+	    g_main_context_release_unlocked (loop->context);
+
+	  UNLOCK_CONTEXT (loop->context);
 	  g_main_loop_unref (loop);
 	  return;
 	}
 
       g_assert (got_ownership);
     }
-  else
-    LOCK_CONTEXT (loop->context);
 
-  if (loop->context->in_check_or_prepare)
+  if G_UNLIKELY (loop->context->in_check_or_prepare)
     {
       g_warning ("g_main_loop_run(): called recursively from within a source's "
 		 "check() or prepare() member, iteration not possible.");
+      g_main_context_release_unlocked (loop->context);
+      UNLOCK_CONTEXT (loop->context);
       g_main_loop_unref (loop);
       return;
     }
 
   g_atomic_int_set (&loop->is_running, TRUE);
   while (g_atomic_int_get (&loop->is_running))
-    g_main_context_iterate (loop->context, TRUE, TRUE, self);
+    g_main_context_iterate_unlocked (loop->context, TRUE, TRUE, self);
+
+  g_main_context_release_unlocked (loop->context);
 
   UNLOCK_CONTEXT (loop->context);
-  
-  g_main_context_release (loop->context);
   
   g_main_loop_unref (loop);
 }
@@ -4548,11 +4606,11 @@ g_main_loop_get_context (GMainLoop *loop)
 
 /* HOLDS: context's lock */
 static void
-g_main_context_poll (GMainContext *context,
-		     gint          timeout,
-		     gint          priority,
-		     GPollFD      *fds,
-		     gint          n_fds)
+g_main_context_poll_unlocked (GMainContext *context,
+                              int           timeout,
+                              int           priority,
+                              GPollFD      *fds,
+                              int           n_fds)
 {
 #ifdef  G_MAIN_POLL_DEBUG
   GTimer *poll_timer;
@@ -4575,13 +4633,12 @@ g_main_context_poll (GMainContext *context,
 	  poll_timer = g_timer_new ();
 	}
 #endif
-
-      LOCK_CONTEXT (context);
-
       poll_func = context->poll_func;
 
       UNLOCK_CONTEXT (context);
       ret = (*poll_func) (fds, n_fds, timeout);
+      LOCK_CONTEXT (context);
+
       errsv = errno;
       if (ret < 0 && errsv != EINTR)
 	{
@@ -4596,8 +4653,6 @@ g_main_context_poll (GMainContext *context,
 #ifdef	G_MAIN_POLL_DEBUG
       if (_g_main_poll_debug)
 	{
-	  LOCK_CONTEXT (context);
-
 	  g_print ("g_main_poll(%d) timeout: %d - elapsed %12.10f seconds",
 		   n_fds,
 		   timeout,
@@ -4634,8 +4689,6 @@ g_main_context_poll (GMainContext *context,
 	      pollrec = pollrec->next;
 	    }
 	  g_print ("\n");
-
-	  UNLOCK_CONTEXT (context);
 	}
 #endif
     } /* if (n_fds || timeout != 0) */
