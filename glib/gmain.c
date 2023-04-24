@@ -3121,7 +3121,7 @@ get_dispatch (void)
  *
  * Returns the depth of the stack of calls to
  * g_main_context_dispatch() on any #GMainContext in the current thread.
- *  That is, when called from the toplevel, it gives 0. When
+ * That is, when called from the toplevel, it gives 0. When
  * called from within a callback from g_main_context_iteration()
  * (or g_main_loop_run(), etc.) it returns 1. When called from within 
  * a callback to a recursive call to g_main_context_iteration(),

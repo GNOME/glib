@@ -1760,7 +1760,7 @@ g_uri_join_internal (GUriFlags    flags,
  *
  * When @host is present, @path must either be empty or begin with a slash (`/`)
  * character. When @host is not present, @path cannot begin with two slash
-   characters (`//`). See
+ * characters (`//`). See
  * [RFC 3986, section 3](https://tools.ietf.org/html/rfc3986#section-3).
  *
  * See also g_uri_join_with_user(), which allows specifying the
