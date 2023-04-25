@@ -71,24 +71,75 @@ g_resolver_error_from_addrinfo_error (gint err)
 }
 
 typedef struct {
-  char *hostname;
-  int address_family;
+  enum {
+    LOOKUP_BY_NAME,
+    LOOKUP_BY_ADDRESS,
+    LOOKUP_RECORDS,
+  } lookup_type;
+
+  union {
+    struct {
+      char *hostname;
+      int address_family;
+    } lookup_by_name;
+    struct {
+      GInetAddress *address;  /* (owned) */
+    } lookup_by_address;
+    struct {
+      char *rrname;
+      GResolverRecordType record_type;
+    } lookup_records;
+  };
 } LookupData;
 
 static LookupData *
-lookup_data_new (const char *hostname,
-                 int         address_family)
+lookup_data_new_by_name (const char *hostname,
+                         int         address_family)
 {
-  LookupData *data = g_new (LookupData, 1);
-  data->hostname = g_strdup (hostname);
-  data->address_family = address_family;
-  return data;
+  LookupData *data = g_new0 (LookupData, 1);
+  data->lookup_type = LOOKUP_BY_NAME;
+  data->lookup_by_name.hostname = g_strdup (hostname);
+  data->lookup_by_name.address_family = address_family;
+  return g_steal_pointer (&data);
+}
+
+static LookupData *
+lookup_data_new_by_address (GInetAddress *address)
+{
+  LookupData *data = g_new0 (LookupData, 1);
+  data->lookup_type = LOOKUP_BY_ADDRESS;
+  data->lookup_by_address.address = g_object_ref (address);
+  return g_steal_pointer (&data);
+}
+
+static LookupData *
+lookup_data_new_records (const gchar         *rrname,
+                         GResolverRecordType  record_type)
+{
+  LookupData *data = g_new0 (LookupData, 1);
+  data->lookup_type = LOOKUP_RECORDS;
+  data->lookup_records.rrname = g_strdup (rrname);
+  data->lookup_records.record_type = record_type;
+  return g_steal_pointer (&data);
 }
 
 static void
 lookup_data_free (LookupData *data)
 {
-  g_free (data->hostname);
+  switch (data->lookup_type) {
+  case LOOKUP_BY_NAME:
+    g_free (data->lookup_by_name.hostname);
+    break;
+  case LOOKUP_BY_ADDRESS:
+    g_clear_object (&data->lookup_by_address.address);
+    break;
+  case LOOKUP_RECORDS:
+    g_free (data->lookup_records.rrname);
+    break;
+  default:
+    g_assert_not_reached ();
+  }
+
   g_free (data);
 }
 
@@ -99,7 +150,7 @@ do_lookup_by_name (GTask         *task,
                    GCancellable  *cancellable)
 {
   LookupData *lookup_data = task_data;
-  const char *hostname = lookup_data->hostname;
+  const char *hostname = lookup_data->lookup_by_name.hostname;
   struct addrinfo *res = NULL;
   GList *addresses;
   gint retval;
@@ -115,7 +166,7 @@ do_lookup_by_name (GTask         *task,
   addrinfo_hints.ai_socktype = SOCK_STREAM;
   addrinfo_hints.ai_protocol = IPPROTO_TCP;
 
-  addrinfo_hints.ai_family = lookup_data->address_family;
+  addrinfo_hints.ai_family = lookup_data->lookup_by_name.address_family;
   retval = getaddrinfo (hostname, NULL, &addrinfo_hints, &res);
 
   if (retval == 0)
@@ -190,11 +241,11 @@ lookup_by_name (GResolver     *resolver,
   GList *addresses;
   LookupData *data;
 
-  data = lookup_data_new (hostname, AF_UNSPEC);
+  data = lookup_data_new_by_name (hostname, AF_UNSPEC);
   task = g_task_new (resolver, cancellable, NULL, NULL);
   g_task_set_source_tag (task, lookup_by_name);
   g_task_set_name (task, "[gio] resolver lookup");
-  g_task_set_task_data (task, data, (GDestroyNotify)lookup_data_free);
+  g_task_set_task_data (task, g_steal_pointer (&data), (GDestroyNotify) lookup_data_free);
   g_task_set_return_on_cancel (task, TRUE);
   g_task_run_in_thread_sync (task, do_lookup_by_name);
   addresses = g_task_propagate_pointer (task, error);
@@ -232,11 +283,11 @@ lookup_by_name_with_flags (GResolver                 *resolver,
   GList *addresses;
   LookupData *data;
 
-  data = lookup_data_new (hostname, flags_to_family (flags));
+  data = lookup_data_new_by_name (hostname, flags_to_family (flags));
   task = g_task_new (resolver, cancellable, NULL, NULL);
   g_task_set_source_tag (task, lookup_by_name_with_flags);
   g_task_set_name (task, "[gio] resolver lookup");
-  g_task_set_task_data (task, data, (GDestroyNotify)lookup_data_free);
+  g_task_set_task_data (task, g_steal_pointer (&data), (GDestroyNotify) lookup_data_free);
   g_task_set_return_on_cancel (task, TRUE);
   g_task_run_in_thread_sync (task, do_lookup_by_name);
   addresses = g_task_propagate_pointer (task, error);
@@ -256,7 +307,7 @@ lookup_by_name_with_flags_async (GResolver                *resolver,
   GTask *task;
   LookupData *data;
 
-  data = lookup_data_new (hostname, flags_to_family (flags));
+  data = lookup_data_new_by_name (hostname, flags_to_family (flags));
   task = g_task_new (resolver, cancellable, callback, user_data);
 
   g_debug ("%s: starting new lookup for %s with GTask %p, LookupData %p",
@@ -264,7 +315,7 @@ lookup_by_name_with_flags_async (GResolver                *resolver,
 
   g_task_set_source_tag (task, lookup_by_name_with_flags_async);
   g_task_set_name (task, "[gio] resolver lookup");
-  g_task_set_task_data (task, data, (GDestroyNotify)lookup_data_free);
+  g_task_set_task_data (task, g_steal_pointer (&data), (GDestroyNotify) lookup_data_free);
   g_task_set_return_on_cancel (task, TRUE);
   g_task_run_in_thread (task, do_lookup_by_name);
   g_object_unref (task);
@@ -311,7 +362,8 @@ do_lookup_by_address (GTask         *task,
                       gpointer       task_data,
                       GCancellable  *cancellable)
 {
-  GInetAddress *address = task_data;
+  LookupData *data = task_data;
+  GInetAddress *address = data->lookup_by_address.address;
   struct sockaddr_storage sockaddr_address;
   gsize sockaddr_address_size;
   GSocketAddress *gsockaddr;
@@ -358,13 +410,15 @@ lookup_by_address (GResolver        *resolver,
                    GCancellable     *cancellable,
                    GError          **error)
 {
+  LookupData *data = NULL;
   GTask *task;
   gchar *name;
 
+  data = lookup_data_new_by_address (address);
   task = g_task_new (resolver, cancellable, NULL, NULL);
   g_task_set_source_tag (task, lookup_by_address);
   g_task_set_name (task, "[gio] resolver lookup");
-  g_task_set_task_data (task, g_object_ref (address), g_object_unref);
+  g_task_set_task_data (task, g_steal_pointer (&data), (GDestroyNotify) lookup_data_free);
   g_task_set_return_on_cancel (task, TRUE);
   g_task_run_in_thread_sync (task, do_lookup_by_address);
   name = g_task_propagate_pointer (task, error);
@@ -380,12 +434,14 @@ lookup_by_address_async (GResolver           *resolver,
                          GAsyncReadyCallback  callback,
                          gpointer             user_data)
 {
+  LookupData *data = NULL;
   GTask *task;
 
+  data = lookup_data_new_by_address (address);
   task = g_task_new (resolver, cancellable, callback, user_data);
   g_task_set_source_tag (task, lookup_by_address_async);
   g_task_set_name (task, "[gio] resolver lookup");
-  g_task_set_task_data (task, g_object_ref (address), g_object_unref);
+  g_task_set_task_data (task, g_steal_pointer (&data), (GDestroyNotify) lookup_data_free);
   g_task_set_return_on_cancel (task, TRUE);
   g_task_run_in_thread (task, do_lookup_by_address);
   g_object_unref (task);
@@ -1074,18 +1130,6 @@ g_resolver_records_from_DnsQuery (const gchar  *rrname,
 
 #endif
 
-typedef struct {
-  char *rrname;
-  GResolverRecordType record_type;
-} LookupRecordsData;
-
-static void
-free_lookup_records_data (LookupRecordsData *lrd)
-{
-  g_free (lrd->rrname);
-  g_slice_free (LookupRecordsData, lrd);
-}
-
 static void
 free_records (GList *records)
 {
@@ -1107,7 +1151,9 @@ do_lookup_records (GTask         *task,
                    gpointer       task_data,
                    GCancellable  *cancellable)
 {
-  LookupRecordsData *lrd = task_data;
+  LookupData *data = task_data;
+  const gchar *rrname = data->lookup_records.rrname;
+  GResolverRecordType record_type = data->lookup_records.record_type;
   GList *records;
   GError *error = NULL;
 
@@ -1134,20 +1180,20 @@ do_lookup_records (GTask         *task,
   if (res_ninit (&res) != 0)
     {
       g_task_return_new_error (task, G_RESOLVER_ERROR, G_RESOLVER_ERROR_INTERNAL,
-                               _("Error resolving “%s”"), lrd->rrname);
+                               _("Error resolving “%s”"), rrname);
       return;
     }
 #endif
 
-  rrtype = g_resolver_record_type_to_rrtype (lrd->record_type);
+  rrtype = g_resolver_record_type_to_rrtype (record_type);
   answer = g_byte_array_new ();
   for (;;)
     {
       g_byte_array_set_size (answer, len * 2);
 #if defined(HAVE_RES_NQUERY)
-      len = res_nquery (&res, lrd->rrname, C_IN, rrtype, answer->data, answer->len);
+      len = res_nquery (&res, rrname, C_IN, rrtype, answer->data, answer->len);
 #else
-      len = res_query (lrd->rrname, C_IN, rrtype, answer->data, answer->len);
+      len = res_query (rrname, C_IN, rrtype, answer->data, answer->len);
 #endif
 
       /* If answer fit in the buffer then we're done */
@@ -1161,7 +1207,7 @@ do_lookup_records (GTask         *task,
     }
 
   herr = h_errno;
-  records = g_resolver_records_from_res_query (lrd->rrname, rrtype, answer->data, len, herr, &error);
+  records = g_resolver_records_from_res_query (rrname, rrtype, answer->data, len, herr, &error);
   g_byte_array_free (answer, TRUE);
 
 #ifdef HAVE_RES_NQUERY
@@ -1182,9 +1228,9 @@ do_lookup_records (GTask         *task,
   DNS_RECORD *results = NULL;
   WORD dnstype;
 
-  dnstype = g_resolver_record_type_to_dnstype (lrd->record_type);
-  status = DnsQuery_A (lrd->rrname, dnstype, DNS_QUERY_STANDARD, NULL, &results, NULL);
-  records = g_resolver_records_from_DnsQuery (lrd->rrname, dnstype, status, results, &error);
+  dnstype = g_resolver_record_type_to_dnstype (record_type);
+  status = DnsQuery_A (rrname, dnstype, DNS_QUERY_STANDARD, NULL, &results, NULL);
+  records = g_resolver_records_from_DnsQuery (rrname, dnstype, status, results, &error);
   if (results != NULL)
     DnsRecordListFree (results, DnsFreeRecordList);
 
@@ -1205,16 +1251,14 @@ lookup_records (GResolver              *resolver,
 {
   GTask *task;
   GList *records;
-  LookupRecordsData *lrd;
+  LookupData *data = NULL;
 
   task = g_task_new (resolver, cancellable, NULL, NULL);
   g_task_set_source_tag (task, lookup_records);
   g_task_set_name (task, "[gio] resolver lookup records");
 
-  lrd = g_slice_new (LookupRecordsData);
-  lrd->rrname = g_strdup (rrname);
-  lrd->record_type = record_type;
-  g_task_set_task_data (task, lrd, (GDestroyNotify) free_lookup_records_data);
+  data = lookup_data_new_records (rrname, record_type);
+  g_task_set_task_data (task, g_steal_pointer (&data), (GDestroyNotify) lookup_data_free);
 
   g_task_set_return_on_cancel (task, TRUE);
   g_task_run_in_thread_sync (task, do_lookup_records);
@@ -1233,16 +1277,14 @@ lookup_records_async (GResolver           *resolver,
                       gpointer             user_data)
 {
   GTask *task;
-  LookupRecordsData *lrd;
+  LookupData *data = NULL;
 
   task = g_task_new (resolver, cancellable, callback, user_data);
   g_task_set_source_tag (task, lookup_records_async);
   g_task_set_name (task, "[gio] resolver lookup records");
 
-  lrd = g_slice_new (LookupRecordsData);
-  lrd->rrname = g_strdup (rrname);
-  lrd->record_type = record_type;
-  g_task_set_task_data (task, lrd, (GDestroyNotify) free_lookup_records_data);
+  data = lookup_data_new_records (rrname, record_type);
+  g_task_set_task_data (task, g_steal_pointer (&data), (GDestroyNotify) lookup_data_free);
 
   g_task_set_return_on_cancel (task, TRUE);
   g_task_run_in_thread (task, do_lookup_records);
