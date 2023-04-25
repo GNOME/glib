@@ -41,6 +41,7 @@ static int nlookups = 0;
 static gboolean synchronous = FALSE;
 static guint connectable_count = 0;
 static GResolverRecordType record_type = 0;
+static gint timeout_ms = 0;
 
 static G_NORETURN void
 usage (void)
@@ -722,6 +723,7 @@ static const GOptionEntry option_entries[] = {
   { "synchronous", 's', 0, G_OPTION_ARG_NONE, &synchronous, "Synchronous connections", NULL },
   { "connectable", 'c', 0, G_OPTION_ARG_INT, &connectable_count, "Connectable count", "C" },
   { "special-type", 't', 0, G_OPTION_ARG_CALLBACK, record_type_arg, "Record type like MX, TXT, NS or SOA", "RR" },
+  { "timeout", 0, 0, G_OPTION_ARG_INT, &timeout_ms, "Timeout (ms)", "ms" },
   G_OPTION_ENTRY_NULL,
 };
 
@@ -748,6 +750,9 @@ main (int argc, char **argv)
     usage ();
 
   resolver = g_resolver_get_default ();
+
+  if (timeout_ms != 0)
+    g_resolver_set_timeout (resolver, timeout_ms);
 
   cancellable = g_cancellable_new ();
 
