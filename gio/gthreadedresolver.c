@@ -28,6 +28,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "glib/glib-private.h"
 #include "gthreadedresolver.h"
 #include "gnetworkingprivate.h"
 
@@ -120,6 +121,9 @@ typedef struct {
   GCond cond;  /* used for signalling completion of the task when running it sync */
   GMutex lock;
 
+  GSource *timeout_source;  /* (nullable) (owned) */
+  GSource *cancellable_source;  /* (nullable) (owned) */
+
   /* This enum indicates that a particular code path has claimed the
    * task and is shortly about to call g_task_return_*() on it.
    * This must be accessed with GThreadedResolver.lock held. */
@@ -127,6 +131,8 @@ typedef struct {
     {
       NOT_YET,
       COMPLETED,  /* libc lookup call has completed successfully or errored */
+      TIMED_OUT,
+      CANCELLED,
     } will_return;
 
   /* Whether the thread pool thread executing this lookup has finished executing
@@ -188,6 +194,18 @@ lookup_data_free (LookupData *data)
   default:
     g_assert_not_reached ();
   }
+
+  if (data->timeout_source != NULL)
+    {
+      g_source_destroy (data->timeout_source);
+      g_clear_pointer (&data->timeout_source, g_source_unref);
+    }
+
+  if (data->cancellable_source != NULL)
+    {
+      g_source_destroy (data->cancellable_source);
+      g_clear_pointer (&data->cancellable_source, g_source_unref);
+    }
 
   g_mutex_clear (&data->lock);
   g_cond_clear (&data->cond);
@@ -1358,15 +1376,94 @@ lookup_records_finish (GResolver     *resolver,
   return g_task_propagate_pointer (G_TASK (result), error);
 }
 
+/* Will be called in the GLib worker thread, so must lock all accesses to shared
+ * data. */
+static gboolean
+timeout_cb (gpointer user_data)
+{
+  GTask *task = G_TASK (user_data);
+  LookupData *data = g_task_get_task_data (task);
+  gboolean should_return;
+
+  g_mutex_lock (&data->lock);
+
+  should_return = g_atomic_int_compare_and_exchange (&data->will_return, NOT_YET, TIMED_OUT);
+  g_clear_pointer (&data->timeout_source, g_source_unref);
+
+  g_mutex_unlock (&data->lock);
+
+  if (should_return)
+    g_task_return_new_error (task, G_IO_ERROR, G_IO_ERROR_TIMED_OUT,
+                             _("Socket I/O timed out"));
+
+  /* Signal completion of the task. */
+  g_mutex_lock (&data->lock);
+  g_assert (!data->has_returned);
+  data->has_returned = TRUE;
+  g_cond_broadcast (&data->cond);
+  g_mutex_unlock (&data->lock);
+
+  return G_SOURCE_REMOVE;
+}
+
+/* Will be called in the GLib worker thread, so must lock all accesses to shared
+ * data. */
+static gboolean
+cancelled_cb (GCancellable *cancellable,
+              gpointer      user_data)
+{
+  GTask *task = G_TASK (user_data);
+  LookupData *data = g_task_get_task_data (task);
+  gboolean should_return;
+
+  g_mutex_lock (&data->lock);
+
+  g_assert (g_cancellable_is_cancelled (cancellable));
+  should_return = g_atomic_int_compare_and_exchange (&data->will_return, NOT_YET, CANCELLED);
+  g_clear_pointer (&data->cancellable_source, g_source_unref);
+
+  g_mutex_unlock (&data->lock);
+
+  if (should_return)
+    g_task_return_error_if_cancelled (task);
+
+  /* Signal completion of the task. */
+  g_mutex_lock (&data->lock);
+  g_assert (!data->has_returned);
+  data->has_returned = TRUE;
+  g_cond_broadcast (&data->cond);
+  g_mutex_unlock (&data->lock);
+
+  return G_SOURCE_REMOVE;
+}
+
 static void
 run_task_in_thread_pool_async (GThreadedResolver *self,
                                GTask             *task)
 {
   LookupData *data = g_task_get_task_data (task);
+  guint timeout_ms = g_resolver_get_timeout (G_RESOLVER (self));
+  GCancellable *cancellable = g_task_get_cancellable (task);
 
   g_mutex_lock (&data->lock);
 
   g_thread_pool_push (self->thread_pool, g_object_ref (task), NULL);
+
+  if (timeout_ms != 0)
+    {
+      data->timeout_source = g_timeout_source_new (timeout_ms);
+      g_source_set_static_name (data->timeout_source, "[gio] threaded resolver timeout");
+      g_source_set_callback (data->timeout_source, G_SOURCE_FUNC (timeout_cb), task, NULL);
+      g_source_attach (data->timeout_source, GLIB_PRIVATE_CALL (g_get_worker_context) ());
+    }
+
+  if (cancellable != NULL)
+    {
+      data->cancellable_source = g_cancellable_source_new (cancellable);
+      g_source_set_static_name (data->cancellable_source, "[gio] threaded resolver cancellable");
+      g_source_set_callback (data->cancellable_source, G_SOURCE_FUNC (cancelled_cb), task, NULL);
+      g_source_attach (data->cancellable_source, GLIB_PRIVATE_CALL (g_get_worker_context) ());
+    }
 
   g_mutex_unlock (&data->lock);
 }
