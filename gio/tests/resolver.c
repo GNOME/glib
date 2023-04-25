@@ -689,7 +689,7 @@ static gboolean
 async_cancel (GIOChannel *source, GIOCondition cond, gpointer cancel)
 {
   g_cancellable_cancel (cancel);
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }
 #endif
 
@@ -734,7 +734,7 @@ main (int argc, char **argv)
   GError *error = NULL;
 #ifdef G_OS_UNIX
   GIOChannel *chan;
-  guint watch;
+  GSource *watch_source = NULL;
 #endif
 
   context = g_option_context_new ("lookups ...");
@@ -768,7 +768,9 @@ main (int argc, char **argv)
       exit (1);
     }
   chan = g_io_channel_unix_new (cancel_fds[0]);
-  watch = g_io_add_watch (chan, G_IO_IN, async_cancel, cancellable);
+  watch_source = g_io_create_watch (chan, G_IO_IN);
+  g_source_set_callback (watch_source, (GSourceFunc) async_cancel, cancellable, NULL);
+  g_source_attach (watch_source, NULL);
   g_io_channel_unref (chan);
 #endif
 
@@ -792,7 +794,8 @@ main (int argc, char **argv)
   g_main_loop_unref (loop);
 
 #ifdef G_OS_UNIX
-  g_source_remove (watch);
+  g_source_destroy (watch_source);
+  g_clear_pointer (&watch_source, g_source_unref);
 #endif
   g_object_unref (cancellable);
   g_option_context_free (context);
