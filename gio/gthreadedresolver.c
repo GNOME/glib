@@ -39,6 +39,47 @@
 #include "gsocketaddress.h"
 #include "gsrvtarget.h"
 
+/*
+ * GThreadedResolver is a threaded wrapper around the system libc’s
+ * `getaddrinfo()`.
+ *
+ * It has to be threaded, as `getaddrinfo()` is synchronous. libc does provide
+ * `getaddrinfo_a()` as an asynchronous version of `getaddrinfo()`, but it does
+ * not integrate with a poll loop. It requires use of sigevent to notify of
+ * completion of an asynchronous operation. That either emits a signal, or calls
+ * a callback function in a newly spawned thread.
+ *
+ * A signal (`SIGEV_SIGNAL`) can’t be used for completion as (aside from being
+ * another expensive round trip into the kernel) GLib cannot pick a `SIG*`
+ * number which is guaranteed to not be in use elsewhere in the process. Various
+ * other things could be interfering with signal dispositions, such as gdb or
+ * other libraries in the process. Using a `signalfd()`
+ * [cannot improve this situation](https://ldpreload.com/blog/signalfd-is-useless).
+ *
+ * A callback function in a newly spawned thread (`SIGEV_THREAD`) could be used,
+ * but that is very expensive. Internally, glibc currently also just implements
+ * `getaddrinfo_a()`
+ * [using its own thread pool](https://github.com/bminor/glibc/blob/master/resolv/gai_misc.c),
+ * and then
+ * [spawns an additional thread for each completion callback](https://github.com/bminor/glibc/blob/master/resolv/gai_notify.c).
+ * That is very expensive.
+ *
+ * No other appropriate sigevent callback types
+ * [currently exist](https://sourceware.org/bugzilla/show_bug.cgi?id=30287), and
+ * [others agree that sigevent is not great](http://davmac.org/davpage/linux/async-io.html#posixaio).
+ *
+ * Hence, #GThreadedResolver calls the normal synchronous `getaddrinfo()` in its
+ * own thread pool. Previously, #GThreadedResolver used the thread pool which is
+ * internal to #GTask by calling g_task_run_in_thread(). That lead to exhaustion
+ * of the #GTask thread pool in some situations, though, as DNS lookups are
+ * quite frequent leaf operations in some use cases. Now, #GThreadedResolver
+ * uses its own private thread pool.
+ *
+ * This is similar to what
+ * [libasyncns](http://git.0pointer.net/libasyncns.git/tree/libasyncns/asyncns.h)
+ * and other multi-threaded users of `getaddrinfo()` do.
+ */
+
 struct _GThreadedResolver
 {
   GResolver parent_instance;
