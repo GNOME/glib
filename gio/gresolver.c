@@ -55,6 +55,10 @@
  * #GNetworkAddress and #GNetworkService provide wrappers around
  * #GResolver functionality that also implement #GSocketConnectable,
  * making it easy to connect to a remote host/service.
+ *
+ * The default resolver (see g_resolver_get_default()) has a timeout of 30s set
+ * on it since GLib 2.78. Earlier versions of GLib did not support resolver
+ * timeouts.
  */
 
 typedef enum {
@@ -299,7 +303,9 @@ g_resolver_get_default (void)
 
   G_LOCK (default_resolver);
   if (!default_resolver)
-    default_resolver = g_object_new (G_TYPE_THREADED_RESOLVER, NULL);
+    default_resolver = g_object_new (G_TYPE_THREADED_RESOLVER,
+                                     "timeout", 30000,
+                                     NULL);
   ret = g_object_ref (default_resolver);
   G_UNLOCK (default_resolver);
 
