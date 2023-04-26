@@ -65,9 +65,13 @@ struct  _GRealThread
 #define g_futex_simple(uaddr, futex_op, ...)                                     \
   G_STMT_START                                                                   \
   {                                                                              \
+    int saved_errno = errno;                                                     \
     int res = syscall (__NR_futex_time64, uaddr, (gsize) futex_op, __VA_ARGS__); \
     if (res < 0 && errno == ENOSYS)                                              \
-      syscall (__NR_futex, uaddr, (gsize) futex_op, __VA_ARGS__);                \
+      {                                                                          \
+        errno = saved_errno;                                                     \
+        syscall (__NR_futex, uaddr, (gsize) futex_op, __VA_ARGS__);              \
+      }                                                                          \
   }                                                                              \
   G_STMT_END
 #elif defined(__NR_futex_time64)
