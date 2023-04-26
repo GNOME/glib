@@ -177,10 +177,11 @@ g_unix_connection_receive_fd (GUnixConnection  *connection,
       gint i;
 
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-        ngettext("Expecting 1 control message, got %d",
-                 "Expecting 1 control message, got %d",
-                 nscm),
-        nscm);
+                   g_dngettext (NULL,
+                                "Expecting 1 control message, got %d",
+                                "Expecting 1 control message, got %d",
+                                nscm),
+                   nscm);
 
       for (i = 0; i < nscm; i++)
         g_object_unref (scms[i]);
@@ -211,9 +212,10 @@ g_unix_connection_receive_fd (GUnixConnection  *connection,
       gint i;
 
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                   ngettext("Expecting one fd, but got %d\n",
-                            "Expecting one fd, but got %d\n",
-                            nfd),
+                   g_dngettext (NULL,
+                                "Expecting one fd, but got %d\n",
+                                "Expecting one fd, but got %d\n",
+                                nfd),
                    nfd);
 
       for (i = 0; i < nfd; i++)
@@ -595,9 +597,10 @@ g_unix_connection_receive_credentials (GUnixConnection      *connection,
           g_set_error (error,
                        G_IO_ERROR,
                        G_IO_ERROR_FAILED,
-                       ngettext("Expecting 1 control message, got %d",
-                                "Expecting 1 control message, got %d",
-                                nscm),
+                       g_dngettext (NULL,
+                                    "Expecting 1 control message, got %d",
+                                    "Expecting 1 control message, got %d",
+                                    nscm),
                        nscm);
           goto out;
         }
