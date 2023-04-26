@@ -293,12 +293,15 @@ GSourceFuncs g_unix_fd_source_funcs = {
 /**
  * g_unix_fd_source_new:
  * @fd: a file descriptor
- * @condition: IO conditions to watch for on @fd
+ * @condition: I/O conditions to watch for on @fd
  *
- * Creates a #GSource to watch for a particular IO condition on a file
+ * Creates a #GSource to watch for a particular I/O condition on a file
  * descriptor.
  *
- * The source will never close the fd -- you must do it yourself.
+ * The source will never close the @fd — you must do it yourself.
+ *
+ * Any callback attached to the returned #GSource must have type
+ * #GUnixFDSourceFunc.
  *
  * Returns: the newly created #GSource
  *
