@@ -595,7 +595,7 @@ scan-build:
     paths:
       - "_scan_build/meson-logs/scanbuild"
 
-coverity:
+.coverity:
   extends:
     - .build-linux
     - .only-schedules
