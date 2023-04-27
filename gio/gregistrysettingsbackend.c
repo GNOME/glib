@@ -2319,8 +2319,7 @@ g_registry_settings_backend_class_init (GRegistrySettingsBackendClass *class)
   g_object_class_install_property (object_class,
                                    PROP_REGISTRY_KEY,
                                    g_param_spec_string ("registry-key",
-                                                        P_("Root registry key"),
-                                                        P_("The path to the registry key where settings are stored"),
+                                                        NULL, NULL,
                                                         "HKEY_CURRENT_USER\\Software\\GSettings",
                                                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY |
                                                         G_PARAM_STATIC_STRINGS));
