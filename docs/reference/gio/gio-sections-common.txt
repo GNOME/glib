@@ -1934,6 +1934,8 @@ g_resolver_lookup_service
 g_resolver_lookup_service_async
 g_resolver_lookup_service_finish
 g_resolver_free_targets
+g_resolver_get_timeout
+g_resolver_set_timeout
 <SUBSECTION>
 GResolverRecordType
 g_resolver_lookup_records

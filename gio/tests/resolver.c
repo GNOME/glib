@@ -41,6 +41,7 @@ static int nlookups = 0;
 static gboolean synchronous = FALSE;
 static guint connectable_count = 0;
 static GResolverRecordType record_type = 0;
+static gint timeout_ms = 0;
 
 static G_NORETURN void
 usage (void)
@@ -688,7 +689,7 @@ static gboolean
 async_cancel (GIOChannel *source, GIOCondition cond, gpointer cancel)
 {
   g_cancellable_cancel (cancel);
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }
 #endif
 
@@ -722,6 +723,7 @@ static const GOptionEntry option_entries[] = {
   { "synchronous", 's', 0, G_OPTION_ARG_NONE, &synchronous, "Synchronous connections", NULL },
   { "connectable", 'c', 0, G_OPTION_ARG_INT, &connectable_count, "Connectable count", "C" },
   { "special-type", 't', 0, G_OPTION_ARG_CALLBACK, record_type_arg, "Record type like MX, TXT, NS or SOA", "RR" },
+  { "timeout", 0, 0, G_OPTION_ARG_INT, &timeout_ms, "Timeout (ms)", "ms" },
   G_OPTION_ENTRY_NULL,
 };
 
@@ -732,7 +734,7 @@ main (int argc, char **argv)
   GError *error = NULL;
 #ifdef G_OS_UNIX
   GIOChannel *chan;
-  guint watch;
+  GSource *watch_source = NULL;
 #endif
 
   context = g_option_context_new ("lookups ...");
@@ -749,6 +751,9 @@ main (int argc, char **argv)
 
   resolver = g_resolver_get_default ();
 
+  if (timeout_ms != 0)
+    g_resolver_set_timeout (resolver, timeout_ms);
+
   cancellable = g_cancellable_new ();
 
 #ifdef G_OS_UNIX
@@ -763,7 +768,9 @@ main (int argc, char **argv)
       exit (1);
     }
   chan = g_io_channel_unix_new (cancel_fds[0]);
-  watch = g_io_add_watch (chan, G_IO_IN, async_cancel, cancellable);
+  watch_source = g_io_create_watch (chan, G_IO_IN);
+  g_source_set_callback (watch_source, (GSourceFunc) async_cancel, cancellable, NULL);
+  g_source_attach (watch_source, NULL);
   g_io_channel_unref (chan);
 #endif
 
@@ -787,7 +794,8 @@ main (int argc, char **argv)
   g_main_loop_unref (loop);
 
 #ifdef G_OS_UNIX
-  g_source_remove (watch);
+  g_source_destroy (watch_source);
+  g_clear_pointer (&watch_source, g_source_unref);
 #endif
   g_object_unref (cancellable);
   g_option_context_free (context);
