@@ -1439,7 +1439,6 @@ timeout_cb (gpointer user_data)
 
   /* Signal completion of the task. */
   g_mutex_lock (&data->lock);
-  g_assert (!data->has_returned);
   data->has_returned = TRUE;
   g_cond_broadcast (&data->cond);
   g_mutex_unlock (&data->lock);
@@ -1470,7 +1469,6 @@ cancelled_cb (GCancellable *cancellable,
 
   /* Signal completion of the task. */
   g_mutex_lock (&data->lock);
-  g_assert (!data->has_returned);
   data->has_returned = TRUE;
   g_cond_broadcast (&data->cond);
   g_mutex_unlock (&data->lock);
@@ -1605,7 +1603,6 @@ threaded_resolver_worker_cb (gpointer task_data,
 
   /* Signal completion of a task. */
   g_mutex_lock (&data->lock);
-  g_assert (!data->has_returned);
   data->has_returned = TRUE;
   g_cond_broadcast (&data->cond);
   g_mutex_unlock (&data->lock);
