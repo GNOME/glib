@@ -576,6 +576,9 @@ g_thread_pool_new (GFunc      func,
  * to g_thread_pool_push() in the case that the #GThreadPool is stopped
  * and freed before all tasks have been executed.
  *
+ * @item_free_func will *not* be called on items successfully passed to @func.
+ * @func is responsible for freeing the items passed to it.
+ *
  * Returns: (transfer full): the new #GThreadPool
  *
  * Since: 2.70
