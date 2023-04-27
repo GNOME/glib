@@ -714,7 +714,7 @@ struct _GTypeQuery
  * These flags used to be passed to g_type_init_with_debug_flags() which
  * is now deprecated.
  *
- * If you need to enable debugging features, use the GOBJECT_DEBUG
+ * If you need to enable debugging features, use the `GOBJECT_DEBUG`
  * environment variable.
  *
  * Deprecated: 2.36: g_type_init() is now done automatically

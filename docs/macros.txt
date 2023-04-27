@@ -48,11 +48,9 @@ G_ENABLE_DEBUG
 	be affected by it similar to G_DISABLE_ASSERT.
 	The additional code executed/compiled for this macro currently involve:
 	- extra validity checks for GDate
-	- memory profiling traps in gmem.c (consult debugging.txt for details)
 	- BREAKPOINT abortion for fatal log levels in gmessage.c instead of
 	  plain abort() to allow debuggers trapping and overriding them
 	- added verbosity of gscanner.c to catch deprecated code paths
 	- added verbosity of gutils.c to catch deprecated code paths
-	- object ref/unref traps (consult debugging.txt) and object bookkeeping
-	  in gobject.c
+	- object and type bookkeeping in gobject.c
 	- extra validity checks in gsignal.c
