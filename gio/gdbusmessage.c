@@ -569,9 +569,7 @@ g_dbus_message_class_init (GDBusMessageClass *klass)
    */
   g_object_class_install_property (gobject_class,
                                    PROP_LOCKED,
-                                   g_param_spec_boolean ("locked",
-                                                         P_("Locked"),
-                                                         P_("Whether the message is locked"),
+                                   g_param_spec_boolean ("locked", NULL, NULL,
                                                          FALSE,
                                                          G_PARAM_READABLE |
                                                          G_PARAM_STATIC_NAME |

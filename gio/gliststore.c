@@ -155,7 +155,7 @@ g_list_store_class_init (GListStoreClass *klass)
    * Since: 2.44
    **/
   properties[PROP_ITEM_TYPE] =
-    g_param_spec_gtype ("item-type", "", "", G_TYPE_OBJECT,
+    g_param_spec_gtype ("item-type", NULL, NULL, G_TYPE_OBJECT,
                         G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
 
   /**
@@ -166,7 +166,7 @@ g_list_store_class_init (GListStoreClass *klass)
    * Since: 2.74
    **/
   properties[PROP_N_ITEMS] =
-    g_param_spec_uint ("n-items", "", "", 0, G_MAXUINT, 0,
+    g_param_spec_uint ("n-items", NULL, NULL, 0, G_MAXUINT, 0,
                        G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
 
   g_object_class_install_properties (object_class, N_PROPERTIES, properties);

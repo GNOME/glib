@@ -140,9 +140,7 @@ g_tcp_wrapper_connection_class_init (GTcpWrapperConnectionClass *klass)
    */
   g_object_class_install_property (gobject_class,
                                    PROP_BASE_IO_STREAM,
-                                   g_param_spec_object ("base-io-stream",
-			                                P_("Base IO Stream"),
-			                                P_("The wrapped GIOStream"),
+                                   g_param_spec_object ("base-io-stream", NULL, NULL,
                                                         G_TYPE_IO_STREAM,
                                                         G_PARAM_CONSTRUCT_ONLY |
                                                         G_PARAM_READWRITE |

@@ -164,8 +164,7 @@ g_file_enumerator_class_init (GFileEnumeratorClass *klass)
    */
   g_object_class_install_property
     (gobject_class, PROP_CONTAINER,
-     g_param_spec_object ("container", P_("Container"),
-                          P_("The container that is being enumerated"),
+     g_param_spec_object ("container", NULL, NULL,
                           G_TYPE_FILE,
                           G_PARAM_WRITABLE |
                           G_PARAM_CONSTRUCT_ONLY |

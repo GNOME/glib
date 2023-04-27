@@ -124,9 +124,7 @@ g_network_address_class_init (GNetworkAddressClass *klass)
    * Since: 2.22
    */
   g_object_class_install_property (gobject_class, PROP_HOSTNAME,
-                                   g_param_spec_string ("hostname",
-                                                        P_("Hostname"),
-                                                        P_("Hostname to resolve"),
+                                   g_param_spec_string ("hostname", NULL, NULL,
                                                         NULL,
                                                         G_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT_ONLY |
@@ -140,9 +138,7 @@ g_network_address_class_init (GNetworkAddressClass *klass)
    * Since: 2.22
    */
   g_object_class_install_property (gobject_class, PROP_PORT,
-                                   g_param_spec_uint ("port",
-                                                      P_("Port"),
-                                                      P_("Network port"),
+                                   g_param_spec_uint ("port", NULL, NULL,
                                                       0, 65535, 0,
                                                       G_PARAM_READWRITE |
                                                       G_PARAM_CONSTRUCT_ONLY |
@@ -156,9 +152,7 @@ g_network_address_class_init (GNetworkAddressClass *klass)
    * Since: 2.22
    */
   g_object_class_install_property (gobject_class, PROP_SCHEME,
-                                   g_param_spec_string ("scheme",
-                                                        P_("Scheme"),
-                                                        P_("URI Scheme"),
+                                   g_param_spec_string ("scheme", NULL, NULL,
                                                         NULL,
                                                         G_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT_ONLY |

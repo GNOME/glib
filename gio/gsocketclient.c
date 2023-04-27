@@ -874,9 +874,7 @@ g_socket_client_class_init (GSocketClientClass *class)
    * Since: 2.22
    */
   g_object_class_install_property (gobject_class, PROP_FAMILY,
-				   g_param_spec_enum ("family",
-						      P_("Socket family"),
-						      P_("The sockets address family to use for socket construction"),
+				   g_param_spec_enum ("family", NULL, NULL,
 						      G_TYPE_SOCKET_FAMILY,
 						      G_SOCKET_FAMILY_INVALID,
 						      G_PARAM_CONSTRUCT |
@@ -891,9 +889,7 @@ g_socket_client_class_init (GSocketClientClass *class)
    * Since: 2.22
    */
   g_object_class_install_property (gobject_class, PROP_TYPE,
-				   g_param_spec_enum ("type",
-						      P_("Socket type"),
-						      P_("The sockets type to use for socket construction"),
+				   g_param_spec_enum ("type", NULL, NULL,
 						      G_TYPE_SOCKET_TYPE,
 						      G_SOCKET_TYPE_STREAM,
 						      G_PARAM_CONSTRUCT |
@@ -908,9 +904,7 @@ g_socket_client_class_init (GSocketClientClass *class)
    * Since: 2.22
    */
   g_object_class_install_property (gobject_class, PROP_PROTOCOL,
-				   g_param_spec_enum ("protocol",
-						      P_("Socket protocol"),
-						      P_("The protocol to use for socket construction, or 0 for default"),
+				   g_param_spec_enum ("protocol", NULL, NULL,
 						      G_TYPE_SOCKET_PROTOCOL,
 						      G_SOCKET_PROTOCOL_DEFAULT,
 						      G_PARAM_CONSTRUCT |
@@ -925,9 +919,7 @@ g_socket_client_class_init (GSocketClientClass *class)
    * Since: 2.22
    */
   g_object_class_install_property (gobject_class, PROP_LOCAL_ADDRESS,
-				   g_param_spec_object ("local-address",
-							P_("Local address"),
-							P_("The local address constructed sockets will be bound to"),
+				   g_param_spec_object ("local-address", NULL, NULL,
 							G_TYPE_SOCKET_ADDRESS,
 							G_PARAM_CONSTRUCT |
                                                         G_PARAM_READWRITE |
@@ -941,9 +933,7 @@ g_socket_client_class_init (GSocketClientClass *class)
    * Since: 2.22
    */
   g_object_class_install_property (gobject_class, PROP_TIMEOUT,
-				   g_param_spec_uint ("timeout",
-						      P_("Socket timeout"),
-						      P_("The I/O timeout for sockets, or 0 for none"),
+				   g_param_spec_uint ("timeout", NULL, NULL,
 						      0, G_MAXUINT, 0,
 						      G_PARAM_CONSTRUCT |
                                                       G_PARAM_READWRITE |
@@ -957,9 +947,7 @@ g_socket_client_class_init (GSocketClientClass *class)
    * Since: 2.22
    */
    g_object_class_install_property (gobject_class, PROP_ENABLE_PROXY,
-				    g_param_spec_boolean ("enable-proxy",
-							  P_("Enable proxy"),
-							  P_("Enable proxy support"),
+				    g_param_spec_boolean ("enable-proxy", NULL, NULL,
 							  TRUE,
 							  G_PARAM_CONSTRUCT |
 							  G_PARAM_READWRITE |
@@ -973,9 +961,7 @@ g_socket_client_class_init (GSocketClientClass *class)
    * Since: 2.22
    */
   g_object_class_install_property (gobject_class, PROP_TLS,
-				   g_param_spec_boolean ("tls",
-							 P_("TLS"),
-							 P_("Whether to create TLS connections"),
+				   g_param_spec_boolean ("tls", NULL, NULL,
 							 FALSE,
 							 G_PARAM_CONSTRUCT |
 							 G_PARAM_READWRITE |
@@ -1004,9 +990,7 @@ g_socket_client_class_init (GSocketClientClass *class)
    * Deprecated: 2.72: Do not attempt to ignore validation errors.
    */
   g_object_class_install_property (gobject_class, PROP_TLS_VALIDATION_FLAGS,
-				   g_param_spec_flags ("tls-validation-flags",
-						       P_("TLS validation flags"),
-						       P_("TLS validation flags to use"),
+				   g_param_spec_flags ("tls-validation-flags", NULL, NULL,
 						       G_TYPE_TLS_CERTIFICATE_FLAGS,
 						       G_TLS_CERTIFICATE_VALIDATE_ALL,
 						       G_PARAM_CONSTRUCT |
@@ -1022,9 +1006,7 @@ g_socket_client_class_init (GSocketClientClass *class)
    * Since: 2.36
    */
   g_object_class_install_property (gobject_class, PROP_PROXY_RESOLVER,
-                                   g_param_spec_object ("proxy-resolver",
-                                                        P_("Proxy resolver"),
-                                                        P_("The proxy resolver to use"),
+                                   g_param_spec_object ("proxy-resolver", NULL, NULL,
                                                         G_TYPE_PROXY_RESOLVER,
                                                         G_PARAM_CONSTRUCT |
                                                         G_PARAM_READWRITE |

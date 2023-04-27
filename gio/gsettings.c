@@ -841,9 +841,7 @@ g_settings_class_init (GSettingsClass *class)
    * The name of the context that the settings are stored in.
    */
   g_object_class_install_property (object_class, PROP_BACKEND,
-    g_param_spec_object ("backend",
-                         P_("GSettingsBackend"),
-                         P_("The GSettingsBackend for this settings object"),
+    g_param_spec_object ("backend", NULL, NULL,
                          G_TYPE_SETTINGS_BACKEND, G_PARAM_CONSTRUCT_ONLY |
                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
@@ -859,9 +857,7 @@ g_settings_class_init (GSettingsClass *class)
    * than the schema itself.  Take care.
    */
   g_object_class_install_property (object_class, PROP_SCHEMA,
-    g_param_spec_boxed ("settings-schema",
-                        P_("schema"),
-                        P_("The GSettingsSchema for this settings object"),
+    g_param_spec_boxed ("settings-schema", NULL, NULL,
                         G_TYPE_SETTINGS_SCHEMA,
                         G_PARAM_CONSTRUCT_ONLY |
                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
@@ -883,9 +879,7 @@ g_settings_class_init (GSettingsClass *class)
    * version, this property may instead refer to a #GSettingsSchema.
    */
   g_object_class_install_property (object_class, PROP_SCHEMA_ID,
-    g_param_spec_string ("schema",
-                         P_("Schema name"),
-                         P_("The name of the schema for this settings object"),
+    g_param_spec_string ("schema", NULL, NULL,
                          NULL,
                          G_PARAM_CONSTRUCT_ONLY |
                          G_PARAM_DEPRECATED | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
@@ -897,9 +891,7 @@ g_settings_class_init (GSettingsClass *class)
    * for this #GSettings object.
    */
   g_object_class_install_property (object_class, PROP_SCHEMA_ID,
-    g_param_spec_string ("schema-id",
-                         P_("Schema name"),
-                         P_("The name of the schema for this settings object"),
+    g_param_spec_string ("schema-id", NULL, NULL,
                          NULL,
                          G_PARAM_CONSTRUCT_ONLY |
                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
@@ -910,9 +902,7 @@ g_settings_class_init (GSettingsClass *class)
     * The path within the backend where the settings are stored.
     */
    g_object_class_install_property (object_class, PROP_PATH,
-     g_param_spec_string ("path",
-                          P_("Base path"),
-                          P_("The path within the backend where the settings are"),
+     g_param_spec_string ("path", NULL, NULL,
                           NULL,
                           G_PARAM_CONSTRUCT_ONLY |
                           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
@@ -924,9 +914,7 @@ g_settings_class_init (GSettingsClass *class)
     * changes that will be applied when g_settings_apply() is called.
     */
    g_object_class_install_property (object_class, PROP_HAS_UNAPPLIED,
-     g_param_spec_boolean ("has-unapplied",
-                           P_("Has unapplied changes"),
-                           P_("TRUE if there are outstanding changes to apply()"),
+     g_param_spec_boolean ("has-unapplied", NULL, NULL,
                            FALSE,
                            G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
@@ -939,9 +927,7 @@ g_settings_class_init (GSettingsClass *class)
     * Since: 2.28
     */
    g_object_class_install_property (object_class, PROP_DELAY_APPLY,
-     g_param_spec_boolean ("delay-apply",
-                           P_("Delay-apply mode"),
-                           P_("Whether this settings object is in “delay-apply” mode"),
+     g_param_spec_boolean ("delay-apply", NULL, NULL,
                            FALSE,
                            G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 }

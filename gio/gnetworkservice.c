@@ -122,9 +122,7 @@ g_network_service_class_init (GNetworkServiceClass *klass)
    * Since: 2.22
    */
   g_object_class_install_property (gobject_class, PROP_SERVICE,
-                                   g_param_spec_string ("service",
-                                                        P_("Service"),
-                                                        P_("Service name, eg \"ldap\""),
+                                   g_param_spec_string ("service", NULL, NULL,
                                                         NULL,
                                                         G_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT_ONLY |
@@ -138,9 +136,7 @@ g_network_service_class_init (GNetworkServiceClass *klass)
    * Since: 2.22
    */
   g_object_class_install_property (gobject_class, PROP_PROTOCOL,
-                                   g_param_spec_string ("protocol",
-                                                        P_("Protocol"),
-                                                        P_("Network protocol, eg \"tcp\""),
+                                   g_param_spec_string ("protocol", NULL, NULL,
                                                         NULL,
                                                         G_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT_ONLY |
@@ -154,9 +150,7 @@ g_network_service_class_init (GNetworkServiceClass *klass)
    * Since: 2.22
    */
   g_object_class_install_property (gobject_class, PROP_DOMAIN,
-                                   g_param_spec_string ("domain",
-                                                        P_("Domain"),
-                                                        P_("Network domain, eg, \"example.com\""),
+                                   g_param_spec_string ("domain", NULL, NULL,
                                                         NULL,
                                                         G_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT_ONLY |
@@ -170,9 +164,7 @@ g_network_service_class_init (GNetworkServiceClass *klass)
    * Since: 2.22
    */
   g_object_class_install_property (gobject_class, PROP_DOMAIN,
-                                   g_param_spec_string ("scheme",
-                                                        P_("Scheme"),
-                                                        P_("Network scheme (default is to use service)"),
+                                   g_param_spec_string ("scheme", NULL, NULL,
                                                         NULL,
                                                         G_PARAM_READWRITE |
                                                         G_PARAM_STATIC_STRINGS));

@@ -53,9 +53,7 @@ g_tls_server_connection_default_init (GTlsServerConnectionInterface *iface)
    * Since: 2.28
    */
   g_object_interface_install_property (iface,
-				       g_param_spec_enum ("authentication-mode",
-							  P_("Authentication Mode"),
-							  P_("The client authentication mode"),
+				       g_param_spec_enum ("authentication-mode", NULL, NULL,
 							  G_TYPE_TLS_AUTHENTICATION_MODE,
 							  G_TLS_AUTHENTICATION_NONE,
 							  G_PARAM_READWRITE |

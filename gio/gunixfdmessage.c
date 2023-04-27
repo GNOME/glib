@@ -221,8 +221,7 @@ g_unix_fd_message_class_init (GUnixFDMessageClass *class)
    * Since: 2.22
    */
   g_object_class_install_property (object_class, 1,
-    g_param_spec_object ("fd-list", "file descriptor list",
-                         "The GUnixFDList object to send with the message",
+    g_param_spec_object ("fd-list", NULL, NULL,
                          G_TYPE_UNIX_FD_LIST, G_PARAM_STATIC_STRINGS |
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
 }

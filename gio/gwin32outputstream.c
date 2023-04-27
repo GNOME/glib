@@ -245,9 +245,7 @@ g_win32_output_stream_class_init (GWin32OutputStreamClass *klass)
    * Since: 2.26
    */
   props[PROP_HANDLE] =
-    g_param_spec_pointer ("handle",
-                          P_("File handle"),
-                          P_("The file handle to write to"),
+    g_param_spec_pointer ("handle", NULL, NULL,
                           G_PARAM_READABLE |
                           G_PARAM_WRITABLE |
                           G_PARAM_CONSTRUCT_ONLY |
@@ -261,9 +259,7 @@ g_win32_output_stream_class_init (GWin32OutputStreamClass *klass)
    * Since: 2.26
    */
   props[PROP_CLOSE_HANDLE] =
-    g_param_spec_boolean ("close-handle",
-                          P_("Close file handle"),
-                          P_("Whether to close the file handle when the stream is closed"),
+    g_param_spec_boolean ("close-handle", NULL, NULL,
                           TRUE,
                           G_PARAM_READABLE |
                           G_PARAM_WRITABLE |

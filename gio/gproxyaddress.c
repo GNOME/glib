@@ -195,9 +195,7 @@ g_proxy_address_class_init (GProxyAddressClass *klass)
    */
   g_object_class_install_property (gobject_class,
 				   PROP_PROTOCOL,
-				   g_param_spec_string ("protocol",
-						       P_("Protocol"),
-						       P_("The proxy protocol"),
+				   g_param_spec_string ("protocol", NULL, NULL,
 						       NULL,
 						       G_PARAM_READWRITE |
 						       G_PARAM_CONSTRUCT_ONLY |
@@ -212,9 +210,7 @@ g_proxy_address_class_init (GProxyAddressClass *klass)
    */
   g_object_class_install_property (gobject_class,
 				   PROP_USERNAME,
-				   g_param_spec_string ("username",
-						       P_("Username"),
-						       P_("The proxy username"),
+				   g_param_spec_string ("username", NULL, NULL,
 						       NULL,
 						       G_PARAM_READWRITE |
 						       G_PARAM_CONSTRUCT_ONLY |
@@ -229,9 +225,7 @@ g_proxy_address_class_init (GProxyAddressClass *klass)
    */
   g_object_class_install_property (gobject_class,
 				   PROP_PASSWORD,
-				   g_param_spec_string ("password",
-						       P_("Password"),
-						       P_("The proxy password"),
+				   g_param_spec_string ("password", NULL, NULL,
 						       NULL,
 						       G_PARAM_READWRITE |
 						       G_PARAM_CONSTRUCT_ONLY |
@@ -247,9 +241,7 @@ g_proxy_address_class_init (GProxyAddressClass *klass)
    */
   g_object_class_install_property (gobject_class,
 				   PROP_DESTINATION_PROTOCOL,
-				   g_param_spec_string ("destination-protocol",
-						       P_("Destination Protocol"),
-						       P_("The proxy destination protocol"),
+				   g_param_spec_string ("destination-protocol", NULL, NULL,
 						       NULL,
 						       G_PARAM_READWRITE |
 						       G_PARAM_CONSTRUCT_ONLY |
@@ -264,9 +256,7 @@ g_proxy_address_class_init (GProxyAddressClass *klass)
    */
   g_object_class_install_property (gobject_class,
 				   PROP_DESTINATION_HOSTNAME,
-				   g_param_spec_string ("destination-hostname",
-						       P_("Destination Hostname"),
-						       P_("The proxy destination hostname"),
+				   g_param_spec_string ("destination-hostname", NULL, NULL,
 						       NULL,
 						       G_PARAM_READWRITE |
 						       G_PARAM_CONSTRUCT_ONLY |
@@ -281,9 +271,7 @@ g_proxy_address_class_init (GProxyAddressClass *klass)
    */
   g_object_class_install_property (gobject_class,
 				   PROP_DESTINATION_PORT,
-				   g_param_spec_uint ("destination-port",
-						      P_("Destination Port"),
-						      P_("The proxy destination port"),
+				   g_param_spec_uint ("destination-port", NULL, NULL,
 						      0, 65535, 0,
 						      G_PARAM_READWRITE |
 						      G_PARAM_CONSTRUCT_ONLY |
@@ -299,9 +287,7 @@ g_proxy_address_class_init (GProxyAddressClass *klass)
    */
   g_object_class_install_property (gobject_class,
 				   PROP_URI,
-				   g_param_spec_string ("uri",
-							P_("URI"),
-							P_("The proxy’s URI"),
+				   g_param_spec_string ("uri", NULL, NULL,
 							NULL,
 							G_PARAM_READWRITE |
 							G_PARAM_CONSTRUCT_ONLY |

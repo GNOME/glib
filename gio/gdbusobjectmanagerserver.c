@@ -209,9 +209,7 @@ g_dbus_object_manager_server_class_init (GDBusObjectManagerServerClass *klass)
    */
   g_object_class_install_property (gobject_class,
                                    PROP_CONNECTION,
-                                   g_param_spec_object ("connection",
-                                                        "Connection",
-                                                        "The connection to export objects on",
+                                   g_param_spec_object ("connection", NULL, NULL,
                                                         G_TYPE_DBUS_CONNECTION,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_WRITABLE |
@@ -226,9 +224,7 @@ g_dbus_object_manager_server_class_init (GDBusObjectManagerServerClass *klass)
    */
   g_object_class_install_property (gobject_class,
                                    PROP_OBJECT_PATH,
-                                   g_param_spec_string ("object-path",
-                                                        "Object Path",
-                                                        "The object path to register the manager object at",
+                                   g_param_spec_string ("object-path", NULL, NULL,
                                                         NULL,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_WRITABLE |

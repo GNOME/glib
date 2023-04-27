@@ -757,9 +757,7 @@ g_proxy_address_enumerator_class_init (GProxyAddressEnumeratorClass *proxy_enume
    */
   g_object_class_install_property (object_class,
 				   PROP_URI,
-				   g_param_spec_string ("uri",
-							P_("URI"),
-							P_("The destination URI, use none:// for generic socket"),
+				   g_param_spec_string ("uri", NULL, NULL,
 							NULL,
 							G_PARAM_READWRITE |
 							G_PARAM_CONSTRUCT_ONLY |
@@ -775,9 +773,7 @@ g_proxy_address_enumerator_class_init (GProxyAddressEnumeratorClass *proxy_enume
    */
   g_object_class_install_property (object_class,
 				   PROP_DEFAULT_PORT,
-				   g_param_spec_uint ("default-port",
-                                                      P_("Default port"),
-                                                      P_("The default port to use if uri does not specify one"),
+				   g_param_spec_uint ("default-port", NULL, NULL,
                                                       0, 65535, 0,
                                                       G_PARAM_READWRITE |
                                                       G_PARAM_CONSTRUCT_ONLY |
@@ -790,9 +786,7 @@ g_proxy_address_enumerator_class_init (GProxyAddressEnumeratorClass *proxy_enume
    */
   g_object_class_install_property (object_class,
 				   PROP_CONNECTABLE,
-				   g_param_spec_object ("connectable",
-							P_("Connectable"),
-							P_("The connectable being enumerated."),
+				   g_param_spec_object ("connectable", NULL, NULL,
 							G_TYPE_SOCKET_CONNECTABLE,
 							G_PARAM_READWRITE |
 							G_PARAM_CONSTRUCT_ONLY |
@@ -807,9 +801,7 @@ g_proxy_address_enumerator_class_init (GProxyAddressEnumeratorClass *proxy_enume
    */
   g_object_class_install_property (object_class,
                                    PROP_PROXY_RESOLVER,
-                                   g_param_spec_object ("proxy-resolver",
-                                                        P_("Proxy resolver"),
-                                                        P_("The proxy resolver to use."),
+                                   g_param_spec_object ("proxy-resolver", NULL, NULL,
                                                         G_TYPE_PROXY_RESOLVER,
                                                         G_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT |

@@ -127,9 +127,7 @@ g_bytes_icon_class_init (GBytesIconClass *klass)
    * The bytes containing the icon.
    */
   g_object_class_install_property (gobject_class, PROP_BYTES,
-                                   g_param_spec_boxed ("bytes",
-                                                       P_("bytes"),
-                                                       P_("The bytes containing the icon"),
+                                   g_param_spec_boxed ("bytes", NULL, NULL,
                                                        G_TYPE_BYTES,
                                                        G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 }

@@ -264,9 +264,7 @@ g_unix_credentials_message_class_init (GUnixCredentialsMessageClass *class)
    */
   g_object_class_install_property (gobject_class,
                                    PROP_CREDENTIALS,
-                                   g_param_spec_object ("credentials",
-                                                        P_("Credentials"),
-                                                        P_("The credentials stored in the message"),
+                                   g_param_spec_object ("credentials", NULL, NULL,
                                                         G_TYPE_CREDENTIALS,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_WRITABLE |

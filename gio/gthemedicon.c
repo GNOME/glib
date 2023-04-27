@@ -179,9 +179,7 @@ g_themed_icon_class_init (GThemedIconClass *klass)
    * The icon name.
    */
   g_object_class_install_property (gobject_class, PROP_NAME,
-                                   g_param_spec_string ("name",
-                                                        P_("name"),
-                                                        P_("The name of the icon"),
+                                   g_param_spec_string ("name", NULL, NULL,
                                                         NULL,
                                                         G_PARAM_CONSTRUCT_ONLY | G_PARAM_WRITABLE | G_PARAM_STATIC_NAME | G_PARAM_STATIC_BLURB | G_PARAM_STATIC_NICK));
 
@@ -191,9 +189,7 @@ g_themed_icon_class_init (GThemedIconClass *klass)
    * A %NULL-terminated array of icon names.
    */
   g_object_class_install_property (gobject_class, PROP_NAMES,
-                                   g_param_spec_boxed ("names",
-                                                       P_("names"),
-                                                       P_("An array containing the icon names"),
+                                   g_param_spec_boxed ("names", NULL, NULL,
                                                        G_TYPE_STRV,
                                                        G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_NAME | G_PARAM_STATIC_BLURB | G_PARAM_STATIC_NICK));
 
@@ -217,9 +213,7 @@ g_themed_icon_class_init (GThemedIconClass *klass)
    * ]|
    */
   g_object_class_install_property (gobject_class, PROP_USE_DEFAULT_FALLBACKS,
-                                   g_param_spec_boolean ("use-default-fallbacks",
-                                                         P_("use default fallbacks"),
-                                                         P_("Whether to use default fallbacks found by shortening the name at “-” characters. Ignores names after the first if multiple names are given."),
+                                   g_param_spec_boolean ("use-default-fallbacks", NULL, NULL,
                                                          FALSE,
                                                          G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_NAME | G_PARAM_STATIC_BLURB | G_PARAM_STATIC_NICK));
 }

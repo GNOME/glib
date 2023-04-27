@@ -363,9 +363,7 @@ g_dbus_object_manager_client_class_init (GDBusObjectManagerClientClass *klass)
    */
   g_object_class_install_property (gobject_class,
                                    PROP_CONNECTION,
-                                   g_param_spec_object ("connection",
-                                                        "Connection",
-                                                        "The connection to use",
+                                   g_param_spec_object ("connection", NULL, NULL,
                                                         G_TYPE_DBUS_CONNECTION,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_WRITABLE |
@@ -384,9 +382,7 @@ g_dbus_object_manager_client_class_init (GDBusObjectManagerClientClass *klass)
    */
   g_object_class_install_property (gobject_class,
                                    PROP_BUS_TYPE,
-                                   g_param_spec_enum ("bus-type",
-                                                      "Bus Type",
-                                                      "The bus to connect to, if any",
+                                   g_param_spec_enum ("bus-type", NULL, NULL,
                                                       G_TYPE_BUS_TYPE,
                                                       G_BUS_TYPE_NONE,
                                                       G_PARAM_WRITABLE |
@@ -404,9 +400,7 @@ g_dbus_object_manager_client_class_init (GDBusObjectManagerClientClass *klass)
    */
   g_object_class_install_property (gobject_class,
                                    PROP_FLAGS,
-                                   g_param_spec_flags ("flags",
-                                                       "Flags",
-                                                       "Flags for the proxy manager",
+                                   g_param_spec_flags ("flags", NULL, NULL,
                                                        G_TYPE_DBUS_OBJECT_MANAGER_CLIENT_FLAGS,
                                                        G_DBUS_OBJECT_MANAGER_CLIENT_FLAGS_NONE,
                                                        G_PARAM_READABLE |
@@ -425,9 +419,7 @@ g_dbus_object_manager_client_class_init (GDBusObjectManagerClientClass *klass)
    */
   g_object_class_install_property (gobject_class,
                                    PROP_OBJECT_PATH,
-                                   g_param_spec_string ("object-path",
-                                                        "Object Path",
-                                                        "The object path of the control object",
+                                   g_param_spec_string ("object-path", NULL, NULL,
                                                         NULL,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_WRITABLE |
@@ -443,9 +435,7 @@ g_dbus_object_manager_client_class_init (GDBusObjectManagerClientClass *klass)
    */
   g_object_class_install_property (gobject_class,
                                    PROP_NAME,
-                                   g_param_spec_string ("name",
-                                                        "Name",
-                                                        "Name that the manager is for",
+                                   g_param_spec_string ("name", NULL, NULL,
                                                         NULL,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_WRITABLE |
@@ -463,9 +453,7 @@ g_dbus_object_manager_client_class_init (GDBusObjectManagerClientClass *klass)
    */
   g_object_class_install_property (gobject_class,
                                    PROP_NAME_OWNER,
-                                   g_param_spec_string ("name-owner",
-                                                        "Name Owner",
-                                                        "The owner of the name we are watching",
+                                   g_param_spec_string ("name-owner", NULL, NULL,
                                                         NULL,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_STATIC_STRINGS));
@@ -480,9 +468,7 @@ g_dbus_object_manager_client_class_init (GDBusObjectManagerClientClass *klass)
    */
   g_object_class_install_property (gobject_class,
                                    PROP_GET_PROXY_TYPE_FUNC,
-                                   g_param_spec_pointer ("get-proxy-type-func",
-                                                         "GDBusProxyTypeFunc Function Pointer",
-                                                         "The GDBusProxyTypeFunc pointer to use",
+                                   g_param_spec_pointer ("get-proxy-type-func", NULL, NULL,
                                                          G_PARAM_READABLE |
                                                          G_PARAM_WRITABLE |
                                                          G_PARAM_CONSTRUCT_ONLY |
@@ -497,9 +483,7 @@ g_dbus_object_manager_client_class_init (GDBusObjectManagerClientClass *klass)
    */
   g_object_class_install_property (gobject_class,
                                    PROP_GET_PROXY_TYPE_USER_DATA,
-                                   g_param_spec_pointer ("get-proxy-type-user-data",
-                                                         "GDBusProxyTypeFunc User Data",
-                                                         "The GDBusProxyTypeFunc user_data",
+                                   g_param_spec_pointer ("get-proxy-type-user-data", NULL, NULL,
                                                          G_PARAM_READABLE |
                                                          G_PARAM_WRITABLE |
                                                          G_PARAM_CONSTRUCT_ONLY |
@@ -514,9 +498,7 @@ g_dbus_object_manager_client_class_init (GDBusObjectManagerClientClass *klass)
    */
   g_object_class_install_property (gobject_class,
                                    PROP_GET_PROXY_TYPE_DESTROY_NOTIFY,
-                                   g_param_spec_pointer ("get-proxy-type-destroy-notify",
-                                                         "GDBusProxyTypeFunc user data free function",
-                                                         "The GDBusProxyTypeFunc user data free function",
+                                   g_param_spec_pointer ("get-proxy-type-destroy-notify", NULL, NULL,
                                                          G_PARAM_READABLE |
                                                          G_PARAM_WRITABLE |
                                                          G_PARAM_CONSTRUCT_ONLY |

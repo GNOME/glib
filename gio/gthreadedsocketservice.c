@@ -255,9 +255,7 @@ g_threaded_socket_service_class_init (GThreadedSocketServiceClass *class)
    * Since: 2.22
    */
   g_object_class_install_property (gobject_class, PROP_MAX_THREADS,
-				   g_param_spec_int ("max-threads",
-						     P_("Max threads"),
-						     P_("The max number of threads handling clients for this service"),
+				   g_param_spec_int ("max-threads", NULL, NULL,
 						     -1,
 						     G_MAXINT,
 						     10,

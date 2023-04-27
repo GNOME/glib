@@ -454,9 +454,7 @@ g_socket_connection_class_init (GSocketConnectionClass *klass)
    */
   g_object_class_install_property (gobject_class,
                                    PROP_SOCKET,
-                                   g_param_spec_object ("socket",
-			                                P_("Socket"),
-			                                P_("The underlying GSocket"),
+                                   g_param_spec_object ("socket", NULL, NULL,
                                                         G_TYPE_SOCKET,
                                                         G_PARAM_CONSTRUCT_ONLY |
                                                         G_PARAM_READWRITE |

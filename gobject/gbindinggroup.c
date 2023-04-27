@@ -345,9 +345,7 @@ g_binding_group_class_init (GBindingGroupClass *klass)
    * Since: 2.72
    */
   properties[PROP_SOURCE] =
-      g_param_spec_object ("source",
-                           "Source",
-                           "The source GObject used for binding properties.",
+      g_param_spec_object ("source", NULL, NULL,
                            G_TYPE_OBJECT,
                            (G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY | G_PARAM_STATIC_STRINGS));
 

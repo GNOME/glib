@@ -276,9 +276,7 @@ g_unix_socket_address_class_init (GUnixSocketAddressClass *klass)
    */
   g_object_class_install_property (gobject_class,
 				   PROP_PATH,
-				   g_param_spec_string ("path",
-							P_("Path"),
-							P_("UNIX socket path"),
+				   g_param_spec_string ("path", NULL, NULL,
 							NULL,
 							G_PARAM_READWRITE |
 							G_PARAM_CONSTRUCT_ONLY |
@@ -292,9 +290,7 @@ g_unix_socket_address_class_init (GUnixSocketAddressClass *klass)
    * Since: 2.22
    */
   g_object_class_install_property (gobject_class, PROP_PATH_AS_ARRAY,
-				   g_param_spec_boxed ("path-as-array",
-						       P_("Path array"),
-						       P_("UNIX socket path, as byte array"),
+				   g_param_spec_boxed ("path-as-array", NULL, NULL,
 						       G_TYPE_BYTE_ARRAY,
 						       G_PARAM_READWRITE |
 						       G_PARAM_CONSTRUCT_ONLY |
@@ -310,9 +306,7 @@ g_unix_socket_address_class_init (GUnixSocketAddressClass *klass)
    * abstract addresses.
    */
   g_object_class_install_property (gobject_class, PROP_ABSTRACT,
-				   g_param_spec_boolean ("abstract",
-							 P_("Abstract"),
-							 P_("Whether or not this is an abstract address"),
+				   g_param_spec_boolean ("abstract", NULL, NULL,
 							 FALSE,
 							 G_PARAM_READWRITE |
 							 G_PARAM_CONSTRUCT_ONLY |
@@ -326,9 +320,7 @@ g_unix_socket_address_class_init (GUnixSocketAddressClass *klass)
    * Since: 2.22
    */
   g_object_class_install_property (gobject_class, PROP_ADDRESS_TYPE,
-				   g_param_spec_enum ("address-type",
-						      P_("Address type"),
-						      P_("The type of UNIX socket address"),
+				   g_param_spec_enum ("address-type", NULL, NULL,
 						      G_TYPE_UNIX_SOCKET_ADDRESS_TYPE,
 						      G_UNIX_SOCKET_ADDRESS_PATH,
 						      G_PARAM_READWRITE |

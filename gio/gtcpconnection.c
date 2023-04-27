@@ -136,9 +136,7 @@ g_tcp_connection_class_init (GTcpConnectionClass *class)
    * Since: 2.22
    */
   g_object_class_install_property (gobject_class, PROP_GRACEFUL_DISCONNECT,
-				   g_param_spec_boolean ("graceful-disconnect",
-							 P_("Graceful Disconnect"),
-							 P_("Whether or not close does a graceful disconnect"),
+				   g_param_spec_boolean ("graceful-disconnect", NULL, NULL,
 							 FALSE,
 							 G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 

@@ -136,9 +136,7 @@ g_converter_output_stream_class_init (GConverterOutputStreamClass *klass)
    */
   g_object_class_install_property (object_class,
 				   PROP_CONVERTER,
-				   g_param_spec_object ("converter",
-							P_("Converter"),
-							P_("The converter object"),
+				   g_param_spec_object ("converter", NULL, NULL,
 							G_TYPE_CONVERTER,
 							G_PARAM_READWRITE|
 							G_PARAM_CONSTRUCT_ONLY|

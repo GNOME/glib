@@ -164,9 +164,7 @@ g_buffered_input_stream_class_init (GBufferedInputStreamClass *klass)
    */
   g_object_class_install_property (object_class,
                                    PROP_BUFSIZE,
-                                   g_param_spec_uint ("buffer-size",
-                                                      P_("Buffer Size"),
-                                                      P_("The size of the backend buffer"),
+                                   g_param_spec_uint ("buffer-size", NULL, NULL,
                                                       1,
                                                       G_MAXUINT,
                                                       DEFAULT_BUFFER_SIZE,

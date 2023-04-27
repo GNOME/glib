@@ -152,9 +152,7 @@ g_buffered_output_stream_class_init (GBufferedOutputStreamClass *klass)
    */
   g_object_class_install_property (object_class,
                                    PROP_BUFSIZE,
-                                   g_param_spec_uint ("buffer-size",
-                                                      P_("Buffer Size"),
-                                                      P_("The size of the backend buffer"),
+                                   g_param_spec_uint ("buffer-size", NULL, NULL,
                                                       1,
                                                       G_MAXUINT,
                                                       DEFAULT_BUFFER_SIZE,
@@ -168,9 +166,7 @@ g_buffered_output_stream_class_init (GBufferedOutputStreamClass *klass)
    */
   g_object_class_install_property (object_class,
                                    PROP_AUTO_GROW,
-                                   g_param_spec_boolean ("auto-grow",
-                                                         P_("Auto-grow"),
-                                                         P_("Whether the buffer should automatically grow"),
+                                   g_param_spec_boolean ("auto-grow", NULL, NULL,
                                                          FALSE,
                                                          G_PARAM_READWRITE|
                                                          G_PARAM_STATIC_NAME|G_PARAM_STATIC_NICK|G_PARAM_STATIC_BLURB));

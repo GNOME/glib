@@ -224,9 +224,7 @@ g_zlib_decompressor_class_init (GZlibDecompressorClass *klass)
    */
   g_object_class_install_property (gobject_class,
 				   PROP_FORMAT,
-				   g_param_spec_enum ("format",
-						      P_("compression format"),
-						      P_("The format of the compressed data"),
+				   g_param_spec_enum ("format", NULL, NULL,
 						      G_TYPE_ZLIB_COMPRESSOR_FORMAT,
 						      G_ZLIB_COMPRESSOR_FORMAT_ZLIB,
 						      G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY |
@@ -244,9 +242,7 @@ g_zlib_decompressor_class_init (GZlibDecompressorClass *klass)
    */
   g_object_class_install_property (gobject_class,
                                    PROP_FILE_INFO,
-                                   g_param_spec_object ("file-info",
-                                                       P_("file info"),
-                                                       P_("File info"),
+                                   g_param_spec_object ("file-info", NULL, NULL,
                                                        G_TYPE_FILE_INFO,
                                                        G_PARAM_READABLE |
                                                        G_PARAM_STATIC_STRINGS));

@@ -122,9 +122,7 @@ _g_dbus_auth_mechanism_class_init (GDBusAuthMechanismClass *klass)
 
   g_object_class_install_property (gobject_class,
                                    PROP_STREAM,
-                                   g_param_spec_object ("stream",
-                                                        P_("IO Stream"),
-                                                        P_("The underlying GIOStream used for I/O"),
+                                   g_param_spec_object ("stream", NULL, NULL,
                                                         G_TYPE_IO_STREAM,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_WRITABLE |
@@ -144,9 +142,7 @@ _g_dbus_auth_mechanism_class_init (GDBusAuthMechanismClass *klass)
    */
   g_object_class_install_property (gobject_class,
                                    PROP_CREDENTIALS,
-                                   g_param_spec_object ("credentials",
-                                                        P_("Credentials"),
-                                                        P_("The credentials of the remote peer"),
+                                   g_param_spec_object ("credentials", NULL, NULL,
                                                         G_TYPE_CREDENTIALS,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_WRITABLE |

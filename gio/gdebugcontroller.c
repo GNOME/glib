@@ -66,9 +66,7 @@ g_debug_controller_default_init (GDebugControllerInterface *iface)
    * Since: 2.72
    */
   g_object_interface_install_property (iface,
-                                       g_param_spec_boolean ("debug-enabled",
-                                                             "Debug Enabled",
-                                                             "Whether to expose debug output",
+                                       g_param_spec_boolean ("debug-enabled", NULL, NULL,
                                                              FALSE,
                                                              G_PARAM_READWRITE |
                                                              G_PARAM_STATIC_STRINGS |

@@ -90,9 +90,7 @@ g_action_default_init (GActionInterface *iface)
    * Since: 2.28
    **/
   g_object_interface_install_property (iface,
-                                       g_param_spec_string ("name",
-                                                            P_("Action Name"),
-                                                            P_("The name used to invoke the action"),
+                                       g_param_spec_string ("name", NULL, NULL,
                                                             NULL,
                                                             G_PARAM_READABLE |
                                                             G_PARAM_STATIC_STRINGS));
@@ -107,9 +105,7 @@ g_action_default_init (GActionInterface *iface)
    * Since: 2.28
    **/
   g_object_interface_install_property (iface,
-                                       g_param_spec_boxed ("parameter-type",
-                                                           P_("Parameter Type"),
-                                                           P_("The type of GVariant passed to activate()"),
+                                       g_param_spec_boxed ("parameter-type", NULL, NULL,
                                                            G_TYPE_VARIANT_TYPE,
                                                            G_PARAM_READABLE |
                                                            G_PARAM_STATIC_STRINGS));
@@ -125,9 +121,7 @@ g_action_default_init (GActionInterface *iface)
    * Since: 2.28
    **/
   g_object_interface_install_property (iface,
-                                       g_param_spec_boolean ("enabled",
-                                                             P_("Enabled"),
-                                                             P_("If the action can be activated"),
+                                       g_param_spec_boolean ("enabled", NULL, NULL,
                                                              TRUE,
                                                              G_PARAM_READABLE |
                                                              G_PARAM_STATIC_STRINGS));
@@ -141,9 +135,7 @@ g_action_default_init (GActionInterface *iface)
    * Since: 2.28
    **/
   g_object_interface_install_property (iface,
-                                       g_param_spec_boxed ("state-type",
-                                                           P_("State Type"),
-                                                           P_("The type of the state kept by the action"),
+                                       g_param_spec_boxed ("state-type", NULL, NULL,
                                                            G_TYPE_VARIANT_TYPE,
                                                            G_PARAM_READABLE |
                                                            G_PARAM_STATIC_STRINGS));
@@ -156,9 +148,7 @@ g_action_default_init (GActionInterface *iface)
    * Since: 2.28
    **/
   g_object_interface_install_property (iface,
-                                       g_param_spec_variant ("state",
-                                                             P_("State"),
-                                                             P_("The state the action is in"),
+                                       g_param_spec_variant ("state", NULL, NULL,
                                                              G_VARIANT_TYPE_ANY,
                                                              NULL,
                                                              G_PARAM_READABLE |

@@ -94,9 +94,7 @@ g_data_output_stream_class_init (GDataOutputStreamClass *klass)
    */
   g_object_class_install_property (object_class,
                                    PROP_BYTE_ORDER,
-                                   g_param_spec_enum ("byte-order",
-                                                      P_("Byte order"),
-                                                      P_("The byte order"),
+                                   g_param_spec_enum ("byte-order", NULL, NULL,
                                                       G_TYPE_DATA_STREAM_BYTE_ORDER,
                                                       G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN,
                                                       G_PARAM_READWRITE|G_PARAM_STATIC_NAME|G_PARAM_STATIC_BLURB));

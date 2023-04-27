@@ -184,7 +184,7 @@ g_subprocess_launcher_class_init (GSubprocessLauncherClass *class)
    * Since: 2.40
    */
   g_object_class_install_property (gobject_class, 1,
-                                   g_param_spec_flags ("flags", "Flags", "GSubprocessFlags for launched processes",
+                                   g_param_spec_flags ("flags", NULL, NULL,
                                                        G_TYPE_SUBPROCESS_FLAGS, 0, G_PARAM_WRITABLE |
                                                        G_PARAM_STATIC_STRINGS | G_PARAM_CONSTRUCT_ONLY));
 }

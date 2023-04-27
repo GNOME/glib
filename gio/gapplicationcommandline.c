@@ -447,9 +447,7 @@ g_application_command_line_class_init (GApplicationCommandLineClass *class)
    * Since: 2.28
    */
   g_object_class_install_property (object_class, PROP_ARGUMENTS,
-    g_param_spec_variant ("arguments",
-                          P_("Commandline arguments"),
-                          P_("The commandline that caused this ::command-line signal emission"),
+    g_param_spec_variant ("arguments", NULL, NULL,
                           G_VARIANT_TYPE_BYTESTRING_ARRAY, NULL,
                           G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY |
                           G_PARAM_STATIC_STRINGS));
@@ -462,9 +460,7 @@ g_application_command_line_class_init (GApplicationCommandLineClass *class)
    * Since: 2.28
    */
   g_object_class_install_property (object_class, PROP_OPTIONS,
-    g_param_spec_variant ("options",
-                          P_("Options"),
-                          P_("The options sent along with the commandline"),
+    g_param_spec_variant ("options", NULL, NULL,
                           G_VARIANT_TYPE_VARDICT, NULL, G_PARAM_WRITABLE |
                           G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS));
 
@@ -476,9 +472,7 @@ g_application_command_line_class_init (GApplicationCommandLineClass *class)
    * Since: 2.28
    */
   g_object_class_install_property (object_class, PROP_PLATFORM_DATA,
-    g_param_spec_variant ("platform-data",
-                          P_("Platform data"),
-                          P_("Platform-specific data for the commandline"),
+    g_param_spec_variant ("platform-data", NULL, NULL,
                           G_VARIANT_TYPE ("a{sv}"), NULL,
                           G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY |
                           G_PARAM_STATIC_STRINGS));
@@ -491,9 +485,7 @@ g_application_command_line_class_init (GApplicationCommandLineClass *class)
    * Since: 2.28
    */
   g_object_class_install_property (object_class, PROP_IS_REMOTE,
-    g_param_spec_boolean ("is-remote",
-                          P_("Is remote"),
-                          P_("TRUE if this is a remote commandline"),
+    g_param_spec_boolean ("is-remote", NULL, NULL,
                           FALSE,
                           G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 }

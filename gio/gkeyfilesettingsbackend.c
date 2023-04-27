@@ -898,9 +898,7 @@ g_keyfile_settings_backend_class_init (GKeyfileSettingsBackendClass *class)
    */
   g_object_class_install_property (object_class,
                                    PROP_FILENAME,
-                                   g_param_spec_string ("filename",
-                                                        P_("Filename"),
-                                                        P_("The filename"),
+                                   g_param_spec_string ("filename", NULL, NULL,
                                                         NULL,
                                                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY |
                                                         G_PARAM_STATIC_STRINGS));
@@ -916,9 +914,7 @@ g_keyfile_settings_backend_class_init (GKeyfileSettingsBackendClass *class)
    */
   g_object_class_install_property (object_class,
                                    PROP_ROOT_PATH,
-                                   g_param_spec_string ("root-path",
-                                                        P_("Root path"),
-                                                        P_("The root path"),
+                                   g_param_spec_string ("root-path", NULL, NULL,
                                                         NULL,
                                                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY |
                                                         G_PARAM_STATIC_STRINGS));
@@ -933,9 +929,7 @@ g_keyfile_settings_backend_class_init (GKeyfileSettingsBackendClass *class)
    */
   g_object_class_install_property (object_class,
                                    PROP_ROOT_GROUP,
-                                   g_param_spec_string ("root-group",
-                                                        P_("Root group"),
-                                                        P_("The root group"),
+                                   g_param_spec_string ("root-group", NULL, NULL,
                                                         NULL,
                                                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY |
                                                         G_PARAM_STATIC_STRINGS));
@@ -949,9 +943,7 @@ g_keyfile_settings_backend_class_init (GKeyfileSettingsBackendClass *class)
    */
   g_object_class_install_property (object_class,
                                    PROP_DEFAULTS_DIR,
-                                   g_param_spec_string ("defaults-dir",
-                                                        P_("Default dir"),
-                                                        P_("Defaults dir"),
+                                   g_param_spec_string ("defaults-dir", NULL, NULL,
                                                         NULL,
                                                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY |
                                                         G_PARAM_STATIC_STRINGS));
