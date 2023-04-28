@@ -113,35 +113,37 @@ if get_option('man')
   endforeach
 endif
 
-# GVariant specification is currently standalone
-rst2html5 = find_program('rst2html5', 'rst2html5.py', required: false)
+if get_option('gtk_doc')
+  # GVariant specification is currently standalone
+  rst2html5 = find_program('rst2html5', 'rst2html5.py', required: false)
 
-if rst2html5.found()
-  spec_path = glib_datadir / 'doc' / 'glib-2.0'
+  if rst2html5.found()
+    spec_path = glib_datadir / 'doc' / 'glib-2.0'
 
-  figures = files(
-    'gvariant-byte-boundaries.svg',
-    'gvariant-integer-and-string-structure.svg',
-    'gvariant-integer-array.svg',
-    'gvariant-string-array.svg',
-  )
+    figures = files(
+      'gvariant-byte-boundaries.svg',
+      'gvariant-integer-and-string-structure.svg',
+      'gvariant-integer-array.svg',
+      'gvariant-string-array.svg',
+    )
 
-  custom_target('gvariant-specification-1.0',
-    input: 'gvariant-specification-1.0.rst',
-    output: 'gvariant-specification-1.0.html',
-    command: [
-      rst2html5,
-      '@INPUT@',
-    ],
-    capture: true,
-    install: true,
-    install_dir: spec_path,
-    install_tag: 'doc',
-    depend_files: figures,
-  )
+    custom_target('gvariant-specification-1.0',
+      input: 'gvariant-specification-1.0.rst',
+      output: 'gvariant-specification-1.0.html',
+      command: [
+        rst2html5,
+        '@INPUT@',
+      ],
+      capture: true,
+      install: true,
+      install_dir: spec_path,
+      install_tag: 'doc',
+      depend_files: figures,
+    )
 
-  install_data(figures,
-    install_dir : spec_path,
-    install_tag : 'doc',
-  )
+    install_data(figures,
+      install_dir : spec_path,
+      install_tag : 'doc',
+    )
+  endif
 endif
