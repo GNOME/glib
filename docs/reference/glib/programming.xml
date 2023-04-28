@@ -20,6 +20,17 @@ General considerations when programming with GLib
 <title>Writing GLib Applications</title>
 
 <refsect2>
+<title>Memory Allocations</title>
+
+<para>
+Unless otherwise specified, all functions which allocate memory in GLib will
+abort the process if heap allocation fails. This is because it is too hard to
+recover from allocation failures in any non-trivial program and, in particular,
+to test all the allocation failure code paths.
+</para>
+</refsect2>
+
+<refsect2>
 <title>Threads</title>
 
 <para>
