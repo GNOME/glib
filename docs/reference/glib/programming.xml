@@ -43,7 +43,7 @@ support multithreaded applications.
 </refsect2>
 
 <refsect2>
-<title>Security</title>
+<title>Security and setuid use</title>
 
 <para>
 When writing code that runs with elevated privileges, it is important
@@ -56,8 +56,17 @@ excellent book on this topic,
 When it comes to GLib and its associated libraries, GLib and
 GObject are generally fine to use in code that runs with elevated
 privileges; they don't load modules (executable code in shared objects)
-or run other programs 'behind your back'. GIO has to be used
-carefully in privileged programs, see the <ulink url="http://developer.gnome.org/gio/stable/ch02.html">GIO documentation</ulink> for details.
+or run other programs ‘behind your back’. GIO, however, is not designed to be
+used in privileged programs, either ones which are spawned by a privileged
+process, or ones which are run with a setuid bit set.
+</para>
+
+<para>
+setuid programs should always reset their environment to contain only
+known-safe values before calling into non-trivial libraries such as GIO. This
+reduces the risk of an attacker-controlled environment variable being used to
+get a privileged GIO process to run arbitrary code via loading a GIO module or
+similar.
 </para>
 
 </refsect2>
