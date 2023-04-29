@@ -590,8 +590,8 @@ test_extra_programs += {
   'proxy' : {'install' : false},
   'resolver' : {'install' : false},
   'send-data' : {'install' : false},
-  'socket-server' : {'install' : false},
-  'socket-client' : {
+  'socket-testserver' : {'install' : false},
+  'socket-testclient' : {
     'extra_sources' : ['gtlsconsoleinteraction.c'],
     'install' : false,
   },

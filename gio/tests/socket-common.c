@@ -1,4 +1,4 @@
-/* #included into both socket-client.c and socket-server.c */
+/* #included into both socket-testclient.c and socket-testserver.c */
 
 #ifdef G_OS_UNIX
 static const char *unix_socket_address_types[] = {
