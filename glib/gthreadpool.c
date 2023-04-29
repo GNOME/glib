@@ -536,10 +536,14 @@ g_thread_pool_start_thread (GRealThreadPool  *pool,
  * since their threads are never considered idle and returned to the
  * global pool.
  *
- * Note that the threads used by exclusive threadpools will all inherit the
+ * Note that the threads used by exclusive thread pools will all inherit the
  * scheduler settings of the current thread while the threads used by
- * non-exclusive threadpools will inherit the scheduler settings from the
- * first thread that created such a threadpool.
+ * non-exclusive thread pools will inherit the scheduler settings from the
+ * first thread that created such a thread pool.
+ *
+ * At least one thread will be spawned when this function is called, either to
+ * create the @max_threads exclusive threads, or to preserve the scheduler
+ * settings of the current thread for future spawns.
  *
  * @error can be %NULL to ignore errors, or non-%NULL to report
  * errors. An error can only occur when @exclusive is set to %TRUE

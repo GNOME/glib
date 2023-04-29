@@ -20,6 +20,17 @@ General considerations when programming with GLib
 <title>Writing GLib Applications</title>
 
 <refsect2>
+<title>Memory Allocations</title>
+
+<para>
+Unless otherwise specified, all functions which allocate memory in GLib will
+abort the process if heap allocation fails. This is because it is too hard to
+recover from allocation failures in any non-trivial program and, in particular,
+to test all the allocation failure code paths.
+</para>
+</refsect2>
+
+<refsect2>
 <title>Threads</title>
 
 <para>
@@ -35,8 +46,15 @@ will always have at least 2 threads.
 </para>
 
 <para>
+In particular, this means that programs must only use
+<ulink url="man:signal-safety(7)">async-signal-safe functions</ulink> between
+calling <function>fork()</function> and <function>exec()</function>, even if
+they haven’t explicitly spawned another thread yet.
+</para>
+
+<para>
 See the sections on <link linkend="glib-Threads">threads</link> and
-<link linkend="glib-Thread-Pools">threadpools</link> for GLib APIs that
+<link linkend="glib-Thread-Pools">thread pools</link> for GLib APIs that
 support multithreaded applications.
 </para>
 
