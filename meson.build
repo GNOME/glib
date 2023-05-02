@@ -509,7 +509,7 @@ if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
     # building with -Wbad-function-cast.
     '-Wno-cast-function-type',
     # Due to function casts through (void*) we cannot support -Wpedantic:
-    # https://wiki.gnome.org/Projects/GLib/CompilerRequirements#Function_pointer_conversions.
+    # ./docs/toolchain-requirements.md#Function_pointer_conversions.
     '-Wno-pedantic',
     # A zero-length format string shouldn't be considered an issue.
     '-Wno-format-zero-length',

@@ -60,7 +60,7 @@
       Before you can compile the GLib library, you need to have
       various other tools and libraries installed on your system.
       If you are building from a release archive, you will need
-      <ulink url="https://wiki.gnome.org/Projects/GLib/CompilerRequirements">a compliant C toolchain</ulink>,
+      <ulink url="https://gitlab.gnome.org/GNOME/glib/-/blob/main/docs/toolchain-requirements.md">a compliant C toolchain</ulink>,
       <application>Meson</application>, and <application>pkg-config</application>;
       the requirements are the same when building from a Git repository clone
       of GLib.
