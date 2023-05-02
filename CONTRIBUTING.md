@@ -114,7 +114,7 @@ development tools appropriate for your operating system, including:
  - Meson
  - Ninja
  - Gettext (19.7 or newer)
- - a [C99 compatible compiler](https://wiki.gnome.org/Projects/GLib/CompilerRequirements)
+ - a [C99 compatible compiler](./docs/toolchain-requirements.md)
 
 Up-to-date instructions about developing GNOME applications and libraries
 can be found on [the GNOME Developer Center](https://developer.gnome.org).
@@ -187,7 +187,7 @@ With each code review, we intend to:
     adequately tested, either through requiring tests to be submitted at the
     same time, or as a follow-up.
  0. Ensure that all new APIs are documented and have [introspection
-    annotations](https://wiki.gnome.org/Projects/GObjectIntrospection/Annotations).
+    annotations](https://gi.readthedocs.io/en/latest/annotations/giannotations.html).
  0. Check that the contribution is split into logically separate commits, each
     with a good commit message.
  0. Encourage further high quality contributions.
@@ -272,4 +272,4 @@ GLib to follow a few rules:
 
 If you have been contributing to GLib for a while and you don’t have commit
 access to the repository, you may ask to obtain it following the [GNOME account
-process](https://wiki.gnome.org/AccountsTeam/NewAccounts).
+process](https://wiki.gnome.org/Infrastructure/NewAccounts).

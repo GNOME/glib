@@ -32,14 +32,14 @@ GLib is regularly built on at least the following systems:
  * FreeBSD: https://wiki.gnome.org/Projects/Jhbuild/FreeBSD
  * openSUSE: https://build.opensuse.org/package/show/GNOME:Factory/glib2
  * CI runners, https://gitlab.gnome.org/GNOME/glib/blob/main/.gitlab-ci.yml:
-  * Fedora (34, https://gitlab.gnome.org/GNOME/glib/-/blob/main/.gitlab-ci/fedora.Dockerfile)
-  * Debian (Bullseye, https://gitlab.gnome.org/GNOME/glib/-/blob/main/.gitlab-ci/debian-stable.Dockerfile)
-  * Windows (MinGW64)
-  * Windows (msys2-mingw32)
-  * Windows (Visual Studio 2017, and a static linking version)
-  * Android (NDK r23b, API 31, arm64, https://gitlab.gnome.org/GNOME/glib/-/blob/main/.gitlab-ci/android-ndk.sh)
-  * FreeBSD (12 and 13)
-  * macOS
+   - Fedora (34, https://gitlab.gnome.org/GNOME/glib/-/blob/main/.gitlab-ci/fedora.Dockerfile)
+   - Debian (Bullseye, https://gitlab.gnome.org/GNOME/glib/-/blob/main/.gitlab-ci/debian-stable.Dockerfile)
+   - Windows (MinGW64)
+   - Windows (msys2-mingw32)
+   - Windows (Visual Studio 2017, and a static linking version)
+   - Android (NDK r23b, API 31, arm64, https://gitlab.gnome.org/GNOME/glib/-/blob/main/.gitlab-ci/android-ndk.sh)
+   - FreeBSD (12 and 13)
+   - macOS
 
 If other platforms are to be supported, we need to set up regular CI testing for
 them. Please contact us if you want to help.
