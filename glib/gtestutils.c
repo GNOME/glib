@@ -174,7 +174,7 @@
  * }
  * ]|
  *
- * ### Integrating GTest in your project
+ * ## Integrating GTest in your project
  *
  * If you are using the [Meson](http://mesonbuild.com) build system, you will
  * typically use the provided `test()` primitive to call the test binaries,
