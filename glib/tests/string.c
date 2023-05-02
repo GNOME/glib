@@ -709,6 +709,40 @@ test_string_steal (void)
   g_free (str);
 }
 
+static void
+test_string_new_take (void)
+{
+  const char *test_str_const = "test_test";
+  const char *replaced_str_const = "test__test";
+  char *test_str = malloc (10 * sizeof (*test_str_const));
+  GString *string;
+
+  strcpy (test_str, test_str_const);
+  g_assert_cmpstr (test_str, ==, test_str_const);
+
+  string = g_string_new_take (g_steal_pointer (&test_str));
+  g_assert_null (test_str);
+  g_assert_nonnull (string);
+
+  g_string_replace (string, "_", "__", 0);
+  g_assert_cmpstr (string->str, ==, replaced_str_const);
+
+  test_str = g_string_free_and_steal (g_steal_pointer (&string));
+  g_assert_cmpstr (test_str, ==, replaced_str_const);
+
+  g_free (test_str);
+}
+
+static void
+test_string_new_take_null (void)
+{
+  GString *string = g_string_new_take (NULL);
+
+  g_assert_cmpstr (string->str, ==, "");
+
+  g_string_free (g_steal_pointer (&string), TRUE);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -736,6 +770,8 @@ main (int   argc,
   g_test_add_func ("/string/test-string-to-bytes", test_string_to_bytes);
   g_test_add_func ("/string/test-string-replace", test_string_replace);
   g_test_add_func ("/string/test-string-steal", test_string_steal);
+  g_test_add_func ("/string/test-string-new-take", test_string_new_take);
+  g_test_add_func ("/string/test-string-new-take/null", test_string_new_take_null);
 
   return g_test_run();
 }

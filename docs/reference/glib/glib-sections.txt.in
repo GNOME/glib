@@ -2625,6 +2625,7 @@ g_str_hash
 <FILE>strings</FILE>
 GString
 g_string_new
+g_string_new_take
 g_string_new_len
 g_string_sized_new
 g_string_assign
