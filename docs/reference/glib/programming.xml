@@ -31,6 +31,36 @@ to test all the allocation failure code paths.
 </refsect2>
 
 <refsect2>
+<title>UTF-8 and String Encoding</title>
+
+<para>
+All GLib, GObject and GIO functions accept and return strings in
+<ulink url="https://en.wikipedia.org/wiki/UTF-8">UTF-8 encoding</ulink>
+unless otherwise specified.
+</para>
+
+<para>
+Input strings to function calls are <emphasis>not</emphasis> checked to see if
+they are valid UTF-8: it is the application developer’s responsibility to
+validate input strings at the time of input, either at the program or library
+boundary, and to only use valid UTF-8 string constants in their application.
+If GLib were to UTF-8 validate all string inputs to all functions, there would
+be a significant drop in performance.
+</para>
+
+<para>Similarly, output strings from functions are guaranteed to be in UTF-8,
+and this does not need to be validated by the calling function. If a function
+returns invalid UTF-8 (and is not documented as doing so), that’s a bug.
+</para>
+
+<para>
+See <link linkend='g-utf8-validate'><function>g_utf8_validate()</function></link>
+and <link linkend='g-utf8-make-valid'><function>g_utf8_make_valid()</function></link>
+for validating UTF-8 input.
+</para>
+</refsect2>
+
+<refsect2>
 <title>Threads</title>
 
 <para>
