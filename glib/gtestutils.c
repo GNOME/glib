@@ -1097,6 +1097,7 @@ g_test_log (GTestLogType lbit,
   guint8 *dbuffer;
   guint32 dbufferlen;
   unsigned subtest_level;
+  gdouble timing;
 
   if (g_once_init_enter (&g_default_print_func))
     {
@@ -1154,6 +1155,7 @@ g_test_log (GTestLogType lbit,
       break;
     case G_TEST_LOG_STOP_CASE:
       result = largs[G_TEST_CASE_LARGS_RESULT];
+      timing = largs[G_TEST_CASE_LARGS_EXECUTION_TIME];
       fail = result == G_TEST_RUN_FAILURE;
       if (test_tap_log)
         {
@@ -1184,6 +1186,16 @@ g_test_log (GTestLogType lbit,
           g_string_append_c (tap_output, '\n');
           g_default_print_func (tap_output->str);
           g_string_free (g_steal_pointer (&tap_output), TRUE);
+
+          /* Print msg for any slow tests, where 'slow' means >= 0.5 secs */
+          if (timing > 0.5)
+            {
+              tap_output = g_string_new ("# ");
+              g_string_append_printf (tap_output, "slow test %s executed in %0.2lf secs\n",
+                                      string1, timing);
+              g_default_print_func (tap_output->str);
+              g_string_free (g_steal_pointer (&tap_output), TRUE);
+            }
         }
       else if (g_test_verbose ())
         g_print ("GTest: result: %s\n", g_test_result_names[result]);
