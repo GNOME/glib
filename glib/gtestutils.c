@@ -926,6 +926,14 @@ const GTestConfig * const g_test_config_vars = &mutable_test_config_vars;
 static gboolean  no_g_set_prgname = FALSE;
 static GPrintFunc g_default_print_func = NULL;
 
+enum
+{
+  G_TEST_CASE_LARGS_RESULT = 0,
+  G_TEST_CASE_LARGS_RUN_FORKS = 1,
+  G_TEST_CASE_LARGS_EXECUTION_TIME = 2,
+
+  G_TEST_CASE_LARGS_MAX
+};
 
 /* --- functions --- */
 static inline gboolean
@@ -1145,7 +1153,7 @@ g_test_log (GTestLogType lbit,
         }
       break;
     case G_TEST_LOG_STOP_CASE:
-      result = largs[0];
+      result = largs[G_TEST_CASE_LARGS_RESULT];
       fail = result == G_TEST_RUN_FAILURE;
       if (test_tap_log)
         {
@@ -3086,7 +3094,7 @@ test_case_run (GTestCase *tc)
   else
     {
       GTimer *test_run_timer = g_timer_new();
-      long double largs[3];
+      long double largs[G_TEST_CASE_LARGS_MAX];
       void *fixture;
       g_test_log (G_TEST_LOG_START_CASE, test_run_name, NULL, 0, NULL);
       test_run_forks = 0;
@@ -3132,9 +3140,9 @@ test_case_run (GTestCase *tc)
         }
       success = test_run_success;
       test_run_success = G_TEST_RUN_FAILURE;
-      largs[0] = success; /* OK */
-      largs[1] = test_run_forks;
-      largs[2] = g_timer_elapsed (test_run_timer, NULL);
+      largs[G_TEST_CASE_LARGS_RESULT] = success; /* OK */
+      largs[G_TEST_CASE_LARGS_RUN_FORKS] = test_run_forks;
+      largs[G_TEST_CASE_LARGS_EXECUTION_TIME] = g_timer_elapsed (test_run_timer, NULL);
       g_test_log (G_TEST_LOG_STOP_CASE, test_run_name, test_run_msg, G_N_ELEMENTS (largs), largs);
       g_clear_pointer (&test_run_msg, g_free);
       g_timer_destroy (test_run_timer);
