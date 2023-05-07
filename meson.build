@@ -412,7 +412,7 @@ if cc.check_header('malloc.h')
   glib_conf_prefix = glib_conf_prefix + '#define HAVE_MALLOC_H 1\n'
 endif
 
-if cc.has_header('linux/netlink.h')
+if cc.check_header('linux/netlink.h')
   glib_conf.set('HAVE_NETLINK', 1)
 endif
 
