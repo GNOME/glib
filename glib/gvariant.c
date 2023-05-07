@@ -1282,8 +1282,9 @@ g_variant_new_string (const gchar *string)
  * @string must be valid UTF-8, and must not be %NULL. To encode
  * potentially-%NULL strings, use this with g_variant_new_maybe().
  *
- * This function consumes @string.  g_free() will be called on @string
- * when it is no longer required.
+ * After this call, @string belongs to the #GVariant and may no longer be
+ * modified by the caller. The memory of @data has to be dynamically
+ * allocated and will eventually be freed with g_free().
  *
  * You must not modify or access @string in any other way after passing
  * it to this function.  It is even possible that @string is immediately

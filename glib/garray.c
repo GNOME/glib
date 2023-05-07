@@ -204,8 +204,10 @@ g_array_new (gboolean zero_terminated,
  * reference count of 1.
  *
  * This avoids having to copy the data manually, when it can just be
- * inherited. @data will eventually be freed using g_free(), so must
- * have been allocated with a suitable allocator.
+ * inherited.
+ * After this call, @data belongs to the #GArray and may no longer be
+ * modified by the caller. The memory of @data has to be dynamically
+ * allocated and will eventually be freed with g_free().
  *
  * In case the elements need to be cleared when the array is freed, use
  * g_array_set_clear_func() to set a #GDestroyNotify function to perform
@@ -252,8 +254,10 @@ g_array_new_take (gpointer  data,
  * and setting the reference count to 1.
  *
  * This avoids having to copy the data manually, when it can just be
- * inherited. @data will eventually be freed using g_free(), so must
- * have been allocated with a suitable allocator.
+ * inherited.
+ * After this call, @data belongs to the #GArray and may no longer be
+ * modified by the caller. The memory of @data has to be dynamically
+ * allocated and will eventually be freed with g_free().
  *
  * The length is calculated by iterating through @data until the first %NULL
  * element is found.
@@ -1275,8 +1279,10 @@ g_ptr_array_new (void)
  * Creates a new #GPtrArray with @data as pointers, @len as length and a
  * reference count of 1.
  *
- * This avoids having to copy such data manually. @data will eventually be
- * freed using g_free(), so must have been allocated with a suitable allocator.
+ * This avoids having to copy such data manually.
+ * After this call, @data belongs to the #GPtrArray and may no longer be
+ * modified by the caller. The memory of @data has to be dynamically
+ * allocated and will eventually be freed with g_free().
  *
  * It also sets @element_free_func for freeing each element when the array is
  * destroyed either via g_ptr_array_unref(), when g_ptr_array_free() is called
@@ -1321,8 +1327,10 @@ g_ptr_array_new_take (gpointer       *data,
  * Creates a new #GPtrArray with @data as pointers, computing the length of it
  * and setting the reference count to 1.
  *
- * This avoids having to copy such data manually. @data will eventually be
- * freed using g_free(), so must have been allocated with a suitable allocator.
+ * This avoids having to copy such data manually.
+ * After this call, @data belongs to the #GPtrArray and may no longer be
+ * modified by the caller. The memory of @data has to be dynamically
+ * allocated and will eventually be freed with g_free().
  *
  * The length is calculated by iterating through @data until the first %NULL
  * element is found.
@@ -2845,8 +2853,10 @@ g_byte_array_steal (GByteArray *array,
  * @data: (transfer full) (array length=len): byte data for the array
  * @len: length of @data
  *
- * Create byte array containing the data. The data will be owned by the array
- * and will be freed with g_free(), i.e. it could be allocated using g_strdup().
+ * Creates a byte array containing the @data.
+ * After this call, @data belongs to the #GByteArray and may no longer be
+ * modified by the caller. The memory of @data has to be dynamically
+ * allocated and will eventually be freed with g_free().
  *
  * Do not use it if @len is greater than %G_MAXUINT. #GByteArray
  * stores the length of its data in #guint, which may be shorter than
