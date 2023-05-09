@@ -1364,11 +1364,10 @@ g_resources_get_info (const gchar           *path,
 static void
 register_lazy_static_resources_unlocked (void)
 {
-  GStaticResource *list;
+  GStaticResource *list = g_atomic_pointer_get (&lazy_register_resources);
 
-  do
-    list = g_atomic_pointer_get (&lazy_register_resources);
-  while (!g_atomic_pointer_compare_and_exchange (&lazy_register_resources, list, NULL));
+  while (!g_atomic_pointer_compare_and_exchange_full (&lazy_register_resources, list, NULL, &list))
+    ;
 
   while (list != NULL)
     {
