@@ -611,6 +611,7 @@ endif
 functions = [
   'accept4',
   'close_range',
+  'copy_file_range',
   'endmntent',
   'endservent',
   'epoll_create',
