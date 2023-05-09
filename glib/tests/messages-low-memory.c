@@ -23,6 +23,9 @@
 #include "config.h"
 
 #include <dlfcn.h>
+#ifdef HAVE_SYS_RESOURCE_H
+#include <sys/resource.h>
+#endif
 #include <glib.h>
 
 static gboolean malloc_eom = FALSE;
@@ -56,6 +59,12 @@ int
 main (int   argc,
       char *argv[])
 {
+#ifdef HAVE_SYS_RESOURCE_H
+  /* We expect this test to abort, so try to avoid that creating a coredump */
+  struct rlimit limit = { 0, 0 };
+  (void) setrlimit (RLIMIT_CORE, &limit);
+#endif
+
   g_setenv ("LC_ALL", "C", TRUE);
 
 #ifndef ENOMEM
