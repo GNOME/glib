@@ -3487,6 +3487,29 @@ g_assertion_message_expr (const char     *domain,
 }
 
 void
+g_assertion_message_cmpint (const char     *domain,
+                            const char     *file,
+                            int             line,
+                            const char     *func,
+                            const char     *expr,
+                            guint64         arg1,
+                            const char     *cmp,
+                            guint64         arg2,
+                            char            numtype)
+{
+  char *s = NULL;
+
+  switch (numtype)
+    {
+    case 'i':   s = g_strdup_printf ("assertion failed (%s): (%" G_GINT64_MODIFIER "i %s %" G_GINT64_MODIFIER "i)", expr, (gint64) arg1, cmp, (gint64) arg2); break;
+    case 'u':   s = g_strdup_printf ("assertion failed (%s): (%" G_GINT64_MODIFIER "u %s %" G_GINT64_MODIFIER "u)", expr, arg1, cmp, arg2); break;
+    case 'x':   s = g_strdup_printf ("assertion failed (%s): (0x%08" G_GINT64_MODIFIER "x %s 0x%08" G_GINT64_MODIFIER "x)", expr, arg1, cmp, arg2); break;
+    }
+  g_assertion_message (domain, file, line, func, s);
+  g_free (s);
+}
+
+void
 g_assertion_message_cmpnum (const char     *domain,
                             const char     *file,
                             int             line,
@@ -3501,8 +3524,10 @@ g_assertion_message_cmpnum (const char     *domain,
 
   switch (numtype)
     {
-    case 'i':   s = g_strdup_printf ("assertion failed (%s): (%" G_GINT64_MODIFIER "i %s %" G_GINT64_MODIFIER "i)", expr, (gint64) arg1, cmp, (gint64) arg2); break;
-    case 'x':   s = g_strdup_printf ("assertion failed (%s): (0x%08" G_GINT64_MODIFIER "x %s 0x%08" G_GINT64_MODIFIER "x)", expr, (guint64) arg1, cmp, (guint64) arg2); break;
+    case 'i':
+    case 'x':
+      /* Backwards compatibility to apps compiled before 2.78 */
+      g_assertion_message_cmpint (domain, file, line, func, expr, (guint64) arg1, cmp, (guint64) arg2, numtype); break;
     case 'f':   s = g_strdup_printf ("assertion failed (%s): (%.9g %s %.9g)", expr, (double) arg1, cmp, (double) arg2); break;
       /* ideally use: floats=%.7g double=%.17g */
     }

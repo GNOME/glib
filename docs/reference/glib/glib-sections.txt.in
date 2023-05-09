@@ -3401,6 +3401,7 @@ g_test_trap_assertions
 g_assertion_message
 g_assertion_message_expr
 g_assertion_message_cmpstr
+g_assertion_message_cmpint
 g_assertion_message_cmpnum
 g_assertion_message_error
 g_test_assert_expected_messages_internal
