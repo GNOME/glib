@@ -5410,21 +5410,7 @@ g_timeout_add_seconds_full (gint           priority,
                             gpointer       data,
                             GDestroyNotify notify)
 {
-  GSource *source;
-  guint id;
-
-  g_return_val_if_fail (function != NULL, 0);
-
-  source = g_timeout_source_new_seconds (interval);
-
-  if (priority != G_PRIORITY_DEFAULT)
-    g_source_set_priority (source, priority);
-
-  g_source_set_callback (source, function, data, notify);
-  id = g_source_attach (source, NULL);
-  g_source_unref (source);
-
-  return id;
+  return timeout_add_full (priority, interval, TRUE, FALSE, function, data, notify);
 }
 
 /**
@@ -5469,6 +5455,26 @@ g_timeout_add_seconds (guint       interval,
   g_return_val_if_fail (function != NULL, 0);
 
   return g_timeout_add_seconds_full (G_PRIORITY_DEFAULT, interval, function, data, NULL);
+}
+
+/**
+ * g_timeout_add_seconds_once:
+ * @interval: the time after which the function will be called, in seconds
+ * @function: function to call
+ * @data: data to pass to @function
+ *
+ * This function behaves like g_timeout_add_once() but with a range in seconds.
+ *
+ * Returns: the ID (greater than 0) of the event source
+ *
+ * Since: 2.78
+ */
+guint
+g_timeout_add_seconds_once (guint           interval,
+                            GSourceOnceFunc function,
+                            gpointer        data)
+{
+  return timeout_add_full (G_PRIORITY_DEFAULT, interval, TRUE, TRUE, (GSourceFunc) function, data, NULL);
 }
 
 /* Child watch functions */

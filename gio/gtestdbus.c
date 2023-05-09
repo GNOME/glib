@@ -62,13 +62,12 @@ typedef struct
   gboolean   timed_out;
 } WeakNotifyData;
 
-static gboolean
+static void
 on_weak_notify_timeout (gpointer user_data)
 {
   WeakNotifyData *data = user_data;
   data->timed_out = TRUE;
   g_main_loop_quit (data->loop);
-  return FALSE;
 }
 
 static gboolean
@@ -95,7 +94,7 @@ _g_object_unref_and_wait_weak_notify (gpointer object)
   g_idle_add (unref_on_idle, object);
 
   /* Make sure we don't block forever */
-  timeout_id = g_timeout_add_seconds (30, on_weak_notify_timeout, &data);
+  timeout_id = g_timeout_add_seconds_once (30, on_weak_notify_timeout, &data);
 
   g_main_loop_run (data.loop);
 

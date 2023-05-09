@@ -1117,15 +1117,13 @@ activate (gpointer data)
   /* GApplication complains if we don't connect to ::activate */
 }
 
-static gboolean
+static void
 quit_already (gpointer user_data)
 {
   TestReplaceData *data = user_data;
 
   g_application_quit (data->app);
   data->timeout_id = 0;
-
-  return G_SOURCE_REMOVE;
 }
 
 static void
@@ -1177,7 +1175,7 @@ test_replace (gconstpointer data)
       g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
 
       if (!allow)
-        data.timeout_id = g_timeout_add_seconds (1, quit_already, &data);
+        data.timeout_id = g_timeout_add_seconds_once (1, quit_already, &data);
 
       g_application_run (app, G_N_ELEMENTS (argv) - 1, argv);
 

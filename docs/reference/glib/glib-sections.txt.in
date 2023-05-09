@@ -586,6 +586,7 @@ g_timeout_add_once
 g_timeout_add_full
 g_timeout_add_seconds
 g_timeout_add_seconds_full
+g_timeout_add_seconds_once
 
 <SUBSECTION>
 g_idle_source_new
