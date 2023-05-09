@@ -108,7 +108,6 @@ if get_option('gtk_doc')
     ignore_headers += [
       'gfiledescriptorbased.h',
       'gunixmounts.h',
-      'gunixfdlist.h',
       'gunixfdmessage.h',
       'gunixinputstream.h',
       'gunixoutputstream.h',
