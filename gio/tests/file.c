@@ -2613,7 +2613,7 @@ test_measure (void)
   g_assert_true (ok);
   g_assert_no_error (error);
 
-  g_assert_cmpuint (num_bytes, ==, 74478);
+  g_assert_cmpuint (num_bytes, ==, 74469);
   g_assert_cmpuint (num_dirs, ==, 6);
   g_assert_cmpuint (num_files, ==, 32);
 
@@ -2696,7 +2696,7 @@ test_measure_async (void)
   file = g_file_new_for_path (path);
   g_free (path);
 
-  data->expected_bytes = 74478;
+  data->expected_bytes = 74469;
   data->expected_dirs = 6;
   data->expected_files = 32;
 
