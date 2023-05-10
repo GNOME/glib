@@ -139,7 +139,7 @@ Selected C99 features
 
 _Hard requirement._
 
-Starting with GLib 2.52 and GTK+ 3.90, we will be using the following C99
+Starting with GLib 2.52 and GTK 3.90, we will be using the following C99
 features where appropriate:
 
  * Compound literals

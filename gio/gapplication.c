@@ -2230,7 +2230,7 @@ g_application_register (GApplication  *application,
  * Increases the use count of @application.
  *
  * Use this function to indicate that the application has a reason to
- * continue to run.  For example, g_application_hold() is called by GTK+
+ * continue to run.  For example, g_application_hold() is called by GTK
  * when a toplevel window is on the screen.
  *
  * To cancel the hold, call g_application_release().

@@ -220,7 +220,7 @@ G_STATIC_ASSERT (sizeof (int) == sizeof (gint32));
  *
  * Parses a string containing debugging options
  * into a %guint containing bit flags. This is used
- * within GDK and GTK+ to parse the debug options passed on the
+ * within GDK and GTK to parse the debug options passed on the
  * command line or through environment variables.
  *
  * If @string is equal to "all", all flags are set. Any flags

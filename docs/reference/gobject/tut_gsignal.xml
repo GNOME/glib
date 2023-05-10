@@ -10,7 +10,7 @@
 
     <para>
       Closures are central to the concept of asynchronous signal delivery
-      which is widely used throughout GTK+ and GNOME applications. A closure is an 
+      which is widely used throughout GTK and GNOME applications. A closure is an 
       abstraction, a generic representation of a callback. It is a small structure
       which contains three objects:
       <itemizedlist>
@@ -37,9 +37,9 @@ return_type function_callback (… , gpointer user_data);
       <footnote><para>
         In practice, closures sit at the boundary of language runtimes: if you are
         writing Python code and one of your Python callbacks receives a signal from
-        a GTK+ widget, the C code in GTK+ needs to execute your Python
-        code. The closure invoked by the GTK+ object invokes the Python callback:
-        it behaves as a normal C object for GTK+ and as a normal Python object for
+        a GTK widget, the C code in GTK needs to execute your Python
+        code. The closure invoked by the GTK object invokes the Python callback:
+        it behaves as a normal C object for GTK and as a normal Python object for
         Python code.
       </para></footnote>
       The GObject library provides a simple <link linkend="GCClosure"><type>GCClosure</type></link> type which
@@ -179,8 +179,8 @@ g_cclosure_marshal_VOID__INT (GClosure     *closure,
     <para>
       GObject's signals have nothing to do with standard UNIX signals: they connect 
       arbitrary application-specific events with any number of listeners.
-      For example, in GTK+, every user event (keystroke or mouse move) is received
-      from the windowing system and generates a GTK+ event in the form of a signal emission
+      For example, in GTK, every user event (keystroke or mouse move) is received
+      from the windowing system and generates a GTK event in the form of a signal emission
       on the widget object instance.
     </para>
 

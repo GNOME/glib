@@ -3036,7 +3036,7 @@ g_unix_mount_point_guess_can_eject (GUnixMountPoint *mount_point)
 /* Utility functions {{{1 */
 
 #ifdef HAVE_MNTENT_H
-/* borrowed from gtk/gtkfilesystemunix.c in GTK+ on 02/23/2006 */
+/* borrowed from gtk/gtkfilesystemunix.c in GTK on 02/23/2006 */
 static void
 _canonicalize_filename (gchar *filename)
 {

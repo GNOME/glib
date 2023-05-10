@@ -6,7 +6,7 @@
   <title>Background</title>
   
   <para>
-    GObject, and its lower-level type system, GType, are used by GTK+ and most GNOME libraries to
+    GObject, and its lower-level type system, GType, are used by GTK and most GNOME libraries to
     provide:
     <itemizedlist>
       <listitem><para>object-oriented C-based APIs and</para></listitem>

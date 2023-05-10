@@ -62,7 +62,7 @@
         Yet another tool that you may find helpful when working with
         GObjects is <ulink
         url="http://sourceforge.net/projects/g-inspector">G-Inspector</ulink>. It
-        is able to display GLib/GTK+ objects and their properties.
+        is able to display GLib/GTK objects and their properties.
       </para>
   </chapter>
   
@@ -90,7 +90,7 @@ break g_object_unref if _object == 0xcafebabe
   <chapter id="tools-gtkdoc">
     <title>Writing API docs</title>
   
-    <para>The API documentation for most of the GLib, GObject, GTK+ and GNOME
+    <para>The API documentation for most of the GLib, GObject, GTK and GNOME
     libraries is built with a combination of complex tools. Typically, the part of 
     the documentation which describes the behavior of each function is extracted
     from the specially-formatted source code comments by a tool named gtk-doc which

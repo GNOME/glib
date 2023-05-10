@@ -17,7 +17,7 @@
   
   <para>
     This chapter focuses on the implementation of a subtype of GObject, for
-    example to create a custom class hierarchy, or to subclass a GTK+ widget.
+    example to create a custom class hierarchy, or to subclass a GTK widget.
   </para>
 
   <para>
@@ -55,7 +55,7 @@
         <filename>viewer_file.c</filename>.</para></listitem>
         <listitem><para>Do not separate the prefix from the typename:
         <filename>viewerfile.h</filename> and <filename>viewerfile.c</filename>.
-        (this is the convention used by GTK+)</para></listitem>
+        (this is the convention used by GTK)</para></listitem>
       </itemizedlist>
       Some people like the first two solutions better: it makes reading file
       names easier for those with poor eyesight.

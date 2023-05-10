@@ -154,7 +154,7 @@
   </para>
 
   <figure id="gvfs-overview">
-    <title>GIO in the GTK+ library stack</title>
+    <title>GIO in the GTK library stack</title>
     <graphic fileref="gvfs-overview.png" format="PNG"></graphic>
   </figure>
 
@@ -166,7 +166,7 @@
   </para>
   <para>
     One of the big advantages of putting the VFS in the GLib layer
-    is that GTK+ can directly use it, e.g. in the filechooser.
+    is that GTK can directly use it, e.g. in the filechooser.
   </para>
   </chapter>
 

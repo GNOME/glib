@@ -165,7 +165,7 @@ typedef gpointer	(*GCopyFunc)            (gconstpointer  src,
  *
  * Declares a type of function which takes an arbitrary
  * data pointer argument and has no return value. It is
- * not currently used in GLib or GTK+.
+ * not currently used in GLib or GTK.
  */
 typedef void            (*GFreeFunc)            (gpointer       data);
 

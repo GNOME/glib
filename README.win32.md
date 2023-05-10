@@ -9,7 +9,7 @@ warned.
 # General
 
 For prebuilt binaries (DLLs and EXEs) and developer packages (headers,
-import libraries) of GLib, Pango, GTK+ etc for Windows, go to
+import libraries) of GLib, Pango, GTK etc for Windows, go to
 https://www.gtk.org/docs/installations/windows/ . They are for "native"
 Windows meaning they use the Win32 API and Microsoft C runtime library
 only. No POSIX (Unix) emulation layer like Cygwin is involved.
@@ -59,9 +59,9 @@ MinGW](https://mingwpy.github.io/ucrt.html) too.
 GLib is not actively tested with the static versions of the UCRT, but if you
 need to use those, patches are welcome.
 
-# Building software that use GLib or GTK+
+# Building software that use GLib or GTK
 
-Building software that just *uses* GLib or GTK+ also require to have
+Building software that just *uses* GLib or GTK also require to have
 the right compiler set up the right way. If you intend to use MinGW-GCC,
 follow the relevant instructions below in that case, too.
 

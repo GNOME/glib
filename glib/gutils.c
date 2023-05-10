@@ -1138,7 +1138,7 @@ static const gchar *g_prgname = NULL; /* always a quark */
  * in contrast to g_get_application_name().
  *
  * If you are using #GApplication the program name is set in
- * g_application_run(). In case of GDK or GTK+ it is set in
+ * g_application_run(). In case of GDK or GTK it is set in
  * gdk_init(), which is called by gtk_init() and the
  * #GtkApplication::startup handler. The program name is found by
  * taking the last component of @argv[0].
@@ -1167,7 +1167,7 @@ g_get_prgname (void)
  * in contrast to g_set_application_name().
  *
  * If you are using #GApplication the program name is set in
- * g_application_run(). In case of GDK or GTK+ it is set in
+ * g_application_run(). In case of GDK or GTK it is set in
  * gdk_init(), which is called by gtk_init() and the
  * #GtkApplication::startup handler. The program name is found by
  * taking the last component of @argv[0].
@@ -2584,7 +2584,7 @@ g_win32_get_system_data_dirs_for_module_real (void (*address_of_function)(void))
   /* Using the above subfolders of Documents and Settings perhaps
    * makes sense from a Windows perspective.
    *
-   * But looking at the actual use cases of this function in GTK+
+   * But looking at the actual use cases of this function in GTK
    * and GNOME software, what we really want is the "share"
    * subdirectory of the installation directory for the package
    * our caller is a part of.
