@@ -44,7 +44,7 @@
  * @see_also: #GParamSpecObject, g_param_spec_object()
  *
  * GObject is the fundamental type providing the common attributes and
- * methods for all object types in GTK+, Pango and other libraries
+ * methods for all object types in GTK, Pango and other libraries
  * based on GObject.  The GObject class provides methods for object
  * construction and destruction, property access methods, and signal
  * support.  Signals are described in detail [here][gobject-Signals].
@@ -135,7 +135,6 @@
  *   g_object_unref (object); // release previously acquired reference
  * ]|
  */
-
 
 /* --- macros --- */
 #define PARAM_SPEC_PARAM_ID(pspec)		((pspec)->param_id)

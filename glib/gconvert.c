@@ -56,7 +56,6 @@
 
 #include "glibintl.h"
 
-
 /**
  * SECTION:conversions
  * @title: Character Set Conversion
@@ -85,7 +84,7 @@
  * Character:  P  r  e  s  e  n  t  a  c  i  ó     n  .  s  x  i
  * Hex code:   50 72 65 73 65 6e 74 61 63 69 c3 b3 6e 2e 73 78 69
  * ]|
- * Glib uses UTF-8 for its strings, and GUI toolkits like GTK+ that use
+ * GLib uses UTF-8 for its strings, and GUI toolkits like GTK that use
  * GLib do the same thing. If you get a file name from the file system,
  * for example, from readdir() or from g_dir_read_name(), and you wish
  * to display the file name to the user, you  will need to convert it

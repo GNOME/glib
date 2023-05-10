@@ -133,7 +133,7 @@
  * @short_description: manages all available sources of events
  *
  * The main event loop manages all the available sources of events for
- * GLib and GTK+ applications. These events can come from any number of
+ * GLib and GTK applications. These events can come from any number of
  * different types of sources such as file descriptors (plain files,
  * pipes or sockets) and timeouts. New types of event sources can also
  * be added using g_source_attach().
@@ -165,12 +165,12 @@
  * exit the main loop, and g_main_loop_run() returns.
  *
  * It is possible to create new instances of #GMainLoop recursively.
- * This is often used in GTK+ applications when showing modal dialog
+ * This is often used in GTK applications when showing modal dialog
  * boxes. Note that event sources are associated with a particular
  * #GMainContext, and will be checked and dispatched for all main
  * loops associated with that GMainContext.
  *
- * GTK+ contains wrappers of some of these functions, e.g. gtk_main(),
+ * GTK contains wrappers of some of these functions, e.g. gtk_main(),
  * gtk_main_quit() and gtk_events_pending().
  *
  * ## Creating new source types
@@ -2197,7 +2197,7 @@ g_source_set_name_full (GSource    *source,
  *
  * The source name should describe in a human-readable way
  * what the source does. For example, "X11 event queue"
- * or "GTK+ repaint idle handler" or whatever it is.
+ * or "GTK repaint idle handler" or whatever it is.
  *
  * It is permitted to call this function multiple times, but is not
  * recommended due to the potential performance impact.  For example,

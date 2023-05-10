@@ -246,7 +246,7 @@ g_quark_from_string (const gchar *string)
  * with statically allocated strings in the main program, but not with
  * statically allocated memory in dynamically loaded modules, if you
  * expect to ever unload the module again (e.g. do not use this
- * function in GTK+ theme engines).
+ * function in GTK theme engines).
  *
  * This function must not be used before library constructors have finished
  * running. In particular, this means it cannot be used to initialize global

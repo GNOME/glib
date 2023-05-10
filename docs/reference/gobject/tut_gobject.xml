@@ -19,7 +19,7 @@
       <listitem><para>Generic per-object properties with set/get function pairs</para></listitem>
       <listitem><para>Easy use of signals</para></listitem>
     </itemizedlist>
-    All the GNOME libraries which use the GLib type system (like GTK+ and GStreamer)
+    All the GNOME libraries which use the GLib type system (like GTK and GStreamer)
     inherit from <link linkend="GObject"><type>GObject</type></link> which is why it is important to understand
     the details of how it works.
   </para>

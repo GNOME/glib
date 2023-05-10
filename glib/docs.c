@@ -1068,7 +1068,7 @@
  * @title: Type Conversion Macros
  * @short_description: portably storing integers in pointer variables
  *
- * Many times GLib, GTK+, and other libraries allow you to pass "user
+ * Many times GLib, GTK, and other libraries allow you to pass "user
  * data" to a callback, in the form of a void pointer. From time to time
  * you want to pass an integer instead of a pointer. You could allocate
  * an integer, with something like:

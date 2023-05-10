@@ -49,7 +49,7 @@
       aliasing and cannot be guaranteed to work.
     </para>
     <para>
-      The GTK+ documentation contains
+      The GTK documentation contains
       <ulink url="https://developer.gnome.org/gtk3/stable/gtk-building.html">further details</ulink>
       about the build process and ways to influence it.
     </para>

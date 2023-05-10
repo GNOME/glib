@@ -241,7 +241,7 @@
  * not advisable, as it cannot be filtered against using the `G_MESSAGES_DEBUG`
  * environment variable.
  *
- * For example, GTK+ uses this in its `Makefile.am`:
+ * For example, GTK uses this in its `Makefile.am`:
  * |[
  * AM_CPPFLAGS = -DG_LOG_DOMAIN=\"Gtk\"
  * ]|
@@ -831,7 +831,7 @@ g_log_set_fatal_mask (const gchar   *log_domain,
  *                    | G_LOG_FLAG_RECURSION, my_log_handler, NULL);
  * ]|
  *
- * This example adds a log handler for all critical messages from GTK+:
+ * This example adds a log handler for all critical messages from GTK:
  *
  * |[<!-- language="C" --> 
  * g_log_set_handler ("Gtk", G_LOG_LEVEL_CRITICAL | G_LOG_FLAG_FATAL
@@ -3295,7 +3295,7 @@ g_log_default_handler (const gchar   *log_domain,
  * Any messages passed to g_print() will be output via
  * the new handler. The default handler outputs
  * the encoded message to stdout. By providing your own handler
- * you can redirect the output, to a GTK+ widget or a
+ * you can redirect the output, to a GTK widget or a
  * log file for example.
  *
  * Since 2.76 this functions always returns a valid
@@ -3424,7 +3424,7 @@ g_print (const gchar *format,
  * Any messages passed to g_printerr() will be output via
  * the new handler. The default handler outputs the encoded
  * message to stderr. By providing your own handler you can
- * redirect the output, to a GTK+ widget or a log file for
+ * redirect the output, to a GTK widget or a log file for
  * example.
  *
  * Since 2.76 this functions always returns a valid

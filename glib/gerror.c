@@ -53,7 +53,7 @@
  * These two kinds of errors are fundamentally different: runtime errors
  * should be handled or reported to the user, programming errors should
  * be eliminated by fixing the bug in the program. This is why most
- * functions in GLib and GTK+ do not use the #GError facility.
+ * functions in GLib and GTK do not use the #GError facility.
  *
  * Functions that can fail take a return location for a #GError as their
  * last argument. On error, a new #GError instance will be allocated and

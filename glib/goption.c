@@ -65,7 +65,7 @@
  * Help Options:
  *   -h, --help               Show help options
  *   --help-all               Show all help options
- *   --help-gtk               Show GTK+ Options
+ *   --help-gtk               Show GTK Options
  *  
  * Application Options:
  *   -r, --repeats=N          Average over N repetitions
