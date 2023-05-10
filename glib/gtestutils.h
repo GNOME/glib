@@ -49,6 +49,26 @@ typedef void (*GTestFixtureFunc) (gpointer      fixture,
                                                g_assertion_message_cmpstr (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
                                                  #s1 " " #cmp " " #s2, __s1, #cmp, __s2); \
                                         } G_STMT_END
+#if GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_78
+#define g_assert_cmpint(n1, cmp, n2)    G_STMT_START { \
+                                             gint64 __n1 = (n1), __n2 = (n2); \
+                                             if (__n1 cmp __n2) ; else \
+                                               g_assertion_message_cmpint (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
+                                                 #n1 " " #cmp " " #n2, __n1, #cmp, __n2, 'i'); \
+                                        } G_STMT_END
+#define g_assert_cmpuint(n1, cmp, n2)   G_STMT_START { \
+                                             guint64 __n1 = (n1), __n2 = (n2); \
+                                             if (__n1 cmp __n2) ; else \
+                                               g_assertion_message_cmpint (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
+                                                 #n1 " " #cmp " " #n2, __n1, #cmp, __n2, 'u'); \
+                                        } G_STMT_END
+#define g_assert_cmphex(n1, cmp, n2)    G_STMT_START { \
+                                             guint64 __n1 = (n1), __n2 = (n2); \
+                                             if (__n1 cmp __n2) ; else \
+                                               g_assertion_message_cmpint (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
+                                                 #n1 " " #cmp " " #n2, __n1, #cmp, __n2, 'x'); \
+                                        } G_STMT_END
+#else /* GLIB_VERSION_MIN_REQUIRED < GLIB_VERSION_2_78 */
 #define g_assert_cmpint(n1, cmp, n2)    G_STMT_START { \
                                              gint64 __n1 = (n1), __n2 = (n2); \
                                              if (__n1 cmp __n2) ; else \
@@ -67,6 +87,7 @@ typedef void (*GTestFixtureFunc) (gpointer      fixture,
                                                g_assertion_message_cmpnum (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
                                                  #n1 " " #cmp " " #n2, (long double) __n1, #cmp, (long double) __n2, 'x'); \
                                         } G_STMT_END
+#endif /* GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_78 */
 #define g_assert_cmpfloat(n1,cmp,n2)    G_STMT_START { \
                                              long double __n1 = (long double) (n1), __n2 = (long double) (n2); \
                                              if (__n1 cmp __n2) ; else \
@@ -80,6 +101,25 @@ typedef void (*GTestFixtureFunc) (gpointer      fixture,
                                                g_assertion_message_cmpnum (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
                                                  #n1 " == " #n2 " (+/- " #epsilon ")", __n1, "==", __n2, 'f'); \
                                         } G_STMT_END
+#if GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_78
+#define g_assert_cmpmem(m1, l1, m2, l2) G_STMT_START {\
+                                             gconstpointer __m1 = m1, __m2 = m2; \
+                                             size_t __l1 = (size_t) l1, __l2 = (size_t) l2; \
+                                             if (__l1 != 0 && __m1 == NULL) \
+                                               g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
+                                                                    "assertion failed (" #l1 " == 0 || " #m1 " != NULL)"); \
+                                             else if (__l2 != 0 && __m2 == NULL) \
+                                               g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
+                                                                    "assertion failed (" #l2 " == 0 || " #m2 " != NULL)"); \
+                                             else if (__l1 != __l2) \
+                                               g_assertion_message_cmpint (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
+                                                                           #l1 " (len(" #m1 ")) == " #l2 " (len(" #m2 "))", \
+                                                                           __l1, "==", __l2, 'u'); \
+                                             else if (__l1 != 0 && __m2 != NULL && memcmp (__m1, __m2, __l1) != 0) \
+                                               g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
+                                                                    "assertion failed (" #m1 " == " #m2 ")"); \
+                                        } G_STMT_END
+#else /* GLIB_VERSION_MIN_REQUIRED < GLIB_VERSION_2_78 */
 #define g_assert_cmpmem(m1, l1, m2, l2) G_STMT_START {\
                                              gconstpointer __m1 = m1, __m2 = m2; \
                                              size_t __l1 = (size_t) l1, __l2 = (size_t) l2; \
@@ -97,6 +137,7 @@ typedef void (*GTestFixtureFunc) (gpointer      fixture,
                                                g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
                                                                     "assertion failed (" #m1 " == " #m2 ")"); \
                                         } G_STMT_END
+#endif /* GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_78 */
 #define g_assert_cmpvariant(v1, v2) \
   G_STMT_START \
   { \
@@ -567,6 +608,16 @@ void    g_assertion_message_cmpstrv     (const char         *domain,
                                          const char * const *arg1,
                                          const char * const *arg2,
                                          gsize               first_wrong_idx) G_ANALYZER_NORETURN;
+GLIB_AVAILABLE_IN_2_78
+void    g_assertion_message_cmpint      (const char     *domain,
+                                         const char     *file,
+                                         int             line,
+                                         const char     *func,
+                                         const char     *expr,
+                                         guint64         arg1,
+                                         const char     *cmp,
+                                         guint64         arg2,
+                                         char            numtype) G_ANALYZER_NORETURN;
 GLIB_AVAILABLE_IN_ALL
 void    g_assertion_message_cmpnum      (const char     *domain,
                                          const char     *file,

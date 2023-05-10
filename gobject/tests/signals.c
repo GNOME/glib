@@ -4,13 +4,13 @@
 #define g_assert_cmpflags(type,n1, cmp, n2) G_STMT_START { \
                                                type __n1 = (n1), __n2 = (n2); \
                                                if (__n1 cmp __n2) ; else \
-                                                 g_assertion_message_cmpnum (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
+                                                 g_assertion_message_cmpint (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
                                                                              #n1 " " #cmp " " #n2, __n1, #cmp, __n2, 'i'); \
                                             } G_STMT_END
 #define g_assert_cmpenum(type,n1, cmp, n2) G_STMT_START { \
                                                type __n1 = (n1), __n2 = (n2); \
                                                if (__n1 cmp __n2) ; else \
-                                                 g_assertion_message_cmpnum (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
+                                                 g_assertion_message_cmpint (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
                                                                              #n1 " " #cmp " " #n2, __n1, #cmp, __n2, 'i'); \
                                             } G_STMT_END
 

@@ -33,6 +33,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <inttypes.h>
 #ifdef HAVE_SYS_RESOURCE_H
 #include <sys/resource.h>
 #endif
@@ -3487,6 +3488,43 @@ g_assertion_message_expr (const char     *domain,
 }
 
 void
+g_assertion_message_cmpint (const char     *domain,
+                            const char     *file,
+                            int             line,
+                            const char     *func,
+                            const char     *expr,
+                            guint64         arg1,
+                            const char     *cmp,
+                            guint64         arg2,
+                            char            numtype)
+{
+  char *s = NULL;
+
+  switch (numtype)
+    {
+    case 'i':
+      s = g_strdup_printf ("assertion failed (%s): "
+                           "(%" PRIi64 " %s %" PRIi64 ")",
+                           expr, (int64_t) arg1, cmp, (int64_t) arg2);
+      break;
+    case 'u':
+      s = g_strdup_printf ("assertion failed (%s): "
+                           "(%" PRIu64 " %s %" PRIu64 ")",
+                           expr, (uint64_t) arg1, cmp, (uint64_t) arg2);
+      break;
+    case 'x':
+      s = g_strdup_printf ("assertion failed (%s): "
+                           "(0x%08" PRIx64 " %s 0x%08" PRIx64 ")",
+                           expr, (uint64_t) arg1, cmp, (uint64_t) arg2);
+      break;
+    default:
+      g_assert_not_reached ();
+    }
+  g_assertion_message (domain, file, line, func, s);
+  g_free (s);
+}
+
+void
 g_assertion_message_cmpnum (const char     *domain,
                             const char     *file,
                             int             line,
@@ -3501,10 +3539,16 @@ g_assertion_message_cmpnum (const char     *domain,
 
   switch (numtype)
     {
-    case 'i':   s = g_strdup_printf ("assertion failed (%s): (%" G_GINT64_MODIFIER "i %s %" G_GINT64_MODIFIER "i)", expr, (gint64) arg1, cmp, (gint64) arg2); break;
-    case 'x':   s = g_strdup_printf ("assertion failed (%s): (0x%08" G_GINT64_MODIFIER "x %s 0x%08" G_GINT64_MODIFIER "x)", expr, (guint64) arg1, cmp, (guint64) arg2); break;
     case 'f':   s = g_strdup_printf ("assertion failed (%s): (%.9g %s %.9g)", expr, (double) arg1, cmp, (double) arg2); break;
       /* ideally use: floats=%.7g double=%.17g */
+    case 'i':
+    case 'x':
+      /* Backwards compatibility to apps compiled before 2.78 */
+      g_assertion_message_cmpint (domain, file, line, func, expr,
+                                  (guint64) arg1, cmp, (guint64) arg2, numtype);
+      break;
+    default:
+      g_assert_not_reached ();
     }
   g_assertion_message (domain, file, line, func, s);
   g_free (s);
