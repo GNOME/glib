@@ -2575,12 +2575,12 @@ g_win32_get_system_data_dirs_for_module_real (void (*address_of_function)(void))
   p = get_special_folder (&FOLDERID_ProgramData);
   if (p)
     g_array_append_val (data_dirs, p);
-  
+
   /* Documents and Settings\All Users\Documents */
   p = get_special_folder (&FOLDERID_PublicDocuments);
   if (p)
     g_array_append_val (data_dirs, p);
-	
+
   /* Using the above subfolders of Documents and Settings perhaps
    * makes sense from a Windows perspective.
    *
