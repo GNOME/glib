@@ -723,46 +723,6 @@ test_mkdir_with_parents_1 (const gchar *base)
   g_free (p0);
 }
 
-static void
-test_mkdir_with_parents (void)
-{
-  gchar *cwd, *new_path;
-  if (g_test_verbose())
-    g_printerr ("checking g_mkdir_with_parents() in subdir ./hum/");
-  test_mkdir_with_parents_1 ("hum");
-  g_remove ("hum");
-  if (g_test_verbose())
-    g_printerr ("checking g_mkdir_with_parents() in subdir ./hii///haa/hee/");
-  test_mkdir_with_parents_1 ("./hii///haa/hee///");
-  g_remove ("hii/haa/hee");
-  g_remove ("hii/haa");
-  g_remove ("hii");
-  cwd = g_get_current_dir ();
-  if (g_test_verbose())
-    g_printerr ("checking g_mkdir_with_parents() in cwd: %s", cwd);
-  test_mkdir_with_parents_1 (cwd);
-
-  new_path = g_build_filename (cwd, "new", NULL);
-  g_assert_cmpint (g_mkdir_with_parents (new_path, 0), ==, 0);
-  g_assert_cmpint (g_rmdir (new_path), ==, 0);
-  g_free (new_path);
-  g_free (cwd);
-
-  g_assert_cmpint (g_mkdir_with_parents ("./test", 0), ==, 0);
-  g_assert_cmpint (g_mkdir_with_parents ("./test", 0), ==, 0);
-  g_remove ("./test");
-
-#ifndef G_OS_WIN32
-  g_assert_cmpint (g_mkdir_with_parents ("/usr/b/c", 0), ==, -1);
-  /* EPERM or EROFS may be returned if the filesystem as a whole is read-only */
-  if (errno != EPERM && errno != EROFS)
-    g_assert_cmpint (errno, ==, EACCES);
-#endif
-
-  g_assert_cmpint (g_mkdir_with_parents (NULL, 0), ==, -1);
-  g_assert_cmpint (errno, ==, EINVAL);
-}
-
 /*
  * check_cap_dac_override:
  * @tmpdir: (nullable): A temporary directory in which we can create
@@ -846,6 +806,59 @@ check_cap_dac_override (const char *tmpdir)
 #else
   return FALSE;
 #endif
+}
+
+static void
+test_mkdir_with_parents (void)
+{
+  gchar *cwd, *new_path;
+#ifndef G_OS_WIN32
+  gboolean can_override_dac = check_cap_dac_override (NULL);
+#endif
+  if (g_test_verbose())
+    g_printerr ("checking g_mkdir_with_parents() in subdir ./hum/");
+  test_mkdir_with_parents_1 ("hum");
+  g_remove ("hum");
+  if (g_test_verbose())
+    g_printerr ("checking g_mkdir_with_parents() in subdir ./hii///haa/hee/");
+  test_mkdir_with_parents_1 ("./hii///haa/hee///");
+  g_remove ("hii/haa/hee");
+  g_remove ("hii/haa");
+  g_remove ("hii");
+  cwd = g_get_current_dir ();
+  if (g_test_verbose())
+    g_printerr ("checking g_mkdir_with_parents() in cwd: %s", cwd);
+  test_mkdir_with_parents_1 (cwd);
+
+  new_path = g_build_filename (cwd, "new", NULL);
+  g_assert_cmpint (g_mkdir_with_parents (new_path, 0), ==, 0);
+  g_assert_cmpint (g_rmdir (new_path), ==, 0);
+  g_free (new_path);
+  g_free (cwd);
+
+  g_assert_cmpint (g_mkdir_with_parents ("./test", 0), ==, 0);
+  g_assert_cmpint (g_mkdir_with_parents ("./test", 0), ==, 0);
+  g_remove ("./test");
+
+#ifndef G_OS_WIN32
+  if (can_override_dac)
+    {
+      g_assert_cmpint (g_mkdir_with_parents ("/usr/b/c", 0), ==, 0);
+      g_remove ("/usr/b/c");
+      g_remove ("/usr/b");
+    }
+  else
+    {
+      g_assert_cmpint (g_mkdir_with_parents ("/usr/b/c", 0), ==, -1);
+      /* EPERM or EROFS may be returned if the filesystem as a whole is read-only */
+      if (errno != EPERM && errno != EROFS)
+        g_assert_cmpint (errno, ==, EACCES);
+    }
+
+#endif
+
+  g_assert_cmpint (g_mkdir_with_parents (NULL, 0), ==, -1);
+  g_assert_cmpint (errno, ==, EINVAL);
 }
 
 /* Reproducer for https://gitlab.gnome.org/GNOME/glib/issues/1852 */
