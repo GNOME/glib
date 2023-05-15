@@ -77,6 +77,13 @@
 #include "gioerror.h"
 #include "glibintl.h"
 
+/* Linux defines loff_t as a way to simplify the offset types for calls like
+ * splice() and copy_file_range(). BSD has copy_file_range() but doesn’t define
+ * loff_t. Abstract that. */
+#ifndef HAVE_LOFF_T
+typedef off_t loff_t;
+#endif
+
 
 /**
  * SECTION:gfile
