@@ -215,7 +215,7 @@ class SignalFrame(FrameDecorator):
         if detail is not None:
             return signal + ":" + detail
         else:
-            return detail
+            return signal
 
     def function(self):
         instances = []
