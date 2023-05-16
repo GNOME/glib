@@ -108,11 +108,9 @@ g_bytes_new (gconstpointer data,
  *
  * Creates a new #GBytes from @data.
  *
- * After this call, @data belongs to the bytes and may no longer be
- * modified by the caller.  g_free() will be called on @data when the
- * bytes is no longer in use. Because of this @data must have been created by
- * a call to g_malloc(), g_malloc0() or g_realloc() or by one of the many
- * functions that wrap these calls (such as g_new(), g_strdup(), etc).
+ * After this call, @data belongs to the #GBytes and may no longer be
+ * modified by the caller. The memory of @data has to be dynamically
+ * allocated and will eventually be freed with g_free().
  *
  * For creating #GBytes with memory from other allocators, see
  * g_bytes_new_with_free_func().

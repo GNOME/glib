@@ -51,6 +51,8 @@ struct _GString
 
 GLIB_AVAILABLE_IN_ALL
 GString*     g_string_new               (const gchar     *init);
+GLIB_AVAILABLE_IN_2_78
+GString*     g_string_new_take          (gchar           *init);
 GLIB_AVAILABLE_IN_ALL
 GString*     g_string_new_len           (const gchar     *init,
                                          gssize           len);
