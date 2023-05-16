@@ -3970,7 +3970,7 @@ g_file_move (GFile                  *source,
  * @progress_callback: (nullable) (scope call) (closure progress_callback_data):
  *   #GFileProgressCallback function for updates
  * @progress_callback_data: gpointer to user data for the callback function
- * @callback: (closure user_data): a #GAsyncReadyCallback
+ * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
  *   to call when the request is satisfied
  * @user_data: the data to pass to callback function
  *
