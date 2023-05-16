@@ -2,6 +2,7 @@
 #include <string.h>
 
 #ifdef G_OS_UNIX
+#include <sys/ptrace.h>
 #include <sys/wait.h>
 #include <glib-unix.h>
 #include <gio/gunixinputstream.h>
@@ -1989,7 +1990,107 @@ test_fd_conflation_child_err_report_fd (void)
   do_test_fd_conflation (G_SUBPROCESS_FLAGS_NONE, empty_child_setup, TRUE);
 }
 
-#endif
+/* Handle ptrace events on @main_child, and assert that when it exits, it does
+ * so with status %EXIT_SUCCESS, rather than signalling. Other than that, this
+ * just calls %PTRACE_CONT for all trace events. */
+static void
+trace_children (pid_t main_child)
+{
+  int wstatus;
+
+  g_assert_no_errno (waitpid (main_child, &wstatus, 0));
+  g_assert_no_errno (ptrace (PTRACE_SETOPTIONS, main_child, NULL,
+                             (PTRACE_O_TRACEFORK |
+                              PTRACE_O_EXITKILL |
+                              PTRACE_O_TRACEVFORK |
+                              PTRACE_O_TRACECLONE |
+                              PTRACE_O_TRACEEXEC)));
+  g_assert_no_errno (ptrace (PTRACE_CONT, main_child, NULL, 0));
+
+  while (TRUE)
+    {
+      pid_t pid;
+      int wstatus;
+      int stop_signum;
+      int ptrace_event;
+
+      pid = waitpid (-1, &wstatus, 0);
+      if (pid == -1 && errno == ECHILD)
+        break;
+
+      g_assert_cmpint (errno, ==, 0);
+      g_assert_cmpint (pid, >=, 0);
+
+      if (WIFSTOPPED (wstatus))
+        stop_signum = WSTOPSIG (wstatus);
+      else
+        stop_signum = 0;
+
+      switch (stop_signum)
+        {
+        case SIGTRAP:
+          ptrace_event = (wstatus >> 16) & 0xffff;
+          switch (ptrace_event)
+            {
+            case 0:
+              g_assert_no_errno (ptrace (PTRACE_CONT, pid, NULL, stop_signum));
+              break;
+            default:
+              g_assert_no_errno (ptrace (PTRACE_CONT, pid, NULL, 0));
+              break;
+            }
+          break;
+        case SIGSTOP:
+          g_assert_no_errno (ptrace (PTRACE_CONT, pid, NULL, 0));
+          break;
+        default:
+          if (!WIFEXITED (wstatus) && !WIFSIGNALED (wstatus))
+            g_assert_no_errno (ptrace (PTRACE_CONT, pid, NULL, stop_signum));
+          break;
+        }
+
+      if (pid == main_child)
+        {
+          g_assert_false (WIFSIGNALED (wstatus));
+          if (WIFEXITED (wstatus))
+            {
+              g_assert_cmpint (WEXITSTATUS (wstatus), ==, EXIT_SUCCESS);
+              break;
+            }
+        }
+    }
+}
+
+static void
+test_exit_status_trapped (void)
+{
+  GPtrArray *args = NULL;
+  pid_t test_child;
+
+  g_test_summary ("Test that exit status is reported correctly for ptrace()d child processes");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/merge_requests/3433");
+
+  /* Call fork() directly here, rather than using #GSubprocess, so that we can
+   * safely call waitpid() on it ourselves without interfering with the internals
+   * of #GSubprocess.
+   * See https://gitlab.gnome.org/GNOME/glib/-/merge_requests/3433#note_1749055 */
+  args = get_test_subprocess_args ("sleep-and-kill", NULL);
+  test_child = fork ();
+  if (test_child == 0)
+    {
+      /* Between fork() and exec() we can only call async-signal-safe functions. */
+      if (ptrace (PTRACE_TRACEME, 0, NULL, NULL) < 0)
+        abort ();
+
+      g_assert_no_errno (execvp (args->pdata[0], (char * const *) args->pdata));
+    }
+
+  trace_children (test_child);
+
+  g_clear_pointer (&args, g_ptr_array_unref);
+}
+
+#endif  /* G_OS_UNIX */
 
 static void
 test_launcher_environment (void)
@@ -2133,6 +2234,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gsubprocess/fd-conflation/empty-child-setup", test_fd_conflation_empty_child_setup);
   g_test_add_func ("/gsubprocess/fd-conflation/inherit-fds", test_fd_conflation_inherit_fds);
   g_test_add_func ("/gsubprocess/fd-conflation/child-err-report-fd", test_fd_conflation_child_err_report_fd);
+  g_test_add_func ("/gsubprocess/exit-status/trapped", test_exit_status_trapped);
 #endif
   g_test_add_func ("/gsubprocess/launcher-environment", test_launcher_environment);
 

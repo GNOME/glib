@@ -5,6 +5,7 @@
 #include <errno.h>
 #ifdef G_OS_UNIX
 #include <unistd.h>
+#include <sys/ptrace.h>
 #else
 #include <io.h>
 #endif
@@ -241,6 +242,66 @@ printenv_mode (int argc, char **argv)
   return 0;
 }
 
+#ifdef G_OS_UNIX
+static void
+on_sleep_exited (GObject         *object,
+                 GAsyncResult    *result,
+                 gpointer         user_data)
+{
+  GSubprocess *subprocess = G_SUBPROCESS (object);
+  gboolean *done = user_data;
+  GError *local_error = NULL;
+  gboolean ret;
+
+  ret = g_subprocess_wait_finish (subprocess, result, &local_error);
+  g_assert_no_error (local_error);
+  g_assert_true (ret);
+
+  *done = TRUE;
+  g_main_context_wakeup (NULL);
+}
+
+static int
+sleep_and_kill (int argc, char **argv)
+{
+  GPtrArray *args = NULL;
+  GSubprocessLauncher *launcher = NULL;
+  GSubprocess *proc = NULL;
+  GError *local_error = NULL;
+  pid_t sleep_pid;
+  gboolean done = FALSE;
+
+  args = g_ptr_array_new_with_free_func (g_free);
+
+  /* Run sleep "forever" in a shell; this will trigger PTRACE_EVENT_EXEC */
+  g_ptr_array_add (args, g_strdup ("sh"));
+  g_ptr_array_add (args, g_strdup ("-c"));
+  g_ptr_array_add (args, g_strdup ("sleep infinity"));
+  g_ptr_array_add (args, NULL);
+  launcher = g_subprocess_launcher_new (G_SUBPROCESS_FLAGS_NONE);
+  proc = g_subprocess_launcher_spawnv (launcher, (const gchar **) args->pdata, &local_error);
+  g_assert_no_error (local_error);
+  g_assert_nonnull (proc);
+
+  sleep_pid = atoi (g_subprocess_get_identifier (proc));
+
+  g_subprocess_wait_async (proc, NULL, on_sleep_exited, &done);
+
+  kill (sleep_pid, SIGKILL);
+
+  while (!done)
+    g_main_context_iteration (NULL, TRUE);
+
+  g_assert_false (g_subprocess_get_successful (proc));
+
+  g_clear_pointer (&args, g_ptr_array_unref);
+  g_clear_object (&launcher);
+  g_clear_object (&proc);
+
+  return EXIT_SUCCESS;
+}
+#endif
+
 int
 main (int argc, char **argv)
 {
@@ -266,6 +327,8 @@ main (int argc, char **argv)
       g_printerr ("MODE argument required\n");
       return 1;
     }
+
+  g_log_writer_default_set_use_stderr (TRUE);
 
   mode = argv[1];
   if (strcmp (mode, "noop") == 0)
@@ -297,6 +360,10 @@ main (int argc, char **argv)
     return cwd_mode (argc, argv);
   else if (strcmp (mode, "printenv") == 0)
     return printenv_mode (argc, argv);
+#ifdef G_OS_UNIX
+  else if (strcmp (mode, "sleep-and-kill") == 0)
+    return sleep_and_kill (argc, argv);
+#endif
   else
     {
       g_printerr ("Unknown MODE %s\n", argv[1]);
