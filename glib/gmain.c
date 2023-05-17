@@ -5245,7 +5245,6 @@ g_child_watch_prepare (GSource *source,
 		       gint    *timeout)
 {
 #ifdef G_OS_WIN32
-  *timeout = -1;
   return FALSE;
 #else /* G_OS_WIN32 */
   {
