@@ -3855,10 +3855,7 @@ g_main_context_prepare_unlocked (GMainContext *context,
               context->in_check_or_prepare--;
             }
           else
-            {
-              source_timeout = -1;
-              result = FALSE;
-            }
+            result = FALSE;
 
           if (result == FALSE && source->priv->ready_time != -1)
             {
