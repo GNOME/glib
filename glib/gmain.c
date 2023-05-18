@@ -374,14 +374,11 @@ struct _GChildWatchSource
 {
   GSource     source;
   GPid        pid;
-  /* On Unix this is a wait status, which is the thing you pass to WEXITSTATUS()
-   * to get the status returned from the process’ main() or passed to exit(): */
-  gint        child_status;
-  /* @poll is always used on Windows, and used on Unix iff @using_pidfd is set: */
+  /* @poll is always used on Windows.
+   * On Unix, poll.fd will be negative if PIDFD is unavailable. */
   GPollFD     poll;
 #ifndef G_OS_WIN32
-  gboolean    child_exited; /* (atomic); not used iff @using_pidfd is set */
-  gboolean    using_pidfd;
+  gboolean child_maybe_exited; /* (atomic) */
 #endif /* G_OS_WIN32 */
 };
 
@@ -488,6 +485,11 @@ static gboolean g_child_watch_dispatch (GSource     *source,
 					GSourceFunc  callback,
 					gpointer     user_data);
 static void     g_child_watch_finalize (GSource     *source);
+
+#ifndef G_OS_WIN32
+static void unref_unix_signal_handler_unlocked (int signum);
+#endif
+
 #ifdef G_OS_UNIX
 static void g_unix_signal_handler (int signum);
 static gboolean g_unix_signal_watch_prepare  (GSource     *source,
@@ -3850,10 +3852,7 @@ g_main_context_prepare_unlocked (GMainContext *context,
               context->in_check_or_prepare--;
             }
           else
-            {
-              source_timeout = -1;
-              result = FALSE;
-            }
+            result = FALSE;
 
           if (result == FALSE && source->priv->ready_time != -1)
             {
@@ -5479,47 +5478,70 @@ g_timeout_add_seconds_once (guint           interval,
 
 /* Child watch functions */
 
-#ifdef G_OS_WIN32
+#ifdef HAVE_PIDFD
+static int
+siginfo_t_to_wait_status (const siginfo_t *info)
+{
+  /* Each of these returns is essentially the inverse of WIFEXITED(),
+   * WIFSIGNALED(), etc. */
+  switch (info->si_code)
+    {
+    case CLD_EXITED:
+      return W_EXITCODE (info->si_status, 0);
+    case CLD_KILLED:
+      return W_EXITCODE (0, info->si_status);
+    case CLD_DUMPED:
+      return W_EXITCODE (0, info->si_status | WCOREFLAG);
+    case CLD_CONTINUED:
+      return __W_CONTINUED;
+    case CLD_STOPPED:
+    case CLD_TRAPPED:
+    default:
+      return W_STOPCODE (info->si_status);
+    }
+}
+#endif /* HAVE_PIDFD */
 
 static gboolean
 g_child_watch_prepare (GSource *source,
 		       gint    *timeout)
 {
-  *timeout = -1;
+#ifdef G_OS_WIN32
   return FALSE;
+#else  /* G_OS_WIN32 */
+  {
+    GChildWatchSource *child_watch_source;
+
+    child_watch_source = (GChildWatchSource *) source;
+
+    if (child_watch_source->poll.fd >= 0)
+      return FALSE;
+
+    return g_atomic_int_get (&child_watch_source->child_maybe_exited);
+  }
+#endif /* G_OS_WIN32 */
 }
 
-static gboolean 
-g_child_watch_check (GSource  *source)
+static gboolean
+g_child_watch_check (GSource *source)
 {
   GChildWatchSource *child_watch_source;
   gboolean child_exited;
 
   child_watch_source = (GChildWatchSource *) source;
 
-  child_exited = child_watch_source->poll.revents & G_IO_IN;
-
-  if (child_exited)
+#ifdef G_OS_WIN32
+  child_exited = !!(child_watch_source->poll.revents & G_IO_IN);
+#else /* G_OS_WIN32 */
+#ifdef HAVE_PIDFD
+  if (child_watch_source->poll.fd >= 0)
     {
-      DWORD child_status;
-
-      /*
-       * Note: We do _not_ check for the special value of STILL_ACTIVE
-       * since we know that the process has exited and doing so runs into
-       * problems if the child process "happens to return STILL_ACTIVE(259)"
-       * as Microsoft's Platform SDK puts it.
-       */
-      if (!GetExitCodeProcess (child_watch_source->pid, &child_status))
-        {
-	  gchar *emsg = g_win32_error_message (GetLastError ());
-	  g_warning (G_STRLOC ": GetExitCodeProcess() failed: %s", emsg);
-	  g_free (emsg);
-
-	  child_watch_source->child_status = -1;
-	}
-      else
-	child_watch_source->child_status = child_status;
+      child_exited = !!(child_watch_source->poll.revents & G_IO_IN);
+      return child_exited;
     }
+#endif /* HAVE_PIDFD */
+  child_exited = g_atomic_int_get (&child_watch_source->child_maybe_exited);
+#endif /* G_OS_WIN32 */
 
   return child_exited;
 }
@@ -5527,9 +5549,23 @@ g_child_watch_check (GSource  *source)
 static void
 g_child_watch_finalize (GSource *source)
 {
+#ifndef G_OS_WIN32
+  GChildWatchSource *child_watch_source = (GChildWatchSource *) source;
+
+  if (child_watch_source->poll.fd >= 0)
+    {
+      close (child_watch_source->poll.fd);
+      return;
+    }
+
+  G_LOCK (unix_signal_lock);
+  unix_child_watches = g_slist_remove (unix_child_watches, source);
+  unref_unix_signal_handler_unlocked (SIGCHLD);
+  G_UNLOCK (unix_signal_lock);
+#endif /* G_OS_WIN32 */
 }
 
-#else /* G_OS_WIN32 */
+#ifndef G_OS_WIN32
 
 static void
 wake_source (GSource *source)
@@ -5613,30 +5649,8 @@ dispatch_unix_signals_unlocked (void)
         {
           GChildWatchSource *source = node->data;
 
-          if (!source->using_pidfd &&
-              !g_atomic_int_get (&source->child_exited))
-            {
-              pid_t pid;
-              do
-                {
-                  g_assert (source->pid > 0);
-
-                  pid = waitpid (source->pid, &source->child_status, WNOHANG);
-                  if (pid > 0)
-                    {
-                      g_atomic_int_set (&source->child_exited, TRUE);
-                      wake_source ((GSource *) source);
-                    }
-                  else if (pid == -1 && errno == ECHILD)
-                    {
-                      g_warning ("GChildWatchSource: Exit status of a child process was requested but ECHILD was received by waitpid(). See the documentation of g_child_watch_source_new() for possible causes.");
-                      source->child_status = 0;
-                      g_atomic_int_set (&source->child_exited, TRUE);
-                      wake_source ((GSource *) source);
-                    }
-                }
-              while (pid == -1 && errno == EINTR);
-            }
+          if (g_atomic_int_compare_and_exchange (&source->child_maybe_exited, FALSE, TRUE))
+            wake_source ((GSource *) source);
         }
     }
 
@@ -5660,79 +5674,6 @@ dispatch_unix_signals (void)
   G_LOCK(unix_signal_lock);
   dispatch_unix_signals_unlocked ();
   G_UNLOCK(unix_signal_lock);
-}
-
-static gboolean
-g_child_watch_prepare (GSource *source,
-		       gint    *timeout)
-{
-  GChildWatchSource *child_watch_source;
-
-  child_watch_source = (GChildWatchSource *) source;
-
-  return g_atomic_int_get (&child_watch_source->child_exited);
-}
-
-#ifdef HAVE_PIDFD
-static int
-siginfo_t_to_wait_status (const siginfo_t *info)
-{
-  /* Each of these returns is essentially the inverse of WIFEXITED(),
-   * WIFSIGNALED(), etc. */
-  switch (info->si_code)
-    {
-    case CLD_EXITED:
-      return W_EXITCODE (info->si_status, 0);
-    case CLD_KILLED:
-      return W_EXITCODE (0, info->si_status);
-    case CLD_DUMPED:
-      return W_EXITCODE (0, info->si_status | WCOREFLAG);
-    case CLD_CONTINUED:
-      return __W_CONTINUED;
-    case CLD_STOPPED:
-    case CLD_TRAPPED:
-    default:
-      return W_STOPCODE (info->si_status);
-    }
-}
-#endif  /* HAVE_PIDFD */
-
-static gboolean
-g_child_watch_check (GSource *source)
-{
-  GChildWatchSource *child_watch_source;
-
-  child_watch_source = (GChildWatchSource *) source;
-
-#ifdef HAVE_PIDFD
-  if (child_watch_source->using_pidfd)
-    {
-      gboolean child_exited = child_watch_source->poll.revents & G_IO_IN;
-
-      if (child_exited)
-        {
-          siginfo_t child_info = { 0, };
-
-          /* Get the exit status */
-          if (waitid (P_PIDFD, child_watch_source->poll.fd, &child_info, WEXITED | WNOHANG) >= 0 &&
-              child_info.si_pid != 0)
-            {
-              /* waitid() helpfully provides the wait status in a decomposed
-               * form which is quite useful. Unfortunately we have to report it
-               * to the #GChildWatchFunc as a waitpid()-style platform-specific
-               * wait status, so that the user code in #GChildWatchFunc can then
-               * call WIFEXITED() (etc.) on it. That means re-composing the
-               * status information. */
-              child_watch_source->child_status = siginfo_t_to_wait_status (&child_info);
-              child_watch_source->child_exited = TRUE;
-            }
-        }
-
-      return child_exited;
-    }
-#endif  /* HAVE_PIDFD */
-
-  return g_atomic_int_get (&child_watch_source->child_exited);
 }
 
 static gboolean
@@ -5913,24 +5854,6 @@ g_unix_signal_watch_finalize (GSource    *source)
   G_UNLOCK (unix_signal_lock);
 }
 
-static void
-g_child_watch_finalize (GSource *source)
-{
-  GChildWatchSource *child_watch_source = (GChildWatchSource *) source;
-
-  if (child_watch_source->using_pidfd)
-    {
-      if (child_watch_source->poll.fd >= 0)
-        close (child_watch_source->poll.fd);
-      return;
-    }
-
-  G_LOCK (unix_signal_lock);
-  unix_child_watches = g_slist_remove (unix_child_watches, source);
-  unref_unix_signal_handler_unlocked (SIGCHLD);
-  G_UNLOCK (unix_signal_lock);
-}
-
 #endif /* G_OS_WIN32 */
 
 static gboolean
@@ -5940,8 +5863,105 @@ g_child_watch_dispatch (GSource    *source,
 {
   GChildWatchSource *child_watch_source;
   GChildWatchFunc child_watch_callback = (GChildWatchFunc) callback;
+  int wait_status;
 
   child_watch_source = (GChildWatchSource *) source;
+
+  /* We only (try to) reap the child process right before dispatching the callback.
+   * That way, the caller can rely that the process is there until the callback
+   * is invoked; or, if the caller calls g_source_destroy() without the callback
+   * being dispatched, the process is still not reaped. */
+
+#ifdef G_OS_WIN32
+  {
+    DWORD child_status;
+
+    /*
+     * Note: We do _not_ check for the special value of STILL_ACTIVE
+     * since we know that the process has exited and doing so runs into
+     * problems if the child process "happens to return STILL_ACTIVE(259)"
+     * as Microsoft's Platform SDK puts it.
+     */
+    if (!GetExitCodeProcess (child_watch_source->pid, &child_status))
+      {
+        gchar *emsg = g_win32_error_message (GetLastError ());
+        g_warning (G_STRLOC ": GetExitCodeProcess() failed: %s", emsg);
+        g_free (emsg);
+
+        /* Unknown error. We got signaled that the process might be exited,
+         * but now we failed to reap it? Assume the process is gone and proceed. */
+        wait_status = -1;
+      }
+    else
+      wait_status = child_status;
+  }
+#else /* G_OS_WIN32 */
+  {
+    gboolean child_exited = FALSE;
+
+    wait_status = -1;
+
+#ifdef HAVE_PIDFD
+    if (child_watch_source->poll.fd >= 0)
+      {
+        siginfo_t child_info = {
+          0,
+        };
+
+        /* Get the exit status */
+        if (waitid (P_PIDFD, child_watch_source->poll.fd, &child_info, WEXITED | WNOHANG) >= 0 &&
+            child_info.si_pid != 0)
+          {
+            /* waitid() helpfully provides the wait status in a decomposed
+             * form which is quite useful. Unfortunately we have to report it
+             * to the #GChildWatchFunc as a waitpid()-style platform-specific
+             * wait status, so that the user code in #GChildWatchFunc can then
+             * call WIFEXITED() (etc.) on it. That means re-composing the
+             * status information. */
+            wait_status = siginfo_t_to_wait_status (&child_info);
+          }
+        else
+          {
+            /* Unknown error. We got signaled that the process might be exited,
+             * but now we failed to reap it? Assume the process is gone and proceed. */
+            g_warning (G_STRLOC ": pidfd signaled ready but failed");
+          }
+        child_exited = TRUE;
+      }
+#endif /* HAVE_PIDFD*/
+
+    if (!child_exited)
+      {
+        pid_t pid;
+        int wstatus;
+
+      waitpid_again:
+
+        /* We must reset the flag before waitpid(). Otherwise, there would be a
+         * race. */
+        g_atomic_int_set (&child_watch_source->child_maybe_exited, FALSE);
+
+        pid = waitpid (child_watch_source->pid, &wstatus, WNOHANG);
+
+        if (pid == 0)
+          {
+            /* Not exited yet. Wait longer. */
+            return TRUE;
+          }
+
+        if (pid > 0)
+          wait_status = wstatus;
+        else if (errno == ECHILD)
+          g_warning ("GChildWatchSource: Exit status of a child process was requested but ECHILD was received by waitpid(). See the documentation of g_child_watch_source_new() for possible causes.");
+        else if (errno == EINTR)
+          goto waitpid_again;
+        else
+          {
+            /* Unexpected error. Whatever happened, we are done waiting for this child. */
+          }
+      }
+  }
+#endif /* G_OS_WIN32 */
 
   if (!callback)
     {
@@ -5950,7 +5970,7 @@ g_child_watch_dispatch (GSource    *source,
       return FALSE;
     }
 
-  (child_watch_callback) (child_watch_source->pid, child_watch_source->child_status, user_data);
+  (child_watch_callback) (child_watch_source->pid, wait_status, user_data);
 
   /* We never keep a child watch source around as the child is gone */
   return FALSE;
@@ -6009,6 +6029,14 @@ g_unix_signal_handler (int signum)
  *   mechanism, including `waitpid(pid, ...)` or a second child-watch
  *   source for the same @pid
  * * the application must not ignore `SIGCHLD`
+ * * Before 2.78, the application could not send a signal (`kill()`) to the
+ *   watched @pid in a race free manner. Since 2.78, you can do that while the
+ *   associated #GMainContext is acquired.
+ * * Before 2.78, even after destroying the #GSource, you could not
+ *   be sure that @pid wasn't already reaped. Hence, it was also not
+ *   safe to `kill()` or `waitpid()` on the process ID after the child watch
+ *   source was gone. Destroying the source before it fired made it
+ *   impossible to reliably reap the process.
  *
  * If any of those conditions are not met, this and related APIs will
  * not work correctly. This can often be diagnosed via a GLib warning
@@ -6059,29 +6087,28 @@ g_child_watch_source_new (GPid pid)
    * better than SIGCHLD.
    */
   child_watch_source->poll.fd = (int) syscall (SYS_pidfd_open, pid, 0);
-  errsv = errno;
 
   if (child_watch_source->poll.fd >= 0)
     {
-      child_watch_source->using_pidfd = TRUE;
       child_watch_source->poll.events = G_IO_IN;
       g_source_add_poll (source, &child_watch_source->poll);
-
       return source;
     }
-  else
-    {
-      g_debug ("pidfd_open(%" G_PID_FORMAT ") failed with error: %s",
-               pid, g_strerror (errsv));
-      /* Fall through; likely the kernel isn’t new enough to support pidfd_open() */
-    }
-#endif  /* HAVE_PIDFD */
+
+  errsv = errno;
+  g_debug ("pidfd_open(%" G_PID_FORMAT ") failed with error: %s",
+           pid, g_strerror (errsv));
+  /* Fall through; likely the kernel isn’t new enough to support pidfd_open() */
+#endif /* HAVE_PIDFD */
+
+  /* We can do that without atomic, as the source is not yet added in
+   * unix_child_watches (which we do next under a lock). */
+  child_watch_source->child_maybe_exited = TRUE;
+  child_watch_source->poll.fd = -1;
 
   G_LOCK (unix_signal_lock);
   ref_unix_signal_handler_unlocked (SIGCHLD);
   unix_child_watches = g_slist_prepend (unix_child_watches, child_watch_source);
-  if (waitpid (pid, &child_watch_source->child_status, WNOHANG) > 0)
-    child_watch_source->child_exited = TRUE;
   G_UNLOCK (unix_signal_lock);
 #endif /* !G_OS_WIN32 */
 

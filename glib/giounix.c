@@ -135,8 +135,6 @@ g_io_unix_prepare (GSource  *source,
   GIOUnixWatch *watch = (GIOUnixWatch *)source;
   GIOCondition buffer_condition = g_io_channel_get_buffer_condition (watch->channel);
 
-  *timeout = -1;
-
   /* Only return TRUE here if _all_ bits in watch->condition will be set
    */
   return ((watch->condition & buffer_condition) == watch->condition);

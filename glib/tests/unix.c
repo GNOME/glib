@@ -372,6 +372,99 @@ test_get_passwd_entry_nonexistent (void)
   g_clear_error (&local_error);
 }
 
+static void
+_child_wait_watch_cb (GPid pid,
+                      gint wait_status,
+                      gpointer user_data)
+{
+  gboolean *p_got_callback = user_data;
+
+  g_assert_nonnull (p_got_callback);
+  g_assert_false (*p_got_callback);
+  *p_got_callback = TRUE;
+}
+
+static void
+test_child_wait (void)
+{
+  gboolean r;
+  GPid pid;
+  guint id;
+  pid_t pid2;
+  int wstatus;
+  gboolean got_callback = FALSE;
+  gboolean iterate_maincontext = g_test_rand_bit ();
+  char **argv;
+  int errsv;
+
+  /* - We spawn a trivial child process that exits after a short time.
+   * - We schedule a g_child_watch_add()
+   * - we may iterate the GMainContext a bit. Randomly we either get the
+   *   child-watcher callback or not.
+   * - if we didn't get the callback, we g_source_remove() the child watcher.
+   *
+   * Afterwards, if the callback didn't fire, we check that we are able to waitpid()
+   * on the process ourselves. Of course, if the child watcher notified, the waitpid()
+   * will fail with ECHILD.
+   */
+
+  argv = g_test_rand_bit () ? ((char *[]){ "/bin/sleep", "0.05", NULL }) : ((char *[]){ "/bin/true", NULL });
+
+  r = g_spawn_async (NULL,
+                     argv,
+                     NULL,
+                     G_SPAWN_DO_NOT_REAP_CHILD,
+                     NULL,
+                     NULL,
+                     &pid,
+                     NULL);
+  if (!r)
+    {
+      /* Some odd system without /bin/sleep? Skip the test. */
+      g_test_skip ("failure to spawn test process in test_child_wait()");
+      return;
+    }
+
+  g_assert_cmpint (pid, >=, 1);
+
+  if (g_test_rand_bit ())
+    g_usleep (g_test_rand_int_range (0, (G_USEC_PER_SEC / 10)));
+
+  id = g_child_watch_add (pid, _child_wait_watch_cb, &got_callback);
+
+  if (g_test_rand_bit ())
+    g_usleep (g_test_rand_int_range (0, (G_USEC_PER_SEC / 10)));
+
+  if (iterate_maincontext)
+    {
+      gint64 start_usec = g_get_monotonic_time ();
+      gint64 end_usec = start_usec + g_test_rand_int_range (0, (G_USEC_PER_SEC / 10));
+
+      while (!got_callback && g_get_monotonic_time () < end_usec)
+        g_main_context_iteration (NULL, FALSE);
+    }
+
+  if (!got_callback)
+    g_source_remove (id);
+
+  errno = 0;
+  pid2 = waitpid (pid, &wstatus, 0);
+  errsv = errno;
+  if (got_callback)
+    {
+      g_assert_true (iterate_maincontext);
+      g_assert_cmpint (errsv, ==, ECHILD);
+      g_assert_cmpint (pid2, <, 0);
+    }
+  else
+    {
+      g_assert_cmpint (errsv, ==, 0);
+      g_assert_cmpint (pid2, ==, pid);
+      g_assert_true (WIFEXITED (wstatus));
+      g_assert_cmpint (WEXITSTATUS (wstatus), ==, 0);
+    }
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -390,6 +483,7 @@ main (int   argc,
   g_test_add_func ("/glib-unix/callback_after_signal", test_callback_after_signal);
   g_test_add_func ("/glib-unix/get-passwd-entry/root", test_get_passwd_entry_root);
   g_test_add_func ("/glib-unix/get-passwd-entry/nonexistent", test_get_passwd_entry_nonexistent);
+  g_test_add_func ("/glib-unix/child-wait", test_child_wait);
 
   return g_test_run();
 }

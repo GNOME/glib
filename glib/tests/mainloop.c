@@ -37,6 +37,8 @@ cb (gpointer data)
 static gboolean
 prepare (GSource *source, gint *time)
 {
+  g_assert_nonnull (time);
+  g_assert_cmpint (*time, ==, -1);
   return FALSE;
 }
 static gboolean

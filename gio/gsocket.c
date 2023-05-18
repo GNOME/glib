@@ -4003,8 +4003,6 @@ socket_source_prepare (GSource *source,
 {
   GSocketSource *socket_source = (GSocketSource *)source;
 
-  *timeout = -1;
-
 #ifdef G_OS_WIN32
   if ((socket_source->pollfd.revents & G_IO_NVAL) != 0)
     return TRUE;
