@@ -260,7 +260,7 @@ class SignalFrame(FrameDecorator):
         instance = self.or_join_array(instances)
         signal = self.or_join_array(signals)
 
-        return "<emit signal %s on instance %s>" % (signal, instance)
+        return "<emit signal '%s' on instance %s>" % (signal, instance)
 
     def elided(self):
         return self.frames[0:-1]
