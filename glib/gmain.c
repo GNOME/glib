@@ -5907,24 +5907,34 @@ g_child_watch_dispatch (GSource    *source,
         };
 
         /* Get the exit status */
-        if (waitid (P_PIDFD, child_watch_source->poll.fd, &child_info, WEXITED | WNOHANG) >= 0 &&
-            child_info.si_pid != 0)
+        if (waitid (P_PIDFD, child_watch_source->poll.fd, &child_info, WEXITED | WNOHANG) >= 0)
           {
-            /* waitid() helpfully provides the wait status in a decomposed
-             * form which is quite useful. Unfortunately we have to report it
-             * to the #GChildWatchFunc as a waitpid()-style platform-specific
-             * wait status, so that the user code in #GChildWatchFunc can then
-             * call WIFEXITED() (etc.) on it. That means re-composing the
-             * status information. */
-            wait_status = siginfo_t_to_wait_status (&child_info);
+            if (child_info.si_pid != 0)
+              {
+                /* waitid() helpfully provides the wait status in a decomposed
+                 * form which is quite useful. Unfortunately we have to report it
+                 * to the #GChildWatchFunc as a waitpid()-style platform-specific
+                 * wait status, so that the user code in #GChildWatchFunc can then
+                 * call WIFEXITED() (etc.) on it. That means re-composing the
+                 * status information. */
+                wait_status = siginfo_t_to_wait_status (&child_info);
+                child_exited = TRUE;
+              }
+            else
+              {
+                g_debug (G_STRLOC ": pidfd signaled but pid %d didn't exit",
+                         child_watch_source->pid);
+                return TRUE;
+              }
           }
         else
           {
             /* Unknown error. We got signaled that the process might be exited,
              * but now we failed to reap it? Assume the process is gone and proceed. */
-            g_warning (G_STRLOC ": pidfd signaled ready but failed");
+            g_warning (G_STRLOC ": pidfd signaled ready but failed for pid %d",
+                       child_watch_source->pid);
+            child_exited = TRUE;
           }
-        child_exited = TRUE;
       }
 #endif /* HAVE_PIDFD*/
 
