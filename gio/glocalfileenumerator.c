@@ -23,6 +23,7 @@
 #include "config.h"
 
 #include <glib.h>
+#include <gcancellable.h>
 #include <glocalfileenumerator.h>
 #include <glocalfileinfo.h>
 #include <glocalfile.h>
@@ -382,6 +383,9 @@ g_local_file_enumerator_next_file (GFileEnumerator  *enumerator,
     }
 
  next_file:
+
+  if (g_cancellable_set_error_if_cancelled (cancellable, error))
+    return NULL;
 
 #ifdef USE_GDIR
   filename = g_dir_read_name (local->dir);
