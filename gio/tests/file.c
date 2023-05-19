@@ -3888,6 +3888,37 @@ test_query_default_handler_uri_async (void)
   g_object_unref (invalid_file);
 }
 
+static void
+test_enumerator_cancellation (void)
+{
+  GCancellable *cancellable;
+  GFileEnumerator *enumerator;
+  GFileInfo *info;
+  GFile *dir;
+  GError *error = NULL;
+
+  dir = g_file_new_for_path (g_get_tmp_dir ());
+  g_assert_nonnull (dir);
+
+  enumerator = g_file_enumerate_children (dir,
+                                          G_FILE_ATTRIBUTE_STANDARD_NAME,
+                                          G_FILE_QUERY_INFO_NONE,
+                                          NULL,
+                                          &error);
+  g_assert_nonnull (enumerator);
+
+  cancellable = g_cancellable_new ();
+  g_cancellable_cancel (cancellable);
+  info = g_file_enumerator_next_file (enumerator, cancellable, &error);
+  g_assert_null (info);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
+
+  g_error_free (error);
+  g_object_unref (cancellable);
+  g_object_unref (enumerator);
+  g_object_unref (dir);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -3941,6 +3972,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/file/query-default-handler-file-async", test_query_default_handler_file_async);
   g_test_add_func ("/file/query-default-handler-uri", test_query_default_handler_uri);
   g_test_add_func ("/file/query-default-handler-uri-async", test_query_default_handler_uri_async);
+  g_test_add_func ("/file/enumerator-cancellation", test_enumerator_cancellation);
 
   return g_test_run ();
 }
