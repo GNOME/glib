@@ -74,10 +74,10 @@ activate (GApplication *application)
 }
 
 static void
-open (GApplication  *application,
-      GFile        **files,
-      gint           n_files,
-      const gchar   *hint)
+app_open (GApplication  *application,
+          GFile        **files,
+          gint           n_files,
+          const gchar   *hint)
 {
   gint i;
 
@@ -249,7 +249,7 @@ main (int argc, char **argv)
                              : G_APPLICATION_HANDLES_OPEN));
   g_signal_connect (app, "startup", G_CALLBACK (startup), NULL);
   g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
-  g_signal_connect (app, "open", G_CALLBACK (open), NULL);
+  g_signal_connect (app, "open", G_CALLBACK (app_open), NULL);
   g_signal_connect (app, "command-line", G_CALLBACK (command_line), NULL);
 #ifdef STANDALONE
   g_application_set_inactivity_timeout (app, 10000);

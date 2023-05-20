@@ -47,7 +47,7 @@ G_DEFINE_TYPE (GTlsConsoleInteraction, g_tls_console_interaction, G_TYPE_TLS_INT
 #define BUFSIZ 8192
 #endif
 static gchar *
-getpass (const gchar *prompt)
+static_getpass (const gchar *prompt)
 {
   static gchar buf[BUFSIZ];
   gint i;
@@ -71,6 +71,9 @@ getpass (const gchar *prompt)
 
   return &buf[0];
 }
+#undef getpass
+#define getpass static_getpass /* avoid overloading a potential
+                                  build environment defintion of getpass */
 #endif
 
 static GTlsInteractionResult
