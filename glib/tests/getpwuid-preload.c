@@ -25,6 +25,8 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+#undef getpwuid
+
 static struct passwd my_pw;
 
 /* This is used in gutils.c used to make sure utility functions
