@@ -3131,6 +3131,7 @@ g_utf8_strchr
 g_utf8_strrchr
 g_utf8_strreverse
 g_utf8_substring
+g_utf8_truncate_middle
 g_utf8_validate
 g_utf8_validate_len
 g_utf8_make_valid

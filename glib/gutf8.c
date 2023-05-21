@@ -460,6 +460,72 @@ g_utf8_strncpy (gchar       *dest,
   return dest;
 }
 
+/**
+ * g_utf8_truncate_middle:
+ * @string: (transfer none): a nul-terminated UTF-8 encoded string
+ * @truncate_length: the new size of @string, in characters, including the ellipsis character
+ *
+ * Cuts off the middle of the string, preserving half of @truncate_length
+ * characters at the beginning and half at the end.
+ * 
+ * If @string is already short enough, this returns a copy of @string.
+ * If @truncate_length is `0`, an empty string is returned.
+ *
+ * Returns: (transfer full): a newly-allocated copy of @string ellipsized in the middle
+ *
+ * Since: 2.78
+ */
+gchar *
+g_utf8_truncate_middle (const gchar *string,
+                        gsize        truncate_length)
+{
+  const gchar *ellipsis = "…";
+  const gsize ellipsis_bytes = strlen (ellipsis);
+
+  gsize length;
+  gsize left_substring_length;
+  gchar *left_substring_end;
+  gchar *right_substring_begin;
+  gchar *right_substring_end;
+  gsize left_bytes;
+  gsize right_bytes;
+  gchar *result;
+
+  g_return_val_if_fail (string != NULL, NULL);
+
+  length = g_utf8_strlen (string, -1);
+  /* Current string already smaller than requested length */
+  if (length <= truncate_length)
+    return g_strdup (string);
+  if (truncate_length == 0)
+    return g_strdup ("");
+
+  /* Find substrings to keep, ignore ellipsis character for that */
+  truncate_length -= 1;
+
+  left_substring_length = truncate_length / 2;
+
+  left_substring_end = g_utf8_offset_to_pointer (string, left_substring_length);
+  right_substring_begin = g_utf8_offset_to_pointer (left_substring_end,
+                                                    length - truncate_length);
+  right_substring_end = g_utf8_offset_to_pointer (right_substring_begin,
+                                                  truncate_length - left_substring_length);
+
+  g_assert (*right_substring_end == '\0');
+
+  left_bytes = left_substring_end - string;
+  right_bytes = right_substring_end - right_substring_begin;
+
+  result = g_malloc (left_bytes + ellipsis_bytes + right_bytes + 1);
+
+  strncpy (result, string, left_bytes);
+  memcpy (result + left_bytes, ellipsis, ellipsis_bytes);
+  strncpy (result + left_bytes + ellipsis_bytes, right_substring_begin, right_bytes);
+  result[left_bytes + ellipsis_bytes + right_bytes] = '\0';
+
+  return result;
+}
+
 /* unicode_strchr */
 
 /**
