@@ -7406,6 +7406,35 @@ g_file_new_build_filename (const gchar *first_element,
   return file;
 }
 
+
+/**
+ * g_file_new_build_filenamev:
+ * @args: (array zero-terminated=1) (element-type filename): %NULL-terminated
+ *   array of strings containing the path elements.
+ *
+ * Constructs a #GFile from a vector of elements using the correct
+ * separator for filenames.
+ *
+ * Using this function is equivalent to calling g_build_filenamev(),
+ * followed by g_file_new_for_path() on the result.
+ *
+ * Returns: (transfer full): a new #GFile
+ *
+ * Since: 2.78
+ */
+GFile *
+g_file_new_build_filenamev (gchar **args)
+{
+  gchar *str;
+  GFile *file;
+
+  str = g_build_filenamev (args);
+  file = g_file_new_for_path (str);
+  g_free (str);
+
+  return file;
+}
+
 static gboolean
 is_valid_scheme_character (char c)
 {
