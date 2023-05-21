@@ -25,6 +25,12 @@ GTypeClass
 GTypeInfo
 GTypeFundamentalInfo
 GInterfaceInfo
+GTypeValueInitFunc
+GTypeValueFreeFunc
+GTypeValueCopyFunc
+GTypeValuePeekPointerFunc
+GTypeValueCollectFunc
+GTypeValueLCopyFunc
 GTypeValueTable
 G_TYPE_FROM_INSTANCE
 G_TYPE_FROM_CLASS
