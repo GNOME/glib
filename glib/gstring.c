@@ -168,6 +168,8 @@ g_string_new (const gchar *init)
  * allocated and will eventually be freed with g_free().
  *
  * Returns: (transfer full): the new #GString
+ *
+ * Since: 2.78
  */
 GString *
 g_string_new_take (gchar *init)
