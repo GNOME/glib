@@ -7423,12 +7423,12 @@ g_file_new_build_filename (const gchar *first_element,
  * Since: 2.78
  */
 GFile *
-g_file_new_build_filenamev (gchar **args)
+g_file_new_build_filenamev (const gchar * const *args)
 {
   gchar *str;
   GFile *file;
 
-  str = g_build_filenamev (args);
+  str = g_build_filenamev ((gchar **) args);
   file = g_file_new_for_path (str);
   g_free (str);
 
