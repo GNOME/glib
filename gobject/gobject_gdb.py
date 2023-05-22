@@ -260,7 +260,7 @@ class SignalFrame(FrameDecorator):
         instance = self.or_join_array(instances)
         signal = self.or_join_array(signals)
 
-        return "<emit signal %s on instance %s>" % (signal, instance)
+        return "<emit signal '%s' on instance %s>" % (signal, instance)
 
     def elided(self):
         return self.frames[0:-1]
@@ -287,7 +287,8 @@ class GFrameDecorator:
 
     def find_signal_emission(self):
         for i in range(min(len(self.queue), 3)):
-            if frame_name(self.queue[i]) == "signal_emit_unlocked_R":
+            name = frame_name(self.queue[i])
+            if name == "signal_emit_unlocked_R" or name == "_g_closure_invoke_va":
                 return i
         return -1
 
@@ -306,7 +307,7 @@ class GFrameDecorator:
                 if start == 0:
                     break
                 prev_name = frame_name(self.queue[start - 1])
-                if prev_name.find("_marshal_") >= 0 or prev_name == "g_closure_invoke":
+                if prev_name.find("_marshal") >= 0 or prev_name == "g_closure_invoke":
                     start = start - 1
                 else:
                     break
@@ -317,7 +318,6 @@ class GFrameDecorator:
                     "g_signal_emit_valist",
                     "g_signal_emit",
                     "g_signal_emit_by_name",
-                    "_g_closure_invoke_va",
                 ]:
                     end = end + 1
                 else:
