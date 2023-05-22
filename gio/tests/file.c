@@ -66,12 +66,12 @@ test_build_filenamev (void)
 {
   GFile *file;
 
-  gchar *args[5] = {".", "some", "directory", "testfile", NULL};
+  const gchar *args[] = { ".", "some", "directory", "testfile", NULL };
   file = g_file_new_build_filenamev (args);
   test_basic_for_file (file, "/some/directory/testfile");
   g_object_unref (file);
 
-  gchar *brgs[2] = {"testfile", NULL};
+  const gchar *brgs[] = { "testfile", NULL };
   file = g_file_new_build_filenamev (brgs);
   test_basic_for_file (file, "/testfile");
   g_object_unref (file);
