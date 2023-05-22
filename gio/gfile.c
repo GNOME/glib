@@ -106,7 +106,7 @@ typedef off_t loff_t;
  * - g_file_new_tmp_async() to asynchronously create a temporary file.
  * - g_file_new_tmp_dir_async() to asynchronously create a temporary directory.
  * - g_file_parse_name() from a UTF-8 string gotten from g_file_get_parse_name().
- * - g_file_new_build_filename() to create a file from path elements.
+ * - g_file_new_build_filename() or g_file_new_build_filenamev() to create a file from path elements.
  *
  * One way to think of a #GFile is as an abstraction of a pathname. For
  * normal files the system pathname is what is stored internally, but as
