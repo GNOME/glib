@@ -90,6 +90,7 @@ g_file_new_tmp_dir_async
 g_file_new_tmp_dir_finish
 g_file_parse_name
 g_file_new_build_filename
+g_file_new_build_filenamev
 g_file_dup
 g_file_hash
 g_file_equal

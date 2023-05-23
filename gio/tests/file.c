@@ -62,6 +62,22 @@ test_build_filename (void)
 }
 
 static void
+test_build_filenamev (void)
+{
+  GFile *file;
+
+  const gchar *args[] = { ".", "some", "directory", "testfile", NULL };
+  file = g_file_new_build_filenamev (args);
+  test_basic_for_file (file, "/some/directory/testfile");
+  g_object_unref (file);
+
+  const gchar *brgs[] = { "testfile", NULL };
+  file = g_file_new_build_filenamev (brgs);
+  test_basic_for_file (file, "/testfile");
+  g_object_unref (file);
+}
+
+static void
 test_parent (void)
 {
   GFile *file;
@@ -3928,6 +3944,7 @@ main (int argc, char *argv[])
 
   g_test_add_func ("/file/basic", test_basic);
   g_test_add_func ("/file/build-filename", test_build_filename);
+  g_test_add_func ("/file/build-filenamev", test_build_filenamev);
   g_test_add_func ("/file/parent", test_parent);
   g_test_add_func ("/file/child", test_child);
   g_test_add_func ("/file/empty-path", test_empty_path);
