@@ -1,3 +1,24 @@
+Overview of changes in GLib 2.76.3, 2023-05-23
+==============================================
+
+* Bugs fixed:
+  - #1264 Use-after-free under
+    send_message_with_reply_cleanup():gdbusconnection.c:1792 (Philip Withnall)
+  - !3402 Backport !3398 “Avoid having g_futex_simple() inadvertently modify
+    errno” to glib-2-76
+  - !3403 Backport !3400 “Revert "Fix error format in gio/gunixconnection.c
+    (part 2)"” to glib-2-76
+  - !3427 Backport !3291 “gdbusconnection: Fix double unref on timeout/cancel
+    sending a message” to glib-2-76
+  - !3428 Backport !3425 “gwin32networkmonitor: Fix returning address of local
+    variable” to glib-2-76
+  - !3434 Backport !3430 “gobject_gdb.py: fix regression caused by bfbe7127d5”
+    to glib-2-76
+
+* Translation updates:
+  - Galician (Fran Dieguez)
+
+
 Overview of changes in GLib 2.76.2, 2023-04-21
 ==============================================
 
