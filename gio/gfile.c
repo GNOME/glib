@@ -106,7 +106,7 @@ typedef off_t loff_t;
  * - g_file_new_tmp_async() to asynchronously create a temporary file.
  * - g_file_new_tmp_dir_async() to asynchronously create a temporary directory.
  * - g_file_parse_name() from a UTF-8 string gotten from g_file_get_parse_name().
- * - g_file_new_build_filename() to create a file from path elements.
+ * - g_file_new_build_filename() or g_file_new_build_filenamev() to create a file from path elements.
  *
  * One way to think of a #GFile is as an abstraction of a pathname. For
  * normal files the system pathname is what is stored internally, but as
@@ -7400,6 +7400,35 @@ g_file_new_build_filename (const gchar *first_element,
   str = g_build_filename_valist (first_element, &args);
   va_end (args);
 
+  file = g_file_new_for_path (str);
+  g_free (str);
+
+  return file;
+}
+
+
+/**
+ * g_file_new_build_filenamev:
+ * @args: (array zero-terminated=1) (element-type filename): %NULL-terminated
+ *   array of strings containing the path elements.
+ *
+ * Constructs a #GFile from a vector of elements using the correct
+ * separator for filenames.
+ *
+ * Using this function is equivalent to calling g_build_filenamev(),
+ * followed by g_file_new_for_path() on the result.
+ *
+ * Returns: (transfer full): a new #GFile
+ *
+ * Since: 2.78
+ */
+GFile *
+g_file_new_build_filenamev (const gchar * const *args)
+{
+  gchar *str;
+  GFile *file;
+
+  str = g_build_filenamev ((gchar **) args);
   file = g_file_new_for_path (str);
   g_free (str);
 

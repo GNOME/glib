@@ -650,6 +650,8 @@ GFile *                 g_file_parse_name                 (const char           
 GIO_AVAILABLE_IN_2_56
 GFile *                 g_file_new_build_filename         (const gchar                *first_element,
                                                            ...) G_GNUC_NULL_TERMINATED;
+GIO_AVAILABLE_IN_2_78
+GFile *                 g_file_new_build_filenamev        (const gchar                * const *args);
 GIO_AVAILABLE_IN_ALL
 GFile *                 g_file_dup                        (GFile                      *file);
 GIO_AVAILABLE_IN_ALL
