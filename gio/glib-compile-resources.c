@@ -837,6 +837,7 @@ main (int argc, char **argv)
 
 #ifdef G_OS_WIN32
   gchar *tmp;
+  gchar **command_line = NULL;
 #endif
 
   setlocale (LC_ALL, GLIB_DEFAULT_LOCALE);
@@ -863,11 +864,21 @@ main (int argc, char **argv)
   g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
 
   error = NULL;
+#ifdef G_OS_WIN32
+  command_line = g_win32_get_command_line ();
+  if (!g_option_context_parse_strv (context, &command_line, &error))
+    {
+      g_printerr ("%s\n", error->message);
+      return 1;
+    }
+  argc = g_strv_length (command_line);
+#else
   if (!g_option_context_parse (context, &argc, &argv, &error))
     {
       g_printerr ("%s\n", error->message);
       return 1;
     }
+#endif
 
   g_option_context_free (context);
 
@@ -890,7 +901,11 @@ main (int argc, char **argv)
   compiler_type = get_compiler_id (compiler);
   g_free (compiler);
 
+#ifdef G_OS_WIN32
+  srcfile = command_line[1];
+#else
   srcfile = argv[1];
+#endif
 
   xmllint = g_strdup (g_getenv ("XMLLINT"));
   if (xmllint == NULL)
@@ -1309,6 +1324,10 @@ main (int argc, char **argv)
   g_free (jsonformat);
   g_free (c_name);
   g_hash_table_unref (files);
+
+#ifdef G_OS_WIN32
+  g_strfreev (command_line);  
+#endif
 
   return 0;
 }
