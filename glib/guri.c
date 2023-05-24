@@ -820,6 +820,9 @@ default_scheme_port (const char *scheme)
   if (strcmp (scheme, "ftp") == 0)
     return 21;
 
+  if (strstr (scheme, "socks") == scheme)
+    return 1080;
+
   return -1;
 }
 
