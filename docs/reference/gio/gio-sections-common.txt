@@ -3559,6 +3559,7 @@ g_action_map_lookup_action
 GActionEntry
 g_action_map_add_action_entries
 g_action_map_add_action
+g_action_map_remove_action_entries
 g_action_map_remove_action
 
 <SUBSECTION Standard>

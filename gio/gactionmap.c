@@ -283,3 +283,47 @@ g_action_map_add_action_entries (GActionMap         *action_map,
       g_object_unref (action);
     }
 }
+
+/**
+ * g_action_map_remove_action_entries:
+ * @action_map: The #GActionMap
+ * @entries: (array length=n_entries) (element-type GActionEntry): a pointer to
+ *           the first item in an array of #GActionEntry structs
+ * @n_entries: the length of @entries, or -1 if @entries is %NULL-terminated
+ *
+ * Remove actions from a #GActionMap. This is meant as the reverse of
+ * g_action_map_add_action_entries().
+ *
+ *
+ * |[<!-- language="C" -->
+ * static const GActionEntry entries[] = {
+ *     { "quit",         activate_quit              },
+ *     { "print-string", activate_print_string, "s" }
+ * };
+ *
+ * void
+ * add_actions (GActionMap *map)
+ * {
+ *   g_action_map_add_action_entries (map, entries, G_N_ELEMENTS (entries), NULL);
+ * }
+ *
+ * void
+ * remove_actions (GActionMap *map)
+ * {
+ *   g_action_map_remove_action_entries (map, entries, G_N_ELEMENTS (entries));
+ * }
+ * ]|
+ *
+ * Since: 2.78
+ */
+void
+g_action_map_remove_action_entries (GActionMap         *action_map,
+                                    const GActionEntry  entries[],
+                                    gint                n_entries)
+{
+  g_return_if_fail (G_IS_ACTION_MAP (action_map));
+  g_return_if_fail (entries != NULL || n_entries == 0);
+
+  for (int i = 0; n_entries < 0 ? entries[i].name != NULL : i < n_entries; i++)
+    g_action_map_remove_action (action_map, entries[i].name);
+}
