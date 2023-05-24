@@ -22,7 +22,7 @@ many things that we value:
 Please, do not use the issue tracker for support questions. If you have
 questions on how to use GLib effectively, you can use:
 
- - the `#gtk` IRC channel on irc.gnome.org
+ - the `#gtk` channel on [Matrix](https://wiki.gnome.org/GettingInTouch/Matrix)
  - the [`glib` tag on GNOME's Discourse](https://discourse.gnome.org/tags/glib)
 
 You can also look at the [`glib` tag on Stack
@@ -99,7 +99,7 @@ reports which are viewable for each merge request. See
 [the testing policy](./docs/testing.md) for more details.
 
 If proposing a large feature or change, it’s better to discuss it (on the
-`#gtk` IRC channel or on [Discourse](https://discourse.gnome.org) before
+`#gtk` Matrix channel or on [Discourse](https://discourse.gnome.org) before
 putting time into writing an actionable issue — and certainly before putting
 time into writing a merge request.
 
@@ -177,7 +177,7 @@ of each commit between at least two people.
 With each code review, we intend to:
 
  0. Identify if this is a desirable change or new feature. Ideally for larger
-    features this will have been discussed (in an issue, on IRC, or on Discourse)
+    features this will have been discussed (in an issue, on Matrix, or on Discourse)
     already, so that effort isn’t wasted on putting together merge requests
     which will be rejected.
  0. Check the design of any new API.
@@ -195,7 +195,7 @@ With each code review, we intend to:
 
 If a code review is stalled (due to not receiving comments for two or more
 weeks; or due to a technical disagreement), please ping another GLib core
-developer on the merge request, or on IRC, to ask for a second opinion.
+developer on the merge request, or on Matrix, to ask for a second opinion.
 
 ### Commit messages
 
