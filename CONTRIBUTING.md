@@ -143,9 +143,8 @@ To compile the Git version of GLib on your system, you will need to
 configure your build using Meson:
 
 ```sh
-$ meson _builddir .
-$ cd _builddir
-$ ninja
+$ meson setup _builddir .
+$ ninja -C _builddir
 ```
 
 Typically, you should work on your own branch:
