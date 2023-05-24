@@ -22,6 +22,7 @@
 /* Prologue {{{1 */
 #include "config.h"
 
+#include <glib.h>
 #include <gstdio.h>
 #include <gi18n.h>
 
@@ -2182,6 +2183,7 @@ main (int argc, char **argv)
 
 #ifdef G_OS_WIN32
   gchar *tmp = NULL;
+  gchar **command_line = NULL;
 #endif
 
   setlocale (LC_ALL, GLIB_DEFAULT_LOCALE);
@@ -2206,12 +2208,23 @@ main (int argc, char **argv)
        "and the cache file is called gschemas.compiled."));
   g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
 
+#ifdef G_OS_WIN32
+  command_line = g_win32_get_command_line ();
+  if (!g_option_context_parse_strv (context, &command_line, &error))
+    {
+      fprintf (stderr, "%s\n", error->message);
+      retval = 1;
+      goto done;
+    }
+  argc = g_strv_length (command_line);
+#else
   if (!g_option_context_parse (context, &argc, &argv, &error))
     {
       fprintf (stderr, "%s\n", error->message);
       retval = 1;
       goto done;
     }
+#endif
 
   if (show_version_and_exit)
     {
@@ -2227,7 +2240,11 @@ main (int argc, char **argv)
       goto done;
     }
 
+#ifdef G_OS_WIN32
+  srcdir = command_line[1];
+#else
   srcdir = argv[1];
+#endif
 
   target = g_build_filename (targetdir ? targetdir : srcdir, "gschemas.compiled", NULL);
 
@@ -2320,6 +2337,7 @@ done:
 
 #ifdef G_OS_WIN32
   g_free (tmp);
+  g_strfreev (command_line);  
 #endif
 
   return retval;
