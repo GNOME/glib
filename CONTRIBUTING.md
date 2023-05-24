@@ -139,14 +139,6 @@ $ git clone https://gitlab.gnome.org/yourusername/glib.git
 $ cd glib
 ```
 
-**Note**: if you plan to push changes to back to the main repository and
-have a GNOME account, you can skip the fork, and use the following instead:
-
-```sh
-$ git clone git@ssh.gitlab.gnome.org:GNOME/glib.git
-$ cd glib
-```
-
 To compile the Git version of GLib on your system, you will need to
 configure your build using Meson:
 
