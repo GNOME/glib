@@ -34,10 +34,9 @@ The issue tracker is meant to be used for actionable issues only.
 
 ### Security issues
 
-You should not open a new issue for security related questions.
+You **must not** open a new public issue for security related concerns.
 
-When in doubt, send an email to the [security](mailto:security@gnome.org)
-mailing list.
+Instead, see the [`SECURITY.md` documentation](./SECURITY.md).
 
 ### Bug reports
 
