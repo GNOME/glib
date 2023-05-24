@@ -92,6 +92,13 @@ A common way to introduce new APIs or data types to GLib is to prototype them in
 another code base for a while, to gain real-life experience with them before
 they are imported into GLib and marked as stable.
 
+Many APIs and features may be best implemented in another library, unless they
+will be useful for a significant number of applications. GLib does not, and
+cannot, grow its API surface forever. APIs which integrate well with existing
+GLib API, or which extend it to allow it to be integrated better with other
+libraries, are more likely to be accepted than self-contained new APIs or
+features which can easily exist outside of GLib.
+
 Each feature should also come fully documented, and with tests which approach
 full branch coverage of the new code. GLib’s CI system generates code coverage
 reports which are viewable for each merge request. See
