@@ -217,12 +217,10 @@ g_action_map_add_action_entries (GActionMap         *action_map,
                                  gint                n_entries,
                                  gpointer            user_data)
 {
-  gint i;
-
   g_return_if_fail (G_IS_ACTION_MAP (action_map));
   g_return_if_fail (entries != NULL || n_entries == 0);
 
-  for (i = 0; n_entries < 0 ? entries[i].name != NULL : i < n_entries; i++)
+  for (int i = 0; n_entries < 0 ? entries[i].name != NULL : i < n_entries; i++)
     {
       const GActionEntry *entry = &entries[i];
       const GVariantType *parameter_type;
