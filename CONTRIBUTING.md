@@ -22,7 +22,7 @@ many things that we value:
 Please, do not use the issue tracker for support questions. If you have
 questions on how to use GLib effectively, you can use:
 
- - the `#gtk` IRC channel on irc.gnome.org
+ - the `#gtk` channel on [Matrix](https://wiki.gnome.org/GettingInTouch/Matrix)
  - the [`glib` tag on GNOME's Discourse](https://discourse.gnome.org/tags/glib)
 
 You can also look at the [`glib` tag on Stack
@@ -34,10 +34,9 @@ The issue tracker is meant to be used for actionable issues only.
 
 ### Security issues
 
-You should not open a new issue for security related questions.
+You **must not** open a new public issue for security related concerns.
 
-When in doubt, send an email to the [security](mailto:security@gnome.org)
-mailing list.
+Instead, see the [`SECURITY.md` documentation](./SECURITY.md).
 
 ### Bug reports
 
@@ -93,13 +92,20 @@ A common way to introduce new APIs or data types to GLib is to prototype them in
 another code base for a while, to gain real-life experience with them before
 they are imported into GLib and marked as stable.
 
+Many APIs and features may be best implemented in another library, unless they
+will be useful for a significant number of applications. GLib does not, and
+cannot, grow its API surface forever. APIs which integrate well with existing
+GLib API, or which extend it to allow it to be integrated better with other
+libraries, are more likely to be accepted than self-contained new APIs or
+features which can easily exist outside of GLib.
+
 Each feature should also come fully documented, and with tests which approach
 full branch coverage of the new code. GLib’s CI system generates code coverage
 reports which are viewable for each merge request. See
 [the testing policy](./docs/testing.md) for more details.
 
 If proposing a large feature or change, it’s better to discuss it (on the
-`#gtk` IRC channel or on [Discourse](https://discourse.gnome.org) before
+`#gtk` Matrix channel or on [Discourse](https://discourse.gnome.org) before
 putting time into writing an actionable issue — and certainly before putting
 time into writing a merge request.
 
@@ -133,21 +139,12 @@ $ git clone https://gitlab.gnome.org/yourusername/glib.git
 $ cd glib
 ```
 
-**Note**: if you plan to push changes to back to the main repository and
-have a GNOME account, you can skip the fork, and use the following instead:
-
-```sh
-$ git clone git@ssh.gitlab.gnome.org:GNOME/glib.git
-$ cd glib
-```
-
 To compile the Git version of GLib on your system, you will need to
 configure your build using Meson:
 
 ```sh
-$ meson _builddir .
-$ cd _builddir
-$ ninja
+$ meson setup _builddir .
+$ ninja -C _builddir
 ```
 
 Typically, you should work on your own branch:
@@ -177,7 +174,7 @@ of each commit between at least two people.
 With each code review, we intend to:
 
  0. Identify if this is a desirable change or new feature. Ideally for larger
-    features this will have been discussed (in an issue, on IRC, or on Discourse)
+    features this will have been discussed (in an issue, on Matrix, or on Discourse)
     already, so that effort isn’t wasted on putting together merge requests
     which will be rejected.
  0. Check the design of any new API.
@@ -195,7 +192,7 @@ With each code review, we intend to:
 
 If a code review is stalled (due to not receiving comments for two or more
 weeks; or due to a technical disagreement), please ping another GLib core
-developer on the merge request, or on IRC, to ask for a second opinion.
+developer on the merge request, or on Matrix, to ask for a second opinion.
 
 ### Commit messages
 

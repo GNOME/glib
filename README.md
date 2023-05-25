@@ -13,7 +13,9 @@ The official web site is:
 
 ## Installation
 
-See the file '[INSTALL.md](INSTALL.md)'
+See the file ‘[INSTALL.md](INSTALL.md)’. There is
+[separate and more in-depth documentation](./docs/win32-build.md) for building
+GLib on Windows.
 
 ## Supported versions
 
