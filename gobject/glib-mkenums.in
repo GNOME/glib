@@ -149,8 +149,7 @@ output = ''                 # Filename to write result into
 
 def parse_trigraph(opts):
     result = {}
-
-    for opt in re.split(r'\s*,\s*', opts):
+    for opt in re.findall(r'(?:[^\s,"]|"(?:\\.|[^"])*")+', opts):
         opt = re.sub(r'^\s*', '', opt)
         opt = re.sub(r'\s*$', '', opt)
         m = re.search(r'(\w+)(?:=(.+))?', opt)
@@ -161,7 +160,7 @@ def parse_trigraph(opts):
             val = groups[1]
         else:
             val = 1
-        result[key] = val
+        result[key] = val.strip('"') if val is not None else None
     return result
 
 def parse_entries(file, file_name):

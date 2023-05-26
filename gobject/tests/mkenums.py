@@ -520,6 +520,31 @@ comment: {standard_bottom_comment}
             "0",
         )
 
+    def test_with_double_quotes(self):
+        """Test trigraphs with double-quoted expressions. Issue #65."""
+        h_contents = """
+        typedef enum {
+          FOO_VALUE /*< nick="eek, a comma" >*/
+        } Foo;
+        """
+        result = self.runMkenumsWithHeader(h_contents)
+        self.assertEqual("", result.err)
+        self.assertSingleEnum(
+            result,
+            "Foo",
+            "foo_",
+            "FOO_",
+            "",
+            "FOO",
+            "",
+            "enum",
+            "Enum",
+            "ENUM",
+            "FOO_VALUE",
+            "eek, a comma",
+            "0",
+        )
+
     def test_filename_basename_in_fhead_ftail(self):
         template_contents = """
 /*** BEGIN file-header ***/
