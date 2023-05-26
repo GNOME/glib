@@ -408,8 +408,14 @@ test_entries (void)
     { "toggle", NULL,         NULL, "false", NULL,                { 0 } },
     { "volume", NULL,         NULL, "0",     change_volume_state, { 0 } },
   };
+  const GActionEntry entries2[] = {
+    { "foo",    activate_foo, NULL, NULL,    NULL,                { 0 } },
+    { "bar",    activate_bar, "s",  NULL,    NULL,                { 0 } },
+    { NULL },
+  };
   GSimpleActionGroup *actions;
   GVariant *state;
+  GStrv names;
 
   actions = g_simple_action_group_new ();
   g_simple_action_group_add_entries (actions, entries,
@@ -464,6 +470,25 @@ test_entries (void)
   state = g_action_group_get_action_state (G_ACTION_GROUP (actions), "volume");
   g_assert_cmpint (g_variant_get_int32 (state), ==, 7);
   g_variant_unref (state);
+
+  names = g_action_group_list_actions (G_ACTION_GROUP (actions));
+  g_assert_cmpuint (g_strv_length (names), ==, G_N_ELEMENTS (entries));
+  g_strfreev (names);
+
+  g_action_map_remove_action_entries (G_ACTION_MAP (actions), entries, G_N_ELEMENTS (entries));
+  names = g_action_group_list_actions (G_ACTION_GROUP (actions));
+  g_assert_cmpuint (g_strv_length (names), ==, 0);
+  g_strfreev (names);
+
+  /* Check addition and removal of %NULL terminated array */
+  g_action_map_add_action_entries (G_ACTION_MAP (actions), entries2, -1, NULL);
+  names = g_action_group_list_actions (G_ACTION_GROUP (actions));
+  g_assert_cmpuint (g_strv_length (names), ==, G_N_ELEMENTS (entries2) - 1);
+  g_strfreev (names);
+  g_action_map_remove_action_entries (G_ACTION_MAP (actions), entries2, -1);
+  names = g_action_group_list_actions (G_ACTION_GROUP (actions));
+  g_assert_cmpuint (g_strv_length (names), ==, 0);
+  g_strfreev (names);
 
   g_object_unref (actions);
 }
