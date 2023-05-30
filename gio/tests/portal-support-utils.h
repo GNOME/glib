@@ -23,6 +23,8 @@
 
 #include <glib.h>
 
+void cleanup_snapfiles (const gchar *path);
+
 void create_fake_snap_yaml (const char *snap_path,
                             gboolean is_classic);
 

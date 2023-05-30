@@ -67,6 +67,9 @@ tests_teardown (SetupData *setup_data,
   else
     g_unsetenv ("SNAP");
 
+  cleanup_snapfiles (setup_data->snap_path);
+  cleanup_snapfiles (setup_data->bin_path);
+
   g_clear_pointer (&setup_data->old_path, g_free);
   g_clear_pointer (&setup_data->old_snap, g_free);
 }
