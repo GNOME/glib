@@ -166,13 +166,13 @@ void     g_aligned_free_sized (gpointer  mem,
 #endif /* __GNUC__ */
 
 
-#if G_GNUC_CHECK_VERSION (4, 1) && GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_78
+#if G_GNUC_CHECK_VERSION (4, 1) && GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_78 && defined(G_HAVE_FREE_SIZED)
 
 #define g_free(mem)                                                            \
   (__builtin_object_size ((mem), 0) != ((size_t) - 1)) ?                       \
     g_free_sized (mem, __builtin_object_size ((mem), 0)) : (g_free) (mem)
 
-#endif /* G_GNUC_CHECK_VERSION (4, 1) && && GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_78 */
+#endif /* G_GNUC_CHECK_VERSION (4, 1) && && GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_78 && defined(G_HAVE_FREE_SIZED) */
 
 /**
  * g_steal_pointer:

@@ -729,6 +729,10 @@ foreach f : functions
   endif
 endforeach
 
+# Export the information about free_sized() so we can correctly define a macro
+# wrapper around g_free()/g_free_sized() depending on whether it’s available
+glibconfig_conf.set('G_HAVE_FREE_SIZED', have_func_free_sized)
+
 # Check that stpcpy() is usable; must use header.
 # See:
 # https://github.com/mesonbuild/meson/issues/5628.
