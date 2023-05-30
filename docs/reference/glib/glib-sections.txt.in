@@ -2297,6 +2297,16 @@ g_unix_open_pipe
 g_unix_set_fd_nonblocking
 
 <SUBSECTION>
+GUnixPipe
+G_UNIX_PIPE_INIT
+GUnixPipeEnd
+g_unix_pipe_open
+g_unix_pipe_get
+g_unix_pipe_steal
+g_unix_pipe_close
+g_unix_pipe_clear
+
+<SUBSECTION>
 g_unix_signal_add
 g_unix_signal_add_full
 g_unix_signal_source_new
