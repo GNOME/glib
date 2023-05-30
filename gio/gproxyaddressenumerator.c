@@ -29,6 +29,7 @@
 #include "ginetaddress.h"
 #include "gioerror.h"
 #include "glibintl.h"
+#include "glib-private.h"
 #include "gnetworkaddress.h"
 #include "gnetworkingprivate.h"
 #include "gproxy.h"
@@ -158,9 +159,13 @@ next_enumerator (GProxyAddressEnumeratorPrivate *priv)
       else
 	{
 	  GError *error = NULL;
+	  int default_port;
 
-	  connectable = g_network_address_parse_uri (priv->proxy_uri, 0, &error);
+	  default_port = GLIB_PRIVATE_CALL (g_uri_get_default_scheme_port) (priv->proxy_type);
+	  if (default_port == -1)
+	    default_port = 0;
 
+	  connectable = g_network_address_parse_uri (priv->proxy_uri, default_port, &error);
 	  if (error)
 	    {
 	      g_warning ("Invalid proxy URI '%s': %s",

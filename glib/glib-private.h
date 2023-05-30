@@ -158,6 +158,8 @@ char *g_find_program_for_path (const char *program,
                                const char *path,
                                const char *working_dir);
 
+int g_uri_get_default_scheme_port (const char *scheme);
+
 #define GLIB_PRIVATE_CALL(symbol) (glib__private__()->symbol)
 
 
@@ -221,6 +223,9 @@ typedef struct {
   char *(* g_find_program_for_path) (const char *program,
                                      const char *path,
                                      const char *working_dir);
+
+  /* See guri.c */
+  int (* g_uri_get_default_scheme_port) (const char *scheme);
 
   /* Add other private functions here, initialize them in glib-private.c */
 } GLibPrivateVTable;

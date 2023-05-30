@@ -69,6 +69,8 @@ glib__private__ (void)
     g_win32_pop_invalid_parameter_handler,
 
     g_find_program_for_path,
+
+    g_uri_get_default_scheme_port,
   };
 
   return &table;
