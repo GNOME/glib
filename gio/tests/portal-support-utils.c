@@ -26,6 +26,33 @@
 #include <glib.h>
 #include <glib/gstdio.h>
 
+
+void
+cleanup_snapfiles (const gchar *path)
+{
+  GDir *dir = NULL;
+  const gchar *entry;
+
+  dir = g_dir_open (path, 0, NULL);
+  if (dir == NULL)
+    {
+      /* Assume it’s a file. Ignore failure. */
+      (void) g_remove (path);
+      return;
+    }
+
+  while ((entry = g_dir_read_name (dir)) != NULL)
+    {
+      gchar *sub_path = g_build_filename (path, entry, NULL);
+      cleanup_snapfiles (sub_path);
+      g_free (sub_path);
+    }
+
+  g_dir_close (dir);
+
+  g_rmdir (path);
+}
+
 void
 create_fake_snapctl (const char *path,
                      const char *supported_op)
