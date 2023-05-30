@@ -1912,6 +1912,16 @@ static const struct
       "ftp", "", 21 },
     { "scheme://foo", G_URI_FLAGS_SCHEME_NORMALIZE,
       "scheme", "", -1 },
+    { "socks://foo", G_URI_FLAGS_SCHEME_NORMALIZE,
+      "socks", "", 1080 },
+    { "socks4://foo", G_URI_FLAGS_SCHEME_NORMALIZE,
+      "socks4", "", 1080 },
+    { "socks4a://foo", G_URI_FLAGS_SCHEME_NORMALIZE,
+      "socks4a", "", 1080 },
+    { "socks5://foo", G_URI_FLAGS_SCHEME_NORMALIZE,
+      "socks5", "", 1080 },
+    { "socks5h://foo", G_URI_FLAGS_SCHEME_NORMALIZE,
+      "socks5h", "", 1080 },
   };
 
 static const struct
