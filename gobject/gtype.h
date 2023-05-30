@@ -1183,6 +1183,7 @@ struct _GInterfaceInfo
  *
  * Since: 2.78
  */
+GOBJECT_AVAILABLE_TYPE_IN_2_78
 typedef void (* GTypeValueInitFunc) (GValue *value);
 
 /**
@@ -1203,6 +1204,7 @@ typedef void (* GTypeValueInitFunc) (GValue *value);
  *
  * Since: 2.78
  */
+GOBJECT_AVAILABLE_TYPE_IN_2_78
 typedef void (* GTypeValueFreeFunc) (GValue *value);
 
 /**
@@ -1225,6 +1227,7 @@ typedef void (* GTypeValueFreeFunc) (GValue *value);
  *
  * Since: 2.78
  */
+GOBJECT_AVAILABLE_TYPE_IN_2_78
 typedef void (* GTypeValueCopyFunc) (const GValue *src_value,
                                      GValue       *dest_value);
 
@@ -1245,6 +1248,7 @@ typedef void (* GTypeValueCopyFunc) (const GValue *src_value,
  *
  * Since: 2.78
  */
+GOBJECT_AVAILABLE_TYPE_IN_2_78
 typedef gpointer (* GTypeValuePeekPointerFunc) (const GValue *value);
 
 /**
@@ -1331,6 +1335,7 @@ typedef gpointer (* GTypeValuePeekPointerFunc) (const GValue *value);
  *
  * Since: 2.78
  */
+GOBJECT_AVAILABLE_TYPE_IN_2_78
 typedef gchar * (* GTypeValueCollectFunc) (GValue      *value,
                                            guint        n_collect_values,
                                            GTypeCValue *collect_values,
@@ -1392,6 +1397,7 @@ typedef gchar * (* GTypeValueCollectFunc) (GValue      *value,
  *
  * Since: 2.78
  */
+GOBJECT_AVAILABLE_TYPE_IN_2_78
 typedef gchar * (* GTypeValueLCopyFunc) (const GValue *value,
                                          guint         n_collect_values,
                                          GTypeCValue  *collect_values,
@@ -1427,6 +1433,7 @@ typedef gchar * (* GTypeValueLCopyFunc) (const GValue *value,
  * The #GTypeValueTable provides the functions required by the #GValue
  * implementation, to serve as a container for values of a type.
  */
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 struct _GTypeValueTable
 {
   GTypeValueInitFunc value_init;
@@ -1440,6 +1447,7 @@ struct _GTypeValueTable
   const gchar *lcopy_format;
   GTypeValueLCopyFunc lcopy_value;
 };
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 GOBJECT_AVAILABLE_IN_ALL
 GType g_type_register_static		(GType			     parent_type,
