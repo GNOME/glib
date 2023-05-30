@@ -144,12 +144,13 @@
 #define G_DATALIST_GET_POINTER(datalist)						\
   ((GData*) ((gsize) g_atomic_pointer_get (datalist) & ~(gsize) G_DATALIST_FLAGS_MASK_INTERNAL))
 
-#define G_DATALIST_SET_POINTER(datalist, pointer)       G_STMT_START {                  \
-  gpointer _oldv, _newv;                                                                \
-  do {                                                                                  \
-    _oldv = g_atomic_pointer_get (datalist);                                            \
+#define G_DATALIST_SET_POINTER(datalist, pointer)       G_STMT_START {                           \
+  gpointer _oldv = g_atomic_pointer_get (datalist);                                              \
+  gpointer _newv;                                                                                \
+  do {                                                                                           \
     _newv = (gpointer) (((gsize) _oldv & G_DATALIST_FLAGS_MASK_INTERNAL) | (gsize) pointer);     \
-  } while (!g_atomic_pointer_compare_and_exchange ((void**) datalist, _oldv, _newv));   \
+  } while (!g_atomic_pointer_compare_and_exchange_full ((void**) datalist, _oldv,                \
+                                                        _newv, &_oldv));                         \
 } G_STMT_END
 
 /* --- structures --- */

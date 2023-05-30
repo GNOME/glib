@@ -3435,16 +3435,20 @@ object_floating_flag_handler (GObject        *object,
     {
       gpointer oldvalue;
     case +1:    /* force floating if possible */
-      do
-        oldvalue = g_atomic_pointer_get (&object->qdata);
-      while (!g_atomic_pointer_compare_and_exchange ((void**) &object->qdata, oldvalue,
-                                                     (gpointer) ((gsize) oldvalue | OBJECT_FLOATING_FLAG)));
+      oldvalue = g_atomic_pointer_get (&object->qdata);
+      while (!g_atomic_pointer_compare_and_exchange_full (
+        (void**) &object->qdata, oldvalue,
+        (void *) ((gsize) oldvalue | OBJECT_FLOATING_FLAG),
+        &oldvalue))
+        ;
       return (gsize) oldvalue & OBJECT_FLOATING_FLAG;
     case -1:    /* sink if possible */
-      do
-        oldvalue = g_atomic_pointer_get (&object->qdata);
-      while (!g_atomic_pointer_compare_and_exchange ((void**) &object->qdata, oldvalue,
-                                                     (gpointer) ((gsize) oldvalue & ~(gsize) OBJECT_FLOATING_FLAG)));
+      oldvalue = g_atomic_pointer_get (&object->qdata);
+      while (!g_atomic_pointer_compare_and_exchange_full (
+        (void**) &object->qdata, oldvalue,
+        (void *) ((gsize) oldvalue & ~(gsize) OBJECT_FLOATING_FLAG),
+        &oldvalue))
+        ;
       return (gsize) oldvalue & OBJECT_FLOATING_FLAG;
     default:    /* check floating */
       return 0 != ((gsize) g_atomic_pointer_get (&object->qdata) & OBJECT_FLOATING_FLAG);
