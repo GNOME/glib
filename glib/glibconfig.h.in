@@ -212,6 +212,8 @@ typedef @g_pid_type@ GPid;
 #define G_SEARCHPATH_SEPARATOR '@g_searchpath_separator@'
 #define G_SEARCHPATH_SEPARATOR_S "@g_searchpath_separator@"
 
+#mesondefine G_HAVE_FREE_SIZED
+
 G_END_DECLS
 
 #endif /* __GLIBCONFIG_H__ */

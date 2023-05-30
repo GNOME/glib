@@ -71,7 +71,7 @@ typedef struct _GMemVTable GMemVTable;
  */
 
 GLIB_AVAILABLE_IN_ALL
-void	 g_free	          (gpointer	 mem);
+void     (g_free)         (gpointer	     mem);
 GLIB_AVAILABLE_IN_2_76
 void     g_free_sized     (gpointer      mem,
                            size_t        size);
@@ -164,6 +164,15 @@ void     g_aligned_free_sized (gpointer  mem,
   } G_STMT_END                                                                 \
   GLIB_AVAILABLE_MACRO_IN_2_34
 #endif /* __GNUC__ */
+
+
+#if G_GNUC_CHECK_VERSION (4, 1) && GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_78 && defined(G_HAVE_FREE_SIZED)
+
+#define g_free(mem)                                                            \
+  (__builtin_object_size ((mem), 0) != ((size_t) - 1)) ?                       \
+    g_free_sized (mem, __builtin_object_size ((mem), 0)) : (g_free) (mem)
+
+#endif /* G_GNUC_CHECK_VERSION (4, 1) && && GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_78 && defined(G_HAVE_FREE_SIZED) */
 
 /**
  * g_steal_pointer:
