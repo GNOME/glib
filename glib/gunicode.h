@@ -833,6 +833,10 @@ gchar   *g_utf8_strncpy           (gchar       *dest,
                                    const gchar *src,
                                    gsize        n);
 
+GLIB_AVAILABLE_IN_2_78
+gchar   *g_utf8_truncate_middle   (const gchar *string,
+                                   gsize        truncate_length);
+
 /* Find the UTF-8 character corresponding to ch, in string p. These
    functions are equivalants to strchr and strrchr */
 GLIB_AVAILABLE_IN_ALL
