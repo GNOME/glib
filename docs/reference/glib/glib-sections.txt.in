@@ -2159,7 +2159,7 @@ g_key_file_get_type
 
 <SECTION>
 <TITLE>Bookmark file parser</TITLE>
-<FILE>bookmarkfile</FILE>
+<FILE>gbookmarkfile</FILE>
 GBookmarkFile
 G_BOOKMARK_FILE_ERROR
 GBookmarkFileError
