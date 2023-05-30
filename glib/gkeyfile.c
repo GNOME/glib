@@ -74,7 +74,7 @@
 
 
 /**
- * SECTION:keyfile
+ * SECTION:gkeyfile
  * @title: Key-value file parser
  * @short_description: parses .ini-like config files
  *
@@ -160,6 +160,7 @@
  * restricted to ASCII characters.
  *
  * Here is an example of loading a key file and reading a value:
+ *
  * |[<!-- language="C" -->
  * g_autoptr(GError) error = NULL;
  * g_autoptr(GKeyFile) key_file = g_key_file_new ();
@@ -186,6 +187,7 @@
  * ]|
  *
  * Here is an example of creating and saving a key file:
+ *
  * |[<!-- language="C" -->
  * g_autoptr(GKeyFile) key_file = g_key_file_new ();
  * const gchar *val = …;
