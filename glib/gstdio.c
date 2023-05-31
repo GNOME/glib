@@ -1856,8 +1856,13 @@ g_close (gint       fd,
  * stored in both %errno and @error. If this function succeeds,
  * %errno is undefined.
  *
- * This function is async-signal-safe if @error is %NULL and @fd_ptr
- * points to either a negative number or a valid file descriptor.
+ * On POSIX platforms, this function is async-signal safe
+ * if @error is %NULL and @fd_ptr points to either a negative number or a
+ * valid open file descriptor.
+ * This makes it safe to call from a signal handler or a #GSpawnChildSetupFunc
+ * under those conditions.
+ * See [`signal(7)`](man:signal(7)) and
+ * [`signal-safety(7)`](man:signal-safety(7)) for more details.
  *
  * It is a programming error for @fd_ptr to point to a non-negative
  * number that is not a valid file descriptor.
