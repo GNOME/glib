@@ -1,5 +1,6 @@
 /* 
  * Copyright (C) 2011 Red Hat, Inc.
+ * Copyright 2023 Collabora Ltd.
  *
  * SPDX-License-Identifier: LicenseRef-old-glib-tests
  *
@@ -25,12 +26,15 @@
 
 #include "config.h"
 
+#include "glib-private.h"
 #include "glib-unix.h"
 #include "gstdio.h"
 
 #include <string.h>
 #include <pwd.h>
 #include <unistd.h>
+
+#include "testutils.h"
 
 static void
 test_pipe (void)
@@ -120,6 +124,116 @@ test_pipe_stdio_overwrite (void)
 
   g_close (stdin_fd, &error);
   g_assert_no_error (error);
+}
+
+static void
+test_pipe_struct (void)
+{
+  GError *error = NULL;
+  GUnixPipe pair = G_UNIX_PIPE_INIT;
+  char buf[1024];
+  gssize bytes_read;
+  gboolean res;
+  int read_end = -1;    /* owned */
+  int write_end = -1;   /* unowned */
+  int errsv;
+
+  g_test_summary ("Test GUnixPipe structure");
+
+  res = g_unix_pipe_open (&pair, FD_CLOEXEC, &error);
+  g_assert_no_error (error);
+  g_assert_true (res);
+
+  read_end = g_unix_pipe_steal (&pair, G_UNIX_PIPE_END_READ);
+  g_assert_cmpint (read_end, >=, 0);
+  g_assert_cmpint (g_unix_pipe_steal (&pair, G_UNIX_PIPE_END_READ), ==, -1);
+  g_assert_cmpint (g_unix_pipe_get (&pair, G_UNIX_PIPE_END_READ), ==, -1);
+  write_end = g_unix_pipe_get (&pair, G_UNIX_PIPE_END_WRITE);
+  g_assert_cmpint (write_end, >=, 0);
+  g_assert_cmpint (g_unix_pipe_get (&pair, G_UNIX_PIPE_END_WRITE), ==, write_end);
+
+  g_assert_cmpint (write (write_end, "hello", sizeof ("hello")), ==, sizeof ("hello"));
+  memset (buf, 0, sizeof (buf));
+  bytes_read = read (read_end, buf, sizeof(buf) - 1);
+  g_assert_cmpint (bytes_read, ==, sizeof ("hello"));
+  buf[bytes_read] = '\0';
+
+  /* This is one of the few errno values guaranteed by Standard C.
+   * We set it here to check that g_unix_pipe_clear doesn't alter errno. */
+  errno = EILSEQ;
+
+  g_unix_pipe_clear (&pair);
+  errsv = errno;
+  g_assert_cmpint (errsv, ==, EILSEQ);
+
+  g_assert_cmpint (pair.fds[0], ==, -1);
+  g_assert_cmpint (pair.fds[1], ==, -1);
+
+  /* The read end wasn't closed, because it was stolen first */
+  g_clear_fd (&read_end, &error);
+  g_assert_no_error (error);
+
+  /* The write end was closed, because it wasn't stolen */
+  assert_fd_was_closed (write_end);
+
+  g_assert_cmpstr (buf, ==, "hello");
+}
+
+static void
+test_pipe_struct_auto (void)
+{
+#ifdef g_autofree
+  int i;
+
+  g_test_summary ("Test g_auto(GUnixPipe)");
+
+  /* Let g_auto close the read end, the write end, neither, or both */
+  for (i = 0; i < 4; i++)
+    {
+      int read_end = -1;    /* unowned */
+      int write_end = -1;   /* unowned */
+      int errsv;
+
+        {
+          g_auto(GUnixPipe) pair = G_UNIX_PIPE_INIT;
+          GError *error = NULL;
+          gboolean res;
+
+          res = g_unix_pipe_open (&pair, FD_CLOEXEC, &error);
+          g_assert_no_error (error);
+          g_assert_true (res);
+
+          read_end = pair.fds[G_UNIX_PIPE_END_READ];
+          g_assert_cmpint (read_end, >=, 0);
+          write_end = pair.fds[G_UNIX_PIPE_END_WRITE];
+          g_assert_cmpint (write_end, >=, 0);
+
+          if (i & 1)
+            {
+              /* This also exercises g_unix_pipe_close() with error */
+              res = g_unix_pipe_close (&pair, G_UNIX_PIPE_END_READ, &error);
+              g_assert_no_error (error);
+              g_assert_true (res);
+            }
+
+          /* This also exercises g_unix_pipe_close() without error */
+          if (i & 2)
+            g_unix_pipe_close (&pair, G_UNIX_PIPE_END_WRITE, NULL);
+
+          /* This is one of the few errno values guaranteed by Standard C.
+           * We set it here to check that a g_auto(GUnixPipe) close doesn't
+           * alter errno. */
+          errno = EILSEQ;
+        }
+
+      errsv = errno;
+      g_assert_cmpint (errsv, ==, EILSEQ);
+      assert_fd_was_closed (read_end);
+      assert_fd_was_closed (write_end);
+    }
+#else
+  g_test_skip ("g_auto not supported by compiler");
+#endif
 }
 
 static void
@@ -502,6 +616,8 @@ main (int   argc,
   g_test_add_func ("/glib-unix/pipe", test_pipe);
   g_test_add_func ("/glib-unix/pipe/fd-cloexec", test_pipe_fd_cloexec);
   g_test_add_func ("/glib-unix/pipe-stdio-overwrite", test_pipe_stdio_overwrite);
+  g_test_add_func ("/glib-unix/pipe-struct", test_pipe_struct);
+  g_test_add_func ("/glib-unix/pipe-struct-auto", test_pipe_struct_auto);
   g_test_add_func ("/glib-unix/error", test_error);
   g_test_add_func ("/glib-unix/nonblocking", test_nonblocking);
   g_test_add_func ("/glib-unix/sighup", test_sighup);
