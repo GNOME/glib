@@ -2064,7 +2064,7 @@ GErrorType
 
 <SECTION>
 <TITLE>Key-value file parser</TITLE>
-<FILE>keyfile</FILE>
+<FILE>gkeyfile</FILE>
 GKeyFile
 G_KEY_FILE_ERROR
 GKeyFileError
@@ -2159,7 +2159,7 @@ g_key_file_get_type
 
 <SECTION>
 <TITLE>Bookmark file parser</TITLE>
-<FILE>bookmarkfile</FILE>
+<FILE>gbookmarkfile</FILE>
 GBookmarkFile
 G_BOOKMARK_FILE_ERROR
 GBookmarkFileError

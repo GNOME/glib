@@ -53,7 +53,7 @@
 
 
 /**
- * SECTION:bookmarkfile
+ * SECTION:gbookmarkfile
  * @title: Bookmark file parser
  * @short_description: parses files containing bookmarks
  *

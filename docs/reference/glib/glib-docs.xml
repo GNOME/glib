@@ -90,8 +90,8 @@
     <xi:include href="xml/gregex.xml" />
     <xi:include href="regex-syntax.xml" />
     <xi:include href="xml/markup.xml" />
-    <xi:include href="xml/keyfile.xml" />
-    <xi:include href="xml/bookmarkfile.xml" />
+    <xi:include href="xml/gkeyfile.xml" />
+    <xi:include href="xml/gbookmarkfile.xml" />
     <xi:include href="xml/testing.xml" />
     <xi:include href="xml/gunix.xml" />
     <xi:include href="xml/windows.xml" />
