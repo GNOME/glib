@@ -139,21 +139,9 @@ g_unix_set_fd_nonblocking (gint       fd,
     return g_unix_set_error_from_errno (error, errno);
 
   if (nonblock)
-    {
-#ifdef O_NONBLOCK
-      fcntl_flags |= O_NONBLOCK;
-#else
-      fcntl_flags |= O_NDELAY;
-#endif
-    }
+    fcntl_flags |= O_NONBLOCK;
   else
-    {
-#ifdef O_NONBLOCK
-      fcntl_flags &= ~O_NONBLOCK;
-#else
-      fcntl_flags &= ~O_NDELAY;
-#endif
-    }
+    fcntl_flags &= ~O_NONBLOCK;
 
   if (fcntl (fd, F_SETFL, fcntl_flags) == -1)
     return g_unix_set_error_from_errno (error, errno);
