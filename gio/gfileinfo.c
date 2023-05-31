@@ -2004,7 +2004,7 @@ g_file_info_get_creation_date_time (GFileInfo *info)
  * It is an error to call this if the #GFileInfo does not contain
  * %G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET.
  *
- * Returns: (nullable): a string containing the symlink target.
+ * Returns: (type filename) (nullable): a string containing the symlink target.
  **/
 const char *
 g_file_info_get_symlink_target (GFileInfo *info)
@@ -2492,7 +2492,7 @@ g_file_info_set_creation_date_time (GFileInfo *info,
 /**
  * g_file_info_set_symlink_target:
  * @info: a #GFileInfo.
- * @symlink_target: a static string containing a path to a symlink target.
+ * @symlink_target: (type filename): a static string containing a path to a symlink target.
  *
  * Sets the %G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET attribute in the file info
  * to the given symlink target.
