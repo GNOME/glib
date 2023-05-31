@@ -6608,6 +6608,8 @@ g_get_worker_context (void)
  * [`signal-safety(7)`](man:signal-safety(7))), making it safe to call from a
  * signal handler or a #GSpawnChildSetupFunc.
  *
+ * This function preserves the value of `errno`.
+ *
  * Returns: the value that @fd_ptr previously had
  * Since: 2.70
  */
