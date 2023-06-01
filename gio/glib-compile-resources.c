@@ -987,11 +987,15 @@ main (int argc, char **argv)
       g_hash_table_iter_init (&iter, files);
 
       dep_string = g_string_new (NULL);
-      escaped = escape_makefile_string (srcfile);
+      escaped = escape_makefile_string (target);
       g_string_printf (dep_string, "%s:", escaped);
       g_free (escaped);
 
-      /* First rule: foo.xml: resource1 resource2.. */
+      escaped = escape_makefile_string (srcfile);
+      g_string_append_printf (dep_string, " %s", escaped);
+      g_free (escaped);
+
+      /* First rule: foo.c: foo.xml resource1 resource2.. */
       while (g_hash_table_iter_next (&iter, &key, &data))
         {
           file_data = data;
