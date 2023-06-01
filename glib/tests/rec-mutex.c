@@ -155,6 +155,16 @@ test_rec_mutex4 (void)
   data.n_locks = 48;
   data.n_iterations = 10000;
   data.n_threads = 100;
+
+  /* Some CI runners have a hard time with this much contention, so tone it down
+   * a bit for CI. */
+  if (!g_test_perf ())
+    {
+      data.n_locks /= 10;
+      data.n_iterations /= 10;
+      data.n_threads /= 10;
+    }
+
   data.threads = g_new0 (GThread*, data.n_threads);
   data.owners = g_new0 (GThread*, data.n_locks);
   data.locks = g_new0 (GRecMutex, data.n_locks);
