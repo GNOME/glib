@@ -505,7 +505,7 @@ freebsd-13-x86_64:
       - "_build/glib/glibconfig.h"
       - "_build/meson-logs"
 
-macos:
+.macos:
   extends: .only-origin
   stage: build
   tags:
