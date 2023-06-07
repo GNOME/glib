@@ -1621,10 +1621,6 @@ test_source_postmortem (void)
 static void
 test_reuse_tcp (void)
 {
-#if 1
-  g_test_skip ("Test is currently failing due to a kernel bug; see https://gitlab.gnome.org/GNOME/glib/-/issues/2879");
-  return;
-#else
   GSocket *sock1, *sock2;
   GError *error = NULL;
   GInetAddress *iaddr;
@@ -1661,7 +1657,6 @@ test_reuse_tcp (void)
 
   g_object_unref (sock1);
   g_object_unref (sock2);
-#endif
 }
 
 static void
