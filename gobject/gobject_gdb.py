@@ -318,6 +318,8 @@ class GFrameDecorator:
                     "g_signal_emit_valist",
                     "g_signal_emit",
                     "g_signal_emit_by_name",
+                    "signal_emitv_unlocked",
+                    "signal_emit_valist_unlocked",
                 ]:
                     end = end + 1
                 else:
