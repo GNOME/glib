@@ -1326,6 +1326,7 @@ g_resolver_get_serial (GResolver *resolver)
  * Get the timeout applied to all resolver lookups. See #GResolver:timeout.
  *
  * Returns: the resolver timeout, in milliseconds, or `0` for no timeout
+ *
  * Since: 2.78
  */
 unsigned
