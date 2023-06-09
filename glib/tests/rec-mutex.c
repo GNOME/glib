@@ -62,75 +62,85 @@ test_rec_mutex3 (void)
   gboolean ret;
 
   ret = g_rec_mutex_trylock (&mutex);
-  g_assert (ret);
+  g_assert_true (ret);
 
   ret = g_rec_mutex_trylock (&mutex);
-  g_assert (ret);
+  g_assert_true (ret);
 
   g_rec_mutex_unlock (&mutex);
   g_rec_mutex_unlock (&mutex);
 }
 
-#define LOCKS      48
-#define ITERATIONS 10000
-#define THREADS    100
-
-
-GThread   *owners[LOCKS];
-GRecMutex  locks[LOCKS];
+typedef struct {
+  size_t n_locks;
+  unsigned int n_iterations;
+  size_t n_threads;
+  GThread **threads;  /* (array length=n_threads) */
+  GThread **owners;  /* (array length=n_locks), each element is locked by the corresponding mutex in @locks */
+  GRecMutex *locks;  /* (array length=n_locks) */
+} ThreadTestData;
 
 static void
-acquire (gint nr)
+thread_test_data_clear (ThreadTestData *data)
+{
+  g_free (data->locks);
+  g_free (data->owners);
+  g_free (data->threads);
+}
+
+static void
+acquire (ThreadTestData *data,
+         unsigned int    nr)
 {
   GThread *self;
 
   self = g_thread_self ();
 
-  if (!g_rec_mutex_trylock (&locks[nr]))
+  if (!g_rec_mutex_trylock (&data->locks[nr]))
     {
       if (g_test_verbose ())
         g_printerr ("thread %p going to block on lock %d\n", self, nr);
 
-      g_rec_mutex_lock (&locks[nr]);
+      g_rec_mutex_lock (&data->locks[nr]);
     }
 
-  g_assert (owners[nr] == NULL);   /* hopefully nobody else is here */
-  owners[nr] = self;
+  g_assert_null (data->owners[nr]);   /* hopefully nobody else is here */
+  data->owners[nr] = self;
 
   /* let some other threads try to ruin our day */
   g_thread_yield ();
   g_thread_yield ();
 
-  g_assert (owners[nr] == self);   /* hopefully this is still us... */
+  g_assert_true (data->owners[nr] == self);   /* hopefully this is still us... */
 
   if (g_test_verbose ())
     g_printerr ("thread %p recursively taking lock %d\n", self, nr);
 
-  g_rec_mutex_lock (&locks[nr]);  /* we're recursive, after all */
+  g_rec_mutex_lock (&data->locks[nr]);  /* we're recursive, after all */
 
-  g_assert (owners[nr] == self);   /* hopefully this is still us... */
+  g_assert_true (data->owners[nr] == self);   /* hopefully this is still us... */
 
-  g_rec_mutex_unlock (&locks[nr]);
+  g_rec_mutex_unlock (&data->locks[nr]);
 
   g_thread_yield ();
   g_thread_yield ();
 
-  g_assert (owners[nr] == self);   /* hopefully this is still us... */
-  owners[nr] = NULL;               /* make way for the next guy */
+  g_assert_true (data->owners[nr] == self);   /* hopefully this is still us... */
+  data->owners[nr] = NULL;               /* make way for the next guy */
 
-  g_rec_mutex_unlock (&locks[nr]);
+  g_rec_mutex_unlock (&data->locks[nr]);
 }
 
 static gpointer
-thread_func (gpointer data)
+thread_func (gpointer user_data)
 {
-  gint i;
+  ThreadTestData *data = user_data;
   GRand *rand;
 
   rand = g_rand_new ();
 
-  for (i = 0; i < ITERATIONS; i++)
-    acquire (g_rand_int_range (rand, 0, LOCKS));
+  for (unsigned int i = 0; i < data->n_iterations; i++)
+    acquire (data, g_rand_int_range (rand, 0, data->n_locks));
 
   g_rand_free (rand);
 
@@ -140,23 +150,41 @@ thread_func (gpointer data)
 static void
 test_rec_mutex4 (void)
 {
-  gint i;
-  GThread *threads[THREADS];
+  ThreadTestData data;
 
-  for (i = 0; i < LOCKS; i++)
-    g_rec_mutex_init (&locks[i]);
+  data.n_locks = 48;
+  data.n_iterations = 10000;
+  data.n_threads = 100;
 
-  for (i = 0; i < THREADS; i++)
-    threads[i] = g_thread_new ("test", thread_func, NULL);
+  /* Some CI runners have a hard time with this much contention, so tone it down
+   * a bit for CI. */
+  if (!g_test_perf ())
+    {
+      data.n_locks /= 10;
+      data.n_iterations /= 10;
+      data.n_threads /= 10;
+    }
 
-  for (i = 0; i < THREADS; i++)
-    g_thread_join (threads[i]);
+  data.threads = g_new0 (GThread*, data.n_threads);
+  data.owners = g_new0 (GThread*, data.n_locks);
+  data.locks = g_new0 (GRecMutex, data.n_locks);
 
-  for (i = 0; i < LOCKS; i++)
-    g_rec_mutex_clear (&locks[i]);
+  for (size_t i = 0; i < data.n_locks; i++)
+    g_rec_mutex_init (&data.locks[i]);
 
-  for (i = 0; i < LOCKS; i++)
-    g_assert (owners[i] == NULL);
+  for (size_t i = 0; i < data.n_threads; i++)
+    data.threads[i] = g_thread_new ("test", thread_func, &data);
+
+  for (size_t i = 0; i < data.n_threads; i++)
+    g_thread_join (data.threads[i]);
+
+  for (size_t i = 0; i < data.n_locks; i++)
+    g_rec_mutex_clear (&data.locks[i]);
+
+  for (size_t i = 0; i < data.n_locks; i++)
+    g_assert_null (data.owners[i]);
+
+  thread_test_data_clear (&data);
 }
 
 static gint count_to = 0;
@@ -195,7 +223,7 @@ static void
 test_mutex_perf (gconstpointer data)
 {
   gint c = GPOINTER_TO_INT (data);
-  GThread *threads[THREADS];
+  GThread *threads[100];
   gint64 start_time;
   gint n_threads;
   gdouble rate;
