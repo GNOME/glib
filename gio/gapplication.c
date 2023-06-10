@@ -117,6 +117,10 @@
  * conveniently access them remotely. GIO provides a #GDBusMenuModel wrapper
  * for remote access to exported #GMenuModels.
  *
+ * Note: Due to the fact that actions are exported on the session bus,
+ * using `maybe` parameters is not supported, since D-Bus does not support
+ * `maybe` types.
+ *
  * There is a number of different entry points into a GApplication:
  *
  * - via 'Activate' (i.e. just starting the application)
