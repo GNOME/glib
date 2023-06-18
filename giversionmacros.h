@@ -209,4 +209,18 @@
 # define GI_AVAILABLE_IN_1_76                 _GI_EXTERN
 #endif
 
+#if defined(GLIB_VERSION_2_78) && GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_78
+# define GI_DEPRECATED_IN_1_78                GI_DEPRECATED
+# define GI_DEPRECATED_IN_1_78_FOR(f)         GI_DEPRECATED_FOR(f)
+#else
+# define GI_DEPRECATED_IN_1_78                _GI_EXTERN
+# define GI_DEPRECATED_IN_1_78_FOR(f)         _GI_EXTERN
+#endif
+
+#if defined(GLIB_VERSION_2_78) && GLIB_VERSION_MAX_ALLOWED < GLIB_VERSION_2_78
+# define GI_AVAILABLE_IN_1_78                 GI_UNAVAILABLE(2, 78)
+#else
+# define GI_AVAILABLE_IN_1_78                 _GI_EXTERN
+#endif
+
 #endif /* __GIVERSIONMACROS_H__ */
