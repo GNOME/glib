@@ -124,6 +124,8 @@ G_DEFINE_INTERFACE (GListModel, g_list_model, G_TYPE_OBJECT)
  * %NULL is never returned for an index that is smaller than the length
  * of the list.  See g_list_model_get_n_items().
  *
+ * The same #GObject instance may not appear more than once in a #GListModel.
+ *
  * Returns: (type GObject) (transfer full) (nullable): the object at @position.
  *
  * Since: 2.44
