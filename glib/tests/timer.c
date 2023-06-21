@@ -350,21 +350,33 @@ static void
 test_usleep_with_zero_wait (void)
 {
   GTimer *timer;
-  gdouble elapsed0, elapsed1;
+  unsigned int n_times_shorter = 0;
 
   timer = g_timer_new ();
 
-  g_timer_start (timer);
-  g_usleep (0);
-  elapsed0 = g_timer_elapsed (timer, NULL);
-  g_timer_stop (timer);
+  /* Test that g_usleep(0) sleeps for less time than g_usleep(1). We can’t
+   * actually guarantee this, since the exact length of g_usleep(1) is not
+   * guaranteed, but we can say that it probably should be longer 9 times out
+   * of 10. */
+  for (unsigned int i = 0; i < 10; i++)
+    {
+      gdouble elapsed0, elapsed1;
 
-  g_timer_start (timer);
-  g_usleep (1);
-  elapsed1 = g_timer_elapsed (timer, NULL);
-  g_timer_stop (timer);
+      g_timer_start (timer);
+      g_usleep (0);
+      elapsed0 = g_timer_elapsed (timer, NULL);
+      g_timer_stop (timer);
 
-  g_assert_cmpfloat (elapsed0, <=, elapsed1);
+      g_timer_start (timer);
+      g_usleep (1);
+      elapsed1 = g_timer_elapsed (timer, NULL);
+      g_timer_stop (timer);
+
+      if (elapsed0 <= elapsed1)
+        n_times_shorter++;
+    }
+
+  g_assert_cmpuint (n_times_shorter, >=, 9);
 
   g_clear_pointer (&timer, g_timer_destroy);
 }
