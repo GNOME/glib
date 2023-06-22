@@ -159,6 +159,63 @@ test_mutex5 (void)
     g_assert (owners[i] == NULL);
 }
 
+static gpointer
+test_mutex_errno_func (gpointer data)
+{
+  GMutex *m = data;
+
+  g_test_summary ("Validates that errno is not touched upon return");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/3034");
+
+  for (unsigned int i = 0; i < 1000; i++)
+    {
+      errno = 0;
+      g_mutex_lock (m);
+      g_assert_cmpint (errno, ==, 0);
+
+      g_thread_yield ();
+
+      errno = 0;
+      g_mutex_unlock (m);
+      g_assert_cmpint (errno, ==, 0);
+
+      errno = 0;
+      if (g_mutex_trylock (m))
+        {
+          g_assert_cmpint (errno, ==, 0);
+
+          g_thread_yield ();
+
+          errno = 0;
+          g_mutex_unlock (m);
+          g_assert_cmpint (errno, ==, 0);
+        }
+    }
+
+  return NULL;
+}
+
+static void
+test_mutex_errno (void)
+{
+  gsize i;
+  GThread *threads[THREADS];
+  GMutex m;
+
+  g_mutex_init (&m);
+
+  for (i = 0; i < G_N_ELEMENTS (threads); i++)
+    {
+      threads[i] = g_thread_new ("test_mutex_errno",
+                                 test_mutex_errno_func, &m);
+    }
+
+  for (i = 0; i < G_N_ELEMENTS (threads); i++)
+    {
+      g_thread_join (threads[i]);
+    }
+}
+
 static gint count_to = 0;
 
 static gboolean
@@ -226,6 +283,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/thread/mutex3", test_mutex3);
   g_test_add_func ("/thread/mutex4", test_mutex4);
   g_test_add_func ("/thread/mutex5", test_mutex5);
+  g_test_add_func ("/thread/mutex/errno", test_mutex_errno);
 
     {
       guint i;

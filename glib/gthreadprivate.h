@@ -54,6 +54,12 @@ struct  _GRealThread
 /* Wrapper macro to call `futex_time64` and/or `futex` with simple
  * parameters and without returning the return value.
  *
+ * We expect futex to sometimes return EAGAIN due to the race
+ * between the caller checking the current value and deciding to
+ * do the futex op. To avoid splattering errno on success, we
+ * restore the original errno if EAGAIN is seen. See also:
+ *   https://gitlab.gnome.org/GNOME/glib/-/issues/3034
+ *
  * If the `futex_time64` syscall does not exist (`ENOSYS`), we retry again
  * with the normal `futex` syscall. This can happen if newer kernel headers
  * are used than the kernel that is actually running.
@@ -70,23 +76,37 @@ struct  _GRealThread
     if (res < 0 && errno == ENOSYS)                                              \
       {                                                                          \
         errno = saved_errno;                                                     \
-        syscall (__NR_futex, uaddr, (gsize) futex_op, __VA_ARGS__);              \
+        res = syscall (__NR_futex, uaddr, (gsize) futex_op, __VA_ARGS__);        \
+      }                                                                          \
+    if (res < 0 && errno == EAGAIN)                                              \
+      {                                                                          \
+        errno = saved_errno;                                                     \
       }                                                                          \
   }                                                                              \
   G_STMT_END
 #elif defined(__NR_futex_time64)
-#define g_futex_simple(uaddr, futex_op, ...)                           \
-  G_STMT_START                                                         \
-  {                                                                    \
-    syscall (__NR_futex_time64, uaddr, (gsize) futex_op, __VA_ARGS__); \
-  }                                                                    \
+#define g_futex_simple(uaddr, futex_op, ...)                                     \
+  G_STMT_START                                                                   \
+  {                                                                              \
+    int saved_errno = errno;                                                     \
+    int res = syscall (__NR_futex_time64, uaddr, (gsize) futex_op, __VA_ARGS__); \
+    if (res < 0 && errno == EAGAIN)                                              \
+      {                                                                          \
+        errno = saved_errno;                                                     \
+      }                                                                          \
+  }                                                                              \
   G_STMT_END
 #elif defined(__NR_futex)
-#define g_futex_simple(uaddr, futex_op, ...)                    \
-  G_STMT_START                                                  \
-  {                                                             \
-    syscall (__NR_futex, uaddr, (gsize) futex_op, __VA_ARGS__); \
-  }                                                             \
+#define g_futex_simple(uaddr, futex_op, ...)                              \
+  G_STMT_START                                                            \
+  {                                                                       \
+    int saved_errno = errno;                                              \
+    int res = syscall (__NR_futex, uaddr, (gsize) futex_op, __VA_ARGS__); \
+    if (res < 0 && errno == EAGAIN)                                       \
+      {                                                                   \
+        errno = saved_errno;                                              \
+      }                                                                   \
+  }                                                                       \
   G_STMT_END
 #else /* !defined(__NR_futex) && !defined(__NR_futex_time64) */
 #error "Neither __NR_futex nor __NR_futex_time64 are defined but were found by meson"
