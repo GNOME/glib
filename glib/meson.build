@@ -494,6 +494,9 @@ else
     c_args : ['-UG_DISABLE_ASSERT'],
     include_directories : configinc,
     dependencies : [libglib_dep])
+
+  # Provide tools for others when we're a subproject and they use the Meson GNOME module
+  meson.override_find_program('gtester', gtester)
 endif
 
 report_conf = configuration_data()
