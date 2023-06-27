@@ -336,14 +336,14 @@ g_dbus_interface_skeleton_get_info (GDBusInterfaceSkeleton *interface_)
 }
 
 /**
- * g_dbus_interface_skeleton_get_vtable: (skip)
+ * g_dbus_interface_skeleton_get_vtable:
  * @interface_: A #GDBusInterfaceSkeleton.
  *
  * Gets the interface vtable for the D-Bus interface implemented by
  * @interface_. The returned function pointers should expect @interface_
  * itself to be passed as @user_data.
  *
- * Returns: A #GDBusInterfaceVTable (never %NULL).
+ * Returns: (not nullable) (transfer none): the vtable of the D-Bus interface implemented by the skeleton
  *
  * Since: 2.30
  */
