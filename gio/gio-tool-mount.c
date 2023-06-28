@@ -321,11 +321,11 @@ mount_done_cb (GObject *object,
 }
 
 static void
-show_unmount_progress (GMountOperation* self,
-                       gchar* message,
-                       gint64 time_left,
-                       gint64 bytes_left,
-                       gpointer user_data)
+show_unmount_progress (GMountOperation *self,
+                       const gchar     *message,
+                       gint64           time_left,
+                       gint64           bytes_left,
+                       gpointer         user_data)
 {
   GStrv lines = NULL;
   gchar *one_line = NULL;
