@@ -2118,11 +2118,16 @@ if libintl.found()
   if cc.has_function('ngettext', dependencies : libintl, prefix: libintl_prefix)
     libintl_deps += [libintl]
   else
-    libintl_pthread = cc.find_library('pthread', required : false)
-    if libintl_pthread.found() and cc.has_function('ngettext', dependencies : [libintl, libintl_pthread], prefix: libintl_prefix)
-      libintl_deps += [libintl, libintl_pthread]
+    libintl_iconv = cc.find_library('iconv', required : false)
+    if libintl_iconv.found() and cc.has_function('ngettext', dependencies : [libintl, libintl_iconv])
+      libintl_deps += [libintl, libintl_iconv]
     else
-      libintl = disabler()
+      libintl_pthread = cc.find_library('pthread', required : false)
+      if libintl_pthread.found() and cc.has_function('ngettext', dependencies : [libintl, libintl_pthread], prefix: libintl_prefix)
+        libintl_deps += [libintl, libintl_pthread]
+      else
+        libintl = disabler()
+      endif
     endif
   endif
 endif
