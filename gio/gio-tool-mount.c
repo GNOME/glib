@@ -320,6 +320,31 @@ mount_done_cb (GObject *object,
     g_main_loop_quit (main_loop);
 }
 
+static void
+show_unmount_progress (GMountOperation *self,
+                       const gchar     *message,
+                       gint64           time_left,
+                       gint64           bytes_left,
+                       gpointer         user_data)
+{
+  GStrv lines = NULL;
+  gchar *one_line = NULL;
+
+  if (message == NULL)
+    return;
+
+  lines = g_strsplit (message, "\n", -1);
+  one_line = g_strjoinv (" - ", lines);
+
+  /* Print just the message, the GVfsUDisks2VolumeMonitor doesn't report time or
+   * bytes.
+   */
+  g_print ("%s\n", one_line);
+
+  g_free (one_line);
+  g_strfreev (lines);
+}
+
 static GMountOperation *
 new_mount_op (void)
 {
@@ -331,6 +356,7 @@ new_mount_op (void)
 
   g_signal_connect (op, "ask_password", G_CALLBACK (ask_password_cb), NULL);
   g_signal_connect (op, "ask_question", G_CALLBACK (ask_question_cb), NULL);
+  g_signal_connect (op, "show-unmount-progress", G_CALLBACK (show_unmount_progress), NULL);
 
   /* TODO: we *should* also connect to the "aborted" signal but since the
    * main thread is blocked handling input we won't get that signal anyway...
