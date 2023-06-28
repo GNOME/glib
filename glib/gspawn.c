@@ -1553,7 +1553,7 @@ safe_fdwalk_with_invalid_fds (int (*cb)(void *data, int fd), void *data)
    * It's just a thin wrapper around a syscall, so it's probably okay.
    */
   {
-    char buffer[open_max * PROC_PIDLISTFD_SIZE];
+    char buffer[4096 * PROC_PIDLISTFD_SIZE];
     ssize_t buffer_size;
 
     buffer_size = proc_pidinfo (getpid (), PROC_PIDLISTFDS, 0, buffer, sizeof (buffer));
