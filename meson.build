@@ -866,6 +866,7 @@ if host_system == 'linux'
   endif
 endif
 
+osx_ldflags = []
 glib_have_os_x_9_or_later = false
 glib_have_carbon = false
 glib_have_cocoa = false
@@ -898,6 +899,7 @@ if host_system == 'darwin'
 
   if glib_have_cocoa
     glib_conf.set('HAVE_COCOA', true)
+    osx_ldflags += ['-Wl,-framework,Foundation', '-Wl,-framework,AppKit']
   endif
 endif
 
@@ -2119,7 +2121,7 @@ if libintl.found()
     libintl_deps += [libintl]
   else
     libintl_iconv = cc.find_library('iconv', required : false)
-    if libintl_iconv.found() and cc.has_function('ngettext', dependencies : [libintl, libintl_iconv])
+    if libintl_iconv.found() and cc.has_function('ngettext', args : osx_ldflags, dependencies : [libintl, libintl_iconv])
       libintl_deps += [libintl, libintl_iconv]
     else
       libintl_pthread = cc.find_library('pthread', required : false)
