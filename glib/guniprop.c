@@ -1236,7 +1236,7 @@ g_utf8_casefold (const gchar *str,
 /**
  * g_unichar_get_mirror_char:
  * @ch: a Unicode character
- * @mirrored_ch: location to store the mirrored character
+ * @mirrored_ch: (out): location to store the mirrored character
  * 
  * In Unicode, some characters are "mirrored". This means that their
  * images are mirrored horizontally in text that is laid out from right
