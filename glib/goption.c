@@ -2297,6 +2297,11 @@ g_option_context_parse (GOptionContext   *context,
  *
  * Creates a new #GOptionGroup.
  *
+ * @description is typically used to provide a title for the group. If so, it
+ * is recommended that it’s written in title case, and has a trailing colon so
+ * that it matches the style of built-in GLib group titles such as
+ * ‘Application Options:’.
+ *
  * Returns: a newly created option group. It should be added
  *   to a #GOptionContext or freed with g_option_group_unref().
  *
