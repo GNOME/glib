@@ -27,7 +27,7 @@ Policy
  * Any change which requires changes or additions to translatable strings should
    not be backported unless unavoidable to fix a widely-occurring bug
    - If possible, existing translatable strings should be reused
-   - If unavoidable, liase with the GNOME Translation Team and ensure string
+   - If unavoidable, liaise with the GNOME Translation Team and ensure string
      changes are landed with plenty of time to allow translators to provide new
      translations
    - See https://wiki.gnome.org/TranslationProject/HandlingStringFreezes
