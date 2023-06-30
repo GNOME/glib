@@ -28,10 +28,35 @@ marshalers_c = custom_target('marshalers_c',
   ],
 )
 
+# We must embed custom-dispatch.exe with an application
+# manifest to pacify UAC in order to run on 32-bit Windows
+# builds, otherwise the test will not run as UAC will kill it.
+extra_custom_dispatch_objs = []
+if embed_uac_manifest
+  uac_exe_pkg = 'gobject'
+  uac_exe_name = 'custom-dispatch'
+
+  # Well, we have to forgo the xxx.exe.manifest in the output listing, since
+  # compile_resources doesn't like to consume targets with multiple outputs,
+  # and the xxx.exe.manifest and xxx.rc are tied together
+  uac_rc = custom_target(
+    '@0@.rc'.format(uac_exe_name),
+    output: ['@0@.rc'.format(uac_exe_name)],
+    command: [gen_uac_manifest,
+              '-p=@0@'.format(uac_exe_pkg),
+              '-n=@0@'.format(uac_exe_name),
+              '--pkg-version=@0@'.format(meson.project_version()),
+              '--output-dir=@OUTDIR@'],
+  )
+  extra_custom_dispatch_objs = import('windows').compile_resources(uac_rc)
+endif
+
 gobject_tests = {
   'notify-init' : {},
   'notify-init2' : {},
-  'custom-dispatch' : {},
+  'custom-dispatch' : {
+    'extra_objs' : extra_custom_dispatch_objs,
+  },
   'qdata' : {},
   'accumulator' : {
     'source' : ['accumulator.c', marshalers_h, marshalers_c],
@@ -150,6 +175,7 @@ test_cpp_args = test_cargs
 
 foreach test_name, extra_args : gobject_tests
   source = extra_args.get('source', test_name + '.c')
+  extra_objs = extra_args.get('extra_objs', [])
   install = installed_tests_enabled and extra_args.get('install', true)
 
   if install
@@ -166,7 +192,7 @@ foreach test_name, extra_args : gobject_tests
     )
   endif
 
-  exe = executable(test_name, source,
+  exe = executable(test_name, source, extra_objs,
     c_args : test_cargs + extra_args.get('c_args', []),
     cpp_args : test_cpp_args + extra_args.get('cpp_args', []),
     dependencies : test_deps + extra_args.get('dependencies', []),

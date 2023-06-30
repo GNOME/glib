@@ -24,3 +24,11 @@ if host_system != 'windows'
 endif
 
 gen_visibility_macros = find_program('gen-visibility-macros.py')
+
+# This is only needed for 32-bit (x86) Windows builds
+if host_system == 'windows' and host_machine.cpu_family() == 'x86'
+  embed_uac_manifest = true
+  gen_uac_manifest = find_program('generate-uac-manifest.py')
+else
+  embed_uac_manifest = false
+endif
