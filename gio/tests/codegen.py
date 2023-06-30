@@ -67,8 +67,8 @@ class TestCodegen(unittest.TestCase):
         "q": {"value_type": "uint"},
         "i": {"value_type": "int"},
         "u": {"value_type": "uint"},
-        "x": {"value_type": "int64"},
-        "t": {"value_type": "uint64"},
+        "x": {"value_type": "int64", "lacks_marshaller": True},
+        "t": {"value_type": "uint64", "lacks_marshaller": True},
         "d": {"value_type": "double"},
         "s": {"value_type": "string"},
         "o": {"value_type": "string"},
@@ -867,10 +867,12 @@ G_END_DECLS
         func_name = "org_project_signaling_iface_signal_marshal_simple_signal"
         self.assertIs(stripped_out.count(f"{func_name},"), 1)
         self.assertIs(stripped_out.count(f"{func_name} ("), 1)
+        self.assertIs(stripped_out.count("g_cclosure_marshal_VOID__VOID (closure"), 2)
 
         func_name = "org_project_other_signaling_iface_signal_marshal_simple_signal"
         self.assertIs(stripped_out.count(f"{func_name},"), 1)
         self.assertIs(stripped_out.count(f"{func_name} ("), 1)
+        self.assertIs(stripped_out.count("g_cclosure_marshal_VOID__VOID (closure"), 2)
 
     @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_generate_signals_marshaller_single_typed_args(self):
@@ -894,17 +896,30 @@ G_END_DECLS
             self.assertFalse(result.err)
             self.assertEqual(stripped_out.count("g_cclosure_marshal_generic"), 0)
 
+            self.assertIs(
+                stripped_out.count("g_cclosure_marshal_VOID__VOID (closure"), 1
+            )
+
             func_name = (
                 f"org_project_signaling_iface_signal_marshal_single_arg_signal_{t}"
             )
             self.assertIs(stripped_out.count(f"{func_name},"), 1)
             self.assertIs(stripped_out.count(f"{func_name} ("), 1)
-            self.assertIs(
-                stripped_out.count(
-                    f"g_marshal_value_peek_{props['value_type']} (param_values + 1)"
-                ),
-                1,
-            )
+
+            if props.get("lacks_marshaller", False):
+                self.assertIs(
+                    stripped_out.count(
+                        f"g_marshal_value_peek_{props['value_type']} (param_values + 1)"
+                    ),
+                    1,
+                )
+            else:
+                self.assertIs(
+                    stripped_out.count(
+                        f"g_cclosure_marshal_VOID__{props['value_type'].upper()} (closure"
+                    ),
+                    1,
+                )
 
     @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_generate_signals_marshallers_multiple_args(self):

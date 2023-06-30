@@ -2580,15 +2580,32 @@ class CodeGenerator:
         self.generate_marshaller_body(func_name, in_args, ret_arg)
         self.outfile.write("}\n" "\n")
 
-    def generate_marshaller_declaration(self, func_name, uses_ret=False):
+    def generate_marshaller_wrapper(self, wrapper_name, wrapped_func):
+        self.generate_marshaller_declaration(
+            wrapper_name,
+            uses_ret=True,
+            uses_hint=True,
+            inline=True,
+        )
+        self.outfile.write("{\n")
         self.outfile.write(
-            "static void\n"
+            f"  {wrapped_func} (closure,\n"
+            "    return_value, n_param_values, param_values, "
+            "invocation_hint, marshal_data);\n"
+        )
+        self.outfile.write("}\n" "\n")
+
+    def generate_marshaller_declaration(
+        self, func_name, uses_ret=False, uses_hint=False, inline=False
+    ):
+        self.outfile.write(
+            f"{'inline ' if inline else ''}static void\n"
             f"{func_name} (\n"
             "    GClosure     *closure,\n"
             f"    GValue       *return_value{' G_GNUC_UNUSED' if not uses_ret else ''},\n"
             "    unsigned int  n_param_values,\n"
             "    const GValue *param_values,\n"
-            "    void         *invocation_hint G_GNUC_UNUSED,\n"
+            f"    void         *invocation_hint{' G_GNUC_UNUSED' if not uses_hint else ''},\n"
             "    void         *marshal_data)\n"
         )
 
@@ -2656,12 +2673,21 @@ class CodeGenerator:
         assert isinstance(t, (dbustypes.Signal, dbustypes.Method))
 
         kind_uscore = utils.camel_case_to_uscore(t.__class__.__name__.lower())
+        func_name = f"{i.name_lower}_{kind_uscore}_marshal_{t.name_lower}"
 
-        self.generate_marshaller(
-            func_name=f"{i.name_lower}_{kind_uscore}_marshal_{t.name_lower}",
-            in_args=t.marshaller_in_args,
-            ret_arg=t.marshaller_ret_arg,
-        )
+        if not t.marshaller_ret_arg:
+            if not t.marshaller_in_args:
+                self.generate_marshaller_wrapper(
+                    func_name, "g_cclosure_marshal_VOID__VOID"
+                )
+                return
+            elif len(t.marshaller_in_args) == 1 and t.args[0].gclosure_marshaller:
+                self.generate_marshaller_wrapper(
+                    func_name, t.args[0].gclosure_marshaller
+                )
+                return
+
+        self.generate_marshaller(func_name, t.marshaller_in_args, t.marshaller_ret_arg)
 
     def generate_signal_marshallers(self, i):
         for s in i.signals:
