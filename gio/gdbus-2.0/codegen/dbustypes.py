@@ -84,6 +84,7 @@ class Arg:
         self.format_out = "@" + self.signature
         self.gvariant_get = "XXX"
         self.gvalue_get = "g_value_get_variant"
+        self.gvalue_set = "g_value_take_variant"
         self.array_annotation = ""
 
         if not utils.lookup_annotation(
@@ -100,6 +101,7 @@ class Arg:
                 self.format_out = "b"
                 self.gvariant_get = "g_variant_get_boolean"
                 self.gvalue_get = "g_value_get_boolean"
+                self.gvalue_set = "g_value_set_boolean"
             elif self.signature == "y":
                 self.ctype_in_g = "guchar "
                 self.ctype_in = "guchar "
@@ -111,6 +113,7 @@ class Arg:
                 self.format_out = "y"
                 self.gvariant_get = "g_variant_get_byte"
                 self.gvalue_get = "g_value_get_uchar"
+                self.gvalue_set = "g_value_set_uchar"
             elif self.signature == "n":
                 self.ctype_in_g = "gint "
                 self.ctype_in = "gint16 "
@@ -122,6 +125,7 @@ class Arg:
                 self.format_out = "n"
                 self.gvariant_get = "g_variant_get_int16"
                 self.gvalue_get = "g_value_get_int"
+                self.gvalue_set = "g_value_set_int"
             elif self.signature == "q":
                 self.ctype_in_g = "guint "
                 self.ctype_in = "guint16 "
@@ -133,6 +137,7 @@ class Arg:
                 self.format_out = "q"
                 self.gvariant_get = "g_variant_get_uint16"
                 self.gvalue_get = "g_value_get_uint"
+                self.gvalue_set = "g_value_set_uint"
             elif self.signature == "i":
                 self.ctype_in_g = "gint "
                 self.ctype_in = "gint "
@@ -144,6 +149,7 @@ class Arg:
                 self.format_out = "i"
                 self.gvariant_get = "g_variant_get_int32"
                 self.gvalue_get = "g_value_get_int"
+                self.gvalue_set = "g_value_set_int"
             elif self.signature == "u":
                 self.ctype_in_g = "guint "
                 self.ctype_in = "guint "
@@ -155,6 +161,7 @@ class Arg:
                 self.format_out = "u"
                 self.gvariant_get = "g_variant_get_uint32"
                 self.gvalue_get = "g_value_get_uint"
+                self.gvalue_set = "g_value_set_uint"
             elif self.signature == "x":
                 self.ctype_in_g = "gint64 "
                 self.ctype_in = "gint64 "
@@ -166,6 +173,7 @@ class Arg:
                 self.format_out = "x"
                 self.gvariant_get = "g_variant_get_int64"
                 self.gvalue_get = "g_value_get_int64"
+                self.gvalue_set = "g_value_set_int64"
             elif self.signature == "t":
                 self.ctype_in_g = "guint64 "
                 self.ctype_in = "guint64 "
@@ -177,6 +185,7 @@ class Arg:
                 self.format_out = "t"
                 self.gvariant_get = "g_variant_get_uint64"
                 self.gvalue_get = "g_value_get_uint64"
+                self.gvalue_set = "g_value_set_uint64"
             elif self.signature == "d":
                 self.ctype_in_g = "gdouble "
                 self.ctype_in = "gdouble "
@@ -188,6 +197,7 @@ class Arg:
                 self.format_out = "d"
                 self.gvariant_get = "g_variant_get_double"
                 self.gvalue_get = "g_value_get_double"
+                self.gvalue_set = "g_value_set_double"
             elif self.signature == "s":
                 self.ctype_in_g = "const gchar *"
                 self.ctype_in = "const gchar *"
@@ -200,6 +210,7 @@ class Arg:
                 self.format_out = "s"
                 self.gvariant_get = "g_variant_get_string"
                 self.gvalue_get = "g_value_get_string"
+                self.gvalue_set = "g_value_set_string"
             elif self.signature == "o":
                 self.ctype_in_g = "const gchar *"
                 self.ctype_in = "const gchar *"
@@ -212,6 +223,7 @@ class Arg:
                 self.format_out = "o"
                 self.gvariant_get = "g_variant_get_string"
                 self.gvalue_get = "g_value_get_string"
+                self.gvalue_set = "g_value_set_string"
             elif self.signature == "g":
                 self.ctype_in_g = "const gchar *"
                 self.ctype_in = "const gchar *"
@@ -224,6 +236,7 @@ class Arg:
                 self.format_out = "g"
                 self.gvariant_get = "g_variant_get_string"
                 self.gvalue_get = "g_value_get_string"
+                self.gvalue_set = "g_value_set_string"
             elif self.signature == "ay":
                 self.ctype_in_g = "const gchar *"
                 self.ctype_in = "const gchar *"
@@ -236,6 +249,7 @@ class Arg:
                 self.format_out = "^ay"
                 self.gvariant_get = "g_variant_get_bytestring"
                 self.gvalue_get = "g_value_get_string"
+                self.gvalue_set = "g_value_set_string"
             elif self.signature == "as":
                 self.ctype_in_g = "const gchar *const *"
                 self.ctype_in = "const gchar *const *"
@@ -248,6 +262,7 @@ class Arg:
                 self.format_out = "^as"
                 self.gvariant_get = "g_variant_get_strv"
                 self.gvalue_get = "g_value_get_boxed"
+                self.gvalue_set = "g_value_take_boxed"
                 self.array_annotation = "(array zero-terminated=1)"
             elif self.signature == "ao":
                 self.ctype_in_g = "const gchar *const *"
@@ -261,6 +276,7 @@ class Arg:
                 self.format_out = "^ao"
                 self.gvariant_get = "g_variant_get_objv"
                 self.gvalue_get = "g_value_get_boxed"
+                self.gvalue_set = "g_value_take_boxed"
                 self.array_annotation = "(array zero-terminated=1)"
             elif self.signature == "aay":
                 self.ctype_in_g = "const gchar *const *"
@@ -274,6 +290,7 @@ class Arg:
                 self.format_out = "^aay"
                 self.gvariant_get = "g_variant_get_bytestring_array"
                 self.gvalue_get = "g_value_get_boxed"
+                self.gvalue_set = "g_value_take_boxed"
                 self.array_annotation = "(array zero-terminated=1)"
 
         for a in self.annotations:
@@ -336,6 +353,20 @@ class Method:
         if utils.lookup_annotation(self.annotations, "org.gtk.GDBus.C.UnixFD"):
             self.unix_fd = True
 
+        self.marshaller_ret_arg = Arg("return", "b")
+        self.marshaller_ret_arg.post_process(None, None, None, None, None)
+
+        method_invocation_arg = Arg("method_invocation", None)
+        method_invocation_arg.ctype_in = "GDBusMethodInvocation *"
+        method_invocation_arg.gvalue_get = "g_value_get_object"
+        self.marshaller_in_args = [method_invocation_arg] + self.in_args
+
+        if self.unix_fd:
+            fd_list_arg = Arg("fd_list", None)
+            fd_list_arg.ctype_in = "GUnixFDList *"
+            fd_list_arg.gvalue_get = "g_value_get_object"
+            self.marshaller_in_args.insert(0, fd_list_arg)
+
         for a in self.annotations:
             a.post_process(interface_prefix, cns, cns_upper, cns_lower, self)
 
@@ -385,6 +416,9 @@ class Signal:
             == "true"
         ):
             self.deprecated = True
+
+        self.marshaller_ret_arg = None
+        self.marshaller_in_args = self.args
 
         for a in self.annotations:
             a.post_process(interface_prefix, cns, cns_upper, cns_lower, self)

@@ -2136,7 +2136,7 @@ class CodeGenerator:
                     "    G_STRUCT_OFFSET (%sIface, handle_%s),\n"
                     "    g_signal_accumulator_true_handled,\n"
                     "    NULL,\n"  # accu_data
-                    "    g_cclosure_marshal_generic,\n"
+                    f"      {i.name_lower}_method_marshal_{m.name_lower},\n"
                     "    G_TYPE_BOOLEAN,\n"
                     "    %d,\n"
                     "    G_TYPE_DBUS_METHOD_INVOCATION"
@@ -2525,34 +2525,44 @@ class CodeGenerator:
 
     # ---------------------------------------------------------------------------------------------------
 
-    def generate_marshaller(self, func_name, in_args):
-        self.generate_marshaller_declaration(func_name)
+    def generate_marshaller(self, func_name, in_args, ret_arg=None):
+        self.generate_marshaller_declaration(func_name, uses_ret=ret_arg is not None)
         self.outfile.write("{\n")
-        self.generate_marshaller_body(func_name, in_args)
+        self.generate_marshaller_body(func_name, in_args, ret_arg)
         self.outfile.write("}\n" "\n")
 
-    def generate_marshaller_declaration(self, func_name):
+    def generate_marshaller_declaration(self, func_name, uses_ret=False):
         self.outfile.write(
             "static void\n"
             f"{func_name} (\n"
             "    GClosure     *closure,\n"
-            "    GValue       *return_value G_GNUC_UNUSED,\n"
+            f"    GValue       *return_value{' G_GNUC_UNUSED' if not uses_ret else ''},\n"
             "    unsigned int  n_param_values,\n"
             "    const GValue *param_values,\n"
             "    void         *invocation_hint G_GNUC_UNUSED,\n"
             "    void         *marshal_data)\n"
         )
 
-    def generate_marshaller_body(self, func_name, in_args=[]):
+    def generate_marshaller_body(self, func_name, in_args=[], ret_arg=None):
         marshal_func_type = f"{utils.uscore_to_camel_case(func_name)}Func"
         self.outfile.write(
-            f"  typedef void (*{marshal_func_type})\n"
+            f"  typedef {ret_arg.ctype_in if ret_arg else 'void '}(*{marshal_func_type})\n"
             "       (void *data1,\n"
             + "".join([f"        {a.ctype_in}arg_{a.name},\n" for a in in_args])
             + "        void *data2);\n"
             f"  {marshal_func_type} callback;\n"
             "  GCClosure *cc = (GCClosure*) closure;\n"
             f"  void *data1, *data2;\n"
+        )
+
+        if ret_arg:
+            self.outfile.write(
+                f"  {ret_arg.ctype_in}v_return;\n"
+                "\n"
+                "  g_return_if_fail (return_value != NULL);"
+            )
+
+        self.outfile.write(
             "\n"
             f"  g_return_if_fail (n_param_values == {len(in_args) + 1});\n"
             "\n"
@@ -2570,29 +2580,47 @@ class CodeGenerator:
             f"  callback = ({marshal_func_type})\n"
             "    (marshal_data ? marshal_data : cc->callback);\n"
             "\n"
-            "  callback (data1,\n"
+        )
+
+        prefix = ""
+        if ret_arg:
+            self.outfile.write("  v_return =\n")
+            prefix = 2 * " "
+
+        self.outfile.write(
+            f"{prefix}  callback (data1,\n"
             + "".join(
                 [
-                    f"            {in_args[i].gvalue_get} (param_values + {i+1}),\n"
+                    f"{prefix}            {in_args[i].gvalue_get} (param_values + {i+1}),\n"
                     for i in range(len(in_args))
                 ]
             )
-            + "            data2);\n"
+            + f"{prefix}            data2);\n"
         )
 
+        if ret_arg:
+            self.outfile.write(
+                "\n" f"  {ret_arg.gvalue_set} (return_value, v_return);\n"
+            )
+
     def generate_marshaller_for_type(self, i, t):
-        assert isinstance(t, dbustypes.Signal)
+        assert isinstance(t, (dbustypes.Signal, dbustypes.Method))
 
         kind_uscore = utils.camel_case_to_uscore(t.__class__.__name__.lower())
 
         self.generate_marshaller(
             func_name=f"{i.name_lower}_{kind_uscore}_marshal_{t.name_lower}",
-            in_args=t.args,
+            in_args=t.marshaller_in_args,
+            ret_arg=t.marshaller_ret_arg,
         )
 
     def generate_signal_marshallers(self, i):
         for s in i.signals:
             self.generate_marshaller_for_type(i, s)
+
+    def generate_method_marshallers(self, i):
+        for m in i.methods:
+            self.generate_marshaller_for_type(i, m)
 
     # ---------------------------------------------------------------------------------------------------
 
@@ -5321,6 +5349,7 @@ class CodeGenerator:
             self.generate_signals_enum_for_interface(i)
             self.generate_introspection_for_interface(i)
             self.generate_signal_marshallers(i)
+            self.generate_method_marshallers(i)
             self.generate_interface(i)
             self.generate_property_accessors(i)
             self.generate_signal_emitters(i)
