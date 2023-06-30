@@ -60,6 +60,27 @@ class TestCodegen(unittest.TestCase):
     # Track the cwd, we want to back out to that to clean up our tempdir
     cwd = ""
 
+    ARGUMENTS_TYPES = {
+        "b": {},
+        "y": {},
+        "n": {},
+        "q": {},
+        "i": {},
+        "u": {},
+        "x": {},
+        "t": {},
+        "d": {},
+        "s": {},
+        "o": {},
+        "g": {},
+        "h": {},
+        "ay": {},
+        "as": {},
+        "ao": {},
+        "aay": {},
+        "asv": {"variant_type": "a{sv}"},
+    }
+
     def setUp(self):
         self.timeout_seconds = 6  # seconds per test
         self.tmpdir = tempfile.TemporaryDirectory()
@@ -664,6 +685,117 @@ G_END_DECLS
         self.assertEqual("", result.err)
         self.assertEqual(result.out.strip().count("GDBusCallFlags call_flags,"), 2)
         self.assertEqual(result.out.strip().count("gint timeout_msec,"), 2)
+
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
+    def test_generate_signal_id_simple_signal(self):
+        """Test that signals IDs are used to emit signals"""
+        interface_xml = """
+            <node>
+              <interface name="org.project.UsefulInterface">
+                <signal name="SimpleSignal"/>
+              </interface>
+              <interface name="org.project.OtherIface">
+                <signal name="SimpleSignal"/>
+              </interface>
+            </node>"""
+
+        result = self.runCodegenWithInterface(
+            interface_xml, "--output", "/dev/stdout", "--body"
+        )
+        stripped_out = result.out.strip()
+        self.assertFalse(result.err)
+        self.assertIs(stripped_out.count("g_signal_emit_by_name ("), 0)
+
+        for iface in ["USEFUL_INTERFACE", "OTHER_IFACE"]:
+            enum_name = f"_ORG_PROJECT_{iface}_SIGNALS"
+            enum_item = f"_ORG_PROJECT_{iface}_SIMPLE_SIGNAL"
+            self.assertIs(stripped_out.count(f"{enum_item},"), 1)
+            self.assertIs(stripped_out.count(f"{enum_name}[{enum_item}] ="), 1)
+            self.assertIs(
+                stripped_out.count(
+                    f" g_signal_emit (object, {enum_name}[{enum_item}], 0);"
+                ),
+                1,
+            )
+
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
+    def test_generate_signal_id_multiple_signals_types(self):
+        """Test that signals IDs are used to emit signals for all types"""
+
+        signal_template = "<signal name='{}'><arg name='{}' type='{}'/></signal>"
+        generated_signals = [
+            signal_template.format(
+                f"SingleArgSignal{t.upper()}", f"an_{t}", props.get("variant_type", t)
+            )
+            for t, props in self.ARGUMENTS_TYPES.items()
+        ]
+
+        interface_xml = f"""
+            <node>
+              <interface name="org.project.SignalingIface">
+                <signal name="NoArgSignal" />
+                {''.join(generated_signals)}
+              </interface>
+            </node>"""
+
+        result = self.runCodegenWithInterface(
+            interface_xml, "--output", "/dev/stdout", "--body"
+        )
+        stripped_out = result.out.strip()
+        self.assertFalse(result.err)
+        self.assertIs(stripped_out.count("g_signal_emit_by_name ("), 0)
+
+        iface = "SIGNALING_IFACE"
+        for t in self.ARGUMENTS_TYPES.keys():
+            enum_name = f"_ORG_PROJECT_{iface}_SIGNALS"
+            enum_item = f"_ORG_PROJECT_{iface}_SINGLE_ARG_SIGNAL_{t.upper()}"
+            self.assertIs(stripped_out.count(f"{enum_item},"), 1)
+            self.assertIs(stripped_out.count(f"{enum_name}[{enum_item}] ="), 1)
+            self.assertIs(
+                stripped_out.count(
+                    f" g_signal_emit (object, {enum_name}[{enum_item}], 0, arg_an_{t});"
+                ),
+                1,
+            )
+
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
+    def test_generate_signal_id_multiple_signal_args_types(self):
+        """Test that signals IDs are used to emit signals for all types"""
+
+        generated_args = [
+            f"<arg name='an_{t}' type='{props.get('variant_type', t)}'/>\n"
+            for t, props in self.ARGUMENTS_TYPES.items()
+        ]
+
+        interface_xml = f"""
+            <node>
+              <interface name="org.project.SignalingIface">
+                <signal name="SignalWithManyArgs">
+                    {''.join(generated_args)}
+                </signal>
+              </interface>
+            </node>"""
+
+        result = self.runCodegenWithInterface(
+            interface_xml, "--output", "/dev/stdout", "--body"
+        )
+        stripped_out = result.out.strip()
+        self.assertFalse(result.err)
+        self.assertIs(stripped_out.count("g_signal_emit_by_name ("), 0)
+
+        iface = "SIGNALING_IFACE"
+        enum_name = f"_ORG_PROJECT_{iface}_SIGNALS"
+        enum_item = f"_ORG_PROJECT_{iface}_SIGNAL_WITH_MANY_ARGS"
+        self.assertIs(stripped_out.count(f"{enum_item},"), 1)
+        self.assertIs(stripped_out.count(f"{enum_name}[{enum_item}] ="), 1)
+
+        args = ", ".join([f"arg_an_{t}" for t in self.ARGUMENTS_TYPES.keys()])
+        self.assertIs(
+            stripped_out.count(
+                f" g_signal_emit (object, {enum_name}[{enum_item}], 0, {args});"
+            ),
+            1,
+        )
 
     def test_generate_valid_docbook(self):
         """Test the basic functionality of the docbook generator."""
