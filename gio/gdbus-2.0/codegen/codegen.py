@@ -1138,7 +1138,7 @@ class InterfaceInfoBodyCodeGenerator:
             "const %s * const %s[] =\n" % (element_type, array_name_lower)
         )
         self.outfile.write("{\n")
-        for (_, name) in elements:
+        for _, name in elements:
             self.outfile.write("  &%s,\n" % name)
         self.outfile.write("  NULL,\n")
         self.outfile.write("};\n")
@@ -2397,7 +2397,6 @@ class CodeGenerator:
             self.outfile.write("}\n")
             self.outfile.write("\n")
             if p.arg.free_func is not None:
-
                 self.outfile.write(
                     self.docbook_gen.expand(
                         "/**\n"

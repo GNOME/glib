@@ -119,7 +119,7 @@ def apply_annotation(iface_list, iface, method, signal, prop, arg, key, value):
 
 def apply_annotations(iface_list, annotation_list):
     # apply annotations given on the command line
-    for (what, key, value) in annotation_list:
+    for what, key, value in annotation_list:
         pos = what.find("::")
         if pos != -1:
             # signal
