@@ -83,7 +83,7 @@ class Arg:
         self.format_in = "@" + self.signature
         self.format_out = "@" + self.signature
         self.gvariant_get = "XXX"
-        self.gvalue_get = "g_value_get_variant"
+        self.gvalue_get = "g_marshal_value_peek_variant"
         self.gvalue_set = "g_value_take_variant"
         self.array_annotation = ""
 
@@ -100,7 +100,7 @@ class Arg:
                 self.format_in = "b"
                 self.format_out = "b"
                 self.gvariant_get = "g_variant_get_boolean"
-                self.gvalue_get = "g_value_get_boolean"
+                self.gvalue_get = "g_marshal_value_peek_boolean"
                 self.gvalue_set = "g_value_set_boolean"
             elif self.signature == "y":
                 self.ctype_in_g = "guchar "
@@ -112,7 +112,7 @@ class Arg:
                 self.format_in = "y"
                 self.format_out = "y"
                 self.gvariant_get = "g_variant_get_byte"
-                self.gvalue_get = "g_value_get_uchar"
+                self.gvalue_get = "g_marshal_value_peek_uchar"
                 self.gvalue_set = "g_value_set_uchar"
             elif self.signature == "n":
                 self.ctype_in_g = "gint "
@@ -124,7 +124,7 @@ class Arg:
                 self.format_in = "n"
                 self.format_out = "n"
                 self.gvariant_get = "g_variant_get_int16"
-                self.gvalue_get = "g_value_get_int"
+                self.gvalue_get = "g_marshal_value_peek_int"
                 self.gvalue_set = "g_value_set_int"
             elif self.signature == "q":
                 self.ctype_in_g = "guint "
@@ -136,7 +136,7 @@ class Arg:
                 self.format_in = "q"
                 self.format_out = "q"
                 self.gvariant_get = "g_variant_get_uint16"
-                self.gvalue_get = "g_value_get_uint"
+                self.gvalue_get = "g_marshal_value_peek_uint"
                 self.gvalue_set = "g_value_set_uint"
             elif self.signature == "i":
                 self.ctype_in_g = "gint "
@@ -148,7 +148,7 @@ class Arg:
                 self.format_in = "i"
                 self.format_out = "i"
                 self.gvariant_get = "g_variant_get_int32"
-                self.gvalue_get = "g_value_get_int"
+                self.gvalue_get = "g_marshal_value_peek_int"
                 self.gvalue_set = "g_value_set_int"
             elif self.signature == "u":
                 self.ctype_in_g = "guint "
@@ -160,7 +160,7 @@ class Arg:
                 self.format_in = "u"
                 self.format_out = "u"
                 self.gvariant_get = "g_variant_get_uint32"
-                self.gvalue_get = "g_value_get_uint"
+                self.gvalue_get = "g_marshal_value_peek_uint"
                 self.gvalue_set = "g_value_set_uint"
             elif self.signature == "x":
                 self.ctype_in_g = "gint64 "
@@ -172,7 +172,7 @@ class Arg:
                 self.format_in = "x"
                 self.format_out = "x"
                 self.gvariant_get = "g_variant_get_int64"
-                self.gvalue_get = "g_value_get_int64"
+                self.gvalue_get = "g_marshal_value_peek_int64"
                 self.gvalue_set = "g_value_set_int64"
             elif self.signature == "t":
                 self.ctype_in_g = "guint64 "
@@ -184,7 +184,7 @@ class Arg:
                 self.format_in = "t"
                 self.format_out = "t"
                 self.gvariant_get = "g_variant_get_uint64"
-                self.gvalue_get = "g_value_get_uint64"
+                self.gvalue_get = "g_marshal_value_peek_uint64"
                 self.gvalue_set = "g_value_set_uint64"
             elif self.signature == "d":
                 self.ctype_in_g = "gdouble "
@@ -196,7 +196,7 @@ class Arg:
                 self.format_in = "d"
                 self.format_out = "d"
                 self.gvariant_get = "g_variant_get_double"
-                self.gvalue_get = "g_value_get_double"
+                self.gvalue_get = "g_marshal_value_peek_double"
                 self.gvalue_set = "g_value_set_double"
             elif self.signature == "s":
                 self.ctype_in_g = "const gchar *"
@@ -209,7 +209,7 @@ class Arg:
                 self.format_in = "s"
                 self.format_out = "s"
                 self.gvariant_get = "g_variant_get_string"
-                self.gvalue_get = "g_value_get_string"
+                self.gvalue_get = "g_marshal_value_peek_string"
                 self.gvalue_set = "g_value_set_string"
             elif self.signature == "o":
                 self.ctype_in_g = "const gchar *"
@@ -222,7 +222,7 @@ class Arg:
                 self.format_in = "o"
                 self.format_out = "o"
                 self.gvariant_get = "g_variant_get_string"
-                self.gvalue_get = "g_value_get_string"
+                self.gvalue_get = "g_marshal_value_peek_string"
                 self.gvalue_set = "g_value_set_string"
             elif self.signature == "g":
                 self.ctype_in_g = "const gchar *"
@@ -235,7 +235,7 @@ class Arg:
                 self.format_in = "g"
                 self.format_out = "g"
                 self.gvariant_get = "g_variant_get_string"
-                self.gvalue_get = "g_value_get_string"
+                self.gvalue_get = "g_marshal_value_peek_string"
                 self.gvalue_set = "g_value_set_string"
             elif self.signature == "ay":
                 self.ctype_in_g = "const gchar *"
@@ -248,7 +248,7 @@ class Arg:
                 self.format_in = "^ay"
                 self.format_out = "^ay"
                 self.gvariant_get = "g_variant_get_bytestring"
-                self.gvalue_get = "g_value_get_string"
+                self.gvalue_get = "g_marshal_value_peek_string"
                 self.gvalue_set = "g_value_set_string"
             elif self.signature == "as":
                 self.ctype_in_g = "const gchar *const *"
@@ -261,7 +261,7 @@ class Arg:
                 self.format_in = "^as"
                 self.format_out = "^as"
                 self.gvariant_get = "g_variant_get_strv"
-                self.gvalue_get = "g_value_get_boxed"
+                self.gvalue_get = "g_marshal_value_peek_boxed"
                 self.gvalue_set = "g_value_take_boxed"
                 self.array_annotation = "(array zero-terminated=1)"
             elif self.signature == "ao":
@@ -275,7 +275,7 @@ class Arg:
                 self.format_in = "^ao"
                 self.format_out = "^ao"
                 self.gvariant_get = "g_variant_get_objv"
-                self.gvalue_get = "g_value_get_boxed"
+                self.gvalue_get = "g_marshal_value_peek_boxed"
                 self.gvalue_set = "g_value_take_boxed"
                 self.array_annotation = "(array zero-terminated=1)"
             elif self.signature == "aay":
@@ -289,7 +289,7 @@ class Arg:
                 self.format_in = "^aay"
                 self.format_out = "^aay"
                 self.gvariant_get = "g_variant_get_bytestring_array"
-                self.gvalue_get = "g_value_get_boxed"
+                self.gvalue_get = "g_marshal_value_peek_boxed"
                 self.gvalue_set = "g_value_take_boxed"
                 self.array_annotation = "(array zero-terminated=1)"
 
@@ -358,13 +358,13 @@ class Method:
 
         method_invocation_arg = Arg("method_invocation", None)
         method_invocation_arg.ctype_in = "GDBusMethodInvocation *"
-        method_invocation_arg.gvalue_get = "g_value_get_object"
+        method_invocation_arg.gvalue_get = "g_marshal_value_peek_object"
         self.marshaller_in_args = [method_invocation_arg] + self.in_args
 
         if self.unix_fd:
             fd_list_arg = Arg("fd_list", None)
             fd_list_arg.ctype_in = "GUnixFDList *"
-            fd_list_arg.gvalue_get = "g_value_get_object"
+            fd_list_arg.gvalue_get = "g_marshal_value_peek_object"
             self.marshaller_in_args.insert(0, fd_list_arg)
 
         for a in self.annotations:
