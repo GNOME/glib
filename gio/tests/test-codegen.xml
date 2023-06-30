@@ -475,7 +475,7 @@
   </interface>
   <unknownTag/>
 
-  <interface name="FDPassing">
+  <interface name="test.FDPassing">
     <method name="HelloFD">
       <annotation name="org.gtk.GDBus.C.UnixFD" value="1"/>
       <arg name="greeting" direction="in" type="s"/>

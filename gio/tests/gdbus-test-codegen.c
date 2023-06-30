@@ -2650,53 +2650,53 @@ test_standalone_interface_info (void)
 
 /* ---------------------------------------------------------------------------------------------------- */
 static gboolean
-handle_hello_fd (FooiGenFDPassing *object,
+handle_hello_fd (FooiGenTestFDPassing *object,
                  GDBusMethodInvocation *invocation,
                  GUnixFDList *fd_list,
                  const gchar *arg_greeting)
 {
-  foo_igen_fdpassing_complete_hello_fd (object, invocation, fd_list, arg_greeting);
+  foo_igen_test_fdpassing_complete_hello_fd (object, invocation, fd_list, arg_greeting);
   return G_DBUS_METHOD_INVOCATION_HANDLED;
 }
 
 #if GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_64
 static gboolean
-handle_no_annotation (FooiGenFDPassing *object,
+handle_no_annotation (FooiGenTestFDPassing *object,
                       GDBusMethodInvocation *invocation,
                       GUnixFDList *fd_list,
                       GVariant *arg_greeting,
                       const gchar *arg_greeting_locale)
 {
-  foo_igen_fdpassing_complete_no_annotation (object, invocation, fd_list, arg_greeting, arg_greeting_locale);
+  foo_igen_test_fdpassing_complete_no_annotation (object, invocation, fd_list, arg_greeting, arg_greeting_locale);
   return G_DBUS_METHOD_INVOCATION_HANDLED;
 }
 
 static gboolean
-handle_no_annotation_nested (FooiGenFDPassing *object,
+handle_no_annotation_nested (FooiGenTestFDPassing *object,
                              GDBusMethodInvocation *invocation,
                              GUnixFDList *fd_list,
                              GVariant *arg_files)
 {
-  foo_igen_fdpassing_complete_no_annotation_nested (object, invocation, fd_list);
+  foo_igen_test_fdpassing_complete_no_annotation_nested (object, invocation, fd_list);
   return G_DBUS_METHOD_INVOCATION_HANDLED;
 }
 #else
 static gboolean
-handle_no_annotation (FooiGenFDPassing *object,
+handle_no_annotation (FooiGenTestFDPassing *object,
                       GDBusMethodInvocation *invocation,
                       GVariant *arg_greeting,
                       const gchar *arg_greeting_locale)
 {
-  foo_igen_fdpassing_complete_no_annotation (object, invocation, arg_greeting, arg_greeting_locale);
+  foo_igen_test_fdpassing_complete_no_annotation (object, invocation, arg_greeting, arg_greeting_locale);
   return G_DBUS_METHOD_INVOCATION_HANDLED;
 }
 
 static gboolean
-handle_no_annotation_nested (FooiGenFDPassing *object,
+handle_no_annotation_nested (FooiGenTestFDPassing *object,
                              GDBusMethodInvocation *invocation,
                              GVariant *arg_files)
 {
-  foo_igen_fdpassing_complete_no_annotation_nested (object, invocation);
+  foo_igen_test_fdpassing_complete_no_annotation_nested (object, invocation);
   return G_DBUS_METHOD_INVOCATION_HANDLED;
 }
 #endif
@@ -2709,7 +2709,7 @@ handle_no_annotation_nested (FooiGenFDPassing *object,
 static void
 test_unix_fd_list (void)
 {
-  FooiGenFDPassingIface iface;
+  FooiGenTestFDPassingIface iface;
 
   g_test_bug ("https://gitlab.gnome.org/GNOME/glib/issues/1726");
 
