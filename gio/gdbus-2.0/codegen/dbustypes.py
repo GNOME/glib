@@ -369,7 +369,11 @@ class Signal:
             if overridden_name:
                 name = overridden_name
             self.name_lower = utils.camel_case_to_uscore(name).lower().replace("-", "_")
+        self.name_upper = self.name_lower.upper()
         self.name_hyphen = self.name_lower.replace("_", "-")
+        self.upper_id_name = "_".join(
+            [cns_upper, containing_iface.name_upper, self.name_upper]
+        )
 
         arg_count = 0
         for a in self.args:
@@ -540,3 +544,6 @@ class Interface:
 
         for a in self.annotations:
             a.post_process(interface_prefix, cns, cns_upper, cns_lower, self)
+
+        if self.signals:
+            self.signals_enum_name = "_".join([cns_upper, self.name_upper, "SIGNALS"])

@@ -1728,6 +1728,22 @@ class CodeGenerator:
                 self.outfile.write("  &%s_%s.parent_struct,\n" % (prefix, a.name))
             self.outfile.write("  NULL\n" "};\n" "\n")
 
+    def generate_signals_enum_for_interface(self, i):
+        if not i.signals:
+            return
+
+        self.outfile.write("enum\n{\n")
+        for s in i.signals:
+            self.outfile.write(f"  {s.upper_id_name},\n")
+        self.outfile.write("};\n" "\n")
+
+        self.outfile.write(
+            "static unsigned "
+            f"{i.signals_enum_name}[{len(i.signals)}] = {{ 0 }};"
+            "\n"
+            "\n"
+        )
+
     def generate_introspection_for_interface(self, i):
         self.outfile.write(
             "/* ---- Introspection data for %s ---- */\n" "\n" % (i.name)
@@ -2164,15 +2180,17 @@ class CodeGenerator:
                 )
                 self.write_gtkdoc_deprecated_and_since_and_close(s, self.outfile, 2)
                 self.outfile.write(
-                    '  g_signal_new ("%s",\n'
-                    "    G_TYPE_FROM_INTERFACE (iface),\n"
-                    "    G_SIGNAL_RUN_LAST,\n"
-                    "    G_STRUCT_OFFSET (%sIface, %s),\n"
-                    "    NULL,\n"  # accumulator
-                    "    NULL,\n"  # accu_data
-                    "    g_cclosure_marshal_generic,\n"
-                    "    G_TYPE_NONE,\n"
-                    "    %d" % (s.name_hyphen, i.camel_name, s.name_lower, len(s.args))
+                    f"  {i.signals_enum_name}[{s.upper_id_name}] =\n"
+                    '    g_signal_new ("%s",\n'
+                    "      G_TYPE_FROM_INTERFACE (iface),\n"
+                    "      G_SIGNAL_RUN_LAST,\n"
+                    "      G_STRUCT_OFFSET (%sIface, %s),\n"
+                    "      NULL,\n"  # accumulator
+                    "      NULL,\n"  # accu_data
+                    "      g_cclosure_marshal_generic,\n"
+                    "      G_TYPE_NONE,\n"
+                    "      %d"
+                    % (s.name_hyphen, i.camel_name, s.name_lower, len(s.args))
                 )
                 for a in s.args:
                     self.outfile.write(", %s" % (a.gtype))
@@ -2496,7 +2514,10 @@ class CodeGenerator:
             for a in s.args:
                 self.outfile.write(",\n    %sarg_%s" % (a.ctype_in, a.name))
             self.outfile.write(
-                ")\n" "{\n" '  g_signal_emit_by_name (object, "%s"' % (s.name_hyphen)
+                ")\n"
+                "{\n"
+                "  g_signal_emit (object, "
+                f"{i.signals_enum_name}[{s.upper_id_name}], 0"
             )
             for a in s.args:
                 self.outfile.write(", arg_%s" % a.name)
@@ -5227,6 +5248,7 @@ class CodeGenerator:
         self.generate_body_preamble()
         for i in self.ifaces:
             self.generate_interface_intro(i)
+            self.generate_signals_enum_for_interface(i)
             self.generate_introspection_for_interface(i)
             self.generate_interface(i)
             self.generate_property_accessors(i)
