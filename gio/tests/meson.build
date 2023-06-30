@@ -172,7 +172,8 @@ python_tests = {
   # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/2764
   'codegen.py' : {
     'can_fail' : host_system == 'freebsd',
-    'suite': ['gdbus-codegen'],
+    'suite': ['gdbus-codegen', 'slow'],
+    'timeout': 90,
   },
 }
 
@@ -1068,6 +1069,7 @@ foreach test_name, extra_args : python_tests
     depends: depends,
     args: ['-B', files(test_name)],
     env: test_env,
+    timeout: extra_args.get('timeout'),
     suite: suite,
   )
 
