@@ -114,6 +114,10 @@ def camel_case_to_uscore(s):
     return ret
 
 
+def uscore_to_camel_case(s):
+    return "".join([s[0].upper() + s[1:].lower() if s else "_" for s in s.split("_")])
+
+
 def is_ugly_case(s):
     if s and s.find("_") > 0:
         return True

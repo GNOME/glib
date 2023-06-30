@@ -61,24 +61,24 @@ class TestCodegen(unittest.TestCase):
     cwd = ""
 
     ARGUMENTS_TYPES = {
-        "b": {},
-        "y": {},
-        "n": {},
-        "q": {},
-        "i": {},
-        "u": {},
-        "x": {},
-        "t": {},
-        "d": {},
-        "s": {},
-        "o": {},
-        "g": {},
-        "h": {},
-        "ay": {},
-        "as": {},
-        "ao": {},
-        "aay": {},
-        "asv": {"variant_type": "a{sv}"},
+        "b": {"value_type": "boolean"},
+        "y": {"value_type": "uchar"},
+        "n": {"value_type": "int"},
+        "q": {"value_type": "uint"},
+        "i": {"value_type": "int"},
+        "u": {"value_type": "uint"},
+        "x": {"value_type": "int64"},
+        "t": {"value_type": "uint64"},
+        "d": {"value_type": "double"},
+        "s": {"value_type": "string"},
+        "o": {"value_type": "string"},
+        "g": {"value_type": "string"},
+        "h": {"value_type": "variant"},
+        "ay": {"value_type": "string"},
+        "as": {"value_type": "boxed"},
+        "ao": {"value_type": "boxed"},
+        "aay": {"value_type": "boxed"},
+        "asv": {"value_type": "variant", "variant_type": "a{sv}"},
     }
 
     def setUp(self):
@@ -796,6 +796,112 @@ G_END_DECLS
             ),
             1,
         )
+
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
+    def test_generate_signals_marshaller_simple_signal(self):
+        """Test that signals marshaller is generated for simple signal"""
+        interface_xml = """
+            <node>
+              <interface name="org.project.SignalingIface">
+                <signal name="SimpleSignal"/>
+              </interface>
+              <interface name="org.project.OtherSignalingIface">
+                <signal name="SimpleSignal"/>
+              </interface>
+            </node>"""
+
+        result = self.runCodegenWithInterface(
+            interface_xml, "--output", "/dev/stdout", "--body"
+        )
+        stripped_out = result.out.strip()
+        self.assertFalse(result.err)
+        self.assertIs(stripped_out.count("g_cclosure_marshal_generic"), 0)
+
+        func_name = "org_project_signaling_iface_signal_marshal_simple_signal"
+        self.assertIs(stripped_out.count(f"{func_name},"), 1)
+        self.assertIs(stripped_out.count(f"{func_name} ("), 1)
+
+        func_name = "org_project_other_signaling_iface_signal_marshal_simple_signal"
+        self.assertIs(stripped_out.count(f"{func_name},"), 1)
+        self.assertIs(stripped_out.count(f"{func_name} ("), 1)
+
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
+    def test_generate_signals_marshaller_single_typed_args(self):
+        """Test that signals marshaller is generated for each known type"""
+        for t, props in self.ARGUMENTS_TYPES.items():
+            camel_type = t[0].upper() + t[1:]
+            interface_xml = f"""
+            <node>
+            <interface name="org.project.SignalingIface">
+                <signal name="SimpleSignal"/>
+                <signal name="SingleArgSignal{camel_type}">
+                    <arg name="arg_{t}" type="{props.get("variant_type", t)}"/>
+                </signal>
+            </interface>
+            </node>"""
+
+            result = self.runCodegenWithInterface(
+                interface_xml, "--output", "/dev/stdout", "--body"
+            )
+            stripped_out = result.out.strip()
+            self.assertFalse(result.err)
+            self.assertEqual(stripped_out.count("g_cclosure_marshal_generic"), 0)
+
+            func_name = (
+                f"org_project_signaling_iface_signal_marshal_single_arg_signal_{t}"
+            )
+            self.assertIs(stripped_out.count(f"{func_name},"), 1)
+            self.assertIs(stripped_out.count(f"{func_name} ("), 1)
+            self.assertIs(
+                stripped_out.count(
+                    f"g_value_get_{props['value_type']} (param_values + 1)"
+                ),
+                1,
+            )
+
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
+    def test_generate_signals_marshallers_multiple_args(self):
+        """Test that signals marshallers are generated"""
+        generated_args = [
+            f"<arg name='an_{t}' type='{props.get('variant_type', t)}'/>\n"
+            for t, props in self.ARGUMENTS_TYPES.items()
+        ]
+
+        interface_xml = f"""
+            <node>
+              <interface name="org.project.SignalingIface">
+                <signal name="SimpleSignal"/>
+                <signal name="SignalWithManyArgs">
+                    {''.join(generated_args)}
+                </signal>
+              </interface>
+            </node>"""
+
+        result = self.runCodegenWithInterface(
+            interface_xml, "--output", "/dev/stdout", "--body"
+        )
+        stripped_out = result.out.strip()
+        self.assertFalse(result.err)
+        self.assertIs(stripped_out.count("g_cclosure_marshal_generic"), 0)
+
+        func_name = f"org_project_signaling_iface_signal_marshal_simple_signal"
+        self.assertIs(stripped_out.count(f"{func_name},"), 1)
+        self.assertIs(stripped_out.count(f"{func_name} ("), 1)
+
+        func_name = f"org_project_signaling_iface_signal_marshal_signal_with_many_args"
+        self.assertIs(stripped_out.count(f"{func_name},"), 1)
+        self.assertIs(stripped_out.count(f"{func_name} ("), 1)
+
+        # Check access to MultipleArgsSignal arguments
+        index = 1
+        for props in self.ARGUMENTS_TYPES.values():
+            self.assertIs(
+                stripped_out.count(
+                    f"g_value_get_{props['value_type']} (param_values + {index})"
+                ),
+                1,
+            )
+            index += 1
 
     def test_generate_valid_docbook(self):
         """Test the basic functionality of the docbook generator."""

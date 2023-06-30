@@ -2187,7 +2187,7 @@ class CodeGenerator:
                     "      G_STRUCT_OFFSET (%sIface, %s),\n"
                     "      NULL,\n"  # accumulator
                     "      NULL,\n"  # accu_data
-                    "      g_cclosure_marshal_generic,\n"
+                    f"      {i.name_lower}_signal_marshal_{s.name_lower},\n"
                     "      G_TYPE_NONE,\n"
                     "      %d"
                     % (s.name_hyphen, i.camel_name, s.name_lower, len(s.args))
@@ -2522,6 +2522,77 @@ class CodeGenerator:
                 self.outfile.write(", arg_%s" % a.name)
             self.outfile.write(");\n")
             self.outfile.write("}\n" "\n")
+
+    # ---------------------------------------------------------------------------------------------------
+
+    def generate_marshaller(self, func_name, in_args):
+        self.generate_marshaller_declaration(func_name)
+        self.outfile.write("{\n")
+        self.generate_marshaller_body(func_name, in_args)
+        self.outfile.write("}\n" "\n")
+
+    def generate_marshaller_declaration(self, func_name):
+        self.outfile.write(
+            "static void\n"
+            f"{func_name} (\n"
+            "    GClosure     *closure,\n"
+            "    GValue       *return_value G_GNUC_UNUSED,\n"
+            "    unsigned int  n_param_values,\n"
+            "    const GValue *param_values,\n"
+            "    void         *invocation_hint G_GNUC_UNUSED,\n"
+            "    void         *marshal_data)\n"
+        )
+
+    def generate_marshaller_body(self, func_name, in_args=[]):
+        marshal_func_type = f"{utils.uscore_to_camel_case(func_name)}Func"
+        self.outfile.write(
+            f"  typedef void (*{marshal_func_type})\n"
+            "       (void *data1,\n"
+            + "".join([f"        {a.ctype_in}arg_{a.name},\n" for a in in_args])
+            + "        void *data2);\n"
+            f"  {marshal_func_type} callback;\n"
+            "  GCClosure *cc = (GCClosure*) closure;\n"
+            f"  void *data1, *data2;\n"
+            "\n"
+            f"  g_return_if_fail (n_param_values == {len(in_args) + 1});\n"
+            "\n"
+            "  if (G_CCLOSURE_SWAP_DATA (closure))\n"
+            "    {\n"
+            "      data1 = closure->data;\n"
+            "      data2 = g_value_peek_pointer (param_values + 0);\n"
+            "    }\n"
+            "  else\n"
+            "    {\n"
+            "      data1 = g_value_peek_pointer (param_values + 0);\n"
+            "      data2 = closure->data;\n"
+            "    }\n"
+            "\n"
+            f"  callback = ({marshal_func_type})\n"
+            "    (marshal_data ? marshal_data : cc->callback);\n"
+            "\n"
+            "  callback (data1,\n"
+            + "".join(
+                [
+                    f"            {in_args[i].gvalue_get} (param_values + {i+1}),\n"
+                    for i in range(len(in_args))
+                ]
+            )
+            + "            data2);\n"
+        )
+
+    def generate_marshaller_for_type(self, i, t):
+        assert isinstance(t, dbustypes.Signal)
+
+        kind_uscore = utils.camel_case_to_uscore(t.__class__.__name__.lower())
+
+        self.generate_marshaller(
+            func_name=f"{i.name_lower}_{kind_uscore}_marshal_{t.name_lower}",
+            in_args=t.args,
+        )
+
+    def generate_signal_marshallers(self, i):
+        for s in i.signals:
+            self.generate_marshaller_for_type(i, s)
 
     # ---------------------------------------------------------------------------------------------------
 
@@ -5249,6 +5320,7 @@ class CodeGenerator:
             self.generate_interface_intro(i)
             self.generate_signals_enum_for_interface(i)
             self.generate_introspection_for_interface(i)
+            self.generate_signal_marshallers(i)
             self.generate_interface(i)
             self.generate_property_accessors(i)
             self.generate_signal_emitters(i)
