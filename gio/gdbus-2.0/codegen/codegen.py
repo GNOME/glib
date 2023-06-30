@@ -1462,6 +1462,7 @@ class CodeGenerator:
         self.glib_min_required = glib_min_required
         self.symbol_decoration_define = symbol_decoration_define
         self.outfile = outfile
+        self.marshallers = set()
 
     # ----------------------------------------------------------------------------------------------------
 
@@ -2669,25 +2670,53 @@ class CodeGenerator:
                 "\n" f"  {ret_arg.gvalue_set} (return_value, v_return);\n"
             )
 
+    def generic_marshaller_name(self, args=[], ret=None):
+        name = "_g_dbus_codegen_marshal_"
+        name += f"{ret.gvalue_type.upper() if ret else 'VOID'}__"
+        if args:
+            name += "_".join(f"{a.gvalue_type.upper()}" for a in args)
+        else:
+            name += "VOID"
+        return name
+
+    def generic_marshaller_name_for_type(self, t):
+        assert isinstance(t, (dbustypes.Signal, dbustypes.Method))
+
+        if not t.marshaller_ret_arg:
+            if not t.marshaller_in_args:
+                return "g_cclosure_marshal_VOID__VOID"
+            elif (
+                len(t.marshaller_in_args) == 1
+                and t.marshaller_in_args[0].gclosure_marshaller
+            ):
+                return t.marshaller_in_args[0].gclosure_marshaller
+
+        return self.generic_marshaller_name(t.marshaller_in_args, t.marshaller_ret_arg)
+
+    def generate_generic_marshallers(self, i):
+        for t in i.signals + i.methods:
+            marshaller_name = self.generic_marshaller_name_for_type(t)
+            if marshaller_name.startswith("g_cclosure_"):
+                self.marshallers.add(marshaller_name)
+                continue
+
+            if marshaller_name in self.marshallers:
+                continue
+
+            self.generate_marshaller(
+                marshaller_name, t.marshaller_in_args, t.marshaller_ret_arg
+            )
+            self.marshallers.add(marshaller_name)
+
     def generate_marshaller_for_type(self, i, t):
         assert isinstance(t, (dbustypes.Signal, dbustypes.Method))
 
         kind_uscore = utils.camel_case_to_uscore(t.__class__.__name__.lower())
         func_name = f"{i.name_lower}_{kind_uscore}_marshal_{t.name_lower}"
+        marshaller_name = self.generic_marshaller_name_for_type(t)
+        assert marshaller_name in self.marshallers
 
-        if not t.marshaller_ret_arg:
-            if not t.marshaller_in_args:
-                self.generate_marshaller_wrapper(
-                    func_name, "g_cclosure_marshal_VOID__VOID"
-                )
-                return
-            elif len(t.marshaller_in_args) == 1 and t.args[0].gclosure_marshaller:
-                self.generate_marshaller_wrapper(
-                    func_name, t.args[0].gclosure_marshaller
-                )
-                return
-
-        self.generate_marshaller(func_name, t.marshaller_in_args, t.marshaller_ret_arg)
+        self.generate_marshaller_wrapper(func_name, marshaller_name)
 
     def generate_signal_marshallers(self, i):
         for s in i.signals:
@@ -5419,6 +5448,8 @@ class CodeGenerator:
 
     def generate(self):
         self.generate_body_preamble()
+        for i in self.ifaces:
+            self.generate_generic_marshallers(i)
         for i in self.ifaces:
             self.generate_interface_intro(i)
             self.generate_signals_enum_for_interface(i)

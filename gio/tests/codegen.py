@@ -994,10 +994,20 @@ G_END_DECLS
         self.assertIs(stripped_out.count(f"{func_name} ("), 1)
 
         self.assertIs(
-            stripped_out.count("g_marshal_value_peek_object (param_values + 1)"), 2
+            stripped_out.count("g_marshal_value_peek_object (param_values + 1)"), 1
         )
         self.assertIs(
-            stripped_out.count("g_value_set_boolean (return_value, v_return);"), 2
+            stripped_out.count("g_value_set_boolean (return_value, v_return);"), 1
+        )
+
+        self.assertIs(
+            stripped_out.count(
+                "_g_dbus_codegen_marshal_BOOLEAN__OBJECT (\n    GClosure"
+            ),
+            1,
+        )
+        self.assertIs(
+            stripped_out.count("_g_dbus_codegen_marshal_BOOLEAN__OBJECT (closure"), 2
         )
 
     @unittest.skipIf(on_win32(), "requires /dev/stdout")
@@ -1087,6 +1097,14 @@ G_END_DECLS
                 <method name="MethodWithManyArgs">
                     {''.join(generated_args)}
                 </method>
+                <method name="SameMethodWithManyArgs">
+                    {''.join(generated_args)}
+                </method>
+              </interface>
+              <interface name="org.project.OtherCallableIface">
+                <method name="MethodWithManyArgs">
+                    {''.join(generated_args)}
+                </method>
               </interface>
             </node>"""
 
@@ -1121,6 +1139,18 @@ G_END_DECLS
         self.assertIs(
             stripped_out.count("g_value_set_boolean (return_value, v_return);"), 1
         )
+        func_types = "_".join(
+            [p["value_type"].upper() for p in self.ARGUMENTS_TYPES.values()]
+        )
+        func_name = f"_g_dbus_codegen_marshal_BOOLEAN__OBJECT_{func_types}"
+        self.assertIs(stripped_out.count(f"{func_name} (\n    GClosure"), 1)
+        self.assertIs(stripped_out.count(f"{func_name} (closure"), 3)
+
+        func_name = (
+            f"org_project_other_callable_iface_method_marshal_method_with_many_args"
+        )
+        self.assertIs(stripped_out.count(f"{func_name},"), 1)
+        self.assertIs(stripped_out.count(f"{func_name} ("), 1)
 
     @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_generate_methods_marshallers_multiple_out_args(self):
@@ -1163,6 +1193,11 @@ G_END_DECLS
 
         self.assertIs(
             stripped_out.count("g_value_set_boolean (return_value, v_return);"), 1
+        )
+
+        self.assertIs(
+            stripped_out.count("_g_dbus_codegen_marshal_BOOLEAN__OBJECT (closure"),
+            1,
         )
 
     @unittest.skipIf(on_win32(), "requires /dev/stdout")
