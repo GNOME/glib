@@ -26,6 +26,7 @@
 #include <stdio.h>
 
 #include "gdbus-tests.h"
+#include "gstdio.h"
 
 #if GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_64
 #include "gdbus-test-codegen-generated-min-required-2-64.h"
@@ -410,6 +411,22 @@ on_handle_check_not_authorized_from_object (FooiGenAuthorize       *object,
   return G_DBUS_METHOD_INVOCATION_HANDLED;
 }
 
+static gboolean
+on_handle_fdpassing_hello_fd (FooiGenMethodThreads   *object,
+                              GDBusMethodInvocation  *invocation,
+                              GUnixFDList            *fd_list,
+                              const gchar            *greeting,
+                              gpointer                user_data)
+{
+  g_assert_true (G_IS_UNIX_FD_LIST (fd_list));
+  g_assert_cmpuint (g_unix_fd_list_get_length (fd_list), ==, 2);
+  g_assert_cmpstr (greeting, ==, "Hey fd!");
+  foo_igen_test_fdpassing_complete_hello_fd (FOO_IGEN_TEST_FDPASSING (object),
+                                             invocation, fd_list,
+                                             "I love to receive fds!");
+  return G_DBUS_METHOD_INVOCATION_HANDLED;
+}
+
 /* ---------------------------------------------------------------------------------------------------- */
 
 static gboolean
@@ -430,6 +447,7 @@ static GThread *method_handler_thread = NULL;
 
 static FooiGenBar *exported_bar_object = NULL;
 static FooiGenBat *exported_bat_object = NULL;
+static FooiGenTestFDPassing *exported_fd_passing_object = NULL;
 static FooiGenAuthorize *exported_authorize_object = NULL;
 static GDBusObjectSkeleton *authorize_enclosing_object = NULL;
 static FooiGenMethodThreads *exported_thread_object_1 = NULL;
@@ -443,6 +461,7 @@ unexport_objects (void)
   g_dbus_interface_skeleton_unexport (G_DBUS_INTERFACE_SKELETON (exported_authorize_object));
   g_dbus_interface_skeleton_unexport (G_DBUS_INTERFACE_SKELETON (exported_thread_object_1));
   g_dbus_interface_skeleton_unexport (G_DBUS_INTERFACE_SKELETON (exported_thread_object_2));
+  g_dbus_interface_skeleton_unexport (G_DBUS_INTERFACE_SKELETON (exported_fd_passing_object));
 }
 
 static void
@@ -583,6 +602,17 @@ on_bus_acquired (GDBusConnection *connection,
                     NULL);
 
   g_assert_cmpint (g_dbus_interface_skeleton_get_flags (G_DBUS_INTERFACE_SKELETON (exported_thread_object_2)), ==, G_DBUS_INTERFACE_SKELETON_FLAGS_NONE);
+
+  exported_fd_passing_object = foo_igen_test_fdpassing_skeleton_new ();
+  g_dbus_interface_skeleton_export (G_DBUS_INTERFACE_SKELETON (exported_fd_passing_object),
+                                    connection,
+                                    "/fdpassing",
+                                    &error);
+  g_assert_no_error (error);
+  g_signal_connect (exported_fd_passing_object,
+                    "handle-hello-fd",
+                    G_CALLBACK (on_handle_fdpassing_hello_fd),
+                    NULL);
 
   method_handler_thread = g_thread_self ();
 }
@@ -1125,6 +1155,45 @@ check_bar_proxy (FooiGenBar *proxy,
   g_variant_unref (array_of_signatures);
 }
 
+static void
+check_fdpassing_proxy (FooiGenTestFDPassing *proxy)
+{
+  GError *error = NULL;
+  GUnixFDList *fd_list = g_unix_fd_list_new ();
+  GUnixFDList *ret_fd_list = NULL;
+  char *response = NULL;
+  int fd;
+
+  fd = dup (0);
+  g_assert_cmpint (g_unix_fd_list_append (fd_list, fd, &error), ==, 0);
+  g_assert_no_error (error);
+  g_close (fd, &error);
+  g_assert_no_error (error);
+
+  fd = dup (0);
+  g_assert_cmpint (g_unix_fd_list_append (fd_list, fd, &error), ==, 1);
+  g_assert_no_error (error);
+  g_close (fd, &error);
+  g_assert_no_error (error);
+
+  foo_igen_test_fdpassing_call_hello_fd_sync (proxy, "Hey fd!",
+#if GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_64
+                                              G_DBUS_CALL_FLAGS_NO_AUTO_START, -1,
+#endif
+                                              fd_list,
+                                              &response, &ret_fd_list, NULL,
+                                              &error);
+  g_assert_no_error (error);
+
+  g_assert_true (G_IS_UNIX_FD_LIST (ret_fd_list));
+  g_assert_cmpuint (g_unix_fd_list_get_length (fd_list), ==, 2);
+
+  g_assert_cmpstr (response, ==, "I love to receive fds!");
+  g_clear_pointer (&response, g_free);
+  g_clear_object (&fd_list);
+  g_clear_object (&ret_fd_list);
+}
+
 /* ---------------------------------------------------------------------------------------------------- */
 
 static void
@@ -1309,6 +1378,7 @@ check_proxies_in_thread (gpointer user_data)
   GError *error;
   FooiGenBar *bar_proxy;
   FooiGenBat *bat_proxy;
+  FooiGenTestFDPassing *fd_passing_proxy;
   FooiGenAuthorize *authorize_proxy;
   FooiGenMethodThreads *thread_proxy_1;
   FooiGenMethodThreads *thread_proxy_2;
@@ -1369,6 +1439,16 @@ check_proxies_in_thread (gpointer user_data)
   check_thread_proxies (thread_proxy_1, thread_proxy_2, thread_loop);
   g_object_unref (thread_proxy_1);
   g_object_unref (thread_proxy_2);
+
+   fd_passing_proxy = foo_igen_test_fdpassing_proxy_new_for_bus_sync (G_BUS_TYPE_SESSION,
+                                                                      G_DBUS_PROXY_FLAGS_NONE,
+                                                                      "org.gtk.GDBus.BindingsTool.Test",
+                                                                      "/fdpassing",
+                                                                      NULL, /* GCancellable* */
+                                                                      &error);
+  g_assert_no_error (error);
+  check_fdpassing_proxy (fd_passing_proxy);
+  g_object_unref (fd_passing_proxy);
 
   /* Wait for the proxy signals to all be unsubscribed. */
   while (g_main_context_iteration (thread_context, FALSE))
@@ -2650,53 +2730,53 @@ test_standalone_interface_info (void)
 
 /* ---------------------------------------------------------------------------------------------------- */
 static gboolean
-handle_hello_fd (FooiGenFDPassing *object,
+handle_hello_fd (FooiGenTestFDPassing *object,
                  GDBusMethodInvocation *invocation,
                  GUnixFDList *fd_list,
                  const gchar *arg_greeting)
 {
-  foo_igen_fdpassing_complete_hello_fd (object, invocation, fd_list, arg_greeting);
+  foo_igen_test_fdpassing_complete_hello_fd (object, invocation, fd_list, arg_greeting);
   return G_DBUS_METHOD_INVOCATION_HANDLED;
 }
 
 #if GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_64
 static gboolean
-handle_no_annotation (FooiGenFDPassing *object,
+handle_no_annotation (FooiGenTestFDPassing *object,
                       GDBusMethodInvocation *invocation,
                       GUnixFDList *fd_list,
                       GVariant *arg_greeting,
                       const gchar *arg_greeting_locale)
 {
-  foo_igen_fdpassing_complete_no_annotation (object, invocation, fd_list, arg_greeting, arg_greeting_locale);
+  foo_igen_test_fdpassing_complete_no_annotation (object, invocation, fd_list, arg_greeting, arg_greeting_locale);
   return G_DBUS_METHOD_INVOCATION_HANDLED;
 }
 
 static gboolean
-handle_no_annotation_nested (FooiGenFDPassing *object,
+handle_no_annotation_nested (FooiGenTestFDPassing *object,
                              GDBusMethodInvocation *invocation,
                              GUnixFDList *fd_list,
                              GVariant *arg_files)
 {
-  foo_igen_fdpassing_complete_no_annotation_nested (object, invocation, fd_list);
+  foo_igen_test_fdpassing_complete_no_annotation_nested (object, invocation, fd_list);
   return G_DBUS_METHOD_INVOCATION_HANDLED;
 }
 #else
 static gboolean
-handle_no_annotation (FooiGenFDPassing *object,
+handle_no_annotation (FooiGenTestFDPassing *object,
                       GDBusMethodInvocation *invocation,
                       GVariant *arg_greeting,
                       const gchar *arg_greeting_locale)
 {
-  foo_igen_fdpassing_complete_no_annotation (object, invocation, arg_greeting, arg_greeting_locale);
+  foo_igen_test_fdpassing_complete_no_annotation (object, invocation, arg_greeting, arg_greeting_locale);
   return G_DBUS_METHOD_INVOCATION_HANDLED;
 }
 
 static gboolean
-handle_no_annotation_nested (FooiGenFDPassing *object,
+handle_no_annotation_nested (FooiGenTestFDPassing *object,
                              GDBusMethodInvocation *invocation,
                              GVariant *arg_files)
 {
-  foo_igen_fdpassing_complete_no_annotation_nested (object, invocation);
+  foo_igen_test_fdpassing_complete_no_annotation_nested (object, invocation);
   return G_DBUS_METHOD_INVOCATION_HANDLED;
 }
 #endif
@@ -2709,7 +2789,7 @@ handle_no_annotation_nested (FooiGenFDPassing *object,
 static void
 test_unix_fd_list (void)
 {
-  FooiGenFDPassingIface iface;
+  FooiGenTestFDPassingIface iface;
 
   g_test_bug ("https://gitlab.gnome.org/GNOME/glib/issues/1726");
 

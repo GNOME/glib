@@ -170,7 +170,11 @@ test_extra_programs = {
 
 python_tests = {
   # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/2764
-  'codegen.py' : { 'can_fail' : host_system == 'freebsd' },
+  'codegen.py' : {
+    'can_fail' : host_system == 'freebsd',
+    'suite': ['gdbus-codegen', 'slow'],
+    'timeout': 90,
+  },
 }
 
 test_env = environment()
@@ -458,6 +462,7 @@ if host_machine.system() != 'windows'
       'gdbus-test-codegen' : {
         'extra_sources' : [extra_sources, gdbus_test_codegen_generated, gdbus_test_codegen_generated_interface_info],
         'c_args' : ['-DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_32'],
+        'suite': ['gdbus-codegen'],
       },
       'gdbus-threading' : {
         'extra_sources' : extra_sources,
@@ -476,11 +481,13 @@ if host_machine.system() != 'windows'
         'extra_sources' : [extra_sources, gdbus_test_codegen_generated, gdbus_test_codegen_generated_interface_info],
         'c_args' : ['-DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_36',
                     '-DGLIB_VERSION_MAX_ALLOWED=GLIB_VERSION_2_36'],
+        'suite': ['gdbus-codegen'],
       },
       'gdbus-test-codegen-min-required-2-64' : {
         'source' : 'gdbus-test-codegen.c',
         'extra_sources' : [extra_sources, gdbus_test_codegen_generated_min_required_2_64, gdbus_test_codegen_generated_interface_info],
         'c_args' : ['-DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_64'],
+        'suite': ['gdbus-codegen'],
       },
       'gapplication' : {
         'extra_sources' : extra_sources,
@@ -1045,7 +1052,7 @@ endforeach
 
 foreach test_name, extra_args : python_tests
   depends = [extra_args.get('depends', [])]
-  suite = ['gio', 'no-valgrind']
+  suite = ['gio', 'no-valgrind'] + extra_args.get('suite', [])
 
   if extra_args.get('can_fail', false)
     suite += 'failing'
@@ -1062,6 +1069,7 @@ foreach test_name, extra_args : python_tests
     depends: depends,
     args: ['-B', files(test_name)],
     env: test_env,
+    timeout: extra_args.get('timeout'),
     suite: suite,
   )
 
