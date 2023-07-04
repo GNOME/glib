@@ -131,23 +131,9 @@ _g_local_file_info_create_etag (GLocalFileStat *statbuf)
 
   g_return_val_if_fail (_g_stat_has_field (statbuf, G_LOCAL_FILE_STAT_FIELD_MTIME), NULL);
 
-#if defined (G_OS_WIN32)
-  sec = statbuf->st_mtim.tv_sec;
-  usec = statbuf->st_mtim.tv_nsec / 1000;
-  nsec = statbuf->st_mtim.tv_nsec;
-#else
   sec = _g_stat_mtime (statbuf);
-#if defined (HAVE_STRUCT_STAT_ST_MTIMENSEC)
-  usec = statbuf->st_mtimensec / 1000;
-  nsec = statbuf->st_mtimensec;
-#elif defined (HAVE_STRUCT_STAT_ST_MTIM_TV_NSEC)
   usec = _g_stat_mtim_nsec (statbuf) / 1000;
   nsec = _g_stat_mtim_nsec (statbuf);
-#else
-  usec = 0;
-  nsec = 0;
-#endif
-#endif
 
   return g_strdup_printf ("%lu:%lu:%lu", sec, usec, nsec);
 }
@@ -1036,35 +1022,16 @@ set_info_from_stat (GFileInfo             *info,
 
 #endif
 
-#if defined (G_OS_WIN32)
-  _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_MODIFIED, statbuf->st_mtim.tv_sec);
-  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_MODIFIED_USEC, statbuf->st_mtim.tv_nsec / 1000);
-  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_MODIFIED_NSEC, statbuf->st_mtim.tv_nsec);
-  _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_ACCESS, statbuf->st_atim.tv_sec);
-  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_ACCESS_USEC, statbuf->st_atim.tv_nsec / 1000);
-  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_ACCESS_NSEC, statbuf->st_atim.tv_nsec);
-#else
   _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_MODIFIED, _g_stat_mtime (statbuf));
-#if defined (HAVE_STRUCT_STAT_ST_MTIMENSEC)
-  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_MODIFIED_USEC, statbuf->st_mtimensec / 1000);
-  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_MODIFIED_NSEC, statbuf->st_mtimensec);
-#elif defined (HAVE_STRUCT_STAT_ST_MTIM_TV_NSEC)
   _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_MODIFIED_USEC, _g_stat_mtim_nsec (statbuf) / 1000);
   _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_MODIFIED_NSEC, _g_stat_mtim_nsec (statbuf));
-#endif
 
   if (_g_stat_has_field (statbuf, G_LOCAL_FILE_STAT_FIELD_ATIME))
     {
       _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_ACCESS, _g_stat_atime (statbuf));
-#if defined (HAVE_STRUCT_STAT_ST_ATIMENSEC)
-      _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_ACCESS_USEC, statbuf->st_atimensec / 1000);
-      _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_ACCESS_NSEC, statbuf->st_atimensec);
-#elif defined (HAVE_STRUCT_STAT_ST_ATIM_TV_NSEC)
       _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_ACCESS_USEC, _g_stat_atim_nsec (statbuf) / 1000);
       _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_ACCESS_NSEC, _g_stat_atim_nsec (statbuf));
-#endif
     }
-#endif
 
 #ifndef G_OS_WIN32
   /* Microsoft uses st_ctime for file creation time,
@@ -1073,13 +1040,8 @@ set_info_from_stat (GFileInfo             *info,
    * Thank you, Microsoft!
    */
   _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CHANGED, _g_stat_ctime (statbuf));
-#if defined (HAVE_STRUCT_STAT_ST_CTIMENSEC)
-  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CHANGED_USEC, statbuf->st_ctimensec / 1000);
-  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CHANGED_NSEC, statbuf->st_ctimensec);
-#elif defined (HAVE_STRUCT_STAT_ST_CTIM_TV_NSEC)
   _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CHANGED_USEC, _g_stat_ctim_nsec (statbuf) / 1000);
   _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CHANGED_NSEC, _g_stat_ctim_nsec (statbuf));
-#endif
 #endif
 
 #if defined (HAVE_STATX)
