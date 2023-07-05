@@ -49,8 +49,18 @@ variables:
     - bash .gitlab-ci/show-execution-environment.sh
     - cp -r $HOME/subprojects/* subprojects/
 
-style-check-advisory:
+# FIXME: Work around https://gitlab.com/gitlab-org/gitlab/-/issues/391756
+.only-default-with-git:
   extends: .only-default
+  before_script:
+   - rm -rf subprojects/gvdb
+   - git submodule update --init --depth 1
+  variables:
+    GIT_SUBMODULE_STRATEGY: "none"
+    GIT_SUBMODULE_DEPTH: 1
+
+style-check-advisory:
+  extends: .only-default-with-git
   image: $DEBIAN_IMAGE
   stage: style-check
   allow_failure: true
@@ -73,15 +83,12 @@ sh-and-py-check:
       - "**/*.sh"
 
 style-check-mandatory:
-  extends: .only-default
+  extends: .only-default-with-git
   image: $DEBIAN_IMAGE
   stage: style-check
   allow_failure: false
   script:
     - .gitlab-ci/run-reuse.sh
-  variables:
-    # The submodules are needed for `reuse lint` to work properly
-    GIT_SUBMODULE_STRATEGY: "normal"
 
 fedora-x86_64:
   extends:
