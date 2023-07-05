@@ -240,7 +240,7 @@
       <listitem>
         <para>
           Generate reStructuredText Documentation for each D-Bus interface and
-          put it in <filename><replaceable>OUTFILES</replaceable>-<replaceanle>NAME</replaceanle>.rst</filename>
+          put it in <filename><replaceable>OUTFILES</replaceable>-<replaceable>NAME</replaceable>.rst</filename>
           where <literal>NAME</literal> is a place-holder for the interface
           name, e.g. <literal>net.Corp.FooBar</literal> and so on.
         </para>
@@ -1136,10 +1136,10 @@ on_handle_hello_world (MyAppFrobber           *interface,
 <refsect1 id="gdbus-code-stability">
   <title>Stability Guarantees</title>
   <para>
-    The generated C functions are guaranteed to not change their ABI
-    that is, if a method, signal or property does not change its
+    The generated C functions are guaranteed to not change their ABI.
+    That is, if a method, signal or property does not change its
     signature in the introspection XML, the generated C functions will
-    not change its C ABI either. The ABI of the generated instance and
+    not change their C ABI either. The ABI of the generated instance and
     class structures will be preserved as well.
   </para>
   <para>
@@ -1150,7 +1150,7 @@ on_handle_hello_world (MyAppFrobber           *interface,
     a D-Bus method, property or signal or is added to a D-Bus
     interface, then ABI of the generated #GInterface type is preserved
     if, and only if, each added method, property signal is annotated
-    with they <literal>org.gtk.GDBus.Since</literal> annotation using
+    with the <literal>org.gtk.GDBus.Since</literal> annotation using
     a greater version number than previous versions.
   </para>
   <para>
