@@ -1,3 +1,253 @@
+Overview of changes in GLib 2.77.0, 2023-07-06
+==============================================
+
+* Fix `GSocketClient` connecting to a proxy if the port is not specified
+  (#2832, work by Michael Catanzaro)
+
+* Support using `copy_file_range()` in `g_file_copy()`, if available (#2863,
+  work by Philip Withnall)
+
+* Improve handling of comments above groups in key files (#2927,
+  work by Gaël Bonithon)
+
+* Re-upgrade missing attribute debugs to criticals in `GFileInfo` (#2951,
+  work by Philip Withnall)
+
+* Do not redefine NULL on C++ (#2973, work by Marco Trevisan)
+
+* Make `g_signal_handlers_block_matched()` work for `G_SIGNAL_MATCH_ID`
+  (#2980, work by Przemyslaw Gorszkowski)
+
+* Fixes to support building with bionic libc better (#3008, work by Øyvind Kolås)
+
+* Fix potential stack overflow in gspawn on macOS if open file limit is very
+  high (#3024, work by Dario Saccavino)
+
+* Fix support for `--force-fallback-for libpcre` in meson configuration (#3025,
+  work by Marius Kintel)
+
+* Generate specific marshallers in `gdbus-codegen` (#3028, work by Marco Trevisan)
+
+* Fix build failure on Android with `statx()` support (#3039, work by Philip Withnall)
+
+* Improve locking performance of `GSignal` (!2824, work by Marco Trevisan)
+
+* Improve locking performance of `g_main_context_iterate()` (!3235, work by
+  Marco Trevisan)
+
+* Add an inline definition of `g_free()` to automatically use `g_free_sized()`
+  if available (!3252, work by Marco Trevisan)
+
+* Fix race with `waitpid()` and `GChildWatchSource` (!3353, work by Thomas Haller)
+
+* Add `glib_valgrind_suppressions` variable to glib pkg-config file (!3361, work
+  by Marco Trevisan)
+
+* Fix build on macOS SDK 10.11 (!3385, work by Peter Williams)
+
+* Switch to using a separate thread pool and support timeouts in
+  `GThreadedResolver` (!3397, work by Philip Withnall)
+
+* Track pending `GTask`s if `G_ENABLE_DEBUG` is defined (!3404, work by Philip Withnall)
+
+* Support GSignal fast path and more marshallers in `gobject_gdb.py` (!3437,
+  work by Nelson Ben)
+
+* Disable the macOS CI because it’s too unreliable — if you rely on GLib working
+  on macOS, please get in touch and do something to help! (!3463, decision taken
+  by Philip Withnall)
+
+* Bugs fixed:
+  - #65 glib-mkenums: parse_trigraph() chokes on quoted commas (Emmanuel Fleury)
+  - #95 GMarkupParser documentation completion (David King)
+  - #98 g_get_current_dir SIGSEGV on long path (Philip Withnall)
+  - #104 Invocation of the interface "g_key_file_remove_comment" does not remove
+    comment in specific case (Gaël Bonithon)
+  - #116 Document UTF-8 behaviour and requirements throughout GLib (Philip
+    Withnall)
+  - #252 Disagreement between runtime and docs on whether interfaces are
+    "classed" (Philip Withnall)
+  - #322 gdbus-example-proxy-subclass.c is not complete. (Colin Walters)
+  - #799 GAppInfoMonitor documentation deficiencies (Philip Withnall)
+  - #1264 Use-after-free under
+    send_message_with_reply_cleanup():gdbusconnection.c:1792 (Philip Withnall)
+  - #2289 Document clearly that libgio is not guaranteed to be safe to use in
+    setuid processes (Philip Withnall)
+  - #2307 mainloop test leaks a GMainLoop object (Philip Withnall)
+  - #2829 "glib-compile-resources --dependency-file=DEPFILE" creates wrong set
+    of dependencies (Michael Catanzaro)
+  - #2832 GSocketClient cannot proxy connect unless default port is explicitly
+    specified in proxy URL (Michael Catanzaro)
+  - #2855 gio/tests/socket-client.c name is too confusing because it does not
+    use GSocketClient (Mike Salmela)
+  - #2861 Check for __kernel_long_t when enabling futex()
+  - #2863 Use copy_file_range() whenever possible in g_file_copy (Philip
+    Withnall)
+  - #2864 Documentation mentions non-existing function `g_value_free` (Philip
+    Withnall)
+  - #2879 Job #2498619 failed: gio/tests/socket.c:1654:test_reuse_tcp: assertion
+    failed (error == (g-io-error-quark, 33)): error is NULL (Philip Withnall)
+  - #2927 GKeyFile: Inconsistent behavior of comment writing above a group (Gaël
+    Bonithon)
+  - #2939 mkenums.py test fails on FreeBSD (Philip Withnall)
+  - #2951 Re-upgrade missing attribute debugs to criticals in GFileInfo (Philip
+    Withnall)
+  - #2952 Not clear that GPollableInputStream methods are undefined if
+    can_poll() returns FALSE (Philip Withnall)
+  - #2953 Missing docs for GOption (commandline parser) (Sam Thursfield)
+  - #2958 nbd server fails with glib 2.76.0
+  - #2960 GDebugControllerDBus wrong default in documentation (Philip Withnall)
+  - #2963 Probably wrong information regarding G_PLATFORM_WIN32 in
+    README.win32.md
+  - #2965 test_measure fails with coreutils 9.2 (Joan Bruguera)
+  - #2966 Multiple Definition Error When Generating gio/tests/test5.gresource
+    (Dan Yeaw)
+  - #2969 user docs: GLib.DateTime.format: broken highlighting (Philip Withnall)
+  - #2972 GtkFileLauncher: generated paths not recognized on Win32 (Luca Bacci)
+  - #2973 Build failed due to NULL pointer redefinition in C++ (Marco Trevisan
+    (Treviño))
+  - #2980 g_signal_handlers_block_matched does not work for G_SIGNAL_MATCH_ID
+    (Przemyslaw Gorszkowski)
+  - #2982 Build randomly fails with: 'gmodule/gmodule-visibility.h' file not
+    found (Marco Trevisan (Treviño))
+  - #2993 g_dbus_interface_skeleton_get_vtable misses transfer annotation and is
+    not introspectable
+  - #2997 g_assert_cmpuint() should display positive, not negative values (Eric
+    Blake)
+  - #3003 glib-compile-schemas failed on directory name with no Latin symbols
+    (Daniyar Tleulin)
+  - #3007 GOptionContext group headings missing colon at the end (Philip
+    Withnall)
+  - #3008 Adaptations for building with bionic libc under termux (Øyvind Kolås)
+  - #3020 Races in gio/tests/portal-support-snap* tests
+  - #3024 Possible stack overflow in gspawn on MacOS
+  - #3025 libpcre and libintl cannot be chosen to use the builtins
+  - #3027 action exporter fails in the presence of actions with maybe parameter
+    types (Matthias Clasen)
+  - #3028 gdbus-codegen should generate marshallers (Marco Trevisan (Treviño))
+  - #3030 Document GListModel requiring unique instance pointers from
+    GListModelInterface.get_item (Christian Hergert)
+  - #3034 futex based g_mutex_lock sometimes splatters errno with EAGAIN on
+    contended locks
+  - #3039 Build failure due to statx fields with NDK r25.c (Philip Withnall)
+  - #3040 gtester in custom_target() run against system rather than built
+    libglib during build
+  - !2824 gsignal: Reduce lock/unlock pairs and ensure we always work on valid
+    signal nodes
+  - !3146 Make GVariant/GHash opaque types compatible with CHERI
+  - !3235 gmain: Avoid some lock/unlock dance during g_main_context_iterate
+  - !3252 gmem: Add an inline definition of g_free() to automatically use
+    g_free_sized()
+  - !3289 Work around an UCRT issue with _wspawn() functions taking an envp
+    block
+  - !3306 gregistrysettingsbackend: Allow a different root key path
+  - !3308 doc: Workaround missing API index
+  - !3314 gmain: More explicitly document g_main_context_release() prereqs
+  - !3326 unicode: add tests for g_utf8_normalize() and empty strings
+  - !3333 build: Drop old .gitignore files from test directories
+  - !3335 meson: allow -Dlibelf=enabled without pkg-config
+  - !3337 gio-tool-info: Fix a duplicate attribute name in the UI
+  - !3340 meson: Move msvc_recommended_pragmas.h to a subdirectory
+  - !3341 g_utf8_normalize: don't read past the end of the buffer
+  - !3342 Add fuzzing harness for g_utf8_normalize()
+  - !3344 tools: Drop check-abis.sh script
+  - !3345 docs: Drop section about default branch renaming from README.md
+  - !3347 gsocket/inotify/gwakeup: Use SOCK_NONBLOCK and O_NONBLOCK to avoid
+    fcntl() syscalls where possible
+  - !3351 tests: Update Unicode normalisation tests from Unicode 15
+  - !3352 meson: Fix detection of a system-provided proxy-libintl
+  - !3353 [th/child-watch-waitpid] fix race with waitpid() and child watcher
+    sources
+  - !3356 build/gmodule-2.0.pc: Move compiler flags from Libs to Cflags
+  - !3357 Make clang++ happier when using G_STATIC_ASSERT
+  - !3361 meson: Add glib_valgrind_suppressions variable to glib pkg-config file
+  - !3365 gwin32: Avoid use of function call with side effect in g_return_*
+    macro
+  - !3366 Add init macros for refcounting types
+  - !3367 actiongroup: Add a compiler warning
+  - !3371 Explicitly mark size parameter as (in)
+  - !3377 gsignal: Clarify documentation for GSignalMatchType matching
+  - !3378 build: Post-release version bump
+  - !3381 gtimer: Avoid doing anything on g_usleep (0)
+  - !3382 gsocket: Explicitly mark size parameter as (in)
+  - !3383 add g_timeout_add_seconds_once
+  - !3384 Test g_signal_handlers_disconnect_matched for G_SIGNAL_MATCH_ID match
+  - !3385 gio: fix build on older macOS SDKs
+  - !3388 appmonitor: Skip the test under OSX
+  - !3389 glib/tests/[rec-]mutex: Allow each thread to work
+  - !3390 Fix error format in gio/gunixconnection.c (part 2)
+  - !3392 gvariant: Fix doc for g_variant_new_object_path
+  - !3393 Fix small issues in docs
+  - !3395 gtask: Document that g_task_run_in_thread() uses a shared resource
+  - !3396 glib-unix: Improve documentation for g_unix_fd_source_new()
+  - !3397 gthreadedresolver: Switch to using a separate thread pool and support
+    timeouts
+  - !3398 Avoid having g_futex_simple() inadvertently modify errno
+  - !3399 meson: wrap html documentation generation with gtk_doc option
+  - !3400 restore error messages in gunixconnection while maintaining older
+    compiler support
+  - !3401 ci: Disable the Coverity CI job
+  - !3404 gtask: Track pending GTasks if G_ENABLE_DEBUG is defined
+  - !3405 gthreadedresolver: Remove some incorrect assertions
+  - !3406 gthreadpool: Clarify that item_free_func is not normally called
+  - !3407 gregistrysettingsbackend: Remove translatable pspec nick/blurb
+  - !3408 docs: Update/Drop txt documents from docs directory
+  - !3409 docs: Don’t ignore gunixfdlist.h when building docs on Windows
+  - !3410 tests: Add descriptions to environment tests
+  - !3416 gtestutils: Fix section marker in documentation
+  - !3418 docs: Add lb90 as a Windows maintainer
+  - !3419 docs: Update various broken/redirected links and fix list formatting
+  - !3420 gtestutils: print timing information per test case in TAP output
+  - !3421 glib/tests/fileutils:fix asserts when running as root
+  - !3422 Check for linux/netlink.h buildability
+  - !3423 gstring: add g_string_new_take
+  - !3425 gwin32networkmonitor: Fix returning address of local variable
+  - !3426 gdataset, gobject: Use atomic compare and exchange full to set
+    pointers
+  - !3429 Rename GTK+ to GTK (mostly comments and documentation)
+  - !3430 gobject_gdb.py: fix regression caused by bfbe7127d5
+  - !3431 gfile: Ensure loff_t is defined on FreeBSD
+  - !3435 Ignore g_task_print_alive_task() when introspecting GIO
+  - !3437 gobject_gdb.py: support gsignal fastpath and detect more marshallers
+  - !3438 gio: Check cancellable iterating local file enumerator
+  - !3439 gstring: Add `Since` marker to `g_string_new_take()`
+  - !3440 gutf8: Add a g_utf8_truncate_middle() function
+  - !3441 Allow proper introspection of GTypeValueTable
+  - !3442 gio: Add g_file_new_build_filenamev
+  - !3448 meson: try iconv in libintl lookup
+  - !3449 docs: Move README.win32.md to the docs folder and update
+    CONTRIBUTING.md
+  - !3450 gactionmap: Add g_action_map_remove_action_entries()
+  - !3453 docs: Use the type name as the section name for GKeyFile
+  - !3455 gfileinfo: add (type filename) annotation to symlink_target functions
+  - !3456 gmain: Document that g_steal_fd() preserves errno
+  - !3458 gstdio: Improve documentation of some functions as async-signal safe
+  - !3462 tests: Reduce thread and iteration count on CI for /thread/rec-mutex3
+  - !3463 ci: Disable the macOS CI
+  - !3465 gobject_gdb.py: adapt to recent gsignal changes
+  - !3466 resolver: Add space in documentations
+  - !3470 pcre subproject fixes: Allow fallback & static build
+  - !3471 gio-tool-mount: Add option to show progress when unmounting
+  - !3472 tests: Fix an intermittent timing error with testing g_usleep(0)
+  - !3477 gdbus-codegen: Fix some minor typos in the documentation
+  - !3484 docs: Fix a typo in the backports policy
+  - !3486 docs: Document issue and merge request triaging and review guidelines
+  - !3488 codegen: Use g_signal_emit to emit signals
+  - !3489 guniprop: fix param direction in g_unichar_get_mirror_char(), for
+    introspection
+  - !3490 gobject/tests: Fix running on 32-bit Windows
+
+* Translation updates:
+  - Bulgarian (Alexander Shopov)
+  - Chinese (China) (Boyuan Yang)
+  - English (United Kingdom) (Bruce Cowan)
+  - Galician (Fran Dieguez)
+  - Portuguese (Brazil) (Leônidas Araújo)
+  - Slovak (Dušan Kazik)
+  - Swedish (Anders Jonsson)
+  - Turkish (Sabri Ünal)
+
+
 Overview of changes in GLib 2.76.1, 2023-03-22
 ==============================================
 
