@@ -1,3 +1,26 @@
+Overview of changes in GLib 2.76.4, 2023-07-06
+==============================================
+
+* Fix build failure on Android with `statx()` support (#3039)
+
+* Bugs fixed:
+  - #3003 glib-compile-schemas failed on directory name with no Latin symbols
+    (Daniyar Tleulin)
+  - #3039 Build failure due to statx fields with NDK r25.c (Philip Withnall)
+  - !3447 Backport !3446 “glib-compile-resources: Fix non-ASCII arg parsing on
+    Windows” to glib-2-76
+  - !3479 Backport !3473 ”glib: reset errno to 0 when futex() returns EAGAIN” to
+    glib-2-76
+  - !3480 Backport !3468 “Avoid stack overflow in gspawn on macOS” to glib-2-76
+  - !3492 Backport !3482 “glocalfileinfo: Fix incorrect use of struct
+    statx.st_mtimensec on Android” to glib-2-76
+
+* Translation updates:
+  - English (United Kingdom) (Bruce Cowan)
+  - Portuguese (Brazil) (Leônidas Araújo)
+  - Slovak (Dušan Kazik)
+
+
 Overview of changes in GLib 2.76.3, 2023-05-23
 ==============================================
 
