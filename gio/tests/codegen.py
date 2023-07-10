@@ -628,6 +628,64 @@ G_END_DECLS
             )
 
     @unittest.skipIf(on_win32(), "requires /dev/stdout")
+    def test_dbus_types(self):
+        bad_types = [
+            "{vs}",  # Bad dictionary key type
+            "(ss(s{{sv}s}))",  # Bad dictionary key types
+            "{s",  # Unterminated dictionary
+            "(s{sss})",  # Unterminated dictionary
+            "z",  # Bad type
+            "(ssms)",  # Bad type
+            "(",  # Unterminated tuple
+            "(((ss))",  # Unterminated tuple
+            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaas",  # Too much recursion
+            "(((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((("
+            "(((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((s))"
+            "))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))"
+            "))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))",  # Too much recursion
+            "{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{"
+            "{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{sv}"
+            "}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}"
+            "}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}",  # Too much recursion
+            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa(aaaaaa{sv})",  # Too much recursion
+            "(ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+            "ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+            "ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+            "ssssssssssssssssssssssssssssssssssssssssssssssssssssssssss)",  # Too long
+        ]
+        for t in bad_types:
+            interface_xml = f"""
+                <node>
+                  <interface name="BadTypes">
+                    <property type="{t}" name="BadPropertyType" access="read" />
+                  </interface>
+                </node>"""
+            with self.assertRaises(subprocess.CalledProcessError):
+                self.runCodegenWithInterface(
+                    interface_xml, "--output", "/dev/stdout", "--body"
+                )
+        good_types = [
+            "si{s{b(ybnqiuxtdh)}}{yv}{nv}{dv}",
+            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaas",  # 128 Levels of recursion
+            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa(aaaaaaaaaaaaaaaaa{sv})",  # 128 Levels of recursion
+        ]
+        for t in good_types:
+            interface_xml = f"""
+                <node>
+                  <interface name="GoodTypes">
+                    <property type="{t}" name="GoodPropertyType" access="read" />
+                  </interface>
+                </node>"""
+            result = self.runCodegenWithInterface(
+                interface_xml, "--output", "/dev/stdout", "--body"
+            )
+            self.assertEqual("", result.err)
+
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_unix_fd_types_and_annotations(self):
         """Test an interface with `h` arguments, no annotation, and GLib < 2.64.
 
