@@ -2106,8 +2106,8 @@ libz_dep = dependency('zlib')
 # implementations. This could be extended if issues are found in some platforms.
 libintl_deps = []
 libintl_prefix = '#include <libintl.h>'
-libintl = dependency('intl', required: false, allow_fallback: false)
-if libintl.found()
+libintl = dependency('intl', required: false)
+if libintl.found() and libintl.type_name() != 'internal'
   # libintl supports different threading APIs, which may not
   # require additional flags, but it defaults to using pthreads if
   # found. Meson's "threads" dependency does not allow you to
@@ -2134,9 +2134,10 @@ if libintl.found()
   endif
 endif
 
-if libintl.found()
+if libintl.found() and libintl.type_name() != 'internal'
   have_bind_textdomain_codeset = cc.has_function('bind_textdomain_codeset', dependencies: libintl_deps, prefix: libintl_prefix)
 else
+  # using proxy-libintl fallback
   libintl = dependency('intl', allow_fallback: true)
   assert(libintl.type_name() == 'internal')
   libintl_deps = [libintl]
