@@ -2467,7 +2467,7 @@ g_ptr_array_insert (GPtrArray *array,
  * take the pointers from the array as arguments, it takes pointers to
  * the pointers in the array.
  *
- * Use g_ptr_array_sort_with_data() if you want to use normal
+ * Use g_ptr_array_sort_values() if you want to use normal
  * #GCompareFuncs, otherwise here is a full example of use:
  *
  * |[<!-- language="C" -->
@@ -2527,7 +2527,7 @@ g_ptr_array_sort (GPtrArray    *array,
  * doesn't take the pointers from the array as arguments, it takes
  * pointers to the pointers in the array.
  *
- * Use g_ptr_array_sort_with_data() if you want to use normal
+ * Use g_ptr_array_sort_values_with_data() if you want to use normal
  * #GCompareDataFuncs, otherwise here is a full example of use:
  *
  * |[<!-- language="C" -->
