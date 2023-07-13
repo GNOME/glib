@@ -480,6 +480,16 @@ test_comments (void)
                G_KEY_FILE_ERROR_GROUP_NOT_FOUND);
   g_assert_null (comment);
 
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/3047");
+
+  /* check if we don't add a blank line above new group if last value of preceding
+   * group was added via g_key_file_set_value() and contains line breaks */
+  g_key_file_set_value (keyfile, "group4", "key1", "value1\n\n# group comment");
+  g_key_file_set_string (keyfile, "group5", "key1", "value1");
+  comment = g_key_file_get_comment (keyfile, "group5", NULL, &error);
+  check_no_error (&error);
+  g_assert_null (comment);
+
   g_key_file_free (keyfile);
 }
 

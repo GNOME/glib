@@ -3858,8 +3858,12 @@ g_key_file_add_group (GKeyFile    *key_file,
     {
       /* separate groups by a blank line if we don't keep comments or group is created */
       GKeyFileGroup *next_group = key_file->groups->next->data;
+      GKeyFileKeyValuePair *pair;
+      if (next_group->key_value_pairs != NULL)
+        pair = next_group->key_value_pairs->data;
+
       if (next_group->key_value_pairs == NULL ||
-          ((GKeyFileKeyValuePair *) next_group->key_value_pairs->data)->key != NULL)
+          (pair->key != NULL && !g_strstr_len (pair->value, -1, "\n")))
         {
           GKeyFileKeyValuePair *pair = g_new (GKeyFileKeyValuePair, 1);
           pair->key = NULL;
