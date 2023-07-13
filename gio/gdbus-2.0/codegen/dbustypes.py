@@ -23,6 +23,69 @@ from . import utils
 from .utils import print_error
 
 
+# See: variant_type_string_scan_internal()
+def variant_type_string_scan(signature: str, depth_limit: int, i=0):
+    beg_char = signature[i]
+    i += 1
+    if beg_char == "(":
+        while signature[i] != ")":
+            if depth_limit == 0:
+                raise ValueError(
+                    f'Bad signature "{signature}". Too much recursion beginning at {i}.'
+                )
+            i = variant_type_string_scan(signature, depth_limit - 1, i)
+        i += 1
+    elif beg_char == "{":
+        if depth_limit == 0:
+            raise ValueError(
+                f'Bad signature "{signature}". Too much recursion beginning at {i}.'
+            )
+        elif signature[i] not in "bynqihuxtdsog?":
+            raise ValueError(
+                f'Bad signature "{signature}". "{signature[i]}" is not a valid type for dictionary keys at position {i}.'
+            )
+        i += 1
+        i = variant_type_string_scan(signature, depth_limit - 1, i)
+        if signature[i] != "}":
+            raise ValueError(
+                f'Bad signature "{signature}". Dict must end with "}}" at position {i}.'
+            )
+        i += 1
+    elif beg_char == "a":
+        if depth_limit == 0:
+            raise ValueError(
+                f'Bad signature "{signature}". Too much recursion beginning at {i}.'
+            )
+        i = variant_type_string_scan(signature, depth_limit - 1, i)
+    elif beg_char not in "bynqiuxtdsogvr*?h":
+        raise ValueError(
+            f'Bad signature "{signature}". Unexpected value "{beg_char}" at position {i}.'
+        )
+    return i
+
+
+# variant_check_signature() does not perform a strict validation check and
+# should not be used in security sensitive contexts.
+def variant_check_signature(signature: str):
+    # See: gvariant-internal.h
+    G_VARIANT_MAX_RECURSION_DEPTH = 128
+    if len(signature) > 255:
+        print_error("D-Bus maximum signature length of 255 exceeded.")
+    for s in signature:
+        if s not in "ybnqiuxthdvasog(){}":
+            print_error(
+                f'Bad signature "{signature}". "{s}" is not a valid D-Bus type.'
+            )
+    try:
+        variant_type_string_scan(signature, G_VARIANT_MAX_RECURSION_DEPTH)
+    except IndexError:
+        print_error(
+            f'Bad signature "{signature}". Error parsing string or brackets not closed.'
+        )
+    except ValueError as e:
+        print_error(e.args[0])
+
+
 class Annotation:
     def __init__(self, key, value):
         self.key = key
@@ -88,6 +151,7 @@ class Arg:
         self.gvalue_set = "g_value_take_variant"
         self.gclosure_marshaller = "g_cclosure_marshal_VOID__VARIANT"
         self.array_annotation = ""
+        variant_check_signature(self.signature)
 
         if not utils.lookup_annotation(
             self.annotations, "org.gtk.GDBus.C.ForceGVariant"
