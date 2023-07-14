@@ -8,10 +8,18 @@ GLib on a particular system, or we have regular builds of GLib on that system.
 Minimum versions
 ---
 
+This list is authoritative, and documents what this version of GLib targets to
+support. The list will be periodically updated for the development branch,
+with versions typically being updated as they lapse from receiving support from
+their vendor.
+
  * macOS: minimum version OS X 10.7 (we
    [don’t support universal binaries](https://bugzilla.gnome.org/show_bug.cgi?id=780238);
    some features (like notification support)
    [require OS X 10.9](https://bugzilla.gnome.org/show_bug.cgi?id=747146)
+   * Note that older versions of macOS than what’s currently officially
+     supported by Apple are supported by GLib on a best-effort basis due to
+     still having significant user bases
  * Windows:
    [minimum version is Windows 8](https://gitlab.gnome.org/GNOME/glib/-/merge_requests/1970),
    minimum build chain is Visual Studio 2012
