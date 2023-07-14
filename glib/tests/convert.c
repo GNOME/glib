@@ -949,6 +949,38 @@ test_no_conv (void)
   g_error_free (error);
 }
 
+static void
+test_filename_from_uri_query_is_ignored (void)
+{
+  gchar *filename;
+  GError *error = NULL;
+
+  filename = g_filename_from_uri ("file:///tmp/foo?bar", NULL, &error);
+  g_assert_no_error (error);
+#ifdef G_OS_WIN32
+  g_assert_cmpstr (filename, ==, "\\tmp\\foo");
+#else
+  g_assert_cmpstr (filename, ==, "/tmp/foo");
+#endif
+  g_free (filename);
+}
+
+static void
+test_filename_from_uri_fragment_is_ignored (void)
+{
+  gchar *filename;
+  GError *error = NULL;
+
+  filename = g_filename_from_uri ("file:///tmp/foo#bar", NULL, &error);
+  g_assert_no_error (error);
+#ifdef G_OS_WIN32
+  g_assert_cmpstr (filename, ==, "\\tmp\\foo");
+#else
+  g_assert_cmpstr (filename, ==, "/tmp/foo");
+#endif
+  g_free (filename);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -974,6 +1006,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/conversion/filename-from-utf8/embedded-nul", test_filename_from_utf8_embedded_nul);
   g_test_add_func ("/conversion/filename-from-utf8/embedded-nul/subprocess/utf8", test_filename_from_utf8_embedded_nul_utf8);
   g_test_add_func ("/conversion/filename-from-utf8/embedded-nul/subprocess/iconv", test_filename_from_utf8_embedded_nul_iconv);
+  g_test_add_func ("/conversion/filename-from-uri/query-is-ignored", test_filename_from_uri_query_is_ignored);
+  g_test_add_func ("/conversion/filename-from-uri/fragment-is-ignored", test_filename_from_uri_fragment_is_ignored);
 
   return g_test_run ();
 }
