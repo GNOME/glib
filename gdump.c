@@ -594,6 +594,7 @@ g_irepository_dump (const char *arg, GError **error)
   if (output == NULL)
     {
       g_input_stream_close (G_INPUT_STREAM (input), NULL, NULL);
+      g_object_unref (input);
       return FALSE;
     }
 
@@ -674,11 +675,12 @@ g_irepository_dump (const char *arg, GError **error)
       ioerror = NULL;
     else
       ioerror = error;
-    if (!g_input_stream_close (G_INPUT_STREAM (in), NULL, ioerror))
-      return FALSE;
-    if (!g_output_stream_close (G_OUTPUT_STREAM (output), NULL, ioerror))
-      return FALSE;
+    caught_error |= !g_input_stream_close (G_INPUT_STREAM (in), NULL, ioerror);
+    caught_error |= !g_output_stream_close (G_OUTPUT_STREAM (output), NULL, ioerror);
   }
+
+  g_object_unref (in);
+  g_object_unref (output);
 
   return !caught_error;
 }
