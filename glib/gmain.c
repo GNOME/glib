@@ -3608,6 +3608,7 @@ g_main_context_release (GMainContext *context)
       g_critical ("g_main_context_release() called on a context (%p, owner %p, "
                   "owner count %u) which is not acquired by the current thread",
                   context, context_owner, context_owner_count);
+      return;
     }
 #endif  /* !G_DISABLE_CHECKS */
 
