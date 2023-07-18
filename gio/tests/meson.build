@@ -774,7 +774,7 @@ if not meson.is_cross_build()
 
     resource_plugin += shared_module('resourceplugin',
       sources: ['resourceplugin.c', plugin_resources_c],
-      c_args : export_dynamic_cflags,
+      link_args : export_dynamic_ldflags,
       dependencies : common_gio_tests_deps,
       install_dir : installed_tests_execdir,
       install_tag : 'tests',

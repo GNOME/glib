@@ -115,24 +115,22 @@ pkg.generate(libgmodule,
   description : 'Dynamic module loader for GLib',
 )
 
-pkg.generate(libraries : [libgmodule],
+pkg.generate(libraries : [libgmodule, export_dynamic_ldflags],
   requires : ['glib-2.0'],
   version : glib_version,
   variables : [supported_var],
   install_dir : glib_pkgconfigreldir,
   filebase : 'gmodule-export-2.0',
-  extra_cflags : export_dynamic_cflags,
   name : 'GModule',
   description : 'Dynamic module loader for GLib',
 )
 
-pkg.generate(libraries : [libgmodule],
+pkg.generate(libraries : [libgmodule, export_dynamic_ldflags],
   requires : ['glib-2.0'],
   version : glib_version,
   variables : [supported_var],
   install_dir : glib_pkgconfigreldir,
   filebase : 'gmodule-2.0',
-  extra_cflags : export_dynamic_cflags,
   name : 'GModule',
   description : 'Dynamic module loader for GLib',
 )
