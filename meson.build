@@ -138,6 +138,12 @@ else
   glib_runstatedir = '/run'
 endif
 
+# When building glib and gobject-introspection with subprojects, gobject-introspection
+# requires to know the path of the sources and the build directory for the subproject.
+# We provide it here with a variable.
+glib_source_dir = meson.current_source_dir()
+glib_build_dir = meson.current_build_dir()
+
 installed_tests_metadir = join_paths(glib_datadir, 'installed-tests', meson.project_name())
 installed_tests_execdir = join_paths(glib_libexecdir, 'installed-tests', meson.project_name())
 installed_tests_enabled = get_option('installed_tests')
