@@ -573,7 +573,8 @@ static void                  g_key_file_remove_key_value_pair_node (GKeyFile    
 
 static void                  g_key_file_add_key_value_pair     (GKeyFile               *key_file,
                                                                 GKeyFileGroup          *group,
-                                                                GKeyFileKeyValuePair   *pair);
+                                                                GKeyFileKeyValuePair   *pair,
+                                                                GList                  *sibling);
 static void                  g_key_file_add_key                (GKeyFile               *key_file,
 								GKeyFileGroup          *group,
 								const gchar            *key,
@@ -1447,7 +1448,8 @@ g_key_file_parse_key_value_pair (GKeyFile     *key_file,
       pair->key = g_steal_pointer (&key);
       pair->value = g_strndup (value_start, value_len);
 
-      g_key_file_add_key_value_pair (key_file, key_file->current_group, pair);
+      g_key_file_add_key_value_pair (key_file, key_file->current_group, pair,
+                                     key_file->current_group->key_value_pairs);
     }
 
   g_free (key);
@@ -3858,8 +3860,12 @@ g_key_file_add_group (GKeyFile    *key_file,
     {
       /* separate groups by a blank line if we don't keep comments or group is created */
       GKeyFileGroup *next_group = key_file->groups->next->data;
+      GKeyFileKeyValuePair *pair;
+      if (next_group->key_value_pairs != NULL)
+        pair = next_group->key_value_pairs->data;
+
       if (next_group->key_value_pairs == NULL ||
-          ((GKeyFileKeyValuePair *) next_group->key_value_pairs->data)->key != NULL)
+          (pair->key != NULL && !g_strstr_len (pair->value, -1, "\n")))
         {
           GKeyFileKeyValuePair *pair = g_new (GKeyFileKeyValuePair, 1);
           pair->key = NULL;
@@ -4030,10 +4036,11 @@ g_key_file_remove_group (GKeyFile     *key_file,
 static void
 g_key_file_add_key_value_pair (GKeyFile             *key_file,
                                GKeyFileGroup        *group,
-                               GKeyFileKeyValuePair *pair)
+                               GKeyFileKeyValuePair *pair,
+                               GList                *sibling)
 {
   g_hash_table_replace (group->lookup_map, pair->key, pair);
-  group->key_value_pairs = g_list_prepend (group->key_value_pairs, pair);
+  group->key_value_pairs = g_list_insert_before (group->key_value_pairs, sibling, pair);
 }
 
 static void
@@ -4043,12 +4050,18 @@ g_key_file_add_key (GKeyFile      *key_file,
 		    const gchar   *value)
 {
   GKeyFileKeyValuePair *pair;
+  GList *lp;
 
   pair = g_new (GKeyFileKeyValuePair, 1);
   pair->key = g_strdup (key);
   pair->value = g_strdup (value);
 
-  g_key_file_add_key_value_pair (key_file, group, pair);
+  /* skip group comment */
+  lp = group->key_value_pairs;
+  while (lp != NULL && ((GKeyFileKeyValuePair *) lp->data)->key == NULL)
+    lp = lp->next;
+
+  g_key_file_add_key_value_pair (key_file, group, pair, lp);
 }
 
 /**

@@ -456,6 +456,15 @@ test_comments (void)
   check_name ("group comment", comment, group_comment, 0);
   g_free (comment);
 
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/3047");
+
+  /* check if adding a key to group N preserve group comment of group N+1 */
+  g_key_file_set_string (keyfile, "group1", "key5", "value5");
+  comment = g_key_file_get_comment (keyfile, "group2", NULL, &error);
+  check_no_error (&error);
+  check_name ("group comment", comment, group_comment, 0);
+  g_free (comment);
+
   g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/104");
 
   /* check if comments above another group than the first one are properly removed */
@@ -478,6 +487,16 @@ test_comments (void)
   check_error (&error,
                G_KEY_FILE_ERROR,
                G_KEY_FILE_ERROR_GROUP_NOT_FOUND);
+  g_assert_null (comment);
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/3047");
+
+  /* check if we don't add a blank line above new group if last value of preceding
+   * group was added via g_key_file_set_value() and contains line breaks */
+  g_key_file_set_value (keyfile, "group4", "key1", "value1\n\n# group comment");
+  g_key_file_set_string (keyfile, "group5", "key1", "value1");
+  comment = g_key_file_get_comment (keyfile, "group5", NULL, &error);
+  check_no_error (&error);
   g_assert_null (comment);
 
   g_key_file_free (keyfile);
