@@ -1127,13 +1127,15 @@ if have_bash and have_pkg_config
 
   gio_binaries = [
     'gio',
-    'gio-querymodules',
-    'glib-compile-schemas',
     'glib-compile-resources',
     'gdbus',
     'gdbus-codegen',
     'gresource',
     'gsettings',
+  ]
+  gio_multiarch_binaries = [
+    'gio-querymodules',
+    'glib-compile-schemas',
   ]
 
   foreach binary: gio_binaries
@@ -1141,6 +1143,14 @@ if have_bash and have_pkg_config
       'test "$(pkg-config --variable=@0@ gio-2.0)" = "@1@"'.format(
         binary.underscorify(),
         prefix / get_option('bindir') / binary)
+    ]
+  endforeach
+
+  foreach binary: gio_multiarch_binaries
+    pkg_config_tests += [
+      'test "$(pkg-config --variable=@0@ gio-2.0)" = "@1@"'.format(
+        binary.underscorify(),
+        prefix / multiarch_bindir / binary)
     ]
   endforeach
 
