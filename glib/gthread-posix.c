@@ -1047,7 +1047,7 @@ g_private_impl_free (pthread_key_t *key)
   free (key);
 }
 
-static inline pthread_key_t *
+static inline pthread_key_t
 g_private_get_impl (GPrivate *key)
 {
   pthread_key_t *impl = g_atomic_pointer_get (&key->p);
@@ -1062,7 +1062,7 @@ g_private_get_impl (GPrivate *key)
         }
     }
 
-  return impl;
+  return *impl;
 }
 
 /**
@@ -1081,7 +1081,7 @@ gpointer
 g_private_get (GPrivate *key)
 {
   /* quote POSIX: No errors are returned from pthread_getspecific(). */
-  return pthread_getspecific (*g_private_get_impl (key));
+  return pthread_getspecific (g_private_get_impl (key));
 }
 
 /**
@@ -1101,7 +1101,7 @@ g_private_set (GPrivate *key,
 {
   gint status;
 
-  if G_UNLIKELY ((status = pthread_setspecific (*g_private_get_impl (key), value)) != 0)
+  if G_UNLIKELY ((status = pthread_setspecific (g_private_get_impl (key), value)) != 0)
     g_thread_abort (status, "pthread_setspecific");
 }
 
@@ -1123,13 +1123,13 @@ void
 g_private_replace (GPrivate *key,
                    gpointer  value)
 {
-  pthread_key_t *impl = g_private_get_impl (key);
+  pthread_key_t impl = g_private_get_impl (key);
   gpointer old;
   gint status;
 
-  old = pthread_getspecific (*impl);
+  old = pthread_getspecific (impl);
 
-  if G_UNLIKELY ((status = pthread_setspecific (*impl, value)) != 0)
+  if G_UNLIKELY ((status = pthread_setspecific (impl, value)) != 0)
     g_thread_abort (status, "pthread_setspecific");
 
   if (old && key->notify)
