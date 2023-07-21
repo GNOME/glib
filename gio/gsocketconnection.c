@@ -173,7 +173,7 @@ static gboolean g_socket_connection_connect_callback (GSocket      *socket,
  * @address: a #GSocketAddress specifying the remote address.
  * @cancellable: (nullable): a %GCancellable or %NULL
  * @callback: (scope async): a #GAsyncReadyCallback
- * @user_data: (closure): user data for the callback
+ * @user_data: user data for the callback
  *
  * Asynchronously connect @connection to the specified remote address.
  *

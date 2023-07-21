@@ -1115,9 +1115,9 @@ g_file_enumerate_children (GFile                *file,
  * @io_priority: the [I/O priority][io-priority] of the request
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
- * @callback: (scope async): a #GAsyncReadyCallback to call when the
- *   request is satisfied
- * @user_data: (closure): the data to pass to callback function
+ * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
+ *   to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * Asynchronously gets the requested information about the files
  * in a directory. The result is a #GFileEnumerator object that will
@@ -1352,9 +1352,9 @@ g_file_query_info (GFile                *file,
  * @io_priority: the [I/O priority][io-priority] of the request
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
- * @callback: (scope async): a #GAsyncReadyCallback to call when the
- *   request is satisfied
- * @user_data: (closure): the data to pass to callback function
+ * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
+ *   to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * Asynchronously gets the requested information about specified @file.
  * The result is a #GFileInfo object that contains key-value attributes
@@ -1489,9 +1489,9 @@ g_file_query_filesystem_info (GFile         *file,
  * @io_priority: the [I/O priority][io-priority] of the request
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
- * @callback: (scope async): a #GAsyncReadyCallback to call
- *   when the request is satisfied
- * @user_data: (closure): the data to pass to callback function
+ * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
+ *   to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * Asynchronously gets the requested information about the filesystem
  * that the specified @file is on. The result is a #GFileInfo object
@@ -1611,9 +1611,9 @@ g_file_find_enclosing_mount (GFile         *file,
  * @io_priority: the [I/O priority][io-priority] of the request
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
- * @callback: (scope async): a #GAsyncReadyCallback to call
- *   when the request is satisfied
- * @user_data: (closure): the data to pass to callback function
+ * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
+ *   to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * Asynchronously gets the mount for the file.
  *
@@ -2099,9 +2099,9 @@ g_file_replace_readwrite (GFile             *file,
  * @io_priority: the [I/O priority][io-priority] of the request
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
- * @callback: (scope async): a #GAsyncReadyCallback to call
- *   when the request is satisfied
- * @user_data: (closure): the data to pass to callback function
+ * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
+ *   to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * Asynchronously opens @file for reading.
  *
@@ -2167,9 +2167,9 @@ g_file_read_finish (GFile         *file,
  * @io_priority: the [I/O priority][io-priority] of the request
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
- * @callback: (scope async): a #GAsyncReadyCallback to call
- *   when the request is satisfied
- * @user_data: (closure): the data to pass to callback function
+ * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
+ *   to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * Asynchronously opens @file for appending.
  *
@@ -2238,9 +2238,9 @@ g_file_append_to_finish (GFile         *file,
  * @io_priority: the [I/O priority][io-priority] of the request
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
- * @callback: (scope async): a #GAsyncReadyCallback to call
- *   when the request is satisfied
- * @user_data: (closure): the data to pass to callback function
+ * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
+ *   to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * Asynchronously creates a new file and returns an output stream
  * for writing to it. The file must not already exist.
@@ -2312,9 +2312,9 @@ g_file_create_finish (GFile         *file,
  * @io_priority: the [I/O priority][io-priority] of the request
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
- * @callback: (scope async): a #GAsyncReadyCallback to call
- *   when the request is satisfied
- * @user_data: (closure): the data to pass to callback function
+ * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
+ *   to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * Asynchronously overwrites the file, replacing the contents,
  * possibly creating a backup copy of the file first.
@@ -2386,9 +2386,9 @@ g_file_replace_finish (GFile         *file,
  * @io_priority: the [I/O priority][io-priority] of the request
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
- * @callback: (scope async): a #GAsyncReadyCallback to call
- *   when the request is satisfied
- * @user_data: (closure): the data to pass to callback function
+ * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
+ *   to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * Asynchronously opens @file for reading and writing.
  *
@@ -2458,9 +2458,9 @@ g_file_open_readwrite_finish (GFile         *file,
  * @io_priority: the [I/O priority][io-priority] of the request
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
- * @callback: (scope async): a #GAsyncReadyCallback to call
- *   when the request is satisfied
- * @user_data: (closure): the data to pass to callback function
+ * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
+ *   to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * Asynchronously creates a new file and returns a stream
  * for reading and writing to it. The file must not already exist.
@@ -2536,9 +2536,9 @@ g_file_create_readwrite_finish (GFile         *file,
  * @io_priority: the [I/O priority][io-priority] of the request
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
- * @callback: (scope async): a #GAsyncReadyCallback to call
- *   when the request is satisfied
- * @user_data: (closure): the data to pass to callback function
+ * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
+ *   to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * Asynchronously overwrites the file in read-write mode,
  * replacing the contents, possibly creating a backup copy
@@ -3751,11 +3751,13 @@ g_file_copy (GFile                  *source,
  * @io_priority: the [I/O priority][io-priority] of the request
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
- * @progress_callback: (nullable) (scope notified): function to callback with progress
- *   information, or %NULL if progress information is not needed
- * @progress_callback_data: (closure progress_callback) (nullable): user data to pass to @progress_callback
- * @callback: (scope async): a #GAsyncReadyCallback to call when the request is satisfied
- * @user_data: (closure callback): the data to pass to callback function
+ * @progress_callback: (nullable) (scope notified) (closure progress_callback_data):
+ *   function to callback with progress information, or %NULL if
+ *   progress information is not needed
+ * @progress_callback_data: user data to pass to @progress_callback
+ * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
+ *   to call when the request is satisfied
+ * @user_data: the data to pass to callback
  *
  * Copies the file @source to the location specified by @destination
  * asynchronously. For details of the behaviour, see g_file_copy().
@@ -3965,12 +3967,11 @@ g_file_move (GFile                  *source,
  * @io_priority: the [I/O priority][io-priority] of the request
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
- * @progress_callback: (nullable) (scope call): #GFileProgressCallback
- *   function for updates
- * @progress_callback_data: (closure): gpointer to user data for
- *   the callback function
- * @callback: a #GAsyncReadyCallback to call
- *   when the request is satisfied
+ * @progress_callback: (nullable) (scope call) (closure progress_callback_data):
+ *   #GFileProgressCallback function for updates
+ * @progress_callback_data: gpointer to user data for the callback function
+ * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
+ *   to call when the request is satisfied
  * @user_data: the data to pass to callback function
  *
  * Asynchronously moves a file @source to the location of @destination. For details of the behaviour, see g_file_move().
@@ -4738,9 +4739,9 @@ g_file_set_display_name (GFile         *file,
  * @io_priority: the [I/O priority][io-priority] of the request
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
- * @callback: (scope async): a #GAsyncReadyCallback to call
- *   when the request is satisfied
- * @user_data: (closure): the data to pass to callback function
+ * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
+ *   to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * Asynchronously sets the display name for a given #GFile.
  *
@@ -5072,8 +5073,9 @@ g_file_real_set_attributes_from_info (GFile                *file,
  * @io_priority: the [I/O priority][io-priority] of the request
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
- * @callback: (scope async): a #GAsyncReadyCallback
- * @user_data: (closure): a #gpointer
+ * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
+ *   to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * Asynchronously sets the attributes of @file with @info.
  *
@@ -5342,9 +5344,9 @@ g_file_set_attribute_int64 (GFile                *file,
  *   or %NULL to avoid user interaction
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
- * @callback: (scope async) (nullable): a #GAsyncReadyCallback to call
- *   when the request is satisfied, or %NULL
- * @user_data: (closure): the data to pass to callback function
+ * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
+ *   to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * Mounts a file of type G_FILE_TYPE_MOUNTABLE.
  * Using @mount_operation, you can request callbacks when, for instance,
@@ -5428,9 +5430,9 @@ g_file_mount_mountable_finish (GFile         *file,
  * @flags: flags affecting the operation
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
- * @callback: (scope async) (nullable): a #GAsyncReadyCallback to call
- *   when the request is satisfied, or %NULL
- * @user_data: (closure): the data to pass to callback function
+ * @callback: (scope async) (nullable) (closure user_data): a #GAsyncReadyCallback
+ *   to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * Unmounts a file of type G_FILE_TYPE_MOUNTABLE.
  *
@@ -5517,9 +5519,9 @@ g_file_unmount_mountable_finish (GFile         *file,
  *   or %NULL to avoid user interaction
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
- * @callback: (scope async) (nullable): a #GAsyncReadyCallback to call
- *   when the request is satisfied, or %NULL
- * @user_data: (closure): the data to pass to callback function
+ * @callback: (scope async) (nullable) (closure user_data): a #GAsyncReadyCallback
+ *   to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * Unmounts a file of type %G_FILE_TYPE_MOUNTABLE.
  *
@@ -5616,9 +5618,9 @@ g_file_unmount_mountable_with_operation_finish (GFile         *file,
  * @flags: flags affecting the operation
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
- * @callback: (scope async) (nullable): a #GAsyncReadyCallback to call
- *   when the request is satisfied, or %NULL
- * @user_data: (closure): the data to pass to callback function
+ * @callback: (scope async) (nullable) (closure user_data): a #GAsyncReadyCallback
+ *   to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * Starts an asynchronous eject on a mountable.
  * When this operation has completed, @callback will be called with
@@ -5702,9 +5704,9 @@ g_file_eject_mountable_finish (GFile         *file,
  *   or %NULL to avoid user interaction
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
- * @callback: (scope async) (nullable): a #GAsyncReadyCallback to call
- *   when the request is satisfied, or %NULL
- * @user_data: (closure): the data to pass to callback function
+ * @callback: (scope async) (nullable) (closure user_data): a #GAsyncReadyCallback
+ *   to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * Starts an asynchronous eject on a mountable.
  * When this operation has completed, @callback will be called with
@@ -9329,9 +9331,9 @@ g_file_load_bytes_cb (GObject      *object,
  * g_file_load_bytes_async:
  * @file: a #GFile
  * @cancellable: (nullable): a #GCancellable or %NULL
- * @callback: (scope async): a #GAsyncReadyCallback to call when the
- *   request is satisfied
- * @user_data: (closure): the data to pass to callback function
+ * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
+ *   to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * Asynchronously loads the contents of @file as #GBytes.
  *

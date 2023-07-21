@@ -589,8 +589,9 @@ async_ready_close_callback_wrapper (GObject      *source_object,
  * @io_priority: the [I/O priority][io-priority]
  * of the request. 
  * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
- * @callback: (scope async): callback to call when the request is satisfied
- * @user_data: (closure): the data to pass to callback function
+ * @callback: (scope async): a #GAsyncReadyCallback
+ *   to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * Request an asynchronous read of @count bytes from the stream into the buffer
  * starting at @buffer. When the operation is finished @callback will be called. 
@@ -780,8 +781,9 @@ read_all_async_thread (GTask        *task,
  * @count: (in): the number of bytes that will be read from the stream
  * @io_priority: the [I/O priority][io-priority] of the request
  * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore
- * @callback: (scope async): callback to call when the request is satisfied
- * @user_data: (closure): the data to pass to callback function
+ * @callback: (scope async): a #GAsyncReadyCallback
+ *   to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * Request an asynchronous read of @count bytes from the stream into the
  * buffer starting at @buffer.
@@ -915,8 +917,9 @@ read_bytes_callback (GObject      *stream,
  * @count: the number of bytes that will be read from the stream
  * @io_priority: the [I/O priority][io-priority] of the request
  * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
- * @callback: (scope async): callback to call when the request is satisfied
- * @user_data: (closure): the data to pass to callback function
+ * @callback: (scope async): a #GAsyncReadyCallback
+ *   to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * Request an asynchronous read of @count bytes from the stream into a
  * new #GBytes. When the operation is finished @callback will be
@@ -993,8 +996,9 @@ g_input_stream_read_bytes_finish (GInputStream  *stream,
  * @count: the number of bytes that will be skipped from the stream
  * @io_priority: the [I/O priority][io-priority] of the request
  * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
- * @callback: (scope async): callback to call when the request is satisfied
- * @user_data: (closure): the data to pass to callback function
+ * @callback: (scope async): a #GAsyncReadyCallback
+ *   to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * Request an asynchronous skip of @count bytes from the stream.
  * When the operation is finished @callback will be called.
@@ -1104,8 +1108,9 @@ g_input_stream_skip_finish (GInputStream  *stream,
  * @stream: A #GInputStream.
  * @io_priority: the [I/O priority][io-priority] of the request
  * @cancellable: (nullable): optional cancellable object
- * @callback: (scope async): callback to call when the request is satisfied
- * @user_data: (closure): the data to pass to callback function
+ * @callback: (scope async): a #GAsyncReadyCallback
+ *   to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * Requests an asynchronous closes of the stream, releasing resources related to it.
  * When the operation is finished @callback will be called. 
