@@ -853,6 +853,56 @@ test_l10n_context (void)
   g_object_unref (settings);
 }
 
+/* Test use of l10n="time" and LC_TIME. */
+static void
+test_l10n_time (void)
+{
+  GSettings *settings;
+  gchar *str;
+  gchar *locale;
+
+  g_test_summary ("Test that l10n='time' attribute uses the correct category for translations");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/2575");
+
+  bindtextdomain ("test", locale_dir);
+  bind_textdomain_codeset ("test", "UTF-8");
+
+  locale = g_strdup (setlocale (LC_TIME, NULL));
+
+  settings = g_settings_new ("org.gtk.test.localized");
+
+  g_setenv ("LC_TIME", "C", TRUE);
+  setlocale (LC_TIME, "C");
+  str = g_settings_get_string (settings, "midnight");
+  g_setenv ("LC_TIME", locale, TRUE);
+  setlocale (LC_TIME, locale);
+
+  g_assert_cmpstr (str, ==, "12:00 AM");
+  g_free (str);
+  str = NULL;
+
+  g_setenv ("LC_TIME", "de_DE.UTF-8", TRUE);
+  setlocale (LC_TIME, "de_DE.UTF-8");
+  /* Only do the test if translation is actually working... */
+  if (g_str_equal (dgettext ("test", "\"12:00 AM\""), "\"00:00\""))
+    {
+      str = g_settings_get_string (settings, "midnight");
+
+      g_assert_cmpstr (str, ==, "00:00");
+      g_free (str);
+      str = NULL;
+    }
+  else
+    {
+      g_test_skip ("translation is not working");
+    }
+
+  g_setenv ("LC_TIME", locale, TRUE);
+  setlocale (LC_TIME, locale);
+  g_free (locale);
+  g_object_unref (settings);
+}
+
 enum
 {
   PROP_0,
@@ -3109,6 +3159,7 @@ main (int argc, char *argv[])
 
   g_test_add_func ("/gsettings/l10n", test_l10n);
   g_test_add_func ("/gsettings/l10n-context", test_l10n_context);
+  g_test_add_func ("/gsettings/l10n-time", test_l10n_time);
 
   g_test_add_func ("/gsettings/delay-apply", test_delay_apply);
   g_test_add_func ("/gsettings/delay-revert", test_delay_revert);
