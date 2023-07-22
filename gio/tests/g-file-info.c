@@ -43,7 +43,7 @@
 static void
 test_assigned_values (GFileInfo *info)
 {
-  const char *name, *display_name, *mistake;
+  const char *name, *name_filepath, *display_name, *mistake;
   guint64 size;
   GFileType type;
   
@@ -56,12 +56,14 @@ test_assigned_values (GFileInfo *info)
   /*  Retrieve data back and compare */
   
   name = g_file_info_get_attribute_byte_string (info, G_FILE_ATTRIBUTE_STANDARD_NAME);
+  name_filepath = g_file_info_get_attribute_file_path (info, G_FILE_ATTRIBUTE_STANDARD_NAME);
   display_name = g_file_info_get_attribute_string (info, G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME);
   mistake = g_file_info_get_attribute_string (info, G_FILE_ATTRIBUTE_STANDARD_COPY_NAME);
   size = g_file_info_get_attribute_uint64 (info, G_FILE_ATTRIBUTE_STANDARD_SIZE);
   type = g_file_info_get_file_type (info);
   
   g_assert_cmpstr (name, ==, TEST_NAME);
+  g_assert_cmpstr (name_filepath, ==, name);
   g_assert_cmpstr (display_name, ==, TEST_DISPLAY_NAME);
   g_assert_null (mistake);
   g_assert_cmpint (size, ==, TEST_SIZE);
@@ -102,7 +104,12 @@ test_g_file_info (void)
   g_strfreev (attr_list);
 
   test_assigned_values (info);
-	
+
+  /* Test the file path encoding functions */
+  g_file_info_set_attribute_file_path (info, G_FILE_ATTRIBUTE_STANDARD_NAME, "something different");
+  g_assert_cmpstr (g_file_info_get_attribute_file_path (info, G_FILE_ATTRIBUTE_STANDARD_NAME), ==, "something different");
+  g_file_info_set_attribute_file_path (info, G_FILE_ATTRIBUTE_STANDARD_NAME, TEST_NAME);
+
   /*  Test dups */
   info_dup = g_file_info_dup (info);
   g_assert_nonnull (info_dup);

@@ -1360,6 +1360,9 @@ GObject *          g_file_info_get_attribute_object      (GFileInfo  *info,
 GIO_AVAILABLE_IN_ALL
 char **            g_file_info_get_attribute_stringv     (GFileInfo  *info,
 							  const char *attribute);
+GIO_AVAILABLE_IN_2_78
+const char *       g_file_info_get_attribute_file_path   (GFileInfo  *info,
+							  const char *attribute);
 
 GIO_AVAILABLE_IN_ALL
 void               g_file_info_set_attribute             (GFileInfo  *info,
@@ -1402,6 +1405,10 @@ GIO_AVAILABLE_IN_ALL
 void               g_file_info_set_attribute_stringv     (GFileInfo  *info,
 							  const char *attribute,
 							  char      **attr_value);
+GIO_AVAILABLE_IN_2_78
+void               g_file_info_set_attribute_file_path   (GFileInfo  *info,
+							  const char *attribute,
+							  const char *attr_value);
 
 GIO_AVAILABLE_IN_ALL
 void               g_file_info_clear_status              (GFileInfo  *info);

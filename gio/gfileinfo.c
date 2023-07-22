@@ -967,6 +967,30 @@ g_file_info_get_attribute_byte_string (GFileInfo  *info,
 }
 
 /**
+ * g_file_info_get_attribute_file_path:
+ * @info: a #GFileInfo.
+ * @attribute: a file attribute key.
+ *
+ * Gets the value of a byte string attribute as a file path.
+ *
+ * If the attribute does not contain a byte string, `NULL` will be returned.
+ *
+ * This function is meant to be used by language bindings that have specific
+ * handling for Unix paths.
+ *
+ * Returns: (type filename) (nullable): the contents of the @attribute value as
+ * a file path, or %NULL otherwise.
+ *
+ * Since: 2.78
+ **/
+const char *
+g_file_info_get_attribute_file_path (GFileInfo  *info,
+                                     const char *attribute)
+{
+  return g_file_info_get_attribute_byte_string (info, attribute);
+}
+
+/**
  * g_file_info_get_attribute_stringv:
  * @info: a #GFileInfo.
  * @attribute: a file attribute key.
@@ -1316,6 +1340,28 @@ g_file_info_set_attribute_byte_string (GFileInfo  *info,
   _g_file_info_set_attribute_byte_string_by_id (info,
                                                 lookup_attribute (attribute),
                                                 attr_value);
+}
+
+/**
+ * g_file_info_set_attribute_file_path:
+ * @info: a #GFileInfo.
+ * @attribute: a file attribute key.
+ * @attr_value: (type filename): a file path.
+ *
+ * Sets the @attribute to contain the given @attr_value,
+ * if possible.
+ *
+ * This function is meant to be used by language bindings that have specific
+ * handling for Unix paths.
+ *
+ * Since: 2.78
+ **/
+void
+g_file_info_set_attribute_file_path (GFileInfo  *info,
+                                     const char *attribute,
+                                     const char *attr_value)
+{
+  g_file_info_set_attribute_byte_string (info, attribute, attr_value);
 }
 
 void
