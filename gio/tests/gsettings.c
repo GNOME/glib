@@ -776,17 +776,14 @@ test_l10n (void)
 
   settings = g_settings_new ("org.gtk.test.localized");
 
-  g_setenv ("LC_MESSAGES", "C", TRUE);
   setlocale (LC_MESSAGES, "C");
   str = g_settings_get_string (settings, "error-message");
-  g_setenv ("LC_MESSAGES", locale, TRUE);
   setlocale (LC_MESSAGES, locale);
 
   g_assert_cmpstr (str, ==, "Unnamed");
   g_free (str);
   str = NULL;
 
-  g_setenv ("LC_MESSAGES", "de_DE.UTF-8", TRUE);
   setlocale (LC_MESSAGES, "de_DE.UTF-8");
   /* Only do the test if translation is actually working... */
   if (g_str_equal (dgettext ("test", "\"Unnamed\""), "\"Unbenannt\""))
@@ -802,7 +799,6 @@ test_l10n (void)
       g_test_skip ("translation is not working");
     }
 
-  g_setenv ("LC_MESSAGES", locale, TRUE);
   setlocale (LC_MESSAGES, locale);
   g_free (locale);
   g_object_unref (settings);
@@ -829,17 +825,14 @@ test_l10n_context (void)
 
   settings = g_settings_new ("org.gtk.test.localized");
 
-  g_setenv ("LC_MESSAGES", "C", TRUE);
   setlocale (LC_MESSAGES, "C");
   g_settings_get (settings, "backspace", "s", &str);
-  g_setenv ("LC_MESSAGES", locale, TRUE);
   setlocale (LC_MESSAGES, locale);
 
   g_assert_cmpstr (str, ==, "BackSpace");
   g_free (str);
   str = NULL;
 
-  g_setenv ("LC_MESSAGES", "de_DE.UTF-8", TRUE);
   setlocale (LC_MESSAGES, "de_DE.UTF-8");
   /* Only do the test if translation is actually working... */
   if (g_str_equal (dgettext ("test", "\"Unnamed\""), "\"Unbenannt\""))
@@ -847,7 +840,6 @@ test_l10n_context (void)
   else
     g_test_skip ("translation is not working");
 
-  g_setenv ("LC_MESSAGES", locale, TRUE);
   setlocale (LC_MESSAGES, locale);
   g_free (locale);
   g_object_unref (settings);
@@ -871,17 +863,14 @@ test_l10n_time (void)
 
   settings = g_settings_new ("org.gtk.test.localized");
 
-  g_setenv ("LC_TIME", "C", TRUE);
   setlocale (LC_TIME, "C");
   str = g_settings_get_string (settings, "midnight");
-  g_setenv ("LC_TIME", locale, TRUE);
   setlocale (LC_TIME, locale);
 
   g_assert_cmpstr (str, ==, "12:00 AM");
   g_free (str);
   str = NULL;
 
-  g_setenv ("LC_TIME", "de_DE.UTF-8", TRUE);
   setlocale (LC_TIME, "de_DE.UTF-8");
   /* Only do the test if translation is actually working... */
   if (g_str_equal (dgettext ("test", "\"12:00 AM\""), "\"00:00\""))
@@ -897,7 +886,6 @@ test_l10n_time (void)
       g_test_skip ("translation is not working");
     }
 
-  g_setenv ("LC_TIME", locale, TRUE);
   setlocale (LC_TIME, locale);
   g_free (locale);
   g_object_unref (settings);
