@@ -381,6 +381,7 @@ headers = [
   'sys/mnttab.h',
   'sys/mount.h',
   'sys/param.h',
+  'sys/prctl.h',
   'sys/resource.h',
   'sys/select.h',
   'sys/statfs.h',
@@ -694,6 +695,11 @@ if glib_conf.has('HAVE_SYS_STATFS_H') or glib_conf.has('HAVE_SYS_MOUNT_H')
   functions += ['statfs']
 else
   have_func_statfs = false
+endif
+if glib_conf.has('HAVE_SYS_PRCTL_H')
+  functions += ['prctl']
+else
+  have_func_prctl = false
 endif
 
 if host_system == 'windows'

@@ -34,6 +34,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <inttypes.h>
+#ifdef HAVE_SYS_PRCTL_H
+#include <sys/prctl.h>
+#endif
 #ifdef HAVE_SYS_RESOURCE_H
 #include <sys/resource.h>
 #endif
@@ -1320,6 +1323,12 @@ g_test_disable_crash_reporting (void)
   struct rlimit limit = { 0, 0 };
 
   (void) setrlimit (RLIMIT_CORE, &limit);
+#endif
+
+#if defined(HAVE_PRCTL) && defined(PR_SET_DUMPABLE)
+  /* On Linux, RLIMIT_CORE = 0 is ignored if core dumps are
+   * configured to be written to a pipe, but PR_SET_DUMPABLE is not. */
+  (void) prctl (PR_SET_DUMPABLE, 0, 0, 0, 0);
 #endif
 }
 
