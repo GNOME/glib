@@ -407,6 +407,8 @@ GLIB_AVAILABLE_IN_2_38
 gboolean g_test_failed                  (void);
 GLIB_AVAILABLE_IN_2_38
 void    g_test_set_nonfatal_assertions  (void);
+GLIB_AVAILABLE_IN_2_78
+void    g_test_disable_crash_reporting  (void);
 
 /**
  * g_test_add:

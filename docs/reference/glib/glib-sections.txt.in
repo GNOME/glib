@@ -3359,6 +3359,7 @@ g_test_trap_assert_stdout_unmatched
 g_test_trap_assert_stderr
 g_test_trap_assert_stderr_unmatched
 g_test_trap_fork
+g_test_disable_crash_reporting
 
 g_test_rand_bit
 g_test_rand_int
