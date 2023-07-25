@@ -3596,30 +3596,27 @@ g_main_context_release (GMainContext *context)
     context = g_main_context_default ();
 
   LOCK_CONTEXT (context);
-
-#ifndef G_DISABLE_CHECKS
-  if (G_UNLIKELY (context->owner != G_THREAD_SELF || context->owner_count == 0))
-    {
-      GThread *context_owner = context->owner;
-      guint context_owner_count = context->owner_count;
-
-      UNLOCK_CONTEXT (context);
-
-      g_critical ("g_main_context_release() called on a context (%p, owner %p, "
-                  "owner count %u) which is not acquired by the current thread",
-                  context, context_owner, context_owner_count);
-      return;
-    }
-#endif  /* !G_DISABLE_CHECKS */
-
   g_main_context_release_unlocked (context);
-
   UNLOCK_CONTEXT (context);
 }
 
 static void
 g_main_context_release_unlocked (GMainContext *context)
 {
+  /* NOTE: We should also have the following assert here:
+   * g_return_if_fail (context->owner == G_THREAD_SELF);
+   * However, this breaks NetworkManager, which has been (non-compliantly but
+   * apparently safely) releasing a #GMainContext from a thread which didn’t
+   * acquire it.
+   * Breaking that would be quite disruptive, so we won’t do that now. However,
+   * GLib reserves the right to add that assertion in future, if doing so would
+   * allow for optimisations or refactorings. By that point, NetworkManager will
+   * have to have reworked its use of #GMainContext.
+   *
+   * See: https://gitlab.gnome.org/GNOME/glib/-/merge_requests/3513
+   */
+  g_return_if_fail (context->owner_count > 0);
+
   context->owner_count--;
   if (context->owner_count == 0)
     {
