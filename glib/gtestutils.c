@@ -34,6 +34,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <inttypes.h>
+#ifdef HAVE_SYS_PRCTL_H
+#include <sys/prctl.h>
+#endif
 #ifdef HAVE_SYS_RESOURCE_H
 #include <sys/resource.h>
 #endif
@@ -1302,6 +1305,33 @@ g_test_log (GTestLogType lbit,
     }
 }
 
+/**
+ * g_test_disable_crash_reporting:
+ *
+ * Attempt to disable system crash reporting infrastructure.
+ *
+ * This function should be called before exercising code paths that are
+ * expected or intended to crash, to avoid wasting resources in system-wide
+ * crash collection infrastructure such as systemd-coredump or abrt.
+ *
+ * Since: 2.78
+ */
+void
+g_test_disable_crash_reporting (void)
+{
+#ifdef HAVE_SYS_RESOURCE_H
+  struct rlimit limit = { 0, 0 };
+
+  (void) setrlimit (RLIMIT_CORE, &limit);
+#endif
+
+#if defined(HAVE_PRCTL) && defined(PR_SET_DUMPABLE)
+  /* On Linux, RLIMIT_CORE = 0 is ignored if core dumps are
+   * configured to be written to a pipe, but PR_SET_DUMPABLE is not. */
+  (void) prctl (PR_SET_DUMPABLE, 0, 0, 0, 0);
+#endif
+}
+
 /* We intentionally parse the command line without GOptionContext
  * because otherwise you would never be able to test it.
  */
@@ -1376,12 +1406,8 @@ parse_args (gint    *argc_p,
            * tests spawn a *lot* of them.  Avoid spamming system crash
            * collection programs such as systemd-coredump and abrt.
            */
-#ifdef HAVE_SYS_RESOURCE_H
-          {
-            struct rlimit limit = { 0, 0 };
-            (void) setrlimit (RLIMIT_CORE, &limit);
-          }
-#endif
+          g_test_disable_crash_reporting ();
+
           argv[i] = NULL;
 
           /* Force non-TAP output when spawning a subprocess, since people often
@@ -3980,12 +4006,7 @@ g_test_trap_fork (guint64        usec_timeout,
        * tests spawn a *lot* of them.  Avoid spamming system crash
        * collection programs such as systemd-coredump and abrt.
        */
-#ifdef HAVE_SYS_RESOURCE_H
-      {
-        struct rlimit limit = { 0, 0 };
-        (void) setrlimit (RLIMIT_CORE, &limit);
-      }
-#endif
+      g_test_disable_crash_reporting ();
 
       return TRUE;
     }

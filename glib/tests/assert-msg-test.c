@@ -19,20 +19,14 @@
  */
 
 #include "config.h"
-#ifdef HAVE_SYS_RESOURCE_H
-#include <sys/resource.h>
-#endif
 #include <glib.h>
 
 int
 main (int    argc,
       char **argv)
 {
-#ifdef HAVE_SYS_RESOURCE_H
   /* We expect this test to abort, so try to avoid that creating a coredump */
-  struct rlimit limit = { 0, 0 };
-  (void) setrlimit (RLIMIT_CORE, &limit);
-#endif
+  g_test_disable_crash_reporting ();
 
   g_assert (42 < 0);
   return 0;
