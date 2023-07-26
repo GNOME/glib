@@ -13,6 +13,7 @@ giowin32_lib = static_library('giowin32',
   dependencies : [
     libintl,
     gioenumtypes_dep,
+    libglib_dep,
     gmodule_inc_dep,
   ],
   gnu_symbol_visibility : 'hidden',
