@@ -3935,6 +3935,38 @@ test_enumerator_cancellation (void)
   g_object_unref (dir);
 }
 
+static void
+test_from_uri_ignores_fragment (void)
+{
+  GFile *file;
+  gchar *path;
+  file = g_file_new_for_uri ("file:///tmp/foo#bar");
+  path = g_file_get_path (file);
+#ifdef G_OS_WIN32
+  g_assert_cmpstr (path, ==, "\\tmp\\foo");
+#else
+  g_assert_cmpstr (path, ==, "/tmp/foo");
+#endif
+  g_free (path);
+  g_object_unref (file);
+}
+
+static void
+test_from_uri_ignores_query_string (void)
+{
+  GFile *file;
+  gchar *path;
+  file = g_file_new_for_uri ("file:///tmp/foo?bar");
+  path = g_file_get_path (file);
+#ifdef G_OS_WIN32
+  g_assert_cmpstr (path, ==, "\\tmp\\foo");
+#else
+  g_assert_cmpstr (path, ==, "/tmp/foo");
+#endif
+  g_free (path);
+  g_object_unref (file);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -3990,6 +4022,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/file/query-default-handler-uri", test_query_default_handler_uri);
   g_test_add_func ("/file/query-default-handler-uri-async", test_query_default_handler_uri_async);
   g_test_add_func ("/file/enumerator-cancellation", test_enumerator_cancellation);
+  g_test_add_func ("/file/from-uri/ignores-query-string", test_from_uri_ignores_query_string);
+  g_test_add_func ("/file/from-uri/ignores-fragment", test_from_uri_ignores_fragment);
 
   return g_test_run ();
 }

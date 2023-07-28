@@ -1662,7 +1662,12 @@ hostname_validate (const char *hostname)
  *         errors. Any of the errors in #GConvertError may occur.
  * 
  * Converts an escaped ASCII-encoded URI to a local filename in the
- * encoding used for filenames. 
+ * encoding used for filenames.
+ *
+ * Since GLib 2.78, the query string and fragment can be present in the URI,
+ * but are not part of the resulting filename.
+ * We take inspiration from https://url.spec.whatwg.org/#file-state,
+ * but we don't support the entire standard.
  * 
  * Returns: (type filename): a newly-allocated string holding
  *               the resulting filename, or %NULL on an error.
@@ -1672,11 +1677,13 @@ g_filename_from_uri (const gchar *uri,
 		     gchar      **hostname,
 		     GError     **error)
 {
-  const char *path_part;
+  const char *past_scheme;
   const char *host_part;
   char *unescaped_hostname;
   char *result;
   char *filename;
+  char *past_path;
+  char *temp_uri;
   int offs;
 #ifdef G_OS_WIN32
   char *p, *slash;
@@ -1692,40 +1699,44 @@ g_filename_from_uri (const gchar *uri,
 		   uri);
       return NULL;
     }
-  
-  path_part = uri + strlen ("file:");
-  
-  if (strchr (path_part, '#') != NULL)
-    {
-      g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_BAD_URI,
-		   _("The local file URI “%s” may not include a “#”"),
-		   uri);
-      return NULL;
-    }
-	
-  if (has_case_prefix (path_part, "///")) 
-    path_part += 2;
-  else if (has_case_prefix (path_part, "//"))
-    {
-      path_part += 2;
-      host_part = path_part;
 
-      path_part = strchr (path_part, '/');
+  temp_uri = g_strdup (uri);
 
-      if (path_part == NULL)
+  past_scheme = temp_uri + strlen ("file:");
+  
+  past_path = strchr (past_scheme, '?');
+  if (past_path != NULL)
+    *past_path = '\0';
+
+  past_path = strchr (past_scheme, '#');
+  if (past_path != NULL)
+    *past_path = '\0';
+
+  if (has_case_prefix (past_scheme, "///"))
+    past_scheme += 2;
+  else if (has_case_prefix (past_scheme, "//"))
+    {
+      past_scheme += 2;
+      host_part = past_scheme;
+
+      past_scheme = strchr (past_scheme, '/');
+
+      if (past_scheme == NULL)
 	{
+          g_free (temp_uri);
 	  g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_BAD_URI,
 		       _("The URI “%s” is invalid"),
 		       uri);
 	  return NULL;
 	}
 
-      unescaped_hostname = g_unescape_uri_string (host_part, path_part - host_part, "", TRUE);
+      unescaped_hostname = g_unescape_uri_string (host_part, past_scheme - host_part, "", TRUE);
 
       if (unescaped_hostname == NULL ||
 	  !hostname_validate (unescaped_hostname))
 	{
 	  g_free (unescaped_hostname);
+          g_free (temp_uri);
 	  g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_BAD_URI,
 		       _("The hostname of the URI “%s” is invalid"),
 		       uri);
@@ -1738,10 +1749,11 @@ g_filename_from_uri (const gchar *uri,
 	g_free (unescaped_hostname);
     }
 
-  filename = g_unescape_uri_string (path_part, -1, "/", FALSE);
+  filename = g_unescape_uri_string (past_scheme, -1, "/", FALSE);
 
   if (filename == NULL)
     {
+      g_free (temp_uri);
       g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_BAD_URI,
 		   _("The URI “%s” contains invalidly escaped characters"),
 		   uri);
@@ -1784,6 +1796,8 @@ g_filename_from_uri (const gchar *uri,
 
   result = g_strdup (filename + offs);
   g_free (filename);
+
+  g_free (temp_uri);
 
   return result;
 }
