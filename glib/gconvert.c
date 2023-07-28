@@ -1672,7 +1672,7 @@ g_filename_from_uri (const gchar *uri,
 		     gchar      **hostname,
 		     GError     **error)
 {
-  const char *path_part;
+  const char *past_scheme;
   const char *host_part;
   char *unescaped_hostname;
   char *result;
@@ -1693,9 +1693,9 @@ g_filename_from_uri (const gchar *uri,
       return NULL;
     }
   
-  path_part = uri + strlen ("file:");
+  past_scheme = uri + strlen ("file:");
   
-  if (strchr (path_part, '#') != NULL)
+  if (strchr (past_scheme, '#') != NULL)
     {
       g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_BAD_URI,
 		   _("The local file URI “%s” may not include a “#”"),
@@ -1703,16 +1703,16 @@ g_filename_from_uri (const gchar *uri,
       return NULL;
     }
 	
-  if (has_case_prefix (path_part, "///")) 
-    path_part += 2;
-  else if (has_case_prefix (path_part, "//"))
+  if (has_case_prefix (past_scheme, "///"))
+    past_scheme += 2;
+  else if (has_case_prefix (past_scheme, "//"))
     {
-      path_part += 2;
-      host_part = path_part;
+      past_scheme += 2;
+      host_part = past_scheme;
 
-      path_part = strchr (path_part, '/');
+      past_scheme = strchr (past_scheme, '/');
 
-      if (path_part == NULL)
+      if (past_scheme == NULL)
 	{
 	  g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_BAD_URI,
 		       _("The URI “%s” is invalid"),
@@ -1720,7 +1720,7 @@ g_filename_from_uri (const gchar *uri,
 	  return NULL;
 	}
 
-      unescaped_hostname = g_unescape_uri_string (host_part, path_part - host_part, "", TRUE);
+      unescaped_hostname = g_unescape_uri_string (host_part, past_scheme - host_part, "", TRUE);
 
       if (unescaped_hostname == NULL ||
 	  !hostname_validate (unescaped_hostname))
@@ -1738,7 +1738,7 @@ g_filename_from_uri (const gchar *uri,
 	g_free (unescaped_hostname);
     }
 
-  filename = g_unescape_uri_string (path_part, -1, "/", FALSE);
+  filename = g_unescape_uri_string (past_scheme, -1, "/", FALSE);
 
   if (filename == NULL)
     {
