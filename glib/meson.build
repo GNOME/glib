@@ -443,7 +443,7 @@ pkg.generate(libglib,
   libraries : [libintl_deps],
   libraries_private : [win32_ldflags],
   subdirs : ['glib-2.0'],
-  extra_cflags : ['-I${libdir}/glib-2.0/include'],
+  extra_cflags : ['-I${libdir}/glib-2.0/include'] + win32_cflags,
   variables : [
     'bindir=' + '${prefix}' / get_option('bindir'),
     'datadir=' + '${prefix}' / get_option('datadir'),
