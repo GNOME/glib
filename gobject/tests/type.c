@@ -215,6 +215,20 @@ test_is_a (void)
   g_assert_false ((g_type_is_a) (bar_get_type (), bibi_get_type ()));
 }
 
+static void
+test_query (void)
+{
+  GTypeQuery results;
+
+  g_test_message ("Invalid types can’t be queried.");
+  g_type_query (G_TYPE_INVALID, &results);
+  g_assert_cmpuint (results.type, ==, 0);
+
+  g_test_message ("Unclassed types can’t be queried.");
+  g_type_query (G_TYPE_INT64, &results);
+  g_assert_cmpuint (results.type, ==, 0);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -225,6 +239,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/type/interface-check", test_interface_check);
   g_test_add_func ("/type/next-base", test_next_base);
   g_test_add_func ("/type/is-a", test_is_a);
+  g_test_add_func ("/type/query", test_query);
 
   return g_test_run ();
 }
