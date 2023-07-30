@@ -65,10 +65,10 @@ Building software that just *uses* GLib or GTK also require to have
 the right compiler set up the right way. If you intend to use MinGW-GCC,
 follow the relevant instructions below in that case, too.
 
-You should link to GLib using the `-mms-bitfields` GCC flag. It is the default
-since 2012 (GCC 4.7). This flag means that the struct layout rules are identical
-to those used by MSVC. This is essential if the same DLLs are to be usable both
-from gcc- and MSVC-compiled code.
+You should link to GLib using the `-mms-bitfields` GCC flag. This flag means
+that the struct layout rules are identical to those used by MSVC. This is
+essential if the same DLLs are to be usable both from gcc- and MSVC-compiled
+code.
 
 ## Cross-CRT issues
 
