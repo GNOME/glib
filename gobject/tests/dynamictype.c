@@ -109,8 +109,6 @@ test_dynamic_type (void)
 {
   DynamicObjectClass *class;
 
-  test_module_new (module_register);
-
   /* Not loaded until we call ref for the first time */
   class = g_type_class_peek (DYNAMIC_OBJECT_TYPE);
   g_assert_null (class);
@@ -165,6 +163,27 @@ test_dynamic_type (void)
 #endif
 }
 
+static void
+test_dynamic_type_query (void)
+{
+  DynamicObjectClass *class;
+  GTypeQuery query_result;
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/623");
+
+  class = g_type_class_ref (DYNAMIC_OBJECT_TYPE);
+  g_assert_nonnull (class);
+
+  g_type_query (DYNAMIC_OBJECT_TYPE, &query_result);
+
+  g_assert_cmpuint (query_result.type, !=, 0);
+  g_assert_cmpstr (query_result.type_name, ==, "DynamicObject");
+  g_assert_cmpuint (query_result.class_size, >=, sizeof (DynamicObjectClass));
+  g_assert_cmpuint (query_result.instance_size, >=, sizeof (DynamicObject));
+
+  g_type_class_unref (class);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -175,7 +194,10 @@ main (int   argc,
 
   g_test_init (&argc, &argv, NULL);
 
+  test_module_new (module_register);
+
   g_test_add_func ("/gobject/dynamic-type", test_dynamic_type);
+  g_test_add_func ("/gobject/dynamic-type/query", test_dynamic_type_query);
 
   return g_test_run ();
 }
