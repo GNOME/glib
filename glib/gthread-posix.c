@@ -1047,22 +1047,99 @@ g_private_impl_free (pthread_key_t *key)
   free (key);
 }
 
-static inline pthread_key_t *
-g_private_get_impl (GPrivate *key)
+static gpointer
+g_private_impl_new_direct (GDestroyNotify notify)
 {
-  pthread_key_t *impl = g_atomic_pointer_get (&key->p);
+  gpointer impl = (void *) (gssize) -1;
+  pthread_key_t key;
+  gint status;
 
-  if G_UNLIKELY (impl == NULL)
+  status = pthread_key_create (&key, notify);
+  if G_UNLIKELY (status != 0)
+    g_thread_abort (status, "pthread_key_create");
+
+  memcpy (&impl, &key, sizeof (pthread_key_t));
+
+  /* pthread_key_create could theoretically put a NULL value into key.
+   * If that happens, waste the result and create a new one, since we
+   * use NULL to mean "not yet allocated".
+   *
+   * This will only happen once per program run.
+   *
+   * We completely avoid this problem for the case where pthread_key_t
+   * is smaller than void* (for example, on 64 bit Linux) by putting
+   * some high bits in the value of 'impl' to start with.  Since we only
+   * overwrite part of the pointer, we will never end up with NULL.
+   */
+  if (sizeof (pthread_key_t) == sizeof (gpointer))
     {
-      impl = g_private_impl_new (key->notify);
-      if (!g_atomic_pointer_compare_and_exchange (&key->p, NULL, impl))
+      if G_UNLIKELY (impl == NULL)
         {
-          g_private_impl_free (impl);
-          impl = key->p;
+          status = pthread_key_create (&key, notify);
+          if G_UNLIKELY (status != 0)
+            g_thread_abort (status, "pthread_key_create");
+
+          memcpy (&impl, &key, sizeof (pthread_key_t));
+
+          if G_UNLIKELY (impl == NULL)
+            g_thread_abort (status, "pthread_key_create (gave NULL result twice)");
         }
     }
 
   return impl;
+}
+
+static void
+g_private_impl_free_direct (gpointer impl)
+{
+  pthread_key_t tmp;
+  gint status;
+
+  memcpy (&tmp, &impl, sizeof (pthread_key_t));
+
+  status = pthread_key_delete (tmp);
+  if G_UNLIKELY (status != 0)
+    g_thread_abort (status, "pthread_key_delete");
+}
+
+static inline pthread_key_t
+g_private_get_impl (GPrivate *key)
+{
+  if (sizeof (pthread_key_t) > sizeof (gpointer))
+    {
+      pthread_key_t *impl = g_atomic_pointer_get (&key->p);
+
+      if G_UNLIKELY (impl == NULL)
+        {
+          impl = g_private_impl_new (key->notify);
+          if (!g_atomic_pointer_compare_and_exchange (&key->p, NULL, impl))
+            {
+              g_private_impl_free (impl);
+              impl = key->p;
+            }
+        }
+
+      return *impl;
+    }
+  else
+    {
+      gpointer impl = g_atomic_pointer_get (&key->p);
+      pthread_key_t tmp;
+
+      if G_UNLIKELY (impl == NULL)
+        {
+          impl = g_private_impl_new_direct (key->notify);
+          if (!g_atomic_pointer_compare_and_exchange (&key->p, NULL, impl))
+            {
+              g_private_impl_free_direct (impl);
+              impl = key->p;
+            }
+        }
+
+      memcpy (&tmp, &impl, sizeof (pthread_key_t));
+
+      return tmp;
+    }
 }
 
 /**
@@ -1081,7 +1158,7 @@ gpointer
 g_private_get (GPrivate *key)
 {
   /* quote POSIX: No errors are returned from pthread_getspecific(). */
-  return pthread_getspecific (*g_private_get_impl (key));
+  return pthread_getspecific (g_private_get_impl (key));
 }
 
 /**
@@ -1101,7 +1178,7 @@ g_private_set (GPrivate *key,
 {
   gint status;
 
-  if G_UNLIKELY ((status = pthread_setspecific (*g_private_get_impl (key), value)) != 0)
+  if G_UNLIKELY ((status = pthread_setspecific (g_private_get_impl (key), value)) != 0)
     g_thread_abort (status, "pthread_setspecific");
 }
 
@@ -1123,13 +1200,13 @@ void
 g_private_replace (GPrivate *key,
                    gpointer  value)
 {
-  pthread_key_t *impl = g_private_get_impl (key);
+  pthread_key_t impl = g_private_get_impl (key);
   gpointer old;
   gint status;
 
-  old = pthread_getspecific (*impl);
+  old = pthread_getspecific (impl);
 
-  if G_UNLIKELY ((status = pthread_setspecific (*impl, value)) != 0)
+  if G_UNLIKELY ((status = pthread_setspecific (impl, value)) != 0)
     g_thread_abort (status, "pthread_setspecific");
 
   if (old && key->notify)
