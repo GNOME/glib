@@ -1,3 +1,51 @@
+Overview of changes in GLib 2.77.1, 2023-07-30
+==============================================
+
+* Fix some regressions with `GKeyFile` comment handling (#3047, work by Gaël Bonithon)
+
+* Improve handling of query and fragment components in `file:` URIs (#3050, work by Lukáš Tyrychtr)
+
+* Bugs fixed:
+  - #473 systemtap probes for gvariant (Allison Karlitskaya)
+  - #623 g_type_query() doesn't work for dynamic types (Philip Withnall)
+  - #931 Optimise GPrivate by removing one malloc (Allison Karlitskaya)
+  - #2929 gio: Failing build due to race generating glib/gversionmacros.h (Eric
+    van Gyzen)
+  - #3045 2.77.0: gio pkg-config test has incorrect install location for gio-
+    querymodules & glib-compile-schemas (Philip Withnall)
+  - #3047 2.77.0 changes formatting of keyfiles (Gaël Bonithon)
+  - #3048 Forcing fallback for libintl does not work (Brendan Shanks)
+  - #3050 g_file_new_for_uri() handles query strings incorrectly ("?") (Lukáš
+    Tyrychtr)
+  - #3054 Fedora installer (anaconda) crashes early with glib 2.77.0 due to
+    "Attempt to unlock mutex that was not locked", when it runs `hwclock` and
+    changes the system time (Thomas Haller, Philip Withnall)
+  - !3287 Audit and fix incorrect use of (closure) in glib
+  - !3461 gfileinfo: add file_path methods for language bindings
+  - !3485 docs: Expand supported platforms documentation a little
+  - !3494 ci: Manually fetch submodules for style-check CI jobs
+  - !3495 gdbus-codegen: Error on invalid dbus types
+  - !3496 garray: Fix typo in doc comment of g_ptr_array_sort[_with_data]()
+  - !3499 strfuncs: Add missing ownership annotations for returned string
+    vectors
+  - !3504 Revert "build/gmodule-2.0.pc: Move compiler flags from Libs to Cflags"
+  - !3505 meson: help gobject-introspection locate source and build dirs
+  - !3509 build-sys: drop -mms-bitfields GCC flag
+  - !3510 testutils: Use prctl PR_SET_DUMPABLE to silence core dumps on Linux
+  - !3514 Revert "build-sys: drop -mms-bitfields GCC flag"
+  - !3515 gnetworkmonitor: Expand guidelines for metered data use
+  - !3517 tests: Add some more tests for g_type_query()
+  - !3518 m4macros: drop unused m4 files
+
+* Translation updates:
+  - Georgian (Ekaterine Papava)
+  - Hebrew (Yosef Or Boczko)
+  - Hungarian (Balázs Úr)
+  - Persian (Danial Behzadi)
+  - Slovenian (Matej Urbančič)
+  - Ukrainian (Yuri Chornoivan)
+
+
 Overview of changes in GLib 2.77.0, 2023-07-06
 ==============================================
 
