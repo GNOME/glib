@@ -2358,6 +2358,20 @@ if host_system == 'windows' and cc.get_id() != 'msvc' and cc.get_id() != 'clang-
   # Ensure MSVC-compatible struct packing convention is used when
   # compiling for Win32 with gcc. It is used for the whole project and exposed
   # in glib-2.0.pc.
+  if not cc.compiles('''
+struct _GTestMSBitfields
+{
+  int a : 1;
+  short b : 1;
+};
+
+typedef char _StaticCheck[sizeof(struct _GTestMSBitfields) != sizeof(int) ? 1 : -1];
+''')
+    warning('''
+Your compiler does not have ms-bitfields packing by default.
+Please use gcc >= 4.7 or clang >= 12: GLib will drop -mms-bitfields in the future.
+''')
+  endif
   win32_cflags = ['-mms-bitfields']
   add_project_arguments(win32_cflags, language : 'c')
 
