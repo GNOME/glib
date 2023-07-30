@@ -34,6 +34,7 @@
 #include <glib/grefcount.h>
 #include <string.h>
 
+#include "glib_trace.h"
 
 /*
  * This file includes the structure definition for GVariant and a small
@@ -528,6 +529,7 @@ g_variant_ensure_serialised (GVariant *value)
       GBytes *bytes;
       gpointer data;
 
+      TRACE(GLIB_VARIANT_START_SERIALISE(value, value->type_info));
       g_variant_ensure_size (value);
       data = g_malloc (value->size);
       g_variant_serialise (value, data);
@@ -540,6 +542,7 @@ g_variant_ensure_serialised (GVariant *value)
       value->contents.serialised.ordered_offsets_up_to = G_MAXSIZE;
       value->contents.serialised.checked_offsets_up_to = G_MAXSIZE;
       value->state |= STATE_SERIALISED;
+      TRACE(GLIB_VARIANT_END_SERIALISE(value, value->type_info));
     }
 }
 
@@ -676,6 +679,8 @@ g_variant_new_from_bytes (const GVariantType *type,
 
   g_clear_pointer (&owned_bytes, g_bytes_unref);
 
+  TRACE(GLIB_VARIANT_FROM_BUFFER(value, value->type_info, value->ref_count, value->state));
+
   return value;
 }
 
@@ -708,6 +713,7 @@ g_variant_new_from_children (const GVariantType  *type,
   value = g_variant_alloc (type, FALSE, trusted);
   value->contents.tree.children = children;
   value->contents.tree.n_children = n_children;
+  TRACE(GLIB_VARIANT_FROM_CHILDREN(value, value->type_info, value->ref_count, value->state));
 
   return value;
 }
@@ -781,6 +787,8 @@ g_variant_unref (GVariant *value)
 {
   g_return_if_fail (value != NULL);
 
+  TRACE(GLIB_VARIANT_UNREF(value, value->type_info, value->ref_count, value->state));
+
   if (g_atomic_ref_count_dec (&value->ref_count))
     {
       if G_UNLIKELY (value->state & STATE_LOCKED)
@@ -815,6 +823,8 @@ GVariant *
 g_variant_ref (GVariant *value)
 {
   g_return_val_if_fail (value != NULL, NULL);
+
+  TRACE(GLIB_VARIANT_REF(value, value->type_info, value->ref_count, value->state));
 
   g_atomic_ref_count_inc (&value->ref_count);
 
@@ -859,6 +869,8 @@ g_variant_ref_sink (GVariant *value)
   g_return_val_if_fail (!g_atomic_ref_count_compare (&value->ref_count, 0), NULL);
 
   g_variant_lock (value);
+
+  TRACE(GLIB_VARIANT_REF_SINK(value, value->type_info, value->ref_count, value->state, value->state & STATE_FLOATING));
 
   if (~value->state & STATE_FLOATING)
     g_variant_ref (value);
@@ -915,6 +927,7 @@ g_variant_take_ref (GVariant *value)
   g_return_val_if_fail (value != NULL, NULL);
   g_return_val_if_fail (!g_atomic_ref_count_compare (&value->ref_count, 0), NULL);
 
+  TRACE(GLIB_VARIANT_TAKE_REF(value, value->type_info, value->ref_count, value->state, value->state & STATE_FLOATING));
   g_atomic_int_and (&value->state, ~STATE_FLOATING);
 
   return value;
@@ -1202,6 +1215,8 @@ g_variant_get_child_value (GVariant *value,
     child->contents.serialised.data = s_child.data;
     child->contents.serialised.ordered_offsets_up_to = (value->state & STATE_TRUSTED) ? G_MAXSIZE : s_child.ordered_offsets_up_to;
     child->contents.serialised.checked_offsets_up_to = (value->state & STATE_TRUSTED) ? G_MAXSIZE : s_child.checked_offsets_up_to;
+
+    TRACE(GLIB_VARIANT_FROM_PARENT(child, child->type_info, child->ref_count, child->state, value));
 
     return child;
   }
