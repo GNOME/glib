@@ -88,8 +88,8 @@
  * instance and g_application_run() promptly returns. See the code
  * examples below.
  *
- * If used, the expected form of an application identifier is the same as
- * that of of a
+ * If used, the expected form of an application identifier is the 
+ * same as that of a
  * [D-Bus well-known bus name](https://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-names-bus).
  * Examples include: `com.example.MyApp`, `org.example.internal_apps.Calculator`,
  * `org._7_zip.Archiver`.

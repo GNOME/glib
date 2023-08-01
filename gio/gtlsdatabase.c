@@ -978,7 +978,7 @@ g_tls_database_lookup_certificates_issued_by (GTlsDatabase           *self,
  * g_tls_database_lookup_certificates_issued_by() for more information.
  *
  * The database may choose to hold a reference to the issuer byte array for the duration
- * of of this asynchronous operation. The byte array should not be modified during
+ * of this asynchronous operation. The byte array should not be modified during
  * this time.
  *
  * Since: 2.30
