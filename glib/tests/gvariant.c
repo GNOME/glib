@@ -3807,7 +3807,7 @@ test_gv_byteswap (void)
 # define native16(x)  0, x
 # define swapped16(x) x, 0
 #endif
-  /* all kinds of of crazy randomised testing already performed on the
+  /* all kinds of crazy randomised testing already performed on the
    * byteswapper in the /gvariant/serializer/byteswap test and all kinds
    * of crazy randomised testing performed against the serializer
    * normalisation functions in the /gvariant/serializer/fuzz/ tests.

@@ -1595,7 +1595,7 @@ g_app_launch_context_get_display (GAppLaunchContext *context,
  * g_app_launch_context_get_startup_notify_id:
  * @context: a #GAppLaunchContext
  * @info: a #GAppInfo
- * @files: (element-type GFile): a #GList of of #GFile objects
+ * @files: (element-type GFile): a #GList of #GFile objects
  * 
  * Initiates startup notification for the application and returns the
  * `XDG_ACTIVATION_TOKEN` or `DESKTOP_STARTUP_ID` for the launched operation,

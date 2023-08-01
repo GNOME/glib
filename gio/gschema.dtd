@@ -33,7 +33,7 @@
               enum  CDATA #IMPLIED
               flags CDATA #IMPLIED >
 
-<!-- the default value is specified a a serialized GVariant,
+<!-- the default value is specified as a serialized GVariant,
      i.e. you have to include the quotes when specifying a string -->
 <!ELEMENT default (#PCDATA) >
 <!-- the presence of the l10n attribute marks a default value for

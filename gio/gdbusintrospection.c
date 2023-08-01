@@ -1613,7 +1613,7 @@ parser_end_element (GMarkupParseContext  *context,
       nodes = parse_data_steal_nodes (data, &num_nodes);
       interfaces = parse_data_steal_interfaces (data, &num_interfaces);
 
-      /* destroy the nodes, interfaces for scope we're exiting and and pop the nodes, interfaces from the
+      /* destroy the nodes, interfaces for scope we're exiting and pop the nodes, interfaces from the
        * scope we're reentering
        */
       parse_data_free_interfaces (data);
@@ -1707,7 +1707,7 @@ parser_end_element (GMarkupParseContext  *context,
 
       embedded_annotations = steal_annotations (data);
 
-      /* destroy the annotations for scope we're exiting and and pop the annotations from the scope we're reentering */
+      /* destroy the annotations for scope we're exiting and pop the annotations from the scope we're reentering */
       parse_data_free_annotations (data);
       data->annotations = (GPtrArray *) data->annotations_stack->data;
       data->annotations_stack = g_slist_remove (data->annotations_stack, data->annotations_stack->data);
@@ -1727,7 +1727,7 @@ parser_end_element (GMarkupParseContext  *context,
 
   if (!have_popped_annotations)
     {
-      /* destroy the annotations for scope we're exiting and and pop the annotations from the scope we're reentering */
+      /* destroy the annotations for scope we're exiting and pop the annotations from the scope we're reentering */
       parse_data_free_annotations (data);
       data->annotations = (GPtrArray *) data->annotations_stack->data;
       data->annotations_stack = g_slist_remove (data->annotations_stack, data->annotations_stack->data);
