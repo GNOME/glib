@@ -512,23 +512,38 @@ freebsd-13-x86_64:
       - "_build/glib/glibconfig.h"
       - "_build/meson-logs"
 
-.macos:
+macos-x86_64:
   extends: .only-origin
   stage: build
   tags:
-    - macos
+    - macosintel
   needs: []
+  cache: []
   variables:
     GIT_SUBMODULE_STRATEGY: normal
+    # -Wno-overlength-strings
     # libpcre2 gets built as a subproject, but the default Clang options on
     # macOS limit string lengths to 4095B — pcre2_error.c has a string of length
     # 4380B
-    CFLAGS: '-Wno-overlength-strings'
+    CFLAGS: "-Wno-overlength-strings"
+    # redirect to the runner's volatile temporary directory
+    TMPDIR: /Users/Shared/work/tmp
+    # keep the user profile clean
+    PIP_CACHE_DIR: /Users/Shared/build/cache
+    PIPENV_CACHE_DIR: $PIP_CACHE_DIR
+    PYTHONPYCACHEPREFIX: $PIP_CACHE_DIR
+    # target OS X 10.9 Mavericks for backward compatibility
+    SDKROOT: /opt/sdks/MacOSX10.9.sdk
+    # use the runner's ccache directory
+    CCACHE_DIR: /Users/Shared/work/ccache
   before_script:
     - bash .gitlab-ci/show-execution-environment.sh
-    - pip3 install --user meson==1.0.0
-    - pip3 install --user ninja
-    - export PATH=/Users/gitlabrunner/Library/Python/3.7/bin:$PATH
+    - python3 -m venv .venv
+    - ln -s /opt/cmake/CMake.app/Contents/bin/cmake .venv/bin
+    - ln -s /opt/ccache/ccache .venv/bin
+    - source .venv/bin/activate
+    - pip3 install meson==1.2.0
+    - pip3 install ninja==1.11.1
   script:
     # FIXME: Use --wrap-mode=default so we download dependencies each time,
     # until the macOS runner is a VM where we can use a pre-made image which
