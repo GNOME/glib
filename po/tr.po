@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2023-05-23 17:17+0000\n"
-"PO-Revision-Date: 2023-05-12 13:53+0300\n"
+"POT-Creation-Date: 2023-06-29 17:01+0000\n"
+"PO-Revision-Date: 2023-07-02 15:40+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Turkish <takim@gnome.org.tr>\n"
 "Language: tr\n"
@@ -49,23 +49,23 @@ msgstr "‘%s’ içerik türü için öntanımlı uygulama bulunamadı"
 msgid "Failed to find default application for URI Scheme ‘%s’"
 msgstr "‘%s’ URI Şeması için öntanımlı uygulama bulunamadı"
 
-#: gio/gapplication.c:502
-msgid "GApplication options"
-msgstr "GApplication seçenekleri"
+#: gio/gapplication.c:506
+msgid "GApplication Options:"
+msgstr "GApplication Seçenekleri:"
 
-#: gio/gapplication.c:502
+#: gio/gapplication.c:506
 msgid "Show GApplication options"
 msgstr "GApplication seçeneklerini göster"
 
-#: gio/gapplication.c:547
+#: gio/gapplication.c:551
 msgid "Enter GApplication service mode (use from D-Bus service files)"
 msgstr "GApplication hizmet kipi girin (D-Bus hizmet dosyalarından kullan)"
 
-#: gio/gapplication.c:559
+#: gio/gapplication.c:563
 msgid "Override the application’s ID"
 msgstr "Uygulama kimliğini çiğne"
 
-#: gio/gapplication.c:571
+#: gio/gapplication.c:575
 msgid "Replace the running instance"
 msgstr "Çalışan örneği değiştir"
 
@@ -329,7 +329,7 @@ msgstr "Hedefte yeterli alan yok"
 #: gio/gcharsetconverter.c:344 gio/gdatainputstream.c:850
 #: gio/gdatainputstream.c:1268 glib/gconvert.c:450 glib/gconvert.c:882
 #: glib/giochannel.c:1576 glib/giochannel.c:1618 glib/giochannel.c:2478
-#: glib/gutf8.c:892 glib/gutf8.c:1346
+#: glib/gutf8.c:958 glib/gutf8.c:1412
 msgid "Invalid byte sequence in conversion input"
 msgstr "Dönüşüm girdisinde geçersiz bayt dizisi"
 
@@ -1747,7 +1747,7 @@ msgstr "stdout’a yazılırken hata"
 #: gio/gio-tool-cat.c:135 gio/gio-tool-info.c:382 gio/gio-tool-list.c:176
 #: gio/gio-tool-mkdir.c:50 gio/gio-tool-monitor.c:39 gio/gio-tool-monitor.c:41
 #: gio/gio-tool-monitor.c:43 gio/gio-tool-monitor.c:45
-#: gio/gio-tool-monitor.c:206 gio/gio-tool-mount.c:1210 gio/gio-tool-open.c:72
+#: gio/gio-tool-monitor.c:206 gio/gio-tool-mount.c:1236 gio/gio-tool-open.c:72
 #: gio/gio-tool-remove.c:50 gio/gio-tool-rename.c:47 gio/gio-tool-set.c:95
 #: gio/gio-tool-trash.c:222 gio/gio-tool-tree.c:246
 msgid "LOCATION"
@@ -1768,7 +1768,7 @@ msgstr ""
 "gibi bir şeyi konum olarak kullanabilirsiniz."
 
 #: gio/gio-tool-cat.c:164 gio/gio-tool-info.c:413 gio/gio-tool-mkdir.c:78
-#: gio/gio-tool-monitor.c:231 gio/gio-tool-mount.c:1261 gio/gio-tool-open.c:98
+#: gio/gio-tool-monitor.c:231 gio/gio-tool-mount.c:1287 gio/gio-tool-open.c:98
 #: gio/gio-tool-remove.c:74 gio/gio-tool-trash.c:303
 msgid "No locations given"
 msgstr "Konum verilmedi"
@@ -2192,15 +2192,15 @@ msgstr "TCRYPT sistem bölümü bağla"
 msgid "Anonymous access denied"
 msgstr "Anonim erişim engellendi"
 
-#: gio/gio-tool-mount.c:533
+#: gio/gio-tool-mount.c:559
 msgid "No drive for device file"
 msgstr "Aygıt dosyası için sürücü yok"
 
-#: gio/gio-tool-mount.c:1025
+#: gio/gio-tool-mount.c:1051
 msgid "No volume for given ID"
 msgstr "Bu kimlik için bölüm yok"
 
-#: gio/gio-tool-mount.c:1214
+#: gio/gio-tool-mount.c:1240
 msgid "Mount or unmount the locations."
 msgstr "Konumları bağla veya ayır."
 
@@ -3498,7 +3498,7 @@ msgstr "%s için geçilen vektörlerin toplamı çok büyük"
 msgid "Source stream is already closed"
 msgstr "Kaynak akışı zaten kapalı"
 
-#: gio/gproxyaddressenumerator.c:324 gio/gproxyaddressenumerator.c:342
+#: gio/gproxyaddressenumerator.c:329 gio/gproxyaddressenumerator.c:347
 msgid "Unspecified proxy lookup failure"
 msgstr "Belirtilmemiş vekil bakış başarısızlığı"
 
@@ -4373,7 +4373,7 @@ msgstr "Dosya tanımlayıcıdan okuma hatası: %s"
 msgid "Error closing file descriptor: %s"
 msgstr "Dosya tanımlayıcı kapatılırken hata: %s"
 
-#: gio/gunixmounts.c:2817 gio/gunixmounts.c:2870
+#: gio/gunixmounts.c:2826 gio/gunixmounts.c:2879
 msgid "Filesystem root"
 msgstr "Dosya sistemi kök dizini"
 
@@ -4534,8 +4534,8 @@ msgstr "Exec satırı “%s”, “%s” URI’si ile genişletilemedi"
 msgid "Unrepresentable character in conversion input"
 msgstr "Dönüşüm girdisi içinde temsil edilemez karakter"
 
-#: glib/gconvert.c:496 glib/gutf8.c:888 glib/gutf8.c:1101 glib/gutf8.c:1238
-#: glib/gutf8.c:1342
+#: glib/gconvert.c:496 glib/gutf8.c:954 glib/gutf8.c:1167 glib/gutf8.c:1304
+#: glib/gutf8.c:1408
 msgid "Partial character sequence at end of input"
 msgstr "Girdinin sonunda parçalı karakter dizisi"
 
@@ -5099,15 +5099,15 @@ msgstr "Kanal kısmi bir karakterde sonlanıyor"
 msgid "Can’t do a raw read in g_io_channel_read_to_end"
 msgstr "g_io_channel_read_to_end içinde ham okuma başarısız"
 
-#: glib/gkeyfile.c:799
+#: glib/gkeyfile.c:801
 msgid "Valid key file could not be found in search dirs"
 msgstr "Arama dizinlerinde geçerli anahtar dosyası bulunamadı"
 
-#: glib/gkeyfile.c:836
+#: glib/gkeyfile.c:838
 msgid "Not a regular file"
 msgstr "Normal dosya değil"
 
-#: glib/gkeyfile.c:1294
+#: glib/gkeyfile.c:1296
 #, c-format
 msgid ""
 "Key file contains line “%s” which is not a key-value pair, group, or comment"
@@ -5115,50 +5115,50 @@ msgstr ""
 "Anahtar dosyası; anahtar-değer çifti, küme veya yorum olmayan “%s” satırını "
 "içeriyor"
 
-#: glib/gkeyfile.c:1351
+#: glib/gkeyfile.c:1353
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "Geçersiz küme adı: %s"
 
-#: glib/gkeyfile.c:1375
+#: glib/gkeyfile.c:1377
 msgid "Key file does not start with a group"
 msgstr "Anahtar dosyası kümeyle başlamıyor"
 
-#: glib/gkeyfile.c:1399
+#: glib/gkeyfile.c:1401
 #, c-format
 msgid "Invalid key name: %.*s"
 msgstr "Geçersiz anahtar adı: %.*s"
 
-#: glib/gkeyfile.c:1427
+#: glib/gkeyfile.c:1429
 #, c-format
 msgid "Key file contains unsupported encoding “%s”"
 msgstr "Anahtar dosya desteklenmeyen “%s” kodlamasını içeriyor"
 
-#: glib/gkeyfile.c:1674 glib/gkeyfile.c:1847 glib/gkeyfile.c:3294
-#: glib/gkeyfile.c:3396 glib/gkeyfile.c:3501 glib/gkeyfile.c:3630
-#: glib/gkeyfile.c:3773 glib/gkeyfile.c:4018 glib/gkeyfile.c:4085
+#: glib/gkeyfile.c:1676 glib/gkeyfile.c:1849 glib/gkeyfile.c:3296
+#: glib/gkeyfile.c:3398 glib/gkeyfile.c:3503 glib/gkeyfile.c:3632
+#: glib/gkeyfile.c:3775 glib/gkeyfile.c:4020 glib/gkeyfile.c:4087
 #, c-format
 msgid "Key file does not have group “%s”"
 msgstr "Anahtar dosyasında “%s” kümesi yok"
 
-#: glib/gkeyfile.c:1802
+#: glib/gkeyfile.c:1804
 #, c-format
 msgid "Key file does not have key “%s” in group “%s”"
 msgstr "Anahtar dosyası, “%2$s” kümesinde “%1$s” anahtarı içermiyor"
 
-#: glib/gkeyfile.c:1964 glib/gkeyfile.c:2080
+#: glib/gkeyfile.c:1966 glib/gkeyfile.c:2082
 #, c-format
 msgid "Key file contains key “%s” with value “%s” which is not UTF-8"
 msgstr "Anahtar dosyası, UTF-8 olmayan “%s” anahtarını “%s” değeriyle içeriyor"
 
-#: glib/gkeyfile.c:1984 glib/gkeyfile.c:2100 glib/gkeyfile.c:2539
+#: glib/gkeyfile.c:1986 glib/gkeyfile.c:2102 glib/gkeyfile.c:2541
 #, c-format
 msgid ""
 "Key file contains key “%s” which has a value that cannot be interpreted."
 msgstr ""
 "Anahtar dosyası yorumlanamayan bir değere sahip olan “%s” anahtarını içerir."
 
-#: glib/gkeyfile.c:2754 glib/gkeyfile.c:3123
+#: glib/gkeyfile.c:2756 glib/gkeyfile.c:3125
 #, c-format
 msgid ""
 "Key file contains key “%s” in group “%s” which has a value that cannot be "
@@ -5167,38 +5167,38 @@ msgstr ""
 "“%2$s” kümesindeki anahtar dosyası, yorumlanamayan “%1$s” anahtarını "
 "içeriyor."
 
-#: glib/gkeyfile.c:2832 glib/gkeyfile.c:2909
+#: glib/gkeyfile.c:2834 glib/gkeyfile.c:2911
 #, c-format
 msgid "Key “%s” in group “%s” has value “%s” where %s was expected"
 msgstr ""
 "“%2$s” kümesindeki “%1$s” anahtarı “%4$s” değerine sahip olması beklenirken "
 "“%3$s” değerine sahip"
 
-#: glib/gkeyfile.c:4338
+#: glib/gkeyfile.c:4340
 msgid "Key file contains escape character at end of line"
 msgstr "Anahtar dosyası satır sonunda çıkış karakteri içeriyor"
 
-#: glib/gkeyfile.c:4360
+#: glib/gkeyfile.c:4362
 #, c-format
 msgid "Key file contains invalid escape sequence “%s”"
 msgstr "“%s” anahtar dosyası geçersiz çıkış dizisi içeriyor"
 
-#: glib/gkeyfile.c:4505
+#: glib/gkeyfile.c:4507
 #, c-format
 msgid "Value “%s” cannot be interpreted as a number."
 msgstr "“%s” değeri bir sayı olarak yorumlanamıyor."
 
-#: glib/gkeyfile.c:4519
+#: glib/gkeyfile.c:4521
 #, c-format
 msgid "Integer value “%s” out of range"
 msgstr "“%s”, tamsayı değeri aralık dışında"
 
-#: glib/gkeyfile.c:4552
+#: glib/gkeyfile.c:4554
 #, c-format
 msgid "Value “%s” cannot be interpreted as a float number."
 msgstr "“%s” değeri bir gerçel sayı olarak yorumlanamıyor."
 
-#: glib/gkeyfile.c:4591
+#: glib/gkeyfile.c:4593
 #, c-format
 msgid "Value “%s” cannot be interpreted as a boolean."
 msgstr "“%s” değeri mantıksal değer olarak yorumlanamıyor."
@@ -5941,12 +5941,12 @@ msgstr "Geçersiz program adı: %s"
 #: glib/gspawn-win32.c:600 glib/gspawn-win32.c:940
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
-msgstr "%d konumunda argüman vektörü içinde geçersiz dizgi: %s"
+msgstr "%d konumunda argüman vektörü içinde geçersiz dizge: %s"
 
 #: glib/gspawn-win32.c:611 glib/gspawn-win32.c:956
 #, c-format
 msgid "Invalid string in environment: %s"
-msgstr "Çevre içinde geçersiz dizgi: %s"
+msgstr "Çevre içinde geçersiz dizge: %s"
 
 #: glib/gspawn-win32.c:936
 #, c-format
@@ -5985,76 +5985,76 @@ msgstr "“%s” sayısı sınırların dışındadır [%s, %s]"
 msgid "“%s” is not an unsigned number"
 msgstr "“%s” işaretsiz bir sayı değil"
 
-#: glib/guri.c:317
+#: glib/guri.c:318
 #, no-c-format
 msgid "Invalid %-encoding in URI"
 msgstr "URI’de geçersiz %-kodlama"
 
-#: glib/guri.c:334
+#: glib/guri.c:335
 msgid "Illegal character in URI"
 msgstr "URI’de kural dışı karakter"
 
-#: glib/guri.c:368
+#: glib/guri.c:369
 msgid "Non-UTF-8 characters in URI"
 msgstr "URI’de UTF-8 olmayan karakterler"
 
-#: glib/guri.c:548
+#: glib/guri.c:549
 #, c-format
 msgid "Invalid IPv6 address ‘%.*s’ in URI"
 msgstr "URI’de geçersiz IPv6 adresi ‘%.*s’"
 
-#: glib/guri.c:603
+#: glib/guri.c:604
 #, c-format
 msgid "Illegal encoded IP address ‘%.*s’ in URI"
 msgstr "URI’de kural dışı kodlanmış IP adresi ‘%.*s’"
 
-#: glib/guri.c:615
+#: glib/guri.c:616
 #, c-format
 msgid "Illegal internationalized hostname ‘%.*s’ in URI"
 msgstr "URI’de kural dışı uluslararasılaştırılmış ana makine adı ‘%.*s’"
 
-#: glib/guri.c:647 glib/guri.c:659
+#: glib/guri.c:648 glib/guri.c:660
 #, c-format
 msgid "Could not parse port ‘%.*s’ in URI"
 msgstr "URI’deki ‘%.*s’ bağlantı noktası ayrıştırılamadı"
 
-#: glib/guri.c:666
+#: glib/guri.c:667
 #, c-format
 msgid "Port ‘%.*s’ in URI is out of range"
 msgstr "URI’deki ‘%.*s’ bağlantı noktası kapsam dışında"
 
-#: glib/guri.c:1226 glib/guri.c:1290
+#: glib/guri.c:1230 glib/guri.c:1294
 #, c-format
 msgid "URI ‘%s’ is not an absolute URI"
 msgstr "‘%s’ URI’si mutlak URI değil"
 
-#: glib/guri.c:1232
+#: glib/guri.c:1236
 #, c-format
 msgid "URI ‘%s’ has no host component"
 msgstr "‘%s’ URI’sinin ana makine bileşeni yok"
 
-#: glib/guri.c:1462
+#: glib/guri.c:1466
 msgid "URI is not absolute, and no base URI was provided"
 msgstr "URI mutlak değil ve temel URI sağlanmamış"
 
-#: glib/guri.c:2248
+#: glib/guri.c:2252
 msgid "Missing ‘=’ and parameter value"
 msgstr "‘=’ ve parametre değeri eksik"
 
-#: glib/gutf8.c:834
+#: glib/gutf8.c:900
 msgid "Failed to allocate memory"
 msgstr "Bellek ayrılamadı"
 
-#: glib/gutf8.c:967
+#: glib/gutf8.c:1033
 msgid "Character out of range for UTF-8"
 msgstr "Karakter UTF-8 için sınırlarının dışında"
 
-#: glib/gutf8.c:1069 glib/gutf8.c:1078 glib/gutf8.c:1208 glib/gutf8.c:1217
-#: glib/gutf8.c:1356 glib/gutf8.c:1453
+#: glib/gutf8.c:1135 glib/gutf8.c:1144 glib/gutf8.c:1274 glib/gutf8.c:1283
+#: glib/gutf8.c:1422 glib/gutf8.c:1519
 msgid "Invalid sequence in conversion input"
 msgstr "Dönüşüm girdisi içinde geçersiz dizi"
 
-#: glib/gutf8.c:1367 glib/gutf8.c:1464
+#: glib/gutf8.c:1433 glib/gutf8.c:1530
 msgid "Character out of range for UTF-16"
 msgstr "Karakter UTF-16 sınırlarının dışında"
 
@@ -6275,3 +6275,6 @@ msgstr "%.1f PB"
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
+
+#~ msgid "GApplication options"
+#~ msgstr "GApplication seçenekleri"
