@@ -1454,6 +1454,11 @@ g_tree_height (GTree *tree)
  * Gets the number of nodes in a #GTree.
  * 
  * Returns: the number of nodes in @tree
+ *
+ * The node counter value type is really a #guint,
+ * but it is returned as a #gint due to backward
+ * compatibility issues (can be cast back to #guint to
+ * support its full range of values).
  */
 gint
 g_tree_nnodes (GTree *tree)
