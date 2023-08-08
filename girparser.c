@@ -3728,7 +3728,6 @@ _g_ir_parser_parse_file (GIrParser   *parser,
   gchar *buffer;
   gsize length;
   GIrModule *module;
-  const char *slash;
   char *dash;
   char *namespace;
 
@@ -3743,11 +3742,7 @@ _g_ir_parser_parse_file (GIrParser   *parser,
 
   g_debug ("[parsing] filename %s", filename);
 
-  slash = g_strrstr (filename, "/");
-  if (!slash)
-    namespace = g_strdup (filename);
-  else
-    namespace = g_strdup (slash+1);
+  namespace = g_path_get_basename (filename);
   namespace[strlen(namespace)-4] = '\0';
 
   /* Remove version */
