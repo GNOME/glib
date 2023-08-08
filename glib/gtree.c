@@ -69,6 +69,8 @@
  **/
 
 #define MAX_GTREE_HEIGHT 40
+/* G_MAXUINT nodes will be covered by tree height of log2(G_MAXUINT) + 2. */
+G_STATIC_ASSERT ((G_GUINT64_CONSTANT (1) << (MAX_GTREE_HEIGHT - 2)) >= G_MAXUINT);
 
 /**
  * GTree:
