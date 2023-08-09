@@ -303,7 +303,7 @@ locate_gir (GIrParser  *parser,
 	  path = g_build_filename (*dir, girname, NULL);
 	  g_debug ("Trying %s from includes", path);
 	  if (g_file_test (path, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR))
-	    return path;
+	    return g_steal_pointer (&path);
 	  g_free (path);
 	  path = NULL;
 	}
@@ -313,7 +313,7 @@ locate_gir (GIrParser  *parser,
       path = g_build_filename (*dir, GIR_SUFFIX, girname, NULL);
       g_debug ("Trying %s from system data dirs", path);
       if (g_file_test (path, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR))
-	return path;
+        return g_steal_pointer (&path);
       g_free (path);
       path = NULL;
     }
@@ -321,7 +321,7 @@ locate_gir (GIrParser  *parser,
   path = g_build_filename (GIR_DIR, girname, NULL);
   g_debug ("Trying %s from GIR_DIR", path);
   if (g_file_test (path, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR))
-    return path;
+    return g_steal_pointer (&path);
   g_free (path);
 
   g_debug ("Did not find %s", girname);
