@@ -333,7 +333,7 @@ read_data (GString *str,
  * @envp: (array zero-terminated=1) (element-type filename) (nullable):
  *     child's environment, or %NULL to inherit parent's
  * @flags: flags from #GSpawnFlags
- * @child_setup: (scope async) (closure user_data) (nullable): function to run
+ * @child_setup: (scope call) (closure user_data) (nullable): function to run
  *     in the child just before `exec()`
  * @user_data: user data for @child_setup
  * @standard_output: (out) (array zero-terminated=1) (element-type guint8) (optional): return location for child output, or %NULL
