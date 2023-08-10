@@ -64,7 +64,12 @@ gio_tests = {
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392 / https://gitlab.gnome.org/GNOME/glib/-/issues/1251
     'can_fail' : host_system == 'darwin',
   },
-  'converter-stream' : {},
+  'converter-stream' : {
+    # musl: charset tests fail due to missing collation support in musl libc
+    # From https://wiki.musl-libc.org/roadmap#Open_future_goals
+    # "LC_COLLATE support for collation orders other than simple codepoint order"
+    'can_fail' : linux_libc == 'musl',
+  },
   'credentials' : {},
   'data-input-stream' : {},
   'data-output-stream' : {},
@@ -993,6 +998,8 @@ if not meson.is_cross_build()
     'resources' : {
       'extra_sources' : resources_extra_sources,
       'depends' : resource_plugin,
+      # FIXME: musl: https://gitlab.gnome.org/GNOME/glib/-/issues/3160
+      'can_fail' : linux_libc == 'musl',
     },
   }
 endif
