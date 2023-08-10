@@ -935,7 +935,8 @@ g_datalist_id_get_data (GData  **datalist,
  * g_datalist_id_dup_data: (skip)
  * @datalist: location of a datalist
  * @key_id: the #GQuark identifying a data element
- * @dup_func: (scope call) (closure user_data): function to duplicate the old value
+ * @dup_func: (scope call) (closure user_data) (nullable): function to
+ *   duplicate the old value
  * @user_data: passed as user_data to @dup_func
  *
  * This is a variant of g_datalist_id_get_data() which
