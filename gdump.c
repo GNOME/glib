@@ -669,14 +669,11 @@ g_irepository_dump (const char *arg, GError **error)
   goutput_write (G_OUTPUT_STREAM (output), "</dump>\n");
 
   {
-    GError **ioerror;
     /* Avoid overwriting an earlier set error */
-    if (caught_error)
-      ioerror = NULL;
-    else
-      ioerror = error;
-    caught_error |= !g_input_stream_close (G_INPUT_STREAM (in), NULL, ioerror);
-    caught_error |= !g_output_stream_close (G_OUTPUT_STREAM (output), NULL, ioerror);
+    caught_error |= !g_input_stream_close (G_INPUT_STREAM (in), NULL,
+                                           caught_error ? NULL : error);
+    caught_error |= !g_output_stream_close (G_OUTPUT_STREAM (output), NULL,
+                                            caught_error ? NULL : error);
   }
 
   g_object_unref (in);
