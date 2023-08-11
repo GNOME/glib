@@ -23,6 +23,7 @@
 #include "config.h"
 
 #include "gnetworking.h"
+#include "gnetworkingprivate.h"
 
 /**
  * SECTION:gnetworking
@@ -75,4 +76,27 @@ g_networking_init (void)
       g_once_init_leave (&inited, 1);
     }
 #endif
+}
+
+gboolean
+g_getservbyname_ntohs (const char *name, const char *proto, guint16 *out_port)
+{
+  struct servent *result;
+
+#ifdef HAVE_GETSERVBYNAME_R
+  struct servent result_buf;
+  char buf[2048];
+  int r;
+
+  r = getservbyname_r (name, proto, &result_buf, buf, sizeof (buf), &result);
+  if (r != 0 || result != &result_buf)
+    result = NULL;
+#else
+  result = getservbyname (name, proto);
+#endif
+
+  if (!result)
+    return FALSE;
+  *out_port = g_ntohs (result->s_port);
+  return TRUE;
 }

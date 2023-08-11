@@ -756,6 +756,24 @@ if cc.has_function('memalign', prefix: '#include <stdlib.h>\n#include <malloc.h>
   glib_conf.set('HAVE_MEMALIGN', 1)
 endif
 
+# For example on Openbsd, getservbyname_r() has a different signature.
+# https://man.openbsd.org/getservbyname.3
+if cc.compiles('''#include <netdb.h>
+               int main (int argc, char ** argv) {
+                 int (*fcn)(const char *,
+                            const char *,
+                            struct servent *,
+                            char *,
+                            size_t,
+                            struct servent **) = getservbyname_r;
+                 (void) fcn;
+                 return 0;
+               }''',
+               name : 'getservbyname_r()',
+               args: '-Werror=incompatible-pointer-types')
+  glib_conf.set('HAVE_GETSERVBYNAME_R', 1)
+endif
+
 if cc.has_function('_aligned_malloc', prefix: '#include <malloc.h>')
   glib_conf.set('HAVE__ALIGNED_MALLOC', 1)
 endif

@@ -33,6 +33,8 @@ gint g_socket (gint     domain,
                gint     protocol,
                GError **error);
 
+gboolean g_getservbyname_ntohs (const char *name, const char *proto, guint16 *out_port);
+
 G_END_DECLS
 
 #endif /* __G_NETWORKINGPRIVATE_H__ */
