@@ -80,7 +80,8 @@ gio_tests = {
   },
   'g-file' : {},
   'g-file-info' : {
-    'can_fail' : host_system == 'windows' and cc.get_id() != 'gcc',
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3070
+    'can_fail' : host_system == 'darwin' or host_system == 'windows' and cc.get_id() != 'gcc',
   },
   'g-icon' : {},
   'gdbus-addresses' : {},
@@ -281,7 +282,10 @@ if host_machine.system() != 'windows'
     'unix-streams' : {},
     'g-file-info-filesystem-readonly' : {},
     'gschema-compile' : {'install' : false},
-    'trash' : {},
+    'trash' : {
+      # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3069
+      'can_fail' : host_system == 'darwin',
+    },
   }
 
   # LD_PRELOAD modules don't work so well with AddressSanitizer
