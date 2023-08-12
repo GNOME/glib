@@ -56,7 +56,7 @@ my_compare_with_data (gconstpointer a,
   const char *chb = b;
 
   /* just check that we got the right data */
-  g_assert (GPOINTER_TO_INT(user_data) == 123);
+  g_assert_cmpint (GPOINTER_TO_INT (user_data), ==, 123);
 
   return *cha - *chb;
 }
@@ -94,7 +94,7 @@ my_traverse (gpointer key,
 {
   char *ch = key;
 
-  g_assert ((*ch) > 0);
+  g_assert_cmpint ((*ch), >, 0);
 
   if (*ch == 'd')
     return TRUE;
@@ -119,7 +119,7 @@ check_order (gpointer key,
   char **p = data;
   char *ch = key;
  
-  g_assert (**p == *ch);
+  g_assert_cmpint (**p, ==, *ch);
 
   (*p)++;
 
@@ -151,12 +151,12 @@ test_tree_search (void)
   for (i = 0; i < 26; i++)
     {
       removed = g_tree_remove (tree, &chars[i + 10]);
-      g_assert (removed);
+      g_assert_true (removed);
     }
 
   c = '\0';
   removed = g_tree_remove (tree, &c);
-  g_assert (!removed);
+  g_assert_false (removed);
 
   g_tree_foreach (tree, my_traverse, NULL);
 
@@ -174,61 +174,61 @@ test_tree_search (void)
 
   c = '0';
   p = g_tree_lookup (tree, &c);
-  g_assert (p && *p == c);
-  g_assert (g_tree_lookup_extended (tree, &c, (gpointer *)&d, (gpointer *)&p));
-  g_assert (c == *d && c == *p);
+  g_assert_true (p && *p == c);
+  g_assert_true (g_tree_lookup_extended (tree, &c, (gpointer *)&d, (gpointer *)&p));
+  g_assert_true (c == *d && c == *p);
 
   c = 'A';
   p = g_tree_lookup (tree, &c);
-  g_assert (p && *p == c);
+  g_assert_true (p && *p == c);
 
   c = 'a';
   p = g_tree_lookup (tree, &c);
-  g_assert (p && *p == c);
+  g_assert_true (p && *p == c);
 
   c = 'z';
   p = g_tree_lookup (tree, &c);
-  g_assert (p && *p == c);
+  g_assert_true (p && *p == c);
 
   c = '!';
   p = g_tree_lookup (tree, &c);
-  g_assert (p == NULL);
+  g_assert_null (p);
 
   c = '=';
   p = g_tree_lookup (tree, &c);
-  g_assert (p == NULL);
+  g_assert_null (p);
 
   c = '|';
   p = g_tree_lookup (tree, &c);
-  g_assert (p == NULL);
+  g_assert_null (p);
 
   c = '0';
   p = g_tree_search (tree, my_search, &c);
-  g_assert (p && *p == c);
+  g_assert_true (p && *p == c);
 
   c = 'A';
   p = g_tree_search (tree, my_search, &c);
-  g_assert (p && *p == c);
+  g_assert_true (p && *p == c);
 
   c = 'a';
   p = g_tree_search (tree, my_search, &c);
-  g_assert (p &&*p == c);
+  g_assert_true (p &&*p == c);
 
   c = 'z';
   p = g_tree_search (tree, my_search, &c);
-  g_assert (p && *p == c);
+  g_assert_true (p && *p == c);
 
   c = '!';
   p = g_tree_search (tree, my_search, &c);
-  g_assert (p == NULL);
+  g_assert_null (p);
 
   c = '=';
   p = g_tree_search (tree, my_search, &c);
-  g_assert (p == NULL);
+  g_assert_null (p);
 
   c = '|';
   p = g_tree_search (tree, my_search, &c);
-  g_assert (p == NULL);
+  g_assert_null (p);
 
   g_tree_destroy (tree);
 }
@@ -252,43 +252,43 @@ test_tree_remove (void)
 
   c = '0';
   g_tree_insert (tree, &c, &c);
-  g_assert (destroyed_key == &c);
-  g_assert (destroyed_value == &chars[0]);
+  g_assert_true (destroyed_key == &c);
+  g_assert_true (destroyed_value == &chars[0]);
   destroyed_key = NULL;
   destroyed_value = NULL;
 
   d = '1';
   g_tree_replace (tree, &d, &d);
-  g_assert (destroyed_key == &chars[1]);
-  g_assert (destroyed_value == &chars[1]);
+  g_assert_true (destroyed_key == &chars[1]);
+  g_assert_true (destroyed_value == &chars[1]);
   destroyed_key = NULL;
   destroyed_value = NULL;
 
   e = '\xff';
   node = g_tree_insert_node (tree, &e, &e);
-  g_assert (node);
-  g_assert (destroyed_key == NULL);
-  g_assert (destroyed_value == NULL);
+  g_assert_nonnull (node);
+  g_assert_null (destroyed_key);
+  g_assert_null (destroyed_value);
 
   c = '2';
   removed = g_tree_remove (tree, &c);
-  g_assert (removed);
-  g_assert (destroyed_key == &chars[2]);
-  g_assert (destroyed_value == &chars[2]);
+  g_assert_true (removed);
+  g_assert_true (destroyed_key == &chars[2]);
+  g_assert_true (destroyed_value == &chars[2]);
   destroyed_key = NULL;
   destroyed_value = NULL;
 
   c = '3';
   removed = g_tree_steal (tree, &c);
-  g_assert (removed);
-  g_assert (destroyed_key == NULL);
-  g_assert (destroyed_value == NULL);
+  g_assert_true (removed);
+  g_assert_null (destroyed_key);
+  g_assert_null (destroyed_value);
 
   f = '4';
   node = g_tree_replace_node (tree, &f, &f);
-  g_assert (node);
-  g_assert (destroyed_key == &chars[4]);
-  g_assert (destroyed_value == &chars[4]);
+  g_assert_nonnull (node);
+  g_assert_true (destroyed_key == &chars[4]);
+  g_assert_true (destroyed_value == &chars[4]);
   destroyed_key = NULL;
   destroyed_value = NULL;
 
@@ -296,7 +296,7 @@ test_tree_remove (void)
   for (i = 0; remove[i]; i++)
     {
       removed = g_tree_remove (tree, &remove[i]);
-      g_assert (removed);
+      g_assert_true (removed);
     }
 
   g_tree_destroy (tree);
@@ -526,12 +526,12 @@ binary_tree_bound (GTree *tree,
         {
           GTreeNode *last = g_tree_node_last (tree);
 
-          g_assert (last);
+          g_assert_nonnull (last);
           if (g_test_verbose ())
             g_test_message ("past end last %c",
                             *(char *) g_tree_node_key (last));
         }
-      g_assert (expected == '\x00');
+      g_assert_cmpint (expected, ==, '\x00');
     }
   else
     {
@@ -540,34 +540,34 @@ binary_tree_bound (GTree *tree,
       GTreeNode *prev = g_tree_node_previous (node);
       GTreeNode *next = g_tree_node_next (node);
 
-      g_assert (expected != '\x00');
-      g_assert (expected == *(char *) g_tree_node_key (node));
+      g_assert_cmpint (expected, !=, '\x00');
+      g_assert_cmpint (expected, ==, *(char *) g_tree_node_key (node));
 
       if (g_test_verbose ())
         g_test_message ("%c", *(char *) g_tree_node_key (node));
 
       if (node != begin)
         {
-          g_assert (prev);
+          g_assert_nonnull (prev);
           if (g_test_verbose ())
             g_test_message (" prev %c", *(char *) g_tree_node_key (prev));
         }
       else
         {
-          g_assert (!prev);
+          g_assert_null (prev);
           if (g_test_verbose ())
             g_test_message (" no prev, it's the first one");
         }
 
       if (node != last)
         {
-          g_assert (next);
+          g_assert_nonnull (next);
           if (g_test_verbose ())
             g_test_message (" next %c", *(char *) g_tree_node_key (next));
         }
       else
         {
-          g_assert (!next);
+          g_assert_null (next);
           if (g_test_verbose ())
             g_test_message (" no next, it's the last one");
         }
@@ -585,7 +585,7 @@ binary_tree_bounds (GTree *tree,
   char expectedl, expectedu;
   char first = mode == 0 ? '0' : mode == 1 ? 'A' : 'z';
 
-  g_assert (mode >= 0 && mode <= 3);
+  g_assert_true (mode >= 0 && mode <= 3);
 
   if (c < first)
     expectedl = first;
@@ -670,9 +670,9 @@ test_tree_bounds (void)
         g_test_message ("%c ", *(char *) elem);
 
       node = g_tree_insert_node (tree, elem, elem);
-      g_assert (node);
-      g_assert (g_tree_node_key (node) == elem);
-      g_assert (g_tree_node_value (node) == elem);
+      g_assert_nonnull (node);
+      g_assert_true (g_tree_node_key (node) == elem);
+      g_assert_true (g_tree_node_value (node) == elem);
     }
 
   if (g_test_verbose ())
