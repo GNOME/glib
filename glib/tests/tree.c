@@ -237,9 +237,10 @@ static void
 test_tree_remove (void)
 {
   GTree *tree;
-  char c, d;
+  char c, d, e, f;
   gint i;
   gboolean removed;
+  GTreeNode *node;
   gchar *remove;
 
   tree = g_tree_new_full ((GCompareDataFunc)my_compare, NULL,
@@ -263,6 +264,12 @@ test_tree_remove (void)
   destroyed_key = NULL;
   destroyed_value = NULL;
 
+  e = '\xff';
+  node = g_tree_insert_node (tree, &e, &e);
+  g_assert (node);
+  g_assert (destroyed_key == NULL);
+  g_assert (destroyed_value == NULL);
+
   c = '2';
   removed = g_tree_remove (tree, &c);
   g_assert (removed);
@@ -276,6 +283,14 @@ test_tree_remove (void)
   g_assert (removed);
   g_assert (destroyed_key == NULL);
   g_assert (destroyed_value == NULL);
+
+  f = '4';
+  node = g_tree_replace_node (tree, &f, &f);
+  g_assert (node);
+  g_assert (destroyed_key == &chars[4]);
+  g_assert (destroyed_value == &chars[4]);
+  destroyed_key = NULL;
+  destroyed_value = NULL;
 
   remove = "omkjigfedba";
   for (i = 0; remove[i]; i++)
@@ -655,6 +670,7 @@ test_tree_bounds (void)
         g_test_message ("%c ", *(char *) elem);
 
       node = g_tree_insert_node (tree, elem, elem);
+      g_assert (node);
       g_assert (g_tree_node_key (node) == elem);
       g_assert (g_tree_node_value (node) == elem);
     }
