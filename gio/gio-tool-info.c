@@ -161,8 +161,8 @@ show_info (GFile *file, GFileInfo *info)
          g_file_info_get_display_name (info) : NULL;
   if (name)
     {
-      /* Translators: This is a noun and represents and attribute of a file */
       flatten = flatten_string (name);
+      /* Translators: This is a noun and represents and attribute of a file */
       g_print (_("display name: %s\n"), flatten);
       g_free (flatten);
     }
@@ -171,8 +171,8 @@ show_info (GFile *file, GFileInfo *info)
          g_file_info_get_edit_name (info) : NULL;
   if (name)
     {
-      /* Translators: This is a noun and represents and attribute of a file */
       flatten = flatten_string (name);
+      /* Translators: This is a noun and represents and attribute of a file */
       g_print (_("edit name: %s\n"), flatten);
       g_free (flatten);
     }
