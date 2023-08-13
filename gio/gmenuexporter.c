@@ -53,8 +53,9 @@ static GDBusInterfaceInfo *
 org_gtk_Menus_get_interface (void)
 {
   static GDBusInterfaceInfo *interface_info;
+  static gsize interface_info_initialized = 0;
 
-  if (interface_info == NULL)
+  if (g_once_init_enter (&interface_info_initialized))
     {
       GError *error = NULL;
       GDBusNodeInfo *info;
@@ -79,6 +80,8 @@ org_gtk_Menus_get_interface (void)
       g_assert (interface_info != NULL);
       g_dbus_interface_info_ref (interface_info);
       g_dbus_node_info_unref (info);
+
+      g_once_init_leave (&interface_info_initialized, 1);
     }
 
   return interface_info;
