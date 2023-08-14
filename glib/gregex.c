@@ -232,6 +232,7 @@ struct _GMatchInfo
   gssize string_len;            /* length of string, in bytes */
   pcre2_match_context *match_context;
   pcre2_match_data *match_data;
+  pcre2_jit_stack *jit_stack;
 };
 
 typedef enum
@@ -896,22 +897,22 @@ recalc_match_offsets (GMatchInfo *match_info,
 }
 
 static JITStatus
-enable_jit_with_match_options (GRegex   *regex,
+enable_jit_with_match_options (GMatchInfo  *match_info,
                                uint32_t  match_options)
 {
   gint retval;
   uint32_t old_jit_options, new_jit_options;
 
-  if (!(regex->orig_compile_opts & G_REGEX_OPTIMIZE))
+  if (!(match_info->regex->orig_compile_opts & G_REGEX_OPTIMIZE))
     return JIT_STATUS_DISABLED;
 
-  if (regex->jit_status == JIT_STATUS_DISABLED)
+  if (match_info->regex->jit_status == JIT_STATUS_DISABLED)
     return JIT_STATUS_DISABLED;
 
   if (match_options & G_REGEX_PCRE2_JIT_UNSUPPORTED_OPTIONS)
     return JIT_STATUS_DISABLED;
 
-  old_jit_options = regex->jit_options;
+  old_jit_options = match_info->regex->jit_options;
   new_jit_options = old_jit_options | PCRE2_JIT_COMPLETE;
   if (match_options & PCRE2_PARTIAL_HARD)
     new_jit_options |= PCRE2_JIT_PARTIAL_HARD;
@@ -920,13 +921,16 @@ enable_jit_with_match_options (GRegex   *regex,
 
   /* no new options enabled */
   if (new_jit_options == old_jit_options)
-    return regex->jit_status;
+    return match_info->regex->jit_status;
 
-  retval = pcre2_jit_compile (regex->pcre_re, new_jit_options);
+  retval = pcre2_jit_compile (match_info->regex->pcre_re, new_jit_options);
   switch (retval)
     {
     case 0: /* JIT enabled successfully */
-      regex->jit_options = new_jit_options;
+      match_info->regex->jit_options = new_jit_options;
+      /* Set min stack size for JIT to 32KiB and max to 512KiB */
+      match_info->jit_stack = pcre2_jit_stack_create (1 << 15, 1 << 19, NULL);
+      pcre2_jit_stack_assign (match_info->match_context, NULL, match_info->jit_stack);
       return JIT_STATUS_ENABLED;
     case PCRE2_ERROR_NOMEMORY:
       g_debug ("JIT compilation was requested with G_REGEX_OPTIMIZE, "
@@ -1023,6 +1027,8 @@ g_match_info_unref (GMatchInfo *match_info)
       g_regex_unref (match_info->regex);
       if (match_info->match_context)
         pcre2_match_context_free (match_info->match_context);
+      if (match_info->jit_stack)
+        pcre2_jit_stack_free (match_info->jit_stack);
       if (match_info->match_data)
         pcre2_match_data_free (match_info->match_data);
       g_free (match_info->offsets);
@@ -1091,7 +1097,7 @@ g_match_info_next (GMatchInfo  *match_info,
 
   opts = match_info->regex->match_opts | match_info->match_opts;
 
-  jit_status = enable_jit_with_match_options (match_info->regex, opts);
+  jit_status = enable_jit_with_match_options (match_info, opts);
   if (jit_status == JIT_STATUS_ENABLED)
     {
       match_info->matches = pcre2_jit_match (match_info->regex->pcre_re,

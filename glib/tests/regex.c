@@ -53,6 +53,9 @@
 /* A random value use to mark untouched integer variables. */
 #define UNTOUCHED -559038737
 
+/* A length of the test string in JIT stack test */
+#define TEST_STRING_LEN 20000
+
 static gint total;
 
 typedef struct {
@@ -2737,6 +2740,12 @@ G_GNUC_END_IGNORE_DEPRECATIONS
   /* Invalid patterns. */
   TEST_MATCH_SIMPLE("\\", "a", 0, 0, FALSE);
   TEST_MATCH_SIMPLE("[", "", 0, 0, FALSE);
+
+  /* Test that JIT compiler has enough stack */
+  char test_string[TEST_STRING_LEN];
+  memset (test_string, '*', TEST_STRING_LEN);
+  test_string[TEST_STRING_LEN - 1] = '\0';
+  TEST_MATCH_SIMPLE ("^(?:[ \t\n]|[^[:cntrl:]])*$", test_string, 0, 0, TRUE);
 
   /* TEST_MATCH(pattern, compile_opts, match_opts, string,
    * 		string_len, start_position, match_opts2, expected) */
