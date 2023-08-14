@@ -2,7 +2,6 @@
 #include <string.h>
 
 #ifdef G_OS_UNIX
-#include <sys/ptrace.h>
 #include <sys/wait.h>
 #include <glib-unix.h>
 #include <gio/gunixinputstream.h>
@@ -10,6 +9,10 @@
 #include <gio/gfiledescriptorbased.h>
 #include <unistd.h>
 #include <fcntl.h>
+#endif
+
+#ifdef __linux__
+#include <sys/ptrace.h>
 #endif
 
 /* We write 2^1 + 2^2 ... + 2^10 or 2047 copies of "Hello World!\n"
@@ -1990,6 +1993,8 @@ test_fd_conflation_child_err_report_fd (void)
   do_test_fd_conflation (G_SUBPROCESS_FLAGS_NONE, empty_child_setup, TRUE);
 }
 
+#ifdef __linux__
+
 /* Handle ptrace events on @main_child, and assert that when it exits, it does
  * so with status %EXIT_SUCCESS, rather than signalling. Other than that, this
  * just calls %PTRACE_CONT for all trace events. */
@@ -2061,15 +2066,20 @@ trace_children (pid_t main_child)
     }
 }
 
+#endif  /* __linux__ */
+
 static void
 test_exit_status_trapped (void)
 {
+#ifdef __linux__
   GPtrArray *args = NULL;
   pid_t test_child;
+#endif
 
   g_test_summary ("Test that exit status is reported correctly for ptrace()d child processes");
   g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/merge_requests/3433");
 
+#ifdef __linux__
   /* Call fork() directly here, rather than using #GSubprocess, so that we can
    * safely call waitpid() on it ourselves without interfering with the internals
    * of #GSubprocess.
@@ -2088,6 +2098,9 @@ test_exit_status_trapped (void)
   trace_children (test_child);
 
   g_clear_pointer (&args, g_ptr_array_unref);
+#else
+  g_test_skip ("ptrace() support for this test is only tested on Linux");
+#endif
 }
 
 #endif  /* G_OS_UNIX */
