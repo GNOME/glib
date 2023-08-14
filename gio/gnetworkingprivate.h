@@ -22,6 +22,7 @@
 #define __G_NETWORKINGPRIVATE_H__
 
 #include "gnetworking.h"
+#include "gresolver.h"
 
 G_BEGIN_DECLS
 
@@ -31,6 +32,8 @@ gint g_socket (gint     domain,
                gint     type,
                gint     protocol,
                GError **error);
+
+gboolean g_getservbyname_ntohs (const char *name, const char *proto, guint16 *out_port);
 
 G_END_DECLS
 

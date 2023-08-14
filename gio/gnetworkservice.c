@@ -364,17 +364,17 @@ static GList *
 g_network_service_fallback_targets (GNetworkService *srv)
 {
   GSrvTarget *target;
-  struct servent *entry;
+  gboolean has_port;
   guint16 port;
 
-  entry = getservbyname (srv->priv->service, "tcp");
-  port = entry ? g_ntohs (entry->s_port) : 0;
+  has_port = g_getservbyname_ntohs (srv->priv->service, "tcp", &port);
+
 #ifdef HAVE_ENDSERVENT
   endservent ();
 #endif
 
-  if (entry == NULL)
-      return NULL;
+  if (!has_port)
+    return NULL;
 
   target = g_srv_target_new (srv->priv->domain, port, 0, 0);
   return g_list_append (NULL, target);

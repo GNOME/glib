@@ -486,10 +486,7 @@ g_network_address_parse (const gchar  *host_and_port,
 
       else
         {
-          struct servent *entry;
-
-          entry = getservbyname (port, "tcp");
-          if (entry == NULL)
+          if (!g_getservbyname_ntohs (port, "tcp", &portnum))
             {
               g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
                            "Unknown service '%s' specified in hostname '%s'",
@@ -500,8 +497,6 @@ g_network_address_parse (const gchar  *host_and_port,
               g_free (name);
               return NULL;
             }
-
-          portnum = g_ntohs (entry->s_port);
 
 #ifdef HAVE_ENDSERVENT
           endservent ();

@@ -73,10 +73,12 @@ test_parse_uri (gconstpointer d)
     g_error_free (error);
 }
 
-static ParseTest host_tests[] =
-{
+static ParseTest host_tests[] = {
   { "www.gnome.org", NULL, "www.gnome.org", 1234, -1 },
   { "www.gnome.org:8080", NULL, "www.gnome.org", 8080, -1 },
+  { "www.gnome.org:http", NULL, "www.gnome.org", 80, -1 },
+  { "1.2.3.4:imaps", NULL, "1.2.3.4", 993, -1 },
+  { "1.2.3.4:doesnotexist", NULL, NULL, 0, G_IO_ERROR_INVALID_ARGUMENT },
   { "[2001:db8::1]", NULL, "2001:db8::1", 1234, -1 },
   { "[2001:db8::1]:888", NULL, "2001:db8::1", 888, -1 },
   { "[2001:db8::1%em1]", NULL, "2001:db8::1%em1", 1234, -1 },
@@ -85,15 +87,49 @@ static ParseTest host_tests[] =
   { "[hostnam]e", NULL, NULL, 0, G_IO_ERROR_INVALID_ARGUMENT },
   { "hostname:", NULL, NULL, 0, G_IO_ERROR_INVALID_ARGUMENT },
   { "hostname:-1", NULL, NULL, 0, G_IO_ERROR_INVALID_ARGUMENT },
-  { "hostname:9999999", NULL, NULL, 0, G_IO_ERROR_INVALID_ARGUMENT }
+  { "hostname:9999999", NULL, NULL, 0, G_IO_ERROR_INVALID_ARGUMENT },
 };
 
 static void
 test_parse_host (gconstpointer d)
 {
   const ParseTest *test = d;
+  ParseTest test_cpy;
   GNetworkAddress *address;
   GError *error;
+  const char *port_by_name = NULL;
+
+  if (g_str_equal (test->input, "www.gnome.org:http"))
+    port_by_name = "http";
+  else if (g_str_equal (test->input, "1.2.3.4:imaps"))
+    port_by_name = "imaps";
+  else if (g_str_equal (test->input, "1.2.3.4:doesnotexist"))
+    port_by_name = "doesnotexist";
+
+  if (port_by_name)
+    {
+      const struct servent *ent;
+      guint16 port;
+      gint error_code;
+
+      /* If using a named port, check that what’s resolved from the system’s
+       * `/etc/services` matches what’s hard-coded in `host_tests`. */
+
+      ent = getservbyname (port_by_name, "tcp");
+      port = ent ? g_ntohs (ent->s_port) : 0;
+      error_code = ent ? -1 : G_IO_ERROR_INVALID_ARGUMENT;
+
+      if (port != test->port || error_code != test->error_code)
+        {
+          /* We will lookup the port via getservbyname(), but on the
+           * tested system, the result is not as expected. Instead,
+           * adjust our expected test result. */
+          test_cpy = *test;
+          test_cpy.port = port;
+          test_cpy.error_code = error_code;
+          test = &test_cpy;
+        }
+    }
 
   error = NULL;
   address = (GNetworkAddress*)g_network_address_parse (test->input, 1234, &error);
@@ -114,6 +150,17 @@ test_parse_host (gconstpointer d)
     g_object_unref (address);
   if (error)
     g_error_free (error);
+
+  if (test == &test_cpy)
+    {
+      char *msg;
+
+      /* We tested something, but it's not what we originally wanted to test. Mark the
+       * test as skipped. */
+      msg = g_strdup_printf ("getservbyname(\"%s\", \"tcp\") did not give expected result to validate the test", port_by_name);
+      g_test_skip (msg);
+      g_free (msg);
+    }
 }
 
 typedef struct {
