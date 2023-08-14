@@ -107,7 +107,7 @@ fedora-x86_64:
   variables:
     CFLAGS: "-coverage -ftest-coverage -fprofile-arcs"
   script:
-    - meson ${MESON_COMMON_OPTIONS}
+    - meson setup ${MESON_COMMON_OPTIONS}
             --werror
             --default-library=both
             --prefix=$HOME/glib-installed
@@ -154,7 +154,7 @@ debian-stable-x86_64:
   stage: build
   needs: []
   script:
-    - meson ${MESON_COMMON_OPTIONS}
+    - meson setup ${MESON_COMMON_OPTIONS}
             --werror
             --default-library=both
             --prefix=$HOME/glib-installed
@@ -187,7 +187,7 @@ installed-tests:
   needs: []
   script:
     # dtrace is disabled because it breaks the static-link.py test
-    - meson ${MESON_COMMON_OPTIONS}
+    - meson setup ${MESON_COMMON_OPTIONS}
             --werror
             --prefix=/usr --libdir=/usr/lib64
             -Dinstalled_tests=true
@@ -224,7 +224,7 @@ G_DISABLE_ASSERT:
   stage: build
   needs: []
   script:
-    - meson ${MESON_COMMON_OPTIONS}
+    - meson setup ${MESON_COMMON_OPTIONS}
             --werror
             -Dsystemtap=true
             -Ddtrace=true
@@ -256,7 +256,7 @@ valgrind:
   variables:
     MESON_TEST_TIMEOUT_MULTIPLIER: 15
   script:
-    - meson ${MESON_COMMON_OPTIONS}
+    - meson setup ${MESON_COMMON_OPTIONS}
             --werror
             -Dsystemtap=true
             -Ddtrace=true
@@ -298,7 +298,7 @@ cross-android_arm64:
   image: $FEDORA_IMAGE
   script:
     # FIXME: add --werror
-    - meson ${MESON_COMMON_OPTIONS} --cross-file=.gitlab-ci/cross_file_android_arm64_31.txt _build
+    - meson setup ${MESON_COMMON_OPTIONS} --cross-file=.gitlab-ci/cross_file_android_arm64_31.txt _build
     - ninja -C _build
 
 cross-mingw64:
@@ -310,7 +310,7 @@ cross-mingw64:
     PYTHONUTF8: "1"
   script:
     # FIXME: Add --werror
-    - meson ${MESON_COMMON_OPTIONS} --cross-file=/opt/cross_file_mingw64.txt _build
+    - meson setup ${MESON_COMMON_OPTIONS} --cross-file=/opt/cross_file_mingw64.txt _build
     - ninja -C _build
   artifacts:
     reports:
@@ -474,7 +474,7 @@ freebsd-12-x86_64:
     # FreeBSD supports xattr, but its API is different from Linux xattr.
     # FIXME: extattr(2) support: https://gitlab.gnome.org/GNOME/glib/issues/1404
     # localstatedir is needed for access to /var/lib/dbus/machine-id
-    - meson ${MESON_COMMON_OPTIONS} --localstatedir=/var -Db_lundef=false -Dxattr=false _build
+    - meson setup ${MESON_COMMON_OPTIONS} --localstatedir=/var -Db_lundef=false -Dxattr=false _build
     - ninja -C _build
     - bash -x ./.gitlab-ci/run-tests.sh
   artifacts:
@@ -503,7 +503,7 @@ freebsd-13-x86_64:
   before_script:
     - bash .gitlab-ci/show-execution-environment.sh
   script:
-    - meson ${MESON_COMMON_OPTIONS} --localstatedir=/var -Db_lundef=false -Dxattr=false _build
+    - meson setup ${MESON_COMMON_OPTIONS} --localstatedir=/var -Db_lundef=false -Dxattr=false _build
     - ninja -C _build
     - bash -x ./.gitlab-ci/run-tests.sh
   artifacts:
@@ -557,7 +557,7 @@ macos-x86_64:
     # already contains the dependencies. See:
     #  - https://gitlab.gnome.org/GNOME/glib/merge_requests/388
     #  - https://gitlab.gnome.org/Infrastructure/Infrastructure/issues/225
-    - meson ${MESON_COMMON_OPTIONS}
+    - meson setup ${MESON_COMMON_OPTIONS}
             --wrap-mode=default
             --werror
             _build
@@ -606,7 +606,7 @@ scan-build:
   stage: analysis
   needs: []
   script:
-    - meson ${MESON_COMMON_OPTIONS}
+    - meson setup ${MESON_COMMON_OPTIONS}
             --werror
             --default-library=both
             --prefix=$HOME/glib-installed
@@ -635,7 +635,7 @@ scan-build:
     # cov-build doesn’t like GLIB_DEPRECATED_ENUMERATOR
     CFLAGS: '-DGLIB_DISABLE_DEPRECATION_WARNINGS'
   script:
-    - meson ${MESON_COMMON_OPTIONS}
+    - meson setup ${MESON_COMMON_OPTIONS}
             --werror
             --default-library=both
             --prefix=$HOME/glib-installed
@@ -679,7 +679,7 @@ dist-job:
     - git submodule update --init
     - for m in $(git submodule foreach -q 'echo $path'); do git config --global --add safe.directory "${PWD}/${m}"; done
     - meson subprojects download
-    - meson ${MESON_COMMON_OPTIONS} --buildtype release -Dgtk_doc=true -Dman=true _build
+    - meson setup ${MESON_COMMON_OPTIONS} --buildtype release -Dgtk_doc=true -Dman=true _build
     - cd _build
     - ninja dist
     - ninja glib-doc gobject-doc gio-doc
