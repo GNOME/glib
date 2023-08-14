@@ -22,6 +22,7 @@
 #define __G_NETWORKINGPRIVATE_H__
 
 #include "gnetworking.h"
+#include "gresolver.h"
 
 G_BEGIN_DECLS
 
