@@ -1764,7 +1764,6 @@ G_GNUC_END_IGNORE_DEPRECATIONS
   regex->orig_compile_opts = compile_options;
   regex->match_opts = pcre_match_options;
   regex->orig_match_opts = match_options;
-  regex->jit_status = enable_jit_with_match_options (regex, regex->match_opts);
 
   return regex;
 }
