@@ -659,6 +659,7 @@ scan-build:
       - "cov-int/build-log.txt"
 
 pages:
+  extends: .only-schedules
   stage: deploy
   only:
     - main
