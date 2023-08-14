@@ -661,8 +661,6 @@ scan-build:
 pages:
   extends: .only-schedules
   stage: deploy
-  only:
-    - main
   needs: ['coverage', 'style-check-advisory']
   script:
     - mv _coverage/ public/
