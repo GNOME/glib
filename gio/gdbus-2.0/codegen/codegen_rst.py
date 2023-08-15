@@ -6,6 +6,7 @@ import os
 import re
 
 from . import utils
+import textwrap
 
 # Disable line length warnings as wrapping the templates would be hard
 # flake8: noqa: E501
@@ -21,8 +22,8 @@ class RstCodeGenerator:
     def _expand(self, s, expandParamsAndConstants):
         """Expands parameters and constant literals."""
         res = []
-        for line in s.split("\n"):
-            line = line.strip()
+        for line in textwrap.dedent(s).split("\n"):
+            line = line.rstrip()
             if line == "":
                 res.append("")
                 continue

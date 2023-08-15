@@ -1340,6 +1340,48 @@ G_END_DECLS
         with open("test-org.project.Bar.Frobnicator.xml", "r") as f:
             self.assertTrue(ET.parse(f) is not None)
 
+    def test_indentation_preservation_in_comments(self):
+        """Test if the parser preserves relative indentation in XML comments"""
+        markup_list = """\
+- The mnemonic key activates the object if it is presently enabled onscreen.
+  This typically corresponds to the underlined letter within the widget.
+  Example: "n" in a traditional "New..." menu item or the "a" in "Apply" for
+  a button."""
+
+        xml_contents = """
+        <node>
+          <interface name="org.project.Bar.Frobnicator">
+            <!-- GetKeyBinding:
+                 @index: 0-based index of the action to query.
+
+                 Gets the keybinding which can be used to activate this action, if one
+                 exists. The string returned should contain localized, human-readable,
+                 key sequences as they would appear when displayed on screen. It must
+                 be in the format "mnemonic;sequence;shortcut".
+
+                 - The mnemonic key activates the object if it is presently enabled onscreen.
+                   This typically corresponds to the underlined letter within the widget.
+                   Example: "n" in a traditional "New..." menu item or the "a" in "Apply" for
+                   a button.
+
+                 If there is no key binding for this action, return "".
+            -->
+            <method name="GetKeyBinding">
+              <arg type="i" name="index" direction="in"/>
+              <arg type="s" direction="out"/>
+            </method>
+          </interface>
+        </node>
+        """
+        for format, ext in [("rst", "rst"), ("md", "md"), ("docbook", "xml")]:
+            res = self.runCodegenWithInterface(
+                xml_contents, f"--generate-{format}", "test"
+            )
+            self.assertFalse(res.err)
+            self.assertFalse(res.out)
+            with open(f"test-org.project.Bar.Frobnicator.{ext}", "r") as f:
+                self.assertIn(markup_list, f.read())
+
 
 if __name__ == "__main__":
     unittest.main(testRunner=taptestrunner.TAPTestRunner())
