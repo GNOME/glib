@@ -1020,6 +1020,10 @@ glib_compile_resources = executable('glib-compile-resources',
   # intl.lib is not compatible with SAFESEH
   link_args : noseh_link_args,
   dependencies : [libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep, gvdb_dep])
+install_data('gresource.dtd',
+  install_dir: get_option('datadir') / 'glib-2.0/dtds',
+  install_tag: 'devel',
+)
 
 # Cannot override those programs in cross compilation case because they are
 # native executables that cannot be run on the build machine.
