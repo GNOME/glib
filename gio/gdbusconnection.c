@@ -3966,9 +3966,21 @@ distribute_signals (GDBusConnection *connection,
                     GDBusMessage    *message)
 {
   GPtrArray *signal_data_array;
-  const gchar *sender;
+  const gchar *sender, *interface, *member, *path;
+
+  g_assert (g_dbus_message_get_message_type (message) == G_DBUS_MESSAGE_TYPE_SIGNAL);
 
   sender = g_dbus_message_get_sender (message);
+
+  /* all three of these are required, but should have been validated already
+   * by validate_headers() in gdbusmessage.c */
+  interface = g_dbus_message_get_interface (message);
+  member = g_dbus_message_get_member (message);
+  path = g_dbus_message_get_path (message);
+
+  g_assert (interface != NULL);
+  g_assert (member != NULL);
+  g_assert (path != NULL);
 
   if (G_UNLIKELY (_g_dbus_debug_signal ()))
     {
@@ -3978,9 +3990,7 @@ distribute_signals (GDBusConnection *connection,
                " <<<< RECEIVED SIGNAL %s.%s\n"
                "      on object %s\n"
                "      sent by name %s\n",
-               g_dbus_message_get_interface (message),
-               g_dbus_message_get_member (message),
-               g_dbus_message_get_path (message),
+               interface, member, path,
                sender != NULL ? sender : "(none)");
       _g_dbus_debug_print_unlock ();
     }
@@ -7195,9 +7205,17 @@ distribute_method_call (GDBusConnection *connection,
 
   g_assert (g_dbus_message_get_message_type (message) == G_DBUS_MESSAGE_TYPE_METHOD_CALL);
 
-  interface_name = g_dbus_message_get_interface (message);
+  /* these are required, and should have been validated by validate_headers()
+   * in gdbusmessage.c already */
   member = g_dbus_message_get_member (message);
   path = g_dbus_message_get_path (message);
+
+  g_assert (member != NULL);
+  g_assert (path != NULL);
+
+  /* this is optional */
+  interface_name = g_dbus_message_get_interface (message);
+
   subtree_path = g_strdup (path);
   needle = strrchr (subtree_path, '/');
   if (needle != NULL && needle != subtree_path)
@@ -7209,7 +7227,6 @@ distribute_method_call (GDBusConnection *connection,
       g_free (subtree_path);
       subtree_path = NULL;
     }
-
 
   if (G_UNLIKELY (_g_dbus_debug_incoming ()))
     {
