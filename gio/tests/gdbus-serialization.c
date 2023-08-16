@@ -936,7 +936,7 @@ test_message_serialize_header_checks (void)
   g_dbus_message_set_interface (message, NULL);
   blob = g_dbus_message_to_blob (message, &blob_size, G_DBUS_CAPABILITY_FLAGS_NONE, &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
-  g_assert_cmpstr (error->message, ==, "Cannot serialize message: SIGNAL message: PATH, INTERFACE or MEMBER header field is missing");
+  g_assert_cmpstr (error->message, ==, "Cannot serialize message: SIGNAL message: PATH, INTERFACE or MEMBER header field is missing or invalid");
   g_clear_error (&error);
   g_assert_null (blob);
   /* interface reserved value => error */
@@ -953,7 +953,7 @@ test_message_serialize_header_checks (void)
   g_dbus_message_set_path (message, NULL);
   blob = g_dbus_message_to_blob (message, &blob_size, G_DBUS_CAPABILITY_FLAGS_NONE, &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
-  g_assert_cmpstr (error->message, ==, "Cannot serialize message: SIGNAL message: PATH, INTERFACE or MEMBER header field is missing");
+  g_assert_cmpstr (error->message, ==, "Cannot serialize message: SIGNAL message: PATH, INTERFACE or MEMBER header field is missing or invalid");
   g_clear_error (&error);
   g_assert_null (blob);
   /* path reserved value => error */
@@ -970,7 +970,7 @@ test_message_serialize_header_checks (void)
   g_dbus_message_set_member (message, NULL);
   blob = g_dbus_message_to_blob (message, &blob_size, G_DBUS_CAPABILITY_FLAGS_NONE, &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
-  g_assert_cmpstr (error->message, ==, "Cannot serialize message: SIGNAL message: PATH, INTERFACE or MEMBER header field is missing");
+  g_assert_cmpstr (error->message, ==, "Cannot serialize message: SIGNAL message: PATH, INTERFACE or MEMBER header field is missing or invalid");
   g_clear_error (&error);
   g_assert_null (blob);
   /* reset member */
@@ -988,7 +988,7 @@ test_message_serialize_header_checks (void)
   g_dbus_message_set_path (message, NULL);
   blob = g_dbus_message_to_blob (message, &blob_size, G_DBUS_CAPABILITY_FLAGS_NONE, &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
-  g_assert_cmpstr (error->message, ==, "Cannot serialize message: METHOD_CALL message: PATH or MEMBER header field is missing");
+  g_assert_cmpstr (error->message, ==, "Cannot serialize message: METHOD_CALL message: PATH or MEMBER header field is missing or invalid");
   g_clear_error (&error);
   g_assert_null (blob);
   /* reset path */
@@ -998,7 +998,7 @@ test_message_serialize_header_checks (void)
   g_dbus_message_set_member (message, NULL);
   blob = g_dbus_message_to_blob (message, &blob_size, G_DBUS_CAPABILITY_FLAGS_NONE, &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
-  g_assert_cmpstr (error->message, ==, "Cannot serialize message: METHOD_CALL message: PATH or MEMBER header field is missing");
+  g_assert_cmpstr (error->message, ==, "Cannot serialize message: METHOD_CALL message: PATH or MEMBER header field is missing or invalid");
   g_clear_error (&error);
   g_assert_null (blob);
   /* reset member */
@@ -1018,7 +1018,7 @@ test_message_serialize_header_checks (void)
   g_dbus_message_set_header (reply, G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL, NULL);
   blob = g_dbus_message_to_blob (reply, &blob_size, G_DBUS_CAPABILITY_FLAGS_NONE, &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
-  g_assert_cmpstr (error->message, ==, "Cannot serialize message: METHOD_RETURN message: REPLY_SERIAL header field is missing");
+  g_assert_cmpstr (error->message, ==, "Cannot serialize message: METHOD_RETURN message: REPLY_SERIAL header field is missing or invalid");
   g_clear_error (&error);
   g_assert_null (blob);
   g_object_unref (reply);
@@ -1029,7 +1029,7 @@ test_message_serialize_header_checks (void)
   g_dbus_message_set_error_name (reply, NULL);
   blob = g_dbus_message_to_blob (reply, &blob_size, G_DBUS_CAPABILITY_FLAGS_NONE, &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
-  g_assert_cmpstr (error->message, ==, "Cannot serialize message: ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing");
+  g_assert_cmpstr (error->message, ==, "Cannot serialize message: ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing or invalid");
   g_clear_error (&error);
   g_assert_null (blob);
   /* reset ERROR_NAME */
@@ -1038,7 +1038,7 @@ test_message_serialize_header_checks (void)
   g_dbus_message_set_header (reply, G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL, NULL);
   blob = g_dbus_message_to_blob (reply, &blob_size, G_DBUS_CAPABILITY_FLAGS_NONE, &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
-  g_assert_cmpstr (error->message, ==, "Cannot serialize message: ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing");
+  g_assert_cmpstr (error->message, ==, "Cannot serialize message: ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing or invalid");
   g_clear_error (&error);
   g_assert_null (blob);
   g_object_unref (reply);
@@ -1615,6 +1615,127 @@ test_message_serialize_empty_structure (void)
   g_clear_object (&message);
 }
 
+static void
+test_message_parse_missing_header (void)
+{
+  const guint8 data[] = {
+    'l',  /* little-endian byte order */
+    0x01,  /* message type (method call) */
+    0x00,  /* message flags (none) */
+    0x01,  /* major protocol version */
+    0x12, 0x00, 0x00, 0x00,  /* body length (in bytes) */
+    0x20, 0x20, 0x20, 0x20,  /* message serial */
+    /* a{yv} of header fields: */
+    0x24, 0x00, 0x00, 0x00,  /* array length (in bytes), must be a multiple of 8 */
+      0x01,  /* array key (PATH, required for method call messages) */
+      /* Variant array value: */
+      0x01,  /* signature length */
+      'o',  /* one complete type */
+      0x00,  /* nul terminator */
+      /* (Variant array value payload) */
+      0x01, 0x00, 0x00, 0x00,
+      '/', 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00,
+      0x30,  /* array key (MEMBER, required for method call messages; CORRUPTED from 0x03) */
+      /* Variant array value: */
+      0x01,  /* signature length */
+      's',  /* one complete type */
+      0x00,  /* nul terminator */
+      /* (Variant array value payload) */
+      0x03, 0x00, 0x00, 0x00,
+      'H', 'e', 'y', 0x00,
+      0x00, 0x00, 0x00, 0x00,
+      0x08,  /* array key (SIGNATURE) */
+      /* Variant array value: */
+      0x01,  /* signature length */
+      'g',  /* one complete type */
+      0x00,  /* nul terminator */
+      /* (Variant array value payload) */
+      0x02, 's', 's', 0x00,
+    /* Some arbitrary valid content inside the message body: */
+    0x03, 0x00, 0x00, 0x00,
+    'h', 'e', 'y', 0x00,
+    0x05, 0x00, 0x00, 0x00,
+    't', 'h', 'e', 'r', 'e', 0x00
+  };
+
+  gsize size = sizeof (data);
+  GDBusMessage *message = NULL;
+  GError *local_error = NULL;
+
+  g_test_summary ("Test that missing (required) headers prompt an error.");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/3061");
+
+  message = g_dbus_message_new_from_blob ((guchar *) data, size,
+                                          G_DBUS_CAPABILITY_FLAGS_NONE,
+                                          &local_error);
+  g_assert_error (local_error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
+  g_assert_null (message);
+
+  g_clear_error (&local_error);
+}
+
+static void
+test_message_parse_invalid_header_type (void)
+{
+  const guint8 data[] = {
+    'l',  /* little-endian byte order */
+    0x01,  /* message type (method call) */
+    0x00,  /* message flags (none) */
+    0x01,  /* major protocol version */
+    0x12, 0x00, 0x00, 0x00,  /* body length (in bytes) */
+    0x20, 0x20, 0x20, 0x20,  /* message serial */
+    /* a{yv} of header fields: */
+    0x24, 0x00, 0x00, 0x00,  /* array length (in bytes), must be a multiple of 8 */
+      0x01,  /* array key (PATH, required for method call messages) */
+      /* Variant array value: */
+      0x01,  /* signature length */
+      'o',  /* one complete type */
+      0x00,  /* nul terminator */
+      /* (Variant array value payload) */
+      0x01, 0x00, 0x00, 0x00,
+      '/', 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00,
+      0x03,  /* array key (MEMBER, required for method call messages) */
+      /* Variant array value: */
+      0x01,  /* signature length */
+      't',  /* one complete type; CORRUPTED, MEMBER should be 's' */
+      0x00,  /* nul terminator */
+      /* (Padding to 64-bit alignment of 't)' */
+      0x00, 0x00, 0x00, 0x00,
+      /* (Variant array value payload) */
+      'H', 'e', 'y', 0x00,
+      0x00, 0x00, 0x00, 0x00,
+      0x08,  /* array key (SIGNATURE) */
+      /* Variant array value: */
+      0x01,  /* signature length */
+      'g',  /* one complete type */
+      0x00,  /* nul terminator */
+      /* (Variant array value payload) */
+      0x02, 's', 's', 0x00,
+    /* Some arbitrary valid content inside the message body: */
+    0x03, 0x00, 0x00, 0x00,
+    'h', 'e', 'y', 0x00,
+    0x05, 0x00, 0x00, 0x00,
+    't', 'h', 'e', 'r', 'e', 0x00
+  };
+
+  gsize size = sizeof (data);
+  GDBusMessage *message = NULL;
+  GError *local_error = NULL;
+
+  g_test_summary ("Test that the type of well-known headers is checked.");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/3061");
+
+  message = g_dbus_message_new_from_blob ((guchar *) data, size,
+                                          G_DBUS_CAPABILITY_FLAGS_NONE,
+                                          &local_error);
+  g_assert_error (local_error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
+  g_assert_null (message);
+
+  g_clear_error (&local_error);
+}
+
 /* ---------------------------------------------------------------------------------------------------- */
 
 int
@@ -1657,6 +1778,10 @@ main (int   argc,
                    test_message_parse_truncated);
   g_test_add_func ("/gdbus/message-parse/empty-structure",
                    test_message_parse_empty_structure);
+  g_test_add_func ("/gdbus/message-parse/missing-header",
+                   test_message_parse_missing_header);
+  g_test_add_func ("/gdbus/message-parse/invalid-header-type",
+                   test_message_parse_invalid_header_type);
 
   return g_test_run();
 }
