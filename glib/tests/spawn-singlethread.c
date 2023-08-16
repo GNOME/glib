@@ -237,7 +237,7 @@ test_spawn_async_with_fds (void)
               break;
             case PIPE:
 #ifdef G_OS_UNIX
-              g_unix_open_pipe (test_pipe[j], FD_CLOEXEC, &error);
+              g_unix_open_pipe (test_pipe[j], O_CLOEXEC, &error);
               g_assert_no_error (error);
 #else
               g_assert_cmpint (_pipe (test_pipe[j], 4096, _O_BINARY), >=, 0);

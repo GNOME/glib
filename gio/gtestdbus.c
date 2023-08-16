@@ -604,7 +604,7 @@ make_pipe (gint     pipe_fds[2],
            GError **error)
 {
 #if defined(G_OS_UNIX)
-  return g_unix_open_pipe (pipe_fds, FD_CLOEXEC, error);
+  return g_unix_open_pipe (pipe_fds, O_CLOEXEC, error);
 #elif defined(G_OS_WIN32)
   if (_pipe (pipe_fds, 4096, _O_BINARY) < 0)
     {

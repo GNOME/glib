@@ -41,7 +41,7 @@ test_pipe (void)
   gssize bytes_read;
   gboolean res;
 
-  res = g_unix_open_pipe (pipefd, FD_CLOEXEC, &error);
+  res = g_unix_open_pipe (pipefd, O_CLOEXEC, &error);
   g_assert (res);
   g_assert_no_error (error);
 
@@ -103,7 +103,7 @@ test_pipe_stdio_overwrite (void)
   g_close (STDIN_FILENO, &error);
   g_assert_no_error (error);
 
-  res = g_unix_open_pipe (pipefd, FD_CLOEXEC, &error);
+  res = g_unix_open_pipe (pipefd, O_CLOEXEC, &error);
   g_assert_no_error (error);
   g_assert_true (res);
 
@@ -143,7 +143,7 @@ test_nonblocking (void)
   gboolean res;
   int flags;
 
-  res = g_unix_open_pipe (pipefd, FD_CLOEXEC, &error);
+  res = g_unix_open_pipe (pipefd, O_CLOEXEC, &error);
   g_assert (res);
   g_assert_no_error (error);
 

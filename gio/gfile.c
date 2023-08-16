@@ -3188,7 +3188,7 @@ splice_stream_with_progress (GInputStream           *in,
   fd_in = g_file_descriptor_based_get_fd (G_FILE_DESCRIPTOR_BASED (in));
   fd_out = g_file_descriptor_based_get_fd (G_FILE_DESCRIPTOR_BASED (out));
 
-  if (!g_unix_open_pipe (buffer, FD_CLOEXEC, error))
+  if (!g_unix_open_pipe (buffer, O_CLOEXEC, error))
     return FALSE;
 
   /* Try a 1MiB buffer for improved throughput. If that fails, use the default

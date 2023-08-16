@@ -63,7 +63,7 @@ test_fd_list (void)
   s = _pipe (sv, 4096, _O_NOINHERIT | _O_BINARY);
   g_assert_cmpint (s, ==, 0);
 #else
-  g_unix_open_pipe (sv, FD_CLOEXEC, &err);
+  g_unix_open_pipe (sv, O_CLOEXEC, &err);
   g_assert_no_error (err);
 #endif
   list = g_unix_fd_list_new_from_array (sv, -1);
