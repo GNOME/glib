@@ -23,14 +23,14 @@
 
       <literallayout>
         <userinput>meson setup _build</userinput>
-        <userinput>ninja -C _build</userinput>
-        <userinput>ninja -C _build install</userinput>
+        <userinput>meson compile -C _build</userinput>
+        <userinput>meson install -C _build</userinput>
       </literallayout>
 
       On FreeBSD:
       <literallayout>
         <userinput>env CPPFLAGS="-I/usr/local/include" LDFLAGS="-L/usr/local/lib -Wl,--disable-new-dtags" meson setup -Dxattr=false -Dinstalled_tests=true -Db_lundef=false _build</userinput>
-        <userinput>ninja -C _build</userinput>
+        <userinput>meson compile -C _build</userinput>
       </literallayout>
     </para>
 

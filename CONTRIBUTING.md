@@ -144,7 +144,7 @@ configure your build using Meson:
 
 ```sh
 $ meson setup _builddir .
-$ ninja -C _builddir
+$ meson compile -C _builddir
 ```
 
 Typically, you should work on your own branch:
