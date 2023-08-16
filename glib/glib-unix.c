@@ -82,15 +82,18 @@ g_unix_set_error_from_errno (GError **error,
  * uses the pipe2() system call, which atomically creates a pipe with
  * the configured flags.
  *
- * As of GLib 2.78, the supported flags are `FD_CLOEXEC` and `O_NONBLOCK`. Prior
- * to GLib 2.78, only `FD_CLOEXEC` was supported — if you wanted to configure
- * `O_NONBLOCK` then that had to be done separately with `fcntl()`.
+ * As of GLib 2.78, the supported flags are `O_CLOEXEC`/`FD_CLOEXEC` (see below)
+ * and `O_NONBLOCK`. Prior to GLib 2.78, only `FD_CLOEXEC` was supported — if
+ * you wanted to configure `O_NONBLOCK` then that had to be done separately with
+ * `fcntl()`.
  *
  * It is a programmer error to call this function with unsupported flags, and a
  * critical warning will be raised.
  *
- * This function does not take `O_CLOEXEC`, it takes `FD_CLOEXEC` as if
- * for fcntl(); these are different on Linux/glibc.
+ * As of GLib 2.78, it is preferred to pass `O_CLOEXEC` in, rather than
+ * `FD_CLOEXEC`, as that matches the underlying `pipe()` API more closely. Prior
+ * to 2.78, only `FD_CLOEXEC` was supported. Support for `FD_CLOEXEC` may be
+ * deprecated and removed in future.
  *
  * Returns: %TRUE on success, %FALSE if not (and errno will be set).
  *
@@ -101,11 +104,16 @@ g_unix_open_pipe (int     *fds,
                   int      flags,
                   GError **error)
 {
-  /* We only support FD_CLOEXEC and O_NONBLOCK */
-  g_return_val_if_fail ((flags & (FD_CLOEXEC | O_NONBLOCK)) == flags, FALSE);
+  /* We only support O_CLOEXEC/FD_CLOEXEC and O_NONBLOCK */
+  g_return_val_if_fail ((flags & (O_CLOEXEC | FD_CLOEXEC | O_NONBLOCK)) == flags, FALSE);
+
+#if O_CLOEXEC != FD_CLOEXEC && !defined(G_DISABLE_CHECKS)
+  if (flags & FD_CLOEXEC)
+    g_debug ("g_unix_open_pipe() called with FD_CLOEXEC; please migrate to using O_CLOEXEC instead");
+#endif
 
   if (!g_unix_open_pipe_internal (fds,
-                                  (flags & FD_CLOEXEC) != 0,
+                                  (flags & (O_CLOEXEC | FD_CLOEXEC)) != 0,
                                   (flags & O_NONBLOCK) != 0))
     return g_unix_set_error_from_errno (error, errno);
 
