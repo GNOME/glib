@@ -306,9 +306,9 @@ test_once (Fixture       *f,
   GDBusMessage *message;
   gboolean pipe_res;
 
-  pipe_res = g_unix_open_pipe (f->server_to_client, FD_CLOEXEC, &f->error);
+  pipe_res = g_unix_open_pipe (f->server_to_client, O_CLOEXEC, &f->error);
   g_assert (pipe_res);
-  pipe_res = g_unix_open_pipe (f->client_to_server, FD_CLOEXEC, &f->error);
+  pipe_res = g_unix_open_pipe (f->client_to_server, O_CLOEXEC, &f->error);
   g_assert (pipe_res);
 
   f->server_iostream = my_io_stream_new_for_fds (f->client_to_server[0],

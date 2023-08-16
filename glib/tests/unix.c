@@ -41,7 +41,7 @@ test_pipe (void)
   gssize bytes_read;
   gboolean res;
 
-  res = g_unix_open_pipe (pipefd, FD_CLOEXEC, &error);
+  res = g_unix_open_pipe (pipefd, O_CLOEXEC, &error);
   g_assert (res);
   g_assert_no_error (error);
 
@@ -55,6 +55,34 @@ test_pipe (void)
   close (pipefd[1]);
 
   g_assert (g_str_has_prefix (buf, "hello"));
+}
+
+static void
+test_pipe_fd_cloexec (void)
+{
+  GError *error = NULL;
+  int pipefd[2];
+  char buf[1024];
+  gssize bytes_read;
+  gboolean res;
+
+  g_test_summary ("Test that FD_CLOEXEC is still accepted as an argument to g_unix_open_pipe()");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/merge_requests/3459");
+
+  res = g_unix_open_pipe (pipefd, FD_CLOEXEC, &error);
+  g_assert (res);
+  g_assert_no_error (error);
+
+  g_assert_cmpint (write (pipefd[1], "hello", sizeof ("hello")), ==, sizeof ("hello"));
+  memset (buf, 0, sizeof (buf));
+  bytes_read = read (pipefd[0], buf, sizeof(buf) - 1);
+  g_assert_cmpint (bytes_read, >, 0);
+  buf[bytes_read] = '\0';
+
+  close (pipefd[0]);
+  close (pipefd[1]);
+
+  g_assert_true (g_str_has_prefix (buf, "hello"));
 }
 
 static void
@@ -75,7 +103,7 @@ test_pipe_stdio_overwrite (void)
   g_close (STDIN_FILENO, &error);
   g_assert_no_error (error);
 
-  res = g_unix_open_pipe (pipefd, FD_CLOEXEC, &error);
+  res = g_unix_open_pipe (pipefd, O_CLOEXEC, &error);
   g_assert_no_error (error);
   g_assert_true (res);
 
@@ -115,7 +143,7 @@ test_nonblocking (void)
   gboolean res;
   int flags;
 
-  res = g_unix_open_pipe (pipefd, FD_CLOEXEC, &error);
+  res = g_unix_open_pipe (pipefd, O_CLOEXEC, &error);
   g_assert (res);
   g_assert_no_error (error);
 
@@ -472,6 +500,7 @@ main (int   argc,
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/glib-unix/pipe", test_pipe);
+  g_test_add_func ("/glib-unix/pipe/fd-cloexec", test_pipe_fd_cloexec);
   g_test_add_func ("/glib-unix/pipe-stdio-overwrite", test_pipe_stdio_overwrite);
   g_test_add_func ("/glib-unix/error", test_error);
   g_test_add_func ("/glib-unix/nonblocking", test_nonblocking);

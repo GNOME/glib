@@ -305,7 +305,7 @@ launch_test_binary (const char *binary,
   gboolean loop_pending;
   gint i = 0;
 
-  if (!g_unix_open_pipe (report_pipe, FD_CLOEXEC, &error))
+  if (!g_unix_open_pipe (report_pipe, O_CLOEXEC, &error))
     {
       if (subtest_mode_fatal)
         g_error ("Failed to open pipe for test binary: %s: %s", binary, error->message);

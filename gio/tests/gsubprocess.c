@@ -1750,9 +1750,9 @@ do_test_pass_fd (GSubprocessFlags     flags,
   char *basic_fd_str;
   char *needdup_fd_str;
 
-  g_unix_open_pipe (basic_pipefds, FD_CLOEXEC, error);
+  g_unix_open_pipe (basic_pipefds, O_CLOEXEC, error);
   g_assert_no_error (local_error);
-  g_unix_open_pipe (needdup_pipefds, FD_CLOEXEC, error);
+  g_unix_open_pipe (needdup_pipefds, O_CLOEXEC, error);
   g_assert_no_error (local_error);
 
   basic_fd_str = g_strdup_printf ("%d", basic_pipefds[1]);
@@ -1854,10 +1854,10 @@ do_test_fd_conflation (GSubprocessFlags     flags,
       return;
     }
 
-  g_unix_open_pipe (unused_pipefds, FD_CLOEXEC, &error);
+  g_unix_open_pipe (unused_pipefds, O_CLOEXEC, &error);
   g_assert_no_error (error);
 
-  g_unix_open_pipe (pipefds, FD_CLOEXEC, &error);
+  g_unix_open_pipe (pipefds, O_CLOEXEC, &error);
   g_assert_no_error (error);
 
   /* The fds should be sequential since we are in a new process. */
