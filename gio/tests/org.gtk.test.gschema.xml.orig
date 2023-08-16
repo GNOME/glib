@@ -83,6 +83,9 @@
     <key name="backspace" type="s">
       <default l10n="messages" context="keyboard label">"BackSpace"</default>
     </key>
+    <key name="midnight" type="s">
+      <default l10n="time">"12:00 AM"</default>
+    </key>
   </schema>
 
   <schema id="org.gtk.test.binding" path="/tests/binding/">

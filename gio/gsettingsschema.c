@@ -32,6 +32,11 @@
 #include <string.h>
 #include <stdlib.h>
 
+#ifdef HAVE_XLOCALE_H
+/* Needed on macOS and FreeBSD for uselocale() */
+#include <xlocale.h>
+#endif
+
 /**
  * SECTION:gsettingsschema
  * @short_description: Introspecting and controlling the loading
@@ -1416,9 +1421,14 @@ g_settings_schema_key_range_fixup (GSettingsSchemaKey *key,
 GVariant *
 g_settings_schema_key_get_translated_default (GSettingsSchemaKey *key)
 {
-  const gchar *translated;
+  const gchar *translated = NULL;
   GError *error = NULL;
   const gchar *domain;
+#ifdef HAVE_USELOCALE
+  const gchar *lc_time;
+  locale_t old_locale;
+  locale_t locale;
+#endif
   GVariant *value;
 
   domain = g_settings_schema_get_gettext_domain (key->schema);
@@ -1427,9 +1437,25 @@ g_settings_schema_key_get_translated_default (GSettingsSchemaKey *key)
     /* translation not requested for this key */
     return NULL;
 
+#ifdef HAVE_USELOCALE
   if (key->lc_char == 't')
-    translated = g_dcgettext (domain, key->unparsed, LC_TIME);
-  else
+    {
+      lc_time = setlocale (LC_TIME, NULL);
+      if (lc_time)
+        {
+          locale = newlocale (LC_MESSAGES_MASK, lc_time, (locale_t) 0);
+          if (locale != (locale_t) 0)
+            {
+              old_locale = uselocale (locale);
+              translated = g_dgettext (domain, key->unparsed);
+              uselocale (old_locale);
+              freelocale (locale);
+            }
+        }
+    }
+#endif
+
+  if (translated == NULL)
     translated = g_dgettext (domain, key->unparsed);
 
   if (translated == key->unparsed)

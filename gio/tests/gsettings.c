@@ -1,3 +1,5 @@
+#include "config.h"
+
 #include <stdlib.h>
 #include <locale.h>
 #include <libintl.h>
@@ -9,6 +11,11 @@
 #include <gio/gsettingsbackend.h>
 
 #include "testenum.h"
+
+#ifdef HAVE_XLOCALE_H
+/* Needed on macOS and FreeBSD for uselocale() */
+#include <xlocale.h>
+#endif
 
 static const gchar *locale_dir = ".";
 
@@ -747,7 +754,7 @@ test_atomic (void)
  * 1) The C library doesn't use LC_MESSAGES, that is implemented only
  * in libintl (defined in its <libintl.h>).
  *
- * 2) The locale names that setlocale() accepts and returns aren't in
+ * 2) The locale names that uselocale() accepts and returns aren't in
  * the "de_DE" style, but like "German_Germany".
  *
  * 3) libintl looks at the Win32 thread locale and not the C library
@@ -765,29 +772,46 @@ test_atomic (void)
 static void
 test_l10n (void)
 {
+#ifndef HAVE_USELOCALE
+  g_test_skip ("Unsafe to change locale because platform does not support uselocale()");
+#else
   GSettings *settings;
   gchar *str;
-  gchar *locale;
+  locale_t original_locale;
+  locale_t new_locale;
+  locale_t result;
 
   bindtextdomain ("test", locale_dir);
   bind_textdomain_codeset ("test", "UTF-8");
 
-  locale = g_strdup (setlocale (LC_MESSAGES, NULL));
+  original_locale = uselocale ((locale_t) 0);
+  g_assert_true (original_locale != (locale_t) 0);
+  new_locale = newlocale (LC_MESSAGES_MASK, "C", (locale_t) 0);
+  g_assert_true (new_locale != (locale_t) 0);
+  result = uselocale (new_locale);
+  g_assert_true (result == original_locale);
 
   settings = g_settings_new ("org.gtk.test.localized");
-
-  g_setenv ("LC_MESSAGES", "C", TRUE);
-  setlocale (LC_MESSAGES, "C");
   str = g_settings_get_string (settings, "error-message");
-  g_setenv ("LC_MESSAGES", locale, TRUE);
-  setlocale (LC_MESSAGES, locale);
+
+  result = uselocale (original_locale);
+  g_assert_true (result == new_locale);
+  freelocale (new_locale);
 
   g_assert_cmpstr (str, ==, "Unnamed");
   g_free (str);
   str = NULL;
 
-  g_setenv ("LC_MESSAGES", "de_DE.UTF-8", TRUE);
-  setlocale (LC_MESSAGES, "de_DE.UTF-8");
+  new_locale = newlocale (LC_MESSAGES_MASK, "de_DE.UTF-8", (locale_t) 0);
+  if (new_locale == (locale_t) 0)
+    {
+      g_test_skip ("Cannot run test becaues de_DE.UTF-8 locale is not available");
+      g_object_unref (settings);
+      return;
+    }
+  result = uselocale (new_locale);
+  g_assert_true (result == original_locale);
+
   /* Only do the test if translation is actually working... */
   if (g_str_equal (dgettext ("test", "\"Unnamed\""), "\"Unbenannt\""))
     {
@@ -802,10 +826,12 @@ test_l10n (void)
       g_test_skip ("translation is not working");
     }
 
-  g_setenv ("LC_MESSAGES", locale, TRUE);
-  setlocale (LC_MESSAGES, locale);
-  g_free (locale);
+  result = uselocale (original_locale);
+  g_assert_true (result == new_locale);
+  freelocale (new_locale);
+
   g_object_unref (settings);
+#endif
 }
 
 /* Test that message context works as expected with translated
@@ -818,39 +844,130 @@ test_l10n (void)
 static void
 test_l10n_context (void)
 {
+#ifndef HAVE_USELOCALE
+  g_test_skip ("Unsafe to change locale because platform does not support uselocale()");
+#else
   GSettings *settings;
   gchar *str;
-  gchar *locale;
+  locale_t original_locale;
+  locale_t new_locale;
+  locale_t result;
 
   bindtextdomain ("test", locale_dir);
   bind_textdomain_codeset ("test", "UTF-8");
 
-  locale = g_strdup (setlocale (LC_MESSAGES, NULL));
-
   settings = g_settings_new ("org.gtk.test.localized");
 
-  g_setenv ("LC_MESSAGES", "C", TRUE);
-  setlocale (LC_MESSAGES, "C");
+  original_locale = uselocale ((locale_t) 0);
+  g_assert_true (original_locale != (locale_t) 0);
+  new_locale = newlocale (LC_MESSAGES_MASK, "C", (locale_t) 0);
+  g_assert_true (new_locale != (locale_t) 0);
+  result = uselocale (new_locale);
+  g_assert_true (result == original_locale);
+
   g_settings_get (settings, "backspace", "s", &str);
-  g_setenv ("LC_MESSAGES", locale, TRUE);
-  setlocale (LC_MESSAGES, locale);
+
+  result = uselocale (original_locale);
+  g_assert_true (result == new_locale);
+  freelocale (new_locale);
 
   g_assert_cmpstr (str, ==, "BackSpace");
   g_free (str);
   str = NULL;
 
-  g_setenv ("LC_MESSAGES", "de_DE.UTF-8", TRUE);
-  setlocale (LC_MESSAGES, "de_DE.UTF-8");
+  new_locale = newlocale (LC_MESSAGES_MASK, "de_DE.UTF-8", (locale_t) 0);
+  if (new_locale == (locale_t) 0)
+    {
+      g_test_skip ("Cannot run test becaues de_DE.UTF-8 locale is not available");
+      g_object_unref (settings);
+      return;
+    }
+  result = uselocale (new_locale);
+  g_assert_true (result == original_locale);
+
   /* Only do the test if translation is actually working... */
   if (g_str_equal (dgettext ("test", "\"Unnamed\""), "\"Unbenannt\""))
     settings_assert_cmpstr (settings, "backspace", ==, "Löschen");
   else
     g_test_skip ("translation is not working");
 
-  g_setenv ("LC_MESSAGES", locale, TRUE);
-  setlocale (LC_MESSAGES, locale);
-  g_free (locale);
+  result = uselocale (original_locale);
+  g_assert_true (result == new_locale);
+  freelocale (new_locale);
+
   g_object_unref (settings);
+#endif
+}
+
+/* Test use of l10n="time" and LC_TIME. */
+static void
+test_l10n_time (void)
+{
+#ifndef HAVE_USELOCALE
+  g_test_skip ("Unsafe to change locale because platform does not support uselocale()");
+#else
+  GSettings *settings;
+  gchar *str;
+  locale_t original_locale;
+  locale_t new_locale;
+  locale_t result;
+
+  g_test_summary ("Test that l10n='time' attribute uses the correct category for translations");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/2575");
+
+  bindtextdomain ("test", locale_dir);
+  bind_textdomain_codeset ("test", "UTF-8");
+
+  settings = g_settings_new ("org.gtk.test.localized");
+
+  original_locale = uselocale ((locale_t) 0);
+  g_assert_true (original_locale != (locale_t) 0);
+  new_locale = duplocale (original_locale);
+  g_assert_true (new_locale != (locale_t) 0);
+  new_locale = newlocale (LC_TIME_MASK, "C", new_locale);
+  g_assert_true (new_locale != (locale_t) 0);
+  result = uselocale (new_locale);
+  g_assert_true (result == original_locale);
+
+  str = g_settings_get_string (settings, "midnight");
+
+  result = uselocale (original_locale);
+  g_assert_true (result == new_locale);
+
+  g_assert_cmpstr (str, ==, "12:00 AM");
+  g_free (str);
+  str = NULL;
+
+  new_locale = newlocale (LC_TIME_MASK, "de_DE.UTF-8", new_locale);
+  if (new_locale == (locale_t) 0)
+    {
+      g_test_skip ("Cannot run test becaues de_DE.UTF-8 locale is not available");
+      g_object_unref (settings);
+      return;
+    }
+  result = uselocale (new_locale);
+  g_assert_true (result != (locale_t) 0);
+
+  /* Only do the test if translation is actually working... */
+  if (g_str_equal (dgettext ("test", "\"12:00 AM\""), "\"00:00\""))
+    {
+      str = g_settings_get_string (settings, "midnight");
+
+      g_assert_cmpstr (str, ==, "00:00");
+      g_free (str);
+      str = NULL;
+    }
+  else
+    {
+      g_test_skip ("translation is not working");
+    }
+
+  result = uselocale (original_locale);
+  g_assert_true (result == new_locale);
+  freelocale (new_locale);
+
+  g_object_unref (settings);
+#endif
 }
 
 enum
@@ -3109,6 +3226,7 @@ main (int argc, char *argv[])
 
   g_test_add_func ("/gsettings/l10n", test_l10n);
   g_test_add_func ("/gsettings/l10n-context", test_l10n_context);
+  g_test_add_func ("/gsettings/l10n-time", test_l10n_time);
 
   g_test_add_func ("/gsettings/delay-apply", test_delay_apply);
   g_test_add_func ("/gsettings/delay-revert", test_delay_revert);
