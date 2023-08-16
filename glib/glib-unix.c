@@ -37,6 +37,12 @@ G_STATIC_ASSERT (G_ALIGNOF (gssize) == G_ALIGNOF (ssize_t));
 G_STATIC_ASSERT (sizeof (GPid) == sizeof (pid_t));
 G_STATIC_ASSERT (G_ALIGNOF (GPid) == G_ALIGNOF (pid_t));
 
+/* If this assertion fails, then the ABI of g_unix_open_pipe() would be
+ * ambiguous on this platform.
+ * On Linux, usually O_NONBLOCK == 04000 and FD_CLOEXEC == 1, but the same
+ * might not be true everywhere. */
+G_STATIC_ASSERT (O_NONBLOCK != FD_CLOEXEC);
+
 /**
  * SECTION:gunix
  * @title: UNIX-specific utilities and integration
@@ -133,21 +139,9 @@ g_unix_set_fd_nonblocking (gint       fd,
     return g_unix_set_error_from_errno (error, errno);
 
   if (nonblock)
-    {
-#ifdef O_NONBLOCK
-      fcntl_flags |= O_NONBLOCK;
-#else
-      fcntl_flags |= O_NDELAY;
-#endif
-    }
+    fcntl_flags |= O_NONBLOCK;
   else
-    {
-#ifdef O_NONBLOCK
-      fcntl_flags &= ~O_NONBLOCK;
-#else
-      fcntl_flags &= ~O_NDELAY;
-#endif
-    }
+    fcntl_flags &= ~O_NONBLOCK;
 
   if (fcntl (fd, F_SETFL, fcntl_flags) == -1)
     return g_unix_set_error_from_errno (error, errno);
