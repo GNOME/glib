@@ -7186,10 +7186,9 @@ distribute_method_call (GDBusConnection *connection,
   GDBusMessage *reply;
   ExportedObject *eo;
   ExportedSubtree *es;
-  const gchar *object_path;
+  const gchar *path;
   const gchar *interface_name;
   const gchar *member;
-  const gchar *path;
   gchar *subtree_path;
   gchar *needle;
   gboolean object_found = FALSE;
@@ -7228,17 +7227,14 @@ distribute_method_call (GDBusConnection *connection,
       _g_dbus_debug_print_unlock ();
     }
 
-  object_path = g_dbus_message_get_path (message);
-  g_assert (object_path != NULL);
-
-  eo = g_hash_table_lookup (connection->map_object_path_to_eo, object_path);
+  eo = g_hash_table_lookup (connection->map_object_path_to_eo, path);
   if (eo != NULL)
     {
       if (obj_message_func (connection, eo, message, &object_found))
         goto out;
     }
 
-  es = g_hash_table_lookup (connection->map_object_path_to_es, object_path);
+  es = g_hash_table_lookup (connection->map_object_path_to_es, path);
   if (es != NULL)
     {
       if (subtree_message_func (connection, es, message))
@@ -7265,14 +7261,14 @@ distribute_method_call (GDBusConnection *connection,
                                                "org.freedesktop.DBus.Error.UnknownMethod",
                                                _("No such interface “%s” on object at path %s"),
                                                interface_name,
-                                               object_path);
+                                               path);
     }
   else
     {
       reply = g_dbus_message_new_method_error (message,
                                            "org.freedesktop.DBus.Error.UnknownMethod",
                                            _("Object does not exist at path “%s”"),
-                                           object_path);
+                                           path);
     }
 
   g_dbus_connection_send_message_unlocked (connection, reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
