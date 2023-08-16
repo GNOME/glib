@@ -35,14 +35,13 @@ export PATH CFLAGS
 if [[ "$MSYSTEM" == "CLANG64" ]]; then
     # FIXME: fix the clang build warnings
     # shellcheck disable=SC2086
-    meson ${MESON_COMMON_OPTIONS} _build
+    meson setup ${MESON_COMMON_OPTIONS} _build
 else
     # shellcheck disable=SC2086
-    meson ${MESON_COMMON_OPTIONS} --werror _build
+    meson setup ${MESON_COMMON_OPTIONS} --werror _build
 fi
 
-cd _build
-ninja
+meson compile -C _build
 
 if [[ "$CFLAGS" == *"-coverage"* ]]; then
     lcov \
@@ -54,8 +53,8 @@ if [[ "$CFLAGS" == *"-coverage"* ]]; then
         --output-file "${DIR}/_coverage/${CI_JOB_NAME}-baseline.lcov"
 fi
 
-meson test -v --timeout-multiplier "${MESON_TEST_TIMEOUT_MULTIPLIER}"
-meson test -v --timeout-multiplier "${MESON_TEST_TIMEOUT_MULTIPLIER}" \
+meson test -C _build -v --timeout-multiplier "${MESON_TEST_TIMEOUT_MULTIPLIER}"
+meson test -C _build -v --timeout-multiplier "${MESON_TEST_TIMEOUT_MULTIPLIER}" \
     --setup=unstable_tests --suite=failing --suite=flaky || true
 
 if [[ "$CFLAGS" == *"-coverage"* ]]; then

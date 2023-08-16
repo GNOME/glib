@@ -107,7 +107,7 @@ fedora-x86_64:
   variables:
     CFLAGS: "-coverage -ftest-coverage -fprofile-arcs"
   script:
-    - meson ${MESON_COMMON_OPTIONS}
+    - meson setup ${MESON_COMMON_OPTIONS}
             --werror
             --default-library=both
             --prefix=$HOME/glib-installed
@@ -118,7 +118,7 @@ fedora-x86_64:
             -Dinstalled_tests=true
             -Dgtk_doc=true
             _build
-    - ninja -C _build
+    - meson compile -C _build
     - mkdir -p _coverage
     - lcov --config-file .lcovrc --directory _build --capture --initial --output-file "_coverage/${CI_JOB_NAME}-baseline.lcov"
     - .gitlab-ci/run-tests.sh
@@ -154,7 +154,7 @@ debian-stable-x86_64:
   stage: build
   needs: []
   script:
-    - meson ${MESON_COMMON_OPTIONS}
+    - meson setup ${MESON_COMMON_OPTIONS}
             --werror
             --default-library=both
             --prefix=$HOME/glib-installed
@@ -163,7 +163,7 @@ debian-stable-x86_64:
             -Dsystemtap=true
             -Ddtrace=true
             _build
-    - ninja -C _build
+    - meson compile -C _build
     - .gitlab-ci/run-tests.sh
   artifacts:
     reports:
@@ -187,15 +187,15 @@ installed-tests:
   needs: []
   script:
     # dtrace is disabled because it breaks the static-link.py test
-    - meson ${MESON_COMMON_OPTIONS}
+    - meson setup ${MESON_COMMON_OPTIONS}
             --werror
             --prefix=/usr --libdir=/usr/lib64
             -Dinstalled_tests=true
             -Ddefault_library=both
             -Ddtrace=false
             _build
-    - ninja -C _build
-    - sudo ninja -C _build install
+    - meson compile -C _build
+    - sudo meson install -C _build
     # Remove old headers, possibly present in current installation
     - sudo rm -f /usr/include/glib-2.0/glib/gurifuncs.h
     - sudo chown -R `id -un`:`id -gn` _build/
@@ -224,14 +224,14 @@ G_DISABLE_ASSERT:
   stage: build
   needs: []
   script:
-    - meson ${MESON_COMMON_OPTIONS}
+    - meson setup ${MESON_COMMON_OPTIONS}
             --werror
             -Dsystemtap=true
             -Ddtrace=true
             -Dinstalled_tests=true
             -Dglib_assert=false
             _build
-    - ninja -C _build
+    - meson compile -C _build
     - bash -x ./.gitlab-ci/run-tests.sh
   artifacts:
     reports:
@@ -256,13 +256,13 @@ valgrind:
   variables:
     MESON_TEST_TIMEOUT_MULTIPLIER: 15
   script:
-    - meson ${MESON_COMMON_OPTIONS}
+    - meson setup ${MESON_COMMON_OPTIONS}
             --werror
             -Dsystemtap=true
             -Ddtrace=true
             -Dinstalled_tests=true
             _build
-    - ninja -C _build
+    - meson compile -C _build
     # Valgrind doesn’t work when the soft FD limit is set too high
     # See https://gitlab.gnome.org/GNOME/glib/-/merge_requests/2710
     - ulimit -Sn 1024
@@ -298,8 +298,8 @@ cross-android_arm64:
   image: $FEDORA_IMAGE
   script:
     # FIXME: add --werror
-    - meson ${MESON_COMMON_OPTIONS} --cross-file=.gitlab-ci/cross_file_android_arm64_31.txt _build
-    - ninja -C _build
+    - meson setup ${MESON_COMMON_OPTIONS} --cross-file=.gitlab-ci/cross_file_android_arm64_31.txt _build
+    - meson compile -C _build
 
 cross-mingw64:
   extends:
@@ -310,8 +310,8 @@ cross-mingw64:
     PYTHONUTF8: "1"
   script:
     # FIXME: Add --werror
-    - meson ${MESON_COMMON_OPTIONS} --cross-file=/opt/cross_file_mingw64.txt _build
-    - ninja -C _build
+    - meson setup ${MESON_COMMON_OPTIONS} --cross-file=/opt/cross_file_mingw64.txt _build
+    - meson compile -C _build
   artifacts:
     reports:
       junit:
@@ -474,8 +474,8 @@ freebsd-12-x86_64:
     # FreeBSD supports xattr, but its API is different from Linux xattr.
     # FIXME: extattr(2) support: https://gitlab.gnome.org/GNOME/glib/issues/1404
     # localstatedir is needed for access to /var/lib/dbus/machine-id
-    - meson ${MESON_COMMON_OPTIONS} --localstatedir=/var -Db_lundef=false -Dxattr=false _build
-    - ninja -C _build
+    - meson setup ${MESON_COMMON_OPTIONS} --localstatedir=/var -Db_lundef=false -Dxattr=false _build
+    - meson compile -C _build
     - bash -x ./.gitlab-ci/run-tests.sh
   artifacts:
     reports:
@@ -503,8 +503,8 @@ freebsd-13-x86_64:
   before_script:
     - bash .gitlab-ci/show-execution-environment.sh
   script:
-    - meson ${MESON_COMMON_OPTIONS} --localstatedir=/var -Db_lundef=false -Dxattr=false _build
-    - ninja -C _build
+    - meson setup ${MESON_COMMON_OPTIONS} --localstatedir=/var -Db_lundef=false -Dxattr=false _build
+    - meson compile -C _build
     - bash -x ./.gitlab-ci/run-tests.sh
   artifacts:
     reports:
@@ -557,11 +557,11 @@ macos-x86_64:
     # already contains the dependencies. See:
     #  - https://gitlab.gnome.org/GNOME/glib/merge_requests/388
     #  - https://gitlab.gnome.org/Infrastructure/Infrastructure/issues/225
-    - meson ${MESON_COMMON_OPTIONS}
+    - meson setup ${MESON_COMMON_OPTIONS}
             --wrap-mode=default
             --werror
             _build
-    - ninja -C _build
+    - meson compile -C _build
     - .gitlab-ci/run-tests.sh
   artifacts:
     reports:
@@ -606,7 +606,7 @@ scan-build:
   stage: analysis
   needs: []
   script:
-    - meson ${MESON_COMMON_OPTIONS}
+    - meson setup ${MESON_COMMON_OPTIONS}
             --werror
             --default-library=both
             --prefix=$HOME/glib-installed
@@ -635,7 +635,7 @@ scan-build:
     # cov-build doesn’t like GLIB_DEPRECATED_ENUMERATOR
     CFLAGS: '-DGLIB_DISABLE_DEPRECATION_WARNINGS'
   script:
-    - meson ${MESON_COMMON_OPTIONS}
+    - meson setup ${MESON_COMMON_OPTIONS}
             --werror
             --default-library=both
             --prefix=$HOME/glib-installed
@@ -645,7 +645,7 @@ scan-build:
             -Ddtrace=true
             -Dinstalled_tests=true
             _coverity_build
-    - $HOME/cov-analysis-linux64-*/bin/cov-build --dir cov-int ninja -C _coverity_build
+    - $HOME/cov-analysis-linux64-*/bin/cov-build --dir cov-int meson compile -C _coverity_build
     - tar cfz cov-int.tar.gz cov-int
     - curl https://scan.coverity.com/builds?project=$COVERITY_SCAN_PROJECT_NAME
            --form token=$COVERITY_SCAN_TOKEN --form email=$GITLAB_USER_EMAIL
@@ -679,10 +679,9 @@ dist-job:
     - git submodule update --init
     - for m in $(git submodule foreach -q 'echo $path'); do git config --global --add safe.directory "${PWD}/${m}"; done
     - meson subprojects download
-    - meson ${MESON_COMMON_OPTIONS} --buildtype release -Dgtk_doc=true -Dman=true _build
-    - cd _build
-    - ninja dist
-    - ninja glib-doc gobject-doc gio-doc
+    - meson setup ${MESON_COMMON_OPTIONS} --buildtype release -Dgtk_doc=true -Dman=true _build
+    - meson dist -C _build
+    - ninja -C _build glib-doc gobject-doc gio-doc
     - tar -c -J -f "glib-docs-$CI_COMMIT_TAG.tar.xz" -C docs/reference/glib html
     - tar -c -J -f "gobject-docs-$CI_COMMIT_TAG.tar.xz" -C docs/reference/gobject html
     - tar -c -J -f "gio-docs-$CI_COMMIT_TAG.tar.xz" -C docs/reference/gio html

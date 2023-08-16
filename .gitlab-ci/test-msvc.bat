@@ -13,9 +13,9 @@ set args=%args:~1%
 
 :: FIXME: make warnings fatal
 pip3 install --upgrade --user meson==1.0.0  || goto :error
-meson %args% _build || goto :error
+meson setup %args% _build || goto :error
 python .gitlab-ci/check-missing-install-tag.py _build || goto :error
-ninja -C _build || goto :error
+meson compile -C _build || goto :error
 
 meson test -v -C _build --timeout-multiplier %MESON_TEST_TIMEOUT_MULTIPLIER% || goto :error
 meson test -v -C _build --timeout-multiplier %MESON_TEST_TIMEOUT_MULTIPLIER% --setup=unstable_tests --suite=failing --suite=flaky
