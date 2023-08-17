@@ -5922,17 +5922,20 @@ g_child_watch_dispatch (GSource    *source,
               }
             else
               {
-                g_debug (G_STRLOC ": pidfd signaled but pid %d didn't exit",
+                g_debug (G_STRLOC ": pidfd signaled but pid %" G_PID_FORMAT " didn't exit",
                          child_watch_source->pid);
                 return TRUE;
               }
           }
         else
           {
-            /* Unknown error. We got signaled that the process might be exited,
-             * but now we failed to reap it? Assume the process is gone and proceed. */
-            g_warning (G_STRLOC ": pidfd signaled ready but failed for pid %d",
-                       child_watch_source->pid);
+            int errsv = errno;
+
+            g_warning (G_STRLOC ": waitid(pid:%" G_PID_FORMAT ", pidfd=%d) failed: %s (%d). %s",
+                       child_watch_source->pid, child_watch_source->poll.fd, g_strerror (errsv), errsv,
+                       "See documentation of g_child_watch_source_new() for possible causes.");
+
+            /* Assume the process is gone and proceed. */
             child_exited = TRUE;
           }
       }
@@ -5951,6 +5954,9 @@ g_child_watch_dispatch (GSource    *source,
 
         pid = waitpid (child_watch_source->pid, &wstatus, WNOHANG);
 
+        if (G_UNLIKELY (pid < 0 && errno == EINTR))
+          goto waitpid_again;
+
         if (pid == 0)
           {
             /* Not exited yet. Wait longer. */
@@ -5959,13 +5965,15 @@ g_child_watch_dispatch (GSource    *source,
 
         if (pid > 0)
           wait_status = wstatus;
-        else if (errno == ECHILD)
-          g_warning ("GChildWatchSource: Exit status of a child process was requested but ECHILD was received by waitpid(). See the documentation of g_child_watch_source_new() for possible causes.");
-        else if (errno == EINTR)
-          goto waitpid_again;
         else
           {
-            /* Unexpected error. Whatever happened, we are done waiting for this child. */
+            int errsv = errno;
+
+            g_warning (G_STRLOC ": waitpid(pid:%" G_PID_FORMAT ") failed: %s (%d). %s",
+                       child_watch_source->pid, g_strerror (errsv), errsv,
+                       "See documentation of g_child_watch_source_new() for possible causes.");
+
+            /* Assume the process is gone and proceed. */
           }
       }
   }
