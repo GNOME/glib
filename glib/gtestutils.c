@@ -4067,6 +4067,11 @@ G_GNUC_END_IGNORE_DEPRECATIONS
  * the subprocess, you can call g_test_subprocess() (after calling
  * g_test_init()) to see whether you are in a subprocess.
  *
+ * Internally, this function tracks the child process using
+ * g_child_watch_source_new(), so your process must not ignore `SIGCHLD`, and
+ * must not attempt to watch or wait for the child process via another
+ * mechanism.
+ *
  * The following example tests that calling
  * `my_object_new(1000000)` will abort with an error
  * message.
