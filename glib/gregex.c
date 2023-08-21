@@ -484,8 +484,6 @@ translate_match_error (gint errcode)
       /* not used by pcre2_match() */
       break;
     case PCRE2_ERROR_MATCHLIMIT:
-    case PCRE2_ERROR_JIT_STACKLIMIT:
-      return _("backtracking limit reached");
     case PCRE2_ERROR_CALLOUT:
       /* callouts are not implemented */
       break;
@@ -1107,8 +1105,18 @@ g_match_info_next (GMatchInfo  *match_info,
                                              opts,
                                              match_info->match_data,
                                              match_info->match_context);
+      /* if the JIT stack limit was reached, fall back to non-JIT matching in
+       * the next conditional statement */
+      if (match_info->matches == PCRE2_ERROR_JIT_STACKLIMIT)
+        {
+          g_debug ("PCRE2 JIT stack limit reached, falling back to "
+                   "non-optimized matching.");
+          opts |= PCRE2_NO_JIT;
+          jit_status = JIT_STATUS_DISABLED;
+        }
     }
-  else
+
+  if (jit_status != JIT_STATUS_ENABLED)
     {
       match_info->matches = pcre2_match (match_info->regex->pcre_re,
                                          (PCRE2_SPTR8) match_info->string,
