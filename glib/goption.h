@@ -234,13 +234,13 @@ GQuark g_option_error_quark (void);
  *     called to handle the extra argument. Otherwise, @arg_data is a
  *     pointer to a location to store the value, the required type of
  *     the location depends on the @arg type:
- *     - %G_OPTION_ARG_NONE: %gboolean
- *     - %G_OPTION_ARG_STRING: %gchar*
- *     - %G_OPTION_ARG_INT: %gint
- *     - %G_OPTION_ARG_FILENAME: %gchar*
- *     - %G_OPTION_ARG_STRING_ARRAY: %gchar**
- *     - %G_OPTION_ARG_FILENAME_ARRAY: %gchar**
- *     - %G_OPTION_ARG_DOUBLE: %gdouble
+ *      - %G_OPTION_ARG_NONE: %gboolean
+ *      - %G_OPTION_ARG_STRING: %gchar*
+ *      - %G_OPTION_ARG_INT: %gint
+ *      - %G_OPTION_ARG_FILENAME: %gchar*
+ *      - %G_OPTION_ARG_STRING_ARRAY: %gchar**
+ *      - %G_OPTION_ARG_FILENAME_ARRAY: %gchar**
+ *      - %G_OPTION_ARG_DOUBLE: %gdouble
  *     If @arg type is %G_OPTION_ARG_STRING or %G_OPTION_ARG_FILENAME,
  *     the location will contain a newly allocated string if the option
  *     was given. That string needs to be freed by the callee using g_free().
