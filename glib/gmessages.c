@@ -186,22 +186,23 @@
 #include <sys/uio.h>
 #endif
 
-#include "glib-init.h"
 #include "galloca.h"
 #include "gbacktrace.h"
 #include "gcharset.h"
 #include "gconvert.h"
 #include "genviron.h"
+#include "glib-init.h"
 #include "glib-private.h"
 #include "gmain.h"
 #include "gmem.h"
+#include "gpattern.h"
 #include "gprintfint.h"
-#include "gtestutils.h"
-#include "gthread.h"
 #include "gstrfuncs.h"
 #include "gstring.h"
-#include "gpattern.h"
+#include "gtestutils.h"
+#include "gthread.h"
 #include "gthreadprivate.h"
+#include "gutilsprivate.h"
 
 #if defined(__linux__) && !defined(__BIONIC__)
 #include "gjournal-private.h"
@@ -2260,7 +2261,7 @@ g_log_writer_format_fields (GLogLevelFlags   log_level,
   GString *gstring;
   gint64 now;
   time_t now_secs;
-  struct tm *now_tm;
+  struct tm now_tm;
   gchar time_buf[128];
 
   /* Extract some common fields. */
@@ -2313,9 +2314,8 @@ g_log_writer_format_fields (GLogLevelFlags   log_level,
   /* Timestamp */
   now = g_get_real_time ();
   now_secs = (time_t) (now / 1000000);
-  now_tm = localtime (&now_secs);
-  if (G_LIKELY (now_tm != NULL))
-    strftime (time_buf, sizeof (time_buf), "%H:%M:%S", now_tm);
+  if (_g_localtime (now_secs, &now_tm))
+    strftime (time_buf, sizeof (time_buf), "%H:%M:%S", &now_tm);
   else
     strcpy (time_buf, "(error)");
 

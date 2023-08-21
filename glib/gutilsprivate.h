@@ -26,6 +26,8 @@
 #include "gtypes.h"
 #include "gtestutils.h"
 
+#include <time.h>
+
 G_BEGIN_DECLS
 
 void g_set_user_dirs (const gchar *first_dir_type,
@@ -54,6 +56,8 @@ g_nearest_pow (gsize num)
 }
 
 void _g_unset_cached_tmp_dir (void);
+
+gboolean _g_localtime (time_t timet, struct tm *tm);
 
 G_END_DECLS
 

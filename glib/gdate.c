@@ -53,6 +53,7 @@
 #include "gtestutils.h"
 #include "gthread.h"
 #include "gunicode.h"
+#include "gutilsprivate.h"
 
 #ifdef G_OS_WIN32
 #include "garray.h"
@@ -1403,6 +1404,33 @@ g_date_set_parse (GDate       *d,
   G_UNLOCK (g_date_global);
 }
 
+gboolean
+_g_localtime (time_t timet, struct tm *out_tm)
+{
+  gboolean success = TRUE;
+
+#ifdef HAVE_LOCALTIME_R
+  if (!localtime_r (&timet, out_tm))
+    success = FALSE;
+#else
+  {
+    struct tm *ptm = localtime (&timet);
+
+    if (ptm == NULL)
+      {
+        /* Happens at least in Microsoft's C library if you pass a
+         * negative time_t.
+         */
+        success = FALSE;
+      }
+    else
+      memcpy (out_tm, ptm, sizeof (struct tm));
+  }
+#endif
+
+  return success;
+}
+
 /**
  * g_date_set_time_t:
  * @date: a #GDate 
@@ -1427,33 +1455,21 @@ g_date_set_time_t (GDate *date,
 		   time_t timet)
 {
   struct tm tm;
-  
+  gboolean success;
+
   g_return_if_fail (date != NULL);
-  
-#ifdef HAVE_LOCALTIME_R
-  localtime_r (&timet, &tm);
-#else
-  {
-    struct tm *ptm = localtime (&timet);
 
-    if (ptm == NULL)
-      {
-	/* Happens at least in Microsoft's C library if you pass a
-	 * negative time_t. Use 2000-01-01 as default date.
-	 */
-#ifndef G_DISABLE_CHECKS
-	g_return_if_fail_warning (G_LOG_DOMAIN, "g_date_set_time", "ptm != NULL");
-#endif
+  success = _g_localtime (timet, &tm);
+  if (!success)
+    {
+      /* Still set a default date, 2000-01-01.
+       *
+       * We may assert out below. */
+      tm.tm_mon = 0;
+      tm.tm_mday = 1;
+      tm.tm_year = 100;
+    }
 
-	tm.tm_mon = 0;
-	tm.tm_mday = 1;
-	tm.tm_year = 100;
-      }
-    else
-      memcpy ((void *) &tm, (void *) ptm, sizeof(struct tm));
-  }
-#endif
-  
   date->julian = FALSE;
   
   date->month = tm.tm_mon + 1;
@@ -1463,6 +1479,11 @@ g_date_set_time_t (GDate *date,
   g_return_if_fail (g_date_valid_dmy (date->day, date->month, date->year));
   
   date->dmy    = TRUE;
+
+#ifndef G_DISABLE_CHECKS
+  if (!success)
+    g_return_if_fail_warning (G_LOG_DOMAIN, "g_date_set_time", "localtime() == NULL");
+#endif
 }
 
 
