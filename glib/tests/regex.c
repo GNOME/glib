@@ -53,8 +53,9 @@
 /* A random value use to mark untouched integer variables. */
 #define UNTOUCHED -559038737
 
-/* A length of the test string in JIT stack test */
+/* Lengths of test strings in JIT stack tests */
 #define TEST_STRING_LEN 20000
+#define LARGE_TEST_STRING_LEN 200000
 
 static gint total;
 
@@ -2746,6 +2747,13 @@ G_GNUC_END_IGNORE_DEPRECATIONS
   memset (test_string, '*', TEST_STRING_LEN);
   test_string[TEST_STRING_LEN - 1] = '\0';
   TEST_MATCH_SIMPLE ("^(?:[ \t\n]|[^[:cntrl:]])*$", test_string, 0, 0, TRUE);
+
+  /* Test that gregex falls back to unoptimized matching when reaching the JIT
+   * compiler stack limit */
+  char large_test_string[LARGE_TEST_STRING_LEN];
+  memset (large_test_string, '*', LARGE_TEST_STRING_LEN);
+  large_test_string[LARGE_TEST_STRING_LEN - 1] = '\0';
+  TEST_MATCH_SIMPLE ("^(?:[ \t\n]|[^[:cntrl:]])*$", large_test_string, 0, 0, TRUE);
 
   /* TEST_MATCH(pattern, compile_opts, match_opts, string,
    * 		string_len, start_position, match_opts2, expected) */
