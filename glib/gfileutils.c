@@ -1500,7 +1500,7 @@ get_tmp_file (gchar            *tmpl,
   static const char letters[] =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   static const int NLETTERS = sizeof (letters) - 1;
-  glong value;
+  gint64 value;
   gint64 now_us;
   static int counter = 0;
 
@@ -1521,7 +1521,7 @@ get_tmp_file (gchar            *tmpl,
 
   for (count = 0; count < 100; value += 7777, ++count)
     {
-      glong v = value;
+      gint64 v = value;
 
       /* Fill in the random bits.  */
       XXXXXX[0] = letters[v % NLETTERS];
