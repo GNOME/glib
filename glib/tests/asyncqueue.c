@@ -220,6 +220,15 @@ test_async_queue_timed (void)
   gint64 start, end, diff;
   gpointer val;
 
+  GDateTime *dt = g_date_time_new_now_utc ();
+  int year = g_date_time_get_year (dt);
+  g_date_time_unref (dt);
+  if (year >= 2038)
+    {
+      g_test_skip ("Test relies on GTimeVal which is Y2038 unsafe and will cause a failure.");
+      return;
+    }
+
   g_get_current_time (&tv);
   if (g_test_undefined ())
     {
