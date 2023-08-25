@@ -260,6 +260,7 @@ G_LOCK_DEFINE_STATIC (weak_refs_mutex);
 G_LOCK_DEFINE_STATIC (toggle_refs_mutex);
 static GQuark	            quark_closure_array = 0;
 static GQuark	            quark_weak_refs = 0;
+static GQuark	            quark_weak_notifies = 0;
 static GQuark	            quark_toggle_refs = 0;
 static GQuark               quark_notify_queue;
 #ifndef HAVE_OPTIONAL_FLAGS
@@ -523,6 +524,7 @@ g_object_do_class_init (GObjectClass *class)
   quark_closure_array = g_quark_from_static_string ("GObject-closure-array");
 
   quark_weak_refs = g_quark_from_static_string ("GObject-weak-references");
+  quark_weak_notifies = g_quark_from_static_string ("GObject-weak-notifies");
   quark_weak_locations = g_quark_from_static_string ("GObject-weak-locations");
   quark_toggle_refs = g_quark_from_static_string ("GObject-toggle-references");
   quark_notify_queue = g_quark_from_static_string ("GObject-notify-queue");
@@ -1359,9 +1361,16 @@ static void
 g_object_real_dispose (GObject *object)
 {
   g_signal_handlers_destroy (object);
-  g_datalist_id_set_data (&object->qdata, quark_closure_array, NULL);
+
+  /* GWeakRef and weak_pointer do not call into user code. Clear those first
+   * so that user code can rely on the state of their weak pointers.
+   */
   g_datalist_id_set_data (&object->qdata, quark_weak_refs, NULL);
   g_datalist_id_set_data (&object->qdata, quark_weak_locations, NULL);
+
+  /* GWeakNotify and GClosure can call into user code */
+  g_datalist_id_set_data (&object->qdata, quark_weak_notifies, NULL);
+  g_datalist_id_set_data (&object->qdata, quark_closure_array, NULL);
 }
 
 #ifdef G_ENABLE_DEBUG
@@ -3316,7 +3325,7 @@ g_object_weak_ref (GObject    *object,
   g_return_if_fail (g_atomic_int_get (&object->ref_count) >= 1);
 
   G_LOCK (weak_refs_mutex);
-  wstack = g_datalist_id_remove_no_notify (&object->qdata, quark_weak_refs);
+  wstack = g_datalist_id_remove_no_notify (&object->qdata, quark_weak_notifies);
   if (wstack)
     {
       i = wstack->n_weak_refs++;
@@ -3331,7 +3340,7 @@ g_object_weak_ref (GObject    *object,
     }
   wstack->weak_refs[i].notify = notify;
   wstack->weak_refs[i].data = data;
-  g_datalist_id_set_data_full (&object->qdata, quark_weak_refs, wstack, weak_refs_notify);
+  g_datalist_id_set_data_full (&object->qdata, quark_weak_notifies, wstack, weak_refs_notify);
   G_UNLOCK (weak_refs_mutex);
 }
 
@@ -3355,7 +3364,7 @@ g_object_weak_unref (GObject    *object,
   g_return_if_fail (notify != NULL);
 
   G_LOCK (weak_refs_mutex);
-  wstack = g_datalist_id_get_data (&object->qdata, quark_weak_refs);
+  wstack = g_datalist_id_get_data (&object->qdata, quark_weak_notifies);
   if (wstack)
     {
       guint i;
@@ -3927,6 +3936,7 @@ g_object_unref (gpointer _object)
       g_signal_handlers_destroy (object);
       g_datalist_id_set_data (&object->qdata, quark_weak_refs, NULL);
       g_datalist_id_set_data (&object->qdata, quark_weak_locations, NULL);
+      g_datalist_id_set_data (&object->qdata, quark_weak_notifies, NULL);
 
       /* decrement the last reference */
       old_ref = g_atomic_int_add (&object->ref_count, -1);
