@@ -99,7 +99,7 @@ typedef void (*GTestFixtureFunc) (gpointer      fixture,
                                              double __n1 = (n1), __n2 = (n2), __epsilon = (epsilon); \
                                              if (G_APPROX_VALUE (__n1,  __n2, __epsilon)) ; else \
                                                g_assertion_message_cmpnum (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
-                                                 #n1 " == " #n2 " (+/- " #epsilon ")", __n1, "==", __n2, 'f'); \
+                                                 #n1 " == " #n2 " (+/- " epsilon ")", __n1, "==", __n2, 'f'); \
                                         } G_STMT_END
 #if GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_78
 #define g_assert_cmpmem(m1, l1, m2, l2) G_STMT_START {\
