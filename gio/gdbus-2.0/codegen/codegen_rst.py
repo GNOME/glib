@@ -231,6 +231,13 @@ class RstCodeGenerator:
                     f"  {arg_desc}",
                     "",
                 ]
+            for a in m.out_args:
+                arg_desc = self._expand(a.doc_string, True)
+                res += [
+                    f"{a.name}",
+                    f"  {arg_desc}",
+                    "",
+                ]
             res += [""]
             if m.since:
                 res += [
