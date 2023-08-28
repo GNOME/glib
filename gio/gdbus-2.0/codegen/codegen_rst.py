@@ -120,11 +120,11 @@ class RstCodeGenerator:
     def _generate_section(self, title, name):
         """Generates a section with the given title."""
         res = [
+            f".. _{name} {title}:",
+            "",
             "-" * len(title),
             title,
             "-" * len(title),
-            "",
-            f".. {name} {title}:",
             "",
             "",
         ]
@@ -142,6 +142,8 @@ class RstCodeGenerator:
             else:
                 access = "readable"
             res += [
+                ".. _{title}:",
+                "",
                 title,
                 "^" * len(title),
                 "",
@@ -216,6 +218,8 @@ class RstCodeGenerator:
         for m in iface.methods:
             title = f"{iface.name}.{m.name}"
             res += [
+                ".. _{title}:",
+                "",
                 title,
                 "^" * len(title),
                 "",
@@ -225,6 +229,13 @@ class RstCodeGenerator:
                 "",
             ]
             for a in m.in_args:
+                arg_desc = self._expand(a.doc_string, True)
+                res += [
+                    f"{a.name}",
+                    f"  {arg_desc}",
+                    "",
+                ]
+            for a in m.out_args:
                 arg_desc = self._expand(a.doc_string, True)
                 res += [
                     f"{a.name}",
@@ -285,6 +296,8 @@ class RstCodeGenerator:
         for s in iface.signals:
             title = f"{iface.name}::{s.name}"
             res += [
+                ".. _{title}:",
+                "",
                 title,
                 "^" * len(title),
                 "",
