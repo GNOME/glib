@@ -580,16 +580,17 @@ test_string (void)
     "3",
   };
   const gchar *data =
-    "[valid]\n"
-    "key1=\\s\\n\\t\\r\\\\\n"
-    "key2=\"quoted\"\n"
-    "key3='quoted'\n"
-    "key4=\xe2\x89\xa0\xe2\x89\xa0\n"
-    "key5=  leading space\n"
-    "key6=trailing space  \n"
-    "[invalid]\n"
-    "key1=\\a\\b\\0800xff\n"
-    "key2=blabla\\\n";
+      "[valid]\n"
+      "key1=\\s\\n\\t\\r\\\\\n"
+      "key2=\"quoted\"\n"
+      "key3='quoted'\n"
+      "key4=\xe2\x89\xa0\xe2\x89\xa0\n"
+      "key5=  leading space\n"
+      "key6=trailing space  \n"
+      "[invalid]\n"
+      "key1=\\a\\b\\0800xff\n"
+      "key2=blabla\\\n"
+      "key3=foo\\i\\\n";
 
   keyfile = load_data (data, 0);
 
@@ -605,6 +606,10 @@ test_string (void)
   g_free (value);
 
   value = g_key_file_get_string (keyfile, "invalid", "key2", &error);
+  check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE);
+  g_free (value);
+
+  value = g_key_file_get_string (keyfile, "invalid", "key3", &error);
   check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE);
   g_free (value);
 
