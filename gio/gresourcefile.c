@@ -238,6 +238,7 @@ g_resource_file_new_for_path (const char *path)
   return G_FILE (resource);
 }
 
+/* Will return %NULL if @uri is malformed */
 GFile *
 _g_resource_file_new (const char *uri)
 {
@@ -245,6 +246,9 @@ _g_resource_file_new (const char *uri)
   char *path;
 
   path = g_uri_unescape_string (uri + strlen ("resource:"), NULL);
+  if (path == NULL)
+    return NULL;
+
   resource = g_resource_file_new_for_path (path);
   g_free (path);
 
