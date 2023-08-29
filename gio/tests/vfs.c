@@ -108,16 +108,37 @@ test_local (void)
   gchar **schemes;
 
   vfs = g_vfs_get_local ();
-  g_assert (g_vfs_is_active (vfs));
+  g_assert_true (g_vfs_is_active (vfs));
 
   file = g_vfs_get_file_for_uri (vfs, "not a good uri");
-  g_assert (G_IS_FILE (file));
+  g_assert_true (G_IS_FILE (file));
   g_object_unref (file);
 
   schemes = (gchar **)g_vfs_get_supported_uri_schemes (vfs);
 
-  g_assert (g_strv_length (schemes) > 0);
+  g_assert_cmpuint (g_strv_length (schemes), >, 0);
   g_assert_cmpstr (schemes[0], ==, "file");
+}
+
+static void
+test_resource_malformed_escaping (void)
+{
+  GVfs *vfs;
+  GFile *file;
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/3090");
+  g_test_summary ("Test that g_vfs_get_file_for_uri() returns an invalid file for an invalid URI");
+
+  vfs = g_vfs_get_local ();
+  g_assert_true (g_vfs_is_active (vfs));
+
+  file = g_vfs_get_file_for_uri (vfs, "resource:///%not-valid-escaping/gtk.css");
+  g_assert_true (G_IS_FILE (file));
+
+  /* This only returns %NULL if the file was constructed with an invalid URI: */
+  g_assert_null (g_file_get_uri_scheme (file));
+
+  g_object_unref (file);
 }
 
 int
@@ -127,6 +148,7 @@ main (int argc, char *argv[])
 
   g_test_add_func ("/gvfs/local", test_local);
   g_test_add_func ("/gvfs/register-scheme", test_register_scheme);
+  g_test_add_func ("/gvfs/resource/malformed-escaping", test_resource_malformed_escaping);
 
   return g_test_run ();
 }
