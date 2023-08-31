@@ -4313,7 +4313,10 @@ g_key_file_parse_value_as_string (GKeyFile     *key_file,
 				  GError      **error)
 {
   gchar *string_value, *q0, *q;
+  GSList *tmp_pieces = NULL;
   const gchar *p;
+
+  g_assert (pieces == NULL || *pieces == NULL);
 
   string_value = g_new (gchar, strlen (value) + 1);
 
@@ -4352,7 +4355,7 @@ g_key_file_parse_value_as_string (GKeyFile     *key_file,
                                    G_KEY_FILE_ERROR_INVALID_VALUE,
                                    _("Key file contains escape character "
                                      "at end of line"));
-	      break;
+              goto error;
 
             default:
 	      if (pieces && *p == key_file->list_separator)
@@ -4374,20 +4377,21 @@ g_key_file_parse_value_as_string (GKeyFile     *key_file,
 				   G_KEY_FILE_ERROR_INVALID_VALUE,
 				   _("Key file contains invalid escape "
 				     "sequence “%s”"), sequence);
-		    }
-		}
+                      goto error;
+                    }
+                }
               break;
             }
         }
       else
-	{
-	  *q = *p;
-	  if (pieces && (*p == key_file->list_separator))
-	    {
-	      *pieces = g_slist_prepend (*pieces, g_strndup (q0, q - q0));
-	      q0 = q + 1; 
-	    }
-	}
+        {
+          *q = *p;
+          if (pieces && (*p == key_file->list_separator))
+            {
+              tmp_pieces = g_slist_prepend (tmp_pieces, g_strndup (q0, q - q0));
+              q0 = q + 1;
+            }
+        }
 
       if (*p == '\0')
 	break;
@@ -4398,13 +4402,19 @@ g_key_file_parse_value_as_string (GKeyFile     *key_file,
 
   *q = '\0';
   if (pieces)
-  {
-    if (q0 < q)
-      *pieces = g_slist_prepend (*pieces, g_strndup (q0, q - q0));
-    *pieces = g_slist_reverse (*pieces);
-  }
+    {
+      if (q0 < q)
+        tmp_pieces = g_slist_prepend (tmp_pieces, g_strndup (q0, q - q0));
+      *pieces = g_slist_reverse (tmp_pieces);
+    }
 
   return string_value;
+
+error:
+  g_free (string_value);
+  g_slist_free_full (tmp_pieces, g_free);
+
+  return NULL;
 }
 
 static gchar *
