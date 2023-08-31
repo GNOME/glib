@@ -1,3 +1,50 @@
+Overview of changes in GLib 2.77.3, 2023-08-31
+==============================================
+
+* Bugs fixed:
+  - #2575 GSettings schemas default value translations don't work when using
+    l10n=time (Michael Catanzaro)
+  - #3032 gdbus-codegen eats indentation in RST in XML comments (André)
+  - #3051 g_dbus_connection_export_menu_model() is not thread_safe
+  - #3061 Possible SEGV (null pointer deref) in distribute_method_call() (Philip
+    Withnall)
+  - #3083 `arg_data`  in GOptionEntry is not a list (Philip Withnall)
+  - #3090 Possible SEGV (null pointer deref) in _g_resource_file_new() (Philip
+    Withnall)
+  - !3459 glib-unix: Clean up use of O_NONBLOCK
+  - !3503 interim solution for macOS CI
+  - !3519 meson: warn if -mms-bitfields is necessary
+  - !3526 gnetworkaddress: use reentrant getservbyname_r() if available
+  - !3527 tests: Use g_assert_*() rather than g_assert() in tree tests
+  - !3528 gio-tool-info: Move translator comments so they’re visible
+  - !3530 gregex: set default max stack size for PCRE2 JIT compiler to 512KiB
+  - !3532 tests: Disable use of ptrace() in tests on BSD and macOS
+  - !3533 ci: Only run pages CI job on scheduled job runs
+  - !3534 ci: Further fix to pages CI job
+  - !3535 Use 'meson setup' to configure
+  - !3538 glib-unix: Accept O_CLOEXEC as well as FD_CLOEXEC in
+    g_unix_open_pipe()
+  - !3540 gio: Add gresource.dtd
+  - !3541 gtestutils: Mention not ignoring SIGCHLD in g_test_trap_subprocess()
+    docs
+  - !3542 [th/gchildwatch-fail-message] gmain: improve g_warning() for failure
+    in g_child_watch_dispatch()
+  - !3543 [th/use-localtime-r] use localtime_r() in g_log_writer_format_fields()
+  - !3545 gregex: if JIT stack limit is reached, fall back to interpretive
+    matching
+  - !3547 glib/gfileutils.c: use 64 bits for value in get_tmp_file()
+  - !3550 glib/tests/asyncqueue.c: skip test_async_queue_timed in 2038 or later
+  - !3553 Generate missing docs for out arguments
+  - !3555 gkeyfile: Fix overwriting of GError
+
+* Translation updates:
+  - Basque (Asier Sarasua Garmendia)
+  - Kazakh (Baurzhan Muftakhidinov)
+  - Panjabi (Amn Alam)
+  - Persian (Danial Behzadi)
+  - Swedish (Anders Jonsson)
+
+
 Overview of changes in GLib 2.77.2, 2023-08-12
 ==============================================
 

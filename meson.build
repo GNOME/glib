@@ -1,5 +1,5 @@
 project('glib', 'c',
-  version : '2.77.2',
+  version : '2.77.3',
   # NOTE: See the policy in docs/meson-version.md before changing the Meson dependency
   meson_version : '>= 0.60.0',
   default_options : [
