@@ -1,3 +1,22 @@
+Overview of changes in GLib 2.76.5, 2023-08-31
+==============================================
+
+* Bugs fixed:
+  - #3061 Possible SEGV (null pointer deref) in distribute_method_call() (Philip
+    Withnall)
+  - #3090 Possible SEGV (null pointer deref) in _g_resource_file_new() (Philip
+    Withnall)
+  - !3531 Backport !3529 “gmenuexporter: synchronization in
+    org_gtk_Menus_get_interface.” to glib-2-76
+  - !3549 Backport !3547 “glib/gfileutils.c: use 64 bits for value in
+    get_tmp_file()” to glib-2-76
+  - !3556 Backport !3554 “gresourcefile: Fix crash if called with a badly
+    escaped URI” to glib-2-76
+  - !3557 Backport !3555 “gkeyfile: Fix overwriting of GError” to glib-2-76
+  - !3558 Backport !3539 “gdbusmessage: Validate required headers have the right
+    type” to glib-2-76
+
+
 Overview of changes in GLib 2.76.4, 2023-07-06
 ==============================================
 
