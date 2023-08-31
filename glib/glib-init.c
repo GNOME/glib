@@ -489,6 +489,11 @@ glib_priv_tls_callback (LPVOID hinstance,
       glib_dll = hinstance;
       tls_callback_invoked = TRUE;
       break;
+    case DLL_THREAD_DETACH:
+#ifdef THREADS_WIN32
+      g_thread_win32_thread_detach ();
+#endif
+      break;
     case DLL_PROCESS_DETACH:
       glib_win32_deinit (reserved == NULL);
       break;

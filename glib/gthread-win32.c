@@ -424,28 +424,6 @@ g_system_thread_free (GRealThread *thread)
 void
 g_system_thread_exit (void)
 {
-  /* In static compilation, DllMain doesn't exist and so DLL_THREAD_DETACH
-   * case is never called and thread destroy notifications are not triggered.
-   * To ensure that notifications are correctly triggered in static
-   * compilation mode, we call directly the "detach" function here right
-   * before terminating the thread.
-   * As all win32 threads initialized through the glib API are run through
-   * the same proxy function g_thread_win32_proxy() which calls systematically
-   * g_system_thread_exit() when finishing, we obtain the same behavior as
-   * with dynamic compilation.
-   *
-   * WARNING: unfortunately this mechanism cannot work with threads created
-   * directly from the Windows API using CreateThread() or _beginthread/ex().
-   * It only works with threads created by using the glib API with
-   * g_system_thread_new(). If users need absolutely to use a thread NOT
-   * created with glib API under Windows and in static compilation mode, they
-   * should not use glib functions within their thread or they may encounter
-   * memory leaks when the thread finishes.
-   */
-#ifdef GLIB_STATIC_COMPILATION
-  g_thread_win32_thread_detach ();
-#endif
-
   _endthreadex (0);
 }
 
