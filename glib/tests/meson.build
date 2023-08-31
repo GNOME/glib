@@ -306,6 +306,20 @@ if host_machine.system() == 'windows'
   }
 endif
 
+if host_machine.system() == 'windows' or have_dlopen_dlsym
+  constructor_lib = shared_library('constructor-lib',
+                                   'constructor.c',
+                                   c_args: ['-DBUILD_LIBRARY'],
+                                   dependencies: [libglib_dep],
+                                   install : false)
+  glib_tests += {
+    'constructor' : {
+      'install': false,
+      'c_args': ['-DLIB_NAME=' + fs.name(constructor_lib.full_path())]
+    }
+  }
+endif
+
 foreach test_name, extra_args : glib_tests
   foreach std: extra_args.get('c_standards', [])
     if c_standards.has_key(std)
