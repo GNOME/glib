@@ -3966,9 +3966,21 @@ distribute_signals (GDBusConnection *connection,
                     GDBusMessage    *message)
 {
   GPtrArray *signal_data_array;
-  const gchar *sender;
+  const gchar *sender, *interface, *member, *path;
+
+  g_assert (g_dbus_message_get_message_type (message) == G_DBUS_MESSAGE_TYPE_SIGNAL);
 
   sender = g_dbus_message_get_sender (message);
+
+  /* all three of these are required, but should have been validated already
+   * by validate_headers() in gdbusmessage.c */
+  interface = g_dbus_message_get_interface (message);
+  member = g_dbus_message_get_member (message);
+  path = g_dbus_message_get_path (message);
+
+  g_assert (interface != NULL);
+  g_assert (member != NULL);
+  g_assert (path != NULL);
 
   if (G_UNLIKELY (_g_dbus_debug_signal ()))
     {
@@ -3978,9 +3990,7 @@ distribute_signals (GDBusConnection *connection,
                " <<<< RECEIVED SIGNAL %s.%s\n"
                "      on object %s\n"
                "      sent by name %s\n",
-               g_dbus_message_get_interface (message),
-               g_dbus_message_get_member (message),
-               g_dbus_message_get_path (message),
+               interface, member, path,
                sender != NULL ? sender : "(none)");
       _g_dbus_debug_print_unlock ();
     }
@@ -7186,19 +7196,26 @@ distribute_method_call (GDBusConnection *connection,
   GDBusMessage *reply;
   ExportedObject *eo;
   ExportedSubtree *es;
-  const gchar *object_path;
+  const gchar *path;
   const gchar *interface_name;
   const gchar *member;
-  const gchar *path;
   gchar *subtree_path;
   gchar *needle;
   gboolean object_found = FALSE;
 
   g_assert (g_dbus_message_get_message_type (message) == G_DBUS_MESSAGE_TYPE_METHOD_CALL);
 
-  interface_name = g_dbus_message_get_interface (message);
+  /* these are required, and should have been validated by validate_headers()
+   * in gdbusmessage.c already */
   member = g_dbus_message_get_member (message);
   path = g_dbus_message_get_path (message);
+
+  g_assert (member != NULL);
+  g_assert (path != NULL);
+
+  /* this is optional */
+  interface_name = g_dbus_message_get_interface (message);
+
   subtree_path = g_strdup (path);
   needle = strrchr (subtree_path, '/');
   if (needle != NULL && needle != subtree_path)
@@ -7210,7 +7227,6 @@ distribute_method_call (GDBusConnection *connection,
       g_free (subtree_path);
       subtree_path = NULL;
     }
-
 
   if (G_UNLIKELY (_g_dbus_debug_incoming ()))
     {
@@ -7228,17 +7244,14 @@ distribute_method_call (GDBusConnection *connection,
       _g_dbus_debug_print_unlock ();
     }
 
-  object_path = g_dbus_message_get_path (message);
-  g_assert (object_path != NULL);
-
-  eo = g_hash_table_lookup (connection->map_object_path_to_eo, object_path);
+  eo = g_hash_table_lookup (connection->map_object_path_to_eo, path);
   if (eo != NULL)
     {
       if (obj_message_func (connection, eo, message, &object_found))
         goto out;
     }
 
-  es = g_hash_table_lookup (connection->map_object_path_to_es, object_path);
+  es = g_hash_table_lookup (connection->map_object_path_to_es, path);
   if (es != NULL)
     {
       if (subtree_message_func (connection, es, message))
@@ -7265,14 +7278,14 @@ distribute_method_call (GDBusConnection *connection,
                                                "org.freedesktop.DBus.Error.UnknownMethod",
                                                _("No such interface “%s” on object at path %s"),
                                                interface_name,
-                                               object_path);
+                                               path);
     }
   else
     {
       reply = g_dbus_message_new_method_error (message,
                                            "org.freedesktop.DBus.Error.UnknownMethod",
                                            _("Object does not exist at path “%s”"),
-                                           object_path);
+                                           path);
     }
 
   g_dbus_connection_send_message_unlocked (connection, reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);

@@ -1308,67 +1308,99 @@ validate_headers (GDBusMessage  *message,
       break;
 
     case G_DBUS_MESSAGE_TYPE_METHOD_CALL:
-      if (g_dbus_message_get_header (message, G_DBUS_MESSAGE_HEADER_FIELD_PATH) == NULL ||
-          g_dbus_message_get_header (message, G_DBUS_MESSAGE_HEADER_FIELD_MEMBER) == NULL)
-        {
-          g_set_error_literal (error,
-                               G_IO_ERROR,
-                               G_IO_ERROR_INVALID_ARGUMENT,
-                               _("METHOD_CALL message: PATH or MEMBER header field is missing"));
-          goto out;
-        }
+      {
+        GVariant *path_variant = g_dbus_message_get_header (message, G_DBUS_MESSAGE_HEADER_FIELD_PATH);
+        GVariant *member_variant = g_dbus_message_get_header (message, G_DBUS_MESSAGE_HEADER_FIELD_MEMBER);
+
+        if (path_variant == NULL ||
+            !g_variant_is_of_type (path_variant, G_VARIANT_TYPE_OBJECT_PATH) ||
+            member_variant == NULL ||
+            !g_variant_is_of_type (member_variant, G_VARIANT_TYPE_STRING) ||
+            !g_dbus_is_member_name (g_variant_get_string (member_variant, NULL)))
+          {
+            g_set_error_literal (error,
+                                 G_IO_ERROR,
+                                 G_IO_ERROR_INVALID_ARGUMENT,
+                                 _("METHOD_CALL message: PATH or MEMBER header field is missing or invalid"));
+            goto out;
+          }
+      }
       break;
 
     case G_DBUS_MESSAGE_TYPE_METHOD_RETURN:
-      if (g_dbus_message_get_header (message, G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL) == NULL)
-        {
-          g_set_error_literal (error,
-                               G_IO_ERROR,
-                               G_IO_ERROR_INVALID_ARGUMENT,
-                               _("METHOD_RETURN message: REPLY_SERIAL header field is missing"));
-          goto out;
-        }
+      {
+        GVariant *reply_serial_variant = g_dbus_message_get_header (message, G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL);
+
+        if (reply_serial_variant == NULL ||
+            !g_variant_is_of_type (reply_serial_variant, G_VARIANT_TYPE_UINT32))
+          {
+            g_set_error_literal (error,
+                                 G_IO_ERROR,
+                                 G_IO_ERROR_INVALID_ARGUMENT,
+                                 _("METHOD_RETURN message: REPLY_SERIAL header field is missing or invalid"));
+            goto out;
+          }
+      }
       break;
 
     case G_DBUS_MESSAGE_TYPE_ERROR:
-      if (g_dbus_message_get_header (message, G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME) == NULL ||
-          g_dbus_message_get_header (message, G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL) == NULL)
-        {
-          g_set_error_literal (error,
-                               G_IO_ERROR,
-                               G_IO_ERROR_INVALID_ARGUMENT,
-                               _("ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing"));
-          goto out;
-        }
+      {
+        GVariant *error_name_variant = g_dbus_message_get_header (message, G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME);
+        GVariant *reply_serial_variant = g_dbus_message_get_header (message, G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL);
+
+        if (error_name_variant == NULL ||
+            !g_variant_is_of_type (error_name_variant, G_VARIANT_TYPE_STRING) ||
+            !g_dbus_is_error_name (g_variant_get_string (error_name_variant, NULL)) ||
+            reply_serial_variant == NULL ||
+            !g_variant_is_of_type (reply_serial_variant, G_VARIANT_TYPE_UINT32))
+          {
+            g_set_error_literal (error,
+                                 G_IO_ERROR,
+                                 G_IO_ERROR_INVALID_ARGUMENT,
+                                 _("ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing or invalid"));
+            goto out;
+          }
+      }
       break;
 
     case G_DBUS_MESSAGE_TYPE_SIGNAL:
-      if (g_dbus_message_get_header (message, G_DBUS_MESSAGE_HEADER_FIELD_PATH) == NULL ||
-          g_dbus_message_get_header (message, G_DBUS_MESSAGE_HEADER_FIELD_INTERFACE) == NULL ||
-          g_dbus_message_get_header (message, G_DBUS_MESSAGE_HEADER_FIELD_MEMBER) == NULL)
-        {
-          g_set_error_literal (error,
-                               G_IO_ERROR,
-                               G_IO_ERROR_INVALID_ARGUMENT,
-                               _("SIGNAL message: PATH, INTERFACE or MEMBER header field is missing"));
-          goto out;
-        }
-      if (g_strcmp0 (g_dbus_message_get_path (message), "/org/freedesktop/DBus/Local") == 0)
-        {
-          g_set_error_literal (error,
-                               G_IO_ERROR,
-                               G_IO_ERROR_INVALID_ARGUMENT,
-                               _("SIGNAL message: The PATH header field is using the reserved value /org/freedesktop/DBus/Local"));
-          goto out;
-        }
-      if (g_strcmp0 (g_dbus_message_get_interface (message), "org.freedesktop.DBus.Local") == 0)
-        {
-          g_set_error_literal (error,
-                               G_IO_ERROR,
-                               G_IO_ERROR_INVALID_ARGUMENT,
-                               _("SIGNAL message: The INTERFACE header field is using the reserved value org.freedesktop.DBus.Local"));
-          goto out;
-        }
+      {
+        GVariant *path_variant = g_dbus_message_get_header (message, G_DBUS_MESSAGE_HEADER_FIELD_PATH);
+        GVariant *interface_variant = g_dbus_message_get_header (message, G_DBUS_MESSAGE_HEADER_FIELD_INTERFACE);
+        GVariant *member_variant = g_dbus_message_get_header (message, G_DBUS_MESSAGE_HEADER_FIELD_MEMBER);
+
+        if (path_variant == NULL ||
+            !g_variant_is_of_type (path_variant, G_VARIANT_TYPE_OBJECT_PATH) ||
+            interface_variant == NULL ||
+            !g_variant_is_of_type (interface_variant, G_VARIANT_TYPE_STRING) ||
+            !g_dbus_is_interface_name (g_variant_get_string (interface_variant, NULL)) ||
+            member_variant == NULL ||
+            !g_variant_is_of_type (member_variant, G_VARIANT_TYPE_STRING) ||
+            !g_dbus_is_member_name (g_variant_get_string (member_variant, NULL)))
+          {
+            g_set_error_literal (error,
+                                 G_IO_ERROR,
+                                 G_IO_ERROR_INVALID_ARGUMENT,
+                                 _("SIGNAL message: PATH, INTERFACE or MEMBER header field is missing or invalid"));
+            goto out;
+          }
+        if (g_strcmp0 (g_dbus_message_get_path (message), "/org/freedesktop/DBus/Local") == 0)
+          {
+            g_set_error_literal (error,
+                                 G_IO_ERROR,
+                                 G_IO_ERROR_INVALID_ARGUMENT,
+                                 _("SIGNAL message: The PATH header field is using the reserved value /org/freedesktop/DBus/Local"));
+            goto out;
+          }
+        if (g_strcmp0 (g_dbus_message_get_interface (message), "org.freedesktop.DBus.Local") == 0)
+          {
+            g_set_error_literal (error,
+                                 G_IO_ERROR,
+                                 G_IO_ERROR_INVALID_ARGUMENT,
+                                 _("SIGNAL message: The INTERFACE header field is using the reserved value org.freedesktop.DBus.Local"));
+            goto out;
+          }
+      }
       break;
 
     default:
