@@ -25,6 +25,16 @@
 
 #ifdef _WIN32
 
+#ifdef __cplusplus
+/* const defaults to static (internal visibility) in C++,
+ * but we want extern instead */
+#define G_EXTERN_CONST extern const
+#else
+/* Using extern const in C is perfectly valid, but triggers
+ * a warning in GCC and CLANG, therefore we avoid it */
+#define G_EXTERN_CONST const
+#endif
+
 #ifdef _MSC_VER
 
 #define G_HAS_TLS_CALLBACKS 1
@@ -34,8 +44,10 @@ __pragma (section (".CRT$XLCE", long, read))                                \
                                                                             \
 static void NTAPI func (PVOID, DWORD, PVOID);                               \
                                                                             \
+G_BEGIN_DECLS                                                               \
 __declspec (allocate (".CRT$XLCE"))                                         \
-const PIMAGE_TLS_CALLBACK _ptr_##func = func;                               \
+G_EXTERN_CONST PIMAGE_TLS_CALLBACK _ptr_##func = func;                      \
+G_END_DECLS                                                                 \
                                                                             \
 __pragma (comment (linker, "/INCLUDE:" G_MSVC_SYMBOL_PREFIX "_tls_used"))   \
 __pragma (comment (linker, "/INCLUDE:" G_MSVC_SYMBOL_PREFIX "_ptr_" #func))
@@ -44,11 +56,13 @@ __pragma (comment (linker, "/INCLUDE:" G_MSVC_SYMBOL_PREFIX "_ptr_" #func))
 
 #define G_HAS_TLS_CALLBACKS 1
 
-#define G_DEFINE_TLS_CALLBACK(func)           \
-static void NTAPI func (PVOID, DWORD, PVOID); \
-                                              \
-__attribute__((section(".CRT$XLCE")))         \
-const PIMAGE_TLS_CALLBACK _ptr_##func = func;
+#define G_DEFINE_TLS_CALLBACK(func) \
+static void NTAPI func (PVOID, DWORD, PVOID);          \
+                                                       \
+G_BEGIN_DECLS                                          \
+__attribute__ ((section (".CRT$XLCE")))                \
+G_EXTERN_CONST PIMAGE_TLS_CALLBACK _ptr_##func = func; \
+G_END_DECLS
 
 #endif /* _MSC_VER */
 
