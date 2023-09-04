@@ -681,7 +681,12 @@ g_thread_win32_init (void)
   InitializeCriticalSection (&g_private_lock);
 
 #ifndef _MSC_VER
-  SetThreadName_VEH_handle = AddVectoredExceptionHandler (1, &SetThreadName_VEH);
+  /* Set the handler as last to not interfere with ASAN runtimes.
+   * Many ASAN implementations (currently all three of GCC, CLANG
+   * and MSVC) install a Vectored Exception Handler that must be
+   * first in the sequence to work well
+   */
+  SetThreadName_VEH_handle = AddVectoredExceptionHandler (0, &SetThreadName_VEH);
   if (SetThreadName_VEH_handle == NULL)
     {
       /* This is bad, but what can we do? */
