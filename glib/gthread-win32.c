@@ -605,10 +605,7 @@ SetThreadName (DWORD  dwThreadID,
      {
      }
 #else
-   /* Without a debugger we *must* have an exception handler,
-    * otherwise raising an exception will crash the process.
-    */
-   if ((!IsDebuggerPresent ()) && (SetThreadName_VEH_handle == NULL))
+   if ((!IsDebuggerPresent ()) || (SetThreadName_VEH_handle == NULL))
      return;
 
    RaiseException (EXCEPTION_SET_THREAD_NAME, 0, infosize, (const ULONG_PTR *) &info);
