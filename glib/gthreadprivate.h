@@ -124,7 +124,7 @@ GRealThread *g_system_thread_new (GThreadFunc proxy,
                                   GError **error);
 void            g_system_thread_free            (GRealThread  *thread);
 
-void            g_system_thread_exit            (void);
+G_NORETURN void g_system_thread_exit            (void);
 void            g_system_thread_set_name        (const gchar  *name);
 
 /* gthread.c */
