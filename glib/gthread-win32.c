@@ -601,7 +601,8 @@ SetThreadName (DWORD  dwThreadID,
        RaiseException (EXCEPTION_SET_THREAD_NAME, 0, infosize,
                        (const ULONG_PTR *) &info);
      }
-   __except (EXCEPTION_EXECUTE_HANDLER)
+   __except (GetExceptionCode () == EXCEPTION_SET_THREAD_NAME ?
+             EXCEPTION_EXECUTE_HANDLER : EXCEPTION_CONTINUE_SEARCH)
      {
      }
 #else
