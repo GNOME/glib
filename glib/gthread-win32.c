@@ -688,9 +688,8 @@ g_thread_win32_init (void)
    */
   SetThreadName_VEH_handle = AddVectoredExceptionHandler (0, &SetThreadName_VEH);
   if (SetThreadName_VEH_handle == NULL)
-    {
-      /* This is bad, but what can we do? */
-    }
+    g_critical ("%s failed with error code %u",
+                "AddVectoredExceptionHandler", (unsigned int) GetLastError ());
 #endif
 }
 
