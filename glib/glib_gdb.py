@@ -16,17 +16,28 @@ def g_quark_to_string(quark):
     quark = long(quark)
     if quark == 0:
         return None
+    max_q = None
     try:
         val = read_global_var("quarks")
-        max_q = long(read_global_var("quark_seq_id"))
+        try:
+            max_q = long(read_global_var("quark_seq_id"))
+        # quark_seq_id gets optimized out in some builds so work around it
+        except gdb.error:
+            pass
     except Exception:
         try:
             val = read_global_var("g_quarks")
-            max_q = long(read_global_var("g_quark_seq_id"))
+            try:
+                max_q = long(read_global_var("g_quark_seq_id"))
+            except gdb.error:
+                pass
         except Exception:
             return None
-    if quark < max_q:
-        return val[quark].string()
+    if max_q is None or quark < max_q:
+        try:
+            return val[quark].string()
+        except gdb.MemoryError:
+            print(f"Invalid quark {quark}")
     return None
 
 
