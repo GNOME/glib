@@ -593,7 +593,7 @@ SetThreadName (DWORD  dwThreadID,
    info.dwThreadID = dwThreadID;
    info.dwFlags = 0;
 
-   infosize = sizeof (info) / sizeof (DWORD);
+   infosize = sizeof (info) / sizeof (ULONG_PTR);
 
 #ifdef _MSC_VER
    __try
