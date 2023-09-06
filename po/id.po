@@ -4,22 +4,22 @@
 #
 # Mohammad DAMT <mdamt@bisnisweb.com>, 2005.
 # Dirgita <dirgitadevina@yahoo.co.id>, 2010, 2012.
-# Andika Triwidada <andika@gmail.com>, 2010-2013, 2015, 2018, 2022.
+# Andika Triwidada <andika@gmail.com>, 2010-2013, 2015, 2018, 2022, 2023.
 # Kukuh Syafaat <kukuhsyafaat@gnome.org>, 2017-2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: glib main\n"
+"Project-Id-Version: glib glib-2-76\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2023-02-15 16:30+0000\n"
-"PO-Revision-Date: 2023-02-16 10:29+0700\n"
-"Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
+"POT-Creation-Date: 2023-09-05 18:42+0000\n"
+"PO-Revision-Date: 2023-09-06 15:12+0700\n"
+"Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <gnome@i15n.org>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.3.2\n"
 
 #: gio/gappinfo.c:339
 msgid "Setting default applications not supported yet"
@@ -137,7 +137,7 @@ msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr "Identifier aplikasi dalam format D-Bus (mis: org.example.viewer)"
 
 #: gio/gapplication-tool.c:76 gio/glib-compile-resources.c:822
-#: gio/glib-compile-resources.c:828 gio/glib-compile-resources.c:857
+#: gio/glib-compile-resources.c:828 gio/glib-compile-resources.c:858
 #: gio/gresource-tool.c:503 gio/gresource-tool.c:569
 msgid "FILE"
 msgstr "BERKAS"
@@ -277,7 +277,7 @@ msgstr ""
 #: gio/gbufferedinputstream.c:422 gio/gbufferedinputstream.c:500
 #: gio/ginputstream.c:181 gio/ginputstream.c:381 gio/ginputstream.c:650
 #: gio/ginputstream.c:1052 gio/goutputstream.c:225 gio/goutputstream.c:1051
-#: gio/gpollableinputstream.c:207 gio/gpollableoutputstream.c:279
+#: gio/gpollableinputstream.c:221 gio/gpollableoutputstream.c:293
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "Nilai cacah yang dilewatkan ke %s terlalu besar"
@@ -300,7 +300,7 @@ msgstr "Stream telah ditutup"
 msgid "Truncate not supported on base stream"
 msgstr "Pemenggalan tak didukung pada stream basis"
 
-#: gio/gcancellable.c:326 gio/gdbusconnection.c:1859 gio/gdbusprivate.c:1420
+#: gio/gcancellable.c:326 gio/gdbusconnection.c:1867 gio/gdbusprivate.c:1434
 #: gio/gsimpleasyncresult.c:873 gio/gsimpleasyncresult.c:899
 #, c-format
 msgid "Operation was cancelled"
@@ -383,17 +383,17 @@ msgstr "Pemalsuan kredensial tak diimplementasikan di OS ini"
 msgid "Unexpected early end-of-stream"
 msgstr "Akhir stream terlalu dini, tak diharapkan"
 
-#: gio/gdbusaddress.c:162 gio/gdbusaddress.c:234 gio/gdbusaddress.c:321
+#: gio/gdbusaddress.c:168 gio/gdbusaddress.c:240 gio/gdbusaddress.c:327
 #, c-format
 msgid "Unsupported key “%s” in address entry “%s”"
 msgstr "Kunci \"%s\" tak didukung pada entri alamat \"%s\""
 
-#: gio/gdbusaddress.c:175
+#: gio/gdbusaddress.c:181
 #, c-format
 msgid "Meaningless key/value pair combination in address entry “%s”"
 msgstr "Kombinasi pasangan kunci/nilai tanpa arti di entri alamat \"%s\""
 
-#: gio/gdbusaddress.c:184
+#: gio/gdbusaddress.c:190
 #, c-format
 msgid ""
 "Address “%s” is invalid (need exactly one of path, dir, tmpdir, or abstract "
@@ -402,28 +402,28 @@ msgstr ""
 "Alamat \"%s\" tak valid (perlu hanya salah satu dari path, dir, tmpdir, atau "
 "kunci abstrak)"
 
-#: gio/gdbusaddress.c:249 gio/gdbusaddress.c:260 gio/gdbusaddress.c:275
-#: gio/gdbusaddress.c:336 gio/gdbusaddress.c:347
+#: gio/gdbusaddress.c:255 gio/gdbusaddress.c:266 gio/gdbusaddress.c:281
+#: gio/gdbusaddress.c:342 gio/gdbusaddress.c:353
 #, c-format
 msgid "Error in address “%s” — the “%s” attribute is malformed"
 msgstr "Galat dalam alamat \"%s\" — atribut \"%s\" salah bentuk"
 
-#: gio/gdbusaddress.c:417 gio/gdbusaddress.c:676
+#: gio/gdbusaddress.c:423 gio/gdbusaddress.c:682
 #, c-format
 msgid "Unknown or unsupported transport “%s” for address “%s”"
 msgstr "Transport \"%s\" tak dikenal atau tak didukung bagi alamat \"%s\""
 
-#: gio/gdbusaddress.c:461
+#: gio/gdbusaddress.c:467
 #, c-format
 msgid "Address element “%s” does not contain a colon (:)"
 msgstr "Elemen alamat \"%s\" tak memuat titik dua (:)"
 
-#: gio/gdbusaddress.c:470
+#: gio/gdbusaddress.c:476
 #, c-format
 msgid "Transport name in address element “%s” must not be empty"
 msgstr "Nama transport dalam elemen alamat “%s” tidak boleh kosong"
 
-#: gio/gdbusaddress.c:491
+#: gio/gdbusaddress.c:497
 #, c-format
 msgid ""
 "Key/Value pair %d, “%s”, in address element “%s” does not contain an equal "
@@ -432,7 +432,7 @@ msgstr ""
 "Pasangan kunci/nilai %d, \"%s\", dalam elemen alamat \"%s\" tak memuat tanda "
 "sama dengan"
 
-#: gio/gdbusaddress.c:502
+#: gio/gdbusaddress.c:508
 #, c-format
 msgid ""
 "Key/Value pair %d, “%s”, in address element “%s” must not have an empty key"
@@ -440,7 +440,7 @@ msgstr ""
 "Pasangan kunci/nilai %d, \"%s\", dalam elemen alamat \"%s\" tak boleh "
 "memiliki kunci kosong"
 
-#: gio/gdbusaddress.c:516
+#: gio/gdbusaddress.c:522
 #, c-format
 msgid ""
 "Error unescaping key or value in Key/Value pair %d, “%s”, in address element "
@@ -449,7 +449,7 @@ msgstr ""
 "Galat saat membongkar kunci atau nilai dalam pasangan Key/Value %d, \"%s\", "
 "dalam elemen alamat \"%s\""
 
-#: gio/gdbusaddress.c:584
+#: gio/gdbusaddress.c:590
 #, c-format
 msgid ""
 "Error in address “%s” — the unix transport requires exactly one of the keys "
@@ -458,74 +458,74 @@ msgstr ""
 "Galat dalam alamat \"%s\" — transport unix memerlukan hanya satu dari kunci "
 "\"path\" atau \"abstract\" untuk ditata"
 
-#: gio/gdbusaddress.c:619
+#: gio/gdbusaddress.c:625
 #, c-format
 msgid "Error in address “%s” — the host attribute is missing or malformed"
 msgstr "Galat dalam alamat \"%s\" — atribut host kurang atau salah bentuk"
 
-#: gio/gdbusaddress.c:633
+#: gio/gdbusaddress.c:639
 #, c-format
 msgid "Error in address “%s” — the port attribute is missing or malformed"
 msgstr "Galat dalam alamat \"%s\" — atribut portt kurang atau salah bentuk"
 
-#: gio/gdbusaddress.c:647
+#: gio/gdbusaddress.c:653
 #, c-format
 msgid "Error in address “%s” — the noncefile attribute is missing or malformed"
 msgstr "Galat di alamat \"%s\" — atribut berkas nonce kurang atau salah bentuk"
 
-#: gio/gdbusaddress.c:668
+#: gio/gdbusaddress.c:674
 msgid "Error auto-launching: "
 msgstr "Galat saat meluncurkan otomatis: "
 
-#: gio/gdbusaddress.c:721
+#: gio/gdbusaddress.c:727
 #, c-format
 msgid "Error opening nonce file “%s”: %s"
 msgstr "Galat saat membuka berkas nonce \"%s\": %s"
 
-#: gio/gdbusaddress.c:740
+#: gio/gdbusaddress.c:746
 #, c-format
 msgid "Error reading from nonce file “%s”: %s"
 msgstr "Galat saat membaca berkas nonce \"%s\": %s"
 
-#: gio/gdbusaddress.c:749
+#: gio/gdbusaddress.c:755
 #, c-format
 msgid "Error reading from nonce file “%s”, expected 16 bytes, got %d"
 msgstr "Galat saat membaca berkas nonce \"%s\", berharap 16 bita, mendapat %d"
 
-#: gio/gdbusaddress.c:767
+#: gio/gdbusaddress.c:773
 #, c-format
 msgid "Error writing contents of nonce file “%s” to stream:"
 msgstr "Galat saat menulis isi dari berkas nonce \"%s\" ke stream:"
 
-#: gio/gdbusaddress.c:982
+#: gio/gdbusaddress.c:988
 msgid "The given address is empty"
 msgstr "Tidak ada alamat yang diberikan"
 
-#: gio/gdbusaddress.c:1095
+#: gio/gdbusaddress.c:1101
 #, c-format
 msgid "Cannot spawn a message bus when AT_SECURE is set"
 msgstr "Tak bisa spawn suatu bus pesan ketika AT_SECURE ditata"
 
-#: gio/gdbusaddress.c:1102
+#: gio/gdbusaddress.c:1108
 msgid "Cannot spawn a message bus without a machine-id: "
 msgstr "Tak bisa spawn suatu bus pesan tanpa id-mesin: "
 
-#: gio/gdbusaddress.c:1109
+#: gio/gdbusaddress.c:1115
 #, c-format
 msgid "Cannot autolaunch D-Bus without X11 $DISPLAY"
 msgstr "Tak bisa meluncurkan mandiri D-Bus tanpa $DISPLAY X11"
 
-#: gio/gdbusaddress.c:1151
+#: gio/gdbusaddress.c:1157
 #, c-format
 msgid "Error spawning command line “%s”: "
 msgstr "Galat saat spawn baris perintah \"%s\": "
 
-#: gio/gdbusaddress.c:1220
+#: gio/gdbusaddress.c:1226
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr "Tak bisa menentukan alamat bus sesi (tidak diimplementasi bagi OS ini)"
 
-#: gio/gdbusaddress.c:1374 gio/gdbusconnection.c:7316
+#: gio/gdbusaddress.c:1380 gio/gdbusconnection.c:7339
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -534,7 +534,7 @@ msgstr ""
 "Tak bisa menentukan alamat bus dari variabel lingkungan "
 "DBUS_STARTER_BUS_TYPE — nilai tak dikenal \"%s\""
 
-#: gio/gdbusaddress.c:1383 gio/gdbusconnection.c:7325
+#: gio/gdbusaddress.c:1389 gio/gdbusconnection.c:7348
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -542,7 +542,7 @@ msgstr ""
 "Tak bisa menentukan alamat bus karena variabel lingkungan "
 "DBUS_STARTER_BUS_TYPE tak diisi"
 
-#: gio/gdbusaddress.c:1393
+#: gio/gdbusaddress.c:1399
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "Tipe bus %d tak dikenal"
@@ -576,44 +576,44 @@ msgstr "ID Pengguna harus sama untuk rakan (peer) dan peladen"
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr "Dibatalkan melalui GDBusAuthObserver::authorize-authenticated-peer"
 
-#: gio/gdbusauthmechanismsha1.c:303
+#: gio/gdbusauthmechanismsha1.c:307
 #, c-format
 msgid "Error when getting information for directory “%s”: %s"
 msgstr "Galat ketika mengambil informasi untuk direktori \"%s\": %s"
 
-#: gio/gdbusauthmechanismsha1.c:318
+#: gio/gdbusauthmechanismsha1.c:322
 #, c-format
 msgid ""
 "Permissions on directory “%s” are malformed. Expected mode 0700, got 0%o"
 msgstr ""
 "Izin pada direktori \"%s\" salah bentuk. Diharapkan mode 0700, diperoleh 0%o"
 
-#: gio/gdbusauthmechanismsha1.c:351 gio/gdbusauthmechanismsha1.c:362
+#: gio/gdbusauthmechanismsha1.c:355 gio/gdbusauthmechanismsha1.c:366
 #, c-format
 msgid "Error creating directory “%s”: %s"
 msgstr "Galat saat membuat direktori \"%s\": %s"
 
-#: gio/gdbusauthmechanismsha1.c:364 gio/gfile.c:1095 gio/gfile.c:1333
+#: gio/gdbusauthmechanismsha1.c:368 gio/gfile.c:1095 gio/gfile.c:1333
 #: gio/gfile.c:1471 gio/gfile.c:1709 gio/gfile.c:1764 gio/gfile.c:1822
 #: gio/gfile.c:1906 gio/gfile.c:1963 gio/gfile.c:2027 gio/gfile.c:2082
-#: gio/gfile.c:3787 gio/gfile.c:3927 gio/gfile.c:4339 gio/gfile.c:4809
-#: gio/gfile.c:5220 gio/gfile.c:5305 gio/gfile.c:5395 gio/gfile.c:5492
-#: gio/gfile.c:5579 gio/gfile.c:5680 gio/gfile.c:8809 gio/gfile.c:8899
-#: gio/gfile.c:8983 gio/win32/gwinhttpfile.c:453
+#: gio/gfile.c:3797 gio/gfile.c:3937 gio/gfile.c:4349 gio/gfile.c:4819
+#: gio/gfile.c:5230 gio/gfile.c:5315 gio/gfile.c:5405 gio/gfile.c:5502
+#: gio/gfile.c:5589 gio/gfile.c:5690 gio/gfile.c:8819 gio/gfile.c:8909
+#: gio/gfile.c:8993 gio/win32/gwinhttpfile.c:453
 msgid "Operation not supported"
 msgstr "Operasi tak didukung"
 
-#: gio/gdbusauthmechanismsha1.c:407
+#: gio/gdbusauthmechanismsha1.c:411
 #, c-format
 msgid "Error opening keyring “%s” for reading: "
 msgstr "Galat saat membuka ring kunci \"%s\" untuk dibaca: "
 
-#: gio/gdbusauthmechanismsha1.c:430 gio/gdbusauthmechanismsha1.c:771
+#: gio/gdbusauthmechanismsha1.c:434 gio/gdbusauthmechanismsha1.c:775
 #, c-format
 msgid "Line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr "Baris %d dari ring kunci pada \"%s\" dengan isi \"%s\" salah bentuk"
 
-#: gio/gdbusauthmechanismsha1.c:444 gio/gdbusauthmechanismsha1.c:785
+#: gio/gdbusauthmechanismsha1.c:448 gio/gdbusauthmechanismsha1.c:789
 #, c-format
 msgid ""
 "First token of line %d of the keyring at “%s” with content “%s” is malformed"
@@ -621,7 +621,7 @@ msgstr ""
 "Token pertama dari baris %d dari ring kunci pada \"%s\" dengan isi \"%s\" "
 "salah bentuk"
 
-#: gio/gdbusauthmechanismsha1.c:458 gio/gdbusauthmechanismsha1.c:799
+#: gio/gdbusauthmechanismsha1.c:462 gio/gdbusauthmechanismsha1.c:803
 #, c-format
 msgid ""
 "Second token of line %d of the keyring at “%s” with content “%s” is malformed"
@@ -629,56 +629,56 @@ msgstr ""
 "Token kedua dari baris %d dari ring kunci pada \"%s\" dengan isi \"%s\" "
 "salah bentuk"
 
-#: gio/gdbusauthmechanismsha1.c:482
+#: gio/gdbusauthmechanismsha1.c:486
 #, c-format
 msgid "Didn’t find cookie with id %d in the keyring at “%s”"
 msgstr "Tak menemukan cookie dengan id %d dalam gantungan kunci pada \"%s\""
 
-#: gio/gdbusauthmechanismsha1.c:539
+#: gio/gdbusauthmechanismsha1.c:543
 #, c-format
 msgid "Error creating lock file “%s”: %s"
 msgstr "Galat saat membuat berkas kunci \"%s\": %s"
 
-#: gio/gdbusauthmechanismsha1.c:612
+#: gio/gdbusauthmechanismsha1.c:616
 #, c-format
 msgid "Error deleting stale lock file “%s”: %s"
 msgstr "Galat saat menghapus berkas kunci yang basi \"%s\": %s"
 
-#: gio/gdbusauthmechanismsha1.c:651
+#: gio/gdbusauthmechanismsha1.c:655
 #, c-format
 msgid "Error closing (unlinked) lock file “%s”: %s"
 msgstr "Galat saat menutup berkas kunci (tak terkait) \"%s\": %s"
 
-#: gio/gdbusauthmechanismsha1.c:662
+#: gio/gdbusauthmechanismsha1.c:666
 #, c-format
 msgid "Error unlinking lock file “%s”: %s"
 msgstr "Galat saat membuka kait berkas kunci \"%s\": %s"
 
-#: gio/gdbusauthmechanismsha1.c:738
+#: gio/gdbusauthmechanismsha1.c:742
 #, c-format
 msgid "Error opening keyring “%s” for writing: "
 msgstr "Galat saat membuka gantungan kunci \"%s\" untuk ditulisi: "
 
-#: gio/gdbusauthmechanismsha1.c:932
+#: gio/gdbusauthmechanismsha1.c:936
 #, c-format
 msgid "(Additionally, releasing the lock for “%s” also failed: %s) "
 msgstr "(Selain itu, melepas kunci bagi \"%s\" juga gagal: %s) "
 
-#: gio/gdbusconnection.c:590 gio/gdbusconnection.c:2405
+#: gio/gdbusconnection.c:590 gio/gdbusconnection.c:2415
 msgid "The connection is closed"
 msgstr "Sambungan tertutup"
 
-#: gio/gdbusconnection.c:1889
+#: gio/gdbusconnection.c:1899
 msgid "Timeout was reached"
 msgstr "Kehabisan waktu"
 
-#: gio/gdbusconnection.c:2528
+#: gio/gdbusconnection.c:2538
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr ""
 "Ditemui tanda yang tak didukung ketika membangun sambungan di sisi klien"
 
-#: gio/gdbusconnection.c:4257 gio/gdbusconnection.c:4611
+#: gio/gdbusconnection.c:4277 gio/gdbusconnection.c:4631
 #, c-format
 msgid ""
 "No such interface “org.freedesktop.DBus.Properties” on object at path %s"
@@ -686,81 +686,81 @@ msgstr ""
 "Tidak ada antarmuka \"org.freedesktop.DBus.Properties\" pada objek pada path "
 "%s"
 
-#: gio/gdbusconnection.c:4402
+#: gio/gdbusconnection.c:4422
 #, c-format
 msgid "No such property “%s”"
 msgstr "Tak ada properti \"%s\""
 
-#: gio/gdbusconnection.c:4414
+#: gio/gdbusconnection.c:4434
 #, c-format
 msgid "Property “%s” is not readable"
 msgstr "Properti \"%s\" tidak dapat dibaca"
 
-#: gio/gdbusconnection.c:4425
+#: gio/gdbusconnection.c:4445
 #, c-format
 msgid "Property “%s” is not writable"
 msgstr "Properti \"%s\" tidak dapat ditulisi"
 
-#: gio/gdbusconnection.c:4445
+#: gio/gdbusconnection.c:4465
 #, c-format
 msgid "Error setting property “%s”: Expected type “%s” but got “%s”"
 msgstr ""
-"Galat menata properti \"%s\": Tipe yang diharapkan \"%s\" tapi diperoleh \"%s"
-"\""
+"Galat menata properti \"%s\": Tipe yang diharapkan \"%s\" tapi diperoleh "
+"\"%s\""
 
-#: gio/gdbusconnection.c:4550 gio/gdbusconnection.c:4765
-#: gio/gdbusconnection.c:6742
+#: gio/gdbusconnection.c:4570 gio/gdbusconnection.c:4785
+#: gio/gdbusconnection.c:6762
 #, c-format
 msgid "No such interface “%s”"
 msgstr "Tak ada antarmuka \"%s\""
 
-#: gio/gdbusconnection.c:4981 gio/gdbusconnection.c:7256
+#: gio/gdbusconnection.c:5001 gio/gdbusconnection.c:7279
 #, c-format
 msgid "No such interface “%s” on object at path %s"
 msgstr "Tak ada antarmuka \"%s\" pada objek di lokasi %s"
 
-#: gio/gdbusconnection.c:5082
+#: gio/gdbusconnection.c:5102
 #, c-format
 msgid "No such method “%s”"
 msgstr "Tidak ada metode seperti \"%s\""
 
-#: gio/gdbusconnection.c:5113
+#: gio/gdbusconnection.c:5133
 #, c-format
 msgid "Type of message, “%s”, does not match expected type “%s”"
 msgstr "Tipe pesan \"%s\" tak cocok dengan tipe yang diharapkan \"%s\""
 
-#: gio/gdbusconnection.c:5316
+#: gio/gdbusconnection.c:5336
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Suatu objek telah diekspor bagi antar muka %s pada %s"
 
-#: gio/gdbusconnection.c:5543
+#: gio/gdbusconnection.c:5563
 #, c-format
 msgid "Unable to retrieve property %s.%s"
 msgstr "Tak bisa mengambil properti %s.%s"
 
-#: gio/gdbusconnection.c:5599
+#: gio/gdbusconnection.c:5619
 #, c-format
 msgid "Unable to set property %s.%s"
 msgstr "Tak bisa menata properti %s.%s"
 
-#: gio/gdbusconnection.c:5778
+#: gio/gdbusconnection.c:5798
 #, c-format
 msgid "Method “%s” returned type “%s”, but expected “%s”"
 msgstr "Metode \"%s\" mengembalikan tipe \"%s\", tapi yang diharapkan \"%s\""
 
-#: gio/gdbusconnection.c:6854
+#: gio/gdbusconnection.c:6874
 #, c-format
 msgid "Method “%s” on interface “%s” with signature “%s” does not exist"
 msgstr ""
 "Metode \"%s\" pada antar muka \"%s\" dengan tanda tangan \"%s\"' tak ada"
 
-#: gio/gdbusconnection.c:6975
+#: gio/gdbusconnection.c:6995
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Subtree telah diekspor bagi %s"
 
-#: gio/gdbusconnection.c:7264
+#: gio/gdbusconnection.c:7287
 #, c-format
 msgid "Object does not exist at path “%s”"
 msgstr "Objek tidak ada di path \"%s\""
@@ -769,23 +769,29 @@ msgstr "Objek tidak ada di path \"%s\""
 msgid "type is INVALID"
 msgstr "jenisnya INVALID"
 
-#: gio/gdbusmessage.c:1317
-msgid "METHOD_CALL message: PATH or MEMBER header field is missing"
-msgstr "Pesan METHOD_CALL: ruas header PATH atau MEMBER hilang"
-
-#: gio/gdbusmessage.c:1328
-msgid "METHOD_RETURN message: REPLY_SERIAL header field is missing"
-msgstr "Pesan METHOD_RETURN: ruas header REPLY_SERIAL hilang"
+#: gio/gdbusmessage.c:1324
+msgid "METHOD_CALL message: PATH or MEMBER header field is missing or invalid"
+msgstr ""
+"Pesan METHOD_CALL: ruas header PATH atau MEMBER kurang atau tidak valid"
 
 #: gio/gdbusmessage.c:1340
-msgid "ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing"
-msgstr "Pesan ERROR: ruas header REPLY_SERIAL atau ERRORN_NAME hilang"
+msgid "METHOD_RETURN message: REPLY_SERIAL header field is missing or invalid"
+msgstr "Pesan METHOD_RETURN: ruas header REPLY_SERIAL kurang atau tidak valid"
 
-#: gio/gdbusmessage.c:1353
-msgid "SIGNAL message: PATH, INTERFACE or MEMBER header field is missing"
-msgstr "Pesan SIGNAL: ruas header PATH, INTERFACE, atau MEMBER hilang"
+#: gio/gdbusmessage.c:1360
+msgid ""
+"ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing or invalid"
+msgstr ""
+"Pesan ERROR: ruas header REPLY_SERIAL atau ERRORN_NAME kurang atau tidak "
+"valid"
 
-#: gio/gdbusmessage.c:1361
+#: gio/gdbusmessage.c:1384
+msgid ""
+"SIGNAL message: PATH, INTERFACE or MEMBER header field is missing or invalid"
+msgstr ""
+"Pesan METHOD_CALL: ruas header PATH atau MEMBER kurang atau tidak valid"
+
+#: gio/gdbusmessage.c:1392
 msgid ""
 "SIGNAL message: The PATH header field is using the reserved value /org/"
 "freedesktop/DBus/Local"
@@ -793,7 +799,7 @@ msgstr ""
 "Pesan SIGNAL: ruas header PATH memakai nilai khusus /org/freedesktop/DBus/"
 "Local"
 
-#: gio/gdbusmessage.c:1369
+#: gio/gdbusmessage.c:1400
 msgid ""
 "SIGNAL message: The INTERFACE header field is using the reserved value org."
 "freedesktop.DBus.Local"
@@ -801,18 +807,18 @@ msgstr ""
 "Pesan SIGNAL: ruas header INTERFACE memakai nilai khusus org.freedesktop."
 "DBus.Local"
 
-#: gio/gdbusmessage.c:1417 gio/gdbusmessage.c:1477
+#: gio/gdbusmessage.c:1449 gio/gdbusmessage.c:1509
 #, c-format
 msgid "Wanted to read %lu byte but only got %lu"
 msgid_plural "Wanted to read %lu bytes but only got %lu"
 msgstr[0] "Ingin membaca %lu bita tapi hanya memperoleh %lu"
 
-#: gio/gdbusmessage.c:1431
+#: gio/gdbusmessage.c:1463
 #, c-format
 msgid "Expected NUL byte after the string “%s” but found byte %d"
 msgstr "Mengharapkan bita NUL setelah string \"%s\" tapi menemui bita %d"
 
-#: gio/gdbusmessage.c:1450
+#: gio/gdbusmessage.c:1482
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
@@ -822,21 +828,21 @@ msgstr ""
 "%d (panjang string adalah %d). String UTF-8 yang valid sampai titik itu "
 "adalah \"%s\""
 
-#: gio/gdbusmessage.c:1514 gio/gdbusmessage.c:1790 gio/gdbusmessage.c:2001
+#: gio/gdbusmessage.c:1546 gio/gdbusmessage.c:1822 gio/gdbusmessage.c:2033
 msgid "Value nested too deeply"
 msgstr "Nilai bersarang terlalu dalam"
 
-#: gio/gdbusmessage.c:1682
+#: gio/gdbusmessage.c:1714
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus object path"
 msgstr "Nilai terurai \"%s\" bukan lokasi objek D-Bus yang valid"
 
-#: gio/gdbusmessage.c:1706
+#: gio/gdbusmessage.c:1738
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature"
 msgstr "Nilai terurai \"%s\" bukan tanda tangan D-Bus yang valid"
 
-#: gio/gdbusmessage.c:1757
+#: gio/gdbusmessage.c:1789
 #, c-format
 msgid ""
 "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
@@ -846,7 +852,7 @@ msgstr[0] ""
 "Menjumpai larik dengan panjang %u bita. Panjang maksimal adalah 2<<26 bita "
 "(64 MiB)."
 
-#: gio/gdbusmessage.c:1777
+#: gio/gdbusmessage.c:1809
 #, c-format
 msgid ""
 "Encountered array of type “a%c”, expected to have a length a multiple of %u "
@@ -855,16 +861,16 @@ msgstr ""
 "Menemui larik bertipe \"a%c\", mengharapkan punya panjang kelipatan %u bita, "
 "tapi menemui panjang %u bita"
 
-#: gio/gdbusmessage.c:1931 gio/gdbusmessage.c:2650
+#: gio/gdbusmessage.c:1963 gio/gdbusmessage.c:2682
 msgid "Empty structures (tuples) are not allowed in D-Bus"
 msgstr "Struktur kosong (tuple) tidak diperbolehkan di D-Bus"
 
-#: gio/gdbusmessage.c:1985
+#: gio/gdbusmessage.c:2017
 #, c-format
 msgid "Parsed value “%s” for variant is not a valid D-Bus signature"
 msgstr "Nilai terurai \"%s\" bagi varian bukan tanda tangan D-Bus yang valid"
 
-#: gio/gdbusmessage.c:2026
+#: gio/gdbusmessage.c:2058
 #, c-format
 msgid ""
 "Error deserializing GVariant with type string “%s” from the D-Bus wire format"
@@ -872,7 +878,7 @@ msgstr ""
 "Galat saat deserialisasi GVariant dengan type string \"%s\" dari format "
 "kabel D-Bus"
 
-#: gio/gdbusmessage.c:2211
+#: gio/gdbusmessage.c:2243
 #, c-format
 msgid ""
 "Invalid endianness value. Expected 0x6c (“l”) or 0x42 (“B”) but found value "
@@ -881,28 +887,28 @@ msgstr ""
 "Nilai ke-endian-an tak valid. Berharap 0x6c (\"l\") atau (0x42) \"B\" tapi "
 "menemui 0x%02x"
 
-#: gio/gdbusmessage.c:2230
+#: gio/gdbusmessage.c:2262
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr "Versi protokol mayor tak valid. Berharap 1 tapi menemui %d"
 
-#: gio/gdbusmessage.c:2288 gio/gdbusmessage.c:2886
+#: gio/gdbusmessage.c:2320 gio/gdbusmessage.c:2918
 msgid "Signature header found but is not of type signature"
 msgstr "Tajuk tanda tangan ditemukan tetapi bukan tipe tanda tangan"
 
-#: gio/gdbusmessage.c:2300
+#: gio/gdbusmessage.c:2332
 #, c-format
 msgid "Signature header with signature “%s” found but message body is empty"
 msgstr ""
 "Header tanda tangan dengan tanda tangan \"%s\" ditemukan tapi body pesan "
 "kosong"
 
-#: gio/gdbusmessage.c:2315
+#: gio/gdbusmessage.c:2347
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature (for body)"
 msgstr "Nilai terurai \"%s\" bukan tanda tangan D-Bus yang valid (bagi body)"
 
-#: gio/gdbusmessage.c:2347
+#: gio/gdbusmessage.c:2379
 #, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
@@ -910,11 +916,11 @@ msgstr[0] ""
 "Tidak terdapat tajuk tanda tangan pada pesan, tetapi panjang badan pesan "
 "adalah %u bita"
 
-#: gio/gdbusmessage.c:2357
+#: gio/gdbusmessage.c:2389
 msgid "Cannot deserialize message: "
 msgstr "Tak bisa men-deserialisasi pesan: "
 
-#: gio/gdbusmessage.c:2703
+#: gio/gdbusmessage.c:2735
 #, c-format
 msgid ""
 "Error serializing GVariant with type string “%s” to the D-Bus wire format"
@@ -922,23 +928,23 @@ msgstr ""
 "Kesalahan serialisasi GVariant dengan type string \"%s\" ke format kabel D-"
 "Bus"
 
-#: gio/gdbusmessage.c:2840
+#: gio/gdbusmessage.c:2872
 #, c-format
 msgid ""
 "Number of file descriptors in message (%d) differs from header field (%d)"
 msgstr ""
 "Jumlah deskriptor berkas dalam pesan (%d) berbeda dari field header (%d)"
 
-#: gio/gdbusmessage.c:2848
+#: gio/gdbusmessage.c:2880
 msgid "Cannot serialize message: "
 msgstr "Tak bisa men-serialisasi pesan: "
 
-#: gio/gdbusmessage.c:2901
+#: gio/gdbusmessage.c:2933
 #, c-format
 msgid "Message body has signature “%s” but there is no signature header"
 msgstr "Body pesan punya tanda tangan \"%s\" tapi tak ada header tanda tangan"
 
-#: gio/gdbusmessage.c:2911
+#: gio/gdbusmessage.c:2943
 #, c-format
 msgid ""
 "Message body has type signature “%s” but signature in the header field is "
@@ -947,37 +953,37 @@ msgstr ""
 "Tubuh pesan memiliki tanda tangan tipe \"%s\" tapi tanda tangan di ruas "
 "header adalah \"(%s)\""
 
-#: gio/gdbusmessage.c:2927
+#: gio/gdbusmessage.c:2959
 #, c-format
 msgid "Message body is empty but signature in the header field is “(%s)”"
 msgstr "Tubuh pesan kosong tapi tanda tangan pada ruas header adalah \"(%s)\""
 
-#: gio/gdbusmessage.c:3482
+#: gio/gdbusmessage.c:3514
 #, c-format
 msgid "Error return with body of type “%s”"
 msgstr "Galat balikan dengan tubuh bertipe \"%s\""
 
-#: gio/gdbusmessage.c:3490
+#: gio/gdbusmessage.c:3522
 msgid "Error return with empty body"
 msgstr "Galat balikan dengan body kosong"
 
-#: gio/gdbusprivate.c:2187
+#: gio/gdbusprivate.c:2201
 #, c-format
 msgid "(Type any character to close this window)\n"
 msgstr "(Ketikkan karakter apapun untuk menutup jendela ini)\n"
 
-#: gio/gdbusprivate.c:2373
+#: gio/gdbusprivate.c:2387
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
 msgstr "dbus sesi tidak sedang berjalan, dan peluncuran otomatis gagal"
 
-#: gio/gdbusprivate.c:2396
+#: gio/gdbusprivate.c:2410
 #, c-format
 msgid "Unable to get Hardware profile: %s"
 msgstr "Tak bisa mendapat profil perangkat keras: %s"
 
 #. Translators: Both placeholders are file paths
-#: gio/gdbusprivate.c:2447
+#: gio/gdbusprivate.c:2461
 #, c-format
 msgid "Unable to load %s or %s: "
 msgstr "Tak bisa memuat %s or %s: "
@@ -1308,12 +1314,12 @@ msgstr "Galat: Terlalu banyak argumen.\n"
 msgid "Error: %s is not a valid well-known bus name.\n"
 msgstr "Galat: %s bukan nama bus yang dikenal baik dan valid\n"
 
-#: gio/gdebugcontrollerdbus.c:360
+#: gio/gdebugcontrollerdbus.c:361
 #, c-format
 msgid "Not authorized to change debug settings"
 msgstr "Tidak berwenang untuk mengubah pengaturan awakutu"
 
-#: gio/gdesktopappinfo.c:2242 gio/gdesktopappinfo.c:5223
+#: gio/gdesktopappinfo.c:2242 gio/gdesktopappinfo.c:5226
 msgid "Unnamed"
 msgstr "Tanpa nama"
 
@@ -1330,27 +1336,27 @@ msgstr "Tak bisa temukan terminal yang diperlukan bagi aplikasi"
 msgid "Program ‘%s’ not found in $PATH"
 msgstr "Program '%s' tidak ditemukan di $PATH"
 
-#: gio/gdesktopappinfo.c:3735
+#: gio/gdesktopappinfo.c:3738
 #, c-format
 msgid "Can’t create user application configuration folder %s: %s"
 msgstr ""
 "Tak bisa membuat folder %s untuk konfigurasi aplikasi bagi pengguna: %s"
 
-#: gio/gdesktopappinfo.c:3739
+#: gio/gdesktopappinfo.c:3742
 #, c-format
 msgid "Can’t create user MIME configuration folder %s: %s"
 msgstr "Tak bisa membuat folder %s untuk konfigurasi MIME bagi pengguna: %s"
 
-#: gio/gdesktopappinfo.c:3981 gio/gdesktopappinfo.c:4005
+#: gio/gdesktopappinfo.c:3984 gio/gdesktopappinfo.c:4008
 msgid "Application information lacks an identifier"
 msgstr "Informasi aplikasi tak punya identifier"
 
-#: gio/gdesktopappinfo.c:4241
+#: gio/gdesktopappinfo.c:4244
 #, c-format
 msgid "Can’t create user desktop file %s"
 msgstr "Tak bisa membuat berkas desktop pengguna %s"
 
-#: gio/gdesktopappinfo.c:4377
+#: gio/gdesktopappinfo.c:4380
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Definisi gubahan bagi %s"
@@ -1423,7 +1429,7 @@ msgstr "Berharap suatu GEmblem bagi GEmblemedIcon"
 msgid "Containing mount does not exist"
 msgstr "Kait yang memuat tak ada"
 
-#: gio/gfile.c:2641 gio/glocalfile.c:2511
+#: gio/gfile.c:2641 gio/glocalfile.c:2515
 msgid "Can’t copy over directory"
 msgstr "Tak bisa menyalin direktori atas direktori"
 
@@ -1448,49 +1454,49 @@ msgstr "Splice tidak didukung"
 msgid "Error splicing file: %s"
 msgstr "Galat saat men-splice berkas: %s"
 
-#: gio/gfile.c:3185
+#: gio/gfile.c:3195
 msgid "Copy (reflink/clone) between mounts is not supported"
 msgstr "Menyalin (reflink/clone) antar kait tak didukung"
 
-#: gio/gfile.c:3189
+#: gio/gfile.c:3199
 msgid "Copy (reflink/clone) is not supported or invalid"
 msgstr "Menyalin (reflink/clone) tak didukung atau tak valid"
 
-#: gio/gfile.c:3194
+#: gio/gfile.c:3204
 msgid "Copy (reflink/clone) is not supported or didn’t work"
 msgstr "Menyalin (reflink/clone) tak didukung atau tak bekerja"
 
-#: gio/gfile.c:3259
+#: gio/gfile.c:3269
 msgid "Can’t copy special file"
 msgstr "Tak bisa menyalin berkas spesial"
 
-#: gio/gfile.c:4153
+#: gio/gfile.c:4163
 msgid "Invalid symlink value given"
 msgstr "Diberikan nilai link simbolik yang tak valid"
 
-#: gio/gfile.c:4163 glib/gfileutils.c:2392
+#: gio/gfile.c:4173 glib/gfileutils.c:2392
 msgid "Symbolic links not supported"
 msgstr "Taut simbolik tidak didukung"
 
-#: gio/gfile.c:4450
+#: gio/gfile.c:4460
 msgid "Trash not supported"
 msgstr "Tong sampah tak didukung"
 
-#: gio/gfile.c:4562
+#: gio/gfile.c:4572
 #, c-format
 msgid "File names cannot contain “%c”"
 msgstr "Nama berkas tak boleh mengandung \"%c\""
 
-#: gio/gfile.c:6993 gio/gfile.c:7119
+#: gio/gfile.c:7003 gio/gfile.c:7129
 #, c-format
 msgid "Failed to create a temporary directory for template “%s”: %s"
 msgstr "Gagal membuat direktori sementara untuk templat \"%s\": %s"
 
-#: gio/gfile.c:7408 gio/gvolume.c:366
+#: gio/gfile.c:7418 gio/gvolume.c:366
 msgid "volume doesn’t implement mount"
 msgstr "volume tak mengimplementasi pengaitan"
 
-#: gio/gfile.c:7522 gio/gfile.c:7599
+#: gio/gfile.c:7532 gio/gfile.c:7609
 msgid "No application is registered as handling this file"
 msgstr "Tak ada aplikasi terdaftar yang menangani berkas ini"
 
@@ -1499,11 +1505,11 @@ msgid "Enumerator is closed"
 msgstr "Enumerator ditutup"
 
 #: gio/gfileenumerator.c:221 gio/gfileenumerator.c:280
-#: gio/gfileenumerator.c:379 gio/gfileenumerator.c:478
+#: gio/gfileenumerator.c:424 gio/gfileenumerator.c:523
 msgid "File enumerator has outstanding operation"
 msgstr "Enumerator berkas memiliki operasi tertunda"
 
-#: gio/gfileenumerator.c:370 gio/gfileenumerator.c:469
+#: gio/gfileenumerator.c:415 gio/gfileenumerator.c:514
 msgid "File enumerator is already closed"
 msgstr "Enumerator berkas telah ditutup"
 
@@ -1746,12 +1752,12 @@ msgid "Error writing to stdout"
 msgstr "Galat saat menulis ke stdout"
 
 #. Translators: commandline placeholder
-#: gio/gio-tool-cat.c:135 gio/gio-tool-info.c:379 gio/gio-tool-list.c:173
+#: gio/gio-tool-cat.c:135 gio/gio-tool-info.c:382 gio/gio-tool-list.c:176
 #: gio/gio-tool-mkdir.c:50 gio/gio-tool-monitor.c:39 gio/gio-tool-monitor.c:41
 #: gio/gio-tool-monitor.c:43 gio/gio-tool-monitor.c:45
 #: gio/gio-tool-monitor.c:206 gio/gio-tool-mount.c:1210 gio/gio-tool-open.c:72
 #: gio/gio-tool-remove.c:50 gio/gio-tool-rename.c:47 gio/gio-tool-set.c:95
-#: gio/gio-tool-trash.c:222 gio/gio-tool-tree.c:241
+#: gio/gio-tool-trash.c:222 gio/gio-tool-tree.c:246
 msgid "LOCATION"
 msgstr "LOKASI"
 
@@ -1769,7 +1775,7 @@ msgstr ""
 "sebagai ganti berkas lokal: sebagai contoh Anda dapat memakai\n"
 "seperti smb://peladen/sumberdaya/berkas.txt sebagai lokasi."
 
-#: gio/gio-tool-cat.c:164 gio/gio-tool-info.c:410 gio/gio-tool-mkdir.c:78
+#: gio/gio-tool-cat.c:164 gio/gio-tool-info.c:413 gio/gio-tool-mkdir.c:78
 #: gio/gio-tool-monitor.c:231 gio/gio-tool-mount.c:1261 gio/gio-tool-open.c:98
 #: gio/gio-tool-remove.c:74 gio/gio-tool-trash.c:303
 msgid "No locations given"
@@ -1866,57 +1872,57 @@ msgstr "Jangan ikuti taut simbolik"
 msgid "attributes:\n"
 msgstr "atribut:\n"
 
-#: gio/gio-tool-info.c:165 gio/gio-tool-info.c:174
+#: gio/gio-tool-info.c:166 gio/gio-tool-info.c:176
 #, c-format
 msgid "display name: %s\n"
 msgstr "nama tampilan: %s\n"
 
-#: gio/gio-tool-info.c:182
+#: gio/gio-tool-info.c:184
 #, c-format
 msgid "name: %s\n"
 msgstr "nama: %s\n"
 
-#: gio/gio-tool-info.c:189
+#: gio/gio-tool-info.c:191
 #, c-format
 msgid "type: %s\n"
 msgstr "tipe: %s\n"
 
-#: gio/gio-tool-info.c:195
+#: gio/gio-tool-info.c:197
 msgid "size: "
 msgstr "ukuran: "
 
-#: gio/gio-tool-info.c:200
+#: gio/gio-tool-info.c:203
 msgid "hidden\n"
 msgstr "tersembunyi\n"
 
-#: gio/gio-tool-info.c:203
+#: gio/gio-tool-info.c:206
 #, c-format
 msgid "uri: %s\n"
 msgstr "uri: %s\n"
 
-#: gio/gio-tool-info.c:210
+#: gio/gio-tool-info.c:213
 #, c-format
 msgid "local path: %s\n"
 msgstr "path lokal: %s\n"
 
-#: gio/gio-tool-info.c:244
+#: gio/gio-tool-info.c:247
 #, c-format
 msgid "unix mount: %s%s %s %s %s\n"
 msgstr "kait unix: %s%s %s %s %s\n"
 
-#: gio/gio-tool-info.c:325
+#: gio/gio-tool-info.c:328
 msgid "Settable attributes:\n"
 msgstr "Atribut yang dapat ditata:\n"
 
-#: gio/gio-tool-info.c:349
+#: gio/gio-tool-info.c:352
 msgid "Writable attribute namespaces:\n"
 msgstr "Namespace atribut yang dapat ditulis:\n"
 
-#: gio/gio-tool-info.c:384
+#: gio/gio-tool-info.c:387
 msgid "Show information about locations."
 msgstr "Tunjukkan informasi tentang lokasi."
 
-#: gio/gio-tool-info.c:386
+#: gio/gio-tool-info.c:389
 msgid ""
 "gio info is similar to the traditional ls utility, but using GIO\n"
 "locations instead of local files: for example, you can use something\n"
@@ -1983,11 +1989,11 @@ msgstr "Cetak nama tampilan"
 msgid "Print full URIs"
 msgstr "Cetak URI lengkap"
 
-#: gio/gio-tool-list.c:178
+#: gio/gio-tool-list.c:181
 msgid "List the contents of the locations."
 msgstr "Tampilkan daftar isi lokasi."
 
-#: gio/gio-tool-list.c:180
+#: gio/gio-tool-list.c:183
 msgid ""
 "gio list is similar to the traditional ls utility, but using GIO\n"
 "locations instead of local files: for example, you can use something\n"
@@ -2399,11 +2405,11 @@ msgstr "Lokasi yang diberikan tidak dimulai dengan trash:///"
 msgid "Follow symbolic links, mounts and shortcuts"
 msgstr "Ikuti taut simbolik, kait, dan pintasan"
 
-#: gio/gio-tool-tree.c:246
+#: gio/gio-tool-tree.c:251
 msgid "List contents of directories in a tree-like format."
 msgstr "Tampilkan daftar isi direktori dalam format mirip pohon."
 
-#: gio/glib-compile-resources.c:142 gio/glib-compile-schemas.c:1513
+#: gio/glib-compile-resources.c:142 gio/glib-compile-schemas.c:1514
 #, c-format
 msgid "Element <%s> not allowed inside <%s>"
 msgstr "Elemen <%s> tidak diijinkan di dalam <%s>"
@@ -2458,7 +2464,7 @@ msgstr "Galat saat memampatkan berkas %s"
 msgid "text may not appear inside <%s>"
 msgstr "teks tidak boleh muncul di dalam <%s>"
 
-#: gio/glib-compile-resources.c:821 gio/glib-compile-schemas.c:2171
+#: gio/glib-compile-resources.c:821 gio/glib-compile-schemas.c:2172
 msgid "Show program version and exit"
 msgstr "Tampilkan versi program dan keluar"
 
@@ -2474,8 +2480,8 @@ msgstr ""
 "Direktori untuk memuat berkas yang direferensikan dalam FILE darinya "
 "(bawaan: direktori saat ini)"
 
-#: gio/glib-compile-resources.c:823 gio/glib-compile-schemas.c:2172
-#: gio/glib-compile-schemas.c:2201
+#: gio/glib-compile-resources.c:823 gio/glib-compile-schemas.c:2173
+#: gio/glib-compile-schemas.c:2203
 msgid "DIRECTORY"
 msgstr "DIREKTORI"
 
@@ -2531,7 +2537,7 @@ msgstr "Nama identifier C yang dipakai bagi kode sumber yang dibuat"
 msgid "The target C compiler (default: the CC environment variable)"
 msgstr "Kompiler target C (bawaan: variabel lingkungan CC)"
 
-#: gio/glib-compile-resources.c:860
+#: gio/glib-compile-resources.c:861
 msgid ""
 "Compile a resource specification into a resource file.\n"
 "Resource specification files have the extension .gresource.xml,\n"
@@ -2541,123 +2547,123 @@ msgstr ""
 "Berkas spesifikasi sumber daya memiliki ekstensi .gresource.xml,\n"
 "dan berkas sumber daya memiliki ekstensi bernama .gresource."
 
-#: gio/glib-compile-resources.c:882
+#: gio/glib-compile-resources.c:893
 msgid "You should give exactly one file name\n"
 msgstr "Anda mesti memberikan hanya satu nama berkas\n"
 
-#: gio/glib-compile-schemas.c:94
+#: gio/glib-compile-schemas.c:95
 #, c-format
 msgid "nick must be a minimum of 2 characters"
 msgstr "nick minimal harus 2 karakter"
 
-#: gio/glib-compile-schemas.c:105
+#: gio/glib-compile-schemas.c:106
 #, c-format
 msgid "Invalid numeric value"
 msgstr "Nilai numerik tidak valid"
 
-#: gio/glib-compile-schemas.c:113
+#: gio/glib-compile-schemas.c:114
 #, c-format
 msgid "<value nick='%s'/> already specified"
 msgstr "<value nick='%s'/> sudah ditentukan"
 
-#: gio/glib-compile-schemas.c:121
+#: gio/glib-compile-schemas.c:122
 #, c-format
 msgid "value='%s' already specified"
 msgstr "value='%s' sudah ditentukan"
 
-#: gio/glib-compile-schemas.c:135
+#: gio/glib-compile-schemas.c:136
 #, c-format
 msgid "flags values must have at most 1 bit set"
 msgstr "nilai tanda harus paling banyak diset 1 bit"
 
-#: gio/glib-compile-schemas.c:160
+#: gio/glib-compile-schemas.c:161
 #, c-format
 msgid "<%s> must contain at least one <value>"
 msgstr "<%s> harus berisi setidaknya satu <value>"
 
-#: gio/glib-compile-schemas.c:316
+#: gio/glib-compile-schemas.c:317
 #, c-format
 msgid "<%s> is not contained in the specified range"
 msgstr "<%s> tidak terdapat dalam jangkauan yang ditentukan"
 
-#: gio/glib-compile-schemas.c:328
+#: gio/glib-compile-schemas.c:329
 #, c-format
 msgid "<%s> is not a valid member of the specified enumerated type"
 msgstr "<%s> bukan anggota yang valid dari tipe enumerasi yang ditentukan"
 
-#: gio/glib-compile-schemas.c:334
+#: gio/glib-compile-schemas.c:335
 #, c-format
 msgid "<%s> contains string not in the specified flags type"
 msgstr "<%s> berisi string tidak dalam jenis tanda yang ditentukan"
 
-#: gio/glib-compile-schemas.c:340
+#: gio/glib-compile-schemas.c:341
 #, c-format
 msgid "<%s> contains a string not in <choices>"
 msgstr "<%s> berisi string yang tidak ada dalam <choices>"
 
-#: gio/glib-compile-schemas.c:374
+#: gio/glib-compile-schemas.c:375
 msgid "<range/> already specified for this key"
 msgstr "<range/> sudah ditentukan untuk kunci ini"
 
-#: gio/glib-compile-schemas.c:392
+#: gio/glib-compile-schemas.c:393
 #, c-format
 msgid "<range> not allowed for keys of type “%s”"
 msgstr "<range> tidak diizinkan untuk kunci tipe \"%s\""
 
-#: gio/glib-compile-schemas.c:409
+#: gio/glib-compile-schemas.c:410
 #, c-format
 msgid "<range> specified minimum is greater than maximum"
 msgstr "<range> minimum yang ditentukan lebih besar dari maksimum"
 
-#: gio/glib-compile-schemas.c:434
+#: gio/glib-compile-schemas.c:435
 #, c-format
 msgid "unsupported l10n category: %s"
 msgstr "kategori l10n tidak didukung: %s"
 
-#: gio/glib-compile-schemas.c:442
+#: gio/glib-compile-schemas.c:443
 msgid "l10n requested, but no gettext domain given"
 msgstr "l10n diminta, tapi tidak ada domain gettext yang diberikan"
 
-#: gio/glib-compile-schemas.c:454
+#: gio/glib-compile-schemas.c:455
 msgid "translation context given for value without l10n enabled"
 msgstr "konteks terjemahan diberikan untuk nilai tanpa l10n diaktifkan"
 
-#: gio/glib-compile-schemas.c:476
+#: gio/glib-compile-schemas.c:477
 #, c-format
 msgid "Failed to parse <default> value of type “%s”: "
 msgstr "Gagal mengurai <default> nilai jenis \"%s\": "
 
-#: gio/glib-compile-schemas.c:493
+#: gio/glib-compile-schemas.c:494
 msgid ""
 "<choices> cannot be specified for keys tagged as having an enumerated type"
 msgstr ""
 "<choices> tidak dapat ditentukan untuk kunci yang ditandai sebagai memiliki "
 "tipe enumerasi"
 
-#: gio/glib-compile-schemas.c:502
+#: gio/glib-compile-schemas.c:503
 msgid "<choices> already specified for this key"
 msgstr "<choices> sudah ditentukan untuk kunci ini"
 
-#: gio/glib-compile-schemas.c:514
+#: gio/glib-compile-schemas.c:515
 #, c-format
 msgid "<choices> not allowed for keys of type “%s”"
 msgstr "<choices> tidak diizinkan untuk kunci tipe \"%s\""
 
-#: gio/glib-compile-schemas.c:530
+#: gio/glib-compile-schemas.c:531
 #, c-format
 msgid "<choice value='%s'/> already given"
 msgstr "<choice value='%s'/> sudah ditentukan"
 
-#: gio/glib-compile-schemas.c:545
+#: gio/glib-compile-schemas.c:546
 #, c-format
 msgid "<choices> must contain at least one <choice>"
 msgstr "<choices> harus mengandung setidaknya satu <choice>"
 
-#: gio/glib-compile-schemas.c:559
+#: gio/glib-compile-schemas.c:560
 msgid "<aliases> already specified for this key"
 msgstr "<aliases> sudah ditentukan untuk kunci ini"
 
-#: gio/glib-compile-schemas.c:563
+#: gio/glib-compile-schemas.c:564
 msgid ""
 "<aliases> can only be specified for keys with enumerated or flags types or "
 "after <choices>"
@@ -2665,7 +2671,7 @@ msgstr ""
 "<aliases> hanya bisa ditentukan untuk kunci dengan tipe enumerasi atau tanda "
 "atau setelah <choices>"
 
-#: gio/glib-compile-schemas.c:582
+#: gio/glib-compile-schemas.c:583
 #, c-format
 msgid ""
 "<alias value='%s'/> given when “%s” is already a member of the enumerated "
@@ -2674,42 +2680,42 @@ msgstr ""
 "<alias value='%s'/> diberikan saat \"%s\" sudah menjadi anggota tipe "
 "enumerasi"
 
-#: gio/glib-compile-schemas.c:588
+#: gio/glib-compile-schemas.c:589
 #, c-format
 msgid "<alias value='%s'/> given when <choice value='%s'/> was already given"
 msgstr ""
 "<alias value='%s'/> diberikan ketika <choice value='%s'/> sudah diberikan"
 
-#: gio/glib-compile-schemas.c:596
+#: gio/glib-compile-schemas.c:597
 #, c-format
 msgid "<alias value='%s'/> already specified"
 msgstr "<alias value='%s'/> sudah ditentukan"
 
-#: gio/glib-compile-schemas.c:606
+#: gio/glib-compile-schemas.c:607
 #, c-format
 msgid "alias target “%s” is not in enumerated type"
 msgstr "target alias \"%s\" bukan bilangan bertanda"
 
-#: gio/glib-compile-schemas.c:607
+#: gio/glib-compile-schemas.c:608
 #, c-format
 msgid "alias target “%s” is not in <choices>"
 msgstr "alias target \"%s\" tidak ada di <choices>"
 
-#: gio/glib-compile-schemas.c:622
+#: gio/glib-compile-schemas.c:623
 #, c-format
 msgid "<aliases> must contain at least one <alias>"
 msgstr "<aliases> harus berisi setidaknya satu <alias>"
 
-#: gio/glib-compile-schemas.c:796
+#: gio/glib-compile-schemas.c:797
 msgid "Empty names are not permitted"
 msgstr "Nama yang kosong tidak diperbolehkan"
 
-#: gio/glib-compile-schemas.c:806
+#: gio/glib-compile-schemas.c:807
 #, c-format
 msgid "Invalid name “%s”: names must begin with a lowercase letter"
 msgstr "Nama \"%s\" tak valid: nama mesti diawali dengan huruf kecil"
 
-#: gio/glib-compile-schemas.c:818
+#: gio/glib-compile-schemas.c:819
 #, c-format
 msgid ""
 "Invalid name “%s”: invalid character “%c”; only lowercase letters, numbers "
@@ -2718,38 +2724,38 @@ msgstr ""
 "Nama \"%s\" tak valid: karakter \"%c\" tak valid; hanya huruf kecil, angka, "
 "dan tanda hubung (\"-\") yang diijinkan"
 
-#: gio/glib-compile-schemas.c:827
+#: gio/glib-compile-schemas.c:828
 #, c-format
 msgid "Invalid name “%s”: two successive hyphens (“--”) are not permitted"
 msgstr ""
 "Nama \"%s\" tak valid: dua tanda hubung berturutan (\"--\") tak diijinkan"
 
-#: gio/glib-compile-schemas.c:836
+#: gio/glib-compile-schemas.c:837
 #, c-format
 msgid "Invalid name “%s”: the last character may not be a hyphen (“-”)"
 msgstr ""
 "Nama \"%s\" tak valid: karakter terakhir tak boleh tanda hubung (\"-\")."
 
-#: gio/glib-compile-schemas.c:844
+#: gio/glib-compile-schemas.c:845
 #, c-format
 msgid "Invalid name “%s”: maximum length is 1024"
 msgstr "Nama \"%s\" tak valid: panjang maksimum 1024"
 
-#: gio/glib-compile-schemas.c:916
+#: gio/glib-compile-schemas.c:917
 #, c-format
 msgid "<child name='%s'> already specified"
 msgstr "<child name='%s'> telah dinyatakan"
 
-#: gio/glib-compile-schemas.c:942
+#: gio/glib-compile-schemas.c:943
 msgid "Cannot add keys to a “list-of” schema"
 msgstr "Tak bisa menambah kunci ke skema \"list-of\""
 
-#: gio/glib-compile-schemas.c:953
+#: gio/glib-compile-schemas.c:954
 #, c-format
 msgid "<key name='%s'> already specified"
 msgstr "<key name='%s'> telah dinyatakan"
 
-#: gio/glib-compile-schemas.c:971
+#: gio/glib-compile-schemas.c:972
 #, c-format
 msgid ""
 "<key name='%s'> shadows <key name='%s'> in <schema id='%s'>; use <override> "
@@ -2758,7 +2764,7 @@ msgstr ""
 "<key name='%s'> membayangi <key name='%s'> di <schema id='%s'>; gunakan "
 "<override> untuk mengubah nilai"
 
-#: gio/glib-compile-schemas.c:982
+#: gio/glib-compile-schemas.c:983
 #, c-format
 msgid ""
 "Exactly one of “type”, “enum” or “flags” must be specified as an attribute "
@@ -2767,63 +2773,63 @@ msgstr ""
 "Persis satu dari 'type', 'enum', atau 'flags' mesti dinyatakan sebagai "
 "atribut dari <key>"
 
-#: gio/glib-compile-schemas.c:1001
+#: gio/glib-compile-schemas.c:1002
 #, c-format
 msgid "<%s id='%s'> not (yet) defined."
 msgstr "<%s id='%s'> belum didefinisikan."
 
-#: gio/glib-compile-schemas.c:1016
+#: gio/glib-compile-schemas.c:1017
 #, c-format
 msgid "Invalid GVariant type string “%s”"
 msgstr "String jenis GVariant \"%s\" tidak sah"
 
-#: gio/glib-compile-schemas.c:1046
+#: gio/glib-compile-schemas.c:1047
 msgid "<override> given but schema isn’t extending anything"
 msgstr "<override> diberikan tapi skema tak memperluas apapun"
 
-#: gio/glib-compile-schemas.c:1059
+#: gio/glib-compile-schemas.c:1060
 #, c-format
 msgid "No <key name='%s'> to override"
 msgstr "Tak ada <key name='%s'> untuk ditimpa"
 
-#: gio/glib-compile-schemas.c:1067
+#: gio/glib-compile-schemas.c:1068
 #, c-format
 msgid "<override name='%s'> already specified"
 msgstr "<override name='%s'> telah dinyatakan"
 
-#: gio/glib-compile-schemas.c:1140
+#: gio/glib-compile-schemas.c:1141
 #, c-format
 msgid "<schema id='%s'> already specified"
 msgstr "<schema id='%s'> sudah ditentukan"
 
-#: gio/glib-compile-schemas.c:1152
+#: gio/glib-compile-schemas.c:1153
 #, c-format
 msgid "<schema id='%s'> extends not yet existing schema “%s”"
 msgstr "<schema id='%s'> memperluas skema \"%s\" yang belum ada"
 
-#: gio/glib-compile-schemas.c:1168
+#: gio/glib-compile-schemas.c:1169
 #, c-format
 msgid "<schema id='%s'> is list of not yet existing schema “%s”"
 msgstr "<schema id='%s'> adalah daftar dari skema \"%s\"' yang belum ada"
 
-#: gio/glib-compile-schemas.c:1176
+#: gio/glib-compile-schemas.c:1177
 #, c-format
 msgid "Cannot be a list of a schema with a path"
 msgstr "Tak mungkin berupa suatu daftar skema dengan path"
 
-#: gio/glib-compile-schemas.c:1186
+#: gio/glib-compile-schemas.c:1187
 #, c-format
 msgid "Cannot extend a schema with a path"
 msgstr "Tak bisa memperluas suatu skema dengan path"
 
-#: gio/glib-compile-schemas.c:1196
+#: gio/glib-compile-schemas.c:1197
 #, c-format
 msgid ""
 "<schema id='%s'> is a list, extending <schema id='%s'> which is not a list"
 msgstr ""
 "<schema id='%s'> adalah daftar, memperluas <schema id='%s'> yang bukan daftar"
 
-#: gio/glib-compile-schemas.c:1206
+#: gio/glib-compile-schemas.c:1207
 #, c-format
 msgid ""
 "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but “%s” "
@@ -2832,18 +2838,18 @@ msgstr ""
 "<schema id='%s' list-of='%s'> memperluas <schema id='%s' list-of='%s'> tapi "
 "\"%s\" tak memperluas \"%s\""
 
-#: gio/glib-compile-schemas.c:1223
+#: gio/glib-compile-schemas.c:1224
 #, c-format
 msgid "A path, if given, must begin and end with a slash"
 msgstr ""
 "Suatu path, bila diberikan, harus dimulai dan diakhiri dengan garis miring"
 
-#: gio/glib-compile-schemas.c:1230
+#: gio/glib-compile-schemas.c:1231
 #, c-format
 msgid "The path of a list must end with “:/”"
 msgstr "Path dari suatu daftar mesti diakhiri dengan “:/”"
 
-#: gio/glib-compile-schemas.c:1239
+#: gio/glib-compile-schemas.c:1240
 #, c-format
 msgid ""
 "Warning: Schema “%s” has path “%s”.  Paths starting with “/apps/”, “/"
@@ -2852,49 +2858,49 @@ msgstr ""
 "Peringatan: Skema \"%s\" memiliki path \"%s\".  Path yang dimulai dengan \"/"
 "apps/\", \"/desktop/\" atau \"/system/\" tidak digunakan lagi."
 
-#: gio/glib-compile-schemas.c:1269
+#: gio/glib-compile-schemas.c:1270
 #, c-format
 msgid "<%s id='%s'> already specified"
 msgstr "<%s id='%s'> sudah ditentukan"
 
-#: gio/glib-compile-schemas.c:1419 gio/glib-compile-schemas.c:1435
+#: gio/glib-compile-schemas.c:1420 gio/glib-compile-schemas.c:1436
 #, c-format
 msgid "Only one <%s> element allowed inside <%s>"
 msgstr "Hanya satu elemen <%s> diizinkan di dalam <%s>"
 
-#: gio/glib-compile-schemas.c:1517
+#: gio/glib-compile-schemas.c:1518
 #, c-format
 msgid "Element <%s> not allowed at the top level"
 msgstr "Elemen <%s> tidak diijinkan pada aras puncak"
 
-#: gio/glib-compile-schemas.c:1535
+#: gio/glib-compile-schemas.c:1536
 msgid "Element <default> is required in <key>"
 msgstr "Elemen <default> diperlukan di <key>"
 
-#: gio/glib-compile-schemas.c:1625
+#: gio/glib-compile-schemas.c:1626
 #, c-format
 msgid "Text may not appear inside <%s>"
 msgstr "Teks tidak boleh muncul di dalam <%s>"
 
-#: gio/glib-compile-schemas.c:1693
+#: gio/glib-compile-schemas.c:1694
 #, c-format
 msgid "Warning: undefined reference to <schema id='%s'/>"
 msgstr "Peringatan: referensi terdefinisi ke <schema id='%s'/>"
 
 #. Translators: Do not translate "--strict".
-#: gio/glib-compile-schemas.c:1832 gio/glib-compile-schemas.c:1911
+#: gio/glib-compile-schemas.c:1833 gio/glib-compile-schemas.c:1912
 msgid "--strict was specified; exiting."
 msgstr "--strict dinyatakan; keluar."
 
-#: gio/glib-compile-schemas.c:1844
+#: gio/glib-compile-schemas.c:1845
 msgid "This entire file has been ignored."
 msgstr "Seluruh berkas telah diabaikan."
 
-#: gio/glib-compile-schemas.c:1907
+#: gio/glib-compile-schemas.c:1908
 msgid "Ignoring this file."
 msgstr "Mengabaikan berkas ini."
 
-#: gio/glib-compile-schemas.c:1962
+#: gio/glib-compile-schemas.c:1963
 #, c-format
 msgid ""
 "No such key “%s” in schema “%s” as specified in override file “%s”; ignoring "
@@ -2903,7 +2909,7 @@ msgstr ""
 "Tak ada kunci “%s” dalam skema “%s” sebagaimana dinyatakan di berkas penimpa "
 "“%s”; mengabaikan penimpa untuk kunci ini."
 
-#: gio/glib-compile-schemas.c:1970
+#: gio/glib-compile-schemas.c:1971
 #, c-format
 msgid ""
 "No such key “%s” in schema “%s” as specified in override file “%s” and --"
@@ -2912,7 +2918,7 @@ msgstr ""
 "Tak ada kunci “%s” dalam skema “%s” sebagaimana dinyatakan di berkas penimpa "
 "“%s” dan --strict dinyatakan; keluar."
 
-#: gio/glib-compile-schemas.c:1992
+#: gio/glib-compile-schemas.c:1993
 #, c-format
 msgid ""
 "Cannot provide per-desktop overrides for localized key “%s” in schema "
@@ -2922,7 +2928,7 @@ msgstr ""
 "dalam skema \"%s\" (menimpa berkas \"%s\"); mengabaikan penimpa untuk kunci "
 "ini."
 
-#: gio/glib-compile-schemas.c:2001
+#: gio/glib-compile-schemas.c:2002
 #, c-format
 msgid ""
 "Cannot provide per-desktop overrides for localized key “%s” in schema "
@@ -2931,7 +2937,7 @@ msgstr ""
 "Tak bisa menyediakan penimpa per-destop untuk kunci \"%s\" yang dilokalkan "
 "dalam skema \"%s\" (menimpa berkas \"%s\") dan --strict dinyatakan; keluar."
 
-#: gio/glib-compile-schemas.c:2025
+#: gio/glib-compile-schemas.c:2026
 #, c-format
 msgid ""
 "Error parsing key “%s” in schema “%s” as specified in override file “%s”: "
@@ -2940,7 +2946,7 @@ msgstr ""
 "Galat saat mengurai kunci “%s” dalam skema “%s” sebagaimana dinyatakan di "
 "berkas penimpa “%s”: %s. Mengabaikan penimpa untuk kunci ini."
 
-#: gio/glib-compile-schemas.c:2037
+#: gio/glib-compile-schemas.c:2038
 #, c-format
 msgid ""
 "Error parsing key “%s” in schema “%s” as specified in override file “%s”: "
@@ -2949,7 +2955,7 @@ msgstr ""
 "Galat saat mengurai kunci “%s” dalam skema “%s” sebagaimana dinyatakan di "
 "berkas penimpa “%s”: %s. dan --strict dinyatakan; keluar."
 
-#: gio/glib-compile-schemas.c:2064
+#: gio/glib-compile-schemas.c:2065
 #, c-format
 msgid ""
 "Override for key “%s” in schema “%s” in override file “%s” is outside the "
@@ -2958,7 +2964,7 @@ msgstr ""
 "Penimpa bagi kunci “%s” dalam skema “%s” di berkas penimpa “%s” di luar "
 "jangkauan yang diberikan di dalam skema; mengabaikan penimpa untuk kunci ini."
 
-#: gio/glib-compile-schemas.c:2074
+#: gio/glib-compile-schemas.c:2075
 #, c-format
 msgid ""
 "Override for key “%s” in schema “%s” in override file “%s” is outside the "
@@ -2967,7 +2973,7 @@ msgstr ""
 "Penimpa bagi kunci “%s” dalam skema “%s” di berkas penimpa “%s” di luar "
 "jangkauan yang diberikan di dalam skema dan --strict dinyatakan; keluar."
 
-#: gio/glib-compile-schemas.c:2100
+#: gio/glib-compile-schemas.c:2101
 #, c-format
 msgid ""
 "Override for key “%s” in schema “%s” in override file “%s” is not in the "
@@ -2976,7 +2982,7 @@ msgstr ""
 "Penimpa bagi kunci “%s” dalam skema “%s” di berkas penimpa “%s” tak ada di "
 "dalam daftar pilihan yang valid; mengabaikan penimpa untuk kunci ini."
 
-#: gio/glib-compile-schemas.c:2110
+#: gio/glib-compile-schemas.c:2111
 #, c-format
 msgid ""
 "Override for key “%s” in schema “%s” in override file “%s” is not in the "
@@ -2985,23 +2991,23 @@ msgstr ""
 "Penimpa bagi kunci “%s” dalam skema “%s” di berkas penimpa “%s” tak ada di "
 "dalam daftar pilihan yang valid dan --strict dinyatakan; keluar."
 
-#: gio/glib-compile-schemas.c:2172
+#: gio/glib-compile-schemas.c:2173
 msgid "Where to store the gschemas.compiled file"
 msgstr "Dimana menyimpan berkas gschemas.compiled"
 
-#: gio/glib-compile-schemas.c:2173
+#: gio/glib-compile-schemas.c:2174
 msgid "Abort on any errors in schemas"
 msgstr "Gugurkan pada sebarang galat dalam skema"
 
-#: gio/glib-compile-schemas.c:2174
+#: gio/glib-compile-schemas.c:2175
 msgid "Do not write the gschema.compiled file"
 msgstr "Jangan menulis berkas gschema.compiled"
 
-#: gio/glib-compile-schemas.c:2175
+#: gio/glib-compile-schemas.c:2176
 msgid "Do not enforce key name restrictions"
 msgstr "Jangan paksakan pembatasan nama kunci"
 
-#: gio/glib-compile-schemas.c:2204
+#: gio/glib-compile-schemas.c:2206
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
@@ -3011,26 +3017,26 @@ msgstr ""
 "Berkas skema diharuskan memiliki ekstensi .gschema.xml,\n"
 "dan berkas singgahan dinamai gschemas.compiled."
 
-#: gio/glib-compile-schemas.c:2225
+#: gio/glib-compile-schemas.c:2238
 msgid "You should give exactly one directory name"
 msgstr "Anda mesti memberikan hanya satu nama direktori"
 
-#: gio/glib-compile-schemas.c:2268
+#: gio/glib-compile-schemas.c:2285
 msgid "No schema files found: doing nothing."
 msgstr "Tidak ada berkas skema yang ditemukan: tidak melakukan apa pun."
 
-#: gio/glib-compile-schemas.c:2270
+#: gio/glib-compile-schemas.c:2287
 msgid "No schema files found: removed existing output file."
 msgstr ""
 "Tidak ada berkas skema yang ditemukan: menghapus berkas keluaran yang telah "
 "ada."
 
-#: gio/glocalfile.c:563 gio/win32/gwinhttpfile.c:436
+#: gio/glocalfile.c:567 gio/win32/gwinhttpfile.c:436
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Nama berkas tak valid: %s"
 
-#: gio/glocalfile.c:1005
+#: gio/glocalfile.c:1009
 #, c-format
 msgid "Error getting filesystem info for %s: %s"
 msgstr "Galat saat mengambil info sistem berkas bagi %s: %s"
@@ -3039,257 +3045,257 @@ msgstr "Galat saat mengambil info sistem berkas bagi %s: %s"
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
 #.
-#: gio/glocalfile.c:1141
+#: gio/glocalfile.c:1145
 #, c-format
 msgid "Containing mount for file %s not found"
 msgstr "Kait wadah bagi berkas %s tak ditemukan"
 
-#: gio/glocalfile.c:1164
+#: gio/glocalfile.c:1168
 msgid "Can’t rename root directory"
 msgstr "Tak bisa mengubah nama direktori root"
 
-#: gio/glocalfile.c:1182 gio/glocalfile.c:1205
+#: gio/glocalfile.c:1186 gio/glocalfile.c:1209
 #, c-format
 msgid "Error renaming file %s: %s"
 msgstr "Galat saat mengubah nama berkas %s: %s"
 
-#: gio/glocalfile.c:1189
+#: gio/glocalfile.c:1193
 msgid "Can’t rename file, filename already exists"
 msgstr "Tak bisa mengubah nama berkas, nama telah dipakai"
 
-#: gio/glocalfile.c:1202 gio/glocalfile.c:2405 gio/glocalfile.c:2433
-#: gio/glocalfile.c:2572 gio/glocalfileoutputstream.c:658
+#: gio/glocalfile.c:1206 gio/glocalfile.c:2409 gio/glocalfile.c:2437
+#: gio/glocalfile.c:2576 gio/glocalfileoutputstream.c:658
 msgid "Invalid filename"
 msgstr "Nama berkas tak valid"
 
-#: gio/glocalfile.c:1370 gio/glocalfile.c:1381
+#: gio/glocalfile.c:1374 gio/glocalfile.c:1385
 #, c-format
 msgid "Error opening file %s: %s"
 msgstr "Galat saat membuka berkas %s: %s"
 
-#: gio/glocalfile.c:1506
+#: gio/glocalfile.c:1510
 #, c-format
 msgid "Error removing file %s: %s"
 msgstr "Galat saat menghapus berkas %s: %s"
 
-#: gio/glocalfile.c:2000 gio/glocalfile.c:2011 gio/glocalfile.c:2038
+#: gio/glocalfile.c:2004 gio/glocalfile.c:2015 gio/glocalfile.c:2042
 #, c-format
 msgid "Error trashing file %s: %s"
 msgstr "Galat saat memindah berkas %s ke tempat sampah: %s"
 
-#: gio/glocalfile.c:2058
+#: gio/glocalfile.c:2062
 #, c-format
 msgid "Unable to create trash directory %s: %s"
 msgstr "Tak bisa membuat direktori tempat sampah %s: %s"
 
-#: gio/glocalfile.c:2079
+#: gio/glocalfile.c:2083
 #, c-format
 msgid "Unable to find toplevel directory to trash %s"
 msgstr ""
 "Tak bisa menemukan direktori puncak %s yang akan dibuang ke tempat sampah"
 
-#: gio/glocalfile.c:2087
+#: gio/glocalfile.c:2091
 #, c-format
 msgid "Trashing on system internal mounts is not supported"
 msgstr "Penyampahan pada kandar internal sistem tidak didukung"
 
-#: gio/glocalfile.c:2173 gio/glocalfile.c:2201
+#: gio/glocalfile.c:2177 gio/glocalfile.c:2205
 #, c-format
 msgid "Unable to find or create trash directory %s to trash %s"
 msgstr "Tak bisa menemukan atau membuat direktori %s ke tempat %s"
 
-#: gio/glocalfile.c:2245
+#: gio/glocalfile.c:2249
 #, c-format
 msgid "Unable to create trashing info file for %s: %s"
 msgstr "Tak bisa membuat berkas info pembuangan ke tempat sampah bagi %s: %s"
 
-#: gio/glocalfile.c:2316
+#: gio/glocalfile.c:2320
 #, c-format
 msgid "Unable to trash file %s across filesystem boundaries"
 msgstr ""
 "Tak bisa membuang berkas %s ke tempat sampah menyeberang batas sistem berkas"
 
-#: gio/glocalfile.c:2320 gio/glocalfile.c:2376
+#: gio/glocalfile.c:2324 gio/glocalfile.c:2380
 #, c-format
 msgid "Unable to trash file %s: %s"
 msgstr "Tak bisa membuang berkas %s ke tempat sampah: %s"
 
-#: gio/glocalfile.c:2382
+#: gio/glocalfile.c:2386
 #, c-format
 msgid "Unable to trash file %s"
 msgstr "Tak bisa membuang berkas ke tempat sampah %s"
 
-#: gio/glocalfile.c:2408
+#: gio/glocalfile.c:2412
 #, c-format
 msgid "Error creating directory %s: %s"
 msgstr "Galat saat membuat direktori %s: %s"
 
-#: gio/glocalfile.c:2437
+#: gio/glocalfile.c:2441
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "Sistem berkas tak mendukung taut simbolik"
 
-#: gio/glocalfile.c:2440
+#: gio/glocalfile.c:2444
 #, c-format
 msgid "Error making symbolic link %s: %s"
 msgstr "Galat saat membuat taut simbolis %s: %s"
 
-#: gio/glocalfile.c:2483 gio/glocalfile.c:2518 gio/glocalfile.c:2575
+#: gio/glocalfile.c:2487 gio/glocalfile.c:2522 gio/glocalfile.c:2579
 #, c-format
 msgid "Error moving file %s: %s"
 msgstr "Galat saat memindah berkas %s: %s"
 
-#: gio/glocalfile.c:2506
+#: gio/glocalfile.c:2510
 msgid "Can’t move directory over directory"
 msgstr "Tak bisa memindah direktori atas direktori"
 
-#: gio/glocalfile.c:2532 gio/glocalfileoutputstream.c:1110
+#: gio/glocalfile.c:2536 gio/glocalfileoutputstream.c:1110
 #: gio/glocalfileoutputstream.c:1124 gio/glocalfileoutputstream.c:1139
 #: gio/glocalfileoutputstream.c:1156 gio/glocalfileoutputstream.c:1170
 msgid "Backup file creation failed"
 msgstr "Pembuatan berkas cadangan gagal"
 
-#: gio/glocalfile.c:2551
+#: gio/glocalfile.c:2555
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Galat saat menghapus berkas tujuan: %s"
 
-#: gio/glocalfile.c:2565
+#: gio/glocalfile.c:2569
 msgid "Move between mounts not supported"
 msgstr "Perpindahan antar kait tak didukung"
 
-#: gio/glocalfile.c:2741
+#: gio/glocalfile.c:2745
 #, c-format
 msgid "Could not determine the disk usage of %s: %s"
 msgstr "Tak bisa menentukan penggunaan diska dari %s: %s"
 
-#: gio/glocalfileinfo.c:775
+#: gio/glocalfileinfo.c:765
 msgid "Attribute value must be non-NULL"
 msgstr "Nilai atribut tak boleh NULL"
 
-#: gio/glocalfileinfo.c:782
+#: gio/glocalfileinfo.c:772
 msgid "Invalid attribute type (string or invalid expected)"
 msgstr "Tipe atribut tak valid (diharapkan string atau tidak valid)"
 
-#: gio/glocalfileinfo.c:789
+#: gio/glocalfileinfo.c:779
 msgid "Invalid extended attribute name"
 msgstr "Nama atribut tambahan yang tak valid"
 
-#: gio/glocalfileinfo.c:840
+#: gio/glocalfileinfo.c:830
 #, c-format
 msgid "Error setting extended attribute “%s”: %s"
 msgstr "Galat saat menata atribut yang diperluas \"%s\": %s"
 
-#: gio/glocalfileinfo.c:1819 gio/win32/gwinhttpfile.c:191
+#: gio/glocalfileinfo.c:1785 gio/win32/gwinhttpfile.c:191
 msgid " (invalid encoding)"
 msgstr " (pengkodean tak valid)"
 
-#: gio/glocalfileinfo.c:1978 gio/glocalfileoutputstream.c:945
+#: gio/glocalfileinfo.c:1944 gio/glocalfileoutputstream.c:945
 #: gio/glocalfileoutputstream.c:997
 #, c-format
 msgid "Error when getting information for file “%s”: %s"
 msgstr "Galat saat mengambil informasi bagi berkas \"%s\": %s"
 
-#: gio/glocalfileinfo.c:2281
+#: gio/glocalfileinfo.c:2250
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr "Galat saat mengambil informasi bagi descriptor berkas: %s"
 
-#: gio/glocalfileinfo.c:2326
+#: gio/glocalfileinfo.c:2295
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Tipe atribut tak valid (diharapkan uint32)"
 
-#: gio/glocalfileinfo.c:2344
+#: gio/glocalfileinfo.c:2313
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Tipe atribut tak valid (diharapkan uint64)"
 
-#: gio/glocalfileinfo.c:2363 gio/glocalfileinfo.c:2382
+#: gio/glocalfileinfo.c:2332 gio/glocalfileinfo.c:2351
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Jenis atribut tidak sah (diharapkan bita berjenis string)"
 
-#: gio/glocalfileinfo.c:2429
+#: gio/glocalfileinfo.c:2398
 msgid "Cannot set permissions on symlinks"
 msgstr "Tak bisa menata ijin pada taut simbolik"
 
-#: gio/glocalfileinfo.c:2445
+#: gio/glocalfileinfo.c:2414
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Galat saat menata ijin: %s"
 
-#: gio/glocalfileinfo.c:2496
+#: gio/glocalfileinfo.c:2465
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Galat saat menata pemilik: %s"
 
-#: gio/glocalfileinfo.c:2519
+#: gio/glocalfileinfo.c:2488
 msgid "symlink must be non-NULL"
 msgstr "symlink tak boleh NULL"
 
-#: gio/glocalfileinfo.c:2529 gio/glocalfileinfo.c:2548
-#: gio/glocalfileinfo.c:2559
+#: gio/glocalfileinfo.c:2498 gio/glocalfileinfo.c:2517
+#: gio/glocalfileinfo.c:2528
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Galat saat menata taut simbolis: %s"
 
-#: gio/glocalfileinfo.c:2538
+#: gio/glocalfileinfo.c:2507
 msgid "Error setting symlink: file is not a symlink"
 msgstr "Galat saat menata symlink: berkas bukan suatu link simbolik"
 
-#: gio/glocalfileinfo.c:2630
+#: gio/glocalfileinfo.c:2599
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld are negative"
 msgstr "Nanodetik ekstra %d untuk stempel waktu UNIX %lld negatif"
 
-#: gio/glocalfileinfo.c:2639
+#: gio/glocalfileinfo.c:2608
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld reach 1 second"
 msgstr "Nanodetik ekstra %d untuk stempel waktu UNIX %lld mencapai 1 detik"
 
-#: gio/glocalfileinfo.c:2649
+#: gio/glocalfileinfo.c:2618
 #, c-format
 msgid "UNIX timestamp %lld does not fit into 64 bits"
 msgstr "Stempel waktu UNIX %lld tidak muat ke dalam 64 bit"
 
-#: gio/glocalfileinfo.c:2660
+#: gio/glocalfileinfo.c:2629
 #, c-format
 msgid "UNIX timestamp %lld is outside of the range supported by Windows"
 msgstr ""
 "Stempel waktu UNIX %lld berada di luar rentang yang didukung oleh Windows"
 
-#: gio/glocalfileinfo.c:2792
+#: gio/glocalfileinfo.c:2761
 #, c-format
 msgid "File name “%s” cannot be converted to UTF-16"
 msgstr "Nama berkas \"%s\" tidak dapat dikonversi ke UTF-16"
 
-#: gio/glocalfileinfo.c:2811
+#: gio/glocalfileinfo.c:2780
 #, c-format
 msgid "File “%s” cannot be opened: Windows Error %lu"
 msgstr "Berkas “%s” tidak dapat dibuka: Galat Windows %lu"
 
-#: gio/glocalfileinfo.c:2824
+#: gio/glocalfileinfo.c:2793
 #, c-format
 msgid "Error setting modification or access time for file “%s”: %lu"
 msgstr "Galat saat menata waktu modifikasi atau akses untuk berkas “%s”: %lu"
 
-#: gio/glocalfileinfo.c:2981
+#: gio/glocalfileinfo.c:2950
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Galat saat menata waktu modifikasi atau akses: %s"
 
-#: gio/glocalfileinfo.c:3004
+#: gio/glocalfileinfo.c:2973
 msgid "SELinux context must be non-NULL"
 msgstr "Konteks SELinux tak boleh NULL"
 
-#: gio/glocalfileinfo.c:3011
+#: gio/glocalfileinfo.c:2980
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux tak diaktifkan di sistem ini"
 
-#: gio/glocalfileinfo.c:3021
+#: gio/glocalfileinfo.c:2990
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Galat saat menata konteks SELinux: %s"
 
-#: gio/glocalfileinfo.c:3118
+#: gio/glocalfileinfo.c:3087
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Penataan atribut %s tak didukung"
@@ -3524,8 +3530,8 @@ msgstr "Domain tidak valid"
 
 #: gio/gresource.c:683 gio/gresource.c:945 gio/gresource.c:985
 #: gio/gresource.c:1109 gio/gresource.c:1181 gio/gresource.c:1255
-#: gio/gresource.c:1336 gio/gresourcefile.c:478 gio/gresourcefile.c:601
-#: gio/gresourcefile.c:752
+#: gio/gresource.c:1336 gio/gresourcefile.c:482 gio/gresourcefile.c:606
+#: gio/gresourcefile.c:757
 #, c-format
 msgid "The resource at “%s” does not exist"
 msgstr "Sumber daya pada \"%s\" tidak ada"
@@ -3535,16 +3541,16 @@ msgstr "Sumber daya pada \"%s\" tidak ada"
 msgid "The resource at “%s” failed to decompress"
 msgstr "Sumber daya di \"%s\" gagal didekompresi"
 
-#: gio/gresourcefile.c:658
+#: gio/gresourcefile.c:663
 msgid "Resource files cannot be renamed"
 msgstr "Berkas sumber daya tidak dapat diganti namanya"
 
-#: gio/gresourcefile.c:748
+#: gio/gresourcefile.c:753
 #, c-format
 msgid "The resource at “%s” is not a directory"
 msgstr "Sumber daya pada \"%s\" bukan suatu direktori"
 
-#: gio/gresourcefile.c:956
+#: gio/gresourcefile.c:961
 msgid "Input stream doesn’t implement seek"
 msgstr "Stream masukan tidak mengimplementasikan seek"
 
@@ -3909,7 +3915,7 @@ msgstr "Soket tak valid, inisialisasi gagal karena: %s"
 msgid "Socket is already closed"
 msgstr "Soket telah ditutup"
 
-#: gio/gsocket.c:449 gio/gsocket.c:3201 gio/gsocket.c:4434 gio/gsocket.c:4492
+#: gio/gsocket.c:449 gio/gsocket.c:3225 gio/gsocket.c:4458 gio/gsocket.c:4516
 msgid "Socket I/O timed out"
 msgstr "I/O soket kehabisan waktu"
 
@@ -4005,74 +4011,74 @@ msgstr "Tak ada dukungan bagi multicast spesifik sumber IPV4"
 msgid "No support for IPv6 source-specific multicast"
 msgstr "Tak ada dukungan bagi multicast spesifik sumber IPV6"
 
-#: gio/gsocket.c:2900
+#: gio/gsocket.c:2924
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Galat saat menerima sambungan: %s"
 
-#: gio/gsocket.c:3026
+#: gio/gsocket.c:3050
 msgid "Connection in progress"
 msgstr "Penyambungan tengah berlangsung"
 
-#: gio/gsocket.c:3077
+#: gio/gsocket.c:3101
 msgid "Unable to get pending error: "
 msgstr "Tak bisa mendapat kesalahan yang tertunda: "
 
-#: gio/gsocket.c:3266
+#: gio/gsocket.c:3290
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Galat saat menerima data: %s"
 
-#: gio/gsocket.c:3463
+#: gio/gsocket.c:3487
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Galat saat mengirim data: %s"
 
-#: gio/gsocket.c:3650
+#: gio/gsocket.c:3674
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "Tak bisa mematikan soket: %s"
 
-#: gio/gsocket.c:3731
+#: gio/gsocket.c:3755
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Galat saat menutup soket: %s"
 
-#: gio/gsocket.c:4427
+#: gio/gsocket.c:4451
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Menunggu kondisi soket: %s"
 
-#: gio/gsocket.c:4817 gio/gsocket.c:4833 gio/gsocket.c:4846
+#: gio/gsocket.c:4841 gio/gsocket.c:4857 gio/gsocket.c:4870
 #, c-format
 msgid "Unable to send message: %s"
 msgstr "Tak bisa mengirim pesan: %s"
 
-#: gio/gsocket.c:4818 gio/gsocket.c:4834 gio/gsocket.c:4847
+#: gio/gsocket.c:4842 gio/gsocket.c:4858 gio/gsocket.c:4871
 msgid "Message vectors too large"
 msgstr "Vektor pesan terlalu besar"
 
-#: gio/gsocket.c:4863 gio/gsocket.c:4865 gio/gsocket.c:5012 gio/gsocket.c:5097
-#: gio/gsocket.c:5275 gio/gsocket.c:5315 gio/gsocket.c:5317
+#: gio/gsocket.c:4887 gio/gsocket.c:4889 gio/gsocket.c:5036 gio/gsocket.c:5121
+#: gio/gsocket.c:5299 gio/gsocket.c:5339 gio/gsocket.c:5341
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Galat saat menerima pesan: %s"
 
-#: gio/gsocket.c:5039
+#: gio/gsocket.c:5063
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "GSocketControlMessage tak didukung pada Windows"
 
-#: gio/gsocket.c:5512 gio/gsocket.c:5588 gio/gsocket.c:5814
+#: gio/gsocket.c:5536 gio/gsocket.c:5612 gio/gsocket.c:5838
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Galat saat menerima pesan: %s"
 
-#: gio/gsocket.c:6099 gio/gsocket.c:6110 gio/gsocket.c:6173
+#: gio/gsocket.c:6123 gio/gsocket.c:6134 gio/gsocket.c:6197
 #, c-format
 msgid "Unable to read socket credentials: %s"
 msgstr "Tak bisa membaca kredensial soket: %s"
 
-#: gio/gsocket.c:6182
+#: gio/gsocket.c:6206
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials tidak diimplementasikan untuk OS ini"
 
@@ -4192,13 +4198,13 @@ msgstr "Proksi SOCSKv5 tidak mendukung jenis alamat yang diberikan."
 msgid "Unknown SOCKSv5 proxy error."
 msgstr "Galat tak dikenal pada proksi SOCKSv5."
 
-#: gio/gtestdbus.c:614 glib/gspawn-win32.c:354
+#: gio/gtestdbus.c:615 glib/gspawn-win32.c:354
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
 "Gagal saat membuat pipe untuk sarana komunikasi dengan proses anak (%s)"
 
-#: gio/gtestdbus.c:621
+#: gio/gtestdbus.c:622
 #, c-format
 msgid "Pipes are not supported in this platform"
 msgstr "Pipa tak didukung pada platform ini"
@@ -4306,57 +4312,57 @@ msgstr "Sandi yang dimasukkan salah."
 msgid "Sending FD is not supported"
 msgstr "Mengirim FD tidak didukung"
 
-#: gio/gunixconnection.c:180 gio/gunixconnection.c:598
+#: gio/gunixconnection.c:181 gio/gunixconnection.c:601
 #, c-format
 msgid "Expecting 1 control message, got %d"
 msgid_plural "Expecting 1 control message, got %d"
 msgstr[0] "Mengharapkan 1 pesan kendali, memperoleh %d"
 
-#: gio/gunixconnection.c:196 gio/gunixconnection.c:610
+#: gio/gunixconnection.c:197 gio/gunixconnection.c:613
 msgid "Unexpected type of ancillary data"
 msgstr "Tipe yang tak diharapkan dari data ancillary"
 
-#: gio/gunixconnection.c:214
+#: gio/gunixconnection.c:216
 #, c-format
 msgid "Expecting one fd, but got %d\n"
 msgid_plural "Expecting one fd, but got %d\n"
 msgstr[0] "Mengharapkan satu fd, tapi mendapat %d\n"
 
-#: gio/gunixconnection.c:233
+#: gio/gunixconnection.c:235
 msgid "Received invalid fd"
 msgstr "Menerima fd yang tak valid"
 
-#: gio/gunixconnection.c:240
+#: gio/gunixconnection.c:242
 msgid "Receiving FD is not supported"
 msgstr "Menerima FD tidak didukung"
 
-#: gio/gunixconnection.c:382
+#: gio/gunixconnection.c:384
 msgid "Error sending credentials: "
 msgstr "Galat saat mengirim kredensial: "
 
-#: gio/gunixconnection.c:539
+#: gio/gunixconnection.c:541
 #, c-format
 msgid "Error checking if SO_PASSCRED is enabled for socket: %s"
 msgstr "Galat ketika memeriksa apakah SO_PASSCRED diaktifkan bagi soket: %s"
 
-#: gio/gunixconnection.c:555
+#: gio/gunixconnection.c:557
 #, c-format
 msgid "Error enabling SO_PASSCRED: %s"
 msgstr "Galat saat mengaktifkan SO_PASSCRED: %s"
 
-#: gio/gunixconnection.c:584
+#: gio/gunixconnection.c:586
 msgid ""
 "Expecting to read a single byte for receiving credentials but read zero bytes"
 msgstr ""
 "Berharap membaca bita tunggal untuk penerimaan kredensial tapi membaca nol "
 "bita"
 
-#: gio/gunixconnection.c:624
+#: gio/gunixconnection.c:627
 #, c-format
 msgid "Not expecting control message, but got %d"
 msgstr "Tak mengharapkan pesan kendali, tapi memperoleh %d"
 
-#: gio/gunixconnection.c:649
+#: gio/gunixconnection.c:652
 #, c-format
 msgid "Error while disabling SO_PASSCRED: %s"
 msgstr "Galat ketika mematikan SO_PASSCRED: %s"
@@ -5097,15 +5103,15 @@ msgstr "Kanal terputus pada karakter sebagian"
 msgid "Can’t do a raw read in g_io_channel_read_to_end"
 msgstr "Tak bisa melakukan pembacaan mentah dalam g_io_channel_read_to_end"
 
-#: glib/gkeyfile.c:796
+#: glib/gkeyfile.c:800
 msgid "Valid key file could not be found in search dirs"
 msgstr "Berkas kunci yang valid tak ditemukan pada direktori yang dicari"
 
-#: glib/gkeyfile.c:833
+#: glib/gkeyfile.c:837
 msgid "Not a regular file"
 msgstr "Bukan berkas biasa"
 
-#: glib/gkeyfile.c:1291
+#: glib/gkeyfile.c:1295
 #, c-format
 msgid ""
 "Key file contains line “%s” which is not a key-value pair, group, or comment"
@@ -5113,51 +5119,51 @@ msgstr ""
 "Berkas kunci mengandung baris \"%s\" yang bukan suatu pasangan kunci-nilai, "
 "kelompok, atau komentar"
 
-#: glib/gkeyfile.c:1348
+#: glib/gkeyfile.c:1352
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "Nama grup tak valid: %s"
 
-#: glib/gkeyfile.c:1372
+#: glib/gkeyfile.c:1376
 msgid "Key file does not start with a group"
 msgstr "Berkas kunci tidak mulai dengan sebuah kelompok"
 
-#: glib/gkeyfile.c:1396
+#: glib/gkeyfile.c:1400
 #, c-format
 msgid "Invalid key name: %.*s"
 msgstr "Nama kunci tak valid: %.*s"
 
-#: glib/gkeyfile.c:1424
+#: glib/gkeyfile.c:1428
 #, c-format
 msgid "Key file contains unsupported encoding “%s”"
 msgstr "Berkas kunci mengandung enkoding \"%s\" yang tidak didukung"
 
-#: glib/gkeyfile.c:1679 glib/gkeyfile.c:1852 glib/gkeyfile.c:3299
-#: glib/gkeyfile.c:3363 glib/gkeyfile.c:3493 glib/gkeyfile.c:3622
-#: glib/gkeyfile.c:3768 glib/gkeyfile.c:4003 glib/gkeyfile.c:4070
+#: glib/gkeyfile.c:1683 glib/gkeyfile.c:1856 glib/gkeyfile.c:3303
+#: glib/gkeyfile.c:3367 glib/gkeyfile.c:3497 glib/gkeyfile.c:3626
+#: glib/gkeyfile.c:3772 glib/gkeyfile.c:4007 glib/gkeyfile.c:4074
 #, c-format
 msgid "Key file does not have group “%s”"
 msgstr "Berkas kunci tidak memiliki grup \"%s\""
 
-#: glib/gkeyfile.c:1807
+#: glib/gkeyfile.c:1811
 #, c-format
 msgid "Key file does not have key “%s” in group “%s”"
 msgstr "Berkas kunci tidak memiliki kunci \"%s\" dalam kelompok \"%s\""
 
-#: glib/gkeyfile.c:1969 glib/gkeyfile.c:2085
+#: glib/gkeyfile.c:1973 glib/gkeyfile.c:2089
 #, c-format
 msgid "Key file contains key “%s” with value “%s” which is not UTF-8"
 msgstr ""
 "Berkas kunci mengandung kunci \"%s\" dengan nilai \"%s\" yang bukan UTF-8"
 
-#: glib/gkeyfile.c:1989 glib/gkeyfile.c:2105 glib/gkeyfile.c:2544
+#: glib/gkeyfile.c:1993 glib/gkeyfile.c:2109 glib/gkeyfile.c:2548
 #, c-format
 msgid ""
 "Key file contains key “%s” which has a value that cannot be interpreted."
 msgstr ""
 "Berkas kunci mengandung kunci \"%s\" yang nilainya tidak dapat diterjemahkan."
 
-#: glib/gkeyfile.c:2759 glib/gkeyfile.c:3128
+#: glib/gkeyfile.c:2763 glib/gkeyfile.c:3132
 #, c-format
 msgid ""
 "Key file contains key “%s” in group “%s” which has a value that cannot be "
@@ -5166,81 +5172,81 @@ msgstr ""
 "Berkas kunci mengandung kunci \"%s\" dalam grup \"%s\" yang nilainya tidak "
 "dapat diterjemahkan."
 
-#: glib/gkeyfile.c:2837 glib/gkeyfile.c:2914
+#: glib/gkeyfile.c:2841 glib/gkeyfile.c:2918
 #, c-format
 msgid "Key “%s” in group “%s” has value “%s” where %s was expected"
 msgstr "Kunci \"%s\" dalam grup \"%s\" bernilai \"%s\" padahal diharapkan %s"
 
-#: glib/gkeyfile.c:4323
+#: glib/gkeyfile.c:4330
 msgid "Key file contains escape character at end of line"
 msgstr "Berkas kunci mengandung karakter escape pada akhir baris"
 
-#: glib/gkeyfile.c:4345
+#: glib/gkeyfile.c:4352
 #, c-format
 msgid "Key file contains invalid escape sequence “%s”"
 msgstr "Berkas kunci memuat urutan escape \"%s\" yang tidak valid"
 
-#: glib/gkeyfile.c:4490
+#: glib/gkeyfile.c:4504
 #, c-format
 msgid "Value “%s” cannot be interpreted as a number."
 msgstr "Nilai \"%s\" tidak bisa diterjemahkan sebagai sebuah bilangan."
 
-#: glib/gkeyfile.c:4504
+#: glib/gkeyfile.c:4518
 #, c-format
 msgid "Integer value “%s” out of range"
 msgstr "Nilai bilangan bulat \"%s\" di luar jangkauan"
 
-#: glib/gkeyfile.c:4537
+#: glib/gkeyfile.c:4551
 #, c-format
 msgid "Value “%s” cannot be interpreted as a float number."
 msgstr "Nilai \"%s\" tidak dapat diterjemahkan sebagai sebuah bilangan float."
 
-#: glib/gkeyfile.c:4576
+#: glib/gkeyfile.c:4590
 #, c-format
 msgid "Value “%s” cannot be interpreted as a boolean."
 msgstr "Nilai \"%s\" tidak dapat diterjemahkan sebagai sebuah boolean."
 
-#: glib/gmappedfile.c:131
+#: glib/gmappedfile.c:135
 #, c-format
 msgid "Failed to get attributes of file “%s%s%s%s”: fstat() failed: %s"
 msgstr "Gagal mengambil atribut berkas \"%s%s%s%s\": fstat() gagal: %s"
 
-#: glib/gmappedfile.c:197
+#: glib/gmappedfile.c:201
 #, c-format
 msgid "Failed to map %s%s%s%s: mmap() failed: %s"
 msgstr "Gagal memetakan %s%s%s%s: mmap() gagal: %s"
 
-#: glib/gmappedfile.c:264
+#: glib/gmappedfile.c:268
 #, c-format
 msgid "Failed to open file “%s”: open() failed: %s"
 msgstr "Gagal membuka berkas \"%s\": open() gagal: %s"
 
-#: glib/gmarkup.c:393 glib/gmarkup.c:435
+#: glib/gmarkup.c:398 glib/gmarkup.c:440
 #, c-format
 msgid "Error on line %d char %d: "
 msgstr "Galat pada baris %d karakter ke-%d: "
 
-#: glib/gmarkup.c:457 glib/gmarkup.c:540
+#: glib/gmarkup.c:462 glib/gmarkup.c:545
 #, c-format
 msgid "Invalid UTF-8 encoded text in name — not valid “%s”"
 msgstr "Teks UTF-8 dalam nama tak valid — bukan “%s” yang valid"
 
-#: glib/gmarkup.c:468
+#: glib/gmarkup.c:473
 #, c-format
 msgid "“%s” is not a valid name"
 msgstr "“%s” bukan suatu nama yang valid"
 
-#: glib/gmarkup.c:484
+#: glib/gmarkup.c:489
 #, c-format
 msgid "“%s” is not a valid name: “%c”"
 msgstr "“%s” bukan suatu nama yang valid: \"%c\""
 
-#: glib/gmarkup.c:608
+#: glib/gmarkup.c:613
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Galat pada baris ke-%d: %s"
 
-#: glib/gmarkup.c:685
+#: glib/gmarkup.c:690
 #, c-format
 msgid ""
 "Failed to parse “%-.*s”, which should have been a digit inside a character "
@@ -5249,7 +5255,7 @@ msgstr ""
 "Gagal saat mengurai \"%-.*s\", yang seharusnya sebuah digit dalam referensi "
 "karakter (misalnya &#234;) — mungkin digitnya terlalu besar"
 
-#: glib/gmarkup.c:697
+#: glib/gmarkup.c:702
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity — escape ampersand "
@@ -5259,25 +5265,25 @@ msgstr ""
 "menggunakan karakter ampersand tanpa bermaksud menjadikannya sebagai entitas "
 "— escape ampersand sebagai &amp;"
 
-#: glib/gmarkup.c:723
+#: glib/gmarkup.c:728
 #, c-format
 msgid "Character reference “%-.*s” does not encode a permitted character"
 msgstr ""
 "Referensi karakter \"%-.*s\" tidak mengenkode karakter yang diperbolehkan"
 
-#: glib/gmarkup.c:761
+#: glib/gmarkup.c:766
 msgid ""
 "Empty entity “&;” seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Ada entitas \"&;\" yang kosong; entitas yang benar antara lain adalah: &amp; "
 "&quot; &lt; &gt; &apos;"
 
-#: glib/gmarkup.c:769
+#: glib/gmarkup.c:774
 #, c-format
 msgid "Entity name “%-.*s” is not known"
 msgstr "Nama entitas \"%-.*s\" tak dikenal"
 
-#: glib/gmarkup.c:774
+#: glib/gmarkup.c:779
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity — escape ampersand as &amp;"
@@ -5286,11 +5292,11 @@ msgstr ""
 "ampersand tanpa bermaksud menjadikannya sebagai entitas — escape ampersand "
 "sebagai &amp;"
 
-#: glib/gmarkup.c:1188
+#: glib/gmarkup.c:1193
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Dokumen harus dimulai dengan elemen (misalnya <book>)"
 
-#: glib/gmarkup.c:1228
+#: glib/gmarkup.c:1233
 #, c-format
 msgid ""
 "“%s” is not a valid character following a “<” character; it may not begin an "
@@ -5299,7 +5305,7 @@ msgstr ""
 "“%s” bukanlah karakter yang benar bila diikuti dengan karakter \"<\". Ini "
 "tidak boleh menjadi nama elemen"
 
-#: glib/gmarkup.c:1271
+#: glib/gmarkup.c:1276
 #, c-format
 msgid ""
 "Odd character “%s”, expected a “>” character to end the empty-element tag "
@@ -5308,12 +5314,12 @@ msgstr ""
 "Ada karakter aneh “%s”, seharusnya ada \">\" untuk mengakhiri tag elemen "
 "kosong “%s”"
 
-#: glib/gmarkup.c:1341
+#: glib/gmarkup.c:1346
 #, c-format
 msgid "Too many attributes in element “%s”"
 msgstr "Terlalu banyak atribut dalam elemen \"%s\""
 
-#: glib/gmarkup.c:1361
+#: glib/gmarkup.c:1366
 #, c-format
 msgid ""
 "Odd character “%s”, expected a “=” after attribute name “%s” of element “%s”"
@@ -5321,7 +5327,7 @@ msgstr ""
 "Ada karakter aneh “%s”. Seharusnya ada karakter '=' setelah nama atribut "
 "“%s” pada elemen “%s”"
 
-#: glib/gmarkup.c:1403
+#: glib/gmarkup.c:1408
 #, c-format
 msgid ""
 "Odd character “%s”, expected a “>” or “/” character to end the start tag of "
@@ -5332,7 +5338,7 @@ msgstr ""
 "padaelemen “%s”, atau bisa juga ada atribut lain. Mungkin Anda menggunakan "
 "karakter yang tidak diperbolehkan pada nama atribut"
 
-#: glib/gmarkup.c:1448
+#: glib/gmarkup.c:1453
 #, c-format
 msgid ""
 "Odd character “%s”, expected an open quote mark after the equals sign when "
@@ -5341,7 +5347,7 @@ msgstr ""
 "Ada karakter aneh “%s”. Seharusnya ada tanda kutip buka setelah tanda sama "
 "dengan saat memberikan nilai atribut “%s” pada elemen “%s”"
 
-#: glib/gmarkup.c:1582
+#: glib/gmarkup.c:1587
 #, c-format
 msgid ""
 "“%s” is not a valid character following the characters “</”; “%s” may not "
@@ -5350,7 +5356,7 @@ msgstr ""
 "“%s” bukan karakter yang benar bila diikuti dengan karakter \"</\". Karena "
 "itu “%s” tidak boleh dijadikan awal nama elemen"
 
-#: glib/gmarkup.c:1620
+#: glib/gmarkup.c:1625
 #, c-format
 msgid ""
 "“%s” is not a valid character following the close element name “%s”; the "
@@ -5359,26 +5365,26 @@ msgstr ""
 "“%s” bukan karakter yang benar bila diikuti elemen penutup “%s”. Karakter "
 "yang diperbolehkan adalah \">\""
 
-#: glib/gmarkup.c:1632
+#: glib/gmarkup.c:1637
 #, c-format
 msgid "Element “%s” was closed, no element is currently open"
 msgstr "Elemen “%s” sudah ditutup, tidak ada elemen yang masih terbuka"
 
-#: glib/gmarkup.c:1641
+#: glib/gmarkup.c:1646
 #, c-format
 msgid "Element “%s” was closed, but the currently open element is “%s”"
 msgstr "Elemen “%s” sudah ditutup, tapi elemen yang masih terbuka adalah “%s”"
 
-#: glib/gmarkup.c:1794
+#: glib/gmarkup.c:1799
 msgid "Document was empty or contained only whitespace"
 msgstr "Dokumen kosong atau berisi whitespace saja"
 
-#: glib/gmarkup.c:1808
+#: glib/gmarkup.c:1813
 msgid "Document ended unexpectedly just after an open angle bracket “<”"
 msgstr ""
 "Dokumen terpotong tidak sempurna sesaat setelah membuka kurung siku \"<\""
 
-#: glib/gmarkup.c:1816 glib/gmarkup.c:1861
+#: glib/gmarkup.c:1821 glib/gmarkup.c:1866
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open — “%s” was the last "
@@ -5387,7 +5393,7 @@ msgstr ""
 "Dokumen terpotong tidak sempurna dengan elemen yang masih terbuka — “%s” "
 "adalah elemen terakhir yang dibuka"
 
-#: glib/gmarkup.c:1824
+#: glib/gmarkup.c:1829
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -5396,19 +5402,19 @@ msgstr ""
 "Dokumen terpotong tidak sempurna, seharusnya ada kurung siku penutup untuk "
 "mengakhiri tag <%s/>"
 
-#: glib/gmarkup.c:1830
+#: glib/gmarkup.c:1835
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Dokumen terpotong tidak sempurna pada dalam nama elemen"
 
-#: glib/gmarkup.c:1836
+#: glib/gmarkup.c:1841
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Dokumen terpotong tidak sempurna di dalam nama atribut"
 
-#: glib/gmarkup.c:1841
+#: glib/gmarkup.c:1846
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Dokumen terpotong tidak sempurna di dalam tag pembukaan elemen."
 
-#: glib/gmarkup.c:1847
+#: glib/gmarkup.c:1852
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -5416,23 +5422,23 @@ msgstr ""
 "Dokumen terpotong tidak sempurna setelah tanda sama dengan mengikuti nama "
 "atribut. Tidak ada nilai atribut yang diperoleh"
 
-#: glib/gmarkup.c:1854
+#: glib/gmarkup.c:1859
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Dokumen tidak sempura saat ada dalam nilai atribut"
 
-#: glib/gmarkup.c:1871
+#: glib/gmarkup.c:1876
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element “%s”"
 msgstr "Dokumen terpotong tidak sempurna di dalam tag penutup elemen “%s”"
 
-#: glib/gmarkup.c:1875
+#: glib/gmarkup.c:1880
 msgid ""
 "Document ended unexpectedly inside the close tag for an unopened element"
 msgstr ""
 "Dokumen terpotong tidak sempurna di dalam tag penutup untuk elemen yang "
 "belum dibuka"
 
-#: glib/gmarkup.c:1881
+#: glib/gmarkup.c:1886
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Dokumen terpotong tidak sempurna di dalam keterangan atau instruksi "
@@ -5967,21 +5973,21 @@ msgstr ""
 "Terjadi galat pada g_io_channel_win32_poll() ketika membaca data dari anak "
 "proses"
 
-#: glib/gstrfuncs.c:3370 glib/gstrfuncs.c:3472
+#: glib/gstrfuncs.c:3373 glib/gstrfuncs.c:3475
 msgid "Empty string is not a number"
 msgstr "String kosong bukan angka"
 
-#: glib/gstrfuncs.c:3394
+#: glib/gstrfuncs.c:3397
 #, c-format
 msgid "“%s” is not a signed number"
 msgstr "\"%s\" bukan bilangan bertanda"
 
-#: glib/gstrfuncs.c:3404 glib/gstrfuncs.c:3508
+#: glib/gstrfuncs.c:3407 glib/gstrfuncs.c:3511
 #, c-format
 msgid "Number “%s” is out of bounds [%s, %s]"
 msgstr "Nomor \"%s\" berada di luar batas [%s, %s]"
 
-#: glib/gstrfuncs.c:3498
+#: glib/gstrfuncs.c:3501
 #, c-format
 msgid "“%s” is not an unsigned number"
 msgstr "\"%s\" bukan bilangan tak bertanda"
@@ -6276,127 +6282,3 @@ msgstr "%.1f PB"
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
-
-#~ msgid "edit name: %s\n"
-#~ msgstr "sunting nama: %s\n"
-
-#~ msgid "internal error or corrupted object"
-#~ msgstr "kesalahan internal atau objek rusak"
-
-#~ msgid "invalid combination of newline flags"
-#~ msgstr "kombinasi tanda baris baru yang tak valid"
-
-#~ msgid "short utf8"
-#~ msgstr "utf8 pendek"
-
-#~ msgid "unexpected repeat"
-#~ msgstr "pengulangan yang tak diharapkan"
-
-#~ msgid "failed to get memory"
-#~ msgstr "gagal memperoleh memori"
-
-#~ msgid ") without opening ("
-#~ msgstr ") tanpa pembuka ("
-
-#~ msgid "unrecognized character after (?<"
-#~ msgstr "karakter tak dikenal setelah (?<"
-
-#~ msgid "(?R or (?[+-]digits must be followed by )"
-#~ msgstr "(?R atau (?[+-]digit mesti diikuti oleh )"
-
-#~ msgid "invalid condition (?(0)"
-#~ msgstr "kondisi tak valid (?(0)"
-
-#~ msgid "escapes \\L, \\l, \\N{name}, \\U, and \\u are not supported"
-#~ msgstr "escape \\L, \\l, \\N{name}, \\U, dan \\u tak didukung"
-
-#~ msgid "recursive call could loop indefinitely"
-#~ msgstr "pemanggilan rekursif bisa berulang tak terhingga"
-
-#~ msgid "digit expected after (?+"
-#~ msgstr "diharapkan digit setelah (?+"
-
-#~ msgid "] is an invalid data character in JavaScript compatibility mode"
-#~ msgstr ""
-#~ "] adalah karakter data tak valid dalam mode kompatibilitas JavaScript"
-
-#~ msgid "too many forward references"
-#~ msgstr "terlalu banyak acuan maju"
-
-#~ msgid "character value in \\u.... sequence is too large"
-#~ msgstr "nilai karakter dalam urutan \\u.... terlalu besar"
-
-#~ msgid "PCRE library is compiled without UTF8 properties support"
-#~ msgstr "Pustaka PCRE dikompail tanpa dukungan properti UTF-8"
-
-#~ msgid "Error while optimizing regular expression %s: %s"
-#~ msgstr "Galat saat mengoptimasi ekspresi reguler %s: %s"
-
-#~ msgid "%.1f MB"
-#~ msgstr "%.1f MB"
-
-#~ msgid "%.1f GB"
-#~ msgstr "%.1f GB"
-
-#~ msgid "%.1f TB"
-#~ msgstr "%.1f TB"
-
-#~ msgid "%.1f PB"
-#~ msgstr "%.1f PB"
-
-#~ msgid "%.1f EB"
-#~ msgstr "%.1f EB"
-
-#~ msgid "%.1f KiB"
-#~ msgstr "%.1f KiB"
-
-#~ msgid "%.1f MiB"
-#~ msgstr "%.1f MiB"
-
-#~ msgid "%.1f GiB"
-#~ msgstr "%.1f GiB"
-
-#~ msgid "%.1f TiB"
-#~ msgstr "%.1f TiB"
-
-#~ msgid "%.1f PiB"
-#~ msgstr "%.1f PiB"
-
-#~ msgid "%.1f EiB"
-#~ msgstr "%.1f EiB"
-
-#~ msgid "%.1f kb"
-#~ msgstr "%.1f kb"
-
-#~ msgid "%.1f Mb"
-#~ msgstr "%.1f Mb"
-
-#~ msgid "%.1f Gb"
-#~ msgstr "%.1f Gb"
-
-#~ msgid "%.1f Tb"
-#~ msgstr "%.1f Tb"
-
-#~ msgid "%.1f Pb"
-#~ msgstr "%.1f Pb"
-
-#~ msgid "%.1f Eb"
-#~ msgstr "%.1f Eb"
-
-#~ msgid "%.1f Kib"
-#~ msgstr "%.1f Kib"
-
-#~ msgid "%.1f Mib"
-#~ msgstr "%.1f Mib"
-
-#~ msgid "%.1f Gib"
-#~ msgstr "%.1f Gib"
-
-#~ msgid "%.1f Tib"
-#~ msgstr "%.1f Tib"
-
-#~ msgid "%.1f Pib"
-#~ msgstr "%.1f Pib"
-
-#~ msgid "%.1f Eib"
-#~ msgstr "%.1f Eib"
