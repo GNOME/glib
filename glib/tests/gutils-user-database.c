@@ -27,10 +27,10 @@ test_get_user_database_entry (void)
   const gchar *r = NULL;
 
   r = g_get_user_name ();
-  g_assert_nonnull (r);
+  g_assert_cmpstr (r, ==, "somebody");
 
   r = g_get_real_name ();
-  g_assert_nonnull (r);
+  g_assert_cmpstr (r, ==, "Unknown");
 }
 
 int
