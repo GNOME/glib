@@ -47,3 +47,35 @@ getpwuid (uid_t uid)
   my_pw.pw_name = NULL;
   return &my_pw;
 }
+
+int
+getpwnam_r (const char *name, struct passwd *pwd, char buf[], size_t buflen, struct passwd **result)
+{
+  int code;
+
+  int (*real_getpwnam_r) (const char *,
+                          struct passwd *,
+                          char[],
+                          size_t,
+                          struct passwd **) = dlsym (RTLD_NEXT, "getpwnam_r");
+
+  code = real_getpwnam_r (name, pwd, buf, buflen, result);
+  pwd->pw_name = NULL;
+  return code;
+}
+
+int
+getpwuid_r (uid_t uid, struct passwd *restrict pwd, char buf[], size_t buflen, struct passwd **result)
+{
+  int code;
+
+  int (*real_getpwuid_r) (uid_t,
+                          struct passwd *,
+                          char[],
+                          size_t,
+                          struct passwd **) = dlsym (RTLD_NEXT, "getpwuid_r");
+
+  code = real_getpwuid_r (uid, pwd, buf, buflen, result);
+  pwd->pw_name = NULL;
+  return code;
+}
