@@ -27,14 +27,19 @@
 #include <windows.h>
 #endif
 
-#define LIB_PREFIX "lib_"
-#define APP_PREFIX "app_"
-
-#ifdef BUILD_LIBRARY
-#define PREFIX LIB_PREFIX
+#if defined(_WIN32)
+  #define MODULE_IMPORT \
+    __declspec (dllimport)
 #else
-#define PREFIX APP_PREFIX
+  #define MODULE_IMPORT
 #endif
+
+MODULE_IMPORT
+void string_add_exclusive (const char *string);
+
+MODULE_IMPORT
+void string_check (const char *string);
+
 
 #if G_HAS_CONSTRUCTORS
 
@@ -47,10 +52,7 @@ G_DEFINE_CONSTRUCTOR (ctor)
 static void
 ctor (void)
 {
-  const char *string = PREFIX "ctor";
-
-  g_assert_null (g_getenv (string));
-  g_setenv (string, "1", FALSE);
+  string_add_exclusive (G_STRINGIFY (PREFIX) "_" "ctor");
 }
 
 #ifdef G_DEFINE_DESTRUCTOR_NEEDS_PRAGMA
@@ -62,13 +64,11 @@ G_DEFINE_DESTRUCTOR (dtor)
 static void
 dtor (void)
 {
-  const char *string = PREFIX "dtor";
-
-  g_assert_null (g_getenv (string));
-  g_setenv (string, "1", FALSE);
+  string_add_exclusive (G_STRINGIFY (PREFIX) "_" "dtor");
 }
 
 #endif /* G_HAS_CONSTRUCTORS */
+
 
 #if defined (_WIN32) && defined (G_HAS_TLS_CALLBACKS)
 
@@ -82,14 +82,14 @@ this_module (void)
 G_DEFINE_TLS_CALLBACK (tls_callback)
 
 static void NTAPI
-tls_callback (PVOID     hInstance,
-              DWORD     dwReason,
-              LPVOID    lpvReserved)
+tls_callback (PVOID  hInstance,
+              DWORD  dwReason,
+              LPVOID lpvReserved)
 {
   /* The HINSTANCE we get must match the address of __ImageBase */
   g_assert_true (hInstance == this_module ());
 
-#ifndef BUILD_LIBRARY
+#ifdef BUILD_TEST_EXECUTABLE
   /* Yes, we can call GetModuleHandle (NULL) with the loader lock */
   g_assert_true (hInstance == GetModuleHandle (NULL));
 #endif
@@ -98,15 +98,11 @@ tls_callback (PVOID     hInstance,
     {
     case DLL_PROCESS_ATTACH:
       {
-        const char *string = PREFIX "tls_cb_process_attach";
-
-#ifdef BUILD_LIBRARY
+#ifndef BUILD_TEST_EXECUTABLE
         /* the library is explicitly loaded */
         g_assert_null (lpvReserved);
 #endif
-
-        g_assert_null (g_getenv (string));
-        g_setenv (string, "1", FALSE);
+        string_add_exclusive (G_STRINGIFY (PREFIX) "_" "tlscb_process_attach");
       }
       break;
 
@@ -117,17 +113,13 @@ tls_callback (PVOID     hInstance,
       break;
 
     case DLL_PROCESS_DETACH:
-#ifdef BUILD_LIBRARY
       {
-        const char *string = PREFIX "tls_cb_process_detach";
-
+#ifndef BUILD_TEST_EXECUTABLE
         /* the library is explicitly unloaded */
         g_assert_null (lpvReserved);
-
-        g_assert_null (g_getenv (string));
-        g_setenv (string, "1", FALSE);
-      }
 #endif
+        string_add_exclusive (G_STRINGIFY (PREFIX) "_" "tlscb_process_detach");
+      }
       break;
 
     default:
@@ -138,27 +130,31 @@ tls_callback (PVOID     hInstance,
 
 #endif /* _WIN32 && G_HAS_TLS_CALLBACKS */
 
-#ifndef BUILD_LIBRARY
+#ifdef BUILD_TEST_EXECUTABLE
 
 void *library;
 
 static void
-load_library (const char *library_path)
+load_library (const char *path)
 {
 #ifndef _WIN32
-  library = dlopen (library_path, RTLD_LAZY);
+  library = dlopen (path, RTLD_NOW);
   if (!library)
-    g_error ("%s (%s) failed: %s", "dlopen", library_path, dlerror ());
+    {
+      g_error ("%s (%s) failed: %s", "dlopen", path, dlerror ());
+    }
 #else
-  wchar_t *library_path_u16 = g_utf8_to_utf16 (library_path, -1, NULL, NULL, NULL);
-  g_assert_nonnull (library_path_u16);
+  wchar_t *path_utf16 = g_utf8_to_utf16 (path, -1, NULL, NULL, NULL);
+  g_assert_nonnull (path_utf16);
 
-  library = LoadLibraryW (library_path_u16);
+  library = LoadLibraryW (path_utf16);
   if (!library)
-    g_error ("%s (%s) failed with error code %u",
-             "FreeLibrary", library_path, (unsigned int) GetLastError ());
+    {
+      g_error ("%s (%s) failed with error code %u",
+               "FreeLibrary", path, (unsigned int) GetLastError ());
+    }
 
-  g_free (library_path_u16);
+  g_free (path_utf16);
 #endif
 }
 
@@ -167,11 +163,15 @@ unload_library (void)
 {
 #ifndef _WIN32
   if (dlclose (library) != 0)
-    g_error ("%s failed: %s", "dlclose", dlerror ());
+    {
+      g_error ("%s failed: %s", "dlclose", dlerror ());
+    }
 #else
   if (!FreeLibrary (library))
-    g_error ("%s failed with error code %u",
-             "FreeLibrary", (unsigned int) GetLastError ());
+    {
+      g_error ("%s failed with error code %u",
+               "FreeLibrary", (unsigned int) GetLastError ());
+    }
 #endif
 }
 
@@ -179,10 +179,10 @@ static void
 test_app (void)
 {
 #if G_HAS_CONSTRUCTORS
-  g_assert_cmpstr (g_getenv (APP_PREFIX "ctor"), ==, "1");
+  string_check ("app_" "ctor");
 #endif
 #if defined (_WIN32) && defined (G_HAS_TLS_CALLBACKS)
-  g_assert_cmpstr (g_getenv (APP_PREFIX "tls_cb_process_attach"), ==, "1");
+  string_check ("app_" "tlscb_process_attach");
 #endif
 }
 
@@ -191,36 +191,24 @@ test_lib (gconstpointer data)
 {
   const char *library_path = (const char*) data;
 
-  /* Check that the environment is clean */
-#if G_HAS_CONSTRUCTORS
-  g_assert_null (g_getenv (LIB_PREFIX "ctor"));
-#endif
-#if G_HAS_DESTRUCTORS
-  g_assert_null (g_getenv (LIB_PREFIX "dtor"));
-#endif
-#if defined (_WIN32) && defined (G_HAS_TLS_CALLBACKS)
-  g_assert_null (g_getenv (LIB_PREFIX "tls_cb_process_attach"));
-  g_assert_null (g_getenv (LIB_PREFIX "tls_cb_process_detach"));
-#endif
-
   /* Constructors */
   load_library (library_path);
 
 #if G_HAS_CONSTRUCTORS
-  g_assert_cmpstr (g_getenv (LIB_PREFIX "ctor"), ==, "1");
+  string_check ("lib_" "ctor");
 #endif
 #if defined (_WIN32) && defined (G_HAS_TLS_CALLBACKS)
-  g_assert_cmpstr (g_getenv (LIB_PREFIX "tls_cb_process_attach"), ==, "1");
+  string_check ("lib_" "tlscb_process_attach");
 #endif
 
   /* Destructors */
   unload_library ();
 
 #if G_HAS_DESTRUCTORS
-  g_assert_cmpstr (g_getenv (LIB_PREFIX "dtor"), ==, "1");
+  string_check ("lib_" "dtor");
 #endif
 #if defined (_WIN32) && defined (G_HAS_TLS_CALLBACKS)
-  g_assert_cmpstr (g_getenv (LIB_PREFIX "tls_cb_process_detach"), ==, "1");
+  string_check ("lib_" "tlscb_process_detach");
 #endif
 }
 
@@ -248,4 +236,4 @@ main (int argc, char *argv[])
   return ret;
 }
 
-#endif /* !BUILD_LIBRARY */
+#endif /* BUILD_TEST_EXECUTABLE */
