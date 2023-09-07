@@ -328,7 +328,7 @@ _g_utf8_strwidth (const gchar *p)
 G_DEFINE_QUARK (g-option-context-error-quark, g_option_error)
 
 /**
- * g_option_context_new:
+ * g_option_context_new: (constructor)
  * @parameter_string: (nullable): a string which is displayed in
  *    the first line of `--help` output, after the usage summary
  *    `programname [OPTION...]`
@@ -353,7 +353,7 @@ G_DEFINE_QUARK (g-option-context-error-quark, g_option_error)
  * function set with g_option_context_set_translate_func(), so
  * it should normally be passed untranslated.
  *
- * Returns: a newly created #GOptionContext, which must be
+ * Returns: (transfer full): a newly created #GOptionContext, which must be
  *    freed with g_option_context_free() after use.
  *
  * Since: 2.6
@@ -381,7 +381,7 @@ g_option_context_new (const gchar *parameter_string)
 
 /**
  * g_option_context_free:
- * @context: a #GOptionContext
+ * @context: (transfer full): a #GOptionContext
  *
  * Frees context and all the groups which have been
  * added to it.
