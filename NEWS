@@ -1,3 +1,34 @@
+Overview of changes in GLib 2.78.0, 2023-09-08
+==============================================
+
+* Bugs fixed:
+  - #3095 Error handling of invalid GKeyFile string escape sequences changed in
+    GLib 2.77.3 (Philip Withnall)
+  - !3559 gdb: Workaround optimized out quark_seq_id
+  - !3561 meson: fix `gnetworking.h` install tag
+  - !3562 gthread: Annotate g_thread_exit() with G_NORETURN
+  - !3564 Fix gutils-user-database unit test
+
+* Translation updates:
+  - Basque (Asier Sarasua Garmendia)
+  - Czech (Vojtěch Perník)
+  - Danish (Alan Mortensen)
+  - English (United Kingdom) (Bruce Cowan)
+  - Galician (Fran Dieguez)
+  - Georgian (Ekaterine Papava)
+  - German (Philipp Kiemle, Jürgen Benvenuti)
+  - Hebrew (Yosef Or Boczko)
+  - Hungarian (Balázs Úr)
+  - Indonesian (Andika Triwidada)
+  - Korean (Changwoo Ryu)
+  - Lithuanian (Aurimas Černius)
+  - Persian (Danial Behzadi)
+  - Polish (Piotr Drąg)
+  - Swedish (Anders Jonsson)
+  - Turkish (Emin Tufan Çetin)
+  - Ukrainian (Yuri Chornoivan)
+
+
 Overview of changes in GLib 2.77.3, 2023-08-31
 ==============================================
 
