@@ -170,12 +170,12 @@ struct _GRand
 };
 
 /**
- * g_rand_new_with_seed:
+ * g_rand_new_with_seed: (constructor)
  * @seed: a value to initialize the random number generator
  * 
  * Creates a new random number generator initialized with @seed.
  * 
- * Returns: the new #GRand
+ * Returns: (transfer full): the new #GRand
  **/
 GRand*
 g_rand_new_with_seed (guint32 seed)
@@ -186,14 +186,14 @@ g_rand_new_with_seed (guint32 seed)
 }
 
 /**
- * g_rand_new_with_seed_array:
+ * g_rand_new_with_seed_array: (constructor)
  * @seed: an array of seeds to initialize the random number generator
  * @seed_length: an array of seeds to initialize the random number
  *     generator
  * 
  * Creates a new random number generator initialized with @seed.
  * 
- * Returns: the new #GRand
+ * Returns: (transfer full): the new #GRand
  *
  * Since: 2.4
  */
@@ -207,7 +207,7 @@ g_rand_new_with_seed_array (const guint32 *seed,
 }
 
 /**
- * g_rand_new:
+ * g_rand_new: (constructor)
  * 
  * Creates a new random number generator initialized with a seed taken
  * either from `/dev/urandom` (if existing) or from the current time
@@ -215,7 +215,7 @@ g_rand_new_with_seed_array (const guint32 *seed,
  *
  * On Windows, the seed is taken from rand_s().
  * 
- * Returns: the new #GRand
+ * Returns: (transfer full): the new #GRand
  */
 GRand* 
 g_rand_new (void)
@@ -310,7 +310,7 @@ g_rand_free (GRand *rand)
  * This way you can take a snapshot of the random number generator for
  * replaying later.
  *
- * Returns: the new #GRand
+ * Returns: (transfer full): the new #GRand
  *
  * Since: 2.4
  */
