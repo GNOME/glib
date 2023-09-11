@@ -1422,9 +1422,16 @@ lookup_records_finish (GResolver     *resolver,
 static gboolean
 timeout_cb (gpointer user_data)
 {
-  GTask *task = G_TASK (user_data);
-  LookupData *data = g_task_get_task_data (task);
+  GWeakRef *weak_task = user_data;
+  GTask *task = NULL;  /* (owned) */
+  LookupData *data;
   gboolean should_return;
+
+  task = g_weak_ref_get (weak_task);
+  if (task == NULL)
+    return G_SOURCE_REMOVE;
+
+  data = g_task_get_task_data (task);
 
   g_mutex_lock (&data->lock);
 
@@ -1443,6 +1450,8 @@ timeout_cb (gpointer user_data)
   g_cond_broadcast (&data->cond);
   g_mutex_unlock (&data->lock);
 
+  g_object_unref (task);
+
   return G_SOURCE_REMOVE;
 }
 
@@ -1452,9 +1461,16 @@ static gboolean
 cancelled_cb (GCancellable *cancellable,
               gpointer      user_data)
 {
-  GTask *task = G_TASK (user_data);
-  LookupData *data = g_task_get_task_data (task);
+  GWeakRef *weak_task = user_data;
+  GTask *task = NULL;  /* (owned) */
+  LookupData *data;
   gboolean should_return;
+
+  task = g_weak_ref_get (weak_task);
+  if (task == NULL)
+    return G_SOURCE_REMOVE;
+
+  data = g_task_get_task_data (task);
 
   g_mutex_lock (&data->lock);
 
@@ -1473,7 +1489,16 @@ cancelled_cb (GCancellable *cancellable,
   g_cond_broadcast (&data->cond);
   g_mutex_unlock (&data->lock);
 
+  g_object_unref (task);
+
   return G_SOURCE_REMOVE;
+}
+
+static void
+weak_ref_clear_and_free (GWeakRef *weak_ref)
+{
+  g_weak_ref_clear (weak_ref);
+  g_free (weak_ref);
 }
 
 static void
@@ -1490,17 +1515,23 @@ run_task_in_thread_pool_async (GThreadedResolver *self,
 
   if (timeout_ms != 0)
     {
+      GWeakRef *weak_task = g_new0 (GWeakRef, 1);
+      g_weak_ref_set (weak_task, task);
+
       data->timeout_source = g_timeout_source_new (timeout_ms);
       g_source_set_static_name (data->timeout_source, "[gio] threaded resolver timeout");
-      g_source_set_callback (data->timeout_source, G_SOURCE_FUNC (timeout_cb), task, NULL);
+      g_source_set_callback (data->timeout_source, G_SOURCE_FUNC (timeout_cb), g_steal_pointer (&weak_task), (GDestroyNotify) weak_ref_clear_and_free);
       g_source_attach (data->timeout_source, GLIB_PRIVATE_CALL (g_get_worker_context) ());
     }
 
   if (cancellable != NULL)
     {
+      GWeakRef *weak_task = g_new0 (GWeakRef, 1);
+      g_weak_ref_set (weak_task, task);
+
       data->cancellable_source = g_cancellable_source_new (cancellable);
       g_source_set_static_name (data->cancellable_source, "[gio] threaded resolver cancellable");
-      g_source_set_callback (data->cancellable_source, G_SOURCE_FUNC (cancelled_cb), task, NULL);
+      g_source_set_callback (data->cancellable_source, G_SOURCE_FUNC (cancelled_cb), g_steal_pointer (&weak_task), (GDestroyNotify) weak_ref_clear_and_free);
       g_source_attach (data->cancellable_source, GLIB_PRIVATE_CALL (g_get_worker_context) ());
     }
 
