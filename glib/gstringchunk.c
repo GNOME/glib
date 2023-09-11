@@ -86,7 +86,7 @@ struct _GStringChunk
 };
 
 /**
- * g_string_chunk_new:
+ * g_string_chunk_new: (constructor)
  * @size: the default size of the blocks of memory which are
  *     allocated to store the strings. If a particular string
  *     is larger than this default size, a larger block of
@@ -94,7 +94,7 @@ struct _GStringChunk
  *
  * Creates a new #GStringChunk.
  *
- * Returns: a new #GStringChunk
+ * Returns: (transfer full): a new #GStringChunk
  */
 GStringChunk *
 g_string_chunk_new (gsize size)
@@ -115,7 +115,7 @@ g_string_chunk_new (gsize size)
 
 /**
  * g_string_chunk_free:
- * @chunk: a #GStringChunk
+ * @chunk: (transfer full): a #GStringChunk
  *
  * Frees all memory allocated by the #GStringChunk.
  * After calling g_string_chunk_free() it is not safe to
