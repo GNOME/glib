@@ -81,12 +81,12 @@ struct _GTimer
 };
 
 /**
- * g_timer_new:
+ * g_timer_new: (constructor)
  *
  * Creates a new timer, and starts timing (i.e. g_timer_start() is
  * implicitly called for you).
  *
- * Returns: a new #GTimer.
+ * Returns: (transfer full): a new #GTimer.
  **/
 GTimer*
 g_timer_new (void)
