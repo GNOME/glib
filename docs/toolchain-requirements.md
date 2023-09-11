@@ -1,14 +1,14 @@
 Toolchain/Compiler requirements
 ===
 
-GLib requires a toolchain that supports C99.
+GLib requires a toolchain that supports C11.
 
 GLib contains some fall back code that allows supporting toolchains that are not
-fully C99-compatible.
+fully C11-compatible.
 
 GLib makes some assumptions about features of the C library and C preprocessor,
 compiler and linker that may go beyond what C99 mandates.  We will use features
-beyond C99 if they are substantially useful and if they are supported in a wide
+beyond C11 if they are substantially useful and if they are supported in a wide
 range of compilers.
 
 In general, we are primarily interested in supporting these four compilers:
@@ -116,11 +116,10 @@ _Hard requirement._
 Your compiler must support `alloca()`, defined in `<alloca.h>` (or `<malloc.h>`
 on Windows) and it must accept a non-constant argument.
 
-(C11) support for type redefinition
+C11 support for type redefinition
 ---
 
-**This requirement has been temporarily suspended (on account of OpenBSD
-carrying an old version of gcc) but it will probably return in the future.**
+_Hard requirement._
 
 Your compiler must allow “a typedef name [to] be redefined to denote the same
 type as it currently does”, as per C11 §6.7, item 3.
@@ -193,4 +192,3 @@ GLib [requires a C99 `stdint.h`](https://gitlab.gnome.org/GNOME/glib/-/merge_req
 with all the usual sized integer types (`int8_t`, `uint64_t` and so on),
 believed to be supported by all relevant Unix platforms/compilers, as well as
 Microsoft compilers since MSVC 2013.
-
