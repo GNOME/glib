@@ -120,7 +120,7 @@ g_dir_open_with_errno (const gchar *path,
 }
 
 /**
- * g_dir_open:
+ * g_dir_open: (constructor)
  * @path: the path to the directory you are interested in. On Unix
  *         in the on-disk encoding. On Windows in UTF-8
  * @flags: Currently must be set to 0. Reserved for future use.
@@ -132,7 +132,7 @@ g_dir_open_with_errno (const gchar *path,
  * directory can then be retrieved using g_dir_read_name().  Note
  * that the ordering is not defined.
  *
- * Returns: a newly allocated #GDir on success, %NULL on failure.
+ * Returns: (transfer full): a newly allocated #GDir on success, %NULL on failure.
  *   If non-%NULL, you must free the result with g_dir_close()
  *   when you are finished with it.
  **/
@@ -289,7 +289,7 @@ g_dir_rewind (GDir *dir)
 
 /**
  * g_dir_close:
- * @dir: a #GDir* created by g_dir_open()
+ * @dir: (transfer full): a #GDir* created by g_dir_open()
  *
  * Closes the directory and deallocates all related resources.
  **/
