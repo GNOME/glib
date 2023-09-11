@@ -215,6 +215,10 @@ G_STATIC_ASSERT (G_SIGNEDNESS_OF (guint64) == 0);
 G_STATIC_ASSERT (G_SIGNEDNESS_OF (int64_t) == 1);
 G_STATIC_ASSERT (G_SIGNEDNESS_OF (uint64_t) == 0);
 
+/* C11 §6.7, item 3 allows us to rely on this being allowed */
+typedef struct Foo Foo;
+typedef struct Foo Foo;
+
 /**
  * g_mem_gc_friendly:
  *
