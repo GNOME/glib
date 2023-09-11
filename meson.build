@@ -5,7 +5,7 @@ project('glib', 'c',
   default_options : [
     'buildtype=debugoptimized',
     'warning_level=3',
-    'c_std=gnu99'
+    'c_std=gnu11'
   ]
 )
 
