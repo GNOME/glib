@@ -123,9 +123,9 @@
 GType
 g_binding_flags_get_type (void)
 {
-  static gsize static_g_define_type_id = 0;
+  static GType static_g_define_type_id = 0;
 
-  if (g_once_init_enter (&static_g_define_type_id))
+  if (g_once_init_enter_pointer (&static_g_define_type_id))
     {
       static const GFlagsValue values[] = {
         { G_BINDING_DEFAULT, "G_BINDING_DEFAULT", "default" },
@@ -136,7 +136,7 @@ g_binding_flags_get_type (void)
       };
       GType g_define_type_id =
         g_flags_register_static (g_intern_static_string ("GBindingFlags"), values);
-      g_once_init_leave (&static_g_define_type_id, g_define_type_id);
+      g_once_init_leave_pointer (&static_g_define_type_id, g_define_type_id);
     }
 
   return static_g_define_type_id;

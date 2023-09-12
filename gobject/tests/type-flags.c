@@ -121,7 +121,7 @@ test_type_flags_final (void)
    * block within the test_final2_get_type() function
    */
   g_test_expect_message ("GLib", G_LOG_LEVEL_CRITICAL,
-                         "*g_once_init_leave: assertion*");
+                         "*g_once_init_leave_pointer: assertion*");
 
   final2_type = TEST_TYPE_FINAL2;
   g_assert_true (final2_type == G_TYPE_INVALID);

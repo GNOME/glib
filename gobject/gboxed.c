@@ -185,16 +185,16 @@ G_DEFINE_BOXED_TYPE (GPatternSpec, g_pattern_spec, g_pattern_spec_copy, g_patter
 GType
 g_strv_get_type (void)
 {
-  static gsize static_g_define_type_id = 0;
+  static GType static_g_define_type_id = 0;
 
-  if (g_once_init_enter (&static_g_define_type_id))
+  if (g_once_init_enter_pointer (&static_g_define_type_id))
     {
       GType g_define_type_id =
         g_boxed_type_register_static (g_intern_static_string ("GStrv"),
                                       (GBoxedCopyFunc) g_strdupv,
                                       (GBoxedFreeFunc) g_strfreev);
 
-      g_once_init_leave (&static_g_define_type_id, g_define_type_id);
+      g_once_init_leave_pointer (&static_g_define_type_id, g_define_type_id);
     }
 
   return static_g_define_type_id;
