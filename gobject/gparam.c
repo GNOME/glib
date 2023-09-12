@@ -955,7 +955,7 @@ param_spec_pool_hash (gconstpointer key_spec)
 {
   const GParamSpec *key = key_spec;
   const gchar *p;
-  guint h = key->owner_type;
+  guint h = (guint) key->owner_type;
 
   for (p = key->name; *p; p++)
     h = (h << 5) - h + *p;
