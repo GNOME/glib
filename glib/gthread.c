@@ -87,7 +87,8 @@
  * for condition variables to allow synchronization of threads (#GCond).
  * There are primitives for thread-private data - data that every
  * thread has a private instance of (#GPrivate). There are facilities
- * for one-time initialization (#GOnce, g_once_init_enter()). Finally,
+ * for one-time initialization (#GOnce, g_once_init_enter_pointer(),
+ * g_once_init_enter()). Finally,
  * there are primitives to create and manage threads (#GThread).
  *
  * The GLib threading system used to be initialized with g_thread_init().
@@ -720,6 +721,54 @@ gboolean
 }
 
 /**
+ * g_once_init_enter_pointer:
+ * @location: (not nullable): location of a static initializable variable
+ *    containing `NULL`
+ *
+ * This functions behaves in the same way as g_once_init_enter(), but can
+ * can be used to initialize pointers (or #guintptr) instead of #gsize.
+ *
+ * |[<!-- language="C" -->
+ *   static MyStruct *interesting_struct = NULL;
+ *
+ *   if (g_once_init_enter_pointer (&interesting_struct))
+ *     {
+ *       MyStruct *setup_value = allocate_my_struct (); // initialization code here
+ *
+ *       g_once_init_leave_pointer (&interesting_struct, g_steal_pointer (&setup_value));
+ *     }
+ *
+ *   // use interesting_struct here
+ * ]|
+ *
+ * Returns: %TRUE if the initialization section should be entered,
+ *     %FALSE and blocks otherwise
+ *
+ * Since: 2.80
+ */
+gboolean
+(g_once_init_enter_pointer) (gpointer location)
+{
+  gpointer *value_location = (gpointer *) location;
+  gboolean need_init = FALSE;
+  g_mutex_lock (&g_once_mutex);
+  if (g_atomic_pointer_get (value_location) == 0)
+    {
+      if (!g_slist_find (g_once_init_list, (void *) value_location))
+        {
+          need_init = TRUE;
+          g_once_init_list = g_slist_prepend (g_once_init_list, (void *) value_location);
+        }
+      else
+        do
+          g_cond_wait (&g_once_cond, &g_once_mutex);
+        while (g_slist_find (g_once_init_list, (void *) value_location));
+    }
+  g_mutex_unlock (&g_once_mutex);
+  return need_init;
+}
+
+/**
  * g_once_init_leave:
  * @location: (not nullable): location of a static initializable variable
  *    containing 0
@@ -751,6 +800,42 @@ void
   g_mutex_lock (&g_once_mutex);
   g_return_if_fail (g_once_init_list != NULL);
   g_once_init_list = g_slist_remove (g_once_init_list, (void*) value_location);
+  g_cond_broadcast (&g_once_cond);
+  g_mutex_unlock (&g_once_mutex);
+}
+
+/**
+ * g_once_init_leave_pointer:
+ * @location: (not nullable): location of a static initializable variable
+ *    containing `NULL`
+ * @result: new non-`NULL` value for `*location`
+ *
+ * Counterpart to g_once_init_enter_pointer(). Expects a location of a static
+ * `NULL`-initialized initialization variable, and an initialization value
+ * other than `NULL`. Sets the variable to the initialization value, and
+ * releases concurrent threads blocking in g_once_init_enter_pointer() on this
+ * initialization variable.
+ *
+ * This functions behaves in the same way as g_once_init_leave(), but
+ * can be used to initialize pointers (or #guintptr) instead of #gsize.
+ *
+ * Since: 2.80
+ */
+void
+(g_once_init_leave_pointer) (gpointer location,
+                             gpointer result)
+{
+  gpointer *value_location = (gpointer *) location;
+  gpointer old_value;
+
+  g_return_if_fail (result != 0);
+
+  old_value = g_atomic_pointer_exchange (value_location, result);
+  g_return_if_fail (old_value == 0);
+
+  g_mutex_lock (&g_once_mutex);
+  g_return_if_fail (g_once_init_list != NULL);
+  g_once_init_list = g_slist_remove (g_once_init_list, (void *) value_location);
   g_cond_broadcast (&g_once_cond);
   g_mutex_unlock (&g_once_mutex);
 }
