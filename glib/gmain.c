@@ -815,7 +815,7 @@ g_main_context_default (void)
 {
   static GMainContext *default_main_context = NULL;
 
-  if (g_once_init_enter (&default_main_context))
+  if (g_once_init_enter_pointer (&default_main_context))
     {
       GMainContext *context;
 
@@ -828,7 +828,7 @@ g_main_context_default (void)
         g_print ("global-default main context=%p\n", context);
 #endif
 
-      g_once_init_leave (&default_main_context, context);
+      g_once_init_leave_pointer (&default_main_context, context);
     }
 
   return default_main_context;

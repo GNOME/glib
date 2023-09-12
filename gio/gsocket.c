@@ -3179,8 +3179,8 @@ g_socket_get_available_bytes (GSocket *socket)
 #else
   if (socket->priv->type == G_SOCKET_TYPE_DATAGRAM)
     {
-      if (G_UNLIKELY (g_once_init_enter (&buf)))
-        g_once_init_leave (&buf, g_malloc (bufsize));
+      if (G_UNLIKELY (g_once_init_enter_pointer (&buf)))
+        g_once_init_leave_pointer (&buf, g_malloc (bufsize));
 
       /* On datagram sockets, FIONREAD ioctl is not reliable because many
        * systems add internal header size to the reported size, making it

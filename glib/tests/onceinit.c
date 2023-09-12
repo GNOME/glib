@@ -71,14 +71,14 @@ initializer1 (void)
 static gpointer
 initializer2 (void)
 {
-  static gsize initialized = 0;
-  if (g_once_init_enter (&initialized))
+  static void *initialized = NULL;
+  if (g_once_init_enter_pointer (&initialized))
     {
       void *pointer_value = &dummy_value;
       assert_singleton_execution2 ();
-      g_once_init_leave (&initialized, (gsize) pointer_value);
+      g_once_init_leave_pointer (&initialized, pointer_value);
     }
-  return (void*) initialized;
+  return initialized;
 }
 
 static void

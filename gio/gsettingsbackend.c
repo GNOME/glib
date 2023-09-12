@@ -1018,7 +1018,7 @@ static GSettingsBackend *settings_backend_default_singleton = NULL;  /* (owned) 
 GSettingsBackend *
 g_settings_backend_get_default (void)
 {
-  if (g_once_init_enter (&settings_backend_default_singleton))
+  if (g_once_init_enter_pointer (&settings_backend_default_singleton))
     {
       GSettingsBackend *singleton;
 
@@ -1026,7 +1026,7 @@ g_settings_backend_get_default (void)
                                             "GSETTINGS_BACKEND",
                                             g_settings_backend_verify);
 
-      g_once_init_leave (&settings_backend_default_singleton, singleton);
+      g_once_init_leave_pointer (&settings_backend_default_singleton, singleton);
     }
 
   return g_object_ref (settings_backend_default_singleton);

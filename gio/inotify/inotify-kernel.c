@@ -416,8 +416,8 @@ ik_source_new (gboolean (* callback) (ik_event_t *event))
 gboolean
 _ik_startup (gboolean (*cb)(ik_event_t *event))
 {
-  if (g_once_init_enter (&inotify_source))
-    g_once_init_leave (&inotify_source, ik_source_new (cb));
+  if (g_once_init_enter_pointer (&inotify_source))
+    g_once_init_leave_pointer (&inotify_source, ik_source_new (cb));
 
   return inotify_source->fd >= 0;
 }

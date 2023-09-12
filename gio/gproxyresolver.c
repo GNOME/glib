@@ -84,7 +84,7 @@ static GProxyResolver *proxy_resolver_default_singleton = NULL;  /* (owned) (ato
 GProxyResolver *
 g_proxy_resolver_get_default (void)
 {
-  if (g_once_init_enter (&proxy_resolver_default_singleton))
+  if (g_once_init_enter_pointer (&proxy_resolver_default_singleton))
     {
       GProxyResolver *singleton;
 
@@ -92,7 +92,7 @@ g_proxy_resolver_get_default (void)
                                             "GIO_USE_PROXY_RESOLVER",
                                             (GIOModuleVerifyFunc) g_proxy_resolver_is_supported);
 
-      g_once_init_leave (&proxy_resolver_default_singleton, singleton);
+      g_once_init_leave_pointer (&proxy_resolver_default_singleton, singleton);
     }
 
   return proxy_resolver_default_singleton;

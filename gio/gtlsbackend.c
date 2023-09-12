@@ -110,7 +110,7 @@ static GTlsBackend *tls_backend_default_singleton = NULL;  /* (owned) (atomic) *
 GTlsBackend *
 g_tls_backend_get_default (void)
 {
-  if (g_once_init_enter (&tls_backend_default_singleton))
+  if (g_once_init_enter_pointer (&tls_backend_default_singleton))
     {
       GTlsBackend *singleton;
 
@@ -118,7 +118,7 @@ g_tls_backend_get_default (void)
                                             "GIO_USE_TLS",
                                             NULL);
 
-      g_once_init_leave (&tls_backend_default_singleton, singleton);
+      g_once_init_leave_pointer (&tls_backend_default_singleton, singleton);
     }
 
   return tls_backend_default_singleton;

@@ -1747,7 +1747,7 @@ static void
 _g_win32_registry_key_reread (GWin32RegistryKey        *key,
                               GWin32RegistryKeyPrivate *buf)
 {
-  if (g_once_init_enter (&nt_query_key))
+  if (g_once_init_enter_pointer (&nt_query_key))
     {
       NtQueryKeyFunc func;
       HMODULE ntdll = GetModuleHandleW (L"ntdll.dll");
@@ -1757,7 +1757,7 @@ _g_win32_registry_key_reread (GWin32RegistryKey        *key,
       else
         func = NULL;
 
-      g_once_init_leave (&nt_query_key, func);
+      g_once_init_leave_pointer (&nt_query_key, func);
     }
 
   /* Assume that predefined keys never get renamed. Also, their handles probably
@@ -1875,7 +1875,7 @@ g_win32_registry_get_os_dirs_w (void)
 {
   static gunichar2 **mui_os_dirs = NULL;
 
-  if (g_once_init_enter (&mui_os_dirs))
+  if (g_once_init_enter_pointer (&mui_os_dirs))
     {
       gunichar2 **new_mui_os_dirs;
       gunichar2 *system32 = NULL;
@@ -1915,7 +1915,7 @@ g_win32_registry_get_os_dirs_w (void)
 
       new_mui_os_dirs[array_index++] = NULL;
 
-      g_once_init_leave (&mui_os_dirs, new_mui_os_dirs);
+      g_once_init_leave_pointer (&mui_os_dirs, new_mui_os_dirs);
     }
 
   return (const gunichar2 * const *) mui_os_dirs;
@@ -1936,7 +1936,7 @@ g_win32_registry_get_os_dirs (void)
 {
   static gchar **mui_os_dirs = NULL;
 
-  if (g_once_init_enter (&mui_os_dirs))
+  if (g_once_init_enter_pointer (&mui_os_dirs))
     {
       gchar **new_mui_os_dirs;
       gsize array_index;
@@ -1960,7 +1960,7 @@ g_win32_registry_get_os_dirs (void)
             g_critical ("Failed to convert to a system directory #%zu to UTF-8", array_index);
         }
 
-      g_once_init_leave (&mui_os_dirs, new_mui_os_dirs);
+      g_once_init_leave_pointer (&mui_os_dirs, new_mui_os_dirs);
     }
 
   return (const gchar * const *) mui_os_dirs;
@@ -2504,7 +2504,7 @@ g_win32_registry_key_watch (GWin32RegistryKey                   *key,
       return FALSE;
     }
 
-  if (g_once_init_enter (&nt_notify_change_multiple_keys))
+  if (g_once_init_enter_pointer (&nt_notify_change_multiple_keys))
   {
     NtNotifyChangeMultipleKeysFunc func;
     HMODULE ntdll = GetModuleHandleW (L"ntdll.dll");
@@ -2514,7 +2514,7 @@ g_win32_registry_key_watch (GWin32RegistryKey                   *key,
     else
       func = NULL;
 
-    g_once_init_leave (&nt_notify_change_multiple_keys, func);
+    g_once_init_leave_pointer (&nt_notify_change_multiple_keys, func);
   }
 
   if (nt_notify_change_multiple_keys== NULL)

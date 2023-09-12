@@ -663,7 +663,7 @@ g_get_user_database_entry (void)
 {
   static UserDatabaseEntry *entry;
 
-  if (g_once_init_enter (&entry))
+  if (g_once_init_enter_pointer (&entry))
     {
       static UserDatabaseEntry e;
 
@@ -787,7 +787,7 @@ g_get_user_database_entry (void)
       if (!e.real_name)
         e.real_name = g_strdup ("Unknown");
 
-      g_once_init_leave (&entry, &e);
+      g_once_init_leave_pointer (&entry, &e);
     }
 
   return entry;
@@ -1065,7 +1065,7 @@ g_get_host_name (void)
 {
   static gchar *hostname;
 
-  if (g_once_init_enter (&hostname))
+  if (g_once_init_enter_pointer (&hostname))
     {
       gboolean failed;
       gchar *utmp = NULL;
@@ -1122,7 +1122,7 @@ g_get_host_name (void)
         failed = TRUE;
 #endif
 
-      g_once_init_leave (&hostname, failed ? g_strdup ("localhost") : utmp);
+      g_once_init_leave_pointer (&hostname, failed ? g_strdup ("localhost") : utmp);
     }
 
   return hostname;

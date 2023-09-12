@@ -48,7 +48,7 @@ ensure_trash_portal (void)
 {
   static GXdpTrash *trash = NULL;
 
-  if (g_once_init_enter (&trash))
+  if (g_once_init_enter_pointer (&trash))
     {
       GDBusConnection *connection = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
       GXdpTrash *proxy = NULL;
@@ -62,7 +62,7 @@ ensure_trash_portal (void)
           g_object_unref (connection);
         }
 
-      g_once_init_leave (&trash, proxy);
+      g_once_init_leave_pointer (&trash, proxy);
     }
 
   return trash;

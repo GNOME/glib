@@ -94,7 +94,7 @@ static GNetworkMonitor *network_monitor_default_singleton = NULL;  /* (owned) (a
 GNetworkMonitor *
 g_network_monitor_get_default (void)
 {
-  if (g_once_init_enter (&network_monitor_default_singleton))
+  if (g_once_init_enter_pointer (&network_monitor_default_singleton))
     {
       GNetworkMonitor *singleton;
 
@@ -102,7 +102,7 @@ g_network_monitor_get_default (void)
                                             "GIO_USE_NETWORK_MONITOR",
                                             NULL);
 
-      g_once_init_leave (&network_monitor_default_singleton, singleton);
+      g_once_init_leave_pointer (&network_monitor_default_singleton, singleton);
     }
 
   return network_monitor_default_singleton;
