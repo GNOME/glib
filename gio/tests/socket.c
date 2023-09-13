@@ -49,6 +49,11 @@ typedef struct {
   GThread *thread;
   GMainLoop *loop;
   GCancellable *cancellable; /* to shut down dgram echo server thread */
+
+  /* Used only by connection timeout test */
+  GSocketConnection *connection; /* optional, used by connection timeout test */
+  guint delay; /* milliseconds */
+  char buf[128];
 } IPTestData;
 
 static gpointer
@@ -100,6 +105,9 @@ echo_server_thread (gpointer user_data)
 
   while (TRUE)
     {
+      if (data->delay)
+        g_usleep (data->delay * G_USEC_PER_SEC / 1000);
+
       nread = g_socket_receive (sock, buf, sizeof (buf), NULL, &error);
       g_assert_no_error (error);
       g_assert_cmpint (nread, >=, 0);
@@ -123,6 +131,7 @@ create_server_full (GSocketFamily   family,
                     GSocketType     socket_type,
                     GThreadFunc     server_thread,
                     gboolean        v4mapped,
+                    guint           delay /* milliseconds */,
                     GError        **error)
 {
   IPTestData *data;
@@ -130,8 +139,9 @@ create_server_full (GSocketFamily   family,
   GSocketAddress *addr;
   GInetAddress *iaddr;
 
-  data = g_slice_new (IPTestData);
+  data = g_slice_new0 (IPTestData);
   data->family = family;
+  data->delay = delay;
 
   data->server = server = g_socket_new (family,
 					socket_type,
@@ -210,7 +220,7 @@ create_server (GSocketFamily   family,
                gboolean        v4mapped,
                GError        **error)
 {
-  return create_server_full (family, G_SOCKET_TYPE_STREAM, server_thread, v4mapped, error);
+  return create_server_full (family, G_SOCKET_TYPE_STREAM, server_thread, v4mapped, 0, error);
 }
 
 static const gchar *testbuf = "0123456789abcdef";
@@ -602,7 +612,7 @@ test_ip_sync_dgram (GSocketFamily family)
   gchar buf[128];
 
   data = create_server_full (family, G_SOCKET_TYPE_DATAGRAM,
-                             echo_server_dgram_thread, FALSE, &error);
+                             echo_server_dgram_thread, FALSE, 0, &error);
   if (error != NULL)
     {
       g_test_skip_printf ("Failed to create server: %s", error->message);
@@ -2337,6 +2347,136 @@ test_credentials_unix_socketpair (void)
 }
 #endif
 
+static void
+read_finished_cb (GInputStream *istream,
+                  GAsyncResult *result,
+                  gpointer      user_data)
+{
+  IPTestData *data = user_data;
+  gsize bytes_read;
+  gboolean ret;
+  GError *error = NULL;
+
+  ret = g_input_stream_read_all_finish (istream, result, &bytes_read, &error);
+  g_assert_true (ret);
+  g_assert_no_error (error);
+
+  /* Don't assert anything about the return value. It may be a partial result,
+   * but that's OK. We're only testing the timeout, not the result.
+   */
+
+  g_main_loop_quit (data->loop);
+}
+
+static void
+write_finished_cb (GOutputStream *ostream,
+                   GAsyncResult  *result,
+                   gpointer       user_data)
+{
+  IPTestData *data = user_data;
+  gsize bytes_written;
+  gboolean ret;
+  GInputStream *istream;
+  GError *error = NULL;
+
+  G_STATIC_ASSERT (sizeof (testbuf) <= sizeof (data->buf));
+
+  ret = g_output_stream_write_all_finish (ostream, result, &bytes_written, &error);
+  g_assert_true (ret);
+  g_assert_no_error (error);
+  g_assert_cmpint (bytes_written, ==, sizeof (testbuf));
+
+  istream = g_io_stream_get_input_stream (G_IO_STREAM (data->connection));
+  g_input_stream_read_async (istream,
+                             &data->buf, sizeof (testbuf),
+                             G_PRIORITY_DEFAULT,
+                             NULL,
+                             (GAsyncReadyCallback) read_finished_cb,
+                             data);
+}
+
+static void
+test_connection_timeout (void)
+{
+  IPTestData *data;
+  GError *error = NULL;
+  GSocket *client;
+  GSocketConnection *connection;
+  GOutputStream *ostream;
+  GSocketAddress *addr;
+
+  /* Tell the echo server to sleep for 200 milliseconds before each read. */
+  data = create_server_full (G_SOCKET_FAMILY_IPV4, G_SOCKET_TYPE_STREAM, echo_server_thread, FALSE, 200 /* delay */, &error);
+  if (error != NULL)
+    {
+      g_test_skip_printf ("Failed to create server: %s", error->message);
+      g_clear_error (&error);
+      return;
+    }
+  g_assert_nonnull (data);
+
+  addr = g_socket_get_local_address (data->server, &error);
+  g_assert_no_error (error);
+
+  client = g_socket_new (G_SOCKET_FAMILY_IPV4,
+			 G_SOCKET_TYPE_STREAM,
+			 G_SOCKET_PROTOCOL_DEFAULT,
+			 &error);
+  g_assert_no_error (error);
+  data->client = client;
+
+  connection = g_socket_connection_factory_create_connection (client);
+  g_assert_true (G_IS_SOCKET_CONNECTION (connection));
+  data->connection = connection;
+
+  g_socket_connection_connect (connection, addr, NULL, &error);
+  g_assert_no_error (error);
+  g_object_unref (addr);
+
+  g_socket_set_blocking (client, FALSE);
+  g_socket_set_timeout (client, 1 /* seconds */);
+
+  /* The echo server will sleep for 200ms before each response to us. Our
+   * timeout is one second, so all echo operations should complete much faster
+   * than the timeout, and we should never time out (unless the computer running
+   * this test is outrageously overloaded).
+   *
+   * Perform six async echo operations. This ensures the GSocketSource resets
+   * its timeout after every operation and does not, for example, hit the one
+   * second timeout after five 200ms operations.
+   */
+  ostream = g_io_stream_get_output_stream (G_IO_STREAM (data->connection));
+  data->loop = g_main_loop_new (NULL, TRUE);
+  for (int i = 0; i < 100; i++)
+    {
+      g_output_stream_write_all_async (ostream,
+                                       testbuf, sizeof (testbuf),
+                                       G_PRIORITY_DEFAULT,
+                                       NULL,
+                                       (GAsyncReadyCallback) write_finished_cb,
+                                       data);
+      g_main_loop_run (data->loop);
+    }
+  g_main_loop_unref (data->loop);
+
+  g_socket_shutdown (client, FALSE, TRUE, &error);
+  g_assert_no_error (error);
+
+  g_thread_join (data->thread);
+
+  g_io_stream_close (G_IO_STREAM (connection), NULL, &error);
+  g_assert_no_error (error);
+  g_assert_true (g_socket_is_closed (client));
+
+  g_socket_close (data->server, &error);
+  g_assert_no_error (error);
+
+  g_object_unref (data->server);
+  g_object_unref (client);
+
+  g_slice_free (IPTestData, data);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -2403,6 +2543,7 @@ main (int   argc,
   g_test_add_func ("/socket/credentials/tcp_server", test_credentials_tcp_server);
   g_test_add_func ("/socket/credentials/unix_socketpair", test_credentials_unix_socketpair);
 #endif
+  g_test_add_func ("/socket/connection-timeout", test_connection_timeout);
 
   return g_test_run();
 }
