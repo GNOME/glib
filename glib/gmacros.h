@@ -952,7 +952,7 @@
 /* Macros by analogy to GINT_TO_POINTER, GPOINTER_TO_INT
  */
 #define GPOINTER_TO_SIZE(p)	((gsize) (p))
-#define GSIZE_TO_POINTER(s)	((gpointer) (gsize) (s))
+#define GSIZE_TO_POINTER(s)	((gpointer) (guintptr) (gsize) (s))
 
 /* Provide convenience macros for handling structure
  * fields through their offsets.

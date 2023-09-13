@@ -4859,7 +4859,7 @@ g_object_compat_control (gsize           what,
     {
       gpointer *pp;
     case 1:     /* floating base type */
-      return G_TYPE_INITIALLY_UNOWNED;
+      return (gsize) G_TYPE_INITIALLY_UNOWNED;
     case 2:     /* FIXME: remove this once GLib/Gtk+ break ABI again */
       floating_flag_handler = (guint(*)(GObject*,gint)) data;
       return 1;
