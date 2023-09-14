@@ -206,6 +206,8 @@ async_close_finish (GTask    *task,
     g_task_return_error (task, error);
   else
     g_task_return_boolean (task, TRUE);
+
+  g_object_unref (task);
 }
 
 
@@ -231,7 +233,6 @@ close_read_ready (GSocket        *socket,
       else
 	{
 	  async_close_finish (task, error);
-	  g_object_unref (task);
 	  return FALSE;
 	}
     }
