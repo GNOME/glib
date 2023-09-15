@@ -24,16 +24,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2023-07-28 12:53+0000\n"
-"PO-Revision-Date: 2023-08-08 20:38+0800\n"
+"POT-Creation-Date: 2023-09-12 10:26+0000\n"
+"PO-Revision-Date: 2023-09-15 10:36+0800\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese - China <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0\n"
-"X-Generator: Gtranslator 42.0\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 3.3.2\n"
 
 #: gio/gappinfo.c:339
 msgid "Setting default applications not supported yet"
@@ -527,14 +527,14 @@ msgstr "生成并运行命令行“%s”时出错："
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr "无法确定会话总线地址（尚未在此操作系统上实现）"
 
-#: gio/gdbusaddress.c:1380 gio/gdbusconnection.c:7326
+#: gio/gdbusaddress.c:1380 gio/gdbusconnection.c:7339
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
 "— unknown value “%s”"
 msgstr "无法从 DBUS_STARTER_BUS_TYPE 环境变量确定总线地址——未知的值“%s”"
 
-#: gio/gdbusaddress.c:1389 gio/gdbusconnection.c:7335
+#: gio/gdbusaddress.c:1389 gio/gdbusconnection.c:7348
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -667,84 +667,84 @@ msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr "构建客户端连接时遇到不支持的标志"
 
-#: gio/gdbusconnection.c:4267 gio/gdbusconnection.c:4621
+#: gio/gdbusconnection.c:4277 gio/gdbusconnection.c:4631
 #, c-format
 msgid ""
 "No such interface “org.freedesktop.DBus.Properties” on object at path %s"
 msgstr "路径 %s 的对象上没有“org.freedesktop.DBus.Properties”接口"
 
-#: gio/gdbusconnection.c:4412
+#: gio/gdbusconnection.c:4422
 #, c-format
 msgid "No such property “%s”"
 msgstr "无此属性“%s”"
 
-#: gio/gdbusconnection.c:4424
+#: gio/gdbusconnection.c:4434
 #, c-format
 msgid "Property “%s” is not readable"
 msgstr "属性“%s”不可读"
 
-#: gio/gdbusconnection.c:4435
+#: gio/gdbusconnection.c:4445
 #, c-format
 msgid "Property “%s” is not writable"
 msgstr "属性“%s”不可写"
 
-#: gio/gdbusconnection.c:4455
+#: gio/gdbusconnection.c:4465
 #, c-format
 msgid "Error setting property “%s”: Expected type “%s” but got “%s”"
 msgstr "设置属性“%s”时出错：期望“%s”类型但得到了“%s”类型"
 
-#: gio/gdbusconnection.c:4560 gio/gdbusconnection.c:4775
-#: gio/gdbusconnection.c:6752
+#: gio/gdbusconnection.c:4570 gio/gdbusconnection.c:4785
+#: gio/gdbusconnection.c:6762
 #, c-format
 msgid "No such interface “%s”"
 msgstr "无此接口“%s”"
 
-#: gio/gdbusconnection.c:4991 gio/gdbusconnection.c:7266
+#: gio/gdbusconnection.c:5001 gio/gdbusconnection.c:7279
 #, c-format
 msgid "No such interface “%s” on object at path %s"
 msgstr "在路径 %s 的对象上没有“%s”接口"
 
-#: gio/gdbusconnection.c:5092
+#: gio/gdbusconnection.c:5102
 #, c-format
 msgid "No such method “%s”"
 msgstr "没有“%s”这个方法"
 
-#: gio/gdbusconnection.c:5123
+#: gio/gdbusconnection.c:5133
 #, c-format
 msgid "Type of message, “%s”, does not match expected type “%s”"
 msgstr "消息的类型“%s”，与预期的类型“%s”不匹配"
 
-#: gio/gdbusconnection.c:5326
+#: gio/gdbusconnection.c:5336
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "已为 %2$s 处的接口 %1$s 导出了一个对象"
 
-#: gio/gdbusconnection.c:5553
+#: gio/gdbusconnection.c:5563
 #, c-format
 msgid "Unable to retrieve property %s.%s"
 msgstr "无法检索属性 %s.%s"
 
-#: gio/gdbusconnection.c:5609
+#: gio/gdbusconnection.c:5619
 #, c-format
 msgid "Unable to set property %s.%s"
 msgstr "无法设置属性 %s.%s"
 
-#: gio/gdbusconnection.c:5788
+#: gio/gdbusconnection.c:5798
 #, c-format
 msgid "Method “%s” returned type “%s”, but expected “%s”"
 msgstr "方法“%s”返回类型“%s”，但预期的是“%s”"
 
-#: gio/gdbusconnection.c:6864
+#: gio/gdbusconnection.c:6874
 #, c-format
 msgid "Method “%s” on interface “%s” with signature “%s” does not exist"
 msgstr "带有“%3$s”签名的接口“%2$s”上不存在“%1$s”方法"
 
-#: gio/gdbusconnection.c:6985
+#: gio/gdbusconnection.c:6995
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "已经为 %s 导出一个子树"
 
-#: gio/gdbusconnection.c:7274
+#: gio/gdbusconnection.c:7287
 #, c-format
 msgid "Object does not exist at path “%s”"
 msgstr "对象在路径“%s”处不存在"
@@ -753,46 +753,48 @@ msgstr "对象在路径“%s”处不存在"
 msgid "type is INVALID"
 msgstr "类型无效"
 
-#: gio/gdbusmessage.c:1317
-msgid "METHOD_CALL message: PATH or MEMBER header field is missing"
-msgstr "METHOD_CALL 消息：PATH 或 MEMBER 首部字段缺失"
-
-#: gio/gdbusmessage.c:1328
-msgid "METHOD_RETURN message: REPLY_SERIAL header field is missing"
-msgstr "METHOD_RETURN 消息：REPLY_SERIAL 首部字段缺失"
+#: gio/gdbusmessage.c:1324
+msgid "METHOD_CALL message: PATH or MEMBER header field is missing or invalid"
+msgstr "METHOD_CALL 消息：PATH 或 MEMBER 首部字段缺失或无效"
 
 #: gio/gdbusmessage.c:1340
-msgid "ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing"
-msgstr "错误消息：REPLY_SERIAL 或 ERROR_NAME 首部字段缺失"
+msgid "METHOD_RETURN message: REPLY_SERIAL header field is missing or invalid"
+msgstr "METHOD_RETURN 消息：REPLY_SERIAL 首部字段缺失或无效"
 
-#: gio/gdbusmessage.c:1353
-msgid "SIGNAL message: PATH, INTERFACE or MEMBER header field is missing"
-msgstr "信号消息：PATH、INTERFACE 或 MEMBER METHOD_RETURN缺失"
+#: gio/gdbusmessage.c:1360
+msgid ""
+"ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing or invalid"
+msgstr "错误消息：REPLY_SERIAL 或 ERROR_NAME 首部字段缺失或无效"
 
-#: gio/gdbusmessage.c:1361
+#: gio/gdbusmessage.c:1384
+msgid ""
+"SIGNAL message: PATH, INTERFACE or MEMBER header field is missing or invalid"
+msgstr "信号消息：PATH、INTERFACE 或 MEMBER METHOD_RETURN缺失或无效"
+
+#: gio/gdbusmessage.c:1392
 msgid ""
 "SIGNAL message: The PATH header field is using the reserved value /org/"
 "freedesktop/DBus/Local"
 msgstr "信号消息：PATH 首部字段正在使用保留值 /org/freedesktop/DBus/Local"
 
-#: gio/gdbusmessage.c:1369
+#: gio/gdbusmessage.c:1400
 msgid ""
 "SIGNAL message: The INTERFACE header field is using the reserved value org."
 "freedesktop.DBus.Local"
 msgstr "信号消息：INTERFACE 首部字段正在使用保留值 org.freedesktop.DBus.Local"
 
-#: gio/gdbusmessage.c:1417 gio/gdbusmessage.c:1477
+#: gio/gdbusmessage.c:1449 gio/gdbusmessage.c:1509
 #, c-format
 msgid "Wanted to read %lu byte but only got %lu"
 msgid_plural "Wanted to read %lu bytes but only got %lu"
 msgstr[0] "期望读取 %lu 个字节但只得到 %lu 个"
 
-#: gio/gdbusmessage.c:1431
+#: gio/gdbusmessage.c:1463
 #, c-format
 msgid "Expected NUL byte after the string “%s” but found byte %d"
 msgstr "期望“%s”后为 NUL 字节但找到了字节 %d"
 
-#: gio/gdbusmessage.c:1450
+#: gio/gdbusmessage.c:1482
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
@@ -801,21 +803,21 @@ msgstr ""
 "期望得到有效的 UTF-8 字符串，但在字节偏移 %d 处（字符串长度为 %d）找到了无效"
 "的字节。该点的有效 UTF-8 字符串曾是“%s”"
 
-#: gio/gdbusmessage.c:1514 gio/gdbusmessage.c:1790 gio/gdbusmessage.c:2001
+#: gio/gdbusmessage.c:1546 gio/gdbusmessage.c:1822 gio/gdbusmessage.c:2033
 msgid "Value nested too deeply"
 msgstr "值嵌套过深"
 
-#: gio/gdbusmessage.c:1682
+#: gio/gdbusmessage.c:1714
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus object path"
 msgstr "已解析的值“%s”不是有效的 D-Bus 对象路径"
 
-#: gio/gdbusmessage.c:1706
+#: gio/gdbusmessage.c:1738
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature"
 msgstr "已解析的值“%s”不是有效的 D-Bus 签名"
 
-#: gio/gdbusmessage.c:1757
+#: gio/gdbusmessage.c:1789
 #, c-format
 msgid ""
 "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
@@ -823,7 +825,7 @@ msgid_plural ""
 "Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."
 msgstr[0] "遇到长度为 %u 字节的数组。最大长度应为 2<<26 字节（64 MiB）。"
 
-#: gio/gdbusmessage.c:1777
+#: gio/gdbusmessage.c:1809
 #, c-format
 msgid ""
 "Encountered array of type “a%c”, expected to have a length a multiple of %u "
@@ -831,96 +833,96 @@ msgid ""
 msgstr ""
 "遇到类型为“a%c”的数组，需要长度为 %u 字节的倍数，但是找到的长度为 %u 字节"
 
-#: gio/gdbusmessage.c:1931 gio/gdbusmessage.c:2650
+#: gio/gdbusmessage.c:1963 gio/gdbusmessage.c:2682
 msgid "Empty structures (tuples) are not allowed in D-Bus"
 msgstr "D-Bus 中不允许空结构（tuples）"
 
-#: gio/gdbusmessage.c:1985
+#: gio/gdbusmessage.c:2017
 #, c-format
 msgid "Parsed value “%s” for variant is not a valid D-Bus signature"
 msgstr "变量的已解析值“%s”不是有效的 D-Bus 签名"
 
-#: gio/gdbusmessage.c:2026
+#: gio/gdbusmessage.c:2058
 #, c-format
 msgid ""
 "Error deserializing GVariant with type string “%s” from the D-Bus wire format"
 msgstr "从 D-Bus 线格式以类型字符串“%s”反序列化 GVariant 时发生错误"
 
-#: gio/gdbusmessage.c:2211
+#: gio/gdbusmessage.c:2243
 #, c-format
 msgid ""
 "Invalid endianness value. Expected 0x6c (“l”) or 0x42 (“B”) but found value "
 "0x%02x"
 msgstr "无效的字节序值。期望为 0x6c（“l”）或 0x42（“B”）但找到值 0x%02x"
 
-#: gio/gdbusmessage.c:2230
+#: gio/gdbusmessage.c:2262
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr "无效的主协议版本。期望 1，但是找到了 %d"
 
-#: gio/gdbusmessage.c:2288 gio/gdbusmessage.c:2886
+#: gio/gdbusmessage.c:2320 gio/gdbusmessage.c:2918
 msgid "Signature header found but is not of type signature"
 msgstr "找到了签名首部但不属于类型签名"
 
-#: gio/gdbusmessage.c:2300
+#: gio/gdbusmessage.c:2332
 #, c-format
 msgid "Signature header with signature “%s” found but message body is empty"
 msgstr "发现签名“%s”的签名首部，但消息主体为空"
 
-#: gio/gdbusmessage.c:2315
+#: gio/gdbusmessage.c:2347
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature (for body)"
 msgstr "已解析的值“%s”不是有效的 D-Bus 签名（针对消息主体）"
 
-#: gio/gdbusmessage.c:2347
+#: gio/gdbusmessage.c:2379
 #, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
 msgstr[0] "消息中没有签名首部，但消息主体为 %u 字节"
 
-#: gio/gdbusmessage.c:2357
+#: gio/gdbusmessage.c:2389
 msgid "Cannot deserialize message: "
 msgstr "无法反序列化消息："
 
-#: gio/gdbusmessage.c:2703
+#: gio/gdbusmessage.c:2735
 #, c-format
 msgid ""
 "Error serializing GVariant with type string “%s” to the D-Bus wire format"
 msgstr "以类型字符串“%s”序列化 GVariant 到 D-Bus 线格式时发生错误"
 
-#: gio/gdbusmessage.c:2840
+#: gio/gdbusmessage.c:2872
 #, c-format
 msgid ""
 "Number of file descriptors in message (%d) differs from header field (%d)"
 msgstr "消息中的文件描述符数量（%d）与首部字段中的（%d）不同"
 
-#: gio/gdbusmessage.c:2848
+#: gio/gdbusmessage.c:2880
 msgid "Cannot serialize message: "
 msgstr "无法序列化消息："
 
-#: gio/gdbusmessage.c:2901
+#: gio/gdbusmessage.c:2933
 #, c-format
 msgid "Message body has signature “%s” but there is no signature header"
 msgstr "消息主体有签名“%s”但是没有签名首部"
 
-#: gio/gdbusmessage.c:2911
+#: gio/gdbusmessage.c:2943
 #, c-format
 msgid ""
 "Message body has type signature “%s” but signature in the header field is "
 "“%s”"
 msgstr "消息主体有类型签名“%s”但首部字段的签名为“%s”"
 
-#: gio/gdbusmessage.c:2927
+#: gio/gdbusmessage.c:2959
 #, c-format
 msgid "Message body is empty but signature in the header field is “(%s)”"
 msgstr "消息主体为空，但首部字段的签名为“(%s)”"
 
-#: gio/gdbusmessage.c:3482
+#: gio/gdbusmessage.c:3514
 #, c-format
 msgid "Error return with body of type “%s”"
 msgstr "出错，返回了“%s”类型的主体"
 
-#: gio/gdbusmessage.c:3490
+#: gio/gdbusmessage.c:3522
 msgid "Error return with empty body"
 msgstr "出错，返回了空的主体"
 
@@ -1827,11 +1829,13 @@ msgstr "不要跟随符号链接"
 msgid "attributes:\n"
 msgstr "属性：\n"
 
+#. Translators: This is a noun and represents and attribute of a file
 #: gio/gio-tool-info.c:166
 #, c-format
 msgid "display name: %s\n"
 msgstr "显示名称：%s\n"
 
+#. Translators: This is a noun and represents and attribute of a file
 #: gio/gio-tool-info.c:176
 #, c-format
 msgid "edit name: %s\n"
@@ -3442,8 +3446,8 @@ msgstr "无效的域"
 
 #: gio/gresource.c:683 gio/gresource.c:945 gio/gresource.c:985
 #: gio/gresource.c:1109 gio/gresource.c:1181 gio/gresource.c:1255
-#: gio/gresource.c:1336 gio/gresourcefile.c:478 gio/gresourcefile.c:602
-#: gio/gresourcefile.c:753
+#: gio/gresource.c:1336 gio/gresourcefile.c:482 gio/gresourcefile.c:606
+#: gio/gresourcefile.c:757
 #, c-format
 msgid "The resource at “%s” does not exist"
 msgstr "位于“%s”的资源不存在"
@@ -3453,16 +3457,16 @@ msgstr "位于“%s”的资源不存在"
 msgid "The resource at “%s” failed to decompress"
 msgstr "解压位于“%s”的资源失败"
 
-#: gio/gresourcefile.c:659
+#: gio/gresourcefile.c:663
 msgid "Resource files cannot be renamed"
 msgstr "无法重命名资源文件"
 
-#: gio/gresourcefile.c:749
+#: gio/gresourcefile.c:753
 #, c-format
 msgid "The resource at “%s” is not a directory"
 msgstr "“%s”处的资源不是一个目录"
 
-#: gio/gresourcefile.c:957
+#: gio/gresourcefile.c:961
 msgid "Input stream doesn’t implement seek"
 msgstr "输入流未实现定位"
 
@@ -3828,7 +3832,7 @@ msgid "Socket is already closed"
 msgstr "套接字已经关闭"
 
 #: gio/gsocket.c:449 gio/gsocket.c:3238 gio/gsocket.c:4469 gio/gsocket.c:4527
-#: gio/gthreadedresolver.c:1438
+#: gio/gthreadedresolver.c:1445
 msgid "Socket I/O timed out"
 msgstr "套接字 I/O 超时"
 
@@ -5074,31 +5078,31 @@ msgstr "键文件包含组“%2$s”中的键“%1$s”，其值无法解释。"
 msgid "Key “%s” in group “%s” has value “%s” where %s was expected"
 msgstr "组“%2$s”中的键“%1$s”的值为“%3$s”，应为 %4$s"
 
-#: glib/gkeyfile.c:4353
+#: glib/gkeyfile.c:4357
 msgid "Key file contains escape character at end of line"
 msgstr "键文件在行尾含有转义字符"
 
-#: glib/gkeyfile.c:4375
+#: glib/gkeyfile.c:4394
 #, c-format
 msgid "Key file contains invalid escape sequence “%s”"
 msgstr "键文件中包含无效的转义序列“%s”"
 
-#: glib/gkeyfile.c:4520
+#: glib/gkeyfile.c:4545
 #, c-format
 msgid "Value “%s” cannot be interpreted as a number."
 msgstr "无法将值“%s”解释为数值。"
 
-#: glib/gkeyfile.c:4534
+#: glib/gkeyfile.c:4559
 #, c-format
 msgid "Integer value “%s” out of range"
 msgstr "整数值“%s”超出范围"
 
-#: glib/gkeyfile.c:4567
+#: glib/gkeyfile.c:4592
 #, c-format
 msgid "Value “%s” cannot be interpreted as a float number."
 msgstr "无法将值“%s”解释为浮点数。"
 
-#: glib/gkeyfile.c:4606
+#: glib/gkeyfile.c:4631
 #, c-format
 msgid "Value “%s” cannot be interpreted as a boolean."
 msgstr "无法将值“%s”解释为布尔值。"
@@ -5370,300 +5374,296 @@ msgstr "缺少 %s 的参数"
 msgid "Unknown option %s"
 msgstr "未知选项 %s"
 
-#: glib/gregex.c:479
+#: glib/gregex.c:480
 msgid "corrupted object"
 msgstr "无效对象"
 
-#: glib/gregex.c:481
+#: glib/gregex.c:482
 msgid "out of memory"
 msgstr "内存不足"
 
-#: glib/gregex.c:487
-msgid "backtracking limit reached"
-msgstr "达到回溯上限"
-
-#: glib/gregex.c:498
+#: glib/gregex.c:497
 msgid "internal error"
 msgstr "内部错误"
 
-#: glib/gregex.c:500
+#: glib/gregex.c:499
 msgid "the pattern contains items not supported for partial matching"
 msgstr "表达式包含不被部分匹配支持的项"
 
-#: glib/gregex.c:502
+#: glib/gregex.c:501
 msgid "back references as conditions are not supported for partial matching"
 msgstr "不完全匹配时作为条件的后向引用不被支持"
 
-#: glib/gregex.c:508
+#: glib/gregex.c:507
 msgid "recursion limit reached"
 msgstr "达到递归上限"
 
-#: glib/gregex.c:510
+#: glib/gregex.c:509
 msgid "bad offset"
 msgstr "错误的偏移值"
 
-#: glib/gregex.c:512
+#: glib/gregex.c:511
 msgid "recursion loop"
 msgstr "递归循环"
 
 #. should not happen in GRegex since we check modes before each match
-#: glib/gregex.c:515
+#: glib/gregex.c:514
 msgid "matching mode is requested that was not compiled for JIT"
 msgstr "请求了匹配模式，但它未为 JIT 编译"
 
-#: glib/gregex.c:536 glib/gregex.c:1838
+#: glib/gregex.c:535 glib/gregex.c:1851
 msgid "unknown error"
 msgstr "未知错误"
 
-#: glib/gregex.c:557
+#: glib/gregex.c:556
 msgid "\\ at end of pattern"
 msgstr "\\ 在表达式末尾"
 
-#: glib/gregex.c:561
+#: glib/gregex.c:560
 msgid "\\c at end of pattern"
 msgstr "表达式末尾的 \\c"
 
-#: glib/gregex.c:566
+#: glib/gregex.c:565
 msgid "unrecognized character following \\"
 msgstr "\\ 后有无法识别的字符"
 
-#: glib/gregex.c:570
+#: glib/gregex.c:569
 msgid "numbers out of order in {} quantifier"
 msgstr "{} 量词里的数字次序颠倒了"
 
-#: glib/gregex.c:574
+#: glib/gregex.c:573
 msgid "number too big in {} quantifier"
 msgstr "{} 量词里的数字太大了"
 
-#: glib/gregex.c:578
+#: glib/gregex.c:577
 msgid "missing terminating ] for character class"
 msgstr "字符类缺少终结的 ]"
 
-#: glib/gregex.c:582
+#: glib/gregex.c:581
 msgid "invalid escape sequence in character class"
 msgstr "字符类包含无效的转义序列"
 
-#: glib/gregex.c:586
+#: glib/gregex.c:585
 msgid "range out of order in character class"
 msgstr "字符类的范围次序颠倒"
 
-#: glib/gregex.c:591
+#: glib/gregex.c:590
 msgid "nothing to repeat"
 msgstr "没有可以重复的内容"
 
-#: glib/gregex.c:595
+#: glib/gregex.c:594
 msgid "unrecognized character after (? or (?-"
 msgstr "(? 或 (?- 后有无法识别的字符"
 
-#: glib/gregex.c:599
+#: glib/gregex.c:598
 msgid "POSIX named classes are supported only within a class"
 msgstr "只有类里支持 POSIX 命名的类"
 
-#: glib/gregex.c:603
+#: glib/gregex.c:602
 msgid "POSIX collating elements are not supported"
 msgstr "不支持 POSIX 整理元素"
 
-#: glib/gregex.c:609
+#: glib/gregex.c:608
 msgid "missing terminating )"
 msgstr "缺少结束的 )"
 
-#: glib/gregex.c:613
+#: glib/gregex.c:612
 msgid "reference to non-existent subpattern"
 msgstr "引用了不存在的子表达式"
 
-#: glib/gregex.c:617
+#: glib/gregex.c:616
 msgid "missing ) after comment"
 msgstr "注释后缺少 )"
 
-#: glib/gregex.c:621
+#: glib/gregex.c:620
 msgid "regular expression is too large"
 msgstr "正则表达式过长"
 
-#: glib/gregex.c:625
+#: glib/gregex.c:624
 msgid "malformed number or name after (?("
 msgstr "(?( 后有形式不正确的数字或名称"
 
-#: glib/gregex.c:629
+#: glib/gregex.c:628
 msgid "lookbehind assertion is not fixed length"
 msgstr "lookbehind 断言不是定长的"
 
-#: glib/gregex.c:633
+#: glib/gregex.c:632
 msgid "conditional group contains more than two branches"
 msgstr "条件组包含了超过两个分支"
 
-#: glib/gregex.c:637
+#: glib/gregex.c:636
 msgid "assertion expected after (?("
 msgstr "(?( 后应该有断言"
 
-#: glib/gregex.c:641
+#: glib/gregex.c:640
 msgid "a numbered reference must not be zero"
 msgstr "编号引用不能为 0"
 
-#: glib/gregex.c:645
+#: glib/gregex.c:644
 msgid "unknown POSIX class name"
 msgstr "未知的 POSIX 类名"
 
-#: glib/gregex.c:650
+#: glib/gregex.c:649
 msgid "character value in \\x{...} sequence is too large"
 msgstr "\\x{...} 序列里的字符值太大了"
 
-#: glib/gregex.c:654
+#: glib/gregex.c:653
 msgid "\\C not allowed in lookbehind assertion"
 msgstr "lookbehind 断言里不允许使用 \\C"
 
-#: glib/gregex.c:658
+#: glib/gregex.c:657
 msgid "missing terminator in subpattern name"
 msgstr "子表达式名里缺少终结符"
 
-#: glib/gregex.c:662
+#: glib/gregex.c:661
 msgid "two named subpatterns have the same name"
 msgstr "两个有名子表达式有相同的名称"
 
-#: glib/gregex.c:666
+#: glib/gregex.c:665
 msgid "malformed \\P or \\p sequence"
 msgstr "形式不正确的 \\P 或 \\p 序列"
 
-#: glib/gregex.c:670
+#: glib/gregex.c:669
 msgid "unknown property name after \\P or \\p"
 msgstr "\\P 或 \\p 后有未知的属性名"
 
-#: glib/gregex.c:674
+#: glib/gregex.c:673
 msgid "subpattern name is too long (maximum 32 characters)"
 msgstr "子表达式名太长了（最多 32 个字符）"
 
-#: glib/gregex.c:678
+#: glib/gregex.c:677
 msgid "too many named subpatterns (maximum 10,000)"
 msgstr "有名子表达式太多了（最多 10,000 个）"
 
-#: glib/gregex.c:682
+#: glib/gregex.c:681
 msgid "octal value is greater than \\377"
 msgstr "八进制值大于 \\377"
 
-#: glib/gregex.c:686
+#: glib/gregex.c:685
 msgid "DEFINE group contains more than one branch"
 msgstr "定义组包含多于一个的分支"
 
-#: glib/gregex.c:690
+#: glib/gregex.c:689
 msgid "inconsistent NEWLINE options"
 msgstr "不一致的换行选项"
 
-#: glib/gregex.c:694
+#: glib/gregex.c:693
 msgid ""
 "\\g is not followed by a braced, angle-bracketed, or quoted name or number, "
 "or by a plain number"
 msgstr "\\g 后没有花括号、尖括号或引号括起来的名称或数字，或纯数字"
 
-#: glib/gregex.c:699
+#: glib/gregex.c:698
 msgid "an argument is not allowed for (*ACCEPT), (*FAIL), or (*COMMIT)"
 msgstr "(*ACCEPT)、(*FAIL) 和 (*COMMIT) 不允许带参数"
 
-#: glib/gregex.c:703
+#: glib/gregex.c:702
 msgid "(*VERB) not recognized"
 msgstr "无法识别 (*VERB)"
 
-#: glib/gregex.c:707
+#: glib/gregex.c:706
 msgid "number is too big"
 msgstr "数字太大"
 
-#: glib/gregex.c:711
+#: glib/gregex.c:710
 msgid "missing subpattern name after (?&"
 msgstr "(?& 后缺少子表达式名"
 
-#: glib/gregex.c:715
+#: glib/gregex.c:714
 msgid "different names for subpatterns of the same number are not allowed"
 msgstr "不允许两个号码相同的子表达式有不同的名称"
 
-#: glib/gregex.c:719
+#: glib/gregex.c:718
 msgid "(*MARK) must have an argument"
 msgstr "(*MARK) 必须有一个参数"
 
-#: glib/gregex.c:723
+#: glib/gregex.c:722
 msgid "\\c must be followed by an ASCII character"
 msgstr "\\c 后面必须跟一个 ASCII 字符"
 
-#: glib/gregex.c:727
+#: glib/gregex.c:726
 msgid "\\k is not followed by a braced, angle-bracketed, or quoted name"
 msgstr "\\k 后没有用花括号、尖括号或引号括起来的名称"
 
-#: glib/gregex.c:731
+#: glib/gregex.c:730
 msgid "\\N is not supported in a class"
 msgstr "类中不支持 \\N"
 
-#: glib/gregex.c:735
+#: glib/gregex.c:734
 msgid "name is too long in (*MARK), (*PRUNE), (*SKIP), or (*THEN)"
 msgstr "在 (*MARK)、(*PRUNE)、(*SKIP) 或者 (*THEN) 中的名称太长"
 
-#: glib/gregex.c:739 glib/gregex.c:875
+#: glib/gregex.c:738 glib/gregex.c:874
 msgid "code overflow"
 msgstr "代码溢出"
 
-#: glib/gregex.c:743
+#: glib/gregex.c:742
 msgid "unrecognized character after (?P"
 msgstr "(?P 有无法识别的字符"
 
-#: glib/gregex.c:747
+#: glib/gregex.c:746
 msgid "overran compiling workspace"
 msgstr "编译工作区超出正常范围"
 
-#: glib/gregex.c:751
+#: glib/gregex.c:750
 msgid "previously-checked referenced subpattern not found"
 msgstr "未找到之前检查过的引用过的子表达式"
 
-#: glib/gregex.c:874 glib/gregex.c:1121 glib/gregex.c:2444
+#: glib/gregex.c:873 glib/gregex.c:1135 glib/gregex.c:2457
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "匹配正则表达式 %s 时出错：%s"
 
-#: glib/gregex.c:1721
+#: glib/gregex.c:1735
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "PCRE 库编译时未包含 UTF8 支持"
 
-#: glib/gregex.c:1729
+#: glib/gregex.c:1743
 msgid "PCRE library is compiled with incompatible options"
 msgstr "PCRE 库编译时使用了不兼容的选项"
 
-#: glib/gregex.c:1847
+#: glib/gregex.c:1860
 #, c-format
 msgid "Error while compiling regular expression ‘%s’ at char %s: %s"
 msgstr "编译正则表达式“%s”到字符 %s 处时出错：%s"
 
-#: glib/gregex.c:2887
+#: glib/gregex.c:2900
 msgid "hexadecimal digit or “}” expected"
 msgstr "期望十六进制数或“}”"
 
-#: glib/gregex.c:2903
+#: glib/gregex.c:2916
 msgid "hexadecimal digit expected"
 msgstr "期望十六进制数"
 
-#: glib/gregex.c:2943
+#: glib/gregex.c:2956
 msgid "missing “<” in symbolic reference"
 msgstr "在符号引用中缺少“<”"
 
-#: glib/gregex.c:2952
+#: glib/gregex.c:2965
 msgid "unfinished symbolic reference"
 msgstr "未完成的符号引用"
 
-#: glib/gregex.c:2959
+#: glib/gregex.c:2972
 msgid "zero-length symbolic reference"
 msgstr "零长符号引用"
 
-#: glib/gregex.c:2970
+#: glib/gregex.c:2983
 msgid "digit expected"
 msgstr "期望数字"
 
-#: glib/gregex.c:2988
+#: glib/gregex.c:3001
 msgid "illegal symbolic reference"
 msgstr "非法的符号引用"
 
-#: glib/gregex.c:3051
+#: glib/gregex.c:3064
 msgid "stray final “\\”"
 msgstr "丢失了最后的“\\”"
 
-#: glib/gregex.c:3055
+#: glib/gregex.c:3068
 msgid "unknown escape sequence"
 msgstr "未知的转义序列"
 
-#: glib/gregex.c:3065
+#: glib/gregex.c:3078
 #, c-format
 msgid "Error while parsing replacement text “%s” at char %lu: %s"
 msgstr "解析替换文本“%s”到字符 %lu 处时出错：%s"
@@ -5690,92 +5690,92 @@ msgstr "在找到为 %c 匹配的引用之前，文本已结束。（文本为�
 msgid "Text was empty (or contained only whitespace)"
 msgstr "文本为空（或仅含空白字符）"
 
-#: glib/gspawn.c:319
+#: glib/gspawn.c:320
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "从子进程中读取数据失败（%s）"
 
-#: glib/gspawn.c:471
+#: glib/gspawn.c:473
 #, c-format
 msgid "Unexpected error in reading data from a child process (%s)"
 msgstr "在从子进程中读取数据时出现异常错误（%s）"
 
-#: glib/gspawn.c:556
+#: glib/gspawn.c:558
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "waitpid() 出现异常错误（%s）"
 
-#: glib/gspawn.c:1175 glib/gspawn-win32.c:1575
+#: glib/gspawn.c:1180 glib/gspawn-win32.c:1575
 #, c-format
 msgid "Child process exited with code %ld"
 msgstr "子进程已退出，代码 %ld"
 
-#: glib/gspawn.c:1183
+#: glib/gspawn.c:1188
 #, c-format
 msgid "Child process killed by signal %ld"
 msgstr "子进程已由信号 %ld 杀死"
 
-#: glib/gspawn.c:1190
+#: glib/gspawn.c:1195
 #, c-format
 msgid "Child process stopped by signal %ld"
 msgstr "子进程已由信号 %ld 停止"
 
-#: glib/gspawn.c:1197
+#: glib/gspawn.c:1202
 #, c-format
 msgid "Child process exited abnormally"
 msgstr "子进程异常中止"
 
-#: glib/gspawn.c:2027 glib/gspawn-win32.c:472 glib/gspawn-win32.c:480
+#: glib/gspawn.c:2032 glib/gspawn-win32.c:472 glib/gspawn-win32.c:480
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "从子管道中读取失败（%s）"
 
-#: glib/gspawn.c:2399
+#: glib/gspawn.c:2404
 #, c-format
 msgid "Failed to spawn child process “%s” (%s)"
 msgstr "生成子进程“%s”失败（%s）"
 
-#: glib/gspawn.c:2525
+#: glib/gspawn.c:2530
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "fork 失败（%s）"
 
-#: glib/gspawn.c:2685 glib/gspawn-win32.c:503
+#: glib/gspawn.c:2690 glib/gspawn-win32.c:503
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
 msgstr "切换到目录“%s”失败（%s）"
 
-#: glib/gspawn.c:2695
+#: glib/gspawn.c:2700
 #, c-format
 msgid "Failed to execute child process “%s” (%s)"
 msgstr "执行子进程“%s”失败（%s）"
 
-#: glib/gspawn.c:2705
+#: glib/gspawn.c:2710
 #, c-format
 msgid "Failed to open file to remap file descriptor (%s)"
 msgstr "打开文件以重新映射文件描述符失败（%s）"
 
-#: glib/gspawn.c:2713
+#: glib/gspawn.c:2718
 #, c-format
 msgid "Failed to duplicate file descriptor for child process (%s)"
 msgstr "为子进程复制文件描述符失败（%s）"
 
-#: glib/gspawn.c:2722
+#: glib/gspawn.c:2727
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "fork 子进程失败（%s）"
 
-#: glib/gspawn.c:2730
+#: glib/gspawn.c:2735
 #, c-format
 msgid "Failed to close file descriptor for child process (%s)"
 msgstr "为子进程关闭文件描述符失败（%s）"
 
-#: glib/gspawn.c:2738
+#: glib/gspawn.c:2743
 #, c-format
 msgid "Unknown error executing child process “%s”"
 msgstr "执行子进程“%s”时出现未知错误"
 
-#: glib/gspawn.c:2762
+#: glib/gspawn.c:2767
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "从子进程管道中读取足够的数据失败（%s）"
@@ -6139,6 +6139,9 @@ msgstr "%.1f PB"
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
+
+#~ msgid "backtracking limit reached"
+#~ msgstr "达到回溯上限"
 
 #~ msgid "GApplication options"
 #~ msgstr "GApplication 选项"
