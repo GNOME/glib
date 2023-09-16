@@ -16,9 +16,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2023-07-28 12:53+0000\n"
-"PO-Revision-Date: 2023-07-29 12:00+0300\n"
-"Last-Translator: Aleksandr Melman <Alexmelman88@gmail.com>\n"
+"POT-Creation-Date: 2023-08-31 14:09+0000\n"
+"PO-Revision-Date: 2023-08-31 18:12+0300\n"
+"Last-Translator: Artur So <arturios2005@mail.ru>\n"
 "Language-Team: Русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.3.2\n"
 
 #: gio/gappinfo.c:339
 msgid "Setting default applications not supported yet"
@@ -545,7 +545,7 @@ msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
 "Не удалось определить адрес сеансовой шины (не реализовано для этой ОС)"
 
-#: gio/gdbusaddress.c:1380 gio/gdbusconnection.c:7326
+#: gio/gdbusaddress.c:1380 gio/gdbusconnection.c:7339
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -554,7 +554,7 @@ msgstr ""
 "Не удалось определить адрес шины из значения переменной окружения "
 "DBUS_STARTER_BUS_TYPE — неизвестное значение «%s»"
 
-#: gio/gdbusaddress.c:1389 gio/gdbusconnection.c:7335
+#: gio/gdbusaddress.c:1389 gio/gdbusconnection.c:7348
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -695,85 +695,85 @@ msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr "При создании клиентского соединения обнаружены неподдерживаемые флаги"
 
-#: gio/gdbusconnection.c:4267 gio/gdbusconnection.c:4621
+#: gio/gdbusconnection.c:4277 gio/gdbusconnection.c:4631
 #, c-format
 msgid ""
 "No such interface “org.freedesktop.DBus.Properties” on object at path %s"
 msgstr ""
 "Интерфейс «org.freedesktop.DBus.Properties» для пути %s объекта не найден"
 
-#: gio/gdbusconnection.c:4412
+#: gio/gdbusconnection.c:4422
 #, c-format
 msgid "No such property “%s”"
 msgstr "Свойство «%s» отсутствует"
 
-#: gio/gdbusconnection.c:4424
+#: gio/gdbusconnection.c:4434
 #, c-format
 msgid "Property “%s” is not readable"
 msgstr "Свойство «%s» недоступно для чтения"
 
-#: gio/gdbusconnection.c:4435
+#: gio/gdbusconnection.c:4445
 #, c-format
 msgid "Property “%s” is not writable"
 msgstr "Свойство «%s» недоступно для записи"
 
-#: gio/gdbusconnection.c:4455
+#: gio/gdbusconnection.c:4465
 #, c-format
 msgid "Error setting property “%s”: Expected type “%s” but got “%s”"
 msgstr "Ошибка установки свойства «%s»: ожидался тип «%s», но получен «%s»"
 
-#: gio/gdbusconnection.c:4560 gio/gdbusconnection.c:4775
-#: gio/gdbusconnection.c:6752
+#: gio/gdbusconnection.c:4570 gio/gdbusconnection.c:4785
+#: gio/gdbusconnection.c:6762
 #, c-format
 msgid "No such interface “%s”"
 msgstr "Интерфейс «%s» отсутствует"
 
-#: gio/gdbusconnection.c:4991 gio/gdbusconnection.c:7266
+#: gio/gdbusconnection.c:5001 gio/gdbusconnection.c:7279
 #, c-format
 msgid "No such interface “%s” on object at path %s"
 msgstr "Интерфейс «%s» для пути %s объекта не найден"
 
-#: gio/gdbusconnection.c:5092
+#: gio/gdbusconnection.c:5102
 #, c-format
 msgid "No such method “%s”"
 msgstr "Ключ «%s» отсутствует"
 
-#: gio/gdbusconnection.c:5123
+#: gio/gdbusconnection.c:5133
 #, c-format
 msgid "Type of message, “%s”, does not match expected type “%s”"
 msgstr "Тип сообщения «%s» не совпадает с ожидаемым типом «%s»"
 
-#: gio/gdbusconnection.c:5326
+#: gio/gdbusconnection.c:5336
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Объект интерфейса %s уже экспортирован как %s"
 
-#: gio/gdbusconnection.c:5553
+#: gio/gdbusconnection.c:5563
 #, c-format
 msgid "Unable to retrieve property %s.%s"
 msgstr "Невозможно получить свойство %s.%s"
 
-#: gio/gdbusconnection.c:5609
+#: gio/gdbusconnection.c:5619
 #, c-format
 msgid "Unable to set property %s.%s"
 msgstr "Невозможно установить свойство %s.%s"
 
-#: gio/gdbusconnection.c:5788
+#: gio/gdbusconnection.c:5798
 #, c-format
 msgid "Method “%s” returned type “%s”, but expected “%s”"
 msgstr "Метод «%s» вернул тип «%s», но ожидалось «%s»"
 
-#: gio/gdbusconnection.c:6864
+#: gio/gdbusconnection.c:6874
 #, c-format
 msgid "Method “%s” on interface “%s” with signature “%s” does not exist"
 msgstr "Метод «%s» интерфейса «%s» с сигнатурой «%s» не существует"
 
-#: gio/gdbusconnection.c:6985
+#: gio/gdbusconnection.c:6995
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Поддерево уже экспортировано для %s"
 
-#: gio/gdbusconnection.c:7274
+#: gio/gdbusconnection.c:7287
 #, c-format
 msgid "Object does not exist at path “%s”"
 msgstr "Объект по пути «%s» не существует"
@@ -782,25 +782,33 @@ msgstr "Объект по пути «%s» не существует"
 msgid "type is INVALID"
 msgstr "тип является НЕДОПУСТИМЫМ"
 
-#: gio/gdbusmessage.c:1317
-msgid "METHOD_CALL message: PATH or MEMBER header field is missing"
-msgstr "Сообщение METHOD_CALL: отсутствует поле заголовка PATH или MEMBER"
-
-#: gio/gdbusmessage.c:1328
-msgid "METHOD_RETURN message: REPLY_SERIAL header field is missing"
-msgstr "Сообщение METHOD_RETURN: отсутствует поле заголовка REPLY_SERIAL"
+#: gio/gdbusmessage.c:1324
+msgid "METHOD_CALL message: PATH or MEMBER header field is missing or invalid"
+msgstr ""
+"Сообщение METHOD_CALL: отсутствует или недопустимо поле заголовка PATH или "
+"MEMBER"
 
 #: gio/gdbusmessage.c:1340
-msgid "ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing"
+msgid "METHOD_RETURN message: REPLY_SERIAL header field is missing or invalid"
 msgstr ""
-"Сообщение ERROR: отсутствует поле заголовка REPLY_SERIAL или ERROR_NAME"
+"Сообщение METHOD_RETURN: отсутствует или недопустимо поле заголовка "
+"REPLY_SERIAL"
 
-#: gio/gdbusmessage.c:1353
-msgid "SIGNAL message: PATH, INTERFACE or MEMBER header field is missing"
+#: gio/gdbusmessage.c:1360
+msgid ""
+"ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing or invalid"
 msgstr ""
-"Сообщение SIGNAL: отсутствует поле заголовка PATH, INTERFACE или MEMBER"
+"Сообщение ERROR: отсутствует или недопустимо поле заголовка REPLY_SERIAL или "
+"ERROR_NAME"
 
-#: gio/gdbusmessage.c:1361
+#: gio/gdbusmessage.c:1384
+msgid ""
+"SIGNAL message: PATH, INTERFACE or MEMBER header field is missing or invalid"
+msgstr ""
+"Сообщение SIGNAL: отсутствует или недопустимо поле заголовка PATH, INTERFACE "
+"или MEMBER"
+
+#: gio/gdbusmessage.c:1392
 msgid ""
 "SIGNAL message: The PATH header field is using the reserved value /org/"
 "freedesktop/DBus/Local"
@@ -808,7 +816,7 @@ msgstr ""
 "Сообщение SIGNAL: поле заголовка PATH использует зарезервированное значение /"
 "org/freedesktop/DBus/Local"
 
-#: gio/gdbusmessage.c:1369
+#: gio/gdbusmessage.c:1400
 msgid ""
 "SIGNAL message: The INTERFACE header field is using the reserved value org."
 "freedesktop.DBus.Local"
@@ -816,7 +824,7 @@ msgstr ""
 "Сообщение SIGNAL: поле заголовка INTERFACE использует зарезервированное "
 "значение org.freedesktop.DBus.Local"
 
-#: gio/gdbusmessage.c:1417 gio/gdbusmessage.c:1477
+#: gio/gdbusmessage.c:1449 gio/gdbusmessage.c:1509
 #, c-format
 msgid "Wanted to read %lu byte but only got %lu"
 msgid_plural "Wanted to read %lu bytes but only got %lu"
@@ -824,12 +832,12 @@ msgstr[0] "Требовалось прочитать %lu байт, но проч
 msgstr[1] "Требовалось прочитать %lu байта, но прочитано только %lu"
 msgstr[2] "Требовалось прочитать %lu байт, но прочитано только %lu"
 
-#: gio/gdbusmessage.c:1431
+#: gio/gdbusmessage.c:1463
 #, c-format
 msgid "Expected NUL byte after the string “%s” but found byte %d"
 msgstr "Ожидался байт NUL после строки «%s», но найден байт %d"
 
-#: gio/gdbusmessage.c:1450
+#: gio/gdbusmessage.c:1482
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
@@ -839,21 +847,21 @@ msgstr ""
 "(смещение %d, длина строки %d). Корректная строка UTF-8 вплоть до тех байт: "
 "«%s»"
 
-#: gio/gdbusmessage.c:1514 gio/gdbusmessage.c:1790 gio/gdbusmessage.c:2001
+#: gio/gdbusmessage.c:1546 gio/gdbusmessage.c:1822 gio/gdbusmessage.c:2033
 msgid "Value nested too deeply"
 msgstr "Слишком глубокая иерархия"
 
-#: gio/gdbusmessage.c:1682
+#: gio/gdbusmessage.c:1714
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus object path"
 msgstr "Разобранное значение «%s» не является допустимым путём объекта D-Bus"
 
-#: gio/gdbusmessage.c:1706
+#: gio/gdbusmessage.c:1738
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature"
 msgstr "Разобранное значение «%s» не является допустимой подписью D-Bus"
 
-#: gio/gdbusmessage.c:1757
+#: gio/gdbusmessage.c:1789
 #, c-format
 msgid ""
 "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
@@ -869,7 +877,7 @@ msgstr[2] ""
 "Обнаружен массив длинной %u байт. Максимальная длина равна 2<<26 байт (64 "
 "МиБ)."
 
-#: gio/gdbusmessage.c:1777
+#: gio/gdbusmessage.c:1809
 #, c-format
 msgid ""
 "Encountered array of type “a%c”, expected to have a length a multiple of %u "
@@ -878,24 +886,24 @@ msgstr ""
 "Получен массив типа «a%c», который должен иметь размер кратный %u (байт), но "
 "массив имеет длину %u (байт)"
 
-#: gio/gdbusmessage.c:1931 gio/gdbusmessage.c:2650
+#: gio/gdbusmessage.c:1963 gio/gdbusmessage.c:2682
 msgid "Empty structures (tuples) are not allowed in D-Bus"
 msgstr "Пустые структуры (записи) не допускаются в D-Bus"
 
-#: gio/gdbusmessage.c:1985
+#: gio/gdbusmessage.c:2017
 #, c-format
 msgid "Parsed value “%s” for variant is not a valid D-Bus signature"
 msgstr ""
 "Разобранное значение «%s» для варианта не является допустимой подписью D-Bus"
 
-#: gio/gdbusmessage.c:2026
+#: gio/gdbusmessage.c:2058
 #, c-format
 msgid ""
 "Error deserializing GVariant with type string “%s” from the D-Bus wire format"
 msgstr ""
 "Ошибка десериализации GVariant с типом строки «%s» из формата D-Bus wire"
 
-#: gio/gdbusmessage.c:2211
+#: gio/gdbusmessage.c:2243
 #, c-format
 msgid ""
 "Invalid endianness value. Expected 0x6c (“l”) or 0x42 (“B”) but found value "
@@ -904,27 +912,27 @@ msgstr ""
 "Неправильный порядок байтов в значении. Ожидался 0x6c ('l') или 0x42 ('B'), "
 "но найдено значение 0x%02x"
 
-#: gio/gdbusmessage.c:2230
+#: gio/gdbusmessage.c:2262
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr "Неправильный старший номер версии протокола. Ожидался 1, но найден %d"
 
-#: gio/gdbusmessage.c:2288 gio/gdbusmessage.c:2886
+#: gio/gdbusmessage.c:2320 gio/gdbusmessage.c:2918
 msgid "Signature header found but is not of type signature"
 msgstr "Заголовок подписи найден, но его тип отличается от подписи"
 
-#: gio/gdbusmessage.c:2300
+#: gio/gdbusmessage.c:2332
 #, c-format
 msgid "Signature header with signature “%s” found but message body is empty"
 msgstr "Найден заголовок подписи с подписью «%s», но тело сообщения пусто"
 
-#: gio/gdbusmessage.c:2315
+#: gio/gdbusmessage.c:2347
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature (for body)"
 msgstr ""
 "Разобранное значение «%s» не является допустимой подписью D-Bus (для тела)"
 
-#: gio/gdbusmessage.c:2347
+#: gio/gdbusmessage.c:2379
 #, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
@@ -936,17 +944,17 @@ msgstr[1] ""
 msgstr[2] ""
 "Отсутствует заголовок подписи в сообщении, но тело сообщения занимает %u байт"
 
-#: gio/gdbusmessage.c:2357
+#: gio/gdbusmessage.c:2389
 msgid "Cannot deserialize message: "
 msgstr "Не удалось выполнить извлечение сообщения: "
 
-#: gio/gdbusmessage.c:2703
+#: gio/gdbusmessage.c:2735
 #, c-format
 msgid ""
 "Error serializing GVariant with type string “%s” to the D-Bus wire format"
 msgstr "Ошибка сериализации GVariant с типом строки «%s» в формат D-Bus wire"
 
-#: gio/gdbusmessage.c:2840
+#: gio/gdbusmessage.c:2872
 #, c-format
 msgid ""
 "Number of file descriptors in message (%d) differs from header field (%d)"
@@ -954,16 +962,16 @@ msgstr ""
 "Количество дескрипторов файлов в сообщении (%d) отличается от указанного в "
 "заголовке (%d)"
 
-#: gio/gdbusmessage.c:2848
+#: gio/gdbusmessage.c:2880
 msgid "Cannot serialize message: "
 msgstr "Не удалось сериализовать сообщение: "
 
-#: gio/gdbusmessage.c:2901
+#: gio/gdbusmessage.c:2933
 #, c-format
 msgid "Message body has signature “%s” but there is no signature header"
 msgstr "Тело сообщения имеет подпись «%s», но нет заголовка подписи"
 
-#: gio/gdbusmessage.c:2911
+#: gio/gdbusmessage.c:2943
 #, c-format
 msgid ""
 "Message body has type signature “%s” but signature in the header field is "
@@ -972,18 +980,18 @@ msgstr ""
 "Тело сообщения имеет тип подписи «%s», но значение подписи в поле заголовка "
 "равно «%s»"
 
-#: gio/gdbusmessage.c:2927
+#: gio/gdbusmessage.c:2959
 #, c-format
 msgid "Message body is empty but signature in the header field is “(%s)”"
 msgstr ""
 "Тело сообщения пусто, но значение подписи в поле заголовка равно «(%s)»"
 
-#: gio/gdbusmessage.c:3482
+#: gio/gdbusmessage.c:3514
 #, c-format
 msgid "Error return with body of type “%s”"
 msgstr "Возвращена ошибка с телом типа «%s»"
 
-#: gio/gdbusmessage.c:3490
+#: gio/gdbusmessage.c:3522
 msgid "Error return with empty body"
 msgstr "Возвращена ошибка с пустым телом"
 
@@ -1896,11 +1904,13 @@ msgstr "Не переходить по символическим ссылкам
 msgid "attributes:\n"
 msgstr "атрибуты:\n"
 
+#. Translators: This is a noun and represents and attribute of a file
 #: gio/gio-tool-info.c:166
 #, c-format
 msgid "display name: %s\n"
 msgstr "отображаемое имя: %s\n"
 
+#. Translators: This is a noun and represents and attribute of a file
 #: gio/gio-tool-info.c:176
 #, c-format
 msgid "edit name: %s\n"
@@ -3569,8 +3579,8 @@ msgstr "Недопустимый домен"
 
 #: gio/gresource.c:683 gio/gresource.c:945 gio/gresource.c:985
 #: gio/gresource.c:1109 gio/gresource.c:1181 gio/gresource.c:1255
-#: gio/gresource.c:1336 gio/gresourcefile.c:478 gio/gresourcefile.c:602
-#: gio/gresourcefile.c:753
+#: gio/gresource.c:1336 gio/gresourcefile.c:482 gio/gresourcefile.c:606
+#: gio/gresourcefile.c:757
 #, c-format
 msgid "The resource at “%s” does not exist"
 msgstr "Ресурс из «%s» не существует"
@@ -3580,16 +3590,16 @@ msgstr "Ресурс из «%s» не существует"
 msgid "The resource at “%s” failed to decompress"
 msgstr "Не удалось распаковать ресурс из «%s»"
 
-#: gio/gresourcefile.c:659
+#: gio/gresourcefile.c:663
 msgid "Resource files cannot be renamed"
 msgstr "Файлы ресурсов нельзя переименовать"
 
-#: gio/gresourcefile.c:749
+#: gio/gresourcefile.c:753
 #, c-format
 msgid "The resource at “%s” is not a directory"
 msgstr "Ресурс из «%s» не является каталогом"
 
-#: gio/gresourcefile.c:957
+#: gio/gresourcefile.c:961
 msgid "Input stream doesn’t implement seek"
 msgstr "По входному потоку перемещение не поддерживается"
 
@@ -5234,31 +5244,31 @@ msgstr ""
 msgid "Key “%s” in group “%s” has value “%s” where %s was expected"
 msgstr "Значение ключа «%s» в группе «%s» имеет значение «%s», но ожидалось %s"
 
-#: glib/gkeyfile.c:4353
+#: glib/gkeyfile.c:4356
 msgid "Key file contains escape character at end of line"
 msgstr "Файл ключей содержит символ escape в конце строки"
 
-#: glib/gkeyfile.c:4375
+#: glib/gkeyfile.c:4378
 #, c-format
 msgid "Key file contains invalid escape sequence “%s”"
 msgstr "Файл ключей содержит неверную экранирующую последовательность «%s»"
 
-#: glib/gkeyfile.c:4520
+#: glib/gkeyfile.c:4530
 #, c-format
 msgid "Value “%s” cannot be interpreted as a number."
 msgstr "Не удалось преобразовать значение «%s» в число."
 
-#: glib/gkeyfile.c:4534
+#: glib/gkeyfile.c:4544
 #, c-format
 msgid "Integer value “%s” out of range"
 msgstr "Целочисленное значение «%s» выходит за пределы"
 
-#: glib/gkeyfile.c:4567
+#: glib/gkeyfile.c:4577
 #, c-format
 msgid "Value “%s” cannot be interpreted as a float number."
 msgstr "Не удалось преобразовать «%s» в число с плавающей запятой."
 
-#: glib/gkeyfile.c:4606
+#: glib/gkeyfile.c:4616
 #, c-format
 msgid "Value “%s” cannot be interpreted as a boolean."
 msgstr "Не удалось преобразовать «%s» в булево значение."
@@ -5557,188 +5567,184 @@ msgstr "Отсутствует аргумент для %s"
 msgid "Unknown option %s"
 msgstr "Неизвестный параметр %s"
 
-#: glib/gregex.c:479
+#: glib/gregex.c:480
 msgid "corrupted object"
 msgstr "повреждённый объект"
 
-#: glib/gregex.c:481
+#: glib/gregex.c:482
 msgid "out of memory"
 msgstr "закончилась память"
 
-#: glib/gregex.c:487
-msgid "backtracking limit reached"
-msgstr "достигнут предел обратного хода"
-
-#: glib/gregex.c:498
+#: glib/gregex.c:497
 msgid "internal error"
 msgstr "внутренняя ошибка"
 
-#: glib/gregex.c:500
+#: glib/gregex.c:499
 msgid "the pattern contains items not supported for partial matching"
 msgstr ""
 "шаблон содержит элементы, которые не поддерживаются при поиске частичного "
 "совпадения"
 
-#: glib/gregex.c:502
+#: glib/gregex.c:501
 msgid "back references as conditions are not supported for partial matching"
 msgstr ""
 "условия в виде обратных ссылок при поиске частичного совпадения не "
 "поддерживаются"
 
-#: glib/gregex.c:508
+#: glib/gregex.c:507
 msgid "recursion limit reached"
 msgstr "достигнут предел рекурсии"
 
-#: glib/gregex.c:510
+#: glib/gregex.c:509
 msgid "bad offset"
 msgstr "неправильное смещение"
 
-#: glib/gregex.c:512
+#: glib/gregex.c:511
 msgid "recursion loop"
 msgstr "зацикливание рекурсии"
 
 #. should not happen in GRegex since we check modes before each match
-#: glib/gregex.c:515
+#: glib/gregex.c:514
 msgid "matching mode is requested that was not compiled for JIT"
 msgstr "запрашивается режим согласования, который не был скомпилирован для JIT"
 
-#: glib/gregex.c:536 glib/gregex.c:1838
+#: glib/gregex.c:535 glib/gregex.c:1851
 msgid "unknown error"
 msgstr "неизвестная ошибка"
 
-#: glib/gregex.c:557
+#: glib/gregex.c:556
 msgid "\\ at end of pattern"
 msgstr "\\ в конце шаблона"
 
-#: glib/gregex.c:561
+#: glib/gregex.c:560
 msgid "\\c at end of pattern"
 msgstr "\\c в конце шаблона"
 
-#: glib/gregex.c:566
+#: glib/gregex.c:565
 msgid "unrecognized character following \\"
 msgstr "неопознанный символ следует за \\"
 
-#: glib/gregex.c:570
+#: glib/gregex.c:569
 msgid "numbers out of order in {} quantifier"
 msgstr "числа в квантификаторе {} в неправильном порядке"
 
-#: glib/gregex.c:574
+#: glib/gregex.c:573
 msgid "number too big in {} quantifier"
 msgstr "слишком большое число в квантификаторе {}"
 
-#: glib/gregex.c:578
+#: glib/gregex.c:577
 msgid "missing terminating ] for character class"
 msgstr "отсутствует завершающая ] для класса символов"
 
-#: glib/gregex.c:582
+#: glib/gregex.c:581
 msgid "invalid escape sequence in character class"
 msgstr "неверное экранирование в классе символов"
 
-#: glib/gregex.c:586
+#: glib/gregex.c:585
 msgid "range out of order in character class"
 msgstr "диапазон в классе символов в неправильном порядке"
 
-#: glib/gregex.c:591
+#: glib/gregex.c:590
 msgid "nothing to repeat"
 msgstr "нечего повторять"
 
-#: glib/gregex.c:595
+#: glib/gregex.c:594
 msgid "unrecognized character after (? or (?-"
 msgstr "неопознанный символ после (? или (?-"
 
-#: glib/gregex.c:599
+#: glib/gregex.c:598
 msgid "POSIX named classes are supported only within a class"
 msgstr "Именованные классы POSIX поддерживаются только внутри класса"
 
-#: glib/gregex.c:603
+#: glib/gregex.c:602
 msgid "POSIX collating elements are not supported"
 msgstr "Сортировочные элементы POSIX не поддерживаются"
 
-#: glib/gregex.c:609
+#: glib/gregex.c:608
 msgid "missing terminating )"
 msgstr "отсутствует завершающая )"
 
-#: glib/gregex.c:613
+#: glib/gregex.c:612
 msgid "reference to non-existent subpattern"
 msgstr "ссылка на несуществующий подшаблон"
 
-#: glib/gregex.c:617
+#: glib/gregex.c:616
 msgid "missing ) after comment"
 msgstr "отсутствует ) после комментария"
 
-#: glib/gregex.c:621
+#: glib/gregex.c:620
 msgid "regular expression is too large"
 msgstr "слишком длинное регулярное выражение"
 
-#: glib/gregex.c:625
+#: glib/gregex.c:624
 msgid "malformed number or name after (?("
 msgstr "ошибочное число или имя после (?("
 
-#: glib/gregex.c:629
+#: glib/gregex.c:628
 msgid "lookbehind assertion is not fixed length"
 msgstr "lookbehind-утверждение не имеет фиксированную длину"
 
-#: glib/gregex.c:633
+#: glib/gregex.c:632
 msgid "conditional group contains more than two branches"
 msgstr "условная группа содержит более двух ветвей"
 
-#: glib/gregex.c:637
+#: glib/gregex.c:636
 msgid "assertion expected after (?("
 msgstr "ожидалось утверждение после (?("
 
-#: glib/gregex.c:641
+#: glib/gregex.c:640
 msgid "a numbered reference must not be zero"
 msgstr "номерная ссылка не может быть нулём"
 
-#: glib/gregex.c:645
+#: glib/gregex.c:644
 msgid "unknown POSIX class name"
 msgstr "неизвестное имя класса POSIX"
 
-#: glib/gregex.c:650
+#: glib/gregex.c:649
 msgid "character value in \\x{...} sequence is too large"
 msgstr "значение символа в последовательности \\x{...} слишком велико"
 
-#: glib/gregex.c:654
+#: glib/gregex.c:653
 msgid "\\C not allowed in lookbehind assertion"
 msgstr "\\C запрещено в lookbehind-утверждениях"
 
-#: glib/gregex.c:658
+#: glib/gregex.c:657
 msgid "missing terminator in subpattern name"
 msgstr "отсутствует завершающий символ в имени подшаблона"
 
-#: glib/gregex.c:662
+#: glib/gregex.c:661
 msgid "two named subpatterns have the same name"
 msgstr "два именованных подшаблона имеют одинаковое имя"
 
-#: glib/gregex.c:666
+#: glib/gregex.c:665
 msgid "malformed \\P or \\p sequence"
 msgstr "ошибочная последовательность \\P или \\p"
 
-#: glib/gregex.c:670
+#: glib/gregex.c:669
 msgid "unknown property name after \\P or \\p"
 msgstr "неизвестное имя свойства после \\P или \\p"
 
-#: glib/gregex.c:674
+#: glib/gregex.c:673
 msgid "subpattern name is too long (maximum 32 characters)"
 msgstr "имя подшаблона слишком длинное (не должно превышать 32 символа)"
 
-#: glib/gregex.c:678
+#: glib/gregex.c:677
 msgid "too many named subpatterns (maximum 10,000)"
 msgstr "слишком много именованных подшаблонов (не должно быть больше 10 000)"
 
-#: glib/gregex.c:682
+#: glib/gregex.c:681
 msgid "octal value is greater than \\377"
 msgstr "восьмеричное значение превышает \\377"
 
-#: glib/gregex.c:686
+#: glib/gregex.c:685
 msgid "DEFINE group contains more than one branch"
 msgstr "Группа DEFINE содержит более одной ветви"
 
-#: glib/gregex.c:690
+#: glib/gregex.c:689
 msgid "inconsistent NEWLINE options"
 msgstr "противоречивые параметры NEWLINE"
 
-#: glib/gregex.c:694
+#: glib/gregex.c:693
 msgid ""
 "\\g is not followed by a braced, angle-bracketed, or quoted name or number, "
 "or by a plain number"
@@ -5746,122 +5752,122 @@ msgstr ""
 "за \\g не следует имя или число в скобках, угловых скобках или кавычках, или "
 "просто число"
 
-#: glib/gregex.c:699
+#: glib/gregex.c:698
 msgid "an argument is not allowed for (*ACCEPT), (*FAIL), or (*COMMIT)"
 msgstr "нельзя указать параметр для (*ACCEPT), (*FAIL) или (*COMMIT)"
 
-#: glib/gregex.c:703
+#: glib/gregex.c:702
 msgid "(*VERB) not recognized"
 msgstr "значение (*VERB) не распознано"
 
-#: glib/gregex.c:707
+#: glib/gregex.c:706
 msgid "number is too big"
 msgstr "слишком большое число"
 
-#: glib/gregex.c:711
+#: glib/gregex.c:710
 msgid "missing subpattern name after (?&"
 msgstr "отсутствует имя подшаблона после (?&"
 
-#: glib/gregex.c:715
+#: glib/gregex.c:714
 msgid "different names for subpatterns of the same number are not allowed"
 msgstr ""
 "не допускаются использовать различные имена для подшаблонов с одинаковым "
 "номером"
 
-#: glib/gregex.c:719
+#: glib/gregex.c:718
 msgid "(*MARK) must have an argument"
 msgstr "для (*MARK) требуется параметр"
 
-#: glib/gregex.c:723
+#: glib/gregex.c:722
 msgid "\\c must be followed by an ASCII character"
 msgstr "за \\c должен быть символ ASCII"
 
-#: glib/gregex.c:727
+#: glib/gregex.c:726
 msgid "\\k is not followed by a braced, angle-bracketed, or quoted name"
 msgstr "за \\k не следует имя в скобках, угловых скобках или кавычках"
 
-#: glib/gregex.c:731
+#: glib/gregex.c:730
 msgid "\\N is not supported in a class"
 msgstr "\\N в классе не поддерживается"
 
-#: glib/gregex.c:735
+#: glib/gregex.c:734
 msgid "name is too long in (*MARK), (*PRUNE), (*SKIP), or (*THEN)"
 msgstr "слишком длинное имя в (*MARK), (*PRUNE), (*SKIP) или (*THEN)"
 
-#: glib/gregex.c:739 glib/gregex.c:875
+#: glib/gregex.c:738 glib/gregex.c:874
 msgid "code overflow"
 msgstr "переполнение кода"
 
-#: glib/gregex.c:743
+#: glib/gregex.c:742
 msgid "unrecognized character after (?P"
 msgstr "неопознанный символ после (?P"
 
-#: glib/gregex.c:747
+#: glib/gregex.c:746
 msgid "overran compiling workspace"
 msgstr "переполнение рабочего пространства компиляции"
 
-#: glib/gregex.c:751
+#: glib/gregex.c:750
 msgid "previously-checked referenced subpattern not found"
 msgstr "не найден ранее проверенный подшаблон со ссылкой"
 
-#: glib/gregex.c:874 glib/gregex.c:1121 glib/gregex.c:2444
+#: glib/gregex.c:873 glib/gregex.c:1135 glib/gregex.c:2457
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr ""
 "Во время поиска совпадений с регулярным выражением %s возникла ошибка: %s"
 
-#: glib/gregex.c:1721
+#: glib/gregex.c:1735
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "Библиотека PCRE собрана без поддержки UTF-8"
 
-#: glib/gregex.c:1729
+#: glib/gregex.c:1743
 msgid "PCRE library is compiled with incompatible options"
 msgstr "Библиотека PCRE собрана с несовместимыми параметрами"
 
-#: glib/gregex.c:1847
+#: glib/gregex.c:1860
 #, c-format
 msgid "Error while compiling regular expression ‘%s’ at char %s: %s"
 msgstr ""
 "Произошла ошибка при компиляции регулярного выражения '%s' у символа с "
 "номером %s: %s"
 
-#: glib/gregex.c:2887
+#: glib/gregex.c:2900
 msgid "hexadecimal digit or “}” expected"
 msgstr "ожидалась шестнадцатеричная цифра или символ «}»"
 
-#: glib/gregex.c:2903
+#: glib/gregex.c:2916
 msgid "hexadecimal digit expected"
 msgstr "ожидалась шестнадцатеричная цифра"
 
-#: glib/gregex.c:2943
+#: glib/gregex.c:2956
 msgid "missing “<” in symbolic reference"
 msgstr "в символьной ссылке отсутствует «<»"
 
-#: glib/gregex.c:2952
+#: glib/gregex.c:2965
 msgid "unfinished symbolic reference"
 msgstr "незаконченная символьная ссылка"
 
-#: glib/gregex.c:2959
+#: glib/gregex.c:2972
 msgid "zero-length symbolic reference"
 msgstr "символьная ссылка нулевой длины"
 
-#: glib/gregex.c:2970
+#: glib/gregex.c:2983
 msgid "digit expected"
 msgstr "ожидалась цифра"
 
-#: glib/gregex.c:2988
+#: glib/gregex.c:3001
 msgid "illegal symbolic reference"
 msgstr "недопустимая символьная ссылка"
 
-#: glib/gregex.c:3051
+#: glib/gregex.c:3064
 msgid "stray final “\\”"
 msgstr "лишний «\\» в конце"
 
-#: glib/gregex.c:3055
+#: glib/gregex.c:3068
 msgid "unknown escape sequence"
 msgstr "неизвестная экранирующая последовательность"
 
-#: glib/gregex.c:3065
+#: glib/gregex.c:3078
 #, c-format
 msgid "Error while parsing replacement text “%s” at char %lu: %s"
 msgstr ""
@@ -5894,92 +5900,92 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Текст был пуст (или содержал только пробелы)"
 
-#: glib/gspawn.c:319
+#: glib/gspawn.c:320
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Не удалось прочитать данные из дочернего процесса (%s)"
 
-#: glib/gspawn.c:471
+#: glib/gspawn.c:473
 #, c-format
 msgid "Unexpected error in reading data from a child process (%s)"
 msgstr "Неожиданная ошибка при чтении данных из дочернего процесса (%s)"
 
-#: glib/gspawn.c:556
+#: glib/gspawn.c:558
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Произошла неожиданная ошибка в функции waitpid() (%s)"
 
-#: glib/gspawn.c:1175 glib/gspawn-win32.c:1575
+#: glib/gspawn.c:1180 glib/gspawn-win32.c:1575
 #, c-format
 msgid "Child process exited with code %ld"
 msgstr "Дочерний процесс завершился с кодом %ld"
 
-#: glib/gspawn.c:1183
+#: glib/gspawn.c:1188
 #, c-format
 msgid "Child process killed by signal %ld"
 msgstr "Дочерний процесс убит по сигналу %ld"
 
-#: glib/gspawn.c:1190
+#: glib/gspawn.c:1195
 #, c-format
 msgid "Child process stopped by signal %ld"
 msgstr "Дочерний процесс остановлен по сигналу %ld"
 
-#: glib/gspawn.c:1197
+#: glib/gspawn.c:1202
 #, c-format
 msgid "Child process exited abnormally"
 msgstr "Дочерний процесс аварийно завершил работу"
 
-#: glib/gspawn.c:2027 glib/gspawn-win32.c:472 glib/gspawn-win32.c:480
+#: glib/gspawn.c:2032 glib/gspawn-win32.c:472 glib/gspawn-win32.c:480
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Не удалось выполнить чтение из дочернего канала (%s)"
 
-#: glib/gspawn.c:2399
+#: glib/gspawn.c:2404
 #, c-format
 msgid "Failed to spawn child process “%s” (%s)"
 msgstr "Не удалось запустить дочерний процесс \"%s\" (%s)"
 
-#: glib/gspawn.c:2525
+#: glib/gspawn.c:2530
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Функция fork завершилась неудачно (%s)"
 
-#: glib/gspawn.c:2685 glib/gspawn-win32.c:503
+#: glib/gspawn.c:2690 glib/gspawn-win32.c:503
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
 msgstr "Не удалось сменить каталог на «%s» (%s)"
 
-#: glib/gspawn.c:2695
+#: glib/gspawn.c:2700
 #, c-format
 msgid "Failed to execute child process “%s” (%s)"
 msgstr "Не удалось выполнить дочерний процесс \"%s\" (%s)"
 
-#: glib/gspawn.c:2705
+#: glib/gspawn.c:2710
 #, c-format
 msgid "Failed to open file to remap file descriptor (%s)"
 msgstr "Не удалось открыть файл для изменения дескриптора файла (%s)"
 
-#: glib/gspawn.c:2713
+#: glib/gspawn.c:2718
 #, c-format
 msgid "Failed to duplicate file descriptor for child process (%s)"
 msgstr "Не удалось дублировать дескриптор файла для дочернего процесса (%s)"
 
-#: glib/gspawn.c:2722
+#: glib/gspawn.c:2727
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "При создании дочернего процесса функция fork завершилась неудачно (%s)"
 
-#: glib/gspawn.c:2730
+#: glib/gspawn.c:2735
 #, c-format
 msgid "Failed to close file descriptor for child process (%s)"
 msgstr "Не удалось закрыть дескриптор файла для дочернего процесса (%s)"
 
-#: glib/gspawn.c:2738
+#: glib/gspawn.c:2743
 #, c-format
 msgid "Unknown error executing child process “%s”"
 msgstr "Произошла неизвестная ошибка при выполнении дочернего процесса «%s»"
 
-#: glib/gspawn.c:2762
+#: glib/gspawn.c:2767
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
@@ -6359,6 +6365,9 @@ msgstr "%.1f ПБ"
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f ЭБ"
+
+#~ msgid "backtracking limit reached"
+#~ msgstr "достигнут предел обратного хода"
 
 #~ msgid "GApplication options"
 #~ msgstr "Параметры GApplication"
