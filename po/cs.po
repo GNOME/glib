@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2023-09-06 11:34+0000\n"
-"PO-Revision-Date: 2023-09-08 16:38+0200\n"
+"POT-Creation-Date: 2023-09-16 09:31+0000\n"
+"PO-Revision-Date: 2023-09-17 15:00+0200\n"
 "Last-Translator: Daniel Rusek <mail@asciiwolf.com>\n"
 "Language-Team: čeština <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -652,7 +652,7 @@ msgstr "Chyba při zavírání (neodkazovaného) zamykacího souboru „%s“: %
 #: gio/gdbusauthmechanismsha1.c:666
 #, c-format
 msgid "Error unlinking lock file “%s”: %s"
-msgstr "Chyba mazámí zamykacího souboru „%s“: %s"
+msgstr "Chyba mazání zamykacího souboru „%s“: %s"
 
 #: gio/gdbusauthmechanismsha1.c:742
 #, c-format
