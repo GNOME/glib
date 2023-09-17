@@ -16,16 +16,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2023-08-31 20:16+0000\n"
-"PO-Revision-Date: 2023-09-02 19:19+0200\n"
-"Last-Translator: Vojtěch Perník <translations@pervoj.cz>\n"
+"POT-Creation-Date: 2023-09-16 21:53+0000\n"
+"PO-Revision-Date: 2023-09-17 14:58+0200\n"
+"Last-Translator: Daniel Rusek <mail@asciiwolf.com>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2\n"
-"X-Generator: Gtranslator 42.0\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Generator: Poedit 3.3.2\n"
 "X-Project-Style: gnome\n"
 
 #: gio/gappinfo.c:339
@@ -653,7 +653,7 @@ msgstr "Chyba při zavírání (neodkazovaného) zamykacího souboru „%s“: %
 #: gio/gdbusauthmechanismsha1.c:666
 #, c-format
 msgid "Error unlinking lock file “%s”: %s"
-msgstr "Chyba mazámí zamykacího souboru „%s“: %s"
+msgstr "Chyba mazání zamykacího souboru „%s“: %s"
 
 #: gio/gdbusauthmechanismsha1.c:742
 #, c-format
@@ -3922,7 +3922,7 @@ msgid "Socket is already closed"
 msgstr "Soket je již ukončen"
 
 #: gio/gsocket.c:449 gio/gsocket.c:3238 gio/gsocket.c:4469 gio/gsocket.c:4527
-#: gio/gthreadedresolver.c:1438
+#: gio/gthreadedresolver.c:1445
 msgid "Socket I/O timed out"
 msgstr "Časový limit V/V soketu vypršel"
 
@@ -5189,31 +5189,31 @@ msgstr ""
 msgid "Key “%s” in group “%s” has value “%s” where %s was expected"
 msgstr "Klíč „%s“ ve skupině „%s“ má hodnotu „%s“, když byla očekávána „%s“"
 
-#: glib/gkeyfile.c:4356
+#: glib/gkeyfile.c:4357
 msgid "Key file contains escape character at end of line"
 msgstr "Soubor klíče obsahuje na konci řádku znak změny"
 
-#: glib/gkeyfile.c:4378
+#: glib/gkeyfile.c:4394
 #, c-format
 msgid "Key file contains invalid escape sequence “%s”"
 msgstr "Soubor klíče obsahuje neplatnou únikovou sekvenci „%s“"
 
-#: glib/gkeyfile.c:4530
+#: glib/gkeyfile.c:4545
 #, c-format
 msgid "Value “%s” cannot be interpreted as a number."
 msgstr "Hodnotu „%s“ nelze interpretovat jako číslo."
 
-#: glib/gkeyfile.c:4544
+#: glib/gkeyfile.c:4559
 #, c-format
 msgid "Integer value “%s” out of range"
 msgstr "Celočíselná hodnota „%s“ je mimo rozsah"
 
-#: glib/gkeyfile.c:4577
+#: glib/gkeyfile.c:4592
 #, c-format
 msgid "Value “%s” cannot be interpreted as a float number."
 msgstr "Hodnotu „%s“ nelze interpretovat jako reálné (plovoucí) číslo."
 
-#: glib/gkeyfile.c:4616
+#: glib/gkeyfile.c:4631
 #, c-format
 msgid "Value “%s” cannot be interpreted as a boolean."
 msgstr "Hodnotu „%s“ nelze interpretovat jako pravdivostní hodnotu."
