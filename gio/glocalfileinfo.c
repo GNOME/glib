@@ -2832,6 +2832,16 @@ set_mtime_atime (char                       *filename,
 	}
     }
 
+  if (atime_usec_value)
+    {
+      guint32 val_usec = 0;
+
+      if (!get_uint32 (atime_usec_value, &val_usec, error))
+        return FALSE;
+
+      times_n[0].tv_nsec = val_usec * 1000;
+    }
+
   if (atime_nsec_value)
     {
       guint32 val_nsec = 0;
@@ -2859,6 +2869,16 @@ set_mtime_atime (char                       *filename,
           times_n[1].tv_nsec = statbuf.st_mtim.tv_nsec;
 #endif
 	}
+    }
+
+  if (mtime_usec_value)
+    {
+      guint32 val_usec = 0;
+
+      if (!get_uint32 (mtime_usec_value, &val_usec, error))
+        return FALSE;
+
+      times_n[1].tv_nsec = val_usec * 1000;
     }
 
   if (mtime_nsec_value)
