@@ -15,24 +15,24 @@
 # Felipe Braga <fbobraga@gmail.com>, 2015.
 # Artur de Aquino Morais <artur.morais93@outlook.com>, 2016.
 # Enrico Nicoletto <hiko@duck.com>, 2013-2014, 2016, 2021-2022.
-# Rafael Fontenelle <rafaelff@gnome.org>, 2013-2022.
 # Matheus Barbosa <mdpb.matheus@gmail.com>, 2022.
 # Leônidas Araújo <leorusvellt@hotmail.com>, 2022-2023.
+# Rafael Fontenelle <rafaelff@gnome.org>, 2013-2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2023-05-24 08:58+0000\n"
-"PO-Revision-Date: 2023-06-01 08:00-0300\n"
-"Last-Translator: Leônidas Araújo <leorusvellt@hotmail.com>\n"
+"POT-Creation-Date: 2023-08-31 11:01+0000\n"
+"PO-Revision-Date: 2023-09-17 22:27-0300\n"
+"Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <https://br.gnome.org/traducao>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.2.2\n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"X-Generator: Gtranslator 45.alpha0\n"
 "X-Project-Style: gnome\n"
 "X-DL-Team: pt_BR\n"
 "X-DL-Module: glib\n"
@@ -563,7 +563,7 @@ msgstr ""
 "Não foi possível determinar o endereço de barramento da sessão (sem "
 "implementação para este SO)"
 
-#: gio/gdbusaddress.c:1380 gio/gdbusconnection.c:7326
+#: gio/gdbusaddress.c:1380 gio/gdbusconnection.c:7339
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -572,7 +572,7 @@ msgstr ""
 "Não foi possível determinar o endereço de barramento da variável de ambiente "
 "DBUS_STARTER_BUS_TYPE — valor desconhecido “%s”"
 
-#: gio/gdbusaddress.c:1389 gio/gdbusconnection.c:7335
+#: gio/gdbusaddress.c:1389 gio/gdbusconnection.c:7348
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -717,86 +717,86 @@ msgstr ""
 "Foram encontrados sinalizadores sem suporte ao construir uma conexão do lado "
 "do cliente"
 
-#: gio/gdbusconnection.c:4267 gio/gdbusconnection.c:4621
+#: gio/gdbusconnection.c:4277 gio/gdbusconnection.c:4631
 #, c-format
 msgid ""
 "No such interface “org.freedesktop.DBus.Properties” on object at path %s"
 msgstr ""
 "Nenhuma interface “org.freedesktop.DBus.Properties” no objeto no caminho %s"
 
-#: gio/gdbusconnection.c:4412
+#: gio/gdbusconnection.c:4422
 #, c-format
 msgid "No such property “%s”"
 msgstr "Nenhuma propriedade “%s”"
 
-#: gio/gdbusconnection.c:4424
+#: gio/gdbusconnection.c:4434
 #, c-format
 msgid "Property “%s” is not readable"
 msgstr "A propriedade “%s” não pode ser lida"
 
-#: gio/gdbusconnection.c:4435
+#: gio/gdbusconnection.c:4445
 #, c-format
 msgid "Property “%s” is not writable"
 msgstr "A propriedade “%s” não pode ser escrita"
 
-#: gio/gdbusconnection.c:4455
+#: gio/gdbusconnection.c:4465
 #, c-format
 msgid "Error setting property “%s”: Expected type “%s” but got “%s”"
 msgstr ""
 "Erro ao definir a propriedade “%s”: o tipo esperado é “%s”, mas obteve “%s”"
 
-#: gio/gdbusconnection.c:4560 gio/gdbusconnection.c:4775
-#: gio/gdbusconnection.c:6752
+#: gio/gdbusconnection.c:4570 gio/gdbusconnection.c:4785
+#: gio/gdbusconnection.c:6762
 #, c-format
 msgid "No such interface “%s”"
 msgstr "Nenhuma interface “%s”"
 
-#: gio/gdbusconnection.c:4991 gio/gdbusconnection.c:7266
+#: gio/gdbusconnection.c:5001 gio/gdbusconnection.c:7279
 #, c-format
 msgid "No such interface “%s” on object at path %s"
 msgstr "Nenhuma interface “%s” no objeto no caminho %s"
 
-#: gio/gdbusconnection.c:5092
+#: gio/gdbusconnection.c:5102
 #, c-format
 msgid "No such method “%s”"
 msgstr "Método inexistente “%s”"
 
-#: gio/gdbusconnection.c:5123
+#: gio/gdbusconnection.c:5133
 #, c-format
 msgid "Type of message, “%s”, does not match expected type “%s”"
 msgstr "O tipo da mensagem, “%s”, não equivale ao tipo esperado “%s”"
 
-#: gio/gdbusconnection.c:5326
+#: gio/gdbusconnection.c:5336
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Um objeto já foi exportado para a interface %s em %s"
 
-#: gio/gdbusconnection.c:5553
+#: gio/gdbusconnection.c:5563
 #, c-format
 msgid "Unable to retrieve property %s.%s"
 msgstr "Não foi possível obter a propriedade %s.%s"
 
-#: gio/gdbusconnection.c:5609
+#: gio/gdbusconnection.c:5619
 #, c-format
 msgid "Unable to set property %s.%s"
 msgstr "Não foi possível definir a propriedade %s.%s"
 
-#: gio/gdbusconnection.c:5788
+#: gio/gdbusconnection.c:5798
 #, c-format
 msgid "Method “%s” returned type “%s”, but expected “%s”"
 msgstr "O método “%s” retornou o tipo “%s”, mas é esperado “%s”"
 
-#: gio/gdbusconnection.c:6864
+#: gio/gdbusconnection.c:6874
 #, c-format
 msgid "Method “%s” on interface “%s” with signature “%s” does not exist"
 msgstr "O método “%s” na interface “%s” com a assinatura “%s” não existe"
 
-#: gio/gdbusconnection.c:6985
+#: gio/gdbusconnection.c:6995
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Uma subárvore já foi exportada para %s"
 
-#: gio/gdbusconnection.c:7274
+#: gio/gdbusconnection.c:7287
 #, c-format
 msgid "Object does not exist at path “%s”"
 msgstr "O objeto não existe no caminho “%s”"
@@ -805,29 +805,33 @@ msgstr "O objeto não existe no caminho “%s”"
 msgid "type is INVALID"
 msgstr "o tipo é INVALID"
 
-#: gio/gdbusmessage.c:1317
-msgid "METHOD_CALL message: PATH or MEMBER header field is missing"
+#: gio/gdbusmessage.c:1324
+msgid "METHOD_CALL message: PATH or MEMBER header field is missing or invalid"
 msgstr ""
-"Mensagem de METHOD_CALL: O campo de cabeçalho PATH ou MEMBER está faltando"
-
-#: gio/gdbusmessage.c:1328
-msgid "METHOD_RETURN message: REPLY_SERIAL header field is missing"
-msgstr ""
-"Mensagem de METHOD_RETURN: O campo de cabeçalho REPLY_SERIAL está faltando"
+"Mensagem de METHOD_CALL: O campo de cabeçalho PATH ou MEMBER está faltando "
+"ou é inválido"
 
 #: gio/gdbusmessage.c:1340
-msgid "ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing"
+msgid "METHOD_RETURN message: REPLY_SERIAL header field is missing or invalid"
+msgstr ""
+"Mensagem de METHOD_RETURN: O campo de cabeçalho REPLY_SERIAL está faltando "
+"ou é inválido"
+
+#: gio/gdbusmessage.c:1360
+msgid ""
+"ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing or invalid"
 msgstr ""
 "Mensagem de ERROR: O campo de cabeçalho REPLY_SERIAL ou ERROR_NAME está "
-"faltando"
+"faltando ou é inválido"
 
-#: gio/gdbusmessage.c:1353
-msgid "SIGNAL message: PATH, INTERFACE or MEMBER header field is missing"
+#: gio/gdbusmessage.c:1384
+msgid ""
+"SIGNAL message: PATH, INTERFACE or MEMBER header field is missing or invalid"
 msgstr ""
 "Mensagem de SIGNAL: O campo de cabeçalho PATH, INTERFACE ou MEMBER está "
-"faltando"
+"faltando ou é inválido"
 
-#: gio/gdbusmessage.c:1361
+#: gio/gdbusmessage.c:1392
 msgid ""
 "SIGNAL message: The PATH header field is using the reserved value /org/"
 "freedesktop/DBus/Local"
@@ -835,7 +839,7 @@ msgstr ""
 "Mensagem de SIGNAL: O campo de cabeçalho PATH está usando o valor reservado /"
 "org/freedesktop/DBus/Local"
 
-#: gio/gdbusmessage.c:1369
+#: gio/gdbusmessage.c:1400
 msgid ""
 "SIGNAL message: The INTERFACE header field is using the reserved value org."
 "freedesktop.DBus.Local"
@@ -843,21 +847,21 @@ msgstr ""
 "Mensagem de SIGNAL: O campo de cabeçalho INTERFACE está usando o valor "
 "reservado org.freedesktop.DBus.Local"
 
-#: gio/gdbusmessage.c:1417 gio/gdbusmessage.c:1477
+#: gio/gdbusmessage.c:1449 gio/gdbusmessage.c:1509
 #, c-format
 msgid "Wanted to read %lu byte but only got %lu"
 msgid_plural "Wanted to read %lu bytes but only got %lu"
 msgstr[0] "Ao tentar ler %lu byte obteve-se %lu"
 msgstr[1] "Ao tentar ler %lu bytes obteve-se %lu"
 
-#: gio/gdbusmessage.c:1431
+#: gio/gdbusmessage.c:1463
 #, c-format
 msgid "Expected NUL byte after the string “%s” but found byte %d"
 msgstr ""
 "Era esperado um byte NUL (nulo) após o texto “%s”, mas foi localizado o byte "
 "%d"
 
-#: gio/gdbusmessage.c:1450
+#: gio/gdbusmessage.c:1482
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
@@ -867,21 +871,21 @@ msgstr ""
 "posição %d (tamanho do texto é %d). O texto UTF-8 válido até este ponto era "
 "“%s”"
 
-#: gio/gdbusmessage.c:1514 gio/gdbusmessage.c:1790 gio/gdbusmessage.c:2001
+#: gio/gdbusmessage.c:1546 gio/gdbusmessage.c:1822 gio/gdbusmessage.c:2033
 msgid "Value nested too deeply"
 msgstr "Valor aninhado profundo demais"
 
-#: gio/gdbusmessage.c:1682
+#: gio/gdbusmessage.c:1714
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus object path"
 msgstr "O valor “%s” analisado não é um objeto de caminho D-Bus válido"
 
-#: gio/gdbusmessage.c:1706
+#: gio/gdbusmessage.c:1738
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature"
 msgstr "O valor “%s” analisado não é uma assinatura D-Bus válida"
 
-#: gio/gdbusmessage.c:1757
+#: gio/gdbusmessage.c:1789
 #, c-format
 msgid ""
 "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
@@ -894,7 +898,7 @@ msgstr[1] ""
 "Foi encontrado um vetor com tamanho de %u bytes. O tamanho máximo é de 2<<26 "
 "bytes (64 MiB)."
 
-#: gio/gdbusmessage.c:1777
+#: gio/gdbusmessage.c:1809
 #, c-format
 msgid ""
 "Encountered array of type “a%c”, expected to have a length a multiple of %u "
@@ -904,16 +908,16 @@ msgstr ""
 "comprimento múltiplo de %u bytes, porém foi localizado %u bytes em "
 "comprimento"
 
-#: gio/gdbusmessage.c:1931 gio/gdbusmessage.c:2650
+#: gio/gdbusmessage.c:1963 gio/gdbusmessage.c:2682
 msgid "Empty structures (tuples) are not allowed in D-Bus"
 msgstr "Estruturas (tuplas) vazias não são permitidas no D-Bus"
 
-#: gio/gdbusmessage.c:1985
+#: gio/gdbusmessage.c:2017
 #, c-format
 msgid "Parsed value “%s” for variant is not a valid D-Bus signature"
 msgstr "O valor “%s” analisado para variante não é uma assinatura D-Bus válida"
 
-#: gio/gdbusmessage.c:2026
+#: gio/gdbusmessage.c:2058
 #, c-format
 msgid ""
 "Error deserializing GVariant with type string “%s” from the D-Bus wire format"
@@ -921,7 +925,7 @@ msgstr ""
 "Erro ao desserializar GVariant com o texto de tipo “%s” do formato "
 "delimitado pelo D-Bus"
 
-#: gio/gdbusmessage.c:2211
+#: gio/gdbusmessage.c:2243
 #, c-format
 msgid ""
 "Invalid endianness value. Expected 0x6c (“l”) or 0x42 (“B”) but found value "
@@ -930,31 +934,31 @@ msgstr ""
 "Valor identificador de endian inválido. Era esperado 0x6c (“l”) ou 0x42 "
 "(“B”), mas foi localizado o valor 0x%02x"
 
-#: gio/gdbusmessage.c:2230
+#: gio/gdbusmessage.c:2262
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr ""
 "Versão majoritária de protocolo inválida. Era esperado 1, mas foi localizado "
 "%d"
 
-#: gio/gdbusmessage.c:2288 gio/gdbusmessage.c:2886
+#: gio/gdbusmessage.c:2320 gio/gdbusmessage.c:2918
 msgid "Signature header found but is not of type signature"
 msgstr "Cabeçalho da assinatura localizado, mas não é do tipo assinatura"
 
-#: gio/gdbusmessage.c:2300
+#: gio/gdbusmessage.c:2332
 #, c-format
 msgid "Signature header with signature “%s” found but message body is empty"
 msgstr ""
 "O cabeçalho de assinatura foi localizado com a assinatura “%s”, mas o corpo "
 "da mensagem está vazio"
 
-#: gio/gdbusmessage.c:2315
+#: gio/gdbusmessage.c:2347
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature (for body)"
 msgstr ""
 "O valor “%s” analisado não é uma assinatura D-Bus válida (para o corpo)"
 
-#: gio/gdbusmessage.c:2347
+#: gio/gdbusmessage.c:2379
 #, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
@@ -965,11 +969,11 @@ msgstr[1] ""
 "Nenhum cabeçalho de assinatura na mensagem, mas o corpo da mensagem tem %u "
 "bytes"
 
-#: gio/gdbusmessage.c:2357
+#: gio/gdbusmessage.c:2389
 msgid "Cannot deserialize message: "
 msgstr "Não foi possível desserializar a mensagem: "
 
-#: gio/gdbusmessage.c:2703
+#: gio/gdbusmessage.c:2735
 #, c-format
 msgid ""
 "Error serializing GVariant with type string “%s” to the D-Bus wire format"
@@ -977,7 +981,7 @@ msgstr ""
 "Erro ao serializar GVariant com o texto de tipo “%s” para o formato "
 "delimitado pelo D-Bus"
 
-#: gio/gdbusmessage.c:2840
+#: gio/gdbusmessage.c:2872
 #, c-format
 msgid ""
 "Number of file descriptors in message (%d) differs from header field (%d)"
@@ -985,18 +989,18 @@ msgstr ""
 "O número de descritores de arquivo na mensagem (%d) difere do campo de "
 "cabeçalho (%d)"
 
-#: gio/gdbusmessage.c:2848
+#: gio/gdbusmessage.c:2880
 msgid "Cannot serialize message: "
 msgstr "Não foi possível serializar a mensagem: "
 
-#: gio/gdbusmessage.c:2901
+#: gio/gdbusmessage.c:2933
 #, c-format
 msgid "Message body has signature “%s” but there is no signature header"
 msgstr ""
 "O corpo da mensagem tem a assinatura “%s”, mas não há um cabeçalho de "
 "assinatura"
 
-#: gio/gdbusmessage.c:2911
+#: gio/gdbusmessage.c:2943
 #, c-format
 msgid ""
 "Message body has type signature “%s” but signature in the header field is "
@@ -1005,19 +1009,19 @@ msgstr ""
 "O corpo da mensagem tem o tipo de assinatura “%s”, mas a assinatura no campo "
 "de cabeçalho é “%s”"
 
-#: gio/gdbusmessage.c:2927
+#: gio/gdbusmessage.c:2959
 #, c-format
 msgid "Message body is empty but signature in the header field is “(%s)”"
 msgstr ""
 "O corpo da mensagem está vazio, mas a assinatura no campo de cabeçalho é "
 "“(%s)”"
 
-#: gio/gdbusmessage.c:3482
+#: gio/gdbusmessage.c:3514
 #, c-format
 msgid "Error return with body of type “%s”"
 msgstr "Retorno de erro com o corpo de tipo “%s”"
 
-#: gio/gdbusmessage.c:3490
+#: gio/gdbusmessage.c:3522
 msgid "Error return with empty body"
 msgstr "Retorno de erro com o corpo vazio"
 
@@ -3219,137 +3223,137 @@ msgstr "Não há suporte a mover entre montagens"
 msgid "Could not determine the disk usage of %s: %s"
 msgstr "Não foi possível determinar a utilização de disco de %s: %s"
 
-#: gio/glocalfileinfo.c:779
+#: gio/glocalfileinfo.c:765
 msgid "Attribute value must be non-NULL"
 msgstr "Valor de atributo deve ser não-NULO"
 
-#: gio/glocalfileinfo.c:786
+#: gio/glocalfileinfo.c:772
 msgid "Invalid attribute type (string or invalid expected)"
 msgstr "Tipo de atributo inválido (string ou inválido esperado)"
 
-#: gio/glocalfileinfo.c:793
+#: gio/glocalfileinfo.c:779
 msgid "Invalid extended attribute name"
 msgstr "Nome de atributo estendido inválido"
 
-#: gio/glocalfileinfo.c:844
+#: gio/glocalfileinfo.c:830
 #, c-format
 msgid "Error setting extended attribute “%s”: %s"
 msgstr "Erro ao definir atributo estendido “%s”: %s"
 
-#: gio/glocalfileinfo.c:1823 gio/win32/gwinhttpfile.c:191
+#: gio/glocalfileinfo.c:1785 gio/win32/gwinhttpfile.c:191
 msgid " (invalid encoding)"
 msgstr " (codificação inválida)"
 
-#: gio/glocalfileinfo.c:1982 gio/glocalfileoutputstream.c:945
+#: gio/glocalfileinfo.c:1944 gio/glocalfileoutputstream.c:945
 #: gio/glocalfileoutputstream.c:997
 #, c-format
 msgid "Error when getting information for file “%s”: %s"
 msgstr "Erro ao obter informação para o arquivo “%s”: %s"
 
-#: gio/glocalfileinfo.c:2288
+#: gio/glocalfileinfo.c:2250
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr "Erro ao obter informação para o descritor de arquivo: %s"
 
-#: gio/glocalfileinfo.c:2333
+#: gio/glocalfileinfo.c:2295
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Tipo de atributo inválido (esperado uint32)"
 
-#: gio/glocalfileinfo.c:2351
+#: gio/glocalfileinfo.c:2313
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Tipo de atributo inválido (esperado uint64)"
 
-#: gio/glocalfileinfo.c:2370 gio/glocalfileinfo.c:2389
+#: gio/glocalfileinfo.c:2332 gio/glocalfileinfo.c:2351
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Tipo de atributo inválido (expressão de byte esperada)"
 
-#: gio/glocalfileinfo.c:2436
+#: gio/glocalfileinfo.c:2398
 msgid "Cannot set permissions on symlinks"
 msgstr "Não foi possível definir permissões aos links simbólicos"
 
-#: gio/glocalfileinfo.c:2452
+#: gio/glocalfileinfo.c:2414
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Erro ao definir permissões: %s"
 
-#: gio/glocalfileinfo.c:2503
+#: gio/glocalfileinfo.c:2465
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Erro ao definir proprietário: %s"
 
-#: gio/glocalfileinfo.c:2526
+#: gio/glocalfileinfo.c:2488
 msgid "symlink must be non-NULL"
 msgstr "o link simbólico deve ser não-NULO"
 
-#: gio/glocalfileinfo.c:2536 gio/glocalfileinfo.c:2555
-#: gio/glocalfileinfo.c:2566
+#: gio/glocalfileinfo.c:2498 gio/glocalfileinfo.c:2517
+#: gio/glocalfileinfo.c:2528
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Erro ao definir link simbólico: %s"
 
-#: gio/glocalfileinfo.c:2545
+#: gio/glocalfileinfo.c:2507
 msgid "Error setting symlink: file is not a symlink"
 msgstr "Erro ao definir link simbólico: o arquivo não é um link simbólico"
 
-#: gio/glocalfileinfo.c:2637
+#: gio/glocalfileinfo.c:2599
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld are negative"
 msgstr ""
 "Os nanossegundos extras %d para a marca de data/hora UNIX %lld são negativos"
 
-#: gio/glocalfileinfo.c:2646
+#: gio/glocalfileinfo.c:2608
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld reach 1 second"
 msgstr ""
 "Os nanossegundos extras %d para a marca de data/hora UNIX %lld alcança 1 "
 "segundo"
 
-#: gio/glocalfileinfo.c:2656
+#: gio/glocalfileinfo.c:2618
 #, c-format
 msgid "UNIX timestamp %lld does not fit into 64 bits"
 msgstr "A marca de data/hora UNIX %lld não cabe em 64 bits"
 
-#: gio/glocalfileinfo.c:2667
+#: gio/glocalfileinfo.c:2629
 #, c-format
 msgid "UNIX timestamp %lld is outside of the range supported by Windows"
 msgstr ""
 "A marca de data/hora UNIX %lld está fora do intervalo suportado pelo Windows"
 
-#: gio/glocalfileinfo.c:2799
+#: gio/glocalfileinfo.c:2761
 #, c-format
 msgid "File name “%s” cannot be converted to UTF-16"
 msgstr "O nome de arquivo “%s” não pode ser convertido para UTF-16"
 
-#: gio/glocalfileinfo.c:2818
+#: gio/glocalfileinfo.c:2780
 #, c-format
 msgid "File “%s” cannot be opened: Windows Error %lu"
 msgstr "O arquivo “%s” não pôde ser aberto: Erro %lu do Windows"
 
-#: gio/glocalfileinfo.c:2831
+#: gio/glocalfileinfo.c:2793
 #, c-format
 msgid "Error setting modification or access time for file “%s”: %lu"
 msgstr ""
 "Erro ao definir data/hora de modificação ou acesso para o arquivo “%s”: %lu"
 
-#: gio/glocalfileinfo.c:2988
+#: gio/glocalfileinfo.c:2950
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Erro ao definir data/hora de modificação ou acesso: %s"
 
-#: gio/glocalfileinfo.c:3011
+#: gio/glocalfileinfo.c:2973
 msgid "SELinux context must be non-NULL"
 msgstr "O contexto SELinux deve ser não-NULO"
 
-#: gio/glocalfileinfo.c:3018
+#: gio/glocalfileinfo.c:2980
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux não está habilitado neste sistema"
 
-#: gio/glocalfileinfo.c:3028
+#: gio/glocalfileinfo.c:2990
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Erro ao definir o contexto SELinux: %s"
 
-#: gio/glocalfileinfo.c:3125
+#: gio/glocalfileinfo.c:3087
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Não há suporte à definição do atributo %s"
@@ -3586,8 +3590,8 @@ msgstr "Domínio inválido"
 
 #: gio/gresource.c:683 gio/gresource.c:945 gio/gresource.c:985
 #: gio/gresource.c:1109 gio/gresource.c:1181 gio/gresource.c:1255
-#: gio/gresource.c:1336 gio/gresourcefile.c:478 gio/gresourcefile.c:602
-#: gio/gresourcefile.c:753
+#: gio/gresource.c:1336 gio/gresourcefile.c:482 gio/gresourcefile.c:606
+#: gio/gresourcefile.c:757
 #, c-format
 msgid "The resource at “%s” does not exist"
 msgstr "O recurso em “%s” não existe"
@@ -3597,16 +3601,16 @@ msgstr "O recurso em “%s” não existe"
 msgid "The resource at “%s” failed to decompress"
 msgstr "Falha ao descompactar o recurso em “%s”"
 
-#: gio/gresourcefile.c:659
+#: gio/gresourcefile.c:663
 msgid "Resource files cannot be renamed"
 msgstr "Os arquivos de recursos não podem ser renomeados"
 
-#: gio/gresourcefile.c:749
+#: gio/gresourcefile.c:753
 #, c-format
 msgid "The resource at “%s” is not a directory"
 msgstr "O recurso em “%s” não é um diretório"
 
-#: gio/gresourcefile.c:957
+#: gio/gresourcefile.c:961
 msgid "Input stream doesn’t implement seek"
 msgstr "Fluxo de entrada não implementa busca"
 
@@ -5244,31 +5248,31 @@ msgstr ""
 msgid "Key “%s” in group “%s” has value “%s” where %s was expected"
 msgstr "Chave “%s” no grupo “%s” tem o valor “%s” onde %s era esperado"
 
-#: glib/gkeyfile.c:4327
+#: glib/gkeyfile.c:4330
 msgid "Key file contains escape character at end of line"
 msgstr "Arquivo de chave contém caractere de escape no fim da linha"
 
-#: glib/gkeyfile.c:4349
+#: glib/gkeyfile.c:4352
 #, c-format
 msgid "Key file contains invalid escape sequence “%s”"
 msgstr "Arquivo de chave contém sequência de escape “%s” inválida"
 
-#: glib/gkeyfile.c:4494
+#: glib/gkeyfile.c:4504
 #, c-format
 msgid "Value “%s” cannot be interpreted as a number."
 msgstr "O valor “%s” não pode ser interpretado como um número."
 
-#: glib/gkeyfile.c:4508
+#: glib/gkeyfile.c:4518
 #, c-format
 msgid "Integer value “%s” out of range"
 msgstr "Valor inteiro “%s” fora dos limites"
 
-#: glib/gkeyfile.c:4541
+#: glib/gkeyfile.c:4551
 #, c-format
 msgid "Value “%s” cannot be interpreted as a float number."
 msgstr "O valor “%s” não pode ser interpretado como ponto flutuante."
 
-#: glib/gkeyfile.c:4580
+#: glib/gkeyfile.c:4590
 #, c-format
 msgid "Value “%s” cannot be interpreted as a boolean."
 msgstr "O valor “%s” não pode ser interpretado como um booleano."
