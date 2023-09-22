@@ -486,7 +486,7 @@ test_random_conversions (void)
   int vint = g_test_rand_int();
   char *err, *str = g_strdup_printf ("%d", vint);
   gint64 vint64 = g_ascii_strtoll (str, &err, 10);
-  g_assert_cmphex (vint, ==, vint64);
+  g_assert_cmpint (vint, ==, vint64);
   g_assert_true (!err || *err == 0);
   g_free (str);
 }
