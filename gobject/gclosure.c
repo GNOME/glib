@@ -39,11 +39,13 @@
 
 
 /**
- * SECTION:gclosure
- * @short_description: Functions as first-class objects
- * @title: Closures
+ * GClosure:
+ * @in_marshal: Indicates whether the closure is currently being invoked with
+ *   g_closure_invoke()
+ * @is_invalid: Indicates whether the closure has been invalidated by
+ *   g_closure_invalidate()
  *
- * A #GClosure represents a callback supplied by the programmer.
+ * A `GClosure` represents a callback supplied by the programmer.
  *
  * It will generally comprise a function of some kind and a marshaller
  * used to call it. It is the responsibility of the marshaller to
@@ -76,7 +78,7 @@
  *
  * Using closures has a number of important advantages over a simple
  * callback function/data pointer combination:
- * 
+ *
  * - Closures allow the callee to get the types of the callback parameters,
  *   which means that language bindings don't have to write individual glue
  *   for each callback type.
