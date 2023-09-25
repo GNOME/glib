@@ -57,21 +57,14 @@
 #include "gmain.h"
 
 /**
- * SECTION:timers
- * @title: Timers
- * @short_description: keep track of elapsed time
- *
- * #GTimer records a start time, and counts microseconds elapsed since
- * that time. This is done somewhat differently on different platforms,
- * and can be tricky to get exactly right, so #GTimer provides a
- * portable/convenient interface.
- **/
-
-/**
  * GTimer:
  *
- * Opaque datatype that records a start time.
- **/
+ * `GTimer` records a start time, and counts microseconds elapsed since
+ * that time.
+ *
+ * This is done somewhat differently on different platforms, and can be
+ * tricky to get exactly right, so `GTimer` provides a portable/convenient interface.
+ */
 struct _GTimer
 {
   guint64 start;
