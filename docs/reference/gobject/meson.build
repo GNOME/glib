@@ -73,6 +73,7 @@ expand_content_files = [
   'gvalue.md',
   'tutorial.md',
   'types.md',
+  'signals.md',
 ]
 
 gobject_gir = meson.current_source_dir() / 'GObject-2.0.gir'
