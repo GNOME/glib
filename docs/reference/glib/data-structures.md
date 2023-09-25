@@ -3,14 +3,15 @@ SPDX-License-Identifier: LGPL-2.1-or-later
 SPDX-FileCopyrightText: 2010 Allison Lortie
 SPDX-FileCopyrightText: 2011 Collabora, Ltd.
 SPDX-FileCopyrightText: 2012 Olivier Sessink
-SPDX-FileCopyrightText: 2014 Matthias Clasen
+SPDX-FileCopyrightText: 2011, 2014 Matthias Clasen
 SPDX-FileCopyrightText: 2019 Emmanuel Fleury
+SPDX-FileCopyrightText: 2017, 2019 Endless Mobile, Inc.
 SPDX-FileCopyrightText: 2020 Endless OS Foundation, LLC
 
 # Data Structures
 
-GLib includes a number of basic data sructures, such as linked lists, hash tables,
-arrays, queues, etc.
+GLib includes a number of basic data sructures, such as arrays, linked lists, hash tables,
+queues, etc.
 
 ## Arrays
 
@@ -261,4 +262,51 @@ To find elements in the list use [func@GLib.List.nth], [func@GLib.List.nth_data]
 To find the index of an element use [func@GLib.List.position] and [func@GLib.List.index].
 
 To free the entire list, use [func@GLib.List.free] or [func@GLib.List.free_full].
+
+
+## Hash Tables
+
+A [struct@GLib.HashTable] provides associations between keys and values which is
+optimized so that given a key, the associated value can be found, inserted or removed
+in amortized O(1). All operations going through each element take O(n) time (list all
+keys/values, table resize, etc.).
+
+Note that neither keys nor values are copied when inserted into the `GHashTable`,
+so they must exist for the lifetime of the `GHashTable`. This means that the use
+of static strings is OK, but temporary strings (i.e. those created in buffers and those
+returned by GTK widgets) should be copied with [func@GLib.strdup] before being inserted.
+
+If keys or values are dynamically allocated, you must be careful to ensure that they are freed
+when they are removed from the `GHashTable`, and also when they are overwritten by
+new insertions into the `GHashTable`. It is also not advisable to mix static strings
+and dynamically-allocated strings in a [struct@GLib.HashTable], because it then becomes difficult
+to determine whether the string should be freed.
+
+To create a `GHashTable`, use [func@GLib.HashTable.new].
+
+To insert a key and value into a `GHashTable`, use [func@GLib.HashTable.insert].
+
+To look up a value corresponding to a given key, use [func@GLib.HashTable.lookup] or
+[func@GLib.HashTable.lookup_extended].
+
+[func@GLib.HashTable.lookup_extended] can also be used to simply check if a key is present
+in the hash table.
+
+To remove a key and value, use [func@GLib.HashTable.remove].
+
+To call a function for each key and value pair use [func@GLib.HashTable.foreach] or use
+an iterator to iterate over the key/value pairs in the hash table, see [struct@GLib.HashTableIter].
+The iteration order of a hash table is not defined, and you must not rely on iterating over
+keys/values in the same order as they were inserted.
+
+To destroy a `GHashTable` use [func@GLib.HashTable.unref] or [func@GLib.HashTable.destroy].
+
+A common use-case for hash tables is to store information about a set of keys, without associating any
+particular value with each key. `GHashTable` optimizes one way of doing so: If you store only
+key-value pairs where key == value, then `GHashTable` does not allocate memory to store the values,
+which can be a considerable space saving, if your set is large. The functions [func@GLib.HashTable.add]
+and [func@GLib.HashTable.contains] are designed to be used when using `GHashTable` this way.
+
+`GHashTable` is not designed to be statically initialised with keys and values known at compile time.
+To build a static hash table, use a tool such as [gperf](https://www.gnu.org/software/gperf/).
 
