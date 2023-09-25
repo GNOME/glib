@@ -64,6 +64,7 @@ content_files = [
   "threads.md",
   "markup.md",
   "goption.md",
+  "data-structures.md",
 ]
 content_images = [
   "file-name-encodings.png",
