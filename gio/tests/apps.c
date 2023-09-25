@@ -34,12 +34,27 @@ main (int argc, char **argv)
   setlocale (LC_ALL, "");
 
   if (argv[1] == NULL || g_str_equal (argv[1], "--help"))
-    g_print ("Usage:\n  apps --help\n  apps COMMAND [COMMAND_OPTIONS]\n\nCOMMANDS:\n  list\n  "
-      "search [--should-show-only] TEXT_TO_SEARCH\n  implementations INTERFACE_NAME\n  "
-      "show-info DESKTOP_FILE\n  default-for-type MIME_TYPE\n  recommended-for-type MIME_TYPE\n  "
-      "all-for-type MIME_TYPE\n  fallback-for-type MIME_TYPE\n  should-show DESKTOP_FILE\n  "
-      "monitor\n\nExamples:\n  apps search --should-show-only ter\n"
-      "  apps show-info org.gnome.Nautilus.desktop\n  apps default-for-type image/png\n\n");
+    g_print ("Usage:\n"
+      "  apps --help\n"
+      "  apps COMMAND [COMMAND_OPTIONS]\n"
+      "\n"
+      "COMMANDS:\n"
+      "  list\n"
+      "  search [--should-show-only] TEXT_TO_SEARCH\n"
+      "  implementations INTERFACE_NAME\n"
+      "  show-info DESKTOP_FILE\n"
+      "  default-for-type MIME_TYPE\n"
+      "  recommended-for-type MIME_TYPE\n"
+      "  all-for-type MIME_TYPE\n"
+      "  fallback-for-type MIME_TYPE\n"
+      "  should-show DESKTOP_FILE\n"
+      "  monitor\n"
+      "\n"
+      "Examples:\n"
+      "  apps search --should-show-only ter\n"
+      "  apps show-info org.gnome.Nautilus.desktop\n"
+      "  apps default-for-type image/png\n"
+      "\n");
   else if (g_str_equal (argv[1], "list"))
     {
       GList *all, *i;

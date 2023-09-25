@@ -458,7 +458,9 @@ const gchar desktop_key_match_category[N_DESKTOP_KEYS] = {
 
 typedef enum {
   /* Lower numbers have higher priority.
-   * Prefix match should put before substring match.
+   * Prefix match should put before substring match, independently of
+   * category relevance, i.e. a prefix match in 'Keyword' category will
+   * come before a substring match in a more relevant category like 'Name'.
    */
   MATCH_TYPE_PREFIX = 1,
   MATCH_TYPE_SUBSTRING = 2
@@ -576,7 +578,10 @@ compare_results (gconstpointer a,
     }
   else
     {
-      if (ra->category == rb->category)
+      /* We prioritize prefix matches over category relevance e.g. a prefix match in 'Keyword'
+       * category is better than a substring match in a more relevance category like 'Name'.
+       */
+      if (ra->match_type != rb->match_type)
         return ra->match_type - rb->match_type;
 
       return ra->category - rb->category;
@@ -590,10 +595,10 @@ compare_categories (gconstpointer a,
   const struct search_result *ra = a;
   const struct search_result *rb = b;
 
-  /* Also compare match types so we can put prefix match in a group while
-   * substring match in another group.
+  /* We prioritize prefix matches over category relevance e.g. a prefix match in 'Keyword'
+   * category is better than a substring match in a more relevance category like 'Name'.
    */
-  if (ra->category == rb->category)
+  if (ra->match_type != rb->match_type)
     return ra->match_type - rb->match_type;
 
   return ra->category - rb->category;
