@@ -4,6 +4,7 @@ SPDX-FileCopyrightText: 2010 Allison Lortie
 SPDX-FileCopyrightText: 2011 Collabora, Ltd.
 SPDX-FileCopyrightText: 2012 Olivier Sessink
 SPDX-FileCopyrightText: 2010, 2011, 2014 Matthias Clasen
+SPDX-FileCopyrightText: 2018 Sébastien Wilmet
 SPDX-FileCopyrightText: 2019 Emmanuel Fleury
 SPDX-FileCopyrightText: 2017, 2018, 2019 Endless Mobile, Inc.
 SPDX-FileCopyrightText: 2020 Endless OS Foundation, LLC
@@ -422,3 +423,35 @@ To traverse a tree, calling a function for each node visited in the traversal, u
 [method@GLib.Node.traverse] or [method@GLib.Node.children_foreach].
 
 To remove a node or subtree from a tree use [method@GLib.Node.unlink] or [method@GLib.Node.destroy].
+
+## Scalable Lists
+
+The [struct@GLib.Sequence] data structure has the API of a list, but is implemented internally with
+a balanced binary tree. This means that most of the operations  (access, search, insertion, deletion,
+...) on `GSequence` are O(log(n)) in average and O(n) in worst case for time complexity. But, note that
+maintaining a balanced sorted list of n elements is done in time O(n log(n)). The data contained
+in each element can be either integer values, by using of the
+[Type Conversion Macros](conversion-macros.md), or simply pointers to any type of data.
+
+A `GSequence` is accessed through "iterators", represented by a [struct@GLib.SequenceIter]. An iterator
+represents a position between two elements of the sequence. For example, the "begin" iterator represents
+the gap immediately before the first element of the sequence, and the "end" iterator represents the gap
+immediately after the last element. In an empty sequence, the begin and end iterators are the same.
+
+Some methods on `GSequence` operate on ranges of items. For example [func@GLib.Sequence.foreach_range]
+will call a user-specified function on each element with the given range. The range is delimited by the
+gaps represented by the passed-in iterators, so if you pass in the begin and end iterators, the range in
+question is the entire sequence.
+
+The function [func@GLib.Sequence.get] is used with an iterator to access the element immediately following
+the gap that the iterator represents. The iterator is said to "point" to that element.
+
+Iterators are stable across most operations on a `GSequence`. For example an iterator pointing to some element
+of a sequence will continue to point to that element even after the sequence is sorted. Even moving an element
+to another sequence using for example [func@GLib.Sequence.move_range] will not invalidate the iterators pointing
+to it. The only operation that will invalidate an iterator is when the element it points to is removed from
+any sequence.
+
+To sort the data, either use [method@GLib.Sequence.insert_sorted] or [method@GLib.Sequence.insert_sorted_iter]
+to add data to the `GSequence` or, if you want to add a large amount of data, it is more efficient to call
+[method@GLib.Sequence.sort] or [method@GLib.Sequence.sort_iter] after doing unsorted insertions.
