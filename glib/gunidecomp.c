@@ -54,6 +54,8 @@
  *  * Unicode 12.0 was added in GLib 2.62
  *  * Unicode 12.1 was added in GLib 2.62
  *  * Unicode 13.0 was added in GLib 2.66
+ *  * Unicode 14.0 was added in GLib 2.71
+ *  * Unicode 15.0 was added in GLib 2.76
  */
 
 #include "config.h"
