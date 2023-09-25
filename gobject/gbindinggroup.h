@@ -36,14 +36,6 @@ G_BEGIN_DECLS
 #define G_IS_BINDING_GROUP(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_BINDING_GROUP))
 #define G_TYPE_BINDING_GROUP    (g_binding_group_get_type())
 
-/**
- * GBindingGroup:
- *
- * GBindingGroup is an opaque structure whose members
- * cannot be accessed directly.
- *
- * Since: 2.72
- */
 typedef struct _GBindingGroup GBindingGroup;
 
 GOBJECT_AVAILABLE_IN_2_72
