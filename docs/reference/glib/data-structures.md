@@ -3,7 +3,7 @@ SPDX-License-Identifier: LGPL-2.1-or-later
 SPDX-FileCopyrightText: 2010 Allison Lortie
 SPDX-FileCopyrightText: 2011 Collabora, Ltd.
 SPDX-FileCopyrightText: 2012 Olivier Sessink
-SPDX-FileCopyrightText: 2011, 2014 Matthias Clasen
+SPDX-FileCopyrightText: 2010, 2011, 2014 Matthias Clasen
 SPDX-FileCopyrightText: 2019 Emmanuel Fleury
 SPDX-FileCopyrightText: 2017, 2018, 2019 Endless Mobile, Inc.
 SPDX-FileCopyrightText: 2020 Endless OS Foundation, LLC
@@ -332,3 +332,39 @@ To add elements, use [method@GLib.Queue.push_head], [method@GLib.Queue.push_head
 To remove elements, use [method@GLib.Queue.pop_head] and [method@GLib.Queue.pop_tail].
 
 To free the entire queue, use [method@GLib.Queue.free].
+
+## Asynchronous Queues
+
+Often you need to communicate between different threads. In general it's safer not to do this
+by shared memory, but by explicit message passing. These messages only make sense asynchronously
+for multi-threaded applications though, as a synchronous operation could as well be done in the
+same thread.
+
+Asynchronous queues are an exception from most other GLib data structures, as they can be used
+simultaneously from multiple threads without explicit locking and they bring their own builtin
+reference counting. This is because the nature of an asynchronous queue is that it will always
+be used by at least 2 concurrent threads.
+
+For using an asynchronous queue you first have to create one with [func@GLib.AsyncQueue.new].
+[struct@GLib.AsyncQueue] structs are reference counted, use [method@GLib.AsyncQueue.ref] and
+[method@GLib.AsyncQueue.unref] to manage your references.
+
+A thread which wants to send a message to that queue simply calls [method@GLib.AsyncQueue.push]
+to push the message to the queue.
+
+A thread which is expecting messages from an asynchronous queue simply calls [method@GLib.AsyncQueue.pop]
+for that queue. If no message is available in the queue at that point, the thread is now put to sleep
+until a message arrives. The message will be removed from the queue and returned. The functions
+[method@GLib.AsyncQueue.try_pop] and [method@GLib.AsyncQueue.timeout_pop] can be used to only check
+for the presence of messages or to only wait a certain time for messages respectively.
+
+For almost every function there exist two variants, one that locks the queue and one that doesn't.
+That way you can hold the queue lock (acquire it with [method@GLib.AsyncQueue.lock] and release it
+with [method@GLib.AsyncQueue.unlock] over multiple queue accessing instructions. This can be necessary
+to ensure the integrity of the queue, but should only be used when really necessary, as it can make your
+life harder if used unwisely. Normally you should only use the locking function variants (those without
+the `_unlocked` suffix).
+
+In many cases, it may be more convenient to use [struct@GLib.ThreadPool] when you need to distribute work
+to a set of worker threads instead of using `GAsyncQueue` manually. `GThreadPool` uses a `GAsyncQueue`
+internally.
