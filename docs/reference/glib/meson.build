@@ -160,6 +160,7 @@ expand_content_files = [
   'running.md',
   'testing.md',
   'threads.md',
+  'markup.md',
 ]
 
 glib_gir = meson.current_source_dir() / 'GLib-2.0.gir'
