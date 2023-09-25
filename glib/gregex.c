@@ -40,14 +40,12 @@
 #include "gthread.h"
 
 /**
- * SECTION:gregex
- * @title: Perl-compatible regular expressions
- * @short_description: matches strings against regular expressions
- * @see_also: [Regular expression syntax][glib-regex-syntax]
+ * GRegex:
  *
- * The g_regex_*() functions implement regular
- * expression pattern matching using syntax and semantics similar to
- * Perl regular expression.
+ * A `GRegex` is the "compiled" form of a regular expression pattern.
+ *
+ * `GRegex` implements regular expression pattern matching using syntax and
+ * semantics similar to Perl regular expression.
  *
  * Some functions accept a @start_position argument, setting it differs
  * from just passing over a shortened string and setting %G_REGEX_MATCH_NOTBOL
@@ -81,23 +79,23 @@
  * The behaviour of the dot, circumflex, and dollar metacharacters are
  * affected by newline characters, the default is to recognize any newline
  * character (the same characters recognized by "\R"). This can be changed
- * with %G_REGEX_NEWLINE_CR, %G_REGEX_NEWLINE_LF and %G_REGEX_NEWLINE_CRLF
- * compile options, and with %G_REGEX_MATCH_NEWLINE_ANY,
- * %G_REGEX_MATCH_NEWLINE_CR, %G_REGEX_MATCH_NEWLINE_LF and
- * %G_REGEX_MATCH_NEWLINE_CRLF match options. These settings are also
- * relevant when compiling a pattern if %G_REGEX_EXTENDED is set, and an
+ * with `G_REGEX_NEWLINE_CR`, `G_REGEX_NEWLINE_LF` and `G_REGEX_NEWLINE_CRLF`
+ * compile options, and with `G_REGEX_MATCH_NEWLINE_ANY`,
+ * `G_REGEX_MATCH_NEWLINE_CR`, `G_REGEX_MATCH_NEWLINE_LF` and
+ * `G_REGEX_MATCH_NEWLINE_CRLF` match options. These settings are also
+ * relevant when compiling a pattern if `G_REGEX_EXTENDED` is set, and an
  * unescaped "#" outside a character class is encountered. This indicates
  * a comment that lasts until after the next newline.
  *
- * Creating and manipulating the same #GRegex structure from different
- * threads is not a problem as #GRegex does not modify its internal
- * state between creation and destruction, on the other hand #GMatchInfo
+ * Creating and manipulating the same `GRegex` structure from different
+ * threads is not a problem as `GRegex` does not modify its internal
+ * state between creation and destruction, on the other hand `GMatchInfo`
  * is not threadsafe.
  *
  * The regular expressions low-level functionalities are obtained through
- * the excellent
- * [PCRE](http://www.pcre.org/)
- * library written by Philip Hazel.
+ * the excellent [PCRE](http://www.pcre.org/) library written by Philip Hazel.
+ *
+ * Since: 2.14
  */
 
 #define G_REGEX_PCRE_GENERIC_MASK (PCRE2_ANCHORED       | \
