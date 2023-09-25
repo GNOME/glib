@@ -31,28 +31,26 @@
 #include "gtype-private.h"
 
 /**
- * SECTION:gparamspec
- * @short_description: Metadata for parameter specifications
- * @see_also: g_object_class_install_property(), g_object_set(),
- *     g_object_get(), g_object_set_property(), g_object_get_property(),
- *     g_value_register_transform_func()
- * @title: GParamSpec
+ * GParamSpec: (ref-func g_param_spec_ref_sink) (unref-func g_param_spec_unref) (set-value-func g_value_set_param) (get-value-func g_value_get_param)
+ * @g_type_instance: private `GTypeInstance` portion
+ * @name: name of this parameter: always an interned string
+ * @flags: `GParamFlags` flags for this parameter
+ * @value_type: the `GValue` type for this parameter
+ * @owner_type: `GType` type that uses (introduces) this parameter
  *
- * #GParamSpec is an object structure that encapsulates the metadata
- * required to specify parameters, such as e.g. #GObject properties.
+ * `GParamSpec` encapsulates the metadata required to specify parameters, such as `GObject` properties.
  *
- * ## Parameter names # {#canonical-parameter-names}
+ * ## Parameter names
  *
  * A property name consists of one or more segments consisting of ASCII letters
  * and digits, separated by either the `-` or `_` character. The first
  * character of a property name must be a letter. These are the same rules as
- * for signal naming (see g_signal_new()).
+ * for signal naming (see [func@GObject.signal_new]).
  *
- * When creating and looking up a #GParamSpec, either separator can be
+ * When creating and looking up a `GParamSpec`, either separator can be
  * used, but they cannot be mixed. Using `-` is considerably more
  * efficient, and is the ‘canonical form’. Using `_` is discouraged.
  */
-
 
 /* --- defines --- */
 #define PARAM_FLOATING_FLAG                     0x2
