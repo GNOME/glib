@@ -36,38 +36,6 @@
 #include "gtestutils.h"
 #include "gslice.h"
 
-/**
- * SECTION:trees-binary
- * @title: Balanced Binary Trees
- * @short_description: a sorted collection of key/value pairs optimized
- *                     for searching and traversing in order
- *
- * The #GTree structure and its associated functions provide a sorted
- * collection of key/value pairs optimized for searching and traversing
- * in order. This means that most of the operations  (access, search,
- * insertion, deletion, ...) on #GTree are O(log(n)) in average and O(n)
- * in worst case for time complexity. But, note that maintaining a
- * balanced sorted #GTree of n elements is done in time O(n log(n)).
- *
- * To create a new #GTree use g_tree_new().
- *
- * To insert a key/value pair into a #GTree use g_tree_insert()
- * (O(n log(n))).
- *
- * To remove a key/value pair use g_tree_remove() (O(n log(n))).
- *
- * To look up the value corresponding to a given key, use
- * g_tree_lookup() and g_tree_lookup_extended().
- *
- * To find out the number of nodes in a #GTree, use g_tree_nnodes(). To
- * get the height of a #GTree, use g_tree_height().
- *
- * To traverse a #GTree, calling a function for each node visited in
- * the traversal, use g_tree_foreach().
- *
- * To destroy a #GTree, use g_tree_destroy().
- **/
-
 #define MAX_GTREE_HEIGHT 40
 /* G_MAXUINT nodes will be covered by tree height of log2(G_MAXUINT) + 2. */
 G_STATIC_ASSERT ((G_GUINT64_CONSTANT (1) << (MAX_GTREE_HEIGHT - 2)) >= G_MAXUINT);

@@ -11,7 +11,7 @@ SPDX-FileCopyrightText: 2020 Endless OS Foundation, LLC
 # Data Structures
 
 GLib includes a number of basic data sructures, such as arrays, linked lists, hash tables,
-queues, etc.
+queues, trees, etc.
 
 ## Arrays
 
@@ -368,3 +368,27 @@ the `_unlocked` suffix).
 In many cases, it may be more convenient to use [struct@GLib.ThreadPool] when you need to distribute work
 to a set of worker threads instead of using `GAsyncQueue` manually. `GThreadPool` uses a `GAsyncQueue`
 internally.
+
+## Binary Trees
+
+The [struct@GLib.Tree] structure and its associated functions provide a sorted collection of key/value
+pairs optimized for searching and traversing in order. This means that most of the operations (access,
+search, insertion, deletion, …) on `GTree` are O(log(n)) in average and O(n) in worst case for time
+complexity. But, note that maintaining a balanced sorted `GTree` of n elements is done in time O(n log(n)).
+
+To create a new `GTree` use [ctor@GLib.Tree.new].
+
+To insert a key/value pair into a `GTree` use [method@GLib.Tree.insert] (O(n log(n))).
+
+To remove a key/value pair use [method@GLib.Tree.remove] (O(n log(n))).
+
+To look up the value corresponding to a given key, use [method@GLib.Tree.lookup] and
+[method@GLib.Tree.lookup_extended].
+
+To find out the number of nodes in a `GTree`, use [method@GLib.Tree.nnodes].
+To get the height of a `GTree`, use [method@GLib.Tree.height].
+
+To traverse a `GTree`, calling a function for each node visited in
+the traversal, use [method@GLib.Tree.foreach].
+
+To destroy a `GTree`, use [method@GLib.Tree.destroy].
