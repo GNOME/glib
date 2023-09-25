@@ -36,57 +36,6 @@
 #include "gslice.h"
 
 /**
- * SECTION:linked_lists_single
- * @title: Singly-Linked Lists
- * @short_description: linked lists that can be iterated in one direction
- *
- * The #GSList structure and its associated functions provide a
- * standard singly-linked list data structure. The benefit of this
- * data-structure is to provide insertion/deletion operations in O(1)
- * complexity where access/search operations are in O(n). The benefit
- * of #GSList over #GList (doubly linked list) is that they are lighter
- * in space as they only need to retain one pointer but it double the
- * cost of the worst case access/search operations.
- *
- * Each element in the list contains a piece of data, together with a
- * pointer which links to the next element in the list. Using this
- * pointer it is possible to move through the list in one direction
- * only (unlike the [double-linked lists][glib-Doubly-Linked-Lists],
- * which allow movement in both directions).
- *
- * The data contained in each element can be either integer values, by
- * using one of the [Type Conversion Macros][glib-Type-Conversion-Macros],
- * or simply pointers to any type of data.
- *
- * List elements are allocated from the [slice allocator][glib-Memory-Slices],
- * which is more efficient than allocating elements individually.
- *
- * Note that most of the #GSList functions expect to be passed a
- * pointer to the first element in the list. The functions which insert
- * elements return the new start of the list, which may have changed.
- *
- * There is no function to create a #GSList. %NULL is considered to be
- * the empty list so you simply set a #GSList* to %NULL.
- *
- * To add elements, use g_slist_append(), g_slist_prepend(),
- * g_slist_insert() and g_slist_insert_sorted().
- *
- * To remove elements, use g_slist_remove().
- *
- * To find elements in the list use g_slist_last(), g_slist_next(),
- * g_slist_nth(), g_slist_nth_data(), g_slist_find() and
- * g_slist_find_custom().
- *
- * To find the index of an element use g_slist_position() and
- * g_slist_index().
- *
- * To call a function for each element in the list use
- * g_slist_foreach().
- *
- * To free the entire list, use g_slist_free().
- **/
-
-/**
  * GSList:
  * @data: holds the element's data, which can be a pointer to any kind
  *        of data, or any integer value using the

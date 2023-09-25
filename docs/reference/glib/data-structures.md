@@ -2,6 +2,7 @@ Title: Data Structures
 SPDX-License-Identifier: LGPL-2.1-or-later
 SPDX-FileCopyrightText: 2010 Allison Lortie
 SPDX-FileCopyrightText: 2011 Collabora, Ltd.
+SPDX-FileCopyrightText: 2012 Olivier Sessink
 SPDX-FileCopyrightText: 2014 Matthias Clasen
 SPDX-FileCopyrightText: 2019 Emmanuel Fleury
 SPDX-FileCopyrightText: 2020 Endless OS Foundation, LLC
@@ -149,3 +150,115 @@ g_byte_array_free (array, TRUE);
 
 See [struct@GLib.Bytes] if you are interested in an immutable object representing a
 sequence of bytes.
+
+## Singly-linked Lists
+
+The [struct@GLib.SList] structure and its associated functions provide a standard
+singly-linked list data structure. The benefit of this data structure is to provide
+insertion/deletion operations in O(1) complexity where access/search operations are
+in O(n). The benefit of `GSList` over [struct@GLib.List] (doubly-linked list) is that
+they are lighter in space as they only need to retain one pointer but it double the
+cost of the worst case access/search operations.
+
+Each element in the list contains a piece of data, together with a pointer which links
+to the next element in the list. Using this pointer it is possible to move through the
+list in one direction only (unlike the [doubly-linked lists](#doubly-linked-lists),
+which allow movement in both directions).
+
+The data contained in each element can be either integer values, by
+using one of the [Type Conversion Macros](conversion-macros.html),
+or simply pointers to any type of data.
+
+Note that most of the #GSList functions expect to be passed a pointer to the first element
+in the list. The functions which insert elements return the new start of the list, which
+may have changed.
+
+There is no function to create a `GSList`. `NULL` is considered to be the empty list so you
+simply set a `GSList*` to `NULL`.
+
+To add elements, use [func@GLib.SList.append], [func@GLib.SList.prepend],
+[func@GLib.SList.insert] and [func@GLib.SList.insert_sorted].
+
+To remove elements, use [func@GLib.SList.remove].
+
+To find elements in the list use [func@GLib.SList.last], [func@GLib.slist_next],
+[func@GLib.SList.nth], [func@GLib.SList.nth_data], [func@GLib.SList.find] and
+[func@GLib.SList.find_custom].
+
+To find the index of an element use [func@GLib.SList.position] and [func@GLib.SList.index].
+
+To call a function for each element in the list use [func@GLib.SList.foreach].
+
+To free the entire list, use [func@GLib.SList.free].
+
+## Doubly-linked Lists
+
+The [struct@GLib.List] structure and its associated functions provide a standard
+doubly-linked list data structure. The benefit of this data-structure is to provide
+insertion/deletion operations in O(1) complexity where access/search operations are in O(n).
+The benefit of `GList` over [struct@GLib.SList] (singly-linked list) is that the worst case
+on access/search operations is divided by two which comes at a cost in space as we need
+to retain two pointers in place of one.
+
+Each element in the list contains a piece of data, together with pointers which link to the
+previous and next elements in the list. Using these pointers it is possible to move through
+the list in both directions (unlike the singly-linked [struct@GLib.SList],
+which only allows movement through the list in the forward direction).
+
+The doubly-linked list does not keep track of the number of items and does not keep track of
+both the start and end of the list. If you want fast access to both the start and the end of
+the list,  and/or the number of items in the list, use a [struct@GLib.Queue] instead.
+
+The data contained in each element can be either integer values, by using one of the
+[Type Conversion Macros](conversion-macros.html), or simply pointers to any type of data.
+
+Note that most of the `GList` functions expect to be passed a pointer to the first element in the list.
+The functions which insert elements return the new start of the list, which may have changed.
+
+There is no function to create a `GList`. `NULL` is considered to be a valid, empty list so you simply
+set a `GList*` to `NULL` to initialize it.
+
+To add elements, use [func@GLib.List.append], [func@GLib.List.prepend],
+[func@GLib.List.insert] and [func@GLib.List.insert_sorted].
+
+To visit all elements in the list, use a loop over the list:
+
+```c
+GList *l;
+for (l = list; l != NULL; l = l->next)
+  {
+    // do something with l->data
+  }
+```
+
+To call a function for each element in the list, use [func@GLib.List.foreach].
+
+To loop over the list and modify it (e.g. remove a certain element) a while loop is more appropriate,
+for example:
+
+```c
+GList *l = list;
+while (l != NULL)
+  {
+    GList *next = l->next;
+    if (should_be_removed (l))
+      {
+        // possibly free l->data
+        list = g_list_delete_link (list, l);
+      }
+    l = next;
+  }
+```
+
+To remove elements, use [func@GLib.List.remove].
+
+To navigate in a list, use [func@GLib.List.first], [func@GLib.List.last],
+[func@GLib.list_next], [func@GLib.list_previous].
+
+To find elements in the list use [func@GLib.List.nth], [func@GLib.List.nth_data],
+[func@GLib.List.find] and [func@GLib.List.find_custom].
+
+To find the index of an element use [func@GLib.List.position] and [func@GLib.List.index].
+
+To free the entire list, use [func@GLib.List.free] or [func@GLib.List.free_full].
+
