@@ -5,6 +5,7 @@ SPDX-FileCopyrightText: 2011 Collabora, Ltd.
 SPDX-FileCopyrightText: 2012 Olivier Sessink
 SPDX-FileCopyrightText: 2010, 2011, 2014 Matthias Clasen
 SPDX-FileCopyrightText: 2018 Sébastien Wilmet
+SPDX-FileCopyrightText: 2018 Emmanuele Bassi
 SPDX-FileCopyrightText: 2019 Emmanuel Fleury
 SPDX-FileCopyrightText: 2017, 2018, 2019 Endless Mobile, Inc.
 SPDX-FileCopyrightText: 2020 Endless OS Foundation, LLC
@@ -455,3 +456,62 @@ any sequence.
 To sort the data, either use [method@GLib.Sequence.insert_sorted] or [method@GLib.Sequence.insert_sorted_iter]
 to add data to the `GSequence` or, if you want to add a large amount of data, it is more efficient to call
 [method@GLib.Sequence.sort] or [method@GLib.Sequence.sort_iter] after doing unsorted insertions.
+
+## Reference-counted strings
+
+Reference-counted strings are normal C strings that have been augmented with a reference count to manage
+their resources. You allocate a new reference counted string and acquire and release references as needed,
+instead of copying the string among callers; when the last reference on the string is released, the resources
+allocated for it are freed.
+
+Typically, reference-counted strings can be used when parsing data from files and storing them into data
+structures that are passed to various callers:
+
+```c
+PersonDetails *
+person_details_from_data (const char *data)
+{
+  // Use g_autoptr() to simplify error cases
+  g_autoptr(GRefString) full_name = NULL;
+  g_autoptr(GRefString) address =  NULL;
+  g_autoptr(GRefString) city = NULL;
+  g_autoptr(GRefString) state = NULL;
+  g_autoptr(GRefString) zip_code = NULL;
+
+  // parse_person_details() is defined elsewhere; returns refcounted strings
+  if (!parse_person_details (data, &full_name, &address, &city, &state, &zip_code))
+    return NULL;
+
+  if (!validate_zip_code (zip_code))
+    return NULL;
+
+  // add_address_to_cache() and add_full_name_to_cache() are defined
+  // elsewhere; they add strings to various caches, using refcounted
+  // strings to avoid copying data over and over again
+  add_address_to_cache (address, city, state, zip_code);
+  add_full_name_to_cache (full_name);
+
+  // person_details_new() is defined elsewhere; it takes a reference
+  // on each string
+  PersonDetails *res = person_details_new (full_name,
+                                           address,
+                                           city,
+                                           state,
+                                           zip_code);
+
+  return res;
+}
+```
+
+In the example above, we have multiple functions taking the same strings for different uses; with typical
+C strings, we'd have to copy the strings every time the life time rules of the data differ from the
+life-time of the string parsed from the original buffer. With reference counted strings, each caller can
+ake a reference on the data, and keep it as long as it needs to own the string.
+
+Reference-counted strings can also be "interned" inside a global table owned by GLib; while an interned
+string has at least a reference, creating a new interned reference-counted string with the same contents
+will return a reference to the existing string instead of creating a new reference-counted string instance.
+Once the string loses its last reference, it will be automatically removed from the global interned strings
+table.
+
+Reference-counted strings were added to GLib in 2.58.
