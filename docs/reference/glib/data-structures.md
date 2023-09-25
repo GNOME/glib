@@ -392,3 +392,33 @@ To traverse a `GTree`, calling a function for each node visited in
 the traversal, use [method@GLib.Tree.foreach].
 
 To destroy a `GTree`, use [method@GLib.Tree.destroy].
+
+## N-ary Trees
+
+The [struct@GLib.Node] struct and its associated functions provide a N-ary tree
+data structure, where nodes in the tree can contain arbitrary data.
+
+To create a new tree use [func@GLib.Node.new].
+
+To insert a node into a tree use [method@GLib.Node.insert], [method@GLib.Node.insert_before],
+[func@GLib.node_append] and [method@GLib.Node.prepend],
+
+To create a new node and insert it into a tree use [func@GLib.node_insert_data],
+[func@GLib.node_insert_data_after], [func@GLib.node_insert_data_before],
+[func@GLib.node_append_data] and [func@GLib.node_prepend_data].
+
+To reverse the children of a node use [method@GLib.Node.reverse_children].
+
+To find a node use [method@GLib.Node.get_root], [method@GLib.Node.find], [method@GLib.Node.find_child],
+[method@GLib.Node.child_index], [method@GLib.Node.child_position], [func@GLib.node_first_child],
+[method@GLib.Node.last_child], [method@GLib.Node.nth_child], [method@GLib.Node.first_sibling],
+[func@GLib.node_prev_sibling], [func@GLib.node_next_sibling] or [method@GLib.Node.last_sibling].
+
+To get information about a node or tree use `G_NODE_IS_LEAF()`,
+`G_NODE_IS_ROOT()`, [method@GLib.Node.depth], [method@GLib.Node.n_nodes],
+[method@GLib.Node.n_children], [method@GLib.Node.is_ancestor] or [method@GLib.Node.max_height].
+
+To traverse a tree, calling a function for each node visited in the traversal, use
+[method@GLib.Node.traverse] or [method@GLib.Node.children_foreach].
+
+To remove a node or subtree from a tree use [method@GLib.Node.unlink] or [method@GLib.Node.destroy].
