@@ -55,15 +55,6 @@
 
 
 /**
- * SECTION:scanner
- * @title: Lexical Scanner
- * @short_description: a general purpose lexical scanner
- *
- * The #GScanner and its associated functions provide a
- * general purpose lexical scanner.
- */
-
-/**
  * GScannerMsgFunc:
  * @scanner: a #GScanner
  * @message: the message
@@ -196,7 +187,7 @@
  * @next_position: char number of the last token from g_scanner_peek_next_token()
  * @msg_handler: handler function for _warn and _error
  *
- * The data structure representing a lexical scanner.
+ * `GScanner` provides a general-purpose lexical scanner.
  *
  * You should set @input_name after creating the scanner, since
  * it is used by the default message handler when displaying
