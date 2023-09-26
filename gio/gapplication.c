@@ -45,25 +45,25 @@
 #include <string.h>
 
 /**
- * SECTION:gapplication
- * @title: GApplication
- * @short_description: Core application class
- * @include: gio/gio.h
+ * GApplication:
  *
- * A #GApplication is the foundation of an application.  It wraps some
+ * `GApplication` is the core class for application support.
+ *
+ * A `GApplication` is the foundation of an application. It wraps some
  * low-level platform-specific services and is intended to act as the
  * foundation for higher-level application classes such as
- * #GtkApplication or #MxApplication.  In general, you should not use
+ * `GtkApplication` or `MxApplication`. In general, you should not use
  * this class outside of a higher level framework.
  *
- * GApplication provides convenient life cycle management by maintaining
+ * `GApplication` provides convenient life-cycle management by maintaining
  * a "use count" for the primary application instance. The use count can
- * be changed using g_application_hold() and g_application_release(). If
- * it drops to zero, the application exits. Higher-level classes such as
- * #GtkApplication employ the use count to ensure that the application
- * stays alive as long as it has any opened windows.
+ * be changed using [method@Gio.Application.hold] and
+ * [method@Gio.Application.release]. If it drops to zero, the application
+ * exits. Higher-level classes such as `GtkApplication` employ the use count
+ * to ensure that the application stays alive as long as it has any opened
+ * windows.
  *
- * Another feature that GApplication (optionally) provides is process
+ * Another feature that `GApplication` (optionally) provides is process
  * uniqueness. Applications can make use of this functionality by
  * providing a unique application ID. If given, only one application
  * with this ID can be running at a time per session. The session
@@ -75,53 +75,54 @@
  * always the current instance. On Linux, the D-Bus session bus
  * is used for communication.
  *
- * The use of #GApplication differs from some other commonly-used
+ * The use of `GApplication` differs from some other commonly-used
  * uniqueness libraries (such as libunique) in important ways. The
  * application is not expected to manually register itself and check
  * if it is the primary instance. Instead, the main() function of a
- * #GApplication should do very little more than instantiating the
+ * `GApplication` should do very little more than instantiating the
  * application instance, possibly connecting signal handlers, then
- * calling g_application_run(). All checks for uniqueness are done
+ * calling [method@Gio.Application.run]. All checks for uniqueness are done
  * internally. If the application is the primary instance then the
  * startup signal is emitted and the mainloop runs. If the application
  * is not the primary instance then a signal is sent to the primary
- * instance and g_application_run() promptly returns. See the code
+ * instance and [method@Gio.Application.run] promptly returns. See the code
  * examples below.
  *
- * If used, the expected form of an application identifier is the 
+ * If used, the expected form of an application identifier is the
  * same as that of a
  * [D-Bus well-known bus name](https://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-names-bus).
  * Examples include: `com.example.MyApp`, `org.example.internal_apps.Calculator`,
  * `org._7_zip.Archiver`.
- * For details on valid application identifiers, see g_application_id_is_valid().
+ * For details on valid application identifiers, see [func@Gio.Application.id_is_valid].
  *
  * On Linux, the application identifier is claimed as a well-known bus name
- * on the user's session bus.  This means that the uniqueness of your
- * application is scoped to the current session.  It also means that your
+ * on the user's session bus. This means that the uniqueness of your
+ * application is scoped to the current session. It also means that your
  * application may provide additional services (through registration of other
- * object paths) at that bus name.  The registration of these object paths
- * should be done with the shared GDBus session bus.  Note that due to the
+ * object paths) at that bus name. The registration of these object paths
+ * should be done with the shared GDBus session bus. Note that due to the
  * internal architecture of GDBus, method calls can be dispatched at any time
- * (even if a main loop is not running).  For this reason, you must ensure that
+ * (even if a main loop is not running). For this reason, you must ensure that
  * any object paths that you wish to register are registered before #GApplication
  * attempts to acquire the bus name of your application (which happens in
- * g_application_register()).  Unfortunately, this means that you cannot use
- * g_application_get_is_remote() to decide if you want to register object paths.
+ * [method@Gio.Application.register]). Unfortunately, this means that you cannot
+ * use [method@Gio.Application.is_remote] to decide if you want to register
+ * object paths.
  *
- * GApplication also implements the #GActionGroup and #GActionMap
+ * `GApplication` also implements the [struct@Gio.ActionGroup] and [struct@Gio.ActionMap]
  * interfaces and lets you easily export actions by adding them with
- * g_action_map_add_action(). When invoking an action by calling
- * g_action_group_activate_action() on the application, it is always
+ * [method@Gio.ActionMap.add_action]. When invoking an action by calling
+ * [method@Gio.ActionGroup.activate_action] on the application, it is always
  * invoked in the primary instance. The actions are also exported on
- * the session bus, and GIO provides the #GDBusActionGroup wrapper to
- * conveniently access them remotely. GIO provides a #GDBusMenuModel wrapper
- * for remote access to exported #GMenuModels.
+ * the session bus, and GIO provides the [struct@Gio.DBusActionGroup] wrapper to
+ * conveniently access them remotely. GIO provides a [struct@Gio.DBusMenuModel] wrapper
+ * for remote access to exported [struct@Gio.MenuModel]s.
  *
  * Note: Due to the fact that actions are exported on the session bus,
  * using `maybe` parameters is not supported, since D-Bus does not support
  * `maybe` types.
  *
- * There is a number of different entry points into a GApplication:
+ * There is a number of different entry points into a `GApplication`:
  *
  * - via 'Activate' (i.e. just starting the application)
  *
@@ -131,50 +132,45 @@
  *
  * - via activating an action
  *
- * The #GApplication::startup signal lets you handle the application
+ * The [signal@Gio.Application.startup] signal lets you handle the application
  * initialization for all of these in a single place.
  *
  * Regardless of which of these entry points is used to start the
- * application, GApplication passes some ‘platform data’ from the
+ * application, `GApplication` passes some ‘platform data’ from the
  * launching instance to the primary instance, in the form of a
- * #GVariant dictionary mapping strings to variants. To use platform
- * data, override the @before_emit or @after_emit virtual functions
- * in your #GApplication subclass. When dealing with
- * #GApplicationCommandLine objects, the platform data is
- * directly available via g_application_command_line_get_cwd(),
- * g_application_command_line_get_environ() and
- * g_application_command_line_get_platform_data().
+ * [struct@GLib.Variant] dictionary mapping strings to variants. To use platform
+ * data, override the [vfunc@Gio.Application.before_emit] or
+ * [vfunc@Gio.Application.after_emit] virtual functions
+ * in your `GApplication` subclass. When dealing with
+ * [struct@Gio.ApplicationCommandLine] objects, the platform data is
+ * directly available via [method@Gio.ApplicationCommandLine.get_cwd],
+ * [method@Gio.ApplicationCommandLine.get_environ] and
+ * [method@Gio.ApplicationCommandLine.get_platform_data].
  *
  * As the name indicates, the platform data may vary depending on the
  * operating system, but it always includes the current directory (key
- * "cwd"), and optionally the environment (ie the set of environment
- * variables and their values) of the calling process (key "environ").
+ * `cwd`), and optionally the environment (ie the set of environment
+ * variables and their values) of the calling process (key `environ`).
  * The environment is only added to the platform data if the
- * %G_APPLICATION_SEND_ENVIRONMENT flag is set. #GApplication subclasses
- * can add their own platform data by overriding the @add_platform_data
- * virtual function. For instance, #GtkApplication adds startup notification
- * data in this way.
+ * `G_APPLICATION_SEND_ENVIRONMENT` flag is set. `GApplication` subclasses
+ * can add their own platform data by overriding the
+ * [vfunc@Gio.Application.add_platform_data] virtual function. For instance,
+ * `GtkApplication` adds startup notification data in this way.
  *
  * To parse commandline arguments you may handle the
- * #GApplication::command-line signal or override the local_command_line()
- * vfunc, to parse them in either the primary instance or the local instance,
- * respectively.
+ * [signal@Gio.Application.command-line] signal or override the
+ * [vfunc@Gio.Application.local_command_line] virtual funcion, to parse them in
+ * either the primary instance or the local instance, respectively.
  *
- * For an example of opening files with a GApplication, see
+ * For an example of opening files with a `GApplication`, see
  * [gapplication-example-open.c](https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-open.c).
  *
- * For an example of using actions with GApplication, see
+ * For an example of using actions with `GApplication`, see
  * [gapplication-example-actions.c](https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-actions.c).
  *
- * For an example of using extra D-Bus hooks with GApplication, see
+ * For an example of using extra D-Bus hooks with `GApplication`, see
  * [gapplication-example-dbushooks.c](https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-dbushooks.c).
- */
-
-/**
- * GApplication:
  *
- * #GApplication is an opaque data structure and can only be accessed
- * using the following functions.
  * Since: 2.28
  */
 
