@@ -155,6 +155,9 @@
 #define g_assert_type_system_initialized() \
   g_assert (static_quark_type_flags)
 
+/* Make sure G_TYPE_IS_*() macros still end up inlined */
+#define g_type_test_flags(t,f) _g_type_test_flags(t,f)
+
 #define TYPE_FUNDAMENTAL_FLAG_MASK (G_TYPE_FLAG_CLASSED | \
 				    G_TYPE_FLAG_INSTANTIATABLE | \
 				    G_TYPE_FLAG_DERIVABLE | \
@@ -200,6 +203,8 @@ typedef struct _IFaceHolder	IFaceHolder;
 
 
 /* --- prototypes --- */
+static inline gboolean			_g_type_test_flags              (GType                   type,
+									 guint                   flags);
 static inline GTypeFundamentalInfo*	type_node_fundamental_info_I	(TypeNode		*node);
 static	      void			type_add_flags_W		(TypeNode		*node,
 									 GTypeFlags		 flags);
@@ -4005,9 +4010,9 @@ g_type_get_instance_count (GType type)
 }
 
 /* --- implementation details --- */
-gboolean
-g_type_test_flags (GType type,
-		   guint flags)
+static inline gboolean
+_g_type_test_flags (GType type,
+                    guint flags)
 {
   TypeNode *node;
   gboolean result = FALSE;
@@ -4060,6 +4065,13 @@ g_type_test_flags (GType type,
     }
   
   return result;
+}
+
+gboolean
+(g_type_test_flags) (GType type,
+                     guint flags)
+{
+  return _g_type_test_flags (type, flags);
 }
 
 /**
