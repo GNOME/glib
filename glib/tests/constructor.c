@@ -65,6 +65,10 @@ static void
 dtor (void)
 {
   string_add_exclusive (G_STRINGIFY (PREFIX) "_" "dtor");
+
+#ifdef BUILD_TEST_EXECUTABLE
+  _Exit (EXIT_SUCCESS);
+#endif
 }
 
 #endif /* G_HAS_CONSTRUCTORS */
@@ -73,6 +77,7 @@ dtor (void)
 #if defined (_WIN32) && defined (G_HAS_TLS_CALLBACKS)
 
 extern IMAGE_DOS_HEADER __ImageBase;
+
 static inline HMODULE
 this_module (void)
 {
@@ -231,9 +236,14 @@ main (int argc, char *argv[])
   g_test_add_data_func ("/constructor/library", path, test_lib);
 
   ret = g_test_run ();
+  g_assert_cmpint (ret, ==, 0);
 
   g_free (path);
-  return ret;
+
+  /* Return EXIT_FAILURE from main. The last destructor will
+   * call _Exit (EXIT_SUCCESS) if everything went well. This
+   * is a way to test that destructors get invoked */
+  return EXIT_FAILURE;
 }
 
 #endif /* BUILD_TEST_EXECUTABLE */
