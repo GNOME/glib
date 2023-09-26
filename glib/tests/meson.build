@@ -234,14 +234,20 @@ else
                                       install_tag : 'tests',
                                       install: installed_tests_enabled)
 
+    if host_system not in ['ios', 'darwin']
+      var_preload = 'LD_PRELOAD'
+    else
+      var_preload = 'DYLD_INSERT_LIBRARIES'
+    endif
+
     glib_tests += {
       'gutils-user-database' : {
         'depends' : [],
         'env' : {
-          'LD_PRELOAD': getpwuid_preload.full_path()
+          var_preload: getpwuid_preload.full_path()
         },
         'installed_tests_env' : {
-          'LD_PRELOAD': installed_tests_execdir / fs.name(getpwuid_preload.full_path())
+          var_preload: installed_tests_execdir / fs.name(getpwuid_preload.full_path())
         },
       },
     }

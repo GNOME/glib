@@ -25,57 +25,67 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#undef getpwuid
+#ifndef __APPLE__
 
-static struct passwd my_pw;
+#define GET_REAL(func) \
+  (real_##func = dlsym (RTLD_NEXT, #func))
+
+#define DEFINE_WRAPPER(return_type, func, argument_list) \
+  static return_type (* real_##func) argument_list;      \
+  return_type func argument_list
+
+#else
+
+#define GET_REAL(func) \
+  func
+
+/* https://opensource.apple.com/source/dyld/dyld-852.2/include/mach-o/dyld-interposing.h */
+#define DYLD_INTERPOSE(_replacement,_replacee) \
+   __attribute__((used)) static struct{ const void* replacement; const void* replacee; } _interpose_##_replacee \
+            __attribute__ ((section ("__DATA,__interpose"))) = { (const void*)(unsigned long)&_replacement, (const void*)(unsigned long)&_replacee };
+
+#define DEFINE_WRAPPER(return_type, func, argument_list) \
+  static return_type wrap_##func argument_list;          \
+  DYLD_INTERPOSE(wrap_##func, func)                      \
+  static return_type wrap_##func argument_list
+
+#endif /* __APPLE__ */
 
 /* This is used in gutils.c used to make sure utility functions
  * handling user information do not crash on bad data (for example
  * caused by getpwuid returning some NULL elements.
  */
-struct passwd *
-getpwuid (uid_t uid)
+
+#undef getpwuid
+
+static struct passwd my_pw;
+
+DEFINE_WRAPPER (struct passwd *, getpwuid, (uid_t uid))
 {
-  static struct passwd *(*real_getpwuid) (uid_t);
-  struct passwd *pw;
-
-  if (real_getpwuid == NULL)
-    real_getpwuid = dlsym (RTLD_NEXT, "getpwuid");
-
-  pw = real_getpwuid (uid);
+  struct passwd *pw = GET_REAL (getpwuid) (uid);
   my_pw = *pw;
   my_pw.pw_name = NULL;
   return &my_pw;
 }
 
-int
-getpwnam_r (const char *name, struct passwd *pwd, char buf[], size_t buflen, struct passwd **result)
+DEFINE_WRAPPER (int, getpwnam_r, (const char     *name,
+                                  struct passwd  *pwd,
+                                  char            buf[],
+                                  size_t          buflen,
+                                  struct passwd **result))
 {
-  int code;
-
-  int (*real_getpwnam_r) (const char *,
-                          struct passwd *,
-                          char[],
-                          size_t,
-                          struct passwd **) = dlsym (RTLD_NEXT, "getpwnam_r");
-
-  code = real_getpwnam_r (name, pwd, buf, buflen, result);
+  int code = GET_REAL (getpwnam_r) (name, pwd, buf, buflen, result);
   pwd->pw_name = NULL;
   return code;
 }
 
-int
-getpwuid_r (uid_t uid, struct passwd *restrict pwd, char buf[], size_t buflen, struct passwd **result)
+DEFINE_WRAPPER (int, getpwuid_r, (uid_t           uid,
+                                  struct passwd  *restrict pwd,
+                                  char            buf[],
+                                  size_t          buflen,
+                                  struct passwd **result))
 {
-  int code;
-
-  int (*real_getpwuid_r) (uid_t,
-                          struct passwd *,
-                          char[],
-                          size_t,
-                          struct passwd **) = dlsym (RTLD_NEXT, "getpwuid_r");
-
-  code = real_getpwuid_r (uid, pwd, buf, buflen, result);
+  int code = GET_REAL (getpwuid_r) (uid, pwd, buf, buflen, result);
   pwd->pw_name = NULL;
   return code;
 }
