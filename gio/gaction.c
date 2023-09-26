@@ -28,47 +28,37 @@
 G_DEFINE_INTERFACE (GAction, g_action, G_TYPE_OBJECT)
 
 /**
- * SECTION:gaction
- * @title: GAction
- * @short_description: An action interface
- * @include: gio/gio.h
+ * GAction:
  *
- * #GAction represents a single named action.
+ * `GAction` represents a single named action.
  *
  * The main interface to an action is that it can be activated with
- * g_action_activate().  This results in the 'activate' signal being
- * emitted.  An activation has a #GVariant parameter (which may be
- * %NULL).  The correct type for the parameter is determined by a static
+ * [method@Gio.Action.activate]. This results in the 'activate' signal being
+ * emitted. An activation has a `GVariant` parameter (which may be
+ * `NULL`). The correct type for the parameter is determined by a static
  * parameter type (which is given at construction time).
  *
  * An action may optionally have a state, in which case the state may be
- * set with g_action_change_state().  This call takes a #GVariant.  The
+ * set with [method@Gio.Action.change_state]. This call takes a #GVariant. The
  * correct type for the state is determined by a static state type
  * (which is given at construction time).
  *
  * The state may have a hint associated with it, specifying its valid
  * range.
  *
- * #GAction is merely the interface to the concept of an action, as
+ * `GAction` is merely the interface to the concept of an action, as
  * described above.  Various implementations of actions exist, including
- * #GSimpleAction.
+ * [struct@Gio.SimpleAction].
  *
  * In all cases, the implementing class is responsible for storing the
- * name of the action, the parameter type, the enabled state, the
- * optional state type and the state and emitting the appropriate
- * signals when these change.  The implementor is responsible for filtering
- * calls to g_action_activate() and g_action_change_state() for type
- * safety and for the state being enabled.
+ * name of the action, the parameter type, the enabled state, the optional
+ * state type and the state and emitting the appropriate signals when these
+ * change. The implementor is responsible for filtering calls to
+ * [method@Gio.Action.activate] and [method@Gio.Action.change_state]
+ * for type safety and for the state being enabled.
  *
- * Probably the only useful thing to do with a #GAction is to put it
- * inside of a #GSimpleActionGroup.
- **/
-
-/**
- * GAction:
- *
- * #GAction is an opaque data structure and can only be accessed
- * using the following functions.
+ * Probably the only useful thing to do with a `GAction` is to put it
+ * inside of a [struct@Gio.SimpleActionGroup].
  **/
 
 /**
