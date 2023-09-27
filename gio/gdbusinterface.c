@@ -28,13 +28,15 @@
 #include "glibintl.h"
 
 /**
- * SECTION:gdbusinterface
- * @short_description: Base type for D-Bus interfaces
- * @include: gio/gio.h
+ * GDBusInterface:
  *
- * The #GDBusInterface type is the base type for D-Bus interfaces both
- * on the service side (see #GDBusInterfaceSkeleton) and client side
- * (see #GDBusProxy).
+ * Base type for D-Bus interfaces.
+ *
+ * The `GDBusInterface` type is the base type for D-Bus interfaces both
+ * on the service side (see [struct@Gio.DBusInterfaceSkeleton]) and client side
+ * (see [struct@Gio.DBusProxy]).
+ *
+ * Since: 2.30
  */
 
 typedef GDBusInterfaceIface GDBusInterfaceInterface;
