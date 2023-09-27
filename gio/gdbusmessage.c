@@ -3517,7 +3517,7 @@ flags_to_string (GType flags_type, guint value)
   GFlagsClass *klass;
   guint n;
 
-  klass = g_type_class_ref (flags_type);
+  klass = g_type_class_get (flags_type);
   s = g_string_new (NULL);
   for (n = 0; n < 32; n++)
     {
@@ -3535,7 +3535,6 @@ flags_to_string (GType flags_type, guint value)
     }
   if (s->len == 0)
     g_string_append (s, "none");
-  g_type_class_unref (klass);
   return g_string_free (s, FALSE);
 }
 
