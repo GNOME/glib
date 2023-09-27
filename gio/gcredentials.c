@@ -415,7 +415,7 @@ credentials_native_type_check (GCredentialsType  requested_type,
     return TRUE;
 #endif
 
-  enum_class = g_type_class_ref (g_credentials_type_get_type ());
+  enum_class = g_type_class_get (g_credentials_type_get_type ());
   requested = g_enum_get_value (enum_class, requested_type);
 
 #if G_CREDENTIALS_SUPPORTED
@@ -433,7 +433,6 @@ credentials_native_type_check (GCredentialsType  requested_type,
              requested ? requested->value_name : "(unknown)");
 #endif
 
-  g_type_class_unref (enum_class);
   return FALSE;
 }
 
