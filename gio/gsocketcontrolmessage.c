@@ -192,9 +192,8 @@ g_socket_control_message_deserialize (int      level,
     {
       GSocketControlMessageClass *class;
 
-      class = g_type_class_ref (message_types[i]);
+      class = g_type_class_get (message_types[i]);
       message = class->deserialize (level, type, size, data);
-      g_type_class_unref (class);
 
       if (message != NULL)
         break;
