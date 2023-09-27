@@ -62,6 +62,9 @@ MODULE_EXPORT
 int string_remove (const char *string);
 
 MODULE_EXPORT
+int string_find (const char *string);
+
+MODULE_EXPORT
 void string_check (const char *string);
 
 static size_t
@@ -202,6 +205,19 @@ string_remove (const char *string)
   memset_ (buffer + position, 0, size);
 
   return 1;
+}
+
+/**< private >
+ * string_find:
+ *
+ * @string: NULL-terminated string. Must not be empty
+ *
+ * Returns 1 if the string is present, 0 otherwise
+ */
+MODULE_EXPORT
+int string_find (const char *string)
+{
+  return string_find_index_ (string) < sizeof (buffer);
 }
 
 /**< private >

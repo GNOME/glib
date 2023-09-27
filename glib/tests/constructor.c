@@ -40,6 +40,8 @@ void string_add_exclusive (const char *string);
 MODULE_IMPORT
 void string_check (const char *string);
 
+MODULE_IMPORT
+int string_find (const char *string);
 
 #if G_HAS_CONSTRUCTORS
 
@@ -66,9 +68,13 @@ dtor (void)
 {
   string_add_exclusive (G_STRINGIFY (PREFIX) "_" "dtor");
 
-#ifdef BUILD_TEST_EXECUTABLE
-  _Exit (EXIT_SUCCESS);
-#endif
+  if (string_find ("app_dtor") && string_find ("lib_dtor"))
+    {
+      /* All destructors were invoked, this is the last.
+       * Call _Exit (EXIT_SUCCESS) to exit immediately
+       * with a success code */
+      _Exit (EXIT_SUCCESS);
+    }
 }
 
 #endif /* G_HAS_CONSTRUCTORS */
@@ -210,7 +216,12 @@ test_lib (gconstpointer data)
   unload_library ();
 
 #if G_HAS_DESTRUCTORS
-  string_check ("lib_" "dtor");
+  /* Destructors in dynamically-loaded libraries do not
+   * necessarily run on dlclose. On some systems dlclose
+   * is effectively a no-op (e.g with the Musl LibC) and
+   * destructors run at program exit */
+  g_test_message ("Destructors run on module unload: %s\n",
+                  string_find ("lib_" "dtor") ? "yes" : "no");
 #endif
 #if defined (_WIN32) && defined (G_HAS_TLS_CALLBACKS)
   string_check ("lib_" "tlscb_process_detach");
