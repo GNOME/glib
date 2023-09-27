@@ -41,7 +41,13 @@ G_BEGIN_DECLS
  */
 #define G_TYPE_FUNDAMENTAL(type)	(g_type_fundamental (type))
 /**
- * G_TYPE_FUNDAMENTAL_MAX:
+ * G_TYPE_FUNDAMENTAL_SHIFT:
+ *
+ * Shift value used in converting numbers to type IDs.
+ */
+#define G_TYPE_FUNDAMENTAL_SHIFT        (2)
+/**
+ * G_TYPE_FUNDAMENTAL_MAX: (value 1020)
  * 
  * An integer constant that represents the number of identifiers reserved
  * for types that are assigned at compile-time.
@@ -207,12 +213,6 @@ G_BEGIN_DECLS
  * Open an issue on https://gitlab.gnome.org/GNOME/glib/issues/new for
  * reservations.
  */
-/**
- * G_TYPE_FUNDAMENTAL_SHIFT:
- *
- * Shift value used in converting numbers to type IDs.
- */
-#define	G_TYPE_FUNDAMENTAL_SHIFT	(2)
 /**
  * G_TYPE_MAKE_FUNDAMENTAL:
  * @x: the fundamental type number.
