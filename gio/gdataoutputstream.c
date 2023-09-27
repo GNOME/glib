@@ -30,16 +30,11 @@
 
 
 /**
- * SECTION:gdataoutputstream
- * @short_description: Data Output Stream
- * @include: gio/gio.h
- * @see_also: #GOutputStream
- * 
- * Data output stream implements #GOutputStream and includes functions for 
- * writing data directly to an output stream.
+ * GDataOutputStream:
  *
- **/
-
+ * Data output stream implements [iface@Gio.OutputStream] and includes functions
+ * for writing data directly to an output stream.
+ */
 
 
 struct _GDataOutputStreamPrivate {
