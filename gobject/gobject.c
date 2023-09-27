@@ -1856,13 +1856,13 @@ object_interface_check_properties (gpointer check_data,
   GParamSpec **pspecs;
   guint n;
 
-  class = g_type_class_ref (iface_class->g_instance_type);
+  class = g_type_class_get (iface_class->g_instance_type);
 
   if (class == NULL)
     return;
 
   if (!G_IS_OBJECT_CLASS (class))
-    goto out;
+    return;
 
   pspecs = g_param_spec_pool_list (pspec_pool, iface_type, &n);
 
@@ -1993,9 +1993,6 @@ object_interface_check_properties (gpointer check_data,
     }
 
   g_free (pspecs);
-
- out:
-  g_type_class_unref (class);
 }
 
 GType
@@ -2373,18 +2370,12 @@ g_object_new_with_properties (GType          object_type,
                               const char    *names[],
                               const GValue   values[])
 {
-  GObjectClass *class, *unref_class = NULL;
+  GObjectClass *class;
   GObject *object;
 
   g_return_val_if_fail (G_TYPE_IS_OBJECT (object_type), NULL);
 
-  /* Try to avoid thrashing the ref_count if we don't need to (since
-   * it's a locked operation).
-   */
-  class = g_type_class_peek_static (object_type);
-
-  if (class == NULL)
-    class = unref_class = g_type_class_ref (object_type);
+  class = g_type_class_get (object_type);
 
   if (n_properties > 0)
     {
@@ -2406,9 +2397,6 @@ g_object_new_with_properties (GType          object_type,
     }
   else
     object = g_object_new_internal (class, NULL, 0);
-
-  if (unref_class != NULL)
-    g_type_class_unref (unref_class);
 
   return object;
 }
@@ -2436,19 +2424,13 @@ g_object_newv (GType       object_type,
                guint       n_parameters,
                GParameter *parameters)
 {
-  GObjectClass *class, *unref_class = NULL;
+  GObjectClass *class;
   GObject *object;
 
   g_return_val_if_fail (G_TYPE_IS_OBJECT (object_type), NULL);
   g_return_val_if_fail (n_parameters == 0 || parameters != NULL, NULL);
 
-  /* Try to avoid thrashing the ref_count if we don't need to (since
-   * it's a locked operation).
-   */
-  class = g_type_class_peek_static (object_type);
-
-  if (!class)
-    class = unref_class = g_type_class_ref (object_type);
+  class = g_type_class_get (object_type);
 
   if (n_parameters)
     {
@@ -2476,9 +2458,6 @@ g_object_newv (GType       object_type,
     /* Fast case: no properties passed in. */
     object = g_object_new_internal (class, NULL, 0);
 
-  if (unref_class)
-    g_type_class_unref (unref_class);
-
   return object;
 }
 G_GNUC_END_IGNORE_DEPRECATIONS
@@ -2502,18 +2481,12 @@ g_object_new_valist (GType        object_type,
                      const gchar *first_property_name,
                      va_list      var_args)
 {
-  GObjectClass *class, *unref_class = NULL;
+  GObjectClass *class;
   GObject *object;
 
   g_return_val_if_fail (G_TYPE_IS_OBJECT (object_type), NULL);
 
-  /* Try to avoid thrashing the ref_count if we don't need to (since
-   * it's a locked operation).
-   */
-  class = g_type_class_peek_static (object_type);
-
-  if (!class)
-    class = unref_class = g_type_class_ref (object_type);
+  class = g_type_class_get (object_type);
 
   if (first_property_name)
     {
@@ -2602,9 +2575,6 @@ g_object_new_valist (GType        object_type,
   else
     /* Fast case: no properties passed in. */
     object = g_object_new_internal (class, NULL, 0);
-
-  if (unref_class)
-    g_type_class_unref (unref_class);
 
   return object;
 }
