@@ -795,11 +795,10 @@ g_notification_get_priority_nick (GNotification *notification)
   GEnumValue *value;
   GVariant *nick;
 
-  enum_class = g_type_class_ref (G_TYPE_NOTIFICATION_PRIORITY);
+  enum_class = g_type_class_get (G_TYPE_NOTIFICATION_PRIORITY);
   value = g_enum_get_value (enum_class, g_notification_get_priority (notification));
   g_assert (value != NULL);
   nick = g_variant_new_string (value->value_nick);
-  g_type_class_unref (enum_class);
 
   return nick;
 }
