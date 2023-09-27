@@ -33,15 +33,11 @@
 #include <string.h>
 
 /**
- * SECTION:gdatainputstream
- * @short_description: Data Input Stream
- * @include: gio/gio.h
- * @see_also: #GInputStream
- * 
- * Data input stream implements #GInputStream and includes functions for 
- * reading structured data directly from a binary input stream.
+ * GDataInputStream:
  *
- **/
+ * Data input stream implements [iface@Gio.InputStream] and includes functions
+ * for reading structured data directly from a binary input stream.
+ */
 
 struct _GDataInputStreamPrivate {
   GDataStreamByteOrder byte_order;
