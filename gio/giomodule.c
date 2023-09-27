@@ -733,11 +733,10 @@ try_class (GIOExtension *extension,
   typedef gboolean (*verify_func) (void);
   gpointer class;
 
-  class = g_type_class_ref (type);
+  class = g_type_class_get (type);
   if (!is_supported_offset || (* G_STRUCT_MEMBER(verify_func, class, is_supported_offset)) ())
     return class;
 
-  g_type_class_unref (class);
   return NULL;
 }
 
