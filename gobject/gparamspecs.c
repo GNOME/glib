@@ -540,15 +540,8 @@ param_enum_init (GParamSpec *pspec)
 static void
 param_enum_finalize (GParamSpec *pspec)
 {
-  GParamSpecEnum *espec = G_PARAM_SPEC_ENUM (pspec);
-  GParamSpecClass *parent_class = g_type_class_peek (g_type_parent (G_TYPE_PARAM_ENUM));
-  
-  if (espec->enum_class)
-    {
-      g_type_class_unref (espec->enum_class);
-      espec->enum_class = NULL;
-    }
-  
+  GParamSpecClass *parent_class = g_type_class_get (g_type_parent (G_TYPE_PARAM_ENUM));
+
   parent_class->finalize (pspec);
 }
 
@@ -595,15 +588,8 @@ param_flags_init (GParamSpec *pspec)
 static void
 param_flags_finalize (GParamSpec *pspec)
 {
-  GParamSpecFlags *fspec = G_PARAM_SPEC_FLAGS (pspec);
-  GParamSpecClass *parent_class = g_type_class_peek (g_type_parent (G_TYPE_PARAM_FLAGS));
-  
-  if (fspec->flags_class)
-    {
-      g_type_class_unref (fspec->flags_class);
-      fspec->flags_class = NULL;
-    }
-  
+  GParamSpecClass *parent_class = g_type_class_get (g_type_parent (G_TYPE_PARAM_FLAGS));
+
   parent_class->finalize (pspec);
 }
 
@@ -1389,9 +1375,8 @@ param_variant_values_cmp (GParamSpec   *pspec,
 /* --- type initialization --- */
 
 #define set_is_valid_vfunc(type,func) { \
-  GParamSpecClass *class = g_type_class_ref (type); \
+  GParamSpecClass *class = g_type_class_get (type); \
   class->value_is_valid = func; \
-  g_type_class_unref (class); \
 }
 
 GType *g_param_spec_types = NULL;
@@ -2291,7 +2276,7 @@ g_param_spec_enum (const gchar *name,
   
   g_return_val_if_fail (G_TYPE_IS_ENUM (enum_type), NULL);
 
-  enum_class = g_type_class_ref (enum_type);
+  enum_class = g_type_class_get (enum_type);
 
   g_return_val_if_fail (g_enum_get_value (enum_class, default_value) != NULL, NULL);
   
@@ -2337,7 +2322,7 @@ g_param_spec_flags (const gchar *name,
   
   g_return_val_if_fail (G_TYPE_IS_FLAGS (flags_type), NULL);
 
-  flags_class = g_type_class_ref (flags_type);
+  flags_class = g_type_class_get (flags_type);
 
   g_return_val_if_fail ((default_value & flags_class->mask) == default_value, NULL);
   
