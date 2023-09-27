@@ -188,10 +188,8 @@ _g_dbus_auth_mechanism_get_name (GType mechanism_type)
 
   g_return_val_if_fail (g_type_is_a (mechanism_type, G_TYPE_DBUS_AUTH_MECHANISM), NULL);
 
-  klass = g_type_class_ref (mechanism_type);
-  g_assert (klass != NULL);
+  klass = g_type_class_get (mechanism_type);
   name = klass->get_name ();
-  //g_type_class_unref (klass);
 
   return name;
 }
@@ -204,10 +202,8 @@ _g_dbus_auth_mechanism_get_priority (GType mechanism_type)
 
   g_return_val_if_fail (g_type_is_a (mechanism_type, G_TYPE_DBUS_AUTH_MECHANISM), 0);
 
-  klass = g_type_class_ref (mechanism_type);
-  g_assert (klass != NULL);
+  klass = g_type_class_get (mechanism_type);
   priority = klass->get_priority ();
-  //g_type_class_unref (klass);
 
   return priority;
 }
