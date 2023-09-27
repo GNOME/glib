@@ -889,13 +889,12 @@ list_drives (GList *drives,
           g_print ("%*scan_stop=%d\n", indent + 2, "", g_drive_can_stop (drive));
 
           enum_value = NULL;
-          klass = g_type_class_ref (G_TYPE_DRIVE_START_STOP_TYPE);
+          klass = g_type_class_get (G_TYPE_DRIVE_START_STOP_TYPE);
           if (klass != NULL)
             {
               enum_value = g_enum_get_value (klass, g_drive_get_start_stop_type (drive));
               g_print ("%*sstart_stop_type=%s\n", indent + 2, "",
                        enum_value != NULL ? enum_value->value_nick : "UNKNOWN");
-              g_type_class_unref (klass);
             }
 
           sort_key = g_drive_get_sort_key (drive);
