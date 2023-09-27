@@ -58,12 +58,10 @@
  * GEnumClass *enum_class;
  * GEnumValue *enum_value;
  *
- * enum_class = g_type_class_ref (MAMAN_TYPE_MY_ENUM);
+ * enum_class = g_type_class_get (MAMAN_TYPE_MY_ENUM);
  * enum_value = g_enum_get_value (enum_class, MAMAN_MY_ENUM_FOO);
  *
  * g_print ("Name: %s\n", enum_value->value_name);
- *
- * g_type_class_unref (enum_class);
  * ]|
  */
 
@@ -594,7 +592,7 @@ g_enum_to_string (GType g_enum_type,
 
   g_return_val_if_fail (G_TYPE_IS_ENUM (g_enum_type), NULL);
 
-  enum_class = g_type_class_ref (g_enum_type);
+  enum_class = g_type_class_get (g_enum_type);
 
   /* Already warned */
   if (enum_class == NULL)
@@ -607,7 +605,6 @@ g_enum_to_string (GType g_enum_type,
   else
     result = g_strdup (enum_value->value_name);
 
-  g_type_class_unref (enum_class);
   return result;
 }
 
@@ -684,7 +681,7 @@ g_flags_to_string (GType flags_type,
 
   g_return_val_if_fail (G_TYPE_IS_FLAGS (flags_type), NULL);
 
-  flags_class = g_type_class_ref (flags_type);
+  flags_class = g_type_class_get (flags_type);
 
   /* Already warned */
   if (flags_class == NULL)
@@ -692,7 +689,6 @@ g_flags_to_string (GType flags_type,
 
   result = g_flags_get_value_string (flags_class, value);
 
-  g_type_class_unref (flags_class);
   return result;
 }
 
