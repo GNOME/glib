@@ -117,15 +117,9 @@ g_signal_group_set_target_type (GSignalGroup *self,
    * to be registered, otherwise g_signal_parse_name() will fail
    */
   if (G_TYPE_IS_INTERFACE (target_type))
-    {
-      if (g_type_default_interface_peek (target_type) == NULL)
-        g_type_default_interface_unref (g_type_default_interface_ref (target_type));
-    }
+    g_type_default_interface_get (target_type);
   else
-    {
-      if (g_type_class_peek (target_type) == NULL)
-        g_type_class_unref (g_type_class_ref (target_type));
-    }
+    g_type_class_get (target_type);
 }
 
 static void
