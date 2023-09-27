@@ -106,7 +106,7 @@ g_binding_group_connect (GBindingGroup *self,
     GFlagsClass *flags_class;
     g_autofree gchar *flags_str = NULL;
 
-    flags_class = g_type_class_ref (G_TYPE_BINDING_FLAGS);
+    flags_class = g_type_class_get (G_TYPE_BINDING_FLAGS);
     flags_str = g_flags_to_string (flags_class, lazy_binding->binding_flags);
 
     g_print ("Binding %s(%p):%s to %s(%p):%s (flags=%s)\n",
@@ -117,8 +117,6 @@ g_binding_group_connect (GBindingGroup *self,
              lazy_binding->target,
              lazy_binding->target_property,
              flags_str);
-
-    g_type_class_unref (flags_class);
   }
 #endif
 
