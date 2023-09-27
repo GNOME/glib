@@ -219,27 +219,9 @@ _g_socket_read_with_control_messages_finish (GSocket       *socket,
 /* Work-around for https://bugzilla.gnome.org/show_bug.cgi?id=674885
    and see also the original https://bugzilla.gnome.org/show_bug.cgi?id=627724  */
 
-static GPtrArray *ensured_classes = NULL;
-
-static void
-ensure_type (GType gtype)
-{
-  g_ptr_array_add (ensured_classes, g_type_class_ref (gtype));
-}
-
-static void
-release_required_types (void)
-{
-  g_ptr_array_foreach (ensured_classes, (GFunc) g_type_class_unref, NULL);
-  g_ptr_array_unref (ensured_classes);
-  ensured_classes = NULL;
-}
-
 static void
 ensure_required_types (void)
 {
-  g_assert (ensured_classes == NULL);
-  ensured_classes = g_ptr_array_new ();
   /* Generally in this list, you should initialize types which are used as
    * properties first, then the class which has them. For example, GDBusProxy
    * has a type of GDBusConnection, so we initialize GDBusConnection first.
@@ -252,18 +234,18 @@ ensure_required_types (void)
    * it tends to be just types that GDBus use that cause pain, and there
    * is work on a more general approach in https://bugzilla.gnome.org/show_bug.cgi?id=674885
    */
-  ensure_type (G_TYPE_TASK);
-  ensure_type (G_TYPE_MEMORY_INPUT_STREAM);
-  ensure_type (G_TYPE_DBUS_CONNECTION_FLAGS);
-  ensure_type (G_TYPE_DBUS_CAPABILITY_FLAGS);
-  ensure_type (G_TYPE_DBUS_AUTH_OBSERVER);
-  ensure_type (G_TYPE_DBUS_CONNECTION);
-  ensure_type (G_TYPE_DBUS_PROXY);
-  ensure_type (G_TYPE_SOCKET_FAMILY);
-  ensure_type (G_TYPE_SOCKET_TYPE);
-  ensure_type (G_TYPE_SOCKET_PROTOCOL);
-  ensure_type (G_TYPE_SOCKET_ADDRESS);
-  ensure_type (G_TYPE_SOCKET);
+  g_type_ensure (G_TYPE_TASK);
+  g_type_ensure (G_TYPE_MEMORY_INPUT_STREAM);
+  g_type_ensure (G_TYPE_DBUS_CONNECTION_FLAGS);
+  g_type_ensure (G_TYPE_DBUS_CAPABILITY_FLAGS);
+  g_type_ensure (G_TYPE_DBUS_AUTH_OBSERVER);
+  g_type_ensure (G_TYPE_DBUS_CONNECTION);
+  g_type_ensure (G_TYPE_DBUS_PROXY);
+  g_type_ensure (G_TYPE_SOCKET_FAMILY);
+  g_type_ensure (G_TYPE_SOCKET_TYPE);
+  g_type_ensure (G_TYPE_SOCKET_PROTOCOL);
+  g_type_ensure (G_TYPE_SOCKET_ADDRESS);
+  g_type_ensure (G_TYPE_SOCKET);
 }
 /* ---------------------------------------------------------------------------------------------------- */
 
@@ -283,8 +265,6 @@ gdbus_shared_thread_func (gpointer user_data)
   g_main_context_push_thread_default (data->context);
   g_main_loop_run (data->loop);
   g_main_context_pop_thread_default (data->context);
-
-  release_required_types ();
 
   return NULL;
 }
@@ -2506,13 +2486,12 @@ _g_dbus_enum_to_string (GType enum_type, gint value)
   GEnumClass *klass;
   GEnumValue *enum_value;
 
-  klass = g_type_class_ref (enum_type);
+  klass = g_type_class_get (enum_type);
   enum_value = g_enum_get_value (klass, value);
   if (enum_value != NULL)
     ret = g_strdup (enum_value->value_nick);
   else
     ret = g_strdup_printf ("unknown (value %d)", value);
-  g_type_class_unref (klass);
   return ret;
 }
 
