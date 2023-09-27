@@ -445,7 +445,7 @@ get_native_class (void)
   g_once (&once_init, (GThreadFunc)get_default_native_class, &type_class);
 
   if (type_class == NULL && once_init.retval != GUINT_TO_POINTER(G_TYPE_INVALID))
-    type_class = g_type_class_ref ((GType)once_init.retval);
+    type_class = g_type_class_get ((GType)once_init.retval);
   
   return (GNativeVolumeMonitorClass *)type_class;
 }
@@ -472,7 +472,6 @@ populate_union_monitor (GUnionVolumeMonitor *union_monitor)
       monitor = g_object_new (G_TYPE_FROM_CLASS (native_class), NULL);
       g_union_volume_monitor_add_monitor (union_monitor, monitor);
       g_object_unref (monitor);
-      g_type_class_unref (native_class);
     }
 
   ep = g_io_extension_point_lookup (G_VOLUME_MONITOR_EXTENSION_POINT_NAME);
