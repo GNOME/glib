@@ -37,14 +37,6 @@ G_BEGIN_DECLS
 typedef struct _GDBusInterfaceSkeletonClass   GDBusInterfaceSkeletonClass;
 typedef struct _GDBusInterfaceSkeletonPrivate GDBusInterfaceSkeletonPrivate;
 
-/**
- * GDBusInterfaceSkeleton:
- *
- * The #GDBusInterfaceSkeleton structure contains private data and should
- * only be accessed using the provided API.
- *
- * Since: 2.30
- */
 struct _GDBusInterfaceSkeleton
 {
   /*< private >*/
