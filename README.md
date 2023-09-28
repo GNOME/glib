@@ -19,9 +19,10 @@ GLib on Windows.
 
 ## Supported versions
 
-Only the most recent unstable and stable release series are supported. All
-older versions are not supported upstream and may contain bugs, some of
-which may be exploitable security vulnerabilities.
+Upstream GLib only supports the most recent stable release series, the previous
+stable release series, and the current development release series. All
+older versions are not supported upstream and may contain bugs, some of which
+may be exploitable security vulnerabilities.
 
 See [SECURITY.md](SECURITY.md) for more details.
 
