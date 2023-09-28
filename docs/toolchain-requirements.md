@@ -156,6 +156,34 @@ and back again losslessly. Any platform or compiler which doesn’t support this
 cannot be used to compile GLib or code which uses GLib. This precludes use of
 the `-pedantic` GCC flag with GLib.
 
+NULL defined as void pointer, or same size and representation as void pointer
+---
+
+_Hard requirement._
+
+GLib assumes that it is safe to pass `NULL` to a variadic function without
+explicitly casting it to a char * pointer, e.g.:
+
+```
+g_object_new (G_TYPE_FOO,
+              "bar", bar,
+              NULL);
+```
+
+This pattern is pervasive throughout GLib and applications that use GLib, but it
+is also nonportable. If `NULL` is defined as an integer type, `0`, rather than a
+pointer type, `(void *) 0`, then using an integer where a pointer is expected
+results in stack corruption if the size of a pointer is different from the size
+of `NULL`. Portable code would use `(char *) NULL`, `(void *) NULL` or `nullptr`
+(in C23 or C++11 or later) instead.
+
+This requirement technically only applies to C, since GLib is written in C and
+since C++ does not permit `NULL` to be defined as a void pointer. If you are
+writing C++ code that uses GLib, use `nullptr` to avoid this problem.
+
+GLib further assumes that the representations of pointers of different types are
+identical, which is not guaranteed.
+
 `stdint.h`
 ---
 
