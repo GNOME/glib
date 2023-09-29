@@ -313,6 +313,11 @@ g_property_action_set_property_name (GPropertyAction *paction,
   GParamSpec *pspec;
   gchar *detailed;
 
+  if (property_name == NULL) {
+      g_critical ("GPropertyAction property 'property-name' should be set during construction");
+      return;
+  }
+
   pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (paction->object), property_name);
 
   if (pspec == NULL)
