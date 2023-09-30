@@ -313,6 +313,15 @@ g_property_action_set_property_name (GPropertyAction *paction,
   GParamSpec *pspec;
   gchar *detailed;
 
+  /* In case somebody is constructing GPropertyAction without passing
+   * a property name
+   */
+  if (G_UNLIKELY (property_name == NULL || property_name[0] == '\0'))
+    {
+      g_critical ("Attempted to use an empty property name for GPropertyAction");
+      return;
+    }
+
   pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (paction->object), property_name);
 
   if (pspec == NULL)
