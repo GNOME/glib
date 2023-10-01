@@ -18,16 +18,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2023-08-31 20:16+0000\n"
-"PO-Revision-Date: 2023-09-02 14:55+0300\n"
-"Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
+"POT-Creation-Date: 2023-09-18 01:28+0000\n"
+"PO-Revision-Date: 2023-09-28 01:19+0300\n"
+"Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Turkish <takim@gnome.org.tr>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.3.2\n"
 "X-POOTLE-MTIME: 1433280446.000000\n"
 
 #: gio/gappinfo.c:339
@@ -778,7 +778,8 @@ msgstr "tür GEÇERSİZ"
 
 #: gio/gdbusmessage.c:1324
 msgid "METHOD_CALL message: PATH or MEMBER header field is missing or invalid"
-msgstr "METHOD_CALL iletisi:  PATH ya da MEMBER başlık alanı eksik veya geçersiz"
+msgstr ""
+"METHOD_CALL iletisi:  PATH ya da MEMBER başlık alanı eksik veya geçersiz"
 
 #: gio/gdbusmessage.c:1340
 msgid "METHOD_RETURN message: REPLY_SERIAL header field is missing or invalid"
@@ -787,12 +788,14 @@ msgstr "METHOD_RETURN iletisi: REPLY_SERIAL başlık alanı eksik veya geçersiz
 #: gio/gdbusmessage.c:1360
 msgid ""
 "ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing or invalid"
-msgstr "ERROR iletisi: REPLY_SERIAL ya da ERROR_NAME başlık alanı eksik veya geçersiz"
+msgstr ""
+"ERROR iletisi: REPLY_SERIAL ya da ERROR_NAME başlık alanı eksik veya geçersiz"
 
 #: gio/gdbusmessage.c:1384
 msgid ""
 "SIGNAL message: PATH, INTERFACE or MEMBER header field is missing or invalid"
-msgstr "SIGNAL iletisi: PATH, INTERFACE ya da MEMBER başlık alanı eksik veya geçersiz"
+msgstr ""
+"SIGNAL iletisi: PATH, INTERFACE ya da MEMBER başlık alanı eksik veya geçersiz"
 
 #: gio/gdbusmessage.c:1392
 msgid ""
@@ -1840,7 +1843,7 @@ msgstr "%s konumu bir dizin değildir"
 #: gio/gio-tool-copy.c:198 gio/gio-tool-move.c:188
 #, c-format
 msgid "%s: overwrite “%s”? "
-msgstr "%s: “%s” üzerine yaz? "
+msgstr "%s: “%s” üzerine yazılsın mı? "
 
 #: gio/gio-tool-info.c:39
 msgid "List writable attributes"
@@ -3915,7 +3918,7 @@ msgid "Socket is already closed"
 msgstr "Yuva zaten kapalı"
 
 #: gio/gsocket.c:449 gio/gsocket.c:3238 gio/gsocket.c:4469 gio/gsocket.c:4527
-#: gio/gthreadedresolver.c:1438
+#: gio/gthreadedresolver.c:1445
 msgid "Socket I/O timed out"
 msgstr "Yuva G/Ç zaman aşımı"
 
@@ -5173,31 +5176,31 @@ msgstr ""
 "“%2$s” kümesindeki “%1$s” anahtarı “%4$s” değerine sahip olması beklenirken "
 "“%3$s” değerine sahip"
 
-#: glib/gkeyfile.c:4356
+#: glib/gkeyfile.c:4357
 msgid "Key file contains escape character at end of line"
 msgstr "Anahtar dosyası satır sonunda çıkış karakteri içeriyor"
 
-#: glib/gkeyfile.c:4378
+#: glib/gkeyfile.c:4394
 #, c-format
 msgid "Key file contains invalid escape sequence “%s”"
 msgstr "“%s” anahtar dosyası geçersiz çıkış dizisi içeriyor"
 
-#: glib/gkeyfile.c:4530
+#: glib/gkeyfile.c:4545
 #, c-format
 msgid "Value “%s” cannot be interpreted as a number."
 msgstr "“%s” değeri bir sayı olarak yorumlanamıyor."
 
-#: glib/gkeyfile.c:4544
+#: glib/gkeyfile.c:4559
 #, c-format
 msgid "Integer value “%s” out of range"
 msgstr "“%s”, tamsayı değeri aralık dışında"
 
-#: glib/gkeyfile.c:4577
+#: glib/gkeyfile.c:4592
 #, c-format
 msgid "Value “%s” cannot be interpreted as a float number."
 msgstr "“%s” değeri bir gerçel sayı olarak yorumlanamıyor."
 
-#: glib/gkeyfile.c:4616
+#: glib/gkeyfile.c:4631
 #, c-format
 msgid "Value “%s” cannot be interpreted as a boolean."
 msgstr "“%s” değeri mantıksal değer olarak yorumlanamıyor."
