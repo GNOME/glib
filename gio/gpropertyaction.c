@@ -408,12 +408,24 @@ g_property_action_get_property (GObject    *object,
 }
 
 static void
+g_property_action_dispose (GObject *object)
+{
+  GPropertyAction *paction = G_PROPERTY_ACTION (object);
+
+  if (paction->object != NULL)
+    {
+      g_signal_handlers_disconnect_by_func (paction->object, g_property_action_notify, paction);
+      g_clear_object (&paction->object);
+    }
+
+  G_OBJECT_CLASS (g_property_action_parent_class)->dispose (object);
+}
+
+static void
 g_property_action_finalize (GObject *object)
 {
   GPropertyAction *paction = G_PROPERTY_ACTION (object);
 
-  g_signal_handlers_disconnect_by_func (paction->object, g_property_action_notify, paction);
-  g_object_unref (paction->object);
   g_free (paction->name);
 
   G_OBJECT_CLASS (g_property_action_parent_class)
@@ -445,6 +457,7 @@ g_property_action_class_init (GPropertyActionClass *class)
 
   object_class->set_property = g_property_action_set_property;
   object_class->get_property = g_property_action_get_property;
+  object_class->dispose = g_property_action_dispose;
   object_class->finalize = g_property_action_finalize;
 
   /**
