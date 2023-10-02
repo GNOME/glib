@@ -2105,7 +2105,7 @@ if not pcre2.found()
   # static flags are automatically enabled by the subproject if it's built
   # with default_library=static
   use_pcre2_static_flag = false
-elif host_system == 'windows'
+elif host_system == 'windows' and pcre2.type_name() != 'internal'
   pcre2_static = cc.links('''#define PCRE2_STATIC
                              #define PCRE2_CODE_UNIT_WIDTH 8
                              #include <pcre2.h>
