@@ -3366,6 +3366,69 @@ g_socket_receive_with_timeout (GSocket       *socket,
 }
 
 /**
+ * g_socket_receive_bytes:
+ * @socket: a #GSocket
+ * @size: the number of bytes you want to read from the socket
+ * @timeout_us: the timeout to wait for, in microseconds, or `-1` to block
+ *   indefinitely
+ * @cancellable: (nullable): a %GCancellable, or `NULL`
+ * @error: return location for a #GError, or `NULL`
+ *
+ * Receives data (up to @size bytes) from a socket.
+ *
+ * This function is a variant of [method@Gio.Socket.receive] which returns a
+ * [struct@GLib.Bytes] rather than a plain buffer.
+ *
+ * Pass `-1` to @timeout_us to block indefinitely until data is received (or
+ * the connection is closed, or there is an error). Pass `0` to use the default
+ * timeout from [property@Gio.Socket:timeout], or pass a positive number to wait
+ * for that many microseconds for data before returning `G_IO_ERROR_TIMED_OUT`.
+ *
+ * Returns: (transfer full): a bytes buffer containing the
+ *   received bytes, or `NULL` on error
+ * Since: 2.80
+ */
+GBytes *
+g_socket_receive_bytes (GSocket       *socket,
+                        gsize          size,
+                        gint64         timeout_us,
+                        GCancellable  *cancellable,
+                        GError       **error)
+{
+  guint8 *data;
+  gssize res;
+  GBytes *buf;
+
+  g_return_val_if_fail (G_IS_SOCKET (socket), NULL);
+  g_return_val_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable), NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+
+  data = g_new0 (guint8, size);
+  res = g_socket_receive_with_timeout (socket, data, size, timeout_us, cancellable, error);
+  if (res < 0)
+    {
+      g_free (data);
+      return NULL;
+    }
+
+  if ((gsize) res == size)
+    {
+      buf = g_bytes_new_take (g_steal_pointer (&data), (gsize) res);
+    }
+  else
+    {
+      GBytes *sub_buf;
+
+      buf = g_bytes_new_take (g_steal_pointer (&data), size);
+      sub_buf = g_bytes_new_from_bytes (buf, 0, (gsize) res);
+      g_bytes_unref (buf);
+      buf = g_steal_pointer (&sub_buf);
+    }
+
+  return g_steal_pointer (&buf);
+}
+
+/**
  * g_socket_receive:
  * @socket: a #GSocket
  * @buffer: (array length=size) (element-type guint8) (out caller-allocates):
@@ -3444,6 +3507,85 @@ g_socket_receive_with_blocking (GSocket       *socket,
 {
   return g_socket_receive_with_timeout (socket, (guint8 *) buffer, size,
                                         blocking ? -1 : 0, cancellable, error);
+}
+
+/**
+ * g_socket_receive_bytes_from:
+ * @socket: a #GSocket
+ * @address: (out) (optional): return location for a #GSocketAddress
+ * @size: the number of bytes you want to read from the socket
+ * @timeout_us: the timeout to wait for, in microseconds, or `-1` to block
+ *   indefinitely
+ * @cancellable: (nullable): a #GCancellable, or `NULL`
+ * @error: return location for a #GError, or `NULL`
+ *
+ * Receive data (up to @size bytes) from a socket.
+ *
+ * This function is a variant of [method@Gio.Socket.receive_from] which returns
+ * a [struct@GLib.Bytes] rather than a plain buffer.
+ *
+ * If @address is non-%NULL then @address will be set equal to the
+ * source address of the received packet.
+ *
+ * The @address is owned by the caller.
+ *
+ * Pass `-1` to @timeout_us to block indefinitely until data is received (or
+ * the connection is closed, or there is an error). Pass `0` to use the default
+ * timeout from [property@Gio.Socket:timeout], or pass a positive number to wait
+ * for that many microseconds for data before returning `G_IO_ERROR_TIMED_OUT`.
+ *
+ * Returns: (transfer full): a bytes buffer containing the
+ *   received bytes, or `NULL` on error
+ * Since: 2.80
+ */
+GBytes *
+g_socket_receive_bytes_from (GSocket         *socket,
+                             GSocketAddress **address,
+                             gsize            size,
+                             gint64           timeout_us,
+                             GCancellable    *cancellable,
+                             GError         **error)
+{
+  GInputVector v;
+  gssize res;
+  GBytes *buf;
+
+  g_return_val_if_fail (G_IS_SOCKET (socket), NULL);
+  g_return_val_if_fail (address == NULL || *address == NULL, NULL);
+  g_return_val_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable), NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+
+  v.buffer = g_new0 (guint8, size);
+  v.size = size;
+
+  res = g_socket_receive_message_with_timeout (socket,
+                                               address,
+                                               &v, 1,
+                                               NULL, 0, NULL,
+                                               timeout_us,
+                                               cancellable,
+                                               error);
+  if (res < 0)
+    {
+      g_free (v.buffer);
+      return NULL;
+    }
+
+  if ((gsize) res == size)
+    {
+      buf = g_bytes_new_take (g_steal_pointer (&v.buffer), (gsize) res);
+    }
+  else
+    {
+      GBytes *sub_buf;
+
+      buf = g_bytes_new_take (g_steal_pointer (&v.buffer), size);
+      sub_buf = g_bytes_new_from_bytes (buf, 0, (gsize) res);
+      g_bytes_unref (buf);
+      buf = g_steal_pointer (&sub_buf);
+    }
+
+  return g_steal_pointer (&buf);
 }
 
 /**
