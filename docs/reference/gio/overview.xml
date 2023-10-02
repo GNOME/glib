@@ -429,6 +429,16 @@ Gvfs is also heavily distributed and relies on a session bus to be present.
     </formalpara>
 
     <formalpara>
+      <title><envar>GIO_USE_PORTALS</envar></title>
+
+      <para>
+        This variable can be set to override detection of portals and force them
+        to be used to provide various bits of GIO functionality, for testing and
+        debugging. This variable is not intended to be used in production.
+      </para>
+    </formalpara>
+
+    <formalpara>
       <title><envar>GIO_MODULE_DIR</envar></title>
 
       <para>
