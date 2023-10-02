@@ -226,23 +226,28 @@ else
     'unix' : {},
   }
   if have_rtld_next and glib_build_shared
+    getpwuid_preload = shared_library('getpwuid-preload',
+                                      'getpwuid-preload.c',
+                                      name_prefix : '',
+                                      dependencies: libdl_dep,
+                                      install_dir : installed_tests_execdir,
+                                      install_tag : 'tests',
+                                      install: installed_tests_enabled)
+
+    if host_system not in ['ios', 'darwin']
+      var_preload = 'LD_PRELOAD'
+    else
+      var_preload = 'DYLD_INSERT_LIBRARIES'
+    endif
+
     glib_tests += {
       'gutils-user-database' : {
-        'depends' : [
-          shared_library('getpwuid-preload',
-            'getpwuid-preload.c',
-            name_prefix : '',
-            dependencies: libdl_dep,
-            install_dir : installed_tests_execdir,
-            install_tag : 'tests',
-            install: installed_tests_enabled,
-          ),
-        ],
+        'depends' : [],
         'env' : {
-          'LD_PRELOAD': '@0@/getpwuid-preload.so'.format(meson.current_build_dir()),
+          var_preload: getpwuid_preload.full_path()
         },
         'installed_tests_env' : {
-          'LD_PRELOAD': '@0@/getpwuid-preload.so'.format(installed_tests_execdir),
+          var_preload: installed_tests_execdir / fs.name(getpwuid_preload.full_path())
         },
       },
     }
