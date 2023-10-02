@@ -125,7 +125,7 @@ sandbox_info_read (void)
       {
         const char *var;
 
-        var = g_getenv ("GTK_USE_PORTAL");
+        var = g_getenv ("GIO_USE_PORTALS");
         if (var && var[0] == '1')
           use_portal = TRUE;
         network_available = TRUE;

@@ -73,7 +73,7 @@ try:
                 raise
             # subprocess.Popen(['gdbus', 'monitor', '--session', '--dest', 'org.freedesktop.portal.Desktop'])
 
-            os.environ['GTK_USE_PORTAL'] = "1"
+            os.environ['GIO_USE_PORTALS'] = "1"
             self.memory_monitor = Gio.MemoryMonitor.dup_default()
             assert("GMemoryMonitorPortal" in str(self.memory_monitor))
             self.memory_monitor.connect("low-memory-warning", self.portal_memory_warning_cb)

@@ -37,7 +37,7 @@ main (int argc, char **argv)
 {
   g_test_init (&argc, &argv, NULL);
 
-  g_setenv ("GTK_USE_PORTAL", "1", TRUE);
+  g_setenv ("GIO_USE_PORTALS", "1", TRUE);
 
   g_test_add_func ("/portal-support/env-var", test_portal_support_env_var);
 

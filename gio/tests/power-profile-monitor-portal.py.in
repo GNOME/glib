@@ -79,7 +79,7 @@ try:
                 raise
             # subprocess.Popen(['gdbus', 'monitor', '--session', '--dest', 'org.freedesktop.portal.Desktop'])
 
-            os.environ['GTK_USE_PORTAL'] = "1"
+            os.environ['GIO_USE_PORTALS'] = "1"
             self.power_profile_monitor = Gio.PowerProfileMonitor.dup_default()
             assert("GPowerProfileMonitorPortal" in str(self.power_profile_monitor))
             self.power_profile_monitor.connect("notify::power-saver-enabled", self.power_saver_enabled_cb)
