@@ -1421,6 +1421,20 @@ test_property_actions (void)
   g_object_unref (group);
 }
 
+static void
+test_property_actions_no_properties (void)
+{
+  GPropertyAction *action;
+
+  g_test_expect_message ("GLib-GIO", G_LOG_LEVEL_CRITICAL, "*Attempted to use an empty property name for GPropertyAction*");
+  action = (GPropertyAction*) g_object_new_with_properties (G_TYPE_PROPERTY_ACTION, 0, NULL, NULL);
+
+  g_test_assert_expected_messages ();
+  g_assert_true (G_IS_PROPERTY_ACTION (action));
+
+  g_object_unref (action);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -1437,6 +1451,7 @@ main (int argc, char **argv)
   g_test_add_func ("/actions/dbus/threaded", test_dbus_threaded);
   g_test_add_func ("/actions/dbus/bug679509", test_bug679509);
   g_test_add_func ("/actions/property", test_property_actions);
+  g_test_add_func ("/actions/no-properties", test_property_actions_no_properties);
 
   return g_test_run ();
 }
