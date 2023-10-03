@@ -155,6 +155,9 @@
 #define g_assert_type_system_initialized() \
   g_assert (static_quark_type_flags)
 
+/* Make sure G_TYPE_IS_*() macros still end up inlined */
+#define g_type_test_flags(t,f) _g_type_test_flags(t,f)
+
 #define TYPE_FUNDAMENTAL_FLAG_MASK (G_TYPE_FLAG_CLASSED | \
 				    G_TYPE_FLAG_INSTANTIATABLE | \
 				    G_TYPE_FLAG_DERIVABLE | \
@@ -163,7 +166,9 @@
 
 /* List the flags that are directly accessible via the TypeNode struct flags */
 #define	NODE_FLAG_MASK ( \
+  G_TYPE_FLAG_ABSTRACT | \
   G_TYPE_FLAG_CLASSED | \
+  G_TYPE_FLAG_DEPRECATED | \
   G_TYPE_FLAG_INSTANTIATABLE | \
   G_TYPE_FLAG_FINAL)
 
@@ -198,6 +203,8 @@ typedef struct _IFaceHolder	IFaceHolder;
 
 
 /* --- prototypes --- */
+static inline gboolean			_g_type_test_flags              (GType                   type,
+									 guint                   flags);
 static inline GTypeFundamentalInfo*	type_node_fundamental_info_I	(TypeNode		*node);
 static	      void			type_add_flags_W		(TypeNode		*node,
 									 GTypeFlags		 flags);
@@ -252,7 +259,9 @@ struct _TypeNode
   guint        n_children; /* writable with lock */
   guint        n_supers : 8;
   guint        n_prerequisites : 9;
+  guint        is_abstract : 1;
   guint        is_classed : 1;
+  guint        is_deprecated : 1;
   guint        is_instantiatable : 1;
   guint        is_final : 1;
   guint        mutatable_check_cache : 1;	/* combines some common path checks */
@@ -482,7 +491,9 @@ type_node_any_new_W (TypeNode             *pnode,
       node->supers[0] = type;
       node->supers[1] = 0;
       
+      node->is_abstract = (type_flags & G_TYPE_FLAG_ABSTRACT) != 0;
       node->is_classed = (type_flags & G_TYPE_FLAG_CLASSED) != 0;
+      node->is_deprecated = (type_flags & G_TYPE_FLAG_DEPRECATED) != 0;
       node->is_instantiatable = (type_flags & G_TYPE_FLAG_INSTANTIATABLE) != 0;
       
       if (NODE_IS_IFACE (node))
@@ -498,9 +509,13 @@ type_node_any_new_W (TypeNode             *pnode,
       node->supers[0] = type;
       memcpy (node->supers + 1, pnode->supers, sizeof (GType) * (1 + pnode->n_supers + 1));
       
+      node->is_abstract = (type_flags & G_TYPE_FLAG_ABSTRACT) != 0;
       node->is_classed = pnode->is_classed;
+      node->is_deprecated = (type_flags & G_TYPE_FLAG_DEPRECATED) != 0;
       node->is_instantiatable = pnode->is_instantiatable;
-      
+
+      node->is_deprecated |= pnode->is_deprecated;
+
       if (NODE_IS_IFACE (node))
 	{
 	  IFACE_NODE_N_PREREQUISITES (node) = 0;
@@ -566,20 +581,18 @@ type_node_fundamental_new_W (GType                 ftype,
 {
   GTypeFundamentalInfo *finfo;
   TypeNode *node;
-  
+
   g_assert ((ftype & TYPE_ID_MASK) == 0);
   g_assert (ftype <= G_TYPE_FUNDAMENTAL_MAX);
-  
+
   if (ftype >> G_TYPE_FUNDAMENTAL_SHIFT == static_fundamental_next)
     static_fundamental_next++;
-  
-  type_flags &= TYPE_FUNDAMENTAL_FLAG_MASK;
-  
+
   node = type_node_any_new_W (NULL, ftype, name, NULL, type_flags);
-  
+
   finfo = type_node_fundamental_info_I (node);
-  finfo->type_flags = type_flags;
-  
+  finfo->type_flags = type_flags & TYPE_FUNDAMENTAL_FLAG_MASK;
+
   return node;
 }
 
@@ -3919,6 +3932,8 @@ type_add_flags_W (TypeNode  *node,
   dflags |= flags;
   type_set_qdata_W (node, static_quark_type_flags, GUINT_TO_POINTER (dflags));
 
+  node->is_abstract = (flags & G_TYPE_FLAG_ABSTRACT) != 0;
+  node->is_deprecated |= (flags & G_TYPE_FLAG_DEPRECATED) != 0;
   node->is_final = (flags & G_TYPE_FLAG_FINAL) != 0;
 }
 
@@ -3995,9 +4010,9 @@ g_type_get_instance_count (GType type)
 }
 
 /* --- implementation details --- */
-gboolean
-g_type_test_flags (GType type,
-		   guint flags)
+static inline gboolean
+_g_type_test_flags (GType type,
+                    guint flags)
 {
   TypeNode *node;
   gboolean result = FALSE;
@@ -4007,16 +4022,22 @@ g_type_test_flags (GType type,
     {
       if ((flags & ~NODE_FLAG_MASK) == 0)
         {
-          if (flags & G_TYPE_FLAG_CLASSED)
-            result |= node->is_classed;
+          if ((flags & G_TYPE_FLAG_CLASSED) && !node->is_classed)
+            return FALSE;
 
-          if (flags & G_TYPE_FLAG_INSTANTIATABLE)
-            result |= node->is_instantiatable;
+          if ((flags & G_TYPE_FLAG_INSTANTIATABLE) && !node->is_instantiatable)
+            return FALSE;
 
-          if (flags & G_TYPE_FLAG_FINAL)
-            result |= node->is_final;
+          if ((flags & G_TYPE_FLAG_FINAL) && !node->is_final)
+            return FALSE;
 
-          return result;
+          if ((flags & G_TYPE_FLAG_ABSTRACT) && !node->is_abstract)
+            return FALSE;
+
+          if ((flags & G_TYPE_FLAG_DEPRECATED) && !node->is_deprecated)
+            return FALSE;
+
+          return TRUE;
         }
 
       guint fflags = flags & TYPE_FUNDAMENTAL_FLAG_MASK;
@@ -4044,6 +4065,13 @@ g_type_test_flags (GType type,
     }
   
   return result;
+}
+
+gboolean
+(g_type_test_flags) (GType type,
+                     guint flags)
+{
+  return _g_type_test_flags (type, flags);
 }
 
 /**
