@@ -64,7 +64,7 @@ struct _GHmac
 };
 
 /**
- * g_hmac_new:
+ * g_hmac_new: (constructor)
  * @digest_type: the desired type of digest
  * @key: (array length=key_len): the key for the HMAC
  * @key_len: the length of the keys
@@ -86,7 +86,7 @@ struct _GHmac
  * Support for digests of type %G_CHECKSUM_SHA512 has been added in GLib 2.42.
  * Support for %G_CHECKSUM_SHA384 was added in GLib 2.52.
  *
- * Returns: the newly created #GHmac, or %NULL.
+ * Returns: (nullable) (transfer full): the newly created #GHmac, or %NULL.
  *   Use g_hmac_unref() to free the memory allocated by it.
  *
  * Since: 2.30
@@ -177,7 +177,7 @@ g_hmac_new (GChecksumType  digest_type,
  * g_hmac_get_string() or g_hmac_get_digest(), the copied
  * HMAC will be closed as well.
  *
- * Returns: the copy of the passed #GHmac. Use g_hmac_unref()
+ * Returns: (transfer full): the copy of the passed #GHmac. Use g_hmac_unref()
  *   when finished using it.
  *
  * Since: 2.30
@@ -206,7 +206,7 @@ g_hmac_copy (const GHmac *hmac)
  *
  * This function is MT-safe and may be called from any thread.
  *
- * Returns: the passed in #GHmac.
+ * Returns: (transfer full): the passed in #GHmac.
  *
  * Since: 2.30
  **/
@@ -222,7 +222,7 @@ g_hmac_ref (GHmac *hmac)
 
 /**
  * g_hmac_unref:
- * @hmac: a #GHmac
+ * @hmac: (transfer full): a #GHmac
  *
  * Atomically decrements the reference count of @hmac by one.
  *
