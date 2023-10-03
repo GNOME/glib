@@ -95,6 +95,7 @@
 #define G_MSVC_CTOR(_func,_sym_prefix) \
   static void _func(void); \
   extern int (* _array ## _func)(void);              \
+  int _func ## _wrapper(void);              \
   int _func ## _wrapper(void) { _func(); g_slist_find (NULL,  _array ## _func); return 0; } \
   __pragma(comment(linker,"/include:" _sym_prefix # _func "_wrapper")) \
   __pragma(section(".CRT$XCU",read)) \
@@ -103,6 +104,7 @@
 #define G_MSVC_DTOR(_func,_sym_prefix) \
   static void _func(void); \
   extern int (* _array ## _func)(void);              \
+  int _func ## _constructor(void);              \
   int _func ## _constructor(void) { atexit (_func); g_slist_find (NULL,  _array ## _func); return 0; } \
    __pragma(comment(linker,"/include:" _sym_prefix # _func "_constructor")) \
   __pragma(section(".CRT$XCU",read)) \
