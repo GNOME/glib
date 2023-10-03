@@ -432,7 +432,6 @@ add_to_table_if_appropriate (GHashTable      *apps,
 
 enum
 {
-  DESKTOP_KEY_Comment,
   DESKTOP_KEY_Exec,
   DESKTOP_KEY_GenericName,
   DESKTOP_KEY_Keywords,
@@ -452,8 +451,7 @@ const gchar desktop_key_match_category[N_DESKTOP_KEYS] = {
   [DESKTOP_KEY_Exec]             = 2,
   [DESKTOP_KEY_Keywords]         = 3,
   [DESKTOP_KEY_GenericName]      = 4,
-  [DESKTOP_KEY_X_GNOME_FullName] = 5,
-  [DESKTOP_KEY_Comment]          = 6
+  [DESKTOP_KEY_X_GNOME_FullName] = 5
 };
 
 typedef enum {
@@ -487,8 +485,6 @@ desktop_key_get_name (guint key_id)
 {
   switch (key_id)
     {
-    case DESKTOP_KEY_Comment:
-      return "Comment";
     case DESKTOP_KEY_Exec:
       return "Exec";
     case DESKTOP_KEY_GenericName:
