@@ -2572,7 +2572,7 @@ g_strsplit_set (const gchar *string,
 
 /**
  * g_strfreev:
- * @str_array: (nullable): a %NULL-terminated array of strings to free
+ * @str_array: (nullable) (transfer full): a %NULL-terminated array of strings to free
  *
  * Frees a %NULL-terminated array of strings, as well as each
  * string it contains.
@@ -2602,7 +2602,7 @@ g_strfreev (gchar **str_array)
  * the array itself. g_strfreev() does this for you. If called
  * on a %NULL value, g_strdupv() simply returns %NULL.
  *
- * Returns: (nullable): a new %NULL-terminated array of strings.
+ * Returns: (nullable) (transfer full): a new %NULL-terminated array of strings.
  */
 gchar**
 g_strdupv (gchar **str_array)
