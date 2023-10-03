@@ -111,11 +111,11 @@ typedef struct
 } SortData;
 
 /**
- * g_async_queue_new:
+ * g_async_queue_new: (constructor)
  *
  * Creates a new asynchronous queue.
  *
- * Returns: a new #GAsyncQueue. Free with g_async_queue_unref()
+ * Returns: (transfer full): a new #GAsyncQueue. Free with g_async_queue_unref()
  */
 GAsyncQueue *
 g_async_queue_new (void)
@@ -124,14 +124,14 @@ g_async_queue_new (void)
 }
 
 /**
- * g_async_queue_new_full:
+ * g_async_queue_new_full: (constructor)
  * @item_free_func: (nullable): function to free queue elements
  *
  * Creates a new asynchronous queue and sets up a destroy notify
  * function that is used to free any remaining queue items when
  * the queue is destroyed after the final unref.
  *
- * Returns: a new #GAsyncQueue. Free with g_async_queue_unref()
+ * Returns: (transfer full): a new #GAsyncQueue. Free with g_async_queue_unref()
  *
  * Since: 2.16
  */
@@ -158,7 +158,7 @@ g_async_queue_new_full (GDestroyNotify item_free_func)
  * Increases the reference count of the asynchronous @queue by 1.
  * You do not need to hold the lock to call this function.
  *
- * Returns: the @queue that was passed in (since 2.6)
+ * Returns: (transfer full): the @queue that was passed in (since 2.6)
  */
 GAsyncQueue *
 g_async_queue_ref (GAsyncQueue *queue)
@@ -212,7 +212,7 @@ g_async_queue_unref_and_unlock (GAsyncQueue *queue)
 
 /**
  * g_async_queue_unref:
- * @queue: a #GAsyncQueue.
+ * @queue: (transfer full): a #GAsyncQueue.
  *
  * Decreases the reference count of the asynchronous @queue by 1.
  *
