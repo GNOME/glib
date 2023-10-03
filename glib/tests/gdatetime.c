@@ -1536,15 +1536,8 @@ test_GDateTime_get_day_of_year (void)
 static void
 test_GDateTime_printf (void)
 {
-/* 64 seems big, but one zoneinfo file, Factory, has an abbreviation
- * that long, and it will cause the test to fail if dst isn't big
- * enough.
- */
   gchar *old_lc_all;
   gchar *old_lc_messages;
-  gchar dst[64];
-  struct tm tt;
-  time_t t;
 
 #ifdef G_OS_WIN32
   gchar *current_tz = NULL;
@@ -1552,14 +1545,14 @@ test_GDateTime_printf (void)
 #endif
 
 #define TEST_PRINTF(f,o)                        G_STMT_START {  \
-GDateTime *__dt = g_date_time_new_local (2009, 10, 24, 0, 0, 0);\
+GDateTime *__dt = g_date_time_new_utc (2009, 10, 24, 0, 0, 0);\
   gchar *__p = g_date_time_format (__dt, (f));                  \
   g_assert_cmpstr (__p, ==, (o));                               \
   g_date_time_unref (__dt);                                     \
   g_free (__p);                                 } G_STMT_END
 
 #define TEST_PRINTF_DATE(y,m,d,f,o)             G_STMT_START {  \
-  GDateTime *dt = g_date_time_new_local (y, m, d, 0, 0, 0);     \
+  GDateTime *dt = g_date_time_new_utc (y, m, d, 0, 0, 0);     \
   gchar *p = g_date_time_format (dt, (f));                      \
   gchar *o_casefold = g_utf8_casefold (o, -1);                  \
   gchar *p_casefold = g_utf8_casefold (p, -1);                  \
@@ -1570,7 +1563,7 @@ GDateTime *__dt = g_date_time_new_local (2009, 10, 24, 0, 0, 0);\
   g_free (p);                                   } G_STMT_END
 
 #define TEST_PRINTF_TIME(h,m,s,f,o)             G_STMT_START { \
-  GDateTime *dt = g_date_time_new_local (2009, 10, 24, (h), (m), (s)); \
+  GDateTime *dt = g_date_time_new_utc (2009, 10, 24, (h), (m), (s)); \
   gchar *p = g_date_time_format (dt, (f));                      \
   g_assert_cmpstr (p, ==, (o));                                 \
   g_date_time_unref (dt);                                       \
@@ -1581,22 +1574,6 @@ GDateTime *__dt = g_date_time_new_local (2009, 10, 24, 0, 0, 0);\
 
   old_lc_messages = g_strdup (g_getenv ("LC_MESSAGES"));
   g_setenv ("LC_MESSAGES", "C", TRUE);
-
-  /*
-   * This is a little helper to make sure we can compare timezones to
-   * that of the generated timezone.
-   */
-  t = time (NULL);
-  g_assert_cmpint (t, !=, (time_t) -1);
-  memset (&tt, 0, sizeof(tt));
-  get_localtime_tm (t, &tt);
-  tt.tm_year = 2009 - 1900;
-  tt.tm_mon = 9; /* 0 indexed */
-  tt.tm_mday = 24;
-  t = mktime (&tt);
-  memset (&tt, 0, sizeof(tt));
-  get_localtime_tm (t, &tt);
-  strftime (dst, sizeof(dst), "%Z", &tt);
 
   TEST_PRINTF ("%a", "Sat");
   TEST_PRINTF ("%A", "Saturday");
@@ -1642,7 +1619,7 @@ GDateTime *__dt = g_date_time_new_local (2009, 10, 24, 0, 0, 0);\
   TEST_PRINTF ("%", "");
   TEST_PRINTF ("%9", NULL);
 #ifdef G_OS_UNIX
-  TEST_PRINTF ("%Z", dst);
+  TEST_PRINTF ("%Z", "UTC");
 #elif defined G_OS_WIN32
   g_assert (GetDynamicTimeZoneInformation (&dtz_info) != TIME_ZONE_ID_INVALID);
   if (wcscmp (dtz_info.StandardName, L"") != 0)
