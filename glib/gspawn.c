@@ -1446,15 +1446,22 @@ safe_fdwalk (int (*cb)(void *data, int fd), void *data)
   int dir_fd = open ("/proc/self/fd", O_RDONLY | O_DIRECTORY);
   if (dir_fd >= 0)
     {
-      char buf[4096];
+      /* buf needs to be aligned correctly to receive linux_dirent64.
+       * C11 has _Alignof for this purpose, but for now a
+       * union serves the same purpose. */
+      union
+      {
+        char buf[4096];
+        struct linux_dirent64 alignment;
+      } u;
       int pos, nread;
       struct linux_dirent64 *de;
 
-      while ((nread = syscall (SYS_getdents64, dir_fd, buf, sizeof(buf))) > 0)
+      while ((nread = syscall (SYS_getdents64, dir_fd, u.buf, sizeof (u.buf))) > 0)
         {
           for (pos = 0; pos < nread; pos += de->d_reclen)
             {
-              de = (struct linux_dirent64 *)(buf + pos);
+              de = (struct linux_dirent64 *) (u.buf + pos);
 
               fd = filename_to_fd (de->d_name);
               if (fd < 0 || fd == dir_fd)
