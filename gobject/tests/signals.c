@@ -2045,6 +2045,44 @@ test_emitv (void)
   g_array_unref (values);
 }
 
+typedef struct
+{
+  GWeakRef wr;
+  gulong handler;
+} TestWeakRefDisconnect;
+
+static void
+weak_ref_disconnect_notify (gpointer  data,
+                            GObject  *where_object_was)
+{
+  TestWeakRefDisconnect *state = data;
+  g_assert_null (g_weak_ref_get (&state->wr));
+  state->handler = 0;
+}
+
+static void
+test_weak_ref_disconnect (void)
+{
+  TestWeakRefDisconnect state;
+  GObject *test;
+
+  test = g_object_new (test_get_type (), NULL);
+  g_weak_ref_init (&state.wr, test);
+  state.handler = g_signal_connect_data (test,
+                                         "simple",
+                                         G_CALLBACK (dont_reach),
+                                         &state,
+                                         (GClosureNotify) weak_ref_disconnect_notify,
+                                         0);
+  g_assert_cmpint (state.handler, >, 0);
+
+  g_object_unref (test);
+
+  g_assert_cmpint (state.handler, ==, 0);
+  g_assert_null (g_weak_ref_get (&state.wr));
+  g_weak_ref_clear (&state.wr);
+}
+
 /* --- */
 
 int
@@ -2083,6 +2121,7 @@ main (int argc,
   g_test_add_data_func ("/gobject/signals/invalid-name/first-char", "7zip", test_signals_invalid_name);
   g_test_add_data_func ("/gobject/signals/invalid-name/empty", "", test_signals_invalid_name);
   g_test_add_func ("/gobject/signals/is-valid-name", test_signal_is_valid_name);
+  g_test_add_func ("/gobject/signals/weak-ref-disconnect", test_weak_ref_disconnect);
 
   return g_test_run ();
 }
