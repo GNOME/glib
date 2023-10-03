@@ -3048,8 +3048,10 @@ g_date_time_format_utf8 (GDateTime   *datetime,
   gunichar  c;
   gboolean  alt_digits = FALSE;
   gboolean  pad_set = FALSE;
+  gboolean mod_case = FALSE;
   gboolean  name_is_utf8;
   const gchar *pad = "";
+  const gchar *mod = "";
   const gchar *name;
   const gchar *tz;
 
@@ -3071,6 +3073,7 @@ g_date_time_format_utf8 (GDateTime   *datetime,
       colons = 0;
       alt_digits = FALSE;
       pad_set = FALSE;
+      mod_case = FALSE;
 
     next_mod:
       c = g_utf8_get_char (utf8_format);
@@ -3078,7 +3081,8 @@ g_date_time_format_utf8 (GDateTime   *datetime,
       switch (c)
 	{
 	case 'a':
-	  name = WEEKDAY_ABBR (datetime);
+          name = mod_case ? g_utf8_strup (WEEKDAY_ABBR (datetime), -1)
+                          : WEEKDAY_ABBR (datetime);
           if (g_strcmp0 (name, "") == 0)
             return FALSE;
 
@@ -3089,7 +3093,8 @@ g_date_time_format_utf8 (GDateTime   *datetime,
 
 	  break;
 	case 'A':
-	  name = WEEKDAY_FULL (datetime);
+          name = mod_case ? g_utf8_strup (WEEKDAY_FULL (datetime), -1)
+                          : WEEKDAY_FULL (datetime);
           if (g_strcmp0 (name, "") == 0)
             return FALSE;
 
@@ -3104,6 +3109,8 @@ g_date_time_format_utf8 (GDateTime   *datetime,
 			    : MONTH_ABBR_WITH_DAY (datetime);
           if (g_strcmp0 (name, "") == 0)
             return FALSE;
+          if (mod_case)
+            name = g_utf8_strup (name, -1);
 
           name_is_utf8 = locale_is_utf8 ||
             ((alt_digits && !MONTH_ABBR_STANDALONE_IS_LOCALE) ||
@@ -3118,6 +3125,8 @@ g_date_time_format_utf8 (GDateTime   *datetime,
 			    : MONTH_FULL_WITH_DAY (datetime);
           if (g_strcmp0 (name, "") == 0)
             return FALSE;
+          if (mod_case)
+            name = g_utf8_strup (name, -1);
 
           name_is_utf8 = locale_is_utf8 ||
             ((alt_digits && !MONTH_FULL_STANDALONE_IS_LOCALE) ||
@@ -3171,6 +3180,8 @@ g_date_time_format_utf8 (GDateTime   *datetime,
 			    : MONTH_ABBR_WITH_DAY (datetime);
           if (g_strcmp0 (name, "") == 0)
             return FALSE;
+          if (mod_case)
+            name = g_utf8_strup (name, -1);
 
           name_is_utf8 = locale_is_utf8 ||
             ((alt_digits && !MONTH_ABBR_STANDALONE_IS_LOCALE) ||
@@ -3215,11 +3226,15 @@ g_date_time_format_utf8 (GDateTime   *datetime,
 	  alt_digits = TRUE;
 	  goto next_mod;
 	case 'p':
-          if (!format_ampm (datetime, outstr, locale_is_utf8, TRUE))
+          if (!format_ampm (datetime, outstr, locale_is_utf8,
+                            mod_case && g_strcmp0 (mod, "#") == 0 ? FALSE
+                                                                  : TRUE))
             return FALSE;
           break;
 	case 'P':
-          if (!format_ampm (datetime, outstr, locale_is_utf8, FALSE))
+          if (!format_ampm (datetime, outstr, locale_is_utf8,
+                            mod_case && g_strcmp0 (mod, "^") == 0 ? TRUE
+                                                                  : FALSE))
             return FALSE;
 	  break;
 	case 'r':
@@ -3299,7 +3314,8 @@ g_date_time_format_utf8 (GDateTime   *datetime,
 	  }
 	  break;
 	case 'Z':
-	  tz = g_date_time_get_timezone_abbreviation (datetime);
+          tz = mod_case && g_strcmp0 (mod, "#") == 0 ? g_utf8_strdown (g_date_time_get_timezone_abbreviation (datetime), -1)
+                                                     : g_date_time_get_timezone_abbreviation (datetime);
           g_string_append (outstr, tz);
 	  break;
 	case '%':
@@ -3323,9 +3339,17 @@ g_date_time_format_utf8 (GDateTime   *datetime,
 	    return FALSE;
 	  colons++;
 	  goto next_mod;
-	default:
-	  return FALSE;
-	}
+        case '^':
+          mod_case = TRUE;
+          mod = "^";
+          goto next_mod;
+        case '#':
+          mod_case = TRUE;
+          mod = "#";
+          goto next_mod;
+        default:
+          return FALSE;
+        }
     }
 
   return TRUE;
@@ -3418,8 +3442,9 @@ g_date_time_format_utf8 (GDateTime   *datetime,
  * - `%%`: a literal `%` character
  *
  * Some conversion specifications can be modified by preceding the
- * conversion specifier by one or more modifier characters. The
- * following modifiers are supported for many of the numeric
+ * conversion specifier by one or more modifier characters.
+ *
+ * The following modifiers are supported for many of the numeric
  * conversions:
  *
  * - `O`: Use alternative numeric symbols, if the current locale supports those.
@@ -3429,6 +3454,13 @@ g_date_time_format_utf8 (GDateTime   *datetime,
  *   for the specifier.
  * - `0`: Pad a numeric result with zeros. This overrides the default padding
  *   for the specifier.
+ *
+ * The following modifiers are supported for many of the alphabetic conversions:
+ *
+ * - `^`: Use upper case if possible. This is a gnulib `strftime()` extension.
+ *   Since: 2.80
+ * - `#`: Use opposite case if possible. This is a gnulib `strftime()`
+ *   extension. Since: 2.80
  *
  * Additionally, when `O` is used with `B`, `b`, or `h`, it produces the alternative
  * form of a month name. The alternative form should be used when the month
