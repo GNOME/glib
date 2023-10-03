@@ -888,11 +888,12 @@ test_search (void)
                                         "gedit.desktop\n", TRUE, TRUE, NULL, NULL);
 
   /* "con" will match "connect" and "contacts" on name with prefix match in
-   * first group, then match "Dconf Editor" and "Desktop Icons" with substring
-   * match in next group.
+   * first group, then second group is a Keyword prefix match for "configuration" in dconf-editor.desktop
+   * and third group is a substring match for "Desktop Icons" in Name of nautilus-classic.desktop.
    */
   assert_search ("con", "gnome-contacts.desktop nautilus-connect-server.desktop\n"
-                        "dconf-editor.desktop nautilus-classic.desktop\n", TRUE, TRUE, NULL, NULL);
+                        "dconf-editor.desktop\n"
+                        "nautilus-classic.desktop\n", TRUE, TRUE, NULL, NULL);
 
   /* "gnome" will match "eye of gnome" from the user's directory, plus
    * matching "GNOME Clocks" X-GNOME-FullName.  It's only a comment on
