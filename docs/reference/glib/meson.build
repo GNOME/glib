@@ -34,6 +34,7 @@ if get_option('gtk_doc')
     'gtranslit-data.h',
     'glib-init.h',
     'gconstructor.h',
+    'gconstructorprivate.h',
     'valgrind.h',
     'gutilsprivate.h',
     'gvalgrind.h',

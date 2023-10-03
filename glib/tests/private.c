@@ -148,19 +148,6 @@ test_private3 (void)
     thread = (HANDLE) _beginthreadex (NULL, 0, private3_func, NULL, 0, &ignore);
     WaitForSingleObject (thread, INFINITE);
     CloseHandle (thread);
-
-    /* FIXME: with static compilation on Windows this test will fail because
-     * it is mixing up glib threads with Microsoft native thread API. See
-     * comment in gthread-win32.c for g_system_thread_exit() implementation.
-     * Fix is not straightforward, possible solution could be to use FLS
-     * functions (instead of TLS) as proposed in
-     * https://gitlab.gnome.org/GNOME/glib/-/merge_requests/1655
-     */
-    if (!private3_freed)
-      {
-        g_test_skip ("FIXME: GPrivate with native win32 thread");
-        return;
-      }
   }
 #else
   {
