@@ -1792,6 +1792,30 @@ test_modifiers (void)
   TEST_PRINTF_DATE (2009, 1, 21, "%-e", "21");
   TEST_PRINTF_DATE (2009, 1, 21, "%0e", "21");
 
+  TEST_PRINTF_DATE (2009, 1, 1, "%a", "Thu");
+  TEST_PRINTF_DATE (2009, 1, 1, "%^a", "THU");
+  TEST_PRINTF_DATE (2009, 1, 1, "%#a", "THU");
+
+  TEST_PRINTF_DATE (2009, 1, 1, "%A", "Thursday");
+  TEST_PRINTF_DATE (2009, 1, 1, "%^A", "THURSDAY");
+  TEST_PRINTF_DATE (2009, 1, 1, "%#A", "THURSDAY");
+
+  TEST_PRINTF_DATE (2009, 1, 1, "%b", "Jan");
+  TEST_PRINTF_DATE (2009, 1, 1, "%^b", "JAN");
+  TEST_PRINTF_DATE (2009, 1, 1, "%#b", "JAN");
+
+  TEST_PRINTF_DATE (2009, 1, 1, "%B", "January");
+  TEST_PRINTF_DATE (2009, 1, 1, "%^B", "JANUARY");
+  TEST_PRINTF_DATE (2009, 1, 1, "%#B", "JANUARY");
+
+  TEST_PRINTF_DATE (2009, 1, 1, "%h", "Jan");
+  TEST_PRINTF_DATE (2009, 1, 1, "%^h", "JAN");
+  TEST_PRINTF_DATE (2009, 1, 1, "%#h", "JAN");
+
+  TEST_PRINTF_DATE (2009, 1, 1, "%Z", "UTC");
+  TEST_PRINTF_DATE (2009, 1, 1, "%^Z", "UTC");
+  TEST_PRINTF_DATE (2009, 1, 1, "%#Z", "utc");
+
   TEST_PRINTF_TIME ( 1, 0, 0,  "%H", "01");
   TEST_PRINTF_TIME ( 1, 0, 0, "%_H", " 1");
   TEST_PRINTF_TIME ( 1, 0, 0, "%-H", "1");
@@ -1823,6 +1847,14 @@ test_modifiers (void)
   TEST_PRINTF_TIME (23, 0, 0, "%_l", "11");
   TEST_PRINTF_TIME (23, 0, 0, "%-l", "11");
   TEST_PRINTF_TIME (23, 0, 0, "%0l", "11");
+
+  TEST_PRINTF_TIME (1, 0, 0, "%p", "AM");
+  TEST_PRINTF_TIME (1, 0, 0, "%^p", "AM");
+  TEST_PRINTF_TIME (1, 0, 0, "%#p", "am");
+
+  TEST_PRINTF_TIME (1, 0, 0, "%P", "am");
+  TEST_PRINTF_TIME (1, 0, 0, "%^P", "AM");
+  TEST_PRINTF_TIME (1, 0, 0, "%#P", "am");
 
   oldlocale = g_strdup (setlocale (LC_ALL, NULL));
   setlocale (LC_ALL, "fa_IR.utf-8");
