@@ -589,8 +589,9 @@ test_string (void)
       "key6=trailing space  \n"
       "[invalid]\n"
       "key1=\\a\\b\\0800xff\n"
-      "key2=blabla\\\n"
-      "key3=foo\\i\\\n";
+      "key2=blabla\\\n"  /* escape at end of line */
+      "key3=\\ifoo\n"  /* invalid escape */
+      "key4=\\i\\hfoo\n";  /* invalid escape with multiple stacked errors */
 
   keyfile = load_data (data, 0);
 
@@ -610,6 +611,10 @@ test_string (void)
   g_free (value);
 
   value = g_key_file_get_string (keyfile, "invalid", "key3", &error);
+  check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE);
+  g_free (value);
+
+  value = g_key_file_get_string (keyfile, "invalid", "key4", &error);
   check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE);
   g_free (value);
 
