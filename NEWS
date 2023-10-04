@@ -1,3 +1,28 @@
+Overview of changes in GLib 2.76.6, 2023-10-04
+==============================================
+
+* Bugs fixed:
+  - !3615 Backport !3582 “Buffer needs to be aligned correctly to receive
+    linux_dirent64.” to glib-2-76
+
+* Translation updates:
+  - Czech (Daniel Rusek)
+  - English (United Kingdom) (Bruce Cowan)
+  - German (Jürgen Benvenuti)
+  - Hungarian (Balázs Úr)
+  - Indonesian (Andika Triwidada)
+  - Lithuanian (Aurimas Černius)
+  - Polish (Piotr Drąg)
+  - Portuguese (Hugo Carvalho)
+  - Portuguese (Brazil) (Rafael Fontenelle)
+  - Russian (Artur S0)
+  - Slovenian (Martin)
+  - Spanish (Daniel Mustieles)
+  - Swedish (Anders Jonsson)
+  - Turkish (Emin Tufan Çetin)
+  - Ukrainian (Yuri Chornoivan)
+
+
 Overview of changes in GLib 2.76.5, 2023-08-31
 ==============================================
 
