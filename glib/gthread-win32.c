@@ -571,7 +571,7 @@ SetThreadName (DWORD  dwThreadID,
    info.dwThreadID = dwThreadID;
    info.dwFlags = 0;
 
-   infosize = sizeof (info) / sizeof (DWORD);
+   infosize = sizeof (info) / sizeof (ULONG_PTR);
 
 #ifdef _MSC_VER
    __try
@@ -579,14 +579,12 @@ SetThreadName (DWORD  dwThreadID,
        RaiseException (EXCEPTION_SET_THREAD_NAME, 0, infosize,
                        (const ULONG_PTR *) &info);
      }
-   __except (EXCEPTION_EXECUTE_HANDLER)
+   __except (GetExceptionCode () == EXCEPTION_SET_THREAD_NAME ?
+             EXCEPTION_EXECUTE_HANDLER : EXCEPTION_CONTINUE_SEARCH)
      {
      }
 #else
-   /* Without a debugger we *must* have an exception handler,
-    * otherwise raising an exception will crash the process.
-    */
-   if ((!IsDebuggerPresent ()) && (SetThreadName_VEH_handle == NULL))
+   if ((!IsDebuggerPresent ()) || (SetThreadName_VEH_handle == NULL))
      return;
 
    RaiseException (EXCEPTION_SET_THREAD_NAME, 0, infosize, (const ULONG_PTR *) &info);
@@ -659,11 +657,15 @@ g_thread_win32_init (void)
   InitializeCriticalSection (&g_private_lock);
 
 #ifndef _MSC_VER
-  SetThreadName_VEH_handle = AddVectoredExceptionHandler (1, &SetThreadName_VEH);
+  /* Set the handler as last to not interfere with ASAN runtimes.
+   * Many ASAN implementations (currently all three of GCC, CLANG
+   * and MSVC) install a Vectored Exception Handler that must be
+   * first in the sequence to work well
+   */
+  SetThreadName_VEH_handle = AddVectoredExceptionHandler (0, &SetThreadName_VEH);
   if (SetThreadName_VEH_handle == NULL)
-    {
-      /* This is bad, but what can we do? */
-    }
+    g_critical ("%s failed with error code %u",
+                "AddVectoredExceptionHandler", (unsigned int) GetLastError ());
 #endif
 }
 
