@@ -138,6 +138,13 @@ glib_tests = {
     'args': [ '--verbose' ],
     'extra_programs' : ['testing-helper'],
   },
+  'testing-macro' : {
+    'args': [ '--verbose' ],
+    'extra_programs' : ['testing-helper'],
+    'source' : 'testing.c',
+    'c_args' : cc.get_id() == 'gcc' ? ['-Werror=sign-conversion'] : [],
+    'install' : false,
+  },
   'test-printf' : {},
   'thread' : {},
   'thread-deprecated' : {},
