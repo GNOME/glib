@@ -5,7 +5,6 @@
 #include <errno.h>
 #ifdef G_OS_UNIX
 #include <unistd.h>
-#include <sys/ptrace.h>
 #else
 #include <io.h>
 #endif
