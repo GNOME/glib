@@ -275,6 +275,7 @@ typedef struct _GSourceList GSourceList;
 
 struct _GSourceList
 {
+  GList link;
   GSource *head, *tail;
   gint priority;
 };
@@ -319,7 +320,7 @@ struct _GMainContext
   gint timeout;			/* Timeout for current iteration */
 
   guint next_id;
-  GList *source_lists;
+  GQueue source_lists;
   gint in_check_or_prepare;
 
   GPollRec *poll_records;
@@ -669,12 +670,13 @@ g_main_context_unref (GMainContext *context)
       g_source_destroy_internal (source, context, TRUE);
     }
 
-  for (sl_iter = context->source_lists; sl_iter; sl_iter = sl_iter->next)
+  sl_iter = context->source_lists.head;
+  while (sl_iter != NULL)
     {
       list = sl_iter->data;
+      sl_iter = sl_iter->next;
       g_slice_free (GSourceList, list);
     }
-  g_list_free (context->source_lists);
 
   g_hash_table_destroy (context->sources);
 
@@ -771,9 +773,7 @@ g_main_context_new_with_flags (GMainContextFlags flags)
   context->ref_count = 1;
 
   context->next_id = 1;
-  
-  context->source_lists = NULL;
-  
+
   context->poll_func = g_poll;
   
   context->cached_poll_array = NULL;
@@ -1126,7 +1126,7 @@ g_source_iter_next (GSourceIter *iter, GSource **source)
       if (iter->current_list)
 	iter->current_list = iter->current_list->next;
       else
-	iter->current_list = iter->context->source_lists;
+	iter->current_list = iter->context->source_lists.head;
 
       if (iter->current_list)
 	{
@@ -1176,11 +1176,10 @@ find_source_list_for_priority (GMainContext *context,
 			       gint          priority,
 			       gboolean      create)
 {
-  GList *iter, *last;
+  GList *iter;
   GSourceList *source_list;
 
-  last = NULL;
-  for (iter = context->source_lists; iter != NULL; last = iter, iter = iter->next)
+  for (iter = context->source_lists.head; iter; iter = iter->next)
     {
       source_list = iter->data;
 
@@ -1193,10 +1192,11 @@ find_source_list_for_priority (GMainContext *context,
 	    return NULL;
 
 	  source_list = g_slice_new0 (GSourceList);
+          source_list->link.data = source_list;
 	  source_list->priority = priority;
-	  context->source_lists = g_list_insert_before (context->source_lists,
-							iter,
-							source_list);
+          g_queue_insert_before_link (&context->source_lists,
+                                      iter,
+                                      &source_list->link);
 	  return source_list;
 	}
     }
@@ -1205,18 +1205,10 @@ find_source_list_for_priority (GMainContext *context,
     return NULL;
 
   source_list = g_slice_new0 (GSourceList);
+  source_list->link.data = source_list;
   source_list->priority = priority;
+  g_queue_push_tail_link (&context->source_lists, &source_list->link);
 
-  if (!last)
-    context->source_lists = g_list_append (NULL, source_list);
-  else
-    {
-      /* This just appends source_list to the end of
-       * context->source_lists without having to walk the list again.
-       */
-      last = g_list_append (last, source_list);
-      (void) last;
-    }
   return source_list;
 }
 
@@ -1284,7 +1276,7 @@ source_remove_from_context (GSource      *source,
 
   if (source_list->head == NULL)
     {
-      context->source_lists = g_list_remove (context->source_lists, source_list);
+      g_queue_unlink (&context->source_lists, &source_list->link);
       g_slice_free (GSourceList, source_list);
     }
 }
