@@ -32,11 +32,14 @@
 
 #include <glib.h>
 
-#ifndef _MSC_VER
-#pragma GCC push_options
-#pragma GCC optimize ("O0")
+#if defined (_MSC_VER)
+#  pragma optimize ("", off)
 #else
-#pragma optimize ("", off)
+#  if defined (__clang__)
+#    pragma clang optimize off
+#  elif defined (__GNUC__)
+#    pragma GCC optimize ("O0")
+#  endif
 #endif
 
 #if defined(_WIN32)
