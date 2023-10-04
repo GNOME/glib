@@ -365,7 +365,7 @@ get_lowercase_current_desktops (void)
 {
   static gchar **result;
 
-  if (g_once_init_enter (&result))
+  if (g_once_init_enter_pointer (&result))
     {
       char **tmp = get_valid_current_desktops (NULL);
       gsize i, j;
@@ -377,7 +377,7 @@ get_lowercase_current_desktops (void)
             tmp[i][j] = g_ascii_tolower (tmp[i][j]);
         }
 
-      g_once_init_leave (&result, tmp);
+      g_once_init_leave_pointer (&result, tmp);
     }
 
   return (const gchar **) result;
@@ -388,11 +388,11 @@ get_current_desktops (const gchar *value)
 {
   static gchar **result;
 
-  if (g_once_init_enter (&result))
+  if (g_once_init_enter_pointer (&result))
     {
       char **tmp = get_valid_current_desktops (value);
 
-      g_once_init_leave (&result, tmp);
+      g_once_init_leave_pointer (&result, tmp);
     }
 
   return (const gchar **) result;
@@ -3012,7 +3012,7 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
           g_free (program);
         }
 
-      if (g_once_init_enter (&gio_launch_desktop_path))
+      if (g_once_init_enter_pointer (&gio_launch_desktop_path))
         {
           const gchar *tmp = NULL;
           gboolean is_setuid = GLIB_PRIVATE_CALL (g_check_setuid) ();
@@ -3028,7 +3028,7 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
           /* Fall back on usual searching in $PATH */
           if (tmp == NULL)
             tmp = "gio-launch-desktop";
-          g_once_init_leave (&gio_launch_desktop_path, tmp);
+          g_once_init_leave_pointer (&gio_launch_desktop_path, tmp);
         }
 
       wrapped_argv = g_new (char *, argc + 2);

@@ -1867,14 +1867,14 @@ maybe_issue_deprecation_warning (GType type)
   gboolean already;
   const char *name;
 
-  if (g_once_init_enter (&enable_diagnostic))
+  if (g_once_init_enter_pointer (&enable_diagnostic))
     {
       const gchar *value = g_getenv ("G_ENABLE_DIAGNOSTIC");
 
       if (!value)
         value = "0";
 
-      g_once_init_leave (&enable_diagnostic, value);
+      g_once_init_leave_pointer (&enable_diagnostic, value);
     }
 
   if (enable_diagnostic[0] == '0')

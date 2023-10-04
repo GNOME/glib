@@ -236,6 +236,12 @@ GLIB_AVAILABLE_IN_ALL
 void            g_once_init_leave               (volatile void  *location,
                                                  gsize           result);
 
+GLIB_AVAILABLE_IN_2_80
+gboolean g_once_init_enter_pointer              (void *location);
+GLIB_AVAILABLE_IN_2_80
+void g_once_init_leave_pointer                  (void *location,
+                                                 gpointer result);
+
 /* Use C11-style atomic extensions to check the fast path for status=ready. If
  * they are not available, fall back to using a mutex and condition variable in
  * g_once_impl().
@@ -268,11 +274,30 @@ void            g_once_init_leave               (volatile void  *location,
     0 ? (void) (*(location) = (result)) : (void) 0;                  \
     g_once_init_leave ((location), (gsize) (result));                \
   }))
+# define g_once_init_enter_pointer(location)                   \
+  (G_GNUC_EXTENSION ({                                         \
+    G_STATIC_ASSERT (sizeof *(location) == sizeof (gpointer)); \
+    (void) (0 ? (gpointer) * (location) : NULL);               \
+    (!g_atomic_pointer_get (location) &&                       \
+     g_once_init_enter_pointer (location));                    \
+  })) GLIB_AVAILABLE_MACRO_IN_2_80
+# define g_once_init_leave_pointer(location, result)                        \
+  (G_GNUC_EXTENSION ({                                                      \
+    G_STATIC_ASSERT (sizeof *(location) == sizeof (gpointer));              \
+    0 ? (void) (*(location) = (result)) : (void) 0;                         \
+    g_once_init_leave_pointer ((location), (gpointer) (guintptr) (result)); \
+  })) GLIB_AVAILABLE_MACRO_IN_2_80
 #else
 # define g_once_init_enter(location) \
   (g_once_init_enter((location)))
 # define g_once_init_leave(location, result) \
   (g_once_init_leave((location), (gsize) (result)))
+# define g_once_init_enter_pointer(location) \
+  (g_once_init_enter_pointer((location))) \
+  GLIB_AVAILABLE_MACRO_IN_2_80
+# define g_once_init_leave_pointer(location, result) \
+  (g_once_init_leave_pointer((location), (gpointer) (guintptr) (result))) \
+  GLIB_AVAILABLE_MACRO_IN_2_80
 #endif
 
 GLIB_AVAILABLE_IN_2_36

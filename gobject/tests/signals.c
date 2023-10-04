@@ -66,9 +66,9 @@ custom_marshal_VOID__INVOCATIONHINT (GClosure     *closure,
 static GType
 test_enum_get_type (void)
 {
-  static gsize static_g_define_type_id = 0;
+  static GType static_g_define_type_id = 0;
 
-  if (g_once_init_enter (&static_g_define_type_id))
+  if (g_once_init_enter_pointer (&static_g_define_type_id))
     {
       static const GEnumValue values[] = {
         { TEST_ENUM_NEGATIVE, "TEST_ENUM_NEGATIVE", "negative" },
@@ -79,7 +79,7 @@ test_enum_get_type (void)
       };
       GType g_define_type_id =
         g_enum_register_static (g_intern_static_string ("TestEnum"), values);
-      g_once_init_leave (&static_g_define_type_id, g_define_type_id);
+      g_once_init_leave_pointer (&static_g_define_type_id, g_define_type_id);
     }
 
   return static_g_define_type_id;
@@ -88,9 +88,9 @@ test_enum_get_type (void)
 static GType
 test_unsigned_enum_get_type (void)
 {
-  static gsize static_g_define_type_id = 0;
+  static GType static_g_define_type_id = 0;
 
-  if (g_once_init_enter (&static_g_define_type_id))
+  if (g_once_init_enter_pointer (&static_g_define_type_id))
     {
       static const GEnumValue values[] = {
         { TEST_UNSIGNED_ENUM_FOO, "TEST_UNSIGNED_ENUM_FOO", "foo" },
@@ -99,7 +99,7 @@ test_unsigned_enum_get_type (void)
       };
       GType g_define_type_id =
         g_enum_register_static (g_intern_static_string ("TestUnsignedEnum"), values);
-      g_once_init_leave (&static_g_define_type_id, g_define_type_id);
+      g_once_init_leave_pointer (&static_g_define_type_id, g_define_type_id);
     }
 
   return static_g_define_type_id;

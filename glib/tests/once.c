@@ -199,8 +199,8 @@ test_once_init_string (void)
 
   g_test_summary ("Test g_once_init_{enter,leave}() usage with a string");
 
-  if (g_once_init_enter (&val))
-    g_once_init_leave (&val, "foo");
+  if (g_once_init_enter_pointer (&val))
+    g_once_init_leave_pointer (&val, "foo");
 
   g_assert_cmpstr (val, ==, "foo");
 }

@@ -421,13 +421,13 @@ g_inet_socket_address_new_from_string (const char *address,
        * it will handle parsing a scope_id as well.
        */
 
-      if (G_UNLIKELY (g_once_init_enter (&hints)))
+      if (G_UNLIKELY (g_once_init_enter_pointer (&hints)))
         {
           hints_struct.ai_family = AF_UNSPEC;
           hints_struct.ai_socktype = SOCK_STREAM;
           hints_struct.ai_protocol = 0;
           hints_struct.ai_flags = AI_NUMERICHOST;
-          g_once_init_leave (&hints, &hints_struct);
+          g_once_init_leave_pointer (&hints, &hints_struct);
         }
 
       status = getaddrinfo (address, NULL, hints, &res);

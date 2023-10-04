@@ -336,7 +336,7 @@ g_resource_find_overlay (const gchar    *path,
    * we can take a bit more time...
    */
 
-  if (g_once_init_enter (&overlay_dirs))
+  if (g_once_init_enter_pointer (&overlay_dirs))
     {
       gboolean is_setuid = GLIB_PRIVATE_CALL (g_check_setuid) ();
       const gchar * const *result;
@@ -420,7 +420,7 @@ g_resource_find_overlay (const gchar    *path,
           result = empty_strv;
         }
 
-      g_once_init_leave (&overlay_dirs, result);
+      g_once_init_leave_pointer (&overlay_dirs, result);
     }
 
   for (i = 0; overlay_dirs[i]; i++)

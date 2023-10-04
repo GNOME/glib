@@ -1163,9 +1163,9 @@ test_object_set_property (GObject      *object,
 static GType
 test_enum_get_type (void)
 {
-  static gsize define_type_id = 0;
+  static GType define_type_id = 0;
 
-  if (g_once_init_enter (&define_type_id))
+  if (g_once_init_enter_pointer (&define_type_id))
     {
       static const GEnumValue values[] = {
         { TEST_ENUM_FOO, "TEST_ENUM_FOO", "foo" },
@@ -1176,7 +1176,7 @@ test_enum_get_type (void)
       };
 
       GType type_id = g_enum_register_static ("TestEnum", values);
-      g_once_init_leave (&define_type_id, type_id);
+      g_once_init_leave_pointer (&define_type_id, type_id);
     }
 
   return define_type_id;
@@ -1185,9 +1185,9 @@ test_enum_get_type (void)
 static GType
 test_flags_get_type (void)
 {
-  static gsize define_type_id = 0;
+  static GType define_type_id = 0;
 
-  if (g_once_init_enter (&define_type_id))
+  if (g_once_init_enter_pointer (&define_type_id))
     {
       static const GFlagsValue values[] = {
         { TEST_FLAGS_NONE, "TEST_FLAGS_NONE", "none" },
@@ -1198,7 +1198,7 @@ test_flags_get_type (void)
       };
 
       GType type_id = g_flags_register_static ("TestFlags", values);
-      g_once_init_leave (&define_type_id, type_id);
+      g_once_init_leave_pointer (&define_type_id, type_id);
     }
 
   return define_type_id;

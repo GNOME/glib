@@ -782,6 +782,8 @@ G_ONCE_INIT
 g_once
 g_once_init_enter
 g_once_init_leave
+g_once_init_enter_pointer
+g_once_init_leave_pointer
 
 <SUBSECTION>
 g_bit_lock

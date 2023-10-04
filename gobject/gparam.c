@@ -1631,7 +1631,7 @@ g_param_spec_get_default_value (GParamSpec *pspec)
    * done before a g_once_init_enter() could take the fast path in
    * another thread.
    */
-  if (g_once_init_enter (&priv->default_value.g_type))
+  if (g_once_init_enter_pointer (&priv->default_value.g_type))
     {
       GValue default_value = G_VALUE_INIT;
 
@@ -1641,7 +1641,7 @@ g_param_spec_get_default_value (GParamSpec *pspec)
       /* store all but the type */
       memcpy (priv->default_value.data, default_value.data, sizeof (default_value.data));
 
-      g_once_init_leave (&priv->default_value.g_type, pspec->value_type);
+      g_once_init_leave_pointer (&priv->default_value.g_type, pspec->value_type);
     }
 
   return &priv->default_value;

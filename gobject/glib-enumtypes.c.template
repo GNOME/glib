@@ -22,9 +22,9 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 GType
 @enum_name@_get_type (void)
 {
-  static gsize static_g_define_type_id = 0;
+  static GType static_g_define_type_id = 0;
 
-  if (g_once_init_enter (&static_g_define_type_id))
+  if (g_once_init_enter_pointer (&static_g_define_type_id))
     {
       static const G@Type@Value values[] = {
 /*** END value-header ***/
@@ -38,7 +38,7 @@ GType
       };
       GType g_define_type_id =
         g_@type@_register_static (g_intern_static_string ("@EnumName@"), values);
-      g_once_init_leave (&static_g_define_type_id, g_define_type_id);
+      g_once_init_leave_pointer (&static_g_define_type_id, g_define_type_id);
     }
 
   return static_g_define_type_id;

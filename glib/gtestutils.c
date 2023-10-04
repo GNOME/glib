@@ -1102,10 +1102,10 @@ g_test_log (GTestLogType lbit,
   unsigned subtest_level;
   gdouble timing;
 
-  if (g_once_init_enter (&g_default_print_func))
+  if (g_once_init_enter_pointer (&g_default_print_func))
     {
-      g_once_init_leave (&g_default_print_func,
-                         g_set_print_handler (g_test_print_handler));
+      g_once_init_leave_pointer (&g_default_print_func,
+                                 g_set_print_handler (g_test_print_handler));
       g_assert_nonnull (g_default_print_func);
     }
 

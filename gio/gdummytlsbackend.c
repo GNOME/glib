@@ -93,12 +93,12 @@ g_dummy_tls_backend_get_default_database (GTlsBackend *backend)
 {
   GDummyTlsBackend *dummy = G_DUMMY_TLS_BACKEND (backend);
 
-  if (g_once_init_enter (&dummy->database))
+  if (g_once_init_enter_pointer (&dummy->database))
     {
       GTlsDatabase *tlsdb;
 
       tlsdb = g_object_new (_g_dummy_tls_database_get_type (), NULL);
-      g_once_init_leave (&dummy->database, tlsdb);
+      g_once_init_leave_pointer (&dummy->database, tlsdb);
     }
 
   return g_object_ref (dummy->database);
