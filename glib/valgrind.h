@@ -93,6 +93,7 @@
 
 
 #include <stdarg.h>
+#include <stdint.h>
 
 /* Nb: this file might be included in a file compiled with -ansi.  So
    we can't use C++ style "//" comments nor the "asm" keyword (instead
@@ -411,14 +412,14 @@ typedef
         _zzq_default, _zzq_request,                               \
         _zzq_arg1, _zzq_arg2, _zzq_arg3, _zzq_arg4, _zzq_arg5)    \
     __extension__                                                 \
-    ({ volatile unsigned long int _zzq_args[6];                   \
+    ({ volatile uintptr_t _zzq_args[6];                           \
     volatile unsigned long int _zzq_result;                       \
-    _zzq_args[0] = (unsigned long int)(_zzq_request);             \
-    _zzq_args[1] = (unsigned long int)(_zzq_arg1);                \
-    _zzq_args[2] = (unsigned long int)(_zzq_arg2);                \
-    _zzq_args[3] = (unsigned long int)(_zzq_arg3);                \
-    _zzq_args[4] = (unsigned long int)(_zzq_arg4);                \
-    _zzq_args[5] = (unsigned long int)(_zzq_arg5);                \
+    _zzq_args[0] = (uintptr_t)(_zzq_request);                     \
+    _zzq_args[1] = (uintptr_t)(_zzq_arg1);                        \
+    _zzq_args[2] = (uintptr_t)(_zzq_arg2);                        \
+    _zzq_args[3] = (uintptr_t)(_zzq_arg3);                        \
+    _zzq_args[4] = (uintptr_t)(_zzq_arg4);                        \
+    _zzq_args[5] = (uintptr_t)(_zzq_arg5);                        \
     __asm__ volatile(__SPECIAL_INSTRUCTION_PREAMBLE               \
                      /* %RDX = client_request ( %RAX ) */         \
                      "xchgq %%rbx,%%rbx"                          \
