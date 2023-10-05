@@ -207,20 +207,25 @@ g_wakeup_get_pollfd (GWakeup *wakeup,
 void
 g_wakeup_acknowledge (GWakeup *wakeup)
 {
-  /* read until it is empty */
+  int res;
 
   if (wakeup->fds[1] == -1)
     {
       uint64_t value;
 
       /* eventfd() read resets counter */
-      read (wakeup->fds[0], &value, sizeof (value));
+      do
+        res = read (wakeup->fds[0], &value, sizeof (value));
+      while (G_UNLIKELY (res == -1 && errno == EINTR));
     }
   else
     {
       uint8_t value;
 
-      while (read (wakeup->fds[0], &value, sizeof (value)) == sizeof (value));
+      /* read until it is empty */
+      do
+        res = read (wakeup->fds[0], &value, sizeof (value));
+      while (res == sizeof (value) || G_UNLIKELY (res == -1 && errno == EINTR));
     }
 }
 
