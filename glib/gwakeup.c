@@ -213,7 +213,8 @@ g_wakeup_acknowledge (GWakeup *wakeup)
     {
       uint64_t value;
 
-      while (read (wakeup->fds[0], &value, sizeof (value)) == sizeof (value));
+      /* eventfd() read resets counter */
+      read (wakeup->fds[0], &value, sizeof (value));
     }
   else
     {
