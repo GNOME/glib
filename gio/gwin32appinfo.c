@@ -4034,9 +4034,9 @@ gio_win32_appinfo_init (gboolean do_wait)
       /* Trigger initial tree build. Fake data pointer. */
       g_thread_pool_push (gio_win32_appinfo_threadpool, (gpointer) keys_updated, NULL);
       /* Increment the DLL refcount */
-      GetModuleHandleExA (GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_PIN,
-                          (const char *) gio_win32_appinfo_init,
-                          &gio_dll_extra);
+      GetModuleHandleEx (GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_PIN,
+                         (LPCWSTR) gio_win32_appinfo_init,
+                         &gio_dll_extra);
       /* gio DLL cannot be unloaded now */
 
       g_once_init_leave (&initialized, TRUE);

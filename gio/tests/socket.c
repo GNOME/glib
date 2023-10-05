@@ -2201,6 +2201,7 @@ _g_win32_socketpair (gint            domain,
   SOCKET client = INVALID_SOCKET;
   SOCKET server = INVALID_SOCKET;
   gchar *path = NULL;
+  wchar_t *path_utf16 = NULL;
   int tmpfd, rv = -1;
   u_long arg, br;
 
@@ -2230,7 +2231,11 @@ _g_win32_socketpair (gint            domain,
   if (listener == INVALID_SOCKET)
     goto out;
 
-  if (DeleteFile (path) == 0)
+  path_utf16 = g_utf8_to_utf16 (path, -1, NULL, NULL, NULL);
+  if (!path_utf16)
+    goto out;
+
+  if (DeleteFile (path_utf16) == 0)
     {
       if (GetLastError () != ERROR_FILE_NOT_FOUND)
         goto out;
@@ -2285,7 +2290,10 @@ _g_win32_socketpair (gint            domain,
   if (server != INVALID_SOCKET)
     closesocket (server);
 
-  DeleteFile (path);
+  if (path_utf16)
+    DeleteFile (path_utf16);
+
+  g_free (path_utf16);
   g_free (path);
   return rv;
 }

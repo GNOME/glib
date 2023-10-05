@@ -63,6 +63,7 @@ get_a_child (gint ttl)
   STARTUPINFO si;
   PROCESS_INFORMATION pi;
   gchar *cmdline;
+  wchar_t *cmdline_utf16;
 
   memset (&si, 0, sizeof (si));
   si.cb = sizeof (&si);
@@ -70,11 +71,15 @@ get_a_child (gint ttl)
 
   cmdline = g_strdup_printf ("%s %d", sleep_prog_path, ttl);
 
-  if (!CreateProcess (NULL, cmdline, NULL, NULL,
+  cmdline_utf16 = g_utf8_to_utf16 (cmdline, -1, NULL, NULL, NULL);
+  g_assert_nonnull (cmdline_utf16);
+
+  if (!CreateProcess (NULL, cmdline_utf16, NULL, NULL,
                       FALSE, 0, NULL, NULL, &si, &pi))
     g_error ("CreateProcess failed: %s",
              g_win32_error_message (GetLastError ()));
 
+  g_free (cmdline_utf16);
   g_free (cmdline);
 
   CloseHandle (pi.hThread);
