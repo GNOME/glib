@@ -47,11 +47,13 @@ content_files = [
   "conversion-macros.md",
   "error-reporting.md",
   "logging.md",
+  "main-loop.md",
   "reference-counting.md",
   "threads.md",
 ]
 content_images = [
   "file-name-encodings.png",
+  "mainloop-states.gif",
   "Sorted_binary_tree_breadth-first_traversal.svg",
   "Sorted_binary_tree_inorder.svg",
   "Sorted_binary_tree_postorder.svg",
