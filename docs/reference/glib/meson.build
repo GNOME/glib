@@ -71,7 +71,6 @@ if get_option('gtk_doc')
                  '--ignore-headers=' + ' '.join(ignore_headers),
                ],
                content_files : [
-                 'cross.xml',
                  'building.xml',
                  'changes.xml',
                  'compiling.xml',
@@ -150,6 +149,7 @@ endif
 # gi-docgen version
 expand_content_files = [
   'character-set.md',
+  'cross-compiling.md',
   'error-reporting.md',
   'gvariant-format-strings.md',
   'gvariant-text-format.md',
