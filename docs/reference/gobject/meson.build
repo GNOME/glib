@@ -73,6 +73,7 @@ endif
 expand_content_files = [
   'boxed.md',
   'enum-types.md',
+  'floating-refs.md',
 ]
 
 gobject_gir = meson.current_source_dir() / 'GObject-2.0.gir'
