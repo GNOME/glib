@@ -42,6 +42,7 @@ urlmap_file = "urlmap.js"
 content_files = [
   "character-set.md",
   "conversion-macros.md",
+  "error-reporting.md",
   "reference-counting.md",
   "threads.md",
 ]

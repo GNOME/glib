@@ -153,6 +153,7 @@ endif
 # gi-docgen version
 expand_content_files = [
   'character-set.md',
+  'error-reporting.md',
   'reference-counting.md',
   'threads.md',
 ]
