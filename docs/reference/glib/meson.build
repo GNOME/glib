@@ -153,6 +153,7 @@ endif
 # gi-docgen version
 expand_content_files = [
   'reference-counting.md',
+  'threads.md',
 ]
 
 glib_gir = meson.current_source_dir() / 'GLib-2.0.gir'
