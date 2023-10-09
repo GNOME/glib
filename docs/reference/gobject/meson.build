@@ -72,6 +72,7 @@ endif
 # gi-docgen version
 expand_content_files = [
   'boxed.md',
+  'enum-types.md',
 ]
 
 gobject_gir = meson.current_source_dir() / 'GObject-2.0.gir'
