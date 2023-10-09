@@ -41,6 +41,8 @@ urlmap_file = "urlmap.js"
 # The same order will be used when generating the index
 content_files = [
   "character-set.md",
+  "i18n.md",
+
   "conversion-macros.md",
   "error-reporting.md",
   "reference-counting.md",

@@ -154,6 +154,7 @@ endif
 expand_content_files = [
   'character-set.md',
   'error-reporting.md',
+  'i18n.md',
   'reference-counting.md',
   'threads.md',
 ]
