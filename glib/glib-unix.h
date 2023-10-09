@@ -34,7 +34,7 @@
 #include <fcntl.h>
 
 #include <glib.h>
-#include <gstdio.h>
+#include <glib/gstdio.h>
 
 #ifndef G_OS_UNIX
 #error "This header may only be used on UNIX"
