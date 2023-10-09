@@ -53,6 +53,7 @@ content_files = [
 
   "macros.md",
   "conversion-macros.md",
+  "auto-cleanup.md",
 
   "memory-slices.md",
   "error-reporting.md",
