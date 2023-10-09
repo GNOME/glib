@@ -45,6 +45,7 @@ content_files = [
   "floating-refs.md",
   "boxed.md",
   "enum-types.md",
+  "gvalue.md",
 ]
 content_images = [
 ]
