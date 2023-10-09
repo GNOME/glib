@@ -45,6 +45,7 @@ content_files = [
 
   "conversion-macros.md",
   "error-reporting.md",
+  "logging.md",
   "reference-counting.md",
   "threads.md",
 ]
