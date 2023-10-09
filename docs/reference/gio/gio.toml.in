@@ -42,6 +42,7 @@ urlmap_file = "urlmap.js"
 content_files = [
   "overview.md",
 
+  "migrating-gdbus.md",
   "migrating-gconf.md",
   "migrating-gnome-vfs.md",
 ]

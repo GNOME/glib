@@ -268,7 +268,6 @@
   <part id="migrating">
     <title>Migrating to GIO</title>
     <xi:include href="xml/migrating-posix.xml"/>
-    <xi:include href="xml/migrating-gdbus.xml"/>
   </part>
 
   <chapter id="gio-hierarchy">

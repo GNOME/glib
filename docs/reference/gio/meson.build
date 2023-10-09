@@ -162,7 +162,6 @@ if get_option('gtk_doc')
 
   content_files = [
     'migrating-posix.xml',
-    'migrating-gdbus.xml',
     'gio-querymodules.xml',
     'glib-compile-schemas.xml',
     'glib-compile-resources.xml',
@@ -196,7 +195,6 @@ if get_option('gtk_doc')
     content_files : content_files,
     expand_content_files : [
       'migrating-posix.xml',
-      'migrating-gdbus.xml',
       'gdbus-codegen.xml',
     ],
     html_assets : [
@@ -232,6 +230,7 @@ endif
 # gi-docgen version
 expand_content_files = [
   'migrating-gconf.md',
+  'migrating-gdbus.md',
   'migrating-gnome-vfs.md',
   'overview.md',
 ]
