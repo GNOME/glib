@@ -28,7 +28,6 @@
     <xi:include href="cross.xml" />
     <xi:include href="programming.xml" />
     <xi:include href="xml/compiling.xml" />
-    <xi:include href="running.xml" />
     <xi:include href="changes.xml" />
     <xi:include href="resources.xml" />
 

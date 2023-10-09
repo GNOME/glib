@@ -72,7 +72,6 @@ if get_option('gtk_doc')
                ],
                content_files : [
                  'cross.xml',
-                 'running.xml',
                  'building.xml',
                  'changes.xml',
                  'compiling.xml',
@@ -159,6 +158,7 @@ expand_content_files = [
   'main-loop.md',
   'memory-slices.md',
   'reference-counting.md',
+  'running.md',
   'testing.md',
   'threads.md',
 ]
