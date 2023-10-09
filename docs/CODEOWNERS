@@ -53,6 +53,9 @@ subprojects/		@xclaesse @nirbheek @pwithnall
 *bsd*		@jmatthew @ajacoutot @lantw @pwithnall
 *kqueue*	@jmatthew @ajacoutot @lantw @pwithnall
 
+# GNU Hurd support
+*hurd*	@bugaevc @sthibaul
+
 # flatpak portals
 gio/*portal*	@matthiasc @alexl @pwithnall
 
