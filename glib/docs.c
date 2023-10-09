@@ -1909,16 +1909,8 @@
  *
  * Multiplying the base 2 exponent by this number yields the base 10 exponent.
  */
- 
-/* Macros {{{1 */
 
-/**
- * SECTION:macros
- * @title: Standard Macros
- * @short_description: commonly-used macros
- *
- * These macros provide a few commonly-used features.
- */
+/* Macros {{{1 */
 
 /**
  * G_OS_WIN32:
@@ -2123,15 +2115,6 @@
  */
 
 /* Miscellaneous Macros {{{1 */
-
-/**
- * SECTION:macros_misc
- * @title: Miscellaneous Macros
- * @short_description: specialized macros which are not used often
- *
- * These macros provide more specialized features which are not
- * needed so often by application programmers.
- */
 
 /**
  * G_STMT_START:

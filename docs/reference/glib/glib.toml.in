@@ -43,6 +43,7 @@ content_files = [
   "character-set.md",
   "i18n.md",
 
+  "macros.md",
   "conversion-macros.md",
   "error-reporting.md",
   "logging.md",
