@@ -26,7 +26,6 @@
 
     <xi:include href="building.xml" />
     <xi:include href="programming.xml" />
-    <xi:include href="xml/compiling.xml" />
     <xi:include href="changes.xml" />
     <xi:include href="resources.xml" />
 

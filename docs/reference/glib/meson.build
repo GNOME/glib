@@ -73,7 +73,6 @@ if get_option('gtk_doc')
                content_files : [
                  'building.xml',
                  'changes.xml',
-                 'compiling.xml',
                  'programming.xml',
                  'resources.xml',
                  'regex-syntax.xml',
@@ -82,7 +81,6 @@ if get_option('gtk_doc')
                  'gtester-report.xml',
                ],
                expand_content_files : [
-                 'compiling.xml',
                ],
                html_assets : [
                  'file-name-encodings.png',
@@ -149,6 +147,7 @@ endif
 # gi-docgen version
 expand_content_files = [
   'character-set.md',
+  'compiling.md',
   'cross-compiling.md',
   'error-reporting.md',
   'gvariant-format-strings.md',
