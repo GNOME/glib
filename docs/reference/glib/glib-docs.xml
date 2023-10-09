@@ -117,7 +117,6 @@
     <xi:include href="xml/datasets.xml" />
     <xi:include href="xml/gvarianttype.xml"/>
     <xi:include href="xml/gvariant.xml"/>
-    <xi:include href="gvariant-varargs.xml"/>
     <xi:include href="xml/refcount.xml"/>
     <xi:include href="xml/rcbox.xml"/>
     <xi:include href="xml/arcbox.xml"/>
