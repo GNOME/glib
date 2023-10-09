@@ -45,6 +45,8 @@ content_files = [
 
   "macros.md",
   "conversion-macros.md",
+
+  "memory-slices.md",
   "error-reporting.md",
   "logging.md",
   "main-loop.md",
