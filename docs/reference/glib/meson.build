@@ -158,6 +158,7 @@ expand_content_files = [
   'logging.md',
   'main-loop.md',
   'reference-counting.md',
+  'testing.md',
   'threads.md',
 ]
 
