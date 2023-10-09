@@ -1102,6 +1102,50 @@ test_xattrs (void)
   g_object_unref (file);
 }
 
+static void
+test_set_modified_date_time_precision (void)
+{
+  GDateTime *modified = NULL;
+  GFile *file = NULL;
+  GFileIOStream *stream = NULL;
+  GFileInfo *info = NULL;
+  GError *local_error = NULL;
+
+
+  g_test_summary ("Test that g_file_info_set_modified_date_time() preserves microseconds");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/3116");
+
+  file = g_file_new_tmp ("g-file-info-test-set-modified-date-time-precision-XXXXXX", &stream, &local_error);
+  g_assert_no_error (local_error);
+
+  modified = g_date_time_new_from_iso8601 ("2000-01-01T00:00:00.123456Z", NULL);
+
+  info = g_file_query_info (file,
+  G_FILE_ATTRIBUTE_TIME_MODIFIED ","
+        G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC ","
+        G_FILE_ATTRIBUTE_TIME_MODIFIED_NSEC, G_FILE_QUERY_INFO_NONE, NULL, &local_error);
+  g_assert_no_error (local_error);
+
+  g_file_info_set_modification_date_time (info, modified);
+  g_assert_true (g_file_set_attributes_from_info (file, info, G_FILE_QUERY_INFO_NONE, NULL, &local_error));
+  g_assert_no_error (local_error);
+
+  g_clear_object (&info);
+  g_clear_pointer (&modified, g_date_time_unref);
+
+  info = g_file_query_info (file,
+  G_FILE_ATTRIBUTE_TIME_MODIFIED ","
+        G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC ","
+        G_FILE_ATTRIBUTE_TIME_MODIFIED_NSEC, G_FILE_QUERY_INFO_NONE, NULL, &local_error);
+  g_assert_no_error (local_error);
+
+  g_assert_cmpuint (g_file_info_get_attribute_uint32 (info, G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC), ==, 123456);
+
+  g_clear_object (&stream);
+  g_clear_object (&info);
+  g_clear_object (&file);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -1116,6 +1160,7 @@ main (int   argc,
   g_test_add_func ("/g-file-info/internal-enhanced-stdio", test_internal_enhanced_stdio);
 #endif
   g_test_add_func ("/g-file-info/xattrs", test_xattrs);
+  g_test_add_func ("/g-file-info/set-modified-date-time-precision", test_set_modified_date_time_precision);
   
   return g_test_run();
 }
