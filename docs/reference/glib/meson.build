@@ -149,3 +149,26 @@ if get_option('gtk_doc')
     )
   endif
 endif
+
+# gi-docgen version
+expand_content_files = [
+]
+
+glib_gir = meson.current_source_dir() / 'GLib-2.0.gir'
+glib_toml = configure_file(input: 'glib.toml.in', output: 'glib.toml', configuration: toml_conf)
+
+custom_target('glib-docs',
+  input: [ glib_toml, glib_gir ],
+  output: 'glib',
+  command: [
+    gidocgen,
+    'generate',
+    gidocgen_common_args,
+    '--config=@INPUT0@',
+    '--output-dir=@OUTPUT@',
+    '--content-dir=@0@'.format(meson.current_source_dir()),
+    '@INPUT1@',
+  ],
+  build_by_default: true,
+  depend_files: expand_content_files,
+)

@@ -16,6 +16,7 @@ RUN apt-get update -qq && apt-get install --no-install-recommends -qq -y \
     gdb \
     g++ \
     gettext \
+    gi-docgen \
     git \
     libc6-dev \
     gtk-doc-tools \

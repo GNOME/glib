@@ -15,6 +15,7 @@ RUN dnf -y update \
     gcc-c++ \
     gdb \
     gettext \
+    gi-docgen \
     git \
     glibc-devel \
     glibc-headers \
