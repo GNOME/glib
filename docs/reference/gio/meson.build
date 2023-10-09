@@ -161,7 +161,6 @@ if get_option('gtk_doc')
   )
 
   content_files = [
-    'overview.xml',
     'migrating-posix.xml',
     'migrating-gdbus.xml',
     'gio-querymodules.xml',
@@ -196,7 +195,6 @@ if get_option('gtk_doc')
     ],
     content_files : content_files,
     expand_content_files : [
-      'overview.xml',
       'migrating-posix.xml',
       'migrating-gdbus.xml',
       'gdbus-codegen.xml',
@@ -235,6 +233,7 @@ endif
 expand_content_files = [
   'migrating-gconf.md',
   'migrating-gnome-vfs.md',
+  'overview.md',
 ]
 
 gio_gir = meson.current_source_dir() / 'Gio-2.0.gir'

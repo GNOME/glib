@@ -15,8 +15,6 @@
     </releaseinfo>
   </bookinfo>
 
-  <xi:include href="xml/overview.xml"/>
-
   <part>
   <title>API Reference</title>
     <chapter id="file_ops">
