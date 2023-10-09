@@ -43,6 +43,7 @@ base_url = "https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/"
 urlmap_file = "urlmap.js"
 # The same order will be used when generating the index
 content_files = [
+  "modules.md",
 ]
 content_images = [
 ]

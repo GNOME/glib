@@ -1,4 +1,5 @@
 expand_content_files = [
+  'modules.md',
 ]
 
 gmodule_gir = meson.current_source_dir() / 'GModule-2.0.gir'
