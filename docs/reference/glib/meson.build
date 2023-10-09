@@ -82,7 +82,6 @@ if get_option('gtk_doc')
                  'gtester.xml',
                  'gtester-report.xml',
                  'gvariant-varargs.xml',
-                 'gvariant-text.xml',
                ],
                expand_content_files : [
                  'compiling.xml',
@@ -153,6 +152,7 @@ endif
 expand_content_files = [
   'character-set.md',
   'error-reporting.md',
+  'gvariant-text-format.md',
   'i18n.md',
   'logging.md',
   'main-loop.md',

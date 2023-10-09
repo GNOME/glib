@@ -42,6 +42,8 @@ urlmap_file = "urlmap.js"
 content_files = [
   "running.md",
 
+  "gvariant-text-format.md",
+
   "character-set.md",
   "i18n.md",
 
