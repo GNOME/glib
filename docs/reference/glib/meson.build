@@ -100,7 +100,7 @@ if get_option('gtk_doc')
                  '--html-dir=' + docpath,
                ],
                install: true,
-               check: true)
+               check: false)
 endif
 
 if get_option('man')

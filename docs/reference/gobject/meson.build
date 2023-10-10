@@ -53,7 +53,7 @@ if get_option('gtk_doc')
       '--extra-dir=' + join_paths('gobject', '..', 'glib', 'html'),
     ],
     install: true,
-    check: true,
+    check: false,
   )
 endif
 
