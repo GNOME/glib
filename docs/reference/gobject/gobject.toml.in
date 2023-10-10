@@ -43,6 +43,7 @@ urlmap_file = "urlmap.js"
 # The same order will be used when generating the index
 content_files = [
   "concepts.md",
+  "tutorial.md",
   "floating-refs.md",
   "boxed.md",
   "enum-types.md",

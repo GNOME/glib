@@ -38,7 +38,6 @@ if get_option('gtk_doc')
       'glib-mkenums.xml',
       'glib-genmarshal.xml',
       'gobject-query.xml',
-      'tut_howto.xml',
       'tut_tools.xml'
     ],
     html_assets : [
@@ -72,6 +71,7 @@ expand_content_files = [
   'enum-types.md',
   'floating-refs.md',
   'gvalue.md',
+  'tutorial.md',
 ]
 
 gobject_gir = meson.current_source_dir() / 'GObject-2.0.gir'

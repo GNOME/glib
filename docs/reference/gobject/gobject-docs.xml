@@ -43,7 +43,6 @@
     <xi:include href="gobject-query.xml" />
   </reference>
 
-  <xi:include href="tut_howto.xml" />
   <xi:include href="tut_tools.xml" />
 
   <chapter id="api-index-full">
