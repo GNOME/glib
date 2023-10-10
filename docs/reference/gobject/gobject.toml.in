@@ -42,12 +42,14 @@ show_class_hierarchy = true
 urlmap_file = "urlmap.js"
 # The same order will be used when generating the index
 content_files = [
+  "concepts.md",
   "floating-refs.md",
   "boxed.md",
   "enum-types.md",
   "gvalue.md",
 ]
 content_images = [
+  "images/glue.png",
 ]
 
 # This is the anonymous union inside GValue; we don't need it

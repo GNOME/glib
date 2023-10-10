@@ -38,11 +38,7 @@ if get_option('gtk_doc')
       'glib-mkenums.xml',
       'glib-genmarshal.xml',
       'gobject-query.xml',
-      'tut_gobject.xml',
-      'tut_gsignal.xml',
-      'tut_gtype.xml',
       'tut_howto.xml',
-      'tut_intro.xml',
       'tut_tools.xml'
     ],
     html_assets : [
@@ -72,6 +68,7 @@ endif
 # gi-docgen version
 expand_content_files = [
   'boxed.md',
+  'concepts.md',
   'enum-types.md',
   'floating-refs.md',
   'gvalue.md',
