@@ -29,8 +29,8 @@
 #define G_FILE_ATTRIBUTE_VALUE_INIT {0}
 
 typedef struct  {
-  GFileAttributeType type : 8;
-  GFileAttributeStatus status : 8;
+  guint type : 8; /* GFileAttributeType */
+  guint status : 8; /* GFileAttributeStatus */
   union {
     gboolean boolean;
     gint32 int32;
