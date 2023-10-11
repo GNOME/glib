@@ -53,25 +53,23 @@
 #endif
 
 /**
- * SECTION:timezone
- * @title: GTimeZone
- * @short_description: a structure representing a time zone
- * @see_also: #GDateTime
+ * GTimeZone:
  *
- * #GTimeZone is a structure that represents a time zone, at no
- * particular point in time.  It is refcounted and immutable.
+ * A `GTimeZone` represents a time zone, at no particular point in time.
+ *
+ * The `GTimeZone` struct is refcounted and immutable.
  *
  * Each time zone has an identifier (for example, ‘Europe/London’) which is
- * platform dependent. See g_time_zone_new() for information on the identifier
- * formats. The identifier of a time zone can be retrieved using
- * g_time_zone_get_identifier().
+ * platform dependent. See [method@GLib.TimeZone.new] for information on the
+ * identifier formats. The identifier of a time zone can be retrieved using
+ * [method@GLib.TimeZone.get_identifier].
  *
- * A time zone contains a number of intervals.  Each interval has
- * an abbreviation to describe it (for example, ‘PDT’), an offset to UTC and a
- * flag indicating if the daylight savings time is in effect during that
- * interval.  A time zone always has at least one interval — interval 0. Note
- * that interval abbreviations are not the same as time zone identifiers
- * (apart from ‘UTC’), and cannot be passed to g_time_zone_new().
+ * A time zone contains a number of intervals. Each interval has an abbreviation
+ * to describe it (for example, ‘PDT’), an offset to UTC and a flag indicating
+ * if the daylight savings time is in effect during that interval. A time zone
+ * always has at least one interval — interval 0. Note that interval abbreviations
+ * are not the same as time zone identifiers (apart from ‘UTC’), and cannot be
+ * passed to [method@GLib.TimeZone.new].
  *
  * Every UTC time is contained within exactly one interval, but a given
  * local time may be contained within zero, one or two intervals (due to
@@ -84,17 +82,8 @@
  * that some properties (like the abbreviation) change between intervals
  * without other properties changing.
  *
- * #GTimeZone is available since GLib 2.26.
- */
-
-/**
- * GTimeZone:
- *
- * #GTimeZone is an opaque structure whose members cannot be accessed
- * directly.
- *
  * Since: 2.26
- **/
+ */
 
 /* IANA zoneinfo file format {{{1 */
 

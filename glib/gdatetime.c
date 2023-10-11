@@ -89,39 +89,6 @@
 #endif
 #endif /* !G_OS_WIN32 */
 
-/**
- * SECTION:date-time
- * @title: GDateTime
- * @short_description: a structure representing Date and Time
- * @see_also: #GTimeZone
- *
- * #GDateTime is a structure that combines a Gregorian date and time
- * into a single structure.  It provides many conversion and methods to
- * manipulate dates and times.  Time precision is provided down to
- * microseconds and the time can range (proleptically) from 0001-01-01
- * 00:00:00 to 9999-12-31 23:59:59.999999.  #GDateTime follows POSIX
- * time in the sense that it is oblivious to leap seconds.
- *
- * #GDateTime is an immutable object; once it has been created it cannot
- * be modified further.  All modifiers will create a new #GDateTime.
- * Nearly all such functions can fail due to the date or time going out
- * of range, in which case %NULL will be returned.
- *
- * #GDateTime is reference counted: the reference count is increased by calling
- * g_date_time_ref() and decreased by calling g_date_time_unref(). When the
- * reference count drops to 0, the resources allocated by the #GDateTime
- * structure are released.
- *
- * Many parts of the API may produce non-obvious results.  As an
- * example, adding two months to January 31st will yield March 31st
- * whereas adding one month and then one month again will yield either
- * March 28th or March 29th.  Also note that adding 24 hours is not
- * always the same as adding one day (since days containing daylight
- * savings time transitions are either 23 or 25 hours in length).
- *
- * #GDateTime is available since GLib 2.26.
- */
-
 struct _GDateTime
 {
   /* Microsecond timekeeping within Day */

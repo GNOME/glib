@@ -18,6 +18,7 @@ RUN dnf -y update \
     gi-docgen \
     git \
     glibc-devel \
+    glibc-gconv-extra \
     glibc-headers \
     glibc-langpack-de \
     glibc-langpack-el \

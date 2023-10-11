@@ -413,14 +413,6 @@ typedef enum
   G_REGEX_MATCH_NOTEMPTY_ATSTART = 1 << 28
 } GRegexMatchFlags;
 
-/**
- * GRegex:
- *
- * A GRegex is the "compiled" form of a regular expression pattern.
- * This structure is opaque and its fields cannot be accessed directly.
- *
- * Since: 2.14
- */
 typedef struct _GRegex		GRegex;
 
 

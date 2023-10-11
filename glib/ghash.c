@@ -64,65 +64,6 @@
 #endif
 
 /**
- * SECTION:hash_tables
- * @title: Hash Tables
- * @short_description: associations between keys and values so that
- *     given a key the value can be found quickly
- *
- * A #GHashTable provides associations between keys and values which is
- * optimized so that given a key, the associated value can be found,
- * inserted or removed in amortized O(1). All operations going through
- * each element take O(n) time (list all keys/values, table resize, etc.).
- *
- * Note that neither keys nor values are copied when inserted into the
- * #GHashTable, so they must exist for the lifetime of the #GHashTable.
- * This means that the use of static strings is OK, but temporary
- * strings (i.e. those created in buffers and those returned by GTK
- * widgets) should be copied with g_strdup() before being inserted.
- *
- * If keys or values are dynamically allocated, you must be careful to
- * ensure that they are freed when they are removed from the
- * #GHashTable, and also when they are overwritten by new insertions
- * into the #GHashTable. It is also not advisable to mix static strings
- * and dynamically-allocated strings in a #GHashTable, because it then
- * becomes difficult to determine whether the string should be freed.
- *
- * To create a #GHashTable, use g_hash_table_new().
- *
- * To insert a key and value into a #GHashTable, use
- * g_hash_table_insert().
- *
- * To look up a value corresponding to a given key, use
- * g_hash_table_lookup() and g_hash_table_lookup_extended().
- *
- * g_hash_table_lookup_extended() can also be used to simply
- * check if a key is present in the hash table.
- *
- * To remove a key and value, use g_hash_table_remove().
- *
- * To call a function for each key and value pair use
- * g_hash_table_foreach() or use an iterator to iterate over the
- * key/value pairs in the hash table, see #GHashTableIter. The iteration order
- * of a hash table is not defined, and you must not rely on iterating over
- * keys/values in the same order as they were inserted.
- *
- * To destroy a #GHashTable use g_hash_table_destroy().
- *
- * A common use-case for hash tables is to store information about a
- * set of keys, without associating any particular value with each
- * key. GHashTable optimizes one way of doing so: If you store only
- * key-value pairs where key == value, then GHashTable does not
- * allocate memory to store the values, which can be a considerable
- * space saving, if your set is large. The functions
- * g_hash_table_add() and g_hash_table_contains() are designed to be
- * used when using #GHashTable this way.
- *
- * #GHashTable is not designed to be statically initialised with keys and
- * values known at compile time. To build a static hash table, use a tool such
- * as [gperf](https://www.gnu.org/software/gperf/).
- */
-
-/**
  * GHashTable:
  *
  * The #GHashTable struct is an opaque data structure to represent a
