@@ -1,4 +1,4 @@
-FROM fedora:34
+FROM fedora:37
 
 RUN dnf -y update \
  && dnf -y install \
@@ -15,6 +15,7 @@ RUN dnf -y update \
     gcc-c++ \
     gdb \
     gettext \
+    gi-docgen \
     git \
     glibc-devel \
     glibc-headers \

@@ -161,11 +161,7 @@ if get_option('gtk_doc')
   )
 
   content_files = [
-    'overview.xml',
     'migrating-posix.xml',
-    'migrating-gnome-vfs.xml',
-    'migrating-gconf.xml',
-    'migrating-gdbus.xml',
     'gio-querymodules.xml',
     'glib-compile-schemas.xml',
     'glib-compile-resources.xml',
@@ -198,11 +194,7 @@ if get_option('gtk_doc')
     ],
     content_files : content_files,
     expand_content_files : [
-      'overview.xml',
       'migrating-posix.xml',
-      'migrating-gnome-vfs.xml',
-      'migrating-gconf.xml',
-      'migrating-gdbus.xml',
       'gdbus-codegen.xml',
     ],
     html_assets : [
@@ -216,7 +208,7 @@ if get_option('gtk_doc')
       '--extra-dir=' + join_paths('gio', '..', 'gobject', 'html'),
     ],
     install: true,
-    check: true,
+    check: false,
   )
 endif
 
@@ -234,3 +226,32 @@ if get_option('man')
       install_dir: man1_dir)
   endforeach
 endif
+
+# gi-docgen version
+expand_content_files = [
+  'migrating-gconf.md',
+  'migrating-gdbus.md',
+  'migrating-gnome-vfs.md',
+  'overview.md',
+]
+
+gio_gir = meson.current_source_dir() / 'Gio-2.0.gir'
+gio_toml = configure_file(input: 'gio.toml.in', output: 'gio.toml', configuration: toml_conf)
+
+custom_target('gio-docs',
+  input: [ gio_toml, gio_gir ],
+  output: 'gio',
+  command: [
+    gidocgen,
+    'generate',
+    gidocgen_common_args,
+    '--config=@INPUT0@',
+    '--output-dir=@OUTPUT@',
+    '--content-dir=@0@'.format(meson.current_source_dir()),
+    '--add-include-path=@0@'.format(meson.current_source_dir() / '../glib'),
+    '--add-include-path=@0@'.format(meson.current_source_dir() / '../gobject'),
+    '@INPUT1@',
+  ],
+  build_by_default: true,
+  depend_files: expand_content_files,
+)

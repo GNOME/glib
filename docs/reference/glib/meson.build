@@ -71,22 +71,15 @@ if get_option('gtk_doc')
                  '--ignore-headers=' + ' '.join(ignore_headers),
                ],
                content_files : [
-                 'cross.xml',
-                 'running.xml',
-                 'building.xml',
                  'changes.xml',
-                 'compiling.xml',
                  'programming.xml',
                  'resources.xml',
                  'regex-syntax.xml',
                  'glib-gettextize.xml',
                  'gtester.xml',
                  'gtester-report.xml',
-                 'gvariant-varargs.xml',
-                 'gvariant-text.xml',
                ],
                expand_content_files : [
-                 'compiling.xml',
                ],
                html_assets : [
                  'file-name-encodings.png',
@@ -100,7 +93,7 @@ if get_option('gtk_doc')
                  '--html-dir=' + docpath,
                ],
                install: true,
-               check: true)
+               check: false)
 endif
 
 if get_option('man')
@@ -149,3 +142,43 @@ if get_option('gtk_doc')
     )
   endif
 endif
+
+# gi-docgen version
+expand_content_files = [
+  'building.md',
+  'character-set.md',
+  'compiling.md',
+  'cross-compiling.md',
+  'error-reporting.md',
+  'gvariant-format-strings.md',
+  'gvariant-text-format.md',
+  'i18n.md',
+  'logging.md',
+  'main-loop.md',
+  'memory-slices.md',
+  'reference-counting.md',
+  'running.md',
+  'testing.md',
+  'threads.md',
+  'markup.md',
+  'goption.md',
+]
+
+glib_gir = meson.current_source_dir() / 'GLib-2.0.gir'
+glib_toml = configure_file(input: 'glib.toml.in', output: 'glib.toml', configuration: toml_conf)
+
+custom_target('glib-docs',
+  input: [ glib_toml, glib_gir ],
+  output: 'glib',
+  command: [
+    gidocgen,
+    'generate',
+    gidocgen_common_args,
+    '--config=@INPUT0@',
+    '--output-dir=@OUTPUT@',
+    '--content-dir=@0@'.format(meson.current_source_dir()),
+    '@INPUT1@',
+  ],
+  build_by_default: true,
+  depend_files: expand_content_files,
+)

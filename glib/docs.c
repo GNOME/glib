@@ -1064,48 +1064,6 @@
 /* Type conversion {{{1 */
 
 /**
- * SECTION:type_conversion
- * @title: Type Conversion Macros
- * @short_description: portably storing integers in pointer variables
- *
- * Many times GLib, GTK, and other libraries allow you to pass "user
- * data" to a callback, in the form of a void pointer. From time to time
- * you want to pass an integer instead of a pointer. You could allocate
- * an integer, with something like:
- * |[<!-- language="C" -->
- *   int *ip = g_new (int, 1);
- *   *ip = 42;
- * ]|
- * But this is inconvenient, and it's annoying to have to free the
- * memory at some later time.
- *
- * Pointers are always at least 32 bits in size (on all platforms GLib
- * intends to support). Thus you can store at least 32-bit integer values
- * in a pointer value. Naively, you might try this, but it's incorrect:
- * |[<!-- language="C" -->
- *   gpointer p;
- *   int i;
- *   p = (void*) 42;
- *   i = (int) p;
- * ]|
- * Again, that example was not correct, don't copy it.
- * The problem is that on some systems you need to do this:
- * |[<!-- language="C" -->
- *   gpointer p;
- *   int i;
- *   p = (void*) (long) 42;
- *   i = (int) (long) p;
- * ]|
- * The GLib macros GPOINTER_TO_INT(), GINT_TO_POINTER(), etc. take care
- * to do the right thing on every platform.
- *
- * Warning: You may not store pointers in integers. This is not
- * portable in any way, shape or form. These macros only allow storing
- * integers in pointers, and only preserve 32 bits of the integer; values
- * outside the range of a 32-bit integer will be mangled.
- */
-
-/**
  * GINT_TO_POINTER:
  * @i: integer to stuff into a pointer
  *
@@ -1161,41 +1119,6 @@
  */
  
 /* Byte order {{{1 */
-
-/**
- * SECTION:byte_order
- * @title: Byte Order Macros
- * @short_description: a portable way to convert between different byte orders
- *
- * These macros provide a portable way to determine the host byte order
- * and to convert values between different byte orders.
- *
- * The byte order is the order in which bytes are stored to create larger
- * data types such as the #gint and #glong values.
- * The host byte order is the byte order used on the current machine.
- *
- * Some processors store the most significant bytes (i.e. the bytes that
- * hold the largest part of the value) first. These are known as big-endian
- * processors. Other processors (notably the x86 family) store the most
- * significant byte last. These are known as little-endian processors.
- *
- * Finally, to complicate matters, some other processors store the bytes in
- * a rather curious order known as PDP-endian. For a 4-byte word, the 3rd
- * most significant byte is stored first, then the 4th, then the 1st and
- * finally the 2nd.
- *
- * Obviously there is a problem when these different processors communicate
- * with each other, for example over networks or by using binary file formats.
- * This is where these macros come in. They are typically used to convert
- * values into a byte order which has been agreed on for use when
- * communicating between different processors. The Internet uses what is
- * known as 'network byte order' as the standard byte order (which is in
- * fact the big-endian byte order).
- *
- * Note that the byte order conversion macros may evaluate their arguments
- * multiple times, thus you should not use them with arguments which have
- * side-effects.
- */
 
 /**
  * G_BYTE_ORDER:
@@ -1986,16 +1909,8 @@
  *
  * Multiplying the base 2 exponent by this number yields the base 10 exponent.
  */
- 
-/* Macros {{{1 */
 
-/**
- * SECTION:macros
- * @title: Standard Macros
- * @short_description: commonly-used macros
- *
- * These macros provide a few commonly-used features.
- */
+/* Macros {{{1 */
 
 /**
  * G_OS_WIN32:
@@ -2200,15 +2115,6 @@
  */
 
 /* Miscellaneous Macros {{{1 */
-
-/**
- * SECTION:macros_misc
- * @title: Miscellaneous Macros
- * @short_description: specialized macros which are not used often
- *
- * These macros provide more specialized features which are not
- * needed so often by application programmers.
- */
 
 /**
  * G_STMT_START:

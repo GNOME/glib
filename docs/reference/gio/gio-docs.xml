@@ -15,8 +15,6 @@
     </releaseinfo>
   </bookinfo>
 
-  <xi:include href="xml/overview.xml"/>
-
   <part>
   <title>API Reference</title>
     <chapter id="file_ops">
@@ -270,9 +268,6 @@
   <part id="migrating">
     <title>Migrating to GIO</title>
     <xi:include href="xml/migrating-posix.xml"/>
-    <xi:include href="xml/migrating-gnome-vfs.xml"/>
-    <xi:include href="xml/migrating-gconf.xml"/>
-    <xi:include href="xml/migrating-gdbus.xml"/>
   </part>
 
   <chapter id="gio-hierarchy">

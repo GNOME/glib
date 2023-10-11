@@ -11,10 +11,10 @@ cache:
     - _ccache/
 
 variables:
-  FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v20"
+  FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v21"
   COVERITY_IMAGE: "registry.gitlab.gnome.org/gnome/glib/coverity:v7"
-  DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v14"
-  MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v10"
+  DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v15"
+  MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v11"
   MESON_TEST_TIMEOUT_MULTIPLIER: 4
   G_MESSAGES_DEBUG: all
   MESON_COMMON_OPTIONS: "--buildtype debug --wrap-mode=nodownload --fatal-meson-warnings"
@@ -61,6 +61,7 @@ variables:
   extends: .only-default
   before_script:
    - rm -rf subprojects/gvdb
+   - git config --global --add safe.directory $(pwd)
    - git submodule update --init --depth 1
   variables:
     GIT_SUBMODULE_STRATEGY: "none"
