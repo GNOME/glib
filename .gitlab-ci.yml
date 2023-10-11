@@ -61,7 +61,7 @@ variables:
   extends: .only-default
   before_script:
    - rm -rf subprojects/gvdb
-   - git config --global --add safe.directory $(pwd)
+   - git config --global --add safe.directory "${PWD}"
    - git submodule update --init --depth 1
   variables:
     GIT_SUBMODULE_STRATEGY: "none"
@@ -82,6 +82,7 @@ sh-and-py-check:
   stage: style-check
   allow_failure: false
   script:
+    - git config --global --add safe.directory "${PWD}"
     - .gitlab-ci/run-shellcheck.sh
     - .gitlab-ci/run-black.sh
     - .gitlab-ci/run-flake8.sh
