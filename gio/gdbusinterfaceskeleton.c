@@ -568,6 +568,8 @@ dispatch_in_thread_func (GTask        *task,
 
   if (object != NULL)
     g_object_unref (object);
+
+  g_task_return_boolean (task, TRUE);
 }
 
 static void
