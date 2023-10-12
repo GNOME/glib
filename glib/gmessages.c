@@ -426,27 +426,6 @@ static gboolean win32_keep_fatal_message = FALSE;
  * called with huge strings, is it?
  */
 static gchar  fatal_msg_buf[1000] = "Unspecified fatal error encountered, aborting.";
-static gchar *fatal_msg_ptr = fatal_msg_buf;
-
-#undef write
-static inline int
-dowrite (int          fd,
-	 const void  *buf,
-	 unsigned int len)
-{
-  if (win32_keep_fatal_message)
-    {
-      memcpy (fatal_msg_ptr, buf, len);
-      fatal_msg_ptr += len;
-      *fatal_msg_ptr = 0;
-      return len;
-    }
-
-  write (fd, buf, len);
-
-  return len;
-}
-#define write(fd, buf, len) dowrite(fd, buf, len)
 
 #endif
 
