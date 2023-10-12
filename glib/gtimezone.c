@@ -92,6 +92,8 @@ typedef struct { gchar bytes[8]; } gint64_be;
 typedef struct { gchar bytes[4]; } gint32_be;
 typedef struct { gchar bytes[4]; } guint32_be;
 
+#ifdef G_OS_UNIX
+
 static inline gint64 gint64_from_be (const gint64_be be) {
   gint64 tmp; memcpy (&tmp, &be, sizeof tmp); return GINT64_FROM_BE (tmp);
 }
@@ -103,6 +105,8 @@ static inline gint32 gint32_from_be (const gint32_be be) {
 static inline guint32 guint32_from_be (const guint32_be be) {
   guint32 tmp; memcpy (&tmp, &be, sizeof tmp); return GUINT32_FROM_BE (tmp);
 }
+
+#endif
 
 /* The layout of an IANA timezone file header */
 struct tzhead
