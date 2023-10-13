@@ -253,7 +253,7 @@ glib_sub_headers = files(
 
 install_headers(glib_sub_headers, install_dir : glib_sub_includedir)
 
-deprecated_sources = files(
+glib_deprecated_sources = files(
   'deprecated/gallocator.c',
   'deprecated/gcache.c',
   'deprecated/gcompletion.c',
@@ -407,7 +407,7 @@ endif
 glib_c_args = ['-DG_LOG_DOMAIN="GLib"'] + glib_c_args_internal + pcre2_static_args
 libglib = library('glib-2.0',
   glib_dtrace_obj, glib_dtrace_hdr,
-  sources : [deprecated_sources, glib_sources],
+  sources : [glib_deprecated_sources, glib_sources],
   version : library_version,
   soversion : soversion,
   darwin_versions : darwin_versions,
