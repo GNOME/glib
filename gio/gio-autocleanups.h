@@ -23,6 +23,8 @@
 #error "Only <gio/gio.h> can be included directly."
 #endif
 
+#ifndef __GI_SCANNER__
+
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GAction, g_object_unref)
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GActionMap, g_object_unref)
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GAppInfo, g_object_unref)
@@ -153,3 +155,5 @@ G_DEFINE_AUTOPTR_CLEANUP_FUNC(GVolume, g_object_unref)
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GVolumeMonitor, g_object_unref)
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GZlibCompressor, g_object_unref)
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GZlibDecompressor, g_object_unref)
+
+#endif /* __GI_SCANNER__ */
