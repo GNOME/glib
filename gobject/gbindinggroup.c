@@ -338,7 +338,7 @@ g_binding_group_class_init (GBindingGroupClass *klass)
   object_class->set_property = g_binding_group_set_property;
 
   /**
-   * GBindingGroup:source: (nullable)
+   * GBindingGroup:source:
    *
    * The source object used for binding properties.
    *
