@@ -51,15 +51,18 @@ G_DEFINE_QUARK (g-io-error-quark, g_io_error)
  * g_io_error_from_errno:
  * @err_no: Error number as defined in errno.h.
  *
- * Converts errno.h error codes into GIO error codes. The fallback
- * value %G_IO_ERROR_FAILED is returned for error codes not currently
- * handled (but note that future GLib releases may return a more
+ * Converts `errno.h` error codes into GIO error codes.
+ *
+ * The fallback value %G_IO_ERROR_FAILED is returned for error codes not
+ * currently handled (but note that future GLib releases may return a more
  * specific value instead).
  *
- * As %errno is global and may be modified by intermediate function
- * calls, you should save its value as soon as the call which sets it
- * returns:
- * |[
+ * As `errno` is global and may be modified by intermediate function
+ * calls, you should save its value immediately after the call returns,
+ * and use the saved value instead of `errno`:
+ * 
+ *
+ * |[<!-- language="C" -->
  *   int saved_errno;
  *
  *   ret = read (blah);
@@ -68,8 +71,8 @@ G_DEFINE_QUARK (g-io-error-quark, g_io_error)
  *   g_io_error_from_errno (saved_errno);
  * ]|
  *
- * Returns: #GIOErrorEnum value for the given errno.h error number.
- **/
+ * Returns: #GIOErrorEnum value for the given `errno.h` error number
+ */
 GIOErrorEnum
 g_io_error_from_errno (gint err_no)
 {
