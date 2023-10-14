@@ -2,11 +2,10 @@ expand_content_files = [
   'modules.md',
 ]
 
-gmodule_gir = meson.current_source_dir() / 'GModule-2.0.gir'
 gmodule_toml = configure_file(input: 'gmodule.toml.in', output: 'gmodule.toml', configuration: toml_conf)
 
 custom_target('gmodule-docs',
-  input: [ gmodule_toml, gmodule_gir ],
+  input: [ gmodule_toml, gmodule_gir[0] ],
   output: 'gmodule',
   command: [
     gidocgen,

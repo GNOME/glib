@@ -235,11 +235,10 @@ expand_content_files = [
   'overview.md',
 ]
 
-gio_gir = meson.current_source_dir() / 'Gio-2.0.gir'
 gio_toml = configure_file(input: 'gio.toml.in', output: 'gio.toml', configuration: toml_conf)
 
 custom_target('gio-docs',
-  input: [ gio_toml, gio_gir ],
+  input: [ gio_toml, gio_gir[0] ],
   output: 'gio',
   command: [
     gidocgen,

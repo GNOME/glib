@@ -76,11 +76,10 @@ expand_content_files = [
   'signals.md',
 ]
 
-gobject_gir = meson.current_source_dir() / 'GObject-2.0.gir'
 gobject_toml = configure_file(input: 'gobject.toml.in', output: 'gobject.toml', configuration: toml_conf)
 
 custom_target('gobject-docs',
-  input: [ gobject_toml, gobject_gir ],
+  input: [ gobject_toml, gobject_gir[0] ],
   output: 'gobject',
   command: [
     gidocgen,
