@@ -60,7 +60,7 @@
  * The `GTimeZone` struct is refcounted and immutable.
  *
  * Each time zone has an identifier (for example, ‘Europe/London’) which is
- * platform dependent. See [method@GLib.TimeZone.new] for information on the
+ * platform dependent. See [ctor@GLib.TimeZone.new] for information on the
  * identifier formats. The identifier of a time zone can be retrieved using
  * [method@GLib.TimeZone.get_identifier].
  *
@@ -69,7 +69,7 @@
  * if the daylight savings time is in effect during that interval. A time zone
  * always has at least one interval — interval 0. Note that interval abbreviations
  * are not the same as time zone identifiers (apart from ‘UTC’), and cannot be
- * passed to [method@GLib.TimeZone.new].
+ * passed to [ctor@GLib.TimeZone.new].
  *
  * Every UTC time is contained within exactly one interval, but a given
  * local time may be contained within zero, one or two intervals (due to

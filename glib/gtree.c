@@ -120,7 +120,7 @@ g_tree_node_new (gpointer key,
 }
 
 /**
- * g_tree_new:
+ * g_tree_new: (constructor)
  * @key_compare_func: the function used to order the nodes in the #GTree.
  *   It should return values similar to the standard strcmp() function -
  *   0 if the two arguments are equal, a negative value if the first argument 

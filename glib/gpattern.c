@@ -35,7 +35,7 @@
  *
  * A `GPatternSpec` struct is the 'compiled' form of a glob-style pattern.
  *
- * The [func@g_pattern_match_simple] and [method@GLib.PatternSpec.match] functions
+ * The [func@GLib.pattern_match_simple] and [method@GLib.PatternSpec.match] functions
  * match a string against a pattern containing '*' and '?' wildcards with similar
  * semantics as the standard `glob()` function: '*' matches an arbitrary,
  * possibly empty, string, '?' matches an arbitrary character.
@@ -46,8 +46,8 @@
  *
  * When multiple strings must be matched against the same pattern, it is better
  * to compile the pattern to a [struct@GLib.PatternSpec] using
- * [method@GLib.PatternSpec.new] and use [method@GLib.PatternSpec.match_string]
- * instead of [func@g_pattern_match_simple]. This avoids the overhead of repeated
+ * [ctor@GLib.PatternSpec.new] and use [method@GLib.PatternSpec.match_string]
+ * instead of [func@GLib.pattern_match_simple]. This avoids the overhead of repeated
  * pattern compilation.
  */
 
