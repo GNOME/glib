@@ -1304,7 +1304,7 @@ g_app_info_can_delete (GAppInfo *appinfo)
 
 
 /**
- * g_app_info_delete:
+ * g_app_info_delete: (virtual do_delete)
  * @appinfo: a #GAppInfo
  *
  * Tries to delete a #GAppInfo.
@@ -1313,7 +1313,6 @@ g_app_info_can_delete (GAppInfo *appinfo)
  * #GAppInfos which can be deleted, and system-wide ones which cannot.
  * See g_app_info_can_delete().
  *
- * Virtual: do_delete
  * Returns: %TRUE if @appinfo has been deleted
  *
  * Since: 2.20
