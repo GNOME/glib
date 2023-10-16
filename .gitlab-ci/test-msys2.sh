@@ -32,14 +32,8 @@ PATH="$(cygpath "$USERPROFILE")/.local/bin:$HOME/.local/bin:$PATH"
 DIR="$(pwd)"
 export PATH CFLAGS
 
-if [[ "$MSYSTEM" == "CLANG64" ]]; then
-    # FIXME: fix the clang build warnings
-    # shellcheck disable=SC2086
-    meson setup ${MESON_COMMON_OPTIONS} _build
-else
-    # shellcheck disable=SC2086
-    meson setup ${MESON_COMMON_OPTIONS} --werror _build
-fi
+# shellcheck disable=SC2086
+meson setup ${MESON_COMMON_OPTIONS} --werror _build
 
 meson compile -C _build
 

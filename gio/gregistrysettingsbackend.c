@@ -443,7 +443,7 @@ typedef struct
 
   gint32 ref_count : 9;
 
-  gint32 readable : 1;
+  guint32 readable : 1;
   RegistryValue value;
 } RegistryCacheItem;
 

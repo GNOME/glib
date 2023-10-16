@@ -44,7 +44,7 @@ test_subst_pid_and_event (void)
   char *debugger_big_utf8;
   gchar *output;
   guintptr be = (guintptr) 0xFFFFFFFF;
-  DWORD bp = G_MAXSIZE;
+  DWORD bp = MAXDWORD;
 
   /* %f is not valid */
   g_assert_false (_g_win32_subst_pid_and_event_w (debugger_3, G_N_ELEMENTS (debugger_3),

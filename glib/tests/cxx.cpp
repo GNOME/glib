@@ -536,7 +536,7 @@ int
 main (int argc, char *argv[])
 {
 #if G_CXX_STD_CHECK_VERSION (11)
-  g_test_init (&argc, &argv, NULL);
+  g_test_init (&argc, &argv, nullptr);
 #else
   g_test_init (&argc, &argv, static_cast<void *>(NULL));
 #endif
