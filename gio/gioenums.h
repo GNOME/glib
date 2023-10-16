@@ -314,6 +314,8 @@ typedef enum {
  * @G_FILE_COPY_ALL_METADATA: Copy all file metadata instead of just default set used for copy (see #GFileInfo).
  * @G_FILE_COPY_NO_FALLBACK_FOR_MOVE: Don't use copy and delete fallback if native move not supported.
  * @G_FILE_COPY_TARGET_DEFAULT_PERMS: Leaves target file with default perms, instead of setting the source file perms.
+ * @G_FILE_COPY_TARGET_DEFAULT_MODIFIED_TIME: Use default modification
+ *     timestamps instead of copying them from the source file. Since 2.80
  *
  * Flags used when copying or moving files.
  */
@@ -324,7 +326,8 @@ typedef enum {
   G_FILE_COPY_NOFOLLOW_SYMLINKS    = (1 << 2),
   G_FILE_COPY_ALL_METADATA         = (1 << 3),
   G_FILE_COPY_NO_FALLBACK_FOR_MOVE = (1 << 4),
-  G_FILE_COPY_TARGET_DEFAULT_PERMS = (1 << 5)
+  G_FILE_COPY_TARGET_DEFAULT_PERMS = (1 << 5),
+  G_FILE_COPY_TARGET_DEFAULT_MODIFIED_TIME GIO_AVAILABLE_ENUMERATOR_IN_2_80 = (1 << 6),
 } GFileCopyFlags;
 
 

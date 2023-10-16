@@ -2743,10 +2743,12 @@ open_source_for_copy (GFile           *source,
 static gboolean
 should_copy (GFileAttributeInfo *info,
              gboolean            copy_all_attributes,
-             gboolean            skip_perms)
+             gboolean            skip_perms,
+             gboolean            skip_modified_time)
 {
-  if (skip_perms && strcmp(info->name, "unix::mode") == 0)
-        return FALSE;
+  if ((skip_perms && strcmp(info->name, "unix::mode") == 0) ||
+      (skip_modified_time && strncmp(info->name, "time::modified", 14) == 0))
+    return FALSE;
 
   if (copy_all_attributes)
     return info->flags & G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED;
@@ -2789,6 +2791,7 @@ g_file_build_attribute_list_for_copy (GFile                  *file,
   int i;
   gboolean copy_all_attributes;
   gboolean skip_perms;
+  gboolean skip_modified_time;
 
   g_return_val_if_fail (G_IS_FILE (file), NULL);
   g_return_val_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable), NULL);
@@ -2796,6 +2799,7 @@ g_file_build_attribute_list_for_copy (GFile                  *file,
 
   copy_all_attributes = flags & G_FILE_COPY_ALL_METADATA;
   skip_perms = (flags & G_FILE_COPY_TARGET_DEFAULT_PERMS) != 0;
+  skip_modified_time = (flags & G_FILE_COPY_TARGET_DEFAULT_MODIFIED_TIME) != 0;
 
   /* Ignore errors here, if the target supports no attributes there is
    * nothing to copy.  We still honor the cancellable though.
@@ -2823,7 +2827,7 @@ g_file_build_attribute_list_for_copy (GFile                  *file,
     {
       for (i = 0; i < attributes->n_infos; i++)
         {
-          if (should_copy (&attributes->infos[i], copy_all_attributes, skip_perms))
+          if (should_copy (&attributes->infos[i], copy_all_attributes, skip_perms, skip_modified_time))
             {
               if (first)
                 first = FALSE;
@@ -2839,7 +2843,7 @@ g_file_build_attribute_list_for_copy (GFile                  *file,
     {
       for (i = 0; i < namespaces->n_infos; i++)
         {
-          if (should_copy (&namespaces->infos[i], copy_all_attributes, FALSE))
+          if (should_copy (&namespaces->infos[i], copy_all_attributes, FALSE, FALSE))
             {
               if (first)
                 first = FALSE;
