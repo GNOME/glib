@@ -6774,8 +6774,6 @@ g_file_real_set_display_name_finish (GFile         *file,
 typedef struct {
   GFileQueryInfoFlags flags;
   GFileInfo *info;
-  gboolean res;
-  GError *error;
 } SetInfoAsyncData;
 
 static void
@@ -6783,8 +6781,6 @@ set_info_data_free (SetInfoAsyncData *data)
 {
   if (data->info)
     g_object_unref (data->info);
-  if (data->error)
-    g_error_free (data->error);
   g_free (data);
 }
 
@@ -6795,13 +6791,16 @@ set_info_async_thread (GTask        *task,
                        GCancellable *cancellable)
 {
   SetInfoAsyncData *data = task_data;
+  GError *error = NULL;
 
-  data->error = NULL;
-  data->res = g_file_set_attributes_from_info (G_FILE (object),
-                                               data->info,
-                                               data->flags,
-                                               cancellable,
-                                               &data->error);
+  if (g_file_set_attributes_from_info (G_FILE (object),
+                                       data->info,
+                                       data->flags,
+                                       cancellable,
+                                       &error))
+    g_task_return_boolean (task, TRUE);
+  else
+    g_task_return_error (task, error);
 }
 
 static void
@@ -6844,10 +6843,7 @@ g_file_real_set_attributes_finish (GFile         *file,
   if (info)
     *info = g_object_ref (data->info);
 
-  if (error != NULL && data->error)
-    *error = g_error_copy (data->error);
-
-  return data->res;
+  return g_task_propagate_boolean (G_TASK (res), error);
 }
 
 static void
