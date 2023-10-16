@@ -905,8 +905,9 @@ if not meson.is_cross_build()
 
   ld = find_program('ld', required : false)
 
-  if build_machine.system() == 'linux' and objcopy.found() and objcopy_supports_add_symbol and ld.found() and \
-      build_machine.cpu_family() != 'mips' and build_machine.cpu_family() != 'mips64'
+  if build_machine.system() == 'linux' and \
+      objcopy.found() and objcopy_supports_add_symbol and ld.found() and \
+      build_machine.cpu_family() not in ['mips', 'mips64']
     test_gresource_binary = custom_target('test5.gresource',
       input : 'test5.gresource.xml',
       output : 'test5.gresource',
