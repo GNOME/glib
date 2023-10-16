@@ -53,6 +53,10 @@ GLIB_AVAILABLE_IN_2_70
 void g_strv_builder_add_many (GStrvBuilder *builder,
                               ...) G_GNUC_NULL_TERMINATED;
 
+GLIB_AVAILABLE_IN_2_80
+void g_strv_builder_take (GStrvBuilder *builder,
+                          char *value);
+
 GLIB_AVAILABLE_IN_2_68
 GStrv g_strv_builder_end (GStrvBuilder *builder);
 

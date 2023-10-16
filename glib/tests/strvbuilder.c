@@ -93,6 +93,25 @@ test_strvbuilder_add_many (void)
 }
 
 static void
+test_strvbuilder_take (void)
+{
+  GStrvBuilder *builder;
+  GStrv result;
+  const gchar *expected[] = { "one", "two", "three", NULL };
+
+  builder = g_strv_builder_new ();
+  g_strv_builder_take (builder, g_strdup ("one"));
+  g_strv_builder_add (builder, "two");
+  g_strv_builder_take (builder, g_strdup ("three"));
+  result = g_strv_builder_end (builder);
+  g_assert_nonnull (result);
+  g_assert_true (g_strv_equal ((const gchar *const *) result, expected));
+
+  g_strfreev (result);
+  g_strv_builder_unref (builder);
+}
+
+static void
 test_strvbuilder_ref (void)
 {
   GStrvBuilder *builder;
@@ -113,6 +132,7 @@ main (int argc,
   g_test_add_func ("/strvbuilder/add", test_strvbuilder_add);
   g_test_add_func ("/strvbuilder/addv", test_strvbuilder_addv);
   g_test_add_func ("/strvbuilder/add_many", test_strvbuilder_add_many);
+  g_test_add_func ("/strvbuilder/take", test_strvbuilder_take);
   g_test_add_func ("/strvbuilder/ref", test_strvbuilder_ref);
 
   return g_test_run ();

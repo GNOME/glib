@@ -157,6 +157,24 @@ g_strv_builder_add_many (GStrvBuilder *builder,
 }
 
 /**
+ * g_strv_builder_take:
+ * @builder: a #GStrvBuilder
+ * @value: (transfer full): a string.
+ *     Ownership of the string is transferred to the #GStrvBuilder
+ *
+ * Add a string to the end of the array. After @value belongs to the
+ * #GStrvBuilder and may no longer be modified by the caller.
+ *
+ * Since 2.80
+ */
+void
+g_strv_builder_take (GStrvBuilder *builder,
+                     char         *value)
+{
+  g_ptr_array_add (&builder->array, value);
+}
+
+/**
  * g_strv_builder_end:
  * @builder: a #GStrvBuilder
  *

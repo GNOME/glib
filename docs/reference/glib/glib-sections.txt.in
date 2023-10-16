@@ -1604,6 +1604,7 @@ g_strv_builder_unref
 g_strv_builder_add
 g_strv_builder_addv
 g_strv_builder_add_many
+g_strv_builder_take
 g_strv_builder_end
 
 <SUBSECTION>
