@@ -44,6 +44,8 @@ urlmap_file = "urlmap.js"
 content_files = [
   "concepts.md",
   "tutorial.md",
+  "types.md",
+  "signals.md",
   "floating-refs.md",
   "boxed.md",
   "enum-types.md",

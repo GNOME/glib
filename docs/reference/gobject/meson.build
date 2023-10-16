@@ -72,6 +72,8 @@ expand_content_files = [
   'floating-refs.md',
   'gvalue.md',
   'tutorial.md',
+  'types.md',
+  'signals.md',
 ]
 
 gobject_gir = meson.current_source_dir() / 'GObject-2.0.gir'

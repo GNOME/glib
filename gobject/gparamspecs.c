@@ -37,29 +37,6 @@
 #include "gvaluearray.h"
 
 
-/**
- * SECTION:param_value_types
- * @short_description: Standard Parameter and Value Types
- * @see_also: #GParamSpec, #GValue, g_object_class_install_property().
- * @title: Parameters and Values
- *
- * #GValue provides an abstract container structure which can be
- * copied, transformed and compared while holding a value of any
- * (derived) type, which is registered as a #GType with a
- * #GTypeValueTable in its #GTypeInfo structure.  Parameter
- * specifications for most value types can be created as #GParamSpec
- * derived instances, to implement e.g. #GObject properties which
- * operate on #GValue containers.
- *
- * Parameter names need to start with a letter (a-z or A-Z). Subsequent
- * characters can be letters, numbers or a '-'.
- * All other characters are replaced by a '-' during construction.
- *
- * See also #GValue for more information.
- *
- */
-
-
 #define	G_FLOAT_EPSILON		(1e-30)
 #define	G_DOUBLE_EPSILON	(1e-90)
 

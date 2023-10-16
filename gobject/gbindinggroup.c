@@ -27,18 +27,15 @@
 #include "gparamspecs.h"
 
 /**
- * SECTION:gbindinggroup
- * @Title: GBindingGroup
- * @Short_description: Binding multiple properties as a group
- * @include: glib-object.h
+ * GBindingGroup:
  *
- * The #GBindingGroup can be used to bind multiple properties
+ * `GBindingGroup` can be used to bind multiple properties
  * from an object collectively.
  *
  * Use the various methods to bind properties from a single source
  * object to multiple destination objects. Properties can be bound
  * bidirectionally and are connected when the source object is set
- * with g_binding_group_set_source().
+ * with [method@GObject.BindingGroup.set_source].
  *
  * Since: 2.72
  */

@@ -38,22 +38,30 @@
 #include "gconstructor.h"
 
 /**
- * SECTION:objects
- * @title: GObject
- * @short_description: The base object type
- * @see_also: #GParamSpecObject, g_param_spec_object()
+ * GObject:
  *
- * GObject is the fundamental type providing the common attributes and
+ * The base object type.
+ *
+ * `GObject` is the fundamental type providing the common attributes and
  * methods for all object types in GTK, Pango and other libraries
- * based on GObject.  The GObject class provides methods for object
+ * based on GObject. The `GObject` class provides methods for object
  * construction and destruction, property access methods, and signal
- * support.  Signals are described in detail [here][gobject-Signals].
+ * support. Signals are described in detail [here][gobject-Signals].
  *
- * For a tutorial on implementing a new GObject class, see [How to define and
- * implement a new GObject][howto-gobject]. For a list of naming conventions for
- * GObjects and their methods, see the [GType conventions][gtype-conventions].
- * For the high-level concepts behind GObject, read [Instantiatable classed types:
- * Objects][gtype-instantiatable-classed].
+ * For a tutorial on implementing a new `GObject` class, see [How to define and
+ * implement a new GObject](tutorial.html#how-to-define-and-implement-a-new-gobject).
+ * For a list of naming conventions for GObjects and their methods, see the
+ * [GType conventions](concepts.html#conventions). For the high-level concepts
+ * behind GObject, read
+ * [Instantiatable classed types: Objects](concepts.html#instantiatable-classed-types-objects).
+ *
+ * Since GLib 2.72, all `GObject`s are guaranteed to be aligned to at least the
+ * alignment of the largest basic GLib type (typically this is `guint64` or
+ * `gdouble`). If you need larger alignment for an element in a `GObject`, you
+ * should allocate it on the heap (aligned), or arrange for your `GObject` to be
+ * appropriately padded. This guarantee applies to the `GObject` (or derived)
+ * struct, the `GObjectClass` (or derived) struct, and any private data allocated
+ * by `G_ADD_PRIVATE()`.
  */
 
 /* --- macros --- */

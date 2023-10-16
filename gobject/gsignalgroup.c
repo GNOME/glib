@@ -28,13 +28,12 @@
 #include "gvaluetypes.h"
 
 /**
- * SECTION:gsignalgroup
- * @Title: GSignalGroup
- * @Short_description: Manage a collection of signals on a GObject
+ * GSignalGroup:
  *
- * #GSignalGroup manages to simplify the process of connecting
- * many signals to a #GObject as a group. As such there is no API
- * to disconnect a signal from the group.
+ * `GSignalGroup` manages a collection of signals on a `GObject`.
+ *
+ * `GSignalGroup` simplifies the process of connecting  many signals to a `GObject`
+ * as a group. As such there is no API to disconnect a signal from the group.
  *
  * In particular, this allows you to:
  *
@@ -43,12 +42,12 @@
  *  - Block and unblock signals as a group
  *  - Ensuring that blocked state transfers across target instances.
  *
- * One place you might want to use such a structure is with #GtkTextView and
- * #GtkTextBuffer. Often times, you'll need to connect to many signals on
- * #GtkTextBuffer from a #GtkTextView subclass. This allows you to create a
+ * One place you might want to use such a structure is with `GtkTextView` and
+ * `GtkTextBuffer`. Often times, you'll need to connect to many signals on
+ * `GtkTextBuffer` from a `GtkTextView` subclass. This allows you to create a
  * signal group during instance construction, simply bind the
- * #GtkTextView:buffer property to #GSignalGroup:target and connect
- * all the signals you need. When the #GtkTextView:buffer property changes
+ * `GtkTextView:buffer` property to `GSignalGroup:target` and connect
+ * all the signals you need. When the `GtkTextView:buffer` property changes
  * all of the signals will be transitioned correctly.
  *
  * Since: 2.72
