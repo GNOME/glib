@@ -1104,7 +1104,7 @@ g_resolver_records_from_res_query (const gchar      *rrname,
 #elif defined(G_OS_WIN32)
 
 static GVariant *
-parse_dns_srv (DNS_RECORD *rec)
+parse_dns_srv (DNS_RECORDA *rec)
 {
   return g_variant_new ("(qqqs)",
                         (guint16)rec->Data.SRV.wPriority,
@@ -1114,7 +1114,7 @@ parse_dns_srv (DNS_RECORD *rec)
 }
 
 static GVariant *
-parse_dns_soa (DNS_RECORD *rec)
+parse_dns_soa (DNS_RECORDA *rec)
 {
   return g_variant_new ("(ssuuuuu)",
                         rec->Data.SOA.pNamePrimaryServer,
@@ -1127,13 +1127,13 @@ parse_dns_soa (DNS_RECORD *rec)
 }
 
 static GVariant *
-parse_dns_ns (DNS_RECORD *rec)
+parse_dns_ns (DNS_RECORDA *rec)
 {
   return g_variant_new ("(s)", rec->Data.NS.pNameHost);
 }
 
 static GVariant *
-parse_dns_mx (DNS_RECORD *rec)
+parse_dns_mx (DNS_RECORDA *rec)
 {
   return g_variant_new ("(qs)",
                         (guint16)rec->Data.MX.wPreference,
@@ -1141,7 +1141,7 @@ parse_dns_mx (DNS_RECORD *rec)
 }
 
 static GVariant *
-parse_dns_txt (DNS_RECORD *rec)
+parse_dns_txt (DNS_RECORDA *rec)
 {
   GVariant *record;
   GPtrArray *array;
@@ -1179,10 +1179,10 @@ static GList *
 g_resolver_records_from_DnsQuery (const gchar  *rrname,
                                   WORD          dnstype,
                                   DNS_STATUS    status,
-                                  DNS_RECORD   *results,
+                                  DNS_RECORDA  *results,
                                   GError      **error)
 {
-  DNS_RECORD *rec;
+  DNS_RECORDA *rec;
   gpointer record;
   GList *records;
 
@@ -1342,11 +1342,18 @@ do_lookup_records (const gchar          *rrname,
 #else
 
   DNS_STATUS status;
-  DNS_RECORD *results = NULL;
+  DNS_RECORDA *results = NULL;
   WORD dnstype;
 
+  /* Work around differences in Windows SDK and mingw-w64 headers */
+#ifdef _MSC_VER
+  typedef DNS_RECORDW * PDNS_RECORD_UTF8_;
+#else
+  typedef DNS_RECORDA * PDNS_RECORD_UTF8_;
+#endif
+
   dnstype = g_resolver_record_type_to_dnstype (record_type);
-  status = DnsQuery_A (rrname, dnstype, DNS_QUERY_STANDARD, NULL, &results, NULL);
+  status = DnsQuery_UTF8 (rrname, dnstype, DNS_QUERY_STANDARD, NULL, (PDNS_RECORD_UTF8_*)&results, NULL);
   records = g_resolver_records_from_DnsQuery (rrname, dnstype, status, results, error);
   if (results != NULL)
     DnsRecordListFree (results, DnsFreeRecordList);

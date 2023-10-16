@@ -213,6 +213,10 @@ if host_system == 'qnx'
   add_project_arguments('-D_QNX_SOURCE', language: 'c')
 endif
 
+if host_system == 'windows'
+  add_project_arguments(['-DUNICODE', '-D_UNICODE'], language: 'c')
+endif
+
 # Disable strict aliasing;
 # see https://bugzilla.gnome.org/show_bug.cgi?id=791622
 if cc.has_argument('-fno-strict-aliasing')

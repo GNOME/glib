@@ -2026,10 +2026,10 @@ _g_dbus_compute_complete_signature (GDBusArgInfo **args)
 
 #ifdef G_OS_WIN32
 
-#define DBUS_DAEMON_ADDRESS_INFO "DBusDaemonAddressInfo"
-#define DBUS_DAEMON_MUTEX "DBusDaemonMutex"
-#define UNIQUE_DBUS_INIT_MUTEX "UniqueDBusInitMutex"
-#define DBUS_AUTOLAUNCH_MUTEX "DBusAutolaunchMutex"
+#define DBUS_DAEMON_ADDRESS_INFO L"DBusDaemonAddressInfo"
+#define DBUS_DAEMON_MUTEX L"DBusDaemonMutex"
+#define UNIQUE_DBUS_INIT_MUTEX L"UniqueDBusInitMutex"
+#define DBUS_AUTOLAUNCH_MUTEX L"DBusAutolaunchMutex"
 
 static void
 release_mutex (HANDLE mutex)
@@ -2039,12 +2039,12 @@ release_mutex (HANDLE mutex)
 }
 
 static HANDLE
-acquire_mutex (const char *mutexname)
+acquire_mutex (const wchar_t *mutexname)
 {
   HANDLE mutex;
   DWORD res;
 
-  mutex = CreateMutexA (NULL, FALSE, mutexname);
+  mutex = CreateMutex (NULL, FALSE, mutexname);
   if (!mutex)
     return 0;
 
@@ -2063,12 +2063,12 @@ acquire_mutex (const char *mutexname)
 }
 
 static gboolean
-is_mutex_owned (const char *mutexname)
+is_mutex_owned (const wchar_t *mutexname)
 {
   HANDLE mutex;
   gboolean res = FALSE;
 
-  mutex = CreateMutexA (NULL, FALSE, mutexname);
+  mutex = CreateMutex (NULL, FALSE, mutexname);
   if (WaitForSingleObject (mutex, 10) == WAIT_TIMEOUT)
     res = TRUE;
   else
@@ -2079,7 +2079,7 @@ is_mutex_owned (const char *mutexname)
 }
 
 static char *
-read_shm (const char *shm_name)
+read_shm (const wchar_t *shm_name)
 {
   HANDLE shared_mem;
   char *shared_data;
@@ -2090,7 +2090,7 @@ read_shm (const char *shm_name)
 
   for (i = 0; i < 20; i++)
     {
-      shared_mem = OpenFileMappingA (FILE_MAP_READ, FALSE, shm_name);
+      shared_mem = OpenFileMapping (FILE_MAP_READ, FALSE, shm_name);
       if (shared_mem != 0)
 	break;
       Sleep (100);
@@ -2120,13 +2120,13 @@ read_shm (const char *shm_name)
 }
 
 static HANDLE
-set_shm (const char *shm_name, const char *value)
+set_shm (const wchar_t *shm_name, const char *value)
 {
   HANDLE shared_mem;
   char *shared_data;
 
-  shared_mem = CreateFileMappingA (INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE,
-				   0, strlen (value) + 1, shm_name);
+  shared_mem = CreateFileMapping (INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE,
+                                  0, strlen (value) + 1, shm_name);
   if (shared_mem == 0)
     return 0;
 
@@ -2152,7 +2152,7 @@ publish_session_bus (const char *address)
 
   init_mutex = acquire_mutex (UNIQUE_DBUS_INIT_MUTEX);
 
-  published_daemon_mutex = CreateMutexA (NULL, FALSE, DBUS_DAEMON_MUTEX);
+  published_daemon_mutex = CreateMutex (NULL, FALSE, DBUS_DAEMON_MUTEX);
   if (WaitForSingleObject (published_daemon_mutex, 10 ) != WAIT_OBJECT_0)
     {
       release_mutex (init_mutex);
@@ -2395,11 +2395,11 @@ gchar *
 _g_dbus_get_machine_id (GError **error)
 {
 #ifdef G_OS_WIN32
-  HW_PROFILE_INFOA info;
-  char *src, *dest, *res;
+  HW_PROFILE_INFO info;
+  char *guid, *src, *dest, *res;
   int i;
 
-  if (!GetCurrentHwProfileA (&info))
+  if (!GetCurrentHwProfile (&info))
     {
       char *message = g_win32_error_message (GetLastError ());
       g_set_error (error,
@@ -2410,8 +2410,11 @@ _g_dbus_get_machine_id (GError **error)
       return NULL;
     }
 
-  /* Form: {12340001-4980-1920-6788-123456789012} */
-  src = &info.szHwProfileGuid[0];
+  if (!(guid = g_utf16_to_utf8 (info.szHwProfileGuid, -1, NULL, NULL, NULL)))
+    return NULL;
+
+  /* Guid is of the form: {12340001-4980-1920-6788-123456789012} */
+  src = guid;
 
   res = g_malloc (32+1);
   dest = res;
@@ -2432,6 +2435,8 @@ _g_dbus_get_machine_id (GError **error)
   for (i = 0; i < 12; i++)
     *dest++ = *src++;
   *dest = 0;
+
+  g_free (guid);
 
   return res;
 #else

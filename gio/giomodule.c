@@ -1175,10 +1175,10 @@ void *
 _g_io_win32_get_module (void)
 {
   if (!gio_dll)
-    GetModuleHandleExA (GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS |
-                        GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
-                        (const char *) _g_io_win32_get_module,
-                        &gio_dll);
+    GetModuleHandleEx (GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS |
+                       GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+                       (LPCWSTR) _g_io_win32_get_module,
+                       &gio_dll);
   return gio_dll;
 }
 

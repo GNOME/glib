@@ -192,20 +192,20 @@ _g_win32_process_get_access_token_sid (DWORD process_id,
 gchar *
 _g_win32_sid_to_string (SID *sid, GError **error)
 {
-  gchar *tmp, *ret;
+  wchar_t *tmp = NULL;
+  char *ret;
 
   g_return_val_if_fail (sid != NULL, NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
-  if (!ConvertSidToStringSidA (sid, &tmp))
+  if (!ConvertSidToStringSid (sid, &tmp))
     {
       g_set_error_literal (error, G_IO_ERROR, g_io_error_from_errno (GetLastError ()),
                            "Failed to ConvertSidToString");
-
       return NULL;
     }
 
-  ret = g_strdup (tmp);
+  ret = g_utf16_to_utf8 (tmp, -1, NULL, NULL, NULL);
   LocalFree (tmp);
   return ret;
 }
