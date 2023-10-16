@@ -145,25 +145,131 @@ functions like `strftime()`.
 
 ## Debugging with GDB
 
-GLib ships with a set of Python macros for the GDB debugger. These includes
-pretty printers for lists, hashtables and GObject types. It also has a
-backtrace filter that makes backtraces with signal emissions easier to read.
+GLib ships with a set of Python macros for the GDB debugger. These
+macros make it easier to debug applications written using GLib.
 
-To use this you need a version of GDB that supports Python scripting;
-anything from 7.0 should be fine. You then need to install GLib in the same
-prefix as GDB so that the Python GDB autoloaded files get installed in the
-right place for GDB to pick up.
+To use this you need to install GLib in the same prefix as GDB so that
+the Python GDB autoloaded files get installed in the right place for
+GDB to pick up.
 
-General pretty printing should just happen without having to do anything
-special. To get the signal emission filtered backtrace you must use the
-"new-backtrace" command instead of the standard one.
+You can check if gdb has picked up the GLib gdb scripts correctly by
+running the following command in your gdb session.
 
-There is also a new command called gforeach that can be used to apply a
-command on each item in a list. E.g. you can do
+```
+(gdb) info auto-load python-scripts
+Loaded  Script
+Yes     /usr/share/gdb/auto-load/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.7800.0-gdb.py
+Yes     /usr/share/gdb/auto-load/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.7800.0-gdb.py
+```
 
-`gforeach i in some_list_variable: print *(GtkWidget *)l`
+The version numbers and paths might differ based on the OS
+distribution, but if you see the entries listed for libglib and
+libgobject, then the gdb scripts should work.
 
-Which would print the contents of each widget in a list of widgets.
+GLib Python macros provide the following benefits while debugging
+applications written using GLib.
+
+1. Pretty printing GLib types
+2. Iterating lists using `gforeach` command
+3. Backtrace decorations
+
+### 1. Pretty printing GLib types:
+
+General pretty printing GLib types should work without having to do
+anything special.
+
+For example, printing a hash table with string keys will display the hash
+contents in the following format.
+
+```
+(gdb) print my_string_hash_variable
+$1 = 0x5555556d9660 = {
+  [0x7ffff76f6592 "GdkWaylandPopup"] = 0x555555768a50,
+  [0x7ffff76e67e8 "GtkStyleProvider"] = 0x5555557a19c0,
+  [0x7ffff7db7151 "GHttpProxy"] = 0x5555556f5bc0
+}
+```
+
+Printing a hash table with pointer keys will display the hash contents
+in the following format.
+
+```
+(gdb) print my_pointer_hash_variable
+$2 = 0x5555556dcb50 = {
+  [0x555555b59ec0] = 0x555555b59770,
+  [0x555555c79f80] = 0x555555c86b00,
+  [0x555555c68f40] = 0x555555c69630
+}
+```
+
+Printing a list will display the list contents in the following
+format.
+
+```
+(gdb) p my_appname_list
+$3 = 0x55c4582deef0 = {0x7f16ab85dc90, 0x7f16abb02700, 0x7f16a80066e0}
+```
+
+It's not possible for us to decode and print string entries even if
+the list has string entries, as GLib stores list entries as
+`gpointer`s internally. But, that can be achieved using the `gforeach`
+command.
+
+### 2. Iterating lists using "gforeach" command:
+
+The `gforeach` command can be used to apply a command on each item in
+a list (`GList`/`GSList`). We can also type cast the `gpointer`s in the
+list to desired type.
+
+For example, to print all strings in a string list named `my_appname_list`,
+you can do the following.
+
+```
+(gdb) gforeach appname in my_appname_list: print (gchar*) $appname
+$4 = (gchar *) 0x7f16ab85dc90 "Boxes"
+$5 = (gchar *) 0x7f16abb02700 "GNOME Application Platform version 45"
+$6 = (gchar *) 0x7f16a80066e0 "Firefox ESR"
+```
+
+You can also call functions on each entry in the list, as below:
+
+```
+(gdb) gforeach appname in my_appname_list: call (int) strlen($appname)
+$7 = 5
+$8 = 37
+$9 = 11
+```
+
+### 3. Backtrace decorations:
+
+Backtraces are decorated with GLib type names and signal names.
+
+E.g. From the below backtrace, we can say that
+`gs_updates_page_button_refresh_cb ()` callback function was called
+when a button (via the `GtkButton` type decoration) was clicked (via
+the `clicked` signal decoration)
+
+```
+#0  gs_updates_page_button_refresh_cb (widget=0x5602f986b670 [GtkButton], self=0x5602f93aeb80 [GsUpdatesPage]) at ../src/gs-updates-page.c:826
+#1  0x00007f09da7651de in <emit signal 'clicked' on instance 0x5602f986b670 [GtkButton]> (instance=0x5602f986b670, signal_id=158, detail=0) at ../gobject/gsignal.c:3675
+#2  0x00007f09da747bad in g_cclosure_marshal_VOID__VOIDv (closure=0x5602f986c6a0, return_value=0x0, instance=0x5602f986b670, ...)
+    at ../gobject/gmarshal.c:165
+…
+#20 0x00007f09da52c250 in g_application_run (application=0x5602f9068ae0 [GsApplication], argc=1, argv=0x7ffcfb3bb468) at ../gio/gapplication.c:2577
+#21 0x00005602f8b53ccd in main (argc=1, argv=0x7ffcfb3bb468) at ../src/gs-main.c:49
+```
+
+Following is the same backtrace without any GLib decorations, which is
+not very useful.
+
+```
+#0  gs_updates_page_button_refresh_cb (widget=0x5602f986b670, self=0x5602f93aeb80) at ../src/gs-updates-page.c:826
+#1  0x00007f09da747bad in g_cclosure_marshal_VOID__VOIDv (closure=0x5602f986c6a0, return_value=0x0, instance=0x5602f986b670, ...)
+    at ../gobject/gmarshal.c:165
+…
+#20 0x00007f09da52c250 in g_application_run (application=0x5602f9068ae0, argc=1, argv=0x7ffcfb3bb468) at ../gio/gapplication.c:2577
+#21 0x00005602f8b53ccd in main (argc=1, argv=0x7ffcfb3bb468) at ../src/gs-main.c:49
+```
 
 ## SystemTap
 
