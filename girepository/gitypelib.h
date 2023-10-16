@@ -29,7 +29,7 @@
 
 #include <glib.h>
 
-#include <giversionmacros.h>
+#include <gi-visibility.h>
 
 G_BEGIN_DECLS
 

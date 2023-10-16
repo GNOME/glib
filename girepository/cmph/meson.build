@@ -25,9 +25,9 @@ cmph_sources = [
 ]
 
 cmph_deps = [
-  glib_dep,
-  gobject_dep,
-  cc.find_library('m', required: false),
+  libglib_dep,
+  libgobject_dep,
+  libm,
 ]
 
 custom_c_args = []
@@ -49,7 +49,7 @@ endif
 
 cmph = static_library('cmph',
   sources: cmph_sources,
-  c_args: gi_hidden_visibility_cflags + custom_c_args,
+  c_args: custom_c_args,
   dependencies: cmph_deps,
 )
 
@@ -68,8 +68,8 @@ endif
 cmph_test = executable('cmph-bdz-test', '../cmph-bdz-test.c',
   dependencies: [
     cmph_dep,
-    glib_dep,
-    gobject_dep,
+    libglib_dep,
+    libgobject_dep,
   ],
   c_args: custom_c_args,
 )

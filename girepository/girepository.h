@@ -26,6 +26,8 @@
 #include <glib-object.h>
 #include <gmodule.h>
 
+#include <gi-visibility.h>
+
 #define __GIREPOSITORY_H_INSIDE__
 
 #include <giarginfo.h>
@@ -45,9 +47,7 @@
 #include <gitypelib.h>
 #include <gitypes.h>
 #include <giunioninfo.h>
-#include <giversionmacros.h>
 #include <givfuncinfo.h>
-#include <giversion.h>
 
 G_BEGIN_DECLS
 
@@ -103,7 +103,7 @@ GIRepository *g_irepository_get_default   (void);
 GI_AVAILABLE_IN_ALL
 void          g_irepository_prepend_search_path (const char *directory);
 
-GI_AVAILABLE_IN_1_36
+GI_AVAILABLE_IN_2_36
 void          g_irepository_prepend_library_path (const char *directory);
 
 GI_AVAILABLE_IN_ALL
@@ -144,7 +144,7 @@ GITypelib *    g_irepository_require_private (GIRepository  *repository,
 					     GIRepositoryLoadFlags flags,
 					     GError       **error);
 
-GI_AVAILABLE_IN_1_44
+GI_AVAILABLE_IN_2_44
 gchar      ** g_irepository_get_immediate_dependencies (GIRepository *repository,
                                                         const gchar  *namespace_);
 
@@ -159,7 +159,7 @@ GI_AVAILABLE_IN_ALL
 GIBaseInfo *  g_irepository_find_by_gtype (GIRepository *repository,
 					   GType         gtype);
 
-GI_AVAILABLE_IN_1_60
+GI_AVAILABLE_IN_2_60
 void          g_irepository_get_object_gtype_interfaces (GIRepository      *repository,
                                                          GType              gtype,
                                                          guint             *n_interfaces_out,
@@ -245,6 +245,4 @@ void gi_cclosure_marshal_generic (GClosure       *closure,
 
 G_END_DECLS
 
-
 #endif  /* __G_IREPOSITORY_H__ */
-

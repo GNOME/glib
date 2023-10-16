@@ -27,8 +27,6 @@
 #error "Only <girepository.h> can be included directly."
 #endif
 
-#include <giversionmacros.h>
-
 G_BEGIN_DECLS
 
 typedef struct _GIBaseInfoStub {
@@ -513,4 +511,3 @@ typedef struct _GITypelib GTypelib;
 G_END_DECLS
 
 #endif  /* __GITYPES_H__ */
-

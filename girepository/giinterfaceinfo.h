@@ -73,7 +73,7 @@ GI_AVAILABLE_IN_ALL
 GISignalInfo *   g_interface_info_get_signal          (GIInterfaceInfo *info,
 						       gint             n);
 
-GI_AVAILABLE_IN_1_34
+GI_AVAILABLE_IN_2_34
 GISignalInfo *   g_interface_info_find_signal         (GIInterfaceInfo *info,
                                                        const gchar  *name);
 

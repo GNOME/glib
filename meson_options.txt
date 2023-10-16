@@ -125,3 +125,7 @@ option('multiarch',
        type : 'boolean',
        value : false,
        description : 'Install some helper executables in per-architecture locations')
+
+option('gir_dir_prefix',
+       type: 'string',
+       description: 'Intermediate prefix for gir installation under ${prefix}')
