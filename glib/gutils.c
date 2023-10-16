@@ -2913,7 +2913,7 @@ g_format_size (guint64 size)
  *     a strong "power of 2" basis, like RAM sizes or RAID stripe sizes.
  *     Network and storage sizes should be reported in the normal SI units.
  * @G_FORMAT_SIZE_BITS: set the size as a quantity in bits, rather than
- *     bytes, and return units in bits. For example, ‘Mb’ rather than ‘MB’.
+ *     bytes, and return units in bits. For example, ‘Mbit’ rather than ‘MB’.
  * @G_FORMAT_SIZE_ONLY_VALUE: return only value, without unit; this should
  *     not be used together with @G_FORMAT_SIZE_LONG_FORMAT
  *     nor @G_FORMAT_SIZE_ONLY_UNIT. Since: 2.74
@@ -2990,32 +2990,32 @@ g_format_size_full (guint64          size,
       { EXBIBYTE_FACTOR, N_("EiB") }
     },
     {
-      /* Translators: A unit symbol for size formatting, showing for example: "13.0 kb" */
-      { KILOBYTE_FACTOR, N_("kb") },
-      /* Translators: A unit symbol for size formatting, showing for example: "13.0 Mb" */
-      { MEGABYTE_FACTOR, N_("Mb") },
-      /* Translators: A unit symbol for size formatting, showing for example: "13.0 Gb" */
-      { GIGABYTE_FACTOR, N_("Gb") },
-      /* Translators: A unit symbol for size formatting, showing for example: "13.0 Tb" */
-      { TERABYTE_FACTOR, N_("Tb") },
-      /* Translators: A unit symbol for size formatting, showing for example: "13.0 Pb" */
-      { PETABYTE_FACTOR, N_("Pb") },
-      /* Translators: A unit symbol for size formatting, showing for example: "13.0 Eb" */
-      { EXABYTE_FACTOR,  N_("Eb") }
+      /* Translators: A unit symbol for size formatting, showing for example: "13.0 kbit" */
+      { KILOBYTE_FACTOR, N_("kbit") },
+      /* Translators: A unit symbol for size formatting, showing for example: "13.0 Mbit" */
+      { MEGABYTE_FACTOR, N_("Mbit") },
+      /* Translators: A unit symbol for size formatting, showing for example: "13.0 Gbit" */
+      { GIGABYTE_FACTOR, N_("Gbit") },
+      /* Translators: A unit symbol for size formatting, showing for example: "13.0 Tbit" */
+      { TERABYTE_FACTOR, N_("Tbit") },
+      /* Translators: A unit symbol for size formatting, showing for example: "13.0 Pbit" */
+      { PETABYTE_FACTOR, N_("Pbit") },
+      /* Translators: A unit symbol for size formatting, showing for example: "13.0 Ebit" */
+      { EXABYTE_FACTOR,  N_("Ebit") }
     },
     {
-      /* Translators: A unit symbol for size formatting, showing for example: "13.0 Kib" */
-      { KIBIBYTE_FACTOR, N_("Kib") },
-      /* Translators: A unit symbol for size formatting, showing for example: "13.0 Mib" */
-      { MEBIBYTE_FACTOR, N_("Mib") },
-      /* Translators: A unit symbol for size formatting, showing for example: "13.0 Gib" */
-      { GIBIBYTE_FACTOR, N_("Gib") },
-      /* Translators: A unit symbol for size formatting, showing for example: "13.0 Tib" */
-      { TEBIBYTE_FACTOR, N_("Tib") },
-      /* Translators: A unit symbol for size formatting, showing for example: "13.0 Pib" */
-      { PEBIBYTE_FACTOR, N_("Pib") },
-      /* Translators: A unit symbol for size formatting, showing for example: "13.0 Eib" */
-      { EXBIBYTE_FACTOR, N_("Eib") }
+      /* Translators: A unit symbol for size formatting, showing for example: "13.0 Kibit" */
+      { KIBIBYTE_FACTOR, N_("Kibit") },
+      /* Translators: A unit symbol for size formatting, showing for example: "13.0 Mibit" */
+      { MEBIBYTE_FACTOR, N_("Mibit") },
+      /* Translators: A unit symbol for size formatting, showing for example: "13.0 Gibit" */
+      { GIBIBYTE_FACTOR, N_("Gibit") },
+      /* Translators: A unit symbol for size formatting, showing for example: "13.0 Tibit" */
+      { TEBIBYTE_FACTOR, N_("Tibit") },
+      /* Translators: A unit symbol for size formatting, showing for example: "13.0 Pibit" */
+      { PEBIBYTE_FACTOR, N_("Pibit") },
+      /* Translators: A unit symbol for size formatting, showing for example: "13.0 Eibit" */
+      { EXBIBYTE_FACTOR, N_("Eibit") }
     }
   };
 
