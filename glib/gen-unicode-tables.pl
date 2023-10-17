@@ -337,7 +337,11 @@ while (<INPUT>)
 	next;
     }
 
-    if ($fields[$CODE] =~ /([A-F0-9]{4,6})\.\.([A-F0-9]{4,6})/) 
+    # Trim leading and trailing whitespace
+    $fields[$CODE] =~ s/^\s+|\s+$//;
+    $fields[$BREAK_PROPERTY] =~ s/^\s+|\s+$//;
+
+    if ($fields[$CODE] =~ /([A-F0-9]{4,6})\.\.([A-F0-9]{4,6})/)
     {
 	$start_code = hex ($1);
 	$end_code = hex ($2);
