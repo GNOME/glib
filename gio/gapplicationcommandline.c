@@ -655,6 +655,54 @@ g_application_command_line_get_is_remote (GApplicationCommandLine *cmdline)
 }
 
 /**
+ * g_application_command_line_print_literal:
+ * @cmdline: a #GApplicationCommandLine
+ * @message: the message
+ *
+ * Prints a message using the stdout print handler in the invoking process.
+ *
+ * Unlike g_application_command_line_print(), @message is not a `printf()`-style
+ * format string. Use this function if @message contains text you don't have
+ * control over, that could include `printf()` escape sequences.
+ *
+ * Since: 2.80
+ **/
+void
+g_application_command_line_print_literal (GApplicationCommandLine *cmdline,
+                                          const gchar             *message)
+{
+  g_return_if_fail (G_IS_APPLICATION_COMMAND_LINE (cmdline));
+  g_return_if_fail (message != NULL);
+
+  G_APPLICATION_COMMAND_LINE_GET_CLASS (cmdline)
+    ->print_literal (cmdline, message);
+}
+
+/**
+ * g_application_command_line_printerr_literal:
+ * @cmdline: a #GApplicationCommandLine
+ * @message: the message
+ *
+ * Prints a message using the stderr print handler in the invoking process.
+ *
+ * Unlike g_application_command_line_printerr(), @message is not
+ * a `printf()`-style format string. Use this function if @message contains text
+ * you don't have control over, that could include `printf()` escape sequences.
+ *
+ * Since: 2.80
+ **/
+void
+g_application_command_line_printerr_literal (GApplicationCommandLine *cmdline,
+                                             const gchar             *message)
+{
+  g_return_if_fail (G_IS_APPLICATION_COMMAND_LINE (cmdline));
+  g_return_if_fail (message != NULL);
+
+  G_APPLICATION_COMMAND_LINE_GET_CLASS (cmdline)
+    ->printerr_literal (cmdline, message);
+}
+
+/**
  * g_application_command_line_print:
  * @cmdline: a #GApplicationCommandLine
  * @format: a printf-style format string
