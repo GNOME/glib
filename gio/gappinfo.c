@@ -45,37 +45,37 @@
 #endif
 
 /**
- * SECTION:gappinfo
- * @short_description: Application information and launch contexts
- * @include: gio/gio.h
- * @see_also: #GAppInfoMonitor
- * 
- * #GAppInfo and #GAppLaunchContext are used for describing and launching
+ * GAppInfo:
+ *
+ * Information about an installed application and methods to launch
+ * it (with file arguments).
+
+ * `GAppInfo` and `GAppLaunchContext` are used for describing and launching
  * applications installed on the system.
  *
  * As of GLib 2.20, URIs will always be converted to POSIX paths
- * (using g_file_get_path()) when using g_app_info_launch() even if
- * the application requested an URI and not a POSIX path. For example
+ * (using [method@Gio.File.get_path]) when using [method@Gio.AppInfo.launch]
+ * even if the application requested an URI and not a POSIX path. For example
  * for a desktop-file based application with Exec key `totem
  * %U` and a single URI, `sftp://foo/file.avi`, then
  * `/home/user/.gvfs/sftp on foo/file.avi` will be passed. This will
- * only work if a set of suitable GIO extensions (such as gvfs 2.26
+ * only work if a set of suitable GIO extensions (such as GVfs 2.26
  * compiled with FUSE support), is available and operational; if this
  * is not the case, the URI will be passed unmodified to the application.
  * Some URIs, such as `mailto:`, of course cannot be mapped to a POSIX
- * path (in gvfs there's no FUSE mount for it); such URIs will be
+ * path (in GVfs there's no FUSE mount for it); such URIs will be
  * passed unmodified to the application.
  *
- * Specifically for gvfs 2.26 and later, the POSIX URI will be mapped
- * back to the GIO URI in the #GFile constructors (since gvfs
- * implements the #GVfs extension point). As such, if the application
- * needs to examine the URI, it needs to use g_file_get_uri() or
- * similar on #GFile. In other words, an application cannot assume
- * that the URI passed to e.g. g_file_new_for_commandline_arg() is
- * equal to the result of g_file_get_uri(). The following snippet
+ * Specifically for GVfs 2.26 and later, the POSIX URI will be mapped
+ * back to the GIO URI in the [struct@Gio.File] constructors (since GVfs
+ * implements the GVfs extension point). As such, if the application
+ * needs to examine the URI, it needs to use [method@Gio.File.get_uri]
+ * or similar on [struct@Gio.File]. In other words, an application cannot
+ * assume that the URI passed to e.g. [func@Gio.File.new_for_commandline_arg]
+ * is equal to the result of [method@Gio.File.get_uri]. The following snippet
  * illustrates this:
  *
- * |[ 
+ * ```c
  * GFile *f;
  * char *uri;
  *
@@ -90,7 +90,7 @@
  *     // do something special with uri
  *   }
  * g_object_unref (file);
- * ]|
+ * ```
  *
  * This code will work when both `cdda://sr0/Track 1.wav` and
  * `/home/user/.gvfs/cdda on sr0/Track 1.wav` is passed to the
@@ -1654,53 +1654,46 @@ g_app_launch_context_launch_failed (GAppLaunchContext *context,
 
 
 /**
- * SECTION:gappinfomonitor
- * @short_description: Monitor application information for changes
- *
- * #GAppInfoMonitor is a very simple object used for monitoring the app
- * info database for changes (newly installed or removed applications).
- *
- * Call g_app_info_monitor_get() to get a #GAppInfoMonitor and connect
- * to the #GAppInfoMonitor::changed signal. The signal will be emitted once when
- * the app info database changes, and will not be emitted again until after the
- * next call to g_app_info_get_all() or another `g_app_info_*()` function. This
- * is because monitoring the app info database for changes is expensive.
- *
- * The following functions will re-arm the #GAppInfoMonitor::changed signal so
- * it can be emitted again:
- *  - g_app_info_get_all()
- *  - g_app_info_get_all_for_type()
- *  - g_app_info_get_default_for_type()
- *  - g_app_info_get_fallback_for_type()
- *  - g_app_info_get_recommended_for_type()
- *  - g_desktop_app_info_get_implementations()
- *  - g_desktop_app_info_new()
- *  - g_desktop_app_info_new_from_filename()
- *  - g_desktop_app_info_new_from_keyfile()
- *  - g_desktop_app_info_search()
- *
- * In the usual case, applications should try to make note of the change
- * (doing things like invalidating caches) but not act on it.  In
- * particular, applications should avoid making calls to #GAppInfo APIs
- * in response to the change signal, deferring these until the time that
- * the updated data is actually required.  The exception to this case is when
- * application information is actually being displayed on the screen
- * (for example, during a search or when the list of all applications is shown).
- * The reason for this is that changes to the list of installed
- * applications often come in groups (like during system updates) and
- * rescanning the list on every change is pointless and expensive.
- *
- * Since: 2.40
- **/
-
-/**
  * GAppInfoMonitor:
  *
- * The only thing you can do with this is to get it via
- * g_app_info_monitor_get() and connect to the "changed" signal.
+ * `GAppInfoMonitor` monitors application information for changes.
+ *
+ * `GAppInfoMonitor` is a very simple object used for monitoring the app
+ * info database for changes (newly installed or removed applications).
+ *
+ * Call [func@Gio.AppInfoMonitor.get] to get a `GAppInfoMonitor` and connect
+ * to the [signal@Gio.AppInfoMonitor.changed] signal. The signal will be emitted once when
+ * the app info database changes, and will not be emitted again until after the
+ * next call to [func@Gio.AppInfo.get_all] or another `g_app_info_*()` function.
+ * This is because monitoring the app info database for changes is expensive.
+ *
+ * The following functions will re-arm the [signal@Gio.AppInfoMonitor.changed]
+ * signal so it can be emitted again:
+ *
+ *  - [method@Gio.AppInfo.get_all]
+ *  - [method@Gio.AppInfo.get_all_for_type]
+ *  - [method@Gio.AppInfo.get_default_for_type]
+ *  - [method@Gio.AppInfo.get_fallback_for_type]
+ *  - [method@Gio.AppInfo.get_recommended_for_type]
+ *  - [method@Gio.DesktopAppInfo.get_implementations]
+ *  - [method@Gio.DesktopAppInfo.new]
+ *  - [method@Gio.DesktopAppInfo.new_from_filename]
+ *  - [method@Gio.DesktopAppInfo.new_from_keyfile]
+ *  - [method@Gio.DesktopAppInfo.search]
+ *
+ * In the usual case, applications should try to make note of the change
+ * (doing things like invalidating caches) but not act on it. In
+ * particular, applications should avoid making calls to `GAppInfo` APIs
+ * in response to the change signal, deferring these until the time that
+ * the updated data is actually required. The exception to this case is when
+ * application information is actually being displayed on the screen
+ * (for example, during a search or when the list of all applications is shown).
+ * The reason for this is that changes to the list of installed applications
+ * often come in groups (like during system updates) and rescanning the list
+ * on every change is pointless and expensive.
  *
  * Since: 2.40
- **/
+ */
 
 typedef struct _GAppInfoMonitorClass GAppInfoMonitorClass;
 

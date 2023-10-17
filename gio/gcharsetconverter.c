@@ -39,22 +39,15 @@ enum {
 };
 
 /**
- * SECTION:gcharsetconverter
- * @short_description: Convert between charsets
- * @include: gio/gio.h
+ * GCharsetConverter:
  *
- * #GCharsetConverter is an implementation of #GConverter based on
- * GIConv.
+ * `GCharsetConverter` is an implementation of [iface@Gio.Converter] based on
+ * [class@GLib.IConv].
  */
 
 static void g_charset_converter_iface_init          (GConverterIface *iface);
 static void g_charset_converter_initable_iface_init (GInitableIface  *iface);
 
-/**
- * GCharsetConverter:
- *
- * Conversions between character sets.
- */
 struct _GCharsetConverter
 {
   GObject parent_instance;

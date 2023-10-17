@@ -131,59 +131,61 @@
    G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER)
 
 /**
- * SECTION:gdbusconnection
- * @short_description: D-Bus Connections
- * @include: gio/gio.h
+ * GDBusConnection:
  *
- * The #GDBusConnection type is used for D-Bus connections to remote
- * peers such as a message buses. It is a low-level API that offers a
- * lot of flexibility. For instance, it lets you establish a connection
- * over any transport that can by represented as a #GIOStream.
+ * The `GDBusConnection` type is used for D-Bus connections to remote
+ * peers such as a message buses.
+ *
+ * It is a low-level API that offers a lot of flexibility. For instance,
+ * it lets you establish a connection over any transport that can by represented
+ * as a [struct@Gio.IOStream].
  *
  * This class is rarely used directly in D-Bus clients. If you are writing
- * a D-Bus client, it is often easier to use the g_bus_own_name(),
- * g_bus_watch_name() or g_dbus_proxy_new_for_bus() APIs.
+ * a D-Bus client, it is often easier to use the [func@g_bus_own_name],
+ * [func@g_bus_watch_name] or [ctor@Gio.DBusProxy.new_for_bus] APIs.
  *
  * As an exception to the usual GLib rule that a particular object must not
- * be used by two threads at the same time, #GDBusConnection's methods may be
- * called from any thread. This is so that g_bus_get() and g_bus_get_sync()
- * can safely return the same #GDBusConnection when called from any thread.
+ * be used by two threads at the same time, `GDBusConnection`s methods may be
+ * called from any thread. This is so that `g_bus_get()` and `g_bus_get_sync()`
+ * can safely return the same `GDBusConnection` when called from any thread.
  *
- * Most of the ways to obtain a #GDBusConnection automatically initialize it
- * (i.e. connect to D-Bus): for instance, g_dbus_connection_new() and
- * g_bus_get(), and the synchronous versions of those methods, give you an
+ * Most of the ways to obtain a `GDBusConnection` automatically initialize it
+ * (i.e. connect to D-Bus): for instance, [func@Gio.DBusConnection.new] and
+ * `g_bus_get()`, and the synchronous versions of those methods, give you an
  * initialized connection. Language bindings for GIO should use
- * g_initable_new() or g_async_initable_new_async(), which also initialize the
- * connection.
+ * [func@Gio.Initiable.new] or [func@Gio.AsyncInitable.new_async], which also
+ * initialize the connection.
  *
- * If you construct an uninitialized #GDBusConnection, such as via
- * g_object_new(), you must initialize it via g_initable_init() or
- * g_async_initable_init_async() before using its methods or properties.
- * Calling methods or accessing properties on a #GDBusConnection that has not
+ * If you construct an uninitialized `GDBusConnection`, such as via
+ * `g_object_new()`, you must initialize it via [method@Gio.Initable.init] or
+ * [method@Gio.AsyncInitable.init_async] before using its methods or properties.
+ * Calling methods or accessing properties on a `GDBusConnection` that has not
  * completed initialization successfully is considered to be invalid, and leads
  * to undefined behaviour. In particular, if initialization fails with a
- * #GError, the only valid thing you can do with that #GDBusConnection is to
- * free it with g_object_unref().
+ * `GError`, the only valid thing you can do with that `GDBusConnection` is to
+ * free it with `g_object_unref()`.
  *
- * ## An example D-Bus server # {#gdbus-server}
+ * ## An example D-Bus server
  *
  * Here is an example for a D-Bus server:
  * [gdbus-example-server.c](https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gdbus-example-server.c)
  *
- * ## An example for exporting a subtree # {#gdbus-subtree-server}
+ * ## An example for exporting a subtree
  *
  * Here is an example for exporting a subtree:
  * [gdbus-example-subtree.c](https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gdbus-example-subtree.c)
  *
- * ## An example for file descriptor passing # {#gdbus-unix-fd-client}
+ * ## An example for file descriptor passing
  *
  * Here is an example for passing UNIX file descriptors:
  * [gdbus-unix-fd-client.c](https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gdbus-example-unix-fd-client.c)
  *
- * ## An example for exporting a GObject # {#gdbus-export}
+ * ## An example for exporting a GObject
  *
  * Here is an example for exporting a #GObject:
  * [gdbus-example-export.c](https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gdbus-example-export.c)
+ *
+ * Since: 2.26
  */
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -312,14 +314,6 @@ enum {
     FLAG_CLOSED = 1 << 2
 };
 
-/**
- * GDBusConnection:
- *
- * The #GDBusConnection structure contains only private data and
- * should only be accessed using the provided API.
- *
- * Since: 2.26
- */
 struct _GDBusConnection
 {
   /*< private >*/

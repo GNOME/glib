@@ -26,12 +26,11 @@
 
 
 /**
- * SECTION:gconverter
- * @short_description: Data conversion interface
- * @include: gio/gio.h
- * @see_also: #GInputStream, #GOutputStream
+ * GConverter:
  *
- * #GConverter is implemented by objects that convert
+ * `GConverter` is an interface for streaming conversions.
+ *
+ * `GConverter` is implemented by objects that convert
  * binary data in various ways. The conversion can be
  * stateful and may fail at any place.
  *
@@ -40,7 +39,7 @@
  * replace.
  *
  * Since: 2.24
- **/
+ */
 
 
 typedef GConverterIface GConverterInterface;

@@ -38,11 +38,6 @@ G_BEGIN_DECLS
 #define G_IS_BUFFERED_INPUT_STREAM_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_BUFFERED_INPUT_STREAM))
 #define G_BUFFERED_INPUT_STREAM_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_BUFFERED_INPUT_STREAM, GBufferedInputStreamClass))
 
-/**
- * GBufferedInputStream:
- *
- * Implements #GFilterInputStream with a sized input buffer.
- **/
 typedef struct _GBufferedInputStreamClass    GBufferedInputStreamClass;
 typedef struct _GBufferedInputStreamPrivate  GBufferedInputStreamPrivate;
 

@@ -33,17 +33,14 @@
 
 
 /**
- * SECTION:gconverterinputstream
- * @short_description: Converter Input Stream
- * @include: gio/gio.h
- * @see_also: #GInputStream, #GConverter
+ * GConverterInputStream:
  *
- * Converter input stream implements #GInputStream and allows
+ * Converter input stream implements [iface@Gio.InputStream] and allows
  * conversion of data of various types during reading.
  *
- * As of GLib 2.34, #GConverterInputStream implements
- * #GPollableInputStream.
- **/
+ * As of GLib 2.34, `GConverterInputStream` implements
+ * [iface@Gio.PollableInputStream].
+ */
 
 #define INITIAL_BUFFER_SIZE 4096
 

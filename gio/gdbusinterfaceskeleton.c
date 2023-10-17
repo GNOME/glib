@@ -36,11 +36,11 @@
 #include "glibintl.h"
 
 /**
- * SECTION:gdbusinterfaceskeleton
- * @short_description: Service-side D-Bus interface
- * @include: gio/gio.h
+ * GDBusInterfaceSkeleton:
  *
  * Abstract base class for D-Bus interfaces on the service side.
+ *
+ * Since: 2.30
  */
 
 struct _GDBusInterfaceSkeletonPrivate

@@ -47,13 +47,6 @@ typedef struct _GAppLaunchContextClass   GAppLaunchContextClass;
 typedef struct _GAppLaunchContextPrivate GAppLaunchContextPrivate;
 
 /**
- * GAppInfo:
- *
- * Information about an installed application and methods to launch
- * it (with file arguments).
- */
-
-/**
  * GAppInfoIface:
  * @g_iface: The parent interface.
  * @dup: Copies a #GAppInfo.

@@ -30,26 +30,22 @@
 #include "glibintl.h"
 
 /**
- * SECTION:gbufferedoutputstream
- * @short_description: Buffered Output Stream
- * @include: gio/gio.h
- * @see_also: #GFilterOutputStream, #GOutputStream
- * 
- * Buffered output stream implements #GFilterOutputStream and provides 
- * for buffered writes. 
- * 
- * By default, #GBufferedOutputStream's buffer size is set at 4 kilobytes.
- * 
- * To create a buffered output stream, use g_buffered_output_stream_new(), 
- * or g_buffered_output_stream_new_sized() to specify the buffer's size 
+ * GBufferedOutputStream:
+ *
+ * Buffered output stream implements [struct@Gio.FilterOutputStream] and provides
+ * for buffered writes.
+ *
+ * By default, `GBufferedOutputStream`'s buffer size is set at 4 kilobytes.
+ *
+ * To create a buffered output stream, use [func@Gio.BufferedOutputStream.new],
+ * or [func@Gio.BufferedOutputStream.new_sized] to specify the buffer's size
  * at construction.
- * 
- * To get the size of a buffer within a buffered input stream, use 
- * g_buffered_output_stream_get_buffer_size(). To change the size of a 
- * buffered output stream's buffer, use 
- * g_buffered_output_stream_set_buffer_size(). Note that the buffer's 
- * size cannot be reduced below the size of the data within the buffer.
- **/
+ *
+ * To get the size of a buffer within a buffered input stream, use
+ * [method@Gio.BufferedOutputStream.get_buffer_size]. To change the size of a
+ * buffered output stream's buffer, use [method@Gio.BufferedOutputStream.set_buffer_size].
+ * Note that the buffer's size cannot be reduced below the size of the data within the buffer.
+ */
 
 #define DEFAULT_BUFFER_SIZE 4096
 

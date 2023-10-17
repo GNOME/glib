@@ -38,11 +38,6 @@ G_BEGIN_DECLS
 #define G_IS_CANCELLABLE_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_CANCELLABLE))
 #define G_CANCELLABLE_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_CANCELLABLE, GCancellableClass))
 
-/**
- * GCancellable:
- *
- * Allows actions to be cancelled.
- */
 typedef struct _GCancellableClass   GCancellableClass;
 typedef struct _GCancellablePrivate GCancellablePrivate;
 

@@ -36,12 +36,6 @@ G_BEGIN_DECLS
 #define G_IS_ASYNC_RESULT(obj)	       (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_ASYNC_RESULT))
 #define G_ASYNC_RESULT_GET_IFACE(obj)  (G_TYPE_INSTANCE_GET_INTERFACE ((obj), G_TYPE_ASYNC_RESULT, GAsyncResultIface))
 
-/**
- * GAsyncResult:
- *
- * Holds results information for an asynchronous operation,
- * usually passed directly to an asynchronous _finish() operation.
- **/
 typedef struct _GAsyncResultIface    GAsyncResultIface;
 
 
