@@ -812,7 +812,7 @@ sub print_row
 	    print OUT "\n    ";
 	    $column = 4;
 	}
-	else
+	elsif ($i > $start)
 	{
 	    print OUT " "
 	}
