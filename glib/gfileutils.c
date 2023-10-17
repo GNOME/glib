@@ -1139,6 +1139,36 @@ fd_should_be_fsynced (int                    fd,
 #endif  /* !HAVE_FSYNC */
 }
 
+static gboolean
+truncate_file (int          fd,
+               off_t        length,
+               const char  *dest_file,
+               GError     **error)
+{
+  while (
+#ifdef G_OS_WIN32
+    g_win32_ftruncate (fd, length) < 0
+#else
+    ftruncate (fd, length) < 0
+#endif
+    )
+    {
+      int saved_errno = errno;
+
+      if (saved_errno == EINTR)
+        continue;
+
+      if (error != NULL)
+        set_file_error (error,
+                        dest_file,
+                        _("Failed to write file “%s”: ftruncate() failed: %s"),
+                        saved_errno);
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
 /* closes @fd once it’s finished (on success or error) */
 static gboolean
 write_to_file (const gchar  *contents,
@@ -1475,6 +1505,8 @@ consistent_out:
         }
 
       do_fsync = fd_should_be_fsynced (direct_fd, filename, flags);
+      if (!truncate_file (direct_fd, 0, filename, error))
+        return FALSE;
       if (!write_to_file (contents, length, g_steal_fd (&direct_fd), filename,
                           do_fsync, error))
         return FALSE;
