@@ -9,7 +9,7 @@ ancestor_horizon=28  # days (4 weeks)
 
 source .gitlab-ci/search-common-ancestor.sh
 
-git diff -U0 --no-color "${newest_common_ancestor_sha}" | .gitlab-ci/clang-format-diff.py -binary "clang-format-11" -p1
+git diff -U0 --no-color "${newest_common_ancestor_sha}" | .gitlab-ci/clang-format-diff.py -binary "clang-format-14" -p1
 
 )
 exit_status=$?
