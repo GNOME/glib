@@ -935,7 +935,7 @@ endif
 # Dependencies used by executables below
 have_libelf = false
 libelf = dependency('libelf', version : '>= 0.8.12', required : false)
-if libelf.found()
+if libelf.found() and get_option('libelf').allowed()
   have_libelf = true
 else
   # This fallback is necessary on *BSD. elfutils isn't the only libelf
