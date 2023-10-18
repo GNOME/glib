@@ -22,9 +22,7 @@ RUN dnf -y update \
     glibc-headers \
     glibc-langpack-de \
     glibc-langpack-el \
-    glibc-langpack-el \
     glibc-langpack-en \
-    glibc-langpack-es \
     glibc-langpack-es \
     glibc-langpack-fa \
     glibc-langpack-fr \
