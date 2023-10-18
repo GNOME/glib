@@ -2980,13 +2980,17 @@ g_date_time_format_locale (GDateTime   *datetime,
 static inline gboolean
 string_append (GString     *string,
                const gchar *s,
+               gboolean     do_strup,
                gboolean     s_is_utf8)
 {
   gchar *utf8;
   gsize  utf8_len;
+  char *tmp = NULL;
 
   if (s_is_utf8)
     {
+      if (do_strup)
+        s = tmp = g_utf8_strup (s, -1);
       g_string_append (string, s);
     }
   else
@@ -2994,9 +2998,17 @@ string_append (GString     *string,
       utf8 = _g_time_locale_to_utf8 (s, -1, NULL, &utf8_len, NULL);
       if (utf8 == NULL)
         return FALSE;
+      if (do_strup)
+        {
+          tmp = g_utf8_strup (utf8, utf8_len);
+          g_free (utf8);
+          utf8 = g_steal_pointer (&tmp);
+        }
       g_string_append_len (string, utf8, utf8_len);
       g_free (utf8);
     }
+
+  g_free (tmp);
 
   return TRUE;
 }
@@ -3021,6 +3033,7 @@ g_date_time_format_utf8 (GDateTime   *datetime,
   const gchar *mod = "";
   const gchar *name;
   const gchar *tz;
+  char *tmp = NULL;
 
   while (*utf8_format)
     {
@@ -3048,26 +3061,24 @@ g_date_time_format_utf8 (GDateTime   *datetime,
       switch (c)
 	{
 	case 'a':
-          name = mod_case ? g_utf8_strup (WEEKDAY_ABBR (datetime), -1)
-                          : WEEKDAY_ABBR (datetime);
+          name = WEEKDAY_ABBR (datetime);
           if (g_strcmp0 (name, "") == 0)
             return FALSE;
 
           name_is_utf8 = locale_is_utf8 || !WEEKDAY_ABBR_IS_LOCALE;
 
-          if (!string_append (outstr, name, name_is_utf8))
+          if (!string_append (outstr, name, mod_case, name_is_utf8))
             return FALSE;
 
 	  break;
 	case 'A':
-          name = mod_case ? g_utf8_strup (WEEKDAY_FULL (datetime), -1)
-                          : WEEKDAY_FULL (datetime);
+          name = WEEKDAY_FULL (datetime);
           if (g_strcmp0 (name, "") == 0)
             return FALSE;
 
           name_is_utf8 = locale_is_utf8 || !WEEKDAY_FULL_IS_LOCALE;
 
-          if (!string_append (outstr, name, name_is_utf8))
+          if (!string_append (outstr, name, mod_case, name_is_utf8))
             return FALSE;
 
 	  break;
@@ -3076,14 +3087,12 @@ g_date_time_format_utf8 (GDateTime   *datetime,
 			    : MONTH_ABBR_WITH_DAY (datetime);
           if (g_strcmp0 (name, "") == 0)
             return FALSE;
-          if (mod_case)
-            name = g_utf8_strup (name, -1);
 
           name_is_utf8 = locale_is_utf8 ||
             ((alt_digits && !MONTH_ABBR_STANDALONE_IS_LOCALE) ||
              (!alt_digits && !MONTH_ABBR_WITH_DAY_IS_LOCALE));
 
-          if (!string_append (outstr, name, name_is_utf8))
+          if (!string_append (outstr, name, mod_case, name_is_utf8))
             return FALSE;
 
 	  break;
@@ -3092,14 +3101,12 @@ g_date_time_format_utf8 (GDateTime   *datetime,
 			    : MONTH_FULL_WITH_DAY (datetime);
           if (g_strcmp0 (name, "") == 0)
             return FALSE;
-          if (mod_case)
-            name = g_utf8_strup (name, -1);
 
           name_is_utf8 = locale_is_utf8 ||
             ((alt_digits && !MONTH_FULL_STANDALONE_IS_LOCALE) ||
              (!alt_digits && !MONTH_FULL_WITH_DAY_IS_LOCALE));
 
-          if (!string_append (outstr, name, name_is_utf8))
+          if (!string_append (outstr, name, mod_case, name_is_utf8))
               return FALSE;
 
 	  break;
@@ -3147,14 +3154,12 @@ g_date_time_format_utf8 (GDateTime   *datetime,
 			    : MONTH_ABBR_WITH_DAY (datetime);
           if (g_strcmp0 (name, "") == 0)
             return FALSE;
-          if (mod_case)
-            name = g_utf8_strup (name, -1);
 
           name_is_utf8 = locale_is_utf8 ||
             ((alt_digits && !MONTH_ABBR_STANDALONE_IS_LOCALE) ||
              (!alt_digits && !MONTH_ABBR_WITH_DAY_IS_LOCALE));
 
-          if (!string_append (outstr, name, name_is_utf8))
+          if (!string_append (outstr, name, mod_case, name_is_utf8))
             return FALSE;
 
 	  break;
@@ -3281,9 +3286,11 @@ g_date_time_format_utf8 (GDateTime   *datetime,
 	  }
 	  break;
 	case 'Z':
-          tz = mod_case && g_strcmp0 (mod, "#") == 0 ? g_utf8_strdown (g_date_time_get_timezone_abbreviation (datetime), -1)
-                                                     : g_date_time_get_timezone_abbreviation (datetime);
+          tz = g_date_time_get_timezone_abbreviation (datetime);
+          if (mod_case && g_strcmp0 (mod, "#") == 0)
+            tz = tmp = g_utf8_strdown (tz, -1);
           g_string_append (outstr, tz);
+          g_free (tmp);
 	  break;
 	case '%':
 	  g_string_append_c (outstr, '%');
