@@ -1,5 +1,9 @@
 gobject_tests = {
-  'performance' : { 'args' : [ '--seconds', '0' ] },
+  'performance' : {
+    'args' : [ '--seconds', '0' ],
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3148
+    'can_fail' : host_system == 'gnu',
+  },
   'performance-threaded' : { 'args' : [ '--seconds', '0' ] },
 }
 

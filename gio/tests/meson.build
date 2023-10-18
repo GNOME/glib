@@ -51,7 +51,8 @@ gio_tests = {
   'application-command-line': {},
   'appmonitor' : {
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
-    'can_fail' : host_system == 'darwin',
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3148
+    'can_fail' : host_system in ['darwin', 'gnu'],
   },
   'async-close-output-stream' : {},
   'async-splice-output-stream' : {},
@@ -81,7 +82,8 @@ gio_tests = {
   'g-file' : {},
   'g-file-info' : {
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3070
-    'can_fail' : host_system == 'darwin' or host_system == 'windows' and cc.get_id() != 'gcc',
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3148
+    'can_fail' : host_system in ['darwin', 'gnu'] or host_system == 'windows' and cc.get_id() != 'gcc',
   },
   'g-icon' : {},
   'gdbus-addresses' : {},
@@ -90,7 +92,8 @@ gio_tests = {
     'dependencies' : [libgdbus_example_objectmanager_dep],
     'install_rpath' : installed_tests_execdir,
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
-    'can_fail' : host_system in ['darwin', 'windows'],
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3148
+    'can_fail' : host_system in ['darwin', 'windows', 'gnu'],
   },
   'inet-address' : {},
   'io-stream' : {},
@@ -118,7 +121,8 @@ gio_tests = {
   'sleepy-stream' : {},
   'socket' : {
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
-    'can_fail' : host_system == 'darwin',
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3148
+    'can_fail' : host_system in ['darwin', 'gnu'],
   },
   'socket-listener' : {},
   'socket-service' : {},
@@ -137,7 +141,8 @@ gio_tests = {
   'gdbus-address-get-session' : {
     'extra_programs': host_system != 'windows' ? ['dbus-launch'] : [],
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
-    'can_fail' : host_system == 'darwin',
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3148
+    'can_fail' : host_system in ['darwin', 'gnu'],
   },
   'win32-appinfo' : {},
 }
@@ -232,7 +237,10 @@ endif
 #  Test programs buildable on UNIX only
 if host_machine.system() != 'windows'
   gio_tests += {
-    'file' : {},
+    'file' : {
+      # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3148
+      'can_fail' : host_system == 'gnu',
+    },
     'gdbus-peer-object-manager' : {},
     'gdbus-sasl' : {},
     'live-g-file' : {},
@@ -277,7 +285,10 @@ if host_machine.system() != 'windows'
     },
     'resolver-parsing' : {'dependencies' : [network_libs]},
     'socket-address' : {},
-    'stream-rw_all' : {},
+    'stream-rw_all' : {
+      # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3148
+      'can_fail' : host_system == 'gnu',
+    },
     'unix-mounts' : {},
     'unix-streams' : {},
     'g-file-info-filesystem-readonly' : {},
@@ -319,11 +330,15 @@ if host_machine.system() != 'windows'
       'appinfo' : {
         'install' : false,
         'extra_programs' : ['appinfo-test'],
+        # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3148
+        'can_fail' : host_system == 'gnu',
       },
       'desktop-app-info' : {
         'install' : false,
         'depends' : gio_launch_desktop,
         'extra_programs' : ['apps', 'appinfo-test'],
+        # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3148
+        'can_fail' : host_system == 'gnu',
       },
     }
   endif
@@ -454,6 +469,8 @@ if host_machine.system() != 'windows'
       'gdbus-proxy-threads' : {
         'extra_sources' : extra_sources,
         'dependencies' : [dbus1_dep],
+        # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3148
+        'can_fail' : host_system == 'gnu',
       },
       'gdbus-proxy-unique-name' : {
         'extra_sources' : extra_sources,
@@ -556,6 +573,8 @@ if host_machine.system() != 'windows'
                     '-DTEST_LOCALE_PATH="@0@"'.format(test_mo_dir)],
         'install' : false,
         'depends' : glib_compile_schemas,
+        # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3148
+        'can_fail' : host_system == 'gnu',
       },
     }
   endif
