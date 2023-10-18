@@ -180,6 +180,37 @@ debian-stable-x86_64:
       - "_build/glib/glibconfig.h"
       - "_build/meson-logs"
 
+hurd-i386:
+  extends:
+    - .build-linux
+    - .only-schedules
+  stage: build
+  tags:
+    - hurd
+  needs: []
+  script:
+    - meson setup ${MESON_COMMON_OPTIONS}
+            --werror
+            --default-library=both
+            --prefix=$HOME/glib-installed
+            --localstatedir=/var
+            --libdir=lib
+            _build
+    - meson compile -C _build
+    - .gitlab-ci/run-tests.sh
+  artifacts:
+    reports:
+      junit:
+        - _build/meson-logs/testlog.junit.xml
+        - _build/meson-logs/testlog-*.junit.xml
+    name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
+    when: always
+    expire_in: 1 week
+    paths:
+      - "_build/config.h"
+      - "_build/glib/glibconfig.h"
+      - "_build/meson-logs"
+
 installed-tests:
   extends:
     - .build-linux
