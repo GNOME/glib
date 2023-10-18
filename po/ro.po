@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2023-10-18 14:46+0000\n"
-"PO-Revision-Date: 2023-10-09 15:17+0300\n"
+"POT-Creation-Date: 2023-10-18 18:26+0000\n"
+"PO-Revision-Date: 2023-10-18 20:27+0200\n"
 "Last-Translator: Florentina Mușat <florentina [dot] musat [dot] 28 [at] "
 "gmail [dot] com>\n"
 "Language-Team: Gnome Romanian Translation Team <gnomero-list@lists."
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
 "20)) ? 1 : 2);\n"
-"X-Generator: Poedit 3.4\n"
+"X-Generator: Poedit 3.3.2\n"
 "X-Project-Style: gnome\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
@@ -45,25 +45,25 @@ msgstr "Nu s-a putut găsi aplicația implicită pentru tipul de conținut „%s
 msgid "Failed to find default application for URI Scheme ‘%s’"
 msgstr "Nu s-a putut găsi aplicația implicită pentru schema URI „%s”"
 
-#: gio/gapplication.c:502
+#: gio/gapplication.c:506
 msgid "GApplication Options:"
 msgstr "Opțiuni GApplication:"
 
-#: gio/gapplication.c:502
+#: gio/gapplication.c:506
 msgid "Show GApplication options"
 msgstr "Arată opțiunile GApplication"
 
-#: gio/gapplication.c:547
+#: gio/gapplication.c:551
 msgid "Enter GApplication service mode (use from D-Bus service files)"
 msgstr ""
 "Intră în modul de serviciu GApplication (utilizează de la fișierele de "
 "serviciu D-Bus)"
 
-#: gio/gapplication.c:559
+#: gio/gapplication.c:563
 msgid "Override the application’s ID"
 msgstr "Suprascrie ID-ul aplicației"
 
-#: gio/gapplication.c:571
+#: gio/gapplication.c:575
 msgid "Replace the running instance"
 msgstr "Înlocuiește instanța care rulează"
 
@@ -280,7 +280,7 @@ msgstr ""
 "comandă nerecunoscută: %s\n"
 "\n"
 
-#: gio/gbufferedinputstream.c:418 gio/gbufferedinputstream.c:496
+#: gio/gbufferedinputstream.c:422 gio/gbufferedinputstream.c:500
 #: gio/ginputstream.c:181 gio/ginputstream.c:381 gio/ginputstream.c:651
 #: gio/ginputstream.c:1056 gio/goutputstream.c:225 gio/goutputstream.c:1052
 #: gio/gpollableinputstream.c:221 gio/gpollableoutputstream.c:293
@@ -288,65 +288,65 @@ msgstr ""
 msgid "Too large count value passed to %s"
 msgstr "S-a pasat o valoare prea mare către %s"
 
-#: gio/gbufferedinputstream.c:889 gio/gbufferedoutputstream.c:573
-#: gio/gdataoutputstream.c:559
+#: gio/gbufferedinputstream.c:893 gio/gbufferedoutputstream.c:577
+#: gio/gdataoutputstream.c:564
 msgid "Seek not supported on base stream"
 msgstr "Căutarea în fluxul de bază nu este suportată"
 
-#: gio/gbufferedinputstream.c:936
+#: gio/gbufferedinputstream.c:940
 msgid "Cannot truncate GBufferedInputStream"
 msgstr "Nu se poate trunchia GBufferedInputStream"
 
-#: gio/gbufferedinputstream.c:981 gio/ginputstream.c:1246 gio/giostream.c:302
+#: gio/gbufferedinputstream.c:985 gio/ginputstream.c:1246 gio/giostream.c:302
 #: gio/goutputstream.c:2208
 msgid "Stream is already closed"
 msgstr "Flux deja închis"
 
-#: gio/gbufferedoutputstream.c:610 gio/gdataoutputstream.c:589
+#: gio/gbufferedoutputstream.c:614 gio/gdataoutputstream.c:594
 msgid "Truncate not supported on base stream"
 msgstr "Trunchierea fluxului de bază nu este suportată"
 
-#: gio/gcancellable.c:326 gio/gdbusconnection.c:1861 gio/gdbusprivate.c:1432
+#: gio/gcancellable.c:326 gio/gdbusconnection.c:1867 gio/gdbusprivate.c:1434
 #: gio/gsimpleasyncresult.c:873 gio/gsimpleasyncresult.c:899
 #, c-format
 msgid "Operation was cancelled"
 msgstr "Operațiunea a fost anulată"
 
-#: gio/gcharsetconverter.c:255
+#: gio/gcharsetconverter.c:262
 msgid "Invalid object, not initialized"
 msgstr "Obiect nevalid, neinițializat"
 
-#: gio/gcharsetconverter.c:276 gio/gcharsetconverter.c:304
+#: gio/gcharsetconverter.c:283 gio/gcharsetconverter.c:311
 msgid "Incomplete multibyte sequence in input"
 msgstr "Secvență de octeți incompletă la intrare"
 
-#: gio/gcharsetconverter.c:310 gio/gcharsetconverter.c:319
+#: gio/gcharsetconverter.c:317 gio/gcharsetconverter.c:326
 msgid "Not enough space in destination"
 msgstr "Spațiu insuficient în destinație"
 
-#: gio/gcharsetconverter.c:337 gio/gdatainputstream.c:846
-#: gio/gdatainputstream.c:1264 glib/gconvert.c:351 glib/gconvert.c:783
+#: gio/gcharsetconverter.c:344 gio/gdatainputstream.c:850
+#: gio/gdatainputstream.c:1268 glib/gconvert.c:450 glib/gconvert.c:882
 #: glib/giochannel.c:1576 glib/giochannel.c:1618 glib/giochannel.c:2478
 #: glib/gutf8.c:958 glib/gutf8.c:1412
 msgid "Invalid byte sequence in conversion input"
 msgstr "Secvență de octeți incorectă în inputul conversiei"
 
-#: gio/gcharsetconverter.c:342 glib/gconvert.c:359 glib/gconvert.c:697
+#: gio/gcharsetconverter.c:349 glib/gconvert.c:458 glib/gconvert.c:796
 #: glib/giochannel.c:1583 glib/giochannel.c:2493
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Eroare în timpul conversiei: %s"
 
-#: gio/gcharsetconverter.c:440 gio/gsocket.c:1164
+#: gio/gcharsetconverter.c:447 gio/gsocket.c:1164
 msgid "Cancellable initialization not supported"
 msgstr "Inițializarea întreruptibilă nu este implementată"
 
-#: gio/gcharsetconverter.c:451 glib/gconvert.c:224 glib/giochannel.c:1404
+#: gio/gcharsetconverter.c:458 glib/gconvert.c:323 glib/giochannel.c:1404
 #, c-format
 msgid "Conversion from character set “%s” to “%s” is not supported"
 msgstr "Conversia de la setul de caractere „%s” la „%s” nu este suportată"
 
-#: gio/gcharsetconverter.c:455 glib/gconvert.c:228
+#: gio/gcharsetconverter.c:462 glib/gconvert.c:327
 #, c-format
 msgid "Could not open converter from “%s” to “%s”"
 msgstr "Nu s-a putut deschide convertorul de la „%s” la „%s”"
@@ -365,27 +365,27 @@ msgstr "Tip necunoscută"
 msgid "%s filetype"
 msgstr "tip de fișier %s"
 
-#: gio/gcredentials.c:327
+#: gio/gcredentials.c:337
 msgid "GCredentials contains invalid data"
 msgstr "GCredentials conține date nevalide"
 
-#: gio/gcredentials.c:387 gio/gcredentials.c:678
+#: gio/gcredentials.c:397 gio/gcredentials.c:688
 msgid "GCredentials is not implemented on this OS"
 msgstr "GCredentials nu este implementat pe acest SO"
 
-#: gio/gcredentials.c:542 gio/gcredentials.c:560
+#: gio/gcredentials.c:552 gio/gcredentials.c:570
 msgid "There is no GCredentials support for your platform"
 msgstr "Nu există suport pentru GCredentials pe platforma dumneavoastră"
 
-#: gio/gcredentials.c:618
+#: gio/gcredentials.c:628
 msgid "GCredentials does not contain a process ID on this OS"
 msgstr "GCredentials nu conține un ID de proces pe acest SO"
 
-#: gio/gcredentials.c:672
+#: gio/gcredentials.c:682
 msgid "Credentials spoofing is not possible on this OS"
 msgstr "Spoofing-ul certificărilor nu este posibil pe acest SO"
 
-#: gio/gdatainputstream.c:302
+#: gio/gdatainputstream.c:306
 msgid "Unexpected early end-of-stream"
 msgstr "Flux terminat neașteptat de repede"
 
@@ -536,7 +536,7 @@ msgstr ""
 "Nu se poate determina adresa magistralei de sesiune (neimplementat pe acest "
 "sistem de operare)"
 
-#: gio/gdbusaddress.c:1380 gio/gdbusconnection.c:7333
+#: gio/gdbusaddress.c:1380 gio/gdbusconnection.c:7339
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -545,7 +545,7 @@ msgstr ""
 "Nu se poate determina adresa magistralei din variabila de mediu "
 "DBUS_STARTER_BUS_TYPE — valoare necunoscută „%s”"
 
-#: gio/gdbusaddress.c:1389 gio/gdbusconnection.c:7342
+#: gio/gdbusaddress.c:1389 gio/gdbusconnection.c:7348
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -610,10 +610,10 @@ msgstr "Eroare la crearea directorului „%s”: %s"
 #: gio/gdbusauthmechanismsha1.c:368 gio/gfile.c:1102 gio/gfile.c:1340
 #: gio/gfile.c:1478 gio/gfile.c:1716 gio/gfile.c:1771 gio/gfile.c:1829
 #: gio/gfile.c:1913 gio/gfile.c:1970 gio/gfile.c:2034 gio/gfile.c:2089
-#: gio/gfile.c:3953 gio/gfile.c:4092 gio/gfile.c:4504 gio/gfile.c:4974
-#: gio/gfile.c:5386 gio/gfile.c:5471 gio/gfile.c:5561 gio/gfile.c:5658
-#: gio/gfile.c:5745 gio/gfile.c:5846 gio/gfile.c:9000 gio/gfile.c:9090
-#: gio/gfile.c:9174 gio/win32/gwinhttpfile.c:453
+#: gio/gfile.c:3949 gio/gfile.c:4088 gio/gfile.c:4500 gio/gfile.c:4970
+#: gio/gfile.c:5382 gio/gfile.c:5467 gio/gfile.c:5557 gio/gfile.c:5654
+#: gio/gfile.c:5741 gio/gfile.c:5842 gio/gfile.c:8996 gio/gfile.c:9086
+#: gio/gfile.c:9170 gio/win32/gwinhttpfile.c:453
 msgid "Operation not supported"
 msgstr "Operațiune neimplementată"
 
@@ -678,22 +678,22 @@ msgstr "Eroare la deschiderea inelului de chei „%s” pentru citire: "
 msgid "(Additionally, releasing the lock for “%s” also failed: %s) "
 msgstr "(Adițional, a eșuat și eliberarea blocării pentru „%s”: %s) "
 
-#: gio/gdbusconnection.c:584 gio/gdbusconnection.c:2409
+#: gio/gdbusconnection.c:590 gio/gdbusconnection.c:2415
 msgid "The connection is closed"
 msgstr "Conexiunea este închisă"
 
-#: gio/gdbusconnection.c:1893
+#: gio/gdbusconnection.c:1899
 msgid "Timeout was reached"
 msgstr "Limita de timp a fost atinsă"
 
-#: gio/gdbusconnection.c:2532
+#: gio/gdbusconnection.c:2538
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr ""
 "S-au întâlnit fanioane nesuportate când se construia partea de client a "
 "conexiunii"
 
-#: gio/gdbusconnection.c:4271 gio/gdbusconnection.c:4625
+#: gio/gdbusconnection.c:4277 gio/gdbusconnection.c:4631
 #, c-format
 msgid ""
 "No such interface “org.freedesktop.DBus.Properties” on object at path %s"
@@ -701,80 +701,80 @@ msgstr ""
 "Nu există interfața „org.freedesktop.DBus.Properties” în obiectul de la "
 "calea %s"
 
-#: gio/gdbusconnection.c:4416
+#: gio/gdbusconnection.c:4422
 #, c-format
 msgid "No such property “%s”"
 msgstr "Nu există proprietatea „%s”"
 
-#: gio/gdbusconnection.c:4428
+#: gio/gdbusconnection.c:4434
 #, c-format
 msgid "Property “%s” is not readable"
 msgstr "Proprietatea „%s” nu poate fi citită"
 
-#: gio/gdbusconnection.c:4439
+#: gio/gdbusconnection.c:4445
 #, c-format
 msgid "Property “%s” is not writable"
 msgstr "Proprietatea „%s” nu poate fi scrisă"
 
-#: gio/gdbusconnection.c:4459
+#: gio/gdbusconnection.c:4465
 #, c-format
 msgid "Error setting property “%s”: Expected type “%s” but got “%s”"
 msgstr ""
 "Eroare la stabilirea proprietății „%s”: Se aștepta tipul „%s”, dar s-a "
 "primit „%s”"
 
-#: gio/gdbusconnection.c:4564 gio/gdbusconnection.c:4779
-#: gio/gdbusconnection.c:6756
+#: gio/gdbusconnection.c:4570 gio/gdbusconnection.c:4785
+#: gio/gdbusconnection.c:6762
 #, c-format
 msgid "No such interface “%s”"
 msgstr "Nu există interfața „%s”"
 
-#: gio/gdbusconnection.c:4995 gio/gdbusconnection.c:7273
+#: gio/gdbusconnection.c:5001 gio/gdbusconnection.c:7279
 #, c-format
 msgid "No such interface “%s” on object at path %s"
 msgstr "Nu există interfața „%s” în obiectul de la calea %s"
 
-#: gio/gdbusconnection.c:5096
+#: gio/gdbusconnection.c:5102
 #, c-format
 msgid "No such method “%s”"
 msgstr "Nu există metoda „%s”"
 
-#: gio/gdbusconnection.c:5127
+#: gio/gdbusconnection.c:5133
 #, c-format
 msgid "Type of message, “%s”, does not match expected type “%s”"
 msgstr "Tipul de mesaj, „%s”, nu se potrivește cu cel așteptat „%s”"
 
-#: gio/gdbusconnection.c:5330
+#: gio/gdbusconnection.c:5336
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Există deja un obiect exportat pentru interfața %s de la %s"
 
-#: gio/gdbusconnection.c:5557
+#: gio/gdbusconnection.c:5563
 #, c-format
 msgid "Unable to retrieve property %s.%s"
 msgstr "Nu se poate obține proprietatea %s.%s"
 
-#: gio/gdbusconnection.c:5613
+#: gio/gdbusconnection.c:5619
 #, c-format
 msgid "Unable to set property %s.%s"
 msgstr "Nu se poate stabili proprietatea %s.%s"
 
-#: gio/gdbusconnection.c:5792
+#: gio/gdbusconnection.c:5798
 #, c-format
 msgid "Method “%s” returned type “%s”, but expected “%s”"
 msgstr "Metoda „%s” a întors tipul „%s”, dar se aștepta „%s”"
 
-#: gio/gdbusconnection.c:6868
+#: gio/gdbusconnection.c:6874
 #, c-format
 msgid "Method “%s” on interface “%s” with signature “%s” does not exist"
 msgstr "Metoda „%s” din interfața „%s” cu semnătura „%s” nu există"
 
-#: gio/gdbusconnection.c:6989
+#: gio/gdbusconnection.c:6995
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Un subarbore este deja exporta pentru %s"
 
-#: gio/gdbusconnection.c:7281
+#: gio/gdbusconnection.c:7287
 #, c-format
 msgid "Object does not exist at path “%s”"
 msgstr "Obiectul nu există la calea „%s”"
@@ -1000,23 +1000,23 @@ msgstr "Eroare la întoarcere cu corpul de tipul „%s”"
 msgid "Error return with empty body"
 msgstr "Rezultat de eroare cu corp vid"
 
-#: gio/gdbusprivate.c:2199
+#: gio/gdbusprivate.c:2201
 #, c-format
 msgid "(Type any character to close this window)\n"
 msgstr "(Tastați orice caracter pentru a închide această fereastră)\n"
 
-#: gio/gdbusprivate.c:2385
+#: gio/gdbusprivate.c:2387
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
 msgstr "Sesiunea dbus nu rulează, și lansarea automată a eșuat"
 
-#: gio/gdbusprivate.c:2408
+#: gio/gdbusprivate.c:2410
 #, c-format
 msgid "Unable to get Hardware profile: %s"
 msgstr "Nu se poate obține profilul hardware: %s"
 
 #. Translators: Both placeholders are file paths
-#: gio/gdbusprivate.c:2464
+#: gio/gdbusprivate.c:2461
 #, c-format
 msgid "Unable to load %s or %s: "
 msgstr "Nu s-a putut încărca %s sau %s: "
@@ -1361,45 +1361,45 @@ msgstr "Eroare: %s nu este un nume de magistrală popular valid.\n"
 msgid "Not authorized to change debug settings"
 msgstr "Neautorizat pentru a modifica configurările de depanare"
 
-#: gio/gdesktopappinfo.c:2243 gio/gdesktopappinfo.c:5227
+#: gio/gdesktopappinfo.c:2242 gio/gdesktopappinfo.c:5226
 msgid "Unnamed"
 msgstr "Nedenumit"
 
-#: gio/gdesktopappinfo.c:2653
+#: gio/gdesktopappinfo.c:2652
 msgid "Desktop file didn’t specify Exec field"
 msgstr "Fișierul desktop nu a specificat un câmp Exec"
 
-#: gio/gdesktopappinfo.c:2943
+#: gio/gdesktopappinfo.c:2942
 msgid "Unable to find terminal required for application"
 msgstr "Nu s-a găsit un terminal pentru pornirea aplicației"
 
-#: gio/gdesktopappinfo.c:3003
+#: gio/gdesktopappinfo.c:3002
 #, c-format
 msgid "Program ‘%s’ not found in $PATH"
 msgstr "Programul „%s” nu a fost găsit în $PATH"
 
-#: gio/gdesktopappinfo.c:3739
+#: gio/gdesktopappinfo.c:3738
 #, c-format
 msgid "Can’t create user application configuration folder %s: %s"
 msgstr ""
 "Nu se poate crea dosarul de configurare pentru aplicațiile utilizatorului "
 "%s: %s"
 
-#: gio/gdesktopappinfo.c:3743
+#: gio/gdesktopappinfo.c:3742
 #, c-format
 msgid "Can’t create user MIME configuration folder %s: %s"
 msgstr "Nu se poate crea dosarul de configurare MIME al utilizatorului %s: %s"
 
-#: gio/gdesktopappinfo.c:3985 gio/gdesktopappinfo.c:4009
+#: gio/gdesktopappinfo.c:3984 gio/gdesktopappinfo.c:4008
 msgid "Application information lacks an identifier"
 msgstr "Informațiile despre aplicație nu au un indentificator"
 
-#: gio/gdesktopappinfo.c:4245
+#: gio/gdesktopappinfo.c:4244
 #, c-format
 msgid "Can’t create user desktop file %s"
 msgstr "Nu se poate crea fișierul desktop al utilizatorului %s"
 
-#: gio/gdesktopappinfo.c:4381
+#: gio/gdesktopappinfo.c:4380
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Definiție personalizată pentru %s"
@@ -1489,67 +1489,67 @@ msgstr "Fișierul destinație există deja"
 msgid "Can’t recursively copy directory"
 msgstr "Nu se poate copia recursiv directorul"
 
-#: gio/gfile.c:3048 gio/gfile.c:3096
+#: gio/gfile.c:3044 gio/gfile.c:3092
 #, c-format
 msgid "Copy file range not supported"
 msgstr "Intervalul de fișier de copiere nu este suportat"
 
-#: gio/gfile.c:3054 gio/gfile.c:3165
+#: gio/gfile.c:3050 gio/gfile.c:3161
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "Eroare la aplicarea funcției „splice” fișierului: %s"
 
-#: gio/gfile.c:3161
+#: gio/gfile.c:3157
 msgid "Splice not supported"
 msgstr "Nu există suport pentru funcția splice"
 
-#: gio/gfile.c:3325
+#: gio/gfile.c:3321
 msgid "Copy (reflink/clone) between mounts is not supported"
 msgstr "Copierea (reflink/clonarea) între două montări nu este suportată"
 
-#: gio/gfile.c:3329
+#: gio/gfile.c:3325
 msgid "Copy (reflink/clone) is not supported or invalid"
 msgstr ""
 "Copierea (legătura de referință/clonarea) nu este suportată sau nu este "
 "validă"
 
-#: gio/gfile.c:3334
+#: gio/gfile.c:3330
 msgid "Copy (reflink/clone) is not supported or didn’t work"
 msgstr ""
 "Copierea (legătura de referință/clonarea) nu este suportată sau nu a "
 "funcționat"
 
-#: gio/gfile.c:3399
+#: gio/gfile.c:3395
 msgid "Can’t copy special file"
 msgstr "Nu se poate copia fișierul special"
 
-#: gio/gfile.c:4318
+#: gio/gfile.c:4314
 msgid "Invalid symlink value given"
 msgstr "S-a primit o valoare incorectă pentru legătura simbolică"
 
-#: gio/gfile.c:4328 glib/gfileutils.c:2392
+#: gio/gfile.c:4324 glib/gfileutils.c:2392
 msgid "Symbolic links not supported"
 msgstr "Legăturile simbolice nu sunt implementate"
 
-#: gio/gfile.c:4615
+#: gio/gfile.c:4611
 msgid "Trash not supported"
 msgstr "Nu există o implementare pentru coșul de gunoi"
 
-#: gio/gfile.c:4727
+#: gio/gfile.c:4723
 #, c-format
 msgid "File names cannot contain “%c”"
 msgstr "Numele de fișiere nu pot conține „%c”"
 
-#: gio/gfile.c:7155 gio/gfile.c:7281
+#: gio/gfile.c:7151 gio/gfile.c:7277
 #, c-format
 msgid "Failed to create a temporary directory for template “%s”: %s"
 msgstr "Nu s-a putut crea un director temporar pentru șablonul „%s”: %s"
 
-#: gio/gfile.c:7599 gio/gvolume.c:366
+#: gio/gfile.c:7595 gio/gvolume.c:366
 msgid "volume doesn’t implement mount"
 msgstr "volumul nu implementează montarea"
 
-#: gio/gfile.c:7713 gio/gfile.c:7790
+#: gio/gfile.c:7709 gio/gfile.c:7786
 msgid "No application is registered as handling this file"
 msgstr "Nu există o aplicație înregistrată pentru deschiderea acestui fișier"
 
@@ -1595,7 +1595,7 @@ msgid "Truncate not supported on stream"
 msgstr "Trunchierea fluxului nu este implementată"
 
 #: gio/ghttpproxy.c:93 gio/gresolver.c:535 gio/gresolver.c:688
-#: glib/gconvert.c:1743
+#: glib/gconvert.c:1842
 msgid "Invalid hostname"
 msgstr "Nume nevalid"
 
@@ -1715,7 +1715,7 @@ msgstr "Păstrează cu fișierul când este mutat"
 msgid "“version” takes no arguments"
 msgstr "„version” nu ia argumente"
 
-#: gio/gio-tool.c:209 gio/gio-tool.c:225 glib/goption.c:711
+#: gio/gio-tool.c:209 gio/gio-tool.c:225 glib/goption.c:871
 msgid "Usage:"
 msgstr "Utilizare:"
 
@@ -1836,60 +1836,54 @@ msgstr ""
 msgid "No locations given"
 msgstr "Nu s-au furnizat locații"
 
-#: gio/gio-tool-copy.c:46 gio/gio-tool-move.c:40
+#: gio/gio-tool-copy.c:45 gio/gio-tool-move.c:40
 msgid "No target directory"
 msgstr "Nu este niciun director țintă"
 
-#: gio/gio-tool-copy.c:47 gio/gio-tool-move.c:41
+#: gio/gio-tool-copy.c:46 gio/gio-tool-move.c:41
 msgid "Show progress"
 msgstr "Arată progresul"
 
-#: gio/gio-tool-copy.c:48 gio/gio-tool-move.c:42
+#: gio/gio-tool-copy.c:47 gio/gio-tool-move.c:42
 msgid "Prompt before overwrite"
 msgstr "Solicită înainte de suprascriere"
 
-#: gio/gio-tool-copy.c:49
+#: gio/gio-tool-copy.c:48
 msgid "Preserve all attributes"
 msgstr "Păstrează toate atributele"
 
-#: gio/gio-tool-copy.c:50 gio/gio-tool-move.c:43 gio/gio-tool-save.c:51
+#: gio/gio-tool-copy.c:49 gio/gio-tool-move.c:43 gio/gio-tool-save.c:51
 msgid "Backup existing destination files"
 msgstr "Creează o copie de siguranță a fișierelor destinație existente"
 
-#: gio/gio-tool-copy.c:51
+#: gio/gio-tool-copy.c:50
 msgid "Never follow symbolic links"
 msgstr "Nu urmări niciodată legăturile simbolice"
 
-#: gio/gio-tool-copy.c:52
+#: gio/gio-tool-copy.c:51
 msgid "Use default permissions for the destination"
 msgstr "Utilizează permisiunile implicite pentru destinație"
 
-#: gio/gio-tool-copy.c:53
-#, fuzzy
-#| msgid "Use default permissions for the destination"
-msgid "Use default file modification timestamps for the destination"
-msgstr "Utilizează permisiunile implicite pentru destinație"
-
-#: gio/gio-tool-copy.c:78 gio/gio-tool-move.c:69
+#: gio/gio-tool-copy.c:76 gio/gio-tool-move.c:69
 #, c-format
 msgid "Transferred %s out of %s (%s/s)"
 msgstr "Transferat %s din %s (%s/s)"
 
 #. Translators: commandline placeholder
-#: gio/gio-tool-copy.c:104 gio/gio-tool-move.c:96
+#: gio/gio-tool-copy.c:102 gio/gio-tool-move.c:96
 msgid "SOURCE"
 msgstr "SURSĂ"
 
 #. Translators: commandline placeholder
-#: gio/gio-tool-copy.c:104 gio/gio-tool-move.c:96 gio/gio-tool-save.c:162
+#: gio/gio-tool-copy.c:102 gio/gio-tool-move.c:96 gio/gio-tool-save.c:162
 msgid "DESTINATION"
 msgstr "DESTINAȚIE"
 
-#: gio/gio-tool-copy.c:109
+#: gio/gio-tool-copy.c:107
 msgid "Copy one or more files from SOURCE to DESTINATION."
 msgstr "Copiază unul sau mai multe fișiere de la SURSĂ la DESTINAȚIE."
 
-#: gio/gio-tool-copy.c:111
+#: gio/gio-tool-copy.c:109
 msgid ""
 "gio copy is similar to the traditional cp utility, but using GIO\n"
 "locations instead of local files: for example, you can use something\n"
@@ -1901,12 +1895,12 @@ msgstr ""
 "asemănător\n"
 "cu smb://server/resource/file.txt ca locație."
 
-#: gio/gio-tool-copy.c:153
+#: gio/gio-tool-copy.c:151
 #, c-format
 msgid "Destination %s is not a directory"
 msgstr "Destinația %s nu este un director"
 
-#: gio/gio-tool-copy.c:202 gio/gio-tool-move.c:188
+#: gio/gio-tool-copy.c:198 gio/gio-tool-move.c:188
 #, c-format
 msgid "%s: overwrite “%s”? "
 msgstr "%s: se suprascrie „%s”? "
@@ -4009,7 +4003,7 @@ msgid "Socket is already closed"
 msgstr "Socket-ul este deja închis"
 
 #: gio/gsocket.c:449 gio/gsocket.c:3238 gio/gsocket.c:4469 gio/gsocket.c:4527
-#: gio/gthreadedresolver.c:1452
+#: gio/gthreadedresolver.c:1445
 msgid "Socket I/O timed out"
 msgstr "A expirat limita de timp la I/O pe socket"
 
@@ -4299,13 +4293,13 @@ msgstr "Proxy-ul SOCKSv5 nu acceptă tipul de adresă furnizat."
 msgid "Unknown SOCKSv5 proxy error."
 msgstr "Eroare necunoscută a proxy-ului SOCKSv5."
 
-#: gio/gtestdbus.c:611 glib/gspawn-win32.c:433
+#: gio/gtestdbus.c:614 glib/gspawn-win32.c:433
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
 "Nu s-a putut crea conectorul „pipe” pentru comunicarea cu procesul copil (%s)"
 
-#: gio/gtestdbus.c:618
+#: gio/gtestdbus.c:621
 #, c-format
 msgid "Pipes are not supported in this platform"
 msgstr "Conductele nu sunt suportate pe această platformă"
@@ -4567,148 +4561,148 @@ msgstr "Rulează un serviciu dbus"
 msgid "Wrong args\n"
 msgstr "Argumente greșite\n"
 
-#: glib/gbookmarkfile.c:816
+#: glib/gbookmarkfile.c:861
 #, c-format
 msgid "Unexpected attribute “%s” for element “%s”"
 msgstr "Atribut neașteptat „%s” pentru elementul „%s”"
 
-#: glib/gbookmarkfile.c:827 glib/gbookmarkfile.c:907 glib/gbookmarkfile.c:917
-#: glib/gbookmarkfile.c:1030
+#: glib/gbookmarkfile.c:872 glib/gbookmarkfile.c:952 glib/gbookmarkfile.c:962
+#: glib/gbookmarkfile.c:1075
 #, c-format
 msgid "Attribute “%s” of element “%s” not found"
 msgstr "Atributul „%s” al elementului „%s” nu a fost găsit"
 
-#: glib/gbookmarkfile.c:1239 glib/gbookmarkfile.c:1304
-#: glib/gbookmarkfile.c:1368 glib/gbookmarkfile.c:1378
+#: glib/gbookmarkfile.c:1284 glib/gbookmarkfile.c:1349
+#: glib/gbookmarkfile.c:1413 glib/gbookmarkfile.c:1423
 #, c-format
 msgid "Unexpected tag “%s”, tag “%s” expected"
 msgstr "Etichetă neașteptată „%s”, se aștepta eticheta „%s”"
 
-#: glib/gbookmarkfile.c:1264 glib/gbookmarkfile.c:1278
-#: glib/gbookmarkfile.c:1346 glib/gbookmarkfile.c:1392
+#: glib/gbookmarkfile.c:1309 glib/gbookmarkfile.c:1323
+#: glib/gbookmarkfile.c:1391 glib/gbookmarkfile.c:1437
 #, c-format
 msgid "Unexpected tag “%s” inside “%s”"
 msgstr "Etichetă neașteptată „%s” în „%s”"
 
-#: glib/gbookmarkfile.c:1672
+#: glib/gbookmarkfile.c:1717
 #, c-format
 msgid "Invalid date/time ‘%s’ in bookmark file"
 msgstr "Dată/oră nevalidă „%s” în fișierul de favorit"
 
-#: glib/gbookmarkfile.c:1911
+#: glib/gbookmarkfile.c:1956
 msgid "No valid bookmark file found in data dirs"
 msgstr "Nu s-a găsit un fișier valid cu favorite în directoarele de date"
 
-#: glib/gbookmarkfile.c:2112
+#: glib/gbookmarkfile.c:2157
 #, c-format
 msgid "A bookmark for URI “%s” already exists"
 msgstr "Un favorit pentru URI-ul „%s” există deja"
 
-#: glib/gbookmarkfile.c:2161 glib/gbookmarkfile.c:2319
-#: glib/gbookmarkfile.c:2404 glib/gbookmarkfile.c:2484
-#: glib/gbookmarkfile.c:2569 glib/gbookmarkfile.c:2703
-#: glib/gbookmarkfile.c:2836 glib/gbookmarkfile.c:2971
-#: glib/gbookmarkfile.c:3013 glib/gbookmarkfile.c:3110
-#: glib/gbookmarkfile.c:3231 glib/gbookmarkfile.c:3425
-#: glib/gbookmarkfile.c:3566 glib/gbookmarkfile.c:3785
-#: glib/gbookmarkfile.c:3874 glib/gbookmarkfile.c:3963
-#: glib/gbookmarkfile.c:4082
+#: glib/gbookmarkfile.c:2206 glib/gbookmarkfile.c:2364
+#: glib/gbookmarkfile.c:2449 glib/gbookmarkfile.c:2529
+#: glib/gbookmarkfile.c:2614 glib/gbookmarkfile.c:2748
+#: glib/gbookmarkfile.c:2881 glib/gbookmarkfile.c:3016
+#: glib/gbookmarkfile.c:3058 glib/gbookmarkfile.c:3155
+#: glib/gbookmarkfile.c:3276 glib/gbookmarkfile.c:3470
+#: glib/gbookmarkfile.c:3611 glib/gbookmarkfile.c:3830
+#: glib/gbookmarkfile.c:3919 glib/gbookmarkfile.c:4008
+#: glib/gbookmarkfile.c:4127
 #, c-format
 msgid "No bookmark found for URI “%s”"
 msgstr "Nu s-a găsit niciun favorit pentru URI-ul „%s”"
 
-#: glib/gbookmarkfile.c:2493
+#: glib/gbookmarkfile.c:2538
 #, c-format
 msgid "No MIME type defined in the bookmark for URI “%s”"
 msgstr "Nu s-a definit niciun tip MIME în favorit pentru URI-ul „%s”"
 
-#: glib/gbookmarkfile.c:2578
+#: glib/gbookmarkfile.c:2623
 #, c-format
 msgid "No private flag has been defined in bookmark for URI “%s”"
 msgstr "Nu s-a definit niciun fanion privat în favorit pentru URI-ul „%s”"
 
-#: glib/gbookmarkfile.c:3119
+#: glib/gbookmarkfile.c:3164
 #, c-format
 msgid "No groups set in bookmark for URI “%s”"
 msgstr "Nu s-au stabilit grupuri în favorit pentru URI-ul „%s”"
 
-#: glib/gbookmarkfile.c:3587 glib/gbookmarkfile.c:3795
+#: glib/gbookmarkfile.c:3632 glib/gbookmarkfile.c:3840
 #, c-format
 msgid "No application with name “%s” registered a bookmark for “%s”"
 msgstr "Nicio aplicație cu numele „%s” nu a înregistrat un favorit pentru „%s”"
 
-#: glib/gbookmarkfile.c:3818
+#: glib/gbookmarkfile.c:3863
 #, c-format
 msgid "Failed to expand exec line “%s” with URI “%s”"
 msgstr "Nu s-a putut extinde linia de exec „%s” cu URI-ul „%s”"
 
-#: glib/gconvert.c:370
+#: glib/gconvert.c:469
 msgid "Unrepresentable character in conversion input"
 msgstr "Caracter nereprezentabil în intrarea conversiei"
 
-#: glib/gconvert.c:397 glib/gutf8.c:954 glib/gutf8.c:1167 glib/gutf8.c:1304
+#: glib/gconvert.c:496 glib/gutf8.c:954 glib/gutf8.c:1167 glib/gutf8.c:1304
 #: glib/gutf8.c:1408
 msgid "Partial character sequence at end of input"
 msgstr "Secvență parțială de caractere la sfârșitul inputului"
 
-#: glib/gconvert.c:668
+#: glib/gconvert.c:767
 #, c-format
 msgid "Cannot convert fallback “%s” to codeset “%s”"
 msgstr "Nu se poate converti rezerva „%s” la setul de codare „%s”"
 
-#: glib/gconvert.c:840
+#: glib/gconvert.c:939
 msgid "Embedded NUL byte in conversion input"
 msgstr "Octet NUL încorporat în intrarea conversiei"
 
-#: glib/gconvert.c:861
+#: glib/gconvert.c:960
 msgid "Embedded NUL byte in conversion output"
 msgstr "Octet NUL încorporat în ieșirea conversiei"
 
-#: glib/gconvert.c:1599
+#: glib/gconvert.c:1698
 #, c-format
 msgid "The URI “%s” is not an absolute URI using the “file” scheme"
 msgstr "URI-ul „%s” nu este un URI absolut care utilizează schema „file”"
 
-#: glib/gconvert.c:1629
+#: glib/gconvert.c:1728
 #, c-format
 msgid "The URI “%s” is invalid"
 msgstr "URI-ul „%s” nu este valid"
 
-#: glib/gconvert.c:1642
+#: glib/gconvert.c:1741
 #, c-format
 msgid "The hostname of the URI “%s” is invalid"
 msgstr "Numele de gazdă al URI-ului „%s” nu este valid"
 
-#: glib/gconvert.c:1659
+#: glib/gconvert.c:1758
 #, c-format
 msgid "The URI “%s” contains invalidly escaped characters"
 msgstr "URI-ul „%s” conține caractere eludate nevalid"
 
-#: glib/gconvert.c:1733
+#: glib/gconvert.c:1832
 #, c-format
 msgid "The pathname “%s” is not an absolute path"
 msgstr "Numele căii „%s” nu este o cale absolută"
 
 #. Translators: this is the preferred format for expressing the date and the time
-#: glib/gdatetime.c:195
+#: glib/gdatetime.c:228
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
 msgstr "%a %d %b %Y %T %z"
 
 #. Translators: this is the preferred format for expressing the date
-#: glib/gdatetime.c:198
+#: glib/gdatetime.c:231
 msgctxt "GDateTime"
 msgid "%m/%d/%y"
 msgstr "%d/%m/%y"
 
 #. Translators: this is the preferred format for expressing the time
-#: glib/gdatetime.c:201
+#: glib/gdatetime.c:234
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
 msgstr "%H:%M:%S"
 
 #. Translators: this is the preferred format for expressing 12 hour time
-#: glib/gdatetime.c:204
+#: glib/gdatetime.c:237
 msgctxt "GDateTime"
 msgid "%I:%M:%S %p"
 msgstr "%I:%M:%S %p"
@@ -4729,62 +4723,62 @@ msgstr "%I:%M:%S %p"
 #. * non-European) there is no difference between the standalone and
 #. * complete date form.
 #.
-#: glib/gdatetime.c:243
+#: glib/gdatetime.c:276
 msgctxt "full month name"
 msgid "January"
 msgstr "Ianuarie"
 
-#: glib/gdatetime.c:245
+#: glib/gdatetime.c:278
 msgctxt "full month name"
 msgid "February"
 msgstr "Februarie"
 
-#: glib/gdatetime.c:247
+#: glib/gdatetime.c:280
 msgctxt "full month name"
 msgid "March"
 msgstr "Martie"
 
-#: glib/gdatetime.c:249
+#: glib/gdatetime.c:282
 msgctxt "full month name"
 msgid "April"
 msgstr "Aprilie"
 
-#: glib/gdatetime.c:251
+#: glib/gdatetime.c:284
 msgctxt "full month name"
 msgid "May"
 msgstr "Mai"
 
-#: glib/gdatetime.c:253
+#: glib/gdatetime.c:286
 msgctxt "full month name"
 msgid "June"
 msgstr "Iunie"
 
-#: glib/gdatetime.c:255
+#: glib/gdatetime.c:288
 msgctxt "full month name"
 msgid "July"
 msgstr "Iulie"
 
-#: glib/gdatetime.c:257
+#: glib/gdatetime.c:290
 msgctxt "full month name"
 msgid "August"
 msgstr "August"
 
-#: glib/gdatetime.c:259
+#: glib/gdatetime.c:292
 msgctxt "full month name"
 msgid "September"
 msgstr "Septembrie"
 
-#: glib/gdatetime.c:261
+#: glib/gdatetime.c:294
 msgctxt "full month name"
 msgid "October"
 msgstr "Octombrie"
 
-#: glib/gdatetime.c:263
+#: glib/gdatetime.c:296
 msgctxt "full month name"
 msgid "November"
 msgstr "Noiembrie"
 
-#: glib/gdatetime.c:265
+#: glib/gdatetime.c:298
 msgctxt "full month name"
 msgid "December"
 msgstr "Decembrie"
@@ -4806,132 +4800,132 @@ msgstr "Decembrie"
 #. * other platform.  Here are abbreviated month names in a form
 #. * appropriate when they are used standalone.
 #.
-#: glib/gdatetime.c:297
+#: glib/gdatetime.c:330
 msgctxt "abbreviated month name"
 msgid "Jan"
 msgstr "Ian"
 
-#: glib/gdatetime.c:299
+#: glib/gdatetime.c:332
 msgctxt "abbreviated month name"
 msgid "Feb"
 msgstr "Feb"
 
-#: glib/gdatetime.c:301
+#: glib/gdatetime.c:334
 msgctxt "abbreviated month name"
 msgid "Mar"
 msgstr "Mar"
 
-#: glib/gdatetime.c:303
+#: glib/gdatetime.c:336
 msgctxt "abbreviated month name"
 msgid "Apr"
 msgstr "Apr"
 
-#: glib/gdatetime.c:305
+#: glib/gdatetime.c:338
 msgctxt "abbreviated month name"
 msgid "May"
 msgstr "Mai"
 
-#: glib/gdatetime.c:307
+#: glib/gdatetime.c:340
 msgctxt "abbreviated month name"
 msgid "Jun"
 msgstr "Iun"
 
-#: glib/gdatetime.c:309
+#: glib/gdatetime.c:342
 msgctxt "abbreviated month name"
 msgid "Jul"
 msgstr "Iul"
 
-#: glib/gdatetime.c:311
+#: glib/gdatetime.c:344
 msgctxt "abbreviated month name"
 msgid "Aug"
 msgstr "Aug"
 
-#: glib/gdatetime.c:313
+#: glib/gdatetime.c:346
 msgctxt "abbreviated month name"
 msgid "Sep"
 msgstr "Sep"
 
-#: glib/gdatetime.c:315
+#: glib/gdatetime.c:348
 msgctxt "abbreviated month name"
 msgid "Oct"
 msgstr "Oct"
 
-#: glib/gdatetime.c:317
+#: glib/gdatetime.c:350
 msgctxt "abbreviated month name"
 msgid "Nov"
 msgstr "Noi"
 
-#: glib/gdatetime.c:319
+#: glib/gdatetime.c:352
 msgctxt "abbreviated month name"
 msgid "Dec"
 msgstr "Dec"
 
-#: glib/gdatetime.c:334
+#: glib/gdatetime.c:367
 msgctxt "full weekday name"
 msgid "Monday"
 msgstr "Luni"
 
-#: glib/gdatetime.c:336
+#: glib/gdatetime.c:369
 msgctxt "full weekday name"
 msgid "Tuesday"
 msgstr "Marți"
 
-#: glib/gdatetime.c:338
+#: glib/gdatetime.c:371
 msgctxt "full weekday name"
 msgid "Wednesday"
 msgstr "Miercuri"
 
-#: glib/gdatetime.c:340
+#: glib/gdatetime.c:373
 msgctxt "full weekday name"
 msgid "Thursday"
 msgstr "Joi"
 
-#: glib/gdatetime.c:342
+#: glib/gdatetime.c:375
 msgctxt "full weekday name"
 msgid "Friday"
 msgstr "Vineri"
 
-#: glib/gdatetime.c:344
+#: glib/gdatetime.c:377
 msgctxt "full weekday name"
 msgid "Saturday"
 msgstr "Sâmbătă"
 
-#: glib/gdatetime.c:346
+#: glib/gdatetime.c:379
 msgctxt "full weekday name"
 msgid "Sunday"
 msgstr "Duminică"
 
-#: glib/gdatetime.c:361
+#: glib/gdatetime.c:394
 msgctxt "abbreviated weekday name"
 msgid "Mon"
 msgstr "Lun"
 
-#: glib/gdatetime.c:363
+#: glib/gdatetime.c:396
 msgctxt "abbreviated weekday name"
 msgid "Tue"
 msgstr "Mar"
 
-#: glib/gdatetime.c:365
+#: glib/gdatetime.c:398
 msgctxt "abbreviated weekday name"
 msgid "Wed"
 msgstr "Mie"
 
-#: glib/gdatetime.c:367
+#: glib/gdatetime.c:400
 msgctxt "abbreviated weekday name"
 msgid "Thu"
 msgstr "Joi"
 
-#: glib/gdatetime.c:369
+#: glib/gdatetime.c:402
 msgctxt "abbreviated weekday name"
 msgid "Fri"
 msgstr "Vin"
 
-#: glib/gdatetime.c:371
+#: glib/gdatetime.c:404
 msgctxt "abbreviated weekday name"
 msgid "Sat"
 msgstr "Sâm"
 
-#: glib/gdatetime.c:373
+#: glib/gdatetime.c:406
 msgctxt "abbreviated weekday name"
 msgid "Sun"
 msgstr "Dum"
@@ -4953,62 +4947,62 @@ msgstr "Dum"
 #. * (western European, non-European) there is no difference between the
 #. * standalone and complete date form.
 #.
-#: glib/gdatetime.c:437
+#: glib/gdatetime.c:470
 msgctxt "full month name with day"
 msgid "January"
 msgstr "Ianuarie"
 
-#: glib/gdatetime.c:439
+#: glib/gdatetime.c:472
 msgctxt "full month name with day"
 msgid "February"
 msgstr "Februarie"
 
-#: glib/gdatetime.c:441
+#: glib/gdatetime.c:474
 msgctxt "full month name with day"
 msgid "March"
 msgstr "Martie"
 
-#: glib/gdatetime.c:443
+#: glib/gdatetime.c:476
 msgctxt "full month name with day"
 msgid "April"
 msgstr "Aprilie"
 
-#: glib/gdatetime.c:445
+#: glib/gdatetime.c:478
 msgctxt "full month name with day"
 msgid "May"
 msgstr "Mai"
 
-#: glib/gdatetime.c:447
+#: glib/gdatetime.c:480
 msgctxt "full month name with day"
 msgid "June"
 msgstr "Iunie"
 
-#: glib/gdatetime.c:449
+#: glib/gdatetime.c:482
 msgctxt "full month name with day"
 msgid "July"
 msgstr "Iulie"
 
-#: glib/gdatetime.c:451
+#: glib/gdatetime.c:484
 msgctxt "full month name with day"
 msgid "August"
 msgstr "August"
 
-#: glib/gdatetime.c:453
+#: glib/gdatetime.c:486
 msgctxt "full month name with day"
 msgid "September"
 msgstr "Septembrie"
 
-#: glib/gdatetime.c:455
+#: glib/gdatetime.c:488
 msgctxt "full month name with day"
 msgid "October"
 msgstr "Octombrie"
 
-#: glib/gdatetime.c:457
+#: glib/gdatetime.c:490
 msgctxt "full month name with day"
 msgid "November"
 msgstr "Noiembrie"
 
-#: glib/gdatetime.c:459
+#: glib/gdatetime.c:492
 msgctxt "full month name with day"
 msgid "December"
 msgstr "Decembrie"
@@ -5030,74 +5024,74 @@ msgstr "Decembrie"
 #. * month names almost ready to copy and paste here.  In other systems
 #. * due to a bug the result is incorrect in some languages.
 #.
-#: glib/gdatetime.c:524
+#: glib/gdatetime.c:557
 msgctxt "abbreviated month name with day"
 msgid "Jan"
 msgstr "Ian"
 
-#: glib/gdatetime.c:526
+#: glib/gdatetime.c:559
 msgctxt "abbreviated month name with day"
 msgid "Feb"
 msgstr "Feb"
 
-#: glib/gdatetime.c:528
+#: glib/gdatetime.c:561
 msgctxt "abbreviated month name with day"
 msgid "Mar"
 msgstr "Mar"
 
-#: glib/gdatetime.c:530
+#: glib/gdatetime.c:563
 msgctxt "abbreviated month name with day"
 msgid "Apr"
 msgstr "Apr"
 
-#: glib/gdatetime.c:532
+#: glib/gdatetime.c:565
 msgctxt "abbreviated month name with day"
 msgid "May"
 msgstr "Mai"
 
-#: glib/gdatetime.c:534
+#: glib/gdatetime.c:567
 msgctxt "abbreviated month name with day"
 msgid "Jun"
 msgstr "Iun"
 
-#: glib/gdatetime.c:536
+#: glib/gdatetime.c:569
 msgctxt "abbreviated month name with day"
 msgid "Jul"
 msgstr "Iul"
 
-#: glib/gdatetime.c:538
+#: glib/gdatetime.c:571
 msgctxt "abbreviated month name with day"
 msgid "Aug"
 msgstr "Aug"
 
-#: glib/gdatetime.c:540
+#: glib/gdatetime.c:573
 msgctxt "abbreviated month name with day"
 msgid "Sep"
 msgstr "Sep"
 
-#: glib/gdatetime.c:542
+#: glib/gdatetime.c:575
 msgctxt "abbreviated month name with day"
 msgid "Oct"
 msgstr "Oct"
 
-#: glib/gdatetime.c:544
+#: glib/gdatetime.c:577
 msgctxt "abbreviated month name with day"
 msgid "Nov"
 msgstr "Noi"
 
-#: glib/gdatetime.c:546
+#: glib/gdatetime.c:579
 msgctxt "abbreviated month name with day"
 msgid "Dec"
 msgstr "Dec"
 
 #. Translators: 'before midday' indicator
-#: glib/gdatetime.c:563
+#: glib/gdatetime.c:596
 msgctxt "GDateTime"
 msgid "AM"
 msgstr "AM"
 
 #. Translators: 'after midday' indicator
-#: glib/gdatetime.c:566
+#: glib/gdatetime.c:599
 msgctxt "GDateTime"
 msgid "PM"
 msgstr "PM"
@@ -5206,15 +5200,15 @@ msgstr "Canalul se termină cu un caracter parțial"
 msgid "Can’t do a raw read in g_io_channel_read_to_end"
 msgstr "Nu se poate efectua o citire brută în g_io_channel_read_to_end"
 
-#: glib/gkeyfile.c:792
+#: glib/gkeyfile.c:802
 msgid "Valid key file could not be found in search dirs"
 msgstr "Nu s-a găsit un fișier cheie valid în directoarele de căutare"
 
-#: glib/gkeyfile.c:829
+#: glib/gkeyfile.c:839
 msgid "Not a regular file"
 msgstr "Nu e un fișier obișnuit"
 
-#: glib/gkeyfile.c:1287
+#: glib/gkeyfile.c:1297
 #, c-format
 msgid ""
 "Key file contains line “%s” which is not a key-value pair, group, or comment"
@@ -5222,44 +5216,44 @@ msgstr ""
 "Fișierul cheii conține linia „%s” care nu este o pereche cheie-valoare, un "
 "grup, sau un comentariu"
 
-#: glib/gkeyfile.c:1344
+#: glib/gkeyfile.c:1354
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "Nume incorect de grup: %s"
 
-#: glib/gkeyfile.c:1368
+#: glib/gkeyfile.c:1378
 msgid "Key file does not start with a group"
 msgstr "Fișierul cheie nu începe cu un grup"
 
-#: glib/gkeyfile.c:1392
+#: glib/gkeyfile.c:1402
 #, c-format
 msgid "Invalid key name: %.*s"
 msgstr "Nume nevalid de cheie: %.*s"
 
-#: glib/gkeyfile.c:1420
+#: glib/gkeyfile.c:1430
 #, c-format
 msgid "Key file contains unsupported encoding “%s”"
 msgstr "Fișierul cheii conține codarea nesuportată „%s”"
 
-#: glib/gkeyfile.c:1668 glib/gkeyfile.c:1841 glib/gkeyfile.c:3288
-#: glib/gkeyfile.c:3390 glib/gkeyfile.c:3495 glib/gkeyfile.c:3624
-#: glib/gkeyfile.c:3767 glib/gkeyfile.c:4016 glib/gkeyfile.c:4090
+#: glib/gkeyfile.c:1678 glib/gkeyfile.c:1851 glib/gkeyfile.c:3298
+#: glib/gkeyfile.c:3400 glib/gkeyfile.c:3505 glib/gkeyfile.c:3634
+#: glib/gkeyfile.c:3777 glib/gkeyfile.c:4026 glib/gkeyfile.c:4100
 #, c-format
 msgid "Key file does not have group “%s”"
 msgstr "Fișierul cheii nu are grupul „%s”"
 
-#: glib/gkeyfile.c:1796
+#: glib/gkeyfile.c:1806
 #, c-format
 msgid "Key file does not have key “%s” in group “%s”"
 msgstr "Fișierul cheii nu are cheia „%s” în grupul „%s”"
 
-#: glib/gkeyfile.c:1958 glib/gkeyfile.c:2074
+#: glib/gkeyfile.c:1968 glib/gkeyfile.c:2084
 #, c-format
 msgid "Key file contains key “%s” with value “%s” which is not UTF-8"
 msgstr ""
 "Fișierul cheii conține cheia „%s”, cu valoarea „%s”, care nu este UTF-8"
 
-#: glib/gkeyfile.c:1978 glib/gkeyfile.c:2094 glib/gkeyfile.c:2533
+#: glib/gkeyfile.c:1988 glib/gkeyfile.c:2104 glib/gkeyfile.c:2543
 #, c-format
 msgid ""
 "Key file contains key “%s” which has a value that cannot be interpreted."
@@ -5267,7 +5261,7 @@ msgstr ""
 "Fișierul cheii conține cheia „%s” care are o valoare care nu se poate "
 "interpreta."
 
-#: glib/gkeyfile.c:2748 glib/gkeyfile.c:3117
+#: glib/gkeyfile.c:2758 glib/gkeyfile.c:3127
 #, c-format
 msgid ""
 "Key file contains key “%s” in group “%s” which has a value that cannot be "
@@ -5276,36 +5270,36 @@ msgstr ""
 "Fișierul cheie conține cheia „%s” în grupul „%s”, care are o valoare ce nu "
 "poate fi interpretată."
 
-#: glib/gkeyfile.c:2826 glib/gkeyfile.c:2903
+#: glib/gkeyfile.c:2836 glib/gkeyfile.c:2913
 #, c-format
 msgid "Key “%s” in group “%s” has value “%s” where %s was expected"
 msgstr "Cheia „%s” în grupul „%s” are valoarea „%s” unde %s a fost așteptat"
 
-#: glib/gkeyfile.c:4346
+#: glib/gkeyfile.c:4357
 msgid "Key file contains escape character at end of line"
 msgstr "Fișieul cheie conține caractere „escape” la sfârșit de linie"
 
-#: glib/gkeyfile.c:4368
+#: glib/gkeyfile.c:4394
 #, c-format
 msgid "Key file contains invalid escape sequence “%s”"
 msgstr "Fișierul cheie conține secvența de eludare nevalidă „%s”"
 
-#: glib/gkeyfile.c:4520
+#: glib/gkeyfile.c:4545
 #, c-format
 msgid "Value “%s” cannot be interpreted as a number."
 msgstr "Valoarea „%s” nu poate fi interpretată ca un număr."
 
-#: glib/gkeyfile.c:4534
+#: glib/gkeyfile.c:4559
 #, c-format
 msgid "Integer value “%s” out of range"
 msgstr "Valoarea întreagă „%s” este în afara limitelor"
 
-#: glib/gkeyfile.c:4567
+#: glib/gkeyfile.c:4592
 #, c-format
 msgid "Value “%s” cannot be interpreted as a float number."
 msgstr "Valoarea „%s” nu poate fi interpretată ca un număr rațional."
 
-#: glib/gkeyfile.c:4606
+#: glib/gkeyfile.c:4631
 #, c-format
 msgid "Value “%s” cannot be interpreted as a boolean."
 msgstr "Valoarea „%s” nu poate fi interpretată ca o valoare logică."
@@ -5326,32 +5320,32 @@ msgstr "Nu s-a putut mapa %s%s%s%s: mmap() a eșuat: %s"
 msgid "Failed to open file “%s”: open() failed: %s"
 msgstr "Nu s-a putut deschide fișierul „%s”: open() a eșuat: %s"
 
-#: glib/gmarkup.c:344 glib/gmarkup.c:386
+#: glib/gmarkup.c:398 glib/gmarkup.c:440
 #, c-format
 msgid "Error on line %d char %d: "
 msgstr "Eroare în linia %d, caracterul %d: "
 
-#: glib/gmarkup.c:408 glib/gmarkup.c:491
+#: glib/gmarkup.c:462 glib/gmarkup.c:545
 #, c-format
 msgid "Invalid UTF-8 encoded text in name — not valid “%s”"
 msgstr "Text codat UTF-8 nevalid în nume — „%s” nu este valid"
 
-#: glib/gmarkup.c:419
+#: glib/gmarkup.c:473
 #, c-format
 msgid "“%s” is not a valid name"
 msgstr "„%s” nu este un nume valid"
 
-#: glib/gmarkup.c:435
+#: glib/gmarkup.c:489
 #, c-format
 msgid "“%s” is not a valid name: “%c”"
 msgstr "„%s” nu este un nume valid: „%c”"
 
-#: glib/gmarkup.c:559
+#: glib/gmarkup.c:613
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Eroare în linia %d: %s"
 
-#: glib/gmarkup.c:636
+#: glib/gmarkup.c:690
 #, c-format
 msgid ""
 "Failed to parse “%-.*s”, which should have been a digit inside a character "
@@ -5360,7 +5354,7 @@ msgstr ""
 "Nu s-a putut parsa „%-.*s”, care ar fi trebuit să fie o cifră într-o "
 "referință de caracter (de exemplu &#234;) — poate cifra este prea mare"
 
-#: glib/gmarkup.c:648
+#: glib/gmarkup.c:702
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity — escape ampersand "
@@ -5370,24 +5364,24 @@ msgstr ""
 "utilizat un caracter ampersand fără intenția de a începe o entitate — "
 "eludați ampersand ca &amp;"
 
-#: glib/gmarkup.c:674
+#: glib/gmarkup.c:728
 #, c-format
 msgid "Character reference “%-.*s” does not encode a permitted character"
 msgstr "Referința de caracter „%-.*s” nu codează un caracter permis"
 
-#: glib/gmarkup.c:712
+#: glib/gmarkup.c:766
 msgid ""
 "Empty entity “&;” seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "S-a depistat o entitate goală „&;”; entitățile valide sunt: &amp; &quot; "
 "&lt; &gt; &apos;"
 
-#: glib/gmarkup.c:720
+#: glib/gmarkup.c:774
 #, c-format
 msgid "Entity name “%-.*s” is not known"
 msgstr "Numele entității „%-.*s” nu este cunoscut"
 
-#: glib/gmarkup.c:725
+#: glib/gmarkup.c:779
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity — escape ampersand as &amp;"
@@ -5396,11 +5390,11 @@ msgstr ""
 "caracter ampersand fără intenția de a începe o entitate — eludați ampersand "
 "ca &amp;"
 
-#: glib/gmarkup.c:1139
+#: glib/gmarkup.c:1193
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Documentul trebuie să înceapă cu un element (de ex. <book>)"
 
-#: glib/gmarkup.c:1179
+#: glib/gmarkup.c:1233
 #, c-format
 msgid ""
 "“%s” is not a valid character following a “<” character; it may not begin an "
@@ -5409,7 +5403,7 @@ msgstr ""
 "„%s” nu este un caracter valid după un caracter „<”; nu poate începe numele "
 "unui element"
 
-#: glib/gmarkup.c:1222
+#: glib/gmarkup.c:1276
 #, c-format
 msgid ""
 "Odd character “%s”, expected a “>” character to end the empty-element tag "
@@ -5418,12 +5412,12 @@ msgstr ""
 "Caracter neobișnuit „%s”, se aștepta un caracter „>” pentru a termina "
 "eticheta de element gol „%s”"
 
-#: glib/gmarkup.c:1292
+#: glib/gmarkup.c:1346
 #, c-format
 msgid "Too many attributes in element “%s”"
 msgstr "Prea multe atribute în elementul „%s”"
 
-#: glib/gmarkup.c:1312
+#: glib/gmarkup.c:1366
 #, c-format
 msgid ""
 "Odd character “%s”, expected a “=” after attribute name “%s” of element “%s”"
@@ -5431,7 +5425,7 @@ msgstr ""
 "Caracter neobișnuit „%s”, se aștepta un caracter „=” după numele atributului "
 "„%s” al elementului „%s”"
 
-#: glib/gmarkup.c:1354
+#: glib/gmarkup.c:1408
 #, c-format
 msgid ""
 "Odd character “%s”, expected a “>” or “/” character to end the start tag of "
@@ -5442,7 +5436,7 @@ msgstr ""
 "termina eticheta de început a elementului „%s”, sau opțional un atribut; "
 "poate ați utilizat un caracter nevalid în numele atributului"
 
-#: glib/gmarkup.c:1399
+#: glib/gmarkup.c:1453
 #, c-format
 msgid ""
 "Odd character “%s”, expected an open quote mark after the equals sign when "
@@ -5451,7 +5445,7 @@ msgstr ""
 "Caracter neobișnuit „%s”, se așteptau ghilimele de deschidere după semnul "
 "egal când se dă valoarea atributului „%s” al elementului „%s”"
 
-#: glib/gmarkup.c:1533
+#: glib/gmarkup.c:1587
 #, c-format
 msgid ""
 "“%s” is not a valid character following the characters “</”; “%s” may not "
@@ -5460,7 +5454,7 @@ msgstr ""
 "„%s” nu este un caracter valid după caracterele „</”; „%s” nu poate începe "
 "un nume de element"
 
-#: glib/gmarkup.c:1571
+#: glib/gmarkup.c:1625
 #, c-format
 msgid ""
 "“%s” is not a valid character following the close element name “%s”; the "
@@ -5469,27 +5463,27 @@ msgstr ""
 "„%s” nu este un caracter valid după numele elementului de închidere „%s”; "
 "caracterul permis este „>”"
 
-#: glib/gmarkup.c:1583
+#: glib/gmarkup.c:1637
 #, c-format
 msgid "Element “%s” was closed, no element is currently open"
 msgstr "Elementul „%s” a fost închis, nici un element nu este curent deschis"
 
-#: glib/gmarkup.c:1592
+#: glib/gmarkup.c:1646
 #, c-format
 msgid "Element “%s” was closed, but the currently open element is “%s”"
 msgstr "Elementul „%s” a fost închis, dar elementul deschis curent este „%s”"
 
-#: glib/gmarkup.c:1745
+#: glib/gmarkup.c:1799
 msgid "Document was empty or contained only whitespace"
 msgstr "Documentul era gol sau conținea doar spațiu gol"
 
-#: glib/gmarkup.c:1759
+#: glib/gmarkup.c:1813
 msgid "Document ended unexpectedly just after an open angle bracket “<”"
 msgstr ""
 "Documentul s-a terminat în mod neașteptat imediat după o paranteză "
 "unghiulară de deschidere „<”"
 
-#: glib/gmarkup.c:1767 glib/gmarkup.c:1812
+#: glib/gmarkup.c:1821 glib/gmarkup.c:1866
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open — “%s” was the last "
@@ -5498,7 +5492,7 @@ msgstr ""
 "Documentul s-a terminat în mod neașteptat cu unele elemente încă deschise — "
 "„%s” a fost ultimul element deschis"
 
-#: glib/gmarkup.c:1775
+#: glib/gmarkup.c:1829
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -5507,23 +5501,23 @@ msgstr ""
 "Documentul s-a terminat în mod neașteptat, se aștepta un caracter „>” care "
 "să încheie eticheta <%s/>"
 
-#: glib/gmarkup.c:1781
+#: glib/gmarkup.c:1835
 msgid "Document ended unexpectedly inside an element name"
 msgstr ""
 "Documentul s-a terminat în mod neașteptat în cadrul numelui unui element"
 
-#: glib/gmarkup.c:1787
+#: glib/gmarkup.c:1841
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr ""
 "Documentul s-a terminat în mod neașteptat în cadrul numele unui atribut"
 
-#: glib/gmarkup.c:1792
+#: glib/gmarkup.c:1846
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr ""
 "Documentul s-a terminat în mod neașteptat în cadrul unei etichete ce "
 "deschidea un element."
 
-#: glib/gmarkup.c:1798
+#: glib/gmarkup.c:1852
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -5531,267 +5525,267 @@ msgstr ""
 "Documentul s-a terminat în mod neașteptat după semnul egal ce urma unui nume "
 "atribut. Nici o valoare pentru atribut"
 
-#: glib/gmarkup.c:1805
+#: glib/gmarkup.c:1859
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr ""
 "Documentul s-a terminat în mod neașteptat în cadrul valorii unui atribut"
 
-#: glib/gmarkup.c:1822
+#: glib/gmarkup.c:1876
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element “%s”"
 msgstr ""
 "Documentul s-a terminat în mod neașteptat în cadrul etichetei de închidere a "
 "elementului „%s”"
 
-#: glib/gmarkup.c:1826
+#: glib/gmarkup.c:1880
 msgid ""
 "Document ended unexpectedly inside the close tag for an unopened element"
 msgstr ""
 "Documentul s-a terminat în mod neașteptat în cadrul etichetei de închidere a "
 "unui element nedeschis"
 
-#: glib/gmarkup.c:1832
+#: glib/gmarkup.c:1886
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Documentul s-a terminat în mod neașteptat în cadrul unui comentariu sau a "
 "unei instrucțiuni de procesare"
 
-#: glib/goption.c:715
+#: glib/goption.c:875
 msgid "[OPTION…]"
 msgstr "[OPȚIUNE…]"
 
-#: glib/goption.c:831
+#: glib/goption.c:991
 msgid "Help Options:"
 msgstr "Opțiuni ajutor:"
 
-#: glib/goption.c:832
+#: glib/goption.c:992
 msgid "Show help options"
 msgstr "Arată opțiunile de ajutor"
 
-#: glib/goption.c:838
+#: glib/goption.c:998
 msgid "Show all help options"
 msgstr "Arată toate opțiunile de ajutor"
 
-#: glib/goption.c:901
+#: glib/goption.c:1061
 msgid "Application Options:"
 msgstr "Opțiuni aplicație:"
 
-#: glib/goption.c:903
+#: glib/goption.c:1063
 msgid "Options:"
 msgstr "Opțiuni:"
 
-#: glib/goption.c:967 glib/goption.c:1037
+#: glib/goption.c:1127 glib/goption.c:1197
 #, c-format
 msgid "Cannot parse integer value “%s” for %s"
 msgstr "Nu se poate parsa valoarea întreagă „%s” pentru %s"
 
-#: glib/goption.c:977 glib/goption.c:1045
+#: glib/goption.c:1137 glib/goption.c:1205
 #, c-format
 msgid "Integer value “%s” for %s out of range"
 msgstr "Valoarea întreagă „%s” pentru %s este în afara limitelor"
 
-#: glib/goption.c:1002
+#: glib/goption.c:1162
 #, c-format
 msgid "Cannot parse double value “%s” for %s"
 msgstr "Nu se poate parsa valoarea dublă „%s” pentru %s"
 
-#: glib/goption.c:1010
+#: glib/goption.c:1170
 #, c-format
 msgid "Double value “%s” for %s out of range"
 msgstr "Valoarea dublă „%s” pentru %s este în afara limitelor"
 
-#: glib/goption.c:1302 glib/goption.c:1381
+#: glib/goption.c:1462 glib/goption.c:1541
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Eroare la prelucrarea opțiunii %s"
 
-#: glib/goption.c:1403 glib/goption.c:1516
+#: glib/goption.c:1563 glib/goption.c:1676
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Argument lipsă pentru %s"
 
-#: glib/goption.c:2026
+#: glib/goption.c:2186
 #, c-format
 msgid "Unknown option %s"
 msgstr "Opțiune necunoscută %s"
 
-#: glib/gregex.c:478
+#: glib/gregex.c:480
 msgid "corrupted object"
 msgstr "obiect corupt"
 
-#: glib/gregex.c:480
+#: glib/gregex.c:482
 msgid "out of memory"
 msgstr "memorie insuficientă"
 
-#: glib/gregex.c:495
+#: glib/gregex.c:497
 msgid "internal error"
 msgstr "eroare internă"
 
-#: glib/gregex.c:497
+#: glib/gregex.c:499
 msgid "the pattern contains items not supported for partial matching"
 msgstr ""
 "modelul de căutare conține elemente pentru care nu se pot face comparații "
 "parțiale"
 
-#: glib/gregex.c:499
+#: glib/gregex.c:501
 msgid "back references as conditions are not supported for partial matching"
 msgstr ""
 "pentru condițiile de tip „back reference” nu se pot face comparații parțiale"
 
-#: glib/gregex.c:505
+#: glib/gregex.c:507
 msgid "recursion limit reached"
 msgstr "s-a atins limita de recursivitate"
 
-#: glib/gregex.c:507
+#: glib/gregex.c:509
 msgid "bad offset"
 msgstr "deplasament greșit"
 
-#: glib/gregex.c:509
+#: glib/gregex.c:511
 msgid "recursion loop"
 msgstr "buclă de recursivitate"
 
 #. should not happen in GRegex since we check modes before each match
-#: glib/gregex.c:512
+#: glib/gregex.c:514
 msgid "matching mode is requested that was not compiled for JIT"
 msgstr "este cerut un mod de potrivire care nu a fost compilat pentru JIT"
 
-#: glib/gregex.c:533 glib/gregex.c:1849
+#: glib/gregex.c:535 glib/gregex.c:1851
 msgid "unknown error"
 msgstr "eroare necunoscută"
 
-#: glib/gregex.c:554
+#: glib/gregex.c:556
 msgid "\\ at end of pattern"
 msgstr "\\ la sfârșitul unui model"
 
-#: glib/gregex.c:558
+#: glib/gregex.c:560
 msgid "\\c at end of pattern"
 msgstr "\\c la sfârșitul unui model"
 
-#: glib/gregex.c:563
+#: glib/gregex.c:565
 msgid "unrecognized character following \\"
 msgstr "caracter nerecunoscut după \\"
 
-#: glib/gregex.c:567
+#: glib/gregex.c:569
 msgid "numbers out of order in {} quantifier"
 msgstr "numere neordonate în cuantificatorul {}"
 
-#: glib/gregex.c:571
+#: glib/gregex.c:573
 msgid "number too big in {} quantifier"
 msgstr "număr prea mare în cuantificatorul {}"
 
-#: glib/gregex.c:575
+#: glib/gregex.c:577
 msgid "missing terminating ] for character class"
 msgstr "lipsește un ] de închidere pentru clasa caracter"
 
-#: glib/gregex.c:579
+#: glib/gregex.c:581
 msgid "invalid escape sequence in character class"
 msgstr "secvență de eludare incorectă în clasa caracter"
 
-#: glib/gregex.c:583
+#: glib/gregex.c:585
 msgid "range out of order in character class"
 msgstr "interval depășit în clasa caracter"
 
-#: glib/gregex.c:588
+#: glib/gregex.c:590
 msgid "nothing to repeat"
 msgstr "nimic de repetat"
 
-#: glib/gregex.c:592
+#: glib/gregex.c:594
 msgid "unrecognized character after (? or (?-"
 msgstr "caracter nerecunoscut după (? sau (?-"
 
-#: glib/gregex.c:596
+#: glib/gregex.c:598
 msgid "POSIX named classes are supported only within a class"
 msgstr "Clasele cu nume POSIX sunt implementate doar înăuntrul altei clase"
 
-#: glib/gregex.c:600
+#: glib/gregex.c:602
 msgid "POSIX collating elements are not supported"
 msgstr "Elementele POSIX de unire nu sunt suportate"
 
-#: glib/gregex.c:606
+#: glib/gregex.c:608
 msgid "missing terminating )"
 msgstr "lipsește un ) de închidere"
 
-#: glib/gregex.c:610
+#: glib/gregex.c:612
 msgid "reference to non-existent subpattern"
 msgstr "referință la un submodel inexistent"
 
-#: glib/gregex.c:614
+#: glib/gregex.c:616
 msgid "missing ) after comment"
 msgstr "lipsește un ) după comentariu"
 
-#: glib/gregex.c:618
+#: glib/gregex.c:620
 msgid "regular expression is too large"
 msgstr "expresia regulată este prea lungă"
 
-#: glib/gregex.c:622
+#: glib/gregex.c:624
 msgid "malformed number or name after (?("
 msgstr "număr sau nume formatat eronat după (?("
 
-#: glib/gregex.c:626
+#: glib/gregex.c:628
 msgid "lookbehind assertion is not fixed length"
 msgstr "aserțiunea „lookbehind” nu e de lungime fixă"
 
-#: glib/gregex.c:630
+#: glib/gregex.c:632
 msgid "conditional group contains more than two branches"
 msgstr "grupul de condiții conține mai mult de două ramuri"
 
-#: glib/gregex.c:634
+#: glib/gregex.c:636
 msgid "assertion expected after (?("
 msgstr "se așteaptă o aserțiune după (?("
 
-#: glib/gregex.c:638
+#: glib/gregex.c:640
 msgid "a numbered reference must not be zero"
 msgstr "o referință numerotată trebuie să fie diferită de zero"
 
-#: glib/gregex.c:642
+#: glib/gregex.c:644
 msgid "unknown POSIX class name"
 msgstr "nume necunoscut de clasă POSIX"
 
-#: glib/gregex.c:647
+#: glib/gregex.c:649
 msgid "character value in \\x{...} sequence is too large"
 msgstr "valoarea caracterului în secvența \\x{...} este prea mare"
 
-#: glib/gregex.c:651
+#: glib/gregex.c:653
 msgid "\\C not allowed in lookbehind assertion"
 msgstr "\\C nu este permis în aserțiunea lookbehind"
 
-#: glib/gregex.c:655
+#: glib/gregex.c:657
 msgid "missing terminator in subpattern name"
 msgstr "terminator lipsă în numele de submodel"
 
-#: glib/gregex.c:659
+#: glib/gregex.c:661
 msgid "two named subpatterns have the same name"
 msgstr "două submodele au același nume"
 
-#: glib/gregex.c:663
+#: glib/gregex.c:665
 msgid "malformed \\P or \\p sequence"
 msgstr "secvență eronată \\P sau \\p"
 
-#: glib/gregex.c:667
+#: glib/gregex.c:669
 msgid "unknown property name after \\P or \\p"
 msgstr "nume necunoscut de proprietate după \\P ori \\p"
 
-#: glib/gregex.c:671
+#: glib/gregex.c:673
 msgid "subpattern name is too long (maximum 32 characters)"
 msgstr "nume de submodel prea lung (sunt permise cel mult 32 de caractere)"
 
-#: glib/gregex.c:675
+#: glib/gregex.c:677
 msgid "too many named subpatterns (maximum 10,000)"
 msgstr "prea multe nume de submodeluri (sunt permise cel mult 10.000)"
 
-#: glib/gregex.c:679
+#: glib/gregex.c:681
 msgid "octal value is greater than \\377"
 msgstr "valoarea octală este mai mare decât \\377"
 
-#: glib/gregex.c:683
+#: glib/gregex.c:685
 msgid "DEFINE group contains more than one branch"
 msgstr "Grupul DEFINE conține mai mult de o ramură"
 
-#: glib/gregex.c:687
+#: glib/gregex.c:689
 msgid "inconsistent NEWLINE options"
 msgstr "opțiuni NEWLINE inconsistente"
 
-#: glib/gregex.c:691
+#: glib/gregex.c:693
 msgid ""
 "\\g is not followed by a braced, angle-bracketed, or quoted name or number, "
 "or by a plain number"
@@ -5799,119 +5793,119 @@ msgstr ""
 "\\g nu este urmat de un nume sau un număr între acolade, paranteze "
 "unghiulare sau citate, sau de un număr simplu"
 
-#: glib/gregex.c:696
+#: glib/gregex.c:698
 msgid "an argument is not allowed for (*ACCEPT), (*FAIL), or (*COMMIT)"
 msgstr "nu este permis un argument pentru (*ACCEPT), (*FAIL), sau (*COMMIT)"
 
-#: glib/gregex.c:700
+#: glib/gregex.c:702
 msgid "(*VERB) not recognized"
 msgstr "(*VERB) nu este recunoscut"
 
-#: glib/gregex.c:704
+#: glib/gregex.c:706
 msgid "number is too big"
 msgstr "numărul este prea mare"
 
-#: glib/gregex.c:708
+#: glib/gregex.c:710
 msgid "missing subpattern name after (?&"
 msgstr "lipsește numele de sub-mostră după (?&"
 
-#: glib/gregex.c:712
+#: glib/gregex.c:714
 msgid "different names for subpatterns of the same number are not allowed"
 msgstr "nume diferite pentru submodele ale aceluiași număr nu sunt permise"
 
-#: glib/gregex.c:716
+#: glib/gregex.c:718
 msgid "(*MARK) must have an argument"
 msgstr "(*MARK) trebuie să aibă un argument"
 
-#: glib/gregex.c:720
+#: glib/gregex.c:722
 msgid "\\c must be followed by an ASCII character"
 msgstr "\\c trebuie să fie urmat de un caracter ASCII"
 
-#: glib/gregex.c:724
+#: glib/gregex.c:726
 msgid "\\k is not followed by a braced, angle-bracketed, or quoted name"
 msgstr ""
 "\\k nu este urmat de un nume scris între paranteze acolade, unghiulare sau "
 "cu citate"
 
-#: glib/gregex.c:728
+#: glib/gregex.c:730
 msgid "\\N is not supported in a class"
 msgstr "\\N nu este suportat într-o clasă"
 
-#: glib/gregex.c:732
+#: glib/gregex.c:734
 msgid "name is too long in (*MARK), (*PRUNE), (*SKIP), or (*THEN)"
 msgstr "numele este prea lung în (*MARK), (*PRUNE), (*SKIP), sau (*THEN)"
 
-#: glib/gregex.c:736 glib/gregex.c:872
+#: glib/gregex.c:738 glib/gregex.c:874
 msgid "code overflow"
 msgstr "„overflow” în cod"
 
-#: glib/gregex.c:740
+#: glib/gregex.c:742
 msgid "unrecognized character after (?P"
 msgstr "caracter nerecunoscut după (?P"
 
-#: glib/gregex.c:744
+#: glib/gregex.c:746
 msgid "overran compiling workspace"
 msgstr "spațiul de compilare a fost depășit"
 
-#: glib/gregex.c:748
+#: glib/gregex.c:750
 msgid "previously-checked referenced subpattern not found"
 msgstr "nu s-a găsit submodelul referit și verificat anterior"
 
-#: glib/gregex.c:871 glib/gregex.c:1133 glib/gregex.c:2455
+#: glib/gregex.c:873 glib/gregex.c:1135 glib/gregex.c:2457
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "Eroare la compararea expresiei regulate %s: %s"
 
-#: glib/gregex.c:1733
+#: glib/gregex.c:1735
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "Biblioteca PCRE este compilată cu suport UTF-8"
 
-#: glib/gregex.c:1741
+#: glib/gregex.c:1743
 msgid "PCRE library is compiled with incompatible options"
 msgstr "Biblioteca PCRE este compilată cu opțiuni incompatibile"
 
-#: glib/gregex.c:1858
+#: glib/gregex.c:1860
 #, c-format
 msgid "Error while compiling regular expression ‘%s’ at char %s: %s"
 msgstr "Eroare la compilarea expresiei regulate „%s” la caracterul %s: %s"
 
-#: glib/gregex.c:2898
+#: glib/gregex.c:2900
 msgid "hexadecimal digit or “}” expected"
 msgstr "s-a așteptat o cifră hexazecimală sau „}”"
 
-#: glib/gregex.c:2914
+#: glib/gregex.c:2916
 msgid "hexadecimal digit expected"
 msgstr "se aștepta un digit hexadecimal"
 
-#: glib/gregex.c:2954
+#: glib/gregex.c:2956
 msgid "missing “<” in symbolic reference"
 msgstr "lipsește „<” în referința simbolică"
 
-#: glib/gregex.c:2963
+#: glib/gregex.c:2965
 msgid "unfinished symbolic reference"
 msgstr "referință simbolică neterminată"
 
-#: glib/gregex.c:2970
+#: glib/gregex.c:2972
 msgid "zero-length symbolic reference"
 msgstr "referință simbolică de lungime zero"
 
-#: glib/gregex.c:2981
+#: glib/gregex.c:2983
 msgid "digit expected"
 msgstr "se aștepta un digit"
 
-#: glib/gregex.c:2999
+#: glib/gregex.c:3001
 msgid "illegal symbolic reference"
 msgstr "referință simbolică ilegală"
 
-#: glib/gregex.c:3062
+#: glib/gregex.c:3064
 msgid "stray final “\\”"
 msgstr "caracter neprevăzut la final „\\”"
 
-#: glib/gregex.c:3066
+#: glib/gregex.c:3068
 msgid "unknown escape sequence"
 msgstr "secvență de eludare necunoscută"
 
-#: glib/gregex.c:3076
+#: glib/gregex.c:3078
 #, c-format
 msgid "Error while parsing replacement text “%s” at char %lu: %s"
 msgstr ""
@@ -5942,94 +5936,94 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Textul era gol (sau conținea doar spațiu gol)"
 
-#: glib/gspawn.c:303
+#: glib/gspawn.c:320
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Nu s-au putut citi datele din procesul copil (%s)"
 
-#: glib/gspawn.c:456
+#: glib/gspawn.c:473
 #, c-format
 msgid "Unexpected error in reading data from a child process (%s)"
 msgstr "Eroare neașteptată la citirea datelor din procesul copil (%s)"
 
-#: glib/gspawn.c:536
+#: glib/gspawn.c:558
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Eroare neașteptată în waitpid() (%s)"
 
-#: glib/gspawn.c:1158 glib/gspawn-win32.c:1575
+#: glib/gspawn.c:1180 glib/gspawn-win32.c:1575
 #, c-format
 msgid "Child process exited with code %ld"
 msgstr "Procesul inferior a ieșit cu codul %ld"
 
-#: glib/gspawn.c:1166
+#: glib/gspawn.c:1188
 #, c-format
 msgid "Child process killed by signal %ld"
 msgstr "Procesul inferior a fost terminat de semnalul %ld"
 
-#: glib/gspawn.c:1173
+#: glib/gspawn.c:1195
 #, c-format
 msgid "Child process stopped by signal %ld"
 msgstr "Procesul inferior a fost oprit de semnalul %ld"
 
-#: glib/gspawn.c:1180
+#: glib/gspawn.c:1202
 #, c-format
 msgid "Child process exited abnormally"
 msgstr "Procesul inferior a ieșit în mod neobișnuit"
 
-#: glib/gspawn.c:2017 glib/gspawn-win32.c:472 glib/gspawn-win32.c:480
+#: glib/gspawn.c:2039 glib/gspawn-win32.c:472 glib/gspawn-win32.c:480
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Nu s-au putut citi datele din conectorul „pipe” copil (%s)"
 
-#: glib/gspawn.c:2396
+#: glib/gspawn.c:2411
 #, c-format
 msgid "Failed to spawn child process “%s” (%s)"
 msgstr "Nu s-a putut crea procesul inferior „%s” (%s)"
 
-#: glib/gspawn.c:2520
+#: glib/gspawn.c:2537
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Nu s-a putut clona procesul (%s)"
 
-#: glib/gspawn.c:2681 glib/gspawn-win32.c:503
+#: glib/gspawn.c:2697 glib/gspawn-win32.c:503
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
 msgstr "Nu s-a putut schimba la directorul „%s” (%s)"
 
-#: glib/gspawn.c:2691
+#: glib/gspawn.c:2707
 #, c-format
 msgid "Failed to execute child process “%s” (%s)"
 msgstr "Nu s-a putut executa procesul inferior „%s” (%s)"
 
-#: glib/gspawn.c:2701
+#: glib/gspawn.c:2717
 #, c-format
 msgid "Failed to open file to remap file descriptor (%s)"
 msgstr ""
 "Nu s-a putut deschide fișierul pentru a recartografia descriptorul de "
 "fișiere (%s)"
 
-#: glib/gspawn.c:2709
+#: glib/gspawn.c:2725
 #, c-format
 msgid "Failed to duplicate file descriptor for child process (%s)"
 msgstr "Nu s-a putut duplica descriptorul de fișier pentru procesul copil (%s)"
 
-#: glib/gspawn.c:2718
+#: glib/gspawn.c:2734
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Nu s-a putut clona procesul copil (%s)"
 
-#: glib/gspawn.c:2726
+#: glib/gspawn.c:2742
 #, c-format
 msgid "Failed to close file descriptor for child process (%s)"
 msgstr "Nu s-a putut închide descriptorul de fișier pentru procesul copil (%s)"
 
-#: glib/gspawn.c:2734
+#: glib/gspawn.c:2750
 #, c-format
 msgid "Unknown error executing child process “%s”"
 msgstr "Eroare necunoscută la executarea procesului inferior „%s”"
 
-#: glib/gspawn.c:2758
+#: glib/gspawn.c:2774
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Nu s-au putut citi date suficiente de la procesul copil (%s)"
@@ -6238,65 +6232,65 @@ msgstr "PiO"
 msgid "EiB"
 msgstr "EiO"
 
-#. Translators: A unit symbol for size formatting, showing for example: "13.0 kbit"
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 kb"
 #: glib/gutils.c:2994
-msgid "kbit"
-msgstr ""
+msgid "kb"
+msgstr "kb"
 
-#. Translators: A unit symbol for size formatting, showing for example: "13.0 Mbit"
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Mb"
 #: glib/gutils.c:2996
-msgid "Mbit"
-msgstr ""
+msgid "Mb"
+msgstr "Mb"
 
-#. Translators: A unit symbol for size formatting, showing for example: "13.0 Gbit"
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Gb"
 #: glib/gutils.c:2998
-msgid "Gbit"
-msgstr ""
+msgid "Gb"
+msgstr "Gb"
 
-#. Translators: A unit symbol for size formatting, showing for example: "13.0 Tbit"
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Tb"
 #: glib/gutils.c:3000
-msgid "Tbit"
-msgstr ""
+msgid "Tb"
+msgstr "Tb"
 
-#. Translators: A unit symbol for size formatting, showing for example: "13.0 Pbit"
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Pb"
 #: glib/gutils.c:3002
-msgid "Pbit"
-msgstr ""
+msgid "Pb"
+msgstr "Pb"
 
-#. Translators: A unit symbol for size formatting, showing for example: "13.0 Ebit"
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Eb"
 #: glib/gutils.c:3004
-msgid "Ebit"
-msgstr ""
+msgid "Eb"
+msgstr "Eb"
 
-#. Translators: A unit symbol for size formatting, showing for example: "13.0 Kibit"
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Kib"
 #: glib/gutils.c:3008
-msgid "Kibit"
-msgstr ""
+msgid "Kib"
+msgstr "Kib"
 
-#. Translators: A unit symbol for size formatting, showing for example: "13.0 Mibit"
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Mib"
 #: glib/gutils.c:3010
-msgid "Mibit"
-msgstr ""
+msgid "Mib"
+msgstr "Mib"
 
-#. Translators: A unit symbol for size formatting, showing for example: "13.0 Gibit"
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Gib"
 #: glib/gutils.c:3012
-msgid "Gibit"
-msgstr ""
+msgid "Gib"
+msgstr "Gib"
 
-#. Translators: A unit symbol for size formatting, showing for example: "13.0 Tibit"
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Tib"
 #: glib/gutils.c:3014
-msgid "Tibit"
-msgstr ""
+msgid "Tib"
+msgstr "Tib"
 
-#. Translators: A unit symbol for size formatting, showing for example: "13.0 Pibit"
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Pib"
 #: glib/gutils.c:3016
-msgid "Pibit"
-msgstr ""
+msgid "Pib"
+msgstr "Pib"
 
-#. Translators: A unit symbol for size formatting, showing for example: "13.0 Eibit"
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Eib"
 #: glib/gutils.c:3018
-msgid "Eibit"
-msgstr ""
+msgid "Eib"
+msgstr "Eib"
 
 #: glib/gutils.c:3056
 msgid "byte"
@@ -6406,41 +6400,10 @@ msgstr "%.1f PB"
 msgid "%.1f EB"
 msgstr "%.1f EB"
 
-#~ msgid "kb"
-#~ msgstr "kb"
-
-#~ msgid "Mb"
-#~ msgstr "Mb"
-
-#~ msgid "Gb"
-#~ msgstr "Gb"
-
-#~ msgid "Tb"
-#~ msgstr "Tb"
-
-#~ msgid "Pb"
-#~ msgstr "Pb"
-
-#~ msgid "Eb"
-#~ msgstr "Eb"
-
-#~ msgid "Kib"
-#~ msgstr "Kib"
-
-#~ msgid "Mib"
-#~ msgstr "Mib"
-
-#~ msgid "Gib"
-#~ msgstr "Gib"
-
-#~ msgid "Tib"
-#~ msgstr "Tib"
-
-#~ msgid "Pib"
-#~ msgstr "Pib"
-
-#~ msgid "Eib"
-#~ msgstr "Eib"
+#, fuzzy
+#~| msgid "Use default permissions for the destination"
+#~ msgid "Use default file modification timestamps for the destination"
+#~ msgstr "Utilizează permisiunile implicite pentru destinație"
 
 #~ msgid "backtracking limit reached"
 #~ msgstr "s-a atins limita de backtracking"
