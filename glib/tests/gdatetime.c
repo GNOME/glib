@@ -1,6 +1,7 @@
 /* gdatetime-tests.c
  *
  * Copyright (C) 2009-2010 Christian Hergert <chris@dronelabs.com>
+ * Copyright 2023 Philip Withnall
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  *
@@ -27,6 +28,8 @@
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <locale.h>
+
+#include "gdatetime-private.h"
 
 #ifdef G_OS_WIN32
 #define WIN32_LEAN_AND_MEAN
@@ -1718,6 +1721,12 @@ test_non_utf8_printf (void)
   TEST_PRINTF ("%%", "%");
   TEST_PRINTF ("%", "");
   TEST_PRINTF ("%9", NULL);
+  TEST_PRINTF ("%Ec", "平成21年10月24日 00時00分00秒");
+  TEST_PRINTF ("%EC", "平成");
+  TEST_PRINTF ("%Ex", "平成21年10月24日");
+  TEST_PRINTF ("%EX", "00時00分00秒");
+  TEST_PRINTF ("%Ey", "21");
+  TEST_PRINTF ("%EY", "平成21年");
 
   setlocale (LC_ALL, oldlocale);
   g_free (oldlocale);
@@ -1872,6 +1881,30 @@ test_modifiers (void)
 #else
     g_test_skip ("langinfo not available, skipping O modifier tests");
 #endif
+
+  setlocale (LC_ALL, "en_GB.utf-8");
+  if (strstr (setlocale (LC_ALL, NULL), "en_GB") != NULL)
+    {
+      TEST_PRINTF_DATE (2009, 1, 1, "%c", "thu 01 jan 2009 00:00:00 utc");
+      TEST_PRINTF_DATE (2009, 1, 1, "%Ec", "thu 01 jan 2009 00:00:00 utc");
+
+      TEST_PRINTF_DATE (2009, 1, 1, "%C", "20");
+      TEST_PRINTF_DATE (2009, 1, 1, "%EC", "20");
+
+      TEST_PRINTF_DATE (2009, 1, 2, "%x", "02/01/09");
+      TEST_PRINTF_DATE (2009, 1, 2, "%Ex", "02/01/09");
+
+      TEST_PRINTF_TIME (1, 2, 3, "%X", "01:02:03");
+      TEST_PRINTF_TIME (1, 2, 3, "%EX", "01:02:03");
+
+      TEST_PRINTF_DATE (2009, 1, 1, "%y", "09");
+      TEST_PRINTF_DATE (2009, 1, 1, "%Ey", "09");
+
+      TEST_PRINTF_DATE (2009, 1, 1, "%Y", "2009");
+      TEST_PRINTF_DATE (2009, 1, 1, "%EY", "2009");
+    }
+  else
+    g_test_skip ("locale en_GB not available, skipping E modifier tests");
 
   setlocale (LC_ALL, oldlocale);
   g_free (oldlocale);
@@ -2210,6 +2243,164 @@ test_all_dates (void)
     }
 
   g_time_zone_unref (timezone);
+}
+
+static void
+test_date_time_eras_japan (void)
+{
+  gchar *oldlocale;
+
+  oldlocale = g_strdup (setlocale (LC_ALL, NULL));
+  setlocale (LC_ALL, "ja_JP.utf-8");
+  if (strstr (setlocale (LC_ALL, NULL), "ja_JP") == NULL)
+    {
+      g_test_skip ("locale ja_JP.utf-8 not available, skipping Japanese era tests");
+      g_free (oldlocale);
+      return;
+    }
+
+  /* See https://en.wikipedia.org/wiki/Japanese_era_name
+   * First test the Reiwa era (令和) */
+  TEST_PRINTF_DATE (2023, 06, 01, "%Ec", "令和05年06月01日 00時00分00秒");
+  TEST_PRINTF_DATE (2023, 06, 01, "%EC", "令和");
+  TEST_PRINTF_DATE (2023, 06, 01, "%Ex", "令和05年06月01日");
+  TEST_PRINTF_DATE (2023, 06, 01, "%EX", "00時00分00秒");
+  TEST_PRINTF_DATE (2023, 06, 01, "%Ey", "05");
+  TEST_PRINTF_DATE (2023, 06, 01, "%EY", "令和05年");
+
+  /* Heisei era (平成) */
+  TEST_PRINTF_DATE (2019, 04, 30, "%Ec", "平成31年04月30日 00時00分00秒");
+  TEST_PRINTF_DATE (2019, 04, 30, "%EC", "平成");
+  TEST_PRINTF_DATE (2019, 04, 30, "%Ex", "平成31年04月30日");
+  TEST_PRINTF_DATE (2019, 04, 30, "%EX", "00時00分00秒");
+  TEST_PRINTF_DATE (2019, 04, 30, "%Ey", "31");
+  TEST_PRINTF_DATE (2019, 04, 30, "%EY", "平成31年");
+
+  /* Shōwa era (昭和) */
+  TEST_PRINTF_DATE (1926, 12, 25, "%Ec", "昭和元年12月25日 00時00分00秒");
+  TEST_PRINTF_DATE (1926, 12, 25, "%EC", "昭和");
+  TEST_PRINTF_DATE (1926, 12, 25, "%Ex", "昭和元年12月25日");
+  TEST_PRINTF_DATE (1926, 12, 25, "%EX", "00時00分00秒");
+  TEST_PRINTF_DATE (1926, 12, 25, "%Ey", "01");
+  TEST_PRINTF_DATE (1926, 12, 25, "%EY", "昭和元年");
+
+  setlocale (LC_ALL, oldlocale);
+  g_free (oldlocale);
+}
+
+static void
+test_date_time_eras_thailand (void)
+{
+  gchar *oldlocale;
+
+  oldlocale = g_strdup (setlocale (LC_ALL, NULL));
+  setlocale (LC_ALL, "th_TH.utf-8");
+  if (strstr (setlocale (LC_ALL, NULL), "th_TH") == NULL)
+    {
+      g_test_skip ("locale th_TH.utf-8 not available, skipping Thai era tests");
+      g_free (oldlocale);
+      return;
+    }
+
+  /* See https://en.wikipedia.org/wiki/Thai_solar_calendar */
+  TEST_PRINTF_DATE (2023, 06, 01, "%Ec", "วันพฤหัสบดีที่  1 มิถุนายน พ.ศ. 2566, 00.00.00 น.");
+  TEST_PRINTF_DATE (2023, 06, 01, "%EC", "พ.ศ.");
+  TEST_PRINTF_DATE (2023, 06, 01, "%Ex", " 1 มิ.ย. 2566");
+  TEST_PRINTF_DATE (2023, 06, 01, "%EX", "00.00.00 น.");
+  TEST_PRINTF_DATE (2023, 06, 01, "%Ey", "2566");
+  TEST_PRINTF_DATE (2023, 06, 01, "%EY", "พ.ศ. 2566");
+
+  TEST_PRINTF_DATE (01, 06, 01, "%Ex", " 1 มิ.ย. 544");
+
+  setlocale (LC_ALL, oldlocale);
+  g_free (oldlocale);
+}
+
+static void
+test_date_time_eras_parsing (void)
+{
+  struct
+    {
+      const char *desc;
+      gboolean expected_success;
+      size_t expected_n_segments;
+    }
+  vectors[] =
+    {
+      /* Some successful parsing: */
+      { "", TRUE, 0 },
+      /* From https://github.com/bminor/glibc/blob/9fd3409842b3e2d31cff5dbd6f96066c430f0aa2/localedata/locales/th_TH#L233: */
+      { "+:1:-543/01/01:+*:พ.ศ.:%EC %Ey", TRUE, 1 },
+      /* From https://github.com/bminor/glibc/blob/9fd3409842b3e2d31cff5dbd6f96066c430f0aa2/localedata/locales/ja_JP#L14967C5-L14977C60: */
+      { "+:2:2020/01/01:+*:令和:%EC%Ey年;"
+        "+:1:2019/05/01:2019/12/31:令和:%EC元年;"
+        "+:2:1990/01/01:2019/04/30:平成:%EC%Ey年;"
+        "+:1:1989/01/08:1989/12/31:平成:%EC元年;"
+        "+:2:1927/01/01:1989/01/07:昭和:%EC%Ey年;"
+        "+:1:1926/12/25:1926/12/31:昭和:%EC元年;"
+        "+:2:1913/01/01:1926/12/24:大正:%EC%Ey年;"
+        "+:1:1912/07/30:1912/12/31:大正:%EC元年;"
+        "+:6:1873/01/01:1912/07/29:明治:%EC%Ey年;"
+        "+:1:0001/01/01:1872/12/31:西暦:%EC%Ey年;"
+        "+:1:-0001/12/31:-*:紀元前:%EC%Ey年", TRUE, 11 },
+      { "-:2:2020/01/01:-*:令和:%EC%Ey年", TRUE, 1 },
+      { "+:2:2020/01/01:2020/01/01:令和:%EC%Ey年", TRUE, 1 },
+      { "+:2:+2020/01/01:+*:令和:%EC%Ey年", TRUE, 1 },
+      /* Some errors: */
+      { ".:2:2020/01/01:+*:令和:%EC%Ey年", FALSE, 0 },
+      { "+.2:2020/01/01:+*:令和:%EC%Ey年", FALSE, 0 },
+      { "+", FALSE, 0 },
+      { "+:", FALSE, 0 },
+      { "+::", FALSE, 0 },
+      { "+:200", FALSE, 0 },
+      { "+:2nonsense", FALSE, 0 },
+      { "+:2nonsense:", FALSE, 0 },
+      { "+:2:", FALSE, 0 },
+      { "+:2::", FALSE, 0 },
+      { "+:2:2020-01/01:+*:令和:%EC%Ey年", FALSE, 0 },
+      { "+:2:2020nonsense/01/01:+*:令和:%EC%Ey年", FALSE, 0 },
+      { "+:2:2020:+*:令和:%EC%Ey年", FALSE, 0 },
+      { "+:2:18446744073709551615/01/01:+*:令和:%EC%Ey年", FALSE, 0 },
+      { "+:2:2020/01-01:+*:令和:%EC%Ey年", FALSE, 0 },
+      { "+:2:2020/01nonsense/01:+*:令和:%EC%Ey年", FALSE, 0 },
+      { "+:2:2020/01:+*:令和:%EC%Ey年", FALSE, 0 },
+      { "+:2:2020/00/01:+*:令和:%EC%Ey年", FALSE, 0 },
+      { "+:2:2020/13/01:+*:令和:%EC%Ey年", FALSE, 0 },
+      { "+:2:2020/01/00:+*:令和:%EC%Ey年", FALSE, 0 },
+      { "+:2:2020/01/32:+*:令和:%EC%Ey年", FALSE, 0 },
+      { "+:2:2020/01/01nonsense:+*:令和:%EC%Ey年", FALSE, 0 },
+      { "+:2:2020/01/01", FALSE, 0 },
+      { "+:2:2020/01/01:", FALSE, 0 },
+      { "+:2:2020/01/01::", FALSE, 0 },
+      { "+:2:2020/01/01:2021-01-01:令和:%EC%Ey年", FALSE, 0 },
+      { "+:2:2020/01/01:+*", FALSE, 0 },
+      { "+:2:2020/01/01:+*:", FALSE, 0 },
+      { "+:2:2020/01/01:+*::", FALSE, 0 },
+      { "+:2:2020/01/01:+*:令和", FALSE, 0 },
+      { "+:2:2020/01/01:+*:令和:", FALSE, 0 },
+      { "+:2:2020/01/01:+*:令和:;", FALSE, 0 },
+    };
+
+  for (size_t i = 0; i < G_N_ELEMENTS (vectors); i++)
+    {
+      GPtrArray *segments = NULL;
+
+      g_test_message ("Vector %" G_GSIZE_FORMAT ": %s", i, vectors[i].desc);
+
+      segments = _g_era_description_parse (vectors[i].desc);
+
+      if (vectors[i].expected_success)
+        {
+          g_assert_nonnull (segments);
+          g_assert_cmpuint (segments->len, ==, vectors[i].expected_n_segments);
+        }
+      else
+        {
+          g_assert_null (segments);
+        }
+
+      g_clear_pointer (&segments, g_ptr_array_unref);
+    }
 }
 
 static void
@@ -3249,6 +3440,10 @@ main (gint   argc,
   g_test_add_func ("/GDateTime/dst", test_GDateTime_dst);
   g_test_add_func ("/GDateTime/test_z", test_z);
   g_test_add_func ("/GDateTime/test-all-dates", test_all_dates);
+  g_test_add_func ("/GDateTime/eras/japan", test_date_time_eras_japan);
+  g_test_add_func ("/GDateTime/eras/thailand", test_date_time_eras_thailand);
+  g_test_add_func ("/GDateTime/eras/parsing", test_date_time_eras_parsing);
+
   g_test_add_func ("/GTimeZone/find-interval", test_find_interval);
   g_test_add_func ("/GTimeZone/adjust-time", test_adjust_time);
   g_test_add_func ("/GTimeZone/no-header", test_no_header);
