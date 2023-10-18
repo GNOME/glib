@@ -1834,6 +1834,7 @@ test_modifiers (void)
   TEST_PRINTF_TIME (1, 0, 0, "%#P", "am");
 
   oldlocale = g_strdup (setlocale (LC_ALL, NULL));
+
   setlocale (LC_ALL, "fa_IR.utf-8");
 #ifdef HAVE_LANGINFO_OUTDIGIT
   if (strstr (setlocale (LC_ALL, NULL), "fa_IR") != NULL)
@@ -1852,6 +1853,26 @@ test_modifiers (void)
 #else
     g_test_skip ("langinfo not available, skipping O modifier tests");
 #endif
+
+  setlocale (LC_ALL, "gu_IN.utf-8");
+#ifdef HAVE_LANGINFO_OUTDIGIT
+  if (strstr (setlocale (LC_ALL, NULL), "gu_IN") != NULL)
+    {
+      TEST_PRINTF_TIME (23, 0, 0, "%OH", "૨૩");    /* '23' */
+      TEST_PRINTF_TIME (23, 0, 0, "%OI", "૧૧");    /* '11' */
+      TEST_PRINTF_TIME (23, 0, 0, "%OM", "૦૦");    /* '00' */
+
+      TEST_PRINTF_DATE (2011, 7, 1, "%Om", "૦૭");  /* '07' */
+      TEST_PRINTF_DATE (2011, 7, 1, "%0Om", "૦૭"); /* '07' */
+      TEST_PRINTF_DATE (2011, 7, 1, "%-Om", "૭");         /* '7' */
+      TEST_PRINTF_DATE (2011, 7, 1, "%_Om", " ૭");        /* ' 7' */
+    }
+  else
+    g_test_skip ("locale gu_IN not available, skipping O modifier tests");
+#else
+    g_test_skip ("langinfo not available, skipping O modifier tests");
+#endif
+
   setlocale (LC_ALL, oldlocale);
   g_free (oldlocale);
 }

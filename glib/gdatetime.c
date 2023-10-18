@@ -54,6 +54,7 @@
 #define _GNU_SOURCE 1
 #endif
 
+#include <locale.h>
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
@@ -2820,6 +2821,9 @@ format_z (GString *outstr,
 /* Initializes the array with UTF-8 encoded alternate digits suitable for use
  * in current locale. Returns NULL when current locale does not use alternate
  * digits or there was an error converting them to UTF-8.
+ *
+ * This needs external locking, so must only be called from within
+ * format_number().
  */
 static const gchar * const *
 initialize_alt_digits (void)
@@ -2874,6 +2878,9 @@ format_number (GString     *str,
   const gchar * const *digits = ascii_digits;
   const gchar *tmp[10];
   gint i = 0;
+#ifdef HAVE_LANGINFO_OUTDIGIT
+  static GMutex alt_digits_mutex;
+#endif
 
   g_return_if_fail (width <= 10);
 
@@ -2881,16 +2888,21 @@ format_number (GString     *str,
   if (use_alt_digits)
     {
       static const gchar * const *alt_digits = NULL;
-      static gsize initialised;
+      static char *alt_digits_locale = NULL;
+      const char *current_ctype_locale = setlocale (LC_CTYPE, NULL);
 
-      if G_UNLIKELY (g_once_init_enter (&initialised))
+      /* Lock so we can initialise (or re-initialise, if the locale has changed)
+       * and hold access to the digits buffer until done formatting. */
+      g_mutex_lock (&alt_digits_mutex);
+
+      if (g_strcmp0 (alt_digits_locale, current_ctype_locale) != 0)
         {
           alt_digits = initialize_alt_digits ();
 
           if (alt_digits == NULL)
             alt_digits = ascii_digits;
 
-          g_once_init_leave (&initialised, TRUE);
+          alt_digits_locale = g_strdup (current_ctype_locale);
         }
 
       digits = alt_digits;
@@ -2906,6 +2918,11 @@ format_number (GString     *str,
 
   while (pad && i < width)
     tmp[i++] = *pad == '0' ? digits[0] : pad;
+
+#ifdef HAVE_LANGINFO_OUTDIGIT
+  if (use_alt_digits)
+    g_mutex_unlock (&alt_digits_mutex);
+#endif
 
   /* should really be impossible */
   g_assert (i <= 10);

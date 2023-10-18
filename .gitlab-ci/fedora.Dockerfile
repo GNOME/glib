@@ -28,6 +28,7 @@ RUN dnf -y update \
     glibc-langpack-es \
     glibc-langpack-fa \
     glibc-langpack-fr \
+    glibc-langpack-gu \
     glibc-langpack-hr \
     glibc-langpack-ja \
     glibc-langpack-lt \
