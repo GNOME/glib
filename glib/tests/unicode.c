@@ -173,6 +173,11 @@ test_unichar_break_type (void)
     { G_UNICODE_BREAK_EMOJI_BASE,          0x1F466 },
     { G_UNICODE_BREAK_EMOJI_MODIFIER,      0x1F3FB },
     { G_UNICODE_BREAK_ZERO_WIDTH_JOINER,   0x200D },
+    { G_UNICODE_BREAK_AKSARA,              0x1B45 },
+    { G_UNICODE_BREAK_AKSARA_PRE_BASE,     0x1193F },
+    { G_UNICODE_BREAK_AKSARA_START,        0x11F50 },
+    { G_UNICODE_BREAK_VIRAMA_FINAL,        0x1BF3 },
+    { G_UNICODE_BREAK_VIRAMA,              0xA9C0 },
   };
 
   for (i = 0; i < G_N_ELEMENTS (examples); i++)
