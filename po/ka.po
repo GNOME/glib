@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2023-09-06 04:18+0000\n"
-"PO-Revision-Date: 2023-09-08 14:07+0200\n"
+"POT-Creation-Date: 2023-10-07 15:03+0000\n"
+"PO-Revision-Date: 2023-10-20 07:49+0200\n"
 "Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: Georgian <(nothing)>\n"
 "Language: ka\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.4\n"
 
 #: gio/gappinfo.c:339
 msgid "Setting default applications not supported yet"
@@ -1670,7 +1670,7 @@ msgstr "შეყვანის ნაკადს წაკითხვის 
 #. * you try to start one
 #: gio/ginputstream.c:1256 gio/giostream.c:312 gio/goutputstream.c:2218
 msgid "Stream has outstanding operation"
-msgstr ""
+msgstr "ნაკადი გადაუდებელ ოპერაციას ასრულებს"
 
 #: gio/gio-tool.c:162
 msgid "Copy with file"
@@ -1698,7 +1698,7 @@ msgstr "ბრძანებები:"
 
 #: gio/gio-tool.c:231
 msgid "Concatenate files to standard output"
-msgstr ""
+msgstr "სტანდარტულ შეტანაზე არსებული ფაილების შეერთება"
 
 #: gio/gio-tool.c:232
 msgid "Copy one or more files"
@@ -1785,7 +1785,7 @@ msgstr "მდებარეობა"
 
 #: gio/gio-tool-cat.c:140
 msgid "Concatenate files and print to standard output."
-msgstr ""
+msgstr "ფაილების შეერთება და სტანდარტულ გამოტანაზე ჩვენება."
 
 #: gio/gio-tool-cat.c:142
 msgid ""
@@ -2236,7 +2236,7 @@ msgstr ""
 
 #: gio/gio-tool-remove.c:33 gio/gio-tool-trash.c:35
 msgid "Ignore nonexistent files, never prompt"
-msgstr ""
+msgstr "არარსებული ფაილების გამოტოვება. არასდროს მკითხო"
 
 #: gio/gio-tool-remove.c:54
 msgid "Delete the given files."
@@ -2277,7 +2277,7 @@ msgstr "შექმნისას მიმდინარე მომხმ�
 
 #: gio/gio-tool-save.c:55
 msgid "When replacing, replace as if the destination did not exist"
-msgstr ""
+msgstr "ჩანაცვლებისას, ჩაანაცვლე, თითქოს სამიზნე ფაილი არც არსებობდა"
 
 #. Translators: The "etag" is a token allowing to verify whether a file has been modified
 #: gio/gio-tool-save.c:57
@@ -2306,7 +2306,7 @@ msgstr ""
 
 #: gio/gio-tool-save.c:165
 msgid "Read from standard input and save to DEST."
-msgstr ""
+msgstr "წაკითხვა სტანდარტული შეყვანიდან და მითითებულ სამიზნეზე ჩაწერა."
 
 #: gio/gio-tool-save.c:185
 msgid "No destination given"
@@ -2334,7 +2334,7 @@ msgstr "მნიშვნელობა"
 
 #: gio/gio-tool-set.c:99
 msgid "Set a file attribute of LOCATION."
-msgstr ""
+msgstr "მითითებული მდებარეობის ფაილის ატრიბუტის დაყენება."
 
 #: gio/gio-tool-set.c:119
 msgid "Location not specified"
@@ -2359,7 +2359,7 @@ msgstr "ნაგვის ყუთის გასუფთავება"
 
 #: gio/gio-tool-trash.c:37
 msgid "List files in the trash with their original locations"
-msgstr ""
+msgstr "ნაგვის ყუთში არსებული ფაილების სია მათი საწყისი მდებარეობებით"
 
 #: gio/gio-tool-trash.c:38
 msgid ""
@@ -2381,7 +2381,7 @@ msgstr "შეუძლებელია ფაილების გადა�
 
 #: gio/gio-tool-trash.c:227
 msgid "Move/Restore files or directories to the trash."
-msgstr ""
+msgstr "ფაილების ან საქაღალდეების ნაგვის ყუთში გადატანა/აღდგენა."
 
 #: gio/gio-tool-trash.c:229
 msgid ""
@@ -2391,7 +2391,7 @@ msgstr ""
 
 #: gio/gio-tool-trash.c:260
 msgid "Location given doesn't start with trash:///"
-msgstr ""
+msgstr "მითითებული მდებარეობა არ იწყება სტრიქონით trash:///"
 
 #: gio/gio-tool-tree.c:35
 msgid "Follow symbolic links, mounts and shortcuts"
@@ -2537,7 +2537,7 @@ msgstr "უნდა მიაწოდოთ ზუსტად ერთი �
 #: gio/glib-compile-schemas.c:95
 #, c-format
 msgid "nick must be a minimum of 2 characters"
-msgstr ""
+msgstr "ფსევდონიმი, მიმიმუმ, 2 სიმბოლოს უნდა შეიცავდეს"
 
 #: gio/glib-compile-schemas.c:106
 #, c-format
@@ -2567,22 +2567,22 @@ msgstr "<%s> სულ ცოტა ერთ <value>-ს უნდა შეი
 #: gio/glib-compile-schemas.c:317
 #, c-format
 msgid "<%s> is not contained in the specified range"
-msgstr ""
+msgstr "<%s> მითითებული შუალედიდან არაა"
 
 #: gio/glib-compile-schemas.c:329
 #, c-format
 msgid "<%s> is not a valid member of the specified enumerated type"
-msgstr ""
+msgstr "<%s> მითითებული ჩამონათვალის ტიპის სწორი წევრი არაა"
 
 #: gio/glib-compile-schemas.c:335
 #, c-format
 msgid "<%s> contains string not in the specified flags type"
-msgstr ""
+msgstr "<%s> შეიცავს სტრიქონს, რომელიც მითითებული ალმის ტიპში არაა"
 
 #: gio/glib-compile-schemas.c:341
 #, c-format
 msgid "<%s> contains a string not in <choices>"
-msgstr ""
+msgstr "<%s> შეიცავს სტრიქონს, რომელიც <choices>-ში არაა"
 
 #: gio/glib-compile-schemas.c:375
 msgid "<range/> already specified for this key"
@@ -2591,12 +2591,12 @@ msgstr "<range/> ამ გასაღებისთვის უკვე მ
 #: gio/glib-compile-schemas.c:393
 #, c-format
 msgid "<range> not allowed for keys of type “%s”"
-msgstr ""
+msgstr "<range> დაუშვებელია გასაღებებისთვის ტიპით “%s”"
 
 #: gio/glib-compile-schemas.c:410
 #, c-format
 msgid "<range> specified minimum is greater than maximum"
-msgstr ""
+msgstr "<range> მაქსიმალური მნიშვნელობა მინიმალურზე მეტი უნდა იყოს"
 
 #: gio/glib-compile-schemas.c:435
 #, c-format
@@ -3564,21 +3564,23 @@ msgstr ""
 
 #: gio/gresource-tool.c:563
 msgid "  SECTION   An (optional) elf section name\n"
-msgstr ""
+msgstr "  სექცია   (არასავალდებულო) elf სექციის სახელი\n"
 
 #: gio/gresource-tool.c:567 gio/gsettings-tool.c:720
 msgid "  COMMAND   The (optional) command to explain\n"
-msgstr ""
+msgstr "  ბრძანება   (არასავალდებულო) ასახსნელი ბრძანება\n"
 
 #: gio/gresource-tool.c:573
 msgid "  FILE      An elf file (a binary or a shared library)\n"
-msgstr ""
+msgstr "  ფაილი      elf ფაილი (გამშვები ან გაზიარებული ბიბლიოთეკა)\n"
 
 #: gio/gresource-tool.c:576
 msgid ""
 "  FILE      An elf file (a binary or a shared library)\n"
 "            or a compiled resource file\n"
 msgstr ""
+"  ფაილი      elf ფაილი (გამშვები ან გაზიარებული ბიბლიოთეკა)\n"
+"               ან აგებული რესურსის ფაილი\n"
 
 #: gio/gresource-tool.c:580
 msgid "[PATH]"
@@ -3765,11 +3767,11 @@ msgstr ""
 
 #: gio/gsettings-tool.c:733
 msgid "  KEY       The key within the schema\n"
-msgstr ""
+msgstr "  გასაღები       გასაღები სქემაშ\n"
 
 #: gio/gsettings-tool.c:737
 msgid "  VALUE     The value to set\n"
-msgstr ""
+msgstr "  მნისვნელობა     დასაყენებელი მნიშვნელობა\n"
 
 #: gio/gsettings-tool.c:792
 #, c-format
@@ -3803,7 +3805,7 @@ msgid "Socket is already closed"
 msgstr "სოკეტი უკვე დახურულია"
 
 #: gio/gsocket.c:449 gio/gsocket.c:3238 gio/gsocket.c:4469 gio/gsocket.c:4527
-#: gio/gthreadedresolver.c:1438
+#: gio/gthreadedresolver.c:1445
 msgid "Socket I/O timed out"
 msgstr "სოკეტის I/O ვადა გავიდა"
 
@@ -4002,55 +4004,58 @@ msgstr "დამატებული სოკეტი დახურულ�
 #: gio/gsocks4aproxy.c:120
 #, c-format
 msgid "SOCKSv4 does not support IPv6 address “%s”"
-msgstr ""
+msgstr "SOCKSv4-ს არ აქვს მხარდაჭერა IPv6 მისამართისთვის “%s”"
 
 #: gio/gsocks4aproxy.c:138
 msgid "Username is too long for SOCKSv4 protocol"
-msgstr ""
+msgstr "SOCKSv4 პროტოკოლისთვის მომხმარებლის სახელი ძალიან გრძელია"
 
 #: gio/gsocks4aproxy.c:155
 #, c-format
 msgid "Hostname “%s” is too long for SOCKSv4 protocol"
-msgstr ""
+msgstr "SOCKSv4 პროტოკოლისთვის ჰოსტის სახელი '%s' მეტისმეტად გრძელია"
 
 #: gio/gsocks4aproxy.c:181
 msgid "The server is not a SOCKSv4 proxy server."
-msgstr ""
+msgstr "სერვერი SOCKSv4 პროქსი სერვერი არაა."
 
 #: gio/gsocks4aproxy.c:188
 msgid "Connection through SOCKSv4 server was rejected"
-msgstr ""
+msgstr "შეერთება SOCKSv4 სერვერის გავლით უარყოფილია"
 
 #: gio/gsocks5proxy.c:155 gio/gsocks5proxy.c:340 gio/gsocks5proxy.c:350
 msgid "The server is not a SOCKSv5 proxy server."
-msgstr ""
+msgstr "სერვერი SOCKSv5 პროქსი სერვერი არაა."
 
 #: gio/gsocks5proxy.c:169 gio/gsocks5proxy.c:186
 msgid "The SOCKSv5 proxy requires authentication."
-msgstr ""
+msgstr "SOCKSv5 პროქსის ავთენტიკაციას მოითხოვს."
 
 #: gio/gsocks5proxy.c:193
 msgid ""
 "The SOCKSv5 proxy requires an authentication method that is not supported by "
 "GLib."
 msgstr ""
+"SOCKSv5 პროქსი მოითხოვს ავთენტიკაციის მეთოდს, რომელიც GLib-ის მიერ "
+"მხარდაჭერილი არაა."
 
 #: gio/gsocks5proxy.c:222
 msgid "Username or password is too long for SOCKSv5 protocol."
-msgstr ""
+msgstr "SOCKSv5 პროტოკოლისთვის მომხმარებლის სახელი ან პაროლი ძალიან გრძელია."
 
 #: gio/gsocks5proxy.c:252
 msgid "SOCKSv5 authentication failed due to wrong username or password."
 msgstr ""
+"SOCKSv5 ავთენტიკაცია ჩავარდა, რადგან მომხმარებლის სახელი ან პაროლი არასწორია."
 
 #: gio/gsocks5proxy.c:302
 #, c-format
 msgid "Hostname “%s” is too long for SOCKSv5 protocol"
-msgstr ""
+msgstr "SOCKSv5 პროტოკოლისთვის ჰოსტის სახელი '%s' მეტისმეტად გრძელია"
 
 #: gio/gsocks5proxy.c:364
 msgid "The SOCKSv5 proxy server uses unknown address type."
-msgstr ""
+msgstr "SOCKSv5 პროქსი სერვერი უცნობი მისამართის ტიპს იყენებს."
 
 #: gio/gsocks5proxy.c:371
 msgid "Internal SOCKSv5 proxy server error."
@@ -4058,27 +4063,27 @@ msgstr "შიდა SOCKSv5 პროქსის შეცდომა."
 
 #: gio/gsocks5proxy.c:377
 msgid "SOCKSv5 connection not allowed by ruleset."
-msgstr ""
+msgstr "SOCKSv5 მიერთება დაუშვებელია წესების მიერ."
 
 #: gio/gsocks5proxy.c:384
 msgid "Host unreachable through SOCKSv5 server."
-msgstr ""
+msgstr "SOCKSv5 სერვერის გავლით ჰოსტი მიუწვდომელია."
 
 #: gio/gsocks5proxy.c:390
 msgid "Network unreachable through SOCKSv5 proxy."
-msgstr ""
+msgstr "SOCKSv5 სერვერის გავლით ქსელი ხელმიუწვდომელია."
 
 #: gio/gsocks5proxy.c:396
 msgid "Connection refused through SOCKSv5 proxy."
-msgstr ""
+msgstr "SOCKSv5 პროქსის გავლით მიერთება უარყოფილია."
 
 #: gio/gsocks5proxy.c:402
 msgid "SOCKSv5 proxy does not support “connect” command."
-msgstr ""
+msgstr "SOCKSv5 პროქსის ბრძანება \"connect\"-ის მხარდაჭერა არ გააჩნია."
 
 #: gio/gsocks5proxy.c:408
 msgid "SOCKSv5 proxy does not support provided address type."
-msgstr ""
+msgstr "SOCKSv5 პროქსის მითითებული მისამართის ტიპის მხარდაჭერა არ გააჩნია."
 
 #: gio/gsocks5proxy.c:414
 msgid "Unknown SOCKSv5 proxy error."
@@ -4106,7 +4111,7 @@ msgstr "სწორი მისამართები ვერ ვიპო
 #: gio/gthreadedresolver.c:514
 #, c-format
 msgid "Error reverse-resolving “%s”: %s"
-msgstr ""
+msgstr "\"%s\"-ის უკუამოხსნის შეცდომა: %s"
 
 #. Translators: the placeholder is a DNS record type, such as ‘MX’ or ‘SRV’
 #: gio/gthreadedresolver.c:737 gio/gthreadedresolver.c:759
@@ -4114,7 +4119,7 @@ msgstr ""
 #: gio/gthreadedresolver.c:889 gio/gthreadedresolver.c:901
 #, c-format
 msgid "Error parsing DNS %s record: malformed DNS packet"
-msgstr ""
+msgstr "DNS %s ჩანაწერის დამუშავება ჩავარდა: DNS პაკეტი შეცდომებს შეიცავს"
 
 #: gio/gthreadedresolver.c:959 gio/gthreadedresolver.c:1096
 #: gio/gthreadedresolver.c:1194 gio/gthreadedresolver.c:1244
@@ -4125,7 +4130,7 @@ msgstr ""
 #: gio/gthreadedresolver.c:964 gio/gthreadedresolver.c:1199
 #, c-format
 msgid "Temporarily unable to resolve “%s”"
-msgstr ""
+msgstr "დროებით \"%s\" ვერ ამოვხსენი"
 
 #: gio/gthreadedresolver.c:969 gio/gthreadedresolver.c:1204
 #: gio/gthreadedresolver.c:1300
@@ -4141,7 +4146,7 @@ msgstr "არასწორი DNS პაკეტი"
 #: gio/gthreadedresolver.c:1089
 #, c-format
 msgid "Failed to parse DNS response for “%s”: "
-msgstr ""
+msgstr "\"%s\"-სთვის DNS პასუხის დამუშავება ჩავარდა: "
 
 #: gio/gtlscertificate.c:480
 msgid "No PEM-encoded private key found"
@@ -5049,31 +5054,31 @@ msgstr ""
 msgid "Key “%s” in group “%s” has value “%s” where %s was expected"
 msgstr ""
 
-#: glib/gkeyfile.c:4356
+#: glib/gkeyfile.c:4357
 msgid "Key file contains escape character at end of line"
 msgstr "გასაღების ფაილი სტრიქონის ბოლოს escape სიმბოლოს შეიცავს"
 
-#: glib/gkeyfile.c:4378
+#: glib/gkeyfile.c:4394
 #, c-format
 msgid "Key file contains invalid escape sequence “%s”"
 msgstr "გასაღების ფაილი მცდარ escape მიმდევრობას '%s' შეიცავს"
 
-#: glib/gkeyfile.c:4530
+#: glib/gkeyfile.c:4545
 #, c-format
 msgid "Value “%s” cannot be interpreted as a number."
 msgstr "მნიშვნელობა '%s' ვერ აღიქმება, როგორც რიცხვი."
 
-#: glib/gkeyfile.c:4544
+#: glib/gkeyfile.c:4559
 #, c-format
 msgid "Integer value “%s” out of range"
 msgstr "მთელი მნიშვნელობა '%s' დიაპაზონს გარეთაა"
 
-#: glib/gkeyfile.c:4577
+#: glib/gkeyfile.c:4592
 #, c-format
 msgid "Value “%s” cannot be interpreted as a float number."
 msgstr "მნიშვნელობა '%s' ვერ აღიქმება, როგორც წილადი."
 
-#: glib/gkeyfile.c:4616
+#: glib/gkeyfile.c:4631
 #, c-format
 msgid "Value “%s” cannot be interpreted as a boolean."
 msgstr "მნიშვნელობა '%s' ვერ აღიქმება, როგორც ლოგიკური ოპერატორი."
@@ -5717,57 +5722,57 @@ msgstr ""
 msgid "Child process exited abnormally"
 msgstr ""
 
-#: glib/gspawn.c:2032 glib/gspawn-win32.c:472 glib/gspawn-win32.c:480
+#: glib/gspawn.c:2039 glib/gspawn-win32.c:472 glib/gspawn-win32.c:480
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "მონაცემთა წაკითხვა ქვეპროცესის არხიდან ვერ მოხერხდა (%s)"
 
-#: glib/gspawn.c:2404
+#: glib/gspawn.c:2411
 #, c-format
 msgid "Failed to spawn child process “%s” (%s)"
 msgstr "ქვეპროცესის (%s) განტოტვის შეცდომა (%s)"
 
-#: glib/gspawn.c:2530
+#: glib/gspawn.c:2537
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "განტოტების შეცდომა (%s)"
 
-#: glib/gspawn.c:2690 glib/gspawn-win32.c:503
+#: glib/gspawn.c:2697 glib/gspawn-win32.c:503
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
 msgstr "საქაღალდის ცვლილების შეცდომა \"%s\" (%s)"
 
-#: glib/gspawn.c:2700
+#: glib/gspawn.c:2707
 #, c-format
 msgid "Failed to execute child process “%s” (%s)"
 msgstr "შვილობილი პროცესის %s გაშვების შეცდომა %s"
 
-#: glib/gspawn.c:2710
+#: glib/gspawn.c:2717
 #, c-format
 msgid "Failed to open file to remap file descriptor (%s)"
 msgstr "დესკრიპტორისთვის ფაილის გადამაგრების შეცდომა (%s)"
 
-#: glib/gspawn.c:2718
+#: glib/gspawn.c:2725
 #, c-format
 msgid "Failed to duplicate file descriptor for child process (%s)"
 msgstr "შვილეული პროცესისთვის (%s) ფაილის დესკრიპტორის დუბლირების შეცდომა"
 
-#: glib/gspawn.c:2727
+#: glib/gspawn.c:2734
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "დამხმარე პროცესის გაშვების შეცდომა (%s)"
 
-#: glib/gspawn.c:2735
+#: glib/gspawn.c:2742
 #, c-format
 msgid "Failed to close file descriptor for child process (%s)"
 msgstr "შვილეული პროცესის (%s) ფაილის დესკრიპტორის დახურვის შეცდომა"
 
-#: glib/gspawn.c:2743
+#: glib/gspawn.c:2750
 #, c-format
 msgid "Unknown error executing child process “%s”"
 msgstr "შეცდომა შვილეული პროცესის (%s) შესრულებისას"
 
-#: glib/gspawn.c:2767
+#: glib/gspawn.c:2774
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "ქვეპროცესის არხიდან საკმარის მონაცემთა წაკითხვა ვერ მოხერხდა (%s)"
