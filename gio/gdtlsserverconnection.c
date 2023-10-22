@@ -31,16 +31,13 @@
 #include "glibintl.h"
 
 /**
- * SECTION:gdtlsserverconnection
- * @short_description: DTLS server-side connection
- * @include: gio/gio.h
+ * GDtlsServerConnection:
  *
- * #GDtlsServerConnection is the server-side subclass of #GDtlsConnection,
- * representing a server-side DTLS connection.
+ * `GDtlsServerConnection` is the server-side subclass of
+ * [iface@Gio.DtlsConnection], representing a server-side DTLS connection.
  *
  * Since: 2.48
  */
-
 G_DEFINE_INTERFACE (GDtlsServerConnection, g_dtls_server_connection,
                     G_TYPE_DTLS_CONNECTION)
 

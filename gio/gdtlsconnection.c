@@ -36,42 +36,32 @@
 #include "gmarshal-internal.h"
 
 /**
- * SECTION:gdtlsconnection
- * @short_description: DTLS connection type
- * @include: gio/gio.h
- *
- * #GDtlsConnection is the base DTLS connection class type, which wraps
- * a #GDatagramBased and provides DTLS encryption on top of it. Its
- * subclasses, #GDtlsClientConnection and #GDtlsServerConnection,
- * implement client-side and server-side DTLS, respectively.
- *
- * For TLS support, see #GTlsConnection.
- *
- * As DTLS is datagram based, #GDtlsConnection implements #GDatagramBased,
- * presenting a datagram-socket-like API for the encrypted connection. This
- * operates over a base datagram connection, which is also a #GDatagramBased
- * (#GDtlsConnection:base-socket).
- *
- * To close a DTLS connection, use g_dtls_connection_close().
- *
- * Neither #GDtlsServerConnection or #GDtlsClientConnection set the peer address
- * on their base #GDatagramBased if it is a #GSocket — it is up to the caller to
- * do that if they wish. If they do not, and g_socket_close() is called on the
- * base socket, the #GDtlsConnection will not raise a %G_IO_ERROR_NOT_CONNECTED
- * error on further I/O.
- *
- * Since: 2.48
- */
-
-/**
  * GDtlsConnection:
  *
- * Abstract base class for the backend-specific #GDtlsClientConnection
- * and #GDtlsServerConnection types.
+ * `GDtlsConnection` is the base DTLS connection class type, which wraps
+ * a [iface@Gio.DatagramBased] and provides DTLS encryption on top of it. Its
+ * subclasses, [iface@Gio.DtlsClientConnection] and
+ * [iface@Gio.DtlsServerConnection], implement client-side and server-side DTLS,
+ * respectively.
+ *
+ * For TLS support, see [class@Gio.TlsConnection].
+ *
+ * As DTLS is datagram based, `GDtlsConnection` implements
+ * [iface@Gio.DatagramBased], presenting a datagram-socket-like API for the
+ * encrypted connection. This operates over a base datagram connection, which is
+ * also a `GDatagramBased` ([property@Gio.DtlsConnection:base-socket]).
+ *
+ * To close a DTLS connection, use [method@Gio.DtlsConnection.close].
+ *
+ * Neither [iface@Gio.DtlsServerConnection] or [iface@Gio.DtlsClientConnection]
+ * set the peer address on their base [iface@Gio.DatagramBased] if it is a
+ * [class@Gio.Socket] — it is up to the caller to do that if they wish. If they
+ * do not, and [method@Gio.Socket.close] is called on the base socket, the
+ * `GDtlsConnection` will not raise a `G_IO_ERROR_NOT_CONNECTED` error on
+ * further I/O.
  *
  * Since: 2.48
  */
-
 G_DEFINE_INTERFACE (GDtlsConnection, g_dtls_connection, G_TYPE_DATAGRAM_BASED)
 
 enum {
