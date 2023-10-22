@@ -41,14 +41,6 @@ G_BEGIN_DECLS
  */
 #define G_DEBUG_CONTROLLER_EXTENSION_POINT_NAME "gio-debug-controller"
 
-/**
- * GDebugController:
- *
- * #GDebugController is an interface to expose control of debugging features and
- * debug output.
- *
- * Since: 2.72
- */
 #define G_TYPE_DEBUG_CONTROLLER             (g_debug_controller_get_type ())
 GIO_AVAILABLE_IN_2_72
 G_DECLARE_INTERFACE(GDebugController, g_debug_controller, g, debug_controller, GObject)
