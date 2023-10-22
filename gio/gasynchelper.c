@@ -26,14 +26,10 @@
 
 
 /*< private >
- * SECTION:gasynchelper
- * @short_description: Asynchronous Helper Functions
- * @include: gio/gio.h
- * @see_also: #GAsyncResult
+ * GAsyncHelper:
  * 
  * Provides helper functions for asynchronous operations.
- *
- **/
+ */
 
 #ifdef G_OS_WIN32
 gboolean
