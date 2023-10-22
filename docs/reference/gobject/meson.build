@@ -74,6 +74,7 @@ expand_content_files = [
   'tutorial.md',
   'types.md',
   'signals.md',
+  'value-collection.md',
 ]
 
 gobject_toml = configure_file(input: 'gobject.toml.in', output: 'gobject.toml', configuration: toml_conf)

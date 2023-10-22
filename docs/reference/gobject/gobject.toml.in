@@ -50,6 +50,7 @@ content_files = [
   "boxed.md",
   "enum-types.md",
   "gvalue.md",
+  "value-collection.md",
 ]
 content_images = [
   "images/glue.png",
