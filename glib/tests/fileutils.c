@@ -1603,6 +1603,8 @@ test_set_contents_full (void)
           gsize len;
           gboolean ret;
           GStatBuf statbuf;
+          const gchar *original_contents = "a string which is longer than what will be overwritten on it";
+          size_t original_contents_len = strlen (original_contents);
 
           g_test_message ("Flags %d and test %" G_GSIZE_FORMAT, flags, i);
 
@@ -1617,7 +1619,7 @@ test_set_contents_full (void)
 
                 fd = g_file_open_tmp (NULL, &file_name, &error);
                 g_assert_no_error (error);
-                g_assert_cmpint (write (fd, "a", 1), ==, 1);
+                g_assert_cmpint (write (fd, original_contents, original_contents_len), ==, original_contents_len);
                 g_assert_no_errno (g_fsync (fd));
                 close (fd);
 
@@ -1713,7 +1715,7 @@ test_set_contents_full (void)
 
                   g_file_get_contents (file_name, &target_contents, NULL, &error);
                   g_assert_no_error (error);
-                  g_assert_cmpstr (target_contents, ==, "a");
+                  g_assert_cmpstr (target_contents, ==, original_contents);
 
                   g_free (target_contents);
                 }
