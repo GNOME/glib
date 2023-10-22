@@ -330,8 +330,6 @@ if host_machine.system() != 'windows'
       'appinfo' : {
         'install' : false,
         'extra_programs' : ['appinfo-test'],
-        # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3148
-        'can_fail' : host_system == 'gnu',
       },
       'desktop-app-info' : {
         'install' : false,
