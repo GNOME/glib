@@ -32,18 +32,14 @@
 #include "gdbuserror.h"
 
 /**
- * SECTION:gactiongroupexporter
- * @title: GActionGroup exporter
- * @include: gio/gio.h
- * @short_description: Export GActionGroups on D-Bus
- * @see_also: #GActionGroup, #GDBusActionGroup
+ * GActionGroupExporter:
  *
- * These functions support exporting a #GActionGroup on D-Bus.
+ * These functions support exporting a [class@Gio.ActionGroup] on D-Bus.
  * The D-Bus interface that is used is a private implementation
  * detail.
  *
- * To access an exported #GActionGroup remotely, use
- * g_dbus_action_group_get() to obtain a #GDBusActionGroup.
+ * To access an exported `GActionGroup` remotely, use
+ * [method@Gio.DBusActionGroup.get] to obtain a [class@Gio.DBusActionGroup].
  */
 
 static GVariant *
