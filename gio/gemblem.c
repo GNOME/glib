@@ -31,14 +31,11 @@
 
 
 /**
- * SECTION:gemblem
- * @short_description: An object for emblems
- * @include: gio/gio.h
- * @see_also: #GIcon, #GEmblemedIcon, #GLoadableIcon, #GThemedIcon
+ * GEmblem:
  *
- * #GEmblem is an implementation of #GIcon that supports
+ * `GEmblem` is an implementation of [iface@Gio.Icon] that supports
  * having an emblem, which is an icon with additional properties.
- * It can than be added to a #GEmblemedIcon.
+ * It can than be added to a [class@Gio.EmblemedIcon].
  *
  * Currently, only metainformation about the emblem's origin is
  * supported. More may be added in the future.
