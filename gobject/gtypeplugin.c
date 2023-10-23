@@ -39,25 +39,25 @@
  *                                           new_type_plugin,
  *                                           type_flags);
  *    ```
- *    where @new_type_plugin is an implementation of the
+ *    where `new_type_plugin` is an implementation of the
  *    `GTypePlugin` interface.
  *
  * 2. The type's implementation is referenced, e.g. through
- *    [func@GObject.type_class_ref] or through [func@GObject.type_create_instance]
- *    (this is being called by [func@GObject.object_new]) or through one of the above
- *    done on a type derived from @new_type_id.
+ *    [func@GObject.TypeClass.ref] or through [func@GObject.type_create_instance]
+ *    (this is being called by [ctor@GObject.Object.new]) or through one of the above
+ *    done on a type derived from `new_type_id`.
  *
  * 3. This causes the type system to load the type's implementation by calling
- *    [func@GObject.type_plugin_use] and [method@GObject.TypePlugin.complete_type_info]
- *    on @new_type_plugin.
+ *    [method@GObject.TypePlugin.use] and [method@GObject.TypePlugin.complete_type_info]
+ *    on `new_type_plugin`.
  *
  * 4. At some point the type's implementation isn't required anymore, e.g. after
- *    [func@GObject.type_class_unref] or [func@GObject.type_free_instance]
+ *    [method@GObject.TypeClass.unref] or [func@GObject.type_free_instance]
  *    (called when the reference count of an instance drops to zero).
  *
  * 5. This causes the type system to throw away the information retrieved
  *    from [method@GObject.TypePlugin.complete_type_info] and then it calls
- *    [method@GObject.TypePlugin.unuse] on @new_type_plugin.
+ *    [method@GObject.TypePlugin.unuse] on `new_type_plugin`.
  *
  * 6. Things may repeat from the second step.
  *
@@ -70,7 +70,7 @@
  * [method@GObject.TypePlugin.use] and [method@GObject.TypePlugin.complete_type_info]
  * again when the type is needed again.
  *
- * [struct@GObject.TypeModule] is an implementation of `GTypePlugin` that
+ * [class@GObject.TypeModule] is an implementation of `GTypePlugin` that
  * already implements most of this except for the actual module loading and
  * unloading. It even handles multiple registered types per module.
  */
