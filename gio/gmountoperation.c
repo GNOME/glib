@@ -31,27 +31,25 @@
 
 
 /**
- * SECTION:gmountoperation
- * @short_description: Object used for authentication and user interaction
- * @include: gio/gio.h
+ * GMountOperation:
  *
- * #GMountOperation provides a mechanism for interacting with the user.
+ * `GMountOperation` provides a mechanism for interacting with the user.
  * It can be used for authenticating mountable operations, such as loop
  * mounting files, hard drive partitions or server locations. It can
  * also be used to ask the user questions or show a list of applications
  * preventing unmount or eject operations from completing.
  *
- * Note that #GMountOperation is used for more than just #GMount
- * objects – for example it is also used in g_drive_start() and
- * g_drive_stop().
+ * Note that `GMountOperation` is used for more than just [iface@Gio.Mount]
+ * objects – for example it is also used in [method@Gio.Drive.start] and
+ * [method@Gio.Drive.stop].
  *
  * Users should instantiate a subclass of this that implements all the
  * various callbacks to show the required dialogs, such as
- * #GtkMountOperation. If no user interaction is desired (for example
- * when automounting filesystems at login time), usually %NULL can be
- * passed, see each method taking a #GMountOperation for details.
+ * [class@Gtk.MountOperation]. If no user interaction is desired (for example
+ * when automounting filesystems at login time), usually `NULL` can be
+ * passed, see each method taking a `GMountOperation` for details.
  *
- * The term ‘TCRYPT’ is used to mean ‘compatible with TrueCrypt and VeraCrypt’.
+ * Throughout the API, the term ‘TCRYPT’ is used to mean ‘compatible with TrueCrypt and VeraCrypt’.
  * [TrueCrypt](https://en.wikipedia.org/wiki/TrueCrypt) is a discontinued system for
  * encrypting file containers, partitions or whole disks, typically used with Windows.
  * [VeraCrypt](https://www.veracrypt.fr/) is a maintained fork of TrueCrypt with various
