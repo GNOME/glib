@@ -32,7 +32,7 @@
 /**
  * GDataOutputStream:
  *
- * Data output stream implements [iface@Gio.OutputStream] and includes functions
+ * Data output stream implements [class@Gio.OutputStream] and includes functions
  * for writing data directly to an output stream.
  */
 

@@ -48,7 +48,7 @@
  *
  * The `_finish()` function for an operation takes the generic result
  * (of type `GAsyncResult`) and returns the specific result that the
- * operation in question yields (e.g. a [struct@Gio.FileEnumerator] for a
+ * operation in question yields (e.g. a [class@Gio.FileEnumerator] for a
  * "enumerate children" operation). If the result or error status of the
  * operation is not needed, there is no need to call the `_finish()`
  * function; GIO will take care of cleaning up the result and error

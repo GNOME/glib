@@ -30,9 +30,9 @@
  *
  * `GActionMap` is an interface for action containers.
  *
- * The `GActionMap` interface is implemented by [struct@Gio.ActionGroup]
+ * The `GActionMap` interface is implemented by [iface@Gio.ActionGroup]
  * implementations that operate by containing a number of named
- * [struct@Gio.Action] instances, such as [struct@Gio.SimpleActionGroup].
+ * [iface@Gio.Action] instances, such as [class@Gio.SimpleActionGroup].
  *
  * One useful application of this interface is to map the
  * names of actions from various action groups to unique,

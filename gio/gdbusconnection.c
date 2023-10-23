@@ -138,32 +138,33 @@
  *
  * It is a low-level API that offers a lot of flexibility. For instance,
  * it lets you establish a connection over any transport that can by represented
- * as a [struct@Gio.IOStream].
+ * as a [class@Gio.IOStream].
  *
  * This class is rarely used directly in D-Bus clients. If you are writing
- * a D-Bus client, it is often easier to use the [func@g_bus_own_name],
- * [func@g_bus_watch_name] or [ctor@Gio.DBusProxy.new_for_bus] APIs.
+ * a D-Bus client, it is often easier to use the [func@Gio.bus_own_name],
+ * [func@Gio.bus_watch_name] or [func@Gio.DBusProxy.new_for_bus] APIs.
  *
  * As an exception to the usual GLib rule that a particular object must not
  * be used by two threads at the same time, `GDBusConnection`s methods may be
- * called from any thread. This is so that `g_bus_get()` and `g_bus_get_sync()`
- * can safely return the same `GDBusConnection` when called from any thread.
+ * called from any thread. This is so that [func@Gio.bus_get] and
+ * [func@Gio.bus_get_sync] can safely return the same `GDBusConnection` when
+ * called from any thread.
  *
  * Most of the ways to obtain a `GDBusConnection` automatically initialize it
  * (i.e. connect to D-Bus): for instance, [func@Gio.DBusConnection.new] and
- * `g_bus_get()`, and the synchronous versions of those methods, give you an
- * initialized connection. Language bindings for GIO should use
- * [func@Gio.Initiable.new] or [func@Gio.AsyncInitable.new_async], which also
+ * [func@Gio.bus_get], and the synchronous versions of those methods, give you
+ * an initialized connection. Language bindings for GIO should use
+ * [func@Gio.Initable.new] or [func@Gio.AsyncInitable.new_async], which also
  * initialize the connection.
  *
  * If you construct an uninitialized `GDBusConnection`, such as via
- * `g_object_new()`, you must initialize it via [method@Gio.Initable.init] or
+ * [ctor@GObject.Object.new], you must initialize it via [method@Gio.Initable.init] or
  * [method@Gio.AsyncInitable.init_async] before using its methods or properties.
  * Calling methods or accessing properties on a `GDBusConnection` that has not
  * completed initialization successfully is considered to be invalid, and leads
  * to undefined behaviour. In particular, if initialization fails with a
  * `GError`, the only valid thing you can do with that `GDBusConnection` is to
- * free it with `g_object_unref()`.
+ * free it with [method@GObject.Object.unref].
  *
  * ## An example D-Bus server
  *

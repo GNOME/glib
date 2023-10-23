@@ -35,7 +35,7 @@
  * interface.
  *
  * `GDBusActionGroup` can be used as a proxy for an action group
- * that is exported over D-Bus with [func@Gio.DBusConnection.export_action_group].
+ * that is exported over D-Bus with [method@Gio.DBusConnection.export_action_group].
  */
 
 struct _GDBusActionGroup

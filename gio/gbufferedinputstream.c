@@ -41,8 +41,8 @@
  *
  * By default, `GBufferedInputStream`'s buffer size is set at 4 kilobytes.
  *
- * To create a buffered input stream, use [func@Gio.BufferedInputStream.new],
- * or [func@Gio.BufferedInputStream.new_sized] to specify the buffer's size at
+ * To create a buffered input stream, use [ctor@Gio.BufferedInputStream.new],
+ * or [ctor@Gio.BufferedInputStream.new_sized] to specify the buffer's size at
  * construction.
  *
  * To get the size of a buffer within a buffered input stream, use

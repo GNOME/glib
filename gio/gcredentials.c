@@ -48,7 +48,7 @@
  * peer of a communication endpoint - see e.g. [method@Gio.Socket.get_credentials].
  *
  * Some operating systems supports securely sending and receiving
- * credentials over a Unix Domain Socket, see [struct@Gio.UnixCredentialsMessage],
+ * credentials over a Unix Domain Socket, see [class@Gio.UnixCredentialsMessage],
  * [method@Gio.UnixConnection.send_credentials] and
  * [method@Gio.UnixConnection.receive_credentials] for details.
  *

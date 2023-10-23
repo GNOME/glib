@@ -39,10 +39,10 @@
  * A `GDatagramBased` is a networking interface for representing datagram-based
  * communications. It is a more or less direct mapping of the core parts of the
  * BSD socket API in a portable GObject interface. It is implemented by
- * [struct@Gio.Socket], which wraps the UNIX socket API on UNIX and winsock2 on Windows.
+ * [class@Gio.Socket], which wraps the UNIX socket API on UNIX and winsock2 on Windows.
  *
  * `GDatagramBased` is entirely platform independent, and is intended to be used
- * alongside higher-level networking APIs such as [struct@Gio.IOStream].
+ * alongside higher-level networking APIs such as [class@Gio.IOStream].
  *
  * It uses vectored scatter/gather I/O by default, allowing for many messages
  * to be sent or received in a single call. Where possible, implementations of
