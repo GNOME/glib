@@ -35,14 +35,6 @@ G_BEGIN_DECLS
 #define G_IS_DTLS_SERVER_CONNECTION(inst)            (G_TYPE_CHECK_INSTANCE_TYPE ((inst), G_TYPE_DTLS_SERVER_CONNECTION))
 #define G_DTLS_SERVER_CONNECTION_GET_INTERFACE(inst) (G_TYPE_INSTANCE_GET_INTERFACE ((inst), G_TYPE_DTLS_SERVER_CONNECTION, GDtlsServerConnectionInterface))
 
-/**
- * GDtlsServerConnection:
- *
- * DTLS server-side connection. This is the server-side implementation
- * of a #GDtlsConnection.
- *
- * Since: 2.48
- */
 typedef struct _GDtlsServerConnectionInterface GDtlsServerConnectionInterface;
 
 /**

@@ -41,38 +41,37 @@
 #define G_ICON_SERIALIZATION_MAGIC0 ". "
 
 /**
- * SECTION:gicon
- * @short_description: Interface for icons
- * @include: gio/gio.h
+ * GIcon:
  *
- * #GIcon is a very minimal interface for icons. It provides functions
+ * `GIcon` is a very minimal interface for icons. It provides functions
  * for checking the equality of two icons, hashing of icons and
  * serializing an icon to and from strings.
  *
- * #GIcon does not provide the actual pixmap for the icon as this is out 
- * of GIO's scope, however implementations of #GIcon may contain the name 
- * of an icon (see #GThemedIcon), or the path to an icon (see #GLoadableIcon). 
+ * `GIcon` does not provide the actual pixmap for the icon as this is out
+ * of GIO's scope, however implementations of `GIcon` may contain the name
+ * of an icon (see [class@Gio.ThemedIcon]), or the path to an icon
+ * (see [iface@Gio.LoadableIcon]).
  *
- * To obtain a hash of a #GIcon, see g_icon_hash().
+ * To obtain a hash of a `GIcon`, see [method@Gio.Icon.hash].
  *
- * To check if two #GIcons are equal, see g_icon_equal().
+ * To check if two `GIcon`s are equal, see [method@Gio.Icon.equal].
  *
- * For serializing a #GIcon, use g_icon_serialize() and
- * g_icon_deserialize().
+ * For serializing a `GIcon`, use [method@Gio.Icon.serialize] and
+ * [func@Gio.Icon.deserialize].
  *
- * If you want to consume #GIcon (for example, in a toolkit) you must
+ * If you want to consume `GIcon` (for example, in a toolkit) you must
  * be prepared to handle at least the three following cases:
- * #GLoadableIcon, #GThemedIcon and #GEmblemedIcon.  It may also make
- * sense to have fast-paths for other cases (like handling #GdkPixbuf
- * directly, for example) but all compliant #GIcon implementations
- * outside of GIO must implement #GLoadableIcon.
+ * [iface@Gio.LoadableIcon], [class@Gio.ThemedIcon] and [class@Gio.EmblemedIcon].
+ * It may also make sense to have fast-paths for other cases (like handling
+ * [class@GdkPixbuf.Pixbuf] directly, for example) but all compliant `GIcon`
+ * implementations outside of GIO must implement [iface@Gio.LoadableIcon].
  *
- * If your application or library provides one or more #GIcon
+ * If your application or library provides one or more `GIcon`
  * implementations you need to ensure that your new implementation also
- * implements #GLoadableIcon.  Additionally, you must provide an
- * implementation of g_icon_serialize() that gives a result that is
- * understood by g_icon_deserialize(), yielding one of the built-in icon
- * types.
+ * implements [iface@Gio.LoadableIcon].  Additionally, you must provide an
+ * implementation of [method@Gio.Icon.serialize] that gives a result that is
+ * understood by [func@Gio.Icon.deserialize], yielding one of the built-in
+ * icon types.
  **/
 
 typedef GIconIface GIconInterface;

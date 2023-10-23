@@ -46,11 +46,9 @@
 #define HAPPY_EYEBALLS_RESOLUTION_DELAY_MS 50
 
 /**
- * SECTION:gnetworkaddress
- * @short_description: A GSocketConnectable for resolving hostnames
- * @include: gio/gio.h
+ * GNetworkAddress:
  *
- * #GNetworkAddress provides an easy way to resolve a hostname and
+ * `GNetworkAddress` provides an easy way to resolve a hostname and
  * then attempt to connect to that host, handling the possibility of
  * multiple IP addresses and multiple address families.
  *
@@ -58,15 +56,8 @@
  * as this object is kept alive which may have unexpected results if
  * alive for too long.
  *
- * See #GSocketConnectable for an example of using the connectable
+ * See [iface@Gio.SocketConnectable] for an example of using the connectable
  * interface.
- */
-
-/**
- * GNetworkAddress:
- *
- * A #GSocketConnectable for resolving a hostname and connecting to
- * that host.
  */
 
 struct _GNetworkAddressPrivate {
