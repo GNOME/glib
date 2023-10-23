@@ -41,6 +41,7 @@ urlmap_file = "urlmap.js"
 # The same order will be used when generating the index
 content_files = [
   "overview.md",
+  "file-attributes.md",
 
   "migrating-gdbus.md",
   "migrating-gconf.md",

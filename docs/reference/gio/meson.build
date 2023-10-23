@@ -229,6 +229,7 @@ endif
 
 # gi-docgen version
 expand_content_files = [
+  'file-attributes.md',
   'migrating-gconf.md',
   'migrating-gdbus.md',
   'migrating-gnome-vfs.md',
