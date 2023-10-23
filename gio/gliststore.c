@@ -28,24 +28,14 @@
 #include "glistmodel.h"
 
 /**
- * SECTION:gliststore
- * @title: GListStore
- * @short_description: A simple implementation of #GListModel
- * @include: gio/gio.h
+ * GListStore:
  *
- * #GListStore is a simple implementation of #GListModel that stores all
- * items in memory.
+ * `GListStore` is a simple implementation of [iface@Gio.ListModel] that stores
+ * all items in memory.
  *
  * It provides insertions, deletions, and lookups in logarithmic time
  * with a fast path for the common case of iterating the list linearly.
  */
-
-/**
- * GListStore:
- *
- * #GListStore is an opaque data structure and can only be accessed
- * using the following functions.
- **/
 
 struct _GListStore
 {
