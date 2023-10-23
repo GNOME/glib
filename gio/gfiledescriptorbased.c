@@ -26,20 +26,18 @@
 
 
 /**
- * SECTION:gfiledescriptorbased
- * @short_description: Interface for file descriptor based IO
- * @include: gio/gfiledescriptorbased.h
- * @see_also: #GInputStream, #GOutputStream
+ * GFileDescriptorBased:
  *
- * #GFileDescriptorBased is implemented by streams (implementations of
- * #GInputStream or #GOutputStream) that are based on file descriptors.
+ * `GFileDescriptorBased` is an interface for file descriptor based IO.
+ *
+ * It is implemented by streams (implementations of [class@Gio.InputStream] or
+ * [class@Gio.OutputStream]) that are based on file descriptors.
  *
  * Note that `<gio/gfiledescriptorbased.h>` belongs to the UNIX-specific
  * GIO interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config
  * file when using it.
  *
  * Since: 2.24
- *
  **/
 
 typedef GFileDescriptorBasedIface GFileDescriptorBasedInterface;

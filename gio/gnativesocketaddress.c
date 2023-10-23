@@ -32,18 +32,14 @@
 
 
 /**
- * SECTION:gnativesocketaddress
- * @short_description: Native GSocketAddress
- * @include: gio/gio.h
- *
- * A socket address of some unknown native type.
- */
-
-/**
  * GNativeSocketAddress:
  *
- * A socket address, corresponding to a general struct
- * sockadd address of a type not otherwise handled by glib.
+ * A socket address of some unknown native type.
+ *
+ * This corresponds to a general `struct sockaddr` of a type not otherwise
+ * handled by GLib.
+ *
+ * Since: 2.46
  */
 
 struct _GNativeSocketAddressPrivate

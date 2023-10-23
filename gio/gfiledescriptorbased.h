@@ -33,11 +33,6 @@ G_BEGIN_DECLS
 #define G_FILE_DESCRIPTOR_BASED_GET_IFACE(obj)  (G_TYPE_INSTANCE_GET_INTERFACE ((obj), G_TYPE_FILE_DESCRIPTOR_BASED, GFileDescriptorBasedIface))
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GFileDescriptorBased, g_object_unref)
 
-/**
- * GFileDescriptorBased:
- *
- * An interface for file descriptor based io objects.
- **/
 typedef struct _GFileDescriptorBasedIface   GFileDescriptorBasedIface;
 
 /**

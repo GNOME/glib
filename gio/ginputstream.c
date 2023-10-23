@@ -33,19 +33,19 @@
 #include "gpollableinputstream.h"
 
 /**
- * SECTION:ginputstream
- * @short_description: Base class for implementing streaming input
- * @include: gio/gio.h
+ * GInputStream:
  *
- * #GInputStream has functions to read from a stream (g_input_stream_read()),
- * to close a stream (g_input_stream_close()) and to skip some content
- * (g_input_stream_skip()). 
+ * `GInputStream` is a base class for implementing streaming input.
+ *
+ * It has functions to read from a stream ([method@Gio.InputStream.read]),
+ * to close a stream ([method@Gio.InputStream.close]) and to skip some content
+ * ([method@Gio.InputStream.skip]).
  *
  * To copy the content of an input stream to an output stream without 
- * manually handling the reads and writes, use g_output_stream_splice().
+ * manually handling the reads and writes, use [method@Gio.OutputStream.splice].
  *
- * See the documentation for #GIOStream for details of thread safety of
- * streaming APIs.
+ * See the documentation for [class@Gio.IOStream] for details of thread safety
+ * of streaming APIs.
  *
  * All of these functions have async variants too.
  **/

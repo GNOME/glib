@@ -33,21 +33,25 @@
 #include "gpollableoutputstream.h"
 
 /**
- * SECTION:goutputstream
- * @short_description: Base class for implementing streaming output
- * @include: gio/gio.h
+ * GOutputStream:
  *
- * #GOutputStream has functions to write to a stream (g_output_stream_write()),
- * to close a stream (g_output_stream_close()) and to flush pending writes
- * (g_output_stream_flush()). 
+ * `GOutputStream` is a base class for implementing streaming output.
+ *
+ * It has functions to write to a stream ([method@Gio.OutputStream.write]),
+ * to close a stream ([method@Gio.OutputStream.close]) and to flush pending
+ * writes ([method@Gio.OutputStream.flush]).
  *
  * To copy the content of an input stream to an output stream without 
- * manually handling the reads and writes, use g_output_stream_splice().
+ * manually handling the reads and writes, use [method@Gio.OutputStream.splice].
  *
- * See the documentation for #GIOStream for details of thread safety of
- * streaming APIs.
+ * See the documentation for [class@Gio.IOStream] for details of thread safety
+ * of streaming APIs.
  *
  * All of these functions have async variants too.
+ *
+ * All classes derived from `GOutputStream` *should* implement synchronous
+ * writing, splicing, flushing and closing streams, but *may* implement
+ * asynchronous versions.
  **/
 
 struct _GOutputStreamPrivate {

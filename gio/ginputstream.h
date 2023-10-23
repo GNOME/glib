@@ -38,11 +38,6 @@ G_BEGIN_DECLS
 #define G_IS_INPUT_STREAM_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_INPUT_STREAM))
 #define G_INPUT_STREAM_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_INPUT_STREAM, GInputStreamClass))
 
-/**
- * GInputStream:
- *
- * Base class for streaming input operations.
- **/
 typedef struct _GInputStreamClass    GInputStreamClass;
 typedef struct _GInputStreamPrivate  GInputStreamPrivate;
 
