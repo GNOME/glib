@@ -108,6 +108,17 @@ libraries.
   where GLib installs the SystemTap probes, using the
   `-Dtapset_install_dir=DIR` option.
 
+- [gobject-introspection](https://gitlab.gnome.org/GNOME/gobject-introspection/)
+  is needed to generate introspection data for consumption by other projects,
+  and to generate the GLib documentation via
+  [gi-docgen](https://gitlab.gnome.org/GNOME/gi-docgen). There is a dependency
+  cycle between GLib and gobject-introspection. This can be broken by building
+  GLib first with `-Dintrospection=disabled`, then building
+  gobject-introspection against this copy of GLib, then re-building GLib against
+  the new gobject-introspection with `-Dintrospection=enabled`. The GLib API
+  documentation can be built during this second build process if
+  `-Dgtk_doc=true` is also set.
+
 ## Extra Configuration Options
 
 In addition to the normal options, these additional ones are supported when
