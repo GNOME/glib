@@ -31,35 +31,34 @@
 #include "gio/gmarshal-internal.h"
 
 /**
- * SECTION:gdebugcontrollerdbus
- * @title: GDebugControllerDBus
- * @short_description: Debugging controller D-Bus implementation
- * @include: gio/gio.h
+ * GDebugControllerDBus:
  *
- * #GDebugControllerDBus is an implementation of #GDebugController which exposes
- * debug settings as a D-Bus object.
+ * `GDebugControllerDBus` is an implementation of [iface@Gio.DebugController]
+ * which exposes debug settings as a D-Bus object.
  *
- * It is a #GInitable object, and will register an object at
+ * It is a [iface@Gio.Initable] object, and will register an object at
  * `/org/gtk/Debugging` on the bus given as
- * #GDebugControllerDBus:connection once it’s initialized. The object will be
- * unregistered when the last reference to the #GDebugControllerDBus is dropped.
+ * [property@Gio.DebugControllerDBus:connection] once it’s initialized. The
+ * object will be unregistered when the last reference to the
+ * `GDebugControllerDBus` is dropped.
  *
  * This D-Bus object can be used by remote processes to enable or disable debug
  * output in this process. Remote processes calling
  * `org.gtk.Debugging.SetDebugEnabled()` will affect the value of
- * #GDebugController:debug-enabled and, by default, g_log_get_debug_enabled().
- * default.
+ * [property@Gio.DebugController:debug-enabled] and, by default,
+ * [func@GLib.log_get_debug_enabled].
  *
  * By default, no processes are allowed to call `SetDebugEnabled()` unless a
- * #GDebugControllerDBus::authorize signal handler is installed. This is because
- * the process may be privileged, or might expose sensitive information in its
- * debug output. You may want to restrict the ability to enable debug output to
- * privileged users or processes.
+ * [signal@Gio.DebugControllerDBus::authorize] signal handler is installed. This
+ * is because the process may be privileged, or might expose sensitive
+ * information in its debug output. You may want to restrict the ability to
+ * enable debug output to privileged users or processes.
  *
  * One option is to install a D-Bus security policy which restricts access to
  * `SetDebugEnabled()`, installing something like the following in
  * `$datadir/dbus-1/system.d/`:
- * |[<!-- language="XML" -->
+ *
+ * ```xml
  * <?xml version="1.0"?> <!--*-nxml-*-->
  * <!DOCTYPE busconfig PUBLIC "-//freedesktop//DTD D-BUS Bus Configuration 1.0//EN"
  *      "http://www.freedesktop.org/standards/dbus/1.0/busconfig.dtd">
@@ -71,7 +70,7 @@
  *     <deny send_destination="com.example.MyService" send_interface="org.gtk.Debugging"/>
  *   </policy>
  * </busconfig>
- * ]|
+ * ```
  *
  * This will prevent the `SetDebugEnabled()` method from being called by all
  * except root. It will not prevent the `DebugEnabled` property from being read,
@@ -79,9 +78,10 @@
  *
  * Another option is to use polkit to allow or deny requests on a case-by-case
  * basis, allowing for the possibility of dynamic authorisation. To do this,
- * connect to the #GDebugControllerDBus::authorize signal and query polkit in
- * it:
- * |[<!-- language="C" -->
+ * connect to the [signal@Gio.DebugControllerDBus::authorize] signal and query
+ * polkit in it:
+ *
+ * ```c
  *   g_autoptr(GError) child_error = NULL;
  *   g_autoptr(GDBusConnection) connection = g_bus_get_sync (G_BUS_TYPE_SYSTEM, NULL, NULL);
  *   gulong debug_controller_authorize_id = 0;
@@ -142,7 +142,7 @@
  *
  *     return polkit_authorization_result_get_is_authorized (auth_result);
  *   }
- * ]|
+ * ```
  *
  * Since: 2.72
  */

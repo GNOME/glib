@@ -28,13 +28,6 @@
 
 G_BEGIN_DECLS
 
-/**
- * GDebugControllerDBus:
- *
- * #GDebugControllerDBus is an implementation of #GDebugController over D-Bus.
- *
- * Since: 2.72
- */
 #define G_TYPE_DEBUG_CONTROLLER_DBUS (g_debug_controller_dbus_get_type ())
 GIO_AVAILABLE_IN_2_72
 G_DECLARE_DERIVABLE_TYPE (GDebugControllerDBus, g_debug_controller_dbus, G, DEBUG_CONTROLLER_DBUS, GObject)
