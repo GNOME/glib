@@ -37,30 +37,29 @@
 
 
 /**
- * SECTION:gmount
- * @short_description: Mount management
- * @include: gio/gio.h
- * @see_also: GVolume, GUnixMountEntry, GUnixMountPoint
+ * GMount:
  *
- * The #GMount interface represents user-visible mounts. Note, when 
- * porting from GnomeVFS, #GMount is the moral equivalent of #GnomeVFSVolume.
+ * The `GMount` interface represents user-visible mounts. Note, when
+ * [porting from GnomeVFS](migrating-gnome-vfs.html), `GMount` is the moral
+ * equivalent of `GnomeVFSVolume`.
  *
- * #GMount is a "mounted" filesystem that you can access. Mounted is in
- * quotes because it's not the same as a unix mount, it might be a gvfs
+ * `GMount` is a ‘mounted’ filesystem that you can access. Mounted is in
+ * quotes because it’s not the same as a UNIX mount, it might be a GVFS
  * mount, but you can still access the files on it if you use GIO. Might or
  * might not be related to a volume object.
  * 
- * Unmounting a #GMount instance is an asynchronous operation. For
- * more information about asynchronous operations, see #GAsyncResult
- * and #GTask. To unmount a #GMount instance, first call
- * g_mount_unmount_with_operation() with (at least) the #GMount instance and a
- * #GAsyncReadyCallback.  The callback will be fired when the
- * operation has resolved (either with success or failure), and a
- * #GAsyncResult structure will be passed to the callback.  That
- * callback should then call g_mount_unmount_with_operation_finish() with the #GMount
- * and the #GAsyncResult data to see if the operation was completed
- * successfully.  If an @error is present when g_mount_unmount_with_operation_finish() 
- * is called, then it will be filled with any error information.
+ * Unmounting a `GMount` instance is an asynchronous operation. For
+ * more information about asynchronous operations, see [iface@Gio.AsyncResult]
+ * and [class@Gio.Task]. To unmount a `GMount` instance, first call
+ * [method@Gio.Mount.unmount_with_operation] with (at least) the `GMount`
+ * instance and a [type@Gio.AsyncReadyCallback].  The callback will be fired
+ * when the operation has resolved (either with success or failure), and a
+ * [struct@Gio.AsyncResult] structure will be passed to the callback.  That
+ * callback should then call [method@Gio.Mount.unmount_with_operation_finish]
+ * with the `GMount` and the [struct@Gio.AsyncResult] data to see if the
+ * operation was completed successfully.  If an `error` is present when
+ * [method@Gio.Mount.unmount_with_operation_finish] is called, then it will be
+ * filled with any error information.
  **/
 
 typedef GMountIface GMountInterface;
