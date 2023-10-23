@@ -35,7 +35,7 @@
 /**
  * GConverterOutputStream:
  *
- * Converter output stream implements [iface@Gio.OutputStream] and allows
+ * Converter output stream implements [class@Gio.OutputStream] and allows
  * conversion of data of various types during reading.
  *
  * As of GLib 2.34, `GConverterOutputStream` implements

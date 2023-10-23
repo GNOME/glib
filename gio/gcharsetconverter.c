@@ -42,7 +42,7 @@ enum {
  * GCharsetConverter:
  *
  * `GCharsetConverter` is an implementation of [iface@Gio.Converter] based on
- * [class@GLib.IConv].
+ * [struct@GLib.IConv].
  */
 
 static void g_charset_converter_iface_init          (GConverterIface *iface);

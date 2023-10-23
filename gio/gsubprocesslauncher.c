@@ -403,7 +403,7 @@ assign_fd (gint *fd_ptr, gint fd)
 /**
  * g_subprocess_launcher_set_stdin_file_path:
  * @self: a #GSubprocessLauncher
- * @path: (type filename) (nullable: a filename or %NULL
+ * @path: (type filename) (nullable): a filename or %NULL
  *
  * Sets the file path to use as the stdin for spawned processes.
  *

@@ -35,7 +35,7 @@
 /**
  * GDataInputStream:
  *
- * Data input stream implements [iface@Gio.InputStream] and includes functions
+ * Data input stream implements [class@Gio.InputStream] and includes functions
  * for reading structured data directly from a binary input stream.
  */
 

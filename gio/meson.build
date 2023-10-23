@@ -472,7 +472,7 @@ else
   install_headers(gio_win32_include_headers, subdir : 'gio-win32-2.0/gio')
 endif
 
-gio_sources = files(
+gio_base_sources = files(
   'gappinfo.c',
   'gasynchelper.c',
   'gasyncinitable.c',
@@ -602,6 +602,8 @@ gio_sources = files(
   'glistmodel.c',
   'gliststore.c',
 )
+
+gio_sources = gio_base_sources
 
 if glib_build_shared
   gio_sources += files ('../glib/gtrace.c')
@@ -1099,6 +1101,58 @@ if multiarch_bindir != get_option('bindir')
       )
     endif
   endforeach
+endif
+
+if enable_gir
+  gio_gir_sources = [
+    gio_visibility_h,
+    gioenumtypes_h,
+    gnetworking_h,
+    gio_headers,
+    gio_base_sources,
+    application_sources,
+    gdbus_sources,
+    appinfo_sources,
+    contenttype_sources,
+    unix_sources,
+    win32_sources,
+    settings_sources,
+  ]
+  gio_gir_packages = [ 'gio-2.0' ]
+  gio_gir_args = [
+    '-DGIO_COMPILATION',
+    '-DG_SETTINGS_ENABLE_BACKEND',
+    '--symbol-prefix=gio',
+  ]
+  if host_system == 'windows'
+    gio_gir_sources += gio_win32_include_headers
+    foreach h: gio_win32_include_headers
+      gio_gir_args += '--c-include=@0@'.format(h)
+    endforeach
+    gio_gir_packages += 'gio-win32-2.0'
+    gio_gir_args += '--pkg=gio-win32-2.0'
+  else
+    gio_gir_sources += gio_unix_include_headers
+    foreach h: gio_unix_include_headers
+      gio_gir_args += '--c-include=@0@'.format(h)
+    endforeach
+    gio_gir_packages += 'gio-unix-2.0'
+    gio_gir_args += '--pkg=gio-unix-2.0'
+  endif
+
+  gio_gir = gnome.generate_gir(libgio,
+    sources: gio_gir_sources,
+    namespace: 'Gio',
+    nsversion: '2.0',
+    identifier_prefix: 'G',
+    symbol_prefix: 'g',
+    export_packages: gio_gir_packages,
+    header: 'gio/gio.h',
+    includes: [ glib_gir[0], gmodule_gir[0], gobject_gir[0] ],
+    install: true,
+    dependencies: [ libglib_dep, libgobject_dep, libgmodule_dep ],
+    extra_args: gir_args + gio_gir_args,
+  )
 endif
 
 if build_tests

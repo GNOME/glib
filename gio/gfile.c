@@ -747,14 +747,13 @@ g_file_dup (GFile *file)
 }
 
 /**
- * g_file_hash:
+ * g_file_hash: (virtual hash)
  * @file: (type GFile): #gconstpointer to a #GFile
  *
  * Creates a hash value for a #GFile.
  *
  * This call does no blocking I/O.
  *
- * Virtual: hash
  * Returns: 0 if @file is not a valid #GFile, otherwise an
  *   integer that can be used as hash value for the #GFile.
  *   This function is intended for easily hashing a #GFile to
@@ -939,7 +938,7 @@ g_file_get_child_for_display_name (GFile      *file,
 }
 
 /**
- * g_file_has_prefix:
+ * g_file_has_prefix: (virtual prefix_matches)
  * @file: input #GFile
  * @prefix: input #GFile
  *
@@ -958,7 +957,6 @@ g_file_get_child_for_display_name (GFile      *file,
  * filesystem point of view), because the prefix of @file is an alias
  * of @prefix.
  *
- * Virtual: prefix_matches
  * Returns:  %TRUE if the @file's parent, grandparent, etc is @prefix,
  *   %FALSE otherwise.
  */
@@ -1674,7 +1672,7 @@ g_file_find_enclosing_mount_finish (GFile         *file,
 
 
 /**
- * g_file_read:
+ * g_file_read: (virtual read_fn)
  * @file: #GFile to read
  * @cancellable: (nullable): a #GCancellable
  * @error: a #GError, or %NULL
@@ -1691,7 +1689,6 @@ g_file_find_enclosing_mount_finish (GFile         *file,
  * error will be returned. Other errors are possible too, and depend
  * on what kind of filesystem the file is on.
  *
- * Virtual: read_fn
  * Returns: (transfer full): #GFileInputStream or %NULL on error.
  *   Free the returned object with g_object_unref().
  */
@@ -4097,7 +4094,7 @@ g_file_make_directory (GFile         *file,
 }
 
 /**
- * g_file_make_directory_async:
+ * g_file_make_directory_async: (virtual make_directory_async)
  * @file: input #GFile
  * @io_priority: the [I/O priority][io-priority] of the request
  * @cancellable: (nullable): optional #GCancellable object,
@@ -4108,7 +4105,6 @@ g_file_make_directory (GFile         *file,
  *
  * Asynchronously creates a directory.
  *
- * Virtual: make_directory_async
  * Since: 2.38
  */
 void
@@ -4131,7 +4127,7 @@ g_file_make_directory_async (GFile               *file,
 }
 
 /**
- * g_file_make_directory_finish:
+ * g_file_make_directory_finish: (virtual make_directory_finish)
  * @file: input #GFile
  * @result: a #GAsyncResult
  * @error: a #GError, or %NULL
@@ -4139,7 +4135,6 @@ g_file_make_directory_async (GFile               *file,
  * Finishes an asynchronous directory creation, started with
  * g_file_make_directory_async().
  *
- * Virtual: make_directory_finish
  * Returns: %TRUE on successful directory creation, %FALSE otherwise.
  * Since: 2.38
  */
@@ -4371,7 +4366,7 @@ g_file_real_make_symbolic_link_async (GFile               *file,
 }
 
 /**
- * g_file_make_symbolic_link_async:
+ * g_file_make_symbolic_link_async: (virtual make_symbolic_link_async)
  * @file: a #GFile with the name of the symlink to create
  * @symlink_value: (type filename): a string with the path for the target
  *   of the new symlink
@@ -4385,7 +4380,6 @@ g_file_real_make_symbolic_link_async (GFile               *file,
  * Asynchronously creates a symbolic link named @file which contains the
  * string @symlink_value.
  *
- * Virtual: make_symbolic_link_async
  * Since: 2.74
  */
 void
@@ -4422,7 +4416,7 @@ g_file_real_make_symbolic_link_finish (GFile         *file,
 }
 
 /**
- * g_file_make_symbolic_link_finish:
+ * g_file_make_symbolic_link_finish: (virtual make_symbolic_link_finish)
  * @file: input #GFile
  * @result: a #GAsyncResult
  * @error: a #GError, or %NULL
@@ -4430,7 +4424,6 @@ g_file_real_make_symbolic_link_finish (GFile         *file,
  * Finishes an asynchronous symbolic link creation, started with
  * g_file_make_symbolic_link_async().
  *
- * Virtual: make_symbolic_link_finish
  * Returns: %TRUE on successful directory creation, %FALSE otherwise.
  * Since: 2.74
  */
@@ -4452,7 +4445,7 @@ g_file_make_symbolic_link_finish (GFile         *file,
 }
 
 /**
- * g_file_delete:
+ * g_file_delete: (virtual delete_file)
  * @file: input #GFile
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
@@ -4480,7 +4473,6 @@ g_file_make_symbolic_link_finish (GFile         *file,
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned.
  *
- * Virtual: delete_file
  * Returns: %TRUE if the file was deleted. %FALSE otherwise.
  */
 gboolean
@@ -4509,7 +4501,7 @@ g_file_delete (GFile         *file,
 }
 
 /**
- * g_file_delete_async:
+ * g_file_delete_async: (virtual delete_file_async)
  * @file: input #GFile
  * @io_priority: the [I/O priority][io-priority] of the request
  * @cancellable: (nullable): optional #GCancellable object,
@@ -4522,7 +4514,6 @@ g_file_delete (GFile         *file,
  * only be deleted if it is empty.  This has the same semantics as
  * g_unlink().
  *
- * Virtual: delete_file_async
  * Since: 2.34
  */
 void
@@ -4545,14 +4536,13 @@ g_file_delete_async (GFile               *file,
 }
 
 /**
- * g_file_delete_finish:
+ * g_file_delete_finish: (virtual delete_file_finish)
  * @file: input #GFile
  * @result: a #GAsyncResult
  * @error: a #GError, or %NULL
  *
  * Finishes deleting a file started with g_file_delete_async().
  *
- * Virtual: delete_file_finish
  * Returns: %TRUE if the file was deleted. %FALSE otherwise.
  * Since: 2.34
  **/
@@ -4574,7 +4564,7 @@ g_file_delete_finish (GFile         *file,
 }
 
 /**
- * g_file_trash:
+ * g_file_trash: (virtual trash)
  * @file: #GFile to send to trash
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
@@ -4591,7 +4581,6 @@ g_file_delete_finish (GFile         *file,
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned.
  *
- * Virtual: trash
  * Returns: %TRUE on successful trash, %FALSE otherwise.
  */
 gboolean
@@ -4620,7 +4609,7 @@ g_file_trash (GFile         *file,
 }
 
 /**
- * g_file_trash_async:
+ * g_file_trash_async: (virtual trash_async)
  * @file: input #GFile
  * @io_priority: the [I/O priority][io-priority] of the request
  * @cancellable: (nullable): optional #GCancellable object,
@@ -4631,7 +4620,6 @@ g_file_trash (GFile         *file,
  *
  * Asynchronously sends @file to the Trash location, if possible.
  *
- * Virtual: trash_async
  * Since: 2.38
  */
 void
@@ -4654,7 +4642,7 @@ g_file_trash_async (GFile               *file,
 }
 
 /**
- * g_file_trash_finish:
+ * g_file_trash_finish: (virtual trash_finish)
  * @file: input #GFile
  * @result: a #GAsyncResult
  * @error: a #GError, or %NULL
@@ -4662,7 +4650,6 @@ g_file_trash_async (GFile               *file,
  * Finishes an asynchronous file trashing operation, started with
  * g_file_trash_async().
  *
- * Virtual: trash_finish
  * Returns: %TRUE on successful trash, %FALSE otherwise.
  * Since: 2.38
  */
@@ -5798,7 +5785,7 @@ g_file_eject_mountable_with_operation_finish (GFile         *file,
 }
 
 /**
- * g_file_monitor_directory:
+ * g_file_monitor_directory: (virtual monitor_dir)
  * @file: input #GFile
  * @flags: a set of #GFileMonitorFlags
  * @cancellable: (nullable): optional #GCancellable object,
@@ -5818,10 +5805,8 @@ g_file_eject_mountable_with_operation_finish (GFile         *file,
  * directory for changes made via hard links; if you want to do this then
  * you must register individual watches with g_file_monitor().
  *
- * Virtual: monitor_dir
  * Returns: (transfer full): a #GFileMonitor for the given @file,
- *   or %NULL on error.
- *   Free the returned object with g_object_unref().
+ *   or %NULL on error. Free the returned object with g_object_unref().
  */
 GFileMonitor *
 g_file_monitor_directory (GFile              *file,

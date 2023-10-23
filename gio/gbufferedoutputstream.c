@@ -32,13 +32,13 @@
 /**
  * GBufferedOutputStream:
  *
- * Buffered output stream implements [struct@Gio.FilterOutputStream] and provides
+ * Buffered output stream implements [class@Gio.FilterOutputStream] and provides
  * for buffered writes.
  *
  * By default, `GBufferedOutputStream`'s buffer size is set at 4 kilobytes.
  *
- * To create a buffered output stream, use [func@Gio.BufferedOutputStream.new],
- * or [func@Gio.BufferedOutputStream.new_sized] to specify the buffer's size
+ * To create a buffered output stream, use [ctor@Gio.BufferedOutputStream.new],
+ * or [ctor@Gio.BufferedOutputStream.new_sized] to specify the buffer's size
  * at construction.
  *
  * To get the size of a buffer within a buffered input stream, use

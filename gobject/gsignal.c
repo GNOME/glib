@@ -2041,7 +2041,7 @@ g_signal_override_class_handler (const gchar *signal_name,
 
 /**
  * g_signal_chain_from_overridden:
- * @instance_and_params: (array) the argument list of the signal emission.
+ * @instance_and_params: (array): the argument list of the signal emission.
  *  The first element in the array is a #GValue for the instance the signal
  *  is being emitted on. The rest are any arguments to be passed to the signal.
  * @return_value: Location for the return value.

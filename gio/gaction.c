@@ -48,7 +48,7 @@ G_DEFINE_INTERFACE (GAction, g_action, G_TYPE_OBJECT)
  *
  * `GAction` is merely the interface to the concept of an action, as
  * described above.  Various implementations of actions exist, including
- * [struct@Gio.SimpleAction].
+ * [class@Gio.SimpleAction].
  *
  * In all cases, the implementing class is responsible for storing the
  * name of the action, the parameter type, the enabled state, the optional
@@ -58,7 +58,7 @@ G_DEFINE_INTERFACE (GAction, g_action, G_TYPE_OBJECT)
  * for type safety and for the state being enabled.
  *
  * Probably the only useful thing to do with a `GAction` is to put it
- * inside of a [struct@Gio.SimpleActionGroup].
+ * inside of a [class@Gio.SimpleActionGroup].
  **/
 
 /**

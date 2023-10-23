@@ -417,7 +417,7 @@ g_simple_proxy_resolver_class_init (GSimpleProxyResolverClass *resolver_class)
   object_class->finalize = g_simple_proxy_resolver_finalize;
 
   /**
-   * GSimpleProxyResolver:default-proxy: (nullable)
+   * GSimpleProxyResolver:default-proxy:
    *
    * The default proxy URI that will be used for any URI that doesn't
    * match #GSimpleProxyResolver:ignore-hosts, and doesn't match any
@@ -503,7 +503,7 @@ g_simple_proxy_resolver_iface_init (GProxyResolverInterface *iface)
  * #GSimpleProxyResolver:ignore-hosts for more details on how the
  * arguments are interpreted.
  *
- * Returns: (transfer full) a new #GSimpleProxyResolver
+ * Returns: (transfer full): a new #GSimpleProxyResolver
  *
  * Since: 2.36
  */

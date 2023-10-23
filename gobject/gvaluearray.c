@@ -44,8 +44,8 @@
  * `GValueArray` is deprecated in favour of `GArray` since GLib 2.32.
  * It is possible to create a `GArray` that behaves like a `GValueArray`
  * by using the size of `GValue` as the element size, and by setting
- * [func@GObject.value_unset] as the clear function using
- * [method@GLib.Array.set_clear_func], for instance, the following code:
+ * [method@GObject.Value.unset] as the clear function using
+ * [func@GLib.Array.set_clear_func], for instance, the following code:
  *
  * ```c
  *   GValueArray *array = g_value_array_new (10);

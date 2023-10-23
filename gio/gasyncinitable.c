@@ -33,7 +33,7 @@
  *
  * `GAsyncInitable` is an interface for asynchronously initializable objects.
  *
- * This is the asynchronous version of [struct@Gio.Initable]; it behaves the same
+ * This is the asynchronous version of [iface@Gio.Initable]; it behaves the same
  * in all ways except that initialization is asynchronous. For more details
  * see the descriptions on `GInitable`.
  *
@@ -41,9 +41,9 @@
  *
  * Users of objects implementing this are not intended to use the interface
  * method directly; instead it will be used automatically in various ways.
- * For C applications you generally just call [func@Gio.AsyncInitiable.new_async]
+ * For C applications you generally just call [func@Gio.AsyncInitable.new_async]
  * directly, or indirectly via a foo_thing_new_async() wrapper. This will call
- * [func@Gio.AsyncInitable.init_async] under the covers, calling back with `NULL`
+ * [method@Gio.AsyncInitable.init_async] under the covers, calling back with `NULL`
  * and a set `GError` on failure.
  *
  * A typical implementation might look something like this:

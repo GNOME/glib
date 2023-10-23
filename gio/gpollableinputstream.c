@@ -170,7 +170,7 @@ g_pollable_input_stream_default_read_nonblocking (GPollableInputStream  *stream,
 }
 
 /**
- * g_pollable_input_stream_read_nonblocking:
+ * g_pollable_input_stream_read_nonblocking: (virtual read_nonblocking)
  * @stream: a #GPollableInputStream
  * @buffer: (array length=count) (element-type guint8) (out caller-allocates): a
  *     buffer to read data into (which should be at least @count bytes long).
@@ -193,7 +193,6 @@ g_pollable_input_stream_default_read_nonblocking (GPollableInputStream  *stream,
  * The behaviour of this method is undefined if
  * g_pollable_input_stream_can_poll() returns %FALSE for @stream.
  *
- * Virtual: read_nonblocking
  * Returns: the number of bytes read, or -1 on error (including
  *   %G_IO_ERROR_WOULD_BLOCK).
  */

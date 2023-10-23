@@ -67,10 +67,10 @@
  * passed unmodified to the application.
  *
  * Specifically for GVfs 2.26 and later, the POSIX URI will be mapped
- * back to the GIO URI in the [struct@Gio.File] constructors (since GVfs
+ * back to the GIO URI in the [iface@Gio.File] constructors (since GVfs
  * implements the GVfs extension point). As such, if the application
  * needs to examine the URI, it needs to use [method@Gio.File.get_uri]
- * or similar on [struct@Gio.File]. In other words, an application cannot
+ * or similar on [iface@Gio.File]. In other words, an application cannot
  * assume that the URI passed to e.g. [func@Gio.File.new_for_commandline_arg]
  * is equal to the result of [method@Gio.File.get_uri]. The following snippet
  * illustrates this:
@@ -1304,7 +1304,7 @@ g_app_info_can_delete (GAppInfo *appinfo)
 
 
 /**
- * g_app_info_delete:
+ * g_app_info_delete: (virtual do_delete)
  * @appinfo: a #GAppInfo
  *
  * Tries to delete a #GAppInfo.
@@ -1313,7 +1313,6 @@ g_app_info_can_delete (GAppInfo *appinfo)
  * #GAppInfos which can be deleted, and system-wide ones which cannot.
  * See g_app_info_can_delete().
  *
- * Virtual: do_delete
  * Returns: %TRUE if @appinfo has been deleted
  *
  * Since: 2.20
@@ -1662,24 +1661,24 @@ g_app_launch_context_launch_failed (GAppLaunchContext *context,
  * info database for changes (newly installed or removed applications).
  *
  * Call [func@Gio.AppInfoMonitor.get] to get a `GAppInfoMonitor` and connect
- * to the [signal@Gio.AppInfoMonitor.changed] signal. The signal will be emitted once when
+ * to the [signal@Gio.AppInfoMonitor::changed] signal. The signal will be emitted once when
  * the app info database changes, and will not be emitted again until after the
  * next call to [func@Gio.AppInfo.get_all] or another `g_app_info_*()` function.
  * This is because monitoring the app info database for changes is expensive.
  *
- * The following functions will re-arm the [signal@Gio.AppInfoMonitor.changed]
+ * The following functions will re-arm the [signal@Gio.AppInfoMonitor::changed]
  * signal so it can be emitted again:
  *
- *  - [method@Gio.AppInfo.get_all]
- *  - [method@Gio.AppInfo.get_all_for_type]
- *  - [method@Gio.AppInfo.get_default_for_type]
- *  - [method@Gio.AppInfo.get_fallback_for_type]
- *  - [method@Gio.AppInfo.get_recommended_for_type]
- *  - [method@Gio.DesktopAppInfo.get_implementations]
- *  - [method@Gio.DesktopAppInfo.new]
- *  - [method@Gio.DesktopAppInfo.new_from_filename]
- *  - [method@Gio.DesktopAppInfo.new_from_keyfile]
- *  - [method@Gio.DesktopAppInfo.search]
+ *  - [func@Gio.AppInfo.get_all]
+ *  - [func@Gio.AppInfo.get_all_for_type]
+ *  - [func@Gio.AppInfo.get_default_for_type]
+ *  - [func@Gio.AppInfo.get_fallback_for_type]
+ *  - [func@Gio.AppInfo.get_recommended_for_type]
+ *  - [func@Gio.DesktopAppInfo.get_implementations]
+ *  - [ctor@Gio.DesktopAppInfo.new]
+ *  - [ctor@Gio.DesktopAppInfo.new_from_filename]
+ *  - [ctor@Gio.DesktopAppInfo.new_from_keyfile]
+ *  - [func@Gio.DesktopAppInfo.search]
  *
  * In the usual case, applications should try to make note of the change
  * (doing things like invalidating caches) but not act on it. In

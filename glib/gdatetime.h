@@ -106,7 +106,7 @@ typedef gint64 GTimeSpan;
  * of range, in which case %NULL will be returned.
  *
  * `GDateTime` is reference counted: the reference count is increased by calling
- * [metohd@GLib.DateTime.ref] and decreased by calling [method@GLib.DateTime.unref].
+ * [method@GLib.DateTime.ref] and decreased by calling [method@GLib.DateTime.unref].
  * When the reference count drops to 0, the resources allocated by the `GDateTime`
  * structure are released.
  *

@@ -52,20 +52,20 @@
  * is full a new block is allocated.
  *
  * When storing a large number of strings, string chunks are more
- * efficient than using [func@g_strdup] since fewer calls to `malloc()`
+ * efficient than using [func@GLib.strdup] since fewer calls to `malloc()`
  * are needed, and less memory is wasted in memory allocation overheads.
  *
  * By adding strings with [method@GLib.StringChunk.insert_const] it is also
  * possible to remove duplicates.
  *
- * To create a new `GStringChunk` use [method@GLib.StringChunk.new].
+ * To create a new `GStringChunk` use [func@GLib.StringChunk.new].
  *
- * To add strings to a `GStringChunk` use [method@GLib.Stringchunk.insert].
+ * To add strings to a `GStringChunk` use [method@GLib.StringChunk.insert].
  *
  * To add strings to a `GStringChunk`, but without duplicating strings
  * which are already in the `GStringChunk`, use [method@GLib.StringChunk.insert_const].
  *
- * To free the entire `GStringChunk` use [method@GLib.Stringchunk.free].
+ * To free the entire `GStringChunk` use [method@GLib.StringChunk.free].
  * It is not possible to free individual strings.
  */
 

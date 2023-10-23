@@ -50,7 +50,7 @@
  * using a use count - it starts at zero, and whenever it is greater than
  * zero, the module is loaded. The use count is maintained internally by
  * the type system, but also can be explicitly controlled by
- * [func@GObject.type_module_use] and [func@GObject.type_module_unuse].
+ * [method@GObject.TypeModule.use] and [method@GObject.TypeModule.unuse].
  * Typically, when loading a module for the first type, `g_type_module_use()`
  * will be used to load it so that it can initialize its types. At some later
  * point, when the module no longer needs to be loaded except for the type

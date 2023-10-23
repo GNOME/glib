@@ -166,11 +166,10 @@ expand_content_files = [
   'unicode.md',
 ]
 
-glib_gir = meson.current_source_dir() / 'GLib-2.0.gir'
 glib_toml = configure_file(input: 'glib.toml.in', output: 'glib.toml', configuration: toml_conf)
 
 custom_target('glib-docs',
-  input: [ glib_toml, glib_gir ],
+  input: [ glib_toml, glib_gir[0] ],
   output: 'glib',
   command: [
     gidocgen,

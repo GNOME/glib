@@ -106,17 +106,17 @@
  * any object paths that you wish to register are registered before #GApplication
  * attempts to acquire the bus name of your application (which happens in
  * [method@Gio.Application.register]). Unfortunately, this means that you cannot
- * use [method@Gio.Application.is_remote] to decide if you want to register
+ * use [property@Gio.Application:is-remote] to decide if you want to register
  * object paths.
  *
- * `GApplication` also implements the [struct@Gio.ActionGroup] and [struct@Gio.ActionMap]
+ * `GApplication` also implements the [iface@Gio.ActionGroup] and [iface@Gio.ActionMap]
  * interfaces and lets you easily export actions by adding them with
  * [method@Gio.ActionMap.add_action]. When invoking an action by calling
  * [method@Gio.ActionGroup.activate_action] on the application, it is always
  * invoked in the primary instance. The actions are also exported on
- * the session bus, and GIO provides the [struct@Gio.DBusActionGroup] wrapper to
- * conveniently access them remotely. GIO provides a [struct@Gio.DBusMenuModel] wrapper
- * for remote access to exported [struct@Gio.MenuModel]s.
+ * the session bus, and GIO provides the [class@Gio.DBusActionGroup] wrapper to
+ * conveniently access them remotely. GIO provides a [class@Gio.DBusMenuModel] wrapper
+ * for remote access to exported [class@Gio.MenuModel]s.
  *
  * Note: Due to the fact that actions are exported on the session bus,
  * using `maybe` parameters is not supported, since D-Bus does not support
@@ -132,7 +132,7 @@
  *
  * - via activating an action
  *
- * The [signal@Gio.Application.startup] signal lets you handle the application
+ * The [signal@Gio.Application::startup] signal lets you handle the application
  * initialization for all of these in a single place.
  *
  * Regardless of which of these entry points is used to start the
@@ -142,7 +142,7 @@
  * data, override the [vfunc@Gio.Application.before_emit] or
  * [vfunc@Gio.Application.after_emit] virtual functions
  * in your `GApplication` subclass. When dealing with
- * [struct@Gio.ApplicationCommandLine] objects, the platform data is
+ * [class@Gio.ApplicationCommandLine] objects, the platform data is
  * directly available via [method@Gio.ApplicationCommandLine.get_cwd],
  * [method@Gio.ApplicationCommandLine.get_environ] and
  * [method@Gio.ApplicationCommandLine.get_platform_data].
@@ -158,7 +158,7 @@
  * `GtkApplication` adds startup notification data in this way.
  *
  * To parse commandline arguments you may handle the
- * [signal@Gio.Application.command-line] signal or override the
+ * [signal@Gio.Application::command-line] signal or override the
  * [vfunc@Gio.Application.local_command_line] virtual funcion, to parse them in
  * either the primary instance or the local instance, respectively.
  *
@@ -654,8 +654,8 @@ add_packed_option (GApplication *application,
 /**
  * g_application_add_main_option_entries:
  * @application: a #GApplication
- * @entries: (array zero-terminated=1) (element-type GOptionEntry) a
- *           %NULL-terminated list of #GOptionEntrys
+ * @entries: (array zero-terminated=1) (element-type GOptionEntry): the
+ *   main options for the application
  *
  * Adds main option entries to be handled by @application.
  *

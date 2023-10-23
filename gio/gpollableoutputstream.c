@@ -238,7 +238,7 @@ g_pollable_output_stream_default_writev_nonblocking (GPollableOutputStream  *str
 }
 
 /**
- * g_pollable_output_stream_write_nonblocking:
+ * g_pollable_output_stream_write_nonblocking: (virtual write_nonblocking)
  * @stream: a #GPollableOutputStream
  * @buffer: (array length=count) (element-type guint8): a buffer to write
  *     data from
@@ -265,7 +265,6 @@ g_pollable_output_stream_default_writev_nonblocking (GPollableOutputStream  *str
  * The behaviour of this method is undefined if
  * g_pollable_output_stream_can_poll() returns %FALSE for @stream.
  *
- * Virtual: write_nonblocking
  * Returns: the number of bytes written, or -1 on error (including
  *   %G_IO_ERROR_WOULD_BLOCK).
  */
@@ -307,7 +306,7 @@ g_pollable_output_stream_write_nonblocking (GPollableOutputStream  *stream,
 }
 
 /**
- * g_pollable_output_stream_writev_nonblocking:
+ * g_pollable_output_stream_writev_nonblocking: (virtual writev_nonblocking)
  * @stream: a #GPollableOutputStream
  * @vectors: (array length=n_vectors): the buffer containing the #GOutputVectors to write.
  * @n_vectors: the number of vectors to write
@@ -335,8 +334,6 @@ g_pollable_output_stream_write_nonblocking (GPollableOutputStream  *stream,
  *
  * The behaviour of this method is undefined if
  * g_pollable_output_stream_can_poll() returns %FALSE for @stream.
- *
- * Virtual: writev_nonblocking
  *
  * Returns: %@G_POLLABLE_RETURN_OK on success, %G_POLLABLE_RETURN_WOULD_BLOCK
  * if the stream is not currently writable (and @error is *not* set), or

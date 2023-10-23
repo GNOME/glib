@@ -33,8 +33,8 @@
  * Base type for D-Bus interfaces.
  *
  * The `GDBusInterface` type is the base type for D-Bus interfaces both
- * on the service side (see [struct@Gio.DBusInterfaceSkeleton]) and client side
- * (see [struct@Gio.DBusProxy]).
+ * on the service side (see [class@Gio.DBusInterfaceSkeleton]) and client side
+ * (see [class@Gio.DBusProxy]).
  *
  * Since: 2.30
  */
