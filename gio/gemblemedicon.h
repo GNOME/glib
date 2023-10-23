@@ -40,11 +40,6 @@ G_BEGIN_DECLS
 #define G_IS_EMBLEMED_ICON_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_EMBLEMED_ICON))
 #define G_EMBLEMED_ICON_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_EMBLEMED_ICON, GEmblemedIconClass))
 
-/**
- * GEmblemedIcon:
- *
- * An implementation of #GIcon for icons with emblems.
- **/
 typedef struct _GEmblemedIcon        GEmblemedIcon;
 typedef struct _GEmblemedIconClass   GEmblemedIconClass;
 typedef struct _GEmblemedIconPrivate GEmblemedIconPrivate;
