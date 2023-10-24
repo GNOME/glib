@@ -30,20 +30,12 @@
 #include "glibintl.h"
 
 /**
- * SECTION:gproxyaddress
- * @short_description: An internet address with proxy information
- * @include: gio/gio.h
- *
- * Support for proxied #GInetSocketAddress.
- */
-
-/**
  * GProxyAddress:
  *
- * A #GInetSocketAddress representing a connection via a proxy server
+ * A [class@Gio.InetSocketAddress] representing a connection via a proxy server.
  *
  * Since: 2.26
- **/
+ */
 
 /**
  * GProxyAddressClass:
