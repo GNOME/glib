@@ -255,7 +255,7 @@ g_param_spec_unref (GParamSpec *pspec)
 void
 g_param_spec_sink (GParamSpec *pspec)
 {
-  gsize oldvalue;
+  guintptr oldvalue;
   g_return_if_fail (G_IS_PARAM_SPEC (pspec));
 
   oldvalue = g_atomic_pointer_and (&pspec->qdata, ~(gsize)PARAM_FLOATING_FLAG);
@@ -275,7 +275,7 @@ g_param_spec_sink (GParamSpec *pspec)
 GParamSpec*
 g_param_spec_ref_sink (GParamSpec *pspec)
 {
-  gsize oldvalue;
+  guintptr oldvalue;
   g_return_val_if_fail (G_IS_PARAM_SPEC (pspec), NULL);
 
   oldvalue = g_atomic_pointer_and (&pspec->qdata, ~(gsize)PARAM_FLOATING_FLAG);

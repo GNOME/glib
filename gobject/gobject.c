@@ -3375,7 +3375,7 @@ object_floating_flag_handler (GObject        *object,
       oldvalue = g_atomic_pointer_get (&object->qdata);
       while (!g_atomic_pointer_compare_and_exchange_full (
         (void**) &object->qdata, oldvalue,
-        (void *) ((gsize) oldvalue | OBJECT_FLOATING_FLAG),
+        (void *) ((guintptr) oldvalue | OBJECT_FLOATING_FLAG),
         &oldvalue))
         ;
       return (gsize) oldvalue & OBJECT_FLOATING_FLAG;
@@ -3383,7 +3383,7 @@ object_floating_flag_handler (GObject        *object,
       oldvalue = g_atomic_pointer_get (&object->qdata);
       while (!g_atomic_pointer_compare_and_exchange_full (
         (void**) &object->qdata, oldvalue,
-        (void *) ((gsize) oldvalue & ~(gsize) OBJECT_FLOATING_FLAG),
+        (void *) ((guintptr) oldvalue & ~(gsize) OBJECT_FLOATING_FLAG),
         &oldvalue))
         ;
       return (gsize) oldvalue & OBJECT_FLOATING_FLAG;
