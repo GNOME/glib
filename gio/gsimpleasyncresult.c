@@ -33,83 +33,81 @@
 
 
 /**
- * SECTION:gsimpleasyncresult
- * @short_description: Simple asynchronous results implementation
- * @include: gio/gio.h
- * @see_also: #GAsyncResult, #GTask
+ * GSimpleAsyncResult:
  *
- * As of GLib 2.46, #GSimpleAsyncResult is deprecated in favor of
- * #GTask, which provides a simpler API.
+ * As of GLib 2.46, `GSimpleAsyncResult` is deprecated in favor of
+ * [class@Gio.Task], which provides a simpler API.
  *
- * #GSimpleAsyncResult implements #GAsyncResult.
+ * `GSimpleAsyncResult` implements [iface@Gio.AsyncResult].
  *
- * GSimpleAsyncResult handles #GAsyncReadyCallbacks, error
+ * `GSimpleAsyncResult` handles [type@Gio.AsyncReadyCallback]s, error
  * reporting, operation cancellation and the final state of an operation,
  * completely transparent to the application. Results can be returned
  * as a pointer e.g. for functions that return data that is collected
  * asynchronously, a boolean value for checking the success or failure
- * of an operation, or a #gssize for operations which return the number
+ * of an operation, or a `gssize` for operations which return the number
  * of bytes modified by the operation; all of the simple return cases
  * are covered.
  *
  * Most of the time, an application will not need to know of the details
  * of this API; it is handled transparently, and any necessary operations
- * are handled by #GAsyncResult's interface. However, if implementing a
- * new GIO module, for writing language bindings, or for complex
+ * are handled by [iface@Gio.AsyncResult]’s interface. However, if implementing
+ * a new GIO module, for writing language bindings, or for complex
  * applications that need better control of how asynchronous operations
  * are completed, it is important to understand this functionality.
  *
- * GSimpleAsyncResults are tagged with the calling function to ensure
+ * `GSimpleAsyncResult`s are tagged with the calling function to ensure
  * that asynchronous functions and their finishing functions are used
  * together correctly.
  *
- * To create a new #GSimpleAsyncResult, call g_simple_async_result_new().
- * If the result needs to be created for a #GError, use
- * g_simple_async_result_new_from_error() or
- * g_simple_async_result_new_take_error(). If a #GError is not available
- * (e.g. the asynchronous operation's doesn't take a #GError argument),
+ * To create a new `GSimpleAsyncResult`, call [ctor@Gio.SimpleAsyncResult.new].
+ * If the result needs to be created for a `GError`, use
+ * [ctor@Gio.SimpleAsyncResult.new_from_error] or
+ * [ctor@Gio.SimpleAsyncResult.new_take_error]. If a `GError` is not available
+ * (e.g. the asynchronous operation doesn’t take a `GError` argument),
  * but the result still needs to be created for an error condition, use
- * g_simple_async_result_new_error() (or g_simple_async_result_set_error_va()
- * if your application or binding requires passing a variable argument list
- * directly), and the error can then be propagated through the use of
- * g_simple_async_result_propagate_error().
+ * [ctor@Gio.SimpleAsyncResult.new_error] (or
+ * [method@Gio.SimpleAsyncResult.set_error_va] if your application or binding
+ * requires passing a variable argument list directly), and the error can then
+ * be propagated through the use of
+ * [method@Gio.SimpleAsyncResult.propagate_error].
  *
  * An asynchronous operation can be made to ignore a cancellation event by
- * calling g_simple_async_result_set_handle_cancellation() with a
- * #GSimpleAsyncResult for the operation and %FALSE. This is useful for
+ * calling [method@Gio.SimpleAsyncResult.set_handle_cancellation] with a
+ * `GSimpleAsyncResult` for the operation and `FALSE`. This is useful for
  * operations that are dangerous to cancel, such as close (which would
  * cause a leak if cancelled before being run).
  *
- * GSimpleAsyncResult can integrate into GLib's event loop, #GMainLoop,
- * or it can use #GThreads.
- * g_simple_async_result_complete() will finish an I/O task directly
- * from the point where it is called. g_simple_async_result_complete_in_idle()
- * will finish it from an idle handler in the 
- * [thread-default main context][g-main-context-push-thread-default]
- * where the #GSimpleAsyncResult was created.
- * g_simple_async_result_run_in_thread() will run the job in a
- * separate thread and then use
- * g_simple_async_result_complete_in_idle() to deliver the result.
+ * `GSimpleAsyncResult` can integrate into GLib’s event loop,
+ * [type@GLib.MainLoop], or it can use [type@GLib.Thread]s.
+ * [method@Gio.SimpleAsyncResult.complete] will finish an I/O task directly
+ * from the point where it is called.
+ * [method@Gio.SimpleAsyncResult.complete_in_idle] will finish it from an idle
+ * handler in the  thread-default main context (see
+ * [method@GLib.MainContext.push_thread_default]) where the `GSimpleAsyncResult`
+ * was created. [method@Gio.SimpleAsyncResult.run_in_thread] will run the job in
+ * a separate thread and then use
+ * [method@Gio.SimpleAsyncResult.complete_in_idle] to deliver the result.
  *
  * To set the results of an asynchronous function,
- * g_simple_async_result_set_op_res_gpointer(),
- * g_simple_async_result_set_op_res_gboolean(), and
- * g_simple_async_result_set_op_res_gssize()
- * are provided, setting the operation's result to a gpointer, gboolean, or
- * gssize, respectively.
+ * [method@Gio.SimpleAsyncResult.set_op_res_gpointer],
+ * [method@Gio.SimpleAsyncResult.set_op_res_gboolean], and
+ * [method@Gio.SimpleAsyncResult.set_op_res_gssize]
+ * are provided, setting the operation's result to a `gpointer`, `gboolean`, or
+ * `gssize`, respectively.
  *
  * Likewise, to get the result of an asynchronous function,
- * g_simple_async_result_get_op_res_gpointer(),
- * g_simple_async_result_get_op_res_gboolean(), and
- * g_simple_async_result_get_op_res_gssize() are
- * provided, getting the operation's result as a gpointer, gboolean, and
- * gssize, respectively.
+ * [method@Gio.SimpleAsyncResult.get_op_res_gpointer],
+ * [method@Gio.SimpleAsyncResult.get_op_res_gboolean], and
+ * [method@Gio.SimpleAsyncResult.get_op_res_gssize] are
+ * provided, getting the operation’s result as a `gpointer`, `gboolean`, and
+ * `gssize`, respectively.
  *
  * For the details of the requirements implementations must respect, see
- * #GAsyncResult.  A typical implementation of an asynchronous operation
- * using GSimpleAsyncResult looks something like this:
+ * [iface@Gio.AsyncResult].  A typical implementation of an asynchronous
+ * operation using `GSimpleAsyncResult` looks something like this:
  *
- * |[<!-- language="C" -->
+ * ```c
  * static void
  * baked_cb (Cake    *cake,
  *           gpointer user_data)
@@ -202,7 +200,7 @@
  *   cake = CAKE (g_simple_async_result_get_op_res_gpointer (simple));
  *   return g_object_ref (cake);
  * }
- * ]|
+ * ```
  */
 
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
