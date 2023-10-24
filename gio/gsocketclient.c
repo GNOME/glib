@@ -64,23 +64,20 @@
 #define HAPPY_EYEBALLS_CONNECTION_ATTEMPT_TIMEOUT_MS 250
 
 /**
- * SECTION:gsocketclient
- * @short_description: Helper for connecting to a network service
- * @include: gio/gio.h
- * @see_also: #GSocketConnection, #GSocketListener
+ * GSocketClient:
  *
- * #GSocketClient is a lightweight high-level utility class for connecting to
+ * `GSocketClient` is a lightweight high-level utility class for connecting to
  * a network host using a connection oriented socket type.
  *
- * You create a #GSocketClient object, set any options you want, and then
- * call a sync or async connect operation, which returns a #GSocketConnection
- * subclass on success.
+ * You create a `GSocketClient` object, set any options you want, and then
+ * call a sync or async connect operation, which returns a
+ * [class@Gio.SocketConnection] subclass on success.
  *
- * The type of the #GSocketConnection object returned depends on the type of
- * the underlying socket that is in use. For instance, for a TCP/IP connection
- * it will be a #GTcpConnection.
+ * The type of the [class@Gio.SocketConnection] object returned depends on the
+ * type of the underlying socket that is in use. For instance, for a TCP/IP
+ * connection it will be a [class@Gio.TcpConnection].
  *
- * As #GSocketClient is a lightweight object, you don't need to cache it. You
+ * As `GSocketClient` is a lightweight object, you don't need to cache it. You
  * can just create a new one any time you need one.
  *
  * Since: 2.22
