@@ -303,4 +303,7 @@ GLibPrivateVTable *glib__private__ (void);
 # define GLIB_DEFAULT_LOCALE ""
 #endif
 
+gboolean g_uint_equal (gconstpointer v1, gconstpointer v2);
+guint g_uint_hash (gconstpointer v);
+
 #endif /* __GLIB_PRIVATE_H__ */
