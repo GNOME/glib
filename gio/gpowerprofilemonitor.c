@@ -32,15 +32,12 @@
 #include "gtask.h"
 
 /**
- * SECTION:gpowerprofilemonitor
- * @title: GPowerProfileMonitor
- * @short_description: Power profile monitor
- * @include: gio/gio.h
+ * GPowerProfileMonitor:
  *
- * #GPowerProfileMonitor makes it possible for applications as well as OS components
- * to monitor system power profiles and act upon them. It currently only exports
- * whether the system is in “Power Saver” mode (known as “Low Power” mode on
- * some systems).
+ * `GPowerProfileMonitor` makes it possible for applications as well as OS
+ * components to monitor system power profiles and act upon them. It currently
+ * only exports whether the system is in “Power Saver” mode (known as
+ * “Low Power” mode on some systems).
  *
  * When in “Low Power” mode, it is recommended that applications:
  * - disable automatic downloads;
@@ -57,17 +54,9 @@
  * or activity at all), `sysprof` to inspect CPU usage, and `intel_gpu_time` to
  * profile GPU usage.
  *
- * Don't forget to disconnect the #GPowerProfileMonitor::notify::power-saver-enabled
- * signal, and unref the #GPowerProfileMonitor itself when exiting.
- *
- * Since: 2.70
- */
-
-/**
- * GPowerProfileMonitor:
- *
- * #GPowerProfileMonitor monitors system power profile and notifies on
- * changes.
+ * Don’t forget to disconnect the [signal@GObject.Object::notify] signal for
+ * [property@Gio.PowerProfileMonitor:power-saver-enabled], and unref the
+ * `GPowerProfileMonitor` itself when exiting.
  *
  * Since: 2.70
  */
