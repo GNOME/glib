@@ -63,35 +63,28 @@
    G_DBUS_SERVER_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER)
 
 /**
- * SECTION:gdbusserver
- * @short_description: Helper for accepting connections
- * @include: gio/gio.h
+ * GDBusServer:
  *
- * #GDBusServer is a helper for listening to and accepting D-Bus
+ * `GDBusServer` is a helper for listening to and accepting D-Bus
  * connections. This can be used to create a new D-Bus server, allowing two
  * peers to use the D-Bus protocol for their own specialized communication.
  * A server instance provided in this way will not perform message routing or
- * implement the org.freedesktop.DBus interface.
+ * implement the
+ * [`org.freedesktop.DBus` interface](https://dbus.freedesktop.org/doc/dbus-specification.html#message-bus-messages).
  *
  * To just export an object on a well-known name on a message bus, such as the
- * session or system bus, you should instead use g_bus_own_name().
+ * session or system bus, you should instead use [func@Gio.bus_own_name].
  *
  * An example of peer-to-peer communication with GDBus can be found
  * in [gdbus-example-peer.c](https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gdbus-example-peer.c).
  *
- * Note that a minimal #GDBusServer will accept connections from any
- * peer. In many use-cases it will be necessary to add a #GDBusAuthObserver
- * that only accepts connections that have successfully authenticated
- * as the same user that is running the #GDBusServer. Since GLib 2.68 this can
- * be achieved more simply by passing the
- * %G_DBUS_SERVER_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER flag to the server.
- */
-
-/**
- * GDBusServer:
- *
- * The #GDBusServer structure contains only private data and
- * should only be accessed using the provided API.
+ * Note that a minimal `GDBusServer` will accept connections from any
+ * peer. In many use-cases it will be necessary to add a
+ * [class@Gio.DBusAuthObserver] that only accepts connections that have
+ * successfully authenticated as the same user that is running the
+ * `GDBusServer`. Since GLib 2.68 this can be achieved more simply by passing
+ * the `G_DBUS_SERVER_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER` flag to the
+ * server.
  *
  * Since: 2.26
  */
