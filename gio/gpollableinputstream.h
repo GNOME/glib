@@ -34,13 +34,6 @@ G_BEGIN_DECLS
 #define G_IS_POLLABLE_INPUT_STREAM(obj)            (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_POLLABLE_INPUT_STREAM))
 #define G_POLLABLE_INPUT_STREAM_GET_INTERFACE(obj) (G_TYPE_INSTANCE_GET_INTERFACE ((obj), G_TYPE_POLLABLE_INPUT_STREAM, GPollableInputStreamInterface))
 
-/**
- * GPollableInputStream:
- *
- * An interface for a #GInputStream that can be polled for readability.
- *
- * Since: 2.28
- */
 typedef struct _GPollableInputStreamInterface GPollableInputStreamInterface;
 
 /**

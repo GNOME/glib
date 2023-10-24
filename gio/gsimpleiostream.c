@@ -28,27 +28,16 @@
 #include "gtask.h"
 
 /**
- * SECTION:gsimpleiostream
- * @short_description: A wrapper around an input and an output stream.
- * @include: gio/gio.h
- * @see_also: #GIOStream
- *
- * GSimpleIOStream creates a #GIOStream from an arbitrary #GInputStream and
- * #GOutputStream. This allows any pair of input and output streams to be used
- * with #GIOStream methods.
- *
- * This is useful when you obtained a #GInputStream and a #GOutputStream
- * by other means, for instance creating them with platform specific methods as
- * g_unix_input_stream_new() or g_win32_input_stream_new(), and you want
- * to take advantage of the methods provided by #GIOStream.
- *
- * Since: 2.44
- */
-
-/**
  * GSimpleIOStream:
  *
- * A wrapper around a #GInputStream and a #GOutputStream.
+ * `GSimpleIOStream` creates a [class@Gio.IOStream] from an arbitrary
+ * [class@Gio.InputStream] and [class@Gio.OutputStream]. This allows any pair of
+ * input and output streams to be used with [class@Gio.IOStream] methods.
+ *
+ * This is useful when you obtained a [class@Gio.InputStream] and a
+ * [class@Gio.OutputStream] by other means, for instance creating them with
+ * platform specific methods as [ctor@Gio.UnixInputStream.new], and you want to
+ * take advantage of the methods provided by [class@Gio.IOStream].
  *
  * Since: 2.44
  */

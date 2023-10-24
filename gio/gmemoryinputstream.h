@@ -38,11 +38,6 @@ G_BEGIN_DECLS
 #define G_IS_MEMORY_INPUT_STREAM_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_MEMORY_INPUT_STREAM))
 #define G_MEMORY_INPUT_STREAM_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_MEMORY_INPUT_STREAM, GMemoryInputStreamClass))
 
-/**
- * GMemoryInputStream:
- *
- * Implements #GInputStream for arbitrary memory chunks.
- **/
 typedef struct _GMemoryInputStreamClass    GMemoryInputStreamClass;
 typedef struct _GMemoryInputStreamPrivate  GMemoryInputStreamPrivate;
 

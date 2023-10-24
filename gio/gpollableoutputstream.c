@@ -28,19 +28,16 @@
 #include "glibintl.h"
 
 /**
- * SECTION:gpollableoutputstream
- * @short_description: Interface for pollable output streams
- * @include: gio/gio.h
- * @see_also: #GOutputStream, #GFileDescriptorBased, #GPollableInputStream
+ * GPollableOutputStream:
  *
- * #GPollableOutputStream is implemented by #GOutputStreams that
+ * `GPollableOutputStream` is implemented by [class@Gio.OutputStream]s that
  * can be polled for readiness to write. This can be used when
  * interfacing with a non-GIO API that expects
  * UNIX-file-descriptor-style asynchronous I/O rather than GIO-style.
  *
- * Some classes may implement #GPollableOutputStream but have only certain
- * instances of that class be pollable. If g_pollable_output_stream_can_poll()
- * returns %FALSE, then the behavior of other #GPollableOutputStream methods is
+ * Some classes may implement `GPollableOutputStream` but have only certain
+ * instances of that class be pollable. If [method@Gio.PollableOutputStream.can_poll]
+ * returns false, then the behavior of other `GPollableOutputStream` methods is
  * undefined.
  *
  * Since: 2.28

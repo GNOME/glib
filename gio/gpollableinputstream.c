@@ -27,19 +27,16 @@
 #include "glibintl.h"
 
 /**
- * SECTION:gpollableinputstream
- * @short_description: Interface for pollable input streams
- * @include: gio/gio.h
- * @see_also: #GInputStream, #GPollableOutputStream, #GFileDescriptorBased
+ * GPollableInputStream:
  *
- * #GPollableInputStream is implemented by #GInputStreams that
+ * `GPollableInputStream` is implemented by [class@Gio.InputStream]s that
  * can be polled for readiness to read. This can be used when
  * interfacing with a non-GIO API that expects
  * UNIX-file-descriptor-style asynchronous I/O rather than GIO-style.
  *
- * Some classes may implement #GPollableInputStream but have only certain
- * instances of that class be pollable. If g_pollable_input_stream_can_poll()
- * returns %FALSE, then the behavior of other #GPollableInputStream methods is
+ * Some classes may implement `GPollableInputStream` but have only certain
+ * instances of that class be pollable. If [method@Gio.PollableInputStream.can_poll]
+ * returns false, then the behavior of other `GPollableInputStream` methods is
  * undefined.
  *
  * Since: 2.28

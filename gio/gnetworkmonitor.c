@@ -31,24 +31,14 @@
 #include "gtask.h"
 
 /**
- * SECTION:gnetworkmonitor
- * @title: GNetworkMonitor
- * @short_description: Network status monitor
- * @include: gio/gio.h
+ * GNetworkMonitor:
  *
- * #GNetworkMonitor provides an easy-to-use cross-platform API
+ * `GNetworkMonitor` provides an easy-to-use cross-platform API
  * for monitoring network connectivity. On Linux, the available
  * implementations are based on the kernel's netlink interface and
  * on NetworkManager.
  *
  * There is also an implementation for use inside Flatpak sandboxes.
- */
-
-/**
- * GNetworkMonitor:
- *
- * #GNetworkMonitor monitors the status of network connections and
- * indicates when a possibly-user-visible change has occurred.
  *
  * Since: 2.32
  */
