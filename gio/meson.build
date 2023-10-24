@@ -1086,20 +1086,11 @@ endif
 
 if multiarch_bindir != get_option('bindir')
   foreach exe : ['gio-querymodules', 'glib-compile-schemas']
-    if meson.version().version_compare('>=0.61.0')
-      install_symlink(
-        exe,
-        install_dir : get_option('bindir'),
-        pointing_to : get_option('prefix') / multiarch_bindir / exe,
-      )
-    else
-      warning(
-        'Please use Meson >= 0.61.0 or create a symlink @1@ -> @2@ in packaging'.format(
-          get_option('prefix') / get_option('bindir') / exe,
-          get_option('prefix') / multiarch_bindir / exe,
-        )
-      )
-    endif
+    install_symlink(
+      exe,
+      install_dir : get_option('bindir'),
+      pointing_to : get_option('prefix') / multiarch_bindir / exe,
+    )
   endforeach
 endif
 
