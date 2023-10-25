@@ -119,7 +119,7 @@ libgirepo_internals = static_library('girepository-internals',
     'girwriter.c',
   ],
   c_args: gir_c_args + custom_c_args,
-  include_directories : [configinc],
+  include_directories : [configinc, girepoinc],
   dependencies: [girepo_gthash_dep, libffi_dep],
 )
 
