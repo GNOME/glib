@@ -17,16 +17,13 @@
  */
 
 /**
- * SECTION:gsubprocesslauncher
- * @title: GSubprocess Launcher
- * @short_description: Environment options for launching a child process
- * @include: gio/gio.h
+ * GSubprocessLauncher:
  *
  * This class contains a set of options for launching child processes,
  * such as where its standard input and output will be directed, the
  * argument list, the environment, and more.
  *
- * While the #GSubprocess class has high level functions covering
+ * While the [class@Gio.Subprocess] class has high level functions covering
  * popular cases, use of this class allows access to more advanced
  * options.  It can also be used to launch multiple subprocesses with
  * a similar configuration.
