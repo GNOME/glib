@@ -1,3 +1,69 @@
+Overview of changes in GLib 2.78.1, 2023-10-25
+==============================================
+
+* Fix truncating files when `g_file_set_contents_full()` is called without
+  `G_FILE_SET_CONTENTS_CONSISTENT` (#3144, work by Philip Withnall)
+
+* Fix `-Dlibelf=disabled` on Linux (#3120, work by Philip Withnall)
+
+* Bugs fixed:
+  - #3105 NetworkManager 1.44.0 crashes repeatedly with glib 2.78.0 (Philip
+    Withnall)
+  - #3111 gsubprocess-testprog.c: build error with cygwin (sys/ptrace.h: No such
+    file or directory) (Philip Withnall)
+  - #3116 gio clears modification time in microseconds when setting with
+    `set_modification_date_time` (Lukáš Tyrychtr)
+  - #3120 Build of glib 2.78.0 ignores -Dlibelf=disabled (Philip Withnall)
+  - #3128 glib-2.78.0 fails at gio/tests/gsubprocess.p/gsubprocess.c.o
+  - #3130 Segfault when creating GIO GPropertyAction without properties
+  - #3144 `g_file_set_contents_full()` doesn't truncate the file (without
+    `G_FILE_SET_CONTENTS_CONSISTENT`) (Philip Withnall)
+  - !3576 guniprop.c: Avoid creating (temporarily) out-of-bounds pointers
+  - !3579 Fixes for integer cast warnings when targeting CHERI
+  - !3580 Fix test_find_program on FreeBSD
+  - !3589 gconstructor.h: Ensure [c|d]tor prototypes are present for MSVC (Chun-
+    wei Fan)
+  - !3594 Fix gutils-user-database test on macOS
+  - !3596 Add value annotation to G_TYPE_FUNDAMENTAL_MAX
+  - !3601 meson: Fix Windows build with PCRE2 as sibling subproject
+  - !3604 Backport !3589 “gconstructor.h: Ensure [c|d]tor prototypes are present
+    for MSVC” to glib-2-78
+  - !3608 Backport !3587 “glocalfileinfo: Preserve microseconds for
+    access/modify times” to glib-2-78
+  - !3609 Backport !3607 “Make sure the `GTask` is freed on a graceful
+    disconnect” to glib-2-78 (Pavel Sobolev)
+  - !3614 Backport !3582 “Buffer needs to be aligned correctly to receive
+    linux_dirent64.” to glib-2-78
+  - !3616 Backport !3590 “gtestutils.h: Fix warning with -Wsign-conversion
+    caused by g_assert_cmpint” to glib-2-78
+  - !3619 Backport !3617 “tests: Drop unnecessary include from gsubprocess-
+    testprog.c” to glib-2-78
+  - !3622 Backport !3621 “wakeup: do single read when using eventfd()” to
+    glib-2-78
+  - !3625 Backport !3624 “wakeup: Fix g_wakeup_acknowledge if signal comes in”
+    to glib-2-78
+  - !3644 Backport !3633 “Use g_task_return in task threads” to glib-2-78
+  - !3649 Backport !3648 “build: Fix -Dlibelf=disabled on Linux” to glib-2-78
+  - !3659 Backport !3650 “gfileutils: Add a missing ftruncate() call when
+    writing files” to glib-2-78
+
+* Translation updates:
+  - Catalan (Jordi Mas i Hernandez)
+  - Chinese (China) (Boyuan Yang)
+  - Czech (Daniel Rusek)
+  - Esperanto (Kristjan SCHMIDT)
+  - French (Alexandre Franke)
+  - Georgian (Ekaterine Papava)
+  - Italian (Milo Casagrande)
+  - Latvian (Rūdolfs Mazurs)
+  - Portuguese (Brazil) (Rafael Fontenelle)
+  - Romanian (Daniel Șerbănescu)
+  - Russian (Artur S0)
+  - Slovenian (Matej Urbančič)
+  - Spanish (Daniel Mustieles)
+  - Turkish (Sabri Ünal)
+
+
 Overview of changes in GLib 2.78.0, 2023-09-08
 ==============================================
 
