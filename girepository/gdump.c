@@ -21,8 +21,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <stdlib.h>
-
 #include <glib.h>
 #include <glib-object.h>
 #include <gio/gio.h>
@@ -37,6 +35,7 @@
 #include "girepository.h"
 #endif
 
+#include <stdlib.h>
 #include <string.h>
 
 static void
