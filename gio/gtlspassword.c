@@ -30,15 +30,6 @@
 #include <string.h>
 
 /**
- * SECTION:gtlspassword
- * @title: GTlsPassword
- * @short_description: TLS Passwords for prompting
- * @include: gio/gio.h
- *
- * Holds a password used in TLS.
- */
-
-/**
  * GTlsPassword:
  *
  * An abstract interface representing a password used in TLS. Often used in
