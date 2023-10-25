@@ -40,17 +40,18 @@
 #include "glibintl.h"
 
 /**
- * SECTION:gdbusmethodinvocation
- * @short_description: Object for handling remote calls
- * @include: gio/gio.h
+ * GDBusMethodInvocation:
  *
- * Instances of the #GDBusMethodInvocation class are used when
+ * Instances of the `GDBusMethodInvocation` class are used when
  * handling D-Bus method calls. It provides a way to asynchronously
  * return results and errors.
  *
- * The normal way to obtain a #GDBusMethodInvocation object is to receive
- * it as an argument to the handle_method_call() function in a
- * #GDBusInterfaceVTable that was passed to g_dbus_connection_register_object().
+ * The normal way to obtain a `GDBusMethodInvocation` object is to receive
+ * it as an argument to the `handle_method_call()` function in a
+ * [type@Gio.DBusInterfaceVTable] that was passed to
+ * [method@Gio.DBusConnection.register_object].
+ *
+ * Since: 2.26
  */
 
 typedef struct _GDBusMethodInvocationClass GDBusMethodInvocationClass;
@@ -68,14 +69,6 @@ struct _GDBusMethodInvocationClass
   GObjectClass parent_class;
 };
 
-/**
- * GDBusMethodInvocation:
- *
- * The #GDBusMethodInvocation structure contains only private data and
- * should only be accessed using the provided API.
- *
- * Since: 2.26
- */
 struct _GDBusMethodInvocation
 {
   /*< private >*/
