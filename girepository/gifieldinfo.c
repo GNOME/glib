@@ -544,6 +544,7 @@ g_field_info_set_field (GIFieldInfo     *field_info,
               }
               g_base_info_unref ((GIBaseInfo *)interface);
           }
+          break;
 	default:
 	  break;
         }
