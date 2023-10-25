@@ -29,9 +29,9 @@
 
 #define __GIREPOSITORY_H_INSIDE__
 
-#include <gibaseinfo.h>
-#include <girepository.h>
-#include <gitypelib.h>
+#include <girepository/gibaseinfo.h>
+#include <girepository/girepository.h>
+#include <girepository/gitypelib.h>
 
 typedef struct _GIRealInfo GIRealInfo;
 

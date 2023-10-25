@@ -30,7 +30,7 @@
 #endif
 
 #include <glib-object.h>
-#include <gitypes.h>
+#include <girepository/gitypes.h>
 
 G_BEGIN_DECLS
 

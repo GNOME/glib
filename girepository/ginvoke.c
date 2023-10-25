@@ -28,7 +28,7 @@
 #include <glib.h>
 #include <glib-object.h>
 
-#include <girepository.h>
+#include <girepository/girepository.h>
 #include "girffi.h"
 
 /**

@@ -26,7 +26,7 @@
 
 #include <glib.h>
 
-#include <girepository.h>
+#include <girepository/girepository.h>
 #include "girepository-private.h"
 #include "gitypelib-internal.h"
 #include "config.h"

@@ -27,7 +27,7 @@
 #include <glib.h>
 #include <string.h> // memcpy
 
-#include <girepository.h>
+#include <girepository/girepository.h>
 #include "girepository-private.h"
 #include "gitypelib-internal.h"
 

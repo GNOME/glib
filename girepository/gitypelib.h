@@ -31,7 +31,7 @@
 
 #include <glib.h>
 
-#include <gi-visibility.h>
+#include <girepository/gi-visibility.h>
 
 G_BEGIN_DECLS
 

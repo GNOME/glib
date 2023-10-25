@@ -29,7 +29,7 @@
 #error "Only <girepository.h> can be included directly."
 #endif
 
-#include <gitypes.h>
+#include <girepository/gitypes.h>
 
 G_BEGIN_DECLS
 
