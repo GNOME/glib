@@ -885,6 +885,7 @@ start_function (GMarkupParseContext *context,
     case STATE_UNION:
       found = strcmp (element_name, "constructor") == 0;
       /* fallthrough */
+      G_GNUC_FALLTHROUGH;
     case STATE_INTERFACE:
       found = (found ||
 	       strcmp (element_name, "function") == 0 ||
