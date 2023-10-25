@@ -1,3 +1,24 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2017 Patrick Griffis
+# SPDX-FileCopyrightText: 2017 Danny Forghieri
+# SPDX-FileCopyrightText: 2017 Nirbheek Chauhan
+# SPDX-FileCopyrightText: 2017, 2021, 2022 Emmanuele Bassi
+# SPDX-FileCopyrightText: 2018 Mathieu Duponchelle
+# SPDX-FileCopyrightText: 2018, 2019, 2020 Christoph Reiter
+# SPDX-FileCopyrightText: 2018 Kai Kang
+# SPDX-FileCopyrightText: 2018 Carlos Garnacho
+# SPDX-FileCopyrightText: 2018, 2019, 2020 Alexander Kanavin
+# SPDX-FileCopyrightText: 2019, 2020 Chun-wei Fan
+# SPDX-FileCopyrightText: 2019 Aaron Boxer
+# SPDX-FileCopyrightText: 2019 Thibault Saunier
+# SPDX-FileCopyrightText: 2019 Joshua Watt
+# SPDX-FileCopyrightText: 2020 Xavier Claessens
+# SPDX-FileCopyrightText: 2020 Philip Chimento
+# SPDX-FileCopyrightText: 2021 John Ericson
+# SPDX-FileCopyrightText: 2021 Cimbali
+# SPDX-FileCopyrightText: 2021, 2023 Simon McVittie
+# SPDX-FileCopyrightText: 2022 Andoni Morales Alastruey
+
 subdir('cmph')
 
 gir_dir_prefix = get_option('gir_dir_prefix')
