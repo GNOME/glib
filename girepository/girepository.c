@@ -1732,7 +1732,7 @@ static const GOptionEntry introspection_args[] = {
   { "introspect-dump", 0, G_OPTION_FLAG_HIDDEN, G_OPTION_ARG_CALLBACK,
     g_irepository_introspect_cb, "Dump introspection information",
     "infile.txt,outfile.xml" },
-  { NULL }
+  G_OPTION_ENTRY_NULL
 };
 
 /**
