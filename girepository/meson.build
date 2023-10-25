@@ -31,6 +31,41 @@ endif
 
 glib_girdir = get_option('prefix') / gir_dir_prefix / 'gir-1.0'
 
+gir_includedir = glib_includedir / 'girepository'
+
+gi_visibility_h = custom_target(
+  output: 'gi-visibility.h',
+  command: [gen_visibility_macros, meson.project_version(), 'visibility-macros', 'GI', '@OUTPUT@'],
+  install: true,
+  install_dir: gir_includedir,
+  install_tag: 'devel',
+)
+
+girepo_headers = files(
+  'giarginfo.h',
+  'gibaseinfo.h',
+  'gicallableinfo.h',
+  'giconstantinfo.h',
+  'gienuminfo.h',
+  'gifieldinfo.h',
+  'gifunctioninfo.h',
+  'giinterfaceinfo.h',
+  'giobjectinfo.h',
+  'gipropertyinfo.h',
+  'giregisteredtypeinfo.h',
+  'girepository.h',
+  'girffi.h',
+  'gisignalinfo.h',
+  'gistructinfo.h',
+  'gitypeinfo.h',
+  'gitypelib.h',
+  'gitypes.h',
+  'giunioninfo.h',
+  'givfuncinfo.h',
+)
+
+install_headers(girepo_headers, install_dir: gir_includedir)
+
 gir_c_args = [
   '-DG_IREPOSITORY_COMPILATION',
   '-DG_LOG_DOMAIN="GLib-GIRepository"',
@@ -50,7 +85,7 @@ if cc.get_id() != 'msvc'
 endif
 
 girepo_gthash_lib = static_library('girepository-gthash',
-  sources: 'gthash.c',
+  sources: ['gthash.c', gi_visibility_h],
   include_directories : configinc,
   c_args: gir_c_args + custom_c_args,
   dependencies: [
@@ -93,41 +128,6 @@ libgirepo_internals_dep = declare_dependency(
   dependencies: libffi_dep,
   include_directories: [girepoinc],
 )
-
-gir_includedir = glib_includedir / 'girepository'
-
-gi_visibility_h = custom_target(
-  output: 'gi-visibility.h',
-  command: [gen_visibility_macros, meson.project_version(), 'visibility-macros', 'GI', '@OUTPUT@'],
-  install: true,
-  install_dir: gir_includedir,
-  install_tag: 'devel',
-)
-
-girepo_headers = files(
-  'giarginfo.h',
-  'gibaseinfo.h',
-  'gicallableinfo.h',
-  'giconstantinfo.h',
-  'gienuminfo.h',
-  'gifieldinfo.h',
-  'gifunctioninfo.h',
-  'giinterfaceinfo.h',
-  'giobjectinfo.h',
-  'gipropertyinfo.h',
-  'giregisteredtypeinfo.h',
-  'girepository.h',
-  'girffi.h',
-  'gisignalinfo.h',
-  'gistructinfo.h',
-  'gitypeinfo.h',
-  'gitypelib.h',
-  'gitypes.h',
-  'giunioninfo.h',
-  'givfuncinfo.h',
-)
-
-install_headers(girepo_headers, install_dir: gir_includedir)
 
 girepo_sources = files(
   'gdump.c',
