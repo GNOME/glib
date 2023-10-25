@@ -31,24 +31,24 @@
 
 
 /**
- * SECTION:gsrvtarget
- * @short_description: DNS SRV record target
- * @include: gio/gio.h
+ * GSrvTarget:
+ *
+ * A single target host/port that a network service is running on.
  *
  * SRV (service) records are used by some network protocols to provide
  * service-specific aliasing and load-balancing. For example, XMPP
  * (Jabber) uses SRV records to locate the XMPP server for a domain;
- * rather than connecting directly to "example.com" or assuming a
- * specific server hostname like "xmpp.example.com", an XMPP client
- * would look up the "xmpp-client" SRV record for "example.com", and
+ * rather than connecting directly to ‘example.com’ or assuming a
+ * specific server hostname like ‘xmpp.example.com’, an XMPP client
+ * would look up the `xmpp-client` SRV record for ‘example.com’, and
  * then connect to whatever host was pointed to by that record.
  *
- * You can use g_resolver_lookup_service() or
- * g_resolver_lookup_service_async() to find the #GSrvTargets
+ * You can use [method@Gio.Resolver.lookup_service] or
+ * [method@Gio.Resolver.lookup_service_async] to find the `GSrvTarget`s
  * for a given service. However, if you are simply planning to connect
- * to the remote service, you can use #GNetworkService's
- * #GSocketConnectable interface and not need to worry about
- * #GSrvTarget at all.
+ * to the remote service, you can use [class@Gio.NetworkService]’s
+ * [iface@Gio.SocketConnectable] interface and not need to worry about
+ * `GSrvTarget` at all.
  */
 
 struct _GSrvTarget {
@@ -58,12 +58,6 @@ struct _GSrvTarget {
   guint16  priority;
   guint16  weight;
 };
-
-/**
- * GSrvTarget:
- *
- * A single target host/port that a network service is running on.
- */
 
 G_DEFINE_BOXED_TYPE (GSrvTarget, g_srv_target,
                      g_srv_target_copy, g_srv_target_free)
