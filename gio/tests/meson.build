@@ -890,10 +890,7 @@ if not meson.is_cross_build()
                '@INPUT@'])
 
   # referenced by test.gresource.xml
-  test_generated_txt = configure_file(input : 'test1.txt',
-    output : 'test-generated.txt',
-    copy : true,
-  )
+  test_generated_txt = fs.copyfile('test1.txt', 'test-generated.txt')
 
   resources_extra_sources = [
     test_gresource,

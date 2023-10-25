@@ -154,11 +154,7 @@ if get_option('gtk_doc')
     command : [concat_files_helper, '@OUTPUT@', '@INPUT@'],
   )
 
-  configure_file(
-    output : 'gio-docs-platform.xml',
-    input : platform_file,
-    copy : true,
-  )
+  fs.copyfile(platform_file, 'gio-docs-platform.xml')
 
   content_files = [
     'migrating-posix.xml',
