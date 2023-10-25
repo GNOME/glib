@@ -86,7 +86,7 @@ endif
 
 girepo_gthash_lib = static_library('girepository-gthash',
   sources: ['gthash.c', gi_visibility_h],
-  include_directories : configinc,
+  include_directories : [configinc, girepoinc],
   c_args: gir_c_args + custom_c_args,
   dependencies: [
     cmph_dep,
