@@ -36,17 +36,16 @@
 #include "gnetworkingprivate.h"
 
 /**
- * SECTION:gproxyresolver
- * @short_description: Asynchronous and cancellable network proxy resolver
- * @include: gio/gio.h
+ * GProxyResolver:
  *
- * #GProxyResolver provides synchronous and asynchronous network proxy
- * resolution. #GProxyResolver is used within #GSocketClient through
- * the method g_socket_connectable_proxy_enumerate().
+ * `GProxyResolver` provides synchronous and asynchronous network proxy
+ * resolution. `GProxyResolver` is used within [class@Gio.SocketClient] through
+ * the method [method@Gio.SocketConnectable.proxy_enumerate].
  *
- * Implementations of #GProxyResolver based on libproxy and GNOME settings can
- * be found in glib-networking. GIO comes with an implementation for use inside
- * Flatpak portals.
+ * Implementations of `GProxyResolver` based on
+ * [libproxy](https://github.com/libproxy/libproxy) and GNOME settings can be
+ * found in [glib-networking](https://gitlab.gnome.org/GNOME/glib-networking).
+ * GIO comes with an implementation for use inside Flatpak portals.
  */
 
 /**

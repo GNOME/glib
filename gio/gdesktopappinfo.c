@@ -63,12 +63,9 @@
 #endif
 
 /**
- * SECTION:gdesktopappinfo
- * @title: GDesktopAppInfo
- * @short_description: Application information from desktop files
- * @include: gio/gdesktopappinfo.h
+ * GDesktopAppInfo:
  *
- * #GDesktopAppInfo is an implementation of #GAppInfo based on
+ * `GDesktopAppInfo` is an implementation of [iface@Gio.AppInfo] based on
  * desktop files.
  *
  * Note that `<gio/gdesktopappinfo.h>` belongs to the UNIX-specific
@@ -95,11 +92,6 @@ static gboolean g_desktop_app_info_ensure_saved       (GDesktopAppInfo  *info,
                                                        GError          **error);
 static gboolean g_desktop_app_info_load_file (GDesktopAppInfo *self);
 
-/**
- * GDesktopAppInfo:
- *
- * Information about an installed application from a desktop file.
- */
 struct _GDesktopAppInfo
 {
   GObject parent_instance;

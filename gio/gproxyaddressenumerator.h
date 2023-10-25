@@ -38,14 +38,6 @@ G_BEGIN_DECLS
 #define G_IS_PROXY_ADDRESS_ENUMERATOR_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_PROXY_ADDRESS_ENUMERATOR))
 #define G_PROXY_ADDRESS_ENUMERATOR_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_PROXY_ADDRESS_ENUMERATOR, GProxyAddressEnumeratorClass))
 
-/**
- * GProxyAddressEnumerator:
- *
- * A subclass of #GSocketAddressEnumerator that takes another address
- * enumerator and wraps each of its results in a #GProxyAddress as
- * directed by the default #GProxyResolver.
- */
-
 typedef struct _GProxyAddressEnumeratorClass GProxyAddressEnumeratorClass;
 typedef struct _GProxyAddressEnumeratorPrivate GProxyAddressEnumeratorPrivate;
 

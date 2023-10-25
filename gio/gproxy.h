@@ -48,13 +48,6 @@ G_BEGIN_DECLS
  */
 #define G_PROXY_EXTENSION_POINT_NAME "gio-proxy"
 
-/**
- * GProxy:
- *
- * Interface that handles proxy connection and payload.
- *
- * Since: 2.26
- */
 typedef struct _GProxyInterface GProxyInterface;
 
 /**

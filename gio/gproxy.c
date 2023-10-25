@@ -29,16 +29,14 @@
 #include "glibintl.h"
 
 /**
- * SECTION:gproxy
- * @short_description: Interface for proxy handling
- * @include: gio/gio.h
+ * GProxy:
  *
- * A #GProxy handles connecting to a remote host via a given type of
- * proxy server. It is implemented by the 'gio-proxy' extension point.
+ * A `GProxy` handles connecting to a remote host via a given type of
+ * proxy server. It is implemented by the `gio-proxy` extension point.
  * The extensions are named after their proxy protocol name. As an
  * example, a SOCKS5 proxy implementation can be retrieved with the
- * name 'socks5' using the function
- * g_io_extension_point_get_extension_by_name().
+ * name `socks5` using the function
+ * [method@Gio.IOExtensionPoint.get_extension_by_name].
  *
  * Since: 2.26
  **/

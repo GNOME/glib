@@ -15,18 +15,15 @@
  */
 
 /**
- * SECTION:gunixfdlist
- * @title: GUnixFDList
- * @short_description: An object containing a set of UNIX file descriptors
- * @include: gio/gunixfdlist.h
- * @see_also: #GUnixFDMessage
+ * GUnixFDList:
  *
- * A #GUnixFDList contains a list of file descriptors.  It owns the file
+ * A `GUnixFDList` contains a list of file descriptors.  It owns the file
  * descriptors that it contains, closing them when finalized.
  *
- * It may be wrapped in a #GUnixFDMessage and sent over a #GSocket in
- * the %G_SOCKET_FAMILY_UNIX family by using g_socket_send_message()
- * and received using g_socket_receive_message().
+ * It may be wrapped in a [class@Gio.UnixFDMessage] and sent over a
+ * [class@Gio.Socket] in the `G_SOCKET_FAMILY_UNIX` family by using
+ * [method@Gio.Socket.send_message] and received using
+ * [method@Gio.Socket.receive_message].
  *
  * Before 2.74, `<gio/gunixfdlist.h>` belonged to the UNIX-specific GIO
  * interfaces, thus you had to use the `gio-unix-2.0.pc` pkg-config file when
@@ -34,13 +31,6 @@
  *
  * Since 2.74, the API is available for Windows.
  */
-
-/**
- * GUnixFDList:
- *
- * #GUnixFDList is an opaque data structure and can only be accessed
- * using the following functions.
- **/
 
 #include "config.h"
 
