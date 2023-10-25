@@ -32,7 +32,7 @@
  * to libgirepository; see
  * https://bugzilla.gnome.org/show_bug.cgi?id=630342
  */
-#ifdef G_IREPOSITORY_COMPILATION
+#ifdef GI_COMPILATION
 #include "config.h"
 #include "girepository.h"
 #endif
@@ -543,7 +543,7 @@ dump_error_quark (GQuark quark, const char *symbol, GOutputStream *out)
  *
  * Returns: %TRUE on success, %FALSE on error
  */
-#ifndef G_IREPOSITORY_COMPILATION
+#ifndef GI_COMPILATION
 static gboolean
 dump_irepository (const char *arg, GError **error) G_GNUC_UNUSED;
 static gboolean

@@ -67,7 +67,7 @@ girepo_headers = files(
 install_headers(girepo_headers, install_dir: gir_includedir)
 
 gir_c_args = [
-  '-DG_IREPOSITORY_COMPILATION',
+  '-DGI_COMPILATION',
   '-DG_LOG_DOMAIN="GLib-GIRepository"',
   '-DGIR_SUFFIX="gir-1.0"',
   '-DGIR_DIR="@0@"'.format(glib_girdir),

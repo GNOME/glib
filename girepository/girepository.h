@@ -247,4 +247,6 @@ void gi_cclosure_marshal_generic (GClosure       *closure,
 
 G_END_DECLS
 
+#undef __GIREPOSITORY_H_INSIDE__
+
 #endif  /* __G_IREPOSITORY_H__ */

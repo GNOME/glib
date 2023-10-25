@@ -24,6 +24,10 @@
 #ifndef __GIRFFI_H__
 #define __GIRFFI_H__
 
+#if !defined (__GIREPOSITORY_H_INSIDE__) && !defined (GI_COMPILATION)
+#error "Only <girepository.h> can be included directly."
+#endif
+
 #include <ffi.h>
 #include "girepository.h"
 
