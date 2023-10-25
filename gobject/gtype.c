@@ -422,7 +422,7 @@ type_node_any_new_W (TypeNode             *pnode,
 #endif
     }
   else
-    type = (GType) node;
+    type = GPOINTER_TO_TYPE (node);
   
   g_assert ((type & TYPE_ID_MASK) == 0);
   
@@ -497,7 +497,7 @@ type_node_any_new_W (TypeNode             *pnode,
   node->global_gdata = NULL;
   g_hash_table_insert (static_type_nodes_ht,
 		       (gpointer) g_quark_to_string (node->qname),
-		       (gpointer) type);
+		       GTYPE_TO_POINTER (type));
 
   g_atomic_int_inc ((gint *)&type_registration_serial);
 
@@ -2721,9 +2721,9 @@ g_type_register_fundamental (GType                       type_id,
   if ((type_id & TYPE_ID_MASK) ||
       type_id > G_TYPE_FUNDAMENTAL_MAX)
     {
-      g_critical ("attempt to register fundamental type '%s' with invalid type id (%" G_GSIZE_FORMAT ")",
+      g_critical ("attempt to register fundamental type '%s' with invalid type id (%" G_GUINTPTR_FORMAT ")",
 		  type_name,
-		  type_id);
+		  (guintptr) type_id);
       return 0;
     }
   if ((finfo->type_flags & G_TYPE_FLAG_INSTANTIATABLE) &&
@@ -3444,7 +3444,7 @@ g_type_from_name (const gchar *name)
   g_return_val_if_fail (name != NULL, 0);
   
   G_READ_LOCK (&type_rw_lock);
-  type = (GType) g_hash_table_lookup (static_type_nodes_ht, name);
+  type = GPOINTER_TO_TYPE (g_hash_table_lookup (static_type_nodes_ht, name));
   G_READ_UNLOCK (&type_rw_lock);
   
   return type;
@@ -4390,7 +4390,7 @@ g_type_value_table_peek (GType type)
     return vtable;
   
   if (!node)
-    g_critical (G_STRLOC ": type id '%" G_GSIZE_FORMAT "' is invalid", type);
+    g_critical (G_STRLOC ": type id '%" G_GUINTPTR_FORMAT "' is invalid", (guintptr) type);
   if (!has_refed_data)
     g_critical ("can't peek value table for type '%s' which is not currently referenced",
 	        type_descriptive_name_I (type));

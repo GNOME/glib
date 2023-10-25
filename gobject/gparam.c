@@ -1234,7 +1234,7 @@ g_param_spec_pool_list_owned (GParamSpecPool *pool,
   
   g_mutex_lock (&pool->mutex);
   data[0] = NULL;
-  data[1] = (gpointer) owner_type;
+  data[1] = GTYPE_TO_POINTER (owner_type);
   g_hash_table_foreach (pool->hash_table, pool_list, &data);
   g_mutex_unlock (&pool->mutex);
 
@@ -1373,7 +1373,7 @@ g_param_spec_pool_list (GParamSpecPool *pool,
   d = g_type_depth (owner_type);
   slists = g_new0 (GSList*, d);
   data[0] = slists;
-  data[1] = (gpointer) owner_type;
+  data[1] = GTYPE_TO_POINTER (owner_type);
   data[2] = pool->hash_table;
   data[3] = &n_pspecs;
 
