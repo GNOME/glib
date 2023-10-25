@@ -28,28 +28,28 @@
 #include <glib-object.h>
 #include <gmodule.h>
 
-#include <gi-visibility.h>
+#include <girepository/gi-visibility.h>
 
 #define __GIREPOSITORY_H_INSIDE__
 
-#include <giarginfo.h>
-#include <gibaseinfo.h>
-#include <gicallableinfo.h>
-#include <giconstantinfo.h>
-#include <gienuminfo.h>
-#include <gifieldinfo.h>
-#include <gifunctioninfo.h>
-#include <giinterfaceinfo.h>
-#include <giobjectinfo.h>
-#include <gipropertyinfo.h>
-#include <giregisteredtypeinfo.h>
-#include <gisignalinfo.h>
-#include <gistructinfo.h>
-#include <gitypeinfo.h>
-#include <gitypelib.h>
-#include <gitypes.h>
-#include <giunioninfo.h>
-#include <givfuncinfo.h>
+#include <girepository/giarginfo.h>
+#include <girepository/gibaseinfo.h>
+#include <girepository/gicallableinfo.h>
+#include <girepository/giconstantinfo.h>
+#include <girepository/gienuminfo.h>
+#include <girepository/gifieldinfo.h>
+#include <girepository/gifunctioninfo.h>
+#include <girepository/giinterfaceinfo.h>
+#include <girepository/giobjectinfo.h>
+#include <girepository/gipropertyinfo.h>
+#include <girepository/giregisteredtypeinfo.h>
+#include <girepository/gisignalinfo.h>
+#include <girepository/gistructinfo.h>
+#include <girepository/gitypeinfo.h>
+#include <girepository/gitypelib.h>
+#include <girepository/gitypes.h>
+#include <girepository/giunioninfo.h>
+#include <girepository/givfuncinfo.h>
 
 G_BEGIN_DECLS
 
