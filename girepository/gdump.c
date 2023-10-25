@@ -21,10 +21,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <glib.h>
-#include <glib-object.h>
-#include <gio/gio.h>
-
 /* This file is both compiled into libgirepository.so, and installed
  * on the filesystem.  But for the dumper, we want to avoid linking
  * to libgirepository; see
@@ -34,6 +30,10 @@
 #include "config.h"
 #include "girepository.h"
 #endif
+
+#include <glib.h>
+#include <glib-object.h>
+#include <gio/gio.h>
 
 #include <stdlib.h>
 #include <string.h>
