@@ -32,6 +32,7 @@
 
 #include "gitypelib-internal.h"
 #include "girepository-private.h"
+#include "gibaseinfo.h"
 
 #define INVALID_REFCOUNT 0x7FFFFFFF
 

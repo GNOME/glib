@@ -29,6 +29,7 @@
 #include <girepository/girepository.h>
 #include "girepository-private.h"
 #include "gitypelib-internal.h"
+#include "giunioninfo.h"
 
 /**
  * SECTION:giunioninfo

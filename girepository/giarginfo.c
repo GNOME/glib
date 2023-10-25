@@ -28,6 +28,7 @@
 
 #include "gitypelib-internal.h"
 #include "girepository-private.h"
+#include "giarginfo.h"
 
 
 /* GIArgInfo functions */

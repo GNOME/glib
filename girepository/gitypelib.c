@@ -30,6 +30,7 @@
 #include <glib.h>
 
 #include "gitypelib-internal.h"
+#include "gitypelib.h"
 
 typedef struct {
   GITypelib *typelib;

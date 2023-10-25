@@ -32,6 +32,7 @@
 #include "girepository-private.h"
 #include "gitypelib-internal.h"
 #include "girffi.h"
+#include "gicallableinfo.h"
 
 /* GICallableInfo functions */
 

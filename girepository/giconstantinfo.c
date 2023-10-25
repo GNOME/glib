@@ -30,6 +30,7 @@
 #include <girepository/girepository.h>
 #include "girepository-private.h"
 #include "gitypelib-internal.h"
+#include "giconstantinfo.h"
 
 /**
  * SECTION:giconstantinfo

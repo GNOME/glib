@@ -30,6 +30,7 @@
 #include "girepository-private.h"
 #include "gitypelib-internal.h"
 #include "config.h"
+#include "gifieldinfo.h"
 
 /**
  * SECTION:gifieldinfo
