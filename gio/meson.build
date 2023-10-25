@@ -242,6 +242,7 @@ xdp_dbus_generated = custom_target('xdp-dbus',
              'org.freedesktop.portal.Trash.xml'],
     output : ['xdp-dbus.h', 'xdp-dbus.c'],
     depend_files : gdbus_codegen_built_files,
+    depends : gdbus_codegen_built_targets,
     command : [python, gdbus_codegen,
                '--interface-prefix', 'org.freedesktop.portal.',
                '--output-directory', '@OUTDIR@',
@@ -254,6 +255,7 @@ gdbus_daemon_generated = custom_target('gdbus-daemon-generated',
     input : ['dbus-daemon.xml'],
     output : ['gdbus-daemon-generated.h', 'gdbus-daemon-generated.c'],
     depend_files : gdbus_codegen_built_files,
+    depends : gdbus_codegen_built_targets,
     command : [python, gdbus_codegen,
                '--interface-prefix', 'org.',
                '--output-directory', '@OUTDIR@',
@@ -881,10 +883,8 @@ libgio_dep = declare_dependency(link_with : libgio,
 pkg.generate(libgio,
   requires : ['glib-2.0', 'gobject-2.0'],
   variables : [
-    'datadir=' + '${prefix}' / get_option('datadir'),
     'schemasdir=' + '${datadir}' / schemas_subdir,
     'dtdsdir=' + '${datadir}' / dtds_subdir,
-    'bindir=' + '${prefix}' / get_option('bindir'),
     'giomoduledir=' + pkgconfig_giomodulesdir,
     'gio=' + '${bindir}' / 'gio',
     'gio_querymodules=' + pkgconfig_multiarch_bindir / 'gio-querymodules',
@@ -1086,20 +1086,11 @@ endif
 
 if multiarch_bindir != get_option('bindir')
   foreach exe : ['gio-querymodules', 'glib-compile-schemas']
-    if meson.version().version_compare('>=0.61.0')
-      install_symlink(
-        exe,
-        install_dir : get_option('bindir'),
-        pointing_to : get_option('prefix') / multiarch_bindir / exe,
-      )
-    else
-      warning(
-        'Please use Meson >= 0.61.0 or create a symlink @1@ -> @2@ in packaging'.format(
-          get_option('prefix') / get_option('bindir') / exe,
-          get_option('prefix') / multiarch_bindir / exe,
-        )
-      )
-    endif
+    install_symlink(
+      exe,
+      install_dir : get_option('bindir'),
+      pointing_to : get_option('prefix') / multiarch_bindir / exe,
+    )
   endforeach
 endif
 

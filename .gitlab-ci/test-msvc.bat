@@ -12,7 +12,7 @@ for %%x in (%*) do (
 set args=%args:~1%
 
 :: FIXME: make warnings fatal
-pip3 install --upgrade --user meson==1.0.0  || goto :error
+pip3 install --upgrade --user meson==1.2.3  || goto :error
 meson setup %args% _build || goto :error
 python .gitlab-ci/check-missing-install-tag.py _build || goto :error
 meson compile -C _build || goto :error

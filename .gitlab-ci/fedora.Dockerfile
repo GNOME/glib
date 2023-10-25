@@ -75,7 +75,7 @@ RUN dnf -y update \
     make \
  && dnf clean all
 
-RUN pip3 install meson==0.60.3
+RUN pip3 install meson==1.2.3
 
 COPY install-gitlab-cobertura-tools.sh .
 RUN ./install-gitlab-cobertura-tools.sh

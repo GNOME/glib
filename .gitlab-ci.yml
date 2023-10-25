@@ -11,10 +11,10 @@ cache:
     - _ccache/
 
 variables:
-  FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v21"
+  FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v22"
   COVERITY_IMAGE: "registry.gitlab.gnome.org/gnome/glib/coverity:v7"
-  DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v15"
-  MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v11"
+  DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v16"
+  MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v12"
   MESON_TEST_TIMEOUT_MULTIPLIER: 4
   G_MESSAGES_DEBUG: all
   MESON_COMMON_OPTIONS: "--buildtype debug --wrap-mode=nodownload --fatal-meson-warnings"
@@ -574,7 +574,7 @@ macos-x86_64:
     - ln -s /opt/cmake/CMake.app/Contents/bin/cmake .venv/bin
     - ln -s /opt/ccache/ccache .venv/bin
     - source .venv/bin/activate
-    - pip3 install meson==1.2.0
+    - pip3 install meson==1.2.3
     - pip3 install ninja==1.11.1
   script:
     # FIXME: Use --wrap-mode=default so we download dependencies each time,
