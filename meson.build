@@ -2440,6 +2440,10 @@ with open(output, "w") as f:
   enable_dtrace = true
 endif
 
+if cc.has_header_symbol('sys/ptrace.h', 'PTRACE_O_EXITKILL')
+  glib_conf.set('HAVE_PTRACE_O_EXITKILL', 1)
+endif
+
 # systemtap
 want_systemtap = get_option('systemtap')
 enable_systemtap = false
