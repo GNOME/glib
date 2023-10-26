@@ -1952,8 +1952,8 @@ g_source_set_ready_time (GSource *source,
  * Gets the "ready time" of @source, as set by
  * g_source_set_ready_time().
  *
- * Any time before the current monotonic time (including 0) is an
- * indication that the source will fire immediately.
+ * Any time before or equal to the current monotonic time (including 0)
+ * is an indication that the source will fire immediately.
  *
  * Returns: the monotonic ready time, -1 for "never"
  **/
