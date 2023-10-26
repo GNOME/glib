@@ -4060,7 +4060,7 @@ socket_source_dispatch (GSource     *source,
 #endif
 
   timeout = g_source_get_ready_time (source);
-  if (timeout >= 0 && timeout < g_source_get_time (source) &&
+  if (timeout >= 0 && timeout <= g_source_get_time (source) &&
       !g_socket_is_closed (socket_source->socket))
     {
       socket->priv->timed_out = TRUE;
