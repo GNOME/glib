@@ -982,7 +982,7 @@ if not meson.is_cross_build()
   gio_tests += {
     'resources' : {
       'extra_sources' : resources_extra_sources,
-      'depends' : resource_plugin,
+      'depends' : [resource_plugin, test_generated_txt],
     },
   }
 endif
