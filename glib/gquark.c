@@ -43,6 +43,7 @@
 #include "gtestutils.h"
 #include "glib_trace.h"
 #include "glib-init.h"
+#include "glib-private.h"
 
 #define QUARK_BLOCK_SIZE         2048
 #define QUARK_STRING_BLOCK_SIZE (4096 - sizeof (gsize))
@@ -301,6 +302,7 @@ quark_new (gchar *string)
        * us to do lockless lookup of the arrays, and there shouldn't be that
        * many quarks in an app
        */
+      g_ignore_leak (g_atomic_pointer_get (&quarks));
       g_atomic_pointer_set (&quarks, quarks_new);
     }
 
