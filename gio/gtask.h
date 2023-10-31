@@ -163,6 +163,12 @@ void          g_task_return_int                (GTask           *task,
 GIO_AVAILABLE_IN_2_36
 void          g_task_return_error              (GTask           *task,
                                                 GError          *error);
+GIO_AVAILABLE_IN_2_80
+void          g_task_return_prefixed_error     (GTask           *task,
+                                                GError          *error,
+                                                const char      *format,
+                                                ...) G_GNUC_PRINTF (3, 4);
+
 GIO_AVAILABLE_IN_2_36
 void          g_task_return_new_error          (GTask           *task,
                                                 GQuark           domain,
