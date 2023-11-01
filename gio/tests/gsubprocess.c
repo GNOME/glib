@@ -2006,7 +2006,7 @@ trace_children (pid_t main_child)
   g_assert_no_errno (waitpid (main_child, &wstatus, 0));
   g_assert_no_errno (ptrace (PTRACE_SETOPTIONS, main_child, NULL,
                              (PTRACE_O_TRACEFORK |
-#ifdef PTRACE_O_EXITKILL
+#ifdef HAVE_PTRACE_O_EXITKILL
                               PTRACE_O_EXITKILL |
 #endif
                               PTRACE_O_TRACEVFORK |
