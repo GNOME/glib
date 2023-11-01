@@ -1074,6 +1074,7 @@ endforeach
 foreach test_name, extra_args : python_tests
   depends = [extra_args.get('depends', [])]
   suite = ['gio', 'no-valgrind'] + extra_args.get('suite', [])
+  timeout = extra_args.get('timeout', test_timeout)
 
   if extra_args.get('can_fail', false)
     suite += 'failing'
@@ -1090,7 +1091,7 @@ foreach test_name, extra_args : python_tests
     depends: depends,
     args: ['-B', files(test_name)],
     env: test_env,
-    timeout: extra_args.get('timeout'),
+    timeout: timeout,
     suite: suite,
   )
 
