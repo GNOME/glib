@@ -717,9 +717,14 @@ g_signal_group_connect_closure_ (GSignalGroup   *self,
 
   g_return_val_if_fail (G_IS_SIGNAL_GROUP (self), FALSE);
   g_return_val_if_fail (detailed_signal != NULL, FALSE);
-  g_return_val_if_fail (g_signal_parse_name (detailed_signal, self->target_type,
-                                             &signal_id, &signal_detail, TRUE) != 0, FALSE);
   g_return_val_if_fail (closure != NULL, FALSE);
+
+  if (!g_signal_parse_name (detailed_signal, self->target_type,
+                            &signal_id, &signal_detail, TRUE))
+    {
+      g_critical ("Invalid signal name “%s”", detailed_signal);
+      return FALSE;
+    }
 
   g_rec_mutex_lock (&self->mutex);
 
