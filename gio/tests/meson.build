@@ -810,8 +810,12 @@ if not meson.is_cross_build()
     output : ['gresource-big-test.txt'],
     command : [python, '@INPUT0@', '@OUTPUT@'])
 
+  # referenced by test.gresource.xml
+  test_generated_txt = fs.copyfile('test1.txt', 'test-generated.txt')
+
   test_gresource = custom_target('test.gresource',
     input : 'test.gresource.xml',
+    depends : test_generated_txt,
     output : 'test.gresource',
     command : [glib_compile_resources,
                compiler_type,
@@ -888,9 +892,6 @@ if not meson.is_cross_build()
                '--generate',
                '--manual-register',
                '@INPUT@'])
-
-  # referenced by test.gresource.xml
-  test_generated_txt = fs.copyfile('test1.txt', 'test-generated.txt')
 
   resources_extra_sources = [
     test_gresource,
@@ -982,7 +983,7 @@ if not meson.is_cross_build()
   gio_tests += {
     'resources' : {
       'extra_sources' : resources_extra_sources,
-      'depends' : [resource_plugin, test_generated_txt],
+      'depends' : resource_plugin,
     },
   }
 endif
