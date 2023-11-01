@@ -181,6 +181,10 @@ python_tests = {
     'suite': ['gdbus-codegen', 'slow'],
     'timeout': 90,
   },
+  'gio-tool.py' : {
+    'depends' : gio_tool,
+    'can_fail' : host_system == 'windows',
+  },
 }
 
 test_env = environment()
