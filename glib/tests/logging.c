@@ -244,6 +244,46 @@ test_default_handler_would_drop (void)
   g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, "foo"));
   g_assert_false (g_log_writer_default_would_drop (1<<G_LOG_LEVEL_USER_SHIFT, "foo"));
 
+  g_setenv ("G_MESSAGES_DEBUG", "foobar", TRUE);
+
+  g_assert_true (g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, "foo"));
+  g_assert_true (g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, "bar"));
+
+  g_setenv ("G_MESSAGES_DEBUG", "foobar bar", TRUE);
+
+  g_assert_true (g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, "foo"));
+  g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, "bar"));
+
+  g_setenv ("G_MESSAGES_DEBUG", "foobar bar barfoo", TRUE);
+
+  g_assert_true (g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, "foo"));
+  g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, "bar"));
+
+  g_setenv ("G_MESSAGES_DEBUG", "foobar bar foo barfoo", TRUE);
+
+  g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, "foo"));
+  g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, "bar"));
+  g_assert_true (g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, "baz"));
+
+  g_setenv ("G_MESSAGES_DEBUG", "foo bar baz", TRUE);
+
+  g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, "foo"));
+  g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, "bar"));
+  g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, "baz"));
+
+  g_setenv ("G_MESSAGES_DEBUG", "foo", TRUE);
+
+  g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, "foo"));
+  g_assert_true (g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, "bar"));
+  g_assert_true (g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, "foobarbaz"));
+  g_assert_true (g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, "barfoobaz"));
+  g_assert_true (g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, "barbazfoo"));
+
+  g_setenv ("G_MESSAGES_DEBUG", "   foo    bar  foobaz ", TRUE);
+  g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, "foo"));
+  g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, "bar"));
+  g_assert_true (g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, "baz"));
+
   exit (0);
 }
 
