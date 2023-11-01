@@ -41,6 +41,7 @@ foreach f : gdbus_codegen_files
   # Copy these into the builddir so that gdbus-codegen can be used uninstalled
   # and then install it too so that it can be used after installation
   gdbus_codegen_built_targets += fs.copyfile(f, f,
+                                             install : true,
                                              install_dir : codegen_dir,
                                              install_tag : 'bin-devel')
 endforeach
