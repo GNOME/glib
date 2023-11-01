@@ -182,7 +182,6 @@ debian-stable-x86_64:
 
 hurd-i386:
   extends:
-    - .build-linux
     - .only-schedules
   stage: build
   tags:
