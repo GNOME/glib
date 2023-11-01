@@ -247,7 +247,6 @@ usage (void)
   g_printerr ("  tree     %s\n", _("Lists the contents of locations in a tree"));
   g_printerr ("\n");
   g_printerr (_("Use %s to get detailed help.\n"), "“gio help COMMAND”");
-  exit (1);
 }
 
 int
