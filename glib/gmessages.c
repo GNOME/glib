@@ -2465,6 +2465,26 @@ log_is_old_api (const GLogField *fields,
           g_strcmp0 (fields[0].value, "1") == 0);
 }
 
+static gboolean
+domain_found (const gchar *domains,
+              const char  *log_domain)
+{
+  guint len;
+  const gchar *found;
+
+  len = strlen (log_domain);
+
+  for (found = strstr (domains, log_domain); found;
+       found = strstr (found + 1, log_domain))
+    {
+      if ((found == domains || found[-1] == ' ')
+          && (found[len] == 0 || found[len] == ' '))
+        return TRUE;
+    }
+
+  return FALSE;
+}
+
 /*
  * Internal version of g_log_writer_default_would_drop(), which can
  * read from either a log_domain or an array of fields. This avoids
@@ -2504,7 +2524,7 @@ should_drop_message (GLogLevelFlags   log_level,
         }
 
       if (strcmp (domains, "all") != 0 &&
-          (log_domain == NULL || !strstr (domains, log_domain)))
+          (log_domain == NULL || !domain_found (domains, log_domain)))
         return TRUE;
     }
 
