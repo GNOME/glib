@@ -119,6 +119,14 @@ class TestGioTool(unittest.TestCase):
         with self.assertRaises(subprocess.CalledProcessError):
             self.runGio()
 
+    def test_info_non_default_attributes(self):
+        """Test running `gio info --attributes` with a non-default list."""
+        with tempfile.NamedTemporaryFile(dir=self.tmpdir.name) as tmpfile:
+            result = self.runGio(
+                "info", "--attributes=standard::content-type", tmpfile.name
+            )
+            self.assertIn("standard::content-type: application/x-zerosize", result.out)
+
 
 if __name__ == "__main__":
     unittest.main(testRunner=taptestrunner.TAPTestRunner())
