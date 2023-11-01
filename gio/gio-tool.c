@@ -249,7 +249,7 @@ static const struct
 };
 
 static void
-usage (void)
+usage (gboolean is_error)
 {
   GString *out = NULL;
   size_t name_width = 0;
@@ -274,7 +274,10 @@ usage (void)
   g_string_append_c (out, '\n');
   g_string_append_printf (out, _("Use %s to get detailed help.\n"), "“gio help COMMAND”");
 
-  g_printerr ("%s", out->str);
+  if (is_error)
+    g_printerr ("%s", out->str);
+  else
+    g_print ("%s", out->str);
 
   g_string_free (out, TRUE);
 }
@@ -306,7 +309,7 @@ main (int argc, char **argv)
 
   if (argc < 2)
     {
-      usage ();
+      usage (TRUE);
       return 1;
     }
 
@@ -319,7 +322,7 @@ main (int argc, char **argv)
     {
       if (argc == 1)
         {
-          usage ();
+          usage (FALSE);
           return 0;
         }
       else
@@ -330,7 +333,7 @@ main (int argc, char **argv)
     }
   else if (g_str_equal (command, "--help"))
     {
-      usage ();
+      usage (FALSE);
       return 0;
     }
   else if (g_str_equal (command, "--version"))
@@ -347,7 +350,7 @@ main (int argc, char **argv)
     }
 
   /* Unknown subcommand. */
-  usage ();
+  usage (TRUE);
 
   return 1;
 }
