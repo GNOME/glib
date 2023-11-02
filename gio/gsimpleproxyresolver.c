@@ -33,19 +33,16 @@
 #include "glibintl.h"
 
 /**
- * SECTION:gsimpleproxyresolver
- * @short_description: Simple proxy resolver implementation
- * @include: gio/gio.h
- * @see_also: g_socket_client_set_proxy_resolver()
+ * GSimpleProxyResolver:
  *
- * #GSimpleProxyResolver is a simple #GProxyResolver implementation
+ * `GSimpleProxyResolver` is a simple [iface@Gio.ProxyResolver] implementation
  * that handles a single default proxy, multiple URI-scheme-specific
  * proxies, and a list of hosts that proxies should not be used for.
  *
- * #GSimpleProxyResolver is never the default proxy resolver, but it
+ * `GSimpleProxyResolver` is never the default proxy resolver, but it
  * can be used as the base class for another proxy resolver
  * implementation, or it can be created and used manually, such as
- * with g_socket_client_set_proxy_resolver().
+ * with [method@Gio.SocketClient.set_proxy_resolver].
  *
  * Since: 2.36
  */
