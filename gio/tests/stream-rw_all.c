@@ -146,6 +146,7 @@ test_read_all_async_memory (void)
 
 #ifdef G_OS_UNIX
 #include <errno.h>
+#include <glib-unix.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <gio/gunixinputstream.h>
@@ -165,13 +166,12 @@ test_read_write_all_async_pipe (void)
 
   {
     gint sv[2];
-    gint s;
 
-    s = socketpair (AF_UNIX, SOCK_STREAM, 0, sv);
-    g_assert (s == 0);
+    g_unix_open_pipe (sv, O_CLOEXEC | O_NONBLOCK, &error);
+    g_assert_no_error (error);
 
-    out = g_unix_output_stream_new (sv[0], TRUE);
-    in = g_unix_input_stream_new (sv[1], TRUE);
+    out = g_unix_output_stream_new (sv[1], TRUE);
+    in = g_unix_input_stream_new (sv[0], TRUE);
   }
 
   /* Try to fill up the buffer */
