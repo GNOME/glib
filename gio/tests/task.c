@@ -2112,6 +2112,28 @@ test_return_value (void)
   g_assert_null (object);
 }
 
+static void
+test_return_prefixed_error (void)
+{
+  GTask *task;
+  GError *original_error = NULL;
+  GError *error = NULL;
+
+  g_set_error (&original_error, G_IO_ERROR, G_IO_ERROR_UNKNOWN, "oh no!");
+
+  task = g_task_new (NULL, NULL, NULL, NULL);
+  g_task_return_prefixed_error (task, original_error, "task %s: ", "failed");
+
+  wait_for_completed_notification (task);
+
+  g_assert_null (g_task_propagate_pointer (task, &error));
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_UNKNOWN);
+  g_assert_cmpstr (error->message, ==, "task failed: oh no!");
+
+  g_assert_finalize_object (task);
+  g_clear_error (&error);
+}
+
 /* test_object_keepalive: GTask takes a ref on its source object */
 
 static GObject *keepalive_object;
@@ -2525,6 +2547,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gtask/return-on-cancel-atomic", test_return_on_cancel_atomic);
   g_test_add_func ("/gtask/return-pointer", test_return_pointer);
   g_test_add_func ("/gtask/return-value", test_return_value);
+  g_test_add_func ("/gtask/return-prefixed-error", test_return_prefixed_error);
   g_test_add_func ("/gtask/object-keepalive", test_object_keepalive);
   g_test_add_func ("/gtask/legacy-error", test_legacy_error);
   g_test_add_func ("/gtask/return/in-idle/error-first", test_return_in_idle_error_first);

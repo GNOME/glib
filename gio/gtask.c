@@ -2058,6 +2058,54 @@ g_task_return_error (GTask  *task,
 }
 
 /**
+ * g_task_return_prefixed_error:
+ * @task: a #GTask.
+ * @error: (transfer full): the #GError result of a task function.
+ * @format: a string with format characters.
+ * @...: a list of values to insert into @format.
+ * 
+ * Sets @task's result to @error (which @task assumes ownership of), with
+ * the message prefixed according to @format, and completes the task
+ * (see g_task_return_pointer() for more discussion of exactly what this
+ * means).
+ *
+ * Note that since the task takes ownership of @error, and since the
+ * task may be completed before returning from g_task_return_prefixed_error(),
+ * you cannot assume that @error is still valid after calling this.
+ * Call g_error_copy() on the error if you need to keep a local copy
+ * as well.
+ *
+ * See also g_task_return_error(), g_prefix_error().
+ *
+ * Since: 2.80
+ */
+void
+g_task_return_prefixed_error (GTask      *task,
+                              GError     *error,
+                              const char *format,
+                              ...)
+{
+  char *prefix;
+  va_list ap;
+
+  g_return_if_fail (G_IS_TASK (task));
+  g_return_if_fail (!task->ever_returned);
+  g_return_if_fail (error != NULL);
+
+  task->error = error;
+
+  va_start (ap, format);
+  prefix = g_strdup_vprintf (format, ap);
+  va_end (ap);
+
+  g_prefix_error_literal (&task->error, prefix);
+
+  g_free (prefix);
+
+  g_task_return (task, G_TASK_RETURN_ERROR);
+}
+
+/**
  * g_task_return_new_error:
  * @task: a #GTask.
  * @domain: a #GQuark.
