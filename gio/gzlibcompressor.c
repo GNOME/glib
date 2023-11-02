@@ -43,21 +43,14 @@ enum {
 };
 
 /**
- * SECTION:gzlibcompressor
- * @short_description: Zlib compressor
- * @include: gio/gio.h
+ * GZlibCompressor:
  *
- * #GZlibCompressor is an implementation of #GConverter that
+ * `GZlibCompressor` is an implementation of [iface@Gio.Converter] that
  * compresses data using zlib.
  */
 
 static void g_zlib_compressor_iface_init          (GConverterIface *iface);
 
-/**
- * GZlibCompressor:
- *
- * Zlib decompression
- */
 struct _GZlibCompressor
 {
   GObject parent_instance;
