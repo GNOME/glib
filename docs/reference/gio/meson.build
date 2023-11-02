@@ -230,6 +230,7 @@ expand_content_files = [
   'migrating-gdbus.md',
   'migrating-gnome-vfs.md',
   'overview.md',
+  'tls-overview.md',
 ]
 
 gio_toml = configure_file(input: 'gio.toml.in', output: 'gio.toml', configuration: toml_conf)
