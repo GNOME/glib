@@ -36,11 +36,6 @@ G_BEGIN_DECLS
 #define G_IS_SIMPLE_PROXY_RESOLVER_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_SIMPLE_PROXY_RESOLVER))
 #define G_SIMPLE_PROXY_RESOLVER_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_SIMPLE_PROXY_RESOLVER, GSimpleProxyResolverClass))
 
-/**
- * GSimpleProxyResolver:
- *
- * A #GProxyResolver implementation for using a fixed set of proxies.
- **/
 typedef struct _GSimpleProxyResolver GSimpleProxyResolver;
 typedef struct _GSimpleProxyResolverPrivate GSimpleProxyResolverPrivate;
 typedef struct _GSimpleProxyResolverClass GSimpleProxyResolverClass;

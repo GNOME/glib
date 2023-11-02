@@ -347,23 +347,21 @@ G_DEFINE_BOXED_TYPE (GWin32RegistryValueIter, g_win32_registry_value_iter,
                      g_win32_registry_value_iter_free)
 
 /**
- * SECTION:gwin32registrykey
- * @title: GWin32RegistryKey
- * @short_description: W32 registry access helper
- * @include: gio/win32/gwin32registrykey.h
+ * GWin32RegistryKey:
  *
- * #GWin32RegistryKey represents a single Windows Registry key.
+ * `GWin32RegistryKey` represents a single Windows Registry key.
  *
- * #GWin32RegistryKey is used by a number of helper functions that read
+ * `GWin32RegistryKey` is used by a number of helper functions that read
  * Windows Registry. All keys are opened with read-only access, and at
  * the moment there is no API for writing into registry keys or creating
  * new ones.
  *
- * #GWin32RegistryKey implements the #GInitable interface, so if it is manually
- * constructed by e.g. g_object_new() you must call g_initable_init() and check
- * the results before using the object. This is done automatically
- * in g_win32_registry_key_new() and g_win32_registry_key_get_child(), so these
- * functions can return %NULL.
+ * `GWin32RegistryKey` implements the [iface@Gio.Initable] interface, so if it
+ * is manually constructed by e.g. [ctor@GObject.Object.new] you must call
+ * [method@Gio.Initable.init] and check the results before using the object.
+ * This is done automatically in [ctor@Gio.Win32RegistryKey.new] and
+ * [method@Gio.Win32RegistryKey.get_child], so these functions can return
+ * `NULL`.
  *
  * To increase efficiency, a UTF-16 variant is available for all functions
  * that deal with key or value names in the registry. Use these to perform
@@ -372,17 +370,17 @@ G_DEFINE_BOXED_TYPE (GWin32RegistryValueIter, g_win32_registry_value_iter,
  * of UTF-16 functions avoids the overhead of converting names to UTF-8 and
  * back.
  *
- * All functions operate in current user's context (it is not possible to
- * access registry tree of a different user).
+ * All functions operate in the current user’s context (it is not possible to
+ * access the registry tree of a different user).
  *
- * Key paths must use '\\' as a separator, '/' is not supported. Key names
- * must not include '\\', because it's used as a separator. Value names
- * can include '\\'.
+ * Key paths must use `\\` as a separator, `/` is not supported. Key names
+ * must not include `\\`, because it’s used as a separator. Value names
+ * can include `\\`.
  *
  * Key and value names are not case sensitive.
  *
- * Full key name (excluding the pre-defined ancestor's name) can't exceed
- * 255 UTF-16 characters, give or take. Value name can't exceed 16383 UTF-16
+ * A full key name (excluding the pre-defined ancestor’s name) can’t exceed
+ * 255 UTF-16 characters, give or take. A value name can’t exceed 16383 UTF-16
  * characters. Tree depth is limited to 512 levels.
  **/
 

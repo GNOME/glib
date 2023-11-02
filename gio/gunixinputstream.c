@@ -39,14 +39,11 @@
 
 
 /**
- * SECTION:gunixinputstream
- * @short_description: Streaming input operations for UNIX file descriptors
- * @include: gio/gunixinputstream.h
- * @see_also: #GInputStream
+ * GUnixInputStream:
  *
- * #GUnixInputStream implements #GInputStream for reading from a UNIX
+ * `GUnixInputStream` implements [class@Gio.InputStream] for reading from a UNIX
  * file descriptor, including asynchronous operations. (If the file
- * descriptor refers to a socket or pipe, this will use poll() to do
+ * descriptor refers to a socket or pipe, this will use `poll()` to do
  * asynchronous I/O. If it refers to a regular file, it will fall back
  * to doing asynchronous I/O in another thread.)
  *

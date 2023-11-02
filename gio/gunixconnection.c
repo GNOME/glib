@@ -31,19 +31,15 @@
 #endif
 
 /**
- * SECTION:gunixconnection
- * @title: GUnixConnection
- * @short_description: A UNIX domain GSocketConnection
- * @include: gio/gunixconnection.h
- * @see_also: #GSocketConnection.
+ * GUnixConnection:
  *
- * This is the subclass of #GSocketConnection that is created
+ * This is the subclass of [class@Gio.SocketConnection] that is created
  * for UNIX domain sockets.
  *
  * It contains functions to do some of the UNIX socket specific
  * functionality like passing file descriptors.
  *
- * Since GLib 2.72, #GUnixConnection is available on all platforms. It requires
+ * Since GLib 2.72, `GUnixConnection` is available on all platforms. It requires
  * underlying system support (such as Windows 10 with `AF_UNIX`) at run time.
  *
  * Before GLib 2.72, `<gio/gunixconnection.h>` belonged to the UNIX-specific GIO
@@ -52,13 +48,6 @@
  *
  * Since: 2.22
  */
-
-/**
- * GUnixConnection:
- *
- * #GUnixConnection is an opaque data structure and can only be accessed
- * using the following functions.
- **/
 
 G_DEFINE_TYPE_WITH_CODE (GUnixConnection, g_unix_connection,
 			 G_TYPE_SOCKET_CONNECTION,

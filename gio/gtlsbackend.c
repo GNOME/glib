@@ -29,53 +29,6 @@
 #include "giomodule-priv.h"
 
 /**
- * SECTION:gtls
- * @title: TLS Overview
- * @short_description: TLS (aka SSL) support for GSocketConnection
- * @include: gio/gio.h
- *
- * #GTlsConnection and related classes provide TLS (Transport Layer
- * Security, previously known as SSL, Secure Sockets Layer) support for
- * gio-based network streams.
- *
- * #GDtlsConnection and related classes provide DTLS (Datagram TLS) support for
- * GIO-based network sockets, using the #GDatagramBased interface. The TLS and
- * DTLS APIs are almost identical, except TLS is stream-based and DTLS is
- * datagram-based. They share certificate and backend infrastructure.
- *
- * In the simplest case, for a client TLS connection, you can just set the
- * #GSocketClient:tls flag on a #GSocketClient, and then any
- * connections created by that client will have TLS negotiated
- * automatically, using appropriate default settings, and rejecting
- * any invalid or self-signed certificates (unless you change that
- * default by setting the #GSocketClient:tls-validation-flags
- * property). The returned object will be a #GTcpWrapperConnection,
- * which wraps the underlying #GTlsClientConnection.
- *
- * For greater control, you can create your own #GTlsClientConnection,
- * wrapping a #GSocketConnection (or an arbitrary #GIOStream with
- * pollable input and output streams) and then connect to its signals,
- * such as #GTlsConnection::accept-certificate, before starting the
- * handshake.
- *
- * Server-side TLS is similar, using #GTlsServerConnection. At the
- * moment, there is no support for automatically wrapping server-side
- * connections in the way #GSocketClient does for client-side
- * connections.
- */
-
-/**
- * SECTION:gtlsbackend
- * @title: GTlsBackend
- * @short_description: TLS backend implementation
- * @include: gio/gio.h
- *
- * TLS (Transport Layer Security, aka SSL) and DTLS backend.
- *
- * Since: 2.28
- */
-
-/**
  * GTlsBackend:
  *
  * TLS (Transport Layer Security, aka SSL) and DTLS backend. This is an

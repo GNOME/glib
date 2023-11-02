@@ -49,11 +49,6 @@ G_BEGIN_DECLS
  */
 #define G_VOLUME_MONITOR_EXTENSION_POINT_NAME "gio-volume-monitor"
 
-/**
- * GVolumeMonitor:
- *
- * A Volume Monitor that watches for volume events.
- **/
 typedef struct _GVolumeMonitorClass GVolumeMonitorClass;
 
 struct _GVolumeMonitor

@@ -30,12 +30,10 @@
 #include "glibintl.h"
 
 /**
- * SECTION:gtlsserverconnection
- * @short_description: TLS server-side connection
- * @include: gio/gio.h
+ * GTlsServerConnection:
  *
- * #GTlsServerConnection is the server-side subclass of #GTlsConnection,
- * representing a server-side TLS connection.
+ * `GTlsServerConnection` is the server-side subclass of
+ * [class@Gio.TlsConnection], representing a server-side TLS connection.
  *
  * Since: 2.28
  */
