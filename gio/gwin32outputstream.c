@@ -37,12 +37,9 @@
 #include "glibintl.h"
 
 /**
- * SECTION:gwin32outputstream
- * @short_description: Streaming output operations for Windows file handles
- * @include: gio/gwin32outputstream.h
- * @see_also: #GOutputStream
+ * GWin32OutputStream:
  *
- * #GWin32OutputStream implements #GOutputStream for writing to a
+ * `GWin32OutputStream` implements [class@Gio.OutputStream] for writing to a
  * Windows file handle.
  *
  * Note that `<gio/gwin32outputstream.h>` belongs to the Windows-specific GIO

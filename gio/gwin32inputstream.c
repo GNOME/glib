@@ -36,12 +36,9 @@
 #include "glibintl.h"
 
 /**
- * SECTION:gwin32inputstream
- * @short_description: Streaming input operations for Windows file handles
- * @include: gio/gwin32inputstream.h
- * @see_also: #GInputStream
+ * GWin32InputStream:
  *
- * #GWin32InputStream implements #GInputStream for reading from a
+ * `GWin32InputStream` implements [class@Gio.InputStream] for reading from a
  * Windows file handle.
  *
  * Note that `<gio/gwin32inputstream.h>` belongs to the Windows-specific GIO
