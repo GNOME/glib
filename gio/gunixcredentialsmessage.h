@@ -58,14 +58,6 @@ struct _GUnixCredentialsMessageClass
   void (*_g_reserved2) (void);
 };
 
-/**
- * GUnixCredentialsMessage:
- *
- * The #GUnixCredentialsMessage structure contains only private data
- * and should only be accessed using the provided API.
- *
- * Since: 2.26
- */
 struct _GUnixCredentialsMessage
 {
   GSocketControlMessage parent_instance;
