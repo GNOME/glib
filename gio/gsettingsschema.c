@@ -38,12 +38,9 @@
 #endif
 
 /**
- * SECTION:gsettingsschema
- * @short_description: Introspecting and controlling the loading
- *     of GSettings schemas
- * @include: gio/gio.h
+ * GSettingsSchema:
  *
- * The #GSettingsSchemaSource and #GSettingsSchema APIs provide a
+ * The [struct@Gio.SettingsSchemaSource] and `GSettingsSchema` APIs provide a
  * mechanism for advanced control over the loading of schemas and a
  * mechanism for introspecting their content.
  *
@@ -53,20 +50,20 @@
  * the schema along with itself and it won't be installed into the
  * standard system directories for schemas.
  *
- * #GSettingsSchemaSource provides a mechanism for dealing with this by
- * allowing the creation of a new 'schema source' from which schemas can
+ * [struct@Gio.SettingsSchemaSource] provides a mechanism for dealing with this
+ * by allowing the creation of a new ‘schema source’ from which schemas can
  * be acquired.  This schema source can then become part of the metadata
  * associated with the plugin and queried whenever the plugin requires
  * access to some settings.
  *
  * Consider the following example:
  *
- * |[<!-- language="C" -->
+ * ```c
  * typedef struct
  * {
- *    ...
+ *    …
  *    GSettingsSchemaSource *schema_source;
- *    ...
+ *    …
  * } Plugin;
  *
  * Plugin *
@@ -74,18 +71,18 @@
  * {
  *   Plugin *plugin;
  *
- *   ...
+ *   …
  *
  *   plugin->schema_source =
  *     g_settings_schema_source_new_from_directory (dir,
  *       g_settings_schema_source_get_default (), FALSE, NULL);
  *
- *   ...
+ *   …
  *
  *   return plugin;
  * }
  *
- * ...
+ * …
  *
  * GSettings *
  * plugin_get_settings (Plugin      *plugin,
@@ -101,12 +98,12 @@
  *
  *   if (schema == NULL)
  *     {
- *       ... disable the plugin or abort, etc ...
+ *       … disable the plugin or abort, etc …
  *     }
  *
  *   return g_settings_new_full (schema, NULL, NULL);
  * }
- * ]|
+ * ```
  *
  * The code above shows how hooks should be added to the code that
  * initialises (or enables) the plugin to create the schema source and
@@ -118,19 +115,19 @@
  * ships a gschemas.compiled file as part of itself, and then simply do
  * the following:
  *
- * |[<!-- language="C" -->
+ * ```c
  * {
  *   GSettings *settings;
  *   gint some_value;
  *
  *   settings = plugin_get_settings (self, NULL);
  *   some_value = g_settings_get_int (settings, "some-value");
- *   ...
+ *   …
  * }
- * ]|
+ * ```
  *
  * It's also possible that the plugin system expects the schema source
- * files (ie: .gschema.xml files) instead of a gschemas.compiled file.
+ * files (ie: `.gschema.xml` files) instead of a `gschemas.compiled` file.
  * In that case, the plugin loading system must compile the schemas for
  * itself before attempting to create the settings source.
  *
@@ -144,13 +141,6 @@
  * using the following functions.
  **/
 
-/**
- * GSettingsSchema:
- *
- * This is an opaque structure type.  You may not access it directly.
- *
- * Since: 2.32
- **/
 struct _GSettingsSchema
 {
   GSettingsSchemaSource *source;
