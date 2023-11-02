@@ -31,19 +31,10 @@
 #include "glibintl.h"
 
 /**
- * SECTION:gtlsclientconnection
- * @short_description: TLS client-side connection
- * @include: gio/gio.h
- *
- * #GTlsClientConnection is the client-side subclass of
- * #GTlsConnection, representing a client-side TLS connection.
- */
-
-/**
  * GTlsClientConnection:
  *
- * Abstract base class for the backend-specific client connection
- * type.
+ * `GTlsClientConnection` is the client-side subclass of
+ * [class@Gio.TlsConnection], representing a client-side TLS connection.
  *
  * Since: 2.28
  */
