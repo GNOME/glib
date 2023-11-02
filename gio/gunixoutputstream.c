@@ -41,14 +41,11 @@
 
 
 /**
- * SECTION:gunixoutputstream
- * @short_description: Streaming output operations for UNIX file descriptors
- * @include: gio/gunixoutputstream.h
- * @see_also: #GOutputStream
+ * GUnixOutputStream:
  *
- * #GUnixOutputStream implements #GOutputStream for writing to a UNIX
+ * `GUnixOutputStream` implements [class@Gio.OutputStream] for writing to a UNIX
  * file descriptor, including asynchronous operations. (If the file
- * descriptor refers to a socket or pipe, this will use poll() to do
+ * descriptor refers to a socket or pipe, this will use `poll()` to do
  * asynchronous I/O. If it refers to a regular file, it will fall back
  * to doing asynchronous I/O in another thread.)
  *
