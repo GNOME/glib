@@ -23,37 +23,33 @@
  */
 
 /**
- * SECTION:gsocketservice
- * @title: GSocketService
- * @short_description: Make it easy to implement a network service
- * @include: gio/gio.h
- * @see_also: #GThreadedSocketService, #GSocketListener.
+ * GSocketService:
  *
- * A #GSocketService is an object that represents a service that
+ * A `GSocketService` is an object that represents a service that
  * is provided to the network or over local sockets.  When a new
- * connection is made to the service the #GSocketService::incoming
+ * connection is made to the service the [signal@Gio.SocketService::incoming]
  * signal is emitted.
  *
- * A #GSocketService is a subclass of #GSocketListener and you need
+ * A `GSocketService` is a subclass of [class@Gio.SocketListener] and you need
  * to add the addresses you want to accept connections on with the
- * #GSocketListener APIs.
+ * [class@Gio.SocketListener] APIs.
  *
  * There are two options for implementing a network service based on
- * #GSocketService. The first is to create the service using
- * g_socket_service_new() and to connect to the #GSocketService::incoming
- * signal. The second is to subclass #GSocketService and override the
- * default signal handler implementation.
+ * `GSocketService`. The first is to create the service using
+ * [ctor@Gio.SocketService.new] and to connect to the
+ * [signal@Gio.SocketService::incoming] signal. The second is to subclass
+ * `GSocketService` and override the default signal handler implementation.
  *
  * In either case, the handler must immediately return, or else it
  * will block additional incoming connections from being serviced.
  * If you are interested in writing connection handlers that contain
- * blocking code then see #GThreadedSocketService.
+ * blocking code then see [class@Gio.ThreadedSocketService].
  *
  * The socket service runs on the main loop of the 
- * [thread-default context][g-main-context-push-thread-default-context]
- * of the thread it is created in, and is not
- * threadsafe in general. However, the calls to start and stop the
- * service are thread-safe so these can be used from threads that
+ * thread-default context (see
+ * [method@GLib.MainContext.push_thread_default_context]) of the thread it is
+ * created in, and is not threadsafe in general. However, the calls to start and
+ * stop the service are thread-safe so these can be used from threads that
  * handle incoming clients.
  *
  * Since: 2.22
