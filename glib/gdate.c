@@ -66,9 +66,9 @@
  * @dmy: this is set if @day, @month and @year are valid
  * @day: the day of the day-month-year representation of the date,
  *   as a number between 1 and 31
- * @month: the day of the day-month-year representation of the date,
+ * @month: the month of the day-month-year representation of the date,
  *   as a number between 1 and 12
- * @year: the day of the day-month-year representation of the date
+ * @year: the year of the day-month-year representation of the date
  *
  * `GDate` is a struct for calendrical calculations.
  *
