@@ -213,26 +213,13 @@ test_thread_sort_entry_func (gpointer data, gpointer user_data)
   thread_id = GPOINTER_TO_UINT (data);
   is_sorted = GPOINTER_TO_INT (user_data);
 
-  if (is_sorted) {
-    static gboolean last_failed = FALSE;
+  if (is_sorted)
+    {
+      if (last_thread_id != 0)
+        g_assert_cmpint (last_thread_id, <=, thread_id);
 
-    if (last_thread_id > thread_id) {
-      if (last_failed) {
-          g_assert_cmpint (last_thread_id, <=, thread_id);
-      }
-
-      /* Here we remember one fail and if it concurrently fails, it
-       * can not be sorted. the last thread id might be < this thread
-       * id if something is added to the queue since threads were
-       * created
-       */
-      last_failed = TRUE;
-    } else {
-      last_failed = FALSE;
+      last_thread_id = thread_id;
     }
-
-    last_thread_id = thread_id;
-  }
 
   G_UNLOCK (last_thread);
 
@@ -246,6 +233,7 @@ test_thread_sort (gboolean sort)
   guint limit;
   guint max_threads;
   guint i;
+  GError *local_error = NULL;
 
   limit = MAX_THREADS * 10;
 
@@ -261,11 +249,16 @@ test_thread_sort (gboolean sort)
    * Threads are scheduled by the operating system and are executed at
    * random. It cannot be assumed that threads are executed in the
    * order they are created. This was discussed in bug #334943.
+   *
+   * However, if testing sorting, we start with max-threads=0 so that all the
+   * work can be enqueued before starting the pool. This prevents a race between
+   * new work being enqueued out of sorted order, and work being pulled off the
+   * queue.
    */
 
   pool = g_thread_pool_new (test_thread_sort_entry_func,
 			    GINT_TO_POINTER (sort),
-			    max_threads,
+			    sort ? 0 : max_threads,
 			    FALSE,
 			    NULL);
 
@@ -289,6 +282,13 @@ test_thread_sort (gboolean sort)
                     g_thread_pool_get_num_threads (pool),
                     g_thread_pool_unprocessed (pool));
   }
+
+  if (sort)
+    {
+      g_test_message ("Starting thread pool processing");
+      g_thread_pool_set_max_threads (pool, max_threads, &local_error);
+      g_assert_no_error (local_error);
+    }
 
   g_assert_cmpint (g_thread_pool_get_max_threads (pool), ==, (gint) max_threads);
   g_assert_cmpuint (g_thread_pool_get_num_threads (pool), <=,
