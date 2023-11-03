@@ -16,10 +16,6 @@ static gulong abs_thread_counter = 0;
 static gulong running_thread_counter = 0;
 static gulong leftover_task_counter = 0;
 
-G_LOCK_DEFINE_STATIC (last_thread);
-
-static guint last_thread_id = 0;
-
 static GThreadPool *idle_pool = NULL;
 
 static GMainLoop *main_loop = NULL;
@@ -203,8 +199,10 @@ test_thread_sort_entry_func (gpointer data, gpointer user_data)
 {
   guint thread_id;
   gboolean is_sorted;
+  static GMutex last_thread_mutex;
+  static guint last_thread_id = 0;
 
-  G_LOCK (last_thread);
+  g_mutex_lock (&last_thread_mutex);
 
   thread_id = GPOINTER_TO_UINT (data);
   is_sorted = GPOINTER_TO_INT (user_data);
@@ -217,7 +215,7 @@ test_thread_sort_entry_func (gpointer data, gpointer user_data)
       last_thread_id = thread_id;
     }
 
-  G_UNLOCK (last_thread);
+  g_mutex_unlock (&last_thread_mutex);
 
   g_usleep (WAIT * 1000);
 }
