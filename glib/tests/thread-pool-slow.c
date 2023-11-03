@@ -20,10 +20,6 @@ G_LOCK_DEFINE_STATIC (last_thread);
 
 static guint last_thread_id = 0;
 
-G_LOCK_DEFINE_STATIC (thread_counter_sort);
-
-static gulong sort_thread_counter = 0;
-
 static GThreadPool *idle_pool = NULL;
 
 static GMainLoop *main_loop = NULL;
@@ -406,14 +402,6 @@ test_check_start_and_stop (gpointer user_data)
     g_test_message ("***** POOL RUNNING THREAD COUNT:%ld",
                     running_thread_counter);
     G_UNLOCK (thread_counter_pools);
-  }
-
-  if (test_number == 4 || test_number == 5) {
-    G_LOCK (thread_counter_sort);
-    quit &= sort_thread_counter <= 0;
-    g_test_message ("***** POOL SORT THREAD COUNT:%ld",
-                    sort_thread_counter);
-    G_UNLOCK (thread_counter_sort);
   }
 
   if (test_number == 8) {
