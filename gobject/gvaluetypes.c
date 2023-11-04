@@ -1160,6 +1160,41 @@ g_value_dup_string (const GValue *value)
 }
 
 /**
+ * g_value_steal_string:
+ * @value: a valid #GValue of type %G_TYPE_STRING
+ *
+ * Steal ownership on contents of a %G_TYPE_STRING #GValue.
+ * As a result of this operation the value's contents will be reset to %NULL.
+ *
+ * The purpose of this call is to provide a way to avoid an extra copy
+ * when some object have been serialized into string through #GValue API.
+ *
+ * NOTE: for safety and compatibility purposes, if #GValue contains
+ * static string, or an interned one, this function will return a copy
+ * of the string. Otherwise the transfer notation would be ambiguous.
+ *
+ * Returns: (nullable) (transfer full): string content of @value;
+ *  Should be freed with g_free() when no longer needed.
+ *
+ * Since: 2.80
+ */
+gchar*
+g_value_steal_string (GValue *value)
+{
+  gchar *ret;
+
+  g_return_val_if_fail (G_VALUE_HOLDS_STRING (value), NULL);
+
+  ret = value->data[0].v_pointer;
+  value->data[0].v_pointer = NULL;
+
+  if (value->data[1].v_uint & G_VALUE_NOCOPY_CONTENTS)
+    return g_strdup (ret);
+
+  return ret;
+}
+
+/**
  * g_value_set_pointer:
  * @value: a valid #GValue of %G_TYPE_POINTER
  * @v_pointer: pointer value to be set
