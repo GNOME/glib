@@ -3042,6 +3042,7 @@ format_number (GString     *str,
           if (alt_digits == NULL)
             alt_digits = ascii_digits;
 
+          g_free (alt_digits_locale);
           alt_digits_locale = g_strdup (current_ctype_locale);
         }
 
