@@ -3373,6 +3373,7 @@ main (gint   argc,
    * categories. Unset it to avoid interference with tests. */
   g_unsetenv ("CHARSET");
 
+  setlocale (LC_ALL, "C.UTF-8");
   g_test_init (&argc, &argv, NULL);
 
   /* GDateTime Tests */
