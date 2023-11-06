@@ -2553,6 +2553,50 @@ g_int_hash (gconstpointer v)
 }
 
 /**
+ * g_uint_equal:
+ * @v1: (not nullable): a pointer to a #guint key
+ * @v2: (not nullable): a pointer to a #guint key to compare with @v1
+ *
+ * Compares the two #guint values being pointed to and returns
+ * %TRUE if they are equal.
+ * It can be passed to g_hash_table_new() as the @key_equal_func
+ * parameter, when using non-%NULL pointers to integers as keys in a
+ * #GHashTable.
+ *
+ * Note that this function acts on pointers to #guint, not on #guint
+ * directly: if your hash table's keys are of the form
+ * `GUINT_TO_POINTER (n)`, use g_direct_equal() instead.
+ *
+ * Returns: %TRUE if the two keys match.
+ */
+gboolean
+g_uint_equal (gconstpointer v1,
+              gconstpointer v2)
+{
+  return *((const guint *) v1) == *((const guint *) v2);
+}
+
+/**
+ * g_uint_hash:
+ * @v: (not nullable): a pointer to a #guint key
+ *
+ * Converts a pointer to a #guint to a hash value.
+ * It can be passed to g_hash_table_new() as the @hash_func parameter,
+ * when using non-%NULL pointers to integer values as keys in a #GHashTable.
+ *
+ * Note that this function acts on pointers to #guint, not on #guint
+ * directly: if your hash table's keys are of the form
+ * `GUINT_TO_POINTER (n)`, use g_direct_hash() instead.
+ *
+ * Returns: a hash value corresponding to the key.
+ */
+guint
+g_uint_hash (gconstpointer v)
+{
+  return *(const guint *) v;
+}
+
+/**
  * g_int64_equal:
  * @v1: (not nullable): a pointer to a #gint64 key
  * @v2: (not nullable): a pointer to a #gint64 key to compare with @v1
