@@ -1997,6 +1997,8 @@ g_local_file_trash (GFile         *file,
   GVfsClass *class;
   GVfs *vfs;
   int errsv;
+  size_t basename_len;
+  GError *my_error = NULL;
 
   if (glib_should_use_portal ())
     return g_trash_portal_trash_file (file, error);
@@ -2224,39 +2226,90 @@ g_local_file_trash (GFile         *file,
   g_free (trashdir);
 
   basename = g_path_get_basename (local->filename);
+  basename_len = strlen (basename);
   i = 1;
   trashname = NULL;
   infofile = NULL;
-  do {
-    g_free (trashname);
-    g_free (infofile);
-    
-    trashname = get_unique_filename (basename, i++);
-    infoname = g_strconcat (trashname, ".trashinfo", NULL);
-    infofile = g_build_filename (infodir, infoname, NULL);
-    g_free (infoname);
+  while (TRUE)
+    {
+      g_free (trashname);
+      g_free (infofile);
 
-    fd = g_open (infofile, O_CREAT | O_EXCL | O_CLOEXEC, 0666);
-    errsv = errno;
-  } while (fd == -1 && errsv == EEXIST);
+      /* Make sure we can create a unique info file */
+      trashname = get_unique_filename (basename, i++);
+      infoname = g_strconcat (trashname, ".trashinfo", NULL);
+      infofile = g_build_filename (infodir, infoname, NULL);
+      g_free (infoname);
+
+      fd = g_open (infofile, O_CREAT | O_EXCL | O_CLOEXEC, 0666);
+      errsv = errno;
+
+      if (fd == -1)
+        {
+          if (errsv == EEXIST)
+            continue;
+          else if (errsv == ENAMETOOLONG)
+            {
+              if (basename_len <= strlen (".trashinfo"))
+                break; /* fail with ENAMETOOLONG */
+              basename_len -= strlen (".trashinfo");
+              basename[basename_len] = '\0';
+              i = 1;
+              continue;
+            }
+          else
+            break; /* fail with other error */
+        }
+
+      (void) g_close (fd, NULL);
+
+      /* Make sure we can write the info file */
+      if (!g_file_set_contents_full (infofile, NULL, 0,
+                                     G_FILE_SET_CONTENTS_CONSISTENT | G_FILE_SET_CONTENTS_ONLY_EXISTING,
+                                     0600, &my_error))
+        {
+          g_unlink (infofile);
+          if (g_error_matches (my_error,
+                               G_FILE_ERROR,
+                               G_FILE_ERROR_NAMETOOLONG))
+            {
+              if (basename_len <= strlen (".XXXXXX"))
+                break; /* fail with ENAMETOOLONG */
+              basename_len -= strlen (".XXXXXX");
+              basename[basename_len] = '\0';
+              i = 1;
+              g_clear_error (&my_error);
+              continue;
+            }
+          else
+            break; /* fail with other error */
+        }
+
+      /* file created */
+      break;
+    }
 
   g_free (basename);
   g_free (infodir);
 
-  if (fd == -1)
+  if (fd == -1 || my_error)
     {
       g_free (filesdir);
       g_free (topdir);
       g_free (trashname);
       g_free (infofile);
 
-      g_set_io_error (error,
-		      _("Unable to create trashing info file for %s: %s"),
-                      file, errsv);
+      if (my_error)
+        g_propagate_error (error, my_error);
+      else
+        {
+          g_set_io_error (error,
+                          _("Unable to create trashing info file for %s: %s"),
+                          file, errsv);
+        }
+
       return FALSE;
     }
-
-  (void) g_close (fd, NULL);
 
   /* Write the full content of the info file before trashing to make
    * sure someone doesn't read an empty file.  See #749314
