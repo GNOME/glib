@@ -228,6 +228,12 @@ g_io_error_from_errno (gint err_no)
       break;
 #endif
 
+#ifdef EDESTADDRREQ
+    case EDESTADDRREQ:
+      return G_IO_ERROR_DESTINATION_UNSET;
+      break;
+#endif
+
 #ifdef EMSGSIZE
     case EMSGSIZE:
       return G_IO_ERROR_MESSAGE_TOO_LARGE;
