@@ -21,8 +21,8 @@ variables:
 
 # Default CI job setup; contrast with `.only-origin`.
 #
-# Don’t execute the pipeline when a merge request is merged into `main`, as it
-# will have already been tested
+# Don’t execute the pipeline when a merge request is merged into `origin/main`,
+# as it will have already been tested
 .only-default:
   only:
     - branches
@@ -30,7 +30,7 @@ variables:
     refs:
       - tags
     variables:
-      - $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      - $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_PROJECT_NAMESPACE == "GNOME"
 
 # Some jobs run on CI runners which don’t have good isolation between CI jobs,
 # and don’t have much available resource. Limit those jobs to only ones on the
