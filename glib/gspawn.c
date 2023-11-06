@@ -70,7 +70,7 @@
 #include "glibintl.h"
 #include "glib-unix.h"
 
-#ifdef __APPLE__
+#if defined(__APPLE__) && defined(HAVE_LIBPROC_H)
 #include <libproc.h>
 #include <sys/proc_info.h>
 #endif
@@ -1534,7 +1534,7 @@ safe_fdwalk_with_invalid_fds (int (*cb)(void *data, int fd), void *data)
   if (open_max < 0)
     open_max = 4096;
 
-#if defined(__APPLE__)
+#if defined(__APPLE__) && defined(HAVE_LIBPROC_H)
   /* proc_pidinfo isn't documented as async-signal-safe but looking at the implementation
    * in the darwin tree here:
    *
