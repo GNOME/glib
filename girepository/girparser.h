@@ -21,8 +21,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __G_GIR_PARSER_H__
-#define __G_GIR_PARSER_H__
+#pragma once
 
 #include <glib.h>
 
@@ -48,5 +47,3 @@ GIrModule *_g_ir_parser_parse_file   (GIrParser    *parser,
 				      GError      **error);
 
 G_END_DECLS
-
-#endif  /* __G_GIR_PARSER_H__ */

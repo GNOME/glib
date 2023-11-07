@@ -22,8 +22,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GISTRUCTINFO_H__
-#define __GISTRUCTINFO_H__
+#pragma once
 
 #if !defined (__GIREPOSITORY_H_INSIDE__) && !defined (GI_COMPILATION)
 #error "Only <girepository.h> can be included directly."
@@ -84,5 +83,3 @@ GI_AVAILABLE_IN_2_76
 const char *     g_struct_info_get_free_function (GIStructInfo *info);
 
 G_END_DECLS
-
-#endif  /* __GISTRUCTINFO_H__ */

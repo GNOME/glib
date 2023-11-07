@@ -22,8 +22,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GIPROPERTYINFO_H__
-#define __GIPROPERTYINFO_H__
+#pragma once
 
 #if !defined (__GIREPOSITORY_H_INSIDE__) && !defined (GI_COMPILATION)
 #error "Only <girepository.h> can be included directly."
@@ -59,6 +58,3 @@ GI_AVAILABLE_IN_2_70
 GIFunctionInfo *g_property_info_get_getter (GIPropertyInfo *info);
 
 G_END_DECLS
-
-#endif  /* __GIPROPERTYINFO_H__ */
-

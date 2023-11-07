@@ -22,8 +22,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GIREGISTEREDTYPEINFO_H__
-#define __GIREGISTEREDTYPEINFO_H__
+#pragma once
 
 #if !defined (__GIREPOSITORY_H_INSIDE__) && !defined (GI_COMPILATION)
 #error "Only <girepository.h> can be included directly."
@@ -60,7 +59,3 @@ GI_AVAILABLE_IN_ALL
 GType                  g_registered_type_info_get_g_type    (GIRegisteredTypeInfo *info);
 
 G_END_DECLS
-
-
-#endif  /* __GIREGISTEREDTYPEINFO_H__ */
-

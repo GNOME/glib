@@ -21,8 +21,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GIRFFI_H__
-#define __GIRFFI_H__
+#pragma once
 
 #if !defined (__GIREPOSITORY_H_INSIDE__) && !defined (GI_COMPILATION)
 #error "Only <girepository.h> can be included directly."
@@ -128,5 +127,3 @@ void          g_callable_info_destroy_closure (GICallableInfo       *callable_in
                                                ffi_closure          *closure);
 
 G_END_DECLS
-
-#endif /* __GIRFFI_H__ */

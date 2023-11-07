@@ -22,8 +22,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GISIGNALINFO_H__
-#define __GISIGNALINFO_H__
+#pragma once
 
 #if !defined (__GIREPOSITORY_H_INSIDE__) && !defined (GI_COMPILATION)
 #error "Only <girepository.h> can be included directly."
@@ -54,6 +53,3 @@ GI_AVAILABLE_IN_ALL
 gboolean      g_signal_info_true_stops_emit   (GISignalInfo *info);
 
 G_END_DECLS
-
-
-#endif  /* __GISIGNALINFO_H__ */

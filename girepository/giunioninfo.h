@@ -22,8 +22,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GIUNIONINFO_H__
-#define __GIUNIONINFO_H__
+#pragma once
 
 #if !defined (__GIREPOSITORY_H_INSIDE__) && !defined (GI_COMPILATION)
 #error "Only <girepository.h> can be included directly."
@@ -86,7 +85,3 @@ GI_AVAILABLE_IN_2_76
 const char *     g_union_info_get_free_function        (GIUnionInfo *info);
 
 G_END_DECLS
-
-
-#endif  /* __GIUNIONINFO_H__ */
-

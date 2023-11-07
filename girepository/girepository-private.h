@@ -21,8 +21,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GIREPOSITORY_PRIVATE_H__
-#define __GIREPOSITORY_PRIVATE_H__
+#pragma once
 
 #include <ffi.h>
 #include <glib.h>
@@ -114,5 +113,3 @@ GIVFuncInfo * _g_base_info_find_vfunc (GIRealInfo   *rinfo,
 				       guint32       offset,
 				       gint          n_vfuncs,
 				       const gchar  *name);
-
-#endif /* __GIREPOSITORY_PRIVATE_H__ */

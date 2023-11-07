@@ -21,8 +21,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __G_IR_MODULE_H__
-#define __G_IR_MODULE_H__
+#pragma once
 
 #include <glib.h>
 #include "gitypelib-internal.h"
@@ -84,5 +83,3 @@ void _g_irnode_init_stats (void);
 void _g_irnode_dump_stats (void);
 
 G_END_DECLS
-
-#endif  /* __G_IR_MODULE_H__ */

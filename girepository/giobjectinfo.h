@@ -22,8 +22,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GIOBJECTINFO_H__
-#define __GIOBJECTINFO_H__
+#pragma once
 
 #if !defined (__GIREPOSITORY_H_INSIDE__) && !defined (GI_COMPILATION)
 #error "Only <girepository.h> can be included directly."
@@ -206,7 +205,3 @@ GIObjectInfoGetValueFunction g_object_info_get_get_value_function_pointer (GIObj
 
 
 G_END_DECLS
-
-
-#endif  /* __GIOBJECTINFO_H__ */
-

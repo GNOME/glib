@@ -22,8 +22,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GITYPES_H__
-#define __GITYPES_H__
+#pragma once
 
 #if !defined (__GIREPOSITORY_H_INSIDE__) && !defined (GI_COMPILATION)
 #error "Only <girepository.h> can be included directly."
@@ -511,5 +510,3 @@ typedef struct _GITypelib GTypelib;
 #endif
 
 G_END_DECLS
-
-#endif  /* __GITYPES_H__ */

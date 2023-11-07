@@ -21,8 +21,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __G_IR_NODE_H__
-#define __G_IR_NODE_H__
+#pragma once
 
 #include <glib.h>
 
@@ -399,5 +398,3 @@ void _g_ir_node_compute_offsets (GIrTypelibBuild *build,
 
 
 G_END_DECLS
-
-#endif  /* __G_IR_NODE_H__ */

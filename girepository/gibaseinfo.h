@@ -22,8 +22,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GIBASEINFO_H__
-#define __GIBASEINFO_H__
+#pragma once
 
 #if !defined (__GIREPOSITORY_H_INSIDE__) && !defined (GI_COMPILATION)
 #error "Only <girepository.h> can be included directly."
@@ -100,5 +99,3 @@ GIBaseInfo *           g_info_new                   (GIInfoType    type,
 						     guint32       offset);
 
 G_END_DECLS
-
-#endif  /* __GIBASEINFO_H__ */

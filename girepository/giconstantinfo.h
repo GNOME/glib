@@ -22,8 +22,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GICONSTANTINFO_H__
-#define __GICONSTANTINFO_H__
+#pragma once
 
 #if !defined (__GIREPOSITORY_H_INSIDE__) && !defined (GI_COMPILATION)
 #error "Only <girepository.h> can be included directly."
@@ -54,7 +53,3 @@ GI_AVAILABLE_IN_ALL
 gint         g_constant_info_get_value(GIConstantInfo *info,
 				       GIArgument      *value);
 G_END_DECLS
-
-
-#endif  /* __GICONSTANTINFO_H__ */
-

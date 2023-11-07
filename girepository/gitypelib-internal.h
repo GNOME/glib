@@ -23,8 +23,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __G_TYPELIB_H__
-#define __G_TYPELIB_H__
+#pragma once
 
 #include <gmodule.h>
 #include "girepository.h"
@@ -1349,6 +1348,3 @@ guint16 _gi_typelib_hash_search (guint8* memory, const char *str, guint n_entrie
 
 
 G_END_DECLS
-
-#endif  /* __G_TYPELIB_H__ */
-

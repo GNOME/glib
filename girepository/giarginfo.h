@@ -22,8 +22,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GIARGINFO_H__
-#define __GIARGINFO_H__
+#pragma once
 
 #if !defined (__GIREPOSITORY_H_INSIDE__) && !defined (GI_COMPILATION)
 #error "Only <girepository.h> can be included directly."
@@ -80,5 +79,3 @@ GI_AVAILABLE_IN_ALL
 void                   g_arg_info_load_type              (GIArgInfo *info,
                                                           GITypeInfo *type);
 G_END_DECLS
-
-#endif  /* __GIARGINFO_H__ */

@@ -22,8 +22,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GICALLABLEINFO_H__
-#define __GICALLABLEINFO_H__
+#pragma once
 
 #if !defined (__GIREPOSITORY_H_INSIDE__) && !defined (GI_COMPILATION)
 #error "Only <girepository.h> can be included directly."
@@ -106,7 +105,3 @@ GI_AVAILABLE_IN_2_42
 GITransfer             g_callable_info_get_instance_ownership_transfer (GICallableInfo *info);
 
 G_END_DECLS
-
-
-#endif  /* __GICALLABLEINFO_H__ */
-

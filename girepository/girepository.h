@@ -22,8 +22,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __G_IREPOSITORY_H__
-#define __G_IREPOSITORY_H__
+#pragma once
 
 #include <glib-object.h>
 #include <gmodule.h>
@@ -246,7 +245,3 @@ void gi_cclosure_marshal_generic (GClosure       *closure,
                                   gpointer        marshal_data);
 
 G_END_DECLS
-
-#undef __GIREPOSITORY_H_INSIDE__
-
-#endif  /* __G_IREPOSITORY_H__ */

@@ -22,8 +22,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GIFIELDINFO_H__
-#define __GIFIELDINFO_H__
+#pragma once
 
 #if !defined (__GIREPOSITORY_H_INSIDE__) && !defined (GI_COMPILATION)
 #error "Only <girepository.h> can be included directly."
@@ -67,7 +66,3 @@ gboolean               g_field_info_set_field      (GIFieldInfo     *field_info,
 						    const GIArgument *value);
 
 G_END_DECLS
-
-
-#endif  /* __GIFIELDINFO_H__ */
-

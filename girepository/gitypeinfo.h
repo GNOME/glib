@@ -22,8 +22,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GITYPEINFO_H__
-#define __GITYPEINFO_H__
+#pragma once
 
 #if !defined (__GIREPOSITORY_H_INSIDE__) && !defined (GI_COMPILATION)
 #error "Only <girepository.h> can be included directly."
@@ -158,7 +157,3 @@ gpointer               gi_type_tag_hash_pointer_from_argument (GITypeTag   stora
                                                                GIArgument *arg);
 
 G_END_DECLS
-
-
-#endif  /* __GITYPEINFO_H__ */
-

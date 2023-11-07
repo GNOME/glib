@@ -22,8 +22,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GIFUNCTIONINFO_H__
-#define __GIFUNCTIONINFO_H__
+#pragma once
 
 #if !defined (__GIREPOSITORY_H_INSIDE__) && !defined (GI_COMPILATION)
 #error "Only <girepository.h> can be included directly."
@@ -96,7 +95,3 @@ gboolean              g_function_info_invoke         (GIFunctionInfo *info,
 
 
 G_END_DECLS
-
-
-#endif  /* __GIFUNCTIONINFO_H__ */
-

@@ -22,8 +22,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GIENUMINFO_H__
-#define __GIENUMINFO_H__
+#pragma once
 
 #if !defined (__GIREPOSITORY_H_INSIDE__) && !defined (GI_COMPILATION)
 #error "Only <girepository.h> can be included directly."
@@ -78,7 +77,3 @@ GI_AVAILABLE_IN_ALL
 gint64         g_value_info_get_value        (GIValueInfo *info);
 
 G_END_DECLS
-
-
-#endif  /* __GIENUMINFO_H__ */
-
