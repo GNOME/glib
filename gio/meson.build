@@ -985,7 +985,7 @@ gio_tool_sources = [
   'gio-tool-tree.c',
 ]
 
-executable('gio', gio_tool_sources,
+gio_tool = executable('gio', gio_tool_sources,
   install : true,
   install_tag : 'bin',
   c_args : gio_c_args,

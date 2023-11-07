@@ -63,6 +63,7 @@ class TestMessagesLowMemory(unittest.TestCase):
 
         env = os.environ.copy()
         env["LC_ALL"] = "C.UTF-8"
+        env["G_DEBUG"] = "fatal-warnings"
         print("Environment:", env)
 
         # We want to ensure consistent line endings...

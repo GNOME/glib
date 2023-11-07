@@ -177,7 +177,8 @@ show_info (GFile *file, GFileInfo *info)
       g_free (flatten);
     }
 
-  name = g_file_info_get_name (info);
+  name = g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_NAME) ?
+         g_file_info_get_name (info) : NULL;
   if (name)
     {
       escaped = escape_string (name);
