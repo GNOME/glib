@@ -1299,6 +1299,7 @@ if cc.links('''#include <langinfo.h>
 endif
 
 # Check for nl_langinfo and LC_TIME parts that are needed in gdatetime.c
+have_langinfo_time = false
 if cc.links('''#include <langinfo.h>
                int main (int argc, char ** argv) {
                  char *str;
@@ -1313,6 +1314,7 @@ if cc.links('''#include <langinfo.h>
                  str = nl_langinfo (ABDAY_7);
                  return 0;
                }''', name : 'nl_langinfo (PM_STR)')
+  have_langinfo_time = true
   glib_conf.set('HAVE_LANGINFO_TIME', 1)
 endif
 
@@ -1328,6 +1330,9 @@ if cc.links('''#include <langinfo.h>
                  return 0;
                }''', name : 'nl_langinfo (ERA)')
   glib_conf.set('HAVE_LANGINFO_ERA', 1)
+  if not have_langinfo_time
+    error('nl_langinfo(ERA) is supported but more basic nl_langinfo() functionality like PM_STR is not')
+  endif
 endif
 
 if cc.links('''#include <langinfo.h>
@@ -1346,6 +1351,9 @@ if cc.links('''#include <langinfo.h>
                  return 0;
                }''', name : 'nl_langinfo (_NL_CTYPE_OUTDIGITn_MB)')
   glib_conf.set('HAVE_LANGINFO_OUTDIGIT', 1)
+  if not have_langinfo_time
+    error('nl_langinfo(_NL_CTYPE_OUTDIGITn_MB) is supported but more basic nl_langinfo() functionality like PM_STR is not')
+  endif
 endif
 
 # Check for nl_langinfo and alternative month names
@@ -1370,6 +1378,9 @@ if cc.links('''#ifndef _GNU_SOURCE
                  return 0;
                }''', name : 'nl_langinfo (ALTMON_n)')
   glib_conf.set('HAVE_LANGINFO_ALTMON', 1)
+  if not have_langinfo_time
+    error('nl_langinfo(ALTMON_n) is supported but more basic nl_langinfo() functionality like PM_STR is not')
+  endif
 endif
 
 # Check for nl_langinfo and abbreviated alternative month names
@@ -1394,6 +1405,9 @@ if cc.links('''#ifndef _GNU_SOURCE
                  return 0;
                }''', name : 'nl_langinfo (_NL_ABALTMON_n)')
   glib_conf.set('HAVE_LANGINFO_ABALTMON', 1)
+  if not have_langinfo_time
+    error('nl_langinfo(_NL_ABALTMON_n) is supported but more basic nl_langinfo() functionality like PM_STR is not')
+  endif
 endif
 
 # Check for nl_langinfo and _NL_TIME_CODESET
@@ -1403,6 +1417,9 @@ if cc.links('''#include <langinfo.h>
                  return 0;
                }''', name : 'nl_langinfo and _NL_TIME_CODESET')
   glib_conf.set('HAVE_LANGINFO_TIME_CODESET', 1)
+  if not have_langinfo_time
+    error('nl_langinfo(_NL_TIME_CODESET) is supported but more basic nl_langinfo() functionality like PM_STR is not')
+  endif
 endif
 
 # Check if C compiler supports the 'signed' keyword
