@@ -101,17 +101,6 @@ GI_AVAILABLE_IN_ALL
 void          g_function_invoker_destroy          (GIFunctionInvoker    *invoker);
 
 
-GI_DEPRECATED_IN_2_72_FOR(g_callable_info_create_closure)
-ffi_closure * g_callable_info_prepare_closure     (GICallableInfo       *callable_info,
-                                                   ffi_cif              *cif,
-                                                   GIFFIClosureCallback  callback,
-                                                   gpointer              user_data);
-
-GI_DEPRECATED_IN_2_72_FOR(g_callable_info_destroy_closure)
-void          g_callable_info_free_closure        (GICallableInfo       *callable_info,
-                                                   ffi_closure          *closure);
-
-
 GI_AVAILABLE_IN_2_72
 ffi_closure * g_callable_info_create_closure (GICallableInfo       *callable_info,
                                               ffi_cif              *cif,
