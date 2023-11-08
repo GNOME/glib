@@ -896,6 +896,16 @@
 	fun:g_get_home_dir
 }
 
+# gcontenttype.c caches a one-time allocation global array of @global_mime_dirs.
+{
+	content_type_mime_dirs_realloc
+	Memcheck:Leak
+	match-leak-kinds:reachable
+	fun:realloc
+	...
+	fun:_g_content_type_set_mime_dirs_locked
+}
+
 # gdesktopappinfo.c caches a one-time allocation global table of @desktop_file_dirs.
 {
 	desktop_file_dirs_malloc
