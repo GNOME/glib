@@ -41,3 +41,10 @@ License: CC0-1.0
 Files: docs/reference/glib/gvariant-*.svg
 Copyright: 2022 Philip Withnall
 License: CC-BY-SA-3.0
+
+# libgirepository uses cmph as a copylib. Adding copyright/license data to the
+# files there would cause divergence from upstream. See
+# girepository/cmph/README-CMPH-IMPORT.txt.
+Files: girepository/cmph/*
+Copyright: CMPH contributors
+License: LGPL-2.1-only or MPL-1.1
