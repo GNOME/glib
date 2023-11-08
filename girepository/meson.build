@@ -199,8 +199,6 @@ executable('gi-dump-types',
 )
 
 pkgconfig_variables = [
-  'datadir=' + '${prefix}' / get_option('datadir'),
-  'bindir=' + '${prefix}' / get_option('bindir'),
   'gidatadir=${datadir}/gobject-introspection-1.0',
   'girdir=' + gir_dir_pc_prefix / 'gir-1.0',
   'typelibdir=${libdir}/girepository-1.0',
