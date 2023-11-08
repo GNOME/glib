@@ -23,10 +23,10 @@ subdir('cmph')
 
 gir_dir_prefix = get_option('gir_dir_prefix')
 if gir_dir_prefix == '' or gir_dir_prefix == get_option('datadir')
-    gir_dir_prefix = get_option('datadir')
-    gir_dir_pc_prefix = '${datadir}'
+  gir_dir_prefix = get_option('datadir')
+  gir_dir_pc_prefix = '${datadir}'
 else
-    gir_dir_pc_prefix = join_paths('${prefix}', gir_dir_prefix)
+  gir_dir_pc_prefix = join_paths('${prefix}', gir_dir_prefix)
 endif
 
 glib_girdir = get_option('prefix') / gir_dir_prefix / 'gir-1.0'
@@ -54,7 +54,6 @@ girepo_headers = files(
   'gipropertyinfo.h',
   'giregisteredtypeinfo.h',
   'girepository.h',
-  'girffi.h',
   'gisignalinfo.h',
   'gistructinfo.h',
   'gitypeinfo.h',
@@ -64,7 +63,15 @@ girepo_headers = files(
   'givfuncinfo.h',
 )
 
-install_headers(girepo_headers, install_dir: gir_includedir)
+girepo_ffi_headers = [
+  'girffi.h',
+]
+
+girepo_ffi_sources = files(
+  'girffi.c',
+)
+
+install_headers(girepo_headers + girepo_ffi_headers, install_dir: gir_includedir)
 
 gir_c_args = [
   '-DGI_COMPILATION',
@@ -165,7 +172,7 @@ if cc.get_id() != 'msvc'
 endif
 
 libgirepo = shared_library('girepository-2.0',
-  sources: girepo_sources + [gi_visibility_h],
+  sources: girepo_sources + girepo_ffi_sources + [gi_visibility_h],
   include_directories: [configinc, girepoinc],
   c_args: gir_c_args,
   version: library_version,
@@ -214,3 +221,30 @@ pkg.generate(libgirepo,
   libraries: [libglib_dep, libgobject_dep],
 )
 
+if enable_gir
+  libgirepo_gir_sources = [
+    gi_visibility_h,
+    girepo_headers,
+    girepo_sources,
+  ]
+  libgirepo_gir_packages = [ 'girepository-2.0' ]
+  libgirepo_gir_args = [
+    '-DGI_COMPILATION',
+    '--symbol-prefix=gi',
+    '--identifier-prefix=GI',
+  ]
+
+  girepository_gir = gnome.generate_gir(libgirepo,
+    sources: libgirepo_gir_sources,
+    namespace: 'GIRepository',
+    nsversion: '2.0',
+    identifier_prefix: 'GI',
+    symbol_prefix: 'gi',
+    export_packages: libgirepo_gir_packages,
+    header: 'girepository/girepository.h',
+    includes: [ glib_gir[0], gmodule_gir[0], gobject_gir[0], gio_gir[0] ],
+    install: true,
+    dependencies: [ libglib_dep, libgobject_dep, libgmodule_dep, libgio_dep ],
+    extra_args: gir_args + libgirepo_gir_args,
+  )
+endif
