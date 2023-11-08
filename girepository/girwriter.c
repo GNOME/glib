@@ -22,6 +22,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include "config.h"
+
+#include "girwriter-private.h"
+
+#include "girepository.h"
+#include "gitypelib-internal.h"
+
 #include <errno.h>
 #include <string.h>
 #include <stdio.h>
@@ -29,10 +36,6 @@
 #include <glib.h>
 #include <glib-object.h>
 #include <glib/gstdio.h>
-
-#include "girwriter.h"
-#include "girepository.h"
-#include "gitypelib-internal.h"
 
 typedef struct {
   FILE *file;

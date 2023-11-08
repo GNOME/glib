@@ -21,12 +21,15 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GIRWRITER_H__
-#define __GIRWRITER_H__
+#pragma once
+
+#include <glib.h>
+
+G_BEGIN_DECLS
 
 void gir_writer_write (const char *filename,
 		       const char *namespace,
 		       gboolean    needs_prefix,
 		       gboolean    show_all);
 
-#endif  /* __GIRWRITER_H__ */
+G_END_DECLS
