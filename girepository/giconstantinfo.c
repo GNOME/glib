@@ -126,13 +126,9 @@ gi_constant_info_get_value (GIConstantInfo *info,
     {
       if (blob->type.flags.pointer)
         {
-#if GLIB_CHECK_VERSION (2, 67, 5)
           gsize blob_size = blob->size;
 
 	  value->v_pointer = g_memdup2 (&rinfo->typelib->data[blob->offset], blob_size);
-#else
-	  value->v_pointer = g_memdup (&rinfo->typelib->data[blob->offset], blob->size);
-#endif
         }
       else
 	{
