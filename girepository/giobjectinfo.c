@@ -103,8 +103,8 @@ gi_object_info_get_parent (GIObjectInfo *info)
   blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
 
   if (blob->parent)
-    return (GIObjectInfo *) _gi_info_from_entry (rinfo->repository,
-                                                 rinfo->typelib, blob->parent);
+    return (GIObjectInfo *) gi_info_from_entry (rinfo->repository,
+                                                rinfo->typelib, blob->parent);
   else
     return NULL;
 }
@@ -269,8 +269,8 @@ gi_object_info_get_interface (GIObjectInfo *info,
 
   blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
 
-  return (GIInterfaceInfo *) _gi_info_from_entry (rinfo->repository,
-                                                  rinfo->typelib, blob->interfaces[n]);
+  return (GIInterfaceInfo *) gi_info_from_entry (rinfo->repository,
+                                                 rinfo->typelib, blob->interfaces[n]);
 }
 
 /**
@@ -467,7 +467,7 @@ gi_object_info_find_method (GIObjectInfo *info,
     + blob->n_field_callbacks * header->callback_blob_size
     + blob->n_properties * header->property_blob_size;
 
-  return _gi_base_info_find_method ((GIBaseInfo*)info, offset, blob->n_methods, name);
+  return gi_base_info_find_method ((GIBaseInfo*)info, offset, blob->n_methods, name);
 }
 
 /**
@@ -718,7 +718,7 @@ gi_object_info_find_vfunc (GIObjectInfo *info,
     + blob->n_methods * header->function_blob_size
     + blob->n_signals * header->signal_blob_size;
 
-  return _gi_base_info_find_vfunc (rinfo, offset, blob->n_vfuncs, name);
+  return gi_base_info_find_vfunc (rinfo, offset, blob->n_vfuncs, name);
 }
 
 /**
@@ -864,8 +864,8 @@ gi_object_info_get_class_struct (GIObjectInfo *info)
   blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
 
   if (blob->gtype_struct)
-    return (GIStructInfo *) _gi_info_from_entry (rinfo->repository,
-                                                 rinfo->typelib, blob->gtype_struct);
+    return (GIStructInfo *) gi_info_from_entry (rinfo->repository,
+                                                rinfo->typelib, blob->gtype_struct);
   else
     return NULL;
 }

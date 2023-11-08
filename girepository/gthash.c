@@ -64,7 +64,7 @@ struct _GITypelibHashBuilder {
 };
 
 GITypelibHashBuilder *
-_gi_typelib_hash_builder_new (void)
+gi_typelib_hash_builder_new (void)
 {
   GITypelibHashBuilder *builder = g_slice_new0 (GITypelibHashBuilder);
   builder->c = NULL;
@@ -73,16 +73,16 @@ _gi_typelib_hash_builder_new (void)
 }
 
 void
-_gi_typelib_hash_builder_add_string (GITypelibHashBuilder *builder,
-				     const char           *str,
-				     guint16               value)
+gi_typelib_hash_builder_add_string (GITypelibHashBuilder *builder,
+                                    const char           *str,
+                                    guint16               value)
 {
   g_return_if_fail (builder->c == NULL);
   g_hash_table_insert (builder->strings, g_strdup (str), GUINT_TO_POINTER ((guint) value));
 }
 
 gboolean
-_gi_typelib_hash_builder_prepare (GITypelibHashBuilder *builder)
+gi_typelib_hash_builder_prepare (GITypelibHashBuilder *builder)
 {
   char **strs;
   GHashTableIter hashiter;
@@ -137,7 +137,7 @@ _gi_typelib_hash_builder_prepare (GITypelibHashBuilder *builder)
 }
 
 guint32
-_gi_typelib_hash_builder_get_buffer_size (GITypelibHashBuilder *builder)
+gi_typelib_hash_builder_get_buffer_size (GITypelibHashBuilder *builder)
 {
   g_return_val_if_fail (builder != NULL, 0);
   g_return_val_if_fail (builder->prepared, 0);
@@ -147,7 +147,7 @@ _gi_typelib_hash_builder_get_buffer_size (GITypelibHashBuilder *builder)
 }
 
 void
-_gi_typelib_hash_builder_pack (GITypelibHashBuilder *builder, guint8* mem, guint32 len)
+gi_typelib_hash_builder_pack (GITypelibHashBuilder *builder, guint8* mem, guint32 len)
 {
   guint16 *table;
   GHashTableIter hashiter;
@@ -185,7 +185,7 @@ _gi_typelib_hash_builder_pack (GITypelibHashBuilder *builder, guint8* mem, guint
 }
 
 void
-_gi_typelib_hash_builder_destroy (GITypelibHashBuilder *builder)
+gi_typelib_hash_builder_destroy (GITypelibHashBuilder *builder)
 {
   if (builder->c)
     {
@@ -197,7 +197,7 @@ _gi_typelib_hash_builder_destroy (GITypelibHashBuilder *builder)
 }
 
 guint16
-_gi_typelib_hash_search (guint8* memory, const char *str, guint n_entries)
+gi_typelib_hash_search (guint8* memory, const char *str, guint n_entries)
 {
   guint32 *mph;
   guint16 *table;

@@ -184,7 +184,7 @@ gi_callable_info_get_return_type (GICallableInfo *info)
 
   offset = signature_offset (info);
 
-  return _gi_type_info_new ((GIBaseInfo*)info, rinfo->typelib, offset);
+  return gi_type_info_new ((GIBaseInfo*)info, rinfo->typelib, offset);
 }
 
 
@@ -211,7 +211,7 @@ gi_callable_info_load_return_type (GICallableInfo *info,
 
   offset = signature_offset (info);
 
-  _gi_type_info_init (type, (GIBaseInfo*)info, rinfo->typelib, offset);
+  gi_type_info_init (type, (GIBaseInfo*)info, rinfo->typelib, offset);
 }
 
 /**
@@ -392,8 +392,8 @@ gi_callable_info_load_arg (GICallableInfo *info,
   offset = signature_offset (info);
   header = (Header *)rinfo->typelib->data;
 
-  _gi_info_init ((GIRealInfo*)arg, GI_INFO_TYPE_ARG, rinfo->repository, (GIBaseInfo*)info, rinfo->typelib,
-                 offset + header->signature_blob_size + n * header->arg_blob_size);
+  gi_info_init ((GIRealInfo*)arg, GI_INFO_TYPE_ARG, rinfo->repository, (GIBaseInfo*)info, rinfo->typelib,
+                offset + header->signature_blob_size + n * header->arg_blob_size);
 }
 
 /**

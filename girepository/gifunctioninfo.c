@@ -48,10 +48,10 @@
  */
 
 GIFunctionInfo *
-_gi_base_info_find_method (GIBaseInfo  *base,
-                           guint32      offset,
-                           gint         n_methods,
-                           const gchar *name)
+gi_base_info_find_method (GIBaseInfo  *base,
+                          guint32      offset,
+                          gint         n_methods,
+                          const gchar *name)
 {
   /* FIXME hash */
   GIRealInfo *rinfo = (GIRealInfo*)base;

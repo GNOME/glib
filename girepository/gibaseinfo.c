@@ -53,11 +53,11 @@ gi_base_info_gtype_get_type (void)
 
 /* info creation */
 GIBaseInfo *
-_gi_info_new_full (GIInfoType    type,
-                   GIRepository *repository,
-                   GIBaseInfo   *container,
-                   GITypelib    *typelib,
-                   guint32       offset)
+gi_info_new_full (GIInfoType    type,
+                  GIRepository *repository,
+                  GIBaseInfo   *container,
+                  GITypelib    *typelib,
+                  guint32       offset)
 {
   GIRealInfo *info;
 
@@ -65,7 +65,7 @@ _gi_info_new_full (GIInfoType    type,
 
   info = g_slice_new (GIRealInfo);
 
-  _gi_info_init (info, type, repository, container, typelib, offset);
+  gi_info_init (info, type, repository, container, typelib, offset);
   info->ref_count = 1;
 
   if (container && ((GIRealInfo *) container)->ref_count != INVALID_REFCOUNT)
@@ -93,16 +93,16 @@ gi_info_new (GIInfoType     type,
              GITypelib      *typelib,
              guint32        offset)
 {
-  return _gi_info_new_full (type, ((GIRealInfo*)container)->repository, container, typelib, offset);
+  return gi_info_new_full (type, ((GIRealInfo*)container)->repository, container, typelib, offset);
 }
 
 void
-_gi_info_init (GIRealInfo     *info,
-               GIInfoType      type,
-               GIRepository   *repository,
-               GIBaseInfo     *container,
-               GITypelib       *typelib,
-               guint32         offset)
+gi_info_init (GIRealInfo   *info,
+              GIInfoType    type,
+              GIRepository *repository,
+              GIBaseInfo   *container,
+              GITypelib    *typelib,
+              guint32       offset)
 {
   memset (info, 0, sizeof (GIRealInfo));
 
@@ -121,15 +121,15 @@ _gi_info_init (GIRealInfo     *info,
 }
 
 GIBaseInfo *
-_gi_info_from_entry (GIRepository *repository,
-                     GITypelib    *typelib,
-                     guint16       index)
+gi_info_from_entry (GIRepository *repository,
+                    GITypelib    *typelib,
+                    guint16       index)
 {
   GIBaseInfo *result;
   DirEntry *entry = gi_typelib_get_dir_entry (typelib, index);
 
   if (entry->local)
-    result = _gi_info_new_full (entry->blob_type, repository, NULL, typelib, entry->offset);
+    result = gi_info_new_full (entry->blob_type, repository, NULL, typelib, entry->offset);
   else
     {
       const gchar *namespace = gi_typelib_get_string (typelib, entry->offset);
@@ -158,9 +158,9 @@ _gi_info_from_entry (GIRepository *repository,
 }
 
 GITypeInfo *
-_gi_type_info_new (GIBaseInfo *container,
-                   GITypelib  *typelib,
-                   guint32     offset)
+gi_type_info_new (GIBaseInfo *container,
+                  GITypelib  *typelib,
+                  guint32     offset)
 {
   SimpleTypeBlob *type = (SimpleTypeBlob *)&typelib->data[offset];
 
@@ -169,16 +169,16 @@ _gi_type_info_new (GIBaseInfo *container,
 }
 
 void
-_gi_type_info_init (GIBaseInfo *info,
-                    GIBaseInfo *container,
-                    GITypelib   *typelib,
-                    guint32     offset)
+gi_type_info_init (GIBaseInfo *info,
+                   GIBaseInfo *container,
+                   GITypelib  *typelib,
+                   guint32     offset)
 {
   GIRealInfo *rinfo = (GIRealInfo*)container;
   SimpleTypeBlob *type = (SimpleTypeBlob *)&typelib->data[offset];
 
-  _gi_info_init ((GIRealInfo*)info, GI_INFO_TYPE_TYPE, rinfo->repository, container, typelib,
-                 (type->flags.reserved == 0 && type->flags.reserved2 == 0) ? offset : type->offset);
+  gi_info_init ((GIRealInfo*)info, GI_INFO_TYPE_TYPE, rinfo->repository, container, typelib,
+                (type->flags.reserved == 0 && type->flags.reserved2 == 0) ? offset : type->offset);
 }
 
 /* GIBaseInfo functions */

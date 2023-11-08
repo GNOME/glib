@@ -363,38 +363,38 @@ struct _GIIrNodeUnion
 };
 
 
-GIIrNode *_gi_ir_node_new             (GIIrNodeTypeId  type,
-                                       GIIrModule     *module);
-void      _gi_ir_node_free            (GIIrNode    *node);
-guint32   _gi_ir_node_get_size        (GIIrNode    *node);
-guint32   _gi_ir_node_get_full_size   (GIIrNode    *node);
-void      _gi_ir_node_build_typelib   (GIIrNode         *node,
-                                       GIIrNode         *parent,
-                                       GIIrTypelibBuild *build,
-                                       guint32          *offset,
-                                       guint32          *offset2,
-                                       guint16          *count2);
-int       _gi_ir_node_cmp             (GIIrNode *node,
-                                       GIIrNode *other);
-gboolean  _gi_ir_node_can_have_member (GIIrNode *node);
-void      _gi_ir_node_add_member      (GIIrNode         *node,
-                                       GIIrNodeFunction *member);
-guint32   _gi_ir_write_string         (const gchar *str,
-                                       GHashTable  *strings,
-                                       guchar      *data,
-                                       guint32     *offset);
+GIIrNode *gi_ir_node_new             (GIIrNodeTypeId  type,
+                                      GIIrModule     *module);
+void      gi_ir_node_free            (GIIrNode    *node);
+guint32   gi_ir_node_get_size        (GIIrNode    *node);
+guint32   gi_ir_node_get_full_size   (GIIrNode    *node);
+void      gi_ir_node_build_typelib   (GIIrNode         *node,
+                                      GIIrNode         *parent,
+                                      GIIrTypelibBuild *build,
+                                      guint32          *offset,
+                                      guint32          *offset2,
+                                      guint16          *count2);
+int       gi_ir_node_cmp             (GIIrNode *node,
+                                      GIIrNode *other);
+gboolean  gi_ir_node_can_have_member (GIIrNode *node);
+void      gi_ir_node_add_member      (GIIrNode         *node,
+                                      GIIrNodeFunction *member);
+guint32   gi_ir_write_string         (const gchar *str,
+                                      GHashTable  *strings,
+                                      guchar      *data,
+                                      guint32     *offset);
 
-const gchar * _gi_ir_node_param_direction_string (GIIrNodeParam * node);
-const gchar * _gi_ir_node_type_to_string         (GIIrNodeTypeId type);
+const gchar * gi_ir_node_param_direction_string (GIIrNodeParam * node);
+const gchar * gi_ir_node_type_to_string         (GIIrNodeTypeId type);
 
-GIIrNode *_gi_ir_find_node (GIIrTypelibBuild *build,
-                            GIIrModule       *module,
-                            const char       *name);
+GIIrNode *gi_ir_find_node (GIIrTypelibBuild *build,
+                           GIIrModule       *module,
+                           const char       *name);
 
 /* In giroffsets.c */
 
-void _gi_ir_node_compute_offsets (GIIrTypelibBuild *build,
-                                  GIIrNode         *node);
+void gi_ir_node_compute_offsets (GIIrTypelibBuild *build,
+                                 GIIrNode         *node);
 
 
 G_END_DECLS

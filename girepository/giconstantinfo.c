@@ -62,7 +62,7 @@ gi_constant_info_get_type (GIConstantInfo *info)
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_CONSTANT_INFO (info), NULL);
 
-  return _gi_type_info_new ((GIBaseInfo*)info, rinfo->typelib, rinfo->offset + 8);
+  return gi_type_info_new ((GIBaseInfo*)info, rinfo->typelib, rinfo->offset + 8);
 }
 
 #define DO_ALIGNED_COPY(dest_addr, src_addr, type) \

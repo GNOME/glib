@@ -212,7 +212,7 @@ gi_struct_info_find_method (GIStructInfo *info,
   StructBlob *blob = (StructBlob *)&rinfo->typelib->data[rinfo->offset];
 
   offset = gi_struct_get_field_offset (info, blob->n_fields);
-  return _gi_base_info_find_method ((GIBaseInfo*)info, offset, blob->n_methods, name);
+  return gi_base_info_find_method ((GIBaseInfo*)info, offset, blob->n_methods, name);
 }
 
 /**

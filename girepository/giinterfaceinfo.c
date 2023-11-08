@@ -88,8 +88,8 @@ gi_interface_info_get_prerequisite (GIInterfaceInfo *info,
 
   blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
 
-  return _gi_info_from_entry (rinfo->repository,
-                              rinfo->typelib, blob->prerequisites[n]);
+  return gi_info_from_entry (rinfo->repository,
+                             rinfo->typelib, blob->prerequisites[n]);
 }
 
 
@@ -228,7 +228,7 @@ gi_interface_info_find_method (GIInterfaceInfo *info,
     + (blob->n_prerequisites + (blob->n_prerequisites % 2)) * 2
     + blob->n_properties * header->property_blob_size;
 
-  return _gi_base_info_find_method ((GIBaseInfo*)info, offset, blob->n_methods, name);
+  return gi_base_info_find_method ((GIBaseInfo*)info, offset, blob->n_methods, name);
 }
 
 /**
@@ -412,7 +412,7 @@ gi_interface_info_find_vfunc (GIInterfaceInfo *info,
     + blob->n_methods * header->function_blob_size
     + blob->n_signals * header->signal_blob_size;
 
-  return _gi_base_info_find_vfunc (rinfo, offset, blob->n_vfuncs, name);
+  return gi_base_info_find_vfunc (rinfo, offset, blob->n_vfuncs, name);
 }
 
 /**
@@ -495,8 +495,8 @@ gi_interface_info_get_iface_struct (GIInterfaceInfo *info)
   blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
 
   if (blob->gtype_struct)
-    return (GIStructInfo *) _gi_info_from_entry (rinfo->repository,
-                                                 rinfo->typelib, blob->gtype_struct);
+    return (GIStructInfo *) gi_info_from_entry (rinfo->repository,
+                                                rinfo->typelib, blob->gtype_struct);
   else
     return NULL;
 }

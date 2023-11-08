@@ -31,28 +31,28 @@ test_build_retrieve (void)
   guint32 bufsize;
   guint8* buf;
 
-  builder = _gi_typelib_hash_builder_new ();
+  builder = gi_typelib_hash_builder_new ();
 
-  _gi_typelib_hash_builder_add_string (builder, "Action", 0);
-  _gi_typelib_hash_builder_add_string (builder, "ZLibDecompressor", 42);
-  _gi_typelib_hash_builder_add_string (builder, "VolumeMonitor", 9);
-  _gi_typelib_hash_builder_add_string (builder, "FileMonitorFlags", 31);
+  gi_typelib_hash_builder_add_string (builder, "Action", 0);
+  gi_typelib_hash_builder_add_string (builder, "ZLibDecompressor", 42);
+  gi_typelib_hash_builder_add_string (builder, "VolumeMonitor", 9);
+  gi_typelib_hash_builder_add_string (builder, "FileMonitorFlags", 31);
 
-  if (!_gi_typelib_hash_builder_prepare (builder))
+  if (!gi_typelib_hash_builder_prepare (builder))
     g_assert_not_reached ();
 
-  bufsize = _gi_typelib_hash_builder_get_buffer_size (builder);
+  bufsize = gi_typelib_hash_builder_get_buffer_size (builder);
 
   buf = g_malloc (bufsize);
 
-  _gi_typelib_hash_builder_pack (builder, buf, bufsize);
+  gi_typelib_hash_builder_pack (builder, buf, bufsize);
 
-  _gi_typelib_hash_builder_destroy (builder);
+  gi_typelib_hash_builder_destroy (builder);
 
-  g_assert (_gi_typelib_hash_search (buf, "Action", 4) == 0);
-  g_assert (_gi_typelib_hash_search (buf, "ZLibDecompressor", 4) == 42);
-  g_assert (_gi_typelib_hash_search (buf, "VolumeMonitor", 4) == 9);
-  g_assert (_gi_typelib_hash_search (buf, "FileMonitorFlags", 4) == 31);
+  g_assert (gi_typelib_hash_search (buf, "Action", 4) == 0);
+  g_assert (gi_typelib_hash_search (buf, "ZLibDecompressor", 4) == 42);
+  g_assert (gi_typelib_hash_search (buf, "VolumeMonitor", 4) == 9);
+  g_assert (gi_typelib_hash_search (buf, "FileMonitorFlags", 4) == 31);
 }
 
 int

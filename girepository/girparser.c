@@ -183,7 +183,7 @@ static const gchar *find_attribute (const gchar  *name,
 
 
 GIIrParser *
-_gi_ir_parser_new (void)
+gi_ir_parser_new (void)
 {
   GIIrParser *parser = g_slice_new0 (GIIrParser);
   const char *gi_gir_path = g_getenv ("GI_GIR_PATH");
@@ -195,7 +195,7 @@ _gi_ir_parser_new (void)
 }
 
 void
-_gi_ir_parser_free (GIIrParser *parser)
+gi_ir_parser_free (GIIrParser *parser)
 {
   GList *l;
 
@@ -203,14 +203,14 @@ _gi_ir_parser_free (GIIrParser *parser)
   g_strfreev (parser->gi_gir_path);
 
   for (l = parser->parsed_modules; l; l = l->next)
-    _gi_ir_module_free (l->data);
+    gi_ir_module_free (l->data);
 
   g_slice_free (GIIrParser, parser);
 }
 
 void
-_gi_ir_parser_set_includes (GIIrParser         *parser,
-                            const gchar *const *includes)
+gi_ir_parser_set_includes (GIIrParser         *parser,
+                           const gchar *const *includes)
 {
   g_strfreev (parser->includes);
 
@@ -541,7 +541,7 @@ parse_type_internal (GIIrModule   *module,
   GIIrNodeType *type;
   char *temporary_type = NULL;
 
-  type = (GIIrNodeType *)_gi_ir_node_new (GI_IR_NODE_TYPE, module);
+  type = (GIIrNodeType *)gi_ir_node_new (GI_IR_NODE_TYPE, module);
 
   type->unparsed = g_strdup (str);
 
@@ -670,7 +670,7 @@ parse_type_internal (GIIrModule   *module,
   return type;
 
 /* error: */
-  _gi_ir_node_free ((GIIrNode *)type);
+  gi_ir_node_free ((GIIrNode *)type);
   g_free (temporary_type);
   return NULL;
 }
@@ -835,8 +835,8 @@ start_glib_boxed (GMarkupParseContext *context,
       return FALSE;
     }
 
-  boxed = (GIIrNodeBoxed *) _gi_ir_node_new (GI_IR_NODE_BOXED,
-                                             ctx->current_module);
+  boxed = (GIIrNodeBoxed *) gi_ir_node_new (GI_IR_NODE_BOXED,
+                                            ctx->current_module);
 
   ((GIIrNode *)boxed)->name = g_strdup (name);
   boxed->gtype_name = g_strdup (typename);
@@ -933,8 +933,8 @@ start_function (GMarkupParseContext *context,
   if (shadows)
     name = shadows;
 
-  function = (GIIrNodeFunction *) _gi_ir_node_new (GI_IR_NODE_FUNCTION,
-                                                   ctx->current_module);
+  function = (GIIrNodeFunction *) gi_ir_node_new (GI_IR_NODE_FUNCTION,
+                                                  ctx->current_module);
 
   ((GIIrNode *)function)->name = g_strdup (name);
   function->symbol = g_strdup (symbol);
@@ -1237,8 +1237,8 @@ start_parameter (GMarkupParseContext *context,
   if (name == NULL)
     name = "unknown";
 
-  param = (GIIrNodeParam *)_gi_ir_node_new (GI_IR_NODE_PARAM,
-                                            ctx->current_module);
+  param = (GIIrNodeParam *)gi_ir_node_new (GI_IR_NODE_PARAM,
+                                           ctx->current_module);
 
   ctx->current_typed = (GIIrNode*) param;
   ctx->current_typed->name = g_strdup (name);
@@ -1408,8 +1408,8 @@ start_field (GMarkupParseContext *context,
       return FALSE;
     }
 
-  field = (GIIrNodeField *)_gi_ir_node_new (GI_IR_NODE_FIELD,
-                                            ctx->current_module);
+  field = (GIIrNodeField *)gi_ir_node_new (GI_IR_NODE_FIELD,
+                                           ctx->current_module);
   if (introspectable)
     {
       ctx->current_typed = (GIIrNode*) field;
@@ -1475,8 +1475,8 @@ start_field (GMarkupParseContext *context,
 	  {
 	    GIIrNodeConstant *constant;
 
-	    constant = (GIIrNodeConstant *) _gi_ir_node_new (GI_IR_NODE_CONSTANT,
-                                                             ctx->current_module);
+	    constant = (GIIrNodeConstant *) gi_ir_node_new (GI_IR_NODE_CONSTANT,
+                                                            ctx->current_module);
 	    ((GIIrNode *)constant)->name = g_strdup (name);
 	    constant->value = g_strdup (branch);
 	    constant->type = union_->discriminator_type;
@@ -1551,11 +1551,11 @@ start_enum (GMarkupParseContext *context,
     }
 
   if (strcmp (element_name, "enumeration") == 0)
-    enum_ = (GIIrNodeEnum *) _gi_ir_node_new (GI_IR_NODE_ENUM,
-                                              ctx->current_module);
+    enum_ = (GIIrNodeEnum *) gi_ir_node_new (GI_IR_NODE_ENUM,
+                                             ctx->current_module);
   else
-    enum_ = (GIIrNodeEnum *) _gi_ir_node_new (GI_IR_NODE_FLAGS,
-                                              ctx->current_module);
+    enum_ = (GIIrNodeEnum *) gi_ir_node_new (GI_IR_NODE_FLAGS,
+                                             ctx->current_module);
   ((GIIrNode *)enum_)->name = g_strdup (name);
   enum_->gtype_name = g_strdup (typename);
   enum_->gtype_init = g_strdup (typeinit);
@@ -1624,8 +1624,8 @@ start_property (GMarkupParseContext *context,
       return FALSE;
     }
 
-  property = (GIIrNodeProperty *) _gi_ir_node_new (GI_IR_NODE_PROPERTY,
-                                                   ctx->current_module);
+  property = (GIIrNodeProperty *) gi_ir_node_new (GI_IR_NODE_PROPERTY,
+                                                  ctx->current_module);
   ctx->current_typed = (GIIrNode*) property;
 
   ((GIIrNode *)property)->name = g_strdup (name);
@@ -1712,8 +1712,8 @@ start_member (GMarkupParseContext *context,
       return FALSE;
     }
 
-  value_ = (GIIrNodeValue *) _gi_ir_node_new (GI_IR_NODE_VALUE,
-                                              ctx->current_module);
+  value_ = (GIIrNodeValue *) gi_ir_node_new (GI_IR_NODE_VALUE,
+                                             ctx->current_module);
 
   ((GIIrNode *)value_)->name = g_strdup (name);
 
@@ -1790,8 +1790,8 @@ start_constant (GMarkupParseContext *context,
       return FALSE;
     }
 
-  constant = (GIIrNodeConstant *) _gi_ir_node_new (GI_IR_NODE_CONSTANT,
-                                                   ctx->current_module);
+  constant = (GIIrNodeConstant *) gi_ir_node_new (GI_IR_NODE_CONSTANT,
+                                                  ctx->current_module);
 
   ((GIIrNode *)constant)->name = g_strdup (name);
   constant->value = g_strdup (value);
@@ -1864,8 +1864,8 @@ start_interface (GMarkupParseContext *context,
       return FALSE;
     }
 
-  iface = (GIIrNodeInterface *) _gi_ir_node_new (GI_IR_NODE_INTERFACE,
-                                                 ctx->current_module);
+  iface = (GIIrNodeInterface *) gi_ir_node_new (GI_IR_NODE_INTERFACE,
+                                                ctx->current_module);
   ((GIIrNode *)iface)->name = g_strdup (name);
   iface->gtype_name = g_strdup (typename);
   iface->gtype_init = g_strdup (typeinit);
@@ -1942,8 +1942,8 @@ start_class (GMarkupParseContext *context,
       return FALSE;
     }
 
-  iface = (GIIrNodeInterface *) _gi_ir_node_new (GI_IR_NODE_OBJECT,
-                                                 ctx->current_module);
+  iface = (GIIrNodeInterface *) gi_ir_node_new (GI_IR_NODE_OBJECT,
+                                                ctx->current_module);
   ((GIIrNode *)iface)->name = g_strdup (name);
   iface->gtype_name = g_strdup (typename);
   iface->gtype_init = g_strdup (typeinit);
@@ -2080,8 +2080,8 @@ start_type (GMarkupParseContext *context,
       const char *len;
       const char *size;
 
-      typenode = (GIIrNodeType *)_gi_ir_node_new (GI_IR_NODE_TYPE,
-                                                  ctx->current_module);
+      typenode = (GIIrNodeType *)gi_ir_node_new (GI_IR_NODE_TYPE,
+                                                 ctx->current_module);
 
       typenode->tag = GI_TYPE_TAG_ARRAY;
       typenode->is_pointer = TRUE;
@@ -2359,8 +2359,8 @@ start_return_value (GMarkupParseContext *context,
 	ctx->state == STATE_FUNCTION))
     return FALSE;
 
-  param = (GIIrNodeParam *)_gi_ir_node_new (GI_IR_NODE_PARAM,
-                                            ctx->current_module);
+  param = (GIIrNodeParam *)gi_ir_node_new (GI_IR_NODE_PARAM,
+                                           ctx->current_module);
   param->in = FALSE;
   param->out = FALSE;
   param->retval = TRUE;
@@ -2480,8 +2480,8 @@ start_glib_signal (GMarkupParseContext *context,
       MISSING_ATTRIBUTE (context, error, element_name, "name");
       return FALSE;
     }
-  signal = (GIIrNodeSignal *)_gi_ir_node_new (GI_IR_NODE_SIGNAL,
-                                              ctx->current_module);
+  signal = (GIIrNodeSignal *)gi_ir_node_new (GI_IR_NODE_SIGNAL,
+                                             ctx->current_module);
 
   ((GIIrNode *)signal)->name = g_strdup (name);
 
@@ -2564,8 +2564,8 @@ start_vfunc (GMarkupParseContext *context,
       return FALSE;
     }
 
-  vfunc = (GIIrNodeVFunc *)_gi_ir_node_new (GI_IR_NODE_VFUNC,
-                                            ctx->current_module);
+  vfunc = (GIIrNodeVFunc *)gi_ir_node_new (GI_IR_NODE_VFUNC,
+                                           ctx->current_module);
 
   ((GIIrNode *)vfunc)->name = g_strdup (name);
 
@@ -2674,8 +2674,8 @@ start_struct (GMarkupParseContext *context,
       return FALSE;
     }
 
-  struct_ = (GIIrNodeStruct *) _gi_ir_node_new (GI_IR_NODE_STRUCT,
-                                                ctx->current_module);
+  struct_ = (GIIrNodeStruct *) gi_ir_node_new (GI_IR_NODE_STRUCT,
+                                               ctx->current_module);
 
   ((GIIrNode *)struct_)->name = g_strdup (name ? name : "");
   if (deprecated)
@@ -2748,8 +2748,8 @@ start_union (GMarkupParseContext *context,
       return FALSE;
     }
 
-  union_ = (GIIrNodeUnion *) _gi_ir_node_new (GI_IR_NODE_UNION,
-                                              ctx->current_module);
+  union_ = (GIIrNodeUnion *) gi_ir_node_new (GI_IR_NODE_UNION,
+                                             ctx->current_module);
 
   ((GIIrNode *)union_)->name = g_strdup (name ? name : "");
   union_->gtype_name = g_strdup (typename);
@@ -2859,7 +2859,7 @@ parse_include (GMarkupParseContext *context,
       return FALSE;
     }
 
-  module = _gi_ir_parser_parse_string (ctx->parser, name, girpath, buffer, length, &error);
+  module = gi_ir_parser_parse_string (ctx->parser, name, girpath, buffer, length, &error);
   g_free (buffer);
   if (error != NULL)
     {
@@ -3106,7 +3106,7 @@ start_element_handler (GMarkupParseContext *context,
 			     "<namespace/> name element '%s' doesn't match file name '%s'",
 			     name, ctx->namespace);
 
-	      ctx->current_module = _gi_ir_module_new (name, version, shared_library, cprefix);
+	      ctx->current_module = gi_ir_module_new (name, version, shared_library, cprefix);
 
 	      ctx->current_module->aliases = ctx->aliases;
 	      ctx->aliases = NULL;
@@ -3116,7 +3116,7 @@ start_element_handler (GMarkupParseContext *context,
 	      ctx->pointer_structures = NULL;
 
 	      for (l = ctx->include_modules; l; l = l->next)
-		_gi_ir_module_add_include_module (ctx->current_module, l->data);
+		gi_ir_module_add_include_module (ctx->current_module, l->data);
 
 	      g_list_free (ctx->include_modules);
 	      ctx->include_modules = NULL;
@@ -3663,7 +3663,7 @@ cleanup (GMarkupParseContext *context,
   GList *m;
 
   for (m = ctx->modules; m; m = m->next)
-    _gi_ir_module_free (m->data);
+    gi_ir_module_free (m->data);
   g_list_free (ctx->modules);
   ctx->modules = NULL;
 
@@ -3671,7 +3671,7 @@ cleanup (GMarkupParseContext *context,
 }
 
 /**
- * _gi_ir_parser_parse_string:
+ * gi_ir_parser_parse_string:
  * @parser: a #GIIrParser
  * @namespace: the namespace of the string
  * @filename: (allow-none): Path to parsed file, or %NULL
@@ -3685,12 +3685,12 @@ cleanup (GMarkupParseContext *context,
  * Returns: (transfer none): a new #GirModule
  */
 GIIrModule *
-_gi_ir_parser_parse_string (GIIrParser   *parser,
-                            const gchar  *namespace,
-                            const gchar  *filename,
-                            const gchar  *buffer,
-                            gssize        length,
-                            GError      **error)
+gi_ir_parser_parse_string (GIIrParser   *parser,
+                           const gchar  *namespace,
+                           const gchar  *filename,
+                           const gchar  *buffer,
+                           gssize        length,
+                           GError      **error)
 {
   ParseContext ctx = { 0 };
   GMarkupParseContext *context;
@@ -3755,7 +3755,7 @@ _gi_ir_parser_parse_string (GIIrParser   *parser,
 }
 
 /**
- * _gi_ir_parser_parse_file:
+ * gi_ir_parser_parse_file:
  * @parser: a #GIIrParser
  * @filename: filename to parse
  * @error: return location for a #GError, or %NULL
@@ -3767,9 +3767,9 @@ _gi_ir_parser_parse_string (GIIrParser   *parser,
  *  are owned by the #GIIrParser and will be freed along with the parser.
  */
 GIIrModule *
-_gi_ir_parser_parse_file (GIIrParser   *parser,
-                          const gchar  *filename,
-                          GError      **error)
+gi_ir_parser_parse_file (GIIrParser   *parser,
+                         const gchar  *filename,
+                         GError      **error)
 {
   gchar *buffer;
   gsize length;
@@ -3803,7 +3803,7 @@ _gi_ir_parser_parse_file (GIIrParser   *parser,
       return NULL;
     }
 
-  module = _gi_ir_parser_parse_string (parser, namespace, filename, buffer, length, error);
+  module = gi_ir_parser_parse_string (parser, namespace, filename, buffer, length, error);
 
   g_free (namespace);
 

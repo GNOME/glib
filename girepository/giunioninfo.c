@@ -173,7 +173,7 @@ gi_union_info_get_discriminator_type (GIUnionInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
 
-  return _gi_type_info_new ((GIBaseInfo*)info, rinfo->typelib, rinfo->offset + 24);
+  return gi_type_info_new ((GIBaseInfo*)info, rinfo->typelib, rinfo->offset + 24);
 }
 
 /**
@@ -234,7 +234,7 @@ gi_union_info_find_method (GIUnionInfo *info,
   offset = rinfo->offset + header->union_blob_size
     + blob->n_fields * header->field_blob_size;
 
-  return _gi_base_info_find_method ((GIBaseInfo*)info, offset, blob->n_functions, name);
+  return gi_base_info_find_method ((GIBaseInfo*)info, offset, blob->n_functions, name);
 }
 
 /**

@@ -1332,19 +1332,19 @@ AttributeBlob *_attribute_blob_find_first (GIBaseInfo *info,
  */
 typedef struct _GITypelibHashBuilder GITypelibHashBuilder;
 
-GITypelibHashBuilder * _gi_typelib_hash_builder_new (void);
+GITypelibHashBuilder * gi_typelib_hash_builder_new (void);
 
-void _gi_typelib_hash_builder_add_string (GITypelibHashBuilder *builder, const char *str, guint16 value);
+void gi_typelib_hash_builder_add_string (GITypelibHashBuilder *builder, const char *str, guint16 value);
 
-gboolean _gi_typelib_hash_builder_prepare (GITypelibHashBuilder *builder);
+gboolean gi_typelib_hash_builder_prepare (GITypelibHashBuilder *builder);
 
-guint32 _gi_typelib_hash_builder_get_buffer_size (GITypelibHashBuilder *builder);
+guint32 gi_typelib_hash_builder_get_buffer_size (GITypelibHashBuilder *builder);
 
-void _gi_typelib_hash_builder_pack (GITypelibHashBuilder *builder, guint8* mem, guint32 size);
+void gi_typelib_hash_builder_pack (GITypelibHashBuilder *builder, guint8* mem, guint32 size);
 
-void _gi_typelib_hash_builder_destroy (GITypelibHashBuilder *builder);
+void gi_typelib_hash_builder_destroy (GITypelibHashBuilder *builder);
 
-guint16 _gi_typelib_hash_search (guint8* memory, const char *str, guint n_entries);
+guint16 gi_typelib_hash_search (guint8* memory, const char *str, guint n_entries);
 
 
 G_END_DECLS

@@ -66,20 +66,20 @@ struct _GIIrModule
   GHashTable *disguised_structures;
 };
 
-GIIrModule *_gi_ir_module_new            (const gchar *name,
-                                          const gchar *nsversion,
-                                          const gchar *module_filename,
-                                          const gchar *c_prefix);
-void       _gi_ir_module_free            (GIIrModule  *module);
+GIIrModule *gi_ir_module_new            (const gchar *name,
+                                         const gchar *nsversion,
+                                         const gchar *module_filename,
+                                         const gchar *c_prefix);
+void       gi_ir_module_free            (GIIrModule  *module);
 
-void       _gi_ir_module_add_include_module (GIIrModule  *module,
-                                             GIIrModule  *include_module);
+void       gi_ir_module_add_include_module (GIIrModule  *module,
+                                            GIIrModule  *include_module);
 
-GITypelib * _gi_ir_module_build_typelib (GIIrModule  *module);
+GITypelib * gi_ir_module_build_typelib (GIIrModule  *module);
 
-void       _gi_ir_module_fatal (GIIrTypelibBuild  *build, guint line, const char *msg, ...) G_GNUC_PRINTF (3, 4) G_GNUC_NORETURN;
+void       gi_ir_module_fatal (GIIrTypelibBuild  *build, guint line, const char *msg, ...) G_GNUC_PRINTF (3, 4) G_GNUC_NORETURN;
 
-void _gi_ir_node_init_stats (void);
-void _gi_ir_node_dump_stats (void);
+void gi_ir_node_init_stats (void);
+void gi_ir_node_dump_stats (void);
 
 G_END_DECLS

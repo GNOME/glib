@@ -194,16 +194,16 @@ get_interface_size_alignment (GIIrTypelibBuild *build,
 {
   GIIrNode *iface;
 
-  iface = _gi_ir_find_node (build, ((GIIrNode*)type)->module, type->giinterface);
+  iface = gi_ir_find_node (build, ((GIIrNode*)type)->module, type->giinterface);
   if (!iface)
     {
-      _gi_ir_module_fatal (build, 0, "Can't resolve type '%s' for %s", type->giinterface, who);
+      gi_ir_module_fatal (build, 0, "Can't resolve type '%s' for %s", type->giinterface, who);
       *size = -1;
       *alignment = -1;
       return FALSE;
     }
 
-  _gi_ir_node_compute_offsets (build, iface);
+  gi_ir_node_compute_offsets (build, iface);
 
   switch (iface->type)
     {
@@ -252,7 +252,7 @@ get_interface_size_alignment (GIIrTypelibBuild *build,
       {
 	g_warning ("%s has is not a pointer and is of type %s",
                    who,
-		   _gi_ir_node_type_to_string (iface->type));
+		   gi_ir_node_type_to_string (iface->type));
 	*size = -1;
 	*alignment = -1;
 	break;
@@ -502,7 +502,7 @@ check_needs_computation (GIIrTypelibBuild *build,
 }
 
 /*
- * _gi_ir_node_compute_offsets:
+ * gi_ir_node_compute_offsets:
  * @build: Current typelib build
  * @node: a #GIIrNode
  *
@@ -511,8 +511,8 @@ check_needs_computation (GIIrTypelibBuild *build,
  * alignment for the type.
  */
 void
-_gi_ir_node_compute_offsets (GIIrTypelibBuild *build,
-                             GIIrNode         *node)
+gi_ir_node_compute_offsets (GIIrTypelibBuild *build,
+                            GIIrNode         *node)
 {
   gboolean appended_stack;
 

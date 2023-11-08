@@ -209,7 +209,7 @@ gi_typelib_get_dir_entry_by_name (GITypelib  *typelib,
       guint8 *hash = (guint8*) &typelib->data[dirindex->offset];
       guint16 index;
 
-      index = _gi_typelib_hash_search (hash, name, n_entries);
+      index = gi_typelib_hash_search (hash, name, n_entries);
       entry = gi_typelib_get_dir_entry (typelib, index + 1);
       entry_name = gi_typelib_get_string (typelib, entry->name);
       if (strcmp (name, entry_name) == 0)
@@ -2298,7 +2298,7 @@ load_one_shared_library (const char *shlib)
 }
 
 static void
-_gi_typelib_do_dlopen (GITypelib *typelib)
+gi_typelib_do_dlopen (GITypelib *typelib)
 {
   Header *header;
   const char *shlib_str;
@@ -2357,12 +2357,12 @@ _gi_typelib_do_dlopen (GITypelib *typelib)
 }
 
 static inline void
-_gi_typelib_ensure_open (GITypelib *typelib)
+gi_typelib_ensure_open (GITypelib *typelib)
 {
   if (typelib->open_attempted)
     return;
   typelib->open_attempted = TRUE;
-  _gi_typelib_do_dlopen (typelib);
+  gi_typelib_do_dlopen (typelib);
 }
 
 /**
@@ -2505,7 +2505,7 @@ gi_typelib_symbol (GITypelib *typelib, const char *symbol_name, gpointer *symbol
 {
   GList *l;
 
-  _gi_typelib_ensure_open (typelib);
+  gi_typelib_ensure_open (typelib);
 
   /*
    * The reason for having multiple modules dates from gir-repository

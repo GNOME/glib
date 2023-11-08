@@ -45,10 +45,10 @@
  */
 
 GIVFuncInfo *
-_gi_base_info_find_vfunc (GIRealInfo  *rinfo,
-                          guint32      offset,
-                          gint         n_vfuncs,
-                          const gchar *name)
+gi_base_info_find_vfunc (GIRealInfo  *rinfo,
+                         guint32      offset,
+                         gint         n_vfuncs,
+                         const gchar *name)
 {
   /* FIXME hash */
   Header *header = (Header *)rinfo->typelib->data;

@@ -156,7 +156,7 @@ gi_field_info_get_type (GIFieldInfo *info)
       type_info->type_is_embedded = TRUE;
     }
   else
-    return _gi_type_info_new ((GIBaseInfo*)info, rinfo->typelib, rinfo->offset + G_STRUCT_OFFSET (FieldBlob, type));
+    return gi_type_info_new ((GIBaseInfo*)info, rinfo->typelib, rinfo->offset + G_STRUCT_OFFSET (FieldBlob, type));
 
   return (GIBaseInfo*)type_info;
 }

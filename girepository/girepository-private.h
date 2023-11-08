@@ -78,38 +78,38 @@ struct _GIUnresolvedInfo
   const gchar *namespace;
 };
 
-void         _gi_info_init       (GIRealInfo   *info,
-                                  GIInfoType    type,
-                                  GIRepository *repository,
-                                  GIBaseInfo   *container,
-                                  GITypelib    *typelib,
-                                  guint32       offset);
+void         gi_info_init       (GIRealInfo   *info,
+                                 GIInfoType    type,
+                                 GIRepository *repository,
+                                 GIBaseInfo   *container,
+                                 GITypelib    *typelib,
+                                 guint32       offset);
 
-GIBaseInfo * _gi_info_from_entry (GIRepository *repository,
-                                  GITypelib    *typelib,
-                                  guint16       index);
+GIBaseInfo * gi_info_from_entry (GIRepository *repository,
+                                 GITypelib    *typelib,
+                                 guint16       index);
 
-GIBaseInfo * _gi_info_new_full   (GIInfoType    type,
-                                  GIRepository *repository,
-                                  GIBaseInfo   *container,
-                                  GITypelib    *typelib,
-                                  guint32       offset);
+GIBaseInfo * gi_info_new_full   (GIInfoType    type,
+                                 GIRepository *repository,
+                                 GIBaseInfo   *container,
+                                 GITypelib    *typelib,
+                                 guint32       offset);
 
-GITypeInfo * _gi_type_info_new   (GIBaseInfo *container,
-                                  GITypelib  *typelib,
-                                  guint32     offset);
+GITypeInfo * gi_type_info_new   (GIBaseInfo *container,
+                                 GITypelib  *typelib,
+                                 guint32     offset);
 
-void         _gi_type_info_init  (GIBaseInfo *info,
-                                  GIBaseInfo *container,
-                                  GITypelib  *typelib,
-                                  guint32     offset);
+void         gi_type_info_init  (GIBaseInfo *info,
+                                 GIBaseInfo *container,
+                                 GITypelib  *typelib,
+                                 guint32     offset);
 
-GIFunctionInfo * _gi_base_info_find_method (GIBaseInfo  *base,
-                                            guint32      offset,
-                                            gint         n_methods,
-                                            const gchar *name);
+GIFunctionInfo * gi_base_info_find_method (GIBaseInfo  *base,
+                                           guint32      offset,
+                                           gint         n_methods,
+                                           const gchar *name);
 
-GIVFuncInfo * _gi_base_info_find_vfunc (GIRealInfo  *rinfo,
-                                        guint32      offset,
-                                        gint         n_vfuncs,
-                                        const gchar *name);
+GIVFuncInfo * gi_base_info_find_vfunc (GIRealInfo  *rinfo,
+                                       guint32      offset,
+                                       gint         n_vfuncs,
+                                       const gchar *name);

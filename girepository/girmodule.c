@@ -38,10 +38,10 @@
 #define NUM_SECTIONS 2
 
 GIIrModule *
-_gi_ir_module_new (const gchar *name,
-                   const gchar *version,
-                   const gchar *shared_library,
-                   const gchar *c_prefix)
+gi_ir_module_new (const gchar *name,
+                  const gchar *version,
+                  const gchar *shared_library,
+                  const gchar *c_prefix)
 {
   GIIrModule *module;
 
@@ -64,14 +64,14 @@ _gi_ir_module_new (const gchar *name,
 }
 
 void
-_gi_ir_module_free (GIIrModule *module)
+gi_ir_module_free (GIIrModule *module)
 {
   GList *e;
 
   g_free (module->name);
 
   for (e = module->entries; e; e = e->next)
-    _gi_ir_node_free ((GIIrNode *)e->data);
+    gi_ir_node_free ((GIIrNode *)e->data);
 
   g_list_free (module->entries);
   /* Don't free dependencies, we inherit that from the parser */
@@ -86,7 +86,7 @@ _gi_ir_module_free (GIIrModule *module)
 }
 
 /**
- * _gi_ir_module_fatal:
+ * gi_ir_module_fatal:
  * @build: Current build
  * @line: Origin line number, or 0 if unknown
  * @msg: printf-format string
@@ -95,10 +95,10 @@ _gi_ir_module_free (GIIrModule *module)
  * Report a fatal error, then exit.
  */
 void
-_gi_ir_module_fatal (GIIrTypelibBuild *build,
-                     guint             line,
-                     const char       *msg,
-                     ...)
+gi_ir_module_fatal (GIIrTypelibBuild *build,
+                    guint             line,
+                    const char       *msg,
+                    ...)
 {
   GString *context;
   char *formatted;
@@ -168,8 +168,8 @@ add_disguised_structure_foreach (gpointer key,
 }
 
 void
-_gi_ir_module_add_include_module (GIIrModule *module,
-                                  GIIrModule *include_module)
+gi_ir_module_add_include_module (GIIrModule *module,
+                                 GIIrModule *include_module)
 {
   module->include_modules = g_list_prepend (module->include_modules,
 					    include_module);
@@ -206,8 +206,8 @@ write_attribute (gpointer key, gpointer value, gpointer datap)
   *(data->offset) += sizeof (AttributeBlob);
 
   blob->offset = data->node->offset;
-  blob->name = _gi_ir_write_string ((const char*) key, data->strings, data->databuf, data->offset2);
-  blob->value = _gi_ir_write_string ((const char*) value, data->strings, data->databuf, data->offset2);
+  blob->name = gi_ir_write_string ((const char*) key, data->strings, data->databuf, data->offset2);
+  blob->value = gi_ir_write_string ((const char*) value, data->strings, data->databuf, data->offset2);
 
   data->count++;
 }
@@ -274,7 +274,7 @@ add_directory_index_section (guint8 *data, GIIrModule *module, guint32 *offset2)
   guint16 required_size;
   guint32 new_offset;
 
-  dirindex_builder = _gi_typelib_hash_builder_new ();
+  dirindex_builder = gi_typelib_hash_builder_new ();
 
   n_interfaces = ((Header *)data)->n_local_entries;
 
@@ -283,37 +283,37 @@ add_directory_index_section (guint8 *data, GIIrModule *module, guint32 *offset2)
       const char *str;
       entry = (DirEntry *)&data[header->directory + (i * header->entry_blob_size)];
       str = (const char *) (&data[entry->name]);
-      _gi_typelib_hash_builder_add_string (dirindex_builder, str, i);
+      gi_typelib_hash_builder_add_string (dirindex_builder, str, i);
     }
 
-  if (!_gi_typelib_hash_builder_prepare (dirindex_builder))
+  if (!gi_typelib_hash_builder_prepare (dirindex_builder))
     {
       /* This happens if CMPH couldn't create a perfect hash.  So
        * we just punt and leave no directory index section.
        */
-      _gi_typelib_hash_builder_destroy (dirindex_builder);
+      gi_typelib_hash_builder_destroy (dirindex_builder);
       return data;
     }
 
   alloc_section (data, GI_SECTION_DIRECTORY_INDEX, *offset2);
 
-  required_size = _gi_typelib_hash_builder_get_buffer_size (dirindex_builder);
+  required_size = gi_typelib_hash_builder_get_buffer_size (dirindex_builder);
   required_size = ALIGN_VALUE (required_size, 4);
 
   new_offset = *offset2 + required_size;
 
   data = g_realloc (data, new_offset);
 
-  _gi_typelib_hash_builder_pack (dirindex_builder, ((guint8*)data) + *offset2, required_size);
+  gi_typelib_hash_builder_pack (dirindex_builder, ((guint8*)data) + *offset2, required_size);
 
   *offset2 = new_offset;
 
-  _gi_typelib_hash_builder_destroy (dirindex_builder);
+  gi_typelib_hash_builder_destroy (dirindex_builder);
   return data;
 }
 
 GITypelib *
-_gi_ir_module_build_typelib (GIIrModule *module)
+gi_ir_module_build_typelib (GIIrModule *module)
 {
   GError *error = NULL;
   GITypelib *typelib;
@@ -360,7 +360,7 @@ _gi_ir_module_build_typelib (GIIrModule *module)
   }
 
  restart:
-  _gi_ir_node_init_stats ();
+  gi_ir_node_init_stats ();
   strings = g_hash_table_new (g_str_hash, g_str_equal);
   types = g_hash_table_new (g_str_hash, g_str_equal);
   nodes_with_attributes = NULL;
@@ -378,7 +378,7 @@ _gi_ir_module_build_typelib (GIIrModule *module)
     {
       GIIrNode *node = e->data;
 
-      size += _gi_ir_node_get_full_size (node);
+      size += gi_ir_node_get_full_size (node);
 
       /* Also reset the offset here */
       node->offset = 0;
@@ -414,17 +414,17 @@ _gi_ir_module_build_typelib (GIIrModule *module)
    * the size calculations above.
    */
   if (dependencies != NULL)
-    header->dependencies = _gi_ir_write_string (dependencies, strings, data, &header_size);
+    header->dependencies = gi_ir_write_string (dependencies, strings, data, &header_size);
   else
     header->dependencies = 0;
   header->size = 0; /* filled in later */
-  header->namespace = _gi_ir_write_string (module->name, strings, data, &header_size);
-  header->nsversion = _gi_ir_write_string (module->version, strings, data, &header_size);
+  header->namespace = gi_ir_write_string (module->name, strings, data, &header_size);
+  header->nsversion = gi_ir_write_string (module->version, strings, data, &header_size);
   header->shared_library = (module->shared_library?
-                             _gi_ir_write_string (module->shared_library, strings, data, &header_size)
+                             gi_ir_write_string (module->shared_library, strings, data, &header_size)
                              : 0);
   if (module->c_prefix != NULL)
-    header->c_prefix = _gi_ir_write_string (module->c_prefix, strings, data, &header_size);
+    header->c_prefix = gi_ir_write_string (module->c_prefix, strings, data, &header_size);
   else
     header->c_prefix = 0;
   header->entry_blob_size = sizeof (DirEntry);
@@ -507,18 +507,18 @@ _gi_ir_module_build_typelib (GIIrModule *module)
 
 	  entry->blob_type = 0;
 	  entry->local = FALSE;
-	  entry->offset = _gi_ir_write_string (namespace, strings, data, &offset2);
-	  entry->name = _gi_ir_write_string (node->name, strings, data, &offset2);
+	  entry->offset = gi_ir_write_string (namespace, strings, data, &offset2);
+	  entry->name = gi_ir_write_string (node->name, strings, data, &offset2);
 	}
       else
 	{
 	  old_offset = offset;
-	  offset2 = offset + _gi_ir_node_get_size (node);
+	  offset2 = offset + gi_ir_node_get_size (node);
 
 	  entry->blob_type = node->type;
 	  entry->local = TRUE;
 	  entry->offset = offset;
-	  entry->name = _gi_ir_write_string (node->name, strings, data, &offset2);
+	  entry->name = gi_ir_write_string (node->name, strings, data, &offset2);
 
 	  memset (&build, 0, sizeof (build));
 	  build.module = module;
@@ -527,13 +527,13 @@ _gi_ir_module_build_typelib (GIIrModule *module)
 	  build.nodes_with_attributes = nodes_with_attributes;
 	  build.n_attributes = header->n_attributes;
 	  build.data = data;
-	  _gi_ir_node_build_typelib (node, NULL, &build, &offset, &offset2, NULL);
+	  gi_ir_node_build_typelib (node, NULL, &build, &offset, &offset2, NULL);
 
 	  nodes_with_attributes = build.nodes_with_attributes;
 	  header->n_attributes = build.n_attributes;
 
-	  if (offset2 > old_offset + _gi_ir_node_get_full_size (node))
-	    g_error ("left a hole of %d bytes\n", offset2 - old_offset - _gi_ir_node_get_full_size (node));
+	  if (offset2 > old_offset + gi_ir_node_get_full_size (node))
+	    g_error ("left a hole of %d bytes\n", offset2 - old_offset - gi_ir_node_get_full_size (node));
 	}
 
       entry++;
@@ -544,7 +544,7 @@ _gi_ir_module_build_typelib (GIIrModule *module)
 
   g_message ("header: %d entries, %d attributes", header->n_entries, header->n_attributes);
 
-  _gi_ir_node_dump_stats ();
+  gi_ir_node_dump_stats ();
 
   /* Write attributes after the blobs */
   offset = offset2;

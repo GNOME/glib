@@ -45,7 +45,7 @@ static gulong types_count = 0;
 static gulong unique_types_count = 0;
 
 void
-_gi_ir_node_init_stats (void)
+gi_ir_node_init_stats (void)
 {
   string_count = 0;
   unique_string_count = 0;
@@ -56,7 +56,7 @@ _gi_ir_node_init_stats (void)
 }
 
 void
-_gi_ir_node_dump_stats (void)
+gi_ir_node_dump_stats (void)
 {
   g_message ("%lu strings (%lu before sharing), %lu bytes (%lu before sharing)",
 	     unique_string_count, string_count, unique_string_size, string_size);
@@ -75,7 +75,7 @@ do {                                            \
 
 
 const gchar *
-_gi_ir_node_type_to_string (GIIrNodeTypeId type)
+gi_ir_node_type_to_string (GIIrNodeTypeId type)
 {
   switch (type)
     {
@@ -121,8 +121,8 @@ _gi_ir_node_type_to_string (GIIrNodeTypeId type)
 }
 
 GIIrNode *
-_gi_ir_node_new (GIIrNodeTypeId  type,
-                 GIIrModule     *module)
+gi_ir_node_new (GIIrNodeTypeId  type,
+                GIIrModule     *module)
 {
   GIIrNode *node = NULL;
 
@@ -206,7 +206,7 @@ _gi_ir_node_new (GIIrNodeTypeId  type,
 }
 
 void
-_gi_ir_node_free (GIIrNode *node)
+gi_ir_node_free (GIIrNode *node)
 {
   GList *l;
 
@@ -223,9 +223,9 @@ _gi_ir_node_free (GIIrNode *node)
 	g_free (node->name);
 	g_free (function->symbol);
         g_free (function->property);
-	_gi_ir_node_free ((GIIrNode *)function->result);
+	gi_ir_node_free ((GIIrNode *)function->result);
 	for (l = function->parameters; l; l = l->next)
-	  _gi_ir_node_free ((GIIrNode *)l->data);
+	  gi_ir_node_free ((GIIrNode *)l->data);
 	g_list_free (function->parameters);
       }
       break;
@@ -235,8 +235,8 @@ _gi_ir_node_free (GIIrNode *node)
 	GIIrNodeType *type = (GIIrNodeType *)node;
 
 	g_free (node->name);
-	_gi_ir_node_free ((GIIrNode *)type->parameter_type1);
-	_gi_ir_node_free ((GIIrNode *)type->parameter_type2);
+	gi_ir_node_free ((GIIrNode *)type->parameter_type1);
+	gi_ir_node_free ((GIIrNode *)type->parameter_type2);
 
 	g_free (type->giinterface);
 	g_strfreev (type->errors);
@@ -249,7 +249,7 @@ _gi_ir_node_free (GIIrNode *node)
 	GIIrNodeParam *param = (GIIrNodeParam *)node;
 
 	g_free (node->name);
-	_gi_ir_node_free ((GIIrNode *)param->type);
+	gi_ir_node_free ((GIIrNode *)param->type);
       }
       break;
 
@@ -260,7 +260,7 @@ _gi_ir_node_free (GIIrNode *node)
 	g_free (node->name);
         g_free (property->setter);
         g_free (property->getter);
-	_gi_ir_node_free ((GIIrNode *)property->type);
+	gi_ir_node_free ((GIIrNode *)property->type);
       }
       break;
 
@@ -270,9 +270,9 @@ _gi_ir_node_free (GIIrNode *node)
 
 	g_free (node->name);
 	for (l = signal->parameters; l; l = l->next)
-	  _gi_ir_node_free ((GIIrNode *)l->data);
+	  gi_ir_node_free ((GIIrNode *)l->data);
 	g_list_free (signal->parameters);
-	_gi_ir_node_free ((GIIrNode *)signal->result);
+	gi_ir_node_free ((GIIrNode *)signal->result);
       }
       break;
 
@@ -283,9 +283,9 @@ _gi_ir_node_free (GIIrNode *node)
 	g_free (node->name);
 	g_free (vfunc->invoker);
 	for (l = vfunc->parameters; l; l = l->next)
-	  _gi_ir_node_free ((GIIrNode *)l->data);
+	  gi_ir_node_free ((GIIrNode *)l->data);
 	g_list_free (vfunc->parameters);
-	_gi_ir_node_free ((GIIrNode *)vfunc->result);
+	gi_ir_node_free ((GIIrNode *)vfunc->result);
       }
       break;
 
@@ -294,8 +294,8 @@ _gi_ir_node_free (GIIrNode *node)
 	GIIrNodeField *field = (GIIrNodeField *)node;
 
 	g_free (node->name);
-	_gi_ir_node_free ((GIIrNode *)field->type);
-	_gi_ir_node_free ((GIIrNode *)field->callback);
+	gi_ir_node_free ((GIIrNode *)field->type);
+	gi_ir_node_free ((GIIrNode *)field->callback);
       }
       break;
 
@@ -321,7 +321,7 @@ _gi_ir_node_free (GIIrNode *node)
 	g_list_free (iface->interfaces);
 
 	for (l = iface->members; l; l = l->next)
-	  _gi_ir_node_free ((GIIrNode *)l->data);
+	  gi_ir_node_free ((GIIrNode *)l->data);
 	g_list_free (iface->members);
 
       }
@@ -344,11 +344,11 @@ _gi_ir_node_free (GIIrNode *node)
 	g_free (enum_->error_domain);
 
 	for (l = enum_->values; l; l = l->next)
-	  _gi_ir_node_free ((GIIrNode *)l->data);
+	  gi_ir_node_free ((GIIrNode *)l->data);
 	g_list_free (enum_->values);
 
 	for (l = enum_->methods; l; l = l->next)
-	  _gi_ir_node_free ((GIIrNode *)l->data);
+	  gi_ir_node_free ((GIIrNode *)l->data);
 	g_list_free (enum_->methods);
       }
       break;
@@ -362,7 +362,7 @@ _gi_ir_node_free (GIIrNode *node)
 	g_free (boxed->gtype_init);
 
 	for (l = boxed->members; l; l = l->next)
-	  _gi_ir_node_free ((GIIrNode *)l->data);
+	  gi_ir_node_free ((GIIrNode *)l->data);
 	g_list_free (boxed->members);
       }
       break;
@@ -378,7 +378,7 @@ _gi_ir_node_free (GIIrNode *node)
         g_free (struct_->free_func);
 
 	for (l = struct_->members; l; l = l->next)
-	  _gi_ir_node_free ((GIIrNode *)l->data);
+	  gi_ir_node_free ((GIIrNode *)l->data);
 	g_list_free (struct_->members);
       }
       break;
@@ -389,7 +389,7 @@ _gi_ir_node_free (GIIrNode *node)
 
 	g_free (node->name);
 	g_free (constant->value);
-	_gi_ir_node_free ((GIIrNode *)constant->type);
+	gi_ir_node_free ((GIIrNode *)constant->type);
       }
       break;
 
@@ -412,11 +412,11 @@ _gi_ir_node_free (GIIrNode *node)
         g_free (union_->copy_func);
         g_free (union_->free_func);
 
-	_gi_ir_node_free ((GIIrNode *)union_->discriminator_type);
+	gi_ir_node_free ((GIIrNode *)union_->discriminator_type);
 	for (l = union_->members; l; l = l->next)
-	  _gi_ir_node_free ((GIIrNode *)l->data);
+	  gi_ir_node_free ((GIIrNode *)l->data);
 	for (l = union_->discriminators; l; l = l->next)
-	  _gi_ir_node_free ((GIIrNode *)l->data);
+	  gi_ir_node_free ((GIIrNode *)l->data);
       }
       break;
 
@@ -432,7 +432,7 @@ _gi_ir_node_free (GIIrNode *node)
 
 /* returns the fixed size of the blob */
 guint32
-_gi_ir_node_get_size (GIIrNode *node)
+gi_ir_node_get_size (GIIrNode *node)
 {
   GList *l;
   gint size, n;
@@ -464,7 +464,7 @@ _gi_ir_node_get_size (GIIrNode *node)
 	size = sizeof (ObjectBlob) + 2 * (n + (n % 2));
 
 	for (l = iface->members; l; l = l->next)
-	  size += _gi_ir_node_get_size ((GIIrNode *)l->data);
+	  size += gi_ir_node_get_size ((GIIrNode *)l->data);
       }
       break;
 
@@ -476,7 +476,7 @@ _gi_ir_node_get_size (GIIrNode *node)
 	size = sizeof (InterfaceBlob) + 2 * (n + (n % 2));
 
 	for (l = iface->members; l; l = l->next)
-	  size += _gi_ir_node_get_size ((GIIrNode *)l->data);
+	  size += gi_ir_node_get_size ((GIIrNode *)l->data);
       }
       break;
 
@@ -487,9 +487,9 @@ _gi_ir_node_get_size (GIIrNode *node)
 
 	size = sizeof (EnumBlob);
 	for (l = enum_->values; l; l = l->next)
-	  size += _gi_ir_node_get_size ((GIIrNode *)l->data);
+	  size += gi_ir_node_get_size ((GIIrNode *)l->data);
 	for (l = enum_->methods; l; l = l->next)
-	  size += _gi_ir_node_get_size ((GIIrNode *)l->data);
+	  size += gi_ir_node_get_size ((GIIrNode *)l->data);
       }
       break;
 
@@ -503,7 +503,7 @@ _gi_ir_node_get_size (GIIrNode *node)
 
 	size = sizeof (StructBlob);
 	for (l = struct_->members; l; l = l->next)
-	  size += _gi_ir_node_get_size ((GIIrNode *)l->data);
+	  size += gi_ir_node_get_size ((GIIrNode *)l->data);
       }
       break;
 
@@ -513,7 +513,7 @@ _gi_ir_node_get_size (GIIrNode *node)
 
 	size = sizeof (StructBlob);
 	for (l = boxed->members; l; l = l->next)
-	  size += _gi_ir_node_get_size ((GIIrNode *)l->data);
+	  size += gi_ir_node_get_size ((GIIrNode *)l->data);
       }
       break;
 
@@ -535,7 +535,7 @@ _gi_ir_node_get_size (GIIrNode *node)
 
         size = sizeof (FieldBlob);
         if (field->callback)
-          size += _gi_ir_node_get_size ((GIIrNode *)field->callback);
+          size += gi_ir_node_get_size ((GIIrNode *)field->callback);
       }
       break;
 
@@ -553,20 +553,20 @@ _gi_ir_node_get_size (GIIrNode *node)
 
 	size = sizeof (UnionBlob);
 	for (l = union_->members; l; l = l->next)
-	  size += _gi_ir_node_get_size ((GIIrNode *)l->data);
+	  size += gi_ir_node_get_size ((GIIrNode *)l->data);
 	for (l = union_->discriminators; l; l = l->next)
-	  size += _gi_ir_node_get_size ((GIIrNode *)l->data);
+	  size += gi_ir_node_get_size ((GIIrNode *)l->data);
       }
       break;
 
     default:
       g_error ("Unhandled node type '%s'\n",
-	       _gi_ir_node_type_to_string (node->type));
+	       gi_ir_node_type_to_string (node->type));
       size = 0;
     }
 
   g_debug ("node %p type '%s' size %d", node,
-	   _gi_ir_node_type_to_string (node->type), size);
+	   gi_ir_node_type_to_string (node->type), size);
 
   return size;
 }
@@ -585,8 +585,8 @@ add_attribute_size (gpointer key, gpointer value, gpointer data)
 
 /* returns the full size of the blob including variable-size parts (including attributes) */
 static guint32
-_gi_ir_node_get_full_size_internal (GIIrNode *parent,
-                                    GIIrNode *node)
+gi_ir_node_get_full_size_internal (GIIrNode *parent,
+                                   GIIrNode *node)
 {
   GList *l;
   gint size, n;
@@ -595,7 +595,7 @@ _gi_ir_node_get_full_size_internal (GIIrNode *parent,
     g_error ("Caught NULL node, parent=%s", parent->name);
 
   g_debug ("node %p type '%s'", node,
-	   _gi_ir_node_type_to_string (node->type));
+	   gi_ir_node_type_to_string (node->type));
 
   switch (node->type)
     {
@@ -606,9 +606,9 @@ _gi_ir_node_get_full_size_internal (GIIrNode *parent,
 	size += ALIGN_VALUE (strlen (node->name) + 1, 4);
 	for (l = function->parameters; l; l = l->next)
 	  {
-	    size += _gi_ir_node_get_full_size_internal (node, (GIIrNode *)l->data);
+	    size += gi_ir_node_get_full_size_internal (node, (GIIrNode *)l->data);
 	  }
-	size += _gi_ir_node_get_full_size_internal (node, (GIIrNode *)function->result);
+	size += gi_ir_node_get_full_size_internal (node, (GIIrNode *)function->result);
       }
       break;
 
@@ -619,8 +619,8 @@ _gi_ir_node_get_full_size_internal (GIIrNode *parent,
 	size += ALIGN_VALUE (strlen (node->name) + 1, 4);
 	size += ALIGN_VALUE (strlen (function->symbol) + 1, 4);
 	for (l = function->parameters; l; l = l->next)
-	  size += _gi_ir_node_get_full_size_internal (node, (GIIrNode *)l->data);
-	size += _gi_ir_node_get_full_size_internal (node, (GIIrNode *)function->result);
+	  size += gi_ir_node_get_full_size_internal (node, (GIIrNode *)l->data);
+	size += gi_ir_node_get_full_size_internal (node, (GIIrNode *)function->result);
       }
       break;
 
@@ -632,7 +632,7 @@ _gi_ir_node_get_full_size_internal (GIIrNode *parent,
 	size = sizeof (ArgBlob) - sizeof (SimpleTypeBlob);
 	if (node->name)
 	  size += ALIGN_VALUE (strlen (node->name) + 1, 4);
-	size += _gi_ir_node_get_full_size_internal (node, (GIIrNode *)param->type);
+	size += gi_ir_node_get_full_size_internal (node, (GIIrNode *)param->type);
       }
       break;
 
@@ -650,7 +650,7 @@ _gi_ir_node_get_full_size_internal (GIIrNode *parent,
 	      case GI_TYPE_TAG_ARRAY:
 		size = sizeof (ArrayTypeBlob);
 		if (type->parameter_type1)
-		  size += _gi_ir_node_get_full_size_internal (node, (GIIrNode *)type->parameter_type1);
+		  size += gi_ir_node_get_full_size_internal (node, (GIIrNode *)type->parameter_type1);
 		break;
 	      case GI_TYPE_TAG_INTERFACE:
 		size += sizeof (InterfaceTypeBlob);
@@ -659,14 +659,14 @@ _gi_ir_node_get_full_size_internal (GIIrNode *parent,
 	      case GI_TYPE_TAG_GSLIST:
 		size += sizeof (ParamTypeBlob);
 		if (type->parameter_type1)
-		  size += _gi_ir_node_get_full_size_internal (node, (GIIrNode *)type->parameter_type1);
+		  size += gi_ir_node_get_full_size_internal (node, (GIIrNode *)type->parameter_type1);
 		break;
 	      case GI_TYPE_TAG_GHASH:
 		size += sizeof (ParamTypeBlob) * 2;
 		if (type->parameter_type1)
-		  size += _gi_ir_node_get_full_size_internal (node, (GIIrNode *)type->parameter_type1);
+		  size += gi_ir_node_get_full_size_internal (node, (GIIrNode *)type->parameter_type1);
 		if (type->parameter_type2)
-		  size += _gi_ir_node_get_full_size_internal (node, (GIIrNode *)type->parameter_type2);
+		  size += gi_ir_node_get_full_size_internal (node, (GIIrNode *)type->parameter_type2);
 		break;
 	      case GI_TYPE_TAG_ERROR:
 		size += sizeof (ErrorTypeBlob);
@@ -704,7 +704,7 @@ _gi_ir_node_get_full_size_internal (GIIrNode *parent,
 	size += 2 * (n + (n % 2));
 
 	for (l = iface->members; l; l = l->next)
-	  size += _gi_ir_node_get_full_size_internal (node, (GIIrNode *)l->data);
+	  size += gi_ir_node_get_full_size_internal (node, (GIIrNode *)l->data);
       }
       break;
 
@@ -720,7 +720,7 @@ _gi_ir_node_get_full_size_internal (GIIrNode *parent,
 	size += 2 * (n + (n % 2));
 
 	for (l = iface->members; l; l = l->next)
-	  size += _gi_ir_node_get_full_size_internal (node, (GIIrNode *)l->data);
+	  size += gi_ir_node_get_full_size_internal (node, (GIIrNode *)l->data);
       }
       break;
 
@@ -740,9 +740,9 @@ _gi_ir_node_get_full_size_internal (GIIrNode *parent,
 	  size += ALIGN_VALUE (strlen (enum_->error_domain) + 1, 4);
 
 	for (l = enum_->values; l; l = l->next)
-	  size += _gi_ir_node_get_full_size_internal (node, (GIIrNode *)l->data);
+	  size += gi_ir_node_get_full_size_internal (node, (GIIrNode *)l->data);
 	for (l = enum_->methods; l; l = l->next)
-	  size += _gi_ir_node_get_full_size_internal (node, (GIIrNode *)l->data);
+	  size += gi_ir_node_get_full_size_internal (node, (GIIrNode *)l->data);
       }
       break;
 
@@ -768,7 +768,7 @@ _gi_ir_node_get_full_size_internal (GIIrNode *parent,
 	if (struct_->free_func)
 	  size += ALIGN_VALUE (strlen (struct_->free_func) + 1, 4);
 	for (l = struct_->members; l; l = l->next)
-	  size += _gi_ir_node_get_full_size_internal (node, (GIIrNode *)l->data);
+	  size += gi_ir_node_get_full_size_internal (node, (GIIrNode *)l->data);
       }
       break;
 
@@ -784,7 +784,7 @@ _gi_ir_node_get_full_size_internal (GIIrNode *parent,
 	    size += ALIGN_VALUE (strlen (boxed->gtype_init) + 1, 4);
 	  }
 	for (l = boxed->members; l; l = l->next)
-	  size += _gi_ir_node_get_full_size_internal (node, (GIIrNode *)l->data);
+	  size += gi_ir_node_get_full_size_internal (node, (GIIrNode *)l->data);
       }
       break;
 
@@ -794,7 +794,7 @@ _gi_ir_node_get_full_size_internal (GIIrNode *parent,
 
 	size = sizeof (PropertyBlob);
 	size += ALIGN_VALUE (strlen (node->name) + 1, 4);
-	size += _gi_ir_node_get_full_size_internal (node, (GIIrNode *)prop->type);
+	size += gi_ir_node_get_full_size_internal (node, (GIIrNode *)prop->type);
       }
       break;
 
@@ -805,8 +805,8 @@ _gi_ir_node_get_full_size_internal (GIIrNode *parent,
 	size = sizeof (SignalBlob);
 	size += ALIGN_VALUE (strlen (node->name) + 1, 4);
 	for (l = signal->parameters; l; l = l->next)
-	  size += _gi_ir_node_get_full_size_internal (node, (GIIrNode *)l->data);
-	size += _gi_ir_node_get_full_size_internal (node, (GIIrNode *)signal->result);
+	  size += gi_ir_node_get_full_size_internal (node, (GIIrNode *)l->data);
+	size += gi_ir_node_get_full_size_internal (node, (GIIrNode *)signal->result);
       }
       break;
 
@@ -817,8 +817,8 @@ _gi_ir_node_get_full_size_internal (GIIrNode *parent,
 	size = sizeof (VFuncBlob);
 	size += ALIGN_VALUE (strlen (node->name) + 1, 4);
 	for (l = vfunc->parameters; l; l = l->next)
-	  size += _gi_ir_node_get_full_size_internal (node, (GIIrNode *)l->data);
-	size += _gi_ir_node_get_full_size_internal (node, (GIIrNode *)vfunc->result);
+	  size += gi_ir_node_get_full_size_internal (node, (GIIrNode *)l->data);
+	size += gi_ir_node_get_full_size_internal (node, (GIIrNode *)vfunc->result);
       }
       break;
 
@@ -829,9 +829,9 @@ _gi_ir_node_get_full_size_internal (GIIrNode *parent,
 	size = sizeof (FieldBlob);
 	size += ALIGN_VALUE (strlen (node->name) + 1, 4);
 	if (field->callback)
-          size += _gi_ir_node_get_full_size_internal (node, (GIIrNode *)field->callback);
+          size += gi_ir_node_get_full_size_internal (node, (GIIrNode *)field->callback);
 	else
-          size += _gi_ir_node_get_full_size_internal (node, (GIIrNode *)field->type);
+          size += gi_ir_node_get_full_size_internal (node, (GIIrNode *)field->type);
       }
       break;
 
@@ -843,7 +843,7 @@ _gi_ir_node_get_full_size_internal (GIIrNode *parent,
 	size += ALIGN_VALUE (strlen (node->name) + 1, 4);
 	/* FIXME non-string values */
 	size += ALIGN_VALUE (strlen (constant->value) + 1, 4);
-	size += _gi_ir_node_get_full_size_internal (node, (GIIrNode *)constant->type);
+	size += gi_ir_node_get_full_size_internal (node, (GIIrNode *)constant->type);
       }
       break;
 
@@ -872,9 +872,9 @@ _gi_ir_node_get_full_size_internal (GIIrNode *parent,
 	if (union_->free_func)
 	  size += ALIGN_VALUE (strlen (union_->free_func) + 1, 4);
 	for (l = union_->members; l; l = l->next)
-	  size += _gi_ir_node_get_full_size_internal (node, (GIIrNode *)l->data);
+	  size += gi_ir_node_get_full_size_internal (node, (GIIrNode *)l->data);
 	for (l = union_->discriminators; l; l = l->next)
-	  size += _gi_ir_node_get_full_size_internal (node, (GIIrNode *)l->data);
+	  size += gi_ir_node_get_full_size_internal (node, (GIIrNode *)l->data);
       }
       break;
 
@@ -887,7 +887,7 @@ _gi_ir_node_get_full_size_internal (GIIrNode *parent,
 	   node->name ? "'" : "",
 	   node->name ? node->name : "",
 	   node->name ? "' " : "",
-	   node, _gi_ir_node_type_to_string (node->type), size);
+	   node, gi_ir_node_type_to_string (node->type), size);
 
   g_hash_table_foreach (node->attributes, add_attribute_size, &size);
 
@@ -895,14 +895,14 @@ _gi_ir_node_get_full_size_internal (GIIrNode *parent,
 }
 
 guint32
-_gi_ir_node_get_full_size (GIIrNode *node)
+gi_ir_node_get_full_size (GIIrNode *node)
 {
-  return _gi_ir_node_get_full_size_internal (NULL, node);
+  return gi_ir_node_get_full_size_internal (NULL, node);
 }
 
 int
-_gi_ir_node_cmp (GIIrNode *node,
-                 GIIrNode *other)
+gi_ir_node_cmp (GIIrNode *node,
+                GIIrNode *other)
 {
   if (node->type < other->type)
     return -1;
@@ -913,7 +913,7 @@ _gi_ir_node_cmp (GIIrNode *node,
 }
 
 gboolean
-_gi_ir_node_can_have_member (GIIrNode *node)
+gi_ir_node_can_have_member (GIIrNode *node)
 {
   switch (node->type)
     {
@@ -949,8 +949,8 @@ _gi_ir_node_can_have_member (GIIrNode *node)
 }
 
 void
-_gi_ir_node_add_member (GIIrNode         *node,
-                        GIIrNodeFunction *member)
+gi_ir_node_add_member (GIIrNode         *node,
+                       GIIrNodeFunction *member)
 {
   g_return_if_fail (node != NULL);
   g_return_if_fail (member != NULL);
@@ -963,7 +963,7 @@ _gi_ir_node_add_member (GIIrNode         *node,
 	GIIrNodeInterface *iface = (GIIrNodeInterface *)node;
 	iface->members =
 	  g_list_insert_sorted (iface->members, member,
-				(GCompareFunc) _gi_ir_node_cmp);
+				(GCompareFunc) gi_ir_node_cmp);
 	break;
       }
     case GI_IR_NODE_BOXED:
@@ -971,7 +971,7 @@ _gi_ir_node_add_member (GIIrNode         *node,
 	GIIrNodeBoxed *boxed = (GIIrNodeBoxed *)node;
 	boxed->members =
 	  g_list_insert_sorted (boxed->members, member,
-				(GCompareFunc) _gi_ir_node_cmp);
+				(GCompareFunc) gi_ir_node_cmp);
 	break;
       }
     case GI_IR_NODE_STRUCT:
@@ -979,7 +979,7 @@ _gi_ir_node_add_member (GIIrNode         *node,
 	GIIrNodeStruct *struct_ = (GIIrNodeStruct *)node;
 	struct_->members =
 	  g_list_insert_sorted (struct_->members, member,
-				(GCompareFunc) _gi_ir_node_cmp);
+				(GCompareFunc) gi_ir_node_cmp);
 	break;
       }
     case GI_IR_NODE_UNION:
@@ -987,7 +987,7 @@ _gi_ir_node_add_member (GIIrNode         *node,
 	GIIrNodeUnion *union_ = (GIIrNodeUnion *)node;
 	union_->members =
 	  g_list_insert_sorted (union_->members, member,
-				(GCompareFunc) _gi_ir_node_cmp);
+				(GCompareFunc) gi_ir_node_cmp);
 	break;
       }
     default:
@@ -998,7 +998,7 @@ _gi_ir_node_add_member (GIIrNode         *node,
 }
 
 const gchar *
-_gi_ir_node_param_direction_string (GIIrNodeParam * node)
+gi_ir_node_param_direction_string (GIIrNodeParam * node)
 {
   if (node->out)
     {
@@ -1087,7 +1087,7 @@ find_entry_node (GIIrTypelibBuild *build,
 
   if (n_names > 1)
     {
-      GIIrNode *node = _gi_ir_node_new (GI_IR_NODE_XREF, module);
+      GIIrNode *node = gi_ir_node_new (GI_IR_NODE_XREF, module);
 
       ((GIIrNodeXRef *)node)->namespace = g_strdup (names[0]);
       node->name = g_strdup (names[1]);
@@ -1105,7 +1105,7 @@ find_entry_node (GIIrTypelibBuild *build,
     }
 
   
-  _gi_ir_module_fatal (build, -1, "type reference '%s' not found", name);
+  gi_ir_module_fatal (build, -1, "type reference '%s' not found", name);
  out:
 
   g_strfreev (names);
@@ -1149,9 +1149,9 @@ find_namespace (GIIrModule *module,
 }
 
 GIIrNode *
-_gi_ir_find_node (GIIrTypelibBuild *build,
-                  GIIrModule       *src_module,
-                  const char       *name)
+gi_ir_find_node (GIIrTypelibBuild *build,
+                 GIIrModule       *src_module,
+                 const char       *name)
 {
   GList *l;
   GIIrNode *return_node = NULL;
@@ -1340,14 +1340,14 @@ serialize_type (GIIrTypelibBuild *build,
 }
 
 static void
-_gi_ir_node_build_members (GList            **members,
-                           GIIrNodeTypeId     type,
-                           guint16           *count,
-                           GIIrNode          *parent,
-                           GIIrTypelibBuild  *build,
-                           guint32           *offset,
-                           guint32           *offset2,
-                           guint16           *count2)
+gi_ir_node_build_members (GList            **members,
+                          GIIrNodeTypeId     type,
+                          guint16           *count,
+                          GIIrNode          *parent,
+                          GIIrTypelibBuild  *build,
+                          guint32           *offset,
+                          guint32           *offset2,
+                          guint16           *count2)
 {
   GList *l = *members;
 
@@ -1359,7 +1359,7 @@ _gi_ir_node_build_members (GList            **members,
       if (member->type == type)
 	{
 	  (*count)++;
-	  _gi_ir_node_build_typelib (member, parent, build, offset, offset2, count2);
+	  gi_ir_node_build_typelib (member, parent, build, offset, offset2, count2);
 	  *members = g_list_delete_link (*members, l);
 	}
       l = next;
@@ -1367,8 +1367,8 @@ _gi_ir_node_build_members (GList            **members,
 }
 
 static void
-_gi_ir_node_check_unhandled_members (GList          **members,
-                                     GIIrNodeTypeId   container_type)
+gi_ir_node_check_unhandled_members (GList          **members,
+                                    GIIrNodeTypeId   container_type)
 {
 #if 0
   if (*members)
@@ -1379,9 +1379,9 @@ _gi_ir_node_check_unhandled_members (GList          **members,
 	{
 	  GIIrNode *member = (GIIrNode *)l->data;
 	  g_printerr ("Unhandled '%s' member '%s' type '%s'\n",
-		      _gi_ir_node_type_to_string (container_type),
+		      gi_ir_node_type_to_string (container_type),
 		      member->name,
-		      _gi_ir_node_type_to_string (member->type));
+		      gi_ir_node_type_to_string (member->type));
 	}
 
       g_list_free (*members);
@@ -1396,12 +1396,12 @@ _gi_ir_node_check_unhandled_members (GList          **members,
 }
 
 void
-_gi_ir_node_build_typelib (GIIrNode         *node,
-                           GIIrNode         *parent,
-                           GIIrTypelibBuild *build,
-                           guint32          *offset,
-                           guint32          *offset2,
-                           guint16          *count2)
+gi_ir_node_build_typelib (GIIrNode         *node,
+                          GIIrNode         *parent,
+                          GIIrTypelibBuild *build,
+                          guint32          *offset,
+                          guint32          *offset2,
+                          guint16          *count2)
 {
   gboolean appended_stack;
   GHashTable *strings = build->strings;
@@ -1416,7 +1416,7 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
   g_debug ("build_typelib: %s%s(%s)",
 	   node->name ? node->name : "",
 	   node->name ? " " : "",
-	   _gi_ir_node_type_to_string (node->type));
+	   gi_ir_node_type_to_string (node->type));
 
   if (build->stack)
     appended_stack = node != (GIIrNode*)build->stack->data;
@@ -1425,7 +1425,7 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
   if (appended_stack)
     build->stack = g_list_prepend (build->stack, node);
   
-  _gi_ir_node_compute_offsets (build, node);
+  gi_ir_node_compute_offsets (build, node);
 
   /* We should only be building each node once.  If we do a typelib expansion, we also
    * reset the offset in girmodule.c.
@@ -1501,8 +1501,8 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
 		      pos = *offset2 + G_STRUCT_OFFSET (ArrayTypeBlob, type);
 		      *offset2 += sizeof (ArrayTypeBlob);
 
-		      _gi_ir_node_build_typelib ((GIIrNode *)type->parameter_type1,
-                                                 node, build, &pos, offset2, NULL);
+		      gi_ir_node_build_typelib ((GIIrNode *)type->parameter_type1,
+                                                node, build, &pos, offset2, NULL);
 		    }
 		    break;
 
@@ -1535,8 +1535,8 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
 		      pos = *offset2 + G_STRUCT_OFFSET (ParamTypeBlob, type);
 		      *offset2 += sizeof (ParamTypeBlob) + sizeof (SimpleTypeBlob);
 
-		      _gi_ir_node_build_typelib ((GIIrNode *)type->parameter_type1,
-                                                 node, build, &pos, offset2, NULL);
+		      gi_ir_node_build_typelib ((GIIrNode *)type->parameter_type1,
+                                                node, build, &pos, offset2, NULL);
 		    }
 		    break;
 
@@ -1554,10 +1554,10 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
 		      pos = *offset2 + G_STRUCT_OFFSET (ParamTypeBlob, type);
 		      *offset2 += sizeof (ParamTypeBlob) + sizeof (SimpleTypeBlob)*2;
 
-		      _gi_ir_node_build_typelib ((GIIrNode *)type->parameter_type1,
-                                                 node, build, &pos, offset2, NULL);
-		      _gi_ir_node_build_typelib ((GIIrNode *)type->parameter_type2,
-                                                 node, build, &pos, offset2, NULL);
+		      gi_ir_node_build_typelib ((GIIrNode *)type->parameter_type1,
+                                                node, build, &pos, offset2, NULL);
+		      gi_ir_node_build_typelib ((GIIrNode *)type->parameter_type2,
+                                                node, build, &pos, offset2, NULL);
 		    }
 		    break;
 
@@ -1591,7 +1591,7 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
 
 	blob = (FieldBlob *)&data[*offset];
 
-	blob->name = _gi_ir_write_string (node->name, strings, data, offset2);
+	blob->name = gi_ir_write_string (node->name, strings, data, offset2);
 	blob->readable = field->readable;
 	blob->writable = field->writable;
 	blob->reserved = 0;
@@ -1606,8 +1606,8 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
             blob->has_embedded_type = TRUE;
             blob->type.offset = GI_INFO_TYPE_CALLBACK;
 	    *offset += sizeof (FieldBlob);
-            _gi_ir_node_build_typelib ((GIIrNode *)field->callback,
-                                       node, build, offset, offset2, NULL);
+            gi_ir_node_build_typelib ((GIIrNode *)field->callback,
+                                      node, build, offset, offset2, NULL);
             /* Fields with callbacks are bigger than normal, update count2
              * as an extra hint which represents the number of fields which are
              * callbacks. This allows us to gain constant time performance in the
@@ -1621,8 +1621,8 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
             blob->has_embedded_type = FALSE;
             /* We handle the size member specially below, so subtract it */
 	    *offset += sizeof (FieldBlob) - sizeof (SimpleTypeBlob);
-            _gi_ir_node_build_typelib ((GIIrNode *)field->type,
-                                       node, build, offset, offset2, NULL);
+            gi_ir_node_build_typelib ((GIIrNode *)field->type,
+                                      node, build, offset, offset2, NULL);
           }
       }
       break;
@@ -1634,7 +1634,7 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
         /* We handle the size member specially below, so subtract it */
 	*offset += sizeof (PropertyBlob) - sizeof (SimpleTypeBlob);
 
-	blob->name = _gi_ir_write_string (node->name, strings, data, offset2);
+	blob->name = gi_ir_write_string (node->name, strings, data, offset2);
 	blob->deprecated = prop->deprecated;
 	blob->readable = prop->readable;
 	blob->writable = prop->writable;
@@ -1674,8 +1674,8 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
         else
           blob->getter = ACCESSOR_SENTINEL;
 
-        _gi_ir_node_build_typelib ((GIIrNode *)prop->type,
-                                   node, build, offset, offset2, NULL);
+        gi_ir_node_build_typelib ((GIIrNode *)prop->type,
+                                  node, build, offset, offset2, NULL);
       }
       break;
 
@@ -1702,8 +1702,8 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
 	blob->wraps_vfunc = function->wraps_vfunc;
 	blob->throws = function->throws; /* Deprecated. Also stored in SignatureBlob. */
 	blob->index = 0;
-	blob->name = _gi_ir_write_string (node->name, strings, data, offset2);
-	blob->symbol = _gi_ir_write_string (function->symbol, strings, data, offset2);
+	blob->name = gi_ir_write_string (node->name, strings, data, offset2);
+	blob->symbol = gi_ir_write_string (function->symbol, strings, data, offset2);
 	blob->signature = signature;
 
         if (function->is_setter || function->is_getter)
@@ -1731,8 +1731,8 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
 
 	g_debug ("building function '%s'", function->symbol);
 
-        _gi_ir_node_build_typelib ((GIIrNode *)function->result->type,
-                                   node, build, &signature, offset2, NULL);
+        gi_ir_node_build_typelib ((GIIrNode *)function->result->type,
+                                  node, build, &signature, offset2, NULL);
 
 	blob2->may_return_null = function->result->nullable;
 	blob2->caller_owns_return_value = function->result->transfer;
@@ -1749,7 +1749,7 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
 	  {
 	    GIIrNode *param = (GIIrNode *)l->data;
 
-	    _gi_ir_node_build_typelib (param, node, build, &signature, offset2, NULL);
+	    gi_ir_node_build_typelib (param, node, build, &signature, offset2, NULL);
 	  }
 
       }
@@ -1772,11 +1772,11 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
 	blob->blob_type = BLOB_TYPE_CALLBACK;
 	blob->deprecated = function->deprecated;
 	blob->reserved = 0;
-	blob->name = _gi_ir_write_string (node->name, strings, data, offset2);
+	blob->name = gi_ir_write_string (node->name, strings, data, offset2);
 	blob->signature = signature;
 
-        _gi_ir_node_build_typelib ((GIIrNode *)function->result->type,
-                                   node, build, &signature, offset2, NULL);
+        gi_ir_node_build_typelib ((GIIrNode *)function->result->type,
+                                  node, build, &signature, offset2, NULL);
 
 	blob2->may_return_null = function->result->nullable;
 	blob2->caller_owns_return_value = function->result->transfer;
@@ -1791,7 +1791,7 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
 	  {
 	    GIIrNode *param = (GIIrNode *)l->data;
 
-	    _gi_ir_node_build_typelib (param, node, build, &signature, offset2, NULL);
+	    gi_ir_node_build_typelib (param, node, build, &signature, offset2, NULL);
 	  }
       }
       break;
@@ -1822,7 +1822,7 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
 	blob->true_stops_emit = 0; /* FIXME */
 	blob->reserved = 0;
 	blob->class_closure = 0; /* FIXME */
-	blob->name = _gi_ir_write_string (node->name, strings, data, offset2);
+	blob->name = gi_ir_write_string (node->name, strings, data, offset2);
 	blob->signature = signature;
 
         /* signal->result is special since it doesn't appear in the serialized format but
@@ -1833,8 +1833,8 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
         g_assert (((GIIrNode *) signal->result)->offset == 0);
         ((GIIrNode *) signal->result)->offset = signature;
 
-        _gi_ir_node_build_typelib ((GIIrNode *)signal->result->type,
-                                   node, build, &signature, offset2, NULL);
+        gi_ir_node_build_typelib ((GIIrNode *)signal->result->type,
+                                  node, build, &signature, offset2, NULL);
 
 	blob2->may_return_null = signal->result->nullable;
 	blob2->caller_owns_return_value = signal->result->transfer;
@@ -1849,7 +1849,7 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
 	  {
 	    GIIrNode *param = (GIIrNode *)l->data;
 
-	    _gi_ir_node_build_typelib (param, node, build, &signature, offset2, NULL);
+	    gi_ir_node_build_typelib (param, node, build, &signature, offset2, NULL);
 	  }
       }
       break;
@@ -1868,7 +1868,7 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
 	*offset += sizeof (VFuncBlob);
 	*offset2 += sizeof (SignatureBlob) + n * sizeof (ArgBlob);
 
-	blob->name = _gi_ir_write_string (node->name, strings, data, offset2);
+	blob->name = gi_ir_write_string (node->name, strings, data, offset2);
 	blob->must_chain_up = 0; /* FIXME */
 	blob->must_be_implemented = 0; /* FIXME */
 	blob->must_not_be_implemented = 0; /* FIXME */
@@ -1892,8 +1892,8 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
 	blob->reserved2 = 0;
 	blob->signature = signature;
 
-        _gi_ir_node_build_typelib ((GIIrNode *)vfunc->result->type,
-                                   node, build, &signature, offset2, NULL);
+        gi_ir_node_build_typelib ((GIIrNode *)vfunc->result->type,
+                                  node, build, &signature, offset2, NULL);
 
 	blob2->may_return_null = vfunc->result->nullable;
 	blob2->caller_owns_return_value = vfunc->result->transfer;
@@ -1909,7 +1909,7 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
 	  {
 	    GIIrNode *param = (GIIrNode *)l->data;
 
-	    _gi_ir_node_build_typelib (param, node, build, &signature, offset2, NULL);
+	    gi_ir_node_build_typelib (param, node, build, &signature, offset2, NULL);
 	  }
       }
       break;
@@ -1924,7 +1924,7 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
 	 */
 	*offset += sizeof (ArgBlob) - sizeof (SimpleTypeBlob);
 
-	blob->name = _gi_ir_write_string (node->name, strings, data, offset2);
+	blob->name = gi_ir_write_string (node->name, strings, data, offset2);
 	blob->in = param->in;
 	blob->out = param->out;
 	blob->caller_allocates = param->caller_allocates;
@@ -1939,7 +1939,7 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
         blob->closure = param->closure;
         blob->destroy = param->destroy;
 
-        _gi_ir_node_build_typelib ((GIIrNode *)param->type, node, build, offset, offset2, NULL);
+        gi_ir_node_build_typelib ((GIIrNode *)param->type, node, build, offset, offset2, NULL);
       }
       break;
 
@@ -1954,15 +1954,15 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
 	blob->deprecated = struct_->deprecated;
 	blob->is_gtype_struct = struct_->is_gtype_struct;
 	blob->reserved = 0;
-	blob->name = _gi_ir_write_string (node->name, strings, data, offset2);
+	blob->name = gi_ir_write_string (node->name, strings, data, offset2);
 	blob->alignment = struct_->alignment;
 	blob->size = struct_->size;
 
 	if (struct_->gtype_name)
 	  {
 	    blob->unregistered = FALSE;
-	    blob->gtype_name = _gi_ir_write_string (struct_->gtype_name, strings, data, offset2);
-	    blob->gtype_init = _gi_ir_write_string (struct_->gtype_init, strings, data, offset2);
+	    blob->gtype_name = gi_ir_write_string (struct_->gtype_name, strings, data, offset2);
+	    blob->gtype_init = gi_ir_write_string (struct_->gtype_init, strings, data, offset2);
 	  }
 	else
 	  {
@@ -1972,9 +1972,9 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
 	  }
 
         if (struct_->copy_func)
-          blob->copy_func = _gi_ir_write_string (struct_->copy_func, strings, data, offset2);
+          blob->copy_func = gi_ir_write_string (struct_->copy_func, strings, data, offset2);
         if (struct_->free_func)
-          blob->free_func = _gi_ir_write_string (struct_->free_func, strings, data, offset2);
+          blob->free_func = gi_ir_write_string (struct_->free_func, strings, data, offset2);
 
 	blob->n_fields = 0;
 	blob->n_methods = 0;
@@ -1983,13 +1983,13 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
 
 	members = g_list_copy (struct_->members);
 
-	_gi_ir_node_build_members (&members, GI_IR_NODE_FIELD, &blob->n_fields,
-                                   node, build, offset, offset2, NULL);
+	gi_ir_node_build_members (&members, GI_IR_NODE_FIELD, &blob->n_fields,
+                                  node, build, offset, offset2, NULL);
 
-	_gi_ir_node_build_members (&members, GI_IR_NODE_FUNCTION, &blob->n_methods,
-                                   node, build, offset, offset2, NULL);
+	gi_ir_node_build_members (&members, GI_IR_NODE_FUNCTION, &blob->n_methods,
+                                  node, build, offset, offset2, NULL);
 
-	_gi_ir_node_check_unhandled_members (&members, node->type);
+	gi_ir_node_check_unhandled_members (&members, node->type);
 
 	g_assert (members == NULL);
       }
@@ -2005,9 +2005,9 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
 	blob->deprecated = boxed->deprecated;
 	blob->unregistered = FALSE;
 	blob->reserved = 0;
-	blob->name = _gi_ir_write_string (node->name, strings, data, offset2);
-	blob->gtype_name = _gi_ir_write_string (boxed->gtype_name, strings, data, offset2);
-	blob->gtype_init = _gi_ir_write_string (boxed->gtype_init, strings, data, offset2);
+	blob->name = gi_ir_write_string (node->name, strings, data, offset2);
+	blob->gtype_name = gi_ir_write_string (boxed->gtype_name, strings, data, offset2);
+	blob->gtype_init = gi_ir_write_string (boxed->gtype_init, strings, data, offset2);
 	blob->alignment = boxed->alignment;
 	blob->size = boxed->size;
 
@@ -2018,13 +2018,13 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
 
 	members = g_list_copy (boxed->members);
 
-	_gi_ir_node_build_members (&members, GI_IR_NODE_FIELD, &blob->n_fields,
-                                   node, build, offset, offset2, NULL);
+	gi_ir_node_build_members (&members, GI_IR_NODE_FIELD, &blob->n_fields,
+                                  node, build, offset, offset2, NULL);
 
-	_gi_ir_node_build_members (&members, GI_IR_NODE_FUNCTION, &blob->n_methods,
-                                   node, build, offset, offset2, NULL);
+	gi_ir_node_build_members (&members, GI_IR_NODE_FUNCTION, &blob->n_methods,
+                                  node, build, offset, offset2, NULL);
 
-	_gi_ir_node_check_unhandled_members (&members, node->type);
+	gi_ir_node_check_unhandled_members (&members, node->type);
 
 	g_assert (members == NULL);
       }
@@ -2039,14 +2039,14 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
 	blob->blob_type = BLOB_TYPE_UNION;
 	blob->deprecated = union_->deprecated;
 	blob->reserved = 0;
-	blob->name = _gi_ir_write_string (node->name, strings, data, offset2);
+	blob->name = gi_ir_write_string (node->name, strings, data, offset2);
 	blob->alignment = union_->alignment;
 	blob->size = union_->size;
 	if (union_->gtype_name)
 	  {
 	    blob->unregistered = FALSE;
-	    blob->gtype_name = _gi_ir_write_string (union_->gtype_name, strings, data, offset2);
-	    blob->gtype_init = _gi_ir_write_string (union_->gtype_init, strings, data, offset2);
+	    blob->gtype_name = gi_ir_write_string (union_->gtype_name, strings, data, offset2);
+	    blob->gtype_init = gi_ir_write_string (union_->gtype_init, strings, data, offset2);
 	  }
 	else
 	  {
@@ -2061,9 +2061,9 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
 	blob->discriminator_offset = union_->discriminator_offset;
 
         if (union_->copy_func)
-          blob->copy_func = _gi_ir_write_string (union_->copy_func, strings, data, offset2);
+          blob->copy_func = gi_ir_write_string (union_->copy_func, strings, data, offset2);
         if (union_->free_func)
-          blob->free_func = _gi_ir_write_string (union_->free_func, strings, data, offset2);
+          blob->free_func = gi_ir_write_string (union_->free_func, strings, data, offset2);
 
 	/* We don't support Union discriminators right now. */
 	/*
@@ -2071,8 +2071,8 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
 	  {
 	    *offset += 28;
 	    blob->discriminated = TRUE;
-	    _gi_ir_node_build_typelib ((GIIrNode *)union_->discriminator_type,
-                                       build, offset, offset2, NULL);
+	    gi_ir_node_build_typelib ((GIIrNode *)union_->discriminator_type,
+                                      build, offset, offset2, NULL);
 	  }
 	else
 	  {
@@ -2083,13 +2083,13 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
 
 	members = g_list_copy (union_->members);
 
-	_gi_ir_node_build_members (&members, GI_IR_NODE_FIELD, &blob->n_fields,
-                                   node, build, offset, offset2, NULL);
+	gi_ir_node_build_members (&members, GI_IR_NODE_FIELD, &blob->n_fields,
+                                  node, build, offset, offset2, NULL);
 
-	_gi_ir_node_build_members (&members, GI_IR_NODE_FUNCTION, &blob->n_functions,
-                                   node, build, offset, offset2, NULL);
+	gi_ir_node_build_members (&members, GI_IR_NODE_FUNCTION, &blob->n_functions,
+                                  node, build, offset, offset2, NULL);
 
-	_gi_ir_node_check_unhandled_members (&members, node->type);
+	gi_ir_node_check_unhandled_members (&members, node->type);
 
 	g_assert (members == NULL);
 
@@ -2099,7 +2099,7 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
 	      {
 		GIIrNode *member = (GIIrNode *)l->data;
 
-		_gi_ir_node_build_typelib (member, node, build, offset, offset2, NULL);
+		gi_ir_node_build_typelib (member, node, build, offset, offset2, NULL);
 	      }
 	  }
       }
@@ -2121,12 +2121,12 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
 	blob->deprecated = enum_->deprecated;
 	blob->reserved = 0;
 	blob->storage_type = enum_->storage_type;
-	blob->name = _gi_ir_write_string (node->name, strings, data, offset2);
+	blob->name = gi_ir_write_string (node->name, strings, data, offset2);
 	if (enum_->gtype_name)
 	  {
 	    blob->unregistered = FALSE;
-	    blob->gtype_name = _gi_ir_write_string (enum_->gtype_name, strings, data, offset2);
-	    blob->gtype_init = _gi_ir_write_string (enum_->gtype_init, strings, data, offset2);
+	    blob->gtype_name = gi_ir_write_string (enum_->gtype_name, strings, data, offset2);
+	    blob->gtype_init = gi_ir_write_string (enum_->gtype_init, strings, data, offset2);
 	  }
 	else
 	  {
@@ -2135,7 +2135,7 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
 	    blob->gtype_init = 0;
 	  }
 	if (enum_->error_domain)
-	  blob->error_domain = _gi_ir_write_string (enum_->error_domain, strings, data, offset2);
+	  blob->error_domain = gi_ir_write_string (enum_->error_domain, strings, data, offset2);
 	else
 	  blob->error_domain = 0;
 
@@ -2147,7 +2147,7 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
 	    GIIrNode *value = (GIIrNode *)l->data;
 
 	    blob->n_values++;
-	    _gi_ir_node_build_typelib (value, node, build, offset, offset2, NULL);
+	    gi_ir_node_build_typelib (value, node, build, offset, offset2, NULL);
 	  }
 
 	for (l = enum_->methods; l; l = l->next)
@@ -2155,7 +2155,7 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
 	    GIIrNode *method = (GIIrNode *)l->data;
 
 	    blob->n_methods++;
-	    _gi_ir_node_build_typelib (method, node, build, offset, offset2, NULL);
+	    gi_ir_node_build_typelib (method, node, build, offset, offset2, NULL);
 	  }
       }
       break;
@@ -2172,17 +2172,17 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
         blob->final_ = object->final_;
 	blob->deprecated = object->deprecated;
 	blob->reserved = 0;
-	blob->name = _gi_ir_write_string (node->name, strings, data, offset2);
-	blob->gtype_name = _gi_ir_write_string (object->gtype_name, strings, data, offset2);
-	blob->gtype_init = _gi_ir_write_string (object->gtype_init, strings, data, offset2);
+	blob->name = gi_ir_write_string (node->name, strings, data, offset2);
+	blob->gtype_name = gi_ir_write_string (object->gtype_name, strings, data, offset2);
+	blob->gtype_init = gi_ir_write_string (object->gtype_init, strings, data, offset2);
         if (object->ref_func)
-          blob->ref_func = _gi_ir_write_string (object->ref_func, strings, data, offset2);
+          blob->ref_func = gi_ir_write_string (object->ref_func, strings, data, offset2);
         if (object->unref_func)
-          blob->unref_func = _gi_ir_write_string (object->unref_func, strings, data, offset2);
+          blob->unref_func = gi_ir_write_string (object->unref_func, strings, data, offset2);
         if (object->set_value_func)
-          blob->set_value_func = _gi_ir_write_string (object->set_value_func, strings, data, offset2);
+          blob->set_value_func = gi_ir_write_string (object->set_value_func, strings, data, offset2);
         if (object->get_value_func)
-          blob->get_value_func = _gi_ir_write_string (object->get_value_func, strings, data, offset2);
+          blob->get_value_func = gi_ir_write_string (object->get_value_func, strings, data, offset2);
 	if (object->parent)
 	  blob->parent = find_entry (build, object->parent);
 	else
@@ -2212,30 +2212,30 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
 	members = g_list_copy (object->members);
 
 	*offset = ALIGN_VALUE (*offset, 4);
-	_gi_ir_node_build_members (&members, GI_IR_NODE_FIELD, &blob->n_fields,
-                                   node, build, offset, offset2, &blob->n_field_callbacks);
+	gi_ir_node_build_members (&members, GI_IR_NODE_FIELD, &blob->n_fields,
+                                  node, build, offset, offset2, &blob->n_field_callbacks);
 
 	*offset = ALIGN_VALUE (*offset, 4);
-	_gi_ir_node_build_members (&members, GI_IR_NODE_PROPERTY, &blob->n_properties,
-                                   node, build, offset, offset2, NULL);
+	gi_ir_node_build_members (&members, GI_IR_NODE_PROPERTY, &blob->n_properties,
+                                  node, build, offset, offset2, NULL);
 
 	*offset = ALIGN_VALUE (*offset, 4);
-	_gi_ir_node_build_members (&members, GI_IR_NODE_FUNCTION, &blob->n_methods,
-                                   node, build, offset, offset2, NULL);
+	gi_ir_node_build_members (&members, GI_IR_NODE_FUNCTION, &blob->n_methods,
+                                  node, build, offset, offset2, NULL);
 
 	*offset = ALIGN_VALUE (*offset, 4);
-	_gi_ir_node_build_members (&members, GI_IR_NODE_SIGNAL, &blob->n_signals,
-                                   node, build, offset, offset2, NULL);
+	gi_ir_node_build_members (&members, GI_IR_NODE_SIGNAL, &blob->n_signals,
+                                  node, build, offset, offset2, NULL);
 
 	*offset = ALIGN_VALUE (*offset, 4);
-	_gi_ir_node_build_members (&members, GI_IR_NODE_VFUNC, &blob->n_vfuncs,
-                                   node, build, offset, offset2, NULL);
+	gi_ir_node_build_members (&members, GI_IR_NODE_VFUNC, &blob->n_vfuncs,
+                                  node, build, offset, offset2, NULL);
 
 	*offset = ALIGN_VALUE (*offset, 4);
-	_gi_ir_node_build_members (&members, GI_IR_NODE_CONSTANT, &blob->n_constants,
-                                   node, build, offset, offset2, NULL);
+	gi_ir_node_build_members (&members, GI_IR_NODE_CONSTANT, &blob->n_constants,
+                                  node, build, offset, offset2, NULL);
 
-	_gi_ir_node_check_unhandled_members (&members, node->type);
+	gi_ir_node_check_unhandled_members (&members, node->type);
 
 	g_assert (members == NULL);
       }
@@ -2250,9 +2250,9 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
 	blob->blob_type = BLOB_TYPE_INTERFACE;
 	blob->deprecated = iface->deprecated;
 	blob->reserved = 0;
-	blob->name = _gi_ir_write_string (node->name, strings, data, offset2);
-	blob->gtype_name = _gi_ir_write_string (iface->gtype_name, strings, data, offset2);
-	blob->gtype_init = _gi_ir_write_string (iface->gtype_init, strings, data, offset2);
+	blob->name = gi_ir_write_string (node->name, strings, data, offset2);
+	blob->gtype_name = gi_ir_write_string (iface->gtype_name, strings, data, offset2);
+	blob->gtype_init = gi_ir_write_string (iface->gtype_init, strings, data, offset2);
 	if (iface->glib_type_struct)
 	  blob->gtype_struct = find_entry (build, iface->glib_type_struct);
 	else
@@ -2275,26 +2275,26 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
 	members = g_list_copy (iface->members);
 
 	*offset = ALIGN_VALUE (*offset, 4);
-	_gi_ir_node_build_members (&members, GI_IR_NODE_PROPERTY, &blob->n_properties,
-                                   node, build, offset, offset2, NULL);
+	gi_ir_node_build_members (&members, GI_IR_NODE_PROPERTY, &blob->n_properties,
+                                  node, build, offset, offset2, NULL);
 
 	*offset = ALIGN_VALUE (*offset, 4);
-	_gi_ir_node_build_members (&members, GI_IR_NODE_FUNCTION, &blob->n_methods,
-                                   node, build, offset, offset2, NULL);
+	gi_ir_node_build_members (&members, GI_IR_NODE_FUNCTION, &blob->n_methods,
+                                  node, build, offset, offset2, NULL);
 
 	*offset = ALIGN_VALUE (*offset, 4);
-	_gi_ir_node_build_members (&members, GI_IR_NODE_SIGNAL, &blob->n_signals,
-                                   node, build, offset, offset2, NULL);
+	gi_ir_node_build_members (&members, GI_IR_NODE_SIGNAL, &blob->n_signals,
+                                  node, build, offset, offset2, NULL);
 
 	*offset = ALIGN_VALUE (*offset, 4);
-	_gi_ir_node_build_members (&members, GI_IR_NODE_VFUNC, &blob->n_vfuncs,
-                                   node, build, offset, offset2, NULL);
+	gi_ir_node_build_members (&members, GI_IR_NODE_VFUNC, &blob->n_vfuncs,
+                                  node, build, offset, offset2, NULL);
 
 	*offset = ALIGN_VALUE (*offset, 4);
-	_gi_ir_node_build_members (&members, GI_IR_NODE_CONSTANT, &blob->n_constants,
-                                   node, build, offset, offset2, NULL);
+	gi_ir_node_build_members (&members, GI_IR_NODE_CONSTANT, &blob->n_constants,
+                                  node, build, offset, offset2, NULL);
 
-	_gi_ir_node_check_unhandled_members (&members, node->type);
+	gi_ir_node_check_unhandled_members (&members, node->type);
 
 	g_assert (members == NULL);
       }
@@ -2310,7 +2310,7 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
 	blob->deprecated = value->deprecated;
 	blob->reserved = 0;
 	blob->unsigned_value = value->value >= 0 ? 1 : 0;
-	blob->name = _gi_ir_write_string (node->name, strings, data, offset2);
+	blob->name = gi_ir_write_string (node->name, strings, data, offset2);
 	blob->value = (gint32)value->value;
       }
       break;
@@ -2327,7 +2327,7 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
 	blob->blob_type = BLOB_TYPE_CONSTANT;
 	blob->deprecated = constant->deprecated;
 	blob->reserved = 0;
-	blob->name = _gi_ir_write_string (node->name, strings, data, offset2);
+	blob->name = gi_ir_write_string (node->name, strings, data, offset2);
 
 	blob->offset = *offset2;
 	switch (constant->type->tag)
@@ -2386,7 +2386,7 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
 	  }
 	*offset2 += ALIGN_VALUE (blob->size, 4);
 
-	_gi_ir_node_build_typelib ((GIIrNode *)constant->type, node, build, &pos, offset2, NULL);
+	gi_ir_node_build_typelib ((GIIrNode *)constant->type, node, build, &pos, offset2, NULL);
       }
       break;
     default:
@@ -2397,12 +2397,12 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
 	   node->name ? "'" : "",
 	   node->name ? node->name : "",
 	   node->name ? "' " : "",
-	   node, _gi_ir_node_type_to_string (node->type),
+	   node, gi_ir_node_type_to_string (node->type),
 	   old_offset, *offset, old_offset2, *offset2);
 
-  if (*offset2 - old_offset2 + *offset - old_offset > _gi_ir_node_get_full_size (node))
+  if (*offset2 - old_offset2 + *offset - old_offset > gi_ir_node_get_full_size (node))
     g_error ("exceeding space reservation; offset: %d (prev %d) offset2: %d (prev %d) nodesize: %d",
-             *offset, old_offset, *offset2, old_offset2, _gi_ir_node_get_full_size (node));
+             *offset, old_offset, *offset2, old_offset2, gi_ir_node_get_full_size (node));
 
   if (appended_stack)
     build->stack = g_list_delete_link (build->stack, build->stack);
@@ -2413,10 +2413,10 @@ _gi_ir_node_build_typelib (GIIrNode         *node,
  * typelib is not large enough to hold the string, reallocate it.
  */
 guint32
-_gi_ir_write_string (const gchar *str,
-                     GHashTable  *strings,
-                     guchar      *data,
-                     guint32     *offset)
+gi_ir_write_string (const gchar *str,
+                    GHashTable  *strings,
+                    guchar      *data,
+                    guint32     *offset)
 {
   gpointer value;
   guint32 start;

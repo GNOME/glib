@@ -308,7 +308,7 @@ gi_arg_info_get_type (GIArgInfo *info)
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_ARG_INFO (info), NULL);
 
-  return _gi_type_info_new ((GIBaseInfo*)info, rinfo->typelib, rinfo->offset + G_STRUCT_OFFSET (ArgBlob, arg_type));
+  return gi_type_info_new ((GIBaseInfo*)info, rinfo->typelib, rinfo->offset + G_STRUCT_OFFSET (ArgBlob, arg_type));
 }
 
 /**
@@ -331,5 +331,5 @@ gi_arg_info_load_type (GIArgInfo  *info,
   g_return_if_fail (info != NULL);
   g_return_if_fail (GI_IS_ARG_INFO (info));
 
-  _gi_type_info_init (type, (GIBaseInfo*)info, rinfo->typelib, rinfo->offset + G_STRUCT_OFFSET (ArgBlob, arg_type));
+  gi_type_info_init (type, (GIBaseInfo*)info, rinfo->typelib, rinfo->offset + G_STRUCT_OFFSET (ArgBlob, arg_type));
 }

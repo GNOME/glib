@@ -31,19 +31,19 @@ G_BEGIN_DECLS
 
 typedef struct _GIIrParser GIIrParser;
 
-GIIrParser *_gi_ir_parser_new          (void);
-void        _gi_ir_parser_free         (GIIrParser         *parser);
-void        _gi_ir_parser_set_includes (GIIrParser         *parser,
-                                        const gchar *const *includes);
+GIIrParser *gi_ir_parser_new          (void);
+void        gi_ir_parser_free         (GIIrParser         *parser);
+void        gi_ir_parser_set_includes (GIIrParser         *parser,
+                                       const gchar *const *includes);
 
-GIIrModule *_gi_ir_parser_parse_string (GIIrParser   *parser,
-                                        const gchar  *namespace,
-                                        const gchar  *filename,
-                                        const gchar  *buffer,
-                                        gssize        length,
-                                        GError      **error);
-GIIrModule *_gi_ir_parser_parse_file   (GIIrParser   *parser,
-                                        const gchar  *filename,
-                                        GError      **error);
+GIIrModule *gi_ir_parser_parse_string (GIIrParser   *parser,
+                                       const gchar  *namespace,
+                                       const gchar  *filename,
+                                       const gchar  *buffer,
+                                       gssize        length,
+                                       GError      **error);
+GIIrModule *gi_ir_parser_parse_file   (GIIrParser   *parser,
+                                       const gchar  *filename,
+                                       GError      **error);
 
 G_END_DECLS

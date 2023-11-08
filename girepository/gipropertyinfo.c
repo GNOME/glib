@@ -96,9 +96,9 @@ gi_property_info_get_type (GIPropertyInfo *info)
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_PROPERTY_INFO (info), NULL);
 
-  return _gi_type_info_new ((GIBaseInfo*)info,
-                            rinfo->typelib,
-                            rinfo->offset + G_STRUCT_OFFSET (PropertyBlob, type));
+  return gi_type_info_new ((GIBaseInfo*)info,
+                           rinfo->typelib,
+                           rinfo->offset + G_STRUCT_OFFSET (PropertyBlob, type));
 }
 
 /**

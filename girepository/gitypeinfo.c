@@ -146,9 +146,9 @@ gi_type_info_get_param_type (GITypeInfo *info,
           case GI_TYPE_TAG_GLIST:
           case GI_TYPE_TAG_GSLIST:
           case GI_TYPE_TAG_GHASH:
-            return _gi_type_info_new ((GIBaseInfo*)info, rinfo->typelib,
-                                      rinfo->offset + sizeof (ParamTypeBlob)
-                                      + sizeof (SimpleTypeBlob) * n);
+            return gi_type_info_new ((GIBaseInfo*)info, rinfo->typelib,
+                                     rinfo->offset + sizeof (ParamTypeBlob)
+                                     + sizeof (SimpleTypeBlob) * n);
             break;
           default:
             break;
@@ -207,7 +207,7 @@ gi_type_info_get_interface (GITypeInfo *info)
           InterfaceTypeBlob *blob = (InterfaceTypeBlob *)&rinfo->typelib->data[rinfo->offset];
 
           if (blob->tag == GI_TYPE_TAG_INTERFACE)
-            return _gi_info_from_entry (rinfo->repository, rinfo->typelib, blob->interface);
+            return gi_info_from_entry (rinfo->repository, rinfo->typelib, blob->interface);
         }
     }
 

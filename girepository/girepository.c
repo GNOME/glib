@@ -754,9 +754,9 @@ gi_repository_get_info (GIRepository *repository,
   entry = gi_typelib_get_dir_entry (typelib, index + 1);
   if (entry == NULL)
     return NULL;
-  return _gi_info_new_full (entry->blob_type,
-                            repository,
-                            NULL, typelib, entry->offset);
+  return gi_info_new_full (entry->blob_type,
+                           repository,
+                           NULL, typelib, entry->offset);
 }
 
 typedef struct {
@@ -854,9 +854,9 @@ gi_repository_find_by_gtype (GIRepository *repository,
 
   if (entry != NULL)
     {
-      cached = _gi_info_new_full (entry->blob_type,
-                                  repository,
-                                  NULL, data.result_typelib, entry->offset);
+      cached = gi_info_new_full (entry->blob_type,
+                                 repository,
+                                 NULL, data.result_typelib, entry->offset);
 
       g_hash_table_insert (repository->priv->info_by_gtype,
 			   (gpointer) gtype,
@@ -901,9 +901,9 @@ gi_repository_find_by_name (GIRepository *repository,
   entry = gi_typelib_get_dir_entry_by_name (typelib, name);
   if (entry == NULL)
     return NULL;
-  return _gi_info_new_full (entry->blob_type,
-                            repository,
-                            NULL, typelib, entry->offset);
+  return gi_info_new_full (entry->blob_type,
+                           repository,
+                           NULL, typelib, entry->offset);
 }
 
 typedef struct {
@@ -971,9 +971,9 @@ gi_repository_find_by_error_domain (GIRepository *repository,
 
   if (data.result != NULL)
     {
-      cached = _gi_info_new_full (data.result->blob_type,
-                                  repository,
-                                  NULL, data.result_typelib, data.result->offset);
+      cached = gi_info_new_full (data.result->blob_type,
+                                 repository,
+                                 NULL, data.result_typelib, data.result->offset);
 
       g_hash_table_insert (repository->priv->info_by_error_domain,
 			   GUINT_TO_POINTER (domain),
