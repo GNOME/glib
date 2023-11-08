@@ -34,14 +34,14 @@
 #include "givfuncinfo.h"
 
 /**
- * SECTION:givfuncinfo
- * @title: GIVFuncInfo
- * @short_description: Struct representing a virtual function
+ * GIVFuncInfo:
  *
- * GIVfuncInfo represents a virtual function.
+ * `GIVfuncInfo` represents a virtual function.
  *
  * A virtual function is a callable object that belongs to either a
- * #GIObjectInfo or a #GIInterfaceInfo.
+ * [alias@GIRepository.ObjectInfo] or a [alias@GIRepository.InterfaceInfo].
+ *
+ * Since: 2.80
  */
 
 GIVFuncInfo *
@@ -73,10 +73,13 @@ gi_base_info_find_vfunc (GIRealInfo  *rinfo,
  * gi_vfunc_info_get_flags:
  * @info: a #GIVFuncInfo
  *
- * Obtain the flags for this virtual function info. See #GIVFuncInfoFlags for
- * more information about possible flag values.
+ * Obtain the flags for this virtual function info.
+ *
+ * See [flags@GIRepository.VFuncInfoFlags] for more information about possible
+ * flag values.
  *
  * Returns: the flags
+ * Since: 2.80
  */
 GIVFuncInfoFlags
 gi_vfunc_info_get_flags (GIVFuncInfo *info)
@@ -112,9 +115,10 @@ gi_vfunc_info_get_flags (GIVFuncInfo *info)
  * @info: a #GIVFuncInfo
  *
  * Obtain the offset of the function pointer in the class struct. The value
- * 0xFFFF indicates that the struct offset is unknown.
+ * `0xFFFF` indicates that the struct offset is unknown.
  *
- * Returns: the struct offset or 0xFFFF if it's unknown
+ * Returns: the struct offset or `0xFFFF` if it’s unknown
+ * Since: 2.80
  */
 gint
 gi_vfunc_info_get_offset (GIVFuncInfo *info)
@@ -135,10 +139,12 @@ gi_vfunc_info_get_offset (GIVFuncInfo *info)
  * @info: a #GIVFuncInfo
  *
  * Obtain the signal for the virtual function if one is set.
+ *
  * The signal comes from the object or interface to which
  * this virtual function belongs.
  *
- * Returns: (transfer full): the signal or %NULL if none set
+ * Returns: (transfer full): the signal or `NULL` if none set
+ * Since: 2.80
  */
 GISignalInfo *
 gi_vfunc_info_get_signal (GIVFuncInfo *info)
@@ -166,8 +172,9 @@ gi_vfunc_info_get_signal (GIVFuncInfo *info)
  *
  * Not all virtuals will have invokers.
  *
- * Returns: (transfer full): the #GIVFuncInfo or %NULL. Free it with
- * gi_base_info_unref() when done.
+ * Returns: (transfer full): the [alias@GIRepository.FunctionInfo] or `NULL`.
+ *   Free it with gi_base_info_unref() when done.
+ * Since: 2.80
  */
 GIFunctionInfo *
 gi_vfunc_info_get_invoker (GIVFuncInfo *info)
@@ -202,10 +209,11 @@ gi_vfunc_info_get_invoker (GIVFuncInfo *info)
  * @implementor_gtype: #GType implementing this virtual function
  * @error: return location for a #GError
  *
- * This method will look up where inside the type struct of @implementor_gtype
- * is the implementation for @info.
+ * Looks up where inside the type struct of @implementor_gtype is the
+ * implementation for @info.
  *
- * Returns: address to a function or %NULL if an error happened
+ * Returns: address to a function or `NULL` if an error happened
+ * Since: 2.80
  */
 gpointer
 gi_vfunc_info_get_address (GIVFuncInfo  *vfunc_info,
@@ -299,25 +307,26 @@ gi_vfunc_info_get_address (GIVFuncInfo  *vfunc_info,
  * gi_vfunc_info_invoke: (skip)
  * @info: a #GIVFuncInfo describing the virtual function to invoke
  * @implementor: #GType of the type that implements this virtual function
- * @in_args: (array length=n_in_args): an array of #GIArgument<!-- -->s, one for each in
- *    parameter of @info. If there are no in parameter, @in_args
- *    can be %NULL
+ * @in_args: (array length=n_in_args): an array of [struct@GIRepository.Argument]s,
+ *    one for each in parameter of @info. If there are no in parameter, @in_args
+ *    can be `NULL`
  * @n_in_args: the length of the @in_args array
- * @out_args: (array length=n_out_args): an array of #GIArgument<!-- -->s, one for each out
- *    parameter of @info. If there are no out parameters, @out_args
- *    may be %NULL
+ * @out_args: (array length=n_out_args): an array of [struct@GIRepository.Argument]s,
+ *    one for each out parameter of @info. If there are no out parameters,
+ *    @out_args may be `NULL`
  * @n_out_args: the length of the @out_args array
  * @return_value: return location for the return value of the
  *    function. If the function returns void, @return_value may be
- *    %NULL
- * @error: return location for detailed error information, or %NULL
+ *    `NULL`
+ * @error: return location for detailed error information, or `NULL`
  *
  * Invokes the function described in @info with the given
  * arguments. Note that inout parameters must appear in both
  * argument lists.
  *
- * Returns: %TRUE if the function has been invoked, %FALSE if an
+ * Returns: true if the function has been invoked, false if an
  *   error occurred.
+ * Since: 2.80
  */
 gboolean
 gi_vfunc_info_invoke (GIVFuncInfo      *info,

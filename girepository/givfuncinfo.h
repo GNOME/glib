@@ -33,10 +33,12 @@
 G_BEGIN_DECLS
 
 /**
- * GI_IS_VFUNC_INFO
+ * GI_IS_VFUNC_INFO:
  * @info: an info structure
  *
- * Checks if @info is a #GIVfuncInfo.
+ * Checks if @info is a [struct@GIRepository.VFuncInfo].
+ *
+ * Since: 2.80
  */
 #define GI_IS_VFUNC_INFO(info) \
     (gi_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_VFUNC)
