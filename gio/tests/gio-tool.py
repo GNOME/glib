@@ -27,6 +27,7 @@ import collections
 import os
 import shutil
 import subprocess
+import sys
 import tempfile
 import unittest
 
@@ -125,7 +126,12 @@ class TestGioTool(unittest.TestCase):
             result = self.runGio(
                 "info", "--attributes=standard::content-type", tmpfile.name
             )
-            self.assertIn("standard::content-type: application/x-zerosize", result.out)
+            if sys.platform == "darwin":
+                self.assertIn("standard::content-type: public.text", result.out)
+            else:
+                self.assertIn(
+                    "standard::content-type: application/x-zerosize", result.out
+                )
 
 
 if __name__ == "__main__":
