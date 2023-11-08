@@ -42,16 +42,6 @@ G_BEGIN_DECLS
     (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_TYPE)
 
 /**
- * G_TYPE_TAG_IS_BASIC
- * @tag: a type tag
- *
- * Checks if @tag is a basic type.
- *
- * Deprecated: 1.72: Use GI_TYPE_TAG_IS_BASIC() instead
- */
-#define G_TYPE_TAG_IS_BASIC(tag) GI_TYPE_TAG_IS_BASIC(tag)
-
-/**
  * GI_TYPE_TAG_IS_BASIC
  * @tag: a type tag
  *
