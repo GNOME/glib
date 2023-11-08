@@ -229,6 +229,10 @@ gi_vfunc_info_get_address (GIVFuncInfo  *vfunc_info,
   gpointer implementor_class, implementor_vtable;
   gpointer func = NULL;
 
+  g_return_val_if_fail (vfunc_info != NULL, NULL);
+  g_return_val_if_fail (GI_IS_VFUNC_INFO (vfunc_info), NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+
   container_info = gi_base_info_get_container (vfunc_info);
   if (gi_base_info_get_type (container_info) == GI_INFO_TYPE_OBJECT)
     {
@@ -340,6 +344,12 @@ gi_vfunc_info_invoke (GIVFuncInfo      *info,
 {
   gpointer func;
   GError *local_error = NULL;
+
+  g_return_val_if_fail (info != NULL, FALSE);
+  g_return_val_if_fail (GI_IS_VFUNC_INFO (info), FALSE);
+  g_return_val_if_fail (in_args != NULL || n_in_args == 0, FALSE);
+  g_return_val_if_fail (out_args != NULL || n_out_args == 0, FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
   func = gi_vfunc_info_get_address (info, implementor, &local_error);
   if (local_error != NULL)
