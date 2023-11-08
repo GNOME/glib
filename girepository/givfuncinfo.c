@@ -143,7 +143,7 @@ gi_vfunc_info_get_offset (GIVFuncInfo *info)
  * The signal comes from the object or interface to which
  * this virtual function belongs.
  *
- * Returns: (transfer full): the signal or `NULL` if none set
+ * Returns: (transfer full) (nullable): the signal or `NULL` if none set
  * Since: 2.80
  */
 GISignalInfo *
@@ -172,8 +172,8 @@ gi_vfunc_info_get_signal (GIVFuncInfo *info)
  *
  * Not all virtuals will have invokers.
  *
- * Returns: (transfer full): the [alias@GIRepository.FunctionInfo] or `NULL`.
- *   Free it with gi_base_info_unref() when done.
+ * Returns: (transfer full) (nullable): the [alias@GIRepository.FunctionInfo] or
+ *   `NULL`. Free it with gi_base_info_unref() when done.
  * Since: 2.80
  */
 GIFunctionInfo *
@@ -307,15 +307,15 @@ gi_vfunc_info_get_address (GIVFuncInfo  *vfunc_info,
  * gi_vfunc_info_invoke: (skip)
  * @info: a #GIVFuncInfo describing the virtual function to invoke
  * @implementor: #GType of the type that implements this virtual function
- * @in_args: (array length=n_in_args): an array of [struct@GIRepository.Argument]s,
- *    one for each in parameter of @info. If there are no in parameter, @in_args
- *    can be `NULL`
+ * @in_args: (array length=n_in_args) (nullable): an array of
+ *    [struct@GIRepository.Argument]s, one for each in parameter of @info. If
+ *    there are no in parameter, @in_args can be `NULL`
  * @n_in_args: the length of the @in_args array
- * @out_args: (array length=n_out_args): an array of [struct@GIRepository.Argument]s,
- *    one for each out parameter of @info. If there are no out parameters,
- *    @out_args may be `NULL`
+ * @out_args: (array length=n_out_args) (nullable): an array of
+ *    [struct@GIRepository.Argument]s, one for each out parameter of @info. If
+ *    there are no out parameters, @out_args may be `NULL`
  * @n_out_args: the length of the @out_args array
- * @return_value: return location for the return value of the
+ * @return_value: (nullable): return location for the return value of the
  *    function. If the function returns void, @return_value may be
  *    `NULL`
  * @error: return location for detailed error information, or `NULL`
