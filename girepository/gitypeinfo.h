@@ -62,26 +62,6 @@ G_BEGIN_DECLS
 #define GI_TYPE_TAG_IS_NUMERIC(tag) ((tag) >= GI_TYPE_TAG_INT8 && (tag) <= GI_TYPE_TAG_DOUBLE)
 
 /**
- * GI_TYPE_TAG_IS_NUMERIC:
- * @tag: a type tag
- *
- * Checks if @tag is a numeric type. That is, integer or floating point.
- *
- * Since: 1.72
- */
-#define GI_TYPE_TAG_IS_NUMERIC(tag) ((tag) >= GI_TYPE_TAG_INT8 && (tag) <= GI_TYPE_TAG_DOUBLE)
-
-/**
- * GI_TYPE_TAG_IS_NUMERIC:
- * @tag: a type tag
- *
- * Checks if @tag is a numeric type. That is, integer or floating point.
- *
- * Since: 1.72
- */
-#define GI_TYPE_TAG_IS_NUMERIC(tag) ((tag) >= GI_TYPE_TAG_INT8 && (tag) <= GI_TYPE_TAG_DOUBLE)
-
-/**
  * GI_TYPE_TAG_IS_CONTAINER:
  * @tag: a type tag
  *
