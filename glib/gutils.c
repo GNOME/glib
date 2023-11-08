@@ -1128,7 +1128,6 @@ g_get_host_name (void)
   return hostname;
 }
 
-G_LOCK_DEFINE_STATIC (g_prgname);
 static const gchar *g_prgname = NULL; /* always a quark */
 
 /**
@@ -1150,13 +1149,7 @@ static const gchar *g_prgname = NULL; /* always a quark */
 const gchar*
 g_get_prgname (void)
 {
-  const gchar* retval;
-
-  G_LOCK (g_prgname);
-  retval = g_prgname;
-  G_UNLOCK (g_prgname);
-
-  return retval;
+  return g_atomic_pointer_get (&g_prgname);
 }
 
 /**
@@ -1179,10 +1172,8 @@ g_get_prgname (void)
 void
 g_set_prgname (const gchar *prgname)
 {
-  GQuark qprgname = g_quark_from_string (prgname);
-  G_LOCK (g_prgname);
-  g_prgname = g_quark_to_string (qprgname);
-  G_UNLOCK (g_prgname);
+  prgname = g_intern_string (prgname);
+  g_atomic_pointer_set (&g_prgname, prgname);
 }
 
 G_LOCK_DEFINE_STATIC (g_application_name);
