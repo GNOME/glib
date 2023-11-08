@@ -501,12 +501,4 @@ typedef enum
   GI_FUNCTION_THROWS         = 1 << 5
 } GIFunctionInfoFlags;
 
-#ifndef __GI_SCANNER__
-#ifndef __GTK_DOC_IGNORE__
-/* backwards compatibility */
-typedef GIArgument GArgument;
-typedef struct _GITypelib GTypelib;
-#endif
-#endif
-
 G_END_DECLS
