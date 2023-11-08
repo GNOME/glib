@@ -194,8 +194,8 @@ gi_union_info_get_discriminator_type (GIUnionInfo *info)
  *
  * If the union is not discriminated, `NULL` is returned.
  *
- * Returns: (transfer full): the [alias@GIRepository.ConstantInfo], free it
- *   with gi_base_info_unref() when done.
+ * Returns: (transfer full) (nullable): the [alias@GIRepository.ConstantInfo],
+ *   free it with gi_base_info_unref() when done.
  * Since: 2.80
  */
 GIConstantInfo *
