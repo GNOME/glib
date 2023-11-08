@@ -104,7 +104,7 @@ GIRepository *g_irepository_get_default   (void);
 GI_AVAILABLE_IN_ALL
 void          g_irepository_prepend_search_path (const char *directory);
 
-GI_AVAILABLE_IN_2_36
+GI_AVAILABLE_IN_ALL
 void          g_irepository_prepend_library_path (const char *directory);
 
 GI_AVAILABLE_IN_ALL
@@ -145,7 +145,7 @@ GITypelib *    g_irepository_require_private (GIRepository  *repository,
 					     GIRepositoryLoadFlags flags,
 					     GError       **error);
 
-GI_AVAILABLE_IN_2_44
+GI_AVAILABLE_IN_ALL
 gchar      ** g_irepository_get_immediate_dependencies (GIRepository *repository,
                                                         const gchar  *namespace_);
 
@@ -160,7 +160,7 @@ GI_AVAILABLE_IN_ALL
 GIBaseInfo *  g_irepository_find_by_gtype (GIRepository *repository,
 					   GType         gtype);
 
-GI_AVAILABLE_IN_2_60
+GI_AVAILABLE_IN_ALL
 void          g_irepository_get_object_gtype_interfaces (GIRepository      *repository,
                                                          GType              gtype,
                                                          guint             *n_interfaces_out,

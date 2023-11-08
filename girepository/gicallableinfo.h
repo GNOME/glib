@@ -45,10 +45,10 @@ G_BEGIN_DECLS
      (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_VFUNC))
 
 
-GI_AVAILABLE_IN_2_34
+GI_AVAILABLE_IN_ALL
 gboolean               g_callable_info_is_method (GICallableInfo *info);
 
-GI_AVAILABLE_IN_2_34
+GI_AVAILABLE_IN_ALL
 gboolean               g_callable_info_can_throw_gerror (GICallableInfo *info);
 
 GI_AVAILABLE_IN_ALL
@@ -89,7 +89,7 @@ void                   g_callable_info_load_arg        (GICallableInfo *info,
                                                         gint            n,
                                                         GIArgInfo      *arg);
 
-GI_AVAILABLE_IN_2_34
+GI_AVAILABLE_IN_ALL
 gboolean               g_callable_info_invoke          (GICallableInfo   *info,
                                                         gpointer          function,
                                                         const GIArgument *in_args,
@@ -101,7 +101,7 @@ gboolean               g_callable_info_invoke          (GICallableInfo   *info,
                                                         gboolean          throws,
                                                         GError          **error);
 
-GI_AVAILABLE_IN_2_42
+GI_AVAILABLE_IN_ALL
 GITransfer             g_callable_info_get_instance_ownership_transfer (GICallableInfo *info);
 
 G_END_DECLS

@@ -49,7 +49,7 @@ GI_AVAILABLE_IN_ALL
 GIFieldInfo *    g_struct_info_get_field       (GIStructInfo *info,
 						gint          n);
 
-GI_AVAILABLE_IN_2_46
+GI_AVAILABLE_IN_ALL
 GIFieldInfo *    g_struct_info_find_field      (GIStructInfo *info,
 						const gchar  *name);
 
@@ -76,10 +76,10 @@ gboolean         g_struct_info_is_gtype_struct (GIStructInfo *info);
 GI_AVAILABLE_IN_ALL
 gboolean         g_struct_info_is_foreign      (GIStructInfo *info);
 
-GI_AVAILABLE_IN_2_76
+GI_AVAILABLE_IN_ALL
 const char *     g_struct_info_get_copy_function (GIStructInfo *info);
 
-GI_AVAILABLE_IN_2_76
+GI_AVAILABLE_IN_ALL
 const char *     g_struct_info_get_free_function (GIStructInfo *info);
 
 G_END_DECLS

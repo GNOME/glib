@@ -88,7 +88,7 @@ const gchar *     g_object_info_get_type_init	 (GIObjectInfo *info);
 GI_AVAILABLE_IN_ALL
 gboolean          g_object_info_get_abstract     (GIObjectInfo *info);
 
-GI_AVAILABLE_IN_2_70
+GI_AVAILABLE_IN_ALL
 gboolean          g_object_info_get_final        (GIObjectInfo *info);
 
 GI_AVAILABLE_IN_ALL
@@ -160,7 +160,7 @@ GI_AVAILABLE_IN_ALL
 GIVFuncInfo *     g_object_info_find_vfunc       (GIObjectInfo *info,
                                                   const gchar  *name);
 
-GI_AVAILABLE_IN_2_32
+GI_AVAILABLE_IN_ALL
 GIVFuncInfo *     g_object_info_find_vfunc_using_interfaces (GIObjectInfo  *info,
 								const gchar   *name,
 								GIObjectInfo **implementor);
