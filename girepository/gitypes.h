@@ -88,11 +88,7 @@ typedef GIBaseInfo GIRegisteredTypeInfo;
  */
 typedef GIBaseInfo GIStructInfo;
 
-/**
- * GIUnionInfo:
- *
- * Represents a union.
- */
+/* Documented in giunioninfo.c */
 typedef GIBaseInfo GIUnionInfo;
 
 /**
