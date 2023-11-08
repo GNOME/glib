@@ -219,35 +219,67 @@ handle_version (int argc, char *argv[], gboolean do_help)
   return 0;
 }
 
-static void
-usage (void)
+typedef int (*HandleSubcommand) (int argc, char *argv[], gboolean do_help);
+
+static const struct
 {
-  g_printerr ("%s\n", _("Usage:"));
-  g_printerr ("  gio %s %s\n", _("COMMAND"), _("[ARGS…]"));
-  g_printerr ("\n");
-  g_printerr ("%s\n", _("Commands:"));
-  g_printerr ("  help     %s\n", _("Print help"));
-  g_printerr ("  version  %s\n", _("Print version"));
-  g_printerr ("  cat      %s\n", _("Concatenate files to standard output"));
-  g_printerr ("  copy     %s\n", _("Copy one or more files"));
-  g_printerr ("  info     %s\n", _("Show information about locations"));
-  g_printerr ("  launch   %s\n", _("Launch an application from a desktop file"));
-  g_printerr ("  list     %s\n", _("List the contents of locations"));
-  g_printerr ("  mime     %s\n", _("Get or set the handler for a mimetype"));
-  g_printerr ("  mkdir    %s\n", _("Create directories"));
-  g_printerr ("  monitor  %s\n", _("Monitor files and directories for changes"));
-  g_printerr ("  mount    %s\n", _("Mount or unmount the locations"));
-  g_printerr ("  move     %s\n", _("Move one or more files"));
-  g_printerr ("  open     %s\n", _("Open files with the default application"));
-  g_printerr ("  rename   %s\n", _("Rename a file"));
-  g_printerr ("  remove   %s\n", _("Delete one or more files"));
-  g_printerr ("  save     %s\n", _("Read from standard input and save"));
-  g_printerr ("  set      %s\n", _("Set a file attribute"));
-  g_printerr ("  trash    %s\n", _("Move files or directories to the trash"));
-  g_printerr ("  tree     %s\n", _("Lists the contents of locations in a tree"));
-  g_printerr ("\n");
-  g_printerr (_("Use %s to get detailed help.\n"), "“gio help COMMAND”");
-  exit (1);
+  const char *name;  /* as used on the command line */
+  HandleSubcommand handle_func;  /* (nullable) for "help" only */
+  const char *description;  /* translatable */
+} gio_subcommands[] = {
+  { "help", NULL, N_("Print help") },
+  { "version", handle_version, N_("Print version") },
+  { "cat", handle_cat, N_("Concatenate files to standard output") },
+  { "copy", handle_copy, N_("Copy one or more files") },
+  { "info", handle_info, N_("Show information about locations") },
+  { "launch", handle_launch, N_("Launch an application from a desktop file") },
+  { "list", handle_list, N_("List the contents of locations") },
+  { "mime", handle_mime, N_("Get or set the handler for a mimetype") },
+  { "mkdir", handle_mkdir, N_("Create directories") },
+  { "monitor", handle_monitor, N_("Monitor files and directories for changes") },
+  { "mount", handle_mount, N_("Mount or unmount the locations") },
+  { "move", handle_move, N_("Move one or more files") },
+  { "open", handle_open, N_("Open files with the default application") },
+  { "rename", handle_rename, N_("Rename a file") },
+  { "remove", handle_remove, N_("Delete one or more files") },
+  { "save", handle_save, N_("Read from standard input and save") },
+  { "set", handle_set, N_("Set a file attribute") },
+  { "trash", handle_trash, N_("Move files or directories to the trash") },
+  { "tree", handle_tree, N_("Lists the contents of locations in a tree") },
+};
+
+static void
+usage (gboolean is_error)
+{
+  GString *out = NULL;
+  size_t name_width = 0;
+
+  out = g_string_new ("");
+  g_string_append_printf (out, "%s\n", _("Usage:"));
+  g_string_append_printf (out, "  gio %s %s\n", _("COMMAND"), _("[ARGS…]"));
+  g_string_append_c (out, '\n');
+  g_string_append_printf (out, "%s\n", _("Commands:"));
+
+  /* Work out the maximum name length for column alignment. */
+  for (size_t i = 0; i < G_N_ELEMENTS (gio_subcommands); i++)
+    name_width = MAX (name_width, strlen (gio_subcommands[i].name));
+
+  for (size_t i = 0; i < G_N_ELEMENTS (gio_subcommands); i++)
+    {
+      g_string_append_printf (out, "  %-*s  %s\n",
+                              (int) name_width, gio_subcommands[i].name,
+                              _(gio_subcommands[i].description));
+    }
+
+  g_string_append_c (out, '\n');
+  g_string_append_printf (out, _("Use %s to get detailed help.\n"), "“gio help COMMAND”");
+
+  if (is_error)
+    g_printerr ("%s", out->str);
+  else
+    g_print ("%s", out->str);
+
+  g_string_free (out, TRUE);
 }
 
 int
@@ -277,7 +309,7 @@ main (int argc, char **argv)
 
   if (argc < 2)
     {
-      usage ();
+      usage (TRUE);
       return 1;
     }
 
@@ -290,7 +322,7 @@ main (int argc, char **argv)
     {
       if (argc == 1)
         {
-          usage ();
+          usage (FALSE);
           return 0;
         }
       else
@@ -301,50 +333,24 @@ main (int argc, char **argv)
     }
   else if (g_str_equal (command, "--help"))
     {
-      usage ();
+      usage (FALSE);
       return 0;
     }
   else if (g_str_equal (command, "--version"))
     command = "version";
 
-  if (g_str_equal (command, "version"))
-    return handle_version (argc, argv, do_help);
-  else if (g_str_equal (command, "cat"))
-    return handle_cat (argc, argv, do_help);
-  else if (g_str_equal (command, "copy"))
-    return handle_copy (argc, argv, do_help);
-  else if (g_str_equal (command, "info"))
-    return handle_info (argc, argv, do_help);
-  else if (g_str_equal (command, "launch"))
-    return handle_launch (argc, argv, do_help);
-  else if (g_str_equal (command, "list"))
-    return handle_list (argc, argv, do_help);
-  else if (g_str_equal (command, "mime"))
-    return handle_mime (argc, argv, do_help);
-  else if (g_str_equal (command, "mkdir"))
-    return handle_mkdir (argc, argv, do_help);
-  else if (g_str_equal (command, "monitor"))
-    return handle_monitor (argc, argv, do_help);
-  else if (g_str_equal (command, "mount"))
-    return handle_mount (argc, argv, do_help);
-  else if (g_str_equal (command, "move"))
-    return handle_move (argc, argv, do_help);
-  else if (g_str_equal (command, "open"))
-    return handle_open (argc, argv, do_help);
-  else if (g_str_equal (command, "rename"))
-    return handle_rename (argc, argv, do_help);
-  else if (g_str_equal (command, "remove"))
-    return handle_remove (argc, argv, do_help);
-  else if (g_str_equal (command, "save"))
-    return handle_save (argc, argv, do_help);
-  else if (g_str_equal (command, "set"))
-    return handle_set (argc, argv, do_help);
-  else if (g_str_equal (command, "trash"))
-    return handle_trash (argc, argv, do_help);
-  else if (g_str_equal (command, "tree"))
-    return handle_tree (argc, argv, do_help);
-  else
-    usage ();
+  /* Work out which subcommand it is. */
+  for (size_t i = 0; i < G_N_ELEMENTS (gio_subcommands); i++)
+    {
+      if (g_str_equal (command, gio_subcommands[i].name))
+        {
+          g_assert (gio_subcommands[i].handle_func != NULL);
+          return gio_subcommands[i].handle_func (argc, argv, do_help);
+        }
+    }
+
+  /* Unknown subcommand. */
+  usage (TRUE);
 
   return 1;
 }

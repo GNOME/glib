@@ -29,11 +29,11 @@
 
 
 /**
- * SECTION:gcancellable
- * @short_description: Thread-safe Operation Cancellation Stack
- * @include: gio/gio.h
+ * GCancellable:
  *
- * GCancellable is a thread-safe operation cancellation stack used 
+ * `GCancellable` allows operations to be cancelled.
+ *
+ * `GCancellable` is a thread-safe operation cancellation stack used
  * throughout GIO to allow for cancellation of synchronous and
  * asynchronous operations.
  */

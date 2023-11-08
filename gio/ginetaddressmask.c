@@ -31,21 +31,12 @@
 #include "glibintl.h"
 
 /**
- * SECTION:ginetaddressmask
- * @short_description: An IPv4/IPv6 address mask
- * @include: gio/gio.h
- *
- * #GInetAddressMask represents a range of IPv4 or IPv6 addresses
- * described by a base address and a length indicating how many bits
- * of the base address are relevant for matching purposes. These are
- * often given in string form. Eg, "10.0.0.0/8", or "fe80::/10".
- */
-
-/**
  * GInetAddressMask:
  *
- * A combination of an IPv4 or IPv6 base address and a length,
- * representing a range of IP addresses.
+ * `GInetAddressMask` represents a range of IPv4 or IPv6 addresses
+ * described by a base address and a length indicating how many bits
+ * of the base address are relevant for matching purposes. These are
+ * often given in string form. For example, `10.0.0.0/8`, or `fe80::/10`.
  *
  * Since: 2.32
  */

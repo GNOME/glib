@@ -35,11 +35,6 @@ G_BEGIN_DECLS
 #define G_IS_WIN32_OUTPUT_STREAM_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_WIN32_OUTPUT_STREAM))
 #define G_WIN32_OUTPUT_STREAM_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_WIN32_OUTPUT_STREAM, GWin32OutputStreamClass))
 
-/**
- * GWin32OutputStream:
- *
- * Implements #GOutputStream for outputting to Windows file handles
- **/
 typedef struct _GWin32OutputStream         GWin32OutputStream;
 typedef struct _GWin32OutputStreamClass    GWin32OutputStreamClass;
 typedef struct _GWin32OutputStreamPrivate  GWin32OutputStreamPrivate;

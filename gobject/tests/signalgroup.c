@@ -305,7 +305,7 @@ test_signal_group_invalid (void)
 
   /* Invalid Signal Name */
   g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
-                         "*g_signal_parse_name*");
+                         "*Invalid signal name “does-not-exist”*");
   group = g_signal_group_new (signal_target_get_type ());
   g_signal_group_connect (group,
                           "does-not-exist",

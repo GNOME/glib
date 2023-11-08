@@ -30,25 +30,15 @@
 #include "glibintl.h"
 
 /**
- * SECTION:gtlsfiledatabase
- * @short_description: TLS file based database type
- * @include: gio/gio.h
+ * GTlsFileDatabase:
  *
- * #GTlsFileDatabase is implemented by #GTlsDatabase objects which load
- * their certificate information from a file. It is an interface which
+ * `GTlsFileDatabase` is implemented by [class@Gio.TlsDatabase] objects which
+ * load their certificate information from a file. It is an interface which
  * TLS library specific subtypes implement.
  *
  * Since: 2.30
  */
 
-/**
- * GTlsFileDatabase:
- *
- * Implemented by a #GTlsDatabase which allows you to load certificates
- * from a file.
- *
- * Since: 2.30
- */
 G_DEFINE_INTERFACE (GTlsFileDatabase, g_tls_file_database, G_TYPE_TLS_DATABASE)
 
 static void

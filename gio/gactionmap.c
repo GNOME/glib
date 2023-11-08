@@ -26,14 +26,13 @@
 #include "gaction.h"
 
 /**
- * SECTION:gactionmap
- * @title: GActionMap
- * @include: gio/gio.h
- * @short_description: Interface for action containers
+ * GActionMap:
  *
- * The GActionMap interface is implemented by #GActionGroup
- * implementations that operate by containing a number of
- * named #GAction instances, such as #GSimpleActionGroup.
+ * `GActionMap` is an interface for action containers.
+ *
+ * The `GActionMap` interface is implemented by [iface@Gio.ActionGroup]
+ * implementations that operate by containing a number of named
+ * [iface@Gio.Action] instances, such as [class@Gio.SimpleActionGroup].
  *
  * One useful application of this interface is to map the
  * names of actions from various action groups to unique,
@@ -42,14 +41,7 @@
  * name.
  *
  * Since: 2.32
- **/
-
-/**
- * GActionMap:
- *
- * #GActionMap is an opaque data structure and can only be accessed
- * using the following functions.
- **/
+ */
 
 /**
  * GActionMapInterface:

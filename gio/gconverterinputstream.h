@@ -39,12 +39,6 @@ G_BEGIN_DECLS
 #define G_IS_CONVERTER_INPUT_STREAM_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_CONVERTER_INPUT_STREAM))
 #define G_CONVERTER_INPUT_STREAM_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_CONVERTER_INPUT_STREAM, GConverterInputStreamClass))
 
-/**
- * GConverterInputStream:
- *
- * An implementation of #GFilterInputStream that allows data
- * conversion.
- **/
 typedef struct _GConverterInputStreamClass    GConverterInputStreamClass;
 typedef struct _GConverterInputStreamPrivate  GConverterInputStreamPrivate;
 

@@ -37,11 +37,6 @@ G_BEGIN_DECLS
 #define G_IS_EMBLEM_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_EMBLEM))
 #define G_EMBLEM_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_EMBLEM, GEmblemClass))
 
-/**
- * GEmblem:
- *
- * An object for Emblems
- */
 typedef struct _GEmblem        GEmblem;
 typedef struct _GEmblemClass   GEmblemClass;
 

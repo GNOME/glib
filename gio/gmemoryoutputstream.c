@@ -35,16 +35,13 @@
 
 
 /**
- * SECTION:gmemoryoutputstream
- * @short_description: Streaming output operations on memory chunks
- * @include: gio/gio.h
- * @see_also: #GMemoryInputStream
+ * GMemoryOutputStream:
  *
- * #GMemoryOutputStream is a class for using arbitrary
+ * `GMemoryOutputStream` is a class for using arbitrary
  * memory chunks as output for GIO streaming output operations.
  *
- * As of GLib 2.34, #GMemoryOutputStream trivially implements
- * #GPollableOutputStream: it always polls as ready.
+ * As of GLib 2.34, `GMemoryOutputStream` trivially implements
+ * [iface@Gio.PollableOutputStream]: it always polls as ready.
  */
 
 #define MIN_ARRAY_SIZE  16

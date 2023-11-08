@@ -462,16 +462,6 @@ g_memory_buffer_put_string (GMemoryBuffer  *mbuf,
   return g_memory_buffer_write (mbuf, str, strlen (str));
 }
 
-
-/**
- * SECTION:gdbusmessage
- * @short_description: D-Bus Message
- * @include: gio/gio.h
- *
- * A type for representing D-Bus messages that can be sent or received
- * on a #GDBusConnection.
- */
-
 typedef struct _GDBusMessageClass GDBusMessageClass;
 
 /**
@@ -490,8 +480,8 @@ struct _GDBusMessageClass
 /**
  * GDBusMessage:
  *
- * The #GDBusMessage structure contains only private data and should
- * only be accessed using the provided API.
+ * A type for representing D-Bus messages that can be sent or received
+ * on a [class@Gio.DBusConnection].
  *
  * Since: 2.26
  */

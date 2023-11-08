@@ -23,27 +23,24 @@
  */
 
 /**
- * SECTION:gthreadedsocketservice
- * @title: GThreadedSocketService
- * @short_description: A threaded GSocketService
- * @include: gio/gio.h
- * @see_also: #GSocketService.
+ * GThreadedSocketService:
  *
- * A #GThreadedSocketService is a simple subclass of #GSocketService
+ * A `GThreadedSocketService` is a simple subclass of [class@Gio.SocketService]
  * that handles incoming connections by creating a worker thread and
  * dispatching the connection to it by emitting the
- * #GThreadedSocketService::run signal in the new thread.
+ * [signal@Gio.ThreadedSocketService::run signal] in the new thread.
  *
- * The signal handler may perform blocking IO and need not return
+ * The signal handler may perform blocking I/O and need not return
  * until the connection is closed.
  *
  * The service is implemented using a thread pool, so there is a
  * limited amount of threads available to serve incoming requests.
- * The service automatically stops the #GSocketService from accepting
+ * The service automatically stops the [class@Gio.SocketService] from accepting
  * new connections when all threads are busy.
  *
- * As with #GSocketService, you may connect to #GThreadedSocketService::run,
- * or subclass and override the default handler.
+ * As with [class@Gio.SocketService], you may connect to
+ * [signal@Gio.ThreadedSocketService::run], or subclass and override the default
+ * handler.
  */
 
 #include "config.h"

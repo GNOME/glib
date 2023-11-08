@@ -43,22 +43,27 @@
 
 
 /**
- * SECTION:gresolver
- * @short_description: Asynchronous and cancellable DNS resolver
- * @include: gio/gio.h
+ * GResolver:
  *
- * #GResolver provides cancellable synchronous and asynchronous DNS
- * resolution, for hostnames (g_resolver_lookup_by_address(),
- * g_resolver_lookup_by_name() and their async variants) and SRV
- * (service) records (g_resolver_lookup_service()).
+ * The object that handles DNS resolution. Use [func@Gio.Resolver.get_default]
+ * to get the default resolver.
  *
- * #GNetworkAddress and #GNetworkService provide wrappers around
- * #GResolver functionality that also implement #GSocketConnectable,
- * making it easy to connect to a remote host/service.
+ * `GResolver` provides cancellable synchronous and asynchronous DNS
+ * resolution, for hostnames ([method@Gio.Resolver.lookup_by_address],
+ * [method@Gio.Resolver.lookup_by_name] and their async variants) and SRV
+ * (service) records ([method@Gio.Resolver.lookup_service]).
  *
- * The default resolver (see g_resolver_get_default()) has a timeout of 30s set
- * on it since GLib 2.78. Earlier versions of GLib did not support resolver
- * timeouts.
+ * [class@Gio.NetworkAddress] and [class@Gio.NetworkService] provide wrappers
+ * around `GResolver` functionality that also implement
+ * [iface@Gio.SocketConnectable], making it easy to connect to a remote
+ * host/service.
+ *
+ * The default resolver (see [func@Gio.Resolver.get_default]) has a timeout of
+ * 30s set on it since GLib 2.78. Earlier versions of GLib did not support
+ * resolver timeouts.
+ *
+ * This is an abstract type; subclasses of it implement different resolvers for
+ * different platforms and situations.
  */
 
 typedef enum {
@@ -83,15 +88,6 @@ struct _GResolverPrivate {
 #endif
 };
 
-/**
- * GResolver:
- *
- * The object that handles DNS resolution. Use g_resolver_get_default()
- * to get the default resolver.
- *
- * This is an abstract type; subclasses of it implement different resolvers for
- * different platforms and situations.
- */
 G_DEFINE_ABSTRACT_TYPE_WITH_CODE (GResolver, g_resolver, G_TYPE_OBJECT,
                                   G_ADD_PRIVATE (GResolver)
                                   g_networking_init ();)

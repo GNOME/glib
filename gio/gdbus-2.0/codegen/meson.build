@@ -30,6 +30,7 @@ meson.override_find_program('gdbus-codegen', gdbus_codegen)
 codegen_dir = join_paths(glib_datadir, 'glib-2.0', 'codegen')
 
 gdbus_codegen_built_files = []
+gdbus_codegen_built_targets = []
 gdbus_codegen_built_files += configure_file(input : 'config.py.in',
                                             output : 'config.py',
                                             install_dir : codegen_dir,
@@ -39,8 +40,8 @@ gdbus_codegen_built_files += configure_file(input : 'config.py.in',
 foreach f : gdbus_codegen_files
   # Copy these into the builddir so that gdbus-codegen can be used uninstalled
   # and then install it too so that it can be used after installation
-  gdbus_codegen_built_files += configure_file(input : f, output : f,
-                                              install_dir : codegen_dir,
-                                              install_tag : 'bin-devel',
-                                              copy : true)
+  gdbus_codegen_built_targets += fs.copyfile(f, f,
+                                             install : true,
+                                             install_dir : codegen_dir,
+                                             install_tag : 'bin-devel')
 endforeach

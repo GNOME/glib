@@ -97,6 +97,13 @@ const gchar *           g_application_command_line_get_cwd              (GApplic
 GIO_AVAILABLE_IN_ALL
 gboolean                g_application_command_line_get_is_remote        (GApplicationCommandLine   *cmdline);
 
+GIO_AVAILABLE_IN_2_80
+void                    g_application_command_line_print_literal        (GApplicationCommandLine   *cmdline,
+                                                                         const gchar               *message);
+GIO_AVAILABLE_IN_2_80
+void                    g_application_command_line_printerr_literal     (GApplicationCommandLine   *cmdline,
+                                                                         const gchar               *message);
+
 GIO_AVAILABLE_IN_ALL
 void                    g_application_command_line_print                (GApplicationCommandLine   *cmdline,
                                                                          const gchar               *format,

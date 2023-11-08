@@ -41,11 +41,6 @@ G_BEGIN_DECLS
 typedef struct _GFileMonitorClass       GFileMonitorClass;
 typedef struct _GFileMonitorPrivate	GFileMonitorPrivate;
 
-/**
- * GFileMonitor:
- *
- * Watches for changes to a file.
- **/
 struct _GFileMonitor
 {
   GObject parent_instance;

@@ -32,51 +32,49 @@
 
 
 /**
- * SECTION:gvolume
- * @short_description: Volume management
- * @include: gio/gio.h
+ * GVolume:
  * 
- * The #GVolume interface represents user-visible objects that can be
- * mounted. Note, when porting from GnomeVFS, #GVolume is the moral
- * equivalent of #GnomeVFSDrive.
+ * The `GVolume` interface represents user-visible objects that can be
+ * mounted. Note, when [porting from GnomeVFS](migrating-gnome-vfs.html),
+ * `GVolume` is the moral equivalent of `GnomeVFSDrive`.
  *
- * Mounting a #GVolume instance is an asynchronous operation. For more
- * information about asynchronous operations, see #GAsyncResult and
- * #GTask. To mount a #GVolume, first call g_volume_mount() with (at
- * least) the #GVolume instance, optionally a #GMountOperation object
- * and a #GAsyncReadyCallback.
+ * Mounting a `GVolume` instance is an asynchronous operation. For more
+ * information about asynchronous operations, see [class@Gio.AsyncResult] and
+ * [class@Gio.Task]. To mount a `GVolume`, first call [method@Gio.Volume.mount]
+ * with (at least) the `GVolume` instance, optionally a
+ * [class@Gio.MountOperation] object and a [type@Gio.AsyncReadyCallback].
  *
- * Typically, one will only want to pass %NULL for the
- * #GMountOperation if automounting all volumes when a desktop session
- * starts since it's not desirable to put up a lot of dialogs asking
+ * Typically, one will only want to pass `NULL` for the
+ * [class@Gio.MountOperation] if automounting all volumes when a desktop session
+ * starts since it’s not desirable to put up a lot of dialogs asking
  * for credentials.
  *
  * The callback will be fired when the operation has resolved (either
- * with success or failure), and a #GAsyncResult instance will be
+ * with success or failure), and a [class@Gio.AsyncResult] instance will be
  * passed to the callback.  That callback should then call
- * g_volume_mount_finish() with the #GVolume instance and the
- * #GAsyncResult data to see if the operation was completed
- * successfully.  If an @error is present when g_volume_mount_finish()
- * is called, then it will be filled with any error information.
+ * [method@Gio.Volume.mount_finish] with the `GVolume` instance and the
+ * [class@Gio.AsyncResult] data to see if the operation was completed
+ * successfully.  If a [type@GLib.Error] is present when
+ * [method@Gio.Volume.mount_finish] is called, then it will be filled with any
+ * error information.
  *
- * ## Volume Identifiers # {#volume-identifier}
+ * ## Volume Identifiers
  *
  * It is sometimes necessary to directly access the underlying
  * operating system object behind a volume (e.g. for passing a volume
- * to an application via the commandline). For this purpose, GIO
- * allows to obtain an 'identifier' for the volume. There can be
+ * to an application via the command line). For this purpose, GIO
+ * allows to obtain an ‘identifier’ for the volume. There can be
  * different kinds of identifiers, such as Hal UDIs, filesystem labels,
  * traditional Unix devices (e.g. `/dev/sda2`), UUIDs. GIO uses predefined
  * strings as names for the different kinds of identifiers:
- * %G_VOLUME_IDENTIFIER_KIND_UUID, %G_VOLUME_IDENTIFIER_KIND_LABEL, etc.
- * Use g_volume_get_identifier() to obtain an identifier for a volume.
+ * `G_VOLUME_IDENTIFIER_KIND_UUID`, `G_VOLUME_IDENTIFIER_KIND_LABEL`, etc.
+ * Use [method@Gio.Volume.get_identifier] to obtain an identifier for a volume.
  *
- *
- * Note that %G_VOLUME_IDENTIFIER_KIND_HAL_UDI will only be available
- * when the gvfs hal volume monitor is in use. Other volume monitors
- * will generally be able to provide the %G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE
+ * Note that `G_VOLUME_IDENTIFIER_KIND_HAL_UDI` will only be available
+ * when the GVFS hal volume monitor is in use. Other volume monitors
+ * will generally be able to provide the `G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE`
  * identifier, which can be used to obtain a hal device by means of
- * libhal_manager_find_device_string_match().
+ * `libhal_manager_find_device_string_match()`.
  */
 
 typedef GVolumeIface GVolumeInterface;
@@ -330,7 +328,7 @@ g_volume_should_automount (GVolume *volume)
 
 
 /**
- * g_volume_mount:
+ * g_volume_mount: (virtual mount_fn)
  * @volume: a #GVolume
  * @flags: flags affecting the operation
  * @mount_operation: (nullable): a #GMountOperation or %NULL to avoid user interaction
@@ -341,8 +339,6 @@ g_volume_should_automount (GVolume *volume)
  * Mounts a volume. This is an asynchronous operation, and is
  * finished by calling g_volume_mount_finish() with the @volume
  * and #GAsyncResult returned in the @callback.
- *
- * Virtual: mount_fn
  */
 void
 g_volume_mount (GVolume             *volume,
@@ -565,7 +561,7 @@ g_volume_eject_with_operation_finish (GVolume        *volume,
  * @kind: the kind of identifier to return
  *
  * Gets the identifier of the given kind for @volume. 
- * See the [introduction][volume-identifier] for more
+ * See the [introduction](#volume-identifiers) for more
  * information about volume identifiers.
  *
  * Returns: (nullable) (transfer full): a newly allocated string containing the
@@ -593,7 +589,7 @@ g_volume_get_identifier (GVolume    *volume,
  * g_volume_enumerate_identifiers:
  * @volume: a #GVolume
  * 
- * Gets the kinds of [identifiers][volume-identifier] that @volume has.
+ * Gets the kinds of [identifiers](#volume-identifiers) that @volume has.
  * Use g_volume_get_identifier() to obtain the identifiers themselves.
  *
  * Returns: (array zero-terminated=1) (transfer full): a %NULL-terminated array

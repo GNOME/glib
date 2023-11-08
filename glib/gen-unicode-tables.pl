@@ -111,6 +111,9 @@ $FOLDING_MAPPING = 2;
     (
      'AI' => "G_UNICODE_BREAK_AMBIGUOUS",
      'AL' => "G_UNICODE_BREAK_ALPHABETIC",
+     'AK' => "G_UNICODE_BREAK_AKSARA",
+     'AP' => "G_UNICODE_BREAK_AKSARA_PRE_BASE",
+     'AS' => "G_UNICODE_BREAK_AKSARA_START",
      'B2' => "G_UNICODE_BREAK_BEFORE_AND_AFTER",
      'BA' => "G_UNICODE_BREAK_AFTER",
      'BB' => "G_UNICODE_BREAK_BEFORE",
@@ -148,6 +151,8 @@ $FOLDING_MAPPING = 2;
      'SG' => "G_UNICODE_BREAK_SURROGATE",
      'SP' => "G_UNICODE_BREAK_SPACE",
      'SY' => "G_UNICODE_BREAK_SYMBOL",
+     'VF' => "G_UNICODE_BREAK_VIRAMA_FINAL",
+     'VI' => "G_UNICODE_BREAK_VIRAMA",
      'WJ' => "G_UNICODE_BREAK_WORD_JOINER",
      'XX' => "G_UNICODE_BREAK_UNKNOWN",
      'ZW' => "G_UNICODE_BREAK_ZERO_WIDTH_SPACE",
@@ -332,7 +337,11 @@ while (<INPUT>)
 	next;
     }
 
-    if ($fields[$CODE] =~ /([A-F0-9]{4,6})\.\.([A-F0-9]{4,6})/) 
+    # Trim leading and trailing whitespace
+    $fields[$CODE] =~ s/^\s+|\s+$//;
+    $fields[$BREAK_PROPERTY] =~ s/^\s+|\s+$//;
+
+    if ($fields[$CODE] =~ /([A-F0-9]{4,6})\.\.([A-F0-9]{4,6})/)
     {
 	$start_code = hex ($1);
 	$end_code = hex ($2);
@@ -803,7 +812,7 @@ sub print_row
 	    print OUT "\n    ";
 	    $column = 4;
 	}
-	else
+	elsif ($i > $start)
 	{
 	    print OUT " "
 	}

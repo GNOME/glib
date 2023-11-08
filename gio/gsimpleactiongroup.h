@@ -46,13 +46,6 @@ G_BEGIN_DECLS
 typedef struct _GSimpleActionGroupPrivate                   GSimpleActionGroupPrivate;
 typedef struct _GSimpleActionGroupClass                     GSimpleActionGroupClass;
 
-/**
- * GSimpleActionGroup:
- *
- * The #GSimpleActionGroup structure contains private data and should only be accessed using the provided API.
- *
- * Since: 2.28
- */
 struct _GSimpleActionGroup
 {
   /*< private >*/

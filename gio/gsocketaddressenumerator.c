@@ -25,23 +25,22 @@
 #include "gtask.h"
 
 /**
- * SECTION:gsocketaddressenumerator
- * @short_description: Enumerator for socket addresses
- * @include: gio/gio.h
+ * GSocketAddressEnumerator:
  *
- * #GSocketAddressEnumerator is an enumerator type for #GSocketAddress
- * instances. It is returned by enumeration functions such as
- * g_socket_connectable_enumerate(), which returns a #GSocketAddressEnumerator
- * to list each #GSocketAddress which could be used to connect to that
- * #GSocketConnectable.
+ * `GSocketAddressEnumerator` is an enumerator type for
+ * [class@Gio.SocketAddress] instances. It is returned by enumeration functions
+ * such as [method@Gio.SocketConnectable.enumerate], which returns a
+ * `GSocketAddressEnumerator` to list each [class@Gio.SocketAddress] which could
+ * be used to connect to that [iface@Gio.SocketConnectable].
  *
  * Enumeration is typically a blocking operation, so the asynchronous methods
- * g_socket_address_enumerator_next_async() and
- * g_socket_address_enumerator_next_finish() should be used where possible.
+ * [method@Gio.SocketAddressEnumerator.next_async] and
+ * [method@Gio.SocketAddressEnumerator.next_finish] should be used where
+ * possible.
  *
- * Each #GSocketAddressEnumerator can only be enumerated once. Once
- * g_socket_address_enumerator_next() has returned %NULL, further
- * enumeration with that #GSocketAddressEnumerator is not possible, and it can
+ * Each `GSocketAddressEnumerator` can only be enumerated once. Once
+ * [method@Gio.SocketAddressEnumerator.next] has returned `NULL`, further
+ * enumeration with that `GSocketAddressEnumerator` is not possible, and it can
  * be unreffed.
  */
 

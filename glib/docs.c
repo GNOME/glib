@@ -1108,6 +1108,12 @@
  * @s: #gsize to stuff into the pointer
  *
  * Stuffs a #gsize into a pointer type.
+ *
+ * Remember, you may not store pointers in integers. This is not portable
+ * in any way, shape or form. These macros only allow storing integers in
+ * pointers, and preserve all bits of a pointer (e.g. on CHERI systems).
+ * The only types that can store pointers as well as integers are #guintptr
+ * and #gintptr.
  */
 
 /**
@@ -1116,6 +1122,14 @@
  *
  * Extracts a #gsize from a pointer. The #gsize must have
  * been stored in the pointer with GSIZE_TO_POINTER().
+ *
+ * Remember, you may not store pointers in integers. This is not portable
+ * in any way, shape or form. These macros only allow storing integers in
+ * pointers, and preserve all bits of a pointer (e.g. on CHERI systems).
+ * The only types that can store pointers as well as integers are #guintptr
+ * and #gintptr.
+ *
+ * See also GPOINTER_TO_TYPE() for #gsize.
  */
  
 /* Byte order {{{1 */

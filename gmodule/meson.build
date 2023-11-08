@@ -147,6 +147,31 @@ meson.override_dependency('gmodule-no-export-2.0', libgmodule_dep)
 meson.override_dependency('gmodule-export-2.0', libgmodule_dep)
 meson.override_dependency('gmodule-2.0', libgmodule_dep)
 
+if enable_gir
+  gmodule_gir = gnome.generate_gir(libgmodule,
+    sources: [
+      gmoduleconf_h,
+      gmodule_h,
+      gmodule_c,
+      'gmodule-deprecated.c',
+    ],
+    namespace: 'GModule',
+    nsversion: '2.0',
+    identifier_prefix: 'G',
+    symbol_prefix: 'g',
+    export_packages: 'gmodule-2.0',
+    header: 'gmodule.h',
+    includes: [ glib_gir[0] ],
+    install: true,
+    dependencies: libglib_dep,
+    extra_args: gir_args + [
+      '-DGMODULE_COMPILATION',
+      '-DGETTEXT_PACKAGE="dummy"',
+      '--symbol-prefix=gmodule',
+    ],
+  )
+endif
+
 if build_tests
   subdir('tests')
 endif

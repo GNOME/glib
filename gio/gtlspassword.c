@@ -30,15 +30,6 @@
 #include <string.h>
 
 /**
- * SECTION:gtlspassword
- * @title: GTlsPassword
- * @short_description: TLS Passwords for prompting
- * @include: gio/gio.h
- *
- * Holds a password used in TLS.
- */
-
-/**
  * GTlsPassword:
  *
  * An abstract interface representing a password used in TLS. Often used in
@@ -300,7 +291,7 @@ g_tls_password_set_value (GTlsPassword  *password,
 }
 
 /**
- * g_tls_password_set_value_full:
+ * g_tls_password_set_value_full: (virtual set_value)
  * @password: a #GTlsPassword object
  * @value: (array length=length): the value for the password
  * @length: the length of the password, or -1
@@ -316,7 +307,6 @@ g_tls_password_set_value (GTlsPassword  *password,
  * calculated automatically. (Note that the terminating nul is not
  * considered part of the password in this case.)
  *
- * Virtual: set_value
  * Since: 2.30
  */
 void

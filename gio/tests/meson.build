@@ -51,7 +51,8 @@ gio_tests = {
   'application-command-line': {},
   'appmonitor' : {
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
-    'can_fail' : host_system == 'darwin',
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3148
+    'can_fail' : host_system in ['darwin', 'gnu'],
   },
   'async-close-output-stream' : {},
   'async-splice-output-stream' : {},
@@ -81,7 +82,8 @@ gio_tests = {
   'g-file' : {},
   'g-file-info' : {
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3070
-    'can_fail' : host_system == 'darwin' or host_system == 'windows' and cc.get_id() != 'gcc',
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3148
+    'can_fail' : host_system in ['darwin', 'gnu'] or host_system == 'windows' and cc.get_id() != 'gcc',
   },
   'g-icon' : {},
   'gdbus-addresses' : {},
@@ -90,7 +92,8 @@ gio_tests = {
     'dependencies' : [libgdbus_example_objectmanager_dep],
     'install_rpath' : installed_tests_execdir,
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
-    'can_fail' : host_system in ['darwin', 'windows'],
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3148
+    'can_fail' : host_system in ['darwin', 'windows', 'gnu'],
   },
   'inet-address' : {},
   'io-stream' : {},
@@ -118,7 +121,8 @@ gio_tests = {
   'sleepy-stream' : {},
   'socket' : {
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
-    'can_fail' : host_system == 'darwin',
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3148
+    'can_fail' : host_system in ['darwin', 'gnu'],
   },
   'socket-listener' : {},
   'socket-service' : {},
@@ -137,7 +141,8 @@ gio_tests = {
   'gdbus-address-get-session' : {
     'extra_programs': host_system != 'windows' ? ['dbus-launch'] : [],
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
-    'can_fail' : host_system == 'darwin',
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3148
+    'can_fail' : host_system in ['darwin', 'gnu'],
   },
   'win32-appinfo' : {},
 }
@@ -175,6 +180,10 @@ python_tests = {
     'can_fail' : host_system == 'freebsd',
     'suite': ['gdbus-codegen', 'slow'],
     'timeout': 90,
+  },
+  'gio-tool.py' : {
+    'depends' : gio_tool,
+    'can_fail' : host_system == 'windows',
   },
 }
 
@@ -232,7 +241,10 @@ endif
 #  Test programs buildable on UNIX only
 if host_machine.system() != 'windows'
   gio_tests += {
-    'file' : {},
+    'file' : {
+      # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3148
+      'can_fail' : host_system == 'gnu',
+    },
     'gdbus-peer-object-manager' : {},
     'gdbus-sasl' : {},
     'live-g-file' : {},
@@ -277,7 +289,10 @@ if host_machine.system() != 'windows'
     },
     'resolver-parsing' : {'dependencies' : [network_libs]},
     'socket-address' : {},
-    'stream-rw_all' : {},
+    'stream-rw_all' : {
+      # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3148
+      'can_fail' : host_system == 'gnu',
+    },
     'unix-mounts' : {},
     'unix-streams' : {},
     'g-file-info-filesystem-readonly' : {},
@@ -324,6 +339,8 @@ if host_machine.system() != 'windows'
         'install' : false,
         'depends' : gio_launch_desktop,
         'extra_programs' : ['apps', 'appinfo-test'],
+        # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3148
+        'can_fail' : host_system == 'gnu',
       },
     }
   endif
@@ -360,6 +377,7 @@ if host_machine.system() != 'windows'
         output :  ['gdbus-test-codegen-generated.h',
                    'gdbus-test-codegen-generated.c'],
         depend_files : gdbus_codegen_built_files,
+        depends : gdbus_codegen_built_targets,
         command : [python, gdbus_codegen,
                    '--interface-prefix', 'org.project.',
                    '--output-directory', '@OUTDIR@',
@@ -376,6 +394,7 @@ if host_machine.system() != 'windows'
         output :  ['gdbus-test-codegen-generated-min-required-2-64.h',
                    'gdbus-test-codegen-generated-min-required-2-64.c'],
         depend_files : gdbus_codegen_built_files,
+        depends : gdbus_codegen_built_targets,
         command : [python, gdbus_codegen,
                    '--glib-min-required', '2.64',
                    '--interface-prefix', 'org.project.',
@@ -392,6 +411,7 @@ if host_machine.system() != 'windows'
           input :   ['test-codegen.xml'],
           output :  ['gdbus-test-codegen-generated-interface-info.h'],
           depend_files : gdbus_codegen_built_files,
+          depends : gdbus_codegen_built_targets,
           command : [python, gdbus_codegen,
                      '--interface-info-header',
                      annotate_args,
@@ -401,6 +421,7 @@ if host_machine.system() != 'windows'
           input :   ['test-codegen.xml'],
           output :  ['gdbus-test-codegen-generated-interface-info.c'],
           depend_files : gdbus_codegen_built_files,
+          depends : gdbus_codegen_built_targets,
           command : [python, gdbus_codegen,
                      '--interface-info-body',
                      annotate_args,
@@ -454,6 +475,8 @@ if host_machine.system() != 'windows'
       'gdbus-proxy-threads' : {
         'extra_sources' : extra_sources,
         'dependencies' : [dbus1_dep],
+        # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3148
+        'can_fail' : host_system == 'gnu',
       },
       'gdbus-proxy-unique-name' : {
         'extra_sources' : extra_sources,
@@ -513,6 +536,7 @@ if host_machine.system() != 'windows'
         output :  ['fake-document-portal-generated.h',
                    'fake-document-portal-generated.c'],
         depend_files : gdbus_codegen_built_files,
+        depends : gdbus_codegen_built_targets,
         command : [python, gdbus_codegen,
                    '--interface-prefix', 'org.freedesktop.portal.',
                    '--output-directory', '@OUTDIR@',
@@ -556,6 +580,8 @@ if host_machine.system() != 'windows'
                     '-DTEST_LOCALE_PATH="@0@"'.format(test_mo_dir)],
         'install' : false,
         'depends' : glib_compile_schemas,
+        # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3148
+        'can_fail' : host_system == 'gnu',
       },
     }
   endif
@@ -793,8 +819,12 @@ if not meson.is_cross_build()
     output : ['gresource-big-test.txt'],
     command : [python, '@INPUT0@', '@OUTPUT@'])
 
+  # referenced by test.gresource.xml
+  test_generated_txt = fs.copyfile('test1.txt', 'test-generated.txt')
+
   test_gresource = custom_target('test.gresource',
     input : 'test.gresource.xml',
+    depends : test_generated_txt,
     output : 'test.gresource',
     command : [glib_compile_resources,
                compiler_type,
@@ -872,12 +902,6 @@ if not meson.is_cross_build()
                '--manual-register',
                '@INPUT@'])
 
-  # referenced by test.gresource.xml
-  test_generated_txt = configure_file(input : 'test1.txt',
-    output : 'test-generated.txt',
-    copy : true,
-  )
-
   resources_extra_sources = [
     test_gresource,
     test_resources_c,
@@ -905,8 +929,9 @@ if not meson.is_cross_build()
 
   ld = find_program('ld', required : false)
 
-  if build_machine.system() == 'linux' and objcopy.found() and objcopy_supports_add_symbol and ld.found() and \
-      build_machine.cpu_family() != 'mips' and build_machine.cpu_family() != 'mips64'
+  if build_machine.system() == 'linux' and \
+      objcopy.found() and objcopy_supports_add_symbol and ld.found() and \
+      build_machine.cpu_family() not in ['mips', 'mips64']
     test_gresource_binary = custom_target('test5.gresource',
       input : 'test5.gresource.xml',
       output : 'test5.gresource',
@@ -1058,6 +1083,7 @@ endforeach
 foreach test_name, extra_args : python_tests
   depends = [extra_args.get('depends', [])]
   suite = ['gio', 'no-valgrind'] + extra_args.get('suite', [])
+  timeout = extra_args.get('timeout', test_timeout)
 
   if extra_args.get('can_fail', false)
     suite += 'failing'
@@ -1074,7 +1100,7 @@ foreach test_name, extra_args : python_tests
     depends: depends,
     args: ['-B', files(test_name)],
     env: test_env,
-    timeout: extra_args.get('timeout'),
+    timeout: timeout,
     suite: suite,
   )
 

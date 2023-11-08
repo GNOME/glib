@@ -38,11 +38,6 @@ G_BEGIN_DECLS
 #define G_IS_FILE_INFO_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_FILE_INFO))
 #define G_FILE_INFO_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_FILE_INFO, GFileInfoClass))
 
-/**
- * GFileInfo:
- *
- * Stores information about a file system object referenced by a #GFile.
- **/
 typedef struct _GFileInfoClass   GFileInfoClass;
 
 

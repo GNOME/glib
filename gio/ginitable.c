@@ -26,35 +26,34 @@
 
 
 /**
- * SECTION:ginitable
- * @short_description: Failable object initialization interface
- * @include: gio/gio.h
- * @see_also: #GAsyncInitable
+ * GInitable:
  *
- * #GInitable is implemented by objects that can fail during
+ * `GInitable` is implemented by objects that can fail during
  * initialization. If an object implements this interface then
  * it must be initialized as the first thing after construction,
- * either via g_initable_init() or g_async_initable_init_async()
- * (the latter is only available if it also implements #GAsyncInitable).
+ * either via [method@Gio.Initable.init] or [method@Gio.AsyncInitable.init_async]
+ * (the latter is only available if it also implements [iface@Gio.AsyncInitable]).
  *
  * If the object is not initialized, or initialization returns with an
- * error, then all operations on the object except g_object_ref() and
- * g_object_unref() are considered to be invalid, and have undefined
- * behaviour. They will often fail with g_critical() or g_warning(), but
- * this must not be relied on.
+ * error, then all operations on the object except `g_object_ref()` and
+ * `g_object_unref()` are considered to be invalid, and have undefined
+ * behaviour. They will often fail with [func@GLib.critical] or
+ * [func@GLib.warning], but this must not be relied on.
  *
  * Users of objects implementing this are not intended to use
  * the interface method directly, instead it will be used automatically
  * in various ways. For C applications you generally just call
- * g_initable_new() directly, or indirectly via a foo_thing_new() wrapper.
- * This will call g_initable_init() under the cover, returning %NULL and
- * setting a #GError on failure (at which point the instance is
+ * [func@Gio.Initable.new] directly, or indirectly via a `foo_thing_new()` wrapper.
+ * This will call [method@Gio.Initable.init] under the cover, returning `NULL`
+ * and setting a `GError` on failure (at which point the instance is
  * unreferenced).
  *
  * For bindings in languages where the native constructor supports
- * exceptions the binding could check for objects implementing %GInitable
+ * exceptions the binding could check for objects implementing `GInitable`
  * during normal construction and automatically initialize them, throwing
  * an exception on failure.
+ *
+ * Since: 2.22
  */
 
 typedef GInitableIface GInitableInterface;

@@ -13,13 +13,9 @@
  */
 
 /**
- * SECTION:gtcpconnection
- * @title: GTcpConnection
- * @short_description: A TCP GSocketConnection
- * @include: gio/gio.h
- * @see_also: #GSocketConnection.
+ * GTcpConnection:
  *
- * This is the subclass of #GSocketConnection that is created
+ * This is the subclass of [class@Gio.SocketConnection] that is created
  * for TCP/IP sockets.
  *
  * Since: 2.22

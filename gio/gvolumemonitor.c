@@ -32,19 +32,16 @@
 
 
 /**
- * SECTION:gvolumemonitor
- * @short_description: Volume Monitor
- * @include: gio/gio.h
- * @see_also: #GFileMonitor
+ * GVolumeMonitor:
  * 
- * #GVolumeMonitor is for listing the user interesting devices and volumes
+ * `GVolumeMonitor` is for listing the user interesting devices and volumes
  * on the computer. In other words, what a file selector or file manager
- * would show in a sidebar. 
+ * would show in a sidebar.
  *
- * #GVolumeMonitor is not
- * [thread-default-context aware][g-main-context-push-thread-default],
- * and so should not be used other than from the main thread, with no
- * thread-default-context active.
+ * `GVolumeMonitor` is not
+ * thread-default-context aware (see
+ * [method@GLib.MainContext.push_thread_default]), and so should not be used
+ * other than from the main thread, with no thread-default-context active.
  *
  * In order to receive updates about volumes and mounts monitored through GVFS,
  * a main loop must be running.

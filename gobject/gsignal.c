@@ -39,99 +39,6 @@
 #include "gobject_trace.h"
 
 
-/**
- * SECTION:signals
- * @short_description: A means for customization of object behaviour
- *     and a general purpose notification mechanism
- * @title: Signals
- *
- * The basic concept of the signal system is that of the emission
- * of a signal. Signals are introduced per-type and are identified
- * through strings. Signals introduced for a parent type are available
- * in derived types as well, so basically they are a per-type facility
- * that is inherited.
- *
- * A signal emission mainly involves invocation of a certain set of
- * callbacks in precisely defined manner. There are two main categories
- * of such callbacks, per-object ones and user provided ones.
- * (Although signals can deal with any kind of instantiatable type, I'm
- * referring to those types as "object types" in the following, simply
- * because that is the context most users will encounter signals in.)
- * The per-object callbacks are most often referred to as "object method
- * handler" or "default (signal) handler", while user provided callbacks are
- * usually just called "signal handler".
- *
- * The object method handler is provided at signal creation time (this most
- * frequently happens at the end of an object class' creation), while user
- * provided handlers are frequently connected and disconnected to/from a
- * certain signal on certain object instances.
- *
- * A signal emission consists of five stages, unless prematurely stopped:
- *
- * 1. Invocation of the object method handler for %G_SIGNAL_RUN_FIRST signals
- *
- * 2. Invocation of normal user-provided signal handlers (where the @after
- *    flag is not set)
- *
- * 3. Invocation of the object method handler for %G_SIGNAL_RUN_LAST signals
- *
- * 4. Invocation of user provided signal handlers (where the @after flag is set)
- *
- * 5. Invocation of the object method handler for %G_SIGNAL_RUN_CLEANUP signals
- *
- * The user-provided signal handlers are called in the order they were
- * connected in.
- *
- * All handlers may prematurely stop a signal emission, and any number of
- * handlers may be connected, disconnected, blocked or unblocked during
- * a signal emission.
- *
- * There are certain criteria for skipping user handlers in stages 2 and 4
- * of a signal emission.
- *
- * First, user handlers may be blocked. Blocked handlers are omitted during
- * callback invocation, to return from the blocked state, a handler has to
- * get unblocked exactly the same amount of times it has been blocked before.
- *
- * Second, upon emission of a %G_SIGNAL_DETAILED signal, an additional
- * @detail argument passed in to g_signal_emit() has to match the detail
- * argument of the signal handler currently subject to invocation.
- * Specification of no detail argument for signal handlers (omission of the
- * detail part of the signal specification upon connection) serves as a
- * wildcard and matches any detail argument passed in to emission.
- *
- * While the @detail argument is typically used to pass an object property name
- * (as with #GObject::notify), no specific format is mandated for the detail
- * string, other than that it must be non-empty.
- *
- * ## Memory management of signal handlers # {#signal-memory-management}
- *
- * If you are connecting handlers to signals and using a #GObject instance as
- * your signal handler user data, you should remember to pair calls to
- * g_signal_connect() with calls to g_signal_handler_disconnect() or
- * g_signal_handlers_disconnect_by_func(). While signal handlers are
- * automatically disconnected when the object emitting the signal is finalised,
- * they are not automatically disconnected when the signal handler user data is
- * destroyed. If this user data is a #GObject instance, using it from a
- * signal handler after it has been finalised is an error.
- *
- * There are two strategies for managing such user data. The first is to
- * disconnect the signal handler (using g_signal_handler_disconnect() or
- * g_signal_handlers_disconnect_by_func()) when the user data (object) is
- * finalised; this has to be implemented manually. For non-threaded programs,
- * g_signal_connect_object() can be used to implement this automatically.
- * Currently, however, it is unsafe to use in threaded programs.
- *
- * The second is to hold a strong reference on the user data until after the
- * signal is disconnected for other reasons. This can be implemented
- * automatically using g_signal_connect_data().
- *
- * The first approach is recommended, as the second approach can result in
- * effective memory leaks of the user data if the signal handler is never
- * disconnected for some reason.
- */
-
-
 #define REPORT_BUG      "please report occurrence circumstances to https://gitlab.gnome.org/GNOME/glib/issues/new"
 
 /* --- typedefs --- */
@@ -1326,8 +1233,8 @@ g_signal_lookup (const gchar *name,
     {
       /* give elaborate warnings */
       if (!g_type_name (itype))
-	g_critical (G_STRLOC ": unable to look up signal \"%s\" for invalid type id '%"G_GSIZE_FORMAT"'",
-		    name, itype);
+	g_critical (G_STRLOC ": unable to look up signal \"%s\" for invalid type id '%"G_GUINTPTR_FORMAT"'",
+		    name, (guintptr) itype);
       else if (!g_signal_is_valid_name (name))
         g_critical (G_STRLOC ": unable to look up invalid signal name \"%s\" on type '%s'",
                     name, g_type_name (itype));
@@ -1375,8 +1282,8 @@ g_signal_list_ids (GType  itype,
     {
       /* give elaborate warnings */
       if (!g_type_name (itype))
-	g_critical (G_STRLOC ": unable to list signals for invalid type id '%"G_GSIZE_FORMAT"'",
-		    itype);
+	g_critical (G_STRLOC ": unable to list signals for invalid type id '%"G_GUINTPTR_FORMAT"'",
+		    (guintptr) itype);
       else if (!G_TYPE_IS_INSTANTIATABLE (itype) && !G_TYPE_IS_INTERFACE (itype))
 	g_critical (G_STRLOC ": unable to list signals of non instantiatable type '%s'",
 		    g_type_name (itype));
@@ -2127,14 +2034,14 @@ g_signal_override_class_handler (const gchar *signal_name,
     g_signal_override_class_closure (signal_id, instance_type,
                                      g_cclosure_new (class_handler, NULL, NULL));
   else
-    g_critical ("%s: signal name '%s' is invalid for type id '%"G_GSIZE_FORMAT"'",
-                G_STRLOC, signal_name, instance_type);
+    g_critical ("%s: signal name '%s' is invalid for type id '%"G_GUINTPTR_FORMAT"'",
+                G_STRLOC, signal_name, (guintptr) instance_type);
 
 }
 
 /**
  * g_signal_chain_from_overridden:
- * @instance_and_params: (array) the argument list of the signal emission.
+ * @instance_and_params: (array): the argument list of the signal emission.
  *  The first element in the array is a #GValue for the instance the signal
  *  is being emitted on. The rest are any arguments to be passed to the signal.
  * @return_value: Location for the return value.

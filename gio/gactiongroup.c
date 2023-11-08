@@ -26,31 +26,26 @@
 #include "gmarshal-internal.h"
 
 /**
- * SECTION:gactiongroup
- * @title: GActionGroup
- * @short_description: A group of actions
- * @include: gio/gio.h
- * @see_also: #GAction
+ * GActionGroup:
  *
- * #GActionGroup represents a group of actions. Actions can be used to
- * expose functionality in a structured way, either from one part of a
- * program to another, or to the outside world. Action groups are often
- * used together with a #GMenuModel that provides additional
- * representation data for displaying the actions to the user, e.g. in
- * a menu.
+ * `GActionGroup` represents a group of actions.
  *
- * The main way to interact with the actions in a GActionGroup is to
- * activate them with g_action_group_activate_action(). Activating an
- * action may require a #GVariant parameter. The required type of the
- * parameter can be inquired with g_action_group_get_action_parameter_type().
- * Actions may be disabled, see g_action_group_get_action_enabled().
+ * Actions can be used to expose functionality in a structured way, either
+ * from one part of a program to another, or to the outside world. Action
+ * groups are often used together with a `GMenuModel` that provides additional
+ * representation data for displaying the actions to the user, e.g. in a menu.
+ *
+ * The main way to interact with the actions in a `GActionGroup` is to
+ * activate them with [method@Gio.ActionGroup.activate_action]. Activating an
+ * action may require a `GVariant` parameter. The required type of the
+ * parameter can be inquired with [method@Gio.ActionGroup.get_action_parameter_type].
+ * Actions may be disabled, see [method@Gio.ActionGroup.get_action_enabled].
  * Activating a disabled action has no effect.
  *
- * Actions may optionally have a state in the form of a #GVariant. The
- * current state of an action can be inquired with
- * g_action_group_get_action_state(). Activating a stateful action may
- * change its state, but it is also possible to set the state by calling
- * g_action_group_change_action_state().
+ * Actions may optionally have a state in the form of a #GVariant. The current
+ * state of an action can be inquired with [method@Gio.ActionGroup.get_action_state].
+ * Activating a stateful action may change its state, but it is also possible to
+ * set the state by calling [method@Gio.ActionGroup.change_action_state].
  *
  * As typical example, consider a text editing application which has an
  * option to change the current font to 'bold'. A good way to represent
@@ -58,33 +53,26 @@
  * action would toggle the state.
  *
  * Each action in the group has a unique name (which is a string).  All
- * method calls, except g_action_group_list_actions() take the name of
+ * method calls, except [method@Gio.ActionGroup.list_actions] take the name of
  * an action as an argument.
  *
- * The #GActionGroup API is meant to be the 'public' API to the action
- * group.  The calls here are exactly the interaction that 'external
+ * The `GActionGroup` API is meant to be the 'public' API to the action
+ * group. The calls here are exactly the interaction that 'external
  * forces' (eg: UI, incoming D-Bus messages, etc.) are supposed to have
- * with actions.  'Internal' APIs (ie: ones meant only to be accessed by
- * the action group implementation) are found on subclasses.  This is
- * why you will find - for example - g_action_group_get_action_enabled()
+ * with actions. 'Internal' APIs (ie: ones meant only to be accessed by
+ * the action group implementation) are found on subclasses. This is
+ * why you will find - for example - [method@Gio.ActionGroup.get_action_enabled]
  * but not an equivalent set() call.
  *
  * Signals are emitted on the action group in response to state changes
  * on individual actions.
  *
- * Implementations of #GActionGroup should provide implementations for
- * the virtual functions g_action_group_list_actions() and
- * g_action_group_query_action().  The other virtual functions should
+ * Implementations of `GActionGroup` should provide implementations for
+ * the virtual functions [method@Gio.ActionGroup.list_actions] and
+ * [method@Gio.ActionGroup.query_action]. The other virtual functions should
  * not be implemented - their "wrappers" are actually implemented with
- * calls to g_action_group_query_action().
+ * calls to [method@Gio.ActionGroup.query_action].
  */
-
-/**
- * GActionGroup:
- *
- * #GActionGroup is an opaque data structure and can only be accessed
- * using the following functions.
- **/
 
 /**
  * GActionGroupInterface:
@@ -96,13 +84,12 @@
  * @get_action_enabled: the virtual function pointer for g_action_group_get_action_enabled()
  * @get_action_state: the virtual function pointer for g_action_group_get_action_state()
  * @change_action_state: the virtual function pointer for g_action_group_change_action_state()
- * @query_action: the virtual function pointer for g_action_group_query_action()
  * @activate_action: the virtual function pointer for g_action_group_activate_action()
- * @change_action_state: the virtual function pointer for g_action_group_change_action_state()
  * @action_added: the class closure for the #GActionGroup::action-added signal
  * @action_removed: the class closure for the #GActionGroup::action-removed signal
  * @action_enabled_changed: the class closure for the #GActionGroup::action-enabled-changed signal
  * @action_state_changed: the class closure for the #GActionGroup::action-enabled-changed signal
+ * @query_action: the virtual function pointer for g_action_group_query_action()
  *
  * The virtual function table for #GActionGroup.
  *

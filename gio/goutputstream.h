@@ -38,15 +38,6 @@ G_BEGIN_DECLS
 #define G_IS_OUTPUT_STREAM_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_OUTPUT_STREAM))
 #define G_OUTPUT_STREAM_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_OUTPUT_STREAM, GOutputStreamClass))
 
-/**
- * GOutputStream:
- *
- * Base class for writing output.
- *
- * All classes derived from GOutputStream should implement synchronous
- * writing, splicing, flushing and closing streams, but may implement
- * asynchronous versions.
- **/
 typedef struct _GOutputStreamClass    GOutputStreamClass;
 typedef struct _GOutputStreamPrivate  GOutputStreamPrivate;
 

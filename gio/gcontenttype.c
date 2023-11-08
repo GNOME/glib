@@ -38,9 +38,7 @@
 
 
 /**
- * SECTION:gcontenttype
- * @short_description: Platform-specific content typing
- * @include: gio/gio.h
+ * GContentType:
  *
  * A content type is a platform specific string that defines the type
  * of a file. On UNIX it is a

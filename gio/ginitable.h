@@ -37,13 +37,6 @@ G_BEGIN_DECLS
 #define G_INITABLE_GET_IFACE(obj)  (G_TYPE_INSTANCE_GET_INTERFACE ((obj), G_TYPE_INITABLE, GInitableIface))
 #define G_TYPE_IS_INITABLE(type)   (g_type_is_a ((type), G_TYPE_INITABLE))
 
-/**
- * GInitable:
- *
- * Interface for initializable objects.
- *
- * Since: 2.22
- **/
 typedef struct _GInitableIface GInitableIface;
 
 /**

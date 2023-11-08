@@ -29,25 +29,13 @@
 #include "glibintl.h"
 
 /**
- * SECTION:gtlscertificate
- * @title: GTlsCertificate
- * @short_description: TLS certificate
- * @include: gio/gio.h
- * @see_also: #GTlsConnection
+ * GTlsCertificate:
  *
  * A certificate used for TLS authentication and encryption.
  * This can represent either a certificate only (eg, the certificate
  * received by a client from a server), or the combination of
  * a certificate and a private key (which is needed when acting as a
- * #GTlsServerConnection).
- *
- * Since: 2.28
- */
-
-/**
- * GTlsCertificate:
- *
- * Abstract base class for TLS certificate types.
+ * [iface@Gio.TlsServerConnection]).
  *
  * Since: 2.28
  */

@@ -39,23 +39,21 @@ struct _GFileEnumeratorPrivate {
 };
 
 /**
- * SECTION:gfileenumerator
- * @short_description: Enumerated Files Routines
- * @include: gio/gio.h
+ * GFileEnumerator:
  * 
- * #GFileEnumerator allows you to operate on a set of #GFiles, 
- * returning a #GFileInfo structure for each file enumerated (e.g. 
- * g_file_enumerate_children() will return a #GFileEnumerator for each 
+ * `GFileEnumerator` allows you to operate on a set of [iface@Gio.File] objects,
+ * returning a [class@Gio.FileInfo] structure for each file enumerated (e.g.
+ * [method@Gio.File.enumerate_children] will return a `GFileEnumerator` for each
  * of the children within a directory).
  *
- * To get the next file's information from a #GFileEnumerator, use 
- * g_file_enumerator_next_file() or its asynchronous version, 
- * g_file_enumerator_next_files_async(). Note that the asynchronous 
- * version will return a list of #GFileInfos, whereas the 
+ * To get the next file's information from a `GFileEnumerator`, use
+ * [method@Gio.FileEnumerator.next_file] or its asynchronous version,
+ * [method@Gio.FileEnumerator.next_files_async]. Note that the asynchronous
+ * version will return a list of [class@Gio.FileInfo] objects, whereas the
  * synchronous will only return the next file in the enumerator.
  *
  * The ordering of returned files is unspecified for non-Unix
- * platforms; for more information, see g_dir_read_name().  On Unix,
+ * platforms; for more information, see [method@GLib.Dir.read_name].  On Unix,
  * when operating on local files, returned files will be sorted by
  * inode number.  Effectively you can assume that the ordering of
  * returned files will be stable between successive calls (and
@@ -65,10 +63,10 @@ struct _GFileEnumeratorPrivate {
  * modification time, you will have to implement that in your
  * application code.
  *
- * To close a #GFileEnumerator, use g_file_enumerator_close(), or 
- * its asynchronous version, g_file_enumerator_close_async(). Once 
- * a #GFileEnumerator is closed, no further actions may be performed 
- * on it, and it should be freed with g_object_unref().
+ * To close a `GFileEnumerator`, use [method@Gio.FileEnumerator.close], or
+ * its asynchronous version, [method@Gio.FileEnumerator.close_async]. Once
+ * a `GFileEnumerator` is closed, no further actions may be performed
+ * on it, and it should be freed with [method@GObject.Object.unref].
  * 
  **/ 
 

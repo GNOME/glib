@@ -21,28 +21,17 @@
  */
 
 /**
- * SECTION:gtcpwrapperconnection
- * @title: GTcpWrapperConnection
- * @short_description: Wrapper for non-GSocketConnection-based,
- *     GSocket-based GIOStreams
- * @include: gio/gio.h
- * @see_also: #GSocketConnection.
+ * GTcpWrapperConnection:
  *
- * A #GTcpWrapperConnection can be used to wrap a #GIOStream that is
- * based on a #GSocket, but which is not actually a
- * #GSocketConnection. This is used by #GSocketClient so that it can
- * always return a #GSocketConnection, even when the connection it has
- * actually created is not directly a #GSocketConnection.
+ * A `GTcpWrapperConnection` can be used to wrap a [class@Gio.IOStream] that is
+ * based on a [class@Gio.Socket], but which is not actually a
+ * [class@Gio.SocketConnection]. This is used by [class@Gio.SocketClient] so
+ * that it can always return a [class@Gio.SocketConnection], even when the
+ * connection it has actually created is not directly a
+ * [class@Gio.SocketConnection].
  *
  * Since: 2.28
  */
-
-/**
- * GTcpWrapperConnection:
- *
- * #GTcpWrapperConnection is an opaque data structure and can only be accessed
- * using the following functions.
- **/
 
 #include "config.h"
 

@@ -2451,12 +2451,15 @@ test_copy_preserve_mode (void)
       { 0600, 0600, TRUE, G_FILE_COPY_OVERWRITE | G_FILE_COPY_NOFOLLOW_SYMLINKS },
       /* The same behaviour should hold if the destination file is not being
        * overwritten because it doesn’t already exist: */
+      { 0600, 0600, FALSE, G_FILE_COPY_NOFOLLOW_SYMLINKS | G_FILE_COPY_TARGET_DEFAULT_MODIFIED_TIME | G_FILE_COPY_ALL_METADATA },
       { 0600, 0600, FALSE, G_FILE_COPY_NOFOLLOW_SYMLINKS | G_FILE_COPY_ALL_METADATA },
       { 0600, 0600, FALSE, G_FILE_COPY_NOFOLLOW_SYMLINKS },
       /* Anything with %G_FILE_COPY_TARGET_DEFAULT_PERMS should use the current
        * umask for the destination file: */
       { 0600, 0666 & ~current_umask, TRUE, G_FILE_COPY_TARGET_DEFAULT_PERMS | G_FILE_COPY_OVERWRITE | G_FILE_COPY_NOFOLLOW_SYMLINKS | G_FILE_COPY_ALL_METADATA },
       { 0600, 0666 & ~current_umask, TRUE, G_FILE_COPY_TARGET_DEFAULT_PERMS | G_FILE_COPY_OVERWRITE | G_FILE_COPY_NOFOLLOW_SYMLINKS },
+      { 0600, 0666 & ~current_umask, FALSE, G_FILE_COPY_TARGET_DEFAULT_PERMS | G_FILE_COPY_NOFOLLOW_SYMLINKS | G_FILE_COPY_TARGET_DEFAULT_MODIFIED_TIME | G_FILE_COPY_ALL_METADATA },
+      { 0600, 0666 & ~current_umask, FALSE, G_FILE_COPY_TARGET_DEFAULT_PERMS | G_FILE_COPY_NOFOLLOW_SYMLINKS | G_FILE_COPY_TARGET_DEFAULT_MODIFIED_TIME },
       { 0600, 0666 & ~current_umask, FALSE, G_FILE_COPY_TARGET_DEFAULT_PERMS | G_FILE_COPY_NOFOLLOW_SYMLINKS | G_FILE_COPY_ALL_METADATA },
       { 0600, 0666 & ~current_umask, FALSE, G_FILE_COPY_TARGET_DEFAULT_PERMS | G_FILE_COPY_NOFOLLOW_SYMLINKS },
     };
@@ -3375,6 +3378,9 @@ test_build_attribute_list_for_copy (void)
       G_FILE_COPY_TARGET_DEFAULT_PERMS,
       G_FILE_COPY_ALL_METADATA,
       G_FILE_COPY_ALL_METADATA | G_FILE_COPY_TARGET_DEFAULT_PERMS,
+      G_FILE_COPY_ALL_METADATA | G_FILE_COPY_TARGET_DEFAULT_MODIFIED_TIME,
+      G_FILE_COPY_TARGET_DEFAULT_MODIFIED_TIME | G_FILE_COPY_TARGET_DEFAULT_PERMS,
+      G_FILE_COPY_TARGET_DEFAULT_MODIFIED_TIME,
     };
   gsize i;
   char *attrs;
@@ -3416,8 +3422,16 @@ test_build_attribute_list_for_copy (void)
         }
 #endif
 #ifdef HAVE_UTIMES
-      g_assert_nonnull (g_strstr_len (attrs_with_commas, -1, "," G_FILE_ATTRIBUTE_TIME_MODIFIED ","));
-      g_assert_nonnull (g_strstr_len (attrs_with_commas, -1, "," G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC ","));
+      if (flags & G_FILE_COPY_TARGET_DEFAULT_MODIFIED_TIME)
+        {
+          g_assert_null (g_strstr_len (attrs_with_commas, -1, "," G_FILE_ATTRIBUTE_TIME_MODIFIED ","));
+          g_assert_null (g_strstr_len (attrs_with_commas, -1, "," G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC ","));
+        }
+      else
+        {
+          g_assert_nonnull (g_strstr_len (attrs_with_commas, -1, "," G_FILE_ATTRIBUTE_TIME_MODIFIED ","));
+          g_assert_nonnull (g_strstr_len (attrs_with_commas, -1, "," G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC ","));
+        }
       if (flags & G_FILE_COPY_ALL_METADATA)
         {
           g_assert_nonnull (g_strstr_len (attrs_with_commas, -1, "," G_FILE_ATTRIBUTE_TIME_ACCESS ","));
@@ -3430,8 +3444,16 @@ test_build_attribute_list_for_copy (void)
         }
 #endif
 #ifdef HAVE_UTIMENSAT
-      g_assert_nonnull (g_strstr_len (attrs_with_commas, -1, "," G_FILE_ATTRIBUTE_TIME_MODIFIED ","));
-      g_assert_nonnull (g_strstr_len (attrs_with_commas, -1, "," G_FILE_ATTRIBUTE_TIME_MODIFIED_NSEC ","));
+      if (flags & G_FILE_COPY_TARGET_DEFAULT_MODIFIED_TIME)
+        {
+          g_assert_null (g_strstr_len (attrs_with_commas, -1, "," G_FILE_ATTRIBUTE_TIME_MODIFIED ","));
+          g_assert_null (g_strstr_len (attrs_with_commas, -1, "," G_FILE_ATTRIBUTE_TIME_MODIFIED_NSEC ","));
+        }
+      else
+        {
+          g_assert_nonnull (g_strstr_len (attrs_with_commas, -1, "," G_FILE_ATTRIBUTE_TIME_MODIFIED ","));
+          g_assert_nonnull (g_strstr_len (attrs_with_commas, -1, "," G_FILE_ATTRIBUTE_TIME_MODIFIED_NSEC ","));
+        }
       if (flags & G_FILE_COPY_ALL_METADATA)
         {
           g_assert_nonnull (g_strstr_len (attrs_with_commas, -1, "," G_FILE_ATTRIBUTE_TIME_ACCESS ","));

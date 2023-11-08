@@ -26,25 +26,22 @@
 
 
 /**
- * SECTION:gseekable
- * @short_description: Stream seeking interface
- * @include: gio/gio.h
- * @see_also: #GInputStream, #GOutputStream
+ * GSeekable:
  *
- * #GSeekable is implemented by streams (implementations of
- * #GInputStream or #GOutputStream) that support seeking.
+ * `GSeekable` is implemented by streams (implementations of
+ * [class@Gio.InputStream] or [class@Gio.OutputStream]) that support seeking.
  *
  * Seekable streams largely fall into two categories: resizable and
  * fixed-size.
  *
- * #GSeekable on fixed-sized streams is approximately the same as POSIX
- * lseek() on a block device (for example: attempting to seek past the
- * end of the device is an error).  Fixed streams typically cannot be
+ * `GSeekable` on fixed-sized streams is approximately the same as POSIX
+ * [`lseek()`](man:lseek(2)) on a block device (for example: attempting to seek
+ * past the end of the device is an error).  Fixed streams typically cannot be
  * truncated.
  *
- * #GSeekable on resizable streams is approximately the same as POSIX
- * lseek() on a normal file.  Seeking past the end and writing data will
- * usually cause the stream to resize by introducing zero bytes.
+ * `GSeekable` on resizable streams is approximately the same as POSIX
+ * [`lseek()`](man:lseek(2)) on a normal file.  Seeking past the end and writing
+ * data will usually cause the stream to resize by introducing zero bytes.
  **/
 
 typedef GSeekableIface GSeekableInterface;

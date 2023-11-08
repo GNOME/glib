@@ -426,27 +426,6 @@ static gboolean win32_keep_fatal_message = FALSE;
  * called with huge strings, is it?
  */
 static gchar  fatal_msg_buf[1000] = "Unspecified fatal error encountered, aborting.";
-static gchar *fatal_msg_ptr = fatal_msg_buf;
-
-#undef write
-static inline int
-dowrite (int          fd,
-	 const void  *buf,
-	 unsigned int len)
-{
-  if (win32_keep_fatal_message)
-    {
-      memcpy (fatal_msg_ptr, buf, len);
-      fatal_msg_ptr += len;
-      *fatal_msg_ptr = 0;
-      return len;
-    }
-
-  write (fd, buf, len);
-
-  return len;
-}
-#define write(fd, buf, len) dowrite(fd, buf, len)
 
 #endif
 
@@ -2486,6 +2465,26 @@ log_is_old_api (const GLogField *fields,
           g_strcmp0 (fields[0].value, "1") == 0);
 }
 
+static gboolean
+domain_found (const gchar *domains,
+              const char  *log_domain)
+{
+  guint len;
+  const gchar *found;
+
+  len = strlen (log_domain);
+
+  for (found = strstr (domains, log_domain); found;
+       found = strstr (found + 1, log_domain))
+    {
+      if ((found == domains || found[-1] == ' ')
+          && (found[len] == 0 || found[len] == ' '))
+        return TRUE;
+    }
+
+  return FALSE;
+}
+
 /*
  * Internal version of g_log_writer_default_would_drop(), which can
  * read from either a log_domain or an array of fields. This avoids
@@ -2525,7 +2524,7 @@ should_drop_message (GLogLevelFlags   log_level,
         }
 
       if (strcmp (domains, "all") != 0 &&
-          (log_domain == NULL || !strstr (domains, log_domain)))
+          (log_domain == NULL || !domain_found (domains, log_domain)))
         return TRUE;
     }
 

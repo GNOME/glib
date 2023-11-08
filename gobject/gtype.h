@@ -421,9 +421,11 @@ G_BEGIN_DECLS
  * A numerical value which represents the unique identifier of a registered
  * type.
  */
-#if     GLIB_SIZEOF_SIZE_T != GLIB_SIZEOF_LONG || !defined (G_CXX_STD_VERSION)
+#if     GLIB_SIZEOF_VOID_P > GLIB_SIZEOF_SIZE_T
+typedef guintptr                        GType;
+#elif     GLIB_SIZEOF_SIZE_T != GLIB_SIZEOF_LONG || !defined (G_CXX_STD_VERSION)
 typedef gsize                           GType;
-#else   /* for historic reasons, C++ links against gulong GTypes */
+#else   /* for historic reasons, C++ on non-Morello/CHERI systems links against gulong GTypes */
 typedef gulong                          GType;
 #endif
 typedef struct _GValue                  GValue;
@@ -2707,6 +2709,27 @@ const gchar *    g_type_name_from_class         (GTypeClass	*g_class);
  * A bit in the type number that's supposed to be left untouched.
  */
 #define	G_TYPE_FLAG_RESERVED_ID_BIT	((GType) (1 << 0))
+
+/**
+ * GPOINTER_TO_TYPE:
+ * @p: The pointer to convert to a #GType
+ *
+ * This macro should be used instead of GPOINTER_TO_SIZE() to ensure
+ * portability since #GType is not guaranteed to be the same as #gsize.
+ *
+ * Since: 2.80
+ */
+#define GPOINTER_TO_TYPE(p) ((GType) (guintptr) (p)) GOBJECT_AVAILABLE_MACRO_IN_2_80
+/**
+ * GTYPE_TO_POINTER:
+ * @t: The #GType to convert to a pointer
+ *
+ * This macro should be used instead of GSIZE_TO_POINTER() to ensure
+ * portability since #GType is not guaranteed to be the same as #gsize.
+ *
+ * Since: 2.80
+ */
+#define GTYPE_TO_POINTER(t) ((gpointer) (guintptr) (t)) GOBJECT_AVAILABLE_MACRO_IN_2_80
 
 G_END_DECLS
 

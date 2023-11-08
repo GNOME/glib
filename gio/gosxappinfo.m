@@ -33,12 +33,10 @@
 #import <ApplicationServices/ApplicationServices.h>
 
 /**
- * SECTION:gosxappinfo
- * @title: GOsxAppInfo
- * @short_description: Application information from NSBundles
- * @include: gio/gosxappinfo.h
+ * GOsxAppInfo:
  *
- * #GOsxAppInfo is an implementation of #GAppInfo based on NSBundle information.
+ * `GOsxAppInfo` is an implementation of [iface@Gio.AppInfo] based on `NSBundle`
+ * information.
  *
  * Note that `<gio/gosxappinfo.h>` is unique to OSX.
  */
@@ -46,11 +44,6 @@
 static void        g_osx_app_info_iface_init (GAppInfoIface *iface);
 static const char *g_osx_app_info_get_id     (GAppInfo      *appinfo);
 
-/**
- * GOsxAppInfo:
- *
- * Information about an installed application from a NSBundle.
- */
 struct _GOsxAppInfo
 {
   GObject parent_instance;

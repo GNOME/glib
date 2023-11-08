@@ -36,14 +36,6 @@ G_BEGIN_DECLS
 #define G_IS_SIGNAL_GROUP(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_SIGNAL_GROUP))
 #define G_TYPE_SIGNAL_GROUP    (g_signal_group_get_type())
 
-/**
- * GSignalGroup:
- *
- * #GSignalGroup is an opaque structure whose members
- * cannot be accessed directly.
- *
- * Since: 2.72
- */
 typedef struct _GSignalGroup GSignalGroup;
 
 GOBJECT_AVAILABLE_IN_2_72

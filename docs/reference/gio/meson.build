@@ -154,11 +154,7 @@ if get_option('gtk_doc')
     command : [concat_files_helper, '@OUTPUT@', '@INPUT@'],
   )
 
-  configure_file(
-    output : 'gio-docs-platform.xml',
-    input : platform_file,
-    copy : true,
-  )
+  fs.copyfile(platform_file, 'gio-docs-platform.xml')
 
   content_files = [
     'migrating-posix.xml',
@@ -229,17 +225,18 @@ endif
 
 # gi-docgen version
 expand_content_files = [
+  'file-attributes.md',
   'migrating-gconf.md',
   'migrating-gdbus.md',
   'migrating-gnome-vfs.md',
   'overview.md',
+  'tls-overview.md',
 ]
 
-gio_gir = meson.current_source_dir() / 'Gio-2.0.gir'
 gio_toml = configure_file(input: 'gio.toml.in', output: 'gio.toml', configuration: toml_conf)
 
 custom_target('gio-docs',
-  input: [ gio_toml, gio_gir ],
+  input: [ gio_toml, gio_gir[0] ],
   output: 'gio',
   command: [
     gidocgen,
@@ -248,8 +245,9 @@ custom_target('gio-docs',
     '--config=@INPUT0@',
     '--output-dir=@OUTPUT@',
     '--content-dir=@0@'.format(meson.current_source_dir()),
-    '--add-include-path=@0@'.format(meson.current_source_dir() / '../glib'),
-    '--add-include-path=@0@'.format(meson.current_source_dir() / '../gobject'),
+    '--add-include-path=@0@'.format(meson.current_build_dir() / '../../../gobject'),
+    '--add-include-path=@0@'.format(meson.current_build_dir() / '../../../gmodule'),
+    '--add-include-path=@0@'.format(meson.current_build_dir() / '../../../gio'),
     '@INPUT1@',
   ],
   build_by_default: true,

@@ -38,12 +38,6 @@ G_BEGIN_DECLS
 #define G_IS_DATA_INPUT_STREAM_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_DATA_INPUT_STREAM))
 #define G_DATA_INPUT_STREAM_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_DATA_INPUT_STREAM, GDataInputStreamClass))
 
-/**
- * GDataInputStream:
- *
- * An implementation of #GBufferedInputStream that allows for high-level
- * data manipulation of arbitrary data (including binary operations).
- **/
 typedef struct _GDataInputStreamClass    GDataInputStreamClass;
 typedef struct _GDataInputStreamPrivate  GDataInputStreamPrivate;
 

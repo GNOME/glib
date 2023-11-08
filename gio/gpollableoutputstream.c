@@ -28,19 +28,16 @@
 #include "glibintl.h"
 
 /**
- * SECTION:gpollableoutputstream
- * @short_description: Interface for pollable output streams
- * @include: gio/gio.h
- * @see_also: #GOutputStream, #GFileDescriptorBased, #GPollableInputStream
+ * GPollableOutputStream:
  *
- * #GPollableOutputStream is implemented by #GOutputStreams that
+ * `GPollableOutputStream` is implemented by [class@Gio.OutputStream]s that
  * can be polled for readiness to write. This can be used when
  * interfacing with a non-GIO API that expects
  * UNIX-file-descriptor-style asynchronous I/O rather than GIO-style.
  *
- * Some classes may implement #GPollableOutputStream but have only certain
- * instances of that class be pollable. If g_pollable_output_stream_can_poll()
- * returns %FALSE, then the behavior of other #GPollableOutputStream methods is
+ * Some classes may implement `GPollableOutputStream` but have only certain
+ * instances of that class be pollable. If [method@Gio.PollableOutputStream.can_poll]
+ * returns false, then the behavior of other `GPollableOutputStream` methods is
  * undefined.
  *
  * Since: 2.28
@@ -238,7 +235,7 @@ g_pollable_output_stream_default_writev_nonblocking (GPollableOutputStream  *str
 }
 
 /**
- * g_pollable_output_stream_write_nonblocking:
+ * g_pollable_output_stream_write_nonblocking: (virtual write_nonblocking)
  * @stream: a #GPollableOutputStream
  * @buffer: (array length=count) (element-type guint8): a buffer to write
  *     data from
@@ -265,7 +262,6 @@ g_pollable_output_stream_default_writev_nonblocking (GPollableOutputStream  *str
  * The behaviour of this method is undefined if
  * g_pollable_output_stream_can_poll() returns %FALSE for @stream.
  *
- * Virtual: write_nonblocking
  * Returns: the number of bytes written, or -1 on error (including
  *   %G_IO_ERROR_WOULD_BLOCK).
  */
@@ -307,7 +303,7 @@ g_pollable_output_stream_write_nonblocking (GPollableOutputStream  *stream,
 }
 
 /**
- * g_pollable_output_stream_writev_nonblocking:
+ * g_pollable_output_stream_writev_nonblocking: (virtual writev_nonblocking)
  * @stream: a #GPollableOutputStream
  * @vectors: (array length=n_vectors): the buffer containing the #GOutputVectors to write.
  * @n_vectors: the number of vectors to write
@@ -335,8 +331,6 @@ g_pollable_output_stream_write_nonblocking (GPollableOutputStream  *stream,
  *
  * The behaviour of this method is undefined if
  * g_pollable_output_stream_can_poll() returns %FALSE for @stream.
- *
- * Virtual: writev_nonblocking
  *
  * Returns: %@G_POLLABLE_RETURN_OK on success, %G_POLLABLE_RETURN_WOULD_BLOCK
  * if the stream is not currently writable (and @error is *not* set), or

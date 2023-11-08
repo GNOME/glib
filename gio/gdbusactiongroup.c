@@ -29,22 +29,13 @@
 #include "gactiongroup.h"
 
 /**
- * SECTION:gdbusactiongroup
- * @title: GDBusActionGroup
- * @short_description: A D-Bus GActionGroup implementation
- * @include: gio/gio.h
- * @see_also: [GActionGroup exporter][gio-GActionGroup-exporter]
- *
- * #GDBusActionGroup is an implementation of the #GActionGroup
- * interface that can be used as a proxy for an action group
- * that is exported over D-Bus with g_dbus_connection_export_action_group().
- */
-
-/**
  * GDBusActionGroup:
  *
- * #GDBusActionGroup is an opaque data structure and can only be accessed
- * using the following functions.
+ * `GDBusActionGroup` is an implementation of the [iface@Gio.ActionGroup]
+ * interface.
+ *
+ * `GDBusActionGroup` can be used as a proxy for an action group
+ * that is exported over D-Bus with [method@Gio.DBusConnection.export_action_group].
  */
 
 struct _GDBusActionGroup

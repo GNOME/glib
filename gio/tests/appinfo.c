@@ -384,6 +384,21 @@ test_associations (void)
   gboolean result;
   GList *list;
   gchar *cmdline;
+  gchar *update_desktop_database = NULL, *update_mime_database = NULL;
+
+  update_desktop_database = g_find_program_in_path ("update-desktop-database");
+  update_mime_database = g_find_program_in_path ("update-mime-database");
+
+  if (update_desktop_database == NULL || update_mime_database == NULL)
+    {
+      g_test_skip ("update-desktop-database and update-mime-database are needed to change file associations");
+      g_free (update_desktop_database);
+      g_free (update_mime_database);
+      return;
+    }
+
+  g_free (update_desktop_database);
+  g_free (update_mime_database);
 
   cmdline = g_strconcat (g_test_get_dir (G_TEST_BUILT), "/appinfo-test --option", NULL);
   appinfo = g_app_info_create_from_commandline (cmdline,

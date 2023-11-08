@@ -53,11 +53,6 @@ G_BEGIN_DECLS
  **/
 #define G_SETTINGS_BACKEND_EXTENSION_POINT_NAME "gsettings-backend"
 
-/**
- * GSettingsBackend:
- *
- * An implementation of a settings storage repository.
- **/
 typedef struct _GSettingsBackendPrivate                     GSettingsBackendPrivate;
 typedef struct _GSettingsBackendClass                       GSettingsBackendClass;
 

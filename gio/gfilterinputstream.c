@@ -27,9 +27,7 @@
 
 
 /**
- * SECTION:gfilterinputstream
- * @short_description: Filter Input Stream
- * @include: gio/gio.h
+ * GFilterInputStream:
  *
  * Base class for input stream implementations that perform some
  * kind of filtering operation on a base stream. Typical examples

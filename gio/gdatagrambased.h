@@ -41,13 +41,6 @@ G_BEGIN_DECLS
 #define G_TYPE_IS_DATAGRAM_BASED(type)    (g_type_is_a ((type), \
                                            G_TYPE_DATAGRAM_BASED))
 
-/**
- * GDatagramBased:
- *
- * Interface for socket-like objects with datagram semantics.
- *
- * Since: 2.48
- */
 typedef struct _GDatagramBasedInterface GDatagramBasedInterface;
 
 /**

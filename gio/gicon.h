@@ -36,11 +36,6 @@ G_BEGIN_DECLS
 #define G_IS_ICON(obj)	       (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_ICON))
 #define G_ICON_GET_IFACE(obj)  (G_TYPE_INSTANCE_GET_INTERFACE ((obj), G_TYPE_ICON, GIconIface))
 
-/**
- * GIcon:
- *
- * An abstract type that specifies an icon.
- **/
 typedef struct _GIconIface GIconIface;
 
 /**

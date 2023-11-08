@@ -102,7 +102,6 @@
  * Welcome[de]=Hallo
  * Welcome[fr_FR]=Bonjour
  * Welcome[it]=Ciao
- * Welcome[be@latin]=Hello
  *
  * [Another Group]
  *

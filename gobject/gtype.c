@@ -44,65 +44,6 @@
 #define	IF_DEBUG(debug_type)	if (_g_type_debug_flags & G_TYPE_DEBUG_ ## debug_type)
 #endif
 
-/**
- * SECTION:gtype
- * @short_description: The GLib Runtime type identification and
- *     management system
- * @title:Type Information
- *
- * The GType API is the foundation of the GObject system. It provides the
- * facilities for registering and managing all fundamental data types,
- * user-defined object and interface types.
- *
- * For type creation and registration purposes, all types fall into one of
- * two categories: static or dynamic.  Static types are never loaded or
- * unloaded at run-time as dynamic types may be.  Static types are created
- * with g_type_register_static() that gets type specific information passed
- * in via a #GTypeInfo structure.
- *
- * Dynamic types are created with g_type_register_dynamic() which takes a
- * #GTypePlugin structure instead. The remaining type information (the
- * #GTypeInfo structure) is retrieved during runtime through #GTypePlugin
- * and the g_type_plugin_*() API.
- *
- * These registration functions are usually called only once from a
- * function whose only purpose is to return the type identifier for a
- * specific class.  Once the type (or class or interface) is registered,
- * it may be instantiated, inherited, or implemented depending on exactly
- * what sort of type it is.
- *
- * There is also a third registration function for registering fundamental
- * types called g_type_register_fundamental() which requires both a #GTypeInfo
- * structure and a #GTypeFundamentalInfo structure but it is seldom used
- * since most fundamental types are predefined rather than user-defined.
- *
- * Type instance and class structs are limited to a total of 64 KiB,
- * including all parent types. Similarly, type instances' private data
- * (as created by G_ADD_PRIVATE()) are limited to a total of
- * 64 KiB. If a type instance needs a large static buffer, allocate it
- * separately (typically by using #GArray or #GPtrArray) and put a pointer
- * to the buffer in the structure.
- *
- * As mentioned in the [GType conventions][gtype-conventions], type names must
- * be at least three characters long. There is no upper length limit. The first
- * character must be a letter (a–z or A–Z) or an underscore (‘_’). Subsequent
- * characters can be letters, numbers or any of ‘-_+’.
- *
- * # Runtime Debugging
- *
- * When `G_ENABLE_DEBUG` is defined during compilation, the GObject library
- * supports an environment variable `GOBJECT_DEBUG` that can be set to a
- * combination of flags to trigger debugging messages about
- * object bookkeeping and signal emissions during runtime.
- *
- * The currently supported flags are:
- *  - `objects`: Tracks all #GObject instances in a global hash table called
- *    `debug_objects_ht`, and prints the still-alive objects on exit.
- *  - `instance-count`: Tracks the number of instances of every #GType and makes
- *    it available via the g_type_get_instance_count() function.
- *  - `signals`: Currently unused.
- */
-
 
 /* NOTE: some functions (some internal variants and exported ones)
  * invalidate data portions of the TypeNodes. if external functions/callbacks
@@ -481,7 +422,7 @@ type_node_any_new_W (TypeNode             *pnode,
 #endif
     }
   else
-    type = (GType) node;
+    type = GPOINTER_TO_TYPE (node);
   
   g_assert ((type & TYPE_ID_MASK) == 0);
   
@@ -556,7 +497,7 @@ type_node_any_new_W (TypeNode             *pnode,
   node->global_gdata = NULL;
   g_hash_table_insert (static_type_nodes_ht,
 		       (gpointer) g_quark_to_string (node->qname),
-		       (gpointer) type);
+		       GTYPE_TO_POINTER (type));
 
   g_atomic_int_inc ((gint *)&type_registration_serial);
 
@@ -2780,9 +2721,9 @@ g_type_register_fundamental (GType                       type_id,
   if ((type_id & TYPE_ID_MASK) ||
       type_id > G_TYPE_FUNDAMENTAL_MAX)
     {
-      g_critical ("attempt to register fundamental type '%s' with invalid type id (%" G_GSIZE_FORMAT ")",
+      g_critical ("attempt to register fundamental type '%s' with invalid type id (%" G_GUINTPTR_FORMAT ")",
 		  type_name,
-		  type_id);
+		  (guintptr) type_id);
       return 0;
     }
   if ((finfo->type_flags & G_TYPE_FLAG_INSTANTIATABLE) &&
@@ -3503,7 +3444,7 @@ g_type_from_name (const gchar *name)
   g_return_val_if_fail (name != NULL, 0);
   
   G_READ_LOCK (&type_rw_lock);
-  type = (GType) g_hash_table_lookup (static_type_nodes_ht, name);
+  type = GPOINTER_TO_TYPE (g_hash_table_lookup (static_type_nodes_ht, name));
   G_READ_UNLOCK (&type_rw_lock);
   
   return type;
@@ -4449,7 +4390,7 @@ g_type_value_table_peek (GType type)
     return vtable;
   
   if (!node)
-    g_critical (G_STRLOC ": type id '%" G_GSIZE_FORMAT "' is invalid", type);
+    g_critical (G_STRLOC ": type id '%" G_GUINTPTR_FORMAT "' is invalid", (guintptr) type);
   if (!has_refed_data)
     g_critical ("can't peek value table for type '%s' which is not currently referenced",
 	        type_descriptive_name_I (type));

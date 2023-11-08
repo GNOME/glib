@@ -129,3 +129,8 @@ option('multiarch',
 option('gir_dir_prefix',
        type: 'string',
        description: 'Intermediate prefix for gir installation under ${prefix}')
+
+option('introspection',
+       type: 'feature',
+       value: 'auto',
+       description: 'Enable generating introspection data (requires gobject-introspection)')

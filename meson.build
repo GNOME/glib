@@ -1,7 +1,7 @@
 project('glib', 'c',
   version : '2.79.0',
   # NOTE: See the policy in docs/meson-version.md before changing the Meson dependency
-  meson_version : '>= 0.60.0',
+  meson_version : '>= 1.2.0',
   default_options : [
     'buildtype=debugoptimized',
     'warning_level=3',
@@ -364,6 +364,7 @@ headers = [
   'fstab.h',
   'grp.h',
   'inttypes.h',
+  'libproc.h',
   'limits.h',
   'locale.h',
   'mach/mach_time.h',
@@ -2441,6 +2442,10 @@ with open(output, "w") as f:
   enable_dtrace = true
 endif
 
+if cc.has_header_symbol('sys/ptrace.h', 'PTRACE_O_EXITKILL')
+  glib_conf.set('HAVE_PTRACE_O_EXITKILL', 1)
+endif
+
 # systemtap
 want_systemtap = get_option('systemtap')
 enable_systemtap = false
@@ -2457,8 +2462,22 @@ if want_systemtap and enable_dtrace
   enable_systemtap = true
 endif
 
+# introspection
+gir_scanner = find_program('g-ir-scanner', required: get_option('introspection'))
+enable_gir = get_option('introspection').allowed() and gir_scanner.found() and meson.can_run_host_binaries()
+
+if get_option('introspection').enabled() and not meson.can_run_host_binaries()
+  error('Running binaries on the build host needs to be supported to build with -Dintrospection=enabled')
+endif
+
+gir_args = [
+  '--quiet',
+]
+
 pkg = import('pkgconfig')
 windows = import('windows')
+gnome = import('gnome')
+
 subdir('tools')
 subdir('glib')
 subdir('gobject')
@@ -2581,4 +2600,5 @@ summary({
   'glib_checks' : get_option('glib_checks'),
   'libelf' : get_option('libelf'),
   'multiarch' : get_option('multiarch'),
+  'introspection' : enable_gir,
 }, section: 'Options')

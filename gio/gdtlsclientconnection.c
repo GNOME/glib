@@ -32,25 +32,13 @@
 #include "glibintl.h"
 
 /**
- * SECTION:gdtlsclientconnection
- * @short_description: DTLS client-side connection
- * @include: gio/gio.h
- *
- * #GDtlsClientConnection is the client-side subclass of
- * #GDtlsConnection, representing a client-side DTLS connection.
- *
- * Since: 2.48
- */
-
-/**
  * GDtlsClientConnection:
  *
- * Abstract base class for the backend-specific client connection
- * type.
+ * `GDtlsClientConnection` is the client-side subclass of
+ * [iface@Gio.DtlsConnection], representing a client-side DTLS connection.
  *
  * Since: 2.48
  */
-
 G_DEFINE_INTERFACE (GDtlsClientConnection, g_dtls_client_connection,
                     G_TYPE_DTLS_CONNECTION)
 

@@ -45,21 +45,12 @@
 
 
 /**
- * SECTION:gsocketaddress
- * @short_description: Abstract base class representing endpoints
- *     for socket communication
- * @include: gio/gio.h
- *
- * #GSocketAddress is the equivalent of struct sockaddr in the BSD
- * sockets API. This is an abstract class; use #GInetSocketAddress
- * for internet sockets, or #GUnixSocketAddress for UNIX domain sockets.
- */
-
-/**
  * GSocketAddress:
  *
- * A socket endpoint address, corresponding to struct sockaddr
- * or one of its subtypes.
+ * `GSocketAddress` is the equivalent of
+ * [`struct sockaddr`](man:sockaddr(3type)) and its subtypes in the BSD sockets
+ * API. This is an abstract class; use [class@Gio.InetSocketAddress] for
+ * internet sockets, or [class@Gio.UnixSocketAddress] for UNIX domain sockets.
  */
 
 enum

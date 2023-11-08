@@ -11,18 +11,18 @@ cache:
     - _ccache/
 
 variables:
-  FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v21"
+  FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v22"
   COVERITY_IMAGE: "registry.gitlab.gnome.org/gnome/glib/coverity:v7"
-  DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v15"
-  MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v11"
+  DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v16"
+  MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v12"
   MESON_TEST_TIMEOUT_MULTIPLIER: 4
   G_MESSAGES_DEBUG: all
   MESON_COMMON_OPTIONS: "--buildtype debug --wrap-mode=nodownload --fatal-meson-warnings"
 
 # Default CI job setup; contrast with `.only-origin`.
 #
-# Don’t execute the pipeline when a merge request is merged into `main`, as it
-# will have already been tested
+# Don’t execute the pipeline when a merge request is merged into `origin/main`,
+# as it will have already been tested
 .only-default:
   only:
     - branches
@@ -30,7 +30,7 @@ variables:
     refs:
       - tags
     variables:
-      - $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      - $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_PROJECT_NAMESPACE == "GNOME"
 
 # Some jobs run on CI runners which don’t have good isolation between CI jobs,
 # and don’t have much available resource. Limit those jobs to only ones on the
@@ -164,6 +164,36 @@ debian-stable-x86_64:
             --libdir=lib
             -Dsystemtap=true
             -Ddtrace=true
+            _build
+    - meson compile -C _build
+    - .gitlab-ci/run-tests.sh
+  artifacts:
+    reports:
+      junit:
+        - _build/meson-logs/testlog.junit.xml
+        - _build/meson-logs/testlog-*.junit.xml
+    name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
+    when: always
+    expire_in: 1 week
+    paths:
+      - "_build/config.h"
+      - "_build/glib/glibconfig.h"
+      - "_build/meson-logs"
+
+hurd-i386:
+  extends:
+    - .only-schedules
+  stage: build
+  tags:
+    - hurd
+  needs: []
+  script:
+    - meson setup ${MESON_COMMON_OPTIONS}
+            --werror
+            --default-library=both
+            --prefix=$HOME/glib-installed
+            --localstatedir=/var
+            --libdir=lib
             _build
     - meson compile -C _build
     - .gitlab-ci/run-tests.sh
@@ -341,10 +371,6 @@ msys2-mingw32:
     CHERE_INVOKING: "yes"
     CFLAGS: -coverage -ftest-coverage -fprofile-arcs
     PYTHONUTF8: "1"
-    # FIXME: For some reason enabling jit debugging "fixes" random python crashes
-    # see https://github.com/msys2/MINGW-packages/issues/11864 and
-    # https://gitlab.gnome.org/GNOME/glib/-/merge_requests/3280#note_1678973
-    MSYS: "winjitdebug"
   script:
     - C:\msys64\usr\bin\pacman --noconfirm -Syyuu --ask 20
     - C:\msys64\usr\bin\bash .gitlab-ci/show-execution-environment.sh
@@ -371,10 +397,6 @@ msys2-clang64:
     MSYSTEM: "CLANG64"
     CHERE_INVOKING: "yes"
     PYTHONUTF8: "1"
-    # FIXME: For some reason enabling jit debugging "fixes" random python crashes
-    # see https://github.com/msys2/MINGW-packages/issues/11864 and
-    # https://gitlab.gnome.org/GNOME/glib/-/merge_requests/3280#note_1678973
-    MSYS: "winjitdebug"
   script:
     - C:\msys64\usr\bin\pacman --noconfirm -Syyuu --ask 20
     - C:\msys64\usr\bin\bash .gitlab-ci/show-execution-environment.sh
@@ -551,7 +573,7 @@ macos-x86_64:
     - ln -s /opt/cmake/CMake.app/Contents/bin/cmake .venv/bin
     - ln -s /opt/ccache/ccache .venv/bin
     - source .venv/bin/activate
-    - pip3 install meson==1.2.0
+    - pip3 install meson==1.2.3
     - pip3 install ninja==1.11.1
   script:
     # FIXME: Use --wrap-mode=default so we download dependencies each time,

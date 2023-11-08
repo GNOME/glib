@@ -37,13 +37,62 @@
 /*
  * %_GLIB_ADDRESS_SANITIZER:
  *
- * Private macro defined if the AddressSanitizer is in use.
+ * Private macro defined if the AddressSanitizer is in use by GLib itself.
  */
 #define _GLIB_ADDRESS_SANITIZER
 
 #include <sanitizer/lsan_interface.h>
 
+/* If GLib itself is not compiled with ASAN sanitizer we may still want to
+ * control it in case it's linked by the loading application, so we need to
+ * do this check dynamically.
+ * However MinGW doesn't support weak attribute properly (even if it advertises
+ * it), so we ignore it in such case since it's not convenient to go through
+ * dlsym().
+ * Under MSVC we could use alternatename, but it doesn't seem to be as reliable
+ * as we'd like: https://stackoverflow.com/a/11529277/210151 and
+ * https://devblogs.microsoft.com/oldnewthing/20200731-00/?p=104024
+ */
+#elif defined (G_OS_UNIX) && !defined (__APPLE__) && g_macro__has_attribute (weak)
+
+#define HAS_DYNAMIC_ASAN_LOADING
+
+void __lsan_enable (void) __attribute__ ((weak));
+void __lsan_disable (void) __attribute__ ((weak));
+void __lsan_ignore_object (const void *p) __attribute__ ((weak));
+
 #endif
+
+/**
+ * G_CONTAINER_OF:
+ * @ptr: a pointer to a member @field of type @type.
+ * @type: the type of the container in which @field is embedded.
+ * @field: the name of the field in @type.
+ *
+ * Casts away constness of @ptr.
+ *
+ * Returns: a pointer to the container, so that "&(@container)->field == (@ptr)" holds.
+ */
+#define G_CONTAINER_OF(ptr, type, field) ((type *) G_STRUCT_MEMBER_P (ptr, -G_STRUCT_OFFSET (type, field)))
+
+/*
+ * g_leak_sanitizer_is_supported:
+ *
+ * Checks at runtime if LeakSanitizer is currently supported by the running
+ * binary. This may imply that GLib itself is not compiled with sanitizer
+ * but that the loading program is.
+ */
+static inline gboolean
+g_leak_sanitizer_is_supported (void)
+{
+#if defined (_GLIB_ADDRESS_SANITIZER)
+  return TRUE;
+#elif defined (HAS_DYNAMIC_ASAN_LOADING)
+  return __lsan_enable != NULL && __lsan_ignore_object != NULL;
+#else
+  return FALSE;
+#endif
+}
 
 /*
  * g_ignore_leak:
@@ -57,8 +106,11 @@
 static inline void
 g_ignore_leak (gconstpointer p)
 {
-#ifdef _GLIB_ADDRESS_SANITIZER
+#if defined (_GLIB_ADDRESS_SANITIZER)
   if (p != NULL)
+    __lsan_ignore_object (p);
+#elif defined (HAS_DYNAMIC_ASAN_LOADING)
+  if (p != NULL && __lsan_ignore_object != NULL)
     __lsan_ignore_object (p);
 #endif
 }
@@ -73,8 +125,10 @@ g_ignore_leak (gconstpointer p)
 static inline void
 g_ignore_strv_leak (GStrv strv)
 {
-#ifdef _GLIB_ADDRESS_SANITIZER
   gchar **item;
+
+  if (!g_leak_sanitizer_is_supported ())
+    return;
 
   if (strv)
     {
@@ -83,7 +137,6 @@ g_ignore_strv_leak (GStrv strv)
       for (item = strv; *item != NULL; item++)
         g_ignore_leak (*item);
     }
-#endif
 }
 
 /*
@@ -98,8 +151,11 @@ g_ignore_strv_leak (GStrv strv)
 static inline void
 g_begin_ignore_leaks (void)
 {
-#ifdef _GLIB_ADDRESS_SANITIZER
+#if defined (_GLIB_ADDRESS_SANITIZER)
   __lsan_disable ();
+#elif defined (HAS_DYNAMIC_ASAN_LOADING)
+  if (__lsan_disable != NULL)
+    __lsan_disable ();
 #endif
 }
 
@@ -112,10 +168,15 @@ g_begin_ignore_leaks (void)
 static inline void
 g_end_ignore_leaks (void)
 {
-#ifdef _GLIB_ADDRESS_SANITIZER
+#if defined (_GLIB_ADDRESS_SANITIZER)
   __lsan_enable ();
+#elif defined (HAS_DYNAMIC_ASAN_LOADING)
+  if (__lsan_enable != NULL)
+    __lsan_enable ();
 #endif
 }
+
+#undef HAS_DYNAMIC_ASAN_LOADING
 
 GMainContext *          g_get_worker_context            (void);
 gboolean                g_check_setuid                  (void);
@@ -253,5 +314,8 @@ GLibPrivateVTable *glib__private__ (void);
 #else
 # define GLIB_DEFAULT_LOCALE ""
 #endif
+
+gboolean g_uint_equal (gconstpointer v1, gconstpointer v2);
+guint g_uint_hash (gconstpointer v);
 
 #endif /* __GLIB_PRIVATE_H__ */

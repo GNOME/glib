@@ -38,11 +38,6 @@ G_BEGIN_DECLS
 #define G_IS_THEMED_ICON_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_THEMED_ICON))
 #define G_THEMED_ICON_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_THEMED_ICON, GThemedIconClass))
 
-/**
- * GThemedIcon:
- *
- * An implementation of #GIcon for themed icons.
- **/
 typedef struct _GThemedIconClass   GThemedIconClass;
 
 GIO_AVAILABLE_IN_ALL

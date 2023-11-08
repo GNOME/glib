@@ -420,7 +420,7 @@ test_value_string (void)
   const gchar *static2 = "static2";
   const gchar *storedstr;
   const gchar *copystr;
-  gchar *str1, *str2;
+  gchar *str1, *str2, *stolen_str;
   GValue value = G_VALUE_INIT;
   GValue copy = G_VALUE_INIT;
 
@@ -513,7 +513,12 @@ test_value_string (void)
   g_assert_true (storedstr != static2);
   g_assert_cmpstr (storedstr, ==, static2);
 
+  /* Now check stealing the ownership of the contents */
+  stolen_str = g_value_steal_string (&value);
+  g_assert_null (g_value_get_string (&value));
   g_value_unset (&value);
+  g_assert_cmpstr (stolen_str, ==, static2);
+  g_free (stolen_str);
 
   /*
    * Static strings
@@ -543,6 +548,14 @@ test_value_string (void)
   storedstr = g_value_get_string (&value);
   g_assert_true (storedstr != static1);
   g_assert_cmpstr (storedstr, ==, static2);
+
+  /* Check if g_value_steal_string() can handle GValue
+   * with a static string */
+  stolen_str = g_value_steal_string (&value);
+  g_assert_true (stolen_str != static2);
+  g_assert_cmpstr (stolen_str, ==, static2);
+  g_assert_null (g_value_get_string (&value));
+  g_free (stolen_str);
 
   g_value_unset (&value);
 
@@ -587,6 +600,14 @@ test_value_string (void)
   storedstr = g_value_get_string (&value);
   g_assert_true (storedstr != static2);
   g_assert_cmpstr (storedstr, ==, static2);
+
+  /* Check if g_value_steal_string() can handle GValue
+   * with an interned string */
+  stolen_str = g_value_steal_string (&value);
+  g_assert_true (stolen_str != static2);
+  g_assert_cmpstr (stolen_str, ==, static2);
+  g_assert_null (g_value_get_string (&value));
+  g_free (stolen_str);
 
   g_value_unset (&value);
 }

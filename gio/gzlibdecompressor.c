@@ -42,11 +42,9 @@ enum {
 };
 
 /**
- * SECTION:gzlibdecompressor
- * @short_description: Zlib decompressor
- * @include: gio/gio.h
+ * GZlibDecompressor:
  *
- * #GZlibDecompressor is an implementation of #GConverter that
+ * `GZlibDecompressor` is an implementation of [iface@Gio.Converter] that
  * decompresses data compressed with zlib.
  */
 
@@ -58,11 +56,6 @@ typedef struct {
   GFileInfo *file_info;
 } HeaderData;
 
-/**
- * GZlibDecompressor:
- *
- * Zlib decompression
- */
 struct _GZlibDecompressor
 {
   GObject parent_instance;

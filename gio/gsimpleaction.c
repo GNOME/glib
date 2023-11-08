@@ -27,24 +27,14 @@
 #include "glibintl.h"
 
 /**
- * SECTION:gsimpleaction
- * @title: GSimpleAction
- * @short_description: A simple GAction implementation
- * @include: gio/gio.h
- *
- * A #GSimpleAction is the obvious simple implementation of the #GAction
- * interface. This is the easiest way to create an action for purposes of
- * adding it to a #GSimpleActionGroup.
- *
- * See also #GtkAction.
- */
-
-/**
  * GSimpleAction:
  *
- * #GSimpleAction is an opaque data structure and can only be accessed
- * using the following functions.
- **/
+ * A `GSimpleAction` is the obvious simple implementation of the
+ * [iface@Gio.Action] interface. This is the easiest way to create an action for
+ * purposes of adding it to a [class@Gio.SimpleActionGroup].
+ *
+ * See also [class@Gtk.Action].
+ */
 
 struct _GSimpleAction
 {

@@ -59,7 +59,7 @@ typedef struct _GRealThreadPool GRealThreadPool;
  * Therefore GLib provides thread pools for your convenience. An added advantage is, that the
  * threads can be shared between the different subsystems of your program, when they are using GLib.
  *
- * To create a new thread pool, you use [method@GLib.ThreadPool.new].
+ * To create a new thread pool, you use [func@GLib.ThreadPool.new].
  * It is destroyed by [method@GLib.ThreadPool.free].
  *
  * If you want to execute a certain task within a thread pool, use [method@GLib.ThreadPool.push].
@@ -70,10 +70,10 @@ typedef struct _GRealThreadPool GRealThreadPool;
  * [method@GLib.ThreadPool.get_max_threads]. and [method@GLib.ThreadPool.set_max_threads].
  *
  * Finally you can control the number of unused threads, that are kept alive by GLib for future use.
- * The current number can be fetched with [method@GLib.ThreadPool.get_num_unused_threads].
- * The maximum number can be controlled by [method@GLib.ThreadPool.get_max_unused_threads] and
- * [method@GLib.ThreadPool.set_max_unused_threads]. All currently unused threads
- * can be stopped by calling [method@GLib.ThreadPool.stop_unused_threads()].
+ * The current number can be fetched with [func@GLib.ThreadPool.get_num_unused_threads].
+ * The maximum number can be controlled by [func@GLib.ThreadPool.get_max_unused_threads] and
+ * [func@GLib.ThreadPool.set_max_unused_threads]. All currently unused threads
+ * can be stopped by calling [func@GLib.ThreadPool.stop_unused_threads].
  */
 struct _GRealThreadPool
 {

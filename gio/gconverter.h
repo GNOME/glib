@@ -36,13 +36,6 @@ G_BEGIN_DECLS
 #define G_IS_CONVERTER(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_CONVERTER))
 #define G_CONVERTER_GET_IFACE(obj)  (G_TYPE_INSTANCE_GET_INTERFACE ((obj), G_TYPE_CONVERTER, GConverterIface))
 
-/**
- * GConverter:
- *
- * Seek object for streaming operations.
- *
- * Since: 2.24
- **/
 typedef struct _GConverterIface   GConverterIface;
 
 /**

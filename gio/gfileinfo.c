@@ -21,45 +21,44 @@
  */
 
 /**
- * SECTION:gfileinfo
- * @short_description: File Information and Attributes
- * @include: gio/gio.h
- * @see_also: #GFile, [GFileAttribute][gio-GFileAttribute]
+ * GFileInfo:
  *
- * Functionality for manipulating basic metadata for files. #GFileInfo
+ * Stores information about a file system object referenced by a [iface@Gio.File].
+ *
+ * Functionality for manipulating basic metadata for files. `GFileInfo`
  * implements methods for getting information that all files should
  * contain, and allows for manipulation of extended attributes.
  *
- * See [GFileAttribute][gio-GFileAttribute] for more information on how
- * GIO handles file attributes.
+ * See [file-attributes.html](file attributes) for more information on how GIO
+ * handles file attributes.
  *
- * To obtain a #GFileInfo for a #GFile, use g_file_query_info() (or its
- * async variant). To obtain a #GFileInfo for a file input or output
- * stream, use g_file_input_stream_query_info() or
- * g_file_output_stream_query_info() (or their async variants).
+ * To obtain a `GFileInfo` for a [iface@Gio.File], use
+ * [method@Gio.File.query_info] (or its async variant). To obtain a `GFileInfo`
+ * for a file input or output stream, use [method@Gio.FileInputStream.query_info]
+ * or [method@Gio.FileOutputStream.query_info] (or their async variants).
  *
  * To change the actual attributes of a file, you should then set the
- * attribute in the #GFileInfo and call g_file_set_attributes_from_info()
- * or g_file_set_attributes_async() on a GFile.
+ * attribute in the `GFileInfo` and call [method@Gio.File.set_attributes_from_info]
+ * or [method@Gio.File.set_attributes_async] on a `GFile`.
  *
  * However, not all attributes can be changed in the file. For instance,
- * the actual size of a file cannot be changed via g_file_info_set_size().
- * You may call g_file_query_settable_attributes() and
- * g_file_query_writable_namespaces() to discover the settable attributes
+ * the actual size of a file cannot be changed via [method@Gio.FileInfo.set_size].
+ * You may call [method@Gio.File.query_settable_attributes] and
+ * [method@Gio.File.query_writable_namespaces] to discover the settable attributes
  * of a particular file at runtime.
  *
- * The direct accessors, such as g_file_info_get_name(), are slightly more
+ * The direct accessors, such as [method@Gio.FileInfo.get_name], are slightly more
  * optimized than the generic attribute accessors, such as
- * g_file_info_get_attribute_byte_string().This optimization will matter
+ * [method@Gio.FileInfo.get_attribute_byte_string].This optimization will matter
  * only if calling the API in a tight loop.
  *
  * It is an error to call these accessors without specifying their required file
- * attributes when creating the #GFileInfo. Use g_file_info_has_attribute() or
- * g_file_info_list_attributes() to check what attributes are specified for a
- * #GFileInfo.
+ * attributes when creating the `GFileInfo`. Use
+ * [method@Gio.FileInfo.has_attribute] or [method@Gio.FileInfo.list_attributes]
+ * to check what attributes are specified for a `GFileInfo`.
  *
- * #GFileAttributeMatcher allows for searching through a #GFileInfo for
- * attributes.
+ * [struct@Gio.FileAttributeMatcher] allows for searching through a `GFileInfo`
+ * for attributes.
  **/
 
 #include "config.h"

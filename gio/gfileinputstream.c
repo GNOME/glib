@@ -33,20 +33,17 @@
 
 
 /**
- * SECTION:gfileinputstream
- * @short_description: File input streaming operations
- * @include: gio/gio.h
- * @see_also: #GInputStream, #GDataInputStream, #GSeekable
+ * GFileInputStream:
  *
- * GFileInputStream provides input streams that take their
+ * `GFileInputStream` provides input streams that take their
  * content from a file.
  *
- * GFileInputStream implements #GSeekable, which allows the input 
+ * `GFileInputStream` implements [iface@Gio.Seekable], which allows the input
  * stream to jump to arbitrary positions in the file, provided the 
  * filesystem of the file allows it. To find the position of a file
- * input stream, use g_seekable_tell(). To find out if a file input
- * stream supports seeking, use g_seekable_can_seek().
- * To position a file input stream, use g_seekable_seek().
+ * input stream, use [method@Gio.Seekable.tell]. To find out if a file input
+ * stream supports seeking, use [iface@Gio.Seekable.can_seek].
+ * To position a file input stream, use [iface@Gio.Seekable.seek].
  **/
 
 static void       g_file_input_stream_seekable_iface_init    (GSeekableIface       *iface);

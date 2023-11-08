@@ -38,11 +38,6 @@ G_BEGIN_DECLS
 #define G_IS_SIMPLE_ASYNC_RESULT_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_SIMPLE_ASYNC_RESULT))
 #define G_SIMPLE_ASYNC_RESULT_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_SIMPLE_ASYNC_RESULT, GSimpleAsyncResultClass))
 
-/**
- * GSimpleAsyncResult:
- *
- * A simple implementation of #GAsyncResult.
- **/
 typedef struct _GSimpleAsyncResultClass   GSimpleAsyncResultClass;
 
 

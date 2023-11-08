@@ -637,7 +637,7 @@ g_main_context_new_with_flags (GMainContextFlags flags)
   g_mutex_init (&context->mutex);
   g_cond_init (&context->cond);
 
-  context->sources = g_hash_table_new (NULL, NULL);
+  context->sources = g_hash_table_new (g_uint_hash, g_uint_equal);
   context->owner = NULL;
   context->flags = flags;
   context->waiters = NULL;
@@ -1166,13 +1166,13 @@ g_source_attach_unlocked (GSource      *source,
    */
   do
     id = context->next_id++;
-  while (id == 0 || g_hash_table_contains (context->sources, GUINT_TO_POINTER (id)));
+  while (id == 0 || g_hash_table_contains (context->sources, &id));
 
   source->context = context;
   source->source_id = id;
   g_source_ref (source);
 
-  g_hash_table_insert (context->sources, GUINT_TO_POINTER (id), source);
+  g_hash_table_add (context->sources, &source->source_id);
 
   source_add_to_context (source, context);
 
@@ -1952,8 +1952,8 @@ g_source_set_ready_time (GSource *source,
  * Gets the "ready time" of @source, as set by
  * g_source_set_ready_time().
  *
- * Any time before the current monotonic time (including 0) is an
- * indication that the source will fire immediately.
+ * Any time before or equal to the current monotonic time (including 0)
+ * is an indication that the source will fire immediately.
  *
  * Returns: the monotonic ready time, -1 for "never"
  **/
@@ -2239,7 +2239,7 @@ g_source_unref_internal (GSource      *source,
 	    g_warning (G_STRLOC ": ref_count == 0, but source was still attached to a context!");
 	  source_remove_from_context (source, context);
 
-          g_hash_table_remove (context->sources, GUINT_TO_POINTER (source->source_id));
+	  g_hash_table_remove (context->sources, &source->source_id);
 	}
 
       if (source->source_funcs->finalize)
@@ -2348,7 +2348,8 @@ GSource *
 g_main_context_find_source_by_id (GMainContext *context,
                                   guint         source_id)
 {
-  GSource *source;
+  GSource *source = NULL;
+  gconstpointer ptr;
 
   g_return_val_if_fail (source_id > 0, NULL);
 
@@ -2356,11 +2357,14 @@ g_main_context_find_source_by_id (GMainContext *context,
     context = g_main_context_default ();
 
   LOCK_CONTEXT (context);
-  source = g_hash_table_lookup (context->sources, GUINT_TO_POINTER (source_id));
+  ptr = g_hash_table_lookup (context->sources, &source_id);
+  if (ptr)
+    {
+      source = G_CONTAINER_OF (ptr, GSource, source_id);
+      if (SOURCE_DESTROYED (source))
+        source = NULL;
+    }
   UNLOCK_CONTEXT (context);
-
-  if (source && SOURCE_DESTROYED (source))
-    source = NULL;
 
   return source;
 }

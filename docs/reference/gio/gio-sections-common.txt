@@ -3366,6 +3366,8 @@ g_application_command_line_get_exit_status
 <SUBSECTION>
 g_application_command_line_print
 g_application_command_line_printerr
+g_application_command_line_print_literal
+g_application_command_line_printerr_literal
 <SUBSECTION Standard>
 G_TYPE_APPLICATION_COMMAND_LINE
 G_APPLICATION_COMMAND_LINE

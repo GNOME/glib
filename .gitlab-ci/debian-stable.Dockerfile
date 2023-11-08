@@ -68,7 +68,7 @@ RUN locale-gen de_DE.UTF-8 \
 
 ENV LANG=C.UTF-8 LANGUAGE=C.UTF-8 LC_ALL=C.UTF-8
 
-RUN pip3 install --break-system-packages meson==0.60.3
+RUN pip3 install --break-system-packages meson==1.2.3
 
 ARG HOST_USER_ID=5555
 ENV HOST_USER_ID ${HOST_USER_ID}

@@ -38,11 +38,6 @@ G_BEGIN_DECLS
 #define G_IS_FILTER_INPUT_STREAM_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_FILTER_INPUT_STREAM))
 #define G_FILTER_INPUT_STREAM_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_FILTER_INPUT_STREAM, GFilterInputStreamClass))
 
-/**
- * GFilterInputStream:
- *
- * A base class for all input streams that work on an underlying stream.
- **/
 typedef struct _GFilterInputStreamClass    GFilterInputStreamClass;
 
 struct _GFilterInputStream

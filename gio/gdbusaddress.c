@@ -62,10 +62,7 @@
 #include "glibintl.h"
 
 /**
- * SECTION:gdbusaddress
- * @title: D-Bus Addresses
- * @short_description: D-Bus connection endpoints
- * @include: gio/gio.h
+ * GDBusAddress:
  *
  * Routines for working with D-Bus addresses. A D-Bus address is a string
  * like `unix:tmpdir=/tmp/my-app-name`. The exact format of addresses

@@ -29,21 +29,12 @@
 #include "glibintl.h"
 
 /**
- * SECTION:gdbusobject
- * @short_description: Base type for D-Bus objects
- * @include: gio/gio.h
- *
- * The #GDBusObject type is the base type for D-Bus objects on both
- * the service side (see #GDBusObjectSkeleton) and the client side
- * (see #GDBusObjectProxy). It is essentially just a container of
- * interfaces.
- */
-
-/**
  * GDBusObject:
  *
- * #GDBusObject is an opaque data structure and can only be accessed
- * using the following functions.
+ * The `GDBusObject` type is the base type for D-Bus objects on both
+ * the service side (see [class@Gio.DBusObjectSkeleton]) and the client side
+ * (see [class@Gio.DBusObjectProxy]). It is essentially just a container of
+ * interfaces.
  */
 
 typedef GDBusObjectIface GDBusObjectInterface;
