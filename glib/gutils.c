@@ -1232,7 +1232,9 @@ void
 g_set_application_name (const gchar *application_name)
 {
   gboolean already_set = FALSE;
-	
+
+  g_return_if_fail (application_name);
+
   G_LOCK (g_application_name);
   if (g_application_name)
     already_set = TRUE;
