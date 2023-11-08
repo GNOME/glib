@@ -22,7 +22,9 @@
  */
 
 #include "girffi.h"
-#include "girnode.h"
+
+#include "girnode-private.h"
+
 #include <string.h>
 
 /* The C standard specifies that an enumeration can be any char or any signed

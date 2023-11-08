@@ -26,7 +26,7 @@
 
 #include "girparser-private.h"
 
-#include "girnode.h"
+#include "girnode-private.h"
 #include "gitypelib-internal.h"
 
 #include <stdlib.h>

@@ -25,8 +25,8 @@
 
 #include "girmodule-private.h"
 
+#include "girnode-private.h"
 #include "gitypelib-internal.h"
-#include "girnode.h"
 
 #include <stdio.h>
 #include <string.h>
