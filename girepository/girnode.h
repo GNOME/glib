@@ -25,7 +25,7 @@
 
 #include <glib.h>
 
-#include "girmodule.h"
+#include "girmodule-private.h"
 
 G_BEGIN_DECLS
 

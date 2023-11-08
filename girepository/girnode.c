@@ -22,13 +22,15 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include "config.h"
+
+#include "girnode.h"
+
+#include "gitypelib-internal.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include "girmodule.h"
-#include "girnode.h"
-#include "gitypelib-internal.h"
 
 #ifdef _MSC_VER
 #define strtoll _strtoi64

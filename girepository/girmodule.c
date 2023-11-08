@@ -21,13 +21,16 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include "config.h"
+
+#include "girmodule-private.h"
+
+#include "gitypelib-internal.h"
+#include "girnode.h"
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
-#include "girmodule.h"
-#include "gitypelib-internal.h"
-#include "girnode.h"
 
 #define ALIGN_VALUE(this, boundary) \
   (( ((unsigned long)(this)) + (((unsigned long)(boundary)) -1)) & (~(((unsigned long)(boundary))-1)))

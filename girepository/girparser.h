@@ -27,7 +27,7 @@
 
 G_BEGIN_DECLS
 
-#include "girmodule.h"
+#include "girmodule-private.h"
 
 typedef struct _GIrParser GIrParser;
 

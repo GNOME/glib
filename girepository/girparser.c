@@ -30,7 +30,6 @@
 
 #include <glib.h>
 #include "girparser.h"
-#include "girmodule.h"
 #include "girnode.h"
 #include "gitypelib-internal.h"
 
