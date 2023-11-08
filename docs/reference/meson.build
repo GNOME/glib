@@ -74,4 +74,5 @@ if get_option('gtk_doc') and enable_gir
   subdir('gmodule')
   subdir('gobject')
   subdir('gio')
+  subdir('girepository')
 endif
