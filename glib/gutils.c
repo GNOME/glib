@@ -1176,7 +1176,6 @@ g_set_prgname (const gchar *prgname)
   g_atomic_pointer_set (&g_prgname, prgname);
 }
 
-G_LOCK_DEFINE_STATIC (g_application_name);
 static gchar *g_application_name = NULL;
 
 /**
@@ -1198,16 +1197,14 @@ static gchar *g_application_name = NULL;
 const gchar *
 g_get_application_name (void)
 {
-  gchar* retval;
+  const char *retval;
 
-  G_LOCK (g_application_name);
-  retval = g_application_name;
-  G_UNLOCK (g_application_name);
+  retval = g_atomic_pointer_get (&g_application_name);
 
-  if (retval == NULL)
-    return g_get_prgname ();
-  
-  return retval;
+  if (retval)
+    return retval;
+
+  return g_get_prgname ();
 }
 
 /**
@@ -1231,19 +1228,17 @@ g_get_application_name (void)
 void
 g_set_application_name (const gchar *application_name)
 {
-  gboolean already_set = FALSE;
+  char *name;
 
   g_return_if_fail (application_name);
 
-  G_LOCK (g_application_name);
-  if (g_application_name)
-    already_set = TRUE;
-  else
-    g_application_name = g_strdup (application_name);
-  G_UNLOCK (g_application_name);
+  name = g_strdup (application_name);
 
-  if (already_set)
-    g_warning ("g_set_application_name() called multiple times");
+  if (!g_atomic_pointer_compare_and_exchange (&g_application_name, NULL, name))
+    {
+      g_warning ("g_set_application_name() called multiple times");
+      g_free (name);
+    }
 }
 
 #ifdef G_OS_WIN32
