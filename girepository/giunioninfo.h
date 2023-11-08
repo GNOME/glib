@@ -39,49 +39,49 @@ G_BEGIN_DECLS
  * Checks if @info is a #GIUnionInfo.
  */
 #define GI_IS_UNION_INFO(info) \
-    (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_UNION)
+    (gi_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_UNION)
 
 GI_AVAILABLE_IN_ALL
-gint             g_union_info_get_n_fields             (GIUnionInfo *info);
+gint             gi_union_info_get_n_fields             (GIUnionInfo *info);
 
 GI_AVAILABLE_IN_ALL
-GIFieldInfo *    g_union_info_get_field                (GIUnionInfo *info,
-							gint         n);
+GIFieldInfo *    gi_union_info_get_field                (GIUnionInfo *info,
+                                                         gint         n);
 
 GI_AVAILABLE_IN_ALL
-gint             g_union_info_get_n_methods            (GIUnionInfo *info);
+gint             gi_union_info_get_n_methods            (GIUnionInfo *info);
 
 GI_AVAILABLE_IN_ALL
-GIFunctionInfo * g_union_info_get_method               (GIUnionInfo *info,
-							gint         n);
+GIFunctionInfo * gi_union_info_get_method               (GIUnionInfo *info,
+                                                         gint         n);
 
 GI_AVAILABLE_IN_ALL
-gboolean         g_union_info_is_discriminated         (GIUnionInfo *info);
+gboolean         gi_union_info_is_discriminated         (GIUnionInfo *info);
 
 GI_AVAILABLE_IN_ALL
-gint             g_union_info_get_discriminator_offset (GIUnionInfo *info);
+gint             gi_union_info_get_discriminator_offset (GIUnionInfo *info);
 
 GI_AVAILABLE_IN_ALL
-GITypeInfo *     g_union_info_get_discriminator_type   (GIUnionInfo *info);
+GITypeInfo *     gi_union_info_get_discriminator_type   (GIUnionInfo *info);
 
 GI_AVAILABLE_IN_ALL
-GIConstantInfo * g_union_info_get_discriminator        (GIUnionInfo *info,
-							gint         n);
+GIConstantInfo * gi_union_info_get_discriminator        (GIUnionInfo *info,
+                                                         gint         n);
 
 GI_AVAILABLE_IN_ALL
-GIFunctionInfo * g_union_info_find_method              (GIUnionInfo *info,
+GIFunctionInfo * gi_union_info_find_method              (GIUnionInfo *info,
 							const gchar *name);
 
 GI_AVAILABLE_IN_ALL
-gsize            g_union_info_get_size                 (GIUnionInfo *info);
+gsize            gi_union_info_get_size                 (GIUnionInfo *info);
 
 GI_AVAILABLE_IN_ALL
-gsize            g_union_info_get_alignment            (GIUnionInfo *info);
+gsize            gi_union_info_get_alignment            (GIUnionInfo *info);
 
 GI_AVAILABLE_IN_ALL
-const char *     g_union_info_get_copy_function        (GIUnionInfo *info);
+const char *     gi_union_info_get_copy_function        (GIUnionInfo *info);
 
 GI_AVAILABLE_IN_ALL
-const char *     g_union_info_get_free_function        (GIUnionInfo *info);
+const char *     gi_union_info_get_free_function        (GIUnionInfo *info);
 
 G_END_DECLS

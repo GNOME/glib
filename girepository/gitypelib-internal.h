@@ -146,15 +146,15 @@ Changes since 0.1:
 */
 
 /**
- * G_IR_MAGIC:
+ * GI_IR_MAGIC:
  *
  * Identifying prefix for the typelib.  This was inspired by XPCOM,
  * which in turn borrowed from PNG.
  */
-#define G_IR_MAGIC "GOBJ\nMETADATA\r\n\032"
+#define GI_IR_MAGIC "GOBJ\nMETADATA\r\n\032"
 
 /**
- * GTypelibBlobType:
+ * GITypelibBlobType:
  * @BLOB_TYPE_INVALID: Should not appear in code
  * @BLOB_TYPE_FUNCTION: A #FunctionBlob
  * @BLOB_TYPE_CALLBACK: A #CallbackBlob
@@ -184,14 +184,14 @@ typedef enum {
   BLOB_TYPE_CONSTANT,
   BLOB_TYPE_INVALID_0,
   BLOB_TYPE_UNION
-} GTypelibBlobType;
+} GITypelibBlobType;
 
 
 #if defined (G_CAN_INLINE) && defined (G_ALWAYS_INLINE)
 
 G_ALWAYS_INLINE
 inline gboolean
-_blob_is_registered_type (GTypelibBlobType blob_type)
+_blob_is_registered_type (GITypelibBlobType blob_type)
 {
   switch (blob_type)
     {
@@ -208,7 +208,7 @@ _blob_is_registered_type (GTypelibBlobType blob_type)
 }
 
 #define BLOB_IS_REGISTERED_TYPE(blob) \
-  _blob_is_registered_type ((GTypelibBlobType) (blob)->blob_type)
+  _blob_is_registered_type ((GITypelibBlobType) (blob)->blob_type)
 
 #else
 
@@ -224,7 +224,7 @@ _blob_is_registered_type (GTypelibBlobType blob_type)
 
 /**
  * Header:
- * @magic: See #G_IR_MAGIC.
+ * @magic: See #GI_IR_MAGIC.
  * @major_version: The major version number of the typelib format. Major version
  *   number changes indicate incompatible changes to the tyeplib format.
  * @minor_version: The minor version number of the typelib format. Minor version
@@ -351,7 +351,7 @@ typedef struct {
 
 /**
  * DirEntry:
- * @blob_type: A #GTypelibBlobType
+ * @blob_type: A #GITypelibBlobType
  * @local: Whether this entry refers to a blob in this typelib.
  * @reserved: Reserved for future use.
  * @name: The name of the entry.
@@ -530,7 +530,7 @@ typedef struct {
 
 /**
  * CommonBlob:
- * @blob_type: A #GTypelibBlobType
+ * @blob_type: A #GITypelibBlobType
  * @deprecated: Whether the blob is deprecated.
  * @reserved: Reserved for future use.
  * @name: The name of the blob.
@@ -1256,27 +1256,27 @@ struct _GITypelib {
   gboolean open_attempted;
 };
 
-DirEntry *g_typelib_get_dir_entry (GITypelib *typelib,
-				   guint16   index);
+DirEntry *gi_typelib_get_dir_entry (GITypelib *typelib,
+                                    guint16    index);
 
-DirEntry *g_typelib_get_dir_entry_by_name (GITypelib *typelib,
-					   const char *name);
+DirEntry *gi_typelib_get_dir_entry_by_name (GITypelib  *typelib,
+                                            const char *name);
 
-DirEntry *g_typelib_get_dir_entry_by_gtype_name (GITypelib *typelib,
-						 const gchar *gtype_name);
+DirEntry *gi_typelib_get_dir_entry_by_gtype_name (GITypelib   *typelib,
+                                                  const gchar *gtype_name);
 
-DirEntry *g_typelib_get_dir_entry_by_error_domain (GITypelib *typelib,
-						   GQuark     error_domain);
+DirEntry *gi_typelib_get_dir_entry_by_error_domain (GITypelib *typelib,
+                                                    GQuark     error_domain);
 
-gboolean  g_typelib_matches_gtype_name_prefix (GITypelib *typelib,
-					       const gchar *gtype_name);
+gboolean  gi_typelib_matches_gtype_name_prefix (GITypelib   *typelib,
+                                                const gchar *gtype_name);
 
 
 GI_AVAILABLE_IN_ALL
-void      g_typelib_check_sanity (void);
+void      gi_typelib_check_sanity (void);
 
 /**
- * g_typelib_get_string:
+ * gi_typelib_get_string:
  * @typelib: TODO
  * @offset: TODO
  *
@@ -1284,41 +1284,41 @@ void      g_typelib_check_sanity (void);
  *
  * Returns: TODO
  */
-#define   g_typelib_get_string(typelib,offset) ((const gchar*)&(typelib->data)[(offset)])
+#define   gi_typelib_get_string(typelib,offset) ((const gchar*)&(typelib->data)[(offset)])
 
 
 /**
  * GITypelibError:
- * @G_TYPELIB_ERROR_INVALID: the typelib is invalid
- * @G_TYPELIB_ERROR_INVALID_HEADER: the typelib header is invalid
- * @G_TYPELIB_ERROR_INVALID_DIRECTORY: the typelib directory is invalid
- * @G_TYPELIB_ERROR_INVALID_ENTRY: a typelib entry is invalid
- * @G_TYPELIB_ERROR_INVALID_BLOB: a typelib blob is invalid
+ * @GI_TYPELIB_ERROR_INVALID: the typelib is invalid
+ * @GI_TYPELIB_ERROR_INVALID_HEADER: the typelib header is invalid
+ * @GI_TYPELIB_ERROR_INVALID_DIRECTORY: the typelib directory is invalid
+ * @GI_TYPELIB_ERROR_INVALID_ENTRY: a typelib entry is invalid
+ * @GI_TYPELIB_ERROR_INVALID_BLOB: a typelib blob is invalid
  *
  * A error set while validating the #GITypelib
  */
 typedef enum
 {
-  G_TYPELIB_ERROR_INVALID,
-  G_TYPELIB_ERROR_INVALID_HEADER,
-  G_TYPELIB_ERROR_INVALID_DIRECTORY,
-  G_TYPELIB_ERROR_INVALID_ENTRY,
-  G_TYPELIB_ERROR_INVALID_BLOB
+  GI_TYPELIB_ERROR_INVALID,
+  GI_TYPELIB_ERROR_INVALID_HEADER,
+  GI_TYPELIB_ERROR_INVALID_DIRECTORY,
+  GI_TYPELIB_ERROR_INVALID_ENTRY,
+  GI_TYPELIB_ERROR_INVALID_BLOB
 } GITypelibError;
 
 /**
- * G_TYPELIB_ERROR:
+ * GI_TYPELIB_ERROR:
  *
  * TODO
  */
-#define G_TYPELIB_ERROR (g_typelib_error_quark ())
+#define GI_TYPELIB_ERROR (gi_typelib_error_quark ())
 
-GQuark g_typelib_error_quark (void);
+GQuark gi_typelib_error_quark (void);
 
 
 GI_AVAILABLE_IN_ALL
-gboolean g_typelib_validate (GITypelib  *typelib,
-			     GError    **error);
+gboolean gi_typelib_validate (GITypelib  *typelib,
+                              GError    **error);
 
 
 /* defined in gibaseinfo.c */

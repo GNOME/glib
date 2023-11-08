@@ -130,7 +130,7 @@ gi_type_tag_get_ffi_type (GITypeTag   type_tag,
 }
 
 /**
- * g_type_info_get_ffi_type:
+ * gi_type_info_get_ffi_type:
  * @info: A #GITypeInfo
  *
  * TODO
@@ -138,15 +138,15 @@ gi_type_tag_get_ffi_type (GITypeTag   type_tag,
  * Returns: A #ffi_type corresponding to the platform default C ABI for @info.
  */
 ffi_type *
-g_type_info_get_ffi_type (GITypeInfo *info)
+gi_type_info_get_ffi_type (GITypeInfo *info)
 {
   gboolean is_enum = FALSE;
   GIBaseInfo *iinfo;
 
-  if (g_type_info_get_tag (info) == GI_TYPE_TAG_INTERFACE)
+  if (gi_type_info_get_tag (info) == GI_TYPE_TAG_INTERFACE)
     {
-      iinfo = g_type_info_get_interface (info);
-      switch (g_base_info_get_type (iinfo))
+      iinfo = gi_type_info_get_interface (info);
+      switch (gi_base_info_get_type (iinfo))
         {
         case GI_INFO_TYPE_ENUM:
         case GI_INFO_TYPE_FLAGS:
@@ -155,14 +155,14 @@ g_type_info_get_ffi_type (GITypeInfo *info)
         default:
           break;
         }
-      g_base_info_unref (iinfo);
+      gi_base_info_unref (iinfo);
     }
 
-  return gi_type_tag_get_ffi_type_internal (g_type_info_get_tag (info), g_type_info_is_pointer (info), is_enum);
+  return gi_type_tag_get_ffi_type_internal (gi_type_info_get_tag (info), gi_type_info_is_pointer (info), is_enum);
 }
 
 /**
- * g_callable_info_get_ffi_arg_types:
+ * gi_callable_info_get_ffi_arg_types:
  * @callable_info: a callable info from a typelib
  * @n_args_p: (out): The number of arguments
  *
@@ -172,8 +172,8 @@ g_type_info_get_ffi_type (GITypeInfo *info)
  * should be freed using g_free() after use.
  */
 static ffi_type **
-g_callable_info_get_ffi_arg_types (GICallableInfo *callable_info,
-                                   int            *n_args_p)
+gi_callable_info_get_ffi_arg_types (GICallableInfo *callable_info,
+                                    int            *n_args_p)
 {
     ffi_type **arg_types;
     gboolean is_method, throws;
@@ -181,9 +181,9 @@ g_callable_info_get_ffi_arg_types (GICallableInfo *callable_info,
 
     g_return_val_if_fail (callable_info != NULL, NULL);
 
-    n_args = g_callable_info_get_n_args (callable_info);
-    is_method = g_callable_info_is_method (callable_info);
-    throws = g_callable_info_can_throw_gerror (callable_info);
+    n_args = gi_callable_info_get_n_args (callable_info);
+    is_method = gi_callable_info_is_method (callable_info);
+    throws = gi_callable_info_can_throw_gerror (callable_info);
     offset = is_method ? 1 : 0;
 
     n_invoke_args = n_args;
@@ -208,12 +208,12 @@ g_callable_info_get_ffi_arg_types (GICallableInfo *callable_info,
         GIArgInfo arg_info;
         GITypeInfo arg_type;
 
-        g_callable_info_load_arg (callable_info, i, &arg_info);
-        g_arg_info_load_type (&arg_info, &arg_type);
-        switch (g_arg_info_get_direction (&arg_info))
+        gi_callable_info_load_arg (callable_info, i, &arg_info);
+        gi_arg_info_load_type (&arg_info, &arg_type);
+        switch (gi_arg_info_get_direction (&arg_info))
           {
             case GI_DIRECTION_IN:
-              arg_types[i + offset] = g_type_info_get_ffi_type (&arg_type);
+              arg_types[i + offset] = gi_type_info_get_ffi_type (&arg_type);
               break;
             case GI_DIRECTION_OUT:
             case GI_DIRECTION_INOUT:
@@ -230,7 +230,7 @@ g_callable_info_get_ffi_arg_types (GICallableInfo *callable_info,
 }
 
 /**
- * g_callable_info_get_ffi_return_type:
+ * gi_callable_info_get_ffi_return_type:
  * @callable_info: a callable info from a typelib
  *
  * Fetches the ffi_type for a corresponding return value of
@@ -239,22 +239,22 @@ g_callable_info_get_ffi_arg_types (GICallableInfo *callable_info,
  * Returns: the ffi_type for the return value
  */
 static ffi_type *
-g_callable_info_get_ffi_return_type (GICallableInfo *callable_info)
+gi_callable_info_get_ffi_return_type (GICallableInfo *callable_info)
 {
   GITypeInfo *return_type;
   ffi_type *return_ffi_type;
 
   g_return_val_if_fail (callable_info != NULL, NULL);
 
-  return_type = g_callable_info_get_return_type (callable_info);
-  return_ffi_type = g_type_info_get_ffi_type (return_type);
-  g_base_info_unref((GIBaseInfo*)return_type);
+  return_type = gi_callable_info_get_return_type (callable_info);
+  return_ffi_type = gi_type_info_get_ffi_type (return_type);
+  gi_base_info_unref((GIBaseInfo*)return_type);
 
   return return_ffi_type;
 }
 
 /**
- * g_function_info_prep_invoker:
+ * gi_function_info_prep_invoker:
  * @info: A #GIFunctionInfo
  * @invoker: Output invoker structure
  * @error: A #GError
@@ -270,9 +270,9 @@ g_callable_info_get_ffi_return_type (GICallableInfo *callable_info)
  * Returns: %TRUE on success, %FALSE otherwise with @error set.
  */
 gboolean
-g_function_info_prep_invoker (GIFunctionInfo       *info,
-                              GIFunctionInvoker    *invoker,
-                              GError              **error)
+gi_function_info_prep_invoker (GIFunctionInfo     *info,
+                               GIFunctionInvoker  *invoker,
+                               GError            **error)
 {
   const char *symbol;
   gpointer addr;
@@ -280,24 +280,24 @@ g_function_info_prep_invoker (GIFunctionInfo       *info,
   g_return_val_if_fail (info != NULL, FALSE);
   g_return_val_if_fail (invoker != NULL, FALSE);
 
-  symbol = g_function_info_get_symbol ((GIFunctionInfo*) info);
+  symbol = gi_function_info_get_symbol ((GIFunctionInfo*) info);
 
-  if (!g_typelib_symbol (g_base_info_get_typelib((GIBaseInfo *) info),
-                         symbol, &addr))
+  if (!gi_typelib_symbol (gi_base_info_get_typelib ((GIBaseInfo *) info),
+                          symbol, &addr))
     {
       g_set_error (error,
-                   G_INVOKE_ERROR,
-                   G_INVOKE_ERROR_SYMBOL_NOT_FOUND,
+                   GI_INVOKE_ERROR,
+                   GI_INVOKE_ERROR_SYMBOL_NOT_FOUND,
                    "Could not locate %s: %s", symbol, g_module_error ());
 
       return FALSE;
     }
 
-  return g_function_invoker_new_for_address (addr, info, invoker, error);
+  return gi_function_invoker_new_for_address (addr, info, invoker, error);
 }
 
 /**
- * g_function_invoker_new_for_address:
+ * gi_function_invoker_new_for_address:
  * @addr: The address
  * @info: A #GICallableInfo
  * @invoker: Output invoker structure
@@ -314,10 +314,10 @@ g_function_info_prep_invoker (GIFunctionInfo       *info,
  * Returns: %TRUE on success, %FALSE otherwise with @error set.
  */
 gboolean
-g_function_invoker_new_for_address (gpointer           addr,
-                                    GICallableInfo    *info,
-                                    GIFunctionInvoker *invoker,
-                                    GError           **error)
+gi_function_invoker_new_for_address (gpointer            addr,
+                                     GICallableInfo     *info,
+                                     GIFunctionInvoker  *invoker,
+                                     GError            **error)
 {
   ffi_type **atypes;
   gint n_args;
@@ -327,15 +327,15 @@ g_function_invoker_new_for_address (gpointer           addr,
 
   invoker->native_address = addr;
 
-  atypes = g_callable_info_get_ffi_arg_types (info, &n_args);
+  atypes = gi_callable_info_get_ffi_arg_types (info, &n_args);
 
   return ffi_prep_cif (&(invoker->cif), FFI_DEFAULT_ABI, n_args,
-                       g_callable_info_get_ffi_return_type (info),
+                       gi_callable_info_get_ffi_return_type (info),
                        atypes) == FFI_OK;
 }
 
 /**
- * g_function_invoker_destroy:
+ * gi_function_invoker_destroy:
  * @invoker: A #GIFunctionInvoker
  *
  * Release all resources allocated for the internals of @invoker; callers
@@ -343,7 +343,7 @@ g_function_invoker_new_for_address (gpointer           addr,
  * itself however.
  */
 void
-g_function_invoker_destroy (GIFunctionInvoker    *invoker)
+gi_function_invoker_destroy (GIFunctionInvoker *invoker)
 {
   g_free (invoker->cif.arg_types);
 }
@@ -355,7 +355,7 @@ typedef struct {
 } GIClosureWrapper;
 
 /**
- * g_callable_info_create_closure:
+ * gi_callable_info_create_closure:
  * @callable_info: a callable info from a typelib
  * @cif: a ffi_cif structure
  * @callback: the ffi callback
@@ -364,13 +364,13 @@ typedef struct {
  * Prepares a callback for ffi invocation.
  *
  * Returns: the ffi_closure or NULL on error. The return value
- *   should be freed by calling g_callable_info_destroy_closure().
+ *   should be freed by calling gi_callable_info_destroy_closure().
  */
 ffi_closure *
-g_callable_info_create_closure (GICallableInfo       *callable_info,
-                                ffi_cif              *cif,
-                                GIFFIClosureCallback  callback,
-                                gpointer              user_data)
+gi_callable_info_create_closure (GICallableInfo       *callable_info,
+                                 ffi_cif              *cif,
+                                 GIFFIClosureCallback  callback,
+                                 gpointer              user_data)
 {
   gpointer exec_ptr;
   int n_args;
@@ -392,9 +392,9 @@ g_callable_info_create_closure (GICallableInfo       *callable_info,
   closure->native_address = exec_ptr;
 
 
-  atypes = g_callable_info_get_ffi_arg_types (callable_info, &n_args);
+  atypes = gi_callable_info_get_ffi_arg_types (callable_info, &n_args);
   status = ffi_prep_cif (cif, FFI_DEFAULT_ABI, n_args,
-                         g_callable_info_get_ffi_return_type (callable_info),
+                         gi_callable_info_get_ffi_return_type (callable_info),
                          atypes);
   if (status != FFI_OK)
     {
@@ -415,30 +415,30 @@ g_callable_info_create_closure (GICallableInfo       *callable_info,
 }
 
 /**
- * g_callable_info_get_closure_native_address:
+ * gi_callable_info_get_closure_native_address:
  * @callable_info: a callable info from a typelib
  * @closure: ffi closure
  *
- * Gets callable code from ffi_closure prepared by g_callable_info_create_closure()
+ * Gets callable code from ffi_closure prepared by gi_callable_info_create_closure()
  */
 gpointer *
-g_callable_info_get_closure_native_address (GICallableInfo       *callable_info,
-                                            ffi_closure          *closure)
+gi_callable_info_get_closure_native_address (GICallableInfo *callable_info,
+                                             ffi_closure    *closure)
 {
   GIClosureWrapper *wrapper = (GIClosureWrapper *)closure;
   return wrapper->native_address;
 }
 
 /**
- * g_callable_info_destroy_closure:
+ * gi_callable_info_destroy_closure:
  * @callable_info: a callable info from a typelib
  * @closure: ffi closure
  *
- * Frees a ffi_closure returned from g_callable_info_create_closure()
+ * Frees a ffi_closure returned from gi_callable_info_create_closure()
  */
 void
-g_callable_info_destroy_closure (GICallableInfo *callable_info,
-                                 ffi_closure    *closure)
+gi_callable_info_destroy_closure (GICallableInfo *callable_info,
+                                  ffi_closure    *closure)
 {
   GIClosureWrapper *wrapper = (GIClosureWrapper *)closure;
 

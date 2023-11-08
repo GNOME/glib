@@ -39,59 +39,59 @@ G_BEGIN_DECLS
  * Checks if @info is a #GIFunctionInfo.
  */
 #define GI_IS_FUNCTION_INFO(info) \
-    (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_FUNCTION)
+    (gi_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_FUNCTION)
 
 
 GI_AVAILABLE_IN_ALL
-const gchar *           g_function_info_get_symbol     (GIFunctionInfo *info);
+const gchar *           gi_function_info_get_symbol     (GIFunctionInfo *info);
 
 GI_AVAILABLE_IN_ALL
-GIFunctionInfoFlags     g_function_info_get_flags      (GIFunctionInfo *info);
+GIFunctionInfoFlags     gi_function_info_get_flags      (GIFunctionInfo *info);
 
 GI_AVAILABLE_IN_ALL
-GIPropertyInfo *        g_function_info_get_property   (GIFunctionInfo *info);
+GIPropertyInfo *        gi_function_info_get_property   (GIFunctionInfo *info);
 
 GI_AVAILABLE_IN_ALL
-GIVFuncInfo *           g_function_info_get_vfunc      (GIFunctionInfo *info);
+GIVFuncInfo *           gi_function_info_get_vfunc      (GIFunctionInfo *info);
 
 /**
- * G_INVOKE_ERROR:
+ * GI_INVOKE_ERROR:
  *
  * TODO
  */
-#define G_INVOKE_ERROR (g_invoke_error_quark ())
+#define GI_INVOKE_ERROR (gi_invoke_error_quark ())
 
 GI_AVAILABLE_IN_ALL
-GQuark g_invoke_error_quark (void);
+GQuark gi_invoke_error_quark (void);
 
 /**
- * GInvokeError:
- * @G_INVOKE_ERROR_FAILED: invokation failed, unknown error.
- * @G_INVOKE_ERROR_SYMBOL_NOT_FOUND: symbol couldn't be found in any of the
- * libraries associated with the typelib of the function.
- * @G_INVOKE_ERROR_ARGUMENT_MISMATCH: the arguments provided didn't match
- * the expected arguments for the functions type signature.
+ * GIInvokeError:
+ * @GI_INVOKE_ERROR_FAILED: invokation failed, unknown error.
+ * @GI_INVOKE_ERROR_SYMBOL_NOT_FOUND: symbol couldn't be found in any of the
+ *   libraries associated with the typelib of the function.
+ * @GI_INVOKE_ERROR_ARGUMENT_MISMATCH: the arguments provided didn't match
+ *   the expected arguments for the functions type signature.
  *
  * An error occuring while invoking a function via
- * g_function_info_invoke().
+ * gi_function_info_invoke().
  */
 
 typedef enum
 {
-  G_INVOKE_ERROR_FAILED,
-  G_INVOKE_ERROR_SYMBOL_NOT_FOUND,
-  G_INVOKE_ERROR_ARGUMENT_MISMATCH
-} GInvokeError;
+  GI_INVOKE_ERROR_FAILED,
+  GI_INVOKE_ERROR_SYMBOL_NOT_FOUND,
+  GI_INVOKE_ERROR_ARGUMENT_MISMATCH
+} GIInvokeError;
 
 
 GI_AVAILABLE_IN_ALL
-gboolean              g_function_info_invoke         (GIFunctionInfo *info,
-						      const GIArgument  *in_args,
-						      int               n_in_args,
-						      const GIArgument  *out_args,
-						      int               n_out_args,
-						      GIArgument        *return_value,
-						      GError          **error);
+gboolean              gi_function_info_invoke         (GIFunctionInfo    *info,
+                                                       const GIArgument  *in_args,
+                                                       int                n_in_args,
+                                                       const GIArgument  *out_args,
+                                                       int                n_out_args,
+                                                       GIArgument        *return_value,
+                                                       GError           **error);
 
 
 G_END_DECLS

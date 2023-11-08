@@ -70,8 +70,8 @@ get_dir_entry_checked (GITypelib *typelib,
   if (index == 0 || index > header->n_entries)
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_BLOB,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID_BLOB,
 		   "Invalid directory index %d", index);
       return FALSE;
     }
@@ -81,8 +81,8 @@ get_dir_entry_checked (GITypelib *typelib,
   if (typelib->len < offset + sizeof (DirEntry))
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID,
 		   "The buffer is too short");
       return FALSE;
     }
@@ -99,8 +99,8 @@ get_blob (GITypelib *typelib,
   if (typelib->len < offset + sizeof (CommonBlob))
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID,
 		   "The buffer is too short");
       return FALSE;
     }
@@ -115,8 +115,8 @@ get_type_blob (GITypelib *typelib,
   if (simple->offset == 0)
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID,
 		   "Expected blob for type");
       return FALSE;
     }
@@ -124,8 +124,8 @@ get_type_blob (GITypelib *typelib,
   if (simple->flags.reserved == 0 && simple->flags.reserved2 == 0)
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID,
 		   "Expected non-basic type but got %d",
 		   simple->flags.tag);
       return FALSE;
@@ -135,7 +135,7 @@ get_type_blob (GITypelib *typelib,
 }
 
 /**
- * g_typelib_get_dir_entry:
+ * gi_typelib_get_dir_entry:
  * @typelib: TODO
  * @index: TODO
  *
@@ -144,8 +144,8 @@ get_type_blob (GITypelib *typelib,
  * Returns: TODO
  */
 DirEntry *
-g_typelib_get_dir_entry (GITypelib *typelib,
-			  guint16    index)
+gi_typelib_get_dir_entry (GITypelib *typelib,
+                          guint16    index)
 {
   Header *header = (Header *)typelib->data;
 
@@ -173,7 +173,7 @@ get_section_by_id (GITypelib   *typelib,
 }
 
 /**
- * g_typelib_get_dir_entry_by_name:
+ * gi_typelib_get_dir_entry_by_name:
  * @typelib: TODO
  * @name: TODO
  *
@@ -182,8 +182,8 @@ get_section_by_id (GITypelib   *typelib,
  * Returns: TODO
  */
 DirEntry *
-g_typelib_get_dir_entry_by_name (GITypelib *typelib,
-				 const char *name)
+gi_typelib_get_dir_entry_by_name (GITypelib  *typelib,
+                                  const char *name)
 {
   Section *dirindex;
   gint i, n_entries;
@@ -197,8 +197,8 @@ g_typelib_get_dir_entry_by_name (GITypelib *typelib,
     {
       for (i = 1; i <= n_entries; i++)
 	{
-	  entry = g_typelib_get_dir_entry (typelib, i);
-	  entry_name = g_typelib_get_string (typelib, entry->name);
+	  entry = gi_typelib_get_dir_entry (typelib, i);
+	  entry_name = gi_typelib_get_string (typelib, entry->name);
 	  if (strcmp (name, entry_name) == 0)
 	    return entry;
 	}
@@ -210,8 +210,8 @@ g_typelib_get_dir_entry_by_name (GITypelib *typelib,
       guint16 index;
 
       index = _gi_typelib_hash_search (hash, name, n_entries);
-      entry = g_typelib_get_dir_entry (typelib, index + 1);
-      entry_name = g_typelib_get_string (typelib, entry->name);
+      entry = gi_typelib_get_dir_entry (typelib, index + 1);
+      entry_name = gi_typelib_get_string (typelib, entry->name);
       if (strcmp (name, entry_name) == 0)
 	return entry;
       return NULL;
@@ -219,7 +219,7 @@ g_typelib_get_dir_entry_by_name (GITypelib *typelib,
 }
 
 /**
- * g_typelib_get_dir_entry_by_gtype_name:
+ * gi_typelib_get_dir_entry_by_gtype_name:
  * @typelib: TODO
  * @gtype_name: TODO
  *
@@ -228,8 +228,8 @@ g_typelib_get_dir_entry_by_name (GITypelib *typelib,
  * Returns: TODO
  */
 DirEntry *
-g_typelib_get_dir_entry_by_gtype_name (GITypelib *typelib,
-				       const gchar *gtype_name)
+gi_typelib_get_dir_entry_by_gtype_name (GITypelib   *typelib,
+                                        const gchar *gtype_name)
 {
   Header *header = (Header *)typelib->data;
   guint i;
@@ -238,7 +238,7 @@ g_typelib_get_dir_entry_by_gtype_name (GITypelib *typelib,
     {
       RegisteredTypeBlob *blob;
       const char *type;
-      DirEntry *entry = g_typelib_get_dir_entry (typelib, i);
+      DirEntry *entry = gi_typelib_get_dir_entry (typelib, i);
       if (!BLOB_IS_REGISTERED_TYPE (entry))
 	continue;
 
@@ -246,7 +246,7 @@ g_typelib_get_dir_entry_by_gtype_name (GITypelib *typelib,
       if (!blob->gtype_name)
 	continue;
 
-      type = g_typelib_get_string (typelib, blob->gtype_name);
+      type = gi_typelib_get_string (typelib, blob->gtype_name);
       if (strcmp (type, gtype_name) == 0)
 	return entry;
     }
@@ -313,7 +313,7 @@ strsplit_iter_clear (StrSplitIter  *iter)
 }
 
 /**
- * g_typelib_matches_gtype_name_prefix:
+ * gi_typelib_matches_gtype_name_prefix:
  * @typelib: TODO
  * @gtype_name: TODO
  *
@@ -322,8 +322,8 @@ strsplit_iter_clear (StrSplitIter  *iter)
  * Returns: TODO
  */
 gboolean
-g_typelib_matches_gtype_name_prefix (GITypelib *typelib,
-				     const gchar *gtype_name)
+gi_typelib_matches_gtype_name_prefix (GITypelib   *typelib,
+                                      const gchar *gtype_name)
 {
   Header *header = (Header *)typelib->data;
   const char *c_prefix;
@@ -332,7 +332,7 @@ g_typelib_matches_gtype_name_prefix (GITypelib *typelib,
   StrSplitIter split_iter;
   gsize gtype_name_len;
 
-  c_prefix = g_typelib_get_string (typelib, header->c_prefix);
+  c_prefix = gi_typelib_get_string (typelib, header->c_prefix);
   if (c_prefix == NULL || strlen (c_prefix) == 0)
     return FALSE;
 
@@ -367,7 +367,7 @@ g_typelib_matches_gtype_name_prefix (GITypelib *typelib,
 }
 
 /**
- * g_typelib_get_dir_entry_by_error_domain:
+ * gi_typelib_get_dir_entry_by_error_domain:
  * @typelib: TODO
  * @error_domain: TODO
  *
@@ -376,8 +376,8 @@ g_typelib_matches_gtype_name_prefix (GITypelib *typelib,
  * Returns: TODO
  */
 DirEntry *
-g_typelib_get_dir_entry_by_error_domain (GITypelib *typelib,
-					 GQuark     error_domain)
+gi_typelib_get_dir_entry_by_error_domain (GITypelib *typelib,
+                                          GQuark     error_domain)
 {
   Header *header = (Header *)typelib->data;
   guint n_entries = header->n_local_entries;
@@ -390,7 +390,7 @@ g_typelib_get_dir_entry_by_error_domain (GITypelib *typelib,
       EnumBlob *blob;
       const char *enum_domain_string;
 
-      entry = g_typelib_get_dir_entry (typelib, i);
+      entry = gi_typelib_get_dir_entry (typelib, i);
       if (entry->blob_type != BLOB_TYPE_ENUM)
 	continue;
 
@@ -398,7 +398,7 @@ g_typelib_get_dir_entry_by_error_domain (GITypelib *typelib,
       if (!blob->error_domain)
 	continue;
 
-      enum_domain_string = g_typelib_get_string (typelib, blob->error_domain);
+      enum_domain_string = gi_typelib_get_string (typelib, blob->error_domain);
       if (strcmp (domain_string, enum_domain_string) == 0)
 	return entry;
     }
@@ -406,12 +406,12 @@ g_typelib_get_dir_entry_by_error_domain (GITypelib *typelib,
 }
 
 /**
- * g_typelib_check_sanity:
+ * gi_typelib_check_sanity:
  *
  * TODO
  */
 void
-g_typelib_check_sanity (void)
+gi_typelib_check_sanity (void)
 {
   /* Check that struct layout is as we expect */
 
@@ -478,8 +478,8 @@ get_string (GITypelib *typelib, guint32 offset, GError **error)
   if (typelib->len < offset)
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID,
 		   "Buffer is too short while looking up name");
       return NULL;
     }
@@ -510,8 +510,8 @@ validate_name (GITypelib   *typelib,
   if (!memchr (name, '\0', MAX_NAME_LEN))
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID,
 		   "The %s is too long: %s",
 		   msg, name);
       return FALSE;
@@ -520,8 +520,8 @@ validate_name (GITypelib   *typelib,
   if (strspn (name, G_CSET_a_2_z G_CSET_A_2_Z G_CSET_DIGITS "-_") < strlen (name))
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID,
 		   "The %s contains invalid characters: '%s'",
 		   msg, name);
       return FALSE;
@@ -541,18 +541,18 @@ validate_header_basic (const guint8   *memory,
   if (len < sizeof (Header))
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID,
 		   "The specified typelib length %" G_GSIZE_FORMAT " is too short",
 		   len);
       return FALSE;
     }
 
-  if (strncmp (header->magic, G_IR_MAGIC, 16) != 0)
+  if (strncmp (header->magic, GI_IR_MAGIC, 16) != 0)
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_HEADER,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID_HEADER,
 		   "Invalid magic header");
       return FALSE;
 
@@ -561,8 +561,8 @@ validate_header_basic (const guint8   *memory,
   if (header->major_version != 4)
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_HEADER,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID_HEADER,
 		   "Typelib version mismatch; expected 4, found %d",
 		   header->major_version);
       return FALSE;
@@ -572,8 +572,8 @@ validate_header_basic (const guint8   *memory,
   if (header->n_entries < header->n_local_entries)
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_HEADER,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID_HEADER,
 		   "Inconsistent entry counts");
       return FALSE;
     }
@@ -581,8 +581,8 @@ validate_header_basic (const guint8   *memory,
   if (header->size != len)
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_HEADER,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID_HEADER,
 		   "Typelib size %" G_GSIZE_FORMAT " does not match %" G_GSIZE_FORMAT,
 		   (gsize) header->size, len);
       return FALSE;
@@ -591,7 +591,7 @@ validate_header_basic (const guint8   *memory,
   /* This is a sanity check for a specific typelib; it
    * prevents us from loading an incompatible typelib.
    *
-   * The hardcoded checks in g_typelib_check_sanity to
+   * The hardcoded checks in gi_typelib_check_sanity to
    * protect against inadvertent or buggy changes to the typelib format
    * itself.
    */
@@ -615,8 +615,8 @@ validate_header_basic (const guint8   *memory,
       header->union_blob_size != sizeof (UnionBlob))
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_HEADER,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID_HEADER,
 		   "Blob size mismatch");
       return FALSE;
     }
@@ -624,8 +624,8 @@ validate_header_basic (const guint8   *memory,
   if (!is_aligned (header->directory))
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_HEADER,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID_HEADER,
 		   "Misaligned directory");
       return FALSE;
     }
@@ -633,8 +633,8 @@ validate_header_basic (const guint8   *memory,
   if (!is_aligned (header->attributes))
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_HEADER,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID_HEADER,
 		   "Misaligned attributes");
       return FALSE;
     }
@@ -642,8 +642,8 @@ validate_header_basic (const guint8   *memory,
   if (header->attributes == 0 && header->n_attributes > 0)
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_HEADER,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID_HEADER,
 		   "Wrong number of attributes");
       return FALSE;
     }
@@ -730,8 +730,8 @@ validate_param_type_blob (GITypelib     *typelib,
   if (!blob->pointer)
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_BLOB,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID_BLOB,
 		   "Pointer type exected for tag %d", blob->tag);
       return FALSE;
     }
@@ -739,8 +739,8 @@ validate_param_type_blob (GITypelib     *typelib,
   if (blob->n_types != n_params)
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_BLOB,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID_BLOB,
 		   "Parameter type number mismatch");
       return FALSE;
     }
@@ -771,8 +771,8 @@ validate_error_type_blob (GITypelib     *typelib,
   if (!blob->pointer)
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_BLOB,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID_BLOB,
 		   "Pointer type exected for tag %d", blob->tag);
       return FALSE;
     }
@@ -798,8 +798,8 @@ validate_type_blob (GITypelib     *typelib,
       if (!GI_TYPE_TAG_IS_BASIC(simple->flags.tag))
 	{
 	  g_set_error (error,
-		       G_TYPELIB_ERROR,
-		       G_TYPELIB_ERROR_INVALID_BLOB,
+		       GI_TYPELIB_ERROR,
+		       GI_TYPELIB_ERROR_INVALID_BLOB,
 		       "Invalid non-basic tag %d in simple type", simple->flags.tag);
 	  return FALSE;
 	}
@@ -809,8 +809,8 @@ validate_type_blob (GITypelib     *typelib,
 	  !simple->flags.pointer)
 	{
 	  g_set_error (error,
-		       G_TYPELIB_ERROR,
-		       G_TYPELIB_ERROR_INVALID_BLOB,
+		       GI_TYPELIB_ERROR,
+		       GI_TYPELIB_ERROR_INVALID_BLOB,
 		       "Pointer type exected for tag %d", simple->flags.tag);
 	  return FALSE;
 	}
@@ -850,8 +850,8 @@ validate_type_blob (GITypelib     *typelib,
       break;
     default:
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_BLOB,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID_BLOB,
 		   "Wrong tag in complex type");
       return FALSE;
     }
@@ -870,8 +870,8 @@ validate_arg_blob (GITypelib     *typelib,
   if (typelib->len < offset + sizeof (ArgBlob))
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID,
 		   "The buffer is too short");
       return FALSE;
     }
@@ -898,8 +898,8 @@ return_type_from_signature (GITypelib *typelib,
   if (typelib->len < offset + sizeof (SignatureBlob))
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID,
 		   "The buffer is too short");
       return NULL;
     }
@@ -908,8 +908,8 @@ return_type_from_signature (GITypelib *typelib,
   if (blob->return_type.offset == 0)
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID,
 		   "No return type found in signature");
       return NULL;
     }
@@ -928,8 +928,8 @@ validate_signature_blob (GITypelib     *typelib,
   if (typelib->len < offset + sizeof (SignatureBlob))
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID,
 		   "The buffer is too short");
       return FALSE;
     }
@@ -971,8 +971,8 @@ validate_function_blob (ValidateContext *ctx,
   if (typelib->len < offset + sizeof (FunctionBlob))
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID,
 		   "The buffer is too short");
       return FALSE;
     }
@@ -982,8 +982,8 @@ validate_function_blob (ValidateContext *ctx,
   if (blob->blob_type != BLOB_TYPE_FUNCTION)
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_BLOB,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID_BLOB,
 		   "Wrong blob type %d, expected function", blob->blob_type);
       return FALSE;
     }
@@ -1008,8 +1008,8 @@ validate_function_blob (ValidateContext *ctx,
 	  break;
 	default:
 	  g_set_error (error,
-		       G_TYPELIB_ERROR,
-		       G_TYPELIB_ERROR_INVALID_BLOB,
+		       GI_TYPELIB_ERROR,
+		       GI_TYPELIB_ERROR_INVALID_BLOB,
 		       "Constructor not allowed");
 	  return FALSE;
 	}
@@ -1024,8 +1024,8 @@ validate_function_blob (ValidateContext *ctx,
 	  break;
 	default:
 	  g_set_error (error,
-		       G_TYPELIB_ERROR,
-		       G_TYPELIB_ERROR_INVALID_BLOB,
+		       GI_TYPELIB_ERROR,
+		       GI_TYPELIB_ERROR_INVALID_BLOB,
 		       "Setter, getter or wrapper not allowed");
 	  return FALSE;
 	}
@@ -1036,8 +1036,8 @@ validate_function_blob (ValidateContext *ctx,
       if (!(blob->setter || blob->getter || blob->wraps_vfunc))
 	{
 	  g_set_error (error,
-		       G_TYPELIB_ERROR,
-		       G_TYPELIB_ERROR_INVALID_BLOB,
+		       GI_TYPELIB_ERROR,
+		       GI_TYPELIB_ERROR_INVALID_BLOB,
 		       "Must be setter, getter or wrapper");
 	  return FALSE;
 	}
@@ -1065,10 +1065,10 @@ validate_function_blob (ValidateContext *ctx,
            container_type == BLOB_TYPE_INTERFACE))
 	{
 	  g_set_error (error,
-		       G_TYPELIB_ERROR,
-		       G_TYPELIB_ERROR_INVALID,
+		       GI_TYPELIB_ERROR,
+		       GI_TYPELIB_ERROR_INVALID,
 		       "Invalid return type '%s' for constructor '%s'",
-		       g_type_tag_to_string (iface_type->tag),
+		       gi_type_tag_to_string (iface_type->tag),
 		       get_string_nofail (typelib, blob->symbol));
 	  return FALSE;
 	}
@@ -1090,8 +1090,8 @@ validate_callback_blob (ValidateContext *ctx,
   if (typelib->len < offset + sizeof (CallbackBlob))
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID,
 		   "The buffer is too short");
       return FALSE;
     }
@@ -1101,8 +1101,8 @@ validate_callback_blob (ValidateContext *ctx,
   if (blob->blob_type != BLOB_TYPE_CALLBACK)
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_BLOB,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID_BLOB,
 		   "Wrong blob type");
       return FALSE;
     }
@@ -1157,8 +1157,8 @@ validate_constant_blob (GITypelib     *typelib,
   if (typelib->len < offset + sizeof (ConstantBlob))
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID,
 		   "The buffer is too short");
       return FALSE;
     }
@@ -1168,8 +1168,8 @@ validate_constant_blob (GITypelib     *typelib,
   if (blob->blob_type != BLOB_TYPE_CONSTANT)
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_BLOB,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID_BLOB,
 		   "Wrong blob type");
       return FALSE;
     }
@@ -1184,8 +1184,8 @@ validate_constant_blob (GITypelib     *typelib,
   if (!is_aligned (blob->offset))
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_BLOB,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID_BLOB,
 		   "Misaligned constant value");
       return FALSE;
     }
@@ -1196,8 +1196,8 @@ validate_constant_blob (GITypelib     *typelib,
       if (type->flags.tag == 0)
 	{
 	  g_set_error (error,
-		       G_TYPELIB_ERROR,
-		       G_TYPELIB_ERROR_INVALID_BLOB,
+		       GI_TYPELIB_ERROR,
+		       GI_TYPELIB_ERROR_INVALID_BLOB,
 		       "Constant value type void");
 	  return FALSE;
 	}
@@ -1206,8 +1206,8 @@ validate_constant_blob (GITypelib     *typelib,
 	  blob->size != value_size[type->flags.tag])
 	{
 	  g_set_error (error,
-		       G_TYPELIB_ERROR,
-		       G_TYPELIB_ERROR_INVALID_BLOB,
+		       GI_TYPELIB_ERROR,
+		       GI_TYPELIB_ERROR_INVALID_BLOB,
 		       "Constant value size mismatch");
 	  return FALSE;
 	}
@@ -1227,8 +1227,8 @@ validate_value_blob (GITypelib     *typelib,
   if (typelib->len < offset + sizeof (ValueBlob))
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID,
 		   "The buffer is too short");
       return FALSE;
     }
@@ -1253,8 +1253,8 @@ validate_field_blob (ValidateContext *ctx,
   if (typelib->len < offset + sizeof (FieldBlob))
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID,
 		   "The buffer is too short");
       return FALSE;
     }
@@ -1287,8 +1287,8 @@ validate_property_blob (GITypelib     *typelib,
   if (typelib->len < offset + sizeof (PropertyBlob))
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID,
 		   "The buffer is too short");
       return FALSE;
     }
@@ -1318,8 +1318,8 @@ validate_signal_blob (GITypelib     *typelib,
   if (typelib->len < offset + sizeof (SignalBlob))
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID,
 		   "The buffer is too short");
       return FALSE;
     }
@@ -1334,8 +1334,8 @@ validate_signal_blob (GITypelib     *typelib,
       (blob->run_cleanup != 0) != 1)
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_BLOB,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID_BLOB,
 		   "Invalid signal run flags");
       return FALSE;
     }
@@ -1362,8 +1362,8 @@ validate_signal_blob (GITypelib     *typelib,
       if (blob->class_closure >= n_signals)
 	{
 	  g_set_error (error,
-		       G_TYPELIB_ERROR,
-		       G_TYPELIB_ERROR_INVALID_BLOB,
+		       GI_TYPELIB_ERROR,
+		       GI_TYPELIB_ERROR_INVALID_BLOB,
 		       "Invalid class closure index");
 	  return FALSE;
 	}
@@ -1387,8 +1387,8 @@ validate_vfunc_blob (GITypelib     *typelib,
   if (typelib->len < offset + sizeof (VFuncBlob))
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID,
 		   "The buffer is too short");
       return FALSE;
     }
@@ -1420,8 +1420,8 @@ validate_vfunc_blob (GITypelib     *typelib,
       if (blob->class_closure >= n_vfuncs)
 	{
 	  g_set_error (error,
-		       G_TYPELIB_ERROR,
-		       G_TYPELIB_ERROR_INVALID_BLOB,
+		       GI_TYPELIB_ERROR,
+		       GI_TYPELIB_ERROR_INVALID_BLOB,
 		       "Invalid class closure index");
 	  return FALSE;
 	}
@@ -1447,8 +1447,8 @@ validate_struct_blob (ValidateContext *ctx,
   if (typelib->len < offset + sizeof (StructBlob))
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID,
 		   "The buffer is too short");
       return FALSE;
     }
@@ -1458,8 +1458,8 @@ validate_struct_blob (ValidateContext *ctx,
   if (blob->blob_type != blob_type)
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_BLOB,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID_BLOB,
 		   "Wrong blob type");
       return FALSE;
     }
@@ -1482,8 +1482,8 @@ validate_struct_blob (ValidateContext *ctx,
       if (blob->gtype_name || blob->gtype_init)
 	{
 	  g_set_error (error,
-		       G_TYPELIB_ERROR,
-		       G_TYPELIB_ERROR_INVALID_BLOB,
+		       GI_TYPELIB_ERROR,
+		       GI_TYPELIB_ERROR_INVALID_BLOB,
 		       "Gtype data in struct");
 	  return FALSE;
 	}
@@ -1494,8 +1494,8 @@ validate_struct_blob (ValidateContext *ctx,
             blob->n_methods * sizeof (FunctionBlob))
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID,
 		   "The buffer is too short");
       return FALSE;
     }
@@ -1544,8 +1544,8 @@ validate_enum_blob (ValidateContext *ctx,
   if (typelib->len < offset + sizeof (EnumBlob))
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID,
 		   "The buffer is too short");
       return FALSE;
     }
@@ -1555,8 +1555,8 @@ validate_enum_blob (ValidateContext *ctx,
   if (blob->blob_type != blob_type)
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_BLOB,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID_BLOB,
 		   "Wrong blob type");
       return FALSE;
     }
@@ -1574,8 +1574,8 @@ validate_enum_blob (ValidateContext *ctx,
       if (blob->gtype_name || blob->gtype_init)
 	{
 	  g_set_error (error,
-		       G_TYPELIB_ERROR,
-		       G_TYPELIB_ERROR_INVALID_BLOB,
+		       GI_TYPELIB_ERROR,
+		       GI_TYPELIB_ERROR_INVALID_BLOB,
 		       "Gtype data in unregistered enum");
 	  return FALSE;
 	}
@@ -1589,8 +1589,8 @@ validate_enum_blob (ValidateContext *ctx,
       blob->n_methods * sizeof (FunctionBlob))
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID,
 		   "The buffer is too short");
       return FALSE;
     }
@@ -1618,8 +1618,8 @@ validate_enum_blob (ValidateContext *ctx,
 
 	      /* FIXME should this be an error ? */
 	      g_set_error (error,
-			   G_TYPELIB_ERROR,
-			   G_TYPELIB_ERROR_INVALID_BLOB,
+			   GI_TYPELIB_ERROR,
+			   GI_TYPELIB_ERROR_INVALID_BLOB,
 			   "Duplicate enum value");
 	      return FALSE;
 	    }
@@ -1655,8 +1655,8 @@ validate_object_blob (ValidateContext *ctx,
   if (typelib->len < offset + sizeof (ObjectBlob))
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID,
 		   "The buffer is too short");
       return FALSE;
     }
@@ -1666,8 +1666,8 @@ validate_object_blob (ValidateContext *ctx,
   if (blob->blob_type != BLOB_TYPE_OBJECT)
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_BLOB,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID_BLOB,
 		   "Wrong blob type");
       return FALSE;
     }
@@ -1684,8 +1684,8 @@ validate_object_blob (ValidateContext *ctx,
   if (blob->parent > header->n_entries)
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_BLOB,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID_BLOB,
 		   "Invalid parent index");
       return FALSE;
     }
@@ -1701,8 +1701,8 @@ validate_object_blob (ValidateContext *ctx,
 	  (entry->local || entry->blob_type != 0))
 	{
 	  g_set_error (error,
-		       G_TYPELIB_ERROR,
-		       G_TYPELIB_ERROR_INVALID_BLOB,
+		       GI_TYPELIB_ERROR,
+		       GI_TYPELIB_ERROR_INVALID_BLOB,
 		       "Parent not object");
 	  return FALSE;
 	}
@@ -1718,8 +1718,8 @@ validate_object_blob (ValidateContext *ctx,
       if (entry->blob_type != BLOB_TYPE_STRUCT && entry->local)
         {
           g_set_error (error,
-                       G_TYPELIB_ERROR,
-                       G_TYPELIB_ERROR_INVALID_BLOB,
+                       GI_TYPELIB_ERROR,
+                       GI_TYPELIB_ERROR_INVALID_BLOB,
                        "Class struct invalid type or not local");
           return FALSE;
         }
@@ -1736,8 +1736,8 @@ validate_object_blob (ValidateContext *ctx,
 
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID,
 		   "The buffer is too short");
       return FALSE;
     }
@@ -1753,8 +1753,8 @@ validate_object_blob (ValidateContext *ctx,
       if (iface == 0 || iface > header->n_entries)
 	{
 	  g_set_error (error,
-		       G_TYPELIB_ERROR,
-		       G_TYPELIB_ERROR_INVALID_BLOB,
+		       GI_TYPELIB_ERROR,
+		       GI_TYPELIB_ERROR_INVALID_BLOB,
 		       "Invalid interface index");
 	  return FALSE;
 	}
@@ -1767,8 +1767,8 @@ validate_object_blob (ValidateContext *ctx,
 	  (entry->local || entry->blob_type != 0))
 	{
 	  g_set_error (error,
-		       G_TYPELIB_ERROR,
-		       G_TYPELIB_ERROR_INVALID_BLOB,
+		       GI_TYPELIB_ERROR,
+		       GI_TYPELIB_ERROR_INVALID_BLOB,
 		       "Not an interface");
 	  return FALSE;
 	}
@@ -1797,8 +1797,8 @@ validate_object_blob (ValidateContext *ctx,
   if (blob->n_field_callbacks != n_field_callbacks)
     {
       g_set_error (error,
-                   G_TYPELIB_ERROR,
-                   G_TYPELIB_ERROR_INVALID_BLOB,
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID_BLOB,
                    "Incorrect number of field callbacks; expected "
                    "%" G_GUINT16_FORMAT ", got %" G_GUINT16_FORMAT,
                    blob->n_field_callbacks, n_field_callbacks);
@@ -1856,8 +1856,8 @@ validate_interface_blob (ValidateContext *ctx,
   if (typelib->len < offset + sizeof (InterfaceBlob))
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID,
 		   "The buffer is too short");
       return FALSE;
     }
@@ -1867,8 +1867,8 @@ validate_interface_blob (ValidateContext *ctx,
   if (blob->blob_type != BLOB_TYPE_INTERFACE)
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_BLOB,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID_BLOB,
 		   "Wrong blob type; expected interface, got %d", blob->blob_type);
       return FALSE;
     }
@@ -1892,8 +1892,8 @@ validate_interface_blob (ValidateContext *ctx,
 
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID,
 		   "The buffer is too short");
       return FALSE;
     }
@@ -1909,20 +1909,20 @@ validate_interface_blob (ValidateContext *ctx,
       if (req == 0 || req > header->n_entries)
 	{
 	  g_set_error (error,
-		       G_TYPELIB_ERROR,
-		       G_TYPELIB_ERROR_INVALID_BLOB,
+		       GI_TYPELIB_ERROR,
+		       GI_TYPELIB_ERROR_INVALID_BLOB,
 		       "Invalid prerequisite index");
 	  return FALSE;
 	}
 
-      entry = g_typelib_get_dir_entry (typelib, req);
+      entry = gi_typelib_get_dir_entry (typelib, req);
       if (entry->blob_type != BLOB_TYPE_INTERFACE &&
 	  entry->blob_type != BLOB_TYPE_OBJECT &&
 	  (entry->local || entry->blob_type != 0))
 	{
 	  g_set_error (error,
-		       G_TYPELIB_ERROR,
-		       G_TYPELIB_ERROR_INVALID_BLOB,
+		       GI_TYPELIB_ERROR,
+		       GI_TYPELIB_ERROR_INVALID_BLOB,
 		       "Not an interface or object");
 	  return FALSE;
 	}
@@ -1986,8 +1986,8 @@ validate_blob (ValidateContext *ctx,
   if (typelib->len < offset + sizeof (CommonBlob))
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID,
 		   "The buffer is too short");
       return FALSE;
     }
@@ -2032,8 +2032,8 @@ validate_blob (ValidateContext *ctx,
       break;
     default:
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_ENTRY,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID_ENTRY,
 		   "Invalid blob type");
       return FALSE;
     }
@@ -2053,15 +2053,15 @@ validate_directory (ValidateContext   *ctx,
   if (typelib->len < header->directory + header->n_entries * sizeof (DirEntry))
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID,
 		   "The buffer is too short");
       return FALSE;
     }
 
   for (i = 0; i < header->n_entries; i++)
     {
-      entry = g_typelib_get_dir_entry (typelib, i + 1);
+      entry = gi_typelib_get_dir_entry (typelib, i + 1);
 
       if (!validate_name (typelib, "entry", typelib->data, entry->name, error))
 	return FALSE;
@@ -2070,8 +2070,8 @@ validate_directory (ValidateContext   *ctx,
 	  entry->blob_type > BLOB_TYPE_UNION)
 	{
 	  g_set_error (error,
-		       G_TYPELIB_ERROR,
-		       G_TYPELIB_ERROR_INVALID_DIRECTORY,
+		       GI_TYPELIB_ERROR,
+		       GI_TYPELIB_ERROR_INVALID_DIRECTORY,
 		       "Invalid entry type");
 	  return FALSE;
 	}
@@ -2081,8 +2081,8 @@ validate_directory (ValidateContext   *ctx,
 	  if (!entry->local)
 	    {
 	      g_set_error (error,
-			   G_TYPELIB_ERROR,
-			   G_TYPELIB_ERROR_INVALID_DIRECTORY,
+			   GI_TYPELIB_ERROR,
+			   GI_TYPELIB_ERROR_INVALID_DIRECTORY,
 			   "Too few local directory entries");
 	      return FALSE;
 	    }
@@ -2090,8 +2090,8 @@ validate_directory (ValidateContext   *ctx,
 	  if (!is_aligned (entry->offset))
 	    {
 	      g_set_error (error,
-			   G_TYPELIB_ERROR,
-			   G_TYPELIB_ERROR_INVALID_DIRECTORY,
+			   GI_TYPELIB_ERROR,
+			   GI_TYPELIB_ERROR_INVALID_DIRECTORY,
 			   "Misaligned entry");
 	      return FALSE;
 	    }
@@ -2104,8 +2104,8 @@ validate_directory (ValidateContext   *ctx,
 	  if (entry->local)
 	    {
 	      g_set_error (error,
-			   G_TYPELIB_ERROR,
-			   G_TYPELIB_ERROR_INVALID_DIRECTORY,
+			   GI_TYPELIB_ERROR,
+			   GI_TYPELIB_ERROR_INVALID_DIRECTORY,
 			   "Too many local directory entries");
 	      return FALSE;
 	    }
@@ -2128,8 +2128,8 @@ validate_attributes (ValidateContext *ctx,
   if (header->size < header->attributes + header->n_attributes * sizeof (AttributeBlob))
     {
       g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID,
+		   GI_TYPELIB_ERROR,
+		   GI_TYPELIB_ERROR_INVALID,
 		   "The buffer is too short");
       return FALSE;
     }
@@ -2168,7 +2168,7 @@ prefix_with_context (GError **error,
 }
 
 /**
- * g_typelib_validate:
+ * gi_typelib_validate:
  * @typelib: TODO
  * @error: TODO
  *
@@ -2177,8 +2177,8 @@ prefix_with_context (GError **error,
  * Returns: TODO
  */
 gboolean
-g_typelib_validate (GITypelib     *typelib,
-		     GError       **error)
+gi_typelib_validate (GITypelib  *typelib,
+                     GError    **error)
 {
   ValidateContext ctx;
   ctx.typelib = typelib;
@@ -2206,25 +2206,25 @@ g_typelib_validate (GITypelib     *typelib,
 }
 
 /**
- * g_typelib_error_quark:
+ * gi_typelib_error_quark:
  *
  * TODO
  *
  * Returns: TODO
  */
 GQuark
-g_typelib_error_quark (void)
+gi_typelib_error_quark (void)
 {
   static GQuark quark = 0;
   if (quark == 0)
-    quark = g_quark_from_static_string ("g-typelib-error-quark");
+    quark = g_quark_from_static_string ("gi-typelib-error-quark");
   return quark;
 }
 
 static GSList *library_paths;
 
 /**
- * g_irepository_prepend_library_path:
+ * gi_repository_prepend_library_path:
  * @directory: (type filename): a single directory to scan for shared libraries
  *
  * Prepends @directory to the search path that is used to
@@ -2243,7 +2243,7 @@ static GSList *library_paths;
  * Since: 1.36
  */
 void
-g_irepository_prepend_library_path (const char *directory)
+gi_repository_prepend_library_path (const char *directory)
 {
   library_paths = g_slist_prepend (library_paths,
                                    g_strdup (directory));
@@ -2298,7 +2298,7 @@ load_one_shared_library (const char *shlib)
 }
 
 static void
-_g_typelib_do_dlopen (GITypelib *typelib)
+_gi_typelib_do_dlopen (GITypelib *typelib)
 {
   Header *header;
   const char *shlib_str;
@@ -2306,7 +2306,7 @@ _g_typelib_do_dlopen (GITypelib *typelib)
   header = (Header *) typelib->data;
   /* note that NULL shlib means to open the main app, which is allowed */
   if (header->shared_library)
-    shlib_str = g_typelib_get_string (typelib, header->shared_library);
+    shlib_str = gi_typelib_get_string (typelib, header->shared_library);
   else
     shlib_str = NULL;
 
@@ -2357,16 +2357,16 @@ _g_typelib_do_dlopen (GITypelib *typelib)
 }
 
 static inline void
-_g_typelib_ensure_open (GITypelib *typelib)
+_gi_typelib_ensure_open (GITypelib *typelib)
 {
   if (typelib->open_attempted)
     return;
   typelib->open_attempted = TRUE;
-  _g_typelib_do_dlopen (typelib);
+  _gi_typelib_do_dlopen (typelib);
 }
 
 /**
- * g_typelib_new_from_memory: (skip)
+ * gi_typelib_new_from_memory: (skip)
  * @memory: address of memory chunk containing the typelib
  * @len: length of memory chunk containing the typelib
  * @error: a #GError
@@ -2378,9 +2378,9 @@ _g_typelib_ensure_open (GITypelib *typelib)
  * Returns: the new #GITypelib
  */
 GITypelib *
-g_typelib_new_from_memory (guint8  *memory, 
-			   gsize    len,
-			   GError **error)
+gi_typelib_new_from_memory (guint8  *memory,
+                            gsize    len,
+                            GError **error)
 {
   GITypelib *meta;
 
@@ -2397,7 +2397,7 @@ g_typelib_new_from_memory (guint8  *memory,
 }
 
 /**
- * g_typelib_new_from_const_memory: (skip)
+ * gi_typelib_new_from_const_memory: (skip)
  * @memory: address of memory chunk containing the typelib
  * @len: length of memory chunk containing the typelib
  * @error: A #GError
@@ -2407,9 +2407,9 @@ g_typelib_new_from_memory (guint8  *memory,
  * Returns: the new #GITypelib
  */
 GITypelib *
-g_typelib_new_from_const_memory (const guchar *memory, 
-				 gsize         len,
-				 GError      **error)
+gi_typelib_new_from_const_memory (const guchar  *memory,
+                                  gsize          len,
+                                  GError       **error)
 {
   GITypelib *meta;
 
@@ -2426,7 +2426,7 @@ g_typelib_new_from_const_memory (const guchar *memory,
 }
 
 /**
- * g_typelib_new_from_mapped_file: (skip)
+ * gi_typelib_new_from_mapped_file: (skip)
  * @mfile: a #GMappedFile, that will be free'd when the repository is destroyed
  * @error: a #GError
  *
@@ -2435,8 +2435,8 @@ g_typelib_new_from_const_memory (const guchar *memory,
  * Returns: the new #GITypelib
  */
 GITypelib *
-g_typelib_new_from_mapped_file (GMappedFile  *mfile,
-				GError      **error)
+gi_typelib_new_from_mapped_file (GMappedFile  *mfile,
+                                 GError      **error)
 {
   GITypelib *meta;
   guint8 *data = (guint8 *) g_mapped_file_get_contents (mfile);
@@ -2455,13 +2455,13 @@ g_typelib_new_from_mapped_file (GMappedFile  *mfile,
 }
 
 /**
- * g_typelib_free:
+ * gi_typelib_free:
  * @typelib: a #GITypelib
  *
  * Free a #GITypelib.
  */
 void
-g_typelib_free (GITypelib *typelib)
+gi_typelib_free (GITypelib *typelib)
 {
   if (typelib->mfile)
     g_mapped_file_unref (typelib->mfile);
@@ -2477,7 +2477,7 @@ g_typelib_free (GITypelib *typelib)
 }
 
 /**
- * g_typelib_get_namespace:
+ * gi_typelib_get_namespace:
  * @typelib: TODO
  *
  * TODO
@@ -2485,13 +2485,13 @@ g_typelib_free (GITypelib *typelib)
  * Returns: TODO
  */
 const gchar *
-g_typelib_get_namespace (GITypelib *typelib)
+gi_typelib_get_namespace (GITypelib *typelib)
 {
-  return g_typelib_get_string (typelib, ((Header *) typelib->data)->namespace);
+  return gi_typelib_get_string (typelib, ((Header *) typelib->data)->namespace);
 }
 
 /**
- * g_typelib_symbol:
+ * gi_typelib_symbol:
  * @typelib: the typelib
  * @symbol_name: name of symbol to be loaded
  * @symbol: returns a pointer to the symbol value
@@ -2501,11 +2501,11 @@ g_typelib_get_namespace (GITypelib *typelib)
  * Returns: #TRUE on success
  */
 gboolean
-g_typelib_symbol (GITypelib *typelib, const char *symbol_name, gpointer *symbol)
+gi_typelib_symbol (GITypelib *typelib, const char *symbol_name, gpointer *symbol)
 {
   GList *l;
 
-  _g_typelib_ensure_open (typelib);
+  _gi_typelib_ensure_open (typelib);
 
   /*
    * The reason for having multiple modules dates from gir-repository

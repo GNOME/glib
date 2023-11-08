@@ -70,7 +70,7 @@ typedef enum {
 } Enum9;
 
 static void
-compute_enum_storage_type (GIrNodeEnum *enum_node)
+compute_enum_storage_type (GIIrNodeEnum *enum_node)
 {
   GList *l;
   gint64 max_value = 0;
@@ -83,7 +83,7 @@ compute_enum_storage_type (GIrNodeEnum *enum_node)
 
   for (l = enum_node->values; l; l = l->next)
     {
-      GIrNodeValue *value = l->data;
+      GIIrNodeValue *value = l->data;
       if (value->value > max_value)
         max_value = value->value;
       if (value->value < min_value)
@@ -148,9 +148,9 @@ compute_enum_storage_type (GIrNodeEnum *enum_node)
 }
 
 static gboolean
-get_enum_size_alignment (GIrNodeEnum *enum_node,
-			 gint        *size,
-			 gint        *alignment)
+get_enum_size_alignment (GIIrNodeEnum *enum_node,
+                         gint         *size,
+                         gint         *alignment)
 {
   ffi_type *type_ffi;
 
@@ -176,7 +176,7 @@ get_enum_size_alignment (GIrNodeEnum *enum_node,
       break;
     default:
       g_error ("Unexpected enum storage type %s",
-	       g_type_tag_to_string (enum_node->storage_type));
+	       gi_type_tag_to_string (enum_node->storage_type));
     }
 
   *size = type_ffi->size;
@@ -186,63 +186,63 @@ get_enum_size_alignment (GIrNodeEnum *enum_node,
 }
 
 static gboolean
-get_interface_size_alignment (GIrTypelibBuild   *build,
-			      GIrNodeType *type,
-			      gint        *size,
-			      gint        *alignment,
-                              const char  *who)
+get_interface_size_alignment (GIIrTypelibBuild *build,
+                              GIIrNodeType     *type,
+                              gint             *size,
+                              gint             *alignment,
+                              const char       *who)
 {
-  GIrNode *iface;
+  GIIrNode *iface;
 
-  iface = _g_ir_find_node (build, ((GIrNode*)type)->module, type->giinterface);
+  iface = _gi_ir_find_node (build, ((GIIrNode*)type)->module, type->giinterface);
   if (!iface)
     {
-      _g_ir_module_fatal (build, 0, "Can't resolve type '%s' for %s", type->giinterface, who);
+      _gi_ir_module_fatal (build, 0, "Can't resolve type '%s' for %s", type->giinterface, who);
       *size = -1;
       *alignment = -1;
       return FALSE;
     }
 
-  _g_ir_node_compute_offsets (build, iface);
+  _gi_ir_node_compute_offsets (build, iface);
 
   switch (iface->type)
     {
-    case G_IR_NODE_BOXED:
+    case GI_IR_NODE_BOXED:
       {
-	GIrNodeBoxed *boxed = (GIrNodeBoxed *)iface;
+	GIIrNodeBoxed *boxed = (GIIrNodeBoxed *)iface;
 	*size = boxed->size;
 	*alignment = boxed->alignment;
 	break;
       }
-    case G_IR_NODE_STRUCT:
+    case GI_IR_NODE_STRUCT:
       {
-	GIrNodeStruct *struct_ = (GIrNodeStruct *)iface;
+	GIIrNodeStruct *struct_ = (GIIrNodeStruct *)iface;
 	*size = struct_->size;
 	*alignment = struct_->alignment;
 	break;
       }
-    case G_IR_NODE_OBJECT:
-    case G_IR_NODE_INTERFACE:
+    case GI_IR_NODE_OBJECT:
+    case GI_IR_NODE_INTERFACE:
       {
-	GIrNodeInterface *interface = (GIrNodeInterface *)iface;
+	GIIrNodeInterface *interface = (GIIrNodeInterface *)iface;
 	*size = interface->size;
 	*alignment = interface->alignment;
 	break;
       }
-    case G_IR_NODE_UNION:
+    case GI_IR_NODE_UNION:
       {
-	GIrNodeUnion *union_ = (GIrNodeUnion *)iface;
+	GIIrNodeUnion *union_ = (GIIrNodeUnion *)iface;
 	*size = union_->size;
 	*alignment = union_->alignment;
 	break;
       }
-    case G_IR_NODE_ENUM:
-    case G_IR_NODE_FLAGS:
+    case GI_IR_NODE_ENUM:
+    case GI_IR_NODE_FLAGS:
       {
-	return get_enum_size_alignment ((GIrNodeEnum *)iface,
+	return get_enum_size_alignment ((GIIrNodeEnum *)iface,
 					size, alignment);
       }
-    case G_IR_NODE_CALLBACK:
+    case GI_IR_NODE_CALLBACK:
       {
 	*size = ffi_type_pointer.size;
 	*alignment = ffi_type_pointer.alignment;
@@ -252,7 +252,7 @@ get_interface_size_alignment (GIrTypelibBuild   *build,
       {
 	g_warning ("%s has is not a pointer and is of type %s",
                    who,
-		   _g_ir_node_type_to_string (iface->type));
+		   _gi_ir_node_type_to_string (iface->type));
 	*size = -1;
 	*alignment = -1;
 	break;
@@ -263,11 +263,11 @@ get_interface_size_alignment (GIrTypelibBuild   *build,
 }
 
 static gboolean
-get_type_size_alignment (GIrTypelibBuild   *build,
-			 GIrNodeType *type,
-                         gint        *size,
-                         gint        *alignment,
-                         const char  *who)
+get_type_size_alignment (GIIrTypelibBuild *build,
+                         GIIrNodeType     *type,
+                         gint             *size,
+                         gint             *alignment,
+                         const char       *who)
 {
   ffi_type *type_ffi;
 
@@ -314,7 +314,7 @@ get_type_size_alignment (GIrTypelibBuild   *build,
 	    {
 	      g_warning ("%s has is not a pointer and is of type %s",
                          who,
-			 g_type_tag_to_string (type->tag));
+			 gi_type_tag_to_string (type->tag));
 	      *size = -1;
 	      *alignment = -1;
 	      return FALSE;
@@ -330,17 +330,17 @@ get_type_size_alignment (GIrTypelibBuild   *build,
 }
 
 static gboolean
-get_field_size_alignment (GIrTypelibBuild    *build,
-			  GIrNodeField *field,
-			  GIrNode      *parent_node,
-			  gint         *size,
-			  gint         *alignment)
+get_field_size_alignment (GIIrTypelibBuild *build,
+                          GIIrNodeField    *field,
+                          GIIrNode         *parent_node,
+                          gint             *size,
+                          gint             *alignment)
 {
-  GIrModule *module = build->module;
+  GIIrModule *module = build->module;
   gchar *who;
   gboolean success;
 
-  who = g_strdup_printf ("field %s.%s.%s", module->name, parent_node->name, ((GIrNode *)field)->name);
+  who = g_strdup_printf ("field %s.%s.%s", module->name, parent_node->name, ((GIIrNode *)field)->name);
 
   if (field->callback)
     {
@@ -358,11 +358,11 @@ get_field_size_alignment (GIrTypelibBuild    *build,
 #define GI_ALIGN(n, align) (((n) + (align) - 1) & ~((align) - 1))
 
 static gboolean
-compute_struct_field_offsets (GIrTypelibBuild   *build,
-			      GIrNode     *node,
-			      GList       *members,
-			      gint        *size_out,
-			      gint        *alignment_out)
+compute_struct_field_offsets (GIIrTypelibBuild *build,
+                              GIIrNode         *node,
+                              GList            *members,
+                              gint             *size_out,
+                              gint             *alignment_out)
 {
   int size = 0;
   int alignment = 1;
@@ -373,11 +373,11 @@ compute_struct_field_offsets (GIrTypelibBuild   *build,
 
   for (l = members; l; l = l->next)
     {
-      GIrNode *member = (GIrNode *)l->data;
+      GIIrNode *member = (GIIrNode *)l->data;
 
-      if (member->type == G_IR_NODE_FIELD)
+      if (member->type == GI_IR_NODE_FIELD)
 	{
-	  GIrNodeField *field = (GIrNodeField *)member;
+	  GIIrNodeField *field = (GIIrNodeField *)member;
 
 	  if (!have_error)
 	    {
@@ -399,7 +399,7 @@ compute_struct_field_offsets (GIrTypelibBuild   *build,
 	  if (have_error)
 	    field->offset = -1;
 	}
-      else if (member->type == G_IR_NODE_CALLBACK)
+      else if (member->type == GI_IR_NODE_CALLBACK)
 	{
           size = GI_ALIGN (size, ffi_type_pointer.alignment);
           alignment = MAX (alignment, ffi_type_pointer.alignment);
@@ -425,11 +425,11 @@ compute_struct_field_offsets (GIrTypelibBuild   *build,
 }
 
 static gboolean
-compute_union_field_offsets (GIrTypelibBuild *build,
-			     GIrNode     *node,
-			     GList       *members,
-			     gint        *size_out,
-			     gint        *alignment_out)
+compute_union_field_offsets (GIIrTypelibBuild *build,
+                             GIIrNode         *node,
+                             GList            *members,
+                             gint             *size_out,
+                             gint             *alignment_out)
 {
   int size = 0;
   int alignment = 1;
@@ -440,11 +440,11 @@ compute_union_field_offsets (GIrTypelibBuild *build,
 
   for (l = members; l; l = l->next)
     {
-      GIrNode *member = (GIrNode *)l->data;
+      GIIrNode *member = (GIIrNode *)l->data;
 
-      if (member->type == G_IR_NODE_FIELD)
+      if (member->type == GI_IR_NODE_FIELD)
 	{
-	  GIrNodeField *field = (GIrNodeField *)member;
+	  GIIrNodeField *field = (GIIrNodeField *)member;
 
 	  if (!have_error)
 	    {
@@ -481,11 +481,11 @@ compute_union_field_offsets (GIrTypelibBuild *build,
 }
 
 static gboolean
-check_needs_computation (GIrTypelibBuild *build,
-			 GIrNode   *node,
-			 gint       alignment)
+check_needs_computation (GIIrTypelibBuild *build,
+                         GIIrNode         *node,
+                         gint              alignment)
 {
-  GIrModule *module = build->module;
+  GIIrModule *module = build->module;
   /*
    *  0: Not yet computed
    * >0: Previously succeeded
@@ -502,22 +502,22 @@ check_needs_computation (GIrTypelibBuild *build,
 }
 
 /*
- * _g_ir_node_compute_offsets:
+ * _gi_ir_node_compute_offsets:
  * @build: Current typelib build
- * @node: a #GIrNode
+ * @node: a #GIIrNode
  *
  * If a node is a a structure or union, makes sure that the field
  * offsets have been computed, and also computes the overall size and
  * alignment for the type.
  */
 void
-_g_ir_node_compute_offsets (GIrTypelibBuild *build,
-			    GIrNode         *node)
+_gi_ir_node_compute_offsets (GIIrTypelibBuild *build,
+                             GIIrNode         *node)
 {
   gboolean appended_stack;
 
   if (build->stack)
-    appended_stack = node != (GIrNode*)build->stack->data; 
+    appended_stack = node != (GIIrNode*)build->stack->data;
   else
     appended_stack = TRUE;
   if (appended_stack)
@@ -525,9 +525,9 @@ _g_ir_node_compute_offsets (GIrTypelibBuild *build,
 
   switch (node->type)
     {
-    case G_IR_NODE_BOXED:
+    case GI_IR_NODE_BOXED:
       {
-	GIrNodeBoxed *boxed = (GIrNodeBoxed *)node;
+	GIIrNodeBoxed *boxed = (GIIrNodeBoxed *)node;
 
 	if (!check_needs_computation (build, node, boxed->alignment))
 	  return;
@@ -536,9 +536,9 @@ _g_ir_node_compute_offsets (GIrTypelibBuild *build,
 				      &boxed->size, &boxed->alignment);
 	break;
       }
-    case G_IR_NODE_STRUCT:
+    case GI_IR_NODE_STRUCT:
       {
-	GIrNodeStruct *struct_ = (GIrNodeStruct *)node;
+	GIIrNodeStruct *struct_ = (GIIrNodeStruct *)node;
 
 	if (!check_needs_computation (build, node, struct_->alignment))
 	  return;
@@ -547,10 +547,10 @@ _g_ir_node_compute_offsets (GIrTypelibBuild *build,
 				      &struct_->size, &struct_->alignment);
 	break;
       }
-    case G_IR_NODE_OBJECT:
-    case G_IR_NODE_INTERFACE:
+    case GI_IR_NODE_OBJECT:
+    case GI_IR_NODE_INTERFACE:
       {
-	GIrNodeInterface *iface = (GIrNodeInterface *)node;
+	GIIrNodeInterface *iface = (GIIrNodeInterface *)node;
 
 	if (!check_needs_computation (build, node, iface->alignment))
 	  return;
@@ -559,21 +559,21 @@ _g_ir_node_compute_offsets (GIrTypelibBuild *build,
 				      &iface->size, &iface->alignment);
 	break;
       }
-    case G_IR_NODE_UNION:
+    case GI_IR_NODE_UNION:
       {
-	GIrNodeUnion *union_ = (GIrNodeUnion *)node;
+	GIIrNodeUnion *union_ = (GIIrNodeUnion *)node;
 
 	if (!check_needs_computation (build, node, union_->alignment))
 	  return;
 
-	compute_union_field_offsets (build, (GIrNode*)union_, union_->members,
+	compute_union_field_offsets (build, (GIIrNode*)union_, union_->members,
 				     &union_->size, &union_->alignment);
 	break;
       }
-    case G_IR_NODE_ENUM:
-    case G_IR_NODE_FLAGS:
+    case GI_IR_NODE_ENUM:
+    case GI_IR_NODE_FLAGS:
       {
-	GIrNodeEnum *enum_ = (GIrNodeEnum *)node;
+	GIIrNodeEnum *enum_ = (GIIrNodeEnum *)node;
 
 	if (enum_->storage_type != GI_TYPE_TAG_VOID) /* already done */
 	  return;

@@ -50,10 +50,10 @@
  * under the library directory used when compiling gobject-introspection.
  *
  * It is possible to control the search paths programmatically, using
- * g_irepository_prepend_search_path(). It is also possible to modify
+ * gi_repository_prepend_search_path(). It is also possible to modify
  * the search paths by using the `GI_TYPELIB_PATH` environment variable.
  * The environment variable takes precedence over the default search path
- * and the g_irepository_prepend_search_path() calls.
+ * and the gi_repository_prepend_search_path() calls.
  */
 
 
@@ -72,7 +72,7 @@ gtype_interface_cache_free (gpointer data)
   guint i;
 
   for (i = 0; i < cache->n_interfaces; i++)
-    g_base_info_unref ((GIBaseInfo*) cache->interfaces[i]);
+    gi_base_info_unref ((GIBaseInfo*) cache->interfaces[i]);
   g_free (cache);
 }
 
@@ -86,7 +86,7 @@ struct _GIRepositoryPrivate
   GHashTable *unknown_gtypes; /* hashset of GType */
 };
 
-G_DEFINE_TYPE_WITH_CODE (GIRepository, g_irepository, G_TYPE_OBJECT, G_ADD_PRIVATE (GIRepository));
+G_DEFINE_TYPE_WITH_CODE (GIRepository, gi_repository, G_TYPE_OBJECT, G_ADD_PRIVATE (GIRepository));
 
 #ifdef G_PLATFORM_WIN32
 
@@ -124,13 +124,13 @@ DllMain (HINSTANCE hinstDLL,
 #endif
 
 static void
-g_irepository_init (GIRepository *repository)
+gi_repository_init (GIRepository *repository)
 {
-  repository->priv = g_irepository_get_instance_private (repository);
+  repository->priv = gi_repository_get_instance_private (repository);
   repository->priv->typelibs
     = g_hash_table_new_full (g_str_hash, g_str_equal,
 			     (GDestroyNotify) NULL,
-			     (GDestroyNotify) g_typelib_free);
+			     (GDestroyNotify) gi_typelib_free);
   repository->priv->lazy_typelibs
     = g_hash_table_new_full (g_str_hash, g_str_equal,
                              (GDestroyNotify) g_free,
@@ -138,11 +138,11 @@ g_irepository_init (GIRepository *repository)
   repository->priv->info_by_gtype
     = g_hash_table_new_full (g_direct_hash, g_direct_equal,
                              (GDestroyNotify) NULL,
-                             (GDestroyNotify) g_base_info_unref);
+                             (GDestroyNotify) gi_base_info_unref);
   repository->priv->info_by_error_domain
     = g_hash_table_new_full (g_direct_hash, g_direct_equal,
                              (GDestroyNotify) NULL,
-                             (GDestroyNotify) g_base_info_unref);
+                             (GDestroyNotify) gi_base_info_unref);
   repository->priv->interfaces_for_gtype
     = g_hash_table_new_full (g_direct_hash, g_direct_equal,
                              (GDestroyNotify) NULL,
@@ -151,9 +151,9 @@ g_irepository_init (GIRepository *repository)
 }
 
 static void
-g_irepository_finalize (GObject *object)
+gi_repository_finalize (GObject *object)
 {
-  GIRepository *repository = G_IREPOSITORY (object);
+  GIRepository *repository = GI_REPOSITORY (object);
 
   g_hash_table_destroy (repository->priv->typelibs);
   g_hash_table_destroy (repository->priv->lazy_typelibs);
@@ -162,17 +162,17 @@ g_irepository_finalize (GObject *object)
   g_hash_table_destroy (repository->priv->interfaces_for_gtype);
   g_hash_table_destroy (repository->priv->unknown_gtypes);
 
-  (* G_OBJECT_CLASS (g_irepository_parent_class)->finalize) (G_OBJECT (repository));
+  (* G_OBJECT_CLASS (gi_repository_parent_class)->finalize) (G_OBJECT (repository));
 }
 
 static void
-g_irepository_class_init (GIRepositoryClass *class)
+gi_repository_class_init (GIRepositoryClass *class)
 {
   GObjectClass *gobject_class;
 
   gobject_class = G_OBJECT_CLASS (class);
 
-  gobject_class->finalize = g_irepository_finalize;
+  gobject_class->finalize = gi_repository_finalize;
 }
 
 static void
@@ -184,7 +184,7 @@ init_globals (void)
     return;
 
   if (default_repository == NULL)
-    default_repository = g_object_new (G_TYPE_IREPOSITORY, NULL);
+    default_repository = g_object_new (GI_TYPE_REPOSITORY, NULL);
 
   if (typelib_search_path == NULL)
     {
@@ -194,7 +194,7 @@ init_globals (void)
 
       /* This variable is intended to take precedence over both:
        *   - the default search path;
-       *   - all g_irepository_prepend_search_path() calls.
+       *   - all gi_repository_prepend_search_path() calls.
        */
       type_lib_path_env = g_getenv ("GI_TYPELIB_PATH");
 
@@ -230,23 +230,23 @@ init_globals (void)
 }
 
 /**
- * g_irepository_prepend_search_path:
+ * gi_repository_prepend_search_path:
  * @directory: (type filename): directory name to prepend to the typelib
  *   search path
  *
  * Prepends @directory to the typelib search path.
  *
- * See also: g_irepository_get_search_path().
+ * See also: gi_repository_get_search_path().
  */
 void
-g_irepository_prepend_search_path (const char *directory)
+gi_repository_prepend_search_path (const char *directory)
 {
   init_globals ();
   typelib_search_path = g_slist_prepend (typelib_search_path, g_strdup (directory));
 }
 
 /**
- * g_irepository_get_search_path:
+ * gi_repository_get_search_path:
  *
  * Returns the current search path #GIRepository will use when loading
  * typelib files. The list is internal to #GIRepository and should not
@@ -255,7 +255,7 @@ g_irepository_prepend_search_path (const char *directory)
  * Returns: (element-type filename) (transfer none): #GSList of strings
  */
 GSList *
-g_irepository_get_search_path (void)
+gi_repository_get_search_path (void)
 {
   return typelib_search_path;
 }
@@ -282,7 +282,7 @@ get_typelib_dependencies (GITypelib *typelib)
   if (header->dependencies == 0)
     return NULL;
 
-  dependencies_glob = g_typelib_get_string (typelib, header->dependencies);
+  dependencies_glob = gi_typelib_get_string (typelib, header->dependencies);
   return g_strsplit (dependencies_glob, "|", 0);
 }
 
@@ -314,7 +314,7 @@ check_version_conflict (GITypelib *typelib,
     }
 
   header = (Header*)typelib->data;
-  loaded_version = g_typelib_get_string (typelib, header->nsversion);
+  loaded_version = gi_typelib_get_string (typelib, header->nsversion);
   g_assert (loaded_version != NULL);
 
   if (strcmp (expected_version, loaded_version) != 0)
@@ -385,7 +385,7 @@ load_dependencies_recurse (GIRepository *repository,
 	  dependency_namespace = g_strndup (dependency, last_dash - dependency);
 	  dependency_version = last_dash+1;
 
-	  if (!g_irepository_require (repository, dependency_namespace, dependency_version,
+	  if (!gi_repository_require (repository, dependency_namespace, dependency_version,
 				      0, error))
 	    {
 	      g_free (dependency_namespace);
@@ -415,7 +415,7 @@ register_internal (GIRepository *repository,
 
   g_return_val_if_fail (header != NULL, FALSE);
 
-  namespace = g_typelib_get_string (typelib, header->namespace);
+  namespace = gi_typelib_get_string (typelib, header->namespace);
 
   if (lazy)
     {
@@ -451,7 +451,7 @@ register_internal (GIRepository *repository,
 }
 
 /**
- * g_irepository_get_immediate_dependencies:
+ * gi_repository_get_immediate_dependencies:
  * @repository: (nullable): A #GIRepository or %NULL for the singleton
  *   process-global default #GIRepository
  * @namespace_: Namespace of interest
@@ -460,10 +460,10 @@ register_internal (GIRepository *repository,
  * Returned strings are of the form `namespace-version`.
  *
  * Note: @namespace_ must have already been loaded using a function
- * such as g_irepository_require() before calling this function.
+ * such as gi_repository_require() before calling this function.
  *
  * To get the transitive closure of dependencies for @namespace_, use
- * g_irepository_get_dependencies().
+ * gi_repository_get_dependencies().
  *
  * Returns: (transfer full): Zero-terminated string array of immediate versioned
  *   dependencies
@@ -471,7 +471,7 @@ register_internal (GIRepository *repository,
  * Since: 1.44
  */
 char **
-g_irepository_get_immediate_dependencies (GIRepository *repository,
+gi_repository_get_immediate_dependencies (GIRepository *repository,
                                           const char   *namespace)
 {
   GITypelib *typelib;
@@ -534,7 +534,7 @@ get_typelib_dependencies_transitive (GIRepository *repository,
 }
 
 /**
- * g_irepository_get_dependencies:
+ * gi_repository_get_dependencies:
  * @repository: (allow-none): A #GIRepository or %NULL for the singleton
  *   process-global default #GIRepository
  * @namespace_: Namespace of interest
@@ -545,16 +545,16 @@ get_typelib_dependencies_transitive (GIRepository *repository,
  * The strings are of the form `namespace-version`.
  *
  * Note: @namespace_ must have already been loaded using a function
- * such as g_irepository_require() before calling this function.
+ * such as gi_repository_require() before calling this function.
  *
  * To get only the immediate dependencies for @namespace_, use
- * g_irepository_get_immediate_dependencies().
+ * gi_repository_get_immediate_dependencies().
  *
  * Returns: (transfer full) (array zero-terminated=1): all versioned
  *   dependencies
  */
 char **
-g_irepository_get_dependencies (GIRepository *repository,
+gi_repository_get_dependencies (GIRepository *repository,
 				const char *namespace)
 {
   GITypelib *typelib;
@@ -596,7 +596,7 @@ g_irepository_get_dependencies (GIRepository *repository,
 }
 
 /**
- * g_irepository_load_typelib:
+ * gi_repository_load_typelib:
  * @repository: (allow-none): A #GIRepository or %NULL for the singleton
  *   process-global default #GIRepository
  * @typelib: TODO
@@ -606,7 +606,7 @@ g_irepository_get_dependencies (GIRepository *repository,
  * TODO
  */
 const char *
-g_irepository_load_typelib (GIRepository *repository,
+gi_repository_load_typelib (GIRepository *repository,
 			    GITypelib     *typelib,
 			    GIRepositoryLoadFlags flags,
 			    GError      **error)
@@ -614,23 +614,23 @@ g_irepository_load_typelib (GIRepository *repository,
   Header *header;
   const char *namespace;
   const char *nsversion;
-  gboolean allow_lazy = flags & G_IREPOSITORY_LOAD_FLAG_LAZY;
+  gboolean allow_lazy = flags & GI_REPOSITORY_LOAD_FLAG_LAZY;
   gboolean is_lazy;
   char *version_conflict;
 
   repository = get_repository (repository);
 
   header = (Header *) typelib->data;
-  namespace = g_typelib_get_string (typelib, header->namespace);
-  nsversion = g_typelib_get_string (typelib, header->nsversion);
+  namespace = gi_typelib_get_string (typelib, header->namespace);
+  nsversion = gi_typelib_get_string (typelib, header->nsversion);
 
   if (get_registered_status (repository, namespace, nsversion, allow_lazy,
 			     &is_lazy, &version_conflict))
     {
       if (version_conflict != NULL)
 	{
-	  g_set_error (error, G_IREPOSITORY_ERROR,
-		       G_IREPOSITORY_ERROR_NAMESPACE_VERSION_CONFLICT,
+	  g_set_error (error, GI_REPOSITORY_ERROR,
+		       GI_REPOSITORY_ERROR_NAMESPACE_VERSION_CONFLICT,
 		       "Attempting to load namespace '%s', version '%s', but '%s' is already loaded",
 		       namespace, nsversion, version_conflict);
 	  return NULL;
@@ -642,7 +642,7 @@ g_irepository_load_typelib (GIRepository *repository,
 }
 
 /**
- * g_irepository_is_registered:
+ * gi_repository_is_registered:
  * @repository: (allow-none): A #GIRepository or %NULL for the singleton
  *   process-global default #GIRepository
  * @namespace_: Namespace of interest
@@ -651,14 +651,14 @@ g_irepository_load_typelib (GIRepository *repository,
  * Check whether a particular namespace (and optionally, a specific
  * version thereof) is currently loaded.  This function is likely to
  * only be useful in unusual circumstances; in order to act upon
- * metadata in the namespace, you should call g_irepository_require()
+ * metadata in the namespace, you should call gi_repository_require()
  * instead which will ensure the namespace is loaded, and return as
  * quickly as this function will if it has already been loaded.
  *
  * Returns: %TRUE if namespace-version is loaded, %FALSE otherwise
  */
 gboolean
-g_irepository_is_registered (GIRepository *repository,
+gi_repository_is_registered (GIRepository *repository,
 			     const gchar *namespace,
 			     const gchar *version)
 {
@@ -667,7 +667,7 @@ g_irepository_is_registered (GIRepository *repository,
 }
 
 /**
- * g_irepository_get_default:
+ * gi_repository_get_default:
  *
  * Returns the singleton process-global default #GIRepository. It is
  * not currently supported to have multiple repositories in a
@@ -683,13 +683,13 @@ g_irepository_is_registered (GIRepository *repository,
  * Returns: (transfer none): The global singleton #GIRepository
  */
 GIRepository *
-g_irepository_get_default (void)
+gi_repository_get_default (void)
 {
   return get_repository (NULL);
 }
 
 /**
- * g_irepository_get_n_infos:
+ * gi_repository_get_n_infos:
  * @repository: (allow-none): A #GIRepository or %NULL for the singleton
  *   process-global default #GIRepository
  * @namespace_: Namespace to inspect
@@ -701,7 +701,7 @@ g_irepository_get_default (void)
  * Returns: number of metadata entries
  */
 gint
-g_irepository_get_n_infos (GIRepository *repository,
+gi_repository_get_n_infos (GIRepository *repository,
 			   const gchar  *namespace)
 {
   GITypelib *typelib;
@@ -721,7 +721,7 @@ g_irepository_get_n_infos (GIRepository *repository,
 }
 
 /**
- * g_irepository_get_info:
+ * gi_repository_get_info:
  * @repository: (allow-none): A #GIRepository or %NULL for the singleton
  *   process-global default #GIRepository
  * @namespace_: Namespace to inspect
@@ -730,13 +730,13 @@ g_irepository_get_n_infos (GIRepository *repository,
  * This function returns a particular metadata entry in the
  * given namespace @namespace_.  The namespace must have
  * already been loaded before calling this function.
- * See g_irepository_get_n_infos() to find the maximum number of
+ * See gi_repository_get_n_infos() to find the maximum number of
  * entries.
  *
  * Returns: (transfer full): #GIBaseInfo containing metadata
  */
 GIBaseInfo *
-g_irepository_get_info (GIRepository *repository,
+gi_repository_get_info (GIRepository *repository,
 			const gchar  *namespace,
 			gint          index)
 {
@@ -751,12 +751,12 @@ g_irepository_get_info (GIRepository *repository,
 
   g_return_val_if_fail (typelib != NULL, NULL);
 
-  entry = g_typelib_get_dir_entry (typelib, index + 1);
+  entry = gi_typelib_get_dir_entry (typelib, index + 1);
   if (entry == NULL)
     return NULL;
-  return _g_info_new_full (entry->blob_type,
-			   repository,
-			   NULL, typelib, entry->offset);
+  return _gi_info_new_full (entry->blob_type,
+                            repository,
+                            NULL, typelib, entry->offset);
 }
 
 typedef struct {
@@ -777,11 +777,11 @@ find_by_gtype (GHashTable *table, FindByGTypeData *data, gboolean check_prefix)
       GITypelib *typelib = (GITypelib*)value;
       if (check_prefix)
         {
-          if (!g_typelib_matches_gtype_name_prefix (typelib, data->gtype_name))
+          if (!gi_typelib_matches_gtype_name_prefix (typelib, data->gtype_name))
             continue;
         }
 
-      ret = g_typelib_get_dir_entry_by_gtype_name (typelib, data->gtype_name);
+      ret = gi_typelib_get_dir_entry_by_gtype_name (typelib, data->gtype_name);
       if (ret)
         {
           data->result_typelib = typelib;
@@ -793,7 +793,7 @@ find_by_gtype (GHashTable *table, FindByGTypeData *data, gboolean check_prefix)
 }
 
 /**
- * g_irepository_find_by_gtype:
+ * gi_repository_find_by_gtype:
  * @repository: (allow-none): A #GIRepository or %NULL for the singleton
  *   process-global default #GIRepository
  * @gtype: GType to search for
@@ -808,7 +808,7 @@ find_by_gtype (GHashTable *table, FindByGTypeData *data, gboolean check_prefix)
  * Returns: (transfer full): #GIBaseInfo representing metadata about @type, or %NULL
  */
 GIBaseInfo *
-g_irepository_find_by_gtype (GIRepository *repository,
+gi_repository_find_by_gtype (GIRepository *repository,
                              GType         gtype)
 {
   FindByGTypeData data;
@@ -823,7 +823,7 @@ g_irepository_find_by_gtype (GIRepository *repository,
 				(gpointer)gtype);
 
   if (cached != NULL)
-    return g_base_info_ref (cached);
+    return gi_base_info_ref (cached);
 
   if (g_hash_table_contains (repository->priv->unknown_gtypes, (gpointer)gtype))
     return NULL;
@@ -854,13 +854,13 @@ g_irepository_find_by_gtype (GIRepository *repository,
 
   if (entry != NULL)
     {
-      cached = _g_info_new_full (entry->blob_type,
-				 repository,
-				 NULL, data.result_typelib, entry->offset);
+      cached = _gi_info_new_full (entry->blob_type,
+                                  repository,
+                                  NULL, data.result_typelib, entry->offset);
 
       g_hash_table_insert (repository->priv->info_by_gtype,
 			   (gpointer) gtype,
-			   g_base_info_ref (cached));
+			   gi_base_info_ref (cached));
       return cached;
     }
   else
@@ -871,7 +871,7 @@ g_irepository_find_by_gtype (GIRepository *repository,
 }
 
 /**
- * g_irepository_find_by_name:
+ * gi_repository_find_by_name:
  * @repository: (allow-none): A #GIRepository or %NULL for the singleton
  *   process-global default #GIRepository
  * @namespace_: Namespace which will be searched
@@ -879,13 +879,13 @@ g_irepository_find_by_gtype (GIRepository *repository,
  *
  * Searches for a particular entry in a namespace.  Before calling
  * this function for a particular namespace, you must call
- * g_irepository_require() once to load the namespace, or otherwise
+ * gi_repository_require() once to load the namespace, or otherwise
  * ensure the namespace has already been loaded.
  *
  * Returns: (transfer full): #GIBaseInfo representing metadata about @name, or %NULL
  */
 GIBaseInfo *
-g_irepository_find_by_name (GIRepository *repository,
+gi_repository_find_by_name (GIRepository *repository,
 			    const gchar  *namespace,
 			    const gchar  *name)
 {
@@ -898,12 +898,12 @@ g_irepository_find_by_name (GIRepository *repository,
   typelib = get_registered (repository, namespace, NULL);
   g_return_val_if_fail (typelib != NULL, NULL);
 
-  entry = g_typelib_get_dir_entry_by_name (typelib, name);
+  entry = gi_typelib_get_dir_entry_by_name (typelib, name);
   if (entry == NULL)
     return NULL;
-  return _g_info_new_full (entry->blob_type,
-			   repository,
-			   NULL, typelib, entry->offset);
+  return _gi_info_new_full (entry->blob_type,
+                            repository,
+                            NULL, typelib, entry->offset);
 }
 
 typedef struct {
@@ -925,20 +925,20 @@ find_by_error_domain_foreach (gpointer key,
   if (data->result != NULL)
     return;
 
-  data->result = g_typelib_get_dir_entry_by_error_domain (typelib, data->domain);
+  data->result = gi_typelib_get_dir_entry_by_error_domain (typelib, data->domain);
   if (data->result)
     data->result_typelib = typelib;
 }
 
 /**
- * g_irepository_find_by_error_domain:
+ * gi_repository_find_by_error_domain:
  * @repository: (allow-none): A #GIRepository or %NULL for the singleton
  *   process-global default #GIRepository
  * @domain: a #GError domain
  *
  * Searches for the enum type corresponding to the given #GError
  * domain. Before calling this function for a particular namespace,
- * you must call g_irepository_require() once to load the namespace, or
+ * you must call gi_repository_require() once to load the namespace, or
  * otherwise ensure the namespace has already been loaded.
  *
  * Returns: (transfer full): #GIEnumInfo representing metadata about @domain's
@@ -946,7 +946,7 @@ find_by_error_domain_foreach (gpointer key,
  * Since: 1.30
  */
 GIEnumInfo *
-g_irepository_find_by_error_domain (GIRepository *repository,
+gi_repository_find_by_error_domain (GIRepository *repository,
 				    GQuark        domain)
 {
   FindByErrorDomainData data;
@@ -958,7 +958,7 @@ g_irepository_find_by_error_domain (GIRepository *repository,
 				GUINT_TO_POINTER (domain));
 
   if (cached != NULL)
-    return g_base_info_ref ((GIBaseInfo *)cached);
+    return gi_base_info_ref ((GIBaseInfo *)cached);
 
   data.repository = repository;
   data.domain = domain;
@@ -971,20 +971,20 @@ g_irepository_find_by_error_domain (GIRepository *repository,
 
   if (data.result != NULL)
     {
-      cached = _g_info_new_full (data.result->blob_type,
-				 repository,
-				 NULL, data.result_typelib, data.result->offset);
+      cached = _gi_info_new_full (data.result->blob_type,
+                                  repository,
+                                  NULL, data.result_typelib, data.result->offset);
 
       g_hash_table_insert (repository->priv->info_by_error_domain,
 			   GUINT_TO_POINTER (domain),
-			   g_base_info_ref (cached));
+			   gi_base_info_ref (cached));
       return cached;
     }
   return NULL;
 }
 
 /**
- * g_irepository_get_object_gtype_interfaces:
+ * gi_repository_get_object_gtype_interfaces:
  * @repository: (nullable): a #GIRepository, or %NULL for the default repository
  * @gtype: a #GType whose fundamental type is G_TYPE_OBJECT
  * @n_interfaces_out: (out): Number of interfaces
@@ -1005,7 +1005,7 @@ g_irepository_find_by_error_domain (GIRepository *repository,
  * Since: 1.62
  */
 void
-g_irepository_get_object_gtype_interfaces (GIRepository      *repository,
+gi_repository_get_object_gtype_interfaces (GIRepository      *repository,
                                            GType              gtype,
                                            guint             *n_interfaces_out,
                                            GIInterfaceInfo ***interfaces_out)
@@ -1030,14 +1030,14 @@ g_irepository_get_object_gtype_interfaces (GIRepository      *repository,
         {
           GIBaseInfo *base_info;
 
-          base_info = g_irepository_find_by_gtype (repository, interfaces[i]);
+          base_info = gi_repository_find_by_gtype (repository, interfaces[i]);
           if (base_info == NULL)
             continue;
 
-          if (g_base_info_get_type (base_info) != GI_INFO_TYPE_INTERFACE)
+          if (gi_base_info_get_type (base_info) != GI_INFO_TYPE_INTERFACE)
             {
               /* FIXME - could this really happen? */
-              g_base_info_unref (base_info);
+              gi_base_info_unref (base_info);
               continue;
             }
 
@@ -1073,7 +1073,7 @@ collect_namespaces (gpointer key,
 }
 
 /**
- * g_irepository_get_loaded_namespaces:
+ * gi_repository_get_loaded_namespaces:
  * @repository: (allow-none): A #GIRepository or %NULL for the singleton
  *   process-global default #GIRepository
  *
@@ -1082,7 +1082,7 @@ collect_namespaces (gpointer key,
  * Returns: (element-type utf8) (transfer full): List of namespaces
  */
 gchar **
-g_irepository_get_loaded_namespaces (GIRepository *repository)
+gi_repository_get_loaded_namespaces (GIRepository *repository)
 {
   GList *l, *list = NULL;
   gchar **names;
@@ -1103,7 +1103,7 @@ g_irepository_get_loaded_namespaces (GIRepository *repository)
 }
 
 /**
- * g_irepository_get_version:
+ * gi_repository_get_version:
  * @repository: (allow-none): A #GIRepository or %NULL for the singleton
  *   process-global default #GIRepository
  * @namespace_: Namespace to inspect
@@ -1112,12 +1112,12 @@ g_irepository_get_loaded_namespaces (GIRepository *repository)
  * namespace @namespace_.
  *
  * Note: The namespace must have already been loaded using a function
- * such as g_irepository_require() before calling this function.
+ * such as gi_repository_require() before calling this function.
  *
  * Returns: Loaded version
  */
 const gchar *
-g_irepository_get_version (GIRepository *repository,
+gi_repository_get_version (GIRepository *repository,
 			   const gchar  *namespace)
 {
   GITypelib *typelib;
@@ -1132,11 +1132,11 @@ g_irepository_get_version (GIRepository *repository,
   g_return_val_if_fail (typelib != NULL, NULL);
 
   header = (Header *) typelib->data;
-  return g_typelib_get_string (typelib, header->nsversion);
+  return gi_typelib_get_string (typelib, header->nsversion);
 }
 
 /**
- * g_irepository_get_shared_library:
+ * gi_repository_get_shared_library:
  * @repository: (allow-none): A #GIRepository or %NULL for the singleton
  *   process-global default #GIRepository
  * @namespace_: Namespace to inspect
@@ -1147,13 +1147,13 @@ g_irepository_get_version (GIRepository *repository,
  * function will return %NULL.
  *
  * Note: The namespace must have already been loaded using a function
- * such as g_irepository_require() before calling this function.
+ * such as gi_repository_require() before calling this function.
  *
  * Returns: (nullable): Comma-separated list of paths to shared libraries,
  *   or %NULL if none are associated
  */
 const gchar *
-g_irepository_get_shared_library (GIRepository *repository,
+gi_repository_get_shared_library (GIRepository *repository,
 				  const gchar  *namespace)
 {
   GITypelib *typelib;
@@ -1169,13 +1169,13 @@ g_irepository_get_shared_library (GIRepository *repository,
 
   header = (Header *) typelib->data;
   if (header->shared_library)
-    return g_typelib_get_string (typelib, header->shared_library);
+    return gi_typelib_get_string (typelib, header->shared_library);
   else
     return NULL;
 }
 
 /**
- * g_irepository_get_c_prefix:
+ * gi_repository_get_c_prefix:
  * @repository: (allow-none): A #GIRepository or %NULL for the singleton
  *   process-global default #GIRepository
  * @namespace_: Namespace to inspect
@@ -1185,12 +1185,12 @@ g_irepository_get_shared_library (GIRepository *repository,
  * starts with this prefix, as well each #GType in the library.
  *
  * Note: The namespace must have already been loaded using a function
- * such as g_irepository_require() before calling this function.
+ * such as gi_repository_require() before calling this function.
  *
  * Returns: C namespace prefix, or %NULL if none associated
  */
 const gchar *
-g_irepository_get_c_prefix (GIRepository *repository,
+gi_repository_get_c_prefix (GIRepository *repository,
                             const gchar  *namespace_)
 {
   GITypelib *typelib;
@@ -1206,13 +1206,13 @@ g_irepository_get_c_prefix (GIRepository *repository,
 
   header = (Header *) typelib->data;
   if (header->c_prefix)
-    return g_typelib_get_string (typelib, header->c_prefix);
+    return gi_typelib_get_string (typelib, header->c_prefix);
   else
     return NULL;
 }
 
 /**
- * g_irepository_get_typelib_path:
+ * gi_repository_get_typelib_path:
  * @repository: (allow-none): A #GIRepository or %NULL for the singleton
  *   process-global default #GIRepository
  * @namespace_: GI namespace to use, e.g. "Gtk"
@@ -1226,7 +1226,7 @@ g_irepository_get_c_prefix (GIRepository *repository,
  */
 
 const gchar *
-g_irepository_get_typelib_path (GIRepository *repository,
+gi_repository_get_typelib_path (GIRepository *repository,
 				const gchar  *namespace)
 {
   gpointer orig_key, value;
@@ -1488,7 +1488,7 @@ find_namespace_latest (const gchar  *namespace,
 }
 
 /**
- * g_irepository_enumerate_versions:
+ * gi_repository_enumerate_versions:
  * @repository: (allow-none): A #GIRepository or %NULL for the singleton
  *   process-global default #GIRepository
  * @namespace_: GI namespace, e.g. "Gtk"
@@ -1499,7 +1499,7 @@ find_namespace_latest (const gchar  *namespace,
  * Returns: (element-type utf8) (transfer full): the array of versions.
  */
 GList *
-g_irepository_enumerate_versions (GIRepository *repository,
+gi_repository_enumerate_versions (GIRepository *repository,
                                   const gchar  *namespace_)
 {
   GList *ret = NULL;
@@ -1521,9 +1521,9 @@ g_irepository_enumerate_versions (GIRepository *repository,
    * available versions, as it could have been loaded using
    * require_private().
    */
-  if (g_irepository_is_registered (repository, namespace_, NULL))
+  if (gi_repository_is_registered (repository, namespace_, NULL))
     {
-      loaded_version = g_irepository_get_version (repository, namespace_);
+      loaded_version = gi_repository_get_version (repository, namespace_);
       if (loaded_version && !g_list_find_custom (ret, loaded_version, g_str_equal))
         ret = g_list_prepend (ret, g_strdup (loaded_version));
     }
@@ -1544,7 +1544,7 @@ require_internal (GIRepository  *repository,
   Header *header;
   GITypelib *typelib = NULL;
   const gchar *typelib_namespace, *typelib_version;
-  gboolean allow_lazy = (flags & G_IREPOSITORY_LOAD_FLAG_LAZY) > 0;
+  gboolean allow_lazy = (flags & GI_REPOSITORY_LOAD_FLAG_LAZY) > 0;
   gboolean is_lazy;
   char *version_conflict = NULL;
   char *path = NULL;
@@ -1561,8 +1561,8 @@ require_internal (GIRepository  *repository,
 
   if (version_conflict != NULL)
     {
-      g_set_error (error, G_IREPOSITORY_ERROR,
-		   G_IREPOSITORY_ERROR_NAMESPACE_VERSION_CONFLICT,
+      g_set_error (error, GI_REPOSITORY_ERROR,
+		   GI_REPOSITORY_ERROR_NAMESPACE_VERSION_CONFLICT,
 		   "Requiring namespace '%s' version '%s', but '%s' is already loaded",
 		   namespace, version, version_conflict);
       return NULL;
@@ -1583,13 +1583,13 @@ require_internal (GIRepository  *repository,
   if (mfile == NULL)
     {
       if (version != NULL)
-	g_set_error (error, G_IREPOSITORY_ERROR,
-		     G_IREPOSITORY_ERROR_TYPELIB_NOT_FOUND,
+	g_set_error (error, GI_REPOSITORY_ERROR,
+		     GI_REPOSITORY_ERROR_TYPELIB_NOT_FOUND,
 		     "Typelib file for namespace '%s', version '%s' not found",
 		     namespace, version);
       else
-	g_set_error (error, G_IREPOSITORY_ERROR,
-		     G_IREPOSITORY_ERROR_TYPELIB_NOT_FOUND,
+	g_set_error (error, GI_REPOSITORY_ERROR,
+		     GI_REPOSITORY_ERROR_TYPELIB_NOT_FOUND,
 		     "Typelib file for namespace '%s' (any version) not found",
 		     namespace);
       goto out;
@@ -1597,11 +1597,11 @@ require_internal (GIRepository  *repository,
 
   {
     GError *temp_error = NULL;
-    typelib = g_typelib_new_from_mapped_file (mfile, &temp_error);
+    typelib = gi_typelib_new_from_mapped_file (mfile, &temp_error);
     if (!typelib)
       {
-	g_set_error (error, G_IREPOSITORY_ERROR,
-		     G_IREPOSITORY_ERROR_TYPELIB_NOT_FOUND,
+	g_set_error (error, GI_REPOSITORY_ERROR,
+		     GI_REPOSITORY_ERROR_TYPELIB_NOT_FOUND,
 		     "Failed to load typelib file '%s' for namespace '%s': %s",
 		     path, namespace, temp_error->message);
 	g_clear_error (&temp_error);
@@ -1609,34 +1609,34 @@ require_internal (GIRepository  *repository,
       }
   }
   header = (Header *) typelib->data;
-  typelib_namespace = g_typelib_get_string (typelib, header->namespace);
-  typelib_version = g_typelib_get_string (typelib, header->nsversion);
+  typelib_namespace = gi_typelib_get_string (typelib, header->namespace);
+  typelib_version = gi_typelib_get_string (typelib, header->nsversion);
 
   if (strcmp (typelib_namespace, namespace) != 0)
     {
-      g_set_error (error, G_IREPOSITORY_ERROR,
-		   G_IREPOSITORY_ERROR_NAMESPACE_MISMATCH,
+      g_set_error (error, GI_REPOSITORY_ERROR,
+		   GI_REPOSITORY_ERROR_NAMESPACE_MISMATCH,
 		   "Typelib file %s for namespace '%s' contains "
 		   "namespace '%s' which doesn't match the file name",
 		   path, namespace, typelib_namespace);
-      g_typelib_free (typelib);
+      gi_typelib_free (typelib);
       goto out;
     }
   if (version != NULL && strcmp (typelib_version, version) != 0)
     {
-      g_set_error (error, G_IREPOSITORY_ERROR,
-		   G_IREPOSITORY_ERROR_NAMESPACE_MISMATCH,
+      g_set_error (error, GI_REPOSITORY_ERROR,
+		   GI_REPOSITORY_ERROR_NAMESPACE_MISMATCH,
 		   "Typelib file %s for namespace '%s' contains "
 		   "version '%s' which doesn't match the expected version '%s'",
 		   path, namespace, typelib_version, version);
-      g_typelib_free (typelib);
+      gi_typelib_free (typelib);
       goto out;
     }
 
   if (!register_internal (repository, path, allow_lazy,
 			  typelib, error))
     {
-      g_typelib_free (typelib);
+      gi_typelib_free (typelib);
       goto out;
     }
   ret = typelib;
@@ -1647,7 +1647,7 @@ require_internal (GIRepository  *repository,
 }
 
 /**
- * g_irepository_require:
+ * gi_repository_require:
  * @repository: (allow-none): A #GIRepository or %NULL for the singleton
  *   process-global default #GIRepository
  * @namespace_: GI namespace to use, e.g. "Gtk"
@@ -1664,7 +1664,7 @@ require_internal (GIRepository  *repository,
  * Returns: (transfer none): a pointer to the #GITypelib if successful, %NULL otherwise
  */
 GITypelib *
-g_irepository_require (GIRepository  *repository,
+gi_repository_require (GIRepository  *repository,
 		       const gchar   *namespace,
 		       const gchar   *version,
 		       GIRepositoryLoadFlags flags,
@@ -1680,7 +1680,7 @@ g_irepository_require (GIRepository  *repository,
 }
 
 /**
- * g_irepository_require_private:
+ * gi_repository_require_private:
  * @repository: (allow-none): A #GIRepository or %NULL for the singleton
  *   process-global default #GIRepository
  * @typelib_dir: Private directory where to find the requested typelib
@@ -1698,7 +1698,7 @@ g_irepository_require (GIRepository  *repository,
  * Returns: (transfer none): a pointer to the #GITypelib if successful, %NULL otherwise
  */
 GITypelib *
-g_irepository_require_private (GIRepository  *repository,
+gi_repository_require_private (GIRepository  *repository,
 			       const gchar   *typelib_dir,
 			       const gchar   *namespace,
 			       const gchar   *version,
@@ -1712,13 +1712,13 @@ g_irepository_require_private (GIRepository  *repository,
 }
 
 static gboolean
-g_irepository_introspect_cb (const char *option_name,
+gi_repository_introspect_cb (const char *option_name,
 			     const char *value,
 			     gpointer data,
 			     GError **error)
 {
   GError *tmp_error = NULL;
-  gboolean ret = g_irepository_dump (value, &tmp_error);
+  gboolean ret = gi_repository_dump (value, &tmp_error);
   if (!ret)
     {
       g_error ("Failed to extract GType data: %s",
@@ -1730,13 +1730,13 @@ g_irepository_introspect_cb (const char *option_name,
 
 static const GOptionEntry introspection_args[] = {
   { "introspect-dump", 0, G_OPTION_FLAG_HIDDEN, G_OPTION_ARG_CALLBACK,
-    g_irepository_introspect_cb, "Dump introspection information",
+    gi_repository_introspect_cb, "Dump introspection information",
     "infile.txt,outfile.xml" },
   G_OPTION_ENTRY_NULL
 };
 
 /**
- * g_irepository_get_option_group:
+ * gi_repository_get_option_group:
  *
  * Obtain the option group for girepository, it's used
  * by the dumper and for programs that wants to provide
@@ -1745,7 +1745,7 @@ static const GOptionEntry introspection_args[] = {
  * Returns: (transfer full): the option group
  */
 GOptionGroup *
-g_irepository_get_option_group (void)
+gi_repository_get_option_group (void)
 {
   GOptionGroup *group;
   group = g_option_group_new ("girepository", "Introspection Options", "Show Introspection Options", NULL, NULL);
@@ -1755,7 +1755,7 @@ g_irepository_get_option_group (void)
 }
 
 GQuark
-g_irepository_error_quark (void)
+gi_repository_error_quark (void)
 {
   static GQuark quark = 0;
   if (quark == 0)
@@ -1764,7 +1764,7 @@ g_irepository_error_quark (void)
 }
 
 /**
- * g_type_tag_to_string:
+ * gi_type_tag_to_string:
  * @type: the type_tag
  *
  * Obtain a string representation of @type
@@ -1772,7 +1772,7 @@ g_irepository_error_quark (void)
  * Returns: the string
  */
 const gchar*
-g_type_tag_to_string (GITypeTag type)
+gi_type_tag_to_string (GITypeTag type)
 {
   switch (type)
     {
@@ -1826,7 +1826,7 @@ g_type_tag_to_string (GITypeTag type)
 }
 
 /**
- * g_info_type_to_string:
+ * gi_info_type_to_string:
  * @type: the info type
  *
  * Obtain a string representation of @type
@@ -1834,7 +1834,7 @@ g_type_tag_to_string (GITypeTag type)
  * Returns: the string
  */
 const gchar*
-g_info_type_to_string (GIInfoType type)
+gi_info_type_to_string (GIInfoType type)
 {
   switch (type)
     {

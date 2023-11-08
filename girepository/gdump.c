@@ -526,7 +526,7 @@ dump_error_quark (GQuark quark, const char *symbol, GOutputStream *out)
 }
 
 /**
- * g_irepository_dump:
+ * gi_repository_dump:
  * @arg: Comma-separated pair of input and output filenames
  * @error: a %GError
  *
@@ -549,7 +549,7 @@ static gboolean
 dump_irepository (const char *arg, GError **error)
 #else
 gboolean
-g_irepository_dump (const char *arg, GError **error)
+gi_repository_dump (const char *arg, GError **error)
 #endif
 {
   GHashTable *output_types;

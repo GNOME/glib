@@ -45,12 +45,12 @@
  *
  * A type can either be a of a basic type which is a standard C primitive
  * type or an interface type. For interface types you need to call
- * g_type_info_get_interface() to get a reference to the base info for that
+ * gi_type_info_get_interface() to get a reference to the base info for that
  * interface.
  */
 
 /**
- * g_type_info_is_pointer:
+ * gi_type_info_is_pointer:
  * @info: a #GITypeInfo
  *
  * Obtain if the type is passed as a reference.
@@ -63,7 +63,7 @@
  * Returns: %TRUE if it is a pointer
  */
 gboolean
-g_type_info_is_pointer (GITypeInfo *info)
+gi_type_info_is_pointer (GITypeInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   SimpleTypeBlob *type;
@@ -84,7 +84,7 @@ g_type_info_is_pointer (GITypeInfo *info)
 }
 
 /**
- * g_type_info_get_tag:
+ * gi_type_info_get_tag:
  * @info: a #GITypeInfo
  *
  * Obtain the type tag for the type. See #GITypeTag for a list
@@ -93,7 +93,7 @@ g_type_info_is_pointer (GITypeInfo *info)
  * Returns: the type tag
  */
 GITypeTag
-g_type_info_get_tag (GITypeInfo *info)
+gi_type_info_get_tag (GITypeInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   SimpleTypeBlob *type;
@@ -116,7 +116,7 @@ g_type_info_get_tag (GITypeInfo *info)
 }
 
 /**
- * g_type_info_get_param_type:
+ * gi_type_info_get_param_type:
  * @info: a #GITypeInfo
  * @n: index of the parameter
  *
@@ -125,8 +125,8 @@ g_type_info_get_tag (GITypeInfo *info)
  * Returns: (transfer full): the param type info
  */
 GITypeInfo *
-g_type_info_get_param_type (GITypeInfo *info,
-                            gint        n)
+gi_type_info_get_param_type (GITypeInfo *info,
+                             gint        n)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   SimpleTypeBlob *type;
@@ -146,9 +146,9 @@ g_type_info_get_param_type (GITypeInfo *info,
           case GI_TYPE_TAG_GLIST:
           case GI_TYPE_TAG_GSLIST:
           case GI_TYPE_TAG_GHASH:
-            return _g_type_info_new ((GIBaseInfo*)info, rinfo->typelib,
-                                    rinfo->offset + sizeof (ParamTypeBlob)
-                                    + sizeof (SimpleTypeBlob) * n);
+            return _gi_type_info_new ((GIBaseInfo*)info, rinfo->typelib,
+                                      rinfo->offset + sizeof (ParamTypeBlob)
+                                      + sizeof (SimpleTypeBlob) * n);
             break;
           default:
             break;
@@ -159,19 +159,19 @@ g_type_info_get_param_type (GITypeInfo *info,
 }
 
 /**
- * g_type_info_get_interface:
+ * gi_type_info_get_interface:
  * @info: a #GITypeInfo
  *
  * For types which have #GI_TYPE_TAG_INTERFACE such as GObjects and boxed values,
  * this function returns full information about the referenced type.  You can then
  * inspect the type of the returned #GIBaseInfo to further query whether it is
- * a concrete GObject, a GInterface, a structure, etc. using g_base_info_get_type().
+ * a concrete GObject, a GInterface, a structure, etc. using gi_base_info_get_type().
  *
  * Returns: (transfer full): the #GIBaseInfo, or %NULL. Free it with
- * g_base_info_unref() when done.
+ *   gi_base_info_unref() when done.
  */
 GIBaseInfo *
-g_type_info_get_interface (GITypeInfo *info)
+gi_type_info_get_interface (GITypeInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
 
@@ -196,8 +196,8 @@ g_type_info_get_interface (GITypeInfo *info)
             g_assert_not_reached ();
             return NULL;
         }
-      return (GIBaseInfo *) g_info_new (info_type, (GIBaseInfo*)info, rinfo->typelib,
-                                        rinfo->offset);
+      return (GIBaseInfo *) gi_info_new (info_type, (GIBaseInfo*)info, rinfo->typelib,
+                                         rinfo->offset);
     }
   else
     {
@@ -207,7 +207,7 @@ g_type_info_get_interface (GITypeInfo *info)
           InterfaceTypeBlob *blob = (InterfaceTypeBlob *)&rinfo->typelib->data[rinfo->offset];
 
           if (blob->tag == GI_TYPE_TAG_INTERFACE)
-            return _g_info_from_entry (rinfo->repository, rinfo->typelib, blob->interface);
+            return _gi_info_from_entry (rinfo->repository, rinfo->typelib, blob->interface);
         }
     }
 
@@ -215,7 +215,7 @@ g_type_info_get_interface (GITypeInfo *info)
 }
 
 /**
- * g_type_info_get_array_length:
+ * gi_type_info_get_array_length:
  * @info: a #GITypeInfo
  *
  * Obtain the position of the argument which gives the array length of the type.
@@ -224,7 +224,7 @@ g_type_info_get_interface (GITypeInfo *info)
  * Returns: the array length, or -1 if the type is not an array
  */
 gint
-g_type_info_get_array_length (GITypeInfo *info)
+gi_type_info_get_array_length (GITypeInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   SimpleTypeBlob *type;
@@ -249,7 +249,7 @@ g_type_info_get_array_length (GITypeInfo *info)
 }
 
 /**
- * g_type_info_get_array_fixed_size:
+ * gi_type_info_get_array_fixed_size:
  * @info: a #GITypeInfo
  *
  * Obtain the fixed array size of the type. The type tag must be a
@@ -258,7 +258,7 @@ g_type_info_get_array_length (GITypeInfo *info)
  * Returns: the size or -1 if it's not an array
  */
 gint
-g_type_info_get_array_fixed_size (GITypeInfo *info)
+gi_type_info_get_array_fixed_size (GITypeInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   SimpleTypeBlob *type;
@@ -283,7 +283,7 @@ g_type_info_get_array_fixed_size (GITypeInfo *info)
 }
 
 /**
- * g_type_info_is_zero_terminated:
+ * gi_type_info_is_zero_terminated:
  * @info: a #GITypeInfo
  *
  * Obtain if the last element of the array is %NULL. The type tag must be a
@@ -292,7 +292,7 @@ g_type_info_get_array_fixed_size (GITypeInfo *info)
  * Returns: %TRUE if zero terminated
  */
 gboolean
-g_type_info_is_zero_terminated (GITypeInfo *info)
+gi_type_info_is_zero_terminated (GITypeInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   SimpleTypeBlob *type;
@@ -314,7 +314,7 @@ g_type_info_is_zero_terminated (GITypeInfo *info)
 }
 
 /**
- * g_type_info_get_array_type:
+ * gi_type_info_get_array_type:
  * @info: a #GITypeInfo
  *
  * Obtain the array type for this type. See #GIArrayType for a list of
@@ -324,7 +324,7 @@ g_type_info_is_zero_terminated (GITypeInfo *info)
  * Returns: the array type or -1
  */
 GIArrayType
-g_type_info_get_array_type (GITypeInfo *info)
+gi_type_info_get_array_type (GITypeInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   SimpleTypeBlob *type;
@@ -346,7 +346,7 @@ g_type_info_get_array_type (GITypeInfo *info)
 }
 
 /**
- * g_type_info_get_storage_type:
+ * gi_type_info_get_storage_type:
  * @info: a #GITypeInfo
  *
  * Obtain the type tag corresponding to the underlying storage type in C for
@@ -358,17 +358,17 @@ g_type_info_get_array_type (GITypeInfo *info)
  * Since: 1.66
  */
 GITypeTag
-g_type_info_get_storage_type (GITypeInfo *info)
+gi_type_info_get_storage_type (GITypeInfo *info)
 {
-  GITypeTag type_tag = g_type_info_get_tag (info);
+  GITypeTag type_tag = gi_type_info_get_tag (info);
 
   if (type_tag == GI_TYPE_TAG_INTERFACE)
     {
-      GIBaseInfo *interface = g_type_info_get_interface (info);
-      GIInfoType info_type = g_base_info_get_type (interface);
+      GIBaseInfo *interface = gi_type_info_get_interface (info);
+      GIInfoType info_type = gi_base_info_get_type (interface);
       if (info_type == GI_INFO_TYPE_ENUM || info_type == GI_INFO_TYPE_FLAGS)
-        type_tag = g_enum_info_get_storage_type (interface);
-      g_base_info_unref (interface);
+        type_tag = gi_enum_info_get_storage_type (interface);
+      gi_base_info_unref (interface);
     }
 
   return type_tag;
@@ -376,7 +376,7 @@ g_type_info_get_storage_type (GITypeInfo *info)
 
 /**
  * gi_type_tag_argument_from_hash_pointer:
- * @storage_type: a #GITypeTag obtained from g_type_info_get_storage_type()
+ * @storage_type: a #GITypeTag obtained from gi_type_info_get_storage_type()
  * @hash_pointer: A pointer, such as a #GHashTable data pointer
  * @arg: A #GIArgument to fill in
  *
@@ -442,13 +442,13 @@ gi_type_tag_argument_from_hash_pointer (GITypeTag   storage_type,
       case GI_TYPE_TAG_DOUBLE:
       default:
         g_critical ("Unsupported storage type for pointer-stuffing: %s",
-                    g_type_tag_to_string (storage_type));
+                    gi_type_tag_to_string (storage_type));
         arg->v_pointer = hash_pointer;
     }
 }
 
 /**
- * g_type_info_argument_from_hash_pointer:
+ * gi_type_info_argument_from_hash_pointer:
  * @info: a #GITypeInfo
  * @hash_pointer: A pointer, such as a #GHashTable data pointer
  * @arg: A #GIArgument to fill in
@@ -468,18 +468,18 @@ gi_type_tag_argument_from_hash_pointer (GITypeTag   storage_type,
  * Since: 1.66
  */
 void
-g_type_info_argument_from_hash_pointer (GITypeInfo *info,
-                                        gpointer    hash_pointer,
-                                        GIArgument *arg)
+gi_type_info_argument_from_hash_pointer (GITypeInfo *info,
+                                         gpointer    hash_pointer,
+                                         GIArgument *arg)
 {
-    GITypeTag storage_type = g_type_info_get_storage_type (info);
+    GITypeTag storage_type = gi_type_info_get_storage_type (info);
     gi_type_tag_argument_from_hash_pointer (storage_type, hash_pointer,
                                             arg);
 }
 
 /**
  * gi_type_tag_hash_pointer_from_argument:
- * @storage_type: a #GITypeTag obtained from g_type_info_get_storage_type()
+ * @storage_type: a #GITypeTag obtained from gi_get_storage_type()
  * @arg: A #GIArgument with the value to stuff into a pointer
  *
  * GLib data structures, such as #GList, #GSList, and #GHashTable, all store
@@ -536,13 +536,13 @@ gi_type_tag_hash_pointer_from_argument (GITypeTag   storage_type,
       case GI_TYPE_TAG_DOUBLE:
       default:
         g_critical ("Unsupported storage type for pointer-stuffing: %s",
-                    g_type_tag_to_string (storage_type));
+                    gi_type_tag_to_string (storage_type));
         return arg->v_pointer;
     }
 }
 
 /**
- * g_type_info_hash_pointer_from_argument:
+ * gi_type_info_hash_pointer_from_argument:
  * @info: a #GITypeInfo
  * @arg: A #GIArgument with the value to stuff into a pointer
  *
@@ -563,9 +563,9 @@ gi_type_tag_hash_pointer_from_argument (GITypeTag   storage_type,
  * Since: 1.66
  */
 gpointer
-g_type_info_hash_pointer_from_argument (GITypeInfo *info,
-                                        GIArgument *arg)
+gi_type_info_hash_pointer_from_argument (GITypeInfo *info,
+                                         GIArgument *arg)
 {
-  GITypeTag storage_type = g_type_info_get_storage_type (info);
+  GITypeTag storage_type = gi_type_info_get_storage_type (info);
   return gi_type_tag_hash_pointer_from_argument (storage_type, arg);
 }

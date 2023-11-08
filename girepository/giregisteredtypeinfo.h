@@ -40,22 +40,22 @@ G_BEGIN_DECLS
  * Checks if @info is a #GIRegisteredTypeInfo or derived from it.
  */
 #define GI_IS_REGISTERED_TYPE_INFO(info) \
-    ((g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_BOXED) || \
-     (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_ENUM) || \
-     (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_FLAGS) ||	\
-     (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_INTERFACE) || \
-     (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_OBJECT) || \
-     (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_STRUCT) || \
-     (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_UNION) || \
-     (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_BOXED))
+    ((gi_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_BOXED) || \
+     (gi_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_ENUM) || \
+     (gi_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_FLAGS) || \
+     (gi_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_INTERFACE) || \
+     (gi_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_OBJECT) || \
+     (gi_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_STRUCT) || \
+     (gi_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_UNION) || \
+     (gi_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_BOXED))
 
 GI_AVAILABLE_IN_ALL
-const gchar *          g_registered_type_info_get_type_name (GIRegisteredTypeInfo *info);
+const gchar *          gi_registered_type_info_get_type_name (GIRegisteredTypeInfo *info);
 
 GI_AVAILABLE_IN_ALL
-const gchar *          g_registered_type_info_get_type_init (GIRegisteredTypeInfo *info);
+const gchar *          gi_registered_type_info_get_type_init (GIRegisteredTypeInfo *info);
 
 GI_AVAILABLE_IN_ALL
-GType                  g_registered_type_info_get_g_type    (GIRegisteredTypeInfo *info);
+GType                  gi_registered_type_info_get_g_type    (GIRegisteredTypeInfo *info);
 
 G_END_DECLS

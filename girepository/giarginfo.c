@@ -44,7 +44,7 @@
  */
 
 /**
- * g_arg_info_get_direction:
+ * gi_arg_info_get_direction:
  * @info: a #GIArgInfo
  *
  * Obtain the direction of the argument. Check #GIDirection for possible
@@ -53,7 +53,7 @@
  * Returns: the direction
  */
 GIDirection
-g_arg_info_get_direction (GIArgInfo *info)
+gi_arg_info_get_direction (GIArgInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   ArgBlob *blob;
@@ -72,7 +72,7 @@ g_arg_info_get_direction (GIArgInfo *info)
 }
 
 /**
- * g_arg_info_is_return_value:
+ * gi_arg_info_is_return_value:
  * @info: a #GIArgInfo
  *
  * Obtain if the argument is a return value. It can either be a
@@ -81,7 +81,7 @@ g_arg_info_get_direction (GIArgInfo *info)
  * Returns: %TRUE if it is a return value
  */
 gboolean
-g_arg_info_is_return_value (GIArgInfo *info)
+gi_arg_info_is_return_value (GIArgInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   ArgBlob *blob;
@@ -95,7 +95,7 @@ g_arg_info_is_return_value (GIArgInfo *info)
 }
 
 /**
- * g_arg_info_is_caller_allocates:
+ * gi_arg_info_is_caller_allocates:
  * @info: a #GIArgInfo
  *
  * Obtain if the argument is a pointer to a struct or object that will
@@ -106,7 +106,7 @@ g_arg_info_is_return_value (GIArgInfo *info)
  * Returns: %TRUE if caller is required to have allocated the argument
  */
 gboolean
-g_arg_info_is_caller_allocates (GIArgInfo *info)
+gi_arg_info_is_caller_allocates (GIArgInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   ArgBlob *blob;
@@ -120,7 +120,7 @@ g_arg_info_is_caller_allocates (GIArgInfo *info)
 }
 
 /**
- * g_arg_info_is_optional:
+ * gi_arg_info_is_optional:
  * @info: a #GIArgInfo
  *
  * Obtain if the argument is optional.  For 'out' arguments this means
@@ -129,7 +129,7 @@ g_arg_info_is_caller_allocates (GIArgInfo *info)
  * Returns: %TRUE if it is an optional argument
  */
 gboolean
-g_arg_info_is_optional (GIArgInfo *info)
+gi_arg_info_is_optional (GIArgInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   ArgBlob *blob;
@@ -143,19 +143,19 @@ g_arg_info_is_optional (GIArgInfo *info)
 }
 
 /**
- * g_arg_info_may_be_null:
+ * gi_arg_info_may_be_null:
  * @info: a #GIArgInfo
  *
  * Obtain if the type of the argument includes the possibility of %NULL.
  * For 'in' values this means that %NULL is a valid value.  For 'out'
  * values, this means that %NULL may be returned.
  *
- * See also g_arg_info_is_optional().
+ * See also gi_arg_info_is_optional().
  *
  * Returns: %TRUE if the value may be %NULL
  */
 gboolean
-g_arg_info_may_be_null (GIArgInfo *info)
+gi_arg_info_may_be_null (GIArgInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   ArgBlob *blob;
@@ -169,7 +169,7 @@ g_arg_info_may_be_null (GIArgInfo *info)
 }
 
 /**
- * g_arg_info_is_skip:
+ * gi_arg_info_is_skip:
  * @info: a #GIArgInfo
  *
  * Obtain if an argument is only useful in C.
@@ -178,7 +178,7 @@ g_arg_info_may_be_null (GIArgInfo *info)
  * Since: 1.30
  */
 gboolean
-g_arg_info_is_skip (GIArgInfo *info)
+gi_arg_info_is_skip (GIArgInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   ArgBlob *blob;
@@ -192,7 +192,7 @@ g_arg_info_is_skip (GIArgInfo *info)
 }
 
 /**
- * g_arg_info_get_ownership_transfer:
+ * gi_arg_info_get_ownership_transfer:
  * @info: a #GIArgInfo
  *
  * Obtain the ownership transfer for this argument.
@@ -201,7 +201,7 @@ g_arg_info_is_skip (GIArgInfo *info)
  * Returns: the transfer
  */
 GITransfer
-g_arg_info_get_ownership_transfer (GIArgInfo *info)
+gi_arg_info_get_ownership_transfer (GIArgInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   ArgBlob *blob;
@@ -220,7 +220,7 @@ g_arg_info_get_ownership_transfer (GIArgInfo *info)
 }
 
 /**
- * g_arg_info_get_scope:
+ * gi_arg_info_get_scope:
  * @info: a #GIArgInfo
  *
  * Obtain the scope type for this argument. The scope type explains
@@ -231,7 +231,7 @@ g_arg_info_get_ownership_transfer (GIArgInfo *info)
  * Returns: the scope type
  */
 GIScopeType
-g_arg_info_get_scope (GIArgInfo *info)
+gi_arg_info_get_scope (GIArgInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   ArgBlob *blob;
@@ -245,7 +245,7 @@ g_arg_info_get_scope (GIArgInfo *info)
 }
 
 /**
- * g_arg_info_get_closure:
+ * gi_arg_info_get_closure:
  * @info: a #GIArgInfo
  *
  * Obtain the index of the user data argument. This is only valid
@@ -254,7 +254,7 @@ g_arg_info_get_scope (GIArgInfo *info)
  * Returns: index of the user data argument or -1 if there is none
  */
 gint
-g_arg_info_get_closure (GIArgInfo *info)
+gi_arg_info_get_closure (GIArgInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   ArgBlob *blob;
@@ -268,7 +268,7 @@ g_arg_info_get_closure (GIArgInfo *info)
 }
 
 /**
- * g_arg_info_get_destroy:
+ * gi_arg_info_get_destroy:
  * @info: a #GIArgInfo
  *
  * Obtains the index of the #GDestroyNotify argument. This is only valid
@@ -277,7 +277,7 @@ g_arg_info_get_closure (GIArgInfo *info)
  * Returns: index of the #GDestroyNotify argument or -1 if there is none
  */
 gint
-g_arg_info_get_destroy (GIArgInfo *info)
+gi_arg_info_get_destroy (GIArgInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   ArgBlob *blob;
@@ -291,45 +291,45 @@ g_arg_info_get_destroy (GIArgInfo *info)
 }
 
 /**
- * g_arg_info_get_type:
+ * gi_arg_info_get_type:
  * @info: a #GIArgInfo
  *
  * Obtain the type information for @info.
  *
  * Returns: (transfer full): the #GITypeInfo holding the type
- *   information for @info, free it with g_base_info_unref()
+ *   information for @info, free it with gi_base_info_unref()
  *   when done.
  */
 GITypeInfo *
-g_arg_info_get_type (GIArgInfo *info)
+gi_arg_info_get_type (GIArgInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
 
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_ARG_INFO (info), NULL);
 
-  return _g_type_info_new ((GIBaseInfo*)info, rinfo->typelib, rinfo->offset + G_STRUCT_OFFSET (ArgBlob, arg_type));
+  return _gi_type_info_new ((GIBaseInfo*)info, rinfo->typelib, rinfo->offset + G_STRUCT_OFFSET (ArgBlob, arg_type));
 }
 
 /**
- * g_arg_info_load_type:
+ * gi_arg_info_load_type:
  * @info: a #GIArgInfo
  * @type: (out caller-allocates): Initialized with information about type of @info
  *
  * Obtain information about a the type of given argument @info; this
- * function is a variant of g_arg_info_get_type() designed for stack
+ * function is a variant of gi_arg_info_get_type() designed for stack
  * allocation.
  *
  * The initialized @type must not be referenced after @info is deallocated.
  */
 void
-g_arg_info_load_type (GIArgInfo  *info,
-                      GITypeInfo *type)
+gi_arg_info_load_type (GIArgInfo  *info,
+                       GITypeInfo *type)
 {
   GIRealInfo *rinfo = (GIRealInfo*) info;
 
   g_return_if_fail (info != NULL);
   g_return_if_fail (GI_IS_ARG_INFO (info));
 
-  _g_type_info_init (type, (GIBaseInfo*)info, rinfo->typelib, rinfo->offset + G_STRUCT_OFFSET (ArgBlob, arg_type));
+  _gi_type_info_init (type, (GIBaseInfo*)info, rinfo->typelib, rinfo->offset + G_STRUCT_OFFSET (ArgBlob, arg_type));
 }

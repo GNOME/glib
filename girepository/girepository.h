@@ -52,12 +52,12 @@
 
 G_BEGIN_DECLS
 
-#define G_TYPE_IREPOSITORY              (g_irepository_get_type ())
-#define G_IREPOSITORY(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), G_TYPE_IREPOSITORY, GIRepository))
-#define G_IREPOSITORY_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), G_TYPE_IREPOSITORY, GIRepositoryClass))
-#define G_IS_IREPOSITORY(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), G_TYPE_IREPOSITORY))
-#define G_IS_IREPOSITORY_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), G_TYPE_IREPOSITORY))
-#define G_IREPOSITORY_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), G_TYPE_IREPOSITORY, GIRepositoryClass))
+#define GI_TYPE_REPOSITORY              (gi_repository_get_type ())
+#define GI_REPOSITORY(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GI_TYPE_REPOSITORY, GIRepository))
+#define GI_REPOSITORY_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GI_TYPE_REPOSITORY, GIRepositoryClass))
+#define GI_IS_REPOSITORY(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GI_TYPE_REPOSITORY))
+#define GI_IS_REPOSITORY_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GI_TYPE_REPOSITORY))
+#define GI_REPOSITORY_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GI_TYPE_REPOSITORY, GIRepositoryClass))
 
 /**
  * GIRepository:
@@ -84,154 +84,154 @@ struct _GIRepositoryClass
 
 /**
  * GIRepositoryLoadFlags:
- * @G_IREPOSITORY_LOAD_FLAG_LAZY: Lazily load the typelib.
+ * @GI_REPOSITORY_LOAD_FLAG_LAZY: Lazily load the typelib.
  *
  * Flags that control how a typelib is loaded.
  */
 typedef enum
 {
-  G_IREPOSITORY_LOAD_FLAG_LAZY = 1 << 0
+  GI_REPOSITORY_LOAD_FLAG_LAZY = 1 << 0
 } GIRepositoryLoadFlags;
 
 /* Repository */
 
 GI_AVAILABLE_IN_ALL
-GType         g_irepository_get_type      (void) G_GNUC_CONST;
+GType         gi_repository_get_type      (void) G_GNUC_CONST;
 
 GI_AVAILABLE_IN_ALL
-GIRepository *g_irepository_get_default   (void);
+GIRepository *gi_repository_get_default   (void);
 
 GI_AVAILABLE_IN_ALL
-void          g_irepository_prepend_search_path (const char *directory);
+void          gi_repository_prepend_search_path (const char *directory);
 
 GI_AVAILABLE_IN_ALL
-void          g_irepository_prepend_library_path (const char *directory);
+void          gi_repository_prepend_library_path (const char *directory);
 
 GI_AVAILABLE_IN_ALL
-GSList *      g_irepository_get_search_path     (void);
+GSList *      gi_repository_get_search_path     (void);
 
 GI_AVAILABLE_IN_ALL
-const char *  g_irepository_load_typelib  (GIRepository *repository,
-					   GITypelib     *typelib,
-					   GIRepositoryLoadFlags flags,
-					   GError      **error);
+const char *  gi_repository_load_typelib  (GIRepository           *repository,
+                                           GITypelib              *typelib,
+                                           GIRepositoryLoadFlags   flags,
+                                           GError                **error);
 
 GI_AVAILABLE_IN_ALL
-gboolean      g_irepository_is_registered (GIRepository *repository,
-					   const gchar  *namespace_,
-					   const gchar  *version);
+gboolean      gi_repository_is_registered (GIRepository *repository,
+                                           const gchar  *namespace_,
+                                           const gchar  *version);
 
 GI_AVAILABLE_IN_ALL
-GIBaseInfo *  g_irepository_find_by_name  (GIRepository *repository,
-					   const gchar  *namespace_,
-					   const gchar  *name);
+GIBaseInfo *  gi_repository_find_by_name  (GIRepository *repository,
+                                           const gchar  *namespace_,
+                                           const gchar  *name);
 
 GI_AVAILABLE_IN_ALL
-GList *       g_irepository_enumerate_versions (GIRepository *repository,
-					        const gchar  *namespace_);
+GList *       gi_repository_enumerate_versions (GIRepository *repository,
+                                                const gchar  *namespace_);
 
 GI_AVAILABLE_IN_ALL
-GITypelib *    g_irepository_require       (GIRepository *repository,
-					   const gchar  *namespace_,
-					   const gchar  *version,
-					   GIRepositoryLoadFlags flags,
-					   GError      **error);
+GITypelib *    gi_repository_require       (GIRepository           *repository,
+                                            const gchar            *namespace_,
+                                            const gchar            *version,
+                                            GIRepositoryLoadFlags   flags,
+                                            GError                **error);
 
 GI_AVAILABLE_IN_ALL
-GITypelib *    g_irepository_require_private (GIRepository  *repository,
-					     const gchar   *typelib_dir,
-					     const gchar   *namespace_,
-					     const gchar   *version,
-					     GIRepositoryLoadFlags flags,
-					     GError       **error);
+GITypelib *    gi_repository_require_private (GIRepository           *repository,
+                                              const gchar            *typelib_dir,
+                                              const gchar            *namespace_,
+                                              const gchar            *version,
+                                              GIRepositoryLoadFlags   flags,
+                                              GError                **error);
 
 GI_AVAILABLE_IN_ALL
-gchar      ** g_irepository_get_immediate_dependencies (GIRepository *repository,
+gchar      ** gi_repository_get_immediate_dependencies (GIRepository *repository,
                                                         const gchar  *namespace_);
 
 GI_AVAILABLE_IN_ALL
-gchar      ** g_irepository_get_dependencies (GIRepository *repository,
-					      const gchar  *namespace_);
+gchar      ** gi_repository_get_dependencies (GIRepository *repository,
+                                              const gchar  *namespace_);
 
 GI_AVAILABLE_IN_ALL
-gchar      ** g_irepository_get_loaded_namespaces (GIRepository *repository);
+gchar      ** gi_repository_get_loaded_namespaces (GIRepository *repository);
 
 GI_AVAILABLE_IN_ALL
-GIBaseInfo *  g_irepository_find_by_gtype (GIRepository *repository,
-					   GType         gtype);
+GIBaseInfo *  gi_repository_find_by_gtype (GIRepository *repository,
+                                           GType         gtype);
 
 GI_AVAILABLE_IN_ALL
-void          g_irepository_get_object_gtype_interfaces (GIRepository      *repository,
+void          gi_repository_get_object_gtype_interfaces (GIRepository      *repository,
                                                          GType              gtype,
                                                          guint             *n_interfaces_out,
                                                          GIInterfaceInfo ***interfaces_out);
 
 GI_AVAILABLE_IN_ALL
-gint          g_irepository_get_n_infos   (GIRepository *repository,
-					   const gchar  *namespace_);
+gint          gi_repository_get_n_infos   (GIRepository *repository,
+                                           const gchar  *namespace_);
 
 GI_AVAILABLE_IN_ALL
-GIBaseInfo *  g_irepository_get_info      (GIRepository *repository,
-					   const gchar  *namespace_,
-					   gint          index);
+GIBaseInfo *  gi_repository_get_info      (GIRepository *repository,
+                                           const gchar  *namespace_,
+                                           gint          index);
 
 GI_AVAILABLE_IN_ALL
-GIEnumInfo *  g_irepository_find_by_error_domain (GIRepository *repository,
-						  GQuark        domain);
+GIEnumInfo *  gi_repository_find_by_error_domain (GIRepository *repository,
+                                                  GQuark        domain);
 
 GI_AVAILABLE_IN_ALL
-const gchar * g_irepository_get_typelib_path   (GIRepository *repository,
-						const gchar  *namespace_);
+const gchar * gi_repository_get_typelib_path   (GIRepository *repository,
+                                                const gchar  *namespace_);
 GI_AVAILABLE_IN_ALL
-const gchar * g_irepository_get_shared_library (GIRepository *repository,
-						const gchar  *namespace_);
+const gchar * gi_repository_get_shared_library (GIRepository *repository,
+                                                const gchar  *namespace_);
 GI_AVAILABLE_IN_ALL
-const gchar * g_irepository_get_c_prefix (GIRepository *repository,
+const gchar * gi_repository_get_c_prefix (GIRepository *repository,
                                           const gchar  *namespace_);
 GI_AVAILABLE_IN_ALL
-const gchar * g_irepository_get_version (GIRepository *repository,
-					 const gchar  *namespace_);
+const gchar * gi_repository_get_version (GIRepository *repository,
+                                         const gchar  *namespace_);
 
 
 GI_AVAILABLE_IN_ALL
-GOptionGroup * g_irepository_get_option_group (void);
+GOptionGroup * gi_repository_get_option_group (void);
 
 
 GI_AVAILABLE_IN_ALL
-gboolean       g_irepository_dump  (const char *arg, GError **error);
+gboolean       gi_repository_dump  (const char *arg, GError **error);
 
 /**
  * GIRepositoryError:
- * @G_IREPOSITORY_ERROR_TYPELIB_NOT_FOUND: the typelib could not be found.
- * @G_IREPOSITORY_ERROR_NAMESPACE_MISMATCH: the namespace does not match the
+ * @GI_REPOSITORY_ERROR_TYPELIB_NOT_FOUND: the typelib could not be found.
+ * @GI_REPOSITORY_ERROR_NAMESPACE_MISMATCH: the namespace does not match the
  *   requested namespace.
- * @G_IREPOSITORY_ERROR_NAMESPACE_VERSION_CONFLICT: the version of the
+ * @GI_REPOSITORY_ERROR_NAMESPACE_VERSION_CONFLICT: the version of the
  *   typelib does not match the requested version.
- * @G_IREPOSITORY_ERROR_LIBRARY_NOT_FOUND: the library used by the typelib
+ * @GI_REPOSITORY_ERROR_LIBRARY_NOT_FOUND: the library used by the typelib
  *   could not be found.
  *
- * An error code used with #G_IREPOSITORY_ERROR in a #GError returned
+ * An error code used with #GI_REPOSITORY_ERROR in a #GError returned
  * from a #GIRepository routine.
  */
 typedef enum
 {
-  G_IREPOSITORY_ERROR_TYPELIB_NOT_FOUND,
-  G_IREPOSITORY_ERROR_NAMESPACE_MISMATCH,
-  G_IREPOSITORY_ERROR_NAMESPACE_VERSION_CONFLICT,
-  G_IREPOSITORY_ERROR_LIBRARY_NOT_FOUND
+  GI_REPOSITORY_ERROR_TYPELIB_NOT_FOUND,
+  GI_REPOSITORY_ERROR_NAMESPACE_MISMATCH,
+  GI_REPOSITORY_ERROR_NAMESPACE_VERSION_CONFLICT,
+  GI_REPOSITORY_ERROR_LIBRARY_NOT_FOUND
 } GIRepositoryError;
 
 /**
- * G_IREPOSITORY_ERROR:
+ * GI_REPOSITORY_ERROR:
  *
  * Error domain for #GIRepository. Errors in this domain will be from the
  * #GIRepositoryError enumeration. See #GError for more information on
  * error domains.
  */
-#define G_IREPOSITORY_ERROR (g_irepository_error_quark ())
+#define GI_REPOSITORY_ERROR (gi_repository_error_quark ())
 
 GI_AVAILABLE_IN_ALL
-GQuark g_irepository_error_quark (void);
+GQuark gi_repository_error_quark (void);
 
 
 /* Global utility functions */

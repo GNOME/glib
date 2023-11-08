@@ -41,12 +41,12 @@
  *
  * The GIEnumInfo contains a set of values and a type.
  *
- * The GIValueInfo is fetched by calling g_enum_info_get_value() on
+ * The GIValueInfo is fetched by calling gi_enum_info_get_value() on
  * a GIEnumInfo.
  */
 
 /**
- * g_enum_info_get_n_values:
+ * gi_enum_info_get_n_values:
  * @info: a #GIEnumInfo
  *
  * Obtain the number of values this enumeration contains.
@@ -54,7 +54,7 @@
  * Returns: the number of enumeration values
  */
 gint
-g_enum_info_get_n_values (GIEnumInfo *info)
+gi_enum_info_get_n_values (GIEnumInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   EnumBlob *blob;
@@ -68,7 +68,7 @@ g_enum_info_get_n_values (GIEnumInfo *info)
 }
 
 /**
- * g_enum_info_get_error_domain:
+ * gi_enum_info_get_error_domain:
  * @info: a #GIEnumInfo
  *
  * Obtain the string form of the quark for the error domain associated with
@@ -79,7 +79,7 @@ g_enum_info_get_n_values (GIEnumInfo *info)
  * Since: 1.30
  */
 const gchar *
-g_enum_info_get_error_domain (GIEnumInfo *info)
+gi_enum_info_get_error_domain (GIEnumInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   EnumBlob *blob;
@@ -90,23 +90,23 @@ g_enum_info_get_error_domain (GIEnumInfo *info)
   blob = (EnumBlob *)&rinfo->typelib->data[rinfo->offset];
 
   if (blob->error_domain)
-    return g_typelib_get_string (rinfo->typelib, blob->error_domain);
+    return gi_typelib_get_string (rinfo->typelib, blob->error_domain);
   else
     return NULL;
 }
 
 /**
- * g_enum_info_get_value:
+ * gi_enum_info_get_value:
  * @info: a #GIEnumInfo
  * @n: index of value to fetch
  *
  * Obtain a value for this enumeration.
  *
  * Returns: (transfer full): the enumeration value or %NULL if type tag is wrong,
- * free the struct with g_base_info_unref() when done.
+ *   free the struct with gi_base_info_unref() when done.
  */
 GIValueInfo *
-g_enum_info_get_value (GIEnumInfo *info,
+gi_enum_info_get_value (GIEnumInfo *info,
 		       gint        n)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -120,11 +120,11 @@ g_enum_info_get_value (GIEnumInfo *info,
   offset = rinfo->offset + header->enum_blob_size
     + n * header->value_blob_size;
 
-  return (GIValueInfo *) g_info_new (GI_INFO_TYPE_VALUE, (GIBaseInfo*)info, rinfo->typelib, offset);
+  return (GIValueInfo *) gi_info_new (GI_INFO_TYPE_VALUE, (GIBaseInfo*)info, rinfo->typelib, offset);
 }
 
 /**
- * g_enum_info_get_n_methods:
+ * gi_enum_info_get_n_methods:
  * @info: a #GIEnumInfo
  *
  * Obtain the number of methods that this enum type has.
@@ -133,7 +133,7 @@ g_enum_info_get_value (GIEnumInfo *info,
  * Since: 1.30
  */
 gint
-g_enum_info_get_n_methods (GIEnumInfo *info)
+gi_enum_info_get_n_methods (GIEnumInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   EnumBlob *blob;
@@ -147,19 +147,19 @@ g_enum_info_get_n_methods (GIEnumInfo *info)
 }
 
 /**
- * g_enum_info_get_method:
+ * gi_enum_info_get_method:
  * @info: a #GIEnumInfo
  * @n: index of method to get
  *
  * Obtain an enum type method at index @n.
  *
  * Returns: (transfer full): the #GIFunctionInfo. Free the struct by calling
- * g_base_info_unref() when done.
+ *   gi_base_info_unref() when done.
  * Since: 1.30
  */
 GIFunctionInfo *
-g_enum_info_get_method (GIEnumInfo *info,
-			gint        n)
+gi_enum_info_get_method (GIEnumInfo *info,
+                         gint        n)
 {
   gint offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -176,12 +176,12 @@ g_enum_info_get_method (GIEnumInfo *info,
     + blob->n_values * header->value_blob_size
     + n * header->function_blob_size;
 
-  return (GIFunctionInfo *) g_info_new (GI_INFO_TYPE_FUNCTION, (GIBaseInfo*)info,
-					rinfo->typelib, offset);
+  return (GIFunctionInfo *) gi_info_new (GI_INFO_TYPE_FUNCTION, (GIBaseInfo*)info,
+                                         rinfo->typelib, offset);
 }
 
 /**
- * g_enum_info_get_storage_type:
+ * gi_enum_info_get_storage_type:
  * @info: a #GIEnumInfo
  *
  * Obtain the tag of the type used for the enum in the C ABI. This will
@@ -194,7 +194,7 @@ g_enum_info_get_method (GIEnumInfo *info,
  * Returns: the storage type for the enumeration
  */
 GITypeTag
-g_enum_info_get_storage_type (GIEnumInfo *info)
+gi_enum_info_get_storage_type (GIEnumInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   EnumBlob *blob;
@@ -208,7 +208,7 @@ g_enum_info_get_storage_type (GIEnumInfo *info)
 }
 
 /**
- * g_value_info_get_value:
+ * gi_value_info_get_value:
  * @info: a #GIValueInfo
  *
  * Obtain the enumeration value of the #GIValueInfo.
@@ -218,7 +218,7 @@ g_enum_info_get_storage_type (GIEnumInfo *info)
  *   return type is to allow both.
  */
 gint64
-g_value_info_get_value (GIValueInfo *info)
+gi_value_info_get_value (GIValueInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   ValueBlob *blob;
