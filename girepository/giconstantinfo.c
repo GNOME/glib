@@ -40,46 +40,46 @@
  * GIConstantInfo represents a constant.
  *
  * A constant has a type associated which can be obtained by calling
- * g_constant_info_get_type() and a value, which can be obtained by
- * calling g_constant_info_get_value().
+ * gi_constant_info_get_type() and a value, which can be obtained by
+ * calling gi_constant_info_get_value().
  */
 
 
 /**
- * g_constant_info_get_type:
+ * gi_constant_info_get_type:
  * @info: a #GIConstantInfo
  *
  * Obtain the type of the constant as a #GITypeInfo.
  *
  * Returns: (transfer full): the #GITypeInfo. Free the struct by calling
- * g_base_info_unref() when done.
+ *   gi_base_info_unref() when done.
  */
 GITypeInfo *
-g_constant_info_get_type (GIConstantInfo *info)
+gi_constant_info_get_type (GIConstantInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
 
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_CONSTANT_INFO (info), NULL);
 
-  return _g_type_info_new ((GIBaseInfo*)info, rinfo->typelib, rinfo->offset + 8);
+  return gi_type_info_new ((GIBaseInfo*)info, rinfo->typelib, rinfo->offset + 8);
 }
 
 #define DO_ALIGNED_COPY(dest_addr, src_addr, type) \
         memcpy((dest_addr), (src_addr), sizeof(type))
 
 /**
- * g_constant_info_free_value: (skip)
+ * gi_constant_info_free_value: (skip)
  * @info: a #GIConstantInfo
  * @value: the argument
  *
- * Free the value returned from g_constant_info_get_value().
+ * Free the value returned from gi_constant_info_get_value().
  *
  * Since: 1.32
  */
 void
-g_constant_info_free_value (GIConstantInfo *info,
-                            GIArgument     *value)
+gi_constant_info_free_value (GIConstantInfo *info,
+                             GIArgument     *value)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   ConstantBlob *blob;
@@ -98,20 +98,20 @@ g_constant_info_free_value (GIConstantInfo *info,
 }
 
 /**
- * g_constant_info_get_value: (skip)
+ * gi_constant_info_get_value: (skip)
  * @info: a #GIConstantInfo
  * @value: (out): an argument
  *
  * Obtain the value associated with the #GIConstantInfo and store it in the
  * @value parameter. @argument needs to be allocated before passing it in.
  * The size of the constant value stored in @argument will be returned.
- * Free the value with g_constant_info_free_value().
+ * Free the value with gi_constant_info_free_value().
  *
  * Returns: size of the constant
  */
 gint
-g_constant_info_get_value (GIConstantInfo *info,
-			   GIArgument      *value)
+gi_constant_info_get_value (GIConstantInfo *info,
+                            GIArgument     *value)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   ConstantBlob *blob;
@@ -126,13 +126,9 @@ g_constant_info_get_value (GIConstantInfo *info,
     {
       if (blob->type.flags.pointer)
         {
-#if GLIB_CHECK_VERSION (2, 67, 5)
           gsize blob_size = blob->size;
 
 	  value->v_pointer = g_memdup2 (&rinfo->typelib->data[blob->offset], blob_size);
-#else
-	  value->v_pointer = g_memdup (&rinfo->typelib->data[blob->offset], blob->size);
-#endif
         }
       else
 	{

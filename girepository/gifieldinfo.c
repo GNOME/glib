@@ -39,8 +39,8 @@
  *
  * A GIFieldInfo struct represents a field of a struct, union, or object.
  *
- * The GIFieldInfo is fetched by calling g_struct_info_get_field(),
- * g_union_info_get_field() or g_object_info_get_field().
+ * The GIFieldInfo is fetched by calling gi_struct_info_get_field(),
+ * gi_union_info_get_field() or gi_object_info_get_field().
  *
  * A field has a size, type and a struct offset asssociated and a set of flags,
  * which are currently #GI_FIELD_IS_READABLE or #GI_FIELD_IS_WRITABLE.
@@ -49,7 +49,7 @@
  */
 
 /**
- * g_field_info_get_flags:
+ * gi_field_info_get_flags:
  * @info: a #GIFieldInfo
  *
  * Obtain the flags for this #GIFieldInfo. See #GIFieldInfoFlags for possible
@@ -58,7 +58,7 @@
  * Returns: the flags
  */
 GIFieldInfoFlags
-g_field_info_get_flags (GIFieldInfo *info)
+gi_field_info_get_flags (GIFieldInfo *info)
 {
   GIFieldInfoFlags flags;
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -81,7 +81,7 @@ g_field_info_get_flags (GIFieldInfo *info)
 }
 
 /**
- * g_field_info_get_size:
+ * gi_field_info_get_size:
  * @info: a #GIFieldInfo
  *
  * Obtain the size in bits of the field member, this is how
@@ -90,7 +90,7 @@ g_field_info_get_flags (GIFieldInfo *info)
  * Returns: the field size
  */
 gint
-g_field_info_get_size (GIFieldInfo *info)
+gi_field_info_get_size (GIFieldInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   FieldBlob *blob;
@@ -104,7 +104,7 @@ g_field_info_get_size (GIFieldInfo *info)
 }
 
 /**
- * g_field_info_get_offset:
+ * gi_field_info_get_offset:
  * @info: a #GIFieldInfo
  *
  * Obtain the offset in bytes of the field member, this is relative
@@ -113,7 +113,7 @@ g_field_info_get_size (GIFieldInfo *info)
  * Returns: the field offset
  */
 gint
-g_field_info_get_offset (GIFieldInfo *info)
+gi_field_info_get_offset (GIFieldInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   FieldBlob *blob;
@@ -127,16 +127,16 @@ g_field_info_get_offset (GIFieldInfo *info)
 }
 
 /**
- * g_field_info_get_type:
+ * gi_field_info_get_type:
  * @info: a #GIFieldInfo
  *
  * Obtain the type of a field as a #GITypeInfo.
  *
  * Returns: (transfer full): the #GITypeInfo. Free the struct by calling
- * g_base_info_unref() when done.
+ *   gi_base_info_unref() when done.
  */
 GITypeInfo *
-g_field_info_get_type (GIFieldInfo *info)
+gi_field_info_get_type (GIFieldInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header = (Header *)rinfo->typelib->data;
@@ -150,19 +150,19 @@ g_field_info_get_type (GIFieldInfo *info)
 
   if (blob->has_embedded_type)
     {
-      type_info = (GIRealInfo *) g_info_new (GI_INFO_TYPE_TYPE,
-                                                (GIBaseInfo*)info, rinfo->typelib,
-                                                rinfo->offset + header->field_blob_size);
+      type_info = (GIRealInfo *) gi_info_new (GI_INFO_TYPE_TYPE,
+                                              (GIBaseInfo*)info, rinfo->typelib,
+                                              rinfo->offset + header->field_blob_size);
       type_info->type_is_embedded = TRUE;
     }
   else
-    return _g_type_info_new ((GIBaseInfo*)info, rinfo->typelib, rinfo->offset + G_STRUCT_OFFSET (FieldBlob, type));
+    return gi_type_info_new ((GIBaseInfo*)info, rinfo->typelib, rinfo->offset + G_STRUCT_OFFSET (FieldBlob, type));
 
   return (GIBaseInfo*)type_info;
 }
 
 /**
- * g_field_info_get_field: (skip)
+ * gi_field_info_get_field: (skip)
  * @field_info: a #GIFieldInfo
  * @mem: pointer to a block of memory representing a C structure or union
  * @value: a #GIArgument into which to store the value retrieved
@@ -175,9 +175,9 @@ g_field_info_get_type (GIFieldInfo *info)
  * Returns: %TRUE if reading the field succeeded, otherwise %FALSE
  */
 gboolean
-g_field_info_get_field (GIFieldInfo *field_info,
-			gpointer     mem,
-			GIArgument   *value)
+gi_field_info_get_field (GIFieldInfo *field_info,
+                         gpointer     mem,
+                         GIArgument  *value)
 {
   int offset;
   GITypeInfo *type_info;
@@ -186,24 +186,24 @@ g_field_info_get_field (GIFieldInfo *field_info,
   g_return_val_if_fail (field_info != NULL, FALSE);
   g_return_val_if_fail (GI_IS_FIELD_INFO (field_info), FALSE);
 
-  if ((g_field_info_get_flags (field_info) & GI_FIELD_IS_READABLE) == 0)
+  if ((gi_field_info_get_flags (field_info) & GI_FIELD_IS_READABLE) == 0)
     return FALSE;
 
-  offset = g_field_info_get_offset (field_info);
-  type_info = g_field_info_get_type (field_info);
+  offset = gi_field_info_get_offset (field_info);
+  type_info = gi_field_info_get_type (field_info);
 
-  if (g_type_info_is_pointer (type_info))
+  if (gi_type_info_is_pointer (type_info))
     {
       value->v_pointer = G_STRUCT_MEMBER (gpointer, mem, offset);
       result = TRUE;
     }
   else
     {
-      switch (g_type_info_get_tag (type_info))
+      switch (gi_type_info_get_tag (type_info))
 	{
 	case GI_TYPE_TAG_VOID:
 	  g_warning("Field %s: should not be have void type",
-		    g_base_info_get_name ((GIBaseInfo *)field_info));
+		    gi_base_info_get_name ((GIBaseInfo *)field_info));
 	  break;
 	case GI_TYPE_TAG_BOOLEAN:
 	  value->v_boolean = G_STRUCT_MEMBER (gboolean, mem, offset) != FALSE;
@@ -254,16 +254,16 @@ g_field_info_get_field (GIFieldInfo *field_info,
 	case GI_TYPE_TAG_GSLIST:
 	case GI_TYPE_TAG_GHASH:
 	  g_warning("Field %s: type %s should have is_pointer set",
-		    g_base_info_get_name ((GIBaseInfo *)field_info),
-		    g_type_tag_to_string (g_type_info_get_tag (type_info)));
+		    gi_base_info_get_name ((GIBaseInfo *)field_info),
+		    gi_type_tag_to_string (gi_type_info_get_tag (type_info)));
 	  break;
 	case GI_TYPE_TAG_ERROR:
 	  /* Needs to be handled by the language binding directly */
 	  break;
 	case GI_TYPE_TAG_INTERFACE:
 	  {
-	    GIBaseInfo *interface = g_type_info_get_interface (type_info);
-	    switch (g_base_info_get_type (interface))
+	    GIBaseInfo *interface = gi_type_info_get_interface (type_info);
+	    switch (gi_base_info_get_type (interface))
 	      {
 	      case GI_INFO_TYPE_STRUCT:
 	      case GI_INFO_TYPE_UNION:
@@ -276,13 +276,13 @@ g_field_info_get_field (GIFieldInfo *field_info,
 	      case GI_INFO_TYPE_FLAGS:
 		{
 		  /* FIXME: there's a mismatch here between the value->v_int we use
-		   * here and the gint64 result returned from g_value_info_get_value().
-		   * But to switch this to gint64, we'd have to make g_function_info_invoke()
+		   * here and the gint64 result returned from gi_value_info_get_value().
+		   * But to switch this to gint64, we'd have to make gi_function_info_invoke()
 		   * translate value->v_int64 to the proper ABI for an enum function
 		   * call parameter, which will usually be int, and then fix up language
 		   * bindings.
 		   */
-		  GITypeTag storage_type = g_enum_info_get_storage_type ((GIEnumInfo *)interface);
+		  GITypeTag storage_type = gi_enum_info_get_storage_type ((GIEnumInfo *)interface);
 		  switch (storage_type)
 		    {
 		    case GI_TYPE_TAG_INT8:
@@ -307,8 +307,8 @@ g_field_info_get_field (GIFieldInfo *field_info,
 		      break;
 		    default:
 		      g_warning("Field %s: Unexpected enum storage type %s",
-				g_base_info_get_name ((GIBaseInfo *)field_info),
-				g_type_tag_to_string (storage_type));
+				gi_base_info_get_name ((GIBaseInfo *)field_info),
+				gi_type_tag_to_string (storage_type));
 		      break;
 		    }
 		  break;
@@ -316,8 +316,8 @@ g_field_info_get_field (GIFieldInfo *field_info,
 	      case GI_INFO_TYPE_VFUNC:
 	      case GI_INFO_TYPE_CALLBACK:
 		g_warning("Field %s: Interface type %d should have is_pointer set",
-			  g_base_info_get_name ((GIBaseInfo *)field_info),
-			  g_base_info_get_type (interface));
+			  gi_base_info_get_name ((GIBaseInfo *)field_info),
+			  gi_base_info_get_type (interface));
 		break;
 	      case GI_INFO_TYPE_INVALID:
 	      case GI_INFO_TYPE_INTERFACE:
@@ -332,14 +332,14 @@ g_field_info_get_field (GIFieldInfo *field_info,
 	      case GI_INFO_TYPE_TYPE:
 	      case GI_INFO_TYPE_UNRESOLVED:
 		g_warning("Field %s: Interface type %d not expected",
-			  g_base_info_get_name ((GIBaseInfo *)field_info),
-			  g_base_info_get_type (interface));
+			  gi_base_info_get_name ((GIBaseInfo *)field_info),
+			  gi_base_info_get_type (interface));
 		break;
 	      default:
 		break;
 	      }
 
-	    g_base_info_unref ((GIBaseInfo *)interface);
+	    gi_base_info_unref ((GIBaseInfo *)interface);
 	    break;
 	  }
 	  break;
@@ -348,13 +348,13 @@ g_field_info_get_field (GIFieldInfo *field_info,
 	}
     }
 
-  g_base_info_unref ((GIBaseInfo *)type_info);
+  gi_base_info_unref ((GIBaseInfo *)type_info);
 
   return result;
 }
 
 /**
- * g_field_info_set_field: (skip)
+ * gi_field_info_set_field: (skip)
  * @field_info: a #GIFieldInfo
  * @mem: pointer to a block of memory representing a C structure or union
  * @value: a #GIArgument holding the value to store
@@ -369,9 +369,9 @@ g_field_info_get_field (GIFieldInfo *field_info,
  * Returns: %TRUE if writing the field succeeded, otherwise %FALSE
  */
 gboolean
-g_field_info_set_field (GIFieldInfo     *field_info,
-			gpointer         mem,
-			const GIArgument *value)
+gi_field_info_set_field (GIFieldInfo      *field_info,
+                         gpointer          mem,
+                         const GIArgument *value)
 {
   int offset;
   GITypeInfo *type_info;
@@ -380,19 +380,19 @@ g_field_info_set_field (GIFieldInfo     *field_info,
   g_return_val_if_fail (field_info != NULL, FALSE);
   g_return_val_if_fail (GI_IS_FIELD_INFO (field_info), FALSE);
 
-  if ((g_field_info_get_flags (field_info) & GI_FIELD_IS_WRITABLE) == 0)
+  if ((gi_field_info_get_flags (field_info) & GI_FIELD_IS_WRITABLE) == 0)
     return FALSE;
 
-  offset = g_field_info_get_offset (field_info);
-  type_info = g_field_info_get_type (field_info);
+  offset = gi_field_info_get_offset (field_info);
+  type_info = gi_field_info_get_type (field_info);
 
-  if (!g_type_info_is_pointer (type_info))
+  if (!gi_type_info_is_pointer (type_info))
     {
-      switch (g_type_info_get_tag (type_info))
+      switch (gi_type_info_get_tag (type_info))
 	{
 	case GI_TYPE_TAG_VOID:
 	  g_warning("Field %s: should not be have void type",
-		    g_base_info_get_name ((GIBaseInfo *)field_info));
+		    gi_base_info_get_name ((GIBaseInfo *)field_info));
 	  break;
 	case GI_TYPE_TAG_BOOLEAN:
 	  G_STRUCT_MEMBER (gboolean, mem, offset) = value->v_boolean != FALSE;
@@ -438,16 +438,16 @@ g_field_info_set_field (GIFieldInfo     *field_info,
 	case GI_TYPE_TAG_GSLIST:
 	case GI_TYPE_TAG_GHASH:
 	  g_warning("Field %s: type %s should have is_pointer set",
-		    g_base_info_get_name ((GIBaseInfo *)field_info),
-		    g_type_tag_to_string (g_type_info_get_tag (type_info)));
+		    gi_base_info_get_name ((GIBaseInfo *)field_info),
+		    gi_type_tag_to_string (gi_type_info_get_tag (type_info)));
 	  break;
 	case GI_TYPE_TAG_ERROR:
 	  /* Needs to be handled by the language binding directly */
 	  break;
 	case GI_TYPE_TAG_INTERFACE:
 	  {
-	    GIBaseInfo *interface = g_type_info_get_interface (type_info);
-	    switch (g_base_info_get_type (interface))
+	    GIBaseInfo *interface = gi_type_info_get_interface (type_info);
+	    switch (gi_base_info_get_type (interface))
 	      {
 	      case GI_INFO_TYPE_STRUCT:
 	      case GI_INFO_TYPE_UNION:
@@ -461,7 +461,7 @@ g_field_info_set_field (GIFieldInfo     *field_info,
 		{
 		  /* See FIXME above
 		   */
-		  GITypeTag storage_type = g_enum_info_get_storage_type ((GIEnumInfo *)interface);
+		  GITypeTag storage_type = gi_enum_info_get_storage_type ((GIEnumInfo *)interface);
 		  switch (storage_type)
 		    {
 		    case GI_TYPE_TAG_INT8:
@@ -486,8 +486,8 @@ g_field_info_set_field (GIFieldInfo     *field_info,
 		      break;
 		    default:
 		      g_warning("Field %s: Unexpected enum storage type %s",
-				g_base_info_get_name ((GIBaseInfo *)field_info),
-				g_type_tag_to_string (storage_type));
+				gi_base_info_get_name ((GIBaseInfo *)field_info),
+				gi_type_tag_to_string (storage_type));
 		      break;
 		    }
 		  break;
@@ -496,8 +496,8 @@ g_field_info_set_field (GIFieldInfo     *field_info,
 	      case GI_INFO_TYPE_VFUNC:
 	      case GI_INFO_TYPE_CALLBACK:
 		g_warning("Field%s: Interface type %d should have is_pointer set",
-			  g_base_info_get_name ((GIBaseInfo *)field_info),
-			  g_base_info_get_type (interface));
+			  gi_base_info_get_name ((GIBaseInfo *)field_info),
+			  gi_base_info_get_type (interface));
 		break;
 	      case GI_INFO_TYPE_INVALID:
 	      case GI_INFO_TYPE_INTERFACE:
@@ -512,14 +512,14 @@ g_field_info_set_field (GIFieldInfo     *field_info,
 	      case GI_INFO_TYPE_TYPE:
 	      case GI_INFO_TYPE_UNRESOLVED:
 		g_warning("Field %s: Interface type %d not expected",
-			  g_base_info_get_name ((GIBaseInfo *)field_info),
-			  g_base_info_get_type (interface));
+			  gi_base_info_get_name ((GIBaseInfo *)field_info),
+			  gi_base_info_get_type (interface));
 		break;
 	      default:
 		break;
 	      }
 
-	    g_base_info_unref ((GIBaseInfo *)interface);
+	    gi_base_info_unref ((GIBaseInfo *)interface);
 	    break;
 	  }
 	  break;
@@ -527,12 +527,12 @@ g_field_info_set_field (GIFieldInfo     *field_info,
 	  break;
 	}
     } else {
-      switch (g_type_info_get_tag (type_info))
+      switch (gi_type_info_get_tag (type_info))
         {
         case GI_TYPE_TAG_INTERFACE:
           {
-	    GIBaseInfo *interface = g_type_info_get_interface (type_info);
-	    switch (g_base_info_get_type (interface))
+	    GIBaseInfo *interface = gi_type_info_get_interface (type_info);
+	    switch (gi_base_info_get_type (interface))
               {
                 case GI_INFO_TYPE_OBJECT:
                 case GI_INFO_TYPE_INTERFACE:
@@ -542,7 +542,7 @@ g_field_info_set_field (GIFieldInfo     *field_info,
 	        default:
 		  break;
               }
-              g_base_info_unref ((GIBaseInfo *)interface);
+              gi_base_info_unref ((GIBaseInfo *)interface);
           }
           break;
 	default:
@@ -550,7 +550,7 @@ g_field_info_set_field (GIFieldInfo     *field_info,
         }
     }
 
-  g_base_info_unref ((GIBaseInfo *)type_info);
+  gi_base_info_unref ((GIBaseInfo *)type_info);
 
   return result;
 }

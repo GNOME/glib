@@ -27,9 +27,9 @@
 
 G_BEGIN_DECLS
 
-void g_ir_writer_write (const char *filename,
-                        const char *ns,
-                        gboolean    needs_prefix,
-                        gboolean    show_all);
+void gi_ir_writer_write (const char *filename,
+                         const char *ns,
+                         gboolean    needs_prefix,
+                         gboolean    show_all);
 
 G_END_DECLS

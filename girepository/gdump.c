@@ -269,10 +269,8 @@ dump_signals (GType type, GOutputStream *out)
         escaped_printf (out, " when=\"last\"");
       else if (query.signal_flags & G_SIGNAL_RUN_CLEANUP)
         escaped_printf (out, " when=\"cleanup\"");
-#if GLIB_CHECK_VERSION(2, 29, 15)
       else if (query.signal_flags & G_SIGNAL_MUST_COLLECT)
         escaped_printf (out, " when=\"must-collect\"");
-#endif
       if (query.signal_flags & G_SIGNAL_NO_RECURSE)
         escaped_printf (out, " no-recurse=\"1\"");
 
@@ -332,10 +330,8 @@ dump_object_type (GType type, const char *symbol, GOutputStream *out)
   if (G_TYPE_IS_ABSTRACT (type))
     escaped_printf (out, " abstract=\"1\"");
 
-#if GLIB_CHECK_VERSION (2, 70, 0)
   if (G_TYPE_IS_FINAL (type))
     escaped_printf (out, " final=\"1\"");
-#endif
 
   goutput_write (out, ">\n");
 
@@ -450,10 +446,8 @@ dump_fundamental_type (GType type, const char *symbol, GOutputStream *out)
   if (G_TYPE_IS_ABSTRACT (type))
     escaped_printf (out, " abstract=\"1\"");
 
-#if GLIB_CHECK_VERSION (2, 70, 0)
   if (G_TYPE_IS_FINAL (type))
     escaped_printf (out, " final=\"1\"");
-#endif
 
   if (G_TYPE_IS_INSTANTIATABLE (type))
     escaped_printf (out, " instantiatable=\"1\"");
@@ -526,7 +520,7 @@ dump_error_quark (GQuark quark, const char *symbol, GOutputStream *out)
 }
 
 /**
- * g_irepository_dump:
+ * gi_repository_dump:
  * @arg: Comma-separated pair of input and output filenames
  * @error: a %GError
  *
@@ -549,7 +543,7 @@ static gboolean
 dump_irepository (const char *arg, GError **error)
 #else
 gboolean
-g_irepository_dump (const char *arg, GError **error)
+gi_repository_dump (const char *arg, GError **error)
 #endif
 {
   GHashTable *output_types;

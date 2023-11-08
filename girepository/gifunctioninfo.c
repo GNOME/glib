@@ -41,17 +41,17 @@
  * GIFunctionInfo represents a function, method or constructor.
  *
  * To find out what kind of entity a #GIFunctionInfo represents, call
- * g_function_info_get_flags().
+ * gi_function_info_get_flags().
  *
  * See also #GICallableInfo for information on how to retreive arguments and
  * other metadata.
  */
 
 GIFunctionInfo *
-_g_base_info_find_method (GIBaseInfo   *base,
-			  guint32       offset,
-			  gint          n_methods,
-			  const gchar  *name)
+gi_base_info_find_method (GIBaseInfo  *base,
+                          guint32      offset,
+                          gint         n_methods,
+                          const gchar *name)
 {
   /* FIXME hash */
   GIRealInfo *rinfo = (GIRealInfo*)base;
@@ -64,8 +64,8 @@ _g_base_info_find_method (GIBaseInfo   *base,
       const gchar *fname = (const gchar *)&rinfo->typelib->data[fblob->name];
 
       if (strcmp (name, fname) == 0)
-        return (GIFunctionInfo *) g_info_new (GI_INFO_TYPE_FUNCTION, base,
-			                      rinfo->typelib, offset);
+        return (GIFunctionInfo *) gi_info_new (GI_INFO_TYPE_FUNCTION, base,
+                                               rinfo->typelib, offset);
 
       offset += header->function_blob_size;
     }
@@ -74,7 +74,7 @@ _g_base_info_find_method (GIBaseInfo   *base,
 }
 
 /**
- * g_function_info_get_symbol:
+ * gi_function_info_get_symbol:
  * @info: a #GIFunctionInfo
  *
  * Obtain the symbol of the function. The symbol is the name of the
@@ -84,7 +84,7 @@ _g_base_info_find_method (GIBaseInfo   *base,
  * Returns: the symbol
  */
 const gchar *
-g_function_info_get_symbol (GIFunctionInfo *info)
+gi_function_info_get_symbol (GIFunctionInfo *info)
 {
   GIRealInfo *rinfo;
   FunctionBlob *blob;
@@ -95,11 +95,11 @@ g_function_info_get_symbol (GIFunctionInfo *info)
   rinfo = (GIRealInfo *)info;
   blob = (FunctionBlob *)&rinfo->typelib->data[rinfo->offset];
 
-  return g_typelib_get_string (rinfo->typelib, blob->symbol);
+  return gi_typelib_get_string (rinfo->typelib, blob->symbol);
 }
 
 /**
- * g_function_info_get_flags:
+ * gi_function_info_get_flags:
  * @info: a #GIFunctionInfo
  *
  * Obtain the #GIFunctionInfoFlags for the @info.
@@ -107,7 +107,7 @@ g_function_info_get_symbol (GIFunctionInfo *info)
  * Returns: the flags
  */
 GIFunctionInfoFlags
-g_function_info_get_flags (GIFunctionInfo *info)
+gi_function_info_get_flags (GIFunctionInfo *info)
 {
   GIFunctionInfoFlags flags;
   GIRealInfo *rinfo;
@@ -144,7 +144,7 @@ g_function_info_get_flags (GIFunctionInfo *info)
 }
 
 /**
- * g_function_info_get_property:
+ * gi_function_info_get_property:
  * @info: a #GIFunctionInfo
  *
  * Obtain the property associated with this #GIFunctionInfo.
@@ -153,10 +153,10 @@ g_function_info_get_flags (GIFunctionInfo *info)
  * %NULL will be returned.
  *
  * Returns: (transfer full): the property or %NULL if not set. Free it with
- * g_base_info_unref() when done.
+ *   gi_base_info_unref() when done.
  */
 GIPropertyInfo *
-g_function_info_get_property (GIFunctionInfo *info)
+gi_function_info_get_property (GIFunctionInfo *info)
 {
   GIRealInfo *rinfo, *container_rinfo;
   FunctionBlob *blob;
@@ -172,20 +172,20 @@ g_function_info_get_property (GIFunctionInfo *info)
     {
       GIInterfaceInfo *container = (GIInterfaceInfo *)rinfo->container;
 
-      return g_interface_info_get_property (container, blob->index);
+      return gi_interface_info_get_property (container, blob->index);
     }
   else if (container_rinfo->type == GI_INFO_TYPE_OBJECT)
     {
       GIObjectInfo *container = (GIObjectInfo *)rinfo->container;
 
-      return g_object_info_get_property (container, blob->index);
+      return gi_object_info_get_property (container, blob->index);
     }
   else
     return NULL;
 }
 
 /**
- * g_function_info_get_vfunc:
+ * gi_function_info_get_vfunc:
  * @info: a #GIFunctionInfo
  *
  * Obtain the virtual function associated with this #GIFunctionInfo.
@@ -193,10 +193,10 @@ g_function_info_get_property (GIFunctionInfo *info)
  * a virtual function set. For other cases, %NULL will be returned.
  *
  * Returns: (transfer full): the virtual function or %NULL if not set.
- * Free it by calling g_base_info_unref() when done.
+ *   Free it by calling gi_base_info_unref() when done.
  */
 GIVFuncInfo *
-g_function_info_get_vfunc (GIFunctionInfo *info)
+gi_function_info_get_vfunc (GIFunctionInfo *info)
 {
   GIRealInfo *rinfo;
   FunctionBlob *blob;
@@ -209,27 +209,27 @@ g_function_info_get_vfunc (GIFunctionInfo *info)
   blob = (FunctionBlob *)&rinfo->typelib->data[rinfo->offset];
   container = (GIInterfaceInfo *)rinfo->container;
 
-  return g_interface_info_get_vfunc (container, blob->index);
+  return gi_interface_info_get_vfunc (container, blob->index);
 }
 
 /**
- * g_invoke_error_quark:
+ * gi_invoke_error_quark:
  *
  * TODO
  *
  * Returns: TODO
  */
 GQuark
-g_invoke_error_quark (void)
+gi_invoke_error_quark (void)
 {
   static GQuark quark = 0;
   if (quark == 0)
-    quark = g_quark_from_static_string ("g-invoke-error-quark");
+    quark = g_quark_from_static_string ("gi-invoke-error-quark");
   return quark;
 }
 
 /**
- * g_function_info_invoke: (skip)
+ * gi_function_info_invoke: (skip)
  * @info: a #GIFunctionInfo describing the function to invoke
  * @in_args: (array length=n_in_args): an array of #GIArgument<!-- -->s, one for each in
  *    parameter of @info. If there are no in parameter, @in_args
@@ -254,44 +254,44 @@ g_invoke_error_quark (void)
  *   error occurred.
  */
 gboolean
-g_function_info_invoke (GIFunctionInfo *info,
-			const GIArgument  *in_args,
-			int               n_in_args,
-			const GIArgument  *out_args,
-			int               n_out_args,
-			GIArgument        *return_value,
-			GError          **error)
+gi_function_info_invoke (GIFunctionInfo    *info,
+                         const GIArgument  *in_args,
+                         int                n_in_args,
+                         const GIArgument  *out_args,
+                         int                n_out_args,
+                         GIArgument        *return_value,
+                         GError           **error)
 {
   const gchar *symbol;
   gpointer func;
   gboolean is_method;
   gboolean throws;
 
-  symbol = g_function_info_get_symbol (info);
+  symbol = gi_function_info_get_symbol (info);
 
-  if (!g_typelib_symbol (g_base_info_get_typelib((GIBaseInfo *) info),
-                         symbol, &func))
+  if (!gi_typelib_symbol (gi_base_info_get_typelib ((GIBaseInfo *) info),
+                          symbol, &func))
     {
       g_set_error (error,
-                   G_INVOKE_ERROR,
-                   G_INVOKE_ERROR_SYMBOL_NOT_FOUND,
+                   GI_INVOKE_ERROR,
+                   GI_INVOKE_ERROR_SYMBOL_NOT_FOUND,
                    "Could not locate %s: %s", symbol, g_module_error ());
 
       return FALSE;
     }
 
-  is_method = (g_function_info_get_flags (info) & GI_FUNCTION_IS_METHOD) != 0
-    && (g_function_info_get_flags (info) & GI_FUNCTION_IS_CONSTRUCTOR) == 0;
-  throws = g_function_info_get_flags (info) & GI_FUNCTION_THROWS;
+  is_method = (gi_function_info_get_flags (info) & GI_FUNCTION_IS_METHOD) != 0
+    && (gi_function_info_get_flags (info) & GI_FUNCTION_IS_CONSTRUCTOR) == 0;
+  throws = gi_function_info_get_flags (info) & GI_FUNCTION_THROWS;
 
-  return g_callable_info_invoke ((GICallableInfo*) info,
-                                 func,
-                                 in_args,
-                                 n_in_args,
-                                 out_args,
-                                 n_out_args,
-                                 return_value,
-                                 is_method,
-                                 throws,
-                                 error);
+  return gi_callable_info_invoke ((GICallableInfo*) info,
+                                  func,
+                                  in_args,
+                                  n_in_args,
+                                  out_args,
+                                  n_out_args,
+                                  return_value,
+                                  is_method,
+                                  throws,
+                                  error);
 }

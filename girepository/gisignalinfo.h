@@ -40,16 +40,16 @@ G_BEGIN_DECLS
  * Checks if @info is a #GISignalInfo.
  */
 #define GI_IS_SIGNAL_INFO(info) \
-    (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_SIGNAL)
+    (gi_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_SIGNAL)
 
 
 GI_AVAILABLE_IN_ALL
-GSignalFlags  g_signal_info_get_flags         (GISignalInfo *info);
+GSignalFlags  gi_signal_info_get_flags         (GISignalInfo *info);
 
 GI_AVAILABLE_IN_ALL
-GIVFuncInfo * g_signal_info_get_class_closure (GISignalInfo *info);
+GIVFuncInfo * gi_signal_info_get_class_closure (GISignalInfo *info);
 
 GI_AVAILABLE_IN_ALL
-gboolean      g_signal_info_true_stops_emit   (GISignalInfo *info);
+gboolean      gi_signal_info_true_stops_emit   (GISignalInfo *info);
 
 G_END_DECLS

@@ -39,33 +39,33 @@ G_BEGIN_DECLS
  * Checks if @info is a #GIVfuncInfo.
  */
 #define GI_IS_VFUNC_INFO(info) \
-    (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_VFUNC)
+    (gi_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_VFUNC)
 
 GI_AVAILABLE_IN_ALL
-GIVFuncInfoFlags  g_vfunc_info_get_flags   (GIVFuncInfo *info);
+GIVFuncInfoFlags  gi_vfunc_info_get_flags   (GIVFuncInfo *info);
 
 GI_AVAILABLE_IN_ALL
-gint              g_vfunc_info_get_offset  (GIVFuncInfo *info);
+gint              gi_vfunc_info_get_offset  (GIVFuncInfo *info);
 
 GI_AVAILABLE_IN_ALL
-GISignalInfo *    g_vfunc_info_get_signal  (GIVFuncInfo *info);
+GISignalInfo *    gi_vfunc_info_get_signal  (GIVFuncInfo *info);
 
 GI_AVAILABLE_IN_ALL
-GIFunctionInfo *  g_vfunc_info_get_invoker (GIVFuncInfo *info);
+GIFunctionInfo *  gi_vfunc_info_get_invoker (GIVFuncInfo *info);
 
 GI_AVAILABLE_IN_ALL
-gpointer          g_vfunc_info_get_address (GIVFuncInfo *info,
-                                            GType        implementor_gtype,
-                                            GError     **error);
+gpointer          gi_vfunc_info_get_address (GIVFuncInfo *info,
+                                             GType        implementor_gtype,
+                                             GError     **error);
 
 GI_AVAILABLE_IN_ALL
-gboolean          g_vfunc_info_invoke      (GIVFuncInfo      *info,
-                                            GType             implementor,
-                                            const GIArgument *in_args,
-                                            int               n_in_args,
-                                            const GIArgument *out_args,
-                                            int               n_out_args,
-                                            GIArgument       *return_value,
-                                            GError          **error);
+gboolean          gi_vfunc_info_invoke      (GIVFuncInfo      *info,
+                                             GType             implementor,
+                                             const GIArgument *in_args,
+                                             int               n_in_args,
+                                             const GIArgument *out_args,
+                                             int               n_out_args,
+                                             GIArgument       *return_value,
+                                             GError          **error);
 
 G_END_DECLS

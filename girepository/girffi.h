@@ -73,7 +73,7 @@ GI_AVAILABLE_IN_ALL
 ffi_type *    gi_type_tag_get_ffi_type            (GITypeTag type_tag, gboolean is_pointer);
 
 GI_AVAILABLE_IN_ALL
-ffi_type *    g_type_info_get_ffi_type            (GITypeInfo           *info);
+ffi_type *    gi_type_info_get_ffi_type           (GITypeInfo           *info);
 
 GI_AVAILABLE_IN_ALL
 void          gi_type_info_extract_ffi_return_value (GITypeInfo                  *return_info,
@@ -87,32 +87,32 @@ void          gi_type_tag_extract_ffi_return_value (GITypeTag         return_tag
                                                     GIArgument       *arg);
 
 GI_AVAILABLE_IN_ALL
-gboolean      g_function_info_prep_invoker        (GIFunctionInfo       *info,
-                                                   GIFunctionInvoker    *invoker,
-                                                   GError              **error);
+gboolean      gi_function_info_prep_invoker        (GIFunctionInfo       *info,
+                                                    GIFunctionInvoker    *invoker,
+                                                    GError              **error);
 
 GI_AVAILABLE_IN_ALL
-gboolean      g_function_invoker_new_for_address  (gpointer              addr,
-                                                   GICallableInfo       *info,
-                                                   GIFunctionInvoker    *invoker,
-                                                   GError              **error);
+gboolean      gi_function_invoker_new_for_address  (gpointer              addr,
+                                                    GICallableInfo       *info,
+                                                    GIFunctionInvoker    *invoker,
+                                                    GError              **error);
 
 GI_AVAILABLE_IN_ALL
-void          g_function_invoker_destroy          (GIFunctionInvoker    *invoker);
+void          gi_function_invoker_destroy          (GIFunctionInvoker    *invoker);
 
 
 GI_AVAILABLE_IN_ALL
-ffi_closure * g_callable_info_create_closure (GICallableInfo       *callable_info,
-                                              ffi_cif              *cif,
-                                              GIFFIClosureCallback  callback,
-                                              gpointer              user_data);
+ffi_closure * gi_callable_info_create_closure (GICallableInfo       *callable_info,
+                                               ffi_cif              *cif,
+                                               GIFFIClosureCallback  callback,
+                                               gpointer              user_data);
 
 GI_AVAILABLE_IN_ALL
-gpointer * g_callable_info_get_closure_native_address (GICallableInfo       *callable_info,
-                                                       ffi_closure          *closure);
+gpointer * gi_callable_info_get_closure_native_address (GICallableInfo       *callable_info,
+                                                        ffi_closure          *closure);
 
 GI_AVAILABLE_IN_ALL
-void          g_callable_info_destroy_closure (GICallableInfo       *callable_info,
-                                               ffi_closure          *closure);
+void          gi_callable_info_destroy_closure (GICallableInfo       *callable_info,
+                                                ffi_closure          *closure);
 
 G_END_DECLS

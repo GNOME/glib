@@ -46,7 +46,7 @@
  */
 
 /**
- * g_signal_info_get_flags:
+ * gi_signal_info_get_flags:
  * @info: a #GISignalInfo
  *
  * Obtain the flags for this signal info. See #GSignalFlags for
@@ -55,7 +55,7 @@
  * Returns: the flags
  */
 GSignalFlags
-g_signal_info_get_flags (GISignalInfo *info)
+gi_signal_info_get_flags (GISignalInfo *info)
 {
   GSignalFlags flags;
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -92,7 +92,7 @@ g_signal_info_get_flags (GISignalInfo *info)
 }
 
 /**
- * g_signal_info_get_class_closure:
+ * gi_signal_info_get_class_closure:
  * @info: a #GISignalInfo
  *
  * Obtain the class closure for this signal if one is set. The class
@@ -102,7 +102,7 @@ g_signal_info_get_flags (GISignalInfo *info)
  * Returns: (transfer full): the class closure or %NULL
  */
 GIVFuncInfo *
-g_signal_info_get_class_closure (GISignalInfo *info)
+gi_signal_info_get_class_closure (GISignalInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   SignalBlob *blob;
@@ -113,13 +113,13 @@ g_signal_info_get_class_closure (GISignalInfo *info)
   blob = (SignalBlob *)&rinfo->typelib->data[rinfo->offset];
 
   if (blob->has_class_closure)
-    return g_interface_info_get_vfunc ((GIInterfaceInfo *)rinfo->container, blob->class_closure);
+    return gi_interface_info_get_vfunc ((GIInterfaceInfo *)rinfo->container, blob->class_closure);
 
   return NULL;
 }
 
 /**
- * g_signal_info_true_stops_emit:
+ * gi_signal_info_true_stops_emit:
  * @info: a #GISignalInfo
  *
  * Obtain if the returning true in the signal handler will
@@ -128,7 +128,7 @@ g_signal_info_get_class_closure (GISignalInfo *info)
  * Returns: %TRUE if returning true stops the signal emission
  */
 gboolean
-g_signal_info_true_stops_emit (GISignalInfo *info)
+gi_signal_info_true_stops_emit (GISignalInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   SignalBlob *blob;

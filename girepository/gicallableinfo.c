@@ -82,7 +82,7 @@ signature_offset (GICallableInfo *info)
 }
 
 /**
- * g_callable_info_can_throw_gerror:
+ * gi_callable_info_can_throw_gerror:
  * @info: a #GICallableInfo
  *
  * TODO
@@ -91,7 +91,7 @@ signature_offset (GICallableInfo *info)
  * Returns: %TRUE if this #GICallableInfo can throw a #GError
  */
 gboolean
-g_callable_info_can_throw_gerror (GICallableInfo *info)
+gi_callable_info_can_throw_gerror (GICallableInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo*)info;
   SignatureBlob *signature;
@@ -127,7 +127,7 @@ g_callable_info_can_throw_gerror (GICallableInfo *info)
 }
 
 /**
- * g_callable_info_is_method:
+ * gi_callable_info_is_method:
  * @info: a #GICallableInfo
  *
  * Determines if the callable info is a method. For #GIVFuncInfo<!-- -->s,
@@ -135,7 +135,7 @@ g_callable_info_can_throw_gerror (GICallableInfo *info)
  * this is always true. Otherwise, this looks at the %GI_FUNCTION_IS_METHOD
  * flag on the #GIFunctionInfo.
  *
- * Concretely, this function returns whether g_callable_info_get_n_args()
+ * Concretely, this function returns whether gi_callable_info_get_n_args()
  * matches the number of arguments in the raw C method. For methods, there
  * is one more C argument than is exposed by introspection: the "self"
  * or "this" object.
@@ -144,7 +144,7 @@ g_callable_info_can_throw_gerror (GICallableInfo *info)
  * Since: 1.34
  */
 gboolean
-g_callable_info_is_method (GICallableInfo *info)
+gi_callable_info_is_method (GICallableInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo*)info;
   switch (rinfo->type) {
@@ -165,16 +165,16 @@ g_callable_info_is_method (GICallableInfo *info)
 }
 
 /**
- * g_callable_info_get_return_type:
+ * gi_callable_info_get_return_type:
  * @info: a #GICallableInfo
  *
  * Obtain the return type of a callable item as a #GITypeInfo.
  *
  * Returns: (transfer full): the #GITypeInfo. Free the struct by calling
- * g_base_info_unref() when done.
+ *   gi_base_info_unref() when done.
  */
 GITypeInfo *
-g_callable_info_get_return_type (GICallableInfo *info)
+gi_callable_info_get_return_type (GICallableInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   guint32 offset;
@@ -184,24 +184,24 @@ g_callable_info_get_return_type (GICallableInfo *info)
 
   offset = signature_offset (info);
 
-  return _g_type_info_new ((GIBaseInfo*)info, rinfo->typelib, offset);
+  return gi_type_info_new ((GIBaseInfo*)info, rinfo->typelib, offset);
 }
 
 
 /**
- * g_callable_info_load_return_type:
+ * gi_callable_info_load_return_type:
  * @info: a #GICallableInfo
  * @type: (out caller-allocates): Initialized with return type of @info
  *
  * Obtain information about a return value of callable; this
- * function is a variant of g_callable_info_get_return_type() designed for stack
+ * function is a variant of gi_callable_info_get_return_type() designed for stack
  * allocation.
  *
  * The initialized @type must not be referenced after @info is deallocated.
  */
 void
-g_callable_info_load_return_type (GICallableInfo *info,
-                                  GITypeInfo     *type)
+gi_callable_info_load_return_type (GICallableInfo *info,
+                                   GITypeInfo     *type)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   guint32 offset;
@@ -211,11 +211,11 @@ g_callable_info_load_return_type (GICallableInfo *info,
 
   offset = signature_offset (info);
 
-  _g_type_info_init (type, (GIBaseInfo*)info, rinfo->typelib, offset);
+  gi_type_info_init (type, (GIBaseInfo*)info, rinfo->typelib, offset);
 }
 
 /**
- * g_callable_info_may_return_null:
+ * gi_callable_info_may_return_null:
  * @info: a #GICallableInfo
  *
  * See if a callable could return %NULL.
@@ -223,7 +223,7 @@ g_callable_info_load_return_type (GICallableInfo *info,
  * Returns: %TRUE if callable could return %NULL
  */
 gboolean
-g_callable_info_may_return_null (GICallableInfo *info)
+gi_callable_info_may_return_null (GICallableInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   SignatureBlob *blob;
@@ -237,7 +237,7 @@ g_callable_info_may_return_null (GICallableInfo *info)
 }
 
 /**
- * g_callable_info_skip_return:
+ * gi_callable_info_skip_return:
  * @info: a #GICallableInfo
  *
  * See if a callable's return value is only useful in C.
@@ -245,7 +245,7 @@ g_callable_info_may_return_null (GICallableInfo *info)
  * Returns: %TRUE if return value is only useful in C.
  */
 gboolean
-g_callable_info_skip_return (GICallableInfo *info)
+gi_callable_info_skip_return (GICallableInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   SignatureBlob *blob;
@@ -259,7 +259,7 @@ g_callable_info_skip_return (GICallableInfo *info)
 }
 
 /**
- * g_callable_info_get_caller_owns:
+ * gi_callable_info_get_caller_owns:
  * @info: a #GICallableInfo
  *
  * See whether the caller owns the return value of this callable.
@@ -268,7 +268,7 @@ g_callable_info_skip_return (GICallableInfo *info)
  * Returns: the transfer mode for the return value of the callable
  */
 GITransfer
-g_callable_info_get_caller_owns (GICallableInfo *info)
+gi_callable_info_get_caller_owns (GICallableInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo*) info;
   SignatureBlob *blob;
@@ -287,7 +287,7 @@ g_callable_info_get_caller_owns (GICallableInfo *info)
 }
 
 /**
- * g_callable_info_get_instance_ownership_transfer:
+ * gi_callable_info_get_instance_ownership_transfer:
  * @info: a #GICallableInfo
  *
  * Obtains the ownership transfer for the instance argument.
@@ -297,7 +297,7 @@ g_callable_info_get_caller_owns (GICallableInfo *info)
  * Returns: the transfer mode of the instance argument
  */
 GITransfer
-g_callable_info_get_instance_ownership_transfer (GICallableInfo *info)
+gi_callable_info_get_instance_ownership_transfer (GICallableInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo*) info;
   SignatureBlob *blob;
@@ -314,7 +314,7 @@ g_callable_info_get_instance_ownership_transfer (GICallableInfo *info)
 }
 
 /**
- * g_callable_info_get_n_args:
+ * gi_callable_info_get_n_args:
  * @info: a #GICallableInfo
  *
  * Obtain the number of arguments (both IN and OUT) for this callable.
@@ -322,7 +322,7 @@ g_callable_info_get_instance_ownership_transfer (GICallableInfo *info)
  * Returns: The number of arguments this callable expects.
  */
 gint
-g_callable_info_get_n_args (GICallableInfo *info)
+gi_callable_info_get_n_args (GICallableInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   gint offset;
@@ -338,18 +338,18 @@ g_callable_info_get_n_args (GICallableInfo *info)
 }
 
 /**
- * g_callable_info_get_arg:
+ * gi_callable_info_get_arg:
  * @info: a #GICallableInfo
  * @n: the argument index to fetch
  *
  * Obtain information about a particular argument of this callable.
  *
  * Returns: (transfer full): the #GIArgInfo. Free it with
- * g_base_info_unref() when done.
+ *   gi_base_info_unref() when done.
  */
 GIArgInfo *
-g_callable_info_get_arg (GICallableInfo *info,
-			 gint            n)
+gi_callable_info_get_arg (GICallableInfo *info,
+                          gint            n)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header;
@@ -361,26 +361,26 @@ g_callable_info_get_arg (GICallableInfo *info,
   offset = signature_offset (info);
   header = (Header *)rinfo->typelib->data;
 
-  return (GIArgInfo *) g_info_new (GI_INFO_TYPE_ARG, (GIBaseInfo*)info, rinfo->typelib,
-				   offset + header->signature_blob_size + n * header->arg_blob_size);
+  return (GIArgInfo *) gi_info_new (GI_INFO_TYPE_ARG, (GIBaseInfo*)info, rinfo->typelib,
+                                    offset + header->signature_blob_size + n * header->arg_blob_size);
 }
 
 /**
- * g_callable_info_load_arg:
+ * gi_callable_info_load_arg:
  * @info: a #GICallableInfo
  * @n: the argument index to fetch
  * @arg: (out caller-allocates): Initialize with argument number @n
  *
  * Obtain information about a particular argument of this callable; this
- * function is a variant of g_callable_info_get_arg() designed for stack
+ * function is a variant of gi_callable_info_get_arg() designed for stack
  * allocation.
  *
  * The initialized @arg must not be referenced after @info is deallocated.
  */
 void
-g_callable_info_load_arg (GICallableInfo *info,
-                          gint            n,
-                          GIArgInfo      *arg)
+gi_callable_info_load_arg (GICallableInfo *info,
+                           gint            n,
+                           GIArgInfo      *arg)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header;
@@ -392,12 +392,12 @@ g_callable_info_load_arg (GICallableInfo *info,
   offset = signature_offset (info);
   header = (Header *)rinfo->typelib->data;
 
-  _g_info_init ((GIRealInfo*)arg, GI_INFO_TYPE_ARG, rinfo->repository, (GIBaseInfo*)info, rinfo->typelib,
+  gi_info_init ((GIRealInfo*)arg, GI_INFO_TYPE_ARG, rinfo->repository, (GIBaseInfo*)info, rinfo->typelib,
                 offset + header->signature_blob_size + n * header->arg_blob_size);
 }
 
 /**
- * g_callable_info_get_return_attribute:
+ * gi_callable_info_get_return_attribute:
  * @info: a #GICallableInfo
  * @name: a freeform string naming an attribute
  *
@@ -406,12 +406,12 @@ g_callable_info_load_arg (GICallableInfo *info,
  * Returns: The value of the attribute, or %NULL if no such attribute exists
  */
 const gchar *
-g_callable_info_get_return_attribute (GICallableInfo  *info,
-                                      const gchar     *name)
+gi_callable_info_get_return_attribute (GICallableInfo *info,
+                                       const gchar    *name)
 {
   GIAttributeIter iter = { 0, };
   gchar *curname, *curvalue;
-  while (g_callable_info_iterate_return_attributes (info, &iter, &curname, &curvalue))
+  while (gi_callable_info_iterate_return_attributes (info, &iter, &curname, &curvalue))
     {
       if (g_strcmp0 (name, curname) == 0)
         return (const gchar*) curvalue;
@@ -421,7 +421,7 @@ g_callable_info_get_return_attribute (GICallableInfo  *info,
 }
 
 /**
- * g_callable_info_iterate_return_attributes:
+ * gi_callable_info_iterate_return_attributes:
  * @info: a #GICallableInfo
  * @iterator: (inout): a #GIAttributeIter structure, must be initialized; see below
  * @name: (out) (transfer none): Returned name, must not be freed
@@ -434,16 +434,16 @@ g_callable_info_get_return_attribute (GICallableInfo  *info,
  * Both the @name and @value should be treated as constants
  * and must not be freed.
  *
- * See g_base_info_iterate_attributes() for an example of how to use a
+ * See gi_base_info_iterate_attributes() for an example of how to use a
  * similar API.
  *
  * Returns: %TRUE if there are more attributes
  */
 gboolean
-g_callable_info_iterate_return_attributes (GICallableInfo  *info,
-                                           GIAttributeIter *iterator,
-                                           char           **name,
-                                           char          **value)
+gi_callable_info_iterate_return_attributes (GICallableInfo   *info,
+                                            GIAttributeIter  *iterator,
+                                            char            **name,
+                                            char            **value)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header = (Header *)rinfo->typelib->data;
@@ -463,8 +463,8 @@ g_callable_info_iterate_return_attributes (GICallableInfo  *info,
   if (next == NULL || next->offset != blob_offset || next >= after)
     return FALSE;
 
-  *name = (gchar*) g_typelib_get_string (rinfo->typelib, next->name);
-  *value = (gchar*) g_typelib_get_string (rinfo->typelib, next->value);
+  *name = (gchar*) gi_typelib_get_string (rinfo->typelib, next->name);
+  *value = (gchar*) gi_typelib_get_string (rinfo->typelib, next->value);
   iterator->data = next + 1;
 
   return TRUE;
@@ -567,14 +567,14 @@ gi_type_info_extract_ffi_return_value (GITypeInfo                  *return_info,
                                        GIFFIReturnValue            *ffi_value,
                                        GIArgument                  *arg)
 {
-  GITypeTag return_tag = g_type_info_get_tag (return_info);
+  GITypeTag return_tag = gi_type_info_get_tag (return_info);
   GIInfoType interface_type = GI_INFO_TYPE_INVALID;
 
   if (return_tag == GI_TYPE_TAG_INTERFACE)
     {
-      GIBaseInfo *interface_info = g_type_info_get_interface (return_info);
-      interface_type = g_base_info_get_type (interface_info);
-      g_base_info_unref (interface_info);
+      GIBaseInfo *interface_info = gi_type_info_get_interface (return_info);
+      interface_type = gi_base_info_get_type (interface_info);
+      gi_base_info_unref (interface_info);
     }
 
   gi_type_tag_extract_ffi_return_value (return_tag, interface_type,
@@ -582,7 +582,7 @@ gi_type_info_extract_ffi_return_value (GITypeInfo                  *return_info,
 }
 
 /**
- * g_callable_info_invoke:
+ * gi_callable_info_invoke:
  * @info: TODO
  * @function: TODO
  * @in_args: (array length=n_in_args): TODO
@@ -597,16 +597,16 @@ gi_type_info_extract_ffi_return_value (GITypeInfo                  *return_info,
  * TODO
  */
 gboolean
-g_callable_info_invoke (GIFunctionInfo *info,
-                        gpointer          function,
-                        const GIArgument  *in_args,
-                        int               n_in_args,
-                        const GIArgument  *out_args,
-                        int               n_out_args,
-                        GIArgument        *return_value,
-                        gboolean          is_method,
-                        gboolean          throws,
-                        GError          **error)
+gi_callable_info_invoke (GIFunctionInfo    *info,
+                         gpointer           function,
+                         const GIArgument  *in_args,
+                         int                n_in_args,
+                         const GIArgument  *out_args,
+                         int                n_out_args,
+                         GIArgument        *return_value,
+                         gboolean           is_method,
+                         gboolean           throws,
+                         GError           **error)
 {
   ffi_cif cif;
   ffi_type *rtype;
@@ -623,21 +623,21 @@ g_callable_info_invoke (GIFunctionInfo *info,
   GIFFIReturnValue ffi_return_value;
   gpointer return_value_p; /* Will point inside the union return_value */
 
-  rinfo = g_callable_info_get_return_type ((GICallableInfo *)info);
-  rtype = g_type_info_get_ffi_type (rinfo);
-  rtag = g_type_info_get_tag(rinfo);
+  rinfo = gi_callable_info_get_return_type ((GICallableInfo *)info);
+  rtype = gi_type_info_get_ffi_type (rinfo);
+  rtag = gi_type_info_get_tag(rinfo);
 
   in_pos = 0;
   out_pos = 0;
 
-  n_args = g_callable_info_get_n_args ((GICallableInfo *)info);
+  n_args = gi_callable_info_get_n_args ((GICallableInfo *)info);
   if (is_method)
     {
       if (n_in_args == 0)
         {
           g_set_error (error,
-                       G_INVOKE_ERROR,
-                       G_INVOKE_ERROR_ARGUMENT_MISMATCH,
+                       GI_INVOKE_ERROR,
+                       GI_INVOKE_ERROR_ARGUMENT_MISMATCH,
                        "Too few \"in\" arguments (handling this)");
           goto out;
         }
@@ -662,20 +662,20 @@ g_callable_info_invoke (GIFunctionInfo *info,
   for (i = 0; i < n_args; i++)
     {
       int offset = (is_method ? 1 : 0);
-      ainfo = g_callable_info_get_arg ((GICallableInfo *)info, i);
-      switch (g_arg_info_get_direction (ainfo))
+      ainfo = gi_callable_info_get_arg ((GICallableInfo *)info, i);
+      switch (gi_arg_info_get_direction (ainfo))
         {
         case GI_DIRECTION_IN:
-          tinfo = g_arg_info_get_type (ainfo);
-          atypes[i+offset] = g_type_info_get_ffi_type (tinfo);
-          g_base_info_unref ((GIBaseInfo *)ainfo);
-          g_base_info_unref ((GIBaseInfo *)tinfo);
+          tinfo = gi_arg_info_get_type (ainfo);
+          atypes[i+offset] = gi_type_info_get_ffi_type (tinfo);
+          gi_base_info_unref ((GIBaseInfo *)ainfo);
+          gi_base_info_unref ((GIBaseInfo *)tinfo);
 
           if (in_pos >= n_in_args)
             {
               g_set_error (error,
-                           G_INVOKE_ERROR,
-                           G_INVOKE_ERROR_ARGUMENT_MISMATCH,
+                           GI_INVOKE_ERROR,
+                           GI_INVOKE_ERROR_ARGUMENT_MISMATCH,
                            "Too few \"in\" arguments (handling in)");
               goto out;
             }
@@ -686,13 +686,13 @@ g_callable_info_invoke (GIFunctionInfo *info,
           break;
         case GI_DIRECTION_OUT:
           atypes[i+offset] = &ffi_type_pointer;
-          g_base_info_unref ((GIBaseInfo *)ainfo);
+          gi_base_info_unref ((GIBaseInfo *)ainfo);
 
           if (out_pos >= n_out_args)
             {
               g_set_error (error,
-                           G_INVOKE_ERROR,
-                           G_INVOKE_ERROR_ARGUMENT_MISMATCH,
+                           GI_INVOKE_ERROR,
+                           GI_INVOKE_ERROR_ARGUMENT_MISMATCH,
                            "Too few \"out\" arguments (handling out)");
               goto out;
             }
@@ -702,13 +702,13 @@ g_callable_info_invoke (GIFunctionInfo *info,
           break;
         case GI_DIRECTION_INOUT:
           atypes[i+offset] = &ffi_type_pointer;
-          g_base_info_unref ((GIBaseInfo *)ainfo);
+          gi_base_info_unref ((GIBaseInfo *)ainfo);
 
           if (in_pos >= n_in_args)
             {
               g_set_error (error,
-                           G_INVOKE_ERROR,
-                           G_INVOKE_ERROR_ARGUMENT_MISMATCH,
+                           GI_INVOKE_ERROR,
+                           GI_INVOKE_ERROR_ARGUMENT_MISMATCH,
                            "Too few \"in\" arguments (handling inout)");
               goto out;
             }
@@ -716,8 +716,8 @@ g_callable_info_invoke (GIFunctionInfo *info,
           if (out_pos >= n_out_args)
             {
               g_set_error (error,
-                           G_INVOKE_ERROR,
-                           G_INVOKE_ERROR_ARGUMENT_MISMATCH,
+                           GI_INVOKE_ERROR,
+                           GI_INVOKE_ERROR_ARGUMENT_MISMATCH,
                            "Too few \"out\" arguments (handling inout)");
               goto out;
             }
@@ -727,7 +727,7 @@ g_callable_info_invoke (GIFunctionInfo *info,
           out_pos++;
           break;
         default:
-          g_base_info_unref ((GIBaseInfo *)ainfo);
+          gi_base_info_unref ((GIBaseInfo *)ainfo);
           g_assert_not_reached ();
         }
     }
@@ -741,16 +741,16 @@ g_callable_info_invoke (GIFunctionInfo *info,
   if (in_pos < n_in_args)
     {
       g_set_error (error,
-                   G_INVOKE_ERROR,
-                   G_INVOKE_ERROR_ARGUMENT_MISMATCH,
+                   GI_INVOKE_ERROR,
+                   GI_INVOKE_ERROR_ARGUMENT_MISMATCH,
                    "Too many \"in\" arguments (at end)");
       goto out;
     }
   if (out_pos < n_out_args)
     {
       g_set_error (error,
-                   G_INVOKE_ERROR,
-                   G_INVOKE_ERROR_ARGUMENT_MISMATCH,
+                   GI_INVOKE_ERROR,
+                   GI_INVOKE_ERROR_ARGUMENT_MISMATCH,
                    "Too many \"out\" arguments (at end)");
       goto out;
     }
@@ -788,6 +788,6 @@ g_callable_info_invoke (GIFunctionInfo *info,
       success = TRUE;
     }
  out:
-  g_base_info_unref ((GIBaseInfo *)rinfo);
+  gi_base_info_unref ((GIBaseInfo *)rinfo);
   return success;
 }

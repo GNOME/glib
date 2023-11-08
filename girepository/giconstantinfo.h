@@ -39,17 +39,17 @@ G_BEGIN_DECLS
  * Checks if @info is a #GIConstantInfo.
  */
 #define GI_IS_CONSTANT_INFO(info) \
-    (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_CONSTANT)
+    (gi_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_CONSTANT)
 
 
 GI_AVAILABLE_IN_ALL
-GITypeInfo * g_constant_info_get_type (GIConstantInfo *info);
+GITypeInfo * gi_constant_info_get_type (GIConstantInfo *info);
 
 GI_AVAILABLE_IN_ALL
-void         g_constant_info_free_value(GIConstantInfo *info,
-                                        GIArgument      *value);
+void         gi_constant_info_free_value (GIConstantInfo *info,
+                                          GIArgument     *value);
 
 GI_AVAILABLE_IN_ALL
-gint         g_constant_info_get_value(GIConstantInfo *info,
-				       GIArgument      *value);
+gint         gi_constant_info_get_value (GIConstantInfo *info,
+                                         GIArgument     *value);
 G_END_DECLS

@@ -45,13 +45,13 @@
  *
  * A registered type info struct has a name and a type function.
  *
- * To get the name call g_registered_type_info_get_type_name().
- * Most users want to call g_registered_type_info_get_g_type() and don't worry
+ * To get the name call gi_registered_type_info_get_type_name().
+ * Most users want to call gi_registered_type_info_get_g_type() and don't worry
  * about the rest of the details.
  */
 
 /**
- * g_registered_type_info_get_type_name:
+ * gi_registered_type_info_get_type_name:
  * @info: a #GIRegisteredTypeInfo
  *
  * Obtain the type name of the struct within the GObject type system.
@@ -60,7 +60,7 @@
  * Returns: the type name
  */
 const gchar *
-g_registered_type_info_get_type_name (GIRegisteredTypeInfo *info)
+gi_registered_type_info_get_type_name (GIRegisteredTypeInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   RegisteredTypeBlob *blob;
@@ -71,25 +71,25 @@ g_registered_type_info_get_type_name (GIRegisteredTypeInfo *info)
   blob = (RegisteredTypeBlob *)&rinfo->typelib->data[rinfo->offset];
 
   if (blob->gtype_name)
-    return g_typelib_get_string (rinfo->typelib, blob->gtype_name);
+    return gi_typelib_get_string (rinfo->typelib, blob->gtype_name);
 
   return NULL;
 }
 
 /**
- * g_registered_type_info_get_type_init:
+ * gi_registered_type_info_get_type_init:
  * @info: a #GIRegisteredTypeInfo
  *
  * Obtain the type init function for @info. The type init function is the
  * function which will register the GType within the GObject type system.
  * Usually this is not called by langauge bindings or applications, use
- * g_registered_type_info_get_g_type() directly instead.
+ * gi_registered_type_info_get_g_type() directly instead.
  *
  * Returns: the symbol name of the type init function, suitable for
  * passing into g_module_symbol().
  */
 const gchar *
-g_registered_type_info_get_type_init (GIRegisteredTypeInfo *info)
+gi_registered_type_info_get_type_init (GIRegisteredTypeInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   RegisteredTypeBlob *blob;
@@ -100,13 +100,13 @@ g_registered_type_info_get_type_init (GIRegisteredTypeInfo *info)
   blob = (RegisteredTypeBlob *)&rinfo->typelib->data[rinfo->offset];
 
   if (blob->gtype_init)
-    return g_typelib_get_string (rinfo->typelib, blob->gtype_init);
+    return gi_typelib_get_string (rinfo->typelib, blob->gtype_init);
 
   return NULL;
 }
 
 /**
- * g_registered_type_info_get_g_type:
+ * gi_registered_type_info_get_g_type:
  * @info: a #GIRegisteredTypeInfo
  *
  * Obtain the #GType for this registered type or G_TYPE_NONE which a special meaning.
@@ -117,7 +117,7 @@ g_registered_type_info_get_type_init (GIRegisteredTypeInfo *info)
  * Returns: the #GType.
  */
 GType
-g_registered_type_info_get_g_type (GIRegisteredTypeInfo *info)
+gi_registered_type_info_get_g_type (GIRegisteredTypeInfo *info)
 {
   const char *type_init;
   GType (* get_type_func) (void);
@@ -126,19 +126,19 @@ g_registered_type_info_get_g_type (GIRegisteredTypeInfo *info)
   g_return_val_if_fail (info != NULL, G_TYPE_INVALID);
   g_return_val_if_fail (GI_IS_REGISTERED_TYPE_INFO (info), G_TYPE_INVALID);
 
-  type_init = g_registered_type_info_get_type_init (info);
+  type_init = gi_registered_type_info_get_type_init (info);
 
   if (type_init == NULL)
     return G_TYPE_NONE;
   else if (!strcmp (type_init, "intern"))
     /* The special string "intern" is used for some types exposed by libgobject
        (that therefore should be always available) */
-    return g_type_from_name (g_registered_type_info_get_type_name (info));
+    return g_type_from_name (gi_registered_type_info_get_type_name (info));
 
   get_type_func = NULL;
-  if (!g_typelib_symbol (rinfo->typelib,
-                         type_init,
-                         (void**) &get_type_func))
+  if (!gi_typelib_symbol (rinfo->typelib,
+                          type_init,
+                          (void**) &get_type_func))
     return G_TYPE_NONE;
 
   return (* get_type_func) ();

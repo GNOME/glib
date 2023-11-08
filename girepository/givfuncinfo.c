@@ -45,10 +45,10 @@
  */
 
 GIVFuncInfo *
-_g_base_info_find_vfunc (GIRealInfo   *rinfo,
-			 guint32       offset,
-			 gint          n_vfuncs,
-			 const gchar  *name)
+gi_base_info_find_vfunc (GIRealInfo  *rinfo,
+                         guint32      offset,
+                         gint         n_vfuncs,
+                         const gchar *name)
 {
   /* FIXME hash */
   Header *header = (Header *)rinfo->typelib->data;
@@ -60,7 +60,7 @@ _g_base_info_find_vfunc (GIRealInfo   *rinfo,
       const gchar *fname = (const gchar *)&rinfo->typelib->data[fblob->name];
 
       if (strcmp (name, fname) == 0)
-        return (GIVFuncInfo *) g_info_new (GI_INFO_TYPE_VFUNC, (GIBaseInfo*) rinfo,
+        return (GIVFuncInfo *) gi_info_new (GI_INFO_TYPE_VFUNC, (GIBaseInfo*) rinfo,
                                            rinfo->typelib, offset);
 
       offset += header->vfunc_blob_size;
@@ -70,7 +70,7 @@ _g_base_info_find_vfunc (GIRealInfo   *rinfo,
 }
 
 /**
- * g_vfunc_info_get_flags:
+ * gi_vfunc_info_get_flags:
  * @info: a #GIVFuncInfo
  *
  * Obtain the flags for this virtual function info. See #GIVFuncInfoFlags for
@@ -79,7 +79,7 @@ _g_base_info_find_vfunc (GIRealInfo   *rinfo,
  * Returns: the flags
  */
 GIVFuncInfoFlags
-g_vfunc_info_get_flags (GIVFuncInfo *info)
+gi_vfunc_info_get_flags (GIVFuncInfo *info)
 {
   GIVFuncInfoFlags flags;
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -108,7 +108,7 @@ g_vfunc_info_get_flags (GIVFuncInfo *info)
 }
 
 /**
- * g_vfunc_info_get_offset:
+ * gi_vfunc_info_get_offset:
  * @info: a #GIVFuncInfo
  *
  * Obtain the offset of the function pointer in the class struct. The value
@@ -117,7 +117,7 @@ g_vfunc_info_get_flags (GIVFuncInfo *info)
  * Returns: the struct offset or 0xFFFF if it's unknown
  */
 gint
-g_vfunc_info_get_offset (GIVFuncInfo *info)
+gi_vfunc_info_get_offset (GIVFuncInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   VFuncBlob *blob;
@@ -131,7 +131,7 @@ g_vfunc_info_get_offset (GIVFuncInfo *info)
 }
 
 /**
- * g_vfunc_info_get_signal:
+ * gi_vfunc_info_get_signal:
  * @info: a #GIVFuncInfo
  *
  * Obtain the signal for the virtual function if one is set.
@@ -141,7 +141,7 @@ g_vfunc_info_get_offset (GIVFuncInfo *info)
  * Returns: (transfer full): the signal or %NULL if none set
  */
 GISignalInfo *
-g_vfunc_info_get_signal (GIVFuncInfo *info)
+gi_vfunc_info_get_signal (GIVFuncInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   VFuncBlob *blob;
@@ -152,13 +152,13 @@ g_vfunc_info_get_signal (GIVFuncInfo *info)
   blob = (VFuncBlob *)&rinfo->typelib->data[rinfo->offset];
 
   if (blob->class_closure)
-    return g_interface_info_get_signal ((GIInterfaceInfo *)rinfo->container, blob->signal);
+    return gi_interface_info_get_signal ((GIInterfaceInfo *)rinfo->container, blob->signal);
 
   return NULL;
 }
 
 /**
- * g_vfunc_info_get_invoker:
+ * gi_vfunc_info_get_invoker:
  * @info: a #GIVFuncInfo
  *
  * If this virtual function has an associated invoker method, this
@@ -167,10 +167,10 @@ g_vfunc_info_get_signal (GIVFuncInfo *info)
  * Not all virtuals will have invokers.
  *
  * Returns: (transfer full): the #GIVFuncInfo or %NULL. Free it with
- * g_base_info_unref() when done.
+ * gi_base_info_unref() when done.
  */
 GIFunctionInfo *
-g_vfunc_info_get_invoker (GIVFuncInfo *info)
+gi_vfunc_info_get_invoker (GIVFuncInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   VFuncBlob *blob;
@@ -187,17 +187,17 @@ g_vfunc_info_get_invoker (GIVFuncInfo *info)
     return NULL;
 
   container = rinfo->container;
-  parent_type = g_base_info_get_type (container);
+  parent_type = gi_base_info_get_type (container);
   if (parent_type == GI_INFO_TYPE_OBJECT)
-    return g_object_info_get_method ((GIObjectInfo*)container, blob->invoker);
+    return gi_object_info_get_method ((GIObjectInfo*)container, blob->invoker);
   else if (parent_type == GI_INFO_TYPE_INTERFACE)
-    return g_interface_info_get_method ((GIInterfaceInfo*)container, blob->invoker);
+    return gi_interface_info_get_method ((GIInterfaceInfo*)container, blob->invoker);
   else
     g_assert_not_reached ();
 }
 
 /**
- * g_vfunc_info_get_address:
+ * gi_vfunc_info_get_address:
  * @info: a #GIVFuncInfo
  * @implementor_gtype: #GType implementing this virtual function
  * @error: return location for a #GError
@@ -208,9 +208,9 @@ g_vfunc_info_get_invoker (GIVFuncInfo *info)
  * Returns: address to a function or %NULL if an error happened
  */
 gpointer
-g_vfunc_info_get_address (GIVFuncInfo      *vfunc_info,
-                          GType             implementor_gtype,
-                          GError          **error)
+gi_vfunc_info_get_address (GIVFuncInfo  *vfunc_info,
+                           GType         implementor_gtype,
+                           GError      **error)
 {
   GIBaseInfo *container_info;
   GIInterfaceInfo *interface_info;
@@ -221,28 +221,28 @@ g_vfunc_info_get_address (GIVFuncInfo      *vfunc_info,
   gpointer implementor_class, implementor_vtable;
   gpointer func = NULL;
 
-  container_info = g_base_info_get_container (vfunc_info);
-  if (g_base_info_get_type (container_info) == GI_INFO_TYPE_OBJECT)
+  container_info = gi_base_info_get_container (vfunc_info);
+  if (gi_base_info_get_type (container_info) == GI_INFO_TYPE_OBJECT)
     {
       object_info = (GIObjectInfo*) container_info;
       interface_info = NULL;
-      struct_info = g_object_info_get_class_struct (object_info);
+      struct_info = gi_object_info_get_class_struct (object_info);
     }
   else
     {
       interface_info = (GIInterfaceInfo*) container_info;
       object_info = NULL;
-      struct_info = g_interface_info_get_iface_struct (interface_info);
+      struct_info = gi_interface_info_get_iface_struct (interface_info);
     }
 
-  length = g_struct_info_get_n_fields (struct_info);
+  length = gi_struct_info_get_n_fields (struct_info);
   for (i = 0; i < length; i++)
     {
-      field_info = g_struct_info_get_field (struct_info, i);
+      field_info = gi_struct_info_get_field (struct_info, i);
 
-      if (strcmp (g_base_info_get_name ( (GIBaseInfo*) field_info),
-                  g_base_info_get_name ( (GIBaseInfo*) vfunc_info)) != 0) {
-          g_base_info_unref (field_info);
+      if (strcmp (gi_base_info_get_name ( (GIBaseInfo*) field_info),
+                  gi_base_info_get_name ( (GIBaseInfo*) vfunc_info)) != 0) {
+          gi_base_info_unref (field_info);
           field_info = NULL;
           continue;
       }
@@ -253,8 +253,8 @@ g_vfunc_info_get_address (GIVFuncInfo      *vfunc_info,
   if (field_info == NULL)
     {
       g_set_error (error,
-                   G_INVOKE_ERROR,
-                   G_INVOKE_ERROR_SYMBOL_NOT_FOUND,
+                   GI_INVOKE_ERROR,
+                   GI_INVOKE_ERROR_SYMBOL_NOT_FOUND,
                    "Couldn't find struct field for this vfunc");
       goto out;
     }
@@ -269,34 +269,34 @@ g_vfunc_info_get_address (GIVFuncInfo      *vfunc_info,
     {
       GType interface_type;
 
-      interface_type = g_registered_type_info_get_g_type ((GIRegisteredTypeInfo*) interface_info);
+      interface_type = gi_registered_type_info_get_g_type ((GIRegisteredTypeInfo*) interface_info);
       implementor_vtable = g_type_interface_peek (implementor_class, interface_type);
     }
 
-  offset = g_field_info_get_offset (field_info);
+  offset = gi_field_info_get_offset (field_info);
   func = *(gpointer*) G_STRUCT_MEMBER_P (implementor_vtable, offset);
   g_type_class_unref (implementor_class);
-  g_base_info_unref (field_info);
+  gi_base_info_unref (field_info);
 
   if (func == NULL)
     {
       g_set_error (error,
-                   G_INVOKE_ERROR,
-                   G_INVOKE_ERROR_SYMBOL_NOT_FOUND,
+                   GI_INVOKE_ERROR,
+                   GI_INVOKE_ERROR_SYMBOL_NOT_FOUND,
                    "Class %s doesn't implement %s",
                    g_type_name (implementor_gtype),
-                   g_base_info_get_name ( (GIBaseInfo*) vfunc_info));
+                   gi_base_info_get_name ( (GIBaseInfo*) vfunc_info));
       goto out;
     }
 
  out:
-  g_base_info_unref ((GIBaseInfo*) struct_info);
+  gi_base_info_unref ((GIBaseInfo*) struct_info);
 
   return func;
 }
 
 /**
- * g_vfunc_info_invoke: (skip)
+ * gi_vfunc_info_invoke: (skip)
  * @info: a #GIVFuncInfo describing the virtual function to invoke
  * @implementor: #GType of the type that implements this virtual function
  * @in_args: (array length=n_in_args): an array of #GIArgument<!-- -->s, one for each in
@@ -320,29 +320,29 @@ g_vfunc_info_get_address (GIVFuncInfo      *vfunc_info,
  *   error occurred.
  */
 gboolean
-g_vfunc_info_invoke (GIVFuncInfo      *info,
-                     GType             implementor,
-                     const GIArgument *in_args,
-                     int               n_in_args,
-                     const GIArgument *out_args,
-                     int               n_out_args,
-                     GIArgument       *return_value,
-                     GError          **error)
+gi_vfunc_info_invoke (GIVFuncInfo      *info,
+                      GType             implementor,
+                      const GIArgument *in_args,
+                      int               n_in_args,
+                      const GIArgument *out_args,
+                      int               n_out_args,
+                      GIArgument       *return_value,
+                      GError          **error)
 {
   gpointer func;
 
-  func = g_vfunc_info_get_address (info, implementor, error);
+  func = gi_vfunc_info_get_address (info, implementor, error);
   if (*error != NULL)
     return FALSE;
 
-  return g_callable_info_invoke ((GICallableInfo*) info,
-                                 func,
-                                 in_args,
-                                 n_in_args,
-                                 out_args,
-                                 n_out_args,
-                                 return_value,
-                                 TRUE,
-                                 FALSE,
-                                 error);
+  return gi_callable_info_invoke ((GICallableInfo*) info,
+                                  func,
+                                  in_args,
+                                  n_in_args,
+                                  out_args,
+                                  n_out_args,
+                                  return_value,
+                                  TRUE,
+                                  FALSE,
+                                  error);
 }

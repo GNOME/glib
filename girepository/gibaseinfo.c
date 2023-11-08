@@ -38,26 +38,26 @@
 
 /* GBoxed registration of BaseInfo. */
 GType
-g_base_info_gtype_get_type (void)
+gi_base_info_gtype_get_type (void)
 {
   static GType our_type = 0;
   
   if (our_type == 0)
     our_type =
         g_boxed_type_register_static ("GIBaseInfo",
-                                      (GBoxedCopyFunc) g_base_info_ref,
-                                      (GBoxedFreeFunc) g_base_info_unref);
+                                      (GBoxedCopyFunc) gi_base_info_ref,
+                                      (GBoxedFreeFunc) gi_base_info_unref);
 
   return our_type;
 }
 
 /* info creation */
 GIBaseInfo *
-_g_info_new_full (GIInfoType     type,
-                  GIRepository  *repository,
-                  GIBaseInfo    *container,
-                  GITypelib      *typelib,
-                  guint32        offset)
+gi_info_new_full (GIInfoType    type,
+                  GIRepository *repository,
+                  GIBaseInfo   *container,
+                  GITypelib    *typelib,
+                  guint32       offset)
 {
   GIRealInfo *info;
 
@@ -65,11 +65,11 @@ _g_info_new_full (GIInfoType     type,
 
   info = g_slice_new (GIRealInfo);
 
-  _g_info_init (info, type, repository, container, typelib, offset);
+  gi_info_init (info, type, repository, container, typelib, offset);
   info->ref_count = 1;
 
   if (container && ((GIRealInfo *) container)->ref_count != INVALID_REFCOUNT)
-    g_base_info_ref (info->container);
+    gi_base_info_ref (info->container);
 
   g_object_ref (info->repository);
 
@@ -77,7 +77,7 @@ _g_info_new_full (GIInfoType     type,
 }
 
 /**
- * g_info_new:
+ * gi_info_new:
  * @type: TODO
  * @container: TODO
  * @typelib: TODO
@@ -88,21 +88,21 @@ _g_info_new_full (GIInfoType     type,
  * Returns: TODO
  */
 GIBaseInfo *
-g_info_new (GIInfoType     type,
-            GIBaseInfo    *container,
-            GITypelib      *typelib,
-            guint32        offset)
+gi_info_new (GIInfoType     type,
+             GIBaseInfo    *container,
+             GITypelib      *typelib,
+             guint32        offset)
 {
-  return _g_info_new_full (type, ((GIRealInfo*)container)->repository, container, typelib, offset);
+  return gi_info_new_full (type, ((GIRealInfo*)container)->repository, container, typelib, offset);
 }
 
 void
-_g_info_init (GIRealInfo     *info,
-              GIInfoType      type,
-              GIRepository   *repository,
-              GIBaseInfo     *container,
-              GITypelib       *typelib,
-              guint32         offset)
+gi_info_init (GIRealInfo   *info,
+              GIInfoType    type,
+              GIRepository *repository,
+              GIBaseInfo   *container,
+              GITypelib    *typelib,
+              guint32       offset)
 {
   memset (info, 0, sizeof (GIRealInfo));
 
@@ -116,26 +116,26 @@ _g_info_init (GIRealInfo     *info,
   if (container)
     info->container = container;
 
-  g_assert (G_IS_IREPOSITORY (repository));
+  g_assert (GI_IS_REPOSITORY (repository));
   info->repository = repository;
 }
 
 GIBaseInfo *
-_g_info_from_entry (GIRepository *repository,
-                    GITypelib     *typelib,
+gi_info_from_entry (GIRepository *repository,
+                    GITypelib    *typelib,
                     guint16       index)
 {
   GIBaseInfo *result;
-  DirEntry *entry = g_typelib_get_dir_entry (typelib, index);
+  DirEntry *entry = gi_typelib_get_dir_entry (typelib, index);
 
   if (entry->local)
-    result = _g_info_new_full (entry->blob_type, repository, NULL, typelib, entry->offset);
+    result = gi_info_new_full (entry->blob_type, repository, NULL, typelib, entry->offset);
   else
     {
-      const gchar *namespace = g_typelib_get_string (typelib, entry->offset);
-      const gchar *name = g_typelib_get_string (typelib, entry->name);
+      const gchar *namespace = gi_typelib_get_string (typelib, entry->offset);
+      const gchar *name = gi_typelib_get_string (typelib, entry->name);
 
-      result = g_irepository_find_by_name (repository, namespace, name);
+      result = gi_repository_find_by_name (repository, namespace, name);
       if (result == NULL)
         {
           GIUnresolvedInfo *unresolved;
@@ -158,26 +158,26 @@ _g_info_from_entry (GIRepository *repository,
 }
 
 GITypeInfo *
-_g_type_info_new (GIBaseInfo    *container,
-                 GITypelib      *typelib,
-		 guint32        offset)
+gi_type_info_new (GIBaseInfo *container,
+                  GITypelib  *typelib,
+                  guint32     offset)
 {
   SimpleTypeBlob *type = (SimpleTypeBlob *)&typelib->data[offset];
 
-  return (GITypeInfo *) g_info_new (GI_INFO_TYPE_TYPE, container, typelib,
-                                    (type->flags.reserved == 0 && type->flags.reserved2 == 0) ? offset : type->offset);
+  return (GITypeInfo *) gi_info_new (GI_INFO_TYPE_TYPE, container, typelib,
+                                     (type->flags.reserved == 0 && type->flags.reserved2 == 0) ? offset : type->offset);
 }
 
 void
-_g_type_info_init (GIBaseInfo *info,
+gi_type_info_init (GIBaseInfo *info,
                    GIBaseInfo *container,
-                   GITypelib   *typelib,
+                   GITypelib  *typelib,
                    guint32     offset)
 {
   GIRealInfo *rinfo = (GIRealInfo*)container;
   SimpleTypeBlob *type = (SimpleTypeBlob *)&typelib->data[offset];
 
-  _g_info_init ((GIRealInfo*)info, GI_INFO_TYPE_TYPE, rinfo->repository, container, typelib,
+  gi_info_init ((GIRealInfo*)info, GI_INFO_TYPE_TYPE, rinfo->repository, container, typelib,
                 (type->flags.reserved == 0 && type->flags.reserved2 == 0) ? offset : type->offset);
 }
 
@@ -199,20 +199,20 @@ _g_type_info_init (GIBaseInfo *info,
  * ]|
  *
  * Most #GIRepository APIs returning a #GIBaseInfo is actually
- * creating a new struct; in other words, g_base_info_unref() has to
+ * creating a new struct; in other words, gi_base_info_unref() has to
  * be called when done accessing the data.
  *
  * #GIBaseInfo structuress are normally accessed by calling either
- * g_irepository_find_by_name(), g_irepository_find_by_gtype() or
- * g_irepository_get_info().
+ * gi_repository_find_by_name(), gi_repository_find_by_gtype() or
+ * gi_repository_get_info().
  *
  * |[<!-- language="C" -->
  * GIBaseInfo *button_info =
- *   g_irepository_find_by_name (NULL, "Gtk", "Button");
+ *   gi_repository_find_by_name (NULL, "Gtk", "Button");
  *
  * // ... use button_info ...
  *
- * g_base_info_unref (button_info);
+ * gi_base_info_unref (button_info);
  * ]|
  *
  * ## Hierarchy
@@ -230,7 +230,7 @@ _g_type_info_init (GIBaseInfo *info,
  */
 
 /**
- * g_base_info_ref: (skip)
+ * gi_base_info_ref: (skip)
  * @info: a #GIBaseInfo
  *
  * Increases the reference count of @info.
@@ -238,7 +238,7 @@ _g_type_info_init (GIBaseInfo *info,
  * Returns: the same @info.
  */
 GIBaseInfo *
-g_base_info_ref (GIBaseInfo *info)
+gi_base_info_ref (GIBaseInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo*)info;
 
@@ -249,14 +249,14 @@ g_base_info_ref (GIBaseInfo *info)
 }
 
 /**
- * g_base_info_unref: (skip)
+ * gi_base_info_unref: (skip)
  * @info: a #GIBaseInfo
  *
  * Decreases the reference count of @info. When its reference count
  * drops to 0, the info is freed.
  */
 void
-g_base_info_unref (GIBaseInfo *info)
+gi_base_info_unref (GIBaseInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo*)info;
 
@@ -266,7 +266,7 @@ g_base_info_unref (GIBaseInfo *info)
     return;
 
   if (rinfo->container && ((GIRealInfo *) rinfo->container)->ref_count != INVALID_REFCOUNT)
-    g_base_info_unref (rinfo->container);
+    gi_base_info_unref (rinfo->container);
 
   if (rinfo->repository)
     g_object_unref (rinfo->repository);
@@ -278,7 +278,7 @@ g_base_info_unref (GIBaseInfo *info)
 }
 
 /**
- * g_base_info_get_type:
+ * gi_base_info_get_type:
  * @info: a #GIBaseInfo
  *
  * Obtain the info type of the GIBaseInfo.
@@ -286,14 +286,14 @@ g_base_info_unref (GIBaseInfo *info)
  * Returns: the info type of @info
  */
 GIInfoType
-g_base_info_get_type (GIBaseInfo *info)
+gi_base_info_get_type (GIBaseInfo *info)
 {
 
   return ((GIRealInfo*)info)->type;
 }
 
 /**
- * g_base_info_get_name:
+ * gi_base_info_get_name:
  * @info: a #GIBaseInfo
  *
  * Obtain the name of the @info. What the name represents depends on
@@ -303,7 +303,7 @@ g_base_info_get_type (GIBaseInfo *info)
  * Returns: the name of @info or %NULL if it lacks a name.
  */
 const gchar *
-g_base_info_get_name (GIBaseInfo *info)
+gi_base_info_get_name (GIBaseInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo*)info;
   g_assert (rinfo->ref_count > 0);
@@ -323,7 +323,7 @@ g_base_info_get_name (GIBaseInfo *info)
       {
         CommonBlob *blob = (CommonBlob *)&rinfo->typelib->data[rinfo->offset];
 
-        return g_typelib_get_string (rinfo->typelib, blob->name);
+        return gi_typelib_get_string (rinfo->typelib, blob->name);
       }
       break;
 
@@ -331,7 +331,7 @@ g_base_info_get_name (GIBaseInfo *info)
       {
         ValueBlob *blob = (ValueBlob *)&rinfo->typelib->data[rinfo->offset];
 
-        return g_typelib_get_string (rinfo->typelib, blob->name);
+        return gi_typelib_get_string (rinfo->typelib, blob->name);
       }
       break;
 
@@ -339,7 +339,7 @@ g_base_info_get_name (GIBaseInfo *info)
       {
         SignalBlob *blob = (SignalBlob *)&rinfo->typelib->data[rinfo->offset];
 
-        return g_typelib_get_string (rinfo->typelib, blob->name);
+        return gi_typelib_get_string (rinfo->typelib, blob->name);
       }
       break;
 
@@ -347,7 +347,7 @@ g_base_info_get_name (GIBaseInfo *info)
       {
         PropertyBlob *blob = (PropertyBlob *)&rinfo->typelib->data[rinfo->offset];
 
-        return g_typelib_get_string (rinfo->typelib, blob->name);
+        return gi_typelib_get_string (rinfo->typelib, blob->name);
       }
       break;
 
@@ -355,7 +355,7 @@ g_base_info_get_name (GIBaseInfo *info)
       {
         VFuncBlob *blob = (VFuncBlob *)&rinfo->typelib->data[rinfo->offset];
 
-        return g_typelib_get_string (rinfo->typelib, blob->name);
+        return gi_typelib_get_string (rinfo->typelib, blob->name);
       }
       break;
 
@@ -363,7 +363,7 @@ g_base_info_get_name (GIBaseInfo *info)
       {
         FieldBlob *blob = (FieldBlob *)&rinfo->typelib->data[rinfo->offset];
 
-        return g_typelib_get_string (rinfo->typelib, blob->name);
+        return gi_typelib_get_string (rinfo->typelib, blob->name);
       }
       break;
 
@@ -371,7 +371,7 @@ g_base_info_get_name (GIBaseInfo *info)
       {
         ArgBlob *blob = (ArgBlob *)&rinfo->typelib->data[rinfo->offset];
 
-        return g_typelib_get_string (rinfo->typelib, blob->name);
+        return gi_typelib_get_string (rinfo->typelib, blob->name);
       }
       break;
     case GI_INFO_TYPE_UNRESOLVED:
@@ -392,7 +392,7 @@ g_base_info_get_name (GIBaseInfo *info)
 }
 
 /**
- * g_base_info_get_namespace:
+ * gi_base_info_get_namespace:
  * @info: a #GIBaseInfo
  *
  * Obtain the namespace of @info.
@@ -400,7 +400,7 @@ g_base_info_get_name (GIBaseInfo *info)
  * Returns: the namespace
  */
 const gchar *
-g_base_info_get_namespace (GIBaseInfo *info)
+gi_base_info_get_namespace (GIBaseInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo*) info;
   Header *header = (Header *)rinfo->typelib->data;
@@ -414,11 +414,11 @@ g_base_info_get_namespace (GIBaseInfo *info)
       return unresolved->namespace;
     }
 
-  return g_typelib_get_string (rinfo->typelib, header->namespace);
+  return gi_typelib_get_string (rinfo->typelib, header->namespace);
 }
 
 /**
- * g_base_info_is_deprecated:
+ * gi_base_info_is_deprecated:
  * @info: a #GIBaseInfo
  *
  * Obtain whether the @info is represents a metadata which is
@@ -427,7 +427,7 @@ g_base_info_get_namespace (GIBaseInfo *info)
  * Returns: %TRUE if deprecated
  */
 gboolean
-g_base_info_is_deprecated (GIBaseInfo *info)
+gi_base_info_is_deprecated (GIBaseInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo*) info;
   switch (rinfo->type)
@@ -485,7 +485,7 @@ g_base_info_is_deprecated (GIBaseInfo *info)
 }
 
 /**
- * g_base_info_get_attribute:
+ * gi_base_info_get_attribute:
  * @info: a #GIBaseInfo
  * @name: a freeform string naming an attribute
  *
@@ -494,12 +494,12 @@ g_base_info_is_deprecated (GIBaseInfo *info)
  * Returns: The value of the attribute, or %NULL if no such attribute exists
  */
 const gchar *
-g_base_info_get_attribute (GIBaseInfo   *info,
-                           const gchar  *name)
+gi_base_info_get_attribute (GIBaseInfo  *info,
+                            const gchar *name)
 {
   GIAttributeIter iter = { 0, };
   gchar *curname, *curvalue;
-  while (g_base_info_iterate_attributes (info, &iter, &curname, &curvalue))
+  while (gi_base_info_iterate_attributes (info, &iter, &curname, &curvalue))
     {
       if (strcmp (name, curname) == 0)
         return (const gchar*) curvalue;
@@ -562,7 +562,7 @@ _attribute_blob_find_first (GIBaseInfo *info,
 }
 
 /**
- * g_base_info_iterate_attributes:
+ * gi_base_info_iterate_attributes:
  * @info: a #GIBaseInfo
  * @iterator: (inout): a #GIAttributeIter structure, must be initialized; see below
  * @name: (out) (transfer none): Returned name, must not be freed
@@ -585,7 +585,7 @@ _attribute_blob_find_first (GIBaseInfo *info,
  *   GIAttributeIter iter = { 0, };
  *   char *name;
  *   char *value;
- *   while (g_base_info_iterate_attributes (info, &iter, &name, &value))
+ *   while (gi_base_info_iterate_attributes (info, &iter, &name, &value))
  *     {
  *       g_print ("attribute name: %s value: %s", name, value);
  *     }
@@ -595,10 +595,10 @@ _attribute_blob_find_first (GIBaseInfo *info,
  * Returns: %TRUE if there are more attributes
  */
 gboolean
-g_base_info_iterate_attributes (GIBaseInfo      *info,
-                                GIAttributeIter *iterator,
-                                gchar           **name,
-                                gchar           **value)
+gi_base_info_iterate_attributes (GIBaseInfo       *info,
+                                 GIAttributeIter  *iterator,
+                                 gchar           **name,
+                                 gchar           **value)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header = (Header *)rinfo->typelib->data;
@@ -615,15 +615,15 @@ g_base_info_iterate_attributes (GIBaseInfo      *info,
   if (next == NULL || next->offset != rinfo->offset || next >= after)
     return FALSE;
 
-  *name = (gchar*) g_typelib_get_string (rinfo->typelib, next->name);
-  *value = (gchar*) g_typelib_get_string (rinfo->typelib, next->value);
+  *name = (gchar*) gi_typelib_get_string (rinfo->typelib, next->name);
+  *value = (gchar*) gi_typelib_get_string (rinfo->typelib, next->value);
   iterator->data = next + 1;
 
   return TRUE;
 }
 
 /**
- * g_base_info_get_container:
+ * gi_base_info_get_container:
  * @info: a #GIBaseInfo
  *
  * Obtain the container of the @info. The container is the parent
@@ -633,13 +633,13 @@ g_base_info_iterate_attributes (GIBaseInfo      *info,
  * Returns: (transfer none): the container
  */
 GIBaseInfo *
-g_base_info_get_container (GIBaseInfo *info)
+gi_base_info_get_container (GIBaseInfo *info)
 {
   return ((GIRealInfo*)info)->container;
 }
 
 /**
- * g_base_info_get_typelib:
+ * gi_base_info_get_typelib:
  * @info: a #GIBaseInfo
  *
  * Obtain the typelib this @info belongs to
@@ -647,13 +647,13 @@ g_base_info_get_container (GIBaseInfo *info)
  * Returns: (transfer none): the typelib.
  */
 GITypelib *
-g_base_info_get_typelib (GIBaseInfo *info)
+gi_base_info_get_typelib (GIBaseInfo *info)
 {
   return ((GIRealInfo*)info)->typelib;
 }
 
 /**
- * g_base_info_equal:
+ * gi_base_info_equal:
  * @info1: a #GIBaseInfo
  * @info2: a #GIBaseInfo
  *
@@ -666,7 +666,7 @@ g_base_info_get_typelib (GIBaseInfo *info)
  * Returns: %TRUE if and only if @info1 equals @info2.
  */
 gboolean
-g_base_info_equal (GIBaseInfo *info1, GIBaseInfo *info2)
+gi_base_info_equal (GIBaseInfo *info1, GIBaseInfo *info2)
 {
   /* Compare the TypeLib pointers, which are mmapped. */
   GIRealInfo *rinfo1 = (GIRealInfo*)info1;

@@ -28,11 +28,11 @@
 
 G_BEGIN_DECLS
 
-typedef struct _GIrTypelibBuild GIrTypelibBuild;
-typedef struct _GIrModule GIrModule;
+typedef struct _GIIrTypelibBuild GIIrTypelibBuild;
+typedef struct _GIIrModule GIIrModule;
 
-struct _GIrTypelibBuild {
-  GIrModule  *module;
+struct _GIIrTypelibBuild {
+  GIIrModule  *module;
   GHashTable  *strings;
   GHashTable  *types;
   GList       *nodes_with_attributes;
@@ -41,7 +41,7 @@ struct _GIrTypelibBuild {
   GList       *stack; 
 };
 
-struct _GIrModule
+struct _GIIrModule
 {
   gchar *name;
   gchar *version;
@@ -66,20 +66,20 @@ struct _GIrModule
   GHashTable *disguised_structures;
 };
 
-GIrModule *_g_ir_module_new            (const gchar *name,
-					const gchar *nsversion,
-					const gchar *module_filename,
-					const gchar *c_prefix);
-void       _g_ir_module_free           (GIrModule  *module);
+GIIrModule *gi_ir_module_new            (const gchar *name,
+                                         const gchar *nsversion,
+                                         const gchar *module_filename,
+                                         const gchar *c_prefix);
+void       gi_ir_module_free            (GIIrModule  *module);
 
-void       _g_ir_module_add_include_module (GIrModule  *module,
-					   GIrModule  *include_module);
+void       gi_ir_module_add_include_module (GIIrModule  *module,
+                                            GIIrModule  *include_module);
 
-GITypelib * _g_ir_module_build_typelib  (GIrModule  *module);
+GITypelib * gi_ir_module_build_typelib (GIIrModule  *module);
 
-void       _g_ir_module_fatal (GIrTypelibBuild  *build, guint line, const char *msg, ...) G_GNUC_PRINTF (3, 4) G_GNUC_NORETURN;
+void       gi_ir_module_fatal (GIIrTypelibBuild  *build, guint line, const char *msg, ...) G_GNUC_PRINTF (3, 4) G_GNUC_NORETURN;
 
-void _g_irnode_init_stats (void);
-void _g_irnode_dump_stats (void);
+void gi_ir_node_init_stats (void);
+void gi_ir_node_dump_stats (void);
 
 G_END_DECLS

@@ -39,69 +39,69 @@ G_BEGIN_DECLS
  * Checks if @info is a #GICallableInfo or derived from it.
  */
 #define GI_IS_CALLABLE_INFO(info)					\
-    ((g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_FUNCTION) || \
-     (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_CALLBACK) || \
-     (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_SIGNAL) || \
-     (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_VFUNC))
+    ((gi_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_FUNCTION) || \
+     (gi_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_CALLBACK) || \
+     (gi_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_SIGNAL) || \
+     (gi_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_VFUNC))
 
 
 GI_AVAILABLE_IN_ALL
-gboolean               g_callable_info_is_method (GICallableInfo *info);
+gboolean               gi_callable_info_is_method (GICallableInfo *info);
 
 GI_AVAILABLE_IN_ALL
-gboolean               g_callable_info_can_throw_gerror (GICallableInfo *info);
+gboolean               gi_callable_info_can_throw_gerror (GICallableInfo *info);
 
 GI_AVAILABLE_IN_ALL
-GITypeInfo *           g_callable_info_get_return_type (GICallableInfo *info);
+GITypeInfo *           gi_callable_info_get_return_type (GICallableInfo *info);
 
 GI_AVAILABLE_IN_ALL
-void                   g_callable_info_load_return_type (GICallableInfo *info,
-                                                         GITypeInfo     *type);
+void                   gi_callable_info_load_return_type (GICallableInfo *info,
+                                                          GITypeInfo     *type);
 
 GI_AVAILABLE_IN_ALL
-const gchar *          g_callable_info_get_return_attribute (GICallableInfo *info,
-                                                             const gchar    *name);
+const gchar *          gi_callable_info_get_return_attribute (GICallableInfo *info,
+                                                              const gchar    *name);
 
 GI_AVAILABLE_IN_ALL
-gboolean               g_callable_info_iterate_return_attributes (GICallableInfo  *info,
-                                                                  GIAttributeIter *iterator,
-                                                                  char           **name,
-                                                                  char          **value);
+gboolean               gi_callable_info_iterate_return_attributes (GICallableInfo   *info,
+                                                                   GIAttributeIter  *iterator,
+                                                                   char            **name,
+                                                                   char            **value);
 
 GI_AVAILABLE_IN_ALL
-GITransfer             g_callable_info_get_caller_owns (GICallableInfo *info);
+GITransfer             gi_callable_info_get_caller_owns (GICallableInfo *info);
 
 GI_AVAILABLE_IN_ALL
-gboolean               g_callable_info_may_return_null (GICallableInfo *info);
+gboolean               gi_callable_info_may_return_null (GICallableInfo *info);
 
 GI_AVAILABLE_IN_ALL
-gboolean               g_callable_info_skip_return     (GICallableInfo *info);
+gboolean               gi_callable_info_skip_return     (GICallableInfo *info);
 
 GI_AVAILABLE_IN_ALL
-gint                   g_callable_info_get_n_args      (GICallableInfo *info);
+gint                   gi_callable_info_get_n_args      (GICallableInfo *info);
 
 GI_AVAILABLE_IN_ALL
-GIArgInfo *            g_callable_info_get_arg         (GICallableInfo *info,
-                                                        gint            n);
+GIArgInfo *            gi_callable_info_get_arg         (GICallableInfo *info,
+                                                         gint            n);
 
 GI_AVAILABLE_IN_ALL
-void                   g_callable_info_load_arg        (GICallableInfo *info,
-                                                        gint            n,
-                                                        GIArgInfo      *arg);
+void                   gi_callable_info_load_arg        (GICallableInfo *info,
+                                                         gint            n,
+                                                         GIArgInfo      *arg);
 
 GI_AVAILABLE_IN_ALL
-gboolean               g_callable_info_invoke          (GICallableInfo   *info,
-                                                        gpointer          function,
-                                                        const GIArgument *in_args,
-                                                        int               n_in_args,
-                                                        const GIArgument *out_args,
-                                                        int               n_out_args,
-                                                        GIArgument       *return_value,
-                                                        gboolean          is_method,
-                                                        gboolean          throws,
-                                                        GError          **error);
+gboolean               gi_callable_info_invoke          (GICallableInfo    *info,
+                                                         gpointer           function,
+                                                         const GIArgument  *in_args,
+                                                         int                n_in_args,
+                                                         const GIArgument  *out_args,
+                                                         int                n_out_args,
+                                                         GIArgument        *return_value,
+                                                         gboolean           is_method,
+                                                         gboolean           throws,
+                                                         GError           **error);
 
 GI_AVAILABLE_IN_ALL
-GITransfer             g_callable_info_get_instance_ownership_transfer (GICallableInfo *info);
+GITransfer             gi_callable_info_get_instance_ownership_transfer (GICallableInfo *info);
 
 G_END_DECLS
