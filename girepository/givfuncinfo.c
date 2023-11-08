@@ -339,10 +339,14 @@ gi_vfunc_info_invoke (GIVFuncInfo      *info,
                       GError          **error)
 {
   gpointer func;
+  GError *local_error = NULL;
 
-  func = gi_vfunc_info_get_address (info, implementor, error);
-  if (*error != NULL)
-    return FALSE;
+  func = gi_vfunc_info_get_address (info, implementor, &local_error);
+  if (local_error != NULL)
+    {
+      g_propagate_error (error, g_steal_pointer (&local_error));
+      return FALSE;
+    }
 
   return gi_callable_info_invoke ((GICallableInfo*) info,
                                   func,
