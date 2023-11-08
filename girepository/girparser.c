@@ -24,14 +24,14 @@
 
 #include "config.h"
 
+#include "girparser-private.h"
+
+#include "girnode.h"
+#include "gitypelib-internal.h"
+
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-
-#include <glib.h>
-#include "girparser.h"
-#include "girnode.h"
-#include "gitypelib-internal.h"
 
 /* This is a "major" version in the sense that it's only bumped
  * for incompatible changes.
