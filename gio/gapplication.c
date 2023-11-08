@@ -38,6 +38,7 @@
 #include "gioenumtypes.h"
 #include "gioenums.h"
 #include "gfile.h"
+#include "glib-private.h"
 
 #include "glibintl.h"
 #include "gmarshal-internal.h"
@@ -2526,7 +2527,7 @@ g_application_run (GApplication  *application,
       gchar *prgname;
 
       prgname = g_path_get_basename (argv[0]);
-      g_set_prgname (prgname);
+      GLIB_PRIVATE_CALL (g_set_prgname_once) (prgname);
       g_free (prgname);
     }
 

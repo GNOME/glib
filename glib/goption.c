@@ -35,6 +35,7 @@
 
 #include "gprintf.h"
 #include "glibintl.h"
+#include "gutilsprivate.h"
 
 #if defined G_OS_WIN32
 #include <windows.h>
@@ -1813,10 +1814,7 @@ g_option_context_parse (GOptionContext   *context,
       else
 	prgname = platform_get_argv0 ();
 
-      if (prgname)
-	g_set_prgname (prgname);
-      else
-	g_set_prgname ("<unknown>");
+      g_set_prgname_once (prgname ? prgname : "<unknown");
 
       g_free (prgname);
     }

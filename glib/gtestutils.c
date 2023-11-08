@@ -1657,8 +1657,8 @@ void
       test_run_seedstr = seedstr;
     }
 
-  if (!g_get_prgname() && !no_g_set_prgname)
-    g_set_prgname ((*argv)[0]);
+  if (!g_get_prgname () && !no_g_set_prgname)
+    g_set_prgname_once ((*argv)[0]);
 
   if (g_getenv ("G_TEST_ROOT_PROCESS"))
     {

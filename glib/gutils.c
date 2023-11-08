@@ -1176,6 +1176,25 @@ g_set_prgname (const gchar *prgname)
   g_atomic_pointer_set (&g_prgname, prgname);
 }
 
+/**
+ * g_set_prgname_once:
+ * @prgname: the name of the program.
+ *
+ * If g_get_prgname() is not set, this is the same as setting
+ * the name via g_set_prgname() and %TRUE is returned. Otherwise,
+ * does nothing and returns %FALSE. This is thread-safe.
+ *
+ * Returns: whether g_prgname was initialized by the call.
+ */
+gboolean
+g_set_prgname_once (const gchar *prgname)
+{
+  /* if @prgname is NULL, then this has the same effect as calling
+   * (g_get_prgname()==NULL). */
+  prgname = g_intern_string (prgname);
+  return g_atomic_pointer_compare_and_exchange (&g_prgname, NULL, prgname);
+}
+
 static gchar *g_application_name = NULL;
 
 /**
