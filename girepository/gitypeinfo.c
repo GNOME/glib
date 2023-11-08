@@ -355,7 +355,7 @@ gi_type_info_get_array_type (GITypeInfo *info)
  *
  * Returns: the type tag
  *
- * Since: 1.66
+ * Since: 2.80
  */
 GITypeTag
 gi_type_info_get_storage_type (GITypeInfo *info)
@@ -392,7 +392,7 @@ gi_type_info_get_storage_type (GITypeInfo *info)
  * This function fills in the appropriate field of @arg with the value extracted
  * from @hash_pointer, depending on @storage_type.
  *
- * Since: 1.72
+ * Since: 2.80
  */
 void
 gi_type_tag_argument_from_hash_pointer (GITypeTag   storage_type,
@@ -465,7 +465,7 @@ gi_type_tag_argument_from_hash_pointer (GITypeTag   storage_type,
  * This function fills in the appropriate field of @arg with the value extracted
  * from @hash_pointer, depending on the storage type of @info.
  *
- * Since: 1.66
+ * Since: 2.80
  */
 void
 gi_type_info_argument_from_hash_pointer (GITypeInfo *info,
@@ -496,7 +496,7 @@ gi_type_info_argument_from_hash_pointer (GITypeInfo *info,
  *
  * Returns: A stuffed pointer, that can be stored in a #GHashTable, for example
  *
- * Since: 1.72
+ * Since: 2.80
  */
 gpointer
 gi_type_tag_hash_pointer_from_argument (GITypeTag   storage_type,
@@ -560,7 +560,7 @@ gi_type_tag_hash_pointer_from_argument (GITypeTag   storage_type,
  *
  * Returns: A stuffed pointer, that can be stored in a #GHashTable, for example
  *
- * Since: 1.66
+ * Since: 2.80
  */
 gpointer
 gi_type_info_hash_pointer_from_argument (GITypeInfo *info,

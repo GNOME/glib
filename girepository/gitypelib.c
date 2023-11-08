@@ -2242,7 +2242,7 @@ static GSList *library_paths;
  * path (ie. LD_LIBRARY_PATH and DT_RPATH in ELF systems).
  * See the documentation of your dynamic linker for full details.
  *
- * Since: 1.36
+ * Since: 2.80
  */
 void
 gi_repository_prepend_library_path (const char *directory)

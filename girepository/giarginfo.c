@@ -175,7 +175,7 @@ gi_arg_info_may_be_null (GIArgInfo *info)
  * Obtain if an argument is only useful in C.
  *
  * Returns: %TRUE if argument is only useful in C.
- * Since: 1.30
+ * Since: 2.80
  */
 gboolean
 gi_arg_info_is_skip (GIArgInfo *info)

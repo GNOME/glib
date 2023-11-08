@@ -141,7 +141,7 @@ gi_object_info_get_abstract (GIObjectInfo *info)
  *
  * Returns: %TRUE if the object type is final
  *
- * Since: 1.70
+ * Since: 2.80
  */
 gboolean
 gi_object_info_get_final (GIObjectInfo *info)

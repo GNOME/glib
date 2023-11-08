@@ -468,7 +468,7 @@ register_internal (GIRepository *repository,
  * Returns: (transfer full): Zero-terminated string array of immediate versioned
  *   dependencies
  *
- * Since: 1.44
+ * Since: 2.80
  */
 char **
 gi_repository_get_immediate_dependencies (GIRepository *repository,
@@ -943,7 +943,7 @@ find_by_error_domain_foreach (gpointer key,
  *
  * Returns: (transfer full): #GIEnumInfo representing metadata about @domain's
  * enum type, or %NULL
- * Since: 1.30
+ * Since: 2.80
  */
 GIEnumInfo *
 gi_repository_find_by_error_domain (GIRepository *repository,
@@ -1002,7 +1002,7 @@ gi_repository_find_by_error_domain (GIRepository *repository,
  * returning a concrete class of #GLocalFile, which is a #GType we
  * see at runtime, but not statically.
  *
- * Since: 1.62
+ * Since: 2.80
  */
 void
 gi_repository_get_object_gtype_interfaces (GIRepository      *repository,

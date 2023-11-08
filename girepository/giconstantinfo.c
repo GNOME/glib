@@ -75,7 +75,7 @@ gi_constant_info_get_type (GIConstantInfo *info)
  *
  * Free the value returned from gi_constant_info_get_value().
  *
- * Since: 1.32
+ * Since: 2.80
  */
 void
 gi_constant_info_free_value (GIConstantInfo *info,

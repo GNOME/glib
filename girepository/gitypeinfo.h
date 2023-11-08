@@ -47,7 +47,7 @@ G_BEGIN_DECLS
  *
  * Checks if @tag is a basic type.
  *
- * Since: 1.72
+ * Since: 2.80
  */
 #define GI_TYPE_TAG_IS_BASIC(tag) ((tag) < GI_TYPE_TAG_ARRAY || (tag) == GI_TYPE_TAG_UNICHAR)
 
@@ -57,7 +57,7 @@ G_BEGIN_DECLS
  *
  * Checks if @tag is a numeric type. That is, integer or floating point.
  *
- * Since: 1.72
+ * Since: 2.80
  */
 #define GI_TYPE_TAG_IS_NUMERIC(tag) ((tag) >= GI_TYPE_TAG_INT8 && (tag) <= GI_TYPE_TAG_DOUBLE)
 
@@ -68,7 +68,7 @@ G_BEGIN_DECLS
  * Checks if @tag is a container type. That is, a type which may have a nonnull
  * return from gi_type_info_get_param_type().
  *
- * Since: 1.72
+ * Since: 2.80
  */
  #define GI_TYPE_TAG_IS_CONTAINER(tag) ((tag) == GI_TYPE_TAG_ARRAY || \
     ((tag) >= GI_TYPE_TAG_GLIST && (tag) <= GI_TYPE_TAG_GHASH))

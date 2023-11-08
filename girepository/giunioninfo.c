@@ -279,7 +279,7 @@ gi_union_info_get_alignment (GIUnionInfo *info)
  *
  * Returns: (transfer none) (nullable): the name of the copy function
  *
- * Since: 1.76
+ * Since: 2.80
  */
 const char *
 gi_union_info_get_copy_function (GIUnionInfo *info)
@@ -306,7 +306,7 @@ gi_union_info_get_copy_function (GIUnionInfo *info)
  *
  * Returns: (transfer none) (nullable): the name of the free function
  *
- * Since: 1.76
+ * Since: 2.80
  */
 const char *
 gi_union_info_get_free_function (GIUnionInfo *info)

@@ -117,7 +117,7 @@ gi_struct_info_get_field (GIStructInfo *info,
  *
  * Obtain the type information for field named @name.
  *
- * Since: 1.46
+ * Since: 2.80
  * Returns: (transfer full): the #GIFieldInfo or %NULL if not found,
  * free it with gi_base_info_unref() when done.
  */
@@ -293,7 +293,7 @@ gi_struct_info_is_gtype_struct (GIStructInfo *info)
  *
  * Returns: (transfer none) (nullable): the name of the copy function
  *
- * Since: 1.76
+ * Since: 2.80
  */
 const char *
 gi_struct_info_get_copy_function (GIStructInfo *info)
@@ -320,7 +320,7 @@ gi_struct_info_get_copy_function (GIStructInfo *info)
  *
  * Returns: (transfer none) (nullable): the name of the free function
  *
- * Since: 1.76
+ * Since: 2.80
  */
 const char *
 gi_struct_info_get_free_function (GIStructInfo *info)

@@ -297,7 +297,7 @@ gi_interface_info_get_signal (GIInterfaceInfo *info,
  *
  * Returns: (transfer full): Info for the signal with name @name in @info, or
  * %NULL on failure.
- * Since: 1.34
+ * Since: 2.80
  */
 GISignalInfo *
 gi_interface_info_find_signal (GIInterfaceInfo *info,

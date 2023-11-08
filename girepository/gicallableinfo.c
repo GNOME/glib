@@ -87,7 +87,7 @@ signature_offset (GICallableInfo *info)
  *
  * TODO
  *
- * Since: 1.34
+ * Since: 2.80
  * Returns: %TRUE if this #GICallableInfo can throw a #GError
  */
 gboolean
@@ -141,7 +141,7 @@ gi_callable_info_can_throw_gerror (GICallableInfo *info)
  * or "this" object.
  *
  * Returns: %TRUE if @info is a method, %FALSE otherwise
- * Since: 1.34
+ * Since: 2.80
  */
 gboolean
 gi_callable_info_is_method (GICallableInfo *info)
@@ -293,7 +293,7 @@ gi_callable_info_get_caller_owns (GICallableInfo *info)
  * Obtains the ownership transfer for the instance argument.
  * #GITransfer contains a list of possible transfer values.
  *
- * Since: 1.42
+ * Since: 2.80
  * Returns: the transfer mode of the instance argument
  */
 GITransfer
@@ -489,7 +489,7 @@ gi_callable_info_iterate_return_attributes (GICallableInfo   *info,
  * The @interface_type argument only applies if @return_tag is
  * %GI_TYPE_TAG_INTERFACE. Otherwise it is ignored.
  *
- * Since: 1.72
+ * Since: 2.80
  */
 void
 gi_type_tag_extract_ffi_return_value (GITypeTag         return_tag,
