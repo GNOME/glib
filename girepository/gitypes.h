@@ -417,16 +417,6 @@ typedef enum {
  */
 #define GI_TYPE_TAG_N_TYPES (GI_TYPE_TAG_UNICHAR+1)
 
-#ifndef __GTK_DOC_IGNORE__
-/* These were removed and no longer appear in the typelib;
- * instead, the machine-specific versions like INT32 are
- * always used.
- */
-#define GI_TYPE_TAG_SHORT GI_TYPE_TAG_SHORT_WAS_REMOVED
-#define GI_TYPE_TAG_INT   GI_TYPE_TAG_INT_WAS_REMOVED
-#define GI_TYPE_TAG_LONG  GI_TYPE_TAG_LONG_WAS_REMOVED
-#endif
-
 /**
  * GIArrayType:
  * @GI_ARRAY_TYPE_C: a C array, char[] for instance
