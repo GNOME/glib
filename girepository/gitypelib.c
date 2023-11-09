@@ -2378,7 +2378,7 @@ gi_typelib_ensure_open (GITypelib *typelib)
 
 /**
  * gi_typelib_new_from_memory: (skip)
- * @memory: address of memory chunk containing the typelib
+ * @memory: (array length=len): address of memory chunk containing the typelib
  * @len: length of memory chunk containing the typelib
  * @error: a #GError
  *
@@ -2387,7 +2387,7 @@ gi_typelib_ensure_open (GITypelib *typelib)
  * The memory block pointed to by @typelib will be automatically freed when the
  * repository is destroyed.
  *
- * Returns: the new #GITypelib
+ * Returns: (transfer full): the new #GITypelib
  * Since: 2.80
  */
 GITypelib *
@@ -2411,13 +2411,13 @@ gi_typelib_new_from_memory (guint8  *memory,
 
 /**
  * gi_typelib_new_from_const_memory: (skip)
- * @memory: address of memory chunk containing the typelib
+ * @memory: (array length=len): address of memory chunk containing the typelib
  * @len: length of memory chunk containing the typelib
  * @error: a #GError
  *
  * Creates a new `GITypelib` from a memory location.
  *
- * Returns: the new #GITypelib
+ * Returns: (transfer full): the new #GITypelib
  * Since: 2.80
  */
 GITypelib *
@@ -2441,13 +2441,13 @@ gi_typelib_new_from_const_memory (const guchar  *memory,
 
 /**
  * gi_typelib_new_from_mapped_file: (skip)
- * @mfile: a [type@GLib.MappedFile], that will be freed when the repository is
- *   destroyed
+ * @mfile: (transfer full): a [type@GLib.MappedFile], that will be freed when
+ *   the repository is destroyed
  * @error: a #GError
  *
  * Creates a new `GITypelib` from a [type@GLib.MappedFile].
  *
- * Returns: the new #GITypelib
+ * Returns: (transfer full): the new #GITypelib
  * Since: 2.80
  */
 GITypelib *
@@ -2472,7 +2472,7 @@ gi_typelib_new_from_mapped_file (GMappedFile  *mfile,
 
 /**
  * gi_typelib_free:
- * @typelib: a #GITypelib
+ * @typelib: (transfer full): a #GITypelib
  *
  * Free a `GITypelib`.
  *
@@ -2513,7 +2513,8 @@ gi_typelib_get_namespace (GITypelib *typelib)
  * gi_typelib_symbol:
  * @typelib: the typelib
  * @symbol_name: name of symbol to be loaded
- * @symbol: returns a pointer to the symbol value
+ * @symbol: (out) (nullable): returns a pointer to the symbol value, or `NULL`
+ *   on failure
  *
  * Loads a symbol from a `GITypelib`.
  *
