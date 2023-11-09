@@ -33,16 +33,18 @@
 G_BEGIN_DECLS
 
 /**
- * GI_IS_TYPE_INFO
+ * GI_IS_TYPE_INFO:
  * @info: an info structure
  *
- * Checks if @info is a #GITypeInfo.
+ * Checks if @info is a [alias@GIRepository.TypeInfo].
+ *
+ * Since: 2.80
  */
 #define GI_IS_TYPE_INFO(info) \
     (gi_base_info_get_info_type ((GIBaseInfo*) info) ==  GI_INFO_TYPE_TYPE)
 
 /**
- * GI_TYPE_TAG_IS_BASIC
+ * GI_TYPE_TAG_IS_BASIC:
  * @tag: a type tag
  *
  * Checks if @tag is a basic type.
@@ -66,7 +68,7 @@ G_BEGIN_DECLS
  * @tag: a type tag
  *
  * Checks if @tag is a container type. That is, a type which may have a nonnull
- * return from gi_type_info_get_param_type().
+ * return from [method@GIRepository.TypeInfo.get_param_type].
  *
  * Since: 2.80
  */
