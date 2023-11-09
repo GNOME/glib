@@ -120,9 +120,9 @@ gi_type_info_get_tag (GITypeInfo *info)
  * @info: a #GITypeInfo
  * @n: index of the parameter
  *
- * Obtain the parameter type @n.
+ * Obtain the parameter type @n, or `-1` if the type is not an array.
  *
- * Returns: (transfer full): the param type info
+ * Returns: (transfer full) (nullable): the param type info
  */
 GITypeInfo *
 gi_type_info_get_param_type (GITypeInfo *info,
@@ -167,7 +167,7 @@ gi_type_info_get_param_type (GITypeInfo *info,
  * inspect the type of the returned #GIBaseInfo to further query whether it is
  * a concrete GObject, a GInterface, a structure, etc. using gi_base_info_get_type().
  *
- * Returns: (transfer full): the #GIBaseInfo, or %NULL. Free it with
+ * Returns: (transfer full) (nullable): the #GIBaseInfo, or %NULL. Free it with
  *   gi_base_info_unref() when done.
  */
 GIBaseInfo *
