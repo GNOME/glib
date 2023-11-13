@@ -43,6 +43,7 @@ content_files = [
   "overview.md",
   "file-attributes.md",
   "tls-overview.md",
+  "dbus-error.md",
 
   "migrating-gdbus.md",
   "migrating-gconf.md",
