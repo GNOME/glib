@@ -288,6 +288,9 @@ typedef struct {
   /* See guri.c */
   int (* g_uri_get_default_scheme_port) (const char *scheme);
 
+  /* See gutils.c */
+  gboolean (* g_set_prgname_once) (const gchar *prgname);
+
   /* Add other private functions here, initialize them in glib-private.c */
 } GLibPrivateVTable;
 
