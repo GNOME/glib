@@ -31,24 +31,15 @@
 #include "gmarshal-internal.h"
 
 /**
- * SECTION:gdbusobjectmanager
- * @short_description: Base type for D-Bus object managers
- * @include: gio/gio.h
- *
- * The #GDBusObjectManager type is the base type for service- and
- * client-side implementations of the standardized
- * [org.freedesktop.DBus.ObjectManager](http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager)
- * interface.
- *
- * See #GDBusObjectManagerClient for the client-side implementation
- * and #GDBusObjectManagerServer for the service-side implementation.
- */
-
-/**
  * GDBusObjectManager:
  *
- * #GDBusObjectManager is an opaque data structure and can only be accessed
- * using the following functions.
+ * The `GDBusObjectManager` type is the base type for service- and
+ * client-side implementations of the standardized
+ * [`org.freedesktop.DBus.ObjectManager`](http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager)
+ * interface.
+ *
+ * See [class@Gio.DBusObjectManagerClient] for the client-side implementation
+ * and [class@Gio.DBusObjectManagerServer] for the service-side implementation.
  */
 
 typedef GDBusObjectManagerIface GDBusObjectManagerInterface;
