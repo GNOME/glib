@@ -32,18 +32,6 @@
 
 #include "glibintl.h"
 
-/**
- * SECTION:gdbusnameowning
- * @title: Owning Bus Names
- * @short_description: Simple API for owning bus names
- * @include: gio/gio.h
- *
- * Convenience API for owning bus names.
- *
- * A simple example for owning a name can be found in
- * [gdbus-example-own-name.c](https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gdbus-example-own-name.c)
- */
-
 G_LOCK_DEFINE_STATIC (lock);
 
 /* ---------------------------------------------------------------------------------------------------- */

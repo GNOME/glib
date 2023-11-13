@@ -45,6 +45,7 @@ content_files = [
   "tls-overview.md",
   "dbus-error.md",
   "dbus-introspection.md",
+  "dbus-name-owning.md",
 
   "migrating-gdbus.md",
   "migrating-gconf.md",
