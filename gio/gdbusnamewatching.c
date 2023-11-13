@@ -33,18 +33,6 @@
 
 #include "glibintl.h"
 
-/**
- * SECTION:gdbusnamewatching
- * @title: Watching Bus Names
- * @short_description: Simple API for watching bus names
- * @include: gio/gio.h
- *
- * Convenience API for watching bus names.
- *
- * A simple example for watching a name can be found in
- * [gdbus-example-watch-name.c](https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gdbus-example-watch-name.c)
- */
-
 G_LOCK_DEFINE_STATIC (lock);
 
 /* ---------------------------------------------------------------------------------------------------- */
