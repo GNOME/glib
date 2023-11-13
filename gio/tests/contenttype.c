@@ -361,6 +361,57 @@ test_tree (void)
 }
 
 static void
+test_tree_invalid_encoding (void)
+{
+  gchar *path;
+  gchar *name;
+  GFile *tmpdir;
+  GFile *file;
+  gchar **types;
+  GError *error = NULL;
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/3168");
+
+#if defined(__APPLE__) || defined(G_OS_WIN32)
+  g_test_skip ("The OSX & Windows backends do not implement g_content_type_guess_for_tree()");
+  return;
+#endif
+
+  path = g_dir_make_tmp ("gio-test-tree-invalid-encoding-XXXXXX", &error);
+  g_assert_no_error (error);
+  tmpdir = g_file_new_for_path (path);
+  g_free (path);
+
+  name = g_strdup_printf ("\260");
+  file = g_file_get_child (tmpdir, name);
+  g_free (name);
+
+  g_file_replace_contents (file, "", 0, NULL, FALSE, 0, NULL, NULL, &error);
+  if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT))
+    {
+      g_test_skip ("Unable to create testing file with non-ASCII characters.");
+
+      g_object_unref (tmpdir);
+      g_object_unref (file);
+      g_clear_error (&error);
+
+      return;
+    }
+  g_assert_no_error (error);
+
+  types = g_content_type_guess_for_tree (tmpdir);
+  g_strfreev (types);
+
+  g_file_delete (file, NULL, &error);
+  g_assert_no_error (error);
+  g_object_unref (file);
+
+  g_file_delete (tmpdir, NULL, &error);
+  g_assert_no_error (error);
+  g_object_unref (tmpdir);
+}
+
+static void
 test_type_is_a_special_case (void)
 {
   gboolean res;
@@ -442,6 +493,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/contenttype/icon", test_icon);
   g_test_add_func ("/contenttype/symbolic-icon", test_symbolic_icon);
   g_test_add_func ("/contenttype/tree", test_tree);
+  g_test_add_func ("/contenttype/tree_invalid_encoding",
+                   test_tree_invalid_encoding);
   g_test_add_func ("/contenttype/test_type_is_a_special_case",
                    test_type_is_a_special_case);
 
