@@ -393,6 +393,7 @@ test_tree_invalid_encoding (void)
 
       g_object_unref (tmpdir);
       g_object_unref (file);
+      g_clear_error (&error);
 
       return;
     }
