@@ -226,6 +226,7 @@ endif
 # gi-docgen version
 expand_content_files = [
   'dbus-error.md',
+  'dbus-introspection.md',
   'file-attributes.md',
   'migrating-gconf.md',
   'migrating-gdbus.md',
