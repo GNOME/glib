@@ -24,17 +24,15 @@
 
 
 /**
- * SECTION:gsocketconnectable
- * @short_description: Interface for potential socket endpoints
- * @include: gio/gio.h
+ * GSocketConnectable:
  *
  * Objects that describe one or more potential socket endpoints
- * implement #GSocketConnectable. Callers can then use
- * g_socket_connectable_enumerate() to get a #GSocketAddressEnumerator
- * to try out each socket address in turn until one succeeds, as shown
- * in the sample code below.
+ * implement `GSocketConnectable`. Callers can then use
+ * [method@Gio.SocketConnectable.enumerate] to get a
+ * [class@Gio.SocketAddressEnumerator] to try out each socket address in turn
+ * until one succeeds, as shown in the sample code below.
  *
- * |[<!-- language="C" -->
+ * ```c
  * MyConnectionType *
  * connect_to_host (const char    *hostname,
  *                  guint16        port,
@@ -84,7 +82,7 @@
  *       return NULL;
  *     }
  * }
- * ]|
+ * ```
  */
 
 
