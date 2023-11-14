@@ -42,14 +42,6 @@ G_BEGIN_DECLS
 typedef struct _GDBusProxyClass   GDBusProxyClass;
 typedef struct _GDBusProxyPrivate GDBusProxyPrivate;
 
-/**
- * GDBusProxy:
- *
- * The #GDBusProxy structure contains only private data and
- * should only be accessed using the provided API.
- *
- * Since: 2.26
- */
 struct _GDBusProxy
 {
   /*< private >*/
