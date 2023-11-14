@@ -68,11 +68,6 @@ typedef GFile * (* GVfsFileLookupFunc) (GVfs       *vfs,
  */
 #define G_VFS_EXTENSION_POINT_NAME "gio-vfs"
 
-/**
- * GVfs:
- *
- * Virtual File System object.
- **/
 typedef struct _GVfsClass    GVfsClass;
 
 struct _GVfs

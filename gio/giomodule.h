@@ -49,11 +49,6 @@ void               g_io_module_scope_block   (GIOModuleScope      *scope,
 #define G_IO_IS_MODULE_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_IO_TYPE_MODULE))
 #define G_IO_MODULE_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_IO_TYPE_MODULE, GIOModuleClass))
 
-/**
- * GIOModule:
- *
- * Opaque module base class for extending GIO.
- **/
 typedef struct _GIOModuleClass GIOModuleClass;
 
 GIO_AVAILABLE_IN_ALL

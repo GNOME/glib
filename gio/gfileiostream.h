@@ -38,14 +38,6 @@ G_BEGIN_DECLS
 #define G_IS_FILE_IO_STREAM_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_FILE_IO_STREAM))
 #define G_FILE_IO_STREAM_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_FILE_IO_STREAM, GFileIOStreamClass))
 
-/**
- * GFileIOStream:
- *
- * A subclass of GIOStream for opened files. This adds
- * a few file-specific operations and seeking and truncating.
- *
- * #GFileIOStream implements GSeekable.
- **/
 typedef struct _GFileIOStreamClass    GFileIOStreamClass;
 typedef struct _GFileIOStreamPrivate  GFileIOStreamPrivate;
 

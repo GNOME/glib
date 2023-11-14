@@ -29,22 +29,11 @@
 /* Prelude {{{1 */
 
 /**
- * SECTION:gdbusmenumodel
- * @title: GDBusMenuModel
- * @short_description: A D-Bus GMenuModel implementation
- * @include: gio/gio.h
- * @see_also: [GMenuModel Exporter][gio-GMenuModel-exporter]
- *
- * #GDBusMenuModel is an implementation of #GMenuModel that can be used
- * as a proxy for a menu model that is exported over D-Bus with
- * g_dbus_connection_export_menu_model().
- */
-
-/**
  * GDBusMenuModel:
  *
- * #GDBusMenuModel is an opaque data structure and can only be accessed
- * using the following functions.
+ * `GDBusMenuModel` is an implementation of [class@Gio.MenuModel] that can be
+ * used as a proxy for a menu model that is exported over D-Bus with
+ * [method@Gio.DBusConnection.export_menu_model].
  */
 
 /*

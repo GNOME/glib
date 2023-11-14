@@ -76,13 +76,6 @@ typedef struct _GFileMonitor                  GFileMonitor;
 typedef struct _GFilterInputStream            GFilterInputStream;
 typedef struct _GFilterOutputStream           GFilterOutputStream;
 
-/**
- * GFile:
- *
- * A handle to an object implementing the #GFileIface interface.
- * Generally stores a location within the file system. Handles do not
- * necessarily represent files or directories that currently exist.
- **/
 typedef struct _GFile                         GFile; /* Dummy typedef */
 typedef struct _GFileInfo                     GFileInfo;
 
@@ -162,12 +155,6 @@ typedef struct _GSimpleAsyncResult            GSimpleAsyncResult;
  **/
 typedef struct _GSocket                       GSocket;
 
-/**
- * GSocketControlMessage:
- *
- * Base class for socket-type specific control messages that can be sent and
- * received over #GSocket.
- **/
 typedef struct _GSocketControlMessage         GSocketControlMessage;
 /**
  * GSocketClient:
@@ -638,13 +625,6 @@ typedef GType (*GDBusProxyTypeFunc) (GDBusObjectManagerClient   *manager,
 
 typedef struct _GTestDBus GTestDBus;
 
-/**
- * GSubprocess:
- *
- * A child process.
- *
- * Since: 2.40
- */
 typedef struct _GSubprocess                   GSubprocess;
 /**
  * GSubprocessLauncher:

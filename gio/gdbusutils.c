@@ -29,15 +29,6 @@
 
 #include "glibintl.h"
 
-/**
- * SECTION:gdbusutils
- * @title: D-Bus Utilities
- * @short_description: Various utilities related to D-Bus
- * @include: gio/gio.h
- *
- * Various utility routines related to D-Bus.
- */
-
 static gboolean
 is_valid_bus_name_character (gint c,
                              gboolean allow_hyphen)

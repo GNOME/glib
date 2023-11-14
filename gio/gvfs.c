@@ -31,12 +31,9 @@
 
 
 /**
- * SECTION:gvfs
- * @short_description: Virtual File System
- * @include: gio/gio.h
+ * GVfs:
  *
  * Entry point for using GIO functionality.
- *
  */
 
 static GRWLock additional_schemes_lock;

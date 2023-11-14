@@ -29,20 +29,6 @@
 
 #include "glibintl.h"
 
-/**
- * SECTION:gdbusintrospection
- * @title: D-Bus Introspection Data
- * @short_description: Node and interface description data structures
- * @include: gio/gio.h
- *
- * Various data structures and convenience routines to parse and
- * generate D-Bus introspection XML. Introspection information is
- * used when registering objects with g_dbus_connection_register_object().
- *
- * The format of D-Bus introspection XML is specified in the
- * [D-Bus specification](http://dbus.freedesktop.org/doc/dbus-specification.html#introspection-format)
- */
-
 /* ---------------------------------------------------------------------------------------------------- */
 
 #define _MY_DEFINE_BOXED_TYPE(TypeName, type_name) \

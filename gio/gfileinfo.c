@@ -2066,7 +2066,7 @@ g_file_info_get_symlink_target (GFileInfo *info)
  * g_file_info_get_etag:
  * @info: a #GFileInfo.
  *
- * Gets the [entity tag][gfile-etag] for a given
+ * Gets the [entity tag](iface.File.html#entity-tags) for a given
  * #GFileInfo. See %G_FILE_ATTRIBUTE_ETAG_VALUE.
  *
  * It is an error to call this if the #GFileInfo does not contain

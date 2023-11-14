@@ -36,16 +36,6 @@ G_BEGIN_DECLS
 #define G_IS_FILE(obj)	       (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_FILE))
 #define G_FILE_GET_IFACE(obj)  (G_TYPE_INSTANCE_GET_INTERFACE ((obj), G_TYPE_FILE, GFileIface))
 
-#if 0
-/**
- * GFile:
- *
- * A handle to an object implementing the #GFileIface interface.
- * Generally stores a location within the file system. Handles do not
- * necessarily represent files or directories that currently exist.
- **/
-typedef struct _GFile         		GFile; /* Dummy typedef */
-#endif
 typedef struct _GFileIface    		GFileIface;
 
 

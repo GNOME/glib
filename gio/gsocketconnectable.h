@@ -34,11 +34,6 @@ G_BEGIN_DECLS
 #define G_IS_SOCKET_CONNECTABLE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_SOCKET_CONNECTABLE))
 #define G_SOCKET_CONNECTABLE_GET_IFACE(obj)  (G_TYPE_INSTANCE_GET_INTERFACE ((obj), G_TYPE_SOCKET_CONNECTABLE, GSocketConnectableIface))
 
-/**
- * GSocketConnectable:
- *
- * Interface for objects that contain or generate a #GSocketAddress.
- */
 typedef struct _GSocketConnectableIface GSocketConnectableIface;
 
 /**

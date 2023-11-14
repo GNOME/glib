@@ -42,19 +42,18 @@
 #include "gtestutils.h"
 
 /**
- * SECTION:caches
- * @title: Caches
- * @short_description: caches allow sharing of complex data structures
- *                     to save resources
+ * GCache:
  *
- * A #GCache allows sharing of complex data structures, in order to
+ * A `GCache` allows sharing of complex data structures, in order to
  * save system resources.
  *
- * GCache uses keys and values. A GCache key describes the properties
- * of a particular resource. A GCache value is the actual resource.
+ * `GCache` uses keys and values. A `GCache` key describes the properties
+ * of a particular resource. A `GCache` value is the actual resource.
  *
- * GCache has been marked as deprecated, since this API is rarely
+ * `GCache` has been marked as deprecated, since this API is rarely
  * used and not very actively maintained.
+ *
+ * Deprecated:2.32: Use a #GHashTable instead
  */
 
 typedef struct _GCacheNode  GCacheNode;
@@ -66,15 +65,6 @@ struct _GCacheNode
   gint ref_count;
 };
 
-/**
- * GCache:
- *
- * The #GCache struct is an opaque data structure containing
- * information about a #GCache. It should only be accessed via the
- * following functions.
- *
- * Deprecated:2.32: Use a #GHashTable instead
- */
 struct _GCache
 {
   /* Called to create a value from a key */
@@ -147,6 +137,7 @@ g_cache_node_destroy (GCacheNode *node)
  * value corresponding to the key.
  *
  * Returns: a new #GCache value corresponding to the key.
+ * Deprecated:2.32: Use a #GHashTable instead
  */
 
 /**
@@ -157,6 +148,8 @@ g_cache_node_destroy (GCacheNode *node)
  * functions passed to g_cache_new(). The functions are passed a
  * pointer to the #GCache key or #GCache value and should free any
  * memory and other resources associated with it.
+ *
+ * Deprecated:2.32: Use a #GHashTable instead
  */
 
 /**
@@ -170,6 +163,7 @@ g_cache_node_destroy (GCacheNode *node)
  * should return a duplicate of the key.
  *
  * Returns: a copy of the #GCache key
+ * Deprecated:2.32: Use a #GHashTable instead
  */
 GCache*
 g_cache_new (GCacheNewFunc      value_new_func,

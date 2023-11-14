@@ -47,54 +47,56 @@
 #include "gmarshal-internal.h"
 
 /**
- * SECTION:gdbusproxy
- * @short_description: Client-side D-Bus interface proxy
- * @include: gio/gio.h
+ * GDBusProxy:
  *
- * #GDBusProxy is a base class used for proxies to access a D-Bus
- * interface on a remote object. A #GDBusProxy can be constructed for
+ * `GDBusProxy` is a base class used for proxies to access a D-Bus
+ * interface on a remote object. A `GDBusProxy` can be constructed for
  * both well-known and unique names.
  *
- * By default, #GDBusProxy will cache all properties (and listen to
+ * By default, `GDBusProxy` will cache all properties (and listen to
  * changes) of the remote object, and proxy all signals that get
  * emitted. This behaviour can be changed by passing suitable
- * #GDBusProxyFlags when the proxy is created. If the proxy is for a
+ * [flags@Gio.DBusProxyFlags] when the proxy is created. If the proxy is for a
  * well-known name, the property cache is flushed when the name owner
  * vanishes and reloaded when a name owner appears.
  *
- * The unique name owner of the proxy's name is tracked and can be read from
- * #GDBusProxy:g-name-owner. Connect to the #GObject::notify signal to
- * get notified of changes. Additionally, only signals and property
- * changes emitted from the current name owner are considered and
- * calls are always sent to the current name owner. This avoids a
- * number of race conditions when the name is lost by one owner and
- * claimed by another. However, if no name owner currently exists,
+ * The unique name owner of the proxy’s name is tracked and can be read from
+ * [property@Gio.DBusProxy:g-name-owner]. Connect to the
+ * [signal@GObject.Object::notify] signal to get notified of changes.
+ * Additionally, only signals and property changes emitted from the current name
+ * owner are considered and calls are always sent to the current name owner.
+ * This avoids a number of race conditions when the name is lost by one owner
+ * and claimed by another. However, if no name owner currently exists,
  * then calls will be sent to the well-known name which may result in
  * the message bus launching an owner (unless
- * %G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START is set).
+ * `G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START` is set).
  *
  * If the proxy is for a stateless D-Bus service, where the name owner may
- * be started and stopped between calls, the #GDBusProxy:g-name-owner tracking
- * of #GDBusProxy will cause the proxy to drop signal and property changes from
- * the service after it has restarted for the first time. When interacting
- * with a stateless D-Bus service, do not use #GDBusProxy — use direct D-Bus
- * method calls and signal connections.
+ * be started and stopped between calls, the
+ * [property@Gio.DBusProxy:g-name-owner] tracking of `GDBusProxy` will cause the
+ * proxy to drop signal and property changes from the service after it has
+ * restarted for the first time. When interacting with a stateless D-Bus
+ * service, do not use `GDBusProxy` — use direct D-Bus method calls and signal
+ * connections.
  *
- * The generic #GDBusProxy::g-properties-changed and
- * #GDBusProxy::g-signal signals are not very convenient to work with.
- * Therefore, the recommended way of working with proxies is to subclass
- * #GDBusProxy, and have more natural properties and signals in your derived
- * class. This [example][gdbus-example-gdbus-codegen] shows how this can
- * easily be done using the [gdbus-codegen][gdbus-codegen] tool.
+ * The generic [signal@Gio.DBusProxy::g-properties-changed] and
+ * [signal@Gio.DBusProxy::g-signal] signals are not very convenient to work
+ * with. Therefore, the recommended way of working with proxies is to subclass
+ * `GDBusProxy`, and have more natural properties and signals in your derived
+ * class. This [example](migrating-gdbus.html#using-gdbus-codegen) shows how
+ * this can easily be done using the [`gdbus-codegen`](gdbus-codegen.html) tool.
  *
- * A #GDBusProxy instance can be used from multiple threads but note
- * that all signals (e.g. #GDBusProxy::g-signal, #GDBusProxy::g-properties-changed
- * and #GObject::notify) are emitted in the
- * [thread-default main context][g-main-context-push-thread-default]
- * of the thread where the instance was constructed.
+ * A `GDBusProxy` instance can be used from multiple threads but note
+ * that all signals (e.g. [signal@Gio.DBusProxy::g-signal],
+ * [signal@Gio.DBusProxy::g-properties-changed] and
+ * [signal@GObject.Object::notify]) are emitted in the thread-default main
+ * context (see [method@GLib.MainContext.push_thread_default]) of the thread
+ * where the instance was constructed.
  *
  * An example using a proxy for a well-known name can be found in
- * [gdbus-example-watch-proxy.c](https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gdbus-example-watch-proxy.c)
+ * [`gdbus-example-watch-proxy.c`](https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gdbus-example-watch-proxy.c).
+ *
+ * Since: 2.26
  */
 
 /* lock protecting the mutable properties: name_owner, timeout_msec,

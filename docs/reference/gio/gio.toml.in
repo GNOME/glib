@@ -44,6 +44,14 @@ content_files = [
   "file-attributes.md",
   "tls-overview.md",
 
+  "error.md",
+
+  "dbus-error.md",
+  "dbus-introspection.md",
+  "dbus-name-owning.md",
+  "dbus-name-watching.md",
+  "dbus-utils.md",
+
   "migrating-gdbus.md",
   "migrating-gconf.md",
   "migrating-gnome-vfs.md",
