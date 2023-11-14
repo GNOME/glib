@@ -152,7 +152,9 @@ gi_typelib_hash_builder_pack (GITypelibHashBuilder *builder, guint8* mem, guint3
   guint16 *table;
   GHashTableIter hashiter;
   gpointer key, value;
+#ifndef G_DISABLE_ASSERT
   guint32 num_elts;
+#endif
   guint8 *packed_mem;
 
   g_return_if_fail (builder != NULL);
@@ -170,7 +172,9 @@ gi_typelib_hash_builder_pack (GITypelibHashBuilder *builder, guint8* mem, guint3
 
   table = (guint16*) (mem + builder->dirmap_offset);
 
+#ifndef G_DISABLE_ASSERT
   num_elts = g_hash_table_size (builder->strings);
+#endif
   g_hash_table_iter_init (&hashiter, builder->strings);
   while (g_hash_table_iter_next (&hashiter, &key, &value))
     {

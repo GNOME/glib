@@ -413,6 +413,7 @@ gi_typelib_get_dir_entry_by_error_domain (GITypelib *typelib,
 void
 gi_typelib_check_sanity (void)
 {
+#ifndef G_DISABLE_ASSERT
   /* Check that struct layout is as we expect */
 
   gboolean size_check_ok = TRUE;
@@ -461,6 +462,7 @@ gi_typelib_check_sanity (void)
 #undef CHECK_SIZE
 
   g_assert (size_check_ok);
+#endif  /* !G_DISABLE_ASSERT */
 }
 
 
