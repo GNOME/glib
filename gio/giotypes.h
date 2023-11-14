@@ -76,13 +76,6 @@ typedef struct _GFileMonitor                  GFileMonitor;
 typedef struct _GFilterInputStream            GFilterInputStream;
 typedef struct _GFilterOutputStream           GFilterOutputStream;
 
-/**
- * GFile:
- *
- * A handle to an object implementing the #GFileIface interface.
- * Generally stores a location within the file system. Handles do not
- * necessarily represent files or directories that currently exist.
- **/
 typedef struct _GFile                         GFile; /* Dummy typedef */
 typedef struct _GFileInfo                     GFileInfo;
 
