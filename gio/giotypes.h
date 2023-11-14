@@ -155,12 +155,6 @@ typedef struct _GSimpleAsyncResult            GSimpleAsyncResult;
  **/
 typedef struct _GSocket                       GSocket;
 
-/**
- * GSocketControlMessage:
- *
- * Base class for socket-type specific control messages that can be sent and
- * received over #GSocket.
- **/
 typedef struct _GSocketControlMessage         GSocketControlMessage;
 /**
  * GSocketClient:
