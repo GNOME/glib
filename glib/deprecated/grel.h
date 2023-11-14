@@ -43,29 +43,6 @@ struct _GTuples
   guint len;
 };
 
-/* GRelation
- *
- * Indexed Relations.  Imagine a really simple table in a
- * database.  Relations are not ordered.  This data type is meant for
- * maintaining a N-way mapping.
- *
- * g_relation_new() creates a relation with FIELDS fields
- *
- * g_relation_destroy() frees all resources
- * g_tuples_destroy() frees the result of g_relation_select()
- *
- * g_relation_index() indexes relation FIELD with the provided
- *   equality and hash functions.  this must be done before any
- *   calls to insert are made.
- *
- * g_relation_insert() inserts a new tuple.  you are expected to
- *   provide the right number of fields.
- *
- * g_relation_delete() deletes all relations with KEY in FIELD
- * g_relation_select() returns ...
- * g_relation_count() counts ...
- */
-
 GLIB_DEPRECATED_IN_2_26
 GRelation* g_relation_new     (gint         fields);
 GLIB_DEPRECATED_IN_2_26
