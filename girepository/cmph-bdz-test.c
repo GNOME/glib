@@ -40,7 +40,7 @@ build (void)
 
   c = cmph_new (config);
   size = cmph_size (c);
-  g_assert (size == g_strv_length (strings));
+  g_assert_cmpuint (size, ==, g_strv_length (strings));
 
   return c;
 }
@@ -57,7 +57,7 @@ assert_hashes_unique (guint    n_hashes,
       for (j = 0; j < n_hashes; j++)
 	{
 	  if (j != i)
-	    g_assert (hashes[i] != hashes[j]);
+	    g_assert_cmpuint (hashes[i], !=, hashes[j]);
 	}
     }
 }
@@ -75,15 +75,18 @@ test_search (void)
 
   i = 0;
   hash = cmph_search (c, "foo", 3);
-  g_assert (hash >= 0 && hash < size);
+  g_assert_cmpuint (hash, >=, 0);
+  g_assert_cmpuint (hash, <, size);
   hashes[i++] = hash;
 
   hash = cmph_search (c, "bar", 3);
-  g_assert (hash >= 0 && hash < size);
+  g_assert_cmpuint (hash, >=, 0);
+  g_assert_cmpuint (hash, <, size);
   hashes[i++] = hash;
 
   hash = cmph_search (c, "baz", 3);
-  g_assert (hash >= 0 && hash < size);
+  g_assert_cmpuint (hash, >=, 0);
+  g_assert_cmpuint (hash, <, size);
   hashes[i++] = hash;
 
   assert_hashes_unique (G_N_ELEMENTS (hashes), &hashes[0]);
@@ -111,15 +114,18 @@ test_search_packed (void)
 
   i = 0;
   hash = cmph_search_packed (buf, "foo", 3);
-  g_assert (hash >= 0 && hash < size);
+  g_assert_cmpuint (hash, >=, 0);
+  g_assert_cmpuint (hash, <, size);
   hashes[i++] = hash;
 
   hash = cmph_search_packed (buf, "bar", 3);
-  g_assert (hash >= 0 && hash < size);
+  g_assert_cmpuint (hash, >=, 0);
+  g_assert_cmpuint (hash, <, size);
   hashes[i++] = hash;
 
   hash = cmph_search_packed (buf, "baz", 3);
-  g_assert (hash >= 0 && hash < size);
+  g_assert_cmpuint (hash, >=, 0);
+  g_assert_cmpuint (hash, <, size);
   hashes[i++] = hash;
 
   assert_hashes_unique (G_N_ELEMENTS (hashes), &hashes[0]);
