@@ -229,6 +229,7 @@ expand_content_files = [
   'dbus-introspection.md',
   'dbus-name-owning.md',
   'dbus-name-watching.md',
+  'dbus-utils.md',
   'file-attributes.md',
   'migrating-gconf.md',
   'migrating-gdbus.md',
