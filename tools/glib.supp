@@ -1278,3 +1278,47 @@
 	...
 	fun:xdg_mime_init
 }
+
+# One-time allocations for default log writer lock and domains
+{
+	should_drop_message_rw_lock
+	Memcheck:Leak
+	match-leak-kinds: reachable
+	fun:malloc
+	fun:g_rw_lock_impl_new
+	fun:g_rw_lock_get_impl
+	fun:g_rw_lock_reader_lock
+	fun:should_drop_message
+}
+
+{
+	should_drop_message_strdup
+	Memcheck:Leak
+	match-leak-kinds: reachable
+	fun:malloc
+	fun:g_malloc
+	fun:g_strdup
+	fun:g_strdup_inline
+	fun:should_drop_message
+}
+
+{
+	g_log_writer_default_set_debug_strdup
+	Memcheck:Leak
+	match-leak-kinds: reachable
+	fun:malloc
+	fun:g_malloc
+	fun:g_strdup_inline
+	fun:g_log_writer_default_set_debug_domains
+}
+
+{
+	g_log_writer_default_set_debug_rw_lock
+	Memcheck:Leak
+	match-leak-kinds: reachable
+	fun:malloc
+	fun:g_rw_lock_impl_new
+	fun:g_rw_lock_get_impl
+	fun:g_rw_lock_writer_lock
+	fun:g_log_writer_default_set_debug_domains
+}
