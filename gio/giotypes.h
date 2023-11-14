@@ -625,13 +625,6 @@ typedef GType (*GDBusProxyTypeFunc) (GDBusObjectManagerClient   *manager,
 
 typedef struct _GTestDBus GTestDBus;
 
-/**
- * GSubprocess:
- *
- * A child process.
- *
- * Since: 2.40
- */
 typedef struct _GSubprocess                   GSubprocess;
 /**
  * GSubprocessLauncher:
