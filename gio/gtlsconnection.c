@@ -34,25 +34,15 @@
 #include "gmarshal-internal.h"
 
 /**
- * SECTION:gtlsconnection
- * @short_description: TLS connection type
- * @include: gio/gio.h
- *
- * #GTlsConnection is the base TLS connection class type, which wraps
- * a #GIOStream and provides TLS encryption on top of it. Its
- * subclasses, #GTlsClientConnection and #GTlsServerConnection,
- * implement client-side and server-side TLS, respectively.
- *
- * For DTLS (Datagram TLS) support, see #GDtlsConnection.
- *
- * Since: 2.28
- */
-
-/**
  * GTlsConnection:
  *
- * Abstract base class for the backend-specific #GTlsClientConnection
- * and #GTlsServerConnection types.
+ * `GTlsConnection` is the base TLS connection class type, which wraps
+ * a [class@Gio.IOStream] and provides TLS encryption on top of it. Its
+ * subclasses, [iface@Gio.TlsClientConnection] and
+ * [iface@Gio.TlsServerConnection], implement client-side and server-side TLS,
+ * respectively.
+ *
+ * For DTLS (Datagram TLS) support, see [iface@Gio.DtlsConnection].
  *
  * Since: 2.28
  */
