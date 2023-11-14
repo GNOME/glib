@@ -1314,6 +1314,9 @@ compare_version (const char *v1,
   success = parse_version (v2, &v2_major, &v2_minor);
   g_assert (success);
 
+  /* Avoid a compiler warning about `success` being unused with G_DISABLE_ASSERT */
+  (void) success;
+
   if (v1_major > v2_major)
     return 1;
   else if (v2_major > v1_major)
