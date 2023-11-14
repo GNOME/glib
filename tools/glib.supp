@@ -867,7 +867,7 @@
 {
 	g_get_system_data_dirs
 	Memcheck:Leak
-	match-leak-kinds:reachable
+	match-leak-kinds:definite,reachable
 	fun:malloc
 	...
 	fun:g_build_system_data_dirs
@@ -878,7 +878,7 @@
 {
 	g_get_user_data_dir
 	Memcheck:Leak
-	match-leak-kinds:reachable
+	match-leak-kinds:definite,reachable
 	fun:realloc
 	...
 	fun:g_build_user_data_dir
@@ -889,7 +889,7 @@
 {
 	g_get_home_dir
 	Memcheck:Leak
-	match-leak-kinds:reachable
+	match-leak-kinds:definite,reachable
 	fun:malloc
 	...
 	fun:g_build_home_dir

@@ -1883,6 +1883,7 @@ g_build_user_data_dir (void)
   if (!data_dir || !data_dir[0])
     {
       gchar *home_dir = g_build_home_dir ();
+      g_free (data_dir);
       data_dir = g_build_filename (home_dir, ".local", "share", NULL);
       g_free (home_dir);
     }

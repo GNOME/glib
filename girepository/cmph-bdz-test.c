@@ -42,6 +42,10 @@ build (void)
   size = cmph_size (c);
   g_assert_cmpuint (size, ==, g_strv_length (strings));
 
+  cmph_config_destroy (config);
+  cmph_io_vector_adapter_destroy (io);
+  g_strfreev (strings);
+
   return c;
 }
 
@@ -90,6 +94,8 @@ test_search (void)
   hashes[i++] = hash;
 
   assert_hashes_unique (G_N_ELEMENTS (hashes), &hashes[0]);
+
+  cmph_destroy (c);
 }
 
 static void
@@ -129,6 +135,8 @@ test_search_packed (void)
   hashes[i++] = hash;
 
   assert_hashes_unique (G_N_ELEMENTS (hashes), &hashes[0]);
+
+  g_free (buf);
 }
 
 int
