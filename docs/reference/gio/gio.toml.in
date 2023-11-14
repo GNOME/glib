@@ -43,6 +43,9 @@ content_files = [
   "overview.md",
   "file-attributes.md",
   "tls-overview.md",
+
+  "error.md",
+
   "dbus-error.md",
   "dbus-introspection.md",
   "dbus-name-owning.md",

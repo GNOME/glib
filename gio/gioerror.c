@@ -31,14 +31,6 @@
 #endif
 
 /**
- * SECTION:gioerror
- * @short_description: Error helper functions
- * @include: gio/gio.h
- *
- * Contains helper functions for reporting errors to the user.
- **/
-
-/**
  * g_io_error_quark:
  *
  * Gets the GIO Error Quark.
