@@ -66,6 +66,8 @@ content_files = [
   "goption.md",
   "data-structures.md",
   "unicode.md",
+
+  "threads-deprecated.md",
 ]
 content_images = [
   "file-name-encodings.png",

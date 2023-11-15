@@ -160,6 +160,7 @@ expand_content_files = [
   'running.md',
   'testing.md',
   'threads.md',
+  'threads-deprecated.md',
   'markup.md',
   'goption.md',
   'data-structures.md',
