@@ -51,6 +51,7 @@ content_files = [
   "dbus-name-owning.md",
   "dbus-name-watching.md",
   "dbus-utils.md",
+  "menu-exporter.md",
 
   "migrating-gdbus.md",
   "migrating-gconf.md",

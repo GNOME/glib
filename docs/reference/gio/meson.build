@@ -233,6 +233,7 @@ expand_content_files = [
   'error.md',
   'file-attributes.md',
   'io-scheduler.md',
+  'menu-exporter.md',
   'migrating-gconf.md',
   'migrating-gdbus.md',
   'migrating-gnome-vfs.md',
