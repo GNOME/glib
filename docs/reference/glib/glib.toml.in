@@ -63,6 +63,7 @@ content_files = [
   "testing.md",
   "threads.md",
   "markup.md",
+  "base64.md",
   "goption.md",
   "data-structures.md",
   "unicode.md",

@@ -145,6 +145,7 @@ endif
 
 # gi-docgen version
 expand_content_files = [
+  'base64.md',
   'building.md',
   'character-set.md',
   'compiling.md',
