@@ -26,31 +26,6 @@
 #include "gnetworkingprivate.h"
 
 /**
- * SECTION:gnetworking
- * @title: gnetworking.h
- * @short_description: System networking includes
- * @include: gio/gnetworking.h
- *
- * The `<gio/gnetworking.h>` header can be included to get
- * various low-level networking-related system headers, automatically
- * taking care of certain portability issues for you.
- *
- * This can be used, for example, if you want to call setsockopt()
- * on a #GSocket.
- *
- * Note that while WinSock has many of the same APIs as the
- * traditional UNIX socket API, most of them behave at least slightly
- * differently (particularly with respect to error handling). If you
- * want your code to work under both UNIX and Windows, you will need
- * to take these differences into account.
- *
- * Also, under GNU libc, certain non-portable functions are only visible
- * in the headers if you define %_GNU_SOURCE before including them. Note
- * that this symbol must be defined before including any headers, or it
- * may not take effect.
- */
-
-/**
  * g_networking_init:
  *
  * Initializes the platform networking libraries (eg, on Windows, this

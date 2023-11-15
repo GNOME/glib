@@ -237,6 +237,7 @@ expand_content_files = [
   'migrating-gconf.md',
   'migrating-gdbus.md',
   'migrating-gnome-vfs.md',
+  'networking.md',
   'overview.md',
   'tls-overview.md',
 ]

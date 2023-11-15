@@ -53,6 +53,8 @@ content_files = [
   "dbus-utils.md",
   "menu-exporter.md",
 
+  "networking.md",
+
   "migrating-gdbus.md",
   "migrating-gconf.md",
   "migrating-gnome-vfs.md",
