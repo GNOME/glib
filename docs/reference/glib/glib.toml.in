@@ -61,6 +61,7 @@ content_files = [
   "main-loop.md",
   "reference-counting.md",
   "testing.md",
+  "atomic.md",
   "threads.md",
   "markup.md",
   "base64.md",
