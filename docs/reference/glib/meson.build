@@ -159,6 +159,7 @@ expand_content_files = [
   'logging.md',
   'main-loop.md',
   'memory-slices.md',
+  'random.md',
   'reference-counting.md',
   'running.md',
   'testing.md',

@@ -64,6 +64,7 @@ content_files = [
   "testing.md",
   "atomic.md",
   "threads.md",
+  "random.md",
   "markup.md",
   "base64.md",
   "goption.md",
