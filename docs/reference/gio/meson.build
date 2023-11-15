@@ -239,6 +239,7 @@ expand_content_files = [
   'migrating-gnome-vfs.md',
   'networking.md',
   'overview.md',
+  'pollable-utils.md',
   'tls-overview.md',
 ]
 

@@ -46,6 +46,8 @@ content_files = [
 
   "error.md",
 
+  "pollable-utils.md",
+
   "dbus-error.md",
   "dbus-introspection.md",
   "dbus-name-owning.md",
