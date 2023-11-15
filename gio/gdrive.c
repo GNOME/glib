@@ -37,7 +37,7 @@
  * It’s generally only created for removable hardware or hardware with
  * removable media.
  *
- * `GDrive` is a container class for [class@Gio.Volume] objects that stem from
+ * `GDrive` is a container class for [iface@Gio.Volume] objects that stem from
  * the same piece of media. As such, `GDrive` abstracts a drive with
  * (or without) removable media and provides operations for querying
  * whether media is available, determining whether media change is

@@ -54,9 +54,9 @@
  * [method@Gio.Mount.unmount_with_operation] with (at least) the `GMount`
  * instance and a [type@Gio.AsyncReadyCallback].  The callback will be fired
  * when the operation has resolved (either with success or failure), and a
- * [struct@Gio.AsyncResult] structure will be passed to the callback.  That
+ * [iface@Gio.AsyncResult] structure will be passed to the callback.  That
  * callback should then call [method@Gio.Mount.unmount_with_operation_finish]
- * with the `GMount` and the [struct@Gio.AsyncResult] data to see if the
+ * with the `GMount` and the [iface@Gio.AsyncResult] data to see if the
  * operation was completed successfully.  If an `error` is present when
  * [method@Gio.Mount.unmount_with_operation_finish] is called, then it will be
  * filled with any error information.

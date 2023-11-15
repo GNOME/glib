@@ -39,7 +39,7 @@
  * `GVolume` is the moral equivalent of `GnomeVFSDrive`.
  *
  * Mounting a `GVolume` instance is an asynchronous operation. For more
- * information about asynchronous operations, see [class@Gio.AsyncResult] and
+ * information about asynchronous operations, see [iface@Gio.AsyncResult] and
  * [class@Gio.Task]. To mount a `GVolume`, first call [method@Gio.Volume.mount]
  * with (at least) the `GVolume` instance, optionally a
  * [class@Gio.MountOperation] object and a [type@Gio.AsyncReadyCallback].
@@ -50,10 +50,10 @@
  * for credentials.
  *
  * The callback will be fired when the operation has resolved (either
- * with success or failure), and a [class@Gio.AsyncResult] instance will be
+ * with success or failure), and a [iface@Gio.AsyncResult] instance will be
  * passed to the callback.  That callback should then call
  * [method@Gio.Volume.mount_finish] with the `GVolume` instance and the
- * [class@Gio.AsyncResult] data to see if the operation was completed
+ * [iface@Gio.AsyncResult] data to see if the operation was completed
  * successfully.  If a [type@GLib.Error] is present when
  * [method@Gio.Volume.mount_finish] is called, then it will be filled with any
  * error information.
