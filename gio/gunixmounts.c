@@ -88,18 +88,6 @@ static const char *_resolve_dev_root (void);
 #endif
 
 /**
- * SECTION:gunixmounts
- * @include: gio/gunixmounts.h
- * @short_description: UNIX mounts
- *
- * Routines for managing mounted UNIX mount points and paths.
- *
- * Note that `<gio/gunixmounts.h>` belongs to the UNIX-specific GIO
- * interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config
- * file when using it.
- */
-
-/**
  * GUnixMountType:
  * @G_UNIX_MOUNT_TYPE_UNKNOWN: Unknown UNIX mount type.
  * @G_UNIX_MOUNT_TYPE_FLOPPY: Floppy disk UNIX mount type.
