@@ -169,6 +169,7 @@ expand_content_files = [
   'goption.md',
   'data-structures.md',
   'unicode.md',
+  'uuid.md',
 ]
 
 glib_toml = configure_file(input: 'glib.toml.in', output: 'glib.toml', configuration: toml_conf)

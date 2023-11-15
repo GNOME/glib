@@ -69,6 +69,7 @@ content_files = [
   "base64.md",
   "goption.md",
   "data-structures.md",
+  "uuid.md",
   "unicode.md",
 
   "threads-deprecated.md",
