@@ -55,6 +55,8 @@ content_files = [
   "migrating-gdbus.md",
   "migrating-gconf.md",
   "migrating-gnome-vfs.md",
+
+  "io-scheduler.md",
 ]
 content_images = [
   "gvfs-overview.png",

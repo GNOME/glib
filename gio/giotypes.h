@@ -110,6 +110,9 @@ typedef struct _GIOExtension                  GIOExtension;
  * GIOSchedulerJob:
  *
  * Opaque class for defining and scheduling IO jobs.
+ *
+ * Deprecated: 2.36: Use [struct@GLib.ThreadPool] or
+ *   [method@Gio.Task.run_in_thread]
  **/
 typedef struct _GIOSchedulerJob               GIOSchedulerJob;
 typedef struct _GIOStreamAdapter              GIOStreamAdapter;
@@ -357,6 +360,8 @@ typedef void (* GFileMeasureProgressCallback) (gboolean reporting,
  *
  * Returns: %TRUE if this function should be called again to
  *    complete the job, %FALSE if the job is complete (or cancelled)
+ * Deprecated: 2.36: Use [struct@GLib.ThreadPool] or
+ *   [method@Gio.Task.run_in_thread]
  **/
 typedef gboolean (*GIOSchedulerJobFunc) (GIOSchedulerJob *job,
 					 GCancellable    *cancellable,
