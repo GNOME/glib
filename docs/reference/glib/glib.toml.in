@@ -58,6 +58,7 @@ content_files = [
   "memory-slices.md",
   "error-reporting.md",
   "logging.md",
+  "file-utils.md",
   "main-loop.md",
   "reference-counting.md",
   "testing.md",

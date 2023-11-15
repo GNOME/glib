@@ -152,6 +152,7 @@ expand_content_files = [
   'compiling.md',
   'cross-compiling.md',
   'error-reporting.md',
+  'file-utils.md',
   'gvariant-format-strings.md',
   'gvariant-text-format.md',
   'i18n.md',
