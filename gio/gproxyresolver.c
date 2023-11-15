@@ -46,6 +46,8 @@
  * [libproxy](https://github.com/libproxy/libproxy) and GNOME settings can be
  * found in [glib-networking](https://gitlab.gnome.org/GNOME/glib-networking).
  * GIO comes with an implementation for use inside Flatpak portals.
+ *
+ * Since: 2.26
  */
 
 /**
