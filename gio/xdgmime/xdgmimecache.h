@@ -70,7 +70,8 @@ int          _xdg_mime_cache_mime_type_equal              (const char *mime_a,
 int          _xdg_mime_cache_media_type_equal             (const char *mime_a,
 							   const char *mime_b);
 int          _xdg_mime_cache_mime_type_subclass           (const char *mime_a,
-							   const char *mime_b);
+							   const char *mime_b,
+							   const char **seen);
 char       **_xdg_mime_cache_list_mime_parents		  (const char *mime);
 const char  *_xdg_mime_cache_unalias_mime_type            (const char *mime);
 int          _xdg_mime_cache_get_max_buffer_extents       (void);
