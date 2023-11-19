@@ -835,13 +835,16 @@ xdg_mime_is_super_type (const char *mime)
 
 int
 _xdg_mime_mime_type_subclass (const char *mime,
-			      const char *base)
+			      const char *base,
+			      const char **seen)
 {
-  const char *umime, *ubase;
+  const char *umime, *ubase, *parent;
   const char **parents;
 
+  int first_seen = 0, i, ret = 0;
+
   if (_caches)
-    return _xdg_mime_cache_mime_type_subclass (mime, base);
+    return _xdg_mime_cache_mime_type_subclass (mime, base, NULL);
 
   umime = _xdg_mime_unalias_mime_type (mime);
   ubase = _xdg_mime_unalias_mime_type (base);
@@ -864,15 +867,39 @@ _xdg_mime_mime_type_subclass (const char *mime,
   if (strcmp (ubase, "application/octet-stream") == 0 &&
       strncmp (umime, "inode/", 6) != 0)
     return 1;
-  
+
+  if (!seen)
+    {
+      seen = calloc (1, sizeof (char *));
+      first_seen = 1;
+    }
+
   parents = _xdg_mime_parent_list_lookup (parent_list, umime);
   for (; parents && *parents; parents++)
     {
-      if (_xdg_mime_mime_type_subclass (*parents, ubase))
-	return 1;
+      parent = *parents;
+
+      /* Detect and avoid buggy circular relationships */
+      for (i = 0; seen[i] != NULL; i++)
+        if (parent == seen[i])
+          goto next_parent;
+      seen = realloc (seen, (i + 2) * sizeof (char *));
+      seen[i] = parent;
+      seen[i + 1] = NULL;
+
+      if (_xdg_mime_mime_type_subclass (parent, ubase, seen))
+        {
+          ret = 1;
+          goto done;
+        }
+
+    next_parent:
     }
 
-  return 0;
+done:
+  if (first_seen)
+    free (seen);
+  return ret;
 }
 
 int
@@ -881,7 +908,7 @@ xdg_mime_mime_type_subclass (const char *mime,
 {
   xdg_mime_init ();
 
-  return _xdg_mime_mime_type_subclass (mime, base);
+  return _xdg_mime_mime_type_subclass (mime, base, NULL);
 }
 
 char **

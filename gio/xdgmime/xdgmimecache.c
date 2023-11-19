@@ -751,8 +751,8 @@ cache_get_mime_type_for_data (const void *data,
       /* Pick glob-result R where mime_type inherits from R */
       for (n = 0; n < n_mime_types; n++)
         {
-          if (mime_types[n] && _xdg_mime_cache_mime_type_subclass(mime_types[n], mime_type))
-              return mime_types[n];
+          if (mime_types[n] && _xdg_mime_cache_mime_type_subclass (mime_types[n], mime_type, NULL))
+            return mime_types[n];
         }
       if (n == 0)
         {
@@ -901,13 +901,14 @@ is_super_type (const char *mime)
 
 int
 _xdg_mime_cache_mime_type_subclass (const char *mime,
-				    const char *base)
+				    const char *base,
+				    const char **seen)
 {
-  const char *umime, *ubase;
+  const char *umime, *ubase, *parent;
 
   xdg_uint32_t j;
-  int i, min, max, med, cmp;
-  
+  int i, k, min, max, med, cmp, first_seen = 0, ret = 0;
+
   umime = _xdg_mime_cache_unalias_mime_type (mime);
   ubase = _xdg_mime_cache_unalias_mime_type (base);
 
@@ -932,7 +933,13 @@ _xdg_mime_cache_mime_type_subclass (const char *mime,
   if (strcmp (ubase, "application/octet-stream") == 0 &&
       strncmp (umime, "inode/", 6) != 0)
     return 1;
- 
+
+  if (!seen)
+    {
+      seen = calloc (1, sizeof (char *));
+      first_seen = 1;
+    }
+
   for (i = 0; _caches[i]; i++)
     {
       XdgMimeCache *cache = _caches[i];
@@ -966,10 +973,23 @@ _xdg_mime_cache_mime_type_subclass (const char *mime,
 	      for (j = 0; j < n_parents; j++)
 		{
 		  parent_offset = GET_UINT32 (cache->buffer, offset + 4 + 4 * j);
-		  if (strcmp (cache->buffer + parent_offset, mime) != 0 &&
-		      strcmp (cache->buffer + parent_offset, umime) != 0 &&
-		      _xdg_mime_cache_mime_type_subclass (cache->buffer + parent_offset, ubase))
-		    return 1;
+		  parent = cache->buffer + parent_offset;
+
+		  /* Detect and avoid buggy circular relationships */
+		  for (k = 0; seen[k] != NULL; k++)
+		    if (parent == seen[k])
+		      goto next_parent;
+		  seen = realloc (seen, (k + 2) * sizeof (char *));
+		  seen[k] = parent;
+		  seen[k + 1] = NULL;
+
+		  if (_xdg_mime_cache_mime_type_subclass (parent, ubase, seen))
+		    {
+		      ret = 1;
+		      goto done;
+		    }
+
+	        next_parent:
 		}
 
 	      break;
@@ -977,7 +997,10 @@ _xdg_mime_cache_mime_type_subclass (const char *mime,
 	}
     }
 
-  return 0;
+done:
+  if (first_seen)
+    free (seen);
+  return ret;
 }
 
 const char *

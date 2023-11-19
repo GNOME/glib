@@ -125,7 +125,8 @@ void xdg_mime_set_dirs (const char * const *dirs);
 int          _xdg_mime_mime_type_equal             (const char *mime_a,
 						    const char *mime_b);
 int          _xdg_mime_mime_type_subclass          (const char *mime,
-						    const char *base);
+						    const char *base,
+						    const char **seen);
 const char  *_xdg_mime_unalias_mime_type           (const char *mime);
 
 
