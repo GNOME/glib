@@ -894,6 +894,7 @@ _xdg_mime_mime_type_subclass (const char *mime,
         }
 
     next_parent:
+      continue;
     }
 
 done:
