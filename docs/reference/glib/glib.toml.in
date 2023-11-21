@@ -51,6 +51,8 @@ content_files = [
   "character-set.md",
   "i18n.md",
 
+  "string-utils.md",
+
   "macros.md",
   "conversion-macros.md",
   "auto-cleanup.md",

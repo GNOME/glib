@@ -169,6 +169,7 @@ expand_content_files = [
   'goption.md',
   'data-structures.md',
   'shell.md',
+  'string-utils.md',
   'unicode.md',
   'uuid.md',
   'version.md',

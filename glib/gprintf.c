@@ -31,7 +31,7 @@
 /**
  * g_printf:
  * @format: a standard printf() format string, but notice 
- *          [string precision pitfalls][string-precision]
+ *          [string precision pitfalls](string-utils.html#string-precision-pitfalls)
  * @...: the arguments to insert in the output.
  *
  * An implementation of the standard printf() function which supports 
@@ -65,7 +65,7 @@ g_printf (gchar const *format,
  * g_fprintf:
  * @file: (not nullable): the stream to write to.
  * @format: a standard printf() format string, but notice 
- *          [string precision pitfalls][string-precision]
+ *          [string precision pitfalls](string-utils.html#string-precision-pitfalls)
  * @...: the arguments to insert in the output.
  *
  * An implementation of the standard fprintf() function which supports 
@@ -98,7 +98,7 @@ g_fprintf (FILE        *file,
  *          is up to the caller to ensure that the allocated buffer is large
  *          enough to hold the formatted result
  * @format: a standard printf() format string, but notice
- *          [string precision pitfalls][string-precision]
+ *          [string precision pitfalls](string-utils.html#string-precision-pitfalls)
  * @...: the arguments to insert in the output.
  *
  * An implementation of the standard sprintf() function which supports
@@ -136,7 +136,7 @@ g_sprintf (gchar       *string,
  * @n: the maximum number of bytes to produce (including the
  *     terminating nul character).
  * @format: a standard printf() format string, but notice
- *          [string precision pitfalls][string-precision]
+ *          [string precision pitfalls](string-utils.html#string-precision-pitfalls)
  * @...: the arguments to insert in the output.
  *
  * A safer form of the standard sprintf() function. The output is guaranteed
@@ -179,7 +179,7 @@ g_snprintf (gchar	*string,
 /**
  * g_vprintf:
  * @format: a standard printf() format string, but notice 
- *          [string precision pitfalls][string-precision]
+ *          [string precision pitfalls](string-utils.html#string-precision-pitfalls)
  * @args: the list of arguments to insert in the output.
  *
  * An implementation of the standard vprintf() function which supports 
@@ -204,7 +204,7 @@ g_vprintf (gchar const *format,
  * g_vfprintf:
  * @file: (not nullable): the stream to write to.
  * @format: a standard printf() format string, but notice 
- *          [string precision pitfalls][string-precision]
+ *          [string precision pitfalls](string-utils.html#string-precision-pitfalls)
  * @args: the list of arguments to insert in the output.
  *
  * An implementation of the standard fprintf() function which supports 
@@ -230,7 +230,7 @@ g_vfprintf (FILE        *file,
  * g_vsprintf:
  * @string: the buffer to hold the output.
  * @format: a standard printf() format string, but notice 
- *          [string precision pitfalls][string-precision]
+ *          [string precision pitfalls](string-utils.html#string-precision-pitfalls)
  * @args: the list of arguments to insert in the output.
  *
  * An implementation of the standard vsprintf() function which supports 
@@ -259,7 +259,7 @@ g_vsprintf (gchar	 *string,
  * @n: the maximum number of bytes to produce (including the 
  *     terminating nul character).
  * @format: a standard printf() format string, but notice 
- *          [string precision pitfalls][string-precision]
+ *          [string precision pitfalls](string-utils.html#string-precision-pitfalls)
  * @args: the list of arguments to insert in the output.
  *
  * A safer form of the standard vsprintf() function. The output is guaranteed
@@ -300,7 +300,7 @@ g_vsnprintf (gchar	 *string,
  * @string: (not optional) (nullable): the return location for the newly-allocated string,
  *   which will be %NULL if (and only if) this function fails
  * @format: (not nullable): a standard printf() format string, but notice
- *          [string precision pitfalls][string-precision]
+ *          [string precision pitfalls](string-utils.html#string-precision-pitfalls)
  * @args: the list of arguments to insert in the output.
  *
  * An implementation of the GNU vasprintf() function which supports 
