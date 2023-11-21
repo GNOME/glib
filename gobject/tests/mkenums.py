@@ -785,6 +785,32 @@ comment: {standard_bottom_comment}
             "7",
         )
 
+    def test_comma_in_enum_value(self):
+        """Test use of comma in enum value."""
+        h_contents = """
+        typedef enum {
+          ENUM_VALUE_WITH_COMMA = ',',
+        } TestCommaEnum;
+        """
+
+        result = self.runMkenumsWithHeader(h_contents)
+        self.assertEqual("", result.err)
+        self.assertSingleEnum(
+            result,
+            "TestCommaEnum",
+            "test_comma_enum",
+            "TEST_COMMA_ENUM",
+            "COMMA_ENUM",
+            "TEST",
+            "",
+            "enum",
+            "Enum",
+            "ENUM",
+            "ENUM_VALUE_WITH_COMMA",
+            "comma",
+            44,
+        )
+
 
 class TestRspMkenums(TestMkenums):
     """Run all tests again in @rspfile mode"""
