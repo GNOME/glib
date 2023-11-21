@@ -989,7 +989,8 @@ _xdg_mime_cache_mime_type_subclass (const char *mime,
 		      goto done;
 		    }
 
-	        next_parent:
+		next_parent:
+		  continue;
 		}
 
 	      break;
