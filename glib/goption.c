@@ -1814,7 +1814,7 @@ g_option_context_parse (GOptionContext   *context,
       else
 	prgname = platform_get_argv0 ();
 
-      g_set_prgname_once (prgname ? prgname : "<unknown");
+      g_set_prgname_once (prgname ? prgname : "<unknown>");
 
       g_free (prgname);
     }
