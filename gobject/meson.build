@@ -190,6 +190,7 @@ if enable_gir
       '-DGLIB_COMPILATION',
       '-DGETTEXT_PACKAGE="dummy"',
       '--symbol-prefix=glib',
+      '--library-path=' + meson.current_build_dir(),
       '--library=gobject-2.0',
     ],
   )
