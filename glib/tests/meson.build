@@ -12,14 +12,26 @@ glib_tests = {
   'cache' : {},
   'charset' : {},
   'checksum' : {},
-  'collate' : {},
+  'collate' : {
+    # musl: collate fail due to missing collation support in musl libc
+    # From https://wiki.musl-libc.org/roadmap#Open_future_goals
+    # "LC_COLLATE support for collation orders other than simple codepoint order"
+    'can_fail' : linux_libc == 'musl',
+  },
   'completion' : {},
   'cond' : {},
-  'convert' : {},
+  'convert' : {
+    # fails /conversion/illegal-sequence
+    # Possibly a bug or some POSIX incompatibility, not sure if here or in musl
+    'can_fail' : linux_libc == 'musl',
+  },
   'dataset' : {},
   'date' : {
-    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
-    'can_fail' : host_system == 'darwin',
+    # FIXME: darwin: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
+    # musl: /date/month_substring should be skipped but it's not. The fix should
+    # be on musl side: https://www.openwall.com/lists/musl/2023/08/10/3
+    # FIXME: musl: /date/strftime: https://gitlab.gnome.org/GNOME/glib/-/issues/3171
+    'can_fail' : host_system == 'darwin' or linux_libc == 'musl',
   },
   'dir' : {},
   'environment' : {
@@ -30,7 +42,10 @@ glib_tests = {
   'fileutils' : {},
   'gdatetime' : {
     'suite' : ['slow'],
-    'can_fail' : host_system == 'windows',
+    # musl: GDateTime/format_mixed/non_utf8_time_non_utf8_messages should be
+    # skipped but it's not. The fix should be on musl side:
+    # https://www.openwall.com/lists/musl/2023/08/10/3
+    'can_fail' : host_system == 'windows' or linux_libc == 'musl',
   },
   'guuid' : {},
   'gvariant' : {
@@ -70,7 +85,11 @@ glib_tests = {
   'node' : {},
   'once' : {},
   'onceinit' : {},
-  'option-context' : {},
+  'option-context' : {
+    # musl: /option/arg/repetition/locale should be skipped but it's not. The
+    # fix should be on musl side: https://www.openwall.com/lists/musl/2023/08/10/3
+    'can_fail' : linux_libc == 'musl',
+  },
   'option-argv0' : {},
   'overflow' : {},
   'overflow-fallback' : {
@@ -94,6 +113,8 @@ glib_tests = {
   'regex' : {
     'dependencies' : [pcre2],
     'c_args' : use_pcre2_static_flag ? ['-DPCRE2_STATIC'] : [],
+    # FIXME: musl: https://gitlab.gnome.org/GNOME/glib/-/issues/3159
+    'can_fail' : linux_libc == 'musl',
   },
   'relation' : {},
   'rwlock' : {},
