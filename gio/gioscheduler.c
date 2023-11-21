@@ -26,18 +26,6 @@
 #include "gcancellable.h"
 #include "gtask.h"
 
-/**
- * SECTION:gioscheduler
- * @short_description: I/O Scheduler
- * @include: gio/gio.h
- * 
- * As of GLib 2.36, #GIOScheduler is deprecated in favor of
- * #GThreadPool and #GTask.
- *
- * Schedules asynchronous I/O operations. #GIOScheduler integrates 
- * into the main event loop (#GMainLoop) and uses threads.
- */
-
 struct _GIOSchedulerJob {
   GList *active_link;
   GTask *task;
@@ -110,7 +98,7 @@ io_job_thread (GTask         *task,
  * by calling g_cancellable_cancel() or by calling 
  * g_io_scheduler_cancel_all_jobs().
  *
- * Deprecated: use #GThreadPool or g_task_run_in_thread()
+ * Deprecated: 2.36: use #GThreadPool or g_task_run_in_thread()
  **/
 void
 g_io_scheduler_push_job (GIOSchedulerJobFunc  job_func,
@@ -157,7 +145,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
  * A job is cancellable if a #GCancellable was passed into
  * g_io_scheduler_push_job().
  *
- * Deprecated: You should never call this function, since you don't
+ * Deprecated: 2.36: You should never call this function, since you don't
  * know how other libraries in your program might be making use of
  * gioscheduler.
  **/
@@ -236,7 +224,7 @@ mainloop_proxy_free (MainLoopProxy *proxy)
  *
  * Returns: The return value of @func
  *
- * Deprecated: Use g_main_context_invoke().
+ * Deprecated: 2.36: Use g_main_context_invoke().
  **/
 gboolean
 g_io_scheduler_job_send_to_mainloop (GIOSchedulerJob *job,
@@ -295,7 +283,7 @@ g_io_scheduler_job_send_to_mainloop (GIOSchedulerJob *job,
  * @func is called, either by passing %NULL as @notify to 
  * g_io_scheduler_push_job() or by using refcounting for @user_data.
  *
- * Deprecated: Use g_main_context_invoke().
+ * Deprecated: 2.36: Use g_main_context_invoke().
  **/
 void
 g_io_scheduler_job_send_to_mainloop_async (GIOSchedulerJob *job,

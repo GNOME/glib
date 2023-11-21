@@ -28,21 +28,6 @@
 #include "gdbusnamewatching.h"
 #include "gdbuserror.h"
 
-/**
- * SECTION:gmenuexporter
- * @title: GMenuModel exporter
- * @short_description: Export GMenuModels on D-Bus
- * @include: gio/gio.h
- * @see_also: #GMenuModel, #GDBusMenuModel
- *
- * These functions support exporting a #GMenuModel on D-Bus.
- * The D-Bus interface that is used is a private implementation
- * detail.
- *
- * To access an exported #GMenuModel remotely, use
- * g_dbus_menu_model_get() to obtain a #GDBusMenuModel.
- */
-
 /* {{{1 D-Bus Interface description */
 
 /* For documentation of this interface, see

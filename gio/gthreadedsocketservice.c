@@ -41,6 +41,8 @@
  * As with [class@Gio.SocketService], you may connect to
  * [signal@Gio.ThreadedSocketService::run], or subclass and override the default
  * handler.
+ *
+ * Since: 2.22
  */
 
 #include "config.h"

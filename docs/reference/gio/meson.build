@@ -232,11 +232,16 @@ expand_content_files = [
   'dbus-utils.md',
   'error.md',
   'file-attributes.md',
+  'io-scheduler.md',
+  'menu-exporter.md',
   'migrating-gconf.md',
   'migrating-gdbus.md',
   'migrating-gnome-vfs.md',
+  'networking.md',
   'overview.md',
+  'pollable-utils.md',
   'tls-overview.md',
+  'unix-mounts.md',
 ]
 
 gio_toml = configure_file(input: 'gio.toml.in', output: 'gio.toml', configuration: toml_conf)

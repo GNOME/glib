@@ -37,9 +37,7 @@
 
 
 /**
- * SECTION:hmac
- * @title: Secure HMAC Digests
- * @short_description: computes the HMAC for data
+ * GHmac:
  *
  * HMACs should be used when producing a cookie or hash based on data
  * and a key. Simple mechanisms for using SHA1 and other algorithms to
@@ -53,6 +51,11 @@
  *
  * Support for HMAC Digests has been added in GLib 2.30, and support for SHA-512
  * in GLib 2.42. Support for SHA-384 was added in GLib 2.52.
+ *
+ * To create a new `GHmac`, use [ctor@GLib.Hmac.new]. To free a `GHmac`, use
+ * [method@GLib.Hmac.unref].
+ *
+ * Since: 2.30
  */
 
 struct _GHmac

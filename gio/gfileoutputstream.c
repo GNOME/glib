@@ -187,7 +187,8 @@ async_ready_callback_wrapper (GObject *source_object,
  * g_file_output_stream_query_info_async:
  * @stream: a #GFileOutputStream.
  * @attributes: a file attribute query string.
- * @io_priority: the [I/O priority][gio-GIOScheduler] of the request
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the
+ *   request
  * @cancellable: optional #GCancellable object, %NULL to ignore. 
  * @callback: callback to call when the request is satisfied
  * @user_data: the data to pass to callback function

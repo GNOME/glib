@@ -26,15 +26,6 @@
 #include "gasynchelper.h"
 #include "glibintl.h"
 
-/**
- * SECTION:gpollableutils
- * @short_description: Utilities for pollable streams
- * @include: gio/gio.h
- *
- * Utility functions for #GPollableInputStream and
- * #GPollableOutputStream implementations.
- */
-
 typedef struct {
   GSource       source;
 
