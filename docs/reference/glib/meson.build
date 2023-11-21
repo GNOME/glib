@@ -168,6 +168,7 @@ expand_content_files = [
   'markup.md',
   'goption.md',
   'data-structures.md',
+  'shell.md',
   'unicode.md',
   'uuid.md',
   'version.md',
