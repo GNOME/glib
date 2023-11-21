@@ -49,14 +49,6 @@
  * Most GVariant API functions are in gvariant.c.
  */
 
-/**
- * GVariant:
- *
- * #GVariant is an opaque data structure and can only be accessed
- * using the following functions.
- *
- * Since: 2.24
- **/
 struct _GVariant
 /* see below for field member documentation */
 {
