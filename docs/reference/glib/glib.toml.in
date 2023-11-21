@@ -71,6 +71,7 @@ content_files = [
   "data-structures.md",
   "uuid.md",
   "unicode.md",
+  "version.md",
 
   "threads-deprecated.md",
 ]
