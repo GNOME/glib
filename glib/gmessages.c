@@ -310,7 +310,8 @@
  *
  * Such messages are suppressed by the g_log_default_handler() and
  * g_log_writer_default() unless the `G_MESSAGES_DEBUG` environment variable is
- * set appropriately.
+ * set appropriately. If you need to set the allowed domains at runtime, use
+ * g_log_writer_default_set_debug_domains().
  *
  * If structured logging is enabled, this will use g_log_structured();
  * otherwise it will use g_log(). See
@@ -333,7 +334,8 @@
  *
  * Such messages are suppressed by the g_log_default_handler() and
  * g_log_writer_default() unless the `G_MESSAGES_DEBUG` environment variable is
- * set appropriately.
+ * set appropriately. If you need to set the allowed domains at runtime, use
+ * g_log_writer_default_set_debug_domains().
  *
  * If structured logging is enabled, this will use g_log_structured();
  * otherwise it will use g_log(). See
@@ -2485,6 +2487,36 @@ domain_found (const gchar *domains,
   return FALSE;
 }
 
+static struct {
+  GRWLock lock;
+  gchar *domains;
+  gboolean domains_set;
+} g_log_global;
+
+/**
+ * g_log_writer_default_set_debug_domains:
+ * @domains: (nullable) (transfer none): `NULL`-terminated array with domains to be printed.
+ *   `NULL` or an array with no values means none. Array with a single value `"all"` means all.
+
+ * Reset the list of domains to be logged, that might be initially set by the
+ * `G_MESSAGES_DEBUG` environment variable. This function is thread-safe.
+ *
+ * Since: 2.80
+ */
+void
+g_log_writer_default_set_debug_domains (const gchar * const *domains)
+{
+  g_rw_lock_writer_lock (&g_log_global.lock);
+
+  g_free (g_log_global.domains);
+  g_log_global.domains = domains ?
+      g_strjoinv (" ", (gchar **)domains) : NULL;
+
+  g_log_global.domains_set = TRUE;
+
+  g_rw_lock_writer_unlock (&g_log_global.lock);
+}
+
 /*
  * Internal version of g_log_writer_default_would_drop(), which can
  * read from either a log_domain or an array of fields. This avoids
@@ -2502,14 +2534,22 @@ should_drop_message (GLogLevelFlags   log_level,
       !(log_level >> G_LOG_LEVEL_USER_SHIFT) &&
       !g_log_get_debug_enabled ())
     {
-      const gchar *domains;
       gsize i;
 
-      domains = g_getenv ("G_MESSAGES_DEBUG");
+      g_rw_lock_reader_lock (&g_log_global.lock);
+
+      if (G_UNLIKELY (!g_log_global.domains_set))
+        {
+          g_log_global.domains = g_strdup (g_getenv ("G_MESSAGES_DEBUG"));
+          g_log_global.domains_set = TRUE;
+        }
 
       if ((log_level & INFO_LEVELS) == 0 ||
-          domains == NULL)
-        return TRUE;
+          g_log_global.domains == NULL)
+        {
+          g_rw_lock_reader_unlock (&g_log_global.lock);
+          return TRUE;
+        }
 
       if (log_domain == NULL)
         {
@@ -2523,9 +2563,14 @@ should_drop_message (GLogLevelFlags   log_level,
             }
         }
 
-      if (strcmp (domains, "all") != 0 &&
-          (log_domain == NULL || !domain_found (domains, log_domain)))
-        return TRUE;
+      if (strcmp (g_log_global.domains, "all") != 0 &&
+          (log_domain == NULL || !domain_found (g_log_global.domains, log_domain)))
+        {
+          g_rw_lock_reader_unlock (&g_log_global.lock);
+          return TRUE;
+        }
+
+      g_rw_lock_reader_unlock (&g_log_global.lock);
     }
 
   return FALSE;
@@ -2542,7 +2587,7 @@ should_drop_message (GLogLevelFlags   log_level,
  *
  * As with g_log_default_handler(), this function drops debug and informational
  * messages unless their log domain (or `all`) is listed in the space-separated
- * `G_MESSAGES_DEBUG` environment variable.
+ * `G_MESSAGES_DEBUG` environment variable, or by g_log_writer_default_set_debug_domains().
  *
  * This can be used when implementing log writers with the same filtering
  * behaviour as the default, but a different destination or output format:
@@ -2599,7 +2644,7 @@ g_log_writer_default_would_drop (GLogLevelFlags  log_level,
  *
  * As with g_log_default_handler(), this function drops debug and informational
  * messages unless their log domain (or `all`) is listed in the space-separated
- * `G_MESSAGES_DEBUG` environment variable.
+ * `G_MESSAGES_DEBUG` environment variable, or set at runtime by g_log_writer_default_set_debug_domains().
  *
  * g_log_writer_default() uses the mask set by g_log_set_always_fatal() to
  * determine which messages are fatal. When using a custom writer func instead it is
@@ -2740,8 +2785,8 @@ _g_log_writer_fallback (GLogLevelFlags   log_level,
  * other logging functions; it should only be used from %GLogWriterFunc
  * implementations.
  *
- * Note also that the value of this does not depend on `G_MESSAGES_DEBUG`; see
- * the docs for g_log_set_debug_enabled().
+ * Note also that the value of this does not depend on `G_MESSAGES_DEBUG`, nor
+ * g_log_writer_default_set_debug_domains(); see the docs for g_log_set_debug_enabled().
  *
  * Returns: %TRUE if debug output is enabled, %FALSE otherwise
  *
@@ -2758,8 +2803,9 @@ g_log_get_debug_enabled (void)
  * @enabled: %TRUE to enable debug output, %FALSE otherwise
  *
  * Enable or disable debug output from the GLib logging system for all domains.
- * This value interacts disjunctively with `G_MESSAGES_DEBUG` — if either of
- * them would allow a debug message to be outputted, it will be.
+ * This value interacts disjunctively with `G_MESSAGES_DEBUG` and
+ * g_log_writer_default_set_debug_domains() — if any of them would allow
+ * a debug message to be outputted, it will be.
  *
  * Note that this should not be used from within library code to enable debug
  * output — it is intended for external use.
@@ -3086,7 +3132,8 @@ escape_string (GString *string)
  *
  * - `G_MESSAGES_DEBUG`: A space-separated list of log domains for
  *   which debug and informational messages are printed. By default
- *   these messages are not printed.
+ *   these messages are not printed. If you need to set the allowed
+ *   domains at runtime, use g_log_writer_default_set_debug_domains().
  *
  * stderr is used for levels %G_LOG_LEVEL_ERROR, %G_LOG_LEVEL_CRITICAL,
  * %G_LOG_LEVEL_WARNING and %G_LOG_LEVEL_MESSAGE. stdout is used for
