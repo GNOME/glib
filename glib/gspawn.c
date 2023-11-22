@@ -110,67 +110,6 @@ extern char **environ;
 #define HAVE_O_CLOEXEC 1
 #endif
 
-/**
- * SECTION:spawn
- * @Short_description: process launching
- * @Title: Spawning Processes
- *
- * GLib supports spawning of processes with an API that is more
- * convenient than the bare UNIX fork() and exec().
- *
- * The g_spawn family of functions has synchronous (g_spawn_sync())
- * and asynchronous variants (g_spawn_async(), g_spawn_async_with_pipes()),
- * as well as convenience variants that take a complete shell-like
- * commandline (g_spawn_command_line_sync(), g_spawn_command_line_async()).
- *
- * See #GSubprocess in GIO for a higher-level API that provides
- * stream interfaces for communication with child processes.
- *
- * An example of using g_spawn_async_with_pipes():
- * |[<!-- language="C" -->
- * const gchar * const argv[] = { "my-favourite-program", "--args", NULL };
- * gint child_stdout, child_stderr;
- * GPid child_pid;
- * g_autoptr(GError) error = NULL;
- *
- * // Spawn child process.
- * g_spawn_async_with_pipes (NULL, argv, NULL, G_SPAWN_DO_NOT_REAP_CHILD, NULL,
- *                           NULL, &child_pid, NULL, &child_stdout,
- *                           &child_stderr, &error);
- * if (error != NULL)
- *   {
- *     g_error ("Spawning child failed: %s", error->message);
- *     return;
- *   }
- *
- * // Add a child watch function which will be called when the child process
- * // exits.
- * g_child_watch_add (child_pid, child_watch_cb, NULL);
- *
- * // You could watch for output on @child_stdout and @child_stderr using
- * // #GUnixInputStream or #GIOChannel here.
- *
- * static void
- * child_watch_cb (GPid     pid,
- *                 gint     status,
- *                 gpointer user_data)
- * {
- *   g_message ("Child %" G_PID_FORMAT " exited %s", pid,
- *              g_spawn_check_wait_status (status, NULL) ? "normally" : "abnormally");
- *
- *   // Free any resources associated with the child here, such as I/O channels
- *   // on its stdout and stderr FDs. If you have no code to put in the
- *   // child_watch_cb() callback, you can remove it and the g_child_watch_add()
- *   // call, but you must also remove the G_SPAWN_DO_NOT_REAP_CHILD flag,
- *   // otherwise the child process will stay around as a zombie until this
- *   // process exits.
- *
- *   g_spawn_close_pid (pid);
- * }
- * ]|
- */
-
-
 static gint g_execute (const gchar  *file,
                        gchar       **argv,
                        gchar       **argv_buffer,

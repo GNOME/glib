@@ -171,6 +171,7 @@ expand_content_files = [
   'host-utils.md',
   'data-structures.md',
   'shell.md',
+  'spawn.md',
   'string-utils.md',
   'unicode.md',
   'uuid.md',
