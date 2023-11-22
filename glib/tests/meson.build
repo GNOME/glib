@@ -21,8 +21,7 @@ glib_tests = {
   'completion' : {},
   'cond' : {},
   'convert' : {
-    # fails /conversion/illegal-sequence
-    # Possibly a bug or some POSIX incompatibility, not sure if here or in musl
+    # FIXME: musl: /conversion/illegal-sequence: https://gitlab.gnome.org/GNOME/glib/-/issues/3182
     'can_fail' : linux_libc == 'musl',
   },
   'dataset' : {},
