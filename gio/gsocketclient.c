@@ -1919,6 +1919,7 @@ try_next_connection_or_finish (GSocketClientAsyncConnectData *data,
     }
 
   complete_connection_with_error (data, g_steal_pointer (&data->error_info->best_error));
+  g_object_unref (data->task);
 }
 
 static void
