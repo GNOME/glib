@@ -3400,6 +3400,9 @@ g_dbus_message_set_signature (GDBusMessage  *message,
  *
  * Convenience to get the first item in the body of @message.
  *
+ * See [method@Gio.DBusMessage.get_arg0_path] for returning object-path-typed
+ * arg0 values.
+ *
  * Returns: (nullable): The string item or %NULL if the first item in the body of
  * @message is not a string.
  *
@@ -3412,6 +3415,31 @@ g_dbus_message_get_arg0 (GDBusMessage  *message)
 
   if (message->arg0_cache != NULL &&
       g_variant_is_of_type (message->arg0_cache, G_VARIANT_TYPE_STRING))
+    return g_variant_get_string (message->arg0_cache, NULL);
+
+  return NULL;
+}
+
+/**
+ * g_dbus_message_get_arg0_path:
+ * @message: A `GDBusMessage`.
+ *
+ * Convenience to get the first item in the body of @message.
+ *
+ * See [method@Gio.DBusMessage.get_arg0] for returning string-typed arg0 values.
+ *
+ * Returns: (nullable): The object path item or `NULL` if the first item in the
+ *   body of @message is not an object path.
+ *
+ * Since: 2.80
+ */
+const gchar *
+g_dbus_message_get_arg0_path (GDBusMessage  *message)
+{
+  g_return_val_if_fail (G_IS_DBUS_MESSAGE (message), NULL);
+
+  if (message->arg0_cache != NULL &&
+      g_variant_is_of_type (message->arg0_cache, G_VARIANT_TYPE_OBJECT_PATH))
     return g_variant_get_string (message->arg0_cache, NULL);
 
   return NULL;
