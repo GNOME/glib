@@ -154,6 +154,8 @@ G_DEFINE_BOXED_TYPE (GUri, g_uri, g_uri_ref, g_uri_unref)
 G_DEFINE_BOXED_TYPE (GOptionGroup, g_option_group, g_option_group_ref, g_option_group_unref)
 G_DEFINE_BOXED_TYPE (GPatternSpec, g_pattern_spec, g_pattern_spec_copy, g_pattern_spec_free);
 
+G_DEFINE_BOXED_TYPE (GStrvBuilder, g_strv_builder, g_strv_builder_ref, g_strv_builder_unref);
+
 /* This one can't use G_DEFINE_BOXED_TYPE (GStrv, g_strv, g_strdupv, g_strfreev) */
 GType
 g_strv_get_type (void)
