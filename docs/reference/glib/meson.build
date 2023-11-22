@@ -158,6 +158,7 @@ expand_content_files = [
   'i18n.md',
   'logging.md',
   'main-loop.md',
+  'memory.md',
   'memory-slices.md',
   'random.md',
   'reference-counting.md',
