@@ -174,6 +174,7 @@ expand_content_files = [
   'goption.md',
   'host-utils.md',
   'data-structures.md',
+  'programming.md',
   'shell.md',
   'spawn.md',
   'string-utils.md',
