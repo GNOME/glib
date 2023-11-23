@@ -252,3 +252,7 @@ if enable_gir
     extra_args: gir_args + libgirepository_gir_args,
   )
 endif
+
+if build_tests
+  subdir('tests')
+endif
