@@ -61,6 +61,7 @@ content_files = [
   "memory-slices.md",
   "error-reporting.md",
   "logging.md",
+  "warnings.md",
   "file-utils.md",
   "host-utils.md",
   "misc-utils.md",

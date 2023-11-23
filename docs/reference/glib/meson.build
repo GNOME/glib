@@ -181,6 +181,7 @@ expand_content_files = [
   'unix.md',
   'uuid.md',
   'version.md',
+  'warnings.md',
 ]
 
 glib_toml = configure_file(input: 'glib.toml.in', output: 'glib.toml', configuration: toml_conf)
