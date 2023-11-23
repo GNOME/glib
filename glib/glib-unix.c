@@ -44,21 +44,6 @@ G_STATIC_ASSERT (G_ALIGNOF (GPid) == G_ALIGNOF (pid_t));
  * might not be true everywhere. */
 G_STATIC_ASSERT (O_NONBLOCK != FD_CLOEXEC);
 
-/**
- * SECTION:gunix
- * @title: UNIX-specific utilities and integration
- * @short_description: pipes, signal handling
- * @include: glib-unix.h
- *
- * Most of GLib is intended to be portable; in contrast, this set of
- * functions is designed for programs which explicitly target UNIX,
- * or are using it to build higher level abstractions which would be
- * conditionally compiled if the platform matches %G_OS_UNIX.
- *
- * To use these functions, you must explicitly include the
- * "glib-unix.h" header.
- */
-
 G_DEFINE_QUARK (g-unix-error-quark, g_unix_error)
 
 static gboolean
