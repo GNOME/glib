@@ -3850,6 +3850,32 @@ G_GNUC_END_IGNORE_DEPRECATIONS
  * @test_flags:   Flags to modify subprocess behaviour.
  *
  * Respawns the test program to run only @test_path in a subprocess.
+ *
+ * This is equivalent to calling g_test_trap_subprocess_with_envp() with `envp`
+ * set to %NULL. See the documentation for that function for full details.
+ *
+ * Since: 2.38
+ */
+void
+g_test_trap_subprocess (const char           *test_path,
+                        guint64               usec_timeout,
+                        GTestSubprocessFlags  test_flags)
+{
+  g_test_trap_subprocess_with_envp (test_path, NULL, usec_timeout, test_flags);
+}
+
+/**
+ * g_test_trap_subprocess_with_envp:
+ * @test_path: (nullable): Test to run in a subprocess
+ * @envp: (array zero-terminated=1) (nullable) (element-type filename): Environment
+ *   to run the test in, or %NULL to inherit the parent’s environment. This must
+ *   be in the GLib filename encoding.
+ * @usec_timeout: Timeout for the subprocess test in micro seconds.
+ * @test_flags:   Flags to modify subprocess behaviour.
+ *
+ * Respawns the test program to run only @test_path in a subprocess with the
+ * given @envp environment.
+ *
  * This can be used for a test case that might not return, or that
  * might abort.
  *
@@ -3862,6 +3888,8 @@ G_GNUC_END_IGNORE_DEPRECATIONS
  * ending with "`/subprocess`" if the test only has one child test);
  * tests with names of this form will automatically be skipped in the
  * parent process.
+ *
+ * If @envp is %NULL, the parent process’ environment will be inherited.
  *
  * If @usec_timeout is non-0, the test subprocess is aborted and
  * considered failing if its run time exceeds it.
@@ -3905,23 +3933,44 @@ G_GNUC_END_IGNORE_DEPRECATIONS
  *     g_test_trap_assert_stderr ("*ERROR*too large*");
  *   }
  *
+ *   static void
+ *   test_different_username (void)
+ *   {
+ *     if (g_test_subprocess ())
+ *       {
+ *         // Code under test goes here
+ *         g_message ("Username is now simulated as %s", g_getenv ("USER"));
+ *         return;
+ *       }
+ *
+ *     // Reruns this same test in a subprocess
+ *     g_autoptr(GStrv) envp = g_get_environ ();
+ *     envp = g_environ_setenv (g_steal_pointer (&envp), "USER", "charlie", TRUE);
+ *     g_test_trap_subprocess_with_envp (NULL, envp, 0, G_TEST_SUBPROCESS_DEFAULT);
+ *     g_test_trap_assert_passed ();
+ *     g_test_trap_assert_stdout ("Username is now simulated as charlie");
+ *   }
+ *
  *   int
  *   main (int argc, char **argv)
  *   {
  *     g_test_init (&argc, &argv, NULL);
  *
- *     g_test_add_func ("/myobject/create_large_object",
+ *     g_test_add_func ("/myobject/create-large-object",
  *                      test_create_large_object);
+ *     g_test_add_func ("/myobject/different-username",
+ *                      test_different_username);
  *     return g_test_run ();
  *   }
  * ]|
  *
- * Since: 2.38
+ * Since: 2.80
  */
 void
-g_test_trap_subprocess (const char           *test_path,
-                        guint64               usec_timeout,
-                        GTestSubprocessFlags  test_flags)
+g_test_trap_subprocess_with_envp (const char           *test_path,
+                                  const char * const   *envp,
+                                  guint64               usec_timeout,
+                                  GTestSubprocessFlags  test_flags)
 {
   GError *error = NULL;
   GPtrArray *argv;
@@ -3980,7 +4029,7 @@ g_test_trap_subprocess (const char           *test_path,
 
   if (!g_spawn_async_with_pipes (test_initial_cwd,
                                  (char **)argv->pdata,
-                                 NULL, flags,
+                                 (char **) envp, flags,
                                  NULL, NULL,
                                  &pid, NULL, &stdout_fd, &stderr_fd,
                                  &error))
