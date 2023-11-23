@@ -73,6 +73,7 @@ content_files = [
   "threads.md",
   "spawn.md",
   "unix.md",
+  "windows.md",
   "random.md",
   "numerical.md",
   "markup.md",

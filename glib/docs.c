@@ -2863,16 +2863,6 @@
 /* Windows Compatibility Functions {{{1 */
 
 /**
- * SECTION:windows
- * @title: Windows Compatibility Functions
- * @short_description: UNIX emulation on Windows
- *
- * These functions provide some level of UNIX emulation on the
- * Windows platform. If your application really needs the POSIX
- * APIs, we suggest you try the Cygwin project.
- */
-
-/**
  * MAXPATHLEN:
  *
  * Provided for UNIX emulation on Windows; equivalent to UNIX
