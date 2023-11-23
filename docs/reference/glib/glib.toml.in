@@ -45,6 +45,7 @@ content_files = [
   "cross-compiling.md",
   "running.md",
   "programming.md",
+  "resources.md",
 
   "gvariant-format-strings.md",
   "gvariant-text-format.md",
