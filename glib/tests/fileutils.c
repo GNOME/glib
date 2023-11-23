@@ -1474,6 +1474,121 @@ test_get_contents (void)
   g_remove (filename);
 }
 
+static gboolean
+resize_file (const gchar *filename,
+             gint64       size)
+{
+  int fd;
+  int retval;
+
+  fd = g_open (filename, O_CREAT | O_RDWR | O_TRUNC, 0666);
+  g_assert_cmpint (fd, >=, 0);
+
+#ifdef G_OS_WIN32
+  retval = _chsize_s (fd, size);
+#else
+  retval = ftruncate64 (fd, size);
+#endif
+  if (retval != 0)
+    {
+      g_test_message ("Error trying to resize file (%s)", strerror (errno));
+      close (fd);
+      return FALSE;
+    }
+
+  close (fd);
+  return TRUE;
+}
+
+static gboolean
+is_error_in_list (GFileError       error_code,
+                  const GFileError ok_list[],
+                  size_t           ok_count)
+{
+  for (size_t i = 0; i < ok_count; i++)
+    {
+      if (ok_list[i] == error_code)
+        return TRUE;
+    }
+  return FALSE;
+}
+
+static void
+get_largefile_check_len (const gchar      *filename,
+                         gint64            large_len,
+                         const GFileError  ok_list[],
+                         size_t            ok_count)
+{
+  gboolean get_ok;
+  gsize len;
+  gchar *contents;
+  GError *error = NULL;
+
+  get_ok = g_file_get_contents (filename, &contents, &len, &error);
+  if (get_ok)
+    {
+      g_assert_cmpint ((gint64) len, ==, large_len);
+      g_free (contents);
+    }
+  else
+    {
+      g_assert_cmpint (error->domain, ==, G_FILE_ERROR);
+      if (is_error_in_list ((GFileError)error->code, ok_list, ok_count))
+        {
+          g_test_message ("Error reading file of size 0x%" G_GINT64_MODIFIER "x, but with acceptable error type (%s)", large_len, error->message);
+        }
+      else
+        {
+          /* fail for other errors */
+          g_assert_no_error (error);
+        }
+      g_clear_error (&error);
+    }
+}
+
+static void
+test_get_contents_largefile (void)
+{
+  if (!g_test_slow ())
+    {
+      g_test_skip ("Skipping slow largefile test");
+      return;
+    }
+
+  const gchar *filename = "file-test-get-contents-large";
+  gint64 large_len;
+
+  /* error OK if couldn't allocate large buffer, or if file is too large */
+  const GFileError too_large_errors[] = { G_FILE_ERROR_NOMEM, G_FILE_ERROR_FAILED };
+  /* error OK if couldn't allocate large buffer */
+  const GFileError nomem_errors[] = { G_FILE_ERROR_NOMEM };
+
+  /* OK to fail to read this, but don't silently under-read */
+  large_len = (G_GINT64_CONSTANT (1) << 32) + 16;
+  if (!resize_file (filename, large_len))
+    goto failed_resize;
+  get_largefile_check_len (filename, large_len, too_large_errors, G_N_ELEMENTS (too_large_errors));
+
+  /* OK to fail to read this size, but don't silently under-read */
+  large_len = (G_GINT64_CONSTANT (1) << 32) - 1;
+  if (!resize_file (filename, large_len))
+    goto failed_resize;
+  get_largefile_check_len (filename, large_len, too_large_errors, G_N_ELEMENTS (too_large_errors));
+
+  /* OK to fail memory allocation, but don't otherwise fail this size */
+  large_len = (G_GINT64_CONSTANT (1) << 31) - 1;
+  if (!resize_file (filename, large_len))
+    goto failed_resize;
+  get_largefile_check_len (filename, large_len, nomem_errors, G_N_ELEMENTS (nomem_errors));
+
+  g_remove (filename);
+  return;
+
+failed_resize:
+  g_test_incomplete ("Failed to resize large file, unable to complete large file tests.");
+  g_remove (filename);
+}
+
 static void
 test_file_test (void)
 {
@@ -2648,6 +2763,7 @@ main (int   argc,
   g_test_add_func ("/fileutils/mkstemp", test_mkstemp);
   g_test_add_func ("/fileutils/mkdtemp", test_mkdtemp);
   g_test_add_func ("/fileutils/get-contents", test_get_contents);
+  g_test_add_func ("/fileutils/get-contents-large-file", test_get_contents_largefile);
   g_test_add_func ("/fileutils/set-contents", test_set_contents);
   g_test_add_func ("/fileutils/set-contents-full", test_set_contents_full);
   g_test_add_func ("/fileutils/set-contents-full/read-only-file", test_set_contents_full_read_only_file);
