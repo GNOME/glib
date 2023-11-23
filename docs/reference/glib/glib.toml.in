@@ -73,6 +73,7 @@ content_files = [
   "spawn.md",
   "unix.md",
   "random.md",
+  "numerical.md",
   "markup.md",
   "base64.md",
   "goption.md",

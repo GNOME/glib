@@ -162,6 +162,7 @@ expand_content_files = [
   'main-loop.md',
   'memory.md',
   'memory-slices.md',
+  'numerical.md',
   'random.md',
   'reference-counting.md',
   'running.md',
