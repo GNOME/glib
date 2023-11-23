@@ -76,6 +76,7 @@ content_files = [
   "base64.md",
   "goption.md",
   "data-structures.md",
+  "datalist-and-dataset.md",
   "shell.md",
   "uuid.md",
   "unicode.md",

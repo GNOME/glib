@@ -151,6 +151,7 @@ expand_content_files = [
   'character-set.md',
   'compiling.md',
   'cross-compiling.md',
+  'datalist-and-dataset.md',
   'error-reporting.md',
   'file-utils.md',
   'gvariant-format-strings.md',
