@@ -104,6 +104,9 @@ GI_AVAILABLE_IN_ALL
 GIRepository *gi_repository_get_default   (void);
 
 GI_AVAILABLE_IN_ALL
+GIRepository *gi_repository_new (void);
+
+GI_AVAILABLE_IN_ALL
 void          gi_repository_prepend_search_path (const char *directory);
 
 GI_AVAILABLE_IN_ALL

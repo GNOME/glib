@@ -184,7 +184,7 @@ init_globals (void)
     return;
 
   if (default_repository == NULL)
-    default_repository = g_object_new (GI_TYPE_REPOSITORY, NULL);
+    default_repository = gi_repository_new ();
 
   if (typelib_search_path == NULL)
     {
@@ -686,6 +686,23 @@ GIRepository *
 gi_repository_get_default (void)
 {
   return get_repository (NULL);
+}
+
+/**
+ * gi_repository_new:
+ *
+ * Create a new (non-singleton) #GIRepository.
+ *
+ * Most callers should use gi_repository_get_default() instead, as a singleton
+ * repository is more useful in most situations.
+ *
+ * Returns: (transfer full): a new #GIRepository
+ * Since: 2.80
+ */
+GIRepository *
+gi_repository_new (void)
+{
+  return g_object_new (GI_TYPE_REPOSITORY, NULL);
 }
 
 /**
