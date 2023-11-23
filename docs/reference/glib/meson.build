@@ -177,6 +177,7 @@ expand_content_files = [
   'shell.md',
   'spawn.md',
   'string-utils.md',
+  'types.md',
   'unicode.md',
   'unix.md',
   'uuid.md',

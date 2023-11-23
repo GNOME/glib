@@ -53,6 +53,7 @@ content_files = [
 
   "string-utils.md",
 
+  "types.md",
   "macros.md",
   "conversion-macros.md",
   "auto-cleanup.md",
