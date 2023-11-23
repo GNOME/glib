@@ -167,6 +167,7 @@ expand_content_files = [
   'threads.md',
   'threads-deprecated.md',
   'markup.md',
+  'misc-utils.md',
   'goption.md',
   'host-utils.md',
   'data-structures.md',

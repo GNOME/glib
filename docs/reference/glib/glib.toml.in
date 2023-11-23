@@ -63,6 +63,7 @@ content_files = [
   "logging.md",
   "file-utils.md",
   "host-utils.md",
+  "misc-utils.md",
   "main-loop.md",
   "reference-counting.md",
   "testing.md",
