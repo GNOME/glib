@@ -129,7 +129,7 @@ gi_repository_init (GIRepository *repository)
   repository->priv = gi_repository_get_instance_private (repository);
   repository->priv->typelibs
     = g_hash_table_new_full (g_str_hash, g_str_equal,
-			     (GDestroyNotify) NULL,
+			     (GDestroyNotify) g_free,
 			     (GDestroyNotify) gi_typelib_free);
   repository->priv->lazy_typelibs
     = g_hash_table_new_full (g_str_hash, g_str_equal,
@@ -441,7 +441,9 @@ register_internal (GIRepository *repository,
       else
 	key = build_typelib_key (namespace, source);
 
-      g_hash_table_insert (repository->priv->typelibs, key, (void *)typelib);
+      g_hash_table_insert (repository->priv->typelibs,
+                           g_steal_pointer (&key),
+                           (void *)typelib);
     }
 
   /* These types might be resolved now, clear the cache */
