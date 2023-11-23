@@ -149,6 +149,7 @@ expand_content_files = [
   'base64.md',
   'building.md',
   'character-set.md',
+  'checked-math.md',
   'compiling.md',
   'cross-compiling.md',
   'datalist-and-dataset.md',

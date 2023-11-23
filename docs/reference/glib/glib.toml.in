@@ -68,6 +68,7 @@ content_files = [
   "reference-counting.md",
   "testing.md",
   "atomic.md",
+  "checked-math.md",
   "threads.md",
   "spawn.md",
   "unix.md",
