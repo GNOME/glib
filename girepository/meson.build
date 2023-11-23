@@ -119,7 +119,7 @@ if cc.get_id() != 'msvc'
   ])
 endif
 
-libgirepo_internals = static_library('girepository-internals',
+libgirepository_internals = static_library('girepository-internals',
   sources: [
     'girmodule.c',
     'girnode.c',
@@ -133,8 +133,8 @@ libgirepo_internals = static_library('girepository-internals',
   dependencies: [girepo_gthash_dep, libffi_dep],
 )
 
-libgirepo_internals_dep = declare_dependency(
-  link_with: libgirepo_internals,
+libgirepository_internals_dep = declare_dependency(
+  link_with: libgirepository_internals,
   dependencies: libffi_dep,
   include_directories: [girepoinc],
 )
@@ -175,7 +175,7 @@ if cc.get_id() != 'msvc'
   ])
 endif
 
-libgirepo = shared_library('girepository-2.0',
+libgirepository = shared_library('girepository-2.0',
   sources: girepo_sources + girepo_ffi_sources + [gi_visibility_h],
   include_directories: [configinc, girepoinc],
   c_args: gir_c_args,
@@ -189,13 +189,13 @@ libgirepo = shared_library('girepository-2.0',
     libgobject_dep,
     libgmodule_dep,
     libgio_dep,
-    libgirepo_internals_dep,
+    libgirepository_internals_dep,
   ],
   install: true,
 )
 
-libgirepo_dep = declare_dependency(
-  link_with: libgirepo,
+libgirepository_dep = declare_dependency(
+  link_with: libgirepository,
   dependencies: [libglib_dep, libgobject_dep, libgio_dep, libgmodule_dep],
   include_directories: [girepoinc],
 )
@@ -203,7 +203,7 @@ libgirepo_dep = declare_dependency(
 executable('gi-dump-types',
   sources: 'gi-dump-types.c',
   dependencies: [
-    libgirepo_dep,
+    libgirepository_dep,
     libgiounix_dep,
     libgiowin32_dep
   ],
@@ -215,7 +215,7 @@ pkgconfig_variables = [
   'typelibdir=${libdir}/girepository-1.0',
 ]
 
-pkg.generate(libgirepo,
+pkg.generate(libgirepository,
   name: 'girepository',
   version: glib_version,
   filebase: 'girepository-2.0',
@@ -226,29 +226,29 @@ pkg.generate(libgirepo,
 )
 
 if enable_gir
-  libgirepo_gir_sources = [
+  libgirepository_gir_sources = [
     gi_visibility_h,
     girepo_headers,
     girepo_sources,
   ]
-  libgirepo_gir_packages = [ 'girepository-2.0' ]
-  libgirepo_gir_args = [
+  libgirepository_gir_packages = [ 'girepository-2.0' ]
+  libgirepository_gir_args = [
     '-DGI_COMPILATION',
     '--symbol-prefix=gi',
     '--identifier-prefix=GI',
   ]
 
-  girepository_gir = gnome.generate_gir(libgirepo,
-    sources: libgirepo_gir_sources,
+  girepository_gir = gnome.generate_gir(libgirepository,
+    sources: libgirepository_gir_sources,
     namespace: 'GIRepository',
     nsversion: '2.0',
     identifier_prefix: 'GI',
     symbol_prefix: 'gi',
-    export_packages: libgirepo_gir_packages,
+    export_packages: libgirepository_gir_packages,
     header: 'girepository/girepository.h',
     includes: [ glib_gir[0], gmodule_gir[0], gobject_gir[0], gio_gir[0] ],
     install: true,
     dependencies: [ libglib_dep, libgobject_dep, libgmodule_dep, libgio_dep ],
-    extra_args: gir_args + libgirepo_gir_args,
+    extra_args: gir_args + libgirepository_gir_args,
   )
 endif
