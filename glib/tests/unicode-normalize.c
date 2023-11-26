@@ -182,6 +182,19 @@ test_unicode_normalize_invalid (void)
     }
 }
 
+static void
+test_unicode_normalize_bad_length (void)
+{
+  const char *input = "fórmula, vol. 2 (deluxe edition)";
+  gsize len = 2;
+  char *output;
+
+  output = g_utf8_normalize (input, len, G_NORMALIZE_ALL_COMPOSE);
+  g_assert_null (output);
+
+  g_free (output);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -190,6 +203,7 @@ main (int argc, char **argv)
   g_test_add_func ("/unicode/normalize", test_unicode_normalize);
   g_test_add_func ("/unicode/normalize-invalid",
                    test_unicode_normalize_invalid);
+  g_test_add_func ("/unicode/normalize/bad-length", test_unicode_normalize_bad_length);
 
   return g_test_run ();
 }
