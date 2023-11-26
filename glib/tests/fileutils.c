@@ -1486,8 +1486,11 @@ resize_file (const gchar *filename,
 
 #ifdef G_OS_WIN32
   retval = _chsize_s (fd, size);
-#else
+#elif HAVE_FTRUNCATE64
   retval = ftruncate64 (fd, size);
+#else
+  errno = ENOSYS;
+  retval = -1;
 #endif
   if (retval != 0)
     {

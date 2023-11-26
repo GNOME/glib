@@ -646,6 +646,7 @@ functions = [
   'free_aligned_sized',
   'free_sized',
   'fsync',
+  'ftruncate64',
   'getauxval',
   'getc_unlocked',
   'getfsstat',
