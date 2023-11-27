@@ -948,6 +948,30 @@ test_vasprintf_invalid_format_placeholder (void)
 #endif
 }
 
+static void
+test_vasprintf_invalid_wide_string (void)
+{
+#if !defined(__APPLE__) && !defined(__FreeBSD__)
+  gint len = 0;
+  gchar *buf = "some non-null string";
+#endif
+
+  g_test_summary ("Test error handling for invalid wide strings in g_vasprintf()");
+
+#if !defined(__APPLE__) && !defined(__FreeBSD__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat"
+#pragma GCC diagnostic ignored "-Wformat-extra-args"
+  len = test_vasprintf_va (&buf, "%ls", L"\xD800"  /* incomplete surrogate pair */);
+#pragma GCC diagnostic pop
+
+  g_assert_cmpint (len, ==, -1);
+  g_assert_null (buf);
+#else
+  g_test_skip ("vasprintf() placeholder checks on BSDs are less strict");
+#endif
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -989,6 +1013,7 @@ main (int   argc,
   g_test_add_func ("/sprintf/upper-bound", test_upper_bound);
 
   g_test_add_func ("/vasprintf/invalid-format-placeholder", test_vasprintf_invalid_format_placeholder);
+  g_test_add_func ("/vasprintf/invalid-wide-string", test_vasprintf_invalid_wide_string);
 
   return g_test_run();
 }
