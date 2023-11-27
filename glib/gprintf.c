@@ -358,19 +358,23 @@ g_vasprintf (gchar      **string,
 #else
 
   {
-    va_list args2;
-
-    va_copy (args2, args);
-
     *string = g_new (gchar, g_printf_string_upper_bound (format, args));
 
-    len = _g_vsprintf (*string, format, args2);
-    va_end (args2);
-
-    if (len < 0)
+    if (*string == NULL)
+      len = -1;
+    else
       {
-        g_free (*string);
-        *string = NULL;
+        va_list args2;
+
+        va_copy (args2, args);
+        len = _g_vsprintf (*string, format, args2);
+        va_end (args2);
+
+        if (len < 0)
+          {
+            g_free (*string);
+            *string = NULL;
+          }
       }
   }
 #endif
