@@ -897,6 +897,9 @@ test_upper_bound (void)
 
   res = upper_bound ("bla %s %d: %g\n", "bla", 123, 0.123);
   g_assert_cmpint (res, ==, 20);
+
+  res = upper_bound ("Invalid case: %ls", L"\xD800" /* incomplete surrogate pair */);
+  g_assert_cmpint (res, ==, 0);
 }
 
 #if !defined(__APPLE__) && !defined(__FreeBSD__)

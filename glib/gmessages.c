@@ -3391,12 +3391,25 @@ g_printerr (const gchar *format,
  * Calculates the maximum space needed to store the output
  * of the sprintf() function.
  *
- * Returns: the maximum space needed to store the formatted string
+ * If @format or @args are invalid, `0` is returned. This could happen if, for
+ * example, @format contains an `%lc` or `%ls` placeholder and @args contains a
+ * wide character which cannot be represented in multibyte encoding. `0`
+ * can also be returned legitimately if, for example, @format is `%s` and @args
+ * is an empty string. The caller is responsible for differentiating these two
+ * return cases if necessary. It is recommended to not use `%lc` or `%ls`
+ * placeholders in any case, as their behaviour is locale-dependent.
+ *
+ * Returns: the maximum space needed to store the formatted string, or `0` on error
  */
 gsize
 g_printf_string_upper_bound (const gchar *format,
                              va_list      args)
 {
   gchar c;
-  return _g_vsnprintf (&c, 1, format, args) + 1;
+  int count = _g_vsnprintf (&c, 1, format, args);
+
+  if (count < 0)
+    return 0;
+
+  return count + 1;
 }
