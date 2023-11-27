@@ -319,6 +319,8 @@ test_string_append_vprintf (void)
 
   string_append_vprintf_va (string, "some %s placeholders", "format");
 
+  /* vasprintf() placeholder checks on BSDs are less strict, so skip these checks if so */
+#if !defined(__APPLE__) && !defined(__FreeBSD__)
   if (g_test_undefined ())
     {
       g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
@@ -330,6 +332,7 @@ test_string_append_vprintf (void)
 #pragma GCC diagnostic pop
       g_test_assert_expected_messages ();
     }
+#endif
 
   g_assert_cmpstr (string->str, ==, "firsthalfsome format placeholders");
 
