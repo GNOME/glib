@@ -1221,6 +1221,10 @@ g_string_append_vprintf (GString     *string,
       string->len += len;
       g_free (buf);
     }
+  else
+    {
+      g_critical ("Failed to append to string: invalid format/args passed to g_vasprintf()");
+    }
 }
 
 /**
