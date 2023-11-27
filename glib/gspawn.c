@@ -2308,7 +2308,7 @@ fork_exec (gboolean              intermediate_child,
   GPid pid = -1;
   GUnixPipe child_err_report_pipe = G_UNIX_PIPE_INIT;
   GUnixPipe child_pid_report_pipe = G_UNIX_PIPE_INIT;
-  guint pipe_flags = cloexec_pipes ? FD_CLOEXEC : 0;
+  guint pipe_flags = cloexec_pipes ? O_CLOEXEC : 0;
   gint status;
   const gchar *chosen_search_path;
   gchar *search_path_buffer = NULL;
