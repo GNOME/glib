@@ -542,7 +542,7 @@ g_stpcpy (gchar       *dest,
  * See also g_vasprintf(), which offers the same functionality, but
  * additionally returns the length of the allocated string.
  *
- * Returns: a newly-allocated string holding the result
+ * Returns: (nullable) (transfer full): a newly-allocated string holding the result
  */
 gchar*
 g_strdup_vprintf (const gchar *format,
@@ -570,7 +570,7 @@ g_strdup_vprintf (const gchar *format,
  * contains `%lc` or `%ls` conversions, which can fail if no multibyte
  * representation is available for the given character.
  *
- * Returns: a newly-allocated string holding the result
+ * Returns: (nullable) (transfer full): a newly-allocated string holding the result
  */
 gchar*
 g_strdup_printf (const gchar *format,
