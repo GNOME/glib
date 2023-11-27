@@ -1345,7 +1345,11 @@ get_content_type (const char          *basename,
 #if !defined(G_OS_WIN32) && !defined(__APPLE__)
       if (!fast && result_uncertain && path != NULL)
 	{
-	  guchar sniff_buffer[4096];
+          /* Sniff the first 16KiB of the file (sometimes less, if xdgmime
+           * says it doesn’t need so much). Most files need less than 4KiB of
+           * sniffing, but some disk images need more (see
+           * https://gitlab.gnome.org/GNOME/glib/-/issues/3186). */
+	  guchar sniff_buffer[16384];
 	  gsize sniff_length;
 #ifdef O_NOATIME
 	  int errsv;
@@ -1353,8 +1357,8 @@ get_content_type (const char          *basename,
 	  int fd;
 
 	  sniff_length = _g_unix_content_type_get_sniff_len ();
-	  if (sniff_length == 0 || sniff_length > 4096)
-	    sniff_length = 4096;
+	  if (sniff_length == 0 || sniff_length > sizeof (sniff_buffer))
+	    sniff_length = sizeof (sniff_buffer);
 
 #ifdef O_NOATIME	  
           fd = g_open (path, O_RDONLY | O_NOATIME | O_CLOEXEC, 0);
