@@ -832,6 +832,47 @@ test_help (void)
   g_test_trap_assert_stdout ("*Application options*");
 }
 
+static gint
+command_line_done_callback (GApplication            *app,
+                            GApplicationCommandLine *command_line,
+                            gpointer                 user_data)
+{
+  gboolean *called = user_data;
+
+  *called = TRUE;
+
+  g_application_command_line_set_exit_status (command_line, 42);
+  g_application_command_line_done (command_line);
+
+  return 0;
+}
+
+/* Test whether 'command-line' handler return value is ignored
+ * after g_application_command_line_done()
+ */
+static void
+test_command_line_done (void)
+{
+  char *binpath = g_test_build_filename (G_TEST_BUILT, "unimportant", NULL);
+  const gchar *const argv[] = { binpath, "arg", NULL };
+  GApplication *app;
+  gboolean called = FALSE;
+  int status;
+  gulong command_line_id;
+
+  app = g_application_new ("org.gtk.TestApplication", G_APPLICATION_HANDLES_COMMAND_LINE);
+  command_line_id = g_signal_connect (app, "command-line", G_CALLBACK (command_line_done_callback), &called);
+
+  status = g_application_run (app, G_N_ELEMENTS (argv) - 1, (gchar **) argv);
+
+  g_signal_handler_disconnect (app, command_line_id);
+  g_object_unref (app);
+  g_free (binpath);
+
+  g_assert_true (called);
+  g_assert_cmpint (status, ==, 42);
+}
+
 static void
 test_busy (void)
 {
@@ -1242,8 +1283,7 @@ dbus_startup_reply_cb (GObject      *source_object,
   reply = g_dbus_connection_send_message_with_reply_finish (connection, result, &local_error);
   g_assert_no_error (local_error);
 
-  /* Nothing to check on the reply for now. */
-  g_clear_object (&reply);
+  g_object_set_data_full (G_OBJECT (app), "dbus-command-line-reply", g_steal_pointer (&reply), g_object_unref);
 
   /* Release the app in an idle callback, so there’s time to process other
    * pending sources first. */
@@ -1563,6 +1603,80 @@ test_dbus_command_line (void)
   g_clear_object (&bus);
 }
 
+static gint
+dbus_command_line_done_cb (GApplication            *app,
+                           GApplicationCommandLine *command_line,
+                           gpointer                 user_data)
+{
+  guint *n_command_lines = user_data;
+
+  *n_command_lines = *n_command_lines + 1;
+
+  if (*n_command_lines == 1)
+    return 0;
+
+  g_object_set_data_full (G_OBJECT (app), "command-line", g_object_ref (command_line), g_object_unref);
+
+  g_application_command_line_set_exit_status (command_line, 42);
+  g_application_command_line_done (command_line);
+
+  return 1; /* ignored - after g_application_command_line_done () */
+}
+
+static void
+test_dbus_command_line_done (void)
+{
+  GTestDBus *bus = NULL;
+  GVariantBuilder builder;
+  GDBusMessage *message = NULL;
+  GDBusMessage *reply = NULL;
+  GApplication *app = NULL;
+  guint n_command_lines = 0;
+  gint exit_status;
+
+  g_test_summary ("Test that GDBusCommandLine.done() works");
+
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("aay"));
+  g_variant_builder_add (&builder, "^ay", "test-program");
+  g_variant_builder_add (&builder, "^ay", "/path/to/something");
+
+  message = g_dbus_message_new_method_call ("org.gtk.TestApplication.CommandLine",
+                                            "/org/gtk/TestApplication/CommandLine",
+                                            "org.gtk.Application",
+                                            "CommandLine");
+  g_dbus_message_set_body (message, g_variant_new ("(oaaya{sv})",
+                                                   "/my/org/gtk/private/CommandLine",
+                                                   &builder, NULL));
+
+  bus = g_test_dbus_new (G_TEST_DBUS_NONE);
+  g_test_dbus_up (bus);
+
+  app = g_application_new ("org.gtk.TestApplication.CommandLine", G_APPLICATION_HANDLES_COMMAND_LINE);
+  g_signal_connect (app, "activate", G_CALLBACK (dbus_activate_noop_cb), NULL);
+  g_signal_connect (app, "command-line", G_CALLBACK (dbus_command_line_done_cb), &n_command_lines);
+  g_signal_connect (app, "startup", G_CALLBACK (dbus_startup_cb), message);
+
+  g_application_hold (app);
+  exit_status = g_application_run (app, 0, NULL);
+
+  g_assert_cmpuint (n_command_lines, ==, 2);
+  g_assert_cmpint (exit_status, ==, 0);
+
+  reply = g_object_get_data (G_OBJECT (app), "dbus-command-line-reply");
+  g_variant_get (g_dbus_message_get_body (reply), "(i)", &exit_status);
+  g_assert_cmpint (exit_status, ==, 42);
+
+  g_signal_handlers_disconnect_by_func (app, G_CALLBACK (dbus_activate_noop_cb), NULL);
+  g_signal_handlers_disconnect_by_func (app, G_CALLBACK (dbus_command_line_done_cb), &n_command_lines);
+  g_signal_handlers_disconnect_by_func (app, G_CALLBACK (dbus_startup_cb), message);
+
+  g_clear_object (&app);
+  g_clear_object (&message);
+
+  g_test_dbus_down (bus);
+  g_clear_object (&bus);
+}
+
 static void
 dbus_activate_action_cb (GSimpleAction *action,
                          GVariant      *parameter,
@@ -1710,6 +1824,7 @@ main (int argc, char **argv)
 /*  g_test_add_func ("/gapplication/remote-command-line", test_remote_command_line); */
   g_test_add_func ("/gapplication/resource-path", test_resource_path);
   g_test_add_func ("/gapplication/test-help", test_help);
+  g_test_add_func ("/gapplication/command-line-done", test_command_line_done);
   g_test_add_func ("/gapplication/test-busy", test_busy);
   g_test_add_func ("/gapplication/test-handle-local-options1", test_handle_local_options_success);
   g_test_add_func ("/gapplication/test-handle-local-options2", test_handle_local_options_failure);
@@ -1720,6 +1835,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gapplication/dbus/activate", test_dbus_activate);
   g_test_add_func ("/gapplication/dbus/open", test_dbus_open);
   g_test_add_func ("/gapplication/dbus/command-line", test_dbus_command_line);
+  g_test_add_func ("/gapplication/dbus/command-line-done", test_dbus_command_line_done);
   g_test_add_func ("/gapplication/dbus/activate-action", test_dbus_activate_action);
 
   return g_test_run ();

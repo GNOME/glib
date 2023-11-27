@@ -1076,13 +1076,19 @@ g_application_call_command_line (GApplication        *application,
     {
       GApplicationCommandLine *cmdline;
       GVariant *v;
+      gint handler_exit_status;
 
       v = g_variant_new_bytestring_array ((const gchar **) arguments, -1);
       cmdline = g_object_new (G_TYPE_APPLICATION_COMMAND_LINE,
                               "arguments", v,
                               "options", options,
                               NULL);
-      g_signal_emit (application, g_application_signals[SIGNAL_COMMAND_LINE], 0, cmdline, exit_status);
+      g_signal_emit (application, g_application_signals[SIGNAL_COMMAND_LINE], 0, cmdline, &handler_exit_status);
+
+      /* For consistency with remote invocations */
+      g_application_command_line_set_exit_status (cmdline, handler_exit_status);
+      *exit_status = g_application_command_line_get_exit_status (cmdline);
+
       g_object_unref (cmdline);
     }
 }
