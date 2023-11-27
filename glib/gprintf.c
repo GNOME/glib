@@ -359,19 +359,29 @@ g_vasprintf (gchar      **string,
 
   {
     va_list args2;
+    char c;
+    int max_len;
 
     va_copy (args2, args);
 
-    *string = g_new (gchar, g_printf_string_upper_bound (format, args));
+    max_len = _g_vsnprintf (&c, 1, format, args);
+    if (max_len < 0)
+      {
+        /* This can happen if @format contains `%ls` or `%lc` and @args contains
+         * something not representable in the current locale’s encoding (which
+         * should be UTF-8, but ymmv). Basically: don’t use `%ls` or `%lc`. */
+        va_end (args2);
+        *string = NULL;
+        return -1;
+      }
+
+    *string = g_new (gchar, (size_t) max_len + 1);
 
     len = _g_vsprintf (*string, format, args2);
     va_end (args2);
 
-    if (len < 0)
-      {
-        g_free (*string);
-        *string = NULL;
-      }
+    /* _g_vsprintf() should have exactly the same failure modes as _g_vsnprintf() */
+    g_assert (len >= 0);
   }
 #endif
 

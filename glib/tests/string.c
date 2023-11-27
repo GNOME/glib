@@ -319,11 +319,17 @@ test_string_append_vprintf (void)
 
   string_append_vprintf_va (string, "some %s placeholders", "format");
 
+  if (g_test_undefined ())
+    {
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "Failed to append to string*");
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wformat"
 #pragma GCC diagnostic ignored "-Wformat-extra-args"
   string_append_vprintf_va (string, "%l", "invalid");
 #pragma GCC diagnostic pop
+      g_test_assert_expected_messages ();
+    }
 
   g_assert_cmpstr (string->str, ==, "firsthalfsome format placeholders");
 
