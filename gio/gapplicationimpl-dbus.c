@@ -970,18 +970,26 @@ g_dbus_command_line_get_stdin (GApplicationCommandLine *cmdline)
 static void
 g_dbus_command_line_finalize (GObject *object)
 {
-  GApplicationCommandLine *cmdline = G_APPLICATION_COMMAND_LINE (object);
   GDBusCommandLine *gdbcl = (GDBusCommandLine *) object;
+
+  g_object_unref (gdbcl->invocation);
+
+  G_OBJECT_CLASS (g_dbus_command_line_parent_class)
+    ->finalize (object);
+}
+
+static void
+g_dbus_command_line_done (GApplicationCommandLine *cmdline)
+{
+  GDBusCommandLine *gdbcl = (GDBusCommandLine *) cmdline;
   gint status;
 
   status = g_application_command_line_get_exit_status (cmdline);
 
   g_dbus_method_invocation_return_value (gdbcl->invocation,
                                          g_variant_new ("(i)", status));
-  g_object_unref (gdbcl->invocation);
 
-  G_OBJECT_CLASS (g_dbus_command_line_parent_class)
-    ->finalize (object);
+  G_APPLICATION_COMMAND_LINE_CLASS (g_dbus_command_line_parent_class)->done (cmdline);
 }
 
 static void
@@ -998,6 +1006,7 @@ g_dbus_command_line_class_init (GApplicationCommandLineClass *class)
   class->printerr_literal = g_dbus_command_line_printerr_literal;
   class->print_literal = g_dbus_command_line_print_literal;
   class->get_stdin = g_dbus_command_line_get_stdin;
+  class->done = g_dbus_command_line_done;
 }
 
 static GApplicationCommandLine *

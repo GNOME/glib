@@ -76,6 +76,15 @@ test_basic_properties (void)
   g_object_get (cl, "is-remote", &is_remote, NULL);
   g_assert_false (is_remote);
 
+  /* exit status */
+  g_assert_cmpint (g_application_command_line_get_exit_status (cl), ==, 0);
+  g_application_command_line_set_exit_status (cl, 1);
+  g_assert_cmpint (g_application_command_line_get_exit_status (cl), ==, 1);
+
+  g_application_command_line_done (cl);
+  g_application_command_line_set_exit_status (cl, 2);
+  g_assert_cmpint (g_application_command_line_get_exit_status (cl), ==, 1);
+
   g_clear_object (&cl);
 }
 

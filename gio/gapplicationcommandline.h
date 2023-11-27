@@ -67,8 +67,9 @@ struct _GApplicationCommandLineClass
   void                  (* printerr_literal)    (GApplicationCommandLine *cmdline,
                                                  const gchar             *message);
   GInputStream *        (* get_stdin)           (GApplicationCommandLine *cmdline);
+  void                  (* done)                (GApplicationCommandLine *cmdline);
 
-  gpointer padding[11];
+  gpointer padding[10];
 };
 
 GIO_AVAILABLE_IN_ALL
@@ -125,6 +126,9 @@ GVariant *              g_application_command_line_get_platform_data    (GApplic
 GIO_AVAILABLE_IN_2_36
 GFile *                 g_application_command_line_create_file_for_arg  (GApplicationCommandLine   *cmdline,
                                                                          const gchar               *arg);
+
+GIO_AVAILABLE_IN_2_80
+void                    g_application_command_line_done                 (GApplicationCommandLine   *cmdline);
 
 G_END_DECLS
 
