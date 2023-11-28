@@ -14,7 +14,7 @@ variables:
   FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v22"
   COVERITY_IMAGE: "registry.gitlab.gnome.org/gnome/glib/coverity:v7"
   DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v16"
-  ALPINE_IMAGE: "registry.gitlab.gnome.org/gnome/glib/alpine-stable:v0"
+  ALPINE_IMAGE: "registry.gitlab.gnome.org/gnome/glib/alpine:v0"
   MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v12"
   MESON_TEST_TIMEOUT_MULTIPLIER: 4
   G_MESSAGES_DEBUG: all
@@ -211,7 +211,7 @@ hurd-i386:
       - "_build/glib/glibconfig.h"
       - "_build/meson-logs"
 
-muslc-alpine-stable-x86_64:
+muslc-alpine-x86_64:
   extends:
     - .build-linux
     - .only-schedules
