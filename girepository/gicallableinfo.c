@@ -59,7 +59,7 @@ signature_offset (GICallableInfo *info)
   GIRealInfo *rinfo = (GIRealInfo*)info;
   int sigoff = -1;
 
-  switch (rinfo->type)
+  switch (gi_base_info_get_type ((GIBaseInfo *) info))
     {
     case GI_INFO_TYPE_FUNCTION:
       sigoff = G_STRUCT_OFFSET (FunctionBlob, signature);
@@ -105,7 +105,7 @@ gi_callable_info_can_throw_gerror (GICallableInfo *info)
    * to support the other callables. For Functions and VFuncs,
    * also check their legacy flag for compatibility.
    */
-  switch (rinfo->type) {
+  switch (gi_base_info_get_type ((GIBaseInfo *) info)) {
   case GI_INFO_TYPE_FUNCTION:
     {
       FunctionBlob *blob;
@@ -147,7 +147,7 @@ gboolean
 gi_callable_info_is_method (GICallableInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo*)info;
-  switch (rinfo->type) {
+  switch (gi_base_info_get_type ((GIBaseInfo *) info)) {
   case GI_INFO_TYPE_FUNCTION:
     {
       FunctionBlob *blob;
