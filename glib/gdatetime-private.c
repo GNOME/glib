@@ -140,7 +140,7 @@ _g_era_description_segment_unref (GEraDescriptionSegment *segment)
  *
  * Parse an ERA description string. See [`nl_langinfo(3)`](man:nl_langinfo(3)).
  *
- * Example description string for th_TR.UTF-8:
+ * Example description string for th_TH.UTF-8:
  * ```
  * +:1:-543/01/01:+*:พ.ศ.:%EC %Ey
  * ```
