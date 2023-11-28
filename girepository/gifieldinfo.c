@@ -34,29 +34,33 @@
 #include "gifieldinfo.h"
 
 /**
- * SECTION:gifieldinfo
- * @title: GIFieldInfo
- * @short_description: Struct representing a struct or union field
+ * GIFieldInfo:
  *
- * A GIFieldInfo struct represents a field of a struct, union, or object.
+ * A `GIFieldInfo` struct represents a field of a struct, union, or object.
  *
- * The GIFieldInfo is fetched by calling gi_struct_info_get_field(),
- * gi_union_info_get_field() or gi_object_info_get_field().
+ * The `GIFieldInfo` is fetched by calling
+ * [method@GIRepository.StructInfo.get_field],
+ * [method@GIRepository.UnionInfo.get_field] or
+ * [method@GIRepository.ObjectInfo.get_field].
  *
- * A field has a size, type and a struct offset asssociated and a set of flags,
- * which are currently #GI_FIELD_IS_READABLE or #GI_FIELD_IS_WRITABLE.
+ * A field has a size, type and a struct offset associated and a set of flags,
+ * which are currently `GI_FIELD_IS_READABLE` or `GI_FIELD_IS_WRITABLE`.
  *
- * See also: #GIStructInfo, #GIUnionInfo, #GIObjectInfo
+ * See also: [type@GIRepository.StructInfo], [type@GIRepository.UnionInfo],
+ * [type@GIRepository.ObjectInfo]
+ *
+ * Since: 2.80
  */
 
 /**
  * gi_field_info_get_flags:
  * @info: a #GIFieldInfo
  *
- * Obtain the flags for this #GIFieldInfo. See #GIFieldInfoFlags for possible
- * flag values.
+ * Obtain the flags for this `GIFieldInfo`. See
+ * [flags@GIRepository.FieldInfoFlags] for possible flag values.
  *
  * Returns: the flags
+ * Since: 2.80
  */
 GIFieldInfoFlags
 gi_field_info_get_flags (GIFieldInfo *info)
@@ -85,10 +89,11 @@ gi_field_info_get_flags (GIFieldInfo *info)
  * gi_field_info_get_size:
  * @info: a #GIFieldInfo
  *
- * Obtain the size in bits of the field member, this is how
+ * Obtain the size of the field member, in bits. This is how
  * much space you need to allocate to store the field.
  *
- * Returns: the field size
+ * Returns: the field size, in bits
+ * Since: 2.80
  */
 gint
 gi_field_info_get_size (GIFieldInfo *info)
@@ -108,10 +113,11 @@ gi_field_info_get_size (GIFieldInfo *info)
  * gi_field_info_get_offset:
  * @info: a #GIFieldInfo
  *
- * Obtain the offset in bytes of the field member, this is relative
+ * Obtain the offset of the field member, in bytes. This is relative
  * to the beginning of the struct or union.
  *
- * Returns: the field offset
+ * Returns: the field offset, in bytes
+ * Since: 2.80
  */
 gint
 gi_field_info_get_offset (GIFieldInfo *info)
@@ -131,10 +137,10 @@ gi_field_info_get_offset (GIFieldInfo *info)
  * gi_field_info_get_type_info:
  * @info: a #GIFieldInfo
  *
- * Obtain the type of a field as a #GITypeInfo.
+ * Obtain the type of a field as a [type@GIRepository.TypeInfo].
  *
- * Returns: (transfer full): the #GITypeInfo. Free the struct by calling
- *   gi_base_info_unref() when done.
+ * Returns: (transfer full): the [type@GIRepository.TypeInfo]. Free the struct
+ *   by calling [method@GIRepository.BaseInfo.unref] when done.
  */
 GITypeInfo *
 gi_field_info_get_type_info (GIFieldInfo *info)
@@ -166,14 +172,17 @@ gi_field_info_get_type_info (GIFieldInfo *info)
  * gi_field_info_get_field: (skip)
  * @field_info: a #GIFieldInfo
  * @mem: pointer to a block of memory representing a C structure or union
- * @value: a #GIArgument into which to store the value retrieved
+ * @value: a [type@GIRepository.Argument] into which to store the value retrieved
  *
- * Reads a field identified by a #GIFieldInfo from a C structure or
- * union.  This only handles fields of simple C types. It will fail
- * for a field of a composite type like a nested structure or union
- * even if that is actually readable.
+ * Reads a field identified by a `GIFieldInfo` from a C structure or
+ * union.
  *
- * Returns: %TRUE if reading the field succeeded, otherwise %FALSE
+ * This only handles fields of simple C types. It will fail for a field of a
+ * composite type like a nested structure or union even if that is actually
+ * readable.
+ *
+ * Returns: true if reading the field succeeded, false otherwise
+ * Since: 2.80
  */
 gboolean
 gi_field_info_get_field (GIFieldInfo *field_info,
@@ -358,16 +367,19 @@ gi_field_info_get_field (GIFieldInfo *field_info,
  * gi_field_info_set_field: (skip)
  * @field_info: a #GIFieldInfo
  * @mem: pointer to a block of memory representing a C structure or union
- * @value: a #GIArgument holding the value to store
+ * @value: a [type@GIRepository.Argument] holding the value to store
  *
- * Writes a field identified by a #GIFieldInfo to a C structure or
- * union.  This only handles fields of simple C types. It will fail
- * for a field of a composite type like a nested structure or union
- * even if that is actually writable. Note also that that it will refuse
- * to write fields where memory management would by required. A field
- * with a type such as 'char *' must be set with a setter function.
+ * Writes a field identified by a `GIFieldInfo` to a C structure or
+ * union.
  *
- * Returns: %TRUE if writing the field succeeded, otherwise %FALSE
+ * This only handles fields of simple C types. It will fail for a field of a
+ * composite type like a nested structure or union even if that is actually
+ * writable. Note also that that it will refuse to write fields where memory
+ * management would by required. A field with a type such as `char *` must be
+ * set with a setter function.
+ *
+ * Returns: true if writing the field succeeded, false otherwise
+ * Since: 2.80
  */
 gboolean
 gi_field_info_set_field (GIFieldInfo      *field_info,

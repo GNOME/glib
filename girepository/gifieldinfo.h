@@ -33,11 +33,12 @@
 G_BEGIN_DECLS
 
 /**
- * GI_IS_FIELD_INFO
+ * GI_IS_FIELD_INFO:
  * @info: an info structure
  *
- * Checks if @info is a #GIFieldInfo.
+ * Checks if @info is a [class@GIRepository.FieldInfo].
  *
+ * Since: 2.80
  */
 #define GI_IS_FIELD_INFO(info) \
     (gi_base_info_get_info_type ((GIBaseInfo*) info) ==  GI_INFO_TYPE_FIELD)
