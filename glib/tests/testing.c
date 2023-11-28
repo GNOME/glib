@@ -404,6 +404,25 @@ test_subprocess_timeout (void)
   g_assert_true (g_test_trap_reached_timeout ());
 }
 
+static void
+test_subprocess_envp (void)
+{
+  char **envp = NULL;
+
+  if (g_test_subprocess ())
+    {
+      g_assert_cmpstr (g_getenv ("TEST_SUBPROCESS_VARIABLE"), ==, "definitely set");
+      return;
+    }
+
+  envp = g_get_environ ();
+  envp = g_environ_setenv (g_steal_pointer (&envp), "TEST_SUBPROCESS_VARIABLE", "definitely set", TRUE);
+  g_test_trap_subprocess_with_envp (NULL, (const gchar * const *) envp,
+                                    0, G_TEST_SUBPROCESS_DEFAULT);
+  g_test_trap_assert_passed ();
+  g_strfreev (envp);
+}
+
 /* run a test with fixture setup and teardown */
 typedef struct {
   guint  seed;
@@ -2909,6 +2928,7 @@ main (int   argc,
   g_test_add_func ("/trap_subprocess/no-such-test", test_subprocess_no_such_test);
   if (g_test_slow ())
     g_test_add_func ("/trap_subprocess/timeout", test_subprocess_timeout);
+  g_test_add_func ("/trap_subprocess/envp", test_subprocess_envp);
 
   g_test_add_func ("/trap_subprocess/patterns", test_subprocess_patterns);
 
