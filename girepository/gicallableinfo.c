@@ -597,7 +597,7 @@ gi_type_info_extract_ffi_return_value (GITypeInfo                  *return_info,
  * TODO
  */
 gboolean
-gi_callable_info_invoke (GIFunctionInfo    *info,
+gi_callable_info_invoke (GICallableInfo    *info,
                          gpointer           function,
                          const GIArgument  *in_args,
                          int                n_in_args,
