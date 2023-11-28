@@ -85,7 +85,7 @@ gi_info_new_full (GIInfoType    type,
  *
  * TODO
  *
- * Returns: TODO
+ * Returns: (transfer full): TODO
  */
 GIBaseInfo *
 gi_info_new (GIInfoType     type,
