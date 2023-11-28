@@ -73,7 +73,7 @@ GI_AVAILABLE_IN_ALL
 gint                   gi_arg_info_get_destroy            (GIArgInfo *info);
 
 GI_AVAILABLE_IN_ALL
-GITypeInfo *           gi_arg_info_get_type               (GIArgInfo *info);
+GITypeInfo *           gi_arg_info_get_type_info          (GIArgInfo *info);
 
 GI_AVAILABLE_IN_ALL
 void                   gi_arg_info_load_type              (GIArgInfo *info,

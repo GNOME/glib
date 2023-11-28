@@ -127,7 +127,7 @@ gi_field_info_get_offset (GIFieldInfo *info)
 }
 
 /**
- * gi_field_info_get_type:
+ * gi_field_info_get_type_info:
  * @info: a #GIFieldInfo
  *
  * Obtain the type of a field as a #GITypeInfo.
@@ -136,7 +136,7 @@ gi_field_info_get_offset (GIFieldInfo *info)
  *   gi_base_info_unref() when done.
  */
 GITypeInfo *
-gi_field_info_get_type (GIFieldInfo *info)
+gi_field_info_get_type_info (GIFieldInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header = (Header *)rinfo->typelib->data;
@@ -190,7 +190,7 @@ gi_field_info_get_field (GIFieldInfo *field_info,
     return FALSE;
 
   offset = gi_field_info_get_offset (field_info);
-  type_info = gi_field_info_get_type (field_info);
+  type_info = gi_field_info_get_type_info (field_info);
 
   if (gi_type_info_is_pointer (type_info))
     {
@@ -384,7 +384,7 @@ gi_field_info_set_field (GIFieldInfo      *field_info,
     return FALSE;
 
   offset = gi_field_info_get_offset (field_info);
-  type_info = gi_field_info_get_type (field_info);
+  type_info = gi_field_info_get_type_info (field_info);
 
   if (!gi_type_info_is_pointer (type_info))
     {

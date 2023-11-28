@@ -80,7 +80,7 @@ gi_property_info_get_flags (GIPropertyInfo *info)
 }
 
 /**
- * gi_property_info_get_type:
+ * gi_property_info_get_type_info:
  * @info: a #GIPropertyInfo
  *
  * Obtain the type information for the property @info.
@@ -89,7 +89,7 @@ gi_property_info_get_flags (GIPropertyInfo *info)
  *   gi_base_info_unref() when done.
  */
 GITypeInfo *
-gi_property_info_get_type (GIPropertyInfo *info)
+gi_property_info_get_type_info (GIPropertyInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
 

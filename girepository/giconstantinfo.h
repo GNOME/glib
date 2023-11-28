@@ -43,7 +43,7 @@ G_BEGIN_DECLS
 
 
 GI_AVAILABLE_IN_ALL
-GITypeInfo * gi_constant_info_get_type (GIConstantInfo *info);
+GITypeInfo * gi_constant_info_get_type_info (GIConstantInfo *info);
 
 GI_AVAILABLE_IN_ALL
 void         gi_constant_info_free_value (GIConstantInfo *info,

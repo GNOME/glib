@@ -46,7 +46,7 @@ GI_AVAILABLE_IN_ALL
 GParamFlags  gi_property_info_get_flags (GIPropertyInfo *info);
 
 GI_AVAILABLE_IN_ALL
-GITypeInfo * gi_property_info_get_type  (GIPropertyInfo *info);
+GITypeInfo *gi_property_info_get_type_info (GIPropertyInfo *info);
 
 GI_AVAILABLE_IN_ALL
 GITransfer   gi_property_info_get_ownership_transfer (GIPropertyInfo *info);

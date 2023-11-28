@@ -291,7 +291,7 @@ gi_arg_info_get_destroy (GIArgInfo *info)
 }
 
 /**
- * gi_arg_info_get_type:
+ * gi_arg_info_get_type_info:
  * @info: a #GIArgInfo
  *
  * Obtain the type information for @info.
@@ -301,7 +301,7 @@ gi_arg_info_get_destroy (GIArgInfo *info)
  *   when done.
  */
 GITypeInfo *
-gi_arg_info_get_type (GIArgInfo *info)
+gi_arg_info_get_type_info (GIArgInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
 
@@ -317,7 +317,7 @@ gi_arg_info_get_type (GIArgInfo *info)
  * @type: (out caller-allocates): Initialized with information about type of @info
  *
  * Obtain information about a the type of given argument @info; this
- * function is a variant of gi_arg_info_get_type() designed for stack
+ * function is a variant of gi_arg_info_get_type_info() designed for stack
  * allocation.
  *
  * The initialized @type must not be referenced after @info is deallocated.

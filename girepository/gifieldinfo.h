@@ -53,7 +53,7 @@ GI_AVAILABLE_IN_ALL
 gint                   gi_field_info_get_offset     (GIFieldInfo *info);
 
 GI_AVAILABLE_IN_ALL
-GITypeInfo *           gi_field_info_get_type       (GIFieldInfo *info);
+GITypeInfo *           gi_field_info_get_type_info  (GIFieldInfo *info);
 
 GI_AVAILABLE_IN_ALL
 gboolean               gi_field_info_get_field      (GIFieldInfo *field_info,

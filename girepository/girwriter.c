@@ -423,13 +423,13 @@ write_field_info (const gchar *ns,
 
   write_attributes (file, (GIBaseInfo*) info);
 
-  type = gi_field_info_get_type (info);
+  type = gi_field_info_get_type_info (info);
 
   if (branch)
     {
       xml_printf (file, " branch=\"");
       gi_base_info_unref ((GIBaseInfo *)type);
-      type = gi_constant_info_get_type (branch);
+      type = gi_constant_info_get_type_info (branch);
       gi_constant_info_get_value (branch, &value);
       write_constant_value (ns, type, &value, file);
       xml_printf (file, "\"");
@@ -555,7 +555,7 @@ write_callable_info (const gchar    *ns,
 
       write_attributes (file, (GIBaseInfo*) arg);
 
-      type = gi_arg_info_get_type (arg);
+      type = gi_arg_info_get_type_info (arg);
       write_type_info (ns, type, file);
 
       xml_end_element (file, "parameter");
@@ -813,7 +813,7 @@ write_constant_info (const gchar    *ns,
   xml_start_element (file, "constant");
   xml_printf (file, " name=\"%s\"", name);
 
-  type = gi_constant_info_get_type (info);
+  type = gi_constant_info_get_type_info (info);
   xml_printf (file, " value=\"");
 
   gi_constant_info_get_value (info, &value);
@@ -1020,7 +1020,7 @@ write_property_info (const gchar    *ns,
 
   write_attributes (file, (GIBaseInfo*) info);
 
-  type = gi_property_info_get_type (info);
+  type = gi_property_info_get_type_info (info);
 
   write_type_info (ns, type, file);
 

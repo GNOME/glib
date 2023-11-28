@@ -666,7 +666,7 @@ gi_callable_info_invoke (GIFunctionInfo    *info,
       switch (gi_arg_info_get_direction (ainfo))
         {
         case GI_DIRECTION_IN:
-          tinfo = gi_arg_info_get_type (ainfo);
+          tinfo = gi_arg_info_get_type_info (ainfo);
           atypes[i+offset] = gi_type_info_get_ffi_type (tinfo);
           gi_base_info_unref ((GIBaseInfo *)ainfo);
           gi_base_info_unref ((GIBaseInfo *)tinfo);
