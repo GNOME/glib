@@ -29,6 +29,7 @@
 #include <glib.h>
 
 #include <girepository/girepository.h>
+#include "gibaseinfo-private.h"
 #include "girepository-private.h"
 #include "gitypelib-internal.h"
 #include "gistructinfo.h"
@@ -337,4 +338,13 @@ gi_struct_info_get_free_function (GIStructInfo *info)
     return gi_typelib_get_string (rinfo->typelib, blob->free_func);
 
   return NULL;
+}
+
+void
+gi_struct_info_class_init (gpointer g_class,
+                           gpointer class_data)
+{
+  GIBaseInfoClass *info_class = g_class;
+
+  info_class->info_type = GI_INFO_TYPE_STRUCT;
 }

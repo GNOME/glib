@@ -29,6 +29,7 @@
 #include <glib.h>
 
 #include <girepository/girepository.h>
+#include "gibaseinfo-private.h"
 #include "girepository-private.h"
 #include "gitypelib-internal.h"
 #include "givfuncinfo.h"
@@ -39,7 +40,7 @@
  * `GIVfuncInfo` represents a virtual function.
  *
  * A virtual function is a callable object that belongs to either a
- * [alias@GIRepository.ObjectInfo] or a [alias@GIRepository.InterfaceInfo].
+ * [type@GIRepository.ObjectInfo] or a [type@GIRepository.InterfaceInfo].
  *
  * Since: 2.80
  */
@@ -172,7 +173,7 @@ gi_vfunc_info_get_signal (GIVFuncInfo *info)
  *
  * Not all virtuals will have invokers.
  *
- * Returns: (transfer full) (nullable): the [alias@GIRepository.FunctionInfo] or
+ * Returns: (transfer full) (nullable): the [type@GIRepository.FunctionInfo] or
  *   `NULL`. Free it with gi_base_info_unref() when done.
  * Since: 2.80
  */
@@ -368,4 +369,13 @@ gi_vfunc_info_invoke (GIVFuncInfo      *info,
                                   TRUE,
                                   FALSE,
                                   error);
+}
+
+void
+gi_vfunc_info_class_init (gpointer g_class,
+                          gpointer class_data)
+{
+  GIBaseInfoClass *info_class = g_class;
+
+  info_class->info_type = GI_INFO_TYPE_VFUNC;
 }

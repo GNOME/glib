@@ -34,6 +34,7 @@
 #include <girepository/giarginfo.h>
 #include <girepository/gibaseinfo.h>
 #include <girepository/gicallableinfo.h>
+#include <girepository/gicallbackinfo.h>
 #include <girepository/giconstantinfo.h>
 #include <girepository/gienuminfo.h>
 #include <girepository/gifieldinfo.h>
@@ -48,6 +49,7 @@
 #include <girepository/gitypelib.h>
 #include <girepository/gitypes.h>
 #include <girepository/giunioninfo.h>
+#include <girepository/giunresolvedinfo.h>
 #include <girepository/givfuncinfo.h>
 
 G_BEGIN_DECLS

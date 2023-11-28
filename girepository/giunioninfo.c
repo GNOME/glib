@@ -27,6 +27,7 @@
 #include <glib.h>
 
 #include <girepository/girepository.h>
+#include "gibaseinfo-private.h"
 #include "girepository-private.h"
 #include "gitypelib-internal.h"
 #include "giunioninfo.h"
@@ -68,8 +69,8 @@ gi_union_info_get_n_fields  (GIUnionInfo *info)
  *
  * Obtain the type information for the field with the specified index.
  *
- * Returns: (transfer full): the [alias@GIRepository.FieldInfo], free it with
- *   gi_base_info_unref() when done.
+ * Returns: (transfer full): the [type@GIRepository.FieldInfo], free it with
+ *   [method@GIRepository.BaseInfo.unref] when done.
  * Since: 2.80
  */
 GIFieldInfo *
@@ -109,8 +110,8 @@ gi_union_info_get_n_methods (GIUnionInfo *info)
  *
  * Obtain the type information for the method with the specified index.
  *
- * Returns: (transfer full): the [alias@GIRepository.FunctionInfo], free it
- *   with gi_base_info_unref() when done.
+ * Returns: (transfer full): the [type@GIRepository.FunctionInfo], free it
+ *   with [method@GIRepository.BaseInfo.unref] when done.
  * Since: 2.80
  */
 GIFunctionInfo *
@@ -171,8 +172,8 @@ gi_union_info_get_discriminator_offset (GIUnionInfo *info)
  *
  * Obtain the type information of the union discriminator.
  *
- * Returns: (transfer full): the [alias@GIRepository.TypeInfo], free it with
- *   gi_base_info_unref() when done.
+ * Returns: (transfer full): the [type@GIRepository.TypeInfo], free it with
+ *   [method@GIRepository.BaseInfo.unref] when done.
  * Since: 2.80
  */
 GITypeInfo *
@@ -194,8 +195,8 @@ gi_union_info_get_discriminator_type (GIUnionInfo *info)
  *
  * If the union is not discriminated, `NULL` is returned.
  *
- * Returns: (transfer full) (nullable): the [alias@GIRepository.ConstantInfo],
- *   free it with gi_base_info_unref() when done.
+ * Returns: (transfer full) (nullable): the [type@GIRepository.ConstantInfo],
+ *   free it with [method@GIRepository.BaseInfo.unref] when done.
  * Since: 2.80
  */
 GIConstantInfo *
@@ -229,8 +230,8 @@ gi_union_info_get_discriminator (GIUnionInfo *info,
  *
  * Obtain the type information for the method named @name.
  *
- * Returns: (transfer full): the [alias@GIRepository.FunctionInfo], free it
- *   with gi_base_info_unref() when done.
+ * Returns: (transfer full): the [type@GIRepository.FunctionInfo], free it
+ *   with [method@GIRepository.BaseInfo.unref] when done.
  * Since: 2.80
  */
 GIFunctionInfo *
@@ -336,4 +337,13 @@ gi_union_info_get_free_function (GIUnionInfo *info)
     return gi_typelib_get_string (rinfo->typelib, blob->free_func);
 
   return NULL;
+}
+
+void
+gi_union_info_class_init (gpointer g_class,
+                          gpointer class_data)
+{
+  GIBaseInfoClass *info_class = g_class;
+
+  info_class->info_type = GI_INFO_TYPE_UNION;
 }

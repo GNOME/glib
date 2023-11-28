@@ -32,7 +32,9 @@
 #include <girepository/girepository.h>
 #include <girepository/gitypelib.h>
 
-typedef struct _GIRealInfo GIRealInfo;
+/* FIXME: For now, GIRealInfo is a compatibility define. This will eventually
+ * be removed. */
+typedef struct _GIBaseInfo GIRealInfo;
 
 /* We changed a gint32 -> gint in the structure below, which should be
  * valid everywhere we care about.
@@ -45,38 +47,168 @@ G_STATIC_ASSERT (sizeof (int) == sizeof (gint32));
  * from the typelib, and not having computed data in
  * per-type structures.
  */
-struct _GIRealInfo
+struct _GIBaseInfo
 {
-  /* Keep this part in sync with GIUnresolvedInfo below */
-  gint32 type;
-  volatile gint ref_count;
+  /*< private >*/
+  GTypeInstance parent_instance;
+  gatomicrefcount ref_count;
+
   GIRepository *repository;
   GIBaseInfo *container;
-
-  /* Resolved specific */
 
   GITypelib *typelib;
   guint32 offset;
 
   guint32 type_is_embedded : 1; /* Used by GITypeInfo */
-  guint32 reserved : 31;
-
-  gpointer reserved2[4];
 };
+
+/* Subtypes */
+struct _GICallableInfo
+{
+  GIBaseInfo parent;
+};
+
+void gi_callable_info_class_init (gpointer g_class,
+                                  gpointer class_data);
+
+struct _GIFunctionInfo
+{
+  GIBaseInfo parent;
+};
+
+void gi_function_info_class_init (gpointer g_class,
+                                  gpointer class_data);
+
+struct _GICallbackInfo
+{
+  GIBaseInfo parent;
+};
+
+void gi_callback_info_class_init (gpointer g_class,
+                                  gpointer class_data);
+
+struct _GIRegisteredTypeInfo
+{
+  GIBaseInfo parent;
+};
+
+void gi_registered_type_info_class_init (gpointer g_class,
+                                         gpointer class_data);
+
+struct _GIStructInfo
+{
+  GIBaseInfo parent;
+};
+
+void gi_struct_info_class_init (gpointer g_class,
+                                gpointer class_data);
+
+struct _GIUnionInfo
+{
+  GIBaseInfo parent;
+};
+
+void gi_union_info_class_init (gpointer g_class,
+                               gpointer class_data);
+
+struct _GIEnumInfo
+{
+  GIBaseInfo parent;
+};
+
+void gi_enum_info_class_init (gpointer g_class,
+                              gpointer class_data);
+
+struct _GIObjectInfo
+{
+  GIBaseInfo parent;
+};
+
+void gi_object_info_class_init (gpointer g_class,
+                                gpointer class_data);
+
+struct _GIInterfaceInfo
+{
+  GIBaseInfo parent;
+};
+
+void gi_interface_info_class_init (gpointer g_class,
+                                   gpointer class_data);
+
+struct _GIConstantInfo
+{
+  GIBaseInfo parent;
+};
+
+void gi_constant_info_class_init (gpointer g_class,
+                                  gpointer class_data);
+
+struct _GIValueInfo
+{
+  GIBaseInfo parent;
+};
+
+void gi_value_info_class_init (gpointer g_class,
+                               gpointer class_data);
+
+struct _GISignalInfo
+{
+  GIBaseInfo parent;
+};
+
+void gi_signal_info_class_init (gpointer g_class,
+                                gpointer class_data);
+
+struct _GIVFuncInfo
+{
+  GIBaseInfo parent;
+};
+
+void gi_vfunc_info_class_init (gpointer g_class,
+                               gpointer class_data);
+
+struct _GIPropertyInfo
+{
+  GIBaseInfo parent;
+};
+
+void gi_property_info_class_init (gpointer g_class,
+                                  gpointer class_data);
+
+struct _GIFieldInfo
+{
+  GIBaseInfo parent;
+};
+
+void gi_field_info_class_init (gpointer g_class,
+                               gpointer class_data);
+
+struct _GIArgInfo
+{
+  GIBaseInfo parent;
+};
+
+void gi_arg_info_class_init (gpointer g_class,
+                             gpointer class_data);
+
+struct _GITypeInfo
+{
+  GIBaseInfo parent;
+};
+
+void gi_type_info_class_init (gpointer g_class,
+                              gpointer class_data);
 
 struct _GIUnresolvedInfo
 {
-  /* Keep this part in sync with GIBaseInfo above */
-  gint32 type;
-  volatile gint ref_count;
-  GIRepository *repository;
-  GIBaseInfo *container;
-
-  /* Unresolved specific */
+  GIBaseInfo parent;
 
   const gchar *name;
   const gchar *namespace;
 };
+
+void gi_unresolved_info_class_init (gpointer g_class,
+                                    gpointer class_data);
 
 void         gi_info_init       (GIRealInfo   *info,
                                  GIInfoType    type,

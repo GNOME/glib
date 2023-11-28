@@ -45,6 +45,7 @@ girepo_headers = files(
   'giarginfo.h',
   'gibaseinfo.h',
   'gicallableinfo.h',
+  'gicallbackinfo.h',
   'giconstantinfo.h',
   'gienuminfo.h',
   'gifieldinfo.h',
@@ -60,6 +61,7 @@ girepo_headers = files(
   'gitypelib.h',
   'gitypes.h',
   'giunioninfo.h',
+  'giunresolvedinfo.h',
   'givfuncinfo.h',
 )
 
@@ -142,6 +144,7 @@ girepo_sources = files(
   'giarginfo.c',
   'gibaseinfo.c',
   'gicallableinfo.c',
+  'gicallbackinfo.c',
   'giconstantinfo.c',
   'gienuminfo.c',
   'gifieldinfo.c',
@@ -158,6 +161,7 @@ girepo_sources = files(
   'gitypeinfo.c',
   'gitypelib.c',
   'giunioninfo.c',
+  'giunresolvedinfo.c',
   'givfuncinfo.c',
 )
 

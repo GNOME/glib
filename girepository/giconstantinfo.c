@@ -28,6 +28,7 @@
 #include <string.h> // memcpy
 
 #include <girepository/girepository.h>
+#include "gibaseinfo-private.h"
 #include "girepository-private.h"
 #include "gitypelib-internal.h"
 #include "giconstantinfo.h"
@@ -176,3 +177,11 @@ gi_constant_info_get_value (GIConstantInfo *info,
   return blob->size;
 }
 
+void
+gi_constant_info_class_init (gpointer g_class,
+                             gpointer class_data)
+{
+  GIBaseInfoClass *info_class = g_class;
+
+  info_class->info_type = GI_INFO_TYPE_CONSTANT;
+}

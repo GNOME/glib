@@ -27,6 +27,7 @@
 #include <glib.h>
 
 #include <girepository/girepository.h>
+#include "gibaseinfo-private.h"
 #include "girepository-private.h"
 #include "gitypelib-internal.h"
 #include "gitypeinfo.h"
@@ -568,4 +569,13 @@ gi_type_info_hash_pointer_from_argument (GITypeInfo *info,
 {
   GITypeTag storage_type = gi_type_info_get_storage_type (info);
   return gi_type_tag_hash_pointer_from_argument (storage_type, arg);
+}
+
+void
+gi_type_info_class_init (gpointer g_class,
+                         gpointer class_data)
+{
+  GIBaseInfoClass *info_class = g_class;
+
+  info_class->info_type = GI_INFO_TYPE_TYPE;
 }

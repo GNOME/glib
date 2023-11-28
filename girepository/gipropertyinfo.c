@@ -27,6 +27,7 @@
 #include <glib.h>
 
 #include <girepository/girepository.h>
+#include "gibaseinfo-private.h"
 #include "girepository-private.h"
 #include "gitypelib-internal.h"
 #include "gipropertyinfo.h"
@@ -206,4 +207,13 @@ gi_property_info_get_getter (GIPropertyInfo *info)
     return gi_interface_info_get_method ((GIInterfaceInfo *) container, blob->getter);
   else
     return NULL;
+}
+
+void
+gi_property_info_class_init (gpointer g_class,
+                             gpointer class_data)
+{
+  GIBaseInfoClass *info_class = g_class;
+
+  info_class->info_type = GI_INFO_TYPE_PROPERTY;
 }

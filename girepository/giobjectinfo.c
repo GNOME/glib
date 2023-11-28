@@ -27,6 +27,7 @@
 #include <glib.h>
 
 #include <girepository/girepository.h>
+#include "gibaseinfo-private.h"
 #include "girepository-private.h"
 #include "gitypelib-internal.h"
 #include "giobjectinfo.h"
@@ -1096,4 +1097,13 @@ gi_object_info_get_get_value_function_pointer (GIObjectInfo *info)
   g_return_val_if_fail (GI_IS_OBJECT_INFO (info), NULL);
 
   return (GIObjectInfoGetValueFunction)_get_func(info, (SymbolGetter)gi_object_info_get_get_value_function);
+}
+
+void
+gi_object_info_class_init (gpointer g_class,
+                           gpointer class_data)
+{
+  GIBaseInfoClass *info_class = g_class;
+
+  info_class->info_type = GI_INFO_TYPE_OBJECT;
 }

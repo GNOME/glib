@@ -27,6 +27,7 @@
 #include <glib.h>
 
 #include <girepository/girepository.h>
+#include "gibaseinfo-private.h"
 #include "girepository-private.h"
 #include "gitypelib-internal.h"
 #include "giinterfaceinfo.h"
@@ -501,3 +502,11 @@ gi_interface_info_get_iface_struct (GIInterfaceInfo *info)
     return NULL;
 }
 
+void
+gi_interface_info_class_init (gpointer g_class,
+                              gpointer class_data)
+{
+  GIBaseInfoClass *info_class = g_class;
+
+  info_class->info_type = GI_INFO_TYPE_INTERFACE;
+}

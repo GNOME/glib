@@ -27,6 +27,7 @@
 #include <glib.h>
 
 #include <girepository/girepository.h>
+#include "gibaseinfo-private.h"
 #include "girepository-private.h"
 #include "gitypelib-internal.h"
 #include "gienuminfo.h"
@@ -207,6 +208,15 @@ gi_enum_info_get_storage_type (GIEnumInfo *info)
   return blob->storage_type;
 }
 
+void
+gi_enum_info_class_init (gpointer g_class,
+                         gpointer class_data)
+{
+  GIBaseInfoClass *info_class = g_class;
+
+  info_class->info_type = GI_INFO_TYPE_ENUM;
+}
+
 /**
  * gi_value_info_get_value:
  * @info: a #GIValueInfo
@@ -232,4 +242,13 @@ gi_value_info_get_value (GIValueInfo *info)
     return (gint64)(guint32)blob->value;
   else
     return (gint64)blob->value;
+}
+
+void
+gi_value_info_class_init (gpointer g_class,
+                          gpointer class_data)
+{
+  GIBaseInfoClass *info_class = g_class;
+
+  info_class->info_type = GI_INFO_TYPE_VALUE;
 }

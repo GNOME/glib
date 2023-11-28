@@ -29,155 +29,87 @@
 #endif
 
 #include <glib.h>
+#include <glib-object.h>
+
+#include "gi-visibility.h"
 
 G_BEGIN_DECLS
 
-typedef struct _GIBaseInfoStub {
-  /*< private >*/
-  gint32 dummy1;
-  gint32 dummy2;
-  gpointer dummy3;
-  gpointer dummy4;
-  gpointer dummy5;
-  guint32  dummy6;
-  guint32  dummy7;
-  gpointer padding[4];
-} GIBaseInfo;
+/* Documented in gibaseinfo.c */
+typedef struct _GIBaseInfo GIBaseInfo;
+typedef struct _GIBaseInfoClass GIBaseInfoClass;
 
-/**
- * GICallableInfo:
- *
- * Represents a callable, either #GIFunctionInfo, #GICallbackInfo or
- * #GIVFuncInfo.
- */
-typedef GIBaseInfo GICallableInfo;
+/* Documented in gicallableinfo.c */
+typedef struct _GICallableInfo GICallableInfo;
+GI_AVAILABLE_IN_ALL GType gi_callable_info_get_type (void);
 
-/**
- * GIFunctionInfo:
- *
- * Represents a function, eg arguments and return value.
- */
-typedef GIBaseInfo GIFunctionInfo;
+/* Documented in gifunctioninfo.c */
+typedef struct _GIFunctionInfo GIFunctionInfo;
+GI_AVAILABLE_IN_ALL GType gi_function_info_get_type (void);
 
-/**
- * SECTION:gicallbackinfo
- * @title: GICallbackInfo
- * @short_description: Struct representing a callback
- *
- * GICallbackInfo represents a callback.
- */
+/* Documented in gicallbackinfo.c */
+typedef struct _GICallbackInfo GICallbackInfo;
+GI_AVAILABLE_IN_ALL GType gi_callback_info_get_type (void);
 
-/**
- * GICallbackInfo:
- *
- * Represents a callback, eg arguments and return value.
- */
-typedef GIBaseInfo GICallbackInfo;
+/* Documented in giregisteredtypeinfo.c */
+typedef struct _GIRegisteredTypeInfo GIRegisteredTypeInfo;
+GI_AVAILABLE_IN_ALL GType gi_registered_type_info_get_type (void);
 
-/**
- * GIRegisteredTypeInfo:
- *
- * Represent a registered type.
- */
-typedef GIBaseInfo GIRegisteredTypeInfo;
-
-/**
- * GIStructInfo:
- *
- * Represents a struct.
- */
-typedef GIBaseInfo GIStructInfo;
+/* Documented in gistructinfo.c */
+typedef struct _GIStructInfo GIStructInfo;
+GI_AVAILABLE_IN_ALL GType gi_struct_info_get_type (void);
 
 /* Documented in giunioninfo.c */
-typedef GIBaseInfo GIUnionInfo;
+typedef struct _GIUnionInfo GIUnionInfo;
+GI_AVAILABLE_IN_ALL GType gi_union_info_get_type (void);
 
-/**
- * GIEnumInfo:
- *
- * Represents an enum or a flag.
- */
-typedef GIBaseInfo GIEnumInfo;
+/* Documented in gienuminfo.c */
+typedef struct _GIEnumInfo GIEnumInfo;
+GI_AVAILABLE_IN_ALL GType gi_enum_info_get_type (void);
 
-/**
- * GIObjectInfo:
- *
- * Represents an object.
- */
-typedef GIBaseInfo GIObjectInfo;
+/* Documented in giobjectinfo.c */
+typedef struct _GIObjectInfo GIObjectInfo;
+GI_AVAILABLE_IN_ALL GType gi_object_info_get_type (void);
 
-/**
- * GIInterfaceInfo:
- *
- * Represents an interface.
- */
-typedef GIBaseInfo GIInterfaceInfo;
+/* Documented in giinterfaceinfo.c */
+typedef struct _GIInterfaceInfo GIInterfaceInfo;
+GI_AVAILABLE_IN_ALL GType gi_interface_info_get_type (void);
 
-/**
- * GIConstantInfo:
- *
- * Represents a constant.
- */
-typedef GIBaseInfo GIConstantInfo;
+/* Documented in giconstantinfo.c */
+typedef struct _GIConstantInfo GIConstantInfo;
+GI_AVAILABLE_IN_ALL GType gi_constant_info_get_type (void);
 
-/**
- * SECTION:givalueinfo
- * @title: GIValueInfo
- * @short_description: Struct representing a value
- *
- * GIValueInfo represents a value.
- */
+/* Documented in givalueinfo.c */
+typedef struct _GIValueInfo GIValueInfo;
+GI_AVAILABLE_IN_ALL GType gi_value_info_get_type (void);
 
-/**
- * GIValueInfo:
- *
- * Represents a enum value of a #GIEnumInfo.
- */
-typedef GIBaseInfo GIValueInfo;
-
-/**
- * GISignalInfo:
- *
- * Represents a signal.
- */
-typedef GIBaseInfo GISignalInfo;
+/* Documented in gisignalinfo.c */
+typedef struct _GISignalInfo GISignalInfo;
+GI_AVAILABLE_IN_ALL GType gi_signal_info_get_type (void);
 
 /* Documented in givfuncinfo.c */
-typedef GIBaseInfo GIVFuncInfo;
+typedef struct _GIVFuncInfo GIVFuncInfo;
+GI_AVAILABLE_IN_ALL GType gi_vfunc_info_get_type (void);
 
-/**
- * GIPropertyInfo:
- *
- * Represents a property of a #GIObjectInfo or a #GIInterfaceInfo.
- */
-typedef GIBaseInfo GIPropertyInfo;
+/* Documented in gipropertyinfo.c */
+typedef struct _GIPropertyInfo GIPropertyInfo;
+GI_AVAILABLE_IN_ALL GType gi_property_info_get_type (void);
 
-/**
- * GIFieldInfo:
- *
- * Represents a field of a #GIStructInfo or a #GIUnionInfo.
- */
-typedef GIBaseInfo GIFieldInfo;
+/* Documented in gifieldinfo.c */
+typedef struct _GIFieldInfo GIFieldInfo;
+GI_AVAILABLE_IN_ALL GType gi_field_info_get_type (void);
 
-/**
- * GIArgInfo:
- *
- * Represents an argument.
- */
-typedef GIBaseInfo GIArgInfo;
+/* Documented in giarginfo.c */
+typedef struct _GIArgInfo GIArgInfo;
+GI_AVAILABLE_IN_ALL GType gi_arg_info_get_type (void);
 
-/**
- * GITypeInfo:
- *
- * Represents type information, direction, transfer etc.
- */
-typedef GIBaseInfo GITypeInfo;
+/* Documented in gitypeinfo.c */
+typedef struct _GITypeInfo GITypeInfo;
+GI_AVAILABLE_IN_ALL GType gi_type_info_get_type (void);
 
-/**
- * GIUnresolvedInfo:
- *
- * Represents a unresolved type in a typelib.
- */
+/* Documented in giunresolvedinfo.c */
 typedef struct _GIUnresolvedInfo GIUnresolvedInfo;
+GI_AVAILABLE_IN_ALL GType gi_unresolved_info_get_type (void);
 
 union _GIArgument
 {
@@ -255,6 +187,10 @@ typedef union _GIArgument GIArgument;
  * @GI_INFO_TYPE_TYPE: type information, see #GITypeInfo
  * @GI_INFO_TYPE_UNRESOLVED: unresolved type, a type which is not present in
  *   the typelib, or any of its dependencies.
+ * @GI_INFO_TYPE_CALLABLE: an abstract type representing any callable (function,
+ *   callback, vfunc) (Since: 2.80)
+ * @GI_INFO_TYPE_REGISTERED_TYPE: an abstract type representing any registered
+ *   type (enum, interface, object, struct, union) (Since: 2.80)
  *
  * The type of a GIBaseInfo struct.
  */
@@ -279,7 +215,10 @@ typedef enum
   GI_INFO_TYPE_FIELD,
   GI_INFO_TYPE_ARG,
   GI_INFO_TYPE_TYPE,
-  GI_INFO_TYPE_UNRESOLVED
+  GI_INFO_TYPE_UNRESOLVED,
+  GI_INFO_TYPE_CALLABLE,     /* 20 */
+  GI_INFO_TYPE_REGISTERED_TYPE,
+  /* keep GI_INFO_TYPE_N_TYPES in sync with this */
 } GIInfoType;
 
 /**

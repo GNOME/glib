@@ -29,6 +29,7 @@
 #include <glib.h>
 
 #include <girepository/girepository.h>
+#include "gibaseinfo-private.h"
 #include "girepository-private.h"
 #include "gitypelib-internal.h"
 #include "gifunctioninfo.h"
@@ -293,4 +294,13 @@ gi_function_info_invoke (GIFunctionInfo    *info,
                                   is_method,
                                   throws,
                                   error);
+}
+
+void
+gi_function_info_class_init (gpointer g_class,
+                             gpointer class_data)
+{
+  GIBaseInfoClass *info_class = g_class;
+
+  info_class->info_type = GI_INFO_TYPE_FUNCTION;
 }

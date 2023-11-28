@@ -29,6 +29,7 @@
 #include <glib.h>
 
 #include <girepository/girepository.h>
+#include "gibaseinfo-private.h"
 #include "girepository-private.h"
 #include "gitypelib-internal.h"
 #include "girffi.h"
@@ -790,4 +791,13 @@ gi_callable_info_invoke (GICallableInfo    *info,
  out:
   gi_base_info_unref ((GIBaseInfo *)rinfo);
   return success;
+}
+
+void
+gi_callable_info_class_init (gpointer g_class,
+                             gpointer class_data)
+{
+  GIBaseInfoClass *info_class = g_class;
+
+  info_class->info_type = GI_INFO_TYPE_CALLABLE;
 }

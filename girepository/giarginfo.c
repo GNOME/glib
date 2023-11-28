@@ -26,6 +26,7 @@
 
 #include <glib.h>
 
+#include "gibaseinfo-private.h"
 #include "gitypelib-internal.h"
 #include "girepository-private.h"
 #include "giarginfo.h"
@@ -332,4 +333,13 @@ gi_arg_info_load_type (GIArgInfo  *info,
   g_return_if_fail (GI_IS_ARG_INFO (info));
 
   gi_type_info_init ((GIBaseInfo *) type, (GIBaseInfo*)info, rinfo->typelib, rinfo->offset + G_STRUCT_OFFSET (ArgBlob, arg_type));
+}
+
+void
+gi_arg_info_class_init (gpointer g_class,
+                        gpointer class_data)
+{
+  GIBaseInfoClass *info_class = g_class;
+
+  info_class->info_type = GI_INFO_TYPE_ARG;
 }
