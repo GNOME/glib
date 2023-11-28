@@ -277,6 +277,7 @@ glib_sources += files(
   'gdataset.c',
   'gdate.c',
   'gdatetime.c',
+  'gdatetime-private.c',
   'gdir.c',
   'genviron.c',
   'gerror.c',

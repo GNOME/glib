@@ -32,6 +32,7 @@ RUN dnf -y update \
     glibc-langpack-lt \
     glibc-langpack-pl \
     glibc-langpack-ru \
+    glibc-langpack-th \
     glibc-langpack-tr \
     "gnome-desktop-testing >= 2018.1" \
     gtk-doc \

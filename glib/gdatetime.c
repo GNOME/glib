@@ -69,6 +69,7 @@
 #include "gconvert.h"
 #include "gconvertprivate.h"
 #include "gdatetime.h"
+#include "gdatetime-private.h"
 #include "gfileutils.h"
 #include "ghash.h"
 #include "glibintl.h"
@@ -162,8 +163,11 @@ static const guint16 days_in_year[2][13] =
 #define GET_AMPM_IS_LOCALE TRUE
 
 #define PREFERRED_DATE_TIME_FMT nl_langinfo (D_T_FMT)
+#define PREFERRED_ERA_DATE_TIME_FMT nl_langinfo (ERA_D_T_FMT)
 #define PREFERRED_DATE_FMT nl_langinfo (D_FMT)
+#define PREFERRED_ERA_DATE_FMT nl_langinfo (ERA_D_FMT)
 #define PREFERRED_TIME_FMT nl_langinfo (T_FMT)
+#define PREFERRED_ERA_TIME_FMT nl_langinfo (ERA_T_FMT)
 #define PREFERRED_12HR_TIME_FMT nl_langinfo (T_FMT_AMPM)
 
 static const gint weekday_item[2][7] =
@@ -187,6 +191,10 @@ static const gint month_item[2][12] =
 #define MONTH_FULL(d) nl_langinfo (month_item[1][g_date_time_get_month (d) - 1])
 #define MONTH_FULL_IS_LOCALE TRUE
 
+#define ERA_DESCRIPTION nl_langinfo (ERA)
+#define ERA_DESCRIPTION_IS_LOCALE TRUE
+#define ERA_DESCRIPTION_N_SEGMENTS (int) (gintptr) nl_langinfo (_NL_TIME_ERA_NUM_ENTRIES)
+
 #else
 
 #define GET_AMPM(d)          (get_fallback_ampm (g_date_time_get_hour (d)))
@@ -194,12 +202,15 @@ static const gint month_item[2][12] =
 
 /* Translators: this is the preferred format for expressing the date and the time */
 #define PREFERRED_DATE_TIME_FMT C_("GDateTime", "%a %b %e %H:%M:%S %Y")
+#define PREFERRED_ERA_DATE_TIME_FMT PREFERRED_DATE_TIME_FMT
 
 /* Translators: this is the preferred format for expressing the date */
 #define PREFERRED_DATE_FMT C_("GDateTime", "%m/%d/%y")
+#define PREFERRED_ERA_DATE_FMT PREFERRED_DATE_FMT
 
 /* Translators: this is the preferred format for expressing the time */
 #define PREFERRED_TIME_FMT C_("GDateTime", "%H:%M:%S")
+#define PREFERRED_ERA_TIME_FMT PREFERRED_TIME_FMT
 
 /* Translators: this is the preferred format for expressing 12 hour time */
 #define PREFERRED_12HR_TIME_FMT C_("GDateTime", "%I:%M:%S %p")
@@ -218,6 +229,10 @@ static const gint month_item[2][12] =
 #define MONTH_ABBR_IS_LOCALE  FALSE
 #define MONTH_FULL(d)         (get_month_name_standalone (g_date_time_get_month (d)))
 #define MONTH_FULL_IS_LOCALE  FALSE
+
+#define ERA_DESCRIPTION NULL
+#define ERA_DESCRIPTION_IS_LOCALE FALSE
+#define ERA_DESCRIPTION_N_SEGMENTS 0
 
 static const gchar *
 get_month_name_standalone (gint month)
@@ -2865,6 +2880,131 @@ initialize_alt_digits (void)
 }
 #endif /* HAVE_LANGINFO_OUTDIGIT */
 
+/* Look up the era which contains @datetime, in the ERA description from libc
+ * which corresponds to the currently set LC_TIME locale. The ERA is parsed and
+ * cached the first time this function is called (or when LC_TIME changes).
+ * See nl_langinfo(3).
+ *
+ * The return value is (transfer full). */
+static GEraDescriptionSegment *
+date_time_lookup_era (GDateTime *datetime,
+                      gboolean   locale_is_utf8)
+{
+  static GMutex era_mutex;
+  static GPtrArray *static_era_description = NULL;  /* (mutex era_mutex) (element-type GEraDescriptionSegment) */
+  static const char *static_era_description_locale = NULL;  /* (mutex era_mutex) */
+  const char *current_lc_time = setlocale (LC_TIME, NULL);
+  GPtrArray *local_era_description;  /* (element-type GEraDescriptionSegment) */
+  GEraDate datetime_date;
+
+  g_mutex_lock (&era_mutex);
+
+  if (static_era_description_locale != current_lc_time)
+    {
+      const char *era_description_str;
+      size_t era_description_str_len;
+      char *tmp = NULL;
+
+      era_description_str = ERA_DESCRIPTION;
+      if (era_description_str != NULL)
+        {
+          /* FIXME: glibc 2.37 seems to return the era segments nul-separated rather
+           * than semicolon-separated (which is what nl_langinfo(3) specifies).
+           * Fix that up before sending it to the parsing code.
+           * See https://sourceware.org/bugzilla/show_bug.cgi?id=31030*/
+            {
+              /* Work out the length of the whole description string, regardless
+               * of whether it uses nuls or semicolons as separators. */
+              int n_entries = ERA_DESCRIPTION_N_SEGMENTS;
+              const char *s = era_description_str;
+
+              for (int i = 1; i < n_entries; i++)
+                {
+                  const char *next_semicolon = strchr (s, ';');
+                  const char *next_nul = strchr (s, '\0');
+
+                  if (next_semicolon != NULL && next_semicolon < next_nul)
+                    s = next_semicolon + 1;
+                  else
+                    s = next_nul + 1;
+                }
+
+              era_description_str_len = strlen (s) + (s - era_description_str);
+
+              /* Replace all the nuls with semicolons. */
+              era_description_str = tmp = g_memdup2 (era_description_str, era_description_str_len + 1);
+              s = era_description_str;
+
+              for (int i = 1; i < n_entries; i++)
+                {
+                  char *next_nul = strchr (s, '\0');
+
+                  if ((size_t) (next_nul - era_description_str) >= era_description_str_len)
+                    break;
+
+                  *next_nul = ';';
+                  s = next_nul + 1;
+                }
+            }
+
+          /* Convert from the LC_TIME encoding to UTF-8 if needed. */
+          if (!locale_is_utf8 && ERA_DESCRIPTION_IS_LOCALE)
+            {
+              char *tmp2 = NULL;
+              era_description_str = tmp2 = g_locale_to_utf8 (era_description_str, -1, NULL, NULL, NULL);
+              g_free (tmp);
+              tmp = g_steal_pointer (&tmp2);
+            }
+
+          g_clear_pointer (&static_era_description, g_ptr_array_unref);
+
+          if (era_description_str != NULL)
+            static_era_description = _g_era_description_parse (era_description_str);
+        }
+
+      if (static_era_description == NULL)
+        g_warning ("Could not parse ERA description: %s", era_description_str);
+
+      g_free (tmp);
+
+      static_era_description_locale = current_lc_time;
+    }
+
+  if (static_era_description == NULL)
+    {
+      g_mutex_unlock (&era_mutex);
+      return NULL;
+    }
+
+  local_era_description = g_ptr_array_ref (static_era_description);
+  g_mutex_unlock (&era_mutex);
+
+  /* Search through the eras and see if one matches. */
+  datetime_date.type = G_ERA_DATE_SET;
+  datetime_date.year = g_date_time_get_year (datetime);
+  datetime_date.month = g_date_time_get_month (datetime);
+  datetime_date.day = g_date_time_get_day_of_month (datetime);
+
+  for (unsigned int i = 0; i < local_era_description->len; i++)
+    {
+      GEraDescriptionSegment *segment = g_ptr_array_index (local_era_description, i);
+
+      if ((_g_era_date_compare (&segment->start_date, &datetime_date) <= 0 &&
+           _g_era_date_compare (&datetime_date, &segment->end_date) <= 0) ||
+          (_g_era_date_compare (&segment->end_date, &datetime_date) <= 0 &&
+           _g_era_date_compare (&datetime_date, &segment->start_date) <= 0))
+        {
+          /* @datetime is within this era segment. */
+          g_ptr_array_unref (local_era_description);
+          return _g_era_description_segment_ref (segment);
+        }
+    }
+
+  g_ptr_array_unref (local_era_description);
+
+  return NULL;
+}
+
 static void
 format_number (GString     *str,
                gboolean     use_alt_digits,
@@ -2902,6 +3042,7 @@ format_number (GString     *str,
           if (alt_digits == NULL)
             alt_digits = ascii_digits;
 
+          g_free (alt_digits_locale);
           alt_digits_locale = g_strdup (current_ctype_locale);
         }
 
@@ -3043,6 +3184,7 @@ g_date_time_format_utf8 (GDateTime   *datetime,
   guint     colons;
   gunichar  c;
   gboolean  alt_digits = FALSE;
+  gboolean alt_era = FALSE;
   gboolean  pad_set = FALSE;
   gboolean mod_case = FALSE;
   gboolean  name_is_utf8;
@@ -3069,6 +3211,7 @@ g_date_time_format_utf8 (GDateTime   *datetime,
 
       colons = 0;
       alt_digits = FALSE;
+      alt_era = FALSE;
       pad_set = FALSE;
       mod_case = FALSE;
 
@@ -3129,14 +3272,31 @@ g_date_time_format_utf8 (GDateTime   *datetime,
 	  break;
 	case 'c':
 	  {
-            if (g_strcmp0 (PREFERRED_DATE_TIME_FMT, "") == 0)
+            const char *subformat = alt_era ? PREFERRED_ERA_DATE_TIME_FMT : PREFERRED_DATE_TIME_FMT;
+
+            /* Fallback */
+            if (alt_era && g_strcmp0 (subformat, "") == 0)
+              subformat = PREFERRED_DATE_TIME_FMT;
+
+            if (g_strcmp0 (subformat, "") == 0)
               return FALSE;
-            if (!g_date_time_format_locale (datetime, PREFERRED_DATE_TIME_FMT,
+            if (!g_date_time_format_locale (datetime, subformat,
                                             outstr, locale_is_utf8))
               return FALSE;
 	  }
 	  break;
 	case 'C':
+          if (alt_era)
+            {
+              GEraDescriptionSegment *era = date_time_lookup_era (datetime, locale_is_utf8);
+              if (era != NULL)
+                {
+                  g_string_append (outstr, era->era_name);
+                  _g_era_description_segment_unref (era);
+                  break;
+                }
+            }
+
 	  format_number (outstr, alt_digits, pad_set ? pad : "0", 2,
 			 g_date_time_get_year (datetime) / 100);
 	  break;
@@ -3214,6 +3374,9 @@ g_date_time_format_utf8 (GDateTime   *datetime,
 	case 'O':
 	  alt_digits = TRUE;
 	  goto next_mod;
+        case 'E':
+          alt_era = TRUE;
+          goto next_mod;
 	case 'p':
           if (!format_ampm (datetime, outstr, locale_is_utf8,
                             mod_case && g_strcmp0 (mod, "#") == 0 ? FALSE
@@ -3270,29 +3433,78 @@ g_date_time_format_utf8 (GDateTime   *datetime,
 	  break;
 	case 'x':
 	  {
-            if (g_strcmp0 (PREFERRED_DATE_FMT, "") == 0)
+            const char *subformat = alt_era ? PREFERRED_ERA_DATE_FMT : PREFERRED_DATE_FMT;
+
+            /* Fallback */
+            if (alt_era && g_strcmp0 (subformat, "") == 0)
+              subformat = PREFERRED_DATE_FMT;
+
+            if (g_strcmp0 (subformat, "") == 0)
               return FALSE;
-	    if (!g_date_time_format_locale (datetime, PREFERRED_DATE_FMT,
+	    if (!g_date_time_format_locale (datetime, subformat,
 					    outstr, locale_is_utf8))
 	      return FALSE;
 	  }
 	  break;
 	case 'X':
 	  {
-            if (g_strcmp0 (PREFERRED_TIME_FMT, "") == 0)
+            const char *subformat = alt_era ? PREFERRED_ERA_TIME_FMT : PREFERRED_TIME_FMT;
+
+            /* Fallback */
+            if (alt_era && g_strcmp0 (subformat, "") == 0)
+              subformat = PREFERRED_TIME_FMT;
+
+            if (g_strcmp0 (subformat, "") == 0)
               return FALSE;
-	    if (!g_date_time_format_locale (datetime, PREFERRED_TIME_FMT,
+	    if (!g_date_time_format_locale (datetime, subformat,
 					    outstr, locale_is_utf8))
 	      return FALSE;
 	  }
 	  break;
 	case 'y':
-	  format_number (outstr, alt_digits, pad_set ? pad : "0", 2,
-			 g_date_time_get_year (datetime) % 100);
+          if (alt_era)
+            {
+              GEraDescriptionSegment *era = date_time_lookup_era (datetime, locale_is_utf8);
+              if (era != NULL)
+                {
+                  int delta = g_date_time_get_year (datetime) - era->start_date.year;
+
+                  /* Both these years are in the Gregorian calendar (CE/BCE),
+                   * which has no year zero. So take one from the delta if they
+                   * cross across where year zero would be. */
+                  if ((g_date_time_get_year (datetime) < 0) != (era->start_date.year < 0))
+                    delta -= 1;
+
+                  format_number (outstr, alt_digits, pad_set ? pad : "0", 2,
+                                 era->offset + delta * era->direction_multiplier);
+                  _g_era_description_segment_unref (era);
+                  break;
+                }
+            }
+
+          format_number (outstr, alt_digits, pad_set ? pad : "0", 2,
+                         g_date_time_get_year (datetime) % 100);
 	  break;
 	case 'Y':
-	  format_number (outstr, alt_digits, 0, 0,
-			 g_date_time_get_year (datetime));
+          if (alt_era)
+            {
+              GEraDescriptionSegment *era = date_time_lookup_era (datetime, locale_is_utf8);
+              if (era != NULL)
+                {
+                  if (!g_date_time_format_utf8 (datetime, era->era_format,
+                                                outstr, locale_is_utf8))
+                    {
+                      _g_era_description_segment_unref (era);
+                      return FALSE;
+                    }
+
+                  _g_era_description_segment_unref (era);
+                  break;
+                }
+            }
+
+          format_number (outstr, alt_digits, 0, 0,
+                         g_date_time_get_year (datetime));
 	  break;
 	case 'z':
 	  {
@@ -3460,6 +3672,22 @@ g_date_time_format_utf8 (GDateTime   *datetime,
  * rules. For other languages there is no difference. `%OB` is a GNU and BSD
  * `strftime()` extension expected to be added to the future POSIX specification,
  * `%Ob` and `%Oh` are GNU `strftime()` extensions. Since: 2.56
+ *
+ * Since GLib 2.80, when `E` is used with `%c`, `%C`, `%x`, `%X`, `%y` or `%Y`,
+ * the date is formatted using an alternate era representation specific to the
+ * locale. This is typically used for the Thai solar calendar or Japanese era
+ * names, for example.
+ *
+ * - `%Ec`: the preferred date and time representation for the current locale,
+ *   using the alternate era representation
+ * - `%EC`: the name of the era
+ * - `%Ex`: the preferred date representation for the current locale without
+ *   the time, using the alternate era representation
+ * - `%EX`: the preferred time representation for the current locale without
+ *   the date, using the alternate era representation
+ * - `%Ey`: the year since the beginning of the era denoted by the `%EC`
+ *   specifier
+ * - `%EY`: the full alternative year representation
  *
  * Returns: (transfer full) (nullable): a newly allocated string formatted to
  *    the requested format or %NULL in the case that there was an error (such

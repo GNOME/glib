@@ -1311,6 +1311,11 @@ if cc.links('''#include <langinfo.h>
                  str = nl_langinfo (ABMON_12);
                  str = nl_langinfo (DAY_1);
                  str = nl_langinfo (ABDAY_7);
+                 str = nl_langinfo (ERA);
+                 str = nl_langinfo (ERA_D_T_FMT);
+                 str = nl_langinfo (ERA_D_FMT);
+                 str = nl_langinfo (ERA_T_FMT);
+                 str = nl_langinfo (_NL_TIME_ERA_NUM_ENTRIES);
                  return 0;
                }''', name : 'nl_langinfo (PM_STR)')
   glib_conf.set('HAVE_LANGINFO_TIME', 1)
