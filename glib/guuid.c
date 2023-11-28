@@ -35,28 +35,6 @@ typedef struct {
   guint8 bytes[16];
 } GUuid;
 
-/**
- * SECTION:uuid
- * @title: GUuid
- * @short_description: a universally unique identifier
- *
- * A UUID, or Universally unique identifier, is intended to uniquely
- * identify information in a distributed environment. For the
- * definition of UUID, see [RFC 4122](https://tools.ietf.org/html/rfc4122.html).
- *
- * The creation of UUIDs does not require a centralized authority.
- *
- * UUIDs are of relatively small size (128 bits, or 16 bytes). The
- * common string representation (ex:
- * 1d6c0810-2bd6-45f3-9890-0268422a6f14) needs 37 bytes.
- *
- * The UUID specification defines 5 versions, and calling
- * g_uuid_string_random() will generate a unique (or rather random)
- * UUID of the most common version, version 4.
- *
- * Since: 2.52
- */
-
 /*
  * g_uuid_to_string:
  * @uuid: a #GUuid

@@ -49,84 +49,11 @@
 #include "galloca.h"
 
 /**
- * SECTION:datasets
- * @title: Datasets
- * @short_description: associate groups of data elements with
- *                     particular memory locations
- *
- * Datasets associate groups of data elements with particular memory
- * locations. These are useful if you need to associate data with a
- * structure returned from an external library. Since you cannot modify
- * the structure, you use its location in memory as the key into a
- * dataset, where you can associate any number of data elements with it.
- *
- * There are two forms of most of the dataset functions. The first form
- * uses strings to identify the data elements associated with a
- * location. The second form uses #GQuark identifiers, which are
- * created with a call to g_quark_from_string() or
- * g_quark_from_static_string(). The second form is quicker, since it
- * does not require looking up the string in the hash table of #GQuark
- * identifiers.
- *
- * There is no function to create a dataset. It is automatically
- * created as soon as you add elements to it.
- *
- * To add data elements to a dataset use g_dataset_id_set_data(),
- * g_dataset_id_set_data_full(), g_dataset_set_data() and
- * g_dataset_set_data_full().
- *
- * To get data elements from a dataset use g_dataset_id_get_data() and
- * g_dataset_get_data().
- *
- * To iterate over all data elements in a dataset use
- * g_dataset_foreach() (not thread-safe).
- *
- * To remove data elements from a dataset use
- * g_dataset_id_remove_data() and g_dataset_remove_data().
- *
- * To destroy a dataset, use g_dataset_destroy().
- **/
-
-/**
- * SECTION:datalist
- * @title: Keyed Data Lists
- * @short_description: lists of data elements which are accessible by a
- *                     string or GQuark identifier
- *
- * Keyed data lists provide lists of arbitrary data elements which can
- * be accessed either with a string or with a #GQuark corresponding to
- * the string.
- *
- * The #GQuark methods are quicker, since the strings have to be
- * converted to #GQuarks anyway.
- *
- * Data lists are used for associating arbitrary data with #GObjects,
- * using g_object_set_data() and related functions.
- *
- * To create a datalist, use g_datalist_init().
- *
- * To add data elements to a datalist use g_datalist_id_set_data(),
- * g_datalist_id_set_data_full(), g_datalist_set_data() and
- * g_datalist_set_data_full().
- *
- * To get data elements from a datalist use g_datalist_id_get_data()
- * and g_datalist_get_data().
- *
- * To iterate over all data elements in a datalist use
- * g_datalist_foreach() (not thread-safe).
- *
- * To remove data elements from a datalist use
- * g_datalist_id_remove_data() and g_datalist_remove_data().
- *
- * To remove all data elements from a datalist, use g_datalist_clear().
- **/
-
-/**
  * GData:
  *
  * An opaque data structure that represents a keyed data list.
  *
- * See also: [Keyed data lists][glib-Keyed-Data-Lists].
+ * See also: [Keyed data lists](datalist-and-dataset.html).
  **/
 
 /**

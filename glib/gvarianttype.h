@@ -31,15 +31,6 @@
 
 G_BEGIN_DECLS
 
-/**
- * GVariantType:
- *
- * A type in the GVariant type system.
- *
- * Two types may not be compared by value; use g_variant_type_equal() or
- * g_variant_type_is_subtype_of().  May be copied using
- * g_variant_type_copy() and freed using g_variant_type_free().
- **/
 typedef struct _GVariantType GVariantType;
 
 /**

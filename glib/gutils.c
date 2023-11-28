@@ -79,14 +79,6 @@
 #endif
 
 
-/**
- * SECTION:misc_utils
- * @title: Miscellaneous Utility Functions
- * @short_description: a selection of portable utility functions
- *
- * These are portable utility functions.
- */
-
 #ifdef G_PLATFORM_WIN32
 #  include <windows.h>
 #  ifndef GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS

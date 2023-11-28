@@ -1,100 +1,3 @@
-if get_option('gtk_doc')
-  subdir('xml')
-
-  ignore_headers = [
-    'gallocator.h',
-    'gdatasetprivate.h',
-    'glibintl.h',
-    'gbsearcharray.h',
-    'glib-private.h',
-    'gmoduleconf.h',
-    'grcboxprivate.h',
-    'gstdioprivate.h',
-    'gthreadprivate.h',
-    'gunibreak.h',
-    'gunicomp.h',
-    'gunidecomp.h',
-    'gunichartables.h',
-    'glib_probes.h',
-    'glib_trace.h',
-    'libcharset.h',
-    'gdebug.h',
-    'gprintfint.h',
-    'gmirroringtable.h',
-    'gscripttable.h',
-    'gtrace-private.h',
-    'glib-mirroring-tab',
-    'gnulib',
-    'gbytesprivate.h',
-    'gvariant-internal.h',
-    'gvariant-serialiser.h',
-    'gvariant-core.h',
-    'gvarianttypeinfo.h',
-    'gwakeup.h',
-    'gtranslit-data.h',
-    'glib-init.h',
-    'gconstructor.h',
-    'gconstructorprivate.h',
-    'testutils.h',
-    'valgrind.h',
-    'gutilsprivate.h',
-    'gvalgrind.h',
-    'dirent.h',
-    'glib-unixprivate.h',
-    'glib-visibility.h',
-    'gmodule-visibility.h',
-  ]
-
-  docpath = join_paths(glib_datadir, 'gtk-doc', 'html')
-  version_conf = configuration_data()
-  version_conf.set('GLIB_VERSION', meson.project_version())
-  configure_file(
-    input: 'version.xml.in',
-    output: 'version.xml',
-    configuration: version_conf
-  )
-
-  configure_file(
-    input: 'glib-sections.txt.in',
-    output: 'glib-sections.txt',
-    command: [gen_visibility_macros, meson.project_version(), 'doc-sections', '@INPUT@', '@OUTPUT@'],
-  )
-
-  gnome.gtkdoc('glib',
-               main_xml : 'glib-docs.xml',
-               namespace : 'g',
-               mode : 'none',
-               src_dir : [ 'glib', 'gmodule' ],
-               dependencies : libglib_dep,
-               scan_args : [
-                 '--ignore-decorators=' + ignore_decorators + '|' + ignore_decorators.replace('GLIB', 'GMODULE'),
-                 '--ignore-headers=' + ' '.join(ignore_headers),
-               ],
-               content_files : [
-                 'changes.xml',
-                 'programming.xml',
-                 'resources.xml',
-                 'regex-syntax.xml',
-                 'glib-gettextize.xml',
-                 'gtester.xml',
-                 'gtester-report.xml',
-               ],
-               expand_content_files : [
-               ],
-               html_assets : [
-                 'file-name-encodings.png',
-                 'mainloop-states.gif',
-                 'Sorted_binary_tree_breadth-first_traversal.svg',
-                 'Sorted_binary_tree_inorder.svg',
-                 'Sorted_binary_tree_postorder.svg',
-                 'Sorted_binary_tree_preorder.svg',
-               ],
-               fixxref_args: [
-                 '--html-dir=' + docpath,
-               ],
-               install: true,
-               check: false)
-endif
 
 if get_option('man')
   manpages = ['glib-gettextize', 'gtester', 'gtester-report']
@@ -143,27 +46,48 @@ if get_option('gtk_doc')
   endif
 endif
 
-# gi-docgen version
 expand_content_files = [
+  'atomic.md',
+  'base64.md',
   'building.md',
   'character-set.md',
+  'checked-math.md',
   'compiling.md',
   'cross-compiling.md',
+  'datalist-and-dataset.md',
   'error-reporting.md',
+  'file-utils.md',
   'gvariant-format-strings.md',
   'gvariant-text-format.md',
   'i18n.md',
   'logging.md',
   'main-loop.md',
+  'memory.md',
   'memory-slices.md',
+  'numerical.md',
+  'random.md',
   'reference-counting.md',
   'running.md',
   'testing.md',
   'threads.md',
+  'threads-deprecated.md',
   'markup.md',
+  'misc-utils.md',
   'goption.md',
+  'host-utils.md',
   'data-structures.md',
+  'programming.md',
+  'resources.md',
+  'shell.md',
+  'spawn.md',
+  'string-utils.md',
+  'types.md',
   'unicode.md',
+  'unix.md',
+  'uuid.md',
+  'version.md',
+  'warnings.md',
+  'windows.md',
 ]
 
 glib_toml = configure_file(input: 'glib.toml.in', output: 'glib.toml', configuration: toml_conf)

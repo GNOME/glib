@@ -47,7 +47,7 @@
  *
  * The socket service runs on the main loop of the 
  * thread-default context (see
- * [method@GLib.MainContext.push_thread_default_context]) of the thread it is
+ * [method@GLib.MainContext.push_thread_default]) of the thread it is
  * created in, and is not threadsafe in general. However, the calls to start and
  * stop the service are thread-safe so these can be used from threads that
  * handle incoming clients.

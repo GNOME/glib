@@ -78,8 +78,8 @@ g_quark_init (void)
  * Given either the string or the `GQuark` identifier it is possible to
  * retrieve the other.
  *
- * Quarks are used for both [datasets][glib-Datasets] and
- * [keyed data lists][glib-Keyed-Data-Lists].
+ * Quarks are used for both
+ * [datasets and keyed data lists](datalist-and-dataset.html).
  *
  * To create a new quark from a string, use [func@GLib.quark_from_string]
  * or [func@GLib.quark_from_static_string].

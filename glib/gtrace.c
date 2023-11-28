@@ -20,10 +20,6 @@
  */
 
 /*
- * SECTION:trace
- * @Title: Performance tracing
- * @Short_description: Functions for measuring and tracing performance
- *
  * The performance tracing functions allow for the performance of code using
  * GLib to be measured by passing metrics from the current process to an
  * external measurement process such as `sysprof-cli` or `sysprofd`.
