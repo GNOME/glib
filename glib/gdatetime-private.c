@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Philip Withnall
+ * Copyright 2023 GNOME Foundation Inc.
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  *
@@ -15,6 +15,9 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, see <http://www.gnu.org/licenses/>.
+ *
+ * Authors:
+ *  - Philip Withnall <pwithnall@gnome.org>
  */
 
 #include "glib.h"

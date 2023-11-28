@@ -5,6 +5,7 @@
  * Copyright (C) 2010 Emmanuele Bassi <ebassi@linux.intel.com>
  * Copyright © 2010 Codethink Limited
  * Copyright © 2018 Tomasz Miąsko
+ * Copyright 2023 GNOME Foundation Inc.
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  *
@@ -26,6 +27,7 @@
  *          Emmanuele Bassi <ebassi@linux.intel.com>
  *          Ryan Lortie <desrt@desrt.ca>
  *          Robert Ancell <robert.ancell@canonical.com>
+ *          Philip Withnall <pwithnall@gnome.org>
  */
 
 /* Algorithms within this file are based on the Calendar FAQ by
