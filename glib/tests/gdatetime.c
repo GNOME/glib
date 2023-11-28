@@ -1725,12 +1725,21 @@ test_non_utf8_printf (void)
   TEST_PRINTF ("%%", "%");
   TEST_PRINTF ("%", "");
   TEST_PRINTF ("%9", NULL);
+#ifdef HAVE_LANGINFO_ERA
   TEST_PRINTF ("%Ec", "平成21年10月24日 00時00分00秒");
   TEST_PRINTF ("%EC", "平成");
   TEST_PRINTF ("%Ex", "平成21年10月24日");
   TEST_PRINTF ("%EX", "00時00分00秒");
   TEST_PRINTF ("%Ey", "21");
   TEST_PRINTF ("%EY", "平成21年");
+#else
+  TEST_PRINTF ("%Ec", "平成21年10月24日 00時00分00秒");
+  TEST_PRINTF ("%EC", "平成");
+  TEST_PRINTF ("%Ex", "2009\345\271\26410\346\234\21024\346\227\245");
+  TEST_PRINTF ("%EX", "00\346\231\20200\345\210\20600\347\247\222");
+  TEST_PRINTF ("%Ey", "09");
+  TEST_PRINTF ("%EY", "2009");
+#endif
 
   setlocale (LC_ALL, oldlocale);
   g_free (oldlocale);
@@ -1889,14 +1898,25 @@ test_modifiers (void)
   setlocale (LC_ALL, "en_GB.utf-8");
   if (strstr (setlocale (LC_ALL, NULL), "en_GB") != NULL)
     {
+#ifndef __APPLE__
       TEST_PRINTF_DATE (2009, 1, 1, "%c", "thu 01 jan 2009 00:00:00 utc");
       TEST_PRINTF_DATE (2009, 1, 1, "%Ec", "thu 01 jan 2009 00:00:00 utc");
+#else
+      /* macOS uses a figure space (U+2007) to pad the day */
+      TEST_PRINTF_DATE (2009, 1, 1, "%c", "thu " "\xe2\x80\x87" "1 jan 00:00:00 2009");
+      TEST_PRINTF_DATE (2009, 1, 1, "%Ec", "thu " "\xe2\x80\x87" "1 jan 00:00:00 2009");
+#endif
 
       TEST_PRINTF_DATE (2009, 1, 1, "%C", "20");
       TEST_PRINTF_DATE (2009, 1, 1, "%EC", "20");
 
+#ifndef __APPLE__
       TEST_PRINTF_DATE (2009, 1, 2, "%x", "02/01/09");
       TEST_PRINTF_DATE (2009, 1, 2, "%Ex", "02/01/09");
+#else
+      TEST_PRINTF_DATE (2009, 1, 2, "%x", "02/01/2009");
+      TEST_PRINTF_DATE (2009, 1, 2, "%Ex", "02/01/2009");
+#endif
 
       TEST_PRINTF_TIME (1, 2, 3, "%X", "01:02:03");
       TEST_PRINTF_TIME (1, 2, 3, "%EX", "01:02:03");
@@ -2252,6 +2272,7 @@ test_all_dates (void)
 static void
 test_date_time_eras_japan (void)
 {
+#ifdef HAVE_LANGINFO_ERA
   gchar *oldlocale;
 
   oldlocale = g_strdup (setlocale (LC_ALL, NULL));
@@ -2290,11 +2311,15 @@ test_date_time_eras_japan (void)
 
   setlocale (LC_ALL, oldlocale);
   g_free (oldlocale);
+#else
+  g_test_skip ("nl_langinfo(ERA) not supported, skipping era tests");
+#endif
 }
 
 static void
 test_date_time_eras_thailand (void)
 {
+#ifdef HAVE_LANGINFO_ERA
   gchar *oldlocale;
 
   oldlocale = g_strdup (setlocale (LC_ALL, NULL));
@@ -2318,6 +2343,9 @@ test_date_time_eras_thailand (void)
 
   setlocale (LC_ALL, oldlocale);
   g_free (oldlocale);
+#else
+  g_test_skip ("nl_langinfo(ERA) not supported, skipping era tests");
+#endif
 }
 
 static void

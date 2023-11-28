@@ -165,11 +165,8 @@ static const guint16 days_in_year[2][13] =
 #define GET_AMPM_IS_LOCALE TRUE
 
 #define PREFERRED_DATE_TIME_FMT nl_langinfo (D_T_FMT)
-#define PREFERRED_ERA_DATE_TIME_FMT nl_langinfo (ERA_D_T_FMT)
 #define PREFERRED_DATE_FMT nl_langinfo (D_FMT)
-#define PREFERRED_ERA_DATE_FMT nl_langinfo (ERA_D_FMT)
 #define PREFERRED_TIME_FMT nl_langinfo (T_FMT)
-#define PREFERRED_ERA_TIME_FMT nl_langinfo (ERA_T_FMT)
 #define PREFERRED_12HR_TIME_FMT nl_langinfo (T_FMT_AMPM)
 
 static const gint weekday_item[2][7] =
@@ -193,10 +190,6 @@ static const gint month_item[2][12] =
 #define MONTH_FULL(d) nl_langinfo (month_item[1][g_date_time_get_month (d) - 1])
 #define MONTH_FULL_IS_LOCALE TRUE
 
-#define ERA_DESCRIPTION nl_langinfo (ERA)
-#define ERA_DESCRIPTION_IS_LOCALE TRUE
-#define ERA_DESCRIPTION_N_SEGMENTS (int) (gintptr) nl_langinfo (_NL_TIME_ERA_NUM_ENTRIES)
-
 #else
 
 #define GET_AMPM(d)          (get_fallback_ampm (g_date_time_get_hour (d)))
@@ -204,15 +197,12 @@ static const gint month_item[2][12] =
 
 /* Translators: this is the preferred format for expressing the date and the time */
 #define PREFERRED_DATE_TIME_FMT C_("GDateTime", "%a %b %e %H:%M:%S %Y")
-#define PREFERRED_ERA_DATE_TIME_FMT PREFERRED_DATE_TIME_FMT
 
 /* Translators: this is the preferred format for expressing the date */
 #define PREFERRED_DATE_FMT C_("GDateTime", "%m/%d/%y")
-#define PREFERRED_ERA_DATE_FMT PREFERRED_DATE_FMT
 
 /* Translators: this is the preferred format for expressing the time */
 #define PREFERRED_TIME_FMT C_("GDateTime", "%H:%M:%S")
-#define PREFERRED_ERA_TIME_FMT PREFERRED_TIME_FMT
 
 /* Translators: this is the preferred format for expressing 12 hour time */
 #define PREFERRED_12HR_TIME_FMT C_("GDateTime", "%I:%M:%S %p")
@@ -231,10 +221,6 @@ static const gint month_item[2][12] =
 #define MONTH_ABBR_IS_LOCALE  FALSE
 #define MONTH_FULL(d)         (get_month_name_standalone (g_date_time_get_month (d)))
 #define MONTH_FULL_IS_LOCALE  FALSE
-
-#define ERA_DESCRIPTION NULL
-#define ERA_DESCRIPTION_IS_LOCALE FALSE
-#define ERA_DESCRIPTION_N_SEGMENTS 0
 
 static const gchar *
 get_month_name_standalone (gint month)
@@ -571,6 +557,28 @@ get_month_name_abbr_with_day (gint month)
 }
 
 #endif  /* HAVE_LANGINFO_ABALTMON */
+
+#ifdef HAVE_LANGINFO_ERA
+
+#define PREFERRED_ERA_DATE_TIME_FMT nl_langinfo (ERA_D_T_FMT)
+#define PREFERRED_ERA_DATE_FMT nl_langinfo (ERA_D_FMT)
+#define PREFERRED_ERA_TIME_FMT nl_langinfo (ERA_T_FMT)
+
+#define ERA_DESCRIPTION nl_langinfo (ERA)
+#define ERA_DESCRIPTION_IS_LOCALE TRUE
+#define ERA_DESCRIPTION_N_SEGMENTS (int) (gintptr) nl_langinfo (_NL_TIME_ERA_NUM_ENTRIES)
+
+#else  /* if !HAVE_LANGINFO_ERA */
+
+#define PREFERRED_ERA_DATE_TIME_FMT PREFERRED_DATE_TIME_FMT
+#define PREFERRED_ERA_DATE_FMT PREFERRED_DATE_FMT
+#define PREFERRED_ERA_TIME_FMT PREFERRED_TIME_FMT
+
+#define ERA_DESCRIPTION NULL
+#define ERA_DESCRIPTION_IS_LOCALE FALSE
+#define ERA_DESCRIPTION_N_SEGMENTS 0
+
+#endif  /* !HAVE_LANGINFO_ERA */
 
 /* Format AM/PM indicator if the locale does not have a localized version. */
 static const gchar *
@@ -2962,10 +2970,13 @@ date_time_lookup_era (GDateTime *datetime,
 
           if (era_description_str != NULL)
             static_era_description = _g_era_description_parse (era_description_str);
+          if (static_era_description == NULL)
+            g_warning ("Could not parse ERA description: %s", era_description_str);
         }
-
-      if (static_era_description == NULL)
-        g_warning ("Could not parse ERA description: %s", era_description_str);
+      else
+        {
+          g_clear_pointer (&static_era_description, g_ptr_array_unref);
+        }
 
       g_free (tmp);
 
