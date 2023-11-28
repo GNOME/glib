@@ -158,7 +158,7 @@ gi_field_info_get_type_info (GIFieldInfo *info)
   else
     return gi_type_info_new ((GIBaseInfo*)info, rinfo->typelib, rinfo->offset + G_STRUCT_OFFSET (FieldBlob, type));
 
-  return (GIBaseInfo*)type_info;
+  return (GITypeInfo *) type_info;
 }
 
 /**

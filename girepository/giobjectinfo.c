@@ -496,7 +496,7 @@ gi_object_info_find_method_using_interfaces (GIObjectInfo  *info,
 
   result = gi_object_info_find_method (info, name);
   if (result)
-    implementor_result = gi_base_info_ref ((GIBaseInfo*) info);
+    implementor_result = (GIObjectInfo *) gi_base_info_ref ((GIBaseInfo*) info);
 
   if (result == NULL)
     {
@@ -514,7 +514,7 @@ gi_object_info_find_method_using_interfaces (GIObjectInfo  *info,
 
 	  if (result != NULL)
 	    {
-	      implementor_result = iface_info;
+	      implementor_result = (GIObjectInfo *) iface_info;
 	      break;
 	    }
 	  gi_base_info_unref ((GIBaseInfo*) iface_info);
@@ -607,7 +607,7 @@ gi_object_info_find_signal (GIObjectInfo *info,
     {
       GISignalInfo *siginfo = gi_object_info_get_signal (info, i);
 
-      if (g_strcmp0 (gi_base_info_get_name (siginfo), name) != 0)
+      if (g_strcmp0 (gi_base_info_get_name ((GIBaseInfo *) siginfo), name) != 0)
 	{
 	  gi_base_info_unref ((GIBaseInfo*)siginfo);
 	  continue;
@@ -750,7 +750,7 @@ gi_object_info_find_vfunc_using_interfaces (GIObjectInfo  *info,
 
   result = gi_object_info_find_vfunc (info, name);
   if (result)
-    implementor_result = gi_base_info_ref ((GIBaseInfo*) info);
+    implementor_result = (GIObjectInfo *) gi_base_info_ref ((GIBaseInfo*) info);
 
   if (result == NULL)
     {
@@ -768,7 +768,7 @@ gi_object_info_find_vfunc_using_interfaces (GIObjectInfo  *info,
 
 	  if (result != NULL)
 	    {
-	      implementor_result = iface_info;
+	      implementor_result = (GIObjectInfo *) iface_info;
 	      break;
 	    }
 	  gi_base_info_unref ((GIBaseInfo*) iface_info);
@@ -881,7 +881,7 @@ _get_func(GIObjectInfo *info,
   GIObjectInfo *parent_info;
   gpointer func = NULL;
 
-  parent_info = gi_base_info_ref (info);
+  parent_info = (GIObjectInfo *) gi_base_info_ref ((GIBaseInfo *) info);
   while (parent_info != NULL)
     {
       parents = g_slist_prepend (parents, parent_info);

@@ -233,7 +233,7 @@ gi_vfunc_info_get_address (GIVFuncInfo  *vfunc_info,
   g_return_val_if_fail (GI_IS_VFUNC_INFO (vfunc_info), NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
-  container_info = gi_base_info_get_container (vfunc_info);
+  container_info = gi_base_info_get_container ((GIBaseInfo *) vfunc_info);
   if (gi_base_info_get_type (container_info) == GI_INFO_TYPE_OBJECT)
     {
       object_info = (GIObjectInfo*) container_info;
@@ -254,7 +254,7 @@ gi_vfunc_info_get_address (GIVFuncInfo  *vfunc_info,
 
       if (strcmp (gi_base_info_get_name ( (GIBaseInfo*) field_info),
                   gi_base_info_get_name ( (GIBaseInfo*) vfunc_info)) != 0) {
-          gi_base_info_unref (field_info);
+          gi_base_info_unref ((GIBaseInfo *) field_info);
           field_info = NULL;
           continue;
       }
@@ -288,7 +288,7 @@ gi_vfunc_info_get_address (GIVFuncInfo  *vfunc_info,
   offset = gi_field_info_get_offset (field_info);
   func = *(gpointer*) G_STRUCT_MEMBER_P (implementor_vtable, offset);
   g_type_class_unref (implementor_class);
-  gi_base_info_unref (field_info);
+  gi_base_info_unref ((GIBaseInfo *) field_info);
 
   if (func == NULL)
     {

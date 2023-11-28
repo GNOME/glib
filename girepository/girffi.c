@@ -293,7 +293,7 @@ gi_function_info_prep_invoker (GIFunctionInfo     *info,
       return FALSE;
     }
 
-  return gi_function_invoker_new_for_address (addr, info, invoker, error);
+  return gi_function_invoker_new_for_address (addr, (GICallableInfo *) info, invoker, error);
 }
 
 /**

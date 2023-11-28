@@ -211,7 +211,7 @@ gi_callable_info_load_return_type (GICallableInfo *info,
 
   offset = signature_offset (info);
 
-  gi_type_info_init (type, (GIBaseInfo*)info, rinfo->typelib, offset);
+  gi_type_info_init ((GIBaseInfo *) type, (GIBaseInfo*)info, rinfo->typelib, offset);
 }
 
 /**
@@ -458,7 +458,7 @@ gi_callable_info_iterate_return_attributes (GICallableInfo   *info,
   if (iterator->data != NULL)
     next = (AttributeBlob *) iterator->data;
   else
-    next = _attribute_blob_find_first (info, blob_offset);
+    next = _attribute_blob_find_first ((GIBaseInfo *) info, blob_offset);
 
   if (next == NULL || next->offset != blob_offset || next >= after)
     return FALSE;

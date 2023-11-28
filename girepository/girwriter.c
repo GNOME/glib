@@ -607,7 +607,7 @@ write_function_info (const gchar    *ns,
           else if (flags & GI_FUNCTION_IS_GETTER)
             xml_printf (file, " glib:get-property=\"%s\"", property_name);
 
-          gi_base_info_unref (property);
+          gi_base_info_unref ((GIBaseInfo *) property);
         }
     }
 

@@ -367,7 +367,7 @@ gi_type_info_get_storage_type (GITypeInfo *info)
       GIBaseInfo *interface = gi_type_info_get_interface (info);
       GIInfoType info_type = gi_base_info_get_type (interface);
       if (info_type == GI_INFO_TYPE_ENUM || info_type == GI_INFO_TYPE_FLAGS)
-        type_tag = gi_enum_info_get_storage_type (interface);
+        type_tag = gi_enum_info_get_storage_type ((GIEnumInfo *) interface);
       gi_base_info_unref (interface);
     }
 

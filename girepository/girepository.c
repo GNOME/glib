@@ -958,7 +958,7 @@ gi_repository_find_by_error_domain (GIRepository *repository,
 				GUINT_TO_POINTER (domain));
 
   if (cached != NULL)
-    return gi_base_info_ref ((GIBaseInfo *)cached);
+    return (GIEnumInfo *) gi_base_info_ref ((GIBaseInfo *)cached);
 
   data.repository = repository;
   data.domain = domain;
@@ -971,13 +971,13 @@ gi_repository_find_by_error_domain (GIRepository *repository,
 
   if (data.result != NULL)
     {
-      cached = gi_info_new_full (data.result->blob_type,
-                                 repository,
-                                 NULL, data.result_typelib, data.result->offset);
+      cached = (GIEnumInfo *) gi_info_new_full (data.result->blob_type,
+                                                repository,
+                                                NULL, data.result_typelib, data.result->offset);
 
       g_hash_table_insert (repository->priv->info_by_error_domain,
 			   GUINT_TO_POINTER (domain),
-			   gi_base_info_ref (cached));
+			   gi_base_info_ref ((GIBaseInfo *) cached));
       return cached;
     }
   return NULL;

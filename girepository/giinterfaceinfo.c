@@ -311,7 +311,7 @@ gi_interface_info_find_signal (GIInterfaceInfo *info,
     {
       GISignalInfo *siginfo = gi_interface_info_get_signal (info, i);
 
-      if (g_strcmp0 (gi_base_info_get_name (siginfo), name) != 0)
+      if (g_strcmp0 (gi_base_info_get_name ((GIBaseInfo *) siginfo), name) != 0)
         {
           gi_base_info_unref ((GIBaseInfo*)siginfo);
           continue;
