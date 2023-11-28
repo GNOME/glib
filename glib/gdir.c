@@ -56,6 +56,7 @@
 
 struct _GDir
 {
+  gatomicrefcount ref_count;
 #ifdef G_OS_WIN32
   _WDIR *wdirp;
 #else
@@ -89,10 +90,13 @@ GDir *
 g_dir_open_with_errno (const gchar *path,
                        guint        flags)
 {
-  GDir dir;
 #ifdef G_OS_WIN32
+  GDir *dir;
+  _WDIR *wdirp;
   gint saved_errno;
   wchar_t *wpath;
+#else
+  DIR *dirp;
 #endif
 
   g_return_val_if_fail (path != NULL, NULL);
@@ -102,21 +106,27 @@ g_dir_open_with_errno (const gchar *path,
 
   g_return_val_if_fail (wpath != NULL, NULL);
 
-  dir.wdirp = _wopendir (wpath);
+  wdirp = _wopendir (wpath);
   saved_errno = errno;
   g_free (wpath);
   errno = saved_errno;
 
-  if (dir.wdirp == NULL)
+  if (wdirp == NULL)
     return NULL;
+
+  dir = g_new0 (GDir, 1);
+  g_atomic_ref_count_init (&dir->ref_count);
+  dir->wdirp = wdirp;
+
+  return g_steal_pointer (&dir);
 #else
-  dir.dirp = opendir (path);
+  dirp = opendir (path);
 
-  if (dir.dirp == NULL)
+  if (dirp == NULL)
     return NULL;
-#endif
 
-  return g_memdup2 (&dir, sizeof dir);
+  return g_dir_new_from_dirp (dirp);
+#endif
 }
 
 /**
@@ -187,7 +197,8 @@ g_dir_new_from_dirp (gpointer dirp)
 
   g_return_val_if_fail (dirp != NULL, NULL);
 
-  dir = g_new (GDir, 1);
+  dir = g_new0 (GDir, 1);
+  g_atomic_ref_count_init (&dir->ref_count);
   dir->dirp = dirp;
 
   return dir;
@@ -287,23 +298,84 @@ g_dir_rewind (GDir *dir)
 #endif
 }
 
+static void
+g_dir_actually_close (GDir *dir)
+{
+#ifdef G_OS_WIN32
+  g_clear_pointer (&dir->wdirp, _wclosedir);
+#else
+  g_clear_pointer (&dir->dirp, closedir);
+#endif
+}
+
 /**
  * g_dir_close:
  * @dir: (transfer full): a #GDir* created by g_dir_open()
  *
- * Closes the directory and deallocates all related resources.
+ * Closes the directory immediately and decrements the reference count.
+ *
+ * Once the reference count reaches zero, the `GDir` structure itself will be
+ * freed. Prior to GLib 2.80, `GDir` was not reference counted.
+ *
+ * It is an error to call any of the `GDir` methods other than
+ * [method@GLib.Dir.ref] and [method@GLib.Dir.unref] on a `GDir` after calling
+ * [method@GLib.Dir.close] on it.
  **/
 void
 g_dir_close (GDir *dir)
 {
   g_return_if_fail (dir != NULL);
 
-#ifdef G_OS_WIN32
-  _wclosedir (dir->wdirp);
-#else
-  closedir (dir->dirp);
-#endif
-  g_free (dir);
+  g_dir_actually_close (dir);
+  g_dir_unref (dir);
+}
+
+/**
+ * g_dir_ref:
+ * @dir: (transfer none): a `GDir`
+ *
+ * Increment the reference count of `dir`.
+ *
+ * Returns: (transfer full): the same pointer as `dir`
+ * Since: 2.80
+ */
+GDir *
+g_dir_ref (GDir *dir)
+{
+  g_return_val_if_fail (dir != NULL, NULL);
+
+  g_atomic_ref_count_inc (&dir->ref_count);
+  return dir;
+}
+
+/**
+ * g_dir_unref:
+ * @dir: (transfer full): a `GDir`
+ *
+ * Decrements the reference count of `dir`.
+ *
+ * Once the reference count reaches zero, the directory will be closed and all
+ * resources associated with it will be freed. If [method@GLib.Dir.close] is
+ * called when the reference count is greater than zero, the directory is closed
+ * but the `GDir` structure will not be freed until its reference count reaches
+ * zero.
+ *
+ * It is an error to call any of the `GDir` methods other than
+ * [method@GLib.Dir.ref] and [method@GLib.Dir.unref] on a `GDir` after calling
+ * [method@GLib.Dir.close] on it.
+ *
+ * Since: 2.80
+ */
+void
+g_dir_unref (GDir *dir)
+{
+  g_return_if_fail (dir != NULL);
+
+  if (g_atomic_ref_count_dec (&dir->ref_count))
+    {
+      g_dir_actually_close (dir);
+      g_free (dir);
+    }
 }
 
 #ifdef G_OS_WIN32
