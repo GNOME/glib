@@ -19,6 +19,7 @@ RUN apt-get update -qq && apt-get install --no-install-recommends -qq -y \
     gi-docgen \
     git \
     libc6-dev \
+    gobject-introspection \
     gtk-doc-tools \
     itstool \
     lcov \
@@ -26,6 +27,7 @@ RUN apt-get update -qq && apt-get install --no-install-recommends -qq -y \
     libdbus-1-dev \
     libelf-dev \
     libffi-dev \
+    libgirepository1.0-dev \
     libmount-dev \
     libpcre2-dev \
     libselinux1-dev \

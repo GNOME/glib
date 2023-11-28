@@ -35,6 +35,8 @@ RUN dnf -y update \
     glibc-langpack-th \
     glibc-langpack-tr \
     "gnome-desktop-testing >= 2018.1" \
+    gobject-introspection \
+    gobject-introspection-devel \
     gtk-doc \
     itstool \
     lcov \
