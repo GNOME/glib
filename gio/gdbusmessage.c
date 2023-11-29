@@ -498,6 +498,7 @@ struct _GDBusMessage
   guint32 serial;
   GHashTable *headers;
   GVariant *body;
+  GVariant *arg0_cache;  /* (nullable) (owned) */
 #ifdef G_OS_UNIX
   GUnixFDList *fd_list;
 #endif
@@ -520,6 +521,7 @@ g_dbus_message_finalize (GObject *object)
     g_hash_table_unref (message->headers);
   if (message->body != NULL)
     g_variant_unref (message->body);
+  g_clear_pointer (&message->arg0_cache, g_variant_unref);
 #ifdef G_OS_UNIX
   if (message->fd_list != NULL)
     g_object_unref (message->fd_list);
@@ -1158,6 +1160,7 @@ g_dbus_message_set_body (GDBusMessage  *message,
   if (body == NULL)
     {
       message->body = NULL;
+      message->arg0_cache = NULL;
       g_dbus_message_set_signature (message, NULL);
     }
   else
@@ -1167,6 +1170,12 @@ g_dbus_message_set_body (GDBusMessage  *message,
       gchar *signature;
 
       message->body = g_variant_ref_sink (body);
+
+      if (g_variant_is_of_type (message->body, G_VARIANT_TYPE_TUPLE) &&
+          g_variant_n_children (message->body) > 0)
+        message->arg0_cache = g_variant_get_child_value (message->body, 0);
+      else
+        message->arg0_cache = NULL;
 
       type_string = g_variant_get_type_string (body);
       type_string_len = strlen (type_string);
@@ -2352,6 +2361,14 @@ g_dbus_message_new_from_blob (guchar                *blob,
                                                  2,
                                                  &local_error);
           g_variant_type_free (variant_type);
+
+          if (message->body != NULL &&
+              g_variant_is_of_type (message->body, G_VARIANT_TYPE_TUPLE) &&
+              g_variant_n_children (message->body) > 0)
+            message->arg0_cache = g_variant_get_child_value (message->body, 0);
+          else
+            message->arg0_cache = NULL;
+
           if (message->body == NULL)
             goto fail;
         }
@@ -3383,6 +3400,9 @@ g_dbus_message_set_signature (GDBusMessage  *message,
  *
  * Convenience to get the first item in the body of @message.
  *
+ * See [method@Gio.DBusMessage.get_arg0_path] for returning object-path-typed
+ * arg0 values.
+ *
  * Returns: (nullable): The string item or %NULL if the first item in the body of
  * @message is not a string.
  *
@@ -3391,22 +3411,38 @@ g_dbus_message_set_signature (GDBusMessage  *message,
 const gchar *
 g_dbus_message_get_arg0 (GDBusMessage  *message)
 {
-  const gchar *ret;
-
   g_return_val_if_fail (G_IS_DBUS_MESSAGE (message), NULL);
 
-  ret = NULL;
+  if (message->arg0_cache != NULL &&
+      g_variant_is_of_type (message->arg0_cache, G_VARIANT_TYPE_STRING))
+    return g_variant_get_string (message->arg0_cache, NULL);
 
-  if (message->body != NULL && g_variant_is_of_type (message->body, G_VARIANT_TYPE_TUPLE))
-    {
-      GVariant *item;
-      item = g_variant_get_child_value (message->body, 0);
-      if (g_variant_is_of_type (item, G_VARIANT_TYPE_STRING))
-        ret = g_variant_get_string (item, NULL);
-      g_variant_unref (item);
-    }
+  return NULL;
+}
 
-  return ret;
+/**
+ * g_dbus_message_get_arg0_path:
+ * @message: A `GDBusMessage`.
+ *
+ * Convenience to get the first item in the body of @message.
+ *
+ * See [method@Gio.DBusMessage.get_arg0] for returning string-typed arg0 values.
+ *
+ * Returns: (nullable): The object path item or `NULL` if the first item in the
+ *   body of @message is not an object path.
+ *
+ * Since: 2.80
+ */
+const gchar *
+g_dbus_message_get_arg0_path (GDBusMessage  *message)
+{
+  g_return_val_if_fail (G_IS_DBUS_MESSAGE (message), NULL);
+
+  if (message->arg0_cache != NULL &&
+      g_variant_is_of_type (message->arg0_cache, G_VARIANT_TYPE_OBJECT_PATH))
+    return g_variant_get_string (message->arg0_cache, NULL);
+
+  return NULL;
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -3849,6 +3885,7 @@ g_dbus_message_copy (GDBusMessage  *message,
    * to just ref (as opposed to deep-copying) the GVariant instances
    */
   ret->body = message->body != NULL ? g_variant_ref (message->body) : NULL;
+  ret->arg0_cache = message->arg0_cache != NULL ? g_variant_ref (message->arg0_cache) : NULL;
   g_hash_table_iter_init (&iter, message->headers);
   while (g_hash_table_iter_next (&iter, &header_key, (gpointer) &header_value))
     g_hash_table_insert (ret->headers, header_key, g_variant_ref (header_value));

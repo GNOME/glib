@@ -3867,16 +3867,22 @@ schedule_callbacks (GDBusConnection *connection,
   const gchar *member;
   const gchar *path;
   const gchar *arg0;
+  const gchar *arg0_path;
 
   interface = NULL;
   member = NULL;
   path = NULL;
   arg0 = NULL;
+  arg0_path = NULL;
 
   interface = g_dbus_message_get_interface (message);
   member = g_dbus_message_get_member (message);
   path = g_dbus_message_get_path (message);
   arg0 = g_dbus_message_get_arg0 (message);
+  arg0_path = g_dbus_message_get_arg0_path (message);
+
+  /* These two are mutually exclusive through the type system. */
+  g_assert (arg0 == NULL || arg0_path == NULL);
 
 #if 0
   g_print ("In schedule_callbacks:\n"
@@ -3910,17 +3916,15 @@ schedule_callbacks (GDBusConnection *connection,
 
       if (signal_data->arg0 != NULL)
         {
-          if (arg0 == NULL)
-            continue;
-
           if (signal_data->flags & G_DBUS_SIGNAL_FLAGS_MATCH_ARG0_NAMESPACE)
             {
-              if (!namespace_rule_matches (signal_data->arg0, arg0))
+              if (arg0 == NULL || !namespace_rule_matches (signal_data->arg0, arg0))
                 continue;
             }
           else if (signal_data->flags & G_DBUS_SIGNAL_FLAGS_MATCH_ARG0_PATH)
             {
-              if (!path_rule_matches (signal_data->arg0, arg0))
+              if ((arg0 == NULL || !path_rule_matches (signal_data->arg0, arg0)) &&
+                  (arg0_path == NULL || !path_rule_matches (signal_data->arg0, arg0_path)))
                 continue;
             }
           else if (!g_str_equal (signal_data->arg0, arg0))
