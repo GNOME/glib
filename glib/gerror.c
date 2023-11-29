@@ -106,9 +106,9 @@ error_domain_register (GQuark            error_quark,
  * g_error_domain_register_static:
  * @error_type_name: static string to create a #GQuark from
  * @error_type_private_size: size of the private error data in bytes
- * @error_type_init: function initializing fields of the private error data
- * @error_type_copy: function copying fields of the private error data
- * @error_type_clear: function freeing fields of the private error data
+ * @error_type_init: (scope forever): function initializing fields of the private error data
+ * @error_type_copy: (scope forever): function copying fields of the private error data
+ * @error_type_clear: (scope forever): function freeing fields of the private error data
  *
  * This function registers an extended #GError domain.
  *
@@ -159,9 +159,9 @@ g_error_domain_register_static (const char        *error_type_name,
  * g_error_domain_register:
  * @error_type_name: string to create a #GQuark from
  * @error_type_private_size: size of the private error data in bytes
- * @error_type_init: function initializing fields of the private error data
- * @error_type_copy: function copying fields of the private error data
- * @error_type_clear: function freeing fields of the private error data
+ * @error_type_init: (scope forever): function initializing fields of the private error data
+ * @error_type_copy: (scope forever): function copying fields of the private error data
+ * @error_type_clear: (scope forever): function freeing fields of the private error data
  *
  * This function registers an extended #GError domain.
  * @error_type_name will be duplicated. Otherwise does the same as
