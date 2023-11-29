@@ -2638,7 +2638,7 @@ summary({
   'dtrace' : get_option('dtrace'),
   'systemtap' : enable_systemtap,
   'sysprof' : libsysprof_capture_dep.found(),
-  'gtk_doc' : get_option('gtk_doc'),
+  'documentation' : get_option('documentation'),
   'bsymbolic_functions' : get_option('bsymbolic_functions'),
   'force_posix_threads' : get_option('force_posix_threads'),
   'tests' : get_option('tests'),

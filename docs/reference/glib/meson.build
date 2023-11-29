@@ -11,7 +11,7 @@ if get_option('man')
   endforeach
 endif
 
-if get_option('gtk_doc')
+if get_option('documentation')
   # GVariant specification is currently standalone
   rst2html5 = find_program('rst2html5', 'rst2html5.py', required: false)
 

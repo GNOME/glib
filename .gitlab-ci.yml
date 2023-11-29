@@ -119,7 +119,7 @@ fedora-x86_64:
             -Dsystemtap=true
             -Ddtrace=true
             -Dinstalled_tests=true
-            -Dgtk_doc=true
+            -Ddocumentation=true
             _build
     - meson compile -C _build
     - mkdir -p _coverage
@@ -735,7 +735,7 @@ dist-job:
     - git submodule update --init
     - for m in $(git submodule foreach -q 'echo $path'); do git config --global --add safe.directory "${PWD}/${m}"; done
     - meson subprojects download
-    - meson setup ${MESON_COMMON_OPTIONS} --buildtype release -Dgtk_doc=true -Dman=true _build
+    - meson setup ${MESON_COMMON_OPTIONS} --buildtype release -Ddocumentation=true -Dman=true _build
     - meson dist -C _build
     - ninja -C _build glib-doc gobject-doc gio-doc
     - tar -c -J -f "glib-docs-$CI_COMMIT_TAG.tar.xz" -C docs/reference/glib html
