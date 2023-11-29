@@ -952,6 +952,13 @@ g_socket_class_init (GSocketClass *klass)
   gobject_class->set_property = g_socket_set_property;
   gobject_class->get_property = g_socket_get_property;
 
+  /**
+   * GSocket:family:
+   *
+   * The socket’s address family.
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_FAMILY,
 				   g_param_spec_enum ("family",
 						      P_("Socket family"),
@@ -962,6 +969,13 @@ g_socket_class_init (GSocketClass *klass)
                                                       G_PARAM_READWRITE |
                                                       G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GSocket:type:
+   *
+   * The socket’s type.
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_TYPE,
 				   g_param_spec_enum ("type",
 						      P_("Socket type"),
@@ -972,6 +986,13 @@ g_socket_class_init (GSocketClass *klass)
                                                       G_PARAM_READWRITE |
                                                       G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GSocket:protocol:
+   *
+   * The ID of the protocol to use, or `-1` for unknown.
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_PROTOCOL,
 				   g_param_spec_enum ("protocol",
 						      P_("Socket protocol"),
@@ -982,6 +1003,13 @@ g_socket_class_init (GSocketClass *klass)
                                                       G_PARAM_READWRITE |
                                                       G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GSocket:fd:
+   *
+   * The socket’s file descriptor.
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_FD,
 				   g_param_spec_int ("fd",
 						     P_("File descriptor"),
@@ -993,6 +1021,13 @@ g_socket_class_init (GSocketClass *klass)
                                                      G_PARAM_READWRITE |
                                                      G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GSocket:blocking:
+   *
+   * Whether I/O on this socket is blocking.
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_BLOCKING,
 				   g_param_spec_boolean ("blocking",
 							 P_("blocking"),
@@ -1001,6 +1036,13 @@ g_socket_class_init (GSocketClass *klass)
 							 G_PARAM_READWRITE |
                                                          G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GSocket:listen-backlog:
+   *
+   * The number of outstanding connections in the listen queue.
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_LISTEN_BACKLOG,
 				   g_param_spec_int ("listen-backlog",
 						     P_("Listen backlog"),
@@ -1011,6 +1053,13 @@ g_socket_class_init (GSocketClass *klass)
 						     G_PARAM_READWRITE |
                                                      G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GSocket:keepalive:
+   *
+   * Whether to keep the connection alive by sending periodic pings.
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_KEEPALIVE,
 				   g_param_spec_boolean ("keepalive",
 							 P_("Keep connection alive"),
@@ -1019,6 +1068,13 @@ g_socket_class_init (GSocketClass *klass)
 							 G_PARAM_READWRITE |
                                                          G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GSocket:local-address:
+   *
+   * The local address the socket is bound to.
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_LOCAL_ADDRESS,
 				   g_param_spec_object ("local-address",
 							P_("Local address"),
@@ -1027,6 +1083,13 @@ g_socket_class_init (GSocketClass *klass)
 							G_PARAM_READABLE |
                                                         G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GSocket:remote-address:
+   *
+   * The remote address the socket is connected to.
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_REMOTE_ADDRESS,
 				   g_param_spec_object ("remote-address",
 							P_("Remote address"),

@@ -113,6 +113,11 @@ g_converter_input_stream_class_init (GConverterInputStreamClass *klass)
   istream_class = G_INPUT_STREAM_CLASS (klass);
   istream_class->read_fn = g_converter_input_stream_read;
 
+  /**
+   * GConverterInputStream:converter:
+   *
+   * The converter object.
+   */
   g_object_class_install_property (object_class,
 				   PROP_CONVERTER,
 				   g_param_spec_object ("converter",

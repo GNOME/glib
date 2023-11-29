@@ -438,6 +438,14 @@ g_application_command_line_class_init (GApplicationCommandLineClass *class)
 
   class->done = g_application_command_line_real_done;
 
+  /**
+   * GApplicationCommandLine:arguments:
+   *
+   * The commandline that caused this [signal@Gio.Application::command-line]
+   * signal emission.
+   *
+   * Since: 2.28
+   */
   g_object_class_install_property (object_class, PROP_ARGUMENTS,
     g_param_spec_variant ("arguments",
                           P_("Commandline arguments"),
@@ -446,6 +454,13 @@ g_application_command_line_class_init (GApplicationCommandLineClass *class)
                           G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY |
                           G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GApplicationCommandLine:options:
+   *
+   * The options sent along with the commandline.
+   *
+   * Since: 2.28
+   */
   g_object_class_install_property (object_class, PROP_OPTIONS,
     g_param_spec_variant ("options",
                           P_("Options"),
@@ -453,6 +468,13 @@ g_application_command_line_class_init (GApplicationCommandLineClass *class)
                           G_VARIANT_TYPE_VARDICT, NULL, G_PARAM_WRITABLE |
                           G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GApplicationCommandLine:platform-data:
+   *
+   * Platform-specific data for the commandline.
+   *
+   * Since: 2.28
+   */
   g_object_class_install_property (object_class, PROP_PLATFORM_DATA,
     g_param_spec_variant ("platform-data",
                           P_("Platform data"),
@@ -461,6 +483,13 @@ g_application_command_line_class_init (GApplicationCommandLineClass *class)
                           G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY |
                           G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GApplicationCommandLine:is-remote:
+   *
+   * Whether this is a remote commandline.
+   *
+   * Since: 2.28
+   */
   g_object_class_install_property (object_class, PROP_IS_REMOTE,
     g_param_spec_boolean ("is-remote",
                           P_("Is remote"),

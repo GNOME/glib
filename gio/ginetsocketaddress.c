@@ -247,6 +247,13 @@ g_inet_socket_address_class_init (GInetSocketAddressClass *klass)
   gsocketaddress_class->to_native = g_inet_socket_address_to_native;
   gsocketaddress_class->get_native_size = g_inet_socket_address_get_native_size;
 
+  /**
+   * GInetSocketAddress:address:
+   *
+   * The address.
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_ADDRESS,
                                    g_param_spec_object ("address",
                                                         P_("Address"),
@@ -256,6 +263,13 @@ g_inet_socket_address_class_init (GInetSocketAddressClass *klass)
                                                         G_PARAM_READWRITE |
                                                         G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GInetSocketAddress:port:
+   *
+   * The port.
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_PORT,
                                    g_param_spec_uint ("port",
                                                       P_("Port"),
@@ -286,7 +300,7 @@ g_inet_socket_address_class_init (GInetSocketAddressClass *klass)
                                                       G_PARAM_STATIC_STRINGS));
 
   /**
-   * GInetSocketAddress:scope_id:
+   * GInetSocketAddress:scope-id:
    *
    * The `sin6_scope_id` field, for IPv6 addresses.
    *

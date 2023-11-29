@@ -866,6 +866,13 @@ g_socket_client_class_init (GSocketClientClass *class)
                               G_TYPE_FROM_CLASS (class),
                               _g_cclosure_marshal_VOID__ENUM_OBJECT_OBJECTv);
 
+  /**
+   * GSocketClient:family:
+   *
+   * The address family to use for socket construction.
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_FAMILY,
 				   g_param_spec_enum ("family",
 						      P_("Socket family"),
@@ -876,6 +883,13 @@ g_socket_client_class_init (GSocketClientClass *class)
                                                       G_PARAM_READWRITE |
                                                       G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GSocketClient:type:
+   *
+   * The type to use for socket construction.
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_TYPE,
 				   g_param_spec_enum ("type",
 						      P_("Socket type"),
@@ -886,6 +900,13 @@ g_socket_client_class_init (GSocketClientClass *class)
                                                       G_PARAM_READWRITE |
                                                       G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GSocketClient:protocol:
+   *
+   * The protocol to use for socket construction, or `0` for default.
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_PROTOCOL,
 				   g_param_spec_enum ("protocol",
 						      P_("Socket protocol"),
@@ -896,6 +917,13 @@ g_socket_client_class_init (GSocketClientClass *class)
                                                       G_PARAM_READWRITE |
                                                       G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GSocketClient:local-address:
+   *
+   * The local address constructed sockets will be bound to.
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_LOCAL_ADDRESS,
 				   g_param_spec_object ("local-address",
 							P_("Local address"),
@@ -905,6 +933,13 @@ g_socket_client_class_init (GSocketClientClass *class)
                                                         G_PARAM_READWRITE |
                                                         G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GSocketClient:timeout:
+   *
+   * The I/O timeout for sockets, in seconds, or `0` for none.
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_TIMEOUT,
 				   g_param_spec_uint ("timeout",
 						      P_("Socket timeout"),
@@ -914,6 +949,13 @@ g_socket_client_class_init (GSocketClientClass *class)
                                                       G_PARAM_READWRITE |
                                                       G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GSocketClient:enable-proxy:
+   *
+   * Enable proxy support.
+   *
+   * Since: 2.22
+   */
    g_object_class_install_property (gobject_class, PROP_ENABLE_PROXY,
 				    g_param_spec_boolean ("enable-proxy",
 							  P_("Enable proxy"),
@@ -923,6 +965,13 @@ g_socket_client_class_init (GSocketClientClass *class)
 							  G_PARAM_READWRITE |
 							  G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GSocketClient:tls:
+   *
+   * Whether to create TLS connections.
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_TLS,
 				   g_param_spec_boolean ("tls",
 							 P_("TLS"),

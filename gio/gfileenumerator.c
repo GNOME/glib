@@ -157,6 +157,11 @@ g_file_enumerator_class_init (GFileEnumeratorClass *klass)
   klass->close_async = g_file_enumerator_real_close_async;
   klass->close_finish = g_file_enumerator_real_close_finish;
 
+  /**
+   * GFileEnumerator:container:
+   *
+   * The container that is being enumerated.
+   */
   g_object_class_install_property
     (gobject_class, PROP_CONTAINER,
      g_param_spec_object ("container", P_("Container"),

@@ -116,6 +116,13 @@ g_network_address_class_init (GNetworkAddressClass *klass)
   gobject_class->get_property = g_network_address_get_property;
   gobject_class->finalize = g_network_address_finalize;
 
+  /**
+   * GNetworkAddress:hostname:
+   *
+   * Hostname to resolve.
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_HOSTNAME,
                                    g_param_spec_string ("hostname",
                                                         P_("Hostname"),
@@ -124,6 +131,14 @@ g_network_address_class_init (GNetworkAddressClass *klass)
                                                         G_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT_ONLY |
                                                         G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GNetworkAddress:port:
+   *
+   * Network port.
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_PORT,
                                    g_param_spec_uint ("port",
                                                       P_("Port"),
@@ -133,6 +148,13 @@ g_network_address_class_init (GNetworkAddressClass *klass)
                                                       G_PARAM_CONSTRUCT_ONLY |
                                                       G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GNetworkAddress:scheme:
+   *
+   * URI scheme.
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_SCHEME,
                                    g_param_spec_string ("scheme",
                                                         P_("Scheme"),

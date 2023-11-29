@@ -134,6 +134,13 @@ g_emblem_class_init (GEmblemClass *klass)
   gobject_class->set_property = g_emblem_set_property;
   gobject_class->get_property = g_emblem_get_property;
 
+  /**
+   * GEmblem:origin:
+   *
+   * The origin the emblem is derived from.
+   *
+   * Since: 2.18
+   */
   g_object_class_install_property (gobject_class,
                                    PROP_ORIGIN,
                                    g_param_spec_enum ("origin",
@@ -143,6 +150,13 @@ g_emblem_class_init (GEmblemClass *klass)
                                                       G_EMBLEM_ORIGIN_UNKNOWN,
                                                       G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GEmblem:icon:
+   *
+   * The actual icon of the emblem.
+   *
+   * Since: 2.18
+   */
   g_object_class_install_property (gobject_class,
                                    PROP_ICON,
                                    g_param_spec_object ("icon",

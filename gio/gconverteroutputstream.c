@@ -129,6 +129,11 @@ g_converter_output_stream_class_init (GConverterOutputStreamClass *klass)
   istream_class->write_fn = g_converter_output_stream_write;
   istream_class->flush = g_converter_output_stream_flush;
 
+  /**
+   * GConverterOutputStream:converter:
+   *
+   * The converter object.
+   */
   g_object_class_install_property (object_class,
 				   PROP_CONVERTER,
 				   g_param_spec_object ("converter",

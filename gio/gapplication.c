@@ -1484,6 +1484,13 @@ g_application_class_init (GApplicationClass *class)
   class->dbus_unregister = g_application_real_dbus_unregister;
   class->name_lost = g_application_real_name_lost;
 
+  /**
+   * GApplication:application-id:
+   *
+   * The unique identifier for the application.
+   *
+   * Since: 2.28
+   */
   g_object_class_install_property (object_class, PROP_APPLICATION_ID,
     g_param_spec_string ("application-id",
                          P_("Application identifier"),
@@ -1491,6 +1498,13 @@ g_application_class_init (GApplicationClass *class)
                          NULL, G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
                          G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GApplication:flags:
+   *
+   * Flags specifying the behaviour of the application.
+   *
+   * Since: 2.28
+   */
   g_object_class_install_property (object_class, PROP_FLAGS,
     g_param_spec_flags ("flags",
                         P_("Application flags"),
@@ -1498,24 +1512,52 @@ g_application_class_init (GApplicationClass *class)
                         G_TYPE_APPLICATION_FLAGS, G_APPLICATION_DEFAULT_FLAGS,
                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GApplication:resource-base-path:
+   *
+   * The base resource path for the application.
+   *
+   * Since: 2.28
+   */
   g_object_class_install_property (object_class, PROP_RESOURCE_BASE_PATH,
     g_param_spec_string ("resource-base-path",
                          P_("Resource base path"),
                          P_("The base resource path for the application"),
                          NULL, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GApplication:is-registered:
+   *
+   * Whether [method@Gio.Application.register] has been called.
+   *
+   * Since: 2.28
+   */
   g_object_class_install_property (object_class, PROP_IS_REGISTERED,
     g_param_spec_boolean ("is-registered",
                           P_("Is registered"),
                           P_("If g_application_register() has been called"),
                           FALSE, G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GApplication:is-remote:
+   *
+   * Whether this application instance is remote.
+   *
+   * Since: 2.28
+   */
   g_object_class_install_property (object_class, PROP_IS_REMOTE,
     g_param_spec_boolean ("is-remote",
                           P_("Is remote"),
                           P_("If this application instance is remote"),
                           FALSE, G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GApplication:inactivity-timeout:
+   *
+   * Time (in milliseconds) to stay alive after becoming idle.
+   *
+   * Since: 2.28
+   */
   g_object_class_install_property (object_class, PROP_INACTIVITY_TIMEOUT,
     g_param_spec_uint ("inactivity-timeout",
                        P_("Inactivity timeout"),
@@ -1523,6 +1565,13 @@ g_application_class_init (GApplicationClass *class)
                        0, G_MAXUINT, 0,
                        G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GApplication:action-group:
+   *
+   * The group of actions that the application exports.
+   *
+   * Since: 2.28
+   */
   g_object_class_install_property (object_class, PROP_ACTION_GROUP,
     g_param_spec_object ("action-group",
                          P_("Action group"),

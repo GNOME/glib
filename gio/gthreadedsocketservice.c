@@ -247,6 +247,13 @@ g_threaded_socket_service_class_init (GThreadedSocketServiceClass *class)
 			      G_TYPE_FROM_CLASS (class),
 			      _g_cclosure_marshal_BOOLEAN__OBJECT_OBJECTv);
 
+  /**
+   * GThreadedSocketService:max-threads:
+   *
+   * The maximum number of threads handling clients for this service.
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_MAX_THREADS,
 				   g_param_spec_int ("max-threads",
 						     P_("Max threads"),

@@ -267,6 +267,13 @@ g_unix_socket_address_class_init (GUnixSocketAddressClass *klass)
   gsocketaddress_class->to_native = g_unix_socket_address_to_native;
   gsocketaddress_class->get_native_size = g_unix_socket_address_get_native_size;
 
+  /**
+   * GUnixSocketAddress:path:
+   *
+   * Unix socket path.
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class,
 				   PROP_PATH,
 				   g_param_spec_string ("path",
@@ -276,6 +283,14 @@ g_unix_socket_address_class_init (GUnixSocketAddressClass *klass)
 							G_PARAM_READWRITE |
 							G_PARAM_CONSTRUCT_ONLY |
 							G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GUnixSocketAddress:path-as-array:
+   *
+   * Unix socket path, as a byte array.
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_PATH_AS_ARRAY,
 				   g_param_spec_boxed ("path-as-array",
 						       P_("Path array"),
@@ -284,6 +299,7 @@ g_unix_socket_address_class_init (GUnixSocketAddressClass *klass)
 						       G_PARAM_READWRITE |
 						       G_PARAM_CONSTRUCT_ONLY |
 						       G_PARAM_STATIC_STRINGS));
+
   /**
    * GUnixSocketAddress:abstract:
    *
@@ -301,6 +317,14 @@ g_unix_socket_address_class_init (GUnixSocketAddressClass *klass)
 							 G_PARAM_READWRITE |
 							 G_PARAM_CONSTRUCT_ONLY |
 							 G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GUnixSocketAddress:address-type:
+   *
+   * The type of Unix socket address.
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_ADDRESS_TYPE,
 				   g_param_spec_enum ("address-type",
 						      P_("Address type"),

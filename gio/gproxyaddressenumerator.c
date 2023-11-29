@@ -750,6 +750,11 @@ g_proxy_address_enumerator_class_init (GProxyAddressEnumeratorClass *proxy_enume
   enumerator_class->next_async = g_proxy_address_enumerator_next_async;
   enumerator_class->next_finish = g_proxy_address_enumerator_next_finish;
 
+  /**
+   * GProxyAddressEnumerator:uri:
+   *
+   * The destination URI. Use `none://` for a generic socket.
+   */
   g_object_class_install_property (object_class,
 				   PROP_URI,
 				   g_param_spec_string ("uri",
@@ -778,6 +783,11 @@ g_proxy_address_enumerator_class_init (GProxyAddressEnumeratorClass *proxy_enume
                                                       G_PARAM_CONSTRUCT_ONLY |
                                                       G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GProxyAddressEnumerator:connectable:
+   *
+   * The connectable being enumerated.
+   */
   g_object_class_install_property (object_class,
 				   PROP_CONNECTABLE,
 				   g_param_spec_object ("connectable",

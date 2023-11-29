@@ -131,6 +131,13 @@ g_tcp_wrapper_connection_class_init (GTcpWrapperConnectionClass *klass)
   stream_class->get_input_stream = g_tcp_wrapper_connection_get_input_stream;
   stream_class->get_output_stream = g_tcp_wrapper_connection_get_output_stream;
 
+  /**
+   * GTcpWrapperConnection:base-io-stream:
+   *
+   * The wrapped [class@Gio.IOStream].
+   *
+   * Since: 2.28
+   */
   g_object_class_install_property (gobject_class,
                                    PROP_BASE_IO_STREAM,
                                    g_param_spec_object ("base-io-stream",

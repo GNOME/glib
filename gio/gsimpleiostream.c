@@ -159,6 +159,8 @@ g_simple_io_stream_class_init (GSimpleIOStreamClass *class)
   /**
    * GSimpleIOStream:input-stream:
    *
+   * The [class@Gio.InputStream] to read from.
+   *
    * Since: 2.44
    */
   g_object_class_install_property (gobject_class, PROP_INPUT_STREAM,
@@ -172,6 +174,8 @@ g_simple_io_stream_class_init (GSimpleIOStreamClass *class)
 
   /**
    * GSimpleIOStream:output-stream:
+   *
+   * The [class@Gio.OutputStream] to write to.
    *
    * Since: 2.44
    */

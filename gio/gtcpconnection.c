@@ -128,6 +128,13 @@ g_tcp_connection_class_init (GTcpConnectionClass *class)
   stream_class->close_fn = g_tcp_connection_close;
   stream_class->close_async = g_tcp_connection_close_async;
 
+  /**
+   * GTcpConnection:graceful-disconnect:
+   *
+   * Whether [method@Gio.IOStream.close] does a graceful disconnect.
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_GRACEFUL_DISCONNECT,
 				   g_param_spec_boolean ("graceful-disconnect",
 							 P_("Graceful Disconnect"),

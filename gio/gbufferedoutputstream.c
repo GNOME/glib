@@ -145,6 +145,11 @@ g_buffered_output_stream_class_init (GBufferedOutputStreamClass *klass)
   ostream_class->close_async  = g_buffered_output_stream_close_async;
   ostream_class->close_finish = g_buffered_output_stream_close_finish;
 
+  /**
+   * GBufferedOutputStream:buffer-size:
+   *
+   * The size of the backend buffer, in bytes.
+   */
   g_object_class_install_property (object_class,
                                    PROP_BUFSIZE,
                                    g_param_spec_uint ("buffer-size",
@@ -156,6 +161,11 @@ g_buffered_output_stream_class_init (GBufferedOutputStreamClass *klass)
                                                       G_PARAM_READWRITE|G_PARAM_CONSTRUCT|
                                                       G_PARAM_STATIC_NAME|G_PARAM_STATIC_NICK|G_PARAM_STATIC_BLURB));
 
+  /**
+   * GBufferedOutputStream:auto-grow:
+   *
+   * Whether the buffer should automatically grow.
+   */
   g_object_class_install_property (object_class,
                                    PROP_AUTO_GROW,
                                    g_param_spec_boolean ("auto-grow",

@@ -188,6 +188,11 @@ g_file_monitor_class_init (GFileMonitorClass *klass)
                               G_TYPE_FROM_CLASS (klass),
                               _g_cclosure_marshal_VOID__OBJECT_OBJECT_ENUMv);
 
+  /**
+   * GFileMonitor:rate-limit:
+   *
+   * The limit of the monitor to watch for changes, in milliseconds.
+   */
   g_object_class_install_property (object_class, PROP_RATE_LIMIT,
                                    g_param_spec_int ("rate-limit",
                                                      P_("Rate limit"),
@@ -195,6 +200,11 @@ g_file_monitor_class_init (GFileMonitorClass *klass)
                                                      0, G_MAXINT, DEFAULT_RATE_LIMIT_MSECS, G_PARAM_READWRITE |
                                                      G_PARAM_EXPLICIT_NOTIFY | G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GFileMonitor:cancelled:
+   *
+   * Whether the monitor has been cancelled.
+   */
   g_object_class_install_property (object_class, PROP_CANCELLED,
                                    g_param_spec_boolean ("cancelled",
                                                          P_("Cancelled"),

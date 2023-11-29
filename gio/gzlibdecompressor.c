@@ -215,6 +215,13 @@ g_zlib_decompressor_class_init (GZlibDecompressorClass *klass)
   gobject_class->get_property = g_zlib_decompressor_get_property;
   gobject_class->set_property = g_zlib_decompressor_set_property;
 
+  /**
+   * GZlibDecompressor:format:
+   *
+   * The format of the compressed data.
+   *
+   * Since: 2.24
+   */
   g_object_class_install_property (gobject_class,
 				   PROP_FORMAT,
 				   g_param_spec_enum ("format",

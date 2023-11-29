@@ -213,6 +213,13 @@ g_unix_fd_message_class_init (GUnixFDMessageClass *class)
   object_class->set_property = g_unix_fd_message_set_property;
   object_class->get_property = g_unix_fd_message_get_property;
 
+  /**
+   * GUnixFDMessage:fd-list:
+   *
+   * The [class@Gio.UnixFDList] object to send with the message.
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (object_class, 1,
     g_param_spec_object ("fd-list", "file descriptor list",
                          "The GUnixFDList object to send with the message",

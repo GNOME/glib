@@ -152,6 +152,13 @@ g_charset_converter_class_init (GCharsetConverterClass *klass)
   gobject_class->get_property = g_charset_converter_get_property;
   gobject_class->set_property = g_charset_converter_set_property;
 
+  /**
+   * GCharsetConverter:to-charset:
+   *
+   * The character encoding to convert to.
+   *
+   * Since: 2.24
+   */
   g_object_class_install_property (gobject_class,
 				   PROP_TO_CHARSET,
 				   g_param_spec_string ("to-charset",
@@ -160,6 +167,14 @@ g_charset_converter_class_init (GCharsetConverterClass *klass)
 							NULL,
 							G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY |
 							G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GCharsetConverter:from-charset:
+   *
+   * The character encoding to convert from.
+   *
+   * Since: 2.24
+   */
   g_object_class_install_property (gobject_class,
 				   PROP_FROM_CHARSET,
 				   g_param_spec_string ("from-charset",
@@ -168,6 +183,14 @@ g_charset_converter_class_init (GCharsetConverterClass *klass)
 							NULL,
 							G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY |
 							G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GCharsetConverter:use-fallback:
+   *
+   * Use fallback (of form `\<hexval>`) for invalid bytes.
+   *
+   * Since: 2.24
+   */
   g_object_class_install_property (gobject_class,
 				   PROP_USE_FALLBACK,
 				   g_param_spec_boolean ("use-fallback",

@@ -186,6 +186,13 @@ g_proxy_address_class_init (GProxyAddressClass *klass)
   gobject_class->set_property = g_proxy_address_set_property;
   gobject_class->get_property = g_proxy_address_get_property;
 
+  /**
+   * GProxyAddress:protocol:
+   *
+   * The proxy protocol.
+   *
+   * Since: 2.26
+   */
   g_object_class_install_property (gobject_class,
 				   PROP_PROTOCOL,
 				   g_param_spec_string ("protocol",
@@ -196,6 +203,13 @@ g_proxy_address_class_init (GProxyAddressClass *klass)
 						       G_PARAM_CONSTRUCT_ONLY |
 						       G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GProxyAddress:username:
+   *
+   * The proxy username.
+   *
+   * Since: 2.26
+   */
   g_object_class_install_property (gobject_class,
 				   PROP_USERNAME,
 				   g_param_spec_string ("username",
@@ -206,6 +220,13 @@ g_proxy_address_class_init (GProxyAddressClass *klass)
 						       G_PARAM_CONSTRUCT_ONLY |
 						       G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GProxyAddress:password:
+   *
+   * The proxy password.
+   *
+   * Since: 2.26
+   */
   g_object_class_install_property (gobject_class,
 				   PROP_PASSWORD,
 				   g_param_spec_string ("password",
@@ -234,6 +255,13 @@ g_proxy_address_class_init (GProxyAddressClass *klass)
 						       G_PARAM_CONSTRUCT_ONLY |
 						       G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GProxyAddress:destination-hostname:
+   *
+   * The proxy destination hostname.
+   *
+   * Since: 2.26
+   */
   g_object_class_install_property (gobject_class,
 				   PROP_DESTINATION_HOSTNAME,
 				   g_param_spec_string ("destination-hostname",
@@ -244,6 +272,13 @@ g_proxy_address_class_init (GProxyAddressClass *klass)
 						       G_PARAM_CONSTRUCT_ONLY |
 						       G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GProxyAddress:destination-port:
+   *
+   * The proxy destination port.
+   *
+   * Since: 2.26
+   */
   g_object_class_install_property (gobject_class,
 				   PROP_DESTINATION_PORT,
 				   g_param_spec_uint ("destination-port",

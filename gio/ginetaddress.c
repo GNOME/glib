@@ -185,6 +185,13 @@ g_inet_address_class_init (GInetAddressClass *klass)
   gobject_class->set_property = g_inet_address_set_property;
   gobject_class->get_property = g_inet_address_get_property;
 
+  /**
+   * GInetAddress:family:
+   *
+   * The address family (IPv4 or IPv6).
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_FAMILY,
                                    g_param_spec_enum ("family",
 						      P_("Address family"),
@@ -195,6 +202,13 @@ g_inet_address_class_init (GInetAddressClass *klass)
                                                       G_PARAM_CONSTRUCT_ONLY |
                                                       G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GInetAddress:bytes:
+   *
+   * The raw address data.
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_BYTES,
                                    g_param_spec_pointer ("bytes",
 							 P_("Bytes"),

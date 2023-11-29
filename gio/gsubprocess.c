@@ -496,10 +496,25 @@ g_subprocess_class_init (GSubprocessClass *class)
   gobject_class->finalize = g_subprocess_finalize;
   gobject_class->set_property = g_subprocess_set_property;
 
+  /**
+   * GSubprocess:flags:
+   *
+   * Subprocess flags.
+   *
+   * Since: 2.40
+   */
   g_object_class_install_property (gobject_class, PROP_FLAGS,
                                    g_param_spec_flags ("flags", P_("Flags"), P_("Subprocess flags"),
                                                        G_TYPE_SUBPROCESS_FLAGS, 0, G_PARAM_WRITABLE |
                                                        G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GSubprocess:argv:
+   *
+   * Argument vector.
+   *
+   * Since: 2.40
+   */
   g_object_class_install_property (gobject_class, PROP_ARGV,
                                    g_param_spec_boxed ("argv", P_("Arguments"), P_("Argument vector"),
                                                        G_TYPE_STRV, G_PARAM_WRITABLE |

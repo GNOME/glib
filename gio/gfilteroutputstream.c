@@ -88,6 +88,11 @@ g_filter_output_stream_class_init (GFilterOutputStreamClass *klass)
   ostream_class->flush = g_filter_output_stream_flush;
   ostream_class->close_fn = g_filter_output_stream_close;
 
+  /**
+   * GFilterOutputStream:close-base-stream:
+   *
+   * The underlying base stream on which the I/O ops will be done.
+   */
   g_object_class_install_property (object_class,
                                    PROP_BASE_STREAM,
                                    g_param_spec_object ("base-stream",
@@ -97,6 +102,11 @@ g_filter_output_stream_class_init (GFilterOutputStreamClass *klass)
                                                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | 
                                                          G_PARAM_STATIC_NAME|G_PARAM_STATIC_NICK|G_PARAM_STATIC_BLURB));
 
+  /**
+   * GFilterOutputStream:close-base-stream:
+   *
+   * Whether the base stream should be closed when the filter stream is closed.
+   */
   g_object_class_install_property (object_class,
                                    PROP_CLOSE_BASE,
                                    g_param_spec_boolean ("close-base-stream",
