@@ -70,9 +70,7 @@ g_dtls_client_connection_default_init (GDtlsClientConnectionInterface *iface)
    * Deprecated: 2.74: Do not attempt to ignore validation errors.
    */
   g_object_interface_install_property (iface,
-                                       g_param_spec_flags ("validation-flags",
-                                                           P_("Validation flags"),
-                                                           P_("What certificate validation to perform"),
+                                       g_param_spec_flags ("validation-flags", NULL, NULL,
                                                            G_TYPE_TLS_CERTIFICATE_FLAGS,
                                                            G_TLS_CERTIFICATE_VALIDATE_ALL,
                                                            G_PARAM_READWRITE |
@@ -100,9 +98,7 @@ g_dtls_client_connection_default_init (GDtlsClientConnectionInterface *iface)
    * Since: 2.48
    */
   g_object_interface_install_property (iface,
-                                       g_param_spec_object ("server-identity",
-                                                            P_("Server identity"),
-                                                            P_("GSocketConnectable identifying the server"),
+                                       g_param_spec_object ("server-identity", NULL, NULL,
                                                             G_TYPE_SOCKET_CONNECTABLE,
                                                             G_PARAM_READWRITE |
                                                             G_PARAM_CONSTRUCT |
@@ -122,9 +118,7 @@ g_dtls_client_connection_default_init (GDtlsClientConnectionInterface *iface)
    * Since: 2.48
    */
   g_object_interface_install_property (iface,
-                                       g_param_spec_pointer ("accepted-cas",
-                                                             P_("Accepted CAs"),
-                                                             P_("Distinguished names of the CAs the server accepts certificates from"),
+                                       g_param_spec_pointer ("accepted-cas", NULL, NULL,
                                                              G_PARAM_READABLE |
                                                              G_PARAM_STATIC_STRINGS));
 }

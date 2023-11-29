@@ -247,19 +247,29 @@ g_inet_socket_address_class_init (GInetSocketAddressClass *klass)
   gsocketaddress_class->to_native = g_inet_socket_address_to_native;
   gsocketaddress_class->get_native_size = g_inet_socket_address_get_native_size;
 
+  /**
+   * GInetSocketAddress:address:
+   *
+   * The address.
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_ADDRESS,
-                                   g_param_spec_object ("address",
-                                                        P_("Address"),
-                                                        P_("The address"),
+                                   g_param_spec_object ("address", NULL, NULL,
                                                         G_TYPE_INET_ADDRESS,
                                                         G_PARAM_CONSTRUCT_ONLY |
                                                         G_PARAM_READWRITE |
                                                         G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GInetSocketAddress:port:
+   *
+   * The port.
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_PORT,
-                                   g_param_spec_uint ("port",
-                                                      P_("Port"),
-                                                      P_("The port"),
+                                   g_param_spec_uint ("port", NULL, NULL,
                                                       0,
                                                       65535,
                                                       0,
@@ -275,9 +285,7 @@ g_inet_socket_address_class_init (GInetSocketAddressClass *klass)
    * Since: 2.32
    */
   g_object_class_install_property (gobject_class, PROP_FLOWINFO,
-                                   g_param_spec_uint ("flowinfo",
-                                                      P_("Flow info"),
-                                                      P_("IPv6 flow info"),
+                                   g_param_spec_uint ("flowinfo", NULL, NULL,
                                                       0,
                                                       G_MAXUINT32,
                                                       0,
@@ -286,16 +294,14 @@ g_inet_socket_address_class_init (GInetSocketAddressClass *klass)
                                                       G_PARAM_STATIC_STRINGS));
 
   /**
-   * GInetSocketAddress:scope_id:
+   * GInetSocketAddress:scope-id:
    *
    * The `sin6_scope_id` field, for IPv6 addresses.
    *
    * Since: 2.32
    */
   g_object_class_install_property (gobject_class, PROP_SCOPE_ID,
-                                   g_param_spec_uint ("scope-id",
-                                                      P_("Scope ID"),
-                                                      P_("IPv6 scope ID"),
+                                   g_param_spec_uint ("scope-id", NULL, NULL,
                                                       0,
                                                       G_MAXUINT32,
                                                       0,

@@ -425,9 +425,7 @@ g_simple_proxy_resolver_class_init (GSimpleProxyResolverClass *resolver_class)
    * to all three of the socks5, socks4a, and socks4 proxy types.
    */
   g_object_class_install_property (object_class, PROP_DEFAULT_PROXY,
-				   g_param_spec_string ("default-proxy",
-                                                        P_("Default proxy"),
-                                                        P_("The default proxy URI"),
+				   g_param_spec_string ("default-proxy", NULL, NULL,
                                                         NULL,
                                                         G_PARAM_READWRITE |
                                                         G_PARAM_STATIC_STRINGS));
@@ -471,9 +469,7 @@ g_simple_proxy_resolver_class_init (GSimpleProxyResolverClass *resolver_class)
    * commonly used by other applications.
    */
   g_object_class_install_property (object_class, PROP_IGNORE_HOSTS,
-				   g_param_spec_boxed ("ignore-hosts",
-                                                       P_("Ignore hosts"),
-                                                       P_("Hosts that will not use the proxy"),
+				   g_param_spec_boxed ("ignore-hosts", NULL, NULL,
                                                        G_TYPE_STRV,
                                                        G_PARAM_READWRITE |
                                                        G_PARAM_STATIC_STRINGS));

@@ -610,9 +610,7 @@ g_signal_group_class_init (GSignalGroupClass *klass)
    * Since: 2.72
    */
   properties[PROP_TARGET] =
-      g_param_spec_object ("target",
-                           "Target",
-                           "The target instance used when connecting signals.",
+      g_param_spec_object ("target", NULL, NULL,
                            G_TYPE_OBJECT,
                            (G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY | G_PARAM_STATIC_STRINGS));
 
@@ -624,9 +622,7 @@ g_signal_group_class_init (GSignalGroupClass *klass)
    * Since: 2.72
    */
   properties[PROP_TARGET_TYPE] =
-      g_param_spec_gtype ("target-type",
-                          "Target Type",
-                          "The GType of the target property.",
+      g_param_spec_gtype ("target-type", NULL, NULL,
                           G_TYPE_OBJECT,
                           (G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS));
 

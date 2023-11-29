@@ -533,9 +533,7 @@ g_test_dbus_class_init (GTestDBusClass *klass)
    * Since: 2.34
    */
   g_object_class_install_property (object_class, PROP_FLAGS,
-    g_param_spec_flags ("flags",
-                        P_("D-Bus session flags"),
-                        P_("Flags specifying the behaviour of the D-Bus session"),
+    g_param_spec_flags ("flags", NULL, NULL,
                         G_TYPE_TEST_DBUS_FLAGS, G_TEST_DBUS_NONE,
                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY |
                         G_PARAM_STATIC_STRINGS));

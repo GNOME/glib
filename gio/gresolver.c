@@ -236,9 +236,7 @@ g_resolver_class_init (GResolverClass *resolver_class)
    * Since: 2.78
    */
   props[PROP_TIMEOUT] =
-    g_param_spec_uint ("timeout",
-                       P_("Timeout"),
-                       P_("Timeout (ms) applied to all resolver lookups"),
+    g_param_spec_uint ("timeout", NULL, NULL,
                        0, G_MAXUINT, 0,
                        G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS | G_PARAM_EXPLICIT_NOTIFY);
 

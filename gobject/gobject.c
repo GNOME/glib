@@ -749,13 +749,13 @@ find_pspec (GObjectClass *class,
  *   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
  *
  *   obj_properties[PROP_FOO] =
- *     g_param_spec_int ("foo", "Foo", "Foo",
+ *     g_param_spec_int ("foo", NULL, NULL,
  *                       -1, G_MAXINT,
  *                       0,
  *                       G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
  *
  *   obj_properties[PROP_BAR] =
- *     g_param_spec_string ("bar", "Bar", "Bar",
+ *     g_param_spec_string ("bar", NULL, NULL,
  *                          NULL,
  *                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
  *
@@ -1565,7 +1565,7 @@ g_object_notify (GObject     *object,
  *   static void
  *   my_object_class_init (MyObjectClass *klass)
  *   {
- *     properties[PROP_FOO] = g_param_spec_int ("foo", "Foo", "The foo",
+ *     properties[PROP_FOO] = g_param_spec_int ("foo", NULL, NULL,
  *                                              0, 100,
  *                                              50,
  *                                              G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);

@@ -886,9 +886,7 @@ g_binding_class_init (GBindingClass *klass)
    * Since: 2.26
    */
   g_object_class_install_property (gobject_class, PROP_SOURCE,
-                                   g_param_spec_object ("source",
-                                                        P_("Source"),
-                                                        P_("The source of the binding"),
+                                   g_param_spec_object ("source", NULL, NULL,
                                                         G_TYPE_OBJECT,
                                                         G_PARAM_CONSTRUCT_ONLY |
                                                         G_PARAM_READWRITE |
@@ -901,9 +899,7 @@ g_binding_class_init (GBindingClass *klass)
    * Since: 2.26
    */
   g_object_class_install_property (gobject_class, PROP_TARGET,
-                                   g_param_spec_object ("target",
-                                                        P_("Target"),
-                                                        P_("The target of the binding"),
+                                   g_param_spec_object ("target", NULL, NULL,
                                                         G_TYPE_OBJECT,
                                                         G_PARAM_CONSTRUCT_ONLY |
                                                         G_PARAM_READWRITE |
@@ -920,9 +916,7 @@ g_binding_class_init (GBindingClass *klass)
    * Since: 2.26
    */
   g_object_class_install_property (gobject_class, PROP_SOURCE_PROPERTY,
-                                   g_param_spec_string ("source-property",
-                                                        P_("Source Property"),
-                                                        P_("The property on the source to bind"),
+                                   g_param_spec_string ("source-property", NULL, NULL,
                                                         NULL,
                                                         G_PARAM_CONSTRUCT_ONLY |
                                                         G_PARAM_READWRITE |
@@ -939,9 +933,7 @@ g_binding_class_init (GBindingClass *klass)
    * Since: 2.26
    */
   g_object_class_install_property (gobject_class, PROP_TARGET_PROPERTY,
-                                   g_param_spec_string ("target-property",
-                                                        P_("Target Property"),
-                                                        P_("The property on the target to bind"),
+                                   g_param_spec_string ("target-property", NULL, NULL,
                                                         NULL,
                                                         G_PARAM_CONSTRUCT_ONLY |
                                                         G_PARAM_READWRITE |
@@ -954,9 +946,7 @@ g_binding_class_init (GBindingClass *klass)
    * Since: 2.26
    */
   g_object_class_install_property (gobject_class, PROP_FLAGS,
-                                   g_param_spec_flags ("flags",
-                                                       P_("Flags"),
-                                                       P_("The binding flags"),
+                                   g_param_spec_flags ("flags", NULL, NULL,
                                                        G_TYPE_BINDING_FLAGS,
                                                        G_BINDING_DEFAULT,
                                                        G_PARAM_CONSTRUCT_ONLY |

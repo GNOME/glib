@@ -561,8 +561,7 @@ g_debug_controller_dbus_class_init (GDebugControllerDBusClass *klass)
    * Since: 2.72
    */
   props[PROP_CONNECTION] =
-      g_param_spec_object ("connection", "D-Bus Connection",
-                           "The D-Bus connection to expose the debugging interface on.",
+      g_param_spec_object ("connection", NULL, NULL,
                            G_TYPE_DBUS_CONNECTION,
                            G_PARAM_READWRITE |
                            G_PARAM_CONSTRUCT_ONLY |

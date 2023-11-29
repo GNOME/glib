@@ -369,9 +369,7 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
    */
   g_object_class_install_property (gobject_class,
                                    PROP_G_INTERFACE_INFO,
-                                   g_param_spec_boxed ("g-interface-info",
-                                                       P_("Interface Information"),
-                                                       P_("Interface Information"),
+                                   g_param_spec_boxed ("g-interface-info", NULL, NULL,
                                                        G_TYPE_DBUS_INTERFACE_INFO,
                                                        G_PARAM_READABLE |
                                                        G_PARAM_WRITABLE |
@@ -388,9 +386,7 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
    */
   g_object_class_install_property (gobject_class,
                                    PROP_G_CONNECTION,
-                                   g_param_spec_object ("g-connection",
-                                                        P_("g-connection"),
-                                                        P_("The connection the proxy is for"),
+                                   g_param_spec_object ("g-connection", NULL, NULL,
                                                         G_TYPE_DBUS_CONNECTION,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_WRITABLE |
@@ -411,9 +407,7 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
    */
   g_object_class_install_property (gobject_class,
                                    PROP_G_BUS_TYPE,
-                                   g_param_spec_enum ("g-bus-type",
-                                                      P_("Bus Type"),
-                                                      P_("The bus to connect to, if any"),
+                                   g_param_spec_enum ("g-bus-type", NULL, NULL,
                                                       G_TYPE_BUS_TYPE,
                                                       G_BUS_TYPE_NONE,
                                                       G_PARAM_WRITABLE |
@@ -431,9 +425,7 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
    */
   g_object_class_install_property (gobject_class,
                                    PROP_G_FLAGS,
-                                   g_param_spec_flags ("g-flags",
-                                                       P_("g-flags"),
-                                                       P_("Flags for the proxy"),
+                                   g_param_spec_flags ("g-flags", NULL, NULL,
                                                        G_TYPE_DBUS_PROXY_FLAGS,
                                                        G_DBUS_PROXY_FLAGS_NONE,
                                                        G_PARAM_READABLE |
@@ -452,9 +444,7 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
    */
   g_object_class_install_property (gobject_class,
                                    PROP_G_NAME,
-                                   g_param_spec_string ("g-name",
-                                                        P_("g-name"),
-                                                        P_("The well-known or unique name that the proxy is for"),
+                                   g_param_spec_string ("g-name", NULL, NULL,
                                                         NULL,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_WRITABLE |
@@ -474,9 +464,7 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
    */
   g_object_class_install_property (gobject_class,
                                    PROP_G_NAME_OWNER,
-                                   g_param_spec_string ("g-name-owner",
-                                                        P_("g-name-owner"),
-                                                        P_("The unique name for the owner"),
+                                   g_param_spec_string ("g-name-owner", NULL, NULL,
                                                         NULL,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_STATIC_NAME |
@@ -492,9 +480,7 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
    */
   g_object_class_install_property (gobject_class,
                                    PROP_G_OBJECT_PATH,
-                                   g_param_spec_string ("g-object-path",
-                                                        P_("g-object-path"),
-                                                        P_("The object path the proxy is for"),
+                                   g_param_spec_string ("g-object-path", NULL, NULL,
                                                         NULL,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_WRITABLE |
@@ -512,9 +498,7 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
    */
   g_object_class_install_property (gobject_class,
                                    PROP_G_INTERFACE_NAME,
-                                   g_param_spec_string ("g-interface-name",
-                                                        P_("g-interface-name"),
-                                                        P_("The D-Bus interface name the proxy is for"),
+                                   g_param_spec_string ("g-interface-name", NULL, NULL,
                                                         NULL,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_WRITABLE |
@@ -539,9 +523,7 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
    */
   g_object_class_install_property (gobject_class,
                                    PROP_G_DEFAULT_TIMEOUT,
-                                   g_param_spec_int ("g-default-timeout",
-                                                     P_("Default Timeout"),
-                                                     P_("Timeout for remote method invocation"),
+                                   g_param_spec_int ("g-default-timeout", NULL, NULL,
                                                      -1,
                                                      G_MAXINT,
                                                      -1,

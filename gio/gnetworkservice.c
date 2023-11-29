@@ -114,34 +114,57 @@ g_network_service_class_init (GNetworkServiceClass *klass)
   gobject_class->get_property = g_network_service_get_property;
   gobject_class->finalize = g_network_service_finalize;
 
+  /**
+   * GNetworkService:service:
+   *
+   * Service name, for example `ldap`.
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_SERVICE,
-                                   g_param_spec_string ("service",
-                                                        P_("Service"),
-                                                        P_("Service name, eg \"ldap\""),
+                                   g_param_spec_string ("service", NULL, NULL,
                                                         NULL,
                                                         G_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT_ONLY |
                                                         G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GNetworkService:protocol:
+   *
+   * Network protocol, for example `tcp`.
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_PROTOCOL,
-                                   g_param_spec_string ("protocol",
-                                                        P_("Protocol"),
-                                                        P_("Network protocol, eg \"tcp\""),
+                                   g_param_spec_string ("protocol", NULL, NULL,
                                                         NULL,
                                                         G_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT_ONLY |
                                                         G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GNetworkService:domain:
+   *
+   * Network domain, for example `example.com`.
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_DOMAIN,
-                                   g_param_spec_string ("domain",
-                                                        P_("Domain"),
-                                                        P_("Network domain, eg, \"example.com\""),
+                                   g_param_spec_string ("domain", NULL, NULL,
                                                         NULL,
                                                         G_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT_ONLY |
                                                         G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GNetworkService:scheme:
+   *
+   * Network scheme (default is to use service).
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_DOMAIN,
-                                   g_param_spec_string ("scheme",
-                                                        P_("Scheme"),
-                                                        P_("Network scheme (default is to use service)"),
+                                   g_param_spec_string ("scheme", NULL, NULL,
                                                         NULL,
                                                         G_PARAM_READWRITE |
                                                         G_PARAM_STATIC_STRINGS));

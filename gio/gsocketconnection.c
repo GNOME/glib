@@ -445,11 +445,16 @@ g_socket_connection_class_init (GSocketConnectionClass *klass)
   stream_class->close_async = g_socket_connection_close_async;
   stream_class->close_finish = g_socket_connection_close_finish;
 
+  /**
+   * GSocketConnection:socket:
+   *
+   * The underlying [class@Gio.Socket].
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class,
                                    PROP_SOCKET,
-                                   g_param_spec_object ("socket",
-			                                P_("Socket"),
-			                                P_("The underlying GSocket"),
+                                   g_param_spec_object ("socket", NULL, NULL,
                                                         G_TYPE_SOCKET,
                                                         G_PARAM_CONSTRUCT_ONLY |
                                                         G_PARAM_READWRITE |

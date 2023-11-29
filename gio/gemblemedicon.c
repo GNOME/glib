@@ -123,10 +123,15 @@ g_emblemed_icon_class_init (GEmblemedIconClass *klass)
   gobject_class->set_property = g_emblemed_icon_set_property;
   gobject_class->get_property = g_emblemed_icon_get_property;
 
+  /**
+   * GEmblemedIcon:gicon:
+   *
+   * The [iface@Gio.Icon] to attach emblems to.
+   *
+   * Since: 2.18
+   */
   properties[PROP_GICON] =
-    g_param_spec_object ("gicon",
-                         P_("The base GIcon"),
-                         P_("The GIcon to attach emblems to"),
+    g_param_spec_object ("gicon", NULL, NULL,
                          G_TYPE_ICON,
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
 

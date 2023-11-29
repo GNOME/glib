@@ -157,9 +157,7 @@ g_dbus_object_skeleton_class_init (GDBusObjectSkeletonClass *klass)
    */
   g_object_class_install_property (gobject_class,
                                    PROP_G_OBJECT_PATH,
-                                   g_param_spec_string ("g-object-path",
-                                                        "Object Path",
-                                                        "The object path where the object is exported",
+                                   g_param_spec_string ("g-object-path", NULL, NULL,
                                                         NULL,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_WRITABLE |

@@ -124,9 +124,7 @@ g_power_profile_monitor_default_init (GPowerProfileMonitorInterface *iface)
    * Since: 2.70
    */
   g_object_interface_install_property (iface,
-                                       g_param_spec_boolean ("power-saver-enabled",
-                                                             "power-saver-enabled",
-                                                             "Power Saver Enabled",
+                                       g_param_spec_boolean ("power-saver-enabled", NULL, NULL,
                                                              FALSE,
                                                              G_PARAM_READABLE | G_PARAM_STATIC_STRINGS | G_PARAM_EXPLICIT_NOTIFY));
 }

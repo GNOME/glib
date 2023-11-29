@@ -433,9 +433,7 @@ g_permission_class_init (GPermissionClass *class)
    * @permission represents the permission to perform.
    */
    g_object_class_install_property (object_class, PROP_ALLOWED,
-     g_param_spec_boolean ("allowed",
-                           P_("Is allowed"),
-                           P_("If the caller is allowed to perform the action"),
+     g_param_spec_boolean ("allowed", NULL, NULL,
                            FALSE,
                            G_PARAM_STATIC_STRINGS | G_PARAM_READABLE));
 
@@ -446,9 +444,7 @@ g_permission_class_init (GPermissionClass *class)
    * g_permission_acquire().
    */
    g_object_class_install_property (object_class, PROP_CAN_ACQUIRE,
-     g_param_spec_boolean ("can-acquire",
-                           P_("Can acquire"),
-                           P_("If calling g_permission_acquire() makes sense"),
+     g_param_spec_boolean ("can-acquire", NULL, NULL,
                            FALSE,
                            G_PARAM_STATIC_STRINGS | G_PARAM_READABLE));
 
@@ -459,9 +455,7 @@ g_permission_class_init (GPermissionClass *class)
    * g_permission_release().
    */
    g_object_class_install_property (object_class, PROP_CAN_RELEASE,
-     g_param_spec_boolean ("can-release",
-                           P_("Can release"),
-                           P_("If calling g_permission_release() makes sense"),
+     g_param_spec_boolean ("can-release", NULL, NULL,
                            FALSE,
                            G_PARAM_STATIC_STRINGS | G_PARAM_READABLE));
 }

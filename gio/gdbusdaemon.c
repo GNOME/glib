@@ -1692,9 +1692,7 @@ g_dbus_daemon_class_init (GDBusDaemonClass *klass)
 
   g_object_class_install_property (gobject_class,
 				   PROP_ADDRESS,
-				   g_param_spec_string ("address",
-							"Bus Address",
-							"The address the bus should use",
+				   g_param_spec_string ("address", NULL, NULL,
 							NULL,
 							G_PARAM_READWRITE |
 							G_PARAM_CONSTRUCT_ONLY |

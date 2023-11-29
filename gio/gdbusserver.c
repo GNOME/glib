@@ -298,9 +298,7 @@ g_dbus_server_class_init (GDBusServerClass *klass)
    */
   g_object_class_install_property (gobject_class,
                                    PROP_FLAGS,
-                                   g_param_spec_flags ("flags",
-                                                       P_("Flags"),
-                                                       P_("Flags for the server"),
+                                   g_param_spec_flags ("flags", NULL, NULL,
                                                        G_TYPE_DBUS_SERVER_FLAGS,
                                                        G_DBUS_SERVER_FLAGS_NONE,
                                                        G_PARAM_READABLE |
@@ -321,9 +319,7 @@ g_dbus_server_class_init (GDBusServerClass *klass)
    */
   g_object_class_install_property (gobject_class,
                                    PROP_GUID,
-                                   g_param_spec_string ("guid",
-                                                        P_("GUID"),
-                                                        P_("The guid of the server"),
+                                   g_param_spec_string ("guid", NULL, NULL,
                                                         NULL,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_WRITABLE |
@@ -341,9 +337,7 @@ g_dbus_server_class_init (GDBusServerClass *klass)
    */
   g_object_class_install_property (gobject_class,
                                    PROP_ADDRESS,
-                                   g_param_spec_string ("address",
-                                                        P_("Address"),
-                                                        P_("The address to listen on"),
+                                   g_param_spec_string ("address", NULL, NULL,
                                                         NULL,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_WRITABLE |
@@ -361,9 +355,7 @@ g_dbus_server_class_init (GDBusServerClass *klass)
    */
   g_object_class_install_property (gobject_class,
                                    PROP_CLIENT_ADDRESS,
-                                   g_param_spec_string ("client-address",
-                                                        P_("Client Address"),
-                                                        P_("The address clients can use"),
+                                   g_param_spec_string ("client-address", NULL, NULL,
                                                         NULL,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_STATIC_NAME |
@@ -379,9 +371,7 @@ g_dbus_server_class_init (GDBusServerClass *klass)
    */
   g_object_class_install_property (gobject_class,
                                    PROP_ACTIVE,
-                                   g_param_spec_boolean ("active",
-                                                         P_("Active"),
-                                                         P_("Whether the server is currently active"),
+                                   g_param_spec_boolean ("active", NULL, NULL,
                                                          FALSE,
                                                          G_PARAM_READABLE |
                                                          G_PARAM_STATIC_NAME |
@@ -397,9 +387,7 @@ g_dbus_server_class_init (GDBusServerClass *klass)
    */
   g_object_class_install_property (gobject_class,
                                    PROP_AUTHENTICATION_OBSERVER,
-                                   g_param_spec_object ("authentication-observer",
-                                                        P_("Authentication Observer"),
-                                                        P_("Object used to assist in the authentication process"),
+                                   g_param_spec_object ("authentication-observer", NULL, NULL,
                                                         G_TYPE_DBUS_AUTH_OBSERVER,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_WRITABLE |

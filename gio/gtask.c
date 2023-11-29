@@ -2439,9 +2439,7 @@ g_task_class_init (GTaskClass *klass)
    * Since: 2.44
    */
   g_object_class_install_property (gobject_class, PROP_COMPLETED,
-    g_param_spec_boolean ("completed",
-                          P_("Task completed"),
-                          P_("Whether the task has completed yet"),
+    g_param_spec_boolean ("completed", NULL, NULL,
                           FALSE, G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
   if (G_UNLIKELY (task_pool_max_counter == 0))

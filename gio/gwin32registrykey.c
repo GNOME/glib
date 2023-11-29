@@ -2695,9 +2695,7 @@ g_win32_registry_key_class_init (GWin32RegistryKeyClass *klass)
    */
   g_object_class_install_property (gobject_class,
                                    PROP_PATH,
-                                   g_param_spec_string ("path",
-                                                        "Path",
-                                                        "Path to the key in the registry",
+                                   g_param_spec_string ("path", NULL, NULL,
                                                         NULL,
                                                         G_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT_ONLY |
@@ -2712,9 +2710,7 @@ g_win32_registry_key_class_init (GWin32RegistryKeyClass *klass)
    */
   g_object_class_install_property (gobject_class,
                                    PROP_PATH_UTF16,
-                                   g_param_spec_pointer ("path-utf16",
-                                                        "Path (UTF-16)",
-                                                        "Path to the key in the registry, in UTF-16",
+                                   g_param_spec_pointer ("path-utf16", NULL, NULL,
                                                         G_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT_ONLY |
                                                         G_PARAM_STATIC_STRINGS));

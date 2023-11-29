@@ -55,9 +55,7 @@ g_tls_file_database_default_init (GTlsFileDatabaseInterface *iface)
    * Since: 2.30
    */
   g_object_interface_install_property (iface,
-                                       g_param_spec_string ("anchors",
-                                                           P_("Anchors"),
-                                                           P_("The certificate authority anchor file"),
+                                       g_param_spec_string ("anchors", NULL, NULL,
                                                            NULL,
                                                            G_PARAM_READWRITE |
                                                            G_PARAM_CONSTRUCT |

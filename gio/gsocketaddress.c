@@ -109,10 +109,15 @@ g_socket_address_class_init (GSocketAddressClass *klass)
 
   gobject_class->get_property = g_socket_address_get_property;
 
+  /**
+   * GSocketAddress:family:
+   *
+   * The family of the socket address.
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_FAMILY,
-                                   g_param_spec_enum ("family",
-						      P_("Address family"),
-						      P_("The family of the socket address"),
+                                   g_param_spec_enum ("family", NULL, NULL,
 						      G_TYPE_SOCKET_FAMILY,
 						      G_SOCKET_FAMILY_INVALID,
 						      G_PARAM_READABLE |

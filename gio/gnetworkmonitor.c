@@ -352,9 +352,7 @@ g_network_monitor_default_init (GNetworkMonitorInterface *iface)
    * Since: 2.32
    */
   g_object_interface_install_property (iface,
-                                       g_param_spec_boolean ("network-available",
-                                                             P_("Network available"),
-                                                             P_("Whether the network is available"),
+                                       g_param_spec_boolean ("network-available", NULL, NULL,
                                                              FALSE,
                                                              G_PARAM_READABLE |
                                                              G_PARAM_STATIC_STRINGS));
@@ -387,9 +385,7 @@ g_network_monitor_default_init (GNetworkMonitorInterface *iface)
    * Since: 2.46
    */
   g_object_interface_install_property (iface,
-                                       g_param_spec_boolean ("network-metered",
-                                                             P_("Network metered"),
-                                                             P_("Whether the network is metered"),
+                                       g_param_spec_boolean ("network-metered", NULL, NULL,
                                                              FALSE,
                                                              G_PARAM_READABLE |
                                                              G_PARAM_STATIC_STRINGS));
@@ -404,9 +400,7 @@ g_network_monitor_default_init (GNetworkMonitorInterface *iface)
    * Since: 2.44
    */
   g_object_interface_install_property (iface,
-                                       g_param_spec_enum ("connectivity",
-                                                          P_("Network connectivity"),
-                                                          P_("Level of network connectivity"),
+                                       g_param_spec_enum ("connectivity", NULL, NULL,
                                                           G_TYPE_NETWORK_CONNECTIVITY,
                                                           G_NETWORK_CONNECTIVITY_FULL,
                                                           G_PARAM_READABLE |

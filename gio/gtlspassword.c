@@ -187,27 +187,42 @@ g_tls_password_class_init (GTlsPasswordClass *klass)
   gobject_class->set_property = g_tls_password_set_property;
   gobject_class->finalize = g_tls_password_finalize;
 
+  /**
+   * GTlsPassword:flags:
+   *
+   * Flags about the password.
+   *
+   * Since: 2.30
+   */
   g_object_class_install_property (gobject_class, PROP_FLAGS,
-				   g_param_spec_flags ("flags",
-						       P_("Flags"),
-						       P_("Flags about the password"),
+				   g_param_spec_flags ("flags", NULL, NULL,
 						       G_TYPE_TLS_PASSWORD_FLAGS,
 						       G_TLS_PASSWORD_NONE,
 						       G_PARAM_READWRITE |
 						       G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GTlsPassword:description:
+   *
+   * Description of what the password is for.
+   *
+   * Since: 2.30
+   */
   g_object_class_install_property (gobject_class, PROP_DESCRIPTION,
-				   g_param_spec_string ("description",
-							P_("Description"),
-							P_("Description of what the password is for"),
+				   g_param_spec_string ("description", NULL, NULL,
 							NULL,
 							G_PARAM_READWRITE |
 							G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GTlsPassword:warning:
+   *
+   * Warning about the password.
+   *
+   * Since: 2.30
+   */
   g_object_class_install_property (gobject_class, PROP_WARNING,
-				   g_param_spec_string ("warning",
-							P_("Warning"),
-							P_("Warning about the password"),
+				   g_param_spec_string ("warning", NULL, NULL,
 							NULL,
 							G_PARAM_READWRITE |
 							G_PARAM_STATIC_STRINGS));
