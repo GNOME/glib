@@ -60,8 +60,10 @@
 
 /* As recommended by RFC 8305 this is the time it waits
  * on a connection before starting another concurrent attempt.
+ *
+ * See https://datatracker.ietf.org/doc/html/rfc8305#section-8
  */
-#define HAPPY_EYEBALLS_CONNECTION_ATTEMPT_TIMEOUT_MS 250
+#define HAPPY_EYEBALLS_CONNECTION_ATTEMPT_DELAY_MS 250
 
 /**
  * GSocketClient:
@@ -1539,7 +1541,7 @@ typedef struct
   GIOStream *connection;
   GProxyAddress *proxy_addr;
   GSocketClientAsyncConnectData *data; /* unowned */
-  GSource *timeout_source;
+  GSource *delay_timeout_source;  /* (owned) */
   GCancellable *cancellable;
   GCancellable *task_cancellable;  /* (owned); this is equal to g_task_get_cancellable (ConnectionAttempt.data->task), but with a longer lifetime */
   gulong cancelled_id;
@@ -1575,10 +1577,10 @@ connection_attempt_unref (gpointer pointer)
       attempt->cancelled_id = 0;
       g_clear_object (&attempt->cancellable);
       g_clear_object (&attempt->proxy_addr);
-      if (attempt->timeout_source)
+      if (attempt->delay_timeout_source)
         {
-          g_source_destroy (attempt->timeout_source);
-          g_source_unref (attempt->timeout_source);
+          g_source_destroy (attempt->delay_timeout_source);
+          g_source_unref (attempt->delay_timeout_source);
         }
       g_free (attempt);
     }
@@ -1933,10 +1935,10 @@ g_socket_client_connected_callback (GObject      *source,
       return;
     }
 
-  if (attempt->timeout_source)
+  if (attempt->delay_timeout_source)
     {
-      g_source_destroy (attempt->timeout_source);
-      g_clear_pointer (&attempt->timeout_source, g_source_unref);
+      g_source_destroy (attempt->delay_timeout_source);
+      g_clear_pointer (&attempt->delay_timeout_source, g_source_unref);
     }
 
   if (!g_socket_connection_connect_finish (G_SOCKET_CONNECTION (source),
@@ -1979,17 +1981,17 @@ g_socket_client_connected_callback (GObject      *source,
 }
 
 static gboolean
-on_connection_attempt_timeout (gpointer data)
+on_connection_attempt_delay_reached (gpointer data)
 {
   ConnectionAttempt *attempt = data;
 
   if (!attempt->data->enumeration_completed)
     {
-      g_debug ("GSocketClient: Timeout reached, trying another enumeration");
+      g_debug ("GSocketClient: Connection attempt delay reached, trying another enumeration");
       enumerator_next_async (attempt->data, TRUE);
     }
 
-  g_clear_pointer (&attempt->timeout_source, g_source_unref);
+  g_clear_pointer (&attempt->delay_timeout_source, g_source_unref);
   return G_SOURCE_REMOVE;
 }
 
@@ -2073,7 +2075,7 @@ g_socket_client_enumerator_callback (GObject      *object,
   attempt->address = address;
   attempt->cancellable = g_cancellable_new ();
   attempt->connection = (GIOStream *)g_socket_connection_factory_create_connection (socket);
-  attempt->timeout_source = g_timeout_source_new (HAPPY_EYEBALLS_CONNECTION_ATTEMPT_TIMEOUT_MS);
+  attempt->delay_timeout_source = g_timeout_source_new (HAPPY_EYEBALLS_CONNECTION_ATTEMPT_DELAY_MS);
 
   g_debug ("%s: starting connection attempt %p for GSocketClientAsyncConnectData %p",
            G_STRFUNC, attempt, data);
@@ -2081,8 +2083,8 @@ g_socket_client_enumerator_callback (GObject      *object,
   if (G_IS_PROXY_ADDRESS (address) && data->client->priv->enable_proxy)
     attempt->proxy_addr = g_object_ref (G_PROXY_ADDRESS (address));
 
-  g_source_set_callback (attempt->timeout_source, on_connection_attempt_timeout, attempt, NULL);
-  g_source_attach (attempt->timeout_source, g_task_get_context (data->task));
+  g_source_set_callback (attempt->delay_timeout_source, on_connection_attempt_delay_reached, attempt, NULL);
+  g_source_attach (attempt->delay_timeout_source, g_task_get_context (data->task));
   data->connection_attempts = g_slist_append (data->connection_attempts, connection_attempt_ref (attempt));
 
   if (g_task_get_cancellable (data->task))
@@ -2178,7 +2180,7 @@ g_socket_client_connect_async (GSocketClient       *client,
         - Each connection is independent and kept in a ConnectionAttempt object.
           - They each hold a ref on the main task and have their own cancellable.
         - Multiple attempts may happen in parallel as per Happy Eyeballs.
-        - Upon failure or timeouts more connection attempts are made.
+        - Upon failure or attempt delays being reached more connection attempts are made.
           - If no connections succeed the task errors.
         - Upon success they are kept in a list of successful connections.
 
