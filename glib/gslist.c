@@ -521,7 +521,7 @@ g_slist_copy (GSList *list)
 /**
  * g_slist_copy_deep:
  * @list: a #GSList
- * @func: a copy function used to copy every element in the list
+ * @func: (scope call): a copy function used to copy every element in the list
  * @user_data: user data passed to the copy function @func, or #NULL
  *
  * Makes a full (deep) copy of a #GSList.
@@ -677,7 +677,7 @@ g_slist_find (GSList        *list,
  * g_slist_find_custom:
  * @list: a #GSList
  * @data: user data passed to the function
- * @func: the function to call for each element.
+ * @func: (scope call): the function to call for each element.
  *     It should return 0 when the desired element is found
  *
  * Finds an element in a #GSList, using a supplied function to
@@ -817,7 +817,7 @@ g_slist_length (GSList *list)
 /**
  * g_slist_foreach:
  * @list: a #GSList
- * @func: the function to call with each element's data
+ * @func: (scope call): the function to call with each element's data
  * @user_data: user data to pass to the function
  *
  * Calls a function for each element of a #GSList.
@@ -896,7 +896,7 @@ g_slist_insert_sorted_real (GSList   *list,
  * g_slist_insert_sorted:
  * @list: a #GSList
  * @data: the data for the new element
- * @func: the function to compare elements in the list.
+ * @func: (scope call): the function to compare elements in the list.
  *     It should return a number > 0 if the first parameter
  *     comes after the second parameter in the sort order.
  *
@@ -917,7 +917,7 @@ g_slist_insert_sorted (GSList       *list,
  * g_slist_insert_sorted_with_data:
  * @list: a #GSList
  * @data: the data for the new element
- * @func: the function to compare elements in the list.
+ * @func: (scope call): the function to compare elements in the list.
  *     It should return a number > 0 if the first parameter
  *     comes after the second parameter in the sort order.
  * @user_data: data to pass to comparison function
@@ -1002,7 +1002,7 @@ g_slist_sort_real (GSList   *list,
 /**
  * g_slist_sort:
  * @list: a #GSList
- * @compare_func: the comparison function used to sort the #GSList.
+ * @compare_func: (scope call): the comparison function used to sort the #GSList.
  *     This function is passed the data from 2 elements of the #GSList
  *     and should return 0 if they are equal, a negative value if the
  *     first element comes before the second, or a positive value if
@@ -1023,7 +1023,7 @@ g_slist_sort (GSList       *list,
 /**
  * g_slist_sort_with_data:
  * @list: a #GSList
- * @compare_func: comparison function
+ * @compare_func: (scope call): comparison function
  * @user_data: data to pass to comparison function
  *
  * Like g_slist_sort(), but the sort function accepts a user data argument.

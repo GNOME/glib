@@ -895,7 +895,7 @@ g_scanner_foreach_internal (gpointer  _key,
  * g_scanner_scope_foreach_symbol:
  * @scanner: a #GScanner
  * @scope_id: the scope id
- * @func: the function to call for each symbol/value pair
+ * @func: (scope call): the function to call for each symbol/value pair
  * @user_data: user data to pass to the function
  *
  * Calls the given function for each of the symbol/value pairs

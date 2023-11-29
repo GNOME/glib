@@ -3376,7 +3376,7 @@ g_regex_replace_literal (const GRegex      *regex,
  * @string_len: the length of @string, in bytes, or -1 if @string is nul-terminated
  * @start_position: starting index of the string to match, in bytes
  * @match_options: options for the match
- * @eval: a function to call for each match
+ * @eval: (scope call): a function to call for each match
  * @user_data: user data to pass to the function
  * @error: location to store the error occurring, or %NULL to ignore errors
  *

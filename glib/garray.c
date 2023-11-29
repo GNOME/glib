@@ -2980,7 +2980,7 @@ g_byte_array_remove_range (GByteArray *array,
 /**
  * g_byte_array_sort:
  * @array: a #GByteArray
- * @compare_func: comparison function
+ * @compare_func: (scope call): comparison function
  *
  * Sorts a byte array, using @compare_func which should be a
  * qsort()-style comparison function (returns less than zero for first
@@ -3003,7 +3003,7 @@ g_byte_array_sort (GByteArray   *array,
 /**
  * g_byte_array_sort_with_data:
  * @array: a #GByteArray
- * @compare_func: comparison function
+ * @compare_func: (scope call): comparison function
  * @user_data: data to pass to @compare_func
  *
  * Like g_byte_array_sort(), but the comparison function takes an extra
