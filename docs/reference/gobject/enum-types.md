@@ -1,6 +1,6 @@
-Title: Enumeration types
+Title: Enumeration Types
 
-# Enumeration types
+# Enumeration Types
 
 The GLib type system provides fundamental types for enumeration and flags
 types. Enumerations types are collection of identifiers associated with a

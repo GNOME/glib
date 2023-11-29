@@ -1,8 +1,8 @@
-Title: Character set conversions
+Title: Character Set Conversions
 SPDX-License-Identifier: LGPL-2.1-or-later
 SPDX-FileCopyrightText: 2010, 2012, 2014 Matthias Clasen
 
-# Character set conversions
+# Character Set Conversions
 
 The [`func@GLib.convert`] family of function wraps the functionality of
 iconv(). In addition to pure character set conversions, GLib has functions

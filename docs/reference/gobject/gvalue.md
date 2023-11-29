@@ -1,6 +1,6 @@
-Title: Generic value container
+Title: Generic Value Container
 
-# Generic value container
+# Generic Value Container
 
 The [`struct@GObject.Value`] structure is basically a variable container
 that consists of a type identifier and a specific value of that type. The

@@ -1,6 +1,6 @@
-Title: Commandline option parser
+Title: Commandline Option Parser
 
-# Commandline option parser
+# Commandline Option Parser
 
 The GOption commandline parser is intended to be a simpler replacement
 for the popt library. It supports short and long commandline options,

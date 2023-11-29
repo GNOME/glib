@@ -1,6 +1,6 @@
-Title: Boxed types
+Title: Boxed Types
 
-# Boxed types
+# Boxed Types
 
 A "boxed type" is a generic wrapper mechanism for arbitrary C structures.
 The only thing the type system needs to know about the structures is how to
