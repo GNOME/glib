@@ -762,7 +762,7 @@ g_file_info_remove_attribute (GFileInfo  *info,
  *
  * Gets the attribute type, value and status for an attribute key.
  *
- * Returns: (transfer none): %TRUE if @info has an attribute named @attribute,
+ * Returns: %TRUE if @info has an attribute named @attribute,
  *      %FALSE otherwise.
  */
 gboolean
