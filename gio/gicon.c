@@ -83,7 +83,7 @@ g_icon_default_init (GIconInterface *iface)
 }
 
 /**
- * g_icon_hash: (hash)
+ * g_icon_hash: (virtual hash)
  * @icon: (not nullable) (type Gio.Icon): #gconstpointer to an icon object.
  * 
  * Gets a hash for an icon.
