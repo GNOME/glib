@@ -286,7 +286,7 @@ void            g_cond_free             (GCond  *cond);
 GLIB_DEPRECATED_IN_2_32
 gboolean        g_cond_timed_wait       (GCond          *cond,
                                          GMutex         *mutex,
-                                         GTimeVal       *timeval);
+                                         GTimeVal       *abs_time);
 
 G_GNUC_END_IGNORE_DEPRECATIONS
 
