@@ -255,8 +255,8 @@ boxed_proxy_lcopy_value (const GValue *value,
 /**
  * g_boxed_type_register_static:
  * @name: Name of the new boxed type.
- * @boxed_copy: Boxed structure copy function.
- * @boxed_free: Boxed structure free function.
+ * @boxed_copy: (scope forever): Boxed structure copy function.
+ * @boxed_free: (scope forever): Boxed structure free function.
  *
  * This function creates a new %G_TYPE_BOXED derived type id for a new
  * boxed type with name @name.
