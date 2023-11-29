@@ -138,6 +138,24 @@
  * a `GSocket` concurrently from multiple threads, you must implement your own
  * locking.
  *
+ * ## Nagle’s algorithm
+ *
+ * Since GLib 2.80, `GSocket` will automatically set the `TCP_NODELAY` option on
+ * all `G_SOCKET_TYPE_STREAM` sockets. This disables
+ * [Nagle’s algorithm](https://en.wikipedia.org/wiki/Nagle%27s_algorithm) as it
+ * typically does more harm than good on modern networks.
+ *
+ * If your application needs Nagle’s algorithm enabled, call
+ * [method@Gio.Socket.set_option] after constructing a `GSocket` to enable it:
+ * ```c
+ * socket = g_socket_new (…, G_SOCKET_TYPE_STREAM, …);
+ * if (socket != NULL)
+ *   {
+ *     g_socket_set_option (socket, IPPROTO_TCP, TCP_NODELAY, FALSE, &local_error);
+ *     // handle error if needed
+ *   }
+ * ```
+ *
  * Since: 2.22
  */
 
@@ -749,6 +767,8 @@ g_socket_constructed (GObject *object)
       /* See note about SIGPIPE below. */
       g_socket_set_option (socket, SOL_SOCKET, SO_NOSIGPIPE, TRUE, NULL);
 #endif
+      if (socket->priv->type == G_SOCKET_TYPE_STREAM)
+        g_socket_set_option (socket, IPPROTO_TCP, TCP_NODELAY, TRUE, NULL);
     }
 }
 
