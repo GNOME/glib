@@ -509,8 +509,10 @@ connection_get_cb (GObject      *source_object,
  * @connection: a #GDBusConnection
  * @name: the well-known name to own
  * @flags: a set of flags from the #GBusNameOwnerFlags enumeration
- * @name_acquired_handler: (nullable): handler to invoke when @name is acquired or %NULL
- * @name_lost_handler: (nullable): handler to invoke when @name is lost or %NULL
+ * @name_acquired_handler: (nullable) (scope notified): handler to invoke when
+ *   @name is acquired or %NULL
+ * @name_lost_handler: (nullable) (scope notified): handler to invoke when @name
+ *   is lost or %NULL
  * @user_data: user data to pass to handlers
  * @user_data_free_func: (nullable): function for freeing @user_data or %NULL
  *
@@ -571,9 +573,12 @@ g_bus_own_name_on_connection (GDBusConnection          *connection,
  * @bus_type: the type of bus to own a name on
  * @name: the well-known name to own
  * @flags: a set of flags from the #GBusNameOwnerFlags enumeration
- * @bus_acquired_handler: (nullable): handler to invoke when connected to the bus of type @bus_type or %NULL
- * @name_acquired_handler: (nullable): handler to invoke when @name is acquired or %NULL
- * @name_lost_handler: (nullable): handler to invoke when @name is lost or %NULL
+ * @bus_acquired_handler: (nullable) (scope notified): handler to invoke when
+ *   connected to the bus of type @bus_type or %NULL
+ * @name_acquired_handler: (nullable) (scope notified): handler to invoke when
+ *   @name is acquired or %NULL
+ * @name_lost_handler: (nullable) (scope notified): handler to invoke when @name
+ *   is lost or %NULL
  * @user_data: user data to pass to handlers
  * @user_data_free_func: (nullable): function for freeing @user_data or %NULL
  *
