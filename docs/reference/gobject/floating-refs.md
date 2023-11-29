@@ -1,6 +1,6 @@
-Title: Floating references
+Title: Floating References
 
-# Floating references
+# Floating References
 
 **Note**: Floating references are a C convenience API and should not be used
 in modern GObject code. Language bindings in particular find the concept
