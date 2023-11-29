@@ -49,6 +49,8 @@
 #include <arpa/nameser.h>
 @NAMESER_COMPAT_INCLUDE@
 
+#ifndef __GI_SCANNER__
+
 #ifndef T_SRV
 #define T_SRV 33
 #endif
@@ -70,6 +72,8 @@
 #define CMSG_SPACE(len) GLIB_ALIGN_TO_SIZEOF (CMSG_LEN (len), struct cmsghdr)
 #endif
 #endif
+
+#endif  /* !__GI_SCANNER__ */
 
 G_BEGIN_DECLS
 
