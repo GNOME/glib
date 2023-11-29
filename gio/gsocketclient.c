@@ -1542,6 +1542,7 @@ typedef struct
   GProxyAddress *proxy_addr;
   GSocketClientAsyncConnectData *data; /* unowned */
   GSource *delay_timeout_source;  /* (owned) */
+  gboolean delay_reached;
   GCancellable *cancellable;
   GCancellable *task_cancellable;  /* (owned); this is equal to g_task_get_cancellable (ConnectionAttempt.data->task), but with a longer lifetime */
   gulong cancelled_id;
@@ -1984,6 +1985,9 @@ static gboolean
 on_connection_attempt_delay_reached (gpointer data)
 {
   ConnectionAttempt *attempt = data;
+
+  g_assert (!attempt->delay_reached);
+  attempt->delay_reached = TRUE;
 
   if (!attempt->data->enumeration_completed)
     {
