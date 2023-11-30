@@ -2,17 +2,15 @@
 
 set -e
 
-ancestor_horizon=28  # days (4 weeks)
-
 # Wrap everything in a subshell so we can propagate the exit status.
+exit_status=0
 (
 
 source .gitlab-ci/search-common-ancestor.sh
 
 git diff -U0 --no-color "${newest_common_ancestor_sha}" | .gitlab-ci/clang-format-diff.py -binary "clang-format-14" -p1
 
-)
-exit_status=$?
+) || exit_status=$?
 
 # The style check is not infallible. The clang-format configuration cannot
 # perfectly describe GLib’s coding style: in particular, it cannot align
