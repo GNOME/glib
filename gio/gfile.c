@@ -8825,7 +8825,7 @@ g_file_real_measure_disk_usage_finish (GFile         *file,
  * @file: a #GFile
  * @flags: #GFileMeasureFlags
  * @cancellable: (nullable): optional #GCancellable
- * @progress_callback: (nullable): a #GFileMeasureProgressCallback
+ * @progress_callback: (nullable) (scope call): a #GFileMeasureProgressCallback
  * @progress_data: user_data for @progress_callback
  * @disk_usage: (out) (optional): the number of bytes of disk space used
  * @num_dirs: (out) (optional): the number of directories encountered

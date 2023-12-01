@@ -81,7 +81,7 @@
 
 /**
  * GCompletionFunc:
- * @Param1: the completion item.
+ * @item: the completion item.
  *
  * Specifies the type of the function passed to g_completion_new(). It
  * should return the string corresponding to the given target item.

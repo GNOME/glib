@@ -587,7 +587,7 @@ g_hook_list_invoke_check (GHookList *hook_list,
  * @may_recurse: %TRUE if hooks which are currently running
  *     (e.g. in another thread) are considered valid. If set to %FALSE,
  *     these are skipped
- * @marshaller: the function to call for each #GHook
+ * @marshaller: (scope call): the function to call for each #GHook
  * @marshal_data: data to pass to @marshaller
  *
  * Calls a function on each valid #GHook and destroys it if the
@@ -637,7 +637,7 @@ g_hook_list_marshal_check (GHookList	       *hook_list,
  * @may_recurse: %TRUE if hooks which are currently running
  *     (e.g. in another thread) are considered valid. If set to %FALSE,
  *     these are skipped
- * @marshaller: the function to call for each #GHook
+ * @marshaller: (scope call): the function to call for each #GHook
  * @marshal_data: data to pass to @marshaller
  *
  * Calls a function on each valid #GHook.
@@ -795,7 +795,7 @@ g_hook_get (GHookList *hook_list,
  * @hook_list: a #GHookList
  * @need_valids: %TRUE if #GHook elements which have been destroyed
  *     should be skipped
- * @func: the function to call for each #GHook, which should return
+ * @func: (scope call): the function to call for each #GHook, which should return
  *     %TRUE when the #GHook has been found
  * @data: the data to pass to @func
  *
@@ -972,7 +972,7 @@ g_hook_find_func_data (GHookList *hook_list,
  * g_hook_insert_sorted:
  * @hook_list: a #GHookList
  * @hook: the #GHook to insert
- * @func: the comparison function used to sort the #GHook elements
+ * @func: (scope call): the comparison function used to sort the #GHook elements
  *
  * Inserts a #GHook into a #GHookList, sorted by the given function.
  */

@@ -2761,7 +2761,7 @@ g_byte_array_new_take (guint8 *data,
  * bytes to the array. Note however that the size of the array is still
  * 0.
  *
- * Returns: the new #GByteArray
+ * Returns: (transfer full): the new #GByteArray
  */
 GByteArray*
 g_byte_array_sized_new (guint reserved_size)
@@ -2825,7 +2825,7 @@ g_byte_array_free_to_bytes (GByteArray *array)
  * Atomically increments the reference count of @array by one.
  * This function is thread-safe and may be called from any thread.
  *
- * Returns: The passed in #GByteArray
+ * Returns: (transfer full): The passed in #GByteArray
  *
  * Since: 2.22
  */
@@ -2861,7 +2861,7 @@ g_byte_array_unref (GByteArray *array)
  * Adds the given bytes to the end of the #GByteArray.
  * The array will grow in size automatically if necessary.
  *
- * Returns: the #GByteArray
+ * Returns: (transfer none): the #GByteArray
  */
 GByteArray*
 g_byte_array_append (GByteArray   *array,
@@ -2882,7 +2882,7 @@ g_byte_array_append (GByteArray   *array,
  * Adds the given data to the start of the #GByteArray.
  * The array will grow in size automatically if necessary.
  *
- * Returns: the #GByteArray
+ * Returns: (transfer none): the #GByteArray
  */
 GByteArray*
 g_byte_array_prepend (GByteArray   *array,
@@ -2901,7 +2901,7 @@ g_byte_array_prepend (GByteArray   *array,
  *
  * Sets the size of the #GByteArray, expanding it if necessary.
  *
- * Returns: the #GByteArray
+ * Returns: (transfer none): the #GByteArray
  */
 GByteArray*
 g_byte_array_set_size (GByteArray *array,
@@ -2920,7 +2920,7 @@ g_byte_array_set_size (GByteArray *array,
  * Removes the byte at the given index from a #GByteArray.
  * The following bytes are moved down one place.
  *
- * Returns: the #GByteArray
+ * Returns: (transfer none): the #GByteArray
  **/
 GByteArray*
 g_byte_array_remove_index (GByteArray *array,
@@ -2941,7 +2941,7 @@ g_byte_array_remove_index (GByteArray *array,
  * does not preserve the order of the #GByteArray. But it is faster
  * than g_byte_array_remove_index().
  *
- * Returns: the #GByteArray
+ * Returns: (transfer none): the #GByteArray
  */
 GByteArray*
 g_byte_array_remove_index_fast (GByteArray *array,
@@ -2961,7 +2961,7 @@ g_byte_array_remove_index_fast (GByteArray *array,
  * Removes the given number of bytes starting at the given index from a
  * #GByteArray.  The following elements are moved to close the gap.
  *
- * Returns: the #GByteArray
+ * Returns: (transfer none): the #GByteArray
  *
  * Since: 2.4
  */
@@ -2980,7 +2980,7 @@ g_byte_array_remove_range (GByteArray *array,
 /**
  * g_byte_array_sort:
  * @array: a #GByteArray
- * @compare_func: comparison function
+ * @compare_func: (scope call): comparison function
  *
  * Sorts a byte array, using @compare_func which should be a
  * qsort()-style comparison function (returns less than zero for first
@@ -3003,7 +3003,7 @@ g_byte_array_sort (GByteArray   *array,
 /**
  * g_byte_array_sort_with_data:
  * @array: a #GByteArray
- * @compare_func: comparison function
+ * @compare_func: (scope call): comparison function
  * @user_data: data to pass to @compare_func
  *
  * Like g_byte_array_sort(), but the comparison function takes an extra

@@ -1,4 +1,4 @@
-if get_option('gtk_doc') and enable_gir
+if get_option('documentation') and enable_gir
   gidocgen_dep = dependency('gi-docgen', version: '>= 2023.1',
                           fallback: ['gi-docgen', 'dummy_dep'],
                           required: true)

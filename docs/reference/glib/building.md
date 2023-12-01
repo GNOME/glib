@@ -117,7 +117,7 @@ libraries.
   gobject-introspection against this copy of GLib, then re-building GLib against
   the new gobject-introspection with `-Dintrospection=enabled`. The GLib API
   documentation can be built during this second build process if
-  `-Dgtk_doc=true` is also set.
+  `-Ddocumentation=true` is also set.
 
 ## Extra Configuration Options
 
@@ -142,13 +142,9 @@ configuring the GLib library:
   Therefore, it may make sense to turn this feature off in some
   situations. The `-Dbsymbolic_functions=false` option allows to do that.
 
-`-Dgtk_doc=false` and `-Dgtk_doc=true`
-: By default, GLib will detect whether the gtk-doc package is installed.
-  If it is, then it will use it to extract and build the documentation
-  for the GLib library. These options can be used to explicitly control
-  whether gtk-doc should be used or not. If it is not used, the
-  distributed, pre-generated HTML files will be installed instead of
-  building them on your machine.
+`-Ddocumentation=false` and `-Ddocumentation=true`
+: By default, GLib will not build documentation for the library and tools. This
+  option can be used to enable building the documentation.
 
 `-Dman=false` and `-Dman=true`
 : By default, GLib will detect whether `xsltproc` and the necessary DocBook

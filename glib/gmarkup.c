@@ -1885,7 +1885,7 @@ g_markup_parse_context_get_element (GMarkupParseContext *context)
  * would merely return the name of the element that is being
  * processed.
  *
- * Returns: the element stack, which must not be modified
+ * Returns: (element-type utf8): the element stack, which must not be modified
  *
  * Since: 2.16
  */

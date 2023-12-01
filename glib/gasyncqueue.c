@@ -276,7 +276,7 @@ g_async_queue_push_unlocked (GAsyncQueue *queue,
  * g_async_queue_push_sorted:
  * @queue: a #GAsyncQueue
  * @data: (not nullable): the @data to push into the @queue
- * @func: the #GCompareDataFunc is used to sort @queue
+ * @func: (scope call): the #GCompareDataFunc is used to sort @queue
  * @user_data: user data passed to @func.
  *
  * Inserts @data into @queue using @func to determine the new
@@ -317,7 +317,7 @@ g_async_queue_invert_compare (gpointer  v1,
  * g_async_queue_push_sorted_unlocked:
  * @queue: a #GAsyncQueue
  * @data: the data to push into the @queue
- * @func: the #GCompareDataFunc is used to sort @queue
+ * @func: (scope call): the #GCompareDataFunc is used to sort @queue
  * @user_data: user data passed to @func.
  *
  * Inserts @data into @queue using @func to determine the new
@@ -672,7 +672,7 @@ g_async_queue_length_unlocked (GAsyncQueue *queue)
 /**
  * g_async_queue_sort:
  * @queue: a #GAsyncQueue
- * @func: the #GCompareDataFunc is used to sort @queue
+ * @func: (scope call): the #GCompareDataFunc is used to sort @queue
  * @user_data: user data passed to @func
  *
  * Sorts @queue using @func.
@@ -716,7 +716,7 @@ g_async_queue_sort (GAsyncQueue      *queue,
 /**
  * g_async_queue_sort_unlocked:
  * @queue: a #GAsyncQueue
- * @func: the #GCompareDataFunc is used to sort @queue
+ * @func: (scope call): the #GCompareDataFunc is used to sort @queue
  * @user_data: user data passed to @func
  *
  * Sorts @queue using @func.

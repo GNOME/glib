@@ -1368,7 +1368,7 @@ g_signal_query (guint         signal_id,
  * @class_offset: The offset of the function pointer in the class structure
  *  for this type. Used to invoke a class method generically. Pass 0 to
  *  not associate a class method slot with this signal.
- * @accumulator: (nullable): the accumulator for this signal; may be %NULL.
+ * @accumulator: (nullable) (scope forever): the accumulator for this signal; may be %NULL.
  * @accu_data: (nullable) (closure accumulator): user data for the @accumulator.
  * @c_marshaller: (nullable): the function to translate arrays of parameter
  *  values to signal emissions into C language callback invocations or %NULL.
@@ -1441,10 +1441,10 @@ g_signal_new (const gchar	 *signal_name,
  * @signal_flags: a combination of #GSignalFlags specifying detail of when
  *  the default handler is to be invoked. You should at least specify
  *  %G_SIGNAL_RUN_FIRST or %G_SIGNAL_RUN_LAST.
- * @class_handler: (nullable): a #GCallback which acts as class implementation of
+ * @class_handler: (nullable) (scope forever): a #GCallback which acts as class implementation of
  *  this signal. Used to invoke a class method generically. Pass %NULL to
  *  not associate a class method with this signal.
- * @accumulator: (nullable): the accumulator for this signal; may be %NULL.
+ * @accumulator: (nullable) (scope forever): the accumulator for this signal; may be %NULL.
  * @accu_data: (nullable) (closure accumulator): user data for the @accumulator.
  * @c_marshaller: (nullable): the function to translate arrays of parameter
  *  values to signal emissions into C language callback invocations or %NULL.
@@ -1581,7 +1581,7 @@ signal_add_class_closure (SignalNode *node,
  *     %G_SIGNAL_RUN_FIRST or %G_SIGNAL_RUN_LAST
  * @class_closure: (nullable): The closure to invoke on signal emission;
  *     may be %NULL
- * @accumulator: (nullable): the accumulator for this signal; may be %NULL
+ * @accumulator: (nullable) (scope forever): the accumulator for this signal; may be %NULL
  * @accu_data: (nullable) (closure accumulator): user data for the @accumulator
  * @c_marshaller: (nullable): the function to translate arrays of
  *     parameter values to signal emissions into C language callback
@@ -1842,7 +1842,7 @@ g_signal_set_va_marshaller (guint              signal_id,
  *  the default handler is to be invoked. You should at least specify
  *  %G_SIGNAL_RUN_FIRST or %G_SIGNAL_RUN_LAST.
  * @class_closure: (nullable): The closure to invoke on signal emission; may be %NULL.
- * @accumulator: (nullable): the accumulator for this signal; may be %NULL.
+ * @accumulator: (nullable) (scope forever): the accumulator for this signal; may be %NULL.
  * @accu_data: (nullable) (closure accumulator): user data for the @accumulator.
  * @c_marshaller: (nullable): the function to translate arrays of parameter
  *  values to signal emissions into C language callback invocations or %NULL.
@@ -2004,7 +2004,7 @@ g_signal_override_class_closure (guint     signal_id,
  * @signal_name: the name for the signal
  * @instance_type: the instance type on which to override the class handler
  *  for the signal.
- * @class_handler: the handler.
+ * @class_handler: (scope forever): the handler.
  *
  * Overrides the class closure (i.e. the default handler) for the
  * given signal for emissions on instances of @instance_type with

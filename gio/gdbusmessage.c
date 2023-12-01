@@ -3618,7 +3618,7 @@ _sort_keys_func (gconstpointer a,
  * The contents of the description has no ABI guarantees, the contents
  * and formatting is subject to change at any time. Typical output
  * looks something like this:
- * |[
+ * ```
  * Type:    method-call
  * Flags:   none
  * Version: 0
@@ -3631,9 +3631,9 @@ _sort_keys_func (gconstpointer a,
  * Body: ()
  * UNIX File Descriptors:
  *   (none)
- * ]|
+ * ```
  * or
- * |[
+ * ```
  * Type:    method-return
  * Flags:   no-reply-expected
  * Version: 0
@@ -3646,9 +3646,9 @@ _sort_keys_func (gconstpointer a,
  * Body: ()
  * UNIX File Descriptors:
  *   fd 12: dev=0:10,mode=020620,ino=5,uid=500,gid=5,rdev=136:2,size=0,atime=1273085037,mtime=1273085851,ctime=1272982635
- * ]|
+ * ```
  *
- * Returns: (not nullable): A string that should be freed with g_free().
+ * Returns: (not nullable): A string that should be freed with [func@GLib.free].
  *
  * Since: 2.26
  */

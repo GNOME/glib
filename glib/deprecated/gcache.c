@@ -300,7 +300,7 @@ g_cache_remove (GCache        *cache,
 /**
  * g_cache_key_foreach:
  * @cache: a #GCache
- * @func: the function to call with each #GCache key
+ * @func: (scope call): the function to call with each #GCache key
  * @user_data: user data to pass to the function
  *
  * Calls the given function for each of the keys in the #GCache.
@@ -326,7 +326,7 @@ g_cache_key_foreach (GCache   *cache,
 /**
  * g_cache_value_foreach:
  * @cache: a #GCache
- * @func: the function to call with each #GCache value
+ * @func: (scope call): the function to call with each #GCache value
  * @user_data: user data to pass to the function
  *
  * Calls the given function for each of the values in the #GCache.

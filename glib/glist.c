@@ -634,7 +634,7 @@ g_list_copy (GList *list)
 /**
  * g_list_copy_deep:
  * @list: a #GList, this must point to the top of the list
- * @func: a copy function used to copy every element in the list
+ * @func: (scope call): a copy function used to copy every element in the list
  * @user_data: user data passed to the copy function @func, or %NULL
  *
  * Makes a full (deep) copy of a #GList.
@@ -821,7 +821,7 @@ g_list_find (GList         *list,
  * g_list_find_custom:
  * @list: a #GList, this must point to the top of the list
  * @data: user data passed to the function
- * @func: the function to call for each element. 
+ * @func: (scope call): the function to call for each element.
  *     It should return 0 when the desired element is found
  *
  * Finds an element in a #GList, using a supplied function to 
@@ -981,7 +981,7 @@ g_list_length (GList *list)
 /**
  * g_list_foreach:
  * @list: a #GList, this must point to the top of the list
- * @func: the function to call with each element's data
+ * @func: (scope call): the function to call with each element's data
  * @user_data: user data to pass to the function
  *
  * Calls a function for each element of a #GList.
@@ -1067,7 +1067,7 @@ g_list_insert_sorted_real (GList    *list,
  * @list: a pointer to a #GList, this must point to the top of the
  *     already sorted list
  * @data: the data for the new element
- * @func: the function to compare elements in the list. It should 
+ * @func: (scope call): the function to compare elements in the list. It should
  *     return a number > 0 if the first parameter comes after the 
  *     second parameter in the sort order.
  *
@@ -1094,7 +1094,7 @@ g_list_insert_sorted (GList        *list,
  * @list: a pointer to a #GList, this must point to the top of the
  *     already sorted list
  * @data: the data for the new element
- * @func: the function to compare elements in the list. It should
+ * @func: (scope call): the function to compare elements in the list. It should
  *     return a number > 0 if the first parameter  comes after the
  *     second parameter in the sort order.
  * @user_data: user data to pass to comparison function
@@ -1189,7 +1189,7 @@ g_list_sort_real (GList    *list,
 /**
  * g_list_sort:
  * @list: a #GList, this must point to the top of the list
- * @compare_func: the comparison function used to sort the #GList.
+ * @compare_func: (scope call): the comparison function used to sort the #GList.
  *     This function is passed the data from 2 elements of the #GList 
  *     and should return 0 if they are equal, a negative value if the 
  *     first element comes before the second, or a positive value if 
@@ -1223,7 +1223,7 @@ g_list_sort (GList        *list,
 /**
  * g_list_sort_with_data:
  * @list: a #GList, this must point to the top of the list
- * @compare_func: comparison function
+ * @compare_func: (scope call): comparison function
  * @user_data: user data to pass to comparison function
  *
  * Like g_list_sort(), but the comparison function accepts 

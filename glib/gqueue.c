@@ -227,7 +227,7 @@ g_queue_copy (GQueue *queue)
 /**
  * g_queue_foreach:
  * @queue: a #GQueue
- * @func: the function to call for each element's data
+ * @func: (scope call): the function to call for each element's data
  * @user_data: user data to pass to @func
  * 
  * Calls @func for each element in the queue passing @user_data to the
@@ -281,7 +281,7 @@ g_queue_find (GQueue        *queue,
  * g_queue_find_custom:
  * @queue: a #GQueue
  * @data: user data passed to @func
- * @func: a #GCompareFunc to call for each element. It should return 0
+ * @func: (scope call): a #GCompareFunc to call for each element. It should return 0
  *     when the desired element is found
  *
  * Finds an element in a #GQueue, using a supplied function to find the
@@ -308,7 +308,7 @@ g_queue_find_custom (GQueue        *queue,
 /**
  * g_queue_sort:
  * @queue: a #GQueue
- * @compare_func: the #GCompareDataFunc used to sort @queue. This function
+ * @compare_func: (scope call): the #GCompareDataFunc used to sort @queue. This function
  *     is passed two elements of the queue and should return 0 if they are
  *     equal, a negative value if the first comes before the second, and
  *     a positive value if the second comes before the first.
@@ -1121,7 +1121,7 @@ g_queue_insert_after_link (GQueue   *queue,
  * g_queue_insert_sorted:
  * @queue: a #GQueue
  * @data: the data to insert
- * @func: the #GCompareDataFunc used to compare elements in the queue. It is
+ * @func: (scope call): the #GCompareDataFunc used to compare elements in the queue. It is
  *     called with two elements of the @queue and @user_data. It should
  *     return 0 if the elements are equal, a negative value if the first
  *     element comes before the second, and a positive value if the second

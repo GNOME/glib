@@ -62,10 +62,16 @@ option('sysprof',
        value : 'disabled',
        description : 'include tracing support for sysprof')
 
+option('documentation',
+       type : 'boolean',
+       value : false,
+       description : 'Build API reference and tools documentation')
+
 option('gtk_doc',
        type : 'boolean',
        value : false,
-       description : 'use gtk-doc to build documentation')
+       description : 'use gtk-doc to build documentation',
+       deprecated : 'documentation')
 
 option('bsymbolic_functions',
        type : 'boolean',

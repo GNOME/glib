@@ -41,6 +41,7 @@ G_DECLARE_FINAL_TYPE (GThreadedResolver, g_threaded_resolver, G, THREADED_RESOLV
 
 /* Used for a private test API */
 #ifdef G_OS_UNIX
+/*< private >*/
 GIO_AVAILABLE_IN_ALL
 GList *g_resolver_records_from_res_query (const gchar      *rrname,
                                           gint              rrtype,
@@ -48,6 +49,7 @@ GList *g_resolver_records_from_res_query (const gchar      *rrname,
                                           gssize            len,
                                           gint              herr,
                                           GError          **error);
+/*< private >*/
 GIO_AVAILABLE_IN_ALL
 gint g_resolver_record_type_to_rrtype (GResolverRecordType type);
 #endif

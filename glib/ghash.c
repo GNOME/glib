@@ -970,7 +970,7 @@ g_hash_table_ensure_keyval_fits (GHashTable *hash_table, gpointer key, gpointer 
  * as its first parameter, and the user-provided key to check against as
  * its second.
  *
- * Returns: a new #GHashTable
+ * Returns: (transfer full): a new #GHashTable
  */
 GHashTable *
 g_hash_table_new (GHashFunc  hash_func,
@@ -1003,7 +1003,7 @@ g_hash_table_new (GHashFunc  hash_func,
  * calling g_hash_table_remove_all() before releasing the last reference using
  * g_hash_table_unref().
  *
- * Returns: a new #GHashTable
+ * Returns: (transfer full): a new #GHashTable
  */
 GHashTable *
 g_hash_table_new_full (GHashFunc      hash_func,
@@ -1154,7 +1154,7 @@ g_hash_table_iter_next (GHashTableIter *iter,
  *
  * Returns the #GHashTable associated with @iter.
  *
- * Returns: the #GHashTable associated with @iter.
+ * Returns: (transfer none): the #GHashTable associated with @iter.
  *
  * Since: 2.16
  */
@@ -1398,7 +1398,7 @@ g_hash_table_iter_steal (GHashTableIter *iter)
  * Atomically increments the reference count of @hash_table by one.
  * This function is MT-safe and may be called from any thread.
  *
- * Returns: the passed in #GHashTable
+ * Returns: (transfer full): the passed in #GHashTable
  *
  * Since: 2.10
  */
@@ -1414,7 +1414,7 @@ g_hash_table_ref (GHashTable *hash_table)
 
 /**
  * g_hash_table_unref:
- * @hash_table: a valid #GHashTable
+ * @hash_table: (transfer full): a valid #GHashTable
  *
  * Atomically decrements the reference count of @hash_table by one.
  * If the reference count drops to 0, all keys and values will be
@@ -2019,7 +2019,7 @@ g_hash_table_foreach_remove_or_steal (GHashTable *hash_table,
 /**
  * g_hash_table_foreach_remove:
  * @hash_table: a #GHashTable
- * @func: the function to call for each key/value pair
+ * @func: (scope call): the function to call for each key/value pair
  * @user_data: user data to pass to the function
  *
  * Calls the given function for each key/value pair in the
@@ -2047,7 +2047,7 @@ g_hash_table_foreach_remove (GHashTable *hash_table,
 /**
  * g_hash_table_foreach_steal:
  * @hash_table: a #GHashTable
- * @func: the function to call for each key/value pair
+ * @func: (scope call): the function to call for each key/value pair
  * @user_data: user data to pass to the function
  *
  * Calls the given function for each key/value pair in the
@@ -2074,7 +2074,7 @@ g_hash_table_foreach_steal (GHashTable *hash_table,
 /**
  * g_hash_table_foreach:
  * @hash_table: a #GHashTable
- * @func: the function to call for each key/value pair
+ * @func: (scope call): the function to call for each key/value pair
  * @user_data: user data to pass to the function
  *
  * Calls the given function for each of the key/value pairs in the
@@ -2125,7 +2125,7 @@ g_hash_table_foreach (GHashTable *hash_table,
 /**
  * g_hash_table_find:
  * @hash_table: a #GHashTable
- * @predicate: function to test the key/value pairs for a certain property
+ * @predicate: (scope call): function to test the key/value pairs for a certain property
  * @user_data: user data to pass to the function
  *
  * Calls the given function for key/value pairs in the #GHashTable

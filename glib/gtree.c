@@ -1106,7 +1106,7 @@ g_tree_lookup_extended (GTree         *tree,
 /**
  * g_tree_foreach:
  * @tree: a #GTree
- * @func: the function to call for each node visited.
+ * @func: (scope call): the function to call for each node visited.
  *     If this function returns %TRUE, the traversal is stopped.
  * @user_data: user data to pass to the function
  *
@@ -1145,7 +1145,7 @@ g_tree_foreach (GTree         *tree,
 /**
  * g_tree_foreach_node:
  * @tree: a #GTree
- * @func: the function to call for each node visited.
+ * @func: (scope call): the function to call for each node visited.
  *     If this function returns %TRUE, the traversal is stopped.
  * @user_data: user data to pass to the function
  *
@@ -1186,7 +1186,7 @@ g_tree_foreach_node (GTree             *tree,
 /**
  * g_tree_traverse:
  * @tree: a #GTree
- * @traverse_func: the function to call for each node visited. If this 
+ * @traverse_func: (scope call): the function to call for each node visited. If this
  *   function returns %TRUE, the traversal is stopped.
  * @traverse_type: the order in which nodes are visited, one of %G_IN_ORDER,
  *   %G_PRE_ORDER and %G_POST_ORDER
@@ -1246,7 +1246,7 @@ g_tree_traverse (GTree         *tree,
 /**
  * g_tree_search_node:
  * @tree: a #GTree
- * @search_func: a function used to search the #GTree
+ * @search_func: (scope call): a function used to search the #GTree
  * @user_data: the data passed as the second argument to @search_func
  *
  * Searches a #GTree using @search_func.
@@ -1280,7 +1280,7 @@ g_tree_search_node (GTree         *tree,
 /**
  * g_tree_search:
  * @tree: a #GTree
- * @search_func: a function used to search the #GTree
+ * @search_func: (scope call): a function used to search the #GTree
  * @user_data: the data passed as the second argument to @search_func
  *
  * Searches a #GTree using @search_func.

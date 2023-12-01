@@ -255,7 +255,7 @@ g_sequence_free (GSequence *seq)
  * g_sequence_foreach_range:
  * @begin: a #GSequenceIter
  * @end: a #GSequenceIter
- * @func: a #GFunc
+ * @func: (scope call): a #GFunc
  * @user_data: user data passed to @func
  *
  * Calls @func for each item in the range (@begin, @end) passing
@@ -297,7 +297,7 @@ g_sequence_foreach_range (GSequenceIter *begin,
 /**
  * g_sequence_foreach:
  * @seq: a #GSequence
- * @func: the function to call for each item in @seq
+ * @func: (scope call): the function to call for each item in @seq
  * @user_data: user data passed to @func
  *
  * Calls @func for each item in the sequence passing @user_data
@@ -627,7 +627,7 @@ g_sequence_move_range (GSequenceIter *dest,
 /**
  * g_sequence_sort:
  * @seq: a #GSequence
- * @cmp_func: the function used to sort the sequence
+ * @cmp_func: (scope call): the function used to sort the sequence
  * @cmp_data: user data passed to @cmp_func
  *
  * Sorts @seq using @cmp_func.
@@ -659,7 +659,7 @@ g_sequence_sort (GSequence        *seq,
  * g_sequence_insert_sorted:
  * @seq: a #GSequence
  * @data: the data to insert
- * @cmp_func: the function used to compare items in the sequence
+ * @cmp_func: (scope call): the function used to compare items in the sequence
  * @cmp_data: user data passed to @cmp_func.
  *
  * Inserts @data into @seq using @cmp_func to determine the new
@@ -701,7 +701,7 @@ g_sequence_insert_sorted (GSequence        *seq,
 /**
  * g_sequence_sort_changed:
  * @iter: A #GSequenceIter
- * @cmp_func: the function used to compare items in the sequence
+ * @cmp_func: (scope call): the function used to compare items in the sequence
  * @cmp_data: user data passed to @cmp_func.
  *
  * Moves the data pointed to by @iter to a new position as indicated by
@@ -742,7 +742,7 @@ g_sequence_sort_changed (GSequenceIter    *iter,
  * g_sequence_search:
  * @seq: a #GSequence
  * @data: data for the new item
- * @cmp_func: the function used to compare items in the sequence
+ * @cmp_func: (scope call): the function used to compare items in the sequence
  * @cmp_data: user data passed to @cmp_func
  *
  * Returns an iterator pointing to the position where @data would
@@ -786,7 +786,7 @@ g_sequence_search (GSequence        *seq,
  * g_sequence_lookup:
  * @seq: a #GSequence
  * @data: data to look up
- * @cmp_func: the function used to compare items in the sequence
+ * @cmp_func: (scope call): the function used to compare items in the sequence
  * @cmp_data: user data passed to @cmp_func
  *
  * Returns an iterator pointing to the position of the first item found
@@ -830,7 +830,7 @@ g_sequence_lookup (GSequence        *seq,
 /**
  * g_sequence_sort_iter:
  * @seq: a #GSequence
- * @cmp_func: the function used to compare iterators in the sequence
+ * @cmp_func: (scope call): the function used to compare iterators in the sequence
  * @cmp_data: user data passed to @cmp_func
  *
  * Like g_sequence_sort(), but uses a #GSequenceIterCompareFunc instead
@@ -884,7 +884,7 @@ g_sequence_sort_iter (GSequence                *seq,
 /**
  * g_sequence_sort_changed_iter:
  * @iter: a #GSequenceIter
- * @iter_cmp: the function used to compare iterators in the sequence
+ * @iter_cmp: (scope call): the function used to compare iterators in the sequence
  * @cmp_data: user data passed to @cmp_func
  *
  * Like g_sequence_sort_changed(), but uses
@@ -949,7 +949,7 @@ g_sequence_sort_changed_iter (GSequenceIter            *iter,
  * g_sequence_insert_sorted_iter:
  * @seq: a #GSequence
  * @data: data for the new item
- * @iter_cmp: the function used to compare iterators in the sequence
+ * @iter_cmp: (scope call): the function used to compare iterators in the sequence
  * @cmp_data: user data passed to @iter_cmp
  *
  * Like g_sequence_insert_sorted(), but uses
@@ -1016,7 +1016,7 @@ g_sequence_insert_sorted_iter (GSequence                *seq,
  * g_sequence_search_iter:
  * @seq: a #GSequence
  * @data: data for the new item
- * @iter_cmp: the function used to compare iterators in the sequence
+ * @iter_cmp: (scope call): the function used to compare iterators in the sequence
  * @cmp_data: user data passed to @iter_cmp
  *
  * Like g_sequence_search(), but uses a #GSequenceIterCompareFunc
@@ -1074,7 +1074,7 @@ g_sequence_search_iter (GSequence                *seq,
  * g_sequence_lookup_iter:
  * @seq: a #GSequence
  * @data: data to look up
- * @iter_cmp: the function used to compare iterators in the sequence
+ * @iter_cmp: (scope call): the function used to compare iterators in the sequence
  * @cmp_data: user data passed to @iter_cmp
  *
  * Like g_sequence_lookup(), but uses a #GSequenceIterCompareFunc
