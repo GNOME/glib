@@ -1259,11 +1259,12 @@ The table below summarizes the destruction process of a `GObject`:
 Weak references are used to monitor object finalization:
 `g_object_weak_ref()` adds a monitoring callback which does not hold a
 reference to the object but which is invoked when the object runs its
-dispose method. As such, each weak ref can be invoked more than once upon
-object finalization (since dispose can run more than once during object
-finalization).
-
-`g_object_weak_unref()` can be used to remove a monitoring callback from the object.
+dispose method. Weak references on the object are automatically dropped when
+the instance is disposed, so there is no need to invoke `g_object_weak_unref()`
+from the `GWeakNotify` callback. Remember that the object instance is not
+passed to the `GWeakNotify` callback because the object has already been
+disposed. Instead, the callback receives a pointer to where the object
+previously was.
 
 Weak references are also used to implement `g_object_add_weak_pointer()` and
 `g_object_remove_weak_pointer()`. These functions add a weak reference to
