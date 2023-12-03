@@ -1101,7 +1101,7 @@ g_hash_table_iter_init (GHashTableIter *iter,
 /**
  * g_hash_table_iter_next:
  * @iter: an initialized #GHashTableIter
- * @key: (out) (optional): a location to store the key
+ * @key: (out) (optional) (nullable): a location to store the key
  * @value: (out) (optional) (nullable): a location to store the value
  *
  * Advances @iter and retrieves the key and/or value that are now
