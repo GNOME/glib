@@ -177,6 +177,10 @@ static gboolean g_socket_connection_connect_callback (GSocket      *socket,
  * This clears the #GSocket:blocking flag on @connection's underlying
  * socket if it is currently set.
  *
+ * If #GSocket:timeout is set, the operation will time out and return
+ * %G_IO_ERROR_TIMED_OUT after that period. Otherwise, it will continue
+ * indefinitely until operating system timeouts (if any) are hit.
+ *
  * Use g_socket_connection_connect_finish() to retrieve the result.
  *
  * Since: 2.32
