@@ -15,6 +15,7 @@ RUN apk add --no-cache \
     libxslt \
     meson \
     musl-locales \
+    py3-pip \
     python3 \
     pcre2-dev \
     shared-mime-info \
@@ -23,6 +24,8 @@ RUN apk add --no-cache \
     zlib-dev
 
 ENV LANG=C.UTF-8 LANGUAGE=C.UTF-8 LC_ALL=C.UTF-8 MUSL_LOCPATH=/usr/share/i18n/locales/musl
+
+RUN pip3 install --break-system-packages meson==1.2.3
 
 ARG HOST_USER_ID=5555
 ENV HOST_USER_ID ${HOST_USER_ID}
