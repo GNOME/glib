@@ -1395,8 +1395,8 @@ check_proxies_in_thread (gpointer user_data)
                                                    "/bar",
                                                    NULL, /* GCancellable* */
                                                    &error);
-  check_bar_proxy (bar_proxy, thread_loop);
   g_assert_no_error (error);
+  check_bar_proxy (bar_proxy, thread_loop);
   g_object_unref (bar_proxy);
 
   error = NULL;
@@ -1406,8 +1406,8 @@ check_proxies_in_thread (gpointer user_data)
                                                    "/bat",
                                                    NULL, /* GCancellable* */
                                                    &error);
-  check_bat_proxy (bat_proxy, thread_loop);
   g_assert_no_error (error);
+  check_bat_proxy (bat_proxy, thread_loop);
   g_object_unref (bat_proxy);
 
   error = NULL;
@@ -1417,8 +1417,8 @@ check_proxies_in_thread (gpointer user_data)
                                                                "/authorize",
                                                                NULL, /* GCancellable* */
                                                                &error);
-  check_authorize_proxy (authorize_proxy, thread_loop);
   g_assert_no_error (error);
+  check_authorize_proxy (authorize_proxy, thread_loop);
   g_object_unref (authorize_proxy);
 
   error = NULL;
