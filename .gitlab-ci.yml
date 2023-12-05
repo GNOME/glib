@@ -14,7 +14,7 @@ variables:
   FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v24"
   COVERITY_IMAGE: "registry.gitlab.gnome.org/gnome/glib/coverity:v7"
   DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v18"
-  ALPINE_IMAGE: "registry.gitlab.gnome.org/gnome/glib/alpine:v0"
+  ALPINE_IMAGE: "registry.gitlab.gnome.org/gnome/glib/alpine:v1"
   MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v14"
   MESON_TEST_TIMEOUT_MULTIPLIER: 4
   G_MESSAGES_DEBUG: all
