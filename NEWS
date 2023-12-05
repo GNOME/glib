@@ -1,3 +1,26 @@
+Overview of changes in GLib 2.78.2, 2023-12-05
+==============================================
+
+* Bugs fixed:
+  - #3156 check for #ifdef PTRACE_O_EXITKILL will always fail since it isn't a
+    macro (Alessandro Bono)
+  - #3157 gsubprocess build-time test intermittently timing out since 2.78.1
+    (Simon McVittie)
+  - !3673 Backport !3669 “meson: Improve PTRACE_O_EXITKILL presence check” to
+    glib-2-78
+  - !3680 Backport !3677 “Make GQuark register intentional leaks” to glib-2-78
+  - !3681 Backport 3678 “gsignalgroup: Avoid function call with side effect in
+    g_return_* macro” to glib-2-78
+  - !3686 Backport !3685 “tests: Don't assume that sh optimizes simple commands
+    into exec” to glib-2-78
+  - !3718 Backport !3714 “xdgmime: Handle buggy type definitions with circular
+    inheritance” to glib-2-78
+  - !3727 Backport !3725 “collate: Don't segfault on bad input” to glib-2-78
+
+* Translation updates:
+  - Ukrainian (Yuri Chornoivan)
+
+
 Overview of changes in GLib 2.78.1, 2023-10-25
 ==============================================
 
