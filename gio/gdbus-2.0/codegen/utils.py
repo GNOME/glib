@@ -19,7 +19,7 @@
 #
 # Author: David Zeuthen <davidz@redhat.com>
 
-import distutils.version
+import packaging.version
 import os
 import sys
 
@@ -166,4 +166,4 @@ def version_cmp_key(key):
         v = str(key[0])
     else:
         v = "0"
-    return (distutils.version.LooseVersion(v), key[1])
+    return (packaging.version.Version(v), key[1])

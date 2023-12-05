@@ -2381,7 +2381,7 @@ python = import('python').find_installation()
 python_name = 'python3'
 
 python_version = python.language_version()
-python_version_req = '>=3.5'
+python_version_req = '>=3.7'
 if not python_version.version_compare(python_version_req)
   error('Requires Python @0@, @1@ found.'.format(python_version_req, python_version))
 endif

@@ -35,6 +35,7 @@ RUN apt-get update -qq && apt-get install --no-install-recommends -qq -y \
     locales \
     ninja-build \
     python3 \
+    python3-packaging \
     python3-pip \
     python3-setuptools \
     python3-wheel \
