@@ -1,3 +1,14 @@
+Overview of changes in GLib 2.78.3, 2023-12-06
+==============================================
+
+* Fix a crash-causing regression in xdgmime (#3191, work by Philip Withnall)
+
+* Bugs fixed:
+  - #3191 Crash in __gio_xdg_cache_mime_type_subclass (Philip Withnall)
+  - !3747 Backport !3742 “xdgmime: Update to upstream commit c2c814d4051f232” to
+    glib-2-78
+
+
 Overview of changes in GLib 2.78.2, 2023-12-05
 ==============================================
 
