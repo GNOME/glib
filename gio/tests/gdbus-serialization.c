@@ -921,7 +921,7 @@ test_message_serialize_header_checks (void)
   blob = g_dbus_message_to_blob (message, &blob_size, G_DBUS_CAPABILITY_FLAGS_NONE, &error);
 
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
-  g_assert_cmpstr (error->message, ==, "Signature header found but is not of type signature");
+  g_assert_cmpstr (error->message, ==, "Cannot serialize message: SIGNAL message: SIGNATURE header field is invalid; expected a value of type ‘g’");
   g_assert_null (blob);
 
   g_clear_error (&error);
@@ -936,14 +936,14 @@ test_message_serialize_header_checks (void)
   g_dbus_message_set_interface (message, NULL);
   blob = g_dbus_message_to_blob (message, &blob_size, G_DBUS_CAPABILITY_FLAGS_NONE, &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
-  g_assert_cmpstr (error->message, ==, "Cannot serialize message: SIGNAL message: PATH, INTERFACE or MEMBER header field is missing or invalid");
+  g_assert_cmpstr (error->message, ==, "Cannot serialize message: SIGNAL message: INTERFACE header field is missing or invalid");
   g_clear_error (&error);
   g_assert_null (blob);
   /* interface reserved value => error */
   g_dbus_message_set_interface (message, "org.freedesktop.DBus.Local");
   blob = g_dbus_message_to_blob (message, &blob_size, G_DBUS_CAPABILITY_FLAGS_NONE, &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
-  g_assert_cmpstr (error->message, ==, "Cannot serialize message: SIGNAL message: The INTERFACE header field is using the reserved value org.freedesktop.DBus.Local");
+  g_assert_cmpstr (error->message, ==, "Cannot serialize message: SIGNAL message: INTERFACE header field is using the reserved value org.freedesktop.DBus.Local");
   g_clear_error (&error);
   g_assert_null (blob);
   /* reset interface */
@@ -953,14 +953,14 @@ test_message_serialize_header_checks (void)
   g_dbus_message_set_path (message, NULL);
   blob = g_dbus_message_to_blob (message, &blob_size, G_DBUS_CAPABILITY_FLAGS_NONE, &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
-  g_assert_cmpstr (error->message, ==, "Cannot serialize message: SIGNAL message: PATH, INTERFACE or MEMBER header field is missing or invalid");
+  g_assert_cmpstr (error->message, ==, "Cannot serialize message: SIGNAL message: PATH header field is missing or invalid");
   g_clear_error (&error);
   g_assert_null (blob);
   /* path reserved value => error */
   g_dbus_message_set_path (message, "/org/freedesktop/DBus/Local");
   blob = g_dbus_message_to_blob (message, &blob_size, G_DBUS_CAPABILITY_FLAGS_NONE, &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
-  g_assert_cmpstr (error->message, ==, "Cannot serialize message: SIGNAL message: The PATH header field is using the reserved value /org/freedesktop/DBus/Local");
+  g_assert_cmpstr (error->message, ==, "Cannot serialize message: SIGNAL message: PATH header field is using the reserved value /org/freedesktop/DBus/Local");
   g_clear_error (&error);
   g_assert_null (blob);
   /* reset path */
@@ -970,7 +970,7 @@ test_message_serialize_header_checks (void)
   g_dbus_message_set_member (message, NULL);
   blob = g_dbus_message_to_blob (message, &blob_size, G_DBUS_CAPABILITY_FLAGS_NONE, &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
-  g_assert_cmpstr (error->message, ==, "Cannot serialize message: SIGNAL message: PATH, INTERFACE or MEMBER header field is missing or invalid");
+  g_assert_cmpstr (error->message, ==, "Cannot serialize message: SIGNAL message: MEMBER header field is missing or invalid");
   g_clear_error (&error);
   g_assert_null (blob);
   /* reset member */
@@ -988,7 +988,7 @@ test_message_serialize_header_checks (void)
   g_dbus_message_set_path (message, NULL);
   blob = g_dbus_message_to_blob (message, &blob_size, G_DBUS_CAPABILITY_FLAGS_NONE, &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
-  g_assert_cmpstr (error->message, ==, "Cannot serialize message: METHOD_CALL message: PATH or MEMBER header field is missing or invalid");
+  g_assert_cmpstr (error->message, ==, "Cannot serialize message: METHOD_CALL message: PATH header field is missing or invalid");
   g_clear_error (&error);
   g_assert_null (blob);
   /* reset path */
@@ -998,7 +998,7 @@ test_message_serialize_header_checks (void)
   g_dbus_message_set_member (message, NULL);
   blob = g_dbus_message_to_blob (message, &blob_size, G_DBUS_CAPABILITY_FLAGS_NONE, &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
-  g_assert_cmpstr (error->message, ==, "Cannot serialize message: METHOD_CALL message: PATH or MEMBER header field is missing or invalid");
+  g_assert_cmpstr (error->message, ==, "Cannot serialize message: METHOD_CALL message: MEMBER header field is missing or invalid");
   g_clear_error (&error);
   g_assert_null (blob);
   /* reset member */
@@ -1029,7 +1029,7 @@ test_message_serialize_header_checks (void)
   g_dbus_message_set_error_name (reply, NULL);
   blob = g_dbus_message_to_blob (reply, &blob_size, G_DBUS_CAPABILITY_FLAGS_NONE, &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
-  g_assert_cmpstr (error->message, ==, "Cannot serialize message: ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing or invalid");
+  g_assert_cmpstr (error->message, ==, "Cannot serialize message: ERROR message: ERROR_NAME header field is missing or invalid");
   g_clear_error (&error);
   g_assert_null (blob);
   /* reset ERROR_NAME */
@@ -1038,7 +1038,7 @@ test_message_serialize_header_checks (void)
   g_dbus_message_set_header (reply, G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL, NULL);
   blob = g_dbus_message_to_blob (reply, &blob_size, G_DBUS_CAPABILITY_FLAGS_NONE, &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
-  g_assert_cmpstr (error->message, ==, "Cannot serialize message: ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing or invalid");
+  g_assert_cmpstr (error->message, ==, "Cannot serialize message: ERROR message: REPLY_SERIAL header field is missing or invalid");
   g_clear_error (&error);
   g_assert_null (blob);
   g_object_unref (reply);
