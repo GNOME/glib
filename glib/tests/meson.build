@@ -113,8 +113,6 @@ glib_tests = {
   'regex' : {
     'dependencies' : [pcre2],
     'c_args' : use_pcre2_static_flag ? ['-DPCRE2_STATIC'] : [],
-    # FIXME: musl: https://gitlab.gnome.org/GNOME/glib/-/issues/3159
-    'can_fail' : linux_libc == 'musl',
   },
   'relation' : {},
   'rwlock' : {},
