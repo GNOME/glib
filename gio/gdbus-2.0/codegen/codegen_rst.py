@@ -142,7 +142,7 @@ class RstCodeGenerator:
             else:
                 access = "readable"
             res += [
-                ".. _{title}:",
+                f".. _{title}:",
                 "",
                 title,
                 "^" * len(title),
@@ -218,7 +218,7 @@ class RstCodeGenerator:
         for m in iface.methods:
             title = f"{iface.name}.{m.name}"
             res += [
-                ".. _{title}:",
+                f".. _{title}:",
                 "",
                 title,
                 "^" * len(title),
@@ -296,7 +296,7 @@ class RstCodeGenerator:
         for s in iface.signals:
             title = f"{iface.name}::{s.name}"
             res += [
-                ".. _{title}:",
+                f".. _{title}:",
                 "",
                 title,
                 "^" * len(title),
