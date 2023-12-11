@@ -28,6 +28,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import textwrap
 import unittest
 import xml.etree.ElementTree as ET
 
@@ -518,6 +519,138 @@ G_END_DECLS
         with open("test-org.project.Bar.Frobnicator.rst", "r") as f:
             rst = f.readlines()
             self.assertTrue(len(rst) != 0)
+
+    def test_generate_rst_method(self):
+        """Test generating a method documentation with the rst generator."""
+        xml_contents = """
+        <node>
+          <interface name="org.project.Bar.Frobnicator">
+            <!-- RandomMethod:
+
+            A random test method.
+            -->
+            <method name="RandomMethod"/>
+          </interface>
+        </node>
+        """
+        res = self.runCodegenWithInterface(
+            xml_contents,
+            "--generate-rst",
+            "test",
+        )
+        self.assertEqual("", res.err)
+        self.assertEqual("", res.out)
+        with open("test-org.project.Bar.Frobnicator.rst", "r") as f:
+            rst = f.read()
+            self.assertIn(
+                textwrap.dedent(
+                    """
+                    -------
+                    Methods
+                    -------
+
+                    .. _org.project.Bar.Frobnicator.RandomMethod:
+
+                    org.project.Bar.Frobnicator.RandomMethod
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+                    ::
+
+                        RandomMethod ()
+
+
+                    A random test method."""
+                ),
+                rst,
+            )
+
+    def test_generate_rst_signal(self):
+        """Test generating a signal documentation with the rst generator."""
+        xml_contents = """
+        <node>
+          <interface name="org.project.Bar.Frobnicator">
+            <!-- RandomSignal:
+
+            A random test signal.
+            -->
+            <signal name="RandomSignal"/>
+          </interface>
+        </node>
+        """
+        res = self.runCodegenWithInterface(
+            xml_contents,
+            "--generate-rst",
+            "test",
+        )
+        self.assertEqual("", res.err)
+        self.assertEqual("", res.out)
+        with open("test-org.project.Bar.Frobnicator.rst", "r") as f:
+            rst = f.read()
+            self.assertIn(
+                textwrap.dedent(
+                    """
+                    -------
+                    Signals
+                    -------
+
+                    .. _org.project.Bar.Frobnicator::RandomSignal:
+
+                    org.project.Bar.Frobnicator::RandomSignal
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+                    ::
+
+                        RandomSignal ()
+
+
+                    A random test signal."""
+                ),
+                rst,
+            )
+
+    def test_generate_rst_property(self):
+        """Test generating a property documentation with the rst generator."""
+        xml_contents = """
+        <node>
+          <interface name="org.project.Bar.Frobnicator">
+            <!-- RandomProperty:
+
+            A random test property.
+            -->
+            <property type="s" name="RandomProperty" access="read"/>
+          </interface>
+        </node>
+        """
+        res = self.runCodegenWithInterface(
+            xml_contents,
+            "--generate-rst",
+            "test",
+        )
+        self.assertEqual("", res.err)
+        self.assertEqual("", res.out)
+        with open("test-org.project.Bar.Frobnicator.rst", "r") as f:
+            rst = f.read()
+            self.assertIn(
+                textwrap.dedent(
+                    """
+                    ----------
+                    Properties
+                    ----------
+
+                    .. _org.project.Bar.Frobnicator:RandomProperty:
+
+                    org.project.Bar.Frobnicator:RandomProperty
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+                    ::
+
+                        RandomProperty readable s
+
+
+                    A random test property."""
+                ),
+                rst,
+            )
 
     @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_glib_min_required_invalid(self):
