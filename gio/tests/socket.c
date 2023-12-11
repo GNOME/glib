@@ -2343,6 +2343,205 @@ test_credentials_unix_socketpair (void)
 }
 #endif
 
+static void
+test_receive_bytes (void)
+{
+  const GSocketFamily family = G_SOCKET_FAMILY_IPV4;
+  IPTestData *data;
+  GError *error = NULL;
+  GSocket *client;
+  GSocketAddress *addr;
+  gssize len;
+  GBytes *bytes = NULL;
+  gint64 time_start;
+  GCancellable *cancellable = NULL;
+
+  g_test_summary ("Test basic functionality of g_socket_receive_bytes()");
+
+  data = create_server (family, echo_server_thread, FALSE, &error);
+  if (error != NULL)
+    {
+      g_test_skip_printf ("Failed to create server: %s", error->message);
+      g_clear_error (&error);
+      return;
+    }
+
+  addr = g_socket_get_local_address (data->server, &error);
+  g_assert_no_error (error);
+
+  client = g_socket_new (family,
+                         G_SOCKET_TYPE_STREAM,
+                         G_SOCKET_PROTOCOL_DEFAULT,
+                         &error);
+  g_assert_no_error (error);
+
+  g_socket_set_blocking (client, TRUE);
+  g_socket_set_timeout (client, 10);
+
+  g_socket_connect (client, addr, NULL, &error);
+  g_assert_no_error (error);
+  g_object_unref (addr);
+
+  /* Send something. */
+  len = g_socket_send (client, "hello", strlen ("hello"), NULL, &error);
+  g_assert_no_error (error);
+  g_assert_cmpint (len, ==, strlen ("hello"));
+
+  /* And receive it back again. */
+  bytes = g_socket_receive_bytes (client, 5, -1, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (bytes);
+  g_assert_cmpuint (g_bytes_get_size (bytes), ==, 5);
+  g_assert_cmpmem (g_bytes_get_data (bytes, NULL), 5, "hello", 5);
+  g_bytes_unref (bytes);
+
+  /* Try again with a receive buffer which is bigger than the sent bytes, to
+   * test sub-buffer handling. */
+  len = g_socket_send (client, "hello", strlen ("hello"), NULL, &error);
+  g_assert_no_error (error);
+  g_assert_cmpint (len, ==, strlen ("hello"));
+
+  /* And receive it back again. */
+  bytes = g_socket_receive_bytes (client, 500, -1, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (bytes);
+  g_assert_cmpuint (g_bytes_get_size (bytes), ==, 5);
+  g_assert_cmpmem (g_bytes_get_data (bytes, NULL), 5, "hello", 5);
+  g_bytes_unref (bytes);
+
+  /* Try receiving when there’s nothing to receive, with a timeout. This should
+   * be the per-operation timeout, not the socket’s overall timeout */
+  time_start = g_get_real_time ();
+  bytes = g_socket_receive_bytes (client, 500, 10, NULL, &error);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_TIMED_OUT);
+  g_assert_null (bytes);
+  g_assert_cmpint (g_get_real_time () - time_start, <, g_socket_get_timeout (client) * G_USEC_PER_SEC);
+  g_clear_error (&error);
+
+  /* And try receiving when already cancelled. */
+  cancellable = g_cancellable_new ();
+  g_cancellable_cancel (cancellable);
+  bytes = g_socket_receive_bytes (client, 500, -1, cancellable, &error);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
+  g_assert_null (bytes);
+  g_clear_error (&error);
+  g_clear_object (&cancellable);
+
+  /* Tidy up. */
+  g_socket_close (client, &error);
+  g_assert_no_error (error);
+
+  g_cancellable_cancel (data->cancellable);
+  g_thread_join (data->thread);
+
+  g_socket_close (data->server, &error);
+  g_assert_no_error (error);
+
+  g_object_unref (client);
+
+  ip_test_data_free (data);
+}
+
+static void
+test_receive_bytes_from (void)
+{
+  const GSocketFamily family = G_SOCKET_FAMILY_IPV4;
+  IPTestData *data;
+  GError *error = NULL;
+  GSocket *client;
+  GSocketAddress *dest_addr = NULL, *sender_addr = NULL;
+  gssize len;
+  GBytes *bytes = NULL;
+  gint64 time_start;
+  GCancellable *cancellable = NULL;
+
+  g_test_summary ("Test basic functionality of g_socket_receive_bytes_from()");
+
+  data = create_server_full (family, G_SOCKET_TYPE_DATAGRAM,
+                             echo_server_dgram_thread, FALSE, &error);
+  if (error != NULL)
+    {
+      g_test_skip_printf ("Failed to create server: %s", error->message);
+      g_clear_error (&error);
+      return;
+    }
+
+  dest_addr = g_socket_get_local_address (data->server, &error);
+  g_assert_no_error (error);
+
+  client = g_socket_new (family,
+                         G_SOCKET_TYPE_DATAGRAM,
+                         G_SOCKET_PROTOCOL_DEFAULT,
+                         &error);
+  g_assert_no_error (error);
+
+  g_socket_set_blocking (client, TRUE);
+  g_socket_set_timeout (client, 10);
+
+  /* Send something. */
+  len = g_socket_send_to (client, dest_addr, "hello", strlen ("hello"), NULL, &error);
+  g_assert_no_error (error);
+  g_assert_cmpint (len, ==, strlen ("hello"));
+
+  /* And receive it back again. */
+  bytes = g_socket_receive_bytes_from (client, &sender_addr, 5, -1, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (bytes);
+  g_assert_cmpuint (g_bytes_get_size (bytes), ==, 5);
+  g_assert_cmpmem (g_bytes_get_data (bytes, NULL), 5, "hello", 5);
+  g_assert_nonnull (sender_addr);
+  g_clear_object (&sender_addr);
+  g_bytes_unref (bytes);
+
+  /* Try again with a receive buffer which is bigger than the sent bytes, to
+   * test sub-buffer handling. */
+  len = g_socket_send_to (client, dest_addr, "hello", strlen ("hello"), NULL, &error);
+  g_assert_no_error (error);
+  g_assert_cmpint (len, ==, strlen ("hello"));
+
+  /* And receive it back again. */
+  bytes = g_socket_receive_bytes_from (client, NULL, 500, -1, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (bytes);
+  g_assert_cmpuint (g_bytes_get_size (bytes), ==, 5);
+  g_assert_cmpmem (g_bytes_get_data (bytes, NULL), 5, "hello", 5);
+  g_bytes_unref (bytes);
+
+  /* Try receiving when there’s nothing to receive, with a timeout. This should
+   * be the per-operation timeout, not the socket’s overall timeout */
+  time_start = g_get_real_time ();
+  bytes = g_socket_receive_bytes_from (client, &sender_addr, 500, 10, NULL, &error);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_TIMED_OUT);
+  g_assert_null (bytes);
+  g_assert_null (sender_addr);
+  g_assert_cmpint (g_get_real_time () - time_start, <, g_socket_get_timeout (client) * G_USEC_PER_SEC);
+  g_clear_error (&error);
+
+  /* And try receiving when already cancelled. */
+  cancellable = g_cancellable_new ();
+  g_cancellable_cancel (cancellable);
+  bytes = g_socket_receive_bytes_from (client, &sender_addr, 500, -1, cancellable, &error);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
+  g_assert_null (bytes);
+  g_assert_null (sender_addr);
+  g_clear_error (&error);
+  g_clear_object (&cancellable);
+
+  /* Tidy up. */
+  g_socket_close (client, &error);
+  g_assert_no_error (error);
+
+  g_cancellable_cancel (data->cancellable);
+  g_thread_join (data->thread);
+
+  g_socket_close (data->server, &error);
+  g_assert_no_error (error);
+
+  g_object_unref (client);
+
+  ip_test_data_free (data);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -2409,6 +2608,8 @@ main (int   argc,
   g_test_add_func ("/socket/credentials/tcp_server", test_credentials_tcp_server);
   g_test_add_func ("/socket/credentials/unix_socketpair", test_credentials_unix_socketpair);
 #endif
+  g_test_add_func ("/socket/receive_bytes", test_receive_bytes);
+  g_test_add_func ("/socket/receive_bytes_from", test_receive_bytes_from);
 
   return g_test_run();
 }
