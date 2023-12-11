@@ -42,7 +42,7 @@ ignore_decorators = '|'.join(ignore_decorators)
 if get_option('gtk_doc')
   # Check we have the minimum gtk-doc version required. Older versions won't
   # generate correct documentation.
-  dependency('gtk-doc', version : '>=1.32.1',
+  dependency('gtk-doc', version : '>=1.32.1', native: true,
     fallback : ['gtk-doc', 'dummy_dep'],
     default_options : ['tests=false'])
 
