@@ -1216,6 +1216,70 @@ test_connection_serials (void)
 /* ---------------------------------------------------------------------------------------------------- */
 
 static void
+get_connection_cb_expect_cancel (GObject       *source_object,
+                                 GAsyncResult  *res,
+                                 gpointer       user_data)
+{
+  GDBusConnection *c;
+  GError *error;
+
+  error = NULL;
+  c = g_bus_get_finish (res, &error);
+
+  /* unref here to avoid timeouts when the test fails */
+  if (c)
+    g_object_unref (c);
+
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
+  g_assert_null (c);
+
+  g_error_free (error);
+}
+
+static void
+get_connection_cb_expect_success (GObject       *source_object,
+                                  GAsyncResult  *res,
+                                  gpointer       user_data)
+{
+  GDBusConnection *c;
+  GError *error;
+
+  error = NULL;
+  c = g_bus_get_finish (res, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (c);
+
+  g_main_loop_quit (loop);
+
+  g_object_unref (c);
+}
+
+static void
+test_connection_cancel (void)
+{
+  GCancellable *cancellable, *cancellable2;
+
+  g_test_summary ("Test that cancelling one of two racing g_bus_get() calls does not cancel the other one");
+
+  session_bus_up ();
+
+  cancellable = g_cancellable_new ();
+  cancellable2 = g_cancellable_new ();
+
+  g_bus_get (G_BUS_TYPE_SESSION, cancellable, get_connection_cb_expect_cancel, NULL);
+  g_bus_get (G_BUS_TYPE_SESSION, cancellable2, get_connection_cb_expect_success, NULL);
+  g_cancellable_cancel (cancellable);
+  g_main_loop_run (loop);
+
+  g_object_unref (cancellable);
+  g_object_unref (cancellable2);
+
+  session_bus_down ();
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
+static void
 test_connection_basic (void)
 {
   GDBusConnection *connection;
@@ -1301,6 +1365,7 @@ main (int   argc,
   g_test_add_func ("/gdbus/connection/signal-match-rules", test_connection_signal_match_rules);
   g_test_add_func ("/gdbus/connection/filter", test_connection_filter);
   g_test_add_func ("/gdbus/connection/serials", test_connection_serials);
+  g_test_add_func ("/gdbus/connection/cancel", test_connection_cancel);
   ret = g_test_run();
 
   g_main_loop_unref (loop);
