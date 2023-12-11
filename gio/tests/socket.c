@@ -617,6 +617,7 @@ test_ip_sync_dgram (GSocketFamily family)
     }
 
   dest_addr = g_socket_get_local_address (data->server, &error);
+  g_assert_no_error (error);
 
   client = g_socket_new (family,
 			 G_SOCKET_TYPE_DATAGRAM,
