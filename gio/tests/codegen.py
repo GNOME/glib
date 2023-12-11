@@ -28,6 +28,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import textwrap
 import unittest
 import xml.etree.ElementTree as ET
 
@@ -542,22 +543,22 @@ G_END_DECLS
         self.assertEqual("", res.out)
         with open("test-org.project.Bar.Frobnicator.rst", "r") as f:
             rst = f.read()
-            self.assertIn("""
--------
-Methods
--------
+            self.assertIn(textwrap.dedent("""
+            -------
+            Methods
+            -------
 
-.. _org.project.Bar.Frobnicator.RandomMethod:
+            .. _org.project.Bar.Frobnicator.RandomMethod:
 
-org.project.Bar.Frobnicator.RandomMethod
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            org.project.Bar.Frobnicator.RandomMethod
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-::
+            ::
 
-    RandomMethod ()
+                RandomMethod ()
 
 
-A random test method.""", rst)
+            A random test method."""), rst)
 
     def  test_generate_rst_signal(self):
         """Test generating a signal documentation with the rst generator."""
@@ -581,22 +582,22 @@ A random test method.""", rst)
         self.assertEqual("", res.out)
         with open("test-org.project.Bar.Frobnicator.rst", "r") as f:
             rst = f.read()
-            self.assertIn("""
--------
-Signals
--------
+            self.assertIn(textwrap.dedent("""
+            -------
+            Signals
+            -------
 
-.. _org.project.Bar.Frobnicator::RandomSignal:
+            .. _org.project.Bar.Frobnicator::RandomSignal:
 
-org.project.Bar.Frobnicator::RandomSignal
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            org.project.Bar.Frobnicator::RandomSignal
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-::
+            ::
 
-    RandomSignal ()
+                RandomSignal ()
 
 
-A random test signal.""", rst)
+            A random test signal."""), rst)
 
     def  test_generate_rst_property(self):
         """Test generating a property documentation with the rst generator."""
@@ -620,22 +621,22 @@ A random test signal.""", rst)
         self.assertEqual("", res.out)
         with open("test-org.project.Bar.Frobnicator.rst", "r") as f:
             rst = f.read()
-            self.assertIn("""
-----------
-Properties
-----------
+            self.assertIn(textwrap.dedent("""
+            ----------
+            Properties
+            ----------
 
-.. _org.project.Bar.Frobnicator:RandomProperty:
+            .. _org.project.Bar.Frobnicator:RandomProperty:
 
-org.project.Bar.Frobnicator:RandomProperty
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            org.project.Bar.Frobnicator:RandomProperty
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-::
+            ::
 
-    RandomProperty readable s
+                RandomProperty readable s
 
 
-A random test property.""", rst)
+            A random test property."""), rst)
 
     @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_glib_min_required_invalid(self):
