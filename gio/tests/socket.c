@@ -43,13 +43,24 @@
 static gboolean ipv6_supported;
 
 typedef struct {
-  GSocket *server;
-  GSocket *client;
+  GSocket *server;  /* (owned) (not nullable) */
+  GSocket *client;  /* (owned) (nullable) */
   GSocketFamily family;
-  GThread *thread;
-  GMainLoop *loop;
-  GCancellable *cancellable; /* to shut down dgram echo server thread */
+  GThread *thread;  /* (owned) (not nullable) */
+  GMainLoop *loop;  /* (owned) (nullable) */
+  GCancellable *cancellable; /* to shut down dgram echo server thread; (owned) (nullable) */
 } IPTestData;
+
+static void
+ip_test_data_free (IPTestData *data)
+{
+  g_clear_object (&data->server);
+  g_clear_object (&data->client);
+  g_clear_pointer (&data->loop, g_main_loop_unref);
+  g_clear_object (&data->cancellable);
+
+  g_slice_free (IPTestData, data);
+}
 
 static gpointer
 echo_server_dgram_thread (gpointer user_data)
@@ -130,7 +141,7 @@ create_server_full (GSocketFamily   family,
   GSocketAddress *addr;
   GInetAddress *iaddr;
 
-  data = g_slice_new (IPTestData);
+  data = g_slice_new0 (IPTestData);
   data->family = family;
 
   data->server = server = g_socket_new (family,
@@ -198,8 +209,7 @@ create_server_full (GSocketFamily   family,
   return data;
 
 error:
-  g_clear_object (&data->server);
-  g_slice_free (IPTestData, data);
+  ip_test_data_free (data);
 
   return NULL;
 }
@@ -396,7 +406,7 @@ test_ip_async (GSocketFamily family)
 
   data->loop = g_main_loop_new (NULL, TRUE);
   g_main_loop_run (data->loop);
-  g_main_loop_unref (data->loop);
+  g_clear_pointer (&data->loop, g_main_loop_unref);
 
   g_socket_shutdown (client, FALSE, TRUE, &error);
   g_assert_no_error (error);
@@ -426,10 +436,7 @@ test_ip_async (GSocketFamily family)
   g_socket_close (data->server, &error);
   g_assert_no_error (error);
 
-  g_object_unref (data->server);
-  g_object_unref (client);
-
-  g_slice_free (IPTestData, data);
+  ip_test_data_free (data);
 }
 
 static void
@@ -567,10 +574,9 @@ test_ip_sync (GSocketFamily family)
   g_socket_close (data->server, &error);
   g_assert_no_error (error);
 
-  g_object_unref (data->server);
   g_object_unref (client);
 
-  g_slice_free (IPTestData, data);
+  ip_test_data_free (data);
 }
 
 static void
@@ -801,12 +807,10 @@ test_ip_sync_dgram (GSocketFamily family)
   g_socket_close (data->server, &error);
   g_assert_no_error (error);
 
-  g_object_unref (data->server);
-  g_object_unref (data->cancellable);
   g_object_unref (client);
   g_object_unref (dest_addr);
 
-  g_slice_free (IPTestData, data);
+  ip_test_data_free (data);
 }
 
 static void
@@ -1046,10 +1050,9 @@ test_close_graceful (void)
   g_assert_no_error (error);
 
   g_object_unref (server);
-  g_object_unref (data->server);
   g_object_unref (client);
 
-  g_slice_free (IPTestData, data);
+  ip_test_data_free (data);
 }
 
 #if defined (IPPROTO_IPV6) && defined (IPV6_V6ONLY)
@@ -1132,11 +1135,10 @@ test_ipv6_v4mapped (void)
   g_socket_close (data->server, &error);
   g_assert_no_error (error);
 
-  g_object_unref (data->server);
   g_object_unref (client);
   g_object_unref (v4addr);
 
-  g_slice_free (IPTestData, data);
+  ip_test_data_free (data);
 }
 #endif
 
@@ -1198,10 +1200,9 @@ test_timed_wait (void)
   g_socket_close (data->server, &error);
   g_assert_no_error (error);
 
-  g_object_unref (data->server);
   g_object_unref (client);
 
-  g_slice_free (IPTestData, data);
+  ip_test_data_free (data);
 }
 
 static int
@@ -1310,11 +1311,10 @@ test_fd_reuse (void)
   g_assert_cmpint (g_socket_get_fd (client2), ==, -1);
   g_assert_cmpint (g_socket_get_fd (data->server), ==, -1);
 
-  g_object_unref (data->server);
   g_object_unref (client);
   g_object_unref (client2);
 
-  g_slice_free (IPTestData, data);
+  ip_test_data_free (data);
 }
 
 static void
@@ -2071,10 +2071,9 @@ test_credentials_tcp_client (void)
   g_socket_close (data->server, &error);
   g_assert_no_error (error);
 
-  g_object_unref (data->server);
   g_object_unref (client);
 
-  g_slice_free (IPTestData, data);
+  ip_test_data_free (data);
 }
 
 static void
@@ -2144,10 +2143,8 @@ beach:
     g_clear_object (&iaddr);
 
     g_clear_pointer (&data->thread, g_thread_join);
-    g_clear_object (&data->server);
-    g_clear_object (&data->client);
 
-    g_slice_free (IPTestData, data);
+    ip_test_data_free (data);
   }
 }
 
