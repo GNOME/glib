@@ -155,7 +155,7 @@ create_server_full (GSocketFamily   family,
   g_assert_cmpint (g_socket_get_socket_type (server), ==, socket_type);
   g_assert_cmpint (g_socket_get_protocol (server), ==, G_SOCKET_PROTOCOL_DEFAULT);
 #ifdef G_OS_WIN32
-  g_assert (GLIB_PRIVATE_CALL (g_win32_handle_is_socket) ((HANDLE)(gintptr) g_socket_get_fd (server)));
+  g_assert_true (GLIB_PRIVATE_CALL (g_win32_handle_is_socket) ((HANDLE)(gintptr) g_socket_get_fd (server)));
 #endif
 
   g_socket_set_blocking (server, TRUE);
@@ -320,7 +320,7 @@ test_ip_async_connected (GSocket      *client,
    */
   g_assert_cmpint (cond, ==, G_IO_OUT);
 
-  g_assert (g_socket_is_connected (client));
+  g_assert_true (g_socket_is_connected (client));
 
   /* This adds 1 second to "make check", so let's just only do it once. */
   if (data->family == G_SOCKET_FAMILY_IPV4)
@@ -490,14 +490,14 @@ test_ip_sync (GSocketFamily family)
   g_assert_cmpint (g_socket_get_socket_type (client), ==, G_SOCKET_TYPE_STREAM);
   g_assert_cmpint (g_socket_get_protocol (client), ==, G_SOCKET_PROTOCOL_DEFAULT);
 #ifdef G_OS_WIN32
-  g_assert (GLIB_PRIVATE_CALL (g_win32_handle_is_socket) ((HANDLE)(gintptr) g_socket_get_fd (client)));
+  g_assert_true (GLIB_PRIVATE_CALL (g_win32_handle_is_socket) ((HANDLE)(gintptr) g_socket_get_fd (client)));
 #endif
   g_socket_set_blocking (client, TRUE);
   g_socket_set_timeout (client, 1);
 
   g_socket_connect (client, addr, NULL, &error);
   g_assert_no_error (error);
-  g_assert (g_socket_is_connected (client));
+  g_assert_true (g_socket_is_connected (client));
   g_object_unref (addr);
 
   /* This adds 1 second to "make check", so let's just only do it once. */
@@ -628,7 +628,7 @@ test_ip_sync_dgram (GSocketFamily family)
   g_assert_cmpint (g_socket_get_socket_type (client), ==, G_SOCKET_TYPE_DATAGRAM);
   g_assert_cmpint (g_socket_get_protocol (client), ==, G_SOCKET_PROTOCOL_DEFAULT);
 #ifdef G_OS_WIN32
-  g_assert (GLIB_PRIVATE_CALL (g_win32_handle_is_socket) ((HANDLE)(gintptr) g_socket_get_fd (client)));
+  g_assert_true (GLIB_PRIVATE_CALL (g_win32_handle_is_socket) ((HANDLE)(gintptr) g_socket_get_fd (client)));
 #endif
 
   g_socket_set_blocking (client, TRUE);
@@ -717,7 +717,7 @@ test_ip_sync_dgram (GSocketFamily family)
     g_assert_no_error (error);
     /* v[0].size + v[1].size + v[2].size + v[3].size + v[4].size + v[5].size */
     g_assert_cmpint (len, ==, 17);
-    g_assert (memcmp (testbuf2, buf, 17) == 0);
+    g_assert_cmpmem (testbuf2, 17, buf, 17);
 
     memset (buf, 0, sizeof (buf));
     len = g_socket_receive_from (client, NULL, buf, sizeof (buf), NULL, &error);
@@ -866,7 +866,7 @@ test_ip_sync_dgram_timeouts (GSocketFamily family)
   g_assert_cmpint (g_socket_get_socket_type (client), ==, G_SOCKET_TYPE_DATAGRAM);
   g_assert_cmpint (g_socket_get_protocol (client), ==, G_SOCKET_PROTOCOL_DEFAULT);
 #ifdef G_OS_WIN32
-  g_assert (GLIB_PRIVATE_CALL (g_win32_handle_is_socket) ((HANDLE)(gintptr) g_socket_get_fd (client)));
+  g_assert_true (GLIB_PRIVATE_CALL (g_win32_handle_is_socket) ((HANDLE)(gintptr) g_socket_get_fd (client)));
 #endif
 
 #ifdef G_OS_WIN32
@@ -1011,7 +1011,7 @@ test_close_graceful (void)
   g_assert_cmpint (g_socket_get_socket_type (client), ==, G_SOCKET_TYPE_STREAM);
   g_assert_cmpint (g_socket_get_protocol (client), ==, G_SOCKET_PROTOCOL_DEFAULT);
 #ifdef G_OS_WIN32
-  g_assert (GLIB_PRIVATE_CALL (g_win32_handle_is_socket) ((HANDLE)(gintptr) g_socket_get_fd (client)));
+  g_assert_true (GLIB_PRIVATE_CALL (g_win32_handle_is_socket) ((HANDLE)(gintptr) g_socket_get_fd (client)));
 #endif
 
   g_socket_set_blocking (client, TRUE);
@@ -1019,7 +1019,7 @@ test_close_graceful (void)
 
   g_socket_connect (client, addr, NULL, &error);
   g_assert_no_error (error);
-  g_assert (g_socket_is_connected (client));
+  g_assert_true (g_socket_is_connected (client));
   g_object_unref (addr);
 
   server = g_thread_join (data->thread);
@@ -1126,7 +1126,7 @@ test_ipv6_v4mapped (void)
 
   g_socket_connect (client, v4addr, NULL, &error);
   g_assert_no_error (error);
-  g_assert (g_socket_is_connected (client));
+  g_assert_true (g_socket_is_connected (client));
 
   g_thread_join (data->thread);
 
@@ -1266,7 +1266,7 @@ test_fd_reuse (void)
 
   g_socket_connect (client, addr, NULL, &error);
   g_assert_no_error (error);
-  g_assert (g_socket_is_connected (client));
+  g_assert_true (g_socket_is_connected (client));
   g_object_unref (addr);
 
   /* we have to dup otherwise the fd gets closed twice on unref */
@@ -1278,7 +1278,7 @@ test_fd_reuse (void)
   g_assert_cmpint (g_socket_get_socket_type (client2), ==, g_socket_get_socket_type (client));
   g_assert_cmpint (g_socket_get_protocol (client2), ==, G_SOCKET_PROTOCOL_TCP);
 #ifdef G_OS_WIN32
-  g_assert (GLIB_PRIVATE_CALL (g_win32_handle_is_socket) ((HANDLE)(gintptr) g_socket_get_fd (client)));
+  g_assert_true (GLIB_PRIVATE_CALL (g_win32_handle_is_socket) ((HANDLE)(gintptr) g_socket_get_fd (client)));
 #endif
 
   len = g_socket_send (client2, testbuf, strlen (testbuf) + 1, NULL, &error);
@@ -1334,12 +1334,12 @@ test_sockaddr (void)
   sin6.sin6_flowinfo = 1729;
 
   saddr = g_socket_address_new_from_native (&sin6, sizeof (sin6));
-  g_assert (G_IS_INET_SOCKET_ADDRESS (saddr));
+  g_assert_true (G_IS_INET_SOCKET_ADDRESS (saddr));
 
   isaddr = G_INET_SOCKET_ADDRESS (saddr);
   iaddr = g_inet_socket_address_get_address (isaddr);
   g_assert_cmpint (g_inet_address_get_family (iaddr), ==, G_SOCKET_FAMILY_IPV6);
-  g_assert (g_inet_address_get_is_loopback (iaddr));
+  g_assert_true (g_inet_address_get_is_loopback (iaddr));
 
   g_assert_cmpint (g_inet_socket_address_get_port (isaddr), ==, 42);
   g_assert_cmpint (g_inet_socket_address_get_scope_id (isaddr), ==, 17);
@@ -1348,7 +1348,7 @@ test_sockaddr (void)
   g_socket_address_to_native (saddr, &gsin6, sizeof (gsin6), &error);
   g_assert_no_error (error);
 
-  g_assert (memcmp (&sin6.sin6_addr, &gsin6.sin6_addr, sizeof (struct in6_addr)) == 0);
+  g_assert_cmpmem (&sin6.sin6_addr, sizeof (struct in6_addr), &gsin6.sin6_addr, sizeof (struct in6_addr));
   g_assert_cmpint (sin6.sin6_port, ==, gsin6.sin6_port);
   g_assert_cmpint (sin6.sin6_scope_id, ==, gsin6.sin6_scope_id);
   g_assert_cmpint (sin6.sin6_flowinfo, ==, gsin6.sin6_flowinfo);
@@ -1399,7 +1399,7 @@ test_unix_from_fd (void)
   g_assert_cmpint (g_socket_get_socket_type (s), ==, G_SOCKET_TYPE_STREAM);
   g_assert_cmpint (g_socket_get_protocol (s), ==, G_SOCKET_PROTOCOL_DEFAULT);
 #ifdef G_OS_WIN32
-  g_assert (GLIB_PRIVATE_CALL (g_win32_handle_is_socket) ((HANDLE)(gintptr) g_socket_get_fd (s)));
+  g_assert_true (GLIB_PRIVATE_CALL (g_win32_handle_is_socket) ((HANDLE)(gintptr) g_socket_get_fd (s)));
 #endif
   g_object_unref (s);
 }
@@ -1428,7 +1428,7 @@ test_unix_connection (void)
   s = g_socket_new_from_fd (fd, &error);
   g_assert_no_error (error);
   c = g_socket_connection_factory_create_connection (s);
-  g_assert (G_IS_UNIX_CONNECTION (c));
+  g_assert_true (G_IS_UNIX_CONNECTION (c));
   g_object_unref (c);
   g_object_unref (s);
 }
@@ -1443,9 +1443,9 @@ create_connection_for_fd (int fd)
 
   socket = g_socket_new_from_fd (fd, &err);
   g_assert_no_error (err);
-  g_assert (G_IS_SOCKET (socket));
+  g_assert_true (G_IS_SOCKET (socket));
   connection = g_socket_connection_factory_create_connection (socket);
-  g_assert (G_IS_UNIX_CONNECTION (connection));
+  g_assert_true (G_IS_UNIX_CONNECTION (connection));
   g_object_unref (socket);
   return connection;
 }
@@ -1525,7 +1525,7 @@ test_unix_connection_ancillary_data (void)
       g_assert_cmpstr (buffer, ==, TEST_DATA);
 
       waitpid (pid, &status, 0);
-      g_assert (WIFEXITED (status));
+      g_assert_true (WIFEXITED (status));
       g_assert_cmpint (WEXITSTATUS (status), ==, 0);
     }
 
@@ -1612,8 +1612,8 @@ test_source_postmortem (void)
   /* Test that, after a socket is closed, its source callback should be called
    * exactly once. */
   g_main_context_iteration (context, FALSE);
-  g_assert (callback_visited);
-  g_assert (!g_main_context_pending (context));
+  g_assert_true (callback_visited);
+  g_assert_false (g_main_context_pending (context));
 
   g_main_context_unref (context);
 }
@@ -1713,14 +1713,14 @@ test_get_available (gconstpointer user_data)
                            G_SOCKET_PROTOCOL_DEFAULT,
                            &err);
   g_assert_no_error (err);
-  g_assert (G_IS_SOCKET (listener));
+  g_assert_true (G_IS_SOCKET (listener));
 
   client = g_socket_new (G_SOCKET_FAMILY_IPV4,
                          socket_type,
                          G_SOCKET_PROTOCOL_DEFAULT,
                          &err);
   g_assert_no_error (err);
-  g_assert (G_IS_SOCKET (client));
+  g_assert_true (G_IS_SOCKET (client));
 
   if (socket_type == G_SOCKET_TYPE_STREAM)
     {
@@ -1918,14 +1918,14 @@ test_read_write (gconstpointer user_data)
                            G_SOCKET_PROTOCOL_DEFAULT,
                            &err);
   g_assert_no_error (err);
-  g_assert (G_IS_SOCKET (listener));
+  g_assert_true (G_IS_SOCKET (listener));
 
   client = g_socket_new (G_SOCKET_FAMILY_IPV4,
                          G_SOCKET_TYPE_STREAM,
                          G_SOCKET_PROTOCOL_DEFAULT,
                          &err);
   g_assert_no_error (err);
-  g_assert (G_IS_SOCKET (client));
+  g_assert_true (G_IS_SOCKET (client));
 
   addr = g_inet_address_new_any (G_SOCKET_FAMILY_IPV4);
   saddr = g_inet_socket_address_new (addr, 0);
