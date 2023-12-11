@@ -2642,7 +2642,26 @@ initable_init (GInitable     *initable,
       g_propagate_error (error, g_error_copy (connection->initialization_error));
     }
 
-  g_atomic_int_or (&connection->atomic_flags, FLAG_INITIALIZED);
+  /* Don't cache canceled errors. Otherwise other concurrent users of the same connection
+   * object will be canceled as well. */
+  if (g_error_matches (connection->initialization_error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+    {
+      if (connection->worker != NULL)
+        {
+          _g_dbus_worker_stop (connection->worker);
+          connection->worker = NULL;
+          if (alive_connections != NULL)
+            g_warn_if_fail (g_hash_table_remove (alive_connections, connection));
+        }
+      g_clear_error (&connection->initialization_error);
+      g_clear_object (&connection->stream);
+      g_clear_object (&connection->auth);
+      g_clear_object (&connection->credentials);
+      g_clear_pointer (&connection->guid, g_free);
+      connection->capabilities = 0;
+    }
+  else
+    g_atomic_int_or (&connection->atomic_flags, FLAG_INITIALIZED);
   g_mutex_unlock (&connection->init_lock);
 
   return ret;
