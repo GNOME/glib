@@ -108,9 +108,9 @@ gi_constant_info_free_value (GIConstantInfo *info,
  * The size of the constant value stored in @argument will be returned.
  * Free the value with gi_constant_info_free_value().
  *
- * Returns: size of the constant
+ * Returns: size of the constant, in bytes
  */
-gint
+gsize
 gi_constant_info_get_value (GIConstantInfo *info,
                             GIArgument     *value)
 {
