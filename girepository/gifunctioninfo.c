@@ -256,9 +256,9 @@ gi_invoke_error_quark (void)
 gboolean
 gi_function_info_invoke (GIFunctionInfo    *info,
                          const GIArgument  *in_args,
-                         int                n_in_args,
+                         gsize              n_in_args,
                          const GIArgument  *out_args,
-                         int                n_out_args,
+                         gsize              n_out_args,
                          GIArgument        *return_value,
                          GError           **error)
 {
