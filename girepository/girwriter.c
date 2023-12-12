@@ -461,7 +461,6 @@ write_callable_info (const gchar    *ns,
 		     Xml            *file)
 {
   GITypeInfo *type;
-  gint i;
 
   if (gi_callable_info_can_throw_gerror (info))
     xml_printf (file, " throws=\"1\"");
@@ -490,7 +489,7 @@ write_callable_info (const gchar    *ns,
     return;
 
   xml_start_element (file, "parameters");
-  for (i = 0; i < gi_callable_info_get_n_args (info); i++)
+  for (guint i = 0; i < gi_callable_info_get_n_args (info); i++)
     {
       GIArgInfo *arg = gi_callable_info_get_arg (info, i);
 

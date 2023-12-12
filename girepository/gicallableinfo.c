@@ -322,7 +322,7 @@ gi_callable_info_get_instance_ownership_transfer (GICallableInfo *info)
  *
  * Returns: The number of arguments this callable expects.
  */
-gint
+guint
 gi_callable_info_get_n_args (GICallableInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -350,7 +350,7 @@ gi_callable_info_get_n_args (GICallableInfo *info)
  */
 GIArgInfo *
 gi_callable_info_get_arg (GICallableInfo *info,
-                          gint            n)
+                          guint           n)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header;
@@ -380,7 +380,7 @@ gi_callable_info_get_arg (GICallableInfo *info,
  */
 void
 gi_callable_info_load_arg (GICallableInfo *info,
-                           gint            n,
+                           guint           n,
                            GIArgInfo      *arg)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -601,9 +601,9 @@ gboolean
 gi_callable_info_invoke (GICallableInfo    *info,
                          gpointer           function,
                          const GIArgument  *in_args,
-                         int                n_in_args,
+                         gsize              n_in_args,
                          const GIArgument  *out_args,
-                         int                n_out_args,
+                         gsize              n_out_args,
                          GIArgument        *return_value,
                          gboolean           is_method,
                          gboolean           throws,
@@ -616,7 +616,7 @@ gi_callable_info_invoke (GICallableInfo    *info,
   GITypeInfo *rinfo;
   GITypeTag rtag;
   GIArgInfo *ainfo;
-  gint n_args, n_invoke_args, in_pos, out_pos, i;
+  gsize n_args, n_invoke_args, in_pos, out_pos, i;
   gpointer *args;
   gboolean success = FALSE;
   GError *local_error = NULL;
