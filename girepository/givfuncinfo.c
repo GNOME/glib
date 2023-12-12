@@ -48,14 +48,13 @@
 GIVFuncInfo *
 gi_base_info_find_vfunc (GIRealInfo  *rinfo,
                          guint32      offset,
-                         gint         n_vfuncs,
+                         guint        n_vfuncs,
                          const gchar *name)
 {
   /* FIXME hash */
   Header *header = (Header *)rinfo->typelib->data;
-  gint i;
 
-  for (i = 0; i < n_vfuncs; i++)
+  for (guint i = 0; i < n_vfuncs; i++)
     {
       VFuncBlob *fblob = (VFuncBlob *)&rinfo->typelib->data[offset];
       const gchar *fname = (const gchar *)&rinfo->typelib->data[fblob->name];
