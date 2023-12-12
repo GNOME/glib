@@ -271,7 +271,7 @@ write_type_info (const gchar *ns,
 
       type = gi_type_info_get_param_type (info, 0);
 
-      length = gi_type_info_get_array_length (info);
+      length = gi_type_info_get_array_length_index (info);
       if (length >= 0)
         xml_printf (file, " length=\"%d\"", length);
 

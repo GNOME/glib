@@ -226,17 +226,17 @@ gi_type_info_get_interface (GITypeInfo *info)
 }
 
 /**
- * gi_type_info_get_array_length:
+ * gi_type_info_get_array_length_index:
  * @info: a #GITypeInfo
  *
  * Obtain the position of the argument which gives the array length of the type.
  * The type tag must be a `GI_TYPE_TAG_ARRAY` or `-1` will be returned.
  *
- * Returns: the array length, or `-1` if the type is not an array
+ * Returns: the array length argument index, or `-1` if the type is not an array
  * Since: 2.80
  */
 gint
-gi_type_info_get_array_length (GITypeInfo *info)
+gi_type_info_get_array_length_index (GITypeInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   SimpleTypeBlob *type;
