@@ -145,7 +145,7 @@ gi_base_info_init (GIBaseInfo *self)
 }
 
 GType
-gi_base_info_gtype_get_type (void)
+gi_base_info_get_type (void)
 {
   static GType base_info_type = 0;
 
