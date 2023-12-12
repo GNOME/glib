@@ -120,7 +120,7 @@ gi_vfunc_info_get_flags (GIVFuncInfo *info)
  * Returns: the struct offset or `0xFFFF` if it’s unknown
  * Since: 2.80
  */
-gint
+guint
 gi_vfunc_info_get_offset (GIVFuncInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -336,9 +336,9 @@ gboolean
 gi_vfunc_info_invoke (GIVFuncInfo      *info,
                       GType             implementor,
                       const GIArgument *in_args,
-                      int               n_in_args,
+                      gsize             n_in_args,
                       const GIArgument *out_args,
-                      int               n_out_args,
+                      gsize             n_out_args,
                       GIArgument       *return_value,
                       GError          **error)
 {
