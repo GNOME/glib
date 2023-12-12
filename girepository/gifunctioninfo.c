@@ -167,13 +167,13 @@ gi_function_info_get_property (GIFunctionInfo *info)
   rinfo = (GIRealInfo *)info;
   blob = (FunctionBlob *)&rinfo->typelib->data[rinfo->offset];
 
-  if (gi_base_info_get_type ((GIBaseInfo *) rinfo->container) == GI_INFO_TYPE_INTERFACE)
+  if (gi_base_info_get_info_type ((GIBaseInfo *) rinfo->container) == GI_INFO_TYPE_INTERFACE)
     {
       GIInterfaceInfo *container = (GIInterfaceInfo *)rinfo->container;
 
       return gi_interface_info_get_property (container, blob->index);
     }
-  else if (gi_base_info_get_type ((GIBaseInfo *) rinfo->container) == GI_INFO_TYPE_OBJECT)
+  else if (gi_base_info_get_info_type ((GIBaseInfo *) rinfo->container) == GI_INFO_TYPE_OBJECT)
     {
       GIObjectInfo *container = (GIObjectInfo *)rinfo->container;
 

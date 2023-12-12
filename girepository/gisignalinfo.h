@@ -40,7 +40,7 @@ G_BEGIN_DECLS
  * Checks if @info is a #GISignalInfo.
  */
 #define GI_IS_SIGNAL_INFO(info) \
-    (gi_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_SIGNAL)
+    (gi_base_info_get_info_type ((GIBaseInfo*) info) ==  GI_INFO_TYPE_SIGNAL)
 
 
 GI_AVAILABLE_IN_ALL

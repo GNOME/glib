@@ -39,7 +39,7 @@ G_BEGIN_DECLS
  * Checks if @info is a #GITypeInfo.
  */
 #define GI_IS_TYPE_INFO(info) \
-    (gi_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_TYPE)
+    (gi_base_info_get_info_type ((GIBaseInfo*) info) ==  GI_INFO_TYPE_TYPE)
 
 /**
  * GI_TYPE_TAG_IS_BASIC

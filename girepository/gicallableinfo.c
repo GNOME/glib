@@ -59,7 +59,7 @@ signature_offset (GICallableInfo *info)
   GIRealInfo *rinfo = (GIRealInfo*)info;
   int sigoff = -1;
 
-  switch (gi_base_info_get_type ((GIBaseInfo *) info))
+  switch (gi_base_info_get_info_type ((GIBaseInfo *) info))
     {
     case GI_INFO_TYPE_FUNCTION:
       sigoff = G_STRUCT_OFFSET (FunctionBlob, signature);
@@ -105,7 +105,7 @@ gi_callable_info_can_throw_gerror (GICallableInfo *info)
    * to support the other callables. For Functions and VFuncs,
    * also check their legacy flag for compatibility.
    */
-  switch (gi_base_info_get_type ((GIBaseInfo *) info)) {
+  switch (gi_base_info_get_info_type ((GIBaseInfo *) info)) {
   case GI_INFO_TYPE_FUNCTION:
     {
       FunctionBlob *blob;
@@ -147,7 +147,7 @@ gboolean
 gi_callable_info_is_method (GICallableInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo*)info;
-  switch (gi_base_info_get_type ((GIBaseInfo *) info)) {
+  switch (gi_base_info_get_info_type ((GIBaseInfo *) info)) {
   case GI_INFO_TYPE_FUNCTION:
     {
       FunctionBlob *blob;
@@ -573,7 +573,7 @@ gi_type_info_extract_ffi_return_value (GITypeInfo                  *return_info,
   if (return_tag == GI_TYPE_TAG_INTERFACE)
     {
       GIBaseInfo *interface_info = gi_type_info_get_interface (return_info);
-      interface_type = gi_base_info_get_type (interface_info);
+      interface_type = gi_base_info_get_info_type (interface_info);
       gi_base_info_unref (interface_info);
     }
 

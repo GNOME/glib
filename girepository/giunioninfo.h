@@ -41,7 +41,7 @@ G_BEGIN_DECLS
  * Since: 2.80
  */
 #define GI_IS_UNION_INFO(info) \
-    (gi_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_UNION)
+    (gi_base_info_get_info_type ((GIBaseInfo*) info) ==  GI_INFO_TYPE_UNION)
 
 GI_AVAILABLE_IN_ALL
 gint             gi_union_info_get_n_fields             (GIUnionInfo *info);

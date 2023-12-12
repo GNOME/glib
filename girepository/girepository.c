@@ -1034,7 +1034,7 @@ gi_repository_get_object_gtype_interfaces (GIRepository      *repository,
           if (base_info == NULL)
             continue;
 
-          if (gi_base_info_get_type (base_info) != GI_INFO_TYPE_INTERFACE)
+          if (gi_base_info_get_info_type (base_info) != GI_INFO_TYPE_INTERFACE)
             {
               /* FIXME - could this really happen? */
               gi_base_info_unref (base_info);

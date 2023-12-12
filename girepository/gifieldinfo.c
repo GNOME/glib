@@ -263,7 +263,7 @@ gi_field_info_get_field (GIFieldInfo *field_info,
 	case GI_TYPE_TAG_INTERFACE:
 	  {
 	    GIBaseInfo *interface = gi_type_info_get_interface (type_info);
-	    switch (gi_base_info_get_type (interface))
+	    switch (gi_base_info_get_info_type (interface))
 	      {
 	      case GI_INFO_TYPE_STRUCT:
 	      case GI_INFO_TYPE_UNION:
@@ -317,7 +317,7 @@ gi_field_info_get_field (GIFieldInfo *field_info,
 	      case GI_INFO_TYPE_CALLBACK:
 		g_warning("Field %s: Interface type %d should have is_pointer set",
 			  gi_base_info_get_name ((GIBaseInfo *)field_info),
-			  gi_base_info_get_type (interface));
+			  gi_base_info_get_info_type (interface));
 		break;
 	      case GI_INFO_TYPE_INVALID:
 	      case GI_INFO_TYPE_INTERFACE:
@@ -333,7 +333,7 @@ gi_field_info_get_field (GIFieldInfo *field_info,
 	      case GI_INFO_TYPE_UNRESOLVED:
 		g_warning("Field %s: Interface type %d not expected",
 			  gi_base_info_get_name ((GIBaseInfo *)field_info),
-			  gi_base_info_get_type (interface));
+			  gi_base_info_get_info_type (interface));
 		break;
 	      default:
 		break;
@@ -447,7 +447,7 @@ gi_field_info_set_field (GIFieldInfo      *field_info,
 	case GI_TYPE_TAG_INTERFACE:
 	  {
 	    GIBaseInfo *interface = gi_type_info_get_interface (type_info);
-	    switch (gi_base_info_get_type (interface))
+	    switch (gi_base_info_get_info_type (interface))
 	      {
 	      case GI_INFO_TYPE_STRUCT:
 	      case GI_INFO_TYPE_UNION:
@@ -497,7 +497,7 @@ gi_field_info_set_field (GIFieldInfo      *field_info,
 	      case GI_INFO_TYPE_CALLBACK:
 		g_warning("Field%s: Interface type %d should have is_pointer set",
 			  gi_base_info_get_name ((GIBaseInfo *)field_info),
-			  gi_base_info_get_type (interface));
+			  gi_base_info_get_info_type (interface));
 		break;
 	      case GI_INFO_TYPE_INVALID:
 	      case GI_INFO_TYPE_INTERFACE:
@@ -513,7 +513,7 @@ gi_field_info_set_field (GIFieldInfo      *field_info,
 	      case GI_INFO_TYPE_UNRESOLVED:
 		g_warning("Field %s: Interface type %d not expected",
 			  gi_base_info_get_name ((GIBaseInfo *)field_info),
-			  gi_base_info_get_type (interface));
+			  gi_base_info_get_info_type (interface));
 		break;
 	      default:
 		break;
@@ -532,7 +532,7 @@ gi_field_info_set_field (GIFieldInfo      *field_info,
         case GI_TYPE_TAG_INTERFACE:
           {
 	    GIBaseInfo *interface = gi_type_info_get_interface (type_info);
-	    switch (gi_base_info_get_type (interface))
+	    switch (gi_base_info_get_info_type (interface))
               {
                 case GI_INFO_TYPE_OBJECT:
                 case GI_INFO_TYPE_INTERFACE:

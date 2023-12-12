@@ -39,7 +39,7 @@ G_BEGIN_DECLS
  * Checks if @info is a #GIPropertyInfo.
  */
 #define GI_IS_PROPERTY_INFO(info) \
-    (gi_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_PROPERTY)
+    (gi_base_info_get_info_type ((GIBaseInfo*) info) ==  GI_INFO_TYPE_PROPERTY)
 
 
 GI_AVAILABLE_IN_ALL

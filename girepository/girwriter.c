@@ -165,7 +165,7 @@ xml_free (Xml *xml)
 static void
 check_unresolved (GIBaseInfo *info)
 {
-  if (gi_base_info_get_type (info) != GI_INFO_TYPE_UNRESOLVED)
+  if (gi_base_info_get_info_type (info) != GI_INFO_TYPE_UNRESOLVED)
     return;
 
   g_critical ("Found unresolved type '%s' '%s'\n",
@@ -442,7 +442,7 @@ write_field_info (const gchar *ns,
     }
 
   interface = gi_type_info_get_interface (type);
-  if (interface && gi_base_info_get_type(interface) == GI_INFO_TYPE_CALLBACK)
+  if (interface && gi_base_info_get_info_type (interface) == GI_INFO_TYPE_CALLBACK)
     write_callback_info (ns, (GICallbackInfo *)interface, file);
   else
     write_type_info (ns, type, file);
@@ -661,7 +661,7 @@ write_struct_info (const gchar  *ns,
   type_name = gi_registered_type_info_get_type_name ((GIRegisteredTypeInfo*)info);
   type_init = gi_registered_type_info_get_type_init ((GIRegisteredTypeInfo*)info);
 
-  if (gi_base_info_get_type ((GIBaseInfo *)info) == GI_INFO_TYPE_BOXED)
+  if (gi_base_info_get_info_type ((GIBaseInfo *) info) == GI_INFO_TYPE_BOXED)
     {
       xml_start_element (file, "glib:boxed");
       xml_printf (file, " glib:name=\"%s\"", name);
@@ -849,7 +849,7 @@ write_enum_info (const gchar *ns,
   type_init = gi_registered_type_info_get_type_init ((GIRegisteredTypeInfo*)info);
   error_domain = gi_enum_info_get_error_domain (info);
 
-  if (gi_base_info_get_type ((GIBaseInfo *)info) == GI_INFO_TYPE_ENUM)
+  if (gi_base_info_get_info_type ((GIBaseInfo *) info) == GI_INFO_TYPE_ENUM)
     xml_start_element (file, "enumeration");
   else
     xml_start_element (file, "bitfield");
@@ -1414,7 +1414,7 @@ gi_ir_writer_write (const char *filename,
       for (j = 0; j < n_infos; j++)
 	{
 	  GIBaseInfo *info = gi_repository_get_info (repository, cur_ns, j);
-	  switch (gi_base_info_get_type (info))
+	  switch (gi_base_info_get_info_type (info))
 	    {
 	    case GI_INFO_TYPE_FUNCTION:
 	      write_function_info (ns, (GIFunctionInfo *)info, xml);
@@ -1451,7 +1451,7 @@ gi_ir_writer_write (const char *filename,
 	      break;
 
 	    default:
-	      g_error ("unknown info type %d\n", gi_base_info_get_type (info));
+	      g_error ("unknown info type %d\n", gi_base_info_get_info_type (info));
 	    }
 
 	  gi_base_info_unref (info);

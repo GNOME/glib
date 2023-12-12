@@ -160,7 +160,7 @@ gi_property_info_get_setter (GIPropertyInfo *info)
     return NULL;
 
   container = rinfo->container;
-  parent_type = gi_base_info_get_type (container);
+  parent_type = gi_base_info_get_info_type (container);
   if (parent_type == GI_INFO_TYPE_OBJECT)
     return gi_object_info_get_method ((GIObjectInfo *) container, blob->setter);
   else if (parent_type == GI_INFO_TYPE_INTERFACE)
@@ -199,7 +199,7 @@ gi_property_info_get_getter (GIPropertyInfo *info)
     return NULL;
 
   container = rinfo->container;
-  parent_type = gi_base_info_get_type (container);
+  parent_type = gi_base_info_get_info_type (container);
   if (parent_type == GI_INFO_TYPE_OBJECT)
     return gi_object_info_get_method ((GIObjectInfo *) container, blob->getter);
   else if (parent_type == GI_INFO_TYPE_INTERFACE)

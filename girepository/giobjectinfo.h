@@ -76,7 +76,7 @@ typedef void * (*GIObjectInfoGetValueFunction) (const GValue *value);
  * Checks if @info is a #GIObjectInfo.
  */
 #define GI_IS_OBJECT_INFO(info) \
-    (gi_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_OBJECT)
+    (gi_base_info_get_info_type ((GIBaseInfo*) info) ==  GI_INFO_TYPE_OBJECT)
 
 
 GI_AVAILABLE_IN_ALL

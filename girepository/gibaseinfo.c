@@ -278,7 +278,7 @@ gi_base_info_unref (GIBaseInfo *info)
 }
 
 /**
- * gi_base_info_get_type:
+ * gi_base_info_get_info_type:
  * @info: a #GIBaseInfo
  *
  * Obtain the info type of the GIBaseInfo.
@@ -286,7 +286,7 @@ gi_base_info_unref (GIBaseInfo *info)
  * Returns: the info type of @info
  */
 GIInfoType
-gi_base_info_get_type (GIBaseInfo *info)
+gi_base_info_get_info_type (GIBaseInfo *info)
 {
 
   return ((GIRealInfo*)info)->type;
@@ -307,7 +307,7 @@ gi_base_info_get_name (GIBaseInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo*)info;
   g_assert (rinfo->ref_count > 0);
-  switch (gi_base_info_get_type ((GIBaseInfo *) info))
+  switch (gi_base_info_get_info_type ((GIBaseInfo *) info))
     {
     case GI_INFO_TYPE_FUNCTION:
     case GI_INFO_TYPE_CALLBACK:
@@ -407,7 +407,7 @@ gi_base_info_get_namespace (GIBaseInfo *info)
 
   g_assert (rinfo->ref_count > 0);
 
-  if (gi_base_info_get_type (info) == GI_INFO_TYPE_UNRESOLVED)
+  if (gi_base_info_get_info_type (info) == GI_INFO_TYPE_UNRESOLVED)
     {
       GIUnresolvedInfo *unresolved = (GIUnresolvedInfo *)info;
 
@@ -430,7 +430,7 @@ gboolean
 gi_base_info_is_deprecated (GIBaseInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo*) info;
-  switch (gi_base_info_get_type ((GIBaseInfo *) info))
+  switch (gi_base_info_get_info_type ((GIBaseInfo *) info))
     {
     case GI_INFO_TYPE_FUNCTION:
     case GI_INFO_TYPE_CALLBACK:

@@ -41,7 +41,7 @@ G_BEGIN_DECLS
  * Since: 2.80
  */
 #define GI_IS_VFUNC_INFO(info) \
-    (gi_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_VFUNC)
+    (gi_base_info_get_info_type ((GIBaseInfo*) info) ==  GI_INFO_TYPE_VFUNC)
 
 GI_AVAILABLE_IN_ALL
 GIVFuncInfoFlags  gi_vfunc_info_get_flags   (GIVFuncInfo *info);

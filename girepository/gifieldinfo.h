@@ -40,7 +40,7 @@ G_BEGIN_DECLS
  *
  */
 #define GI_IS_FIELD_INFO(info) \
-    (gi_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_FIELD)
+    (gi_base_info_get_info_type ((GIBaseInfo*) info) ==  GI_INFO_TYPE_FIELD)
 
 
 GI_AVAILABLE_IN_ALL

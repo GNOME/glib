@@ -194,7 +194,7 @@ gi_vfunc_info_get_invoker (GIVFuncInfo *info)
     return NULL;
 
   container = rinfo->container;
-  parent_type = gi_base_info_get_type (container);
+  parent_type = gi_base_info_get_info_type (container);
   if (parent_type == GI_INFO_TYPE_OBJECT)
     return gi_object_info_get_method ((GIObjectInfo*)container, blob->invoker);
   else if (parent_type == GI_INFO_TYPE_INTERFACE)
@@ -234,7 +234,7 @@ gi_vfunc_info_get_address (GIVFuncInfo  *vfunc_info,
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
   container_info = gi_base_info_get_container ((GIBaseInfo *) vfunc_info);
-  if (gi_base_info_get_type (container_info) == GI_INFO_TYPE_OBJECT)
+  if (gi_base_info_get_info_type (container_info) == GI_INFO_TYPE_OBJECT)
     {
       object_info = (GIObjectInfo*) container_info;
       interface_info = NULL;

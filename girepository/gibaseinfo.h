@@ -61,7 +61,7 @@ GI_AVAILABLE_IN_ALL
 void                   gi_base_info_unref            (GIBaseInfo   *info);
 
 GI_AVAILABLE_IN_ALL
-GIInfoType             gi_base_info_get_type         (GIBaseInfo   *info);
+GIInfoType             gi_base_info_get_info_type    (GIBaseInfo   *info);
 
 GI_AVAILABLE_IN_ALL
 const gchar *          gi_base_info_get_name         (GIBaseInfo   *info);

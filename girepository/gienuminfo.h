@@ -39,8 +39,8 @@ G_BEGIN_DECLS
  * Checks if @info is a #GIEnumInfo.
  */
 #define GI_IS_ENUM_INFO(info) \
-    ((gi_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_ENUM) || \
-     (gi_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_FLAGS))
+    ((gi_base_info_get_info_type ((GIBaseInfo*) info) ==  GI_INFO_TYPE_ENUM) || \
+     (gi_base_info_get_info_type ((GIBaseInfo*) info) ==  GI_INFO_TYPE_FLAGS))
 
 /**
  * GI_IS_VALUE_INFO
@@ -49,7 +49,7 @@ G_BEGIN_DECLS
  * Checks if @info is a #GIValueInfo.
  */
 #define GI_IS_VALUE_INFO(info) \
-    (gi_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_VALUE)
+    (gi_base_info_get_info_type ((GIBaseInfo*) info) ==  GI_INFO_TYPE_VALUE)
 
 
 GI_AVAILABLE_IN_ALL
