@@ -204,7 +204,7 @@ gi_object_info_get_type_name (GIObjectInfo *info)
 }
 
 /**
- * gi_object_info_get_type_init:
+ * gi_object_info_get_type_init_function_name:
  * @info: a #GIObjectInfo
  *
  * Obtain the function which when called will return the GType
@@ -213,7 +213,7 @@ gi_object_info_get_type_name (GIObjectInfo *info)
  * Returns: the type init function
  */
 const gchar *
-gi_object_info_get_type_init (GIObjectInfo *info)
+gi_object_info_get_type_init_function_name (GIObjectInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   ObjectBlob *blob;

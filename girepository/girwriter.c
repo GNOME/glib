@@ -658,7 +658,7 @@ write_struct_info (const gchar  *ns,
   deprecated = gi_base_info_is_deprecated ((GIBaseInfo *)info);
 
   type_name = gi_registered_type_info_get_type_name ((GIRegisteredTypeInfo*)info);
-  type_init = gi_registered_type_info_get_type_init ((GIRegisteredTypeInfo*)info);
+  type_init = gi_registered_type_info_get_type_init_function_name ((GIRegisteredTypeInfo*)info);
 
   if (gi_base_info_get_info_type ((GIBaseInfo *) info) == GI_INFO_TYPE_BOXED)
     {
@@ -844,7 +844,7 @@ write_enum_info (const gchar *ns,
   deprecated = gi_base_info_is_deprecated ((GIBaseInfo *)info);
 
   type_name = gi_registered_type_info_get_type_name ((GIRegisteredTypeInfo*)info);
-  type_init = gi_registered_type_info_get_type_init ((GIRegisteredTypeInfo*)info);
+  type_init = gi_registered_type_info_get_type_init_function_name ((GIRegisteredTypeInfo*)info);
   error_domain = gi_enum_info_get_error_domain (info);
 
   if (gi_base_info_get_info_type ((GIBaseInfo *) info) == GI_INFO_TYPE_ENUM)
@@ -1049,7 +1049,7 @@ write_object_info (const gchar  *ns,
   is_final = gi_object_info_get_final (info);
 
   type_name = gi_registered_type_info_get_type_name ((GIRegisteredTypeInfo*)info);
-  type_init = gi_registered_type_info_get_type_init ((GIRegisteredTypeInfo*)info);
+  type_init = gi_registered_type_info_get_type_init_function_name ((GIRegisteredTypeInfo*)info);
   xml_start_element (file, "class");
   xml_printf (file, " name=\"%s\"", name);
 
@@ -1171,7 +1171,7 @@ write_interface_info (const gchar     *ns,
   deprecated = gi_base_info_is_deprecated ((GIBaseInfo *)info);
 
   type_name = gi_registered_type_info_get_type_name ((GIRegisteredTypeInfo*)info);
-  type_init = gi_registered_type_info_get_type_init ((GIRegisteredTypeInfo*)info);
+  type_init = gi_registered_type_info_get_type_init_function_name ((GIRegisteredTypeInfo*)info);
   xml_start_element (file, "interface");
   xml_printf (file, " name=\"%s\" glib:type-name=\"%s\" glib:get-type=\"%s\"",
 	     name, type_name, type_init);
@@ -1257,7 +1257,7 @@ write_union_info (const gchar *ns,
   deprecated = gi_base_info_is_deprecated ((GIBaseInfo *)info);
 
   type_name = gi_registered_type_info_get_type_name ((GIRegisteredTypeInfo*)info);
-  type_init = gi_registered_type_info_get_type_init ((GIRegisteredTypeInfo*)info);
+  type_init = gi_registered_type_info_get_type_init_function_name ((GIRegisteredTypeInfo*)info);
 
   xml_start_element (file, "union");
   xml_printf (file, " name=\"%s\"", name);

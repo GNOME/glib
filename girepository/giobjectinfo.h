@@ -83,7 +83,7 @@ GI_AVAILABLE_IN_ALL
 const gchar *     gi_object_info_get_type_name	 (GIObjectInfo *info);
 
 GI_AVAILABLE_IN_ALL
-const gchar *     gi_object_info_get_type_init	 (GIObjectInfo *info);
+const gchar *     gi_object_info_get_type_init_function_name (GIObjectInfo *info);
 
 GI_AVAILABLE_IN_ALL
 gboolean          gi_object_info_get_abstract     (GIObjectInfo *info);
