@@ -130,6 +130,7 @@ fedora-x86_64:
             -Dinstalled_tests=true
             -Ddocumentation=true
             -Dintrospection=enabled
+            -Dman=true
             _build
     - meson compile -C _build
     - mkdir -p _coverage
