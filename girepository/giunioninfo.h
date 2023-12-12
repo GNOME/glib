@@ -81,9 +81,9 @@ GI_AVAILABLE_IN_ALL
 gsize            gi_union_info_get_alignment            (GIUnionInfo *info);
 
 GI_AVAILABLE_IN_ALL
-const char *     gi_union_info_get_copy_function        (GIUnionInfo *info);
+const char *     gi_union_info_get_copy_function_name   (GIUnionInfo *info);
 
 GI_AVAILABLE_IN_ALL
-const char *     gi_union_info_get_free_function        (GIUnionInfo *info);
+const char *     gi_union_info_get_free_function_name   (GIUnionInfo *info);
 
 G_END_DECLS

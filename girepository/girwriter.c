@@ -1270,11 +1270,11 @@ write_union_info (const gchar *ns,
   if (file->show_all)
     xml_printf (file, " size=\"%" G_GSIZE_FORMAT "\"", size);
 
-  func = gi_union_info_get_copy_function (info);
+  func = gi_union_info_get_copy_function_name (info);
   if (func)
     xml_printf (file, " copy-function=\"%s\"", func);
 
-  func = gi_union_info_get_free_function (info);
+  func = gi_union_info_get_free_function_name (info);
   if (func)
     xml_printf (file, " free-function=\"%s\"", func);
 
