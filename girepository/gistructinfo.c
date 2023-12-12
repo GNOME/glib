@@ -286,7 +286,7 @@ gi_struct_info_is_gtype_struct (GIStructInfo *info)
 }
 
 /**
- * gi_struct_info_get_copy_function:
+ * gi_struct_info_get_copy_function_name:
  * @info: a struct information blob
  *
  * Retrieves the name of the copy function for @info, if any is set.
@@ -296,7 +296,7 @@ gi_struct_info_is_gtype_struct (GIStructInfo *info)
  * Since: 2.80
  */
 const char *
-gi_struct_info_get_copy_function (GIStructInfo *info)
+gi_struct_info_get_copy_function_name (GIStructInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   StructBlob *blob;
@@ -313,7 +313,7 @@ gi_struct_info_get_copy_function (GIStructInfo *info)
 }
 
 /**
- * gi_struct_info_get_free_function:
+ * gi_struct_info_get_free_function_name:
  * @info: a struct information blob
  *
  * Retrieves the name of the free function for @info, if any is set.
@@ -323,7 +323,7 @@ gi_struct_info_get_copy_function (GIStructInfo *info)
  * Since: 2.80
  */
 const char *
-gi_struct_info_get_free_function (GIStructInfo *info)
+gi_struct_info_get_free_function_name (GIStructInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   StructBlob *blob;

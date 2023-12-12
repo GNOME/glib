@@ -680,11 +680,11 @@ write_struct_info (const gchar  *ns,
   if (is_gtype_struct)
     xml_printf (file, " glib:is-gtype-struct=\"1\"");
 
-  func = gi_struct_info_get_copy_function (info);
+  func = gi_struct_info_get_copy_function_name (info);
   if (func)
     xml_printf (file, " copy-function=\"%s\"", func);
 
-  func = gi_struct_info_get_free_function (info);
+  func = gi_struct_info_get_free_function_name (info);
   if (func)
     xml_printf (file, " free-function=\"%s\"", func);
 

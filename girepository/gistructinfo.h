@@ -77,9 +77,9 @@ GI_AVAILABLE_IN_ALL
 gboolean         gi_struct_info_is_foreign      (GIStructInfo *info);
 
 GI_AVAILABLE_IN_ALL
-const char *     gi_struct_info_get_copy_function (GIStructInfo *info);
+const char *     gi_struct_info_get_copy_function_name (GIStructInfo *info);
 
 GI_AVAILABLE_IN_ALL
-const char *     gi_struct_info_get_free_function (GIStructInfo *info);
+const char *     gi_struct_info_get_free_function_name (GIStructInfo *info);
 
 G_END_DECLS
