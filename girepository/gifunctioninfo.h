@@ -39,7 +39,7 @@ G_BEGIN_DECLS
  * Checks if @info is a #GIFunctionInfo.
  */
 #define GI_IS_FUNCTION_INFO(info) \
-    (gi_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_FUNCTION)
+    (gi_base_info_get_info_type ((GIBaseInfo*) info) ==  GI_INFO_TYPE_FUNCTION)
 
 
 GI_AVAILABLE_IN_ALL

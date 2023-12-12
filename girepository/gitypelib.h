@@ -34,19 +34,6 @@
 
 G_BEGIN_DECLS
 
-/**
- * SECTION:gitypelib
- * @title: GITypelib
- * @short_description: TODO
- *
- * TODO
- */
-
-/**
- * GITypelib:
- *
- * TODO
- */
 typedef struct _GITypelib GITypelib;
 
 GI_AVAILABLE_IN_ALL

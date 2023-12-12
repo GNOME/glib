@@ -33,13 +33,15 @@
 G_BEGIN_DECLS
 
 /**
- * GI_IS_UNION_INFO
+ * GI_IS_UNION_INFO:
  * @info: an info structure
  *
- * Checks if @info is a #GIUnionInfo.
+ * Checks if @info is a [struct@GIRepository.UnionInfo].
+ *
+ * Since: 2.80
  */
 #define GI_IS_UNION_INFO(info) \
-    (gi_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_UNION)
+    (gi_base_info_get_info_type ((GIBaseInfo*) info) ==  GI_INFO_TYPE_UNION)
 
 GI_AVAILABLE_IN_ALL
 gint             gi_union_info_get_n_fields             (GIUnionInfo *info);

@@ -39,7 +39,7 @@ G_BEGIN_DECLS
  * Checks if @info is a GIArgInfo.
  */
 #define GI_IS_ARG_INFO(info) \
-    (gi_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_ARG)
+    (gi_base_info_get_info_type ((GIBaseInfo*) info) ==  GI_INFO_TYPE_ARG)
 
 
 GI_AVAILABLE_IN_ALL
@@ -73,7 +73,7 @@ GI_AVAILABLE_IN_ALL
 gint                   gi_arg_info_get_destroy            (GIArgInfo *info);
 
 GI_AVAILABLE_IN_ALL
-GITypeInfo *           gi_arg_info_get_type               (GIArgInfo *info);
+GITypeInfo *           gi_arg_info_get_type_info          (GIArgInfo *info);
 
 GI_AVAILABLE_IN_ALL
 void                   gi_arg_info_load_type              (GIArgInfo *info,

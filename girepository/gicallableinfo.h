@@ -39,10 +39,10 @@ G_BEGIN_DECLS
  * Checks if @info is a #GICallableInfo or derived from it.
  */
 #define GI_IS_CALLABLE_INFO(info)					\
-    ((gi_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_FUNCTION) || \
-     (gi_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_CALLBACK) || \
-     (gi_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_SIGNAL) || \
-     (gi_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_VFUNC))
+    ((gi_base_info_get_info_type ((GIBaseInfo*) info) == GI_INFO_TYPE_FUNCTION) || \
+     (gi_base_info_get_info_type ((GIBaseInfo*) info) == GI_INFO_TYPE_CALLBACK) || \
+     (gi_base_info_get_info_type ((GIBaseInfo*) info) == GI_INFO_TYPE_SIGNAL) || \
+     (gi_base_info_get_info_type ((GIBaseInfo*) info) == GI_INFO_TYPE_VFUNC))
 
 
 GI_AVAILABLE_IN_ALL

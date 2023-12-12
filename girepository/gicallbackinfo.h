@@ -1,8 +1,7 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*-
- * GObject introspection: Property
+ * GObject introspection: Callable
  *
- * Copyright (C) 2005 Matthias Clasen
- * Copyright (C) 2008,2009 Red Hat, Inc.
+ * Copyright 2023 GNOME Foundation, Inc.
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  *
@@ -33,28 +32,12 @@
 G_BEGIN_DECLS
 
 /**
- * GI_IS_PROPERTY_INFO
+ * GI_IS_CALLBACK_INFO
  * @info: an info structure
  *
- * Checks if @info is a #GIPropertyInfo.
+ * Checks if @info is a #GICallbackInfo or derived from it.
  */
-#define GI_IS_PROPERTY_INFO(info) \
-    (gi_base_info_get_info_type ((GIBaseInfo*) info) ==  GI_INFO_TYPE_PROPERTY)
-
-
-GI_AVAILABLE_IN_ALL
-GParamFlags  gi_property_info_get_flags (GIPropertyInfo *info);
-
-GI_AVAILABLE_IN_ALL
-GITypeInfo *gi_property_info_get_type_info (GIPropertyInfo *info);
-
-GI_AVAILABLE_IN_ALL
-GITransfer   gi_property_info_get_ownership_transfer (GIPropertyInfo *info);
-
-GI_AVAILABLE_IN_ALL
-GIFunctionInfo *gi_property_info_get_setter (GIPropertyInfo *info);
-
-GI_AVAILABLE_IN_ALL
-GIFunctionInfo *gi_property_info_get_getter (GIPropertyInfo *info);
+#define GI_IS_CALLBACK_INFO(info)					\
+    (gi_base_info_get_info_type ((GIBaseInfo*) info) == GI_INFO_TYPE_CALLBACK)
 
 G_END_DECLS

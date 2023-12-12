@@ -146,7 +146,7 @@ gi_type_info_get_ffi_type (GITypeInfo *info)
   if (gi_type_info_get_tag (info) == GI_TYPE_TAG_INTERFACE)
     {
       iinfo = gi_type_info_get_interface (info);
-      switch (gi_base_info_get_type (iinfo))
+      switch (gi_base_info_get_info_type (iinfo))
         {
         case GI_INFO_TYPE_ENUM:
         case GI_INFO_TYPE_FLAGS:
@@ -293,7 +293,7 @@ gi_function_info_prep_invoker (GIFunctionInfo     *info,
       return FALSE;
     }
 
-  return gi_function_invoker_new_for_address (addr, info, invoker, error);
+  return gi_function_invoker_new_for_address (addr, (GICallableInfo *) info, invoker, error);
 }
 
 /**

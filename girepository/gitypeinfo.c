@@ -27,26 +27,31 @@
 #include <glib.h>
 
 #include <girepository/girepository.h>
+#include "gibaseinfo-private.h"
 #include "girepository-private.h"
 #include "gitypelib-internal.h"
 #include "gitypeinfo.h"
 
 /**
- * SECTION:gitypeinfo
- * @title: GITypeInfo
- * @short_description: Struct representing a type
+ * GITypeInfo:
  *
- * GITypeInfo represents a type.
+ * `GITypeInfo` represents a type, including information about direction and
+ * transfer.
  *
- * You can retrieve a type info from an argument (see #GIArgInfo), a
- * functions return value (see #GIFunctionInfo), a field (see
- * #GIFieldInfo), a property (see #GIPropertyInfo), a constant
- * (see #GIConstantInfo) or for a union discriminator (see #GIUnionInfo).
+ * You can retrieve a type info from an argument (see
+ * [class@GIRepository.ArgInfo]), a function’s return value (see
+ * [class@GIRepository.FunctionInfo]), a field (see
+ * [class@GIRepository.FieldInfo]), a property (see
+ * [class@GIRepository.PropertyInfo]), a constant (see
+ * [class@GIRepository.ConstantInfo]) or for a union discriminator (see
+ * [class@GIRepository.UnionInfo]).
  *
  * A type can either be a of a basic type which is a standard C primitive
  * type or an interface type. For interface types you need to call
- * gi_type_info_get_interface() to get a reference to the base info for that
- * interface.
+ * [method@GIRepository.TypeInfo.get_interface] to get a reference to the base
+ * info for that interface.
+ *
+ * Since: 2.80
  */
 
 /**
@@ -55,12 +60,13 @@
  *
  * Obtain if the type is passed as a reference.
  *
- * Note that the types of %GI_DIRECTION_OUT and %GI_DIRECTION_INOUT parameters
+ * Note that the types of `GI_DIRECTION_OUT` and `GI_DIRECTION_INOUT` parameters
  * will only be pointers if the underlying type being transferred is a pointer
  * (i.e. only if the type of the C function’s formal parameter is a pointer to a
  * pointer).
  *
- * Returns: %TRUE if it is a pointer
+ * Returns: true if it is a pointer
+ * Since: 2.80
  */
 gboolean
 gi_type_info_is_pointer (GITypeInfo *info)
@@ -87,10 +93,12 @@ gi_type_info_is_pointer (GITypeInfo *info)
  * gi_type_info_get_tag:
  * @info: a #GITypeInfo
  *
- * Obtain the type tag for the type. See #GITypeTag for a list
- * of type tags.
+ * Obtain the type tag for the type.
+ *
+ * See [type@GIRepository.TypeTag] for a list of type tags.
  *
  * Returns: the type tag
+ * Since: 2.80
  */
 GITypeTag
 gi_type_info_get_tag (GITypeInfo *info)
@@ -120,9 +128,10 @@ gi_type_info_get_tag (GITypeInfo *info)
  * @info: a #GITypeInfo
  * @n: index of the parameter
  *
- * Obtain the parameter type @n.
+ * Obtain the parameter type @n, or `-1` if the type is not an array.
  *
- * Returns: (transfer full): the param type info
+ * Returns: (transfer full) (nullable): the param type info
+ * Since: 2.80
  */
 GITypeInfo *
 gi_type_info_get_param_type (GITypeInfo *info,
@@ -162,13 +171,15 @@ gi_type_info_get_param_type (GITypeInfo *info,
  * gi_type_info_get_interface:
  * @info: a #GITypeInfo
  *
- * For types which have #GI_TYPE_TAG_INTERFACE such as GObjects and boxed values,
- * this function returns full information about the referenced type.  You can then
- * inspect the type of the returned #GIBaseInfo to further query whether it is
- * a concrete GObject, a GInterface, a structure, etc. using gi_base_info_get_type().
+ * For types which have `GI_TYPE_TAG_INTERFACE` such as [class@GObject.Object]s
+ * and boxed values, this function returns full information about the referenced
+ * type.  You can then inspect the type of the returned
+ * [class@GIRepository.BaseInfo] to further query whether it is a concrete
+ * [class@GObject.Object], an interface, a structure, etc., using
+ * [method@GIRepository.BaseInfo.get_info_type].
  *
- * Returns: (transfer full): the #GIBaseInfo, or %NULL. Free it with
- *   gi_base_info_unref() when done.
+ * Returns: (transfer full) (nullable): the [class@GIRepository.BaseInfo], or
+ *   `NULL`. Free it with gi_base_info_unref() when done.
  */
 GIBaseInfo *
 gi_type_info_get_interface (GITypeInfo *info)
@@ -219,9 +230,10 @@ gi_type_info_get_interface (GITypeInfo *info)
  * @info: a #GITypeInfo
  *
  * Obtain the position of the argument which gives the array length of the type.
- * The type tag must be a #GI_TYPE_TAG_ARRAY or -1 will be returned.
+ * The type tag must be a `GI_TYPE_TAG_ARRAY` or `-1` will be returned.
  *
- * Returns: the array length, or -1 if the type is not an array
+ * Returns: the array length, or `-1` if the type is not an array
+ * Since: 2.80
  */
 gint
 gi_type_info_get_array_length (GITypeInfo *info)
@@ -253,9 +265,10 @@ gi_type_info_get_array_length (GITypeInfo *info)
  * @info: a #GITypeInfo
  *
  * Obtain the fixed array size of the type. The type tag must be a
- * #GI_TYPE_TAG_ARRAY or -1 will be returned.
+ * `GI_TYPE_TAG_ARRAY` or `-1` will be returned.
  *
- * Returns: the size or -1 if it's not an array
+ * Returns: the size or `-1` if the type is not an array
+ * Since: 2.80
  */
 gint
 gi_type_info_get_array_fixed_size (GITypeInfo *info)
@@ -286,10 +299,11 @@ gi_type_info_get_array_fixed_size (GITypeInfo *info)
  * gi_type_info_is_zero_terminated:
  * @info: a #GITypeInfo
  *
- * Obtain if the last element of the array is %NULL. The type tag must be a
- * #GI_TYPE_TAG_ARRAY or %FALSE will be returned.
+ * Obtain if the last element of the array is `NULL`. The type tag must be a
+ * `GI_TYPE_TAG_ARRAY` or false will be returned.
  *
- * Returns: %TRUE if zero terminated
+ * Returns: true if zero terminated
+ * Since: 2.80
  */
 gboolean
 gi_type_info_is_zero_terminated (GITypeInfo *info)
@@ -317,11 +331,13 @@ gi_type_info_is_zero_terminated (GITypeInfo *info)
  * gi_type_info_get_array_type:
  * @info: a #GITypeInfo
  *
- * Obtain the array type for this type. See #GIArrayType for a list of
- * possible values. If the type tag of this type is not array, -1 will be
- * returned.
+ * Obtain the array type for this type.
  *
- * Returns: the array type or -1
+ * See [enum@GIRepository.ArrayType] for a list of possible values. If the type
+ * tag of this type is not array, `-1` will be returned.
+ *
+ * Returns: the array type or `-1`
+ * Since: 2.80
  */
 GIArrayType
 gi_type_info_get_array_type (GITypeInfo *info)
@@ -351,11 +367,11 @@ gi_type_info_get_array_type (GITypeInfo *info)
  *
  * Obtain the type tag corresponding to the underlying storage type in C for
  * the type.
- * See #GITypeTag for a list of type tags.
+ *
+ * See [type@GIRepository.TypeTag] for a list of type tags.
  *
  * Returns: the type tag
- *
- * Since: 1.66
+ * Since: 2.80
  */
 GITypeTag
 gi_type_info_get_storage_type (GITypeInfo *info)
@@ -365,9 +381,9 @@ gi_type_info_get_storage_type (GITypeInfo *info)
   if (type_tag == GI_TYPE_TAG_INTERFACE)
     {
       GIBaseInfo *interface = gi_type_info_get_interface (info);
-      GIInfoType info_type = gi_base_info_get_type (interface);
+      GIInfoType info_type = gi_base_info_get_info_type (interface);
       if (info_type == GI_INFO_TYPE_ENUM || info_type == GI_INFO_TYPE_FLAGS)
-        type_tag = gi_enum_info_get_storage_type (interface);
+        type_tag = gi_enum_info_get_storage_type ((GIEnumInfo *) interface);
       gi_base_info_unref (interface);
     }
 
@@ -376,23 +392,25 @@ gi_type_info_get_storage_type (GITypeInfo *info)
 
 /**
  * gi_type_tag_argument_from_hash_pointer:
- * @storage_type: a #GITypeTag obtained from gi_type_info_get_storage_type()
- * @hash_pointer: A pointer, such as a #GHashTable data pointer
- * @arg: A #GIArgument to fill in
+ * @storage_type: a [type@GIRepository.TypeTag] obtained from
+ *   [method@GIRepository.TypeInfo.get_storage_type]
+ * @hash_pointer: a pointer, such as a [struct@GLib.HashTable] data pointer
+ * @arg: a [type@GIRepository.Argument] to fill in
  *
- * GLib data structures, such as #GList, #GSList, and #GHashTable, all store
- * data pointers.
+ * GLib data structures, such as [type@GLib.List], [type@GLib.SList], and
+ * [type@GLib.HashTable], all store data pointers.
+ *
  * In the case where the list or hash table is storing single types rather than
  * structs, these data pointers may have values stuffed into them via macros
- * such as %GPOINTER_TO_INT.
+ * such as `GPOINTER_TO_INT`.
  *
  * Use this function to ensure that all values are correctly extracted from
- * stuffed pointers, regardless of the machine's architecture or endianness.
+ * stuffed pointers, regardless of the machine’s architecture or endianness.
  *
  * This function fills in the appropriate field of @arg with the value extracted
  * from @hash_pointer, depending on @storage_type.
  *
- * Since: 1.72
+ * Since: 2.80
  */
 void
 gi_type_tag_argument_from_hash_pointer (GITypeTag   storage_type,
@@ -450,22 +468,23 @@ gi_type_tag_argument_from_hash_pointer (GITypeTag   storage_type,
 /**
  * gi_type_info_argument_from_hash_pointer:
  * @info: a #GITypeInfo
- * @hash_pointer: A pointer, such as a #GHashTable data pointer
- * @arg: A #GIArgument to fill in
+ * @hash_pointer: a pointer, such as a [struct@GLib.HashTable] data pointer
+ * @arg: a [type@GIRepository.Argument] to fill in
  *
- * GLib data structures, such as #GList, #GSList, and #GHashTable, all store
- * data pointers.
+ * GLib data structures, such as [type@GLib.List], [type@GLib.SList], and
+ * [type@GLib.HashTable], all store data pointers.
+ *
  * In the case where the list or hash table is storing single types rather than
  * structs, these data pointers may have values stuffed into them via macros
- * such as %GPOINTER_TO_INT.
+ * such as `GPOINTER_TO_INT`.
  *
  * Use this function to ensure that all values are correctly extracted from
- * stuffed pointers, regardless of the machine's architecture or endianness.
+ * stuffed pointers, regardless of the machine’s architecture or endianness.
  *
  * This function fills in the appropriate field of @arg with the value extracted
  * from @hash_pointer, depending on the storage type of @info.
  *
- * Since: 1.66
+ * Since: 2.80
  */
 void
 gi_type_info_argument_from_hash_pointer (GITypeInfo *info,
@@ -479,24 +498,26 @@ gi_type_info_argument_from_hash_pointer (GITypeInfo *info,
 
 /**
  * gi_type_tag_hash_pointer_from_argument:
- * @storage_type: a #GITypeTag obtained from gi_get_storage_type()
- * @arg: A #GIArgument with the value to stuff into a pointer
+ * @storage_type: a [type@GIRepository.TypeTag] obtained from
+ *   [method@GIRepository.TypeInfo.get_storage_type]
+ * @arg: A [type@GIRepository.Argument] with the value to stuff into a pointer
  *
- * GLib data structures, such as #GList, #GSList, and #GHashTable, all store
- * data pointers.
+ * GLib data structures, such as [type@GLib.List], [type@GLib.SList], and
+ * [type@GLib.HashTable], all store data pointers.
+ *
  * In the case where the list or hash table is storing single types rather than
  * structs, these data pointers may have values stuffed into them via macros
- * such as %GPOINTER_TO_INT.
+ * such as `GPOINTER_TO_INT`.
  *
  * Use this function to ensure that all values are correctly stuffed into
- * pointers, regardless of the machine's architecture or endianness.
+ * pointers, regardless of the machine’s architecture or endianness.
  *
  * This function returns a pointer stuffed with the appropriate field of @arg,
  * depending on @storage_type.
  *
- * Returns: A stuffed pointer, that can be stored in a #GHashTable, for example
- *
- * Since: 1.72
+ * Returns: A stuffed pointer, that can be stored in a [struct@GLib.HashTable],
+ *   for example
+ * Since: 2.80
  */
 gpointer
 gi_type_tag_hash_pointer_from_argument (GITypeTag   storage_type,
@@ -544,23 +565,24 @@ gi_type_tag_hash_pointer_from_argument (GITypeTag   storage_type,
 /**
  * gi_type_info_hash_pointer_from_argument:
  * @info: a #GITypeInfo
- * @arg: A #GIArgument with the value to stuff into a pointer
+ * @arg: A [struct@GIRepository.Argument] with the value to stuff into a pointer
  *
- * GLib data structures, such as #GList, #GSList, and #GHashTable, all store
- * data pointers.
+ * GLib data structures, such as [type@GLib.List], [type@GLib.SList], and
+ * [type@GLib.HashTable], all store data pointers.
+ *
  * In the case where the list or hash table is storing single types rather than
  * structs, these data pointers may have values stuffed into them via macros
- * such as %GPOINTER_TO_INT.
+ * such as `GPOINTER_TO_INT`.
  *
  * Use this function to ensure that all values are correctly stuffed into
- * pointers, regardless of the machine's architecture or endianness.
+ * pointers, regardless of the machine’s architecture or endianness.
  *
  * This function returns a pointer stuffed with the appropriate field of @arg,
  * depending on the storage type of @info.
  *
- * Returns: A stuffed pointer, that can be stored in a #GHashTable, for example
- *
- * Since: 1.66
+ * Returns: A stuffed pointer, that can be stored in a [struct@GLib.HashTable],
+ *   for example
+ * Since: 2.80
  */
 gpointer
 gi_type_info_hash_pointer_from_argument (GITypeInfo *info,
@@ -568,4 +590,13 @@ gi_type_info_hash_pointer_from_argument (GITypeInfo *info,
 {
   GITypeTag storage_type = gi_type_info_get_storage_type (info);
   return gi_type_tag_hash_pointer_from_argument (storage_type, arg);
+}
+
+void
+gi_type_info_class_init (gpointer g_class,
+                         gpointer class_data)
+{
+  GIBaseInfoClass *info_class = g_class;
+
+  info_class->info_type = GI_INFO_TYPE_TYPE;
 }

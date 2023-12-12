@@ -18,4 +18,5 @@ if get_option('documentation') and enable_gir
   subdir('gmodule')
   subdir('gobject')
   subdir('gio')
+  subdir('girepository')
 endif

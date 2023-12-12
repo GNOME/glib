@@ -1,8 +1,7 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*-
- * GObject introspection: Signal
+ * GObject introspection: Parsed GIR
  *
- * Copyright (C) 2005 Matthias Clasen
- * Copyright (C) 2008,2009 Red Hat, Inc.
+ * Copyright 2023 GNOME Foundation Inc.
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  *
@@ -24,32 +23,36 @@
 
 #pragma once
 
-#if !defined (__GIREPOSITORY_H_INSIDE__) && !defined (GI_COMPILATION)
-#error "Only <girepository.h> can be included directly."
-#endif
-
+#include <glib.h>
 #include <glib-object.h>
-#include <girepository/gitypes.h>
+
+#include "gitypes.h"
 
 G_BEGIN_DECLS
 
-/**
- * GI_IS_SIGNAL_INFO
- * @info: an info structure
+/* Keep this in sync with the GIInfoType enumeration.
  *
- * Checks if @info is a #GISignalInfo.
+ * We don't add an "n-types" value to avoid having to handle
+ * it in every single switch.
  */
-#define GI_IS_SIGNAL_INFO(info) \
-    (gi_base_info_get_info_type ((GIBaseInfo*) info) ==  GI_INFO_TYPE_SIGNAL)
+#define GI_INFO_TYPE_N_TYPES (GI_INFO_TYPE_REGISTERED_TYPE + 1)
 
+#define GI_IS_BASE_INFO_TYPE(info,type) \
+  (G_TYPE_INSTANCE_GET_CLASS ((info), GI_TYPE_BASE_INFO, GIBaseInfoClass)->info_type == (type))
 
-GI_AVAILABLE_IN_ALL
-GSignalFlags  gi_signal_info_get_flags         (GISignalInfo *info);
+struct _GIBaseInfoClass
+{
+  GTypeClass parent_class;
 
-GI_AVAILABLE_IN_ALL
-GIVFuncInfo * gi_signal_info_get_class_closure (GISignalInfo *info);
+  GIInfoType info_type;
 
-GI_AVAILABLE_IN_ALL
-gboolean      gi_signal_info_true_stops_emit   (GISignalInfo *info);
+  void (* finalize) (GIBaseInfo *info);
+};
+
+void            gi_base_info_init_types              (void);
+
+GType           gi_base_info_type_register_static    (const char     *type_name,
+                                                      gsize           instance_size,
+                                                      GClassInitFunc  class_init);
 
 G_END_DECLS

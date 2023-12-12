@@ -11,11 +11,11 @@ cache:
     - _ccache/
 
 variables:
-  FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v24"
+  FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v25"
   COVERITY_IMAGE: "registry.gitlab.gnome.org/gnome/glib/coverity:v7"
-  DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v18"
+  DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v19"
   ALPINE_IMAGE: "registry.gitlab.gnome.org/gnome/glib/alpine:v3"
-  MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v14"
+  MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v15"
   MESON_TEST_TIMEOUT_MULTIPLIER: 4
   G_MESSAGES_DEBUG: all
   MESON_COMMON_OPTIONS: "--buildtype debug --wrap-mode=nodownload --fatal-meson-warnings"
@@ -120,6 +120,7 @@ fedora-x86_64:
             -Ddtrace=true
             -Dinstalled_tests=true
             -Ddocumentation=true
+            -Dintrospection=enabled
             _build
     - meson compile -C _build
     - mkdir -p _coverage
@@ -294,6 +295,7 @@ G_DISABLE_ASSERT:
             -Ddtrace=true
             -Dinstalled_tests=true
             -Dglib_assert=false
+            -Dintrospection=enabled
             _build
     - meson compile -C _build
     - bash -x ./.gitlab-ci/run-tests.sh
@@ -325,6 +327,7 @@ valgrind:
             -Dsystemtap=true
             -Ddtrace=true
             -Dinstalled_tests=true
+            -Dintrospection=enabled
             _build
     - meson compile -C _build
     # Valgrind doesn’t work when the soft FD limit is set too high
@@ -547,7 +550,10 @@ freebsd-12-x86_64:
       - "_build/meson-logs"
 
 freebsd-13-x86_64:
-  extends: .only-origin
+  # FIXME: Temporarily only run the FreeBSD 13 CI on a schedule, rather than on
+  # every commit to origin, because it’s broken:
+  # https://gitlab.gnome.org/GNOME/glib/-/merge_requests/3740#note_1935427
+  extends: .only-schedules
   stage: build
   tags:
     - freebsd-13
@@ -672,6 +678,7 @@ scan-build:
             -Dsystemtap=true
             -Ddtrace=true
             -Dinstalled_tests=true
+            -Dintrospection=enabled
             _scan_build
     - ninja -C _scan_build scan-build
   artifacts:
@@ -701,6 +708,7 @@ scan-build:
             -Dsystemtap=true
             -Ddtrace=true
             -Dinstalled_tests=true
+            -Dintrospection=enabled
             _coverity_build
     - $HOME/cov-analysis-linux64-*/bin/cov-build --dir cov-int meson compile -C _coverity_build
     - tar cfz cov-int.tar.gz cov-int

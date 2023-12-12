@@ -28,6 +28,7 @@
 #include <string.h> // memcpy
 
 #include <girepository/girepository.h>
+#include "gibaseinfo-private.h"
 #include "girepository-private.h"
 #include "gitypelib-internal.h"
 #include "giconstantinfo.h"
@@ -40,13 +41,13 @@
  * GIConstantInfo represents a constant.
  *
  * A constant has a type associated which can be obtained by calling
- * gi_constant_info_get_type() and a value, which can be obtained by
+ * gi_constant_info_get_type_info() and a value, which can be obtained by
  * calling gi_constant_info_get_value().
  */
 
 
 /**
- * gi_constant_info_get_type:
+ * gi_constant_info_get_type_info:
  * @info: a #GIConstantInfo
  *
  * Obtain the type of the constant as a #GITypeInfo.
@@ -55,7 +56,7 @@
  *   gi_base_info_unref() when done.
  */
 GITypeInfo *
-gi_constant_info_get_type (GIConstantInfo *info)
+gi_constant_info_get_type_info (GIConstantInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
 
@@ -75,7 +76,7 @@ gi_constant_info_get_type (GIConstantInfo *info)
  *
  * Free the value returned from gi_constant_info_get_value().
  *
- * Since: 1.32
+ * Since: 2.80
  */
 void
 gi_constant_info_free_value (GIConstantInfo *info,
@@ -176,3 +177,11 @@ gi_constant_info_get_value (GIConstantInfo *info,
   return blob->size;
 }
 
+void
+gi_constant_info_class_init (gpointer g_class,
+                             gpointer class_data)
+{
+  GIBaseInfoClass *info_class = g_class;
+
+  info_class->info_type = GI_INFO_TYPE_CONSTANT;
+}

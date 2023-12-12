@@ -23,10 +23,10 @@ subdir('cmph')
 
 gir_dir_prefix = get_option('gir_dir_prefix')
 if gir_dir_prefix == '' or gir_dir_prefix == get_option('datadir')
-    gir_dir_prefix = get_option('datadir')
-    gir_dir_pc_prefix = '${datadir}'
+  gir_dir_prefix = get_option('datadir')
+  gir_dir_pc_prefix = '${datadir}'
 else
-    gir_dir_pc_prefix = join_paths('${prefix}', gir_dir_prefix)
+  gir_dir_pc_prefix = join_paths('${prefix}', gir_dir_prefix)
 endif
 
 glib_girdir = get_option('prefix') / gir_dir_prefix / 'gir-1.0'
@@ -45,6 +45,7 @@ girepo_headers = files(
   'giarginfo.h',
   'gibaseinfo.h',
   'gicallableinfo.h',
+  'gicallbackinfo.h',
   'giconstantinfo.h',
   'gienuminfo.h',
   'gifieldinfo.h',
@@ -54,17 +55,25 @@ girepo_headers = files(
   'gipropertyinfo.h',
   'giregisteredtypeinfo.h',
   'girepository.h',
-  'girffi.h',
   'gisignalinfo.h',
   'gistructinfo.h',
   'gitypeinfo.h',
   'gitypelib.h',
   'gitypes.h',
   'giunioninfo.h',
+  'giunresolvedinfo.h',
   'givfuncinfo.h',
 )
 
-install_headers(girepo_headers, install_dir: gir_includedir)
+girepo_ffi_headers = [
+  'girffi.h',
+]
+
+girepo_ffi_sources = files(
+  'girffi.c',
+)
+
+install_headers(girepo_headers + girepo_ffi_headers, install_dir: gir_includedir)
 
 gir_c_args = [
   '-DGI_COMPILATION',
@@ -110,7 +119,7 @@ if cc.get_id() != 'msvc'
   ])
 endif
 
-libgirepo_internals = static_library('girepository-internals',
+libgirepository_internals = static_library('girepository-internals',
   sources: [
     'girmodule.c',
     'girnode.c',
@@ -124,8 +133,8 @@ libgirepo_internals = static_library('girepository-internals',
   dependencies: [girepo_gthash_dep, libffi_dep],
 )
 
-libgirepo_internals_dep = declare_dependency(
-  link_with: libgirepo_internals,
+libgirepository_internals_dep = declare_dependency(
+  link_with: libgirepository_internals,
   dependencies: libffi_dep,
   include_directories: [girepoinc],
 )
@@ -135,6 +144,7 @@ girepo_sources = files(
   'giarginfo.c',
   'gibaseinfo.c',
   'gicallableinfo.c',
+  'gicallbackinfo.c',
   'giconstantinfo.c',
   'gienuminfo.c',
   'gifieldinfo.c',
@@ -151,6 +161,7 @@ girepo_sources = files(
   'gitypeinfo.c',
   'gitypelib.c',
   'giunioninfo.c',
+  'giunresolvedinfo.c',
   'givfuncinfo.c',
 )
 
@@ -164,8 +175,8 @@ if cc.get_id() != 'msvc'
   ])
 endif
 
-libgirepo = shared_library('girepository-2.0',
-  sources: girepo_sources + [gi_visibility_h],
+libgirepository = shared_library('girepository-2.0',
+  sources: girepo_sources + girepo_ffi_sources + [gi_visibility_h],
   include_directories: [configinc, girepoinc],
   c_args: gir_c_args,
   version: library_version,
@@ -178,13 +189,13 @@ libgirepo = shared_library('girepository-2.0',
     libgobject_dep,
     libgmodule_dep,
     libgio_dep,
-    libgirepo_internals_dep,
+    libgirepository_internals_dep,
   ],
   install: true,
 )
 
-libgirepo_dep = declare_dependency(
-  link_with: libgirepo,
+libgirepository_dep = declare_dependency(
+  link_with: libgirepository,
   dependencies: [libglib_dep, libgobject_dep, libgio_dep, libgmodule_dep],
   include_directories: [girepoinc],
 )
@@ -192,7 +203,7 @@ libgirepo_dep = declare_dependency(
 executable('gi-dump-types',
   sources: 'gi-dump-types.c',
   dependencies: [
-    libgirepo_dep,
+    libgirepository_dep,
     libgiounix_dep,
     libgiowin32_dep
   ],
@@ -204,7 +215,7 @@ pkgconfig_variables = [
   'typelibdir=${libdir}/girepository-1.0',
 ]
 
-pkg.generate(libgirepo,
+pkg.generate(libgirepository,
   name: 'girepository',
   version: glib_version,
   filebase: 'girepository-2.0',
@@ -214,3 +225,34 @@ pkg.generate(libgirepo,
   libraries: [libglib_dep, libgobject_dep],
 )
 
+if enable_gir
+  libgirepository_gir_sources = [
+    gi_visibility_h,
+    girepo_headers,
+    girepo_sources,
+  ]
+  libgirepository_gir_packages = [ 'girepository-2.0' ]
+  libgirepository_gir_args = [
+    '-DGI_COMPILATION',
+    '--symbol-prefix=gi',
+    '--identifier-prefix=GI',
+  ]
+
+  girepository_gir = gnome.generate_gir(libgirepository,
+    sources: libgirepository_gir_sources,
+    namespace: 'GIRepository',
+    nsversion: '2.0',
+    identifier_prefix: 'GI',
+    symbol_prefix: 'gi',
+    export_packages: libgirepository_gir_packages,
+    header: 'girepository/girepository.h',
+    includes: [ glib_gir[0], gmodule_gir[0], gobject_gir[0], gio_gir[0] ],
+    install: true,
+    dependencies: [ libglib_dep, libgobject_dep, libgmodule_dep, libgio_dep ],
+    extra_args: gir_args + libgirepository_gir_args,
+  )
+endif
+
+if build_tests
+  subdir('tests')
+endif

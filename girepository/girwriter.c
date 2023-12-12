@@ -165,7 +165,7 @@ xml_free (Xml *xml)
 static void
 check_unresolved (GIBaseInfo *info)
 {
-  if (gi_base_info_get_type (info) != GI_INFO_TYPE_UNRESOLVED)
+  if (gi_base_info_get_info_type (info) != GI_INFO_TYPE_UNRESOLVED)
     return;
 
   g_critical ("Found unresolved type '%s' '%s'\n",
@@ -423,13 +423,13 @@ write_field_info (const gchar *ns,
 
   write_attributes (file, (GIBaseInfo*) info);
 
-  type = gi_field_info_get_type (info);
+  type = gi_field_info_get_type_info (info);
 
   if (branch)
     {
       xml_printf (file, " branch=\"");
       gi_base_info_unref ((GIBaseInfo *)type);
-      type = gi_constant_info_get_type (branch);
+      type = gi_constant_info_get_type_info (branch);
       gi_constant_info_get_value (branch, &value);
       write_constant_value (ns, type, &value, file);
       xml_printf (file, "\"");
@@ -442,7 +442,7 @@ write_field_info (const gchar *ns,
     }
 
   interface = gi_type_info_get_interface (type);
-  if (interface && gi_base_info_get_type(interface) == GI_INFO_TYPE_CALLBACK)
+  if (interface && gi_base_info_get_info_type (interface) == GI_INFO_TYPE_CALLBACK)
     write_callback_info (ns, (GICallbackInfo *)interface, file);
   else
     write_type_info (ns, type, file);
@@ -555,7 +555,7 @@ write_callable_info (const gchar    *ns,
 
       write_attributes (file, (GIBaseInfo*) arg);
 
-      type = gi_arg_info_get_type (arg);
+      type = gi_arg_info_get_type_info (arg);
       write_type_info (ns, type, file);
 
       xml_end_element (file, "parameter");
@@ -607,7 +607,7 @@ write_function_info (const gchar    *ns,
           else if (flags & GI_FUNCTION_IS_GETTER)
             xml_printf (file, " glib:get-property=\"%s\"", property_name);
 
-          gi_base_info_unref (property);
+          gi_base_info_unref ((GIBaseInfo *) property);
         }
     }
 
@@ -661,7 +661,7 @@ write_struct_info (const gchar  *ns,
   type_name = gi_registered_type_info_get_type_name ((GIRegisteredTypeInfo*)info);
   type_init = gi_registered_type_info_get_type_init ((GIRegisteredTypeInfo*)info);
 
-  if (gi_base_info_get_type ((GIBaseInfo *)info) == GI_INFO_TYPE_BOXED)
+  if (gi_base_info_get_info_type ((GIBaseInfo *) info) == GI_INFO_TYPE_BOXED)
     {
       xml_start_element (file, "glib:boxed");
       xml_printf (file, " glib:name=\"%s\"", name);
@@ -813,7 +813,7 @@ write_constant_info (const gchar    *ns,
   xml_start_element (file, "constant");
   xml_printf (file, " name=\"%s\"", name);
 
-  type = gi_constant_info_get_type (info);
+  type = gi_constant_info_get_type_info (info);
   xml_printf (file, " value=\"");
 
   gi_constant_info_get_value (info, &value);
@@ -849,7 +849,7 @@ write_enum_info (const gchar *ns,
   type_init = gi_registered_type_info_get_type_init ((GIRegisteredTypeInfo*)info);
   error_domain = gi_enum_info_get_error_domain (info);
 
-  if (gi_base_info_get_type ((GIBaseInfo *)info) == GI_INFO_TYPE_ENUM)
+  if (gi_base_info_get_info_type ((GIBaseInfo *) info) == GI_INFO_TYPE_ENUM)
     xml_start_element (file, "enumeration");
   else
     xml_start_element (file, "bitfield");
@@ -1020,7 +1020,7 @@ write_property_info (const gchar    *ns,
 
   write_attributes (file, (GIBaseInfo*) info);
 
-  type = gi_property_info_get_type (info);
+  type = gi_property_info_get_type_info (info);
 
   write_type_info (ns, type, file);
 
@@ -1414,7 +1414,7 @@ gi_ir_writer_write (const char *filename,
       for (j = 0; j < n_infos; j++)
 	{
 	  GIBaseInfo *info = gi_repository_get_info (repository, cur_ns, j);
-	  switch (gi_base_info_get_type (info))
+	  switch (gi_base_info_get_info_type (info))
 	    {
 	    case GI_INFO_TYPE_FUNCTION:
 	      write_function_info (ns, (GIFunctionInfo *)info, xml);
@@ -1451,7 +1451,7 @@ gi_ir_writer_write (const char *filename,
 	      break;
 
 	    default:
-	      g_error ("unknown info type %d\n", gi_base_info_get_type (info));
+	      g_error ("unknown info type %d\n", gi_base_info_get_info_type (info));
 	    }
 
 	  gi_base_info_unref (info);

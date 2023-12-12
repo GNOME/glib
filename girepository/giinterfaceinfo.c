@@ -27,6 +27,7 @@
 #include <glib.h>
 
 #include <girepository/girepository.h>
+#include "gibaseinfo-private.h"
 #include "girepository-private.h"
 #include "gitypelib-internal.h"
 #include "giinterfaceinfo.h"
@@ -297,7 +298,7 @@ gi_interface_info_get_signal (GIInterfaceInfo *info,
  *
  * Returns: (transfer full): Info for the signal with name @name in @info, or
  * %NULL on failure.
- * Since: 1.34
+ * Since: 2.80
  */
 GISignalInfo *
 gi_interface_info_find_signal (GIInterfaceInfo *info,
@@ -311,7 +312,7 @@ gi_interface_info_find_signal (GIInterfaceInfo *info,
     {
       GISignalInfo *siginfo = gi_interface_info_get_signal (info, i);
 
-      if (g_strcmp0 (gi_base_info_get_name (siginfo), name) != 0)
+      if (g_strcmp0 (gi_base_info_get_name ((GIBaseInfo *) siginfo), name) != 0)
         {
           gi_base_info_unref ((GIBaseInfo*)siginfo);
           continue;
@@ -501,3 +502,11 @@ gi_interface_info_get_iface_struct (GIInterfaceInfo *info)
     return NULL;
 }
 
+void
+gi_interface_info_class_init (gpointer g_class,
+                              gpointer class_data)
+{
+  GIBaseInfoClass *info_class = g_class;
+
+  info_class->info_type = GI_INFO_TYPE_INTERFACE;
+}

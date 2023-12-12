@@ -29,6 +29,7 @@
 #include <glib.h>
 
 #include <girepository/girepository.h>
+#include "gibaseinfo-private.h"
 #include "girepository-private.h"
 #include "gitypelib-internal.h"
 #include "girffi.h"
@@ -59,7 +60,7 @@ signature_offset (GICallableInfo *info)
   GIRealInfo *rinfo = (GIRealInfo*)info;
   int sigoff = -1;
 
-  switch (rinfo->type)
+  switch (gi_base_info_get_info_type ((GIBaseInfo *) info))
     {
     case GI_INFO_TYPE_FUNCTION:
       sigoff = G_STRUCT_OFFSET (FunctionBlob, signature);
@@ -87,7 +88,7 @@ signature_offset (GICallableInfo *info)
  *
  * TODO
  *
- * Since: 1.34
+ * Since: 2.80
  * Returns: %TRUE if this #GICallableInfo can throw a #GError
  */
 gboolean
@@ -105,7 +106,7 @@ gi_callable_info_can_throw_gerror (GICallableInfo *info)
    * to support the other callables. For Functions and VFuncs,
    * also check their legacy flag for compatibility.
    */
-  switch (rinfo->type) {
+  switch (gi_base_info_get_info_type ((GIBaseInfo *) info)) {
   case GI_INFO_TYPE_FUNCTION:
     {
       FunctionBlob *blob;
@@ -141,13 +142,13 @@ gi_callable_info_can_throw_gerror (GICallableInfo *info)
  * or "this" object.
  *
  * Returns: %TRUE if @info is a method, %FALSE otherwise
- * Since: 1.34
+ * Since: 2.80
  */
 gboolean
 gi_callable_info_is_method (GICallableInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo*)info;
-  switch (rinfo->type) {
+  switch (gi_base_info_get_info_type ((GIBaseInfo *) info)) {
   case GI_INFO_TYPE_FUNCTION:
     {
       FunctionBlob *blob;
@@ -211,7 +212,7 @@ gi_callable_info_load_return_type (GICallableInfo *info,
 
   offset = signature_offset (info);
 
-  gi_type_info_init (type, (GIBaseInfo*)info, rinfo->typelib, offset);
+  gi_type_info_init ((GIBaseInfo *) type, (GIBaseInfo*)info, rinfo->typelib, offset);
 }
 
 /**
@@ -293,7 +294,7 @@ gi_callable_info_get_caller_owns (GICallableInfo *info)
  * Obtains the ownership transfer for the instance argument.
  * #GITransfer contains a list of possible transfer values.
  *
- * Since: 1.42
+ * Since: 2.80
  * Returns: the transfer mode of the instance argument
  */
 GITransfer
@@ -458,7 +459,7 @@ gi_callable_info_iterate_return_attributes (GICallableInfo   *info,
   if (iterator->data != NULL)
     next = (AttributeBlob *) iterator->data;
   else
-    next = _attribute_blob_find_first (info, blob_offset);
+    next = _attribute_blob_find_first ((GIBaseInfo *) info, blob_offset);
 
   if (next == NULL || next->offset != blob_offset || next >= after)
     return FALSE;
@@ -489,7 +490,7 @@ gi_callable_info_iterate_return_attributes (GICallableInfo   *info,
  * The @interface_type argument only applies if @return_tag is
  * %GI_TYPE_TAG_INTERFACE. Otherwise it is ignored.
  *
- * Since: 1.72
+ * Since: 2.80
  */
 void
 gi_type_tag_extract_ffi_return_value (GITypeTag         return_tag,
@@ -573,7 +574,7 @@ gi_type_info_extract_ffi_return_value (GITypeInfo                  *return_info,
   if (return_tag == GI_TYPE_TAG_INTERFACE)
     {
       GIBaseInfo *interface_info = gi_type_info_get_interface (return_info);
-      interface_type = gi_base_info_get_type (interface_info);
+      interface_type = gi_base_info_get_info_type (interface_info);
       gi_base_info_unref (interface_info);
     }
 
@@ -597,7 +598,7 @@ gi_type_info_extract_ffi_return_value (GITypeInfo                  *return_info,
  * TODO
  */
 gboolean
-gi_callable_info_invoke (GIFunctionInfo    *info,
+gi_callable_info_invoke (GICallableInfo    *info,
                          gpointer           function,
                          const GIArgument  *in_args,
                          int                n_in_args,
@@ -666,7 +667,7 @@ gi_callable_info_invoke (GIFunctionInfo    *info,
       switch (gi_arg_info_get_direction (ainfo))
         {
         case GI_DIRECTION_IN:
-          tinfo = gi_arg_info_get_type (ainfo);
+          tinfo = gi_arg_info_get_type_info (ainfo);
           atypes[i+offset] = gi_type_info_get_ffi_type (tinfo);
           gi_base_info_unref ((GIBaseInfo *)ainfo);
           gi_base_info_unref ((GIBaseInfo *)tinfo);
@@ -790,4 +791,13 @@ gi_callable_info_invoke (GIFunctionInfo    *info,
  out:
   gi_base_info_unref ((GIBaseInfo *)rinfo);
   return success;
+}
+
+void
+gi_callable_info_class_init (gpointer g_class,
+                             gpointer class_data)
+{
+  GIBaseInfoClass *info_class = g_class;
+
+  info_class->info_type = GI_INFO_TYPE_CALLABLE;
 }

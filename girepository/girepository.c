@@ -129,7 +129,7 @@ gi_repository_init (GIRepository *repository)
   repository->priv = gi_repository_get_instance_private (repository);
   repository->priv->typelibs
     = g_hash_table_new_full (g_str_hash, g_str_equal,
-			     (GDestroyNotify) NULL,
+			     (GDestroyNotify) g_free,
 			     (GDestroyNotify) gi_typelib_free);
   repository->priv->lazy_typelibs
     = g_hash_table_new_full (g_str_hash, g_str_equal,
@@ -184,7 +184,7 @@ init_globals (void)
     return;
 
   if (default_repository == NULL)
-    default_repository = g_object_new (GI_TYPE_REPOSITORY, NULL);
+    default_repository = gi_repository_new ();
 
   if (typelib_search_path == NULL)
     {
@@ -441,7 +441,9 @@ register_internal (GIRepository *repository,
       else
 	key = build_typelib_key (namespace, source);
 
-      g_hash_table_insert (repository->priv->typelibs, key, (void *)typelib);
+      g_hash_table_insert (repository->priv->typelibs,
+                           g_steal_pointer (&key),
+                           (void *)typelib);
     }
 
   /* These types might be resolved now, clear the cache */
@@ -468,7 +470,7 @@ register_internal (GIRepository *repository,
  * Returns: (transfer full): Zero-terminated string array of immediate versioned
  *   dependencies
  *
- * Since: 1.44
+ * Since: 2.80
  */
 char **
 gi_repository_get_immediate_dependencies (GIRepository *repository,
@@ -686,6 +688,23 @@ GIRepository *
 gi_repository_get_default (void)
 {
   return get_repository (NULL);
+}
+
+/**
+ * gi_repository_new:
+ *
+ * Create a new (non-singleton) #GIRepository.
+ *
+ * Most callers should use gi_repository_get_default() instead, as a singleton
+ * repository is more useful in most situations.
+ *
+ * Returns: (transfer full): a new #GIRepository
+ * Since: 2.80
+ */
+GIRepository *
+gi_repository_new (void)
+{
+  return g_object_new (GI_TYPE_REPOSITORY, NULL);
 }
 
 /**
@@ -943,7 +962,7 @@ find_by_error_domain_foreach (gpointer key,
  *
  * Returns: (transfer full): #GIEnumInfo representing metadata about @domain's
  * enum type, or %NULL
- * Since: 1.30
+ * Since: 2.80
  */
 GIEnumInfo *
 gi_repository_find_by_error_domain (GIRepository *repository,
@@ -958,7 +977,7 @@ gi_repository_find_by_error_domain (GIRepository *repository,
 				GUINT_TO_POINTER (domain));
 
   if (cached != NULL)
-    return gi_base_info_ref ((GIBaseInfo *)cached);
+    return (GIEnumInfo *) gi_base_info_ref ((GIBaseInfo *)cached);
 
   data.repository = repository;
   data.domain = domain;
@@ -971,13 +990,13 @@ gi_repository_find_by_error_domain (GIRepository *repository,
 
   if (data.result != NULL)
     {
-      cached = gi_info_new_full (data.result->blob_type,
-                                 repository,
-                                 NULL, data.result_typelib, data.result->offset);
+      cached = (GIEnumInfo *) gi_info_new_full (data.result->blob_type,
+                                                repository,
+                                                NULL, data.result_typelib, data.result->offset);
 
       g_hash_table_insert (repository->priv->info_by_error_domain,
 			   GUINT_TO_POINTER (domain),
-			   gi_base_info_ref (cached));
+			   gi_base_info_ref ((GIBaseInfo *) cached));
       return cached;
     }
   return NULL;
@@ -1002,7 +1021,7 @@ gi_repository_find_by_error_domain (GIRepository *repository,
  * returning a concrete class of #GLocalFile, which is a #GType we
  * see at runtime, but not statically.
  *
- * Since: 1.62
+ * Since: 2.80
  */
 void
 gi_repository_get_object_gtype_interfaces (GIRepository      *repository,
@@ -1034,7 +1053,7 @@ gi_repository_get_object_gtype_interfaces (GIRepository      *repository,
           if (base_info == NULL)
             continue;
 
-          if (gi_base_info_get_type (base_info) != GI_INFO_TYPE_INTERFACE)
+          if (gi_base_info_get_info_type (base_info) != GI_INFO_TYPE_INTERFACE)
             {
               /* FIXME - could this really happen? */
               gi_base_info_unref (base_info);

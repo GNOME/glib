@@ -34,6 +34,7 @@
 #include <girepository/giarginfo.h>
 #include <girepository/gibaseinfo.h>
 #include <girepository/gicallableinfo.h>
+#include <girepository/gicallbackinfo.h>
 #include <girepository/giconstantinfo.h>
 #include <girepository/gienuminfo.h>
 #include <girepository/gifieldinfo.h>
@@ -48,6 +49,7 @@
 #include <girepository/gitypelib.h>
 #include <girepository/gitypes.h>
 #include <girepository/giunioninfo.h>
+#include <girepository/giunresolvedinfo.h>
 #include <girepository/givfuncinfo.h>
 
 G_BEGIN_DECLS
@@ -100,6 +102,9 @@ GType         gi_repository_get_type      (void) G_GNUC_CONST;
 
 GI_AVAILABLE_IN_ALL
 GIRepository *gi_repository_get_default   (void);
+
+GI_AVAILABLE_IN_ALL
+GIRepository *gi_repository_new (void);
 
 GI_AVAILABLE_IN_ALL
 void          gi_repository_prepend_search_path (const char *directory);

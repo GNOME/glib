@@ -27,6 +27,7 @@
 #include <glib.h>
 
 #include <girepository/girepository.h>
+#include "gibaseinfo-private.h"
 #include "girepository-private.h"
 #include "gitypelib-internal.h"
 #include "gienuminfo.h"
@@ -76,7 +77,7 @@ gi_enum_info_get_n_values (GIEnumInfo *info)
  *
  * Returns: (transfer none): the string form of the error domain associated
  * with this enum, or %NULL.
- * Since: 1.30
+ * Since: 2.80
  */
 const gchar *
 gi_enum_info_get_error_domain (GIEnumInfo *info)
@@ -130,7 +131,7 @@ gi_enum_info_get_value (GIEnumInfo *info,
  * Obtain the number of methods that this enum type has.
  *
  * Returns: number of methods
- * Since: 1.30
+ * Since: 2.80
  */
 gint
 gi_enum_info_get_n_methods (GIEnumInfo *info)
@@ -155,7 +156,7 @@ gi_enum_info_get_n_methods (GIEnumInfo *info)
  *
  * Returns: (transfer full): the #GIFunctionInfo. Free the struct by calling
  *   gi_base_info_unref() when done.
- * Since: 1.30
+ * Since: 2.80
  */
 GIFunctionInfo *
 gi_enum_info_get_method (GIEnumInfo *info,
@@ -207,6 +208,15 @@ gi_enum_info_get_storage_type (GIEnumInfo *info)
   return blob->storage_type;
 }
 
+void
+gi_enum_info_class_init (gpointer g_class,
+                         gpointer class_data)
+{
+  GIBaseInfoClass *info_class = g_class;
+
+  info_class->info_type = GI_INFO_TYPE_ENUM;
+}
+
 /**
  * gi_value_info_get_value:
  * @info: a #GIValueInfo
@@ -232,4 +242,13 @@ gi_value_info_get_value (GIValueInfo *info)
     return (gint64)(guint32)blob->value;
   else
     return (gint64)blob->value;
+}
+
+void
+gi_value_info_class_init (gpointer g_class,
+                          gpointer class_data)
+{
+  GIBaseInfoClass *info_class = g_class;
+
+  info_class->info_type = GI_INFO_TYPE_VALUE;
 }

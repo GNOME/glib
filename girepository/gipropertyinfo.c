@@ -27,6 +27,7 @@
 #include <glib.h>
 
 #include <girepository/girepository.h>
+#include "gibaseinfo-private.h"
 #include "girepository-private.h"
 #include "gitypelib-internal.h"
 #include "gipropertyinfo.h"
@@ -80,7 +81,7 @@ gi_property_info_get_flags (GIPropertyInfo *info)
 }
 
 /**
- * gi_property_info_get_type:
+ * gi_property_info_get_type_info:
  * @info: a #GIPropertyInfo
  *
  * Obtain the type information for the property @info.
@@ -89,7 +90,7 @@ gi_property_info_get_flags (GIPropertyInfo *info)
  *   gi_base_info_unref() when done.
  */
 GITypeInfo *
-gi_property_info_get_type (GIPropertyInfo *info)
+gi_property_info_get_type_info (GIPropertyInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
 
@@ -160,7 +161,7 @@ gi_property_info_get_setter (GIPropertyInfo *info)
     return NULL;
 
   container = rinfo->container;
-  parent_type = gi_base_info_get_type (container);
+  parent_type = gi_base_info_get_info_type (container);
   if (parent_type == GI_INFO_TYPE_OBJECT)
     return gi_object_info_get_method ((GIObjectInfo *) container, blob->setter);
   else if (parent_type == GI_INFO_TYPE_INTERFACE)
@@ -199,11 +200,20 @@ gi_property_info_get_getter (GIPropertyInfo *info)
     return NULL;
 
   container = rinfo->container;
-  parent_type = gi_base_info_get_type (container);
+  parent_type = gi_base_info_get_info_type (container);
   if (parent_type == GI_INFO_TYPE_OBJECT)
     return gi_object_info_get_method ((GIObjectInfo *) container, blob->getter);
   else if (parent_type == GI_INFO_TYPE_INTERFACE)
     return gi_interface_info_get_method ((GIInterfaceInfo *) container, blob->getter);
   else
     return NULL;
+}
+
+void
+gi_property_info_class_init (gpointer g_class,
+                             gpointer class_data)
+{
+  GIBaseInfoClass *info_class = g_class;
+
+  info_class->info_type = GI_INFO_TYPE_PROPERTY;
 }

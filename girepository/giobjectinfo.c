@@ -27,6 +27,7 @@
 #include <glib.h>
 
 #include <girepository/girepository.h>
+#include "gibaseinfo-private.h"
 #include "girepository-private.h"
 #include "gitypelib-internal.h"
 #include "giobjectinfo.h"
@@ -141,7 +142,7 @@ gi_object_info_get_abstract (GIObjectInfo *info)
  *
  * Returns: %TRUE if the object type is final
  *
- * Since: 1.70
+ * Since: 2.80
  */
 gboolean
 gi_object_info_get_final (GIObjectInfo *info)
@@ -496,7 +497,7 @@ gi_object_info_find_method_using_interfaces (GIObjectInfo  *info,
 
   result = gi_object_info_find_method (info, name);
   if (result)
-    implementor_result = gi_base_info_ref ((GIBaseInfo*) info);
+    implementor_result = (GIObjectInfo *) gi_base_info_ref ((GIBaseInfo*) info);
 
   if (result == NULL)
     {
@@ -514,7 +515,7 @@ gi_object_info_find_method_using_interfaces (GIObjectInfo  *info,
 
 	  if (result != NULL)
 	    {
-	      implementor_result = iface_info;
+	      implementor_result = (GIObjectInfo *) iface_info;
 	      break;
 	    }
 	  gi_base_info_unref ((GIBaseInfo*) iface_info);
@@ -607,7 +608,7 @@ gi_object_info_find_signal (GIObjectInfo *info,
     {
       GISignalInfo *siginfo = gi_object_info_get_signal (info, i);
 
-      if (g_strcmp0 (gi_base_info_get_name (siginfo), name) != 0)
+      if (g_strcmp0 (gi_base_info_get_name ((GIBaseInfo *) siginfo), name) != 0)
 	{
 	  gi_base_info_unref ((GIBaseInfo*)siginfo);
 	  continue;
@@ -750,7 +751,7 @@ gi_object_info_find_vfunc_using_interfaces (GIObjectInfo  *info,
 
   result = gi_object_info_find_vfunc (info, name);
   if (result)
-    implementor_result = gi_base_info_ref ((GIBaseInfo*) info);
+    implementor_result = (GIObjectInfo *) gi_base_info_ref ((GIBaseInfo*) info);
 
   if (result == NULL)
     {
@@ -768,7 +769,7 @@ gi_object_info_find_vfunc_using_interfaces (GIObjectInfo  *info,
 
 	  if (result != NULL)
 	    {
-	      implementor_result = iface_info;
+	      implementor_result = (GIObjectInfo *) iface_info;
 	      break;
 	    }
 	  gi_base_info_unref ((GIBaseInfo*) iface_info);
@@ -881,7 +882,7 @@ _get_func(GIObjectInfo *info,
   GIObjectInfo *parent_info;
   gpointer func = NULL;
 
-  parent_info = gi_base_info_ref (info);
+  parent_info = (GIObjectInfo *) gi_base_info_ref ((GIBaseInfo *) info);
   while (parent_info != NULL)
     {
       parents = g_slist_prepend (parents, parent_info);
@@ -1096,4 +1097,13 @@ gi_object_info_get_get_value_function_pointer (GIObjectInfo *info)
   g_return_val_if_fail (GI_IS_OBJECT_INFO (info), NULL);
 
   return (GIObjectInfoGetValueFunction)_get_func(info, (SymbolGetter)gi_object_info_get_get_value_function);
+}
+
+void
+gi_object_info_class_init (gpointer g_class,
+                           gpointer class_data)
+{
+  GIBaseInfoClass *info_class = g_class;
+
+  info_class->info_type = GI_INFO_TYPE_OBJECT;
 }

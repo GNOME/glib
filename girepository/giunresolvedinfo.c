@@ -1,8 +1,8 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*-
- * GObject introspection: Constant
+ * GObject introspection: Callable implementation
  *
  * Copyright (C) 2005 Matthias Clasen
- * Copyright (C) 2008,2009 Red Hat, Inc.
+ * Copyright 2023 GNOME Foundation, Inc.
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  *
@@ -22,34 +22,31 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#pragma once
+#include "config.h"
 
-#if !defined (__GIREPOSITORY_H_INSIDE__) && !defined (GI_COMPILATION)
-#error "Only <girepository.h> can be included directly."
-#endif
+#include <stdlib.h>
 
-#include <girepository/gitypes.h>
+#include <glib.h>
 
-G_BEGIN_DECLS
+#include <girepository/girepository.h>
+#include "gibaseinfo-private.h"
+#include "girepository-private.h"
+#include "gitypelib-internal.h"
+#include "giunresolvedinfo.h"
 
 /**
- * GI_IS_CONSTANT_INFO
- * @info: an info structure
+ * SECTION:giunresolved
+ * @title: GIUnresolvedInfo
+ * @short_description: Struct representing an unresolved symbol
  *
- * Checks if @info is a #GIConstantInfo.
+ * GIUnresolvedInfo represents an unresolved symbol.
  */
-#define GI_IS_CONSTANT_INFO(info) \
-    (gi_base_info_get_info_type ((GIBaseInfo*) info) ==  GI_INFO_TYPE_CONSTANT)
 
+void
+gi_unresolved_info_class_init (gpointer g_class,
+                               gpointer class_data)
+{
+  GIBaseInfoClass *info_class = g_class;
 
-GI_AVAILABLE_IN_ALL
-GITypeInfo * gi_constant_info_get_type_info (GIConstantInfo *info);
-
-GI_AVAILABLE_IN_ALL
-void         gi_constant_info_free_value (GIConstantInfo *info,
-                                          GIArgument     *value);
-
-GI_AVAILABLE_IN_ALL
-gint         gi_constant_info_get_value (GIConstantInfo *info,
-                                         GIArgument     *value);
-G_END_DECLS
+  info_class->info_type = GI_INFO_TYPE_UNRESOLVED;
+}

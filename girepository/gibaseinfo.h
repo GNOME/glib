@@ -48,11 +48,11 @@ typedef struct {
   gpointer data4;
 } GIAttributeIter;
 
-#define GI_TYPE_BASE_INFO	(gi_base_info_gtype_get_type ())
+#define GI_TYPE_BASE_INFO	(gi_base_info_get_type ())
 
 
 GI_AVAILABLE_IN_ALL
-GType                  gi_base_info_gtype_get_type   (void) G_GNUC_CONST;
+GType                  gi_base_info_get_type         (void) G_GNUC_CONST;
 
 GI_AVAILABLE_IN_ALL
 GIBaseInfo *           gi_base_info_ref              (GIBaseInfo   *info);
@@ -61,7 +61,7 @@ GI_AVAILABLE_IN_ALL
 void                   gi_base_info_unref            (GIBaseInfo   *info);
 
 GI_AVAILABLE_IN_ALL
-GIInfoType             gi_base_info_get_type         (GIBaseInfo   *info);
+GIInfoType             gi_base_info_get_info_type    (GIBaseInfo   *info);
 
 GI_AVAILABLE_IN_ALL
 const gchar *          gi_base_info_get_name         (GIBaseInfo   *info);

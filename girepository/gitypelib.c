@@ -32,6 +32,15 @@
 #include "gitypelib-internal.h"
 #include "gitypelib.h"
 
+/**
+ * GITypelib:
+ *
+ * `GITypelib` represents a loaded `.typelib` file, which contains a description
+ * of a single module’s API.
+ *
+ * Since: 2.80
+ */
+
 typedef struct {
   GITypelib *typelib;
   GSList *context_stack;
@@ -2242,7 +2251,7 @@ static GSList *library_paths;
  * path (ie. LD_LIBRARY_PATH and DT_RPATH in ELF systems).
  * See the documentation of your dynamic linker for full details.
  *
- * Since: 1.36
+ * Since: 2.80
  */
 void
 gi_repository_prepend_library_path (const char *directory)
@@ -2369,15 +2378,17 @@ gi_typelib_ensure_open (GITypelib *typelib)
 
 /**
  * gi_typelib_new_from_memory: (skip)
- * @memory: address of memory chunk containing the typelib
+ * @memory: (array length=len): address of memory chunk containing the typelib
  * @len: length of memory chunk containing the typelib
  * @error: a #GError
  *
- * Creates a new #GITypelib from a memory location.  The memory block
- * pointed to by @typelib will be automatically g_free()d when the
+ * Creates a new `GITypelib` from a memory location.
+ *
+ * The memory block pointed to by @typelib will be automatically freed when the
  * repository is destroyed.
  *
- * Returns: the new #GITypelib
+ * Returns: (transfer full): the new #GITypelib
+ * Since: 2.80
  */
 GITypelib *
 gi_typelib_new_from_memory (guint8  *memory,
@@ -2400,13 +2411,14 @@ gi_typelib_new_from_memory (guint8  *memory,
 
 /**
  * gi_typelib_new_from_const_memory: (skip)
- * @memory: address of memory chunk containing the typelib
+ * @memory: (array length=len): address of memory chunk containing the typelib
  * @len: length of memory chunk containing the typelib
- * @error: A #GError
+ * @error: a #GError
  *
- * Creates a new #GITypelib from a memory location.
+ * Creates a new `GITypelib` from a memory location.
  *
- * Returns: the new #GITypelib
+ * Returns: (transfer full): the new #GITypelib
+ * Since: 2.80
  */
 GITypelib *
 gi_typelib_new_from_const_memory (const guchar  *memory,
@@ -2429,12 +2441,14 @@ gi_typelib_new_from_const_memory (const guchar  *memory,
 
 /**
  * gi_typelib_new_from_mapped_file: (skip)
- * @mfile: a #GMappedFile, that will be free'd when the repository is destroyed
+ * @mfile: (transfer full): a [type@GLib.MappedFile], that will be freed when
+ *   the repository is destroyed
  * @error: a #GError
  *
- * Creates a new #GITypelib from a #GMappedFile.
+ * Creates a new `GITypelib` from a [type@GLib.MappedFile].
  *
- * Returns: the new #GITypelib
+ * Returns: (transfer full): the new #GITypelib
+ * Since: 2.80
  */
 GITypelib *
 gi_typelib_new_from_mapped_file (GMappedFile  *mfile,
@@ -2458,9 +2472,11 @@ gi_typelib_new_from_mapped_file (GMappedFile  *mfile,
 
 /**
  * gi_typelib_free:
- * @typelib: a #GITypelib
+ * @typelib: (transfer full): a #GITypelib
  *
- * Free a #GITypelib.
+ * Free a `GITypelib`.
+ *
+ * Since: 2.80
  */
 void
 gi_typelib_free (GITypelib *typelib)
@@ -2480,11 +2496,12 @@ gi_typelib_free (GITypelib *typelib)
 
 /**
  * gi_typelib_get_namespace:
- * @typelib: TODO
+ * @typelib: a #GITypelib
  *
- * TODO
+ * Get the name of the namespace represented by @typelib.
  *
- * Returns: TODO
+ * Returns: name of the namespace represented by @typelib
+ * Since: 2.80
  */
 const gchar *
 gi_typelib_get_namespace (GITypelib *typelib)
@@ -2496,11 +2513,13 @@ gi_typelib_get_namespace (GITypelib *typelib)
  * gi_typelib_symbol:
  * @typelib: the typelib
  * @symbol_name: name of symbol to be loaded
- * @symbol: returns a pointer to the symbol value
+ * @symbol: (out) (nullable): returns a pointer to the symbol value, or `NULL`
+ *   on failure
  *
- * Loads a symbol from #GITypelib.
+ * Loads a symbol from a `GITypelib`.
  *
- * Returns: #TRUE on success
+ * Returns: true on success
+ * Since: 2.80
  */
 gboolean
 gi_typelib_symbol (GITypelib *typelib, const char *symbol_name, gpointer *symbol)
