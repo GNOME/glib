@@ -148,11 +148,16 @@ def get_signal_name(id):
     id = long(id)
     if id == 0:
         return None
-    val = read_global_var("g_signal_nodes")
-    max_s = read_global_var("g_n_signal_nodes")
-    max_s = long(max_s)
-    if id < max_s:
-        return val[id]["name"].string()
+
+    try:
+        val = read_global_var("g_signal_nodes")
+        max_s = read_global_var("g_n_signal_nodes")
+        max_s = long(max_s)
+        if id < max_s:
+            return val[id]["name"].string()
+    except gdb.error:
+        return None
+
     return None
 
 
