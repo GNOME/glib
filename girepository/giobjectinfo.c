@@ -60,19 +60,18 @@
  */
 static gint32
 gi_object_info_get_field_offset (GIObjectInfo *info,
-                                 gint          n)
+                                 guint         n)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header = (Header *)rinfo->typelib->data;
   ObjectBlob *blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
   guint32 offset;
-  gint i;
   FieldBlob *field_blob;
 
   offset = rinfo->offset + header->object_blob_size
     + (blob->n_interfaces + blob->n_interfaces % 2) * 2;
 
-  for (i = 0; i < n; i++)
+  for (guint i = 0; i < n; i++)
     {
       field_blob = (FieldBlob *)&rinfo->typelib->data[offset];
       offset += header->field_blob_size;
@@ -234,7 +233,7 @@ gi_object_info_get_type_init_function_name (GIObjectInfo *info)
  *
  * Returns: number of interfaces
  */
-gint
+guint
 gi_object_info_get_n_interfaces (GIObjectInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -260,7 +259,7 @@ gi_object_info_get_n_interfaces (GIObjectInfo *info)
  */
 GIInterfaceInfo *
 gi_object_info_get_interface (GIObjectInfo *info,
-                              gint          n)
+                              guint         n)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   ObjectBlob *blob;
@@ -282,7 +281,7 @@ gi_object_info_get_interface (GIObjectInfo *info,
  *
  * Returns: number of fields
  */
-gint
+guint
 gi_object_info_get_n_fields (GIObjectInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -308,7 +307,7 @@ gi_object_info_get_n_fields (GIObjectInfo *info)
  */
 GIFieldInfo *
 gi_object_info_get_field (GIObjectInfo *info,
-                          gint          n)
+                          guint         n)
 {
   gint offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -329,7 +328,7 @@ gi_object_info_get_field (GIObjectInfo *info,
  *
  * Returns: number of properties
  */
-gint
+guint
 gi_object_info_get_n_properties (GIObjectInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -354,7 +353,7 @@ gi_object_info_get_n_properties (GIObjectInfo *info)
  */
 GIPropertyInfo *
 gi_object_info_get_property (GIObjectInfo *info,
-                             gint          n)
+                             guint         n)
 {
   gint offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -385,7 +384,7 @@ gi_object_info_get_property (GIObjectInfo *info,
  *
  * Returns: number of methods
  */
-gint
+guint
 gi_object_info_get_n_methods (GIObjectInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -411,7 +410,7 @@ gi_object_info_get_n_methods (GIObjectInfo *info)
  */
 GIFunctionInfo *
 gi_object_info_get_method (GIObjectInfo *info,
-                           gint          n)
+                           guint         n)
 {
   gint offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -536,7 +535,7 @@ gi_object_info_find_method_using_interfaces (GIObjectInfo  *info,
  *
  * Returns: number of signals
  */
-gint
+guint
 gi_object_info_get_n_signals (GIObjectInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -562,7 +561,7 @@ gi_object_info_get_n_signals (GIObjectInfo *info)
  */
 GISignalInfo *
 gi_object_info_get_signal (GIObjectInfo *info,
-                           gint          n)
+                           guint         n)
 {
   gint offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -600,11 +599,10 @@ GISignalInfo *
 gi_object_info_find_signal (GIObjectInfo *info,
                             const gchar  *name)
 {
-  gint n_signals;
-  gint i;
+  guint n_signals;
 
   n_signals = gi_object_info_get_n_signals (info);
-  for (i = 0; i < n_signals; i++)
+  for (guint i = 0; i < n_signals; i++)
     {
       GISignalInfo *siginfo = gi_object_info_get_signal (info, i);
 
@@ -628,7 +626,7 @@ gi_object_info_find_signal (GIObjectInfo *info,
  *
  * Returns: number of virtual functions
  */
-gint
+guint
 gi_object_info_get_n_vfuncs (GIObjectInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -654,7 +652,7 @@ gi_object_info_get_n_vfuncs (GIObjectInfo *info)
  */
 GIVFuncInfo *
 gi_object_info_get_vfunc (GIObjectInfo *info,
-                          gint          n)
+                          guint         n)
 {
   gint offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -790,7 +788,7 @@ gi_object_info_find_vfunc_using_interfaces (GIObjectInfo  *info,
  *
  * Returns: number of constants
  */
-gint
+guint
 gi_object_info_get_n_constants (GIObjectInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -816,7 +814,7 @@ gi_object_info_get_n_constants (GIObjectInfo *info)
  */
 GIConstantInfo *
 gi_object_info_get_constant (GIObjectInfo *info,
-                             gint          n)
+                             guint         n)
 {
   gint offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;

@@ -1040,7 +1040,6 @@ write_object_info (const gchar  *ns,
   gboolean is_final;
   GIObjectInfo *pnode;
   GIStructInfo *class_struct;
-  gint i;
 
   name = gi_base_info_get_name ((GIBaseInfo *)info);
   deprecated = gi_base_info_is_deprecated ((GIBaseInfo *)info);
@@ -1101,7 +1100,7 @@ write_object_info (const gchar  *ns,
 
   if (gi_object_info_get_n_interfaces (info) > 0)
     {
-      for (i = 0; i < gi_object_info_get_n_interfaces (info); i++)
+      for (guint i = 0; i < gi_object_info_get_n_interfaces (info); i++)
 	{
 	  GIInterfaceInfo *imp = gi_object_info_get_interface (info, i);
           xml_start_element (file, "implements");
@@ -1111,42 +1110,42 @@ write_object_info (const gchar  *ns,
 	}
     }
 
-  for (i = 0; i < gi_object_info_get_n_fields (info); i++)
+  for (guint i = 0; i < gi_object_info_get_n_fields (info); i++)
     {
       GIFieldInfo *field = gi_object_info_get_field (info, i);
       write_field_info (ns, field, NULL, file);
       gi_base_info_unref ((GIBaseInfo *)field);
     }
 
-  for (i = 0; i < gi_object_info_get_n_methods (info); i++)
+  for (guint i = 0; i < gi_object_info_get_n_methods (info); i++)
     {
       GIFunctionInfo *function = gi_object_info_get_method (info, i);
       write_function_info (ns, function, file);
       gi_base_info_unref ((GIBaseInfo *)function);
     }
 
-  for (i = 0; i < gi_object_info_get_n_properties (info); i++)
+  for (guint i = 0; i < gi_object_info_get_n_properties (info); i++)
     {
       GIPropertyInfo *prop = gi_object_info_get_property (info, i);
       write_property_info (ns, prop, file);
       gi_base_info_unref ((GIBaseInfo *)prop);
     }
 
-  for (i = 0; i < gi_object_info_get_n_signals (info); i++)
+  for (guint i = 0; i < gi_object_info_get_n_signals (info); i++)
     {
       GISignalInfo *signal = gi_object_info_get_signal (info, i);
       write_signal_info (ns, signal, file);
       gi_base_info_unref ((GIBaseInfo *)signal);
     }
 
-  for (i = 0; i < gi_object_info_get_n_vfuncs (info); i++)
+  for (guint i = 0; i < gi_object_info_get_n_vfuncs (info); i++)
     {
       GIVFuncInfo *vfunc = gi_object_info_get_vfunc (info, i);
       write_vfunc_info (ns, vfunc, file);
       gi_base_info_unref ((GIBaseInfo *)vfunc);
     }
 
-  for (i = 0; i < gi_object_info_get_n_constants (info); i++)
+  for (guint i = 0; i < gi_object_info_get_n_constants (info); i++)
     {
       GIConstantInfo *constant = gi_object_info_get_constant (info, i);
       write_constant_info (ns, constant, file);
