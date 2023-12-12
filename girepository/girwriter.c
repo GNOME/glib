@@ -650,9 +650,8 @@ write_struct_info (const gchar  *ns,
   gboolean deprecated;
   gboolean is_gtype_struct;
   gboolean foreign;
-  gint i;
   gint size;
-  int n_elts;
+  guint n_elts;
 
   name = gi_base_info_get_name ((GIBaseInfo *)info);
   deprecated = gi_base_info_is_deprecated ((GIBaseInfo *)info);
@@ -702,14 +701,14 @@ write_struct_info (const gchar  *ns,
   n_elts = gi_struct_info_get_n_fields (info) + gi_struct_info_get_n_methods (info);
   if (n_elts > 0)
     {
-      for (i = 0; i < gi_struct_info_get_n_fields (info); i++)
+      for (guint i = 0; i < gi_struct_info_get_n_fields (info); i++)
 	{
 	  GIFieldInfo *field = gi_struct_info_get_field (info, i);
 	  write_field_info (ns, field, NULL, file);
 	  gi_base_info_unref ((GIBaseInfo *)field);
 	}
 
-      for (i = 0; i < gi_struct_info_get_n_methods (info); i++)
+      for (guint i = 0; i < gi_struct_info_get_n_methods (info); i++)
 	{
 	  GIFunctionInfo *function = gi_struct_info_get_method (info, i);
 	  write_function_info (ns, function, file);

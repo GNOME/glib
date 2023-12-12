@@ -43,22 +43,22 @@ G_BEGIN_DECLS
 
 
 GI_AVAILABLE_IN_ALL
-gint             gi_struct_info_get_n_fields    (GIStructInfo *info);
+guint            gi_struct_info_get_n_fields    (GIStructInfo *info);
 
 GI_AVAILABLE_IN_ALL
 GIFieldInfo *    gi_struct_info_get_field       (GIStructInfo *info,
-                                                 gint          n);
+                                                 guint         n);
 
 GI_AVAILABLE_IN_ALL
 GIFieldInfo *    gi_struct_info_find_field      (GIStructInfo *info,
                                                  const gchar  *name);
 
 GI_AVAILABLE_IN_ALL
-gint             gi_struct_info_get_n_methods   (GIStructInfo *info);
+guint            gi_struct_info_get_n_methods   (GIStructInfo *info);
 
 GI_AVAILABLE_IN_ALL
 GIFunctionInfo * gi_struct_info_get_method      (GIStructInfo *info,
-                                                 gint          n);
+                                                 guint         n);
 
 GI_AVAILABLE_IN_ALL
 GIFunctionInfo * gi_struct_info_find_method     (GIStructInfo *info,
