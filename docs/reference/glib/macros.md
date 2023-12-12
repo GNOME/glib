@@ -868,3 +868,29 @@ by application programmers.
 :   A macro that should be defined before including the `glib.h` header.
     If it is defined, no compiler warnings will be produced for uses
     of deprecated GLib APIs.
+
+
+## Version checking
+
+`GLIB_MAJOR_VERSION`
+
+:   A macro that evaluates to the major component of the version of GLib,
+    e.g. `1` for version `1.2.3`.
+
+
+`GLIB_MINOR_VERSION`
+
+:   A macro that evaluates to the minor component of the version of GLib,
+    e.g. `2` for version `1.2.3`.
+
+
+`GLIB_MICRO_VERSION`
+
+:   A macro that evaluates to the micro component of the version of GLib,
+    e.g. `3` for version `1.2.3`.
+
+
+`GLIB_CHECK_VERSION (major, minor, micro)`
+
+:   A macro that evaluates to true if the version of GLib is newer than
+    the given version tuple.
