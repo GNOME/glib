@@ -719,12 +719,12 @@ gi_repository_new (void)
  *
  * Returns: number of metadata entries
  */
-gint
+guint
 gi_repository_get_n_infos (GIRepository *repository,
 			   const gchar  *namespace)
 {
   GITypelib *typelib;
-  gint n_interfaces = 0;
+  guint n_interfaces = 0;
 
   g_return_val_if_fail (namespace != NULL, -1);
 
@@ -744,7 +744,7 @@ gi_repository_get_n_infos (GIRepository *repository,
  * @repository: (allow-none): A #GIRepository or %NULL for the singleton
  *   process-global default #GIRepository
  * @namespace_: Namespace to inspect
- * @index: 0-based offset into namespace metadata for entry
+ * @idx: 0-based offset into namespace metadata for entry
  *
  * This function returns a particular metadata entry in the
  * given namespace @namespace_.  The namespace must have
@@ -757,7 +757,7 @@ gi_repository_get_n_infos (GIRepository *repository,
 GIBaseInfo *
 gi_repository_get_info (GIRepository *repository,
 			const gchar  *namespace,
-			gint          index)
+			guint         idx)
 {
   GITypelib *typelib;
   DirEntry *entry;
@@ -770,7 +770,7 @@ gi_repository_get_info (GIRepository *repository,
 
   g_return_val_if_fail (typelib != NULL, NULL);
 
-  entry = gi_typelib_get_dir_entry (typelib, index + 1);
+  entry = gi_typelib_get_dir_entry (typelib, idx + 1);
   if (entry == NULL)
     return NULL;
   return gi_info_new_full (entry->blob_type,
@@ -1026,7 +1026,7 @@ gi_repository_find_by_error_domain (GIRepository *repository,
 void
 gi_repository_get_object_gtype_interfaces (GIRepository      *repository,
                                            GType              gtype,
-                                           guint             *n_interfaces_out,
+                                           gsize             *n_interfaces_out,
                                            GIInterfaceInfo ***interfaces_out)
 {
   GTypeInterfaceCache *cache;
