@@ -839,7 +839,6 @@ write_enum_info (const gchar *ns,
   const gchar *type_init;
   const gchar *error_domain;
   gboolean deprecated;
-  gint i;
 
   name = gi_base_info_get_name ((GIBaseInfo *)info);
   deprecated = gi_base_info_is_deprecated ((GIBaseInfo *)info);
@@ -864,7 +863,7 @@ write_enum_info (const gchar *ns,
 
   write_attributes (file, (GIBaseInfo*) info);
 
-  for (i = 0; i < gi_enum_info_get_n_values (info); i++)
+  for (guint i = 0; i < gi_enum_info_get_n_values (info); i++)
     {
       GIValueInfo *value = gi_enum_info_get_value (info, i);
       write_value_info (ns, value, file);
