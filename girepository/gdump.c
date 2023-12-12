@@ -521,33 +521,41 @@ dump_error_quark (GQuark quark, const char *symbol, GOutputStream *out)
 
 /**
  * gi_repository_dump:
- * @arg: Comma-separated pair of input and output filenames
+ * @input_filename: (type filename): Input filename (for example `input.txt`)
+ * @output_filename: (type filename): Output filename (for example `output.xml`)
  * @error: a %GError
  *
- * Argument specified is a comma-separated pair of filenames; i.e. of
- * the form "input.txt,output.xml".  The input file should be a
+ * Dump the introspection data from the types specified in @input_filename to
+ * @output_filename.
+ *
+ * The input file should be a
  * UTF-8 Unix-line-ending text file, with each line containing either
- * "get-type:" followed by the name of a GType _get_type function, or
- * "error-quark:" followed by the name of an error quark function.  No
- * extra whitespace is allowed.
+ * `get-type:` followed by the name of a [type@GObject.Type] `_get_type`
+ * function, or `error-quark:` followed by the name of an error quark function.
+ * No extra whitespace is allowed.
  *
- * The output file should already exist, but be empty.  This function will
- * overwrite its contents.
+ * This function will overwrite the contents of the output file.
  *
- * Returns: %TRUE on success, %FALSE on error
+ * Returns: true on success, false on error
+ * Since: 2.80
  */
 #ifndef GI_COMPILATION
 static gboolean
-dump_irepository (const char *arg, GError **error) G_GNUC_UNUSED;
+dump_irepository (const char  *input_filename,
+                  const char  *output_filename,
+                  GError     **error) G_GNUC_UNUSED;
 static gboolean
-dump_irepository (const char *arg, GError **error)
+dump_irepository (const char  *input_filename,
+                  const char  *output_filename,
+                  GError     **error)
 #else
 gboolean
-gi_repository_dump (const char *arg, GError **error)
+gi_repository_dump (const char  *input_filename,
+                    const char  *output_filename,
+                    GError     **error)
 #endif
 {
   GHashTable *output_types;
-  char **args;
   GFile *input_file;
   GFile *output_file;
   GFileInputStream *input;
@@ -567,12 +575,8 @@ gi_repository_dump (const char *arg, GError **error)
       return FALSE;
     }
 
-  args = g_strsplit (arg, ",", 2);
-
-  input_file = g_file_new_for_path (args[0]);
-  output_file = g_file_new_for_path (args[1]);
-
-  g_strfreev (args);
+  input_file = g_file_new_for_path (input_filename);
+  output_file = g_file_new_for_path (output_filename);
 
   input = g_file_read (input_file, NULL, error);
   g_object_unref (input_file);

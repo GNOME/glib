@@ -203,7 +203,9 @@ GOptionGroup * gi_repository_get_option_group (void);
 
 
 GI_AVAILABLE_IN_ALL
-gboolean       gi_repository_dump  (const char *arg, GError **error);
+gboolean       gi_repository_dump  (const char  *input_filename,
+                                    const char  *output_filename,
+                                    GError     **error);
 
 /**
  * GIRepositoryError:

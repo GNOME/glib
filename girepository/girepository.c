@@ -1740,8 +1740,11 @@ gi_repository_introspect_cb (const char *option_name,
 			     GError **error)
 {
   GError *tmp_error = NULL;
-  gboolean ret = gi_repository_dump (value, &tmp_error);
-  if (!ret)
+  char **args;
+
+  args = g_strsplit (value, ",", 2);
+
+  if (!gi_repository_dump (args[0], args[1], &tmp_error))
     {
       g_error ("Failed to extract GType data: %s",
 	       tmp_error->message);
