@@ -95,7 +95,7 @@ gi_field_info_get_flags (GIFieldInfo *info)
  * Returns: the field size, in bits
  * Since: 2.80
  */
-gint
+gsize
 gi_field_info_get_size (GIFieldInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -119,7 +119,7 @@ gi_field_info_get_size (GIFieldInfo *info)
  * Returns: the field offset, in bytes
  * Since: 2.80
  */
-gint
+gsize
 gi_field_info_get_offset (GIFieldInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
