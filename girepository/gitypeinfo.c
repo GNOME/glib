@@ -276,8 +276,8 @@ gi_type_info_get_array_fixed_size (GITypeInfo *info)
   GIRealInfo *rinfo = (GIRealInfo *)info;
   SimpleTypeBlob *type;
 
-  g_return_val_if_fail (info != NULL, 0);
-  g_return_val_if_fail (GI_IS_TYPE_INFO (info), 0);
+  g_return_val_if_fail (info != NULL, -1);
+  g_return_val_if_fail (GI_IS_TYPE_INFO (info), -1);
 
   type = (SimpleTypeBlob *)&rinfo->typelib->data[rinfo->offset];
 
