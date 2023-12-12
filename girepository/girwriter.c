@@ -1077,19 +1077,19 @@ write_object_info (const gchar  *ns,
   if (is_fundamental)
     xml_printf (file, " glib:fundamental=\"1\"");
 
-  func = gi_object_info_get_unref_function (info);
+  func = gi_object_info_get_unref_function_name (info);
   if (func)
     xml_printf (file, " glib:unref-function=\"%s\"", func);
 
-  func = gi_object_info_get_ref_function (info);
+  func = gi_object_info_get_ref_function_name (info);
   if (func)
     xml_printf (file, " glib:ref-function=\"%s\"", func);
 
-  func = gi_object_info_get_set_value_function (info);
+  func = gi_object_info_get_set_value_function_name (info);
   if (func)
     xml_printf (file, " glib:set-value-function=\"%s\"", func);
 
-  func = gi_object_info_get_get_value_function (info);
+  func = gi_object_info_get_get_value_function_name (info);
   if (func)
     xml_printf (file, " glib:get-value-function=\"%s\"", func);
 

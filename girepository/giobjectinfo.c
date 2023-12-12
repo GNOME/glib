@@ -904,18 +904,18 @@ _get_func(GIObjectInfo *info,
 }
 
 /**
- * gi_object_info_get_ref_function:
+ * gi_object_info_get_ref_function_name:
  * @info: a #GIObjectInfo
  *
  * Obtain the symbol name of the function that should be called to ref this
  * object type. It's mainly used fundamental types. The type signature for
  * the symbol is %GIObjectInfoRefFunction, to fetch the function pointer
- * see gi_object_info_get_ref_function().
+ * see gi_object_info_get_ref_function_name().
  *
  * Returns: (nullable): the symbol or %NULL
  */
 const char *
-gi_object_info_get_ref_function (GIObjectInfo *info)
+gi_object_info_get_ref_function_name (GIObjectInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   ObjectBlob *blob;
@@ -948,22 +948,22 @@ gi_object_info_get_ref_function_pointer (GIObjectInfo *info)
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_OBJECT_INFO (info), NULL);
 
-  return (GIObjectInfoRefFunction)_get_func(info, (SymbolGetter)gi_object_info_get_ref_function);
+  return (GIObjectInfoRefFunction)_get_func(info, (SymbolGetter)gi_object_info_get_ref_function_name);
 }
 
 /**
- * gi_object_info_get_unref_function:
+ * gi_object_info_get_unref_function_name:
  * @info: a #GIObjectInfo
  *
  * Obtain the symbol name of the function that should be called to unref this
  * object type. It's mainly used fundamental types. The type signature for
  * the symbol is %GIObjectInfoUnrefFunction, to fetch the function pointer
- * see gi_object_info_get_unref_function().
+ * see gi_object_info_get_unref_function_name().
  *
  * Returns: (nullable): the symbol or %NULL
  */
 const char *
-gi_object_info_get_unref_function (GIObjectInfo *info)
+gi_object_info_get_unref_function_name (GIObjectInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   ObjectBlob *blob;
@@ -996,23 +996,23 @@ gi_object_info_get_unref_function_pointer (GIObjectInfo *info)
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_OBJECT_INFO (info), NULL);
 
-  return (GIObjectInfoUnrefFunction)_get_func(info, (SymbolGetter)gi_object_info_get_unref_function);
+  return (GIObjectInfoUnrefFunction)_get_func(info, (SymbolGetter)gi_object_info_get_unref_function_name);
 }
 
 /**
- * gi_object_info_get_set_value_function:
+ * gi_object_info_get_set_value_function_name:
  * @info: a #GIObjectInfo
  *
  * Obtain the symbol name of the function that should be called to convert
  * set a GValue giving an object instance pointer of this object type.
  * I's mainly used fundamental types. The type signature for the symbol
  * is %GIObjectInfoSetValueFunction, to fetch the function pointer
- * see gi_object_info_get_set_value_function().
+ * see gi_object_info_get_set_value_function_name().
  *
  * Returns: (nullable): the symbol or %NULL
  */
 const char *
-gi_object_info_get_set_value_function (GIObjectInfo *info)
+gi_object_info_get_set_value_function_name (GIObjectInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   ObjectBlob *blob;
@@ -1045,23 +1045,23 @@ gi_object_info_get_set_value_function_pointer (GIObjectInfo *info)
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_OBJECT_INFO (info), NULL);
 
-  return (GIObjectInfoSetValueFunction)_get_func(info, (SymbolGetter)gi_object_info_get_set_value_function);
+  return (GIObjectInfoSetValueFunction)_get_func(info, (SymbolGetter)gi_object_info_get_set_value_function_name);
 }
 
 /**
- * gi_object_info_get_get_value_function:
+ * gi_object_info_get_get_value_function_name:
  * @info: a #GIObjectInfo
  *
  * Obtain the symbol name of the function that should be called to convert
  * an object instance pointer of this object type to a GValue.
  * I's mainly used fundamental types. The type signature for the symbol
  * is %GIObjectInfoGetValueFunction, to fetch the function pointer
- * see gi_object_info_get_get_value_function().
+ * see gi_object_info_get_get_value_function_name().
  *
  * Returns: (nullable): the symbol or %NULL
  */
 const char *
-gi_object_info_get_get_value_function (GIObjectInfo *info)
+gi_object_info_get_get_value_function_name (GIObjectInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   ObjectBlob *blob;
@@ -1094,7 +1094,7 @@ gi_object_info_get_get_value_function_pointer (GIObjectInfo *info)
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_OBJECT_INFO (info), NULL);
 
-  return (GIObjectInfoGetValueFunction)_get_func(info, (SymbolGetter)gi_object_info_get_get_value_function);
+  return (GIObjectInfoGetValueFunction)_get_func(info, (SymbolGetter)gi_object_info_get_get_value_function_name);
 }
 
 void

@@ -177,28 +177,28 @@ GIStructInfo *    gi_object_info_get_class_struct (GIObjectInfo *info);
 
 
 GI_AVAILABLE_IN_ALL
-const char *                 gi_object_info_get_ref_function               (GIObjectInfo *info);
+const char *                 gi_object_info_get_ref_function_name          (GIObjectInfo *info);
 
 GI_AVAILABLE_IN_ALL
 GIObjectInfoRefFunction      gi_object_info_get_ref_function_pointer       (GIObjectInfo *info);
 
 
 GI_AVAILABLE_IN_ALL
-const char *                 gi_object_info_get_unref_function             (GIObjectInfo *info);
+const char *                 gi_object_info_get_unref_function_name        (GIObjectInfo *info);
 
 GI_AVAILABLE_IN_ALL
 GIObjectInfoUnrefFunction    gi_object_info_get_unref_function_pointer     (GIObjectInfo *info);
 
 
 GI_AVAILABLE_IN_ALL
-const char *                 gi_object_info_get_set_value_function         (GIObjectInfo *info);
+const char *                 gi_object_info_get_set_value_function_name    (GIObjectInfo *info);
 
 GI_AVAILABLE_IN_ALL
 GIObjectInfoSetValueFunction gi_object_info_get_set_value_function_pointer (GIObjectInfo *info);
 
 
 GI_AVAILABLE_IN_ALL
-const char *                 gi_object_info_get_get_value_function         (GIObjectInfo *info);
+const char *                 gi_object_info_get_get_value_function_name    (GIObjectInfo *info);
 
 GI_AVAILABLE_IN_ALL
 GIObjectInfoGetValueFunction gi_object_info_get_get_value_function_pointer (GIObjectInfo *info);
