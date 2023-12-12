@@ -1443,9 +1443,7 @@ g_object_freeze_notify (GObject *object)
     }
 #endif
 
-  g_object_ref (object);
   g_object_notify_queue_freeze (object, FALSE);
-  g_object_unref (object);
 }
 
 static inline void
