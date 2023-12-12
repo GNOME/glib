@@ -1249,8 +1249,7 @@ write_union_info (const gchar *ns,
   const gchar *type_init;
   const gchar *func;
   gboolean deprecated;
-  gint i;
-  gint size;
+  gsize size;
 
   name = gi_base_info_get_name ((GIBaseInfo *)info);
   deprecated = gi_base_info_is_deprecated ((GIBaseInfo *)info);
@@ -1268,8 +1267,8 @@ write_union_info (const gchar *ns,
     xml_printf (file, " deprecated=\"1\"");
 
   size = gi_union_info_get_size (info);
-  if (file->show_all && size >= 0)
-    xml_printf (file, " size=\"%d\"", size);
+  if (file->show_all)
+    xml_printf (file, " size=\"%" G_GSIZE_FORMAT "\"", size);
 
   func = gi_union_info_get_copy_function (info);
   if (func)
@@ -1283,7 +1282,7 @@ write_union_info (const gchar *ns,
 
   if (gi_union_info_is_discriminated (info))
     {
-      gint offset;
+      guint offset;
       GITypeInfo *type;
 
       offset = gi_union_info_get_discriminator_offset (info);
@@ -1296,7 +1295,7 @@ write_union_info (const gchar *ns,
       gi_base_info_unref ((GIBaseInfo *)type);
     }
 
-  for (i = 0; i < gi_union_info_get_n_fields (info); i++)
+  for (guint i = 0; i < gi_union_info_get_n_fields (info); i++)
     {
       GIFieldInfo *field = gi_union_info_get_field (info, i);
       GIConstantInfo *constant = gi_union_info_get_discriminator (info, i);
@@ -1306,7 +1305,7 @@ write_union_info (const gchar *ns,
 	gi_base_info_unref ((GIBaseInfo *)constant);
     }
 
-  for (i = 0; i < gi_union_info_get_n_methods (info); i++)
+  for (guint i = 0; i < gi_union_info_get_n_methods (info); i++)
     {
       GIFunctionInfo *function = gi_union_info_get_method (info, i);
       write_function_info (ns, function, file);
