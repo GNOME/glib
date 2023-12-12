@@ -244,7 +244,8 @@ write_type_info (const gchar *ns,
     }
   else if (tag == GI_TYPE_TAG_ARRAY)
     {
-      gint length, size;
+      gint length;
+      gssize size;
       const char *name = NULL;
 
       xml_start_element (file, "array");
@@ -276,7 +277,7 @@ write_type_info (const gchar *ns,
 
       size = gi_type_info_get_array_fixed_size (info);
       if (size >= 0)
-        xml_printf (file, " fixed-size=\"%d\"", size);
+        xml_printf (file, " fixed-size=\"%" G_GSSIZE_FORMAT "\"", size);
 
       if (gi_type_info_is_zero_terminated (info))
 	xml_printf (file, " zero-terminated=\"1\"");

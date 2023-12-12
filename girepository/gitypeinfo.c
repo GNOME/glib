@@ -135,7 +135,7 @@ gi_type_info_get_tag (GITypeInfo *info)
  */
 GITypeInfo *
 gi_type_info_get_param_type (GITypeInfo *info,
-                             gint        n)
+                             guint       n)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   SimpleTypeBlob *type;
@@ -270,7 +270,7 @@ gi_type_info_get_array_length (GITypeInfo *info)
  * Returns: the size or `-1` if the type is not an array
  * Since: 2.80
  */
-gint
+gssize
 gi_type_info_get_array_fixed_size (GITypeInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
