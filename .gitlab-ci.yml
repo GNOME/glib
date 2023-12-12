@@ -33,6 +33,15 @@ variables:
     variables:
       - $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_PROJECT_NAMESPACE == "GNOME"
 
+# As above, but does get executed on merge into `origin/main`. For use with
+# updating code coverage results and docs builds.
+.only-default-and-merges:
+  only:
+    - branches
+  except:
+    refs:
+      - tags
+
 # Some jobs run on CI runners which don’t have good isolation between CI jobs,
 # and don’t have much available resource. Limit those jobs to only ones on the
 # origin repository (GNOME/glib), rather than people’s forks. Code in the origin
@@ -103,7 +112,7 @@ style-check-mandatory:
 fedora-x86_64:
   extends:
     - .build-linux
-    - .only-default
+    - .only-default-and-merges
   image: $FEDORA_IMAGE
   stage: build
   needs: []
