@@ -127,6 +127,13 @@ fedora-x86_64:
     - lcov --config-file .lcovrc --directory _build --capture --initial --output-file "_coverage/${CI_JOB_NAME}-baseline.lcov"
     - .gitlab-ci/run-tests.sh
     - lcov --config-file .lcovrc --directory _build --capture --output-file "_coverage/${CI_JOB_NAME}.lcov"
+    # Copy the built documentation to an artifact directory. The build for docs.gtk.org
+    # can then pull it from there — see https://gitlab.gnome.org/GNOME/gtk/-/blob/docs-gtk-org/README.md
+    - mkdir -p _reference/
+    - mv _build/docs/reference/glib/glib/ _reference/glib/
+    - mv _build/docs/reference/gmodule/gmodule/ _reference/gmodule/
+    - mv _build/docs/reference/gobject/gobject/ _reference/gobject/
+    - mv _build/docs/reference/gio/gio/ _reference/gio/
   artifacts:
     reports:
       junit:
@@ -139,16 +146,8 @@ fedora-x86_64:
       - "_build/config.h"
       - "_build/glib/glibconfig.h"
       - "_build/meson-logs"
-      - "_build/docs/reference/glib/glib-undeclared.txt"
-      - "_build/docs/reference/glib/glib-undocumented.txt"
-      - "_build/docs/reference/glib/glib-unused.txt"
-      - "_build/docs/reference/gobject/gobject-undeclared.txt"
-      - "_build/docs/reference/gobject/gobject-undocumented.txt"
-      - "_build/docs/reference/gobject/gobject-unused.txt"
-      - "_build/docs/reference/gio/gio-undeclared.txt"
-      - "_build/docs/reference/gio/gio-undocumented.txt"
-      - "_build/docs/reference/gio/gio-unused.txt"
       - "_coverage"
+      - "_reference"
 
 debian-stable-x86_64:
   extends:
