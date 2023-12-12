@@ -352,7 +352,7 @@ write_attributes (Xml *file,
                   GIBaseInfo *info)
 {
   GIAttributeIter iter = { 0, };
-  char *name, *value;
+  const char *name, *value;
 
   while (gi_base_info_iterate_attributes (info, &iter, &name, &value))
     {
@@ -367,7 +367,7 @@ write_return_value_attributes (Xml *file,
                                GICallableInfo *info)
 {
   GIAttributeIter iter = { 0, };
-  char *name, *value;
+  const char *name, *value;
 
   while (gi_callable_info_iterate_return_attributes (info, &iter, &name, &value))
     {

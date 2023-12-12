@@ -65,8 +65,8 @@ const gchar *          gi_callable_info_get_return_attribute (GICallableInfo *in
 GI_AVAILABLE_IN_ALL
 gboolean               gi_callable_info_iterate_return_attributes (GICallableInfo   *info,
                                                                    GIAttributeIter  *iterator,
-                                                                   char            **name,
-                                                                   char            **value);
+                                                                   const char      **name,
+                                                                   const char      **value);
 
 GI_AVAILABLE_IN_ALL
 GITransfer             gi_callable_info_get_caller_owns (GICallableInfo *info);

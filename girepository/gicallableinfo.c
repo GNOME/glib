@@ -411,7 +411,7 @@ gi_callable_info_get_return_attribute (GICallableInfo *info,
                                        const gchar    *name)
 {
   GIAttributeIter iter = { 0, };
-  gchar *curname, *curvalue;
+  const char *curname, *curvalue;
   while (gi_callable_info_iterate_return_attributes (info, &iter, &curname, &curvalue))
     {
       if (g_strcmp0 (name, curname) == 0)
@@ -443,8 +443,8 @@ gi_callable_info_get_return_attribute (GICallableInfo *info,
 gboolean
 gi_callable_info_iterate_return_attributes (GICallableInfo   *info,
                                             GIAttributeIter  *iterator,
-                                            char            **name,
-                                            char            **value)
+                                            const char      **name,
+                                            const char      **value)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header = (Header *)rinfo->typelib->data;
@@ -464,8 +464,8 @@ gi_callable_info_iterate_return_attributes (GICallableInfo   *info,
   if (next == NULL || next->offset != blob_offset || next >= after)
     return FALSE;
 
-  *name = (gchar*) gi_typelib_get_string (rinfo->typelib, next->name);
-  *value = (gchar*) gi_typelib_get_string (rinfo->typelib, next->value);
+  *name = gi_typelib_get_string (rinfo->typelib, next->name);
+  *value = gi_typelib_get_string (rinfo->typelib, next->value);
   iterator->data = next + 1;
 
   return TRUE;

@@ -747,7 +747,7 @@ gi_base_info_get_attribute (GIBaseInfo  *info,
                             const gchar *name)
 {
   GIAttributeIter iter = { 0, };
-  gchar *curname, *curvalue;
+  const char *curname, *curvalue;
   while (gi_base_info_iterate_attributes (info, &iter, &curname, &curvalue))
     {
       if (strcmp (name, curname) == 0)
@@ -832,8 +832,8 @@ _attribute_blob_find_first (GIBaseInfo *info,
  * print_attributes (GIBaseInfo *info)
  * {
  *   GIAttributeIter iter = { 0, };
- *   char *name;
- *   char *value;
+ *   const char *name;
+ *   const char *value;
  *   while (gi_base_info_iterate_attributes (info, &iter, &name, &value))
  *     {
  *       g_print ("attribute name: %s value: %s", name, value);
@@ -846,8 +846,8 @@ _attribute_blob_find_first (GIBaseInfo *info,
 gboolean
 gi_base_info_iterate_attributes (GIBaseInfo       *info,
                                  GIAttributeIter  *iterator,
-                                 gchar           **name,
-                                 gchar           **value)
+                                 const gchar     **name,
+                                 const gchar     **value)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header = (Header *)rinfo->typelib->data;
@@ -864,8 +864,8 @@ gi_base_info_iterate_attributes (GIBaseInfo       *info,
   if (next == NULL || next->offset != rinfo->offset || next >= after)
     return FALSE;
 
-  *name = (gchar*) gi_typelib_get_string (rinfo->typelib, next->name);
-  *value = (gchar*) gi_typelib_get_string (rinfo->typelib, next->value);
+  *name = gi_typelib_get_string (rinfo->typelib, next->name);
+  *value = gi_typelib_get_string (rinfo->typelib, next->value);
   iterator->data = next + 1;
 
   return TRUE;
