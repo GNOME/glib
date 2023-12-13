@@ -509,6 +509,8 @@ check_needs_computation (GIIrTypelibBuild *build,
  * If a node is a a structure or union, makes sure that the field
  * offsets have been computed, and also computes the overall size and
  * alignment for the type.
+ *
+ * Since: 2.80
  */
 void
 gi_ir_node_compute_offsets (GIIrTypelibBuild *build,
