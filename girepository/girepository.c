@@ -37,25 +37,25 @@
 #include "girepository-private.h"
 
 /**
- * SECTION:girepository
- * @short_description: GObject Introspection repository manager
- * @include: girepository.h
+ * GIRepository:
  *
- * #GIRepository is used to manage repositories of namespaces. Namespaces
- * are represented on disk by type libraries (.typelib files).
+ * `GIRepository` is used to manage repositories of namespaces. Namespaces
+ * are represented on disk by type libraries (`.typelib` files).
  *
  * ### Discovery of type libraries
  *
- * #GIRepository will typically look for a `girepository-1.0` directory
- * under the library directory used when compiling gobject-introspection.
+ * `GIRepository` will typically look for a `girepository-1.0` directory
+ * under the library directory used when compiling gobject-introspection. On a
+ * standard Linux system this will end up being `/usr/lib/girepository-1.0`.
  *
  * It is possible to control the search paths programmatically, using
- * gi_repository_prepend_search_path(). It is also possible to modify
- * the search paths by using the `GI_TYPELIB_PATH` environment variable.
+ * [func@GIRepository.Repository.prepend_search_path]. It is also possible to
+ * modify the search paths by using the `GI_TYPELIB_PATH` environment variable.
  * The environment variable takes precedence over the default search path
- * and the gi_repository_prepend_search_path() calls.
+ * and the [func@GIRepository.Repository.prepend_search_path] calls.
+ *
+ * Since: 2.80
  */
-
 
 static GIRepository *default_repository = NULL;
 static GSList *typelib_search_path = NULL;
@@ -237,6 +237,8 @@ init_globals (void)
  * Prepends @directory to the typelib search path.
  *
  * See also: gi_repository_get_search_path().
+ *
+ * Since: 2.80
  */
 void
 gi_repository_prepend_search_path (const char *directory)
@@ -248,11 +250,15 @@ gi_repository_prepend_search_path (const char *directory)
 /**
  * gi_repository_get_search_path:
  *
- * Returns the current search path #GIRepository will use when loading
- * typelib files. The list is internal to #GIRepository and should not
- * be freed, nor should its string elements.
+ * Returns the current search path [class@GIRepository.Repository] will use when
+ * loading typelib files.
  *
- * Returns: (element-type filename) (transfer none): #GSList of strings
+ * The list is internal to [class@GIRepository.Repository] and should not be
+ * freed, nor should its string elements.
+ *
+ * Returns: (element-type filename) (transfer none): list of search paths, most
+ *   important first
+ * Since: 2.80
  */
 GSList *
 gi_repository_get_search_path (void)
@@ -454,7 +460,7 @@ register_internal (GIRepository *repository,
 
 /**
  * gi_repository_get_immediate_dependencies:
- * @repository: (nullable): A #GIRepository or %NULL for the singleton
+ * @repository: (nullable): A #GIRepository, or `NULL` for the singleton
  *   process-global default #GIRepository
  * @namespace_: Namespace of interest
  *
@@ -462,14 +468,14 @@ register_internal (GIRepository *repository,
  * Returned strings are of the form `namespace-version`.
  *
  * Note: @namespace_ must have already been loaded using a function
- * such as gi_repository_require() before calling this function.
+ * such as [method@GIRepository.Repository.require] before calling this
+ * function.
  *
  * To get the transitive closure of dependencies for @namespace_, use
- * gi_repository_get_dependencies().
+ * [method@GIRepository.Repository.get_dependencies].
  *
- * Returns: (transfer full): Zero-terminated string array of immediate versioned
- *   dependencies
- *
+ * Returns: (transfer full) (array zero-terminated=1): `NULL`-terminated string
+ *   array of immediate versioned dependencies
  * Since: 2.80
  */
 char **
@@ -537,7 +543,7 @@ get_typelib_dependencies_transitive (GIRepository *repository,
 
 /**
  * gi_repository_get_dependencies:
- * @repository: (allow-none): A #GIRepository or %NULL for the singleton
+ * @repository: (nullable): A #GIRepository, or `NULL` for the singleton
  *   process-global default #GIRepository
  * @namespace_: Namespace of interest
  *
@@ -547,13 +553,15 @@ get_typelib_dependencies_transitive (GIRepository *repository,
  * The strings are of the form `namespace-version`.
  *
  * Note: @namespace_ must have already been loaded using a function
- * such as gi_repository_require() before calling this function.
+ * such as [method@GIRepository.Repository.require] before calling this
+ * function.
  *
  * To get only the immediate dependencies for @namespace_, use
- * gi_repository_get_immediate_dependencies().
+ * [method@GIRepository.Repository.get_immediate_dependencies].
  *
- * Returns: (transfer full) (array zero-terminated=1): all versioned
- *   dependencies
+ * Returns: (transfer full) (array zero-terminated=1): `NULL`-terminated string
+ *   array of all versioned dependencies
+ * Since: 2.80
  */
 char **
 gi_repository_get_dependencies (GIRepository *repository,
@@ -599,13 +607,16 @@ gi_repository_get_dependencies (GIRepository *repository,
 
 /**
  * gi_repository_load_typelib:
- * @repository: (allow-none): A #GIRepository or %NULL for the singleton
+ * @repository: (nullable): A #GIRepository, or `NULL` for the singleton
  *   process-global default #GIRepository
- * @typelib: TODO
- * @flags: TODO
- * @error: TODO
+ * @typelib: the typelib to load
+ * @flags: flags affecting the loading operation
+ * @error: return location for a [type@GLib.Error], or `NULL`
  *
- * TODO
+ * Load the given @typelib into the repository.
+ *
+ * Returns: namespace of the loaded typelib
+ * Since: 2.80
  */
 const char *
 gi_repository_load_typelib (GIRepository *repository,
@@ -645,19 +656,22 @@ gi_repository_load_typelib (GIRepository *repository,
 
 /**
  * gi_repository_is_registered:
- * @repository: (allow-none): A #GIRepository or %NULL for the singleton
+ * @repository: (nullable): A #GIRepository, or `NULL` for the singleton
  *   process-global default #GIRepository
  * @namespace_: Namespace of interest
- * @version: (allow-none): Required version, may be %NULL for latest
+ * @version: (nullable): Required version, may be `NULL` for latest
  *
  * Check whether a particular namespace (and optionally, a specific
- * version thereof) is currently loaded.  This function is likely to
- * only be useful in unusual circumstances; in order to act upon
- * metadata in the namespace, you should call gi_repository_require()
- * instead which will ensure the namespace is loaded, and return as
- * quickly as this function will if it has already been loaded.
+ * version thereof) is currently loaded.
  *
- * Returns: %TRUE if namespace-version is loaded, %FALSE otherwise
+ * This function is likely to only be useful in unusual circumstances; in order
+ * to act upon metadata in the namespace, you should call
+ * [method@GIRepository.Repository.require] instead which will ensure the
+ * namespace is loaded, and return as quickly as this function will if it has
+ * already been loaded.
+ *
+ * Returns: `TRUE` if namespace-version is loaded, `FALSE` otherwise
+ * Since: 2.80
  */
 gboolean
 gi_repository_is_registered (GIRepository *repository,
@@ -671,18 +685,20 @@ gi_repository_is_registered (GIRepository *repository,
 /**
  * gi_repository_get_default:
  *
- * Returns the singleton process-global default #GIRepository. It is
- * not currently supported to have multiple repositories in a
+ * Returns the singleton process-global default #GIRepository.
+ *
+ * It is not currently supported to have multiple repositories in a
  * particular process, but this function is provided in the unlikely
  * eventuality that it would become possible, and as a convenience for
  * higher level language bindings to conform to the GObject method
  * call conventions.
  *
- * All methods on #GIRepository also accept %NULL as an instance
+ * All methods on #GIRepository also accept `NULL` as an instance
  * parameter to mean this default repository, which is usually more
  * convenient for C.
  *
- * Returns: (transfer none): The global singleton #GIRepository
+ * Returns: (transfer none): The global singleton [class@GIRepository.Repository]
+ * Since: 2.80
  */
 GIRepository *
 gi_repository_get_default (void)
@@ -693,12 +709,12 @@ gi_repository_get_default (void)
 /**
  * gi_repository_new:
  *
- * Create a new (non-singleton) #GIRepository.
+ * Create a new (non-singleton) [class@GIRepository.Repository].
  *
- * Most callers should use gi_repository_get_default() instead, as a singleton
- * repository is more useful in most situations.
+ * Most callers should use [func@GIRepository.Repository.get_default] instead,
+ * as a singleton repository is more useful in most situations.
  *
- * Returns: (transfer full): a new #GIRepository
+ * Returns: (transfer full): a new [class@GIRepository.Repository]
  * Since: 2.80
  */
 GIRepository *
@@ -709,15 +725,17 @@ gi_repository_new (void)
 
 /**
  * gi_repository_get_n_infos:
- * @repository: (allow-none): A #GIRepository or %NULL for the singleton
+ * @repository: (nullable): A #GIRepository, or `NULL` for the singleton
  *   process-global default #GIRepository
  * @namespace_: Namespace to inspect
  *
  * This function returns the number of metadata entries in
- * given namespace @namespace_.  The namespace must have
- * already been loaded before calling this function.
+ * given namespace @namespace_.
+ *
+ * The namespace must have already been loaded before calling this function.
  *
  * Returns: number of metadata entries
+ * Since: 2.80
  */
 guint
 gi_repository_get_n_infos (GIRepository *repository,
@@ -741,18 +759,21 @@ gi_repository_get_n_infos (GIRepository *repository,
 
 /**
  * gi_repository_get_info:
- * @repository: (allow-none): A #GIRepository or %NULL for the singleton
+ * @repository: (nullable): A #GIRepository, or `NULL` for the singleton
  *   process-global default #GIRepository
  * @namespace_: Namespace to inspect
  * @idx: 0-based offset into namespace metadata for entry
  *
  * This function returns a particular metadata entry in the
- * given namespace @namespace_.  The namespace must have
- * already been loaded before calling this function.
- * See gi_repository_get_n_infos() to find the maximum number of
- * entries.
+ * given namespace @namespace_.
  *
- * Returns: (transfer full): #GIBaseInfo containing metadata
+ * The namespace must have already been loaded before calling this function.
+ * See [method@GIRepository.Repository.get_n_infos] to find the maximum number
+ * of entries.
+ *
+ * Returns: (transfer full) (nullable): [class@GIRepository.BaseInfo] containing
+ *   metadata, or `NULL` if @idx was too high
+ * Since: 2.80
  */
 GIBaseInfo *
 gi_repository_get_info (GIRepository *repository,
@@ -813,18 +834,21 @@ find_by_gtype (GHashTable *table, FindByGTypeData *data, gboolean check_prefix)
 
 /**
  * gi_repository_find_by_gtype:
- * @repository: (allow-none): A #GIRepository or %NULL for the singleton
+ * @repository: (nullable): A #GIRepository, or `NULL` for the singleton
  *   process-global default #GIRepository
- * @gtype: GType to search for
+ * @gtype: [type@GObject.Type] to search for
  *
- * Searches all loaded namespaces for a particular #GType.  Note that
- * in order to locate the metadata, the namespace corresponding to
+ * Searches all loaded namespaces for a particular [type@GObject.Type].
+ *
+ * Note that in order to locate the metadata, the namespace corresponding to
  * the type must first have been loaded.  There is currently no
  * mechanism for determining the namespace which corresponds to an
- * arbitrary GType - thus, this function will operate most reliably
- * when you know the GType to originate from be from a loaded namespace.
+ * arbitrary [type@GObject.Type] — thus, this function will operate most
+ * reliably when you know the [type@GObject.Type] is from a loaded namespace.
  *
- * Returns: (transfer full): #GIBaseInfo representing metadata about @type, or %NULL
+ * Returns: (transfer full) (nullable): [class@GIRepository.BaseInfo]
+ *   representing metadata about @type, or `NULL` if none found
+ * Since: 2.80
  */
 GIBaseInfo *
 gi_repository_find_by_gtype (GIRepository *repository,
@@ -891,17 +915,20 @@ gi_repository_find_by_gtype (GIRepository *repository,
 
 /**
  * gi_repository_find_by_name:
- * @repository: (allow-none): A #GIRepository or %NULL for the singleton
+ * @repository: (nullable): A #GIRepository, or `NULL` for the singleton
  *   process-global default #GIRepository
  * @namespace_: Namespace which will be searched
  * @name: Entry name to find
  *
- * Searches for a particular entry in a namespace.  Before calling
- * this function for a particular namespace, you must call
- * gi_repository_require() once to load the namespace, or otherwise
+ * Searches for a particular entry in a namespace.
+ *
+ * Before calling this function for a particular namespace, you must call
+ * [method@GIRepository.Repository.require] to load the namespace, or otherwise
  * ensure the namespace has already been loaded.
  *
- * Returns: (transfer full): #GIBaseInfo representing metadata about @name, or %NULL
+ * Returns: (transfer full) (nullable): [class@GIRepository.BaseInfo]
+ *   representing metadata about @name, or `NULL` if none found
+ * Since: 2.80
  */
 GIBaseInfo *
 gi_repository_find_by_name (GIRepository *repository,
@@ -951,17 +978,19 @@ find_by_error_domain_foreach (gpointer key,
 
 /**
  * gi_repository_find_by_error_domain:
- * @repository: (allow-none): A #GIRepository or %NULL for the singleton
+ * @repository: (nullable): A #GIRepository, or `NULL` for the singleton
  *   process-global default #GIRepository
- * @domain: a #GError domain
+ * @domain: a [type@GLib.Error] domain
  *
- * Searches for the enum type corresponding to the given #GError
- * domain. Before calling this function for a particular namespace,
- * you must call gi_repository_require() once to load the namespace, or
- * otherwise ensure the namespace has already been loaded.
+ * Searches for the enum type corresponding to the given [type@GLib.Error]
+ * domain.
  *
- * Returns: (transfer full): #GIEnumInfo representing metadata about @domain's
- * enum type, or %NULL
+ * Before calling this function for a particular namespace, you must call
+ * [method@GIRepository.Repository.require] to load the namespace, or otherwise
+ * ensure the namespace has already been loaded.
+ *
+ * Returns: (transfer full) (nullable): [class@GIRepository.EnumInfo]
+ *   representing metadata about @domain’s enum type, or `NULL` if none found
  * Since: 2.80
  */
 GIEnumInfo *
@@ -1004,22 +1033,24 @@ gi_repository_find_by_error_domain (GIRepository *repository,
 
 /**
  * gi_repository_get_object_gtype_interfaces:
- * @repository: (nullable): a #GIRepository, or %NULL for the default repository
- * @gtype: a #GType whose fundamental type is G_TYPE_OBJECT
+ * @repository: (nullable): a #GIRepository, or `NULL` for the default repository
+ * @gtype: a [type@GObject.Type] whose fundamental type is `G_TYPE_OBJECT`
  * @n_interfaces_out: (out): Number of interfaces
  * @interfaces_out: (out) (transfer none) (array length=n_interfaces_out): Interfaces for @gtype
  *
- * Look up the implemented interfaces for @gtype.  This function
- * cannot fail per se; but for a totally "unknown" #GType, it may
- * return 0 implemented interfaces.
+ * Look up the implemented interfaces for @gtype.
+ *
+ * This function cannot fail per se; but for a totally ‘unknown’
+ * [type@GObject.Type], it may return 0 implemented interfaces.
  *
  * The semantics of this function are designed for a dynamic binding,
  * where in certain cases (such as a function which returns an
- * interface which may have "hidden" implementation classes), not all
+ * interface which may have ‘hidden’ implementation classes), not all
  * data may be statically known, and will have to be determined from
- * the #GType of the object.  An example is g_file_new_for_path()
- * returning a concrete class of #GLocalFile, which is a #GType we
- * see at runtime, but not statically.
+ * the [type@GObject.Type] of the object.  An example is
+ * [func@Gio.File.new_for_path] returning a concrete class of
+ * `GLocalFile`, which is a [type@GObject.Type] we see at runtime, but
+ * not statically.
  *
  * Since: 2.80
  */
@@ -1093,12 +1124,14 @@ collect_namespaces (gpointer key,
 
 /**
  * gi_repository_get_loaded_namespaces:
- * @repository: (allow-none): A #GIRepository or %NULL for the singleton
+ * @repository: (nullable): A #GIRepository, or `NULL` for the singleton
  *   process-global default #GIRepository
  *
  * Return the list of currently loaded namespaces.
  *
- * Returns: (element-type utf8) (transfer full): List of namespaces
+ * Returns: (element-type utf8) (transfer full) (array zero-terminated=1): `NULL`-terminated
+ *   list of namespaces
+ * Since: 2.80
  */
 gchar **
 gi_repository_get_loaded_namespaces (GIRepository *repository)
@@ -1123,7 +1156,7 @@ gi_repository_get_loaded_namespaces (GIRepository *repository)
 
 /**
  * gi_repository_get_version:
- * @repository: (allow-none): A #GIRepository or %NULL for the singleton
+ * @repository: (nullable): A #GIRepository, or `NULL` for the singleton
  *   process-global default #GIRepository
  * @namespace_: Namespace to inspect
  *
@@ -1131,9 +1164,11 @@ gi_repository_get_loaded_namespaces (GIRepository *repository)
  * namespace @namespace_.
  *
  * Note: The namespace must have already been loaded using a function
- * such as gi_repository_require() before calling this function.
+ * such as [method@GIRepository.Repository.require] before calling this
+ * function.
  *
  * Returns: Loaded version
+ * Since: 2.80
  */
 const gchar *
 gi_repository_get_version (GIRepository *repository,
@@ -1156,20 +1191,23 @@ gi_repository_get_version (GIRepository *repository,
 
 /**
  * gi_repository_get_shared_library:
- * @repository: (allow-none): A #GIRepository or %NULL for the singleton
+ * @repository: (nullable): A #GIRepository, or `NULL` for the singleton
  *   process-global default #GIRepository
  * @namespace_: Namespace to inspect
  *
  * This function returns a comma-separated list of paths to the
  * shared C libraries associated with the given namespace @namespace_.
+ *
  * There may be no shared library path associated, in which case this
- * function will return %NULL.
+ * function will return `NULL`.
  *
  * Note: The namespace must have already been loaded using a function
- * such as gi_repository_require() before calling this function.
+ * such as [method@GIRepository.Repository.require] before calling this
+ * function.
  *
  * Returns: (nullable): Comma-separated list of paths to shared libraries,
- *   or %NULL if none are associated
+ *   or `NULL` if none are associated
+ * Since: 2.80
  */
 const gchar *
 gi_repository_get_shared_library (GIRepository *repository,
@@ -1195,18 +1233,22 @@ gi_repository_get_shared_library (GIRepository *repository,
 
 /**
  * gi_repository_get_c_prefix:
- * @repository: (allow-none): A #GIRepository or %NULL for the singleton
+ * @repository: (nullable): A #GIRepository, or `NULL` for the singleton
  *   process-global default #GIRepository
  * @namespace_: Namespace to inspect
  *
- * This function returns the "C prefix", or the C level namespace
- * associated with the given introspection namespace.  Each C symbol
- * starts with this prefix, as well each #GType in the library.
+ * This function returns the ‘C prefix’, or the C level namespace
+ * associated with the given introspection namespace.
+ *
+ * Each C symbol starts with this prefix, as well each [type@GObject.Type] in
+ * the library.
  *
  * Note: The namespace must have already been loaded using a function
- * such as gi_repository_require() before calling this function.
+ * such as [method@GIRepository.Repository.require] before calling this
+ * function.
  *
- * Returns: C namespace prefix, or %NULL if none associated
+ * Returns: (nullable): C namespace prefix, or `NULL` if none associated
+ * Since: 2.80
  */
 const gchar *
 gi_repository_get_c_prefix (GIRepository *repository,
@@ -1232,18 +1274,20 @@ gi_repository_get_c_prefix (GIRepository *repository,
 
 /**
  * gi_repository_get_typelib_path:
- * @repository: (allow-none): A #GIRepository or %NULL for the singleton
+ * @repository: (nullable): A #GIRepository, or `NULL` for the singleton
  *   process-global default #GIRepository
- * @namespace_: GI namespace to use, e.g. "Gtk"
+ * @namespace_: GI namespace to use, e.g. `Gtk`
  *
  * If namespace @namespace_ is loaded, return the full path to the
- * .typelib file it was loaded from.  If the typelib for
- * namespace @namespace_ was included in a shared library, return
- * the special string "&lt;builtin&gt;".
+ * .typelib file it was loaded from.
  *
- * Returns: Filesystem path (or $lt;builtin$gt;) if successful, %NULL if namespace is not loaded
+ * If the typelib for namespace @namespace_ was included in a shared library,
+ * return the special string `<builtin>`.
+ *
+ * Returns: (type filename) (nullable): Filesystem path (or `<builtin>`) if
+ *   successful, `NULL` if namespace is not loaded
+ * Since: 2.80
  */
-
 const gchar *
 gi_repository_get_typelib_path (GIRepository *repository,
 				const gchar  *namespace)
@@ -1511,14 +1555,15 @@ find_namespace_latest (const gchar  *namespace,
 
 /**
  * gi_repository_enumerate_versions:
- * @repository: (allow-none): A #GIRepository or %NULL for the singleton
+ * @repository: (nullable): A #GIRepository, or `NULL` for the singleton
  *   process-global default #GIRepository
- * @namespace_: GI namespace, e.g. "Gtk"
+ * @namespace_: GI namespace, e.g. `Gtk`
  *
  * Obtain an unordered list of versions (either currently loaded or
  * available) for @namespace_ in this @repository.
  *
  * Returns: (element-type utf8) (transfer full): the array of versions.
+ * Since: 2.80
  */
 GList *
 gi_repository_enumerate_versions (GIRepository *repository,
@@ -1670,20 +1715,23 @@ require_internal (GIRepository  *repository,
 
 /**
  * gi_repository_require:
- * @repository: (allow-none): A #GIRepository or %NULL for the singleton
+ * @repository: (nullable): A #GIRepository, or `NULL` for the singleton
  *   process-global default #GIRepository
- * @namespace_: GI namespace to use, e.g. "Gtk"
- * @version: (allow-none): Version of namespace, may be %NULL for latest
- * @flags: Set of %GIRepositoryLoadFlags, may be 0
- * @error: a #GError.
+ * @namespace_: GI namespace to use, e.g. `Gtk`
+ * @version: (nullable): Version of namespace, may be `NULL` for latest
+ * @flags: Set of [flags@GIRepository.RepositoryLoadFlags], may be 0
+ * @error: a [type@GLib.Error].
  *
- * Force the namespace @namespace_ to be loaded if it isn't already.
+ * Force the namespace @namespace_ to be loaded if it isn’t already.
+ *
  * If @namespace_ is not loaded, this function will search for a
- * ".typelib" file using the repository search path.  In addition, a
+ * `.typelib` file using the repository search path.  In addition, a
  * version @version of namespace may be specified.  If @version is
  * not specified, the latest will be used.
  *
- * Returns: (transfer none): a pointer to the #GITypelib if successful, %NULL otherwise
+ * Returns: (transfer none): a pointer to the [type@GIRepository.Typelib] if
+ *   successful, `NULL` otherwise
+ * Since: 2.80
  */
 GITypelib *
 gi_repository_require (GIRepository  *repository,
@@ -1703,21 +1751,25 @@ gi_repository_require (GIRepository  *repository,
 
 /**
  * gi_repository_require_private:
- * @repository: (allow-none): A #GIRepository or %NULL for the singleton
+ * @repository: (nullable): A #GIRepository, or `NULL` for the singleton
  *   process-global default #GIRepository
- * @typelib_dir: Private directory where to find the requested typelib
- * @namespace_: GI namespace to use, e.g. "Gtk"
- * @version: (allow-none): Version of namespace, may be %NULL for latest
- * @flags: Set of %GIRepositoryLoadFlags, may be 0
- * @error: a #GError.
+ * @typelib_dir: (type filename): Private directory where to find the requested
+ *   typelib
+ * @namespace_: GI namespace to use, e.g. `Gtk`
+ * @version: (nullable): Version of namespace, may be `NULL` for latest
+ * @flags: Set of [flags@GIRepository.RepositoryLoadFlags], may be 0
+ * @error: a [type@GLib.Error].
  *
- * Force the namespace @namespace_ to be loaded if it isn't already.
+ * Force the namespace @namespace_ to be loaded if it isn’t already.
+ *
  * If @namespace_ is not loaded, this function will search for a
- * ".typelib" file within the private directory only. In addition, a
+ * `.typelib` file within the private directory only. In addition, a
  * version @version of namespace should be specified.  If @version is
  * not specified, the latest will be used.
  *
- * Returns: (transfer none): a pointer to the #GITypelib if successful, %NULL otherwise
+ * Returns: (transfer none): a pointer to the [type@GIRepository.Typelib] if
+ *   successful, `NULL` otherwise
+ * Since: 2.80
  */
 GITypelib *
 gi_repository_require_private (GIRepository  *repository,
@@ -1763,11 +1815,13 @@ static const GOptionEntry introspection_args[] = {
 /**
  * gi_repository_get_option_group:
  *
- * Obtain the option group for girepository, it's used
- * by the dumper and for programs that wants to provide
- * introspection information
+ * Obtain the option group for girepository.
+ *
+ * It’s used by the dumper and for programs that want to provide introspection
+ * information
  *
  * Returns: (transfer full): the option group
+ * Since: 2.80
  */
 GOptionGroup *
 gi_repository_get_option_group (void)
@@ -1795,6 +1849,7 @@ gi_repository_error_quark (void)
  * Obtain a string representation of @type
  *
  * Returns: the string
+ * Since: 2.80
  */
 const gchar*
 gi_type_tag_to_string (GITypeTag type)
@@ -1857,6 +1912,7 @@ gi_type_tag_to_string (GITypeTag type)
  * Obtain a string representation of @type
  *
  * Returns: the string
+ * Since: 2.80
  */
 const gchar*
 gi_info_type_to_string (GIInfoType type)
