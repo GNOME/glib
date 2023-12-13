@@ -33,10 +33,12 @@
 G_BEGIN_DECLS
 
 /**
- * GI_IS_ARG_INFO
+ * GI_IS_ARG_INFO:
  * @info: an info structure
  *
- * Checks if @info is a GIArgInfo.
+ * Checks if @info is a [class@GIRepository.ArgInfo].
+ *
+ * Since: 2.80
  */
 #define GI_IS_ARG_INFO(info) \
     (gi_base_info_get_info_type ((GIBaseInfo*) info) ==  GI_INFO_TYPE_ARG)
