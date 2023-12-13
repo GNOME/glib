@@ -38,20 +38,20 @@
 /* GICallableInfo functions */
 
 /**
- * SECTION:gicallableinfo
- * @title: GICallableInfo
- * @short_description: Struct representing a callable
+ * GICallableInfo:
  *
- * GICallableInfo represents an entity which is callable.
+ * `GICallableInfo` represents an entity which is callable.
  *
  * Examples of callable are:
  *
- *  - functions (#GIFunctionInfo)
- *  - virtual functions (#GIVFuncInfo)
- *  - callbacks (#GICallbackInfo).
+ *  - functions ([class@GIRepository.FunctionInfo])
+ *  - virtual functions ([class@GIRepository.VFuncInfo])
+ *  - callbacks ([class@GIRepository.CallbackInfo]).
  *
- * A callable has a list of arguments (#GIArgInfo), a return type,
- * direction and a flag which decides if it returns null.
+ * A callable has a list of arguments ([class@GIRepository.ArgInfo]), a return
+ * type, direction and a flag which decides if it returns `NULL`.
+ *
+ * Since: 2.80
  */
 
 static guint32
@@ -86,10 +86,10 @@ signature_offset (GICallableInfo *info)
  * gi_callable_info_can_throw_gerror:
  * @info: a #GICallableInfo
  *
- * TODO
+ * Whether the callable can throw a [type@GLib.Error]
  *
+ * Returns: `TRUE` if this `GICallableInfo` can throw a [type@GLib.Error]
  * Since: 2.80
- * Returns: %TRUE if this #GICallableInfo can throw a #GError
  */
 gboolean
 gi_callable_info_can_throw_gerror (GICallableInfo *info)
@@ -131,17 +131,18 @@ gi_callable_info_can_throw_gerror (GICallableInfo *info)
  * gi_callable_info_is_method:
  * @info: a #GICallableInfo
  *
- * Determines if the callable info is a method. For #GIVFuncInfo<!-- -->s,
- * #GICallbackInfo<!-- -->s, and #GISignalInfo<!-- -->s,
- * this is always true. Otherwise, this looks at the %GI_FUNCTION_IS_METHOD
- * flag on the #GIFunctionInfo.
+ * Determines if the callable info is a method.
  *
- * Concretely, this function returns whether gi_callable_info_get_n_args()
- * matches the number of arguments in the raw C method. For methods, there
- * is one more C argument than is exposed by introspection: the "self"
- * or "this" object.
+ * For [class@GIRepository.VFuncInfo]s, [class@GIRepository.CallbackInfo]s, and
+ * [class@GIRepository.SignalInfo]s, this is always true. Otherwise, this looks
+ * at the `GI_FUNCTION_IS_METHOD` flag on the [class@GIRepository.FunctionInfo].
  *
- * Returns: %TRUE if @info is a method, %FALSE otherwise
+ * Concretely, this function returns whether
+ * [method@GIRepository.CallableInfo.get_n_args] matches the number of arguments
+ * in the raw C method. For methods, there is one more C argument than is
+ * exposed by introspection: the `self` or `this` object.
+ *
+ * Returns: `TRUE` if @info is a method, `FALSE` otherwise
  * Since: 2.80
  */
 gboolean
@@ -169,10 +170,11 @@ gi_callable_info_is_method (GICallableInfo *info)
  * gi_callable_info_get_return_type:
  * @info: a #GICallableInfo
  *
- * Obtain the return type of a callable item as a #GITypeInfo.
+ * Obtain the return type of a callable item as a [class@GIRepository.TypeInfo].
  *
- * Returns: (transfer full): the #GITypeInfo. Free the struct by calling
- *   gi_base_info_unref() when done.
+ * Returns: (transfer full): the [class@GIRepository.TypeInfo]. Free the struct
+ *   by calling [method@GIRepository.BaseInfo.unref] when done.
+ * Since: 2.80
  */
 GITypeInfo *
 gi_callable_info_get_return_type (GICallableInfo *info)
@@ -188,17 +190,18 @@ gi_callable_info_get_return_type (GICallableInfo *info)
   return gi_type_info_new ((GIBaseInfo*)info, rinfo->typelib, offset);
 }
 
-
 /**
  * gi_callable_info_load_return_type:
  * @info: a #GICallableInfo
  * @type: (out caller-allocates): Initialized with return type of @info
  *
  * Obtain information about a return value of callable; this
- * function is a variant of gi_callable_info_get_return_type() designed for stack
- * allocation.
+ * function is a variant of [method@GIRepository.CallableInfo.get_return_type]
+ * designed for stack allocation.
  *
  * The initialized @type must not be referenced after @info is deallocated.
+ *
+ * Since: 2.80
  */
 void
 gi_callable_info_load_return_type (GICallableInfo *info,
@@ -219,9 +222,10 @@ gi_callable_info_load_return_type (GICallableInfo *info,
  * gi_callable_info_may_return_null:
  * @info: a #GICallableInfo
  *
- * See if a callable could return %NULL.
+ * See if a callable could return `NULL`.
  *
- * Returns: %TRUE if callable could return %NULL
+ * Returns: `TRUE` if callable could return `NULL`
+ * Since: 2.80
  */
 gboolean
 gi_callable_info_may_return_null (GICallableInfo *info)
@@ -241,9 +245,10 @@ gi_callable_info_may_return_null (GICallableInfo *info)
  * gi_callable_info_skip_return:
  * @info: a #GICallableInfo
  *
- * See if a callable's return value is only useful in C.
+ * See if a callable’s return value is only useful in C.
  *
- * Returns: %TRUE if return value is only useful in C.
+ * Returns: `TRUE` if return value is only useful in C.
+ * Since: 2.80
  */
 gboolean
 gi_callable_info_skip_return (GICallableInfo *info)
@@ -264,9 +269,11 @@ gi_callable_info_skip_return (GICallableInfo *info)
  * @info: a #GICallableInfo
  *
  * See whether the caller owns the return value of this callable.
- * #GITransfer contains a list of possible transfer values.
+ *
+ * [type@GIRepository.Transfer] contains a list of possible transfer values.
  *
  * Returns: the transfer mode for the return value of the callable
+ * Since: 2.80
  */
 GITransfer
 gi_callable_info_get_caller_owns (GICallableInfo *info)
@@ -292,10 +299,11 @@ gi_callable_info_get_caller_owns (GICallableInfo *info)
  * @info: a #GICallableInfo
  *
  * Obtains the ownership transfer for the instance argument.
- * #GITransfer contains a list of possible transfer values.
  *
- * Since: 2.80
+ * [type@GIRepository.Transfer] contains a list of possible transfer values.
+ *
  * Returns: the transfer mode of the instance argument
+ * Since: 2.80
  */
 GITransfer
 gi_callable_info_get_instance_ownership_transfer (GICallableInfo *info)
@@ -318,9 +326,10 @@ gi_callable_info_get_instance_ownership_transfer (GICallableInfo *info)
  * gi_callable_info_get_n_args:
  * @info: a #GICallableInfo
  *
- * Obtain the number of arguments (both IN and OUT) for this callable.
+ * Obtain the number of arguments (both ‘in’ and ‘out’) for this callable.
  *
  * Returns: The number of arguments this callable expects.
+ * Since: 2.80
  */
 guint
 gi_callable_info_get_n_args (GICallableInfo *info)
@@ -345,8 +354,9 @@ gi_callable_info_get_n_args (GICallableInfo *info)
  *
  * Obtain information about a particular argument of this callable.
  *
- * Returns: (transfer full): the #GIArgInfo. Free it with
- *   gi_base_info_unref() when done.
+ * Returns: (transfer full): the [class@GIRepository.ArgInfo]. Free it with
+ *   [method@GIRepository.BaseInfo.unref] when done.
+ * Since: 2.80
  */
 GIArgInfo *
 gi_callable_info_get_arg (GICallableInfo *info,
@@ -373,10 +383,12 @@ gi_callable_info_get_arg (GICallableInfo *info,
  * @arg: (out caller-allocates): Initialize with argument number @n
  *
  * Obtain information about a particular argument of this callable; this
- * function is a variant of gi_callable_info_get_arg() designed for stack
- * allocation.
+ * function is a variant of [method@GIRepository.CallableInfo.get_arg] designed
+ * for stack allocation.
  *
  * The initialized @arg must not be referenced after @info is deallocated.
+ *
+ * Since: 2.80
  */
 void
 gi_callable_info_load_arg (GICallableInfo *info,
@@ -404,7 +416,9 @@ gi_callable_info_load_arg (GICallableInfo *info,
  *
  * Retrieve an arbitrary attribute associated with the return value.
  *
- * Returns: The value of the attribute, or %NULL if no such attribute exists
+ * Returns: (nullable): The value of the attribute, or `NULL` if no such
+ *   attribute exists
+ * Since: 2.80
  */
 const gchar *
 gi_callable_info_get_return_attribute (GICallableInfo *info,
@@ -424,21 +438,24 @@ gi_callable_info_get_return_attribute (GICallableInfo *info,
 /**
  * gi_callable_info_iterate_return_attributes:
  * @info: a #GICallableInfo
- * @iterator: (inout): a #GIAttributeIter structure, must be initialized; see below
+ * @iterator: (inout): a [type@GIRepository.AttributeIter] structure, must be
+ *   initialized; see below
  * @name: (out) (transfer none): Returned name, must not be freed
  * @value: (out) (transfer none): Returned name, must not be freed
  *
- * Iterate over all attributes associated with the return value.  The
- * iterator structure is typically stack allocated, and must have its
- * first member initialized to %NULL.
+ * Iterate over all attributes associated with the return value.
+ *
+ * The iterator structure is typically stack allocated, and must have its
+ * first member initialized to `NULL`.
  *
  * Both the @name and @value should be treated as constants
  * and must not be freed.
  *
- * See gi_base_info_iterate_attributes() for an example of how to use a
- * similar API.
+ * See [method@GIRepository.BaseInfo.iterate_attributes] for an example of how
+ * to use a similar API.
  *
- * Returns: %TRUE if there are more attributes
+ * Returns: `TRUE` if there are more attributes
+ * Since: 2.80
  */
 gboolean
 gi_callable_info_iterate_return_attributes (GICallableInfo   *info,
@@ -473,22 +490,23 @@ gi_callable_info_iterate_return_attributes (GICallableInfo   *info,
 
 /**
  * gi_type_tag_extract_ffi_return_value:
- * @return_tag: #GITypeTag of the return value
- * @interface_type: #GIInfoType of the underlying interface type
- * @ffi_value: pointer to #GIFFIReturnValue union containing the return value
- *   from `ffi_call()`
- * @arg: (out caller-allocates): pointer to an allocated #GIArgument
+ * @return_tag: [type@GIRepository.TypeTag] of the return value
+ * @interface_type: [type@GIRepository.InfoType] of the underlying interface type
+ * @ffi_value: pointer to [type@GIRepository.FFIReturnValue] union containing
+ *   the return value from `ffi_call()`
+ * @arg: (out caller-allocates): pointer to an allocated
+ *   [class@GIRepository.Argument]
  *
  * Extract the correct bits from an `ffi_arg` return value into
- * GIArgument.
+ * [class@GIRepository.Argument].
  *
  * See: https://bugzilla.gnome.org/show_bug.cgi?id=665152
  *
- * Also see `ffi_call(3)`: the storage requirements for return values
- * are "special".
+ * Also see [`ffi_call()`](man:ffi_call(3)): the storage requirements for return
+ * values are ‘special’.
  *
  * The @interface_type argument only applies if @return_tag is
- * %GI_TYPE_TAG_INTERFACE. Otherwise it is ignored.
+ * `GI_TYPE_TAG_INTERFACE`. Otherwise it is ignored.
  *
  * Since: 2.80
  */
@@ -550,23 +568,26 @@ gi_type_tag_extract_ffi_return_value (GITypeTag         return_tag,
 
 /**
  * gi_type_info_extract_ffi_return_value:
- * @return_info: #GITypeInfo describing the return type
- * @ffi_value: pointer to #GIFFIReturnValue union containing the return value
- *   from `ffi_call()`
- * @arg: (out caller-allocates): pointer to an allocated #GIArgument
+ * @return_info: [type@GIRepository.TypeInfo] describing the return type
+ * @ffi_value: pointer to [type@GIRepository.FFIReturnValue] union containing
+ *   the return value from `ffi_call()`
+ * @arg: (out caller-allocates): pointer to an allocated
+ *   [class@GIRepository.Argument]
  *
  * Extract the correct bits from an `ffi_arg` return value into
- * #GIArgument.
+ * [class@GIRepository.Argument].
  *
  * See: https://bugzilla.gnome.org/show_bug.cgi?id=665152
  *
- * Also see `ffi_call(3)`: the storage requirements for return values
- * are "special".
+ * Also see [`ffi_call()`](man:ffi_call(3)): the storage requirements for return
+ * values are ‘special’.
+ *
+ * Since: 2.80
  */
 void
-gi_type_info_extract_ffi_return_value (GITypeInfo                  *return_info,
-                                       GIFFIReturnValue            *ffi_value,
-                                       GIArgument                  *arg)
+gi_type_info_extract_ffi_return_value (GITypeInfo       *return_info,
+                                       GIFFIReturnValue *ffi_value,
+                                       GIArgument       *arg)
 {
   GITypeTag return_tag = gi_type_info_get_tag (return_info);
   GIInfoType interface_type = GI_INFO_TYPE_INVALID;
@@ -584,18 +605,29 @@ gi_type_info_extract_ffi_return_value (GITypeInfo                  *return_info,
 
 /**
  * gi_callable_info_invoke:
- * @info: TODO
- * @function: TODO
- * @in_args: (array length=n_in_args): TODO
- * @n_in_args: TODO
- * @out_args: (array length=n_out_args): TODO
- * @n_out_args: TODO
- * @return_value: TODO
- * @is_method: TODO
- * @throws: TODO
- * @error: TODO
+ * @info: a #GICallableInfo
+ * @function: function pointer to call
+ * @in_args: (array length=n_in_args): array of ‘in’ arguments
+ * @n_in_args: number of arguments in @in_args
+ * @out_args: (array length=n_out_args): array of ‘out’ arguments allocated by
+ *   the caller, to be populated with outputted values
+ * @n_out_args: number of arguments in @out_args
+ * @return_value: (out caller-allocates) (not optional) (nullable): return
+ *   location for the return value from the callable; `NULL` may be returned if
+ *   the callable returns that
+ * @is_method: `TRUE` if @info is a method
+ * @throws: `TRUE` if @info may throw a [type@GLib.Error]
+ * @error: return location for a [type@GLib.Error], or `NULL`
  *
- * TODO
+ * Invoke the given `GICallableInfo` by calling the given @function pointer.
+ *
+ * The set of arguments passed to @function will be constructed according to the
+ * introspected type of the `GICallableInfo`, using @in_args, @out_args,
+ * @is_method, @throws and @error.
+ *
+ * Returns: `TRUE` if the callable was executed successfully and didn’t throw
+ *   a [type@GLib.Error]; `FALSE` if @error is set
+ * Since: 2.80
  */
 gboolean
 gi_callable_info_invoke (GICallableInfo    *info,
