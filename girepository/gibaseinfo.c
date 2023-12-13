@@ -341,24 +341,41 @@ gi_info_new_full (GIInfoType    type,
 
 /**
  * gi_info_new:
- * @type: TODO
- * @container: TODO
- * @typelib: TODO
- * @offset: TODO
+ * @type: type of the info to create
+ * @container: (nullable): info which contains this one
+ * @typelib: typelib containing the info
+ * @offset: offset of the info within @typelib, in bytes
  *
- * TODO
+ * Create a new #GIBaseInfo representing an object of the given @type from
+ * @offset of @typelib.
  *
- * Returns: (transfer full): TODO
+ * Returns: (transfer full): The new #GIBaseInfo, unref with
+ *   [method@GIRepository.BaseInfo.unref]
+ * Since: 2.80
  */
 GIBaseInfo *
 gi_info_new (GIInfoType     type,
              GIBaseInfo    *container,
-             GITypelib      *typelib,
+             GITypelib     *typelib,
              guint32        offset)
 {
   return gi_info_new_full (type, ((GIRealInfo*)container)->repository, container, typelib, offset);
 }
 
+/*< private >
+ * gi_info_init:
+ * @info: (out caller-allocates): caller-allocated #GIRealInfo to populate
+ * @type: type of the info to create
+ * @repository: repository the info is in
+ * @container: (nullable): info which contains this one
+ * @typelib: typelib containing the info
+ * @offset: offset of the info within @typelib, in bytes
+ *
+ * Initialise a stack-allocated #GIBaseInfo representing an object of the given
+ * @type from @offset of @typelib.
+ *
+ * Since: 2.80
+ */
 void
 gi_info_init (GIRealInfo   *info,
               GIInfoType    type,
@@ -445,58 +462,48 @@ gi_type_info_init (GIBaseInfo *info,
 /* GIBaseInfo functions */
 
 /**
- * SECTION:gibaseinfo
- * @title: GIBaseInfo
- * @short_description: Base struct for all GITypelib structs
+ * GIBaseInfo:
  *
- * GIBaseInfo is the common base struct of all other Info structs
- * accessible through the #GIRepository API.
+ * `GIBaseInfo` is the common base struct of all other Info structs
+ * accessible through the [class@GIRepository.Repository] API.
  *
- * All info structures can be cast to a #GIBaseInfo, for instance:
+ * All info structures can be cast to a `GIBaseInfo`, for instance:
  *
- * |[<!-- language="C" -->
- *    GIFunctionInfo *function_info = ...;
+ * ```c
+ *    GIFunctionInfo *function_info = …;
  *    GIBaseInfo *info = (GIBaseInfo *) function_info;
- * ]|
+ * ```
  *
- * Most #GIRepository APIs returning a #GIBaseInfo is actually
- * creating a new struct; in other words, gi_base_info_unref() has to
- * be called when done accessing the data.
+ * Most [class@GIRepository.Repository] APIs returning a `GIBaseInfo` are
+ * actually creating a new struct; in other words,
+ * [method@GIRepository.BaseInfo.unref] has to be called when done accessing the
+ * data.
  *
- * #GIBaseInfo structuress are normally accessed by calling either
- * gi_repository_find_by_name(), gi_repository_find_by_gtype() or
- * gi_repository_get_info().
+ * `GIBaseInfo` structuress are normally accessed by calling either
+ * [method@GIRepository.Repository.find_by_name],
+ * [method@GIRepository.Repository.find_by_gtype] or
+ * [method@GIRepository.get_info].
  *
- * |[<!-- language="C" -->
+ * ```c
  * GIBaseInfo *button_info =
  *   gi_repository_find_by_name (NULL, "Gtk", "Button");
  *
- * // ... use button_info ...
+ * // use button_info…
  *
  * gi_base_info_unref (button_info);
- * ]|
+ * ```
  *
- * ## Hierarchy
- *
- * |[<!-- language="plain" -->
- *   GIBaseInfo
- *    +---- GIArgInfo
- *    +---- GICallableInfo
- *    +---- GIConstantInfo
- *    +---- GIFieldInfo
- *    +---- GIPropertyInfo
- *    +---- GIRegisteredTypeInfo
- *    +---- GITypeInfo
- * ]|
+ * Since: 2.80
  */
 
 /**
- * gi_base_info_ref: (skip)
+ * gi_base_info_ref:
  * @info: a #GIBaseInfo
  *
  * Increases the reference count of @info.
  *
- * Returns: the same @info.
+ * Returns: (transfer full): the same @info.
+ * Since: 2.80
  */
 GIBaseInfo *
 gi_base_info_ref (GIBaseInfo *info)
@@ -510,11 +517,13 @@ gi_base_info_ref (GIBaseInfo *info)
 }
 
 /**
- * gi_base_info_unref: (skip)
- * @info: a #GIBaseInfo
+ * gi_base_info_unref:
+ * @info: (transfer full): a #GIBaseInfo
  *
  * Decreases the reference count of @info. When its reference count
  * drops to 0, the info is freed.
+ *
+ * Since: 2.80
  */
 void
 gi_base_info_unref (GIBaseInfo *info)
@@ -531,9 +540,10 @@ gi_base_info_unref (GIBaseInfo *info)
  * gi_base_info_get_info_type:
  * @info: a #GIBaseInfo
  *
- * Obtain the info type of the GIBaseInfo.
+ * Obtain the info type of the `GIBaseInfo`.
  *
  * Returns: the info type of @info
+ * Since: 2.80
  */
 GIInfoType
 gi_base_info_get_info_type (GIBaseInfo *info)
@@ -545,11 +555,14 @@ gi_base_info_get_info_type (GIBaseInfo *info)
  * gi_base_info_get_name:
  * @info: a #GIBaseInfo
  *
- * Obtain the name of the @info. What the name represents depends on
- * the #GIInfoType of the @info. For instance for #GIFunctionInfo it is
- * the name of the function.
+ * Obtain the name of the @info.
  *
- * Returns: the name of @info or %NULL if it lacks a name.
+ * What the name represents depends on the [type@GIRepository.InfoType] of the
+ * @info. For instance for [class@GIRepository.FunctionInfo] it is the name of
+ * the function.
+ *
+ * Returns: (nullable): the name of @info or `NULL` if it lacks a name.
+ * Since: 2.80
  */
 const gchar *
 gi_base_info_get_name (GIBaseInfo *info)
@@ -647,6 +660,7 @@ gi_base_info_get_name (GIBaseInfo *info)
  * Obtain the namespace of @info.
  *
  * Returns: the namespace
+ * Since: 2.80
  */
 const gchar *
 gi_base_info_get_namespace (GIBaseInfo *info)
@@ -671,9 +685,10 @@ gi_base_info_get_namespace (GIBaseInfo *info)
  * @info: a #GIBaseInfo
  *
  * Obtain whether the @info is represents a metadata which is
- * deprecated or not.
+ * deprecated.
  *
- * Returns: %TRUE if deprecated
+ * Returns: `TRUE` if deprecated
+ * Since: 2.80
  */
 gboolean
 gi_base_info_is_deprecated (GIBaseInfo *info)
@@ -740,7 +755,9 @@ gi_base_info_is_deprecated (GIBaseInfo *info)
  *
  * Retrieve an arbitrary attribute associated with this node.
  *
- * Returns: The value of the attribute, or %NULL if no such attribute exists
+ * Returns: (nullable): The value of the attribute, or `NULL` if no such
+ *   attribute exists
+ * Since: 2.80
  */
 const gchar *
 gi_base_info_get_attribute (GIBaseInfo  *info,
@@ -772,7 +789,7 @@ cmp_attribute (const void *av,
     return 1;
 }
 
-/*
+/*< private >
  * _attribute_blob_find_first:
  * @GIBaseInfo: A #GIBaseInfo.
  * @blob_offset: The offset for the blob to find the first attribute for.
@@ -780,7 +797,8 @@ cmp_attribute (const void *av,
  * Searches for the first #AttributeBlob for @blob_offset and returns
  * it if found.
  *
- * Returns: A pointer to #AttributeBlob or %NULL if not found.
+ * Returns: (transfer none): A pointer to #AttributeBlob or `NULL` if not found.
+ * Since: 2.80
  */
 AttributeBlob *
 _attribute_blob_find_first (GIBaseInfo *info,
@@ -813,13 +831,15 @@ _attribute_blob_find_first (GIBaseInfo *info,
 /**
  * gi_base_info_iterate_attributes:
  * @info: a #GIBaseInfo
- * @iterator: (inout): a #GIAttributeIter structure, must be initialized; see below
+ * @iterator: (inout): a [type@GIRepository.AttributeIter] structure, must be
+ *   initialized; see below
  * @name: (out) (transfer none): Returned name, must not be freed
  * @value: (out) (transfer none): Returned name, must not be freed
  *
- * Iterate over all attributes associated with this node.  The iterator
- * structure is typically stack allocated, and must have its first
- * member initialized to %NULL.  Attributes are arbitrary namespaced key–value
+ * Iterate over all attributes associated with this node.
+ *
+ * The iterator structure is typically stack allocated, and must have its first
+ * member initialized to `NULL`.  Attributes are arbitrary namespaced key–value
  * pairs which can be attached to almost any item.  They are intended for use
  * by software higher in the toolchain than bindings, and are distinct from
  * normal GIR annotations.
@@ -827,7 +847,7 @@ _attribute_blob_find_first (GIBaseInfo *info,
  * Both the @name and @value should be treated as constants
  * and must not be freed.
  *
- * |[<!-- language="C" -->
+ * ```c
  * void
  * print_attributes (GIBaseInfo *info)
  * {
@@ -839,9 +859,10 @@ _attribute_blob_find_first (GIBaseInfo *info,
  *       g_print ("attribute name: %s value: %s", name, value);
  *     }
  * }
- * ]|
+ * ```
  *
- * Returns: %TRUE if there are more attributes
+ * Returns: `TRUE` if there are more attributes
+ * Since: 2.80
  */
 gboolean
 gi_base_info_iterate_attributes (GIBaseInfo       *info,
@@ -875,11 +896,14 @@ gi_base_info_iterate_attributes (GIBaseInfo       *info,
  * gi_base_info_get_container:
  * @info: a #GIBaseInfo
  *
- * Obtain the container of the @info. The container is the parent
- * GIBaseInfo. For instance, the parent of a #GIFunctionInfo is an
- * #GIObjectInfo or #GIInterfaceInfo.
+ * Obtain the container of the @info.
+ *
+ * The container is the parent `GIBaseInfo`. For instance, the parent of a
+ * [class@GIRepository.FunctionInfo] is an [class@GIRepository.ObjectInfo] or
+ * [class@GIRepository.InterfaceInfo].
  *
  * Returns: (transfer none): the container
+ * Since: 2.80
  */
 GIBaseInfo *
 gi_base_info_get_container (GIBaseInfo *info)
@@ -893,7 +917,8 @@ gi_base_info_get_container (GIBaseInfo *info)
  *
  * Obtain the typelib this @info belongs to
  *
- * Returns: (transfer none): the typelib.
+ * Returns: (transfer none): the typelib
+ * Since: 2.80
  */
 GITypelib *
 gi_base_info_get_typelib (GIBaseInfo *info)
@@ -906,13 +931,14 @@ gi_base_info_get_typelib (GIBaseInfo *info)
  * @info1: a #GIBaseInfo
  * @info2: a #GIBaseInfo
  *
- * Compare two #GIBaseInfo.
+ * Compare two `GIBaseInfo`s.
  *
  * Using pointer comparison is not practical since many functions return
- * different instances of #GIBaseInfo that refers to the same part of the
- * TypeLib; use this function instead to do #GIBaseInfo comparisons.
+ * different instances of `GIBaseInfo` that refers to the same part of the
+ * TypeLib; use this function instead to do `GIBaseInfo` comparisons.
  *
- * Returns: %TRUE if and only if @info1 equals @info2.
+ * Returns: `TRUE` if and only if @info1 equals @info2.
+ * Since: 2.80
  */
 gboolean
 gi_base_info_equal (GIBaseInfo *info1, GIBaseInfo *info2)
@@ -922,5 +948,3 @@ gi_base_info_equal (GIBaseInfo *info1, GIBaseInfo *info2)
   GIRealInfo *rinfo2 = (GIRealInfo*)info2;
   return rinfo1->typelib->data + rinfo1->offset == rinfo2->typelib->data + rinfo2->offset;
 }
-
-
