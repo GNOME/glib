@@ -39,41 +39,49 @@ G_BEGIN_DECLS
  * Increases the reference count of an object instance.
  *
  * Returns: (transfer full): the object instance
+ * Since: 2.80
  */
 typedef void * (*GIObjectInfoRefFunction) (void *object);
 
 /**
  * GIObjectInfoUnrefFunction: (skip)
- * @object: object instance pointer
+ * @object: (transfer full): object instance pointer
  *
  * Decreases the reference count of an object instance.
+ *
+ * Since: 2.80
  */
 typedef void   (*GIObjectInfoUnrefFunction) (void *object);
 
 /**
  * GIObjectInfoSetValueFunction: (skip)
- * @value: a #GValue
+ * @value: a [type@GObject.Value]
  * @object: object instance pointer
  *
  * Update @value and attach the object instance pointer @object to it.
+ *
+ * Since: 2.80
  */
 typedef void   (*GIObjectInfoSetValueFunction) (GValue *value, void *object);
 
 /**
  * GIObjectInfoGetValueFunction: (skip)
- * @value: a #GValue
+ * @value: a [type@GObject.Value]
  *
- * Extract an object instance out of @value
+ * Extract an object instance out of @value.
  *
  * Returns: (transfer full): the object instance
+ * Since: 2.80
  */
 typedef void * (*GIObjectInfoGetValueFunction) (const GValue *value);
 
 /**
- * GI_IS_OBJECT_INFO
+ * GI_IS_OBJECT_INFO:
  * @info: an info structure
  *
- * Checks if @info is a #GIObjectInfo.
+ * Checks if @info is a [class@GIRepository.ObjectInfo].
+ *
+ * Since: 2.80
  */
 #define GI_IS_OBJECT_INFO(info) \
     (gi_base_info_get_info_type ((GIBaseInfo*) info) ==  GI_INFO_TYPE_OBJECT)
