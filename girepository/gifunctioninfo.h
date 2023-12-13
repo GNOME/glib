@@ -33,10 +33,12 @@
 G_BEGIN_DECLS
 
 /**
- * GI_IS_FUNCTION_INFO
+ * GI_IS_FUNCTION_INFO:
  * @info: an info structure
  *
- * Checks if @info is a #GIFunctionInfo.
+ * Checks if @info is a [class@GIRepository.FunctionInfo].
+ *
+ * Since: 2.80
  */
 #define GI_IS_FUNCTION_INFO(info) \
     (gi_base_info_get_info_type ((GIBaseInfo*) info) ==  GI_INFO_TYPE_FUNCTION)
@@ -57,7 +59,9 @@ GIVFuncInfo *           gi_function_info_get_vfunc      (GIFunctionInfo *info);
 /**
  * GI_INVOKE_ERROR:
  *
- * TODO
+ * Type quark function for [enum@GIRepository.InvokeError].
+ *
+ * Since: 2.80
  */
 #define GI_INVOKE_ERROR (gi_invoke_error_quark ())
 
@@ -66,16 +70,17 @@ GQuark gi_invoke_error_quark (void);
 
 /**
  * GIInvokeError:
- * @GI_INVOKE_ERROR_FAILED: invokation failed, unknown error.
- * @GI_INVOKE_ERROR_SYMBOL_NOT_FOUND: symbol couldn't be found in any of the
+ * @GI_INVOKE_ERROR_FAILED: invocation failed, unknown error.
+ * @GI_INVOKE_ERROR_SYMBOL_NOT_FOUND: symbol couldn’t be found in any of the
  *   libraries associated with the typelib of the function.
- * @GI_INVOKE_ERROR_ARGUMENT_MISMATCH: the arguments provided didn't match
- *   the expected arguments for the functions type signature.
+ * @GI_INVOKE_ERROR_ARGUMENT_MISMATCH: the arguments provided didn’t match
+ *   the expected arguments for the function’s type signature.
  *
- * An error occuring while invoking a function via
- * gi_function_info_invoke().
+ * An error occurring while invoking a function via
+ * [method@GIRepository.FunctionInfo.invoke].
+ *
+ * Since: 2.80
  */
-
 typedef enum
 {
   GI_INVOKE_ERROR_FAILED,
