@@ -65,7 +65,7 @@
  * (i.e. only if the type of the C function’s formal parameter is a pointer to a
  * pointer).
  *
- * Returns: true if it is a pointer
+ * Returns: `TRUE` if it is a pointer
  * Since: 2.80
  */
 gboolean
@@ -128,9 +128,10 @@ gi_type_info_get_tag (GITypeInfo *info)
  * @info: a #GITypeInfo
  * @n: index of the parameter
  *
- * Obtain the parameter type @n, or `-1` if the type is not an array.
+ * Obtain the parameter type @n, or `NULL` if the type is not an array.
  *
- * Returns: (transfer full) (nullable): the param type info
+ * Returns: (transfer full) (nullable): the param type info, or `NULL` if the
+ *   type is not an array
  * Since: 2.80
  */
 GITypeInfo *
@@ -173,13 +174,16 @@ gi_type_info_get_param_type (GITypeInfo *info,
  *
  * For types which have `GI_TYPE_TAG_INTERFACE` such as [class@GObject.Object]s
  * and boxed values, this function returns full information about the referenced
- * type.  You can then inspect the type of the returned
- * [class@GIRepository.BaseInfo] to further query whether it is a concrete
- * [class@GObject.Object], an interface, a structure, etc., using
+ * type.
+ *
+ * You can then inspect the type of the returned [class@GIRepository.BaseInfo]
+ * to further query whether it is a concrete [class@GObject.Object], an
+ * interface, a structure, etc., using
  * [method@GIRepository.BaseInfo.get_info_type].
  *
- * Returns: (transfer full) (nullable): the [class@GIRepository.BaseInfo], or
+ * Returns: (transfer full) (nullable): The [class@GIRepository.BaseInfo], or
  *   `NULL`. Free it with gi_base_info_unref() when done.
+ * Since: 2.80
  */
 GIBaseInfo *
 gi_type_info_get_interface (GITypeInfo *info)
@@ -230,9 +234,11 @@ gi_type_info_get_interface (GITypeInfo *info)
  * @info: a #GITypeInfo
  *
  * Obtain the position of the argument which gives the array length of the type.
+ *
  * The type tag must be a `GI_TYPE_TAG_ARRAY` or `-1` will be returned.
  *
  * Returns: the array length argument index, or `-1` if the type is not an array
+ *   or it has no length argument
  * Since: 2.80
  */
 gint
@@ -264,10 +270,11 @@ gi_type_info_get_array_length_index (GITypeInfo *info)
  * gi_type_info_get_array_fixed_size:
  * @info: a #GITypeInfo
  *
- * Obtain the fixed array size of the type. The type tag must be a
- * `GI_TYPE_TAG_ARRAY` or `-1` will be returned.
+ * Obtain the fixed array size of the type, in number of elements (not bytes).
  *
- * Returns: the size or `-1` if the type is not an array
+ * The type tag must be a `GI_TYPE_TAG_ARRAY` or `-1` will be returned.
+ *
+ * Returns: the size or `-1` if the type is not an array or it has no fixed size
  * Since: 2.80
  */
 gssize
@@ -299,10 +306,11 @@ gi_type_info_get_array_fixed_size (GITypeInfo *info)
  * gi_type_info_is_zero_terminated:
  * @info: a #GITypeInfo
  *
- * Obtain if the last element of the array is `NULL`. The type tag must be a
- * `GI_TYPE_TAG_ARRAY` or false will be returned.
+ * Obtain if the last element of the array is `NULL`.
  *
- * Returns: true if zero terminated
+ * The type tag must be a `GI_TYPE_TAG_ARRAY` or `FALSE` will be returned.
+ *
+ * Returns: `TRUE` if zero terminated
  * Since: 2.80
  */
 gboolean
@@ -395,7 +403,11 @@ gi_type_info_get_storage_type (GITypeInfo *info)
  * @storage_type: a [type@GIRepository.TypeTag] obtained from
  *   [method@GIRepository.TypeInfo.get_storage_type]
  * @hash_pointer: a pointer, such as a [struct@GLib.HashTable] data pointer
- * @arg: a [type@GIRepository.Argument] to fill in
+ * @arg: (out caller-allocates) (not nullable): a [type@GIRepository.Argument]
+ *   to fill in
+ *
+ * Convert a data pointer from a GLib data structure to a
+ * [type@GIRepository.Argument].
  *
  * GLib data structures, such as [type@GLib.List], [type@GLib.SList], and
  * [type@GLib.HashTable], all store data pointers.
@@ -469,7 +481,10 @@ gi_type_tag_argument_from_hash_pointer (GITypeTag   storage_type,
  * gi_type_info_argument_from_hash_pointer:
  * @info: a #GITypeInfo
  * @hash_pointer: a pointer, such as a [struct@GLib.HashTable] data pointer
- * @arg: a [type@GIRepository.Argument] to fill in
+ * @arg: (out caller-allocates): a [type@GIRepository.Argument] to fill in
+ *
+ * Convert a data pointer from a GLib data structure to a
+ * [type@GIRepository.Argument].
  *
  * GLib data structures, such as [type@GLib.List], [type@GLib.SList], and
  * [type@GLib.HashTable], all store data pointers.
@@ -500,7 +515,10 @@ gi_type_info_argument_from_hash_pointer (GITypeInfo *info,
  * gi_type_tag_hash_pointer_from_argument:
  * @storage_type: a [type@GIRepository.TypeTag] obtained from
  *   [method@GIRepository.TypeInfo.get_storage_type]
- * @arg: A [type@GIRepository.Argument] with the value to stuff into a pointer
+ * @arg: a [type@GIRepository.Argument] with the value to stuff into a pointer
+ *
+ * Convert a [type@GIRepository.Argument] to data pointer for use in a GLib
+ * data structure.
  *
  * GLib data structures, such as [type@GLib.List], [type@GLib.SList], and
  * [type@GLib.HashTable], all store data pointers.
@@ -565,7 +583,10 @@ gi_type_tag_hash_pointer_from_argument (GITypeTag   storage_type,
 /**
  * gi_type_info_hash_pointer_from_argument:
  * @info: a #GITypeInfo
- * @arg: A [struct@GIRepository.Argument] with the value to stuff into a pointer
+ * @arg: a [struct@GIRepository.Argument] with the value to stuff into a pointer
+ *
+ * Convert a [type@GIRepository.Argument] to data pointer for use in a GLib
+ * data structure.
  *
  * GLib data structures, such as [type@GLib.List], [type@GLib.SList], and
  * [type@GLib.HashTable], all store data pointers.
