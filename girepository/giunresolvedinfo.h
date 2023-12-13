@@ -32,10 +32,12 @@
 G_BEGIN_DECLS
 
 /**
- * GI_IS_UNRESOLVED_INFO
+ * GI_IS_UNRESOLVED_INFO:
  * @info: an info structure
  *
- * Checks if @info is a #GIUnresolvedInfo or derived from it.
+ * Checks if @info is a [class@GIRepository.UnresolvedInfo] or derived from it.
+ *
+ * Since: 2.80
  */
 #define GI_IS_UNRESOLVED_INFO(info)					\
     (gi_base_info_get_info_type ((GIBaseInfo*) info) == GI_INFO_TYPE_UNRESOLVED)
