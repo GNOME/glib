@@ -33,14 +33,14 @@
 #include "giinterfaceinfo.h"
 
 /**
- * SECTION:giinterfaceinfo
- * @title: GIInterfaceInfo
- * @short_description: Struct representing a GInterface
+ * GIInterfaceInfo:
  *
- * GIInterfaceInfo represents a #GInterface type.
+ * `GIInterfaceInfo` represents a `GInterface` type.
  *
- * A GInterface has methods, fields, properties, signals, interfaces, constants,
- * virtual functions and prerequisites.
+ * A `GInterface` has methods, fields, properties, signals,
+ * interfaces, constants, virtual functions and prerequisites.
+ *
+ * Since: 2.80
  */
 
 /**
@@ -48,10 +48,12 @@
  * @info: a #GIInterfaceInfo
  *
  * Obtain the number of prerequisites for this interface type.
- * A prerequisites is another interface that needs to be implemented for
- * interface, similar to an base class for GObjects.
+ *
+ * A prerequisite is another interface that needs to be implemented for
+ * interface, similar to a base class for [class@GObject.Object]s.
  *
  * Returns: number of prerequisites
+ * Since: 2.80
  */
 guint
 gi_interface_info_get_n_prerequisites (GIInterfaceInfo *info)
@@ -70,12 +72,13 @@ gi_interface_info_get_n_prerequisites (GIInterfaceInfo *info)
 /**
  * gi_interface_info_get_prerequisite:
  * @info: a #GIInterfaceInfo
- * @n: index of prerequisites to get
+ * @n: index of prerequisite to get
  *
- * Obtain an interface type prerequisites index @n.
+ * Obtain an interface type’s prerequisite at index @n.
  *
- * Returns: (transfer full): the prerequisites as a #GIBaseInfo. Free the struct by calling
- *   gi_base_info_unref() when done.
+ * Returns: (transfer full): The prerequisite as a [class@GIRepository.BaseInfo].
+ *   Free the struct by calling [method@GIRepository.BaseInfo.unref] when done.
+ * Since: 2.80
  */
 GIBaseInfo *
 gi_interface_info_get_prerequisite (GIInterfaceInfo *info,
@@ -101,6 +104,7 @@ gi_interface_info_get_prerequisite (GIInterfaceInfo *info,
  * Obtain the number of properties that this interface type has.
  *
  * Returns: number of properties
+ * Since: 2.80
  */
 guint
 gi_interface_info_get_n_properties (GIInterfaceInfo *info)
@@ -123,8 +127,9 @@ gi_interface_info_get_n_properties (GIInterfaceInfo *info)
  *
  * Obtain an interface type property at index @n.
  *
- * Returns: (transfer full): the #GIPropertyInfo. Free the struct by calling
- *   gi_base_info_unref() when done.
+ * Returns: (transfer full): The [class@GIRepository.PropertyInfo]. Free the
+ *   struct by calling [method@GIRepository.BaseInfo.unref] when done.
+ * Since: 2.80
  */
 GIPropertyInfo *
 gi_interface_info_get_property (GIInterfaceInfo *info,
@@ -156,6 +161,7 @@ gi_interface_info_get_property (GIInterfaceInfo *info,
  * Obtain the number of methods that this interface type has.
  *
  * Returns: number of methods
+ * Since: 2.80
  */
 guint
 gi_interface_info_get_n_methods (GIInterfaceInfo *info)
@@ -178,8 +184,9 @@ gi_interface_info_get_n_methods (GIInterfaceInfo *info)
  *
  * Obtain an interface type method at index @n.
  *
- * Returns: (transfer full): the #GIFunctionInfo. Free the struct by calling
- *   gi_base_info_unref() when done.
+ * Returns: (transfer full): The [class@GIRepository.FunctionInfo]. Free the
+ *   struct by calling [method@GIRepository.BaseInfo.unref] when done.
+ * Since: 2.80
  */
 GIFunctionInfo *
 gi_interface_info_get_method (GIInterfaceInfo *info,
@@ -210,11 +217,14 @@ gi_interface_info_get_method (GIInterfaceInfo *info,
  * @info: a #GIInterfaceInfo
  * @name: name of method to obtain
  *
- * Obtain a method of the interface type given a @name. %NULL will be
- * returned if there's no method available with that name.
+ * Obtain a method of the interface type given a @name.
  *
- * Returns: (transfer full): the #GIFunctionInfo or %NULL if none found.
- *   Free the struct by calling gi_base_info_unref() when done.
+ * `NULL` will be returned if there’s no method available with that name.
+ *
+ * Returns: (transfer full) (nullable): The [class@GIRepository.FunctionInfo] or
+ *   `NULL` if none found. Free the struct by calling
+ *   [method@GIRepository.BaseInfo.unref] when done.
+ * Since: 2.80
  */
 GIFunctionInfo *
 gi_interface_info_find_method (GIInterfaceInfo *info,
@@ -239,6 +249,7 @@ gi_interface_info_find_method (GIInterfaceInfo *info,
  * Obtain the number of signals that this interface type has.
  *
  * Returns: number of signals
+ * Since: 2.80
  */
 guint
 gi_interface_info_get_n_signals (GIInterfaceInfo *info)
@@ -261,8 +272,9 @@ gi_interface_info_get_n_signals (GIInterfaceInfo *info)
  *
  * Obtain an interface type signal at index @n.
  *
- * Returns: (transfer full): the #GISignalInfo. Free the struct by calling
- *   gi_base_info_unref() when done.
+ * Returns: (transfer full): The [class@GIRepository.SignalInfo]. Free the
+ *   struct by calling [method@GIRepository.BaseInfo.unref] when done.
+ * Since: 2.80
  */
 GISignalInfo *
 gi_interface_info_get_signal (GIInterfaceInfo *info,
@@ -292,12 +304,15 @@ gi_interface_info_get_signal (GIInterfaceInfo *info,
 /**
  * gi_interface_info_find_signal:
  * @info: a #GIInterfaceInfo
- * @name: Name of signal
+ * @name: name of signal to find
  *
- * TODO
+ * Obtain a signal of the interface type given a @name.
  *
- * Returns: (transfer full): Info for the signal with name @name in @info, or
- * %NULL on failure.
+ * `NULL` will be returned if there’s no signal available with that name.
+ *
+ * Returns: (transfer full) (nullable): The [class@GIRepository.SignalInfo] or
+ *   `NULL` if none found. Free the struct by calling
+ *   [method@GIRepository.BaseInfo.unref] when done.
  * Since: 2.80
  */
 GISignalInfo *
@@ -329,6 +344,7 @@ gi_interface_info_find_signal (GIInterfaceInfo *info,
  * Obtain the number of virtual functions that this interface type has.
  *
  * Returns: number of virtual functions
+ * Since: 2.80
  */
 guint
 gi_interface_info_get_n_vfuncs (GIInterfaceInfo *info)
@@ -351,8 +367,9 @@ gi_interface_info_get_n_vfuncs (GIInterfaceInfo *info)
  *
  * Obtain an interface type virtual function at index @n.
  *
- * Returns: (transfer full): the #GIVFuncInfo. Free the struct by calling
- *   gi_base_info_unref() when done.
+ * Returns: (transfer full): the [class@GIRepository.VFuncInfo]. Free the struct
+ *   by calling [method@GIRepository.BaseInfo.unref] when done.
+ * Since: 2.80
  */
 GIVFuncInfo *
 gi_interface_info_get_vfunc (GIInterfaceInfo *info,
@@ -385,11 +402,15 @@ gi_interface_info_get_vfunc (GIInterfaceInfo *info,
  * @info: a #GIInterfaceInfo
  * @name: The name of a virtual function to find.
  *
- * Locate a virtual function slot with name @name. See the documentation
- * for gi_object_info_find_vfunc() for more information on virtuals.
+ * Locate a virtual function slot with name @name.
  *
- * Returns: (transfer full): the #GIVFuncInfo, or %NULL. Free it with
- *   gi_base_info_unref() when done.
+ * See the documentation for [method@GIRepository.ObjectInfo.find_vfunc] for
+ * more information on virtuals.
+ *
+ * Returns: (transfer full) (nullable): The [class@GIRepository.VFuncInfo], or
+ *   `NULL` if none found. Free it with [method@GIRepository.BaseInfo.unref]
+ *   when done.
+ * Since: 2.80
  */
 GIVFuncInfo *
 gi_interface_info_find_vfunc (GIInterfaceInfo *info,
@@ -422,6 +443,7 @@ gi_interface_info_find_vfunc (GIInterfaceInfo *info,
  * Obtain the number of constants that this interface type has.
  *
  * Returns: number of constants
+ * Since: 2.80
  */
 guint
 gi_interface_info_get_n_constants (GIInterfaceInfo *info)
@@ -444,8 +466,9 @@ gi_interface_info_get_n_constants (GIInterfaceInfo *info)
  *
  * Obtain an interface type constant at index @n.
  *
- * Returns: (transfer full): the #GIConstantInfo. Free the struct by calling
- *   gi_base_info_unref() when done.
+ * Returns: (transfer full): The [class@GIRepository.ConstantInfo]. Free the
+ *   struct by calling [method@GIRepository.BaseInfo.unref] when done.
+ * Since: 2.80
  */
 GIConstantInfo *
 gi_interface_info_get_constant (GIInterfaceInfo *info,
@@ -478,10 +501,12 @@ gi_interface_info_get_constant (GIInterfaceInfo *info,
  * gi_interface_info_get_iface_struct:
  * @info: a #GIInterfaceInfo
  *
- * Returns the layout C structure associated with this #GInterface.
+ * Returns the layout C structure associated with this `GInterface`.
  *
- * Returns: (transfer full): the #GIStructInfo or %NULL. Free it with
- *   gi_base_info_unref() when done.
+ * Returns: (transfer full) (nullable): The [class@GIRepository.StructInfo] or
+ *   `NULL` if unknown. Free it with [method@GIRepository.BaseInfo.unref] when
+ *   done.
+ * Since: 2.80
  */
 GIStructInfo *
 gi_interface_info_get_iface_struct (GIInterfaceInfo *info)
