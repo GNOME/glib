@@ -34,26 +34,26 @@
 #include "giconstantinfo.h"
 
 /**
- * SECTION:giconstantinfo
- * @title: GIConstantInfo
- * @short_description: Struct representing a constant
+ * GIConstantInfo:
  *
- * GIConstantInfo represents a constant.
+ * `GIConstantInfo` represents a constant.
  *
- * A constant has a type associated which can be obtained by calling
- * gi_constant_info_get_type_info() and a value, which can be obtained by
- * calling gi_constant_info_get_value().
+ * A constant has a type associated – which can be obtained by calling
+ * [method@GIRepository.ConstantInfo.get_type_info] – and a value – which can be
+ * obtained by calling [method@GIRepository.ConstantInfo.get_value].
+ *
+ * Since: 2.80
  */
-
 
 /**
  * gi_constant_info_get_type_info:
  * @info: a #GIConstantInfo
  *
- * Obtain the type of the constant as a #GITypeInfo.
+ * Obtain the type of the constant as a [class@GIRepository.TypeInfo].
  *
- * Returns: (transfer full): the #GITypeInfo. Free the struct by calling
- *   gi_base_info_unref() when done.
+ * Returns: (transfer full): The [class@GIRepository.TypeInfo]. Free the struct
+ *   by calling [method@GIRepository.BaseInfo.unref] when done.
+ * Since: 2.80
  */
 GITypeInfo *
 gi_constant_info_get_type_info (GIConstantInfo *info)
@@ -74,7 +74,7 @@ gi_constant_info_get_type_info (GIConstantInfo *info)
  * @info: a #GIConstantInfo
  * @value: the argument
  *
- * Free the value returned from gi_constant_info_get_value().
+ * Free the value returned from [method@GIRepository.ConstantInfo.get_value].
  *
  * Since: 2.80
  */
@@ -101,14 +101,20 @@ gi_constant_info_free_value (GIConstantInfo *info,
 /**
  * gi_constant_info_get_value: (skip)
  * @info: a #GIConstantInfo
- * @value: (out): an argument
+ * @value: (out caller-allocates): an argument
  *
- * Obtain the value associated with the #GIConstantInfo and store it in the
- * @value parameter. @argument needs to be allocated before passing it in.
- * The size of the constant value stored in @argument will be returned.
- * Free the value with gi_constant_info_free_value().
+ * Obtain the value associated with the `GIConstantInfo` and store it in the
+ * @value parameter.
+ *
+ * @argument needs to be allocated before passing it in.
+ *
+ * The size of the constant value (in bytes) stored in @argument will be
+ * returned.
+ *
+ * Free the value with [method@GIRepository.ConstantInfo.free_value].
  *
  * Returns: size of the constant, in bytes
+ * Since: 2.80
  */
 gsize
 gi_constant_info_get_value (GIConstantInfo *info,
