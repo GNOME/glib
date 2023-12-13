@@ -33,20 +33,24 @@
 G_BEGIN_DECLS
 
 /**
- * GI_IS_ENUM_INFO
+ * GI_IS_ENUM_INFO:
  * @info: an info structure
  *
- * Checks if @info is a #GIEnumInfo.
+ * Checks if @info is a [class@GIRepository.EnumInfo].
+ *
+ * Since: 2.80
  */
 #define GI_IS_ENUM_INFO(info) \
     ((gi_base_info_get_info_type ((GIBaseInfo*) info) ==  GI_INFO_TYPE_ENUM) || \
      (gi_base_info_get_info_type ((GIBaseInfo*) info) ==  GI_INFO_TYPE_FLAGS))
 
 /**
- * GI_IS_VALUE_INFO
+ * GI_IS_VALUE_INFO:
  * @info: an info structure
  *
- * Checks if @info is a #GIValueInfo.
+ * Checks if @info is a [class@GIRepository.ValueInfo].
+ *
+ * Since: 2.80
  */
 #define GI_IS_VALUE_INFO(info) \
     (gi_base_info_get_info_type ((GIBaseInfo*) info) ==  GI_INFO_TYPE_VALUE)
