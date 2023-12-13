@@ -631,7 +631,7 @@ g_prefix_error (GError      **err,
 
 /**
  * g_prefix_error_literal:
- * @err: (allow-none): a return location for a #GError, or %NULL
+ * @err: (inout) (nullable) (optional): a return location for a #GError, or %NULL
  * @prefix: string to prefix @err with
  *
  * Prefixes @prefix to an existing error message. If @err or *@err is
