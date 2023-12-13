@@ -37,7 +37,7 @@
 /**
  * GIVFuncInfo:
  *
- * `GIVfuncInfo` represents a virtual function.
+ * `GIVFuncInfo` represents a virtual function.
  *
  * A virtual function is a callable object that belongs to either a
  * [type@GIRepository.ObjectInfo] or a [type@GIRepository.InterfaceInfo].
@@ -114,8 +114,9 @@ gi_vfunc_info_get_flags (GIVFuncInfo *info)
  * gi_vfunc_info_get_offset:
  * @info: a #GIVFuncInfo
  *
- * Obtain the offset of the function pointer in the class struct. The value
- * `0xFFFF` indicates that the struct offset is unknown.
+ * Obtain the offset of the function pointer in the class struct.
+ *
+ * The value `0xFFFF` indicates that the struct offset is unknown.
  *
  * Returns: the struct offset or `0xFFFF` if it’s unknown
  * Since: 2.80
@@ -143,7 +144,7 @@ gi_vfunc_info_get_offset (GIVFuncInfo *info)
  * The signal comes from the object or interface to which
  * this virtual function belongs.
  *
- * Returns: (transfer full) (nullable): the signal or `NULL` if none set
+ * Returns: (transfer full) (nullable): the signal, or `NULL` if none is set
  * Since: 2.80
  */
 GISignalInfo *
@@ -172,8 +173,9 @@ gi_vfunc_info_get_signal (GIVFuncInfo *info)
  *
  * Not all virtuals will have invokers.
  *
- * Returns: (transfer full) (nullable): the [type@GIRepository.FunctionInfo] or
- *   `NULL`. Free it with gi_base_info_unref() when done.
+ * Returns: (transfer full) (nullable): The [type@GIRepository.FunctionInfo] or
+ *   `NULL` if none is set. Free it with [method@GIRepository.BaseInfo.unref]
+ *   when done.
  * Since: 2.80
  */
 GIFunctionInfo *
@@ -206,13 +208,13 @@ gi_vfunc_info_get_invoker (GIVFuncInfo *info)
 /**
  * gi_vfunc_info_get_address:
  * @info: a #GIVFuncInfo
- * @implementor_gtype: #GType implementing this virtual function
- * @error: return location for a #GError
+ * @implementor_gtype: [type@GObject.Type] implementing this virtual function
+ * @error: return location for a [type@GLib.Error], or `NULL`
  *
- * Looks up where inside the type struct of @implementor_gtype is the
- * implementation for @info.
+ * Looks up where the implementation for @info is inside the type struct of
+ * @implementor_gtype.
  *
- * Returns: address to a function or `NULL` if an error happened
+ * Returns: address to a function
  * Since: 2.80
  */
 gpointer
@@ -310,26 +312,29 @@ gi_vfunc_info_get_address (GIVFuncInfo  *vfunc_info,
 /**
  * gi_vfunc_info_invoke: (skip)
  * @info: a #GIVFuncInfo describing the virtual function to invoke
- * @implementor: #GType of the type that implements this virtual function
+ * @implementor: [type@GObject.Type] of the type that implements this virtual
+ *   function
  * @in_args: (array length=n_in_args) (nullable): an array of
- *    [struct@GIRepository.Argument]s, one for each in parameter of @info. If
- *    there are no in parameter, @in_args can be `NULL`
+ *   [struct@GIRepository.Argument]s, one for each ‘in’ parameter of @info. If
+ *   there are no ‘in’ parameters, @in_args can be `NULL`
  * @n_in_args: the length of the @in_args array
  * @out_args: (array length=n_out_args) (nullable): an array of
- *    [struct@GIRepository.Argument]s, one for each out parameter of @info. If
- *    there are no out parameters, @out_args may be `NULL`
+ *   [struct@GIRepository.Argument]s allocated by the caller, one for each
+ *   ‘out’ parameter of @info. If there are no ‘out’ parameters, @out_args may
+ *   be `NULL`
  * @n_out_args: the length of the @out_args array
- * @return_value: (nullable): return location for the return value of the
- *    function. If the function returns void, @return_value may be
- *    `NULL`
+ * @return_value: (out caller-allocates) (not optional) (nullable): return
+ *   location for the return value from the vfunc; `NULL` may be returned if
+ *   the vfunc returns that
  * @error: return location for detailed error information, or `NULL`
  *
  * Invokes the function described in @info with the given
- * arguments. Note that inout parameters must appear in both
- * argument lists.
+ * arguments.
  *
- * Returns: true if the function has been invoked, false if an
- *   error occurred.
+ * Note that ‘inout’ parameters must appear in both argument lists.
+ *
+ * Returns: `TRUE` if the vfunc was executed successfully and didn’t throw
+ *   a [type@GLib.Error]; `FALSE` if @error is set
  * Since: 2.80
  */
 gboolean
