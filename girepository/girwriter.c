@@ -1316,15 +1316,17 @@ write_union_info (const gchar *ns,
 }
 
 
-/*
+/**
  * gi_ir_writer_write:
- * @filename: filename to write to
+ * @filename: (type filename): filename to write to
  * @ns: GIR namespace to write
  * @needs_prefix: if the filename needs prefixing
  * @show_all: if field size calculations should be included
  *
  * Writes the output of a typelib represented by @ns
  * into a GIR xml file named @filename.
+ *
+ * Since: 2.80
  */
 void
 gi_ir_writer_write (const char *filename,
