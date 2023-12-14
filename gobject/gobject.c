@@ -230,9 +230,8 @@ g_object_notify_queue_create_queue_frozen (GObject *object)
   return nqueue;
 }
 
-static GObjectNotifyQueue*
-g_object_notify_queue_freeze (GObject  *object,
-                              gboolean  conditional)
+static GObjectNotifyQueue *
+g_object_notify_queue_freeze (GObject *object)
 {
   GObjectNotifyQueue *nqueue;
 
@@ -240,12 +239,6 @@ g_object_notify_queue_freeze (GObject  *object,
   nqueue = g_datalist_id_get_data (&object->qdata, quark_notify_queue);
   if (!nqueue)
     {
-      if (conditional)
-        {
-          G_UNLOCK(notify_lock);
-          return NULL;
-        }
-
       nqueue = g_object_notify_queue_create_queue_frozen (object);
       goto out;
     }
@@ -1331,7 +1324,7 @@ g_object_init (GObject		*object,
   if (CLASS_HAS_PROPS (class) && CLASS_NEEDS_NOTIFY (class))
     {
       /* freeze object's notification queue, g_object_new_internal() preserves pairedness */
-      g_object_notify_queue_freeze (object, FALSE);
+      g_object_notify_queue_freeze (object);
     }
 
   /* mark object in-construction for notify_queue_thaw() and to allow construct-only properties */
@@ -1505,7 +1498,7 @@ g_object_freeze_notify (GObject *object)
     }
 #endif
 
-  g_object_notify_queue_freeze (object, FALSE);
+  g_object_notify_queue_freeze (object);
 }
 
 static inline void
@@ -2200,7 +2193,7 @@ g_object_new_with_custom_constructor (GObjectClass          *class,
            */
           nqueue = g_datalist_id_get_data (&object->qdata, quark_notify_queue);
           if (!nqueue)
-            nqueue = g_object_notify_queue_freeze (object, FALSE);
+            nqueue = g_object_notify_queue_freeze (object);
         }
     }
 
@@ -2249,7 +2242,7 @@ g_object_new_internal (GObjectClass          *class,
            */
           nqueue = g_datalist_id_get_data (&object->qdata, quark_notify_queue);
           if (!nqueue)
-            nqueue = g_object_notify_queue_freeze (object, FALSE);
+            nqueue = g_object_notify_queue_freeze (object);
         }
 
       /* We will set exactly n_construct_properties construct
@@ -2612,7 +2605,7 @@ g_object_constructor (GType                  type,
   /* set construction parameters */
   if (n_construct_properties)
     {
-      GObjectNotifyQueue *nqueue = g_object_notify_queue_freeze (object, FALSE);
+      GObjectNotifyQueue *nqueue = g_object_notify_queue_freeze (object);
       
       /* set construct properties */
       while (n_construct_properties--)
@@ -2700,7 +2693,7 @@ g_object_setv (GObject       *object,
   class = G_OBJECT_GET_CLASS (object);
 
   if (_g_object_has_notify_handler (object))
-    nqueue = g_object_notify_queue_freeze (object, FALSE);
+    nqueue = g_object_notify_queue_freeze (object);
 
   for (i = 0; i < n_properties; i++)
     {
@@ -2741,7 +2734,7 @@ g_object_set_valist (GObject	 *object,
   g_object_ref (object);
 
   if (_g_object_has_notify_handler (object))
-    nqueue = g_object_notify_queue_freeze (object, FALSE);
+    nqueue = g_object_notify_queue_freeze (object);
 
   class = G_OBJECT_GET_CLASS (object);
 
@@ -3877,7 +3870,7 @@ g_object_unref (gpointer _object)
        * drained when g_object_finalize() is reached and
        * the qdata is cleared.
        */
-      nqueue = g_object_notify_queue_freeze (object, FALSE);
+      nqueue = g_object_notify_queue_freeze (object);
 
       /* we are about to remove the last reference */
       TRACE (GOBJECT_OBJECT_DISPOSE(object,G_TYPE_FROM_INSTANCE(object), 1));
