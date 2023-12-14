@@ -320,12 +320,40 @@ g_object_notify_queue_thaw (GObject            *object,
   g_free (free_me);
 }
 
-static void
+static gboolean
 g_object_notify_queue_add (GObject            *object,
                            GObjectNotifyQueue *nqueue,
-                           GParamSpec         *pspec)
+                           GParamSpec         *pspec,
+                           gboolean            in_init)
 {
   G_LOCK(notify_lock);
+
+  if (!nqueue)
+    {
+      /* We are called without an nqueue. Figure out whether a notification
+       * should be queued. */
+      nqueue = g_datalist_id_get_data (&object->qdata, quark_notify_queue);
+
+      if (!nqueue)
+        {
+          if (!in_init)
+            {
+              /* We don't have a notify queue and are not in_init. The event
+               * is not to be queued. The caller will dispatch directly. */
+              G_UNLOCK (notify_lock);
+              return FALSE;
+            }
+
+          /* We are "in_init", but did not freeze the queue in g_object_init
+           * yet. Instead, we gained a notify handler in instance init, so now
+           * we need to freeze just-in-time.
+           *
+           * Note that this freeze will be balanced at the end of object
+           * initialization.
+           */
+          nqueue = g_object_notify_queue_create_queue_frozen (object);
+        }
+    }
 
   g_assert (nqueue->n_pspecs < 65535);
 
@@ -336,6 +364,8 @@ g_object_notify_queue_add (GObject            *object,
     }
 
   G_UNLOCK(notify_lock);
+
+  return TRUE;
 }
 
 #ifdef	G_ENABLE_DEBUG
@@ -1506,29 +1536,7 @@ g_object_notify_by_spec_internal (GObject    *object,
 
   if (pspec != NULL && needs_notify)
     {
-      GObjectNotifyQueue *nqueue;
-      gboolean need_thaw = TRUE;
-
-      /* conditional freeze: only increase freeze count if already frozen */
-      nqueue = g_object_notify_queue_freeze (object, TRUE);
-      if (in_init && !nqueue)
-        {
-          /* We did not freeze the queue in g_object_init, but
-           * we gained a notify handler in instance init, so
-           * now we need to freeze just-in-time
-           */
-          nqueue = g_object_notify_queue_freeze (object, FALSE);
-          need_thaw = FALSE;
-        }
-
-      if (nqueue != NULL)
-        {
-          /* we're frozen, so add to the queue and release our freeze */
-          g_object_notify_queue_add (object, nqueue, pspec);
-          if (need_thaw)
-            g_object_notify_queue_thaw (object, nqueue, FALSE);
-        }
-      else
+      if (!g_object_notify_queue_add (object, NULL, pspec, in_init))
         {
           /*
            * Coverity doesn’t understand the paired ref/unref here and seems to
@@ -1825,7 +1833,7 @@ object_set_property (GObject             *object,
 
   if ((pspec->flags & (G_PARAM_EXPLICIT_NOTIFY | G_PARAM_READABLE)) == G_PARAM_READABLE &&
       nqueue != NULL)
-    g_object_notify_queue_add (object, nqueue, pspec);
+    g_object_notify_queue_add (object, nqueue, pspec, FALSE);
 }
 
 static void
