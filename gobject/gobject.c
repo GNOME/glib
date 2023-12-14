@@ -257,8 +257,14 @@ g_object_notify_queue_thaw (GObject            *object,
 
   G_LOCK(notify_lock);
 
+  if (!nqueue)
+    {
+      /* Caller didn't look up the queue yet. Do it now. */
+      nqueue = g_datalist_id_get_data (&object->qdata, quark_notify_queue);
+    }
+
   /* Just make sure we never get into some nasty race condition */
-  if (G_UNLIKELY (nqueue->freeze_count == 0))
+  if (G_UNLIKELY (!nqueue || nqueue->freeze_count == 0))
     {
       G_UNLOCK (notify_lock);
       g_critical ("%s: property-changed notification for %s(%p) is not frozen",
@@ -1636,8 +1642,6 @@ g_object_notify_by_pspec (GObject    *object,
 void
 g_object_thaw_notify (GObject *object)
 {
-  GObjectNotifyQueue *nqueue;
-  
   g_return_if_fail (G_IS_OBJECT (object));
 
 #ifndef G_DISABLE_CHECKS
@@ -1651,15 +1655,9 @@ g_object_thaw_notify (GObject *object)
     }
 #endif
 
-
   g_object_ref (object);
 
-  /* FIXME: Freezing is the only way to get at the notify queue.
-   * So we freeze once and then thaw twice.
-   */
-  nqueue = g_object_notify_queue_freeze (object, FALSE);
-  g_object_notify_queue_thaw (object, nqueue);
-  g_object_notify_queue_thaw (object, nqueue);
+  g_object_notify_queue_thaw (object, NULL);
 
   g_object_unref (object);
 }
