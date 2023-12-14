@@ -403,6 +403,26 @@ _g_object_type_init (void)
 #endif /* G_ENABLE_DEBUG */
 }
 
+/* Initialize the global GParamSpecPool; this function needs to be
+ * called whenever we access the GParamSpecPool and we cannot guarantee
+ * that g_object_do_class_init() has been called: for instance, by the
+ * interface property API.
+ *
+ * To avoid yet another global lock, we use atomic pointer checks: the
+ * first caller of this function will win the race. Any other access to
+ * the GParamSpecPool is done under its own mutex.
+ */
+static inline void
+g_object_init_pspec_pool (void)
+{
+  if (G_UNLIKELY (g_atomic_pointer_get (&pspec_pool) == NULL))
+    {
+      GParamSpecPool *pool = g_param_spec_pool_new (TRUE);
+      if (!g_atomic_pointer_compare_and_exchange (&pspec_pool, NULL, pool))
+        g_param_spec_pool_free (pool);
+    }
+}
+
 static void
 g_object_base_class_init (GObjectClass *class)
 {
@@ -459,7 +479,8 @@ g_object_do_class_init (GObjectClass *class)
 #ifndef HAVE_OPTIONAL_FLAGS
   quark_in_construction = g_quark_from_static_string ("GObject-in-construction");
 #endif
-  pspec_pool = g_param_spec_pool_new (TRUE);
+
+  g_object_init_pspec_pool ();
 
   class->constructor = g_object_constructor;
   class->constructed = g_object_constructed;
@@ -525,11 +546,13 @@ install_property_internal (GType       g_type,
 {
   g_param_spec_ref_sink (pspec);
 
+  g_object_init_pspec_pool ();
+
   if (g_param_spec_pool_lookup (pspec_pool, pspec->name, g_type, FALSE))
     {
       g_critical ("When installing property: type '%s' already has a property named '%s'",
-		  g_type_name (g_type),
-		  pspec->name);
+                  g_type_name (g_type),
+                  pspec->name);
       g_param_spec_unref (pspec);
       return FALSE;
     }
@@ -950,7 +973,9 @@ g_object_interface_find_property (gpointer      g_iface,
 	
   g_return_val_if_fail (G_TYPE_IS_INTERFACE (iface_class->g_type), NULL);
   g_return_val_if_fail (property_name != NULL, NULL);
-  
+
+  g_object_init_pspec_pool ();
+
   return g_param_spec_pool_lookup (pspec_pool,
 				   property_name,
 				   iface_class->g_type,
@@ -1076,10 +1101,10 @@ g_object_class_list_properties (GObjectClass *class,
  * Since: 2.4
  *
  * Returns: (array length=n_properties_p) (transfer container): a
- *          pointer to an array of pointers to #GParamSpec
- *          structures. The paramspecs are owned by GLib, but the
- *          array should be freed with g_free() when you are done with
- *          it.
+ *   pointer to an array of pointers to #GParamSpec
+ *   structures. The paramspecs are owned by GLib, but the
+ *   array should be freed with g_free() when you are done with
+ *   it.
  */
 GParamSpec**
 g_object_interface_list_properties (gpointer      g_iface,
@@ -1090,6 +1115,8 @@ g_object_interface_list_properties (gpointer      g_iface,
   guint n;
 
   g_return_val_if_fail (G_TYPE_IS_INTERFACE (iface_class->g_type), NULL);
+
+  g_object_init_pspec_pool ();
 
   pspecs = g_param_spec_pool_list (pspec_pool,
 				   iface_class->g_type,
