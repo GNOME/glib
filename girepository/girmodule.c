@@ -93,6 +93,8 @@ gi_ir_module_free (GIIrModule *module)
  * @args: Remaining arguments
  *
  * Report a fatal error, then exit.
+ *
+ * Since: 2.80
  */
 void
 gi_ir_module_fatal (GIIrTypelibBuild *build,
