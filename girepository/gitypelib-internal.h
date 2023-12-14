@@ -36,7 +36,7 @@ G_BEGIN_DECLS
  * @short_description: Layout and accessors for typelib
  * @stability: Stable
  *
- * The "typelib" is a binary, readonly, memory-mappable database
+ * The ‘typelib’ is a binary, readonly, memory-mappable database
  * containing reflective information about a GObject library.
  *
  * What the typelib describes and the types used are the same for every
@@ -60,7 +60,7 @@ G_BEGIN_DECLS
  *
  * The typelib has the following general format:
  *
- * |[<!-- language="C" -->
+ * ```
  *   typelib ::= header, section-index, directory, blobs, attributes, attributedata
  *
  *   directory ::= list of entries
@@ -69,13 +69,15 @@ G_BEGIN_DECLS
  *   blob ::= function|callback|struct|boxed|enum|flags|object|interface|constant|union
  *   attribute ::= offset, key, value
  *   attributedata ::= string data for attributes
- * ]|
+ * ```
  *
- * Details
+ * ## Details
  *
  * We describe the fragments that make up the typelib in the form of C structs
  * (although some fall short of being valid C structs since they contain
  * multiple flexible arrays).
+ *
+ * Since: 2.80
  */
 
 /*
@@ -148,8 +150,11 @@ Changes since 0.1:
 /**
  * GI_IR_MAGIC:
  *
- * Identifying prefix for the typelib.  This was inspired by XPCOM,
- * which in turn borrowed from PNG.
+ * Identifying prefix for the typelib.
+ *
+ * This was inspired by XPCOM, which in turn borrowed from PNG.
+ *
+ * Since: 2.80
  */
 #define GI_IR_MAGIC "GOBJ\nMETADATA\r\n\032"
 
@@ -170,6 +175,8 @@ Changes since 0.1:
  *
  * The integral value of this enumeration appears in each "Blob" component of
  * a typelib to identify its type.
+ *
+ * Since: 2.80
  */
 typedef enum {
   BLOB_TYPE_INVALID,
@@ -276,6 +283,8 @@ _blob_is_registered_type (GITypelibBlobType blob_type)
  *
  * The header structure appears exactly once at the beginning of a typelib.  It is a
  * collection of meta-information, such as the number of entries and dependencies.
+ *
+ * Since: 2.80
  */
 typedef struct {
   gchar   magic[16];
@@ -327,6 +336,8 @@ typedef struct {
  * @GI_SECTION_DIRECTORY_INDEX: TODO
  *
  * TODO
+ *
+ * Since: 2.80
  */
 typedef enum {
   GI_SECTION_END = 0,
@@ -342,6 +353,8 @@ typedef enum {
  * and may or may not be present in the typelib.  Presently, just used
  * for the directory index.  This allows a form of dynamic extensibility
  * with different tradeoffs from the format minor version.
+ *
+ * Since: 2.80
  */
 typedef struct {
   guint32 id;
@@ -363,6 +376,8 @@ typedef struct {
  *
  * All blobs pointed to by a directory entry start with the same layout for
  * the first 8 bytes (the reserved flags may be used by some blob types)
+ *
+ * Since: 2.80
  */
 typedef struct {
   guint16 blob_type;
@@ -382,6 +397,8 @@ typedef struct {
  * @tag: A #GITypeTag
  *
  * TODO
+ *
+ * Since: 2.80
  */
 typedef struct {
   guint reserved   : 8;
@@ -419,6 +436,8 @@ union _SimpleTypeBlob
  * In this case, the integer is actually an offset into the directory (see
  * above).  Because the header is larger than 2^8=256 bits, all offsets will
  * have one of the upper 24 bits set.
+ *
+ * Since: 2.80
  */
 typedef union _SimpleTypeBlob SimpleTypeBlob;
 
@@ -466,6 +485,8 @@ typedef union _SimpleTypeBlob SimpleTypeBlob;
  * Types are specified by four bytes. If the three high bytes are zero,
  * the low byte describes a basic type, otherwise the 32bit number is an
  * offset which points to a TypeBlob.
+ *
+ * Since: 2.80
  */
 typedef struct {
   guint32        name;
@@ -511,6 +532,8 @@ typedef struct {
  * @arguments: An array of ArgBlob for the arguments of the function.
  *
  * TODO
+ *
+ * Since: 2.80
  */
 typedef struct {
   SimpleTypeBlob return_type;
@@ -539,6 +562,8 @@ typedef struct {
  * #CallbackBlob, #SignalBlob.
  *
  * TODO
+ *
+ * Since: 2.80
  */
 typedef struct {
   guint16 blob_type;  /* 1 */
@@ -576,6 +601,8 @@ typedef struct {
  * @reserved2: Reserved for future use.
  *
  * TODO
+ *
+ * Since: 2.80
  */
 typedef struct {
   guint16 blob_type;  /* 1 */
@@ -610,6 +637,8 @@ typedef struct {
  *   the return value type.
  *
  * TODO
+ *
+ * Since: 2.80
  */
 typedef struct {
   guint16 blob_type;  /* 2 */
@@ -629,6 +658,8 @@ typedef struct {
  * @interface: Index of the directory entry for the interface.
  *
  * If the interface is an enum of flags type, is_pointer is 0, otherwise it is 1.
+ *
+ * Since: 2.80
  */
 typedef struct {
   guint8  pointer  :1;
@@ -644,6 +675,8 @@ typedef struct {
  * @size: TODO
  *
  * TODO
+ *
+ * Since: 2.80
  */
 typedef union {
   guint16 length;
@@ -669,6 +702,8 @@ typedef union {
  * @type: TODO
  *
  * TODO
+ *
+ * Since: 2.80
  */
 typedef struct {
   guint16 pointer         :1;
@@ -696,6 +731,8 @@ typedef struct {
  * @type: Describes the type of the list elements.
  *
  * TODO
+ *
+ * Since: 2.80
  */
 typedef struct {
   guint8	 pointer  :1;
@@ -718,6 +755,8 @@ typedef struct {
  * @domains: TODO
  *
  * TODO
+ *
+ * Since: 2.80
  */
 typedef struct {
   guint8  pointer  :1;
@@ -739,6 +778,8 @@ typedef struct {
  * @value: The numerical value
  *
  * Values commonly occur in enums and flags.
+ *
+ * Since: 2.80
  */
 typedef struct {
   guint32 deprecated : 1;
@@ -763,6 +804,8 @@ typedef struct {
  * @type: The type of the field.
  *
  * TODO
+ *
+ * Since: 2.80
  */
 typedef struct {
   guint32        name;
@@ -792,6 +835,8 @@ typedef struct {
  *   type.
  *
  * TODO
+ *
+ * Since: 2.80
  */
 typedef struct {
   guint16 blob_type;
@@ -827,6 +872,8 @@ typedef struct {
  *   the contents of this struct type
  *
  * TODO
+ *
+ * Since: 2.80
  */
 typedef struct {
   guint16   blob_type;
@@ -876,6 +923,8 @@ typedef struct {
  * @discriminator_type: Type of the discriminator
  *
  * TODO
+ *
+ * Since: 2.80
  */
 typedef struct {
   guint16      blob_type;
@@ -918,6 +967,8 @@ typedef struct {
  * @values: TODO
  *
  * TODO
+ *
+ * Since: 2.80
  */
 typedef struct {
   guint16   blob_type;
@@ -966,6 +1017,8 @@ typedef struct {
  * @type: Describes the type of the property.
  *
  * TODO
+ *
+ * Since: 2.80
  */
 typedef struct {
   guint32        name;
@@ -1007,6 +1060,8 @@ typedef struct {
  *   and the return value type.
  *
  * TODO
+ *
+ * Since: 2.80
  */
 typedef struct {
   guint16 deprecated        : 1;
@@ -1056,6 +1111,8 @@ typedef struct {
  *   the return value type.
  *
  * TODO
+ *
+ * Since: 2.80
  */
 typedef struct {
   guint32 name;
@@ -1116,6 +1173,8 @@ typedef struct {
  *   interfaces.
  *
  * TODO
+ *
+ * Since: 2.80
  */
 typedef struct {
   guint16   blob_type;  /* 7 */
@@ -1176,6 +1235,8 @@ typedef struct {
  *   interfaces.
  *
  * TODO
+ *
+ * Since: 2.80
  */
 typedef struct {
   guint16 blob_type;
@@ -1215,6 +1276,8 @@ typedef struct {
  * @reserved2: Reserved for future use.
  *
  * TODO
+ *
+ * Since: 2.80
  */
 typedef struct {
   guint16        blob_type;
@@ -1239,6 +1302,8 @@ typedef struct {
  * @value: The value of the attribute (also a string)
  *
  * TODO
+ *
+ * Since: 2.80
  */
 typedef struct {
   guint32 offset;
@@ -1283,6 +1348,7 @@ void      gi_typelib_check_sanity (void);
  * TODO
  *
  * Returns: TODO
+ * Since: 2.80
  */
 #define   gi_typelib_get_string(typelib,offset) ((const gchar*)&(typelib->data)[(offset)])
 
@@ -1296,6 +1362,8 @@ void      gi_typelib_check_sanity (void);
  * @GI_TYPELIB_ERROR_INVALID_BLOB: a typelib blob is invalid
  *
  * A error set while validating the #GITypelib
+ *
+ * Since: 2.80
  */
 typedef enum
 {
@@ -1310,6 +1378,8 @@ typedef enum
  * GI_TYPELIB_ERROR:
  *
  * TODO
+ *
+ * Since: 2.80
  */
 #define GI_TYPELIB_ERROR (gi_typelib_error_quark ())
 
@@ -1329,6 +1399,8 @@ AttributeBlob *_attribute_blob_find_first (GIBaseInfo *info,
  * GITypelibHashBuilder:
  *
  * TODO
+ *
+ * Since: 2.80
  */
 typedef struct _GITypelibHashBuilder GITypelibHashBuilder;
 

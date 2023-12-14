@@ -145,12 +145,13 @@ get_type_blob (GITypelib *typelib,
 
 /**
  * gi_typelib_get_dir_entry:
- * @typelib: TODO
- * @index: TODO
+ * @typelib: a #GITypelib
+ * @index: index to retrieve
  *
- * TODO
+ * Get the typelib directory entry at the given @index.
  *
- * Returns: TODO
+ * Returns: (transfer none): a `DirEntry`
+ * Since: 2.80
  */
 DirEntry *
 gi_typelib_get_dir_entry (GITypelib *typelib,
@@ -183,12 +184,14 @@ get_section_by_id (GITypelib   *typelib,
 
 /**
  * gi_typelib_get_dir_entry_by_name:
- * @typelib: TODO
- * @name: TODO
+ * @typelib: a #GITypelib
+ * @name: name to look up
  *
- * TODO
+ * Get the typelib directory entry which has @name.
  *
- * Returns: TODO
+ * Returns: (transfer none) (nullable): entry corresponding to @name, or `NULL`
+ *   if none was found
+ * Since: 2.80
  */
 DirEntry *
 gi_typelib_get_dir_entry_by_name (GITypelib  *typelib,
@@ -229,12 +232,15 @@ gi_typelib_get_dir_entry_by_name (GITypelib  *typelib,
 
 /**
  * gi_typelib_get_dir_entry_by_gtype_name:
- * @typelib: TODO
- * @gtype_name: TODO
+ * @typelib: a #GITypelib
+ * @gtype_name: name of a [type@GObject.Type] to look up
  *
- * TODO
+ * Get the typelib directory entry for the [type@GObject.Type] with the given
+ * @gtype_name.
  *
- * Returns: TODO
+ * Returns: (transfer none) (nullable): entry corresponding to @gtype_name, or
+ *   `NULL` if none was found
+ * Since: 2.80
  */
 DirEntry *
 gi_typelib_get_dir_entry_by_gtype_name (GITypelib   *typelib,
@@ -323,12 +329,14 @@ strsplit_iter_clear (StrSplitIter  *iter)
 
 /**
  * gi_typelib_matches_gtype_name_prefix:
- * @typelib: TODO
- * @gtype_name: TODO
+ * @typelib: a #GITypelib
+ * @gtype_name: name of a [type@GObject.Type]
  *
- * TODO
+ * Check whether the symbol prefix for @typelib is a prefix of the given
+ * @gtype_name.
  *
- * Returns: TODO
+ * Returns: `TRUE` if the prefix for @typelib prefixes @gtype_name
+ * Since: 2.80
  */
 gboolean
 gi_typelib_matches_gtype_name_prefix (GITypelib   *typelib,
@@ -377,12 +385,15 @@ gi_typelib_matches_gtype_name_prefix (GITypelib   *typelib,
 
 /**
  * gi_typelib_get_dir_entry_by_error_domain:
- * @typelib: TODO
- * @error_domain: TODO
+ * @typelib: a #GITypelib
+ * @error_domain: name of a [type@GLib.Error] domain to look up
  *
- * TODO
+ * Get the typelib directory entry for the [type@GLib.Error] domain with the
+ * given @error_domain name.
  *
- * Returns: TODO
+ * Returns: (transfer none) (nullable): entry corresponding to @error_domain, or
+ *   `NULL` if none was found
+ * Since: 2.80
  */
 DirEntry *
 gi_typelib_get_dir_entry_by_error_domain (GITypelib *typelib,
@@ -417,7 +428,10 @@ gi_typelib_get_dir_entry_by_error_domain (GITypelib *typelib,
 /**
  * gi_typelib_check_sanity:
  *
- * TODO
+ * Check compile-time sizes of various typelib file format types are as
+ * expected.
+ *
+ * Since: 2.80
  */
 void
 gi_typelib_check_sanity (void)
@@ -2180,12 +2194,14 @@ prefix_with_context (GError **error,
 
 /**
  * gi_typelib_validate:
- * @typelib: TODO
- * @error: TODO
+ * @typelib: a #GITypelib
+ * @error: return location for a [type@GLib.Error], or `NULL`
  *
- * TODO
+ * Check whether @typelib is well-formed, i.e. that the file is not corrupt or
+ * truncated.
  *
- * Returns: TODO
+ * Returns: `TRUE` if @typelib is well-formed, `FALSE` otherwise
+ * Since: 2.80
  */
 gboolean
 gi_typelib_validate (GITypelib  *typelib,
@@ -2219,9 +2235,10 @@ gi_typelib_validate (GITypelib  *typelib,
 /**
  * gi_typelib_error_quark:
  *
- * TODO
+ * Get the quark representing the [type@GIRepository.TypelibError] error domain.
  *
- * Returns: TODO
+ * Returns: quark representing the error domain
+ * Since: 2.80
  */
 GQuark
 gi_typelib_error_quark (void)
@@ -2240,15 +2257,17 @@ static GSList *library_paths;
  *
  * Prepends @directory to the search path that is used to
  * search shared libraries referenced by imported namespaces.
+ *
  * Multiple calls to this function all contribute to the final
  * list of paths.
- * The list of paths is unique and shared for all #GIRepository
- * instances across the process, but it doesn't affect namespaces
- * imported before the call.
+ *
+ * The list of paths is unique and shared for all
+ * [class@GIRepository.Repository] instances across the process, but it doesn’t
+ * affect namespaces imported before the call.
  *
  * If the library is not found in the directories configured
  * in this way, loading will fall back to the system library
- * path (ie. LD_LIBRARY_PATH and DT_RPATH in ELF systems).
+ * path (i.e. `LD_LIBRARY_PATH` and `DT_RPATH` in ELF systems).
  * See the documentation of your dynamic linker for full details.
  *
  * Since: 2.80
@@ -2379,15 +2398,15 @@ gi_typelib_ensure_open (GITypelib *typelib)
 /**
  * gi_typelib_new_from_memory: (skip)
  * @memory: (array length=len): address of memory chunk containing the typelib
- * @len: length of memory chunk containing the typelib
- * @error: a #GError
+ * @len: length of memory chunk containing the typelib, in bytes
+ * @error: a [type@GLib.Error]
  *
- * Creates a new `GITypelib` from a memory location.
+ * Creates a new [type@GIRepository.Typelib] from a memory location.
  *
  * The memory block pointed to by @typelib will be automatically freed when the
  * repository is destroyed.
  *
- * Returns: (transfer full): the new #GITypelib
+ * Returns: (transfer full): the new [type@GIRepository.Typelib]
  * Since: 2.80
  */
 GITypelib *
@@ -2413,11 +2432,11 @@ gi_typelib_new_from_memory (guint8  *memory,
  * gi_typelib_new_from_const_memory: (skip)
  * @memory: (array length=len): address of memory chunk containing the typelib
  * @len: length of memory chunk containing the typelib
- * @error: a #GError
+ * @error: a [type@GLib.Error]
  *
- * Creates a new `GITypelib` from a memory location.
+ * Creates a new [type@GIRepository.Typelib] from a memory location.
  *
- * Returns: (transfer full): the new #GITypelib
+ * Returns: (transfer full): the new [type@GIRepository.Typelib]
  * Since: 2.80
  */
 GITypelib *
@@ -2445,9 +2464,9 @@ gi_typelib_new_from_const_memory (const guchar  *memory,
  *   the repository is destroyed
  * @error: a #GError
  *
- * Creates a new `GITypelib` from a [type@GLib.MappedFile].
+ * Creates a new [type@GIRepository.Typelib] from a [type@GLib.MappedFile].
  *
- * Returns: (transfer full): the new #GITypelib
+ * Returns: (transfer full): the new [type@GIRepository.Typelib]
  * Since: 2.80
  */
 GITypelib *
@@ -2474,7 +2493,7 @@ gi_typelib_new_from_mapped_file (GMappedFile  *mfile,
  * gi_typelib_free:
  * @typelib: (transfer full): a #GITypelib
  *
- * Free a `GITypelib`.
+ * Free a [type@GIRepository.Typelib].
  *
  * Since: 2.80
  */
@@ -2518,7 +2537,7 @@ gi_typelib_get_namespace (GITypelib *typelib)
  *
  * Loads a symbol from a `GITypelib`.
  *
- * Returns: true on success
+ * Returns: `TRUE` on success
  * Since: 2.80
  */
 gboolean
