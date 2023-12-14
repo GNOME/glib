@@ -34,38 +34,48 @@ G_BEGIN_DECLS
 
 /**
  * GIFFIClosureCallback:
- * @Param1: TODO
- * @Param2: TODO
- * @Param3: TODO
- * @Param4: TODO
+ * @cif: the `ffi_cif` passed to
+ *   [method@GIRepository.CallableInfo.create_closure]
+ * @ret: (out caller-allocates): a pointer to the memory used for the function’s
+ *   return value
+ * @args: a vector of pointers to memory holding the arguments to the function
+ * @user_data: the user data passed to
+ *   [method@GIRepository.CallableInfo.create_closure]
  *
- * TODO
+ * The function which will be called when a closure created with
+ * [method@GIRepository.CallableInfo.create_closure] is invoked.
+ *
+ * The value of @ret is undefined if the function returns `void`.
+ *
+ * Since: 2.80
  */
-typedef void (*GIFFIClosureCallback) (ffi_cif *,
-                                      void *,
-                                      void **,
-                                      void *);
+typedef void (*GIFFIClosureCallback) (ffi_cif  *cif,
+                                      void     *ret,
+                                      void    **args,
+                                      void     *user_data);
 
 /**
  * GIFunctionInvoker:
  * @cif: the cif
  * @native_address: the native address
  *
- * TODO
+ * Structure containing the data necessary to invoke a callable function.
+ *
+ * Since: 2.80
  */
-typedef struct _GIFunctionInvoker GIFunctionInvoker;
-
-struct _GIFunctionInvoker {
+typedef struct {
   ffi_cif cif;
   gpointer native_address;
   /*< private >*/
   gpointer padding[3];
-};
+} GIFunctionInvoker;
 
 /**
  * GIFFIReturnValue:
  *
- * TODO
+ * The type of a return value from a callable invocation closure.
+ *
+ * Since: 2.80
  */
 typedef GIArgument GIFFIReturnValue;
 

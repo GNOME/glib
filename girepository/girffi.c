@@ -35,14 +35,6 @@
 #include "girepository.h"
 #include "girepository-private.h"
 
-/**
- * SECTION:girffi
- * @short_description: TODO
- * @title: girffi
- *
- * TODO
- */
-
 static ffi_type *
 gi_type_tag_get_ffi_type_internal (GITypeTag   tag,
                                    gboolean    is_pointer,
@@ -115,12 +107,14 @@ gi_type_tag_get_ffi_type_internal (GITypeTag   tag,
 
 /**
  * gi_type_tag_get_ffi_type:
- * @type_tag: A #GITypeTag
- * @is_pointer: Whether or not this is a pointer type
+ * @type_tag: a #GITypeTag
+ * @is_pointer: whether this is a pointer type
  *
- * TODO
+ * Get the `ffi_type` corresponding to @type_tag.
  *
- * Returns: A #ffi_type corresponding to the platform default C ABI for @tag and @is_pointer.
+ * Returns: (transfer none): an `ffi_type` corresponding to the platform default
+ *   C ABI for @tag and @is_pointer.
+ * Since: 2.80
  */
 ffi_type *
 gi_type_tag_get_ffi_type (GITypeTag   type_tag,
@@ -131,11 +125,13 @@ gi_type_tag_get_ffi_type (GITypeTag   type_tag,
 
 /**
  * gi_type_info_get_ffi_type:
- * @info: A #GITypeInfo
+ * @info: a #GITypeInfo
  *
- * TODO
+ * Get the `ffi_type` corresponding to @info.
  *
- * Returns: A #ffi_type corresponding to the platform default C ABI for @info.
+ * Returns: (transfer none): a `ffi_type` corresponding to the platform default
+ *   C ABI for @info.
+ * Since: 2.80
  */
 ffi_type *
 gi_type_info_get_ffi_type (GITypeInfo *info)
@@ -164,12 +160,14 @@ gi_type_info_get_ffi_type (GITypeInfo *info)
 /**
  * gi_callable_info_get_ffi_arg_types:
  * @callable_info: a callable info from a typelib
- * @n_args_p: (out): The number of arguments
+ * @n_args_p: (out) (optional): the number of arguments returned
  *
- * TODO
+ * Get the `ffi_type`s for the arguments of @callable_info.
  *
- * Returns: an array of ffi_type*. The array itself
- * should be freed using g_free() after use.
+ * Returns: (transfer container) (array length=n_args_p): an array of
+ *   `ffi_type*`. The array itself should be freed using [func@GLib.free] after
+ *   use.
+ * Since: 2.80
  */
 static ffi_type **
 gi_callable_info_get_ffi_arg_types (GICallableInfo *callable_info,
@@ -233,10 +231,11 @@ gi_callable_info_get_ffi_arg_types (GICallableInfo *callable_info,
  * gi_callable_info_get_ffi_return_type:
  * @callable_info: a callable info from a typelib
  *
- * Fetches the ffi_type for a corresponding return value of
- * a #GICallableInfo
+ * Fetches the `ffi_type` for a corresponding return value of
+ * a [class@GIRepository.CallableInfo].
  *
- * Returns: the ffi_type for the return value
+ * Returns: (transfer none): the `ffi_type` for the return value
+ * Since: 2.80
  */
 static ffi_type *
 gi_callable_info_get_ffi_return_type (GICallableInfo *callable_info)
@@ -256,18 +255,19 @@ gi_callable_info_get_ffi_return_type (GICallableInfo *callable_info)
 /**
  * gi_function_info_prep_invoker:
  * @info: A #GIFunctionInfo
- * @invoker: Output invoker structure
+ * @invoker: (out caller-allocates): Output invoker structure
  * @error: A #GError
  *
  * Initialize the caller-allocated @invoker structure with a cache
  * of information needed to invoke the C function corresponding to
- * @info with the platform's default ABI.
+ * @info with the platform’s default ABI.
  *
  * A primary intent of this function is that a dynamic structure allocated
- * by a language binding could contain a #GIFunctionInvoker structure
- * inside the binding's function mapping.
+ * by a language binding could contain a [type@GIRepository.FunctionInvoker]
+ * structure inside the binding’s function mapping.
  *
- * Returns: %TRUE on success, %FALSE otherwise with @error set.
+ * Returns: `TRUE` on success, `FALSE` otherwise with @error set.
+ * Since: 2.80
  */
 gboolean
 gi_function_info_prep_invoker (GIFunctionInfo     *info,
@@ -300,18 +300,19 @@ gi_function_info_prep_invoker (GIFunctionInfo     *info,
  * gi_function_invoker_new_for_address:
  * @addr: The address
  * @info: A #GICallableInfo
- * @invoker: Output invoker structure
+ * @invoker: (out caller-allocates): Output invoker structure
  * @error: A #GError
  *
  * Initialize the caller-allocated @invoker structure with a cache
  * of information needed to invoke the C function corresponding to
- * @info with the platform's default ABI.
+ * @info with the platform’s default ABI.
  *
  * A primary intent of this function is that a dynamic structure allocated
- * by a language binding could contain a #GIFunctionInvoker structure
- * inside the binding's function mapping.
+ * by a language binding could contain a [type@GIRepository.FunctionInvoker]
+ * structure inside the binding’s function mapping.
  *
- * Returns: %TRUE on success, %FALSE otherwise with @error set.
+ * Returns: `TRUE` on success, `FALSE` otherwise with @error set.
+ * Since: 2.80
  */
 gboolean
 gi_function_invoker_new_for_address (gpointer            addr,
@@ -336,11 +337,14 @@ gi_function_invoker_new_for_address (gpointer            addr,
 
 /**
  * gi_function_invoker_destroy:
- * @invoker: A #GIFunctionInvoker
+ * @invoker: (transfer none): A #GIFunctionInvoker
  *
- * Release all resources allocated for the internals of @invoker; callers
- * are responsible for freeing any resources allocated for the structure
+ * Release all resources allocated for the internals of @invoker.
+ *
+ * Callers are responsible for freeing any resources allocated for the structure
  * itself however.
+ *
+ * Since: 2.80
  */
 void
 gi_function_invoker_destroy (GIFunctionInvoker *invoker)
@@ -357,14 +361,16 @@ typedef struct {
 /**
  * gi_callable_info_create_closure:
  * @callable_info: a callable info from a typelib
- * @cif: a ffi_cif structure
+ * @cif: a `ffi_cif` structure
  * @callback: the ffi callback
  * @user_data: data to be passed into the callback
  *
  * Prepares a callback for ffi invocation.
  *
- * Returns: the ffi_closure or NULL on error. The return value
- *   should be freed by calling gi_callable_info_destroy_closure().
+ * Returns: (transfer full) (nullable): the `ffi_closure`, or `NULL` on error.
+ *   The return value should be freed by calling
+ *   [method@GIRepository.CallableInfo.destroy_closure].
+ * Since: 2.80
  */
 ffi_closure *
 gi_callable_info_create_closure (GICallableInfo       *callable_info,
@@ -419,7 +425,11 @@ gi_callable_info_create_closure (GICallableInfo       *callable_info,
  * @callable_info: a callable info from a typelib
  * @closure: ffi closure
  *
- * Gets callable code from ffi_closure prepared by gi_callable_info_create_closure()
+ * Gets callable code from `ffi_closure` prepared by
+ * [method@GIRepository.CallableInfo.create_closure].
+ *
+ * Returns: (transfer none): native address
+ * Since: 2.80
  */
 gpointer *
 gi_callable_info_get_closure_native_address (GICallableInfo *callable_info,
@@ -432,9 +442,12 @@ gi_callable_info_get_closure_native_address (GICallableInfo *callable_info,
 /**
  * gi_callable_info_destroy_closure:
  * @callable_info: a callable info from a typelib
- * @closure: ffi closure
+ * @closure: (transfer full): ffi closure
  *
- * Frees a ffi_closure returned from gi_callable_info_create_closure()
+ * Frees a `ffi_closure` returned from
+ * [method@GIRepository.CallableInfo.create_closure].
+ *
+ * Since: 2.80
  */
 void
 gi_callable_info_destroy_closure (GICallableInfo *callable_info,
