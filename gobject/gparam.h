@@ -443,7 +443,8 @@ GOBJECT_AVAILABLE_IN_ALL
 GParamSpec**	g_param_spec_pool_list		(GParamSpecPool	*pool,
 						 GType		 owner_type,
 						 guint		*n_pspecs_p);
-
+GOBJECT_AVAILABLE_IN_2_80
+void            g_param_spec_pool_free          (GParamSpecPool *pool);
 
 /* contracts:
  *
