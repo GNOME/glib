@@ -30,13 +30,6 @@
 
 G_BEGIN_DECLS
 
-/* Keep this in sync with the GIInfoType enumeration.
- *
- * We don't add an "n-types" value to avoid having to handle
- * it in every single switch.
- */
-#define GI_INFO_TYPE_N_TYPES (GI_INFO_TYPE_REGISTERED_TYPE + 1)
-
 #define GI_IS_BASE_INFO_TYPE(info,type) \
   (G_TYPE_INSTANCE_GET_CLASS ((info), GI_TYPE_BASE_INFO, GIBaseInfoClass)->info_type == (type))
 
