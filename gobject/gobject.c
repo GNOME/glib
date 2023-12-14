@@ -249,7 +249,8 @@ g_object_notify_queue_freeze (GObject  *object,
 
 static void
 g_object_notify_queue_thaw (GObject            *object,
-                            GObjectNotifyQueue *nqueue)
+                            GObjectNotifyQueue *nqueue,
+                            gboolean take_ref)
 {
   GParamSpec *pspecs_mem[16], **pspecs, **free_me = NULL;
   GSList *slist;
@@ -290,7 +291,15 @@ g_object_notify_queue_thaw (GObject            *object,
   G_UNLOCK(notify_lock);
 
   if (n_pspecs)
-    G_OBJECT_GET_CLASS (object)->dispatch_properties_changed (object, n_pspecs, pspecs);
+    {
+      if (take_ref)
+        g_object_ref (object);
+
+      G_OBJECT_GET_CLASS (object)->dispatch_properties_changed (object, n_pspecs, pspecs);
+
+      if (take_ref)
+        g_object_unref (object);
+    }
   g_free (free_me);
 }
 
@@ -1500,7 +1509,7 @@ g_object_notify_by_spec_internal (GObject    *object,
           /* we're frozen, so add to the queue and release our freeze */
           g_object_notify_queue_add (object, nqueue, pspec);
           if (need_thaw)
-            g_object_notify_queue_thaw (object, nqueue);
+            g_object_notify_queue_thaw (object, nqueue, FALSE);
         }
       else
         {
@@ -1655,11 +1664,7 @@ g_object_thaw_notify (GObject *object)
     }
 #endif
 
-  g_object_ref (object);
-
-  g_object_notify_queue_thaw (object, NULL);
-
-  g_object_unref (object);
+  g_object_notify_queue_thaw (object, NULL, TRUE);
 }
 
 static void
@@ -2185,7 +2190,7 @@ g_object_new_with_custom_constructor (GObjectClass          *class,
 
   /* If nqueue is non-NULL then we are frozen.  Thaw it. */
   if (nqueue)
-    g_object_notify_queue_thaw (object, nqueue);
+    g_object_notify_queue_thaw (object, nqueue, FALSE);
 
   return object;
 }
@@ -2263,7 +2268,7 @@ g_object_new_internal (GObjectClass          *class,
       object_set_property (object, params[i].pspec, params[i].value, nqueue, TRUE);
 
   if (nqueue)
-    g_object_notify_queue_thaw (object, nqueue);
+    g_object_notify_queue_thaw (object, nqueue, FALSE);
 
   return object;
 }
@@ -2593,7 +2598,7 @@ g_object_constructor (GType                  type,
 	  construct_params++;
 	  object_set_property (object, pspec, value, nqueue, TRUE);
 	}
-      g_object_notify_queue_thaw (object, nqueue);
+      g_object_notify_queue_thaw (object, nqueue, FALSE);
       /* the notification queue is still frozen from g_object_init(), so
        * we don't need to handle it here, g_object_newv() takes
        * care of that
@@ -2683,7 +2688,7 @@ g_object_setv (GObject       *object,
     }
 
   if (nqueue)
-    g_object_notify_queue_thaw (object, nqueue);
+    g_object_notify_queue_thaw (object, nqueue, FALSE);
 
   g_object_unref (object);
 }
@@ -2749,7 +2754,7 @@ g_object_set_valist (GObject	 *object,
     }
 
   if (nqueue)
-    g_object_notify_queue_thaw (object, nqueue);
+    g_object_notify_queue_thaw (object, nqueue, FALSE);
 
   g_object_unref (object);
 }
@@ -3869,7 +3874,7 @@ g_object_unref (gpointer _object)
           TRACE (GOBJECT_OBJECT_UNREF (object, G_TYPE_FROM_INSTANCE (object), old_ref));
 
           /* emit all notifications that have been queued during dispose() */
-          g_object_notify_queue_thaw (object, nqueue);
+          g_object_notify_queue_thaw (object, nqueue, FALSE);
 
           /* if we went from 2->1 we need to notify toggle refs if any */
           if (old_ref == 2 && OBJECT_HAS_TOGGLE_REF (object) &&
@@ -3922,7 +3927,7 @@ g_object_unref (gpointer _object)
           /* The instance acquired a reference between dispose() and
            * finalize(), so we need to thaw the notification queue
            */
-          g_object_notify_queue_thaw (object, nqueue);
+          g_object_notify_queue_thaw (object, nqueue, FALSE);
         }
     }
 }
