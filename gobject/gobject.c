@@ -213,6 +213,23 @@ g_object_notify_queue_free (gpointer data)
   g_slice_free (GObjectNotifyQueue, nqueue);
 }
 
+static GObjectNotifyQueue *
+g_object_notify_queue_create_queue_frozen (GObject *object)
+{
+  GObjectNotifyQueue *nqueue;
+
+  nqueue = g_slice_new0 (GObjectNotifyQueue);
+
+  *nqueue = (GObjectNotifyQueue){
+    .freeze_count = 1,
+  };
+
+  g_datalist_id_set_data_full (&object->qdata, quark_notify_queue,
+                               nqueue, g_object_notify_queue_free);
+
+  return nqueue;
+}
+
 static GObjectNotifyQueue*
 g_object_notify_queue_freeze (GObject  *object,
                               gboolean  conditional)
@@ -229,9 +246,8 @@ g_object_notify_queue_freeze (GObject  *object,
           return NULL;
         }
 
-      nqueue = g_slice_new0 (GObjectNotifyQueue);
-      g_datalist_id_set_data_full (&object->qdata, quark_notify_queue,
-                                   nqueue, g_object_notify_queue_free);
+      nqueue = g_object_notify_queue_create_queue_frozen (object);
+      goto out;
     }
 
   if (nqueue->freeze_count >= 65535)
@@ -242,6 +258,7 @@ g_object_notify_queue_freeze (GObject  *object,
   else
     nqueue->freeze_count++;
 
+out:
   G_UNLOCK(notify_lock);
 
   return nqueue;
