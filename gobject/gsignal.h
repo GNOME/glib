@@ -504,7 +504,7 @@ void   g_signal_chain_from_overridden_handler (gpointer           instance,
  * 
  * The handler will be called synchronously, before the default handler of the signal. g_signal_emit() will not return control until all handlers are called.
  *
- * See [memory management of signal handlers][signal-memory-management] for
+ * See [memory management of signal handlers][signals.html#Memory_management_of_signal_handlers] for
  * details on how to handle the return value and memory management of @data.
  * 
  * Returns: the handler ID, of type #gulong (always greater than 0 for successful connections)
