@@ -1,4 +1,10 @@
 #!/usr/bin/env python3
+#
+# Copyright © 2022 Collabora, Ltd.
+#
+# SPDX-License-Identifier: LGPL-2.1-or-later
+#
+# Original author: Xavier Claessens
 
 """
 This script checks Meson configuration logs to verify no installed file is
