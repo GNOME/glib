@@ -52,7 +52,7 @@
  *
  * Returns: number of fields
  */
-gint
+guint
 gi_struct_info_get_n_fields (GIStructInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -72,15 +72,14 @@ gi_struct_info_get_n_fields (GIStructInfo *info)
  */
 static gint32
 gi_struct_get_field_offset (GIStructInfo *info,
-                            gint          n)
+                            guint         n)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header = (Header *)rinfo->typelib->data;
   guint32 offset = rinfo->offset + header->struct_blob_size;
-  gint i;
   FieldBlob *field_blob;
 
-  for (i = 0; i < n; i++)
+  for (guint i = 0; i < n; i++)
     {
       field_blob = (FieldBlob *)&rinfo->typelib->data[offset];
       offset += header->field_blob_size;
@@ -103,7 +102,7 @@ gi_struct_get_field_offset (GIStructInfo *info,
  */
 GIFieldInfo *
 gi_struct_info_get_field (GIStructInfo *info,
-                          gint          n)
+                          guint         n)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
 
@@ -161,7 +160,7 @@ gi_struct_info_find_field (GIStructInfo *info,
  *
  * Returns: number of methods
  */
-gint
+guint
 gi_struct_info_get_n_methods (GIStructInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -182,7 +181,7 @@ gi_struct_info_get_n_methods (GIStructInfo *info)
  */
 GIFunctionInfo *
 gi_struct_info_get_method (GIStructInfo *info,
-                           gint          n)
+                           guint         n)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   StructBlob *blob = (StructBlob *)&rinfo->typelib->data[rinfo->offset];
@@ -287,7 +286,7 @@ gi_struct_info_is_gtype_struct (GIStructInfo *info)
 }
 
 /**
- * gi_struct_info_get_copy_function:
+ * gi_struct_info_get_copy_function_name:
  * @info: a struct information blob
  *
  * Retrieves the name of the copy function for @info, if any is set.
@@ -297,7 +296,7 @@ gi_struct_info_is_gtype_struct (GIStructInfo *info)
  * Since: 2.80
  */
 const char *
-gi_struct_info_get_copy_function (GIStructInfo *info)
+gi_struct_info_get_copy_function_name (GIStructInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   StructBlob *blob;
@@ -314,7 +313,7 @@ gi_struct_info_get_copy_function (GIStructInfo *info)
 }
 
 /**
- * gi_struct_info_get_free_function:
+ * gi_struct_info_get_free_function_name:
  * @info: a struct information blob
  *
  * Retrieves the name of the free function for @info, if any is set.
@@ -324,7 +323,7 @@ gi_struct_info_get_copy_function (GIStructInfo *info)
  * Since: 2.80
  */
 const char *
-gi_struct_info_get_free_function (GIStructInfo *info)
+gi_struct_info_get_free_function_name (GIStructInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   StructBlob *blob;

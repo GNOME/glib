@@ -168,17 +168,17 @@ GIBaseInfo *  gi_repository_find_by_gtype (GIRepository *repository,
 GI_AVAILABLE_IN_ALL
 void          gi_repository_get_object_gtype_interfaces (GIRepository      *repository,
                                                          GType              gtype,
-                                                         guint             *n_interfaces_out,
+                                                         gsize             *n_interfaces_out,
                                                          GIInterfaceInfo ***interfaces_out);
 
 GI_AVAILABLE_IN_ALL
-gint          gi_repository_get_n_infos   (GIRepository *repository,
+guint         gi_repository_get_n_infos   (GIRepository *repository,
                                            const gchar  *namespace_);
 
 GI_AVAILABLE_IN_ALL
 GIBaseInfo *  gi_repository_get_info      (GIRepository *repository,
                                            const gchar  *namespace_,
-                                           gint          index);
+                                           guint         idx);
 
 GI_AVAILABLE_IN_ALL
 GIEnumInfo *  gi_repository_find_by_error_domain (GIRepository *repository,
@@ -203,7 +203,9 @@ GOptionGroup * gi_repository_get_option_group (void);
 
 
 GI_AVAILABLE_IN_ALL
-gboolean       gi_repository_dump  (const char *arg, GError **error);
+gboolean       gi_repository_dump  (const char  *input_filename,
+                                    const char  *output_filename,
+                                    GError     **error);
 
 /**
  * GIRepositoryError:

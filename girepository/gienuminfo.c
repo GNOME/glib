@@ -54,7 +54,7 @@
  *
  * Returns: the number of enumeration values
  */
-gint
+guint
 gi_enum_info_get_n_values (GIEnumInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -108,7 +108,7 @@ gi_enum_info_get_error_domain (GIEnumInfo *info)
  */
 GIValueInfo *
 gi_enum_info_get_value (GIEnumInfo *info,
-		       gint        n)
+                        guint        n)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header;
@@ -133,7 +133,7 @@ gi_enum_info_get_value (GIEnumInfo *info,
  * Returns: number of methods
  * Since: 2.80
  */
-gint
+guint
 gi_enum_info_get_n_methods (GIEnumInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -160,7 +160,7 @@ gi_enum_info_get_n_methods (GIEnumInfo *info)
  */
 GIFunctionInfo *
 gi_enum_info_get_method (GIEnumInfo *info,
-                         gint        n)
+                         guint       n)
 {
   gint offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;

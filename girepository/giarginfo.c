@@ -246,7 +246,7 @@ gi_arg_info_get_scope (GIArgInfo *info)
 }
 
 /**
- * gi_arg_info_get_closure:
+ * gi_arg_info_get_closure_index:
  * @info: a #GIArgInfo
  *
  * Obtain the index of the user data argument. This is only valid
@@ -255,7 +255,7 @@ gi_arg_info_get_scope (GIArgInfo *info)
  * Returns: index of the user data argument or -1 if there is none
  */
 gint
-gi_arg_info_get_closure (GIArgInfo *info)
+gi_arg_info_get_closure_index (GIArgInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   ArgBlob *blob;
@@ -269,7 +269,7 @@ gi_arg_info_get_closure (GIArgInfo *info)
 }
 
 /**
- * gi_arg_info_get_destroy:
+ * gi_arg_info_get_destroy_index:
  * @info: a #GIArgInfo
  *
  * Obtains the index of the #GDestroyNotify argument. This is only valid
@@ -278,7 +278,7 @@ gi_arg_info_get_closure (GIArgInfo *info)
  * Returns: index of the #GDestroyNotify argument or -1 if there is none
  */
 gint
-gi_arg_info_get_destroy (GIArgInfo *info)
+gi_arg_info_get_destroy_index (GIArgInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   ArgBlob *blob;

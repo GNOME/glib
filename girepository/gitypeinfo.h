@@ -90,16 +90,16 @@ GITypeTag              gi_type_info_get_tag             (GITypeInfo *info);
 
 GI_AVAILABLE_IN_ALL
 GITypeInfo *           gi_type_info_get_param_type      (GITypeInfo *info,
-                                                         gint        n);
+                                                         guint       n);
 
 GI_AVAILABLE_IN_ALL
 GIBaseInfo *           gi_type_info_get_interface       (GITypeInfo *info);
 
 GI_AVAILABLE_IN_ALL
-gint                   gi_type_info_get_array_length    (GITypeInfo *info);
+gint                   gi_type_info_get_array_length_index (GITypeInfo *info);
 
 GI_AVAILABLE_IN_ALL
-gint                   gi_type_info_get_array_fixed_size(GITypeInfo *info);
+gssize                 gi_type_info_get_array_fixed_size (GITypeInfo *info);
 
 GI_AVAILABLE_IN_ALL
 gboolean               gi_type_info_is_zero_terminated  (GITypeInfo *info);

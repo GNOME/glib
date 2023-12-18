@@ -60,19 +60,18 @@
  */
 static gint32
 gi_object_info_get_field_offset (GIObjectInfo *info,
-                                 gint          n)
+                                 guint         n)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header = (Header *)rinfo->typelib->data;
   ObjectBlob *blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
   guint32 offset;
-  gint i;
   FieldBlob *field_blob;
 
   offset = rinfo->offset + header->object_blob_size
     + (blob->n_interfaces + blob->n_interfaces % 2) * 2;
 
-  for (i = 0; i < n; i++)
+  for (guint i = 0; i < n; i++)
     {
       field_blob = (FieldBlob *)&rinfo->typelib->data[offset];
       offset += header->field_blob_size;
@@ -204,7 +203,7 @@ gi_object_info_get_type_name (GIObjectInfo *info)
 }
 
 /**
- * gi_object_info_get_type_init:
+ * gi_object_info_get_type_init_function_name:
  * @info: a #GIObjectInfo
  *
  * Obtain the function which when called will return the GType
@@ -213,7 +212,7 @@ gi_object_info_get_type_name (GIObjectInfo *info)
  * Returns: the type init function
  */
 const gchar *
-gi_object_info_get_type_init (GIObjectInfo *info)
+gi_object_info_get_type_init_function_name (GIObjectInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   ObjectBlob *blob;
@@ -234,7 +233,7 @@ gi_object_info_get_type_init (GIObjectInfo *info)
  *
  * Returns: number of interfaces
  */
-gint
+guint
 gi_object_info_get_n_interfaces (GIObjectInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -260,7 +259,7 @@ gi_object_info_get_n_interfaces (GIObjectInfo *info)
  */
 GIInterfaceInfo *
 gi_object_info_get_interface (GIObjectInfo *info,
-                              gint          n)
+                              guint         n)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   ObjectBlob *blob;
@@ -282,7 +281,7 @@ gi_object_info_get_interface (GIObjectInfo *info,
  *
  * Returns: number of fields
  */
-gint
+guint
 gi_object_info_get_n_fields (GIObjectInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -308,7 +307,7 @@ gi_object_info_get_n_fields (GIObjectInfo *info)
  */
 GIFieldInfo *
 gi_object_info_get_field (GIObjectInfo *info,
-                          gint          n)
+                          guint         n)
 {
   gint offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -329,7 +328,7 @@ gi_object_info_get_field (GIObjectInfo *info,
  *
  * Returns: number of properties
  */
-gint
+guint
 gi_object_info_get_n_properties (GIObjectInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -354,7 +353,7 @@ gi_object_info_get_n_properties (GIObjectInfo *info)
  */
 GIPropertyInfo *
 gi_object_info_get_property (GIObjectInfo *info,
-                             gint          n)
+                             guint         n)
 {
   gint offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -385,7 +384,7 @@ gi_object_info_get_property (GIObjectInfo *info,
  *
  * Returns: number of methods
  */
-gint
+guint
 gi_object_info_get_n_methods (GIObjectInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -411,7 +410,7 @@ gi_object_info_get_n_methods (GIObjectInfo *info)
  */
 GIFunctionInfo *
 gi_object_info_get_method (GIObjectInfo *info,
-                           gint          n)
+                           guint         n)
 {
   gint offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -536,7 +535,7 @@ gi_object_info_find_method_using_interfaces (GIObjectInfo  *info,
  *
  * Returns: number of signals
  */
-gint
+guint
 gi_object_info_get_n_signals (GIObjectInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -562,7 +561,7 @@ gi_object_info_get_n_signals (GIObjectInfo *info)
  */
 GISignalInfo *
 gi_object_info_get_signal (GIObjectInfo *info,
-                           gint          n)
+                           guint         n)
 {
   gint offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -600,11 +599,10 @@ GISignalInfo *
 gi_object_info_find_signal (GIObjectInfo *info,
                             const gchar  *name)
 {
-  gint n_signals;
-  gint i;
+  guint n_signals;
 
   n_signals = gi_object_info_get_n_signals (info);
-  for (i = 0; i < n_signals; i++)
+  for (guint i = 0; i < n_signals; i++)
     {
       GISignalInfo *siginfo = gi_object_info_get_signal (info, i);
 
@@ -628,7 +626,7 @@ gi_object_info_find_signal (GIObjectInfo *info,
  *
  * Returns: number of virtual functions
  */
-gint
+guint
 gi_object_info_get_n_vfuncs (GIObjectInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -654,7 +652,7 @@ gi_object_info_get_n_vfuncs (GIObjectInfo *info)
  */
 GIVFuncInfo *
 gi_object_info_get_vfunc (GIObjectInfo *info,
-                          gint          n)
+                          guint         n)
 {
   gint offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -790,7 +788,7 @@ gi_object_info_find_vfunc_using_interfaces (GIObjectInfo  *info,
  *
  * Returns: number of constants
  */
-gint
+guint
 gi_object_info_get_n_constants (GIObjectInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -816,7 +814,7 @@ gi_object_info_get_n_constants (GIObjectInfo *info)
  */
 GIConstantInfo *
 gi_object_info_get_constant (GIObjectInfo *info,
-                             gint          n)
+                             guint         n)
 {
   gint offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -906,18 +904,18 @@ _get_func(GIObjectInfo *info,
 }
 
 /**
- * gi_object_info_get_ref_function:
+ * gi_object_info_get_ref_function_name:
  * @info: a #GIObjectInfo
  *
  * Obtain the symbol name of the function that should be called to ref this
  * object type. It's mainly used fundamental types. The type signature for
  * the symbol is %GIObjectInfoRefFunction, to fetch the function pointer
- * see gi_object_info_get_ref_function().
+ * see gi_object_info_get_ref_function_name().
  *
  * Returns: (nullable): the symbol or %NULL
  */
 const char *
-gi_object_info_get_ref_function (GIObjectInfo *info)
+gi_object_info_get_ref_function_name (GIObjectInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   ObjectBlob *blob;
@@ -950,22 +948,22 @@ gi_object_info_get_ref_function_pointer (GIObjectInfo *info)
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_OBJECT_INFO (info), NULL);
 
-  return (GIObjectInfoRefFunction)_get_func(info, (SymbolGetter)gi_object_info_get_ref_function);
+  return (GIObjectInfoRefFunction)_get_func(info, (SymbolGetter)gi_object_info_get_ref_function_name);
 }
 
 /**
- * gi_object_info_get_unref_function:
+ * gi_object_info_get_unref_function_name:
  * @info: a #GIObjectInfo
  *
  * Obtain the symbol name of the function that should be called to unref this
  * object type. It's mainly used fundamental types. The type signature for
  * the symbol is %GIObjectInfoUnrefFunction, to fetch the function pointer
- * see gi_object_info_get_unref_function().
+ * see gi_object_info_get_unref_function_name().
  *
  * Returns: (nullable): the symbol or %NULL
  */
 const char *
-gi_object_info_get_unref_function (GIObjectInfo *info)
+gi_object_info_get_unref_function_name (GIObjectInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   ObjectBlob *blob;
@@ -998,23 +996,23 @@ gi_object_info_get_unref_function_pointer (GIObjectInfo *info)
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_OBJECT_INFO (info), NULL);
 
-  return (GIObjectInfoUnrefFunction)_get_func(info, (SymbolGetter)gi_object_info_get_unref_function);
+  return (GIObjectInfoUnrefFunction)_get_func(info, (SymbolGetter)gi_object_info_get_unref_function_name);
 }
 
 /**
- * gi_object_info_get_set_value_function:
+ * gi_object_info_get_set_value_function_name:
  * @info: a #GIObjectInfo
  *
  * Obtain the symbol name of the function that should be called to convert
  * set a GValue giving an object instance pointer of this object type.
  * I's mainly used fundamental types. The type signature for the symbol
  * is %GIObjectInfoSetValueFunction, to fetch the function pointer
- * see gi_object_info_get_set_value_function().
+ * see gi_object_info_get_set_value_function_name().
  *
  * Returns: (nullable): the symbol or %NULL
  */
 const char *
-gi_object_info_get_set_value_function (GIObjectInfo *info)
+gi_object_info_get_set_value_function_name (GIObjectInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   ObjectBlob *blob;
@@ -1047,23 +1045,23 @@ gi_object_info_get_set_value_function_pointer (GIObjectInfo *info)
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_OBJECT_INFO (info), NULL);
 
-  return (GIObjectInfoSetValueFunction)_get_func(info, (SymbolGetter)gi_object_info_get_set_value_function);
+  return (GIObjectInfoSetValueFunction)_get_func(info, (SymbolGetter)gi_object_info_get_set_value_function_name);
 }
 
 /**
- * gi_object_info_get_get_value_function:
+ * gi_object_info_get_get_value_function_name:
  * @info: a #GIObjectInfo
  *
  * Obtain the symbol name of the function that should be called to convert
  * an object instance pointer of this object type to a GValue.
  * I's mainly used fundamental types. The type signature for the symbol
  * is %GIObjectInfoGetValueFunction, to fetch the function pointer
- * see gi_object_info_get_get_value_function().
+ * see gi_object_info_get_get_value_function_name().
  *
  * Returns: (nullable): the symbol or %NULL
  */
 const char *
-gi_object_info_get_get_value_function (GIObjectInfo *info)
+gi_object_info_get_get_value_function_name (GIObjectInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   ObjectBlob *blob;
@@ -1096,7 +1094,7 @@ gi_object_info_get_get_value_function_pointer (GIObjectInfo *info)
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_OBJECT_INFO (info), NULL);
 
-  return (GIObjectInfoGetValueFunction)_get_func(info, (SymbolGetter)gi_object_info_get_get_value_function);
+  return (GIObjectInfoGetValueFunction)_get_func(info, (SymbolGetter)gi_object_info_get_get_value_function_name);
 }
 
 void

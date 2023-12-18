@@ -79,8 +79,8 @@ const gchar *          gi_base_info_get_attribute    (GIBaseInfo  *info,
 GI_AVAILABLE_IN_ALL
 gboolean               gi_base_info_iterate_attributes (GIBaseInfo       *info,
                                                         GIAttributeIter  *iterator,
-                                                        char            **name,
-                                                        char            **value);
+                                                        const char      **name,
+                                                        const char      **value);
 
 GI_AVAILABLE_IN_ALL
 GIBaseInfo *           gi_base_info_get_container    (GIBaseInfo   *info);

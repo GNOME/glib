@@ -78,7 +78,7 @@ gi_registered_type_info_get_type_name (GIRegisteredTypeInfo *info)
 }
 
 /**
- * gi_registered_type_info_get_type_init:
+ * gi_registered_type_info_get_type_init_function_name:
  * @info: a #GIRegisteredTypeInfo
  *
  * Obtain the type init function for @info. The type init function is the
@@ -90,7 +90,7 @@ gi_registered_type_info_get_type_name (GIRegisteredTypeInfo *info)
  * passing into g_module_symbol().
  */
 const gchar *
-gi_registered_type_info_get_type_init (GIRegisteredTypeInfo *info)
+gi_registered_type_info_get_type_init_function_name (GIRegisteredTypeInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   RegisteredTypeBlob *blob;
@@ -127,7 +127,7 @@ gi_registered_type_info_get_g_type (GIRegisteredTypeInfo *info)
   g_return_val_if_fail (info != NULL, G_TYPE_INVALID);
   g_return_val_if_fail (GI_IS_REGISTERED_TYPE_INFO (info), G_TYPE_INVALID);
 
-  type_init = gi_registered_type_info_get_type_init (info);
+  type_init = gi_registered_type_info_get_type_init_function_name (info);
 
   if (type_init == NULL)
     return G_TYPE_NONE;

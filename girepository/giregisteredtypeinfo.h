@@ -53,7 +53,7 @@ GI_AVAILABLE_IN_ALL
 const gchar *          gi_registered_type_info_get_type_name (GIRegisteredTypeInfo *info);
 
 GI_AVAILABLE_IN_ALL
-const gchar *          gi_registered_type_info_get_type_init (GIRegisteredTypeInfo *info);
+const gchar *          gi_registered_type_info_get_type_init_function_name (GIRegisteredTypeInfo *info);
 
 GI_AVAILABLE_IN_ALL
 GType                  gi_registered_type_info_get_g_type    (GIRegisteredTypeInfo *info);

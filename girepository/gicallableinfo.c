@@ -322,7 +322,7 @@ gi_callable_info_get_instance_ownership_transfer (GICallableInfo *info)
  *
  * Returns: The number of arguments this callable expects.
  */
-gint
+guint
 gi_callable_info_get_n_args (GICallableInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -350,7 +350,7 @@ gi_callable_info_get_n_args (GICallableInfo *info)
  */
 GIArgInfo *
 gi_callable_info_get_arg (GICallableInfo *info,
-                          gint            n)
+                          guint           n)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header;
@@ -380,7 +380,7 @@ gi_callable_info_get_arg (GICallableInfo *info,
  */
 void
 gi_callable_info_load_arg (GICallableInfo *info,
-                           gint            n,
+                           guint           n,
                            GIArgInfo      *arg)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -411,7 +411,7 @@ gi_callable_info_get_return_attribute (GICallableInfo *info,
                                        const gchar    *name)
 {
   GIAttributeIter iter = { 0, };
-  gchar *curname, *curvalue;
+  const char *curname, *curvalue;
   while (gi_callable_info_iterate_return_attributes (info, &iter, &curname, &curvalue))
     {
       if (g_strcmp0 (name, curname) == 0)
@@ -443,8 +443,8 @@ gi_callable_info_get_return_attribute (GICallableInfo *info,
 gboolean
 gi_callable_info_iterate_return_attributes (GICallableInfo   *info,
                                             GIAttributeIter  *iterator,
-                                            char            **name,
-                                            char            **value)
+                                            const char      **name,
+                                            const char      **value)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header = (Header *)rinfo->typelib->data;
@@ -464,8 +464,8 @@ gi_callable_info_iterate_return_attributes (GICallableInfo   *info,
   if (next == NULL || next->offset != blob_offset || next >= after)
     return FALSE;
 
-  *name = (gchar*) gi_typelib_get_string (rinfo->typelib, next->name);
-  *value = (gchar*) gi_typelib_get_string (rinfo->typelib, next->value);
+  *name = gi_typelib_get_string (rinfo->typelib, next->name);
+  *value = gi_typelib_get_string (rinfo->typelib, next->value);
   iterator->data = next + 1;
 
   return TRUE;
@@ -601,9 +601,9 @@ gboolean
 gi_callable_info_invoke (GICallableInfo    *info,
                          gpointer           function,
                          const GIArgument  *in_args,
-                         int                n_in_args,
+                         gsize              n_in_args,
                          const GIArgument  *out_args,
-                         int                n_out_args,
+                         gsize              n_out_args,
                          GIArgument        *return_value,
                          gboolean           is_method,
                          gboolean           throws,
@@ -616,7 +616,7 @@ gi_callable_info_invoke (GICallableInfo    *info,
   GITypeInfo *rinfo;
   GITypeTag rtag;
   GIArgInfo *ainfo;
-  gint n_args, n_invoke_args, in_pos, out_pos, i;
+  gsize n_args, n_invoke_args, in_pos, out_pos, i;
   gpointer *args;
   gboolean success = FALSE;
   GError *local_error = NULL;

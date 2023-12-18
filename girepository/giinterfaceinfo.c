@@ -53,7 +53,7 @@
  *
  * Returns: number of prerequisites
  */
-gint
+guint
 gi_interface_info_get_n_prerequisites (GIInterfaceInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -79,7 +79,7 @@ gi_interface_info_get_n_prerequisites (GIInterfaceInfo *info)
  */
 GIBaseInfo *
 gi_interface_info_get_prerequisite (GIInterfaceInfo *info,
-                                    gint             n)
+                                    guint            n)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   InterfaceBlob *blob;
@@ -102,7 +102,7 @@ gi_interface_info_get_prerequisite (GIInterfaceInfo *info,
  *
  * Returns: number of properties
  */
-gint
+guint
 gi_interface_info_get_n_properties (GIInterfaceInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -128,7 +128,7 @@ gi_interface_info_get_n_properties (GIInterfaceInfo *info)
  */
 GIPropertyInfo *
 gi_interface_info_get_property (GIInterfaceInfo *info,
-                                gint             n)
+                                guint            n)
 {
   gint offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -157,7 +157,7 @@ gi_interface_info_get_property (GIInterfaceInfo *info,
  *
  * Returns: number of methods
  */
-gint
+guint
 gi_interface_info_get_n_methods (GIInterfaceInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -183,7 +183,7 @@ gi_interface_info_get_n_methods (GIInterfaceInfo *info)
  */
 GIFunctionInfo *
 gi_interface_info_get_method (GIInterfaceInfo *info,
-                              gint             n)
+                              guint            n)
 {
   gint offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -240,7 +240,7 @@ gi_interface_info_find_method (GIInterfaceInfo *info,
  *
  * Returns: number of signals
  */
-gint
+guint
 gi_interface_info_get_n_signals (GIInterfaceInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -266,7 +266,7 @@ gi_interface_info_get_n_signals (GIInterfaceInfo *info)
  */
 GISignalInfo *
 gi_interface_info_get_signal (GIInterfaceInfo *info,
-                              gint             n)
+                              guint            n)
 {
   gint offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -304,11 +304,10 @@ GISignalInfo *
 gi_interface_info_find_signal (GIInterfaceInfo *info,
                                const gchar  *name)
 {
-  gint n_signals;
-  gint i;
+  guint n_signals;
 
   n_signals = gi_interface_info_get_n_signals (info);
-  for (i = 0; i < n_signals; i++)
+  for (guint i = 0; i < n_signals; i++)
     {
       GISignalInfo *siginfo = gi_interface_info_get_signal (info, i);
 
@@ -331,7 +330,7 @@ gi_interface_info_find_signal (GIInterfaceInfo *info,
  *
  * Returns: number of virtual functions
  */
-gint
+guint
 gi_interface_info_get_n_vfuncs (GIInterfaceInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -357,7 +356,7 @@ gi_interface_info_get_n_vfuncs (GIInterfaceInfo *info)
  */
 GIVFuncInfo *
 gi_interface_info_get_vfunc (GIInterfaceInfo *info,
-                             gint             n)
+                             guint            n)
 {
   gint offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -424,7 +423,7 @@ gi_interface_info_find_vfunc (GIInterfaceInfo *info,
  *
  * Returns: number of constants
  */
-gint
+guint
 gi_interface_info_get_n_constants (GIInterfaceInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -450,7 +449,7 @@ gi_interface_info_get_n_constants (GIInterfaceInfo *info)
  */
 GIConstantInfo *
 gi_interface_info_get_constant (GIInterfaceInfo *info,
-                                gint             n)
+                                guint            n)
 {
   gint offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;

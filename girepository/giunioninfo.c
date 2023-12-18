@@ -53,7 +53,7 @@
  * Returns: number of fields
  * Since: 2.80
  */
-gint
+guint
 gi_union_info_get_n_fields  (GIUnionInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -75,7 +75,7 @@ gi_union_info_get_n_fields  (GIUnionInfo *info)
  */
 GIFieldInfo *
 gi_union_info_get_field (GIUnionInfo *info,
-                         gint         n)
+                         guint        n)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header = (Header *)rinfo->typelib->data;
@@ -94,7 +94,7 @@ gi_union_info_get_field (GIUnionInfo *info,
  * Returns: number of methods
  * Since: 2.80
  */
-gint
+guint
 gi_union_info_get_n_methods (GIUnionInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -116,7 +116,7 @@ gi_union_info_get_n_methods (GIUnionInfo *info)
  */
 GIFunctionInfo *
 gi_union_info_get_method (GIUnionInfo *info,
-                          gint         n)
+                          guint        n)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   UnionBlob *blob = (UnionBlob *)&rinfo->typelib->data[rinfo->offset];
@@ -157,7 +157,7 @@ gi_union_info_is_discriminated (GIUnionInfo *info)
  * Returns: offset, in bytes, of the discriminator
  * Since: 2.80
  */
-gint
+guint
 gi_union_info_get_discriminator_offset (GIUnionInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -201,7 +201,7 @@ gi_union_info_get_discriminator_type (GIUnionInfo *info)
  */
 GIConstantInfo *
 gi_union_info_get_discriminator (GIUnionInfo *info,
-                                 gint         n)
+                                 guint        n)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   UnionBlob *blob = (UnionBlob *)&rinfo->typelib->data[rinfo->offset];
@@ -286,7 +286,7 @@ gi_union_info_get_alignment (GIUnionInfo *info)
 }
 
 /**
- * gi_union_info_get_copy_function:
+ * gi_union_info_get_copy_function_name:
  * @info: a union information blob
  *
  * Retrieves the name of the copy function for @info, if any is set.
@@ -296,7 +296,7 @@ gi_union_info_get_alignment (GIUnionInfo *info)
  * Since: 2.80
  */
 const char *
-gi_union_info_get_copy_function (GIUnionInfo *info)
+gi_union_info_get_copy_function_name (GIUnionInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   UnionBlob *blob;
@@ -313,7 +313,7 @@ gi_union_info_get_copy_function (GIUnionInfo *info)
 }
 
 /**
- * gi_union_info_get_free_function:
+ * gi_union_info_get_free_function_name:
  * @info: a union information blob
  *
  * Retrieves the name of the free function for @info, if any is set.
@@ -323,7 +323,7 @@ gi_union_info_get_copy_function (GIUnionInfo *info)
  * Since: 2.80
  */
 const char *
-gi_union_info_get_free_function (GIUnionInfo *info)
+gi_union_info_get_free_function_name (GIUnionInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   UnionBlob *blob;

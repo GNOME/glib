@@ -67,10 +67,10 @@ GI_AVAILABLE_IN_ALL
 GIScopeType            gi_arg_info_get_scope              (GIArgInfo *info);
 
 GI_AVAILABLE_IN_ALL
-gint                   gi_arg_info_get_closure            (GIArgInfo *info);
+gint                   gi_arg_info_get_closure_index      (GIArgInfo *info);
 
 GI_AVAILABLE_IN_ALL
-gint                   gi_arg_info_get_destroy            (GIArgInfo *info);
+gint                   gi_arg_info_get_destroy_index      (GIArgInfo *info);
 
 GI_AVAILABLE_IN_ALL
 GITypeInfo *           gi_arg_info_get_type_info          (GIArgInfo *info);

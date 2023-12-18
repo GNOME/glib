@@ -51,15 +51,14 @@
 GIFunctionInfo *
 gi_base_info_find_method (GIBaseInfo  *base,
                           guint32      offset,
-                          gint         n_methods,
+                          guint        n_methods,
                           const gchar *name)
 {
   /* FIXME hash */
   GIRealInfo *rinfo = (GIRealInfo*)base;
   Header *header = (Header *)rinfo->typelib->data;
-  gint i;
 
-  for (i = 0; i < n_methods; i++)
+  for (guint i = 0; i < n_methods; i++)
     {
       FunctionBlob *fblob = (FunctionBlob *)&rinfo->typelib->data[offset];
       const gchar *fname = (const gchar *)&rinfo->typelib->data[fblob->name];
@@ -256,9 +255,9 @@ gi_invoke_error_quark (void)
 gboolean
 gi_function_info_invoke (GIFunctionInfo    *info,
                          const GIArgument  *in_args,
-                         int                n_in_args,
+                         gsize              n_in_args,
                          const GIArgument  *out_args,
-                         int                n_out_args,
+                         gsize              n_out_args,
                          GIArgument        *return_value,
                          GError           **error)
 {
