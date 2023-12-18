@@ -2517,6 +2517,28 @@ test_unmatched_named_subpattern (void)
   g_regex_unref (regex);
 }
 
+static void
+test_compiled_regex_after_jit_failure (void)
+{
+  GRegex *regex = NULL;
+  char string[LARGE_TEST_STRING_LEN];
+
+  g_test_summary ("Test that failed OPTIMIZE regex doesn't cause issues on subsequent matches");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/2824");
+
+  regex = g_regex_new ("^(?:[ \t\n]|[^[:cntrl:]])*$", G_REGEX_OPTIMIZE, 0, NULL);
+
+  /* Generate large enough string to cause JIT failure on this regex. */
+  memset (string, '*', LARGE_TEST_STRING_LEN);
+  string[LARGE_TEST_STRING_LEN - 1] = '\0';
+
+  g_assert_true (g_regex_match (regex, string, 0, NULL));
+  /* Second assert here is the key - does the first JIT overflow mess up our state? */
+  g_assert_true (g_regex_match (regex, string, 0, NULL));
+
+  g_regex_unref (regex);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -2537,6 +2559,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/regex/compile-errors", test_compile_errors);
   g_test_add_func ("/regex/jit-unsupported-matching", test_jit_unsupported_matching_options);
   g_test_add_func ("/regex/unmatched-named-subpattern", test_unmatched_named_subpattern);
+  g_test_add_func ("/regex/compiled-regex-after-jit-failure", test_compiled_regex_after_jit_failure);
 
   /* TEST_NEW(pattern, compile_opts, match_opts) */
   TEST_NEW("[A-Z]+", G_REGEX_CASELESS | G_REGEX_EXTENDED | G_REGEX_OPTIMIZE, G_REGEX_MATCH_NOTBOL | G_REGEX_MATCH_PARTIAL);
