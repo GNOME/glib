@@ -210,7 +210,7 @@ g_object_notify_queue_free (gpointer data)
   GObjectNotifyQueue *nqueue = data;
 
   g_slist_free (nqueue->pspecs);
-  g_slice_free (GObjectNotifyQueue, nqueue);
+  g_free_sized (nqueue, sizeof (GObjectNotifyQueue));
 }
 
 static GObjectNotifyQueue *
@@ -218,7 +218,7 @@ g_object_notify_queue_create_queue_frozen (GObject *object)
 {
   GObjectNotifyQueue *nqueue;
 
-  nqueue = g_slice_new0 (GObjectNotifyQueue);
+  nqueue = g_new0 (GObjectNotifyQueue, 1);
 
   *nqueue = (GObjectNotifyQueue){
     .freeze_count = 1,
