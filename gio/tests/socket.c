@@ -43,13 +43,24 @@
 static gboolean ipv6_supported;
 
 typedef struct {
-  GSocket *server;
-  GSocket *client;
+  GSocket *server;  /* (owned) (not nullable) */
+  GSocket *client;  /* (owned) (nullable) */
   GSocketFamily family;
-  GThread *thread;
-  GMainLoop *loop;
-  GCancellable *cancellable; /* to shut down dgram echo server thread */
+  GThread *thread;  /* (owned) (not nullable) */
+  GMainLoop *loop;  /* (owned) (nullable) */
+  GCancellable *cancellable; /* to shut down dgram echo server thread; (owned) (nullable) */
 } IPTestData;
+
+static void
+ip_test_data_free (IPTestData *data)
+{
+  g_clear_object (&data->server);
+  g_clear_object (&data->client);
+  g_clear_pointer (&data->loop, g_main_loop_unref);
+  g_clear_object (&data->cancellable);
+
+  g_slice_free (IPTestData, data);
+}
 
 static gpointer
 echo_server_dgram_thread (gpointer user_data)
@@ -130,7 +141,7 @@ create_server_full (GSocketFamily   family,
   GSocketAddress *addr;
   GInetAddress *iaddr;
 
-  data = g_slice_new (IPTestData);
+  data = g_slice_new0 (IPTestData);
   data->family = family;
 
   data->server = server = g_socket_new (family,
@@ -144,7 +155,7 @@ create_server_full (GSocketFamily   family,
   g_assert_cmpint (g_socket_get_socket_type (server), ==, socket_type);
   g_assert_cmpint (g_socket_get_protocol (server), ==, G_SOCKET_PROTOCOL_DEFAULT);
 #ifdef G_OS_WIN32
-  g_assert (GLIB_PRIVATE_CALL (g_win32_handle_is_socket) ((HANDLE)(gintptr) g_socket_get_fd (server)));
+  g_assert_true (GLIB_PRIVATE_CALL (g_win32_handle_is_socket) ((HANDLE)(gintptr) g_socket_get_fd (server)));
 #endif
 
   g_socket_set_blocking (server, TRUE);
@@ -198,8 +209,7 @@ create_server_full (GSocketFamily   family,
   return data;
 
 error:
-  g_clear_object (&data->server);
-  g_slice_free (IPTestData, data);
+  ip_test_data_free (data);
 
   return NULL;
 }
@@ -310,7 +320,7 @@ test_ip_async_connected (GSocket      *client,
    */
   g_assert_cmpint (cond, ==, G_IO_OUT);
 
-  g_assert (g_socket_is_connected (client));
+  g_assert_true (g_socket_is_connected (client));
 
   /* This adds 1 second to "make check", so let's just only do it once. */
   if (data->family == G_SOCKET_FAMILY_IPV4)
@@ -396,7 +406,7 @@ test_ip_async (GSocketFamily family)
 
   data->loop = g_main_loop_new (NULL, TRUE);
   g_main_loop_run (data->loop);
-  g_main_loop_unref (data->loop);
+  g_clear_pointer (&data->loop, g_main_loop_unref);
 
   g_socket_shutdown (client, FALSE, TRUE, &error);
   g_assert_no_error (error);
@@ -426,10 +436,7 @@ test_ip_async (GSocketFamily family)
   g_socket_close (data->server, &error);
   g_assert_no_error (error);
 
-  g_object_unref (data->server);
-  g_object_unref (client);
-
-  g_slice_free (IPTestData, data);
+  ip_test_data_free (data);
 }
 
 static void
@@ -483,14 +490,14 @@ test_ip_sync (GSocketFamily family)
   g_assert_cmpint (g_socket_get_socket_type (client), ==, G_SOCKET_TYPE_STREAM);
   g_assert_cmpint (g_socket_get_protocol (client), ==, G_SOCKET_PROTOCOL_DEFAULT);
 #ifdef G_OS_WIN32
-  g_assert (GLIB_PRIVATE_CALL (g_win32_handle_is_socket) ((HANDLE)(gintptr) g_socket_get_fd (client)));
+  g_assert_true (GLIB_PRIVATE_CALL (g_win32_handle_is_socket) ((HANDLE)(gintptr) g_socket_get_fd (client)));
 #endif
   g_socket_set_blocking (client, TRUE);
   g_socket_set_timeout (client, 1);
 
   g_socket_connect (client, addr, NULL, &error);
   g_assert_no_error (error);
-  g_assert (g_socket_is_connected (client));
+  g_assert_true (g_socket_is_connected (client));
   g_object_unref (addr);
 
   /* This adds 1 second to "make check", so let's just only do it once. */
@@ -567,10 +574,9 @@ test_ip_sync (GSocketFamily family)
   g_socket_close (data->server, &error);
   g_assert_no_error (error);
 
-  g_object_unref (data->server);
   g_object_unref (client);
 
-  g_slice_free (IPTestData, data);
+  ip_test_data_free (data);
 }
 
 static void
@@ -611,6 +617,7 @@ test_ip_sync_dgram (GSocketFamily family)
     }
 
   dest_addr = g_socket_get_local_address (data->server, &error);
+  g_assert_no_error (error);
 
   client = g_socket_new (family,
 			 G_SOCKET_TYPE_DATAGRAM,
@@ -622,7 +629,7 @@ test_ip_sync_dgram (GSocketFamily family)
   g_assert_cmpint (g_socket_get_socket_type (client), ==, G_SOCKET_TYPE_DATAGRAM);
   g_assert_cmpint (g_socket_get_protocol (client), ==, G_SOCKET_PROTOCOL_DEFAULT);
 #ifdef G_OS_WIN32
-  g_assert (GLIB_PRIVATE_CALL (g_win32_handle_is_socket) ((HANDLE)(gintptr) g_socket_get_fd (client)));
+  g_assert_true (GLIB_PRIVATE_CALL (g_win32_handle_is_socket) ((HANDLE)(gintptr) g_socket_get_fd (client)));
 #endif
 
   g_socket_set_blocking (client, TRUE);
@@ -711,7 +718,7 @@ test_ip_sync_dgram (GSocketFamily family)
     g_assert_no_error (error);
     /* v[0].size + v[1].size + v[2].size + v[3].size + v[4].size + v[5].size */
     g_assert_cmpint (len, ==, 17);
-    g_assert (memcmp (testbuf2, buf, 17) == 0);
+    g_assert_cmpmem (testbuf2, 17, buf, 17);
 
     memset (buf, 0, sizeof (buf));
     len = g_socket_receive_from (client, NULL, buf, sizeof (buf), NULL, &error);
@@ -801,12 +808,10 @@ test_ip_sync_dgram (GSocketFamily family)
   g_socket_close (data->server, &error);
   g_assert_no_error (error);
 
-  g_object_unref (data->server);
-  g_object_unref (data->cancellable);
   g_object_unref (client);
   g_object_unref (dest_addr);
 
-  g_slice_free (IPTestData, data);
+  ip_test_data_free (data);
 }
 
 static void
@@ -862,7 +867,7 @@ test_ip_sync_dgram_timeouts (GSocketFamily family)
   g_assert_cmpint (g_socket_get_socket_type (client), ==, G_SOCKET_TYPE_DATAGRAM);
   g_assert_cmpint (g_socket_get_protocol (client), ==, G_SOCKET_PROTOCOL_DEFAULT);
 #ifdef G_OS_WIN32
-  g_assert (GLIB_PRIVATE_CALL (g_win32_handle_is_socket) ((HANDLE)(gintptr) g_socket_get_fd (client)));
+  g_assert_true (GLIB_PRIVATE_CALL (g_win32_handle_is_socket) ((HANDLE)(gintptr) g_socket_get_fd (client)));
 #endif
 
 #ifdef G_OS_WIN32
@@ -1007,7 +1012,7 @@ test_close_graceful (void)
   g_assert_cmpint (g_socket_get_socket_type (client), ==, G_SOCKET_TYPE_STREAM);
   g_assert_cmpint (g_socket_get_protocol (client), ==, G_SOCKET_PROTOCOL_DEFAULT);
 #ifdef G_OS_WIN32
-  g_assert (GLIB_PRIVATE_CALL (g_win32_handle_is_socket) ((HANDLE)(gintptr) g_socket_get_fd (client)));
+  g_assert_true (GLIB_PRIVATE_CALL (g_win32_handle_is_socket) ((HANDLE)(gintptr) g_socket_get_fd (client)));
 #endif
 
   g_socket_set_blocking (client, TRUE);
@@ -1015,7 +1020,7 @@ test_close_graceful (void)
 
   g_socket_connect (client, addr, NULL, &error);
   g_assert_no_error (error);
-  g_assert (g_socket_is_connected (client));
+  g_assert_true (g_socket_is_connected (client));
   g_object_unref (addr);
 
   server = g_thread_join (data->thread);
@@ -1046,10 +1051,9 @@ test_close_graceful (void)
   g_assert_no_error (error);
 
   g_object_unref (server);
-  g_object_unref (data->server);
   g_object_unref (client);
 
-  g_slice_free (IPTestData, data);
+  ip_test_data_free (data);
 }
 
 #if defined (IPPROTO_IPV6) && defined (IPV6_V6ONLY)
@@ -1123,7 +1127,7 @@ test_ipv6_v4mapped (void)
 
   g_socket_connect (client, v4addr, NULL, &error);
   g_assert_no_error (error);
-  g_assert (g_socket_is_connected (client));
+  g_assert_true (g_socket_is_connected (client));
 
   g_thread_join (data->thread);
 
@@ -1132,11 +1136,10 @@ test_ipv6_v4mapped (void)
   g_socket_close (data->server, &error);
   g_assert_no_error (error);
 
-  g_object_unref (data->server);
   g_object_unref (client);
   g_object_unref (v4addr);
 
-  g_slice_free (IPTestData, data);
+  ip_test_data_free (data);
 }
 #endif
 
@@ -1198,10 +1201,9 @@ test_timed_wait (void)
   g_socket_close (data->server, &error);
   g_assert_no_error (error);
 
-  g_object_unref (data->server);
   g_object_unref (client);
 
-  g_slice_free (IPTestData, data);
+  ip_test_data_free (data);
 }
 
 static int
@@ -1265,7 +1267,7 @@ test_fd_reuse (void)
 
   g_socket_connect (client, addr, NULL, &error);
   g_assert_no_error (error);
-  g_assert (g_socket_is_connected (client));
+  g_assert_true (g_socket_is_connected (client));
   g_object_unref (addr);
 
   /* we have to dup otherwise the fd gets closed twice on unref */
@@ -1277,7 +1279,7 @@ test_fd_reuse (void)
   g_assert_cmpint (g_socket_get_socket_type (client2), ==, g_socket_get_socket_type (client));
   g_assert_cmpint (g_socket_get_protocol (client2), ==, G_SOCKET_PROTOCOL_TCP);
 #ifdef G_OS_WIN32
-  g_assert (GLIB_PRIVATE_CALL (g_win32_handle_is_socket) ((HANDLE)(gintptr) g_socket_get_fd (client)));
+  g_assert_true (GLIB_PRIVATE_CALL (g_win32_handle_is_socket) ((HANDLE)(gintptr) g_socket_get_fd (client)));
 #endif
 
   len = g_socket_send (client2, testbuf, strlen (testbuf) + 1, NULL, &error);
@@ -1310,11 +1312,10 @@ test_fd_reuse (void)
   g_assert_cmpint (g_socket_get_fd (client2), ==, -1);
   g_assert_cmpint (g_socket_get_fd (data->server), ==, -1);
 
-  g_object_unref (data->server);
   g_object_unref (client);
   g_object_unref (client2);
 
-  g_slice_free (IPTestData, data);
+  ip_test_data_free (data);
 }
 
 static void
@@ -1334,12 +1335,12 @@ test_sockaddr (void)
   sin6.sin6_flowinfo = 1729;
 
   saddr = g_socket_address_new_from_native (&sin6, sizeof (sin6));
-  g_assert (G_IS_INET_SOCKET_ADDRESS (saddr));
+  g_assert_true (G_IS_INET_SOCKET_ADDRESS (saddr));
 
   isaddr = G_INET_SOCKET_ADDRESS (saddr);
   iaddr = g_inet_socket_address_get_address (isaddr);
   g_assert_cmpint (g_inet_address_get_family (iaddr), ==, G_SOCKET_FAMILY_IPV6);
-  g_assert (g_inet_address_get_is_loopback (iaddr));
+  g_assert_true (g_inet_address_get_is_loopback (iaddr));
 
   g_assert_cmpint (g_inet_socket_address_get_port (isaddr), ==, 42);
   g_assert_cmpint (g_inet_socket_address_get_scope_id (isaddr), ==, 17);
@@ -1348,7 +1349,7 @@ test_sockaddr (void)
   g_socket_address_to_native (saddr, &gsin6, sizeof (gsin6), &error);
   g_assert_no_error (error);
 
-  g_assert (memcmp (&sin6.sin6_addr, &gsin6.sin6_addr, sizeof (struct in6_addr)) == 0);
+  g_assert_cmpmem (&sin6.sin6_addr, sizeof (struct in6_addr), &gsin6.sin6_addr, sizeof (struct in6_addr));
   g_assert_cmpint (sin6.sin6_port, ==, gsin6.sin6_port);
   g_assert_cmpint (sin6.sin6_scope_id, ==, gsin6.sin6_scope_id);
   g_assert_cmpint (sin6.sin6_flowinfo, ==, gsin6.sin6_flowinfo);
@@ -1399,7 +1400,7 @@ test_unix_from_fd (void)
   g_assert_cmpint (g_socket_get_socket_type (s), ==, G_SOCKET_TYPE_STREAM);
   g_assert_cmpint (g_socket_get_protocol (s), ==, G_SOCKET_PROTOCOL_DEFAULT);
 #ifdef G_OS_WIN32
-  g_assert (GLIB_PRIVATE_CALL (g_win32_handle_is_socket) ((HANDLE)(gintptr) g_socket_get_fd (s)));
+  g_assert_true (GLIB_PRIVATE_CALL (g_win32_handle_is_socket) ((HANDLE)(gintptr) g_socket_get_fd (s)));
 #endif
   g_object_unref (s);
 }
@@ -1428,7 +1429,7 @@ test_unix_connection (void)
   s = g_socket_new_from_fd (fd, &error);
   g_assert_no_error (error);
   c = g_socket_connection_factory_create_connection (s);
-  g_assert (G_IS_UNIX_CONNECTION (c));
+  g_assert_true (G_IS_UNIX_CONNECTION (c));
   g_object_unref (c);
   g_object_unref (s);
 }
@@ -1443,9 +1444,9 @@ create_connection_for_fd (int fd)
 
   socket = g_socket_new_from_fd (fd, &err);
   g_assert_no_error (err);
-  g_assert (G_IS_SOCKET (socket));
+  g_assert_true (G_IS_SOCKET (socket));
   connection = g_socket_connection_factory_create_connection (socket);
-  g_assert (G_IS_UNIX_CONNECTION (connection));
+  g_assert_true (G_IS_UNIX_CONNECTION (connection));
   g_object_unref (socket);
   return connection;
 }
@@ -1525,7 +1526,7 @@ test_unix_connection_ancillary_data (void)
       g_assert_cmpstr (buffer, ==, TEST_DATA);
 
       waitpid (pid, &status, 0);
-      g_assert (WIFEXITED (status));
+      g_assert_true (WIFEXITED (status));
       g_assert_cmpint (WEXITSTATUS (status), ==, 0);
     }
 
@@ -1612,8 +1613,8 @@ test_source_postmortem (void)
   /* Test that, after a socket is closed, its source callback should be called
    * exactly once. */
   g_main_context_iteration (context, FALSE);
-  g_assert (callback_visited);
-  g_assert (!g_main_context_pending (context));
+  g_assert_true (callback_visited);
+  g_assert_false (g_main_context_pending (context));
 
   g_main_context_unref (context);
 }
@@ -1713,14 +1714,14 @@ test_get_available (gconstpointer user_data)
                            G_SOCKET_PROTOCOL_DEFAULT,
                            &err);
   g_assert_no_error (err);
-  g_assert (G_IS_SOCKET (listener));
+  g_assert_true (G_IS_SOCKET (listener));
 
   client = g_socket_new (G_SOCKET_FAMILY_IPV4,
                          socket_type,
                          G_SOCKET_PROTOCOL_DEFAULT,
                          &err);
   g_assert_no_error (err);
-  g_assert (G_IS_SOCKET (client));
+  g_assert_true (G_IS_SOCKET (client));
 
   if (socket_type == G_SOCKET_TYPE_STREAM)
     {
@@ -1918,14 +1919,14 @@ test_read_write (gconstpointer user_data)
                            G_SOCKET_PROTOCOL_DEFAULT,
                            &err);
   g_assert_no_error (err);
-  g_assert (G_IS_SOCKET (listener));
+  g_assert_true (G_IS_SOCKET (listener));
 
   client = g_socket_new (G_SOCKET_FAMILY_IPV4,
                          G_SOCKET_TYPE_STREAM,
                          G_SOCKET_PROTOCOL_DEFAULT,
                          &err);
   g_assert_no_error (err);
-  g_assert (G_IS_SOCKET (client));
+  g_assert_true (G_IS_SOCKET (client));
 
   addr = g_inet_address_new_any (G_SOCKET_FAMILY_IPV4);
   saddr = g_inet_socket_address_new (addr, 0);
@@ -2071,10 +2072,9 @@ test_credentials_tcp_client (void)
   g_socket_close (data->server, &error);
   g_assert_no_error (error);
 
-  g_object_unref (data->server);
   g_object_unref (client);
 
-  g_slice_free (IPTestData, data);
+  ip_test_data_free (data);
 }
 
 static void
@@ -2144,10 +2144,8 @@ beach:
     g_clear_object (&iaddr);
 
     g_clear_pointer (&data->thread, g_thread_join);
-    g_clear_object (&data->server);
-    g_clear_object (&data->client);
 
-    g_slice_free (IPTestData, data);
+    ip_test_data_free (data);
   }
 }
 
@@ -2345,6 +2343,205 @@ test_credentials_unix_socketpair (void)
 }
 #endif
 
+static void
+test_receive_bytes (void)
+{
+  const GSocketFamily family = G_SOCKET_FAMILY_IPV4;
+  IPTestData *data;
+  GError *error = NULL;
+  GSocket *client;
+  GSocketAddress *addr;
+  gssize len;
+  GBytes *bytes = NULL;
+  gint64 time_start;
+  GCancellable *cancellable = NULL;
+
+  g_test_summary ("Test basic functionality of g_socket_receive_bytes()");
+
+  data = create_server (family, echo_server_thread, FALSE, &error);
+  if (error != NULL)
+    {
+      g_test_skip_printf ("Failed to create server: %s", error->message);
+      g_clear_error (&error);
+      return;
+    }
+
+  addr = g_socket_get_local_address (data->server, &error);
+  g_assert_no_error (error);
+
+  client = g_socket_new (family,
+                         G_SOCKET_TYPE_STREAM,
+                         G_SOCKET_PROTOCOL_DEFAULT,
+                         &error);
+  g_assert_no_error (error);
+
+  g_socket_set_blocking (client, TRUE);
+  g_socket_set_timeout (client, 10);
+
+  g_socket_connect (client, addr, NULL, &error);
+  g_assert_no_error (error);
+  g_object_unref (addr);
+
+  /* Send something. */
+  len = g_socket_send (client, "hello", strlen ("hello"), NULL, &error);
+  g_assert_no_error (error);
+  g_assert_cmpint (len, ==, strlen ("hello"));
+
+  /* And receive it back again. */
+  bytes = g_socket_receive_bytes (client, 5, -1, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (bytes);
+  g_assert_cmpuint (g_bytes_get_size (bytes), ==, 5);
+  g_assert_cmpmem (g_bytes_get_data (bytes, NULL), 5, "hello", 5);
+  g_bytes_unref (bytes);
+
+  /* Try again with a receive buffer which is bigger than the sent bytes, to
+   * test sub-buffer handling. */
+  len = g_socket_send (client, "hello", strlen ("hello"), NULL, &error);
+  g_assert_no_error (error);
+  g_assert_cmpint (len, ==, strlen ("hello"));
+
+  /* And receive it back again. */
+  bytes = g_socket_receive_bytes (client, 500, -1, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (bytes);
+  g_assert_cmpuint (g_bytes_get_size (bytes), ==, 5);
+  g_assert_cmpmem (g_bytes_get_data (bytes, NULL), 5, "hello", 5);
+  g_bytes_unref (bytes);
+
+  /* Try receiving when there’s nothing to receive, with a timeout. This should
+   * be the per-operation timeout, not the socket’s overall timeout */
+  time_start = g_get_real_time ();
+  bytes = g_socket_receive_bytes (client, 500, 10, NULL, &error);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_TIMED_OUT);
+  g_assert_null (bytes);
+  g_assert_cmpint (g_get_real_time () - time_start, <, g_socket_get_timeout (client) * G_USEC_PER_SEC);
+  g_clear_error (&error);
+
+  /* And try receiving when already cancelled. */
+  cancellable = g_cancellable_new ();
+  g_cancellable_cancel (cancellable);
+  bytes = g_socket_receive_bytes (client, 500, -1, cancellable, &error);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
+  g_assert_null (bytes);
+  g_clear_error (&error);
+  g_clear_object (&cancellable);
+
+  /* Tidy up. */
+  g_socket_close (client, &error);
+  g_assert_no_error (error);
+
+  g_cancellable_cancel (data->cancellable);
+  g_thread_join (data->thread);
+
+  g_socket_close (data->server, &error);
+  g_assert_no_error (error);
+
+  g_object_unref (client);
+
+  ip_test_data_free (data);
+}
+
+static void
+test_receive_bytes_from (void)
+{
+  const GSocketFamily family = G_SOCKET_FAMILY_IPV4;
+  IPTestData *data;
+  GError *error = NULL;
+  GSocket *client;
+  GSocketAddress *dest_addr = NULL, *sender_addr = NULL;
+  gssize len;
+  GBytes *bytes = NULL;
+  gint64 time_start;
+  GCancellable *cancellable = NULL;
+
+  g_test_summary ("Test basic functionality of g_socket_receive_bytes_from()");
+
+  data = create_server_full (family, G_SOCKET_TYPE_DATAGRAM,
+                             echo_server_dgram_thread, FALSE, &error);
+  if (error != NULL)
+    {
+      g_test_skip_printf ("Failed to create server: %s", error->message);
+      g_clear_error (&error);
+      return;
+    }
+
+  dest_addr = g_socket_get_local_address (data->server, &error);
+  g_assert_no_error (error);
+
+  client = g_socket_new (family,
+                         G_SOCKET_TYPE_DATAGRAM,
+                         G_SOCKET_PROTOCOL_DEFAULT,
+                         &error);
+  g_assert_no_error (error);
+
+  g_socket_set_blocking (client, TRUE);
+  g_socket_set_timeout (client, 10);
+
+  /* Send something. */
+  len = g_socket_send_to (client, dest_addr, "hello", strlen ("hello"), NULL, &error);
+  g_assert_no_error (error);
+  g_assert_cmpint (len, ==, strlen ("hello"));
+
+  /* And receive it back again. */
+  bytes = g_socket_receive_bytes_from (client, &sender_addr, 5, -1, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (bytes);
+  g_assert_cmpuint (g_bytes_get_size (bytes), ==, 5);
+  g_assert_cmpmem (g_bytes_get_data (bytes, NULL), 5, "hello", 5);
+  g_assert_nonnull (sender_addr);
+  g_clear_object (&sender_addr);
+  g_bytes_unref (bytes);
+
+  /* Try again with a receive buffer which is bigger than the sent bytes, to
+   * test sub-buffer handling. */
+  len = g_socket_send_to (client, dest_addr, "hello", strlen ("hello"), NULL, &error);
+  g_assert_no_error (error);
+  g_assert_cmpint (len, ==, strlen ("hello"));
+
+  /* And receive it back again. */
+  bytes = g_socket_receive_bytes_from (client, NULL, 500, -1, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (bytes);
+  g_assert_cmpuint (g_bytes_get_size (bytes), ==, 5);
+  g_assert_cmpmem (g_bytes_get_data (bytes, NULL), 5, "hello", 5);
+  g_bytes_unref (bytes);
+
+  /* Try receiving when there’s nothing to receive, with a timeout. This should
+   * be the per-operation timeout, not the socket’s overall timeout */
+  time_start = g_get_real_time ();
+  bytes = g_socket_receive_bytes_from (client, &sender_addr, 500, 10, NULL, &error);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_TIMED_OUT);
+  g_assert_null (bytes);
+  g_assert_null (sender_addr);
+  g_assert_cmpint (g_get_real_time () - time_start, <, g_socket_get_timeout (client) * G_USEC_PER_SEC);
+  g_clear_error (&error);
+
+  /* And try receiving when already cancelled. */
+  cancellable = g_cancellable_new ();
+  g_cancellable_cancel (cancellable);
+  bytes = g_socket_receive_bytes_from (client, &sender_addr, 500, -1, cancellable, &error);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
+  g_assert_null (bytes);
+  g_assert_null (sender_addr);
+  g_clear_error (&error);
+  g_clear_object (&cancellable);
+
+  /* Tidy up. */
+  g_socket_close (client, &error);
+  g_assert_no_error (error);
+
+  g_cancellable_cancel (data->cancellable);
+  g_thread_join (data->thread);
+
+  g_socket_close (data->server, &error);
+  g_assert_no_error (error);
+
+  g_object_unref (client);
+
+  ip_test_data_free (data);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -2411,6 +2608,8 @@ main (int   argc,
   g_test_add_func ("/socket/credentials/tcp_server", test_credentials_tcp_server);
   g_test_add_func ("/socket/credentials/unix_socketpair", test_credentials_unix_socketpair);
 #endif
+  g_test_add_func ("/socket/receive_bytes", test_receive_bytes);
+  g_test_add_func ("/socket/receive_bytes_from", test_receive_bytes_from);
 
   return g_test_run();
 }
