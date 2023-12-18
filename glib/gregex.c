@@ -253,6 +253,13 @@ struct _GRegex
   GRegexMatchFlags orig_match_opts; /* options used as default match options, gregex values */
   uint32_t jit_options;         /* options which were enabled for jit compiler */
   JITStatus jit_status;         /* indicates the status of jit compiler for this compiled regex */
+  /* The jit_status here does _not_ correspond to whether we used the JIT in the last invocation,
+   * which may be affected by match_options or a JIT_STACK_LIMIT error, but whether it was ever
+   * enabled for the current regex AND current set of jit_options.
+   * JIT_STATUS_DEFAULT means enablement was never tried,
+   * JIT_STATUS_ENABLED means it was tried and successful (even if we're not currently using it),
+   * and JIT_STATUS_DISABLED means it was tried and failed (so we shouldn't try again).
+   */
 };
 
 /* TRUE if ret is an error code, FALSE otherwise. */
@@ -919,35 +926,47 @@ enable_jit_with_match_options (GMatchInfo  *match_info,
 
   /* no new options enabled */
   if (new_jit_options == old_jit_options)
-    return match_info->regex->jit_status;
+    {
+      g_assert (match_info->regex->jit_status != JIT_STATUS_DEFAULT);
+      return match_info->regex->jit_status;
+    }
 
   retval = pcre2_jit_compile (match_info->regex->pcre_re, new_jit_options);
-  switch (retval)
+  if (retval == 0)
     {
-    case 0: /* JIT enabled successfully */
+      match_info->regex->jit_status = JIT_STATUS_ENABLED;
+
       match_info->regex->jit_options = new_jit_options;
       /* Set min stack size for JIT to 32KiB and max to 512KiB */
       match_info->jit_stack = pcre2_jit_stack_create (1 << 15, 1 << 19, NULL);
       pcre2_jit_stack_assign (match_info->match_context, NULL, match_info->jit_stack);
-      return JIT_STATUS_ENABLED;
-    case PCRE2_ERROR_NOMEMORY:
-      g_debug ("JIT compilation was requested with G_REGEX_OPTIMIZE, "
-               "but JIT was unable to allocate executable memory for the "
-               "compiler. Falling back to interpretive code.");
-      return JIT_STATUS_DISABLED;
-    case PCRE2_ERROR_JIT_BADOPTION:
-      g_debug ("JIT compilation was requested with G_REGEX_OPTIMIZE, "
-               "but JIT support is not available. Falling back to "
-               "interpretive code.");
-      return JIT_STATUS_DISABLED;
-      break;
-    default:
-      g_debug ("JIT compilation was requested with G_REGEX_OPTIMIZE, "
-               "but request for JIT support had unexpectedly failed (error %d). "
-               "Falling back to interpretive code.", retval);
-      return JIT_STATUS_DISABLED;
-      break;
     }
+  else
+    {
+      match_info->regex->jit_status = JIT_STATUS_DISABLED;
+
+      switch (retval)
+        {
+        case PCRE2_ERROR_NOMEMORY:
+          g_debug ("JIT compilation was requested with G_REGEX_OPTIMIZE, "
+                   "but JIT was unable to allocate executable memory for the "
+                   "compiler. Falling back to interpretive code.");
+          break;
+        case PCRE2_ERROR_JIT_BADOPTION:
+          g_debug ("JIT compilation was requested with G_REGEX_OPTIMIZE, "
+                   "but JIT support is not available. Falling back to "
+                   "interpretive code.");
+          break;
+        default:
+          g_debug ("JIT compilation was requested with G_REGEX_OPTIMIZE, "
+                   "but request for JIT support had unexpectedly failed (error %d). "
+                   "Falling back to interpretive code.",
+                   retval);
+          break;
+        }
+    }
+
+  return match_info->regex->jit_status;
 
   g_assert_not_reached ();
 }
