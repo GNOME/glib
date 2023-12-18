@@ -138,61 +138,74 @@ union _GIArgument
 
 /**
  * GIArgument:
- * @v_boolean: TODO
- * @v_int8: TODO
- * @v_uint8: TODO
- * @v_int16: TODO
- * @v_uint16: TODO
- * @v_int32: TODO
- * @v_uint32: TODO
- * @v_int64: TODO
- * @v_uint64: TODO
- * @v_float: TODO
- * @v_double: TODO
- * @v_short: TODO
- * @v_ushort: TODO
- * @v_int: TODO
- * @v_uint: TODO
- * @v_long: TODO
- * @v_ulong: TODO
- * @v_ssize: TODO
- * @v_size: TODO
- * @v_string: TODO
- * @v_pointer: TODO
+ * @v_boolean: boolean value
+ * @v_int8: 8-bit signed integer value
+ * @v_uint8: 8-bit unsigned integer value
+ * @v_int16: 16-bit signed integer value
+ * @v_uint16: 16-bit unsigned integer value
+ * @v_int32: 32-bit signed integer value
+ * @v_uint32: 32-bit unsigned integer value
+ * @v_int64: 64-bit signed integer value
+ * @v_uint64: 64-bit unsigned integer value
+ * @v_float: single float value
+ * @v_double: double float value
+ * @v_short: signed short integer value
+ * @v_ushort: unsigned short integer value
+ * @v_int: signed integer value
+ * @v_uint: unsigned integer value
+ * @v_long: signed long integer value
+ * @v_ulong: unsigned long integer value
+ * @v_ssize: sized `size_t` value
+ * @v_size: unsigned `size_t` value
+ * @v_string: nul-terminated string value
+ * @v_pointer: arbitrary pointer value
  *
- * Stores an argument of varying type
+ * Stores an argument of varying type.
+ *
+ * Since: 2.80
  */
 typedef union _GIArgument GIArgument;
 
 /**
  * GIInfoType:
  * @GI_INFO_TYPE_INVALID: invalid type
- * @GI_INFO_TYPE_FUNCTION: function, see #GIFunctionInfo
- * @GI_INFO_TYPE_CALLBACK: callback, see #GIFunctionInfo
- * @GI_INFO_TYPE_STRUCT: struct, see #GIStructInfo
- * @GI_INFO_TYPE_BOXED: boxed, see #GIStructInfo or #GIUnionInfo
- * @GI_INFO_TYPE_ENUM: enum, see #GIEnumInfo
- * @GI_INFO_TYPE_FLAGS: flags, see #GIEnumInfo
- * @GI_INFO_TYPE_OBJECT: object, see #GIObjectInfo
- * @GI_INFO_TYPE_INTERFACE: interface, see #GIInterfaceInfo
- * @GI_INFO_TYPE_CONSTANT: contant, see #GIConstantInfo
- * @GI_INFO_TYPE_INVALID_0: deleted, used to be GI_INFO_TYPE_ERROR_DOMAIN.
- * @GI_INFO_TYPE_UNION: union, see #GIUnionInfo
- * @GI_INFO_TYPE_VALUE: enum value, see #GIValueInfo
- * @GI_INFO_TYPE_SIGNAL: signal, see #GISignalInfo
- * @GI_INFO_TYPE_VFUNC: virtual function, see #GIVFuncInfo
- * @GI_INFO_TYPE_PROPERTY: GObject property, see #GIPropertyInfo
- * @GI_INFO_TYPE_FIELD: struct or union field, see #GIFieldInfo
- * @GI_INFO_TYPE_ARG: argument of a function or callback, see #GIArgInfo
- * @GI_INFO_TYPE_TYPE: type information, see #GITypeInfo
+ * @GI_INFO_TYPE_FUNCTION: function, see [class@GIRepository.FunctionInfo]
+ * @GI_INFO_TYPE_CALLBACK: callback, see [class@GIRepository.FunctionInfo]
+ * @GI_INFO_TYPE_STRUCT: struct, see [class@GIRepository.StructInfo]
+ * @GI_INFO_TYPE_BOXED: boxed, see [class@GIRepository.StructInfo] or
+ *   [class@GIRepository.UnionInfo]
+ * @GI_INFO_TYPE_ENUM: enum, see [class@GIRepository.EnumInfo]
+ * @GI_INFO_TYPE_FLAGS: flags, see [class@GIRepository.EnumInfo]
+ * @GI_INFO_TYPE_OBJECT: object, see [class@GIRepository.ObjectInfo]
+ * @GI_INFO_TYPE_INTERFACE: interface, see [class@GIRepository.InterfaceInfo]
+ * @GI_INFO_TYPE_CONSTANT: constant, see [class@GIRepository.ConstantInfo]
+ * @GI_INFO_TYPE_INVALID_0: deleted, used to be `GI_INFO_TYPE_ERROR_DOMAIN`.
+ * @GI_INFO_TYPE_UNION: union, see [class@GIRepository.UnionInfo]
+ * @GI_INFO_TYPE_VALUE: enum value, see [class@GIRepository.ValueInfo]
+ * @GI_INFO_TYPE_SIGNAL: signal, see [class@GIRepository.SignalInfo]
+ * @GI_INFO_TYPE_VFUNC: virtual function, see [class@GIRepository.VFuncInfo]
+ * @GI_INFO_TYPE_PROPERTY: [class@GObject.Object] property, see
+ *   [class@GIRepository.PropertyInfo]
+ * @GI_INFO_TYPE_FIELD: struct or union field, see
+ *   [class@GIRepository.FieldInfo]
+ * @GI_INFO_TYPE_ARG: argument of a function or callback, see
+ *   [class@GIRepository.ArgInfo]
+ * @GI_INFO_TYPE_TYPE: type information, see [class@GIRepository.TypeInfo]
  * @GI_INFO_TYPE_UNRESOLVED: unresolved type, a type which is not present in
- *   the typelib, or any of its dependencies.
+ *   the typelib, or any of its dependencies, see
+ *   [class@GIRepository.UnresolvedInfo]
  * @GI_INFO_TYPE_CALLABLE: an abstract type representing any callable (function,
- *   callback, vfunc) (Since: 2.80)
+ *   callback, vfunc), see [class@GIRepository.CallableInfo]
  * @GI_INFO_TYPE_REGISTERED_TYPE: an abstract type representing any registered
- *   type (enum, interface, object, struct, union) (Since: 2.80)
+ *   type (enum, interface, object, struct, union), see
+ *   [class@GIRepository.RegisteredTypeInfo]
  *
- * The type of a GIBaseInfo struct.
+ * The type of a [class@GIRepository.BaseInfo] struct.
+ *
+ * See [const@GIRepository.INFO_TYPE_N_TYPES] for the total number of elements
+ * in this enum.
+ *
+ * Since: 2.80
  */
 typedef enum
 {
@@ -222,30 +235,46 @@ typedef enum
 } GIInfoType;
 
 /**
+ * GI_INFO_TYPE_N_TYPES:
+ *
+ * Number of entries in [enum@GIRepository.InfoType].
+ *
+ * Since: 2.80
+ */
+#define GI_INFO_TYPE_N_TYPES (GI_INFO_TYPE_REGISTERED_TYPE + 1)
+
+/**
  * GITransfer:
- * @GI_TRANSFER_NOTHING: transfer nothing from the callee (function or the type
- * instance the property belongs to) to the caller. The callee retains the
- * ownership of the transfer and the caller doesn't need to do anything to free
- * up the resources of this transfer.
- * @GI_TRANSFER_CONTAINER: transfer the container (list, array, hash table) from
- * the callee to the caller. The callee retains the ownership of the individual
- * items in the container and the caller has to free up the container resources
- * (g_list_free()/g_hash_table_destroy() etc) of this transfer.
- * @GI_TRANSFER_EVERYTHING: transfer everything, eg the container and its
- * contents from the callee to the caller. This is the case when the callee
- * creates a copy of all the data it returns. The caller is responsible for
- * cleaning up the container and item resources of this transfer.
+ * @GI_TRANSFER_NOTHING: Transfer nothing from the callee (function or the type
+ *   instance the property belongs to) to the caller. The callee retains the
+ *   ownership of the transfer and the caller doesn’t need to do anything to
+ *   free up the resources of this transfer.
+ * @GI_TRANSFER_CONTAINER: Transfer the container (list, array, hash table) from
+ *   the callee to the caller. The callee retains the ownership of the
+ *   individual items in the container and the caller has to free up the
+ *   container resources ([func@GLib.List.free],
+ *   [func@GLib.HashTable.destroy], etc) of this transfer.
+ * @GI_TRANSFER_EVERYTHING: Transfer everything, e.g. the container and its
+ *   contents from the callee to the caller. This is the case when the callee
+ *   creates a copy of all the data it returns. The caller is responsible for
+ *   cleaning up the container and item resources of this transfer.
+ *
+ * `GITransfer` specifies who’s responsible for freeing the resources after an
+ * ownership transfer is complete.
  *
  * The transfer is the exchange of data between two parts, from the callee to
- * the caller. The callee is either a function/method/signal or an
- * object/interface where a property is defined. The caller is the side
- * accessing a property or calling a function.
- * #GITransfer specifies who's responsible for freeing the resources after the
- * ownership transfer is complete. In case of a containing type such as a list,
- * an array or a hash table the container itself is specified differently from
- * the items within the container itself. Each container is freed differently,
- * check the documentation for the types themselves for information on how to
- * free them.
+ * the caller.
+ *
+ * The callee is either a function/method/signal or an object/interface where a
+ * property is defined. The caller is the side accessing a property or calling a
+ * function.
+ *
+ * In the case of a containing type such as a list, an array or a hash table the
+ * container itself is specified differently from the items within the
+ * container. Each container is freed differently, check the documentation for
+ * the types themselves for information on how to free them.
+ *
+ * Since: 2.80
  */
 typedef enum {
   GI_TRANSFER_NOTHING,
@@ -255,11 +284,13 @@ typedef enum {
 
 /**
  * GIDirection:
- * @GI_DIRECTION_IN: in argument.
- * @GI_DIRECTION_OUT: out argument.
- * @GI_DIRECTION_INOUT: in and out argument.
+ * @GI_DIRECTION_IN: ‘in’ argument.
+ * @GI_DIRECTION_OUT: ‘out’ argument.
+ * @GI_DIRECTION_INOUT: ‘in and out’ argument.
  *
- * The direction of a #GIArgInfo.
+ * The direction of a [class@GIRepository.ArgInfo].
+ *
+ * Since: 2.80
  */
 typedef enum  {
   GI_DIRECTION_IN,
@@ -270,19 +301,22 @@ typedef enum  {
 /**
  * GIScopeType:
  * @GI_SCOPE_TYPE_INVALID: The argument is not of callback type.
- * @GI_SCOPE_TYPE_CALL: The callback and associated user_data is only
+ * @GI_SCOPE_TYPE_CALL: The callback and associated `user_data` is only
  *   used during the call to this function.
- * @GI_SCOPE_TYPE_ASYNC: The callback and associated user_data is
+ * @GI_SCOPE_TYPE_ASYNC: The callback and associated `user_data` is
  *   only used until the callback is invoked, and the callback.
  *   is invoked always exactly once.
  * @GI_SCOPE_TYPE_NOTIFIED: The callback and associated
- *   user_data is used until the caller is notfied via the destroy_notify.
- * @GI_SCOPE_TYPE_FOREVER: The callback and associated user_data is
+ *   `user_data` is used until the caller is notified via the
+ *   [type@GLib.DestroyNotify].
+ * @GI_SCOPE_TYPE_FOREVER: The callback and associated `user_data` is
  *   used until the process terminates
  *
- * Scope type of a #GIArgInfo representing callback, determines how the
- * callback is invoked and is used to decided when the invoke structs
- * can be freed.
+ * Scope type of a [class@GIRepository.ArgInfo] representing callback,
+ * determines how the callback is invoked and is used to decided when the invoke
+ * structs can be freed.
+ *
+ * Since: 2.80
  */
 typedef enum {
   GI_SCOPE_TYPE_INVALID,
@@ -306,19 +340,21 @@ typedef enum {
  * @GI_TYPE_TAG_UINT64: 64-bit unsigned integer
  * @GI_TYPE_TAG_FLOAT: float
  * @GI_TYPE_TAG_DOUBLE: double floating point
- * @GI_TYPE_TAG_GTYPE: a #GType
+ * @GI_TYPE_TAG_GTYPE: a [type@GObject.Type]
  * @GI_TYPE_TAG_UTF8: a UTF-8 encoded string
  * @GI_TYPE_TAG_FILENAME: a filename, encoded in the same encoding
  *   as the native filesystem is using.
  * @GI_TYPE_TAG_ARRAY: an array
  * @GI_TYPE_TAG_INTERFACE: an extended interface object
- * @GI_TYPE_TAG_GLIST: a #GList
- * @GI_TYPE_TAG_GSLIST: a #GSList
- * @GI_TYPE_TAG_GHASH: a #GHashTable
- * @GI_TYPE_TAG_ERROR: a #GError
+ * @GI_TYPE_TAG_GLIST: a [type@GLib.List]
+ * @GI_TYPE_TAG_GSLIST: a [type@GLib.SList]
+ * @GI_TYPE_TAG_GHASH: a [type@GLib.HashTable]
+ * @GI_TYPE_TAG_ERROR: a [type@GLib.Error]
  * @GI_TYPE_TAG_UNICHAR: Unicode character
  *
- * The type tag of a #GITypeInfo.
+ * The type tag of a [class@GIRepository.TypeInfo].
+ *
+ * Since: 2.80
  */
 typedef enum {
   /* Basic types */
@@ -352,18 +388,22 @@ typedef enum {
 /**
  * GI_TYPE_TAG_N_TYPES:
  *
- * TODO
+ * Number of entries in [enum@GIRepository.TypeTag].
+ *
+ * Since: 2.80
  */
 #define GI_TYPE_TAG_N_TYPES (GI_TYPE_TAG_UNICHAR+1)
 
 /**
  * GIArrayType:
- * @GI_ARRAY_TYPE_C: a C array, char[] for instance
- * @GI_ARRAY_TYPE_ARRAY: a @GArray array
- * @GI_ARRAY_TYPE_PTR_ARRAY: a #GPtrArray array
- * @GI_ARRAY_TYPE_BYTE_ARRAY: a #GByteArray array
+ * @GI_ARRAY_TYPE_C: a C array, `char[]` for instance
+ * @GI_ARRAY_TYPE_ARRAY: a [type@GLib.Array] array
+ * @GI_ARRAY_TYPE_PTR_ARRAY: a [type@GLib.PtrArray] array
+ * @GI_ARRAY_TYPE_BYTE_ARRAY: a [type@GLib.ByteArray] array
  *
- * The type of array in a #GITypeInfo.
+ * The type of array in a [class@GIRepository.TypeInfo].
+ *
+ * Since: 2.80
  */
 typedef enum {
   GI_ARRAY_TYPE_C,
@@ -377,7 +417,9 @@ typedef enum {
  * @GI_FIELD_IS_READABLE: field is readable.
  * @GI_FIELD_IS_WRITABLE: field is writable.
  *
- * Flags for a #GIFieldInfo.
+ * Flags for a [class@GIRepository.FieldInfo].
+ *
+ * Since: 2.80
  */
 
 typedef enum
@@ -391,9 +433,11 @@ typedef enum
  * @GI_VFUNC_MUST_CHAIN_UP: chains up to the parent type
  * @GI_VFUNC_MUST_OVERRIDE: overrides
  * @GI_VFUNC_MUST_NOT_OVERRIDE: does not override
- * @GI_VFUNC_THROWS: Includes a #GError
+ * @GI_VFUNC_THROWS: includes a [type@GLib.Error]
  *
- * Flags of a #GIVFuncInfo struct.
+ * Flags of a [class@GIRepository.VFuncInfo] struct.
+ *
+ * Since: 2.80
  */
 typedef enum
 {
@@ -407,12 +451,14 @@ typedef enum
  * GIFunctionInfoFlags:
  * @GI_FUNCTION_IS_METHOD: is a method.
  * @GI_FUNCTION_IS_CONSTRUCTOR: is a constructor.
- * @GI_FUNCTION_IS_GETTER: is a getter of a #GIPropertyInfo.
- * @GI_FUNCTION_IS_SETTER: is a setter of a #GIPropertyInfo.
+ * @GI_FUNCTION_IS_GETTER: is a getter of a [class@GIRepository.PropertyInfo].
+ * @GI_FUNCTION_IS_SETTER: is a setter of a [class@GIRepository.PropertyInfo].
  * @GI_FUNCTION_WRAPS_VFUNC: represents a virtual function.
  * @GI_FUNCTION_THROWS: the function may throw an error.
  *
- * Flags for a #GIFunctionInfo struct.
+ * Flags for a [class@GIRepository.FunctionInfo] struct.
+ *
+ * Since: 2.80
  */
 typedef enum
 {

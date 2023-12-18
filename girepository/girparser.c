@@ -3674,15 +3674,17 @@ cleanup (GMarkupParseContext *context,
  * gi_ir_parser_parse_string:
  * @parser: a #GIIrParser
  * @namespace: the namespace of the string
- * @filename: (allow-none): Path to parsed file, or %NULL
- * @buffer: the data containing the XML
- * @length: length of the data
- * @error: return location for a #GError, or %NULL
+ * @filename: (nullable) (type filename): Path to parsed file, or `NULL`
+ * @buffer: (array length=length): the data containing the XML
+ * @length: length of the data, in bytes
+ * @error: return location for a [type@GLib.Error], or `NULL`
  *
  * Parse a string that holds a complete GIR XML file, and return a list of a
- * a #GirModule for each &lt;namespace/&gt; element within the file.
+ * a [class@GIRepository.IrModule] for each `<namespace/>` element within the
+ * file.
  *
- * Returns: (transfer none): a new #GirModule
+ * Returns: (transfer none): a new [class@GIRepository.IrModule]
+ * Since: 2.80
  */
 GIIrModule *
 gi_ir_parser_parse_string (GIIrParser   *parser,
@@ -3757,14 +3759,17 @@ gi_ir_parser_parse_string (GIIrParser   *parser,
 /**
  * gi_ir_parser_parse_file:
  * @parser: a #GIIrParser
- * @filename: filename to parse
- * @error: return location for a #GError, or %NULL
+ * @filename: (type filename): filename to parse
+ * @error: return location for a [type@GLib.Error], or `NULL`
  *
- * Parse GIR XML file, and return a list of a a #GirModule for each
- * &lt;namespace/&gt; element within the file.
+ * Parse the given GIR XML file, and return a list of a
+ * [class@GIRepository.IrModule] for each `<namespace/>` element within the
+ * file.
  *
- * Returns: (transfer container): a newly allocated list of #GIIrModule. The modules themselves
- *  are owned by the #GIIrParser and will be freed along with the parser.
+ * Returns: (transfer container): a newly allocated list of
+ *   [class@GIRepository.IrModule]s. The modules themselves
+ *   are owned by the `GIIrParser` and will be freed along with the parser.
+ * Since: 2.80
  */
 GIIrModule *
 gi_ir_parser_parse_file (GIIrParser   *parser,

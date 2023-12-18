@@ -33,10 +33,15 @@
 
 /**
  * value_to_ffi_type:
- * @gvalue: TODO
- * @value: TODO
+ * @gvalue: (transfer none): a [type@GObject.Value] to convert
+ * @value: (out caller-allocates): return location for the ffi data
  *
- * TODO
+ * Convert @gvalue to a format suitable for passing to ffi.
+ *
+ * @value is only valid as long as @gvalue is alive.
+ *
+ * Returns: pointer to the `ffi_type` associated with @value
+ * Since: 2.80
  */
 static ffi_type *
 value_to_ffi_type (const GValue *gvalue, gpointer *value)
@@ -101,11 +106,18 @@ value_to_ffi_type (const GValue *gvalue, gpointer *value)
 
 /**
  * g_value_to_ffi_return_type:
- * @gvalue: TODO
- * @ffi_value: TODO
- * @value: TODO
+ * @gvalue: (transfer none): a [type@GObject.Value] to convert
+ * @ffi_value: (transfer none): a [type@GIRepository.Argument] containing the
+ *   data to use
+ * @value: (out caller-allocates): return location for the ffi data
  *
- * TODO
+ * Convert @ffi_value to a format suitable for passing to ffi, using the type
+ * data from @gvalue.
+ *
+ * @value is only valid as long as @gvalue and @ffi_value are alive.
+ *
+ * Returns: pointer to the `ffi_type` associated with @value
+ * Since: 2.80
  */
 static ffi_type *
 g_value_to_ffi_return_type (const GValue *gvalue,
@@ -172,10 +184,15 @@ g_value_to_ffi_return_type (const GValue *gvalue,
 
 /**
  * g_value_from_ffi_value:
- * @gvalue: TODO
- * @value: TODO
+ * @gvalue: (inout): a [type@GObject.Value] to set
+ * @value: (transfer none): ffi data to convert
  *
- * TODO
+ * Convert @value to a [type@GObject.Value] according to the type already set
+ * on @gvalue.
+ *
+ * @gvalue is valid even after @value is finalised.
+ *
+ * Since: 2.80
  */
 static void
 g_value_from_ffi_value (GValue           *gvalue,
@@ -236,14 +253,19 @@ g_value_from_ffi_value (GValue           *gvalue,
 
 /**
  * gi_cclosure_marshal_generic: (skip)
- * @closure: TODO
- * @return_gvalue: TODO
- * @n_param_values: TODO
- * @param_values: TODO
- * @invocation_hint: TODO
- * @marshal_data: TODO
+ * @closure: a [type@GObject.Closure]
+ * @return_gvalue: (optional) (out caller-allocates): return location for the
+ *   return value from the closure, or `NULL` to ignore
+ * @n_param_values: number of param values
+ * @param_values: (array length=n_param_values): values to pass to the closure
+ *   parameters
+ * @invocation_hint: invocation hint
+ * @marshal_data: marshal data
  *
- * TODO
+ * A generic C closure marshal function using ffi and
+ * [type@GIRepository.Argument].
+ *
+ * Since: 2.80
  */
 void
 gi_cclosure_marshal_generic (GClosure *closure,

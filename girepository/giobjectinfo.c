@@ -33,20 +33,20 @@
 #include "giobjectinfo.h"
 
 /**
- * SECTION:giobjectinfo
- * @title: GIObjectInfo
- * @short_description: Struct representing a classed type
+ * GIObjectInfo:
  *
- * GIObjectInfo represents a classed type.
+ * `GIObjectInfo` represents a classed type.
  *
- * Classed types in GType inherit from #GTypeInstance; the most common
- * type is #GObject.
+ * Classed types in [type@GObject.Type] inherit from
+ * [type@GObject.TypeInstance]; the most common type is [class@GObject.Object].
  *
- * A GIObjectInfo doesn't represent a specific instance of a classed type,
- * instead this represent the object type (eg class).
+ * A `GIObjectInfo` doesn’t represent a specific instance of a classed type,
+ * instead this represent the object type (i.e. the class).
  *
- * A GIObjectInfo has methods, fields, properties, signals, interfaces,
+ * A `GIObjectInfo` has methods, fields, properties, signals, interfaces,
  * constants and virtual functions.
+ *
+ * Since: 2.80
  */
 
 /**
@@ -56,7 +56,8 @@
  *
  * Obtain the offset of the specified field.
  *
- * Returns: field offset in bytes
+ * Returns: field offset, in bytes
+ * Since: 2.80
  */
 static gint32
 gi_object_info_get_field_offset (GIObjectInfo *info,
@@ -88,8 +89,9 @@ gi_object_info_get_field_offset (GIObjectInfo *info,
  *
  * Obtain the parent of the object type.
  *
- * Returns: (transfer full) (nullable): the #GIObjectInfo. Free the struct by calling
- * gi_base_info_unref() when done.
+ * Returns: (transfer full) (nullable): The `GIObjectInfo`. Free the struct by
+ *   calling [method@GIRepository.BaseInfo.unref] when done.
+ * Since: 2.80
  */
 GIObjectInfo *
 gi_object_info_get_parent (GIObjectInfo *info)
@@ -113,10 +115,11 @@ gi_object_info_get_parent (GIObjectInfo *info)
  * gi_object_info_get_abstract:
  * @info: a #GIObjectInfo
  *
- * Obtain if the object type is an abstract type, eg if it cannot be
- * instantiated
+ * Obtain if the object type is an abstract type, i.e. if it cannot be
+ * instantiated.
  *
- * Returns: %TRUE if the object type is abstract
+ * Returns: `TRUE` if the object type is abstract
+ * Since: 2.80
  */
 gboolean
 gi_object_info_get_abstract (GIObjectInfo *info)
@@ -137,10 +140,9 @@ gi_object_info_get_abstract (GIObjectInfo *info)
  * @info: a #GIObjectInfo
  *
  * Checks whether the object type is a final type, i.e. if it cannot
- * be derived
+ * be derived.
  *
- * Returns: %TRUE if the object type is final
- *
+ * Returns: `TRUE` if the object type is final
  * Since: 2.80
  */
 gboolean
@@ -162,9 +164,12 @@ gi_object_info_get_final (GIObjectInfo *info)
  * @info: a #GIObjectInfo
  *
  * Obtain if the object type is of a fundamental type which is not
- * G_TYPE_OBJECT. This is mostly for supporting GstMiniObject.
+ * `G_TYPE_OBJECT`.
  *
- * Returns: %TRUE if the object type is a fundamental type
+ * This is mostly for supporting `GstMiniObject`.
+ *
+ * Returns: `TRUE` if the object type is a fundamental type
+ * Since: 2.80
  */
 gboolean
 gi_object_info_get_fundamental (GIObjectInfo *info)
@@ -184,9 +189,10 @@ gi_object_info_get_fundamental (GIObjectInfo *info)
  * gi_object_info_get_type_name:
  * @info: a #GIObjectInfo
  *
- * Obtain the name of the objects class/type.
+ * Obtain the name of the object’s class/type.
  *
- * Returns: name of the objects type
+ * Returns: name of the object’s type
+ * Since: 2.80
  */
 const gchar *
 gi_object_info_get_type_name (GIObjectInfo *info)
@@ -206,10 +212,11 @@ gi_object_info_get_type_name (GIObjectInfo *info)
  * gi_object_info_get_type_init_function_name:
  * @info: a #GIObjectInfo
  *
- * Obtain the function which when called will return the GType
- * function for which this object type is registered.
+ * Obtain the name of the function which, when called, will return the
+ * [type@GObject.Type] for this object type.
  *
- * Returns: the type init function
+ * Returns: the type init function name
+ * Since: 2.80
  */
 const gchar *
 gi_object_info_get_type_init_function_name (GIObjectInfo *info)
@@ -232,6 +239,7 @@ gi_object_info_get_type_init_function_name (GIObjectInfo *info)
  * Obtain the number of interfaces that this object type has.
  *
  * Returns: number of interfaces
+ * Since: 2.80
  */
 guint
 gi_object_info_get_n_interfaces (GIObjectInfo *info)
@@ -254,8 +262,9 @@ gi_object_info_get_n_interfaces (GIObjectInfo *info)
  *
  * Obtain an object type interface at index @n.
  *
- * Returns: (transfer full): the #GIInterfaceInfo. Free the struct by calling
- *   gi_base_info_unref() when done.
+ * Returns: (transfer full): The [class@GIRepository.InterfaceInfo]. Free the
+ *   struct by calling [method@GIRepository.BaseInfo.unref] when done.
+ * Since: 2.80
  */
 GIInterfaceInfo *
 gi_object_info_get_interface (GIObjectInfo *info,
@@ -280,6 +289,7 @@ gi_object_info_get_interface (GIObjectInfo *info,
  * Obtain the number of fields that this object type has.
  *
  * Returns: number of fields
+ * Since: 2.80
  */
 guint
 gi_object_info_get_n_fields (GIObjectInfo *info)
@@ -302,8 +312,9 @@ gi_object_info_get_n_fields (GIObjectInfo *info)
  *
  * Obtain an object type field at index @n.
  *
- * Returns: (transfer full): the #GIFieldInfo. Free the struct by calling
- *   gi_base_info_unref() when done.
+ * Returns: (transfer full): The [class@GIRepository.FieldInfo]. Free the struct
+ *   by calling [method@GIRepository.BaseInfo.unref] when done.
+ * Since: 2.80
  */
 GIFieldInfo *
 gi_object_info_get_field (GIObjectInfo *info,
@@ -327,6 +338,7 @@ gi_object_info_get_field (GIObjectInfo *info,
  * Obtain the number of properties that this object type has.
  *
  * Returns: number of properties
+ * Since: 2.80
  */
 guint
 gi_object_info_get_n_properties (GIObjectInfo *info)
@@ -348,8 +360,9 @@ gi_object_info_get_n_properties (GIObjectInfo *info)
  *
  * Obtain an object type property at index @n.
  *
- * Returns: (transfer full): the #GIPropertyInfo. Free the struct by calling
- *   gi_base_info_unref() when done.
+ * Returns: (transfer full): The [class@GIRepository.PropertyInfo]. Free the
+ *   struct by calling [method@GIRepository.BaseInfo.unref] when done.
+ * Since: 2.80
  */
 GIPropertyInfo *
 gi_object_info_get_property (GIObjectInfo *info,
@@ -383,6 +396,7 @@ gi_object_info_get_property (GIObjectInfo *info,
  * Obtain the number of methods that this object type has.
  *
  * Returns: number of methods
+ * Since: 2.80
  */
 guint
 gi_object_info_get_n_methods (GIObjectInfo *info)
@@ -405,8 +419,9 @@ gi_object_info_get_n_methods (GIObjectInfo *info)
  *
  * Obtain an object type method at index @n.
  *
- * Returns: (transfer full): the #GIFunctionInfo. Free the struct by calling
- *   gi_base_info_unref() when done.
+ * Returns: (transfer full): The [class@GIRepository.FunctionInfo]. Free the
+ *   struct by calling [method@GIRepository.BaseInfo.unref] when done.
+ * Since: 2.80
  */
 GIFunctionInfo *
 gi_object_info_get_method (GIObjectInfo *info,
@@ -440,11 +455,14 @@ gi_object_info_get_method (GIObjectInfo *info,
  * @info: a #GIObjectInfo
  * @name: name of method to obtain
  *
- * Obtain a method of the object type given a @name. %NULL will be
- * returned if there's no method available with that name.
+ * Obtain a method of the object type given a @name.
  *
- * Returns: (transfer full) (nullable): the #GIFunctionInfo. Free the struct by calling
- *   gi_base_info_unref() when done.
+ * `NULL` will be returned if there’s no method available with that name.
+ *
+ * Returns: (transfer full) (nullable): The [class@GIRepository.FunctionInfo],
+ *   or `NULL` if no method could be found. Free the struct by calling
+ *   [method@GIRepository.BaseInfo.unref] when done.
+ * Since: 2.80
  */
 GIFunctionInfo *
 gi_object_info_find_method (GIObjectInfo *info,
@@ -474,17 +492,22 @@ gi_object_info_find_method (GIObjectInfo *info,
  * gi_object_info_find_method_using_interfaces:
  * @info: a #GIObjectInfo
  * @name: name of method to obtain
- * @implementor: (out) (transfer full): The implementor of the interface
+ * @implementor: (out) (transfer full) (optional) (nullable): The implementor of
+ *   the interface, or `NULL` to ignore. If no method is found, this will return
+ *   `NULL`.
  *
  * Obtain a method of the object given a @name, searching both the
- * object @info and any interfaces it implements.  %NULL will be
- * returned if there's no method available with that name.
+ * object @info and any interfaces it implements.
+ *
+ * `NULL` will be returned if there’s no method available with that name.
  *
  * Note that this function does *not* search parent classes; you will have
- * to chain up if that's desired.
+ * to chain up if that’s desired.
  *
- * Returns: (transfer full) (nullable): the #GIFunctionInfo. Free the struct by calling
- *   gi_base_info_unref() when done.
+ * Returns: (transfer full) (nullable): The [class@GIRepository.FunctionInfo],
+ *   or `NULL` if none was found. Free the struct by calling
+ *   [method@GIRepository.BaseInfo.unref] when done.
+ * Since: 2.80
  */
 GIFunctionInfo *
 gi_object_info_find_method_using_interfaces (GIObjectInfo  *info,
@@ -534,6 +557,7 @@ gi_object_info_find_method_using_interfaces (GIObjectInfo  *info,
  * Obtain the number of signals that this object type has.
  *
  * Returns: number of signals
+ * Since: 2.80
  */
 guint
 gi_object_info_get_n_signals (GIObjectInfo *info)
@@ -556,8 +580,9 @@ gi_object_info_get_n_signals (GIObjectInfo *info)
  *
  * Obtain an object type signal at index @n.
  *
- * Returns: (transfer full): the #GISignalInfo. Free the struct by calling
- *   gi_base_info_unref() when done.
+ * Returns: (transfer full): The [class@GIRepository.SignalInfo]. Free the
+ *   struct by calling [method@GIRepository.BaseInfo.unref] when done.
+ * Since: 2.80
  */
 GISignalInfo *
 gi_object_info_get_signal (GIObjectInfo *info,
@@ -589,11 +614,16 @@ gi_object_info_get_signal (GIObjectInfo *info,
 /**
  * gi_object_info_find_signal:
  * @info: a #GIObjectInfo
- * @name: Name of signal
+ * @name: name of signal
  *
- * TODO
+ * Obtain a signal of the object type given a @name.
  *
- * Returns: (transfer full) (nullable): Info for the signal with name @name in @info, or %NULL on failure.
+ * `NULL` will be returned if there’s no signal available with that name.
+ *
+ * Returns: (transfer full) (nullable): The [class@GIRepository.SignalInfo],
+ *   or `NULL` if no signal could be found. Free the struct by calling
+ *   [method@GIRepository.BaseInfo.unref] when done.
+ * Since: 2.80
  */
 GISignalInfo *
 gi_object_info_find_signal (GIObjectInfo *info,
@@ -625,6 +655,7 @@ gi_object_info_find_signal (GIObjectInfo *info,
  * Obtain the number of virtual functions that this object type has.
  *
  * Returns: number of virtual functions
+ * Since: 2.80
  */
 guint
 gi_object_info_get_n_vfuncs (GIObjectInfo *info)
@@ -647,8 +678,9 @@ gi_object_info_get_n_vfuncs (GIObjectInfo *info)
  *
  * Obtain an object type virtual function at index @n.
  *
- * Returns: (transfer full): the #GIVFuncInfo. Free the struct by calling
- *   gi_base_info_unref() when done.
+ * Returns: (transfer full): The [class@GIRepository.VFuncInfo]. Free the struct
+ *   by calling [method@GIRepository.BaseInfo.unref] when done.
+ * Since: 2.80
  */
 GIVFuncInfo *
 gi_object_info_get_vfunc (GIObjectInfo *info,
@@ -681,18 +713,22 @@ gi_object_info_get_vfunc (GIObjectInfo *info,
 /**
  * gi_object_info_find_vfunc:
  * @info: a #GIObjectInfo
- * @name: The name of a virtual function to find.
+ * @name: the name of a virtual function to find.
  *
- * Locate a virtual function slot with name @name. Note that the namespace
- * for virtuals is distinct from that of methods; there may or may not be
- * a concrete method associated for a virtual. If there is one, it may
- * be retrieved using gi_vfunc_info_get_invoker(), otherwise %NULL will be
- * returned.
- * See the documentation for gi_vfunc_info_get_invoker() for more
- * information on invoking virtuals.
+ * Locate a virtual function slot with name @name.
  *
- * Returns: (transfer full) (nullable): the #GIVFuncInfo, or %NULL. Free it with
- *   gi_base_info_unref() when done.
+ * Note that the namespace for virtuals is distinct from that of methods; there
+ * may or may not be a concrete method associated for a virtual. If there is
+ * one, it may be retrieved using [method@GIRepository.VFuncInfo.get_invoker],
+ * otherwise that method will return `NULL`.
+ *
+ * See the documentation for [method@GIRepository.VFuncInfo.get_invoker] for
+ * more information on invoking virtuals.
+ *
+ * Returns: (transfer full) (nullable): The [class@GIRepository.VFuncInfo], or
+ *   `NULL` if none is found. Free it with [method@GIRepository.BaseInfo.unref]
+ *   when done.
+ * Since: 2.80
  */
 GIVFuncInfo *
 gi_object_info_find_vfunc (GIObjectInfo *info,
@@ -724,20 +760,27 @@ gi_object_info_find_vfunc (GIObjectInfo *info,
  * gi_object_info_find_vfunc_using_interfaces:
  * @info: a #GIObjectInfo
  * @name: name of vfunc to obtain
- * @implementor: (out) (transfer full): The implementor of the interface
+ * @implementor: (out) (transfer full) (optional) (nullable): The implementor of
+ *   the interface, or `NULL` to ignore. If no vfunc is found, this will return
+ *   `NULL`.
  *
  * Locate a virtual function slot with name @name, searching both the object
- * @info and any interfaces it implements.  Note that the namespace for
- * virtuals is distinct from that of methods; there may or may not be a
- * concrete method associated for a virtual. If there is one, it may be
- * retrieved using gi_vfunc_info_get_invoker(), otherwise %NULL will be
- * returned.
+ * @info and any interfaces it implements.
+ *
+ * `NULL` will be returned if there’s no vfunc available with that name.
+ *
+ * Note that the namespace for virtuals is distinct from that of methods; there
+ * may or may not be a concrete method associated for a virtual. If there is
+ * one, it may be retrieved using [method@GIRepository.VFuncInfo.get_invoker],
+ * otherwise that method will return `NULL`.
  *
  * Note that this function does *not* search parent classes; you will have
- * to chain up if that's desired.
+ * to chain up if that’s desired.
  *
- * Returns: (transfer full) (nullable): the #GIVFuncInfo. Free the struct by calling
- *   gi_base_info_unref() when done.
+ * Returns: (transfer full) (nullable): The [class@GIRepository.VFuncInfo],
+ *   or `NULL` if none was found. Free the struct by calling
+ *   [method@GIRepository.BaseInfo.unref] when done.
+ * Since: 2.80
  */
 GIVFuncInfo *
 gi_object_info_find_vfunc_using_interfaces (GIObjectInfo  *info,
@@ -787,6 +830,7 @@ gi_object_info_find_vfunc_using_interfaces (GIObjectInfo  *info,
  * Obtain the number of constants that this object type has.
  *
  * Returns: number of constants
+ * Since: 2.80
  */
 guint
 gi_object_info_get_n_constants (GIObjectInfo *info)
@@ -809,8 +853,9 @@ gi_object_info_get_n_constants (GIObjectInfo *info)
  *
  * Obtain an object type constant at index @n.
  *
- * Returns: (transfer full): the #GIConstantInfo. Free the struct by calling
- *   gi_base_info_unref() when done.
+ * Returns: (transfer full): The [class@GIRepository.ConstantInfo]. Free the
+ *   struct by calling [method@GIRepository.BaseInfo.unref] when done.
+ * Since: 2.80
  */
 GIConstantInfo *
 gi_object_info_get_constant (GIObjectInfo *info,
@@ -845,11 +890,13 @@ gi_object_info_get_constant (GIObjectInfo *info,
  * gi_object_info_get_class_struct:
  * @info: a #GIObjectInfo
  *
- * Every #GObject has two structures; an instance structure and a class
- * structure.  This function returns the metadata for the class structure.
+ * Every [class@GObject.Object] has two structures; an instance structure and a
+ * class structure.  This function returns the metadata for the class structure.
  *
- * Returns: (transfer full) (nullable): the #GIStructInfo or %NULL. Free with
- *   gi_base_info_unref() when done.
+ * Returns: (transfer full) (nullable): The [class@GIRepository.StructInfo] or
+ *   `NULL` if it’s unknown. Free with [method@GIRepository.BaseInfo.unref] when
+ *   done.
+ * Since: 2.80
  */
 GIStructInfo *
 gi_object_info_get_class_struct (GIObjectInfo *info)
@@ -908,11 +955,16 @@ _get_func(GIObjectInfo *info,
  * @info: a #GIObjectInfo
  *
  * Obtain the symbol name of the function that should be called to ref this
- * object type. It's mainly used fundamental types. The type signature for
- * the symbol is %GIObjectInfoRefFunction, to fetch the function pointer
- * see gi_object_info_get_ref_function_name().
+ * object type.
  *
- * Returns: (nullable): the symbol or %NULL
+ * It’s mainly used for fundamental types. The type signature for
+ * the symbol is [type@GIRepository.ObjectInfoRefFunction]. To fetch the
+ * function pointer see
+ * [method@GIRepository.ObjectInfo.get_ref_function_pointer].
+ *
+ * Returns: (nullable): the symbol, or `NULL` if the object type has no ref
+ *   function
+ * Since: 2.80
  */
 const char *
 gi_object_info_get_ref_function_name (GIObjectInfo *info)
@@ -937,10 +989,13 @@ gi_object_info_get_ref_function_name (GIObjectInfo *info)
  *
  * Obtain a pointer to a function which can be used to
  * increase the reference count an instance of this object type.
+ *
  * This takes derivation into account and will reversely traverse
  * the base classes of this type, starting at the top type.
  *
- * Returns: (nullable): the function pointer or %NULL
+ * Returns: (nullable): the function pointer, or `NULL` if the object type has
+ *   no ref function
+ * Since: 2.80
  */
 GIObjectInfoRefFunction
 gi_object_info_get_ref_function_pointer (GIObjectInfo *info)
@@ -956,11 +1011,15 @@ gi_object_info_get_ref_function_pointer (GIObjectInfo *info)
  * @info: a #GIObjectInfo
  *
  * Obtain the symbol name of the function that should be called to unref this
- * object type. It's mainly used fundamental types. The type signature for
- * the symbol is %GIObjectInfoUnrefFunction, to fetch the function pointer
- * see gi_object_info_get_unref_function_name().
+ * object type.
  *
- * Returns: (nullable): the symbol or %NULL
+ * It’s mainly used for fundamental types. The type signature for the symbol is
+ * [type@GIRepository.ObjectInfoUnrefFunction]. To fetch the function pointer
+ * see [method@GIRepository.ObjectInfo.get_unref_function_pointer].
+ *
+ * Returns: (nullable): the symbol, or `NULL` if the object type has no unref
+ *   function
+ * Since: 2.80
  */
 const char *
 gi_object_info_get_unref_function_name (GIObjectInfo *info)
@@ -985,10 +1044,13 @@ gi_object_info_get_unref_function_name (GIObjectInfo *info)
  *
  * Obtain a pointer to a function which can be used to
  * decrease the reference count an instance of this object type.
+ *
  * This takes derivation into account and will reversely traverse
  * the base classes of this type, starting at the top type.
  *
- * Returns: (nullable): the function pointer or %NULL
+ * Returns: (nullable): the function pointer, or `NULL` if the object type has
+ *   no unref function
+ * Since: 2.80
  */
 GIObjectInfoUnrefFunction
 gi_object_info_get_unref_function_pointer (GIObjectInfo *info)
@@ -1003,13 +1065,16 @@ gi_object_info_get_unref_function_pointer (GIObjectInfo *info)
  * gi_object_info_get_set_value_function_name:
  * @info: a #GIObjectInfo
  *
- * Obtain the symbol name of the function that should be called to convert
- * set a GValue giving an object instance pointer of this object type.
- * I's mainly used fundamental types. The type signature for the symbol
- * is %GIObjectInfoSetValueFunction, to fetch the function pointer
- * see gi_object_info_get_set_value_function_name().
+ * Obtain the symbol name of the function that should be called to set a
+ * [type@GObject.Value], given an object instance pointer of this object type.
  *
- * Returns: (nullable): the symbol or %NULL
+ * It’s mainly used for fundamental types. The type signature for the symbol
+ * is [type@GIRepository.ObjectInfoSetValueFunction]. To fetch the function
+ * pointer see [method@GIRepository.ObjectInfo.get_set_value_function_pointer].
+ *
+ * Returns: (nullable): the symbol, or `NULL` if the object type has no
+ *   set-value function
+ * Since: 2.80
  */
 const char *
 gi_object_info_get_set_value_function_name (GIObjectInfo *info)
@@ -1032,12 +1097,15 @@ gi_object_info_get_set_value_function_name (GIObjectInfo *info)
  * gi_object_info_get_set_value_function_pointer: (skip)
  * @info: a #GIObjectInfo
  *
- * Obtain a pointer to a function which can be used to
- * set a GValue given an instance of this object type.
+ * Obtain a pointer to a function which can be used to set a
+ * [type@GObject.Value], given an instance of this object type.
+ *
  * This takes derivation into account and will reversely traverse
  * the base classes of this type, starting at the top type.
  *
- * Returns: (nullable): the function pointer or %NULL
+ * Returns: (nullable): the function pointer, or `NULL` if the object type has
+ *   no set-value function
+ * Since: 2.80
  */
 GIObjectInfoSetValueFunction
 gi_object_info_get_set_value_function_pointer (GIObjectInfo *info)
@@ -1053,12 +1121,15 @@ gi_object_info_get_set_value_function_pointer (GIObjectInfo *info)
  * @info: a #GIObjectInfo
  *
  * Obtain the symbol name of the function that should be called to convert
- * an object instance pointer of this object type to a GValue.
- * I's mainly used fundamental types. The type signature for the symbol
- * is %GIObjectInfoGetValueFunction, to fetch the function pointer
- * see gi_object_info_get_get_value_function_name().
+ * an object instance pointer of this object type to a [type@GObject.Value].
  *
- * Returns: (nullable): the symbol or %NULL
+ * It’s mainly used for fundamental types. The type signature for the symbol
+ * is [type@GIRepository.ObjectInfoGetValueFunction]. To fetch the function
+ * pointer see [method@GIRepository.ObjectInfo.get_get_value_function_pointer].
+ *
+ * Returns: (nullable): the symbol, or `NULL` if the object type has no
+ *   get-value function
+ * Since: 2.80
  */
 const char *
 gi_object_info_get_get_value_function_name (GIObjectInfo *info)
@@ -1081,12 +1152,15 @@ gi_object_info_get_get_value_function_name (GIObjectInfo *info)
  * gi_object_info_get_get_value_function_pointer: (skip)
  * @info: a #GIObjectInfo
  *
- * Obtain a pointer to a function which can be used to
- * extract an instance of this object type out of a GValue.
+ * Obtain a pointer to a function which can be used to extract an instance of
+ * this object type out of a [type@GObject.Value].
+ *
  * This takes derivation into account and will reversely traverse
  * the base classes of this type, starting at the top type.
  *
- * Returns: (nullable): the function pointer or %NULL
+ * Returns: (nullable): the function pointer, or `NULL` if the object type has
+ *   no get-value function
+ * Since: 2.80
  */
 GIObjectInfoGetValueFunction
 gi_object_info_get_get_value_function_pointer (GIObjectInfo *info)

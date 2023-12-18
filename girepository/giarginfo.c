@@ -35,23 +35,24 @@
 /* GIArgInfo functions */
 
 /**
- * SECTION:giarginfo
- * @title: GIArgInfo
- * @short_description: Struct representing an argument
+ * GIArgInfo:
  *
- * GIArgInfo represents an argument of a callable.
+ * `GIArgInfo` represents an argument of a callable.
  *
- * An argument is always part of a #GICallableInfo.
+ * An argument is always part of a [class@GIRepository.CallableInfo].
+ *
+ * Since: 2.80
  */
 
 /**
  * gi_arg_info_get_direction:
  * @info: a #GIArgInfo
  *
- * Obtain the direction of the argument. Check #GIDirection for possible
- * direction values.
+ * Obtain the direction of the argument. Check [type@GIRepository.Direction]
+ * for possible direction values.
  *
- * Returns: the direction
+ * Returns: The direction
+ * Since: 2.80
  */
 GIDirection
 gi_arg_info_get_direction (GIArgInfo *info)
@@ -79,7 +80,8 @@ gi_arg_info_get_direction (GIArgInfo *info)
  * Obtain if the argument is a return value. It can either be a
  * parameter or a return value.
  *
- * Returns: %TRUE if it is a return value
+ * Returns: `TRUE` if it is a return value
+ * Since: 2.80
  */
 gboolean
 gi_arg_info_is_return_value (GIArgInfo *info)
@@ -100,11 +102,14 @@ gi_arg_info_is_return_value (GIArgInfo *info)
  * @info: a #GIArgInfo
  *
  * Obtain if the argument is a pointer to a struct or object that will
- * receive an output of a function.  The default assumption for
- * %GI_DIRECTION_OUT arguments which have allocation is that the
- * callee allocates; if this is %TRUE, then the caller must allocate.
+ * receive an output of a function.
  *
- * Returns: %TRUE if caller is required to have allocated the argument
+ * The default assumption for `GI_DIRECTION_OUT` arguments which have allocation
+ * is that the callee allocates; if this is `TRUE`, then the caller must
+ * allocate.
+ *
+ * Returns: `TRUE` if caller is required to have allocated the argument
+ * Since: 2.80
  */
 gboolean
 gi_arg_info_is_caller_allocates (GIArgInfo *info)
@@ -124,10 +129,13 @@ gi_arg_info_is_caller_allocates (GIArgInfo *info)
  * gi_arg_info_is_optional:
  * @info: a #GIArgInfo
  *
- * Obtain if the argument is optional.  For 'out' arguments this means
- * that you can pass %NULL in order to ignore the result.
+ * Obtain if the argument is optional.
  *
- * Returns: %TRUE if it is an optional argument
+ * For ‘out’ arguments this means that you can pass `NULL` in order to ignore
+ * the result.
+ *
+ * Returns: `TRUE` if it is an optional argument
+ * Since: 2.80
  */
 gboolean
 gi_arg_info_is_optional (GIArgInfo *info)
@@ -147,13 +155,15 @@ gi_arg_info_is_optional (GIArgInfo *info)
  * gi_arg_info_may_be_null:
  * @info: a #GIArgInfo
  *
- * Obtain if the type of the argument includes the possibility of %NULL.
- * For 'in' values this means that %NULL is a valid value.  For 'out'
- * values, this means that %NULL may be returned.
+ * Obtain if the type of the argument includes the possibility of `NULL`.
  *
- * See also gi_arg_info_is_optional().
+ * For ‘in’ values this means that `NULL` is a valid value.  For ‘out’
+ * values, this means that `NULL` may be returned.
  *
- * Returns: %TRUE if the value may be %NULL
+ * See also [method@GIRepository.ArgInfo.is_optional].
+ *
+ * Returns: `TRUE` if the value may be `NULL`
+ * Since: 2.80
  */
 gboolean
 gi_arg_info_may_be_null (GIArgInfo *info)
@@ -175,7 +185,7 @@ gi_arg_info_may_be_null (GIArgInfo *info)
  *
  * Obtain if an argument is only useful in C.
  *
- * Returns: %TRUE if argument is only useful in C.
+ * Returns: `TRUE` if argument is only useful in C.
  * Since: 2.80
  */
 gboolean
@@ -197,9 +207,10 @@ gi_arg_info_is_skip (GIArgInfo *info)
  * @info: a #GIArgInfo
  *
  * Obtain the ownership transfer for this argument.
- * #GITransfer contains a list of possible values.
+ * [type@GIRepository.Transfer] contains a list of possible values.
  *
- * Returns: the transfer
+ * Returns: The transfer
+ * Since: 2.80
  */
 GITransfer
 gi_arg_info_get_ownership_transfer (GIArgInfo *info)
@@ -224,12 +235,15 @@ gi_arg_info_get_ownership_transfer (GIArgInfo *info)
  * gi_arg_info_get_scope:
  * @info: a #GIArgInfo
  *
- * Obtain the scope type for this argument. The scope type explains
- * how a callback is going to be invoked, most importantly when
- * the resources required to invoke it can be freed.
- * #GIScopeType contains a list of possible values.
+ * Obtain the scope type for this argument.
  *
- * Returns: the scope type
+ * The scope type explains how a callback is going to be invoked, most
+ * importantly when the resources required to invoke it can be freed.
+ *
+ * [type@GIRepository.ScopeType] contains a list of possible values.
+ *
+ * Returns: The scope type
+ * Since: 2.80
  */
 GIScopeType
 gi_arg_info_get_scope (GIArgInfo *info)
@@ -252,7 +266,8 @@ gi_arg_info_get_scope (GIArgInfo *info)
  * Obtain the index of the user data argument. This is only valid
  * for arguments which are callbacks.
  *
- * Returns: index of the user data argument or -1 if there is none
+ * Returns: Index of the user data argument or `-1` if there is none
+ * Since: 2.80
  */
 gint
 gi_arg_info_get_closure_index (GIArgInfo *info)
@@ -272,10 +287,12 @@ gi_arg_info_get_closure_index (GIArgInfo *info)
  * gi_arg_info_get_destroy_index:
  * @info: a #GIArgInfo
  *
- * Obtains the index of the #GDestroyNotify argument. This is only valid
- * for arguments which are callbacks.
+ * Obtains the index of the [type@GLib.DestroyNotify] argument. This is only
+ * valid for arguments which are callbacks.
  *
- * Returns: index of the #GDestroyNotify argument or -1 if there is none
+ * Returns: Index of the [type@GLib.DestroyNotify] argument or `-1` if there is
+ *   none
+ * Since: 2.80
  */
 gint
 gi_arg_info_get_destroy_index (GIArgInfo *info)
@@ -297,9 +314,10 @@ gi_arg_info_get_destroy_index (GIArgInfo *info)
  *
  * Obtain the type information for @info.
  *
- * Returns: (transfer full): the #GITypeInfo holding the type
- *   information for @info, free it with gi_base_info_unref()
- *   when done.
+ * Returns: (transfer full): The [class@GIRepository.TypeInfo] holding the type
+ *   information for @info, free it with [method@GIRepository.BaseInfo.unref]
+ *   when done
+ * Since: 2.80
  */
 GITypeInfo *
 gi_arg_info_get_type_info (GIArgInfo *info)
@@ -318,10 +336,12 @@ gi_arg_info_get_type_info (GIArgInfo *info)
  * @type: (out caller-allocates): Initialized with information about type of @info
  *
  * Obtain information about a the type of given argument @info; this
- * function is a variant of gi_arg_info_get_type_info() designed for stack
- * allocation.
+ * function is a variant of [method@GIRepository.ArgInfo.get_type_info] designed
+ * for stack allocation.
  *
  * The initialized @type must not be referenced after @info is deallocated.
+ *
+ * Since: 2.80
  */
 void
 gi_arg_info_load_type (GIArgInfo  *info,

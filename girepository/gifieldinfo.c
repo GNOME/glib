@@ -141,6 +141,7 @@ gi_field_info_get_offset (GIFieldInfo *info)
  *
  * Returns: (transfer full): the [type@GIRepository.TypeInfo]. Free the struct
  *   by calling [method@GIRepository.BaseInfo.unref] when done.
+ * Since: 2.80
  */
 GITypeInfo *
 gi_field_info_get_type_info (GIFieldInfo *info)
@@ -181,7 +182,7 @@ gi_field_info_get_type_info (GIFieldInfo *info)
  * composite type like a nested structure or union even if that is actually
  * readable.
  *
- * Returns: true if reading the field succeeded, false otherwise
+ * Returns: `TRUE` if reading the field succeeded, `FALSE` otherwise
  * Since: 2.80
  */
 gboolean
@@ -378,7 +379,7 @@ gi_field_info_get_field (GIFieldInfo *field_info,
  * management would by required. A field with a type such as `char *` must be
  * set with a setter function.
  *
- * Returns: true if writing the field succeeded, false otherwise
+ * Returns: `TRUE` if writing the field succeeded, `FALSE` otherwise
  * Since: 2.80
  */
 gboolean

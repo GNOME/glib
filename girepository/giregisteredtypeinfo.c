@@ -35,20 +35,22 @@
 #include "giregisteredtypeinfo.h"
 
 /**
- * SECTION:giregisteredtypeinfo
- * @title: GIRegisteredTypeInfo
- * @short_description: Struct representing a struct with a GType
+ * GIRegisteredTypeInfo:
  *
- * GIRegisteredTypeInfo represents an entity with a GType associated.
+ * `GIRegisteredTypeInfo` represents an entity with a [type@GObject.Type]
+ * associated.
  *
- * Could be either a #GIEnumInfo, #GIInterfaceInfo, #GIObjectInfo,
- * #GIStructInfo or a #GIUnionInfo.
+ * Could be either a [class@GIRepository.EnumInfo],
+ * [class@GIRepository.InterfaceInfo], [class@GIRepository.ObjectInfo],
+ * [class@GIRepository.StructInfo] or a [class@GIRepository.UnionInfo].
  *
  * A registered type info struct has a name and a type function.
  *
- * To get the name call gi_registered_type_info_get_type_name().
- * Most users want to call gi_registered_type_info_get_g_type() and don't worry
- * about the rest of the details.
+ * To get the name call [method@GIRepository.RegisteredTypeInfo.get_type_name].
+ * Most users want to call [method@GIRepository.RegisteredTypeInfo.get_g_type]
+ * and don’t worry about the rest of the details.
+ *
+ * Since: 2.80
  */
 
 /**
@@ -56,9 +58,12 @@
  * @info: a #GIRegisteredTypeInfo
  *
  * Obtain the type name of the struct within the GObject type system.
- * This type can be passed to g_type_name() to get a #GType.
  *
- * Returns: the type name
+ * This type can be passed to [func@GObject.type_name] to get a
+ * [type@GObject.Type].
+ *
+ * Returns: (nullable): the type name, or `NULL` if unknown
+ * Since: 2.80
  */
 const gchar *
 gi_registered_type_info_get_type_name (GIRegisteredTypeInfo *info)
@@ -81,13 +86,16 @@ gi_registered_type_info_get_type_name (GIRegisteredTypeInfo *info)
  * gi_registered_type_info_get_type_init_function_name:
  * @info: a #GIRegisteredTypeInfo
  *
- * Obtain the type init function for @info. The type init function is the
- * function which will register the GType within the GObject type system.
- * Usually this is not called by langauge bindings or applications, use
- * gi_registered_type_info_get_g_type() directly instead.
+ * Obtain the type init function for @info.
  *
- * Returns: the symbol name of the type init function, suitable for
- * passing into g_module_symbol().
+ * The type init function is the function which will register the
+ * [type@GObject.Type] within the GObject type system. Usually this is not
+ * called by language bindings or applications — use
+ * [method@GIRepository.RegisteredTypeInfo.get_g_type] directly instead.
+ *
+ * Returns: (nullable): the symbol name of the type init function, suitable for
+ *   passing into [method@GModule.Module.symbol], or `NULL` if unknown
+ * Since: 2.80
  */
 const gchar *
 gi_registered_type_info_get_type_init_function_name (GIRegisteredTypeInfo *info)
@@ -110,12 +118,14 @@ gi_registered_type_info_get_type_init_function_name (GIRegisteredTypeInfo *info)
  * gi_registered_type_info_get_g_type:
  * @info: a #GIRegisteredTypeInfo
  *
- * Obtain the #GType for this registered type or G_TYPE_NONE which a special meaning.
- * It means that either there is no type information associated with this @info or
- * that the shared library which provides the type_init function for this
- * @info cannot be called.
+ * Obtain the [type@GObject.Type] for this registered type.
  *
- * Returns: the #GType.
+ * If there is no type information associated with @info, or the shared library
+ * which provides the `type_init` function for @info cannot be called, then
+ * `G_TYPE_NONE` is returned.
+ *
+ * Returns: the [type@GObject.Type], or `G_TYPE_NONE` if unknown
+ * Since: 2.80
  */
 GType
 gi_registered_type_info_get_g_type (GIRegisteredTypeInfo *info)

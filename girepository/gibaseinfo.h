@@ -38,7 +38,9 @@ G_BEGIN_DECLS
  * GIAttributeIter:
  *
  * An opaque structure used to iterate over attributes
- * in a #GIBaseInfo struct.
+ * in a [class@GIRepository.BaseInfo] struct.
+ *
+ * Since: 2.80
  */
 typedef struct {
   /*< private >*/

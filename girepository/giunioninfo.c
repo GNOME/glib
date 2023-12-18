@@ -134,9 +134,9 @@ gi_union_info_get_method (GIUnionInfo *info,
  * gi_union_info_is_discriminated:
  * @info: a #GIUnionInfo
  *
- * Return true if this union contains a discriminator field.
+ * Return `TRUE` if this union contains a discriminator field.
  *
- * Returns: true if this is a discriminated union, false otherwise
+ * Returns: `TRUE` if this is a discriminated union, `FALSE` otherwise
  * Since: 2.80
  */
 gboolean
@@ -195,8 +195,9 @@ gi_union_info_get_discriminator_type (GIUnionInfo *info)
  *
  * If the union is not discriminated, `NULL` is returned.
  *
- * Returns: (transfer full) (nullable): the [type@GIRepository.ConstantInfo],
- *   free it with [method@GIRepository.BaseInfo.unref] when done.
+ * Returns: (transfer full) (nullable): The [type@GIRepository.ConstantInfo], or
+ *   `NULL` if the union is not discriminated. Free it with
+ *   [method@GIRepository.BaseInfo.unref] when done.
  * Since: 2.80
  */
 GIConstantInfo *
@@ -230,8 +231,9 @@ gi_union_info_get_discriminator (GIUnionInfo *info,
  *
  * Obtain the type information for the method named @name.
  *
- * Returns: (transfer full): the [type@GIRepository.FunctionInfo], free it
- *   with [method@GIRepository.BaseInfo.unref] when done.
+ * Returns: (transfer full) (nullable): The [type@GIRepository.FunctionInfo], or
+ *   `NULL` if none was found. Free it with [method@GIRepository.BaseInfo.unref]
+ *   when done.
  * Since: 2.80
  */
 GIFunctionInfo *

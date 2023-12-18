@@ -35,11 +35,11 @@
 #include "giunresolvedinfo.h"
 
 /**
- * SECTION:giunresolved
- * @title: GIUnresolvedInfo
- * @short_description: Struct representing an unresolved symbol
+ * GIUnresolvedInfo:
  *
- * GIUnresolvedInfo represents an unresolved symbol.
+ * `GIUnresolvedInfo` represents an unresolved symbol.
+ *
+ * Since: 2.80
  */
 
 void

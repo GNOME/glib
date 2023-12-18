@@ -35,11 +35,11 @@
 #include "gicallbackinfo.h"
 
 /**
- * SECTION:gicallback
- * @title: GICallbackInfo
- * @short_description: Struct representing a callback
+ * GICallbackInfo:
  *
- * GICallbackInfo represents a callback.
+ * `GICallbackInfo` represents a callback.
+ *
+ * Since: 2.80
  */
 
 void

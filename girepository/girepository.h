@@ -61,12 +61,6 @@ G_BEGIN_DECLS
 #define GI_IS_REPOSITORY_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GI_TYPE_REPOSITORY))
 #define GI_REPOSITORY_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GI_TYPE_REPOSITORY, GIRepositoryClass))
 
-/**
- * GIRepository:
- *
- * The GIRepository structure contains private data and should only be
- * accessed using the provided API.
- */
 typedef struct _GIRepository         GIRepository;
 typedef struct _GIRepositoryClass    GIRepositoryClass;
 typedef struct _GIRepositoryPrivate  GIRepositoryPrivate;
@@ -89,6 +83,8 @@ struct _GIRepositoryClass
  * @GI_REPOSITORY_LOAD_FLAG_LAZY: Lazily load the typelib.
  *
  * Flags that control how a typelib is loaded.
+ *
+ * Since: 2.80
  */
 typedef enum
 {
@@ -217,8 +213,10 @@ gboolean       gi_repository_dump  (const char  *input_filename,
  * @GI_REPOSITORY_ERROR_LIBRARY_NOT_FOUND: the library used by the typelib
  *   could not be found.
  *
- * An error code used with #GI_REPOSITORY_ERROR in a #GError returned
- * from a #GIRepository routine.
+ * An error code used with `GI_REPOSITORY_ERROR` in a [type@GLib.Error]
+ * returned from a [class@GIRepository.Repository] routine.
+ *
+ * Since: 2.80
  */
 typedef enum
 {
@@ -231,9 +229,12 @@ typedef enum
 /**
  * GI_REPOSITORY_ERROR:
  *
- * Error domain for #GIRepository. Errors in this domain will be from the
- * #GIRepositoryError enumeration. See #GError for more information on
- * error domains.
+ * Error domain for [class@GIRepository.Repository].
+ *
+ * Errors in this domain will be from the [enum@GIRepository.Error] enumeration.
+ * See [type@GLib.Error] for more information on error domains.
+ *
+ * Since: 2.80
  */
 #define GI_REPOSITORY_ERROR (gi_repository_error_quark ())
 

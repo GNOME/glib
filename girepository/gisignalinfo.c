@@ -33,27 +33,30 @@
 #include "gisignalinfo.h"
 
 /**
- * SECTION:gisignalinfo
- * @title: GISignalInfo
- * @short_description: Struct representing a signal
+ * GISignalInfo:
  *
- * GISignalInfo represents a signal.
+ * `GISignalInfo` represents a signal.
  *
- * It's a sub-struct of #GICallableInfo and contains a set of flags and
- * a class closure.
+ * It’s a sub-struct of [class@GIRepository.CallableInfo] and contains a set of
+ * flags and a class closure.
  *
- * See #GICallableInfo for information on how to retreive arguments
- * and other metadata from the signal.
+ * See [class@GIRepository.CallableInfo] for information on how to retrieve
+ * arguments and other metadata from the signal.
+ *
+ * Since: 2.80
  */
 
 /**
  * gi_signal_info_get_flags:
  * @info: a #GISignalInfo
  *
- * Obtain the flags for this signal info. See #GSignalFlags for
- * more information about possible flag values.
+ * Obtain the flags for this signal info.
+ *
+ * See [flags@GObject.SignalFlags] for more information about possible flag
+ * values.
  *
  * Returns: the flags
+ * Since: 2.80
  */
 GSignalFlags
 gi_signal_info_get_flags (GISignalInfo *info)
@@ -96,11 +99,14 @@ gi_signal_info_get_flags (GISignalInfo *info)
  * gi_signal_info_get_class_closure:
  * @info: a #GISignalInfo
  *
- * Obtain the class closure for this signal if one is set. The class
- * closure is a virtual function on the type that the signal belongs to.
- * If the signal lacks a closure %NULL will be returned.
+ * Obtain the class closure for this signal if one is set.
  *
- * Returns: (transfer full): the class closure or %NULL
+ * The class closure is a virtual function on the type that the signal belongs
+ * to. If the signal lacks a closure, `NULL` will be returned.
+ *
+ * Returns: (transfer full) (nullable): the class closure, or `NULL` if none is
+ *   set
+ * Since: 2.80
  */
 GIVFuncInfo *
 gi_signal_info_get_class_closure (GISignalInfo *info)
@@ -123,10 +129,11 @@ gi_signal_info_get_class_closure (GISignalInfo *info)
  * gi_signal_info_true_stops_emit:
  * @info: a #GISignalInfo
  *
- * Obtain if the returning true in the signal handler will
- * stop the emission of the signal.
+ * Obtain if the returning `TRUE` in the signal handler will stop the emission
+ * of the signal.
  *
- * Returns: %TRUE if returning true stops the signal emission
+ * Returns: `TRUE` if returning `TRUE` stops the signal emission
+ * Since: 2.80
  */
 gboolean
 gi_signal_info_true_stops_emit (GISignalInfo *info)
