@@ -49,12 +49,66 @@ properties_introspection (void)
   g_test_trap_assert_stderr ("");
 }
 
+static gpointer
+inspect_func (gpointer data)
+{
+  unsigned int *n_checks = data; /* (atomic) */
+
+  gpointer klass = NULL;
+  do
+    {
+      klass = g_type_default_interface_ref (my_testable_get_type ());
+    }
+  while (klass == NULL);
+
+  GParamSpec *pspec = NULL;
+  do
+    {
+      pspec = g_object_interface_find_property (klass, "check");
+    }
+  while (pspec == NULL);
+
+  g_type_default_interface_unref (klass);
+
+  g_atomic_int_inc (n_checks);
+
+  return NULL;
+}
+
+#define N_THREADS 10
+
+static void
+properties_collision (void)
+{
+  GThread *threads[N_THREADS];
+  unsigned int n_checks = 0; /* (atomic) */
+
+  g_test_summary ("Verify that multiple threads create a single GParamSpecPool.");
+
+  for (unsigned int i = 0; i < N_THREADS; i++)
+    {
+      char *t_name = g_strdup_printf ("inspect [%d]", i);
+      threads[i] = g_thread_new (t_name, inspect_func, &n_checks);
+      g_assert_nonnull (threads[i]);
+      g_free (t_name);
+    }
+
+  while (g_atomic_int_get (&n_checks) != N_THREADS)
+    g_usleep (50);
+
+  for (unsigned int i = 0; i < N_THREADS; i++)
+    g_thread_join (threads[i]);
+}
+
+#undef N_THREADS
+
 int
 main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/properties/introspection", properties_introspection);
+  g_test_add_func ("/properties/collision", properties_collision);
 
   return g_test_run ();
 }
