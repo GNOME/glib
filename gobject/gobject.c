@@ -3567,7 +3567,6 @@ g_object_force_floating (GObject *object)
 }
 
 typedef struct {
-  GObject *object;
   guint n_toggle_refs;
   struct {
     GToggleNotify notify;
@@ -3600,7 +3599,7 @@ toggle_refs_notify (GObject *object,
    * will only be notified when there is exactly one of them.
    */
   g_assert (tstack.n_toggle_refs == 1);
-  tstack.toggle_refs[0].notify (tstack.toggle_refs[0].data, tstack.object, is_last_ref);
+  tstack.toggle_refs[0].notify (tstack.toggle_refs[0].data, object, is_last_ref);
 }
 
 /**
@@ -3668,7 +3667,6 @@ g_object_add_toggle_ref (GObject       *object,
   else
     {
       tstack = g_renew (ToggleRefStack, NULL, 1);
-      tstack->object = object;
       tstack->n_toggle_refs = 1;
       i = 0;
     }
