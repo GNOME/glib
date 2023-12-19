@@ -83,6 +83,7 @@ gobject_tests = {
   'binding' : {},
   'bindinggroup' : {},
   'properties' : {},
+  'properties-introspection' : {},
   'reference' : {},
   'flags' : {},
   'value' : {},
