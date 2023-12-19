@@ -156,8 +156,6 @@ error_callback (GObject      *object,
   g_error_free (error);
 
   g_assert (g_task_had_error (G_TASK (result)));
-
-  g_main_loop_quit (loop);
 }
 
 static gboolean
@@ -188,7 +186,6 @@ test_error (void)
   TaskErrorResult result;
   gboolean first_task_data_destroyed = FALSE;
   gboolean second_task_data_destroyed = FALSE;
-  gboolean notification_emitted = FALSE;
 
   task = g_task_new (NULL, NULL, error_callback, &result);
   result = (TaskErrorResult){
@@ -197,8 +194,6 @@ test_error (void)
     .expected_message = g_strdup_printf ("Failed %p", task),
   };
   g_object_add_weak_pointer (G_OBJECT (task), (gpointer *)&task);
-  g_signal_connect (task, "notify::completed",
-                    (GCallback) completed_cb, &notification_emitted);
 
   g_assert (first_task_data_destroyed == FALSE);
   g_task_set_task_data (task, &first_task_data_destroyed, error_destroy_notify);
@@ -210,11 +205,10 @@ test_error (void)
   g_assert (second_task_data_destroyed == FALSE);
 
   g_idle_add (error_return, task);
-  g_main_loop_run (loop);
+  wait_for_completed_notification (task);
 
   g_assert_cmpint (result.int_result, ==, -1);
   g_assert (second_task_data_destroyed == TRUE);
-  g_assert_true (notification_emitted);
   g_assert (task == NULL);
   g_free (result.expected_message);
 }
