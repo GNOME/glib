@@ -1624,6 +1624,23 @@ test_param_spec_custom (void)
   g_param_spec_unref (pspec);
 }
 
+static void
+test_param_spec_pool (void)
+{
+  GParamSpecPool *pool = g_param_spec_pool_new (FALSE);
+  GParamSpec *pspec = g_param_spec_int ("int", NULL, NULL, -1, 100, -1, G_PARAM_READWRITE);
+  GParamSpec *check = NULL;
+
+  g_param_spec_pool_insert (pool, g_param_spec_ref_sink (pspec), G_TYPE_OBJECT);
+  check = g_param_spec_pool_lookup (pool, "int", G_TYPE_OBJECT, FALSE);
+  g_assert_true (check->owner_type == G_TYPE_OBJECT);
+
+  g_param_spec_pool_remove (pool, pspec);
+  g_assert_null (g_param_spec_pool_lookup (pool, "int", G_TYPE_OBJECT, FALSE));
+
+  g_param_spec_pool_free (pool);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -1680,6 +1697,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/paramspec/variant", test_param_spec_variant);
   g_test_add_func ("/paramspec/variant/cmp", test_param_spec_variant_cmp);
   g_test_add_func ("/paramspec/custom", test_param_spec_custom);
+  g_test_add_func ("/paramspec/pool", test_param_spec_pool);
 
   return g_test_run ();
 }
