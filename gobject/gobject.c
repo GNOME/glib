@@ -3574,32 +3574,45 @@ typedef struct {
   } toggle_refs[1];  /* flexible array */
 } ToggleRefStack;
 
+static GToggleNotify
+toggle_refs_get_notify_unlocked (GObject *object,
+                                 gpointer *out_data)
+{
+  ToggleRefStack *tstackptr;
+
+  if (!OBJECT_HAS_TOGGLE_REF (object))
+    return NULL;
+
+  tstackptr = g_datalist_id_get_data (&object->qdata, quark_toggle_refs);
+
+  if (tstackptr->n_toggle_refs != 1)
+    {
+      /* There are multiple references. We won't notify.
+       *
+       * Note that the user MUST pair g_object_add_toggle_ref() with
+       * g_object_remove_toggle_ref(). In that case, having a
+       * "n_toggle_refs" larger than one, also means that we have multiple
+       * references. */
+      return NULL;
+    }
+
+  *out_data = tstackptr->toggle_refs[0].data;
+  return tstackptr->toggle_refs[0].notify;
+}
+
 static void
 toggle_refs_notify (GObject *object,
 		    gboolean is_last_ref)
 {
-  ToggleRefStack tstack, *tstackptr;
+  GToggleNotify notify;
+  gpointer data;
 
   G_LOCK (toggle_refs_mutex);
-  /* If another thread removed the toggle reference on the object, while
-   * we were waiting here, there's nothing to notify.
-   * So let's check again if the object has toggle reference and in case return.
-   */
-  if (!OBJECT_HAS_TOGGLE_REF (object))
-    {
-      G_UNLOCK (toggle_refs_mutex);
-      return;
-    }
-
-  tstackptr = g_datalist_id_get_data (&object->qdata, quark_toggle_refs);
-  tstack = *tstackptr;
+  notify = toggle_refs_get_notify_unlocked (object, &data);
   G_UNLOCK (toggle_refs_mutex);
 
-  /* Reentrancy here is not as tricky as it seems, because a toggle reference
-   * will only be notified when there is exactly one of them.
-   */
-  g_assert (tstack.n_toggle_refs == 1);
-  tstack.toggle_refs[0].notify (tstack.toggle_refs[0].data, object, is_last_ref);
+  if (notify)
+    notify (data, object, is_last_ref);
 }
 
 /**
