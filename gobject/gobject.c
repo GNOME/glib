@@ -3587,32 +3587,12 @@ toggle_refs_get_notify_unlocked (GObject *object,
 
   if (tstackptr->n_toggle_refs != 1)
     {
-      /* There are multiple references. We won't notify.
-       *
-       * Note that the user MUST pair g_object_add_toggle_ref() with
-       * g_object_remove_toggle_ref(). In that case, having a
-       * "n_toggle_refs" larger than one, also means that we have multiple
-       * references. */
+      g_critical ("Unexpected number of toggle-refs. g_object_add_toggle_ref() must be paired with g_object_remove_toggle_ref()");
       return NULL;
     }
 
   *out_data = tstackptr->toggle_refs[0].data;
   return tstackptr->toggle_refs[0].notify;
-}
-
-static void
-toggle_refs_notify (GObject *object,
-		    gboolean is_last_ref)
-{
-  GToggleNotify notify;
-  gpointer data;
-
-  G_LOCK (toggle_refs_mutex);
-  notify = toggle_refs_get_notify_unlocked (object, &data);
-  G_UNLOCK (toggle_refs_mutex);
-
-  if (notify)
-    notify (data, object, is_last_ref);
 }
 
 /**
@@ -3781,19 +3761,49 @@ gpointer
 (g_object_ref) (gpointer _object)
 {
   GObject *object = _object;
-  gint old_val;
-  gboolean object_already_finalized;
+  GToggleNotify toggle_notify;
+  gpointer toggle_data;
+  gint old_ref;
 
   g_return_val_if_fail (G_IS_OBJECT (object), NULL);
 
-  old_val = g_atomic_int_add (&object->ref_count, 1);
-  object_already_finalized = (old_val <= 0);
-  g_return_val_if_fail (!object_already_finalized, NULL);
+  old_ref = g_atomic_int_get (&object->ref_count);
 
-  if (old_val == 1 && OBJECT_HAS_TOGGLE_REF (object))
-    toggle_refs_notify (object, FALSE);
+retry:
+  toggle_notify = NULL;
+  if (old_ref > 1 && old_ref < G_MAXINT)
+    {
+      /* Fast-path. We have apparently more than 1 references already. No
+       * special handling for toggle references, just increment the ref count. */
+      if (!g_atomic_int_compare_and_exchange_full ((int *) &object->ref_count,
+                                                   old_ref, old_ref + 1, &old_ref))
+        goto retry;
+    }
+  else if (old_ref == 1)
+    {
+      gboolean do_retry;
 
-  TRACE (GOBJECT_OBJECT_REF (object, G_TYPE_FROM_INSTANCE (object), old_val));
+      /* With ref count 1, check whether we need to emit a toggle notification. */
+      G_LOCK (toggle_refs_mutex);
+      toggle_notify = toggle_refs_get_notify_unlocked (object, &toggle_data);
+      do_retry = !g_atomic_int_compare_and_exchange_full ((int *) &object->ref_count,
+                                                          old_ref, old_ref + 1, &old_ref);
+      G_UNLOCK (toggle_refs_mutex);
+      if (do_retry)
+        goto retry;
+    }
+  else
+    {
+      gboolean object_already_finalized = TRUE;
+
+      g_return_val_if_fail (!object_already_finalized, NULL);
+      return NULL;
+    }
+
+  TRACE (GOBJECT_OBJECT_REF (object, G_TYPE_FROM_INSTANCE (object), old_ref));
+
+  if (toggle_notify)
+    toggle_notify (toggle_data, object, FALSE);
 
   return object;
 }
