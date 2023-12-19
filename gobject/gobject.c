@@ -3773,7 +3773,7 @@ gpointer
   gboolean object_already_finalized;
 
   g_return_val_if_fail (G_IS_OBJECT (object), NULL);
-  
+
   old_val = g_atomic_int_add (&object->ref_count, 1);
   object_already_finalized = (old_val <= 0);
   g_return_val_if_fail (!object_already_finalized, NULL);
@@ -3781,7 +3781,7 @@ gpointer
   if (old_val == 1 && OBJECT_HAS_TOGGLE_REF (object))
     toggle_refs_notify (object, FALSE);
 
-  TRACE (GOBJECT_OBJECT_REF(object,G_TYPE_FROM_INSTANCE(object),old_val));
+  TRACE (GOBJECT_OBJECT_REF (object, G_TYPE_FROM_INSTANCE (object), old_val));
 
   return object;
 }
@@ -3803,22 +3803,22 @@ g_object_unref (gpointer _object)
 {
   GObject *object = _object;
   gint old_ref;
-  
+
   g_return_if_fail (G_IS_OBJECT (object));
-  
+
   /* here we want to atomically do: if (ref_count>1) { ref_count--; return; } */
   old_ref = g_atomic_int_get (&object->ref_count);
- retry_atomic_decrement1:
+retry_atomic_decrement1:
   while (old_ref > 1)
     {
       /* valid if last 2 refs are owned by this call to unref and the toggle_ref */
 
-      if (!g_atomic_int_compare_and_exchange_full ((int *)&object->ref_count,
+      if (!g_atomic_int_compare_and_exchange_full ((int *) &object->ref_count,
                                                    old_ref, old_ref - 1,
                                                    &old_ref))
         continue;
 
-      TRACE (GOBJECT_OBJECT_UNREF(object,G_TYPE_FROM_INSTANCE(object),old_ref));
+      TRACE (GOBJECT_OBJECT_UNREF (object, G_TYPE_FROM_INSTANCE (object), old_ref));
 
       /* if we went from 2->1 we need to notify toggle refs if any */
       if (old_ref == 2 && OBJECT_HAS_TOGGLE_REF (object))
@@ -3830,138 +3830,138 @@ g_object_unref (gpointer _object)
       return;
     }
 
-    {
-      GSList **weak_locations;
-      GObjectNotifyQueue *nqueue;
+  {
+    GSList **weak_locations;
+    GObjectNotifyQueue *nqueue;
 
-      /* The only way that this object can live at this point is if
-       * there are outstanding weak references already established
-       * before we got here.
-       *
-       * If there were not already weak references then no more can be
-       * established at this time, because the other thread would have
-       * to hold a strong ref in order to call
-       * g_object_add_weak_pointer() and then we wouldn't be here.
-       *
-       * Other GWeakRef's (weak locations) instead may still be added
-       * before the object is finalized, but in such case we'll unset
-       * them as part of the qdata removal.
-       */
-      weak_locations = g_datalist_id_get_data (&object->qdata, quark_weak_locations);
+    /* The only way that this object can live at this point is if
+     * there are outstanding weak references already established
+     * before we got here.
+     *
+     * If there were not already weak references then no more can be
+     * established at this time, because the other thread would have
+     * to hold a strong ref in order to call
+     * g_object_add_weak_pointer() and then we wouldn't be here.
+     *
+     * Other GWeakRef's (weak locations) instead may still be added
+     * before the object is finalized, but in such case we'll unset
+     * them as part of the qdata removal.
+     */
+    weak_locations = g_datalist_id_get_data (&object->qdata, quark_weak_locations);
 
-      if (weak_locations != NULL)
-        {
-          g_rw_lock_writer_lock (&weak_locations_lock);
+    if (weak_locations != NULL)
+      {
+        g_rw_lock_writer_lock (&weak_locations_lock);
 
-          /* It is possible that one of the weak references beat us to
-           * the lock. Make sure the refcount is still what we expected
-           * it to be.
-           */
-          old_ref = g_atomic_int_get (&object->ref_count);
-          if (old_ref != 1)
-            {
-              g_rw_lock_writer_unlock (&weak_locations_lock);
-              goto retry_atomic_decrement1;
-            }
+        /* It is possible that one of the weak references beat us to
+         * the lock. Make sure the refcount is still what we expected
+         * it to be.
+         */
+        old_ref = g_atomic_int_get (&object->ref_count);
+        if (old_ref != 1)
+          {
+            g_rw_lock_writer_unlock (&weak_locations_lock);
+            goto retry_atomic_decrement1;
+          }
 
-          /* We got the lock first, so the object will definitely die
-           * now. Clear out all the weak references, if they're still set.
-           */
-          weak_locations = g_datalist_id_remove_no_notify (&object->qdata,
-                                                           quark_weak_locations);
-          g_clear_pointer (&weak_locations, weak_locations_free_unlocked);
+        /* We got the lock first, so the object will definitely die
+         * now. Clear out all the weak references, if they're still set.
+         */
+        weak_locations = g_datalist_id_remove_no_notify (&object->qdata,
+                                                         quark_weak_locations);
+        g_clear_pointer (&weak_locations, weak_locations_free_unlocked);
 
-          g_rw_lock_writer_unlock (&weak_locations_lock);
-        }
+        g_rw_lock_writer_unlock (&weak_locations_lock);
+      }
 
-      /* freeze the notification queue, so we don't accidentally emit
-       * notifications during dispose() and finalize().
-       *
-       * The notification queue stays frozen unless the instance acquires
-       * a reference during dispose(), in which case we thaw it and
-       * dispatch all the notifications. If the instance gets through
-       * to finalize(), the notification queue gets automatically
-       * drained when g_object_finalize() is reached and
-       * the qdata is cleared.
-       */
-      nqueue = g_object_notify_queue_freeze (object);
+    /* freeze the notification queue, so we don't accidentally emit
+     * notifications during dispose() and finalize().
+     *
+     * The notification queue stays frozen unless the instance acquires
+     * a reference during dispose(), in which case we thaw it and
+     * dispatch all the notifications. If the instance gets through
+     * to finalize(), the notification queue gets automatically
+     * drained when g_object_finalize() is reached and
+     * the qdata is cleared.
+     */
+    nqueue = g_object_notify_queue_freeze (object);
 
-      /* we are about to remove the last reference */
-      TRACE (GOBJECT_OBJECT_DISPOSE(object,G_TYPE_FROM_INSTANCE(object), 1));
-      G_OBJECT_GET_CLASS (object)->dispose (object);
-      TRACE (GOBJECT_OBJECT_DISPOSE_END(object,G_TYPE_FROM_INSTANCE(object), 1));
+    /* we are about to remove the last reference */
+    TRACE (GOBJECT_OBJECT_DISPOSE (object, G_TYPE_FROM_INSTANCE (object), 1));
+    G_OBJECT_GET_CLASS (object)->dispose (object);
+    TRACE (GOBJECT_OBJECT_DISPOSE_END (object, G_TYPE_FROM_INSTANCE (object), 1));
 
-      /* may have been re-referenced meanwhile */
-      old_ref = g_atomic_int_get ((int *)&object->ref_count);
+    /* may have been re-referenced meanwhile */
+    old_ref = g_atomic_int_get ((int *) &object->ref_count);
 
-      while (old_ref > 1)
-        {
-          /* valid if last 2 refs are owned by this call to unref and the toggle_ref */
+    while (old_ref > 1)
+      {
+        /* valid if last 2 refs are owned by this call to unref and the toggle_ref */
 
-          if (!g_atomic_int_compare_and_exchange_full ((int *)&object->ref_count,
-                                                       old_ref, old_ref - 1,
-                                                       &old_ref))
-            continue;
+        if (!g_atomic_int_compare_and_exchange_full ((int *) &object->ref_count,
+                                                     old_ref, old_ref - 1,
+                                                     &old_ref))
+          continue;
 
-          TRACE (GOBJECT_OBJECT_UNREF (object, G_TYPE_FROM_INSTANCE (object), old_ref));
+        TRACE (GOBJECT_OBJECT_UNREF (object, G_TYPE_FROM_INSTANCE (object), old_ref));
 
-          /* emit all notifications that have been queued during dispose() */
-          g_object_notify_queue_thaw (object, nqueue, FALSE);
+        /* emit all notifications that have been queued during dispose() */
+        g_object_notify_queue_thaw (object, nqueue, FALSE);
 
-          /* if we went from 2->1 we need to notify toggle refs if any */
-          if (old_ref == 2 && OBJECT_HAS_TOGGLE_REF (object) &&
-              g_atomic_int_get ((int *)&object->ref_count) == 1)
-            {
-              /* The last ref being held in this case is owned by the toggle_ref */
-              toggle_refs_notify (object, TRUE);
-            }
+        /* if we went from 2->1 we need to notify toggle refs if any */
+        if (old_ref == 2 && OBJECT_HAS_TOGGLE_REF (object) &&
+            g_atomic_int_get ((int *) &object->ref_count) == 1)
+          {
+            /* The last ref being held in this case is owned by the toggle_ref */
+            toggle_refs_notify (object, TRUE);
+          }
 
-	  return;
-	}
+        return;
+      }
 
-      /* we are still in the process of taking away the last ref */
-      g_datalist_id_set_data (&object->qdata, quark_closure_array, NULL);
-      g_signal_handlers_destroy (object);
-      g_datalist_id_set_data (&object->qdata, quark_weak_refs, NULL);
-      g_datalist_id_set_data (&object->qdata, quark_weak_locations, NULL);
-      g_datalist_id_set_data (&object->qdata, quark_weak_notifies, NULL);
+    /* we are still in the process of taking away the last ref */
+    g_datalist_id_set_data (&object->qdata, quark_closure_array, NULL);
+    g_signal_handlers_destroy (object);
+    g_datalist_id_set_data (&object->qdata, quark_weak_refs, NULL);
+    g_datalist_id_set_data (&object->qdata, quark_weak_locations, NULL);
+    g_datalist_id_set_data (&object->qdata, quark_weak_notifies, NULL);
 
-      /* decrement the last reference */
-      old_ref = g_atomic_int_add (&object->ref_count, -1);
-      g_return_if_fail (old_ref > 0);
+    /* decrement the last reference */
+    old_ref = g_atomic_int_add (&object->ref_count, -1);
+    g_return_if_fail (old_ref > 0);
 
-      TRACE (GOBJECT_OBJECT_UNREF(object,G_TYPE_FROM_INSTANCE(object),old_ref));
+    TRACE (GOBJECT_OBJECT_UNREF (object, G_TYPE_FROM_INSTANCE (object), old_ref));
 
-      /* may have been re-referenced meanwhile */
-      if (G_LIKELY (old_ref == 1))
-	{
-	  TRACE (GOBJECT_OBJECT_FINALIZE(object,G_TYPE_FROM_INSTANCE(object)));
-          G_OBJECT_GET_CLASS (object)->finalize (object);
-	  TRACE (GOBJECT_OBJECT_FINALIZE_END(object,G_TYPE_FROM_INSTANCE(object)));
+    /* may have been re-referenced meanwhile */
+    if (G_LIKELY (old_ref == 1))
+      {
+        TRACE (GOBJECT_OBJECT_FINALIZE (object, G_TYPE_FROM_INSTANCE (object)));
+        G_OBJECT_GET_CLASS (object)->finalize (object);
+        TRACE (GOBJECT_OBJECT_FINALIZE_END (object, G_TYPE_FROM_INSTANCE (object)));
 
-          GOBJECT_IF_DEBUG (OBJECTS,
-	    {
-              gboolean was_present;
+        GOBJECT_IF_DEBUG (OBJECTS,
+                          {
+                            gboolean was_present;
 
-              /* catch objects not chaining finalize handlers */
-              G_LOCK (debug_objects);
-              was_present = g_hash_table_remove (debug_objects_ht, object);
-              G_UNLOCK (debug_objects);
+                            /* catch objects not chaining finalize handlers */
+                            G_LOCK (debug_objects);
+                            was_present = g_hash_table_remove (debug_objects_ht, object);
+                            G_UNLOCK (debug_objects);
 
-              if (was_present)
-                g_critical ("Object %p of type %s not finalized correctly.",
-                            object, G_OBJECT_TYPE_NAME (object));
-	    });
-          g_type_free_instance ((GTypeInstance*) object);
-	}
-      else
-        {
-          /* The instance acquired a reference between dispose() and
-           * finalize(), so we need to thaw the notification queue
-           */
-          g_object_notify_queue_thaw (object, nqueue, FALSE);
-        }
-    }
+                            if (was_present)
+                              g_critical ("Object %p of type %s not finalized correctly.",
+                                          object, G_OBJECT_TYPE_NAME (object));
+                          });
+        g_type_free_instance ((GTypeInstance *) object);
+      }
+    else
+      {
+        /* The instance acquired a reference between dispose() and
+         * finalize(), so we need to thaw the notification queue
+         */
+        g_object_notify_queue_thaw (object, nqueue, FALSE);
+      }
+  }
 }
 
 /**
