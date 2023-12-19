@@ -3723,7 +3723,10 @@ g_object_remove_toggle_ref (GObject       *object,
 	      tstack->toggle_refs[i] = tstack->toggle_refs[tstack->n_toggle_refs];
 
 	    if (tstack->n_toggle_refs == 0)
-	      g_datalist_unset_flags (&object->qdata, OBJECT_HAS_TOGGLE_REF_FLAG);
+	      {
+	        g_datalist_unset_flags (&object->qdata, OBJECT_HAS_TOGGLE_REF_FLAG);
+	        g_datalist_id_set_data_full (&object->qdata, quark_toggle_refs, NULL, NULL);
+	      }
 
 	    break;
 	  }
