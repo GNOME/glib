@@ -1033,15 +1033,41 @@ g_date_time_new_now_utc (void)
 GDateTime *
 g_date_time_new_from_unix_local (gint64 t)
 {
-  GDateTime *datetime;
-  GTimeZone *local;
-
   if (t > G_MAXINT64 / USEC_PER_SECOND ||
       t < G_MININT64 / USEC_PER_SECOND)
     return NULL;
 
+  return g_date_time_new_from_unix_local_usec (t * USEC_PER_SECOND);
+}
+
+/**
+ * g_date_time_new_from_unix_local_usec: (constructor)
+ * @usecs: the Unix time in microseconds
+ *
+ * Creates a [struct@GLib.DateTime] corresponding to the given Unix time @t in the
+ * local time zone.
+ *
+ * Unix time is the number of microseconds that have elapsed since 1970-01-01
+ * 00:00:00 UTC, regardless of the local time offset.
+ *
+ * This call can fail (returning `NULL`) if @t represents a time outside
+ * of the supported range of #GDateTime.
+ *
+ * You should release the return value by calling [method@GLib.DateTime.unref]
+ * when you are done with it.
+ *
+ * Returns: (transfer full) (nullable): a new [struct@GLib.DateTime], or `NULL`
+ *
+ * Since: 2.80
+ **/
+GDateTime *
+g_date_time_new_from_unix_local_usec (gint64 usecs)
+{
+  GDateTime *datetime;
+  GTimeZone *local;
+
   local = g_time_zone_new_local ();
-  datetime = g_date_time_new_from_unix (local, t * USEC_PER_SECOND);
+  datetime = g_date_time_new_from_unix (local, usecs);
   g_time_zone_unref (local);
 
   return datetime;
@@ -1069,15 +1095,40 @@ g_date_time_new_from_unix_local (gint64 t)
 GDateTime *
 g_date_time_new_from_unix_utc (gint64 t)
 {
-  GDateTime *datetime;
-  GTimeZone *utc;
-
   if (t > G_MAXINT64 / USEC_PER_SECOND ||
       t < G_MININT64 / USEC_PER_SECOND)
     return NULL;
 
+  return g_date_time_new_from_unix_utc_usec (t * USEC_PER_SECOND);
+}
+
+/**
+ * g_date_time_new_from_unix_utc: (constructor)
+ * @usecs: the Unix time in microseconds
+ *
+ * Creates a [struct@GLib.DateTime] corresponding to the given Unix time @t in UTC.
+ *
+ * Unix time is the number of microseconds that have elapsed since 1970-01-01
+ * 00:00:00 UTC.
+ *
+ * This call can fail (returning `NULL`) if @t represents a time outside
+ * of the supported range of #GDateTime.
+ *
+ * You should release the return value by calling [method@GLib.DateTime.unref]
+ * when you are done with it.
+ *
+ * Returns: (transfer full) (nullable): a new [struct@GLib.DateTime], or `NULL`
+ *
+ * Since: 2.80
+ **/
+GDateTime *
+g_date_time_new_from_unix_utc_usec (gint64 usecs)
+{
+  GDateTime *datetime;
+  GTimeZone *utc;
+
   utc = g_time_zone_new_utc ();
-  datetime = g_date_time_new_from_unix (utc, t * USEC_PER_SECOND);
+  datetime = g_date_time_new_from_unix (utc, usecs);
   g_time_zone_unref (utc);
 
   return datetime;
@@ -2564,6 +2615,27 @@ g_date_time_to_unix (GDateTime *datetime)
   g_return_val_if_fail (datetime != NULL, 0);
 
   return INSTANT_TO_UNIX (g_date_time_to_instant (datetime));
+}
+
+/**
+ * g_date_time_to_unix_usec:
+ * @datetime: a #GDateTime
+ *
+ * Gives the Unix time corresponding to @datetime, in microseconds.
+ *
+ * Unix time is the number of microseconds that have elapsed since 1970-01-01
+ * 00:00:00 UTC, regardless of the time zone associated with @datetime.
+ *
+ * Returns: the Unix time corresponding to @datetime
+ *
+ * Since: 2.80
+ **/
+gint64
+g_date_time_to_unix_usec (GDateTime *datetime)
+{
+  g_return_val_if_fail (datetime != NULL, 0);
+
+  return INSTANT_TO_UNIX_USECS (g_date_time_to_instant (datetime));
 }
 
 /**

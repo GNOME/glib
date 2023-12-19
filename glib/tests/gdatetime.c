@@ -3392,6 +3392,38 @@ test_time_zone_caching (void)
   g_assert_true (tz1 == tz2);
 }
 
+static void
+test_date_time_unix_usec (void)
+{
+  gint64 usecs = g_get_real_time ();
+  gint64 secs = usecs / G_USEC_PER_SEC;
+  GDateTime *dt;
+  GDateTime *local;
+
+  dt = g_date_time_new_from_unix_utc (secs);
+  g_assert_cmpint (g_date_time_to_unix_usec (dt), ==, secs * G_USEC_PER_SEC);
+  g_assert_cmpint (g_date_time_to_unix (dt), ==, secs);
+  g_date_time_unref (dt);
+
+  dt = g_date_time_new_from_unix_utc_usec (usecs);
+  g_assert_cmpint (g_date_time_to_unix_usec (dt), ==, usecs);
+  g_assert_cmpint (g_date_time_to_unix (dt), ==, secs);
+  g_date_time_unref (dt);
+
+  local = g_date_time_new_from_unix_local (secs);
+  dt = g_date_time_to_utc (local);
+  g_assert_cmpint (g_date_time_to_unix_usec (dt), ==, secs * G_USEC_PER_SEC);
+  g_assert_cmpint (g_date_time_to_unix (dt), ==, secs);
+  g_date_time_unref (dt);
+  g_date_time_unref (local);
+
+  local = g_date_time_new_from_unix_local_usec (usecs);
+  dt = g_date_time_to_utc (local);
+  g_assert_cmpint (g_date_time_to_unix_usec (dt), ==, usecs);
+  g_assert_cmpint (g_date_time_to_unix (dt), ==, secs);
+  g_date_time_unref (dt);
+  g_date_time_unref (local);
+}
 
 gint
 main (gint   argc,
@@ -3476,6 +3508,7 @@ main (gint   argc,
   g_test_add_func ("/GDateTime/eras/japan", test_date_time_eras_japan);
   g_test_add_func ("/GDateTime/eras/thailand", test_date_time_eras_thailand);
   g_test_add_func ("/GDateTime/eras/parsing", test_date_time_eras_parsing);
+  g_test_add_func ("/GDateTime/unix_usec", test_date_time_unix_usec);
 
   g_test_add_func ("/GTimeZone/find-interval", test_find_interval);
   g_test_add_func ("/GTimeZone/adjust-time", test_adjust_time);
