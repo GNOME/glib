@@ -213,6 +213,53 @@ test_error (void)
   g_free (result.expected_message);
 }
 
+static void
+test_error_literal (void)
+{
+  GTask *task;
+  TaskErrorResult result;
+
+  task = g_task_new (NULL, NULL, error_callback, &result);
+  result = (TaskErrorResult){
+    .expected_domain = G_IO_ERROR,
+    .expected_code = G_IO_ERROR_FAILED,
+    .expected_message = "Literal Failure",
+  };
+
+  g_task_return_new_error_literal (task,
+                                   result.expected_domain,
+                                   result.expected_code,
+                                   "Literal Failure");
+
+  wait_for_completed_notification (task);
+  g_assert_cmpint (result.int_result, ==, -1);
+
+  g_assert_finalize_object (task);
+}
+
+static void
+test_error_literal_from_variable (void)
+{
+  GTask *task;
+  TaskErrorResult result;
+
+  task = g_task_new (NULL, NULL, error_callback, &result);
+  result = (TaskErrorResult){
+    .expected_domain = G_IO_ERROR,
+    .expected_code = G_IO_ERROR_FAILED,
+    .expected_message = "Literal Failure",
+  };
+
+  g_task_return_new_error_literal (task,
+                                   result.expected_domain,
+                                   result.expected_code,
+                                   result.expected_message);
+
+  wait_for_completed_notification (task);
+  g_assert_cmpint (result.int_result, ==, -1);
+  g_assert_finalize_object (task);
+}
+
 /* test_return_from_same_iteration: calling g_task_return_* from the
  * loop iteration the task was created in defers completion until the
  * next iteration.
@@ -2532,6 +2579,8 @@ main (int argc, char **argv)
 
   g_test_add_func ("/gtask/basic", test_basic);
   g_test_add_func ("/gtask/error", test_error);
+  g_test_add_func ("/gtask/error-literal", test_error_literal);
+  g_test_add_func ("/gtask/error-literal-from-variable", test_error_literal_from_variable);
   g_test_add_func ("/gtask/return-from-same-iteration", test_return_from_same_iteration);
   g_test_add_func ("/gtask/return-from-toplevel", test_return_from_toplevel);
   g_test_add_func ("/gtask/return-from-anon-thread", test_return_from_anon_thread);
