@@ -561,9 +561,9 @@ can_reach_done (GObject      *source,
   if (reachable)
     g_task_return_boolean (task, TRUE);
   else
-    g_task_return_new_error (task,
-                             G_IO_ERROR, G_IO_ERROR_HOST_UNREACHABLE,
-                             "Can't reach host");
+    g_task_return_new_error_literal (task,
+                                     G_IO_ERROR, G_IO_ERROR_HOST_UNREACHABLE,
+                                     "Can't reach host");
 
   g_object_unref (task);
 }

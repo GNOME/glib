@@ -7721,9 +7721,9 @@ query_default_handler_query_app_info_for_type_cb (GObject      *object,
     }
   else if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
     {
-      g_task_return_new_error (task,
-                               G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-                               "%s", error->message);
+      g_task_return_new_error_literal (task,
+                                       G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                                       error->message);
     }
   else
     {
@@ -7774,10 +7774,10 @@ query_default_handler_query_info_cb (GObject      *object,
     }
   else
     {
-      g_task_return_new_error (task,
-                               G_IO_ERROR,
-                               G_IO_ERROR_NOT_SUPPORTED,
-                               _("No application is registered as handling this file"));
+      g_task_return_new_error_literal (task,
+                                       G_IO_ERROR,
+                                       G_IO_ERROR_NOT_SUPPORTED,
+                                       _("No application is registered as handling this file"));
     }
 
   g_object_unref (info);

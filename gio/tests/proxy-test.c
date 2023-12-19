@@ -797,9 +797,9 @@ g_fake_resolver_lookup_by_name_async (GResolver           *resolver,
     }
   else
     {
-      g_task_return_new_error (task,
-                               G_RESOLVER_ERROR, G_RESOLVER_ERROR_NOT_FOUND,
-                               "Not found");
+      g_task_return_new_error_literal (task,
+                                       G_RESOLVER_ERROR, G_RESOLVER_ERROR_NOT_FOUND,
+                                       "Not found");
     }
   g_object_unref (task);
 }

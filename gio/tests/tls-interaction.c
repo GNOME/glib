@@ -149,7 +149,7 @@ test_interaction_ask_password_async_failure (GTlsInteraction    *interaction,
 
   task = g_task_new (self, cancellable, callback, user_data);
 
-  g_task_return_new_error (task, G_FILE_ERROR, G_FILE_ERROR_ACCES, "The message");
+  g_task_return_new_error_literal (task, G_FILE_ERROR, G_FILE_ERROR_ACCES, "The message");
   g_object_unref (task);
 }
 
@@ -348,7 +348,7 @@ test_interaction_request_certificate_async_failure (GTlsInteraction    *interact
 
   task = g_task_new (self, cancellable, callback, user_data);
 
-  g_task_return_new_error (task, G_FILE_ERROR, G_FILE_ERROR_NOENT, "Another message");
+  g_task_return_new_error_literal (task, G_FILE_ERROR, G_FILE_ERROR_NOENT, "Another message");
   g_object_unref (task);
 }
 

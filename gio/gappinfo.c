@@ -721,8 +721,8 @@ g_app_info_launch_uris_async (GAppInfo           *appinfo,
 
       task = g_task_new (appinfo, cancellable, callback, user_data);
       g_task_set_source_tag (task, g_app_info_launch_uris_async);
-      g_task_return_new_error (task, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-                               "Operation not supported for the current backend.");
+      g_task_return_new_error_literal (task, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                                       "Operation not supported for the current backend.");
       g_object_unref (task);
 
       return;
