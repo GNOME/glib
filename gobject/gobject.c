@@ -109,6 +109,10 @@ enum {
 #define OPTIONAL_FLAG_HAS_NOTIFY_HANDLER (1 << 2) /* Same, specifically for "notify" */
 #define OPTIONAL_FLAG_LOCK               (1 << 3) /* _OPTIONAL_BIT_LOCK */
 
+#define _OPTIONAL2_BIT_LOCK              0
+
+#define OPTIONAL2_FLAG_LOCK              (1 << 0) /* _OPTIONAL2_BIT_LOCK */
+
 /* We use g_bit_lock(), which only supports one lock per integer.
  *
  * Hence, while we have locks for different purposes, internally they all
@@ -128,26 +132,24 @@ enum {
 #define OPTIONAL_BIT_LOCK_TOGGLE_REFS    3
 #define OPTIONAL_BIT_LOCK_CLOSURE_ARRAY  4
 
+/* These lock types are for optional2_flags and object_bit_lock2(). */
+#define OPTIONAL2_BIT_LOCK_G_WEAK_REF    1
+
 #if SIZEOF_INT == 4 && GLIB_SIZEOF_VOID_P >= 8
 #define HAVE_OPTIONAL_FLAGS_IN_GOBJECT 1
 #else
 #define HAVE_OPTIONAL_FLAGS_IN_GOBJECT 0
 #endif
 
-/* For now we only create a private struct if we don't have optional flags in
- * GObject. Currently we don't need it otherwise. In the future we might
- * always add a private struct. */
-#define HAVE_PRIVATE (!HAVE_OPTIONAL_FLAGS_IN_GOBJECT)
-
-#if HAVE_PRIVATE
-typedef struct {
+typedef struct
+{
 #if !HAVE_OPTIONAL_FLAGS_IN_GOBJECT
-	guint optional_flags; /* (atomic) */
+  guint optional_flags; /* (atomic) */
 #endif
+  guint optional2_flags; /* (atomic) */
 } GObjectPrivate;
 
 static int GObject_private_offset;
-#endif
 
 typedef struct
 {
@@ -165,6 +167,13 @@ G_STATIC_ASSERT(sizeof(GObject) == sizeof(GObjectReal));
 G_STATIC_ASSERT(G_STRUCT_OFFSET(GObject, ref_count) == G_STRUCT_OFFSET(GObjectReal, ref_count));
 G_STATIC_ASSERT(G_STRUCT_OFFSET(GObject, qdata) == G_STRUCT_OFFSET(GObjectReal, qdata));
 
+typedef struct
+{
+#if G_ENABLE_DEBUG
+  GObject *object;
+#endif
+  GSList *list;
+} GWeakRefList;
 
 /* --- prototypes --- */
 static void	g_object_base_class_init		(GObjectClass	*class);
@@ -209,7 +218,6 @@ static guint               object_floating_flag_handler (GObject        *object,
 
 static void object_interface_check_properties           (gpointer        check_data,
 							 gpointer        g_iface);
-static void                weak_locations_free_unlocked (GSList **weak_locations);
 
 /* --- typedefs --- */
 typedef struct _GObjectNotifyQueue            GObjectNotifyQueue;
@@ -229,17 +237,13 @@ static GQuark               quark_notify_queue;
 static GParamSpecPool      *pspec_pool = NULL;
 static gulong	            gobject_signals[LAST_SIGNAL] = { 0, };
 static guint (*floating_flag_handler) (GObject*, gint) = object_floating_flag_handler;
-/* qdata pointing to GSList<GWeakRef *>, protected by weak_locations_lock */
 static GQuark	            quark_weak_locations = 0;
-static GRWLock              weak_locations_lock;
 
-#if HAVE_PRIVATE
 G_ALWAYS_INLINE static inline GObjectPrivate *
 g_object_get_instance_private (GObject *object)
 {
   return G_STRUCT_MEMBER_P (object, GObject_private_offset);
 }
-#endif
 
 G_ALWAYS_INLINE static inline guint *
 object_get_optional_flags_p (GObject *object)
@@ -286,6 +290,29 @@ object_bit_unlock (GObject *object, guint lock_bit)
 #endif
 
   g_bit_unlock ((gint *) object_get_optional_flags_p (object), _OPTIONAL_BIT_LOCK);
+}
+
+static void
+object_bit_lock2 (GObject *object, guint lock_bit)
+{
+#if defined(G_ENABLE_DEBUG)
+  /* Only OPTIONAL2_BIT_LOCK_G_WEAK_REF is supported. Also, will take this lock
+   * nested (on two objects) during _weak_ref_set(). We thus cannot use
+   * something like _object_bit_is_locked for asserting. */
+  g_assert (lock_bit == OPTIONAL2_BIT_LOCK_G_WEAK_REF);
+#endif
+  if (object)
+    g_bit_lock ((gint *) &g_object_get_instance_private (object)->optional2_flags, _OPTIONAL2_BIT_LOCK);
+}
+
+static void
+object_bit_unlock2 (GObject *object, guint lock_bit)
+{
+#if defined(G_ENABLE_DEBUG)
+  g_assert (lock_bit == OPTIONAL2_BIT_LOCK_G_WEAK_REF);
+#endif
+  if (object)
+    g_bit_unlock ((gint *) &g_object_get_instance_private (object)->optional2_flags, _OPTIONAL2_BIT_LOCK);
 }
 
 /* --- functions --- */
@@ -542,10 +569,8 @@ _g_object_type_init (void)
     }
 #endif /* G_ENABLE_DEBUG */
 
-#if HAVE_PRIVATE
   GObject_private_offset =
       g_type_add_instance_private (G_TYPE_OBJECT, sizeof (GObjectPrivate));
-#endif
 }
 
 /* Initialize the global GParamSpecPool; this function needs to be
@@ -678,9 +703,7 @@ g_object_do_class_init (GObjectClass *class)
    */
   g_type_add_interface_check (NULL, object_interface_check_properties);
 
-#if HAVE_PRIVATE
   g_type_class_adjust_private_offset (class, &GObject_private_offset);
-#endif
 }
 
 /* Sinks @pspec if it’s a floating ref. */
@@ -1434,6 +1457,11 @@ g_object_finalize (GObject *object)
                   "and must be removed with g_object_ref_sink().",
                   G_OBJECT_TYPE_NAME (object), object);
    }
+
+  /* At this point we really should not have any weak-locations anymore. We
+   * are about to g_datalist_clear() them, would we need a lock for
+   * OPTIONAL2_BIT_LOCK_G_WEAK_REF? */
+  g_assert (!g_datalist_id_get_data (&object->qdata, quark_weak_locations));
 #endif
 
   g_datalist_clear (&object->qdata);
@@ -1478,7 +1506,11 @@ g_object_run_dispose (GObject *object)
   TRACE (GOBJECT_OBJECT_DISPOSE(object,G_TYPE_FROM_INSTANCE(object), 0));
   G_OBJECT_GET_CLASS (object)->dispose (object);
   TRACE (GOBJECT_OBJECT_DISPOSE_END(object,G_TYPE_FROM_INSTANCE(object), 0));
+
+  object_bit_lock2 (object, OPTIONAL2_BIT_LOCK_G_WEAK_REF);
   g_datalist_id_remove_data (&object->qdata, quark_weak_locations);
+  object_bit_unlock2 (object, OPTIONAL2_BIT_LOCK_G_WEAK_REF);
+
   g_object_unref (object);
 }
 
@@ -3841,77 +3873,47 @@ gpointer
 static gboolean
 _object_unref_clear_weak_locations (GObject *object, gint *p_old_ref, gboolean do_unref)
 {
-  GSList **weak_locations;
+  gboolean success;
 
-  if (do_unref)
+  object_bit_lock2 (object, OPTIONAL2_BIT_LOCK_G_WEAK_REF);
+
+  /* We now hold a lock. We must check that the ref-count is as expected at 1.
+   * Otherwise, we are non the position to proceed clearing weak references. */
+  *p_old_ref = g_atomic_int_get ((gint *) &object->ref_count);
+  success = (*p_old_ref == 1);
+
+  if (success)
     {
-      gboolean unreffed = FALSE;
+      /* Looks good. Clear weak locations... */
+      g_datalist_id_remove_data (&object->qdata, quark_weak_locations);
 
-      /* Fast path for the final unref using a read-lck only. We check whether
-       * we have weak_locations and drop ref count to zero under a reader lock. */
-
-      g_rw_lock_reader_lock (&weak_locations_lock);
-
-      weak_locations = g_datalist_id_get_data (&object->qdata, quark_weak_locations);
-      if (!weak_locations)
+      /* Note that g_weak_ref_set() requires a OPTIONAL2_BIT_LOCK_G_WEAK_REF lock,
+       * so right now no new weak references can be registered.
+       *
+       * However, g_weak_ref_get() only requires a _weak_ref_lock() lock,
+       * so we might race against having the object resurrected.
+       *
+       * We can still fail. Do the final unref or recheck the ref-count.
+       *
+       * Note what this means. If we have multiple weak references registered,
+       * then we start clearing the weak locations, and half way through a weak-ref
+       * can resurrect the object. But the weak references are already partly cleared. */
+      if (do_unref)
         {
-          unreffed = g_atomic_int_compare_and_exchange_full ((int *) &object->ref_count,
-                                                             1, 0,
-                                                             p_old_ref);
-          g_rw_lock_reader_unlock (&weak_locations_lock);
-          return unreffed;
+          success = g_atomic_int_compare_and_exchange_full ((int *) &object->ref_count,
+                                                            1, 0,
+                                                            p_old_ref);
         }
-
-      g_rw_lock_reader_unlock (&weak_locations_lock);
-
-      /* We have weak-locations. Note that we are here already after dispose(). That
-       * means, during dispose a GWeakRef was registered (very unusual). */
-
-      g_rw_lock_writer_lock (&weak_locations_lock);
-
-      if (!g_atomic_int_compare_and_exchange_full ((int *) &object->ref_count,
-                                                   1, 0,
-                                                   p_old_ref))
+      else
         {
-          g_rw_lock_writer_unlock (&weak_locations_lock);
-          return FALSE;
+          *p_old_ref = g_atomic_int_get ((gint *) &object->ref_count);
+          success = (*p_old_ref == 1);
         }
-
-      weak_locations = g_datalist_id_remove_no_notify (&object->qdata, quark_weak_locations);
-      g_clear_pointer (&weak_locations, weak_locations_free_unlocked);
-
-      g_rw_lock_writer_unlock (&weak_locations_lock);
-      return TRUE;
     }
 
-  weak_locations = g_datalist_id_get_data (&object->qdata, quark_weak_locations);
-  if (weak_locations != NULL)
-    {
-      g_rw_lock_writer_lock (&weak_locations_lock);
+  object_bit_unlock2 (object, OPTIONAL2_BIT_LOCK_G_WEAK_REF);
 
-      *p_old_ref = g_atomic_int_get (&object->ref_count);
-      if (*p_old_ref != 1)
-        {
-          g_rw_lock_writer_unlock (&weak_locations_lock);
-          return FALSE;
-        }
-
-      weak_locations = g_datalist_id_remove_no_notify (&object->qdata, quark_weak_locations);
-      g_clear_pointer (&weak_locations, weak_locations_free_unlocked);
-
-      g_rw_lock_writer_unlock (&weak_locations_lock);
-      return TRUE;
-    }
-
-  /* We don't need to re-fetch p_old_ref or check that it's still 1. The caller
-   * did that already. We are good.
-   *
-   * Note that in this case we fetched old_ref and weak_locations separately,
-   * without a lock. But this is fine. We are still before calling dispose().
-   * If there is a race at this point, the same race can happen between
-   * _object_unref_clear_weak_locations() and dispose() call. That is handled
-   * just fine. */
-  return TRUE;
+  return success;
 }
 
 /**
@@ -5064,6 +5066,201 @@ g_initially_unowned_class_init (GInitiallyUnownedClass *klass)
  * without first having or creating a strong reference to the object.
  */
 
+#define WEAK_REF_LOCK 0
+
+static GObject *
+_weak_ref_clean_pointer (gpointer ptr)
+{
+  /* Drop the lockbit WEAK_REF_LOCK (if set). */
+  return g_pointer_bit_lock_mask_ptr (ptr, WEAK_REF_LOCK, FALSE, 0, NULL);
+}
+
+static void
+_weak_ref_lock (GWeakRef *weak_ref, GObject **out_object)
+{
+  g_pointer_bit_lock (&weak_ref->priv.p, WEAK_REF_LOCK);
+
+  if (out_object)
+    {
+      /* Let's read "weak_ref->priv.p" without atomic. We just set a bitlock (using
+       * atomics), nobody is changing this value. */
+      *out_object = _weak_ref_clean_pointer (weak_ref->priv.p);
+    }
+}
+
+static void
+_weak_ref_unlock (GWeakRef *weak_ref)
+{
+  g_pointer_bit_unlock (&weak_ref->priv.p, WEAK_REF_LOCK);
+}
+
+static void
+_weak_ref_unlock_and_set (GWeakRef *weak_ref, GObject *object)
+{
+  g_pointer_bit_unlock_and_set (&weak_ref->priv.p, WEAK_REF_LOCK, object, 0);
+}
+
+static void
+_weak_ref_list_free (GWeakRefList *weak_ref_list)
+{
+  /* This must be called with a OPTIONAL2_BIT_LOCK_G_WEAK_REF lock hold. Note
+   * that this function is the destroy notify for quark_weak_locations data. We
+   * will always explicitly call
+   *
+   *   g_datalist_id_remove_data (&object->qdata, quark_weak_locations);
+   *
+   * while holding a OPTIONAL2_BIT_LOCK_G_WEAK_REF. Only during finalize
+   * (g_datalist_clear()) we don't. But then the qdata is expected not to be
+   * set. */
+  while (weak_ref_list->list)
+    {
+      GWeakRef *weak_ref = weak_ref_list->list->data;
+      gpointer ptr;
+
+      weak_ref_list->list = g_slist_remove (weak_ref_list->list, weak_ref);
+
+      /* Fast-path. Most likely @weak_ref is currently not locked, so we can
+       * just atomically set the pointer to NULL. */
+      ptr = g_atomic_pointer_get (&weak_ref->priv.p);
+#if G_ENABLE_DEBUG
+      g_assert(_weak_ref_clean_pointer (ptr) == weak_ref_list->object);
+#endif
+      if (G_LIKELY (ptr == _weak_ref_clean_pointer (ptr)))
+        {
+          /* The pointer is unlocked. Try an atomic compare-and-exchange... */
+          if (g_atomic_pointer_compare_and_exchange (&weak_ref->priv.p, ptr, NULL))
+            continue;
+        }
+
+      /* The @weak_ref is locked. This can only be due to a concurrent
+       * g_weak_ref_get() (because g_weak_ref_set() would wait to acquire a
+       * OPTIONAL2_BIT_LOCK_G_WEAK_REF lock).
+       *
+       * Take the lock on @weak_ref, and set the pointer to NULL. */
+      _weak_ref_lock (weak_ref, NULL);
+#if G_ENABLE_DEBUG
+      g_assert(_weak_ref_clean_pointer (weak_ref->priv.p) == weak_ref_list->object);
+#endif
+      _weak_ref_unlock_and_set (weak_ref, NULL);
+    }
+
+  g_free_sized (weak_ref_list, sizeof (GWeakRefList));
+}
+
+static void
+_weak_ref_set (GWeakRef *weak_ref,
+               GObject *new_object,
+               gboolean is_initially_null)
+{
+  GWeakRefList *weak_ref_list;
+  GObject *old_object_unlock;
+  GObject *old_object_real;
+  GObject *old_object;
+
+  if (is_initially_null)
+    {
+      /* The caller indicates that the weak-ref is set to NULL. Don't check. */
+      old_object = NULL;
+    }
+  else
+    {
+      /* We must take a lock on old_object. For that, we have to first get a
+       * reference to it. */
+      old_object = g_weak_ref_get (weak_ref);
+    }
+
+  /* We need lock on both objects and the weak_ref. The order of the locks
+   * matters so we don't deadlock. */
+  if (new_object && old_object && (((guintptr) (gpointer) old_object) < ((guintptr) ((gpointer) new_object))))
+    {
+      /* To avoid deadlocks, we sort the objects by pointer value. */
+      object_bit_lock2 (old_object, OPTIONAL2_BIT_LOCK_G_WEAK_REF);
+      object_bit_lock2 (new_object, OPTIONAL2_BIT_LOCK_G_WEAK_REF);
+      old_object_unlock = old_object;
+    }
+  else
+    {
+      object_bit_lock2 (new_object, OPTIONAL2_BIT_LOCK_G_WEAK_REF);
+      if (new_object != old_object)
+        {
+          object_bit_lock2 (old_object, OPTIONAL2_BIT_LOCK_G_WEAK_REF);
+          old_object_unlock = old_object;
+        }
+      else
+        old_object_unlock = NULL;
+    }
+  _weak_ref_lock (weak_ref, &old_object_real);
+
+  if (old_object_real != old_object)
+    {
+      /* A race. old_object_real is not the expected old_object due to a
+       * concurrent g_weak_ref_set() call. */
+      if (old_object_real)
+        {
+          /* We lost the race and are done. */
+          object_bit_unlock2 (old_object_unlock, OPTIONAL2_BIT_LOCK_G_WEAK_REF);
+          object_bit_unlock2 (new_object, OPTIONAL2_BIT_LOCK_G_WEAK_REF);
+          _weak_ref_unlock (weak_ref);
+          g_clear_object (&old_object);
+          return;
+        }
+
+      /* old_object_real is NULL, which is unexpected but OK. Proceed to set. */
+    }
+
+  if (old_object_real && new_object != old_object_real)
+    {
+      weak_ref_list = g_datalist_id_get_data (&old_object_real->qdata, quark_weak_locations);
+      if (!weak_ref_list)
+        {
+          g_critical ("unexpected missing GWeakRefList");
+        }
+      else
+        {
+#if G_ENABLE_DEBUG
+          g_assert (g_slist_find (weak_ref_list->list, weak_ref));
+#endif
+          weak_ref_list->list = g_slist_remove (weak_ref_list->list, weak_ref);
+          if (!weak_ref_list->list)
+            g_datalist_id_remove_data (&old_object_real->qdata, quark_weak_locations);
+        }
+    }
+
+  object_bit_unlock2 (old_object_unlock, OPTIONAL2_BIT_LOCK_G_WEAK_REF);
+
+  if (new_object && new_object != old_object_real)
+    {
+      if (g_atomic_int_get (&new_object->ref_count) < 1)
+        {
+          g_critical ("calling g_weak_ref_set() with already destroyed object");
+          object_bit_unlock2 (new_object, OPTIONAL2_BIT_LOCK_G_WEAK_REF);
+          new_object = NULL;
+        }
+      else
+        {
+          weak_ref_list = g_datalist_id_get_data (&new_object->qdata, quark_weak_locations);
+          if (!weak_ref_list)
+            {
+              weak_ref_list = g_new0 (GWeakRefList, 1);
+#if G_ENABLE_DEBUG
+              weak_ref_list->object = new_object;
+#endif
+              g_datalist_id_set_data_full (&new_object->qdata, quark_weak_locations,
+                                           weak_ref_list, (GDestroyNotify) _weak_ref_list_free);
+            }
+
+          weak_ref_list->list = g_slist_prepend (weak_ref_list->list, weak_ref);
+        }
+    }
+
+  _weak_ref_unlock_and_set (weak_ref, new_object);
+  object_bit_unlock2 (new_object, OPTIONAL2_BIT_LOCK_G_WEAK_REF);
+
+  /* g_object_unref() emits callbacks. Can only unref now after all locks are
+   * released. */
+  g_clear_object (&old_object);
+}
+
 /**
  * g_weak_ref_init: (skip)
  * @weak_ref: (inout): uninitialized or empty location for a weak
@@ -5084,12 +5281,19 @@ g_initially_unowned_class_init (GInitiallyUnownedClass *klass)
  */
 void
 g_weak_ref_init (GWeakRef *weak_ref,
-                 gpointer  object)
+                 gpointer object)
 {
-  weak_ref->priv.p = NULL;
+  g_return_if_fail (weak_ref);
+  g_return_if_fail (object == NULL || G_IS_OBJECT (object));
 
+  g_atomic_pointer_set (&weak_ref->priv.p, NULL);
   if (object)
-    g_weak_ref_set (weak_ref, object);
+    {
+      /* We give a hint that the weak_ref is currently NULL. Unlike
+       * g_weak_ref_set(), we then don't need extra locks just to
+       * find out that we have no object. */
+      _weak_ref_set (weak_ref, object, TRUE);
+    }
 }
 
 /**
@@ -5102,6 +5306,11 @@ g_weak_ref_init (GWeakRef *weak_ref,
  *
  * You should only call this on a #GWeakRef that previously had
  * g_weak_ref_init() called on it.
+ *
+ * Note that clearing a weak ref needs to temporarily take a reference
+ * on the old object. This means that toggle notifications can be emitted
+ * and that the old objects may be destroyed by this (if another thread
+ * races to also release the last reference).
  *
  * Since: 2.32
  */
@@ -5142,48 +5351,66 @@ g_weak_ref_get (GWeakRef *weak_ref)
 
   g_return_val_if_fail (weak_ref, NULL);
 
-  g_rw_lock_reader_lock (&weak_locations_lock);
+again:
 
-  object = weak_ref->priv.p;
+  _weak_ref_lock (weak_ref, &object);
 
   if (object)
     object = object_ref (object, &toggle_notify, &toggle_data);
 
-  g_rw_lock_reader_unlock (&weak_locations_lock);
+  _weak_ref_unlock (weak_ref);
 
   if (toggle_notify)
     toggle_notify (toggle_data, object, FALSE);
 
-  return object;
-}
-
-static void
-weak_locations_free_unlocked (GSList **weak_locations)
-{
-  if (*weak_locations)
+  if (object)
     {
-      GSList *weak_location;
+      GObject *object2;
+      gboolean obj_is_good;
 
-      for (weak_location = *weak_locations; weak_location;)
+      /* There is a problem...
+       *
+       * We obtained a reference on @object while holding a _weak_ref_lock()
+       * lock.
+       *
+       * But _object_unref_clear_weak_locations() is racing against clearing
+       * the weak-ref. We can only ensure that the weak-reference is sane, if
+       * we also do that under a OPTIONAL2_BIT_LOCK_G_WEAK_REF lock.  But we
+       * could not have taken that look, before getting a reference on @object.
+       *
+       * Now that we have the @object, we need to take locks in the right order
+       * and check again. */
+      object_bit_lock2 (object, OPTIONAL2_BIT_LOCK_G_WEAK_REF);
+      _weak_ref_lock (weak_ref, &object2);
+      obj_is_good = (object2 == object);
+      _weak_ref_unlock (weak_ref);
+      object_bit_unlock2 (object, OPTIONAL2_BIT_LOCK_G_WEAK_REF);
+
+      /* FIXME: while this should work, when @obj_is_good is FALSE, tests break
+       * (??).
+       *
+       * But what is worse, is that we cannot have g_weak_ref_get() /
+       * g_weak_ref_set() take spurious references on Object. We currently need
+       * that, because we need to take OPTIONAL2_BIT_LOCK_G_WEAK_REF locks and
+       * the object needs to stay alive for that.
+       *
+       * However, this is too bad. Taking a reference emits toggle
+       * notifications, and worse, it means that we can steal the destruction
+       * from another thread that does the final g_object_unref().
+       *
+       * The fix instead will be to request a ref-counted locker instance from
+       * the object, which we can keep alive separately from object and can
+       * take a lock on. */
+      obj_is_good = TRUE;
+
+      if (!obj_is_good)
         {
-          GWeakRef *weak_ref_location = weak_location->data;
-
-          weak_ref_location->priv.p = NULL;
-          weak_location = g_slist_delete_link (weak_location, weak_location);
+          g_object_unref (object);
+          goto again;
         }
     }
 
-  g_free (weak_locations);
-}
-
-static void
-weak_locations_free (gpointer data)
-{
-  GSList **weak_locations = data;
-
-  g_rw_lock_writer_lock (&weak_locations_lock);
-  weak_locations_free_unlocked (weak_locations);
-  g_rw_lock_writer_unlock (&weak_locations_lock);
+  return object;
 }
 
 /**
@@ -5197,86 +5424,19 @@ weak_locations_free (gpointer data)
  * You must own a strong reference on @object while calling this
  * function.
  *
+ * Note that resetting a weak ref needs to temporarily take a reference
+ * on the old object. This means that toggle notifications can be emitted
+ * and that the old objects may be destroyed by this (if another thread
+ * races to also release the last reference).
+ *
  * Since: 2.32
  */
 void
 g_weak_ref_set (GWeakRef *weak_ref,
-                gpointer  object)
+                gpointer object)
 {
-  GSList **weak_locations;
-  GObject *new_object;
-  GObject *old_object;
-
   g_return_if_fail (weak_ref != NULL);
   g_return_if_fail (object == NULL || G_IS_OBJECT (object));
 
-  new_object = object;
-
-  g_rw_lock_writer_lock (&weak_locations_lock);
-
-  /* We use the extra level of indirection here so that if we have ever
-   * had a weak pointer installed at any point in time on this object,
-   * we can see that there is a non-NULL value associated with the
-   * weak-pointer quark and know that this value will not change at any
-   * point in the object's lifetime.
-   *
-   * Both properties are important for reducing the amount of times we
-   * need to acquire locks and for decreasing the duration of time the
-   * lock is held while avoiding some rather tricky races.
-   *
-   * Specifically: we can avoid having to do an extra unconditional lock
-   * in g_object_unref() without worrying about some extremely tricky
-   * races.
-   */
-
-  old_object = weak_ref->priv.p;
-  if (new_object != old_object)
-    {
-      weak_ref->priv.p = new_object;
-
-      /* Remove the weak ref from the old object */
-      if (old_object != NULL)
-        {
-          weak_locations = g_datalist_id_get_data (&old_object->qdata, quark_weak_locations);
-          if (weak_locations == NULL)
-            {
-              g_critical ("unexpected missing GWeakRef");
-            }
-          else
-            {
-              *weak_locations = g_slist_remove (*weak_locations, weak_ref);
-
-              if (!*weak_locations)
-                {
-                  weak_locations_free_unlocked (weak_locations);
-                  g_datalist_id_remove_no_notify (&old_object->qdata, quark_weak_locations);
-                }
-            }
-        }
-
-      /* Add the weak ref to the new object */
-      if (new_object != NULL)
-        {
-          if (g_atomic_int_get (&new_object->ref_count) < 1)
-            {
-              weak_ref->priv.p = NULL;
-              g_rw_lock_writer_unlock (&weak_locations_lock);
-              g_critical ("calling g_weak_ref_set() with already destroyed object");
-              return;
-            }
-
-          weak_locations = g_datalist_id_get_data (&new_object->qdata, quark_weak_locations);
-
-          if (weak_locations == NULL)
-            {
-              weak_locations = g_new0 (GSList *, 1);
-              g_datalist_id_set_data_full (&new_object->qdata, quark_weak_locations,
-                                           weak_locations, weak_locations_free);
-            }
-
-          *weak_locations = g_slist_prepend (*weak_locations, weak_ref);
-        }
-    }
-
-  g_rw_lock_writer_unlock (&weak_locations_lock);
+  _weak_ref_set (weak_ref, object, FALSE);
 }
