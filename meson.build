@@ -2558,19 +2558,10 @@ endif
 
 configure_file(output : 'config.h', configuration : glib_conf)
 
-if get_option('man')
-  xsltproc = find_program('xsltproc', required : true)
-  xsltproc_command = [
-    xsltproc,
-    '--nonet',
-    '--stringparam', 'man.output.quietly', '1',
-    '--stringparam', 'funcsynopsis.style', 'ansi',
-    '--stringparam', 'man.th.extra1.suppress', '1',
-    '--stringparam', 'man.authors.section.enabled', '0',
-    '--stringparam', 'man.copyright.section.enabled', '0',
-    '-o', '@OUTPUT@',
-    'http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl',
-    '@INPUT@',
+rst2man = find_program('rst2man', 'rst2man.py', required: get_option('man-pages'))
+if rst2man.found()
+  rst2man_flags = [
+    '--syntax-highlight=none',
   ]
   man1_dir = join_paths(glib_prefix, get_option('mandir'), 'man1')
 endif
@@ -2634,7 +2625,7 @@ endif
 
 summary({
   'xattr' : xattr_dep.length() > 0,
-  'man' : get_option('man'),
+  'man-pages' : get_option('man-pages'),
   'dtrace' : get_option('dtrace'),
   'systemtap' : enable_systemtap,
   'sysprof' : libsysprof_capture_dep.found(),

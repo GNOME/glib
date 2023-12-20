@@ -1,11 +1,16 @@
 
-if get_option('man')
+if get_option('man-pages').enabled()
   manpages = ['glib-gettextize', 'gtester', 'gtester-report']
   foreach page : manpages
     custom_target(page + '-man',
-      input: page + '.xml',
+      input: page + '.rst',
       output: page + '.1',
-      command: xsltproc_command,
+      command: [
+        rst2man,
+        rst2man_flags,
+        '@INPUT@',
+      ],
+      capture: true,
       install: true,
       install_dir: man1_dir,
       install_tag: 'doc',

@@ -146,12 +146,11 @@ configuring the GLib library:
 : By default, GLib will not build documentation for the library and tools. This
   option can be used to enable building the documentation.
 
-`-Dman=false` and `-Dman=true`
-: By default, GLib will detect whether `xsltproc` and the necessary DocBook
-  stylesheets are installed. If they are, then it will use them to rebuild
-  the included man pages from the XML sources. These options can be used to
-  explicitly control whether man pages should be rebuilt used or not. The
-  distribution includes pre-generated man pages.
+`-Dman-pages=disabled` and `-Dman-pages=enabled`
+: By default, GLib will detect whether `rst2man` and the necessary DocBook
+  stylesheets are installed. If they are, then it will use them to build
+  the included man pages from the reStructuredText sources. These options can be
+  used to explicitly control whether man pages should be built and used.
 
 `-Dxattr=false` and `-Dxattr=true`
 : By default, GLib will detect whether the `getxattr()` family of functions is
