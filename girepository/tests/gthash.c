@@ -53,6 +53,8 @@ test_build_retrieve (void)
   g_assert (gi_typelib_hash_search (buf, "ZLibDecompressor", 4) == 42);
   g_assert (gi_typelib_hash_search (buf, "VolumeMonitor", 4) == 9);
   g_assert (gi_typelib_hash_search (buf, "FileMonitorFlags", 4) == 31);
+
+  g_free (buf);
 }
 
 int
