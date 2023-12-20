@@ -1,6 +1,16 @@
+
+gi_identifier_prefix = 'G'
+gi_symbol_prefix = 'g'
+
+gi_gen_shared_sources = [
+  # Required to compile gdump
+  gmodule_visibility_h,
+]
+
 # GLib
 glib_gir = gnome.generate_gir(libglib,
   sources: [
+    gi_gen_shared_sources,
     glibconfig_h,
     gversionmacros_h,
     glib_visibility_h,
@@ -11,14 +21,11 @@ glib_gir = gnome.generate_gir(libglib,
     glib_types_h,
     glib_deprecated_sources,
     glib_sources,
-
-    # Required to compile gdump
-    gmodule_visibility_h,
   ],
   namespace: 'GLib',
   nsversion: '2.0',
-  identifier_prefix: 'G',
-  symbol_prefix: 'g',
+  identifier_prefix: gi_identifier_prefix,
+  symbol_prefix: gi_symbol_prefix,
   export_packages: 'glib-2.0',
   header: 'glib.h',
   install: true,
@@ -37,17 +44,15 @@ glib_gir = gnome.generate_gir(libglib,
 # GObject
 gobject_gir = gnome.generate_gir(libgobject,
   sources: [
+    gi_gen_shared_sources,
     gobject_visibility_h,
     gobject_install_headers,
     gobject_sources,
-
-    # Required to compile gdump
-    gmodule_visibility_h,
   ],
   namespace: 'GObject',
   nsversion: '2.0',
-  identifier_prefix: 'G',
-  symbol_prefix: 'g',
+  identifier_prefix: gi_identifier_prefix,
+  symbol_prefix: gi_symbol_prefix,
   export_packages: 'gobject-2.0',
   header: 'glib-object.h',
   includes: [ glib_gir[0] ],
@@ -61,6 +66,7 @@ gobject_gir = gnome.generate_gir(libgobject,
 # GModule
 gmodule_gir = gnome.generate_gir(libgmodule,
   sources: [
+    gi_gen_shared_sources,
     gmoduleconf_h,
     gmodule_h,
     gmodule_c,
@@ -69,8 +75,8 @@ gmodule_gir = gnome.generate_gir(libgmodule,
   ],
   namespace: 'GModule',
   nsversion: '2.0',
-  identifier_prefix: 'G',
-  symbol_prefix: 'g',
+  identifier_prefix: gi_identifier_prefix,
+  symbol_prefix: gi_symbol_prefix,
   export_packages: 'gmodule-2.0',
   header: 'gmodule.h',
   includes: [ glib_gir[0] ],
@@ -87,6 +93,7 @@ gmodule_gir = gnome.generate_gir(libgmodule,
 
 # Gio
 gio_gir_sources = [
+  gi_gen_shared_sources,
   gio_visibility_h,
   gioenumtypes_h,
   gnetworking_h,
@@ -99,9 +106,6 @@ gio_gir_sources = [
   unix_sources,
   win32_sources,
   settings_sources,
-
-  # Required to compile gdump
-  gmodule_visibility_h,
 ]
 gio_gir_packages = [ 'gio-2.0' ]
 gio_gir_args = [
@@ -129,8 +133,8 @@ gio_gir = gnome.generate_gir(libgio,
   sources: gio_gir_sources,
   namespace: 'Gio',
   nsversion: '2.0',
-  identifier_prefix: 'G',
-  symbol_prefix: 'g',
+  identifier_prefix: gi_identifier_prefix,
+  symbol_prefix: gi_symbol_prefix,
   export_packages: gio_gir_packages,
   header: 'gio/gio.h',
   includes: [ glib_gir[0], gmodule_gir[0], gobject_gir[0] ],
