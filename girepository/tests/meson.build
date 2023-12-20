@@ -6,6 +6,10 @@ if enable_gir
     'repository' : {
       'depends': [glib_gir, gobject_gir],
     },
+    'repository-search-paths' : {
+      'c_args': '-DGOBJECT_INTROSPECTION_LIBDIR="@0@"'.format(glib_libdir),
+      'depends': [glib_gir],
+    },
   }
 endif
 
