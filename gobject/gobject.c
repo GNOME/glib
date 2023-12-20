@@ -125,6 +125,7 @@ enum {
  * (per-object!) is not worth it. */
 #define OPTIONAL_BIT_LOCK_WEAK_REFS      1
 #define OPTIONAL_BIT_LOCK_NOTIFY         2
+#define OPTIONAL_BIT_LOCK_TOGGLE_REFS    3
 
 #if SIZEOF_INT == 4 && GLIB_SIZEOF_VOID_P == 8
 #define HAVE_OPTIONAL_FLAGS_IN_GOBJECT 1
@@ -221,7 +222,6 @@ struct _GObjectNotifyQueue
 
 /* --- variables --- */
 G_LOCK_DEFINE_STATIC (closure_array_mutex);
-G_LOCK_DEFINE_STATIC (toggle_refs_mutex);
 static GQuark	            quark_closure_array = 0;
 static GQuark	            quark_weak_notifies = 0;
 static GQuark	            quark_toggle_refs = 0;
@@ -3662,7 +3662,7 @@ g_object_add_toggle_ref (GObject       *object,
 
   g_object_ref (object);
 
-  G_LOCK (toggle_refs_mutex);
+  object_bit_lock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
   tstack = g_datalist_id_remove_no_notify (&object->qdata, quark_toggle_refs);
   if (tstack)
     {
@@ -3686,7 +3686,7 @@ g_object_add_toggle_ref (GObject       *object,
   tstack->toggle_refs[i].data = data;
   g_datalist_id_set_data_full (&object->qdata, quark_toggle_refs, tstack,
 			       (GDestroyNotify)g_free);
-  G_UNLOCK (toggle_refs_mutex);
+  object_bit_unlock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
 }
 
 /**
@@ -3719,7 +3719,7 @@ g_object_remove_toggle_ref (GObject       *object,
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (notify != NULL);
 
-  G_LOCK (toggle_refs_mutex);
+  object_bit_lock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
   tstack = g_datalist_id_get_data (&object->qdata, quark_toggle_refs);
   if (tstack)
     {
@@ -3743,7 +3743,7 @@ g_object_remove_toggle_ref (GObject       *object,
 	    break;
 	  }
     }
-  G_UNLOCK (toggle_refs_mutex);
+  object_bit_unlock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
 
   if (found_one)
     g_object_unref (object);
@@ -3791,11 +3791,11 @@ retry:
       gboolean do_retry;
 
       /* With ref count 1, check whether we need to emit a toggle notification. */
-      G_LOCK (toggle_refs_mutex);
+      object_bit_lock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
       toggle_notify = toggle_refs_get_notify_unlocked (object, &toggle_data);
       do_retry = !g_atomic_int_compare_and_exchange_full ((int *) &object->ref_count,
                                                           old_ref, old_ref + 1, &old_ref);
-      G_UNLOCK (toggle_refs_mutex);
+      object_bit_unlock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
       if (do_retry)
         goto retry;
     }
@@ -3960,18 +3960,18 @@ retry_beginning:
        *
        * We need to take a lock, to avoid races. */
 
-      G_LOCK (toggle_refs_mutex);
+      object_bit_lock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
 
       toggle_notify = toggle_refs_get_notify_unlocked (object, &toggle_data);
 
       if (!g_atomic_int_compare_and_exchange_full ((int *) &object->ref_count,
                                                    old_ref, old_ref - 1, &old_ref))
         {
-          G_UNLOCK (toggle_refs_mutex);
+          object_bit_unlock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
           goto retry_beginning;
         }
 
-      G_UNLOCK (toggle_refs_mutex);
+      object_bit_unlock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
 
       /* Beware: object might be a dangling pointer. */
       TRACE (GOBJECT_OBJECT_UNREF (object, obj_gtype, old_ref));
@@ -4042,12 +4042,12 @@ retry_decrement:
        * notification. Take a lock and check for that.
        *
        * In that case, we need a lock to get the toggle notification. */
-      G_LOCK (toggle_refs_mutex);
+      object_bit_lock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
       toggle_notify = toggle_refs_get_notify_unlocked (object, &toggle_data);
       do_retry = !g_atomic_int_compare_and_exchange_full ((int *) &object->ref_count,
                                                           old_ref, old_ref - 1,
                                                           &old_ref);
-      G_UNLOCK (toggle_refs_mutex);
+      object_bit_unlock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
 
       if (do_retry)
         goto retry_decrement;
