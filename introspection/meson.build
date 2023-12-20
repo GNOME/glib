@@ -7,6 +7,13 @@ gi_gen_shared_sources = [
   gmodule_visibility_h,
 ]
 
+gi_gen_env_variables = environment()
+
+if get_option('b_sanitize') != ''
+  gi_gen_env_variables.append(
+    'ASAN_OPTIONS', 'verify_asan_link_order=0', separator: ',')
+endif
+
 # GLib
 glib_gir = gnome.generate_gir(libglib,
   sources: [
@@ -32,6 +39,7 @@ glib_gir = gnome.generate_gir(libglib,
   dependencies: [
     libgobject_dep,
   ],
+  env: gi_gen_env_variables,
   extra_args: gir_args + [
     '-DGLIB_COMPILATION',
     '-DGETTEXT_PACKAGE="dummy"',
@@ -57,6 +65,7 @@ gobject_gir = gnome.generate_gir(libgobject,
   header: 'glib-object.h',
   includes: [ glib_gir[0] ],
   install: true,
+  env: gi_gen_env_variables,
   extra_args: gir_args + [
       '-DGOBJECT_COMPILATION',
       '--symbol-prefix=gobject',
@@ -84,6 +93,7 @@ gmodule_gir = gnome.generate_gir(libgmodule,
   dependencies: [
     libglib_dep,
   ],
+  env: gi_gen_env_variables,
   extra_args: gir_args + [
       '-DGMODULE_COMPILATION',
       '-DGETTEXT_PACKAGE="dummy"',
@@ -144,5 +154,6 @@ gio_gir = gnome.generate_gir(libgio,
     libgobject_dep,
     libgmodule_dep,
   ],
+  env: gi_gen_env_variables,
   extra_args: gir_args + gio_gir_args,
 )
