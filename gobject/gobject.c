@@ -124,6 +124,7 @@ enum {
  * integers to GObjectPrivate. But increasing memory usage for more parallelism
  * (per-object!) is not worth it. */
 #define OPTIONAL_BIT_LOCK_WEAK_REFS      1
+#define OPTIONAL_BIT_LOCK_NOTIFY         2
 
 #if SIZEOF_INT == 4 && GLIB_SIZEOF_VOID_P == 8
 #define HAVE_OPTIONAL_FLAGS_IN_GOBJECT 1
@@ -232,8 +233,6 @@ static guint (*floating_flag_handler) (GObject*, gint) = object_floating_flag_ha
 static GQuark	            quark_weak_locations = 0;
 static GRWLock              weak_locations_lock;
 
-G_LOCK_DEFINE_STATIC(notify_lock);
-
 #if HAVE_PRIVATE
 G_ALWAYS_INLINE static inline GObjectPrivate *
 g_object_get_instance_private (GObject *object)
@@ -321,7 +320,7 @@ g_object_notify_queue_freeze (GObject *object)
 {
   GObjectNotifyQueue *nqueue;
 
-  G_LOCK(notify_lock);
+  object_bit_lock (object, OPTIONAL_BIT_LOCK_NOTIFY);
   nqueue = g_datalist_id_get_data (&object->qdata, quark_notify_queue);
   if (!nqueue)
     {
@@ -338,7 +337,7 @@ g_object_notify_queue_freeze (GObject *object)
     nqueue->freeze_count++;
 
 out:
-  G_UNLOCK(notify_lock);
+  object_bit_unlock (object, OPTIONAL_BIT_LOCK_NOTIFY);
 
   return nqueue;
 }
@@ -352,7 +351,7 @@ g_object_notify_queue_thaw (GObject            *object,
   GSList *slist;
   guint n_pspecs = 0;
 
-  G_LOCK(notify_lock);
+  object_bit_lock (object, OPTIONAL_BIT_LOCK_NOTIFY);
 
   if (!nqueue)
     {
@@ -363,7 +362,7 @@ g_object_notify_queue_thaw (GObject            *object,
   /* Just make sure we never get into some nasty race condition */
   if (G_UNLIKELY (!nqueue || nqueue->freeze_count == 0))
     {
-      G_UNLOCK (notify_lock);
+      object_bit_unlock (object, OPTIONAL_BIT_LOCK_NOTIFY);
       g_critical ("%s: property-changed notification for %s(%p) is not frozen",
                   G_STRFUNC, G_OBJECT_TYPE_NAME (object), object);
       return;
@@ -372,7 +371,7 @@ g_object_notify_queue_thaw (GObject            *object,
   nqueue->freeze_count--;
   if (nqueue->freeze_count)
     {
-      G_UNLOCK (notify_lock);
+      object_bit_unlock (object, OPTIONAL_BIT_LOCK_NOTIFY);
       return;
     }
 
@@ -384,7 +383,7 @@ g_object_notify_queue_thaw (GObject            *object,
     }
   g_datalist_id_set_data (&object->qdata, quark_notify_queue, NULL);
 
-  G_UNLOCK(notify_lock);
+  object_bit_unlock (object, OPTIONAL_BIT_LOCK_NOTIFY);
 
   if (n_pspecs)
     {
@@ -405,7 +404,7 @@ g_object_notify_queue_add (GObject            *object,
                            GParamSpec         *pspec,
                            gboolean            in_init)
 {
-  G_LOCK(notify_lock);
+  object_bit_lock (object, OPTIONAL_BIT_LOCK_NOTIFY);
 
   if (!nqueue)
     {
@@ -419,7 +418,7 @@ g_object_notify_queue_add (GObject            *object,
             {
               /* We don't have a notify queue and are not in_init. The event
                * is not to be queued. The caller will dispatch directly. */
-              G_UNLOCK (notify_lock);
+              object_bit_unlock (object, OPTIONAL_BIT_LOCK_NOTIFY);
               return FALSE;
             }
 
@@ -442,7 +441,7 @@ g_object_notify_queue_add (GObject            *object,
       nqueue->n_pspecs++;
     }
 
-  G_UNLOCK(notify_lock);
+  object_bit_unlock (object, OPTIONAL_BIT_LOCK_NOTIFY);
 
   return TRUE;
 }
