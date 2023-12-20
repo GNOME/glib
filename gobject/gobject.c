@@ -107,7 +107,24 @@ enum {
 #define OPTIONAL_FLAG_HAS_NOTIFY_HANDLER (1 << 2) /* Same, specifically for "notify" */
 
 #if SIZEOF_INT == 4 && GLIB_SIZEOF_VOID_P == 8
-#define HAVE_OPTIONAL_FLAGS
+#define HAVE_OPTIONAL_FLAGS_IN_GOBJECT 1
+#else
+#define HAVE_OPTIONAL_FLAGS_IN_GOBJECT 0
+#endif
+
+/* For now we only create a private struct if we don't have optional flags in
+ * GObject. Currently we don't need it otherwise. In the future we might
+ * always add a private struct. */
+#define HAVE_PRIVATE (!HAVE_OPTIONAL_FLAGS_IN_GOBJECT)
+
+#if HAVE_PRIVATE
+typedef struct {
+#if !HAVE_OPTIONAL_FLAGS_IN_GOBJECT
+	guint optional_flags; /* (atomic) */
+#endif
+} GObjectPrivate;
+
+static int GObject_private_offset;
 #endif
 
 typedef struct
@@ -116,7 +133,7 @@ typedef struct
 
   /*< private >*/
   guint          ref_count;  /* (atomic) */
-#ifdef HAVE_OPTIONAL_FLAGS
+#if HAVE_OPTIONAL_FLAGS_IN_GOBJECT
   guint          optional_flags;  /* (atomic) */
 #endif
   GData         *qdata;
@@ -190,9 +207,6 @@ static GQuark	            quark_closure_array = 0;
 static GQuark	            quark_weak_notifies = 0;
 static GQuark	            quark_toggle_refs = 0;
 static GQuark               quark_notify_queue;
-#ifndef HAVE_OPTIONAL_FLAGS
-static GQuark               quark_in_construction;
-#endif
 static GParamSpecPool      *pspec_pool = NULL;
 static gulong	            gobject_signals[LAST_SIGNAL] = { 0, };
 static guint (*floating_flag_handler) (GObject*, gint) = object_floating_flag_handler;
@@ -201,6 +215,24 @@ static GQuark	            quark_weak_locations = 0;
 static GRWLock              weak_locations_lock;
 
 G_LOCK_DEFINE_STATIC(notify_lock);
+
+#if HAVE_PRIVATE
+G_ALWAYS_INLINE static inline GObjectPrivate *
+g_object_get_instance_private (GObject *object)
+{
+  return G_STRUCT_MEMBER_P (object, GObject_private_offset);
+}
+#endif
+
+G_ALWAYS_INLINE static inline guint *
+object_get_optional_flags_p (GObject *object)
+{
+#if HAVE_OPTIONAL_FLAGS_IN_GOBJECT
+  return &(((GObjectReal *) object)->optional_flags);
+#else
+  return &g_object_get_instance_private (object)->optional_flags;
+#endif
+}
 
 /* --- functions --- */
 static void
@@ -455,6 +487,11 @@ _g_object_type_init (void)
 # endif /* G_HAS_CONSTRUCTORS */
     }
 #endif /* G_ENABLE_DEBUG */
+
+#if HAVE_PRIVATE
+  GObject_private_offset =
+      g_type_add_instance_private (G_TYPE_OBJECT, sizeof (GObjectPrivate));
+#endif
 }
 
 /* Initialize the global GParamSpecPool; this function needs to be
@@ -529,9 +566,6 @@ g_object_do_class_init (GObjectClass *class)
   quark_weak_locations = g_quark_from_static_string ("GObject-weak-locations");
   quark_toggle_refs = g_quark_from_static_string ("GObject-toggle-references");
   quark_notify_queue = g_quark_from_static_string ("GObject-notify-queue");
-#ifndef HAVE_OPTIONAL_FLAGS
-  quark_in_construction = g_quark_from_static_string ("GObject-in-construction");
-#endif
 
   g_object_init_pspec_pool ();
 
@@ -589,6 +623,10 @@ g_object_do_class_init (GObjectClass *class)
    * implement an interface implement all properties for that interface
    */
   g_type_add_interface_check (NULL, object_interface_check_properties);
+
+#if HAVE_PRIVATE
+  g_type_class_adjust_private_offset (class, &GObject_private_offset);
+#endif
 }
 
 /* Sinks @pspec if it’s a floating ref. */
@@ -1183,12 +1221,7 @@ g_object_interface_list_properties (gpointer      g_iface,
 static inline guint
 object_get_optional_flags (GObject *object)
 {
-#ifdef HAVE_OPTIONAL_FLAGS
-  GObjectReal *real = (GObjectReal *)object;
-  return (guint)g_atomic_int_get (&real->optional_flags);
-#else
-  return 0;
-#endif
+  return g_atomic_int_get (object_get_optional_flags_p (object));
 }
 
 /* Variant of object_get_optional_flags for when
@@ -1198,21 +1231,14 @@ object_get_optional_flags (GObject *object)
 static inline guint
 object_get_optional_flags_X (GObject *object)
 {
-#ifdef HAVE_OPTIONAL_FLAGS
-  GObjectReal *real = (GObjectReal *)object;
-  return real->optional_flags;
-#else
-  return 0;
-#endif
+  return *object_get_optional_flags_p (object);
 }
 
-#ifdef HAVE_OPTIONAL_FLAGS
 static inline void
 object_set_optional_flags (GObject *object,
                           guint flags)
 {
-  GObjectReal *real = (GObjectReal *)object;
-  g_atomic_int_or (&real->optional_flags, flags);
+  g_atomic_int_or (object_get_optional_flags_p (object), flags);
 }
 
 /* Variant for when we have exclusive access
@@ -1222,8 +1248,7 @@ static inline void
 object_set_optional_flags_X (GObject *object,
                              guint flags)
 {
-  GObjectReal *real = (GObjectReal *)object;
-  real->optional_flags |= flags;
+  (*object_get_optional_flags_p (object)) |= flags;
 }
 
 /* Variant for when we have exclusive access
@@ -1233,83 +1258,55 @@ static inline void
 object_unset_optional_flags_X (GObject *object,
                                guint flags)
 {
-  GObjectReal *real = (GObjectReal *)object;
-  real->optional_flags &= ~flags;
+  (*object_get_optional_flags_p (object)) &= ~flags;
 }
-#endif
 
 gboolean
 _g_object_has_signal_handler (GObject *object)
 {
-#ifdef HAVE_OPTIONAL_FLAGS
   return (object_get_optional_flags (object) & OPTIONAL_FLAG_HAS_SIGNAL_HANDLER) != 0;
-#else
-  return TRUE;
-#endif
 }
 
 static inline gboolean
 _g_object_has_notify_handler (GObject *object)
 {
-#ifdef HAVE_OPTIONAL_FLAGS
   return CLASS_NEEDS_NOTIFY (G_OBJECT_GET_CLASS (object)) ||
          (object_get_optional_flags (object) & OPTIONAL_FLAG_HAS_NOTIFY_HANDLER) != 0;
-#else
-  return TRUE;
-#endif
 }
 
 static inline gboolean
 _g_object_has_notify_handler_X (GObject *object)
 {
-#ifdef HAVE_OPTIONAL_FLAGS
   return CLASS_NEEDS_NOTIFY (G_OBJECT_GET_CLASS (object)) ||
          (object_get_optional_flags_X (object) & OPTIONAL_FLAG_HAS_NOTIFY_HANDLER) != 0;
-#else
-  return TRUE;
-#endif
 }
 
 void
 _g_object_set_has_signal_handler (GObject *object,
                                   guint    signal_id)
 {
-#ifdef HAVE_OPTIONAL_FLAGS
   guint flags = OPTIONAL_FLAG_HAS_SIGNAL_HANDLER;
   if (signal_id == gobject_signals[NOTIFY])
     flags |= OPTIONAL_FLAG_HAS_NOTIFY_HANDLER;
   object_set_optional_flags (object, flags);
-#endif
 }
 
 static inline gboolean
 object_in_construction (GObject *object)
 {
-#ifdef HAVE_OPTIONAL_FLAGS
   return (object_get_optional_flags (object) & OPTIONAL_FLAG_IN_CONSTRUCTION) != 0;
-#else
-  return g_datalist_id_get_data (&object->qdata, quark_in_construction) != NULL;
-#endif
 }
 
 static inline void
 set_object_in_construction (GObject *object)
 {
-#ifdef HAVE_OPTIONAL_FLAGS
   object_set_optional_flags_X (object, OPTIONAL_FLAG_IN_CONSTRUCTION);
-#else
-  g_datalist_id_set_data (&object->qdata, quark_in_construction, object);
-#endif
 }
 
 static inline void
 unset_object_in_construction (GObject *object)
 {
-#ifdef HAVE_OPTIONAL_FLAGS
   object_unset_optional_flags_X (object, OPTIONAL_FLAG_IN_CONSTRUCTION);
-#else
-  g_datalist_id_set_data (&object->qdata, quark_in_construction, NULL);
-#endif
 }
 
 static void
@@ -1498,9 +1495,7 @@ static inline void
 g_object_notify_by_spec_internal (GObject    *object,
                                   GParamSpec *pspec)
 {
-#ifdef HAVE_OPTIONAL_FLAGS
   guint object_flags;
-#endif
   gboolean needs_notify;
   gboolean in_init;
 
@@ -1509,16 +1504,11 @@ g_object_notify_by_spec_internal (GObject    *object,
 
   param_spec_follow_override (&pspec);
 
-#ifdef HAVE_OPTIONAL_FLAGS
   /* get all flags we need with a single atomic read */
   object_flags = object_get_optional_flags (object);
   needs_notify = ((object_flags & OPTIONAL_FLAG_HAS_NOTIFY_HANDLER) != 0) ||
                   CLASS_NEEDS_NOTIFY (G_OBJECT_GET_CLASS (object));
   in_init = (object_flags & OPTIONAL_FLAG_IN_CONSTRUCTION) != 0;
-#else
-  needs_notify = TRUE;
-  in_init = object_in_construction (object);
-#endif
 
   if (pspec != NULL && needs_notify)
     {
