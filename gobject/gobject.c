@@ -126,6 +126,7 @@ enum {
 #define OPTIONAL_BIT_LOCK_WEAK_REFS      1
 #define OPTIONAL_BIT_LOCK_NOTIFY         2
 #define OPTIONAL_BIT_LOCK_TOGGLE_REFS    3
+#define OPTIONAL_BIT_LOCK_CLOSURE_ARRAY  4
 
 #if SIZEOF_INT == 4 && GLIB_SIZEOF_VOID_P == 8
 #define HAVE_OPTIONAL_FLAGS_IN_GOBJECT 1
@@ -221,7 +222,6 @@ struct _GObjectNotifyQueue
 };
 
 /* --- variables --- */
-G_LOCK_DEFINE_STATIC (closure_array_mutex);
 static GQuark	            quark_closure_array = 0;
 static GQuark	            quark_weak_notifies = 0;
 static GQuark	            quark_toggle_refs = 0;
@@ -4805,7 +4805,7 @@ object_remove_closure (gpointer  data,
   CArray *carray;
   guint i;
   
-  G_LOCK (closure_array_mutex);
+  object_bit_lock (object, OPTIONAL_BIT_LOCK_CLOSURE_ARRAY);
   carray = g_object_get_qdata (object, quark_closure_array);
   for (i = 0; i < carray->n_closures; i++)
     if (carray->closures[i] == closure)
@@ -4813,10 +4813,10 @@ object_remove_closure (gpointer  data,
 	carray->n_closures--;
 	if (i < carray->n_closures)
 	  carray->closures[i] = carray->closures[carray->n_closures];
-	G_UNLOCK (closure_array_mutex);
+	object_bit_unlock (object, OPTIONAL_BIT_LOCK_CLOSURE_ARRAY);
 	return;
       }
-  G_UNLOCK (closure_array_mutex);
+  object_bit_unlock (object, OPTIONAL_BIT_LOCK_CLOSURE_ARRAY);
   g_assert_not_reached ();
 }
 
@@ -4872,7 +4872,7 @@ g_object_watch_closure (GObject  *object,
   g_closure_add_marshal_guards (closure,
 				object, (GClosureNotify) g_object_ref,
 				object, (GClosureNotify) g_object_unref);
-  G_LOCK (closure_array_mutex);
+  object_bit_lock (object, OPTIONAL_BIT_LOCK_CLOSURE_ARRAY);
   carray = g_datalist_id_remove_no_notify (&object->qdata, quark_closure_array);
   if (!carray)
     {
@@ -4888,7 +4888,7 @@ g_object_watch_closure (GObject  *object,
     }
   carray->closures[i] = closure;
   g_datalist_id_set_data_full (&object->qdata, quark_closure_array, carray, destroy_closure_array);
-  G_UNLOCK (closure_array_mutex);
+  object_bit_unlock (object, OPTIONAL_BIT_LOCK_CLOSURE_ARRAY);
 }
 
 /**
