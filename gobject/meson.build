@@ -170,59 +170,6 @@ libgobject_dep = declare_dependency(link_with : libgobject,
 )
 meson.override_dependency('gobject-2.0', libgobject_dep)
 
-if enable_gir
-  # We generate GLib-2.0 here, as we need various GTypes
-  glib_gir = gnome.generate_gir(libglib,
-    sources: [
-      glibconfig_h,
-      gversionmacros_h,
-      glib_visibility_h,
-      glib_headers,
-      glib_deprecated_headers,
-      glib_sub_headers,
-      glib_enumtypes_h,
-      glib_types_h,
-      glib_deprecated_sources,
-      glib_sources,
-    ],
-    namespace: 'GLib',
-    nsversion: '2.0',
-    identifier_prefix: 'G',
-    symbol_prefix: 'g',
-    export_packages: 'glib-2.0',
-    header: 'glib.h',
-    install: true,
-    dependencies: libgobject_dep,
-    extra_args: gir_args + [
-      '-DGLIB_COMPILATION',
-      '-DGETTEXT_PACKAGE="dummy"',
-      '--symbol-prefix=glib',
-      '--library-path=' + meson.current_build_dir(),
-      '--library=gobject-2.0',
-    ],
-  )
-
-  gobject_gir = gnome.generate_gir(libgobject,
-    sources: [
-      gobject_visibility_h,
-      gobject_install_headers,
-      gobject_sources,
-    ],
-    namespace: 'GObject',
-    nsversion: '2.0',
-    identifier_prefix: 'G',
-    symbol_prefix: 'g',
-    export_packages: 'gobject-2.0',
-    header: 'glib-object.h',
-    includes: [ glib_gir[0] ],
-    install: true,
-    extra_args: gir_args + [
-      '-DGOBJECT_COMPILATION',
-      '--symbol-prefix=gobject',
-    ],
-  )
-endif
-
 gobject_query = executable('gobject-query', 'gobject-query.c',
   install : true,
   install_tag : 'bin-devel',

@@ -35,7 +35,7 @@ test_repository_basic (void)
 
   g_test_summary ("Test basic opening of a repository and requiring a typelib");
 
-  gobject_typelib_dir = g_test_build_filename (G_TEST_BUILT, "..", "..", "gobject", NULL);
+  gobject_typelib_dir = g_test_build_filename (G_TEST_BUILT, "..", "..", "introspection", NULL);
   g_test_message ("Using GI_TYPELIB_DIR = %s", gobject_typelib_dir);
   gi_repository_prepend_search_path (gobject_typelib_dir);
 
@@ -70,7 +70,7 @@ test_repository_info (void)
 
   g_test_summary ("Test retrieving some basic info blobs from a typelib");
 
-  gobject_typelib_dir = g_test_build_filename (G_TEST_BUILT, "..", "..", "gobject", NULL);
+  gobject_typelib_dir = g_test_build_filename (G_TEST_BUILT, "..", "..", "introspection", NULL);
   g_test_message ("Using GI_TYPELIB_DIR = %s", gobject_typelib_dir);
   gi_repository_prepend_search_path (gobject_typelib_dir);
   g_free (gobject_typelib_dir);
