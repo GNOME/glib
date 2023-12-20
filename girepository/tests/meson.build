@@ -3,6 +3,9 @@ girepository_tests = {}
 # Some GIR files are needed to test against
 if enable_gir
   girepository_tests += {
+    'cmph-bdz': {
+      'dependencies': [cmph_dep],
+    },
     'gthash' : {},
     'repository' : {
       'depends': [glib_gir, gobject_gir],
