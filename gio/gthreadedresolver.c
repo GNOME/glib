@@ -1448,8 +1448,10 @@ timeout_cb (gpointer user_data)
   g_mutex_unlock (&data->lock);
 
   if (should_return)
-    g_task_return_new_error (task, G_IO_ERROR, G_IO_ERROR_TIMED_OUT,
-                             _("Socket I/O timed out"));
+    {
+      g_task_return_new_error_literal (task, G_IO_ERROR, G_IO_ERROR_TIMED_OUT,
+                                       _("Socket I/O timed out"));
+    }
 
   /* Signal completion of the task. */
   g_mutex_lock (&data->lock);

@@ -343,9 +343,14 @@ complete_async (GTask *task)
       priv->last_error = NULL;
     }
   else if (!priv->ever_enumerated)
-    g_task_return_new_error (task, G_IO_ERROR, G_IO_ERROR_FAILED, _("Unspecified proxy lookup failure"));
+    {
+      g_task_return_new_error_literal (task, G_IO_ERROR, G_IO_ERROR_FAILED,
+                                       _("Unspecified proxy lookup failure"));
+    }
   else
-    g_task_return_pointer (task, NULL, NULL);
+    {
+      g_task_return_pointer (task, NULL, NULL);
+    }
 
   priv->ever_enumerated = TRUE;
 

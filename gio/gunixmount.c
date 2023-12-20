@@ -262,7 +262,7 @@ eject_unmount_done (GObject      *source,
     {
       if (!g_subprocess_get_successful (subprocess))
         /* ...but bad exit code */
-        g_task_return_new_error (task, G_IO_ERROR, G_IO_ERROR_FAILED, "%s", stderr_str);
+        g_task_return_new_error_literal (task, G_IO_ERROR, G_IO_ERROR_FAILED, stderr_str);
       else
         /* ...and successful exit code */
         g_task_return_boolean (task, TRUE);

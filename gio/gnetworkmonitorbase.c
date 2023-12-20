@@ -285,8 +285,9 @@ can_reach_async_got_address (GObject      *object,
       else
         {
           /* Resolved all addresses, none matched */
-          g_task_return_new_error (task, G_IO_ERROR, G_IO_ERROR_HOST_UNREACHABLE,
-                                   _("Host unreachable"));
+          g_task_return_new_error_literal (task, G_IO_ERROR,
+                                           G_IO_ERROR_HOST_UNREACHABLE,
+                                           _("Host unreachable"));
           g_object_unref (task);
           return;
         }
@@ -321,8 +322,8 @@ g_network_monitor_base_can_reach_async (GNetworkMonitor     *monitor,
 
   if (g_hash_table_size (G_NETWORK_MONITOR_BASE (monitor)->priv->networks) == 0)
     {
-      g_task_return_new_error (task, G_IO_ERROR, G_IO_ERROR_NETWORK_UNREACHABLE,
-                               _("Network unreachable"));
+      g_task_return_new_error_literal (task, G_IO_ERROR, G_IO_ERROR_NETWORK_UNREACHABLE,
+                                       _("Network unreachable"));
       g_object_unref (task);
       return;
     }

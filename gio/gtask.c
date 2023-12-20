@@ -2031,7 +2031,8 @@ g_task_propagate_boolean (GTask   *task,
  * Call g_error_copy() on the error if you need to keep a local copy
  * as well.
  *
- * See also g_task_return_new_error().
+ * See also [method@Gio.Task.return_new_error],
+ * [method@Gio.Task.return_new_error_literal].
  *
  * Since: 2.36
  */
@@ -2128,6 +2129,32 @@ g_task_return_new_error (GTask           *task,
   va_end (args);
 
   g_task_return_error (task, error);
+}
+
+/**
+ * g_task_return_new_error_literal:
+ * @task: a #GTask.
+ * @domain: a #GQuark.
+ * @code: an error code.
+ * @message: an error message
+ *
+ * Sets @task’s result to a new [type@GLib.Error] created from @domain, @code,
+ * @message and completes the task.
+ *
+ * See [method@Gio.Task.return_pointer] for more discussion of exactly what
+ * ‘completing the task’ means.
+ *
+ * See also [method@Gio.Task.return_new_error].
+ *
+ * Since: 2.80
+ */
+void
+g_task_return_new_error_literal (GTask      *task,
+                                 GQuark      domain,
+                                 gint        code,
+                                 const char *message)
+{
+  g_task_return_error (task, g_error_new_literal (domain, code, message));
 }
 
 /**

@@ -1828,7 +1828,7 @@ send_message_data_deliver_error (GTask      *task,
   send_message_with_reply_cleanup (task, TRUE);
   CONNECTION_UNLOCK (connection);
 
-  g_task_return_new_error (task, domain, code, "%s", message);
+  g_task_return_new_error_literal (task, domain, code, message);
   g_object_unref (task);
 }
 
@@ -2386,10 +2386,10 @@ cancel_method_on_close (gpointer key, gpointer value, gpointer user_data)
   if (data->delivered)
     return FALSE;
 
-  g_task_return_new_error (task,
-                           G_IO_ERROR,
-                           G_IO_ERROR_CLOSED,
-                           _("The connection is closed"));
+  g_task_return_new_error_literal (task,
+                                   G_IO_ERROR,
+                                   G_IO_ERROR_CLOSED,
+                                   _("The connection is closed"));
 
   /* Ask send_message_with_reply_cleanup not to remove the element from the
    * hash table - we're in the middle of a foreach; that would be unsafe.

@@ -724,10 +724,10 @@ nego_reply_read_cb (GObject      *source,
 
   if (read == 0)
     {
-      g_task_return_new_error (task,
-                               G_IO_ERROR,
-                               G_IO_ERROR_CONNECTION_CLOSED,
-                               "Connection to SOCKSv5 proxy server lost");
+      g_task_return_new_error_literal (task,
+                                       G_IO_ERROR,
+                                       G_IO_ERROR_CONNECTION_CLOSED,
+                                       "Connection to SOCKSv5 proxy server lost");
       g_object_unref (task);
       return;
     }
@@ -837,10 +837,10 @@ auth_reply_read_cb (GObject      *source,
 
   if (read == 0)
     {
-      g_task_return_new_error (task,
-                               G_IO_ERROR,
-                               G_IO_ERROR_CONNECTION_CLOSED,
-                               "Connection to SOCKSv5 proxy server lost");
+      g_task_return_new_error_literal (task,
+                                       G_IO_ERROR,
+                                       G_IO_ERROR_CONNECTION_CLOSED,
+                                       "Connection to SOCKSv5 proxy server lost");
       g_object_unref (task);
       return;
     }
@@ -949,10 +949,10 @@ connect_reply_read_cb (GObject       *source,
 
   if (read == 0)
     {
-      g_task_return_new_error (task,
-                               G_IO_ERROR,
-                               G_IO_ERROR_CONNECTION_CLOSED,
-                               "Connection to SOCKSv5 proxy server lost");
+      g_task_return_new_error_literal (task,
+                                       G_IO_ERROR,
+                                       G_IO_ERROR_CONNECTION_CLOSED,
+                                       "Connection to SOCKSv5 proxy server lost");
       g_object_unref (task);
       return;
     }
@@ -1019,10 +1019,10 @@ connect_addr_len_read_cb (GObject      *source,
 
   if (read == 0)
     {
-      g_task_return_new_error (task,
-                               G_IO_ERROR,
-                               G_IO_ERROR_CONNECTION_CLOSED,
-                               "Connection to SOCKSv5 proxy server lost");
+      g_task_return_new_error_literal (task,
+                                       G_IO_ERROR,
+                                       G_IO_ERROR_CONNECTION_CLOSED,
+                                       "Connection to SOCKSv5 proxy server lost");
       g_object_unref (task);
       return;
     }
@@ -1055,10 +1055,10 @@ connect_addr_read_cb (GObject      *source,
 
   if (read == 0)
     {
-      g_task_return_new_error (task,
-                               G_IO_ERROR,
-                               G_IO_ERROR_CONNECTION_CLOSED,
-                               "Connection to SOCKSv5 proxy server lost");
+      g_task_return_new_error_literal (task,
+                                       G_IO_ERROR,
+                                       G_IO_ERROR_CONNECTION_CLOSED,
+                                       "Connection to SOCKSv5 proxy server lost");
       g_object_unref (task);
       return;
     }

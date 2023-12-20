@@ -182,11 +182,11 @@ response_received (GDBusConnection *connection,
       g_task_return_boolean (task, TRUE);
       break;
     case XDG_DESKTOP_PORTAL_CANCELLED:
-      g_task_return_new_error (task, G_IO_ERROR, G_IO_ERROR_CANCELLED, "Launch cancelled");
+      g_task_return_new_error_literal (task, G_IO_ERROR, G_IO_ERROR_CANCELLED, "Launch cancelled");
       break;
     case XDG_DESKTOP_PORTAL_FAILED:
     default:
-      g_task_return_new_error (task, G_IO_ERROR, G_IO_ERROR_FAILED, "Launch failed");
+      g_task_return_new_error_literal (task, G_IO_ERROR, G_IO_ERROR_FAILED, "Launch failed");
       break;
     }
 

@@ -1764,9 +1764,9 @@ g_output_stream_splice_async (GOutputStream            *stream,
 
   if (g_input_stream_is_closed (source))
     {
-      g_task_return_new_error (task,
-                               G_IO_ERROR, G_IO_ERROR_CLOSED,
-                               _("Source stream is already closed"));
+      g_task_return_new_error_literal (task,
+                                       G_IO_ERROR, G_IO_ERROR_CLOSED,
+                                       _("Source stream is already closed"));
       g_object_unref (task);
       return;
     }

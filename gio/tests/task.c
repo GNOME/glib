@@ -129,12 +129,19 @@ test_basic (void)
 
 /* test_error */
 
+typedef struct {
+  GQuark expected_domain;
+  int expected_code;
+  char *expected_message;
+  gssize int_result;
+} TaskErrorResult;
+
 static void
 error_callback (GObject      *object,
                 GAsyncResult *result,
                 gpointer      user_data)
 {
-  gssize *result_out = user_data;
+  TaskErrorResult *result_inout = user_data;
   GError *error = NULL;
 
   g_assert (object == NULL);
@@ -143,13 +150,12 @@ error_callback (GObject      *object,
   g_assert (g_task_had_error (G_TASK (result)));
   g_assert_false (g_task_get_completed (G_TASK (result)));
 
-  *result_out = g_task_propagate_int (G_TASK (result), &error);
-  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_FAILED);
+  result_inout->int_result = g_task_propagate_int (G_TASK (result), &error);
+  g_assert_error (error, result_inout->expected_domain, result_inout->expected_code);
+  g_assert_cmpstr (error->message, ==, result_inout->expected_message);
   g_error_free (error);
 
   g_assert (g_task_had_error (G_TASK (result)));
-
-  g_main_loop_quit (loop);
 }
 
 static gboolean
@@ -159,7 +165,7 @@ error_return (gpointer user_data)
 
   g_task_return_new_error (task,
                            G_IO_ERROR, G_IO_ERROR_FAILED,
-                           "Failed");
+                           "Failed %p", task);
   g_object_unref (task);
 
   return FALSE;
@@ -177,15 +183,17 @@ static void
 test_error (void)
 {
   GTask *task;
-  gssize result;
+  TaskErrorResult result;
   gboolean first_task_data_destroyed = FALSE;
   gboolean second_task_data_destroyed = FALSE;
-  gboolean notification_emitted = FALSE;
 
   task = g_task_new (NULL, NULL, error_callback, &result);
+  result = (TaskErrorResult){
+    .expected_domain = G_IO_ERROR,
+    .expected_code = G_IO_ERROR_FAILED,
+    .expected_message = g_strdup_printf ("Failed %p", task),
+  };
   g_object_add_weak_pointer (G_OBJECT (task), (gpointer *)&task);
-  g_signal_connect (task, "notify::completed",
-                    (GCallback) completed_cb, &notification_emitted);
 
   g_assert (first_task_data_destroyed == FALSE);
   g_task_set_task_data (task, &first_task_data_destroyed, error_destroy_notify);
@@ -197,12 +205,59 @@ test_error (void)
   g_assert (second_task_data_destroyed == FALSE);
 
   g_idle_add (error_return, task);
-  g_main_loop_run (loop);
+  wait_for_completed_notification (task);
 
-  g_assert_cmpint (result, ==, -1);
+  g_assert_cmpint (result.int_result, ==, -1);
   g_assert (second_task_data_destroyed == TRUE);
-  g_assert_true (notification_emitted);
   g_assert (task == NULL);
+  g_free (result.expected_message);
+}
+
+static void
+test_error_literal (void)
+{
+  GTask *task;
+  TaskErrorResult result;
+
+  task = g_task_new (NULL, NULL, error_callback, &result);
+  result = (TaskErrorResult){
+    .expected_domain = G_IO_ERROR,
+    .expected_code = G_IO_ERROR_FAILED,
+    .expected_message = "Literal Failure",
+  };
+
+  g_task_return_new_error_literal (task,
+                                   result.expected_domain,
+                                   result.expected_code,
+                                   "Literal Failure");
+
+  wait_for_completed_notification (task);
+  g_assert_cmpint (result.int_result, ==, -1);
+
+  g_assert_finalize_object (task);
+}
+
+static void
+test_error_literal_from_variable (void)
+{
+  GTask *task;
+  TaskErrorResult result;
+
+  task = g_task_new (NULL, NULL, error_callback, &result);
+  result = (TaskErrorResult){
+    .expected_domain = G_IO_ERROR,
+    .expected_code = G_IO_ERROR_FAILED,
+    .expected_message = "Literal Failure",
+  };
+
+  g_task_return_new_error_literal (task,
+                                   result.expected_domain,
+                                   result.expected_code,
+                                   result.expected_message);
+
+  wait_for_completed_notification (task);
+  g_assert_cmpint (result.int_result, ==, -1);
+  g_assert_finalize_object (task);
 }
 
 /* test_return_from_same_iteration: calling g_task_return_* from the
@@ -2524,6 +2579,8 @@ main (int argc, char **argv)
 
   g_test_add_func ("/gtask/basic", test_basic);
   g_test_add_func ("/gtask/error", test_error);
+  g_test_add_func ("/gtask/error-literal", test_error_literal);
+  g_test_add_func ("/gtask/error-literal-from-variable", test_error_literal_from_variable);
   g_test_add_func ("/gtask/return-from-same-iteration", test_return_from_same_iteration);
   g_test_add_func ("/gtask/return-from-toplevel", test_return_from_toplevel);
   g_test_add_func ("/gtask/return-from-anon-thread", test_return_from_anon_thread);

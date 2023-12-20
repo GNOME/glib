@@ -1030,10 +1030,12 @@ write_message_continue_writing (MessageToWriteData *data)
           if (!(data->worker->capabilities & G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING))
             {
               GTask *task = g_steal_pointer (&data->task);
-              g_task_return_new_error (task,
-                                       G_IO_ERROR,
-                                       G_IO_ERROR_FAILED,
-                                       "Tried sending a file descriptor but remote peer does not support this capability");
+              g_task_return_new_error_literal (task,
+                                               G_IO_ERROR,
+                                               G_IO_ERROR_FAILED,
+                                               "Tried sending a file descriptor "
+                                               "but remote peer does not support "
+                                               "this capability");
               g_clear_object (&task);
               goto out;
             }
