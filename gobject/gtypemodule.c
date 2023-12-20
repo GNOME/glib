@@ -115,6 +115,10 @@ g_type_module_finalize (GObject *object)
 
   g_free (module->name);
 
+  /* in case a subclass does not chain-up to parent in dispose() */
+  g_assert (module->type_infos == NULL);
+  g_assert (module->interface_infos == NULL);
+
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
