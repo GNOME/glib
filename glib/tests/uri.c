@@ -132,6 +132,8 @@ file_from_uri_tests[] = {
   { "file://%E5%E4%F6/etc", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
   { "file:///some/file?query", "/some/file", NULL, 0 },
   { "file:///some/file#bad", "/some/file", NULL, 0 },
+  { "file:///some/file?query#frag", "/some/file", NULL, 0 },
+  { "file:///some/file#fr?ag", "/some/file", NULL, 0 },
   { "file://some", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
   { "", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
   { "file:test", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
