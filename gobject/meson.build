@@ -163,6 +163,13 @@ pkg.generate(libgobject,
   description : 'GLib Type, Object, Parameter and Signal Library',
 )
 
+libgobject_dep = declare_dependency(link_with : libgobject,
+  include_directories : [gobjectinc],
+  sources : [gobject_visibility_h, glib_enumtypes_h],
+  dependencies : [libglib_dep],
+)
+meson.override_dependency('gobject-2.0', libgobject_dep)
+
 if enable_gir
   # We generate GLib-2.0 here, as we need various GTypes
   glib_gir = gnome.generate_gir(libglib,
@@ -185,7 +192,7 @@ if enable_gir
     export_packages: 'glib-2.0',
     header: 'glib.h',
     install: true,
-    dependencies: libglib_dep,
+    dependencies: libgobject_dep,
     extra_args: gir_args + [
       '-DGLIB_COMPILATION',
       '-DGETTEXT_PACKAGE="dummy"',
@@ -215,13 +222,6 @@ if enable_gir
     ],
   )
 endif
-
-libgobject_dep = declare_dependency(link_with : libgobject,
-  include_directories : [gobjectinc],
-  sources : [gobject_visibility_h, glib_enumtypes_h],
-  dependencies : [libglib_dep],
-)
-meson.override_dependency('gobject-2.0', libgobject_dep)
 
 gobject_query = executable('gobject-query', 'gobject-query.c',
   install : true,
