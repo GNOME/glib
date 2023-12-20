@@ -698,7 +698,7 @@ resolve_aliases (ParseContext *ctx, const gchar *type)
   seen_values = g_slist_prepend (seen_values, (char*)lookup);
   while (g_hash_table_lookup_extended (ctx->current_module->aliases, lookup, &orig, &value))
     {
-      g_debug ("Resolved: %s => %s\n", lookup, (char*)value);
+      g_debug ("Resolved: %s => %s", lookup, (char*)value);
       lookup = value;
       if (g_slist_find_custom (seen_values, lookup,
 			       (GCompareFunc)strcmp) != NULL)
@@ -1064,7 +1064,7 @@ parse_property_transfer (GIIrNodeProperty *property,
     GIIrNodeInterface *iface = (GIIrNodeInterface *)CURRENT_NODE (ctx);
 
     g_debug ("required attribute 'transfer-ownership' is missing from "
-             "property '%s' in type '%s.%s'. Assuming 'none'\n",
+             "property '%s' in type '%s.%s'. Assuming 'none'",
              property->node.name, ctx->namespace, iface->node.name);
 #endif
     transfer = "none";
@@ -2849,7 +2849,7 @@ parse_include (GMarkupParseContext *context,
     }
   g_free (girname);
 
-  g_debug ("Parsing include %s\n", girpath);
+  g_debug ("Parsing include %s", girpath);
 
   if (!g_file_get_contents (girpath, &buffer, &length, &error))
     {
@@ -3640,7 +3640,7 @@ end_element_handler (GMarkupParseContext *context,
         state_switch (ctx, ctx->prev_state);
       break;
     default:
-      g_error ("Unhandled state %d in end_element_handler\n", ctx->state);
+      g_error ("Unhandled state %d in end_element_handler", ctx->state);
     }
 }
 

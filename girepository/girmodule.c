@@ -368,7 +368,7 @@ gi_ir_module_build_typelib (GIIrModule *module)
   nodes_with_attributes = NULL;
   n_entries = g_list_length (module->entries);
 
-  g_message ("%d entries (%d local), %d dependencies\n", n_entries, n_local_entries,
+  g_message ("%d entries (%d local), %d dependencies", n_entries, n_local_entries,
 	     g_list_length (module->dependencies));
 
   dir_size = n_entries * sizeof (DirEntry);
@@ -397,7 +397,7 @@ gi_ir_module_build_typelib (GIIrModule *module)
 
   size += sizeof (Section) * NUM_SECTIONS;
 
-  g_message ("allocating %d bytes (%d header, %d directory, %d entries)\n",
+  g_message ("allocating %d bytes (%d header, %d directory, %d entries)",
 	  size, header_size, dir_size, size - header_size - dir_size);
 
   data = g_malloc0 (size);
@@ -535,7 +535,7 @@ gi_ir_module_build_typelib (GIIrModule *module)
 	  header->n_attributes = build.n_attributes;
 
 	  if (offset2 > old_offset + gi_ir_node_get_full_size (node))
-	    g_error ("left a hole of %d bytes\n", offset2 - old_offset - gi_ir_node_get_full_size (node));
+	    g_error ("left a hole of %d bytes", offset2 - old_offset - gi_ir_node_get_full_size (node));
 	}
 
       entry++;

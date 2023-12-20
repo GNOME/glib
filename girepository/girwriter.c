@@ -168,7 +168,7 @@ check_unresolved (GIBaseInfo *info)
   if (gi_base_info_get_info_type (info) != GI_INFO_TYPE_UNRESOLVED)
     return;
 
-  g_critical ("Found unresolved type '%s' '%s'\n",
+  g_critical ("Found unresolved type '%s' '%s'",
 	      gi_base_info_get_name (info), gi_base_info_get_namespace (info));
 }
 
@@ -1452,7 +1452,7 @@ gi_ir_writer_write (const char *filename,
 	      break;
 
 	    default:
-	      g_error ("unknown info type %d\n", gi_base_info_get_info_type (info));
+	      g_error ("unknown info type %d", gi_base_info_get_info_type (info));
 	    }
 
 	  gi_base_info_unref (info);
