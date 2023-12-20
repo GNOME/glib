@@ -109,7 +109,7 @@ GI_AVAILABLE_IN_ALL
 void          gi_repository_prepend_library_path (const char *directory);
 
 GI_AVAILABLE_IN_ALL
-GSList *      gi_repository_get_search_path     (void);
+const char * const * gi_repository_get_search_path (size_t *n_paths_out);
 
 GI_AVAILABLE_IN_ALL
 const char *  gi_repository_load_typelib  (GIRepository           *repository,

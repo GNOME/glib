@@ -27,7 +27,7 @@ test_repository_basic (void)
 {
   GIRepository *repository;
   char *gobject_typelib_dir = NULL;
-  GSList *search_path;
+  const char * const * search_paths;
   GITypelib *typelib = NULL;
   char **namespaces = NULL;
   const char *expected_namespaces[] = { "GLib", NULL };
@@ -55,9 +55,10 @@ test_repository_basic (void)
   g_assert_cmpstrv (versions, ((char *[]){"2.0", NULL}));
   g_clear_pointer (&versions, g_strfreev);
 
-  search_path = gi_repository_get_search_path ();
-  g_assert_nonnull (search_path);
-  g_assert_cmpstr (search_path->data, ==, gobject_typelib_dir);
+  search_paths = gi_repository_get_search_path (NULL);
+  g_assert_nonnull (search_paths);
+  g_assert_cmpuint (g_strv_length ((char **) search_paths), >, 0);
+  g_assert_cmpstr (search_paths[0], ==, gobject_typelib_dir);
 
   typelib = gi_repository_require (repository, "GLib", "2.0", 0, &local_error);
   g_assert_no_error (local_error);

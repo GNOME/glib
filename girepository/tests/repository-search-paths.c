@@ -26,32 +26,39 @@
 static void
 test_repository_search_paths_unset (void)
 {
-  GSList *search_paths;
+  const char * const *search_paths;
+  size_t n_search_paths;
 
-  search_paths = gi_repository_get_search_path ();
-  g_assert_null (search_paths);
+  search_paths = gi_repository_get_search_path (&n_search_paths);
+  g_assert_nonnull (search_paths);
+  g_assert_cmpstrv (search_paths, ((char *[]){NULL}));
+  g_assert_cmpuint (n_search_paths, ==, 0);
+
+  search_paths = gi_repository_get_search_path (NULL);
+  g_assert_cmpuint (g_strv_length ((char **) search_paths), ==, 0);
 }
 
 static void
 test_repository_search_paths_default (void)
 {
-  GSList *search_paths;
+  const char * const *search_paths;
+  size_t n_search_paths;
 
-  search_paths = gi_repository_get_search_path ();
-  g_assert_null (search_paths);
+  search_paths = gi_repository_get_search_path (&n_search_paths);
+  g_assert_nonnull (search_paths);
 
   /* Init default paths */
   g_assert_nonnull (gi_repository_get_default ());
 
-  search_paths = gi_repository_get_search_path ();
+  search_paths = gi_repository_get_search_path (&n_search_paths);
   g_assert_nonnull (search_paths);
-  g_assert_cmpuint (g_slist_length (search_paths), ==, 2);
+  g_assert_cmpuint (g_strv_length ((char **) search_paths), ==, 2);
 
-  g_assert_cmpstr (g_slist_nth_data (search_paths, 0), ==, g_get_tmp_dir ());
+  g_assert_cmpstr (search_paths[0], ==, g_get_tmp_dir ());
 
 #ifndef G_PLATFORM_WIN32
   char *expected_path = g_build_filename (GOBJECT_INTROSPECTION_LIBDIR, "girepository-1.0", NULL);
-  g_assert_cmpstr (g_slist_nth_data (search_paths, 1), ==, expected_path);
+  g_assert_cmpstr (search_paths[1], ==, expected_path);
   g_clear_pointer (&expected_path, g_free);
 #endif
 }
@@ -59,34 +66,35 @@ test_repository_search_paths_default (void)
 static void
 test_repository_search_paths_prepend (void)
 {
-  GSList *search_paths;
+  const char * const *search_paths;
+  size_t n_search_paths;
 
   gi_repository_prepend_search_path (g_test_get_dir (G_TEST_BUILT));
-  search_paths = gi_repository_get_search_path ();
+  search_paths = gi_repository_get_search_path (&n_search_paths);
   g_assert_nonnull (search_paths);
-  g_assert_cmpuint (g_slist_length (search_paths), ==, 3);
+  g_assert_cmpuint (g_strv_length ((char **) search_paths), ==, 3);
 
-  g_assert_cmpstr (g_slist_nth_data (search_paths, 0), ==, g_test_get_dir (G_TEST_BUILT));
-  g_assert_cmpstr (g_slist_nth_data (search_paths, 1), ==, g_get_tmp_dir ());
+  g_assert_cmpstr (search_paths[0], ==, g_test_get_dir (G_TEST_BUILT));
+  g_assert_cmpstr (search_paths[1], ==, g_get_tmp_dir ());
 
 #ifndef G_PLATFORM_WIN32
   char *expected_path = g_build_filename (GOBJECT_INTROSPECTION_LIBDIR, "girepository-1.0", NULL);
-  g_assert_cmpstr (g_slist_nth_data (search_paths, 2), ==, expected_path);
+  g_assert_cmpstr (search_paths[2], ==, expected_path);
   g_clear_pointer (&expected_path, g_free);
 #endif
 
   gi_repository_prepend_search_path (g_test_get_dir (G_TEST_DIST));
-  search_paths = gi_repository_get_search_path ();
+  search_paths = gi_repository_get_search_path (&n_search_paths);
   g_assert_nonnull (search_paths);
-  g_assert_cmpuint (g_slist_length (search_paths), ==, 4);
+  g_assert_cmpuint (g_strv_length ((char **) search_paths), ==, 4);
 
-  g_assert_cmpstr (g_slist_nth_data (search_paths, 0), ==, g_test_get_dir (G_TEST_DIST));
-  g_assert_cmpstr (g_slist_nth_data (search_paths, 1), ==, g_test_get_dir (G_TEST_BUILT));
-  g_assert_cmpstr (g_slist_nth_data (search_paths, 2), ==, g_get_tmp_dir ());
+  g_assert_cmpstr (search_paths[0], ==, g_test_get_dir (G_TEST_DIST));
+  g_assert_cmpstr (search_paths[1], ==, g_test_get_dir (G_TEST_BUILT));
+  g_assert_cmpstr (search_paths[2], ==, g_get_tmp_dir ());
 
 #ifndef G_PLATFORM_WIN32
   expected_path = g_build_filename (GOBJECT_INTROSPECTION_LIBDIR, "girepository-1.0", NULL);
-  g_assert_cmpstr (g_slist_nth_data (search_paths, 3), ==, expected_path);
+  g_assert_cmpstr (search_paths[3], ==, expected_path);
   g_clear_pointer (&expected_path, g_free);
 #endif
 }
