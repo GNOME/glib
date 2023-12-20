@@ -138,6 +138,11 @@ GDateTime *             g_date_time_new_from_unix_local                 (gint64 
 GLIB_AVAILABLE_IN_ALL
 GDateTime *             g_date_time_new_from_unix_utc                   (gint64          t);
 
+GLIB_AVAILABLE_IN_2_80
+GDateTime *             g_date_time_new_from_unix_local_usec            (gint64          usecs);
+GLIB_AVAILABLE_IN_2_80
+GDateTime *             g_date_time_new_from_unix_utc_usec              (gint64          usecs);
+
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 GLIB_DEPRECATED_IN_2_62_FOR(g_date_time_new_from_unix_local)
 GDateTime *             g_date_time_new_from_timeval_local              (const GTimeVal *tv);
@@ -265,6 +270,9 @@ gdouble                 g_date_time_get_seconds                         (GDateTi
 
 GLIB_AVAILABLE_IN_ALL
 gint64                  g_date_time_to_unix                             (GDateTime      *datetime);
+GLIB_AVAILABLE_IN_2_80
+gint64                  g_date_time_to_unix_usec                        (GDateTime      *datetime);
+
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 GLIB_DEPRECATED_IN_2_62_FOR(g_date_time_to_unix)
 gboolean                g_date_time_to_timeval                          (GDateTime      *datetime,
