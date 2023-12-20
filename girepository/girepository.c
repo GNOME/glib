@@ -556,7 +556,7 @@ get_typelib_dependencies_transitive (GIRepository *repository,
  * Retrieves all (transitive) versioned dependencies for
  * @namespace_.
  *
- * The strings are of the form `namespace-version`.
+ * The returned strings are of the form `namespace-version`.
  *
  * Note: @namespace_ must have already been loaded using a function
  * such as [method@GIRepository.Repository.require] before calling this
