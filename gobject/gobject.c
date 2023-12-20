@@ -102,9 +102,28 @@ enum {
   PROP_NONE
 };
 
+#define _OPTIONAL_BIT_LOCK               3
+
 #define OPTIONAL_FLAG_IN_CONSTRUCTION    (1 << 0)
 #define OPTIONAL_FLAG_HAS_SIGNAL_HANDLER (1 << 1) /* Set if object ever had a signal handler */
 #define OPTIONAL_FLAG_HAS_NOTIFY_HANDLER (1 << 2) /* Same, specifically for "notify" */
+#define OPTIONAL_FLAG_LOCK               (1 << 3) /* _OPTIONAL_BIT_LOCK */
+
+/* We use g_bit_lock(), which only supports one lock per integer.
+ *
+ * Hence, while we have locks for different purposes, internally they all
+ * map to the same bit lock (_OPTIONAL_BIT_LOCK).
+ *
+ * This means you cannot take a lock (object_bit_lock()) while already holding
+ * another bit lock. There is an assert against that with G_ENABLE_DEBUG
+ * builds (_object_bit_is_locked).
+ *
+ * In the past, we had different global mutexes per topic. Now we have one
+ * per-object mutex for several topics. The downside is that we are not as
+ * parallel as possible. The alternative would be to add individual locking
+ * integers to GObjectPrivate. But increasing memory usage for more parallelism
+ * (per-object!) is not worth it. */
+#define OPTIONAL_BIT_LOCK_WEAK_REFS      1
 
 #if SIZEOF_INT == 4 && GLIB_SIZEOF_VOID_P == 8
 #define HAVE_OPTIONAL_FLAGS_IN_GOBJECT 1
@@ -201,7 +220,6 @@ struct _GObjectNotifyQueue
 
 /* --- variables --- */
 G_LOCK_DEFINE_STATIC (closure_array_mutex);
-G_LOCK_DEFINE_STATIC (weak_refs_mutex);
 G_LOCK_DEFINE_STATIC (toggle_refs_mutex);
 static GQuark	            quark_closure_array = 0;
 static GQuark	            quark_weak_notifies = 0;
@@ -232,6 +250,43 @@ object_get_optional_flags_p (GObject *object)
 #else
   return &g_object_get_instance_private (object)->optional_flags;
 #endif
+}
+
+#if defined(G_ENABLE_DEBUG) && defined(G_THREAD_LOCAL)
+/* Using this thread-local global is sufficient to guard the per-object
+ * locking, because while the current thread holds a lock on one object, it
+ * never calls out to another object (because doing so would would be prone to
+ * deadlock). */
+static G_THREAD_LOCAL guint _object_bit_is_locked;
+#endif
+
+static void
+object_bit_lock (GObject *object, guint lock_bit)
+{
+#if defined(G_ENABLE_DEBUG) && defined(G_THREAD_LOCAL)
+  /* all object_bit_lock() really use the same bit/mutex. The "lock_bit" argument
+   * only exists for asserting. object_bit_lock() is not re-entrant (also not with
+   * different "lock_bit" values). */
+  g_assert (lock_bit > 0);
+  g_assert (_object_bit_is_locked == 0);
+  _object_bit_is_locked = lock_bit;
+#endif
+
+  g_bit_lock ((gint *) object_get_optional_flags_p (object), _OPTIONAL_BIT_LOCK);
+}
+
+static void
+object_bit_unlock (GObject *object, guint lock_bit)
+{
+#if defined(G_ENABLE_DEBUG) && defined(G_THREAD_LOCAL)
+  /* All lock_bit map to the same mutex. We cannot use two different locks on
+   * the same integer. Assert against that. */
+  g_assert (lock_bit > 0);
+  g_assert (_object_bit_is_locked == lock_bit);
+  _object_bit_is_locked = 0;
+#endif
+
+  g_bit_unlock ((gint *) object_get_optional_flags_p (object), _OPTIONAL_BIT_LOCK);
 }
 
 /* --- functions --- */
@@ -3251,7 +3306,7 @@ g_object_weak_ref (GObject    *object,
   g_return_if_fail (notify != NULL);
   g_return_if_fail (g_atomic_int_get (&object->ref_count) >= 1);
 
-  G_LOCK (weak_refs_mutex);
+  object_bit_lock (object, OPTIONAL_BIT_LOCK_WEAK_REFS);
   wstack = g_datalist_id_remove_no_notify (&object->qdata, quark_weak_notifies);
   if (wstack)
     {
@@ -3268,7 +3323,7 @@ g_object_weak_ref (GObject    *object,
   wstack->weak_refs[i].notify = notify;
   wstack->weak_refs[i].data = data;
   g_datalist_id_set_data_full (&object->qdata, quark_weak_notifies, wstack, weak_refs_notify);
-  G_UNLOCK (weak_refs_mutex);
+  object_bit_unlock (object, OPTIONAL_BIT_LOCK_WEAK_REFS);
 }
 
 /**
@@ -3290,7 +3345,7 @@ g_object_weak_unref (GObject    *object,
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (notify != NULL);
 
-  G_LOCK (weak_refs_mutex);
+  object_bit_lock (object, OPTIONAL_BIT_LOCK_WEAK_REFS);
   wstack = g_datalist_id_get_data (&object->qdata, quark_weak_notifies);
   if (wstack)
     {
@@ -3308,7 +3363,7 @@ g_object_weak_unref (GObject    *object,
 	    break;
 	  }
     }
-  G_UNLOCK (weak_refs_mutex);
+  object_bit_unlock (object, OPTIONAL_BIT_LOCK_WEAK_REFS);
   if (!found_one)
     g_critical ("%s: couldn't find weak ref %p(%p)", G_STRFUNC, notify, data);
 }
