@@ -1558,28 +1558,39 @@ find_namespace_latest (const gchar  *namespace,
  * @repository: (nullable): A #GIRepository, or `NULL` for the singleton
  *   process-global default #GIRepository
  * @namespace_: GI namespace, e.g. `Gtk`
+ * @n_versions_out: (optional) (out): The number of versions returned.
  *
  * Obtain an unordered list of versions (either currently loaded or
  * available) for @namespace_ in this @repository.
  *
- * Returns: (element-type utf8) (transfer full): the array of versions.
+ * Returns: (element-type utf8) (transfer full) (array length=n_versions_out): the array of versions.
  * Since: 2.80
  */
-GList *
+char **
 gi_repository_enumerate_versions (GIRepository *repository,
-                                  const gchar  *namespace_)
+                                  const gchar  *namespace_,
+                                  size_t       *n_versions_out)
 {
-  GList *ret = NULL;
+  GPtrArray *versions;
   GSList *candidates, *link;
   const gchar *loaded_version;
+  char **ret;
 
   init_globals ();
   candidates = enumerate_namespace_versions (namespace_, typelib_search_path);
 
+  if (!candidates)
+    {
+      if (n_versions_out)
+        *n_versions_out = 0;
+      return g_strdupv ((char *[]) {NULL});
+    }
+
+  versions = g_ptr_array_new_null_terminated (1, g_free, TRUE);
   for (link = candidates; link; link = link->next)
     {
       struct NamespaceVersionCandidadate *candidate = link->data;
-      ret = g_list_prepend (ret, g_strdup (candidate->version));
+      g_ptr_array_add (versions, g_steal_pointer (&candidate->version));
       free_candidate (candidate);
     }
   g_slist_free (candidates);
@@ -1591,9 +1602,13 @@ gi_repository_enumerate_versions (GIRepository *repository,
   if (gi_repository_is_registered (repository, namespace_, NULL))
     {
       loaded_version = gi_repository_get_version (repository, namespace_);
-      if (loaded_version && !g_list_find_custom (ret, loaded_version, g_str_equal))
-        ret = g_list_prepend (ret, g_strdup (loaded_version));
+      if (loaded_version &&
+          !g_ptr_array_find_with_equal_func (versions, loaded_version, g_str_equal, NULL))
+        g_ptr_array_add (versions, g_strdup (loaded_version));
     }
+
+  ret = (char **) g_ptr_array_steal (versions, n_versions_out);
+  g_ptr_array_unref (g_steal_pointer (&versions));
 
   return ret;
 }

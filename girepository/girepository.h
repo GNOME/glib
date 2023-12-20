@@ -128,8 +128,9 @@ GIBaseInfo *  gi_repository_find_by_name  (GIRepository *repository,
                                            const gchar  *name);
 
 GI_AVAILABLE_IN_ALL
-GList *       gi_repository_enumerate_versions (GIRepository *repository,
-                                                const gchar  *namespace_);
+char       ** gi_repository_enumerate_versions (GIRepository *repository,
+                                                const gchar  *namespace_,
+                                                size_t       *n_versions_out);
 
 GI_AVAILABLE_IN_ALL
 GITypelib *    gi_repository_require       (GIRepository           *repository,

@@ -32,6 +32,8 @@ test_repository_basic (void)
   char **namespaces = NULL;
   const char *expected_namespaces[] = { "GLib", NULL };
   GError *local_error = NULL;
+  char **versions;
+  size_t n_versions;
 
   g_test_summary ("Test basic opening of a repository and requiring a typelib");
 
@@ -41,6 +43,17 @@ test_repository_basic (void)
 
   repository = gi_repository_new ();
   g_assert_nonnull (repository);
+
+  versions = gi_repository_enumerate_versions (repository, "SomeInvalidNamespace", &n_versions);
+  g_assert_nonnull (versions);
+  g_assert_cmpstrv (versions, ((char *[]){NULL}));
+  g_assert_cmpuint (n_versions, ==, 0);
+  g_clear_pointer (&versions, g_strfreev);
+
+  versions = gi_repository_enumerate_versions (repository, "GLib", NULL);
+  g_assert_nonnull (versions);
+  g_assert_cmpstrv (versions, ((char *[]){"2.0", NULL}));
+  g_clear_pointer (&versions, g_strfreev);
 
   search_path = gi_repository_get_search_path ();
   g_assert_nonnull (search_path);
