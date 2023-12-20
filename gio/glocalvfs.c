@@ -94,32 +94,9 @@ g_local_vfs_get_file_for_uri (GVfs       *vfs,
 {
   char *path;
   GFile *file;
-  char *stripped_uri, *hash, *question_mark;
 
-  /* As per https://url.spec.whatwg.org/#file-state, file: URIs can contain
-   * query and fragment sections. We ignore them in order to get only the file
-   * path. Compliance to this part of the WhatWG spec doesn’t necessarily mean
-   * we comply with the entire spec. */
-  if (strchr (uri, '#') != NULL)
-    {
-      stripped_uri = g_strdup (uri);
-      hash = strchr (stripped_uri, '#');
-      *hash = 0;
-    }
-  else if (strchr (uri, '?') != NULL)
-    {
-      stripped_uri = g_strdup (uri);
-      question_mark = strchr (stripped_uri, '?');
-      *question_mark = 0;
-    }
-  else
-    stripped_uri = (char *)uri;
-      
-  path = g_filename_from_uri (stripped_uri, NULL, NULL);
+  path = g_filename_from_uri (uri, NULL, NULL);
 
-  if (stripped_uri != uri)
-    g_free (stripped_uri);
-  
   if (path != NULL)
     file = _g_local_file_new (path);
   else
