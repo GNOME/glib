@@ -593,8 +593,8 @@ gi_repository_get_dependencies (GIRepository *repository,
                                        transitive_dependencies);
 
   /* Convert to a string array. */
-  out = g_ptr_array_new_full (g_hash_table_size (transitive_dependencies),
-                              g_free);
+  out = g_ptr_array_new_null_terminated (g_hash_table_size (transitive_dependencies),
+                                         g_free, TRUE);
   g_hash_table_iter_init (&iter, transitive_dependencies);
 
   while (g_hash_table_iter_next (&iter, (gpointer) &dependency, NULL))
@@ -604,9 +604,6 @@ gi_repository_get_dependencies (GIRepository *repository,
     }
 
   g_hash_table_unref (transitive_dependencies);
-
-  /* Add a NULL terminator. */
-  g_ptr_array_add (out, NULL);
 
   return (gchar **) g_ptr_array_free (out, FALSE);
 }
