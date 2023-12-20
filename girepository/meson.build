@@ -197,6 +197,7 @@ libgirepository = shared_library('girepository-2.0',
 libgirepository_dep = declare_dependency(
   link_with: libgirepository,
   dependencies: [libglib_dep, libgobject_dep, libgio_dep, libgmodule_dep],
+  sources: [gi_visibility_h],
   include_directories: [girepoinc],
 )
 

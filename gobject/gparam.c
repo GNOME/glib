@@ -994,9 +994,30 @@ g_param_spec_pool_new (gboolean type_prefixing)
 
   memcpy (&pool->mutex, &init_mutex, sizeof (init_mutex));
   pool->type_prefixing = type_prefixing != FALSE;
-  pool->hash_table = g_hash_table_new (param_spec_pool_hash, param_spec_pool_equals);
+  pool->hash_table = g_hash_table_new_full (param_spec_pool_hash,
+                                            param_spec_pool_equals,
+                                            (GDestroyNotify) g_param_spec_unref,
+                                            NULL);
 
   return pool;
+}
+
+/**
+ * g_param_spec_pool_free:
+ * @pool: (transfer full): a #GParamSpecPool
+ *
+ * Frees the resources allocated by a #GParamSpecPool.
+ *
+ * Since: 2.80
+ */
+void
+g_param_spec_pool_free (GParamSpecPool *pool)
+{
+  g_mutex_lock (&pool->mutex);
+  g_hash_table_unref (pool->hash_table);
+  g_mutex_unlock (&pool->mutex);
+  g_mutex_clear (&pool->mutex);
+  g_free (pool);
 }
 
 /**
@@ -1053,9 +1074,7 @@ g_param_spec_pool_remove (GParamSpecPool *pool,
   if (pool && pspec)
     {
       g_mutex_lock (&pool->mutex);
-      if (g_hash_table_remove (pool->hash_table, pspec))
-	g_param_spec_unref (pspec);
-      else
+      if (!g_hash_table_remove (pool->hash_table, pspec))
 	g_critical (G_STRLOC ": attempt to remove unknown pspec '%s' from pool", pspec->name);
       g_mutex_unlock (&pool->mutex);
     }
