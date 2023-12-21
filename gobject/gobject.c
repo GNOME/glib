@@ -187,7 +187,6 @@ G_LOCK_DEFINE_STATIC (closure_array_mutex);
 G_LOCK_DEFINE_STATIC (weak_refs_mutex);
 G_LOCK_DEFINE_STATIC (toggle_refs_mutex);
 static GQuark	            quark_closure_array = 0;
-static GQuark	            quark_weak_refs = 0;
 static GQuark	            quark_weak_notifies = 0;
 static GQuark	            quark_toggle_refs = 0;
 static GQuark               quark_notify_queue;
@@ -526,7 +525,6 @@ g_object_do_class_init (GObjectClass *class)
   /* read the comment about typedef struct CArray; on why not to change this quark */
   quark_closure_array = g_quark_from_static_string ("GObject-closure-array");
 
-  quark_weak_refs = g_quark_from_static_string ("GObject-weak-references");
   quark_weak_notifies = g_quark_from_static_string ("GObject-weak-notifies");
   quark_weak_locations = g_quark_from_static_string ("GObject-weak-locations");
   quark_toggle_refs = g_quark_from_static_string ("GObject-toggle-references");
@@ -1375,7 +1373,6 @@ g_object_real_dispose (GObject *object)
   /* GWeakRef and weak_pointer do not call into user code. Clear those first
    * so that user code can rely on the state of their weak pointers.
    */
-  g_datalist_id_set_data (&object->qdata, quark_weak_refs, NULL);
   g_datalist_id_set_data (&object->qdata, quark_weak_locations, NULL);
 
   /* GWeakNotify and GClosure can call into user code */
@@ -4009,7 +4006,6 @@ retry_decrement:
 
   g_datalist_id_set_data (&object->qdata, quark_closure_array, NULL);
   g_signal_handlers_destroy (object);
-  g_datalist_id_set_data (&object->qdata, quark_weak_refs, NULL);
   g_datalist_id_set_data (&object->qdata, quark_weak_locations, NULL);
   g_datalist_id_set_data (&object->qdata, quark_weak_notifies, NULL);
 
@@ -5151,11 +5147,7 @@ g_weak_ref_set (GWeakRef *weak_ref,
           weak_locations = g_datalist_id_get_data (&old_object->qdata, quark_weak_locations);
           if (weak_locations == NULL)
             {
-#ifndef G_DISABLE_ASSERT
-              gboolean in_weak_refs_notify =
-                  g_datalist_id_get_data (&old_object->qdata, quark_weak_refs) == NULL;
-              g_assert (in_weak_refs_notify);
-#endif /* G_DISABLE_ASSERT */
+              g_critical ("unexpected missing GWeakRef");
             }
           else
             {
