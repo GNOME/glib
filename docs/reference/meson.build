@@ -14,6 +14,8 @@ if get_option('documentation') and enable_gir
     '--fatal-warnings',
   ]
 
+  docs_dir = glib_datadir / 'doc' / 'glib-2.0'
+
   subdir('glib')
   subdir('gmodule')
   subdir('gobject')
