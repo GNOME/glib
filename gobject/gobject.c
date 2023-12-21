@@ -1370,11 +1370,6 @@ g_object_real_dispose (GObject *object)
 {
   g_signal_handlers_destroy (object);
 
-  /* GWeakRef and weak_pointer do not call into user code. Clear those first
-   * so that user code can rely on the state of their weak pointers.
-   */
-  g_datalist_id_set_data (&object->qdata, quark_weak_locations, NULL);
-
   /* GWeakNotify and GClosure can call into user code */
   g_datalist_id_set_data (&object->qdata, quark_weak_notifies, NULL);
   g_datalist_id_set_data (&object->qdata, quark_closure_array, NULL);
@@ -1462,6 +1457,7 @@ g_object_run_dispose (GObject *object)
   TRACE (GOBJECT_OBJECT_DISPOSE(object,G_TYPE_FROM_INSTANCE(object), 0));
   G_OBJECT_GET_CLASS (object)->dispose (object);
   TRACE (GOBJECT_OBJECT_DISPOSE_END(object,G_TYPE_FROM_INSTANCE(object), 0));
+  g_datalist_id_remove_data (&object->qdata, quark_weak_locations);
   g_object_unref (object);
 }
 

@@ -615,7 +615,8 @@ weak_reffed_object_dispose (GObject *object)
 
   G_OBJECT_CLASS (weak_reffed_object_parent_class)->dispose (object);
 
-  g_assert_null (g_weak_ref_get (weak_reffed->weak_ref));
+  g_assert_true (object == g_weak_ref_get (weak_reffed->weak_ref));
+  g_object_unref (object);
 }
 
 static void
@@ -668,6 +669,8 @@ test_weak_ref_on_run_dispose (void)
 
   g_object_run_dispose (obj);
   g_assert_null (g_weak_ref_get (&weak));
+
+  g_weak_ref_set (&weak, obj);
 
   g_clear_object (&obj);
   g_assert_null (g_weak_ref_get (&weak));
