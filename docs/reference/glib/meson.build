@@ -23,7 +23,7 @@ if get_option('documentation')
   rst2html5 = find_program('rst2html5', 'rst2html5.py', required: false)
 
   if rst2html5.found()
-    spec_path = glib_datadir / 'doc' / 'glib-2.0'
+    spec_path = docs_dir
 
     figures = files(
       'gvariant-byte-boundaries.svg',
@@ -114,4 +114,7 @@ custom_target('glib-docs',
   ],
   build_by_default: true,
   depend_files: expand_content_files,
+  install: true,
+  install_dir: docs_dir,
+  install_tag: 'doc',
 )
