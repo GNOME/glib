@@ -321,4 +321,10 @@ GLibPrivateVTable *glib__private__ (void);
 gboolean g_uint_equal (gconstpointer v1, gconstpointer v2);
 guint g_uint_hash (gconstpointer v);
 
+#if defined(__GNUC__)
+#define G_THREAD_LOCAL __thread
+#else
+#undef G_THREAD_LOCAL
+#endif
+
 #endif /* __GLIB_PRIVATE_H__ */
