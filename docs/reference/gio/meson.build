@@ -8,7 +8,9 @@ if get_option('man')
       output: page + '.1',
       command: xsltproc_command,
       install: true,
-      install_dir: man1_dir)
+      install_dir: man1_dir,
+      install_tag: 'doc',
+    )
   endforeach
 endif
 
