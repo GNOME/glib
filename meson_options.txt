@@ -45,7 +45,7 @@ option('man',
 
 option('man-pages',
        type : 'feature',
-       value : 'disabled',
+       value : 'auto',
        description : 'generate man pages (requires rst2man)',
        deprecated : { 'true': 'enabled', 'false': 'disabled' })
 
