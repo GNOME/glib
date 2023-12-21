@@ -58,7 +58,7 @@
  */
 
 static GIRepository *default_repository = NULL;
-static GSList *typelib_search_path = NULL;
+static GPtrArray *typelib_search_path = NULL;
 
 typedef struct {
   guint n_interfaces;
@@ -198,32 +198,24 @@ init_globals (void)
        */
       type_lib_path_env = g_getenv ("GI_TYPELIB_PATH");
 
-      typelib_search_path = NULL;
       if (type_lib_path_env)
         {
           gchar **custom_dirs;
-          gchar **d;
 
           custom_dirs = g_strsplit (type_lib_path_env, G_SEARCHPATH_SEPARATOR_S, 0);
-
-          d = custom_dirs;
-          while (*d)
-            {
-              typelib_search_path = g_slist_prepend (typelib_search_path, *d);
-              d++;
-            }
-
-          /* ownership of the array content was passed to the list */
-          g_free (custom_dirs);
+          typelib_search_path =
+            g_ptr_array_new_take_null_terminated ((gpointer) g_steal_pointer (&custom_dirs), g_free);
+        }
+      else
+        {
+          typelib_search_path = g_ptr_array_new_null_terminated (1, g_free, TRUE);
         }
 
       libdir = GOBJECT_INTROSPECTION_LIBDIR;
 
       typelib_dir = g_build_filename (libdir, "girepository-1.0", NULL);
 
-      typelib_search_path = g_slist_prepend (typelib_search_path, typelib_dir);
-
-      typelib_search_path = g_slist_reverse (typelib_search_path);
+      g_ptr_array_add (typelib_search_path, g_steal_pointer (&typelib_dir));
     }
 
   g_once_init_leave (&initialized, 1);
@@ -244,11 +236,12 @@ void
 gi_repository_prepend_search_path (const char *directory)
 {
   init_globals ();
-  typelib_search_path = g_slist_prepend (typelib_search_path, g_strdup (directory));
+  g_ptr_array_insert (typelib_search_path, 0, g_strdup (directory));
 }
 
 /**
  * gi_repository_get_search_path:
+ * @n_paths_out: (optional) (out): The number of search paths returned.
  *
  * Returns the current search path [class@GIRepository.Repository] will use when
  * loading typelib files.
@@ -256,14 +249,27 @@ gi_repository_prepend_search_path (const char *directory)
  * The list is internal to [class@GIRepository.Repository] and should not be
  * freed, nor should its string elements.
  *
- * Returns: (element-type filename) (transfer none): list of search paths, most
+ * Returns: (element-type filename) (transfer none) (array length=n_paths_out): list of search paths, most
  *   important first
  * Since: 2.80
  */
-GSList *
-gi_repository_get_search_path (void)
+const char * const *
+gi_repository_get_search_path (size_t *n_paths_out)
 {
-  return typelib_search_path;
+  if G_UNLIKELY (!typelib_search_path || !typelib_search_path->pdata)
+    {
+      static const char * const empty_search_path[] = {NULL};
+
+      if (n_paths_out)
+        *n_paths_out = 0;
+
+      return empty_search_path;
+    }
+
+  if (n_paths_out)
+    *n_paths_out = typelib_search_path->len;
+
+  return (const char * const *) typelib_search_path->pdata;
 }
 
 static char *
@@ -550,7 +556,7 @@ get_typelib_dependencies_transitive (GIRepository *repository,
  * Retrieves all (transitive) versioned dependencies for
  * @namespace_.
  *
- * The strings are of the form `namespace-version`.
+ * The returned strings are of the form `namespace-version`.
  *
  * Note: @namespace_ must have already been loaded using a function
  * such as [method@GIRepository.Repository.require] before calling this
@@ -587,8 +593,8 @@ gi_repository_get_dependencies (GIRepository *repository,
                                        transitive_dependencies);
 
   /* Convert to a string array. */
-  out = g_ptr_array_new_full (g_hash_table_size (transitive_dependencies),
-                              g_free);
+  out = g_ptr_array_new_null_terminated (g_hash_table_size (transitive_dependencies),
+                                         g_free, TRUE);
   g_hash_table_iter_init (&iter, transitive_dependencies);
 
   while (g_hash_table_iter_next (&iter, (gpointer) &dependency, NULL))
@@ -598,9 +604,6 @@ gi_repository_get_dependencies (GIRepository *repository,
     }
 
   g_hash_table_unref (transitive_dependencies);
-
-  /* Add a NULL terminator. */
-  g_ptr_array_add (out, NULL);
 
   return (gchar **) g_ptr_array_free (out, FALSE);
 }
@@ -1310,21 +1313,21 @@ gi_repository_get_typelib_path (GIRepository *repository,
 /* This simple search function looks for a specified namespace-version;
    it's faster than the full directory listing required for latest version. */
 static GMappedFile *
-find_namespace_version (const gchar  *namespace,
-			const gchar  *version,
-			GSList       *search_path,
-			gchar       **path_ret)
+find_namespace_version (const char          *namespace,
+                        const char          *version,
+                        const char * const  *search_paths,
+                        size_t               n_search_paths,
+                        char               **path_ret)
 {
-  GSList *ldir;
   GError *error = NULL;
   GMappedFile *mfile = NULL;
   char *fname;
 
   fname = g_strdup_printf ("%s-%s.typelib", namespace, version);
 
-  for (ldir = search_path; ldir; ldir = ldir->next)
+  for (size_t i = 0; i < n_search_paths; ++i)
     {
-      char *path = g_build_filename (ldir->data, fname, NULL);
+      char *path = g_build_filename (search_paths[i], fname, NULL);
 
       mfile = g_mapped_file_new (path, FALSE, &error);
       if (error)
@@ -1434,14 +1437,14 @@ free_candidate (struct NamespaceVersionCandidadate *candidate)
 }
 
 static GSList *
-enumerate_namespace_versions (const gchar *namespace,
-			      GSList      *search_path)
+enumerate_namespace_versions (const char         *namespace,
+                              const char * const *search_paths,
+                              size_t              n_search_paths)
 {
   GSList *candidates = NULL;
   GHashTable *found_versions = g_hash_table_new (g_str_hash, g_str_equal);
   char *namespace_dash;
   char *namespace_typelib;
-  GSList *ldir;
   GError *error = NULL;
   int index;
 
@@ -1449,13 +1452,13 @@ enumerate_namespace_versions (const gchar *namespace,
   namespace_typelib = g_strdup_printf ("%s.typelib", namespace);
 
   index = 0;
-  for (ldir = search_path; ldir; ldir = ldir->next)
+  for (size_t i = 0; i < n_search_paths; ++i)
     {
       GDir *dir;
       const char *dirname;
       const char *entry;
 
-      dirname = (const char*)ldir->data;
+      dirname = search_paths[i];
       dir = g_dir_open (dirname, 0, NULL);
       if (dir == NULL)
 	continue;
@@ -1521,10 +1524,11 @@ enumerate_namespace_versions (const gchar *namespace,
 }
 
 static GMappedFile *
-find_namespace_latest (const gchar  *namespace,
-		       GSList       *search_path,
-		       gchar       **version_ret,
-		       gchar       **path_ret)
+find_namespace_latest (const char          *namespace,
+                       const char * const  *search_paths,
+                       size_t               n_search_paths,
+                       char               **version_ret,
+                       char               **path_ret)
 {
   GSList *candidates;
   GMappedFile *result = NULL;
@@ -1532,7 +1536,7 @@ find_namespace_latest (const gchar  *namespace,
   *version_ret = NULL;
   *path_ret = NULL;
 
-  candidates = enumerate_namespace_versions (namespace, search_path);
+  candidates = enumerate_namespace_versions (namespace, search_paths, n_search_paths);
 
   if (candidates != NULL)
     {
@@ -1558,28 +1562,41 @@ find_namespace_latest (const gchar  *namespace,
  * @repository: (nullable): A #GIRepository, or `NULL` for the singleton
  *   process-global default #GIRepository
  * @namespace_: GI namespace, e.g. `Gtk`
+ * @n_versions_out: (optional) (out): The number of versions returned.
  *
  * Obtain an unordered list of versions (either currently loaded or
  * available) for @namespace_ in this @repository.
  *
- * Returns: (element-type utf8) (transfer full): the array of versions.
+ * Returns: (element-type utf8) (transfer full) (array length=n_versions_out): the array of versions.
  * Since: 2.80
  */
-GList *
+char **
 gi_repository_enumerate_versions (GIRepository *repository,
-                                  const gchar  *namespace_)
+                                  const gchar  *namespace_,
+                                  size_t       *n_versions_out)
 {
-  GList *ret = NULL;
+  GPtrArray *versions;
   GSList *candidates, *link;
   const gchar *loaded_version;
+  char **ret;
 
   init_globals ();
-  candidates = enumerate_namespace_versions (namespace_, typelib_search_path);
+  candidates = enumerate_namespace_versions (namespace_,
+                                             (const char * const *) typelib_search_path->pdata,
+                                             typelib_search_path->len);
 
+  if (!candidates)
+    {
+      if (n_versions_out)
+        *n_versions_out = 0;
+      return g_strdupv ((char *[]) {NULL});
+    }
+
+  versions = g_ptr_array_new_null_terminated (1, g_free, TRUE);
   for (link = candidates; link; link = link->next)
     {
       struct NamespaceVersionCandidadate *candidate = link->data;
-      ret = g_list_prepend (ret, g_strdup (candidate->version));
+      g_ptr_array_add (versions, g_steal_pointer (&candidate->version));
       free_candidate (candidate);
     }
   g_slist_free (candidates);
@@ -1591,20 +1608,25 @@ gi_repository_enumerate_versions (GIRepository *repository,
   if (gi_repository_is_registered (repository, namespace_, NULL))
     {
       loaded_version = gi_repository_get_version (repository, namespace_);
-      if (loaded_version && !g_list_find_custom (ret, loaded_version, g_str_equal))
-        ret = g_list_prepend (ret, g_strdup (loaded_version));
+      if (loaded_version &&
+          !g_ptr_array_find_with_equal_func (versions, loaded_version, g_str_equal, NULL))
+        g_ptr_array_add (versions, g_strdup (loaded_version));
     }
+
+  ret = (char **) g_ptr_array_steal (versions, n_versions_out);
+  g_ptr_array_unref (g_steal_pointer (&versions));
 
   return ret;
 }
 
 static GITypelib *
-require_internal (GIRepository  *repository,
-		  const gchar   *namespace,
-		  const gchar   *version,
-		  GIRepositoryLoadFlags flags,
-		  GSList        *search_path,
-		  GError       **error)
+require_internal (GIRepository           *repository,
+                  const char             *namespace,
+                  const char             *version,
+                  GIRepositoryLoadFlags   flags,
+                  const char * const     *search_paths,
+                  size_t                  n_search_paths,
+                  GError                **error)
 {
   GMappedFile *mfile;
   GITypelib *ret = NULL;
@@ -1637,14 +1659,14 @@ require_internal (GIRepository  *repository,
 
   if (version != NULL)
     {
-      mfile = find_namespace_version (namespace, version,
-				      search_path, &path);
+      mfile = find_namespace_version (namespace, version, search_paths,
+                                      n_search_paths, &path);
       tmp_version = g_strdup (version);
     }
   else
     {
-      mfile = find_namespace_latest (namespace, search_path,
-				     &tmp_version, &path);
+      mfile = find_namespace_latest (namespace, search_paths, n_search_paths,
+                                     &tmp_version, &path);
     }
 
   if (mfile == NULL)
@@ -1744,7 +1766,8 @@ gi_repository_require (GIRepository  *repository,
 
   init_globals ();
   typelib = require_internal (repository, namespace, version, flags,
-			      typelib_search_path, error);
+                              (const char * const *) typelib_search_path->pdata,
+                              typelib_search_path->len, error);
 
   return typelib;
 }
@@ -1779,10 +1802,10 @@ gi_repository_require_private (GIRepository  *repository,
 			       GIRepositoryLoadFlags flags,
 			       GError       **error)
 {
-  GSList search_path = { (gpointer) typelib_dir, NULL };
+  const char * const search_path[] = { typelib_dir, NULL };
 
   return require_internal (repository, namespace, version, flags,
-			   &search_path, error);
+                           search_path, 1, error);
 }
 
 static gboolean

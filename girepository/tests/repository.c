@@ -27,11 +27,13 @@ test_repository_basic (void)
 {
   GIRepository *repository;
   char *gobject_typelib_dir = NULL;
-  GSList *search_path;
+  const char * const * search_paths;
   GITypelib *typelib = NULL;
   char **namespaces = NULL;
   const char *expected_namespaces[] = { "GLib", NULL };
   GError *local_error = NULL;
+  char **versions;
+  size_t n_versions;
 
   g_test_summary ("Test basic opening of a repository and requiring a typelib");
 
@@ -42,9 +44,21 @@ test_repository_basic (void)
   repository = gi_repository_new ();
   g_assert_nonnull (repository);
 
-  search_path = gi_repository_get_search_path ();
-  g_assert_nonnull (search_path);
-  g_assert_cmpstr (search_path->data, ==, gobject_typelib_dir);
+  versions = gi_repository_enumerate_versions (repository, "SomeInvalidNamespace", &n_versions);
+  g_assert_nonnull (versions);
+  g_assert_cmpstrv (versions, ((char *[]){NULL}));
+  g_assert_cmpuint (n_versions, ==, 0);
+  g_clear_pointer (&versions, g_strfreev);
+
+  versions = gi_repository_enumerate_versions (repository, "GLib", NULL);
+  g_assert_nonnull (versions);
+  g_assert_cmpstrv (versions, ((char *[]){"2.0", NULL}));
+  g_clear_pointer (&versions, g_strfreev);
+
+  search_paths = gi_repository_get_search_path (NULL);
+  g_assert_nonnull (search_paths);
+  g_assert_cmpuint (g_strv_length ((char **) search_paths), >, 0);
+  g_assert_cmpstr (search_paths[0], ==, gobject_typelib_dir);
 
   typelib = gi_repository_require (repository, "GLib", "2.0", 0, &local_error);
   g_assert_no_error (local_error);
@@ -100,6 +114,38 @@ test_repository_info (void)
   g_clear_object (&repository);
 }
 
+static void
+test_repository_dependencies (void)
+{
+  GIRepository *repository;
+  GITypelib *typelib;
+  GError *error = NULL;
+  char *gobject_typelib_dir = NULL;
+  char **dependencies;
+
+  g_test_summary ("Test ensures namespace dependencies are correctly exposed");
+
+  gobject_typelib_dir = g_test_build_filename (G_TEST_BUILT, "..", "..", "gobject", NULL);
+  g_test_message ("Using GI_TYPELIB_DIR = %s", gobject_typelib_dir);
+  gi_repository_prepend_search_path (gobject_typelib_dir);
+  g_free (gobject_typelib_dir);
+
+  repository = gi_repository_new ();
+  g_assert_nonnull (repository);
+
+  typelib = gi_repository_require (repository, "GObject", "2.0", 0, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (typelib);
+
+  dependencies = gi_repository_get_dependencies (repository, "GObject");
+  g_assert_cmpuint (g_strv_length (dependencies), ==, 1);
+  g_assert_true (g_strv_contains ((const char **) dependencies, "GLib-2.0"));
+
+  g_clear_error (&error);
+  g_clear_object (&repository);
+  g_clear_pointer (&dependencies, g_strfreev);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -112,6 +158,7 @@ main (int   argc,
 
   g_test_add_func ("/repository/basic", test_repository_basic);
   g_test_add_func ("/repository/info", test_repository_info);
+  g_test_add_func ("/repository/dependencies", test_repository_dependencies);
 
   return g_test_run ();
 }

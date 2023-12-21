@@ -109,7 +109,7 @@ GI_AVAILABLE_IN_ALL
 void          gi_repository_prepend_library_path (const char *directory);
 
 GI_AVAILABLE_IN_ALL
-GSList *      gi_repository_get_search_path     (void);
+const char * const * gi_repository_get_search_path (size_t *n_paths_out);
 
 GI_AVAILABLE_IN_ALL
 const char *  gi_repository_load_typelib  (GIRepository           *repository,
@@ -128,8 +128,9 @@ GIBaseInfo *  gi_repository_find_by_name  (GIRepository *repository,
                                            const gchar  *name);
 
 GI_AVAILABLE_IN_ALL
-GList *       gi_repository_enumerate_versions (GIRepository *repository,
-                                                const gchar  *namespace_);
+char       ** gi_repository_enumerate_versions (GIRepository *repository,
+                                                const gchar  *namespace_,
+                                                size_t       *n_versions_out);
 
 GI_AVAILABLE_IN_ALL
 GITypelib *    gi_repository_require       (GIRepository           *repository,
