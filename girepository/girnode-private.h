@@ -92,16 +92,16 @@ struct _GIIrNodeFunction
 {
   GIIrNode node;
 
-  gboolean deprecated;
-  gboolean is_varargs; /* Not in typelib yet */
+  uint8_t deprecated : 1;
+  uint8_t is_varargs : 1; /* Not in typelib yet */
 
-  gboolean is_method;
-  gboolean is_setter;
-  gboolean is_getter;
-  gboolean is_constructor;
-  gboolean wraps_vfunc;
-  gboolean throws;
-  gboolean instance_transfer_full;
+  uint8_t is_method : 1;
+  uint8_t is_setter : 1;
+  uint8_t is_getter : 1;
+  uint8_t is_constructor : 1;
+  uint8_t wraps_vfunc : 1;
+  uint8_t throws : 1;
+  uint8_t instance_transfer_full : 1;
 
   char *symbol;
   char *property;
@@ -114,22 +114,22 @@ struct _GIIrNodeType
 {
   GIIrNode node;
 
-  gboolean is_pointer;
-  gboolean is_basic;
-  gboolean is_array;
-  gboolean is_glist;
-  gboolean is_gslist;
-  gboolean is_ghashtable;
-  gboolean is_interface;
-  gboolean is_error;
+  uint8_t is_pointer : 1;
+  uint8_t is_basic : 1;
+  uint8_t is_array : 1;
+  uint8_t is_glist : 1;
+  uint8_t is_gslist : 1;
+  uint8_t is_ghashtable : 1;
+  uint8_t is_interface : 1;
+  uint8_t is_error : 1;
   int tag;
 
   char *unparsed;
 
-  gboolean zero_terminated;
-  gboolean has_length;
+  uint8_t zero_terminated : 1;
+  uint8_t has_length : 1;
   int length;
-  gboolean has_size;
+  uint8_t has_size : 1;
   int size;
   int array_type;
 
@@ -144,16 +144,16 @@ struct _GIIrNodeParam
 {
   GIIrNode node;
 
-  gboolean in;
-  gboolean out;
-  gboolean caller_allocates;
-  gboolean optional;
-  gboolean retval;
-  gboolean nullable;
-  gboolean skip;
-  gboolean transfer;
-  gboolean shallow_transfer;
-  GIScopeType scope;
+  uint8_t in : 1;
+  uint8_t out : 1;
+  uint8_t caller_allocates : 1;
+  uint8_t optional : 1;
+  uint8_t retval : 1;
+  uint8_t nullable : 1;
+  uint8_t skip : 1;
+  uint8_t transfer : 1;
+  uint8_t shallow_transfer : 1;
+  GIScopeType scope : 3;
 
   int8_t closure;
   int8_t destroy;
@@ -165,15 +165,15 @@ struct _GIIrNodeProperty
 {
   GIIrNode node;
 
-  gboolean deprecated;
+  uint8_t deprecated : 1;
 
   char *name;
-  gboolean readable;
-  gboolean writable;
-  gboolean construct;
-  gboolean construct_only;
-  gboolean transfer;
-  gboolean shallow_transfer;
+  uint8_t readable : 1;
+  uint8_t writable : 1;
+  uint8_t construct : 1;
+  uint8_t construct_only : 1;
+  uint8_t transfer : 1;
+  uint8_t shallow_transfer : 1;
 
   char *setter;
   char *getter;
@@ -185,19 +185,19 @@ struct _GIIrNodeSignal
 {
   GIIrNode node;
 
-  gboolean deprecated;
+  uint8_t deprecated : 1;
 
-  gboolean run_first;
-  gboolean run_last;
-  gboolean run_cleanup;
-  gboolean no_recurse;
-  gboolean detailed;
-  gboolean action;
-  gboolean no_hooks;
-  gboolean instance_transfer_full;
+  uint8_t run_first : 1;
+  uint8_t run_last : 1;
+  uint8_t run_cleanup : 1;
+  uint8_t no_recurse : 1;
+  uint8_t detailed : 1;
+  uint8_t action : 1;
+  uint8_t no_hooks : 1;
+  uint8_t instance_transfer_full : 1;
 
-  gboolean has_class_closure;
-  gboolean true_stops_emit;
+  uint8_t has_class_closure : 1;
+  uint8_t true_stops_emit : 1;
 
   int class_closure;
 
@@ -209,13 +209,13 @@ struct _GIIrNodeVFunc
 {
   GIIrNode node;
 
-  gboolean is_varargs; /* Not in typelib yet */
-  gboolean must_chain_up;
-  gboolean must_be_implemented;
-  gboolean must_not_be_implemented;
-  gboolean is_class_closure;
-  gboolean throws;
-  gboolean instance_transfer_full;
+  uint8_t is_varargs : 1; /* Not in typelib yet */
+  uint8_t must_chain_up : 1;
+  uint8_t must_be_implemented : 1;
+  uint8_t must_not_be_implemented : 1;
+  uint8_t is_class_closure : 1;
+  uint8_t throws : 1;
+  uint8_t instance_transfer_full : 1;
 
   char *invoker;
 
@@ -229,8 +229,8 @@ struct _GIIrNodeField
 {
   GIIrNode node;
 
-  gboolean readable;
-  gboolean writable;
+  uint8_t readable : 1;
+  uint8_t writable : 1;
   int bits;
   int offset;
   GIIrNodeFunction *callback;
@@ -242,10 +242,10 @@ struct _GIIrNodeInterface
 {
   GIIrNode node;
 
-  gboolean abstract;
-  gboolean deprecated;
-  gboolean fundamental;
-  gboolean final_;
+  uint8_t abstract : 1;
+  uint8_t deprecated : 1;
+  uint8_t fundamental : 1;
+  uint8_t final_ : 1;
 
   char *gtype_name;
   char *gtype_init;
@@ -271,7 +271,7 @@ struct _GIIrNodeValue
 {
   GIIrNode node;
 
-  gboolean deprecated;
+  uint8_t deprecated : 1;
 
   int64_t value;
 };
@@ -280,7 +280,7 @@ struct _GIIrNodeConstant
 {
   GIIrNode node;
 
-  gboolean deprecated;
+  uint8_t deprecated : 1;
 
   GIIrNodeType *type;
 
@@ -291,7 +291,7 @@ struct _GIIrNodeEnum
 {
   GIIrNode node;
 
-  gboolean deprecated;
+  uint8_t deprecated : 1;
   int storage_type;
 
   char *gtype_name;
@@ -306,7 +306,7 @@ struct _GIIrNodeBoxed
 {
   GIIrNode node;
 
-  gboolean deprecated;
+  uint8_t deprecated : 1;
 
   char *gtype_name;
   char *gtype_init;
@@ -321,12 +321,12 @@ struct _GIIrNodeStruct
 {
   GIIrNode node;
 
-  gboolean deprecated;
-  gboolean disguised;
-  gboolean opaque;
-  gboolean pointer;
-  gboolean is_gtype_struct;
-  gboolean foreign;
+  uint8_t deprecated : 1;
+  uint8_t disguised : 1;
+  uint8_t opaque : 1;
+  uint8_t pointer : 1;
+  uint8_t is_gtype_struct : 1;
+  uint8_t foreign : 1;
 
   char *gtype_name;
   char *gtype_init;
@@ -344,7 +344,7 @@ struct _GIIrNodeUnion
 {
   GIIrNode node;
 
-  gboolean deprecated;
+  uint8_t deprecated : 1;
 
   GList *members;
   GList *discriminators;
