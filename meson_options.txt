@@ -40,7 +40,14 @@ option('libmount',
 option('man',
        type : 'boolean',
        value : false,
-       description : 'generate man pages (requires xsltproc)')
+       description : 'generate man pages (requires xsltproc)',
+       deprecated : 'man-pages')
+
+option('man-pages',
+       type : 'feature',
+       value : 'auto',
+       description : 'generate man pages (requires rst2man)',
+       deprecated : { 'true': 'enabled', 'false': 'disabled' })
 
 option('dtrace',
        type : 'boolean',

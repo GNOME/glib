@@ -11,7 +11,7 @@ cache:
     - _ccache/
 
 variables:
-  FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v25"
+  FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v26"
   COVERITY_IMAGE: "registry.gitlab.gnome.org/gnome/glib/coverity:v7"
   DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v19"
   ALPINE_IMAGE: "registry.gitlab.gnome.org/gnome/glib/alpine:v3"
@@ -130,7 +130,7 @@ fedora-x86_64:
             -Dinstalled_tests=true
             -Ddocumentation=true
             -Dintrospection=enabled
-            -Dman=true
+            -Dman-pages=enabled
             _build
     - meson compile -C _build
     - mkdir -p _coverage
@@ -753,7 +753,7 @@ dist-job:
     - git submodule update --init
     - for m in $(git submodule foreach -q 'echo $path'); do git config --global --add safe.directory "${PWD}/${m}"; done
     - meson subprojects download
-    - meson setup ${MESON_COMMON_OPTIONS} --buildtype release -Ddocumentation=true -Dman=true _build
+    - meson setup ${MESON_COMMON_OPTIONS} --buildtype release -Ddocumentation=true -Dman-pages=enabled _build
     - meson dist -C _build
     - tar -c -J -f "glib-docs-$CI_COMMIT_TAG.tar.xz" -C docs/reference/glib glib
     - tar -c -J -f "gmodule-docs-$CI_COMMIT_TAG.tar.xz" -C docs/reference/gmodule gmodule
