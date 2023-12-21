@@ -59,7 +59,7 @@ proportionally to the time since the initial release of that branch.
 
 There is no limit on the number of micro releases in a stable release series.
 Typically there will be around 6. Micro releases stop once there are no more
-bugs found in a stable series, or once a new stable series supercedes it.
+bugs found in a stable series, or once a new stable series supersedes it.
 
 The milestone for the next micro release in a stable series is created when the
 previous micro release is made, such that only one stable micro release is
