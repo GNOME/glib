@@ -5001,7 +5001,8 @@ g_weak_ref_init (GWeakRef *weak_ref,
 {
   weak_ref->priv.p = NULL;
 
-  g_weak_ref_set (weak_ref, object);
+  if (object)
+    g_weak_ref_set (weak_ref, object);
 }
 
 /**
