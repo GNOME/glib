@@ -1699,7 +1699,7 @@ if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
     g_sizet_compatibility += { type_name: size_compatibility and
       cc.compiles(
         '''#include <stddef.h>
-        size_t f (size_t *i) { return *i + 1; }
+        static size_t f (size_t *i) { return *i + 1; }
         int main (void) {
           unsigned ''' + type_name + ''' i = 0;
           f (&i);
