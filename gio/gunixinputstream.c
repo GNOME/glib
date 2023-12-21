@@ -66,6 +66,7 @@ struct _GUnixInputStreamPrivate {
 
 static void g_unix_input_stream_pollable_iface_init (GPollableInputStreamInterface *iface);
 static void g_unix_input_stream_file_descriptor_based_iface_init (GFileDescriptorBasedIface *iface);
+static void g_unix_input_stream_seekable_iface_init (GSeekableIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (GUnixInputStream, g_unix_input_stream, G_TYPE_INPUT_STREAM,
                          G_ADD_PRIVATE (GUnixInputStream)
@@ -73,6 +74,8 @@ G_DEFINE_TYPE_WITH_CODE (GUnixInputStream, g_unix_input_stream, G_TYPE_INPUT_STR
 						g_unix_input_stream_pollable_iface_init)
 			 G_IMPLEMENT_INTERFACE (G_TYPE_FILE_DESCRIPTOR_BASED,
 						g_unix_input_stream_file_descriptor_based_iface_init)
+			 G_IMPLEMENT_INTERFACE (G_TYPE_SEEKABLE,
+						g_unix_input_stream_seekable_iface_init)
 			 )
 
 static void     g_unix_input_stream_set_property (GObject              *object,
@@ -105,6 +108,19 @@ static gboolean g_unix_input_stream_pollable_can_poll      (GPollableInputStream
 static gboolean g_unix_input_stream_pollable_is_readable   (GPollableInputStream *stream);
 static GSource *g_unix_input_stream_pollable_create_source (GPollableInputStream *stream,
 							    GCancellable         *cancellable);
+
+static goffset g_unix_input_stream_tell		  (GSeekable   *seekable);
+static gboolean g_unix_input_stream_can_seek	  (GSeekable   *seekable);
+static gboolean g_unix_input_stream_seek	  (GSeekable   *seekable,
+						  goffset       offset,
+						  GSeekType     type,
+						  GCancellable *cancellable,
+						  GError      **error);
+static gboolean g_unix_input_stream_can_truncate (GSeekable    *seekable);
+static gboolean g_unix_input_stream_truncate	 (GSeekable    *seekable,
+						  goffset       offset,
+						  GCancellable *cancellable,
+						  GError      **error);
 
 static void
 g_unix_input_stream_class_init (GUnixInputStreamClass *klass)
@@ -163,6 +179,16 @@ static void
 g_unix_input_stream_file_descriptor_based_iface_init (GFileDescriptorBasedIface *iface)
 {
   iface->get_fd = (int (*) (GFileDescriptorBased *))g_unix_input_stream_get_fd;
+}
+
+static void
+g_unix_input_stream_seekable_iface_init (GSeekableIface *iface)
+{
+  iface->tell = g_unix_input_stream_tell;
+  iface->can_seek = g_unix_input_stream_can_seek;
+  iface->seek = g_unix_input_stream_seek;
+  iface->can_truncate = g_unix_input_stream_can_truncate;
+  iface->truncate_fn = g_unix_input_stream_truncate;
 }
 
 static void
@@ -479,4 +505,81 @@ g_unix_input_stream_pollable_create_source (GPollableInputStream *stream,
     }
 
   return pollable_source;
+}
+
+static goffset
+g_unix_input_stream_tell (GSeekable *seekable)
+{
+  GUnixInputStream *unix_stream = G_UNIX_INPUT_STREAM (seekable);
+  goffset rc = lseek (unix_stream->priv->fd, 0, SEEK_CUR);
+  if (rc < 0)
+    g_critical ("cannot tell GUnixInputStream: %s", g_strerror (errno));
+  return rc;
+}
+
+static gboolean
+g_unix_input_stream_can_seek (GSeekable *seekable)
+{
+  GUnixInputStream *unix_stream = G_UNIX_INPUT_STREAM (seekable);
+  return lseek (unix_stream->priv->fd, 0, SEEK_CUR) >= 0;
+}
+
+static int
+_seek_type_to_lseek (GSeekType type)
+{
+  switch (type)
+    {
+    default:
+    case G_SEEK_CUR:
+      return SEEK_CUR;
+    case G_SEEK_SET:
+      return SEEK_SET;
+    case G_SEEK_END:
+      return SEEK_END;
+    }
+}
+
+static gboolean
+g_unix_input_stream_seek (GSeekable    *seekable,
+                          goffset       offset,
+                          GSeekType     type,
+                          GCancellable *cancellable,
+                          GError      **error)
+{
+  GUnixInputStream *unix_stream = G_UNIX_INPUT_STREAM (seekable);
+  goffset rc;
+
+  g_return_val_if_fail (G_IS_UNIX_INPUT_STREAM (unix_stream), FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+  rc = lseek (unix_stream->priv->fd, offset, _seek_type_to_lseek (type));
+  if (rc < 0)
+    {
+      g_set_error (error,
+                   G_IO_ERROR,
+                   g_io_error_from_errno (errno),
+                   "Error seeking file descriptor: %s",
+                   g_strerror (errno));
+      return FALSE;
+    }
+  return TRUE;
+}
+
+static gboolean
+g_unix_input_stream_can_truncate (GSeekable *seekable)
+{
+  return FALSE;
+}
+
+static gboolean
+g_unix_input_stream_truncate (GSeekable    *seekable,
+                              goffset       offset,
+                              GCancellable *cancellable,
+                              GError      **error)
+{
+  g_set_error_literal (error,
+                       G_IO_ERROR,
+                       G_IO_ERROR_NOT_SUPPORTED,
+                       "Cannot truncate GUnixInputStream");
+  return FALSE;
 }
