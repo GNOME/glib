@@ -212,6 +212,47 @@ test_thread6 (void)
   g_thread_join (thread);
 }
 
+#if defined(_SC_NPROCESSORS_ONLN) && defined(THREADS_POSIX) && defined(HAVE_PTHREAD_GETAFFINITY_NP)
+static gpointer
+thread7_func (gpointer data)
+{
+  int idx = 0, err;
+  int ncores = sysconf (_SC_NPROCESSORS_ONLN);
+
+  cpu_set_t old_mask, new_mask;
+
+  err = pthread_getaffinity_np (pthread_self (), sizeof (old_mask), &old_mask);
+  CPU_ZERO (&new_mask);
+  g_assert_cmpint (err, ==, 0);
+
+  for (idx = 0; idx < ncores; ++idx)
+    if (CPU_ISSET (idx, &old_mask))
+      {
+        CPU_SET (idx, &new_mask);
+        break;
+      }
+
+  err = pthread_setaffinity_np (pthread_self (), sizeof (new_mask), &new_mask);
+  g_assert_cmpint (err, ==, 0);
+
+  int af_count = g_get_num_processors ();
+  return GINT_TO_POINTER (af_count);
+}
+#endif
+
+static void
+test_thread7 (void)
+{
+#if defined(_SC_NPROCESSORS_ONLN) && defined(THREADS_POSIX) && defined(HAVE_PTHREAD_GETAFFINITY_NP)
+  GThread *thread = g_thread_new ("mask", thread7_func, NULL);
+  gpointer result = g_thread_join (thread);
+
+  g_assert_cmpint (GPOINTER_TO_INT (result), ==, 1);
+#else
+  g_test_skip ("Skipping because pthread_getaffinity_np() is not available");
+#endif
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -223,6 +264,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/thread/thread4", test_thread4);
   g_test_add_func ("/thread/thread5", test_thread5);
   g_test_add_func ("/thread/thread6", test_thread6);
+  g_test_add_func ("/thread/thread7", test_thread7);
 
   return g_test_run ();
 }
