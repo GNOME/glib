@@ -254,6 +254,8 @@ if enable_gir
   )
 endif
 
+subdir('tools')
+
 if build_tests
   subdir('tests')
 endif
