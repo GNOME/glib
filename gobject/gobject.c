@@ -3805,74 +3805,75 @@ static gboolean
 _object_unref_clear_weak_locations (GObject *object, gint *p_old_ref, gboolean do_unref)
 {
   GSList **weak_locations;
-  gint old_ref;
 
-  weak_locations = g_datalist_id_get_data (&object->qdata, quark_weak_locations);
-
-  if (weak_locations != NULL)
+  if (do_unref)
     {
+      gboolean unreffed = FALSE;
+
+      /* Fast path for the final unref using a read-lck only. We check whether
+       * we have weak_locations and drop ref count to zero under a reader lock. */
+
+      g_rw_lock_reader_lock (&weak_locations_lock);
+
+      weak_locations = g_datalist_id_get_data (&object->qdata, quark_weak_locations);
+      if (!weak_locations)
+        {
+          unreffed = g_atomic_int_compare_and_exchange_full ((int *) &object->ref_count,
+                                                             1, 0,
+                                                             p_old_ref);
+          g_rw_lock_reader_unlock (&weak_locations_lock);
+          return unreffed;
+        }
+
+      g_rw_lock_reader_unlock (&weak_locations_lock);
+
+      /* We have weak-locations. Note that we are here already after dispose(). That
+       * means, during dispose a GWeakRef was registered (very unusual). */
+
       g_rw_lock_writer_lock (&weak_locations_lock);
 
-      if (do_unref)
+      if (!g_atomic_int_compare_and_exchange_full ((int *) &object->ref_count,
+                                                   1, 0,
+                                                   p_old_ref))
         {
-          /* We drop the ref count from 1 to zero, and do so while holding the lock.
-           * That prevents a g_weak_ref_set() to sneak in.  */
-          g_atomic_int_compare_and_exchange_full ((int *) &object->ref_count,
-                                                  1, 0,
-                                                  &old_ref);
-        }
-      else
-        {
-          old_ref = g_atomic_int_get (&object->ref_count);
-        }
-
-      /* we reloaded old-ref, return it to the caller. */
-      *p_old_ref = old_ref;
-
-      if (old_ref != 1)
-        {
-          /* The ref-count was not the expected 1. Bail out. */
           g_rw_lock_writer_unlock (&weak_locations_lock);
           return FALSE;
         }
 
-      /* We clear out weak locations. After this, the object cannot get a
-       * strong reference via a GWeakRef and as the ref count is 1, nobody else
-       * has a reference anymore.
-       */
       weak_locations = g_datalist_id_remove_no_notify (&object->qdata, quark_weak_locations);
       g_clear_pointer (&weak_locations, weak_locations_free_unlocked);
 
       g_rw_lock_writer_unlock (&weak_locations_lock);
-
       return TRUE;
     }
 
-  if (do_unref)
+  weak_locations = g_datalist_id_get_data (&object->qdata, quark_weak_locations);
+  if (weak_locations != NULL)
     {
-      /* WARNING:
-       *
-       * There is still a race here, because we are about to drop the ref count
-       * to zero without weak_locations_lock.
-       *
-       * At this point, we could have:
-       *   - object was resurrected during dispose and has a ref-count of 2.
-       *     One reference is the one from our current g_object_unref().
-       *     The other reference gets passed to another thread.
-       *     There are no GWeakRef yet, otherwise we would have taken the
-       *     code path with the lock above.
-       * At this point, the other thread can call g_weak_ref_set() and g_object_unref().
-       * The current thread proceeds here, does the final unref and starts finalization.
-       *
-       * Now we have a GWeakRef that can be used to access the destroyed object.
-       *
-       * The fix would be to always take a reader lock of weak_locations_lock. */
-      if (!g_atomic_int_compare_and_exchange_full ((int *) &object->ref_count,
-                                                   1, 0,
-                                                   p_old_ref))
-        return FALSE;
+      g_rw_lock_writer_lock (&weak_locations_lock);
+
+      *p_old_ref = g_atomic_int_get (&object->ref_count);
+      if (*p_old_ref != 1)
+        {
+          g_rw_lock_writer_unlock (&weak_locations_lock);
+          return FALSE;
+        }
+
+      weak_locations = g_datalist_id_remove_no_notify (&object->qdata, quark_weak_locations);
+      g_clear_pointer (&weak_locations, weak_locations_free_unlocked);
+
+      g_rw_lock_writer_unlock (&weak_locations_lock);
+      return TRUE;
     }
 
+  /* We don't need to re-fetch p_old_ref or check that it's still 1. The caller
+   * did that already. We are good.
+   *
+   * Note that in this case we fetched old_ref and weak_locations separately,
+   * without a lock. But this is fine. We are still before calling dispose().
+   * If there is a race at this point, the same race can happen between
+   * _object_unref_clear_weak_locations() and dispose() call. That is handled
+   * just fine. */
   return TRUE;
 }
 
