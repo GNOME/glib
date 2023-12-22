@@ -242,7 +242,7 @@ if enable_gir
   girepository_gir = gnome.generate_gir(libgirepository,
     sources: libgirepository_gir_sources,
     namespace: 'GIRepository',
-    nsversion: '2.0',
+    nsversion: '3.0',
     identifier_prefix: 'GI',
     symbol_prefix: 'gi',
     export_packages: libgirepository_gir_packages,
