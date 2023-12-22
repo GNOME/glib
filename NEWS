@@ -1,3 +1,248 @@
+Overview of changes in GLib 2.79.0, 2023-12-22
+==============================================
+
+ * Port to gi-docgen and drop gtk-doc support — dependencies have changed, and
+   Meson needs `-Ddocumentation` now rather than `-Dgtk_doc` (#3037, work by
+   multiple people)
+
+ * Move libgirepository into glib.git from gobject-introspection.git — but tools
+   like `g-ir-scanner` are currently still in gobject-introspection.git. For the
+   moment, glib.git needs to be built twice, once with `-Dintrospection=false`,
+   then build gobject-introspection.git, then re-build glib.git with
+   `-Dintrospection=true`. This process will evolve throughout the GLib 2.80
+   cycle. The API and ABI of libgirepository has changed, and accordingly its
+   version number has been bumped from 1.0 to 2.0 (note: the version number of
+   `GIRepository-*.gir` has been bumped from 2.0 to 3.0; see !3786). The GIR and
+   typelib file formats have not been changed, and are still at version 1.0.
+   (#3155, work by multiple people)
+
+ * Match behaviour for `GAppInfo` searches has changed (#3082, work by Nelson
+   Benítez León)
+
+ * Rename `GTK_USE_PORTAL` environment variable to `GIO_USE_PORTALS` (#3107,
+   work by Philip Withnall)
+
+ * Bump Meson dependency to 1.2.0 and depend on Python `packaging` module
+   (!3666, !3752)
+
+Bugs fixed:
+  - #596 GApplication in Garbage Collected environments would benefit from a
+    g_application_command_line_exit() to enable remote instances to exit.
+    (Aleksandr Mezin)
+  - #791 Wish: Add a "nodelay" property to GSocket or GTcpConnection (Philip
+    Withnall)
+  - #2810 thread-pool-slow intermittent assertion failure in
+    test_thread_sort_entry_func() (Philip Withnall)
+  - #2824 G_REGEX_OPTIMIZE causes incorrect regex behaviour
+  - #2991 Drop translatable pspec nick/blurbs from properties in GIO (Sophie
+    Herold)
+  - #3082 Investigate prioritising prefix matches on GAppInfo keywords over
+    substring matches on names (Nelson Benítez León)
+  - #3087 glib doesn't cleanly unload on Windows (Luca Bacci)
+  - #3098 Make invalid escape sequences in GKeyFile fatal (Philip Withnall)
+  - #3103 mkenums: Can't parse an enum value with value ',' (Lukáš Tyrychtr)
+  - #3105 NetworkManager 1.44.0 crashes repeatedly with glib 2.78.0 (Philip
+    Withnall)
+  - #3107 Rename GTK_USE_PORTAL to avoid portal services being run with portals
+    force-enabled (Philip Withnall)
+  - #3111 gsubprocess-testprog.c: build error with cygwin (sys/ptrace.h: No such
+    file or directory) (Philip Withnall)
+  - #3112 Update to Unicode 15.1 (Philip Withnall)
+  - #3115 Support for additional strftime formatting capabilities
+  - #3116 gio clears modification time in microseconds when setting with
+    `set_modification_date_time` (Lukáš Tyrychtr)
+  - #3119 Add support for `%Ey` to g_date_time_format() (Philip Withnall)
+  - #3120 Build of glib 2.78.0 ignores -Dlibelf=disabled (Philip Withnall)
+  - #3128 glib-2.78.0 fails at gio/tests/gsubprocess.p/gsubprocess.c.o
+  - #3130 Segfault when creating GIO GPropertyAction without properties
+  - #3134 glib incompatible with Python 3.12 due to distutils usage
+  - #3135 Add GNU/Hurd CI
+  - #3140 Add a flag to not copy modification time when copying files (Khalid
+    Abu Shawarib)
+  - #3144 `g_file_set_contents_full()` doesn't truncate the file (without
+    `G_FILE_SET_CONTENTS_CONSISTENT`) (Philip Withnall)
+  - #3156 check for #ifdef PTRACE_O_EXITKILL will always fail since it isn't a
+    macro (Alessandro Bono)
+  - #3157 gsubprocess build-time test intermittently timing out since 2.78.1
+    (Simon McVittie)
+  - #3158 "CRITICAL" log when using --attributes option for "gio info" (Philip
+    Withnall)
+  - #3159 glib regex test fails JIT compiler tests under musl libc (Pablo Correa
+    Gómez)
+  - #3161 codegen installation is broken
+  - #3168 gvfs-udisks2-volume-monitor SIGSEGV in g_content_type_guess_for_tree()
+    due to filename with bad encoding (Ondrej Holy)
+  - #3183 g_dbus_connection_signal_subscribe with flag
+    G_DBUS_SIGNAL_FLAGS_MATCH_ARG0_PATH doesn't work with an arg0 that is an
+    object path (Philip Withnall)
+  - #3185 g_utf8_collate_key() segfaults when passed an invalid length
+  - #3186 [RFE] Increase gio sniff buffer for mime type magic detection to 16K
+    or so (Philip Withnall)
+  - #3187 g_vasprintf crashes when passed invalid UTF-8 (Philip Withnall)
+  - #3191 Crash in __gio_xdg_cache_mime_type_subclass (Philip Withnall)
+  - #3203 Fdo notification fails without AppID (Michael Catanzaro)
+  - !3143 gatomic: Use g(u)intptr where appropriate
+  - !3316 gobject: Separate GWeakRef from GWeakNotify
+  - !3394 gsocketclient: Document delays/timeouts better
+  - !3457 glib-unix: Add convenience API for pipes
+  - !3524 add muslc ci
+  - !3552 gutils: Use international symbol for bits
+  - !3566 Update annotations for GAsyncQueue and GDir
+  - !3567 Update annotations for GHmac
+  - !3568 Update GOptionContext annotations
+  - !3569 Small fixes and cleanups for Vectored Exception Handlers
+  - !3571 Update GStringChunk annotations
+  - !3572 Update GRand annotations
+  - !3573 Update GTimer annotations
+  - !3576 guniprop.c: Avoid creating (temporarily) out-of-bounds pointers
+  - !3577 gthread: introduce g_once_init_{enter,leave}_pointer
+  - !3578 GType: Use guintptr as the underlying storage if larger than gsize
+  - !3579 Fixes for integer cast warnings when targeting CHERI
+  - !3580 Fix test_find_program on FreeBSD
+  - !3581 gthread: Fix optional/nullable annotations for g_once_init_*()
+  - !3582 Buffer needs to be aligned correctly to receive linux_dirent64.
+  - !3589 gconstructor.h: Ensure [c|d]tor prototypes are present for MSVC
+    (Chun-wei Fan)
+  - !3590 gtestutils.h: Fix warning with -Wsign-conversion caused by
+    g_assert_cmpint
+  - !3591 Switch to using gi-docgen for docs (batch 1)
+  - !3594 Fix gutils-user-database test on macOS
+  - !3595 gobject: cache flags needed for g_type_create_instance()
+  - !3596 Add value annotation to G_TYPE_FUNDAMENTAL_MAX
+  - !3597 Expand security policy to cover previous stable branch
+  - !3598 Document NULL pointer pitfall in toolchain requirements
+  - !3601 meson: Fix Windows build with PCRE2 as sibling subproject
+  - !3603 Add GBytes variants for GSocket receive methods
+  - !3605 build: Post-release version bump
+  - !3607 Make sure the `GTask` is freed on a graceful disconnect
+  - !3610 gdesktopappinfo: Do not search Comment field
+  - !3611 tests/constructor: Fix "unknown pragma ignored" warning on clang
+  - !3612 Update GStrv annotations
+  - !3613 tests: Fix gdatetime test on non-UTC systems
+  - !3620 gmain: avoid a GList traversal when removing source
+  - !3621 wakeup: do single read when using eventfd()
+  - !3623 Windows: Compile with the UNICODE / _UNICODE macros
+  - !3624 wakeup: Fix g_wakeup_acknowledge if signal comes in
+  - !3627 Add Hurd code owners
+  - !3628 glib-unix: Use full path to gstdio.h include
+  - !3629 glib/tests/meson.build: remove identical build targets
+  - !3630 glib-compile-resources: ensure alignment is at least sizeof(void *)
+  - !3632 Stop using enums in bitfields
+  - !3633 Use g_task_return in task threads
+  - !3634 Switch to using gi-docgen for docs (batch 2)
+  - !3635 Fix warnings with Clang on Windows and enable --Werror in CI
+  - !3636 Generate introspection data
+  - !3637 gstrvbuilder: Add g_strv_builder_take
+  - !3638 Cleanup and add content to glib debugging using gdb scripts
+  - !3640 GIO/tests: skip test_resources_binary on MIPS platforms
+  - !3641 build: Simplify MIPS test check
+  - !3645 Switch to using gi-docgen for docs (batch 3)
+  - !3646 ci: Update from clang-format-11 to clang-format-14
+  - !3647 Switch to using gi-docgen for docs (batch 4)
+  - !3652 GApplicationCommandLine: add print[err]_literal()
+  - !3654 gdatetime: Fix minor leaks from strup/strdown calls
+  - !3655 gdatetime: Fix incorrect alt-digits being used after changing locale
+  - !3656 gmodule-dl: Use RTLD_DEFAULT on FreeBSD too
+  - !3660 Switch to using gi-docgen for docs (batch 5)
+  - !3661 Switch to using gi-docgen for docs (batch 6)
+  - !3662 Switch to using gi-docgen for docs (batch 7)
+  - !3663 gdbusconnection: don't cache G_IO_ERROR_CANCELLED errors
+  - !3664 gmain: optimize "context->sources" hash table to use as set
+  - !3665 ci: Remove .build-linux from Hurd CI scheduled job
+  - !3666 build: Bump Meson dependency to 1.2.0
+  - !3667 Switch to using gi-docgen for docs (batch 8)
+  - !3668 Socket & readiness fixes
+  - !3671 gio/tests: Add test generated txt as the resources test dependency
+  - !3672 glib-private: Check for LSAN support at runtime when controlling it
+  - !3674 gtask: Add g_task_return_prefixed_error()
+  - !3677 Make GQuark register intentional leaks
+  - !3678 gsignalgroup: Avoid function call with side effect in g_return_* macro
+  - !3679 gmessages: fix dropping irrelevant log domains
+  - !3682 tests: Fix dependency of test.gresource on test-generated.txt
+  - !3683 glib: Disable dynamic asan loading on macOS
+  - !3687 fix: about libproc.h and PROC_PIDLISTFD_SIZE
+  - !3688 build: Fix the inclusion paths for GIR files in gi-docgen
+  - !3689 meson: Add missing dependencies for utility files for gdbus-codegen
+  - !3690 Switch to using gi-docgen for docs (batch 9)
+  - !3695 gvalue: add "steal_string"
+  - !3699 [th/prgname] use atomic pointers for g_prgname/g_application_name and
+    add g_set_prgname_once()
+  - !3701 tests: Fix gio-tool.py test on macOS
+  - !3702 glib.supp: Suppress the global_mime_dirs allocations
+  - !3703 Port GIRepository to GTypeInstance and add introspection
+  - !3704 girepository: Rename symbols to the GI namespace
+  - !3707 girepository: Ignore set-but-not-used warnings with G_DISABLE_ASSERT
+  - !3708 Fix various leaks in cmph-bdz-test and gutils
+  - !3709 Switch to using gi-docgen for docs (batch 10)
+  - !3710 gmessages: introduce g_log_writer_default_set_debug_domains()
+  - !3711 ghmac: Add a boxed type for GHmac and fix introspection build
+    accordingly
+  - !3712 Switch to using gi-docgen for docs (batch 11)
+  - !3713 gfileutils: Fix g_file_get_contents() silent under-read of large files
+    when off_t is wider than size_t
+  - !3714 xdgmime: Handle buggy type definitions with circular inheritance
+  - !3715 goption: Fix a typo
+  - !3716 tests: Improve build of cmph tests in girepository
+  - !3717 tests: provide reason for disabling convert test under musl
+  - !3721 gtestutils: Add g_test_trap_subprocess_with_envp() for testing envs
+  - !3722 gdir, gstrvbuilder: Add refcounting support and a boxed type
+  - !3723 gwin32: Un-hide symbols when building GIR
+  - !3726 tests: Fix fileutils build on FreeBSD and macOS
+  - !3731 tests: Fix string test failure on BSDs
+  - !3732 gspawn: Stop spewing debug messages
+  - !3733 ci: Make the Alpine CI name more consistent
+  - !3734 gdatetime: Disable ERA support on platforms which don’t support this
+  - !3735 ci: Fix printing info message at end of run-style-check-diff.sh
+  - !3736 build: Rename -Dgtk_doc option to -Ddocumentation and fix some
+    g-ir-scanner warnings
+  - !3739 Documentation only: Added clarification about GWeakNotify and removed
+    ambiguous text
+  - !3741 hash: Explicitly annotate key in iter_next as nullable
+  - !3743 ci: Install correct version of Meson on Alpine CI image
+  - !3745 tests: Assert there no errors first in gdbus-test-codegen
+  - !3751 Fix generated RST anchors for methods, signals and properties
+  - !3752 build: Make packaging module required
+  - !3753 gobject_gdb.py: Do not break bt on optimized build
+  - !3755 tests: Use textwrap.dedent to indent expected strings pleasingly
+  - !3757 ci: Re-add explicit Meson version to Alpine CI image
+  - !3758 docs: Add a section on version checking macros
+  - !3760 girepository: Various API cleanups
+  - !3761 gerror: Fix an old allow-none annotation
+  - !3762 [th/notify-queue] some optimization around
+    g_object_freeze_notify()/g_object_thaw_notify()
+  - !3763 girepository: Drop libgio dependency from gdump.c
+  - !3764 gsignal: fix reference to signals documentation page
+  - !3765 gapplication: Fix minor typo in docs
+  - !3767 girepository: Port documentation to gi-docgen and update
+  - !3768 ci: Build docs artifacts for deployment to docs.gtk.org
+  - !3770 GDateTime: Add usec precision API for unix time
+  - !3771 gtask: Add g_task_return_new_error_literal()
+  - !3772 gobject: Make GLib-2.0 gir build depend on GObject dependency
+  - !3773 girepository: Return enumerated versions and search paths as a GStrv
+  - !3776 glocalvfs: Remove unnecessary and buggy code
+  - !3777 Fix detecting size_t size when `-Wmissing-prototypes` is in CFLAGS
+  - !3779 gtypemodule: Add assertions in finalize()
+  - !3782 docs: fix a typo
+  - !3786 girepository: Re-number GIR file from 2.0 to 3.0
+  - !3787 docs: Install the gi-docgen docs
+
+* Translation updates:
+  - Catalan (Jordi Mas i Hernandez)
+  - Chinese (China) (Boyuan Yang)
+  - Czech (Daniel Rusek)
+  - Esperanto (Kristjan SCHMIDT)
+  - French (Alexandre Franke)
+  - Italian (Milo Casagrande)
+  - Latvian (Rūdolfs Mazurs)
+  - Portuguese (Brazil) (Rafael Fontenelle)
+  - Romanian (Florentina Mușat)
+  - Russian (Artur S0)
+  - Slovenian (Matej Urbančič)
+  - Spanish (Daniel Mustieles)
+  - Turkish (Sabri Ünal)
+  - Ukrainian (Yuri Chornoivan)
+
+
 Overview of changes in GLib 2.78.0, 2023-09-08
 ==============================================
 
