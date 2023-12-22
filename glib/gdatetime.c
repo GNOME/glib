@@ -1103,7 +1103,7 @@ g_date_time_new_from_unix_utc (gint64 t)
 }
 
 /**
- * g_date_time_new_from_unix_utc: (constructor)
+ * g_date_time_new_from_unix_utc_usec: (constructor)
  * @usecs: the Unix time in microseconds
  *
  * Creates a [struct@GLib.DateTime] corresponding to the given Unix time @t in UTC.
