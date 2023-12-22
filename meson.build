@@ -2048,6 +2048,9 @@ else
   if cc.has_header_symbol('pthread.h', 'pthread_getname_np', prefix : pthread_prefix)
     glib_conf.set('HAVE_PTHREAD_GETNAME_NP', 1)
   endif
+  if cc.has_header_symbol('pthread.h', 'pthread_getaffinity_np', prefix : pthread_prefix)
+    glib_conf.set('HAVE_PTHREAD_GETAFFINITY_NP', 1)
+  endif
 
   # Assume that pthread_setname_np is available in some form; same as configure
   if cc.links(pthread_prefix + '''
