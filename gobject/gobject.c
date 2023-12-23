@@ -3751,28 +3751,14 @@ g_object_remove_toggle_ref (GObject       *object,
     g_critical ("%s: couldn't find toggle ref %p(%p)", G_STRFUNC, notify, data);
 }
 
-/**
- * g_object_ref:
- * @object: (type GObject.Object): a #GObject
- *
- * Increases the reference count of @object.
- *
- * Since GLib 2.56, if `GLIB_VERSION_MAX_ALLOWED` is 2.56 or greater, the type
- * of @object will be propagated to the return type (using the GCC typeof()
- * extension), so any casting the caller needs to do on the return type must be
- * explicit.
- *
- * Returns: (type GObject.Object) (transfer none): the same @object
- */
-gpointer
-(g_object_ref) (gpointer _object)
+static gpointer
+_object_ref (GObject *object,
+             GToggleNotify *out_toggle_notify,
+             gpointer *out_toggle_data)
 {
-  GObject *object = _object;
   GToggleNotify toggle_notify;
   gpointer toggle_data;
   gint old_ref;
-
-  g_return_val_if_fail (G_IS_OBJECT (object), NULL);
 
   old_ref = g_atomic_int_get (&object->ref_count);
 
@@ -3804,10 +3790,41 @@ retry:
       gboolean object_already_finalized = TRUE;
 
       g_return_val_if_fail (!object_already_finalized, NULL);
+      *out_toggle_notify = NULL;
+      *out_toggle_data = NULL;
       return NULL;
     }
 
   TRACE (GOBJECT_OBJECT_REF (object, G_TYPE_FROM_INSTANCE (object), old_ref));
+
+  *out_toggle_notify = toggle_notify;
+  *out_toggle_data = toggle_data;
+  return object;
+}
+
+/**
+ * g_object_ref:
+ * @object: (type GObject.Object): a #GObject
+ *
+ * Increases the reference count of @object.
+ *
+ * Since GLib 2.56, if `GLIB_VERSION_MAX_ALLOWED` is 2.56 or greater, the type
+ * of @object will be propagated to the return type (using the GCC typeof()
+ * extension), so any casting the caller needs to do on the return type must be
+ * explicit.
+ *
+ * Returns: (type GObject.Object) (transfer none): the same @object
+ */
+gpointer
+(g_object_ref) (gpointer _object)
+{
+  GObject *object = _object;
+  GToggleNotify toggle_notify;
+  gpointer toggle_data;
+
+  g_return_val_if_fail (G_IS_OBJECT (object), NULL);
+
+  object = _object_ref (object, &toggle_notify, &toggle_data);
 
   if (toggle_notify)
     toggle_notify (toggle_data, object, FALSE);
@@ -5113,20 +5130,25 @@ g_weak_ref_clear (GWeakRef *weak_ref)
 gpointer
 g_weak_ref_get (GWeakRef *weak_ref)
 {
-  gpointer object_or_null;
+  GToggleNotify toggle_notify = NULL;
+  gpointer toggle_data = NULL;
+  GObject *object;
 
-  g_return_val_if_fail (weak_ref!= NULL, NULL);
+  g_return_val_if_fail (weak_ref, NULL);
 
   g_rw_lock_reader_lock (&weak_locations_lock);
 
-  object_or_null = weak_ref->priv.p;
+  object = weak_ref->priv.p;
 
-  if (object_or_null != NULL)
-    g_object_ref (object_or_null);
+  if (object)
+    object = _object_ref (object, &toggle_notify, &toggle_data);
 
   g_rw_lock_reader_unlock (&weak_locations_lock);
 
-  return object_or_null;
+  if (toggle_notify)
+    toggle_notify (toggle_data, object, FALSE);
+
+  return object;
 }
 
 static void
