@@ -387,6 +387,31 @@ g_futex_int_address (const void *address)
   return int_address;
 }
 
+G_ALWAYS_INLINE static inline gpointer
+pointer_bit_lock_mask_ptr (gpointer ptr, guint lock_bit, gboolean set, guintptr preserve_mask, gpointer preserve_ptr)
+{
+  guintptr x_ptr;
+  guintptr x_preserve_ptr;
+  guintptr lock_mask;
+
+  x_ptr = (guintptr) ptr;
+
+  if (preserve_mask != 0)
+    {
+      x_preserve_ptr = (guintptr) preserve_ptr;
+      x_ptr = (x_preserve_ptr & preserve_mask) | (x_ptr & ~preserve_mask);
+    }
+
+  if (lock_bit == G_MAXUINT)
+    return (gpointer) x_ptr;
+
+  lock_mask = (guintptr) (1u << lock_bit);
+  if (set)
+    return (gpointer) (x_ptr | lock_mask);
+  else
+    return (gpointer) (x_ptr & ~lock_mask);
+}
+
 /**
  * g_pointer_bit_lock:
  * @address: (not nullable): a pointer to a #gpointer-sized value
@@ -555,4 +580,91 @@ void
         g_futex_wake (g_futex_int_address (address_nonvolatile));
     }
   }
+}
+
+/**
+ * g_pointer_bit_lock_mask_ptr:
+ * @ptr: (nullable): the pointer to mask
+ * @lock_bit: the bit to set/clear. If set to `G_MAXUINT`, the
+ *   lockbit is taken from @preserve_ptr or @ptr (depending on @preserve_mask).
+ * @set: whether to set (lock) the bit or unset (unlock). This
+ *   has no effect, if @lock_bit is set to `G_MAXUINT`.
+ * @preserve_mask: if non-zero, a bit-mask for @preserve_ptr. The
+ *   @preserve_mask bits from @preserve_ptr are set in the result.
+ *   Note that the @lock_bit bit will be always set according to @set,
+ *   regardless of @preserve_mask and @preserve_ptr (unless @lock_bit is
+ *   `G_MAXUINT`).
+ * @preserve_ptr: (nullable): if @preserve_mask is non-zero, the bits
+ *   from this pointer are set in the result.
+ *
+ * This mangles @ptr as g_pointer_bit_lock() and g_pointer_bit_unlock()
+ * do.
+ *
+ * Returns: the mangled pointer.
+ *
+ * Since: 2.80
+ **/
+gpointer
+g_pointer_bit_lock_mask_ptr (gpointer ptr, guint lock_bit, gboolean set, guintptr preserve_mask, gpointer preserve_ptr)
+{
+  g_return_val_if_fail (lock_bit < 32u || lock_bit == G_MAXUINT, ptr);
+
+  return pointer_bit_lock_mask_ptr (ptr, lock_bit, set, preserve_mask, preserve_ptr);
+}
+
+/**
+ * g_pointer_bit_unlock_and_set:
+ * @address: (not nullable): a pointer to a #gpointer-sized value
+ * @lock_bit: a bit value between 0 and 31
+ * @ptr: the new pointer value to set
+ * @preserve_mask: if non-zero, those bits of the current pointer in @address
+ *   are preserved.
+ *   Note that the @lock_bit bit will be always set according to @set,
+ *   regardless of @preserve_mask and the currently set value in @address.
+ *
+ * This is equivalent to g_pointer_bit_unlock() and atomically setting
+ * the pointer value.
+ *
+ * Note that the lock bit will be cleared from the pointer. If the unlocked
+ * pointer that was set is not identical to @ptr, an assertion fails. In other
+ * words, @ptr must have @lock_bit unset. This also means, you usually can
+ * only use this on the lowest bits.
+ *
+ * Since: 2.80
+ **/
+void (g_pointer_bit_unlock_and_set) (void *address,
+                                     guint lock_bit,
+                                     gpointer ptr,
+                                     guintptr preserve_mask)
+{
+  gpointer *pointer_address = address;
+  guint class = ((guintptr) address) % G_N_ELEMENTS (g_bit_lock_contended);
+  gpointer ptr2;
+
+  g_return_if_fail (lock_bit < 32u);
+
+  if (preserve_mask != 0)
+    {
+      gpointer old_ptr = g_atomic_pointer_get ((gpointer *) address);
+
+    again:
+      ptr2 = pointer_bit_lock_mask_ptr (ptr, lock_bit, FALSE, preserve_mask, old_ptr);
+      if (!g_atomic_pointer_compare_and_exchange_full (pointer_address, old_ptr, ptr2, &old_ptr))
+        goto again;
+    }
+  else
+    {
+      ptr2 = pointer_bit_lock_mask_ptr (ptr, lock_bit, FALSE, 0, NULL);
+      g_atomic_pointer_set (pointer_address, ptr2);
+    }
+
+  if (g_atomic_int_get (&g_bit_lock_contended[class]) > 0)
+    g_futex_wake (g_futex_int_address (address));
+
+  /* It makes no sense, if unlocking mangles the pointer. Assert against
+   * that.
+   *
+   * Note that based on @preserve_mask, the pointer also gets mangled, which
+   * can make sense for the caller. We don't assert for that. */
+  g_return_if_fail (ptr == pointer_bit_lock_mask_ptr (ptr, lock_bit, FALSE, 0, NULL));
 }

@@ -51,6 +51,19 @@ GLIB_AVAILABLE_IN_ALL
 void      g_pointer_bit_unlock            (volatile void *address,
                                            gint           lock_bit);
 
+GLIB_AVAILABLE_IN_2_80
+gpointer  g_pointer_bit_lock_mask_ptr     (gpointer ptr,
+                                           guint lock_bit,
+                                           gboolean set,
+                                           guintptr preserve_mask,
+                                           gpointer preserve_ptr);
+
+GLIB_AVAILABLE_IN_2_80
+void g_pointer_bit_unlock_and_set         (void *address,
+                                           guint lock_bit,
+                                           gpointer ptr,
+                                           guintptr preserve_mask);
+
 #ifdef __GNUC__
 
 #define g_pointer_bit_lock(address, lock_bit) \
@@ -69,6 +82,12 @@ void      g_pointer_bit_unlock            (volatile void *address,
   (G_GNUC_EXTENSION ({                                                       \
     G_STATIC_ASSERT (sizeof *(address) == sizeof (gpointer));                \
     g_pointer_bit_unlock ((address), (lock_bit));                            \
+  }))
+
+#define g_pointer_bit_unlock_and_set(address, lock_bit, ptr, preserve_mask)       \
+  (G_GNUC_EXTENSION ({                                                            \
+    G_STATIC_ASSERT (sizeof *(address) == sizeof (gpointer));                     \
+    g_pointer_bit_unlock_and_set ((address), (lock_bit), (ptr), (preserve_mask)); \
   }))
 
 #endif
