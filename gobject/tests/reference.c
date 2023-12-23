@@ -731,11 +731,9 @@ weak_ref_in_toggle_notify_toggle_cb (gpointer data,
     return;
 
   /* We just got a second ref, while calling g_weak_ref_get().
-   * At this point, we hold a lock for the weak ref.
    *
-   * FIXME: currently we would dead lock with the lines below.
+   * Test that taking another weak ref in this situation works.
    */
-  return;
 
   g_weak_ref_init (&weak2, object);
   g_assert_true (object == g_weak_ref_get (&weak2));
