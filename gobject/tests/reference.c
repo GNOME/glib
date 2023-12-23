@@ -719,6 +719,56 @@ test_weak_ref_on_toggle_notify (void)
   g_assert_null (g_weak_ref_get (&weak));
 }
 
+static void
+weak_ref_in_toggle_notify_toggle_cb (gpointer data,
+                                     GObject *object,
+                                     gboolean is_last_ref)
+{
+  GWeakRef weak2;
+  GObject *obj2;
+
+  if (is_last_ref)
+    return;
+
+  /* We just got a second ref, while calling g_weak_ref_get().
+   * At this point, we hold a lock for the weak ref.
+   *
+   * FIXME: currently we would dead lock with the lines below.
+   */
+  return;
+
+  g_weak_ref_init (&weak2, object);
+  g_assert_true (object == g_weak_ref_get (&weak2));
+  g_object_unref (object);
+
+  obj2 = g_object_new (G_TYPE_OBJECT, NULL);
+  g_weak_ref_set (&weak2, obj2);
+  g_object_unref (obj2);
+
+  g_assert_null (g_weak_ref_get (&weak2));
+}
+
+static void
+test_weak_ref_in_toggle_notify (void)
+{
+  GObject *obj;
+  GWeakRef weak = { { GUINT_TO_POINTER (0xDEADBEEFU) } };
+
+  obj = g_object_new (G_TYPE_OBJECT, NULL);
+  g_object_add_toggle_ref (obj, weak_ref_in_toggle_notify_toggle_cb, NULL);
+  g_object_unref (obj);
+
+  g_weak_ref_init (&weak, obj);
+
+  /* We trigger a toggle notify via g_weak_ref_get(). */
+  g_assert_true (g_weak_ref_get (&weak) == obj);
+
+  g_object_remove_toggle_ref (obj, weak_ref_in_toggle_notify_toggle_cb, NULL);
+  g_object_unref (obj);
+
+  g_assert_null (g_weak_ref_get (&weak));
+}
+
 typedef struct
 {
   gboolean should_be_last;
@@ -1365,6 +1415,7 @@ main (int argc, char **argv)
   g_test_add_func ("/object/weak-ref/on-dispose", test_weak_ref_on_dispose);
   g_test_add_func ("/object/weak-ref/on-run-dispose", test_weak_ref_on_run_dispose);
   g_test_add_func ("/object/weak-ref/on-toggle-notify", test_weak_ref_on_toggle_notify);
+  g_test_add_func ("/object/weak-ref/in-toggle-notify", test_weak_ref_in_toggle_notify);
   g_test_add_func ("/object/toggle-ref", test_toggle_ref);
   g_test_add_func ("/object/toggle-ref/ref-on-dispose", test_toggle_ref_on_dispose);
   g_test_add_func ("/object/toggle-ref/ref-and-notify-on-dispose", test_toggle_ref_and_notify_on_dispose);
