@@ -499,6 +499,8 @@ g_set_str (char       **str_pointer,
   return TRUE;
 }
 
+#define g_set_str(sp, np) ((g_set_str) (sp, np))
+
 G_END_DECLS
 
 #endif /* __G_STRFUNCS_H__ */
