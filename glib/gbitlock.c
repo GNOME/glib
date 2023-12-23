@@ -556,3 +556,66 @@ void
     }
   }
 }
+
+/**
+ * g_pointer_bit_lock_mask_ptr:
+ * @ptr: (nullable): the pointer to mask
+ * @lock_bit: the bit to set/clear
+ * @set: whether to set (lock) the bit or unset (unlock).
+ *
+ * This mangles @ptr as g_pointer_bit_lock() and g_pointer_bit_unlock()
+ * do.
+ *
+ * Returns: the mangled pointer.
+ *
+ * Since: 2.80
+ **/
+gpointer
+g_pointer_bit_lock_mask_ptr (gpointer ptr, guint lock_bit, gboolean set)
+{
+  g_return_val_if_fail (lock_bit < 32u, ptr);
+
+  if (set)
+    return (gpointer) (((guintptr) ptr) | ((guintptr) (1 << lock_bit)));
+  else
+    return (gpointer) (((guintptr) ptr) & ~((guintptr) (1 << lock_bit)));
+}
+
+/**
+ * g_pointer_bit_unlock_and_set:
+ * @address: (not nullable): a pointer to a #gpointer-sized value
+ * @lock_bit: a bit value between 0 and 31
+ * @ptr: the new pointer value to set
+ *
+ * This is equivalent to g_pointer_bit_unlock() and atomically setting
+ * the pointer value.
+ *
+ * Note that the lock bit will be cleared from the pointer. If the unlocked
+ * pointer that was set is not identical to @ptr, an assertion fails. In other
+ * words, @ptr must have @lock_bit unset. This also means, you usually can
+ * only use this on the lowest bits.
+ *
+ * Since: 2.80
+ **/
+void
+(g_pointer_bit_unlock_and_set) (void *address,
+                                guint lock_bit,
+                                gpointer ptr)
+{
+  gpointer *pointer_address = address;
+  guint class = ((gsize) address) % G_N_ELEMENTS (g_bit_lock_contended);
+  gpointer ptr2;
+
+  g_return_if_fail (lock_bit < 32);
+
+  ptr2 = g_pointer_bit_lock_mask_ptr (ptr, lock_bit, FALSE);
+
+  g_atomic_pointer_set (pointer_address, ptr2);
+
+  if (g_atomic_int_get (&g_bit_lock_contended[class]))
+    g_futex_wake (g_futex_int_address (address));
+
+  /* It makes no sense, if unlocking mangles the pointer. Assert against
+   * that. */
+  g_return_if_fail(ptr == ptr2);
+}
