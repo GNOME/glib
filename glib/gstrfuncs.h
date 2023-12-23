@@ -499,6 +499,10 @@ g_set_str (char       **str_pointer,
   return TRUE;
 }
 
+/* Dummy macro to make g_set_str() visible to gi-docgen. */
+#define g_set_str(str_pointer, new_str) ((g_set_str) (str_pointer, new_str))
+
+
 G_END_DECLS
 
 #endif /* __G_STRFUNCS_H__ */
