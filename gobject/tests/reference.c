@@ -768,6 +768,167 @@ test_weak_ref_in_toggle_notify (void)
   g_assert_null (g_weak_ref_get (&weak));
 }
 
+/*****************************************************************************/
+
+#define CONCURRENT_N_OBJS 5
+#define CONCURRENT_N_THREADS 5
+#define CONCURRENT_N_RACES 100
+
+typedef struct
+{
+  int TEST_IDX;
+  GObject *objs[CONCURRENT_N_OBJS];
+  int thread_done[CONCURRENT_N_THREADS];
+} ConcurrentData;
+
+typedef struct
+{
+  const ConcurrentData *data;
+  int idx;
+  int race_count;
+  GWeakRef *weak_ref;
+} ConcurrentThreadData;
+
+static gpointer
+_test_weak_ref_concurrent_thread_cb (gpointer data)
+{
+  ConcurrentThreadData *thread_data = data;
+
+  while (TRUE)
+    {
+      gboolean all_done;
+      int i;
+      int r;
+
+      for (r = 0; r < 15; r++)
+        {
+          const guint rnd = (guint) g_test_rand_int ();
+          GObject *obj_allocated = NULL;
+          GObject *obj;
+          GObject *obj2;
+          gboolean got_race;
+
+          /* Choose a random object */
+          obj = thread_data->data->objs[rnd % CONCURRENT_N_OBJS];
+          if (thread_data->data->TEST_IDX > 0 && (rnd >> 10) % 4)
+            {
+              /* With TEST_IDX>0 also randomly choose NULL or a newly created
+               * object. */
+              if ((rnd >> 13) % 2)
+                obj = NULL;
+              else
+                {
+                  obj_allocated = g_object_new (G_TYPE_OBJECT, NULL);
+                  obj = obj_allocated;
+                }
+            }
+
+          g_assert (!obj || G_IS_OBJECT (obj));
+
+          g_weak_ref_set (thread_data->weak_ref, obj);
+
+          /* get the weak-ref. If there is no race, we expect to get the same
+           * object back. */
+          obj2 = g_weak_ref_get (thread_data->weak_ref);
+
+          g_assert (!obj2 || G_IS_OBJECT (obj2));
+          if (!obj2)
+            {
+              g_assert (thread_data->data->TEST_IDX > 0);
+            }
+          if (obj != obj2)
+            {
+              int cnt;
+
+              cnt = 0;
+              for (i = 0; i < CONCURRENT_N_OBJS; i++)
+                {
+                  if (obj2 == thread_data->data->objs[i])
+                    cnt++;
+                }
+              if (!obj2)
+                g_assert_cmpint (cnt, ==, 0);
+              else if (obj2 && obj2 == obj_allocated)
+                g_assert_cmpint (cnt, ==, 0);
+              else if (thread_data->data->TEST_IDX > 0)
+                g_assert_cmpint (cnt, <=, 1);
+              else
+                g_assert_cmpint (cnt, ==, 1);
+              got_race = TRUE;
+            }
+          else
+            got_race = FALSE;
+
+          g_clear_object (&obj2);
+          g_clear_object (&obj_allocated);
+
+          if (got_race)
+            {
+              /* Each thread should see CONCURRENT_N_RACES before being done.
+               * Count them. */
+              if (g_atomic_int_get (&thread_data->race_count) > CONCURRENT_N_RACES)
+                g_atomic_int_set (&thread_data->data->thread_done[thread_data->idx], 1);
+              else
+                g_atomic_int_add (&thread_data->race_count, 1);
+            }
+        }
+
+      /* Each thread runs, until all threads saw the expected number of races. */
+      all_done = TRUE;
+      for (i = 0; i < CONCURRENT_N_THREADS; i++)
+        {
+          if (!g_atomic_int_get (&thread_data->data->thread_done[i]))
+            {
+              all_done = FALSE;
+              break;
+            }
+        }
+      if (all_done)
+        return GINT_TO_POINTER (1);
+    }
+}
+
+static void
+test_weak_ref_concurrent (gconstpointer testdata)
+{
+  const int TEST_IDX = GPOINTER_TO_INT (testdata);
+  GThread *threads[CONCURRENT_N_THREADS];
+  int i;
+  ConcurrentData data = {
+    .TEST_IDX = TEST_IDX,
+  };
+  ConcurrentThreadData thread_data[CONCURRENT_N_THREADS];
+  GWeakRef weak_ref = { 0 };
+
+  /* Let several threads call g_weak_ref_set() & g_weak_ref_get() in a loop. */
+
+  for (i = 0; i < CONCURRENT_N_OBJS; i++)
+    data.objs[i] = g_object_new (G_TYPE_OBJECT, NULL);
+
+  for (i = 0; i < CONCURRENT_N_THREADS; i++)
+    {
+      thread_data[i] = (ConcurrentThreadData){
+        .idx = i,
+        .data = &data,
+        .weak_ref = &weak_ref,
+      };
+      threads[i] = g_thread_new ("test-weak-ref-concurrent", _test_weak_ref_concurrent_thread_cb, &thread_data[i]);
+    }
+
+  for (i = 0; i < CONCURRENT_N_THREADS; i++)
+    {
+      gpointer r;
+
+      r = g_thread_join (g_steal_pointer (&threads[i]));
+      g_assert_cmpint (GPOINTER_TO_INT (r), ==, 1);
+    }
+
+  for (i = 0; i < CONCURRENT_N_OBJS; i++)
+    g_object_unref (g_steal_pointer (&data.objs[i]));
+}
+
+/*****************************************************************************/
+
 typedef struct
 {
   gboolean should_be_last;
@@ -1415,6 +1576,8 @@ main (int argc, char **argv)
   g_test_add_func ("/object/weak-ref/on-run-dispose", test_weak_ref_on_run_dispose);
   g_test_add_func ("/object/weak-ref/on-toggle-notify", test_weak_ref_on_toggle_notify);
   g_test_add_func ("/object/weak-ref/in-toggle-notify", test_weak_ref_in_toggle_notify);
+  g_test_add_data_func ("/object/weak-ref/concurrent/0", GINT_TO_POINTER(0), test_weak_ref_concurrent);
+  g_test_add_data_func ("/object/weak-ref/concurrent/1", GINT_TO_POINTER(1), test_weak_ref_concurrent);
   g_test_add_func ("/object/toggle-ref", test_toggle_ref);
   g_test_add_func ("/object/toggle-ref/ref-on-dispose", test_toggle_ref_on_dispose);
   g_test_add_func ("/object/toggle-ref/ref-and-notify-on-dispose", test_toggle_ref_and_notify_on_dispose);
