@@ -26,7 +26,7 @@
 #include <string.h>
 
 #include "cmph/cmph.h"
-#include "gitypelib-internal.h"
+#include <gitypelib/gitypelib-private.h>
 
 #define ALIGN_VALUE(this, boundary) \
   (( ((unsigned long)(this)) + (((unsigned long)(boundary)) -1)) & (~(((unsigned long)(boundary))-1)))

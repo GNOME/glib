@@ -35,7 +35,6 @@
 #include "girmodule-private.h"
 #include "girnode-private.h"
 #include "girparser-private.h"
-#include "gitypelib-internal.h"
 
 gchar **includedirs = NULL;
 gchar **input = NULL;
@@ -150,7 +149,6 @@ main (int argc, char ** argv)
   GError *error = NULL;
   GIIrParser *parser;
   GIIrModule *module;
-  gint i;
   gi_typelib_check_sanity ();
 
   setlocale (LC_ALL, "");
@@ -194,10 +192,6 @@ main (int argc, char ** argv)
 
   g_debug ("[parsing] start, %d includes", 
 	   includedirs ? g_strv_length (includedirs) : 0);
-
-  if (includedirs != NULL)
-    for (i = 0; includedirs[i]; i++)
-      gi_repository_prepend_search_path (includedirs[i]);
 
   parser = gi_ir_parser_new ();
 

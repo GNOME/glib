@@ -27,7 +27,7 @@
 #include <glib.h>
 
 #include "gibaseinfo-private.h"
-#include "gitypelib-internal.h"
+#include <gitypelib/gitypelib-private.h>
 #include "girepository-private.h"
 #include "giarginfo.h"
 

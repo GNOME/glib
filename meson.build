@@ -98,6 +98,7 @@ glibinc = include_directories('glib')
 gobjectinc = include_directories('gobject')
 gmoduleinc = include_directories('gmodule')
 gioinc = include_directories('gio')
+gitypelibinc = include_directories('gitypelib')
 girepoinc = include_directories('girepository')
 
 glib_prefix = get_option('prefix')
@@ -2531,6 +2532,8 @@ subdir('gobject')
 subdir('gthread')
 subdir('gmodule')
 subdir('gio')
+subdir('gitypelib')
+subdir('gircompiler')
 if enable_gir
   subdir('introspection')
 endif

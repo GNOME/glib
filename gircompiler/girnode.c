@@ -26,7 +26,7 @@
 
 #include "girnode-private.h"
 
-#include "gitypelib-internal.h"
+#include <gitypelib/gitypelib.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -43,6 +43,60 @@ static gulong string_size = 0;
 static gulong unique_string_size = 0;
 static gulong types_count = 0;
 static gulong unique_types_count = 0;
+
+const gchar*
+gi_node_type_tag_to_string (int type)
+{
+  switch (type)
+    {
+    case GI_TYPE_TAG_VOID:
+      return "void";
+    case GI_TYPE_TAG_BOOLEAN:
+      return "gboolean";
+    case GI_TYPE_TAG_INT8:
+      return "gint8";
+    case GI_TYPE_TAG_UINT8:
+      return "guint8";
+    case GI_TYPE_TAG_INT16:
+      return "gint16";
+    case GI_TYPE_TAG_UINT16:
+      return "guint16";
+    case GI_TYPE_TAG_INT32:
+      return "gint32";
+    case GI_TYPE_TAG_UINT32:
+      return "guint32";
+    case GI_TYPE_TAG_INT64:
+      return "gint64";
+    case GI_TYPE_TAG_UINT64:
+      return "guint64";
+    case GI_TYPE_TAG_FLOAT:
+      return "gfloat";
+    case GI_TYPE_TAG_DOUBLE:
+      return "gdouble";
+    case GI_TYPE_TAG_UNICHAR:
+      return "gunichar";
+    case GI_TYPE_TAG_GTYPE:
+      return "GType";
+    case GI_TYPE_TAG_UTF8:
+      return "utf8";
+    case GI_TYPE_TAG_FILENAME:
+      return "filename";
+    case GI_TYPE_TAG_ARRAY:
+      return "array";
+    case GI_TYPE_TAG_INTERFACE:
+      return "interface";
+    case GI_TYPE_TAG_GLIST:
+      return "glist";
+    case GI_TYPE_TAG_GSLIST:
+      return "gslist";
+    case GI_TYPE_TAG_GHASH:
+      return "ghash";
+    case GI_TYPE_TAG_ERROR:
+      return "error";
+    default:
+      return "unknown";
+    }
+}
 
 void
 gi_ir_node_init_stats (void)
@@ -643,7 +697,7 @@ gi_ir_node_get_full_size_internal (GIIrNode *parent,
         if (!GI_TYPE_TAG_IS_BASIC (type->tag))
 	  {
 	    g_debug ("node %p type tag '%s'", node,
-		     gi_type_tag_to_string (type->tag));
+		     gi_node_type_tag_to_string (type->tag));
 
 	    switch (type->tag)
 	      {
@@ -1225,7 +1279,7 @@ serialize_type (GIIrTypelibBuild *build,
 
   if (GI_TYPE_TAG_IS_BASIC (node->tag))
     {
-      g_string_append_printf (str, "%s%s", gi_type_tag_to_string (node->tag),
+      g_string_append_printf (str, "%s%s", gi_node_type_tag_to_string (node->tag),
 			      node->is_pointer ? "*" : "");
     }
   else if (node->tag == GI_TYPE_TAG_ARRAY)

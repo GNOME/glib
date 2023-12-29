@@ -24,17 +24,16 @@
 
 #pragma once
 
-#if !defined (__GIREPOSITORY_H_INSIDE__) && !defined (GI_COMPILATION)
-#error "Only <girepository.h> can be included directly."
-#endif
-
 #include <glib.h>
 
-#include <girepository/gi-visibility.h>
+#include <gitypelib/gi-visibility.h>
 
 G_BEGIN_DECLS
 
 typedef struct _GITypelib GITypelib;
+
+GI_AVAILABLE_IN_ALL
+void          gi_typelib_prepend_library_path (const char *directory);
 
 GI_AVAILABLE_IN_ALL
 GITypelib *    gi_typelib_new_from_memory       (guint8  *memory,
@@ -61,5 +60,9 @@ gboolean      gi_typelib_symbol                (GITypelib     *typelib,
 GI_AVAILABLE_IN_ALL
 const gchar * gi_typelib_get_namespace         (GITypelib     *typelib);
 
+
+GI_AVAILABLE_IN_ALL
+gboolean gi_typelib_validate (GITypelib  *typelib,
+                              GError    **error);
 
 G_END_DECLS

@@ -19,6 +19,8 @@
 # SPDX-FileCopyrightText: 2021, 2023 Simon McVittie
 # SPDX-FileCopyrightText: 2022 Andoni Morales Alastruey
 
+subdir('cmph')
+
 gir_dir_prefix = get_option('gir_dir_prefix')
 if gir_dir_prefix == '' or gir_dir_prefix == get_option('datadir')
   gir_dir_prefix = get_option('datadir')
@@ -29,7 +31,7 @@ endif
 
 glib_girdir = get_option('prefix') / gir_dir_prefix / 'gir-1.0'
 
-gir_includedir = glib_includedir / 'girepository'
+gir_includedir = glib_includedir / 'gitypelib'
 
 gi_visibility_h = custom_target(
   output: 'gi-visibility.h',
@@ -39,42 +41,17 @@ gi_visibility_h = custom_target(
   install_tag: 'devel',
 )
 
-girepo_headers = files(
-  'giarginfo.h',
-  'gibaseinfo.h',
-  'gicallableinfo.h',
-  'gicallbackinfo.h',
-  'giconstantinfo.h',
-  'gienuminfo.h',
-  'gifieldinfo.h',
-  'gifunctioninfo.h',
-  'giinterfaceinfo.h',
-  'giobjectinfo.h',
-  'gipropertyinfo.h',
-  'giregisteredtypeinfo.h',
-  'girepository.h',
-  'gisignalinfo.h',
-  'gistructinfo.h',
-  'gitypeinfo.h',
-  'gitypes.h',
-  'giunioninfo.h',
-  'giunresolvedinfo.h',
-  'givfuncinfo.h',
+gitypelib_headers = files(
+  'gitypelib.h',
 )
-
-girepo_ffi_headers = [
-  'girffi.h',
-]
-
-girepo_ffi_sources = files(
-  'girffi.c',
+gitypelib_private_headers = files(
+  'gitypelib-private.h',
 )
-
-install_headers(girepo_headers + girepo_ffi_headers, install_dir: gir_includedir)
+install_headers(gitypelib_headers + gitypelib_private_headers, install_dir: gir_includedir)
 
 gir_c_args = [
   '-DGI_COMPILATION',
-  '-DG_LOG_DOMAIN="GLib-GIRepository"',
+  '-DG_LOG_DOMAIN="GLib-GITypelib"',
   '-DGIR_SUFFIX="gir-1.0"',
   '-DGIR_DIR="@0@"'.format(glib_girdir),
   '-DGOBJECT_INTROSPECTION_LIBDIR="@0@"'.format(glib_libdir),
@@ -98,45 +75,26 @@ if cc.get_id() != 'msvc'
   ])
 endif
 
-libgirepository_internals = static_library('girepository-internals',
-  sources: [
-    'girwriter.c',
-    gi_visibility_h,
-  ],
+gitypelib_gthash_lib = static_library('girepository-gthash',
+  sources: ['gthash.c', gi_visibility_h],
+  include_directories : [configinc],
   c_args: gir_c_args + custom_c_args,
-  include_directories : [configinc, girepoinc],
-  dependencies: [libgitypelib_dep, libffi_dep],
+  dependencies: [
+    cmph_dep,
+    libglib_dep,
+    libgmodule_dep,
+    libgobject_dep,
+  ],
 )
 
-libgirepository_internals_dep = declare_dependency(
-  link_with: libgirepository_internals,
-  dependencies: libffi_dep,
-  include_directories: [girepoinc],
+gitypelib_gthash_dep = declare_dependency(
+  link_with: gitypelib_gthash_lib,
+  dependencies: [libglib_dep, libgmodule_dep, libgobject_dep],
+  include_directories: [],
 )
 
-girepo_sources = files(
-  'gdump.c',
-  'giarginfo.c',
-  'gibaseinfo.c',
-  'gicallableinfo.c',
-  'gicallbackinfo.c',
-  'giconstantinfo.c',
-  'gienuminfo.c',
-  'gifieldinfo.c',
-  'gifunctioninfo.c',
-  'ginvoke.c',
-  'giinterfaceinfo.c',
-  'giobjectinfo.c',
-  'gipropertyinfo.c',
-  'giregisteredtypeinfo.c',
-  'girepository.c',
-  'girffi.c',
-  'gisignalinfo.c',
-  'gistructinfo.c',
-  'gitypeinfo.c',
-  'giunioninfo.c',
-  'giunresolvedinfo.c',
-  'givfuncinfo.c',
+gitypelib_sources = files(
+  'gitypelib.c',
 )
 
 if cc.get_id() != 'msvc'
@@ -149,9 +107,9 @@ if cc.get_id() != 'msvc'
   ])
 endif
 
-libgirepository = shared_library('girepository-2.0',
-  sources: girepo_sources + girepo_ffi_sources + [gi_visibility_h],
-  include_directories: [configinc, girepoinc],
+libgitypelib = shared_library('gitypelib-2.0',
+  sources: gitypelib_sources + [gi_visibility_h],
+  include_directories: [configinc],
   c_args: gir_c_args,
   version: library_version,
   soversion: soversion,
@@ -163,26 +121,16 @@ libgirepository = shared_library('girepository-2.0',
     libgobject_dep,
     libgmodule_dep,
     libgio_dep,
-    libgitypelib_dep,
-    libgirepository_internals_dep,
+    gitypelib_gthash_dep,
   ],
   install: true,
 )
 
-libgirepository_dep = declare_dependency(
-  link_with: libgirepository,
+libgitypelib_dep = declare_dependency(
+  link_with: libgitypelib,
   dependencies: [libglib_dep, libgobject_dep, libgio_dep, libgmodule_dep],
   sources: [gi_visibility_h],
-  include_directories: [girepoinc],
-)
-
-executable('gi-dump-types',
-  sources: 'gi-dump-types.c',
-  dependencies: [
-    libgirepository_dep,
-    libgiounix_dep,
-    libgiowin32_dep
-  ],
+  include_directories: [],
 )
 
 pkgconfig_variables = [
@@ -191,44 +139,12 @@ pkgconfig_variables = [
   'typelibdir=${libdir}/girepository-1.0',
 ]
 
-pkg.generate(libgirepository,
-  name: 'girepository',
+pkg.generate(libgitypelib,
+  name: 'gitypelib',
   version: glib_version,
-  filebase: 'girepository-2.0',
+  filebase: 'gitypelib-2.0',
   install_dir: glib_pkgconfigreldir,
   description: 'GObject Introspection repository parser',
   variables: pkgconfig_variables,
   libraries: [libglib_dep, libgobject_dep],
 )
-
-if enable_gir
-  libgirepository_gir_sources = [
-    gi_visibility_h,
-    girepo_headers,
-    girepo_sources,
-  ]
-  libgirepository_gir_packages = [ 'girepository-2.0' ]
-  libgirepository_gir_args = [
-    '-DGI_COMPILATION',
-    '--symbol-prefix=gi',
-    '--identifier-prefix=GI',
-  ]
-
-  girepository_gir = gnome.generate_gir(libgirepository,
-    sources: libgirepository_gir_sources,
-    namespace: 'GIRepository',
-    nsversion: '3.0',
-    identifier_prefix: 'GI',
-    symbol_prefix: 'gi',
-    export_packages: libgirepository_gir_packages,
-    header: 'girepository/girepository.h',
-    includes: [ glib_gir[0], gmodule_gir[0], gobject_gir[0], gio_gir[0], gitypelib_gir[0] ],
-    install: true,
-    dependencies: [ libglib_dep, libgobject_dep, libgmodule_dep, libgio_dep ],
-    extra_args: gir_args + libgirepository_gir_args,
-  )
-endif
-
-if build_tests
-  subdir('tests')
-endif

@@ -157,3 +157,30 @@ gio_gir = gnome.generate_gir(libgio,
   env: gi_gen_env_variables,
   extra_args: gir_args + gio_gir_args,
 )
+
+libgitypelib_gir_sources = [
+  gi_visibility_h,
+  gitypelib_headers,
+  gitypelib_sources,
+]
+
+libgitypelib_gir_packages = [ 'gitypelib-2.0' ]
+libgitypelib_gir_args = [
+  '-DGI_COMPILATION',
+  '--symbol-prefix=gi',
+  '--identifier-prefix=GI',
+]
+
+gitypelib_gir = gnome.generate_gir(libgitypelib,
+  sources: libgitypelib_gir_sources,
+  namespace: 'GITypelib',
+  nsversion: '2.0',
+  identifier_prefix: 'GI',
+  symbol_prefix: 'gi',
+  export_packages: libgitypelib_gir_packages,
+  header: 'gitypelib/gitypelib.h',
+  includes: [ glib_gir[0], gmodule_gir[0], gobject_gir[0], gio_gir[0] ],
+  install: true,
+  dependencies: [ libglib_dep, libgobject_dep, libgmodule_dep, libgio_dep ],
+  extra_args: gir_args + libgitypelib_gir_args,
+)

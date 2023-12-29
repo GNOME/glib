@@ -26,7 +26,7 @@
 #pragma once
 
 #include <gmodule.h>
-#include "girepository.h"
+#include <gitypelib/gitypelib.h>
 
 G_BEGIN_DECLS
 
@@ -1321,18 +1321,23 @@ struct _GITypelib {
   gboolean open_attempted;
 };
 
+GI_AVAILABLE_IN_ALL
 DirEntry *gi_typelib_get_dir_entry (GITypelib *typelib,
                                     guint16    index);
 
+GI_AVAILABLE_IN_ALL
 DirEntry *gi_typelib_get_dir_entry_by_name (GITypelib  *typelib,
                                             const char *name);
 
+GI_AVAILABLE_IN_ALL
 DirEntry *gi_typelib_get_dir_entry_by_gtype_name (GITypelib   *typelib,
                                                   const gchar *gtype_name);
 
+GI_AVAILABLE_IN_ALL
 DirEntry *gi_typelib_get_dir_entry_by_error_domain (GITypelib *typelib,
                                                     GQuark     error_domain);
 
+GI_AVAILABLE_IN_ALL
 gboolean  gi_typelib_matches_gtype_name_prefix (GITypelib   *typelib,
                                                 const gchar *gtype_name);
 
@@ -1383,16 +1388,11 @@ typedef enum
  */
 #define GI_TYPELIB_ERROR (gi_typelib_error_quark ())
 
+GI_AVAILABLE_IN_ALL
 GQuark gi_typelib_error_quark (void);
 
-
 GI_AVAILABLE_IN_ALL
-gboolean gi_typelib_validate (GITypelib  *typelib,
-                              GError    **error);
-
-
-/* defined in gibaseinfo.c */
-AttributeBlob *_attribute_blob_find_first (GIBaseInfo *info,
+AttributeBlob * gi_typelib_attribute_blob_find_first (GITypelib *typelib,
                                            guint32     blob_offset);
 
 /**

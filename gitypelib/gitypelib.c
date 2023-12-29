@@ -29,7 +29,8 @@
 
 #include <glib.h>
 
-#include "gitypelib-internal.h"
+#include "gitypes.h"
+#include "gitypelib-private.h"
 #include "gitypelib.h"
 
 /**
@@ -982,6 +983,69 @@ validate_signature_blob (GITypelib     *typelib,
   /* FIXME check constraints on return_value */
   /* FIXME check array-length pairs */
   return TRUE;
+}
+
+/**
+ * gi_type_tag_to_string:
+ * @type: the type_tag
+ *
+ * Obtain a string representation of @type
+ *
+ * Returns: the string
+ * Since: 2.80
+ */
+static const gchar*
+gi_type_tag_to_string (GITypeTag type)
+{
+  switch (type)
+    {
+    case GI_TYPE_TAG_VOID:
+      return "void";
+    case GI_TYPE_TAG_BOOLEAN:
+      return "gboolean";
+    case GI_TYPE_TAG_INT8:
+      return "gint8";
+    case GI_TYPE_TAG_UINT8:
+      return "guint8";
+    case GI_TYPE_TAG_INT16:
+      return "gint16";
+    case GI_TYPE_TAG_UINT16:
+      return "guint16";
+    case GI_TYPE_TAG_INT32:
+      return "gint32";
+    case GI_TYPE_TAG_UINT32:
+      return "guint32";
+    case GI_TYPE_TAG_INT64:
+      return "gint64";
+    case GI_TYPE_TAG_UINT64:
+      return "guint64";
+    case GI_TYPE_TAG_FLOAT:
+      return "gfloat";
+    case GI_TYPE_TAG_DOUBLE:
+      return "gdouble";
+    case GI_TYPE_TAG_UNICHAR:
+      return "gunichar";
+    case GI_TYPE_TAG_GTYPE:
+      return "GType";
+    case GI_TYPE_TAG_UTF8:
+      return "utf8";
+    case GI_TYPE_TAG_FILENAME:
+      return "filename";
+    case GI_TYPE_TAG_ARRAY:
+      return "array";
+    case GI_TYPE_TAG_INTERFACE:
+      return "interface";
+    case GI_TYPE_TAG_GLIST:
+      return "glist";
+    case GI_TYPE_TAG_GSLIST:
+      return "gslist";
+    case GI_TYPE_TAG_GHASH:
+      return "ghash";
+    case GI_TYPE_TAG_ERROR:
+      return "error";
+    default:
+      return "unknown";
+    }
 }
 
 static gboolean
@@ -2252,7 +2316,7 @@ gi_typelib_error_quark (void)
 static GSList *library_paths;
 
 /**
- * gi_repository_prepend_library_path:
+ * gi_typelib_prepend_library_path:
  * @directory: (type filename): a single directory to scan for shared libraries
  *
  * Prepends @directory to the search path that is used to
@@ -2273,7 +2337,7 @@ static GSList *library_paths;
  * Since: 2.80
  */
 void
-gi_repository_prepend_library_path (const char *directory)
+gi_typelib_prepend_library_path (const char *directory)
 {
   library_paths = g_slist_prepend (library_paths,
                                    g_strdup (directory));
@@ -2567,4 +2631,57 @@ gi_typelib_symbol (GITypelib *typelib, const char *symbol_name, gpointer *symbol
     }
 
   return FALSE;
+}
+
+static int
+cmp_attribute (const void *av,
+               const void *bv)
+{
+  const AttributeBlob *a = av;
+  const AttributeBlob *b = bv;
+
+  if (a->offset < b->offset)
+    return -1;
+  else if (a->offset == b->offset)
+    return 0;
+  else
+    return 1;
+}
+
+/*
+ * gi_typelib_attribute_blob_find_first:
+ * @typelib: A #GITypelib.
+ * @blob_offset: The offset for the blob to find the first attribute for.
+ *
+ * Searches for the first #AttributeBlob for @blob_offset and returns
+ * it if found.
+ *
+ * Returns: (transfer none): A pointer to #AttributeBlob or `NULL` if not found.
+ * Since: 2.80
+ */
+AttributeBlob *
+gi_typelib_attribute_blob_find_first (GITypelib *typelib,
+                            guint32     blob_offset)
+{
+  Header *header = (Header *)typelib->data;
+  AttributeBlob blob, *first, *res, *previous;
+
+  blob.offset = blob_offset;
+
+  first = (AttributeBlob *) &typelib->data[header->attributes];
+
+  res = bsearch (&blob, first, header->n_attributes,
+                 header->attribute_blob_size, cmp_attribute);
+
+  if (res == NULL)
+    return NULL;
+
+  previous = res - 1;
+  while (previous >= first && previous->offset == blob_offset)
+    {
+      res = previous;
+      previous = res - 1;
+    }
+
+  return res;
 }

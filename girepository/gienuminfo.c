@@ -29,7 +29,7 @@
 #include <girepository/girepository.h>
 #include "gibaseinfo-private.h"
 #include "girepository-private.h"
-#include "gitypelib-internal.h"
+#include <gitypelib/gitypelib-private.h>
 #include "gienuminfo.h"
 
 /**

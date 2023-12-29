@@ -22,7 +22,7 @@
  */
 
 #include <glib-object.h>
-#include "gitypelib-internal.h"
+#include <gitypelib/gitypelib-private.h>
 
 static void
 test_build_retrieve (void)

@@ -33,7 +33,7 @@
 #include <glib/gprintf.h>
 #include <gmodule.h>
 #include "girepository.h"
-#include "gitypelib-internal.h"
+#include <gitypelib/gitypelib-private.h>
 #include "girepository-private.h"
 
 /**
@@ -1984,3 +1984,32 @@ gi_info_type_to_string (GIInfoType type)
       return "unknown";
   }
 }
+
+
+/**
+ * gi_repository_prepend_library_path:
+ * @directory: (type filename): a single directory to scan for shared libraries
+ *
+ * Prepends @directory to the search path that is used to
+ * search shared libraries referenced by imported namespaces.
+ *
+ * Multiple calls to this function all contribute to the final
+ * list of paths.
+ *
+ * The list of paths is unique and shared for all
+ * [class@GIRepository.Repository] instances across the process, but it doesn’t
+ * affect namespaces imported before the call.
+ *
+ * If the library is not found in the directories configured
+ * in this way, loading will fall back to the system library
+ * path (i.e. `LD_LIBRARY_PATH` and `DT_RPATH` in ELF systems).
+ * See the documentation of your dynamic linker for full details.
+ *
+ * Since: 2.80
+ */
+void
+gi_repository_prepend_library_path (const char *directory)
+{
+  gi_typelib_prepend_library_path(directory);
+}
+

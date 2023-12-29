@@ -31,7 +31,7 @@
 #include <girepository/girepository.h>
 #include "gibaseinfo-private.h"
 #include "girepository-private.h"
-#include "gitypelib-internal.h"
+#include <gitypelib/gitypelib-private.h>
 #include "girffi.h"
 #include "gicallableinfo.h"
 
@@ -476,7 +476,7 @@ gi_callable_info_iterate_return_attributes (GICallableInfo   *info,
   if (iterator->data != NULL)
     next = (AttributeBlob *) iterator->data;
   else
-    next = _attribute_blob_find_first ((GIBaseInfo *) info, blob_offset);
+    next = gi_typelib_attribute_blob_find_first (((GIBaseInfo *) info)->typelib, blob_offset);
 
   if (next == NULL || next->offset != blob_offset || next >= after)
     return FALSE;

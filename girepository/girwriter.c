@@ -27,7 +27,7 @@
 #include "girwriter-private.h"
 
 #include "girepository.h"
-#include "gitypelib-internal.h"
+#include <gitypelib/gitypelib-private.h>
 
 #include <errno.h>
 #include <string.h>

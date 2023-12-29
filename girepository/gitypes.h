@@ -24,14 +24,14 @@
 
 #pragma once
 
-#if !defined (__GIREPOSITORY_H_INSIDE__) && !defined (GI_COMPILATION)
-#error "Only <girepository.h> can be included directly."
-#endif
+// #if !defined (__GITYPELIB_H_INSIDE__) && !defined (GI_COMPILATION)
+// #error "Only <gitypelib.h> can be included directly."
+// #endif
 
 #include <glib.h>
 #include <glib-object.h>
 
-#include "gi-visibility.h"
+#include <girepository/gi-visibility.h>
 
 G_BEGIN_DECLS
 

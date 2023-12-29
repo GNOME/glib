@@ -24,7 +24,7 @@
 #pragma once
 
 #include <glib.h>
-#include "gitypelib-internal.h"
+#include <gitypelib/gitypelib.h>
 
 G_BEGIN_DECLS
 

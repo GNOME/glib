@@ -21,7 +21,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "girffi.h"
+#include "ffi.h"
 
 #include "girnode-private.h"
 
@@ -68,6 +68,68 @@ typedef enum {
 typedef enum {
   ENUM_9 = G_MINSHORT - 1 /* compiler could use int32 */
 } Enum9;
+
+static 
+ffi_type *    get_ffi_type            (GITypeTag tag, gboolean is_pointer) {
+    switch (tag)
+    {
+    case GI_TYPE_TAG_BOOLEAN:
+      return &ffi_type_uint;
+    case GI_TYPE_TAG_INT8:
+      return &ffi_type_sint8;
+    case GI_TYPE_TAG_UINT8:
+      return &ffi_type_uint8;
+    case GI_TYPE_TAG_INT16:
+      return &ffi_type_sint16;
+    case GI_TYPE_TAG_UINT16:
+      return &ffi_type_uint16;
+    case GI_TYPE_TAG_INT32:
+      return &ffi_type_sint32;
+    case GI_TYPE_TAG_UINT32:
+    case GI_TYPE_TAG_UNICHAR:
+      return &ffi_type_uint32;
+    case GI_TYPE_TAG_INT64:
+      return &ffi_type_sint64;
+    case GI_TYPE_TAG_UINT64:
+      return &ffi_type_uint64;
+    case GI_TYPE_TAG_GTYPE:
+#if GLIB_SIZEOF_SIZE_T == 4
+      return &ffi_type_uint32;
+#elif GLIB_SIZEOF_SIZE_T == 8
+      return &ffi_type_uint64;
+#else
+#  error "Unexpected size for size_t: not 4 or 8"
+#endif
+    case GI_TYPE_TAG_FLOAT:
+      return &ffi_type_float;
+    case GI_TYPE_TAG_DOUBLE:
+      return &ffi_type_double;
+    case GI_TYPE_TAG_UTF8:
+    case GI_TYPE_TAG_FILENAME:
+    case GI_TYPE_TAG_ARRAY:
+    case GI_TYPE_TAG_GLIST:
+    case GI_TYPE_TAG_GSLIST:
+    case GI_TYPE_TAG_GHASH:
+    case GI_TYPE_TAG_ERROR:
+      return &ffi_type_pointer;
+    case GI_TYPE_TAG_INTERFACE:
+      {
+       return &ffi_type_pointer;
+      }
+    case GI_TYPE_TAG_VOID:
+      if (is_pointer)
+        return &ffi_type_pointer;
+      else
+        return &ffi_type_void;
+    default:
+      break;
+    }
+
+  g_assert_not_reached ();
+
+  return NULL;
+}
+
 
 static void
 compute_enum_storage_type (GIIrNodeEnum *enum_node)
@@ -176,7 +238,7 @@ get_enum_size_alignment (GIIrNodeEnum *enum_node,
       break;
     default:
       g_error ("Unexpected enum storage type %s",
-	       gi_type_tag_to_string (enum_node->storage_type));
+	       gi_node_type_tag_to_string (enum_node->storage_type));
     }
 
   *size = type_ffi->size;
@@ -301,7 +363,7 @@ get_type_size_alignment (GIIrTypelibBuild *build,
 	}
       else
 	{
-	  type_ffi = gi_type_tag_get_ffi_type (type->tag, type->is_pointer);
+	  type_ffi = get_ffi_type (type->tag, type->is_pointer);
 
 	  if (type_ffi == &ffi_type_void)
 	    {
@@ -314,7 +376,7 @@ get_type_size_alignment (GIIrTypelibBuild *build,
 	    {
 	      g_warning ("%s has is not a pointer and is of type %s",
                          who,
-			 gi_type_tag_to_string (type->tag));
+			 gi_node_type_tag_to_string (type->tag));
 	      *size = -1;
 	      *alignment = -1;
 	      return FALSE;

@@ -29,8 +29,9 @@
 #endif
 
 #include <glib-object.h>
-#include <girepository/gitypelib.h>
+#include <gitypelib/gitypelib-private.h>
 #include <girepository/gitypes.h>
+#include <gitypelib/gitypelib.h>
 
 G_BEGIN_DECLS
 

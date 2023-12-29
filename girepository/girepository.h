@@ -45,12 +45,12 @@
 #include <girepository/giregisteredtypeinfo.h>
 #include <girepository/gisignalinfo.h>
 #include <girepository/gistructinfo.h>
-#include <girepository/gitypeinfo.h>
-#include <girepository/gitypelib.h>
 #include <girepository/gitypes.h>
 #include <girepository/giunioninfo.h>
 #include <girepository/giunresolvedinfo.h>
 #include <girepository/givfuncinfo.h>
+#include <girepository/gitypeinfo.h>
+#include <gitypelib/gitypelib.h>
 
 G_BEGIN_DECLS
 

@@ -25,6 +25,7 @@
 
 #include <glib.h>
 
+#include <girepository/girepository.h>
 #include "girmodule-private.h"
 
 G_BEGIN_DECLS
@@ -390,6 +391,8 @@ const gchar * gi_ir_node_type_to_string         (GIIrNodeTypeId type);
 GIIrNode *gi_ir_find_node (GIIrTypelibBuild *build,
                            GIIrModule       *module,
                            const char       *name);
+
+const gchar* gi_node_type_tag_to_string (int type);
 
 /* In giroffsets.c */
 

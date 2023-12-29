@@ -31,7 +31,7 @@
 #include <glib-object.h>
 #include <gobject/gvaluecollector.h>
 
-#include "gitypelib-internal.h"
+#include <gitypelib/gitypelib-private.h>
 #include "girepository-private.h"
 #include "gibaseinfo.h"
 #include "gibaseinfo-private.h"
@@ -774,60 +774,6 @@ gi_base_info_get_attribute (GIBaseInfo  *info,
   return NULL;
 }
 
-static int
-cmp_attribute (const void *av,
-               const void *bv)
-{
-  const AttributeBlob *a = av;
-  const AttributeBlob *b = bv;
-
-  if (a->offset < b->offset)
-    return -1;
-  else if (a->offset == b->offset)
-    return 0;
-  else
-    return 1;
-}
-
-/*< private >
- * _attribute_blob_find_first:
- * @GIBaseInfo: A #GIBaseInfo.
- * @blob_offset: The offset for the blob to find the first attribute for.
- *
- * Searches for the first #AttributeBlob for @blob_offset and returns
- * it if found.
- *
- * Returns: (transfer none): A pointer to #AttributeBlob or `NULL` if not found.
- * Since: 2.80
- */
-AttributeBlob *
-_attribute_blob_find_first (GIBaseInfo *info,
-                            guint32     blob_offset)
-{
-  GIRealInfo *rinfo = (GIRealInfo *) info;
-  Header *header = (Header *)rinfo->typelib->data;
-  AttributeBlob blob, *first, *res, *previous;
-
-  blob.offset = blob_offset;
-
-  first = (AttributeBlob *) &rinfo->typelib->data[header->attributes];
-
-  res = bsearch (&blob, first, header->n_attributes,
-                 header->attribute_blob_size, cmp_attribute);
-
-  if (res == NULL)
-    return NULL;
-
-  previous = res - 1;
-  while (previous >= first && previous->offset == blob_offset)
-    {
-      res = previous;
-      previous = res - 1;
-    }
-
-  return res;
-}
-
 /**
  * gi_base_info_iterate_attributes:
  * @info: a #GIBaseInfo
@@ -880,7 +826,7 @@ gi_base_info_iterate_attributes (GIBaseInfo       *info,
   if (iterator->data != NULL)
     next = (AttributeBlob *) iterator->data;
   else
-    next = _attribute_blob_find_first (info, rinfo->offset);
+    next = gi_typelib_attribute_blob_find_first (info->typelib, rinfo->offset);
 
   if (next == NULL || next->offset != rinfo->offset || next >= after)
     return FALSE;

@@ -24,9 +24,7 @@
 
 #pragma once
 
-#if !defined (__GIREPOSITORY_H_INSIDE__) && !defined (GI_COMPILATION)
-#error "Only <girepository.h> can be included directly."
-#endif
+
 
 #include <girepository/gitypes.h>
 

@@ -30,7 +30,9 @@
 
 #include <girepository/gibaseinfo.h>
 #include <girepository/girepository.h>
-#include <girepository/gitypelib.h>
+#include <girepository/gitypeinfo.h>
+#include <gitypelib/gitypelib.h>
+#include <gitypelib/gitypelib-private.h>
 
 /* FIXME: For now, GIRealInfo is a compatibility define. This will eventually
  * be removed. */
