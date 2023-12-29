@@ -1751,7 +1751,7 @@ require_internal (GIRepository           *repository,
  * version @version of namespace may be specified.  If @version is
  * not specified, the latest will be used.
  *
- * Returns: (transfer none): a pointer to the [type@GIRepository.Typelib] if
+ * Returns: (transfer none): a pointer to the [type@GITypelib.Typelib] if
  *   successful, `NULL` otherwise
  * Since: 2.80
  */
@@ -1790,7 +1790,7 @@ gi_repository_require (GIRepository  *repository,
  * version @version of namespace should be specified.  If @version is
  * not specified, the latest will be used.
  *
- * Returns: (transfer none): a pointer to the [type@GIRepository.Typelib] if
+ * Returns: (transfer none): a pointer to the [type@GITypelib.Typelib] if
  *   successful, `NULL` otherwise
  * Since: 2.80
  */

@@ -2299,7 +2299,7 @@ gi_typelib_validate (GITypelib  *typelib,
 /**
  * gi_typelib_error_quark:
  *
- * Get the quark representing the [type@GIRepository.TypelibError] error domain.
+ * Get the quark representing the [type@GITypelib.TypelibError] error domain.
  *
  * Returns: quark representing the error domain
  * Since: 2.80
@@ -2325,8 +2325,7 @@ static GSList *library_paths;
  * Multiple calls to this function all contribute to the final
  * list of paths.
  *
- * The list of paths is unique and shared for all
- * [class@GIRepository.Repository] instances across the process, but it doesn’t
+ * The list of paths is unique and shared for across the process, but it doesn’t
  * affect namespaces imported before the call.
  *
  * If the library is not found in the directories configured
@@ -2465,12 +2464,12 @@ gi_typelib_ensure_open (GITypelib *typelib)
  * @len: length of memory chunk containing the typelib, in bytes
  * @error: a [type@GLib.Error]
  *
- * Creates a new [type@GIRepository.Typelib] from a memory location.
+ * Creates a new [type@GITypelib.Typelib] from a memory location.
  *
  * The memory block pointed to by @typelib will be automatically freed when the
  * repository is destroyed.
  *
- * Returns: (transfer full): the new [type@GIRepository.Typelib]
+ * Returns: (transfer full): the new [type@GITypelib.Typelib]
  * Since: 2.80
  */
 GITypelib *
@@ -2498,9 +2497,9 @@ gi_typelib_new_from_memory (guint8  *memory,
  * @len: length of memory chunk containing the typelib
  * @error: a [type@GLib.Error]
  *
- * Creates a new [type@GIRepository.Typelib] from a memory location.
+ * Creates a new [type@GITypelib.Typelib] from a memory location.
  *
- * Returns: (transfer full): the new [type@GIRepository.Typelib]
+ * Returns: (transfer full): the new [type@GITypelib.Typelib]
  * Since: 2.80
  */
 GITypelib *
@@ -2528,9 +2527,9 @@ gi_typelib_new_from_const_memory (const guchar  *memory,
  *   the repository is destroyed
  * @error: a #GError
  *
- * Creates a new [type@GIRepository.Typelib] from a [type@GLib.MappedFile].
+ * Creates a new [type@GITypelib.Typelib] from a [type@GLib.MappedFile].
  *
- * Returns: (transfer full): the new [type@GIRepository.Typelib]
+ * Returns: (transfer full): the new [type@GITypelib.Typelib]
  * Since: 2.80
  */
 GITypelib *
@@ -2557,7 +2556,7 @@ gi_typelib_new_from_mapped_file (GMappedFile  *mfile,
  * gi_typelib_free:
  * @typelib: (transfer full): a #GITypelib
  *
- * Free a [type@GIRepository.Typelib].
+ * Free a [type@GITypelib.Typelib].
  *
  * Since: 2.80
  */
