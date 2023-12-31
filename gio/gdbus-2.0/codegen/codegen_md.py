@@ -88,7 +88,7 @@ class MdCodeGenerator:
             f"Title: {iface.name} D-Bus Interface",
             f"Slug: {iface.name}",
             "",
-            "# " + iface.name,
+            "# " + iface.name_without_prefix,
             "",
             "## Description",
             "",

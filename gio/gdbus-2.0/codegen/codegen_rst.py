@@ -82,12 +82,13 @@ class RstCodeGenerator:
 
     def _generate_header(self, iface):
         """Generates the header and preamble of the document."""
-        header_len = len(iface.name)
+        iface_name = iface.name_without_prefix
+        header_len = len(iface_name)
         res = [
             f".. _{iface.name}:",
             "",
             "=" * header_len,
-            iface.name,
+            iface_name,
             "=" * header_len,
             "",
             "-----------",
