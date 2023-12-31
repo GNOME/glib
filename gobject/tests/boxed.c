@@ -668,6 +668,28 @@ test_boxed_pattern_spec (void)
   g_value_unset (&value);
 }
 
+static void
+test_boxed_rand (void)
+{
+  GRand *r, *r2;
+  GValue value = G_VALUE_INIT;
+
+  g_value_init (&value, G_TYPE_RAND);
+  g_assert_true (G_VALUE_HOLDS_BOXED (&value));
+
+  r = g_rand_new ();
+  g_value_take_boxed (&value, r);
+
+  r2 = g_value_get_boxed (&value);
+  g_assert_true (r == r2);
+
+  r2 = g_value_dup_boxed (&value);
+  g_assert_true (r != r2);
+  g_rand_free (r2);
+
+  g_value_unset (&value);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -699,6 +721,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/boxed/checksum", test_boxed_checksum);
   g_test_add_func ("/boxed/tree", test_boxed_tree);
   g_test_add_func ("/boxed/patternspec", test_boxed_pattern_spec);
+  g_test_add_func ("/boxed/rand", test_boxed_rand);
 
   return g_test_run ();
 }

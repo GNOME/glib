@@ -355,6 +355,15 @@ typedef gsize GType;
 #define G_TYPE_DIR (g_dir_get_type ())
 
 /**
+ * G_TYPE_RAND:
+ *
+ * The #GType for a boxed type holding a #GRand.
+ *
+ * Since: 2.80
+ */
+#define G_TYPE_RAND (g_rand_get_type ())
+
+/**
  * G_TYPE_STRV_BUILDER:
  *
  * The #GType for a boxed type holding a #GStrvBuilder.
@@ -431,6 +440,8 @@ GOBJECT_AVAILABLE_IN_2_80
 GType   g_hmac_get_type (void) G_GNUC_CONST;
 GOBJECT_AVAILABLE_IN_2_80
 GType   g_dir_get_type (void) G_GNUC_CONST;
+GOBJECT_AVAILABLE_IN_2_80
+GType   g_rand_get_type (void) G_GNUC_CONST;
 GOBJECT_AVAILABLE_IN_2_80
 GType   g_strv_builder_get_type (void) G_GNUC_CONST;
 
