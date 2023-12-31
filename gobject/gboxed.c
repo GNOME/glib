@@ -140,6 +140,7 @@ G_DEFINE_BOXED_TYPE (GMappedFile, g_mapped_file, g_mapped_file_ref, g_mapped_fil
 G_DEFINE_BOXED_TYPE (GBookmarkFile, g_bookmark_file, g_bookmark_file_copy, g_bookmark_file_free)
 G_DEFINE_BOXED_TYPE (GHmac, g_hmac, g_hmac_ref, g_hmac_unref)
 G_DEFINE_BOXED_TYPE (GDir, g_dir, g_dir_ref, g_dir_unref)
+G_DEFINE_BOXED_TYPE (GRand, g_rand, g_rand_copy, g_rand_free)
 
 G_DEFINE_BOXED_TYPE (GMainLoop, g_main_loop, g_main_loop_ref, g_main_loop_unref)
 G_DEFINE_BOXED_TYPE (GMainContext, g_main_context, g_main_context_ref, g_main_context_unref)
