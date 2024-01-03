@@ -615,7 +615,8 @@ weak_reffed_object_dispose (GObject *object)
 
   G_OBJECT_CLASS (weak_reffed_object_parent_class)->dispose (object);
 
-  g_assert_null (g_weak_ref_get (weak_reffed->weak_ref));
+  g_assert_true (object == g_weak_ref_get (weak_reffed->weak_ref));
+  g_object_unref (object);
 }
 
 static void
@@ -668,6 +669,8 @@ test_weak_ref_on_run_dispose (void)
 
   g_object_run_dispose (obj);
   g_assert_null (g_weak_ref_get (&weak));
+
+  g_weak_ref_set (&weak, obj);
 
   g_clear_object (&obj);
   g_assert_null (g_weak_ref_get (&weak));
@@ -1106,8 +1109,7 @@ test_toggle_ref_and_notify_on_dispose (void)
   obj->expected.count = 1;
   obj->notify_handler = G_CALLBACK (on_object_notify);
   g_object_remove_toggle_ref (G_OBJECT (obj), obj->toggle_notify, NULL);
-   /* FIXME: adjust the count to 1 when !2377 is in */
-  g_assert_cmpint (obj->actual.count, ==, 4);
+  g_assert_cmpint (obj->actual.count, ==, 2);
   g_assert_cmpuint (obj->notify_called, ==, 1);
 
   disposed_checker = &obj;
@@ -1117,10 +1119,10 @@ test_toggle_ref_and_notify_on_dispose (void)
    * notification is happening if notify handler switches to normal reference
    */
   obj->disposing_refs = 1;
-  obj->expected.count = 4;
+  obj->expected.count = 2;
   obj->notify_handler = G_CALLBACK (on_object_notify_switch_to_normal_ref);
   g_object_remove_toggle_ref (G_OBJECT (obj), obj->toggle_notify, NULL);
-  g_assert_cmpint (obj->actual.count, ==, 5);
+  g_assert_cmpint (obj->actual.count, ==, 2);
   g_assert_cmpuint (obj->notify_called, ==, 2);
 
   disposed_checker = &obj;
@@ -1131,10 +1133,10 @@ test_toggle_ref_and_notify_on_dispose (void)
    */
   obj->disposing_refs = 1;
   obj->disposing_refs_all_normal = TRUE;
-  obj->expected.count = 5;
+  obj->expected.count = 2;
   obj->notify_handler = G_CALLBACK (on_object_notify_switch_to_toggle_ref);
   g_object_unref (obj);
-  g_assert_cmpint (obj->actual.count, ==, 7);
+  g_assert_cmpint (obj->actual.count, ==, 3);
   g_assert_cmpuint (obj->notify_called, ==, 3);
 
   disposed_checker = &obj;
@@ -1145,10 +1147,10 @@ test_toggle_ref_and_notify_on_dispose (void)
    */
   obj->disposing_refs = 1;
   obj->disposing_refs_all_normal = FALSE;
-  obj->expected.count = 7;
+  obj->expected.count = 3;
   obj->notify_handler = G_CALLBACK (on_object_notify_add_ref);
   g_object_remove_toggle_ref (G_OBJECT (obj), obj->toggle_notify, NULL);
-  g_assert_cmpint (obj->actual.count, ==, 8);
+  g_assert_cmpint (obj->actual.count, ==, 3);
   g_assert_cmpuint (obj->notify_called, ==, 4);
   g_object_unref (obj);
 
@@ -1156,7 +1158,7 @@ test_toggle_ref_and_notify_on_dispose (void)
   g_object_add_weak_pointer (G_OBJECT (obj), &disposed_checker);
 
   obj->disposing_refs = 0;
-  obj->expected.count = 9;
+  obj->expected.count = 4;
   g_clear_object (&obj);
   g_assert_null (disposed_checker);
 }

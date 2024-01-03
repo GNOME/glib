@@ -187,7 +187,6 @@ G_LOCK_DEFINE_STATIC (closure_array_mutex);
 G_LOCK_DEFINE_STATIC (weak_refs_mutex);
 G_LOCK_DEFINE_STATIC (toggle_refs_mutex);
 static GQuark	            quark_closure_array = 0;
-static GQuark	            quark_weak_refs = 0;
 static GQuark	            quark_weak_notifies = 0;
 static GQuark	            quark_toggle_refs = 0;
 static GQuark               quark_notify_queue;
@@ -526,7 +525,6 @@ g_object_do_class_init (GObjectClass *class)
   /* read the comment about typedef struct CArray; on why not to change this quark */
   quark_closure_array = g_quark_from_static_string ("GObject-closure-array");
 
-  quark_weak_refs = g_quark_from_static_string ("GObject-weak-references");
   quark_weak_notifies = g_quark_from_static_string ("GObject-weak-notifies");
   quark_weak_locations = g_quark_from_static_string ("GObject-weak-locations");
   quark_toggle_refs = g_quark_from_static_string ("GObject-toggle-references");
@@ -1372,12 +1370,6 @@ g_object_real_dispose (GObject *object)
 {
   g_signal_handlers_destroy (object);
 
-  /* GWeakRef and weak_pointer do not call into user code. Clear those first
-   * so that user code can rely on the state of their weak pointers.
-   */
-  g_datalist_id_set_data (&object->qdata, quark_weak_refs, NULL);
-  g_datalist_id_set_data (&object->qdata, quark_weak_locations, NULL);
-
   /* GWeakNotify and GClosure can call into user code */
   g_datalist_id_set_data (&object->qdata, quark_weak_notifies, NULL);
   g_datalist_id_set_data (&object->qdata, quark_closure_array, NULL);
@@ -1465,6 +1457,7 @@ g_object_run_dispose (GObject *object)
   TRACE (GOBJECT_OBJECT_DISPOSE(object,G_TYPE_FROM_INSTANCE(object), 0));
   G_OBJECT_GET_CLASS (object)->dispose (object);
   TRACE (GOBJECT_OBJECT_DISPOSE_END(object,G_TYPE_FROM_INSTANCE(object), 0));
+  g_datalist_id_remove_data (&object->qdata, quark_weak_locations);
   g_object_unref (object);
 }
 
@@ -3567,7 +3560,6 @@ g_object_force_floating (GObject *object)
 }
 
 typedef struct {
-  GObject *object;
   guint n_toggle_refs;
   struct {
     GToggleNotify notify;
@@ -3575,32 +3567,25 @@ typedef struct {
   } toggle_refs[1];  /* flexible array */
 } ToggleRefStack;
 
-static void
-toggle_refs_notify (GObject *object,
-		    gboolean is_last_ref)
+static GToggleNotify
+toggle_refs_get_notify_unlocked (GObject *object,
+                                 gpointer *out_data)
 {
-  ToggleRefStack tstack, *tstackptr;
+  ToggleRefStack *tstackptr;
 
-  G_LOCK (toggle_refs_mutex);
-  /* If another thread removed the toggle reference on the object, while
-   * we were waiting here, there's nothing to notify.
-   * So let's check again if the object has toggle reference and in case return.
-   */
   if (!OBJECT_HAS_TOGGLE_REF (object))
-    {
-      G_UNLOCK (toggle_refs_mutex);
-      return;
-    }
+    return NULL;
 
   tstackptr = g_datalist_id_get_data (&object->qdata, quark_toggle_refs);
-  tstack = *tstackptr;
-  G_UNLOCK (toggle_refs_mutex);
 
-  /* Reentrancy here is not as tricky as it seems, because a toggle reference
-   * will only be notified when there is exactly one of them.
-   */
-  g_assert (tstack.n_toggle_refs == 1);
-  tstack.toggle_refs[0].notify (tstack.toggle_refs[0].data, tstack.object, is_last_ref);
+  if (tstackptr->n_toggle_refs != 1)
+    {
+      g_critical ("Unexpected number of toggle-refs. g_object_add_toggle_ref() must be paired with g_object_remove_toggle_ref()");
+      return NULL;
+    }
+
+  *out_data = tstackptr->toggle_refs[0].data;
+  return tstackptr->toggle_refs[0].notify;
 }
 
 /**
@@ -3640,6 +3625,13 @@ toggle_refs_notify (GObject *object,
  * this reason, you should only ever use a toggle reference if there
  * is important state in the proxy object.
  *
+ * Note that if you unref the object on another thread, then @notify might
+ * still be invoked after g_object_remove_toggle_ref(), and the object argument
+ * might be a dangling pointer. If the object is destroyed on other threads,
+ * you must take care of that yourself.
+ *
+ * A g_object_add_toggle_ref() must be released with g_object_remove_toggle_ref().
+ *
  * Since: 2.8
  */
 void
@@ -3668,7 +3660,6 @@ g_object_add_toggle_ref (GObject       *object,
   else
     {
       tstack = g_renew (ToggleRefStack, NULL, 1);
-      tstack->object = object;
       tstack->n_toggle_refs = 1;
       i = 0;
     }
@@ -3695,6 +3686,11 @@ g_object_add_toggle_ref (GObject       *object,
  *
  * Removes a reference added with g_object_add_toggle_ref(). The
  * reference count of the object is decreased by one.
+ *
+ * Note that if you unref the object on another thread, then @notify might
+ * still be invoked after g_object_remove_toggle_ref(), and the object argument
+ * might be a dangling pointer. If the object is destroyed on other threads,
+ * you must take care of that yourself.
  *
  * Since: 2.8
  */
@@ -3725,7 +3721,10 @@ g_object_remove_toggle_ref (GObject       *object,
 	      tstack->toggle_refs[i] = tstack->toggle_refs[tstack->n_toggle_refs];
 
 	    if (tstack->n_toggle_refs == 0)
-	      g_datalist_unset_flags (&object->qdata, OBJECT_HAS_TOGGLE_REF_FLAG);
+	      {
+	        g_datalist_unset_flags (&object->qdata, OBJECT_HAS_TOGGLE_REF_FLAG);
+	        g_datalist_id_set_data_full (&object->qdata, quark_toggle_refs, NULL, NULL);
+	      }
 
 	    break;
 	  }
@@ -3755,21 +3754,127 @@ gpointer
 (g_object_ref) (gpointer _object)
 {
   GObject *object = _object;
-  gint old_val;
-  gboolean object_already_finalized;
+  GToggleNotify toggle_notify;
+  gpointer toggle_data;
+  gint old_ref;
 
   g_return_val_if_fail (G_IS_OBJECT (object), NULL);
-  
-  old_val = g_atomic_int_add (&object->ref_count, 1);
-  object_already_finalized = (old_val <= 0);
-  g_return_val_if_fail (!object_already_finalized, NULL);
 
-  if (old_val == 1 && OBJECT_HAS_TOGGLE_REF (object))
-    toggle_refs_notify (object, FALSE);
+  old_ref = g_atomic_int_get (&object->ref_count);
 
-  TRACE (GOBJECT_OBJECT_REF(object,G_TYPE_FROM_INSTANCE(object),old_val));
+retry:
+  toggle_notify = NULL;
+  if (old_ref > 1 && old_ref < G_MAXINT)
+    {
+      /* Fast-path. We have apparently more than 1 references already. No
+       * special handling for toggle references, just increment the ref count. */
+      if (!g_atomic_int_compare_and_exchange_full ((int *) &object->ref_count,
+                                                   old_ref, old_ref + 1, &old_ref))
+        goto retry;
+    }
+  else if (old_ref == 1)
+    {
+      gboolean do_retry;
+
+      /* With ref count 1, check whether we need to emit a toggle notification. */
+      G_LOCK (toggle_refs_mutex);
+      toggle_notify = toggle_refs_get_notify_unlocked (object, &toggle_data);
+      do_retry = !g_atomic_int_compare_and_exchange_full ((int *) &object->ref_count,
+                                                          old_ref, old_ref + 1, &old_ref);
+      G_UNLOCK (toggle_refs_mutex);
+      if (do_retry)
+        goto retry;
+    }
+  else
+    {
+      gboolean object_already_finalized = TRUE;
+
+      g_return_val_if_fail (!object_already_finalized, NULL);
+      return NULL;
+    }
+
+  TRACE (GOBJECT_OBJECT_REF (object, G_TYPE_FROM_INSTANCE (object), old_ref));
+
+  if (toggle_notify)
+    toggle_notify (toggle_data, object, FALSE);
 
   return object;
+}
+
+static gboolean
+_object_unref_clear_weak_locations (GObject *object, gint *p_old_ref, gboolean do_unref)
+{
+  GSList **weak_locations;
+
+  if (do_unref)
+    {
+      gboolean unreffed = FALSE;
+
+      /* Fast path for the final unref using a read-lck only. We check whether
+       * we have weak_locations and drop ref count to zero under a reader lock. */
+
+      g_rw_lock_reader_lock (&weak_locations_lock);
+
+      weak_locations = g_datalist_id_get_data (&object->qdata, quark_weak_locations);
+      if (!weak_locations)
+        {
+          unreffed = g_atomic_int_compare_and_exchange_full ((int *) &object->ref_count,
+                                                             1, 0,
+                                                             p_old_ref);
+          g_rw_lock_reader_unlock (&weak_locations_lock);
+          return unreffed;
+        }
+
+      g_rw_lock_reader_unlock (&weak_locations_lock);
+
+      /* We have weak-locations. Note that we are here already after dispose(). That
+       * means, during dispose a GWeakRef was registered (very unusual). */
+
+      g_rw_lock_writer_lock (&weak_locations_lock);
+
+      if (!g_atomic_int_compare_and_exchange_full ((int *) &object->ref_count,
+                                                   1, 0,
+                                                   p_old_ref))
+        {
+          g_rw_lock_writer_unlock (&weak_locations_lock);
+          return FALSE;
+        }
+
+      weak_locations = g_datalist_id_remove_no_notify (&object->qdata, quark_weak_locations);
+      g_clear_pointer (&weak_locations, weak_locations_free_unlocked);
+
+      g_rw_lock_writer_unlock (&weak_locations_lock);
+      return TRUE;
+    }
+
+  weak_locations = g_datalist_id_get_data (&object->qdata, quark_weak_locations);
+  if (weak_locations != NULL)
+    {
+      g_rw_lock_writer_lock (&weak_locations_lock);
+
+      *p_old_ref = g_atomic_int_get (&object->ref_count);
+      if (*p_old_ref != 1)
+        {
+          g_rw_lock_writer_unlock (&weak_locations_lock);
+          return FALSE;
+        }
+
+      weak_locations = g_datalist_id_remove_no_notify (&object->qdata, quark_weak_locations);
+      g_clear_pointer (&weak_locations, weak_locations_free_unlocked);
+
+      g_rw_lock_writer_unlock (&weak_locations_lock);
+      return TRUE;
+    }
+
+  /* We don't need to re-fetch p_old_ref or check that it's still 1. The caller
+   * did that already. We are good.
+   *
+   * Note that in this case we fetched old_ref and weak_locations separately,
+   * without a lock. But this is fine. We are still before calling dispose().
+   * If there is a race at this point, the same race can happen between
+   * _object_unref_clear_weak_locations() and dispose() call. That is handled
+   * just fine. */
+  return TRUE;
 }
 
 /**
@@ -3789,165 +3894,189 @@ g_object_unref (gpointer _object)
 {
   GObject *object = _object;
   gint old_ref;
-  
+  GToggleNotify toggle_notify;
+  gpointer toggle_data;
+  GObjectNotifyQueue *nqueue;
+  gboolean do_retry;
+  GType obj_gtype;
+
   g_return_if_fail (G_IS_OBJECT (object));
-  
-  /* here we want to atomically do: if (ref_count>1) { ref_count--; return; } */
+
+  /* obj_gtype will be needed for TRACE(GOBJECT_OBJECT_UNREF()) later. Note
+   * that we issue the TRACE() after decrementing the ref-counter. If at that
+   * point the reference counter does not reach zero, somebody else can race
+   * and destroy the object.
+   *
+   * This means, TRACE() can be called with a dangling object pointer. This
+   * could only be avoided, by emitting the TRACE before doing the actual
+   * unref, but at that point we wouldn't know the correct "old_ref" value.
+   * Maybe this should change.
+   *
+   * Anyway. At that later point we can also no longer safely get the GType for
+   * the TRACE(). Do it now.
+   */
+  obj_gtype = G_TYPE_FROM_INSTANCE (object);
+  (void) obj_gtype;
+
   old_ref = g_atomic_int_get (&object->ref_count);
- retry_atomic_decrement1:
-  while (old_ref > 1)
+
+retry_beginning:
+
+  if (old_ref > 2)
     {
-      /* valid if last 2 refs are owned by this call to unref and the toggle_ref */
+      /* We have many references. If we can decrement the ref counter, we are done. */
+      if (!g_atomic_int_compare_and_exchange_full ((int *) &object->ref_count,
+                                                   old_ref, old_ref - 1, &old_ref))
+        goto retry_beginning;
 
-      if (!g_atomic_int_compare_and_exchange_full ((int *)&object->ref_count,
-                                                   old_ref, old_ref - 1,
-                                                   &old_ref))
-        continue;
-
-      TRACE (GOBJECT_OBJECT_UNREF(object,G_TYPE_FROM_INSTANCE(object),old_ref));
-
-      /* if we went from 2->1 we need to notify toggle refs if any */
-      if (old_ref == 2 && OBJECT_HAS_TOGGLE_REF (object))
-        {
-          /* The last ref being held in this case is owned by the toggle_ref */
-          toggle_refs_notify (object, TRUE);
-        }
-
+      /* Beware: object might be a dangling pointer. */
+      TRACE (GOBJECT_OBJECT_UNREF (object, obj_gtype, old_ref));
       return;
     }
 
+  if (old_ref == 2)
     {
-      GSList **weak_locations;
-      GObjectNotifyQueue *nqueue;
-
-      /* The only way that this object can live at this point is if
-       * there are outstanding weak references already established
-       * before we got here.
+      /* We are about to return the second-to-last reference. In that case we
+       * might need to notify a toggle reference.
        *
-       * If there were not already weak references then no more can be
-       * established at this time, because the other thread would have
-       * to hold a strong ref in order to call
-       * g_object_add_weak_pointer() and then we wouldn't be here.
+       * Note that a g_object_add_toggle_ref() MUST always be released
+       * via g_object_remove_toggle_ref(). Thus, if we are here with
+       * an old_ref of 2, then at most one of the references can be
+       * a toggle reference.
        *
-       * Other GWeakRef's (weak locations) instead may still be added
-       * before the object is finalized, but in such case we'll unset
-       * them as part of the qdata removal.
-       */
-      weak_locations = g_datalist_id_get_data (&object->qdata, quark_weak_locations);
+       * We need to take a lock, to avoid races. */
 
-      if (weak_locations != NULL)
+      G_LOCK (toggle_refs_mutex);
+
+      toggle_notify = toggle_refs_get_notify_unlocked (object, &toggle_data);
+
+      if (!g_atomic_int_compare_and_exchange_full ((int *) &object->ref_count,
+                                                   old_ref, old_ref - 1, &old_ref))
         {
-          g_rw_lock_writer_lock (&weak_locations_lock);
-
-          /* It is possible that one of the weak references beat us to
-           * the lock. Make sure the refcount is still what we expected
-           * it to be.
-           */
-          old_ref = g_atomic_int_get (&object->ref_count);
-          if (old_ref != 1)
-            {
-              g_rw_lock_writer_unlock (&weak_locations_lock);
-              goto retry_atomic_decrement1;
-            }
-
-          /* We got the lock first, so the object will definitely die
-           * now. Clear out all the weak references, if they're still set.
-           */
-          weak_locations = g_datalist_id_remove_no_notify (&object->qdata,
-                                                           quark_weak_locations);
-          g_clear_pointer (&weak_locations, weak_locations_free_unlocked);
-
-          g_rw_lock_writer_unlock (&weak_locations_lock);
+          G_UNLOCK (toggle_refs_mutex);
+          goto retry_beginning;
         }
 
-      /* freeze the notification queue, so we don't accidentally emit
-       * notifications during dispose() and finalize().
-       *
-       * The notification queue stays frozen unless the instance acquires
-       * a reference during dispose(), in which case we thaw it and
-       * dispatch all the notifications. If the instance gets through
-       * to finalize(), the notification queue gets automatically
-       * drained when g_object_finalize() is reached and
-       * the qdata is cleared.
-       */
-      nqueue = g_object_notify_queue_freeze (object);
+      G_UNLOCK (toggle_refs_mutex);
 
-      /* we are about to remove the last reference */
-      TRACE (GOBJECT_OBJECT_DISPOSE(object,G_TYPE_FROM_INSTANCE(object), 1));
-      G_OBJECT_GET_CLASS (object)->dispose (object);
-      TRACE (GOBJECT_OBJECT_DISPOSE_END(object,G_TYPE_FROM_INSTANCE(object), 1));
-
-      /* may have been re-referenced meanwhile */
-      old_ref = g_atomic_int_get ((int *)&object->ref_count);
-
-      while (old_ref > 1)
-        {
-          /* valid if last 2 refs are owned by this call to unref and the toggle_ref */
-
-          if (!g_atomic_int_compare_and_exchange_full ((int *)&object->ref_count,
-                                                       old_ref, old_ref - 1,
-                                                       &old_ref))
-            continue;
-
-          TRACE (GOBJECT_OBJECT_UNREF (object, G_TYPE_FROM_INSTANCE (object), old_ref));
-
-          /* emit all notifications that have been queued during dispose() */
-          g_object_notify_queue_thaw (object, nqueue, FALSE);
-
-          /* if we went from 2->1 we need to notify toggle refs if any */
-          if (old_ref == 2 && OBJECT_HAS_TOGGLE_REF (object) &&
-              g_atomic_int_get ((int *)&object->ref_count) == 1)
-            {
-              /* The last ref being held in this case is owned by the toggle_ref */
-              toggle_refs_notify (object, TRUE);
-            }
-
-	  return;
-	}
-
-      /* we are still in the process of taking away the last ref */
-      g_datalist_id_set_data (&object->qdata, quark_closure_array, NULL);
-      g_signal_handlers_destroy (object);
-      g_datalist_id_set_data (&object->qdata, quark_weak_refs, NULL);
-      g_datalist_id_set_data (&object->qdata, quark_weak_locations, NULL);
-      g_datalist_id_set_data (&object->qdata, quark_weak_notifies, NULL);
-
-      /* decrement the last reference */
-      old_ref = g_atomic_int_add (&object->ref_count, -1);
-      g_return_if_fail (old_ref > 0);
-
-      TRACE (GOBJECT_OBJECT_UNREF(object,G_TYPE_FROM_INSTANCE(object),old_ref));
-
-      /* may have been re-referenced meanwhile */
-      if (G_LIKELY (old_ref == 1))
-	{
-	  TRACE (GOBJECT_OBJECT_FINALIZE(object,G_TYPE_FROM_INSTANCE(object)));
-          G_OBJECT_GET_CLASS (object)->finalize (object);
-	  TRACE (GOBJECT_OBJECT_FINALIZE_END(object,G_TYPE_FROM_INSTANCE(object)));
-
-          GOBJECT_IF_DEBUG (OBJECTS,
-	    {
-              gboolean was_present;
-
-              /* catch objects not chaining finalize handlers */
-              G_LOCK (debug_objects);
-              was_present = g_hash_table_remove (debug_objects_ht, object);
-              G_UNLOCK (debug_objects);
-
-              if (was_present)
-                g_critical ("Object %p of type %s not finalized correctly.",
-                            object, G_OBJECT_TYPE_NAME (object));
-	    });
-          g_type_free_instance ((GTypeInstance*) object);
-	}
-      else
-        {
-          /* The instance acquired a reference between dispose() and
-           * finalize(), so we need to thaw the notification queue
-           */
-          g_object_notify_queue_thaw (object, nqueue, FALSE);
-        }
+      /* Beware: object might be a dangling pointer. */
+      TRACE (GOBJECT_OBJECT_UNREF (object, obj_gtype, old_ref));
+      if (toggle_notify)
+        toggle_notify (toggle_data, object, TRUE);
+      return;
     }
+
+  if (G_UNLIKELY (old_ref != 1))
+    {
+      gboolean object_already_finalized = TRUE;
+
+      g_return_if_fail (!object_already_finalized);
+      return;
+    }
+
+  /* We only have one reference left. Proceed to (maybe) clear weak locations. */
+  if (!_object_unref_clear_weak_locations (object, &old_ref, FALSE))
+    goto retry_beginning;
+
+  /* At this point, we checked with an atomic read that we only hold only one
+   * reference. Weak locations are cleared (and toggle references are not to
+   * be considered in this case). Proceed with dispose().
+   *
+   * First, freeze the notification queue, so we don't accidentally emit
+   * notifications during dispose() and finalize().
+   *
+   * The notification queue stays frozen unless the instance acquires a
+   * reference during dispose(), in which case we thaw it and dispatch all the
+   * notifications. If the instance gets through to finalize(), the
+   * notification queue gets automatically drained when g_object_finalize() is
+   * reached and the qdata is cleared.
+   */
+  nqueue = g_object_notify_queue_freeze (object);
+
+  TRACE (GOBJECT_OBJECT_DISPOSE (object, G_TYPE_FROM_INSTANCE (object), 1));
+  G_OBJECT_GET_CLASS (object)->dispose (object);
+  TRACE (GOBJECT_OBJECT_DISPOSE_END (object, G_TYPE_FROM_INSTANCE (object), 1));
+
+retry_decrement:
+  /* Here, old_ref is 1 if we just come from dispose(). If the object was resurrected,
+   * we can hit `goto retry_decrement` and be here with a larger old_ref. */
+
+  if (old_ref > 1 && nqueue)
+    {
+      /* If the object was resurrected, we need to unfreeze the notify
+       * queue. */
+      g_object_notify_queue_thaw (object, nqueue, FALSE);
+      nqueue = NULL;
+    }
+
+  if (old_ref > 2)
+    {
+      if (!g_atomic_int_compare_and_exchange_full ((int *) &object->ref_count,
+                                                   old_ref, old_ref - 1,
+                                                   &old_ref))
+        goto retry_decrement;
+
+      /* Beware: object might be a dangling pointer. */
+      TRACE (GOBJECT_OBJECT_UNREF (object, obj_gtype, old_ref));
+      return;
+    }
+
+  if (old_ref == 2)
+    {
+      /* If the object was resurrected and the current ref-count is 2, then we
+       * are about to drop the ref-count to 1. We may need to emit a toggle
+       * notification. Take a lock and check for that.
+       *
+       * In that case, we need a lock to get the toggle notification. */
+      G_LOCK (toggle_refs_mutex);
+      toggle_notify = toggle_refs_get_notify_unlocked (object, &toggle_data);
+      do_retry = !g_atomic_int_compare_and_exchange_full ((int *) &object->ref_count,
+                                                          old_ref, old_ref - 1,
+                                                          &old_ref);
+      G_UNLOCK (toggle_refs_mutex);
+
+      if (do_retry)
+        goto retry_decrement;
+
+      /* Beware: object might be a dangling pointer. */
+      TRACE (GOBJECT_OBJECT_UNREF (object, obj_gtype, old_ref));
+      if (toggle_notify)
+        toggle_notify (toggle_data, object, TRUE);
+      return;
+    }
+
+  /* old_ref is 1, we are about to drop the reference count to zero. That is
+   * done by _object_unref_clear_weak_locations() under a weak_locations_lock
+   * so that there is no race with g_weak_ref_set(). */
+  if (!_object_unref_clear_weak_locations (object, &old_ref, TRUE))
+    goto retry_decrement;
+
+  TRACE (GOBJECT_OBJECT_UNREF (object, obj_gtype, old_ref));
+
+  /* The object is almost gone. Finalize. */
+
+  g_datalist_id_set_data (&object->qdata, quark_closure_array, NULL);
+  g_signal_handlers_destroy (object);
+  g_datalist_id_set_data (&object->qdata, quark_weak_notifies, NULL);
+
+  TRACE (GOBJECT_OBJECT_FINALIZE (object, G_TYPE_FROM_INSTANCE (object)));
+  G_OBJECT_GET_CLASS (object)->finalize (object);
+  TRACE (GOBJECT_OBJECT_FINALIZE_END (object, G_TYPE_FROM_INSTANCE (object)));
+
+  GOBJECT_IF_DEBUG (OBJECTS,
+                    {
+                      gboolean was_present;
+
+                      /* catch objects not chaining finalize handlers */
+                      G_LOCK (debug_objects);
+                      was_present = g_hash_table_remove (debug_objects_ht, object);
+                      G_UNLOCK (debug_objects);
+
+                      if (was_present)
+                        g_critical ("Object %p of type %s not finalized correctly.",
+                                    object, G_OBJECT_TYPE_NAME (object));
+                    });
+  g_type_free_instance ((GTypeInstance *) object);
 }
 
 /**
@@ -4922,7 +5051,8 @@ g_weak_ref_init (GWeakRef *weak_ref,
 {
   weak_ref->priv.p = NULL;
 
-  g_weak_ref_set (weak_ref, object);
+  if (object)
+    g_weak_ref_set (weak_ref, object);
 }
 
 /**
@@ -5068,11 +5198,7 @@ g_weak_ref_set (GWeakRef *weak_ref,
           weak_locations = g_datalist_id_get_data (&old_object->qdata, quark_weak_locations);
           if (weak_locations == NULL)
             {
-#ifndef G_DISABLE_ASSERT
-              gboolean in_weak_refs_notify =
-                  g_datalist_id_get_data (&old_object->qdata, quark_weak_refs) == NULL;
-              g_assert (in_weak_refs_notify);
-#endif /* G_DISABLE_ASSERT */
+              g_critical ("unexpected missing GWeakRef");
             }
           else
             {
@@ -5089,6 +5215,14 @@ g_weak_ref_set (GWeakRef *weak_ref,
       /* Add the weak ref to the new object */
       if (new_object != NULL)
         {
+          if (g_atomic_int_get (&new_object->ref_count) < 1)
+            {
+              weak_ref->priv.p = NULL;
+              g_rw_lock_writer_unlock (&weak_locations_lock);
+              g_critical ("calling g_weak_ref_set() with already destroyed object");
+              return;
+            }
+
           weak_locations = g_datalist_id_get_data (&new_object->qdata, quark_weak_locations);
 
           if (weak_locations == NULL)

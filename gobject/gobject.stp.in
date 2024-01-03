@@ -70,6 +70,8 @@ probe gobject.object_ref = process("@ABS_GLIB_RUNTIME_LIBDIR@/libgobject-2.0.so.
  */
 probe gobject.object_unref = process("@ABS_GLIB_RUNTIME_LIBDIR@/libgobject-2.0.so.0.@LT_CURRENT@.@LT_REVISION@").mark("object__unref")
 {
+  /* Beware that if old_refcount is larger than 1 and other threads might race
+   * and destroy object. In that case, object might be a dangling pointer. */
   object = $arg1; 
   gtype = $arg2; 
   type = gobject_type_names_2_0_@LT_CURRENT@_@LT_REVISION@[pid(),gtype];
