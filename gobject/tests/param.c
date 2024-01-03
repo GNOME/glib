@@ -1628,10 +1628,10 @@ static void
 test_param_spec_pool (void)
 {
   GParamSpecPool *pool = g_param_spec_pool_new (FALSE);
-  GParamSpec *pspec = g_param_spec_int ("int", NULL, NULL, -1, 100, -1, G_PARAM_READWRITE);
+  GParamSpec *pspec = g_param_spec_ref_sink (g_param_spec_int ("int", NULL, NULL, -1, 100, -1, G_PARAM_READWRITE));
   GParamSpec *check = NULL;
 
-  g_param_spec_pool_insert (pool, g_param_spec_ref_sink (pspec), G_TYPE_OBJECT);
+  g_param_spec_pool_insert (pool, pspec, G_TYPE_OBJECT);
   check = g_param_spec_pool_lookup (pool, "int", G_TYPE_OBJECT, FALSE);
   g_assert_true (check->owner_type == G_TYPE_OBJECT);
 
@@ -1639,6 +1639,7 @@ test_param_spec_pool (void)
   g_assert_null (g_param_spec_pool_lookup (pool, "int", G_TYPE_OBJECT, FALSE));
 
   g_param_spec_pool_free (pool);
+  g_param_spec_unref (pspec);
 }
 
 int
