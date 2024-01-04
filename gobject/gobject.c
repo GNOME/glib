@@ -102,12 +102,51 @@ enum {
   PROP_NONE
 };
 
+#define _OPTIONAL_BIT_LOCK               3
+
 #define OPTIONAL_FLAG_IN_CONSTRUCTION    (1 << 0)
 #define OPTIONAL_FLAG_HAS_SIGNAL_HANDLER (1 << 1) /* Set if object ever had a signal handler */
 #define OPTIONAL_FLAG_HAS_NOTIFY_HANDLER (1 << 2) /* Same, specifically for "notify" */
+#define OPTIONAL_FLAG_LOCK               (1 << 3) /* _OPTIONAL_BIT_LOCK */
+
+/* We use g_bit_lock(), which only supports one lock per integer.
+ *
+ * Hence, while we have locks for different purposes, internally they all
+ * map to the same bit lock (_OPTIONAL_BIT_LOCK).
+ *
+ * This means you cannot take a lock (object_bit_lock()) while already holding
+ * another bit lock. There is an assert against that with G_ENABLE_DEBUG
+ * builds (_object_bit_is_locked).
+ *
+ * In the past, we had different global mutexes per topic. Now we have one
+ * per-object mutex for several topics. The downside is that we are not as
+ * parallel as possible. The alternative would be to add individual locking
+ * integers to GObjectPrivate. But increasing memory usage for more parallelism
+ * (per-object!) is not worth it. */
+#define OPTIONAL_BIT_LOCK_WEAK_REFS      1
+#define OPTIONAL_BIT_LOCK_NOTIFY         2
+#define OPTIONAL_BIT_LOCK_TOGGLE_REFS    3
+#define OPTIONAL_BIT_LOCK_CLOSURE_ARRAY  4
 
 #if SIZEOF_INT == 4 && GLIB_SIZEOF_VOID_P == 8
-#define HAVE_OPTIONAL_FLAGS
+#define HAVE_OPTIONAL_FLAGS_IN_GOBJECT 1
+#else
+#define HAVE_OPTIONAL_FLAGS_IN_GOBJECT 0
+#endif
+
+/* For now we only create a private struct if we don't have optional flags in
+ * GObject. Currently we don't need it otherwise. In the future we might
+ * always add a private struct. */
+#define HAVE_PRIVATE (!HAVE_OPTIONAL_FLAGS_IN_GOBJECT)
+
+#if HAVE_PRIVATE
+typedef struct {
+#if !HAVE_OPTIONAL_FLAGS_IN_GOBJECT
+	guint optional_flags; /* (atomic) */
+#endif
+} GObjectPrivate;
+
+static int GObject_private_offset;
 #endif
 
 typedef struct
@@ -116,7 +155,7 @@ typedef struct
 
   /*< private >*/
   guint          ref_count;  /* (atomic) */
-#ifdef HAVE_OPTIONAL_FLAGS
+#if HAVE_OPTIONAL_FLAGS_IN_GOBJECT
   guint          optional_flags;  /* (atomic) */
 #endif
   GData         *qdata;
@@ -183,16 +222,10 @@ struct _GObjectNotifyQueue
 };
 
 /* --- variables --- */
-G_LOCK_DEFINE_STATIC (closure_array_mutex);
-G_LOCK_DEFINE_STATIC (weak_refs_mutex);
-G_LOCK_DEFINE_STATIC (toggle_refs_mutex);
 static GQuark	            quark_closure_array = 0;
 static GQuark	            quark_weak_notifies = 0;
 static GQuark	            quark_toggle_refs = 0;
 static GQuark               quark_notify_queue;
-#ifndef HAVE_OPTIONAL_FLAGS
-static GQuark               quark_in_construction;
-#endif
 static GParamSpecPool      *pspec_pool = NULL;
 static gulong	            gobject_signals[LAST_SIGNAL] = { 0, };
 static guint (*floating_flag_handler) (GObject*, gint) = object_floating_flag_handler;
@@ -200,7 +233,60 @@ static guint (*floating_flag_handler) (GObject*, gint) = object_floating_flag_ha
 static GQuark	            quark_weak_locations = 0;
 static GRWLock              weak_locations_lock;
 
-G_LOCK_DEFINE_STATIC(notify_lock);
+#if HAVE_PRIVATE
+G_ALWAYS_INLINE static inline GObjectPrivate *
+g_object_get_instance_private (GObject *object)
+{
+  return G_STRUCT_MEMBER_P (object, GObject_private_offset);
+}
+#endif
+
+G_ALWAYS_INLINE static inline guint *
+object_get_optional_flags_p (GObject *object)
+{
+#if HAVE_OPTIONAL_FLAGS_IN_GOBJECT
+  return &(((GObjectReal *) object)->optional_flags);
+#else
+  return &g_object_get_instance_private (object)->optional_flags;
+#endif
+}
+
+#if defined(G_ENABLE_DEBUG) && defined(G_THREAD_LOCAL)
+/* Using this thread-local global is sufficient to guard the per-object
+ * locking, because while the current thread holds a lock on one object, it
+ * never calls out to another object (because doing so would would be prone to
+ * deadlock). */
+static G_THREAD_LOCAL guint _object_bit_is_locked;
+#endif
+
+static void
+object_bit_lock (GObject *object, guint lock_bit)
+{
+#if defined(G_ENABLE_DEBUG) && defined(G_THREAD_LOCAL)
+  /* all object_bit_lock() really use the same bit/mutex. The "lock_bit" argument
+   * only exists for asserting. object_bit_lock() is not re-entrant (also not with
+   * different "lock_bit" values). */
+  g_assert (lock_bit > 0);
+  g_assert (_object_bit_is_locked == 0);
+  _object_bit_is_locked = lock_bit;
+#endif
+
+  g_bit_lock ((gint *) object_get_optional_flags_p (object), _OPTIONAL_BIT_LOCK);
+}
+
+static void
+object_bit_unlock (GObject *object, guint lock_bit)
+{
+#if defined(G_ENABLE_DEBUG) && defined(G_THREAD_LOCAL)
+  /* All lock_bit map to the same mutex. We cannot use two different locks on
+   * the same integer. Assert against that. */
+  g_assert (lock_bit > 0);
+  g_assert (_object_bit_is_locked == lock_bit);
+  _object_bit_is_locked = 0;
+#endif
+
+  g_bit_unlock ((gint *) object_get_optional_flags_p (object), _OPTIONAL_BIT_LOCK);
+}
 
 /* --- functions --- */
 static void
@@ -234,7 +320,7 @@ g_object_notify_queue_freeze (GObject *object)
 {
   GObjectNotifyQueue *nqueue;
 
-  G_LOCK(notify_lock);
+  object_bit_lock (object, OPTIONAL_BIT_LOCK_NOTIFY);
   nqueue = g_datalist_id_get_data (&object->qdata, quark_notify_queue);
   if (!nqueue)
     {
@@ -251,7 +337,7 @@ g_object_notify_queue_freeze (GObject *object)
     nqueue->freeze_count++;
 
 out:
-  G_UNLOCK(notify_lock);
+  object_bit_unlock (object, OPTIONAL_BIT_LOCK_NOTIFY);
 
   return nqueue;
 }
@@ -265,7 +351,7 @@ g_object_notify_queue_thaw (GObject            *object,
   GSList *slist;
   guint n_pspecs = 0;
 
-  G_LOCK(notify_lock);
+  object_bit_lock (object, OPTIONAL_BIT_LOCK_NOTIFY);
 
   if (!nqueue)
     {
@@ -276,7 +362,7 @@ g_object_notify_queue_thaw (GObject            *object,
   /* Just make sure we never get into some nasty race condition */
   if (G_UNLIKELY (!nqueue || nqueue->freeze_count == 0))
     {
-      G_UNLOCK (notify_lock);
+      object_bit_unlock (object, OPTIONAL_BIT_LOCK_NOTIFY);
       g_critical ("%s: property-changed notification for %s(%p) is not frozen",
                   G_STRFUNC, G_OBJECT_TYPE_NAME (object), object);
       return;
@@ -285,7 +371,7 @@ g_object_notify_queue_thaw (GObject            *object,
   nqueue->freeze_count--;
   if (nqueue->freeze_count)
     {
-      G_UNLOCK (notify_lock);
+      object_bit_unlock (object, OPTIONAL_BIT_LOCK_NOTIFY);
       return;
     }
 
@@ -297,7 +383,7 @@ g_object_notify_queue_thaw (GObject            *object,
     }
   g_datalist_id_set_data (&object->qdata, quark_notify_queue, NULL);
 
-  G_UNLOCK(notify_lock);
+  object_bit_unlock (object, OPTIONAL_BIT_LOCK_NOTIFY);
 
   if (n_pspecs)
     {
@@ -318,7 +404,7 @@ g_object_notify_queue_add (GObject            *object,
                            GParamSpec         *pspec,
                            gboolean            in_init)
 {
-  G_LOCK(notify_lock);
+  object_bit_lock (object, OPTIONAL_BIT_LOCK_NOTIFY);
 
   if (!nqueue)
     {
@@ -332,7 +418,7 @@ g_object_notify_queue_add (GObject            *object,
             {
               /* We don't have a notify queue and are not in_init. The event
                * is not to be queued. The caller will dispatch directly. */
-              G_UNLOCK (notify_lock);
+              object_bit_unlock (object, OPTIONAL_BIT_LOCK_NOTIFY);
               return FALSE;
             }
 
@@ -355,7 +441,7 @@ g_object_notify_queue_add (GObject            *object,
       nqueue->n_pspecs++;
     }
 
-  G_UNLOCK(notify_lock);
+  object_bit_unlock (object, OPTIONAL_BIT_LOCK_NOTIFY);
 
   return TRUE;
 }
@@ -455,6 +541,11 @@ _g_object_type_init (void)
 # endif /* G_HAS_CONSTRUCTORS */
     }
 #endif /* G_ENABLE_DEBUG */
+
+#if HAVE_PRIVATE
+  GObject_private_offset =
+      g_type_add_instance_private (G_TYPE_OBJECT, sizeof (GObjectPrivate));
+#endif
 }
 
 /* Initialize the global GParamSpecPool; this function needs to be
@@ -529,9 +620,6 @@ g_object_do_class_init (GObjectClass *class)
   quark_weak_locations = g_quark_from_static_string ("GObject-weak-locations");
   quark_toggle_refs = g_quark_from_static_string ("GObject-toggle-references");
   quark_notify_queue = g_quark_from_static_string ("GObject-notify-queue");
-#ifndef HAVE_OPTIONAL_FLAGS
-  quark_in_construction = g_quark_from_static_string ("GObject-in-construction");
-#endif
 
   g_object_init_pspec_pool ();
 
@@ -589,6 +677,10 @@ g_object_do_class_init (GObjectClass *class)
    * implement an interface implement all properties for that interface
    */
   g_type_add_interface_check (NULL, object_interface_check_properties);
+
+#if HAVE_PRIVATE
+  g_type_class_adjust_private_offset (class, &GObject_private_offset);
+#endif
 }
 
 /* Sinks @pspec if it’s a floating ref. */
@@ -1183,133 +1275,62 @@ g_object_interface_list_properties (gpointer      g_iface,
 static inline guint
 object_get_optional_flags (GObject *object)
 {
-#ifdef HAVE_OPTIONAL_FLAGS
-  GObjectReal *real = (GObjectReal *)object;
-  return (guint)g_atomic_int_get (&real->optional_flags);
-#else
-  return 0;
-#endif
+  return g_atomic_int_get (object_get_optional_flags_p (object));
 }
 
-/* Variant of object_get_optional_flags for when
- * we know that we have exclusive access (during
- * construction)
- */
-static inline guint
-object_get_optional_flags_X (GObject *object)
-{
-#ifdef HAVE_OPTIONAL_FLAGS
-  GObjectReal *real = (GObjectReal *)object;
-  return real->optional_flags;
-#else
-  return 0;
-#endif
-}
-
-#ifdef HAVE_OPTIONAL_FLAGS
 static inline void
 object_set_optional_flags (GObject *object,
                           guint flags)
 {
-  GObjectReal *real = (GObjectReal *)object;
-  g_atomic_int_or (&real->optional_flags, flags);
+  g_atomic_int_or (object_get_optional_flags_p (object), flags);
 }
 
-/* Variant for when we have exclusive access
- * (during construction)
- */
 static inline void
-object_set_optional_flags_X (GObject *object,
-                             guint flags)
-{
-  GObjectReal *real = (GObjectReal *)object;
-  real->optional_flags |= flags;
-}
-
-/* Variant for when we have exclusive access
- * (during construction)
- */
-static inline void
-object_unset_optional_flags_X (GObject *object,
+object_unset_optional_flags (GObject *object,
                                guint flags)
 {
-  GObjectReal *real = (GObjectReal *)object;
-  real->optional_flags &= ~flags;
+  g_atomic_int_and (object_get_optional_flags_p (object), ~flags);
 }
-#endif
 
 gboolean
 _g_object_has_signal_handler (GObject *object)
 {
-#ifdef HAVE_OPTIONAL_FLAGS
   return (object_get_optional_flags (object) & OPTIONAL_FLAG_HAS_SIGNAL_HANDLER) != 0;
-#else
-  return TRUE;
-#endif
 }
 
 static inline gboolean
 _g_object_has_notify_handler (GObject *object)
 {
-#ifdef HAVE_OPTIONAL_FLAGS
   return CLASS_NEEDS_NOTIFY (G_OBJECT_GET_CLASS (object)) ||
          (object_get_optional_flags (object) & OPTIONAL_FLAG_HAS_NOTIFY_HANDLER) != 0;
-#else
-  return TRUE;
-#endif
-}
-
-static inline gboolean
-_g_object_has_notify_handler_X (GObject *object)
-{
-#ifdef HAVE_OPTIONAL_FLAGS
-  return CLASS_NEEDS_NOTIFY (G_OBJECT_GET_CLASS (object)) ||
-         (object_get_optional_flags_X (object) & OPTIONAL_FLAG_HAS_NOTIFY_HANDLER) != 0;
-#else
-  return TRUE;
-#endif
 }
 
 void
 _g_object_set_has_signal_handler (GObject *object,
                                   guint    signal_id)
 {
-#ifdef HAVE_OPTIONAL_FLAGS
   guint flags = OPTIONAL_FLAG_HAS_SIGNAL_HANDLER;
   if (signal_id == gobject_signals[NOTIFY])
     flags |= OPTIONAL_FLAG_HAS_NOTIFY_HANDLER;
   object_set_optional_flags (object, flags);
-#endif
 }
 
 static inline gboolean
 object_in_construction (GObject *object)
 {
-#ifdef HAVE_OPTIONAL_FLAGS
   return (object_get_optional_flags (object) & OPTIONAL_FLAG_IN_CONSTRUCTION) != 0;
-#else
-  return g_datalist_id_get_data (&object->qdata, quark_in_construction) != NULL;
-#endif
 }
 
 static inline void
 set_object_in_construction (GObject *object)
 {
-#ifdef HAVE_OPTIONAL_FLAGS
-  object_set_optional_flags_X (object, OPTIONAL_FLAG_IN_CONSTRUCTION);
-#else
-  g_datalist_id_set_data (&object->qdata, quark_in_construction, object);
-#endif
+  object_set_optional_flags (object, OPTIONAL_FLAG_IN_CONSTRUCTION);
 }
 
 static inline void
 unset_object_in_construction (GObject *object)
 {
-#ifdef HAVE_OPTIONAL_FLAGS
-  object_unset_optional_flags_X (object, OPTIONAL_FLAG_IN_CONSTRUCTION);
-#else
-  g_datalist_id_set_data (&object->qdata, quark_in_construction, NULL);
-#endif
+  object_unset_optional_flags (object, OPTIONAL_FLAG_IN_CONSTRUCTION);
 }
 
 static void
@@ -1498,9 +1519,7 @@ static inline void
 g_object_notify_by_spec_internal (GObject    *object,
                                   GParamSpec *pspec)
 {
-#ifdef HAVE_OPTIONAL_FLAGS
   guint object_flags;
-#endif
   gboolean needs_notify;
   gboolean in_init;
 
@@ -1509,16 +1528,11 @@ g_object_notify_by_spec_internal (GObject    *object,
 
   param_spec_follow_override (&pspec);
 
-#ifdef HAVE_OPTIONAL_FLAGS
   /* get all flags we need with a single atomic read */
   object_flags = object_get_optional_flags (object);
   needs_notify = ((object_flags & OPTIONAL_FLAG_HAS_NOTIFY_HANDLER) != 0) ||
                   CLASS_NEEDS_NOTIFY (G_OBJECT_GET_CLASS (object));
   in_init = (object_flags & OPTIONAL_FLAG_IN_CONSTRUCTION) != 0;
-#else
-  needs_notify = TRUE;
-  in_init = object_in_construction (object);
-#endif
 
   if (pspec != NULL && needs_notify)
     {
@@ -2178,7 +2192,7 @@ g_object_new_with_custom_constructor (GObjectClass          *class,
 
   if (CLASS_HAS_PROPS (class))
     {
-      if ((newly_constructed && _g_object_has_notify_handler_X (object)) ||
+      if ((newly_constructed && _g_object_has_notify_handler (object)) ||
           _g_object_has_notify_handler (object))
         {
           /* This may or may not have been setup in g_object_init().
@@ -2228,7 +2242,7 @@ g_object_new_internal (GObjectClass          *class,
     {
       GSList *node;
 
-      if (_g_object_has_notify_handler_X (object))
+      if (_g_object_has_notify_handler (object))
         {
           /* This may or may not have been setup in g_object_init().
            * If it hasn't, we do it now.
@@ -3291,7 +3305,7 @@ g_object_weak_ref (GObject    *object,
   g_return_if_fail (notify != NULL);
   g_return_if_fail (g_atomic_int_get (&object->ref_count) >= 1);
 
-  G_LOCK (weak_refs_mutex);
+  object_bit_lock (object, OPTIONAL_BIT_LOCK_WEAK_REFS);
   wstack = g_datalist_id_remove_no_notify (&object->qdata, quark_weak_notifies);
   if (wstack)
     {
@@ -3308,7 +3322,7 @@ g_object_weak_ref (GObject    *object,
   wstack->weak_refs[i].notify = notify;
   wstack->weak_refs[i].data = data;
   g_datalist_id_set_data_full (&object->qdata, quark_weak_notifies, wstack, weak_refs_notify);
-  G_UNLOCK (weak_refs_mutex);
+  object_bit_unlock (object, OPTIONAL_BIT_LOCK_WEAK_REFS);
 }
 
 /**
@@ -3330,7 +3344,7 @@ g_object_weak_unref (GObject    *object,
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (notify != NULL);
 
-  G_LOCK (weak_refs_mutex);
+  object_bit_lock (object, OPTIONAL_BIT_LOCK_WEAK_REFS);
   wstack = g_datalist_id_get_data (&object->qdata, quark_weak_notifies);
   if (wstack)
     {
@@ -3348,7 +3362,7 @@ g_object_weak_unref (GObject    *object,
 	    break;
 	  }
     }
-  G_UNLOCK (weak_refs_mutex);
+  object_bit_unlock (object, OPTIONAL_BIT_LOCK_WEAK_REFS);
   if (!found_one)
     g_critical ("%s: couldn't find weak ref %p(%p)", G_STRFUNC, notify, data);
 }
@@ -3648,7 +3662,7 @@ g_object_add_toggle_ref (GObject       *object,
 
   g_object_ref (object);
 
-  G_LOCK (toggle_refs_mutex);
+  object_bit_lock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
   tstack = g_datalist_id_remove_no_notify (&object->qdata, quark_toggle_refs);
   if (tstack)
     {
@@ -3672,7 +3686,7 @@ g_object_add_toggle_ref (GObject       *object,
   tstack->toggle_refs[i].data = data;
   g_datalist_id_set_data_full (&object->qdata, quark_toggle_refs, tstack,
 			       (GDestroyNotify)g_free);
-  G_UNLOCK (toggle_refs_mutex);
+  object_bit_unlock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
 }
 
 /**
@@ -3705,7 +3719,7 @@ g_object_remove_toggle_ref (GObject       *object,
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (notify != NULL);
 
-  G_LOCK (toggle_refs_mutex);
+  object_bit_lock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
   tstack = g_datalist_id_get_data (&object->qdata, quark_toggle_refs);
   if (tstack)
     {
@@ -3729,12 +3743,69 @@ g_object_remove_toggle_ref (GObject       *object,
 	    break;
 	  }
     }
-  G_UNLOCK (toggle_refs_mutex);
+  object_bit_unlock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
 
   if (found_one)
     g_object_unref (object);
   else
     g_critical ("%s: couldn't find toggle ref %p(%p)", G_STRFUNC, notify, data);
+}
+
+/* Internal implementation of g_object_ref() which doesn't call out to user code.
+ * @out_toggle_notify and @out_toggle_data *must* be provided, and if non-`NULL`
+ * values are returned, then the caller *must* call that toggle notify function
+ * as soon as it is safe to do so. It may call (or be) user-provided code so should
+ * only be called once all locks are released. */
+static gpointer
+object_ref (GObject *object,
+            GToggleNotify *out_toggle_notify,
+            gpointer *out_toggle_data)
+{
+  GToggleNotify toggle_notify;
+  gpointer toggle_data;
+  gint old_ref;
+
+  old_ref = g_atomic_int_get (&object->ref_count);
+
+retry:
+  toggle_notify = NULL;
+  toggle_data = NULL;
+  if (old_ref > 1 && old_ref < G_MAXINT)
+    {
+      /* Fast-path. We have apparently more than 1 references already. No
+       * special handling for toggle references, just increment the ref count. */
+      if (!g_atomic_int_compare_and_exchange_full ((int *) &object->ref_count,
+                                                   old_ref, old_ref + 1, &old_ref))
+        goto retry;
+    }
+  else if (old_ref == 1)
+    {
+      gboolean do_retry;
+
+      /* With ref count 1, check whether we need to emit a toggle notification. */
+      object_bit_lock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
+      toggle_notify = toggle_refs_get_notify_unlocked (object, &toggle_data);
+      do_retry = !g_atomic_int_compare_and_exchange_full ((int *) &object->ref_count,
+                                                          old_ref, old_ref + 1, &old_ref);
+      object_bit_unlock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
+      if (do_retry)
+        goto retry;
+    }
+  else
+    {
+      gboolean object_already_finalized = TRUE;
+
+      *out_toggle_notify = NULL;
+      *out_toggle_data = NULL;
+      g_return_val_if_fail (!object_already_finalized, NULL);
+      return NULL;
+    }
+
+  TRACE (GOBJECT_OBJECT_REF (object, G_TYPE_FROM_INSTANCE (object), old_ref));
+
+  *out_toggle_notify = toggle_notify;
+  *out_toggle_data = toggle_data;
+  return object;
 }
 
 /**
@@ -3756,44 +3827,10 @@ gpointer
   GObject *object = _object;
   GToggleNotify toggle_notify;
   gpointer toggle_data;
-  gint old_ref;
 
   g_return_val_if_fail (G_IS_OBJECT (object), NULL);
 
-  old_ref = g_atomic_int_get (&object->ref_count);
-
-retry:
-  toggle_notify = NULL;
-  if (old_ref > 1 && old_ref < G_MAXINT)
-    {
-      /* Fast-path. We have apparently more than 1 references already. No
-       * special handling for toggle references, just increment the ref count. */
-      if (!g_atomic_int_compare_and_exchange_full ((int *) &object->ref_count,
-                                                   old_ref, old_ref + 1, &old_ref))
-        goto retry;
-    }
-  else if (old_ref == 1)
-    {
-      gboolean do_retry;
-
-      /* With ref count 1, check whether we need to emit a toggle notification. */
-      G_LOCK (toggle_refs_mutex);
-      toggle_notify = toggle_refs_get_notify_unlocked (object, &toggle_data);
-      do_retry = !g_atomic_int_compare_and_exchange_full ((int *) &object->ref_count,
-                                                          old_ref, old_ref + 1, &old_ref);
-      G_UNLOCK (toggle_refs_mutex);
-      if (do_retry)
-        goto retry;
-    }
-  else
-    {
-      gboolean object_already_finalized = TRUE;
-
-      g_return_val_if_fail (!object_already_finalized, NULL);
-      return NULL;
-    }
-
-  TRACE (GOBJECT_OBJECT_REF (object, G_TYPE_FROM_INSTANCE (object), old_ref));
+  object = object_ref (object, &toggle_notify, &toggle_data);
 
   if (toggle_notify)
     toggle_notify (toggle_data, object, FALSE);
@@ -3946,18 +3983,18 @@ retry_beginning:
        *
        * We need to take a lock, to avoid races. */
 
-      G_LOCK (toggle_refs_mutex);
+      object_bit_lock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
 
       toggle_notify = toggle_refs_get_notify_unlocked (object, &toggle_data);
 
       if (!g_atomic_int_compare_and_exchange_full ((int *) &object->ref_count,
                                                    old_ref, old_ref - 1, &old_ref))
         {
-          G_UNLOCK (toggle_refs_mutex);
+          object_bit_unlock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
           goto retry_beginning;
         }
 
-      G_UNLOCK (toggle_refs_mutex);
+      object_bit_unlock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
 
       /* Beware: object might be a dangling pointer. */
       TRACE (GOBJECT_OBJECT_UNREF (object, obj_gtype, old_ref));
@@ -4028,12 +4065,12 @@ retry_decrement:
        * notification. Take a lock and check for that.
        *
        * In that case, we need a lock to get the toggle notification. */
-      G_LOCK (toggle_refs_mutex);
+      object_bit_lock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
       toggle_notify = toggle_refs_get_notify_unlocked (object, &toggle_data);
       do_retry = !g_atomic_int_compare_and_exchange_full ((int *) &object->ref_count,
                                                           old_ref, old_ref - 1,
                                                           &old_ref);
-      G_UNLOCK (toggle_refs_mutex);
+      object_bit_unlock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
 
       if (do_retry)
         goto retry_decrement;
@@ -4791,7 +4828,7 @@ object_remove_closure (gpointer  data,
   CArray *carray;
   guint i;
   
-  G_LOCK (closure_array_mutex);
+  object_bit_lock (object, OPTIONAL_BIT_LOCK_CLOSURE_ARRAY);
   carray = g_object_get_qdata (object, quark_closure_array);
   for (i = 0; i < carray->n_closures; i++)
     if (carray->closures[i] == closure)
@@ -4799,10 +4836,10 @@ object_remove_closure (gpointer  data,
 	carray->n_closures--;
 	if (i < carray->n_closures)
 	  carray->closures[i] = carray->closures[carray->n_closures];
-	G_UNLOCK (closure_array_mutex);
+	object_bit_unlock (object, OPTIONAL_BIT_LOCK_CLOSURE_ARRAY);
 	return;
       }
-  G_UNLOCK (closure_array_mutex);
+  object_bit_unlock (object, OPTIONAL_BIT_LOCK_CLOSURE_ARRAY);
   g_assert_not_reached ();
 }
 
@@ -4858,7 +4895,7 @@ g_object_watch_closure (GObject  *object,
   g_closure_add_marshal_guards (closure,
 				object, (GClosureNotify) g_object_ref,
 				object, (GClosureNotify) g_object_unref);
-  G_LOCK (closure_array_mutex);
+  object_bit_lock (object, OPTIONAL_BIT_LOCK_CLOSURE_ARRAY);
   carray = g_datalist_id_remove_no_notify (&object->qdata, quark_closure_array);
   if (!carray)
     {
@@ -4874,7 +4911,7 @@ g_object_watch_closure (GObject  *object,
     }
   carray->closures[i] = closure;
   g_datalist_id_set_data_full (&object->qdata, quark_closure_array, carray, destroy_closure_array);
-  G_UNLOCK (closure_array_mutex);
+  object_bit_unlock (object, OPTIONAL_BIT_LOCK_CLOSURE_ARRAY);
 }
 
 /**
@@ -5099,20 +5136,25 @@ g_weak_ref_clear (GWeakRef *weak_ref)
 gpointer
 g_weak_ref_get (GWeakRef *weak_ref)
 {
-  gpointer object_or_null;
+  GToggleNotify toggle_notify = NULL;
+  gpointer toggle_data = NULL;
+  GObject *object;
 
-  g_return_val_if_fail (weak_ref!= NULL, NULL);
+  g_return_val_if_fail (weak_ref, NULL);
 
   g_rw_lock_reader_lock (&weak_locations_lock);
 
-  object_or_null = weak_ref->priv.p;
+  object = weak_ref->priv.p;
 
-  if (object_or_null != NULL)
-    g_object_ref (object_or_null);
+  if (object)
+    object = object_ref (object, &toggle_notify, &toggle_data);
 
   g_rw_lock_reader_unlock (&weak_locations_lock);
 
-  return object_or_null;
+  if (toggle_notify)
+    toggle_notify (toggle_data, object, FALSE);
+
+  return object;
 }
 
 static void
