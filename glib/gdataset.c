@@ -104,7 +104,6 @@ struct _GDataset
 
 /* --- prototypes --- */
 static inline GDataset*	g_dataset_lookup		(gconstpointer	  dataset_location);
-static inline void	g_datalist_clear_i		(GData		**datalist);
 static void		g_dataset_destroy_internal	(GDataset	 *dataset);
 static inline gpointer	g_data_set_internal		(GData     	**datalist,
 							 GQuark   	  key_id,
@@ -150,33 +149,6 @@ static void
 g_datalist_unlock_and_set (GData **datalist, gpointer ptr)
 {
   g_pointer_bit_unlock_and_set ((void **) datalist, DATALIST_LOCK_BIT, ptr, G_DATALIST_FLAGS_MASK_INTERNAL);
-}
-
-/* Called with the datalist lock held, or the dataset global
- * lock for dataset lists
- */
-static void
-g_datalist_clear_i (GData **datalist)
-{
-  GData *data;
-  guint i;
-
-  data = G_DATALIST_GET_POINTER (datalist);
-  G_DATALIST_SET_POINTER (datalist, NULL);
-
-  if (data)
-    {
-      G_UNLOCK (g_dataset_global);
-      for (i = 0; i < data->len; i++)
-        {
-          if (data->data[i].data && data->data[i].destroy)
-            data->data[i].destroy (data->data[i].data);
-        }
-      G_LOCK (g_dataset_global);
-
-      g_free (data);
-    }
-
 }
 
 /**
@@ -238,6 +210,9 @@ g_dataset_destroy_internal (GDataset *dataset)
   dataset_location = dataset->location;
   while (dataset)
     {
+      GData *data;
+      guint i;
+
       if (G_DATALIST_GET_POINTER(&dataset->datalist) == NULL)
 	{
 	  if (dataset == g_dataset_cached)
@@ -246,8 +221,23 @@ g_dataset_destroy_internal (GDataset *dataset)
 	  g_slice_free (GDataset, dataset);
 	  break;
 	}
-      
-      g_datalist_clear_i (&dataset->datalist);
+
+      data = G_DATALIST_GET_POINTER (&dataset->datalist);
+      G_DATALIST_SET_POINTER (&dataset->datalist, NULL);
+
+      if (data)
+        {
+          G_UNLOCK (g_dataset_global);
+          for (i = 0; i < data->len; i++)
+            {
+              if (data->data[i].data && data->data[i].destroy)
+                data->data[i].destroy (data->data[i].data);
+            }
+          G_LOCK (g_dataset_global);
+
+          g_free (data);
+        }
+
       dataset = g_dataset_lookup (dataset_location);
     }
 }
