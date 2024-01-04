@@ -171,7 +171,12 @@ g_futex_wake (const gint *address)
 }
 #endif
 
-#define CONTENTION_CLASSES 11
+/* Chosen arbitrarily. 97 is a prime (for no strong reasons). 97 seems small
+ * enough to not waste too much memory, but large so that we have few false
+ * positives where g_bit_unlock() wrongly guesses a contention and calls
+ * g_futex_wake(). */
+#define CONTENTION_CLASSES 97
+
 static gint g_bit_lock_contended[CONTENTION_CLASSES];  /* (atomic) */
 
 #if (defined (i386) || defined (__amd64__))
