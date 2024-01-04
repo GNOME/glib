@@ -146,6 +146,12 @@ g_datalist_unlock (GData **datalist)
   g_pointer_bit_unlock ((void **)datalist, DATALIST_LOCK_BIT);
 }
 
+static void
+g_datalist_unlock_and_set (GData **datalist, gpointer ptr)
+{
+  g_pointer_bit_unlock_and_set ((void **) datalist, DATALIST_LOCK_BIT, ptr, G_DATALIST_FLAGS_MASK_INTERNAL);
+}
+
 /* Called with the datalist lock held, or the dataset global
  * lock for dataset lists
  */
@@ -192,9 +198,8 @@ g_datalist_clear (GData **datalist)
   g_datalist_lock (datalist);
 
   data = G_DATALIST_GET_POINTER (datalist);
-  G_DATALIST_SET_POINTER (datalist, NULL);
 
-  g_datalist_unlock (datalist);
+  g_datalist_unlock_and_set (datalist, NULL);
 
   if (data)
     {
@@ -280,6 +285,7 @@ g_data_set_internal (GData	  **datalist,
 		     GDataset	   *dataset)
 {
   GData *d, *old_d;
+  GData *new_d = NULL;
   GDataElt old, *data, *data_last, *data_end;
 
   g_datalist_lock (datalist);
@@ -306,12 +312,12 @@ g_data_set_internal (GData	  **datalist,
                    */
 		  if (d->len == 0)
 		    {
-		      G_DATALIST_SET_POINTER (datalist, NULL);
-		      g_free (d);
 		      /* datalist may be situated in dataset, so must not be
-		       * unlocked after we free it
+		       * unlocked when we free it
 		       */
-		      g_datalist_unlock (datalist);
+		      g_datalist_unlock_and_set (datalist, NULL);
+
+		      g_free (d);
 
 		      /* the dataset destruction *must* be done
 		       * prior to invocation of the data destroy function
@@ -402,7 +408,7 @@ g_data_set_internal (GData	  **datalist,
 	  d = g_realloc (d, sizeof (GData) + (d->alloc - 1) * sizeof (GDataElt));
 	}
       if (old_d != d)
-	G_DATALIST_SET_POINTER (datalist, d);
+	new_d = d;
 
       d->data[d->len].key = key_id;
       d->data[d->len].data = new_data;
@@ -410,7 +416,10 @@ g_data_set_internal (GData	  **datalist,
       d->len++;
     }
 
-  g_datalist_unlock (datalist);
+  if (new_d)
+    g_datalist_unlock_and_set (datalist, new_d);
+  else
+    g_datalist_unlock (datalist);
 
   return NULL;
 
@@ -964,6 +973,7 @@ g_datalist_id_replace_data (GData          **datalist,
 {
   gpointer val = NULL;
   GData *d;
+  GData *new_d = NULL;
   GDataElt *data, *data_end;
 
   g_return_val_if_fail (datalist != NULL, FALSE);
@@ -1033,7 +1043,7 @@ g_datalist_id_replace_data (GData          **datalist,
           d = g_realloc (d, sizeof (GData) + (d->alloc - 1) * sizeof (GDataElt));
         }
       if (old_d != d)
-        G_DATALIST_SET_POINTER (datalist, d);
+        new_d = d;
 
       d->data[d->len].key = key_id;
       d->data[d->len].data = newval;
@@ -1041,7 +1051,10 @@ g_datalist_id_replace_data (GData          **datalist,
       d->len++;
     }
 
-  g_datalist_unlock (datalist);
+  if (new_d)
+    g_datalist_unlock_and_set (datalist, new_d);
+  else
+    g_datalist_unlock (datalist);
 
   return val == oldval;
 }
