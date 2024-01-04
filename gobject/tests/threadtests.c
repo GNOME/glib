@@ -509,6 +509,49 @@ test_threaded_toggle_notify (void)
   g_clear_object (&object);
 }
 
+static void
+test_threaded_g_pointer_bit_unlock_and_set (void)
+{
+  GObject *obj;
+  gpointer plock;
+  gpointer ptr;
+
+#if defined(__GNUC__)
+  /* We should have at least one bit we can use safely for bit-locking */
+  G_STATIC_ASSERT (__alignof (GObject) > 1);
+#endif
+
+  obj = g_object_new (G_TYPE_OBJECT, NULL);
+
+  g_assert(g_pointer_bit_lock_mask_ptr(obj, 0, 0) == obj);
+  g_assert(g_pointer_bit_lock_mask_ptr(obj, 0, 1) != obj);
+
+  plock = obj;
+  g_pointer_bit_lock (&plock, 0);
+  g_assert (plock != obj);
+  g_pointer_bit_unlock_and_set (&plock, 0, obj);
+  g_assert (plock == obj);
+
+  plock = NULL;
+  g_pointer_bit_lock (&plock, 0);
+  g_assert (plock != NULL);
+  g_pointer_bit_unlock_and_set (&plock, 0, NULL);
+  g_assert (plock == NULL);
+
+  ptr = ((char *) obj) + 1;
+  plock = obj;
+  g_pointer_bit_lock (&plock, 0);
+  g_assert (plock == ptr);
+  g_test_expect_message ("GLib", G_LOG_LEVEL_CRITICAL,
+                         "*assertion 'ptr == ptr2' failed*");
+  g_pointer_bit_unlock_and_set (&plock, 0, ptr);
+  g_test_assert_expected_messages ();
+  g_assert (plock != ptr);
+  g_assert (plock == obj);
+
+  g_object_unref (obj);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -522,6 +565,8 @@ main (int   argc,
                    test_threaded_weak_ref_finalization);
   g_test_add_func ("/GObject/threaded-toggle-notify",
                    test_threaded_toggle_notify);
+  g_test_add_func ("/GObject/threaded-g-pointer-bit-unlock-and-set",
+                   test_threaded_g_pointer_bit_unlock_and_set);
 
   return g_test_run();
 }
