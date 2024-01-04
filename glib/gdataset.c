@@ -213,7 +213,9 @@ g_dataset_destroy_internal (GDataset *dataset)
       GData *data;
       guint i;
 
-      if (G_DATALIST_GET_POINTER(&dataset->datalist) == NULL)
+      data = G_DATALIST_GET_POINTER (&dataset->datalist);
+
+      if (!data)
 	{
 	  if (dataset == g_dataset_cached)
 	    g_dataset_cached = NULL;
@@ -222,22 +224,18 @@ g_dataset_destroy_internal (GDataset *dataset)
 	  break;
 	}
 
-      data = G_DATALIST_GET_POINTER (&dataset->datalist);
       G_DATALIST_SET_POINTER (&dataset->datalist, NULL);
 
-      if (data)
+      G_UNLOCK (g_dataset_global);
+
+      for (i = 0; i < data->len; i++)
         {
-          G_UNLOCK (g_dataset_global);
-          for (i = 0; i < data->len; i++)
-            {
-              if (data->data[i].data && data->data[i].destroy)
-                data->data[i].destroy (data->data[i].data);
-            }
-          G_LOCK (g_dataset_global);
-
-          g_free (data);
+          if (data->data[i].data && data->data[i].destroy)
+            data->data[i].destroy (data->data[i].data);
         }
+      g_free (data);
 
+      G_LOCK (g_dataset_global);
       dataset = g_dataset_lookup (dataset_location);
     }
 }
