@@ -580,7 +580,6 @@ gi_base_info_get_name (GIBaseInfo *info)
     case GI_INFO_TYPE_OBJECT:
     case GI_INFO_TYPE_INTERFACE:
     case GI_INFO_TYPE_CONSTANT:
-    case GI_INFO_TYPE_INVALID_0:
     case GI_INFO_TYPE_UNION:
       {
         CommonBlob *blob = (CommonBlob *)&rinfo->typelib->data[rinfo->offset];
@@ -705,7 +704,6 @@ gi_base_info_is_deprecated (GIBaseInfo *info)
     case GI_INFO_TYPE_OBJECT:
     case GI_INFO_TYPE_INTERFACE:
     case GI_INFO_TYPE_CONSTANT:
-    case GI_INFO_TYPE_INVALID_0:
       {
         CommonBlob *blob = (CommonBlob *)&rinfo->typelib->data[rinfo->offset];
 

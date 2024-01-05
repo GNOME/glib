@@ -179,7 +179,6 @@ typedef union _GIArgument GIArgument;
  * @GI_INFO_TYPE_OBJECT: object, see [class@GIRepository.ObjectInfo]
  * @GI_INFO_TYPE_INTERFACE: interface, see [class@GIRepository.InterfaceInfo]
  * @GI_INFO_TYPE_CONSTANT: constant, see [class@GIRepository.ConstantInfo]
- * @GI_INFO_TYPE_INVALID_0: deleted, used to be `GI_INFO_TYPE_ERROR_DOMAIN`.
  * @GI_INFO_TYPE_UNION: union, see [class@GIRepository.UnionInfo]
  * @GI_INFO_TYPE_VALUE: enum value, see [class@GIRepository.ValueInfo]
  * @GI_INFO_TYPE_SIGNAL: signal, see [class@GIRepository.SignalInfo]
@@ -214,23 +213,22 @@ typedef enum
   GI_INFO_TYPE_CALLBACK,
   GI_INFO_TYPE_STRUCT,
   GI_INFO_TYPE_BOXED,
-  GI_INFO_TYPE_ENUM,         /*  5 */
+  GI_INFO_TYPE_ENUM,             /*  5 */
   GI_INFO_TYPE_FLAGS,
   GI_INFO_TYPE_OBJECT,
   GI_INFO_TYPE_INTERFACE,
   GI_INFO_TYPE_CONSTANT,
-  GI_INFO_TYPE_INVALID_0,    /* 10 */
-  GI_INFO_TYPE_UNION,
+  GI_INFO_TYPE_UNION,            /* 10 */
   GI_INFO_TYPE_VALUE,
   GI_INFO_TYPE_SIGNAL,
   GI_INFO_TYPE_VFUNC,
-  GI_INFO_TYPE_PROPERTY,     /* 15 */
-  GI_INFO_TYPE_FIELD,
+  GI_INFO_TYPE_PROPERTY,
+  GI_INFO_TYPE_FIELD,            /* 15 */
   GI_INFO_TYPE_ARG,
   GI_INFO_TYPE_TYPE,
   GI_INFO_TYPE_UNRESOLVED,
-  GI_INFO_TYPE_CALLABLE,     /* 20 */
-  GI_INFO_TYPE_REGISTERED_TYPE,
+  GI_INFO_TYPE_CALLABLE,
+  GI_INFO_TYPE_REGISTERED_TYPE,  /* 20 */
   /* keep GI_INFO_TYPE_N_TYPES in sync with this */
 } GIInfoType;
 
