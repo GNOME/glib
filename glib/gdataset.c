@@ -67,9 +67,12 @@
 
 #define G_DATALIST_FLAGS_MASK_INTERNAL 0x7
 
+#define G_DATALIST_CLEAN_POINTER(ptr) \
+  ((GData *) ((gpointer) (((guintptr) (ptr)) & ~((guintptr) G_DATALIST_FLAGS_MASK_INTERNAL))))
+
 /* datalist pointer accesses have to be carried out atomically */
-#define G_DATALIST_GET_POINTER(datalist)						\
-  ((GData *) ((gpointer) ((guintptr) g_atomic_pointer_get (datalist) & ~((guintptr) G_DATALIST_FLAGS_MASK_INTERNAL))))
+#define G_DATALIST_GET_POINTER(datalist) \
+  G_DATALIST_CLEAN_POINTER (g_atomic_pointer_get (datalist))
 
 #define G_DATALIST_SET_POINTER(datalist, pointer)       G_STMT_START {                           \
   gpointer _oldv = g_atomic_pointer_get (datalist);                                              \
@@ -136,8 +139,10 @@ static GDataset     *g_dataset_cached = NULL; /* should this be
 G_ALWAYS_INLINE static inline GData *
 g_datalist_lock_and_get (GData **datalist)
 {
-  g_pointer_bit_lock ((void **) datalist, DATALIST_LOCK_BIT);
-  return G_DATALIST_GET_POINTER (datalist);
+  guintptr ptr;
+
+  g_pointer_bit_lock_and_get ((void **) datalist, DATALIST_LOCK_BIT, &ptr);
+  return G_DATALIST_CLEAN_POINTER (ptr);
 }
 
 static void
