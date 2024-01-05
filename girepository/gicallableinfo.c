@@ -632,7 +632,7 @@ gi_callable_info_invoke (GICallableInfo    *info,
                          gpointer           function,
                          const GIArgument  *in_args,
                          gsize              n_in_args,
-                         const GIArgument  *out_args,
+                         GIArgument        *out_args,
                          gsize              n_out_args,
                          GIArgument        *return_value,
                          GError           **error)
