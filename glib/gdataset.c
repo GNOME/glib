@@ -963,6 +963,8 @@ g_datalist_id_replace_data (GData          **datalist,
   GData *d;
   GData *new_d = NULL;
   GDataElt *data, *data_end;
+  gboolean free_d = FALSE;
+  gboolean set_new_d = FALSE;
 
   g_return_val_if_fail (datalist != NULL, FALSE);
   g_return_val_if_fail (key_id != 0, FALSE);
@@ -1002,8 +1004,8 @@ g_datalist_id_replace_data (GData          **datalist,
                       */
                      if (d->len == 0)
                        {
-                         G_DATALIST_SET_POINTER (datalist, NULL);
-                         g_free (d);
+                         set_new_d = TRUE;
+                         free_d = TRUE;
                        }
                    }
                 }
@@ -1031,7 +1033,10 @@ g_datalist_id_replace_data (GData          **datalist,
           d = g_realloc (d, sizeof (GData) + (d->alloc - 1) * sizeof (GDataElt));
         }
       if (old_d != d)
-        new_d = d;
+        {
+          new_d = d;
+          set_new_d = TRUE;
+        }
 
       d->data[d->len].key = key_id;
       d->data[d->len].data = newval;
@@ -1039,10 +1044,13 @@ g_datalist_id_replace_data (GData          **datalist,
       d->len++;
     }
 
-  if (new_d)
+  if (set_new_d)
     g_datalist_unlock_and_set (datalist, new_d);
   else
     g_datalist_unlock (datalist);
+
+  if (free_d)
+    g_free (d);
 
   return val == oldval;
 }
