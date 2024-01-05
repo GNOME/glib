@@ -419,87 +419,106 @@ g_data_remove_internal (GData  **datalist,
                         gsize    n_keys)
 {
   GData *d;
+  GDataElt *old;
+  GDataElt *old_to_free = NULL;
+  GDataElt *data;
+  GDataElt *data_end;
+  gsize found_keys;
+  gboolean free_d = FALSE;
 
   g_datalist_lock (datalist);
 
   d = G_DATALIST_GET_POINTER (datalist);
 
-  if (d)
+  if (!d)
     {
-      GDataElt *old, *data, *data_end;
-      gsize found_keys;
+      g_datalist_unlock (datalist);
+      return;
+    }
 
-      /* Allocate an array of GDataElt to hold copies of the elements
-       * that are removed from the datalist. Allow enough space for all
-       * the keys; if a key is not found, the corresponding element of
-       * old is not populated, so we initialize them all to NULL to
-       * detect that case. */
-      old = g_newa0 (GDataElt, n_keys);
+  /* Allocate an array of GDataElt to hold copies of the elements
+   * that are removed from the datalist. Allow enough space for all
+   * the keys; if a key is not found, the corresponding element of
+   * old is not populated, so we initialize them all to NULL to
+   * detect that case.
+   *
+   * At most allocate 400 bytes on the stack. Especially since we call
+   * out to external code, we don't know how much stack we can use. */
+  if (n_keys <= 400u / sizeof (GDataElt))
+    old = g_newa0 (GDataElt, n_keys);
+  else
+    {
+      old_to_free = g_new0 (GDataElt, n_keys);
+      old = old_to_free;
+    }
 
-      data = d->data;
-      data_end = data + d->len;
-      found_keys = 0;
+  data = d->data;
+  data_end = data + d->len;
+  found_keys = 0;
 
-      while (data < data_end && found_keys < n_keys)
+  while (data < data_end && found_keys < n_keys)
+    {
+      gboolean remove = FALSE;
+
+      for (gsize i = 0; i < n_keys; i++)
         {
-          gboolean remove = FALSE;
-
-          for (gsize i = 0; i < n_keys; i++)
+          if (data->key == keys[i])
             {
-              if (data->key == keys[i])
-                {
-                  old[i] = *data;
-                  remove = TRUE;
-                  break;
-                }
-            }
-
-          if (remove)
-            {
-              GDataElt *data_last = data_end - 1;
-
-              found_keys++;
-
-              if (data < data_last)
-                *data = *data_last;
-
-              data_end--;
-              d->len--;
-
-              /* We don't bother to shrink, but if all data are now gone
-               * we at least free the memory
-               */
-              if (d->len == 0)
-                {
-                  G_DATALIST_SET_POINTER (datalist, NULL);
-                  g_free (d);
-                  break;
-                }
-            }
-          else
-            {
-              data++;
+              old[i] = *data;
+              remove = TRUE;
+              break;
             }
         }
 
-      if (found_keys > 0)
+      if (remove)
         {
-          g_datalist_unlock (datalist);
+          GDataElt *data_last = data_end - 1;
 
-          for (gsize i = 0; i < n_keys; i++)
+          found_keys++;
+
+          if (data < data_last)
+            *data = *data_last;
+
+          data_end--;
+          d->len--;
+
+          /* We don't bother to shrink, but if all data are now gone
+           * we at least free the memory
+           */
+          if (d->len == 0)
             {
-              /* If keys[i] was not found, then old[i].destroy is NULL.
-               * Call old[i].destroy() only if keys[i] was found, and
-               * is associated with a destroy notifier: */
-              if (old[i].destroy)
-                old[i].destroy (old[i].data);
+              free_d = TRUE;
+              break;
             }
-
-          return;
+        }
+      else
+        {
+          data++;
         }
     }
 
-  g_datalist_unlock (datalist);
+  if (free_d)
+    {
+      g_datalist_unlock_and_set (datalist, NULL);
+      g_free (d);
+    }
+  else
+    g_datalist_unlock (datalist);
+
+  if (found_keys > 0)
+    {
+      for (gsize i = 0; i < n_keys; i++)
+        {
+          /* If keys[i] was not found, then old[i].destroy is NULL.
+           * Call old[i].destroy() only if keys[i] was found, and
+           * is associated with a destroy notifier: */
+          if (old[i].destroy)
+            old[i].destroy (old[i].data);
+        }
+    }
+
+  if (G_UNLIKELY (old_to_free))
+    g_free (old_to_free);
 }
 
 /**
