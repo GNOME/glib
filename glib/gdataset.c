@@ -133,10 +133,11 @@ static GDataset     *g_dataset_cached = NULL; /* should this be
 
 #define DATALIST_LOCK_BIT 2
 
-static void
-g_datalist_lock (GData **datalist)
+G_ALWAYS_INLINE static inline GData *
+g_datalist_lock_and_get (GData **datalist)
 {
-  g_pointer_bit_lock ((void **)datalist, DATALIST_LOCK_BIT);
+  g_pointer_bit_lock ((void **) datalist, DATALIST_LOCK_BIT);
+  return G_DATALIST_GET_POINTER (datalist);
 }
 
 static void
@@ -167,10 +168,7 @@ g_datalist_clear (GData **datalist)
 
   g_return_if_fail (datalist != NULL);
 
-  g_datalist_lock (datalist);
-
-  data = G_DATALIST_GET_POINTER (datalist);
-
+  data = g_datalist_lock_and_get (datalist);
   g_datalist_unlock_and_set (datalist, NULL);
 
   if (data)
@@ -276,9 +274,7 @@ g_data_set_internal (GData	  **datalist,
   GData *new_d = NULL;
   GDataElt old, *data, *data_last, *data_end;
 
-  g_datalist_lock (datalist);
-
-  d = G_DATALIST_GET_POINTER (datalist);
+  d = g_datalist_lock_and_get (datalist);
 
   if (new_data == NULL) /* remove */
     {
@@ -426,9 +422,7 @@ g_data_remove_internal (GData  **datalist,
   gsize found_keys;
   gboolean free_d = FALSE;
 
-  g_datalist_lock (datalist);
-
-  d = G_DATALIST_GET_POINTER (datalist);
+  d = g_datalist_lock_and_get (datalist);
 
   if (!d)
     {
@@ -913,9 +907,7 @@ g_datalist_id_dup_data (GData          **datalist,
   GData *d;
   GDataElt *data, *data_end;
 
-  g_datalist_lock (datalist);
-
-  d = G_DATALIST_GET_POINTER (datalist);
+  d = g_datalist_lock_and_get (datalist);
   if (d)
     {
       data = d->data;
@@ -991,9 +983,7 @@ g_datalist_id_replace_data (GData          **datalist,
   if (old_destroy)
     *old_destroy = NULL;
 
-  g_datalist_lock (datalist);
-
-  d = G_DATALIST_GET_POINTER (datalist);
+  d = g_datalist_lock_and_get (datalist);
   if (d)
     {
       data = d->data;
@@ -1095,9 +1085,7 @@ g_datalist_get_data (GData	 **datalist,
 
   g_return_val_if_fail (datalist != NULL, NULL);
 
-  g_datalist_lock (datalist);
-
-  d = G_DATALIST_GET_POINTER (datalist);
+  d = g_datalist_lock_and_get (datalist);
   if (d)
     {
       data = d->data;
