@@ -278,10 +278,10 @@ gi_cclosure_marshal_generic (GClosure *closure,
   GIArgument return_ffi_value = { 0, };
   ffi_type *rtype;
   void *rvalue;
-  int n_args;
+  unsigned int n_args;
   ffi_type **atypes;
   void **args;
-  int i;
+  unsigned int i;
   ffi_cif cif;
   GCClosure *cc = (GCClosure*) closure;
 
