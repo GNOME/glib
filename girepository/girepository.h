@@ -185,8 +185,9 @@ GI_AVAILABLE_IN_ALL
 const gchar * gi_repository_get_typelib_path   (GIRepository *repository,
                                                 const gchar  *namespace_);
 GI_AVAILABLE_IN_ALL
-const gchar * gi_repository_get_shared_library (GIRepository *repository,
-                                                const gchar  *namespace_);
+const gchar * const *gi_repository_get_shared_libraries (GIRepository *repository,
+                                                         const gchar  *namespace_,
+                                                         size_t       *out_n_elements);
 GI_AVAILABLE_IN_ALL
 const gchar * gi_repository_get_c_prefix (GIRepository *repository,
                                           const gchar  *namespace_);

@@ -1390,7 +1390,7 @@ gi_ir_writer_write (const char *filename,
 
   if (TRUE)
     {
-      const gchar *shared_library;
+      const char * const *shared_libraries;
       const gchar *c_prefix;
       const char *cur_ns = ns;
       const char *cur_version;
@@ -1398,12 +1398,16 @@ gi_ir_writer_write (const char *filename,
 
       cur_version = gi_repository_get_version (repository, cur_ns);
 
-      shared_library = gi_repository_get_shared_library (repository, cur_ns);
+      shared_libraries = gi_repository_get_shared_libraries (repository, cur_ns, NULL);
       c_prefix = gi_repository_get_c_prefix (repository, cur_ns);
       xml_start_element (xml, "namespace");
       xml_printf (xml, " name=\"%s\" version=\"%s\"", cur_ns, cur_version);
-      if (shared_library)
-        xml_printf (xml, " shared-library=\"%s\"", shared_library);
+      if (shared_libraries != NULL)
+        {
+          char *shared_libraries_str = g_strjoinv (",", (char **) shared_libraries);
+          xml_printf (xml, " shared-library=\"%s\"", shared_libraries_str);
+          g_free (shared_libraries_str);
+        }
       if (c_prefix)
         xml_printf (xml, " c:prefix=\"%s\"", c_prefix);
 
