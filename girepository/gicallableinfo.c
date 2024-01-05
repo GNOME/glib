@@ -615,15 +615,13 @@ gi_type_info_extract_ffi_return_value (GITypeInfo       *return_info,
  * @return_value: (out caller-allocates) (not optional) (nullable): return
  *   location for the return value from the callable; `NULL` may be returned if
  *   the callable returns that
- * @is_method: `TRUE` if @info is a method
- * @throws: `TRUE` if @info may throw a [type@GLib.Error]
  * @error: return location for a [type@GLib.Error], or `NULL`
  *
  * Invoke the given `GICallableInfo` by calling the given @function pointer.
  *
  * The set of arguments passed to @function will be constructed according to the
- * introspected type of the `GICallableInfo`, using @in_args, @out_args,
- * @is_method, @throws and @error.
+ * introspected type of the `GICallableInfo`, using @in_args, @out_args
+ * and @error.
  *
  * Returns: `TRUE` if the callable was executed successfully and didn’t throw
  *   a [type@GLib.Error]; `FALSE` if @error is set
@@ -637,8 +635,6 @@ gi_callable_info_invoke (GICallableInfo    *info,
                          const GIArgument  *out_args,
                          gsize              n_out_args,
                          GIArgument        *return_value,
-                         gboolean           is_method,
-                         gboolean           throws,
                          GError           **error)
 {
   ffi_cif cif;
@@ -655,10 +651,13 @@ gi_callable_info_invoke (GICallableInfo    *info,
   gpointer error_address = &local_error;
   GIFFIReturnValue ffi_return_value;
   gpointer return_value_p; /* Will point inside the union return_value */
+  gboolean is_method, throws;
 
   rinfo = gi_callable_info_get_return_type ((GICallableInfo *)info);
   rtype = gi_type_info_get_ffi_type (rinfo);
   rtag = gi_type_info_get_tag(rinfo);
+  is_method = gi_callable_info_is_method (info);
+  throws = gi_callable_info_can_throw_gerror (info);
 
   in_pos = 0;
   out_pos = 0;

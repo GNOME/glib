@@ -274,8 +274,6 @@ gi_function_info_invoke (GIFunctionInfo    *info,
 {
   const gchar *symbol;
   gpointer func;
-  gboolean is_method;
-  gboolean throws;
 
   symbol = gi_function_info_get_symbol (info);
 
@@ -290,10 +288,6 @@ gi_function_info_invoke (GIFunctionInfo    *info,
       return FALSE;
     }
 
-  is_method = (gi_function_info_get_flags (info) & GI_FUNCTION_IS_METHOD) != 0
-    && (gi_function_info_get_flags (info) & GI_FUNCTION_IS_CONSTRUCTOR) == 0;
-  throws = gi_function_info_get_flags (info) & GI_FUNCTION_THROWS;
-
   return gi_callable_info_invoke ((GICallableInfo*) info,
                                   func,
                                   in_args,
@@ -301,8 +295,6 @@ gi_function_info_invoke (GIFunctionInfo    *info,
                                   out_args,
                                   n_out_args,
                                   return_value,
-                                  is_method,
-                                  throws,
                                   error);
 }
 

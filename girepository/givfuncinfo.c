@@ -370,8 +370,6 @@ gi_vfunc_info_invoke (GIVFuncInfo      *info,
                                   out_args,
                                   n_out_args,
                                   return_value,
-                                  TRUE,
-                                  FALSE,
                                   error);
 }
 
