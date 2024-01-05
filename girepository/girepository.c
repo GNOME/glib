@@ -780,10 +780,10 @@ gi_repository_get_n_infos (GIRepository *repository,
  *
  * The namespace must have already been loaded before calling this function.
  * See [method@GIRepository.Repository.get_n_infos] to find the maximum number
- * of entries.
+ * of entries. It is an error to pass an invalid @idx to this function.
  *
- * Returns: (transfer full) (nullable): [class@GIRepository.BaseInfo] containing
- *   metadata, or `NULL` if @idx was too high
+ * Returns: (transfer full) (not nullable): [class@GIRepository.BaseInfo]
+ *   containing metadata
  * Since: 2.80
  */
 GIBaseInfo *
@@ -803,8 +803,8 @@ gi_repository_get_info (GIRepository *repository,
   g_return_val_if_fail (typelib != NULL, NULL);
 
   entry = gi_typelib_get_dir_entry (typelib, idx + 1);
-  if (entry == NULL)
-    return NULL;
+  g_return_val_if_fail (entry != NULL, NULL);
+
   return gi_info_new_full (entry->blob_type,
                            repository,
                            NULL, typelib, entry->offset);
