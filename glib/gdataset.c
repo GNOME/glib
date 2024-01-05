@@ -157,6 +157,66 @@ g_datalist_unlock_and_set (GData **datalist, gpointer ptr)
   g_pointer_bit_unlock_and_set ((void **) datalist, DATALIST_LOCK_BIT, ptr, G_DATALIST_FLAGS_MASK_INTERNAL);
 }
 
+static gboolean
+datalist_append (GData **data, GQuark key_id, gpointer new_data, GDestroyNotify destroy_func)
+{
+  gboolean reallocated;
+  GData *d;
+
+  d = *data;
+
+  if (!d)
+    {
+      d = g_malloc (sizeof (GData));
+      d->len = 0;
+      d->alloc = 1;
+      *data = d;
+      reallocated = TRUE;
+    }
+  else if (d->len == d->alloc)
+    {
+      d->alloc = d->alloc * 2u;
+      d = g_realloc (d, G_STRUCT_OFFSET (GData, data) + d->alloc * sizeof (GDataElt));
+      *data = d;
+      reallocated = TRUE;
+    }
+  else
+    reallocated = FALSE;
+
+  d->data[d->len] = (GDataElt){
+    .key = key_id,
+    .data = new_data,
+    .destroy = destroy_func,
+  };
+  d->len++;
+
+  return reallocated;
+}
+
+static GDataElt *
+datalist_find (GData *data, GQuark key_id, guint32 *out_idx)
+{
+  guint32 i;
+
+  if (data)
+    {
+      for (i = 0; i < data->len; i++)
+        {
+          GDataElt *data_elt = &data->data[i];
+
+          if (data_elt->key == key_id)
+            {
+              if (out_idx)
+                *out_idx = i;
+              return data_elt;
+            }
+        }
+    }
+  if (out_idx)
+    *out_idx = G_MAXUINT32;
+  return NULL;
+}
+
 /**
  * g_datalist_clear: (skip)
  * @datalist: a datalist.
@@ -275,134 +335,101 @@ g_data_set_internal (GData	  **datalist,
 		     GDestroyNotify new_destroy_func,
 		     GDataset	   *dataset)
 {
-  GData *d, *old_d;
+  GData *d;
   GData *new_d = NULL;
-  GDataElt old, *data, *data_last, *data_end;
+  GDataElt old, *data;
+  guint32 idx;
 
   d = g_datalist_lock_and_get (datalist);
 
+  data = datalist_find (d, key_id, &idx);
+
   if (new_data == NULL) /* remove */
     {
-      if (d)
-	{
-	  data = d->data;
-	  data_last = data + d->len - 1;
-	  while (data <= data_last)
-	    {
-	      if (data->key == key_id)
-		{
-		  old = *data;
-		  if (data != data_last)
-		    *data = *data_last;
-		  d->len--;
+      if (data)
+        {
+          old = *data;
+          if (idx != d->len - 1u)
+            *data = d->data[d->len - 1u];
+          d->len--;
 
-		  /* We don't bother to shrink, but if all data are now gone
-		   * we at least free the memory
-                   */
-		  if (d->len == 0)
-		    {
-		      /* datalist may be situated in dataset, so must not be
-		       * unlocked when we free it
-		       */
-		      g_datalist_unlock_and_set (datalist, NULL);
+          /* We don't bother to shrink, but if all data are now gone
+           * we at least free the memory
+           */
+          if (d->len == 0)
+            {
+              /* datalist may be situated in dataset, so must not be
+               * unlocked when we free it
+               */
+              g_datalist_unlock_and_set (datalist, NULL);
 
-		      g_free (d);
+              g_free (d);
 
-		      /* the dataset destruction *must* be done
-		       * prior to invocation of the data destroy function
-		       */
-		      if (dataset)
-			g_dataset_destroy_internal (dataset);
-		    }
-		  else
-		    {
-		      g_datalist_unlock (datalist);
-		    }
+              /* the dataset destruction *must* be done
+               * prior to invocation of the data destroy function
+               */
+              if (dataset)
+                g_dataset_destroy_internal (dataset);
+            }
+          else
+            {
+              g_datalist_unlock (datalist);
+            }
 
-		  /* We found and removed an old value
-		   * the GData struct *must* already be unlinked
-		   * when invoking the destroy function.
-		   * we use (new_data==NULL && new_destroy_func!=NULL) as
-		   * a special hint combination to "steal"
-		   * data without destroy notification
-		   */
-		  if (old.destroy && !new_destroy_func)
-		    {
-		      if (dataset)
-			G_UNLOCK (g_dataset_global);
-		      old.destroy (old.data);
-		      if (dataset)
-			G_LOCK (g_dataset_global);
-		      old.data = NULL;
-		    }
+          /* We found and removed an old value
+           * the GData struct *must* already be unlinked
+           * when invoking the destroy function.
+           * we use (new_data==NULL && new_destroy_func!=NULL) as
+           * a special hint combination to "steal"
+           * data without destroy notification
+           */
+          if (old.destroy && !new_destroy_func)
+            {
+              if (dataset)
+                G_UNLOCK (g_dataset_global);
+              old.destroy (old.data);
+              if (dataset)
+                G_LOCK (g_dataset_global);
+              old.data = NULL;
+            }
 
-		  return old.data;
-		}
-	      data++;
-	    }
-	}
+          return old.data;
+        }
     }
   else
     {
-      old.data = NULL;
-      if (d)
-	{
-	  data = d->data;
-	  data_end = data + d->len;
-	  while (data < data_end)
-	    {
-	      if (data->key == key_id)
-		{
-		  if (!data->destroy)
-		    {
-		      data->data = new_data;
-		      data->destroy = new_destroy_func;
-		      g_datalist_unlock (datalist);
-		    }
-		  else
-		    {
-		      old = *data;
-		      data->data = new_data;
-		      data->destroy = new_destroy_func;
+      if (data)
+        {
+          if (!data->destroy)
+            {
+              data->data = new_data;
+              data->destroy = new_destroy_func;
+              g_datalist_unlock (datalist);
+            }
+          else
+            {
+              old = *data;
+              data->data = new_data;
+              data->destroy = new_destroy_func;
 
-		      g_datalist_unlock (datalist);
+              g_datalist_unlock (datalist);
 
-		      /* We found and replaced an old value
-		       * the GData struct *must* already be unlinked
-		       * when invoking the destroy function.
-		       */
-		      if (dataset)
-			G_UNLOCK (g_dataset_global);
-		      old.destroy (old.data);
-		      if (dataset)
-			G_LOCK (g_dataset_global);
-		    }
-		  return NULL;
-		}
-	      data++;
-	    }
-	}
+              /* We found and replaced an old value
+               * the GData struct *must* already be unlinked
+               * when invoking the destroy function.
+               */
+              if (dataset)
+                G_UNLOCK (g_dataset_global);
+              old.destroy (old.data);
+              if (dataset)
+                G_LOCK (g_dataset_global);
+            }
+          return NULL;
+        }
 
       /* The key was not found, insert it */
-      old_d = d;
-      if (d == NULL)
-	{
-	  d = g_malloc (sizeof (GData));
-	  d->len = 0;
-	  d->alloc = 1;
-	}
-      else if (d->len == d->alloc)
-	{
-	  d->alloc = d->alloc * 2;
-	  d = g_realloc (d, sizeof (GData) + (d->alloc - 1) * sizeof (GDataElt));
-	}
-      if (old_d != d)
-	new_d = d;
-
-      d->data[d->len].key = key_id;
-      d->data[d->len].data = new_data;
-      d->data[d->len].destroy = new_destroy_func;
-      d->len++;
+      if (datalist_append (&d, key_id, new_data, new_destroy_func))
+        new_d = d;
     }
 
   if (new_d)
@@ -910,24 +937,13 @@ g_datalist_id_dup_data (GData          **datalist,
   gpointer val = NULL;
   gpointer retval = NULL;
   GData *d;
-  GDataElt *data, *data_end;
+  GDataElt *data;
 
   d = g_datalist_lock_and_get (datalist);
-  if (d)
-    {
-      data = d->data;
-      data_end = data + d->len;
-      do
-        {
-          if (data->key == key_id)
-            {
-              val = data->data;
-              break;
-            }
-          data++;
-        }
-      while (data < data_end);
-    }
+
+  data = datalist_find (d, key_id, NULL);
+  if (data)
+    val = data->data;
 
   if (dup_func)
     retval = dup_func (val, user_data);
@@ -978,9 +994,10 @@ g_datalist_id_replace_data (GData          **datalist,
   gpointer val = NULL;
   GData *d;
   GData *new_d = NULL;
-  GDataElt *data, *data_end;
+  GDataElt *data;
   gboolean free_d = FALSE;
   gboolean set_new_d = FALSE;
+  guint32 idx;
 
   g_return_val_if_fail (datalist != NULL, FALSE);
   g_return_val_if_fail (key_id != 0, FALSE);
@@ -989,73 +1006,45 @@ g_datalist_id_replace_data (GData          **datalist,
     *old_destroy = NULL;
 
   d = g_datalist_lock_and_get (datalist);
-  if (d)
-    {
-      data = d->data;
-      data_end = data + d->len - 1;
-      while (data <= data_end)
-        {
-          if (data->key == key_id)
-            {
-              val = data->data;
-              if (val == oldval)
-                {
-                  if (old_destroy)
-                    *old_destroy = data->destroy;
-                  if (newval != NULL)
-                    {
-                      data->data = newval;
-                      data->destroy = destroy;
-                    }
-                  else
-                   {
-                     if (data != data_end)
-                       *data = *data_end;
-                     d->len--;
 
-                     /* We don't bother to shrink, but if all data are now gone
-                      * we at least free the memory
-                      */
-                     if (d->len == 0)
-                       {
-                         set_new_d = TRUE;
-                         free_d = TRUE;
-                       }
-                   }
-                }
-              break;
+  data = datalist_find (d, key_id, &idx);
+  if (data)
+    {
+      val = data->data;
+      if (val == oldval)
+        {
+          if (old_destroy)
+            *old_destroy = data->destroy;
+          if (newval != NULL)
+            {
+              data->data = newval;
+              data->destroy = destroy;
             }
-          data++;
+          else
+            {
+              if (idx != d->len - 1u)
+                *data = d->data[d->len - 1u];
+              d->len--;
+
+              /* We don't bother to shrink, but if all data are now gone
+               * we at least free the memory
+               */
+              if (d->len == 0)
+                {
+                  set_new_d = TRUE;
+                  free_d = TRUE;
+                }
+            }
         }
     }
 
   if (val == NULL && oldval == NULL && newval != NULL)
     {
-      GData *old_d;
-
-      /* insert newval */
-      old_d = d;
-      if (d == NULL)
-	{
-          d = g_malloc (sizeof (GData));
-          d->len = 0;
-          d->alloc = 1;
-        }
-      else if (d->len == d->alloc)
-        {
-          d->alloc = d->alloc * 2;
-          d = g_realloc (d, sizeof (GData) + (d->alloc - 1) * sizeof (GDataElt));
-        }
-      if (old_d != d)
+      if (datalist_append (&d, key_id, newval, destroy))
         {
           new_d = d;
           set_new_d = TRUE;
         }
-
-      d->data[d->len].key = key_id;
-      d->data[d->len].data = newval;
-      d->data[d->len].destroy = destroy;
-      d->len++;
     }
 
   if (set_new_d)
