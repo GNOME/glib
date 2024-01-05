@@ -413,6 +413,76 @@ pointer_bit_lock_mask_ptr (gpointer ptr, guint lock_bit, gboolean set, guintptr 
 }
 
 /**
+ * g_pointer_bit_lock_and_get:
+ * @address: (not nullable): a pointer to a #gpointer-sized value
+ * @lock_bit: a bit value between 0 and 31
+ * @out_ptr: (out) (optional): returns the set pointer atomically.
+ *   This is the value after setting the lock, it thus always has the
+ *   lock bit set, while previously @address had the lockbit unset.
+ *   You may also use g_pointer_bit_lock_mask_ptr() to clear the lock bit.
+ *
+ * This is equivalent to g_bit_lock, but working on pointers (or other
+ * pointer-sized values).
+ *
+ * For portability reasons, you may only lock on the bottom 32 bits of
+ * the pointer.
+ *
+ * Since: 2.80
+ **/
+void
+(g_pointer_bit_lock_and_get) (gpointer address,
+                              guint lock_bit,
+                              guintptr *out_ptr)
+{
+  guint class = ((gsize) address) % G_N_ELEMENTS (g_bit_lock_contended);
+  guintptr mask;
+  guintptr v;
+
+  g_return_if_fail (lock_bit < 32);
+
+  mask = 1u << lock_bit;
+
+#ifdef USE_ASM_GOTO
+  if (G_LIKELY (!out_ptr))
+    {
+      while (TRUE)
+        {
+          __asm__ volatile goto ("lock bts %1, (%0)\n"
+                                 "jc %l[contended]"
+                                 : /* no output */
+                                 : "r"(address), "r"((gsize) lock_bit)
+                                 : "cc", "memory"
+                                 : contended);
+          return;
+
+        contended:
+          v = (guintptr) g_atomic_pointer_get ((gpointer *) address);
+          if (v & mask)
+            {
+              g_atomic_int_add (&g_bit_lock_contended[class], +1);
+              g_futex_wait (g_futex_int_address (address), v);
+              g_atomic_int_add (&g_bit_lock_contended[class], -1);
+            }
+        }
+    }
+#endif
+
+retry:
+  v = g_atomic_pointer_or ((gpointer *) address, mask);
+  if (v & mask)
+    /* already locked */
+    {
+      g_atomic_int_add (&g_bit_lock_contended[class], +1);
+      g_futex_wait (g_futex_int_address (address), (guint) v);
+      g_atomic_int_add (&g_bit_lock_contended[class], -1);
+      goto retry;
+    }
+
+  if (out_ptr)
+    *out_ptr = (v | mask);
+}
+
+/**
  * g_pointer_bit_lock:
  * @address: (not nullable): a pointer to a #gpointer-sized value
  * @lock_bit: a bit value between 0 and 31
@@ -430,60 +500,9 @@ pointer_bit_lock_mask_ptr (gpointer ptr, guint lock_bit, gboolean set, guintptr 
  **/
 void
 (g_pointer_bit_lock) (volatile void *address,
-                      gint           lock_bit)
+                      gint lock_bit)
 {
-  void *address_nonvolatile = (void *) address;
-
-  g_return_if_fail (lock_bit < 32);
-
-  {
-#ifdef USE_ASM_GOTO
- retry:
-    __asm__ volatile goto ("lock bts %1, (%0)\n"
-                           "jc %l[contended]"
-                           : /* no output */
-                           : "r" (address), "r" ((gsize) lock_bit)
-                           : "cc", "memory"
-                           : contended);
-    return;
-
- contended:
-    {
-      gpointer *pointer_address = address_nonvolatile;
-      gsize mask = 1u << lock_bit;
-      gsize v;
-
-      v = (gsize) g_atomic_pointer_get (pointer_address);
-      if (v & mask)
-        {
-          guint class = ((gsize) address_nonvolatile) % G_N_ELEMENTS (g_bit_lock_contended);
-
-          g_atomic_int_add (&g_bit_lock_contended[class], +1);
-          g_futex_wait (g_futex_int_address (address_nonvolatile), v);
-          g_atomic_int_add (&g_bit_lock_contended[class], -1);
-        }
-    }
-    goto retry;
-#else
-  gpointer *pointer_address = address_nonvolatile;
-  gsize mask = 1u << lock_bit;
-  guintptr v;
-
- retry:
-  v = g_atomic_pointer_or (pointer_address, mask);
-  if (v & mask)
-    /* already locked */
-    {
-      guint class = ((gsize) address_nonvolatile) % G_N_ELEMENTS (g_bit_lock_contended);
-
-      g_atomic_int_add (&g_bit_lock_contended[class], +1);
-      g_futex_wait (g_futex_int_address (address_nonvolatile), (guint) v);
-      g_atomic_int_add (&g_bit_lock_contended[class], -1);
-
-      goto retry;
-    }
-#endif
-  }
+  g_pointer_bit_lock_and_get ((gpointer *) address, (guint) lock_bit, NULL);
 }
 
 /**
