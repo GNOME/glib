@@ -12,6 +12,7 @@
 #include "bitbool.h"
 #include <math.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
@@ -20,9 +21,6 @@
 //#define DEBUG
 #include "debug.h"
 
-#if defined (__ia64) || defined (__x86_64__) || defined (_WIN64)
-# define __brz_use_64bit__
-#endif
 
 static int brz_gen_mphf(cmph_config_t *mph);
 static cmph_uint32 brz_min_index(cmph_uint32 * vector, cmph_uint32 n);
@@ -755,11 +753,7 @@ void brz_pack(cmph_t *mphf, void *packed_mphf)
 	cmph_uint8 * ptr = packed_mphf;
 	cmph_uint32 i,n;
 	CMPH_HASH h0_type, h1_type, h2_type;
-#ifdef __brz_use_64bit__
-	cmph_uint64 * g_is_ptr;
-#else
-	cmph_uint32 * g_is_ptr;
-#endif
+	uintptr_t *g_is_ptr;
 	cmph_uint8 * g_i;
 	
 	// packing internal algo type
@@ -801,21 +795,13 @@ void brz_pack(cmph_t *mphf, void *packed_mphf)
 	memcpy(ptr, data->offset, sizeof(cmph_uint32)*data->k);	
 	ptr += sizeof(cmph_uint32)*data->k;
 	
-	#ifdef __brz_use_64bit__
-		g_is_ptr = (cmph_uint64 *)ptr;
-	#else
-		g_is_ptr = (cmph_uint32 *)ptr;
-	#endif
-	
+	g_is_ptr = (uintptr_t *)ptr;
+
 	g_i = (cmph_uint8 *) (g_is_ptr + data->k);
 	
 	for(i = 0; i < data->k; i++)
 	{
-		#ifdef __brz_use_64bit__
-			*g_is_ptr++ = (cmph_uint64)g_i;
-		#else
-			*g_is_ptr++ = (cmph_uint32)g_i;
-		#endif
+		*g_is_ptr++ = (uintptr_t)g_i;
 		// packing h1[i]
 		hash_state_pack(data->h1[i], g_i);
 		g_i += hash_state_packed_size(h1_type);
@@ -859,12 +845,7 @@ cmph_uint32 brz_packed_size(cmph_t *mphf)
 	size = (cmph_uint32)(2*sizeof(CMPH_ALGO) + 3*sizeof(CMPH_HASH) + hash_state_packed_size(h0_type) + sizeof(cmph_uint32) + 
 			sizeof(double) + sizeof(cmph_uint8)*data->k + sizeof(cmph_uint32)*data->k);
 	// pointers to g_is
-	#ifdef __brz_use_64bit__
-		size +=  (cmph_uint32) sizeof(cmph_uint64)*data->k;
-	#else
-		size +=  (cmph_uint32) sizeof(cmph_uint32)*data->k;
-	#endif
-	
+	size +=  (cmph_uint32) sizeof(uintptr_t) * data->k;
 	size += hash_state_packed_size(h1_type) * data->k;
 	size += hash_state_packed_size(h2_type) * data->k;
 	
@@ -897,11 +878,7 @@ static cmph_uint32 brz_bmz8_search_packed(cmph_uint32 *packed_mphf, const char *
 	register double c;
 	register CMPH_HASH h1_type, h2_type;
 	register cmph_uint8 * size;
-#ifdef __brz_use_64bit__
-	register cmph_uint64 * g_is_ptr;
-#else
-	register cmph_uint32 * g_is_ptr;
-#endif
+	register uintptr_t *g_is_ptr;
 	register cmph_uint8 *h1_ptr, *h2_ptr, *g;
 	register cmph_uint8 mphf_bucket;
 
@@ -929,12 +906,8 @@ static cmph_uint32 brz_bmz8_search_packed(cmph_uint32 *packed_mphf, const char *
 	m = size[h0];
 	n = (cmph_uint32)ceil(c * m);
 
-	#ifdef __brz_use_64bit__
-		g_is_ptr = (cmph_uint64 *)packed_mphf;
-	#else
-		g_is_ptr = packed_mphf;
-	#endif
-	
+	g_is_ptr = (uintptr_t *)packed_mphf;
+
 	h1_ptr = (cmph_uint8 *) g_is_ptr[h0];
 	
 	h2_ptr = h1_ptr + hash_state_packed_size(h1_type);
@@ -961,11 +934,7 @@ static cmph_uint32 brz_fch_search_packed(cmph_uint32 *packed_mphf, const char *k
 	register CMPH_HASH h1_type, h2_type;
 	register cmph_uint8 *size, *h1_ptr, *h2_ptr, *g;
 	register cmph_uint32 *offset;
-#ifdef __brz_use_64bit__
-	register cmph_uint64 * g_is_ptr;
-#else
-	register cmph_uint32 * g_is_ptr;
-#endif
+	register uintptr_t *g_is_ptr;
 	register cmph_uint8 mphf_bucket;
 
 	packed_mphf = (cmph_uint32 *)(((cmph_uint8 *)packed_mphf) + hash_state_packed_size(h0_type)); 
@@ -993,12 +962,8 @@ static cmph_uint32 brz_fch_search_packed(cmph_uint32 *packed_mphf, const char *k
 	p1 = fch_calc_p1(m);
 	p2 = fch_calc_p2(b);
 	
-	#ifdef __brz_use_64bit__
-		g_is_ptr = (cmph_uint64 *)packed_mphf;
-	#else
-		g_is_ptr = packed_mphf;
-	#endif
-	
+	g_is_ptr = (uintptr_t *)packed_mphf;
+
 	h1_ptr = (cmph_uint8 *) g_is_ptr[h0];
 	
 	h2_ptr = h1_ptr + hash_state_packed_size(h1_type);
