@@ -412,8 +412,8 @@ gboolean              g_strv_equal     (const gchar * const *strv1,
 
 /**
  * GNumberParserError:
- * @G_NUMBER_PARSER_ERROR_INVALID: String was not a valid number.
- * @G_NUMBER_PARSER_ERROR_OUT_OF_BOUNDS: String was a number, but out of bounds.
+ * @G_NUMBER_PARSER_ERROR_INVALID: string was not a valid number
+ * @G_NUMBER_PARSER_ERROR_OUT_OF_BOUNDS: string was a number, but out of bounds
  *
  * Error codes returned by functions converting a string to a number.
  *
