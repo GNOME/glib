@@ -45,7 +45,7 @@
  *
  * Users should instantiate a subclass of this that implements all the
  * various callbacks to show the required dialogs, such as
- * [class@Gtk.MountOperation]. If no user interaction is desired (for example
+ * [GtkMountOperation](https://docs.gtk.org/gtk4/class.MountOperation.html). If no user interaction is desired (for example
  * when automounting filesystems at login time), usually `NULL` can be
  * passed, see each method taking a `GMountOperation` for details.
  *

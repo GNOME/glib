@@ -62,7 +62,7 @@
  * `G_IO_ERROR_TIMED_OUT` if no progress was made. To know when a call would
  * successfully run you can call [method@Gio.DatagramBased.condition_check] or
  * [method@Gio.DatagramBased.condition_wait]. You can also use
- * [method@Gio.DatagramBased.create_source] and attach it to a [struct@Glib.MainContext]
+ * [method@Gio.DatagramBased.create_source] and attach it to a [struct@GLib.MainContext]
  * to get callbacks when I/O is possible.
  *
  * When running a non-blocking operation applications should always be able to

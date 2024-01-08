@@ -68,8 +68,8 @@ An untyped pointer, exactly equivalent to `void *`.
 
 The standard C `void *` type should usually be preferred in
 new code, but `gpointer` can be used in contexts where a type name
-must be a single word, such as in the [method@GObject.Type.name] of
-[const@GObject.TYPE_POINTER] or when generating a family of function names for
+must be a single word, such as in the `GType` name of
+`G_TYPE_POINTER` or when generating a family of function names for
 multiple types using macros.
 
 ### `gconstpointer`
@@ -98,8 +98,8 @@ Equivalent to the standard C `unsigned char` type.
 
 The standard C `unsigned char` type should usually be preferred in
 new code, but `guchar` can be used in contexts where a type name
-must be a single word, such as in the [method@GObject.Type.name] of
-[const@GObject.TYPE_UCHAR] or when generating a family of function names for
+must be a single word, such as in the `GType` name of
+`G_TYPE_UCHAR` or when generating a family of function names for
 multiple types using macros.
 
 ## Naturally Sized Integers
@@ -135,8 +135,8 @@ or equivalently `0` to `G_MAXUINT`.
 
 The standard C `unsigned int` type should usually be preferred in
 new code, but `guint` can be used in contexts where a type name
-must be a single word, such as in the [method@GObject.Type.name] of
-[const@GObject.TYPE_UINT] or when generating a family of function names for
+must be a single word, such as in the `GType` name of
+`G_TYPE_UINT` or when generating a family of function names for
 multiple types using macros.
 
 `G_MAXUINT`
@@ -216,8 +216,8 @@ Values of this type can range from `0` to `G_MAXULONG`.
 
 The standard C `unsigned long` type should usually be preferred in
 new code, but `gulong` can be used in contexts where a type name
-must be a single word, such as in the [method@GObject.Type.name] of
-[const@GObject.TYPE_ULONG] or when generating a family of function names for
+must be a single word, such as in the `GType` name of
+`G_TYPE_ULONG` or when generating a family of function names for
 multiple types using macros.
 
 `G_MAXULONG`

@@ -65,18 +65,18 @@
  * in sync with the property value — its state is the property value.
  *
  * For example, it might be useful to create a [iface@Gio.Action] corresponding
- * to the `visible-child-name` property of a [class@Gtk.Stack] so that the
+ * to the `visible-child-name` property of a [GtkStack](https://docs.gtk.org/gtk4/class.Stack.html) so that the
  * current page can be switched from a menu.  The active radio indication in the
  * menu is then directly determined from the active page of the
- * [class@Gtk.Stack].
+ * `GtkStack`.
  *
  * An anti-example would be binding the `active-id` property on a
- * [class@Gtk.ComboBox].  This is because the state of the combobox itself is
+ * [GtkComboBox](https://docs.gtk.org/gtk4/class.ComboBox.html).  This is because the state of the combo box itself is
  * probably uninteresting and is actually being used to control
  * something else.
  *
  * Another anti-example would be to bind to the `visible-child-name`
- * property of a [class@Gtk.Stack] if this value is actually stored in
+ * property of a [GtkStack](https://docs.gtk.org/gtk4/class.Stack.html) if this value is actually stored in
  * [class@Gio.Settings].  In that case, the real source of the value is
  * [class@Gio.Settings].  If you want a [iface@Gio.Action] to control a setting
  * stored in [class@Gio.Settings], see [method@Gio.Settings.create_action]

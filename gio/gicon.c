@@ -63,7 +63,7 @@
  * be prepared to handle at least the three following cases:
  * [iface@Gio.LoadableIcon], [class@Gio.ThemedIcon] and [class@Gio.EmblemedIcon].
  * It may also make sense to have fast-paths for other cases (like handling
- * [class@GdkPixbuf.Pixbuf] directly, for example) but all compliant `GIcon`
+ * [GdkPixbuf](https://docs.gtk.org/gdk-pixbuf/class.Pixbuf.html) directly, for example) but all compliant `GIcon`
  * implementations outside of GIO must implement [iface@Gio.LoadableIcon].
  *
  * If your application or library provides one or more `GIcon`
