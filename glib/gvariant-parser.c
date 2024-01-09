@@ -2502,7 +2502,8 @@ parse (TokenStream  *stream,
  * then it will be set to reflect the error that occurred.
  *
  * Officially, the language understood by the parser is "any string
- * produced by g_variant_print()".
+ * produced by g_variant_print()". This explicitly includes
+ * `g_variant_print()`’s annotated types like `int64 -1000`.
  *
  * There may be implementation specific restrictions on deeply nested values,
  * which would result in a %G_VARIANT_PARSE_ERROR_RECURSION error. #GVariant is
