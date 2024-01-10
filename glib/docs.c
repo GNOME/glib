@@ -93,7 +93,7 @@
  * The only types that can store pointers as well as integers are #guintptr
  * and #gintptr.
  *
- * See also GPOINTER_TO_TYPE() for #gsize.
+ * See also GPOINTER_TO_TYPE() for #GType.
  */
  
 /* Byte order {{{1 */
