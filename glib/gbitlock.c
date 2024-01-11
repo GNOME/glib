@@ -174,6 +174,12 @@ g_futex_wake (const gint *address)
 #define CONTENTION_CLASSES 11
 static gint g_bit_lock_contended[CONTENTION_CLASSES];  /* (atomic) */
 
+G_ALWAYS_INLINE static inline guint
+bit_lock_contended_class (gpointer address)
+{
+  return ((gsize) address) % G_N_ELEMENTS (g_bit_lock_contended);
+}
+
 #if (defined (i386) || defined (__amd64__))
   #if G_GNUC_CHECK_VERSION(4, 5)
     #define USE_ASM_GOTO 1
@@ -226,7 +232,7 @@ g_bit_lock (volatile gint *address,
     v = (guint) g_atomic_int_get (address_nonvolatile);
     if (v & mask)
       {
-        guint class = ((gsize) address_nonvolatile) % G_N_ELEMENTS (g_bit_lock_contended);
+        guint class = bit_lock_contended_class (address_nonvolatile);
 
         g_atomic_int_add (&g_bit_lock_contended[class], +1);
         g_futex_wait (address_nonvolatile, v);
@@ -243,7 +249,7 @@ g_bit_lock (volatile gint *address,
   if (v & mask)
     /* already locked */
     {
-      guint class = ((gsize) address_nonvolatile) % G_N_ELEMENTS (g_bit_lock_contended);
+      guint class = bit_lock_contended_class (address_nonvolatile);
 
       g_atomic_int_add (&g_bit_lock_contended[class], +1);
       g_futex_wait (address_nonvolatile, v);
@@ -337,7 +343,7 @@ g_bit_unlock (volatile gint *address,
 #endif
 
   {
-    guint class = ((gsize) address_nonvolatile) % G_N_ELEMENTS (g_bit_lock_contended);
+    guint class = bit_lock_contended_class (address_nonvolatile);
 
     if (g_atomic_int_get (&g_bit_lock_contended[class]))
       g_futex_wake (address_nonvolatile);
@@ -434,7 +440,7 @@ void
                               guint lock_bit,
                               guintptr *out_ptr)
 {
-  guint class = ((gsize) address) % G_N_ELEMENTS (g_bit_lock_contended);
+  guint class = bit_lock_contended_class (address);
   guintptr mask;
   guintptr v;
 
@@ -594,7 +600,8 @@ void
 #endif
 
     {
-      guint class = ((gsize) address_nonvolatile) % G_N_ELEMENTS (g_bit_lock_contended);
+      guint class = bit_lock_contended_class (address_nonvolatile);
+
       if (g_atomic_int_get (&g_bit_lock_contended[class]))
         g_futex_wake (g_futex_int_address (address_nonvolatile));
     }
@@ -657,7 +664,7 @@ void (g_pointer_bit_unlock_and_set) (void *address,
                                      guintptr preserve_mask)
 {
   gpointer *pointer_address = address;
-  guint class = ((guintptr) address) % G_N_ELEMENTS (g_bit_lock_contended);
+  guint class = bit_lock_contended_class (address);
   gpointer ptr2;
 
   g_return_if_fail (lock_bit < 32u);
