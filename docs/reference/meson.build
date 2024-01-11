@@ -16,10 +16,10 @@ if get_option('documentation') and enable_gir
   ]
 
   docs_dir = glib_datadir / 'doc' / 'glib-2.0'
-
-  subdir('glib')
-  subdir('gmodule')
-  subdir('gobject')
-  subdir('gio')
-  subdir('girepository')
 endif
+
+subdir('glib')
+subdir('gmodule')
+subdir('gobject')
+subdir('gio')
+subdir('girepository')
