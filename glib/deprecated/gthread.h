@@ -139,8 +139,8 @@ typedef struct
 # ifndef G_OS_WIN32
   /* only for ABI compatibility reasons */
   pthread_mutex_t unused;
-# endif
-#endif
+# endif /* !G_OS_WIN32 */
+#endif /* !__GI_SCANNER__ */
 } GStaticMutex GLIB_DEPRECATED_TYPE_IN_2_32_FOR(GMutex);
 
 #define g_static_mutex_lock(mutex) \
@@ -171,10 +171,10 @@ struct _GStaticRecMutex
     void *owner;
 # else
     pthread_t owner;
-# endif
+# endif /* !G_OS_WIN32 */
     gdouble dummy;
   } unused;
-#endif
+#endif /* !__GI_SCANNER__ */
 } GLIB_DEPRECATED_TYPE_IN_2_32_FOR(GRecMutex);
 
 #define G_STATIC_REC_MUTEX_INIT { G_STATIC_MUTEX_INIT, 0, { 0 } } GLIB_DEPRECATED_MACRO_IN_2_32_FOR(g_rec_mutex_init)
