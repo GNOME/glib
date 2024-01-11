@@ -135,9 +135,11 @@ void     g_thread_foreach      (GFunc             thread_func,
 typedef struct
 {
   GMutex *mutex;
-#ifndef G_OS_WIN32
+#ifndef __GI_SCANNER__
+# ifndef G_OS_WIN32
   /* only for ABI compatibility reasons */
   pthread_mutex_t unused;
+# endif
 #endif
 } GStaticMutex GLIB_DEPRECATED_TYPE_IN_2_32_FOR(GMutex);
 
@@ -162,15 +164,17 @@ struct _GStaticRecMutex
   GStaticMutex mutex;
   guint depth;
 
+#ifndef __GI_SCANNER__
   /* ABI compat only */
   union {
-#ifdef G_OS_WIN32
+# ifdef G_OS_WIN32
     void *owner;
-#else
+# else
     pthread_t owner;
-#endif
+# endif
     gdouble dummy;
   } unused;
+#endif
 } GLIB_DEPRECATED_TYPE_IN_2_32_FOR(GRecMutex);
 
 #define G_STATIC_REC_MUTEX_INIT { G_STATIC_MUTEX_INIT, 0, { 0 } } GLIB_DEPRECATED_MACRO_IN_2_32_FOR(g_rec_mutex_init)
