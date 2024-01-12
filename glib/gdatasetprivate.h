@@ -38,6 +38,15 @@ G_BEGIN_DECLS
 #define G_DATALIST_GET_FLAGS(datalist)				\
   ((gsize) g_atomic_pointer_get (datalist) & G_DATALIST_FLAGS_MASK)
 
+typedef gpointer (*GDataListUpdateAtomicFunc) (GQuark key_id,
+                                               gpointer *data,
+                                               GDestroyNotify *destroy_notify,
+                                               gpointer user_data);
+
+gpointer g_datalist_id_update_atomic (GData **datalist,
+                                      GQuark key_id,
+                                      GDataListUpdateAtomicFunc callback,
+                                      gpointer user_data);
 
 G_END_DECLS
 
