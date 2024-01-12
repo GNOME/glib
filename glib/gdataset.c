@@ -828,6 +828,107 @@ g_datalist_id_remove_no_notify (GData	**datalist,
 }
 
 /**
+ * g_datalist_id_update_atomic:
+ * @datalist: the data list
+ * @key_id: they key to add.
+ * @callback: callback to update (set, remove, steal, update) the
+ *   data.
+ * @user_data: the user data for @callback.
+ *
+ * Will call @callback while holding the lock on @datalist. Be careful, to not
+ * end up calling into another data-list function, because the lock is not reentrant
+ * and deadlock will happen.
+ *
+ * The callback receives the current data and destroy function. If the key
+ * is currently not in @datalist, they will be %NULL.
+ * The callback can update those pointers, and @datalist will be updated.
+ * Note that if callback modifies a received data, then it MUST steal it
+ * and take ownership on it. Possibly freeing it with the provided destroy function.
+ *
+ * The point is to atomically update the entry, while holding a lock.
+ *
+ * Returns: the data that @callback returns.
+ */
+gpointer
+g_datalist_id_update_atomic (GData **datalist,
+                             GQuark key_id,
+                             GDataListUpdateAtomicFunc callback,
+                             gpointer user_data)
+{
+  GData *d;
+  GDataElt *data;
+  gpointer new_data;
+  GDestroyNotify new_destroy;
+  guint32 idx;
+  gboolean to_unlock = TRUE;
+
+  d = g_datalist_lock_and_get (datalist);
+
+  data = datalist_find (d, key_id, &idx);
+
+  if (data)
+    {
+      new_data = data->data;
+      new_destroy = data->destroy;
+    }
+  else
+    {
+      new_data = NULL;
+      new_destroy = NULL;
+    }
+
+  callback (key_id, &new_data, &new_destroy, user_data);
+
+  if (data && !new_data)
+    {
+      /* Remove.
+       *
+       * The old data->data was already stolen by callback(). */
+      if (idx != d->len - 1u)
+        *data = d->data[d->len - 1u];
+      d->len--;
+
+      /* We don't bother to shrink, but if all data are now gone
+       * we at least free the memory
+       */
+      if (d->len == 0)
+        {
+          /* datalist may be situated in dataset, so must not be
+           * unlocked when we free it
+           */
+          g_datalist_unlock_and_set (datalist, NULL);
+          g_free (d);
+          to_unlock = FALSE;
+        }
+    }
+  else if (data)
+    {
+      /* Update.
+       *
+       * The old data was stolen by callback(). We only update the pointers and are done. */
+      data->data = new_data;
+      data->destroy = new_destroy;
+    }
+  else if (!data && !new_data)
+    {
+      /* Absent, no change. We had no data, and nothing to add. */
+    }
+  else
+    {
+      /* Add */
+      if (datalist_append (&d, key_id, new_data, new_destroy))
+        {
+          g_datalist_unlock_and_set (datalist, d);
+          to_unlock = FALSE;
+        }
+    }
+
+  if (to_unlock)
+    g_datalist_unlock (datalist);
+  return new_data;
+}
+
+/**
  * g_dataset_id_get_data:
  * @dataset_location: (not nullable): the location identifying the dataset.
  * @key_id: the #GQuark id to identify the data element.

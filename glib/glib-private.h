@@ -75,6 +75,11 @@ void __lsan_ignore_object (const void *p) __attribute__ ((weak));
  */
 #define G_CONTAINER_OF(ptr, type, field) ((type *) G_STRUCT_MEMBER_P (ptr, -G_STRUCT_OFFSET (type, field)))
 
+typedef gpointer (*GDataListUpdateAtomicFunc) (GQuark key_id,
+                                               gpointer *data,
+                                               GDestroyNotify *destroy_notify,
+                                               gpointer user_data);
+
 /*
  * g_leak_sanitizer_is_supported:
  *
@@ -290,6 +295,11 @@ typedef struct {
 
   /* See gutils.c */
   gboolean (* g_set_prgname_once) (const gchar *prgname);
+
+  gpointer (*g_datalist_id_update_atomic) (GData **datalist,
+                                           GQuark key_id,
+                                           GDataListUpdateAtomicFunc callback,
+                                           gpointer user_data);
 
   /* Add other private functions here, initialize them in glib-private.c */
 } GLibPrivateVTable;
