@@ -827,6 +827,119 @@ g_datalist_id_remove_no_notify (GData	**datalist,
   return ret_data;
 }
 
+/*< private >
+ * g_datalist_id_update_atomic:
+ * @datalist: the data list
+ * @key_id: the key to add.
+ * @callback: (scope call): callback to update (set, remove, steal, update) the
+ *   data.
+ * @user_data: the user data for @callback.
+ *
+ * Will call @callback while holding the lock on @datalist. Be careful to not
+ * end up calling into another data-list function, because the lock is not
+ * reentrant and deadlock will happen.
+ *
+ * The callback receives the current data and destroy function. If @key_id is
+ * currently not in @datalist, they will be %NULL. The callback can update
+ * those pointers, and @datalist will be updated with the result. Note that if
+ * callback modifies a received data, then it MUST steal it and take ownership
+ * on it. Possibly by freeing it with the provided destroy function.
+ *
+ * The point is to atomically access the entry, while holding a lock
+ * of @datalist. Without this, the user would have to hold their own mutex
+ * while handling @key_id entry.
+ *
+ * The return value of @callback is not used, except it becomes the return
+ * value of the function. This is an alternative to returning a result via
+ * @user_data.
+ *
+ * Returns: the value returned by @callback.
+ *
+ * Since: 2.80
+ */
+gpointer
+g_datalist_id_update_atomic (GData **datalist,
+                             GQuark key_id,
+                             GDataListUpdateAtomicFunc callback,
+                             gpointer user_data)
+{
+  GData *d;
+  GDataElt *data;
+  gpointer new_data;
+  gpointer result;
+  GDestroyNotify new_destroy;
+  guint32 idx;
+  gboolean to_unlock = TRUE;
+
+  d = g_datalist_lock_and_get (datalist);
+
+  data = datalist_find (d, key_id, &idx);
+
+  if (data)
+    {
+      new_data = data->data;
+      new_destroy = data->destroy;
+    }
+  else
+    {
+      new_data = NULL;
+      new_destroy = NULL;
+    }
+
+  result = callback (key_id, &new_data, &new_destroy, user_data);
+
+  if (data && !new_data)
+    {
+      /* Remove. The callback indicates to drop the entry.
+       *
+       * The old data->data was stolen by callback(). */
+      d->len--;
+
+      /* We don't bother to shrink, but if all data are now gone
+       * we at least free the memory
+       */
+      if (d->len == 0)
+        {
+          g_datalist_unlock_and_set (datalist, NULL);
+          g_free (d);
+          to_unlock = FALSE;
+        }
+      else
+        {
+          if (idx != d->len)
+            *data = d->data[d->len];
+        }
+    }
+  else if (data)
+    {
+      /* Update. The callback may have provided new pointers to an existing
+       * entry.
+       *
+       * The old data was stolen by callback(). We only update the pointers and
+       * are done. */
+      data->data = new_data;
+      data->destroy = new_destroy;
+    }
+  else if (!data && !new_data)
+    {
+      /* Absent. No change. The entry didn't exist and still does not. */
+    }
+  else
+    {
+      /* Add. Add a new entry that didn't exist previously. */
+      if (datalist_append (&d, key_id, new_data, new_destroy))
+        {
+          g_datalist_unlock_and_set (datalist, d);
+          to_unlock = FALSE;
+        }
+    }
+
+  if (to_unlock)
+    g_datalist_unlock (datalist);
+
+  return result;
+}
+
 /**
  * g_dataset_id_get_data:
  * @dataset_location: (not nullable): the location identifying the dataset.

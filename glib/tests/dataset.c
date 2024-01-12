@@ -1,6 +1,8 @@
 #include <glib.h>
 #include <stdlib.h>
 
+#include "glib/glib-private.h"
+
 static void
 test_quark_basic (void)
 {
@@ -319,6 +321,58 @@ test_datalist_id_remove_multiple_destroy_order (void)
   g_assert_cmpint (destroy_count, ==, 3);
 }
 
+static gpointer
+_update_atomic_cb (GQuark key_id,
+                   gpointer *data,
+                   GDestroyNotify *destroy_notify,
+                   gpointer user_data)
+{
+  const char *op = user_data;
+  char *data_entry = *data;
+
+  g_assert_nonnull (op);
+
+  if (strcmp (op, "create") == 0)
+    {
+      g_assert_cmpstr (data_entry, ==, NULL);
+      g_assert_null (*destroy_notify);
+
+      *data = g_strdup ("hello");
+      *destroy_notify = g_free;
+    }
+  else if (strcmp (op, "remove") == 0)
+    {
+      g_assert_cmpstr (data_entry, ==, "hello");
+      g_assert_true (*destroy_notify == g_free);
+
+      g_free (data_entry);
+      *data = NULL;
+    }
+  else
+    g_assert_not_reached ();
+
+  return "result";
+}
+
+static void
+test_datalist_update_atomic (void)
+{
+  GQuark one = g_quark_from_static_string ("one");
+  GData *list = NULL;
+  const char *result;
+
+  result = _g_datalist_id_update_atomic (&list, one, _update_atomic_cb, "create");
+  g_assert_cmpstr (result, ==, "result");
+  g_assert_cmpstr ((const char *) g_datalist_id_get_data (&list, one), ==, "hello");
+
+  g_datalist_id_set_data_full (&list, one, g_strdup ("hello"), g_free);
+
+  result = _g_datalist_id_update_atomic (&list, one, _update_atomic_cb, "remove");
+  g_assert_cmpstr (result, ==, "result");
+
+  g_assert_null (list);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -337,6 +391,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/datalist/id-remove-multiple", test_datalist_id_remove_multiple);
   g_test_add_func ("/datalist/id-remove-multiple-destroy-order",
                    test_datalist_id_remove_multiple_destroy_order);
+  g_test_add_func ("/datalist/update-atomic", test_datalist_update_atomic);
 
   return g_test_run ();
 }
