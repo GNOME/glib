@@ -558,7 +558,7 @@ get_month_name_abbr_with_day (gint month)
 
 #endif  /* HAVE_LANGINFO_ABALTMON */
 
-#ifdef HAVE_LANGINFO_ERA
+#if defined(HAVE_LANGINFO_ERA) && (G_BYTE_ORDER == G_LITTLE_ENDIAN || GLIB_SIZEOF_VOID_P == 4)
 
 #define PREFERRED_ERA_DATE_TIME_FMT nl_langinfo (ERA_D_T_FMT)
 #define PREFERRED_ERA_DATE_FMT nl_langinfo (ERA_D_FMT)
