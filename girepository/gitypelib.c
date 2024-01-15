@@ -426,7 +426,7 @@ gi_typelib_get_dir_entry_by_error_domain (GITypelib *typelib,
 }
 
 /**
- * gi_typelib_check_sanity:
+ * gi_typelib_check_format:
  *
  * Check compile-time sizes of various typelib file format types are as
  * expected.
@@ -434,7 +434,7 @@ gi_typelib_get_dir_entry_by_error_domain (GITypelib *typelib,
  * Since: 2.80
  */
 void
-gi_typelib_check_sanity (void)
+gi_typelib_check_format (void)
 {
 #ifndef G_DISABLE_ASSERT
   /* Check that struct layout is as we expect */
@@ -616,7 +616,7 @@ validate_header_basic (const guint8   *memory,
   /* This is a sanity check for a specific typelib; it
    * prevents us from loading an incompatible typelib.
    *
-   * The hardcoded checks in gi_typelib_check_sanity to
+   * The hardcoded checks in gi_typelib_check_format to
    * protect against inadvertent or buggy changes to the typelib format
    * itself.
    */

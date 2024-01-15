@@ -92,6 +92,9 @@ struct _GIRepositoryPrivate
   GHashTable *info_by_error_domain; /* GQuark -> GIBaseInfo */
   GHashTable *interfaces_for_gtype; /* GType -> GTypeInterfaceCache */
   GHashTable *unknown_gtypes; /* hashset of GType */
+
+  char **cached_shared_libraries;  /* (owned) (nullable) (array zero-terminated=1) */
+  size_t cached_n_shared_libraries;  /* length of @cached_shared_libraries, not including NULL terminator */
 };
 
 G_DEFINE_TYPE_WITH_CODE (GIRepository, gi_repository, G_TYPE_OBJECT, G_ADD_PRIVATE (GIRepository));
@@ -169,6 +172,8 @@ gi_repository_finalize (GObject *object)
   g_hash_table_destroy (repository->priv->info_by_error_domain);
   g_hash_table_destroy (repository->priv->interfaces_for_gtype);
   g_hash_table_destroy (repository->priv->unknown_gtypes);
+
+  g_clear_pointer (&repository->priv->cached_shared_libraries, g_strfreev);
 
   (* G_OBJECT_CLASS (gi_repository_parent_class)->finalize) (G_OBJECT (repository));
 }
@@ -780,10 +785,10 @@ gi_repository_get_n_infos (GIRepository *repository,
  *
  * The namespace must have already been loaded before calling this function.
  * See [method@GIRepository.Repository.get_n_infos] to find the maximum number
- * of entries.
+ * of entries. It is an error to pass an invalid @idx to this function.
  *
- * Returns: (transfer full) (nullable): [class@GIRepository.BaseInfo] containing
- *   metadata, or `NULL` if @idx was too high
+ * Returns: (transfer full) (not nullable): [class@GIRepository.BaseInfo]
+ *   containing metadata
  * Since: 2.80
  */
 GIBaseInfo *
@@ -803,8 +808,8 @@ gi_repository_get_info (GIRepository *repository,
   g_return_val_if_fail (typelib != NULL, NULL);
 
   entry = gi_typelib_get_dir_entry (typelib, idx + 1);
-  if (entry == NULL)
-    return NULL;
+  g_return_val_if_fail (entry != NULL, NULL);
+
   return gi_info_new_full (entry->blob_type,
                            repository,
                            NULL, typelib, entry->offset);
@@ -1201,12 +1206,14 @@ gi_repository_get_version (GIRepository *repository,
 }
 
 /**
- * gi_repository_get_shared_library:
+ * gi_repository_get_shared_libraries:
  * @repository: (nullable): A #GIRepository, or `NULL` for the singleton
  *   process-global default #GIRepository
  * @namespace_: Namespace to inspect
+ * @out_n_elements: (out) (optional): Return location for the number of elements
+ *   in the returned array
  *
- * This function returns a comma-separated list of paths to the
+ * This function returns an array of paths to the
  * shared C libraries associated with the given namespace @namespace_.
  *
  * There may be no shared library path associated, in which case this
@@ -1216,13 +1223,17 @@ gi_repository_get_version (GIRepository *repository,
  * such as [method@GIRepository.Repository.require] before calling this
  * function.
  *
- * Returns: (nullable): Comma-separated list of paths to shared libraries,
- *   or `NULL` if none are associated
+ * The list is internal to [class@GIRepository.Repository] and should not be
+ * freed, nor should its string elements.
+ *
+ * Returns: (nullable) (array length=out_n_elements) (transfer none): Array of
+ *   paths to shared libraries, or `NULL` if none are associated
  * Since: 2.80
  */
-const gchar *
-gi_repository_get_shared_library (GIRepository *repository,
-				  const gchar  *namespace)
+const char * const *
+gi_repository_get_shared_libraries (GIRepository *repository,
+                                    const gchar  *namespace,
+                                    size_t       *out_n_elements)
 {
   GITypelib *typelib;
   Header *header;
@@ -1236,10 +1247,29 @@ gi_repository_get_shared_library (GIRepository *repository,
   g_return_val_if_fail (typelib != NULL, NULL);
 
   header = (Header *) typelib->data;
-  if (header->shared_library)
-    return gi_typelib_get_string (typelib, header->shared_library);
-  else
-    return NULL;
+  if (!header->shared_library)
+    {
+      if (out_n_elements != NULL)
+        *out_n_elements = 0;
+      return NULL;
+    }
+
+  /* Populate the cache. */
+  if (repository->priv->cached_shared_libraries == NULL)
+    {
+      const char *comma_separated = gi_typelib_get_string (typelib, header->shared_library);
+
+      if (comma_separated != NULL && *comma_separated != '\0')
+        {
+          repository->priv->cached_shared_libraries = g_strsplit (comma_separated, ",", -1);
+          repository->priv->cached_n_shared_libraries = g_strv_length (repository->priv->cached_shared_libraries);
+        }
+    }
+
+  if (out_n_elements != NULL)
+    *out_n_elements = repository->priv->cached_n_shared_libraries;
+
+  return (const char * const *) repository->priv->cached_shared_libraries;
 }
 
 /**
