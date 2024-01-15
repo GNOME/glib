@@ -444,52 +444,6 @@ vs2017-x64-static:
     paths:
       - _build/meson-logs
 
-freebsd-12-x86_64:
-  # The FreeBSD 13 build is run on each commit, so the FreeBSD 12 build can be
-  # run less regularly to save CI resources. The chance of a regression on
-  # FreeBSD 12 and not FreeBSD 13 is tiny.
-  extends: .only-schedules
-  stage: build
-  tags:
-    # To run a FreeBSD builder, install gitlab-runner package and start both
-    # gitlab-runner and dbus service because we need /var/lib/dbus/machine-id.
-    # To compile GLib, you still have to install the following packages:
-    # desktop-file-utils gettext libiconv meson pkgconf python3 shared-mime-info
-    - freebsd-12
-  needs: []
-  variables:
-    # CPPFLAGS is required because libintl doesn't use pkg-config.
-    CPPFLAGS: -I/usr/local/include
-    # FIXME: Workaround meson inability to set LD_LIBRARY_PATH.
-    # https://github.com/mesonbuild/meson/issues/1383
-    # https://github.com/mesonbuild/meson/issues/1635
-    # https://github.com/mesonbuild/meson/issues/2881
-    LDFLAGS: -L/usr/local/lib -Wl,--disable-new-dtags
-    # FreeBSD supports C.UTF-8 locale since 12.1.
-    LANG: C.UTF-8
-  before_script:
-    - bash .gitlab-ci/show-execution-environment.sh
-  script:
-    # We cannot use -Wl,--no-undefined because GLib uses 'environ' variable.
-    # FreeBSD supports xattr, but its API is different from Linux xattr.
-    # FIXME: extattr(2) support: https://gitlab.gnome.org/GNOME/glib/issues/1404
-    # localstatedir is needed for access to /var/lib/dbus/machine-id
-    - meson setup ${MESON_COMMON_OPTIONS} --localstatedir=/var -Db_lundef=false -Dxattr=false _build
-    - meson compile -C _build
-    - bash -x ./.gitlab-ci/run-tests.sh
-  artifacts:
-    reports:
-      junit:
-        - _build/meson-logs/testlog.junit.xml
-        - _build/meson-logs/testlog-*.junit.xml
-    name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
-    when: always
-    expire_in: 1 week
-    paths:
-      - "_build/config.h"
-      - "_build/glib/glibconfig.h"
-      - "_build/meson-logs"
-
 freebsd-13-x86_64:
   extends: .only-origin
   stage: build
