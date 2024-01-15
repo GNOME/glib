@@ -95,7 +95,7 @@ gi_field_info_get_flags (GIFieldInfo *info)
  * Returns: the field size, in bits
  * Since: 2.80
  */
-gsize
+size_t
 gi_field_info_get_size (GIFieldInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -119,7 +119,7 @@ gi_field_info_get_size (GIFieldInfo *info)
  * Returns: the field offset, in bytes
  * Since: 2.80
  */
-gsize
+size_t
 gi_field_info_get_offset (GIFieldInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -433,7 +433,7 @@ gi_field_info_set_field (GIFieldInfo      *field_info,
           result = TRUE;
           break;
         case GI_TYPE_TAG_GTYPE:
-          G_STRUCT_MEMBER (gsize, mem, offset) = value->v_size;
+          G_STRUCT_MEMBER (size_t, mem, offset) = value->v_size;
           result = TRUE;
           break;
         case GI_TYPE_TAG_FLOAT:

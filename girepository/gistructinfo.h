@@ -67,10 +67,10 @@ GIFunctionInfo * gi_struct_info_find_method     (GIStructInfo *info,
                                                  const char   *name);
 
 GI_AVAILABLE_IN_ALL
-gsize            gi_struct_info_get_size        (GIStructInfo *info);
+size_t           gi_struct_info_get_size        (GIStructInfo *info);
 
 GI_AVAILABLE_IN_ALL
-gsize            gi_struct_info_get_alignment   (GIStructInfo *info);
+size_t           gi_struct_info_get_alignment   (GIStructInfo *info);
 
 GI_AVAILABLE_IN_ALL
 gboolean         gi_struct_info_is_gtype_struct (GIStructInfo *info);

@@ -133,7 +133,7 @@ union _GIArgument
   long            v_long;
   unsigned long   v_ulong;
   gssize          v_ssize;
-  gsize           v_size;
+  size_t          v_size;
   char           *v_string;
   void           *v_pointer;
 };

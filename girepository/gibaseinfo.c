@@ -213,7 +213,7 @@ gi_base_info_get_type (void)
  */
 GType
 gi_base_info_type_register_static (const char     *type_name,
-                                   gsize           instance_size,
+                                   size_t          instance_size,
                                    GClassInitFunc  class_init)
 {
   GTypeInfo info;
@@ -264,7 +264,7 @@ GI_DEFINE_BASE_INFO_TYPE (gi_unresolved_info, GI_INFO_TYPE_UNRESOLVED)
 void
 gi_base_info_init_types (void)
 {
-  static gsize register_types_once = 0;
+  static size_t register_types_once = 0;
 
   if (g_once_init_enter (&register_types_once))
     {
@@ -272,7 +272,7 @@ gi_base_info_init_types (void)
         {
           GIInfoType info_type;
           const char *type_name;
-          gsize instance_size;
+          size_t instance_size;
           GClassInitFunc class_init;
         }
       types[] =
@@ -297,7 +297,7 @@ gi_base_info_init_types (void)
           { GI_INFO_TYPE_UNRESOLVED, "GIUnresolvedInfo", sizeof (GIUnresolvedInfo), gi_unresolved_info_class_init },
         };
 
-      for (gsize i = 0; i < G_N_ELEMENTS (types); i++)
+      for (size_t i = 0; i < G_N_ELEMENTS (types); i++)
         {
           GType registered_type = gi_base_info_type_register_static (g_intern_static_string (types[i].type_name),
                                                                      types[i].instance_size,

@@ -75,10 +75,10 @@ GIFunctionInfo * gi_union_info_find_method              (GIUnionInfo *info,
                                                          const char  *name);
 
 GI_AVAILABLE_IN_ALL
-gsize            gi_union_info_get_size                 (GIUnionInfo *info);
+size_t           gi_union_info_get_size                 (GIUnionInfo *info);
 
 GI_AVAILABLE_IN_ALL
-gsize            gi_union_info_get_alignment            (GIUnionInfo *info);
+size_t           gi_union_info_get_alignment            (GIUnionInfo *info);
 
 GI_AVAILABLE_IN_ALL
 const char *     gi_union_info_get_copy_function_name   (GIUnionInfo *info);

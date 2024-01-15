@@ -1314,7 +1314,7 @@ typedef struct {
 struct _GITypelib {
   /*< private >*/
   uint8_t *data;
-  gsize len;
+  size_t len;
   gboolean owns_memory;
   GMappedFile *mfile;
   GList *modules;

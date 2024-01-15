@@ -38,12 +38,12 @@ typedef struct _GITypelib GITypelib;
 
 GI_AVAILABLE_IN_ALL
 GITypelib *    gi_typelib_new_from_memory       (uint8_t *memory,
-                                                 gsize    len,
+                                                 size_t   len,
                                                  GError **error);
 
 GI_AVAILABLE_IN_ALL
 GITypelib *    gi_typelib_new_from_const_memory (const uint8_t *memory,
-                                                 gsize          len,
+                                                 size_t         len,
                                                  GError       **error);
 
 GI_AVAILABLE_IN_ALL

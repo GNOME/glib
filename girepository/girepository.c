@@ -1071,7 +1071,7 @@ gi_repository_find_by_error_domain (GIRepository *repository,
 void
 gi_repository_get_object_gtype_interfaces (GIRepository      *repository,
                                            GType              gtype,
-                                           gsize             *n_interfaces_out,
+                                           size_t            *n_interfaces_out,
                                            GIInterfaceInfo ***interfaces_out)
 {
   GTypeInterfaceCache *cache;

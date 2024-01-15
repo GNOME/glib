@@ -631,9 +631,9 @@ gboolean
 gi_callable_info_invoke (GICallableInfo    *info,
                          void              *function,
                          const GIArgument  *in_args,
-                         gsize              n_in_args,
+                         size_t             n_in_args,
                          GIArgument        *out_args,
-                         gsize              n_out_args,
+                         size_t             n_out_args,
                          GIArgument        *return_value,
                          GError           **error)
 {
@@ -644,7 +644,7 @@ gi_callable_info_invoke (GICallableInfo    *info,
   GITypeInfo *rinfo;
   GITypeTag rtag;
   GIArgInfo *ainfo;
-  gsize n_args, n_invoke_args, in_pos, out_pos, i;
+  size_t n_args, n_invoke_args, in_pos, out_pos, i;
   void **args;
   gboolean success = FALSE;
   GError *local_error = NULL;

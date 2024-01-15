@@ -95,9 +95,9 @@ GI_AVAILABLE_IN_ALL
 gboolean               gi_callable_info_invoke          (GICallableInfo    *info,
                                                          void              *function,
                                                          const GIArgument  *in_args,
-                                                         gsize              n_in_args,
+                                                         size_t             n_in_args,
                                                          GIArgument        *out_args,
-                                                         gsize              n_out_args,
+                                                         size_t             n_out_args,
                                                          GIArgument        *return_value,
                                                          GError           **error);
 

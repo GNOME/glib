@@ -1249,7 +1249,7 @@ write_union_info (const char *ns,
   const char *type_init;
   const char *func;
   gboolean deprecated;
-  gsize size;
+  size_t size;
 
   name = gi_base_info_get_name ((GIBaseInfo *)info);
   deprecated = gi_base_info_is_deprecated ((GIBaseInfo *)info);

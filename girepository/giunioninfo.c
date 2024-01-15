@@ -260,7 +260,7 @@ gi_union_info_find_method (GIUnionInfo *info,
  * Returns: size of the union, in bytes
  * Since: 2.80
  */
-gsize
+size_t
 gi_union_info_get_size (GIUnionInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -278,7 +278,7 @@ gi_union_info_get_size (GIUnionInfo *info)
  * Returns: required alignment, in bytes
  * Since: 2.80
  */
-gsize
+size_t
 gi_union_info_get_alignment (GIUnionInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;

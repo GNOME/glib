@@ -48,10 +48,10 @@ GI_AVAILABLE_IN_ALL
 GIFieldInfoFlags       gi_field_info_get_flags      (GIFieldInfo *info);
 
 GI_AVAILABLE_IN_ALL
-gsize                  gi_field_info_get_size       (GIFieldInfo *info);
+size_t                 gi_field_info_get_size       (GIFieldInfo *info);
 
 GI_AVAILABLE_IN_ALL
-gsize                  gi_field_info_get_offset     (GIFieldInfo *info);
+size_t                 gi_field_info_get_offset     (GIFieldInfo *info);
 
 GI_AVAILABLE_IN_ALL
 GITypeInfo *           gi_field_info_get_type_info  (GIFieldInfo *info);

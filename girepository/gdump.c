@@ -44,8 +44,8 @@
 static gboolean
 write_all (FILE          *out,
            const void    *buffer,
-           gsize          count,
-           gsize         *bytes_written,
+           size_t         count,
+           size_t        *bytes_written,
            GError       **error)
 {
   size_t ret;
@@ -104,7 +104,7 @@ escaped_printf (FILE *out, const char *fmt, ...)
 {
   char *str;
   va_list args;
-  gsize written;
+  size_t written;
   GError *error = NULL;
 
   va_start (args, fmt);
@@ -123,7 +123,7 @@ escaped_printf (FILE *out, const char *fmt, ...)
 static void
 goutput_write (FILE *out, const char *str)
 {
-  gsize written;
+  size_t written;
   GError *error = NULL;
   if (!write_all (out, str, strlen (str), &written, &error))
     {
@@ -662,7 +662,7 @@ gi_repository_dump (const char  *input_filename,
 
   while (TRUE)
     {
-      gsize len;
+      size_t len;
       char *line = read_line (input, &len);
       const char *function;
 

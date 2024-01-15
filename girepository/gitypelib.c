@@ -271,7 +271,7 @@ gi_typelib_get_dir_entry_by_gtype_name (GITypelib   *typelib,
 typedef struct {
   const char *s;
   const char *separator;
-  gsize sep_len;
+  size_t sep_len;
   GString buf;
 } StrSplitIter;
 
@@ -294,7 +294,7 @@ strsplit_iter_next (StrSplitIter  *iter,
 {
   const char *s = iter->s;
   const char *next;
-  gsize len;
+  size_t len;
 
   if (!s)
     return FALSE;
@@ -347,7 +347,7 @@ gi_typelib_matches_gtype_name_prefix (GITypelib   *typelib,
   const char *prefix;
   gboolean ret = FALSE;
   StrSplitIter split_iter;
-  gsize gtype_name_len;
+  size_t gtype_name_len;
 
   c_prefix = gi_typelib_get_string (typelib, header->c_prefix);
   if (c_prefix == NULL || strlen (c_prefix) == 0)
@@ -558,7 +558,7 @@ validate_name (GITypelib   *typelib,
 /* Fast path sanity check, operates on a memory blob */
 static gboolean
 validate_header_basic (const uint8_t  *memory,
-                       gsize           len,
+                       size_t          len,
                        GError        **error)
 {
   Header *header = (Header *)memory;
@@ -568,8 +568,7 @@ validate_header_basic (const uint8_t  *memory,
       g_set_error (error,
                    GI_TYPELIB_ERROR,
                    GI_TYPELIB_ERROR_INVALID,
-                   "The specified typelib length %" G_GSIZE_FORMAT " is too short",
-                   len);
+                   "The specified typelib length %zu is too short", len);
       return FALSE;
     }
 
@@ -608,8 +607,8 @@ validate_header_basic (const uint8_t  *memory,
       g_set_error (error,
                    GI_TYPELIB_ERROR,
                    GI_TYPELIB_ERROR_INVALID_HEADER,
-                   "Typelib size %" G_GSIZE_FORMAT " does not match %" G_GSIZE_FORMAT,
-                   (gsize) header->size, len);
+                   "Typelib size %zu does not match %zu",
+                   (size_t) header->size, len);
       return FALSE;
     }
 
@@ -2410,7 +2409,7 @@ gi_typelib_ensure_open (GITypelib *typelib)
  */
 GITypelib *
 gi_typelib_new_from_memory (uint8_t *memory,
-                            gsize    len,
+                            size_t   len,
                             GError **error)
 {
   GITypelib *meta;
@@ -2440,8 +2439,8 @@ gi_typelib_new_from_memory (uint8_t *memory,
  */
 GITypelib *
 gi_typelib_new_from_const_memory (const uint8_t  *memory,
-                                  gsize          len,
-                                  GError       **error)
+                                  size_t          len,
+                                  GError        **error)
 {
   GITypelib *meta;
 
@@ -2474,7 +2473,7 @@ gi_typelib_new_from_mapped_file (GMappedFile  *mfile,
 {
   GITypelib *meta;
   uint8_t *data = (uint8_t *) g_mapped_file_get_contents (mfile);
-  gsize len = g_mapped_file_get_length (mfile);
+  size_t len = g_mapped_file_get_length (mfile);
 
   if (!validate_header_basic (data, len, error))
     return NULL;

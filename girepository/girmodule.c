@@ -319,8 +319,8 @@ gi_ir_module_build_typelib (GIIrModule *module)
 {
   GError *error = NULL;
   GITypelib *typelib;
-  gsize length;
-  unsigned int i;
+  size_t length;
+  size_t i;
   GList *e;
   Header *header;
   DirEntry *entry;

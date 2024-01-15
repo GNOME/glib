@@ -232,7 +232,7 @@ gi_struct_info_find_method (GIStructInfo *info,
  * Returns: size of the structure, in bytes
  * Since: 2.80
  */
-gsize
+size_t
 gi_struct_info_get_size (GIStructInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -250,7 +250,7 @@ gi_struct_info_get_size (GIStructInfo *info)
  * Returns: required alignment, in bytes
  * Since: 2.80
  */
-gsize
+size_t
 gi_struct_info_get_alignment (GIStructInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;

@@ -116,7 +116,7 @@ gi_constant_info_free_value (GIConstantInfo *info,
  * Returns: size of the constant, in bytes
  * Since: 2.80
  */
-gsize
+size_t
 gi_constant_info_get_value (GIConstantInfo *info,
                             GIArgument     *value)
 {
@@ -133,7 +133,7 @@ gi_constant_info_get_value (GIConstantInfo *info,
     {
       if (blob->type.flags.pointer)
         {
-          gsize blob_size = blob->size;
+          size_t blob_size = blob->size;
 
           value->v_pointer = g_memdup2 (&rinfo->typelib->data[blob->offset], blob_size);
         }

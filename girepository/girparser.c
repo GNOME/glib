@@ -433,7 +433,7 @@ static GIIrNodeType * parse_type_internal (GIIrModule *module,
 
 typedef struct {
   const char *str;
-  unsigned int size;
+  size_t size;
   unsigned int is_signed : 1;
 } IntegerAliasInfo;
 

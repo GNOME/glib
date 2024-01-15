@@ -341,9 +341,9 @@ gboolean
 gi_vfunc_info_invoke (GIVFuncInfo      *info,
                       GType             implementor,
                       const GIArgument *in_args,
-                      gsize             n_in_args,
+                      size_t            n_in_args,
                       GIArgument       *out_args,
-                      gsize             n_out_args,
+                      size_t            n_out_args,
                       GIArgument       *return_value,
                       GError          **error)
 {
