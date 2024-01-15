@@ -395,17 +395,9 @@ handler_list_ensure (guint    signal_id,
   if (!hlbsa)
     {
       hlbsa = g_bsearch_array_create (&g_signal_hlbsa_bconfig);
-      hlbsa = g_bsearch_array_insert (hlbsa, &g_signal_hlbsa_bconfig, &key);
-      g_hash_table_insert (g_handler_list_bsa_ht, instance, hlbsa);
     }
-  else
-    {
-      GBSearchArray *o = hlbsa;
-
-      hlbsa = g_bsearch_array_insert (o, &g_signal_hlbsa_bconfig, &key);
-      if (hlbsa != o)
-	g_hash_table_insert (g_handler_list_bsa_ht, instance, hlbsa);
-    }
+  hlbsa = g_bsearch_array_insert (hlbsa, &g_signal_hlbsa_bconfig, &key);
+  g_hash_table_insert (g_handler_list_bsa_ht, instance, hlbsa);
   return g_bsearch_array_lookup (hlbsa, &g_signal_hlbsa_bconfig, &key);
 }
 
