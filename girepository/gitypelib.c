@@ -522,7 +522,7 @@ get_string_nofail (GITypelib *typelib, uint32_t offset)
 static gboolean
 validate_name (GITypelib   *typelib,
                const char *msg,
-               const guchar *data,
+               const uint8_t *data,
                uint32_t offset,
                GError **error)
 {
@@ -2439,7 +2439,7 @@ gi_typelib_new_from_memory (uint8_t *memory,
  * Since: 2.80
  */
 GITypelib *
-gi_typelib_new_from_const_memory (const guchar  *memory,
+gi_typelib_new_from_const_memory (const uint8_t  *memory,
                                   gsize          len,
                                   GError       **error)
 {
@@ -2449,7 +2449,7 @@ gi_typelib_new_from_const_memory (const guchar  *memory,
     return NULL;
 
   meta = g_slice_new0 (GITypelib);
-  meta->data = (guchar *) memory;
+  meta->data = (uint8_t *) memory;
   meta->len = len;
   meta->owns_memory = FALSE;
   meta->modules = NULL;

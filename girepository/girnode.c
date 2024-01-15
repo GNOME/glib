@@ -1405,7 +1405,7 @@ gi_ir_node_build_typelib (GIIrNode         *node,
   gboolean appended_stack;
   GHashTable *strings = build->strings;
   GHashTable *types = build->types;
-  guchar *data = build->data;
+  uint8_t *data = build->data;
   GList *l;
   uint32_t old_offset = *offset;
   uint32_t old_offset2 = *offset2;
@@ -2414,7 +2414,7 @@ gi_ir_node_build_typelib (GIIrNode         *node,
 uint32_t
 gi_ir_write_string (const char  *str,
                     GHashTable  *strings,
-                    guchar      *data,
+                    uint8_t     *data,
                     uint32_t    *offset)
 {
   uint32_t start;

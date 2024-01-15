@@ -1313,7 +1313,7 @@ typedef struct {
 
 struct _GITypelib {
   /*< private >*/
-  guchar *data;
+  uint8_t *data;
   gsize len;
   gboolean owns_memory;
   GMappedFile *mfile;

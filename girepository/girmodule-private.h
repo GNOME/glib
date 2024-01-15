@@ -37,7 +37,7 @@ struct _GIIrTypelibBuild {
   GHashTable  *types;
   GList       *nodes_with_attributes;
   uint32_t     n_attributes;
-  guchar      *data;
+  uint8_t     *data;
   GList       *stack; 
 };
 

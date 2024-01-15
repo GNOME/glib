@@ -191,7 +191,7 @@ gi_ir_module_add_include_module (GIIrModule *module,
 struct AttributeWriteData
 {
   unsigned int count;
-  guchar *databuf;
+  uint8_t *databuf;
   GIIrNode *node;
   GHashTable *strings;
   uint32_t *offset;
@@ -218,7 +218,7 @@ static unsigned
 write_attributes (GIIrModule *module,
                   GIIrNode   *node,
                   GHashTable *strings,
-                  guchar     *data,
+                  uint8_t    *data,
                   uint32_t   *offset,
                   uint32_t   *offset2)
 {

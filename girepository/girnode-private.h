@@ -381,7 +381,7 @@ void      gi_ir_node_add_member      (GIIrNode         *node,
                                       GIIrNodeFunction *member);
 uint32_t  gi_ir_write_string         (const char  *str,
                                       GHashTable  *strings,
-                                      guchar      *data,
+                                      uint8_t     *data,
                                       uint32_t    *offset);
 
 const char * gi_ir_node_param_direction_string (GIIrNodeParam * node);
