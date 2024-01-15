@@ -934,9 +934,19 @@ if not meson.is_cross_build()
 
   ld = find_program('ld', required : false)
 
-  if build_machine.system() == 'linux' and \
-      objcopy.found() and objcopy_supports_add_symbol and ld.found() and \
-      build_machine.cpu_family() not in ['mips', 'mips64']
+  if build_machine.system() != 'linux'
+    why_no_external_data = 'only works on Linux'
+  elif not objcopy.found()
+    why_no_external_data = 'objcopy not found'
+  elif not objcopy_supports_add_symbol
+    why_no_external_data = 'objcopy does not support --add-symbol'
+  elif not ld.found()
+    why_no_external_data = 'ld not found'
+  elif build_machine.cpu_family() in ['mips', 'mips64']
+    why_no_external_data = 'cc -r can produce a mismatched MIPS ABI family, see GNOME/glib!3640'
+  else
+    why_no_external_data = ''
+
     test_gresource_binary = custom_target('test5.gresource',
       input : 'test5.gresource.xml',
       output : 'test5.gresource',
@@ -994,8 +1004,15 @@ if not meson.is_cross_build()
     ]
   endif
 
+  resources_c_args = []
+
+  if why_no_external_data != ''
+    resources_c_args += '-DNO_EXTERNAL_DATA="@0@"'.format(why_no_external_data)
+  endif
+
   gio_tests += {
     'resources' : {
+      'c_args' : resources_c_args,
       'extra_sources' : resources_extra_sources,
       'depends' : resource_plugin,
       # FIXME: musl: https://gitlab.gnome.org/GNOME/glib/-/issues/3160
