@@ -142,15 +142,11 @@ test_search_packed (void)
 int
 main(int argc, char **argv)
 {
-  gint ret;
-
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/cmph-bdz/search", test_search);
   g_test_add_func ("/cmph-bdz/search-packed", test_search_packed);
 
-  ret = g_test_run ();
-
-  return ret;
+  return g_test_run ();
 }
 
