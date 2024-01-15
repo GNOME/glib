@@ -435,7 +435,9 @@ static GRecMutex g_module_global_lock;
  * @error: #GError.
  *
  * Opens a module. If the module has already been opened, its reference count
- * is incremented. If not, the module is searched in the following order:
+ * is incremented. If not, the module is searched using @file_name.
+ *
+ * Since 2.76, the search order/behavior is as follows:
  *
  * 1. If @file_name exists as a regular file, it is used as-is; else
  * 2. If @file_name doesn't have the correct suffix and/or prefix for the
@@ -446,10 +448,15 @@ static GRecMutex g_module_global_lock;
  *    libtool archive is parsed to find the actual file name, and that is
  *    used.
  *
- * At the end of all this, we would have a file path that we can access on
- * disk, and it is opened as a module. If not, @file_name is opened as
- * a module verbatim in the hopes that the system implementation will somehow
- * be able to access it.
+ * If, at the end of all this, we have a file path that we can access on disk,
+ * it is opened as a module. If not, @file_name is attempted to be opened as a
+ * module verbatim in the hopes that the system implementation will somehow be
+ * able to access it. If that is not possible, %NULL is returned.
+ *
+ * Note that this behaviour was different prior to 2.76, but there is some
+ * overlap in functionality. If backwards compatibility is an issue, kindly
+ * consult earlier #GModule documentation for the prior search order/behavior
+ * of @file_name.
  *
  * Returns: a #GModule on success, or %NULL on failure
  *
