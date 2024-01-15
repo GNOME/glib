@@ -36,11 +36,6 @@
  * be removed. */
 typedef struct _GIBaseInfo GIRealInfo;
 
-/* We changed a gint32 -> gint in the structure below, which should be
- * valid everywhere we care about.
- */
-G_STATIC_ASSERT (sizeof (int) == sizeof (int32_t));
-
 /*
  * We just use one structure for all of the info object
  * types; in general, we should be reading data directly
