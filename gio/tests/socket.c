@@ -2537,6 +2537,7 @@ test_receive_bytes_from (void)
   g_socket_close (data->server, &error);
   g_assert_no_error (error);
 
+  g_object_unref (dest_addr);
   g_object_unref (client);
 
   ip_test_data_free (data);
