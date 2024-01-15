@@ -80,6 +80,7 @@ test_repository_info (void)
   GITypelib *typelib = NULL;
   GIObjectInfo *object_info = NULL;
   GISignalInfo *signal_info = NULL;
+  GIFunctionInfo *method_info = NULL;
   GError *local_error = NULL;
 
   g_test_summary ("Test retrieving some basic info blobs from a typelib");
@@ -108,6 +109,20 @@ test_repository_info (void)
 
   g_assert_cmpint (gi_signal_info_get_flags (signal_info), ==,
                    G_SIGNAL_RUN_FIRST | G_SIGNAL_NO_RECURSE | G_SIGNAL_DETAILED | G_SIGNAL_NO_HOOKS | G_SIGNAL_ACTION);
+
+  g_assert_cmpuint (gi_object_info_get_n_methods (object_info), >, 2);
+
+  method_info = gi_object_info_find_method (object_info, "get_property");
+  g_assert_nonnull (method_info);
+  g_assert_true (gi_callable_info_is_method ((GICallableInfo *) method_info));
+  g_assert_cmpuint (gi_callable_info_get_n_args ((GICallableInfo *) method_info), ==, 2);
+  g_clear_pointer ((GIBaseInfo **) &method_info, gi_base_info_unref);
+
+  method_info = gi_object_info_get_method (object_info,
+                                           gi_object_info_get_n_methods (object_info) - 1);
+  g_assert_true (gi_callable_info_is_method ((GICallableInfo *) method_info));
+  g_assert_cmpuint (gi_callable_info_get_n_args ((GICallableInfo *) method_info), >, 0);
+  g_clear_pointer ((GIBaseInfo **) &method_info, gi_base_info_unref);
 
   gi_base_info_unref ((GIBaseInfo *) signal_info);
   gi_base_info_unref ((GIBaseInfo *) object_info);

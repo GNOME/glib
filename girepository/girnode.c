@@ -192,7 +192,7 @@ gi_ir_node_new (GIIrNodeTypeId  type,
       break;
 
     default:
-      g_error ("Unhandled node type %d\n", type);
+      g_error ("Unhandled node type %d", type);
       break;
     }
 
@@ -421,7 +421,7 @@ gi_ir_node_free (GIIrNode *node)
       break;
 
     default:
-      g_error ("Unhandled node type %d\n", node->type);
+      g_error ("Unhandled node type %d", node->type);
       break;
     }
 
@@ -560,8 +560,7 @@ gi_ir_node_get_size (GIIrNode *node)
       break;
 
     default:
-      g_error ("Unhandled node type '%s'\n",
-	       gi_ir_node_type_to_string (node->type));
+      g_error ("Unhandled node type '%s'", gi_ir_node_type_to_string (node->type));
       size = 0;
     }
 
@@ -672,7 +671,7 @@ gi_ir_node_get_full_size_internal (GIIrNode *parent,
 		size += sizeof (ErrorTypeBlob);
 		break;
 	      default:
-		g_error ("Unknown type tag %d\n", type->tag);
+		g_error ("Unknown type tag %d", type->tag);
 		break;
 	      }
 	  }
@@ -879,7 +878,7 @@ gi_ir_node_get_full_size_internal (GIIrNode *parent,
       break;
 
     default:
-      g_error ("Unknown type tag %d\n", node->type);
+      g_error ("Unknown type tag %d", node->type);
       size = 0;
     }
 
@@ -991,7 +990,7 @@ gi_ir_node_add_member (GIIrNode         *node,
 	break;
       }
     default:
-      g_error ("Cannot add a member to unknown type tag type %d\n",
+      g_error ("Cannot add a member to unknown type tag type %d",
 	       node->type);
       break;
     }
@@ -1576,7 +1575,7 @@ gi_ir_node_build_typelib (GIIrNode         *node,
 		    break;
 
 		  default:
-		    g_error ("Unknown type tag %d\n", type->tag);
+		    g_error ("Unknown type tag %d", type->tag);
 		    break;
 		  }
 	      }

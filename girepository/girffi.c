@@ -392,7 +392,7 @@ gi_callable_info_create_closure (GICallableInfo       *callable_info,
   closure = ffi_closure_alloc (sizeof (GIClosureWrapper), &exec_ptr);
   if (!closure)
     {
-      g_warning ("could not allocate closure\n");
+      g_warning ("could not allocate closure");
       return NULL;
     }
   closure->writable_self = closure;
@@ -405,7 +405,7 @@ gi_callable_info_create_closure (GICallableInfo       *callable_info,
                          atypes);
   if (status != FFI_OK)
     {
-      g_warning ("ffi_prep_cif failed: %d\n", status);
+      g_warning ("ffi_prep_cif failed: %d", status);
       ffi_closure_free (closure);
       return NULL;
     }
@@ -413,7 +413,7 @@ gi_callable_info_create_closure (GICallableInfo       *callable_info,
   status = ffi_prep_closure_loc (&closure->ffi_closure, cif, callback, user_data, exec_ptr);
   if (status != FFI_OK)
     {
-      g_warning ("ffi_prep_closure failed: %d\n", status);
+      g_warning ("ffi_prep_closure failed: %d", status);
       ffi_closure_free (closure);
       return NULL;
     }
