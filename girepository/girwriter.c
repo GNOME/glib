@@ -545,10 +545,12 @@ write_callable_info (const char     *ns,
         }
 
       if (gi_arg_info_get_closure_index (arg) >= 0)
-        xml_printf (file, " closure=\"%d\"", gi_arg_info_get_closure_index (arg));
+        xml_printf (file, " closure=\"%" G_GSSIZE_FORMAT "\"",
+                    gi_arg_info_get_closure_index (arg));
 
       if (gi_arg_info_get_destroy_index (arg) >= 0)
-        xml_printf (file, " destroy=\"%d\"", gi_arg_info_get_destroy_index (arg));
+        xml_printf (file, " destroy=\"%" G_GSSIZE_FORMAT "\"",
+                    gi_arg_info_get_destroy_index (arg));
 
       if (gi_arg_info_is_skip (arg))
         xml_printf (file, " skip=\"1\"");
