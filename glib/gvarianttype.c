@@ -88,9 +88,10 @@
  * This is similar to how instances of abstract classes may not
  * directly exist in other type systems, but instances of their
  * non-abstract subtypes may.  For example, in GTK, no object that has
- * the type of [GtkWidget](https://docs.gtk.org/gtk4/class.Widget.html) can exist (since `GtkWidget` is an
- * abstract class), but a [GtkWindow](https://docs.gtk.org/gtk4/class.Window.html) can certainly be instantiated, and
- * you would say that a `GtkWidget` is a `GtkWidget` (since `GtkWidget` is a subclass of `GtkWidget`).
+ * the type of [`GtkWidget`](https://docs.gtk.org/gtk4/class.Widget.html) can
+ * exist (since `GtkWidget` is an abstract class), but a [`GtkWindow`](https://docs.gtk.org/gtk4/class.Window.html)
+ * can certainly be instantiated, and you would say that a `GtkWidget` is a
+ * `GtkWidget` (since `GtkWidget` is a subclass of `GtkWidget`).
  *
  * Two types may not be compared by value; use [method@GLib.VariantType.equal]
  * or [method@GLib.VariantType.is_subtype_of]  May be copied using
@@ -118,7 +119,8 @@
  * `a(aa(ui)(qna{ya(yd)}))`. In order to not hit memory limits,
  * [type@GLib.Variant] imposes a limit on recursion depth of 65 nested
  * containers. This is the limit in the D-Bus specification (64) plus one to
- * allow a [GDBusMessage](../gio/class.DBusMessage.html) to be nested in a top-level tuple.
+ * allow a [`GDBusMessage`](../gio/class.DBusMessage.html) to be nested in
+ * a top-level tuple.
  *
  * The meaning of each of the characters is as follows:
  *

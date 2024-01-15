@@ -52,9 +52,10 @@ G_DEFINE_BOXED_TYPE (GResource, g_resource, g_resource_ref, g_resource_unref)
  *
  * Applications and libraries often contain binary or textual data that is
  * really part of the application, rather than user data. For instance
- * [GtkBuilder](https://docs.gtk.org/gtk4/class.Builder.html) `.ui` files, splashscreen images, [class@Gio.Menu] markup
- * XML, CSS files, icons, etc. These are often shipped as files in
- * `$datadir/appname`, or manually included as literal strings in the code.
+ * [`GtkBuilder`](https://docs.gtk.org/gtk4/class.Builder.html) `.ui` files,
+ * splashscreen images, [class@Gio.Menu] markup XML, CSS files, icons, etc.
+ * These are often shipped as files in `$datadir/appname`, or manually
+ * included as literal strings in the code.
  *
  * The `GResource` API and the
  * [`glib-compile-resources`](glib-compile-resources.html) program provide a
@@ -82,7 +83,7 @@ G_DEFINE_BOXED_TYPE (GResource, g_resource, g_resource_ref, g_resource_unref)
  *    the preprocessing step is skipped.
  *
  *  - `to-pixdata` (deprecated since gdk-pixbuf 2.32) which will use the
- *    `gdk-pixbuf-pixdata` command to convert images to the [GdkPixdata](https://docs.gtk.org/gdk-pixbuf/class.Pixdata.html)
+ *    `gdk-pixbuf-pixdata` command to convert images to the [`GdkPixdata`](https://docs.gtk.org/gdk-pixbuf/class.Pixdata.html)
  *    format, which allows you to create pixbufs directly using the data inside
  *    the resource file, rather than an (uncompressed) copy of it. For this, the
  *    `gdk-pixbuf-pixdata` program must be in the `PATH`, or the
@@ -155,9 +156,10 @@ G_DEFINE_BOXED_TYPE (GResource, g_resource, g_resource_ref, g_resource_unref)
  * also use URIs like `resource:///org/gtk/Example/data/splashscreen.png` with
  * [iface@Gio.File] to access the resource data.
  *
- * Some higher-level APIs, such as [GtkApplication](https://docs.gtk.org/gtk4/class.Application.html), will automatically
- * load resources from certain well-known paths in the resource namespace as a
- * convenience. See the documentation for those APIs for details.
+ * Some higher-level APIs, such as [`GtkApplication`](https://docs.gtk.org/gtk4/class.Application.html),
+ * will automatically load resources from certain well-known paths in the
+ * resource namespace as a convenience. See the documentation for those APIs
+ * for details.
  *
  * There are two forms of the generated source, the default version uses the
  * compiler support for constructor and destructor functions (where available)

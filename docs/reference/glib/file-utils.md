@@ -5,8 +5,8 @@ SPDX-FileCopyrightText: 2012 Dan Winship
 # File Utilities
 
 Do not use these APIs unless you are porting a POSIX application to Windows.
-A more high-level file access API is provided as GIO — see the documentation
-for [GFile](../gio/iface.File.html).
+A more high-level file access API is provided as GIO; see the documentation
+for [`GFile`](../gio/iface.File.html).
 
 ## POSIX File Wrappers
 

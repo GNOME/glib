@@ -14,7 +14,7 @@ The [type@GLib.Quark] methods are quicker, since the strings have to be
 converted to [type@GLib.Quark]s anyway.
 
 Data lists are used for associating arbitrary data with
-[GObject](../gobject/class.Object.html)s, using [`g_object_set_data()`](../gobject/method.Object.set_data.html) and related
+[`GObject`](../gobject/class.Object.html)s, using [`g_object_set_data()`](../gobject/method.Object.set_data.html) and related
 functions. The data is stored inside opaque [type@GLib.Data] elements.
 
 To create a datalist, use [func@GLib.datalist_init].

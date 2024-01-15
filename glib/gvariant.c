@@ -48,7 +48,7 @@
  *
  * `GVariant` is useful whenever data needs to be serialized, for example when
  * sending method parameters in D-Bus, or when saving settings using
- * [GSettings](../gio/class.Settings.html).
+ * [`GSettings`](../gio/class.Settings.html).
  *
  * When creating a new `GVariant`, you pass the data you want to store in it
  * along with a string representing the type of data you wish to pass to it.
