@@ -558,7 +558,10 @@ get_month_name_abbr_with_day (gint month)
 
 #endif  /* HAVE_LANGINFO_ABALTMON */
 
-#ifdef HAVE_LANGINFO_ERA
+/* FIXME: It doesn’t seem to be possible to use ERA on 64-bit big-endian platforms with glibc
+ * in a POSIX-compliant way right now.
+ * See https://gitlab.gnome.org/GNOME/glib/-/issues/3225 */
+#if defined(HAVE_LANGINFO_ERA) && (G_BYTE_ORDER == G_LITTLE_ENDIAN || GLIB_SIZEOF_VOID_P == 4)
 
 #define PREFERRED_ERA_DATE_TIME_FMT nl_langinfo (ERA_D_T_FMT)
 #define PREFERRED_ERA_DATE_FMT nl_langinfo (ERA_D_FMT)

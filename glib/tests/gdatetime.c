@@ -1725,7 +1725,7 @@ test_non_utf8_printf (void)
   TEST_PRINTF ("%%", "%");
   TEST_PRINTF ("%", "");
   TEST_PRINTF ("%9", NULL);
-#ifdef HAVE_LANGINFO_ERA
+#if defined(HAVE_LANGINFO_ERA) && (G_BYTE_ORDER == G_LITTLE_ENDIAN || GLIB_SIZEOF_VOID_P == 4)
   TEST_PRINTF ("%Ec", "平成21年10月24日 00時00分00秒");
   TEST_PRINTF ("%EC", "平成");
   TEST_PRINTF ("%Ex", "平成21年10月24日");
@@ -2272,7 +2272,7 @@ test_all_dates (void)
 static void
 test_date_time_eras_japan (void)
 {
-#ifdef HAVE_LANGINFO_ERA
+#if defined(HAVE_LANGINFO_ERA) && (G_BYTE_ORDER == G_LITTLE_ENDIAN || GLIB_SIZEOF_VOID_P == 4)
   gchar *oldlocale;
 
   oldlocale = g_strdup (setlocale (LC_ALL, NULL));
@@ -2319,7 +2319,7 @@ test_date_time_eras_japan (void)
 static void
 test_date_time_eras_thailand (void)
 {
-#ifdef HAVE_LANGINFO_ERA
+#if defined(HAVE_LANGINFO_ERA) && (G_BYTE_ORDER == G_LITTLE_ENDIAN || GLIB_SIZEOF_VOID_P == 4)
   gchar *oldlocale;
 
   oldlocale = g_strdup (setlocale (LC_ALL, NULL));
