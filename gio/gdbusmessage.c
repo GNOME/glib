@@ -1283,17 +1283,225 @@ get_type_fixed_size (const GVariantType *type)
     }
 }
 
+static const char *
+message_type_to_string (GDBusMessageType message_type)
+{
+  switch (message_type)
+    {
+    case G_DBUS_MESSAGE_TYPE_INVALID:
+      return "INVALID";
+    case G_DBUS_MESSAGE_TYPE_METHOD_CALL:
+      return "METHOD_CALL";
+    case G_DBUS_MESSAGE_TYPE_METHOD_RETURN:
+      return "METHOD_RETURN";
+    case G_DBUS_MESSAGE_TYPE_ERROR:
+      return "ERROR";
+    case G_DBUS_MESSAGE_TYPE_SIGNAL:
+      return "SIGNAL";
+    default:
+      return "unknown-type";
+    }
+}
+
+static const char *
+message_header_field_to_string (GDBusMessageHeaderField field)
+{
+  switch (field)
+    {
+    case G_DBUS_MESSAGE_HEADER_FIELD_INVALID:
+      return "INVALID";
+    case G_DBUS_MESSAGE_HEADER_FIELD_PATH:
+      return "PATH";
+    case G_DBUS_MESSAGE_HEADER_FIELD_INTERFACE:
+      return "INTERFACE";
+    case G_DBUS_MESSAGE_HEADER_FIELD_MEMBER:
+      return "MEMBER";
+    case G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME:
+      return "ERROR_NAME";
+    case G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL:
+      return "REPLY_SERIAL";
+    case G_DBUS_MESSAGE_HEADER_FIELD_DESTINATION:
+      return "DESTINATION";
+    case G_DBUS_MESSAGE_HEADER_FIELD_SENDER:
+      return "SENDER";
+    case G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE:
+      return "SIGNATURE";
+    case G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS:
+      return "NUM_UNIX_FDS";
+    default:
+      return "unknown-field";
+    }
+}
+
+static gboolean
+validate_header (GDBusMessage             *message,
+                 GDBusMessageHeaderField   field,
+                 GVariant                 *header_value,
+                 const GVariantType       *expected_type,
+                 GError                  **error)
+{
+  g_assert (header_value != NULL);
+
+  if (!g_variant_is_of_type (header_value, expected_type))
+    {
+      char *expected_type_string = g_variant_type_dup_string (expected_type);
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_INVALID_ARGUMENT,
+                   _("%s message: %s header field is invalid; expected a value of type ‘%s’"),
+                   message_type_to_string (message->type),
+                   message_header_field_to_string (field),
+                   expected_type_string);
+      g_free (expected_type_string);
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+static gboolean
+require_header (GDBusMessage             *message,
+                GDBusMessageHeaderField   field,
+                GError                  **error)
+{
+  GVariant *header_value = g_dbus_message_get_header (message, field);
+
+  if (header_value == NULL)
+    {
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_INVALID_ARGUMENT,
+                   _("%s message: %s header field is missing or invalid"),
+                   message_type_to_string (message->type),
+                   message_header_field_to_string (field));
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+/* Implement the validation rules given in
+ * https://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-header-fields */
 static gboolean
 validate_headers (GDBusMessage  *message,
                   GError       **error)
 {
   gboolean ret;
+  GHashTableIter headers_iter;
+  gpointer key;
+  GVariant *header_value;
 
   g_return_val_if_fail (G_IS_DBUS_MESSAGE (message), FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
   ret = FALSE;
 
+  /* Validate the types of all known headers. */
+  g_hash_table_iter_init (&headers_iter, message->headers);
+  while (g_hash_table_iter_next (&headers_iter, &key, (gpointer) &header_value))
+    {
+      GDBusMessageHeaderField field_type = GPOINTER_TO_INT (key);
+
+      switch (field_type)
+        {
+        case G_DBUS_MESSAGE_HEADER_FIELD_INVALID:
+          /* The invalid header must be rejected as per
+           * https://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-header-fields */
+          g_set_error (error,
+                       G_IO_ERROR,
+                       G_IO_ERROR_INVALID_ARGUMENT,
+                       _("%s message: INVALID header field supplied"),
+                       message_type_to_string (message->type));
+          goto out;
+        case G_DBUS_MESSAGE_HEADER_FIELD_PATH:
+          if (!validate_header (message, field_type, header_value, G_VARIANT_TYPE_OBJECT_PATH, error))
+            goto out;
+          if (g_strcmp0 (g_variant_get_string (header_value, NULL), "/org/freedesktop/DBus/Local") == 0)
+            {
+              g_set_error (error,
+                           G_IO_ERROR,
+                           G_IO_ERROR_INVALID_ARGUMENT,
+                           _("%s message: PATH header field is using the reserved value /org/freedesktop/DBus/Local"),
+                           message_type_to_string (message->type));
+              goto out;
+            }
+          break;
+        case G_DBUS_MESSAGE_HEADER_FIELD_INTERFACE:
+          if (!validate_header (message, field_type, header_value, G_VARIANT_TYPE_STRING, error))
+            goto out;
+          if (!g_dbus_is_interface_name (g_variant_get_string (header_value, NULL)))
+            {
+              g_set_error (error,
+                           G_IO_ERROR,
+                           G_IO_ERROR_INVALID_ARGUMENT,
+                           _("%s message: INTERFACE header field does not contain a valid interface name"),
+                           message_type_to_string (message->type));
+              goto out;
+            }
+          if (g_strcmp0 (g_variant_get_string (header_value, NULL), "org.freedesktop.DBus.Local") == 0)
+            {
+              g_set_error (error,
+                           G_IO_ERROR,
+                           G_IO_ERROR_INVALID_ARGUMENT,
+                           _("%s message: INTERFACE header field is using the reserved value org.freedesktop.DBus.Local"),
+                           message_type_to_string (message->type));
+              goto out;
+            }
+          break;
+        case G_DBUS_MESSAGE_HEADER_FIELD_MEMBER:
+          if (!validate_header (message, field_type, header_value, G_VARIANT_TYPE_STRING, error))
+            goto out;
+          if (!g_dbus_is_member_name (g_variant_get_string (header_value, NULL)))
+            {
+              g_set_error (error,
+                           G_IO_ERROR,
+                           G_IO_ERROR_INVALID_ARGUMENT,
+                           _("%s message: MEMBER header field does not contain a valid member name"),
+                           message_type_to_string (message->type));
+              goto out;
+            }
+          break;
+        case G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME:
+          if (!validate_header (message, field_type, header_value, G_VARIANT_TYPE_STRING, error))
+            goto out;
+          if (!g_dbus_is_error_name (g_variant_get_string (header_value, NULL)))
+            {
+              g_set_error (error,
+                           G_IO_ERROR,
+                           G_IO_ERROR_INVALID_ARGUMENT,
+                           _("%s message: ERROR_NAME header field does not contain a valid error name"),
+                           message_type_to_string (message->type));
+              goto out;
+            }
+          break;
+        case G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL:
+          if (!validate_header (message, field_type, header_value, G_VARIANT_TYPE_UINT32, error))
+            goto out;
+          break;
+        case G_DBUS_MESSAGE_HEADER_FIELD_DESTINATION:
+          if (!validate_header (message, field_type, header_value, G_VARIANT_TYPE_STRING, error))
+            goto out;
+          break;
+        case G_DBUS_MESSAGE_HEADER_FIELD_SENDER:
+          if (!validate_header (message, field_type, header_value, G_VARIANT_TYPE_STRING, error))
+            goto out;
+          break;
+        case G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE:
+          if (!validate_header (message, field_type, header_value, G_VARIANT_TYPE_SIGNATURE, error))
+            goto out;
+          break;
+        case G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS:
+          if (!validate_header (message, field_type, header_value, G_VARIANT_TYPE_UINT32, error))
+            goto out;
+          break;
+        default:
+          /* Ignore unknown fields as per
+           * https://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-header-fields. */
+          continue;
+        }
+    }
+
+  /* Check for message-type-specific required headers. */
   switch (message->type)
     {
     case G_DBUS_MESSAGE_TYPE_INVALID:
@@ -1302,102 +1510,29 @@ validate_headers (GDBusMessage  *message,
                            G_IO_ERROR_INVALID_ARGUMENT,
                            _("type is INVALID"));
       goto out;
-      break;
 
     case G_DBUS_MESSAGE_TYPE_METHOD_CALL:
-      {
-        GVariant *path_variant = g_dbus_message_get_header (message, G_DBUS_MESSAGE_HEADER_FIELD_PATH);
-        GVariant *member_variant = g_dbus_message_get_header (message, G_DBUS_MESSAGE_HEADER_FIELD_MEMBER);
-
-        if (path_variant == NULL ||
-            !g_variant_is_of_type (path_variant, G_VARIANT_TYPE_OBJECT_PATH) ||
-            member_variant == NULL ||
-            !g_variant_is_of_type (member_variant, G_VARIANT_TYPE_STRING) ||
-            !g_dbus_is_member_name (g_variant_get_string (member_variant, NULL)))
-          {
-            g_set_error_literal (error,
-                                 G_IO_ERROR,
-                                 G_IO_ERROR_INVALID_ARGUMENT,
-                                 _("METHOD_CALL message: PATH or MEMBER header field is missing or invalid"));
-            goto out;
-          }
-      }
+      if (!require_header (message, G_DBUS_MESSAGE_HEADER_FIELD_PATH, error) ||
+          !require_header (message, G_DBUS_MESSAGE_HEADER_FIELD_MEMBER, error))
+        goto out;
       break;
 
     case G_DBUS_MESSAGE_TYPE_METHOD_RETURN:
-      {
-        GVariant *reply_serial_variant = g_dbus_message_get_header (message, G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL);
-
-        if (reply_serial_variant == NULL ||
-            !g_variant_is_of_type (reply_serial_variant, G_VARIANT_TYPE_UINT32))
-          {
-            g_set_error_literal (error,
-                                 G_IO_ERROR,
-                                 G_IO_ERROR_INVALID_ARGUMENT,
-                                 _("METHOD_RETURN message: REPLY_SERIAL header field is missing or invalid"));
-            goto out;
-          }
-      }
+      if (!require_header (message, G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL, error))
+        goto out;
       break;
 
     case G_DBUS_MESSAGE_TYPE_ERROR:
-      {
-        GVariant *error_name_variant = g_dbus_message_get_header (message, G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME);
-        GVariant *reply_serial_variant = g_dbus_message_get_header (message, G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL);
-
-        if (error_name_variant == NULL ||
-            !g_variant_is_of_type (error_name_variant, G_VARIANT_TYPE_STRING) ||
-            !g_dbus_is_error_name (g_variant_get_string (error_name_variant, NULL)) ||
-            reply_serial_variant == NULL ||
-            !g_variant_is_of_type (reply_serial_variant, G_VARIANT_TYPE_UINT32))
-          {
-            g_set_error_literal (error,
-                                 G_IO_ERROR,
-                                 G_IO_ERROR_INVALID_ARGUMENT,
-                                 _("ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing or invalid"));
-            goto out;
-          }
-      }
+      if (!require_header (message, G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME, error) ||
+          !require_header (message, G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL, error))
+        goto out;
       break;
 
     case G_DBUS_MESSAGE_TYPE_SIGNAL:
-      {
-        GVariant *path_variant = g_dbus_message_get_header (message, G_DBUS_MESSAGE_HEADER_FIELD_PATH);
-        GVariant *interface_variant = g_dbus_message_get_header (message, G_DBUS_MESSAGE_HEADER_FIELD_INTERFACE);
-        GVariant *member_variant = g_dbus_message_get_header (message, G_DBUS_MESSAGE_HEADER_FIELD_MEMBER);
-
-        if (path_variant == NULL ||
-            !g_variant_is_of_type (path_variant, G_VARIANT_TYPE_OBJECT_PATH) ||
-            interface_variant == NULL ||
-            !g_variant_is_of_type (interface_variant, G_VARIANT_TYPE_STRING) ||
-            !g_dbus_is_interface_name (g_variant_get_string (interface_variant, NULL)) ||
-            member_variant == NULL ||
-            !g_variant_is_of_type (member_variant, G_VARIANT_TYPE_STRING) ||
-            !g_dbus_is_member_name (g_variant_get_string (member_variant, NULL)))
-          {
-            g_set_error_literal (error,
-                                 G_IO_ERROR,
-                                 G_IO_ERROR_INVALID_ARGUMENT,
-                                 _("SIGNAL message: PATH, INTERFACE or MEMBER header field is missing or invalid"));
-            goto out;
-          }
-        if (g_strcmp0 (g_dbus_message_get_path (message), "/org/freedesktop/DBus/Local") == 0)
-          {
-            g_set_error_literal (error,
-                                 G_IO_ERROR,
-                                 G_IO_ERROR_INVALID_ARGUMENT,
-                                 _("SIGNAL message: The PATH header field is using the reserved value /org/freedesktop/DBus/Local"));
-            goto out;
-          }
-        if (g_strcmp0 (g_dbus_message_get_interface (message), "org.freedesktop.DBus.Local") == 0)
-          {
-            g_set_error_literal (error,
-                                 G_IO_ERROR,
-                                 G_IO_ERROR_INVALID_ARGUMENT,
-                                 _("SIGNAL message: The INTERFACE header field is using the reserved value org.freedesktop.DBus.Local"));
-            goto out;
-          }
-      }
+      if (!require_header (message, G_DBUS_MESSAGE_HEADER_FIELD_PATH, error) ||
+          !require_header (message, G_DBUS_MESSAGE_HEADER_FIELD_INTERFACE, error) ||
+          !require_header (message, G_DBUS_MESSAGE_HEADER_FIELD_MEMBER, error))
+        goto out;
       break;
 
     default:
