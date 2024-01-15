@@ -426,7 +426,7 @@ gi_type_info_get_storage_type (GITypeInfo *info)
  */
 void
 gi_type_tag_argument_from_hash_pointer (GITypeTag   storage_type,
-                                        gpointer    hash_pointer,
+                                        void       *hash_pointer,
                                         GIArgument *arg)
 {
   switch (storage_type)
@@ -503,7 +503,7 @@ gi_type_tag_argument_from_hash_pointer (GITypeTag   storage_type,
  */
 void
 gi_type_info_argument_from_hash_pointer (GITypeInfo *info,
-                                         gpointer    hash_pointer,
+                                         void       *hash_pointer,
                                          GIArgument *arg)
 {
     GITypeTag storage_type = gi_type_info_get_storage_type (info);
@@ -537,7 +537,7 @@ gi_type_info_argument_from_hash_pointer (GITypeInfo *info,
  *   for example
  * Since: 2.80
  */
-gpointer
+void *
 gi_type_tag_hash_pointer_from_argument (GITypeTag   storage_type,
                                         GIArgument *arg)
 {
@@ -605,7 +605,7 @@ gi_type_tag_hash_pointer_from_argument (GITypeTag   storage_type,
  *   for example
  * Since: 2.80
  */
-gpointer
+void *
 gi_type_info_hash_pointer_from_argument (GITypeInfo *info,
                                          GIArgument *arg)
 {

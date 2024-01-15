@@ -235,9 +235,9 @@ write_attributes (GIIrModule *module,
   return wdata.count;
 }
 
-static gint
-node_cmp_offset_func (gconstpointer a,
-                      gconstpointer b)
+static int
+node_cmp_offset_func (const void *a,
+                      const void *b)
 {
   const GIIrNode *na = a;
   const GIIrNode *nb = b;

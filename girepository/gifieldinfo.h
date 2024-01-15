@@ -58,12 +58,12 @@ GITypeInfo *           gi_field_info_get_type_info  (GIFieldInfo *info);
 
 GI_AVAILABLE_IN_ALL
 gboolean               gi_field_info_get_field      (GIFieldInfo *field_info,
-                                                     gpointer     mem,
+                                                     void        *mem,
                                                      GIArgument  *value);
 
 GI_AVAILABLE_IN_ALL
 gboolean               gi_field_info_set_field      (GIFieldInfo      *field_info,
-                                                     gpointer          mem,
+                                                     void             *mem,
                                                      const GIArgument *value);
 
 G_END_DECLS

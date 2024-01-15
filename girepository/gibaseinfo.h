@@ -44,10 +44,8 @@ G_BEGIN_DECLS
  */
 typedef struct {
   /*< private >*/
-  gpointer data;
-  gpointer data2;
-  gpointer data3;
-  gpointer data4;
+  void *data;
+  void *_dummy[4];
 } GIAttributeIter;
 
 #define GI_TYPE_BASE_INFO        (gi_base_info_get_type ())

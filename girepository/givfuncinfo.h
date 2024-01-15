@@ -56,7 +56,7 @@ GI_AVAILABLE_IN_ALL
 GIFunctionInfo *  gi_vfunc_info_get_invoker (GIVFuncInfo *info);
 
 GI_AVAILABLE_IN_ALL
-gpointer          gi_vfunc_info_get_address (GIVFuncInfo *info,
+void *            gi_vfunc_info_get_address (GIVFuncInfo *info,
                                              GType        implementor_gtype,
                                              GError     **error);
 

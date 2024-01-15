@@ -133,7 +133,7 @@ union _GIArgument
   gssize   v_ssize;
   gsize    v_size;
   gchar *  v_string;
-  gpointer v_pointer;
+  void           *v_pointer;
 };
 
 /**

@@ -217,7 +217,7 @@ gi_vfunc_info_get_invoker (GIVFuncInfo *info)
  * Returns: address to a function
  * Since: 2.80
  */
-gpointer
+void *
 gi_vfunc_info_get_address (GIVFuncInfo  *vfunc_info,
                            GType         implementor_gtype,
                            GError      **error)
@@ -228,8 +228,8 @@ gi_vfunc_info_get_address (GIVFuncInfo  *vfunc_info,
   GIStructInfo *struct_info;
   GIFieldInfo *field_info = NULL;
   int length, i, offset;
-  gpointer implementor_class, implementor_vtable;
-  gpointer func = NULL;
+  void *implementor_class, *implementor_vtable;
+  void *func = NULL;
 
   g_return_val_if_fail (vfunc_info != NULL, NULL);
   g_return_val_if_fail (GI_IS_VFUNC_INFO (vfunc_info), NULL);
@@ -288,7 +288,7 @@ gi_vfunc_info_get_address (GIVFuncInfo  *vfunc_info,
     }
 
   offset = gi_field_info_get_offset (field_info);
-  func = *(gpointer*) G_STRUCT_MEMBER_P (implementor_vtable, offset);
+  func = *(void**) G_STRUCT_MEMBER_P (implementor_vtable, offset);
   g_type_class_unref (implementor_class);
   gi_base_info_unref ((GIBaseInfo *) field_info);
 
@@ -347,7 +347,7 @@ gi_vfunc_info_invoke (GIVFuncInfo      *info,
                       GIArgument       *return_value,
                       GError          **error)
 {
-  gpointer func;
+  void *func;
   GError *local_error = NULL;
 
   g_return_val_if_fail (info != NULL, FALSE);

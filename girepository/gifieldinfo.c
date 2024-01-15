@@ -187,7 +187,7 @@ gi_field_info_get_type_info (GIFieldInfo *info)
  */
 gboolean
 gi_field_info_get_field (GIFieldInfo *field_info,
-                         gpointer     mem,
+                         void        *mem,
                          GIArgument  *value)
 {
   int offset;
@@ -205,7 +205,7 @@ gi_field_info_get_field (GIFieldInfo *field_info,
 
   if (gi_type_info_is_pointer (type_info))
     {
-      value->v_pointer = G_STRUCT_MEMBER (gpointer, mem, offset);
+      value->v_pointer = G_STRUCT_MEMBER (void *, mem, offset);
       result = TRUE;
     }
   else
@@ -383,7 +383,7 @@ gi_field_info_get_field (GIFieldInfo *field_info,
  */
 gboolean
 gi_field_info_set_field (GIFieldInfo      *field_info,
-                         gpointer          mem,
+                         void             *mem,
                          const GIArgument *value)
 {
   int offset;
@@ -548,7 +548,7 @@ gi_field_info_set_field (GIFieldInfo      *field_info,
               {
                 case GI_INFO_TYPE_OBJECT:
                 case GI_INFO_TYPE_INTERFACE:
-                  G_STRUCT_MEMBER (gpointer, mem, offset) = (gpointer)value->v_pointer;
+                  G_STRUCT_MEMBER (void *, mem, offset) = (void *)value->v_pointer;
                   result = TRUE;
                   break;
                 default:

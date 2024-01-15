@@ -556,12 +556,12 @@ gi_type_tag_extract_ffi_return_value (GITypeTag         return_tag,
             arg->v_int32 = (gint32) ffi_value->v_long;
             break;
         default:
-            arg->v_pointer = (gpointer) ffi_value->v_pointer;
+            arg->v_pointer = (void *) ffi_value->v_pointer;
             break;
         }
         break;
     default:
-        arg->v_pointer = (gpointer) ffi_value->v_pointer;
+        arg->v_pointer = (void *) ffi_value->v_pointer;
         break;
     }
 }
@@ -629,7 +629,7 @@ gi_type_info_extract_ffi_return_value (GITypeInfo       *return_info,
  */
 gboolean
 gi_callable_info_invoke (GICallableInfo    *info,
-                         gpointer           function,
+                         void              *function,
                          const GIArgument  *in_args,
                          gsize              n_in_args,
                          GIArgument        *out_args,
@@ -645,12 +645,12 @@ gi_callable_info_invoke (GICallableInfo    *info,
   GITypeTag rtag;
   GIArgInfo *ainfo;
   gsize n_args, n_invoke_args, in_pos, out_pos, i;
-  gpointer *args;
+  void **args;
   gboolean success = FALSE;
   GError *local_error = NULL;
-  gpointer error_address = &local_error;
+  void *error_address = &local_error;
   GIFFIReturnValue ffi_return_value;
-  gpointer return_value_p; /* Will point inside the union return_value */
+  void *return_value_p; /* Will point inside the union return_value */
   gboolean is_method, throws;
 
   rinfo = gi_callable_info_get_return_type ((GICallableInfo *)info);
@@ -684,12 +684,12 @@ gi_callable_info_invoke (GICallableInfo    *info,
     n_invoke_args ++;
 
   atypes = g_alloca (sizeof (ffi_type*) * n_invoke_args);
-  args = g_alloca (sizeof (gpointer) * n_invoke_args);
+  args = g_alloca (sizeof (void *) * n_invoke_args);
 
   if (is_method)
     {
       atypes[0] = &ffi_type_pointer;
-      args[0] = (gpointer) &in_args[0];
+      args[0] = (void *) &in_args[0];
     }
   for (i = 0; i < n_args; i++)
     {
@@ -712,7 +712,7 @@ gi_callable_info_invoke (GICallableInfo    *info,
               goto out;
             }
 
-          args[i+offset] = (gpointer)&in_args[in_pos];
+          args[i+offset] = (void *)&in_args[in_pos];
           in_pos++;
 
           break;
@@ -729,7 +729,7 @@ gi_callable_info_invoke (GICallableInfo    *info,
               goto out;
             }
 
-          args[i+offset] = (gpointer)&out_args[out_pos];
+          args[i+offset] = (void *)&out_args[out_pos];
           out_pos++;
           break;
         case GI_DIRECTION_INOUT:
@@ -754,7 +754,7 @@ gi_callable_info_invoke (GICallableInfo    *info,
               goto out;
             }
 
-          args[i+offset] = (gpointer)&in_args[in_pos];
+          args[i+offset] = (void *)&in_args[in_pos];
           in_pos++;
           out_pos++;
           break;

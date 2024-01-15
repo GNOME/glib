@@ -2541,7 +2541,7 @@ gi_typelib_get_namespace (GITypelib *typelib)
  * Since: 2.80
  */
 gboolean
-gi_typelib_symbol (GITypelib *typelib, const char *symbol_name, gpointer *symbol)
+gi_typelib_symbol (GITypelib *typelib, const char *symbol_name, void **symbol)
 {
   GList *l;
 

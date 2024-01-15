@@ -1083,7 +1083,7 @@ gi_repository_get_object_gtype_interfaces (GIRepository      *repository,
   repository = get_repository (repository);
 
   cache = g_hash_table_lookup (repository->priv->interfaces_for_gtype,
-                               (gpointer) gtype);
+                               (void *) gtype);
   if (cache == NULL)
     {
       GType *interfaces;

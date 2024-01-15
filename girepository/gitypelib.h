@@ -55,8 +55,8 @@ void          gi_typelib_free                  (GITypelib     *typelib);
 
 GI_AVAILABLE_IN_ALL
 gboolean      gi_typelib_symbol                (GITypelib     *typelib,
-                                                const gchar  *symbol_name,
-                                                gpointer     *symbol);
+                                                const gchar   *symbol_name,
+                                                void         **symbol);
 
 GI_AVAILABLE_IN_ALL
 const gchar * gi_typelib_get_namespace         (GITypelib     *typelib);

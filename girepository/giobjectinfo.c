@@ -925,7 +925,7 @@ _get_func(GIObjectInfo *info,
   const char* symbol;
   GSList *parents = NULL, *l;
   GIObjectInfo *parent_info;
-  gpointer func = NULL;
+  void *func = NULL;
 
   parent_info = (GIObjectInfo *) gi_base_info_ref ((GIBaseInfo *) info);
   while (parent_info != NULL)

@@ -64,7 +64,7 @@ value_base_info_copy_value (const GValue *src,
     dst->data[0].v_pointer = NULL;
 }
 
-static gpointer
+static void *
 value_base_info_peek_pointer (const GValue *value)
 {
   return value->data[0].v_pointer;

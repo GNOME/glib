@@ -273,7 +273,7 @@ gi_function_info_invoke (GIFunctionInfo    *info,
                          GError           **error)
 {
   const gchar *symbol;
-  gpointer func;
+  void *func;
 
   symbol = gi_function_info_get_symbol (info);
 

@@ -136,20 +136,20 @@ static void start_element_handler (GMarkupParseContext *context,
                                    const gchar         *element_name,
                                    const gchar        **attribute_names,
                                    const gchar        **attribute_values,
-                                   gpointer             user_data,
+                                   void                *user_data,
                                    GError             **error);
 static void end_element_handler   (GMarkupParseContext *context,
                                    const gchar         *element_name,
-                                   gpointer             user_data,
+                                   void                *user_data,
                                    GError             **error);
 static void text_handler          (GMarkupParseContext *context,
                                    const gchar         *text,
                                    gsize                text_len,
-                                   gpointer             user_data,
+                                   void                *user_data,
                                    GError             **error);
 static void cleanup               (GMarkupParseContext *context,
                                    GError              *error,
-                                   gpointer             user_data);
+                                   void                *user_data);
 static void state_switch (ParseContext *ctx, ParseState newstate);
 
 
@@ -222,7 +222,7 @@ firstpass_start_element_handler (GMarkupParseContext *context,
                                  const gchar         *element_name,
                                  const gchar        **attribute_names,
                                  const gchar        **attribute_values,
-                                 gpointer             user_data,
+                                 void                *user_data,
                                  GError             **error)
 {
   ParseContext *ctx = user_data;
@@ -267,7 +267,7 @@ firstpass_start_element_handler (GMarkupParseContext *context,
 static void
 firstpass_end_element_handler (GMarkupParseContext *context,
                                const gchar         *element_name,
-                               gpointer             user_data,
+                               void                *user_data,
                                GError             **error)
 {
   ParseContext *ctx = user_data;
@@ -678,8 +678,8 @@ parse_type_internal (GIIrModule   *module,
 static const char *
 resolve_aliases (ParseContext *ctx, const gchar *type)
 {
-  gpointer orig;
-  gpointer value;
+  void *orig;
+  void *value;
   GSList *seen_values = NULL;
   const gchar *lookup;
   gchar *prefixed;
@@ -2885,7 +2885,7 @@ start_element_handler (GMarkupParseContext *context,
                        const gchar         *element_name,
                        const gchar        **attribute_names,
                        const gchar        **attribute_values,
-                       gpointer             user_data,
+                       void                *user_data,
                        GError             **error)
 {
   ParseContext *ctx = user_data;
@@ -3346,7 +3346,7 @@ require_end_element (GMarkupParseContext *context,
 static void
 end_element_handler (GMarkupParseContext *context,
                      const gchar         *element_name,
-                     gpointer             user_data,
+                     void                *user_data,
                      GError             **error)
 {
   ParseContext *ctx = user_data;
@@ -3648,7 +3648,7 @@ static void
 text_handler (GMarkupParseContext *context,
               const gchar         *text,
               gsize                text_len,
-              gpointer             user_data,
+              void                *user_data,
               GError             **error)
 {
   /* FIXME warn about non-whitespace text */
@@ -3657,7 +3657,7 @@ text_handler (GMarkupParseContext *context,
 static void
 cleanup (GMarkupParseContext *context,
          GError              *error,
-         gpointer             user_data)
+         void                *user_data)
 {
   ParseContext *ctx = user_data;
   GList *m;

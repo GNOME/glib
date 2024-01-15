@@ -276,7 +276,7 @@ gi_function_info_prep_invoker (GIFunctionInfo     *info,
                                GError            **error)
 {
   const char *symbol;
-  gpointer addr;
+  void *addr;
 
   g_return_val_if_fail (info != NULL, FALSE);
   g_return_val_if_fail (invoker != NULL, FALSE);
@@ -316,7 +316,7 @@ gi_function_info_prep_invoker (GIFunctionInfo     *info,
  * Since: 2.80
  */
 gboolean
-gi_function_invoker_new_for_address (gpointer            addr,
+gi_function_invoker_new_for_address (void               *addr,
                                      GICallableInfo     *info,
                                      GIFunctionInvoker  *invoker,
                                      GError            **error)
@@ -355,8 +355,8 @@ gi_function_invoker_destroy (GIFunctionInvoker *invoker)
 
 typedef struct {
   ffi_closure ffi_closure;
-  gpointer writable_self;
-  gpointer native_address;
+  void *writable_self;
+  void *native_address;
 } GIClosureWrapper;
 
 /**
@@ -377,9 +377,9 @@ ffi_closure *
 gi_callable_info_create_closure (GICallableInfo       *callable_info,
                                  ffi_cif              *cif,
                                  GIFFIClosureCallback  callback,
-                                 gpointer              user_data)
+                                 void                 *user_data)
 {
-  gpointer exec_ptr;
+  void *exec_ptr;
   size_t n_args;
   ffi_type **atypes;
   GIClosureWrapper *closure;
@@ -432,7 +432,7 @@ gi_callable_info_create_closure (GICallableInfo       *callable_info,
  * Returns: (transfer none): native address
  * Since: 2.80
  */
-gpointer *
+void **
 gi_callable_info_get_closure_native_address (GICallableInfo *callable_info,
                                              ffi_closure    *closure)
 {

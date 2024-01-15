@@ -86,7 +86,7 @@ gi_typelib_hash_builder_prepare (GITypelibHashBuilder *builder)
 {
   char **strs;
   GHashTableIter hashiter;
-  gpointer key, value;
+  void *key, *value;
   cmph_io_adapter_t *io;
   cmph_config_t *config;
   guint32 num_elts;
@@ -152,7 +152,7 @@ gi_typelib_hash_builder_pack (GITypelibHashBuilder *builder, guint8* mem, guint3
 {
   guint16 *table;
   GHashTableIter hashiter;
-  gpointer key, value;
+  void *key, *value;
 #ifndef G_DISABLE_ASSERT
   guint32 num_elts;
 #endif

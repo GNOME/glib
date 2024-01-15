@@ -2417,8 +2417,8 @@ gi_ir_write_string (const gchar *str,
                     guchar      *data,
                     guint32     *offset)
 {
-  gpointer value;
   guint32 start;
+  void *value;
 
   string_count += 1;
   string_size += strlen (str);
@@ -2431,7 +2431,7 @@ gi_ir_write_string (const gchar *str,
   unique_string_count += 1;
   unique_string_size += strlen (str);
 
-  g_hash_table_insert (strings, (gpointer)str, GUINT_TO_POINTER (*offset));
+  g_hash_table_insert (strings, (void *)str, GUINT_TO_POINTER (*offset));
 
   start = *offset;
   *offset = ALIGN_VALUE (start + strlen (str) + 1, 4);

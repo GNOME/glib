@@ -251,7 +251,7 @@ void gi_cclosure_marshal_generic (GClosure       *closure,
                                   GValue         *return_gvalue,
                                   guint           n_param_values,
                                   const GValue   *param_values,
-                                  gpointer        invocation_hint,
-                                  gpointer        marshal_data);
+                                  void           *invocation_hint,
+                                  void           *marshal_data);
 
 G_END_DECLS

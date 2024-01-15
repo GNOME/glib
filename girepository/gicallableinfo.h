@@ -93,7 +93,7 @@ void                   gi_callable_info_load_arg        (GICallableInfo *info,
 
 GI_AVAILABLE_IN_ALL
 gboolean               gi_callable_info_invoke          (GICallableInfo    *info,
-                                                         gpointer           function,
+                                                         void              *function,
                                                          const GIArgument  *in_args,
                                                          gsize              n_in_args,
                                                          GIArgument        *out_args,
