@@ -414,6 +414,7 @@ headers = [
   'sys/vfstab.h',
   'sys/vmount.h',
   'sys/wait.h',
+  'syslog.h',
   'termios.h',
   'unistd.h',
   'values.h',

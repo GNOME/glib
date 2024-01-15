@@ -64,6 +64,10 @@
 #include "gthreadprivate.h"
 #include "gutilsprivate.h"
 
+#ifdef HAVE_SYSLOG_H
+#include <syslog.h>
+#endif
+
 #if defined(__linux__) && !defined(__BIONIC__)
 #include "gjournal-private.h"
 #endif
@@ -1326,6 +1330,25 @@ log_level_to_priority (GLogLevelFlags log_level)
   return "5";
 }
 
+#ifdef HAVE_SYSLOG_H
+static int
+str_to_syslog_facility (const gchar *syslog_facility_str)
+{
+  int syslog_facility = LOG_USER;
+
+  if (g_strcmp0 (syslog_facility_str, "auth") == 0)
+    {
+      syslog_facility = LOG_AUTH;
+    }
+  else if (g_strcmp0 (syslog_facility_str, "daemon") == 0)
+    {
+      syslog_facility = LOG_DAEMON;
+    }
+
+  return syslog_facility;
+}
+#endif
+
 static inline FILE *
 log_level_to_file (GLogLevelFlags log_level)
 {
@@ -2009,6 +2032,13 @@ reset_invalid_param_handler:
 #endif
 }
 
+#ifdef HAVE_SYSLOG_H
+static gboolean syslog_opened = FALSE;
+#ifndef __linux__
+G_LOCK_DEFINE_STATIC (syslog_opened);
+#endif
+#endif
+
 #if defined(__linux__) && !defined(__BIONIC__)
 static int journal_fd = -1;
 
@@ -2193,6 +2223,113 @@ g_log_writer_format_fields (GLogLevelFlags   log_level,
     }
 
   return g_string_free (gstring, FALSE);
+}
+
+/**
+ * g_log_writer_syslog:
+ * @log_level: log level, either from [type@GLib.LogLevelFlags], or a user-defined
+ *    level
+ * @fields: (array length=n_fields): key–value pairs of structured data forming
+ *    the log message
+ * @n_fields: number of elements in the @fields array
+ * @user_data: user data passed to [func@GLib.log_set_writer_func]
+ *
+ * Format a structured log message and send it to the syslog daemon. Only fields
+ * which are understood by this function are included in the formatted string
+ * which is printed.
+ *
+ * Log facility will be defined via the SYSLOG_FACILITY field and accepts the following
+ * values: "auth", "daemon", and "user". If SYSLOG_FACILITY is not specified, LOG_USER
+ * facility will be used.
+ *
+ * This is suitable for use as a [type@GLib.LogWriterFunc].
+ *
+ * If syslog is not supported, this function is still defined, but will always
+ * return [enum@GLib.LogWriterOutput.UNHANDLED].
+ *
+ * Returns: [enum@GLib.LogWriterOutput.HANDLED] on success, [enum@GLib.LogWriterOutput.UNHANDLED] otherwise
+ * Since: 2.80
+ */
+GLogWriterOutput
+g_log_writer_syslog (GLogLevelFlags   log_level,
+                     const GLogField *fields,
+                     gsize            n_fields,
+                     gpointer         user_data)
+{
+#ifdef HAVE_SYSLOG_H
+  gsize i;
+  const char *message = NULL;
+  const char *log_domain = NULL;
+  int syslog_facility = 0;
+  int syslog_level;
+  gssize message_length = -1;
+  gssize log_domain_length = -1;
+  GString *gstring;
+
+  g_return_val_if_fail (fields != NULL, G_LOG_WRITER_UNHANDLED);
+  g_return_val_if_fail (n_fields > 0, G_LOG_WRITER_UNHANDLED);
+
+/* As not all man pages provide sufficient information about the thread safety
+ * of the openlog() routine or even describe alternative routines like logopen_r()
+ * intended for multi-threaded applications, use locking on non-Linux platforms till
+ * the situation can be cleared. See the following links for more information:
+ * FreeBSD: https://man.freebsd.org/cgi/man.cgi?query=openlog
+ * NetBSD: https://man.netbsd.org/openlog.3
+ * POSIX: https://pubs.opengroup.org/onlinepubs/9699919799.2008edition/functions/openlog.html#
+ */
+#ifndef __linux__
+  G_LOCK (syslog_opened);
+#endif
+
+  if (!syslog_opened)
+    {
+      openlog (NULL, 0, 0);
+      syslog_opened = TRUE;
+    }
+
+#ifndef __linux__
+  G_UNLOCK (syslog_opened);
+#endif
+
+  for (i = 0; i < n_fields; i++)
+    {
+      const GLogField *field = &fields[i];
+
+      if (g_strcmp0 (field->key, "MESSAGE") == 0)
+        {
+          message = field->value;
+          message_length = field->length;
+        }
+      else if (g_strcmp0 (field->key, "GLIB_DOMAIN") == 0)
+        {
+          log_domain = field->value;
+          log_domain_length = field->length;
+        }
+      else if (g_strcmp0 (field->key, "SYSLOG_FACILITY") == 0)
+        {
+          syslog_facility = str_to_syslog_facility (field->value);
+        }
+    }
+
+  gstring = g_string_new (NULL);
+
+  if (log_domain != NULL)
+    {
+      g_string_append_len (gstring, log_domain, log_domain_length);
+      g_string_append (gstring, ": ");
+    }
+
+  g_string_append_len (gstring, message, message_length);
+
+  syslog_level = atoi (log_level_to_priority (log_level));
+  syslog (syslog_level | syslog_facility, "%s", gstring->str);
+
+  g_string_free (gstring, TRUE);
+
+  return G_LOG_WRITER_HANDLED;
+#else
+  return G_LOG_WRITER_UNHANDLED;
+#endif /* HAVE_SYSLOG_H */
 }
 
 /* Enable support for the journal if we're on a recent enough Linux */

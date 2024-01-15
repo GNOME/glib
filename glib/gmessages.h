@@ -229,6 +229,11 @@ gchar           *g_log_writer_format_fields    (GLogLevelFlags   log_level,
                                                 gsize            n_fields,
                                                 gboolean         use_color);
 
+GLIB_AVAILABLE_IN_2_80
+GLogWriterOutput g_log_writer_syslog           (GLogLevelFlags   log_level,
+                                                const GLogField *fields,
+                                                gsize            n_fields,
+                                                gpointer         user_data);
 GLIB_AVAILABLE_IN_2_50
 GLogWriterOutput g_log_writer_journald         (GLogLevelFlags   log_level,
                                                 const GLogField *fields,
