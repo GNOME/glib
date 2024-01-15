@@ -244,7 +244,7 @@ write_type_info (const char *ns,
     }
   else if (tag == GI_TYPE_TAG_ARRAY)
     {
-      int length;
+      gssize length;
       gssize size;
       const char *name = NULL;
 
@@ -273,7 +273,7 @@ write_type_info (const char *ns,
 
       length = gi_type_info_get_array_length_index (info);
       if (length >= 0)
-        xml_printf (file, " length=\"%d\"", length);
+        xml_printf (file, " length=\"%" G_GSSIZE_FORMAT "\"", length);
 
       size = gi_type_info_get_array_fixed_size (info);
       if (size >= 0)

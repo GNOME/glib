@@ -96,7 +96,7 @@ GI_AVAILABLE_IN_ALL
 GIBaseInfo *           gi_type_info_get_interface       (GITypeInfo *info);
 
 GI_AVAILABLE_IN_ALL
-int                    gi_type_info_get_array_length_index (GITypeInfo *info);
+gssize                 gi_type_info_get_array_length_index (GITypeInfo *info);
 
 GI_AVAILABLE_IN_ALL
 gssize                 gi_type_info_get_array_fixed_size (GITypeInfo *info);

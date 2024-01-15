@@ -241,7 +241,7 @@ gi_type_info_get_interface (GITypeInfo *info)
  *   or it has no length argument
  * Since: 2.80
  */
-int
+gssize
 gi_type_info_get_array_length_index (GITypeInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
