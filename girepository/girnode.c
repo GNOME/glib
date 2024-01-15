@@ -1047,8 +1047,8 @@ find_entry_node (GIIrTypelibBuild *build,
 {
   GIIrModule *module = build->module;
   GList *l;
-  int i;
-  int n_names;
+  unsigned int i;
+  unsigned int n_names;
   char **names;
   GIIrNode *result = NULL;
 
@@ -1155,7 +1155,7 @@ gi_ir_find_node (GIIrTypelibBuild *build,
   GList *l;
   GIIrNode *return_node = NULL;
   char **names = g_strsplit (name, ".", 0);
-  int n_names = g_strv_length (names);
+  unsigned n_names = g_strv_length (names);
   const char *target_name;
   GIIrModule *target_module;
 
@@ -1653,7 +1653,7 @@ gi_ir_node_build_typelib (GIIrNode         *node,
                 g_error ("Unknown setter %s for property %s:%s", prop->setter, parent->name, node->name);
               }
 
-            blob->setter = (unsigned int) index;
+            blob->setter = (uint16_t) index;
           }
         else
           blob->setter = ACCESSOR_SENTINEL;
@@ -1668,7 +1668,7 @@ gi_ir_node_build_typelib (GIIrNode         *node,
                 g_error ("Unknown getter %s for property %s:%s", prop->getter, parent->name, node->name);
               }
 
-            blob->getter = (unsigned int) index;
+            blob->getter = (uint16_t) index;
           }
         else
           blob->getter = ACCESSOR_SENTINEL;
@@ -1684,7 +1684,7 @@ gi_ir_node_build_typelib (GIIrNode         *node,
         SignatureBlob *blob2 = (SignatureBlob *)&data[*offset2];
         GIIrNodeFunction *function = (GIIrNodeFunction *)node;
         uint32_t signature;
-        int n;
+        unsigned int n;
 
         signature = *offset2;
         n = g_list_length (function->parameters);
@@ -1717,7 +1717,7 @@ gi_ir_node_build_typelib (GIIrNode         *node,
 
             blob->setter = function->is_setter;
             blob->getter = function->is_getter;
-            blob->index = (unsigned int) index;
+            blob->index = (uint16_t) index;
           }
 
         /* function->result is special since it doesn't appear in the serialized format but
@@ -1882,7 +1882,7 @@ gi_ir_node_build_typelib (GIIrNode         *node,
               {
                 g_error ("Unknown member function %s for vfunc %s", vfunc->invoker, node->name);
               }
-            blob->invoker = (unsigned int) index;
+            blob->invoker = (uint16_t) index;
           }
         else
           blob->invoker = 0x3ff; /* max of 10 bits */

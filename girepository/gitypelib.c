@@ -968,7 +968,7 @@ validate_signature_blob (GITypelib     *typelib,
         return FALSE;
     }
 
-  for (int i = 0; i < blob->n_arguments; i++)
+  for (unsigned int i = 0; i < blob->n_arguments; i++)
     {
       if (!validate_arg_blob (typelib,
                               offset + sizeof (SignatureBlob) +
