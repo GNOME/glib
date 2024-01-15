@@ -270,7 +270,7 @@ g_value_from_ffi_value (GValue           *gvalue,
 void
 gi_cclosure_marshal_generic (GClosure *closure,
                              GValue *return_gvalue,
-                             guint n_param_values,
+                             unsigned int n_param_values,
                              const GValue *param_values,
                              void *invocation_hint,
                              void *marshal_data)

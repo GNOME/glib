@@ -30,7 +30,7 @@ build (void)
   cmph_io_adapter_t *io;
   char **strings;
   cmph_t *c;
-  guint32 size;
+  uint32_t size;
 
   strings = g_strsplit ("foo,bar,baz", ",", -1);
 
@@ -50,14 +50,14 @@ build (void)
 }
 
 static void
-assert_hashes_unique (guint    n_hashes,
-		      guint32* hashes)
+assert_hashes_unique (unsigned  n_hashes,
+                      uint32_t* hashes)
 {
-  guint i;
+  unsigned i;
 
   for (i = 0; i < n_hashes; i++)
     {
-      guint j = 0;
+      unsigned j = 0;
       for (j = 0; j < n_hashes; j++)
 	{
 	  if (j != i)
@@ -70,10 +70,10 @@ static void
 test_search (void)
 {
   cmph_t *c = build();
-  guint i;
-  guint32 hash;
-  guint32 hashes[3];
-  guint32 size;
+  unsigned i;
+  uint32_t hash;
+  uint32_t hashes[3];
+  uint32_t size;
 
   size = cmph_size (c);
 
@@ -102,12 +102,12 @@ static void
 test_search_packed (void)
 {
   cmph_t *c = build();
-  guint32 bufsize;
-  guint i;
-  guint32 hash;
-  guint32 hashes[3];
-  guint32 size;
-  guint8 *buf;
+  unsigned i;
+  uint32_t bufsize;
+  uint32_t hash;
+  uint32_t hashes[3];
+  uint32_t size;
+  uint8_t *buf;
 
   bufsize = cmph_packed_size (c);
   buf = g_malloc (bufsize);

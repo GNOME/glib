@@ -28,6 +28,8 @@
 #error "Only <girepository.h> can be included directly."
 #endif
 
+#include <stdint.h>
+
 #include <glib.h>
 #include <glib-object.h>
 
@@ -113,25 +115,25 @@ GI_AVAILABLE_IN_ALL GType gi_unresolved_info_get_type (void);
 
 union _GIArgument
 {
-  gboolean v_boolean;
-  gint8    v_int8;
-  guint8   v_uint8;
-  gint16   v_int16;
-  guint16  v_uint16;
-  gint32   v_int32;
-  guint32  v_uint32;
-  gint64   v_int64;
-  guint64  v_uint64;
-  gfloat   v_float;
-  gdouble  v_double;
-  gshort   v_short;
-  gushort  v_ushort;
-  gint     v_int;
-  guint    v_uint;
-  glong    v_long;
-  gulong   v_ulong;
-  gssize   v_ssize;
-  gsize    v_size;
+  gboolean        v_boolean;
+  int8_t          v_int8;
+  uint8_t         v_uint8;
+  int16_t         v_int16;
+  uint16_t        v_uint16;
+  int32_t         v_int32;
+  uint32_t        v_uint32;
+  int64_t         v_int64;
+  uint64_t        v_uint64;
+  float           v_float;
+  double          v_double;
+  short           v_short;
+  unsigned short  v_ushort;
+  int             v_int;
+  unsigned int    v_uint;
+  long            v_long;
+  unsigned long   v_ulong;
+  gssize          v_ssize;
+  gsize           v_size;
   char           *v_string;
   void           *v_pointer;
 };

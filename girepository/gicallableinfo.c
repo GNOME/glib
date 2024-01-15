@@ -54,7 +54,7 @@
  * Since: 2.80
  */
 
-static guint32
+static uint32_t
 signature_offset (GICallableInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo*)info;
@@ -78,7 +78,7 @@ signature_offset (GICallableInfo *info)
       g_assert_not_reached ();
     }
   if (sigoff >= 0)
-    return *(guint32 *)&rinfo->typelib->data[rinfo->offset + sigoff];
+    return *(uint32_t *)&rinfo->typelib->data[rinfo->offset + sigoff];
   return 0;
 }
 
@@ -180,7 +180,7 @@ GITypeInfo *
 gi_callable_info_get_return_type (GICallableInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  guint32 offset;
+  uint32_t offset;
 
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_CALLABLE_INFO (info), NULL);
@@ -208,7 +208,7 @@ gi_callable_info_load_return_type (GICallableInfo *info,
                                    GITypeInfo     *type)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  guint32 offset;
+  uint32_t offset;
 
   g_return_if_fail (info != NULL);
   g_return_if_fail (GI_IS_CALLABLE_INFO (info));
@@ -331,11 +331,11 @@ gi_callable_info_get_instance_ownership_transfer (GICallableInfo *info)
  * Returns: The number of arguments this callable expects.
  * Since: 2.80
  */
-guint
+unsigned int
 gi_callable_info_get_n_args (GICallableInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  gint offset;
+  uint32_t offset;
   SignatureBlob *blob;
 
   g_return_val_if_fail (info != NULL, -1);
@@ -360,11 +360,11 @@ gi_callable_info_get_n_args (GICallableInfo *info)
  */
 GIArgInfo *
 gi_callable_info_get_arg (GICallableInfo *info,
-                          guint           n)
+                          unsigned int    n)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header;
-  gint offset;
+  uint32_t offset;
 
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_CALLABLE_INFO (info), NULL);
@@ -392,12 +392,12 @@ gi_callable_info_get_arg (GICallableInfo *info,
  */
 void
 gi_callable_info_load_arg (GICallableInfo *info,
-                           guint           n,
+                           unsigned int    n,
                            GIArgInfo      *arg)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header;
-  gint offset;
+  uint32_t offset;
 
   g_return_if_fail (info != NULL);
   g_return_if_fail (GI_IS_CALLABLE_INFO (info));
@@ -466,7 +466,7 @@ gi_callable_info_iterate_return_attributes (GICallableInfo   *info,
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header = (Header *)rinfo->typelib->data;
   AttributeBlob *next, *after;
-  guint32 blob_offset;
+  uint32_t blob_offset;
 
   after = (AttributeBlob *) &rinfo->typelib->data[header->attributes +
                                                   header->n_attributes * header->attribute_blob_size];
@@ -518,30 +518,30 @@ gi_type_tag_extract_ffi_return_value (GITypeTag         return_tag,
 {
     switch (return_tag) {
     case GI_TYPE_TAG_INT8:
-        arg->v_int8 = (gint8) ffi_value->v_long;
+        arg->v_int8 = (int8_t) ffi_value->v_long;
         break;
     case GI_TYPE_TAG_UINT8:
-        arg->v_uint8 = (guint8) ffi_value->v_ulong;
+        arg->v_uint8 = (uint8_t) ffi_value->v_ulong;
         break;
     case GI_TYPE_TAG_INT16:
-        arg->v_int16 = (gint16) ffi_value->v_long;
+        arg->v_int16 = (int16_t) ffi_value->v_long;
         break;
     case GI_TYPE_TAG_UINT16:
-        arg->v_uint16 = (guint16) ffi_value->v_ulong;
+        arg->v_uint16 = (uint16_t) ffi_value->v_ulong;
         break;
     case GI_TYPE_TAG_INT32:
-        arg->v_int32 = (gint32) ffi_value->v_long;
+        arg->v_int32 = (int32_t) ffi_value->v_long;
         break;
     case GI_TYPE_TAG_UINT32:
     case GI_TYPE_TAG_BOOLEAN:
     case GI_TYPE_TAG_UNICHAR:
-        arg->v_uint32 = (guint32) ffi_value->v_ulong;
+        arg->v_uint32 = (uint32_t) ffi_value->v_ulong;
         break;
     case GI_TYPE_TAG_INT64:
-        arg->v_int64 = (gint64) ffi_value->v_int64;
+        arg->v_int64 = (int64_t) ffi_value->v_int64;
         break;
     case GI_TYPE_TAG_UINT64:
-        arg->v_uint64 = (guint64) ffi_value->v_uint64;
+        arg->v_uint64 = (uint64_t) ffi_value->v_uint64;
         break;
     case GI_TYPE_TAG_FLOAT:
         arg->v_float = ffi_value->v_float;
@@ -553,7 +553,7 @@ gi_type_tag_extract_ffi_return_value (GITypeTag         return_tag,
         switch(interface_type) {
         case GI_INFO_TYPE_ENUM:
         case GI_INFO_TYPE_FLAGS:
-            arg->v_int32 = (gint32) ffi_value->v_long;
+            arg->v_int32 = (int32_t) ffi_value->v_long;
             break;
         default:
             arg->v_pointer = (void *) ffi_value->v_pointer;

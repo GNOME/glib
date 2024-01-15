@@ -47,7 +47,7 @@ GI_AVAILABLE_IN_ALL
 GIVFuncInfoFlags  gi_vfunc_info_get_flags   (GIVFuncInfo *info);
 
 GI_AVAILABLE_IN_ALL
-guint             gi_vfunc_info_get_offset  (GIVFuncInfo *info);
+unsigned int      gi_vfunc_info_get_offset  (GIVFuncInfo *info);
 
 GI_AVAILABLE_IN_ALL
 GISignalInfo *    gi_vfunc_info_get_signal  (GIVFuncInfo *info);

@@ -98,7 +98,7 @@ gi_ir_module_free (GIIrModule *module)
  */
 void
 gi_ir_module_fatal (GIIrTypelibBuild *build,
-                    guint             line,
+                    unsigned int      line,
                     const char       *msg,
                     ...)
 {
@@ -190,19 +190,19 @@ gi_ir_module_add_include_module (GIIrModule *module,
 
 struct AttributeWriteData
 {
-  guint count;
+  unsigned int count;
   guchar *databuf;
   GIIrNode *node;
   GHashTable *strings;
-  guint32 *offset;
-  guint32 *offset2;
+  uint32_t *offset;
+  uint32_t *offset2;
 };
 
 static void
 write_attribute (gpointer key, gpointer value, gpointer datap)
 {
   struct AttributeWriteData *data = datap;
-  guint32 old_offset = *(data->offset);
+  uint32_t old_offset = *(data->offset);
   AttributeBlob *blob = (AttributeBlob*)&(data->databuf[old_offset]);
 
   *(data->offset) += sizeof (AttributeBlob);
@@ -214,13 +214,13 @@ write_attribute (gpointer key, gpointer value, gpointer datap)
   data->count++;
 }
 
-static guint
+static unsigned
 write_attributes (GIIrModule *module,
                   GIIrNode   *node,
                   GHashTable *strings,
                   guchar     *data,
-                  guint32    *offset,
-                  guint32    *offset2)
+                  uint32_t   *offset,
+                  uint32_t   *offset2)
 {
   struct AttributeWriteData wdata;
   wdata.count = 0;
@@ -245,7 +245,7 @@ node_cmp_offset_func (const void *a,
 }
 
 static void
-alloc_section (guint8 *data, SectionType section_id, guint32 offset)
+alloc_section (uint8_t *data, SectionType section_id, uint32_t offset)
 {
   int i;
   Header *header = (Header*)data;
@@ -266,21 +266,21 @@ alloc_section (guint8 *data, SectionType section_id, guint32 offset)
   g_assert_not_reached ();
 }
 
-static guint8*
-add_directory_index_section (guint8 *data, GIIrModule *module, guint32 *offset2)
+static uint8_t *
+add_directory_index_section (uint8_t *data, GIIrModule *module, uint32_t *offset2)
 {
   DirEntry *entry;
   Header *header = (Header*)data;
   GITypelibHashBuilder *dirindex_builder;
-  guint i, n_interfaces;
-  guint16 required_size;
-  guint32 new_offset;
+  uint16_t n_interfaces;
+  uint16_t required_size;
+  uint32_t new_offset;
 
   dirindex_builder = gi_typelib_hash_builder_new ();
 
   n_interfaces = ((Header *)data)->n_local_entries;
 
-  for (i = 0; i < n_interfaces; i++)
+  for (uint16_t i = 0; i < n_interfaces; i++)
     {
       const char *str;
       entry = (DirEntry *)&data[header->directory + (i * header->entry_blob_size)];
@@ -306,7 +306,7 @@ add_directory_index_section (guint8 *data, GIIrModule *module, guint32 *offset2)
 
   data = g_realloc (data, new_offset);
 
-  gi_typelib_hash_builder_pack (dirindex_builder, ((guint8*)data) + *offset2, required_size);
+  gi_typelib_hash_builder_pack (dirindex_builder, ((uint8_t*)data) + *offset2, required_size);
 
   *offset2 = new_offset;
 
@@ -320,20 +320,20 @@ gi_ir_module_build_typelib (GIIrModule *module)
   GError *error = NULL;
   GITypelib *typelib;
   gsize length;
-  guint i;
+  unsigned int i;
   GList *e;
   Header *header;
   DirEntry *entry;
-  guint32 header_size;
-  guint32 dir_size;
-  guint32 n_entries;
-  guint32 n_local_entries;
-  guint32 size, offset, offset2, old_offset;
+  uint32_t header_size;
+  uint32_t dir_size;
+  uint32_t n_entries;
+  uint32_t n_local_entries;
+  uint32_t size, offset, offset2, old_offset;
   GHashTable *strings;
   GHashTable *types;
   GList *nodes_with_attributes;
   char *dependencies;
-  guchar *data;
+  uint8_t *data;
   Section *section;
 
   header_size = ALIGN_VALUE (sizeof (Header), 4);

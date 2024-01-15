@@ -383,9 +383,7 @@ find_attribute (const char   *name,
                 const char **attribute_names,
                 const char **attribute_values)
 {
-  gint i;
-
-  for (i = 0; attribute_names[i] != NULL; i++)
+  for (int i = 0; attribute_names[i] != NULL; i++)
     if (strcmp (attribute_names[i], name) == 0)
       return attribute_values[i];
 
@@ -435,8 +433,8 @@ static GIIrNodeType * parse_type_internal (GIIrModule *module,
 
 typedef struct {
   const char *str;
-  guint size;
-  guint is_signed : 1;
+  unsigned int size;
+  unsigned int is_signed : 1;
 } IntegerAliasInfo;
 
 static IntegerAliasInfo integer_aliases[] = {
@@ -456,7 +454,7 @@ static IntegerAliasInfo integer_aliases[] = {
 
 typedef struct {
   const char *str;
-  gint tag;
+  int tag;
   gboolean pointer;
 } BasicTypeInfo;
 
@@ -486,8 +484,8 @@ static BasicTypeInfo basic_types[] = {
 static const BasicTypeInfo *
 parse_basic (const char *str)
 {
-  guint i;
-  guint n_basic = G_N_ELEMENTS (basic_types);
+  unsigned int i;
+  unsigned int n_basic = G_N_ELEMENTS (basic_types);
 
   for (i = 0; i < n_basic; i++)
     {
@@ -500,25 +498,25 @@ parse_basic (const char *str)
         {
           switch (integer_aliases[i].size)
             {
-            case sizeof(guint8):
+            case sizeof (uint8_t):
               if (integer_aliases[i].is_signed)
                 return &basic_types[BASIC_TYPE_FIXED_OFFSET];
               else
                 return &basic_types[BASIC_TYPE_FIXED_OFFSET+1];
               break;
-            case sizeof(guint16):
+            case sizeof (uint16_t):
               if (integer_aliases[i].is_signed)
                 return &basic_types[BASIC_TYPE_FIXED_OFFSET+2];
               else
                 return &basic_types[BASIC_TYPE_FIXED_OFFSET+3];
               break;
-            case sizeof(guint32):
+            case sizeof (uint32_t):
               if (integer_aliases[i].is_signed)
                 return &basic_types[BASIC_TYPE_FIXED_OFFSET+4];
               else
                 return &basic_types[BASIC_TYPE_FIXED_OFFSET+5];
               break;
-            case sizeof(guint64):
+            case sizeof (uint64_t):
               if (integer_aliases[i].is_signed)
                 return &basic_types[BASIC_TYPE_FIXED_OFFSET+6];
               else
@@ -705,7 +703,7 @@ resolve_aliases (ParseContext *ctx, const char *type)
       if (g_slist_find_custom (seen_values, lookup,
                                (GCompareFunc)strcmp) != NULL)
         break;
-      seen_values = g_slist_prepend (seen_values, (gchar*)lookup);
+      seen_values = g_slist_prepend (seen_values, (char*) lookup);
     }
   g_slist_free (seen_values);
 
@@ -1661,7 +1659,7 @@ start_property (GMarkupParseContext *context,
   return TRUE;
 }
 
-static gint64
+static int64_t
 parse_value (const char *str)
 {
   char *shift_op;
@@ -1671,7 +1669,7 @@ parse_value (const char *str)
 
   if (shift_op)
     {
-      gint64 base, shift;
+      int64_t base, shift;
 
       base = g_ascii_strtoll (str, NULL, 10);
       shift = g_ascii_strtoll (shift_op + 3, NULL, 10);
@@ -3243,7 +3241,7 @@ start_element_handler (GMarkupParseContext *context,
 
   if (*error == NULL && ctx->state != STATE_PASSTHROUGH)
     {
-      gint line_number, char_number;
+      int line_number, char_number;
       g_markup_parse_context_get_position (context, &line_number, &char_number);
       if (!g_str_has_prefix (element_name, "c:"))
         g_printerr ("%s:%d:%d: warning: element %s from state %d is unknown, ignoring\n",
@@ -3255,7 +3253,7 @@ start_element_handler (GMarkupParseContext *context,
  out:
   if (*error)
     {
-      gint line_number, char_number;
+      int line_number, char_number;
       g_markup_parse_context_get_position (context, &line_number, &char_number);
 
       g_printerr ("%s:%d:%d: error: %s\n", ctx->file_path, line_number, char_number, (*error)->message);

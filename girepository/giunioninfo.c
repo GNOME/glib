@@ -53,7 +53,7 @@
  * Returns: number of fields
  * Since: 2.80
  */
-guint
+unsigned int
 gi_union_info_get_n_fields  (GIUnionInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -75,7 +75,7 @@ gi_union_info_get_n_fields  (GIUnionInfo *info)
  */
 GIFieldInfo *
 gi_union_info_get_field (GIUnionInfo *info,
-                         guint        n)
+                         unsigned int n)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header = (Header *)rinfo->typelib->data;
@@ -94,7 +94,7 @@ gi_union_info_get_field (GIUnionInfo *info,
  * Returns: number of methods
  * Since: 2.80
  */
-guint
+unsigned int
 gi_union_info_get_n_methods (GIUnionInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -116,12 +116,12 @@ gi_union_info_get_n_methods (GIUnionInfo *info)
  */
 GIFunctionInfo *
 gi_union_info_get_method (GIUnionInfo *info,
-                          guint        n)
+                          unsigned int n)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   UnionBlob *blob = (UnionBlob *)&rinfo->typelib->data[rinfo->offset];
   Header *header = (Header *)rinfo->typelib->data;
-  gint offset;
+  int offset;
 
   offset = rinfo->offset + header->union_blob_size
     + blob->n_fields * header->field_blob_size
@@ -157,7 +157,7 @@ gi_union_info_is_discriminated (GIUnionInfo *info)
  * Returns: offset, in bytes, of the discriminator
  * Since: 2.80
  */
-guint
+unsigned int
 gi_union_info_get_discriminator_offset (GIUnionInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -202,7 +202,7 @@ gi_union_info_get_discriminator_type (GIUnionInfo *info)
  */
 GIConstantInfo *
 gi_union_info_get_discriminator (GIUnionInfo *info,
-                                 guint        n)
+                                 unsigned int n)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   UnionBlob *blob = (UnionBlob *)&rinfo->typelib->data[rinfo->offset];
@@ -210,7 +210,7 @@ gi_union_info_get_discriminator (GIUnionInfo *info,
   if (blob->discriminated)
     {
       Header *header = (Header *)rinfo->typelib->data;
-      gint offset;
+      int offset;
 
       offset = rinfo->offset + header->union_blob_size
         + blob->n_fields * header->field_blob_size
@@ -240,7 +240,7 @@ GIFunctionInfo *
 gi_union_info_find_method (GIUnionInfo *info,
                            const char  *name)
 {
-  gint offset;
+  int offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header = (Header *)rinfo->typelib->data;
   UnionBlob *blob = (UnionBlob *)&rinfo->typelib->data[rinfo->offset];

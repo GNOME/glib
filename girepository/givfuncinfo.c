@@ -47,14 +47,14 @@
 
 GIVFuncInfo *
 gi_base_info_find_vfunc (GIRealInfo  *rinfo,
-                         guint32      offset,
-                         guint        n_vfuncs,
+                         uint32_t     offset,
+                         unsigned     n_vfuncs,
                          const char  *name)
 {
   /* FIXME hash */
   Header *header = (Header *)rinfo->typelib->data;
 
-  for (guint i = 0; i < n_vfuncs; i++)
+  for (unsigned i = 0; i < n_vfuncs; i++)
     {
       VFuncBlob *fblob = (VFuncBlob *)&rinfo->typelib->data[offset];
       const char *fname = (const char *)&rinfo->typelib->data[fblob->name];
@@ -121,7 +121,7 @@ gi_vfunc_info_get_flags (GIVFuncInfo *info)
  * Returns: the struct offset or `0xFFFF` if it’s unknown
  * Since: 2.80
  */
-guint
+unsigned int
 gi_vfunc_info_get_offset (GIVFuncInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;

@@ -36,6 +36,7 @@
 #include <gmodule.h>
 
 #include <stdlib.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -70,12 +71,12 @@ read_line (FILE   *input,
            size_t *len_out)
 {
   GByteArray *buffer = g_byte_array_new ();
-  const guint8 nul = '\0';
+  const uint8_t nul = '\0';
 
   while (TRUE)
     {
       size_t ret;
-      guint8 byte;
+      uint8_t byte;
 
       ret = fread (&byte, 1, 1, input);
       if (ret == 0)
@@ -250,8 +251,8 @@ value_to_string (const GValue *value)
 static void
 dump_properties (GType type, FILE *out)
 {
-  guint i;
-  guint n_properties = 0;
+  unsigned int i;
+  unsigned int n_properties = 0;
   GParamSpec **props;
 
   if (G_TYPE_FUNDAMENTAL (type) == G_TYPE_OBJECT)
@@ -303,16 +304,16 @@ dump_properties (GType type, FILE *out)
 static void
 dump_signals (GType type, FILE *out)
 {
-  guint i;
-  guint n_sigs;
-  guint *sig_ids;
+  unsigned int i;
+  unsigned int n_sigs;
+  unsigned int *sig_ids;
 
   sig_ids = g_signal_list_ids (type, &n_sigs);
   for (i = 0; i < n_sigs; i++)
     {
-      guint sigid;
+      unsigned int sigid;
       GSignalQuery query;
-      guint j;
+      unsigned int j;
 
       sigid = sig_ids[i];
       g_signal_query (sigid, &query);
@@ -355,8 +356,8 @@ dump_signals (GType type, FILE *out)
 static void
 dump_object_type (GType type, const char *symbol, FILE *out)
 {
-  guint n_interfaces;
-  guint i;
+  unsigned int n_interfaces;
+  unsigned int i;
   GType *interfaces;
 
   escaped_printf (out, "  <class name=\"%s\" get-type=\"%s\"",
@@ -409,8 +410,8 @@ dump_object_type (GType type, const char *symbol, FILE *out)
 static void
 dump_interface_type (GType type, const char *symbol, FILE *out)
 {
-  guint n_interfaces;
-  guint i;
+  unsigned int n_interfaces;
+  unsigned int i;
   GType *interfaces;
 
   escaped_printf (out, "  <interface name=\"%s\" get-type=\"%s\">\n",
@@ -449,7 +450,7 @@ dump_boxed_type (GType type, const char *symbol, FILE *out)
 static void
 dump_flags_type (GType type, const char *symbol, FILE *out)
 {
-  guint i;
+  unsigned int i;
   GFlagsClass *klass;
 
   klass = g_type_class_ref (type);
@@ -469,7 +470,7 @@ dump_flags_type (GType type, const char *symbol, FILE *out)
 static void
 dump_enum_type (GType type, const char *symbol, FILE *out)
 {
-  guint i;
+  unsigned int i;
   GEnumClass *klass;
 
   klass = g_type_class_ref (type);
@@ -489,8 +490,8 @@ dump_enum_type (GType type, const char *symbol, FILE *out)
 static void
 dump_fundamental_type (GType type, const char *symbol, FILE *out)
 {
-  guint n_interfaces;
-  guint i;
+  unsigned int n_interfaces;
+  unsigned int i;
   GType *interfaces;
   GString *parent_str;
   GType parent;

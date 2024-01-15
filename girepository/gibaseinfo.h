@@ -96,6 +96,6 @@ GI_AVAILABLE_IN_ALL
 GIBaseInfo *           gi_info_new                   (GIInfoType  type,
                                                       GIBaseInfo *container,
                                                       GITypelib  *typelib,
-                                                      guint32     offset);
+                                                      uint32_t    offset);
 
 G_END_DECLS

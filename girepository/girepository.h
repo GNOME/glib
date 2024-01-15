@@ -169,13 +169,13 @@ void          gi_repository_get_object_gtype_interfaces (GIRepository      *repo
                                                          GIInterfaceInfo ***interfaces_out);
 
 GI_AVAILABLE_IN_ALL
-guint         gi_repository_get_n_infos   (GIRepository *repository,
+unsigned int  gi_repository_get_n_infos   (GIRepository *repository,
                                            const char   *namespace_);
 
 GI_AVAILABLE_IN_ALL
 GIBaseInfo *  gi_repository_get_info      (GIRepository *repository,
                                            const char   *namespace_,
-                                           guint         idx);
+                                           unsigned int  idx);
 
 GI_AVAILABLE_IN_ALL
 GIEnumInfo *  gi_repository_find_by_error_domain (GIRepository *repository,
@@ -249,7 +249,7 @@ GQuark gi_repository_error_quark (void);
 GI_AVAILABLE_IN_ALL
 void gi_cclosure_marshal_generic (GClosure       *closure,
                                   GValue         *return_gvalue,
-                                  guint           n_param_values,
+                                  unsigned int    n_param_values,
                                   const GValue   *param_values,
                                   void           *invocation_hint,
                                   void           *marshal_data);

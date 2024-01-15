@@ -89,14 +89,14 @@ GI_AVAILABLE_IN_ALL
 GITypeTag              gi_type_info_get_tag             (GITypeInfo *info);
 
 GI_AVAILABLE_IN_ALL
-GITypeInfo *           gi_type_info_get_param_type      (GITypeInfo *info,
-                                                         guint       n);
+GITypeInfo *           gi_type_info_get_param_type      (GITypeInfo  *info,
+                                                         unsigned int n);
 
 GI_AVAILABLE_IN_ALL
 GIBaseInfo *           gi_type_info_get_interface       (GITypeInfo *info);
 
 GI_AVAILABLE_IN_ALL
-gint                   gi_type_info_get_array_length_index (GITypeInfo *info);
+int                    gi_type_info_get_array_length_index (GITypeInfo *info);
 
 GI_AVAILABLE_IN_ALL
 gssize                 gi_type_info_get_array_fixed_size (GITypeInfo *info);

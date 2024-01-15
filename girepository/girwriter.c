@@ -45,7 +45,7 @@ typedef struct {
 
 typedef struct {
   char *name;
-  guint has_children : 1;
+  unsigned has_children : 1;
 } XmlElement;
 
 static XmlElement *
@@ -173,7 +173,7 @@ check_unresolved (GIBaseInfo *info)
 }
 
 static void
-write_type_name (const char  *ns,
+write_type_name (const char *ns,
                  GIBaseInfo  *info,
                  Xml         *file)
 {
@@ -184,7 +184,7 @@ write_type_name (const char  *ns,
 }
 
 static void
-write_type_name_attribute (const  char *ns,
+write_type_name_attribute (const char *ns,
                            GIBaseInfo  *info,
                            const char  *attr_name,
                            Xml         *file)
@@ -215,11 +215,11 @@ write_ownership_transfer (GITransfer transfer,
 }
 
 static void
-write_type_info (const char  *ns,
+write_type_info (const char *ns,
                  GITypeInfo  *info,
                  Xml         *file)
 {
-  gint tag;
+  int tag;
   GITypeInfo *type;
   gboolean is_pointer;
 
@@ -244,7 +244,7 @@ write_type_info (const char  *ns,
     }
   else if (tag == GI_TYPE_TAG_ARRAY)
     {
-      gint length;
+      int length;
       gssize size;
       const char *name = NULL;
 
@@ -379,7 +379,7 @@ write_return_value_attributes (Xml *file,
 }
 
 static void
-write_constant_value (const char  *ns,
+write_constant_value (const char *ns,
                       GITypeInfo *info,
                       GIArgument *argument,
                       Xml *file);
@@ -390,15 +390,15 @@ write_callback_info (const char     *ns,
                      Xml            *file);
 
 static void
-write_field_info (const char  *ns,
+write_field_info (const char *ns,
                   GIFieldInfo *info,
                   GIConstantInfo *branch,
                   Xml         *file)
 {
   const char *name;
   GIFieldInfoFlags flags;
-  gint size;
-  gint offset;
+  int size;
+  int offset;
   GITypeInfo *type;
   GIBaseInfo *interface;
   GIArgument value;
@@ -490,7 +490,7 @@ write_callable_info (const char     *ns,
     return;
 
   xml_start_element (file, "parameters");
-  for (guint i = 0; i < gi_callable_info_get_n_args (info); i++)
+  for (unsigned int i = 0; i < gi_callable_info_get_n_args (info); i++)
     {
       GIArgInfo *arg = gi_callable_info_get_arg (info, i);
 
@@ -568,7 +568,7 @@ write_callable_info (const char     *ns,
 }
 
 static void
-write_function_info (const char     *ns,
+write_function_info (const char    *ns,
                      GIFunctionInfo *info,
                      Xml            *file)
 {
@@ -651,8 +651,8 @@ write_struct_info (const char   *ns,
   gboolean deprecated;
   gboolean is_gtype_struct;
   gboolean foreign;
-  gint size;
-  guint n_elts;
+  int size;
+  unsigned int n_elts;
 
   name = gi_base_info_get_name ((GIBaseInfo *)info);
   deprecated = gi_base_info_is_deprecated ((GIBaseInfo *)info);
@@ -702,14 +702,14 @@ write_struct_info (const char   *ns,
   n_elts = gi_struct_info_get_n_fields (info) + gi_struct_info_get_n_methods (info);
   if (n_elts > 0)
     {
-      for (guint i = 0; i < gi_struct_info_get_n_fields (info); i++)
+      for (unsigned int i = 0; i < gi_struct_info_get_n_fields (info); i++)
         {
           GIFieldInfo *field = gi_struct_info_get_field (info, i);
           write_field_info (ns, field, NULL, file);
           gi_base_info_unref ((GIBaseInfo *)field);
         }
 
-      for (guint i = 0; i < gi_struct_info_get_n_methods (info); i++)
+      for (unsigned int i = 0; i < gi_struct_info_get_n_methods (info); i++)
         {
           GIFunctionInfo *function = gi_struct_info_get_method (info, i);
           write_function_info (ns, function, file);
@@ -722,12 +722,12 @@ write_struct_info (const char   *ns,
 }
 
 static void
-write_value_info (const char  *ns,
+write_value_info (const char *ns,
                   GIValueInfo *info,
                   Xml         *file)
 {
   const char *name;
-  gint64 value;
+  int64_t value;
   char *value_str;
   gboolean deprecated;
 
@@ -863,7 +863,7 @@ write_enum_info (const char *ns,
 
   write_attributes (file, (GIBaseInfo*) info);
 
-  for (guint i = 0; i < gi_enum_info_get_n_values (info); i++)
+  for (unsigned int i = 0; i < gi_enum_info_get_n_values (info); i++)
     {
       GIValueInfo *value = gi_enum_info_get_value (info, i);
       write_value_info (ns, value, file);
@@ -925,7 +925,7 @@ write_vfunc_info (const char  *ns,
   const char *name;
   GIFunctionInfo *invoker;
   gboolean deprecated;
-  gint offset;
+  int offset;
 
   name = gi_base_info_get_name ((GIBaseInfo *)info);
   flags = gi_vfunc_info_get_flags (info);
@@ -1100,7 +1100,7 @@ write_object_info (const char   *ns,
 
   if (gi_object_info_get_n_interfaces (info) > 0)
     {
-      for (guint i = 0; i < gi_object_info_get_n_interfaces (info); i++)
+      for (unsigned int i = 0; i < gi_object_info_get_n_interfaces (info); i++)
         {
           GIInterfaceInfo *imp = gi_object_info_get_interface (info, i);
           xml_start_element (file, "implements");
@@ -1110,42 +1110,42 @@ write_object_info (const char   *ns,
         }
     }
 
-  for (guint i = 0; i < gi_object_info_get_n_fields (info); i++)
+  for (unsigned int i = 0; i < gi_object_info_get_n_fields (info); i++)
     {
       GIFieldInfo *field = gi_object_info_get_field (info, i);
       write_field_info (ns, field, NULL, file);
       gi_base_info_unref ((GIBaseInfo *)field);
     }
 
-  for (guint i = 0; i < gi_object_info_get_n_methods (info); i++)
+  for (unsigned int i = 0; i < gi_object_info_get_n_methods (info); i++)
     {
       GIFunctionInfo *function = gi_object_info_get_method (info, i);
       write_function_info (ns, function, file);
       gi_base_info_unref ((GIBaseInfo *)function);
     }
 
-  for (guint i = 0; i < gi_object_info_get_n_properties (info); i++)
+  for (unsigned int i = 0; i < gi_object_info_get_n_properties (info); i++)
     {
       GIPropertyInfo *prop = gi_object_info_get_property (info, i);
       write_property_info (ns, prop, file);
       gi_base_info_unref ((GIBaseInfo *)prop);
     }
 
-  for (guint i = 0; i < gi_object_info_get_n_signals (info); i++)
+  for (unsigned int i = 0; i < gi_object_info_get_n_signals (info); i++)
     {
       GISignalInfo *signal = gi_object_info_get_signal (info, i);
       write_signal_info (ns, signal, file);
       gi_base_info_unref ((GIBaseInfo *)signal);
     }
 
-  for (guint i = 0; i < gi_object_info_get_n_vfuncs (info); i++)
+  for (unsigned int i = 0; i < gi_object_info_get_n_vfuncs (info); i++)
     {
       GIVFuncInfo *vfunc = gi_object_info_get_vfunc (info, i);
       write_vfunc_info (ns, vfunc, file);
       gi_base_info_unref ((GIBaseInfo *)vfunc);
     }
 
-  for (guint i = 0; i < gi_object_info_get_n_constants (info); i++)
+  for (unsigned int i = 0; i < gi_object_info_get_n_constants (info); i++)
     {
       GIConstantInfo *constant = gi_object_info_get_constant (info, i);
       write_constant_info (ns, constant, file);
@@ -1189,7 +1189,7 @@ write_interface_info (const char      *ns,
 
   if (gi_interface_info_get_n_prerequisites (info) > 0)
     {
-      for (guint i = 0; i < gi_interface_info_get_n_prerequisites (info); i++)
+      for (unsigned int i = 0; i < gi_interface_info_get_n_prerequisites (info); i++)
         {
           GIBaseInfo *req = gi_interface_info_get_prerequisite (info, i);
 
@@ -1201,35 +1201,35 @@ write_interface_info (const char      *ns,
         }
     }
 
-  for (guint i = 0; i < gi_interface_info_get_n_methods (info); i++)
+  for (unsigned int i = 0; i < gi_interface_info_get_n_methods (info); i++)
     {
       GIFunctionInfo *function = gi_interface_info_get_method (info, i);
       write_function_info (ns, function, file);
       gi_base_info_unref ((GIBaseInfo *)function);
     }
 
-  for (guint i = 0; i < gi_interface_info_get_n_properties (info); i++)
+  for (unsigned int i = 0; i < gi_interface_info_get_n_properties (info); i++)
     {
       GIPropertyInfo *prop = gi_interface_info_get_property (info, i);
       write_property_info (ns, prop, file);
       gi_base_info_unref ((GIBaseInfo *)prop);
     }
 
-  for (guint i = 0; i < gi_interface_info_get_n_signals (info); i++)
+  for (unsigned int i = 0; i < gi_interface_info_get_n_signals (info); i++)
     {
       GISignalInfo *signal = gi_interface_info_get_signal (info, i);
       write_signal_info (ns, signal, file);
       gi_base_info_unref ((GIBaseInfo *)signal);
     }
 
-  for (guint i = 0; i < gi_interface_info_get_n_vfuncs (info); i++)
+  for (unsigned int i = 0; i < gi_interface_info_get_n_vfuncs (info); i++)
     {
       GIVFuncInfo *vfunc = gi_interface_info_get_vfunc (info, i);
       write_vfunc_info (ns, vfunc, file);
       gi_base_info_unref ((GIBaseInfo *)vfunc);
     }
 
-  for (guint i = 0; i < gi_interface_info_get_n_constants (info); i++)
+  for (unsigned int i = 0; i < gi_interface_info_get_n_constants (info); i++)
     {
       GIConstantInfo *constant = gi_interface_info_get_constant (info, i);
       write_constant_info (ns, constant, file);
@@ -1240,7 +1240,7 @@ write_interface_info (const char      *ns,
 }
 
 static void
-write_union_info (const char  *ns,
+write_union_info (const char *ns,
                   GIUnionInfo *info,
                   Xml         *file)
 {
@@ -1282,7 +1282,7 @@ write_union_info (const char  *ns,
 
   if (gi_union_info_is_discriminated (info))
     {
-      guint offset;
+      unsigned int offset;
       GITypeInfo *type;
 
       offset = gi_union_info_get_discriminator_offset (info);
@@ -1295,7 +1295,7 @@ write_union_info (const char  *ns,
       gi_base_info_unref ((GIBaseInfo *)type);
     }
 
-  for (guint i = 0; i < gi_union_info_get_n_fields (info); i++)
+  for (unsigned int i = 0; i < gi_union_info_get_n_fields (info); i++)
     {
       GIFieldInfo *field = gi_union_info_get_field (info, i);
       GIConstantInfo *constant = gi_union_info_get_discriminator (info, i);
@@ -1305,7 +1305,7 @@ write_union_info (const char  *ns,
         gi_base_info_unref ((GIBaseInfo *)constant);
     }
 
-  for (guint i = 0; i < gi_union_info_get_n_methods (info); i++)
+  for (unsigned int i = 0; i < gi_union_info_get_n_methods (info); i++)
     {
       GIFunctionInfo *function = gi_union_info_get_method (info, i);
       write_function_info (ns, function, file);
@@ -1335,7 +1335,7 @@ gi_ir_writer_write (const char *filename,
                     gboolean    show_all)
 {
   FILE *ofile;
-  gint i, j;
+  int i, j;
   char **dependencies;
   GIRepository *repository;
   Xml *xml;
@@ -1394,7 +1394,7 @@ gi_ir_writer_write (const char *filename,
       const char *c_prefix;
       const char *cur_ns = ns;
       const char *cur_version;
-      gint n_infos;
+      int n_infos;
 
       cur_version = gi_repository_get_version (repository, cur_ns);
 

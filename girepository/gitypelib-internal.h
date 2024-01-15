@@ -288,46 +288,46 @@ _blob_is_registered_type (GITypelibBlobType blob_type)
  */
 typedef struct {
   char    magic[16];
-  guint8  major_version;
-  guint8  minor_version;
-  guint16 reserved;
-  guint16 n_entries;
-  guint16 n_local_entries;
-  guint32 directory;
-  guint32 n_attributes;
-  guint32 attributes;
+  uint8_t  major_version;
+  uint8_t  minor_version;
+  uint16_t reserved;
+  uint16_t n_entries;
+  uint16_t n_local_entries;
+  uint32_t directory;
+  uint32_t n_attributes;
+  uint32_t attributes;
 
-  guint32 dependencies;
+  uint32_t dependencies;
 
-  guint32 size;
-  guint32 namespace;
-  guint32 nsversion;
-  guint32 shared_library;
-  guint32 c_prefix;
+  uint32_t size;
+  uint32_t namespace;
+  uint32_t nsversion;
+  uint32_t shared_library;
+  uint32_t c_prefix;
 
-  guint16 entry_blob_size;
-  guint16 function_blob_size;
-  guint16 callback_blob_size;
-  guint16 signal_blob_size;
-  guint16 vfunc_blob_size;
-  guint16 arg_blob_size;
-  guint16 property_blob_size;
-  guint16 field_blob_size;
-  guint16 value_blob_size;
-  guint16 attribute_blob_size;
-  guint16 constant_blob_size;
-  guint16 error_domain_blob_size;
+  uint16_t entry_blob_size;
+  uint16_t function_blob_size;
+  uint16_t callback_blob_size;
+  uint16_t signal_blob_size;
+  uint16_t vfunc_blob_size;
+  uint16_t arg_blob_size;
+  uint16_t property_blob_size;
+  uint16_t field_blob_size;
+  uint16_t value_blob_size;
+  uint16_t attribute_blob_size;
+  uint16_t constant_blob_size;
+  uint16_t error_domain_blob_size;
 
-  guint16 signature_blob_size;
-  guint16 enum_blob_size;
-  guint16 struct_blob_size;
-  guint16 object_blob_size;
-  guint16 interface_blob_size;
-  guint16 union_blob_size;
+  uint16_t signature_blob_size;
+  uint16_t enum_blob_size;
+  uint16_t struct_blob_size;
+  uint16_t object_blob_size;
+  uint16_t interface_blob_size;
+  uint16_t union_blob_size;
 
-  guint32 sections;
+  uint32_t sections;
 
-  guint16 padding[6];
+  uint16_t padding[6];
 } Header;
 
 /**
@@ -357,8 +357,8 @@ typedef enum {
  * Since: 2.80
  */
 typedef struct {
-  guint32 id;
-  guint32 offset;
+  uint32_t id;
+  uint32_t offset;
 } Section;
 
 
@@ -380,12 +380,12 @@ typedef struct {
  * Since: 2.80
  */
 typedef struct {
-  guint16 blob_type;
+  uint16_t blob_type;
 
-  guint16 local    : 1;
-  guint16 reserved :15;
-  guint32 name;
-  guint32 offset;
+  uint16_t local    : 1;
+  uint16_t reserved :15;
+  uint32_t name;
+  uint32_t offset;
 } DirEntry;
 
 /**
@@ -401,17 +401,17 @@ typedef struct {
  * Since: 2.80
  */
 typedef struct {
-  guint reserved   : 8;
-  guint reserved2  :16;
-  guint pointer    : 1;
-  guint reserved3  : 2;
-  guint tag        : 5;
+  unsigned reserved   : 8;
+  unsigned reserved2  :16;
+  unsigned pointer    : 1;
+  unsigned reserved3  : 2;
+  unsigned tag        : 5;
 } SimpleTypeBlobFlags;
 
 union _SimpleTypeBlob
 {
   SimpleTypeBlobFlags flags;
-  guint32    offset;
+  uint32_t  offset;
 };
 
 /**
@@ -489,23 +489,23 @@ typedef union _SimpleTypeBlob SimpleTypeBlob;
  * Since: 2.80
  */
 typedef struct {
-  guint32        name;
+  uint32_t       name;
 
-  guint          in                           : 1;
-  guint          out                          : 1;
-  guint          caller_allocates             : 1;
-  guint          nullable                     : 1;
-  guint          optional                     : 1;
-  guint          transfer_ownership           : 1;
-  guint          transfer_container_ownership : 1;
-  guint          return_value                 : 1;
-  guint          scope                        : 3;
-  guint          skip                         : 1;
-  guint          reserved                     :20;
-  gint8          closure;
-  gint8          destroy;
+  unsigned       in                           : 1;
+  unsigned       out                          : 1;
+  unsigned       caller_allocates             : 1;
+  unsigned       nullable                     : 1;
+  unsigned       optional                     : 1;
+  unsigned       transfer_ownership           : 1;
+  unsigned       transfer_container_ownership : 1;
+  unsigned       return_value                 : 1;
+  unsigned       scope                        : 3;
+  unsigned       skip                         : 1;
+  unsigned       reserved                     :20;
+  int8_t         closure;
+  int8_t         destroy;
 
-  guint16        padding;
+  uint16_t       padding;
 
   SimpleTypeBlob arg_type;
 } ArgBlob;
@@ -538,15 +538,15 @@ typedef struct {
 typedef struct {
   SimpleTypeBlob return_type;
 
-  guint16        may_return_null              : 1;
-  guint16        caller_owns_return_value     : 1;
-  guint16        caller_owns_return_container : 1;
-  guint16        skip_return                  : 1;
-  guint16        instance_transfer_ownership  : 1;
-  guint16        throws                       : 1;
-  guint16        reserved                     :10;
+  uint16_t        may_return_null              : 1;
+  uint16_t        caller_owns_return_value     : 1;
+  uint16_t        caller_owns_return_container : 1;
+  uint16_t        skip_return                  : 1;
+  uint16_t        instance_transfer_ownership  : 1;
+  uint16_t        throws                       : 1;
+  uint16_t        reserved                     :10;
 
-  guint16        n_arguments;
+  uint16_t        n_arguments;
 
   ArgBlob        arguments[];
 } SignatureBlob;
@@ -566,11 +566,11 @@ typedef struct {
  * Since: 2.80
  */
 typedef struct {
-  guint16 blob_type;  /* 1 */
+  uint16_t blob_type;  /* 1 */
 
-  guint16 deprecated : 1;
-  guint16 reserved   :15;
-  guint32 name;
+  uint16_t deprecated : 1;
+  uint16_t reserved   :15;
+  uint32_t name;
 } CommonBlob;
 
 /**
@@ -605,26 +605,26 @@ typedef struct {
  * Since: 2.80
  */
 typedef struct {
-  guint16 blob_type;  /* 1 */
+  uint16_t blob_type;  /* 1 */
 
-  guint16 deprecated  : 1;
-  guint16 setter      : 1;
-  guint16 getter      : 1;
-  guint16 constructor : 1;
-  guint16 wraps_vfunc : 1;
-  guint16 throws      : 1;
-  guint16 index       :10;
+  uint16_t deprecated  : 1;
+  uint16_t setter      : 1;
+  uint16_t getter      : 1;
+  uint16_t constructor : 1;
+  uint16_t wraps_vfunc : 1;
+  uint16_t throws      : 1;
+  uint16_t index       :10;
   /* Note the bits above need to match CommonBlob
    * and are thus exhausted, extend things using
    * the reserved block below. */
 
-  guint32 name;
-  guint32 symbol;
-  guint32 signature;
+  uint32_t name;
+  uint32_t symbol;
+  uint32_t signature;
 
-  guint16 is_static   : 1;
-  guint16 reserved    : 15;
-  guint16 reserved2   : 16;
+  uint16_t is_static   : 1;
+  uint16_t reserved    : 15;
+  uint16_t reserved2   : 16;
 } FunctionBlob;
 
 /**
@@ -641,12 +641,12 @@ typedef struct {
  * Since: 2.80
  */
 typedef struct {
-  guint16 blob_type;  /* 2 */
+  uint16_t blob_type;  /* 2 */
 
-  guint16 deprecated : 1;
-  guint16 reserved   :15;
-  guint32 name;
-  guint32 signature;
+  uint16_t deprecated : 1;
+  uint16_t reserved   :15;
+  uint32_t name;
+  uint32_t signature;
 } CallbackBlob;
 
 /**
@@ -662,11 +662,11 @@ typedef struct {
  * Since: 2.80
  */
 typedef struct {
-  guint8  pointer  :1;
-  guint8  reserved :2;
-  guint8  tag      :5;
-  guint8  reserved2;
-  guint16 interface;
+  uint8_t  pointer  :1;
+  uint8_t  reserved :2;
+  uint8_t  tag      :5;
+  uint8_t  reserved2;
+  uint16_t interface;
 } InterfaceTypeBlob;
 
 /**
@@ -679,8 +679,8 @@ typedef struct {
  * Since: 2.80
  */
 typedef union {
-  guint16 length;
-  guint16 size;
+  uint16_t length;
+  uint16_t size;
 } ArrayTypeDimension;
 
 /**
@@ -706,15 +706,15 @@ typedef union {
  * Since: 2.80
  */
 typedef struct {
-  guint16 pointer         :1;
-  guint16 reserved        :2;
-  guint16 tag             :5;
+  uint16_t pointer         :1;
+  uint16_t reserved        :2;
+  uint16_t tag             :5;
 
-  guint16 zero_terminated :1;
-  guint16 has_length      :1;
-  guint16 has_size        :1;
-  guint16 array_type      :2;
-  guint16 reserved2       :3;
+  uint16_t zero_terminated :1;
+  uint16_t has_length      :1;
+  uint16_t has_size        :1;
+  uint16_t array_type      :2;
+  uint16_t reserved2       :3;
 
   ArrayTypeDimension dimensions;
 
@@ -735,12 +735,12 @@ typedef struct {
  * Since: 2.80
  */
 typedef struct {
-  guint8         pointer  :1;
-  guint8         reserved :2;
-  guint8         tag      :5;
+  uint8_t        pointer  :1;
+  uint8_t        reserved :2;
+  uint8_t        tag      :5;
 
-  guint8         reserved2;
-  guint16         n_types;
+  uint8_t        reserved2;
+  uint16_t       n_types;
 
   SimpleTypeBlob type[];
 } ParamTypeBlob;
@@ -759,20 +759,20 @@ typedef struct {
  * Since: 2.80
  */
 typedef struct {
-  guint8  pointer  :1;
-  guint8  reserved :2;
-  guint8  tag      :5;
+  uint8_t  pointer  :1;
+  uint8_t  reserved :2;
+  uint8_t  tag      :5;
 
-  guint8  reserved2;
+  uint8_t  reserved2;
 
-  guint16 n_domains; /* Must be 0 */
-  guint16 domains[];
+  uint16_t n_domains; /* Must be 0 */
+  uint16_t domains[];
 }  ErrorTypeBlob;
 
 /**
  * ValueBlob:
  * @deprecated: Whether this value is deprecated
- * @unsigned_value: if set, value is a 32-bit unsigned integer cast to gint32
+ * @unsigned_value: if set, value is a 32-bit unsigned integer cast to int32_t
  * @reserved: Reserved for future use.
  * @name: Name of blob
  * @value: The numerical value
@@ -782,11 +782,11 @@ typedef struct {
  * Since: 2.80
  */
 typedef struct {
-  guint32 deprecated : 1;
-  guint32 unsigned_value : 1;
-  guint32 reserved   :30;
-  guint32 name;
-  gint32 value;
+  uint32_t deprecated : 1;
+  uint32_t unsigned_value : 1;
+  uint32_t reserved   :30;
+  uint32_t name;
+  int32_t value;
 } ValueBlob;
 
 /**
@@ -808,17 +808,17 @@ typedef struct {
  * Since: 2.80
  */
 typedef struct {
-  guint32        name;
+  uint32_t       name;
 
-  guint8         readable :1;
-  guint8         writable :1;
-  guint8         has_embedded_type :1;
-  guint8         reserved :5;
-  guint8         bits;
+  uint8_t        readable :1;
+  uint8_t        writable :1;
+  uint8_t        has_embedded_type :1;
+  uint8_t        reserved :5;
+  uint8_t        bits;
 
-  guint16        struct_offset;
+  uint16_t       struct_offset;
 
-  guint32        reserved2;
+  uint32_t       reserved2;
 
   SimpleTypeBlob type;
 } FieldBlob;
@@ -839,14 +839,14 @@ typedef struct {
  * Since: 2.80
  */
 typedef struct {
-  guint16 blob_type;
-  guint16 deprecated   : 1;
-  guint16 unregistered : 1;
-  guint16 reserved :14;
-  guint32 name;
+  uint16_t blob_type;
+  uint16_t deprecated   : 1;
+  uint16_t unregistered : 1;
+  uint16_t reserved :14;
+  uint32_t name;
 
-  guint32 gtype_name;
-  guint32 gtype_init;
+  uint32_t gtype_name;
+  uint32_t gtype_init;
 } RegisteredTypeBlob;
 
 /**
@@ -876,27 +876,27 @@ typedef struct {
  * Since: 2.80
  */
 typedef struct {
-  guint16   blob_type;
+  uint16_t blob_type;
 
-  guint16   deprecated   : 1;
-  guint16   unregistered : 1;
-  guint16   is_gtype_struct : 1;
-  guint16   alignment    : 6;
-  guint16   foreign      : 1;
-  guint16   reserved     : 6;
+  uint16_t deprecated   : 1;
+  uint16_t unregistered : 1;
+  uint16_t is_gtype_struct : 1;
+  uint16_t alignment    : 6;
+  uint16_t foreign      : 1;
+  uint16_t reserved     : 6;
 
-  guint32   name;
+  uint32_t name;
 
-  guint32   gtype_name;
-  guint32   gtype_init;
+  uint32_t gtype_name;
+  uint32_t gtype_init;
 
-  guint32   size;
+  uint32_t size;
 
-  guint16   n_fields;
-  guint16   n_methods;
+  uint16_t n_fields;
+  uint16_t n_methods;
 
-  guint32   copy_func;
-  guint32   free_func;
+  uint32_t copy_func;
+  uint32_t free_func;
 } StructBlob;
 
 /**
@@ -927,26 +927,26 @@ typedef struct {
  * Since: 2.80
  */
 typedef struct {
-  guint16      blob_type;
-  guint16      deprecated    : 1;
-  guint16      unregistered  : 1;
-  guint16      discriminated : 1;
-  guint16      alignment     : 6;
-  guint16      reserved      : 7;
-  guint32      name;
+  uint16_t       blob_type;
+  uint16_t       deprecated    : 1;
+  uint16_t       unregistered  : 1;
+  uint16_t       discriminated : 1;
+  uint16_t       alignment     : 6;
+  uint16_t       reserved      : 7;
+  uint32_t       name;
 
-  guint32      gtype_name;
-  guint32      gtype_init;
+  uint32_t       gtype_name;
+  uint32_t       gtype_init;
 
-  guint32      size;
+  uint32_t       size;
 
-  guint16      n_fields;
-  guint16      n_functions;
+  uint16_t       n_fields;
+  uint16_t       n_functions;
 
-  guint32      copy_func;
-  guint32      free_func;
+  uint32_t       copy_func;
+  uint32_t       free_func;
 
-  gint32       discriminator_offset;
+  int32_t        discriminator_offset;
   SimpleTypeBlob discriminator_type;
 } UnionBlob;
 
@@ -971,22 +971,22 @@ typedef struct {
  * Since: 2.80
  */
 typedef struct {
-  guint16   blob_type;
+  uint16_t  blob_type;
 
-  guint16   deprecated   : 1;
-  guint16   unregistered : 1;
-  guint16   storage_type : 5;
-  guint16   reserved     : 9;
+  uint16_t  deprecated   : 1;
+  uint16_t  unregistered : 1;
+  uint16_t  storage_type : 5;
+  uint16_t  reserved     : 9;
 
-  guint32   name;
+  uint32_t  name;
 
-  guint32   gtype_name;
-  guint32   gtype_init;
+  uint32_t  gtype_name;
+  uint32_t  gtype_init;
 
-  guint16   n_values;
-  guint16   n_methods;
+  uint16_t  n_values;
+  uint16_t  n_methods;
 
-  guint32   error_domain;
+  uint32_t  error_domain;
 
   ValueBlob values[];
 } EnumBlob;
@@ -1021,20 +1021,20 @@ typedef struct {
  * Since: 2.80
  */
 typedef struct {
-  guint32        name;
+  uint32_t       name;
 
-  guint32        deprecated                   : 1;
-  guint32        readable                     : 1;
-  guint32        writable                     : 1;
-  guint32        construct                    : 1;
-  guint32        construct_only               : 1;
-  guint32        transfer_ownership           : 1;
-  guint32        transfer_container_ownership : 1;
-  guint32        setter                       :10;
-  guint32        getter                       :10;
-  guint32        reserved                     : 5;
+  uint32_t       deprecated                   : 1;
+  uint32_t       readable                     : 1;
+  uint32_t       writable                     : 1;
+  uint32_t       construct                    : 1;
+  uint32_t       construct_only               : 1;
+  uint32_t       transfer_ownership           : 1;
+  uint32_t       transfer_container_ownership : 1;
+  uint32_t       setter                       :10;
+  uint32_t       getter                       :10;
+  uint32_t       reserved                     : 5;
 
-  guint32        reserved2;
+  uint32_t       reserved2;
 
   SimpleTypeBlob type;
 } PropertyBlob;
@@ -1064,25 +1064,25 @@ typedef struct {
  * Since: 2.80
  */
 typedef struct {
-  guint16 deprecated        : 1;
-  guint16 run_first         : 1;
-  guint16 run_last          : 1;
-  guint16 run_cleanup       : 1;
-  guint16 no_recurse        : 1;
-  guint16 detailed          : 1;
-  guint16 action            : 1;
-  guint16 no_hooks          : 1;
-  guint16 has_class_closure : 1;
-  guint16 true_stops_emit   : 1;
-  guint16 reserved          : 6;
+  uint16_t deprecated        : 1;
+  uint16_t run_first         : 1;
+  uint16_t run_last          : 1;
+  uint16_t run_cleanup       : 1;
+  uint16_t no_recurse        : 1;
+  uint16_t detailed          : 1;
+  uint16_t action            : 1;
+  uint16_t no_hooks          : 1;
+  uint16_t has_class_closure : 1;
+  uint16_t true_stops_emit   : 1;
+  uint16_t reserved          : 6;
 
-  guint16 class_closure;
+  uint16_t class_closure;
 
-  guint32 name;
+  uint32_t name;
 
-  guint32 reserved2;
+  uint32_t reserved2;
 
-  guint32 signature;
+  uint32_t signature;
 } SignalBlob;
 
 /**
@@ -1115,22 +1115,22 @@ typedef struct {
  * Since: 2.80
  */
 typedef struct {
-  guint32 name;
+  uint32_t name;
 
-  guint16 must_chain_up           : 1;
-  guint16 must_be_implemented     : 1;
-  guint16 must_not_be_implemented : 1;
-  guint16 class_closure           : 1;
-  guint16 throws                  : 1;
-  guint16 reserved                :11;
-  guint16 signal;
+  uint16_t must_chain_up           : 1;
+  uint16_t must_be_implemented     : 1;
+  uint16_t must_not_be_implemented : 1;
+  uint16_t class_closure           : 1;
+  uint16_t throws                  : 1;
+  uint16_t reserved                :11;
+  uint16_t signal;
 
-  guint16 struct_offset;
-  guint16 invoker : 10; /* Number of bits matches @index in FunctionBlob */
-  guint16 reserved2 : 6;
+  uint16_t struct_offset;
+  uint16_t invoker : 10; /* Number of bits matches @index in FunctionBlob */
+  uint16_t reserved2 : 6;
 
-  guint32 reserved3;
-  guint32 signature;
+  uint32_t reserved3;
+  uint32_t signature;
 } VFuncBlob;
 
 /**
@@ -1177,38 +1177,38 @@ typedef struct {
  * Since: 2.80
  */
 typedef struct {
-  guint16   blob_type;  /* 7 */
-  guint16   deprecated   : 1;
-  guint16   abstract     : 1;
-  guint16   fundamental  : 1;
-  guint16   final_       : 1;
-  guint16   reserved     :12;
-  guint32   name;
+  uint16_t blob_type;  /* 7 */
+  uint16_t deprecated   : 1;
+  uint16_t abstract     : 1;
+  uint16_t fundamental  : 1;
+  uint16_t final_       : 1;
+  uint16_t reserved     :12;
+  uint32_t name;
 
-  guint32   gtype_name;
-  guint32   gtype_init;
+  uint32_t gtype_name;
+  uint32_t gtype_init;
 
-  guint16   parent;
-  guint16   gtype_struct;
+  uint16_t parent;
+  uint16_t gtype_struct;
 
-  guint16   n_interfaces;
-  guint16   n_fields;
-  guint16   n_properties;
-  guint16   n_methods;
-  guint16   n_signals;
-  guint16   n_vfuncs;
-  guint16   n_constants;
-  guint16   n_field_callbacks;
+  uint16_t n_interfaces;
+  uint16_t n_fields;
+  uint16_t n_properties;
+  uint16_t n_methods;
+  uint16_t n_signals;
+  uint16_t n_vfuncs;
+  uint16_t n_constants;
+  uint16_t n_field_callbacks;
 
-  guint32   ref_func;
-  guint32   unref_func;
-  guint32   set_value_func;
-  guint32   get_value_func;
+  uint32_t ref_func;
+  uint32_t unref_func;
+  uint32_t set_value_func;
+  uint32_t get_value_func;
 
-  guint32   reserved3;
-  guint32   reserved4;
+  uint32_t reserved3;
+  uint32_t reserved4;
 
-  guint16   interfaces[];
+  uint16_t interfaces[];
 } ObjectBlob;
 
 /**
@@ -1239,28 +1239,28 @@ typedef struct {
  * Since: 2.80
  */
 typedef struct {
-  guint16 blob_type;
-  guint16 deprecated   : 1;
-  guint16 reserved     :15;
-  guint32 name;
+  uint16_t blob_type;
+  uint16_t deprecated   : 1;
+  uint16_t reserved     :15;
+  uint32_t name;
 
-  guint32 gtype_name;
-  guint32 gtype_init;
-  guint16 gtype_struct;
+  uint32_t gtype_name;
+  uint32_t gtype_init;
+  uint16_t gtype_struct;
 
-  guint16 n_prerequisites;
-  guint16 n_properties;
-  guint16 n_methods;
-  guint16 n_signals;
-  guint16 n_vfuncs;
-  guint16 n_constants;
+  uint16_t n_prerequisites;
+  uint16_t n_properties;
+  uint16_t n_methods;
+  uint16_t n_signals;
+  uint16_t n_vfuncs;
+  uint16_t n_constants;
 
-  guint16 padding;
+  uint16_t padding;
 
-  guint32 reserved2;
-  guint32 reserved3;
+  uint32_t reserved2;
+  uint32_t reserved3;
 
-  guint16 prerequisites[];
+  uint16_t prerequisites[];
 } InterfaceBlob;
 
 /**
@@ -1280,17 +1280,17 @@ typedef struct {
  * Since: 2.80
  */
 typedef struct {
-  guint16        blob_type;
-  guint16        deprecated   : 1;
-  guint16        reserved     :15;
-  guint32        name;
+  uint16_t       blob_type;
+  uint16_t       deprecated   : 1;
+  uint16_t       reserved     :15;
+  uint32_t       name;
 
   SimpleTypeBlob type;
 
-  guint32        size;
-  guint32        offset;
+  uint32_t       size;
+  uint32_t       offset;
 
-  guint32        reserved2;
+  uint32_t       reserved2;
 } ConstantBlob;
 
 /**
@@ -1306,9 +1306,9 @@ typedef struct {
  * Since: 2.80
  */
 typedef struct {
-  guint32 offset;
-  guint32 name;
-  guint32 value;
+  uint32_t offset;
+  uint32_t name;
+  uint32_t value;
 } AttributeBlob;
 
 struct _GITypelib {
@@ -1322,7 +1322,7 @@ struct _GITypelib {
 };
 
 DirEntry *gi_typelib_get_dir_entry (GITypelib *typelib,
-                                    guint16    index);
+                                    uint16_t   index);
 
 DirEntry *gi_typelib_get_dir_entry_by_name (GITypelib  *typelib,
                                             const char *name);
@@ -1393,7 +1393,7 @@ gboolean gi_typelib_validate (GITypelib  *typelib,
 
 /* defined in gibaseinfo.c */
 AttributeBlob *_attribute_blob_find_first (GIBaseInfo *info,
-                                           guint32     blob_offset);
+                                           uint32_t     blob_offset);
 
 /**
  * GITypelibHashBuilder:
@@ -1406,17 +1406,17 @@ typedef struct _GITypelibHashBuilder GITypelibHashBuilder;
 
 GITypelibHashBuilder * gi_typelib_hash_builder_new (void);
 
-void gi_typelib_hash_builder_add_string (GITypelibHashBuilder *builder, const char *str, guint16 value);
+void gi_typelib_hash_builder_add_string (GITypelibHashBuilder *builder, const char *str, uint16_t value);
 
 gboolean gi_typelib_hash_builder_prepare (GITypelibHashBuilder *builder);
 
-guint32 gi_typelib_hash_builder_get_buffer_size (GITypelibHashBuilder *builder);
+uint32_t gi_typelib_hash_builder_get_buffer_size (GITypelibHashBuilder *builder);
 
-void gi_typelib_hash_builder_pack (GITypelibHashBuilder *builder, guint8* mem, guint32 size);
+void gi_typelib_hash_builder_pack (GITypelibHashBuilder *builder, uint8_t* mem, uint32_t size);
 
 void gi_typelib_hash_builder_destroy (GITypelibHashBuilder *builder);
 
-guint16 gi_typelib_hash_search (guint8* memory, const char *str, guint n_entries);
+uint16_t gi_typelib_hash_search (uint8_t* memory, const char *str, uint32_t n_entries);
 
 
 G_END_DECLS

@@ -315,7 +315,7 @@ gi_info_new_full (GIInfoType    type,
                   GIRepository *repository,
                   GIBaseInfo   *container,
                   GITypelib    *typelib,
-                  guint32       offset)
+                  uint32_t      offset)
 {
   GIRealInfo *info;
 
@@ -357,7 +357,7 @@ GIBaseInfo *
 gi_info_new (GIInfoType     type,
              GIBaseInfo    *container,
              GITypelib     *typelib,
-             guint32        offset)
+             uint32_t       offset)
 {
   return gi_info_new_full (type, ((GIRealInfo*)container)->repository, container, typelib, offset);
 }
@@ -382,7 +382,7 @@ gi_info_init (GIRealInfo   *info,
               GIRepository *repository,
               GIBaseInfo   *container,
               GITypelib    *typelib,
-              guint32       offset)
+              uint32_t      offset)
 {
   memset (info, 0, sizeof (GIRealInfo));
 
@@ -401,7 +401,7 @@ gi_info_init (GIRealInfo   *info,
 GIBaseInfo *
 gi_info_from_entry (GIRepository *repository,
                     GITypelib    *typelib,
-                    guint16       index)
+                    uint16_t      index)
 {
   GIBaseInfo *result;
   DirEntry *entry = gi_typelib_get_dir_entry (typelib, index);
@@ -438,7 +438,7 @@ gi_info_from_entry (GIRepository *repository,
 GITypeInfo *
 gi_type_info_new (GIBaseInfo *container,
                   GITypelib  *typelib,
-                  guint32     offset)
+                  uint32_t    offset)
 {
   SimpleTypeBlob *type = (SimpleTypeBlob *)&typelib->data[offset];
 
@@ -450,7 +450,7 @@ void
 gi_type_info_init (GIBaseInfo *info,
                    GIBaseInfo *container,
                    GITypelib  *typelib,
-                   guint32     offset)
+                   uint32_t    offset)
 {
   GIRealInfo *rinfo = (GIRealInfo*)container;
   SimpleTypeBlob *type = (SimpleTypeBlob *)&typelib->data[offset];
@@ -800,7 +800,7 @@ cmp_attribute (const void *av,
  */
 AttributeBlob *
 _attribute_blob_find_first (GIBaseInfo *info,
-                            guint32     blob_offset)
+                            uint32_t    blob_offset)
 {
   GIRealInfo *rinfo = (GIRealInfo *) info;
   Header *header = (Header *)rinfo->typelib->data;

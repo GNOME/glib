@@ -36,7 +36,7 @@ struct _GIIrTypelibBuild {
   GHashTable  *strings;
   GHashTable  *types;
   GList       *nodes_with_attributes;
-  guint32      n_attributes;
+  uint32_t     n_attributes;
   guchar      *data;
   GList       *stack; 
 };
@@ -77,7 +77,7 @@ void       gi_ir_module_add_include_module (GIIrModule  *module,
 
 GITypelib * gi_ir_module_build_typelib (GIIrModule  *module);
 
-void       gi_ir_module_fatal (GIIrTypelibBuild  *build, guint line, const char *msg, ...) G_GNUC_PRINTF (3, 4) G_GNUC_NORETURN;
+void       gi_ir_module_fatal (GIIrTypelibBuild  *build, unsigned int line, const char *msg, ...) G_GNUC_PRINTF (3, 4) G_GNUC_NORETURN;
 
 void gi_ir_node_init_stats (void);
 void gi_ir_node_dump_stats (void);

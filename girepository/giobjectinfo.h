@@ -106,32 +106,32 @@ GI_AVAILABLE_IN_ALL
 GIObjectInfo *    gi_object_info_get_parent       (GIObjectInfo *info);
 
 GI_AVAILABLE_IN_ALL
-guint             gi_object_info_get_n_interfaces (GIObjectInfo *info);
+unsigned int      gi_object_info_get_n_interfaces (GIObjectInfo *info);
 
 GI_AVAILABLE_IN_ALL
 GIInterfaceInfo * gi_object_info_get_interface    (GIObjectInfo *info,
-                                                   guint         n);
+                                                   unsigned int  n);
 
 GI_AVAILABLE_IN_ALL
-guint             gi_object_info_get_n_fields     (GIObjectInfo *info);
+unsigned int      gi_object_info_get_n_fields     (GIObjectInfo *info);
 
 GI_AVAILABLE_IN_ALL
 GIFieldInfo *     gi_object_info_get_field        (GIObjectInfo *info,
-                                                   guint         n);
+                                                   unsigned int  n);
 
 GI_AVAILABLE_IN_ALL
-guint             gi_object_info_get_n_properties (GIObjectInfo *info);
+unsigned int      gi_object_info_get_n_properties (GIObjectInfo *info);
 
 GI_AVAILABLE_IN_ALL
 GIPropertyInfo *  gi_object_info_get_property     (GIObjectInfo *info,
-                                                   guint         n);
+                                                   unsigned int  n);
 
 GI_AVAILABLE_IN_ALL
-guint             gi_object_info_get_n_methods    (GIObjectInfo *info);
+unsigned int      gi_object_info_get_n_methods    (GIObjectInfo *info);
 
 GI_AVAILABLE_IN_ALL
 GIFunctionInfo *  gi_object_info_get_method       (GIObjectInfo *info,
-                                                   guint         n);
+                                                   unsigned int  n);
 
 GI_AVAILABLE_IN_ALL
 GIFunctionInfo *  gi_object_info_find_method      (GIObjectInfo *info,
@@ -145,11 +145,11 @@ GIFunctionInfo *  gi_object_info_find_method_using_interfaces (GIObjectInfo  *in
 
 
 GI_AVAILABLE_IN_ALL
-guint             gi_object_info_get_n_signals    (GIObjectInfo *info);
+unsigned int      gi_object_info_get_n_signals    (GIObjectInfo *info);
 
 GI_AVAILABLE_IN_ALL
 GISignalInfo *    gi_object_info_get_signal       (GIObjectInfo *info,
-                                                   guint         n);
+                                                   unsigned int  n);
 
 
 GI_AVAILABLE_IN_ALL
@@ -158,11 +158,11 @@ GISignalInfo *    gi_object_info_find_signal      (GIObjectInfo *info,
 
 
 GI_AVAILABLE_IN_ALL
-guint             gi_object_info_get_n_vfuncs     (GIObjectInfo *info);
+unsigned int      gi_object_info_get_n_vfuncs     (GIObjectInfo *info);
 
 GI_AVAILABLE_IN_ALL
 GIVFuncInfo *     gi_object_info_get_vfunc        (GIObjectInfo *info,
-                                                   guint         n);
+                                                   unsigned int  n);
 
 GI_AVAILABLE_IN_ALL
 GIVFuncInfo *     gi_object_info_find_vfunc       (GIObjectInfo *info,
@@ -174,11 +174,11 @@ GIVFuncInfo *     gi_object_info_find_vfunc_using_interfaces (GIObjectInfo  *inf
                                                               GIObjectInfo **implementor);
 
 GI_AVAILABLE_IN_ALL
-guint             gi_object_info_get_n_constants  (GIObjectInfo *info);
+unsigned int      gi_object_info_get_n_constants  (GIObjectInfo *info);
 
 GI_AVAILABLE_IN_ALL
 GIConstantInfo *  gi_object_info_get_constant     (GIObjectInfo *info,
-                                                   guint         n);
+                                                   unsigned int  n);
 
 GI_AVAILABLE_IN_ALL
 GIStructInfo *    gi_object_info_get_class_struct (GIObjectInfo *info);

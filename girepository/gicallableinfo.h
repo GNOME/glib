@@ -80,15 +80,15 @@ GI_AVAILABLE_IN_ALL
 gboolean               gi_callable_info_skip_return     (GICallableInfo *info);
 
 GI_AVAILABLE_IN_ALL
-guint                  gi_callable_info_get_n_args      (GICallableInfo *info);
+unsigned int           gi_callable_info_get_n_args      (GICallableInfo *info);
 
 GI_AVAILABLE_IN_ALL
 GIArgInfo *            gi_callable_info_get_arg         (GICallableInfo *info,
-                                                         guint           n);
+                                                         unsigned int    n);
 
 GI_AVAILABLE_IN_ALL
 void                   gi_callable_info_load_arg        (GICallableInfo *info,
-                                                         guint           n,
+                                                         unsigned int    n,
                                                          GIArgInfo      *arg);
 
 GI_AVAILABLE_IN_ALL

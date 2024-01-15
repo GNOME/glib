@@ -135,8 +135,8 @@ gi_type_info_get_tag (GITypeInfo *info)
  * Since: 2.80
  */
 GITypeInfo *
-gi_type_info_get_param_type (GITypeInfo *info,
-                             guint       n)
+gi_type_info_get_param_type (GITypeInfo  *info,
+                             unsigned int n)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   SimpleTypeBlob *type;
@@ -241,7 +241,7 @@ gi_type_info_get_interface (GITypeInfo *info)
  *   or it has no length argument
  * Since: 2.80
  */
-gint
+int
 gi_type_info_get_array_length_index (GITypeInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -435,23 +435,23 @@ gi_type_tag_argument_from_hash_pointer (GITypeTag   storage_type,
         arg->v_boolean = !!GPOINTER_TO_INT (hash_pointer);
         break;
       case GI_TYPE_TAG_INT8:
-        arg->v_int8 = (gint8)GPOINTER_TO_INT (hash_pointer);
+        arg->v_int8 = (int8_t) GPOINTER_TO_INT (hash_pointer);
         break;
       case GI_TYPE_TAG_UINT8:
-        arg->v_uint8 = (guint8)GPOINTER_TO_UINT (hash_pointer);
+        arg->v_uint8 = (uint8_t) GPOINTER_TO_UINT (hash_pointer);
         break;
       case GI_TYPE_TAG_INT16:
-        arg->v_int16 = (gint16)GPOINTER_TO_INT (hash_pointer);
+        arg->v_int16 = (int16_t) GPOINTER_TO_INT (hash_pointer);
         break;
       case GI_TYPE_TAG_UINT16:
-        arg->v_uint16 = (guint16)GPOINTER_TO_UINT (hash_pointer);
+        arg->v_uint16 = (uint16_t) GPOINTER_TO_UINT (hash_pointer);
         break;
       case GI_TYPE_TAG_INT32:
-        arg->v_int32 = (gint32)GPOINTER_TO_INT (hash_pointer);
+        arg->v_int32 = (int32_t) GPOINTER_TO_INT (hash_pointer);
         break;
       case GI_TYPE_TAG_UINT32:
       case GI_TYPE_TAG_UNICHAR:
-        arg->v_uint32 = (guint32)GPOINTER_TO_UINT (hash_pointer);
+        arg->v_uint32 = (uint32_t) GPOINTER_TO_UINT (hash_pointer);
         break;
       case GI_TYPE_TAG_GTYPE:
         arg->v_size = GPOINTER_TO_SIZE (hash_pointer);

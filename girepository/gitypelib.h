@@ -37,12 +37,12 @@ G_BEGIN_DECLS
 typedef struct _GITypelib GITypelib;
 
 GI_AVAILABLE_IN_ALL
-GITypelib *    gi_typelib_new_from_memory       (guint8  *memory,
+GITypelib *    gi_typelib_new_from_memory       (uint8_t *memory,
                                                  gsize    len,
                                                  GError **error);
 
 GI_AVAILABLE_IN_ALL
-GITypelib *    gi_typelib_new_from_const_memory (const guint8  *memory,
+GITypelib *    gi_typelib_new_from_const_memory (const uint8_t *memory,
                                                  gsize          len,
                                                  GError       **error);
 

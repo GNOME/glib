@@ -54,7 +54,7 @@ typedef enum {
 } Enum5;
 
 typedef enum {
-  ENUM_6 = ((guint)G_MAXINT) + 1 /* compiler could use uint32 */
+  ENUM_6 = ((unsigned int)G_MAXINT) + 1 /* compiler could use uint32 */
 } Enum6;
 
 typedef enum {
@@ -73,8 +73,8 @@ static void
 compute_enum_storage_type (GIIrNodeEnum *enum_node)
 {
   GList *l;
-  gint64 max_value = 0;
-  gint64 min_value = 0;
+  int64_t max_value = 0;
+  int64_t min_value = 0;
   int width;
   gboolean signed_type;
 
@@ -106,32 +106,32 @@ compute_enum_storage_type (GIIrNodeEnum *enum_node)
       if (max_value <= 127)
         {
           width = sizeof (Enum1);
-          signed_type = (gint64)(Enum1)(-1) < 0;
+          signed_type = (int64_t)(Enum1)(-1) < 0;
         }
       else if (max_value <= 255)
         {
           width = sizeof (Enum2);
-          signed_type = (gint64)(Enum2)(-1) < 0;
+          signed_type = (int64_t)(Enum2)(-1) < 0;
         }
       else if (max_value <= G_MAXSHORT)
         {
           width = sizeof (Enum3);
-          signed_type = (gint64)(Enum3)(-1) < 0;
+          signed_type = (int64_t)(Enum3)(-1) < 0;
         }
       else if (max_value <= G_MAXUSHORT)
         {
           width = sizeof (Enum4);
-          signed_type = (gint64)(Enum4)(-1) < 0;
+          signed_type = (int64_t)(Enum4)(-1) < 0;
         }
       else if (max_value <= G_MAXINT)
         {
           width = sizeof (Enum5);
-          signed_type = (gint64)(Enum5)(-1) < 0;
+          signed_type = (int64_t)(Enum5)(-1) < 0;
         }
       else
         {
           width = sizeof (Enum6);
-          signed_type = (gint64)(Enum6)(-1) < 0;
+          signed_type = (int64_t)(Enum6)(-1) < 0;
         }
     }
 
@@ -149,8 +149,8 @@ compute_enum_storage_type (GIIrNodeEnum *enum_node)
 
 static gboolean
 get_enum_size_alignment (GIIrNodeEnum *enum_node,
-                         gint         *size,
-                         gint         *alignment)
+                         int          *size,
+                         int          *alignment)
 {
   ffi_type *type_ffi;
 
@@ -188,8 +188,8 @@ get_enum_size_alignment (GIIrNodeEnum *enum_node,
 static gboolean
 get_interface_size_alignment (GIIrTypelibBuild *build,
                               GIIrNodeType     *type,
-                              gint             *size,
-                              gint             *alignment,
+                              int              *size,
+                              int              *alignment,
                               const char       *who)
 {
   GIIrNode *iface;
@@ -265,8 +265,8 @@ get_interface_size_alignment (GIIrTypelibBuild *build,
 static gboolean
 get_type_size_alignment (GIIrTypelibBuild *build,
                          GIIrNodeType     *type,
-                         gint             *size,
-                         gint             *alignment,
+                         int              *size,
+                         int              *alignment,
                          const char       *who)
 {
   ffi_type *type_ffi;
@@ -277,7 +277,7 @@ get_type_size_alignment (GIIrTypelibBuild *build,
     }
   else if (type->tag == GI_TYPE_TAG_ARRAY)
     {
-      gint elt_size, elt_alignment;
+      int elt_size, elt_alignment;
 
       if (!type->has_size
           || !get_type_size_alignment(build, type->parameter_type1,
@@ -333,8 +333,8 @@ static gboolean
 get_field_size_alignment (GIIrTypelibBuild *build,
                           GIIrNodeField    *field,
                           GIIrNode         *parent_node,
-                          gint             *size,
-                          gint             *alignment)
+                          int              *size,
+                          int              *alignment)
 {
   GIIrModule *module = build->module;
   char *who;
@@ -361,8 +361,8 @@ static gboolean
 compute_struct_field_offsets (GIIrTypelibBuild *build,
                               GIIrNode         *node,
                               GList            *members,
-                              gint             *size_out,
-                              gint             *alignment_out)
+                              int              *size_out,
+                              int              *alignment_out)
 {
   int size = 0;
   int alignment = 1;
@@ -428,8 +428,8 @@ static gboolean
 compute_union_field_offsets (GIIrTypelibBuild *build,
                              GIIrNode         *node,
                              GList            *members,
-                             gint             *size_out,
-                             gint             *alignment_out)
+                             int              *size_out,
+                             int              *alignment_out)
 {
   int size = 0;
   int alignment = 1;
@@ -483,7 +483,7 @@ compute_union_field_offsets (GIIrTypelibBuild *build,
 static gboolean
 check_needs_computation (GIIrTypelibBuild *build,
                          GIIrNode         *node,
-                         gint              alignment)
+                         int               alignment)
 {
   GIIrModule *module = build->module;
   /*

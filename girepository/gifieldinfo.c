@@ -222,35 +222,35 @@ gi_field_info_get_field (GIFieldInfo *field_info,
           break;
         case GI_TYPE_TAG_INT8:
         case GI_TYPE_TAG_UINT8:
-          value->v_uint8 = G_STRUCT_MEMBER (guint8, mem, offset);
+          value->v_uint8 = G_STRUCT_MEMBER (uint8_t, mem, offset);
           result = TRUE;
           break;
         case GI_TYPE_TAG_INT16:
         case GI_TYPE_TAG_UINT16:
-          value->v_uint16 = G_STRUCT_MEMBER (guint16, mem, offset);
+          value->v_uint16 = G_STRUCT_MEMBER (uint16_t, mem, offset);
           result = TRUE;
           break;
         case GI_TYPE_TAG_INT32:
         case GI_TYPE_TAG_UINT32:
         case GI_TYPE_TAG_UNICHAR:
-          value->v_uint32 = G_STRUCT_MEMBER (guint32, mem, offset);
+          value->v_uint32 = G_STRUCT_MEMBER (uint32_t, mem, offset);
           result = TRUE;
           break;
         case GI_TYPE_TAG_INT64:
         case GI_TYPE_TAG_UINT64:
-          value->v_uint64 = G_STRUCT_MEMBER (guint64, mem, offset);
+          value->v_uint64 = G_STRUCT_MEMBER (uint64_t, mem, offset);
           result = TRUE;
           break;
         case GI_TYPE_TAG_GTYPE:
-          value->v_size = G_STRUCT_MEMBER (gsize, mem, offset);
+          value->v_size = G_STRUCT_MEMBER (size_t, mem, offset);
           result = TRUE;
           break;
         case GI_TYPE_TAG_FLOAT:
-          value->v_float = G_STRUCT_MEMBER (gfloat, mem, offset);
+          value->v_float = G_STRUCT_MEMBER (float, mem, offset);
           result = TRUE;
           break;
         case GI_TYPE_TAG_DOUBLE:
-          value->v_double = G_STRUCT_MEMBER (gdouble, mem, offset);
+          value->v_double = G_STRUCT_MEMBER (double, mem, offset);
           result = TRUE;
           break;
         case GI_TYPE_TAG_ARRAY:
@@ -287,8 +287,8 @@ gi_field_info_get_field (GIFieldInfo *field_info,
               case GI_INFO_TYPE_FLAGS:
                 {
                   /* FIXME: there's a mismatch here between the value->v_int we use
-                   * here and the gint64 result returned from gi_value_info_get_value().
-                   * But to switch this to gint64, we'd have to make gi_function_info_invoke()
+                   * here and the int64_t result returned from gi_value_info_get_value().
+                   * But to switch this to int64_t, we'd have to make gi_function_info_invoke()
                    * translate value->v_int64 to the proper ABI for an enum function
                    * call parameter, which will usually be int, and then fix up language
                    * bindings.
@@ -298,22 +298,22 @@ gi_field_info_get_field (GIFieldInfo *field_info,
                     {
                     case GI_TYPE_TAG_INT8:
                     case GI_TYPE_TAG_UINT8:
-                      value->v_int = (gint)G_STRUCT_MEMBER (guint8, mem, offset);
+                      value->v_int = (int)G_STRUCT_MEMBER (uint8_t, mem, offset);
                       result = TRUE;
                       break;
                     case GI_TYPE_TAG_INT16:
                     case GI_TYPE_TAG_UINT16:
-                      value->v_int = (gint)G_STRUCT_MEMBER (guint16, mem, offset);
+                      value->v_int = (int)G_STRUCT_MEMBER (uint16_t, mem, offset);
                       result = TRUE;
                       break;
                     case GI_TYPE_TAG_INT32:
                     case GI_TYPE_TAG_UINT32:
-                      value->v_int = (gint)G_STRUCT_MEMBER (guint32, mem, offset);
+                      value->v_int = (int)G_STRUCT_MEMBER (uint32_t, mem, offset);
                       result = TRUE;
                       break;
                     case GI_TYPE_TAG_INT64:
                     case GI_TYPE_TAG_UINT64:
-                      value->v_int = (gint)G_STRUCT_MEMBER (guint64, mem, offset);
+                      value->v_int = (int)G_STRUCT_MEMBER (uint64_t, mem, offset);
                       result = TRUE;
                       break;
                     default:
@@ -413,23 +413,23 @@ gi_field_info_set_field (GIFieldInfo      *field_info,
           break;
         case GI_TYPE_TAG_INT8:
         case GI_TYPE_TAG_UINT8:
-          G_STRUCT_MEMBER (guint8, mem, offset) = value->v_uint8;
+          G_STRUCT_MEMBER (uint8_t, mem, offset) = value->v_uint8;
           result = TRUE;
           break;
         case GI_TYPE_TAG_INT16:
         case GI_TYPE_TAG_UINT16:
-          G_STRUCT_MEMBER (guint16, mem, offset) = value->v_uint16;
+          G_STRUCT_MEMBER (uint16_t, mem, offset) = value->v_uint16;
           result = TRUE;
           break;
         case GI_TYPE_TAG_INT32:
         case GI_TYPE_TAG_UINT32:
         case GI_TYPE_TAG_UNICHAR:
-          G_STRUCT_MEMBER (guint32, mem, offset) = value->v_uint32;
+          G_STRUCT_MEMBER (uint32_t, mem, offset) = value->v_uint32;
           result = TRUE;
           break;
         case GI_TYPE_TAG_INT64:
         case GI_TYPE_TAG_UINT64:
-          G_STRUCT_MEMBER (guint64, mem, offset) = value->v_uint64;
+          G_STRUCT_MEMBER (uint64_t, mem, offset) = value->v_uint64;
           result = TRUE;
           break;
         case GI_TYPE_TAG_GTYPE:
@@ -437,11 +437,11 @@ gi_field_info_set_field (GIFieldInfo      *field_info,
           result = TRUE;
           break;
         case GI_TYPE_TAG_FLOAT:
-          G_STRUCT_MEMBER (gfloat, mem, offset) = value->v_float;
+          G_STRUCT_MEMBER (float, mem, offset) = value->v_float;
           result = TRUE;
           break;
         case GI_TYPE_TAG_DOUBLE:
-          G_STRUCT_MEMBER (gdouble, mem, offset)= value->v_double;
+          G_STRUCT_MEMBER (double, mem, offset)= value->v_double;
           result = TRUE;
           break;
         case GI_TYPE_TAG_UTF8:
@@ -479,22 +479,22 @@ gi_field_info_set_field (GIFieldInfo      *field_info,
                     {
                     case GI_TYPE_TAG_INT8:
                     case GI_TYPE_TAG_UINT8:
-                      G_STRUCT_MEMBER (guint8, mem, offset) = (guint8)value->v_int;
+                      G_STRUCT_MEMBER (uint8_t, mem, offset) = (uint8_t)value->v_int;
                       result = TRUE;
                       break;
                     case GI_TYPE_TAG_INT16:
                     case GI_TYPE_TAG_UINT16:
-                      G_STRUCT_MEMBER (guint16, mem, offset) = (guint16)value->v_int;
+                      G_STRUCT_MEMBER (uint16_t, mem, offset) = (uint16_t)value->v_int;
                       result = TRUE;
                       break;
                     case GI_TYPE_TAG_INT32:
                     case GI_TYPE_TAG_UINT32:
-                      G_STRUCT_MEMBER (guint32, mem, offset) = (guint32)value->v_int;
+                      G_STRUCT_MEMBER (uint32_t, mem, offset) = (uint32_t)value->v_int;
                       result = TRUE;
                       break;
                     case GI_TYPE_TAG_INT64:
                     case GI_TYPE_TAG_UINT64:
-                      G_STRUCT_MEMBER (guint64, mem, offset) = (guint64)value->v_int;
+                      G_STRUCT_MEMBER (uint64_t, mem, offset) = (uint64_t)value->v_int;
                       result = TRUE;
                       break;
                     default:

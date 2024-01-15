@@ -57,18 +57,18 @@ G_BEGIN_DECLS
 
 
 GI_AVAILABLE_IN_ALL
-guint          gi_enum_info_get_n_values      (GIEnumInfo  *info);
+unsigned int   gi_enum_info_get_n_values      (GIEnumInfo  *info);
 
 GI_AVAILABLE_IN_ALL
-GIValueInfo  * gi_enum_info_get_value         (GIEnumInfo *info,
-                                               guint       n);
+GIValueInfo  * gi_enum_info_get_value         (GIEnumInfo  *info,
+                                               unsigned int n);
 
 GI_AVAILABLE_IN_ALL
-guint             gi_enum_info_get_n_methods  (GIEnumInfo  *info);
+unsigned int      gi_enum_info_get_n_methods  (GIEnumInfo  *info);
 
 GI_AVAILABLE_IN_ALL
-GIFunctionInfo  * gi_enum_info_get_method     (GIEnumInfo *info,
-                                               guint       n);
+GIFunctionInfo  * gi_enum_info_get_method     (GIEnumInfo  *info,
+                                               unsigned int n);
 
 GI_AVAILABLE_IN_ALL
 GITypeTag      gi_enum_info_get_storage_type  (GIEnumInfo  *info);
@@ -78,6 +78,6 @@ const char *   gi_enum_info_get_error_domain   (GIEnumInfo  *info);
 
 
 GI_AVAILABLE_IN_ALL
-gint64         gi_value_info_get_value        (GIValueInfo *info);
+int64_t        gi_value_info_get_value        (GIValueInfo *info);
 
 G_END_DECLS

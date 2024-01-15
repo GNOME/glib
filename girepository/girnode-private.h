@@ -76,7 +76,7 @@ struct _GIIrNode
   char *name;
   GIIrModule *module;
 
-  guint32 offset; /* Assigned as we build the typelib */
+  uint32_t offset; /* Assigned as we build the typelib */
 
   GHashTable *attributes;
 };
@@ -122,16 +122,16 @@ struct _GIIrNodeType
   gboolean is_ghashtable;
   gboolean is_interface;
   gboolean is_error;
-  gint tag;
+  int tag;
 
   char *unparsed;
 
   gboolean zero_terminated;
   gboolean has_length;
-  gint length;
+  int length;
   gboolean has_size;
-  gint size;
-  gint array_type;
+  int size;
+  int array_type;
 
   GIIrNodeType *parameter_type1;
   GIIrNodeType *parameter_type2;
@@ -155,8 +155,8 @@ struct _GIIrNodeParam
   gboolean shallow_transfer;
   GIScopeType scope;
 
-  gint8 closure;
-  gint8 destroy;
+  int8_t closure;
+  int8_t destroy;
 
   GIIrNodeType *type;
 };
@@ -199,7 +199,7 @@ struct _GIIrNodeSignal
   gboolean has_class_closure;
   gboolean true_stops_emit;
 
-  gint class_closure;
+  int class_closure;
 
   GList *parameters;
   GIIrNodeParam *result;
@@ -222,7 +222,7 @@ struct _GIIrNodeVFunc
   GList *parameters;
   GIIrNodeParam *result;
 
-  gint offset;
+  int offset;
 };
 
 struct _GIIrNodeField
@@ -231,8 +231,8 @@ struct _GIIrNodeField
 
   gboolean readable;
   gboolean writable;
-  gint bits;
-  gint offset;
+  int bits;
+  int offset;
   GIIrNodeFunction *callback;
 
   GIIrNodeType *type;
@@ -261,8 +261,8 @@ struct _GIIrNodeInterface
   GList *interfaces;
   GList *prerequisites;
 
-  gint alignment;
-  gint size;
+  int alignment;
+  int size;
 
   GList *members;
 };
@@ -273,7 +273,7 @@ struct _GIIrNodeValue
 
   gboolean deprecated;
 
-  gint64 value;
+  int64_t value;
 };
 
 struct _GIIrNodeConstant
@@ -292,7 +292,7 @@ struct _GIIrNodeEnum
   GIIrNode node;
 
   gboolean deprecated;
-  gint storage_type;
+  int storage_type;
 
   char *gtype_name;
   char *gtype_init;
@@ -311,8 +311,8 @@ struct _GIIrNodeBoxed
   char *gtype_name;
   char *gtype_init;
 
-  gint alignment;
-  gint size;
+  int alignment;
+  int size;
 
   GList *members;
 };
@@ -334,8 +334,8 @@ struct _GIIrNodeStruct
   char *copy_func;
   char *free_func;
 
-  gint alignment;
-  gint size;
+  int alignment;
+  int size;
 
   GList *members;
 };
@@ -355,10 +355,10 @@ struct _GIIrNodeUnion
   char *copy_func;
   char *free_func;
 
-  gint alignment;
-  gint size;
+  int alignment;
+  int size;
 
-  gint discriminator_offset;
+  int discriminator_offset;
   GIIrNodeType *discriminator_type;
 };
 
@@ -366,23 +366,23 @@ struct _GIIrNodeUnion
 GIIrNode *gi_ir_node_new             (GIIrNodeTypeId  type,
                                       GIIrModule     *module);
 void      gi_ir_node_free            (GIIrNode    *node);
-guint32   gi_ir_node_get_size        (GIIrNode    *node);
-guint32   gi_ir_node_get_full_size   (GIIrNode    *node);
+uint32_t  gi_ir_node_get_size        (GIIrNode    *node);
+uint32_t  gi_ir_node_get_full_size   (GIIrNode    *node);
 void      gi_ir_node_build_typelib   (GIIrNode         *node,
                                       GIIrNode         *parent,
                                       GIIrTypelibBuild *build,
-                                      guint32          *offset,
-                                      guint32          *offset2,
-                                      guint16          *count2);
+                                      uint32_t         *offset,
+                                      uint32_t         *offset2,
+                                      uint16_t         *count2);
 int       gi_ir_node_cmp             (GIIrNode *node,
                                       GIIrNode *other);
 gboolean  gi_ir_node_can_have_member (GIIrNode *node);
 void      gi_ir_node_add_member      (GIIrNode         *node,
                                       GIIrNodeFunction *member);
-guint32   gi_ir_write_string         (const char  *str,
+uint32_t  gi_ir_write_string         (const char  *str,
                                       GHashTable  *strings,
                                       guchar      *data,
-                                      guint32     *offset);
+                                      uint32_t    *offset);
 
 const char * gi_ir_node_param_direction_string (GIIrNodeParam * node);
 const char * gi_ir_node_type_to_string         (GIIrNodeTypeId type);

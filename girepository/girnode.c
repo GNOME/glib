@@ -431,11 +431,11 @@ gi_ir_node_free (GIIrNode *node)
 }
 
 /* returns the fixed size of the blob */
-guint32
+uint32_t
 gi_ir_node_get_size (GIIrNode *node)
 {
   GList *l;
-  gint size, n;
+  int size, n;
 
   switch (node->type)
     {
@@ -575,7 +575,7 @@ add_attribute_size (gpointer key, gpointer value, gpointer data)
 {
   const char *key_str = key;
   const char *value_str = value;
-  gint *size_p = data;
+  int *size_p = data;
 
   *size_p += sizeof (AttributeBlob);
   *size_p += ALIGN_VALUE (strlen (key_str) + 1, 4);
@@ -583,12 +583,12 @@ add_attribute_size (gpointer key, gpointer value, gpointer data)
 }
 
 /* returns the full size of the blob including variable-size parts (including attributes) */
-static guint32
+static uint32_t
 gi_ir_node_get_full_size_internal (GIIrNode *parent,
                                    GIIrNode *node)
 {
   GList *l;
-  gint size, n;
+  int size, n;
 
   if (node == NULL && parent != NULL)
     g_error ("Caught NULL node, parent=%s", parent->name);
@@ -893,7 +893,7 @@ gi_ir_node_get_full_size_internal (GIIrNode *parent,
   return size;
 }
 
-guint32
+uint32_t
 gi_ir_node_get_full_size (GIIrNode *node)
 {
   return gi_ir_node_get_full_size_internal (NULL, node);
@@ -1009,19 +1009,19 @@ gi_ir_node_param_direction_string (GIIrNodeParam * node)
   return "in";
 }
 
-static gint64
+static int64_t
 parse_int_value (const char *str)
 {
   return g_ascii_strtoll (str, NULL, 0);
 }
 
-static guint64
+static uint64_t
 parse_uint_value (const char *str)
 {
   return g_ascii_strtoull (str, NULL, 0);
 }
 
-static gdouble
+static double
 parse_float_value (const char *str)
 {
   return g_ascii_strtod (str, NULL);
@@ -1042,13 +1042,13 @@ parse_boolean_value (const char *str)
 static GIIrNode *
 find_entry_node (GIIrTypelibBuild *build,
                  const char       *name,
-                 guint16          *idx)
+                 uint16_t         *idx)
 
 {
   GIIrModule *module = build->module;
   GList *l;
-  gint i;
-  gint n_names;
+  int i;
+  int n_names;
   char **names;
   GIIrNode *result = NULL;
 
@@ -1112,11 +1112,11 @@ find_entry_node (GIIrTypelibBuild *build,
   return result;
 }
 
-static guint16
+static uint16_t
 find_entry (GIIrTypelibBuild *build,
             const char       *name)
 {
-  guint16 idx = 0;
+  uint16_t idx = 0;
 
   find_entry_node (build, name, &idx);
 
@@ -1155,7 +1155,7 @@ gi_ir_find_node (GIIrTypelibBuild *build,
   GList *l;
   GIIrNode *return_node = NULL;
   char **names = g_strsplit (name, ".", 0);
-  gint n_names = g_strv_length (names);
+  int n_names = g_strv_length (names);
   const char *target_name;
   GIIrModule *target_module;
 
@@ -1196,7 +1196,7 @@ get_index_of_member_type (GIIrNodeInterface *node,
                           GIIrNodeTypeId     type,
                           const char        *name)
 {
-  gint index = -1;
+  int index = -1;
   GList *l;
 
   for (l = node->members; l; l = l->next)
@@ -1220,7 +1220,7 @@ serialize_type (GIIrTypelibBuild *build,
                 GIIrNodeType     *node,
                 GString          *str)
 {
-  gint i;
+  int i;
 
   if (GI_TYPE_TAG_IS_BASIC (node->tag))
     {
@@ -1341,12 +1341,12 @@ serialize_type (GIIrTypelibBuild *build,
 static void
 gi_ir_node_build_members (GList            **members,
                           GIIrNodeTypeId     type,
-                          guint16           *count,
+                          uint16_t          *count,
                           GIIrNode          *parent,
                           GIIrTypelibBuild  *build,
-                          guint32           *offset,
-                          guint32           *offset2,
-                          guint16           *count2)
+                          uint32_t           *offset,
+                          uint32_t           *offset2,
+                          uint16_t          *count2)
 {
   GList *l = *members;
 
@@ -1398,17 +1398,17 @@ void
 gi_ir_node_build_typelib (GIIrNode         *node,
                           GIIrNode         *parent,
                           GIIrTypelibBuild *build,
-                          guint32          *offset,
-                          guint32          *offset2,
-                          guint16          *count2)
+                          uint32_t         *offset,
+                          uint32_t         *offset2,
+                          uint16_t         *count2)
 {
   gboolean appended_stack;
   GHashTable *strings = build->strings;
   GHashTable *types = build->types;
   guchar *data = build->data;
   GList *l;
-  guint32 old_offset = *offset;
-  guint32 old_offset2 = *offset2;
+  uint32_t old_offset = *offset;
+  uint32_t old_offset2 = *offset2;
 
   g_assert (node != NULL);
 
@@ -1480,7 +1480,7 @@ gi_ir_node_build_typelib (GIIrNode         *node,
                   case GI_TYPE_TAG_ARRAY:
                     {
                       ArrayTypeBlob *array = (ArrayTypeBlob *)&data[*offset2];
-                      guint32 pos;
+                      uint32_t pos;
 
                       array->pointer = type->is_pointer;
                       array->reserved = 0;
@@ -1523,7 +1523,7 @@ gi_ir_node_build_typelib (GIIrNode         *node,
                   case GI_TYPE_TAG_GSLIST:
                     {
                       ParamTypeBlob *param = (ParamTypeBlob *)&data[*offset2];
-                      guint32 pos;
+                      uint32_t pos;
 
                       param->pointer = 1;
                       param->reserved = 0;
@@ -1542,7 +1542,7 @@ gi_ir_node_build_typelib (GIIrNode         *node,
                   case GI_TYPE_TAG_GHASH:
                     {
                       ParamTypeBlob *param = (ParamTypeBlob *)&data[*offset2];
-                      guint32 pos;
+                      uint32_t pos;
 
                       param->pointer = 1;
                       param->reserved = 0;
@@ -1653,7 +1653,7 @@ gi_ir_node_build_typelib (GIIrNode         *node,
                 g_error ("Unknown setter %s for property %s:%s", prop->setter, parent->name, node->name);
               }
 
-            blob->setter = (guint) index;
+            blob->setter = (unsigned int) index;
           }
         else
           blob->setter = ACCESSOR_SENTINEL;
@@ -1668,7 +1668,7 @@ gi_ir_node_build_typelib (GIIrNode         *node,
                 g_error ("Unknown getter %s for property %s:%s", prop->getter, parent->name, node->name);
               }
 
-            blob->getter = (guint) index;
+            blob->getter = (unsigned int) index;
           }
         else
           blob->getter = ACCESSOR_SENTINEL;
@@ -1683,8 +1683,8 @@ gi_ir_node_build_typelib (GIIrNode         *node,
         FunctionBlob *blob = (FunctionBlob *)&data[*offset];
         SignatureBlob *blob2 = (SignatureBlob *)&data[*offset2];
         GIIrNodeFunction *function = (GIIrNodeFunction *)node;
-        guint32 signature;
-        gint n;
+        uint32_t signature;
+        int n;
 
         signature = *offset2;
         n = g_list_length (function->parameters);
@@ -1717,7 +1717,7 @@ gi_ir_node_build_typelib (GIIrNode         *node,
 
             blob->setter = function->is_setter;
             blob->getter = function->is_getter;
-            blob->index = (guint) index;
+            blob->index = (unsigned int) index;
           }
 
         /* function->result is special since it doesn't appear in the serialized format but
@@ -1759,8 +1759,8 @@ gi_ir_node_build_typelib (GIIrNode         *node,
         CallbackBlob *blob = (CallbackBlob *)&data[*offset];
         SignatureBlob *blob2 = (SignatureBlob *)&data[*offset2];
         GIIrNodeFunction *function = (GIIrNodeFunction *)node;
-        guint32 signature;
-        gint n;
+        uint32_t signature;
+        unsigned int n;
 
         signature = *offset2;
         n = g_list_length (function->parameters);
@@ -1800,8 +1800,8 @@ gi_ir_node_build_typelib (GIIrNode         *node,
         SignalBlob *blob = (SignalBlob *)&data[*offset];
         SignatureBlob *blob2 = (SignatureBlob *)&data[*offset2];
         GIIrNodeSignal *signal = (GIIrNodeSignal *)node;
-        guint32 signature;
-        gint n;
+        uint32_t signature;
+        unsigned int n;
 
         signature = *offset2;
         n = g_list_length (signal->parameters);
@@ -1858,8 +1858,8 @@ gi_ir_node_build_typelib (GIIrNode         *node,
         VFuncBlob *blob = (VFuncBlob *)&data[*offset];
         SignatureBlob *blob2 = (SignatureBlob *)&data[*offset2];
         GIIrNodeVFunc *vfunc = (GIIrNodeVFunc *)node;
-        guint32 signature;
-        gint n;
+        uint32_t signature;
+        unsigned int n;
 
         signature = *offset2;
         n = g_list_length (vfunc->parameters);
@@ -1882,7 +1882,7 @@ gi_ir_node_build_typelib (GIIrNode         *node,
               {
                 g_error ("Unknown member function %s for vfunc %s", vfunc->invoker, node->name);
               }
-            blob->invoker = (guint) index;
+            blob->invoker = (unsigned int) index;
           }
         else
           blob->invoker = 0x3ff; /* max of 10 bits */
@@ -2204,7 +2204,7 @@ gi_ir_node_build_typelib (GIIrNode         *node,
         for (l = object->interfaces; l; l = l->next)
           {
             blob->n_interfaces++;
-            *(guint16*)&data[*offset] = find_entry (build, (char *)l->data);
+            *(uint16_t *)&data[*offset] = find_entry (build, (char *)l->data);
             *offset += 2;
           }
 
@@ -2267,7 +2267,7 @@ gi_ir_node_build_typelib (GIIrNode         *node,
         for (l = iface->prerequisites; l; l = l->next)
           {
             blob->n_prerequisites++;
-            *(guint16*)&data[*offset] = find_entry (build, (char *)l->data);
+            *(uint16_t *)&data[*offset] = find_entry (build, (char *)l->data);
             *offset += 2;
           }
 
@@ -2310,7 +2310,7 @@ gi_ir_node_build_typelib (GIIrNode         *node,
         blob->reserved = 0;
         blob->unsigned_value = value->value >= 0 ? 1 : 0;
         blob->name = gi_ir_write_string (node->name, strings, data, offset2);
-        blob->value = (gint32)value->value;
+        blob->value = (int32_t) value->value;
       }
       break;
 
@@ -2318,7 +2318,7 @@ gi_ir_node_build_typelib (GIIrNode         *node,
       {
         GIIrNodeConstant *constant = (GIIrNodeConstant *)node;
         ConstantBlob *blob = (ConstantBlob *)&data[*offset];
-        guint32 pos;
+        uint32_t pos;
 
         pos = *offset + G_STRUCT_OFFSET (ConstantBlob, type);
         *offset += sizeof (ConstantBlob);
@@ -2337,43 +2337,43 @@ gi_ir_node_build_typelib (GIIrNode         *node,
             break;
             case GI_TYPE_TAG_INT8:
             blob->size = 1;
-              *(gint8*)&data[blob->offset] = (gint8) parse_int_value (constant->value);
+            *(int8_t *)&data[blob->offset] = (int8_t) parse_int_value (constant->value);
             break;
           case GI_TYPE_TAG_UINT8:
             blob->size = 1;
-            *(guint8*)&data[blob->offset] = (guint8) parse_uint_value (constant->value);
+            *(uint8_t *)&data[blob->offset] = (uint8_t) parse_uint_value (constant->value);
             break;
           case GI_TYPE_TAG_INT16:
             blob->size = 2;
-            *(gint16*)&data[blob->offset] = (gint16) parse_int_value (constant->value);
+            *(int16_t *)&data[blob->offset] = (int16_t) parse_int_value (constant->value);
             break;
           case GI_TYPE_TAG_UINT16:
             blob->size = 2;
-            *(guint16*)&data[blob->offset] = (guint16) parse_uint_value (constant->value);
+            *(uint16_t *)&data[blob->offset] = (uint16_t) parse_uint_value (constant->value);
             break;
           case GI_TYPE_TAG_INT32:
             blob->size = 4;
-            *(gint32*)&data[blob->offset] = (gint32) parse_int_value (constant->value);
+            *(int32_t *)&data[blob->offset] = (int32_t) parse_int_value (constant->value);
             break;
           case GI_TYPE_TAG_UINT32:
             blob->size = 4;
-            *(guint32*)&data[blob->offset] = (guint32) parse_uint_value (constant->value);
+            *(uint32_t*)&data[blob->offset] = (uint32_t) parse_uint_value (constant->value);
             break;
           case GI_TYPE_TAG_INT64:
             blob->size = 8;
-            DO_ALIGNED_COPY(&data[blob->offset], parse_int_value (constant->value), gint64);
+            DO_ALIGNED_COPY (&data[blob->offset], parse_int_value (constant->value), int64_t);
             break;
           case GI_TYPE_TAG_UINT64:
             blob->size = 8;
-            DO_ALIGNED_COPY(&data[blob->offset], parse_uint_value (constant->value), guint64);
+            DO_ALIGNED_COPY (&data[blob->offset], parse_uint_value (constant->value), uint64_t);
             break;
           case GI_TYPE_TAG_FLOAT:
-            blob->size = sizeof (gfloat);
-            DO_ALIGNED_COPY(&data[blob->offset], parse_float_value (constant->value), gfloat);
+            blob->size = sizeof (float);
+            DO_ALIGNED_COPY (&data[blob->offset], parse_float_value (constant->value), float);
             break;
           case GI_TYPE_TAG_DOUBLE:
-            blob->size = sizeof (gdouble);
-            DO_ALIGNED_COPY(&data[blob->offset], parse_float_value (constant->value), gdouble);
+            blob->size = sizeof (double);
+            DO_ALIGNED_COPY (&data[blob->offset], parse_float_value (constant->value), double);
             break;
           case GI_TYPE_TAG_UTF8:
           case GI_TYPE_TAG_FILENAME:
@@ -2411,13 +2411,13 @@ gi_ir_node_build_typelib (GIIrNode         *node,
  * to the typelib at offset, put it in the pool and update offset. If the
  * typelib is not large enough to hold the string, reallocate it.
  */
-guint32
+uint32_t
 gi_ir_write_string (const char  *str,
                     GHashTable  *strings,
                     guchar      *data,
-                    guint32     *offset)
+                    uint32_t    *offset)
 {
-  guint32 start;
+  uint32_t start;
   void *value;
 
   string_count += 1;

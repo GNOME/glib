@@ -69,7 +69,7 @@ static GIRepository *default_repository = NULL;
 static GPtrArray *typelib_search_path = NULL;
 
 typedef struct {
-  guint n_interfaces;
+  unsigned int n_interfaces;
   GIBaseInfo *interfaces[];
 } GTypeInterfaceCache;
 
@@ -77,9 +77,8 @@ static void
 gtype_interface_cache_free (gpointer data)
 {
   GTypeInterfaceCache *cache = data;
-  guint i;
 
-  for (i = 0; i < cache->n_interfaces; i++)
+  for (unsigned int i = 0; i < cache->n_interfaces; i++)
     gi_base_info_unref ((GIBaseInfo*) cache->interfaces[i]);
   g_free (cache);
 }
@@ -528,12 +527,11 @@ get_typelib_dependencies_transitive (GIRepository *repository,
                                      GITypelib    *typelib,
                                      GHashTable   *transitive_dependencies)
 {
-  guint i;
   char **immediate_dependencies;
 
   immediate_dependencies = get_typelib_dependencies (typelib);
 
-  for (i = 0; immediate_dependencies != NULL && immediate_dependencies[i]; i++)
+  for (unsigned int i = 0; immediate_dependencies != NULL && immediate_dependencies[i]; i++)
     {
       char *dependency;
       const char *last_dash;
@@ -753,12 +751,12 @@ gi_repository_new (void)
  * Returns: number of metadata entries
  * Since: 2.80
  */
-guint
+unsigned int
 gi_repository_get_n_infos (GIRepository *repository,
                            const char   *namespace)
 {
   GITypelib *typelib;
-  guint n_interfaces = 0;
+  unsigned int n_interfaces = 0;
 
   g_return_val_if_fail (namespace != NULL, -1);
 
@@ -794,7 +792,7 @@ gi_repository_get_n_infos (GIRepository *repository,
 GIBaseInfo *
 gi_repository_get_info (GIRepository *repository,
                         const char   *namespace,
-                        guint         idx)
+                        unsigned int  idx)
 {
   GITypelib *typelib;
   DirEntry *entry;
@@ -1087,8 +1085,8 @@ gi_repository_get_object_gtype_interfaces (GIRepository      *repository,
   if (cache == NULL)
     {
       GType *interfaces;
-      guint n_interfaces;
-      guint i;
+      unsigned int i;
+      unsigned int n_interfaces;
       GList *interface_infos = NULL, *iter;
 
       interfaces = g_type_interfaces (gtype, &n_interfaces);
@@ -1154,7 +1152,7 @@ gi_repository_get_loaded_namespaces (GIRepository *repository)
 {
   GList *l, *list = NULL;
   char **names;
-  gint i;
+  int i;
 
   repository = get_repository (repository);
 
