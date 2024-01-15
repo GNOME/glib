@@ -337,7 +337,7 @@ get_field_size_alignment (GIIrTypelibBuild *build,
                           gint             *alignment)
 {
   GIIrModule *module = build->module;
-  gchar *who;
+  char *who;
   gboolean success;
 
   who = g_strdup_printf ("field %s.%s.%s", module->name, parent_node->name, ((GIIrNode *)field)->name);

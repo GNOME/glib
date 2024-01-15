@@ -173,7 +173,7 @@ check_unresolved (GIBaseInfo *info)
 }
 
 static void
-write_type_name (const gchar *ns,
+write_type_name (const char  *ns,
                  GIBaseInfo  *info,
                  Xml         *file)
 {
@@ -184,7 +184,7 @@ write_type_name (const gchar *ns,
 }
 
 static void
-write_type_name_attribute (const gchar *ns,
+write_type_name_attribute (const  char *ns,
                            GIBaseInfo  *info,
                            const char  *attr_name,
                            Xml         *file)
@@ -215,7 +215,7 @@ write_ownership_transfer (GITransfer transfer,
 }
 
 static void
-write_type_info (const gchar *ns,
+write_type_info (const char  *ns,
                  GITypeInfo  *info,
                  Xml         *file)
 {
@@ -379,23 +379,23 @@ write_return_value_attributes (Xml *file,
 }
 
 static void
-write_constant_value (const gchar *ns,
+write_constant_value (const char  *ns,
                       GITypeInfo *info,
                       GIArgument *argument,
                       Xml *file);
 
 static void
-write_callback_info (const gchar    *ns,
+write_callback_info (const char     *ns,
                      GICallbackInfo *info,
                      Xml            *file);
 
 static void
-write_field_info (const gchar *ns,
+write_field_info (const char  *ns,
                   GIFieldInfo *info,
                   GIConstantInfo *branch,
                   Xml         *file)
 {
-  const gchar *name;
+  const char *name;
   GIFieldInfoFlags flags;
   gint size;
   gint offset;
@@ -457,7 +457,7 @@ write_field_info (const gchar *ns,
 }
 
 static void
-write_callable_info (const gchar    *ns,
+write_callable_info (const char     *ns,
                      GICallableInfo *info,
                      Xml            *file)
 {
@@ -568,14 +568,14 @@ write_callable_info (const gchar    *ns,
 }
 
 static void
-write_function_info (const gchar    *ns,
+write_function_info (const char     *ns,
                      GIFunctionInfo *info,
                      Xml            *file)
 {
   GIFunctionInfoFlags flags;
-  const gchar *tag;
-  const gchar *name;
-  const gchar *symbol;
+  const char *tag;
+  const char *name;
+  const char *symbol;
   gboolean deprecated;
 
   flags = gi_function_info_get_flags (info);
@@ -619,11 +619,11 @@ write_function_info (const gchar    *ns,
 }
 
 static void
-write_callback_info (const gchar    *ns,
+write_callback_info (const char     *ns,
                      GICallbackInfo *info,
                      Xml            *file)
 {
-  const gchar *name;
+  const char *name;
   gboolean deprecated;
 
   name = gi_base_info_get_name ((GIBaseInfo *)info);
@@ -640,14 +640,14 @@ write_callback_info (const gchar    *ns,
 }
 
 static void
-write_struct_info (const gchar  *ns,
+write_struct_info (const char   *ns,
                    GIStructInfo *info,
                    Xml          *file)
 {
-  const gchar *name;
-  const gchar *type_name;
-  const gchar *type_init;
-  const gchar *func;
+  const char *name;
+  const char *type_name;
+  const char *type_init;
+  const char *func;
   gboolean deprecated;
   gboolean is_gtype_struct;
   gboolean foreign;
@@ -722,13 +722,13 @@ write_struct_info (const gchar  *ns,
 }
 
 static void
-write_value_info (const gchar *ns,
+write_value_info (const char  *ns,
                   GIValueInfo *info,
                   Xml         *file)
 {
-  const gchar *name;
+  const char *name;
   gint64 value;
-  gchar *value_str;
+  char *value_str;
   gboolean deprecated;
 
   name = gi_base_info_get_name ((GIBaseInfo *)info);
@@ -749,7 +749,7 @@ write_value_info (const gchar *ns,
 }
 
 static void
-write_constant_value (const gchar *ns,
+write_constant_value (const char *ns,
                       GITypeInfo *type,
                       GIArgument  *value,
                       Xml        *file)
@@ -799,12 +799,12 @@ write_constant_value (const gchar *ns,
 }
 
 static void
-write_constant_info (const gchar    *ns,
+write_constant_info (const char     *ns,
                      GIConstantInfo *info,
                      Xml            *file)
 {
   GITypeInfo *type;
-  const gchar *name;
+  const char *name;
   GIArgument value;
 
   name = gi_base_info_get_name ((GIBaseInfo *)info);
@@ -830,14 +830,14 @@ write_constant_info (const gchar    *ns,
 
 
 static void
-write_enum_info (const gchar *ns,
+write_enum_info (const char *ns,
                  GIEnumInfo *info,
                  Xml         *file)
 {
-  const gchar *name;
-  const gchar *type_name;
-  const gchar *type_init;
-  const gchar *error_domain;
+  const char *name;
+  const char *type_name;
+  const char *type_init;
+  const char *error_domain;
   gboolean deprecated;
 
   name = gi_base_info_get_name ((GIBaseInfo *)info);
@@ -874,12 +874,12 @@ write_enum_info (const gchar *ns,
 }
 
 static void
-write_signal_info (const gchar  *ns,
+write_signal_info (const char   *ns,
                    GISignalInfo *info,
                    Xml          *file)
 {
   GSignalFlags flags;
-  const gchar *name;
+  const char *name;
   gboolean deprecated;
 
   name = gi_base_info_get_name ((GIBaseInfo *)info);
@@ -917,12 +917,12 @@ write_signal_info (const gchar  *ns,
 }
 
 static void
-write_vfunc_info (const gchar *ns,
+write_vfunc_info (const char  *ns,
                   GIVFuncInfo *info,
                   Xml         *file)
 {
   GIVFuncInfoFlags flags;
-  const gchar *name;
+  const char *name;
   GIFunctionInfo *invoker;
   gboolean deprecated;
   gint offset;
@@ -961,12 +961,12 @@ write_vfunc_info (const gchar *ns,
 }
 
 static void
-write_property_info (const gchar    *ns,
+write_property_info (const char     *ns,
                      GIPropertyInfo *info,
                      Xml            *file)
 {
   GParamFlags flags;
-  const gchar *name;
+  const char *name;
   gboolean deprecated;
   GITypeInfo *type;
 
@@ -1026,14 +1026,14 @@ write_property_info (const gchar    *ns,
 }
 
 static void
-write_object_info (const gchar  *ns,
+write_object_info (const char   *ns,
                    GIObjectInfo *info,
                    Xml          *file)
 {
-  const gchar *name;
-  const gchar *type_name;
-  const gchar *type_init;
-  const gchar *func;
+  const char *name;
+  const char *type_name;
+  const char *type_init;
+  const char *func;
   gboolean deprecated;
   gboolean is_abstract;
   gboolean is_fundamental;
@@ -1156,13 +1156,13 @@ write_object_info (const gchar  *ns,
 }
 
 static void
-write_interface_info (const gchar     *ns,
+write_interface_info (const char      *ns,
                       GIInterfaceInfo *info,
                       Xml             *file)
 {
-  const gchar *name;
-  const gchar *type_name;
-  const gchar *type_init;
+  const char *name;
+  const char *type_name;
+  const char *type_init;
   GIStructInfo *class_struct;
   gboolean deprecated;
 
@@ -1240,14 +1240,14 @@ write_interface_info (const gchar     *ns,
 }
 
 static void
-write_union_info (const gchar *ns,
+write_union_info (const char  *ns,
                   GIUnionInfo *info,
                   Xml         *file)
 {
-  const gchar *name;
-  const gchar *type_name;
-  const gchar *type_init;
-  const gchar *func;
+  const char *name;
+  const char *type_name;
+  const char *type_init;
+  const char *func;
   gboolean deprecated;
   gsize size;
 
@@ -1346,7 +1346,7 @@ gi_ir_writer_write (const char *filename,
     ofile = stdout;
   else
     {
-      gchar *full_filename;
+      char *full_filename;
 
       if (needs_prefix)
         full_filename = g_strdup_printf ("%s-%s", ns, filename);
@@ -1391,7 +1391,7 @@ gi_ir_writer_write (const char *filename,
   if (TRUE)
     {
       const char * const *shared_libraries;
-      const gchar *c_prefix;
+      const char *c_prefix;
       const char *cur_ns = ns;
       const char *cur_version;
       gint n_infos;

@@ -67,7 +67,7 @@ GIFunctionInfo * gi_interface_info_get_method          (GIInterfaceInfo *info,
 
 GI_AVAILABLE_IN_ALL
 GIFunctionInfo * gi_interface_info_find_method         (GIInterfaceInfo *info,
-                                                        const gchar     *name);
+                                                        const char      *name);
 
 GI_AVAILABLE_IN_ALL
 guint            gi_interface_info_get_n_signals       (GIInterfaceInfo *info);
@@ -78,7 +78,7 @@ GISignalInfo *   gi_interface_info_get_signal          (GIInterfaceInfo *info,
 
 GI_AVAILABLE_IN_ALL
 GISignalInfo *   gi_interface_info_find_signal         (GIInterfaceInfo *info,
-                                                        const gchar     *name);
+                                                        const char      *name);
 
 GI_AVAILABLE_IN_ALL
 guint            gi_interface_info_get_n_vfuncs        (GIInterfaceInfo *info);
@@ -89,7 +89,7 @@ GIVFuncInfo *    gi_interface_info_get_vfunc           (GIInterfaceInfo *info,
 
 GI_AVAILABLE_IN_ALL
 GIVFuncInfo *    gi_interface_info_find_vfunc          (GIInterfaceInfo *info,
-                                                        const gchar     *name);
+                                                        const char      *name);
 
 GI_AVAILABLE_IN_ALL
 guint            gi_interface_info_get_n_constants     (GIInterfaceInfo *info);

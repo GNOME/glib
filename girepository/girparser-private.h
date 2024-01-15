@@ -34,16 +34,16 @@ typedef struct _GIIrParser GIIrParser;
 GIIrParser *gi_ir_parser_new          (void);
 void        gi_ir_parser_free         (GIIrParser         *parser);
 void        gi_ir_parser_set_includes (GIIrParser         *parser,
-                                       const gchar *const *includes);
+                                       const char  *const *includes);
 
 GIIrModule *gi_ir_parser_parse_string (GIIrParser   *parser,
-                                       const gchar  *namespace,
-                                       const gchar  *filename,
-                                       const gchar  *buffer,
+                                       const char   *namespace,
+                                       const char   *filename,
+                                       const char   *buffer,
                                        gssize        length,
                                        GError      **error);
 GIIrModule *gi_ir_parser_parse_file   (GIIrParser   *parser,
-                                       const gchar  *filename,
+                                       const char   *filename,
                                        GError      **error);
 
 G_END_DECLS

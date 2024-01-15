@@ -74,7 +74,7 @@ GI_AVAILABLE_IN_ALL
 GITypeTag      gi_enum_info_get_storage_type  (GIEnumInfo  *info);
 
 GI_AVAILABLE_IN_ALL
-const gchar *  gi_enum_info_get_error_domain  (GIEnumInfo  *info);
+const char *   gi_enum_info_get_error_domain   (GIEnumInfo  *info);
 
 
 GI_AVAILABLE_IN_ALL

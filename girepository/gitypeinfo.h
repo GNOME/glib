@@ -76,10 +76,10 @@ G_BEGIN_DECLS
     ((tag) >= GI_TYPE_TAG_GLIST && (tag) <= GI_TYPE_TAG_GHASH))
 
 GI_AVAILABLE_IN_ALL
-const gchar*           gi_type_tag_to_string            (GITypeTag   type);
+const char *           gi_type_tag_to_string            (GITypeTag   type);
 
 GI_AVAILABLE_IN_ALL
-const gchar*           gi_info_type_to_string           (GIInfoType  type);
+const char *           gi_info_type_to_string           (GIInfoType  type);
 
 
 GI_AVAILABLE_IN_ALL

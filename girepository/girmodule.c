@@ -38,10 +38,10 @@
 #define NUM_SECTIONS 2
 
 GIIrModule *
-gi_ir_module_new (const gchar *name,
-                  const gchar *version,
-                  const gchar *shared_library,
-                  const gchar *c_prefix)
+gi_ir_module_new (const char *name,
+                  const char *version,
+                  const char *shared_library,
+                  const char *c_prefix)
 {
   GIIrModule *module;
 

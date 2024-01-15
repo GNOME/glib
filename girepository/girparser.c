@@ -58,8 +58,8 @@
 
 struct _GIIrParser
 {
-  gchar **includes;
-  gchar **gi_gir_path;
+  char **includes;
+  char **gi_gir_path;
   GList *parsed_modules; /* All previously parsed modules */
 };
 
@@ -133,17 +133,17 @@ struct _ParseContext
 #define CURRENT_NODE(ctx) ((GIIrNode *)((ctx)->node_stack->data))
 
 static void start_element_handler (GMarkupParseContext *context,
-                                   const gchar         *element_name,
-                                   const gchar        **attribute_names,
-                                   const gchar        **attribute_values,
+                                   const char          *element_name,
+                                   const char         **attribute_names,
+                                   const char         **attribute_values,
                                    void                *user_data,
                                    GError             **error);
 static void end_element_handler   (GMarkupParseContext *context,
-                                   const gchar         *element_name,
+                                   const char          *element_name,
                                    void                *user_data,
                                    GError             **error);
 static void text_handler          (GMarkupParseContext *context,
-                                   const gchar         *text,
+                                   const char          *text,
                                    gsize                text_len,
                                    void                *user_data,
                                    GError             **error);
@@ -164,22 +164,22 @@ static GMarkupParser markup_parser =
 
 static gboolean
 start_alias (GMarkupParseContext *context,
-             const gchar         *element_name,
-             const gchar        **attribute_names,
-             const gchar        **attribute_values,
+             const char          *element_name,
+             const char         **attribute_names,
+             const char         **attribute_values,
              ParseContext        *ctx,
              GError             **error);
 static gboolean
 start_type (GMarkupParseContext *context,
-            const gchar         *element_name,
-            const gchar        **attribute_names,
-            const gchar        **attribute_values,
+            const char          *element_name,
+            const char         **attribute_names,
+            const char         **attribute_values,
             ParseContext        *ctx,
             GError             **error);
 
-static const gchar *find_attribute (const gchar  *name,
-                                    const gchar **attribute_names,
-                                    const gchar **attribute_values);
+static const char *find_attribute (const char   *name,
+                                   const char **attribute_names,
+                                   const char **attribute_values);
 
 
 GIIrParser *
@@ -210,7 +210,7 @@ gi_ir_parser_free (GIIrParser *parser)
 
 void
 gi_ir_parser_set_includes (GIIrParser         *parser,
-                           const gchar *const *includes)
+                           const char *const *includes)
 {
   g_strfreev (parser->includes);
 
@@ -219,9 +219,9 @@ gi_ir_parser_set_includes (GIIrParser         *parser,
 
 static void
 firstpass_start_element_handler (GMarkupParseContext *context,
-                                 const gchar         *element_name,
-                                 const gchar        **attribute_names,
-                                 const gchar        **attribute_values,
+                                 const char          *element_name,
+                                 const char         **attribute_names,
+                                 const char         **attribute_values,
                                  void                *user_data,
                                  GError             **error)
 {
@@ -239,9 +239,9 @@ firstpass_start_element_handler (GMarkupParseContext *context,
     }
   else if (strcmp (element_name, "record") == 0)
     {
-      const gchar *name;
-      const gchar *disguised;
-      const gchar *pointer;
+      const char *name;
+      const char *disguised;
+      const char *pointer;
 
       name = find_attribute ("name", attribute_names, attribute_values);
       disguised = find_attribute ("disguised", attribute_names, attribute_values);
@@ -266,7 +266,7 @@ firstpass_start_element_handler (GMarkupParseContext *context,
 
 static void
 firstpass_end_element_handler (GMarkupParseContext *context,
-                               const gchar         *element_name,
+                               const char          *element_name,
                                void                *user_data,
                                GError             **error)
 {
@@ -294,8 +294,8 @@ static char *
 locate_gir (GIIrParser *parser,
             const char *girname)
 {
-  const gchar *const *datadirs;
-  const gchar *const *dir;
+  const char *const *datadirs;
+  const char *const *dir;
   char *path = NULL;
 
   g_debug ("Looking for %s", girname);
@@ -303,7 +303,7 @@ locate_gir (GIIrParser *parser,
 
   if (parser->includes != NULL)
     {
-      for (dir = (const gchar *const *)parser->includes; *dir; dir++)
+      for (dir = (const char *const *)parser->includes; *dir; dir++)
         {
           path = g_build_filename (*dir, girname, NULL);
           g_debug ("Trying %s from includes", path);
@@ -315,7 +315,7 @@ locate_gir (GIIrParser *parser,
 
   if (parser->gi_gir_path != NULL)
     {
-      for (dir = (const gchar *const *) parser->gi_gir_path; *dir; dir++)
+      for (dir = (const char *const *) parser->gi_gir_path; *dir; dir++)
         {
           if (**dir == '\0')
             continue;
@@ -378,10 +378,10 @@ locate_gir (GIIrParser *parser,
                  line_number, char_number, attribute, element);                \
   } while (0)
 
-static const gchar *
-find_attribute (const gchar  *name,
-                const gchar **attribute_names,
-                const gchar **attribute_values)
+static const char *
+find_attribute (const char   *name,
+                const char **attribute_names,
+                const char **attribute_values)
 {
   gint i;
 
@@ -428,11 +428,13 @@ push_node (ParseContext *ctx, GIIrNode *node)
 }
 
 static GIIrNodeType * parse_type_internal (GIIrModule *module,
-                                           const gchar *str, gchar **next, gboolean in_glib,
+                                           const char *str,
+                                           char **next,
+                                           gboolean in_glib,
                                            gboolean in_gobject);
 
 typedef struct {
-  const gchar *str;
+  const char *str;
   guint size;
   guint is_signed : 1;
 } IntegerAliasInfo;
@@ -453,7 +455,7 @@ static IntegerAliasInfo integer_aliases[] = {
 };
 
 typedef struct {
-  const gchar *str;
+  const char *str;
   gint tag;
   gboolean pointer;
 } BasicTypeInfo;
@@ -532,7 +534,7 @@ parse_basic (const char *str)
 
 static GIIrNodeType *
 parse_type_internal (GIIrModule   *module,
-                     const gchar  *str,
+                     const char   *str,
                      char        **next,
                      gboolean      in_glib,
                      gboolean      in_gobject)
@@ -676,13 +678,13 @@ parse_type_internal (GIIrModule   *module,
 }
 
 static const char *
-resolve_aliases (ParseContext *ctx, const gchar *type)
+resolve_aliases (ParseContext *ctx, const char *type)
 {
   void *orig;
   void *value;
   GSList *seen_values = NULL;
-  const gchar *lookup;
-  gchar *prefixed;
+  const char *lookup;
+  char *prefixed;
 
   if (strchr (type, '.') == NULL)
     {
@@ -717,12 +719,12 @@ resolve_aliases (ParseContext *ctx, const gchar *type)
 
 static void
 is_pointer_or_disguised_structure (ParseContext *ctx,
-                                   const gchar *type,
+                                   const char *type,
                                    gboolean *is_pointer,
                                    gboolean *is_disguised)
 {
-  const gchar *lookup;
-  gchar *prefixed;
+  const char *lookup;
+  char *prefixed;
 
   if (strchr (type, '.') == NULL)
     {
@@ -744,7 +746,7 @@ is_pointer_or_disguised_structure (ParseContext *ctx,
 }
 
 static GIIrNodeType *
-parse_type (ParseContext *ctx, const gchar *type)
+parse_type (ParseContext *ctx, const char *type)
 {
   GIIrNodeType *node;
   const BasicTypeInfo *basic;
@@ -769,13 +771,13 @@ parse_type (ParseContext *ctx, const gchar *type)
 
 static gboolean
 introspectable_prelude (GMarkupParseContext *context,
-                    const gchar        **attribute_names,
-                    const gchar        **attribute_values,
+                    const char         **attribute_names,
+                    const char         **attribute_values,
                     ParseContext        *ctx,
                     ParseState           new_state)
 {
-  const gchar *introspectable_arg;
-  const gchar *shadowed_by;
+  const char *introspectable_arg;
+  const char *shadowed_by;
   gboolean introspectable;
 
   g_assert (ctx->state != STATE_PASSTHROUGH);
@@ -795,16 +797,16 @@ introspectable_prelude (GMarkupParseContext *context,
 
 static gboolean
 start_glib_boxed (GMarkupParseContext *context,
-                  const gchar         *element_name,
-                  const gchar        **attribute_names,
-                  const gchar        **attribute_values,
+                  const char          *element_name,
+                  const char         **attribute_names,
+                  const char         **attribute_values,
                   ParseContext        *ctx,
                   GError             **error)
 {
-  const gchar *name;
-  const gchar *typename;
-  const gchar *typeinit;
-  const gchar *deprecated;
+  const char *name;
+  const char *typename;
+  const char *typeinit;
+  const char *deprecated;
   GIIrNodeBoxed *boxed;
 
   if (!(strcmp (element_name, "glib:boxed") == 0 &&
@@ -855,19 +857,19 @@ start_glib_boxed (GMarkupParseContext *context,
 
 static gboolean
 start_function (GMarkupParseContext *context,
-                const gchar         *element_name,
-                const gchar        **attribute_names,
-                const gchar        **attribute_values,
+                const char          *element_name,
+                const char         **attribute_names,
+                const char         **attribute_values,
                 ParseContext        *ctx,
                 GError             **error)
 {
-  const gchar *name;
-  const gchar *shadows;
-  const gchar *symbol;
-  const gchar *deprecated;
-  const gchar *throws;
-  const gchar *set_property;
-  const gchar *get_property;
+  const char *name;
+  const char *shadows;
+  const char *symbol;
+  const char *deprecated;
+  const char *throws;
+  const char *set_property;
+  const char *get_property;
   GIIrNodeFunction *function;
   gboolean found = FALSE;
   ParseState in_embedded_state = STATE_NONE;
@@ -1055,7 +1057,7 @@ start_function (GMarkupParseContext *context,
 
 static void
 parse_property_transfer (GIIrNodeProperty *property,
-                         const gchar      *transfer,
+                         const char       *transfer,
                          ParseContext     *ctx)
 {
   if (transfer == NULL)
@@ -1095,7 +1097,7 @@ parse_property_transfer (GIIrNodeProperty *property,
 }
 
 static gboolean
-parse_param_transfer (GIIrNodeParam *param, const gchar *transfer, const gchar *name,
+parse_param_transfer (GIIrNodeParam *param, const char *transfer, const char *name,
                       GError **error)
 {
   if (transfer == NULL)
@@ -1132,13 +1134,13 @@ parse_param_transfer (GIIrNodeParam *param, const gchar *transfer, const gchar *
 
 static gboolean
 start_instance_parameter (GMarkupParseContext *context,
-                          const gchar         *element_name,
-                          const gchar        **attribute_names,
-                          const gchar        **attribute_values,
+                          const char          *element_name,
+                          const char         **attribute_names,
+                          const char         **attribute_values,
                           ParseContext        *ctx,
                           GError             **error)
 {
-  const gchar *transfer;
+  const char *transfer;
   gboolean transfer_full;
 
   if (!(strcmp (element_name, "instance-parameter") == 0 &&
@@ -1197,24 +1199,24 @@ start_instance_parameter (GMarkupParseContext *context,
 
 static gboolean
 start_parameter (GMarkupParseContext *context,
-                 const gchar         *element_name,
-                 const gchar        **attribute_names,
-                 const gchar        **attribute_values,
+                 const char          *element_name,
+                 const char         **attribute_names,
+                 const char         **attribute_values,
                  ParseContext        *ctx,
                  GError             **error)
 {
-  const gchar *name;
-  const gchar *direction;
-  const gchar *retval;
-  const gchar *optional;
-  const gchar *caller_allocates;
-  const gchar *allow_none;
-  const gchar *transfer;
-  const gchar *scope;
-  const gchar *closure;
-  const gchar *destroy;
-  const gchar *skip;
-  const gchar *nullable;
+  const char *name;
+  const char *direction;
+  const char *retval;
+  const char *optional;
+  const char *caller_allocates;
+  const char *allow_none;
+  const char *transfer;
+  const char *scope;
+  const char *closure;
+  const char *destroy;
+  const char *skip;
+  const char *nullable;
   GIIrNodeParam *param;
 
   if (!(strcmp (element_name, "parameter") == 0 &&
@@ -1350,17 +1352,17 @@ start_parameter (GMarkupParseContext *context,
 
 static gboolean
 start_field (GMarkupParseContext *context,
-             const gchar         *element_name,
-             const gchar        **attribute_names,
-             const gchar        **attribute_values,
+             const char          *element_name,
+             const char         **attribute_names,
+             const char         **attribute_values,
              ParseContext        *ctx,
              GError             **error)
 {
-  const gchar *name;
-  const gchar *readable;
-  const gchar *writable;
-  const gchar *bits;
-  const gchar *branch;
+  const char *name;
+  const char *readable;
+  const char *writable;
+  const char *bits;
+  const char *branch;
   GIIrNodeField *field;
   ParseState target_state;
   gboolean introspectable;
@@ -1495,13 +1497,13 @@ start_field (GMarkupParseContext *context,
 
 static gboolean
 start_alias (GMarkupParseContext *context,
-             const gchar         *element_name,
-             const gchar        **attribute_names,
-             const gchar        **attribute_values,
+             const char          *element_name,
+             const char         **attribute_names,
+             const char         **attribute_values,
              ParseContext        *ctx,
              GError             **error)
 {
-  const gchar *name;
+  const char *name;
 
   name = find_attribute ("name", attribute_names, attribute_values);
   if (name == NULL)
@@ -1518,17 +1520,17 @@ start_alias (GMarkupParseContext *context,
 
 static gboolean
 start_enum (GMarkupParseContext *context,
-             const gchar         *element_name,
-             const gchar        **attribute_names,
-             const gchar        **attribute_values,
+            const char          *element_name,
+            const char         **attribute_names,
+            const char         **attribute_values,
              ParseContext        *ctx,
              GError             **error)
 {
-  const gchar *name;
-  const gchar *typename;
-  const gchar *typeinit;
-  const gchar *deprecated;
-  const gchar *error_domain;
+  const char *name;
+  const char *typename;
+  const char *typeinit;
+  const char *deprecated;
+  const char *error_domain;
   GIIrNodeEnum *enum_;
 
   if (!((strcmp (element_name, "enumeration") == 0 && ctx->state == STATE_NAMESPACE) ||
@@ -1575,21 +1577,21 @@ start_enum (GMarkupParseContext *context,
 
 static gboolean
 start_property (GMarkupParseContext *context,
-                const gchar         *element_name,
-                const gchar        **attribute_names,
-                const gchar        **attribute_values,
+                const char          *element_name,
+                const char         **attribute_names,
+                const char         **attribute_values,
                 ParseContext        *ctx,
                 GError             **error)
 {
   ParseState target_state;
-  const gchar *name;
-  const gchar *readable;
-  const gchar *writable;
-  const gchar *construct;
-  const gchar *construct_only;
-  const gchar *transfer;
-  const gchar *setter;
-  const gchar *getter;
+  const char *name;
+  const char *readable;
+  const char *writable;
+  const char *construct;
+  const char *construct_only;
+  const char *transfer;
+  const char *setter;
+  const char *getter;
   GIIrNodeProperty *property;
   GIIrNodeInterface *iface;
 
@@ -1660,9 +1662,9 @@ start_property (GMarkupParseContext *context,
 }
 
 static gint64
-parse_value (const gchar *str)
+parse_value (const char *str)
 {
-  gchar *shift_op;
+  char *shift_op;
 
   /* FIXME just a quick hack */
   shift_op = strstr (str, "<<");
@@ -1684,16 +1686,16 @@ parse_value (const gchar *str)
 
 static gboolean
 start_member (GMarkupParseContext *context,
-              const gchar         *element_name,
-              const gchar        **attribute_names,
-              const gchar        **attribute_values,
+              const char          *element_name,
+              const char         **attribute_names,
+              const char         **attribute_values,
               ParseContext        *ctx,
               GError             **error)
 {
-  const gchar *name;
-  const gchar *value;
-  const gchar *deprecated;
-  const gchar *c_identifier;
+  const char *name;
+  const char *value;
+  const char *deprecated;
+  const char *c_identifier;
   GIIrNodeEnum *enum_;
   GIIrNodeValue *value_;
 
@@ -1736,17 +1738,17 @@ start_member (GMarkupParseContext *context,
 
 static gboolean
 start_constant (GMarkupParseContext *context,
-                const gchar         *element_name,
-                const gchar        **attribute_names,
-                const gchar        **attribute_values,
+                const char          *element_name,
+                const char         **attribute_names,
+                const char         **attribute_values,
                 ParseContext        *ctx,
                 GError             **error)
 {
   ParseState prev_state;
   ParseState target_state;
-  const gchar *name;
-  const gchar *value;
-  const gchar *deprecated;
+  const char *name;
+  const char *value;
+  const char *deprecated;
   GIIrNodeConstant *constant;
 
   if (!(strcmp (element_name, "constant") == 0 &&
@@ -1822,17 +1824,17 @@ start_constant (GMarkupParseContext *context,
 
 static gboolean
 start_interface (GMarkupParseContext *context,
-                 const gchar         *element_name,
-                 const gchar        **attribute_names,
-                 const gchar        **attribute_values,
+                 const char          *element_name,
+                 const char         **attribute_names,
+                 const char         **attribute_values,
                  ParseContext        *ctx,
                  GError             **error)
 {
-  const gchar *name;
-  const gchar *typename;
-  const gchar *typeinit;
-  const gchar *deprecated;
-  const gchar *glib_type_struct;
+  const char *name;
+  const char *typename;
+  const char *typeinit;
+  const char *deprecated;
+  const char *glib_type_struct;
   GIIrNodeInterface *iface;
 
   if (!(strcmp (element_name, "interface") == 0 &&
@@ -1884,25 +1886,25 @@ start_interface (GMarkupParseContext *context,
 
 static gboolean
 start_class (GMarkupParseContext *context,
-              const gchar         *element_name,
-              const gchar        **attribute_names,
-              const gchar        **attribute_values,
+             const char          *element_name,
+             const char         **attribute_names,
+             const char         **attribute_values,
               ParseContext        *ctx,
               GError             **error)
 {
-  const gchar *name;
-  const gchar *parent;
-  const gchar *glib_type_struct;
-  const gchar *typename;
-  const gchar *typeinit;
-  const gchar *deprecated;
-  const gchar *abstract;
-  const gchar *fundamental;
-  const gchar *final;
-  const gchar *ref_func;
-  const gchar *unref_func;
-  const gchar *set_value_func;
-  const gchar *get_value_func;
+  const char *name;
+  const char *parent;
+  const char *glib_type_struct;
+  const char *typename;
+  const char *typeinit;
+  const char *deprecated;
+  const char *abstract;
+  const char *fundamental;
+  const char *final;
+  const char *ref_func;
+  const char *unref_func;
+  const char *set_value_func;
+  const char *get_value_func;
   GIIrNodeInterface *iface;
 
   if (!(strcmp (element_name, "class") == 0 &&
@@ -1977,14 +1979,14 @@ start_class (GMarkupParseContext *context,
 
 static gboolean
 start_type (GMarkupParseContext *context,
-            const gchar         *element_name,
-            const gchar        **attribute_names,
-            const gchar        **attribute_values,
+            const char          *element_name,
+            const char         **attribute_names,
+            const char         **attribute_values,
             ParseContext       *ctx,
             GError             **error)
 {
-  const gchar *name;
-  const gchar *ctype;
+  const char *name;
+  const char *ctype;
   gboolean in_alias = FALSE;
   gboolean is_array;
   gboolean is_varargs;
@@ -2299,14 +2301,14 @@ end_type (ParseContext *ctx)
 
 static gboolean
 start_attribute (GMarkupParseContext *context,
-                 const gchar         *element_name,
-                 const gchar        **attribute_names,
-                 const gchar        **attribute_values,
+                 const char          *element_name,
+                 const char         **attribute_names,
+                 const char         **attribute_values,
                  ParseContext       *ctx,
                  GError             **error)
 {
-  const gchar *name;
-  const gchar *value;
+  const char *name;
+  const char *value;
   GIIrNode *curnode;
 
   if (strcmp (element_name, "attribute") != 0 || ctx->node_stack == NULL)
@@ -2344,16 +2346,16 @@ start_attribute (GMarkupParseContext *context,
 
 static gboolean
 start_return_value (GMarkupParseContext *context,
-                    const gchar         *element_name,
-                    const gchar        **attribute_names,
-                    const gchar        **attribute_values,
+                    const char          *element_name,
+                    const char         **attribute_names,
+                    const char         **attribute_values,
                     ParseContext       *ctx,
                     GError             **error)
 {
   GIIrNodeParam *param;
-  const gchar  *transfer;
-  const gchar  *skip;
-  const gchar  *nullable;
+  const char *transfer;
+  const char *skip;
+  const char *nullable;
 
   if (!(strcmp (element_name, "return-value") == 0 &&
         ctx->state == STATE_FUNCTION))
@@ -2413,9 +2415,9 @@ start_return_value (GMarkupParseContext *context,
 
 static gboolean
 start_implements (GMarkupParseContext *context,
-                  const gchar         *element_name,
-                  const gchar        **attribute_names,
-                  const gchar        **attribute_values,
+                  const char          *element_name,
+                  const char         **attribute_names,
+                  const char         **attribute_values,
                   ParseContext       *ctx,
                   GError             **error)
 {
@@ -2443,19 +2445,19 @@ start_implements (GMarkupParseContext *context,
 
 static gboolean
 start_glib_signal (GMarkupParseContext *context,
-                   const gchar         *element_name,
-                   const gchar        **attribute_names,
-                   const gchar        **attribute_values,
+                   const char          *element_name,
+                   const char         **attribute_names,
+                   const char         **attribute_values,
                    ParseContext       *ctx,
                    GError             **error)
 {
-  const gchar *name;
-  const gchar *when;
-  const gchar *no_recurse;
-  const gchar *detailed;
-  const gchar *action;
-  const gchar *no_hooks;
-  const gchar *has_class_closure;
+  const char *name;
+  const char *when;
+  const char *no_recurse;
+  const char *detailed;
+  const char *action;
+  const char *no_hooks;
+  const char *has_class_closure;
   GIIrNodeInterface *iface;
   GIIrNodeSignal *signal;
 
@@ -2526,19 +2528,19 @@ start_glib_signal (GMarkupParseContext *context,
 
 static gboolean
 start_vfunc (GMarkupParseContext *context,
-             const gchar         *element_name,
-             const gchar        **attribute_names,
-             const gchar        **attribute_values,
+             const char          *element_name,
+             const char         **attribute_names,
+             const char         **attribute_values,
              ParseContext       *ctx,
              GError             **error)
 {
-  const gchar *name;
-  const gchar *must_chain_up;
-  const gchar *override;
-  const gchar *is_class_closure;
-  const gchar *offset;
-  const gchar *invoker;
-  const gchar *throws;
+  const char *name;
+  const char *must_chain_up;
+  const char *override;
+  const char *is_class_closure;
+  const char *offset;
+  const char *invoker;
+  const char *throws;
   GIIrNodeInterface *iface;
   GIIrNodeVFunc *vfunc;
 
@@ -2617,23 +2619,23 @@ start_vfunc (GMarkupParseContext *context,
 
 static gboolean
 start_struct (GMarkupParseContext *context,
-              const gchar         *element_name,
-              const gchar        **attribute_names,
-              const gchar        **attribute_values,
+              const char          *element_name,
+              const char         **attribute_names,
+              const char         **attribute_values,
               ParseContext       *ctx,
               GError             **error)
 {
-  const gchar *name;
-  const gchar *deprecated;
-  const gchar *disguised;
-  const gchar *opaque;
-  const gchar *pointer;
-  const gchar *gtype_name;
-  const gchar *gtype_init;
-  const gchar *gtype_struct;
-  const gchar *foreign;
-  const gchar *copy_func;
-  const gchar *free_func;
+  const char *name;
+  const char *deprecated;
+  const char *disguised;
+  const char *opaque;
+  const char *pointer;
+  const char *gtype_name;
+  const char *gtype_init;
+  const char *gtype_struct;
+  const char *foreign;
+  const char *copy_func;
+  const char *free_func;
   GIIrNodeStruct *struct_;
 
   if (!(strcmp (element_name, "record") == 0 &&
@@ -2711,18 +2713,18 @@ start_struct (GMarkupParseContext *context,
 
 static gboolean
 start_union (GMarkupParseContext *context,
-             const gchar         *element_name,
-             const gchar        **attribute_names,
-             const gchar        **attribute_values,
+             const char          *element_name,
+             const char         **attribute_names,
+             const char         **attribute_values,
              ParseContext       *ctx,
              GError             **error)
 {
-  const gchar *name;
-  const gchar *deprecated;
-  const gchar *typename;
-  const gchar *typeinit;
-  const gchar *copy_func;
-  const gchar *free_func;
+  const char *name;
+  const char *deprecated;
+  const char *typename;
+  const char *typeinit;
+  const char *copy_func;
+  const char *free_func;
   GIIrNodeUnion *union_;
 
   if (!(strcmp (element_name, "union") == 0 &&
@@ -2770,14 +2772,14 @@ start_union (GMarkupParseContext *context,
 
 static gboolean
 start_discriminator (GMarkupParseContext *context,
-                     const gchar         *element_name,
-                     const gchar        **attribute_names,
-                     const gchar        **attribute_values,
+                     const char          *element_name,
+                     const char         **attribute_names,
+                     const char         **attribute_values,
                      ParseContext       *ctx,
                      GError             **error)
 {
-  const gchar *type;
-  const gchar *offset;
+  const char *type;
+  const char *offset;
   if (!(strcmp (element_name, "discriminator") == 0 &&
         ctx->state == STATE_UNION))
     return FALSE;
@@ -2810,9 +2812,9 @@ parse_include (GMarkupParseContext *context,
                const char          *version)
 {
   GError *error = NULL;
-  gchar *buffer;
+  char *buffer;
   gsize length;
-  gchar *girpath, *girname;
+  char *girpath, *girname;
   GIIrModule *module;
   GList *l;
 
@@ -2882,9 +2884,9 @@ extern GLogLevelFlags logged_levels;
 
 static void
 start_element_handler (GMarkupParseContext *context,
-                       const gchar         *element_name,
-                       const gchar        **attribute_names,
-                       const gchar        **attribute_values,
+                       const char          *element_name,
+                       const char         **attribute_names,
+                       const char         **attribute_values,
                        void                *user_data,
                        GError             **error)
 {
@@ -3004,8 +3006,8 @@ start_element_handler (GMarkupParseContext *context,
       if (strcmp (element_name, "include") == 0 &&
           ctx->state == STATE_REPOSITORY)
         {
-          const gchar *name;
-          const gchar *version;
+          const char *name;
+          const char *version;
 
           name = find_attribute ("name", attribute_names, attribute_values);
           version = find_attribute ("version", attribute_names, attribute_values);
@@ -3072,7 +3074,7 @@ start_element_handler (GMarkupParseContext *context,
     case 'n':
       if (strcmp (element_name, "namespace") == 0 && ctx->state == STATE_REPOSITORY)
         {
-          const gchar *name, *version, *shared_library, *cprefix;
+          const char *name, *version, *shared_library, *cprefix;
 
           if (ctx->current_module != NULL)
             {
@@ -3149,7 +3151,7 @@ start_element_handler (GMarkupParseContext *context,
       else if (strcmp (element_name, "prerequisite") == 0 &&
                ctx->state == STATE_INTERFACE)
         {
-          const gchar *name;
+          const char *name;
 
           name = find_attribute ("name", attribute_names, attribute_values);
 
@@ -3177,7 +3179,7 @@ start_element_handler (GMarkupParseContext *context,
     case 'r':
       if (strcmp (element_name, "repository") == 0 && ctx->state == STATE_START)
         {
-          const gchar *version;
+          const char *version;
 
           version = find_attribute ("version", attribute_names, attribute_values);
 
@@ -3301,7 +3303,7 @@ require_one_of_end_elements (GMarkupParseContext *context,
 static gboolean
 state_switch_end_struct_or_union (GMarkupParseContext *context,
                                   ParseContext *ctx,
-                                  const gchar *element_name,
+                                  const char *element_name,
                                   GError **error)
 {
   pop_node (ctx);
@@ -3345,7 +3347,7 @@ require_end_element (GMarkupParseContext *context,
 
 static void
 end_element_handler (GMarkupParseContext *context,
-                     const gchar         *element_name,
+                     const char          *element_name,
                      void                *user_data,
                      GError             **error)
 {
@@ -3646,7 +3648,7 @@ end_element_handler (GMarkupParseContext *context,
 
 static void
 text_handler (GMarkupParseContext *context,
-              const gchar         *text,
+              const char          *text,
               gsize                text_len,
               void                *user_data,
               GError             **error)
@@ -3688,9 +3690,9 @@ cleanup (GMarkupParseContext *context,
  */
 GIIrModule *
 gi_ir_parser_parse_string (GIIrParser   *parser,
-                           const gchar  *namespace,
-                           const gchar  *filename,
-                           const gchar  *buffer,
+                           const char   *namespace,
+                           const char   *filename,
+                           const char   *buffer,
                            gssize        length,
                            GError      **error)
 {
@@ -3773,10 +3775,10 @@ gi_ir_parser_parse_string (GIIrParser   *parser,
  */
 GIIrModule *
 gi_ir_parser_parse_file (GIIrParser   *parser,
-                         const gchar  *filename,
+                         const char   *filename,
                          GError      **error)
 {
-  gchar *buffer;
+  char *buffer;
   gsize length;
   GIIrModule *module;
   char *dash;

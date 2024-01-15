@@ -238,7 +238,7 @@ gi_union_info_get_discriminator (GIUnionInfo *info,
  */
 GIFunctionInfo *
 gi_union_info_find_method (GIUnionInfo *info,
-                           const gchar *name)
+                           const char  *name)
 {
   gint offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;

@@ -287,7 +287,7 @@ _blob_is_registered_type (GITypelibBlobType blob_type)
  * Since: 2.80
  */
 typedef struct {
-  gchar   magic[16];
+  char    magic[16];
   guint8  major_version;
   guint8  minor_version;
   guint16 reserved;
@@ -1328,13 +1328,13 @@ DirEntry *gi_typelib_get_dir_entry_by_name (GITypelib  *typelib,
                                             const char *name);
 
 DirEntry *gi_typelib_get_dir_entry_by_gtype_name (GITypelib   *typelib,
-                                                  const gchar *gtype_name);
+                                                  const char  *gtype_name);
 
 DirEntry *gi_typelib_get_dir_entry_by_error_domain (GITypelib *typelib,
                                                     GQuark     error_domain);
 
 gboolean  gi_typelib_matches_gtype_name_prefix (GITypelib   *typelib,
-                                                const gchar *gtype_name);
+                                                const char  *gtype_name);
 
 
 GI_AVAILABLE_IN_ALL
@@ -1350,7 +1350,7 @@ void      gi_typelib_check_format (void);
  * Returns: TODO
  * Since: 2.80
  */
-#define   gi_typelib_get_string(typelib,offset) ((const gchar*)&(typelib->data)[(offset)])
+#define   gi_typelib_get_string(typelib,offset) ((const char*)&(typelib->data)[(offset)])
 
 
 /**

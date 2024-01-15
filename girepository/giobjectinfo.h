@@ -88,10 +88,10 @@ typedef void * (*GIObjectInfoGetValueFunction) (const GValue *value);
 
 
 GI_AVAILABLE_IN_ALL
-const gchar *     gi_object_info_get_type_name         (GIObjectInfo *info);
+const char *      gi_object_info_get_type_name    (GIObjectInfo *info);
 
 GI_AVAILABLE_IN_ALL
-const gchar *     gi_object_info_get_type_init_function_name (GIObjectInfo *info);
+const char *      gi_object_info_get_type_init_function_name (GIObjectInfo *info);
 
 GI_AVAILABLE_IN_ALL
 gboolean          gi_object_info_get_abstract     (GIObjectInfo *info);
@@ -135,12 +135,12 @@ GIFunctionInfo *  gi_object_info_get_method       (GIObjectInfo *info,
 
 GI_AVAILABLE_IN_ALL
 GIFunctionInfo *  gi_object_info_find_method      (GIObjectInfo *info,
-                                                  const gchar  *name);
+                                                   const char   *name);
 
 
 GI_AVAILABLE_IN_ALL
 GIFunctionInfo *  gi_object_info_find_method_using_interfaces (GIObjectInfo  *info,
-                                                               const gchar   *name,
+                                                               const char    *name,
                                                                GIObjectInfo **implementor);
 
 
@@ -154,7 +154,7 @@ GISignalInfo *    gi_object_info_get_signal       (GIObjectInfo *info,
 
 GI_AVAILABLE_IN_ALL
 GISignalInfo *    gi_object_info_find_signal      (GIObjectInfo *info,
-                                                   const gchar  *name);
+                                                   const char   *name);
 
 
 GI_AVAILABLE_IN_ALL
@@ -166,11 +166,11 @@ GIVFuncInfo *     gi_object_info_get_vfunc        (GIObjectInfo *info,
 
 GI_AVAILABLE_IN_ALL
 GIVFuncInfo *     gi_object_info_find_vfunc       (GIObjectInfo *info,
-                                                   const gchar  *name);
+                                                   const char   *name);
 
 GI_AVAILABLE_IN_ALL
 GIVFuncInfo *     gi_object_info_find_vfunc_using_interfaces (GIObjectInfo  *info,
-                                                              const gchar   *name,
+                                                              const char    *name,
                                                               GIObjectInfo **implementor);
 
 GI_AVAILABLE_IN_ALL

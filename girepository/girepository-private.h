@@ -203,8 +203,8 @@ struct _GIUnresolvedInfo
 {
   GIBaseInfo parent;
 
-  const gchar *name;
-  const gchar *namespace;
+  const char *name;
+  const char *namespace;
 };
 
 void gi_unresolved_info_class_init (gpointer g_class,
@@ -239,9 +239,9 @@ void         gi_type_info_init  (GIBaseInfo *info,
 GIFunctionInfo * gi_base_info_find_method (GIBaseInfo  *base,
                                            guint32      offset,
                                            guint        n_methods,
-                                           const gchar *name);
+                                           const char  *name);
 
 GIVFuncInfo * gi_base_info_find_vfunc (GIRealInfo  *rinfo,
                                        guint32      offset,
                                        guint        n_vfuncs,
-                                       const gchar *name);
+                                       const char  *name);

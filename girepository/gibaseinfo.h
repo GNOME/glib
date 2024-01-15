@@ -64,17 +64,17 @@ GI_AVAILABLE_IN_ALL
 GIInfoType             gi_base_info_get_info_type    (GIBaseInfo   *info);
 
 GI_AVAILABLE_IN_ALL
-const gchar *          gi_base_info_get_name         (GIBaseInfo   *info);
+const char *           gi_base_info_get_name         (GIBaseInfo   *info);
 
 GI_AVAILABLE_IN_ALL
-const gchar *          gi_base_info_get_namespace    (GIBaseInfo   *info);
+const char *           gi_base_info_get_namespace    (GIBaseInfo   *info);
 
 GI_AVAILABLE_IN_ALL
 gboolean               gi_base_info_is_deprecated    (GIBaseInfo   *info);
 
 GI_AVAILABLE_IN_ALL
-const gchar *          gi_base_info_get_attribute    (GIBaseInfo  *info,
-                                                      const gchar *name);
+const char *           gi_base_info_get_attribute    (GIBaseInfo  *info,
+                                                      const char  *name);
 
 GI_AVAILABLE_IN_ALL
 gboolean               gi_base_info_iterate_attributes (GIBaseInfo       *info,

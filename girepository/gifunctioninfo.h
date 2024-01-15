@@ -45,7 +45,7 @@ G_BEGIN_DECLS
 
 
 GI_AVAILABLE_IN_ALL
-const gchar *           gi_function_info_get_symbol     (GIFunctionInfo *info);
+const char *            gi_function_info_get_symbol     (GIFunctionInfo *info);
 
 GI_AVAILABLE_IN_ALL
 GIFunctionInfoFlags     gi_function_info_get_flags      (GIFunctionInfo *info);

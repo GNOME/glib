@@ -53,10 +53,10 @@ G_BEGIN_DECLS
      (gi_base_info_get_info_type ((GIBaseInfo*) info) == GI_INFO_TYPE_BOXED))
 
 GI_AVAILABLE_IN_ALL
-const gchar *          gi_registered_type_info_get_type_name (GIRegisteredTypeInfo *info);
+const char *           gi_registered_type_info_get_type_name (GIRegisteredTypeInfo *info);
 
 GI_AVAILABLE_IN_ALL
-const gchar *          gi_registered_type_info_get_type_init_function_name (GIRegisteredTypeInfo *info);
+const char *           gi_registered_type_info_get_type_init_function_name (GIRegisteredTypeInfo *info);
 
 GI_AVAILABLE_IN_ALL
 GType                  gi_registered_type_info_get_g_type    (GIRegisteredTypeInfo *info);

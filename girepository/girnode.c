@@ -74,7 +74,7 @@ do {                                            \
   (( ((unsigned long)(this)) + (((unsigned long)(boundary)) -1)) & (~(((unsigned long)(boundary))-1)))
 
 
-const gchar *
+const char *
 gi_ir_node_type_to_string (GIIrNodeTypeId type)
 {
   switch (type)
@@ -573,8 +573,8 @@ gi_ir_node_get_size (GIIrNode *node)
 static void
 add_attribute_size (gpointer key, gpointer value, gpointer data)
 {
-  const gchar *key_str = key;
-  const gchar *value_str = value;
+  const char *key_str = key;
+  const char *value_str = value;
   gint *size_p = data;
 
   *size_p += sizeof (AttributeBlob);
@@ -996,7 +996,7 @@ gi_ir_node_add_member (GIIrNode         *node,
     }
 }
 
-const gchar *
+const char *
 gi_ir_node_param_direction_string (GIIrNodeParam * node)
 {
   if (node->out)
@@ -1010,25 +1010,25 @@ gi_ir_node_param_direction_string (GIIrNodeParam * node)
 }
 
 static gint64
-parse_int_value (const gchar *str)
+parse_int_value (const char *str)
 {
   return g_ascii_strtoll (str, NULL, 0);
 }
 
 static guint64
-parse_uint_value (const gchar *str)
+parse_uint_value (const char *str)
 {
   return g_ascii_strtoull (str, NULL, 0);
 }
 
 static gdouble
-parse_float_value (const gchar *str)
+parse_float_value (const char *str)
 {
   return g_ascii_strtod (str, NULL);
 }
 
 static gboolean
-parse_boolean_value (const gchar *str)
+parse_boolean_value (const char *str)
 {
   if (g_ascii_strcasecmp (str, "TRUE") == 0)
     return TRUE;
@@ -1041,15 +1041,15 @@ parse_boolean_value (const gchar *str)
 
 static GIIrNode *
 find_entry_node (GIIrTypelibBuild *build,
-                 const gchar      *name,
+                 const char       *name,
                  guint16          *idx)
 
 {
   GIIrModule *module = build->module;
   GList *l;
   gint i;
-  gchar **names;
   gint n_names;
+  char **names;
   GIIrNode *result = NULL;
 
   g_assert (name != NULL);
@@ -1114,7 +1114,7 @@ find_entry_node (GIIrTypelibBuild *build,
 
 static guint16
 find_entry (GIIrTypelibBuild *build,
-            const gchar      *name)
+            const char       *name)
 {
   guint16 idx = 0;
 
@@ -1271,7 +1271,7 @@ serialize_type (GIIrTypelibBuild *build,
   else if (node->tag == GI_TYPE_TAG_INTERFACE)
     {
       GIIrNode *iface;
-      gchar *name;
+      char *name;
 
       iface = find_entry_node (build, node->giinterface, NULL);
       if (iface)
@@ -1455,7 +1455,7 @@ gi_ir_node_build_typelib (GIIrNode         *node,
         else
           {
             GString *str;
-            gchar *s;
+            char *s;
             gpointer value;
 
             str = g_string_new (0);
@@ -2204,7 +2204,7 @@ gi_ir_node_build_typelib (GIIrNode         *node,
         for (l = object->interfaces; l; l = l->next)
           {
             blob->n_interfaces++;
-            *(guint16*)&data[*offset] = find_entry (build, (gchar *)l->data);
+            *(guint16*)&data[*offset] = find_entry (build, (char *)l->data);
             *offset += 2;
           }
 
@@ -2267,7 +2267,7 @@ gi_ir_node_build_typelib (GIIrNode         *node,
         for (l = iface->prerequisites; l; l = l->next)
           {
             blob->n_prerequisites++;
-            *(guint16*)&data[*offset] = find_entry (build, (gchar *)l->data);
+            *(guint16*)&data[*offset] = find_entry (build, (char *)l->data);
             *offset += 2;
           }
 
@@ -2412,7 +2412,7 @@ gi_ir_node_build_typelib (GIIrNode         *node,
  * typelib is not large enough to hold the string, reallocate it.
  */
 guint32
-gi_ir_write_string (const gchar *str,
+gi_ir_write_string (const char  *str,
                     GHashTable  *strings,
                     guchar      *data,
                     guint32     *offset)
@@ -2436,7 +2436,7 @@ gi_ir_write_string (const gchar *str,
   start = *offset;
   *offset = ALIGN_VALUE (start + strlen (str) + 1, 4);
 
-  strcpy ((gchar*)&data[start], str);
+  strcpy ((char *)&data[start], str);
 
   return start;
 }

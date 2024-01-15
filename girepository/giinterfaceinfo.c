@@ -228,7 +228,7 @@ gi_interface_info_get_method (GIInterfaceInfo *info,
  */
 GIFunctionInfo *
 gi_interface_info_find_method (GIInterfaceInfo *info,
-                               const gchar     *name)
+                               const char      *name)
 {
   gint offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -317,7 +317,7 @@ gi_interface_info_get_signal (GIInterfaceInfo *info,
  */
 GISignalInfo *
 gi_interface_info_find_signal (GIInterfaceInfo *info,
-                               const gchar  *name)
+                               const char      *name)
 {
   guint n_signals;
 
@@ -414,7 +414,7 @@ gi_interface_info_get_vfunc (GIInterfaceInfo *info,
  */
 GIVFuncInfo *
 gi_interface_info_find_vfunc (GIInterfaceInfo *info,
-                              const gchar  *name)
+                              const char      *name)
 {
   gint offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;

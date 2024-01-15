@@ -96,7 +96,7 @@ value_base_info_collect_value (GValue      *value,
   return NULL;
 }
 
-static gchar *
+static char *
 value_base_info_lcopy_value (const GValue *value,
                              guint         n_collect_values,
                              GTypeCValue  *collect_values,
@@ -410,8 +410,8 @@ gi_info_from_entry (GIRepository *repository,
     result = gi_info_new_full (entry->blob_type, repository, NULL, typelib, entry->offset);
   else
     {
-      const gchar *namespace = gi_typelib_get_string (typelib, entry->offset);
-      const gchar *name = gi_typelib_get_string (typelib, entry->name);
+      const char *namespace = gi_typelib_get_string (typelib, entry->offset);
+      const char *name = gi_typelib_get_string (typelib, entry->name);
 
       result = gi_repository_find_by_name (repository, namespace, name);
       if (result == NULL)
@@ -564,7 +564,7 @@ gi_base_info_get_info_type (GIBaseInfo *info)
  * Returns: (nullable): the name of @info or `NULL` if it lacks a name.
  * Since: 2.80
  */
-const gchar *
+const char *
 gi_base_info_get_name (GIBaseInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo*)info;
@@ -661,7 +661,7 @@ gi_base_info_get_name (GIBaseInfo *info)
  * Returns: the namespace
  * Since: 2.80
  */
-const gchar *
+const char *
 gi_base_info_get_namespace (GIBaseInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo*) info;
@@ -757,16 +757,16 @@ gi_base_info_is_deprecated (GIBaseInfo *info)
  *   attribute exists
  * Since: 2.80
  */
-const gchar *
+const char *
 gi_base_info_get_attribute (GIBaseInfo  *info,
-                            const gchar *name)
+                            const char *name)
 {
   GIAttributeIter iter = { 0, };
   const char *curname, *curvalue;
   while (gi_base_info_iterate_attributes (info, &iter, &curname, &curvalue))
     {
       if (strcmp (name, curname) == 0)
-        return (const gchar*) curvalue;
+        return (const char *) curvalue;
     }
 
   return NULL;
@@ -865,8 +865,8 @@ _attribute_blob_find_first (GIBaseInfo *info,
 gboolean
 gi_base_info_iterate_attributes (GIBaseInfo       *info,
                                  GIAttributeIter  *iterator,
-                                 const gchar     **name,
-                                 const gchar     **value)
+                                 const char      **name,
+                                 const char      **value)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header = (Header *)rinfo->typelib->data;

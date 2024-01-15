@@ -61,8 +61,8 @@ void                   gi_callable_info_load_return_type (GICallableInfo *info,
                                                           GITypeInfo     *type);
 
 GI_AVAILABLE_IN_ALL
-const gchar *          gi_callable_info_get_return_attribute (GICallableInfo *info,
-                                                              const gchar    *name);
+const char  *          gi_callable_info_get_return_attribute (GICallableInfo *info,
+                                                              const char     *name);
 
 GI_AVAILABLE_IN_ALL
 gboolean               gi_callable_info_iterate_return_attributes (GICallableInfo   *info,

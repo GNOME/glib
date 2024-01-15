@@ -80,7 +80,7 @@ gi_enum_info_get_n_values (GIEnumInfo *info)
  *   associated with this enum, or `NULL`.
  * Since: 2.80
  */
-const gchar *
+const char *
 gi_enum_info_get_error_domain (GIEnumInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;

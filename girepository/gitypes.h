@@ -132,7 +132,7 @@ union _GIArgument
   gulong   v_ulong;
   gssize   v_ssize;
   gsize    v_size;
-  gchar *  v_string;
+  char           *v_string;
   void           *v_pointer;
 };
 

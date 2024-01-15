@@ -73,7 +73,7 @@ typedef enum
 struct _GIIrNode
 {
   GIIrNodeTypeId type;
-  gchar *name;
+  char *name;
   GIIrModule *module;
 
   guint32 offset; /* Assigned as we build the typelib */
@@ -85,7 +85,7 @@ struct _GIIrNodeXRef
 {
   GIIrNode node;
 
-  gchar *namespace;
+  char *namespace;
 };
 
 struct _GIIrNodeFunction
@@ -103,7 +103,7 @@ struct _GIIrNodeFunction
   gboolean throws;
   gboolean instance_transfer_full;
 
-  gchar *symbol;
+  char *symbol;
   char *property;
 
   GIIrNodeParam *result;
@@ -124,7 +124,7 @@ struct _GIIrNodeType
   gboolean is_error;
   gint tag;
 
-  gchar *unparsed;
+  char *unparsed;
 
   gboolean zero_terminated;
   gboolean has_length;
@@ -136,8 +136,8 @@ struct _GIIrNodeType
   GIIrNodeType *parameter_type1;
   GIIrNodeType *parameter_type2;
 
-  gchar *giinterface;
-  gchar **errors;
+  char *giinterface;
+  char **errors;
 };
 
 struct _GIIrNodeParam
@@ -167,7 +167,7 @@ struct _GIIrNodeProperty
 
   gboolean deprecated;
 
-  gchar *name;
+  char *name;
   gboolean readable;
   gboolean writable;
   gboolean construct;
@@ -247,16 +247,16 @@ struct _GIIrNodeInterface
   gboolean fundamental;
   gboolean final_;
 
-  gchar *gtype_name;
-  gchar *gtype_init;
+  char *gtype_name;
+  char *gtype_init;
 
-  gchar *ref_func;
-  gchar *unref_func;
-  gchar *set_value_func;
-  gchar *get_value_func;
+  char *ref_func;
+  char *unref_func;
+  char *set_value_func;
+  char *get_value_func;
 
-  gchar *parent;
-  gchar *glib_type_struct;
+  char *parent;
+  char *glib_type_struct;
 
   GList *interfaces;
   GList *prerequisites;
@@ -284,7 +284,7 @@ struct _GIIrNodeConstant
 
   GIIrNodeType *type;
 
-  gchar *value;
+  char *value;
 };
 
 struct _GIIrNodeEnum
@@ -294,9 +294,9 @@ struct _GIIrNodeEnum
   gboolean deprecated;
   gint storage_type;
 
-  gchar *gtype_name;
-  gchar *gtype_init;
-  gchar *error_domain;
+  char *gtype_name;
+  char *gtype_init;
+  char *error_domain;
 
   GList *values;
   GList *methods;
@@ -308,8 +308,8 @@ struct _GIIrNodeBoxed
 
   gboolean deprecated;
 
-  gchar *gtype_name;
-  gchar *gtype_init;
+  char *gtype_name;
+  char *gtype_init;
 
   gint alignment;
   gint size;
@@ -328,11 +328,11 @@ struct _GIIrNodeStruct
   gboolean is_gtype_struct;
   gboolean foreign;
 
-  gchar *gtype_name;
-  gchar *gtype_init;
+  char *gtype_name;
+  char *gtype_init;
 
-  gchar *copy_func;
-  gchar *free_func;
+  char *copy_func;
+  char *free_func;
 
   gint alignment;
   gint size;
@@ -349,11 +349,11 @@ struct _GIIrNodeUnion
   GList *members;
   GList *discriminators;
 
-  gchar *gtype_name;
-  gchar *gtype_init;
+  char *gtype_name;
+  char *gtype_init;
 
-  gchar *copy_func;
-  gchar *free_func;
+  char *copy_func;
+  char *free_func;
 
   gint alignment;
   gint size;
@@ -379,13 +379,13 @@ int       gi_ir_node_cmp             (GIIrNode *node,
 gboolean  gi_ir_node_can_have_member (GIIrNode *node);
 void      gi_ir_node_add_member      (GIIrNode         *node,
                                       GIIrNodeFunction *member);
-guint32   gi_ir_write_string         (const gchar *str,
+guint32   gi_ir_write_string         (const char  *str,
                                       GHashTable  *strings,
                                       guchar      *data,
                                       guint32     *offset);
 
-const gchar * gi_ir_node_param_direction_string (GIIrNodeParam * node);
-const gchar * gi_ir_node_type_to_string         (GIIrNodeTypeId type);
+const char * gi_ir_node_param_direction_string (GIIrNodeParam * node);
+const char * gi_ir_node_type_to_string         (GIIrNodeTypeId type);
 
 GIIrNode *gi_ir_find_node (GIIrTypelibBuild *build,
                            GIIrModule       *module,

@@ -212,10 +212,10 @@ g_value_from_ffi_value (GValue           *gvalue,
       g_value_set_boolean (gvalue, (gboolean)value->v_long);
       break;
   case G_TYPE_STRING:
-      g_value_set_string (gvalue, (gchar*)value->v_pointer);
+      g_value_set_string (gvalue, (char*)value->v_pointer);
       break;
   case G_TYPE_CHAR:
-      g_value_set_schar (gvalue, (gchar)value->v_long);
+      g_value_set_schar (gvalue, (char)value->v_long);
       break;
   case G_TYPE_UCHAR:
       g_value_set_uchar (gvalue, (guchar)value->v_ulong);

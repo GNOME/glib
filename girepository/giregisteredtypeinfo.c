@@ -65,7 +65,7 @@
  * Returns: (nullable): the type name, or `NULL` if unknown
  * Since: 2.80
  */
-const gchar *
+const char *
 gi_registered_type_info_get_type_name (GIRegisteredTypeInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -97,7 +97,7 @@ gi_registered_type_info_get_type_name (GIRegisteredTypeInfo *info)
  *   passing into [method@GModule.Module.symbol], or `NULL` if unknown
  * Since: 2.80
  */
-const gchar *
+const char *
 gi_registered_type_info_get_type_init_function_name (GIRegisteredTypeInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;

@@ -244,7 +244,7 @@ gi_typelib_get_dir_entry_by_name (GITypelib  *typelib,
  */
 DirEntry *
 gi_typelib_get_dir_entry_by_gtype_name (GITypelib   *typelib,
-                                        const gchar *gtype_name)
+                                        const char  *gtype_name)
 {
   Header *header = (Header *)typelib->data;
   guint i;
@@ -340,11 +340,11 @@ strsplit_iter_clear (StrSplitIter  *iter)
  */
 gboolean
 gi_typelib_matches_gtype_name_prefix (GITypelib   *typelib,
-                                      const gchar *gtype_name)
+                                      const char  *gtype_name)
 {
   Header *header = (Header *)typelib->data;
   const char *c_prefix;
-  const gchar *prefix;
+  const char *prefix;
   gboolean ret = FALSE;
   StrSplitIter split_iter;
   gsize gtype_name_len;
@@ -2342,7 +2342,7 @@ gi_typelib_do_dlopen (GITypelib *typelib)
 
   if (shlib_str != NULL && shlib_str[0] != '\0')
     {
-      gchar **shlibs;
+      char **shlibs;
       gint i;
 
       /* shared-library is a comma-separated list of libraries */
@@ -2522,7 +2522,7 @@ gi_typelib_free (GITypelib *typelib)
  * Returns: name of the namespace represented by @typelib
  * Since: 2.80
  */
-const gchar *
+const char *
 gi_typelib_get_namespace (GITypelib *typelib)
 {
   return gi_typelib_get_string (typelib, ((Header *) typelib->data)->namespace);

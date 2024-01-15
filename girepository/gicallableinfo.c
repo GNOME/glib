@@ -420,16 +420,16 @@ gi_callable_info_load_arg (GICallableInfo *info,
  *   attribute exists
  * Since: 2.80
  */
-const gchar *
+const char *
 gi_callable_info_get_return_attribute (GICallableInfo *info,
-                                       const gchar    *name)
+                                       const char     *name)
 {
   GIAttributeIter iter = { 0, };
   const char *curname, *curvalue;
   while (gi_callable_info_iterate_return_attributes (info, &iter, &curname, &curvalue))
     {
       if (g_strcmp0 (name, curname) == 0)
-        return (const gchar*) curvalue;
+        return (const char*) curvalue;
     }
 
   return NULL;

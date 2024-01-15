@@ -194,7 +194,7 @@ gi_object_info_get_fundamental (GIObjectInfo *info)
  * Returns: name of the object’s type
  * Since: 2.80
  */
-const gchar *
+const char *
 gi_object_info_get_type_name (GIObjectInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -218,7 +218,7 @@ gi_object_info_get_type_name (GIObjectInfo *info)
  * Returns: the type init function name
  * Since: 2.80
  */
-const gchar *
+const char *
 gi_object_info_get_type_init_function_name (GIObjectInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -466,7 +466,7 @@ gi_object_info_get_method (GIObjectInfo *info,
  */
 GIFunctionInfo *
 gi_object_info_find_method (GIObjectInfo *info,
-                            const gchar  *name)
+                            const char   *name)
 {
   gint offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -511,7 +511,7 @@ gi_object_info_find_method (GIObjectInfo *info,
  */
 GIFunctionInfo *
 gi_object_info_find_method_using_interfaces (GIObjectInfo  *info,
-                                             const gchar   *name,
+                                             const char    *name,
                                              GIObjectInfo **implementor)
 {
   GIFunctionInfo *result = NULL;
@@ -627,7 +627,7 @@ gi_object_info_get_signal (GIObjectInfo *info,
  */
 GISignalInfo *
 gi_object_info_find_signal (GIObjectInfo *info,
-                            const gchar  *name)
+                            const char   *name)
 {
   guint n_signals;
 
@@ -732,7 +732,7 @@ gi_object_info_get_vfunc (GIObjectInfo *info,
  */
 GIVFuncInfo *
 gi_object_info_find_vfunc (GIObjectInfo *info,
-                           const gchar  *name)
+                           const char   *name)
 {
   gint offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -784,7 +784,7 @@ gi_object_info_find_vfunc (GIObjectInfo *info,
  */
 GIVFuncInfo *
 gi_object_info_find_vfunc_using_interfaces (GIObjectInfo  *info,
-                                            const gchar   *name,
+                                            const char    *name,
                                             GIObjectInfo **implementor)
 {
   GIVFuncInfo *result = NULL;
