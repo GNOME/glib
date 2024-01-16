@@ -350,10 +350,12 @@ gi_type_info_is_zero_terminated (GITypeInfo *info)
  *
  * Obtain the array type for this type.
  *
- * See [enum@GIRepository.ArrayType] for a list of possible values. If the type
- * tag of this type is not array, `-1` will be returned.
+ * See [enum@GIRepository.ArrayType] for a list of possible values.
  *
- * Returns: the array type or `-1`
+ * It is an error to call this on an @info which is not an array type. Use
+ * [method@GIRepository.TypeInfo.get_tag] to check.
+ *
+ * Returns: the array type
  * Since: 2.80
  */
 GIArrayType
@@ -375,7 +377,8 @@ gi_type_info_get_array_type (GITypeInfo *info)
       return blob->array_type;
     }
 
-  return -1;
+  /* Not an array type */
+  g_assert_not_reached ();
 }
 
 /**
