@@ -232,23 +232,25 @@ gi_type_info_get_interface (GITypeInfo *info)
 /**
  * gi_type_info_get_array_length_index:
  * @info: a #GITypeInfo
+ * @out_length_index: (out) (optional): return location for the length argument
  *
  * Obtain the position of the argument which gives the array length of the type.
  *
- * The type tag must be a `GI_TYPE_TAG_ARRAY` or `-1` will be returned.
+ * The type tag must be a `GI_TYPE_TAG_ARRAY` with a length argument, or `FALSE`
+ * will be returned.
  *
- * Returns: the array length argument index, or `-1` if the type is not an array
- *   or it has no length argument
+ * Returns: `TRUE` if the type is an array and has a length argument
  * Since: 2.80
  */
-gssize
-gi_type_info_get_array_length_index (GITypeInfo *info)
+gboolean
+gi_type_info_get_array_length_index (GITypeInfo   *info,
+                                     unsigned int *out_length_index)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   SimpleTypeBlob *type;
 
-  g_return_val_if_fail (info != NULL, -1);
-  g_return_val_if_fail (GI_IS_TYPE_INFO (info), -1);
+  g_return_val_if_fail (info != NULL, FALSE);
+  g_return_val_if_fail (GI_IS_TYPE_INFO (info), FALSE);
 
   type = (SimpleTypeBlob *)&rinfo->typelib->data[rinfo->offset];
 
@@ -259,11 +261,17 @@ gi_type_info_get_array_length_index (GITypeInfo *info)
       if (blob->tag == GI_TYPE_TAG_ARRAY)
         {
           if (blob->has_length)
-            return blob->dimensions.length;
+            {
+              if (out_length_index != NULL)
+                *out_length_index = blob->dimensions.length;
+              return TRUE;
+            }
         }
     }
 
-  return -1;
+  if (out_length_index != NULL)
+    *out_length_index = 0;
+  return FALSE;
 }
 
 /**
