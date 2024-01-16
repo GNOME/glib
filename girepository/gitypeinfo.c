@@ -269,22 +269,25 @@ gi_type_info_get_array_length_index (GITypeInfo *info)
 /**
  * gi_type_info_get_array_fixed_size:
  * @info: a #GITypeInfo
+ * @out_size: (out) (optional): return location for the array size
  *
  * Obtain the fixed array size of the type, in number of elements (not bytes).
  *
- * The type tag must be a `GI_TYPE_TAG_ARRAY` or `-1` will be returned.
+ * The type tag must be a `GI_TYPE_TAG_ARRAY` with a fixed size, or `FALSE` will
+ * be returned.
  *
- * Returns: the size or `-1` if the type is not an array or it has no fixed size
+ * Returns: `TRUE` if the type is an array and has a fixed size
  * Since: 2.80
  */
-gssize
-gi_type_info_get_array_fixed_size (GITypeInfo *info)
+gboolean
+gi_type_info_get_array_fixed_size (GITypeInfo *info,
+                                   size_t     *out_size)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   SimpleTypeBlob *type;
 
-  g_return_val_if_fail (info != NULL, -1);
-  g_return_val_if_fail (GI_IS_TYPE_INFO (info), -1);
+  g_return_val_if_fail (info != NULL, FALSE);
+  g_return_val_if_fail (GI_IS_TYPE_INFO (info), FALSE);
 
   type = (SimpleTypeBlob *)&rinfo->typelib->data[rinfo->offset];
 
@@ -295,11 +298,17 @@ gi_type_info_get_array_fixed_size (GITypeInfo *info)
       if (blob->tag == GI_TYPE_TAG_ARRAY)
         {
           if (blob->has_size)
-            return blob->dimensions.size;
+            {
+              if (out_size != NULL)
+                *out_size = blob->dimensions.size;
+              return TRUE;
+            }
         }
     }
 
-  return -1;
+  if (out_size != NULL)
+    *out_size = 0;
+  return FALSE;
 }
 
 /**
