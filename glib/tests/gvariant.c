@@ -1352,7 +1352,7 @@ align_malloc (gsize size)
    * have malloc() that returns non-8-aligned.  if so, we need to try
    * harder here.
    */
-  mem = malloc (size);
+  mem = (size > 0) ? malloc (size) : NULL;
 #endif
 
   return mem;
