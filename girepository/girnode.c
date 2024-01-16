@@ -435,7 +435,7 @@ uint32_t
 gi_ir_node_get_size (GIIrNode *node)
 {
   GList *l;
-  int size, n;
+  size_t size, n;
 
   switch (node->type)
     {
@@ -564,8 +564,10 @@ gi_ir_node_get_size (GIIrNode *node)
       size = 0;
     }
 
-  g_debug ("node %p type '%s' size %d", node,
+  g_debug ("node %p type '%s' size %zu", node,
            gi_ir_node_type_to_string (node->type), size);
+
+  g_assert (size <= G_MAXUINT32);
 
   return size;
 }
@@ -575,7 +577,7 @@ add_attribute_size (gpointer key, gpointer value, gpointer data)
 {
   const char *key_str = key;
   const char *value_str = value;
-  int *size_p = data;
+  size_t *size_p = data;
 
   *size_p += sizeof (AttributeBlob);
   *size_p += ALIGN_VALUE (strlen (key_str) + 1, 4);
@@ -588,7 +590,7 @@ gi_ir_node_get_full_size_internal (GIIrNode *parent,
                                    GIIrNode *node)
 {
   GList *l;
-  int size, n;
+  size_t size, n;
 
   if (node == NULL && parent != NULL)
     g_error ("Caught NULL node, parent=%s", parent->name);
@@ -882,13 +884,15 @@ gi_ir_node_get_full_size_internal (GIIrNode *parent,
       size = 0;
     }
 
-  g_debug ("node %s%s%s%p type '%s' full size %d",
+  g_debug ("node %s%s%s%p type '%s' full size %zu",
            node->name ? "'" : "",
            node->name ? node->name : "",
            node->name ? "' " : "",
            node, gi_ir_node_type_to_string (node->type), size);
 
   g_hash_table_foreach (node->attributes, add_attribute_size, &size);
+
+  g_assert (size <= G_MAXUINT32);
 
   return size;
 }
