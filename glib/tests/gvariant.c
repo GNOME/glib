@@ -1337,19 +1337,22 @@ flavoured_free (gpointer data,
 static gpointer
 align_malloc (gsize size)
 {
-  gpointer mem;
+  gpointer mem = NULL;
 
 #ifdef HAVE_POSIX_MEMALIGN
   /* posix_memalign() requires the alignment to be a multiple of
-   * sizeof(void*), and a power of 2. */
-  if (posix_memalign (&mem, MAX (sizeof (void *), 8), size))
+   * sizeof(void*), and a power of 2.
+   * Calling it with size==0 leads to implementation-defined behaviour, so avoid
+   * that and guarantee to return NULL. */
+  if (size != 0 &&
+      posix_memalign (&mem, MAX (sizeof (void *), 8), size))
     g_error ("posix_memalign failed");
 #else
   /* NOTE: there may be platforms that lack posix_memalign() and also
    * have malloc() that returns non-8-aligned.  if so, we need to try
    * harder here.
    */
-  mem = malloc (size);
+  mem = (size > 0) ? malloc (size) : NULL;
 #endif
 
   return mem;
@@ -4959,6 +4962,12 @@ test_gbytes (void)
   g_bytes_unref (bytes2);
   g_variant_unref (a);
   g_variant_unref (tuple);
+
+  bytes = g_bytes_new (NULL, 0);
+  a = g_variant_new_from_bytes (G_VARIANT_TYPE ("as"), bytes, TRUE);
+  g_bytes_unref (bytes);
+  g_assert_cmpuint (g_variant_n_children (a), ==, 0);
+  g_variant_unref (a);
 }
 
 typedef struct {
