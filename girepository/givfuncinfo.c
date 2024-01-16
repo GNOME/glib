@@ -121,7 +121,7 @@ gi_vfunc_info_get_flags (GIVFuncInfo *info)
  * Returns: the struct offset or `0xFFFF` if it’s unknown
  * Since: 2.80
  */
-unsigned int
+size_t
 gi_vfunc_info_get_offset (GIVFuncInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;

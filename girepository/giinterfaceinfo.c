@@ -135,7 +135,7 @@ GIPropertyInfo *
 gi_interface_info_get_property (GIInterfaceInfo *info,
                                 unsigned int     n)
 {
-  int offset;
+  size_t offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header;
   InterfaceBlob *blob;
@@ -192,7 +192,7 @@ GIFunctionInfo *
 gi_interface_info_get_method (GIInterfaceInfo *info,
                               unsigned int     n)
 {
-  int offset;
+  size_t offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header;
   InterfaceBlob *blob;
@@ -230,7 +230,7 @@ GIFunctionInfo *
 gi_interface_info_find_method (GIInterfaceInfo *info,
                                const char      *name)
 {
-  int offset;
+  size_t offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header = (Header *)rinfo->typelib->data;
   InterfaceBlob *blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
@@ -280,7 +280,7 @@ GISignalInfo *
 gi_interface_info_get_signal (GIInterfaceInfo *info,
                               unsigned int     n)
 {
-  int offset;
+  size_t offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header;
   InterfaceBlob *blob;
@@ -375,7 +375,7 @@ GIVFuncInfo *
 gi_interface_info_get_vfunc (GIInterfaceInfo *info,
                              unsigned int     n)
 {
-  int offset;
+  size_t offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header;
   InterfaceBlob *blob;
@@ -416,7 +416,7 @@ GIVFuncInfo *
 gi_interface_info_find_vfunc (GIInterfaceInfo *info,
                               const char      *name)
 {
-  int offset;
+  size_t offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header;
   InterfaceBlob *blob;
@@ -474,7 +474,7 @@ GIConstantInfo *
 gi_interface_info_get_constant (GIInterfaceInfo *info,
                                 unsigned int     n)
 {
-  int offset;
+  size_t offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header;
   InterfaceBlob *blob;

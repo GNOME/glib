@@ -114,7 +114,7 @@ gi_enum_info_get_value (GIEnumInfo *info,
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header;
-  int offset;
+  size_t offset;
 
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_ENUM_INFO (info), NULL);
@@ -164,7 +164,7 @@ GIFunctionInfo *
 gi_enum_info_get_method (GIEnumInfo *info,
                          unsigned int n)
 {
-  int offset;
+  size_t offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header;
   EnumBlob *blob;

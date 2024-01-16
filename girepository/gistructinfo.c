@@ -132,10 +132,9 @@ gi_struct_info_find_field (GIStructInfo *info,
   GIRealInfo *rinfo = (GIRealInfo *)info;
   StructBlob *blob = (StructBlob *)&rinfo->typelib->data[rinfo->offset];
   Header *header = (Header *)rinfo->typelib->data;
-  uint32_t offset = rinfo->offset + header->struct_blob_size;
-  int i;
+  size_t offset = rinfo->offset + header->struct_blob_size;
 
-  for (i = 0; i < blob->n_fields; i++)
+  for (size_t i = 0; i < blob->n_fields; i++)
     {
       FieldBlob *field_blob = (FieldBlob *)&rinfo->typelib->data[offset];
       const char *fname = (const char *)&rinfo->typelib->data[field_blob->name];
@@ -192,7 +191,7 @@ gi_struct_info_get_method (GIStructInfo *info,
   GIRealInfo *rinfo = (GIRealInfo *)info;
   StructBlob *blob = (StructBlob *)&rinfo->typelib->data[rinfo->offset];
   Header *header = (Header *)rinfo->typelib->data;
-  int offset;
+  size_t offset;
 
   offset = gi_struct_get_field_offset (info, blob->n_fields) + n * header->function_blob_size;
   return (GIFunctionInfo *) gi_info_new (GI_INFO_TYPE_FUNCTION, (GIBaseInfo*)info,
@@ -215,7 +214,7 @@ GIFunctionInfo *
 gi_struct_info_find_method (GIStructInfo *info,
                             const char   *name)
 {
-  int offset;
+  size_t offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
   StructBlob *blob = (StructBlob *)&rinfo->typelib->data[rinfo->offset];
 

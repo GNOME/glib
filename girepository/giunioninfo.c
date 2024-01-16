@@ -121,7 +121,7 @@ gi_union_info_get_method (GIUnionInfo *info,
   GIRealInfo *rinfo = (GIRealInfo *)info;
   UnionBlob *blob = (UnionBlob *)&rinfo->typelib->data[rinfo->offset];
   Header *header = (Header *)rinfo->typelib->data;
-  int offset;
+  size_t offset;
 
   offset = rinfo->offset + header->union_blob_size
     + blob->n_fields * header->field_blob_size
@@ -157,7 +157,7 @@ gi_union_info_is_discriminated (GIUnionInfo *info)
  * Returns: offset, in bytes, of the discriminator
  * Since: 2.80
  */
-unsigned int
+size_t
 gi_union_info_get_discriminator_offset (GIUnionInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -202,7 +202,7 @@ gi_union_info_get_discriminator_type (GIUnionInfo *info)
  */
 GIConstantInfo *
 gi_union_info_get_discriminator (GIUnionInfo *info,
-                                 unsigned int n)
+                                 size_t       n)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   UnionBlob *blob = (UnionBlob *)&rinfo->typelib->data[rinfo->offset];
@@ -210,7 +210,7 @@ gi_union_info_get_discriminator (GIUnionInfo *info,
   if (blob->discriminated)
     {
       Header *header = (Header *)rinfo->typelib->data;
-      int offset;
+      size_t offset;
 
       offset = rinfo->offset + header->union_blob_size
         + blob->n_fields * header->field_blob_size
@@ -240,7 +240,7 @@ GIFunctionInfo *
 gi_union_info_find_method (GIUnionInfo *info,
                            const char  *name)
 {
-  int offset;
+  size_t offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header = (Header *)rinfo->typelib->data;
   UnionBlob *blob = (UnionBlob *)&rinfo->typelib->data[rinfo->offset];

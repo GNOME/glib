@@ -61,14 +61,14 @@ GI_AVAILABLE_IN_ALL
 gboolean         gi_union_info_is_discriminated         (GIUnionInfo *info);
 
 GI_AVAILABLE_IN_ALL
-unsigned int     gi_union_info_get_discriminator_offset (GIUnionInfo *info);
+size_t           gi_union_info_get_discriminator_offset (GIUnionInfo *info);
 
 GI_AVAILABLE_IN_ALL
 GITypeInfo *     gi_union_info_get_discriminator_type   (GIUnionInfo *info);
 
 GI_AVAILABLE_IN_ALL
 GIConstantInfo * gi_union_info_get_discriminator        (GIUnionInfo *info,
-                                                         unsigned int n);
+                                                         size_t       n);
 
 GI_AVAILABLE_IN_ALL
 GIFunctionInfo * gi_union_info_find_method              (GIUnionInfo *info,

@@ -397,8 +397,8 @@ write_field_info (const char *ns,
 {
   const char *name;
   GIFieldInfoFlags flags;
-  int size;
-  int offset;
+  size_t size;
+  size_t offset;
   GITypeInfo *type;
   GIBaseInfo *interface;
   GIArgument value;
@@ -420,7 +420,7 @@ write_field_info (const char *ns,
     xml_printf (file, " writable=\"1\"");
 
   if (size)
-    xml_printf (file, " bits=\"%d\"", size);
+    xml_printf (file, " bits=\"%zu\"", size);
 
   write_attributes (file, (GIBaseInfo*) info);
 
@@ -438,8 +438,7 @@ write_field_info (const char *ns,
 
   if (file->show_all)
     {
-      if (offset >= 0)
-        xml_printf (file, "offset=\"%d\"", offset);
+      xml_printf (file, "offset=\"%zu\"", offset);
     }
 
   interface = gi_type_info_get_interface (type);
@@ -653,7 +652,7 @@ write_struct_info (const char   *ns,
   gboolean deprecated;
   gboolean is_gtype_struct;
   gboolean foreign;
-  int size;
+  size_t size;
   unsigned int n_elts;
 
   name = gi_base_info_get_name ((GIBaseInfo *)info);
@@ -694,8 +693,8 @@ write_struct_info (const char   *ns,
   write_attributes (file, (GIBaseInfo*) info);
 
   size = gi_struct_info_get_size (info);
-  if (file->show_all && size >= 0)
-    xml_printf (file, " size=\"%d\"", size);
+  if (file->show_all)
+    xml_printf (file, " size=\"%zu\"", size);
 
   foreign = gi_struct_info_is_foreign (info);
   if (foreign)
@@ -927,7 +926,7 @@ write_vfunc_info (const char  *ns,
   const char *name;
   GIFunctionInfo *invoker;
   gboolean deprecated;
-  int offset;
+  size_t offset;
 
   name = gi_base_info_get_name ((GIBaseInfo *)info);
   flags = gi_vfunc_info_get_flags (info);
@@ -949,7 +948,7 @@ write_vfunc_info (const char  *ns,
   else if (flags & GI_VFUNC_MUST_NOT_OVERRIDE)
     xml_printf (file, " override=\"never\"");
 
-  xml_printf (file, " offset=\"%d\"", offset);
+  xml_printf (file, " offset=\"%zu\"", offset);
 
   if (invoker)
     {
@@ -1284,14 +1283,14 @@ write_union_info (const char *ns,
 
   if (gi_union_info_is_discriminated (info))
     {
-      unsigned int offset;
+      size_t offset;
       GITypeInfo *type;
 
       offset = gi_union_info_get_discriminator_offset (info);
       type = gi_union_info_get_discriminator_type (info);
 
       xml_start_element (file, "discriminator");
-      xml_printf (file, " offset=\"%d\" type=\"", offset);
+      xml_printf (file, " offset=\"%zu\" type=\"", offset);
       write_type_info (ns, type, file);
       xml_end_element (file, "discriminator");
       gi_base_info_unref ((GIBaseInfo *)type);
@@ -1337,7 +1336,7 @@ gi_ir_writer_write (const char *filename,
                     gboolean    show_all)
 {
   FILE *ofile;
-  int i, j;
+  size_t i, j;
   char **dependencies;
   GIRepository *repository;
   Xml *xml;
@@ -1396,7 +1395,7 @@ gi_ir_writer_write (const char *filename,
       const char *c_prefix;
       const char *cur_ns = ns;
       const char *cur_version;
-      int n_infos;
+      unsigned int n_infos;
 
       cur_version = gi_repository_get_version (repository, cur_ns);
 

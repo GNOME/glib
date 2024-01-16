@@ -59,9 +59,9 @@
  * Returns: field offset, in bytes
  * Since: 2.80
  */
-static uint32_t
+static size_t
 gi_object_info_get_field_offset (GIObjectInfo *info,
-                                 unsigned int  n)
+                                 size_t        n)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header = (Header *)rinfo->typelib->data;
@@ -320,7 +320,7 @@ GIFieldInfo *
 gi_object_info_get_field (GIObjectInfo *info,
                           unsigned int  n)
 {
-  int offset;
+  size_t offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
 
   g_return_val_if_fail (info != NULL, NULL);
@@ -368,7 +368,7 @@ GIPropertyInfo *
 gi_object_info_get_property (GIObjectInfo *info,
                              unsigned int  n)
 {
-  int offset;
+  size_t offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header;
   ObjectBlob *blob;
@@ -427,7 +427,7 @@ GIFunctionInfo *
 gi_object_info_get_method (GIObjectInfo *info,
                            unsigned int  n)
 {
-  int offset;
+  size_t offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header;
   ObjectBlob *blob;
@@ -468,7 +468,7 @@ GIFunctionInfo *
 gi_object_info_find_method (GIObjectInfo *info,
                             const char   *name)
 {
-  int offset;
+  size_t offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header;
   ObjectBlob *blob;
@@ -588,7 +588,7 @@ GISignalInfo *
 gi_object_info_get_signal (GIObjectInfo *info,
                            unsigned int  n)
 {
-  int offset;
+  size_t offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header;
   ObjectBlob *blob;
@@ -629,10 +629,10 @@ GISignalInfo *
 gi_object_info_find_signal (GIObjectInfo *info,
                             const char   *name)
 {
-  unsigned int n_signals;
+  size_t n_signals;
 
   n_signals = gi_object_info_get_n_signals (info);
-  for (unsigned int i = 0; i < n_signals; i++)
+  for (size_t i = 0; i < n_signals; i++)
     {
       GISignalInfo *siginfo = gi_object_info_get_signal (info, i);
 
@@ -686,7 +686,7 @@ GIVFuncInfo *
 gi_object_info_get_vfunc (GIObjectInfo *info,
                           unsigned int  n)
 {
-  int offset;
+  size_t offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header;
   ObjectBlob *blob;
@@ -734,7 +734,7 @@ GIVFuncInfo *
 gi_object_info_find_vfunc (GIObjectInfo *info,
                            const char   *name)
 {
-  int offset;
+  size_t offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header;
   ObjectBlob *blob;
@@ -861,7 +861,7 @@ GIConstantInfo *
 gi_object_info_get_constant (GIObjectInfo *info,
                              unsigned int  n)
 {
-  int offset;
+  size_t offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header;
   ObjectBlob *blob;

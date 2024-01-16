@@ -357,7 +357,7 @@ GIBaseInfo *
 gi_info_new (GIInfoType     type,
              GIBaseInfo    *container,
              GITypelib     *typelib,
-             uint32_t       offset)
+             size_t         offset)
 {
   return gi_info_new_full (type, ((GIRealInfo*)container)->repository, container, typelib, offset);
 }
