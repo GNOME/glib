@@ -148,9 +148,9 @@ compute_enum_storage_type (GIIrNodeEnum *enum_node)
 }
 
 static gboolean
-get_enum_size_alignment (GIIrNodeEnum *enum_node,
-                         int          *size,
-                         int          *alignment)
+get_enum_size_alignment (GIIrNodeEnum   *enum_node,
+                         size_t         *size,
+                         gssize         *alignment)
 {
   ffi_type *type_ffi;
 
@@ -188,8 +188,8 @@ get_enum_size_alignment (GIIrNodeEnum *enum_node,
 static gboolean
 get_interface_size_alignment (GIIrTypelibBuild *build,
                               GIIrNodeType     *type,
-                              int              *size,
-                              int              *alignment,
+                              size_t           *size,
+                              gssize           *alignment,
                               const char       *who)
 {
   GIIrNode *iface;
@@ -265,8 +265,8 @@ get_interface_size_alignment (GIIrTypelibBuild *build,
 static gboolean
 get_type_size_alignment (GIIrTypelibBuild *build,
                          GIIrNodeType     *type,
-                         int              *size,
-                         int              *alignment,
+                         size_t           *size,
+                         gssize           *alignment,
                          const char       *who)
 {
   ffi_type *type_ffi;
@@ -277,7 +277,8 @@ get_type_size_alignment (GIIrTypelibBuild *build,
     }
   else if (type->tag == GI_TYPE_TAG_ARRAY)
     {
-      int elt_size, elt_alignment;
+      size_t elt_size;
+      gssize elt_alignment;
 
       if (!type->has_size
           || !get_type_size_alignment(build, type->parameter_type1,
@@ -333,8 +334,8 @@ static gboolean
 get_field_size_alignment (GIIrTypelibBuild *build,
                           GIIrNodeField    *field,
                           GIIrNode         *parent_node,
-                          int              *size,
-                          int              *alignment)
+                          size_t           *size,
+                          gssize           *alignment)
 {
   GIIrModule *module = build->module;
   char *who;
@@ -361,8 +362,8 @@ static gboolean
 compute_struct_field_offsets (GIIrTypelibBuild *build,
                               GIIrNode         *node,
                               GList            *members,
-                              int              *size_out,
-                              int              *alignment_out)
+                              size_t           *size_out,
+                              gssize           *alignment_out)
 {
   int size = 0;
   int alignment = 1;
@@ -381,8 +382,8 @@ compute_struct_field_offsets (GIIrTypelibBuild *build,
 
           if (!have_error)
             {
-              int member_size;
-              int member_alignment;
+              size_t member_size;
+              gssize member_alignment;
 
               if (get_field_size_alignment (build, field, node,
                                             &member_size, &member_alignment))
@@ -428,10 +429,10 @@ static gboolean
 compute_union_field_offsets (GIIrTypelibBuild *build,
                              GIIrNode         *node,
                              GList            *members,
-                             int              *size_out,
-                             int              *alignment_out)
+                             size_t           *size_out,
+                             gssize           *alignment_out)
 {
-  int size = 0;
+  size_t size = 0;
   int alignment = 1;
   GList *l;
   gboolean have_error = FALSE;
@@ -448,8 +449,8 @@ compute_union_field_offsets (GIIrTypelibBuild *build,
 
           if (!have_error)
             {
-              int member_size;
-              int member_alignment;
+              size_t member_size;
+              gssize member_alignment;
 
               if (get_field_size_alignment (build,field, node,
                                             &member_size, &member_alignment))

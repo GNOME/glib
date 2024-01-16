@@ -261,8 +261,8 @@ struct _GIIrNodeInterface
   GList *interfaces;
   GList *prerequisites;
 
-  int alignment;
-  int size;
+  gssize alignment;
+  size_t size;
 
   GList *members;
 };
@@ -311,8 +311,8 @@ struct _GIIrNodeBoxed
   char *gtype_name;
   char *gtype_init;
 
-  int alignment;
-  int size;
+  gssize alignment;
+  size_t size;
 
   GList *members;
 };
@@ -334,8 +334,8 @@ struct _GIIrNodeStruct
   char *copy_func;
   char *free_func;
 
-  int alignment;
-  int size;
+  gssize alignment;
+  size_t size;
 
   GList *members;
 };
@@ -355,8 +355,8 @@ struct _GIIrNodeUnion
   char *copy_func;
   char *free_func;
 
-  int alignment;
-  int size;
+  gssize alignment;
+  size_t size;
 
   int discriminator_offset;
   GIIrNodeType *discriminator_type;
