@@ -45,7 +45,7 @@ G_BEGIN_DECLS
 
 
 GI_AVAILABLE_IN_ALL
-const gchar *           gi_function_info_get_symbol     (GIFunctionInfo *info);
+const char *            gi_function_info_get_symbol     (GIFunctionInfo *info);
 
 GI_AVAILABLE_IN_ALL
 GIFunctionInfoFlags     gi_function_info_get_flags      (GIFunctionInfo *info);
@@ -92,9 +92,9 @@ typedef enum
 GI_AVAILABLE_IN_ALL
 gboolean              gi_function_info_invoke         (GIFunctionInfo    *info,
                                                        const GIArgument  *in_args,
-                                                       gsize              n_in_args,
+                                                       size_t             n_in_args,
                                                        GIArgument        *out_args,
-                                                       gsize              n_out_args,
+                                                       size_t             n_out_args,
                                                        GIArgument        *return_value,
                                                        GError           **error);
 

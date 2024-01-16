@@ -41,12 +41,12 @@ main (int    argc,
 
       type = invoke_get_type (self, argv[i], &error);
       if (!type)
-	{
-	  g_printerr ("%s\n", error->message);
-	  g_clear_error (&error);
-	}
+        {
+          g_printerr ("%s\n", error->message);
+          g_clear_error (&error);
+        }
       else
-	dump_type (type, argv[i], stdout);
+        dump_type (type, argv[i], stdout);
     }
 
   return 0;

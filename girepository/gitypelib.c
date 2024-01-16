@@ -60,28 +60,28 @@ pop_context (ValidateContext *ctx)
 {
   g_assert (ctx->context_stack != NULL);
   ctx->context_stack = g_slist_delete_link (ctx->context_stack,
-					    ctx->context_stack);
+                                            ctx->context_stack);
 }
 
 static gboolean
 validate_interface_blob (ValidateContext *ctx,
-			 guint32        offset,
-			 GError       **error);
+                         uint32_t       offset,
+                         GError       **error);
 
 static DirEntry *
 get_dir_entry_checked (GITypelib *typelib,
-		       guint16    index,
-		       GError   **error)
+                       uint16_t   index,
+                       GError   **error)
 {
   Header *header = (Header *)typelib->data;
-  guint32 offset;
+  uint32_t offset;
 
   if (index == 0 || index > header->n_entries)
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID_BLOB,
-		   "Invalid directory index %d", index);
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID_BLOB,
+                   "Invalid directory index %d", index);
       return FALSE;
     }
 
@@ -90,9 +90,9 @@ get_dir_entry_checked (GITypelib *typelib,
   if (typelib->len < offset + sizeof (DirEntry))
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID,
-		   "The buffer is too short");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID,
+                   "The buffer is too short");
       return FALSE;
     }
 
@@ -102,15 +102,15 @@ get_dir_entry_checked (GITypelib *typelib,
 
 static CommonBlob *
 get_blob (GITypelib *typelib,
-	  guint32   offset,
-	  GError  **error)
+          uint32_t   offset,
+          GError  **error)
 {
   if (typelib->len < offset + sizeof (CommonBlob))
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID,
-		   "The buffer is too short");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID,
+                   "The buffer is too short");
       return FALSE;
     }
   return (CommonBlob *)&typelib->data[offset];
@@ -118,25 +118,25 @@ get_blob (GITypelib *typelib,
 
 static InterfaceTypeBlob *
 get_type_blob (GITypelib *typelib,
-	       SimpleTypeBlob *simple,
-	       GError  **error)
+               SimpleTypeBlob *simple,
+               GError  **error)
 {
   if (simple->offset == 0)
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID,
-		   "Expected blob for type");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID,
+                   "Expected blob for type");
       return FALSE;
     }
 
   if (simple->flags.reserved == 0 && simple->flags.reserved2 == 0)
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID,
-		   "Expected non-basic type but got %d",
-		   simple->flags.tag);
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID,
+                   "Expected non-basic type but got %d",
+                   simple->flags.tag);
       return FALSE;
     }
 
@@ -155,7 +155,7 @@ get_type_blob (GITypelib *typelib,
  */
 DirEntry *
 gi_typelib_get_dir_entry (GITypelib *typelib,
-                          guint16    index)
+                          uint16_t   index)
 {
   Header *header = (Header *)typelib->data;
 
@@ -164,7 +164,7 @@ gi_typelib_get_dir_entry (GITypelib *typelib,
 
 static Section *
 get_section_by_id (GITypelib   *typelib,
-		   SectionType  section_type)
+                   SectionType  section_type)
 {
   Header *header = (Header *)typelib->data;
   Section *section;
@@ -177,7 +177,7 @@ get_section_by_id (GITypelib   *typelib,
        section++)
     {
       if (section->id == section_type)
-	return section;
+        return section;
     }
   return NULL;
 }
@@ -198,7 +198,7 @@ gi_typelib_get_dir_entry_by_name (GITypelib  *typelib,
                                   const char *name)
 {
   Section *dirindex;
-  gint i, n_entries;
+  size_t i, n_entries;
   const char *entry_name;
   DirEntry *entry;
 
@@ -208,24 +208,24 @@ gi_typelib_get_dir_entry_by_name (GITypelib  *typelib,
   if (dirindex == NULL)
     {
       for (i = 1; i <= n_entries; i++)
-	{
-	  entry = gi_typelib_get_dir_entry (typelib, i);
-	  entry_name = gi_typelib_get_string (typelib, entry->name);
-	  if (strcmp (name, entry_name) == 0)
-	    return entry;
-	}
+        {
+          entry = gi_typelib_get_dir_entry (typelib, i);
+          entry_name = gi_typelib_get_string (typelib, entry->name);
+          if (strcmp (name, entry_name) == 0)
+            return entry;
+        }
       return NULL;
     }
   else
     {
-      guint8 *hash = (guint8*) &typelib->data[dirindex->offset];
-      guint16 index;
+      uint8_t *hash = (uint8_t *) &typelib->data[dirindex->offset];
+      uint16_t index;
 
       index = gi_typelib_hash_search (hash, name, n_entries);
       entry = gi_typelib_get_dir_entry (typelib, index + 1);
       entry_name = gi_typelib_get_string (typelib, entry->name);
       if (strcmp (name, entry_name) == 0)
-	return entry;
+        return entry;
       return NULL;
     }
 }
@@ -244,26 +244,25 @@ gi_typelib_get_dir_entry_by_name (GITypelib  *typelib,
  */
 DirEntry *
 gi_typelib_get_dir_entry_by_gtype_name (GITypelib   *typelib,
-                                        const gchar *gtype_name)
+                                        const char  *gtype_name)
 {
   Header *header = (Header *)typelib->data;
-  guint i;
 
-  for (i = 1; i <= header->n_local_entries; i++)
+  for (size_t i = 1; i <= header->n_local_entries; i++)
     {
       RegisteredTypeBlob *blob;
       const char *type;
       DirEntry *entry = gi_typelib_get_dir_entry (typelib, i);
       if (!BLOB_IS_REGISTERED_TYPE (entry))
-	continue;
+        continue;
 
       blob = (RegisteredTypeBlob *)(&typelib->data[entry->offset]);
       if (!blob->gtype_name)
-	continue;
+        continue;
 
       type = gi_typelib_get_string (typelib, blob->gtype_name);
       if (strcmp (type, gtype_name) == 0)
-	return entry;
+        return entry;
     }
   return NULL;
 }
@@ -271,7 +270,7 @@ gi_typelib_get_dir_entry_by_gtype_name (GITypelib   *typelib,
 typedef struct {
   const char *s;
   const char *separator;
-  gsize sep_len;
+  size_t sep_len;
   GString buf;
 } StrSplitIter;
 
@@ -294,7 +293,7 @@ strsplit_iter_next (StrSplitIter  *iter,
 {
   const char *s = iter->s;
   const char *next;
-  gsize len;
+  size_t len;
 
   if (!s)
     return FALSE;
@@ -340,14 +339,14 @@ strsplit_iter_clear (StrSplitIter  *iter)
  */
 gboolean
 gi_typelib_matches_gtype_name_prefix (GITypelib   *typelib,
-                                      const gchar *gtype_name)
+                                      const char  *gtype_name)
 {
   Header *header = (Header *)typelib->data;
   const char *c_prefix;
-  const gchar *prefix;
+  const char *prefix;
   gboolean ret = FALSE;
   StrSplitIter split_iter;
-  gsize gtype_name_len;
+  size_t gtype_name_len;
 
   c_prefix = gi_typelib_get_string (typelib, header->c_prefix);
   if (c_prefix == NULL || strlen (c_prefix) == 0)
@@ -400,97 +399,66 @@ gi_typelib_get_dir_entry_by_error_domain (GITypelib *typelib,
                                           GQuark     error_domain)
 {
   Header *header = (Header *)typelib->data;
-  guint n_entries = header->n_local_entries;
+  size_t n_entries = header->n_local_entries;
   const char *domain_string = g_quark_to_string (error_domain);
   DirEntry *entry;
-  guint i;
 
-  for (i = 1; i <= n_entries; i++)
+  for (size_t i = 1; i <= n_entries; i++)
     {
       EnumBlob *blob;
       const char *enum_domain_string;
 
       entry = gi_typelib_get_dir_entry (typelib, i);
       if (entry->blob_type != BLOB_TYPE_ENUM)
-	continue;
+        continue;
 
       blob = (EnumBlob *)(&typelib->data[entry->offset]);
       if (!blob->error_domain)
-	continue;
+        continue;
 
       enum_domain_string = gi_typelib_get_string (typelib, blob->error_domain);
       if (strcmp (domain_string, enum_domain_string) == 0)
-	return entry;
+        return entry;
     }
   return NULL;
 }
 
-/**
- * gi_typelib_check_format:
+/* When changing the size of a typelib structure, you are required to update
+ * the hardcoded size here.  Do NOT change these to use sizeof(); these
+ * should match whatever is defined in the text specification and serve as
+ * a sanity check on structure modifications.
  *
- * Check compile-time sizes of various typelib file format types are as
- * expected.
- *
- * Since: 2.80
+ * Everything else in the code however should be using sizeof().
  */
-void
-gi_typelib_check_format (void)
-{
-#ifndef G_DISABLE_ASSERT
-  /* Check that struct layout is as we expect */
 
-  gboolean size_check_ok = TRUE;
-
-#define CHECK_SIZE(s,n) \
-  if (sizeof(s) != n) \
-    { \
-      g_printerr ("sizeof("#s") is expected to be %d but is %"G_GSIZE_FORMAT".\n", \
-		  n, sizeof (s));					\
-      size_check_ok = FALSE; \
-    }
-
-  /* When changing the size of a typelib structure, you are required to update
-   * the hardcoded size here.  Do NOT change these to use sizeof(); these
-   * should match whatever is defined in the text specification and serve as
-   * a sanity check on structure modifications.
-   *
-   * Everything else in the code however should be using sizeof().
-   */
-
-  CHECK_SIZE (Header, 112);
-  CHECK_SIZE (DirEntry, 12);
-  CHECK_SIZE (SimpleTypeBlob, 4);
-  CHECK_SIZE (ArgBlob, 16);
-  CHECK_SIZE (SignatureBlob, 8);
-  CHECK_SIZE (CommonBlob, 8);
-  CHECK_SIZE (FunctionBlob, 20);
-  CHECK_SIZE (CallbackBlob, 12);
-  CHECK_SIZE (InterfaceTypeBlob, 4);
-  CHECK_SIZE (ArrayTypeBlob, 8);
-  CHECK_SIZE (ParamTypeBlob, 4);
-  CHECK_SIZE (ErrorTypeBlob, 4);
-  CHECK_SIZE (ValueBlob, 12);
-  CHECK_SIZE (FieldBlob, 16);
-  CHECK_SIZE (RegisteredTypeBlob, 16);
-  CHECK_SIZE (StructBlob, 32);
-  CHECK_SIZE (EnumBlob, 24);
-  CHECK_SIZE (PropertyBlob, 16);
-  CHECK_SIZE (SignalBlob, 16);
-  CHECK_SIZE (VFuncBlob, 20);
-  CHECK_SIZE (ObjectBlob, 60);
-  CHECK_SIZE (InterfaceBlob, 40);
-  CHECK_SIZE (ConstantBlob, 24);
-  CHECK_SIZE (AttributeBlob, 12);
-  CHECK_SIZE (UnionBlob, 40);
-#undef CHECK_SIZE
-
-  g_assert (size_check_ok);
-#endif  /* !G_DISABLE_ASSERT */
-}
-
+G_STATIC_ASSERT (sizeof (Header) == 112);
+G_STATIC_ASSERT (sizeof (DirEntry) == 12);
+G_STATIC_ASSERT (sizeof (SimpleTypeBlob) == 4);
+G_STATIC_ASSERT (sizeof (ArgBlob) == 16);
+G_STATIC_ASSERT (sizeof (SignatureBlob) == 8);
+G_STATIC_ASSERT (sizeof (CommonBlob) == 8);
+G_STATIC_ASSERT (sizeof (FunctionBlob) == 20);
+G_STATIC_ASSERT (sizeof (CallbackBlob) == 12);
+G_STATIC_ASSERT (sizeof (InterfaceTypeBlob) == 4);
+G_STATIC_ASSERT (sizeof (ArrayTypeBlob) == 8);
+G_STATIC_ASSERT (sizeof (ParamTypeBlob) == 4);
+G_STATIC_ASSERT (sizeof (ErrorTypeBlob) == 4);
+G_STATIC_ASSERT (sizeof (ValueBlob) == 12);
+G_STATIC_ASSERT (sizeof (FieldBlob) == 16);
+G_STATIC_ASSERT (sizeof (RegisteredTypeBlob) == 16);
+G_STATIC_ASSERT (sizeof (StructBlob) == 32);
+G_STATIC_ASSERT (sizeof (EnumBlob) == 24);
+G_STATIC_ASSERT (sizeof (PropertyBlob) == 16);
+G_STATIC_ASSERT (sizeof (SignalBlob) == 16);
+G_STATIC_ASSERT (sizeof (VFuncBlob) == 20);
+G_STATIC_ASSERT (sizeof (ObjectBlob) == 60);
+G_STATIC_ASSERT (sizeof (InterfaceBlob) == 40);
+G_STATIC_ASSERT (sizeof (ConstantBlob) == 24);
+G_STATIC_ASSERT (sizeof (AttributeBlob) == 12);
+G_STATIC_ASSERT (sizeof (UnionBlob) == 40);
 
 static gboolean
-is_aligned (guint32 offset)
+is_aligned (uint32_t offset)
 {
   return offset == ALIGN_VALUE (offset, 4);
 }
@@ -498,14 +466,14 @@ is_aligned (guint32 offset)
 #define MAX_NAME_LEN 2048
 
 static const char *
-get_string (GITypelib *typelib, guint32 offset, GError **error)
+get_string (GITypelib *typelib, uint32_t offset, GError **error)
 {
   if (typelib->len < offset)
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID,
-		   "Buffer is too short while looking up name");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID,
+                   "Buffer is too short while looking up name");
       return NULL;
     }
 
@@ -513,7 +481,7 @@ get_string (GITypelib *typelib, guint32 offset, GError **error)
 }
 
 static const char *
-get_string_nofail (GITypelib *typelib, guint32 offset)
+get_string_nofail (GITypelib *typelib, uint32_t offset)
 {
   const char *ret = get_string (typelib, offset, NULL);
   g_assert (ret);
@@ -522,9 +490,10 @@ get_string_nofail (GITypelib *typelib, guint32 offset)
 
 static gboolean
 validate_name (GITypelib   *typelib,
-	       const char *msg,
-	       const guchar *data, guint32 offset,
-	       GError **error)
+               const char *msg,
+               const uint8_t *data,
+               uint32_t offset,
+               GError **error)
 {
   const char *name;
 
@@ -535,20 +504,20 @@ validate_name (GITypelib   *typelib,
   if (!memchr (name, '\0', MAX_NAME_LEN))
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID,
-		   "The %s is too long: %s",
-		   msg, name);
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID,
+                   "The %s is too long: %s",
+                   msg, name);
       return FALSE;
     }
 
   if (strspn (name, G_CSET_a_2_z G_CSET_A_2_Z G_CSET_DIGITS "-_") < strlen (name))
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID,
-		   "The %s contains invalid characters: '%s'",
-		   msg, name);
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID,
+                   "The %s contains invalid characters: '%s'",
+                   msg, name);
       return FALSE;
     }
 
@@ -557,28 +526,27 @@ validate_name (GITypelib   *typelib,
 
 /* Fast path sanity check, operates on a memory blob */
 static gboolean
-validate_header_basic (const guint8   *memory,
-		       gsize           len,
-		       GError        **error)
+validate_header_basic (const uint8_t  *memory,
+                       size_t          len,
+                       GError        **error)
 {
   Header *header = (Header *)memory;
 
   if (len < sizeof (Header))
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID,
-		   "The specified typelib length %" G_GSIZE_FORMAT " is too short",
-		   len);
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID,
+                   "The specified typelib length %zu is too short", len);
       return FALSE;
     }
 
   if (strncmp (header->magic, GI_IR_MAGIC, 16) != 0)
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID_HEADER,
-		   "Invalid magic header");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID_HEADER,
+                   "Invalid magic header");
       return FALSE;
 
     }
@@ -586,10 +554,10 @@ validate_header_basic (const guint8   *memory,
   if (header->major_version != 4)
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID_HEADER,
-		   "Typelib version mismatch; expected 4, found %d",
-		   header->major_version);
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID_HEADER,
+                   "Typelib version mismatch; expected 4, found %d",
+                   header->major_version);
       return FALSE;
 
     }
@@ -597,28 +565,27 @@ validate_header_basic (const guint8   *memory,
   if (header->n_entries < header->n_local_entries)
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID_HEADER,
-		   "Inconsistent entry counts");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID_HEADER,
+                   "Inconsistent entry counts");
       return FALSE;
     }
 
   if (header->size != len)
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID_HEADER,
-		   "Typelib size %" G_GSIZE_FORMAT " does not match %" G_GSIZE_FORMAT,
-		   (gsize) header->size, len);
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID_HEADER,
+                   "Typelib size %zu does not match %zu",
+                   (size_t) header->size, len);
       return FALSE;
     }
 
   /* This is a sanity check for a specific typelib; it
    * prevents us from loading an incompatible typelib.
    *
-   * The hardcoded checks in gi_typelib_check_format to
-   * protect against inadvertent or buggy changes to the typelib format
-   * itself.
+   * The hardcoded static checks to protect against inadvertent
+   * or buggy changes to the typelib format itself.
    */
 
   if (header->entry_blob_size != sizeof (DirEntry) ||
@@ -640,36 +607,36 @@ validate_header_basic (const guint8   *memory,
       header->union_blob_size != sizeof (UnionBlob))
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID_HEADER,
-		   "Blob size mismatch");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID_HEADER,
+                   "Blob size mismatch");
       return FALSE;
     }
 
   if (!is_aligned (header->directory))
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID_HEADER,
-		   "Misaligned directory");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID_HEADER,
+                   "Misaligned directory");
       return FALSE;
     }
 
   if (!is_aligned (header->attributes))
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID_HEADER,
-		   "Misaligned attributes");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID_HEADER,
+                   "Misaligned attributes");
       return FALSE;
     }
 
   if (header->attributes == 0 && header->n_attributes > 0)
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID_HEADER,
-		   "Wrong number of attributes");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID_HEADER,
+                   "Wrong number of attributes");
       return FALSE;
     }
 
@@ -678,7 +645,7 @@ validate_header_basic (const guint8   *memory,
 
 static gboolean
 validate_header (ValidateContext  *ctx,
-		 GError          **error)
+                 GError          **error)
 {
   GITypelib *typelib = ctx->typelib;
   
@@ -695,23 +662,23 @@ validate_header (ValidateContext  *ctx,
 }
 
 static gboolean validate_type_blob (GITypelib     *typelib,
-				    guint32        offset,
-				    guint32        signature_offset,
-				    gboolean       return_type,
-				    GError       **error);
+                                    uint32_t       offset,
+                                    uint32_t       signature_offset,
+                                    gboolean       return_type,
+                                    GError       **error);
 
 static gboolean
 validate_array_type_blob (GITypelib     *typelib,
-			  guint32        offset,
-			  guint32        signature_offset,
-			  gboolean       return_type,
-			  GError       **error)
+                          uint32_t       offset,
+                          uint32_t       signature_offset,
+                          gboolean       return_type,
+                          GError       **error)
 {
   /* FIXME validate length */
 
   if (!validate_type_blob (typelib,
-			   offset + G_STRUCT_OFFSET (ArrayTypeBlob, type),
-			   0, FALSE, error))
+                           offset + G_STRUCT_OFFSET (ArrayTypeBlob, type),
+                           0, FALSE, error))
     return FALSE;
 
   return TRUE;
@@ -719,10 +686,10 @@ validate_array_type_blob (GITypelib     *typelib,
 
 static gboolean
 validate_iface_type_blob (GITypelib     *typelib,
-			  guint32        offset,
-			  guint32        signature_offset,
-			  gboolean       return_type,
-			  GError       **error)
+                          uint32_t       offset,
+                          uint32_t       signature_offset,
+                          gboolean       return_type,
+                          GError       **error)
 {
   InterfaceTypeBlob *blob;
   InterfaceBlob *target;
@@ -741,42 +708,41 @@ validate_iface_type_blob (GITypelib     *typelib,
 
 static gboolean
 validate_param_type_blob (GITypelib     *typelib,
-			  guint32        offset,
-			  guint32        signature_offset,
-			  gboolean       return_type,
-			  gint           n_params,
-			  GError       **error)
+                          uint32_t       offset,
+                          uint32_t       signature_offset,
+                          gboolean       return_type,
+                          size_t         n_params,
+                          GError       **error)
 {
   ParamTypeBlob *blob;
-  gint i;
 
   blob = (ParamTypeBlob*)&typelib->data[offset];
 
   if (!blob->pointer)
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID_BLOB,
-		   "Pointer type exected for tag %d", blob->tag);
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID_BLOB,
+                   "Pointer type exected for tag %d", blob->tag);
       return FALSE;
     }
 
   if (blob->n_types != n_params)
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID_BLOB,
-		   "Parameter type number mismatch");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID_BLOB,
+                   "Parameter type number mismatch");
       return FALSE;
     }
 
-  for (i = 0; i < n_params; i++)
+  for (size_t i = 0; i < n_params; i++)
     {
       if (!validate_type_blob (typelib,
-			       offset + sizeof (ParamTypeBlob) +
-			       i * sizeof (SimpleTypeBlob),
-			       0, FALSE, error))
-	return FALSE;
+                               offset + sizeof (ParamTypeBlob) +
+                               i * sizeof (SimpleTypeBlob),
+                               0, FALSE, error))
+        return FALSE;
     }
 
   return TRUE;
@@ -784,10 +750,10 @@ validate_param_type_blob (GITypelib     *typelib,
 
 static gboolean
 validate_error_type_blob (GITypelib     *typelib,
-			  guint32        offset,
-			  guint32        signature_offset,
-			  gboolean       return_type,
-			  GError       **error)
+                          uint32_t       offset,
+                          uint32_t       signature_offset,
+                          gboolean       return_type,
+                          GError       **error)
 {
   ErrorTypeBlob *blob;
 
@@ -796,9 +762,9 @@ validate_error_type_blob (GITypelib     *typelib,
   if (!blob->pointer)
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID_BLOB,
-		   "Pointer type exected for tag %d", blob->tag);
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID_BLOB,
+                   "Pointer type exected for tag %d", blob->tag);
       return FALSE;
     }
 
@@ -807,10 +773,10 @@ validate_error_type_blob (GITypelib     *typelib,
 
 static gboolean
 validate_type_blob (GITypelib     *typelib,
-		    guint32        offset,
-		    guint32        signature_offset,
-		    gboolean       return_type,
-		    GError       **error)
+                    uint32_t       offset,
+                    uint32_t       signature_offset,
+                    gboolean       return_type,
+                    GError       **error)
 {
   SimpleTypeBlob *simple;
   InterfaceTypeBlob *iface;
@@ -821,24 +787,24 @@ validate_type_blob (GITypelib     *typelib,
       simple->flags.reserved2 == 0)
     {
       if (!GI_TYPE_TAG_IS_BASIC(simple->flags.tag))
-	{
-	  g_set_error (error,
-		       GI_TYPELIB_ERROR,
-		       GI_TYPELIB_ERROR_INVALID_BLOB,
-		       "Invalid non-basic tag %d in simple type", simple->flags.tag);
-	  return FALSE;
-	}
+        {
+          g_set_error (error,
+                       GI_TYPELIB_ERROR,
+                       GI_TYPELIB_ERROR_INVALID_BLOB,
+                       "Invalid non-basic tag %d in simple type", simple->flags.tag);
+          return FALSE;
+        }
 
       if (simple->flags.tag >= GI_TYPE_TAG_UTF8 &&
-	  simple->flags.tag != GI_TYPE_TAG_UNICHAR &&
-	  !simple->flags.pointer)
-	{
-	  g_set_error (error,
-		       GI_TYPELIB_ERROR,
-		       GI_TYPELIB_ERROR_INVALID_BLOB,
-		       "Pointer type exected for tag %d", simple->flags.tag);
-	  return FALSE;
-	}
+          simple->flags.tag != GI_TYPE_TAG_UNICHAR &&
+          !simple->flags.pointer)
+        {
+          g_set_error (error,
+                       GI_TYPELIB_ERROR,
+                       GI_TYPELIB_ERROR_INVALID_BLOB,
+                       "Pointer type exected for tag %d", simple->flags.tag);
+          return FALSE;
+        }
 
       return TRUE;
     }
@@ -849,35 +815,35 @@ validate_type_blob (GITypelib     *typelib,
     {
     case GI_TYPE_TAG_ARRAY:
       if (!validate_array_type_blob (typelib, simple->offset,
-				     signature_offset, return_type, error))
-	return FALSE;
+                                     signature_offset, return_type, error))
+        return FALSE;
       break;
     case GI_TYPE_TAG_INTERFACE:
       if (!validate_iface_type_blob (typelib, simple->offset,
-				     signature_offset, return_type, error))
-	return FALSE;
+                                     signature_offset, return_type, error))
+        return FALSE;
       break;
     case GI_TYPE_TAG_GLIST:
     case GI_TYPE_TAG_GSLIST:
       if (!validate_param_type_blob (typelib, simple->offset,
-				     signature_offset, return_type, 1, error))
-	return FALSE;
+                                     signature_offset, return_type, 1, error))
+        return FALSE;
       break;
     case GI_TYPE_TAG_GHASH:
       if (!validate_param_type_blob (typelib, simple->offset,
-				     signature_offset, return_type, 2, error))
-	return FALSE;
+                                     signature_offset, return_type, 2, error))
+        return FALSE;
       break;
     case GI_TYPE_TAG_ERROR:
       if (!validate_error_type_blob (typelib, simple->offset,
-				     signature_offset, return_type, error))
-	return FALSE;
+                                     signature_offset, return_type, error))
+        return FALSE;
       break;
     default:
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID_BLOB,
-		   "Wrong tag in complex type");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID_BLOB,
+                   "Wrong tag in complex type");
       return FALSE;
     }
 
@@ -886,18 +852,18 @@ validate_type_blob (GITypelib     *typelib,
 
 static gboolean
 validate_arg_blob (GITypelib     *typelib,
-		   guint32        offset,
-		   guint32        signature_offset,
-		   GError       **error)
+                   uint32_t       offset,
+                   uint32_t       signature_offset,
+                   GError       **error)
 {
   ArgBlob *blob;
 
   if (typelib->len < offset + sizeof (ArgBlob))
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID,
-		   "The buffer is too short");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID,
+                   "The buffer is too short");
       return FALSE;
     }
 
@@ -907,8 +873,8 @@ validate_arg_blob (GITypelib     *typelib,
     return FALSE;
 
   if (!validate_type_blob (typelib,
-			   offset + G_STRUCT_OFFSET (ArgBlob, arg_type),
-			   signature_offset, FALSE, error))
+                           offset + G_STRUCT_OFFSET (ArgBlob, arg_type),
+                           signature_offset, FALSE, error))
     return FALSE;
 
   return TRUE;
@@ -916,16 +882,16 @@ validate_arg_blob (GITypelib     *typelib,
 
 static SimpleTypeBlob *
 return_type_from_signature (GITypelib *typelib,
-			    guint32   offset,
-			    GError  **error)
+                            uint32_t   offset,
+                            GError  **error)
 {
   SignatureBlob *blob;
   if (typelib->len < offset + sizeof (SignatureBlob))
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID,
-		   "The buffer is too short");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID,
+                   "The buffer is too short");
       return NULL;
     }
 
@@ -933,9 +899,9 @@ return_type_from_signature (GITypelib *typelib,
   if (blob->return_type.offset == 0)
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID,
-		   "No return type found in signature");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID,
+                   "No return type found in signature");
       return NULL;
     }
 
@@ -944,18 +910,17 @@ return_type_from_signature (GITypelib *typelib,
 
 static gboolean
 validate_signature_blob (GITypelib     *typelib,
-			 guint32        offset,
-			 GError       **error)
+                         uint32_t       offset,
+                         GError       **error)
 {
   SignatureBlob *blob;
-  gint i;
 
   if (typelib->len < offset + sizeof (SignatureBlob))
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID,
-		   "The buffer is too short");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID,
+                   "The buffer is too short");
       return FALSE;
     }
 
@@ -964,19 +929,19 @@ validate_signature_blob (GITypelib     *typelib,
   if (blob->return_type.offset != 0)
     {
       if (!validate_type_blob (typelib,
-			       offset + G_STRUCT_OFFSET (SignatureBlob, return_type),
-			       offset, TRUE, error))
-	return FALSE;
+                               offset + G_STRUCT_OFFSET (SignatureBlob, return_type),
+                               offset, TRUE, error))
+        return FALSE;
     }
 
-  for (i = 0; i < blob->n_arguments; i++)
+  for (size_t i = 0; i < blob->n_arguments; i++)
     {
       if (!validate_arg_blob (typelib,
-			      offset + sizeof (SignatureBlob) +
-			      i * sizeof (ArgBlob),
-			      offset,
-			      error))
-	return FALSE;
+                              offset + sizeof (SignatureBlob) +
+                              i * sizeof (ArgBlob),
+                              offset,
+                              error))
+        return FALSE;
     }
 
   /* FIXME check constraints on return_value */
@@ -986,9 +951,9 @@ validate_signature_blob (GITypelib     *typelib,
 
 static gboolean
 validate_function_blob (ValidateContext *ctx,
-			guint32        offset,
-			guint16        container_type,
-			GError       **error)
+                        uint32_t       offset,
+                        uint16_t       container_type,
+                        GError       **error)
 {
   GITypelib *typelib = ctx->typelib;
   FunctionBlob *blob;
@@ -996,9 +961,9 @@ validate_function_blob (ValidateContext *ctx,
   if (typelib->len < offset + sizeof (FunctionBlob))
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID,
-		   "The buffer is too short");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID,
+                   "The buffer is too short");
       return FALSE;
     }
 
@@ -1007,9 +972,9 @@ validate_function_blob (ValidateContext *ctx,
   if (blob->blob_type != BLOB_TYPE_FUNCTION)
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID_BLOB,
-		   "Wrong blob type %d, expected function", blob->blob_type);
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID_BLOB,
+                   "Wrong blob type %d, expected function", blob->blob_type);
       return FALSE;
     }
 
@@ -1024,48 +989,48 @@ validate_function_blob (ValidateContext *ctx,
   if (blob->constructor)
     {
       switch (container_type)
-	{
-	case BLOB_TYPE_BOXED:
-	case BLOB_TYPE_STRUCT:
-	case BLOB_TYPE_UNION:
-	case BLOB_TYPE_OBJECT:
-	case BLOB_TYPE_INTERFACE:
-	  break;
-	default:
-	  g_set_error (error,
-		       GI_TYPELIB_ERROR,
-		       GI_TYPELIB_ERROR_INVALID_BLOB,
-		       "Constructor not allowed");
-	  return FALSE;
-	}
+        {
+        case BLOB_TYPE_BOXED:
+        case BLOB_TYPE_STRUCT:
+        case BLOB_TYPE_UNION:
+        case BLOB_TYPE_OBJECT:
+        case BLOB_TYPE_INTERFACE:
+          break;
+        default:
+          g_set_error (error,
+                       GI_TYPELIB_ERROR,
+                       GI_TYPELIB_ERROR_INVALID_BLOB,
+                       "Constructor not allowed");
+          return FALSE;
+        }
     }
 
   if (blob->setter || blob->getter || blob->wraps_vfunc)
     {
       switch (container_type)
-	{
-	case BLOB_TYPE_OBJECT:
-	case BLOB_TYPE_INTERFACE:
-	  break;
-	default:
-	  g_set_error (error,
-		       GI_TYPELIB_ERROR,
-		       GI_TYPELIB_ERROR_INVALID_BLOB,
-		       "Setter, getter or wrapper not allowed");
-	  return FALSE;
-	}
+        {
+        case BLOB_TYPE_OBJECT:
+        case BLOB_TYPE_INTERFACE:
+          break;
+        default:
+          g_set_error (error,
+                       GI_TYPELIB_ERROR,
+                       GI_TYPELIB_ERROR_INVALID_BLOB,
+                       "Setter, getter or wrapper not allowed");
+          return FALSE;
+        }
     }
 
   if (blob->index)
     {
       if (!(blob->setter || blob->getter || blob->wraps_vfunc))
-	{
-	  g_set_error (error,
-		       GI_TYPELIB_ERROR,
-		       GI_TYPELIB_ERROR_INVALID_BLOB,
-		       "Must be setter, getter or wrapper");
-	  return FALSE;
-	}
+        {
+          g_set_error (error,
+                       GI_TYPELIB_ERROR,
+                       GI_TYPELIB_ERROR_INVALID_BLOB,
+                       "Must be setter, getter or wrapper");
+          return FALSE;
+        }
     }
 
   /* FIXME: validate index range */
@@ -1076,27 +1041,27 @@ validate_function_blob (ValidateContext *ctx,
   if (blob->constructor)
     {
       SimpleTypeBlob *simple = return_type_from_signature (typelib,
-							   blob->signature,
-							   error);
+                                                           blob->signature,
+                                                           error);
       InterfaceTypeBlob *iface_type;
 
       if (!simple)
-	return FALSE;
+        return FALSE;
       iface_type = get_type_blob (typelib, simple, error);
       if (!iface_type)
-	return FALSE;
+        return FALSE;
       if (iface_type->tag != GI_TYPE_TAG_INTERFACE &&
           (container_type == BLOB_TYPE_OBJECT ||
            container_type == BLOB_TYPE_INTERFACE))
-	{
-	  g_set_error (error,
-		       GI_TYPELIB_ERROR,
-		       GI_TYPELIB_ERROR_INVALID,
-		       "Invalid return type '%s' for constructor '%s'",
-		       gi_type_tag_to_string (iface_type->tag),
-		       get_string_nofail (typelib, blob->symbol));
-	  return FALSE;
-	}
+        {
+          g_set_error (error,
+                       GI_TYPELIB_ERROR,
+                       GI_TYPELIB_ERROR_INVALID,
+                       "Invalid return type '%s' for constructor '%s'",
+                       gi_type_tag_to_string (iface_type->tag),
+                       get_string_nofail (typelib, blob->symbol));
+          return FALSE;
+        }
     }
 
   pop_context (ctx);
@@ -1106,8 +1071,8 @@ validate_function_blob (ValidateContext *ctx,
 
 static gboolean
 validate_callback_blob (ValidateContext *ctx,
-			guint32        offset,
-			GError       **error)
+                        uint32_t       offset,
+                        GError       **error)
 {
   GITypelib *typelib = ctx->typelib;
   CallbackBlob *blob;
@@ -1115,9 +1080,9 @@ validate_callback_blob (ValidateContext *ctx,
   if (typelib->len < offset + sizeof (CallbackBlob))
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID,
-		   "The buffer is too short");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID,
+                   "The buffer is too short");
       return FALSE;
     }
 
@@ -1126,9 +1091,9 @@ validate_callback_blob (ValidateContext *ctx,
   if (blob->blob_type != BLOB_TYPE_CALLBACK)
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID_BLOB,
-		   "Wrong blob type");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID_BLOB,
+                   "Wrong blob type");
       return FALSE;
     }
 
@@ -1147,10 +1112,10 @@ validate_callback_blob (ValidateContext *ctx,
 
 static gboolean
 validate_constant_blob (GITypelib     *typelib,
-			guint32        offset,
-			GError       **error)
+                        uint32_t       offset,
+                        GError       **error)
 {
-  guint value_size[] = {
+  size_t value_size[] = {
     0, /* VOID */
     4, /* BOOLEAN */
     1, /* INT8 */
@@ -1161,8 +1126,8 @@ validate_constant_blob (GITypelib     *typelib,
     4, /* UINT32 */
     8, /* INT64 */
     8, /* UINT64 */
-    sizeof (gfloat),
-    sizeof (gdouble),
+    sizeof (float),
+    sizeof (double),
     0, /* GTYPE */
     0, /* UTF8 */
     0, /* FILENAME */
@@ -1182,9 +1147,9 @@ validate_constant_blob (GITypelib     *typelib,
   if (typelib->len < offset + sizeof (ConstantBlob))
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID,
-		   "The buffer is too short");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID,
+                   "The buffer is too short");
       return FALSE;
     }
 
@@ -1193,9 +1158,9 @@ validate_constant_blob (GITypelib     *typelib,
   if (blob->blob_type != BLOB_TYPE_CONSTANT)
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID_BLOB,
-		   "Wrong blob type");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID_BLOB,
+                   "Wrong blob type");
       return FALSE;
     }
 
@@ -1203,15 +1168,15 @@ validate_constant_blob (GITypelib     *typelib,
     return FALSE;
 
   if (!validate_type_blob (typelib, offset + G_STRUCT_OFFSET (ConstantBlob, type),
-			   0, FALSE, error))
+                           0, FALSE, error))
     return FALSE;
 
   if (!is_aligned (blob->offset))
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID_BLOB,
-		   "Misaligned constant value");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID_BLOB,
+                   "Misaligned constant value");
       return FALSE;
     }
 
@@ -1219,23 +1184,23 @@ validate_constant_blob (GITypelib     *typelib,
   if (type->flags.reserved == 0 && type->flags.reserved2 == 0)
     {
       if (type->flags.tag == 0)
-	{
-	  g_set_error (error,
-		       GI_TYPELIB_ERROR,
-		       GI_TYPELIB_ERROR_INVALID_BLOB,
-		       "Constant value type void");
-	  return FALSE;
-	}
+        {
+          g_set_error (error,
+                       GI_TYPELIB_ERROR,
+                       GI_TYPELIB_ERROR_INVALID_BLOB,
+                       "Constant value type void");
+          return FALSE;
+        }
 
       if (value_size[type->flags.tag] != 0 &&
-	  blob->size != value_size[type->flags.tag])
-	{
-	  g_set_error (error,
-		       GI_TYPELIB_ERROR,
-		       GI_TYPELIB_ERROR_INVALID_BLOB,
-		       "Constant value size mismatch");
-	  return FALSE;
-	}
+          blob->size != value_size[type->flags.tag])
+        {
+          g_set_error (error,
+                       GI_TYPELIB_ERROR,
+                       GI_TYPELIB_ERROR_INVALID_BLOB,
+                       "Constant value size mismatch");
+          return FALSE;
+        }
       /* FIXME check string values */
     }
 
@@ -1244,17 +1209,17 @@ validate_constant_blob (GITypelib     *typelib,
 
 static gboolean
 validate_value_blob (GITypelib     *typelib,
-		     guint32        offset,
-		     GError       **error)
+                     uint32_t       offset,
+                     GError       **error)
 {
   ValueBlob *blob;
 
   if (typelib->len < offset + sizeof (ValueBlob))
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID,
-		   "The buffer is too short");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID,
+                   "The buffer is too short");
       return FALSE;
     }
 
@@ -1268,8 +1233,8 @@ validate_value_blob (GITypelib     *typelib,
 
 static gboolean
 validate_field_blob (ValidateContext *ctx,
-		     guint32        offset,
-		     GError       **error)
+                     uint32_t       offset,
+                     GError       **error)
 {
   GITypelib *typelib = ctx->typelib;
   Header *header = (Header *)typelib->data;
@@ -1278,9 +1243,9 @@ validate_field_blob (ValidateContext *ctx,
   if (typelib->len < offset + sizeof (FieldBlob))
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID,
-		   "The buffer is too short");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID,
+                   "The buffer is too short");
       return FALSE;
     }
 
@@ -1295,8 +1260,8 @@ validate_field_blob (ValidateContext *ctx,
         return FALSE;
     }
   else if (!validate_type_blob (typelib,
-			        offset + G_STRUCT_OFFSET (FieldBlob, type),
-			        0, FALSE, error))
+                                offset + G_STRUCT_OFFSET (FieldBlob, type),
+                                0, FALSE, error))
     return FALSE;
 
   return TRUE;
@@ -1304,17 +1269,17 @@ validate_field_blob (ValidateContext *ctx,
 
 static gboolean
 validate_property_blob (GITypelib     *typelib,
-			guint32        offset,
-			GError       **error)
+                        uint32_t       offset,
+                        GError       **error)
 {
   PropertyBlob *blob;
 
   if (typelib->len < offset + sizeof (PropertyBlob))
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID,
-		   "The buffer is too short");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID,
+                   "The buffer is too short");
       return FALSE;
     }
 
@@ -1324,8 +1289,8 @@ validate_property_blob (GITypelib     *typelib,
     return FALSE;
 
   if (!validate_type_blob (typelib,
-			   offset + G_STRUCT_OFFSET (PropertyBlob, type),
-			   0, FALSE, error))
+                           offset + G_STRUCT_OFFSET (PropertyBlob, type),
+                           0, FALSE, error))
     return FALSE;
 
   return TRUE;
@@ -1333,19 +1298,19 @@ validate_property_blob (GITypelib     *typelib,
 
 static gboolean
 validate_signal_blob (GITypelib     *typelib,
-		      guint32        offset,
-		      guint32        container_offset,
-		      GError       **error)
+                      uint32_t       offset,
+                      uint32_t       container_offset,
+                      GError       **error)
 {
   SignalBlob *blob;
-  gint n_signals;
+  size_t n_signals;
 
   if (typelib->len < offset + sizeof (SignalBlob))
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID,
-		   "The buffer is too short");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID,
+                   "The buffer is too short");
       return FALSE;
     }
 
@@ -1359,39 +1324,39 @@ validate_signal_blob (GITypelib     *typelib,
       (blob->run_cleanup != 0) != 1)
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID_BLOB,
-		   "Invalid signal run flags");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID_BLOB,
+                   "Invalid signal run flags");
       return FALSE;
     }
 
   if (blob->has_class_closure)
     {
       if (((CommonBlob*)&typelib->data[container_offset])->blob_type == BLOB_TYPE_OBJECT)
-	{
-	  ObjectBlob *object;
+        {
+          ObjectBlob *object;
 
-	  object = (ObjectBlob*)&typelib->data[container_offset];
+          object = (ObjectBlob*)&typelib->data[container_offset];
 
-	  n_signals = object->n_signals;
-	}
+          n_signals = object->n_signals;
+        }
       else
-	{
-	  InterfaceBlob *iface;
+        {
+          InterfaceBlob *iface;
 
-	  iface = (InterfaceBlob*)&typelib->data[container_offset];
+          iface = (InterfaceBlob*)&typelib->data[container_offset];
 
-	  n_signals = iface->n_signals;
-	}
+          n_signals = iface->n_signals;
+        }
 
       if (blob->class_closure >= n_signals)
-	{
-	  g_set_error (error,
-		       GI_TYPELIB_ERROR,
-		       GI_TYPELIB_ERROR_INVALID_BLOB,
-		       "Invalid class closure index");
-	  return FALSE;
-	}
+        {
+          g_set_error (error,
+                       GI_TYPELIB_ERROR,
+                       GI_TYPELIB_ERROR_INVALID_BLOB,
+                       "Invalid class closure index");
+          return FALSE;
+        }
     }
 
   if (!validate_signature_blob (typelib, blob->signature, error))
@@ -1402,19 +1367,19 @@ validate_signal_blob (GITypelib     *typelib,
 
 static gboolean
 validate_vfunc_blob (GITypelib     *typelib,
-		     guint32        offset,
-		     guint32        container_offset,
-		     GError       **error)
+                     uint32_t       offset,
+                     uint32_t       container_offset,
+                     GError       **error)
 {
   VFuncBlob *blob;
-  gint n_vfuncs;
+  size_t n_vfuncs;
 
   if (typelib->len < offset + sizeof (VFuncBlob))
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID,
-		   "The buffer is too short");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID,
+                   "The buffer is too short");
       return FALSE;
     }
 
@@ -1426,30 +1391,30 @@ validate_vfunc_blob (GITypelib     *typelib,
   if (blob->class_closure)
     {
       if (((CommonBlob*)&typelib->data[container_offset])->blob_type == BLOB_TYPE_OBJECT)
-	{
-	  ObjectBlob *object;
+        {
+          ObjectBlob *object;
 
-	  object = (ObjectBlob*)&typelib->data[container_offset];
+          object = (ObjectBlob*)&typelib->data[container_offset];
 
-	  n_vfuncs = object->n_vfuncs;
-	}
+          n_vfuncs = object->n_vfuncs;
+        }
       else
-	{
-	  InterfaceBlob *iface;
+        {
+          InterfaceBlob *iface;
 
-	  iface = (InterfaceBlob*)&typelib->data[container_offset];
+          iface = (InterfaceBlob*)&typelib->data[container_offset];
 
-	  n_vfuncs = iface->n_vfuncs;
-	}
+          n_vfuncs = iface->n_vfuncs;
+        }
 
       if (blob->class_closure >= n_vfuncs)
-	{
-	  g_set_error (error,
-		       GI_TYPELIB_ERROR,
-		       GI_TYPELIB_ERROR_INVALID_BLOB,
-		       "Invalid class closure index");
-	  return FALSE;
-	}
+        {
+          g_set_error (error,
+                       GI_TYPELIB_ERROR,
+                       GI_TYPELIB_ERROR_INVALID_BLOB,
+                       "Invalid class closure index");
+          return FALSE;
+        }
     }
 
   if (!validate_signature_blob (typelib, blob->signature, error))
@@ -1460,21 +1425,21 @@ validate_vfunc_blob (GITypelib     *typelib,
 
 static gboolean
 validate_struct_blob (ValidateContext *ctx,
-		      guint32        offset,
-		      guint16        blob_type,
-		      GError       **error)
+                      uint32_t        offset,
+                      uint16_t         blob_type,
+                      GError         **error)
 {
   GITypelib *typelib = ctx->typelib;
   StructBlob *blob;
-  gint i;
-  guint32 field_offset;
+  size_t i;
+  uint32_t field_offset;
 
   if (typelib->len < offset + sizeof (StructBlob))
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID,
-		   "The buffer is too short");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID,
+                   "The buffer is too short");
       return FALSE;
     }
 
@@ -1483,9 +1448,9 @@ validate_struct_blob (ValidateContext *ctx,
   if (blob->blob_type != blob_type)
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID_BLOB,
-		   "Wrong blob type");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID_BLOB,
+                   "Wrong blob type");
       return FALSE;
     }
 
@@ -1497,21 +1462,21 @@ validate_struct_blob (ValidateContext *ctx,
   if (!blob->unregistered)
     {
       if (!validate_name (typelib, "boxed", typelib->data, blob->gtype_name, error))
-	return FALSE;
+        return FALSE;
 
       if (!validate_name (typelib, "boxed", typelib->data, blob->gtype_init, error))
-	return FALSE;
+        return FALSE;
     }
   else
     {
       if (blob->gtype_name || blob->gtype_init)
-	{
-	  g_set_error (error,
-		       GI_TYPELIB_ERROR,
-		       GI_TYPELIB_ERROR_INVALID_BLOB,
-		       "Gtype data in struct");
-	  return FALSE;
-	}
+        {
+          g_set_error (error,
+                       GI_TYPELIB_ERROR,
+                       GI_TYPELIB_ERROR_INVALID_BLOB,
+                       "Gtype data in struct");
+          return FALSE;
+        }
     }
 
   if (typelib->len < offset + sizeof (StructBlob) +
@@ -1519,9 +1484,9 @@ validate_struct_blob (ValidateContext *ctx,
             blob->n_methods * sizeof (FunctionBlob))
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID,
-		   "The buffer is too short");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID,
+                   "The buffer is too short");
       return FALSE;
     }
 
@@ -1531,9 +1496,9 @@ validate_struct_blob (ValidateContext *ctx,
       FieldBlob *field_blob = (FieldBlob*) &typelib->data[field_offset];
 
       if (!validate_field_blob (ctx,
-				field_offset,
-				error))
-	return FALSE;
+                                field_offset,
+                                error))
+        return FALSE;
 
       field_offset += sizeof (FieldBlob);
       if (field_blob->has_embedded_type)
@@ -1543,11 +1508,11 @@ validate_struct_blob (ValidateContext *ctx,
   for (i = 0; i < blob->n_methods; i++)
     {
       if (!validate_function_blob (ctx,
-				   field_offset +
-				   i * sizeof (FunctionBlob),
-				   blob_type,
-				   error))
-	return FALSE;
+                                   field_offset +
+                                   i * sizeof (FunctionBlob),
+                                   blob_type,
+                                   error))
+        return FALSE;
     }
 
   pop_context (ctx);
@@ -1557,21 +1522,20 @@ validate_struct_blob (ValidateContext *ctx,
 
 static gboolean
 validate_enum_blob (ValidateContext *ctx,
-		    guint32        offset,
-		    guint16        blob_type,
-		    GError       **error)
+                    uint32_t       offset,
+                    uint16_t       blob_type,
+                    GError       **error)
 {
   GITypelib *typelib = ctx->typelib;
   EnumBlob *blob;
-  gint i;
-  guint32 offset2;
+  uint32_t offset2;
 
   if (typelib->len < offset + sizeof (EnumBlob))
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID,
-		   "The buffer is too short");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID,
+                   "The buffer is too short");
       return FALSE;
     }
 
@@ -1580,30 +1544,30 @@ validate_enum_blob (ValidateContext *ctx,
   if (blob->blob_type != blob_type)
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID_BLOB,
-		   "Wrong blob type");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID_BLOB,
+                   "Wrong blob type");
       return FALSE;
     }
 
   if (!blob->unregistered)
     {
       if (!validate_name (typelib, "enum", typelib->data, blob->gtype_name, error))
-	return FALSE;
+        return FALSE;
 
       if (!validate_name (typelib, "enum", typelib->data, blob->gtype_init, error))
-	return FALSE;
+        return FALSE;
     }
   else
     {
       if (blob->gtype_name || blob->gtype_init)
-	{
-	  g_set_error (error,
-		       GI_TYPELIB_ERROR,
-		       GI_TYPELIB_ERROR_INVALID_BLOB,
-		       "Gtype data in unregistered enum");
-	  return FALSE;
-	}
+        {
+          g_set_error (error,
+                       GI_TYPELIB_ERROR,
+                       GI_TYPELIB_ERROR_INVALID_BLOB,
+                       "Gtype data in unregistered enum");
+          return FALSE;
+        }
     }
 
   if (!validate_name (typelib, "enum", typelib->data, blob->name, error))
@@ -1614,9 +1578,9 @@ validate_enum_blob (ValidateContext *ctx,
       blob->n_methods * sizeof (FunctionBlob))
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID,
-		   "The buffer is too short");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID,
+                   "The buffer is too short");
       return FALSE;
     }
 
@@ -1624,38 +1588,38 @@ validate_enum_blob (ValidateContext *ctx,
 
   push_context (ctx, get_string_nofail (typelib, blob->name));
 
-  for (i = 0; i < blob->n_values; i++, offset2 += sizeof (ValueBlob))
+  for (size_t i = 0; i < blob->n_values; i++, offset2 += sizeof (ValueBlob))
     {
       if (!validate_value_blob (typelib,
-				offset2,
-				error))
-	return FALSE;
+                                offset2,
+                                error))
+        return FALSE;
 
 #if 0
       v1 = (ValueBlob *)&typelib->data[offset2];
       for (j = 0; j < i; j++)
-	{
-	  v2 = (ValueBlob *)&typelib->data[offset2 +
+        {
+          v2 = (ValueBlob *)&typelib->data[offset2 +
                                             j * sizeof (ValueBlob)];
 
-	  if (v1->value == v2->value)
-	    {
+          if (v1->value == v2->value)
+            {
 
-	      /* FIXME should this be an error ? */
-	      g_set_error (error,
-			   GI_TYPELIB_ERROR,
-			   GI_TYPELIB_ERROR_INVALID_BLOB,
-			   "Duplicate enum value");
-	      return FALSE;
-	    }
-	}
+              /* FIXME should this be an error ? */
+              g_set_error (error,
+                           GI_TYPELIB_ERROR,
+                           GI_TYPELIB_ERROR_INVALID_BLOB,
+                           "Duplicate enum value");
+              return FALSE;
+            }
+        }
 #endif
     }
 
-  for (i = 0; i < blob->n_methods; i++, offset2 += sizeof (FunctionBlob))
+  for (size_t i = 0; i < blob->n_methods; i++, offset2 += sizeof (FunctionBlob))
     {
       if (!validate_function_blob (ctx, offset2, BLOB_TYPE_ENUM, error))
-	return FALSE;
+        return FALSE;
     }
 
   pop_context (ctx);
@@ -1665,24 +1629,24 @@ validate_enum_blob (ValidateContext *ctx,
 
 static gboolean
 validate_object_blob (ValidateContext *ctx,
-		      guint32        offset,
-		      GError       **error)
+                      uint32_t       offset,
+                      GError       **error)
 {
   GITypelib *typelib = ctx->typelib;
   Header *header;
   ObjectBlob *blob;
-  gint i;
-  guint32 offset2;
-  guint16 n_field_callbacks;
+  size_t i;
+  uint32_t offset2;
+  uint16_t n_field_callbacks;
 
   header = (Header *)typelib->data;
 
   if (typelib->len < offset + sizeof (ObjectBlob))
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID,
-		   "The buffer is too short");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID,
+                   "The buffer is too short");
       return FALSE;
     }
 
@@ -1691,9 +1655,9 @@ validate_object_blob (ValidateContext *ctx,
   if (blob->blob_type != BLOB_TYPE_OBJECT)
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID_BLOB,
-		   "Wrong blob type");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID_BLOB,
+                   "Wrong blob type");
       return FALSE;
     }
 
@@ -1709,9 +1673,9 @@ validate_object_blob (ValidateContext *ctx,
   if (blob->parent > header->n_entries)
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID_BLOB,
-		   "Invalid parent index");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID_BLOB,
+                   "Invalid parent index");
       return FALSE;
     }
 
@@ -1723,14 +1687,14 @@ validate_object_blob (ValidateContext *ctx,
       if (!entry)
         return FALSE;
       if (entry->blob_type != BLOB_TYPE_OBJECT &&
-	  (entry->local || entry->blob_type != 0))
-	{
-	  g_set_error (error,
-		       GI_TYPELIB_ERROR,
-		       GI_TYPELIB_ERROR_INVALID_BLOB,
-		       "Parent not object");
-	  return FALSE;
-	}
+          (entry->local || entry->blob_type != 0))
+        {
+          g_set_error (error,
+                       GI_TYPELIB_ERROR,
+                       GI_TYPELIB_ERROR_INVALID_BLOB,
+                       "Parent not object");
+          return FALSE;
+        }
     }
 
   if (blob->gtype_struct != 0)
@@ -1761,9 +1725,9 @@ validate_object_blob (ValidateContext *ctx,
 
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID,
-		   "The buffer is too short");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID,
+                   "The buffer is too short");
       return FALSE;
     }
 
@@ -1771,32 +1735,32 @@ validate_object_blob (ValidateContext *ctx,
 
   for (i = 0; i < blob->n_interfaces; i++, offset2 += 2)
     {
-      guint16 iface;
+      uint16_t iface;
       DirEntry *entry;
 
-      iface = *(guint16*)&typelib->data[offset2];
+      iface = *(uint16_t *)&typelib->data[offset2];
       if (iface == 0 || iface > header->n_entries)
-	{
-	  g_set_error (error,
-		       GI_TYPELIB_ERROR,
-		       GI_TYPELIB_ERROR_INVALID_BLOB,
-		       "Invalid interface index");
-	  return FALSE;
-	}
+        {
+          g_set_error (error,
+                       GI_TYPELIB_ERROR,
+                       GI_TYPELIB_ERROR_INVALID_BLOB,
+                       "Invalid interface index");
+          return FALSE;
+        }
 
       entry = get_dir_entry_checked (typelib, iface, error);
       if (!entry)
         return FALSE;
 
       if (entry->blob_type != BLOB_TYPE_INTERFACE &&
-	  (entry->local || entry->blob_type != 0))
-	{
-	  g_set_error (error,
-		       GI_TYPELIB_ERROR,
-		       GI_TYPELIB_ERROR_INVALID_BLOB,
-		       "Not an interface");
-	  return FALSE;
-	}
+          (entry->local || entry->blob_type != 0))
+        {
+          g_set_error (error,
+                       GI_TYPELIB_ERROR,
+                       GI_TYPELIB_ERROR_INVALID_BLOB,
+                       "Not an interface");
+          return FALSE;
+        }
     }
 
   offset2 += 2 * (blob->n_interfaces %2);
@@ -1809,7 +1773,7 @@ validate_object_blob (ValidateContext *ctx,
       FieldBlob *field_blob = (FieldBlob*) &typelib->data[offset2];
 
       if (!validate_field_blob (ctx, offset2, error))
-	return FALSE;
+        return FALSE;
 
       offset2 += sizeof (FieldBlob);
       /* Special case fields which are callbacks. */
@@ -1833,31 +1797,31 @@ validate_object_blob (ValidateContext *ctx,
   for (i = 0; i < blob->n_properties; i++, offset2 += sizeof (PropertyBlob))
     {
       if (!validate_property_blob (typelib, offset2, error))
-	return FALSE;
+        return FALSE;
     }
 
   for (i = 0; i < blob->n_methods; i++, offset2 += sizeof (FunctionBlob))
     {
       if (!validate_function_blob (ctx, offset2, BLOB_TYPE_OBJECT, error))
-	return FALSE;
+        return FALSE;
     }
 
   for (i = 0; i < blob->n_signals; i++, offset2 += sizeof (SignalBlob))
     {
       if (!validate_signal_blob (typelib, offset2, offset, error))
-	return FALSE;
+        return FALSE;
     }
 
   for (i = 0; i < blob->n_vfuncs; i++, offset2 += sizeof (VFuncBlob))
     {
       if (!validate_vfunc_blob (typelib, offset2, offset, error))
-	return FALSE;
+        return FALSE;
     }
 
   for (i = 0; i < blob->n_constants; i++, offset2 += sizeof (ConstantBlob))
     {
       if (!validate_constant_blob (typelib, offset2, error))
-	return FALSE;
+        return FALSE;
     }
 
   pop_context (ctx);
@@ -1867,23 +1831,23 @@ validate_object_blob (ValidateContext *ctx,
 
 static gboolean
 validate_interface_blob (ValidateContext *ctx,
-			 guint32        offset,
-			 GError       **error)
+                         uint32_t       offset,
+                         GError       **error)
 {
   GITypelib *typelib = ctx->typelib;
   Header *header;
   InterfaceBlob *blob;
-  gint i;
-  guint32 offset2;
+  size_t i;
+  uint32_t offset2;
 
   header = (Header *)typelib->data;
 
   if (typelib->len < offset + sizeof (InterfaceBlob))
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID,
-		   "The buffer is too short");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID,
+                   "The buffer is too short");
       return FALSE;
     }
 
@@ -1892,9 +1856,9 @@ validate_interface_blob (ValidateContext *ctx,
   if (blob->blob_type != BLOB_TYPE_INTERFACE)
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID_BLOB,
-		   "Wrong blob type; expected interface, got %d", blob->blob_type);
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID_BLOB,
+                   "Wrong blob type; expected interface, got %d", blob->blob_type);
       return FALSE;
     }
 
@@ -1917,9 +1881,9 @@ validate_interface_blob (ValidateContext *ctx,
 
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID,
-		   "The buffer is too short");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID,
+                   "The buffer is too short");
       return FALSE;
     }
 
@@ -1928,29 +1892,29 @@ validate_interface_blob (ValidateContext *ctx,
   for (i = 0; i < blob->n_prerequisites; i++, offset2 += 2)
     {
       DirEntry *entry;
-      guint16 req;
+      uint16_t req;
 
-      req = *(guint16*)&typelib->data[offset2];
+      req = *(uint16_t *)&typelib->data[offset2];
       if (req == 0 || req > header->n_entries)
-	{
-	  g_set_error (error,
-		       GI_TYPELIB_ERROR,
-		       GI_TYPELIB_ERROR_INVALID_BLOB,
-		       "Invalid prerequisite index");
-	  return FALSE;
-	}
+        {
+          g_set_error (error,
+                       GI_TYPELIB_ERROR,
+                       GI_TYPELIB_ERROR_INVALID_BLOB,
+                       "Invalid prerequisite index");
+          return FALSE;
+        }
 
       entry = gi_typelib_get_dir_entry (typelib, req);
       if (entry->blob_type != BLOB_TYPE_INTERFACE &&
-	  entry->blob_type != BLOB_TYPE_OBJECT &&
-	  (entry->local || entry->blob_type != 0))
-	{
-	  g_set_error (error,
-		       GI_TYPELIB_ERROR,
-		       GI_TYPELIB_ERROR_INVALID_BLOB,
-		       "Not an interface or object");
-	  return FALSE;
-	}
+          entry->blob_type != BLOB_TYPE_OBJECT &&
+          (entry->local || entry->blob_type != 0))
+        {
+          g_set_error (error,
+                       GI_TYPELIB_ERROR,
+                       GI_TYPELIB_ERROR_INVALID_BLOB,
+                       "Not an interface or object");
+          return FALSE;
+        }
     }
 
   offset2 += 2 * (blob->n_prerequisites % 2);
@@ -1960,31 +1924,31 @@ validate_interface_blob (ValidateContext *ctx,
   for (i = 0; i < blob->n_properties; i++, offset2 += sizeof (PropertyBlob))
     {
       if (!validate_property_blob (typelib, offset2, error))
-	return FALSE;
+        return FALSE;
     }
 
   for (i = 0; i < blob->n_methods; i++, offset2 += sizeof (FunctionBlob))
     {
       if (!validate_function_blob (ctx, offset2, BLOB_TYPE_INTERFACE, error))
-	return FALSE;
+        return FALSE;
     }
 
   for (i = 0; i < blob->n_signals; i++, offset2 += sizeof (SignalBlob))
     {
       if (!validate_signal_blob (typelib, offset2, offset, error))
-	return FALSE;
+        return FALSE;
     }
 
   for (i = 0; i < blob->n_vfuncs; i++, offset2 += sizeof (VFuncBlob))
     {
       if (!validate_vfunc_blob (typelib, offset2, offset, error))
-	return FALSE;
+        return FALSE;
     }
 
   for (i = 0; i < blob->n_constants; i++, offset2 += sizeof (ConstantBlob))
     {
       if (!validate_constant_blob (typelib, offset2, error))
-	return FALSE;
+        return FALSE;
     }
 
   pop_context (ctx);
@@ -1994,16 +1958,16 @@ validate_interface_blob (ValidateContext *ctx,
 
 static gboolean
 validate_union_blob (GITypelib     *typelib,
-		     guint32        offset,
-		     GError       **error)
+                     uint32_t       offset,
+                     GError       **error)
 {
   return TRUE;
 }
 
 static gboolean
 validate_blob (ValidateContext *ctx,
-	       guint32          offset,
-	       GError         **error)
+               uint32_t         offset,
+               GError         **error)
 {
   GITypelib *typelib = ctx->typelib;
   CommonBlob *common;
@@ -2011,9 +1975,9 @@ validate_blob (ValidateContext *ctx,
   if (typelib->len < offset + sizeof (CommonBlob))
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID,
-		   "The buffer is too short");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID,
+                   "The buffer is too short");
       return FALSE;
     }
 
@@ -2023,43 +1987,43 @@ validate_blob (ValidateContext *ctx,
     {
     case BLOB_TYPE_FUNCTION:
       if (!validate_function_blob (ctx, offset, 0, error))
-	return FALSE;
+        return FALSE;
       break;
     case BLOB_TYPE_CALLBACK:
       if (!validate_callback_blob (ctx, offset, error))
-	return FALSE;
+        return FALSE;
       break;
     case BLOB_TYPE_STRUCT:
     case BLOB_TYPE_BOXED:
       if (!validate_struct_blob (ctx, offset, common->blob_type, error))
-	return FALSE;
+        return FALSE;
       break;
     case BLOB_TYPE_ENUM:
     case BLOB_TYPE_FLAGS:
       if (!validate_enum_blob (ctx, offset, common->blob_type, error))
-	return FALSE;
+        return FALSE;
       break;
     case BLOB_TYPE_OBJECT:
       if (!validate_object_blob (ctx, offset, error))
-	return FALSE;
+        return FALSE;
       break;
     case BLOB_TYPE_INTERFACE:
       if (!validate_interface_blob (ctx, offset, error))
-	return FALSE;
+        return FALSE;
       break;
     case BLOB_TYPE_CONSTANT:
       if (!validate_constant_blob (typelib, offset, error))
-	return FALSE;
+        return FALSE;
       break;
     case BLOB_TYPE_UNION:
       if (!validate_union_blob (typelib, offset, error))
-	return FALSE;
+        return FALSE;
       break;
     default:
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID_ENTRY,
-		   "Invalid blob type");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID_ENTRY,
+                   "Invalid blob type");
       return FALSE;
     }
 
@@ -2068,19 +2032,19 @@ validate_blob (ValidateContext *ctx,
 
 static gboolean
 validate_directory (ValidateContext   *ctx,
-		    GError            **error)
+                    GError            **error)
 {
   GITypelib *typelib = ctx->typelib;
   Header *header = (Header *)typelib->data;
   DirEntry *entry;
-  gint i;
+  size_t i;
 
   if (typelib->len < header->directory + header->n_entries * sizeof (DirEntry))
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID,
-		   "The buffer is too short");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID,
+                   "The buffer is too short");
       return FALSE;
     }
 
@@ -2089,55 +2053,55 @@ validate_directory (ValidateContext   *ctx,
       entry = gi_typelib_get_dir_entry (typelib, i + 1);
 
       if (!validate_name (typelib, "entry", typelib->data, entry->name, error))
-	return FALSE;
+        return FALSE;
 
       if ((entry->local && entry->blob_type == BLOB_TYPE_INVALID) ||
-	  entry->blob_type > BLOB_TYPE_UNION)
-	{
-	  g_set_error (error,
-		       GI_TYPELIB_ERROR,
-		       GI_TYPELIB_ERROR_INVALID_DIRECTORY,
-		       "Invalid entry type");
-	  return FALSE;
-	}
+          entry->blob_type > BLOB_TYPE_UNION)
+        {
+          g_set_error (error,
+                       GI_TYPELIB_ERROR,
+                       GI_TYPELIB_ERROR_INVALID_DIRECTORY,
+                       "Invalid entry type");
+          return FALSE;
+        }
 
       if (i < header->n_local_entries)
-	{
-	  if (!entry->local)
-	    {
-	      g_set_error (error,
-			   GI_TYPELIB_ERROR,
-			   GI_TYPELIB_ERROR_INVALID_DIRECTORY,
-			   "Too few local directory entries");
-	      return FALSE;
-	    }
+        {
+          if (!entry->local)
+            {
+              g_set_error (error,
+                           GI_TYPELIB_ERROR,
+                           GI_TYPELIB_ERROR_INVALID_DIRECTORY,
+                           "Too few local directory entries");
+              return FALSE;
+            }
 
-	  if (!is_aligned (entry->offset))
-	    {
-	      g_set_error (error,
-			   GI_TYPELIB_ERROR,
-			   GI_TYPELIB_ERROR_INVALID_DIRECTORY,
-			   "Misaligned entry");
-	      return FALSE;
-	    }
+          if (!is_aligned (entry->offset))
+            {
+              g_set_error (error,
+                           GI_TYPELIB_ERROR,
+                           GI_TYPELIB_ERROR_INVALID_DIRECTORY,
+                           "Misaligned entry");
+              return FALSE;
+            }
 
-	  if (!validate_blob (ctx, entry->offset, error))
-	    return FALSE;
-	}
+          if (!validate_blob (ctx, entry->offset, error))
+            return FALSE;
+        }
       else
-	{
-	  if (entry->local)
-	    {
-	      g_set_error (error,
-			   GI_TYPELIB_ERROR,
-			   GI_TYPELIB_ERROR_INVALID_DIRECTORY,
-			   "Too many local directory entries");
-	      return FALSE;
-	    }
+        {
+          if (entry->local)
+            {
+              g_set_error (error,
+                           GI_TYPELIB_ERROR,
+                           GI_TYPELIB_ERROR_INVALID_DIRECTORY,
+                           "Too many local directory entries");
+              return FALSE;
+            }
 
-	  if (!validate_name (typelib, "namespace", typelib->data, entry->offset, error))
-	    return FALSE;
-	}
+          if (!validate_name (typelib, "namespace", typelib->data, entry->offset, error))
+            return FALSE;
+        }
     }
 
   return TRUE;
@@ -2145,7 +2109,7 @@ validate_directory (ValidateContext   *ctx,
 
 static gboolean
 validate_attributes (ValidateContext *ctx,
-		     GError       **error)
+                     GError       **error)
 {
   GITypelib *typelib = ctx->typelib;
   Header *header = (Header *)typelib->data;
@@ -2153,9 +2117,9 @@ validate_attributes (ValidateContext *ctx,
   if (header->size < header->attributes + header->n_attributes * sizeof (AttributeBlob))
     {
       g_set_error (error,
-		   GI_TYPELIB_ERROR,
-		   GI_TYPELIB_ERROR_INVALID,
-		   "The buffer is too short");
+                   GI_TYPELIB_ERROR,
+                   GI_TYPELIB_ERROR_INVALID,
+                   "The buffer is too short");
       return FALSE;
     }
 
@@ -2164,8 +2128,8 @@ validate_attributes (ValidateContext *ctx,
 
 static void
 prefix_with_context (GError **error,
-		     const char *section,
-		     ValidateContext *ctx)
+                     const char *section,
+                     ValidateContext *ctx)
 {
   GString *str;
   GSList *link;
@@ -2184,7 +2148,7 @@ prefix_with_context (GError **error,
     {
       g_string_append (str, link->data);
       if (link->next)
-	g_string_append_c (str, '/');
+        g_string_append_c (str, '/');
     }
   g_string_append_c (str, ')');
   buf = g_string_free (str, FALSE);
@@ -2342,8 +2306,7 @@ gi_typelib_do_dlopen (GITypelib *typelib)
 
   if (shlib_str != NULL && shlib_str[0] != '\0')
     {
-      gchar **shlibs;
-      gint i;
+      char **shlibs;
 
       /* shared-library is a comma-separated list of libraries */
       shlibs = g_strsplit (shlib_str, ",", 0);
@@ -2352,7 +2315,7 @@ gi_typelib_do_dlopen (GITypelib *typelib)
         * again with g_module_open(), the same file handle will be returned. See bug:
         * http://bugzilla.gnome.org/show_bug.cgi?id=555294
         */
-      for (i = 0; shlibs[i]; i++)
+      for (size_t i = 0; shlibs[i]; i++)
         {
           GModule *module;
 
@@ -2410,8 +2373,8 @@ gi_typelib_ensure_open (GITypelib *typelib)
  * Since: 2.80
  */
 GITypelib *
-gi_typelib_new_from_memory (guint8  *memory,
-                            gsize    len,
+gi_typelib_new_from_memory (uint8_t *memory,
+                            size_t   len,
                             GError **error)
 {
   GITypelib *meta;
@@ -2440,9 +2403,9 @@ gi_typelib_new_from_memory (guint8  *memory,
  * Since: 2.80
  */
 GITypelib *
-gi_typelib_new_from_const_memory (const guchar  *memory,
-                                  gsize          len,
-                                  GError       **error)
+gi_typelib_new_from_const_memory (const uint8_t  *memory,
+                                  size_t          len,
+                                  GError        **error)
 {
   GITypelib *meta;
 
@@ -2450,7 +2413,7 @@ gi_typelib_new_from_const_memory (const guchar  *memory,
     return NULL;
 
   meta = g_slice_new0 (GITypelib);
-  meta->data = (guchar *) memory;
+  meta->data = (uint8_t *) memory;
   meta->len = len;
   meta->owns_memory = FALSE;
   meta->modules = NULL;
@@ -2474,8 +2437,8 @@ gi_typelib_new_from_mapped_file (GMappedFile  *mfile,
                                  GError      **error)
 {
   GITypelib *meta;
-  guint8 *data = (guint8 *) g_mapped_file_get_contents (mfile);
-  gsize len = g_mapped_file_get_length (mfile);
+  uint8_t *data = (uint8_t *) g_mapped_file_get_contents (mfile);
+  size_t len = g_mapped_file_get_length (mfile);
 
   if (!validate_header_basic (data, len, error))
     return NULL;
@@ -2522,7 +2485,7 @@ gi_typelib_free (GITypelib *typelib)
  * Returns: name of the namespace represented by @typelib
  * Since: 2.80
  */
-const gchar *
+const char *
 gi_typelib_get_namespace (GITypelib *typelib)
 {
   return gi_typelib_get_string (typelib, ((Header *) typelib->data)->namespace);
@@ -2541,7 +2504,7 @@ gi_typelib_get_namespace (GITypelib *typelib)
  * Since: 2.80
  */
 gboolean
-gi_typelib_symbol (GITypelib *typelib, const char *symbol_name, gpointer *symbol)
+gi_typelib_symbol (GITypelib *typelib, const char *symbol_name, void **symbol)
 {
   GList *l;
 

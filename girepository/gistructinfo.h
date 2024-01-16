@@ -45,32 +45,32 @@ G_BEGIN_DECLS
 
 
 GI_AVAILABLE_IN_ALL
-guint            gi_struct_info_get_n_fields    (GIStructInfo *info);
+unsigned int     gi_struct_info_get_n_fields    (GIStructInfo *info);
 
 GI_AVAILABLE_IN_ALL
 GIFieldInfo *    gi_struct_info_get_field       (GIStructInfo *info,
-                                                 guint         n);
+                                                 unsigned int  n);
 
 GI_AVAILABLE_IN_ALL
 GIFieldInfo *    gi_struct_info_find_field      (GIStructInfo *info,
-                                                 const gchar  *name);
+                                                 const char   *name);
 
 GI_AVAILABLE_IN_ALL
-guint            gi_struct_info_get_n_methods   (GIStructInfo *info);
+unsigned int     gi_struct_info_get_n_methods   (GIStructInfo *info);
 
 GI_AVAILABLE_IN_ALL
 GIFunctionInfo * gi_struct_info_get_method      (GIStructInfo *info,
-                                                 guint         n);
+                                                 unsigned int  n);
 
 GI_AVAILABLE_IN_ALL
 GIFunctionInfo * gi_struct_info_find_method     (GIStructInfo *info,
-                                                 const gchar  *name);
+                                                 const char   *name);
 
 GI_AVAILABLE_IN_ALL
-gsize            gi_struct_info_get_size        (GIStructInfo *info);
+size_t           gi_struct_info_get_size        (GIStructInfo *info);
 
 GI_AVAILABLE_IN_ALL
-gsize            gi_struct_info_get_alignment   (GIStructInfo *info);
+size_t           gi_struct_info_get_alignment   (GIStructInfo *info);
 
 GI_AVAILABLE_IN_ALL
 gboolean         gi_struct_info_is_gtype_struct (GIStructInfo *info);

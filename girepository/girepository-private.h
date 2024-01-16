@@ -36,11 +36,6 @@
  * be removed. */
 typedef struct _GIBaseInfo GIRealInfo;
 
-/* We changed a gint32 -> gint in the structure below, which should be
- * valid everywhere we care about.
- */
-G_STATIC_ASSERT (sizeof (int) == sizeof (gint32));
-
 /*
  * We just use one structure for all of the info object
  * types; in general, we should be reading data directly
@@ -57,9 +52,9 @@ struct _GIBaseInfo
   GIBaseInfo *container;
 
   GITypelib *typelib;
-  guint32 offset;
+  uint32_t offset;
 
-  guint32 type_is_embedded : 1; /* Used by GITypeInfo */
+  uint32_t type_is_embedded : 1; /* Used by GITypeInfo */
 };
 
 /* Subtypes */
@@ -203,8 +198,8 @@ struct _GIUnresolvedInfo
 {
   GIBaseInfo parent;
 
-  const gchar *name;
-  const gchar *namespace;
+  const char *name;
+  const char *namespace;
 };
 
 void gi_unresolved_info_class_init (gpointer g_class,
@@ -215,33 +210,33 @@ void         gi_info_init       (GIRealInfo   *info,
                                  GIRepository *repository,
                                  GIBaseInfo   *container,
                                  GITypelib    *typelib,
-                                 guint32       offset);
+                                 uint32_t      offset);
 
 GIBaseInfo * gi_info_from_entry (GIRepository *repository,
                                  GITypelib    *typelib,
-                                 guint16       index);
+                                 uint16_t      index);
 
 GIBaseInfo * gi_info_new_full   (GIInfoType    type,
                                  GIRepository *repository,
                                  GIBaseInfo   *container,
                                  GITypelib    *typelib,
-                                 guint32       offset);
+                                 uint32_t      offset);
 
 GITypeInfo * gi_type_info_new   (GIBaseInfo *container,
                                  GITypelib  *typelib,
-                                 guint32     offset);
+                                 uint32_t    offset);
 
 void         gi_type_info_init  (GIBaseInfo *info,
                                  GIBaseInfo *container,
                                  GITypelib  *typelib,
-                                 guint32     offset);
+                                 uint32_t    offset);
 
 GIFunctionInfo * gi_base_info_find_method (GIBaseInfo  *base,
-                                           guint32      offset,
-                                           guint        n_methods,
-                                           const gchar *name);
+                                           uint32_t     offset,
+                                           uint16_t     n_methods,
+                                           const char  *name);
 
 GIVFuncInfo * gi_base_info_find_vfunc (GIRealInfo  *rinfo,
-                                       guint32      offset,
-                                       guint        n_vfuncs,
-                                       const gchar *name);
+                                       uint32_t     offset,
+                                       uint16_t     n_vfuncs,
+                                       const char  *name);

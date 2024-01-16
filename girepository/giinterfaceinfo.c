@@ -55,7 +55,7 @@
  * Returns: number of prerequisites
  * Since: 2.80
  */
-guint
+unsigned int
 gi_interface_info_get_n_prerequisites (GIInterfaceInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -82,13 +82,14 @@ gi_interface_info_get_n_prerequisites (GIInterfaceInfo *info)
  */
 GIBaseInfo *
 gi_interface_info_get_prerequisite (GIInterfaceInfo *info,
-                                    guint            n)
+                                    unsigned int     n)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   InterfaceBlob *blob;
 
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_INTERFACE_INFO (info), NULL);
+  g_return_val_if_fail (n <= G_MAXUINT16, NULL);
 
   blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
 
@@ -106,7 +107,7 @@ gi_interface_info_get_prerequisite (GIInterfaceInfo *info,
  * Returns: number of properties
  * Since: 2.80
  */
-guint
+unsigned int
 gi_interface_info_get_n_properties (GIInterfaceInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -133,15 +134,16 @@ gi_interface_info_get_n_properties (GIInterfaceInfo *info)
  */
 GIPropertyInfo *
 gi_interface_info_get_property (GIInterfaceInfo *info,
-                                guint            n)
+                                unsigned int     n)
 {
-  gint offset;
+  size_t offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header;
   InterfaceBlob *blob;
 
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_INTERFACE_INFO (info), NULL);
+  g_return_val_if_fail (n <= G_MAXUINT16, NULL);
 
   header = (Header *)rinfo->typelib->data;
   blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
@@ -163,7 +165,7 @@ gi_interface_info_get_property (GIInterfaceInfo *info,
  * Returns: number of methods
  * Since: 2.80
  */
-guint
+unsigned int
 gi_interface_info_get_n_methods (GIInterfaceInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -190,15 +192,16 @@ gi_interface_info_get_n_methods (GIInterfaceInfo *info)
  */
 GIFunctionInfo *
 gi_interface_info_get_method (GIInterfaceInfo *info,
-                              guint            n)
+                              unsigned int     n)
 {
-  gint offset;
+  size_t offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header;
   InterfaceBlob *blob;
 
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_INTERFACE_INFO (info), NULL);
+  g_return_val_if_fail (n <= G_MAXUINT16, NULL);
 
   header = (Header *)rinfo->typelib->data;
   blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
@@ -228,9 +231,9 @@ gi_interface_info_get_method (GIInterfaceInfo *info,
  */
 GIFunctionInfo *
 gi_interface_info_find_method (GIInterfaceInfo *info,
-                               const gchar     *name)
+                               const char      *name)
 {
-  gint offset;
+  size_t offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header = (Header *)rinfo->typelib->data;
   InterfaceBlob *blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
@@ -251,7 +254,7 @@ gi_interface_info_find_method (GIInterfaceInfo *info,
  * Returns: number of signals
  * Since: 2.80
  */
-guint
+unsigned int
 gi_interface_info_get_n_signals (GIInterfaceInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -278,15 +281,16 @@ gi_interface_info_get_n_signals (GIInterfaceInfo *info)
  */
 GISignalInfo *
 gi_interface_info_get_signal (GIInterfaceInfo *info,
-                              guint            n)
+                              unsigned int     n)
 {
-  gint offset;
+  size_t offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header;
   InterfaceBlob *blob;
 
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_INTERFACE_INFO (info), NULL);
+  g_return_val_if_fail (n <= G_MAXUINT16, NULL);
 
   header = (Header *)rinfo->typelib->data;
   blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
@@ -317,12 +321,12 @@ gi_interface_info_get_signal (GIInterfaceInfo *info,
  */
 GISignalInfo *
 gi_interface_info_find_signal (GIInterfaceInfo *info,
-                               const gchar  *name)
+                               const char      *name)
 {
-  guint n_signals;
+  uint32_t n_signals;
 
   n_signals = gi_interface_info_get_n_signals (info);
-  for (guint i = 0; i < n_signals; i++)
+  for (uint32_t i = 0; i < n_signals; i++)
     {
       GISignalInfo *siginfo = gi_interface_info_get_signal (info, i);
 
@@ -346,7 +350,7 @@ gi_interface_info_find_signal (GIInterfaceInfo *info,
  * Returns: number of virtual functions
  * Since: 2.80
  */
-guint
+unsigned int
 gi_interface_info_get_n_vfuncs (GIInterfaceInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -373,15 +377,16 @@ gi_interface_info_get_n_vfuncs (GIInterfaceInfo *info)
  */
 GIVFuncInfo *
 gi_interface_info_get_vfunc (GIInterfaceInfo *info,
-                             guint            n)
+                             unsigned int     n)
 {
-  gint offset;
+  size_t offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header;
   InterfaceBlob *blob;
 
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_INTERFACE_INFO (info), NULL);
+  g_return_val_if_fail (n <= G_MAXUINT16, NULL);
 
   header = (Header *)rinfo->typelib->data;
   blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
@@ -414,9 +419,9 @@ gi_interface_info_get_vfunc (GIInterfaceInfo *info,
  */
 GIVFuncInfo *
 gi_interface_info_find_vfunc (GIInterfaceInfo *info,
-                              const gchar  *name)
+                              const char      *name)
 {
-  gint offset;
+  size_t offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header;
   InterfaceBlob *blob;
@@ -445,7 +450,7 @@ gi_interface_info_find_vfunc (GIInterfaceInfo *info,
  * Returns: number of constants
  * Since: 2.80
  */
-guint
+unsigned int
 gi_interface_info_get_n_constants (GIInterfaceInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -472,15 +477,16 @@ gi_interface_info_get_n_constants (GIInterfaceInfo *info)
  */
 GIConstantInfo *
 gi_interface_info_get_constant (GIInterfaceInfo *info,
-                                guint            n)
+                                unsigned int     n)
 {
-  gint offset;
+  size_t offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header;
   InterfaceBlob *blob;
 
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_INTERFACE_INFO (info), NULL);
+  g_return_val_if_fail (n <= G_MAXUINT16, NULL);
 
   header = (Header *)rinfo->typelib->data;
   blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];

@@ -48,7 +48,7 @@
  * INT32 mph_size
  * MPH (mph_size bytes)
  * (padding for alignment to uint32 if necessary)
- * INDEX (array of guint16)
+ * INDEX (array of uint16_t)
  *
  * Because BDZ is not order preserving, we need a lookaside table which
  * maps the hash value into the directory index.
@@ -59,8 +59,8 @@ struct _GITypelibHashBuilder {
   gboolean buildable;
   cmph_t *c;
   GHashTable *strings;
-  guint32 dirmap_offset;
-  guint32 packed_size;
+  uint32_t dirmap_offset;
+  uint32_t packed_size;
 };
 
 GITypelibHashBuilder *
@@ -75,10 +75,10 @@ gi_typelib_hash_builder_new (void)
 void
 gi_typelib_hash_builder_add_string (GITypelibHashBuilder *builder,
                                     const char           *str,
-                                    guint16               value)
+                                    uint16_t              value)
 {
   g_return_if_fail (builder->c == NULL);
-  g_hash_table_insert (builder->strings, g_strdup (str), GUINT_TO_POINTER ((guint) value));
+  g_hash_table_insert (builder->strings, g_strdup (str), GUINT_TO_POINTER (value));
 }
 
 gboolean
@@ -86,12 +86,12 @@ gi_typelib_hash_builder_prepare (GITypelibHashBuilder *builder)
 {
   char **strs;
   GHashTableIter hashiter;
-  gpointer key, value;
+  void *key, *value;
   cmph_io_adapter_t *io;
   cmph_config_t *config;
-  guint32 num_elts;
-  guint32 offset;
-  guint i;
+  uint32_t num_elts;
+  uint32_t offset;
+  unsigned i;
 
   if (builder->prepared)
     return builder->buildable;
@@ -127,9 +127,9 @@ gi_typelib_hash_builder_prepare (GITypelibHashBuilder *builder)
   g_assert (cmph_size (builder->c) == num_elts);
 
   /* Pack a size counter at front */
-  offset = sizeof(guint32) + cmph_packed_size (builder->c);
+  offset = sizeof (uint32_t) + cmph_packed_size (builder->c);
   builder->dirmap_offset = ALIGN_VALUE (offset, 4);
-  builder->packed_size = builder->dirmap_offset + (num_elts * sizeof(guint16));
+  builder->packed_size = builder->dirmap_offset + (num_elts * sizeof (uint16_t));
  out:
   g_strfreev (strs);
   cmph_config_destroy (config);
@@ -137,7 +137,7 @@ gi_typelib_hash_builder_prepare (GITypelibHashBuilder *builder)
   return builder->buildable;
 }
 
-guint32
+uint32_t
 gi_typelib_hash_builder_get_buffer_size (GITypelibHashBuilder *builder)
 {
   g_return_val_if_fail (builder != NULL, 0);
@@ -148,15 +148,15 @@ gi_typelib_hash_builder_get_buffer_size (GITypelibHashBuilder *builder)
 }
 
 void
-gi_typelib_hash_builder_pack (GITypelibHashBuilder *builder, guint8* mem, guint32 len)
+gi_typelib_hash_builder_pack (GITypelibHashBuilder *builder, uint8_t* mem, uint32_t len)
 {
-  guint16 *table;
+  uint16_t *table;
   GHashTableIter hashiter;
-  gpointer key, value;
+  void *key, *value;
 #ifndef G_DISABLE_ASSERT
-  guint32 num_elts;
+  uint32_t num_elts;
 #endif
-  guint8 *packed_mem;
+  uint8_t *packed_mem;
 
   g_return_if_fail (builder != NULL);
   g_return_if_fail (builder->prepared);
@@ -167,11 +167,11 @@ gi_typelib_hash_builder_pack (GITypelibHashBuilder *builder, guint8* mem, guint3
 
   memset (mem, 0, len);
 
-  *((guint32*) mem) = builder->dirmap_offset;
-  packed_mem = (guint8*)(mem + sizeof(guint32));
+  *((uint32_t*) mem) = builder->dirmap_offset;
+  packed_mem = (uint8_t*)(mem + sizeof (uint32_t));
   cmph_pack (builder->c, packed_mem);
 
-  table = (guint16*) (mem + builder->dirmap_offset);
+  table = (uint16_t*) (mem + builder->dirmap_offset);
 
 #ifndef G_DISABLE_ASSERT
   num_elts = g_hash_table_size (builder->strings);
@@ -180,8 +180,8 @@ gi_typelib_hash_builder_pack (GITypelibHashBuilder *builder, guint8* mem, guint3
   while (g_hash_table_iter_next (&hashiter, &key, &value))
     {
       const char *str = key;
-      guint16 strval = (guint16)GPOINTER_TO_UINT(value);
-      guint32 hashv;
+      uint16_t strval = (uint16_t)GPOINTER_TO_UINT(value);
+      uint32_t hashv;
 
       hashv = cmph_search_packed (packed_mem, str, strlen (str));
       g_assert (hashv < num_elts);
@@ -201,16 +201,16 @@ gi_typelib_hash_builder_destroy (GITypelibHashBuilder *builder)
   g_slice_free (GITypelibHashBuilder, builder);
 }
 
-guint16
-gi_typelib_hash_search (guint8* memory, const char *str, guint n_entries)
+uint16_t
+gi_typelib_hash_search (uint8_t* memory, const char *str, uint32_t n_entries)
 {
-  guint32 *mph;
-  guint16 *table;
-  guint32 dirmap_offset;
-  guint32 offset;
+  uint32_t *mph;
+  uint16_t *table;
+  uint32_t dirmap_offset;
+  uint32_t offset;
 
   g_assert ((((size_t)memory) & 0x3) == 0);
-  mph = ((guint32*)memory)+1;
+  mph = ((uint32_t*)memory)+1;
 
   offset = cmph_search_packed (mph, str, strlen (str));
 
@@ -222,8 +222,8 @@ gi_typelib_hash_search (guint8* memory, const char *str, guint n_entries)
   if (offset >= n_entries)
     offset = 0;
 
-  dirmap_offset = *((guint32*)memory);
-  table = (guint16*) (memory + dirmap_offset);
+  dirmap_offset = *((uint32_t*)memory);
+  table = (uint16_t*) (memory + dirmap_offset);
 
   return table[offset];
 }

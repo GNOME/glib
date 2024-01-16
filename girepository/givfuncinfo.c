@@ -47,21 +47,21 @@
 
 GIVFuncInfo *
 gi_base_info_find_vfunc (GIRealInfo  *rinfo,
-                         guint32      offset,
-                         guint        n_vfuncs,
-                         const gchar *name)
+                         uint32_t     offset,
+                         uint16_t     n_vfuncs,
+                         const char  *name)
 {
   /* FIXME hash */
   Header *header = (Header *)rinfo->typelib->data;
 
-  for (guint i = 0; i < n_vfuncs; i++)
+  for (uint16_t i = 0; i < n_vfuncs; i++)
     {
       VFuncBlob *fblob = (VFuncBlob *)&rinfo->typelib->data[offset];
-      const gchar *fname = (const gchar *)&rinfo->typelib->data[fblob->name];
+      const char *fname = (const char *)&rinfo->typelib->data[fblob->name];
 
       if (strcmp (name, fname) == 0)
         return (GIVFuncInfo *) gi_info_new (GI_INFO_TYPE_VFUNC, (GIBaseInfo*) rinfo,
-                                           rinfo->typelib, offset);
+                                            rinfo->typelib, offset);
 
       offset += header->vfunc_blob_size;
     }
@@ -121,7 +121,7 @@ gi_vfunc_info_get_flags (GIVFuncInfo *info)
  * Returns: the struct offset or `0xFFFF` if it’s unknown
  * Since: 2.80
  */
-guint
+size_t
 gi_vfunc_info_get_offset (GIVFuncInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -217,7 +217,7 @@ gi_vfunc_info_get_invoker (GIVFuncInfo *info)
  * Returns: address to a function
  * Since: 2.80
  */
-gpointer
+void *
 gi_vfunc_info_get_address (GIVFuncInfo  *vfunc_info,
                            GType         implementor_gtype,
                            GError      **error)
@@ -228,8 +228,8 @@ gi_vfunc_info_get_address (GIVFuncInfo  *vfunc_info,
   GIStructInfo *struct_info;
   GIFieldInfo *field_info = NULL;
   int length, i, offset;
-  gpointer implementor_class, implementor_vtable;
-  gpointer func = NULL;
+  void *implementor_class, *implementor_vtable;
+  void *func = NULL;
 
   g_return_val_if_fail (vfunc_info != NULL, NULL);
   g_return_val_if_fail (GI_IS_VFUNC_INFO (vfunc_info), NULL);
@@ -288,7 +288,7 @@ gi_vfunc_info_get_address (GIVFuncInfo  *vfunc_info,
     }
 
   offset = gi_field_info_get_offset (field_info);
-  func = *(gpointer*) G_STRUCT_MEMBER_P (implementor_vtable, offset);
+  func = *(void**) G_STRUCT_MEMBER_P (implementor_vtable, offset);
   g_type_class_unref (implementor_class);
   gi_base_info_unref ((GIBaseInfo *) field_info);
 
@@ -341,13 +341,13 @@ gboolean
 gi_vfunc_info_invoke (GIVFuncInfo      *info,
                       GType             implementor,
                       const GIArgument *in_args,
-                      gsize             n_in_args,
+                      size_t            n_in_args,
                       GIArgument       *out_args,
-                      gsize             n_out_args,
+                      size_t            n_out_args,
                       GIArgument       *return_value,
                       GError          **error)
 {
-  gpointer func;
+  void *func;
   GError *local_error = NULL;
 
   g_return_val_if_fail (info != NULL, FALSE);

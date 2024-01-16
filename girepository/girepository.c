@@ -69,7 +69,7 @@ static GIRepository *default_repository = NULL;
 static GPtrArray *typelib_search_path = NULL;
 
 typedef struct {
-  guint n_interfaces;
+  size_t n_interfaces;
   GIBaseInfo *interfaces[];
 } GTypeInterfaceCache;
 
@@ -77,9 +77,8 @@ static void
 gtype_interface_cache_free (gpointer data)
 {
   GTypeInterfaceCache *cache = data;
-  guint i;
 
-  for (i = 0; i < cache->n_interfaces; i++)
+  for (size_t i = 0; i < cache->n_interfaces; i++)
     gi_base_info_unref ((GIBaseInfo*) cache->interfaces[i]);
   g_free (cache);
 }
@@ -111,8 +110,8 @@ BOOL WINAPI DllMain (HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved);
 
 BOOL WINAPI
 DllMain (HINSTANCE hinstDLL,
-	 DWORD     fdwReason,
-	 LPVOID    lpvReserved)
+         DWORD     fdwReason,
+         LPVOID    lpvReserved)
 {
   if (fdwReason == DLL_PROCESS_ATTACH)
       girepository_dll = hinstDLL;
@@ -129,8 +128,8 @@ DllMain (HINSTANCE hinstDLL,
  */
 #define GOBJECT_INTROSPECTION_LIBDIR \
   g_build_filename (g_win32_get_package_installation_directory_of_module (girepository_dll), \
-		    "lib", \
-		    NULL)
+                    "lib", \
+                    NULL)
 
 #endif
 
@@ -140,8 +139,8 @@ gi_repository_init (GIRepository *repository)
   repository->priv = gi_repository_get_instance_private (repository);
   repository->priv->typelibs
     = g_hash_table_new_full (g_str_hash, g_str_equal,
-			     (GDestroyNotify) g_free,
-			     (GDestroyNotify) gi_typelib_free);
+                             (GDestroyNotify) g_free,
+                             (GDestroyNotify) gi_typelib_free);
   repository->priv->lazy_typelibs
     = g_hash_table_new_full (g_str_hash, g_str_equal,
                              (GDestroyNotify) g_free,
@@ -203,7 +202,7 @@ init_globals (void)
     {
       const char *libdir;
       char *typelib_dir;
-      const gchar *type_lib_path_env;
+      const char *type_lib_path_env;
 
       /* This variable is intended to take precedence over both:
        *   - the default search path;
@@ -213,7 +212,7 @@ init_globals (void)
 
       if (type_lib_path_env)
         {
-          gchar **custom_dirs;
+          char **custom_dirs;
 
           custom_dirs = g_strsplit (type_lib_path_env, G_SEARCHPATH_SEPARATOR_S, 0);
           typelib_search_path =
@@ -324,9 +323,9 @@ get_repository (GIRepository *repository)
 
 static GITypelib *
 check_version_conflict (GITypelib *typelib,
-			const gchar *namespace,
-			const gchar *expected_version,
-			char       **version_conflict)
+                        const char  *namespace,
+                        const char  *expected_version,
+                        char       **version_conflict)
 {
   Header *header;
   const char *loaded_version;
@@ -334,7 +333,7 @@ check_version_conflict (GITypelib *typelib,
   if (expected_version == NULL)
     {
       if (version_conflict)
-	*version_conflict = NULL;
+        *version_conflict = NULL;
       return typelib;
     }
 
@@ -345,7 +344,7 @@ check_version_conflict (GITypelib *typelib,
   if (strcmp (expected_version, loaded_version) != 0)
     {
       if (version_conflict)
-	*version_conflict = (char*)loaded_version;
+        *version_conflict = (char*)loaded_version;
       return NULL;
     }
   if (version_conflict)
@@ -355,11 +354,11 @@ check_version_conflict (GITypelib *typelib,
 
 static GITypelib *
 get_registered_status (GIRepository *repository,
-		       const char   *namespace,
-		       const char   *version,
-		       gboolean      allow_lazy,
-		       gboolean     *lazy_status,
-		       char        **version_conflict)
+                       const char   *namespace,
+                       const char   *version,
+                       gboolean      allow_lazy,
+                       gboolean     *lazy_status,
+                       char        **version_conflict)
 {
   GITypelib *typelib;
   repository = get_repository (repository);
@@ -380,16 +379,16 @@ get_registered_status (GIRepository *repository,
 
 static GITypelib *
 get_registered (GIRepository *repository,
-		const char   *namespace,
-		const char   *version)
+                const char   *namespace,
+                const char   *version)
 {
   return get_registered_status (repository, namespace, version, TRUE, NULL, NULL);
 }
 
 static gboolean
 load_dependencies_recurse (GIRepository *repository,
-			   GITypelib     *typelib,
-			   GError      **error)
+                           GITypelib     *typelib,
+                           GError      **error)
 {
   char **dependencies;
 
@@ -400,25 +399,25 @@ load_dependencies_recurse (GIRepository *repository,
       int i;
 
       for (i = 0; dependencies[i]; i++)
-	{
-	  char *dependency = dependencies[i];
-	  const char *last_dash;
-	  char *dependency_namespace;
-	  const char *dependency_version;
+        {
+          char *dependency = dependencies[i];
+          const char *last_dash;
+          char *dependency_namespace;
+          const char *dependency_version;
 
-	  last_dash = strrchr (dependency, '-');
-	  dependency_namespace = g_strndup (dependency, last_dash - dependency);
-	  dependency_version = last_dash+1;
+          last_dash = strrchr (dependency, '-');
+          dependency_namespace = g_strndup (dependency, last_dash - dependency);
+          dependency_version = last_dash+1;
 
-	  if (!gi_repository_require (repository, dependency_namespace, dependency_version,
-				      0, error))
-	    {
-	      g_free (dependency_namespace);
-	      g_strfreev (dependencies);
-	      return FALSE;
-	    }
-	  g_free (dependency_namespace);
-	}
+          if (!gi_repository_require (repository, dependency_namespace, dependency_version,
+                                      0, error))
+            {
+              g_free (dependency_namespace);
+              g_strfreev (dependencies);
+              return FALSE;
+            }
+          g_free (dependency_namespace);
+        }
       g_strfreev (dependencies);
     }
   return TRUE;
@@ -426,13 +425,13 @@ load_dependencies_recurse (GIRepository *repository,
 
 static const char *
 register_internal (GIRepository *repository,
-		   const char   *source,
-		   gboolean      lazy,
-		   GITypelib     *typelib,
-		   GError      **error)
+                   const char   *source,
+                   gboolean      lazy,
+                   GITypelib     *typelib,
+                   GError      **error)
 {
   Header *header;
-  const gchar *namespace;
+  const char *namespace;
 
   g_return_val_if_fail (typelib != NULL, FALSE);
 
@@ -445,9 +444,9 @@ register_internal (GIRepository *repository,
   if (lazy)
     {
       g_assert (!g_hash_table_lookup (repository->priv->lazy_typelibs,
-				      namespace));
+                                      namespace));
       g_hash_table_insert (repository->priv->lazy_typelibs,
-			   build_typelib_key (namespace, source), (void *)typelib);
+                           build_typelib_key (namespace, source), (void *)typelib);
     }
   else
     {
@@ -456,15 +455,15 @@ register_internal (GIRepository *repository,
 
       /* First, try loading all the dependencies */
       if (!load_dependencies_recurse (repository, typelib, error))
-	return NULL;
+        return NULL;
 
       /* Check if we are transitioning from lazily loaded state */
       if (g_hash_table_lookup_extended (repository->priv->lazy_typelibs,
-					namespace,
-					(gpointer)&key, &value))
-	g_hash_table_remove (repository->priv->lazy_typelibs, key);
+                                        namespace,
+                                        (gpointer)&key, &value))
+        g_hash_table_remove (repository->priv->lazy_typelibs, key);
       else
-	key = build_typelib_key (namespace, source);
+        key = build_typelib_key (namespace, source);
 
       g_hash_table_insert (repository->priv->typelibs,
                            g_steal_pointer (&key),
@@ -502,7 +501,7 @@ gi_repository_get_immediate_dependencies (GIRepository *repository,
                                           const char   *namespace)
 {
   GITypelib *typelib;
-  gchar **deps;
+  char **deps;
 
   g_return_val_if_fail (namespace != NULL, NULL);
 
@@ -528,16 +527,15 @@ get_typelib_dependencies_transitive (GIRepository *repository,
                                      GITypelib    *typelib,
                                      GHashTable   *transitive_dependencies)
 {
-  gchar **immediate_dependencies;
-  guint i;
+  char **immediate_dependencies;
 
   immediate_dependencies = get_typelib_dependencies (typelib);
 
-  for (i = 0; immediate_dependencies != NULL && immediate_dependencies[i]; i++)
+  for (size_t i = 0; immediate_dependencies != NULL && immediate_dependencies[i]; i++)
     {
-      gchar *dependency;
-      const gchar *last_dash;
-      gchar *dependency_namespace;
+      char *dependency;
+      const char *last_dash;
+      char *dependency_namespace;
 
       dependency = immediate_dependencies[i];
 
@@ -584,12 +582,12 @@ get_typelib_dependencies_transitive (GIRepository *repository,
  */
 char **
 gi_repository_get_dependencies (GIRepository *repository,
-				const char *namespace)
+                                const char *namespace)
 {
   GITypelib *typelib;
   GHashTable *transitive_dependencies;  /* set of owned utf8 */
   GHashTableIter iter;
-  gchar *dependency;
+  char *dependency;
   GPtrArray *out;  /* owned utf8 elements */
 
   g_return_val_if_fail (namespace != NULL, NULL);
@@ -618,7 +616,7 @@ gi_repository_get_dependencies (GIRepository *repository,
 
   g_hash_table_unref (transitive_dependencies);
 
-  return (gchar **) g_ptr_array_free (out, FALSE);
+  return (char **) g_ptr_array_free (out, FALSE);
 }
 
 /**
@@ -635,10 +633,10 @@ gi_repository_get_dependencies (GIRepository *repository,
  * Since: 2.80
  */
 const char *
-gi_repository_load_typelib (GIRepository *repository,
-			    GITypelib     *typelib,
-			    GIRepositoryLoadFlags flags,
-			    GError      **error)
+gi_repository_load_typelib (GIRepository           *repository,
+                            GITypelib              *typelib,
+                            GIRepositoryLoadFlags   flags,
+                            GError                **error)
 {
   Header *header;
   const char *namespace;
@@ -654,20 +652,20 @@ gi_repository_load_typelib (GIRepository *repository,
   nsversion = gi_typelib_get_string (typelib, header->nsversion);
 
   if (get_registered_status (repository, namespace, nsversion, allow_lazy,
-			     &is_lazy, &version_conflict))
+                             &is_lazy, &version_conflict))
     {
       if (version_conflict != NULL)
-	{
-	  g_set_error (error, GI_REPOSITORY_ERROR,
-		       GI_REPOSITORY_ERROR_NAMESPACE_VERSION_CONFLICT,
-		       "Attempting to load namespace '%s', version '%s', but '%s' is already loaded",
-		       namespace, nsversion, version_conflict);
-	  return NULL;
-	}
+        {
+          g_set_error (error, GI_REPOSITORY_ERROR,
+                       GI_REPOSITORY_ERROR_NAMESPACE_VERSION_CONFLICT,
+                       "Attempting to load namespace '%s', version '%s', but '%s' is already loaded",
+                       namespace, nsversion, version_conflict);
+          return NULL;
+        }
       return namespace;
     }
   return register_internal (repository, "<builtin>",
-			    allow_lazy, typelib, error);
+                            allow_lazy, typelib, error);
 }
 
 /**
@@ -691,8 +689,8 @@ gi_repository_load_typelib (GIRepository *repository,
  */
 gboolean
 gi_repository_is_registered (GIRepository *repository,
-			     const gchar *namespace,
-			     const gchar *version)
+                             const char   *namespace,
+                             const char   *version)
 {
   repository = get_repository (repository);
   return get_registered (repository, namespace, version) != NULL;
@@ -753,12 +751,12 @@ gi_repository_new (void)
  * Returns: number of metadata entries
  * Since: 2.80
  */
-guint
+unsigned int
 gi_repository_get_n_infos (GIRepository *repository,
-			   const gchar  *namespace)
+                           const char   *namespace)
 {
   GITypelib *typelib;
-  guint n_interfaces = 0;
+  unsigned int n_interfaces = 0;
 
   g_return_val_if_fail (namespace != NULL, -1);
 
@@ -793,13 +791,14 @@ gi_repository_get_n_infos (GIRepository *repository,
  */
 GIBaseInfo *
 gi_repository_get_info (GIRepository *repository,
-			const gchar  *namespace,
-			guint         idx)
+                        const char   *namespace,
+                        unsigned int  idx)
 {
   GITypelib *typelib;
   DirEntry *entry;
 
   g_return_val_if_fail (namespace != NULL, NULL);
+  g_return_val_if_fail (idx < G_MAXUINT16, NULL);
 
   repository = get_repository (repository);
 
@@ -816,7 +815,7 @@ gi_repository_get_info (GIRepository *repository,
 }
 
 typedef struct {
-  const gchar *gtype_name;
+  const char *gtype_name;
   GITypelib *result_typelib;
 } FindByGTypeData;
 
@@ -879,7 +878,7 @@ gi_repository_find_by_gtype (GIRepository *repository,
   repository = get_repository (repository);
 
   cached = g_hash_table_lookup (repository->priv->info_by_gtype,
-				(gpointer)gtype);
+                                (gpointer)gtype);
 
   if (cached != NULL)
     return gi_base_info_ref (cached);
@@ -918,8 +917,8 @@ gi_repository_find_by_gtype (GIRepository *repository,
                                  NULL, data.result_typelib, entry->offset);
 
       g_hash_table_insert (repository->priv->info_by_gtype,
-			   (gpointer) gtype,
-			   gi_base_info_ref (cached));
+                           (gpointer) gtype,
+                           gi_base_info_ref (cached));
       return cached;
     }
   else
@@ -948,8 +947,8 @@ gi_repository_find_by_gtype (GIRepository *repository,
  */
 GIBaseInfo *
 gi_repository_find_by_name (GIRepository *repository,
-			    const gchar  *namespace,
-			    const gchar  *name)
+                            const char   *namespace,
+                            const char   *name)
 {
   GITypelib *typelib;
   DirEntry *entry;
@@ -978,8 +977,8 @@ typedef struct {
 
 static void
 find_by_error_domain_foreach (gpointer key,
-			      gpointer value,
-			      gpointer datap)
+                              gpointer value,
+                              gpointer datap)
 {
   GITypelib *typelib = (GITypelib*)value;
   FindByErrorDomainData *data = datap;
@@ -1011,7 +1010,7 @@ find_by_error_domain_foreach (gpointer key,
  */
 GIEnumInfo *
 gi_repository_find_by_error_domain (GIRepository *repository,
-				    GQuark        domain)
+                                    GQuark        domain)
 {
   FindByErrorDomainData data;
   GIEnumInfo *cached;
@@ -1019,7 +1018,7 @@ gi_repository_find_by_error_domain (GIRepository *repository,
   repository = get_repository (repository);
 
   cached = g_hash_table_lookup (repository->priv->info_by_error_domain,
-				GUINT_TO_POINTER (domain));
+                                GUINT_TO_POINTER (domain));
 
   if (cached != NULL)
     return (GIEnumInfo *) gi_base_info_ref ((GIBaseInfo *)cached);
@@ -1040,8 +1039,8 @@ gi_repository_find_by_error_domain (GIRepository *repository,
                                                 NULL, data.result_typelib, data.result->offset);
 
       g_hash_table_insert (repository->priv->info_by_error_domain,
-			   GUINT_TO_POINTER (domain),
-			   gi_base_info_ref ((GIBaseInfo *) cached));
+                           GUINT_TO_POINTER (domain),
+                           gi_base_info_ref ((GIBaseInfo *) cached));
       return cached;
     }
   return NULL;
@@ -1073,7 +1072,7 @@ gi_repository_find_by_error_domain (GIRepository *repository,
 void
 gi_repository_get_object_gtype_interfaces (GIRepository      *repository,
                                            GType              gtype,
-                                           gsize             *n_interfaces_out,
+                                           size_t            *n_interfaces_out,
                                            GIInterfaceInfo ***interfaces_out)
 {
   GTypeInterfaceCache *cache;
@@ -1083,12 +1082,12 @@ gi_repository_get_object_gtype_interfaces (GIRepository      *repository,
   repository = get_repository (repository);
 
   cache = g_hash_table_lookup (repository->priv->interfaces_for_gtype,
-                               (gpointer) gtype);
+                               (void *) gtype);
   if (cache == NULL)
     {
       GType *interfaces;
-      guint n_interfaces;
-      guint i;
+      unsigned int i;
+      unsigned int n_interfaces;
       GList *interface_infos = NULL, *iter;
 
       interfaces = g_type_interfaces (gtype, &n_interfaces);
@@ -1130,8 +1129,8 @@ gi_repository_get_object_gtype_interfaces (GIRepository      *repository,
 
 static void
 collect_namespaces (gpointer key,
-		    gpointer value,
-		    gpointer data)
+                    gpointer value,
+                    gpointer data)
 {
   GList **list = data;
 
@@ -1149,19 +1148,19 @@ collect_namespaces (gpointer key,
  *   list of namespaces
  * Since: 2.80
  */
-gchar **
+char **
 gi_repository_get_loaded_namespaces (GIRepository *repository)
 {
   GList *l, *list = NULL;
-  gchar **names;
-  gint i;
+  char **names;
+  size_t i;
 
   repository = get_repository (repository);
 
   g_hash_table_foreach (repository->priv->typelibs, collect_namespaces, &list);
   g_hash_table_foreach (repository->priv->lazy_typelibs, collect_namespaces, &list);
 
-  names = g_malloc0 (sizeof (gchar *) * (g_list_length (list) + 1));
+  names = g_malloc0 (sizeof (char *) * (g_list_length (list) + 1));
   i = 0;
   for (l = list; l; l = l->next)
     names[i++] = g_strdup (l->data);
@@ -1186,9 +1185,9 @@ gi_repository_get_loaded_namespaces (GIRepository *repository)
  * Returns: Loaded version
  * Since: 2.80
  */
-const gchar *
+const char *
 gi_repository_get_version (GIRepository *repository,
-			   const gchar  *namespace)
+                           const char   *namespace)
 {
   GITypelib *typelib;
   Header *header;
@@ -1232,7 +1231,7 @@ gi_repository_get_version (GIRepository *repository,
  */
 const char * const *
 gi_repository_get_shared_libraries (GIRepository *repository,
-                                    const gchar  *namespace,
+                                    const char   *namespace,
                                     size_t       *out_n_elements)
 {
   GITypelib *typelib;
@@ -1291,9 +1290,9 @@ gi_repository_get_shared_libraries (GIRepository *repository,
  * Returns: (nullable): C namespace prefix, or `NULL` if none associated
  * Since: 2.80
  */
-const gchar *
+const char *
 gi_repository_get_c_prefix (GIRepository *repository,
-                            const gchar  *namespace_)
+                            const char   *namespace_)
 {
   GITypelib *typelib;
   Header *header;
@@ -1329,21 +1328,21 @@ gi_repository_get_c_prefix (GIRepository *repository,
  *   successful, `NULL` if namespace is not loaded
  * Since: 2.80
  */
-const gchar *
+const char *
 gi_repository_get_typelib_path (GIRepository *repository,
-				const gchar  *namespace)
+                                const char   *namespace)
 {
   gpointer orig_key, value;
 
   repository = get_repository (repository);
 
   if (!g_hash_table_lookup_extended (repository->priv->typelibs, namespace,
-				     &orig_key, &value))
+                                     &orig_key, &value))
     {
       if (!g_hash_table_lookup_extended (repository->priv->lazy_typelibs, namespace,
-					 &orig_key, &value))
+                                         &orig_key, &value))
 
-	return NULL;
+        return NULL;
     }
   return ((char*)orig_key) + strlen ((char *) orig_key) + 1;
 }
@@ -1379,11 +1378,11 @@ find_namespace_version (const char          *namespace,
 
       mfile = g_mapped_file_new (path, FALSE, &error);
       if (error)
-	{
-	  g_free (path);
-	  g_clear_error (&error);
-	  continue;
-	}
+        {
+          g_free (path);
+          g_clear_error (&error);
+          continue;
+        }
       *path_ret = path;
       break;
     }
@@ -1393,8 +1392,8 @@ find_namespace_version (const char          *namespace,
 
 static gboolean
 parse_version (const char *version,
-	       int *major,
-	       int *minor)
+               int *major,
+               int *minor)
 {
   const char *dot;
   char *end;
@@ -1416,7 +1415,7 @@ parse_version (const char *version,
 
 static int
 compare_version (const char *v1,
-		 const char *v2)
+                 const char *v2)
 {
   gboolean success;
   int v1_major, v1_minor;
@@ -1452,7 +1451,7 @@ struct NamespaceVersionCandidadate
 
 static int
 compare_candidate_reverse (struct NamespaceVersionCandidadate *c1,
-			   struct NamespaceVersionCandidadate *c2)
+                           struct NamespaceVersionCandidadate *c2)
 {
   int result = compare_version (c1->version, c2->version);
   /* First, check the version */
@@ -1467,11 +1466,11 @@ compare_candidate_reverse (struct NamespaceVersionCandidadate *c1,
        * pick the earlier one.
        */
       if (c1->path_index == c2->path_index)
-	return 0;
+        return 0;
       else if (c1->path_index > c2->path_index)
-	return 1;
+        return 1;
       else
-	return -1;
+        return -1;
     }
 }
 
@@ -1509,66 +1508,66 @@ enumerate_namespace_versions (const char         *namespace,
       dirname = search_paths[i];
       dir = g_dir_open (dirname, 0, NULL);
       if (dir == NULL)
-	continue;
+        continue;
       while ((entry = g_dir_read_name (dir)) != NULL)
-	{
-	  GMappedFile *mfile;
-	  char *path, *version;
-	  struct NamespaceVersionCandidadate *candidate;
+        {
+          GMappedFile *mfile;
+          char *path, *version;
+          struct NamespaceVersionCandidadate *candidate;
 
-	  if (!g_str_has_suffix (entry, ".typelib"))
-	    continue;
+          if (!g_str_has_suffix (entry, ".typelib"))
+            continue;
 
-	  if (g_str_has_prefix (entry, namespace_dash))
-	    {
-	      const char *last_dash;
-	      const char *name_end;
-	      int major, minor;
+          if (g_str_has_prefix (entry, namespace_dash))
+            {
+              const char *last_dash;
+              const char *name_end;
+              int major, minor;
 
-	      if (g_str_equal (namespace, GIREPOSITORY_TYPELIB_NAME) &&
-		  !g_str_equal (entry, GIREPOSITORY_TYPELIB_FILENAME))
-		{
-		  g_debug ("Ignoring %s because this libgirepository "
-			   "corresponds to %s",
-			   entry, GIREPOSITORY_TYPELIB_FILENAME);
-		  continue;
-		}
+              if (g_str_equal (namespace, GIREPOSITORY_TYPELIB_NAME) &&
+                  !g_str_equal (entry, GIREPOSITORY_TYPELIB_FILENAME))
+                {
+                  g_debug ("Ignoring %s because this libgirepository "
+                           "corresponds to %s",
+                           entry, GIREPOSITORY_TYPELIB_FILENAME);
+                  continue;
+                }
 
-	      name_end = strrchr (entry, '.');
-	      last_dash = strrchr (entry, '-');
-	      version = g_strndup (last_dash+1, name_end-(last_dash+1));
-	      if (!parse_version (version, &major, &minor))
-		{
-		  g_free (version);
-		  continue;
-		}
-	    }
-	  else
-	    continue;
+              name_end = strrchr (entry, '.');
+              last_dash = strrchr (entry, '-');
+              version = g_strndup (last_dash+1, name_end-(last_dash+1));
+              if (!parse_version (version, &major, &minor))
+                {
+                  g_free (version);
+                  continue;
+                }
+            }
+          else
+            continue;
 
-	  if (g_hash_table_lookup (found_versions, version) != NULL)
-	    {
-	      g_free (version);
-	      continue;
-	    }
+          if (g_hash_table_lookup (found_versions, version) != NULL)
+            {
+              g_free (version);
+              continue;
+            }
 
-	  path = g_build_filename (dirname, entry, NULL);
-	  mfile = g_mapped_file_new (path, FALSE, &error);
-	  if (mfile == NULL)
-	    {
-	      g_free (path);
-	      g_free (version);
-	      g_clear_error (&error);
-	      continue;
-	    }
-	  candidate = g_slice_new0 (struct NamespaceVersionCandidadate);
-	  candidate->mfile = mfile;
-	  candidate->path_index = index;
-	  candidate->path = path;
-	  candidate->version = version;
-	  candidates = g_slist_prepend (candidates, candidate);
-	  g_hash_table_add (found_versions, version);
-	}
+          path = g_build_filename (dirname, entry, NULL);
+          mfile = g_mapped_file_new (path, FALSE, &error);
+          if (mfile == NULL)
+            {
+              g_free (path);
+              g_free (version);
+              g_clear_error (&error);
+              continue;
+            }
+          candidate = g_slice_new0 (struct NamespaceVersionCandidadate);
+          candidate->mfile = mfile;
+          candidate->path_index = index;
+          candidate->path = path;
+          candidate->version = version;
+          candidates = g_slist_prepend (candidates, candidate);
+          g_hash_table_add (found_versions, version);
+        }
       g_dir_close (dir);
       index++;
     }
@@ -1629,12 +1628,12 @@ find_namespace_latest (const char          *namespace,
  */
 char **
 gi_repository_enumerate_versions (GIRepository *repository,
-                                  const gchar  *namespace_,
+                                  const char   *namespace_,
                                   size_t       *n_versions_out)
 {
   GPtrArray *versions;
   GSList *candidates, *link;
-  const gchar *loaded_version;
+  const char *loaded_version;
   char **ret;
 
   init_globals ();
@@ -1689,7 +1688,7 @@ require_internal (GIRepository           *repository,
   GITypelib *ret = NULL;
   Header *header;
   GITypelib *typelib = NULL;
-  const gchar *typelib_namespace, *typelib_version;
+  const char *typelib_namespace, *typelib_version;
   gboolean allow_lazy = (flags & GI_REPOSITORY_LOAD_FLAG_LAZY) > 0;
   gboolean is_lazy;
   char *version_conflict = NULL;
@@ -1708,9 +1707,9 @@ require_internal (GIRepository           *repository,
   if (version_conflict != NULL)
     {
       g_set_error (error, GI_REPOSITORY_ERROR,
-		   GI_REPOSITORY_ERROR_NAMESPACE_VERSION_CONFLICT,
-		   "Requiring namespace '%s' version '%s', but '%s' is already loaded",
-		   namespace, version, version_conflict);
+                   GI_REPOSITORY_ERROR_NAMESPACE_VERSION_CONFLICT,
+                   "Requiring namespace '%s' version '%s', but '%s' is already loaded",
+                   namespace, version, version_conflict);
       return NULL;
     }
 
@@ -1729,15 +1728,15 @@ require_internal (GIRepository           *repository,
   if (mfile == NULL)
     {
       if (version != NULL)
-	g_set_error (error, GI_REPOSITORY_ERROR,
-		     GI_REPOSITORY_ERROR_TYPELIB_NOT_FOUND,
-		     "Typelib file for namespace '%s', version '%s' not found",
-		     namespace, version);
+        g_set_error (error, GI_REPOSITORY_ERROR,
+                     GI_REPOSITORY_ERROR_TYPELIB_NOT_FOUND,
+                     "Typelib file for namespace '%s', version '%s' not found",
+                     namespace, version);
       else
-	g_set_error (error, GI_REPOSITORY_ERROR,
-		     GI_REPOSITORY_ERROR_TYPELIB_NOT_FOUND,
-		     "Typelib file for namespace '%s' (any version) not found",
-		     namespace);
+        g_set_error (error, GI_REPOSITORY_ERROR,
+                     GI_REPOSITORY_ERROR_TYPELIB_NOT_FOUND,
+                     "Typelib file for namespace '%s' (any version) not found",
+                     namespace);
       goto out;
     }
 
@@ -1746,12 +1745,12 @@ require_internal (GIRepository           *repository,
     typelib = gi_typelib_new_from_mapped_file (mfile, &temp_error);
     if (!typelib)
       {
-	g_set_error (error, GI_REPOSITORY_ERROR,
-		     GI_REPOSITORY_ERROR_TYPELIB_NOT_FOUND,
-		     "Failed to load typelib file '%s' for namespace '%s': %s",
-		     path, namespace, temp_error->message);
-	g_clear_error (&temp_error);
-	goto out;
+        g_set_error (error, GI_REPOSITORY_ERROR,
+                     GI_REPOSITORY_ERROR_TYPELIB_NOT_FOUND,
+                     "Failed to load typelib file '%s' for namespace '%s': %s",
+                     path, namespace, temp_error->message);
+        g_clear_error (&temp_error);
+        goto out;
       }
   }
   header = (Header *) typelib->data;
@@ -1761,26 +1760,26 @@ require_internal (GIRepository           *repository,
   if (strcmp (typelib_namespace, namespace) != 0)
     {
       g_set_error (error, GI_REPOSITORY_ERROR,
-		   GI_REPOSITORY_ERROR_NAMESPACE_MISMATCH,
-		   "Typelib file %s for namespace '%s' contains "
-		   "namespace '%s' which doesn't match the file name",
-		   path, namespace, typelib_namespace);
+                   GI_REPOSITORY_ERROR_NAMESPACE_MISMATCH,
+                   "Typelib file %s for namespace '%s' contains "
+                   "namespace '%s' which doesn't match the file name",
+                   path, namespace, typelib_namespace);
       gi_typelib_free (typelib);
       goto out;
     }
   if (version != NULL && strcmp (typelib_version, version) != 0)
     {
       g_set_error (error, GI_REPOSITORY_ERROR,
-		   GI_REPOSITORY_ERROR_NAMESPACE_MISMATCH,
-		   "Typelib file %s for namespace '%s' contains "
-		   "version '%s' which doesn't match the expected version '%s'",
-		   path, namespace, typelib_version, version);
+                   GI_REPOSITORY_ERROR_NAMESPACE_MISMATCH,
+                   "Typelib file %s for namespace '%s' contains "
+                   "version '%s' which doesn't match the expected version '%s'",
+                   path, namespace, typelib_version, version);
       gi_typelib_free (typelib);
       goto out;
     }
 
   if (!register_internal (repository, path, allow_lazy,
-			  typelib, error))
+                          typelib, error))
     {
       gi_typelib_free (typelib);
       goto out;
@@ -1814,10 +1813,10 @@ require_internal (GIRepository           *repository,
  */
 GITypelib *
 gi_repository_require (GIRepository  *repository,
-		       const gchar   *namespace,
-		       const gchar   *version,
-		       GIRepositoryLoadFlags flags,
-		       GError       **error)
+                       const char    *namespace,
+                       const char    *version,
+                       GIRepositoryLoadFlags flags,
+                       GError       **error)
 {
   GITypelib *typelib;
 
@@ -1852,12 +1851,12 @@ gi_repository_require (GIRepository  *repository,
  * Since: 2.80
  */
 GITypelib *
-gi_repository_require_private (GIRepository  *repository,
-			       const gchar   *typelib_dir,
-			       const gchar   *namespace,
-			       const gchar   *version,
-			       GIRepositoryLoadFlags flags,
-			       GError       **error)
+gi_repository_require_private (GIRepository           *repository,
+                               const char             *typelib_dir,
+                               const char             *namespace,
+                               const char             *version,
+                               GIRepositoryLoadFlags   flags,
+                               GError                **error)
 {
   const char * const search_path[] = { typelib_dir, NULL };
 
@@ -1867,9 +1866,9 @@ gi_repository_require_private (GIRepository  *repository,
 
 static gboolean
 gi_repository_introspect_cb (const char *option_name,
-			     const char *value,
-			     gpointer data,
-			     GError **error)
+                             const char *value,
+                             gpointer data,
+                             GError **error)
 {
   GError *tmp_error = NULL;
   char **args;
@@ -1879,7 +1878,7 @@ gi_repository_introspect_cb (const char *option_name,
   if (!gi_repository_dump (args[0], args[1], &tmp_error))
     {
       g_error ("Failed to extract GType data: %s",
-	       tmp_error->message);
+               tmp_error->message);
       exit (1);
     }
   exit (0);
@@ -1931,7 +1930,7 @@ gi_repository_error_quark (void)
  * Returns: the string
  * Since: 2.80
  */
-const gchar*
+const char *
 gi_type_tag_to_string (GITypeTag type)
 {
   switch (type)
@@ -1994,7 +1993,7 @@ gi_type_tag_to_string (GITypeTag type)
  * Returns: the string
  * Since: 2.80
  */
-const gchar*
+const char *
 gi_info_type_to_string (GIInfoType type)
 {
   switch (type)

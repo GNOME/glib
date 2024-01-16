@@ -76,10 +76,10 @@ G_BEGIN_DECLS
     ((tag) >= GI_TYPE_TAG_GLIST && (tag) <= GI_TYPE_TAG_GHASH))
 
 GI_AVAILABLE_IN_ALL
-const gchar*           gi_type_tag_to_string            (GITypeTag   type);
+const char *           gi_type_tag_to_string            (GITypeTag   type);
 
 GI_AVAILABLE_IN_ALL
-const gchar*           gi_info_type_to_string           (GIInfoType  type);
+const char *           gi_info_type_to_string           (GIInfoType  type);
 
 
 GI_AVAILABLE_IN_ALL
@@ -89,14 +89,14 @@ GI_AVAILABLE_IN_ALL
 GITypeTag              gi_type_info_get_tag             (GITypeInfo *info);
 
 GI_AVAILABLE_IN_ALL
-GITypeInfo *           gi_type_info_get_param_type      (GITypeInfo *info,
-                                                         guint       n);
+GITypeInfo *           gi_type_info_get_param_type      (GITypeInfo  *info,
+                                                         unsigned int n);
 
 GI_AVAILABLE_IN_ALL
 GIBaseInfo *           gi_type_info_get_interface       (GITypeInfo *info);
 
 GI_AVAILABLE_IN_ALL
-gint                   gi_type_info_get_array_length_index (GITypeInfo *info);
+gssize                 gi_type_info_get_array_length_index (GITypeInfo *info);
 
 GI_AVAILABLE_IN_ALL
 gssize                 gi_type_info_get_array_fixed_size (GITypeInfo *info);
@@ -112,20 +112,20 @@ GITypeTag              gi_type_info_get_storage_type    (GITypeInfo *info);
 
 GI_AVAILABLE_IN_ALL
 void                   gi_type_info_argument_from_hash_pointer (GITypeInfo *info,
-                                                                gpointer    hash_pointer,
+                                                                void       *hash_pointer,
                                                                 GIArgument *arg);
 
 GI_AVAILABLE_IN_ALL
-gpointer               gi_type_info_hash_pointer_from_argument (GITypeInfo *info,
+void *                 gi_type_info_hash_pointer_from_argument (GITypeInfo *info,
                                                                 GIArgument *arg);
 
 GI_AVAILABLE_IN_ALL
 void                   gi_type_tag_argument_from_hash_pointer (GITypeTag   storage_type,
-                                                               gpointer    hash_pointer,
+                                                               void       *hash_pointer,
                                                                GIArgument *arg);
 
 GI_AVAILABLE_IN_ALL
-gpointer               gi_type_tag_hash_pointer_from_argument (GITypeTag   storage_type,
+void *                 gi_type_tag_hash_pointer_from_argument (GITypeTag   storage_type,
                                                                GIArgument *arg);
 
 G_END_DECLS

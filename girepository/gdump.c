@@ -36,6 +36,7 @@
 #include <gmodule.h>
 
 #include <stdlib.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -43,8 +44,8 @@
 static gboolean
 write_all (FILE          *out,
            const void    *buffer,
-           gsize          count,
-           gsize         *bytes_written,
+           size_t         count,
+           size_t        *bytes_written,
            GError       **error)
 {
   size_t ret;
@@ -70,12 +71,12 @@ read_line (FILE   *input,
            size_t *len_out)
 {
   GByteArray *buffer = g_byte_array_new ();
-  const guint8 nul = '\0';
+  const uint8_t nul = '\0';
 
   while (TRUE)
     {
       size_t ret;
-      guint8 byte;
+      uint8_t byte;
 
       ret = fread (&byte, 1, 1, input);
       if (ret == 0)
@@ -103,7 +104,7 @@ escaped_printf (FILE *out, const char *fmt, ...)
 {
   char *str;
   va_list args;
-  gsize written;
+  size_t written;
   GError *error = NULL;
 
   va_start (args, fmt);
@@ -122,7 +123,7 @@ escaped_printf (FILE *out, const char *fmt, ...)
 static void
 goutput_write (FILE *out, const char *str)
 {
-  gsize written;
+  size_t written;
   GError *error = NULL;
   if (!write_all (out, str, strlen (str), &written, &error))
     {
@@ -143,9 +144,9 @@ invoke_get_type (GModule *self, const char *symbol, GError **error)
   if (!g_module_symbol (self, symbol, (void**)&sym))
     {
       g_set_error (error,
-		   G_FILE_ERROR,
-		   G_FILE_ERROR_FAILED,
-		   "Failed to find symbol '%s'", symbol);
+                   G_FILE_ERROR,
+                   G_FILE_ERROR_FAILED,
+                   "Failed to find symbol '%s'", symbol);
       return G_TYPE_INVALID;
     }
 
@@ -153,9 +154,9 @@ invoke_get_type (GModule *self, const char *symbol, GError **error)
   if (ret == G_TYPE_INVALID)
     {
       g_set_error (error,
-		   G_FILE_ERROR,
-		   G_FILE_ERROR_FAILED,
-		   "Function '%s' returned G_TYPE_INVALID", symbol);
+                   G_FILE_ERROR,
+                   G_FILE_ERROR_FAILED,
+                   "Function '%s' returned G_TYPE_INVALID", symbol);
     }
   return ret;
 }
@@ -168,9 +169,9 @@ invoke_error_quark (GModule *self, const char *symbol, GError **error)
   if (!g_module_symbol (self, symbol, (void**)&sym))
     {
       g_set_error (error,
-		   G_FILE_ERROR,
-		   G_FILE_ERROR_FAILED,
-		   "Failed to find symbol '%s'", symbol);
+                   G_FILE_ERROR,
+                   G_FILE_ERROR_FAILED,
+                   "Failed to find symbol '%s'", symbol);
       return G_TYPE_INVALID;
     }
 
@@ -250,8 +251,8 @@ value_to_string (const GValue *value)
 static void
 dump_properties (GType type, FILE *out)
 {
-  guint i;
-  guint n_properties = 0;
+  unsigned int i;
+  unsigned int n_properties = 0;
   GParamSpec **props;
 
   if (G_TYPE_FUNDAMENTAL (type) == G_TYPE_OBJECT)
@@ -273,7 +274,7 @@ dump_properties (GType type, FILE *out)
 
       prop = props[i];
       if (prop->owner_type != type)
-	continue;
+        continue;
 
       const GValue *v = g_param_spec_get_default_value (prop);
       char *default_value = value_to_string (v);
@@ -303,22 +304,22 @@ dump_properties (GType type, FILE *out)
 static void
 dump_signals (GType type, FILE *out)
 {
-  guint i;
-  guint n_sigs;
-  guint *sig_ids;
+  unsigned int i;
+  unsigned int n_sigs;
+  unsigned int *sig_ids;
 
   sig_ids = g_signal_list_ids (type, &n_sigs);
   for (i = 0; i < n_sigs; i++)
     {
-      guint sigid;
+      unsigned int sigid;
       GSignalQuery query;
-      guint j;
+      unsigned int j;
 
       sigid = sig_ids[i];
       g_signal_query (sigid, &query);
 
       escaped_printf (out, "    <signal name=\"%s\" return=\"%s\"",
-		      query.signal_name, g_type_name (query.return_type));
+                      query.signal_name, g_type_name (query.return_type));
 
       if (query.signal_flags & G_SIGNAL_RUN_FIRST)
         escaped_printf (out, " when=\"first\"");
@@ -343,10 +344,10 @@ dump_signals (GType type, FILE *out)
       goutput_write (out, ">\n");
 
       for (j = 0; j < query.n_params; j++)
-	{
-	  escaped_printf (out, "      <param type=\"%s\"/>\n",
-			  g_type_name (query.param_types[j]));
-	}
+        {
+          escaped_printf (out, "      <param type=\"%s\"/>\n",
+                          g_type_name (query.param_types[j]));
+        }
       goutput_write (out, "    </signal>\n");
     }
   g_free (sig_ids);
@@ -355,12 +356,12 @@ dump_signals (GType type, FILE *out)
 static void
 dump_object_type (GType type, const char *symbol, FILE *out)
 {
-  guint n_interfaces;
-  guint i;
+  unsigned int n_interfaces;
+  unsigned int i;
   GType *interfaces;
 
   escaped_printf (out, "  <class name=\"%s\" get-type=\"%s\"",
-		  g_type_name (type), symbol);
+                  g_type_name (type), symbol);
   if (type != G_TYPE_OBJECT)
     {
       GString *parent_str;
@@ -397,7 +398,7 @@ dump_object_type (GType type, const char *symbol, FILE *out)
     {
       GType itype = interfaces[i];
       escaped_printf (out, "    <implements name=\"%s\"/>\n",
-		      g_type_name (itype));
+                      g_type_name (itype));
     }
   g_free (interfaces);
 
@@ -409,28 +410,28 @@ dump_object_type (GType type, const char *symbol, FILE *out)
 static void
 dump_interface_type (GType type, const char *symbol, FILE *out)
 {
-  guint n_interfaces;
-  guint i;
+  unsigned int n_interfaces;
+  unsigned int i;
   GType *interfaces;
 
   escaped_printf (out, "  <interface name=\"%s\" get-type=\"%s\">\n",
-		  g_type_name (type), symbol);
+                  g_type_name (type), symbol);
 
   interfaces = g_type_interface_prerequisites (type, &n_interfaces);
   for (i = 0; i < n_interfaces; i++)
     {
       GType itype = interfaces[i];
       if (itype == G_TYPE_OBJECT)
-	{
-	  /* Treat this as implicit for now; in theory GInterfaces are
-	   * supported on things like GstMiniObject, but right now
-	   * the introspection system only supports GObject.
-	   * http://bugzilla.gnome.org/show_bug.cgi?id=559706
-	   */
-	  continue;
-	}
+        {
+          /* Treat this as implicit for now; in theory GInterfaces are
+           * supported on things like GstMiniObject, but right now
+           * the introspection system only supports GObject.
+           * http://bugzilla.gnome.org/show_bug.cgi?id=559706
+           */
+          continue;
+        }
       escaped_printf (out, "    <prerequisite name=\"%s\"/>\n",
-		      g_type_name (itype));
+                      g_type_name (itype));
     }
   g_free (interfaces);
 
@@ -443,25 +444,25 @@ static void
 dump_boxed_type (GType type, const char *symbol, FILE *out)
 {
   escaped_printf (out, "  <boxed name=\"%s\" get-type=\"%s\"/>\n",
-		  g_type_name (type), symbol);
+                  g_type_name (type), symbol);
 }
 
 static void
 dump_flags_type (GType type, const char *symbol, FILE *out)
 {
-  guint i;
+  unsigned int i;
   GFlagsClass *klass;
 
   klass = g_type_class_ref (type);
   escaped_printf (out, "  <flags name=\"%s\" get-type=\"%s\">\n",
-		  g_type_name (type), symbol);
+                  g_type_name (type), symbol);
 
   for (i = 0; i < klass->n_values; i++)
     {
       GFlagsValue *value = &(klass->values[i]);
 
       escaped_printf (out, "    <member name=\"%s\" nick=\"%s\" value=\"%u\"/>\n",
-		      value->value_name, value->value_nick, value->value);
+                      value->value_name, value->value_nick, value->value);
     }
   goutput_write (out, "  </flags>\n");
 }
@@ -469,19 +470,19 @@ dump_flags_type (GType type, const char *symbol, FILE *out)
 static void
 dump_enum_type (GType type, const char *symbol, FILE *out)
 {
-  guint i;
+  unsigned int i;
   GEnumClass *klass;
 
   klass = g_type_class_ref (type);
   escaped_printf (out, "  <enum name=\"%s\" get-type=\"%s\">\n",
-		  g_type_name (type), symbol);
+                  g_type_name (type), symbol);
 
   for (i = 0; i < klass->n_values; i++)
     {
       GEnumValue *value = &(klass->values[i]);
 
       escaped_printf (out, "    <member name=\"%s\" nick=\"%s\" value=\"%d\"/>\n",
-		      value->value_name, value->value_nick, value->value);
+                      value->value_name, value->value_nick, value->value);
     }
   goutput_write (out, "  </enum>");
 }
@@ -489,8 +490,8 @@ dump_enum_type (GType type, const char *symbol, FILE *out)
 static void
 dump_fundamental_type (GType type, const char *symbol, FILE *out)
 {
-  guint n_interfaces;
-  guint i;
+  unsigned int n_interfaces;
+  unsigned int i;
   GType *interfaces;
   GString *parent_str;
   GType parent;
@@ -498,7 +499,7 @@ dump_fundamental_type (GType type, const char *symbol, FILE *out)
 
 
   escaped_printf (out, "  <fundamental name=\"%s\" get-type=\"%s\"",
-		  g_type_name (type), symbol);
+                  g_type_name (type), symbol);
 
   if (G_TYPE_IS_ABSTRACT (type))
     escaped_printf (out, " abstract=\"1\"");
@@ -534,7 +535,7 @@ dump_fundamental_type (GType type, const char *symbol, FILE *out)
     {
       GType itype = interfaces[i];
       escaped_printf (out, "    <implements name=\"%s\"/>\n",
-		      g_type_name (itype));
+                      g_type_name (itype));
     }
   g_free (interfaces);
   goutput_write (out, "  </fundamental>\n");
@@ -573,7 +574,7 @@ static void
 dump_error_quark (GQuark quark, const char *symbol, FILE *out)
 {
   escaped_printf (out, "  <error-quark function=\"%s\" domain=\"%s\"/>\n",
-		  symbol, g_quark_to_string (quark));
+                  symbol, g_quark_to_string (quark));
 }
 
 /**
@@ -622,10 +623,10 @@ gi_repository_dump (const char  *input_filename,
   if (!self)
     {
       g_set_error (error,
-		   G_FILE_ERROR,
-		   G_FILE_ERROR_FAILED,
-		   "failed to open self: %s",
-		   g_module_error ());
+                   G_FILE_ERROR,
+                   G_FILE_ERROR_FAILED,
+                   "failed to open self: %s",
+                   g_module_error ());
       return FALSE;
     }
 
@@ -661,7 +662,7 @@ gi_repository_dump (const char  *input_filename,
 
   while (TRUE)
     {
-      gsize len;
+      size_t len;
       char *line = read_line (input, &len);
       const char *function;
 

@@ -52,6 +52,6 @@ void         gi_constant_info_free_value (GIConstantInfo *info,
                                           GIArgument     *value);
 
 GI_AVAILABLE_IN_ALL
-gsize        gi_constant_info_get_value (GIConstantInfo *info,
+size_t       gi_constant_info_get_value (GIConstantInfo *info,
                                          GIArgument     *value);
 G_END_DECLS

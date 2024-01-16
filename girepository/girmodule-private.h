@@ -36,17 +36,17 @@ struct _GIIrTypelibBuild {
   GHashTable  *strings;
   GHashTable  *types;
   GList       *nodes_with_attributes;
-  guint32      n_attributes;
-  guchar      *data;
-  GList       *stack; 
+  uint32_t     n_attributes;
+  uint8_t     *data;
+  GList       *stack;
 };
 
 struct _GIIrModule
 {
-  gchar *name;
-  gchar *version;
-  gchar *shared_library;
-  gchar *c_prefix;
+  char  *name;
+  char  *version;
+  char  *shared_library;
+  char  *c_prefix;
   GList *dependencies;
   GList *entries;
 
@@ -66,10 +66,10 @@ struct _GIIrModule
   GHashTable *disguised_structures;
 };
 
-GIIrModule *gi_ir_module_new            (const gchar *name,
-                                         const gchar *nsversion,
-                                         const gchar *module_filename,
-                                         const gchar *c_prefix);
+GIIrModule *gi_ir_module_new            (const char  *name,
+                                         const char  *nsversion,
+                                         const char  *module_filename,
+                                         const char  *c_prefix);
 void       gi_ir_module_free            (GIIrModule  *module);
 
 void       gi_ir_module_add_include_module (GIIrModule  *module,
@@ -77,7 +77,10 @@ void       gi_ir_module_add_include_module (GIIrModule  *module,
 
 GITypelib * gi_ir_module_build_typelib (GIIrModule  *module);
 
-void       gi_ir_module_fatal (GIIrTypelibBuild  *build, guint line, const char *msg, ...) G_GNUC_PRINTF (3, 4) G_GNUC_NORETURN;
+void       gi_ir_module_fatal (GIIrTypelibBuild  *build,
+                               unsigned int       line,
+                               const char *msg,
+                               ...) G_GNUC_PRINTF (3, 4) G_GNUC_NORETURN;
 
 void gi_ir_node_init_stats (void);
 void gi_ir_node_dump_stats (void);

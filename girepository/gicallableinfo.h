@@ -40,7 +40,7 @@ G_BEGIN_DECLS
  *
  * Since: 2.80
  */
-#define GI_IS_CALLABLE_INFO(info)					\
+#define GI_IS_CALLABLE_INFO(info)                                        \
     ((gi_base_info_get_info_type ((GIBaseInfo*) info) == GI_INFO_TYPE_FUNCTION) || \
      (gi_base_info_get_info_type ((GIBaseInfo*) info) == GI_INFO_TYPE_CALLBACK) || \
      (gi_base_info_get_info_type ((GIBaseInfo*) info) == GI_INFO_TYPE_SIGNAL) || \
@@ -61,8 +61,8 @@ void                   gi_callable_info_load_return_type (GICallableInfo *info,
                                                           GITypeInfo     *type);
 
 GI_AVAILABLE_IN_ALL
-const gchar *          gi_callable_info_get_return_attribute (GICallableInfo *info,
-                                                              const gchar    *name);
+const char  *          gi_callable_info_get_return_attribute (GICallableInfo *info,
+                                                              const char     *name);
 
 GI_AVAILABLE_IN_ALL
 gboolean               gi_callable_info_iterate_return_attributes (GICallableInfo   *info,
@@ -80,24 +80,24 @@ GI_AVAILABLE_IN_ALL
 gboolean               gi_callable_info_skip_return     (GICallableInfo *info);
 
 GI_AVAILABLE_IN_ALL
-guint                  gi_callable_info_get_n_args      (GICallableInfo *info);
+unsigned int           gi_callable_info_get_n_args      (GICallableInfo *info);
 
 GI_AVAILABLE_IN_ALL
 GIArgInfo *            gi_callable_info_get_arg         (GICallableInfo *info,
-                                                         guint           n);
+                                                         unsigned int    n);
 
 GI_AVAILABLE_IN_ALL
 void                   gi_callable_info_load_arg        (GICallableInfo *info,
-                                                         guint           n,
+                                                         unsigned int    n,
                                                          GIArgInfo      *arg);
 
 GI_AVAILABLE_IN_ALL
 gboolean               gi_callable_info_invoke          (GICallableInfo    *info,
-                                                         gpointer           function,
+                                                         void              *function,
                                                          const GIArgument  *in_args,
-                                                         gsize              n_in_args,
+                                                         size_t             n_in_args,
                                                          GIArgument        *out_args,
-                                                         gsize              n_out_args,
+                                                         size_t             n_out_args,
                                                          GIArgument        *return_value,
                                                          GError           **error);
 

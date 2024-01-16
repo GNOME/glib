@@ -1,19 +1,20 @@
+#include <stdint.h>
 #include <glib.h>
 
 #ifndef __CMPH_TYPES_H__
 #define __CMPH_TYPES_H__
 
-typedef gint8 cmph_int8;
-typedef guint8 cmph_uint8;
+typedef int8_t cmph_int8;
+typedef uint8_t cmph_uint8;
 
-typedef gint16 cmph_int16;
-typedef guint16 cmph_uint16;
+typedef int16_t cmph_int16;
+typedef uint16_t cmph_uint16;
 
-typedef gint32 cmph_int32;
-typedef guint32 cmph_uint32;
+typedef int32_t cmph_int32;
+typedef uint32_t cmph_uint32;
 
-typedef gint64 cmph_int64;
-typedef guint64 cmph_uint64;
+typedef int64_t cmph_int64;
+typedef uint64_t cmph_uint64;
 
 typedef enum { CMPH_HASH_JENKINS, CMPH_HASH_COUNT } CMPH_HASH;
 extern const char *cmph_hash_names[];

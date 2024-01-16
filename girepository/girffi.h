@@ -65,9 +65,9 @@ typedef void (*GIFFIClosureCallback) (ffi_cif  *cif,
  */
 typedef struct {
   ffi_cif cif;
-  gpointer native_address;
+  void *native_address;
   /*< private >*/
-  gpointer padding[3];
+  void *padding[3];
 } GIFunctionInvoker;
 
 /**
@@ -102,7 +102,7 @@ gboolean      gi_function_info_prep_invoker        (GIFunctionInfo       *info,
                                                     GError              **error);
 
 GI_AVAILABLE_IN_ALL
-gboolean      gi_function_invoker_new_for_address  (gpointer              addr,
+gboolean      gi_function_invoker_new_for_address  (void                 *addr,
                                                     GICallableInfo       *info,
                                                     GIFunctionInvoker    *invoker,
                                                     GError              **error);
@@ -115,10 +115,10 @@ GI_AVAILABLE_IN_ALL
 ffi_closure * gi_callable_info_create_closure (GICallableInfo       *callable_info,
                                                ffi_cif              *cif,
                                                GIFFIClosureCallback  callback,
-                                               gpointer              user_data);
+                                               void                 *user_data);
 
 GI_AVAILABLE_IN_ALL
-gpointer * gi_callable_info_get_closure_native_address (GICallableInfo       *callable_info,
+void **    gi_callable_info_get_closure_native_address (GICallableInfo       *callable_info,
                                                         ffi_closure          *closure);
 
 GI_AVAILABLE_IN_ALL

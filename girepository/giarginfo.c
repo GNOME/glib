@@ -269,7 +269,7 @@ gi_arg_info_get_scope (GIArgInfo *info)
  * Returns: Index of the user data argument or `-1` if there is none
  * Since: 2.80
  */
-gint
+gssize
 gi_arg_info_get_closure_index (GIArgInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -294,7 +294,7 @@ gi_arg_info_get_closure_index (GIArgInfo *info)
  *   none
  * Since: 2.80
  */
-gint
+gssize
 gi_arg_info_get_destroy_index (GIArgInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;

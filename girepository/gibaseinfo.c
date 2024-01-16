@@ -64,7 +64,7 @@ value_base_info_copy_value (const GValue *src,
     dst->data[0].v_pointer = NULL;
 }
 
-static gpointer
+static void *
 value_base_info_peek_pointer (const GValue *value)
 {
   return value->data[0].v_pointer;
@@ -96,7 +96,7 @@ value_base_info_collect_value (GValue      *value,
   return NULL;
 }
 
-static gchar *
+static char *
 value_base_info_lcopy_value (const GValue *value,
                              guint         n_collect_values,
                              GTypeCValue  *collect_values,
@@ -213,7 +213,7 @@ gi_base_info_get_type (void)
  */
 GType
 gi_base_info_type_register_static (const char     *type_name,
-                                   gsize           instance_size,
+                                   size_t          instance_size,
                                    GClassInitFunc  class_init)
 {
   GTypeInfo info;
@@ -264,7 +264,7 @@ GI_DEFINE_BASE_INFO_TYPE (gi_unresolved_info, GI_INFO_TYPE_UNRESOLVED)
 void
 gi_base_info_init_types (void)
 {
-  static gsize register_types_once = 0;
+  static size_t register_types_once = 0;
 
   if (g_once_init_enter (&register_types_once))
     {
@@ -272,7 +272,7 @@ gi_base_info_init_types (void)
         {
           GIInfoType info_type;
           const char *type_name;
-          gsize instance_size;
+          size_t instance_size;
           GClassInitFunc class_init;
         }
       types[] =
@@ -297,7 +297,7 @@ gi_base_info_init_types (void)
           { GI_INFO_TYPE_UNRESOLVED, "GIUnresolvedInfo", sizeof (GIUnresolvedInfo), gi_unresolved_info_class_init },
         };
 
-      for (gsize i = 0; i < G_N_ELEMENTS (types); i++)
+      for (size_t i = 0; i < G_N_ELEMENTS (types); i++)
         {
           GType registered_type = gi_base_info_type_register_static (g_intern_static_string (types[i].type_name),
                                                                      types[i].instance_size,
@@ -315,12 +315,13 @@ gi_info_new_full (GIInfoType    type,
                   GIRepository *repository,
                   GIBaseInfo   *container,
                   GITypelib    *typelib,
-                  guint32       offset)
+                  uint32_t      offset)
 {
   GIRealInfo *info;
 
   g_return_val_if_fail (container != NULL || repository != NULL, NULL);
   g_return_val_if_fail (GI_IS_REPOSITORY (repository), NULL);
+  g_return_val_if_fail (offset <= G_MAXUINT32, NULL);
 
   gi_base_info_init_types ();
   g_assert (gi_base_info_types[type] != G_TYPE_INVALID);
@@ -357,7 +358,7 @@ GIBaseInfo *
 gi_info_new (GIInfoType     type,
              GIBaseInfo    *container,
              GITypelib     *typelib,
-             guint32        offset)
+             size_t         offset)
 {
   return gi_info_new_full (type, ((GIRealInfo*)container)->repository, container, typelib, offset);
 }
@@ -382,7 +383,7 @@ gi_info_init (GIRealInfo   *info,
               GIRepository *repository,
               GIBaseInfo   *container,
               GITypelib    *typelib,
-              guint32       offset)
+              uint32_t      offset)
 {
   memset (info, 0, sizeof (GIRealInfo));
 
@@ -401,7 +402,7 @@ gi_info_init (GIRealInfo   *info,
 GIBaseInfo *
 gi_info_from_entry (GIRepository *repository,
                     GITypelib    *typelib,
-                    guint16       index)
+                    uint16_t      index)
 {
   GIBaseInfo *result;
   DirEntry *entry = gi_typelib_get_dir_entry (typelib, index);
@@ -410,8 +411,8 @@ gi_info_from_entry (GIRepository *repository,
     result = gi_info_new_full (entry->blob_type, repository, NULL, typelib, entry->offset);
   else
     {
-      const gchar *namespace = gi_typelib_get_string (typelib, entry->offset);
-      const gchar *name = gi_typelib_get_string (typelib, entry->name);
+      const char *namespace = gi_typelib_get_string (typelib, entry->offset);
+      const char *name = gi_typelib_get_string (typelib, entry->name);
 
       result = gi_repository_find_by_name (repository, namespace, name);
       if (result == NULL)
@@ -428,7 +429,7 @@ gi_info_from_entry (GIRepository *repository,
           unresolved->namespace = namespace;
 
           return (GIBaseInfo *)unresolved;
-	}
+        }
       return (GIBaseInfo *)result;
     }
 
@@ -438,7 +439,7 @@ gi_info_from_entry (GIRepository *repository,
 GITypeInfo *
 gi_type_info_new (GIBaseInfo *container,
                   GITypelib  *typelib,
-                  guint32     offset)
+                  uint32_t    offset)
 {
   SimpleTypeBlob *type = (SimpleTypeBlob *)&typelib->data[offset];
 
@@ -450,7 +451,7 @@ void
 gi_type_info_init (GIBaseInfo *info,
                    GIBaseInfo *container,
                    GITypelib  *typelib,
-                   guint32     offset)
+                   uint32_t    offset)
 {
   GIRealInfo *rinfo = (GIRealInfo*)container;
   SimpleTypeBlob *type = (SimpleTypeBlob *)&typelib->data[offset];
@@ -564,7 +565,7 @@ gi_base_info_get_info_type (GIBaseInfo *info)
  * Returns: (nullable): the name of @info or `NULL` if it lacks a name.
  * Since: 2.80
  */
-const gchar *
+const char *
 gi_base_info_get_name (GIBaseInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo*)info;
@@ -661,7 +662,7 @@ gi_base_info_get_name (GIBaseInfo *info)
  * Returns: the namespace
  * Since: 2.80
  */
-const gchar *
+const char *
 gi_base_info_get_namespace (GIBaseInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo*) info;
@@ -757,16 +758,16 @@ gi_base_info_is_deprecated (GIBaseInfo *info)
  *   attribute exists
  * Since: 2.80
  */
-const gchar *
+const char *
 gi_base_info_get_attribute (GIBaseInfo  *info,
-                            const gchar *name)
+                            const char *name)
 {
   GIAttributeIter iter = { 0, };
   const char *curname, *curvalue;
   while (gi_base_info_iterate_attributes (info, &iter, &curname, &curvalue))
     {
       if (strcmp (name, curname) == 0)
-        return (const gchar*) curvalue;
+        return (const char *) curvalue;
     }
 
   return NULL;
@@ -800,7 +801,7 @@ cmp_attribute (const void *av,
  */
 AttributeBlob *
 _attribute_blob_find_first (GIBaseInfo *info,
-                            guint32     blob_offset)
+                            uint32_t    blob_offset)
 {
   GIRealInfo *rinfo = (GIRealInfo *) info;
   Header *header = (Header *)rinfo->typelib->data;
@@ -865,8 +866,8 @@ _attribute_blob_find_first (GIBaseInfo *info,
 gboolean
 gi_base_info_iterate_attributes (GIBaseInfo       *info,
                                  GIAttributeIter  *iterator,
-                                 const gchar     **name,
-                                 const gchar     **value)
+                                 const char      **name,
+                                 const char      **value)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header = (Header *)rinfo->typelib->data;

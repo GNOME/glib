@@ -54,7 +54,7 @@
  * Since: 2.80
  */
 
-static guint32
+static uint32_t
 signature_offset (GICallableInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo*)info;
@@ -78,7 +78,7 @@ signature_offset (GICallableInfo *info)
       g_assert_not_reached ();
     }
   if (sigoff >= 0)
-    return *(guint32 *)&rinfo->typelib->data[rinfo->offset + sigoff];
+    return *(uint32_t *)&rinfo->typelib->data[rinfo->offset + sigoff];
   return 0;
 }
 
@@ -180,7 +180,7 @@ GITypeInfo *
 gi_callable_info_get_return_type (GICallableInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  guint32 offset;
+  uint32_t offset;
 
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_CALLABLE_INFO (info), NULL);
@@ -208,7 +208,7 @@ gi_callable_info_load_return_type (GICallableInfo *info,
                                    GITypeInfo     *type)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  guint32 offset;
+  uint32_t offset;
 
   g_return_if_fail (info != NULL);
   g_return_if_fail (GI_IS_CALLABLE_INFO (info));
@@ -331,11 +331,11 @@ gi_callable_info_get_instance_ownership_transfer (GICallableInfo *info)
  * Returns: The number of arguments this callable expects.
  * Since: 2.80
  */
-guint
+unsigned int
 gi_callable_info_get_n_args (GICallableInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  gint offset;
+  uint32_t offset;
   SignatureBlob *blob;
 
   g_return_val_if_fail (info != NULL, -1);
@@ -360,14 +360,15 @@ gi_callable_info_get_n_args (GICallableInfo *info)
  */
 GIArgInfo *
 gi_callable_info_get_arg (GICallableInfo *info,
-                          guint           n)
+                          unsigned int    n)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header;
-  gint offset;
+  uint32_t offset;
 
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_CALLABLE_INFO (info), NULL);
+  g_return_val_if_fail (n <= G_MAXUINT16, NULL);
 
   offset = signature_offset (info);
   header = (Header *)rinfo->typelib->data;
@@ -392,15 +393,16 @@ gi_callable_info_get_arg (GICallableInfo *info,
  */
 void
 gi_callable_info_load_arg (GICallableInfo *info,
-                           guint           n,
+                           unsigned int    n,
                            GIArgInfo      *arg)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header;
-  gint offset;
+  uint32_t offset;
 
   g_return_if_fail (info != NULL);
   g_return_if_fail (GI_IS_CALLABLE_INFO (info));
+  g_return_if_fail (n <= G_MAXUINT16);
 
   offset = signature_offset (info);
   header = (Header *)rinfo->typelib->data;
@@ -420,16 +422,16 @@ gi_callable_info_load_arg (GICallableInfo *info,
  *   attribute exists
  * Since: 2.80
  */
-const gchar *
+const char *
 gi_callable_info_get_return_attribute (GICallableInfo *info,
-                                       const gchar    *name)
+                                       const char     *name)
 {
   GIAttributeIter iter = { 0, };
   const char *curname, *curvalue;
   while (gi_callable_info_iterate_return_attributes (info, &iter, &curname, &curvalue))
     {
       if (g_strcmp0 (name, curname) == 0)
-        return (const gchar*) curvalue;
+        return (const char*) curvalue;
     }
 
   return NULL;
@@ -466,7 +468,7 @@ gi_callable_info_iterate_return_attributes (GICallableInfo   *info,
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header = (Header *)rinfo->typelib->data;
   AttributeBlob *next, *after;
-  guint32 blob_offset;
+  uint32_t blob_offset;
 
   after = (AttributeBlob *) &rinfo->typelib->data[header->attributes +
                                                   header->n_attributes * header->attribute_blob_size];
@@ -518,30 +520,30 @@ gi_type_tag_extract_ffi_return_value (GITypeTag         return_tag,
 {
     switch (return_tag) {
     case GI_TYPE_TAG_INT8:
-        arg->v_int8 = (gint8) ffi_value->v_long;
+        arg->v_int8 = (int8_t) ffi_value->v_long;
         break;
     case GI_TYPE_TAG_UINT8:
-        arg->v_uint8 = (guint8) ffi_value->v_ulong;
+        arg->v_uint8 = (uint8_t) ffi_value->v_ulong;
         break;
     case GI_TYPE_TAG_INT16:
-        arg->v_int16 = (gint16) ffi_value->v_long;
+        arg->v_int16 = (int16_t) ffi_value->v_long;
         break;
     case GI_TYPE_TAG_UINT16:
-        arg->v_uint16 = (guint16) ffi_value->v_ulong;
+        arg->v_uint16 = (uint16_t) ffi_value->v_ulong;
         break;
     case GI_TYPE_TAG_INT32:
-        arg->v_int32 = (gint32) ffi_value->v_long;
+        arg->v_int32 = (int32_t) ffi_value->v_long;
         break;
     case GI_TYPE_TAG_UINT32:
     case GI_TYPE_TAG_BOOLEAN:
     case GI_TYPE_TAG_UNICHAR:
-        arg->v_uint32 = (guint32) ffi_value->v_ulong;
+        arg->v_uint32 = (uint32_t) ffi_value->v_ulong;
         break;
     case GI_TYPE_TAG_INT64:
-        arg->v_int64 = (gint64) ffi_value->v_int64;
+        arg->v_int64 = (int64_t) ffi_value->v_int64;
         break;
     case GI_TYPE_TAG_UINT64:
-        arg->v_uint64 = (guint64) ffi_value->v_uint64;
+        arg->v_uint64 = (uint64_t) ffi_value->v_uint64;
         break;
     case GI_TYPE_TAG_FLOAT:
         arg->v_float = ffi_value->v_float;
@@ -553,15 +555,15 @@ gi_type_tag_extract_ffi_return_value (GITypeTag         return_tag,
         switch(interface_type) {
         case GI_INFO_TYPE_ENUM:
         case GI_INFO_TYPE_FLAGS:
-            arg->v_int32 = (gint32) ffi_value->v_long;
+            arg->v_int32 = (int32_t) ffi_value->v_long;
             break;
         default:
-            arg->v_pointer = (gpointer) ffi_value->v_pointer;
+            arg->v_pointer = (void *) ffi_value->v_pointer;
             break;
         }
         break;
     default:
-        arg->v_pointer = (gpointer) ffi_value->v_pointer;
+        arg->v_pointer = (void *) ffi_value->v_pointer;
         break;
     }
 }
@@ -629,11 +631,11 @@ gi_type_info_extract_ffi_return_value (GITypeInfo       *return_info,
  */
 gboolean
 gi_callable_info_invoke (GICallableInfo    *info,
-                         gpointer           function,
+                         void              *function,
                          const GIArgument  *in_args,
-                         gsize              n_in_args,
+                         size_t             n_in_args,
                          GIArgument        *out_args,
-                         gsize              n_out_args,
+                         size_t             n_out_args,
                          GIArgument        *return_value,
                          GError           **error)
 {
@@ -644,13 +646,13 @@ gi_callable_info_invoke (GICallableInfo    *info,
   GITypeInfo *rinfo;
   GITypeTag rtag;
   GIArgInfo *ainfo;
-  gsize n_args, n_invoke_args, in_pos, out_pos, i;
-  gpointer *args;
+  size_t n_args, n_invoke_args, in_pos, out_pos, i;
+  void **args;
   gboolean success = FALSE;
   GError *local_error = NULL;
-  gpointer error_address = &local_error;
+  void *error_address = &local_error;
   GIFFIReturnValue ffi_return_value;
-  gpointer return_value_p; /* Will point inside the union return_value */
+  void *return_value_p; /* Will point inside the union return_value */
   gboolean is_method, throws;
 
   rinfo = gi_callable_info_get_return_type ((GICallableInfo *)info);
@@ -684,12 +686,12 @@ gi_callable_info_invoke (GICallableInfo    *info,
     n_invoke_args ++;
 
   atypes = g_alloca (sizeof (ffi_type*) * n_invoke_args);
-  args = g_alloca (sizeof (gpointer) * n_invoke_args);
+  args = g_alloca (sizeof (void *) * n_invoke_args);
 
   if (is_method)
     {
       atypes[0] = &ffi_type_pointer;
-      args[0] = (gpointer) &in_args[0];
+      args[0] = (void *) &in_args[0];
     }
   for (i = 0; i < n_args; i++)
     {
@@ -712,7 +714,7 @@ gi_callable_info_invoke (GICallableInfo    *info,
               goto out;
             }
 
-          args[i+offset] = (gpointer)&in_args[in_pos];
+          args[i+offset] = (void *)&in_args[in_pos];
           in_pos++;
 
           break;
@@ -729,7 +731,7 @@ gi_callable_info_invoke (GICallableInfo    *info,
               goto out;
             }
 
-          args[i+offset] = (gpointer)&out_args[out_pos];
+          args[i+offset] = (void *)&out_args[out_pos];
           out_pos++;
           break;
         case GI_DIRECTION_INOUT:
@@ -754,7 +756,7 @@ gi_callable_info_invoke (GICallableInfo    *info,
               goto out;
             }
 
-          args[i+offset] = (gpointer)&in_args[in_pos];
+          args[i+offset] = (void *)&in_args[in_pos];
           in_pos++;
           out_pos++;
           break;

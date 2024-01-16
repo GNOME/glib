@@ -116,7 +116,7 @@ gi_constant_info_free_value (GIConstantInfo *info,
  * Returns: size of the constant, in bytes
  * Since: 2.80
  */
-gsize
+size_t
 gi_constant_info_get_value (GIConstantInfo *info,
                             GIArgument     *value)
 {
@@ -133,51 +133,51 @@ gi_constant_info_get_value (GIConstantInfo *info,
     {
       if (blob->type.flags.pointer)
         {
-          gsize blob_size = blob->size;
+          size_t blob_size = blob->size;
 
-	  value->v_pointer = g_memdup2 (&rinfo->typelib->data[blob->offset], blob_size);
+          value->v_pointer = g_memdup2 (&rinfo->typelib->data[blob->offset], blob_size);
         }
       else
-	{
-	  switch (blob->type.flags.tag)
-	    {
-	    case GI_TYPE_TAG_BOOLEAN:
-	      value->v_boolean = *(gboolean*)&rinfo->typelib->data[blob->offset];
-	      break;
-	    case GI_TYPE_TAG_INT8:
-	      value->v_int8 = *(gint8*)&rinfo->typelib->data[blob->offset];
-	      break;
-	    case GI_TYPE_TAG_UINT8:
-	      value->v_uint8 = *(guint8*)&rinfo->typelib->data[blob->offset];
-	      break;
-	    case GI_TYPE_TAG_INT16:
-	      value->v_int16 = *(gint16*)&rinfo->typelib->data[blob->offset];
-	      break;
-	    case GI_TYPE_TAG_UINT16:
-	      value->v_uint16 = *(guint16*)&rinfo->typelib->data[blob->offset];
-	      break;
-	    case GI_TYPE_TAG_INT32:
-	      value->v_int32 = *(gint32*)&rinfo->typelib->data[blob->offset];
-	      break;
-	    case GI_TYPE_TAG_UINT32:
-	      value->v_uint32 = *(guint32*)&rinfo->typelib->data[blob->offset];
-	      break;
-	    case GI_TYPE_TAG_INT64:
-	      DO_ALIGNED_COPY(&value->v_int64, &rinfo->typelib->data[blob->offset], gint64);
-	      break;
-	    case GI_TYPE_TAG_UINT64:
-	      DO_ALIGNED_COPY(&value->v_uint64, &rinfo->typelib->data[blob->offset], guint64);
-	      break;
-	    case GI_TYPE_TAG_FLOAT:
-	      DO_ALIGNED_COPY(&value->v_float, &rinfo->typelib->data[blob->offset], gfloat);
-	      break;
-	    case GI_TYPE_TAG_DOUBLE:
-	      DO_ALIGNED_COPY(&value->v_double, &rinfo->typelib->data[blob->offset], gdouble);
-	      break;
-	    default:
-	      g_assert_not_reached ();
-	    }
-	}
+        {
+          switch (blob->type.flags.tag)
+            {
+            case GI_TYPE_TAG_BOOLEAN:
+              value->v_boolean = *(gboolean*)&rinfo->typelib->data[blob->offset];
+              break;
+            case GI_TYPE_TAG_INT8:
+              value->v_int8 = *(int8_t*)&rinfo->typelib->data[blob->offset];
+              break;
+            case GI_TYPE_TAG_UINT8:
+              value->v_uint8 = *(uint8_t*)&rinfo->typelib->data[blob->offset];
+              break;
+            case GI_TYPE_TAG_INT16:
+              value->v_int16 = *(int16_t*)&rinfo->typelib->data[blob->offset];
+              break;
+            case GI_TYPE_TAG_UINT16:
+              value->v_uint16 = *(uint16_t*)&rinfo->typelib->data[blob->offset];
+              break;
+            case GI_TYPE_TAG_INT32:
+              value->v_int32 = *(int32_t*)&rinfo->typelib->data[blob->offset];
+              break;
+            case GI_TYPE_TAG_UINT32:
+              value->v_uint32 = *(uint32_t*)&rinfo->typelib->data[blob->offset];
+              break;
+            case GI_TYPE_TAG_INT64:
+              DO_ALIGNED_COPY (&value->v_int64, &rinfo->typelib->data[blob->offset], int64_t);
+              break;
+            case GI_TYPE_TAG_UINT64:
+              DO_ALIGNED_COPY (&value->v_uint64, &rinfo->typelib->data[blob->offset], uint64_t);
+              break;
+            case GI_TYPE_TAG_FLOAT:
+              DO_ALIGNED_COPY (&value->v_float, &rinfo->typelib->data[blob->offset], float);
+              break;
+            case GI_TYPE_TAG_DOUBLE:
+              DO_ALIGNED_COPY (&value->v_double, &rinfo->typelib->data[blob->offset], double);
+              break;
+            default:
+              g_assert_not_reached ();
+            }
+        }
     }
 
   return blob->size;

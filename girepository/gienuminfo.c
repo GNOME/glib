@@ -55,7 +55,7 @@
  * Returns: the number of enumeration values
  * Since: 2.80
  */
-guint
+unsigned int
 gi_enum_info_get_n_values (GIEnumInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -80,7 +80,7 @@ gi_enum_info_get_n_values (GIEnumInfo *info)
  *   associated with this enum, or `NULL`.
  * Since: 2.80
  */
-const gchar *
+const char *
 gi_enum_info_get_error_domain (GIEnumInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -110,14 +110,15 @@ gi_enum_info_get_error_domain (GIEnumInfo *info)
  */
 GIValueInfo *
 gi_enum_info_get_value (GIEnumInfo *info,
-                        guint        n)
+                        unsigned int n)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header;
-  gint offset;
+  size_t offset;
 
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_ENUM_INFO (info), NULL);
+  g_return_val_if_fail (n <= G_MAXUINT16, NULL);
 
   header = (Header *)rinfo->typelib->data;
   offset = rinfo->offset + header->enum_blob_size
@@ -135,7 +136,7 @@ gi_enum_info_get_value (GIEnumInfo *info,
  * Returns: number of methods
  * Since: 2.80
  */
-guint
+unsigned int
 gi_enum_info_get_n_methods (GIEnumInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -162,15 +163,16 @@ gi_enum_info_get_n_methods (GIEnumInfo *info)
  */
 GIFunctionInfo *
 gi_enum_info_get_method (GIEnumInfo *info,
-                         guint       n)
+                         unsigned int n)
 {
-  gint offset;
+  size_t offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header;
   EnumBlob *blob;
 
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_ENUM_INFO (info), NULL);
+  g_return_val_if_fail (n <= G_MAXUINT16, NULL);
 
   header = (Header *)rinfo->typelib->data;
   blob = (EnumBlob *)&rinfo->typelib->data[rinfo->offset];
@@ -238,11 +240,11 @@ gi_enum_info_class_init (gpointer g_class,
  * Obtain the enumeration value of the `GIValueInfo`.
  *
  * Returns: the enumeration value. This will always be representable
- *   as a 32-bit signed or unsigned value. The use of `gint64` as the
+ *   as a 32-bit signed or unsigned value. The use of `int64_t` as the
  *   return type is to allow both.
  * Since: 2.80
  */
-gint64
+int64_t
 gi_value_info_get_value (GIValueInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -254,9 +256,9 @@ gi_value_info_get_value (GIValueInfo *info)
   blob = (ValueBlob *)&rinfo->typelib->data[rinfo->offset];
 
   if (blob->unsigned_value)
-    return (gint64)(guint32)blob->value;
+    return (int64_t)(uint32_t)blob->value;
   else
-    return (gint64)blob->value;
+    return (int64_t)blob->value;
 }
 
 void

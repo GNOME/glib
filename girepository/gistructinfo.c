@@ -53,7 +53,7 @@
  * Returns: number of fields
  * Since: 2.80
  */
-guint
+unsigned int
 gi_struct_info_get_n_fields (GIStructInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -72,16 +72,16 @@ gi_struct_info_get_n_fields (GIStructInfo *info)
  * Returns: field offset, in bytes
  * Since: 2.80
  */
-static gint32
+static size_t
 gi_struct_get_field_offset (GIStructInfo *info,
-                            guint         n)
+                            uint16_t        n)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header = (Header *)rinfo->typelib->data;
-  guint32 offset = rinfo->offset + header->struct_blob_size;
+  size_t offset = rinfo->offset + header->struct_blob_size;
   FieldBlob *field_blob;
 
-  for (guint i = 0; i < n; i++)
+  for (uint16_t i = 0; i < n; i++)
     {
       field_blob = (FieldBlob *)&rinfo->typelib->data[offset];
       offset += header->field_blob_size;
@@ -105,9 +105,11 @@ gi_struct_get_field_offset (GIStructInfo *info,
  */
 GIFieldInfo *
 gi_struct_info_get_field (GIStructInfo *info,
-                          guint         n)
+                          unsigned int  n)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
+
+  g_return_val_if_fail (n <= G_MAXUINT16, NULL);
 
   return (GIFieldInfo *) gi_info_new (GI_INFO_TYPE_FIELD, (GIBaseInfo*)info, rinfo->typelib,
                                       gi_struct_get_field_offset (info, n));
@@ -127,18 +129,17 @@ gi_struct_info_get_field (GIStructInfo *info,
  */
 GIFieldInfo *
 gi_struct_info_find_field (GIStructInfo *info,
-                           const gchar  *name)
+                           const char   *name)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   StructBlob *blob = (StructBlob *)&rinfo->typelib->data[rinfo->offset];
   Header *header = (Header *)rinfo->typelib->data;
-  guint32 offset = rinfo->offset + header->struct_blob_size;
-  gint i;
+  size_t offset = rinfo->offset + header->struct_blob_size;
 
-  for (i = 0; i < blob->n_fields; i++)
+  for (size_t i = 0; i < blob->n_fields; i++)
     {
       FieldBlob *field_blob = (FieldBlob *)&rinfo->typelib->data[offset];
-      const gchar *fname = (const gchar *)&rinfo->typelib->data[field_blob->name];
+      const char *fname = (const char *)&rinfo->typelib->data[field_blob->name];
 
       if (strcmp (name, fname) == 0)
         {
@@ -165,7 +166,7 @@ gi_struct_info_find_field (GIStructInfo *info,
  * Returns: number of methods
  * Since: 2.80
  */
-guint
+unsigned int
 gi_struct_info_get_n_methods (GIStructInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -187,12 +188,14 @@ gi_struct_info_get_n_methods (GIStructInfo *info)
  */
 GIFunctionInfo *
 gi_struct_info_get_method (GIStructInfo *info,
-                           guint         n)
+                           unsigned int  n)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   StructBlob *blob = (StructBlob *)&rinfo->typelib->data[rinfo->offset];
   Header *header = (Header *)rinfo->typelib->data;
-  gint offset;
+  size_t offset;
+
+  g_return_val_if_fail (n <= G_MAXUINT16, NULL);
 
   offset = gi_struct_get_field_offset (info, blob->n_fields) + n * header->function_blob_size;
   return (GIFunctionInfo *) gi_info_new (GI_INFO_TYPE_FUNCTION, (GIBaseInfo*)info,
@@ -213,9 +216,9 @@ gi_struct_info_get_method (GIStructInfo *info,
  */
 GIFunctionInfo *
 gi_struct_info_find_method (GIStructInfo *info,
-                            const gchar  *name)
+                            const char   *name)
 {
-  gint offset;
+  size_t offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
   StructBlob *blob = (StructBlob *)&rinfo->typelib->data[rinfo->offset];
 
@@ -232,7 +235,7 @@ gi_struct_info_find_method (GIStructInfo *info,
  * Returns: size of the structure, in bytes
  * Since: 2.80
  */
-gsize
+size_t
 gi_struct_info_get_size (GIStructInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -250,7 +253,7 @@ gi_struct_info_get_size (GIStructInfo *info)
  * Returns: required alignment, in bytes
  * Since: 2.80
  */
-gsize
+size_t
 gi_struct_info_get_alignment (GIStructInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;

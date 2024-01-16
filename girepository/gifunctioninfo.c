@@ -50,18 +50,18 @@
 
 GIFunctionInfo *
 gi_base_info_find_method (GIBaseInfo  *base,
-                          guint32      offset,
-                          guint        n_methods,
-                          const gchar *name)
+                          uint32_t     offset,
+                          uint16_t     n_methods,
+                          const char  *name)
 {
   /* FIXME hash */
   GIRealInfo *rinfo = (GIRealInfo*)base;
   Header *header = (Header *)rinfo->typelib->data;
 
-  for (guint i = 0; i < n_methods; i++)
+  for (uint16_t i = 0; i < n_methods; i++)
     {
       FunctionBlob *fblob = (FunctionBlob *)&rinfo->typelib->data[offset];
-      const gchar *fname = (const gchar *)&rinfo->typelib->data[fblob->name];
+      const char *fname = (const char *)&rinfo->typelib->data[fblob->name];
 
       if (strcmp (name, fname) == 0)
         return (GIFunctionInfo *) gi_info_new (GI_INFO_TYPE_FUNCTION, base,
@@ -85,7 +85,7 @@ gi_base_info_find_method (GIBaseInfo  *base,
  * Returns: the symbol
  * Since: 2.80
  */
-const gchar *
+const char *
 gi_function_info_get_symbol (GIFunctionInfo *info)
 {
   GIRealInfo *rinfo;
@@ -266,14 +266,14 @@ gi_invoke_error_quark (void)
 gboolean
 gi_function_info_invoke (GIFunctionInfo    *info,
                          const GIArgument  *in_args,
-                         gsize              n_in_args,
+                         size_t             n_in_args,
                          GIArgument        *out_args,
-                         gsize              n_out_args,
+                         size_t             n_out_args,
                          GIArgument        *return_value,
                          GError           **error)
 {
-  const gchar *symbol;
-  gpointer func;
+  const char *symbol;
+  void *func;
 
   symbol = gi_function_info_get_symbol (info);
 

@@ -21,6 +21,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <stdint.h>
 #include <glib-object.h>
 #include "gitypelib-internal.h"
 
@@ -28,8 +29,8 @@ static void
 test_build_retrieve (void)
 {
   GITypelibHashBuilder *builder;
-  guint32 bufsize;
-  guint8* buf;
+  uint32_t bufsize;
+  uint8_t* buf;
 
   builder = gi_typelib_hash_builder_new ();
 

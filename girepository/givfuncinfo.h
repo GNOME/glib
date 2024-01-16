@@ -47,7 +47,7 @@ GI_AVAILABLE_IN_ALL
 GIVFuncInfoFlags  gi_vfunc_info_get_flags   (GIVFuncInfo *info);
 
 GI_AVAILABLE_IN_ALL
-guint             gi_vfunc_info_get_offset  (GIVFuncInfo *info);
+size_t            gi_vfunc_info_get_offset  (GIVFuncInfo *info);
 
 GI_AVAILABLE_IN_ALL
 GISignalInfo *    gi_vfunc_info_get_signal  (GIVFuncInfo *info);
@@ -56,7 +56,7 @@ GI_AVAILABLE_IN_ALL
 GIFunctionInfo *  gi_vfunc_info_get_invoker (GIVFuncInfo *info);
 
 GI_AVAILABLE_IN_ALL
-gpointer          gi_vfunc_info_get_address (GIVFuncInfo *info,
+void *            gi_vfunc_info_get_address (GIVFuncInfo *info,
                                              GType        implementor_gtype,
                                              GError     **error);
 
@@ -64,9 +64,9 @@ GI_AVAILABLE_IN_ALL
 gboolean          gi_vfunc_info_invoke      (GIVFuncInfo      *info,
                                              GType             implementor,
                                              const GIArgument *in_args,
-                                             gsize             n_in_args,
+                                             size_t            n_in_args,
                                              GIArgument       *out_args,
-                                             gsize             n_out_args,
+                                             size_t            n_out_args,
                                              GIArgument       *return_value,
                                              GError          **error);
 
