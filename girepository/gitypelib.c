@@ -442,7 +442,7 @@ gi_typelib_check_format (void)
 #define CHECK_SIZE(s,n) \
   if (sizeof(s) != n) \
     { \
-      g_printerr ("sizeof("#s") is expected to be %d but is %"G_GSIZE_FORMAT".\n", \
+      g_printerr ("sizeof("#s") is expected to be %d but is %zu.\n", \
                   n, sizeof (s));                                        \
       size_check_ok = FALSE; \
     }
