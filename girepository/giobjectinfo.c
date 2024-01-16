@@ -528,20 +528,20 @@ gi_object_info_find_method_using_interfaces (GIObjectInfo  *info,
 
       n_interfaces = gi_object_info_get_n_interfaces (info);
       for (i = 0; i < n_interfaces; ++i)
-	{
-	  GIInterfaceInfo *iface_info;
+        {
+          GIInterfaceInfo *iface_info;
 
-	  iface_info = gi_object_info_get_interface (info, i);
+          iface_info = gi_object_info_get_interface (info, i);
 
-	  result = gi_interface_info_find_method (iface_info, name);
+          result = gi_interface_info_find_method (iface_info, name);
 
-	  if (result != NULL)
-	    {
-	      implementor_result = (GIObjectInfo *) iface_info;
-	      break;
-	    }
-	  gi_base_info_unref ((GIBaseInfo*) iface_info);
-	}
+          if (result != NULL)
+            {
+              implementor_result = (GIObjectInfo *) iface_info;
+              break;
+            }
+          gi_base_info_unref ((GIBaseInfo*) iface_info);
+        }
     }
   if (implementor)
     *implementor = implementor_result;
@@ -637,10 +637,10 @@ gi_object_info_find_signal (GIObjectInfo *info,
       GISignalInfo *siginfo = gi_object_info_get_signal (info, i);
 
       if (g_strcmp0 (gi_base_info_get_name ((GIBaseInfo *) siginfo), name) != 0)
-	{
-	  gi_base_info_unref ((GIBaseInfo*)siginfo);
-	  continue;
-	}
+        {
+          gi_base_info_unref ((GIBaseInfo*)siginfo);
+          continue;
+        }
 
       return siginfo;
     }
@@ -801,20 +801,20 @@ gi_object_info_find_vfunc_using_interfaces (GIObjectInfo  *info,
 
       n_interfaces = gi_object_info_get_n_interfaces (info);
       for (i = 0; i < n_interfaces; ++i)
-	{
-	  GIInterfaceInfo *iface_info;
+        {
+          GIInterfaceInfo *iface_info;
 
-	  iface_info = gi_object_info_get_interface (info, i);
+          iface_info = gi_object_info_get_interface (info, i);
 
-	  result = gi_interface_info_find_vfunc (iface_info, name);
+          result = gi_interface_info_find_vfunc (iface_info, name);
 
-	  if (result != NULL)
-	    {
-	      implementor_result = (GIObjectInfo *) iface_info;
-	      break;
-	    }
-	  gi_base_info_unref ((GIBaseInfo*) iface_info);
-	}
+          if (result != NULL)
+            {
+              implementor_result = (GIObjectInfo *) iface_info;
+              break;
+            }
+          gi_base_info_unref ((GIBaseInfo*) iface_info);
+        }
     }
   if (implementor)
     *implementor = implementor_result;

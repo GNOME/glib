@@ -38,7 +38,7 @@
 static ffi_type *
 gi_type_tag_get_ffi_type_internal (GITypeTag   tag,
                                    gboolean    is_pointer,
-				   gboolean    is_enum)
+                                   gboolean    is_enum)
 {
   switch (tag)
     {
@@ -83,13 +83,13 @@ gi_type_tag_get_ffi_type_internal (GITypeTag   tag,
       return &ffi_type_pointer;
     case GI_TYPE_TAG_INTERFACE:
       {
-	/* We need to handle enums specially:
-	 * https://bugzilla.gnome.org/show_bug.cgi?id=665150
-	 */
+        /* We need to handle enums specially:
+         * https://bugzilla.gnome.org/show_bug.cgi?id=665150
+         */
         if (!is_enum)
           return &ffi_type_pointer;
-	else
-	  return &ffi_type_sint32;
+        else
+          return &ffi_type_sint32;
       }
     case GI_TYPE_TAG_VOID:
       if (is_pointer)
@@ -118,7 +118,7 @@ gi_type_tag_get_ffi_type_internal (GITypeTag   tag,
  */
 ffi_type *
 gi_type_tag_get_ffi_type (GITypeTag   type_tag,
-			  gboolean    is_pointer)
+                          gboolean    is_pointer)
 {
   return gi_type_tag_get_ffi_type_internal (type_tag, is_pointer, FALSE);
 }

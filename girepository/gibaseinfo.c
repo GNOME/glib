@@ -428,7 +428,7 @@ gi_info_from_entry (GIRepository *repository,
           unresolved->namespace = namespace;
 
           return (GIBaseInfo *)unresolved;
-	}
+        }
       return (GIBaseInfo *)result;
     }
 

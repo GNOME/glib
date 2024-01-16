@@ -121,8 +121,8 @@ value_to_ffi_type (const GValue *gvalue, gpointer *value)
  */
 static ffi_type *
 g_value_to_ffi_return_type (const GValue *gvalue,
-			    const GIArgument *ffi_value,
-			    gpointer *value)
+                            const GIArgument *ffi_value,
+                            gpointer *value)
 {
   ffi_type *rettype = NULL;
   GType type = g_type_fundamental (G_VALUE_TYPE (gvalue));
@@ -246,7 +246,7 @@ g_value_from_ffi_value (GValue           *gvalue,
       break;
   default:
     g_warning ("Unsupported fundamental type: %s",
-	       g_type_name (g_type_fundamental (G_VALUE_TYPE (gvalue))));
+               g_type_name (g_type_fundamental (G_VALUE_TYPE (gvalue))));
   }
 
 }
@@ -288,7 +288,7 @@ gi_cclosure_marshal_generic (GClosure *closure,
   if (return_gvalue && G_VALUE_TYPE (return_gvalue))
     {
       rtype = g_value_to_ffi_return_type (return_gvalue, &return_ffi_value,
-					  &rvalue);
+                                          &rvalue);
     }
   else
     {

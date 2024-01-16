@@ -40,7 +40,7 @@ G_BEGIN_DECLS
  *
  * Since: 2.80
  */
-#define GI_IS_CALLABLE_INFO(info)					\
+#define GI_IS_CALLABLE_INFO(info)                                        \
     ((gi_base_info_get_info_type ((GIBaseInfo*) info) == GI_INFO_TYPE_FUNCTION) || \
      (gi_base_info_get_info_type ((GIBaseInfo*) info) == GI_INFO_TYPE_CALLBACK) || \
      (gi_base_info_get_info_type ((GIBaseInfo*) info) == GI_INFO_TYPE_SIGNAL) || \

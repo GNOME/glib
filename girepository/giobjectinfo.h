@@ -88,7 +88,7 @@ typedef void * (*GIObjectInfoGetValueFunction) (const GValue *value);
 
 
 GI_AVAILABLE_IN_ALL
-const gchar *     gi_object_info_get_type_name	 (GIObjectInfo *info);
+const gchar *     gi_object_info_get_type_name         (GIObjectInfo *info);
 
 GI_AVAILABLE_IN_ALL
 const gchar *     gi_object_info_get_type_init_function_name (GIObjectInfo *info);
@@ -135,7 +135,7 @@ GIFunctionInfo *  gi_object_info_get_method       (GIObjectInfo *info,
 
 GI_AVAILABLE_IN_ALL
 GIFunctionInfo *  gi_object_info_find_method      (GIObjectInfo *info,
-						  const gchar  *name);
+                                                  const gchar  *name);
 
 
 GI_AVAILABLE_IN_ALL

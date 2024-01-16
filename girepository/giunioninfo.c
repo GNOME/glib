@@ -213,9 +213,9 @@ gi_union_info_get_discriminator (GIUnionInfo *info,
       gint offset;
 
       offset = rinfo->offset + header->union_blob_size
-	+ blob->n_fields * header->field_blob_size
-	+ blob->n_functions * header->function_blob_size
-	+ n * header->constant_blob_size;
+        + blob->n_fields * header->field_blob_size
+        + blob->n_functions * header->function_blob_size
+        + n * header->constant_blob_size;
 
       return (GIConstantInfo *) gi_info_new (GI_INFO_TYPE_CONSTANT, (GIBaseInfo*)info,
                                              rinfo->typelib, offset);

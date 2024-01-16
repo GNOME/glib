@@ -257,10 +257,10 @@ gi_type_info_get_array_length_index (GITypeInfo *info)
       ArrayTypeBlob *blob = (ArrayTypeBlob *)&rinfo->typelib->data[rinfo->offset];
 
       if (blob->tag == GI_TYPE_TAG_ARRAY)
-	{
-	  if (blob->has_length)
-	    return blob->dimensions.length;
-	}
+        {
+          if (blob->has_length)
+            return blob->dimensions.length;
+        }
     }
 
   return -1;
@@ -293,10 +293,10 @@ gi_type_info_get_array_fixed_size (GITypeInfo *info)
       ArrayTypeBlob *blob = (ArrayTypeBlob *)&rinfo->typelib->data[rinfo->offset];
 
       if (blob->tag == GI_TYPE_TAG_ARRAY)
-	{
-	  if (blob->has_size)
-	    return blob->dimensions.size;
-	}
+        {
+          if (blob->has_size)
+            return blob->dimensions.size;
+        }
     }
 
   return -1;
@@ -329,7 +329,7 @@ gi_type_info_is_zero_terminated (GITypeInfo *info)
       ArrayTypeBlob *blob = (ArrayTypeBlob *)&rinfo->typelib->data[rinfo->offset];
 
       if (blob->tag == GI_TYPE_TAG_ARRAY)
-	return blob->zero_terminated;
+        return blob->zero_terminated;
     }
 
   return FALSE;

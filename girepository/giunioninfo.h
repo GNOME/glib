@@ -72,7 +72,7 @@ GIConstantInfo * gi_union_info_get_discriminator        (GIUnionInfo *info,
 
 GI_AVAILABLE_IN_ALL
 GIFunctionInfo * gi_union_info_find_method              (GIUnionInfo *info,
-							const gchar *name);
+                                                        const gchar *name);
 
 GI_AVAILABLE_IN_ALL
 gsize            gi_union_info_get_size                 (GIUnionInfo *info);

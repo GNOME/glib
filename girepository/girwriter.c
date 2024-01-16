@@ -169,13 +169,13 @@ check_unresolved (GIBaseInfo *info)
     return;
 
   g_critical ("Found unresolved type '%s' '%s'",
-	      gi_base_info_get_name (info), gi_base_info_get_namespace (info));
+              gi_base_info_get_name (info), gi_base_info_get_namespace (info));
 }
 
 static void
 write_type_name (const gchar *ns,
-		 GIBaseInfo  *info,
-		 Xml         *file)
+                 GIBaseInfo  *info,
+                 Xml         *file)
 {
   if (strcmp (ns, gi_base_info_get_namespace (info)) != 0)
     xml_printf (file, "%s.", gi_base_info_get_namespace (info));
@@ -185,9 +185,9 @@ write_type_name (const gchar *ns,
 
 static void
 write_type_name_attribute (const gchar *ns,
-			   GIBaseInfo  *info,
-			   const char  *attr_name,
-			   Xml         *file)
+                           GIBaseInfo  *info,
+                           const char  *attr_name,
+                           Xml         *file)
 {
   xml_printf (file, " %s=\"", attr_name);
   write_type_name (ns, info, file);
@@ -216,8 +216,8 @@ write_ownership_transfer (GITransfer transfer,
 
 static void
 write_type_info (const gchar *ns,
-		 GITypeInfo  *info,
-		 Xml         *file)
+                 GITypeInfo  *info,
+                 Xml         *file)
 {
   gint tag;
   GITypeInfo *type;
@@ -280,7 +280,7 @@ write_type_info (const gchar *ns,
         xml_printf (file, " fixed-size=\"%" G_GSSIZE_FORMAT "\"", size);
 
       if (gi_type_info_is_zero_terminated (info))
-	xml_printf (file, " zero-terminated=\"1\"");
+        xml_printf (file, " zero-terminated=\"1\"");
 
       write_type_info (ns, type, file);
 
@@ -302,10 +302,10 @@ write_type_info (const gchar *ns,
       xml_printf (file, " name=\"GLib.List\"");
       type = gi_type_info_get_param_type (info, 0);
       if (type)
-	{
-	  write_type_info (ns, type, file);
-	  gi_base_info_unref ((GIBaseInfo *)type);
-	}
+        {
+          write_type_info (ns, type, file);
+          gi_base_info_unref ((GIBaseInfo *)type);
+        }
       xml_end_element (file, "type");
     }
   else if (tag == GI_TYPE_TAG_GSLIST)
@@ -314,10 +314,10 @@ write_type_info (const gchar *ns,
       xml_printf (file, " name=\"GLib.SList\"");
       type = gi_type_info_get_param_type (info, 0);
       if (type)
-	{
-	  write_type_info (ns, type, file);
-	  gi_base_info_unref ((GIBaseInfo *)type);
-	}
+        {
+          write_type_info (ns, type, file);
+          gi_base_info_unref ((GIBaseInfo *)type);
+        }
       xml_end_element (file, "type");
     }
   else if (tag == GI_TYPE_TAG_GHASH)
@@ -326,13 +326,13 @@ write_type_info (const gchar *ns,
       xml_printf (file, " name=\"GLib.HashTable\"");
       type = gi_type_info_get_param_type (info, 0);
       if (type)
-	{
-	  write_type_info (ns, type, file);
-	  gi_base_info_unref ((GIBaseInfo *)type);
-	  type = gi_type_info_get_param_type (info, 1);
-	  write_type_info (ns, type, file);
-	  gi_base_info_unref ((GIBaseInfo *)type);
-	}
+        {
+          write_type_info (ns, type, file);
+          gi_base_info_unref ((GIBaseInfo *)type);
+          type = gi_type_info_get_param_type (info, 1);
+          write_type_info (ns, type, file);
+          gi_base_info_unref ((GIBaseInfo *)type);
+        }
       xml_end_element (file, "type");
     }
   else if (tag == GI_TYPE_TAG_ERROR)
@@ -380,20 +380,20 @@ write_return_value_attributes (Xml *file,
 
 static void
 write_constant_value (const gchar *ns,
-		      GITypeInfo *info,
-		      GIArgument *argument,
-		      Xml *file);
+                      GITypeInfo *info,
+                      GIArgument *argument,
+                      Xml *file);
 
 static void
 write_callback_info (const gchar    *ns,
-		     GICallbackInfo *info,
-		     Xml            *file);
+                     GICallbackInfo *info,
+                     Xml            *file);
 
 static void
 write_field_info (const gchar *ns,
-		  GIFieldInfo *info,
-		  GIConstantInfo *branch,
-		  Xml         *file)
+                  GIFieldInfo *info,
+                  GIConstantInfo *branch,
+                  Xml         *file)
 {
   const gchar *name;
   GIFieldInfoFlags flags;
@@ -458,8 +458,8 @@ write_field_info (const gchar *ns,
 
 static void
 write_callable_info (const gchar    *ns,
-		     GICallableInfo *info,
-		     Xml            *file)
+                     GICallableInfo *info,
+                     Xml            *file)
 {
   GITypeInfo *type;
 
@@ -501,28 +501,28 @@ write_callable_info (const gchar    *ns,
       write_ownership_transfer (gi_arg_info_get_ownership_transfer (arg), file);
 
       switch (gi_arg_info_get_direction (arg))
-	{
-	case GI_DIRECTION_IN:
-	  break;
-	case GI_DIRECTION_OUT:
-	  xml_printf (file, " direction=\"out\" caller-allocates=\"%s\"",
-	              gi_arg_info_is_caller_allocates (arg) ? "1" : "0");
-	  break;
-	case GI_DIRECTION_INOUT:
-	  xml_printf (file, " direction=\"inout\"");
-	  break;
-	default:
-	  g_assert_not_reached ();
-	}
+        {
+        case GI_DIRECTION_IN:
+          break;
+        case GI_DIRECTION_OUT:
+          xml_printf (file, " direction=\"out\" caller-allocates=\"%s\"",
+                      gi_arg_info_is_caller_allocates (arg) ? "1" : "0");
+          break;
+        case GI_DIRECTION_INOUT:
+          xml_printf (file, " direction=\"inout\"");
+          break;
+        default:
+          g_assert_not_reached ();
+        }
 
       if (gi_arg_info_may_be_null (arg))
-	xml_printf (file, " allow-none=\"1\"");
+        xml_printf (file, " allow-none=\"1\"");
 
       if (gi_arg_info_is_return_value (arg))
-	xml_printf (file, " retval=\"1\"");
+        xml_printf (file, " retval=\"1\"");
 
       if (gi_arg_info_is_optional (arg))
-	xml_printf (file, " optional=\"1\"");
+        xml_printf (file, " optional=\"1\"");
 
       switch (gi_arg_info_get_scope (arg))
         {
@@ -569,8 +569,8 @@ write_callable_info (const gchar    *ns,
 
 static void
 write_function_info (const gchar    *ns,
-		     GIFunctionInfo *info,
-		     Xml            *file)
+                     GIFunctionInfo *info,
+                     Xml            *file)
 {
   GIFunctionInfoFlags flags;
   const gchar *tag;
@@ -620,8 +620,8 @@ write_function_info (const gchar    *ns,
 
 static void
 write_callback_info (const gchar    *ns,
-		     GICallbackInfo *info,
-		     Xml            *file)
+                     GICallbackInfo *info,
+                     Xml            *file)
 {
   const gchar *name;
   gboolean deprecated;
@@ -641,8 +641,8 @@ write_callback_info (const gchar    *ns,
 
 static void
 write_struct_info (const gchar  *ns,
-		   GIStructInfo *info,
-		   Xml          *file)
+                   GIStructInfo *info,
+                   Xml          *file)
 {
   const gchar *name;
   const gchar *type_name;
@@ -703,18 +703,18 @@ write_struct_info (const gchar  *ns,
   if (n_elts > 0)
     {
       for (guint i = 0; i < gi_struct_info_get_n_fields (info); i++)
-	{
-	  GIFieldInfo *field = gi_struct_info_get_field (info, i);
-	  write_field_info (ns, field, NULL, file);
-	  gi_base_info_unref ((GIBaseInfo *)field);
-	}
+        {
+          GIFieldInfo *field = gi_struct_info_get_field (info, i);
+          write_field_info (ns, field, NULL, file);
+          gi_base_info_unref ((GIBaseInfo *)field);
+        }
 
       for (guint i = 0; i < gi_struct_info_get_n_methods (info); i++)
-	{
-	  GIFunctionInfo *function = gi_struct_info_get_method (info, i);
-	  write_function_info (ns, function, file);
-	  gi_base_info_unref ((GIBaseInfo *)function);
-	}
+        {
+          GIFunctionInfo *function = gi_struct_info_get_method (info, i);
+          write_function_info (ns, function, file);
+          gi_base_info_unref ((GIBaseInfo *)function);
+        }
 
     }
 
@@ -723,8 +723,8 @@ write_struct_info (const gchar  *ns,
 
 static void
 write_value_info (const gchar *ns,
-		  GIValueInfo *info,
-		  Xml         *file)
+                  GIValueInfo *info,
+                  Xml         *file)
 {
   const gchar *name;
   gint64 value;
@@ -750,9 +750,9 @@ write_value_info (const gchar *ns,
 
 static void
 write_constant_value (const gchar *ns,
-		      GITypeInfo *type,
-		      GIArgument  *value,
-		      Xml        *file)
+                      GITypeInfo *type,
+                      GIArgument  *value,
+                      Xml        *file)
 {
   switch (gi_type_info_get_tag (type))
     {
@@ -800,8 +800,8 @@ write_constant_value (const gchar *ns,
 
 static void
 write_constant_info (const gchar    *ns,
-		     GIConstantInfo *info,
-		     Xml            *file)
+                     GIConstantInfo *info,
+                     Xml            *file)
 {
   GITypeInfo *type;
   const gchar *name;
@@ -831,8 +831,8 @@ write_constant_info (const gchar    *ns,
 
 static void
 write_enum_info (const gchar *ns,
-		 GIEnumInfo *info,
-		 Xml         *file)
+                 GIEnumInfo *info,
+                 Xml         *file)
 {
   const gchar *name;
   const gchar *type_name;
@@ -875,8 +875,8 @@ write_enum_info (const gchar *ns,
 
 static void
 write_signal_info (const gchar  *ns,
-		   GISignalInfo *info,
-		   Xml          *file)
+                   GISignalInfo *info,
+                   Xml          *file)
 {
   GSignalFlags flags;
   const gchar *name;
@@ -918,8 +918,8 @@ write_signal_info (const gchar  *ns,
 
 static void
 write_vfunc_info (const gchar *ns,
-		  GIVFuncInfo *info,
-		  Xml         *file)
+                  GIVFuncInfo *info,
+                  Xml         *file)
 {
   GIVFuncInfoFlags flags;
   const gchar *name;
@@ -962,8 +962,8 @@ write_vfunc_info (const gchar *ns,
 
 static void
 write_property_info (const gchar    *ns,
-		     GIPropertyInfo *info,
-		     Xml            *file)
+                     GIPropertyInfo *info,
+                     Xml            *file)
 {
   GParamFlags flags;
   const gchar *name;
@@ -1027,8 +1027,8 @@ write_property_info (const gchar    *ns,
 
 static void
 write_object_info (const gchar  *ns,
-		   GIObjectInfo *info,
-		   Xml          *file)
+                   GIObjectInfo *info,
+                   Xml          *file)
 {
   const gchar *name;
   const gchar *type_name;
@@ -1101,13 +1101,13 @@ write_object_info (const gchar  *ns,
   if (gi_object_info_get_n_interfaces (info) > 0)
     {
       for (guint i = 0; i < gi_object_info_get_n_interfaces (info); i++)
-	{
-	  GIInterfaceInfo *imp = gi_object_info_get_interface (info, i);
+        {
+          GIInterfaceInfo *imp = gi_object_info_get_interface (info, i);
           xml_start_element (file, "implements");
-	  write_type_name_attribute (ns, (GIBaseInfo *)imp, "name", file);
+          write_type_name_attribute (ns, (GIBaseInfo *)imp, "name", file);
           xml_end_element (file, "implements");
-	  gi_base_info_unref ((GIBaseInfo*)imp);
-	}
+          gi_base_info_unref ((GIBaseInfo*)imp);
+        }
     }
 
   for (guint i = 0; i < gi_object_info_get_n_fields (info); i++)
@@ -1157,8 +1157,8 @@ write_object_info (const gchar  *ns,
 
 static void
 write_interface_info (const gchar     *ns,
-		      GIInterfaceInfo *info,
-		      Xml             *file)
+                      GIInterfaceInfo *info,
+                      Xml             *file)
 {
   const gchar *name;
   const gchar *type_name;
@@ -1173,7 +1173,7 @@ write_interface_info (const gchar     *ns,
   type_init = gi_registered_type_info_get_type_init_function_name ((GIRegisteredTypeInfo*)info);
   xml_start_element (file, "interface");
   xml_printf (file, " name=\"%s\" glib:type-name=\"%s\" glib:get-type=\"%s\"",
-	     name, type_name, type_init);
+             name, type_name, type_init);
 
   class_struct = gi_interface_info_get_iface_struct (info);
   if (class_struct)
@@ -1190,15 +1190,15 @@ write_interface_info (const gchar     *ns,
   if (gi_interface_info_get_n_prerequisites (info) > 0)
     {
       for (guint i = 0; i < gi_interface_info_get_n_prerequisites (info); i++)
-	{
-	  GIBaseInfo *req = gi_interface_info_get_prerequisite (info, i);
+        {
+          GIBaseInfo *req = gi_interface_info_get_prerequisite (info, i);
 
-	  xml_start_element (file, "prerequisite");
-	  write_type_name_attribute (ns, req, "name", file);
+          xml_start_element (file, "prerequisite");
+          write_type_name_attribute (ns, req, "name", file);
 
           xml_end_element_unchecked (file);
-	  gi_base_info_unref (req);
-	}
+          gi_base_info_unref (req);
+        }
     }
 
   for (guint i = 0; i < gi_interface_info_get_n_methods (info); i++)
@@ -1241,8 +1241,8 @@ write_interface_info (const gchar     *ns,
 
 static void
 write_union_info (const gchar *ns,
-		  GIUnionInfo *info,
-		  Xml         *file)
+                  GIUnionInfo *info,
+                  Xml         *file)
 {
   const gchar *name;
   const gchar *type_name;
@@ -1302,7 +1302,7 @@ write_union_info (const gchar *ns,
       write_field_info (ns, field, constant, file);
       gi_base_info_unref ((GIBaseInfo *)field);
       if (constant)
-	gi_base_info_unref ((GIBaseInfo *)constant);
+        gi_base_info_unref ((GIBaseInfo *)constant);
     }
 
   for (guint i = 0; i < gi_union_info_get_n_methods (info); i++)
@@ -1349,19 +1349,19 @@ gi_ir_writer_write (const char *filename,
       gchar *full_filename;
 
       if (needs_prefix)
-	full_filename = g_strdup_printf ("%s-%s", ns, filename);
+        full_filename = g_strdup_printf ("%s-%s", ns, filename);
       else
-	full_filename = g_strdup (filename);
+        full_filename = g_strdup (filename);
       ofile = g_fopen (filename, "w");
 
       if (ofile == NULL)
-	{
-	  g_fprintf (stderr, "failed to open '%s': %s\n",
-		     full_filename, g_strerror (errno));
-	  g_free (full_filename);
+        {
+          g_fprintf (stderr, "failed to open '%s': %s\n",
+                     full_filename, g_strerror (errno));
+          g_free (full_filename);
 
-	  return;
-	}
+          return;
+        }
 
       g_free (full_filename);
     }
@@ -1371,21 +1371,21 @@ gi_ir_writer_write (const char *filename,
   xml_printf (xml, "<?xml version=\"1.0\"?>\n");
   xml_start_element (xml, "repository");
   xml_printf (xml, " version=\"1.0\"\n"
-	      "            xmlns=\"http://www.gtk.org/introspection/core/1.0\"\n"
-	      "            xmlns:c=\"http://www.gtk.org/introspection/c/1.0\"\n"
-	      "            xmlns:glib=\"http://www.gtk.org/introspection/glib/1.0\"");
+              "            xmlns=\"http://www.gtk.org/introspection/core/1.0\"\n"
+              "            xmlns:c=\"http://www.gtk.org/introspection/c/1.0\"\n"
+              "            xmlns:glib=\"http://www.gtk.org/introspection/glib/1.0\"");
 
   dependencies = gi_repository_get_immediate_dependencies (repository, ns);
   if (dependencies != NULL)
     {
       for (i = 0; dependencies[i]; i++)
-	{
-	  char **parts = g_strsplit (dependencies[i], "-", 2);
-	  xml_start_element (xml, "include");
-	  xml_printf (xml, " name=\"%s\" version=\"%s\"", parts[0], parts[1]);
-	  xml_end_element (xml, "include");
-	  g_strfreev (parts);
-	}
+        {
+          char **parts = g_strsplit (dependencies[i], "-", 2);
+          xml_start_element (xml, "include");
+          xml_printf (xml, " name=\"%s\" version=\"%s\"", parts[0], parts[1]);
+          xml_end_element (xml, "include");
+          g_strfreev (parts);
+        }
     }
 
   if (TRUE)
@@ -1413,50 +1413,50 @@ gi_ir_writer_write (const char *filename,
 
       n_infos = gi_repository_get_n_infos (repository, cur_ns);
       for (j = 0; j < n_infos; j++)
-	{
-	  GIBaseInfo *info = gi_repository_get_info (repository, cur_ns, j);
-	  switch (gi_base_info_get_info_type (info))
-	    {
-	    case GI_INFO_TYPE_FUNCTION:
-	      write_function_info (ns, (GIFunctionInfo *)info, xml);
-	      break;
+        {
+          GIBaseInfo *info = gi_repository_get_info (repository, cur_ns, j);
+          switch (gi_base_info_get_info_type (info))
+            {
+            case GI_INFO_TYPE_FUNCTION:
+              write_function_info (ns, (GIFunctionInfo *)info, xml);
+              break;
 
-	    case GI_INFO_TYPE_CALLBACK:
-	      write_callback_info (ns, (GICallbackInfo *)info, xml);
-	      break;
+            case GI_INFO_TYPE_CALLBACK:
+              write_callback_info (ns, (GICallbackInfo *)info, xml);
+              break;
 
-	    case GI_INFO_TYPE_STRUCT:
-	    case GI_INFO_TYPE_BOXED:
-	      write_struct_info (ns, (GIStructInfo *)info, xml);
-	      break;
+            case GI_INFO_TYPE_STRUCT:
+            case GI_INFO_TYPE_BOXED:
+              write_struct_info (ns, (GIStructInfo *)info, xml);
+              break;
 
-	    case GI_INFO_TYPE_UNION:
-	      write_union_info (ns, (GIUnionInfo *)info, xml);
-	      break;
+            case GI_INFO_TYPE_UNION:
+              write_union_info (ns, (GIUnionInfo *)info, xml);
+              break;
 
-	    case GI_INFO_TYPE_ENUM:
-	    case GI_INFO_TYPE_FLAGS:
-	      write_enum_info (ns, (GIEnumInfo *)info, xml);
-	      break;
+            case GI_INFO_TYPE_ENUM:
+            case GI_INFO_TYPE_FLAGS:
+              write_enum_info (ns, (GIEnumInfo *)info, xml);
+              break;
 
-	    case GI_INFO_TYPE_CONSTANT:
-	      write_constant_info (ns, (GIConstantInfo *)info, xml);
-	      break;
+            case GI_INFO_TYPE_CONSTANT:
+              write_constant_info (ns, (GIConstantInfo *)info, xml);
+              break;
 
-	    case GI_INFO_TYPE_OBJECT:
-	      write_object_info (ns, (GIObjectInfo *)info, xml);
-	      break;
+            case GI_INFO_TYPE_OBJECT:
+              write_object_info (ns, (GIObjectInfo *)info, xml);
+              break;
 
-	    case GI_INFO_TYPE_INTERFACE:
-	      write_interface_info (ns, (GIInterfaceInfo *)info, xml);
-	      break;
+            case GI_INFO_TYPE_INTERFACE:
+              write_interface_info (ns, (GIInterfaceInfo *)info, xml);
+              break;
 
-	    default:
-	      g_error ("unknown info type %d", gi_base_info_get_info_type (info));
-	    }
+            default:
+              g_error ("unknown info type %d", gi_base_info_get_info_type (info));
+            }
 
-	  gi_base_info_unref (info);
-	}
+          gi_base_info_unref (info);
+        }
 
       xml_end_element (xml, "namespace");
     }

@@ -50,7 +50,7 @@ typedef struct {
   gpointer data4;
 } GIAttributeIter;
 
-#define GI_TYPE_BASE_INFO	(gi_base_info_get_type ())
+#define GI_TYPE_BASE_INFO        (gi_base_info_get_type ())
 
 
 GI_AVAILABLE_IN_ALL
