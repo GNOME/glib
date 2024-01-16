@@ -132,21 +132,21 @@ struct _ParseContext
 };
 #define CURRENT_NODE(ctx) ((GIIrNode *)((ctx)->node_stack->data))
 
-static void start_element_handler (GMarkupParseContext *context,
-                                   const char          *element_name,
-                                   const char         **attribute_names,
-                                   const char         **attribute_values,
-                                   void                *user_data,
-                                   GError             **error);
-static void end_element_handler   (GMarkupParseContext *context,
-                                   const char          *element_name,
-                                   void                *user_data,
-                                   GError             **error);
-static void text_handler          (GMarkupParseContext *context,
-                                   const char          *text,
-                                   gsize                text_len,
-                                   void                *user_data,
-                                   GError             **error);
+static void start_element_handler (GMarkupParseContext  *context,
+                                   const char           *element_name,
+                                   const char          **attribute_names,
+                                   const char          **attribute_values,
+                                   void                 *user_data,
+                                   GError              **error);
+static void end_element_handler   (GMarkupParseContext  *context,
+                                   const char           *element_name,
+                                   void                 *user_data,
+                                   GError              **error);
+static void text_handler          (GMarkupParseContext  *context,
+                                   const char           *text,
+                                   gsize                 text_len,
+                                   void                 *user_data,
+                                   GError              **error);
 static void cleanup               (GMarkupParseContext *context,
                                    GError              *error,
                                    void                *user_data);
@@ -163,21 +163,21 @@ static GMarkupParser markup_parser =
 };
 
 static gboolean
-start_alias (GMarkupParseContext *context,
-             const char          *element_name,
-             const char         **attribute_names,
-             const char         **attribute_values,
-             ParseContext        *ctx,
-             GError             **error);
+start_alias (GMarkupParseContext  *context,
+             const char           *element_name,
+             const char          **attribute_names,
+             const char          **attribute_values,
+             ParseContext         *ctx,
+             GError              **error);
 static gboolean
-start_type (GMarkupParseContext *context,
-            const char          *element_name,
-            const char         **attribute_names,
-            const char         **attribute_values,
-            ParseContext        *ctx,
-            GError             **error);
+start_type (GMarkupParseContext  *context,
+            const char           *element_name,
+            const char          **attribute_names,
+            const char          **attribute_values,
+            ParseContext         *ctx,
+            GError              **error);
 
-static const char *find_attribute (const char   *name,
+static const char *find_attribute (const char  *name,
                                    const char **attribute_names,
                                    const char **attribute_values);
 
@@ -218,12 +218,12 @@ gi_ir_parser_set_includes (GIIrParser         *parser,
 }
 
 static void
-firstpass_start_element_handler (GMarkupParseContext *context,
-                                 const char          *element_name,
-                                 const char         **attribute_names,
-                                 const char         **attribute_values,
-                                 void                *user_data,
-                                 GError             **error)
+firstpass_start_element_handler (GMarkupParseContext  *context,
+                                 const char           *element_name,
+                                 const char          **attribute_names,
+                                 const char          **attribute_values,
+                                 void                 *user_data,
+                                 GError              **error)
 {
   ParseContext *ctx = user_data;
 
@@ -265,10 +265,10 @@ firstpass_start_element_handler (GMarkupParseContext *context,
 }
 
 static void
-firstpass_end_element_handler (GMarkupParseContext *context,
-                               const char          *element_name,
-                               void                *user_data,
-                               GError             **error)
+firstpass_end_element_handler (GMarkupParseContext  *context,
+                               const char           *element_name,
+                               gpointer              user_data,
+                               GError              **error)
 {
   ParseContext *ctx = user_data;
   if (strcmp (element_name, "alias") == 0)
@@ -770,11 +770,11 @@ parse_type (ParseContext *ctx, const char *type)
 }
 
 static gboolean
-introspectable_prelude (GMarkupParseContext *context,
-                    const char         **attribute_names,
-                    const char         **attribute_values,
-                    ParseContext        *ctx,
-                    ParseState           new_state)
+introspectable_prelude (GMarkupParseContext  *context,
+                        const char          **attribute_names,
+                        const char          **attribute_values,
+                        ParseContext         *ctx,
+                        ParseState            new_state)
 {
   const char *introspectable_arg;
   const char *shadowed_by;
@@ -796,12 +796,12 @@ introspectable_prelude (GMarkupParseContext *context,
 }
 
 static gboolean
-start_glib_boxed (GMarkupParseContext *context,
-                  const char          *element_name,
-                  const char         **attribute_names,
-                  const char         **attribute_values,
-                  ParseContext        *ctx,
-                  GError             **error)
+start_glib_boxed (GMarkupParseContext  *context,
+                  const char           *element_name,
+                  const char          **attribute_names,
+                  const char          **attribute_values,
+                  ParseContext         *ctx,
+                  GError              **error)
 {
   const char *name;
   const char *typename;
@@ -856,12 +856,12 @@ start_glib_boxed (GMarkupParseContext *context,
 }
 
 static gboolean
-start_function (GMarkupParseContext *context,
-                const char          *element_name,
-                const char         **attribute_names,
-                const char         **attribute_values,
-                ParseContext        *ctx,
-                GError             **error)
+start_function (GMarkupParseContext  *context,
+                const char           *element_name,
+                const char          **attribute_names,
+                const char          **attribute_values,
+                ParseContext         *ctx,
+                GError              **error)
 {
   const char *name;
   const char *shadows;
@@ -1133,12 +1133,12 @@ parse_param_transfer (GIIrNodeParam *param, const char *transfer, const char *na
 }
 
 static gboolean
-start_instance_parameter (GMarkupParseContext *context,
-                          const char          *element_name,
-                          const char         **attribute_names,
-                          const char         **attribute_values,
-                          ParseContext        *ctx,
-                          GError             **error)
+start_instance_parameter (GMarkupParseContext  *context,
+                          const char           *element_name,
+                          const char          **attribute_names,
+                          const char          **attribute_values,
+                          ParseContext         *ctx,
+                          GError              **error)
 {
   const char *transfer;
   gboolean transfer_full;
@@ -1198,12 +1198,12 @@ start_instance_parameter (GMarkupParseContext *context,
 }
 
 static gboolean
-start_parameter (GMarkupParseContext *context,
-                 const char          *element_name,
-                 const char         **attribute_names,
-                 const char         **attribute_values,
-                 ParseContext        *ctx,
-                 GError             **error)
+start_parameter (GMarkupParseContext  *context,
+                 const char           *element_name,
+                 const char          **attribute_names,
+                 const char          **attribute_values,
+                 ParseContext         *ctx,
+                 GError              **error)
 {
   const char *name;
   const char *direction;
@@ -1351,12 +1351,12 @@ start_parameter (GMarkupParseContext *context,
 }
 
 static gboolean
-start_field (GMarkupParseContext *context,
-             const char          *element_name,
-             const char         **attribute_names,
-             const char         **attribute_values,
-             ParseContext        *ctx,
-             GError             **error)
+start_field (GMarkupParseContext  *context,
+             const char           *element_name,
+             const char          **attribute_names,
+             const char          **attribute_values,
+             ParseContext         *ctx,
+             GError              **error)
 {
   const char *name;
   const char *readable;
@@ -1496,12 +1496,12 @@ start_field (GMarkupParseContext *context,
 }
 
 static gboolean
-start_alias (GMarkupParseContext *context,
-             const char          *element_name,
-             const char         **attribute_names,
-             const char         **attribute_values,
-             ParseContext        *ctx,
-             GError             **error)
+start_alias (GMarkupParseContext  *context,
+             const char           *element_name,
+             const char          **attribute_names,
+             const char          **attribute_values,
+             ParseContext         *ctx,
+             GError              **error)
 {
   const char *name;
 
@@ -1519,12 +1519,12 @@ start_alias (GMarkupParseContext *context,
 }
 
 static gboolean
-start_enum (GMarkupParseContext *context,
-            const char          *element_name,
-            const char         **attribute_names,
-            const char         **attribute_values,
-             ParseContext        *ctx,
-             GError             **error)
+start_enum (GMarkupParseContext  *context,
+            const char           *element_name,
+            const char          **attribute_names,
+            const char          **attribute_values,
+            ParseContext         *ctx,
+            GError              **error)
 {
   const char *name;
   const char *typename;
@@ -1576,12 +1576,12 @@ start_enum (GMarkupParseContext *context,
 }
 
 static gboolean
-start_property (GMarkupParseContext *context,
-                const char          *element_name,
-                const char         **attribute_names,
-                const char         **attribute_values,
-                ParseContext        *ctx,
-                GError             **error)
+start_property (GMarkupParseContext  *context,
+                const char           *element_name,
+                const char          **attribute_names,
+                const char          **attribute_values,
+                ParseContext         *ctx,
+                GError              **error)
 {
   ParseState target_state;
   const char *name;
@@ -1685,12 +1685,12 @@ parse_value (const char *str)
 }
 
 static gboolean
-start_member (GMarkupParseContext *context,
-              const char          *element_name,
-              const char         **attribute_names,
-              const char         **attribute_values,
-              ParseContext        *ctx,
-              GError             **error)
+start_member (GMarkupParseContext  *context,
+              const char           *element_name,
+              const char          **attribute_names,
+              const char          **attribute_values,
+              ParseContext         *ctx,
+              GError              **error)
 {
   const char *name;
   const char *value;
@@ -1737,12 +1737,12 @@ start_member (GMarkupParseContext *context,
 }
 
 static gboolean
-start_constant (GMarkupParseContext *context,
-                const char          *element_name,
-                const char         **attribute_names,
-                const char         **attribute_values,
-                ParseContext        *ctx,
-                GError             **error)
+start_constant (GMarkupParseContext  *context,
+                const char           *element_name,
+                const char          **attribute_names,
+                const char          **attribute_values,
+                ParseContext         *ctx,
+                GError              **error)
 {
   ParseState prev_state;
   ParseState target_state;
@@ -1823,12 +1823,12 @@ start_constant (GMarkupParseContext *context,
 }
 
 static gboolean
-start_interface (GMarkupParseContext *context,
-                 const char          *element_name,
-                 const char         **attribute_names,
-                 const char         **attribute_values,
-                 ParseContext        *ctx,
-                 GError             **error)
+start_interface (GMarkupParseContext  *context,
+                 const char           *element_name,
+                 const char          **attribute_names,
+                 const char          **attribute_values,
+                 ParseContext         *ctx,
+                 GError              **error)
 {
   const char *name;
   const char *typename;
@@ -1885,12 +1885,12 @@ start_interface (GMarkupParseContext *context,
 }
 
 static gboolean
-start_class (GMarkupParseContext *context,
-             const char          *element_name,
-             const char         **attribute_names,
-             const char         **attribute_values,
-              ParseContext        *ctx,
-              GError             **error)
+start_class (GMarkupParseContext  *context,
+             const char           *element_name,
+             const char          **attribute_names,
+             const char          **attribute_values,
+             ParseContext         *ctx,
+             GError              **error)
 {
   const char *name;
   const char *parent;
@@ -1978,12 +1978,12 @@ start_class (GMarkupParseContext *context,
 }
 
 static gboolean
-start_type (GMarkupParseContext *context,
-            const char          *element_name,
-            const char         **attribute_names,
-            const char         **attribute_values,
-            ParseContext       *ctx,
-            GError             **error)
+start_type (GMarkupParseContext  *context,
+            const char           *element_name,
+            const char          **attribute_names,
+            const char          **attribute_values,
+            ParseContext        *ctx,
+            GError              **error)
 {
   const char *name;
   const char *ctype;
@@ -2300,12 +2300,12 @@ end_type (ParseContext *ctx)
 }
 
 static gboolean
-start_attribute (GMarkupParseContext *context,
-                 const char          *element_name,
-                 const char         **attribute_names,
-                 const char         **attribute_values,
-                 ParseContext       *ctx,
-                 GError             **error)
+start_attribute (GMarkupParseContext  *context,
+                 const char           *element_name,
+                 const char          **attribute_names,
+                 const char          **attribute_values,
+                 ParseContext        *ctx,
+                 GError              **error)
 {
   const char *name;
   const char *value;
@@ -2345,12 +2345,12 @@ start_attribute (GMarkupParseContext *context,
 }
 
 static gboolean
-start_return_value (GMarkupParseContext *context,
-                    const char          *element_name,
-                    const char         **attribute_names,
-                    const char         **attribute_values,
-                    ParseContext       *ctx,
-                    GError             **error)
+start_return_value (GMarkupParseContext  *context,
+                    const char           *element_name,
+                    const char          **attribute_names,
+                    const char          **attribute_values,
+                    ParseContext        *ctx,
+                    GError              **error)
 {
   GIIrNodeParam *param;
   const char *transfer;
@@ -2414,12 +2414,12 @@ start_return_value (GMarkupParseContext *context,
 }
 
 static gboolean
-start_implements (GMarkupParseContext *context,
-                  const char          *element_name,
-                  const char         **attribute_names,
-                  const char         **attribute_values,
-                  ParseContext       *ctx,
-                  GError             **error)
+start_implements (GMarkupParseContext  *context,
+                  const char           *element_name,
+                  const char          **attribute_names,
+                  const char          **attribute_values,
+                  ParseContext        *ctx,
+                  GError              **error)
 {
   GIIrNodeInterface *iface;
   const char *name;
@@ -2444,12 +2444,12 @@ start_implements (GMarkupParseContext *context,
 }
 
 static gboolean
-start_glib_signal (GMarkupParseContext *context,
-                   const char          *element_name,
-                   const char         **attribute_names,
-                   const char         **attribute_values,
-                   ParseContext       *ctx,
-                   GError             **error)
+start_glib_signal (GMarkupParseContext  *context,
+                   const char           *element_name,
+                   const char          **attribute_names,
+                   const char          **attribute_values,
+                   ParseContext        *ctx,
+                   GError              **error)
 {
   const char *name;
   const char *when;
@@ -2527,12 +2527,12 @@ start_glib_signal (GMarkupParseContext *context,
 }
 
 static gboolean
-start_vfunc (GMarkupParseContext *context,
-             const char          *element_name,
-             const char         **attribute_names,
-             const char         **attribute_values,
-             ParseContext       *ctx,
-             GError             **error)
+start_vfunc (GMarkupParseContext  *context,
+             const char           *element_name,
+             const char          **attribute_names,
+             const char          **attribute_values,
+             ParseContext        *ctx,
+             GError              **error)
 {
   const char *name;
   const char *must_chain_up;
@@ -2618,12 +2618,12 @@ start_vfunc (GMarkupParseContext *context,
 }
 
 static gboolean
-start_struct (GMarkupParseContext *context,
-              const char          *element_name,
-              const char         **attribute_names,
-              const char         **attribute_values,
-              ParseContext       *ctx,
-              GError             **error)
+start_struct (GMarkupParseContext  *context,
+              const char           *element_name,
+              const char          **attribute_names,
+              const char          **attribute_values,
+              ParseContext         *ctx,
+              GError               **error)
 {
   const char *name;
   const char *deprecated;
@@ -2712,12 +2712,12 @@ start_struct (GMarkupParseContext *context,
 }
 
 static gboolean
-start_union (GMarkupParseContext *context,
-             const char          *element_name,
-             const char         **attribute_names,
-             const char         **attribute_values,
-             ParseContext       *ctx,
-             GError             **error)
+start_union (GMarkupParseContext  *context,
+             const char           *element_name,
+             const char          **attribute_names,
+             const char          **attribute_values,
+             ParseContext        *ctx,
+             GError              **error)
 {
   const char *name;
   const char *deprecated;
@@ -2771,12 +2771,12 @@ start_union (GMarkupParseContext *context,
 }
 
 static gboolean
-start_discriminator (GMarkupParseContext *context,
-                     const char          *element_name,
-                     const char         **attribute_names,
-                     const char         **attribute_values,
-                     ParseContext       *ctx,
-                     GError             **error)
+start_discriminator (GMarkupParseContext  *context,
+                     const char           *element_name,
+                     const char          **attribute_names,
+                     const char          **attribute_values,
+                     ParseContext         *ctx,
+                     GError              **error)
 {
   const char *type;
   const char *offset;
@@ -2883,12 +2883,12 @@ parse_include (GMarkupParseContext *context,
 extern GLogLevelFlags logged_levels;
 
 static void
-start_element_handler (GMarkupParseContext *context,
-                       const char          *element_name,
-                       const char         **attribute_names,
-                       const char         **attribute_values,
-                       void                *user_data,
-                       GError             **error)
+start_element_handler (GMarkupParseContext  *context,
+                       const char           *element_name,
+                       const char          **attribute_names,
+                       const char          **attribute_values,
+                       gpointer              user_data,
+                       GError              **error)
 {
   ParseContext *ctx = user_data;
 
@@ -3263,10 +3263,10 @@ start_element_handler (GMarkupParseContext *context,
 }
 
 static gboolean
-require_one_of_end_elements (GMarkupParseContext *context,
-                             ParseContext        *ctx,
-                             const char          *actual_name,
-                             GError             **error,
+require_one_of_end_elements (GMarkupParseContext  *context,
+                             ParseContext         *ctx,
+                             const char           *actual_name,
+                             GError              **error,
                              ...)
 {
   va_list args;
@@ -3301,10 +3301,10 @@ require_one_of_end_elements (GMarkupParseContext *context,
 }
 
 static gboolean
-state_switch_end_struct_or_union (GMarkupParseContext *context,
-                                  ParseContext *ctx,
-                                  const char *element_name,
-                                  GError **error)
+state_switch_end_struct_or_union (GMarkupParseContext  *context,
+                                  ParseContext         *ctx,
+                                  const char           *element_name,
+                                  GError              **error)
 {
   pop_node (ctx);
   if (ctx->node_stack == NULL)
@@ -3336,20 +3336,20 @@ state_switch_end_struct_or_union (GMarkupParseContext *context,
 }
 
 static gboolean
-require_end_element (GMarkupParseContext *context,
-                     ParseContext        *ctx,
-                     const char          *expected_name,
-                     const char          *actual_name,
-                     GError             **error)
+require_end_element (GMarkupParseContext  *context,
+                     ParseContext         *ctx,
+                     const char           *expected_name,
+                     const char           *actual_name,
+                     GError              **error)
 {
   return require_one_of_end_elements (context, ctx, actual_name, error, expected_name, NULL);
 }
 
 static void
-end_element_handler (GMarkupParseContext *context,
-                     const char          *element_name,
-                     void                *user_data,
-                     GError             **error)
+end_element_handler (GMarkupParseContext  *context,
+                     const char           *element_name,
+                     gpointer              user_data,
+                     GError              **error)
 {
   ParseContext *ctx = user_data;
 
@@ -3647,11 +3647,11 @@ end_element_handler (GMarkupParseContext *context,
 }
 
 static void
-text_handler (GMarkupParseContext *context,
-              const char          *text,
-              gsize                text_len,
-              void                *user_data,
-              GError             **error)
+text_handler (GMarkupParseContext  *context,
+              const char           *text,
+              gsize                 text_len,
+              gpointer              user_data,
+              GError              **error)
 {
   /* FIXME warn about non-whitespace text */
 }

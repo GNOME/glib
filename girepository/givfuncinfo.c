@@ -61,7 +61,7 @@ gi_base_info_find_vfunc (GIRealInfo  *rinfo,
 
       if (strcmp (name, fname) == 0)
         return (GIVFuncInfo *) gi_info_new (GI_INFO_TYPE_VFUNC, (GIBaseInfo*) rinfo,
-                                           rinfo->typelib, offset);
+                                            rinfo->typelib, offset);
 
       offset += header->vfunc_blob_size;
     }

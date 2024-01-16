@@ -38,7 +38,7 @@ struct _GIIrTypelibBuild {
   GList       *nodes_with_attributes;
   uint32_t     n_attributes;
   uint8_t     *data;
-  GList       *stack; 
+  GList       *stack;
 };
 
 struct _GIIrModule

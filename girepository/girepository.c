@@ -633,10 +633,10 @@ gi_repository_get_dependencies (GIRepository *repository,
  * Since: 2.80
  */
 const char *
-gi_repository_load_typelib (GIRepository *repository,
-                            GITypelib     *typelib,
-                            GIRepositoryLoadFlags flags,
-                            GError      **error)
+gi_repository_load_typelib (GIRepository           *repository,
+                            GITypelib              *typelib,
+                            GIRepositoryLoadFlags   flags,
+                            GError                **error)
 {
   Header *header;
   const char *namespace;
@@ -1851,12 +1851,12 @@ gi_repository_require (GIRepository  *repository,
  * Since: 2.80
  */
 GITypelib *
-gi_repository_require_private (GIRepository  *repository,
-                               const char    *typelib_dir,
-                               const char    *namespace,
-                               const char    *version,
-                               GIRepositoryLoadFlags flags,
-                               GError       **error)
+gi_repository_require_private (GIRepository           *repository,
+                               const char             *typelib_dir,
+                               const char             *namespace,
+                               const char             *version,
+                               GIRepositoryLoadFlags   flags,
+                               GError                **error)
 {
   const char * const search_path[] = { typelib_dir, NULL };
 
