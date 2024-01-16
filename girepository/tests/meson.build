@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2024 GNOME Foundation
+
 girepository_tests = {
   'cmph-bdz': {
     'dependencies': [cmph_dep],
