@@ -2202,7 +2202,7 @@ pointer_array_extend_and_steal (void)
   GPtrArray *ptr_array, *ptr_array2, *ptr_array3;
   gsize i;
   const gsize array_size = 100;
-  gsize *array_test = g_malloc (array_size * sizeof (gsize));
+  guintptr *array_test = g_malloc (array_size * sizeof (guintptr));
 
   /* Initializing array_test */
   for (i = 0; i < array_size; i++)
@@ -2221,7 +2221,7 @@ pointer_array_extend_and_steal (void)
   g_ptr_array_extend_and_steal (ptr_array, ptr_array2);
 
   for (i = 0; i < array_size; i++)
-    g_assert_cmpuint (*((gsize *) g_ptr_array_index (ptr_array, i)), ==, i);
+    g_assert_cmpuint (*((guintptr *) g_ptr_array_index (ptr_array, i)), ==, i);
 
   g_ptr_array_free (ptr_array, TRUE);
 
@@ -2240,7 +2240,7 @@ pointer_array_extend_and_steal (void)
   g_ptr_array_extend_and_steal (ptr_array, ptr_array2);
 
   for (i = 0; i < array_size; i++)
-    g_assert_cmpuint (*((gsize *) g_ptr_array_index (ptr_array, i)), ==, i);
+    g_assert_cmpuint (*((guintptr *) g_ptr_array_index (ptr_array, i)), ==, i);
 
   g_assert_cmpuint (ptr_array3->len, ==, 0);
   g_assert_null (ptr_array3->pdata);
