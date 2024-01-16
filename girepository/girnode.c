@@ -1196,7 +1196,7 @@ get_index_of_member_type (GIIrNodeInterface *node,
                           GIIrNodeTypeId     type,
                           const char        *name)
 {
-  guint index = -1;
+  gint index = -1;
   GList *l;
 
   for (l = node->members; l; l = l->next)
