@@ -742,11 +742,10 @@ validate_param_type_blob (GITypelib     *typelib,
                           uint32_t       offset,
                           uint32_t       signature_offset,
                           gboolean       return_type,
-                          unsigned int   n_params,
+                          size_t         n_params,
                           GError       **error)
 {
   ParamTypeBlob *blob;
-  unsigned int i;
 
   blob = (ParamTypeBlob*)&typelib->data[offset];
 
@@ -768,7 +767,7 @@ validate_param_type_blob (GITypelib     *typelib,
       return FALSE;
     }
 
-  for (i = 0; i < n_params; i++)
+  for (size_t i = 0; i < n_params; i++)
     {
       if (!validate_type_blob (typelib,
                                offset + sizeof (ParamTypeBlob) +
@@ -1147,7 +1146,7 @@ validate_constant_blob (GITypelib     *typelib,
                         uint32_t       offset,
                         GError       **error)
 {
-  unsigned int value_size[] = {
+  size_t value_size[] = {
     0, /* VOID */
     4, /* BOOLEAN */
     1, /* INT8 */
