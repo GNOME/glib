@@ -50,15 +50,14 @@ build (void)
 }
 
 static void
-assert_hashes_unique (unsigned  n_hashes,
+assert_hashes_unique (size_t    n_hashes,
                       uint32_t* hashes)
 {
-  unsigned i;
+  size_t i;
 
   for (i = 0; i < n_hashes; i++)
     {
-      unsigned j = 0;
-      for (j = 0; j < n_hashes; j++)
+      for (size_t j = 0; j < n_hashes; j++)
 	{
 	  if (j != i)
 	    g_assert_cmpuint (hashes[i], !=, hashes[j]);
@@ -70,7 +69,7 @@ static void
 test_search (void)
 {
   cmph_t *c = build();
-  unsigned i;
+  size_t i;
   uint32_t hash;
   uint32_t hashes[3];
   uint32_t size;
@@ -102,7 +101,7 @@ static void
 test_search_packed (void)
 {
   cmph_t *c = build();
-  unsigned i;
+  size_t i;
   uint32_t bufsize;
   uint32_t hash;
   uint32_t hashes[3];
