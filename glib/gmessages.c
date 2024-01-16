@@ -124,83 +124,83 @@
  * GLib log levels that are considered fatal by default.
  *
  * This is not used if structured logging is enabled; see
- * [Using Structured Logging][using-structured-logging].
+ * [Using Structured Logging](logging.html#using-structured-logging).
  */
 
 /**
  * GLogFunc:
  * @log_domain: the log domain of the message
  * @log_level: the log level of the message (including the
- *     fatal and recursion flags)
+ *   fatal and recursion flags)
  * @message: the message to process
- * @user_data: user data, set in g_log_set_handler()
+ * @user_data: user data, set in [func@GLib.log_set_handler]
  *
  * Specifies the prototype of log handler functions.
  *
- * The default log handler, g_log_default_handler(), automatically appends a
+ * The default log handler, [func@GLib.log_default_handler], automatically appends a
  * new-line character to @message when printing it. It is advised that any
  * custom log handler functions behave similarly, so that logging calls in user
  * code do not need modifying to add a new-line character to the message if the
  * log handler is changed.
  *
  * This is not used if structured logging is enabled; see
- * [Using Structured Logging][using-structured-logging].
+ * [Using Structured Logging](logging.html#using-structured-logging).
  */
 
 /**
  * GLogLevelFlags:
  * @G_LOG_FLAG_RECURSION: internal flag
  * @G_LOG_FLAG_FATAL: internal flag
- * @G_LOG_LEVEL_ERROR: log level for errors, see g_error().
- *     This level is also used for messages produced by g_assert().
+ * @G_LOG_LEVEL_ERROR: log level for errors, see [func@GLib.error].
+ *   This level is also used for messages produced by [func@GLib.assert].
  * @G_LOG_LEVEL_CRITICAL: log level for critical warning messages, see
- *     g_critical().
- *     This level is also used for messages produced by g_return_if_fail()
- *     and g_return_val_if_fail().
- * @G_LOG_LEVEL_WARNING: log level for warnings, see g_warning()
- * @G_LOG_LEVEL_MESSAGE: log level for messages, see g_message()
- * @G_LOG_LEVEL_INFO: log level for informational messages, see g_info()
- * @G_LOG_LEVEL_DEBUG: log level for debug messages, see g_debug()
+ *   [func@GLib.critical]. This level is also used for messages produced by
+ *   [func@GLib.return_if_fail] and [func@GLib.return_val_if_fail].
+ * @G_LOG_LEVEL_WARNING: log level for warnings, see [func@GLib.warning]
+ * @G_LOG_LEVEL_MESSAGE: log level for messages, see [func@GLib.message]
+ * @G_LOG_LEVEL_INFO: log level for informational messages, see [func@GLib.info]
+ * @G_LOG_LEVEL_DEBUG: log level for debug messages, see [func@GLib.debug]
  * @G_LOG_LEVEL_MASK: a mask including all log levels
  *
  * Flags specifying the level of log messages.
  *
  * It is possible to change how GLib treats messages of the various
- * levels using g_log_set_handler() and g_log_set_fatal_mask().
+ * levels using [func@GLib.log_set_handler] and [func@GLib.log_set_fatal_mask].
  */
 
 /**
  * G_LOG_LEVEL_USER_SHIFT:
  *
- * Log levels below 1<<G_LOG_LEVEL_USER_SHIFT are used by GLib.
+ * Log levels below `1<<G_LOG_LEVEL_USER_SHIFT` are used by GLib.
  * Higher bits can be used for user-defined log levels.
  */
 
 /**
  * g_message:
- * @...: format string, followed by parameters to insert
- *     into the format string (as with printf())
+ * @...: format string, followed by parameters to insert into the format string
+ *   (as with `printf()`)
  *
  * A convenience function/macro to log a normal message.
  *
- * If g_log_default_handler() is used as the log handler function, a new-line
+ * If [func@GLib.log_default_handler] is used as the log handler function, a new-line
  * character will automatically be appended to @..., and need not be entered
  * manually.
  *
- * If structured logging is enabled, this will use g_log_structured();
- * otherwise it will use g_log(). See
- * [Using Structured Logging][using-structured-logging].
+ * If structured logging is enabled, this will use [func@GLib.log_structured];
+ * otherwise it will use [func@GLib.log]. See
+ * [Using Structured Logging](logging.html#using-structured-logging).
  */
 
 /**
  * g_warning:
- * @...: format string, followed by parameters to insert
- *     into the format string (as with printf())
+ * @...: format string, followed by parameters to insert into the format string
+ *   (as with `printf()`)
  *
- * A convenience function/macro to log a warning message. The message should
- * typically *not* be translated to the user's language.
+ * A convenience function/macro to log a warning message.
  *
- * This is not intended for end user error reporting. Use of #GError is
+ * The message should typically *not* be translated to the user’s language.
+ *
+ * This is not intended for end user error reporting. Use of [type@GLib.Error] is
  * preferred for that instead, as it allows calling functions to perform actions
  * conditional on the type of error.
  *
@@ -210,140 +210,144 @@
  * trusted files, etc.)
  *
  * If attempting to deal with programmer errors (for example, incorrect function
- * parameters) then you should use %G_LOG_LEVEL_CRITICAL instead.
+ * parameters) then you should use [flags@GLib.LogLevelFlags.CRITICAL] instead.
  *
- * g_warn_if_reached() and g_warn_if_fail() log at %G_LOG_LEVEL_WARNING.
+ * [func@GLib.warn_if_reached] and func@GLib.warn_if_fail] log at [flags@GLib.LogLevelFlags.WARNING].
  *
  * You can make warnings fatal at runtime by setting the `G_DEBUG`
  * environment variable (see
  * [Running GLib Applications](glib-running.html)):
  *
- * |[
- *   G_DEBUG=fatal-warnings gdb ./my-program
- * ]|
+ * ```
+ * G_DEBUG=fatal-warnings gdb ./my-program
+ * ```
  *
  * Any unrelated failures can be skipped over in
  * [gdb](https://www.gnu.org/software/gdb/) using the `continue` command.
  *
- * If g_log_default_handler() is used as the log handler function,
+ * If [func@GLib.log_default_handler] is used as the log handler function,
  * a newline character will automatically be appended to @..., and
  * need not be entered manually.
  *
- * If structured logging is enabled, this will use g_log_structured();
- * otherwise it will use g_log(). See
- * [Using Structured Logging][using-structured-logging].
+ * If structured logging is enabled, this will use [func@GLib.log_structured];
+ * otherwise it will use [func@GLib.log]. See
+ * [Using Structured Logging](logging.html#using-structured-logging).
  */
 
 /**
  * g_critical:
- * @...: format string, followed by parameters to insert
- *     into the format string (as with printf())
+ * @...: format string, followed by parameters to insert into the format string
+ *   (as with `printf()`)
  *
- * Logs a "critical warning" (%G_LOG_LEVEL_CRITICAL).
+ * Logs a ‘critical warning’ ([flags@GLib.LogLevelFlags.CRITICAL]).
  *
  * Critical warnings are intended to be used in the event of an error
  * that originated in the current process (a programmer error).
  * Logging of a critical error is by definition an indication of a bug
  * somewhere in the current program (or its libraries).
  *
- * g_return_if_fail(), g_return_val_if_fail(), g_return_if_reached() and
- * g_return_val_if_reached() log at %G_LOG_LEVEL_CRITICAL.
+ * [func@GLib.return_if_fail], [func@GLib.return_val_if_fail], [func@GLib.return_if_reached] and
+ * [func@GLib.return_val_if_reached] log at [flags@GLib.LogLevelFlags.CRITICAL].
  *
  * You can make critical warnings fatal at runtime by
  * setting the `G_DEBUG` environment variable (see
  * [Running GLib Applications](glib-running.html)):
  *
- * |[
- *   G_DEBUG=fatal-warnings gdb ./my-program
- * ]|
+ * ```
+ * G_DEBUG=fatal-warnings gdb ./my-program
+ * ```
  *
- * You can also use g_log_set_always_fatal().
+ * You can also use [func@GLib.log_set_always_fatal].
  *
  * Any unrelated failures can be skipped over in
  * [gdb](https://www.gnu.org/software/gdb/) using the `continue` command.
  *
  * The message should typically *not* be translated to the
- * user's language.
+ * user’s language.
  *
- * If g_log_default_handler() is used as the log handler function, a new-line
+ * If [func@GLib.log_default_handler] is used as the log handler function, a new-line
  * character will automatically be appended to @..., and need not be entered
  * manually.
  *
- * If structured logging is enabled, this will use g_log_structured();
- * otherwise it will use g_log(). See
- * [Using Structured Logging][using-structured-logging].
+ * If structured logging is enabled, this will use [func@GLib.log_structured];
+ * otherwise it will use [func@GLib.log]. See
+ * [Using Structured Logging](logging.html#using-structured-logging).
  */
 
 /**
  * g_error:
- * @...: format string, followed by parameters to insert
- *     into the format string (as with printf())
+ * @...: format string, followed by parameters to insert into the format string
+ *   (as with `printf()`)
  *
- * A convenience function/macro to log an error message. The message should
- * typically *not* be translated to the user's language.
+ * A convenience function/macro to log an error message.
  *
- * This is not intended for end user error reporting. Use of #GError is
+ * The message should typically *not* be translated to the user’s language.
+ *
+ * This is not intended for end user error reporting. Use of [type@GLib.Error] is
  * preferred for that instead, as it allows calling functions to perform actions
  * conditional on the type of error.
  *
- * Error messages are always fatal, resulting in a call to G_BREAKPOINT()
+ * Error messages are always fatal, resulting in a call to [func@GLib.BREAKPOINT]
  * to terminate the application. This function will
- * result in a core dump; don't use it for errors you expect.
+ * result in a core dump; don’t use it for errors you expect.
  * Using this function indicates a bug in your program, i.e.
  * an assertion failure.
  *
- * If g_log_default_handler() is used as the log handler function, a new-line
+ * If [func@GLib.log_default_handler] is used as the log handler function, a new-line
  * character will automatically be appended to @..., and need not be entered
  * manually.
  *
- * If structured logging is enabled, this will use g_log_structured();
- * otherwise it will use g_log(). See
- * [Using Structured Logging][using-structured-logging].
+ * If structured logging is enabled, this will use [func@GLib.log_structured];
+ * otherwise it will use [func@GLib.log]. See
+ * [Using Structured Logging](logging.html#using-structured-logging).
  */
 
 /**
  * g_info:
- * @...: format string, followed by parameters to insert
- *     into the format string (as with printf())
+ * @...: format string, followed by parameters to insert into the format string
+ *   (as with `printf()`)
  *
- * A convenience function/macro to log an informational message. Seldom used.
+ * A convenience function/macro to log an informational message.
  *
- * If g_log_default_handler() is used as the log handler function, a new-line
+ * Seldom used.
+ *
+ * If [func@GLib.log_default_handler] is used as the log handler function, a new-line
  * character will automatically be appended to @..., and need not be entered
  * manually.
  *
- * Such messages are suppressed by the g_log_default_handler() and
- * g_log_writer_default() unless the `G_MESSAGES_DEBUG` environment variable is
+ * Such messages are suppressed by the [func@GLib.log_default_handler] and
+ * [func@GLib.log_writer_default] unless the `G_MESSAGES_DEBUG` environment variable is
  * set appropriately. If you need to set the allowed domains at runtime, use
- * g_log_writer_default_set_debug_domains().
+ * [func@GLib.log_writer_default_set_debug_domains].
  *
- * If structured logging is enabled, this will use g_log_structured();
- * otherwise it will use g_log(). See
- * [Using Structured Logging][using-structured-logging].
+ * If structured logging is enabled, this will use [func@GLib.log_structured];
+ * otherwise it will use [func@GLib.log]. See
+ * [Using Structured Logging](logging.html#using-structured-logging).
  *
  * Since: 2.40
  */
 
 /**
  * g_debug:
- * @...: format string, followed by parameters to insert
- *     into the format string (as with printf())
+ * @...: format string, followed by parameters to insert into the format string
+ *   (as with `printf()`)
  *
- * A convenience function/macro to log a debug message. The message should
- * typically *not* be translated to the user's language.
+ * A convenience function/macro to log a debug message.
  *
- * If g_log_default_handler() is used as the log handler function, a new-line
+ * The message should typically *not* be translated to the user’s language.
+ *
+ * If [func@GLib.log_default_handler] is used as the log handler function, a new-line
  * character will automatically be appended to @..., and need not be entered
  * manually.
  *
- * Such messages are suppressed by the g_log_default_handler() and
- * g_log_writer_default() unless the `G_MESSAGES_DEBUG` environment variable is
+ * Such messages are suppressed by the [func@GLib.log_default_handler] and
+ * [func@GLib.log_writer_default] unless the `G_MESSAGES_DEBUG` environment variable is
  * set appropriately. If you need to set the allowed domains at runtime, use
- * g_log_writer_default_set_debug_domains().
+ * [func@GLib.log_writer_default_set_debug_domains].
  *
- * If structured logging is enabled, this will use g_log_structured();
- * otherwise it will use g_log(). See
- * [Using Structured Logging][using-structured-logging].
+ * If structured logging is enabled, this will use [func@GLib.log_structured];
+ * otherwise it will use [func@GLib.log]. See
+ * [Using Structured Logging](logging.html#using-structured-logging).
  *
  * Since: 2.6
  */
@@ -550,13 +554,14 @@ g_log_domain_get_handler_L (GLogDomain	*domain,
 
 /**
  * g_log_set_always_fatal:
- * @fatal_mask: the mask containing bits set for each level
- *     of error which is to be fatal
+ * @fatal_mask: the mask containing bits set for each level of error which is
+ *   to be fatal
  *
  * Sets the message levels which are always fatal, in any log domain.
+ *
  * When a message with any of these levels is logged the program terminates.
  * You can only set the levels defined by GLib to be fatal.
- * %G_LOG_LEVEL_ERROR is always fatal.
+ * [flags@GLib.LogLevelFlags.ERROR] is always fatal.
  *
  * You can also make some message levels fatal at runtime by setting
  * the `G_DEBUG` environment variable (see
@@ -565,10 +570,10 @@ g_log_domain_get_handler_L (GLogDomain	*domain,
  * Libraries should not call this function, as it affects all messages logged
  * by a process, including those from other libraries.
  *
- * Structured log messages (using g_log_structured() and
- * g_log_structured_array()) are fatal only if the default log writer is used;
+ * Structured log messages (using [func@GLib.log_structured] and
+ * [func@GLib.log_structured_array]) are fatal only if the default log writer is used;
  * otherwise it is up to the writer function to determine which log messages
- * are fatal. See [Using Structured Logging][using-structured-logging].
+ * are fatal. See [Using Structured Logging](logging.html#using-structured-logging).
  *
  * Returns: the old fatal mask
  */
@@ -600,18 +605,19 @@ g_log_set_always_fatal (GLogLevelFlags fatal_mask)
  * @fatal_mask: the new fatal mask
  *
  * Sets the log levels which are fatal in the given domain.
- * %G_LOG_LEVEL_ERROR is always fatal.
  *
- * This has no effect on structured log messages (using g_log_structured() or
- * g_log_structured_array()). To change the fatal behaviour for specific log
+ * [flags@GLib.LogLevelFlags.ERROR] is always fatal.
+ *
+ * This has no effect on structured log messages (using [func@GLib.log_structured] or
+ * [func@GLib.log_structured_array]). To change the fatal behaviour for specific log
  * messages, programs must install a custom log writer function using
- * g_log_set_writer_func(). See
- * [Using Structured Logging][using-structured-logging].
+ * [func@GLib.log_set_writer_func]. See
+ * [Using Structured Logging](logging.html#using-structured-logging).
  *
  * This function is mostly intended to be used with
- * %G_LOG_LEVEL_CRITICAL.  You should typically not set
- * %G_LOG_LEVEL_WARNING, %G_LOG_LEVEL_MESSAGE, %G_LOG_LEVEL_INFO or
- * %G_LOG_LEVEL_DEBUG as fatal except inside of test programs.
+ * [flags@GLib.LogLevelFlags.CRITICAL].  You should typically not set
+ * [flags@GLib.LogLevelFlags.WARNING], [flags@GLib.LogLevelFlags.MESSAGE], [flags@GLib.LogLevelFlags.INFO] or
+ * [flags@GLib.LogLevelFlags.DEBUG] as fatal except inside of test programs.
  *
  * Returns: the old fatal mask for the log domain
  */
@@ -647,49 +653,49 @@ g_log_set_fatal_mask (const gchar   *log_domain,
 
 /**
  * g_log_set_handler:
- * @log_domain: (nullable): the log domain, or %NULL for the default ""
+ * @log_domain: (nullable): the log domain, or `NULL` for the default `""`
  *    application domain
  * @log_levels: the log levels to apply the log handler for.
  *    To handle fatal and recursive messages as well, combine
- *    the log levels with the %G_LOG_FLAG_FATAL and
- *    %G_LOG_FLAG_RECURSION bit flags.
+ *    the log levels with the [flags@GLib.LogLevelFlags.FATAL] and
+ *    [flags@GLib.LogLevelFlags.RECURSION] bit flags.
  * @log_func: the log handler function
  * @user_data: data passed to the log handler
  *
  * Sets the log handler for a domain and a set of log levels.
  *
  * To handle fatal and recursive messages the @log_levels parameter
- * must be combined with the %G_LOG_FLAG_FATAL and %G_LOG_FLAG_RECURSION
+ * must be combined with the [flags@GLib.LogLevelFlags.FATAL] and [flags@GLib.LogLevelFlags.RECURSION]
  * bit flags.
  *
- * Note that since the %G_LOG_LEVEL_ERROR log level is always fatal, if
+ * Note that since the [flags@GLib.LogLevelFlags.ERROR] log level is always fatal, if
  * you want to set a handler for this log level you must combine it with
- * %G_LOG_FLAG_FATAL.
+ * [flags@GLib.LogLevelFlags.FATAL].
  *
  * This has no effect if structured logging is enabled; see
- * [Using Structured Logging][using-structured-logging].
+ * [Using Structured Logging](logging.html#using-structured-logging).
  *
  * Here is an example for adding a log handler for all warning messages
  * in the default domain:
  *
- * |[<!-- language="C" --> 
+ * ```c
  * g_log_set_handler (NULL, G_LOG_LEVEL_WARNING | G_LOG_FLAG_FATAL
  *                    | G_LOG_FLAG_RECURSION, my_log_handler, NULL);
- * ]|
+ * ```
  *
  * This example adds a log handler for all critical messages from GTK:
  *
- * |[<!-- language="C" --> 
+ * ```c
  * g_log_set_handler ("Gtk", G_LOG_LEVEL_CRITICAL | G_LOG_FLAG_FATAL
  *                    | G_LOG_FLAG_RECURSION, my_log_handler, NULL);
- * ]|
+ * ```
  *
  * This example adds a log handler for all messages from GLib:
  *
- * |[<!-- language="C" --> 
+ * ```c
  * g_log_set_handler ("GLib", G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL
  *                    | G_LOG_FLAG_RECURSION, my_log_handler, NULL);
- * ]|
+ * ```
  *
  * Returns: the id of the new handler
  */
@@ -704,22 +710,22 @@ g_log_set_handler (const gchar	 *log_domain,
 
 /**
  * g_log_set_handler_full: (rename-to g_log_set_handler)
- * @log_domain: (nullable): the log domain, or %NULL for the default ""
+ * @log_domain: (nullable): the log domain, or `NULL` for the default `""`
  *   application domain
  * @log_levels: the log levels to apply the log handler for.
  *   To handle fatal and recursive messages as well, combine
- *   the log levels with the %G_LOG_FLAG_FATAL and
- *   %G_LOG_FLAG_RECURSION bit flags.
+ *   the log levels with the [flags@GLib.LogLevelFlags.FATAL] and
+ *   [flags@GLib.LogLevelFlags.RECURSION] bit flags.
  * @log_func: the log handler function
  * @user_data: data passed to the log handler
- * @destroy: destroy notify for @user_data, or %NULL
+ * @destroy: destroy notify for @user_data, or `NULL`
  *
- * Like g_log_set_handler(), but takes a destroy notify for the @user_data.
+ * Like [func@GLib.log_set_handler], but takes a destroy notify for the @user_data.
  *
  * This has no effect if structured logging is enabled; see
- * [Using Structured Logging][using-structured-logging].
+ * [Using Structured Logging](logging.html#using-structured-logging).
  *
- * Returns: the id of the new handler
+ * Returns: the ID of the new handler
  *
  * Since: 2.46
  */
@@ -768,11 +774,12 @@ g_log_set_handler_full (const gchar    *log_domain,
  *
  * Installs a default log handler which is used if no
  * log handler has been set for the particular log domain
- * and log level combination. By default, GLib uses
- * g_log_default_handler() as default log handler.
+ * and log level combination.
+ *
+ * By default, GLib uses [func@GLib.log_default_handler] as default log handler.
  *
  * This has no effect if structured logging is enabled; see
- * [Using Structured Logging][using-structured-logging].
+ * [Using Structured Logging](logging.html#using-structured-logging).
  *
  * Returns: the previous default log handler
  *
@@ -815,10 +822,10 @@ g_log_set_default_handler (GLogFunc log_func,
  * This handler has no effect on g_error messages.
  *
  * This handler also has no effect on structured log messages (using
- * g_log_structured() or g_log_structured_array()). To change the fatal
+ * [func@GLib.log_structured] or [func@GLib.log_structured_array]). To change the fatal
  * behaviour for specific log messages, programs must install a custom log
- * writer function using g_log_set_writer_func().See
- * [Using Structured Logging][using-structured-logging].
+ * writer function using [func@GLib.log_set_writer_func].See
+ * [Using Structured Logging](logging.html#using-structured-logging).
  *
  * Since: 2.22
  **/
@@ -835,13 +842,13 @@ g_test_log_set_fatal_handler (GTestLogFatalFunc log_func,
 /**
  * g_log_remove_handler:
  * @log_domain: the log domain
- * @handler_id: the id of the handler, which was returned
- *     in g_log_set_handler()
+ * @handler_id: the ID of the handler, which was returned
+ *   in [func@GLib.log_set_handler]
  *
  * Removes the log handler.
  *
  * This has no effect if structured logging is enabled; see
- * [Using Structured Logging][using-structured-logging].
+ * [Using Structured Logging](logging.html#using-structured-logging).
  */
 void
 g_log_remove_handler (const gchar *log_domain,
@@ -1024,16 +1031,18 @@ static gboolean gmessages_use_stderr = FALSE;
 
 /**
  * g_log_writer_default_set_use_stderr:
- * @use_stderr: If %TRUE, use `stderr` for log messages that would
+ * @use_stderr: If `TRUE`, use `stderr` for log messages that would
  *  normally have appeared on `stdout`
  *
- * Configure whether the built-in log functions
- * (g_log_default_handler() for the old-style API, and both
- * g_log_writer_default() and g_log_writer_standard_streams() for the
- * structured API) will output all log messages to `stderr`.
+ * Configure whether the built-in log functions will output all log messages to
+ * `stderr`.
  *
- * By default, log messages of levels %G_LOG_LEVEL_INFO and
- * %G_LOG_LEVEL_DEBUG are sent to `stdout`, and other log messages are
+ * The built-in log functions are [func@GLib.log_default_handler] for the
+ * old-style API, and both [func@GLib.log_writer_default] and
+ * [func@GLib.log_writer_standard_streams] for the structured API.
+ *
+ * By default, log messages of levels [flags@GLib.LogLevelFlags.INFO] and
+ * [flags@GLib.LogLevelFlags.DEBUG] are sent to `stdout`, and other log messages are
  * sent to `stderr`. This is problematic for applications that intend
  * to reserve `stdout` for structured output such as JSON or XML.
  *
@@ -1114,24 +1123,24 @@ static GSList *expected_messages = NULL;
 
 /**
  * g_logv:
- * @log_domain: (nullable): the log domain, or %NULL for the default ""
- * application domain
+ * @log_domain: (nullable): the log domain, or `NULL` for the default `""`
+ *   application domain
  * @log_level: the log level
- * @format: the message format. See the printf() documentation
+ * @format: the message format. See the `printf()` documentation
  * @args: the parameters to insert into the format string
  *
  * Logs an error or debugging message.
  *
- * If the log level has been set as fatal, G_BREAKPOINT() is called
- * to terminate the program. See the documentation for G_BREAKPOINT() for
+ * If the log level has been set as fatal, [func@GLib.BREAKPOINT] is called
+ * to terminate the program. See the documentation for [func@GLib.BREAKPOINT] for
  * details of the debugging options this provides.
  *
- * If g_log_default_handler() is used as the log handler function, a new-line
+ * If [func@GLib.log_default_handler] is used as the log handler function, a new-line
  * character will automatically be appended to @..., and need not be entered
  * manually.
  *
- * If [structured logging is enabled][using-structured-logging] this will
- * output via the structured log writer function (see g_log_set_writer_func()).
+ * If [structured logging is enabled](logging.html#using-structured-logging) this will
+ * output via the structured log writer function (see [func@GLib.log_set_writer_func]).
  */
 void
 g_logv (const gchar   *log_domain,
@@ -1274,25 +1283,25 @@ g_logv (const gchar   *log_domain,
 
 /**
  * g_log:
- * @log_domain: (nullable): the log domain, usually %G_LOG_DOMAIN, or %NULL
+ * @log_domain: (nullable): the log domain, usually `G_LOG_DOMAIN`, or `NULL`
  *   for the default
- * @log_level: the log level, either from #GLogLevelFlags
+ * @log_level: the log level, either from [type@GLib.LogLevelFlags]
  *   or a user-defined level
  * @format: the message format. See the `printf()` documentation
  * @...: the parameters to insert into the format string
  *
  * Logs an error or debugging message.
  *
- * If the log level has been set as fatal, G_BREAKPOINT() is called
- * to terminate the program. See the documentation for G_BREAKPOINT() for
+ * If the log level has been set as fatal, [func@GLib.BREAKPOINT] is called
+ * to terminate the program. See the documentation for [func@GLib.BREAKPOINT] for
  * details of the debugging options this provides.
  *
- * If g_log_default_handler() is used as the log handler function, a new-line
+ * If [func@GLib.log_default_handler] is used as the log handler function, a new-line
  * character will automatically be appended to @..., and need not be entered
  * manually.
  *
- * If [structured logging is enabled][using-structured-logging] this will
- * output via the structured log writer function (see g_log_set_writer_func()).
+ * If [structured logging is enabled](logging.html#using-structured-logging) this will
+ * output via the structured log writer function (see [func@GLib.log_set_writer_func]).
  */
 void
 g_log (const gchar   *log_domain,
@@ -1478,27 +1487,27 @@ done_query:
 
 /**
  * g_log_structured:
- * @log_domain: log domain, usually %G_LOG_DOMAIN
- * @log_level: log level, either from #GLogLevelFlags, or a user-defined
+ * @log_domain: log domain, usually `G_LOG_DOMAIN`
+ * @log_level: log level, either from [type@GLib.LogLevelFlags], or a user-defined
  *    level
  * @...: key-value pairs of structured data to add to the log entry, followed
- *    by the key "MESSAGE", followed by a printf()-style message format,
+ *    by the key `MESSAGE`, followed by a `printf()`-style message format,
  *    followed by parameters to insert in the format string
  *
  * Log a message with structured data.
  *
  * The message will be passed through to the log writer set by the application
- * using g_log_set_writer_func(). If the message is fatal (i.e. its log level
- * is %G_LOG_LEVEL_ERROR), the program will be aborted by calling
- * G_BREAKPOINT() at the end of this function. If the log writer returns
- * %G_LOG_WRITER_UNHANDLED (failure), no other fallback writers will be tried.
- * See the documentation for #GLogWriterFunc for information on chaining
+ * using [func@GLib.log_set_writer_func]. If the message is fatal (i.e. its log level
+ * is [flags@GLib.LogLevelFlags.ERROR]), the program will be aborted by calling
+ * [func@GLib.BREAKPOINT] at the end of this function. If the log writer returns
+ * [enum@GLib.LogWriterOutput.UNHANDLED] (failure), no other fallback writers will be tried.
+ * See the documentation for [type@GLib.LogWriterFunc] for information on chaining
  * writers.
  *
  * The structured data is provided as key–value pairs, where keys are UTF-8
  * strings, and values are arbitrary pointers — typically pointing to UTF-8
  * strings, but that is not a requirement. To pass binary (non-nul-terminated)
- * structured data, use g_log_structured_array(). The keys for structured data
+ * structured data, use [func@GLib.log_structured_array]. The keys for structured data
  * should follow the [systemd journal
  * fields](https://www.freedesktop.org/software/systemd/man/systemd.journal-fields.html)
  * specification. It is suggested that custom keys are namespaced according to
@@ -1506,10 +1515,10 @@ done_query:
  * `GLIB_` prefix.
  *
  * Note that keys that expect UTF-8 strings (specifically `"MESSAGE"` and
- * `"GLIB_DOMAIN"`) must be passed as NUL-terminated UTF-8 strings until GLib
+ * `"GLIB_DOMAIN"`) must be passed as nul-terminated UTF-8 strings until GLib
  * version 2.74.1 because the default log handler did not consider the length of
  * the `GLogField`. Starting with GLib 2.74.1 this is fixed and
- * non-NUL-terminated UTF-8 strings can be passed with their correct length.
+ * non-nul-terminated UTF-8 strings can be passed with their correct length.
  *
  * The @log_domain will be converted into a `GLIB_DOMAIN` field. @log_level will
  * be converted into a
@@ -1528,19 +1537,19 @@ done_query:
  *  * [`ERRNO`](https://www.freedesktop.org/software/systemd/man/systemd.journal-fields.html#ERRNO=)
  *
  * Note that `CODE_FILE`, `CODE_LINE` and `CODE_FUNC` are automatically set by
- * the logging macros, G_DEBUG_HERE(), g_message(), g_warning(), g_critical(),
- * g_error(), etc, if the symbols `G_LOG_USE_STRUCTURED` is defined before including
+ * the logging macros, [func@GLib.DEBUG_HERE], [func@GLib.message], [func@GLib.warning], [func@GLib.critical],
+ * [func@GLib.error], etc, if the symbol `G_LOG_USE_STRUCTURED` is defined before including
  * `glib.h`.
  *
  * For example:
  *
- * |[<!-- language="C" -->
+ * ```c
  * g_log_structured (G_LOG_DOMAIN, G_LOG_LEVEL_DEBUG,
  *                   "MESSAGE_ID", "06d4df59e6c24647bfe69d2c27ef0b4e",
  *                   "MY_APPLICATION_CUSTOM_FIELD", "some debug string",
  *                   "MESSAGE", "This is a debug message about pointer %p and integer %u.",
  *                   some_pointer, some_integer);
- * ]|
+ * ```
  *
  * Note that each `MESSAGE_ID` must be [uniquely and randomly
  * generated](https://www.freedesktop.org/software/systemd/man/systemd.journal-fields.html#MESSAGE_ID=).
@@ -1549,13 +1558,13 @@ done_query:
  * your software.
  *
  * To pass a user data pointer to the log writer function which is specific to
- * this logging call, you must use g_log_structured_array() and pass the pointer
- * as a field with #GLogField.length set to zero, otherwise it will be
+ * this logging call, you must use [func@GLib.log_structured_array] and pass the pointer
+ * as a field with `GLogField.length` set to zero, otherwise it will be
  * interpreted as a string.
  *
  * For example:
  *
- * |[<!-- language="C" -->
+ * ```c
  * const GLogField fields[] = {
  *   { "MESSAGE", "This is a debug message.", -1 },
  *   { "MESSAGE_ID", "fcfb2e1e65c3494386b74878f1abf893", -1 },
@@ -1563,12 +1572,12 @@ done_query:
  *   { "MY_APPLICATION_STATE", state_object, 0 },
  * };
  * g_log_structured_array (G_LOG_LEVEL_DEBUG, fields, G_N_ELEMENTS (fields));
- * ]|
+ * ```
  *
  * Note also that, even if no other structured fields are specified, there
  * must always be a `MESSAGE` key before the format string. The `MESSAGE`-format
  * pair has to be the last of the key-value pairs, and `MESSAGE` is the only
- * field for which printf()-style formatting is supported.
+ * field for which `printf()`-style formatting is supported.
  *
  * The default writer function for `stdout` and `stderr` will automatically
  * append a new-line character after the message, so you should not add one
@@ -1682,30 +1691,30 @@ g_log_structured (const gchar    *log_domain,
 
 /**
  * g_log_variant:
- * @log_domain: (nullable): log domain, usually %G_LOG_DOMAIN
- * @log_level: log level, either from #GLogLevelFlags, or a user-defined
+ * @log_domain: (nullable): log domain, usually `G_LOG_DOMAIN`
+ * @log_level: log level, either from [type@GLib.LogLevelFlags], or a user-defined
  *    level
- * @fields: a dictionary (#GVariant of the type %G_VARIANT_TYPE_VARDICT)
+ * @fields: a dictionary ([type@GLib.Variant] of the type `G_VARIANT_TYPE_VARDICT`)
  * containing the key-value pairs of message data.
  *
- * Log a message with structured data, accepting the data within a #GVariant. This
- * version is especially useful for use in other languages, via introspection.
+ * Log a message with structured data, accepting the data within a [type@GLib.Variant].
  *
- * The only mandatory item in the @fields dictionary is the "MESSAGE" which must
+ * This version is especially useful for use in other languages, via introspection.
+ *
+ * The only mandatory item in the @fields dictionary is the `"MESSAGE"` which must
  * contain the text shown to the user.
  *
- * The values in the @fields dictionary are likely to be of type String
- * (%G_VARIANT_TYPE_STRING). Array of bytes (%G_VARIANT_TYPE_BYTESTRING) is also
+ * The values in the @fields dictionary are likely to be of type `G_VARIANT_TYPE_STRING`.
+ * Array of bytes (`G_VARIANT_TYPE_BYTESTRING`) is also
  * supported. In this case the message is handled as binary and will be forwarded
  * to the log writer as such. The size of the array should not be higher than
- * %G_MAXSSIZE. Otherwise it will be truncated to this size. For other types
- * g_variant_print() will be used to convert the value into a string.
+ * `G_MAXSSIZE`. Otherwise it will be truncated to this size. For other types
+ * [method@GLib.Variant.print] will be used to convert the value into a string.
  *
- * For more details on its usage and about the parameters, see g_log_structured().
+ * For more details on its usage and about the parameters, see [func@GLib.log_structured].
  *
  * Since: 2.50
  */
-
 void
 g_log_variant (const gchar    *log_domain,
                GLogLevelFlags  log_level,
@@ -1799,18 +1808,20 @@ static GLogWriterOutput _g_log_writer_fallback (GLogLevelFlags   log_level,
 
 /**
  * g_log_structured_array:
- * @log_level: log level, either from #GLogLevelFlags, or a user-defined
+ * @log_level: log level, either from [type@GLib.LogLevelFlags], or a user-defined
  *    level
  * @fields: (array length=n_fields): key–value pairs of structured data to add
  *    to the log message
  * @n_fields: number of elements in the @fields array
  *
- * Log a message with structured data. The message will be passed through to the
- * log writer set by the application using g_log_set_writer_func(). If the
- * message is fatal (i.e. its log level is %G_LOG_LEVEL_ERROR), the program will
+ * Log a message with structured data.
+ *
+ * The message will be passed through to the log writer set by the application
+ * using [func@GLib.log_set_writer_func]. If the
+ * message is fatal (i.e. its log level is [flags@GLib.LogLevelFlags.ERROR]), the program will
  * be aborted at the end of this function.
  *
- * See g_log_structured() for more documentation.
+ * See [func@GLib.log_structured] for more documentation.
  *
  * This assumes that @log_level is already present in @fields (typically as the
  * `PRIORITY` field).
@@ -1909,14 +1920,16 @@ g_log_structured_standard (const gchar    *log_domain,
 
 /**
  * g_log_set_writer_func:
- * @func: log writer function, which must not be %NULL
+ * @func: log writer function, which must not be `NULL`
  * @user_data: (closure func): user data to pass to @func
  * @user_data_free: (destroy func): function to free @user_data once it’s
- *    finished with, if non-%NULL
+ *    finished with, if non-`NULL`
  *
  * Set a writer function which will be called to format and write out each log
- * message. Each program should set a writer function, or the default writer
- * (g_log_writer_default()) will be used.
+ * message.
+ *
+ * Each program should set a writer function, or the default writer
+ * ([func@GLib.log_writer_default]) will be used.
  *
  * Libraries **must not** call this function — only programs are allowed to
  * install a writer function, as there must be a single, central point where
@@ -1953,11 +1966,12 @@ g_log_set_writer_func (GLogWriterFunc func,
  * g_log_writer_supports_color:
  * @output_fd: output file descriptor to check
  *
- * Check whether the given @output_fd file descriptor supports ANSI color
- * escape sequences. If so, they can safely be used when formatting log
- * messages.
+ * Check whether the given @output_fd file descriptor supports
+ * [ANSI color escape sequences](https://en.wikipedia.org/wiki/ANSI_escape_code).
  *
- * Returns: %TRUE if ANSI color escapes are supported, %FALSE otherwise
+ * If so, they can safely be used when formatting log messages.
+ *
+ * Returns: `TRUE` if ANSI color escapes are supported, `FALSE` otherwise
  * Since: 2.50
  */
 gboolean
@@ -2072,13 +2086,13 @@ open_journal (void)
  * systemd journal, or something else (like a log file or `stdout` or
  * `stderr`).
  *
- * Invalid file descriptors are accepted and return %FALSE, which allows for
+ * Invalid file descriptors are accepted and return `FALSE`, which allows for
  * the following construct without needing any additional error handling:
- * |[<!-- language="C" -->
- *   is_journald = g_log_writer_is_journald (fileno (stderr));
- * ]|
+ * ```c
+ * is_journald = g_log_writer_is_journald (fileno (stderr));
+ * ```
  *
- * Returns: %TRUE if @output_fd points to the journal, %FALSE otherwise
+ * Returns: `TRUE` if @output_fd points to the journal, `FALSE` otherwise
  * Since: 2.50
  */
 gboolean
@@ -2095,18 +2109,21 @@ static void escape_string (GString *string);
 
 /**
  * g_log_writer_format_fields:
- * @log_level: log level, either from #GLogLevelFlags, or a user-defined
+ * @log_level: log level, either from [type@GLib.LogLevelFlags], or a user-defined
  *    level
  * @fields: (array length=n_fields): key–value pairs of structured data forming
  *    the log message
  * @n_fields: number of elements in the @fields array
- * @use_color: %TRUE to use ANSI color escape sequences when formatting the
- *    message, %FALSE to not
+ * @use_color: `TRUE` to use
+ *   [ANSI color escape sequences](https://en.wikipedia.org/wiki/ANSI_escape_code)
+ *   when formatting the message, `FALSE` to not
  *
  * Format a structured log message as a string suitable for outputting to the
- * terminal (or elsewhere). This will include the values of all fields it knows
+ * terminal (or elsewhere).
+ *
+ * This will include the values of all fields it knows
  * how to interpret, which includes `MESSAGE` and `GLIB_DOMAIN` (see the
- * documentation for g_log_structured()). It does not include values from
+ * documentation for [func@GLib.log_structured]). It does not include values from
  * unknown fields.
  *
  * The returned string does **not** have a trailing new-line character. It is
@@ -2425,24 +2442,26 @@ retry2:
 
 /**
  * g_log_writer_journald:
- * @log_level: log level, either from #GLogLevelFlags, or a user-defined
+ * @log_level: log level, either from [type@GLib.LogLevelFlags], or a user-defined
  *    level
  * @fields: (array length=n_fields): key–value pairs of structured data forming
  *    the log message
  * @n_fields: number of elements in the @fields array
- * @user_data: user data passed to g_log_set_writer_func()
+ * @user_data: user data passed to [func@GLib.log_set_writer_func]
  *
  * Format a structured log message and send it to the systemd journal as a set
- * of key–value pairs. All fields are sent to the journal, but if a field has
+ * of key–value pairs.
+ *
+ * All fields are sent to the journal, but if a field has
  * length zero (indicating program-specific data) then only its key will be
  * sent.
  *
- * This is suitable for use as a #GLogWriterFunc.
+ * This is suitable for use as a [type@GLib.LogWriterFunc].
  *
  * If GLib has been compiled without systemd support, this function is still
- * defined, but will always return %G_LOG_WRITER_UNHANDLED.
+ * defined, but will always return [enum@GLib.LogWriterOutput.UNHANDLED].
  *
- * Returns: %G_LOG_WRITER_HANDLED on success, %G_LOG_WRITER_UNHANDLED otherwise
+ * Returns: [enum@GLib.LogWriterOutput.HANDLED] on success, [enum@GLib.LogWriterOutput.UNHANDLED] otherwise
  * Since: 2.50
  */
 GLogWriterOutput
@@ -2536,29 +2555,33 @@ g_log_writer_journald (GLogLevelFlags   log_level,
 
 /**
  * g_log_writer_standard_streams:
- * @log_level: log level, either from #GLogLevelFlags, or a user-defined
+ * @log_level: log level, either from [type@GLib.LogLevelFlags], or a user-defined
  *    level
  * @fields: (array length=n_fields): key–value pairs of structured data forming
  *    the log message
  * @n_fields: number of elements in the @fields array
- * @user_data: user data passed to g_log_set_writer_func()
+ * @user_data: user data passed to [func@GLib.log_set_writer_func]
  *
  * Format a structured log message and print it to either `stdout` or `stderr`,
- * depending on its log level. %G_LOG_LEVEL_INFO and %G_LOG_LEVEL_DEBUG messages
+ * depending on its log level.
+ *
+ * [flags@GLib.LogLevelFlags.INFO] and [flags@GLib.LogLevelFlags.DEBUG] messages
  * are sent to `stdout`, or to `stderr` if requested by
- * g_log_writer_default_set_use_stderr();
+ * [func@GLib.log_writer_default_set_use_stderr];
  * all other log levels are sent to `stderr`. Only fields
  * which are understood by this function are included in the formatted string
  * which is printed.
  *
- * If the output stream supports ANSI color escape sequences, they will be used
- * in the output.
+ * If the output stream supports
+ * [ANSI color escape sequences](https://en.wikipedia.org/wiki/ANSI_escape_code),
+ * they will be used in the output.
  *
  * A trailing new-line character is added to the log message when it is printed.
  *
- * This is suitable for use as a #GLogWriterFunc.
+ * This is suitable for use as a [type@GLib.LogWriterFunc].
  *
- * Returns: %G_LOG_WRITER_HANDLED on success, %G_LOG_WRITER_UNHANDLED otherwise
+ * Returns: [enum@GLib.LogWriterOutput.HANDLED] on success,
+ *   [enum@GLib.LogWriterOutput.UNHANDLED] otherwise
  * Since: 2.50
  */
 GLogWriterOutput
@@ -2634,9 +2657,11 @@ static struct {
  * g_log_writer_default_set_debug_domains:
  * @domains: (nullable) (transfer none): `NULL`-terminated array with domains to be printed.
  *   `NULL` or an array with no values means none. Array with a single value `"all"` means all.
-
+ *
  * Reset the list of domains to be logged, that might be initially set by the
- * `G_MESSAGES_DEBUG` environment variable. This function is thread-safe.
+ * `G_MESSAGES_DEBUG` environment variable.
+ *
+ * This function is thread-safe.
  *
  * Since: 2.80
  */
@@ -2716,39 +2741,38 @@ should_drop_message (GLogLevelFlags   log_level,
 /**
  * g_log_writer_default_would_drop:
  * @log_domain: (nullable): log domain
- * @log_level: log level, either from #GLogLevelFlags, or a user-defined
+ * @log_level: log level, either from [type@GLib.LogLevelFlags], or a user-defined
  *    level
  *
- * Check whether g_log_writer_default() and g_log_default_handler() would
+ * Check whether [func@GLib.log_writer_default] and [func@GLib.log_default_handler] would
  * ignore a message with the given domain and level.
  *
- * As with g_log_default_handler(), this function drops debug and informational
+ * As with [func@GLib.log_default_handler], this function drops debug and informational
  * messages unless their log domain (or `all`) is listed in the space-separated
- * `G_MESSAGES_DEBUG` environment variable, or by g_log_writer_default_set_debug_domains().
+ * `G_MESSAGES_DEBUG` environment variable, or by [func@GLib.log_writer_default_set_debug_domains].
  *
  * This can be used when implementing log writers with the same filtering
  * behaviour as the default, but a different destination or output format:
  *
- * |[<!-- language="C" -->
- *   if (g_log_writer_default_would_drop (log_level, log_domain))
- *     return G_LOG_WRITER_HANDLED;
+ * ```c
+ * if (g_log_writer_default_would_drop (log_level, log_domain))
+ *   return G_LOG_WRITER_HANDLED;
  * ]|
  *
  * or to skip an expensive computation if it is only needed for a debugging
  * message, and `G_MESSAGES_DEBUG` is not set:
  *
- * |[<!-- language="C" -->
- *   if (!g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, G_LOG_DOMAIN))
- *     {
- *       gchar *result = expensive_computation (my_object);
+ * ```c
+ * if (!g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, G_LOG_DOMAIN))
+ *   {
+ *     g_autofree gchar *result = expensive_computation (my_object);
  *
- *       g_debug ("my_object result: %s", result);
- *       g_free (result);
- *     }
- * ]|
+ *     g_debug ("my_object result: %s", result);
+ *   }
+ * ```
  *
- * Returns: %TRUE if the log message would be dropped by GLib's
- *  default log handlers
+ * Returns: `TRUE` if the log message would be dropped by GLib’s
+ *   default log handlers
  * Since: 2.68
  */
 gboolean
@@ -2760,15 +2784,17 @@ g_log_writer_default_would_drop (GLogLevelFlags  log_level,
 
 /**
  * g_log_writer_default:
- * @log_level: log level, either from #GLogLevelFlags, or a user-defined
+ * @log_level: log level, either from [type@GLib.LogLevelFlags], or a user-defined
  *    level
  * @fields: (array length=n_fields): key–value pairs of structured data forming
  *    the log message
  * @n_fields: number of elements in the @fields array
- * @user_data: user data passed to g_log_set_writer_func()
+ * @user_data: user data passed to [func@GLib.log_set_writer_func]
  *
  * Format a structured log message and output it to the default log destination
- * for the platform. On Linux, this is typically the systemd journal, falling
+ * for the platform.
+ *
+ * On Linux, this is typically the systemd journal, falling
  * back to `stdout` or `stderr` if running from the terminal or if output is
  * being redirected to a file.
  *
@@ -2776,18 +2802,19 @@ g_log_writer_default_would_drop (GLogLevelFlags  log_level,
  * future. Distributors of GLib may modify this function to impose their own
  * (documented) platform-specific log writing policies.
  *
- * This is suitable for use as a #GLogWriterFunc, and is the default writer used
- * if no other is set using g_log_set_writer_func().
+ * This is suitable for use as a [type@GLib.LogWriterFunc], and is the default writer used
+ * if no other is set using [func@GLib.log_set_writer_func].
  *
- * As with g_log_default_handler(), this function drops debug and informational
+ * As with [func@GLib.log_default_handler], this function drops debug and informational
  * messages unless their log domain (or `all`) is listed in the space-separated
- * `G_MESSAGES_DEBUG` environment variable, or set at runtime by g_log_writer_default_set_debug_domains().
+ * `G_MESSAGES_DEBUG` environment variable, or set at runtime by [func@GLib.log_writer_default_set_debug_domains].
  *
- * g_log_writer_default() uses the mask set by g_log_set_always_fatal() to
- * determine which messages are fatal. When using a custom writer func instead it is
+ * [func@GLib.log_writer_default] uses the mask set by [func@GLib.log_set_always_fatal] to
+ * determine which messages are fatal. When using a custom writer function instead it is
  * up to the writer function to determine which log messages are fatal.
  *
- * Returns: %G_LOG_WRITER_HANDLED on success, %G_LOG_WRITER_UNHANDLED otherwise
+ * Returns: [enum@GLib.LogWriterOutput.HANDLED] on success,
+ *   [enum@GLib.LogWriterOutput.UNHANDLED] otherwise
  * Since: 2.50
  */
 GLogWriterOutput
@@ -2918,14 +2945,14 @@ _g_log_writer_fallback (GLogLevelFlags   log_level,
  *
  * Return whether debug output from the GLib logging system is enabled.
  *
- * Note that this should not be used to conditionalise calls to g_debug() or
- * other logging functions; it should only be used from %GLogWriterFunc
+ * Note that this should not be used to conditionalise calls to [func@GLib.debug] or
+ * other logging functions; it should only be used from [type@GLib.LogWriterFunc]
  * implementations.
  *
  * Note also that the value of this does not depend on `G_MESSAGES_DEBUG`, nor
- * g_log_writer_default_set_debug_domains(); see the docs for g_log_set_debug_enabled().
+ * [func@GLib.log_writer_default_set_debug_domains]; see the docs for [func@GLib.log_set_debug_enabled].
  *
- * Returns: %TRUE if debug output is enabled, %FALSE otherwise
+ * Returns: `TRUE` if debug output is enabled, `FALSE` otherwise
  *
  * Since: 2.72
  */
@@ -2937,11 +2964,12 @@ g_log_get_debug_enabled (void)
 
 /**
  * g_log_set_debug_enabled:
- * @enabled: %TRUE to enable debug output, %FALSE otherwise
+ * @enabled: `TRUE` to enable debug output, `FALSE` otherwise
  *
  * Enable or disable debug output from the GLib logging system for all domains.
+ *
  * This value interacts disjunctively with `G_MESSAGES_DEBUG` and
- * g_log_writer_default_set_debug_domains() — if any of them would allow
+ * [func@GLib.log_writer_default_set_debug_domains] — if any of them would allow
  * a debug message to be outputted, it will be.
  *
  * Note that this should not be used from within library code to enable debug
@@ -2961,8 +2989,8 @@ g_log_set_debug_enabled (gboolean enabled)
  * @pretty_function: function containing the assertion
  * @expression: (nullable): expression which failed
  *
- * Internal function used to print messages from the public g_return_if_fail()
- * and g_return_val_if_fail() macros.
+ * Internal function used to print messages from the public [func@GLib.return_if_fail]
+ * and [func@GLib.return_val_if_fail] macros.
  */
 void
 g_return_if_fail_warning (const char *log_domain,
@@ -2984,8 +3012,8 @@ g_return_if_fail_warning (const char *log_domain,
  * @func: function containing the warning
  * @warnexpr: (nullable): expression which failed
  *
- * Internal function used to print messages from the public g_warn_if_reached()
- * and g_warn_if_fail() macros.
+ * Internal function used to print messages from the public [func@GLib.warn_if_reached]
+ * and [func@GLib.warn_if_fail] macros.
  */
 void
 g_warn_message (const char     *domain,
@@ -3038,42 +3066,43 @@ g_assert_warning (const char *log_domain,
  * g_test_expect_message:
  * @log_domain: (nullable): the log domain of the message
  * @log_level: the log level of the message
- * @pattern: a glob-style [pattern][glib-Glob-style-pattern-matching]
+ * @pattern: a glob-style pattern (see [type@GLib.PatternSpec])
  *
  * Indicates that a message with the given @log_domain and @log_level,
- * with text matching @pattern, is expected to be logged. When this
- * message is logged, it will not be printed, and the test case will
+ * with text matching @pattern, is expected to be logged.
+ *
+ * When this message is logged, it will not be printed, and the test case will
  * not abort.
  *
- * This API may only be used with the old logging API (g_log() without
- * %G_LOG_USE_STRUCTURED defined). It will not work with the structured logging
- * API. See [Testing for Messages][testing-for-messages].
+ * This API may only be used with the old logging API ([func@GLib.log] without
+ * `G_LOG_USE_STRUCTURED` defined). It will not work with the structured logging
+ * API. See [Testing for Messages](logging.html#testing-for-messages).
  *
- * Use g_test_assert_expected_messages() to assert that all
+ * Use [func@GLib.test_assert_expected_messages] to assert that all
  * previously-expected messages have been seen and suppressed.
  *
  * You can call this multiple times in a row, if multiple messages are
  * expected as a result of a single call. (The messages must appear in
- * the same order as the calls to g_test_expect_message().)
+ * the same order as the calls to [func@GLib.test_expect_message].)
  *
  * For example:
  *
- * |[<!-- language="C" --> 
- *   // g_main_context_push_thread_default() should fail if the
- *   // context is already owned by another thread.
- *   g_test_expect_message (G_LOG_DOMAIN,
- *                          G_LOG_LEVEL_CRITICAL,
- *                          "assertion*acquired_context*failed");
- *   g_main_context_push_thread_default (bad_context);
- *   g_test_assert_expected_messages ();
- * ]|
+ * ```c
+ * // g_main_context_push_thread_default() should fail if the
+ * // context is already owned by another thread.
+ * g_test_expect_message (G_LOG_DOMAIN,
+ *                        G_LOG_LEVEL_CRITICAL,
+ *                        "assertion*acquired_context*failed");
+ * g_main_context_push_thread_default (bad_context);
+ * g_test_assert_expected_messages ();
+ * ```
  *
- * Note that you cannot use this to test g_error() messages, since
- * g_error() intentionally never returns even if the program doesn't
- * abort; use g_test_trap_subprocess() in this case.
+ * Note that you cannot use this to test [func@GLib.error] messages, since
+ * [func@GLib.error] intentionally never returns even if the program doesn’t
+ * abort; use [func@GLib.test_trap_subprocess] in this case.
  *
- * If messages at %G_LOG_LEVEL_DEBUG are emitted, but not explicitly
- * expected via g_test_expect_message() then they will be ignored.
+ * If messages at [flags@GLib.LogLevelFlags.DEBUG] are emitted, but not explicitly
+ * expected via [func@GLib.test_expect_message] then they will be ignored.
  *
  * Since: 2.34
  */
@@ -3123,14 +3152,14 @@ g_test_assert_expected_messages_internal (const char     *domain,
  * g_test_assert_expected_messages:
  *
  * Asserts that all messages previously indicated via
- * g_test_expect_message() have been seen and suppressed.
+ * [func@GLib.test_expect_message] have been seen and suppressed.
  *
- * This API may only be used with the old logging API (g_log() without
- * %G_LOG_USE_STRUCTURED defined). It will not work with the structured logging
- * API. See [Testing for Messages][testing-for-messages].
+ * This API may only be used with the old logging API ([func@GLib.log] without
+ * `G_LOG_USE_STRUCTURED` defined). It will not work with the structured logging
+ * API. See [Testing for Messages](logging.html#testing-for-messages).
  *
- * If messages at %G_LOG_LEVEL_DEBUG are emitted, but not explicitly
- * expected via g_test_expect_message() then they will be ignored.
+ * If messages at [flags@GLib.LogLevelFlags.DEBUG] are emitted, but not explicitly
+ * expected via [func@GLib.test_expect_message] then they will be ignored.
  *
  * Since: 2.34
  */
@@ -3246,39 +3275,40 @@ escape_string (GString *string)
 
 /**
  * g_log_default_handler:
- * @log_domain: (nullable): the log domain of the message, or %NULL for the
- * default "" application domain
+ * @log_domain: (nullable): the log domain of the message, or `NULL` for the
+ *   default `""` application domain
  * @log_level: the level of the message
  * @message: (nullable): the message
- * @unused_data: (nullable): data passed from g_log() which is unused
+ * @unused_data: (nullable): data passed from [func@GLib.log] which is unused
  *
- * The default log handler set up by GLib; g_log_set_default_handler()
+ * The default log handler set up by GLib; [func@GLib.log_set_default_handler]
  * allows to install an alternate default log handler.
+ *
  * This is used if no log handler has been set for the particular log
- * domain and log level combination. It outputs the message to stderr
- * or stdout and if the log level is fatal it calls G_BREAKPOINT(). It automatically
+ * domain and log level combination. It outputs the message to `stderr`
+ * or `stdout` and if the log level is fatal it calls [func@GLib.BREAKPOINT]. It automatically
  * prints a new-line character after the message, so one does not need to be
  * manually included in @message.
  *
  * The behavior of this log handler can be influenced by a number of
  * environment variables:
  *
- * - `G_MESSAGES_PREFIXED`: A :-separated list of log levels for which
- *   messages should be prefixed by the program name and PID of the
- *   application.
+ *   - `G_MESSAGES_PREFIXED`: A `:`-separated list of log levels for which
+ *     messages should be prefixed by the program name and PID of the
+ *     application.
+ *   - `G_MESSAGES_DEBUG`: A space-separated list of log domains for
+ *     which debug and informational messages are printed. By default
+ *     these messages are not printed. If you need to set the allowed
+ *     domains at runtime, use [func@GLib.log_writer_default_set_debug_domains].
  *
- * - `G_MESSAGES_DEBUG`: A space-separated list of log domains for
- *   which debug and informational messages are printed. By default
- *   these messages are not printed. If you need to set the allowed
- *   domains at runtime, use g_log_writer_default_set_debug_domains().
- *
- * stderr is used for levels %G_LOG_LEVEL_ERROR, %G_LOG_LEVEL_CRITICAL,
- * %G_LOG_LEVEL_WARNING and %G_LOG_LEVEL_MESSAGE. stdout is used for
- * the rest, unless stderr was requested by
- * g_log_writer_default_set_use_stderr().
+ * `stderr` is used for levels [flags@GLib.LogLevelFlags.ERROR],
+ * [flags@GLib.LogLevelFlags.CRITICAL], [flags@GLib.LogLevelFlags.WARNING] and
+ * [flags@GLib.LogLevelFlags.MESSAGE]. `stdout` is used for
+ * the rest, unless `stderr` was requested by
+ * [func@GLib.log_writer_default_set_use_stderr].
  *
  * This has no effect if structured logging is enabled; see
- * [Using Structured Logging][using-structured-logging].
+ * [Using Structured Logging](logging.html#using-structured-logging).
  */
 void
 g_log_default_handler (const gchar   *log_domain,
@@ -3329,24 +3359,24 @@ g_log_default_handler (const gchar   *log_domain,
 
 /**
  * g_set_print_handler:
- * @func: (nullable): the new print handler or %NULL to
+ * @func: (nullable): the new print handler or `NULL` to
  *   reset to the default
  *
  * Sets the print handler to @func, or resets it to the
- * default GLib handler if %NULL.
+ * default GLib handler if `NULL`.
  *
- * Any messages passed to g_print() will be output via
+ * Any messages passed to [func@GLib.print] will be output via
  * the new handler. The default handler outputs
- * the encoded message to stdout. By providing your own handler
+ * the encoded message to `stdout`. By providing your own handler
  * you can redirect the output, to a GTK widget or a
  * log file for example.
  *
  * Since 2.76 this functions always returns a valid
- * #GPrintFunc, and never returns %NULL. If no custom
+ * [type@GLib.PrintFunc], and never returns `NULL`. If no custom
  * print handler was set, it will return the GLib
  * default print handler and that can be re-used to
- * decorate its output and/or to write to stderr
- * in all platforms. Before GLib 2.76, this was %NULL.
+ * decorate its output and/or to write to `stderr`
+ * in all platforms. Before GLib 2.76, this was `NULL`.
  *
  * Returns: (not nullable): the old print handler
  */
@@ -3422,19 +3452,20 @@ g_default_printerr_func (const gchar *string)
 
 /**
  * g_print:
- * @format: the message format. See the printf() documentation
+ * @format: the message format. See the `printf()` documentation
  * @...: the parameters to insert into the format string
  *
  * Outputs a formatted message via the print handler.
- * The default print handler outputs the encoded message to stdout, without
+ *
+ * The default print handler outputs the encoded message to `stdout`, without
  * appending a trailing new-line character. Typically, @format should end with
  * its own new-line character.
  *
- * g_print() should not be used from within libraries for debugging
+ * This function should not be used from within libraries for debugging
  * messages, since it may be redirected by applications to special
  * purpose message windows or even files. Instead, libraries should
- * use g_log(), g_log_structured(), or the convenience macros g_message(),
- * g_warning() and g_error().
+ * use [func@GLib.log], [func@GLib.log_structured], or the convenience macros
+ * [func@GLib.message], [func@GLib.warning] and [func@GLib.error].
  */
 void
 g_print (const gchar *format,
@@ -3458,24 +3489,24 @@ g_print (const gchar *format,
 
 /**
  * g_set_printerr_handler:
- * @func: (nullable): he new error message handler or %NULL
- *  to reset to the default
+ * @func: (nullable): he new error message handler or `NULL`
+ *   to reset to the default
  *
  * Sets the handler for printing error messages to @func,
- * or resets it to the default GLib handler if %NULL.
+ * or resets it to the default GLib handler if `NULL`.
  *
- * Any messages passed to g_printerr() will be output via
+ * Any messages passed to [func@GLib.printerr] will be output via
  * the new handler. The default handler outputs the encoded
- * message to stderr. By providing your own handler you can
+ * message to `stderr`. By providing your own handler you can
  * redirect the output, to a GTK widget or a log file for
  * example.
  *
  * Since 2.76 this functions always returns a valid
- * #GPrintFunc, and never returns %NULL. If no custom error
+ * [type@GLib.PrintFunc], and never returns `NULL`. If no custom error
  * print handler was set, it will return the GLib default
  * error print handler and that can be re-used to decorate
- * its output and/or to write to stderr in all platforms.
- * Before GLib 2.76, this was %NULL.
+ * its output and/or to write to `stderr` in all platforms.
+ * Before GLib 2.76, this was `NULL`.
  *
  * Returns: (not nullable): the old error message handler
  */
@@ -3488,17 +3519,18 @@ g_set_printerr_handler (GPrintFunc func)
 
 /**
  * g_printerr:
- * @format: the message format. See the printf() documentation
+ * @format: the message format. See the `printf()` documentation
  * @...: the parameters to insert into the format string
  *
  * Outputs a formatted message via the error message handler.
- * The default handler outputs the encoded message to stderr, without appending
+ *
+ * The default handler outputs the encoded message to `stderr`, without appending
  * a trailing new-line character. Typically, @format should end with its own
  * new-line character.
  *
- * g_printerr() should not be used from within libraries.
- * Instead g_log() or g_log_structured() should be used, or the convenience
- * macros g_message(), g_warning() and g_error().
+ * This function should not be used from within libraries.
+ * Instead [func@GLib.log] or [func@GLib.log_structured] should be used, or the convenience
+ * macros [func@GLib.message], [func@GLib.warning] and [func@GLib.error].
  */
 void
 g_printerr (const gchar *format,
@@ -3522,11 +3554,11 @@ g_printerr (const gchar *format,
 
 /**
  * g_printf_string_upper_bound:
- * @format: the format string. See the printf() documentation
+ * @format: the format string. See the `printf()` documentation
  * @args: the parameters to be inserted into the format string
  *
  * Calculates the maximum space needed to store the output
- * of the sprintf() function.
+ * of the `sprintf()` function.
  *
  * If @format or @args are invalid, `0` is returned. This could happen if, for
  * example, @format contains an `%lc` or `%ls` placeholder and @args contains a
