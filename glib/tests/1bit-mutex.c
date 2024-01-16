@@ -41,15 +41,20 @@
      defining our own version of the g_bit_*lock symbols
    */
   #undef g_pointer_bit_lock
+  #undef g_pointer_bit_lock_and_get
   #undef g_pointer_bit_trylock
   #undef g_pointer_bit_unlock
+  #undef g_pointer_bit_unlock_and_set
 
-  #define g_bit_lock            _emufutex_g_bit_lock
-  #define g_bit_trylock         _emufutex_g_bit_trylock
-  #define g_bit_unlock          _emufutex_g_bit_unlock
-  #define g_pointer_bit_lock    _emufutex_g_pointer_bit_lock
-  #define g_pointer_bit_trylock _emufutex_g_pointer_bit_trylock
-  #define g_pointer_bit_unlock  _emufutex_g_pointer_bit_unlock
+  #define g_bit_lock                    _emufutex_g_bit_lock
+  #define g_bit_trylock                 _emufutex_g_bit_trylock
+  #define g_bit_unlock                  _emufutex_g_bit_unlock
+  #define g_pointer_bit_lock            _emufutex_g_pointer_bit_lock
+  #define g_pointer_bit_lock_and_get    _emufutex_g_pointer_bit_lock_and_get
+  #define g_pointer_bit_trylock         _emufutex_g_pointer_bit_trylock
+  #define g_pointer_bit_unlock          _emufutex_g_pointer_bit_unlock
+  #define g_pointer_bit_lock_mask_ptr   _emufutex_g_pointer_bit_lock_mask_ptr
+  #define g_pointer_bit_unlock_and_set  _emufutex_g_pointer_bit_unlock_and_set
 
   #define G_BIT_LOCK_FORCE_FUTEX_EMULATION
 
