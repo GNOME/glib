@@ -798,6 +798,7 @@ gi_repository_get_info (GIRepository *repository,
   DirEntry *entry;
 
   g_return_val_if_fail (namespace != NULL, NULL);
+  g_return_val_if_fail (idx < G_MAXUINT16, NULL);
 
   repository = get_repository (repository);
 

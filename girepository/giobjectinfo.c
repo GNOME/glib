@@ -275,6 +275,7 @@ gi_object_info_get_interface (GIObjectInfo *info,
 
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_OBJECT_INFO (info), NULL);
+  g_return_val_if_fail (n <= G_MAXUINT16, NULL);
 
   blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
 
@@ -325,6 +326,7 @@ gi_object_info_get_field (GIObjectInfo *info,
 
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_OBJECT_INFO (info), NULL);
+  g_return_val_if_fail (n <= G_MAXUINT16, NULL);
 
   offset = gi_object_info_get_field_offset(info, n);
 
@@ -375,6 +377,7 @@ gi_object_info_get_property (GIObjectInfo *info,
 
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_OBJECT_INFO (info), NULL);
+  g_return_val_if_fail (n <= G_MAXUINT16, NULL);
 
   header = (Header *)rinfo->typelib->data;
   blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
@@ -434,6 +437,7 @@ gi_object_info_get_method (GIObjectInfo *info,
 
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_OBJECT_INFO (info), NULL);
+  g_return_val_if_fail (n <= G_MAXUINT16, NULL);
 
   header = (Header *)rinfo->typelib->data;
   blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
@@ -595,6 +599,7 @@ gi_object_info_get_signal (GIObjectInfo *info,
 
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_OBJECT_INFO (info), NULL);
+  g_return_val_if_fail (n <= G_MAXUINT16, NULL);
 
   header = (Header *)rinfo->typelib->data;
   blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
@@ -693,6 +698,7 @@ gi_object_info_get_vfunc (GIObjectInfo *info,
 
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_OBJECT_INFO (info), NULL);
+  g_return_val_if_fail (n <= G_MAXUINT16, NULL);
 
   header = (Header *)rinfo->typelib->data;
   blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
@@ -868,6 +874,7 @@ gi_object_info_get_constant (GIObjectInfo *info,
 
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_OBJECT_INFO (info), NULL);
+  g_return_val_if_fail (n <= G_MAXUINT16, NULL);
 
   header = (Header *)rinfo->typelib->data;
   blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];

@@ -368,6 +368,7 @@ gi_callable_info_get_arg (GICallableInfo *info,
 
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_CALLABLE_INFO (info), NULL);
+  g_return_val_if_fail (n <= G_MAXUINT16, NULL);
 
   offset = signature_offset (info);
   header = (Header *)rinfo->typelib->data;
@@ -401,6 +402,7 @@ gi_callable_info_load_arg (GICallableInfo *info,
 
   g_return_if_fail (info != NULL);
   g_return_if_fail (GI_IS_CALLABLE_INFO (info));
+  g_return_if_fail (n <= G_MAXUINT16);
 
   offset = signature_offset (info);
   header = (Header *)rinfo->typelib->data;

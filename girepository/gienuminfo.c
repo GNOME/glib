@@ -118,6 +118,7 @@ gi_enum_info_get_value (GIEnumInfo *info,
 
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_ENUM_INFO (info), NULL);
+  g_return_val_if_fail (n <= G_MAXUINT16, NULL);
 
   header = (Header *)rinfo->typelib->data;
   offset = rinfo->offset + header->enum_blob_size
@@ -171,6 +172,7 @@ gi_enum_info_get_method (GIEnumInfo *info,
 
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_ENUM_INFO (info), NULL);
+  g_return_val_if_fail (n <= G_MAXUINT16, NULL);
 
   header = (Header *)rinfo->typelib->data;
   blob = (EnumBlob *)&rinfo->typelib->data[rinfo->offset];

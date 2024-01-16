@@ -109,6 +109,8 @@ gi_struct_info_get_field (GIStructInfo *info,
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
 
+  g_return_val_if_fail (n <= G_MAXUINT16, NULL);
+
   return (GIFieldInfo *) gi_info_new (GI_INFO_TYPE_FIELD, (GIBaseInfo*)info, rinfo->typelib,
                                       gi_struct_get_field_offset (info, n));
 }
@@ -192,6 +194,8 @@ gi_struct_info_get_method (GIStructInfo *info,
   StructBlob *blob = (StructBlob *)&rinfo->typelib->data[rinfo->offset];
   Header *header = (Header *)rinfo->typelib->data;
   size_t offset;
+
+  g_return_val_if_fail (n <= G_MAXUINT16, NULL);
 
   offset = gi_struct_get_field_offset (info, blob->n_fields) + n * header->function_blob_size;
   return (GIFunctionInfo *) gi_info_new (GI_INFO_TYPE_FUNCTION, (GIBaseInfo*)info,

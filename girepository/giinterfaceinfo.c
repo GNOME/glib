@@ -89,6 +89,7 @@ gi_interface_info_get_prerequisite (GIInterfaceInfo *info,
 
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_INTERFACE_INFO (info), NULL);
+  g_return_val_if_fail (n <= G_MAXUINT16, NULL);
 
   blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
 
@@ -142,6 +143,7 @@ gi_interface_info_get_property (GIInterfaceInfo *info,
 
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_INTERFACE_INFO (info), NULL);
+  g_return_val_if_fail (n <= G_MAXUINT16, NULL);
 
   header = (Header *)rinfo->typelib->data;
   blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
@@ -199,6 +201,7 @@ gi_interface_info_get_method (GIInterfaceInfo *info,
 
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_INTERFACE_INFO (info), NULL);
+  g_return_val_if_fail (n <= G_MAXUINT16, NULL);
 
   header = (Header *)rinfo->typelib->data;
   blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
@@ -287,6 +290,7 @@ gi_interface_info_get_signal (GIInterfaceInfo *info,
 
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_INTERFACE_INFO (info), NULL);
+  g_return_val_if_fail (n <= G_MAXUINT16, NULL);
 
   header = (Header *)rinfo->typelib->data;
   blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
@@ -382,6 +386,7 @@ gi_interface_info_get_vfunc (GIInterfaceInfo *info,
 
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_INTERFACE_INFO (info), NULL);
+  g_return_val_if_fail (n <= G_MAXUINT16, NULL);
 
   header = (Header *)rinfo->typelib->data;
   blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
@@ -481,6 +486,7 @@ gi_interface_info_get_constant (GIInterfaceInfo *info,
 
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_INTERFACE_INFO (info), NULL);
+  g_return_val_if_fail (n <= G_MAXUINT16, NULL);
 
   header = (Header *)rinfo->typelib->data;
   blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
