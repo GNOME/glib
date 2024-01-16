@@ -1104,7 +1104,7 @@ find_entry_node (GIIrTypelibBuild *build,
     }
 
   
-  gi_ir_module_fatal (build, -1, "type reference '%s' not found", name);
+  gi_ir_module_fatal (build, 0, "type reference '%s' not found", name);
  out:
 
   g_strfreev (names);

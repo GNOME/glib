@@ -114,7 +114,7 @@ gi_ir_module_fatal (GIIrTypelibBuild *build,
 
   context = g_string_new ("");
   if (line > 0)
-    g_string_append_printf (context, "%d: ", line);
+    g_string_append_printf (context, "%u: ", line);
   if (build->stack)
     g_string_append (context, "In ");
   for (link = g_list_last (build->stack); link; link = link->prev)
