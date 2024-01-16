@@ -69,7 +69,7 @@ static GIRepository *default_repository = NULL;
 static GPtrArray *typelib_search_path = NULL;
 
 typedef struct {
-  unsigned int n_interfaces;
+  size_t n_interfaces;
   GIBaseInfo *interfaces[];
 } GTypeInterfaceCache;
 
@@ -78,7 +78,7 @@ gtype_interface_cache_free (gpointer data)
 {
   GTypeInterfaceCache *cache = data;
 
-  for (unsigned int i = 0; i < cache->n_interfaces; i++)
+  for (size_t i = 0; i < cache->n_interfaces; i++)
     gi_base_info_unref ((GIBaseInfo*) cache->interfaces[i]);
   g_free (cache);
 }
