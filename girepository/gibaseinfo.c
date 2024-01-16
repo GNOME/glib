@@ -321,6 +321,7 @@ gi_info_new_full (GIInfoType    type,
 
   g_return_val_if_fail (container != NULL || repository != NULL, NULL);
   g_return_val_if_fail (GI_IS_REPOSITORY (repository), NULL);
+  g_return_val_if_fail (offset <= G_MAXUINT32, NULL);
 
   gi_base_info_init_types ();
   g_assert (gi_base_info_types[type] != G_TYPE_INVALID);
