@@ -1337,9 +1337,6 @@ gboolean  gi_typelib_matches_gtype_name_prefix (GITypelib   *typelib,
                                                 const char  *gtype_name);
 
 
-GI_AVAILABLE_IN_ALL
-void      gi_typelib_check_format (void);
-
 /**
  * gi_typelib_get_string:
  * @typelib: TODO

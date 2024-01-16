@@ -423,69 +423,39 @@ gi_typelib_get_dir_entry_by_error_domain (GITypelib *typelib,
   return NULL;
 }
 
-/**
- * gi_typelib_check_format:
+/* When changing the size of a typelib structure, you are required to update
+ * the hardcoded size here.  Do NOT change these to use sizeof(); these
+ * should match whatever is defined in the text specification and serve as
+ * a sanity check on structure modifications.
  *
- * Check compile-time sizes of various typelib file format types are as
- * expected.
- *
- * Since: 2.80
+ * Everything else in the code however should be using sizeof().
  */
-void
-gi_typelib_check_format (void)
-{
-#ifndef G_DISABLE_ASSERT
-  /* Check that struct layout is as we expect */
 
-  gboolean size_check_ok = TRUE;
-
-#define CHECK_SIZE(s,n) \
-  if (sizeof(s) != n) \
-    { \
-      g_printerr ("sizeof("#s") is expected to be %d but is %zu.\n", \
-                  n, sizeof (s));                                        \
-      size_check_ok = FALSE; \
-    }
-
-  /* When changing the size of a typelib structure, you are required to update
-   * the hardcoded size here.  Do NOT change these to use sizeof(); these
-   * should match whatever is defined in the text specification and serve as
-   * a sanity check on structure modifications.
-   *
-   * Everything else in the code however should be using sizeof().
-   */
-
-  CHECK_SIZE (Header, 112);
-  CHECK_SIZE (DirEntry, 12);
-  CHECK_SIZE (SimpleTypeBlob, 4);
-  CHECK_SIZE (ArgBlob, 16);
-  CHECK_SIZE (SignatureBlob, 8);
-  CHECK_SIZE (CommonBlob, 8);
-  CHECK_SIZE (FunctionBlob, 20);
-  CHECK_SIZE (CallbackBlob, 12);
-  CHECK_SIZE (InterfaceTypeBlob, 4);
-  CHECK_SIZE (ArrayTypeBlob, 8);
-  CHECK_SIZE (ParamTypeBlob, 4);
-  CHECK_SIZE (ErrorTypeBlob, 4);
-  CHECK_SIZE (ValueBlob, 12);
-  CHECK_SIZE (FieldBlob, 16);
-  CHECK_SIZE (RegisteredTypeBlob, 16);
-  CHECK_SIZE (StructBlob, 32);
-  CHECK_SIZE (EnumBlob, 24);
-  CHECK_SIZE (PropertyBlob, 16);
-  CHECK_SIZE (SignalBlob, 16);
-  CHECK_SIZE (VFuncBlob, 20);
-  CHECK_SIZE (ObjectBlob, 60);
-  CHECK_SIZE (InterfaceBlob, 40);
-  CHECK_SIZE (ConstantBlob, 24);
-  CHECK_SIZE (AttributeBlob, 12);
-  CHECK_SIZE (UnionBlob, 40);
-#undef CHECK_SIZE
-
-  g_assert (size_check_ok);
-#endif  /* !G_DISABLE_ASSERT */
-}
-
+G_STATIC_ASSERT (sizeof (Header) == 112);
+G_STATIC_ASSERT (sizeof (DirEntry) == 12);
+G_STATIC_ASSERT (sizeof (SimpleTypeBlob) == 4);
+G_STATIC_ASSERT (sizeof (ArgBlob) == 16);
+G_STATIC_ASSERT (sizeof (SignatureBlob) == 8);
+G_STATIC_ASSERT (sizeof (CommonBlob) == 8);
+G_STATIC_ASSERT (sizeof (FunctionBlob) == 20);
+G_STATIC_ASSERT (sizeof (CallbackBlob) == 12);
+G_STATIC_ASSERT (sizeof (InterfaceTypeBlob) == 4);
+G_STATIC_ASSERT (sizeof (ArrayTypeBlob) == 8);
+G_STATIC_ASSERT (sizeof (ParamTypeBlob) == 4);
+G_STATIC_ASSERT (sizeof (ErrorTypeBlob) == 4);
+G_STATIC_ASSERT (sizeof (ValueBlob) == 12);
+G_STATIC_ASSERT (sizeof (FieldBlob) == 16);
+G_STATIC_ASSERT (sizeof (RegisteredTypeBlob) == 16);
+G_STATIC_ASSERT (sizeof (StructBlob) == 32);
+G_STATIC_ASSERT (sizeof (EnumBlob) == 24);
+G_STATIC_ASSERT (sizeof (PropertyBlob) == 16);
+G_STATIC_ASSERT (sizeof (SignalBlob) == 16);
+G_STATIC_ASSERT (sizeof (VFuncBlob) == 20);
+G_STATIC_ASSERT (sizeof (ObjectBlob) == 60);
+G_STATIC_ASSERT (sizeof (InterfaceBlob) == 40);
+G_STATIC_ASSERT (sizeof (ConstantBlob) == 24);
+G_STATIC_ASSERT (sizeof (AttributeBlob) == 12);
+G_STATIC_ASSERT (sizeof (UnionBlob) == 40);
 
 static gboolean
 is_aligned (uint32_t offset)
@@ -614,9 +584,8 @@ validate_header_basic (const uint8_t  *memory,
   /* This is a sanity check for a specific typelib; it
    * prevents us from loading an incompatible typelib.
    *
-   * The hardcoded checks in gi_typelib_check_format to
-   * protect against inadvertent or buggy changes to the typelib format
-   * itself.
+   * The hardcoded static checks to protect against inadvertent
+   * or buggy changes to the typelib format itself.
    */
 
   if (header->entry_blob_size != sizeof (DirEntry) ||
