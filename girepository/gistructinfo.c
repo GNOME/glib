@@ -72,16 +72,16 @@ gi_struct_info_get_n_fields (GIStructInfo *info)
  * Returns: field offset, in bytes
  * Since: 2.80
  */
-static int32_t
+static size_t
 gi_struct_get_field_offset (GIStructInfo *info,
-                            unsigned int  n)
+                            uint16_t        n)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header = (Header *)rinfo->typelib->data;
-  uint32_t offset = rinfo->offset + header->struct_blob_size;
+  size_t offset = rinfo->offset + header->struct_blob_size;
   FieldBlob *field_blob;
 
-  for (unsigned int i = 0; i < n; i++)
+  for (uint16_t i = 0; i < n; i++)
     {
       field_blob = (FieldBlob *)&rinfo->typelib->data[offset];
       offset += header->field_blob_size;
