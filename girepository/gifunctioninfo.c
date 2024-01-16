@@ -51,14 +51,14 @@
 GIFunctionInfo *
 gi_base_info_find_method (GIBaseInfo  *base,
                           uint32_t     offset,
-                          unsigned     n_methods,
+                          uint16_t     n_methods,
                           const char  *name)
 {
   /* FIXME hash */
   GIRealInfo *rinfo = (GIRealInfo*)base;
   Header *header = (Header *)rinfo->typelib->data;
 
-  for (unsigned i = 0; i < n_methods; i++)
+  for (uint16_t i = 0; i < n_methods; i++)
     {
       FunctionBlob *fblob = (FunctionBlob *)&rinfo->typelib->data[offset];
       const char *fname = (const char *)&rinfo->typelib->data[fblob->name];

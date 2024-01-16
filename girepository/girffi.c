@@ -175,8 +175,7 @@ gi_callable_info_get_ffi_arg_types (GICallableInfo *callable_info,
 {
     ffi_type **arg_types;
     gboolean is_method, throws;
-    size_t n_invoke_args;
-    unsigned int n_args, i, offset;
+    size_t n_args, n_invoke_args, i, offset;
 
     g_return_val_if_fail (callable_info != NULL, NULL);
 

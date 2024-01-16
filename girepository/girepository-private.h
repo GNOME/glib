@@ -233,10 +233,10 @@ void         gi_type_info_init  (GIBaseInfo *info,
 
 GIFunctionInfo * gi_base_info_find_method (GIBaseInfo  *base,
                                            uint32_t     offset,
-                                           unsigned     n_methods,
+                                           uint16_t     n_methods,
                                            const char  *name);
 
 GIVFuncInfo * gi_base_info_find_vfunc (GIRealInfo  *rinfo,
                                        uint32_t     offset,
-                                       unsigned     n_vfuncs,
+                                       uint16_t     n_vfuncs,
                                        const char  *name);

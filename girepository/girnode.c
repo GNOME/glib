@@ -1047,7 +1047,7 @@ find_entry_node (GIIrTypelibBuild *build,
 {
   GIIrModule *module = build->module;
   GList *l;
-  unsigned int i;
+  size_t i;
   unsigned int n_names;
   char **names;
   GIIrNode *result = NULL;
@@ -1220,7 +1220,7 @@ serialize_type (GIIrTypelibBuild *build,
                 GIIrNodeType     *node,
                 GString          *str)
 {
-  int i;
+  size_t i;
 
   if (GI_TYPE_TAG_IS_BASIC (node->tag))
     {

@@ -198,7 +198,7 @@ gi_typelib_get_dir_entry_by_name (GITypelib  *typelib,
                                   const char *name)
 {
   Section *dirindex;
-  int i, n_entries;
+  size_t i, n_entries;
   const char *entry_name;
   DirEntry *entry;
 
@@ -247,9 +247,8 @@ gi_typelib_get_dir_entry_by_gtype_name (GITypelib   *typelib,
                                         const char  *gtype_name)
 {
   Header *header = (Header *)typelib->data;
-  unsigned int i;
 
-  for (i = 1; i <= header->n_local_entries; i++)
+  for (size_t i = 1; i <= header->n_local_entries; i++)
     {
       RegisteredTypeBlob *blob;
       const char *type;
@@ -400,11 +399,11 @@ gi_typelib_get_dir_entry_by_error_domain (GITypelib *typelib,
                                           GQuark     error_domain)
 {
   Header *header = (Header *)typelib->data;
-  unsigned int n_entries = header->n_local_entries;
+  size_t n_entries = header->n_local_entries;
   const char *domain_string = g_quark_to_string (error_domain);
   DirEntry *entry;
 
-  for (unsigned int i = 1; i <= n_entries; i++)
+  for (size_t i = 1; i <= n_entries; i++)
     {
       EnumBlob *blob;
       const char *enum_domain_string;
@@ -743,11 +742,11 @@ validate_param_type_blob (GITypelib     *typelib,
                           uint32_t       offset,
                           uint32_t       signature_offset,
                           gboolean       return_type,
-                          int            n_params,
+                          unsigned int   n_params,
                           GError       **error)
 {
   ParamTypeBlob *blob;
-  int i;
+  unsigned int i;
 
   blob = (ParamTypeBlob*)&typelib->data[offset];
 
@@ -967,7 +966,7 @@ validate_signature_blob (GITypelib     *typelib,
         return FALSE;
     }
 
-  for (unsigned int i = 0; i < blob->n_arguments; i++)
+  for (size_t i = 0; i < blob->n_arguments; i++)
     {
       if (!validate_arg_blob (typelib,
                               offset + sizeof (SignatureBlob) +
@@ -1336,7 +1335,7 @@ validate_signal_blob (GITypelib     *typelib,
                       GError       **error)
 {
   SignalBlob *blob;
-  int n_signals;
+  size_t n_signals;
 
   if (typelib->len < offset + sizeof (SignalBlob))
     {
@@ -1405,7 +1404,7 @@ validate_vfunc_blob (GITypelib     *typelib,
                      GError       **error)
 {
   VFuncBlob *blob;
-  int n_vfuncs;
+  size_t n_vfuncs;
 
   if (typelib->len < offset + sizeof (VFuncBlob))
     {
@@ -1464,7 +1463,7 @@ validate_struct_blob (ValidateContext *ctx,
 {
   GITypelib *typelib = ctx->typelib;
   StructBlob *blob;
-  int i;
+  size_t i;
   uint32_t field_offset;
 
   if (typelib->len < offset + sizeof (StructBlob))
@@ -1561,7 +1560,6 @@ validate_enum_blob (ValidateContext *ctx,
 {
   GITypelib *typelib = ctx->typelib;
   EnumBlob *blob;
-  int i;
   uint32_t offset2;
 
   if (typelib->len < offset + sizeof (EnumBlob))
@@ -1622,7 +1620,7 @@ validate_enum_blob (ValidateContext *ctx,
 
   push_context (ctx, get_string_nofail (typelib, blob->name));
 
-  for (i = 0; i < blob->n_values; i++, offset2 += sizeof (ValueBlob))
+  for (size_t i = 0; i < blob->n_values; i++, offset2 += sizeof (ValueBlob))
     {
       if (!validate_value_blob (typelib,
                                 offset2,
@@ -1650,7 +1648,7 @@ validate_enum_blob (ValidateContext *ctx,
 #endif
     }
 
-  for (i = 0; i < blob->n_methods; i++, offset2 += sizeof (FunctionBlob))
+  for (size_t i = 0; i < blob->n_methods; i++, offset2 += sizeof (FunctionBlob))
     {
       if (!validate_function_blob (ctx, offset2, BLOB_TYPE_ENUM, error))
         return FALSE;
@@ -1669,7 +1667,7 @@ validate_object_blob (ValidateContext *ctx,
   GITypelib *typelib = ctx->typelib;
   Header *header;
   ObjectBlob *blob;
-  int i;
+  size_t i;
   uint32_t offset2;
   uint16_t n_field_callbacks;
 
@@ -1871,7 +1869,7 @@ validate_interface_blob (ValidateContext *ctx,
   GITypelib *typelib = ctx->typelib;
   Header *header;
   InterfaceBlob *blob;
-  int i;
+  size_t i;
   uint32_t offset2;
 
   header = (Header *)typelib->data;
@@ -2071,7 +2069,7 @@ validate_directory (ValidateContext   *ctx,
   GITypelib *typelib = ctx->typelib;
   Header *header = (Header *)typelib->data;
   DirEntry *entry;
-  int i;
+  size_t i;
 
   if (typelib->len < header->directory + header->n_entries * sizeof (DirEntry))
     {
@@ -2341,7 +2339,6 @@ gi_typelib_do_dlopen (GITypelib *typelib)
   if (shlib_str != NULL && shlib_str[0] != '\0')
     {
       char **shlibs;
-      int i;
 
       /* shared-library is a comma-separated list of libraries */
       shlibs = g_strsplit (shlib_str, ",", 0);
@@ -2350,7 +2347,7 @@ gi_typelib_do_dlopen (GITypelib *typelib)
         * again with g_module_open(), the same file handle will be returned. See bug:
         * http://bugzilla.gnome.org/show_bug.cgi?id=555294
         */
-      for (i = 0; shlibs[i]; i++)
+      for (size_t i = 0; shlibs[i]; i++)
         {
           GModule *module;
 

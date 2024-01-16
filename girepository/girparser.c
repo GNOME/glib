@@ -383,7 +383,9 @@ find_attribute (const char   *name,
                 const char **attribute_names,
                 const char **attribute_values)
 {
-  for (int i = 0; attribute_names[i] != NULL; i++)
+  size_t i;
+
+  for (i = 0; attribute_names[i] != NULL; i++)
     if (strcmp (attribute_names[i], name) == 0)
       return attribute_values[i];
 
@@ -484,8 +486,8 @@ static BasicTypeInfo basic_types[] = {
 static const BasicTypeInfo *
 parse_basic (const char *str)
 {
-  unsigned int i;
-  unsigned int n_basic = G_N_ELEMENTS (basic_types);
+  size_t i;
+  size_t n_basic = G_N_ELEMENTS (basic_types);
 
   for (i = 0; i < n_basic; i++)
     {

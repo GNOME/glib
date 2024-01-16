@@ -531,7 +531,7 @@ get_typelib_dependencies_transitive (GIRepository *repository,
 
   immediate_dependencies = get_typelib_dependencies (typelib);
 
-  for (unsigned int i = 0; immediate_dependencies != NULL && immediate_dependencies[i]; i++)
+  for (size_t i = 0; immediate_dependencies != NULL && immediate_dependencies[i]; i++)
     {
       char *dependency;
       const char *last_dash;
@@ -1153,7 +1153,7 @@ gi_repository_get_loaded_namespaces (GIRepository *repository)
 {
   GList *l, *list = NULL;
   char **names;
-  int i;
+  size_t i;
 
   repository = get_repository (repository);
 

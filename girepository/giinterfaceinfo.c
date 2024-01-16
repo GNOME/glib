@@ -323,10 +323,10 @@ GISignalInfo *
 gi_interface_info_find_signal (GIInterfaceInfo *info,
                                const char      *name)
 {
-  unsigned int n_signals;
+  uint32_t n_signals;
 
   n_signals = gi_interface_info_get_n_signals (info);
-  for (unsigned int i = 0; i < n_signals; i++)
+  for (uint32_t i = 0; i < n_signals; i++)
     {
       GISignalInfo *siginfo = gi_interface_info_get_signal (info, i);
 

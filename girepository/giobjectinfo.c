@@ -72,7 +72,7 @@ gi_object_info_get_field_offset (GIObjectInfo *info,
   offset = rinfo->offset + header->object_blob_size
     + (blob->n_interfaces + blob->n_interfaces % 2) * 2;
 
-  for (unsigned int i = 0; i < n; i++)
+  for (size_t i = 0; i < n; i++)
     {
       field_blob = (FieldBlob *)&rinfo->typelib->data[offset];
       offset += header->field_blob_size;
