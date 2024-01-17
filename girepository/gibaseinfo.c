@@ -517,7 +517,7 @@ gi_type_info_init (GIBaseInfo *info,
 
 /**
  * gi_base_info_ref:
- * @info: a #GIBaseInfo
+ * @info: (type GIRepository.BaseInfo): a #GIBaseInfo
  *
  * Increases the reference count of @info.
  *
@@ -525,9 +525,11 @@ gi_type_info_init (GIBaseInfo *info,
  * Since: 2.80
  */
 GIBaseInfo *
-gi_base_info_ref (GIBaseInfo *info)
+gi_base_info_ref (void *info)
 {
   GIRealInfo *rinfo = (GIRealInfo*)info;
+
+  g_return_val_if_fail (GI_IS_BASE_INFO (info), NULL);
 
   g_assert (rinfo->ref_count != INVALID_REFCOUNT);
   g_atomic_ref_count_inc (&rinfo->ref_count);
@@ -537,7 +539,7 @@ gi_base_info_ref (GIBaseInfo *info)
 
 /**
  * gi_base_info_unref:
- * @info: (transfer full): a #GIBaseInfo
+ * @info: (type GIRepository.BaseInfo) (transfer full): a #GIBaseInfo
  *
  * Decreases the reference count of @info. When its reference count
  * drops to 0, the info is freed.
@@ -545,9 +547,11 @@ gi_base_info_ref (GIBaseInfo *info)
  * Since: 2.80
  */
 void
-gi_base_info_unref (GIBaseInfo *info)
+gi_base_info_unref (void *info)
 {
   GIRealInfo *rinfo = (GIRealInfo*)info;
+
+  g_return_if_fail (GI_IS_BASE_INFO (info));
 
   g_assert (rinfo->ref_count > 0 && rinfo->ref_count != INVALID_REFCOUNT);
 

@@ -65,10 +65,10 @@ GI_AVAILABLE_IN_ALL
 GType                  gi_base_info_get_type         (void) G_GNUC_CONST;
 
 GI_AVAILABLE_IN_ALL
-GIBaseInfo *           gi_base_info_ref              (GIBaseInfo   *info);
+GIBaseInfo *           gi_base_info_ref              (void         *info);
 
 GI_AVAILABLE_IN_ALL
-void                   gi_base_info_unref            (GIBaseInfo   *info);
+void                   gi_base_info_unref            (void         *info);
 
 GI_AVAILABLE_IN_ALL
 GIInfoType             gi_base_info_get_info_type    (GIBaseInfo   *info);

@@ -116,16 +116,16 @@ test_repository_info (void)
   g_assert_nonnull (method_info);
   g_assert_true (gi_callable_info_is_method ((GICallableInfo *) method_info));
   g_assert_cmpuint (gi_callable_info_get_n_args ((GICallableInfo *) method_info), ==, 2);
-  g_clear_pointer ((GIBaseInfo **) &method_info, gi_base_info_unref);
+  g_clear_pointer (&method_info, gi_base_info_unref);
 
   method_info = gi_object_info_get_method (object_info,
                                            gi_object_info_get_n_methods (object_info) - 1);
   g_assert_true (gi_callable_info_is_method ((GICallableInfo *) method_info));
   g_assert_cmpuint (gi_callable_info_get_n_args ((GICallableInfo *) method_info), >, 0);
-  g_clear_pointer ((GIBaseInfo **) &method_info, gi_base_info_unref);
+  g_clear_pointer (&method_info, gi_base_info_unref);
 
-  gi_base_info_unref ((GIBaseInfo *) signal_info);
-  gi_base_info_unref ((GIBaseInfo *) object_info);
+  gi_base_info_unref (signal_info);
+  gi_base_info_unref (object_info);
   g_clear_object (&repository);
 }
 
