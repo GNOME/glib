@@ -132,11 +132,19 @@ void gi_object_info_class_init (gpointer g_class,
 
 struct _GIInterfaceInfo
 {
-  GIBaseInfo parent;
+  GIRegisteredTypeInfo parent;
 };
 
 void gi_interface_info_class_init (gpointer g_class,
                                    gpointer class_data);
+
+struct _GIBoxedInfo
+{
+  GIBaseInfo parent;
+};
+
+void gi_boxed_info_class_init (gpointer g_class,
+                               gpointer class_data);
 
 struct _GIConstantInfo
 {

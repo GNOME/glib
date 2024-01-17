@@ -257,6 +257,7 @@ GI_DEFINE_BASE_INFO_TYPE (gi_enum_info, GI_INFO_TYPE_ENUM)
 GI_DEFINE_BASE_INFO_TYPE (gi_flags_info, GI_INFO_TYPE_FLAGS)
 GI_DEFINE_BASE_INFO_TYPE (gi_object_info, GI_INFO_TYPE_OBJECT)
 GI_DEFINE_BASE_INFO_TYPE (gi_interface_info, GI_INFO_TYPE_INTERFACE)
+GI_DEFINE_BASE_INFO_TYPE (gi_boxed_info, GI_INFO_TYPE_BOXED)
 GI_DEFINE_BASE_INFO_TYPE (gi_constant_info, GI_INFO_TYPE_CONSTANT)
 GI_DEFINE_BASE_INFO_TYPE (gi_value_info, GI_INFO_TYPE_VALUE)
 GI_DEFINE_BASE_INFO_TYPE (gi_signal_info, GI_INFO_TYPE_SIGNAL)
@@ -295,6 +296,7 @@ gi_base_info_init_types (void)
           { GI_INFO_TYPE_FLAGS, "GIFlagsInfo", sizeof (GIFlagsInfo), gi_flags_info_class_init, GI_INFO_TYPE_ENUM, G_TYPE_FLAG_NONE },
           { GI_INFO_TYPE_OBJECT, "GIObjectInfo", sizeof (GIObjectInfo), gi_object_info_class_init, 0, G_TYPE_FLAG_NONE },
           { GI_INFO_TYPE_INTERFACE, "GIInterfaceInfo", sizeof (GIInterfaceInfo), gi_interface_info_class_init, 0, G_TYPE_FLAG_NONE },
+          { GI_INFO_TYPE_BOXED, "GIBoxedInfo", sizeof (GIBoxedInfo), gi_boxed_info_class_init, 0, G_TYPE_FLAG_NONE },
           { GI_INFO_TYPE_CONSTANT, "GIConstantInfo", sizeof (GIConstantInfo), gi_constant_info_class_init, 0, G_TYPE_FLAG_NONE },
           { GI_INFO_TYPE_VALUE, "GIValueInfo", sizeof (GIValueInfo), gi_value_info_class_init, 0, G_TYPE_FLAG_NONE },
           { GI_INFO_TYPE_SIGNAL, "GISignalInfo", sizeof (GISignalInfo), gi_signal_info_class_init, GI_INFO_TYPE_CALLABLE, G_TYPE_FLAG_NONE },
