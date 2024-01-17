@@ -204,6 +204,7 @@ gi_base_info_get_type (void)
  * @type_name: the name of the type
  * @instance_size: size (in bytes) of the type’s instance struct
  * @class_init: class init function for the type
+ * @type_flags: flags for the type
  *
  * Registers a new [type@GIRepository.BaseInfo] type for the given @type_name
  * using the type information provided.
@@ -214,7 +215,8 @@ gi_base_info_get_type (void)
 GType
 gi_base_info_type_register_static (const char     *type_name,
                                    size_t          instance_size,
-                                   GClassInitFunc  class_init)
+                                   GClassInitFunc  class_init,
+                                   GTypeFlags      type_flags)
 {
   GTypeInfo info;
 
@@ -228,7 +230,7 @@ gi_base_info_type_register_static (const char     *type_name,
   info.instance_init = NULL;
   info.value_table = NULL;
 
-  return g_type_register_static (GI_TYPE_BASE_INFO, type_name, &info, 0);
+  return g_type_register_static (GI_TYPE_BASE_INFO, type_name, &info, type_flags);
 }
 
 static GType gi_base_info_types[GI_INFO_TYPE_N_TYPES];
@@ -274,34 +276,36 @@ gi_base_info_init_types (void)
           const char *type_name;
           size_t instance_size;
           GClassInitFunc class_init;
+          GTypeFlags type_flags;
         }
       types[] =
         {
-          { GI_INFO_TYPE_CALLABLE, "GICallableInfo", sizeof (GICallableInfo), gi_callable_info_class_init },
-          { GI_INFO_TYPE_FUNCTION, "GIFunctionInfo", sizeof (GIFunctionInfo), gi_function_info_class_init },
-          { GI_INFO_TYPE_CALLBACK, "GICallbackInfo", sizeof (GICallbackInfo), gi_callback_info_class_init },
-          { GI_INFO_TYPE_REGISTERED_TYPE, "GIRegisteredTypeInfo", sizeof (GIRegisteredTypeInfo), gi_registered_type_info_class_init },
-          { GI_INFO_TYPE_STRUCT, "GIStructInfo", sizeof (GIStructInfo), gi_struct_info_class_init },
-          { GI_INFO_TYPE_UNION, "GIUnionInfo", sizeof (GIUnionInfo), gi_union_info_class_init },
-          { GI_INFO_TYPE_ENUM, "GIEnumInfo", sizeof (GIEnumInfo), gi_enum_info_class_init },
-          { GI_INFO_TYPE_OBJECT, "GIObjectInfo", sizeof (GIObjectInfo), gi_object_info_class_init },
-          { GI_INFO_TYPE_INTERFACE, "GIInterfaceInfo", sizeof (GIInterfaceInfo), gi_interface_info_class_init },
-          { GI_INFO_TYPE_CONSTANT, "GIConstantInfo", sizeof (GIConstantInfo), gi_constant_info_class_init },
-          { GI_INFO_TYPE_VALUE, "GIValueInfo", sizeof (GIValueInfo), gi_value_info_class_init },
-          { GI_INFO_TYPE_SIGNAL, "GISignalInfo", sizeof (GISignalInfo), gi_signal_info_class_init },
-          { GI_INFO_TYPE_VFUNC, "GIVFuncInfo", sizeof (GIVFuncInfo), gi_vfunc_info_class_init },
-          { GI_INFO_TYPE_PROPERTY, "GIPropertyInfo", sizeof (GIPropertyInfo), gi_property_info_class_init },
-          { GI_INFO_TYPE_FIELD, "GIFieldInfo", sizeof (GIFieldInfo), gi_field_info_class_init },
-          { GI_INFO_TYPE_ARG, "GIArgInfo", sizeof (GIArgInfo), gi_arg_info_class_init },
-          { GI_INFO_TYPE_TYPE, "GITypeInfo", sizeof (GITypeInfo), gi_type_info_class_init },
-          { GI_INFO_TYPE_UNRESOLVED, "GIUnresolvedInfo", sizeof (GIUnresolvedInfo), gi_unresolved_info_class_init },
+          { GI_INFO_TYPE_CALLABLE, "GICallableInfo", sizeof (GICallableInfo), gi_callable_info_class_init, G_TYPE_FLAG_NONE },
+          { GI_INFO_TYPE_FUNCTION, "GIFunctionInfo", sizeof (GIFunctionInfo), gi_function_info_class_init, G_TYPE_FLAG_NONE },
+          { GI_INFO_TYPE_CALLBACK, "GICallbackInfo", sizeof (GICallbackInfo), gi_callback_info_class_init, G_TYPE_FLAG_NONE },
+          { GI_INFO_TYPE_REGISTERED_TYPE, "GIRegisteredTypeInfo", sizeof (GIRegisteredTypeInfo), gi_registered_type_info_class_init, G_TYPE_FLAG_NONE },
+          { GI_INFO_TYPE_STRUCT, "GIStructInfo", sizeof (GIStructInfo), gi_struct_info_class_init, G_TYPE_FLAG_NONE },
+          { GI_INFO_TYPE_UNION, "GIUnionInfo", sizeof (GIUnionInfo), gi_union_info_class_init, G_TYPE_FLAG_NONE },
+          { GI_INFO_TYPE_ENUM, "GIEnumInfo", sizeof (GIEnumInfo), gi_enum_info_class_init, G_TYPE_FLAG_NONE },
+          { GI_INFO_TYPE_OBJECT, "GIObjectInfo", sizeof (GIObjectInfo), gi_object_info_class_init, G_TYPE_FLAG_NONE },
+          { GI_INFO_TYPE_INTERFACE, "GIInterfaceInfo", sizeof (GIInterfaceInfo), gi_interface_info_class_init, G_TYPE_FLAG_NONE },
+          { GI_INFO_TYPE_CONSTANT, "GIConstantInfo", sizeof (GIConstantInfo), gi_constant_info_class_init, G_TYPE_FLAG_NONE },
+          { GI_INFO_TYPE_VALUE, "GIValueInfo", sizeof (GIValueInfo), gi_value_info_class_init, G_TYPE_FLAG_NONE },
+          { GI_INFO_TYPE_SIGNAL, "GISignalInfo", sizeof (GISignalInfo), gi_signal_info_class_init, G_TYPE_FLAG_NONE },
+          { GI_INFO_TYPE_VFUNC, "GIVFuncInfo", sizeof (GIVFuncInfo), gi_vfunc_info_class_init, G_TYPE_FLAG_NONE },
+          { GI_INFO_TYPE_PROPERTY, "GIPropertyInfo", sizeof (GIPropertyInfo), gi_property_info_class_init, G_TYPE_FLAG_NONE },
+          { GI_INFO_TYPE_FIELD, "GIFieldInfo", sizeof (GIFieldInfo), gi_field_info_class_init, G_TYPE_FLAG_NONE },
+          { GI_INFO_TYPE_ARG, "GIArgInfo", sizeof (GIArgInfo), gi_arg_info_class_init, G_TYPE_FLAG_NONE },
+          { GI_INFO_TYPE_TYPE, "GITypeInfo", sizeof (GITypeInfo), gi_type_info_class_init, G_TYPE_FLAG_NONE },
+          { GI_INFO_TYPE_UNRESOLVED, "GIUnresolvedInfo", sizeof (GIUnresolvedInfo), gi_unresolved_info_class_init, G_TYPE_FLAG_NONE },
         };
 
       for (size_t i = 0; i < G_N_ELEMENTS (types); i++)
         {
           GType registered_type = gi_base_info_type_register_static (g_intern_static_string (types[i].type_name),
                                                                      types[i].instance_size,
-                                                                     types[i].class_init);
+                                                                     types[i].class_init,
+                                                                     types[i].type_flags);
           gi_base_info_types[types[i].info_type] = registered_type;
         }
 
