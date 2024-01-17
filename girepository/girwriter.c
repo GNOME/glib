@@ -490,6 +490,7 @@ write_callable_info (const char     *ns,
   for (unsigned int i = 0; i < gi_callable_info_get_n_args (info); i++)
     {
       GIArgInfo *arg = gi_callable_info_get_arg (info, i);
+      unsigned int closure_index, destroy_index;
 
       xml_start_element (file, "parameter");
       xml_printf (file, " name=\"%s\"",
@@ -541,13 +542,11 @@ write_callable_info (const char     *ns,
           g_assert_not_reached ();
         }
 
-      if (gi_arg_info_get_closure_index (arg) >= 0)
-        xml_printf (file, " closure=\"%" G_GSSIZE_FORMAT "\"",
-                    gi_arg_info_get_closure_index (arg));
+      if (gi_arg_info_get_closure_index (arg, &closure_index))
+        xml_printf (file, " closure=\"%u\"", closure_index);
 
-      if (gi_arg_info_get_destroy_index (arg) >= 0)
-        xml_printf (file, " destroy=\"%" G_GSSIZE_FORMAT "\"",
-                    gi_arg_info_get_destroy_index (arg));
+      if (gi_arg_info_get_destroy_index (arg, &destroy_index))
+        xml_printf (file, " destroy=\"%u\"", destroy_index);
 
       if (gi_arg_info_is_skip (arg))
         xml_printf (file, " skip=\"1\"");
