@@ -38,13 +38,11 @@ G_BEGIN_DECLS
  * GI_IS_ENUM_INFO:
  * @info: an info structure
  *
- * Checks if @info is a [class@GIRepository.EnumInfo].
+ * Checks if @info is a [class@GIRepository.EnumInfo] (or a derived type).
  *
  * Since: 2.80
  */
-#define GI_IS_ENUM_INFO(info) \
-    ((gi_base_info_get_info_type ((GIBaseInfo*) info) ==  GI_INFO_TYPE_ENUM) || \
-     (gi_base_info_get_info_type ((GIBaseInfo*) info) ==  GI_INFO_TYPE_FLAGS))
+#define GI_IS_ENUM_INFO(info) (G_TYPE_CHECK_INSTANCE_TYPE ((info), GI_TYPE_ENUM_INFO))
 
 
 GI_AVAILABLE_IN_ALL

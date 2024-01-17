@@ -81,12 +81,11 @@ typedef void * (*GIObjectInfoGetValueFunction) (const GValue *value);
  * GI_IS_OBJECT_INFO:
  * @info: an info structure
  *
- * Checks if @info is a [class@GIRepository.ObjectInfo].
+ * Checks if @info is a [class@GIRepository.ObjectInfo] (or a derived type).
  *
  * Since: 2.80
  */
-#define GI_IS_OBJECT_INFO(info) \
-    (gi_base_info_get_info_type ((GIBaseInfo*) info) ==  GI_INFO_TYPE_OBJECT)
+#define GI_IS_OBJECT_INFO(info) (G_TYPE_CHECK_INSTANCE_TYPE ((info), GI_TYPE_OBJECT_INFO))
 
 
 GI_AVAILABLE_IN_ALL

@@ -38,12 +38,11 @@ G_BEGIN_DECLS
  * GI_IS_PROPERTY_INFO:
  * @info: an info structure
  *
- * Checks if @info is a [class@GIRepository.PropertyInfo].
+ * Checks if @info is a [class@GIRepository.PropertyInfo] (or a derived type).
  *
  * Since: 2.80
  */
-#define GI_IS_PROPERTY_INFO(info) \
-    (gi_base_info_get_info_type ((GIBaseInfo*) info) ==  GI_INFO_TYPE_PROPERTY)
+#define GI_IS_PROPERTY_INFO(info) (G_TYPE_CHECK_INSTANCE_TYPE ((info), GI_TYPE_PROPERTY_INFO))
 
 
 GI_AVAILABLE_IN_ALL

@@ -44,15 +44,7 @@ G_BEGIN_DECLS
  *
  * Since: 2.80
  */
-#define GI_IS_REGISTERED_TYPE_INFO(info) \
-    ((gi_base_info_get_info_type ((GIBaseInfo*) info) == GI_INFO_TYPE_BOXED) || \
-     (gi_base_info_get_info_type ((GIBaseInfo*) info) == GI_INFO_TYPE_ENUM) || \
-     (gi_base_info_get_info_type ((GIBaseInfo*) info) == GI_INFO_TYPE_FLAGS) || \
-     (gi_base_info_get_info_type ((GIBaseInfo*) info) == GI_INFO_TYPE_INTERFACE) || \
-     (gi_base_info_get_info_type ((GIBaseInfo*) info) == GI_INFO_TYPE_OBJECT) || \
-     (gi_base_info_get_info_type ((GIBaseInfo*) info) == GI_INFO_TYPE_STRUCT) || \
-     (gi_base_info_get_info_type ((GIBaseInfo*) info) == GI_INFO_TYPE_UNION) || \
-     (gi_base_info_get_info_type ((GIBaseInfo*) info) == GI_INFO_TYPE_BOXED))
+#define GI_IS_REGISTERED_TYPE_INFO(info) (G_TYPE_CHECK_INSTANCE_TYPE ((info), GI_TYPE_OBJECT_INFO))
 
 GI_AVAILABLE_IN_ALL
 const char *           gi_registered_type_info_get_type_name (GIRegisteredTypeInfo *info);

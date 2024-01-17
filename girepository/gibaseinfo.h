@@ -50,6 +50,16 @@ typedef struct {
 
 #define GI_TYPE_BASE_INFO        (gi_base_info_get_type ())
 
+/**
+ * GI_IS_BASE_INFO:
+ * @info: Instance to check for being a `GI_TYPE_BASE_INFO`.
+ *
+ * Checks whether a valid [type@GObject.TypeInstance] pointer is of type
+ * `GI_TYPE_BASE_INFO` (or a derived type).
+ *
+ * Since: 2.80
+ */
+#define GI_IS_BASE_INFO(info)    (G_TYPE_CHECK_INSTANCE_TYPE ((info), GI_TYPE_BASE_INFO))
 
 GI_AVAILABLE_IN_ALL
 GType                  gi_base_info_get_type         (void) G_GNUC_CONST;

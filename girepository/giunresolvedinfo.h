@@ -41,7 +41,6 @@ G_BEGIN_DECLS
  *
  * Since: 2.80
  */
-#define GI_IS_UNRESOLVED_INFO(info)                                        \
-    (gi_base_info_get_info_type ((GIBaseInfo*) info) == GI_INFO_TYPE_UNRESOLVED)
+#define GI_IS_UNRESOLVED_INFO(info) (G_TYPE_CHECK_INSTANCE_TYPE ((info), GI_TYPE_UNRESOLVED_INFO))
 
 G_END_DECLS

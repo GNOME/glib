@@ -38,12 +38,11 @@ G_BEGIN_DECLS
  * GI_IS_FUNCTION_INFO:
  * @info: an info structure
  *
- * Checks if @info is a [class@GIRepository.FunctionInfo].
+ * Checks if @info is a [class@GIRepository.FunctionInfo] (or a derived type).
  *
  * Since: 2.80
  */
-#define GI_IS_FUNCTION_INFO(info) \
-    (gi_base_info_get_info_type ((GIBaseInfo*) info) ==  GI_INFO_TYPE_FUNCTION)
+#define GI_IS_FUNCTION_INFO(info) (G_TYPE_CHECK_INSTANCE_TYPE ((info), GI_TYPE_FUNCTION_INFO))
 
 
 GI_AVAILABLE_IN_ALL

@@ -38,12 +38,11 @@ G_BEGIN_DECLS
  * GI_IS_STRUCT_INFO:
  * @info: an info structure
  *
- * Checks if @info is a [class@GIRepository.StructInfo].
+ * Checks if @info is a [class@GIRepository.StructInfo] (or a derived type).
  *
  * Since: 2.80
  */
-#define GI_IS_STRUCT_INFO(info) \
-    (gi_base_info_get_info_type ((GIBaseInfo*) info) ==  GI_INFO_TYPE_STRUCT)
+#define GI_IS_STRUCT_INFO(info) (G_TYPE_CHECK_INSTANCE_TYPE ((info), GI_TYPE_STRUCT_INFO))
 
 
 GI_AVAILABLE_IN_ALL
