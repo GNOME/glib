@@ -92,7 +92,7 @@ void gi_registered_type_info_class_init (gpointer g_class,
 
 struct _GIStructInfo
 {
-  GIBaseInfo parent;
+  GIRegisteredTypeInfo parent;
 };
 
 void gi_struct_info_class_init (gpointer g_class,
@@ -100,7 +100,7 @@ void gi_struct_info_class_init (gpointer g_class,
 
 struct _GIUnionInfo
 {
-  GIBaseInfo parent;
+  GIRegisteredTypeInfo parent;
 };
 
 void gi_union_info_class_init (gpointer g_class,
@@ -108,7 +108,7 @@ void gi_union_info_class_init (gpointer g_class,
 
 struct _GIEnumInfo
 {
-  GIBaseInfo parent;
+  GIRegisteredTypeInfo parent;
 };
 
 void gi_enum_info_class_init (gpointer g_class,
@@ -124,7 +124,7 @@ void gi_flags_info_class_init (gpointer g_class,
 
 struct _GIObjectInfo
 {
-  GIBaseInfo parent;
+  GIRegisteredTypeInfo parent;
 };
 
 void gi_object_info_class_init (gpointer g_class,
@@ -140,7 +140,7 @@ void gi_interface_info_class_init (gpointer g_class,
 
 struct _GIBoxedInfo
 {
-  GIBaseInfo parent;
+  GIRegisteredTypeInfo parent;
 };
 
 void gi_boxed_info_class_init (gpointer g_class,
