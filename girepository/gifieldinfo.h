@@ -35,6 +35,20 @@ G_BEGIN_DECLS
 #define GI_TYPE_FIELD_INFO (gi_field_info_get_type ())
 
 /**
+ * GI_FIELD_INFO:
+ * @info: Info object which is subject to casting.
+ *
+ * Casts a [type@GIRepository.FieldInfo] or derived pointer into a
+ * `(GIFieldInfo*)` pointer.
+ *
+ * Depending on the current debugging level, this function may invoke
+ * certain runtime checks to identify invalid casts.
+ *
+ * Since: 2.80
+ */
+#define GI_FIELD_INFO(info) (G_TYPE_CHECK_INSTANCE_CAST ((info), GI_TYPE_FIELD_INFO, GIFieldInfo))
+
+/**
  * GI_IS_FIELD_INFO:
  * @info: an info structure
  *

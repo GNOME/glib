@@ -34,6 +34,20 @@ G_BEGIN_DECLS
 #define GI_TYPE_FLAGS_INFO (gi_flags_info_get_type ())
 
 /**
+ * GI_FLAGS_INFO:
+ * @info: Info object which is subject to casting.
+ *
+ * Casts a [type@GIRepository.FlagsInfo] or derived pointer into a
+ * `(GIFlagsInfo*)` pointer.
+ *
+ * Depending on the current debugging level, this function may invoke
+ * certain runtime checks to identify invalid casts.
+ *
+ * Since: 2.80
+ */
+#define GI_FLAGS_INFO(info) (G_TYPE_CHECK_INSTANCE_CAST ((info), GI_TYPE_FLAGS_INFO, GIFlagsInfo))
+
+/**
  * GI_IS_FLAGS_INFO:
  * @info: an info structure
  *

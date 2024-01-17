@@ -35,6 +35,20 @@ G_BEGIN_DECLS
 #define GI_TYPE_FUNCTION_INFO (gi_function_info_get_type ())
 
 /**
+ * GI_FUNCTION_INFO:
+ * @info: Info object which is subject to casting.
+ *
+ * Casts a [type@GIRepository.FunctionInfo] or derived pointer into a
+ * `(GIFunctionInfo*)` pointer.
+ *
+ * Depending on the current debugging level, this function may invoke
+ * certain runtime checks to identify invalid casts.
+ *
+ * Since: 2.80
+ */
+#define GI_FUNCTION_INFO(info) (G_TYPE_CHECK_INSTANCE_CAST ((info), GI_TYPE_FUNCTION_INFO, GIFunctionInfo))
+
+/**
  * GI_IS_FUNCTION_INFO:
  * @info: an info structure
  *

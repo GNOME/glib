@@ -51,6 +51,20 @@ typedef struct {
 #define GI_TYPE_BASE_INFO        (gi_base_info_get_type ())
 
 /**
+ * GI_BASE_INFO:
+ * @info: Info object which is subject to casting.
+ *
+ * Casts a [type@GIRepository.BaseInfo] or derived pointer into a
+ * `(GIBaseInfo*)` pointer.
+ *
+ * Depending on the current debugging level, this function may invoke
+ * certain runtime checks to identify invalid casts.
+ *
+ * Since: 2.80
+ */
+#define GI_BASE_INFO(info)       (G_TYPE_CHECK_INSTANCE_CAST ((info), GI_TYPE_BASE_INFO, GIBaseInfo))
+
+/**
  * GI_IS_BASE_INFO:
  * @info: Instance to check for being a `GI_TYPE_BASE_INFO`.
  *

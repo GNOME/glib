@@ -36,6 +36,20 @@ G_BEGIN_DECLS
 #define GI_TYPE_SIGNAL_INFO (gi_signal_info_get_type ())
 
 /**
+ * GI_SIGNAL_INFO:
+ * @info: Info object which is subject to casting.
+ *
+ * Casts a [type@GIRepository.SignalInfo] or derived pointer into a
+ * `(GISignalInfo*)` pointer.
+ *
+ * Depending on the current debugging level, this function may invoke
+ * certain runtime checks to identify invalid casts.
+ *
+ * Since: 2.80
+ */
+#define GI_SIGNAL_INFO(info) (G_TYPE_CHECK_INSTANCE_CAST ((info), GI_TYPE_SIGNAL_INFO, GISignalInfo))
+
+/**
  * GI_IS_SIGNAL_INFO:
  * @info: an info structure
  *

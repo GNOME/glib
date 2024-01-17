@@ -34,6 +34,20 @@ G_BEGIN_DECLS
 #define GI_TYPE_CALLBACK_INFO (gi_callback_info_get_type ())
 
 /**
+ * GI_CALLBACK_INFO:
+ * @info: Info object which is subject to casting.
+ *
+ * Casts a [type@GIRepository.CallbackInfo] or derived pointer into a
+ * `(GICallbackInfo*)` pointer.
+ *
+ * Depending on the current debugging level, this function may invoke
+ * certain runtime checks to identify invalid casts.
+ *
+ * Since: 2.80
+ */
+#define GI_CALLBACK_INFO(info) (G_TYPE_CHECK_INSTANCE_CAST ((info), GI_TYPE_CALLBACK_INFO, GICallbackInfo))
+
+/**
  * GI_IS_CALLBACK_INFO:
  * @info: an info structure
  *

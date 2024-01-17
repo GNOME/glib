@@ -35,6 +35,20 @@ G_BEGIN_DECLS
 #define GI_TYPE_ENUM_INFO (gi_enum_info_get_type ())
 
 /**
+ * GI_ENUM_INFO:
+ * @info: Info object which is subject to casting.
+ *
+ * Casts a [type@GIRepository.EnumInfo] or derived pointer into a
+ * `(GIEnumInfo*)` pointer.
+ *
+ * Depending on the current debugging level, this function may invoke
+ * certain runtime checks to identify invalid casts.
+ *
+ * Since: 2.80
+ */
+#define GI_ENUM_INFO(info) (G_TYPE_CHECK_INSTANCE_CAST ((info), GI_TYPE_ENUM_INFO, GIEnumInfo))
+
+/**
  * GI_IS_ENUM_INFO:
  * @info: an info structure
  *

@@ -34,6 +34,20 @@ G_BEGIN_DECLS
 #define GI_TYPE_UNRESOLVED_INFO (gi_unresolved_info_get_type ())
 
 /**
+ * GI_UNRESOLVED_INFO:
+ * @info: Info object which is subject to casting.
+ *
+ * Casts a [type@GIRepository.UnresolvedInfo] or derived pointer into a
+ * `(GIUnresolvedInfo*)` pointer.
+ *
+ * Depending on the current debugging level, this function may invoke
+ * certain runtime checks to identify invalid casts.
+ *
+ * Since: 2.80
+ */
+#define GI_UNRESOLVED_INFO(info) (G_TYPE_CHECK_INSTANCE_CAST ((info), GI_TYPE_UNRESOLVED_INFO, GIUnresolvedInfo))
+
+/**
  * GI_IS_UNRESOLVED_INFO:
  * @info: an info structure
  *

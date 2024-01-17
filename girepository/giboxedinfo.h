@@ -34,6 +34,20 @@ G_BEGIN_DECLS
 #define GI_TYPE_BOXED_INFO (gi_boxed_info_get_type ())
 
 /**
+ * GI_BOXED_INFO:
+ * @info: Info object which is subject to casting.
+ *
+ * Casts a [type@GIRepository.BoxedInfo] or derived pointer into a
+ * `(GIBoxedInfo*)` pointer.
+ *
+ * Depending on the current debugging level, this function may invoke
+ * certain runtime checks to identify invalid casts.
+ *
+ * Since: 2.80
+ */
+#define GI_BOXED_INFO(info) (G_TYPE_CHECK_INSTANCE_CAST ((info), GI_TYPE_BOXED_INFO, GIBoxedInfo))
+
+/**
  * GI_IS_BOXED_INFO:
  * @info: an info structure
  *

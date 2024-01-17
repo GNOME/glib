@@ -35,6 +35,20 @@ G_BEGIN_DECLS
 #define GI_TYPE_CONSTANT_INFO (gi_constant_info_get_type ())
 
 /**
+ * GI_CONSTANT_INFO:
+ * @info: Info object which is subject to casting.
+ *
+ * Casts a [type@GIRepository.ConstantInfo] or derived pointer into a
+ * `(GIConstantInfo*)` pointer.
+ *
+ * Depending on the current debugging level, this function may invoke
+ * certain runtime checks to identify invalid casts.
+ *
+ * Since: 2.80
+ */
+#define GI_CONSTANT_INFO(info) (G_TYPE_CHECK_INSTANCE_CAST ((info), GI_TYPE_CONSTANT_INFO, GIConstantInfo))
+
+/**
  * GI_IS_CONSTANT_INFO:
  * @info: an info structure
  *

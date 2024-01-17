@@ -35,6 +35,20 @@ G_BEGIN_DECLS
 #define GI_TYPE_VALUE_INFO (gi_value_info_get_type ())
 
 /**
+ * GI_VALUE_INFO:
+ * @info: Info object which is subject to casting.
+ *
+ * Casts a [type@GIRepository.ValueInfo] or derived pointer into a
+ * `(GIValueInfo*)` pointer.
+ *
+ * Depending on the current debugging level, this function may invoke
+ * certain runtime checks to identify invalid casts.
+ *
+ * Since: 2.80
+ */
+#define GI_VALUE_INFO(info) (G_TYPE_CHECK_INSTANCE_CAST ((info), GI_TYPE_VALUE_INFO, GIValueInfo))
+
+/**
  * GI_IS_VALUE_INFO:
  * @info: an info structure
  *
