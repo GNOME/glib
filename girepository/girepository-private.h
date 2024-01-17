@@ -68,7 +68,7 @@ void gi_callable_info_class_init (gpointer g_class,
 
 struct _GIFunctionInfo
 {
-  GIBaseInfo parent;
+  GICallableInfo parent;
 };
 
 void gi_function_info_class_init (gpointer g_class,
@@ -76,7 +76,7 @@ void gi_function_info_class_init (gpointer g_class,
 
 struct _GICallbackInfo
 {
-  GIBaseInfo parent;
+  GICallableInfo parent;
 };
 
 void gi_callback_info_class_init (gpointer g_class,
@@ -148,7 +148,7 @@ void gi_value_info_class_init (gpointer g_class,
 
 struct _GISignalInfo
 {
-  GIBaseInfo parent;
+  GICallableInfo parent;
 };
 
 void gi_signal_info_class_init (gpointer g_class,
@@ -156,7 +156,7 @@ void gi_signal_info_class_init (gpointer g_class,
 
 struct _GIVFuncInfo
 {
-  GIBaseInfo parent;
+  GICallableInfo parent;
 };
 
 void gi_vfunc_info_class_init (gpointer g_class,

@@ -284,9 +284,9 @@ gi_base_info_init_types (void)
         }
       types[] =
         {
-          { GI_INFO_TYPE_CALLABLE, "GICallableInfo", sizeof (GICallableInfo), gi_callable_info_class_init, 0, G_TYPE_FLAG_NONE },
-          { GI_INFO_TYPE_FUNCTION, "GIFunctionInfo", sizeof (GIFunctionInfo), gi_function_info_class_init, 0, G_TYPE_FLAG_NONE },
-          { GI_INFO_TYPE_CALLBACK, "GICallbackInfo", sizeof (GICallbackInfo), gi_callback_info_class_init, 0, G_TYPE_FLAG_NONE },
+          { GI_INFO_TYPE_CALLABLE, "GICallableInfo", sizeof (GICallableInfo), gi_callable_info_class_init, 0, G_TYPE_FLAG_ABSTRACT },
+          { GI_INFO_TYPE_FUNCTION, "GIFunctionInfo", sizeof (GIFunctionInfo), gi_function_info_class_init, GI_INFO_TYPE_CALLABLE, G_TYPE_FLAG_NONE },
+          { GI_INFO_TYPE_CALLBACK, "GICallbackInfo", sizeof (GICallbackInfo), gi_callback_info_class_init, GI_INFO_TYPE_CALLABLE, G_TYPE_FLAG_NONE },
           { GI_INFO_TYPE_REGISTERED_TYPE, "GIRegisteredTypeInfo", sizeof (GIRegisteredTypeInfo), gi_registered_type_info_class_init, 0, G_TYPE_FLAG_NONE },
           { GI_INFO_TYPE_STRUCT, "GIStructInfo", sizeof (GIStructInfo), gi_struct_info_class_init, 0, G_TYPE_FLAG_NONE },
           { GI_INFO_TYPE_UNION, "GIUnionInfo", sizeof (GIUnionInfo), gi_union_info_class_init, 0, G_TYPE_FLAG_NONE },
@@ -295,8 +295,8 @@ gi_base_info_init_types (void)
           { GI_INFO_TYPE_INTERFACE, "GIInterfaceInfo", sizeof (GIInterfaceInfo), gi_interface_info_class_init, 0, G_TYPE_FLAG_NONE },
           { GI_INFO_TYPE_CONSTANT, "GIConstantInfo", sizeof (GIConstantInfo), gi_constant_info_class_init, 0, G_TYPE_FLAG_NONE },
           { GI_INFO_TYPE_VALUE, "GIValueInfo", sizeof (GIValueInfo), gi_value_info_class_init, 0, G_TYPE_FLAG_NONE },
-          { GI_INFO_TYPE_SIGNAL, "GISignalInfo", sizeof (GISignalInfo), gi_signal_info_class_init, 0, G_TYPE_FLAG_NONE },
-          { GI_INFO_TYPE_VFUNC, "GIVFuncInfo", sizeof (GIVFuncInfo), gi_vfunc_info_class_init, 0, G_TYPE_FLAG_NONE },
+          { GI_INFO_TYPE_SIGNAL, "GISignalInfo", sizeof (GISignalInfo), gi_signal_info_class_init, GI_INFO_TYPE_CALLABLE, G_TYPE_FLAG_NONE },
+          { GI_INFO_TYPE_VFUNC, "GIVFuncInfo", sizeof (GIVFuncInfo), gi_vfunc_info_class_init, GI_INFO_TYPE_CALLABLE, G_TYPE_FLAG_NONE },
           { GI_INFO_TYPE_PROPERTY, "GIPropertyInfo", sizeof (GIPropertyInfo), gi_property_info_class_init, 0, G_TYPE_FLAG_NONE },
           { GI_INFO_TYPE_FIELD, "GIFieldInfo", sizeof (GIFieldInfo), gi_field_info_class_init, 0, G_TYPE_FLAG_NONE },
           { GI_INFO_TYPE_ARG, "GIArgInfo", sizeof (GIArgInfo), gi_arg_info_class_init, 0, G_TYPE_FLAG_NONE },
