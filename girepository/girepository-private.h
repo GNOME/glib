@@ -114,6 +114,14 @@ struct _GIEnumInfo
 void gi_enum_info_class_init (gpointer g_class,
                               gpointer class_data);
 
+struct _GIFlagsInfo
+{
+  GIEnumInfo parent;
+};
+
+void gi_flags_info_class_init (gpointer g_class,
+                               gpointer class_data);
+
 struct _GIObjectInfo
 {
   GIBaseInfo parent;

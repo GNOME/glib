@@ -69,6 +69,10 @@ GI_AVAILABLE_IN_ALL GType gi_union_info_get_type (void);
 typedef struct _GIEnumInfo GIEnumInfo;
 GI_AVAILABLE_IN_ALL GType gi_enum_info_get_type (void);
 
+/* Documented in giflagsinfo.c */
+typedef struct _GIFlagsInfo GIFlagsInfo;
+GI_AVAILABLE_IN_ALL GType gi_flags_info_get_type (void);
+
 /* Documented in giobjectinfo.c */
 typedef struct _GIObjectInfo GIObjectInfo;
 GI_AVAILABLE_IN_ALL GType gi_object_info_get_type (void);

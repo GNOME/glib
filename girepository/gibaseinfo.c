@@ -254,6 +254,7 @@ GI_DEFINE_BASE_INFO_TYPE (gi_registered_type_info, GI_INFO_TYPE_REGISTERED_TYPE)
 GI_DEFINE_BASE_INFO_TYPE (gi_struct_info, GI_INFO_TYPE_STRUCT)
 GI_DEFINE_BASE_INFO_TYPE (gi_union_info, GI_INFO_TYPE_UNION)
 GI_DEFINE_BASE_INFO_TYPE (gi_enum_info, GI_INFO_TYPE_ENUM)
+GI_DEFINE_BASE_INFO_TYPE (gi_flags_info, GI_INFO_TYPE_FLAGS)
 GI_DEFINE_BASE_INFO_TYPE (gi_object_info, GI_INFO_TYPE_OBJECT)
 GI_DEFINE_BASE_INFO_TYPE (gi_interface_info, GI_INFO_TYPE_INTERFACE)
 GI_DEFINE_BASE_INFO_TYPE (gi_constant_info, GI_INFO_TYPE_CONSTANT)
@@ -291,6 +292,7 @@ gi_base_info_init_types (void)
           { GI_INFO_TYPE_STRUCT, "GIStructInfo", sizeof (GIStructInfo), gi_struct_info_class_init, 0, G_TYPE_FLAG_NONE },
           { GI_INFO_TYPE_UNION, "GIUnionInfo", sizeof (GIUnionInfo), gi_union_info_class_init, 0, G_TYPE_FLAG_NONE },
           { GI_INFO_TYPE_ENUM, "GIEnumInfo", sizeof (GIEnumInfo), gi_enum_info_class_init, 0, G_TYPE_FLAG_NONE },
+          { GI_INFO_TYPE_FLAGS, "GIFlagsInfo", sizeof (GIFlagsInfo), gi_flags_info_class_init, GI_INFO_TYPE_ENUM, G_TYPE_FLAG_NONE },
           { GI_INFO_TYPE_OBJECT, "GIObjectInfo", sizeof (GIObjectInfo), gi_object_info_class_init, 0, G_TYPE_FLAG_NONE },
           { GI_INFO_TYPE_INTERFACE, "GIInterfaceInfo", sizeof (GIInterfaceInfo), gi_interface_info_class_init, 0, G_TYPE_FLAG_NONE },
           { GI_INFO_TYPE_CONSTANT, "GIConstantInfo", sizeof (GIConstantInfo), gi_constant_info_class_init, 0, G_TYPE_FLAG_NONE },

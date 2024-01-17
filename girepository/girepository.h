@@ -38,6 +38,7 @@
 #include <girepository/giconstantinfo.h>
 #include <girepository/gienuminfo.h>
 #include <girepository/gifieldinfo.h>
+#include <girepository/giflagsinfo.h>
 #include <girepository/gifunctioninfo.h>
 #include <girepository/giinterfaceinfo.h>
 #include <girepository/giobjectinfo.h>
