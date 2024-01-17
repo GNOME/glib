@@ -50,6 +50,7 @@
 #include <girepository/gitypes.h>
 #include <girepository/giunioninfo.h>
 #include <girepository/giunresolvedinfo.h>
+#include <girepository/givalueinfo.h>
 #include <girepository/givfuncinfo.h>
 
 G_BEGIN_DECLS

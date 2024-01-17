@@ -33,36 +33,18 @@
 G_BEGIN_DECLS
 
 /**
- * GI_IS_ENUM_INFO:
+ * GI_IS_VALUE_INFO:
  * @info: an info structure
  *
- * Checks if @info is a [class@GIRepository.EnumInfo].
+ * Checks if @info is a [class@GIRepository.ValueInfo].
  *
  * Since: 2.80
  */
-#define GI_IS_ENUM_INFO(info) \
-    ((gi_base_info_get_info_type ((GIBaseInfo*) info) ==  GI_INFO_TYPE_ENUM) || \
-     (gi_base_info_get_info_type ((GIBaseInfo*) info) ==  GI_INFO_TYPE_FLAGS))
+#define GI_IS_VALUE_INFO(info) \
+    (gi_base_info_get_info_type ((GIBaseInfo*) info) ==  GI_INFO_TYPE_VALUE)
 
 
 GI_AVAILABLE_IN_ALL
-unsigned int   gi_enum_info_get_n_values      (GIEnumInfo  *info);
-
-GI_AVAILABLE_IN_ALL
-GIValueInfo  * gi_enum_info_get_value         (GIEnumInfo  *info,
-                                               unsigned int n);
-
-GI_AVAILABLE_IN_ALL
-unsigned int      gi_enum_info_get_n_methods  (GIEnumInfo  *info);
-
-GI_AVAILABLE_IN_ALL
-GIFunctionInfo  * gi_enum_info_get_method     (GIEnumInfo  *info,
-                                               unsigned int n);
-
-GI_AVAILABLE_IN_ALL
-GITypeTag      gi_enum_info_get_storage_type  (GIEnumInfo  *info);
-
-GI_AVAILABLE_IN_ALL
-const char *   gi_enum_info_get_error_domain   (GIEnumInfo  *info);
+int64_t        gi_value_info_get_value        (GIValueInfo *info);
 
 G_END_DECLS

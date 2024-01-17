@@ -62,6 +62,7 @@ girepo_headers = files(
   'gitypes.h',
   'giunioninfo.h',
   'giunresolvedinfo.h',
+  'givalueinfo.h',
   'givfuncinfo.h',
 )
 
@@ -162,6 +163,7 @@ girepo_sources = files(
   'gitypelib.c',
   'giunioninfo.c',
   'giunresolvedinfo.c',
+  'givalueinfo.c',
   'givfuncinfo.c',
 )
 
