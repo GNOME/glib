@@ -32,6 +32,8 @@
 
 G_BEGIN_DECLS
 
+#define GI_TYPE_FUNCTION_INFO (gi_function_info_get_type ())
+
 /**
  * GI_IS_FUNCTION_INFO:
  * @info: an info structure

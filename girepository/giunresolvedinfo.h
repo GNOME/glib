@@ -31,6 +31,8 @@
 
 G_BEGIN_DECLS
 
+#define GI_TYPE_UNRESOLVED_INFO (gi_unresolved_info_get_type ())
+
 /**
  * GI_IS_UNRESOLVED_INFO:
  * @info: an info structure

@@ -33,6 +33,8 @@
 
 G_BEGIN_DECLS
 
+#define GI_TYPE_REGISTERED_TYPE_INFO (gi_registered_type_info_get_type ())
+
 /**
  * GI_IS_REGISTERED_TYPE_INFO:
  * @info: an info structure

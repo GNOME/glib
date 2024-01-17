@@ -32,6 +32,8 @@
 
 G_BEGIN_DECLS
 
+#define GI_TYPE_CALLABLE_INFO (gi_callable_info_get_type ())
+
 /**
  * GI_IS_CALLABLE_INFO:
  * @info: an info structure

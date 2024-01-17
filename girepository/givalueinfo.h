@@ -32,6 +32,8 @@
 
 G_BEGIN_DECLS
 
+#define GI_TYPE_VALUE_INFO (gi_value_info_get_type ())
+
 /**
  * GI_IS_VALUE_INFO:
  * @info: an info structure

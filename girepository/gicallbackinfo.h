@@ -31,6 +31,8 @@
 
 G_BEGIN_DECLS
 
+#define GI_TYPE_CALLBACK_INFO (gi_callback_info_get_type ())
+
 /**
  * GI_IS_CALLBACK_INFO:
  * @info: an info structure

@@ -32,6 +32,8 @@
 
 G_BEGIN_DECLS
 
+#define GI_TYPE_VFUNC_INFO (gi_vfunc_info_get_type ())
+
 /**
  * GI_IS_VFUNC_INFO:
  * @info: an info structure

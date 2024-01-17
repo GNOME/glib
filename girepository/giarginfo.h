@@ -32,6 +32,8 @@
 
 G_BEGIN_DECLS
 
+#define GI_TYPE_ARG_INFO (gi_arg_info_get_type ())
+
 /**
  * GI_IS_ARG_INFO:
  * @info: an info structure

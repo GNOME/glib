@@ -75,6 +75,8 @@ typedef void   (*GIObjectInfoSetValueFunction) (GValue *value, void *object);
  */
 typedef void * (*GIObjectInfoGetValueFunction) (const GValue *value);
 
+#define GI_TYPE_OBJECT_INFO (gi_object_info_get_type ())
+
 /**
  * GI_IS_OBJECT_INFO:
  * @info: an info structure

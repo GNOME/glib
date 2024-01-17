@@ -33,6 +33,8 @@
 
 G_BEGIN_DECLS
 
+#define GI_TYPE_SIGNAL_INFO (gi_signal_info_get_type ())
+
 /**
  * GI_IS_SIGNAL_INFO:
  * @info: an info structure
