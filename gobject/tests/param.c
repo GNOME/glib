@@ -1431,7 +1431,7 @@ test_param_implement (void)
 
               case 'i':
                 g_test_trap_assert_failed ();
-                g_test_trap_assert_stderr ("*g_object_class_install_property*");
+                g_test_trap_assert_stderr ("*pspec->flags*");
                 continue;
 
               case 'f':
