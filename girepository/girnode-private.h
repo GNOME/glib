@@ -70,6 +70,27 @@ typedef enum
   GI_IR_NODE_XREF         = 19
 } GIIrNodeTypeId;
 
+/**
+ * GIIrOffsetsState:
+ * @GI_IR_OFFSETS_UNKNOWN: offsets have not been calculated yet
+ * @GI_IR_OFFSETS_COMPUTED: offsets have been successfully calculated
+ * @GI_IR_OFFSETS_FAILED: calculating the offsets failed
+ * @GI_IR_OFFSETS_IN_PROGRESS: offsets are currently being calculated (used to
+ *   detect type recursion)
+ *
+ * State tracking for calculating size and alignment of
+ * [type@GIRepository.IrNode]s.
+ *
+ * Since: 2.80
+ */
+typedef enum
+{
+  GI_IR_OFFSETS_UNKNOWN,
+  GI_IR_OFFSETS_COMPUTED,
+  GI_IR_OFFSETS_FAILED,
+  GI_IR_OFFSETS_IN_PROGRESS,
+} GIIrOffsetsState;
+
 struct _GIIrNode
 {
   GIIrNodeTypeId type;
@@ -261,8 +282,9 @@ struct _GIIrNodeInterface
   GList *interfaces;
   GList *prerequisites;
 
-  gssize alignment;
+  size_t alignment;
   size_t size;
+  GIIrOffsetsState offsets_state;
 
   GList *members;
 };
@@ -311,8 +333,9 @@ struct _GIIrNodeBoxed
   char *gtype_name;
   char *gtype_init;
 
-  gssize alignment;
+  size_t alignment;
   size_t size;
+  GIIrOffsetsState offsets_state;
 
   GList *members;
 };
@@ -334,8 +357,9 @@ struct _GIIrNodeStruct
   char *copy_func;
   char *free_func;
 
-  gssize alignment;
+  size_t alignment;
   size_t size;
+  GIIrOffsetsState offsets_state;
 
   GList *members;
 };
@@ -355,8 +379,9 @@ struct _GIIrNodeUnion
   char *copy_func;
   char *free_func;
 
-  gssize alignment;
+  size_t alignment;
   size_t size;
+  GIIrOffsetsState offsets_state;
 
   int discriminator_offset;
   GIIrNodeType *discriminator_type;

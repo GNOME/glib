@@ -244,8 +244,8 @@ write_type_info (const char *ns,
     }
   else if (tag == GI_TYPE_TAG_ARRAY)
     {
-      gssize length;
-      gssize size;
+      unsigned int length_index;
+      size_t size;
       const char *name = NULL;
 
       xml_start_element (file, "array");
@@ -271,13 +271,11 @@ write_type_info (const char *ns,
 
       type = gi_type_info_get_param_type (info, 0);
 
-      length = gi_type_info_get_array_length_index (info);
-      if (length >= 0)
-        xml_printf (file, " length=\"%" G_GSSIZE_FORMAT "\"", length);
+      if (gi_type_info_get_array_length_index (info, &length_index))
+        xml_printf (file, " length=\"%u\"", length_index);
 
-      size = gi_type_info_get_array_fixed_size (info);
-      if (size >= 0)
-        xml_printf (file, " fixed-size=\"%" G_GSSIZE_FORMAT "\"", size);
+      if (gi_type_info_get_array_fixed_size (info, &size))
+        xml_printf (file, " fixed-size=\"%zu\"", size);
 
       if (gi_type_info_is_zero_terminated (info))
         xml_printf (file, " zero-terminated=\"1\"");
@@ -492,6 +490,7 @@ write_callable_info (const char     *ns,
   for (unsigned int i = 0; i < gi_callable_info_get_n_args (info); i++)
     {
       GIArgInfo *arg = gi_callable_info_get_arg (info, i);
+      unsigned int closure_index, destroy_index;
 
       xml_start_element (file, "parameter");
       xml_printf (file, " name=\"%s\"",
@@ -543,13 +542,11 @@ write_callable_info (const char     *ns,
           g_assert_not_reached ();
         }
 
-      if (gi_arg_info_get_closure_index (arg) >= 0)
-        xml_printf (file, " closure=\"%" G_GSSIZE_FORMAT "\"",
-                    gi_arg_info_get_closure_index (arg));
+      if (gi_arg_info_get_closure_index (arg, &closure_index))
+        xml_printf (file, " closure=\"%u\"", closure_index);
 
-      if (gi_arg_info_get_destroy_index (arg) >= 0)
-        xml_printf (file, " destroy=\"%" G_GSSIZE_FORMAT "\"",
-                    gi_arg_info_get_destroy_index (arg));
+      if (gi_arg_info_get_destroy_index (arg, &destroy_index))
+        xml_printf (file, " destroy=\"%u\"", destroy_index);
 
       if (gi_arg_info_is_skip (arg))
         xml_printf (file, " skip=\"1\"");

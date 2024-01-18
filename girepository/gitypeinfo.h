@@ -96,10 +96,12 @@ GI_AVAILABLE_IN_ALL
 GIBaseInfo *           gi_type_info_get_interface       (GITypeInfo *info);
 
 GI_AVAILABLE_IN_ALL
-gssize                 gi_type_info_get_array_length_index (GITypeInfo *info);
+gboolean               gi_type_info_get_array_length_index (GITypeInfo   *info,
+                                                            unsigned int *out_length_index);
 
 GI_AVAILABLE_IN_ALL
-gssize                 gi_type_info_get_array_fixed_size (GITypeInfo *info);
+gboolean               gi_type_info_get_array_fixed_size (GITypeInfo *info,
+                                                          size_t     *out_size);
 
 GI_AVAILABLE_IN_ALL
 gboolean               gi_type_info_is_zero_terminated  (GITypeInfo *info);
