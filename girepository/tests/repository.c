@@ -22,6 +22,30 @@
 #include "glib.h"
 #include "girepository.h"
 
+static GIRepository *
+load_typelib_from_builddir (const char *name,
+                            const char *version)
+{
+  GIRepository *repository;
+  char *gobject_typelib_dir = NULL;
+  GITypelib *typelib = NULL;
+  GError *local_error = NULL;
+
+  gobject_typelib_dir = g_test_build_filename (G_TEST_BUILT, "..", "..", "introspection", NULL);
+  g_test_message ("Using GI_TYPELIB_DIR = %s", gobject_typelib_dir);
+  gi_repository_prepend_search_path (gobject_typelib_dir);
+  g_free (gobject_typelib_dir);
+
+  repository = gi_repository_new ();
+  g_assert_nonnull (repository);
+
+  typelib = gi_repository_require (repository, name, version, 0, &local_error);
+  g_assert_no_error (local_error);
+  g_assert_nonnull (typelib);
+
+  return g_steal_pointer (&repository);
+}
+
 static void
 test_repository_basic (void)
 {
@@ -161,6 +185,177 @@ test_repository_dependencies (void)
   g_clear_pointer (&dependencies, g_strfreev);
 }
 
+static void
+test_repository_arg_info (void)
+{
+  GIRepository *repository;
+  GIObjectInfo *object_info = NULL;
+  GIStructInfo *struct_info = NULL;
+  GIFunctionInfo *method_info = NULL;
+  GIArgInfo *arg_info = NULL;
+  GITypeInfo *type_info = NULL;
+  unsigned int idx;
+
+  g_test_summary ("Test retrieving GIArgInfos from a typelib");
+
+  repository = load_typelib_from_builddir ("GObject", "2.0");
+
+  /* Test all the methods of GIArgInfo. Here we’re looking at the
+   * `const char *property_name` argument of g_object_get_property(). (The
+   * ‘self’ argument is not exposed through gi_callable_info_get_arg().) */
+  object_info = (GIObjectInfo *) gi_repository_find_by_name (repository, "GObject", "Object");
+  g_assert_nonnull (object_info);
+
+  method_info = gi_object_info_find_method (object_info, "get_property");
+  g_assert_nonnull (method_info);
+
+  arg_info = gi_callable_info_get_arg (GI_CALLABLE_INFO (method_info), 0);
+  g_assert_nonnull (arg_info);
+
+  g_assert_cmpint (gi_arg_info_get_direction (arg_info), ==, GI_DIRECTION_IN);
+  g_assert_false (gi_arg_info_is_return_value (arg_info));
+  g_assert_false (gi_arg_info_is_optional (arg_info));
+  g_assert_false (gi_arg_info_is_caller_allocates (arg_info));
+  g_assert_false (gi_arg_info_may_be_null (arg_info));
+  g_assert_false (gi_arg_info_is_skip (arg_info));
+  g_assert_cmpint (gi_arg_info_get_ownership_transfer (arg_info), ==, GI_TRANSFER_NOTHING);
+  g_assert_cmpint (gi_arg_info_get_scope (arg_info), ==, GI_SCOPE_TYPE_INVALID);
+  g_assert_false (gi_arg_info_get_closure_index (arg_info, NULL));
+  g_assert_false (gi_arg_info_get_closure_index (arg_info, &idx));
+  g_assert_cmpuint (idx, ==, 0);
+  g_assert_false (gi_arg_info_get_destroy_index (arg_info, NULL));
+  g_assert_false (gi_arg_info_get_destroy_index (arg_info, &idx));
+  g_assert_cmpuint (idx, ==, 0);
+
+  type_info = gi_arg_info_get_type_info (arg_info);
+  g_assert_nonnull (type_info);
+  g_assert_true (gi_type_info_is_pointer (type_info));
+  g_assert_cmpint (gi_type_info_get_tag (type_info), ==, GI_TYPE_TAG_UTF8);
+
+  g_clear_pointer (&type_info, gi_base_info_unref);
+  g_clear_pointer (&arg_info, gi_base_info_unref);
+  g_clear_pointer (&method_info, gi_base_info_unref);
+  g_clear_pointer (&object_info, gi_base_info_unref);
+
+  /* Test an (out) argument. Here it’s the `guint *n_properties` from
+   * g_object_class_list_properties(). */
+  struct_info = (GIStructInfo *) gi_repository_find_by_name (repository, "GObject", "ObjectClass");
+  g_assert_nonnull (struct_info);
+
+  method_info = gi_struct_info_find_method (struct_info, "list_properties");
+  g_assert_nonnull (method_info);
+
+  arg_info = gi_callable_info_get_arg (GI_CALLABLE_INFO (method_info), 0);
+  g_assert_nonnull (arg_info);
+
+  g_assert_cmpint (gi_arg_info_get_direction (arg_info), ==, GI_DIRECTION_OUT);
+  g_assert_false (gi_arg_info_is_optional (arg_info));
+  g_assert_false (gi_arg_info_is_caller_allocates (arg_info));
+  g_assert_cmpint (gi_arg_info_get_ownership_transfer (arg_info), ==, GI_TRANSFER_EVERYTHING);
+
+  g_clear_pointer (&arg_info, gi_base_info_unref);
+  g_clear_pointer (&method_info, gi_base_info_unref);
+  g_clear_pointer (&struct_info, gi_base_info_unref);
+
+  g_clear_object (&repository);
+}
+
+static void
+test_repository_boxed_info (void)
+{
+  GIRepository *repository;
+  GIBoxedInfo *boxed_info = NULL;
+
+  g_test_summary ("Test retrieving GIBoxedInfos from a typelib");
+
+  repository = load_typelib_from_builddir ("GObject", "2.0");
+
+  /* Test all the methods of GIBoxedInfo. This is simple, because there are none. */
+  boxed_info = (GIBoxedInfo *) gi_repository_find_by_name (repository, "GObject", "BookmarkFile");
+  g_assert_nonnull (boxed_info);
+
+  g_clear_pointer (&boxed_info, gi_base_info_unref);
+
+  g_clear_object (&repository);
+}
+
+static void
+test_repository_callable_info (void)
+{
+  GIRepository *repository;
+  GIObjectInfo *object_info = NULL;
+  GIFunctionInfo *method_info = NULL;
+  GICallableInfo *callable_info;
+  GITypeInfo *type_info = NULL;
+  GIAttributeIter iter = GI_ATTRIBUTE_ITER_INIT;
+  const char *name, *value;
+  GIArgInfo *arg_info = NULL;
+
+  g_test_summary ("Test retrieving GICallableInfos from a typelib");
+
+  repository = load_typelib_from_builddir ("GObject", "2.0");
+
+  /* Test all the methods of GICallableInfo. Here we’re looking at
+   * g_object_get_qdata(). */
+  object_info = (GIObjectInfo *) gi_repository_find_by_name (repository, "GObject", "Object");
+  g_assert_nonnull (object_info);
+
+  method_info = gi_object_info_find_method (object_info, "get_qdata");
+  g_assert_nonnull (method_info);
+
+  callable_info = GI_CALLABLE_INFO (method_info);
+
+  g_assert_true (gi_callable_info_is_method (callable_info));
+  g_assert_false (gi_callable_info_can_throw_gerror (callable_info));
+
+  type_info = gi_callable_info_get_return_type (callable_info);
+  g_assert_nonnull (type_info);
+  g_assert_true (gi_type_info_is_pointer (type_info));
+  g_assert_cmpint (gi_type_info_get_tag (type_info), ==, GI_TYPE_TAG_VOID);
+  g_clear_pointer (&type_info, gi_base_info_unref);
+
+  /* This method has no attributes */
+  g_assert_false (gi_callable_info_iterate_return_attributes (callable_info, &iter, &name, &value));
+
+  g_assert_null (gi_callable_info_get_return_attribute (callable_info, "doesnt-exist"));
+
+  g_assert_false (gi_callable_info_get_caller_owns (callable_info));
+  g_assert_true (gi_callable_info_may_return_null (callable_info));
+  g_assert_false (gi_callable_info_skip_return (callable_info));
+
+  g_assert_cmpuint (gi_callable_info_get_n_args (callable_info), ==, 1);
+
+  arg_info = gi_callable_info_get_arg (callable_info, 0);
+  g_assert_nonnull (arg_info);
+  g_clear_pointer (&arg_info, gi_base_info_unref);
+
+  g_assert_cmpint (gi_callable_info_get_instance_ownership_transfer (callable_info), ==, GI_TRANSFER_NOTHING);
+
+  g_clear_pointer (&method_info, gi_base_info_unref);
+  g_clear_pointer (&object_info, gi_base_info_unref);
+
+  g_clear_object (&repository);
+}
+
+static void
+test_repository_callback_info (void)
+{
+  GIRepository *repository;
+  GICallbackInfo *callback_info = NULL;
+
+  g_test_summary ("Test retrieving GICallbackInfos from a typelib");
+
+  repository = load_typelib_from_builddir ("GObject", "2.0");
+
+  /* Test all the methods of GICallbackInfo. This is simple, because there are none. */
+  callback_info = (GICallbackInfo *) gi_repository_find_by_name (repository, "GObject", "ObjectFinalizeFunc");
+  g_assert_nonnull (callback_info);
+
+  g_clear_pointer (&callback_info, gi_base_info_unref);
+
+  g_clear_object (&repository);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -174,6 +369,10 @@ main (int   argc,
   g_test_add_func ("/repository/basic", test_repository_basic);
   g_test_add_func ("/repository/info", test_repository_info);
   g_test_add_func ("/repository/dependencies", test_repository_dependencies);
+  g_test_add_func ("/repository/arg-info", test_repository_arg_info);
+  g_test_add_func ("/repository/boxed-info", test_repository_boxed_info);
+  g_test_add_func ("/repository/callable-info", test_repository_callable_info);
+  g_test_add_func ("/repository/callback-info", test_repository_callback_info);
 
   return g_test_run ();
 }
