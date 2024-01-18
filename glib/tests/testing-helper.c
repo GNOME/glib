@@ -55,6 +55,9 @@ test_fail (void)
 static void
 test_error (void)
 {
+  /* We expect this test to abort, so try to avoid that creating a coredump */
+  g_test_disable_crash_reporting ();
+
   g_error ("This should error out\nBecause it's just\nwrong!");
 }
 
