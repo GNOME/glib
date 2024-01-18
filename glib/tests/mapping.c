@@ -299,6 +299,7 @@ main (int argc,
     }
 #endif
 
+  g_test_init (&argc, &argv, NULL);
   local_argv = argv;
 
   if (argc > 1)
@@ -306,8 +307,6 @@ main (int argc,
       child_main ();
       return EXIT_SUCCESS;
     }
-
-  g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/mapping/flags", test_mapping_flags);
   g_test_add_func ("/mapping/private", test_private);
