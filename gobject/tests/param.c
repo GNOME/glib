@@ -1157,7 +1157,6 @@ test_interface_default_init (TestInterfaceInterface *iface)
             g_object_interface_install_property (iface, pspec);
             g_test_assert_expected_messages ();
 
-            g_param_spec_unref (pspec);
             continue;
           }
 
