@@ -426,7 +426,7 @@ const char *
 gi_callable_info_get_return_attribute (GICallableInfo *info,
                                        const char     *name)
 {
-  GIAttributeIter iter = { 0, };
+  GIAttributeIter iter = GI_ATTRIBUTE_ITER_INIT;
   const char *curname, *curvalue;
   while (gi_callable_info_iterate_return_attributes (info, &iter, &curname, &curvalue))
     {

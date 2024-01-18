@@ -784,7 +784,7 @@ const char *
 gi_base_info_get_attribute (GIBaseInfo  *info,
                             const char *name)
 {
-  GIAttributeIter iter = { 0, };
+  GIAttributeIter iter = GI_ATTRIBUTE_ITER_INIT;
   const char *curname, *curvalue;
   while (gi_base_info_iterate_attributes (info, &iter, &curname, &curvalue))
     {
@@ -872,7 +872,7 @@ _attribute_blob_find_first (GIBaseInfo *info,
  * void
  * print_attributes (GIBaseInfo *info)
  * {
- *   GIAttributeIter iter = { 0, };
+ *   GIAttributeIter iter = GI_ATTRIBUTE_ITER_INIT;
  *   const char *name;
  *   const char *value;
  *   while (gi_base_info_iterate_attributes (info, &iter, &name, &value))

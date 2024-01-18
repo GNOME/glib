@@ -48,6 +48,16 @@ typedef struct {
   void *_dummy[4];
 } GIAttributeIter;
 
+/**
+ * GI_ATTRIBUTE_ITER_INIT:
+ *
+ * Initialise a stack-allocated [type@GIRepository.AttributeIter] to a value
+ * suitable for passing to the first call to an ‘iterate’ function.
+ *
+ * Since: 2.80
+ */
+#define GI_ATTRIBUTE_ITER_INIT { NULL, { NULL, } }
+
 #define GI_TYPE_BASE_INFO        (gi_base_info_get_type ())
 
 /**
