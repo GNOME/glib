@@ -32,8 +32,6 @@
  * A `GSimpleAction` is the obvious simple implementation of the
  * [iface@Gio.Action] interface. This is the easiest way to create an action for
  * purposes of adding it to a [class@Gio.SimpleActionGroup].
- *
- * See also [class@Gtk.Action].
  */
 
 struct _GSimpleAction

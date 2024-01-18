@@ -15,8 +15,8 @@ and asynchronous variants ([func@GLib.spawn_async],
 complete shell-like command line ([func@GLib.spawn_command_line_sync],
 [func@GLib.spawn_command_line_async]).
 
-See [class@Gio.Subprocess] in GIO for a higher-level API that provides
-stream interfaces for communication with child processes.
+See [`GSubprocess`](../gio/class.Subprocess.html) in GIO for a higher-level API
+that provides stream interfaces for communication with child processes.
 
 An example of using [func@GLib.spawn_async_with_pipes]:
 ```c

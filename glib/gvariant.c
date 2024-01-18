@@ -48,7 +48,7 @@
  *
  * `GVariant` is useful whenever data needs to be serialized, for example when
  * sending method parameters in D-Bus, or when saving settings using
- * [class@Gio.Settings].
+ * [`GSettings`](../gio/class.Settings.html).
  *
  * When creating a new `GVariant`, you pass the data you want to store in it
  * along with a string representing the type of data you wish to pass to it.
@@ -93,7 +93,7 @@
  * `GVariant` instances can be sent over D-Bus.  See [type@GLib.VariantType] for
  * exceptions.  (However, `GVariant`’s serialization format is not the same
  * as the serialization format of a D-Bus message body: use
- * [class@Gio.DBusMessage], in the GIO library, for those.)
+ * [GDBusMessage](../gio/class.DBusMessage.html), in the GIO library, for those.)
  *
  * For space-efficiency, the `GVariant` serialization format does not
  * automatically include the variant’s length, type or endianness,

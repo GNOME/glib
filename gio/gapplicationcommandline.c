@@ -55,7 +55,7 @@
  * commandline to this process).
  *
  * The `GApplicationCommandLine` object can provide the @argc and @argv
- * parameters for use with the [struct@Glib.OptionContext] command-line parsing API,
+ * parameters for use with the [struct@GLib.OptionContext] command-line parsing API,
  * with the [method@Gio.ApplicationCommandLine.get_arguments] function. See
  * [gapplication-example-cmdline3.c][gapplication-example-cmdline3]
  * for an example.

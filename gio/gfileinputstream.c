@@ -42,8 +42,8 @@
  * stream to jump to arbitrary positions in the file, provided the 
  * filesystem of the file allows it. To find the position of a file
  * input stream, use [method@Gio.Seekable.tell]. To find out if a file input
- * stream supports seeking, use [iface@Gio.Seekable.can_seek].
- * To position a file input stream, use [iface@Gio.Seekable.seek].
+ * stream supports seeking, use [vfunc@Gio.Seekable.can_seek].
+ * To position a file input stream, use [vfunc@Gio.Seekable.seek].
  **/
 
 static void       g_file_input_stream_seekable_iface_init    (GSeekableIface       *iface);
