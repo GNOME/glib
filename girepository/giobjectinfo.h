@@ -75,16 +75,31 @@ typedef void   (*GIObjectInfoSetValueFunction) (GValue *value, void *object);
  */
 typedef void * (*GIObjectInfoGetValueFunction) (const GValue *value);
 
+#define GI_TYPE_OBJECT_INFO (gi_object_info_get_type ())
+
+/**
+ * GI_OBJECT_INFO:
+ * @info: Info object which is subject to casting.
+ *
+ * Casts a [type@GIRepository.ObjectInfo] or derived pointer into a
+ * `(GIObjectInfo*)` pointer.
+ *
+ * Depending on the current debugging level, this function may invoke
+ * certain runtime checks to identify invalid casts.
+ *
+ * Since: 2.80
+ */
+#define GI_OBJECT_INFO(info) (G_TYPE_CHECK_INSTANCE_CAST ((info), GI_TYPE_OBJECT_INFO, GIObjectInfo))
+
 /**
  * GI_IS_OBJECT_INFO:
  * @info: an info structure
  *
- * Checks if @info is a [class@GIRepository.ObjectInfo].
+ * Checks if @info is a [class@GIRepository.ObjectInfo] (or a derived type).
  *
  * Since: 2.80
  */
-#define GI_IS_OBJECT_INFO(info) \
-    (gi_base_info_get_info_type ((GIBaseInfo*) info) ==  GI_INFO_TYPE_OBJECT)
+#define GI_IS_OBJECT_INFO(info) (G_TYPE_CHECK_INSTANCE_TYPE ((info), GI_TYPE_OBJECT_INFO))
 
 
 GI_AVAILABLE_IN_ALL

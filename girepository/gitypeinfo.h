@@ -32,16 +32,31 @@
 
 G_BEGIN_DECLS
 
+#define GI_TYPE_TYPE_INFO (gi_type_info_get_type ())
+
+/**
+ * GI_TYPE_INFO:
+ * @info: Info object which is subject to casting.
+ *
+ * Casts a [type@GIRepository.TypeInfo] or derived pointer into a
+ * `(GITypeInfo*)` pointer.
+ *
+ * Depending on the current debugging level, this function may invoke
+ * certain runtime checks to identify invalid casts.
+ *
+ * Since: 2.80
+ */
+#define GI_TYPE_INFO(info) (G_TYPE_CHECK_INSTANCE_CAST ((info), GI_TYPE_TYPE_INFO, GITypeInfo))
+
 /**
  * GI_IS_TYPE_INFO:
  * @info: an info structure
  *
- * Checks if @info is a [alias@GIRepository.TypeInfo].
+ * Checks if @info is a [alias@GIRepository.TypeInfo] (or a derived type).
  *
  * Since: 2.80
  */
-#define GI_IS_TYPE_INFO(info) \
-    (gi_base_info_get_info_type ((GIBaseInfo*) info) ==  GI_INFO_TYPE_TYPE)
+#define GI_IS_TYPE_INFO(info) (G_TYPE_CHECK_INSTANCE_TYPE ((info), GI_TYPE_TYPE_INFO))
 
 /**
  * GI_TYPE_TAG_IS_BASIC:

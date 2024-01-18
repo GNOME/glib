@@ -32,6 +32,22 @@
 
 G_BEGIN_DECLS
 
+#define GI_TYPE_CALLABLE_INFO (gi_callable_info_get_type ())
+
+/**
+ * GI_CALLABLE_INFO:
+ * @info: Info object which is subject to casting.
+ *
+ * Casts a [type@GIRepository.CallableInfo] or derived pointer into a
+ * `(GICallableInfo*)` pointer.
+ *
+ * Depending on the current debugging level, this function may invoke
+ * certain runtime checks to identify invalid casts.
+ *
+ * Since: 2.80
+ */
+#define GI_CALLABLE_INFO(info) (G_TYPE_CHECK_INSTANCE_CAST ((info), GI_TYPE_CALLABLE_INFO, GICallableInfo))
+
 /**
  * GI_IS_CALLABLE_INFO:
  * @info: an info structure
@@ -40,11 +56,7 @@ G_BEGIN_DECLS
  *
  * Since: 2.80
  */
-#define GI_IS_CALLABLE_INFO(info)                                        \
-    ((gi_base_info_get_info_type ((GIBaseInfo*) info) == GI_INFO_TYPE_FUNCTION) || \
-     (gi_base_info_get_info_type ((GIBaseInfo*) info) == GI_INFO_TYPE_CALLBACK) || \
-     (gi_base_info_get_info_type ((GIBaseInfo*) info) == GI_INFO_TYPE_SIGNAL) || \
-     (gi_base_info_get_info_type ((GIBaseInfo*) info) == GI_INFO_TYPE_VFUNC))
+#define GI_IS_CALLABLE_INFO(info) (G_TYPE_CHECK_INSTANCE_TYPE ((info), GI_TYPE_CALLABLE_INFO))
 
 
 GI_AVAILABLE_IN_ALL

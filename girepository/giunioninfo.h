@@ -32,16 +32,31 @@
 
 G_BEGIN_DECLS
 
+#define GI_TYPE_UNION_INFO (gi_union_info_get_type ())
+
+/**
+ * GI_UNION_INFO:
+ * @info: Info object which is subject to casting.
+ *
+ * Casts a [type@GIRepository.UnionInfo] or derived pointer into a
+ * `(GIUnionInfo*)` pointer.
+ *
+ * Depending on the current debugging level, this function may invoke
+ * certain runtime checks to identify invalid casts.
+ *
+ * Since: 2.80
+ */
+#define GI_UNION_INFO(info) (G_TYPE_CHECK_INSTANCE_CAST ((info), GI_TYPE_UNION_INFO, GIUnionInfo))
+
 /**
  * GI_IS_UNION_INFO:
  * @info: an info structure
  *
- * Checks if @info is a [struct@GIRepository.UnionInfo].
+ * Checks if @info is a [struct@GIRepository.UnionInfo] (or a derived type).
  *
  * Since: 2.80
  */
-#define GI_IS_UNION_INFO(info) \
-    (gi_base_info_get_info_type ((GIBaseInfo*) info) ==  GI_INFO_TYPE_UNION)
+#define GI_IS_UNION_INFO(info) (G_TYPE_CHECK_INSTANCE_TYPE ((info), GI_TYPE_UNION_INFO))
 
 GI_AVAILABLE_IN_ALL
 unsigned int     gi_union_info_get_n_fields             (GIUnionInfo *info);

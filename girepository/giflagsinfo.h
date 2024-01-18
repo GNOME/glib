@@ -1,8 +1,7 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*-
- * GObject introspection: Registered Type
+ * GObject introspection: Flags type
  *
- * Copyright (C) 2005 Matthias Clasen
- * Copyright (C) 2008,2009 Red Hat, Inc.
+ * Copyright 2024 GNOME Foundation, Inc.
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  *
@@ -28,45 +27,34 @@
 #error "Only <girepository.h> can be included directly."
 #endif
 
-#include <glib-object.h>
 #include <girepository/gitypes.h>
 
 G_BEGIN_DECLS
 
-#define GI_TYPE_REGISTERED_TYPE_INFO (gi_registered_type_info_get_type ())
+#define GI_TYPE_FLAGS_INFO (gi_flags_info_get_type ())
 
 /**
- * GI_REGISTERED_TYPE_INFO:
+ * GI_FLAGS_INFO:
  * @info: Info object which is subject to casting.
  *
- * Casts a [type@GIRepository.RegisteredTypeInfo] or derived pointer into a
- * `(GIRegisteredTypeInfo*)` pointer.
+ * Casts a [type@GIRepository.FlagsInfo] or derived pointer into a
+ * `(GIFlagsInfo*)` pointer.
  *
  * Depending on the current debugging level, this function may invoke
  * certain runtime checks to identify invalid casts.
  *
  * Since: 2.80
  */
-#define GI_REGISTERED_TYPE_INFO(info) (G_TYPE_CHECK_INSTANCE_CAST ((info), GI_TYPE_REGISTERED_TYPE_INFO, GIRegisteredTypeInfo))
+#define GI_FLAGS_INFO(info) (G_TYPE_CHECK_INSTANCE_CAST ((info), GI_TYPE_FLAGS_INFO, GIFlagsInfo))
 
 /**
- * GI_IS_REGISTERED_TYPE_INFO:
+ * GI_IS_FLAGS_INFO:
  * @info: an info structure
  *
- * Checks if @info is a [class@GIRepository.RegisteredTypeInfo] or derived from
- * it.
+ * Checks if @info is a [class@GIRepository.FlagsInfo] (or a derived type).
  *
  * Since: 2.80
  */
-#define GI_IS_REGISTERED_TYPE_INFO(info) (G_TYPE_CHECK_INSTANCE_TYPE ((info), GI_TYPE_OBJECT_INFO))
-
-GI_AVAILABLE_IN_ALL
-const char *           gi_registered_type_info_get_type_name (GIRegisteredTypeInfo *info);
-
-GI_AVAILABLE_IN_ALL
-const char *           gi_registered_type_info_get_type_init_function_name (GIRegisteredTypeInfo *info);
-
-GI_AVAILABLE_IN_ALL
-GType                  gi_registered_type_info_get_g_type    (GIRegisteredTypeInfo *info);
+#define GI_IS_FLAGS_INFO(info) (G_TYPE_CHECK_INSTANCE_TYPE ((info), GI_TYPE_FLAGS_INFO))
 
 G_END_DECLS

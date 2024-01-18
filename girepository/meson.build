@@ -44,11 +44,13 @@ gi_visibility_h = custom_target(
 girepo_headers = files(
   'giarginfo.h',
   'gibaseinfo.h',
+  'giboxedinfo.h',
   'gicallableinfo.h',
   'gicallbackinfo.h',
   'giconstantinfo.h',
   'gienuminfo.h',
   'gifieldinfo.h',
+  'giflagsinfo.h',
   'gifunctioninfo.h',
   'giinterfaceinfo.h',
   'giobjectinfo.h',
@@ -62,6 +64,7 @@ girepo_headers = files(
   'gitypes.h',
   'giunioninfo.h',
   'giunresolvedinfo.h',
+  'givalueinfo.h',
   'givfuncinfo.h',
 )
 
@@ -143,11 +146,13 @@ girepo_sources = files(
   'gdump.c',
   'giarginfo.c',
   'gibaseinfo.c',
+  'giboxedinfo.c',
   'gicallableinfo.c',
   'gicallbackinfo.c',
   'giconstantinfo.c',
   'gienuminfo.c',
   'gifieldinfo.c',
+  'giflagsinfo.c',
   'gifunctioninfo.c',
   'ginvoke.c',
   'giinterfaceinfo.c',
@@ -162,6 +167,7 @@ girepo_sources = files(
   'gitypelib.c',
   'giunioninfo.c',
   'giunresolvedinfo.c',
+  'givalueinfo.c',
   'givfuncinfo.c',
 )
 

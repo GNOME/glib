@@ -68,7 +68,7 @@ void gi_callable_info_class_init (gpointer g_class,
 
 struct _GIFunctionInfo
 {
-  GIBaseInfo parent;
+  GICallableInfo parent;
 };
 
 void gi_function_info_class_init (gpointer g_class,
@@ -76,7 +76,7 @@ void gi_function_info_class_init (gpointer g_class,
 
 struct _GICallbackInfo
 {
-  GIBaseInfo parent;
+  GICallableInfo parent;
 };
 
 void gi_callback_info_class_init (gpointer g_class,
@@ -92,7 +92,7 @@ void gi_registered_type_info_class_init (gpointer g_class,
 
 struct _GIStructInfo
 {
-  GIBaseInfo parent;
+  GIRegisteredTypeInfo parent;
 };
 
 void gi_struct_info_class_init (gpointer g_class,
@@ -100,7 +100,7 @@ void gi_struct_info_class_init (gpointer g_class,
 
 struct _GIUnionInfo
 {
-  GIBaseInfo parent;
+  GIRegisteredTypeInfo parent;
 };
 
 void gi_union_info_class_init (gpointer g_class,
@@ -108,15 +108,23 @@ void gi_union_info_class_init (gpointer g_class,
 
 struct _GIEnumInfo
 {
-  GIBaseInfo parent;
+  GIRegisteredTypeInfo parent;
 };
 
 void gi_enum_info_class_init (gpointer g_class,
                               gpointer class_data);
 
+struct _GIFlagsInfo
+{
+  GIEnumInfo parent;
+};
+
+void gi_flags_info_class_init (gpointer g_class,
+                               gpointer class_data);
+
 struct _GIObjectInfo
 {
-  GIBaseInfo parent;
+  GIRegisteredTypeInfo parent;
 };
 
 void gi_object_info_class_init (gpointer g_class,
@@ -124,11 +132,19 @@ void gi_object_info_class_init (gpointer g_class,
 
 struct _GIInterfaceInfo
 {
-  GIBaseInfo parent;
+  GIRegisteredTypeInfo parent;
 };
 
 void gi_interface_info_class_init (gpointer g_class,
                                    gpointer class_data);
+
+struct _GIBoxedInfo
+{
+  GIRegisteredTypeInfo parent;
+};
+
+void gi_boxed_info_class_init (gpointer g_class,
+                               gpointer class_data);
 
 struct _GIConstantInfo
 {
@@ -148,7 +164,7 @@ void gi_value_info_class_init (gpointer g_class,
 
 struct _GISignalInfo
 {
-  GIBaseInfo parent;
+  GICallableInfo parent;
 };
 
 void gi_signal_info_class_init (gpointer g_class,
@@ -156,7 +172,7 @@ void gi_signal_info_class_init (gpointer g_class,
 
 struct _GIVFuncInfo
 {
-  GIBaseInfo parent;
+  GICallableInfo parent;
 };
 
 void gi_vfunc_info_class_init (gpointer g_class,

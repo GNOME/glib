@@ -32,16 +32,31 @@
 
 G_BEGIN_DECLS
 
+#define GI_TYPE_INTERFACE_INFO (gi_interface_info_get_type ())
+
+/**
+ * GI_INTERFACE_INFO:
+ * @info: Info object which is subject to casting.
+ *
+ * Casts a [type@GIRepository.InterfaceInfo] or derived pointer into a
+ * `(GIInterfaceInfo*)` pointer.
+ *
+ * Depending on the current debugging level, this function may invoke
+ * certain runtime checks to identify invalid casts.
+ *
+ * Since: 2.80
+ */
+#define GI_INTERFACE_INFO(info) (G_TYPE_CHECK_INSTANCE_CAST ((info), GI_TYPE_INTERFACE_INFO, GIInterfaceInfo))
+
 /**
  * GI_IS_INTERFACE_INFO:
  * @info: an info structure
  *
- * Checks if @info is a [class@GIRepository.InterfaceInfo].
+ * Checks if @info is a [class@GIRepository.InterfaceInfo] (or a derived type).
  *
  * Since: 2.80
  */
-#define GI_IS_INTERFACE_INFO(info) \
-    (gi_base_info_get_info_type ((GIBaseInfo*) info) ==  GI_INFO_TYPE_INTERFACE)
+#define GI_IS_INTERFACE_INFO(info) (G_TYPE_CHECK_INSTANCE_TYPE ((info), GI_TYPE_INTERFACE_INFO))
 
 
 GI_AVAILABLE_IN_ALL

@@ -32,16 +32,31 @@
 
 G_BEGIN_DECLS
 
+#define GI_TYPE_PROPERTY_INFO (gi_property_info_get_type ())
+
+/**
+ * GI_PROPERTY_INFO:
+ * @info: Info object which is subject to casting.
+ *
+ * Casts a [type@GIRepository.PropertyInfo] or derived pointer into a
+ * `(GIPropertyInfo*)` pointer.
+ *
+ * Depending on the current debugging level, this function may invoke
+ * certain runtime checks to identify invalid casts.
+ *
+ * Since: 2.80
+ */
+#define GI_PROPERTY_INFO(info) (G_TYPE_CHECK_INSTANCE_CAST ((info), GI_TYPE_PROPERTY_INFO, GIPropertyInfo))
+
 /**
  * GI_IS_PROPERTY_INFO:
  * @info: an info structure
  *
- * Checks if @info is a [class@GIRepository.PropertyInfo].
+ * Checks if @info is a [class@GIRepository.PropertyInfo] (or a derived type).
  *
  * Since: 2.80
  */
-#define GI_IS_PROPERTY_INFO(info) \
-    (gi_base_info_get_info_type ((GIBaseInfo*) info) ==  GI_INFO_TYPE_PROPERTY)
+#define GI_IS_PROPERTY_INFO(info) (G_TYPE_CHECK_INSTANCE_TYPE ((info), GI_TYPE_PROPERTY_INFO))
 
 
 GI_AVAILABLE_IN_ALL
