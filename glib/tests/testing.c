@@ -395,11 +395,11 @@ test_subprocess_timeout (void)
     {
       /* loop and sleep forever */
       while (TRUE)
-        g_usleep (1000 * 1000);
+        g_usleep (G_USEC_PER_SEC);
       return;
     }
   /* allow child to run for only a fraction of a second */
-  g_test_trap_subprocess (NULL, 0.11 * 1000000, G_TEST_SUBPROCESS_DEFAULT);
+  g_test_trap_subprocess (NULL, 0.05 * G_USEC_PER_SEC, G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_failed ();
   g_assert_true (g_test_trap_reached_timeout ());
 }
@@ -898,18 +898,6 @@ test_incomplete (void)
    * causes nonzero exit status 77, which is treated as failure by
    * g_test_trap_subprocess(). */
   g_test_trap_assert_failed ();
-}
-
-static void
-test_subprocess_timed_out (void)
-{
-  if (g_test_subprocess ())
-    {
-      g_usleep (1000000);
-      return;
-    }
-  g_test_trap_subprocess (NULL, 50000, G_TEST_SUBPROCESS_DEFAULT);
-  g_assert_true (g_test_trap_reached_timeout ());
 }
 
 static void
@@ -2926,8 +2914,7 @@ main (int   argc,
 
   g_test_add_func ("/trap_subprocess/fail", test_subprocess_fail);
   g_test_add_func ("/trap_subprocess/no-such-test", test_subprocess_no_such_test);
-  if (g_test_slow ())
-    g_test_add_func ("/trap_subprocess/timeout", test_subprocess_timeout);
+  g_test_add_func ("/trap_subprocess/timeout", test_subprocess_timeout);
   g_test_add_func ("/trap_subprocess/envp", test_subprocess_envp);
 
   g_test_add_func ("/trap_subprocess/patterns", test_subprocess_patterns);
@@ -2971,7 +2958,6 @@ main (int   argc,
   g_test_add_func ("/misc/combining/subprocess/pass", test_pass);
   g_test_add_func ("/misc/fail", test_fail);
   g_test_add_func ("/misc/incomplete", test_incomplete);
-  g_test_add_func ("/misc/timeout", test_subprocess_timed_out);
 
   g_test_add_func ("/misc/path/first", test_path_first);
   g_test_add_func ("/misc/path/second", test_path_second);
