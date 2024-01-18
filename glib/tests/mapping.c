@@ -189,8 +189,6 @@ test_private (void)
 
   /* Cleaning left over files */
   g_remove ("maptest");
-
-  g_test_message ("test_private: ok");
 }
 
 static void
@@ -283,8 +281,6 @@ test_child_private (void)
   /* Cleaning left over files */
   g_remove ("mapchild");
   g_remove ("maptest");
-
-  g_test_message ("test_child_private: ok");
 }
 
 int
