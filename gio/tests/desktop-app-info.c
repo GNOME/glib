@@ -596,6 +596,7 @@ wait_for_file (const gchar *want_this,
 static void
 test_actions (void)
 {
+  GTestDBus *bus = NULL;
   const char *expected[] = { "frob", "tweak", "twiddle", "broken", NULL };
   const gchar * const *actions;
   GDesktopAppInfo *appinfo;
@@ -604,6 +605,10 @@ test_actions (void)
   gchar *frob_path;
   gchar *tweak_path;
   gchar *twiddle_path;
+
+  /* Set up a test session bus to keep D-Bus traffic off the real session bus. */
+  bus = g_test_dbus_new (G_TEST_DBUS_NONE);
+  g_test_dbus_up (bus);
 
   appinfo = g_desktop_app_info_new_from_filename (g_test_get_filename (G_TEST_DIST, "appinfo-test-actions.desktop", NULL));
   g_assert_nonnull (appinfo);
@@ -651,6 +656,9 @@ test_actions (void)
   g_free (tweak_path);
   g_free (twiddle_path);
   g_object_unref (appinfo);
+
+  g_test_dbus_down (bus);
+  g_clear_object (&bus);
 }
 
 static gchar *

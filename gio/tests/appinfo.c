@@ -6,6 +6,7 @@
 #include <gio/gio.h>
 #include <gio/gdesktopappinfo.h>
 
+/* Should be called inside a #GTestDBus environment. */
 static void
 test_launch_for_app_info (GAppInfo *appinfo)
 {
@@ -51,8 +52,13 @@ test_launch_for_app_info (GAppInfo *appinfo)
 static void
 test_launch (void)
 {
+  GTestDBus *bus = NULL;
   GAppInfo *appinfo;
   const gchar *path;
+
+  /* Set up a test session bus to keep D-Bus traffic off the real session bus. */
+  bus = g_test_dbus_new (G_TEST_DBUS_NONE);
+  g_test_dbus_up (bus);
 
   path = g_test_get_filename (G_TEST_BUILT, "appinfo-test.desktop", NULL);
   appinfo = (GAppInfo*)g_desktop_app_info_new_from_filename (path);
@@ -60,6 +66,9 @@ test_launch (void)
 
   test_launch_for_app_info (appinfo);
   g_object_unref (appinfo);
+
+  g_test_dbus_down (bus);
+  g_clear_object (&bus);
 }
 
 static void
@@ -83,6 +92,7 @@ test_launch_no_app_id (void)
     "Keywords=keyword1;test keyword;\n"
     "Categories=GNOME;GTK;\n";
 
+  GTestDBus *bus = NULL;
   gchar *exec_line_variants[2];
   gsize i;
 
@@ -94,6 +104,10 @@ test_launch_no_app_id (void)
       g_test_get_dir (G_TEST_BUILT));
 
   g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=791337");
+
+  /* Set up a test session bus to keep D-Bus traffic off the real session bus. */
+  bus = g_test_dbus_new (G_TEST_DBUS_NONE);
+  g_test_dbus_up (bus);
 
   for (i = 0; i < G_N_ELEMENTS (exec_line_variants); i++)
     {
@@ -124,6 +138,9 @@ test_launch_no_app_id (void)
       g_object_unref (appinfo);
       g_key_file_unref (fake_desktop_file);
     }
+
+  g_test_dbus_down (bus);
+  g_clear_object (&bus);
 
   g_free (exec_line_variants[1]);
   g_free (exec_line_variants[0]);
@@ -332,11 +349,16 @@ launch_failed (GAppLaunchContext *context,
 static void
 test_launch_context_signals (void)
 {
+  GTestDBus *bus = NULL;
   GAppLaunchContext *context;
   GAppInfo *appinfo;
   GError *error = NULL;
   gboolean success;
   gchar *cmdline;
+
+  /* Set up a test session bus to keep D-Bus traffic off the real session bus. */
+  bus = g_test_dbus_new (G_TEST_DBUS_NONE);
+  g_test_dbus_up (bus);
 
   cmdline = g_strconcat (g_test_get_dir (G_TEST_BUILT), "/appinfo-test --option", NULL);
 
@@ -358,6 +380,9 @@ test_launch_context_signals (void)
   g_object_unref (context);
 
   g_free (cmdline);
+
+  g_test_dbus_down (bus);
+  g_clear_object (&bus);
 }
 
 static void
