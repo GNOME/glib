@@ -241,6 +241,18 @@ g_object_get_instance_private (GObject *object)
 }
 #endif
 
+static gpointer
+datalist_id_update_atomic (GObject *object,
+                           GQuark key_id,
+                           GDataListUpdateAtomicFunc callback,
+                           gpointer user_data)
+{
+  return GLIB_PRIVATE_CALL (g_datalist_id_update_atomic) (&object->qdata,
+                                                          key_id,
+                                                          callback,
+                                                          user_data);
+}
+
 G_ALWAYS_INLINE static inline guint *
 object_get_optional_flags_p (GObject *object)
 {
@@ -299,18 +311,46 @@ g_object_notify_queue_free (gpointer data)
 }
 
 static GObjectNotifyQueue *
-g_object_notify_queue_create_queue_frozen (GObject *object)
+g_object_notify_queue_new (void)
 {
   GObjectNotifyQueue *nqueue;
 
-  nqueue = g_new0 (GObjectNotifyQueue, 1);
-
+  nqueue = g_new (GObjectNotifyQueue, 1);
   *nqueue = (GObjectNotifyQueue){
     .freeze_count = 1,
   };
 
-  g_datalist_id_set_data_full (&object->qdata, quark_notify_queue,
-                               nqueue, g_object_notify_queue_free);
+  return nqueue;
+}
+
+static gpointer
+g_object_notify_queue_freeze_cb (GQuark key_id,
+                                 gpointer *data,
+                                 GDestroyNotify *destroy_notify,
+                                 gpointer user_data)
+{
+  GObject *object = user_data;
+  GObjectNotifyQueue *nqueue = *data;
+
+  if (!nqueue)
+    {
+      /* The nqueue doesn't exist yet. We create it, and freeze thus 1 time. */
+      nqueue = g_object_notify_queue_new ();
+      *data = nqueue;
+      *destroy_notify = g_object_notify_queue_free;
+    }
+  else
+    {
+      if (nqueue->freeze_count >= 65535)
+        {
+          g_critical ("Free queue for %s (%p) is larger than 65535,"
+                      " called g_object_freeze_notify() too often."
+                      " Forgot to call g_object_thaw_notify() or infinite loop",
+                      G_OBJECT_TYPE_NAME (object), object);
+        }
+      else
+        nqueue->freeze_count++;
+    }
 
   return nqueue;
 }
@@ -321,24 +361,11 @@ g_object_notify_queue_freeze (GObject *object)
   GObjectNotifyQueue *nqueue;
 
   object_bit_lock (object, OPTIONAL_BIT_LOCK_NOTIFY);
-  nqueue = g_datalist_id_get_data (&object->qdata, quark_notify_queue);
-  if (!nqueue)
-    {
-      nqueue = g_object_notify_queue_create_queue_frozen (object);
-      goto out;
-    }
-
-  if (nqueue->freeze_count >= 65535)
-    g_critical("Free queue for %s (%p) is larger than 65535,"
-               " called g_object_freeze_notify() too often."
-               " Forgot to call g_object_thaw_notify() or infinite loop",
-               G_OBJECT_TYPE_NAME (object), object);
-  else
-    nqueue->freeze_count++;
-
-out:
+  nqueue = datalist_id_update_atomic (object,
+                                      quark_notify_queue,
+                                      g_object_notify_queue_freeze_cb,
+                                      object);
   object_bit_unlock (object, OPTIONAL_BIT_LOCK_NOTIFY);
-
   return nqueue;
 }
 
@@ -429,7 +456,9 @@ g_object_notify_queue_add (GObject            *object,
            * Note that this freeze will be balanced at the end of object
            * initialization.
            */
-          nqueue = g_object_notify_queue_create_queue_frozen (object);
+          nqueue = g_object_notify_queue_new ();
+          g_datalist_id_set_data_full (&object->qdata, quark_notify_queue,
+                                       nqueue, g_object_notify_queue_free);
         }
     }
 
