@@ -90,8 +90,8 @@
  * non-abstract subtypes may.  For example, in GTK, no object that has
  * the type of [`GtkWidget`](https://docs.gtk.org/gtk4/class.Widget.html) can
  * exist (since `GtkWidget` is an abstract class), but a [`GtkWindow`](https://docs.gtk.org/gtk4/class.Window.html)
- * can certainly be instantiated, and you would say that a `GtkWidget` is a
- * `GtkWidget` (since `GtkWidget` is a subclass of `GtkWidget`).
+ * can certainly be instantiated, and you would say that a `GtkWindow` is a
+ * `GtkWidget` (since `GtkWindow` is a subclass of `GtkWidget`).
  *
  * Two types may not be compared by value; use [method@GLib.VariantType.equal]
  * or [method@GLib.VariantType.is_subtype_of]  May be copied using
