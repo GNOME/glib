@@ -51,6 +51,7 @@ cmph = static_library('cmph',
   sources: cmph_sources,
   c_args: custom_c_args,
   dependencies: cmph_deps,
+  gnu_symbol_visibility : 'hidden',
 )
 
 cmph_dep = declare_dependency(
