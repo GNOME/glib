@@ -210,9 +210,9 @@
  * trusted files, etc.)
  *
  * If attempting to deal with programmer errors (for example, incorrect function
- * parameters) then you should use [flags@GLib.LogLevelFlags.CRITICAL] instead.
+ * parameters) then you should use [flags@GLib.LogLevelFlags.LEVEL_CRITICAL] instead.
  *
- * [func@GLib.warn_if_reached] and func@GLib.warn_if_fail] log at [flags@GLib.LogLevelFlags.WARNING].
+ * [func@GLib.warn_if_reached] and func@GLib.warn_if_fail] log at [flags@GLib.LogLevelFlags.LEVEL_WARNING].
  *
  * You can make warnings fatal at runtime by setting the `G_DEBUG`
  * environment variable (see
@@ -239,7 +239,7 @@
  * @...: format string, followed by parameters to insert into the format string
  *   (as with `printf()`)
  *
- * Logs a ‘critical warning’ ([flags@GLib.LogLevelFlags.CRITICAL]).
+ * Logs a ‘critical warning’ ([flags@GLib.LogLevelFlags.LEVEL_CRITICAL]).
  *
  * Critical warnings are intended to be used in the event of an error
  * that originated in the current process (a programmer error).
@@ -247,7 +247,7 @@
  * somewhere in the current program (or its libraries).
  *
  * [func@GLib.return_if_fail], [func@GLib.return_val_if_fail], [func@GLib.return_if_reached] and
- * [func@GLib.return_val_if_reached] log at [flags@GLib.LogLevelFlags.CRITICAL].
+ * [func@GLib.return_val_if_reached] log at [flags@GLib.LogLevelFlags.LEVEL_CRITICAL].
  *
  * You can make critical warnings fatal at runtime by
  * setting the `G_DEBUG` environment variable (see
@@ -561,7 +561,7 @@ g_log_domain_get_handler_L (GLogDomain	*domain,
  *
  * When a message with any of these levels is logged the program terminates.
  * You can only set the levels defined by GLib to be fatal.
- * [flags@GLib.LogLevelFlags.ERROR] is always fatal.
+ * [flags@GLib.LogLevelFlags.LEVEL_ERROR] is always fatal.
  *
  * You can also make some message levels fatal at runtime by setting
  * the `G_DEBUG` environment variable (see
@@ -606,7 +606,7 @@ g_log_set_always_fatal (GLogLevelFlags fatal_mask)
  *
  * Sets the log levels which are fatal in the given domain.
  *
- * [flags@GLib.LogLevelFlags.ERROR] is always fatal.
+ * [flags@GLib.LogLevelFlags.LEVEL_ERROR] is always fatal.
  *
  * This has no effect on structured log messages (using [func@GLib.log_structured] or
  * [func@GLib.log_structured_array]). To change the fatal behaviour for specific log
@@ -615,9 +615,9 @@ g_log_set_always_fatal (GLogLevelFlags fatal_mask)
  * [Using Structured Logging](logging.html#using-structured-logging).
  *
  * This function is mostly intended to be used with
- * [flags@GLib.LogLevelFlags.CRITICAL].  You should typically not set
- * [flags@GLib.LogLevelFlags.WARNING], [flags@GLib.LogLevelFlags.MESSAGE], [flags@GLib.LogLevelFlags.INFO] or
- * [flags@GLib.LogLevelFlags.DEBUG] as fatal except inside of test programs.
+ * [flags@GLib.LogLevelFlags.LEVEL_CRITICAL].  You should typically not set
+ * [flags@GLib.LogLevelFlags.LEVEL_WARNING], [flags@GLib.LogLevelFlags.LEVEL_MESSAGE], [flags@GLib.LogLevelFlags.LEVEL_INFO] or
+ * [flags@GLib.LogLevelFlags.LEVEL_DEBUG] as fatal except inside of test programs.
  *
  * Returns: the old fatal mask for the log domain
  */
@@ -657,20 +657,20 @@ g_log_set_fatal_mask (const gchar   *log_domain,
  *    application domain
  * @log_levels: the log levels to apply the log handler for.
  *    To handle fatal and recursive messages as well, combine
- *    the log levels with the [flags@GLib.LogLevelFlags.FATAL] and
- *    [flags@GLib.LogLevelFlags.RECURSION] bit flags.
+ *    the log levels with the [flags@GLib.LogLevelFlags.FLAG_FATAL] and
+ *    [flags@GLib.LogLevelFlags.FLAG_RECURSION] bit flags.
  * @log_func: the log handler function
  * @user_data: data passed to the log handler
  *
  * Sets the log handler for a domain and a set of log levels.
  *
  * To handle fatal and recursive messages the @log_levels parameter
- * must be combined with the [flags@GLib.LogLevelFlags.FATAL] and [flags@GLib.LogLevelFlags.RECURSION]
+ * must be combined with the [flags@GLib.LogLevelFlags.FLAG_FATAL] and [flags@GLib.LogLevelFlags.FLAG_RECURSION]
  * bit flags.
  *
- * Note that since the [flags@GLib.LogLevelFlags.ERROR] log level is always fatal, if
+ * Note that since the [flags@GLib.LogLevelFlags.LEVEL_ERROR] log level is always fatal, if
  * you want to set a handler for this log level you must combine it with
- * [flags@GLib.LogLevelFlags.FATAL].
+ * [flags@GLib.LogLevelFlags.FLAG_FATAL].
  *
  * This has no effect if structured logging is enabled; see
  * [Using Structured Logging](logging.html#using-structured-logging).
@@ -714,8 +714,8 @@ g_log_set_handler (const gchar	 *log_domain,
  *   application domain
  * @log_levels: the log levels to apply the log handler for.
  *   To handle fatal and recursive messages as well, combine
- *   the log levels with the [flags@GLib.LogLevelFlags.FATAL] and
- *   [flags@GLib.LogLevelFlags.RECURSION] bit flags.
+ *   the log levels with the [flags@GLib.LogLevelFlags.FLAG_FATAL] and
+ *   [flags@GLib.LogLevelFlags.FLAG_RECURSION] bit flags.
  * @log_func: the log handler function
  * @user_data: data passed to the log handler
  * @destroy: destroy notify for @user_data, or `NULL`
@@ -1041,8 +1041,8 @@ static gboolean gmessages_use_stderr = FALSE;
  * old-style API, and both [func@GLib.log_writer_default] and
  * [func@GLib.log_writer_standard_streams] for the structured API.
  *
- * By default, log messages of levels [flags@GLib.LogLevelFlags.INFO] and
- * [flags@GLib.LogLevelFlags.DEBUG] are sent to `stdout`, and other log messages are
+ * By default, log messages of levels [flags@GLib.LogLevelFlags.LEVEL_INFO] and
+ * [flags@GLib.LogLevelFlags.LEVEL_DEBUG] are sent to `stdout`, and other log messages are
  * sent to `stderr`. This is problematic for applications that intend
  * to reserve `stdout` for structured output such as JSON or XML.
  *
@@ -1498,7 +1498,7 @@ done_query:
  *
  * The message will be passed through to the log writer set by the application
  * using [func@GLib.log_set_writer_func]. If the message is fatal (i.e. its log level
- * is [flags@GLib.LogLevelFlags.ERROR]), the program will be aborted by calling
+ * is [flags@GLib.LogLevelFlags.LEVEL_ERROR]), the program will be aborted by calling
  * [func@GLib.BREAKPOINT] at the end of this function. If the log writer returns
  * [enum@GLib.LogWriterOutput.UNHANDLED] (failure), no other fallback writers will be tried.
  * See the documentation for [type@GLib.LogWriterFunc] for information on chaining
@@ -1818,7 +1818,7 @@ static GLogWriterOutput _g_log_writer_fallback (GLogLevelFlags   log_level,
  *
  * The message will be passed through to the log writer set by the application
  * using [func@GLib.log_set_writer_func]. If the
- * message is fatal (i.e. its log level is [flags@GLib.LogLevelFlags.ERROR]), the program will
+ * message is fatal (i.e. its log level is [flags@GLib.LogLevelFlags.LEVEL_ERROR]), the program will
  * be aborted at the end of this function.
  *
  * See [func@GLib.log_structured] for more documentation.
@@ -2565,7 +2565,7 @@ g_log_writer_journald (GLogLevelFlags   log_level,
  * Format a structured log message and print it to either `stdout` or `stderr`,
  * depending on its log level.
  *
- * [flags@GLib.LogLevelFlags.INFO] and [flags@GLib.LogLevelFlags.DEBUG] messages
+ * [flags@GLib.LogLevelFlags.LEVEL_INFO] and [flags@GLib.LogLevelFlags.LEVEL_DEBUG] messages
  * are sent to `stdout`, or to `stderr` if requested by
  * [func@GLib.log_writer_default_set_use_stderr];
  * all other log levels are sent to `stderr`. Only fields
@@ -3101,7 +3101,7 @@ g_assert_warning (const char *log_domain,
  * [func@GLib.error] intentionally never returns even if the program doesn’t
  * abort; use [func@GLib.test_trap_subprocess] in this case.
  *
- * If messages at [flags@GLib.LogLevelFlags.DEBUG] are emitted, but not explicitly
+ * If messages at [flags@GLib.LogLevelFlags.LEVEL_DEBUG] are emitted, but not explicitly
  * expected via [func@GLib.test_expect_message] then they will be ignored.
  *
  * Since: 2.34
@@ -3158,7 +3158,7 @@ g_test_assert_expected_messages_internal (const char     *domain,
  * `G_LOG_USE_STRUCTURED` defined). It will not work with the structured logging
  * API. See [Testing for Messages](logging.html#testing-for-messages).
  *
- * If messages at [flags@GLib.LogLevelFlags.DEBUG] are emitted, but not explicitly
+ * If messages at [flags@GLib.LogLevelFlags.LEVEL_DEBUG] are emitted, but not explicitly
  * expected via [func@GLib.test_expect_message] then they will be ignored.
  *
  * Since: 2.34
@@ -3301,9 +3301,9 @@ escape_string (GString *string)
  *     these messages are not printed. If you need to set the allowed
  *     domains at runtime, use [func@GLib.log_writer_default_set_debug_domains].
  *
- * `stderr` is used for levels [flags@GLib.LogLevelFlags.ERROR],
- * [flags@GLib.LogLevelFlags.CRITICAL], [flags@GLib.LogLevelFlags.WARNING] and
- * [flags@GLib.LogLevelFlags.MESSAGE]. `stdout` is used for
+ * `stderr` is used for levels [flags@GLib.LogLevelFlags.LEVEL_ERROR],
+ * [flags@GLib.LogLevelFlags.LEVEL_CRITICAL], [flags@GLib.LogLevelFlags.LEVEL_WARNING] and
+ * [flags@GLib.LogLevelFlags.LEVEL_MESSAGE]. `stdout` is used for
  * the rest, unless `stderr` was requested by
  * [func@GLib.log_writer_default_set_use_stderr].
  *
