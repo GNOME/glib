@@ -37,6 +37,7 @@ typedef struct
 
 static const TypelibLoadSpec typelib_load_spec_glib = { "GLib", "2.0" };
 static const TypelibLoadSpec typelib_load_spec_gobject = { "GObject", "2.0" };
+static const TypelibLoadSpec typelib_load_spec_gio = { "Gio", "2.0" };
 
 void repository_init (int *argc,
                       char **argv[]);

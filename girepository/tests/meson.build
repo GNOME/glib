@@ -14,11 +14,17 @@ if enable_gir
       'dependencies': [girepo_gthash_dep],
     },
     'repository' : {
-      'depends': [glib_gir, gobject_gir],
+      'depends': [glib_gir, gio_gir, gobject_gir],
     },
     'repository-search-paths' : {
       'c_args': '-DGOBJECT_INTROSPECTION_LIBDIR="@0@"'.format(glib_libdir),
       'depends': [glib_gir],
+    },
+    'struct-info' : {
+      'depends': [gobject_gir],
+    },
+    'throws' : {
+      'depends': [glib_gir, gio_gir],
     },
   }
 endif

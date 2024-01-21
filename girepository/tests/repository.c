@@ -1,4 +1,13 @@
 /*
+ * Copyright 2008-2011 Colin Walters <walters@verbum.org>
+ * Copyright 2011 Laszlo Pandy <lpandy@src.gnome.org>
+ * Copyright 2011 Torsten Schönfeld <kaffeetisch@gmx.de>
+ * Copyright 2011, 2012 Pavel Holejsovsky <pavel.holejsovsky@gmail.com>
+ * Copyright 2013 Martin Pitt <martinpitt@gnome.org>
+ * Copyright 2014 Giovanni Campagna <gcampagna@src.gnome.org>
+ * Copyright 2018 Christoph Reiter
+ * Copyright 2019, 2024 Philip Chimento <philip.chimento@gmail.com>
+ * Copyright 2022 Emmanuele Bassi <ebassi@gnome.org>
  * Copyright 2023 GNOME Foundation, Inc.
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
@@ -19,8 +28,11 @@
  * Author: Philip Withnall <pwithnall@gnome.org>
  */
 
-#include "glib.h"
+#include "config.h"
+
+#include "gio.h"
 #include "girepository.h"
+#include "glib.h"
 #include "test-common.h"
 
 static void
@@ -32,6 +44,7 @@ test_repository_basic (RepositoryFixture *fx,
   const char *expected_namespaces[] = { "GLib", NULL };
   char **versions;
   size_t n_versions;
+  const char *prefix = NULL;
 
   g_test_summary ("Test basic opening of a repository and requiring a typelib");
 
@@ -54,17 +67,26 @@ test_repository_basic (RepositoryFixture *fx,
   namespaces = gi_repository_get_loaded_namespaces (fx->repository);
   g_assert_cmpstrv (namespaces, expected_namespaces);
   g_strfreev (namespaces);
+
+  prefix = gi_repository_get_c_prefix (fx->repository, "GLib");
+  g_assert_nonnull (prefix);
+  g_assert_cmpstr (prefix, ==, "G");
 }
 
 static void
 test_repository_info (RepositoryFixture *fx,
                       const void *unused)
 {
-  GIObjectInfo *object_info = NULL;
+  GIBaseInfo *not_found_info = NULL;
+  GIObjectInfo *object_info = NULL, *object_info_by_gtype = NULL;
   GISignalInfo *signal_info = NULL;
   GIFunctionInfo *method_info = NULL;
+  GType gtype;
 
   g_test_summary ("Test retrieving some basic info blobs from a typelib");
+
+  not_found_info = gi_repository_find_by_name (fx->repository, "GObject", "ThisDoesNotExist");
+  g_assert_null (not_found_info);
 
   object_info = GI_OBJECT_INFO (gi_repository_find_by_name (fx->repository, "GObject", "Object"));
   g_assert_nonnull (object_info);
@@ -72,6 +94,12 @@ test_repository_info (RepositoryFixture *fx,
   g_assert_cmpint (gi_base_info_get_info_type (GI_BASE_INFO (object_info)), ==, GI_INFO_TYPE_OBJECT);
   g_assert_cmpstr (gi_base_info_get_name (GI_BASE_INFO (object_info)), ==, "Object");
   g_assert_cmpstr (gi_base_info_get_namespace (GI_BASE_INFO (object_info)), ==, "GObject");
+
+  gtype = gi_registered_type_info_get_g_type (GI_REGISTERED_TYPE_INFO (object_info));
+  g_assert_true (g_type_is_a (gtype, G_TYPE_OBJECT));
+
+  object_info_by_gtype = GI_OBJECT_INFO (gi_repository_find_by_gtype (fx->repository, G_TYPE_OBJECT));
+  g_assert_nonnull (object_info);
 
   signal_info = gi_object_info_find_signal (object_info, "notify");
   g_assert_nonnull (signal_info);
@@ -95,6 +123,7 @@ test_repository_info (RepositoryFixture *fx,
 
   gi_base_info_unref (signal_info);
   gi_base_info_unref (object_info);
+  gi_base_info_unref (object_info_by_gtype);
 }
 
 static void
@@ -269,6 +298,430 @@ test_repository_callback_info (RepositoryFixture *fx,
   g_clear_pointer (&callback_info, gi_base_info_unref);
 }
 
+static void
+test_repository_char_types (RepositoryFixture *fx,
+                            const void *unused)
+{
+  GIStructInfo *gvalue_info;
+  GIFunctionInfo *method_info;
+  GITypeInfo *type_info;
+
+  g_test_summary ("Test that signed and unsigned char GITypeInfo have GITypeTag of INT8 and UINT8 respectively");
+
+  gvalue_info = GI_STRUCT_INFO (gi_repository_find_by_name (fx->repository, "GObject", "Value"));
+  g_assert_nonnull (gvalue_info);
+
+  /* unsigned char */
+  method_info = gi_struct_info_find_method (gvalue_info, "get_uchar");
+  g_assert_nonnull (method_info);
+
+  type_info = gi_callable_info_get_return_type (GI_CALLABLE_INFO (method_info));
+  g_assert_nonnull (type_info);
+  g_assert_cmpuint (gi_type_info_get_tag (type_info), ==, GI_TYPE_TAG_UINT8);
+
+  g_clear_pointer (&type_info, gi_base_info_unref);
+  g_clear_pointer (&method_info, gi_base_info_unref);
+
+  /* signed char */
+  method_info = gi_struct_info_find_method (gvalue_info, "get_schar");
+  g_assert_nonnull (method_info);
+
+  type_info = gi_callable_info_get_return_type (GI_CALLABLE_INFO (method_info));
+  g_assert_nonnull (type_info);
+  g_assert_cmpuint (gi_type_info_get_tag (type_info), ==, GI_TYPE_TAG_INT8);
+
+  g_clear_pointer (&type_info, gi_base_info_unref);
+  g_clear_pointer (&method_info, gi_base_info_unref);
+  g_clear_pointer (&gvalue_info, gi_base_info_unref);
+}
+
+static void
+test_repository_constructor_return_type (RepositoryFixture *fx,
+                                         const void *unused)
+{
+  GIObjectInfo *object_info = NULL;
+  GIFunctionInfo *constructor = NULL;
+  GITypeInfo *return_type = NULL;
+  GIBaseInfo *return_info = NULL;
+  const char *class_name = NULL;
+  const char *return_name = NULL;
+
+  g_test_summary ("Test the return type of a constructor, g_object_newv()");
+
+  object_info = GI_OBJECT_INFO (gi_repository_find_by_name (fx->repository, "GObject", "Object"));
+  g_assert_nonnull (object_info);
+
+  class_name = gi_registered_type_info_get_type_name (GI_REGISTERED_TYPE_INFO (object_info));
+  g_assert_nonnull (class_name);
+
+  constructor = gi_object_info_find_method (object_info, "newv");
+  g_assert_nonnull (constructor);
+
+  return_type = gi_callable_info_get_return_type (GI_CALLABLE_INFO (constructor));
+  g_assert_nonnull (return_type);
+  g_assert_cmpuint (gi_type_info_get_tag (return_type), ==, GI_TYPE_TAG_INTERFACE);
+
+  return_info = gi_type_info_get_interface (return_type);
+  g_assert_nonnull (return_info);
+
+  return_name = gi_registered_type_info_get_type_name (GI_REGISTERED_TYPE_INFO (return_info));
+  g_assert_nonnull (return_name);
+  g_assert_cmpstr (class_name, ==, return_name);
+
+  g_clear_pointer (&return_info, gi_base_info_unref);
+  g_clear_pointer (&return_type, gi_base_info_unref);
+  g_clear_pointer (&constructor, gi_base_info_unref);
+  g_clear_pointer (&object_info, gi_base_info_unref);
+}
+
+static void
+test_repository_enum_info_c_identifier (RepositoryFixture *fx,
+                                        const void *unused)
+{
+  GIBaseInfo *info = NULL;
+  GIValueInfo *value_info = NULL;
+  unsigned n_infos, n_values, ix, jx;
+  const char *c_identifier = NULL;
+
+  g_test_summary ("Test that every enum member has a C identifier");
+
+  n_infos = gi_repository_get_n_infos (fx->repository, "GLib");
+
+  for (ix = 0; ix < n_infos; ix++)
+    {
+      info = gi_repository_get_info (fx->repository, "GLib", ix);
+
+      if (GI_IS_ENUM_INFO (info))
+        {
+          n_values = gi_enum_info_get_n_values (GI_ENUM_INFO (info));
+          for (jx = 0; jx < n_values; jx++)
+            {
+              value_info = gi_enum_info_get_value (GI_ENUM_INFO (info), jx);
+              c_identifier = gi_base_info_get_attribute (GI_BASE_INFO (value_info), "c:identifier");
+              g_assert_nonnull (c_identifier);
+
+              g_clear_pointer (&value_info, gi_base_info_unref);
+            }
+        }
+
+      g_clear_pointer (&info, gi_base_info_unref);
+    }
+}
+
+static void
+test_repository_enum_info_static_methods (RepositoryFixture *fx,
+                                          const void *unused)
+{
+  GIEnumInfo *enum_info = NULL;
+  unsigned n_methods, ix;
+  GIFunctionInfo *function_info = NULL;
+  GIFunctionInfoFlags flags;
+  const char *symbol = NULL;
+
+  g_test_summary ("Test an enum with methods");
+
+  enum_info = GI_ENUM_INFO (gi_repository_find_by_name (fx->repository, "GLib", "UnicodeScript"));
+  g_assert_nonnull (enum_info);
+
+  n_methods = gi_enum_info_get_n_methods (enum_info);
+  g_assert_cmpuint (n_methods, >, 0);
+
+  for (ix = 0; ix < n_methods; ix++)
+    {
+      function_info = gi_enum_info_get_method (enum_info, ix);
+      g_assert_nonnull (function_info);
+
+      flags = gi_function_info_get_flags (function_info);
+      g_assert_false (flags & GI_FUNCTION_IS_METHOD); /* must be static */
+
+      symbol = gi_function_info_get_symbol (function_info);
+      g_assert_nonnull (symbol);
+      g_assert_true (g_str_has_prefix (symbol, "g_unicode_script_"));
+
+      g_clear_pointer (&function_info, gi_base_info_unref);
+    }
+
+  g_clear_pointer (&enum_info, gi_base_info_unref);
+}
+
+static void
+test_repository_error_quark (RepositoryFixture *fx,
+                             const void *unused)
+{
+  GIEnumInfo *error_info = NULL;
+
+  g_test_summary ("Test finding an error quark by error domain");
+
+  error_info = gi_repository_find_by_error_domain (fx->repository, G_RESOLVER_ERROR);
+  g_assert_nonnull (error_info);
+  g_assert_true (GI_IS_ENUM_INFO (error_info));
+  g_assert_cmpstr (gi_base_info_get_name (GI_BASE_INFO (error_info)), ==, "ResolverError");
+
+  g_clear_pointer (&error_info, gi_base_info_unref);
+}
+
+static void
+test_repository_flags_info_c_identifier (RepositoryFixture *fx,
+                                         const void *unused)
+{
+  GIBaseInfo *info = NULL;
+  GIValueInfo *value_info = NULL;
+  unsigned n_infos, n_values, ix, jx;
+  const char *c_identifier = NULL;
+
+  g_test_summary ("Test that every flags member has a C identifier");
+
+  n_infos = gi_repository_get_n_infos (fx->repository, "GLib");
+
+  for (ix = 0; ix < n_infos; ix++)
+    {
+      info = gi_repository_get_info (fx->repository, "GLib", ix);
+
+      if (GI_IS_FLAGS_INFO (info))
+        {
+          n_values = gi_enum_info_get_n_values (GI_ENUM_INFO (info));
+          for (jx = 0; jx < n_values; jx++)
+            {
+              value_info = gi_enum_info_get_value (GI_ENUM_INFO (info), jx);
+              c_identifier = gi_base_info_get_attribute (GI_BASE_INFO (value_info), "c:identifier");
+              g_assert_nonnull (c_identifier);
+
+              g_clear_pointer (&value_info, gi_base_info_unref);
+            }
+        }
+
+      g_clear_pointer (&info, gi_base_info_unref);
+    }
+}
+
+static void
+test_repository_fundamental_ref_func (RepositoryFixture *fx,
+                                      const void *unused)
+{
+  GIObjectInfo *info;
+
+  g_test_summary ("Test getting the ref func of a fundamental type");
+
+  info = GI_OBJECT_INFO (gi_repository_find_by_name (fx->repository, "GObject", "ParamSpec"));
+  g_assert_nonnull (info);
+
+  g_assert_nonnull (gi_object_info_get_ref_function_pointer (info));
+
+  g_clear_pointer (&info, gi_base_info_unref);
+}
+
+static void
+test_repository_instance_method_ownership_transfer (RepositoryFixture *fx,
+                                                    const void *unused)
+{
+  GIObjectInfo *class_info = NULL;
+  GIFunctionInfo *func_info = NULL;
+  GITransfer transfer;
+
+  g_test_summary ("Test two methods of the same object having opposite ownership transfer of the instance parameter");
+
+  class_info = GI_OBJECT_INFO (gi_repository_find_by_name (fx->repository, "Gio", "DBusMethodInvocation"));
+  g_assert_nonnull (class_info);
+
+  func_info = gi_object_info_find_method (class_info, "get_connection");
+  g_assert_nonnull (func_info);
+  transfer = gi_callable_info_get_instance_ownership_transfer (GI_CALLABLE_INFO (func_info));
+  g_assert_cmpint (GI_TRANSFER_NOTHING, ==, transfer);
+
+  g_clear_pointer (&func_info, gi_base_info_unref);
+
+  func_info = gi_object_info_find_method (class_info, "return_error_literal");
+  g_assert_nonnull (func_info);
+  transfer = gi_callable_info_get_instance_ownership_transfer (GI_CALLABLE_INFO (func_info));
+  g_assert_cmpint (GI_TRANSFER_EVERYTHING, ==, transfer);
+
+  g_clear_pointer (&func_info, gi_base_info_unref);
+  g_clear_pointer (&class_info, gi_base_info_unref);
+}
+
+static void
+test_repository_object_gtype_interfaces (RepositoryFixture *fx,
+                                         const void *unused)
+{
+  GIInterfaceInfo **interfaces;
+  size_t n_interfaces, ix;
+  const char *name;
+  gboolean found_initable = FALSE, found_async_initable = FALSE;
+
+  g_test_summary ("Test gi_repository_get_object_gtype_interfaces()");
+
+  gi_repository_get_object_gtype_interfaces (fx->repository, G_TYPE_DBUS_CONNECTION, &n_interfaces, &interfaces);
+
+  g_assert_cmpuint (n_interfaces, ==, 2);
+
+  for (ix = 0; ix < n_interfaces; ix++)
+    {
+      name = gi_base_info_get_name (GI_BASE_INFO (*(interfaces + ix)));
+      if (strcmp (name, "Initable") == 0)
+        found_initable = TRUE;
+      else if (strcmp (name, "AsyncInitable") == 0)
+        found_async_initable = TRUE;
+    }
+
+  g_assert_true (found_initable);
+  g_assert_true (found_async_initable);
+}
+
+static void
+test_repository_signal_info_with_array_length_arg (RepositoryFixture *fx,
+                                                   const void *unused)
+{
+  GIObjectInfo *gsettings_info = NULL;
+  GISignalInfo *sig_info = NULL;
+  GIArgInfo *arg_info = NULL;
+  GITypeInfo *type_info = NULL;
+  unsigned length_ix;
+
+  g_test_summary ("Test finding the associated array length argument of an array parameter of a signal");
+
+  gsettings_info = GI_OBJECT_INFO (gi_repository_find_by_name (fx->repository, "Gio", "Settings"));
+  g_assert_nonnull (gsettings_info);
+
+  sig_info = gi_object_info_find_signal (gsettings_info, "change-event");
+  g_assert_nonnull (sig_info);
+
+  g_assert_cmpuint (gi_callable_info_get_n_args (GI_CALLABLE_INFO (sig_info)), ==, 2);
+
+  /* verify array argument */
+  arg_info = gi_callable_info_get_arg (GI_CALLABLE_INFO (sig_info), 0);
+  g_assert_nonnull (arg_info);
+  g_assert_cmpstr (gi_base_info_get_name (GI_BASE_INFO (arg_info)), ==, "keys");
+
+  type_info = gi_arg_info_get_type_info (arg_info);
+  g_assert_nonnull (type_info);
+  g_assert_cmpint (gi_type_info_get_tag (type_info), ==, GI_TYPE_TAG_ARRAY);
+  g_assert_cmpint (gi_type_info_get_array_type (type_info), ==, GI_ARRAY_TYPE_C);
+  g_assert_false (gi_type_info_is_zero_terminated (type_info));
+  gboolean ok = gi_type_info_get_array_length_index (type_info, &length_ix);
+  g_assert_true (ok);
+  g_assert_cmpuint (length_ix, ==, 1);
+
+  g_clear_pointer (&arg_info, gi_base_info_unref);
+  g_clear_pointer (&type_info, gi_base_info_unref);
+
+  /* verify array length argument */
+  arg_info = gi_callable_info_get_arg (GI_CALLABLE_INFO (sig_info), 1);
+  g_assert_nonnull (arg_info);
+  g_assert_cmpstr (gi_base_info_get_name (GI_BASE_INFO (arg_info)), ==, "n_keys");
+
+  g_clear_pointer (&arg_info, gi_base_info_unref);
+  g_clear_pointer (&type_info, gi_base_info_unref);
+  g_clear_pointer (&sig_info, gi_base_info_unref);
+  g_clear_pointer (&gsettings_info, gi_base_info_unref);
+}
+
+static void
+test_repository_type_info_name (RepositoryFixture *fx,
+                                const void *unused)
+{
+  GIInterfaceInfo *interface_info = NULL;
+  GIVFuncInfo *vfunc;
+  GITypeInfo *typeinfo;
+
+  g_test_summary ("Test that gi_base_info_get_name() returns null for GITypeInfo");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/gobject-introspection/issues/96");
+
+  interface_info = GI_INTERFACE_INFO (gi_repository_find_by_name (fx->repository, "Gio", "File"));
+  g_assert_nonnull (interface_info);
+  vfunc = gi_interface_info_find_vfunc (interface_info, "read_async");
+  g_assert_nonnull (vfunc);
+
+  typeinfo = gi_callable_info_get_return_type (GI_CALLABLE_INFO (vfunc));
+  g_assert_nonnull (typeinfo);
+
+  g_assert_null (gi_base_info_get_name (GI_BASE_INFO (typeinfo)));
+
+  g_clear_pointer (&interface_info, gi_base_info_unref);
+  g_clear_pointer (&vfunc, gi_base_info_unref);
+  g_clear_pointer (&typeinfo, gi_base_info_unref);
+}
+
+static void
+test_repository_vfunc_info_with_no_invoker (RepositoryFixture *fx,
+                                            const void *unused)
+{
+  GIObjectInfo *object_info = NULL;
+  GIVFuncInfo *vfunc_info = NULL;
+  GIFunctionInfo *invoker_info = NULL;
+
+  g_test_summary ("Test vfunc with no known invoker on object, such as GObject.dispose");
+
+  object_info = GI_OBJECT_INFO (gi_repository_find_by_name (fx->repository, "GObject", "Object"));
+  g_assert_nonnull (object_info);
+
+  vfunc_info = gi_object_info_find_vfunc (object_info, "dispose");
+  g_assert_nonnull (vfunc_info);
+
+  invoker_info = gi_vfunc_info_get_invoker (vfunc_info);
+  g_assert_null (invoker_info);
+
+  g_clear_pointer (&object_info, gi_base_info_unref);
+  g_clear_pointer (&vfunc_info, gi_base_info_unref);
+}
+
+static void
+test_repository_vfunc_info_with_invoker_on_interface (RepositoryFixture *fx,
+                                                      const void *unused)
+{
+  GIInterfaceInfo *interface_info = NULL;
+  GIVFuncInfo *vfunc_info = NULL;
+  GIFunctionInfo *invoker_info = NULL;
+
+  g_test_summary ("Test vfunc with invoker on interface, such as GFile.read_async");
+
+  interface_info = GI_INTERFACE_INFO (gi_repository_find_by_name (fx->repository, "Gio", "File"));
+  g_assert_nonnull (interface_info);
+
+  vfunc_info = gi_interface_info_find_vfunc (interface_info, "read_async");
+  g_assert_nonnull (vfunc_info);
+
+  invoker_info = gi_vfunc_info_get_invoker (vfunc_info);
+  g_assert_nonnull (invoker_info);
+
+  g_assert_cmpstr (gi_base_info_get_name (GI_BASE_INFO (invoker_info)), ==, "read_async");
+
+  g_clear_pointer (&interface_info, gi_base_info_unref);
+  g_clear_pointer (&vfunc_info, gi_base_info_unref);
+  g_clear_pointer (&invoker_info, gi_base_info_unref);
+}
+
+static void
+test_repository_vfunc_info_with_invoker_on_object (RepositoryFixture *fx,
+                                                   const void *unused)
+{
+  GIObjectInfo *object_info = NULL;
+  GIVFuncInfo *vfunc_info = NULL;
+  GIFunctionInfo *invoker_info = NULL;
+
+  g_test_summary ("Test vfunc with invoker on object, such as GAppLaunchContext.get_display");
+
+  object_info = GI_OBJECT_INFO (gi_repository_find_by_name (fx->repository, "Gio", "AppLaunchContext"));
+  g_assert_nonnull (object_info);
+
+  vfunc_info = gi_object_info_find_vfunc (object_info, "get_display");
+  g_assert_nonnull (vfunc_info);
+
+  invoker_info = gi_vfunc_info_get_invoker (vfunc_info);
+  g_assert_nonnull (invoker_info);
+  g_assert_cmpstr (gi_base_info_get_name (GI_BASE_INFO (invoker_info)), ==, "get_display");
+
+  /* And let's be sure we can find the method directly */
+  g_clear_pointer (&invoker_info, gi_base_info_unref);
+
+  invoker_info = gi_object_info_find_method (object_info, "get_display");
+  g_assert_nonnull (invoker_info);
+  g_assert_cmpstr (gi_base_info_get_name (GI_BASE_INFO (invoker_info)), ==, "get_display");
+
+  g_clear_pointer (&object_info, gi_base_info_unref);
+  g_clear_pointer (&vfunc_info, gi_base_info_unref);
+  g_clear_pointer (&invoker_info, gi_base_info_unref);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -282,6 +735,20 @@ main (int   argc,
   ADD_REPOSITORY_TEST ("/repository/boxed-info", test_repository_boxed_info, &typelib_load_spec_gobject);
   ADD_REPOSITORY_TEST ("/repository/callable-info", test_repository_callable_info, &typelib_load_spec_gobject);
   ADD_REPOSITORY_TEST ("/repository/callback-info", test_repository_callback_info, &typelib_load_spec_gobject);
+  ADD_REPOSITORY_TEST ("/repository/char-types", test_repository_char_types, &typelib_load_spec_gobject);
+  ADD_REPOSITORY_TEST ("/repository/constructor-return-type", test_repository_constructor_return_type, &typelib_load_spec_gobject);
+  ADD_REPOSITORY_TEST ("/repository/enum-info-c-identifier", test_repository_enum_info_c_identifier, &typelib_load_spec_glib);
+  ADD_REPOSITORY_TEST ("/repository/enum-info-static-methods", test_repository_enum_info_static_methods, &typelib_load_spec_glib);
+  ADD_REPOSITORY_TEST ("/repository/error-quark", test_repository_error_quark, &typelib_load_spec_gio);
+  ADD_REPOSITORY_TEST ("/repository/flags-info-c-identifier", test_repository_flags_info_c_identifier, &typelib_load_spec_gobject);
+  ADD_REPOSITORY_TEST ("/repository/fundamental-ref-func", test_repository_fundamental_ref_func, &typelib_load_spec_gobject);
+  ADD_REPOSITORY_TEST ("/repository/instance-method-ownership-transfer", test_repository_instance_method_ownership_transfer, &typelib_load_spec_gio);
+  ADD_REPOSITORY_TEST ("/repository/object-gtype-interfaces", test_repository_object_gtype_interfaces, &typelib_load_spec_gio);
+  ADD_REPOSITORY_TEST ("/repository/signal-info-with-array-length-arg", test_repository_signal_info_with_array_length_arg, &typelib_load_spec_gio);
+  ADD_REPOSITORY_TEST ("/repository/type-info-name", test_repository_type_info_name, &typelib_load_spec_gio);
+  ADD_REPOSITORY_TEST ("/repository/vfunc-info-with-no-invoker", test_repository_vfunc_info_with_no_invoker, &typelib_load_spec_gobject);
+  ADD_REPOSITORY_TEST ("/repository/vfunc-info-with-invoker-on-interface", test_repository_vfunc_info_with_invoker_on_interface, &typelib_load_spec_gio);
+  ADD_REPOSITORY_TEST ("/repository/vfunc-info-with-invoker-on-object", test_repository_vfunc_info_with_invoker_on_object, &typelib_load_spec_gio);
 
   return g_test_run ();
 }
