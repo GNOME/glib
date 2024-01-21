@@ -1,3 +1,16 @@
+Overview of changes in GLib 2.78.4, 2024-01-21
+==============================================
+
+* Bugs fixed:
+  - !3754 Backport !3751 “Fix generated RST anchors for methods, signals and
+    properties” to glib-2-78
+  - !3756 docs/reference: depend on a native gtk-doc
+  - !3759 Backport !3753 “gobject_gdb.py: Do not break bt on optimized build” to
+    glib-2-78
+  - !3766 Backport !3750 “gregex: clean up usage of _GRegex.jit_status” to
+    glib-2-78
+
+
 Overview of changes in GLib 2.78.3, 2023-12-06
 ==============================================
 
