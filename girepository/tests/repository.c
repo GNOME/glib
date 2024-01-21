@@ -21,60 +21,27 @@
 
 #include "glib.h"
 #include "girepository.h"
-
-static GIRepository *
-load_typelib_from_builddir (const char *name,
-                            const char *version)
-{
-  GIRepository *repository;
-  char *gobject_typelib_dir = NULL;
-  GITypelib *typelib = NULL;
-  GError *local_error = NULL;
-
-  gobject_typelib_dir = g_test_build_filename (G_TEST_BUILT, "..", "..", "introspection", NULL);
-  g_test_message ("Using GI_TYPELIB_DIR = %s", gobject_typelib_dir);
-  gi_repository_prepend_search_path (gobject_typelib_dir);
-  g_free (gobject_typelib_dir);
-
-  repository = gi_repository_new ();
-  g_assert_nonnull (repository);
-
-  typelib = gi_repository_require (repository, name, version, 0, &local_error);
-  g_assert_no_error (local_error);
-  g_assert_nonnull (typelib);
-
-  return g_steal_pointer (&repository);
-}
+#include "test-common.h"
 
 static void
-test_repository_basic (void)
+test_repository_basic (RepositoryFixture *fx,
+                       const void *unused)
 {
-  GIRepository *repository;
-  char *gobject_typelib_dir = NULL;
   const char * const * search_paths;
-  GITypelib *typelib = NULL;
   char **namespaces = NULL;
   const char *expected_namespaces[] = { "GLib", NULL };
-  GError *local_error = NULL;
   char **versions;
   size_t n_versions;
 
   g_test_summary ("Test basic opening of a repository and requiring a typelib");
 
-  gobject_typelib_dir = g_test_build_filename (G_TEST_BUILT, "..", "..", "introspection", NULL);
-  g_test_message ("Using GI_TYPELIB_DIR = %s", gobject_typelib_dir);
-  gi_repository_prepend_search_path (gobject_typelib_dir);
-
-  repository = gi_repository_new ();
-  g_assert_nonnull (repository);
-
-  versions = gi_repository_enumerate_versions (repository, "SomeInvalidNamespace", &n_versions);
+  versions = gi_repository_enumerate_versions (fx->repository, "SomeInvalidNamespace", &n_versions);
   g_assert_nonnull (versions);
   g_assert_cmpstrv (versions, ((char *[]){NULL}));
   g_assert_cmpuint (n_versions, ==, 0);
   g_clear_pointer (&versions, g_strfreev);
 
-  versions = gi_repository_enumerate_versions (repository, "GLib", NULL);
+  versions = gi_repository_enumerate_versions (fx->repository, "GLib", NULL);
   g_assert_nonnull (versions);
   g_assert_cmpstrv (versions, ((char *[]){"2.0", NULL}));
   g_clear_pointer (&versions, g_strfreev);
@@ -82,46 +49,24 @@ test_repository_basic (void)
   search_paths = gi_repository_get_search_path (NULL);
   g_assert_nonnull (search_paths);
   g_assert_cmpuint (g_strv_length ((char **) search_paths), >, 0);
-  g_assert_cmpstr (search_paths[0], ==, gobject_typelib_dir);
+  g_assert_cmpstr (search_paths[0], ==, fx->gobject_typelib_dir);
 
-  typelib = gi_repository_require (repository, "GLib", "2.0", 0, &local_error);
-  g_assert_no_error (local_error);
-  g_assert_nonnull (typelib);
-
-  namespaces = gi_repository_get_loaded_namespaces (repository);
+  namespaces = gi_repository_get_loaded_namespaces (fx->repository);
   g_assert_cmpstrv (namespaces, expected_namespaces);
   g_strfreev (namespaces);
-
-  g_free (gobject_typelib_dir);
-  g_clear_object (&repository);
 }
 
 static void
-test_repository_info (void)
+test_repository_info (RepositoryFixture *fx,
+                      const void *unused)
 {
-  GIRepository *repository;
-  char *gobject_typelib_dir = NULL;
-  GITypelib *typelib = NULL;
   GIObjectInfo *object_info = NULL;
   GISignalInfo *signal_info = NULL;
   GIFunctionInfo *method_info = NULL;
-  GError *local_error = NULL;
 
   g_test_summary ("Test retrieving some basic info blobs from a typelib");
 
-  gobject_typelib_dir = g_test_build_filename (G_TEST_BUILT, "..", "..", "introspection", NULL);
-  g_test_message ("Using GI_TYPELIB_DIR = %s", gobject_typelib_dir);
-  gi_repository_prepend_search_path (gobject_typelib_dir);
-  g_free (gobject_typelib_dir);
-
-  repository = gi_repository_new ();
-  g_assert_nonnull (repository);
-
-  typelib = gi_repository_require (repository, "GObject", "2.0", 0, &local_error);
-  g_assert_no_error (local_error);
-  g_assert_nonnull (typelib);
-
-  object_info = (GIObjectInfo *) gi_repository_find_by_name (repository, "GObject", "Object");
+  object_info = (GIObjectInfo *) gi_repository_find_by_name (fx->repository, "GObject", "Object");
   g_assert_nonnull (object_info);
 
   g_assert_cmpint (gi_base_info_get_info_type ((GIBaseInfo *) object_info), ==, GI_INFO_TYPE_OBJECT);
@@ -150,45 +95,29 @@ test_repository_info (void)
 
   gi_base_info_unref (signal_info);
   gi_base_info_unref (object_info);
-  g_clear_object (&repository);
 }
 
 static void
-test_repository_dependencies (void)
+test_repository_dependencies (RepositoryFixture *fx,
+                              const void *unused)
 {
-  GIRepository *repository;
-  GITypelib *typelib;
   GError *error = NULL;
-  char *gobject_typelib_dir = NULL;
   char **dependencies;
 
   g_test_summary ("Test ensures namespace dependencies are correctly exposed");
 
-  gobject_typelib_dir = g_test_build_filename (G_TEST_BUILT, "..", "..", "gobject", NULL);
-  g_test_message ("Using GI_TYPELIB_DIR = %s", gobject_typelib_dir);
-  gi_repository_prepend_search_path (gobject_typelib_dir);
-  g_free (gobject_typelib_dir);
-
-  repository = gi_repository_new ();
-  g_assert_nonnull (repository);
-
-  typelib = gi_repository_require (repository, "GObject", "2.0", 0, &error);
-  g_assert_no_error (error);
-  g_assert_nonnull (typelib);
-
-  dependencies = gi_repository_get_dependencies (repository, "GObject");
+  dependencies = gi_repository_get_dependencies (fx->repository, "GObject");
   g_assert_cmpuint (g_strv_length (dependencies), ==, 1);
   g_assert_true (g_strv_contains ((const char **) dependencies, "GLib-2.0"));
 
   g_clear_error (&error);
-  g_clear_object (&repository);
   g_clear_pointer (&dependencies, g_strfreev);
 }
 
 static void
-test_repository_arg_info (void)
+test_repository_arg_info (RepositoryFixture *fx,
+                          const void *unused)
 {
-  GIRepository *repository;
   GIObjectInfo *object_info = NULL;
   GIStructInfo *struct_info = NULL;
   GIFunctionInfo *method_info = NULL;
@@ -198,12 +127,10 @@ test_repository_arg_info (void)
 
   g_test_summary ("Test retrieving GIArgInfos from a typelib");
 
-  repository = load_typelib_from_builddir ("GObject", "2.0");
-
   /* Test all the methods of GIArgInfo. Here we’re looking at the
    * `const char *property_name` argument of g_object_get_property(). (The
    * ‘self’ argument is not exposed through gi_callable_info_get_arg().) */
-  object_info = (GIObjectInfo *) gi_repository_find_by_name (repository, "GObject", "Object");
+  object_info = (GIObjectInfo *) gi_repository_find_by_name (fx->repository, "GObject", "Object");
   g_assert_nonnull (object_info);
 
   method_info = gi_object_info_find_method (object_info, "get_property");
@@ -239,7 +166,7 @@ test_repository_arg_info (void)
 
   /* Test an (out) argument. Here it’s the `guint *n_properties` from
    * g_object_class_list_properties(). */
-  struct_info = (GIStructInfo *) gi_repository_find_by_name (repository, "GObject", "ObjectClass");
+  struct_info = (GIStructInfo *) gi_repository_find_by_name (fx->repository, "GObject", "ObjectClass");
   g_assert_nonnull (struct_info);
 
   method_info = gi_struct_info_find_method (struct_info, "list_properties");
@@ -256,33 +183,27 @@ test_repository_arg_info (void)
   g_clear_pointer (&arg_info, gi_base_info_unref);
   g_clear_pointer (&method_info, gi_base_info_unref);
   g_clear_pointer (&struct_info, gi_base_info_unref);
-
-  g_clear_object (&repository);
 }
 
 static void
-test_repository_boxed_info (void)
+test_repository_boxed_info (RepositoryFixture *fx,
+                            const void *unused)
 {
-  GIRepository *repository;
   GIBoxedInfo *boxed_info = NULL;
 
   g_test_summary ("Test retrieving GIBoxedInfos from a typelib");
 
-  repository = load_typelib_from_builddir ("GObject", "2.0");
-
   /* Test all the methods of GIBoxedInfo. This is simple, because there are none. */
-  boxed_info = (GIBoxedInfo *) gi_repository_find_by_name (repository, "GObject", "BookmarkFile");
+  boxed_info = (GIBoxedInfo *) gi_repository_find_by_name (fx->repository, "GObject", "BookmarkFile");
   g_assert_nonnull (boxed_info);
 
   g_clear_pointer (&boxed_info, gi_base_info_unref);
-
-  g_clear_object (&repository);
 }
 
 static void
-test_repository_callable_info (void)
+test_repository_callable_info (RepositoryFixture *fx,
+                               const void *unused)
 {
-  GIRepository *repository;
   GIObjectInfo *object_info = NULL;
   GIFunctionInfo *method_info = NULL;
   GICallableInfo *callable_info;
@@ -293,11 +214,9 @@ test_repository_callable_info (void)
 
   g_test_summary ("Test retrieving GICallableInfos from a typelib");
 
-  repository = load_typelib_from_builddir ("GObject", "2.0");
-
   /* Test all the methods of GICallableInfo. Here we’re looking at
    * g_object_get_qdata(). */
-  object_info = (GIObjectInfo *) gi_repository_find_by_name (repository, "GObject", "Object");
+  object_info = (GIObjectInfo *) gi_repository_find_by_name (fx->repository, "GObject", "Object");
   g_assert_nonnull (object_info);
 
   method_info = gi_object_info_find_method (object_info, "get_qdata");
@@ -333,46 +252,36 @@ test_repository_callable_info (void)
 
   g_clear_pointer (&method_info, gi_base_info_unref);
   g_clear_pointer (&object_info, gi_base_info_unref);
-
-  g_clear_object (&repository);
 }
 
 static void
-test_repository_callback_info (void)
+test_repository_callback_info (RepositoryFixture *fx,
+                               const void *unused)
 {
-  GIRepository *repository;
   GICallbackInfo *callback_info = NULL;
 
   g_test_summary ("Test retrieving GICallbackInfos from a typelib");
 
-  repository = load_typelib_from_builddir ("GObject", "2.0");
-
   /* Test all the methods of GICallbackInfo. This is simple, because there are none. */
-  callback_info = (GICallbackInfo *) gi_repository_find_by_name (repository, "GObject", "ObjectFinalizeFunc");
+  callback_info = (GICallbackInfo *) gi_repository_find_by_name (fx->repository, "GObject", "ObjectFinalizeFunc");
   g_assert_nonnull (callback_info);
 
   g_clear_pointer (&callback_info, gi_base_info_unref);
-
-  g_clear_object (&repository);
 }
 
 int
 main (int   argc,
       char *argv[])
 {
-  /* Isolate from the system typelibs and GIRs. */
-  g_setenv ("GI_TYPELIB_PATH", "/dev/null", TRUE);
-  g_setenv ("GI_GIR_PATH", "/dev/null", TRUE);
+  repository_init (&argc, &argv);
 
-  g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
-
-  g_test_add_func ("/repository/basic", test_repository_basic);
-  g_test_add_func ("/repository/info", test_repository_info);
-  g_test_add_func ("/repository/dependencies", test_repository_dependencies);
-  g_test_add_func ("/repository/arg-info", test_repository_arg_info);
-  g_test_add_func ("/repository/boxed-info", test_repository_boxed_info);
-  g_test_add_func ("/repository/callable-info", test_repository_callable_info);
-  g_test_add_func ("/repository/callback-info", test_repository_callback_info);
+  ADD_REPOSITORY_TEST ("/repository/basic", test_repository_basic, &typelib_load_spec_glib);
+  ADD_REPOSITORY_TEST ("/repository/info", test_repository_info, &typelib_load_spec_gobject);
+  ADD_REPOSITORY_TEST ("/repository/dependencies", test_repository_dependencies, &typelib_load_spec_gobject);
+  ADD_REPOSITORY_TEST ("/repository/arg-info", test_repository_arg_info, &typelib_load_spec_gobject);
+  ADD_REPOSITORY_TEST ("/repository/boxed-info", test_repository_boxed_info, &typelib_load_spec_gobject);
+  ADD_REPOSITORY_TEST ("/repository/callable-info", test_repository_callable_info, &typelib_load_spec_gobject);
+  ADD_REPOSITORY_TEST ("/repository/callback-info", test_repository_callback_info, &typelib_load_spec_gobject);
 
   return g_test_run ();
 }
