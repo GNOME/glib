@@ -80,7 +80,7 @@ gmodule_visibility_h = custom_target(
 
 gmodule_sources = [gmodule_c, gmodule_visibility_h, gmodule_deprecated_c]
 
-if host_system == 'windows'
+if host_system == 'windows' and glib_build_shared
   gmodule_win_rc = configure_file(
     input: 'gmodule.rc.in',
     output: 'gmodule.rc',

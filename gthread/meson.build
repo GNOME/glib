@@ -2,7 +2,7 @@
 # has been moved into glib now
 
 gthread_sources = ['gthread-impl.c']
-if host_system == 'windows'
+if host_system == 'windows' and glib_build_shared
   gthread_win_rc = configure_file(
     input: 'gthread.rc.in',
     output: 'gthread.rc',
