@@ -66,12 +66,12 @@ test_repository_info (RepositoryFixture *fx,
 
   g_test_summary ("Test retrieving some basic info blobs from a typelib");
 
-  object_info = (GIObjectInfo *) gi_repository_find_by_name (fx->repository, "GObject", "Object");
+  object_info = GI_OBJECT_INFO (gi_repository_find_by_name (fx->repository, "GObject", "Object"));
   g_assert_nonnull (object_info);
 
-  g_assert_cmpint (gi_base_info_get_info_type ((GIBaseInfo *) object_info), ==, GI_INFO_TYPE_OBJECT);
-  g_assert_cmpstr (gi_base_info_get_name ((GIBaseInfo *) object_info), ==, "Object");
-  g_assert_cmpstr (gi_base_info_get_namespace ((GIBaseInfo *) object_info), ==, "GObject");
+  g_assert_cmpint (gi_base_info_get_info_type (GI_BASE_INFO (object_info)), ==, GI_INFO_TYPE_OBJECT);
+  g_assert_cmpstr (gi_base_info_get_name (GI_BASE_INFO (object_info)), ==, "Object");
+  g_assert_cmpstr (gi_base_info_get_namespace (GI_BASE_INFO (object_info)), ==, "GObject");
 
   signal_info = gi_object_info_find_signal (object_info, "notify");
   g_assert_nonnull (signal_info);
@@ -83,14 +83,14 @@ test_repository_info (RepositoryFixture *fx,
 
   method_info = gi_object_info_find_method (object_info, "get_property");
   g_assert_nonnull (method_info);
-  g_assert_true (gi_callable_info_is_method ((GICallableInfo *) method_info));
-  g_assert_cmpuint (gi_callable_info_get_n_args ((GICallableInfo *) method_info), ==, 2);
+  g_assert_true (gi_callable_info_is_method (GI_CALLABLE_INFO (method_info)));
+  g_assert_cmpuint (gi_callable_info_get_n_args (GI_CALLABLE_INFO (method_info)), ==, 2);
   g_clear_pointer (&method_info, gi_base_info_unref);
 
   method_info = gi_object_info_get_method (object_info,
                                            gi_object_info_get_n_methods (object_info) - 1);
-  g_assert_true (gi_callable_info_is_method ((GICallableInfo *) method_info));
-  g_assert_cmpuint (gi_callable_info_get_n_args ((GICallableInfo *) method_info), >, 0);
+  g_assert_true (gi_callable_info_is_method (GI_CALLABLE_INFO (method_info)));
+  g_assert_cmpuint (gi_callable_info_get_n_args (GI_CALLABLE_INFO (method_info)), >, 0);
   g_clear_pointer (&method_info, gi_base_info_unref);
 
   gi_base_info_unref (signal_info);
@@ -130,7 +130,7 @@ test_repository_arg_info (RepositoryFixture *fx,
   /* Test all the methods of GIArgInfo. Here we’re looking at the
    * `const char *property_name` argument of g_object_get_property(). (The
    * ‘self’ argument is not exposed through gi_callable_info_get_arg().) */
-  object_info = (GIObjectInfo *) gi_repository_find_by_name (fx->repository, "GObject", "Object");
+  object_info = GI_OBJECT_INFO (gi_repository_find_by_name (fx->repository, "GObject", "Object"));
   g_assert_nonnull (object_info);
 
   method_info = gi_object_info_find_method (object_info, "get_property");
@@ -166,7 +166,7 @@ test_repository_arg_info (RepositoryFixture *fx,
 
   /* Test an (out) argument. Here it’s the `guint *n_properties` from
    * g_object_class_list_properties(). */
-  struct_info = (GIStructInfo *) gi_repository_find_by_name (fx->repository, "GObject", "ObjectClass");
+  struct_info = GI_STRUCT_INFO (gi_repository_find_by_name (fx->repository, "GObject", "ObjectClass"));
   g_assert_nonnull (struct_info);
 
   method_info = gi_struct_info_find_method (struct_info, "list_properties");
@@ -194,7 +194,7 @@ test_repository_boxed_info (RepositoryFixture *fx,
   g_test_summary ("Test retrieving GIBoxedInfos from a typelib");
 
   /* Test all the methods of GIBoxedInfo. This is simple, because there are none. */
-  boxed_info = (GIBoxedInfo *) gi_repository_find_by_name (fx->repository, "GObject", "BookmarkFile");
+  boxed_info = GI_BOXED_INFO (gi_repository_find_by_name (fx->repository, "GObject", "BookmarkFile"));
   g_assert_nonnull (boxed_info);
 
   g_clear_pointer (&boxed_info, gi_base_info_unref);
@@ -216,7 +216,7 @@ test_repository_callable_info (RepositoryFixture *fx,
 
   /* Test all the methods of GICallableInfo. Here we’re looking at
    * g_object_get_qdata(). */
-  object_info = (GIObjectInfo *) gi_repository_find_by_name (fx->repository, "GObject", "Object");
+  object_info = GI_OBJECT_INFO (gi_repository_find_by_name (fx->repository, "GObject", "Object"));
   g_assert_nonnull (object_info);
 
   method_info = gi_object_info_find_method (object_info, "get_qdata");
@@ -263,7 +263,7 @@ test_repository_callback_info (RepositoryFixture *fx,
   g_test_summary ("Test retrieving GICallbackInfos from a typelib");
 
   /* Test all the methods of GICallbackInfo. This is simple, because there are none. */
-  callback_info = (GICallbackInfo *) gi_repository_find_by_name (fx->repository, "GObject", "ObjectFinalizeFunc");
+  callback_info = GI_CALLBACK_INFO (gi_repository_find_by_name (fx->repository, "GObject", "ObjectFinalizeFunc"));
   g_assert_nonnull (callback_info);
 
   g_clear_pointer (&callback_info, gi_base_info_unref);

@@ -35,7 +35,7 @@ test_function_info_invoker (RepositoryFixture *fx,
 
   g_test_summary ("Test preparing a function invoker");
 
-  function_info = (GIFunctionInfo *) gi_repository_find_by_name (fx->repository, "GLib", "get_locale_variants");
+  function_info = GI_FUNCTION_INFO (gi_repository_find_by_name (fx->repository, "GLib", "get_locale_variants"));
   g_assert_nonnull (function_info);
 
   gi_function_info_prep_invoker (function_info, &invoker, &local_error);
