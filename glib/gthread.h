@@ -139,6 +139,10 @@ struct _GOnce
 #  define G_TRYLOCK(name) g_mutex_trylock (&G_LOCK_NAME (name))
 #endif /* !G_DEBUG_LOCKS */
 
+#ifdef g_autoptr
+#define G_AUTO_LOCK(name) G_MUTEX_AUTO_LOCK (&G_LOCK_NAME (name), g__##name##_locker)
+#endif /* g_autoptr */
+
 GLIB_AVAILABLE_IN_2_32
 GThread *       g_thread_ref                    (GThread        *thread);
 GLIB_AVAILABLE_IN_2_32
@@ -339,7 +343,7 @@ typedef void GMutexLocker;
  *
  *   // Code with mutex locked here
  *
- *   if (cond)
+ *   if (condition)
  *     // No need to unlock
  *     return;
  *
@@ -349,6 +353,10 @@ typedef void GMutexLocker;
  *   // Code with mutex unlocked here
  * }
  * ]|
+ *
+ * Note that it is common for the declared variable to not be used in the scope,
+ * which causes some compilers to warn. That can be avoided by using
+ * `G_GNUC_UNUSED` or, since 2.80, [func@GLib.MUTEX_AUTO_LOCK].
  *
  * Returns: a #GMutexLocker
  * Since: 2.44
@@ -377,6 +385,49 @@ g_mutex_locker_free (GMutexLocker *locker)
 {
   g_mutex_unlock ((GMutex *) locker);
 }
+
+/**
+ * G_MUTEX_AUTO_LOCK:
+ * @mutex: a [type@GLib.Mutex]
+ * @var: a variable name to be declared
+ *
+ * Declare a [type@GLib.MutexLocker] variable with `g_autoptr()` and lock the
+ * mutex. The mutex will be unlocked automatically when leaving the scope. The
+ * variable is declared with `G_GNUC_UNUSED` to avoid compiler warning if it is
+ * not used in the scope.
+ *
+ * This feature is only supported on GCC and clang. This macro is not defined on
+ * other compilers and should not be used in programs that are intended to be
+ * portable to those compilers.
+ *
+ * Note that this should be used in a place where it is allowed to declare a
+ * variable, which could be before any statement in the case
+ * `-Wdeclaration-after-statement` is used, or C standard prior to C99.
+ *
+ * ```c
+ * {
+ *   G_MUTEX_AUTO_LOCK (&obj->mutex, locker);
+ *
+ *   obj->stuff_with_lock ();
+ *   if (condition)
+ *     {
+ *       // No need to unlock
+ *       return;
+ *     }
+ *
+ *   // Unlock before end of scope
+ *   g_clear_pointer (&locker, g_mutex_locker_free);
+ *   obj->stuff_without_lock ();
+ * }
+ * ```
+ *
+ * Since: 2.80.0
+ */
+#ifdef g_autoptr
+#define G_MUTEX_AUTO_LOCK(mutex, var)                   \
+  GLIB_AVAILABLE_MACRO_IN_2_80 g_autoptr (GMutexLocker) \
+  G_GNUC_UNUSED var = g_mutex_locker_new (mutex)
+#endif /* g_autoptr */
 
 /**
  * GRecMutexLocker:
@@ -414,7 +465,7 @@ typedef void GRecMutexLocker;
  *
  *   // Code with rec_mutex locked here
  *
- *   if (cond)
+ *   if (condition)
  *     // No need to unlock
  *     return;
  *
@@ -424,6 +475,10 @@ typedef void GRecMutexLocker;
  *   // Code with rec_mutex unlocked here
  * }
  * ]|
+ *
+ * Note that it is common for the declared variable to not be used in the scope,
+ * which causes some compilers to warn. That can be avoided by using
+ * `G_GNUC_UNUSED` or, since 2.80, [func@GLib.REC_MUTEX_AUTO_LOCK].
  *
  * Returns: a #GRecMutexLocker
  * Since: 2.60
@@ -456,6 +511,49 @@ g_rec_mutex_locker_free (GRecMutexLocker *locker)
   g_rec_mutex_unlock ((GRecMutex *) locker);
 }
 G_GNUC_END_IGNORE_DEPRECATIONS
+
+/**
+ * G_REC_MUTEX_AUTO_LOCK:
+ * @mutex: a [type@GLib.RecMutex]
+ * @var: a variable name to be declared
+ *
+ * Declare a [type@GLib.RecMutexLocker] variable with `g_autoptr()` and lock the
+ * mutex. The mutex will be unlocked automatically when leaving the scope. The
+ * variable is declared with `G_GNUC_UNUSED` to avoid compiler warning if it is
+ * not used in the scope.
+ *
+ * This feature is only supported on GCC and clang. This macro is not defined on
+ * other compilers and should not be used in programs that are intended to be
+ * portable to those compilers.
+ *
+ * Note that this should be used in a place where it is allowed to declare a
+ * variable, which could be before any statement in the case
+ * `-Wdeclaration-after-statement` is used, or C standard prior to C99.
+ *
+ * ```c
+ * {
+ *   G_REC_MUTEX_AUTO_LOCK (&obj->rec_mutex, locker);
+ *
+ *   obj->stuff_with_lock ();
+ *   if (condition)
+ *     {
+ *       // No need to unlock
+ *       return;
+ *     }
+ *
+ *   // Unlock before end of scope
+ *   g_clear_pointer (&locker, g_rec_mutex_locker_free);
+ *   obj->stuff_without_lock ();
+ * }
+ * ```
+ *
+ * Since: 2.80.0
+ */
+#ifdef g_autoptr
+#define G_REC_MUTEX_AUTO_LOCK(mutex, var)                  \
+  GLIB_AVAILABLE_MACRO_IN_2_80 g_autoptr (GRecMutexLocker) \
+  G_GNUC_UNUSED var = g_rec_mutex_locker_new (mutex)
+#endif /* g_autoptr */
 
 /**
  * GRWLockWriterLocker:
@@ -520,7 +618,7 @@ typedef void GRWLockWriterLocker;
  *   if (self->array == NULL)
  *     self->array = g_ptr_array_new ();
  *
- *   if (cond)
+ *   if (condition)
  *     // No need to unlock
  *     return;
  *
@@ -534,6 +632,10 @@ typedef void GRWLockWriterLocker;
  *   // Code with rw_lock unlocked here
  * }
  * ]|
+ *
+ * Note that it is common for the declared variable to not be used in the scope,
+ * which causes some compilers to warn. That can be avoided by using
+ * `G_GNUC_UNUSED` or, since 2.80, [func@GLib.RW_LOCK_WRITER_AUTO_LOCK].
  *
  * Returns: a #GRWLockWriterLocker
  * Since: 2.62
@@ -567,6 +669,49 @@ g_rw_lock_writer_locker_free (GRWLockWriterLocker *locker)
   g_rw_lock_writer_unlock ((GRWLock *) locker);
 }
 G_GNUC_END_IGNORE_DEPRECATIONS
+
+/**
+ * G_RW_LOCK_WRITER_AUTO_LOCK:
+ * @mutex: a [type@GLib.RWLock]
+ * @var: a variable name to be declared
+ *
+ * Declare a [type@GLib.RWLockWriterLocker] variable with `g_autoptr()` and lock
+ * for writing. The mutex will be unlocked automatically when leaving the scope.
+ * The variable is declared with `G_GNUC_UNUSED` to avoid compiler warning if it
+ * is not used in the scope.
+ *
+ * This feature is only supported on GCC and clang. This macro is not defined on
+ * other compilers and should not be used in programs that are intended to be
+ * portable to those compilers.
+ *
+ * Note that this should be used in a place where it is allowed to declare a
+ * variable, which could be before any statement in the case
+ * `-Wdeclaration-after-statement` is used, or C standard prior to C99.
+ *
+ * ```c
+ * {
+ *   G_RW_LOCK_WRITER_AUTO_LOCK (&obj->rw_lock, locker);
+ *
+ *   obj->stuff_with_lock ();
+ *   if (condition)
+ *     {
+ *       // No need to unlock
+ *       return;
+ *     }
+ *
+ *   // Unlock before end of scope
+ *   g_clear_pointer (&locker, g_rw_lock_writer_locker_free);
+ *   obj->stuff_without_lock ();
+ * }
+ * ```
+ *
+ * Since: 2.80.0
+ */
+#ifdef g_autoptr
+#define G_RW_LOCK_WRITER_AUTO_LOCK(mutex, var)                 \
+  GLIB_AVAILABLE_MACRO_IN_2_80 g_autoptr (GRWLockWriterLocker) \
+  G_GNUC_UNUSED var = g_rw_lock_writer_locker_new (mutex)
+#endif /* g_autoptr */
 
 /**
  * GRWLockReaderLocker:
@@ -622,6 +767,49 @@ g_rw_lock_reader_locker_free (GRWLockReaderLocker *locker)
   g_rw_lock_reader_unlock ((GRWLock *) locker);
 }
 G_GNUC_END_IGNORE_DEPRECATIONS
+
+/**
+ * G_RW_LOCK_READER_AUTO_LOCK:
+ * @mutex: a [type@GLib.RWLock]
+ * @var: a variable name to be declared
+ *
+ * Declare a [type@GLib.RWLockReaderLocker] variable with `g_autoptr()` and lock
+ * for reading. The mutex will be unlocked automatically when leaving the scope.
+ * The variable is declared with `G_GNUC_UNUSED` to avoid compiler warning if it
+ * is not used in the scope.
+ *
+ * This feature is only supported on GCC and clang. This macro is not defined on
+ * other compilers and should not be used in programs that are intended to be
+ * portable to those compilers.
+ *
+ * Note that this should be used in a place where it is allowed to declare a
+ * variable, which could be before any statement in the case
+ * `-Wdeclaration-after-statement` is used, or C standard prior to C99.
+ *
+ * ```c
+ * {
+ *   G_RW_LOCK_READER_AUTO_LOCK (&obj->rw_lock, locker);
+ *
+ *   obj->stuff_with_lock ();
+ *   if (condition)
+ *     {
+ *       // No need to unlock
+ *       return;
+ *     }
+ *
+ *   // Unlock before end of scope
+ *   g_clear_pointer (&locker, g_rw_lock_reader_locker_free);
+ *   obj->stuff_without_lock ();
+ * }
+ * ```
+ *
+ * Since: 2.80.0
+ */
+#ifdef g_autoptr
+#define G_RW_LOCK_READER_AUTO_LOCK(mutex, var)                 \
+  GLIB_AVAILABLE_MACRO_IN_2_80 g_autoptr (GRWLockReaderLocker) \
+  G_GNUC_UNUSED var = g_rw_lock_reader_locker_new (mutex)
+#endif /* g_autoptr */
 
 G_END_DECLS
 

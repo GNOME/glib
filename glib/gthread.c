@@ -142,6 +142,20 @@
  * %G_LOCK_DEFINE.
  */
 
+/**
+ * G_AUTO_LOCK:
+ * @name: the name of the lock
+ *
+ * Works like [func@GLib.MUTEX_AUTO_LOCK], but for a lock defined with
+ * [func@GLib.LOCK_DEFINE].
+ *
+ * This feature is only supported on GCC and clang. This macro is not defined on
+ * other compilers and should not be used in programs that are intended to be
+ * portable to those compilers.
+ *
+ * Since: 2.80
+ */
+
 /* GMutex Documentation {{{1 ------------------------------------------ */
 
 /**
