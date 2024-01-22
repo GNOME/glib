@@ -83,6 +83,7 @@ try:
                 self.fail(message or 'timed out waiting for ' + str(condition))
 
         def memory_warning_cb(self, monitor, level):
+            print("Received memory warning signal, level", level)
             self.last_warning = level
             self.main_context.wakeup()
 
