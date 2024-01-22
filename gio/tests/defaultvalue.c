@@ -17,8 +17,14 @@
  * along with this library; if not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "config.h"
+
 #include <string.h>
 #include <gio/gio.h>
+
+#ifdef HAVE_COCOA
+#include <gio/gosxappinfo.h>
+#endif
 
 static void
 check_property (const char *output,
