@@ -57,6 +57,7 @@ try:
             self.power_saver_enabled = False
             self.dbus_props = dbus.Interface(self.obj_ppd, dbus.PROPERTIES_IFACE)
             self.power_profile_monitor = Gio.PowerProfileMonitor.dup_default()
+            assert("GPowerProfileMonitorDBus" in str(self.power_profile_monitor))
             self.power_profile_monitor.connect("notify::power-saver-enabled", self.power_saver_enabled_cb)
             self.mainloop = GLib.MainLoop()
             self.main_context = self.mainloop.get_context()
