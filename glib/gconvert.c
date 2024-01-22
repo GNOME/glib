@@ -77,7 +77,7 @@ try_conversion (const char *to_codeset,
 #if defined(__FreeBSD__) && defined(ICONV_SET_ILSEQ_INVALID)
   /* On FreeBSD request GNU iconv compatible handling of characters that cannot
    * be repesented in the destination character set.
-   * See https://github.com/freebsd/freebsd-src/commit/7c5b23111c5fd1992
+   * See https://cgit.freebsd.org/src/commit/?id=7c5b23111c5fd1992047922d4247c4a1ce1bb6c3
    */
   int value = 1;
   if (iconvctl (*cd, ICONV_SET_ILSEQ_INVALID, &value) != 0)
