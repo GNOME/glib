@@ -73,8 +73,7 @@ try:
             printed on failure.
             '''
             while timeout >= 0:
-                context = GLib.MainContext.default()
-                while context.iteration(False):
+                while self.main_context.iteration(False):
                     pass
                 if condition():
                     break
