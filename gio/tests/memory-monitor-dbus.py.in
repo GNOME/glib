@@ -58,6 +58,7 @@ try:
             self.last_warning = -1
             self.dbusmock = dbus.Interface(self.obj_lmm, dbusmock.MOCK_IFACE)
             self.memory_monitor = Gio.MemoryMonitor.dup_default()
+            assert("GMemoryMonitorDBus" in str(self.memory_monitor))
             self.memory_monitor.connect("low-memory-warning", self.memory_warning_cb)
             self.mainloop = GLib.MainLoop()
             self.main_context = self.mainloop.get_context()
