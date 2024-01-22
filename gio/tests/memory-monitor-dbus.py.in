@@ -66,21 +66,27 @@ try:
             self.p_mock.terminate()
             self.p_mock.wait()
 
-        def assertEventually(self, condition, message=None, timeout=50):
+        def assertEventually(self, condition, message=None, timeout=5):
             '''Assert that condition function eventually returns True.
 
-            Timeout is in deciseconds, defaulting to 50 (5 seconds). message is
+            Timeout is in seconds, defaulting to 5 seconds. message is
             printed on failure.
             '''
-            while timeout >= 0:
-                while self.main_context.iteration(False):
-                    pass
-                if condition():
-                    break
-                timeout -= 1
-                time.sleep(0.1)
-            else:
-                self.fail(message or 'timed out waiting for ' + str(condition))
+            if not message:
+                message = 'timed out waiting for ' + str(condition)
+
+            def timed_out_cb(message):
+                self.fail(message)
+                return GLib.SOURCE_REMOVE
+
+            timeout_source = GLib.timeout_source_new_seconds(timeout)
+            timeout_source.set_callback(timed_out_cb, message)
+            timeout_source.attach(self.main_context)
+
+            while not condition():
+                self.main_context.iteration(True)
+
+            timeout_source.destroy()
 
         def memory_warning_cb(self, monitor, level):
             print("Received memory warning signal, level", level)
@@ -99,11 +105,11 @@ try:
 
             self.dbusmock.EmitWarning(100)
             # Wait 2 seconds or until warning
-            self.assertEventually(lambda: self.last_warning == 100, "'100' low-memory warning not received", 20)
+            self.assertEventually(lambda: self.last_warning == 100, "'100' low-memory warning not received", 2)
 
             self.dbusmock.EmitWarning(255)
             # Wait 2 seconds or until warning
-            self.assertEventually(lambda: self.last_warning == 255, "'255' low-memory warning not received", 20)
+            self.assertEventually(lambda: self.last_warning == 255, "'255' low-memory warning not received", 2)
 
 except ImportError as e:
     @unittest.skip("Cannot import %s" % e.name)
