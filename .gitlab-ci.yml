@@ -713,10 +713,12 @@ dist-job:
     - meson subprojects download
     - meson setup ${MESON_COMMON_OPTIONS} --buildtype release -Ddocumentation=true -Dman-pages=enabled _build
     - meson dist -C _build
-    - tar -c -J -f "glib-docs-$CI_COMMIT_TAG.tar.xz" -C docs/reference/glib glib
-    - tar -c -J -f "gmodule-docs-$CI_COMMIT_TAG.tar.xz" -C docs/reference/gmodule gmodule
-    - tar -c -J -f "gobject-docs-$CI_COMMIT_TAG.tar.xz" -C docs/reference/gobject gobject
-    - tar -c -J -f "gio-docs-$CI_COMMIT_TAG.tar.xz" -C docs/reference/gio gio
+    # Compile again to build the docs
+    - meson compile -C _build
+    - tar -c -J -f "glib-docs-$CI_COMMIT_TAG.tar.xz" -C _build/docs/reference/glib glib
+    - tar -c -J -f "gmodule-docs-$CI_COMMIT_TAG.tar.xz" -C _build/docs/reference/gmodule gmodule
+    - tar -c -J -f "gobject-docs-$CI_COMMIT_TAG.tar.xz" -C _build/docs/reference/gobject gobject
+    - tar -c -J -f "gio-docs-$CI_COMMIT_TAG.tar.xz" -C _build/docs/reference/gio gio
   artifacts:
     paths:
       - "${CI_PROJECT_DIR}/_build/glib-docs-$CI_COMMIT_TAG.tar.xz"
