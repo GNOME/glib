@@ -1,3 +1,79 @@
+Overview of changes in GLib 2.79.1, 2024-01-22
+==============================================
+
+* Fix a race condition in `g_object_unref()` (#3064, work by Thomas Haller)
+
+* Various API and build changes to libgirepository as it is not yet API-stable
+  (#3216, !3780, !3805, !3823, !3833, !3840)
+
+* Build fixes on big-endian 64-bit systems and mips64el (#3225, #3226, work by
+  Simon McVittie)
+
+* Reduce contention on global locks within GObject (!3774, work by Thomas
+  Haller)
+
+* Allow building man pages without the reference documentation (!3817, work by
+  Simon McVittie)
+
+* Bugs fixed:
+  - #1010 g_get_num_processor does not respect cpuset/affinity
+  - #3064 Crash under g_object_unref()
+  - #3093 GDBusMessage: should validate the type of all known headers (Philip
+    Withnall)
+  - #3207 Add support for syslog to Structured Logging
+  - #3216 Feedback on gobject-introspection: Casting to and from GIBaseInfo*
+    (Philip Withnall)
+  - #3222 pthread_t usages lack type name (Emmanuele Bassi)
+  - #3223 CLang, GMutexLocker: error: unused variable 'locker'
+    [-Werror,-Wunused-variable]
+  - #3225 2.79 regression: gdatetime test failing on 64-bit big-endian since
+    #3119
+  - #3226 resource test fails on Debian mips64el: test5.gresource is not linked
+    but the test assumes it should be (Simon McVittie)
+  - !3774 [th/g-object-priv] add private data to GObject and use per-object
+    locking
+  - !3780 girepository: Use standard types instead of glib specific
+  - !3789 gdatetime: Fix title of documentation comment
+  - !3792 build: Tell gi-docgen where to find the GIR files
+  - !3793 Shorten the title for D-Bus interface docs
+  - !3794 Add boxed GType for GRand
+  - !3795 girepository: Skip GIRepository versions not matching GIRepository-3.0
+  - !3798 docs: Drop outdated .gitignore files
+  - !3799 tests: Fix a minor leak in the new GParamSpecPool test
+  - !3800 ci: Re-enable and fix FreeBSD CI
+  - !3801 gmessages: Port all doc comments to gi-docgen
+  - !3802 [th/g-pointer-bit-lock-ext] glib: add g_pointer_bit_unlock_and_set()
+    and g_pointer_bit_lock_mask_ptr()
+  - !3803 ci: Fix tarballing the docs on dist
+  - !3805 girepository: Various small API cleanups
+  - !3806 gsignal.c: drop an optimization that is undefined behaviour
+  - !3808 glib/deprecated: Skip all the deprecated gthread api
+  - !3809 docs: Fix links to symbols outside the allowed namsepace
+  - !3810 gstrfuncs: Improve and port g_set_str() docs to gi-docgen
+  - !3811 gvariant-parser: Mention annotated types
+  - !3812 brz.c: Use uintptr_t instead of a hardcoded list of 64-bit arches
+  - !3813 gobject: define HAVE_OPTIONAL_FLAGS for sizeof(void*) > 8
+  - !3814 Fix typo in GPOINTER_TO_SIZE documentation
+  - !3817 docs: Allow building man pages without the reference documentation
+  - !3818 docs: Clarify >=2.76 changes to g_module_open()
+  - !3821 tests: Fix a minor leak in the socket test
+  - !3823 girepository: Misc cleanups
+  - !3826 genums: use g_once_init_enter_pointer for GType initializers
+  - !3827 array-test: Don't assume sizeof(void*)==sizeof(gsize)
+  - !3831 gvariant-core: Don’t call posix_memalign() with size==0
+  - !3833 girepository: Change various alignments to use size_t
+  - !3835 build: Ignore branches in g_clear_*() functions under lcov
+  - !3837 tests: A couple of test isolation improvements
+  - !3839 gvarianttype: Fix typos
+  - !3840 girepository: Exclude private symbols from the ABI
+  - !3841 docs: Fix member names of GLib.LogLevelFlags
+  - !3842 gio, gmodule, gthread: compile windows resources only in shared build
+
+* Translation updates:
+  - Georgian (Ekaterine Papava)
+  - Russian (Artur S0)
+
+
 Overview of changes in GLib 2.79.0, 2023-12-22
 ==============================================
 
