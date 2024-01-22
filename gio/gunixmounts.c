@@ -201,6 +201,11 @@ static GSource *proc_mounts_watch_source;
 #define endmntent(f) fclose(f)
 #endif
 
+#ifdef HAVE_LIBMOUNT
+/* Protected by proc_mounts_source lock */
+static struct libmnt_monitor *proc_mounts_monitor = NULL;
+#endif
+
 static gboolean
 is_in (const char *value, const char *set[])
 {
@@ -1893,7 +1898,36 @@ proc_mounts_changed (GIOChannel   *channel,
                      GIOCondition  cond,
                      gpointer      user_data)
 {
+  gboolean has_changed = FALSE;
+
+#ifdef HAVE_LIBMOUNT
+  if (cond & G_IO_IN)
+    {
+      G_LOCK (proc_mounts_source);
+      if (proc_mounts_monitor != NULL)
+        {
+          int ret;
+
+          /* The mnt_monitor_next_change function needs to be used to avoid false-positives. */
+          ret = mnt_monitor_next_change (proc_mounts_monitor, NULL, NULL);
+          if (ret == 0)
+            {
+              has_changed = TRUE;
+              ret = mnt_monitor_event_cleanup (proc_mounts_monitor);
+            }
+
+          if (ret < 0)
+            g_debug ("mnt_monitor_next_change failed: %s", g_strerror (-ret));
+        }
+      G_UNLOCK (proc_mounts_source);
+    }
+
+#else
   if (cond & G_IO_ERR)
+    has_changed = TRUE;
+#endif
+
+  if (has_changed)
     {
       G_LOCK (proc_mounts_source);
       mount_poller_time = (guint64) g_get_monotonic_time ();
@@ -1958,6 +1992,10 @@ mount_monitor_stop (void)
       g_source_destroy (proc_mounts_watch_source);
       proc_mounts_watch_source = NULL;
     }
+
+#ifdef HAVE_LIBMOUNT
+  g_clear_pointer (&proc_mounts_monitor, mnt_unref_monitor);
+#endif
   G_UNLOCK (proc_mounts_source);
 
   if (mtab_monitor)
@@ -1999,9 +2037,37 @@ mount_monitor_start (void)
        */
       if (g_str_has_prefix (mtab_path, "/proc/"))
         {
-          GIOChannel *proc_mounts_channel;
+          GIOChannel *proc_mounts_channel = NULL;
           GError *error = NULL;
+#ifdef HAVE_LIBMOUNT
+          int ret;
+
+          G_LOCK (proc_mounts_source);
+
+          proc_mounts_monitor = mnt_new_monitor ();
+          ret = mnt_monitor_enable_kernel (proc_mounts_monitor, TRUE);
+          if (ret < 0)
+            g_warning ("mnt_monitor_enable_kernel failed: %s", g_strerror (-ret));
+
+          ret = mnt_monitor_enable_userspace (proc_mounts_monitor, TRUE, NULL);
+          if (ret < 0)
+            g_warning ("mnt_monitor_enable_userspace failed: %s", g_strerror (-ret));
+
+          ret = mnt_monitor_get_fd (proc_mounts_monitor);
+          if (ret >= 0)
+            {
+              proc_mounts_channel = g_io_channel_unix_new (ret);
+            }
+          else
+            {
+              g_set_error_literal (&error, G_IO_ERROR, g_io_error_from_errno (-ret),
+                                   g_strerror (-ret));
+            }
+
+          G_UNLOCK (proc_mounts_source);
+#else
           proc_mounts_channel = g_io_channel_new_file (mtab_path, "r", &error);
+#endif
           if (proc_mounts_channel == NULL)
             {
               g_warning ("Error creating IO channel for %s: %s (%s, %d)", mtab_path,
@@ -2012,7 +2078,11 @@ mount_monitor_start (void)
             {
               G_LOCK (proc_mounts_source);
 
+#ifdef HAVE_LIBMOUNT
+              proc_mounts_watch_source = g_io_create_watch (proc_mounts_channel, G_IO_IN);
+#else
               proc_mounts_watch_source = g_io_create_watch (proc_mounts_channel, G_IO_ERR);
+#endif
               mount_poller_time = (guint64) g_get_monotonic_time ();
               g_source_set_callback (proc_mounts_watch_source,
                                      (GSourceFunc) proc_mounts_changed,
