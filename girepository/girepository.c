@@ -244,6 +244,17 @@ init_globals (void)
   g_once_init_leave (&initialized, 1);
 }
 
+static GIRepository *
+get_repository (GIRepository *repository)
+{
+  init_globals ();
+
+  if (repository != NULL)
+    return repository;
+  else
+    return default_repository;
+}
+
 /**
  * gi_repository_prepend_search_path:
  * @directory: (type filename): directory name to prepend to the typelib
@@ -319,17 +330,6 @@ get_typelib_dependencies (GITypelib *typelib)
 
   dependencies_glob = gi_typelib_get_string (typelib, header->dependencies);
   return g_strsplit (dependencies_glob, "|", 0);
-}
-
-static GIRepository *
-get_repository (GIRepository *repository)
-{
-  init_globals ();
-
-  if (repository != NULL)
-    return repository;
-  else
-    return default_repository;
 }
 
 static GITypelib *
