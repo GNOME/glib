@@ -95,6 +95,9 @@ GI_AVAILABLE_IN_ALL
 void                   gi_base_info_unref            (void         *info);
 
 GI_AVAILABLE_IN_ALL
+void                   gi_base_info_clear            (void         *info);
+
+GI_AVAILABLE_IN_ALL
 GIInfoType             gi_base_info_get_info_type    (GIBaseInfo   *info);
 
 GI_AVAILABLE_IN_ALL

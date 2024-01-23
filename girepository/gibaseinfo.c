@@ -141,6 +141,9 @@ gi_base_info_class_init (GIBaseInfoClass *klass)
 static void
 gi_base_info_init (GIBaseInfo *self)
 {
+  /* Initialise a dynamically allocated #GIBaseInfo’s members.
+   *
+   * This function *must* be kept in sync with gi_info_init(). */
   g_atomic_ref_count_init (&self->ref_count);
 }
 
@@ -405,6 +408,20 @@ gi_info_init (GIRealInfo   *info,
 {
   memset (info, 0, sizeof (GIRealInfo));
 
+  /* Evil setup of a stack allocated #GTypeInstance. This is not something it’s
+   * really designed to do.
+   *
+   * This function *must* be kept in sync with gi_base_info_init(), which is
+   * the equivalent function for dynamically allocated types. */
+  info->parent_instance.g_class = g_type_class_ref (type);
+
+  /* g_type_create_instance() calls the #GInstanceInitFunc for each of the
+   * parent types, down to (and including) @type. We don’t need to do that, as
+   * #GIBaseInfo is fundamental so doesn’t have a parent type, the instance init
+   * function for #GIBaseInfo is gi_base_info_init() (which only sets the
+   * refcount, which we already do here), and subtypes of #GIBaseInfo don’t have
+   * instance init functions (see gi_base_info_type_register_static()). */
+
   /* Invalid refcount used to flag stack-allocated infos */
   info->ref_count = INVALID_REFCOUNT;
   info->typelib = typelib;
@@ -415,6 +432,34 @@ gi_info_init (GIRealInfo   *info,
 
   g_assert (GI_IS_REPOSITORY (repository));
   info->repository = repository;
+}
+
+/**
+ * gi_base_info_clear:
+ * @info: (type GIRepository.BaseInfo): a #GIBaseInfo
+ *
+ * Clears memory allocated internally by a stack-allocated
+ * [type@GIRepository.BaseInfo].
+ *
+ * This does not deallocate the [type@GIRepository.BaseInfo] struct itself.
+ *
+ * This must only be called on stack-allocated [type@GIRepository.BaseInfo]s.
+ * Use [method@GIRepository.BaseInfo.unref] for heap-allocated ones.
+ *
+ * Since: 2.80
+ */
+void
+gi_base_info_clear (void *info)
+{
+  GIBaseInfo *rinfo = (GIBaseInfo *) info;
+
+  g_return_if_fail (GI_IS_BASE_INFO (rinfo));
+
+  g_assert (rinfo->ref_count == INVALID_REFCOUNT);
+
+  GI_BASE_INFO_GET_CLASS (info)->finalize (rinfo);
+
+  g_type_class_unref (rinfo->parent_instance.g_class);
 }
 
 GIBaseInfo *
@@ -558,6 +603,9 @@ gi_base_info_ref (void *info)
  *
  * Decreases the reference count of @info. When its reference count
  * drops to 0, the info is freed.
+ *
+ * This must not be called on stack-allocated [type@GIRepository.BaseInfo]s —
+ * use [method@GIRepository.BaseInfo.clear] for that.
  *
  * Since: 2.80
  */

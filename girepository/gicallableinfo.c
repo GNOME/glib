@@ -201,6 +201,9 @@ gi_callable_info_get_return_type (GICallableInfo *info)
  *
  * The initialized @type must not be referenced after @info is deallocated.
  *
+ * Once you are done with @type, it must be cleared using
+ * [method@GIRepository.BaseInfo.clear].
+ *
  * Since: 2.80
  */
 void
@@ -388,6 +391,9 @@ gi_callable_info_get_arg (GICallableInfo *info,
  * for stack allocation.
  *
  * The initialized @arg must not be referenced after @info is deallocated.
+ *
+ * Once you are done with @arg, it must be cleared using
+ * [method@GIRepository.BaseInfo.clear].
  *
  * Since: 2.80
  */

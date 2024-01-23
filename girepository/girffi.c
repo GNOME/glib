@@ -220,6 +220,9 @@ gi_callable_info_get_ffi_arg_types (GICallableInfo *callable_info,
             default:
               g_assert_not_reached ();
           }
+
+        gi_base_info_clear (&arg_type);
+        gi_base_info_clear (&arg_info);
       }
 
     arg_types[n_invoke_args] = NULL;
