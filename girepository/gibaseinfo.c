@@ -123,12 +123,12 @@ value_base_info_lcopy_value (const GValue *value,
 static void
 gi_base_info_finalize (GIBaseInfo *self)
 {
-  if (self->container && self->container->ref_count != INVALID_REFCOUNT)
+  if (self->ref_count != INVALID_REFCOUNT &&
+      self->container && self->container->ref_count != INVALID_REFCOUNT)
     gi_base_info_unref (self->container);
 
-  g_clear_object (&self->repository);
-
-  g_type_free_instance ((GTypeInstance *) self);
+  if (self->ref_count != INVALID_REFCOUNT)
+    g_clear_object (&self->repository);
 }
 
 static void
@@ -571,7 +571,10 @@ gi_base_info_unref (void *info)
   g_assert (rinfo->ref_count > 0 && rinfo->ref_count != INVALID_REFCOUNT);
 
   if (g_atomic_ref_count_dec (&rinfo->ref_count))
-    GI_BASE_INFO_GET_CLASS (info)->finalize (info);
+    {
+      GI_BASE_INFO_GET_CLASS (info)->finalize (info);
+      g_type_free_instance ((GTypeInstance *) info);
+    }
 }
 
 /**
