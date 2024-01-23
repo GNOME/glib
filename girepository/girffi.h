@@ -108,7 +108,7 @@ gboolean      gi_function_invoker_new_for_address  (void                 *addr,
                                                     GError              **error);
 
 GI_AVAILABLE_IN_ALL
-void          gi_function_invoker_destroy          (GIFunctionInvoker    *invoker);
+void          gi_function_invoker_clear            (GIFunctionInvoker    *invoker);
 
 
 GI_AVAILABLE_IN_ALL

@@ -6,6 +6,9 @@ if enable_gir
     'cmph-bdz': {
       'dependencies': [cmph_dep],
     },
+    'function-info' : {
+      'depends': [glib_gir],
+    },
     'gthash' : {
       'dependencies': [girepo_gthash_dep],
     },

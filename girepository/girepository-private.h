@@ -48,6 +48,7 @@ struct _GIBaseInfo
   GTypeInstance parent_instance;
   gatomicrefcount ref_count;
 
+  /* these are both reffed if the GIBaseInfo is heap-allocated, but not reffed if it’s stack-allocated */
   GIRepository *repository;
   GIBaseInfo *container;
 
@@ -222,7 +223,7 @@ void gi_unresolved_info_class_init (gpointer g_class,
                                     gpointer class_data);
 
 void         gi_info_init       (GIRealInfo   *info,
-                                 GIInfoType    type,
+                                 GType         type,
                                  GIRepository *repository,
                                  GIBaseInfo   *container,
                                  GITypelib    *typelib,
@@ -242,7 +243,7 @@ GITypeInfo * gi_type_info_new   (GIBaseInfo *container,
                                  GITypelib  *typelib,
                                  uint32_t    offset);
 
-void         gi_type_info_init  (GIBaseInfo *info,
+void         gi_type_info_init  (GITypeInfo *info,
                                  GIBaseInfo *container,
                                  GITypelib  *typelib,
                                  uint32_t    offset);

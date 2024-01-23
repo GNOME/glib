@@ -201,6 +201,9 @@ gi_callable_info_get_return_type (GICallableInfo *info)
  *
  * The initialized @type must not be referenced after @info is deallocated.
  *
+ * Once you are done with @type, it must be cleared using
+ * [method@GIRepository.BaseInfo.clear].
+ *
  * Since: 2.80
  */
 void
@@ -215,7 +218,7 @@ gi_callable_info_load_return_type (GICallableInfo *info,
 
   offset = signature_offset (info);
 
-  gi_type_info_init ((GIBaseInfo *) type, (GIBaseInfo*)info, rinfo->typelib, offset);
+  gi_type_info_init (type, (GIBaseInfo*)info, rinfo->typelib, offset);
 }
 
 /**
@@ -389,6 +392,9 @@ gi_callable_info_get_arg (GICallableInfo *info,
  *
  * The initialized @arg must not be referenced after @info is deallocated.
  *
+ * Once you are done with @arg, it must be cleared using
+ * [method@GIRepository.BaseInfo.clear].
+ *
  * Since: 2.80
  */
 void
@@ -407,7 +413,7 @@ gi_callable_info_load_arg (GICallableInfo *info,
   offset = signature_offset (info);
   header = (Header *)rinfo->typelib->data;
 
-  gi_info_init ((GIRealInfo*)arg, GI_INFO_TYPE_ARG, rinfo->repository, (GIBaseInfo*)info, rinfo->typelib,
+  gi_info_init ((GIRealInfo*)arg, GI_TYPE_ARG_INFO, rinfo->repository, (GIBaseInfo*)info, rinfo->typelib,
                 offset + header->signature_blob_size + n * header->arg_blob_size);
 }
 
