@@ -397,7 +397,7 @@ gi_info_new (GIInfoType     type,
  */
 void
 gi_info_init (GIRealInfo   *info,
-              GIInfoType    type,
+              GType         type,
               GIRepository *repository,
               GIBaseInfo   *container,
               GITypelib    *typelib,
@@ -489,7 +489,7 @@ gi_type_info_init (GITypeInfo *info,
   GIRealInfo *rinfo = (GIRealInfo*)container;
   SimpleTypeBlob *type = (SimpleTypeBlob *)&typelib->data[offset];
 
-  gi_info_init ((GIRealInfo*)info, GI_INFO_TYPE_TYPE, rinfo->repository, container, typelib,
+  gi_info_init ((GIRealInfo*)info, GI_TYPE_TYPE_INFO, rinfo->repository, container, typelib,
                 (type->flags.reserved == 0 && type->flags.reserved2 == 0) ? offset : type->offset);
 }
 

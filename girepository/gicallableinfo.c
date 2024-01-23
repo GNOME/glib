@@ -407,7 +407,7 @@ gi_callable_info_load_arg (GICallableInfo *info,
   offset = signature_offset (info);
   header = (Header *)rinfo->typelib->data;
 
-  gi_info_init ((GIRealInfo*)arg, GI_INFO_TYPE_ARG, rinfo->repository, (GIBaseInfo*)info, rinfo->typelib,
+  gi_info_init ((GIRealInfo*)arg, GI_TYPE_ARG_INFO, rinfo->repository, (GIBaseInfo*)info, rinfo->typelib,
                 offset + header->signature_blob_size + n * header->arg_blob_size);
 }
 

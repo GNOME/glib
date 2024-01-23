@@ -223,7 +223,7 @@ void gi_unresolved_info_class_init (gpointer g_class,
                                     gpointer class_data);
 
 void         gi_info_init       (GIRealInfo   *info,
-                                 GIInfoType    type,
+                                 GType         type,
                                  GIRepository *repository,
                                  GIBaseInfo   *container,
                                  GITypelib    *typelib,
