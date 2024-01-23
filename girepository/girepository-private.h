@@ -242,7 +242,7 @@ GITypeInfo * gi_type_info_new   (GIBaseInfo *container,
                                  GITypelib  *typelib,
                                  uint32_t    offset);
 
-void         gi_type_info_init  (GIBaseInfo *info,
+void         gi_type_info_init  (GITypeInfo *info,
                                  GIBaseInfo *container,
                                  GITypelib  *typelib,
                                  uint32_t    offset);

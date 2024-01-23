@@ -215,7 +215,7 @@ gi_callable_info_load_return_type (GICallableInfo *info,
 
   offset = signature_offset (info);
 
-  gi_type_info_init ((GIBaseInfo *) type, (GIBaseInfo*)info, rinfo->typelib, offset);
+  gi_type_info_init (type, (GIBaseInfo*)info, rinfo->typelib, offset);
 }
 
 /**

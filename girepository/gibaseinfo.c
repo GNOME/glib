@@ -465,8 +465,23 @@ gi_type_info_new (GIBaseInfo *container,
                                      (type->flags.reserved == 0 && type->flags.reserved2 == 0) ? offset : type->offset);
 }
 
+/*< private >
+ * gi_type_info_init:
+ * @info: (out caller-allocates): caller-allocated #GITypeInfo to populate
+ * @container: (nullable): info which contains this one
+ * @typelib: typelib containing the info
+ * @offset: offset of the info within @typelib, in bytes
+ *
+ * Initialise a stack-allocated #GITypeInfo representing an object of type
+ * [type@GIRepository.TypeInfo] from @offset of @typelib.
+ *
+ * This is a specialised form of [func@GIRepository.info_init] for type
+ * information.
+ *
+ * Since: 2.80
+ */
 void
-gi_type_info_init (GIBaseInfo *info,
+gi_type_info_init (GITypeInfo *info,
                    GIBaseInfo *container,
                    GITypelib  *typelib,
                    uint32_t    offset)
