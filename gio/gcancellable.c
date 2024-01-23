@@ -495,11 +495,16 @@ g_cancellable_cancel (GCancellable *cancellable)
 
   priv = cancellable->priv;
 
+  /* We add a reference before locking, to avoid that potential toggle
+   * notifications on the object might happen while we're locked.
+   */
+  g_object_ref (cancellable);
   g_mutex_lock (&priv->mutex);
 
   if (!g_atomic_int_compare_and_exchange (&priv->cancelled, FALSE, TRUE))
     {
       g_mutex_unlock (&priv->mutex);
+      g_object_unref (cancellable);
       return;
     }
 
@@ -508,7 +513,6 @@ g_cancellable_cancel (GCancellable *cancellable)
   if (priv->wakeup)
     GLIB_PRIVATE_CALL (g_wakeup_signal) (priv->wakeup);
 
-  g_object_ref (cancellable);
   g_signal_emit (cancellable, signals[CANCELLED], 0);
 
   if (g_atomic_int_dec_and_test (&priv->cancelled_running))
