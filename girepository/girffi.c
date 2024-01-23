@@ -269,7 +269,7 @@ gi_callable_info_get_ffi_return_type (GICallableInfo *callable_info)
  * by a language binding could contain a [type@GIRepository.FunctionInvoker]
  * structure inside the binding’s function mapping.
  *
- * @invoker must be freed using [method@GIRepository.FunctionInvoker.destroy]
+ * @invoker must be freed using [method@GIRepository.FunctionInvoker.clear]
  * when it’s finished with.
  *
  * Returns: `TRUE` on success, `FALSE` otherwise with @error set.
@@ -342,7 +342,7 @@ gi_function_invoker_new_for_address (void               *addr,
 }
 
 /**
- * gi_function_invoker_destroy:
+ * gi_function_invoker_clear:
  * @invoker: (transfer none): A #GIFunctionInvoker
  *
  * Release all resources allocated for the internals of @invoker.
@@ -353,7 +353,7 @@ gi_function_invoker_new_for_address (void               *addr,
  * Since: 2.80
  */
 void
-gi_function_invoker_destroy (GIFunctionInvoker *invoker)
+gi_function_invoker_clear (GIFunctionInvoker *invoker)
 {
   g_free (invoker->cif.arg_types);
 }

@@ -66,7 +66,7 @@ test_function_info_invoker (void)
   gi_function_info_prep_invoker (function_info, &invoker, &local_error);
   g_assert_no_error (local_error);
 
-  gi_function_invoker_destroy (&invoker);
+  gi_function_invoker_clear (&invoker);
   g_clear_pointer (&function_info, gi_base_info_unref);
 
   g_clear_object (&repository);
