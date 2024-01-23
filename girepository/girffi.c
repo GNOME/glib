@@ -269,6 +269,9 @@ gi_callable_info_get_ffi_return_type (GICallableInfo *callable_info)
  * by a language binding could contain a [type@GIRepository.FunctionInvoker]
  * structure inside the binding’s function mapping.
  *
+ * @invoker must be freed using [method@GIRepository.FunctionInvoker.destroy]
+ * when it’s finished with.
+ *
  * Returns: `TRUE` on success, `FALSE` otherwise with @error set.
  * Since: 2.80
  */
