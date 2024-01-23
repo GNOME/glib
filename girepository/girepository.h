@@ -92,6 +92,9 @@ GI_AVAILABLE_IN_ALL
 const char * const * gi_repository_get_search_path (size_t *n_paths_out);
 
 GI_AVAILABLE_IN_ALL
+const char * const *gi_repository_get_library_path (size_t *n_paths_out);
+
+GI_AVAILABLE_IN_ALL
 const char *  gi_repository_load_typelib  (GIRepository           *repository,
                                            GITypelib              *typelib,
                                            GIRepositoryLoadFlags   flags,

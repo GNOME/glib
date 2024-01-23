@@ -2213,36 +2213,6 @@ gi_typelib_error_quark (void)
   return quark;
 }
 
-static GSList *library_paths;
-
-/**
- * gi_repository_prepend_library_path:
- * @directory: (type filename): a single directory to scan for shared libraries
- *
- * Prepends @directory to the search path that is used to
- * search shared libraries referenced by imported namespaces.
- *
- * Multiple calls to this function all contribute to the final
- * list of paths.
- *
- * The list of paths is unique and shared for all
- * [class@GIRepository.Repository] instances across the process, but it doesn’t
- * affect namespaces imported before the call.
- *
- * If the library is not found in the directories configured
- * in this way, loading will fall back to the system library
- * path (i.e. `LD_LIBRARY_PATH` and `DT_RPATH` in ELF systems).
- * See the documentation of your dynamic linker for full details.
- *
- * Since: 2.80
- */
-void
-gi_repository_prepend_library_path (const char *directory)
-{
-  library_paths = g_slist_prepend (library_paths,
-                                   g_strdup (directory));
-}
-
 /* Note on the GModule flags used by this function:
 
  * Glade's autoconnect feature and OpenGL's extension mechanism
@@ -2256,7 +2226,6 @@ gi_repository_prepend_library_path (const char *directory)
 static GModule *
 load_one_shared_library (const char *shlib)
 {
-  GSList *p;
   GModule *m;
 
 #ifdef __APPLE__
@@ -2272,9 +2241,11 @@ load_one_shared_library (const char *shlib)
 #endif
     {
       /* First try in configured library paths */
-      for (p = library_paths; p; p = p->next)
+      const char * const *library_paths = gi_repository_get_library_path (NULL);
+
+      for (unsigned int i = 0; library_paths[i] != NULL; i++)
         {
-          char *path = g_build_filename (p->data, shlib, NULL);
+          char *path = g_build_filename (library_paths[i], shlib, NULL);
 
           m = g_module_open (path, G_MODULE_BIND_LAZY);
 

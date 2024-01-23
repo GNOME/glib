@@ -99,6 +99,39 @@ test_repository_search_paths_prepend (void)
 #endif
 }
 
+static void
+test_repository_library_paths_default (void)
+{
+  const char * const *library_paths;
+  size_t n_library_paths;
+
+  library_paths = gi_repository_get_library_path (&n_library_paths);
+  g_assert_nonnull (library_paths);
+  g_assert_cmpuint (g_strv_length ((char **) library_paths), ==, 0);
+}
+
+static void
+test_repository_library_paths_prepend (void)
+{
+  const char * const *library_paths;
+  size_t n_library_paths;
+
+  gi_repository_prepend_library_path (g_test_get_dir (G_TEST_BUILT));
+  library_paths = gi_repository_get_library_path (&n_library_paths);
+  g_assert_nonnull (library_paths);
+  g_assert_cmpuint (g_strv_length ((char **) library_paths), ==, 1);
+
+  g_assert_cmpstr (library_paths[0], ==, g_test_get_dir (G_TEST_BUILT));
+
+  gi_repository_prepend_library_path (g_test_get_dir (G_TEST_DIST));
+  library_paths = gi_repository_get_library_path (&n_library_paths);
+  g_assert_nonnull (library_paths);
+  g_assert_cmpuint (g_strv_length ((char **) library_paths), ==, 2);
+
+  g_assert_cmpstr (library_paths[0], ==, g_test_get_dir (G_TEST_DIST));
+  g_assert_cmpstr (library_paths[1], ==, g_test_get_dir (G_TEST_BUILT));
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -109,9 +142,11 @@ main (int   argc,
   g_setenv ("GI_TYPELIB_PATH", g_get_tmp_dir (), TRUE);
   g_setenv ("GI_GIR_PATH", g_get_user_cache_dir (), TRUE);
 
-  g_test_add_func ("/repository-search-paths/unset", test_repository_search_paths_unset);
-  g_test_add_func ("/repository-search-paths/default", test_repository_search_paths_default);
-  g_test_add_func ("/repository-search-paths/prepend", test_repository_search_paths_prepend);
+  g_test_add_func ("/repository/search-paths/unset", test_repository_search_paths_unset);
+  g_test_add_func ("/repository/search-paths/default", test_repository_search_paths_default);
+  g_test_add_func ("/repository/search-paths/prepend", test_repository_search_paths_prepend);
+  g_test_add_func ("/repository/library-paths/default", test_repository_library_paths_default);
+  g_test_add_func ("/repository/library-paths/prepend", test_repository_library_paths_prepend);
 
   return g_test_run ();
 }

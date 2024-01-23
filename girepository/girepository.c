@@ -77,6 +77,7 @@
 
 static GIRepository *default_repository = NULL;
 static GPtrArray *typelib_search_path = NULL;
+static GPtrArray *library_paths = NULL;  /* (element-type filename) (owned) */
 
 typedef struct {
   size_t n_interfaces;
@@ -241,6 +242,9 @@ init_globals (void)
       g_ptr_array_add (typelib_search_path, g_steal_pointer (&typelib_dir));
     }
 
+  if (library_paths == NULL)
+    library_paths = g_ptr_array_new_null_terminated (1, g_free, TRUE);
+
   g_once_init_leave (&initialized, 1);
 }
 
@@ -304,6 +308,67 @@ gi_repository_get_search_path (size_t *n_paths_out)
     *n_paths_out = typelib_search_path->len;
 
   return (const char * const *) typelib_search_path->pdata;
+}
+
+/**
+ * gi_repository_prepend_library_path:
+ * @directory: (type filename): a single directory to scan for shared libraries
+ *
+ * Prepends @directory to the search path that is used to
+ * search shared libraries referenced by imported namespaces.
+ *
+ * Multiple calls to this function all contribute to the final
+ * list of paths.
+ *
+ * The list of paths is unique and shared for all
+ * [class@GIRepository.Repository] instances across the process, but it doesn’t
+ * affect namespaces imported before the call.
+ *
+ * If the library is not found in the directories configured
+ * in this way, loading will fall back to the system library
+ * path (i.e. `LD_LIBRARY_PATH` and `DT_RPATH` in ELF systems).
+ * See the documentation of your dynamic linker for full details.
+ *
+ * Since: 2.80
+ */
+void
+gi_repository_prepend_library_path (const char *directory)
+{
+  init_globals ();
+  g_ptr_array_insert (library_paths, 0, g_strdup (directory));
+}
+
+/**
+ * gi_repository_get_library_path:
+ * @n_paths_out: (optional) (out): The number of library paths returned.
+ *
+ * Returns the current search path [class@GIRepository.Repository] will use when
+ * loading shared libraries referenced by imported namespaces.
+ *
+ * The list is internal to [class@GIRepository.Repository] and should not be
+ * freed, nor should its string elements.
+ *
+ * Returns: (element-type filename) (transfer none) (array length=n_paths_out): list of search paths, most
+ *   important first
+ * Since: 2.80
+ */
+const char * const *
+gi_repository_get_library_path (size_t *n_paths_out)
+{
+  if G_UNLIKELY (!library_paths || !library_paths->pdata)
+    {
+      static const char * const empty_search_path[] = {NULL};
+
+      if (n_paths_out)
+        *n_paths_out = 0;
+
+      return empty_search_path;
+    }
+
+  if (n_paths_out)
+    *n_paths_out = library_paths->len;
+
+  return (const char * const *) library_paths->pdata;
 }
 
 static char *
