@@ -61,6 +61,22 @@ variables:
   except:
     - tags
 
+# Some jobs take a long time and are unlikely to find failures (or will find
+# failures which are not merge-blockers to fix), so they’re executed on a weekly
+# schedule in order to save CI resources and speed up branch pipelines.
+# But for specific merge requests, one may still want to run them, so make
+# possible to run them manually.
+.only-schedules-or-manual:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: never
+    # As per rule before, the following rules will only apply to non MR events
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: always
+    - if: $CI_PIPELINE_SOURCE != "schedule"
+      when: manual
+      allow_failure: true
+
 .build-linux:
   before_script:
     - bash .gitlab-ci/show-execution-environment.sh
@@ -193,7 +209,7 @@ debian-stable-x86_64:
 
 hurd-i386:
   extends:
-    - .only-schedules
+    - .only-schedules-or-manual
   stage: build
   tags:
     - hurd
@@ -224,7 +240,7 @@ hurd-i386:
 muslc-alpine-x86_64:
   extends:
     - .build-linux
-    - .only-schedules
+    - .only-schedules-or-manual
   image: $ALPINE_IMAGE
   stage: build
   needs: []
@@ -255,7 +271,7 @@ muslc-alpine-x86_64:
 installed-tests:
   extends:
     - .build-linux
-    - .only-schedules
+    - .only-schedules-or-manual
   image: $FEDORA_IMAGE
   stage: build
   needs: []
@@ -293,7 +309,7 @@ installed-tests:
 G_DISABLE_ASSERT:
   extends:
     - .build-linux
-    - .only-schedules
+    - .only-schedules-or-manual
   image: $FEDORA_IMAGE
   stage: build
   needs: []
@@ -324,7 +340,7 @@ G_DISABLE_ASSERT:
 valgrind:
   extends:
     - .build-linux
-    - .only-schedules
+    - .only-schedules-or-manual
   image: $FEDORA_IMAGE
   stage: analysis
   needs: []
@@ -432,7 +448,7 @@ msys2-mingw32:
       - _coverage/
 
 msys2-clang64:
-  extends: .only-schedules
+  extends: .only-schedules-or-manual
   stage: build
   tags:
     - win32-ps
@@ -631,7 +647,7 @@ coverage:
 scan-build:
   extends:
     - .build-linux
-    - .only-schedules
+    - .only-schedules-or-manual
   image: $FEDORA_IMAGE
   stage: analysis
   needs: []
