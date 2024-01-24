@@ -145,18 +145,22 @@ endif
 
 glib_headers = files(
   'glib.h',
-  'glib-unix.h',
   'glib-object.h',
 )
+if host_system != 'windows'
+  glib_headers += files('glib-unix.h')
+endif
 install_headers(glib_headers, install_dir : glib_includedir)
+
+if host_system != 'windows'
+  # Expose as variable to be used by gobject-introspection
+  # when it includes GLib as a subproject
+  glib_unix_h = files('glib-unix.h')
+endif
 
 if host_system == 'windows'
   install_headers([ 'msvc_recommended_pragmas.h' ], install_dir : glib_includedir)
 endif
-
-# Expose as variable to be used by gobject-introspection
-# when it includes GLib as a subproject
-glib_unix_h = files('glib-unix.h')
 
 glib_deprecated_headers = files(
   'deprecated/gallocator.h',
