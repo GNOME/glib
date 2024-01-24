@@ -7,6 +7,7 @@ if enable_gir
       'dependencies': [cmph_dep],
     },
     'function-info' : {
+      'dependencies': [libffi_dep],
       'depends': [glib_gir],
     },
     'gthash' : {
