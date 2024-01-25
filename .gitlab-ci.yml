@@ -77,6 +77,21 @@ variables:
       when: manual
       allow_failure: true
 
+# Some jobs run on CI runners don’t have much available resource.
+# Limit those jobs to only ones on the origin repository (GNOME/glib),
+# rather than people’s forks or if ran manually.
+.only-origin-or-manual:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: never
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: never
+    - if: $CI_PROJECT_NAMESPACE == "GNOME"
+      when: always
+    - if: $CI_PROJECT_NAMESPACE != "GNOME"
+      when: manual
+      allow_failure: true
+
 .build-linux:
   before_script:
     - bash .gitlab-ci/show-execution-environment.sh
@@ -529,7 +544,7 @@ vs2017-x64-static:
       - _build/meson-logs
 
 freebsd-13-x86_64:
-  extends: .only-origin
+  extends: .only-origin-or-manual
   stage: build
   tags:
     - freebsd-13
@@ -565,7 +580,7 @@ freebsd-13-x86_64:
       - "_build/meson-logs"
 
 macos-x86_64:
-  extends: .only-origin
+  extends: .only-origin-or-manual
   stage: build
   tags:
     - macosintel
