@@ -441,7 +441,6 @@ typedef enum
  * @GI_VFUNC_MUST_CHAIN_UP: chains up to the parent type
  * @GI_VFUNC_MUST_OVERRIDE: overrides
  * @GI_VFUNC_MUST_NOT_OVERRIDE: does not override
- * @GI_VFUNC_THROWS: includes a [type@GLib.Error]
  *
  * Flags of a [class@GIRepository.VFuncInfo] struct.
  *
@@ -452,7 +451,6 @@ typedef enum
   GI_VFUNC_MUST_CHAIN_UP     = 1 << 0,
   GI_VFUNC_MUST_OVERRIDE     = 1 << 1,
   GI_VFUNC_MUST_NOT_OVERRIDE = 1 << 2,
-  GI_VFUNC_THROWS =            1 << 3
 } GIVFuncInfoFlags;
 
 /**
@@ -462,7 +460,6 @@ typedef enum
  * @GI_FUNCTION_IS_GETTER: is a getter of a [class@GIRepository.PropertyInfo].
  * @GI_FUNCTION_IS_SETTER: is a setter of a [class@GIRepository.PropertyInfo].
  * @GI_FUNCTION_WRAPS_VFUNC: represents a virtual function.
- * @GI_FUNCTION_THROWS: the function may throw an error.
  *
  * Flags for a [class@GIRepository.FunctionInfo] struct.
  *
@@ -475,7 +472,6 @@ typedef enum
   GI_FUNCTION_IS_GETTER      = 1 << 2,
   GI_FUNCTION_IS_SETTER      = 1 << 3,
   GI_FUNCTION_WRAPS_VFUNC    = 1 << 4,
-  GI_FUNCTION_THROWS         = 1 << 5
 } GIFunctionInfoFlags;
 
 G_END_DECLS

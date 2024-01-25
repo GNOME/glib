@@ -140,9 +140,6 @@ gi_function_info_get_flags (GIFunctionInfo *info)
   if (blob->wraps_vfunc)
     flags = flags | GI_FUNCTION_WRAPS_VFUNC;
 
-  if (blob->throws)
-    flags = flags | GI_FUNCTION_THROWS;
-
   return flags;
 }
 

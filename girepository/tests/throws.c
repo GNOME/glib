@@ -37,7 +37,6 @@ test_invoke_gerror (RepositoryFixture *fx,
 
   func_info = GI_FUNCTION_INFO (gi_repository_find_by_name (fx->repository, "GLib", "file_read_link"));
   g_assert_nonnull (func_info);
-  g_assert_true (gi_function_info_get_flags (func_info) & GI_FUNCTION_THROWS);
   g_assert_true (gi_callable_info_can_throw_gerror (GI_CALLABLE_INFO (func_info)));
 
   in_arg[0].v_string = g_strdup ("non-existent-file/hope");
@@ -66,12 +65,10 @@ test_vfunc_can_throw_gerror (RepositoryFixture *fx,
 
   invoker_info = gi_interface_info_find_method (interface_info, "launch");
   g_assert_nonnull (invoker_info);
-  g_assert_true (gi_function_info_get_flags (invoker_info) & GI_FUNCTION_THROWS);
   g_assert_true (gi_callable_info_can_throw_gerror (GI_CALLABLE_INFO (invoker_info)));
 
   vfunc_info = gi_interface_info_find_vfunc (interface_info, "launch");
   g_assert_nonnull (vfunc_info);
-  g_assert_true (gi_vfunc_info_get_flags (vfunc_info) & GI_VFUNC_THROWS);
   g_assert_true (gi_callable_info_can_throw_gerror (GI_CALLABLE_INFO (vfunc_info)));
 
   g_clear_pointer (&vfunc_info, gi_base_info_unref);
