@@ -240,7 +240,7 @@ gi_ir_node_free (GIIrNode *node)
 
         g_free (type->giinterface);
         g_strfreev (type->errors);
-
+        g_free (type->unparsed);
       }
       break;
 
@@ -319,6 +319,8 @@ gi_ir_node_free (GIIrNode *node)
         for (l = iface->interfaces; l; l = l->next)
           g_free ((GIIrNode *)l->data);
         g_list_free (iface->interfaces);
+
+        g_list_free_full (iface->prerequisites, g_free);
 
         for (l = iface->members; l; l = l->next)
           gi_ir_node_free ((GIIrNode *)l->data);
