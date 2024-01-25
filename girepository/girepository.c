@@ -42,6 +42,16 @@
  * `GIRepository` is used to manage repositories of namespaces. Namespaces
  * are represented on disk by type libraries (`.typelib` files).
  *
+ * The individual pieces of API within a type library are represented by
+ * subclasses of [class@GIRepository.BaseInfo]. These can be found using
+ * methods like [method@GIRepository.Repository.find_by_name] or
+ * [method@GIRepository.Repository.get_info].
+ *
+ * You are responsible for ensuring that the lifetime of the
+ * [class@GIRepository.Repository] exceeds that of the lifetime of any of its
+ * [class@GIRepository.BaseInfo]s. This cannot be guaranteed by using internal
+ * references within libgirepository as that would affect performance.
+ *
  * ### Discovery of type libraries
  *
  * `GIRepository` will typically look for a `girepository-1.0` directory

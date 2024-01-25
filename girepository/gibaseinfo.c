@@ -126,9 +126,6 @@ gi_base_info_finalize (GIBaseInfo *self)
   if (self->ref_count != INVALID_REFCOUNT &&
       self->container && self->container->ref_count != INVALID_REFCOUNT)
     gi_base_info_unref (self->container);
-
-  if (self->ref_count != INVALID_REFCOUNT)
-    g_clear_object (&self->repository);
 }
 
 static void
@@ -356,7 +353,14 @@ gi_info_new_full (GIInfoType    type,
   if (container && container->ref_count != INVALID_REFCOUNT)
     gi_base_info_ref (info->container);
 
-  info->repository = g_object_ref (repository);
+  /* Don’t keep a strong ref, since the repository keeps a cache of #GIBaseInfos
+   * and holds refs on them. If we kept a ref here, there’d be a cycle.
+   * Don’t keep a weak ref either, as that would make creating/destroying a
+   * #GIBaseInfo noticeably more expensive, and infos are performance critical
+   * for bindings.
+   * As stated in the documentation, the mitigation here is to require the user
+   * to keep the #GIRepository alive longer than any of its #GIBaseInfos. */
+  info->repository = repository;
 
   return (GIBaseInfo*)info;
 }
