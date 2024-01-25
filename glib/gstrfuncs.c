@@ -2556,14 +2556,14 @@ g_strfreev (gchar **str_array)
 
 /**
  * g_strdupv:
- * @str_array: (nullable): a %NULL-terminated array of strings
+ * @str_array: (array zero-terminated=1) (nullable): a %NULL-terminated array of strings
  *
  * Copies %NULL-terminated array of strings. The copy is a deep copy;
  * the new array should be freed by first freeing each string, then
  * the array itself. g_strfreev() does this for you. If called
  * on a %NULL value, g_strdupv() simply returns %NULL.
  *
- * Returns: (nullable) (transfer full): a new %NULL-terminated array of strings.
+ * Returns: (array zero-terminated=1) (nullable) (transfer full): a new %NULL-terminated array of strings.
  */
 gchar**
 g_strdupv (gchar **str_array)
@@ -2597,7 +2597,7 @@ g_strdupv (gchar **str_array)
  * g_strjoinv:
  * @separator: (nullable): a string to insert between each of the
  *     strings, or %NULL
- * @str_array: a %NULL-terminated array of strings to join
+ * @str_array: (array zero-terminated=1): a %NULL-terminated array of strings to join
  *
  * Joins a number of strings together to form one long string, with the
  * optional @separator inserted between each of them. The returned string
