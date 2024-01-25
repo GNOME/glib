@@ -338,7 +338,7 @@ gchar*
  * Allocates @byte_size bytes of memory, and copies @byte_size bytes into it
  * from @mem. If @mem is %NULL it returns %NULL.
  *
- * Returns: a pointer to the newly-allocated copy of the memory, or %NULL if @mem
+ * Returns: (transfer full) (nullable): a pointer to the newly-allocated copy of the memory, or %NULL if @mem
  *  is %NULL.
  * Deprecated: 2.68: Use g_memdup2() instead, as it accepts a #gsize argument
  *     for @byte_size, avoiding the possibility of overflow in a #gsize → #guint
@@ -372,7 +372,7 @@ g_memdup (gconstpointer mem,
  * This replaces g_memdup(), which was prone to integer overflows when
  * converting the argument from a #gsize to a #guint.
  *
- * Returns: (nullable): a pointer to the newly-allocated copy of the memory,
+ * Returns: (transfer full) (nullable): a pointer to the newly-allocated copy of the memory,
  *    or %NULL if @mem is %NULL.
  * Since: 2.68
  */
