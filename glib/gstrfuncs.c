@@ -3204,7 +3204,7 @@ one_matched:
 
 /**
  * g_strv_contains:
- * @strv: a %NULL-terminated array of strings
+ * @strv: (array zero-terminated=1): a %NULL-terminated array of strings
  * @str: a string
  *
  * Checks if @strv contains @str. @strv must not be %NULL.
@@ -3231,8 +3231,8 @@ g_strv_contains (const gchar * const *strv,
 
 /**
  * g_strv_equal:
- * @strv1: a %NULL-terminated array of strings
- * @strv2: another %NULL-terminated array of strings
+ * @strv1: (array zero-terminated=1): a %NULL-terminated array of strings
+ * @strv2: (array zero-terminated=1): another %NULL-terminated array of strings
  *
  * Checks if @strv1 and @strv2 contain exactly the same elements in exactly the
  * same order. Elements are compared using g_str_equal(). To match independently
