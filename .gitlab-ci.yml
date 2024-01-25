@@ -735,7 +735,7 @@ scan-build:
       - "cov-int/build-log.txt"
 
 pages:
-  extends: .only-schedules-or-manual-in-default-branch
+  extends: .only-schedules
   stage: deploy
   needs: ['coverage', 'style-check-advisory']
   script:
