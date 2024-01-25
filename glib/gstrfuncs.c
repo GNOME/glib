@@ -2533,7 +2533,7 @@ g_strsplit_set (const gchar *string,
 
 /**
  * g_strfreev:
- * @str_array: (nullable) (transfer full): a %NULL-terminated array of strings to free
+ * @str_array: (array zero-terminated=1) (nullable) (transfer full): a %NULL-terminated array of strings to free
  *
  * Frees a %NULL-terminated array of strings, as well as each
  * string it contains.
