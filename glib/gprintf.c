@@ -297,7 +297,7 @@ g_vsnprintf (gchar	 *string,
 
 /**
  * g_vasprintf:
- * @string: (not optional) (nullable): the return location for the newly-allocated string,
+ * @string: (out) (not optional) (nullable): the return location for the newly-allocated string,
  *   which will be %NULL if (and only if) this function fails
  * @format: (not nullable): a standard printf() format string, but notice
  *          [string precision pitfalls](string-utils.html#string-precision-pitfalls)
