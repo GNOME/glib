@@ -48,8 +48,9 @@ struct _GIBaseInfo
   GTypeInstance parent_instance;
   gatomicrefcount ref_count;
 
-  /* these are both reffed if the GIBaseInfo is heap-allocated, but not reffed if it’s stack-allocated */
+  /* @repository is never reffed, as that would lead to a refcount cycle with the repository */
   GIRepository *repository;
+  /* @container is reffed if the GIBaseInfo is heap-allocated, but not reffed if it’s stack-allocated */
   GIBaseInfo *container;
 
   GITypelib *typelib;
