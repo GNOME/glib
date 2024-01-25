@@ -1555,9 +1555,10 @@ g_ascii_strdown (const gchar *str,
   g_return_val_if_fail (str != NULL, NULL);
 
   if (len < 0)
-    len = (gssize) strlen (str);
+    result = g_strdup (str);
+  else
+    result = g_strndup (str, (gsize) len);
 
-  result = g_strndup (str, (gsize) len);
   for (s = result; *s; s++)
     *s = g_ascii_tolower (*s);
 
@@ -1585,9 +1586,10 @@ g_ascii_strup (const gchar *str,
   g_return_val_if_fail (str != NULL, NULL);
 
   if (len < 0)
-    len = (gssize) strlen (str);
+    result = g_strdup (str);
+  else
+    result = g_strndup (str, (gsize) len);
 
-  result = g_strndup (str, (gsize) len);
   for (s = result; *s; s++)
     *s = g_ascii_toupper (*s);
 
