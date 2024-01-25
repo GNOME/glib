@@ -3044,7 +3044,7 @@ split_words (const gchar *value)
  * @string: a string
  * @translit_locale: (nullable): the language code (like 'de' or
  *   'en_GB') from which @string originates
- * @ascii_alternates: (out) (transfer full) (array zero-terminated=1): a
+ * @ascii_alternates: (out) (optional) (transfer full) (array zero-terminated=1): a
  *   return location for ASCII alternates
  *
  * Tokenises @string and performs folding on each token.
