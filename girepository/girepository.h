@@ -57,29 +57,9 @@
 
 G_BEGIN_DECLS
 
-#define GI_TYPE_REPOSITORY              (gi_repository_get_type ())
-#define GI_REPOSITORY(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GI_TYPE_REPOSITORY, GIRepository))
-#define GI_REPOSITORY_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GI_TYPE_REPOSITORY, GIRepositoryClass))
-#define GI_IS_REPOSITORY(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GI_TYPE_REPOSITORY))
-#define GI_IS_REPOSITORY_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GI_TYPE_REPOSITORY))
-#define GI_REPOSITORY_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GI_TYPE_REPOSITORY, GIRepositoryClass))
-
-typedef struct _GIRepository         GIRepository;
-typedef struct _GIRepositoryClass    GIRepositoryClass;
-typedef struct _GIRepositoryPrivate  GIRepositoryPrivate;
-
-struct _GIRepository
-{
-  /*< private >*/
-  GObject parent;
-  GIRepositoryPrivate *priv;
-};
-
-struct _GIRepositoryClass
-{
-  /*< private >*/
-  GObjectClass parent;
-};
+#define GI_TYPE_REPOSITORY (gi_repository_get_type ())
+GI_AVAILABLE_IN_ALL
+G_DECLARE_FINAL_TYPE (GIRepository, gi_repository, GI, REPOSITORY, GObject)
 
 /**
  * GIRepositoryLoadFlags:
@@ -95,9 +75,6 @@ typedef enum
 } GIRepositoryLoadFlags;
 
 /* Repository */
-
-GI_AVAILABLE_IN_ALL
-GType         gi_repository_get_type      (void) G_GNUC_CONST;
 
 GI_AVAILABLE_IN_ALL
 GIRepository *gi_repository_get_default   (void);
