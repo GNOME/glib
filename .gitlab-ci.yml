@@ -77,6 +77,19 @@ variables:
       when: manual
       allow_failure: true
 
+# Some jobs should be runnable only on schedules and when triggered by a branch
+# in the origin repository, but without
+.only-schedules-or-manual-in-default-branch:
+  rules:
+    - if: $CI_PROJECT_PATH != "GNOME/glib" || $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+      when: never
+    # As per rule before, the following rules will apply only to GNOME/glib:main
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: always
+    - if: $CI_PIPELINE_SOURCE != "schedule"
+      when: manual
+      allow_failure: true
+
 # Some jobs run on CI runners don’t have much available resource.
 # Limit those jobs to only ones on the origin repository (GNOME/glib),
 # rather than people’s forks or if ran manually.
@@ -689,7 +702,7 @@ scan-build:
 .coverity:
   extends:
     - .build-linux
-    - .only-schedules
+    - .only-schedules-or-manual-in-default-branch
   image: $COVERITY_IMAGE
   stage: analysis
   needs: []
@@ -722,7 +735,7 @@ scan-build:
       - "cov-int/build-log.txt"
 
 pages:
-  extends: .only-schedules
+  extends: .only-schedules-or-manual-in-default-branch
   stage: deploy
   needs: ['coverage', 'style-check-advisory']
   script:
