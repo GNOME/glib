@@ -395,7 +395,7 @@ g_memdup2 (gconstpointer mem,
 
 /**
  * g_strndup:
- * @str: the string to duplicate
+ * @str: (nullable): the string to duplicate
  * @n: the maximum number of bytes to copy from @str
  *
  * Duplicates the first @n bytes of a string, returning a newly-allocated
@@ -407,7 +407,7 @@ g_memdup2 (gconstpointer mem,
  * To copy a number of characters from a UTF-8 encoded string,
  * use g_utf8_strncpy() instead.
  *
- * Returns: a newly-allocated buffer containing the first @n bytes
+ * Returns: (nullable): a newly-allocated buffer containing the first @n bytes
  *     of @str, nul-terminated
  */
 gchar*
