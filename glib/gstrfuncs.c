@@ -2932,7 +2932,7 @@ gboolean (g_str_has_prefix) (const gchar *str,
 
 /**
  * g_strv_length:
- * @str_array: a %NULL-terminated array of strings
+ * @str_array: (array zero-terminated=1): a %NULL-terminated array of strings
  *
  * Returns the length of the given %NULL-terminated
  * string array @str_array. @str_array must not be %NULL.
