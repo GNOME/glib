@@ -94,19 +94,19 @@ typedef enum
 struct _GIIrNode
 {
   GIIrNodeTypeId type;
-  char *name;
-  GIIrModule *module;
+  char *name;  /* (owned) */
+  GIIrModule *module;  /* (unowned) */
 
   uint32_t offset; /* Assigned as we build the typelib */
 
-  GHashTable *attributes;
+  GHashTable *attributes;  /* (element-type utf8 utf8) (owned) */
 };
 
 struct _GIIrNodeXRef
 {
   GIIrNode node;
 
-  char *namespace;
+  char *namespace;  /* (owned) */
 };
 
 struct _GIIrNodeFunction
@@ -124,11 +124,11 @@ struct _GIIrNodeFunction
   uint8_t throws : 1;
   uint8_t instance_transfer_full : 1;
 
-  char *symbol;
-  char *property;
+  char *symbol;  /* (owned) */
+  char *property;  /* (owned) */
 
-  GIIrNodeParam *result;
-  GList *parameters;
+  GIIrNodeParam *result;  /* (owned) */
+  GList *parameters;  /* (element-type GIIrNode) (owned) */
 };
 
 struct _GIIrNodeType
@@ -145,7 +145,7 @@ struct _GIIrNodeType
   uint8_t is_error : 1;
   int tag;
 
-  char *unparsed;
+  char *unparsed; /* (owned) */
 
   uint8_t zero_terminated : 1;
   uint8_t has_length : 1;
@@ -154,11 +154,11 @@ struct _GIIrNodeType
   int size;
   int array_type;
 
-  GIIrNodeType *parameter_type1;
-  GIIrNodeType *parameter_type2;
+  GIIrNodeType *parameter_type1;  /* (owned) */
+  GIIrNodeType *parameter_type2;  /* (owned) */
 
-  char *giinterface;
-  char **errors;
+  char *giinterface;  /* (owned) */
+  char **errors;  /* (array zero-terminated=1) (owned) */
 };
 
 struct _GIIrNodeParam
@@ -179,7 +179,7 @@ struct _GIIrNodeParam
   int8_t closure;
   int8_t destroy;
 
-  GIIrNodeType *type;
+  GIIrNodeType *type;  /* (owned) */
 };
 
 struct _GIIrNodeProperty
@@ -188,7 +188,7 @@ struct _GIIrNodeProperty
 
   uint8_t deprecated : 1;
 
-  char *name;
+  char *name;  /* (owned) */
   uint8_t readable : 1;
   uint8_t writable : 1;
   uint8_t construct : 1;
@@ -196,10 +196,10 @@ struct _GIIrNodeProperty
   uint8_t transfer : 1;
   uint8_t shallow_transfer : 1;
 
-  char *setter;
-  char *getter;
+  char *setter;  /* (owned) */
+  char *getter;  /* (owned) */
 
-  GIIrNodeType *type;
+  GIIrNodeType *type;  /* (owned) */
 };
 
 struct _GIIrNodeSignal
@@ -222,8 +222,8 @@ struct _GIIrNodeSignal
 
   int class_closure;
 
-  GList *parameters;
-  GIIrNodeParam *result;
+  GList *parameters;  /* (element-type GIIrNode) (owned) */
+  GIIrNodeParam *result;  /* (owned) */
 };
 
 struct _GIIrNodeVFunc
@@ -238,10 +238,10 @@ struct _GIIrNodeVFunc
   uint8_t throws : 1;
   uint8_t instance_transfer_full : 1;
 
-  char *invoker;
+  char *invoker;  /* (owned) */
 
-  GList *parameters;
-  GIIrNodeParam *result;
+  GList *parameters;  /* (element-type GIIrNode) (owned) */
+  GIIrNodeParam *result;  /* (owned) */
 
   int offset;
 };
@@ -254,9 +254,9 @@ struct _GIIrNodeField
   uint8_t writable : 1;
   int bits;
   int offset;
-  GIIrNodeFunction *callback;
+  GIIrNodeFunction *callback;  /* (owned) */
 
-  GIIrNodeType *type;
+  GIIrNodeType *type;  /* (owned) */
 };
 
 struct _GIIrNodeInterface
@@ -268,25 +268,25 @@ struct _GIIrNodeInterface
   uint8_t fundamental : 1;
   uint8_t final_ : 1;
 
-  char *gtype_name;
-  char *gtype_init;
+  char *gtype_name;  /* (owned) */
+  char *gtype_init;  /* (owned) */
 
-  char *ref_func;
-  char *unref_func;
-  char *set_value_func;
-  char *get_value_func;
+  char *ref_func;  /* (owned) */
+  char *unref_func;  /* (owned) */
+  char *set_value_func;  /* (owned) */
+  char *get_value_func;  /* (owned) */
 
-  char *parent;
-  char *glib_type_struct;
+  char *parent;  /* (owned) */
+  char *glib_type_struct;  /* (owned) */
 
-  GList *interfaces;
-  GList *prerequisites;
+  GList *interfaces;  /* (element-type GIIrNode) (owned) */
+  GList *prerequisites; /* (element-type utf8) (owned) */
 
   size_t alignment;
   size_t size;
   GIIrOffsetsState offsets_state;
 
-  GList *members;
+  GList *members;  /* (element-type GIIrNode) (owned) */
 };
 
 struct _GIIrNodeValue
@@ -304,9 +304,9 @@ struct _GIIrNodeConstant
 
   uint8_t deprecated : 1;
 
-  GIIrNodeType *type;
+  GIIrNodeType *type;  /* (owned) */
 
-  char *value;
+  char *value;  /* (owned) */
 };
 
 struct _GIIrNodeEnum
@@ -316,12 +316,12 @@ struct _GIIrNodeEnum
   uint8_t deprecated : 1;
   int storage_type;
 
-  char *gtype_name;
-  char *gtype_init;
-  char *error_domain;
+  char *gtype_name;  /* (owned) */
+  char *gtype_init;  /* (owned) */
+  char *error_domain;  /* (owned) */
 
-  GList *values;
-  GList *methods;
+  GList *values;  /* (element-type GIIrNode) (owned) */
+  GList *methods;  /* (element-type GIIrNode) (owned) */
 };
 
 struct _GIIrNodeBoxed
@@ -330,14 +330,14 @@ struct _GIIrNodeBoxed
 
   uint8_t deprecated : 1;
 
-  char *gtype_name;
-  char *gtype_init;
+  char *gtype_name;  /* (owned) */
+  char *gtype_init;  /* (owned) */
 
   size_t alignment;
   size_t size;
   GIIrOffsetsState offsets_state;
 
-  GList *members;
+  GList *members;  /* (element-type GIIrNode) (owned) */
 };
 
 struct _GIIrNodeStruct
@@ -351,17 +351,17 @@ struct _GIIrNodeStruct
   uint8_t is_gtype_struct : 1;
   uint8_t foreign : 1;
 
-  char *gtype_name;
-  char *gtype_init;
+  char *gtype_name;  /* (owned) */
+  char *gtype_init;  /* (owned) */
 
-  char *copy_func;
-  char *free_func;
+  char *copy_func;  /* (owned) */
+  char *free_func;  /* (owned) */
 
   size_t alignment;
   size_t size;
   GIIrOffsetsState offsets_state;
 
-  GList *members;
+  GList *members;  /* (element-type GIIrNode) (owned) */
 };
 
 struct _GIIrNodeUnion
@@ -370,21 +370,21 @@ struct _GIIrNodeUnion
 
   uint8_t deprecated : 1;
 
-  GList *members;
-  GList *discriminators;
+  GList *members;  /* (element-type GIIrNode) (owned) */
+  GList *discriminators;  /* (element-type GIIrNode) (owned) */
 
-  char *gtype_name;
-  char *gtype_init;
+  char *gtype_name;  /* (owned) */
+  char *gtype_init;  /* (owned) */
 
-  char *copy_func;
-  char *free_func;
+  char *copy_func;  /* (owned) */
+  char *free_func;  /* (owned) */
 
   size_t alignment;
   size_t size;
   GIIrOffsetsState offsets_state;
 
   int discriminator_offset;
-  GIIrNodeType *discriminator_type;
+  GIIrNodeType *discriminator_type;  /* (owned) */
 };
 
 
