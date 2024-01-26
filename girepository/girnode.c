@@ -1601,7 +1601,7 @@ gi_ir_node_build_typelib (GIIrNode         *node,
         blob->writable = field->writable;
         blob->reserved = 0;
         blob->bits = 0;
-        if (field->offset >= 0)
+        if (field->offset_state == GI_IR_OFFSETS_COMPUTED)
           blob->struct_offset = field->offset;
         else
           blob->struct_offset = 0xFFFF; /* mark as unknown */

@@ -1366,6 +1366,7 @@ start_field (GMarkupParseContext  *context,
   GIIrNodeField *field;
   ParseState target_state;
   gboolean introspectable;
+  guint64 parsed_bits;
 
   switch (ctx->state)
     {
@@ -1428,10 +1429,15 @@ start_field (GMarkupParseContext  *context,
   field->readable = readable == NULL || strcmp (readable, "0") == 0;
   field->writable = writable != NULL && strcmp (writable, "1") == 0;
 
-  if (bits)
-    field->bits = atoi (bits);
-  else
+  if (bits == NULL)
     field->bits = 0;
+  else if (g_ascii_string_to_unsigned (bits, 10, 0, G_MAXUINT, &parsed_bits, error))
+    field->bits = parsed_bits;
+  else
+    {
+      gi_ir_node_free ((GIIrNode *) field);
+      return FALSE;
+    }
 
   switch (CURRENT_NODE (ctx)->type)
     {

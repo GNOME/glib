@@ -252,8 +252,9 @@ struct _GIIrNodeField
 
   uint8_t readable : 1;
   uint8_t writable : 1;
-  int bits;
-  int offset;
+  unsigned int bits;
+  size_t offset;
+  GIIrOffsetsState offset_state;
   GIIrNodeFunction *callback;  /* (owned) */
 
   GIIrNodeType *type;  /* (owned) */
