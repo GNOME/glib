@@ -2561,6 +2561,7 @@ start_vfunc (GMarkupParseContext  *context,
   const char *throws;
   GIIrNodeInterface *iface;
   GIIrNodeVFunc *vfunc;
+  guint64 parsed_offset;
 
   if (!(strcmp (element_name, "virtual-method") == 0 &&
         (ctx->state == STATE_CLASS ||
@@ -2620,10 +2621,15 @@ start_vfunc (GMarkupParseContext  *context,
   else
     vfunc->throws = FALSE;
 
-  if (offset)
-    vfunc->offset = atoi (offset);
-  else
+  if (offset == NULL)
     vfunc->offset = 0xFFFF;
+  else if (g_ascii_string_to_unsigned (offset, 10, 0, G_MAXSIZE, &parsed_offset, error))
+    vfunc->offset = parsed_offset;
+  else
+    {
+      gi_ir_node_free ((GIIrNode *) vfunc);
+      return FALSE;
+    }
 
   vfunc->invoker = g_strdup (invoker);
 

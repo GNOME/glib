@@ -243,7 +243,7 @@ struct _GIIrNodeVFunc
   GList *parameters;  /* (element-type GIIrNode) (owned) */
   GIIrNodeParam *result;  /* (owned) */
 
-  int offset;
+  size_t offset;
 };
 
 struct _GIIrNodeField
