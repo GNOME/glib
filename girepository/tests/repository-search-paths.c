@@ -33,12 +33,6 @@ test_repository_search_paths_default (void)
 
   search_paths = gi_repository_get_search_path (repository, &n_search_paths);
   g_assert_nonnull (search_paths);
-
-  /* Init default paths */
-  g_assert_nonnull (gi_repository_get_default ());
-
-  search_paths = gi_repository_get_search_path (repository, &n_search_paths);
-  g_assert_nonnull (search_paths);
   g_assert_cmpuint (g_strv_length ((char **) search_paths), ==, 2);
 
   g_assert_cmpstr (search_paths[0], ==, g_get_tmp_dir ());

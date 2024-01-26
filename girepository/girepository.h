@@ -77,9 +77,6 @@ typedef enum
 /* Repository */
 
 GI_AVAILABLE_IN_ALL
-GIRepository *gi_repository_get_default   (void);
-
-GI_AVAILABLE_IN_ALL
 GIRepository *gi_repository_new (void);
 
 GI_AVAILABLE_IN_ALL
