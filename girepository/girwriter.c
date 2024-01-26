@@ -1335,10 +1335,10 @@ gi_ir_writer_write (const char *filename,
   FILE *ofile;
   size_t i, j;
   char **dependencies;
-  GIRepository *repository;
+  GIRepository *repository = NULL;
   Xml *xml;
 
-  repository = gi_repository_get_default ();
+  repository = gi_repository_new ();
 
   if (filename == NULL)
     ofile = stdout;
@@ -1462,4 +1462,6 @@ gi_ir_writer_write (const char *filename,
   xml_end_element (xml, "repository");
 
   xml_free (xml);
+
+  g_clear_object (&repository);
 }

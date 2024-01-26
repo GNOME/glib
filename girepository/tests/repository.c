@@ -59,7 +59,7 @@ test_repository_basic (RepositoryFixture *fx,
   g_assert_cmpstrv (versions, ((char *[]){"2.0", NULL}));
   g_clear_pointer (&versions, g_strfreev);
 
-  search_paths = gi_repository_get_search_path (NULL);
+  search_paths = gi_repository_get_search_path (fx->repository, NULL);
   g_assert_nonnull (search_paths);
   g_assert_cmpuint (g_strv_length ((char **) search_paths), >, 0);
   g_assert_cmpstr (search_paths[0], ==, fx->gobject_typelib_dir);
