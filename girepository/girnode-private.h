@@ -384,7 +384,7 @@ struct _GIIrNodeUnion
   size_t size;
   GIIrOffsetsState offsets_state;
 
-  int discriminator_offset;
+  size_t discriminator_offset;
   GIIrNodeType *discriminator_type;  /* (owned) */
 };
 

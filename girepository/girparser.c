@@ -2810,6 +2810,8 @@ start_discriminator (GMarkupParseContext  *context,
 {
   const char *type;
   const char *offset;
+  guint64 parsed_offset;
+
   if (!(strcmp (element_name, "discriminator") == 0 &&
         ctx->state == STATE_UNION))
     return FALSE;
@@ -2829,8 +2831,11 @@ start_discriminator (GMarkupParseContext  *context,
 
   ((GIIrNodeUnion *)CURRENT_NODE (ctx))->discriminator_type
     = parse_type (ctx, type);
-  ((GIIrNodeUnion *)CURRENT_NODE (ctx))->discriminator_offset
-    = atoi (offset);
+
+  if (g_ascii_string_to_unsigned (offset, 10, 0, G_MAXSIZE, &parsed_offset, error))
+    ((GIIrNodeUnion *)CURRENT_NODE (ctx))->discriminator_offset = parsed_offset;
+  else
+    return FALSE;
 
   return TRUE;
 }
