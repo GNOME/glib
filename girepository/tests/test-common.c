@@ -46,7 +46,7 @@ repository_setup (RepositoryFixture *fx,
   fx->repository = gi_repository_new ();
   g_assert_nonnull (fx->repository);
 
-  fx->gobject_typelib_dir = g_test_build_filename (G_TEST_BUILT, "..", "..", "introspection", NULL);
+  fx->gobject_typelib_dir = g_test_build_filename (G_TEST_BUILT, "..", "introspection", NULL);
   g_test_message ("Using GI_TYPELIB_DIR = %s", fx->gobject_typelib_dir);
   gi_repository_prepend_search_path (fx->repository, fx->gobject_typelib_dir);
 

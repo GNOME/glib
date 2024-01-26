@@ -1,17 +1,18 @@
-girepository_tests = {}
+girepository_tests = {
+  'cmph-bdz': {
+    'dependencies': [cmph_dep],
+  },
+  'gthash' : {
+    'dependencies': [girepo_gthash_dep],
+  },
+}
 
-# Some GIR files are needed to test against
+# Some tests require GIR files to have been generated
 if enable_gir
   girepository_tests += {
-    'cmph-bdz': {
-      'dependencies': [cmph_dep],
-    },
     'function-info' : {
       'dependencies': [libffi_dep],
       'depends': [glib_gir],
-    },
-    'gthash' : {
-      'dependencies': [girepo_gthash_dep],
     },
     'repository' : {
       'depends': [glib_gir, gio_gir, gobject_gir],

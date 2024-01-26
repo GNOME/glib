@@ -235,31 +235,7 @@ pkg.generate(libgirepository,
 )
 
 if enable_gir
-  libgirepository_gir_sources = [
-    gi_visibility_h,
-    girepo_headers,
-    girepo_sources,
-  ]
-  libgirepository_gir_packages = [ 'girepository-2.0' ]
-  libgirepository_gir_args = [
-    '-DGI_COMPILATION',
-    '--symbol-prefix=gi',
-    '--identifier-prefix=GI',
-  ]
-
-  girepository_gir = gnome.generate_gir(libgirepository,
-    sources: libgirepository_gir_sources,
-    namespace: 'GIRepository',
-    nsversion: '3.0',
-    identifier_prefix: 'GI',
-    symbol_prefix: 'gi',
-    export_packages: libgirepository_gir_packages,
-    header: 'girepository/girepository.h',
-    includes: [ glib_gir[0], gmodule_gir[0], gobject_gir[0], gio_gir[0] ],
-    install: true,
-    dependencies: [ libglib_dep, libgobject_dep, libgmodule_dep, libgio_dep ],
-    extra_args: gir_args + libgirepository_gir_args,
-  )
+  subdir('introspection')
 endif
 
 if build_tests
