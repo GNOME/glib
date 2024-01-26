@@ -220,7 +220,7 @@ struct _GIIrNodeSignal
   uint8_t has_class_closure : 1;
   uint8_t true_stops_emit : 1;
 
-  int class_closure;
+  unsigned int class_closure;
 
   GList *parameters;  /* (element-type GIIrNode) (owned) */
   GIIrNodeParam *result;  /* (owned) */
