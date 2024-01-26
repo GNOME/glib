@@ -324,6 +324,7 @@ GITypelib *
 gi_ir_module_build_typelib (GIIrModule *module)
 {
   GError *error = NULL;
+  GBytes *bytes = NULL;
   GITypelib *typelib;
   size_t length;
   size_t i;
@@ -574,7 +575,11 @@ gi_ir_module_build_typelib (GIIrModule *module)
   header = (Header *)data;
 
   length = header->size = offset2;
-  typelib = gi_typelib_new_from_memory (data, length, &error);
+
+  bytes = g_bytes_new_take (g_steal_pointer (&data), length);
+  typelib = gi_typelib_new_from_bytes (bytes, &error);
+  g_bytes_unref (bytes);
+
   if (!typelib)
     {
       g_error ("error building typelib: %s",

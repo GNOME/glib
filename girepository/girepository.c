@@ -1753,7 +1753,12 @@ require_internal (GIRepository           *repository,
 
   {
     GError *temp_error = NULL;
-    typelib = gi_typelib_new_from_mapped_file (mfile, &temp_error);
+    GBytes *bytes = NULL;
+
+    bytes = g_mapped_file_get_bytes (mfile);
+    typelib = gi_typelib_new_from_bytes (bytes, &temp_error);
+    g_bytes_unref (bytes);
+
     if (!typelib)
       {
         g_set_error (error, GI_REPOSITORY_ERROR,

@@ -1313,10 +1313,9 @@ typedef struct {
 
 struct _GITypelib {
   /*< private >*/
-  uint8_t *data;
+  const uint8_t *data;  /* just a cached pointer to inside @bytes */
   size_t len;
-  gboolean owns_memory;
-  GMappedFile *mfile;
+  GBytes *bytes;  /* (owned) */
   GList *modules;
   gboolean open_attempted;
 };

@@ -37,18 +37,8 @@ G_BEGIN_DECLS
 typedef struct _GITypelib GITypelib;
 
 GI_AVAILABLE_IN_ALL
-GITypelib *    gi_typelib_new_from_memory       (uint8_t *memory,
-                                                 size_t   len,
-                                                 GError **error);
-
-GI_AVAILABLE_IN_ALL
-GITypelib *    gi_typelib_new_from_const_memory (const uint8_t *memory,
-                                                 size_t         len,
-                                                 GError       **error);
-
-GI_AVAILABLE_IN_ALL
-GITypelib *    gi_typelib_new_from_mapped_file  (GMappedFile  *mfile,
-                                                 GError      **error);
+GITypelib *    gi_typelib_new_from_bytes       (GBytes  *bytes,
+                                                GError **error);
 
 GI_AVAILABLE_IN_ALL
 void          gi_typelib_free                  (GITypelib     *typelib);

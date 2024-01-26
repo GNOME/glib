@@ -2359,95 +2359,34 @@ gi_typelib_ensure_open (GITypelib *typelib)
 }
 
 /**
- * gi_typelib_new_from_memory: (skip)
- * @memory: (array length=len): address of memory chunk containing the typelib
- * @len: length of memory chunk containing the typelib, in bytes
+ * gi_typelib_new_from_bytes:
+ * @bytes: memory chunk containing the typelib
  * @error: a [type@GLib.Error]
  *
- * Creates a new [type@GIRepository.Typelib] from a memory location.
+ * Creates a new [type@GIRepository.Typelib] from a [type@GLib.Bytes].
  *
- * The memory block pointed to by @typelib will be automatically freed when the
- * repository is destroyed.
- *
- * Returns: (transfer full): the new [type@GIRepository.Typelib]
- * Since: 2.80
- */
-GITypelib *
-gi_typelib_new_from_memory (uint8_t *memory,
-                            size_t   len,
-                            GError **error)
-{
-  GITypelib *meta;
-
-  if (!validate_header_basic (memory, len, error))
-    return NULL;
-
-  meta = g_slice_new0 (GITypelib);
-  meta->data = memory;
-  meta->len = len;
-  meta->owns_memory = TRUE;
-  meta->modules = NULL;
-
-  return meta;
-}
-
-/**
- * gi_typelib_new_from_const_memory: (skip)
- * @memory: (array length=len): address of memory chunk containing the typelib
- * @len: length of memory chunk containing the typelib
- * @error: a [type@GLib.Error]
- *
- * Creates a new [type@GIRepository.Typelib] from a memory location.
+ * The [type@GLib.Bytes] can point to a memory location or a mapped file, and
+ * the typelib will hold a reference to it until the repository is destroyed.
  *
  * Returns: (transfer full): the new [type@GIRepository.Typelib]
  * Since: 2.80
  */
 GITypelib *
-gi_typelib_new_from_const_memory (const uint8_t  *memory,
-                                  size_t          len,
-                                  GError        **error)
+gi_typelib_new_from_bytes (GBytes *bytes,
+                           GError **error)
 {
   GITypelib *meta;
-
-  if (!validate_header_basic (memory, len, error))
-    return NULL;
-
-  meta = g_slice_new0 (GITypelib);
-  meta->data = (uint8_t *) memory;
-  meta->len = len;
-  meta->owns_memory = FALSE;
-  meta->modules = NULL;
-
-  return meta;
-}
-
-/**
- * gi_typelib_new_from_mapped_file: (skip)
- * @mfile: (transfer full): a [type@GLib.MappedFile], that will be freed when
- *   the repository is destroyed
- * @error: a #GError
- *
- * Creates a new [type@GIRepository.Typelib] from a [type@GLib.MappedFile].
- *
- * Returns: (transfer full): the new [type@GIRepository.Typelib]
- * Since: 2.80
- */
-GITypelib *
-gi_typelib_new_from_mapped_file (GMappedFile  *mfile,
-                                 GError      **error)
-{
-  GITypelib *meta;
-  uint8_t *data = (uint8_t *) g_mapped_file_get_contents (mfile);
-  size_t len = g_mapped_file_get_length (mfile);
+  size_t len;
+  const uint8_t *data = g_bytes_get_data (bytes, &len);
 
   if (!validate_header_basic (data, len, error))
     return NULL;
 
   meta = g_slice_new0 (GITypelib);
-  meta->mfile = mfile;
-  meta->owns_memory = FALSE;
-  meta->data = data; 
+  meta->bytes = g_bytes_ref (bytes);
+  meta->data = data;
   meta->len = len;
+  meta->modules = NULL;
 
   return meta;
 }
@@ -2463,11 +2402,8 @@ gi_typelib_new_from_mapped_file (GMappedFile  *mfile,
 void
 gi_typelib_free (GITypelib *typelib)
 {
-  if (typelib->mfile)
-    g_mapped_file_unref (typelib->mfile);
-  else
-    if (typelib->owns_memory)
-      g_free (typelib->data);
+  g_clear_pointer (&typelib->bytes, g_bytes_unref);
+
   if (typelib->modules)
     {
       g_list_foreach (typelib->modules, (GFunc) (void *) g_module_close, NULL);
