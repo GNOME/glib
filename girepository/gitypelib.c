@@ -2224,7 +2224,8 @@ gi_typelib_error_quark (void)
  * load modules globally for now.
  */
 static GModule *
-load_one_shared_library (const char *shlib)
+load_one_shared_library (GITypelib  *typelib,
+                         const char *shlib)
 {
   GModule *m;
 
@@ -2241,11 +2242,9 @@ load_one_shared_library (const char *shlib)
 #endif
     {
       /* First try in configured library paths */
-      const char * const *library_paths = gi_repository_get_library_path (NULL);
-
-      for (unsigned int i = 0; library_paths[i] != NULL; i++)
+      for (unsigned int i = 0; typelib->library_paths != NULL && i < typelib->library_paths->len; i++)
         {
-          char *path = g_build_filename (library_paths[i], shlib, NULL);
+          char *path = g_build_filename (typelib->library_paths->pdata[i], shlib, NULL);
 
           m = g_module_open (path, G_MODULE_BIND_LAZY);
 
@@ -2290,7 +2289,7 @@ gi_typelib_do_dlopen (GITypelib *typelib)
         {
           GModule *module;
 
-          module = load_one_shared_library (shlibs[i]);
+          module = load_one_shared_library (typelib, shlibs[i]);
 
           if (module == NULL)
             {
@@ -2374,6 +2373,8 @@ void
 gi_typelib_free (GITypelib *typelib)
 {
   g_clear_pointer (&typelib->bytes, g_bytes_unref);
+
+  g_clear_pointer (&typelib->library_paths, g_ptr_array_unref);
 
   if (typelib->modules)
     {

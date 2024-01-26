@@ -22,35 +22,22 @@
 #include "glib.h"
 #include "girepository.h"
 
-/* Keep this test first, not to add search paths to other tests */
-static void
-test_repository_search_paths_unset (void)
-{
-  const char * const *search_paths;
-  size_t n_search_paths;
-
-  search_paths = gi_repository_get_search_path (&n_search_paths);
-  g_assert_nonnull (search_paths);
-  g_assert_cmpstrv (search_paths, ((char *[]){NULL}));
-  g_assert_cmpuint (n_search_paths, ==, 0);
-
-  search_paths = gi_repository_get_search_path (NULL);
-  g_assert_cmpuint (g_strv_length ((char **) search_paths), ==, 0);
-}
-
 static void
 test_repository_search_paths_default (void)
 {
   const char * const *search_paths;
   size_t n_search_paths;
+  GIRepository *repository = NULL;
 
-  search_paths = gi_repository_get_search_path (&n_search_paths);
+  repository = gi_repository_new ();
+
+  search_paths = gi_repository_get_search_path (repository, &n_search_paths);
   g_assert_nonnull (search_paths);
 
   /* Init default paths */
   g_assert_nonnull (gi_repository_get_default ());
 
-  search_paths = gi_repository_get_search_path (&n_search_paths);
+  search_paths = gi_repository_get_search_path (repository, &n_search_paths);
   g_assert_nonnull (search_paths);
   g_assert_cmpuint (g_strv_length ((char **) search_paths), ==, 2);
 
@@ -61,6 +48,8 @@ test_repository_search_paths_default (void)
   g_assert_cmpstr (search_paths[1], ==, expected_path);
   g_clear_pointer (&expected_path, g_free);
 #endif
+
+  g_clear_object (&repository);
 }
 
 static void
@@ -68,9 +57,12 @@ test_repository_search_paths_prepend (void)
 {
   const char * const *search_paths;
   size_t n_search_paths;
+  GIRepository *repository = NULL;
 
-  gi_repository_prepend_search_path (g_test_get_dir (G_TEST_BUILT));
-  search_paths = gi_repository_get_search_path (&n_search_paths);
+  repository = gi_repository_new ();
+
+  gi_repository_prepend_search_path (repository, g_test_get_dir (G_TEST_BUILT));
+  search_paths = gi_repository_get_search_path (repository, &n_search_paths);
   g_assert_nonnull (search_paths);
   g_assert_cmpuint (g_strv_length ((char **) search_paths), ==, 3);
 
@@ -83,8 +75,8 @@ test_repository_search_paths_prepend (void)
   g_clear_pointer (&expected_path, g_free);
 #endif
 
-  gi_repository_prepend_search_path (g_test_get_dir (G_TEST_DIST));
-  search_paths = gi_repository_get_search_path (&n_search_paths);
+  gi_repository_prepend_search_path (repository, g_test_get_dir (G_TEST_DIST));
+  search_paths = gi_repository_get_search_path (repository, &n_search_paths);
   g_assert_nonnull (search_paths);
   g_assert_cmpuint (g_strv_length ((char **) search_paths), ==, 4);
 
@@ -97,6 +89,8 @@ test_repository_search_paths_prepend (void)
   g_assert_cmpstr (search_paths[3], ==, expected_path);
   g_clear_pointer (&expected_path, g_free);
 #endif
+
+  g_clear_object (&repository);
 }
 
 static void
@@ -104,10 +98,15 @@ test_repository_library_paths_default (void)
 {
   const char * const *library_paths;
   size_t n_library_paths;
+  GIRepository *repository = NULL;
 
-  library_paths = gi_repository_get_library_path (&n_library_paths);
+  repository = gi_repository_new ();
+
+  library_paths = gi_repository_get_library_path (repository, &n_library_paths);
   g_assert_nonnull (library_paths);
   g_assert_cmpuint (g_strv_length ((char **) library_paths), ==, 0);
+
+  g_clear_object (&repository);
 }
 
 static void
@@ -115,21 +114,26 @@ test_repository_library_paths_prepend (void)
 {
   const char * const *library_paths;
   size_t n_library_paths;
+  GIRepository *repository = NULL;
 
-  gi_repository_prepend_library_path (g_test_get_dir (G_TEST_BUILT));
-  library_paths = gi_repository_get_library_path (&n_library_paths);
+  repository = gi_repository_new ();
+
+  gi_repository_prepend_library_path (repository, g_test_get_dir (G_TEST_BUILT));
+  library_paths = gi_repository_get_library_path (repository, &n_library_paths);
   g_assert_nonnull (library_paths);
   g_assert_cmpuint (g_strv_length ((char **) library_paths), ==, 1);
 
   g_assert_cmpstr (library_paths[0], ==, g_test_get_dir (G_TEST_BUILT));
 
-  gi_repository_prepend_library_path (g_test_get_dir (G_TEST_DIST));
-  library_paths = gi_repository_get_library_path (&n_library_paths);
+  gi_repository_prepend_library_path (repository, g_test_get_dir (G_TEST_DIST));
+  library_paths = gi_repository_get_library_path (repository, &n_library_paths);
   g_assert_nonnull (library_paths);
   g_assert_cmpuint (g_strv_length ((char **) library_paths), ==, 2);
 
   g_assert_cmpstr (library_paths[0], ==, g_test_get_dir (G_TEST_DIST));
   g_assert_cmpstr (library_paths[1], ==, g_test_get_dir (G_TEST_BUILT));
+
+  g_clear_object (&repository);
 }
 
 int
@@ -142,7 +146,6 @@ main (int   argc,
   g_setenv ("GI_TYPELIB_PATH", g_get_tmp_dir (), TRUE);
   g_setenv ("GI_GIR_PATH", g_get_user_cache_dir (), TRUE);
 
-  g_test_add_func ("/repository/search-paths/unset", test_repository_search_paths_unset);
   g_test_add_func ("/repository/search-paths/default", test_repository_search_paths_default);
   g_test_add_func ("/repository/search-paths/prepend", test_repository_search_paths_prepend);
   g_test_add_func ("/repository/library-paths/default", test_repository_library_paths_default);

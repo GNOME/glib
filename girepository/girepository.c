@@ -59,10 +59,10 @@
  * standard Linux system this will end up being `/usr/lib/girepository-1.0`.
  *
  * It is possible to control the search paths programmatically, using
- * [func@GIRepository.Repository.prepend_search_path]. It is also possible to
+ * [method@GIRepository.Repository.prepend_search_path]. It is also possible to
  * modify the search paths by using the `GI_TYPELIB_PATH` environment variable.
  * The environment variable takes precedence over the default search path
- * and the [func@GIRepository.Repository.prepend_search_path] calls.
+ * and the [method@GIRepository.Repository.prepend_search_path] calls.
  *
  * Since: 2.80
  */
@@ -76,8 +76,6 @@
   GIREPOSITORY_TYPELIB_NAME "-" GIREPOSITORY_TYPELIB_VERSION ".typelib"
 
 static GIRepository *default_repository = NULL;
-static GPtrArray *typelib_search_path = NULL;
-static GPtrArray *library_paths = NULL;  /* (element-type filename) (owned) */
 
 typedef struct {
   size_t n_interfaces;
@@ -97,6 +95,9 @@ gtype_interface_cache_free (gpointer data)
 struct _GIRepository
 {
   GObject parent;
+
+  GPtrArray *typelib_search_path;  /* (element-type filename) (owned) */
+  GPtrArray *library_paths;  /* (element-type filename) (owned) */
 
   GHashTable *typelibs; /* (string) namespace -> GITypelib */
   GHashTable *lazy_typelibs; /* (string) namespace-version -> GITypelib */
@@ -149,6 +150,40 @@ DllMain (HINSTANCE hinstDLL,
 static void
 gi_repository_init (GIRepository *repository)
 {
+  /* typelib search path */
+    {
+      const char *libdir;
+      char *typelib_dir;
+      const char *type_lib_path_env;
+
+      /* This variable is intended to take precedence over both:
+       *   - the default search path;
+       *   - all gi_repository_prepend_search_path() calls.
+       */
+      type_lib_path_env = g_getenv ("GI_TYPELIB_PATH");
+
+      if (type_lib_path_env)
+        {
+          char **custom_dirs;
+
+          custom_dirs = g_strsplit (type_lib_path_env, G_SEARCHPATH_SEPARATOR_S, 0);
+          repository->typelib_search_path =
+            g_ptr_array_new_take_null_terminated ((gpointer) g_steal_pointer (&custom_dirs), g_free);
+        }
+      else
+        {
+          repository->typelib_search_path = g_ptr_array_new_null_terminated (1, g_free, TRUE);
+        }
+
+      libdir = GOBJECT_INTROSPECTION_LIBDIR;
+
+      typelib_dir = g_build_filename (libdir, "girepository-1.0", NULL);
+
+      g_ptr_array_add (repository->typelib_search_path, g_steal_pointer (&typelib_dir));
+    }
+
+  repository->library_paths = g_ptr_array_new_null_terminated (1, g_free, TRUE);
+
   repository->typelibs
     = g_hash_table_new_full (g_str_hash, g_str_equal,
                              (GDestroyNotify) g_free,
@@ -186,6 +221,9 @@ gi_repository_finalize (GObject *object)
 
   g_clear_pointer (&repository->cached_shared_libraries, g_strfreev);
 
+  g_clear_pointer (&repository->library_paths, g_ptr_array_unref);
+  g_clear_pointer (&repository->typelib_search_path, g_ptr_array_unref);
+
   (* G_OBJECT_CLASS (gi_repository_parent_class)->finalize) (G_OBJECT (repository));
 }
 
@@ -210,41 +248,6 @@ init_globals (void)
   if (default_repository == NULL)
     default_repository = gi_repository_new ();
 
-  if (typelib_search_path == NULL)
-    {
-      const char *libdir;
-      char *typelib_dir;
-      const char *type_lib_path_env;
-
-      /* This variable is intended to take precedence over both:
-       *   - the default search path;
-       *   - all gi_repository_prepend_search_path() calls.
-       */
-      type_lib_path_env = g_getenv ("GI_TYPELIB_PATH");
-
-      if (type_lib_path_env)
-        {
-          char **custom_dirs;
-
-          custom_dirs = g_strsplit (type_lib_path_env, G_SEARCHPATH_SEPARATOR_S, 0);
-          typelib_search_path =
-            g_ptr_array_new_take_null_terminated ((gpointer) g_steal_pointer (&custom_dirs), g_free);
-        }
-      else
-        {
-          typelib_search_path = g_ptr_array_new_null_terminated (1, g_free, TRUE);
-        }
-
-      libdir = GOBJECT_INTROSPECTION_LIBDIR;
-
-      typelib_dir = g_build_filename (libdir, "girepository-1.0", NULL);
-
-      g_ptr_array_add (typelib_search_path, g_steal_pointer (&typelib_dir));
-    }
-
-  if (library_paths == NULL)
-    library_paths = g_ptr_array_new_null_terminated (1, g_free, TRUE);
-
   g_once_init_leave (&initialized, 1);
 }
 
@@ -261,6 +264,8 @@ get_repository (GIRepository *repository)
 
 /**
  * gi_repository_prepend_search_path:
+ * @repository: (nullable): A #GIRepository, or `NULL` for the singleton
+ *   process-global default #GIRepository
  * @directory: (type filename): directory name to prepend to the typelib
  *   search path
  *
@@ -271,14 +276,18 @@ get_repository (GIRepository *repository)
  * Since: 2.80
  */
 void
-gi_repository_prepend_search_path (const char *directory)
+gi_repository_prepend_search_path (GIRepository *repository,
+                                   const char   *directory)
 {
   init_globals ();
-  g_ptr_array_insert (typelib_search_path, 0, g_strdup (directory));
+  repository = get_repository (repository);
+  g_ptr_array_insert (repository->typelib_search_path, 0, g_strdup (directory));
 }
 
 /**
  * gi_repository_get_search_path:
+ * @repository: (nullable): A #GIRepository, or `NULL` for the singleton
+ *   process-global default #GIRepository
  * @n_paths_out: (optional) (out): The number of search paths returned.
  *
  * Returns the current search path [class@GIRepository.Repository] will use when
@@ -292,9 +301,13 @@ gi_repository_prepend_search_path (const char *directory)
  * Since: 2.80
  */
 const char * const *
-gi_repository_get_search_path (size_t *n_paths_out)
+gi_repository_get_search_path (GIRepository *repository,
+                               size_t       *n_paths_out)
 {
-  if G_UNLIKELY (!typelib_search_path || !typelib_search_path->pdata)
+  repository = get_repository (repository);
+
+  if G_UNLIKELY (!repository->typelib_search_path ||
+                 !repository->typelib_search_path->pdata)
     {
       static const char * const empty_search_path[] = {NULL};
 
@@ -305,13 +318,15 @@ gi_repository_get_search_path (size_t *n_paths_out)
     }
 
   if (n_paths_out)
-    *n_paths_out = typelib_search_path->len;
+    *n_paths_out = repository->typelib_search_path->len;
 
-  return (const char * const *) typelib_search_path->pdata;
+  return (const char * const *) repository->typelib_search_path->pdata;
 }
 
 /**
  * gi_repository_prepend_library_path:
+ * @repository: (nullable): A #GIRepository, or `NULL` for the singleton
+ *   process-global default #GIRepository
  * @directory: (type filename): a single directory to scan for shared libraries
  *
  * Prepends @directory to the search path that is used to
@@ -320,9 +335,9 @@ gi_repository_get_search_path (size_t *n_paths_out)
  * Multiple calls to this function all contribute to the final
  * list of paths.
  *
- * The list of paths is unique and shared for all
- * [class@GIRepository.Repository] instances across the process, but it doesn’t
- * affect namespaces imported before the call.
+ * The list of paths is unique to @repository. When a typelib is loaded by the
+ * repository, the list of paths from the @repository at that instant is used
+ * by the typelib for loading its modules.
  *
  * If the library is not found in the directories configured
  * in this way, loading will fall back to the system library
@@ -332,14 +347,18 @@ gi_repository_get_search_path (size_t *n_paths_out)
  * Since: 2.80
  */
 void
-gi_repository_prepend_library_path (const char *directory)
+gi_repository_prepend_library_path (GIRepository *repository,
+                                    const char   *directory)
 {
   init_globals ();
-  g_ptr_array_insert (library_paths, 0, g_strdup (directory));
+  repository = get_repository (repository);
+  g_ptr_array_insert (repository->library_paths, 0, g_strdup (directory));
 }
 
 /**
  * gi_repository_get_library_path:
+ * @repository: (nullable): A #GIRepository, or `NULL` for the singleton
+ *   process-global default #GIRepository
  * @n_paths_out: (optional) (out): The number of library paths returned.
  *
  * Returns the current search path [class@GIRepository.Repository] will use when
@@ -353,9 +372,12 @@ gi_repository_prepend_library_path (const char *directory)
  * Since: 2.80
  */
 const char * const *
-gi_repository_get_library_path (size_t *n_paths_out)
+gi_repository_get_library_path (GIRepository *repository,
+                                size_t       *n_paths_out)
 {
-  if G_UNLIKELY (!library_paths || !library_paths->pdata)
+  repository = get_repository (repository);
+
+  if G_UNLIKELY (!repository->library_paths || !repository->library_paths->pdata)
     {
       static const char * const empty_search_path[] = {NULL};
 
@@ -366,9 +388,9 @@ gi_repository_get_library_path (size_t *n_paths_out)
     }
 
   if (n_paths_out)
-    *n_paths_out = library_paths->len;
+    *n_paths_out = repository->library_paths->len;
 
-  return (const char * const *) library_paths->pdata;
+  return (const char * const *) repository->library_paths->pdata;
 }
 
 static char *
@@ -1714,8 +1736,8 @@ gi_repository_enumerate_versions (GIRepository *repository,
 
   init_globals ();
   candidates = enumerate_namespace_versions (namespace_,
-                                             (const char * const *) typelib_search_path->pdata,
-                                             typelib_search_path->len);
+                                             (const char * const *) repository->typelib_search_path->pdata,
+                                             repository->typelib_search_path->len);
 
   if (!candidates)
     {
@@ -1833,6 +1855,8 @@ require_internal (GIRepository           *repository,
         g_clear_error (&temp_error);
         goto out;
       }
+
+    typelib->library_paths = (repository->library_paths != NULL) ? g_ptr_array_ref (repository->library_paths) : NULL;
   }
   header = (Header *) typelib->data;
   typelib_namespace = gi_typelib_get_string (typelib, header->namespace);
@@ -1903,8 +1927,8 @@ gi_repository_require (GIRepository  *repository,
 
   init_globals ();
   typelib = require_internal (repository, namespace, version, flags,
-                              (const char * const *) typelib_search_path->pdata,
-                              typelib_search_path->len, error);
+                              (const char * const *) repository->typelib_search_path->pdata,
+                              repository->typelib_search_path->len, error);
 
   return typelib;
 }

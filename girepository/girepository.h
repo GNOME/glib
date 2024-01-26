@@ -83,16 +83,20 @@ GI_AVAILABLE_IN_ALL
 GIRepository *gi_repository_new (void);
 
 GI_AVAILABLE_IN_ALL
-void          gi_repository_prepend_search_path (const char *directory);
+void          gi_repository_prepend_search_path (GIRepository *repository,
+                                                 const char   *directory);
 
 GI_AVAILABLE_IN_ALL
-void          gi_repository_prepend_library_path (const char *directory);
+void          gi_repository_prepend_library_path (GIRepository *repository,
+                                                  const char   *directory);
 
 GI_AVAILABLE_IN_ALL
-const char * const * gi_repository_get_search_path (size_t *n_paths_out);
+const char * const * gi_repository_get_search_path (GIRepository *repository,
+                                                    size_t       *n_paths_out);
 
 GI_AVAILABLE_IN_ALL
-const char * const *gi_repository_get_library_path (size_t *n_paths_out);
+const char * const *gi_repository_get_library_path (GIRepository *repository,
+                                                    size_t       *n_paths_out);
 
 GI_AVAILABLE_IN_ALL
 const char *  gi_repository_load_typelib  (GIRepository           *repository,

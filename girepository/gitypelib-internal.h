@@ -1318,6 +1318,7 @@ struct _GITypelib {
   GBytes *bytes;  /* (owned) */
   GList *modules;
   gboolean open_attempted;
+  GPtrArray *library_paths;  /* (element-type filename) (owned) (nullable) */
 };
 
 DirEntry *gi_typelib_get_dir_entry (GITypelib *typelib,
