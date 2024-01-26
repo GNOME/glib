@@ -2100,15 +2100,33 @@ start_type (GMarkupParseContext  *context,
       }
 
       if (typenode->array_type == GI_ARRAY_TYPE_C) {
+          guint64 parsed_uint;
+
           zero = find_attribute ("zero-terminated", attribute_names, attribute_values);
           len = find_attribute ("length", attribute_names, attribute_values);
           size = find_attribute ("fixed-size", attribute_names, attribute_values);
 
           typenode->has_length = len != NULL;
-          typenode->length = typenode->has_length ? atoi (len) : -1;
+          if (!typenode->has_length)
+            typenode->length = -1;
+          else if (g_ascii_string_to_unsigned (len, 10, 0, G_MAXUINT, &parsed_uint, error))
+            typenode->length = parsed_uint;
+          else
+            {
+              gi_ir_node_free ((GIIrNode *) typenode);
+              return FALSE;
+            }
 
           typenode->has_size = size != NULL;
-          typenode->size = typenode->has_size ? atoi (size) : -1;
+          if (!typenode->has_size)
+            typenode->size = -1;
+          else if (g_ascii_string_to_unsigned (size, 10, 0, G_MAXSIZE, &parsed_uint, error))
+            typenode->size = parsed_uint;
+          else
+            {
+              gi_ir_node_free ((GIIrNode *) typenode);
+              return FALSE;
+            }
 
           if (zero)
             typenode->zero_terminated = strcmp(zero, "1") == 0;

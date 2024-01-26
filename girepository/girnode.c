@@ -1243,7 +1243,7 @@ serialize_type (GIIrTypelibBuild *build,
           if (node->has_length)
             g_string_append_printf (str, "length=%d", node->length);
           else if (node->has_size)
-            g_string_append_printf (str, "fixed-size=%d", node->size);
+            g_string_append_printf (str, "fixed-size=%" G_GSIZE_FORMAT, node->size);
 
           if (node->zero_terminated)
             g_string_append_printf (str, "%szero-terminated=1",

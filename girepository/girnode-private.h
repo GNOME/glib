@@ -149,10 +149,10 @@ struct _GIIrNodeType
 
   uint8_t zero_terminated : 1;
   uint8_t has_length : 1;
-  int length;
+  unsigned int length;
   uint8_t has_size : 1;
-  int size;
-  int array_type;
+  size_t size;
+  GIArrayType array_type;
 
   GIIrNodeType *parameter_type1;  /* (owned) */
   GIIrNodeType *parameter_type2;  /* (owned) */
