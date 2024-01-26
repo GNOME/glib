@@ -315,7 +315,7 @@ struct _GIIrNodeEnum
   GIIrNode node;
 
   uint8_t deprecated : 1;
-  int storage_type;
+  GITypeTag storage_type;
 
   char *gtype_name;  /* (owned) */
   char *gtype_init;  /* (owned) */
