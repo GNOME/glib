@@ -240,7 +240,7 @@ gi_ir_node_free (GIIrNode *node)
 
         g_free (type->giinterface);
         g_strfreev (type->errors);
-
+        g_free (type->unparsed);
       }
       break;
 
@@ -319,6 +319,8 @@ gi_ir_node_free (GIIrNode *node)
         for (l = iface->interfaces; l; l = l->next)
           g_free ((GIIrNode *)l->data);
         g_list_free (iface->interfaces);
+
+        g_list_free_full (iface->prerequisites, g_free);
 
         for (l = iface->members; l; l = l->next)
           gi_ir_node_free ((GIIrNode *)l->data);
@@ -1241,7 +1243,7 @@ serialize_type (GIIrTypelibBuild *build,
           if (node->has_length)
             g_string_append_printf (str, "length=%d", node->length);
           else if (node->has_size)
-            g_string_append_printf (str, "fixed-size=%d", node->size);
+            g_string_append_printf (str, "fixed-size=%" G_GSIZE_FORMAT, node->size);
 
           if (node->zero_terminated)
             g_string_append_printf (str, "%szero-terminated=1",
@@ -1599,7 +1601,7 @@ gi_ir_node_build_typelib (GIIrNode         *node,
         blob->writable = field->writable;
         blob->reserved = 0;
         blob->bits = 0;
-        if (field->offset >= 0)
+        if (field->offset_state == GI_IR_OFFSETS_COMPUTED)
           blob->struct_offset = field->offset;
         else
           blob->struct_offset = 0xFFFF; /* mark as unknown */

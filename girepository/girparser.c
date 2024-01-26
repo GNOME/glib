@@ -1366,6 +1366,7 @@ start_field (GMarkupParseContext  *context,
   GIIrNodeField *field;
   ParseState target_state;
   gboolean introspectable;
+  guint64 parsed_bits;
 
   switch (ctx->state)
     {
@@ -1428,10 +1429,15 @@ start_field (GMarkupParseContext  *context,
   field->readable = readable == NULL || strcmp (readable, "0") == 0;
   field->writable = writable != NULL && strcmp (writable, "1") == 0;
 
-  if (bits)
-    field->bits = atoi (bits);
-  else
+  if (bits == NULL)
     field->bits = 0;
+  else if (g_ascii_string_to_unsigned (bits, 10, 0, G_MAXUINT, &parsed_bits, error))
+    field->bits = parsed_bits;
+  else
+    {
+      gi_ir_node_free ((GIIrNode *) field);
+      return FALSE;
+    }
 
   switch (CURRENT_NODE (ctx)->type)
     {
@@ -2100,15 +2106,33 @@ start_type (GMarkupParseContext  *context,
       }
 
       if (typenode->array_type == GI_ARRAY_TYPE_C) {
+          guint64 parsed_uint;
+
           zero = find_attribute ("zero-terminated", attribute_names, attribute_values);
           len = find_attribute ("length", attribute_names, attribute_values);
           size = find_attribute ("fixed-size", attribute_names, attribute_values);
 
           typenode->has_length = len != NULL;
-          typenode->length = typenode->has_length ? atoi (len) : -1;
+          if (!typenode->has_length)
+            typenode->length = -1;
+          else if (g_ascii_string_to_unsigned (len, 10, 0, G_MAXUINT, &parsed_uint, error))
+            typenode->length = parsed_uint;
+          else
+            {
+              gi_ir_node_free ((GIIrNode *) typenode);
+              return FALSE;
+            }
 
           typenode->has_size = size != NULL;
-          typenode->size = typenode->has_size ? atoi (size) : -1;
+          if (!typenode->has_size)
+            typenode->size = -1;
+          else if (g_ascii_string_to_unsigned (size, 10, 0, G_MAXSIZE, &parsed_uint, error))
+            typenode->size = parsed_uint;
+          else
+            {
+              gi_ir_node_free ((GIIrNode *) typenode);
+              return FALSE;
+            }
 
           if (zero)
             typenode->zero_terminated = strcmp(zero, "1") == 0;
@@ -2543,6 +2567,7 @@ start_vfunc (GMarkupParseContext  *context,
   const char *throws;
   GIIrNodeInterface *iface;
   GIIrNodeVFunc *vfunc;
+  guint64 parsed_offset;
 
   if (!(strcmp (element_name, "virtual-method") == 0 &&
         (ctx->state == STATE_CLASS ||
@@ -2602,10 +2627,15 @@ start_vfunc (GMarkupParseContext  *context,
   else
     vfunc->throws = FALSE;
 
-  if (offset)
-    vfunc->offset = atoi (offset);
-  else
+  if (offset == NULL)
     vfunc->offset = 0xFFFF;
+  else if (g_ascii_string_to_unsigned (offset, 10, 0, G_MAXSIZE, &parsed_offset, error))
+    vfunc->offset = parsed_offset;
+  else
+    {
+      gi_ir_node_free ((GIIrNode *) vfunc);
+      return FALSE;
+    }
 
   vfunc->invoker = g_strdup (invoker);
 
@@ -2780,6 +2810,8 @@ start_discriminator (GMarkupParseContext  *context,
 {
   const char *type;
   const char *offset;
+  guint64 parsed_offset;
+
   if (!(strcmp (element_name, "discriminator") == 0 &&
         ctx->state == STATE_UNION))
     return FALSE;
@@ -2799,8 +2831,11 @@ start_discriminator (GMarkupParseContext  *context,
 
   ((GIIrNodeUnion *)CURRENT_NODE (ctx))->discriminator_type
     = parse_type (ctx, type);
-  ((GIIrNodeUnion *)CURRENT_NODE (ctx))->discriminator_offset
-    = atoi (offset);
+
+  if (g_ascii_string_to_unsigned (offset, 10, 0, G_MAXSIZE, &parsed_offset, error))
+    ((GIIrNodeUnion *)CURRENT_NODE (ctx))->discriminator_offset = parsed_offset;
+  else
+    return FALSE;
 
   return TRUE;
 }

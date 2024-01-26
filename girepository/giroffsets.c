@@ -392,6 +392,7 @@ compute_struct_field_offsets (GIIrTypelibBuild *build,
                   size = GI_ALIGN (size, member_alignment);
                   alignment = MAX (alignment, member_alignment);
                   field->offset = size;
+                  field->offset_state = GI_IR_OFFSETS_COMPUTED;
                   size += member_size;
                 }
               else
@@ -399,7 +400,10 @@ compute_struct_field_offsets (GIIrTypelibBuild *build,
             }
 
           if (have_error)
-            field->offset = -1;
+            {
+              field->offset = 0;
+              field->offset_state = GI_IR_OFFSETS_FAILED;
+            }
         }
       else if (member->type == GI_IR_NODE_CALLBACK)
         {

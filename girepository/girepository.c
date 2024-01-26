@@ -93,8 +93,10 @@ gtype_interface_cache_free (gpointer data)
   g_free (cache);
 }
 
-struct _GIRepositoryPrivate
+struct _GIRepository
 {
+  GObject parent;
+
   GHashTable *typelibs; /* (string) namespace -> GITypelib */
   GHashTable *lazy_typelibs; /* (string) namespace-version -> GITypelib */
   GHashTable *info_by_gtype; /* GType -> GIBaseInfo */
@@ -106,7 +108,7 @@ struct _GIRepositoryPrivate
   size_t cached_n_shared_libraries;  /* length of @cached_shared_libraries, not including NULL terminator */
 };
 
-G_DEFINE_TYPE_WITH_CODE (GIRepository, gi_repository, G_TYPE_OBJECT, G_ADD_PRIVATE (GIRepository));
+G_DEFINE_TYPE (GIRepository, gi_repository, G_TYPE_OBJECT);
 
 #ifdef G_PLATFORM_WIN32
 
@@ -146,28 +148,27 @@ DllMain (HINSTANCE hinstDLL,
 static void
 gi_repository_init (GIRepository *repository)
 {
-  repository->priv = gi_repository_get_instance_private (repository);
-  repository->priv->typelibs
+  repository->typelibs
     = g_hash_table_new_full (g_str_hash, g_str_equal,
                              (GDestroyNotify) g_free,
                              (GDestroyNotify) gi_typelib_free);
-  repository->priv->lazy_typelibs
+  repository->lazy_typelibs
     = g_hash_table_new_full (g_str_hash, g_str_equal,
                              (GDestroyNotify) g_free,
                              (GDestroyNotify) NULL);
-  repository->priv->info_by_gtype
+  repository->info_by_gtype
     = g_hash_table_new_full (g_direct_hash, g_direct_equal,
                              (GDestroyNotify) NULL,
                              (GDestroyNotify) gi_base_info_unref);
-  repository->priv->info_by_error_domain
+  repository->info_by_error_domain
     = g_hash_table_new_full (g_direct_hash, g_direct_equal,
                              (GDestroyNotify) NULL,
                              (GDestroyNotify) gi_base_info_unref);
-  repository->priv->interfaces_for_gtype
+  repository->interfaces_for_gtype
     = g_hash_table_new_full (g_direct_hash, g_direct_equal,
                              (GDestroyNotify) NULL,
                              (GDestroyNotify) gtype_interface_cache_free);
-  repository->priv->unknown_gtypes = g_hash_table_new (NULL, NULL);
+  repository->unknown_gtypes = g_hash_table_new (NULL, NULL);
 }
 
 static void
@@ -175,14 +176,14 @@ gi_repository_finalize (GObject *object)
 {
   GIRepository *repository = GI_REPOSITORY (object);
 
-  g_hash_table_destroy (repository->priv->typelibs);
-  g_hash_table_destroy (repository->priv->lazy_typelibs);
-  g_hash_table_destroy (repository->priv->info_by_gtype);
-  g_hash_table_destroy (repository->priv->info_by_error_domain);
-  g_hash_table_destroy (repository->priv->interfaces_for_gtype);
-  g_hash_table_destroy (repository->priv->unknown_gtypes);
+  g_hash_table_destroy (repository->typelibs);
+  g_hash_table_destroy (repository->lazy_typelibs);
+  g_hash_table_destroy (repository->info_by_gtype);
+  g_hash_table_destroy (repository->info_by_error_domain);
+  g_hash_table_destroy (repository->interfaces_for_gtype);
+  g_hash_table_destroy (repository->unknown_gtypes);
 
-  g_clear_pointer (&repository->priv->cached_shared_libraries, g_strfreev);
+  g_clear_pointer (&repository->cached_shared_libraries, g_strfreev);
 
   (* G_OBJECT_CLASS (gi_repository_parent_class)->finalize) (G_OBJECT (repository));
 }
@@ -374,10 +375,10 @@ get_registered_status (GIRepository *repository,
   repository = get_repository (repository);
   if (lazy_status)
     *lazy_status = FALSE;
-  typelib = g_hash_table_lookup (repository->priv->typelibs, namespace);
+  typelib = g_hash_table_lookup (repository->typelibs, namespace);
   if (typelib)
     return check_version_conflict (typelib, namespace, version, version_conflict);
-  typelib = g_hash_table_lookup (repository->priv->lazy_typelibs, namespace);
+  typelib = g_hash_table_lookup (repository->lazy_typelibs, namespace);
   if (!typelib)
     return NULL;
   if (lazy_status)
@@ -453,9 +454,9 @@ register_internal (GIRepository *repository,
 
   if (lazy)
     {
-      g_assert (!g_hash_table_lookup (repository->priv->lazy_typelibs,
+      g_assert (!g_hash_table_lookup (repository->lazy_typelibs,
                                       namespace));
-      g_hash_table_insert (repository->priv->lazy_typelibs,
+      g_hash_table_insert (repository->lazy_typelibs,
                            build_typelib_key (namespace, source), (void *)typelib);
     }
   else
@@ -468,20 +469,20 @@ register_internal (GIRepository *repository,
         return NULL;
 
       /* Check if we are transitioning from lazily loaded state */
-      if (g_hash_table_lookup_extended (repository->priv->lazy_typelibs,
+      if (g_hash_table_lookup_extended (repository->lazy_typelibs,
                                         namespace,
                                         (gpointer)&key, &value))
-        g_hash_table_remove (repository->priv->lazy_typelibs, key);
+        g_hash_table_remove (repository->lazy_typelibs, key);
       else
         key = build_typelib_key (namespace, source);
 
-      g_hash_table_insert (repository->priv->typelibs,
+      g_hash_table_insert (repository->typelibs,
                            g_steal_pointer (&key),
                            (void *)typelib);
     }
 
   /* These types might be resolved now, clear the cache */
-  g_hash_table_remove_all (repository->priv->unknown_gtypes);
+  g_hash_table_remove_all (repository->unknown_gtypes);
 
   return namespace;
 }
@@ -887,13 +888,13 @@ gi_repository_find_by_gtype (GIRepository *repository,
 
   repository = get_repository (repository);
 
-  cached = g_hash_table_lookup (repository->priv->info_by_gtype,
+  cached = g_hash_table_lookup (repository->info_by_gtype,
                                 (gpointer)gtype);
 
   if (cached != NULL)
     return gi_base_info_ref (cached);
 
-  if (g_hash_table_contains (repository->priv->unknown_gtypes, (gpointer)gtype))
+  if (g_hash_table_contains (repository->unknown_gtypes, (gpointer)gtype))
     return NULL;
 
   data.gtype_name = g_type_name (gtype);
@@ -906,9 +907,9 @@ gi_repository_find_by_gtype (GIRepository *repository,
    * target type does not have this typelib's C prefix. Use this
    * assumption as our first attempt at locating the DirEntry.
    */
-  entry = find_by_gtype (repository->priv->typelibs, &data, TRUE);
+  entry = find_by_gtype (repository->typelibs, &data, TRUE);
   if (entry == NULL)
-    entry = find_by_gtype (repository->priv->lazy_typelibs, &data, TRUE);
+    entry = find_by_gtype (repository->lazy_typelibs, &data, TRUE);
 
   /* Not ever class library necessarily specifies a correct c_prefix,
    * so take a second pass. This time we will try a global lookup,
@@ -916,9 +917,9 @@ gi_repository_find_by_gtype (GIRepository *repository,
    * See http://bugzilla.gnome.org/show_bug.cgi?id=564016
    */
   if (entry == NULL)
-    entry = find_by_gtype (repository->priv->typelibs, &data, FALSE);
+    entry = find_by_gtype (repository->typelibs, &data, FALSE);
   if (entry == NULL)
-    entry = find_by_gtype (repository->priv->lazy_typelibs, &data, FALSE);
+    entry = find_by_gtype (repository->lazy_typelibs, &data, FALSE);
 
   if (entry != NULL)
     {
@@ -926,14 +927,14 @@ gi_repository_find_by_gtype (GIRepository *repository,
                                  repository,
                                  NULL, data.result_typelib, entry->offset);
 
-      g_hash_table_insert (repository->priv->info_by_gtype,
+      g_hash_table_insert (repository->info_by_gtype,
                            (gpointer) gtype,
                            gi_base_info_ref (cached));
       return cached;
     }
   else
     {
-      g_hash_table_add (repository->priv->unknown_gtypes, (gpointer) gtype);
+      g_hash_table_add (repository->unknown_gtypes, (gpointer) gtype);
       return NULL;
     }
 }
@@ -1027,7 +1028,7 @@ gi_repository_find_by_error_domain (GIRepository *repository,
 
   repository = get_repository (repository);
 
-  cached = g_hash_table_lookup (repository->priv->info_by_error_domain,
+  cached = g_hash_table_lookup (repository->info_by_error_domain,
                                 GUINT_TO_POINTER (domain));
 
   if (cached != NULL)
@@ -1038,9 +1039,9 @@ gi_repository_find_by_error_domain (GIRepository *repository,
   data.result_typelib = NULL;
   data.result = NULL;
 
-  g_hash_table_foreach (repository->priv->typelibs, find_by_error_domain_foreach, &data);
+  g_hash_table_foreach (repository->typelibs, find_by_error_domain_foreach, &data);
   if (data.result == NULL)
-    g_hash_table_foreach (repository->priv->lazy_typelibs, find_by_error_domain_foreach, &data);
+    g_hash_table_foreach (repository->lazy_typelibs, find_by_error_domain_foreach, &data);
 
   if (data.result != NULL)
     {
@@ -1048,7 +1049,7 @@ gi_repository_find_by_error_domain (GIRepository *repository,
                                                 repository,
                                                 NULL, data.result_typelib, data.result->offset);
 
-      g_hash_table_insert (repository->priv->info_by_error_domain,
+      g_hash_table_insert (repository->info_by_error_domain,
                            GUINT_TO_POINTER (domain),
                            gi_base_info_ref ((GIBaseInfo *) cached));
       return cached;
@@ -1091,7 +1092,7 @@ gi_repository_get_object_gtype_interfaces (GIRepository      *repository,
 
   repository = get_repository (repository);
 
-  cache = g_hash_table_lookup (repository->priv->interfaces_for_gtype,
+  cache = g_hash_table_lookup (repository->interfaces_for_gtype,
                                (void *) gtype);
   if (cache == NULL)
     {
@@ -1127,7 +1128,7 @@ gi_repository_get_object_gtype_interfaces (GIRepository      *repository,
         cache->interfaces[i] = iter->data;
       g_list_free (interface_infos);
 
-      g_hash_table_insert (repository->priv->interfaces_for_gtype, (gpointer) gtype,
+      g_hash_table_insert (repository->interfaces_for_gtype, (gpointer) gtype,
                            cache);
 
       g_free (interfaces);
@@ -1167,8 +1168,8 @@ gi_repository_get_loaded_namespaces (GIRepository *repository)
 
   repository = get_repository (repository);
 
-  g_hash_table_foreach (repository->priv->typelibs, collect_namespaces, &list);
-  g_hash_table_foreach (repository->priv->lazy_typelibs, collect_namespaces, &list);
+  g_hash_table_foreach (repository->typelibs, collect_namespaces, &list);
+  g_hash_table_foreach (repository->lazy_typelibs, collect_namespaces, &list);
 
   names = g_malloc0 (sizeof (char *) * (g_list_length (list) + 1));
   i = 0;
@@ -1264,21 +1265,21 @@ gi_repository_get_shared_libraries (GIRepository *repository,
     }
 
   /* Populate the cache. */
-  if (repository->priv->cached_shared_libraries == NULL)
+  if (repository->cached_shared_libraries == NULL)
     {
       const char *comma_separated = gi_typelib_get_string (typelib, header->shared_library);
 
       if (comma_separated != NULL && *comma_separated != '\0')
         {
-          repository->priv->cached_shared_libraries = g_strsplit (comma_separated, ",", -1);
-          repository->priv->cached_n_shared_libraries = g_strv_length (repository->priv->cached_shared_libraries);
+          repository->cached_shared_libraries = g_strsplit (comma_separated, ",", -1);
+          repository->cached_n_shared_libraries = g_strv_length (repository->cached_shared_libraries);
         }
     }
 
   if (out_n_elements != NULL)
-    *out_n_elements = repository->priv->cached_n_shared_libraries;
+    *out_n_elements = repository->cached_n_shared_libraries;
 
-  return (const char * const *) repository->priv->cached_shared_libraries;
+  return (const char * const *) repository->cached_shared_libraries;
 }
 
 /**
@@ -1346,10 +1347,10 @@ gi_repository_get_typelib_path (GIRepository *repository,
 
   repository = get_repository (repository);
 
-  if (!g_hash_table_lookup_extended (repository->priv->typelibs, namespace,
+  if (!g_hash_table_lookup_extended (repository->typelibs, namespace,
                                      &orig_key, &value))
     {
-      if (!g_hash_table_lookup_extended (repository->priv->lazy_typelibs, namespace,
+      if (!g_hash_table_lookup_extended (repository->lazy_typelibs, namespace,
                                          &orig_key, &value))
 
         return NULL;
