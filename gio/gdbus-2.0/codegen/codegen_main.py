@@ -24,6 +24,7 @@
 import argparse
 import os
 import sys
+from contextlib import contextmanager
 
 from . import config
 from . import dbustypes
@@ -61,6 +62,15 @@ def find_prop(iface, prop):
         if m.name == prop:
             return m
     return None
+
+
+@contextmanager
+def file_or_stdout(filename):
+    if filename is None or filename == "stdout":
+        yield sys.stdout
+    else:
+        with open(filename, "w") as outfile:
+            yield outfile
 
 
 def apply_annotation(iface_list, iface, method, signal, prop, arg, key, value):
@@ -446,7 +456,7 @@ def codegen_main():
         rst_gen.generate(rst, args.output_directory)
 
     if args.header:
-        with open(h_file, "w") as outfile:
+        with file_or_stdout(h_file) as outfile:
             gen = codegen.HeaderCodeGenerator(
                 all_ifaces,
                 args.c_namespace,
@@ -463,7 +473,7 @@ def codegen_main():
             gen.generate()
 
     if args.body:
-        with open(c_file, "w") as outfile:
+        with file_or_stdout(c_file) as outfile:
             gen = codegen.CodeGenerator(
                 all_ifaces,
                 args.c_namespace,
@@ -478,7 +488,7 @@ def codegen_main():
             gen.generate()
 
     if args.interface_info_header:
-        with open(h_file, "w") as outfile:
+        with file_or_stdout(h_file) as outfile:
             gen = codegen.InterfaceInfoHeaderCodeGenerator(
                 all_ifaces,
                 args.c_namespace,
@@ -493,7 +503,7 @@ def codegen_main():
             gen.generate()
 
     if args.interface_info_body:
-        with open(c_file, "w") as outfile:
+        with file_or_stdout(c_file) as outfile:
             gen = codegen.InterfaceInfoBodyCodeGenerator(
                 all_ifaces,
                 args.c_namespace,
