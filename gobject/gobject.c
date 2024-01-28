@@ -723,60 +723,88 @@ g_object_notify_queue_freeze (GObject *object)
   return nqueue;
 }
 
-static void
-g_object_notify_queue_thaw (GObject            *object,
-                            GObjectNotifyQueue *nqueue,
-                            gboolean take_ref)
+static gpointer
+g_object_notify_queue_thaw_cb (gpointer *data,
+                               GDestroyNotify *destroy_notify,
+                               gpointer user_data)
 {
-  GParamSpec *pspecs_mem[16], **pspecs, **free_me = NULL;
-  GSList *slist;
-  guint n_pspecs = 0;
+  GObject *object = ((gpointer *) user_data)[0];
+  GObjectNotifyQueue *nqueue0 = ((gpointer *) user_data)[1];
+  GObjectNotifyQueue *nqueue = *data;
 
-  object_bit_lock (object, OPTIONAL_BIT_LOCK_NOTIFY);
+#ifdef G_ENABLE_DEBUG
+  g_assert (!nqueue0 || nqueue0 == nqueue);
+#endif
+  (void) nqueue0;
 
-  if (!nqueue)
-    {
-      /* Caller didn't look up the queue yet. Do it now. */
-      nqueue = g_datalist_id_get_data (&object->qdata, quark_notify_queue);
-    }
-
-  /* Just make sure we never get into some nasty race condition */
   if (G_UNLIKELY (!nqueue || nqueue->freeze_count == 0))
     {
-      object_bit_unlock (object, OPTIONAL_BIT_LOCK_NOTIFY);
       g_critical ("%s: property-changed notification for %s(%p) is not frozen",
                   G_STRFUNC, G_OBJECT_TYPE_NAME (object), object);
-      return;
+      return NULL;
     }
 
   nqueue->freeze_count--;
-  if (nqueue->freeze_count)
-    {
-      object_bit_unlock (object, OPTIONAL_BIT_LOCK_NOTIFY);
-      return;
-    }
 
-  pspecs = nqueue->n_pspecs > 16 ? free_me = g_new (GParamSpec*, nqueue->n_pspecs) : pspecs_mem;
+  if (nqueue->freeze_count > 0)
+    return NULL;
 
-  for (slist = nqueue->pspecs; slist; slist = slist->next)
-    {
-      pspecs[n_pspecs++] = slist->data;
-    }
-  g_datalist_id_set_data (&object->qdata, quark_notify_queue, NULL);
+  *data = NULL;
+  return nqueue;
+}
+
+static void
+g_object_notify_queue_thaw (GObject *object,
+                            GObjectNotifyQueue *nqueue,
+                            gboolean take_ref)
+{
+  GParamSpec *pspecs_stack[16];
+  GParamSpec **pspecs_heap = NULL;
+  GParamSpec **pspecs = pspecs_stack;
+  guint n_pspecs;
+  GSList *slist;
+
+  object_bit_lock (object, OPTIONAL_BIT_LOCK_NOTIFY);
+
+  nqueue = _g_datalist_id_update_atomic (&object->qdata,
+                                         quark_notify_queue,
+                                         g_object_notify_queue_thaw_cb,
+                                         ((gpointer[]){ object, nqueue }));
 
   object_bit_unlock (object, OPTIONAL_BIT_LOCK_NOTIFY);
 
-  if (n_pspecs)
+  if (!nqueue)
+    return;
+
+  if (nqueue->n_pspecs == 0)
+    goto out;
+
+  if (nqueue->n_pspecs > G_N_ELEMENTS (pspecs_stack))
     {
-      if (take_ref)
-        g_object_ref (object);
-
-      G_OBJECT_GET_CLASS (object)->dispatch_properties_changed (object, n_pspecs, pspecs);
-
-      if (take_ref)
-        g_object_unref (object);
+      pspecs_heap = g_new (GParamSpec *, nqueue->n_pspecs);
+      pspecs = pspecs_heap;
     }
-  g_free (free_me);
+
+  n_pspecs = 0;
+  for (slist = nqueue->pspecs; slist; slist = slist->next)
+    pspecs[n_pspecs++] = slist->data;
+#ifdef G_ENABLE_DEBUG
+  g_assert (n_pspecs == nqueue->n_pspecs);
+#endif
+
+  if (take_ref)
+    g_object_ref (object);
+
+  G_OBJECT_GET_CLASS (object)->dispatch_properties_changed (object, n_pspecs, pspecs);
+
+  if (take_ref)
+    g_object_unref (object);
+
+  if (pspecs_heap)
+    g_free (pspecs_heap);
+
+out:
+  g_object_notify_queue_free (nqueue);
 }
 
 static gboolean
