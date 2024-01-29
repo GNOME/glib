@@ -295,7 +295,7 @@ typedef struct {
 } GLibPrivateVTable;
 
 GLIB_AVAILABLE_IN_ALL
-GLibPrivateVTable *glib__private__ (void);
+const GLibPrivateVTable *glib__private__ (void);
 
 /* Please see following for the use of ".ACP" over ""
  * on Windows, although both are accepted at compile-time
