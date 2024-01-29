@@ -124,9 +124,8 @@ enum {
  * parallel as possible. The alternative would be to add individual locking
  * integers to GObjectPrivate. But increasing memory usage for more parallelism
  * (per-object!) is not worth it. */
-#define OPTIONAL_BIT_LOCK_WEAK_REFS      1
-#define OPTIONAL_BIT_LOCK_NOTIFY         2
-#define OPTIONAL_BIT_LOCK_TOGGLE_REFS    3
+#define OPTIONAL_BIT_LOCK_NOTIFY 1
+#define OPTIONAL_BIT_LOCK_TOGGLE_REFS 2
 
 #if SIZEOF_INT == 4 && GLIB_SIZEOF_VOID_P >= 8
 #define HAVE_OPTIONAL_FLAGS_IN_GOBJECT 1
@@ -3732,12 +3731,10 @@ g_object_weak_ref (GObject    *object,
   g_return_if_fail (notify != NULL);
   g_return_if_fail (g_atomic_int_get (&object->ref_count) >= 1);
 
-  object_bit_lock (object, OPTIONAL_BIT_LOCK_WEAK_REFS);
   _g_datalist_id_update_atomic (&object->qdata,
                                 quark_weak_notifies,
                                 g_object_weak_ref_cb,
                                 ((gpointer[]){ object, notify, data }));
-  object_bit_unlock (object, OPTIONAL_BIT_LOCK_WEAK_REFS);
 }
 
 static gpointer
@@ -3795,12 +3792,10 @@ g_object_weak_unref (GObject    *object,
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (notify != NULL);
 
-  object_bit_lock (object, OPTIONAL_BIT_LOCK_WEAK_REFS);
   _g_datalist_id_update_atomic (&object->qdata,
                                 quark_weak_notifies,
                                 g_object_weak_unref_cb,
                                 ((gpointer[]){ notify, data }));
-  object_bit_unlock (object, OPTIONAL_BIT_LOCK_WEAK_REFS);
 }
 
 /**
