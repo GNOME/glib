@@ -320,13 +320,19 @@ g_object_notify_queue_new (void)
   return nqueue;
 }
 
+typedef struct
+{
+  GObject *object;
+  gboolean freeze_always;
+} NotifyQueueFreezeData;
+
 static gpointer
 g_object_notify_queue_freeze_cb (GQuark key_id,
                                  gpointer *data,
                                  GDestroyNotify *destroy_notify,
                                  gpointer user_data)
 {
-  GObject *object = user_data;
+  NotifyQueueFreezeData *nqdata = user_data;
   GObjectNotifyQueue *nqueue = *data;
 
   if (!nqueue)
@@ -336,6 +342,13 @@ g_object_notify_queue_freeze_cb (GQuark key_id,
       *data = nqueue;
       *destroy_notify = g_object_notify_queue_free;
     }
+  else if (!nqdata->freeze_always)
+    {
+      /* The caller only wants to ensure we are frozen once. If we are already frozen,
+       * don't freeze another time.
+       *
+       * This is only relevant during the object initialization. */
+    }
   else
     {
       if (nqueue->freeze_count == G_MAXUINT16)
@@ -343,7 +356,7 @@ g_object_notify_queue_freeze_cb (GQuark key_id,
           g_critical ("Free queue for %s (%p) is larger than 65535,"
                       " called g_object_freeze_notify() too often."
                       " Forgot to call g_object_thaw_notify() or infinite loop",
-                      G_OBJECT_TYPE_NAME (object), object);
+                      G_OBJECT_TYPE_NAME (nqdata->object), nqdata->object);
         }
       else
         nqueue->freeze_count++;
@@ -353,12 +366,15 @@ g_object_notify_queue_freeze_cb (GQuark key_id,
 }
 
 static void
-g_object_notify_queue_freeze (GObject *object)
+g_object_notify_queue_freeze (GObject *object, gboolean freeze_always)
 {
   datalist_id_update_atomic (object,
                              quark_notify_queue,
                              g_object_notify_queue_freeze_cb,
-                             object);
+                             &((NotifyQueueFreezeData){
+                                 .object = object,
+                                 .freeze_always = freeze_always,
+                             }));
 }
 
 static gpointer
@@ -1410,7 +1426,7 @@ g_object_init (GObject		*object,
   if (CLASS_HAS_PROPS (class) && CLASS_NEEDS_NOTIFY (class))
     {
       /* freeze object's notification queue, g_object_new_internal() preserves pairedness */
-      g_object_notify_queue_freeze (object);
+      g_object_notify_queue_freeze (object, TRUE);
     }
 
   /* mark object in-construction for notify_queue_thaw() and to allow construct-only properties */
@@ -1579,7 +1595,7 @@ g_object_freeze_notify (GObject *object)
     }
 #endif
 
-  g_object_notify_queue_freeze (object);
+  g_object_notify_queue_freeze (object, TRUE);
 }
 
 static inline void
@@ -2265,8 +2281,7 @@ g_object_new_with_custom_constructor (GObjectClass          *class,
           /* This may or may not have been setup in g_object_init().
            * If it hasn't, we do it now.
            */
-          if (!g_datalist_id_get_data (&object->qdata, quark_notify_queue))
-            g_object_notify_queue_freeze (object);
+          g_object_notify_queue_freeze (object, FALSE);
           nqueue_is_frozen = TRUE;
         }
     }
@@ -2313,8 +2328,7 @@ g_object_new_internal (GObjectClass          *class,
           /* This may or may not have been setup in g_object_init().
            * If it hasn't, we do it now.
            */
-          if (!g_datalist_id_get_data (&object->qdata, quark_notify_queue))
-            g_object_notify_queue_freeze (object);
+          g_object_notify_queue_freeze (object, FALSE);
           nqueue_is_frozen = TRUE;
         }
 
@@ -2678,7 +2692,7 @@ g_object_constructor (GType                  type,
   /* set construction parameters */
   if (n_construct_properties)
     {
-      g_object_notify_queue_freeze (object);
+      g_object_notify_queue_freeze (object, TRUE);
       
       /* set construct properties */
       while (n_construct_properties--)
@@ -2768,7 +2782,7 @@ g_object_setv (GObject       *object,
 
   if (_g_object_has_notify_handler (object))
     {
-      g_object_notify_queue_freeze (object);
+      g_object_notify_queue_freeze (object, TRUE);
       nqueue_is_frozen = TRUE;
     }
 
@@ -2812,7 +2826,7 @@ g_object_set_valist (GObject	 *object,
 
   if (_g_object_has_notify_handler (object))
     {
-      g_object_notify_queue_freeze (object);
+      g_object_notify_queue_freeze (object, TRUE);
       nqueue_is_frozen = TRUE;
     }
 
@@ -4101,7 +4115,7 @@ retry_beginning:
    * notification queue gets automatically drained when g_object_finalize() is
    * reached and the qdata is cleared.
    */
-  g_object_notify_queue_freeze (object);
+  g_object_notify_queue_freeze (object, TRUE);
   nqueue_is_frozen = TRUE;
 
   TRACE (GOBJECT_OBJECT_DISPOSE (object, G_TYPE_FROM_INSTANCE (object), 1));
