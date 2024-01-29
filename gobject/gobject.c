@@ -705,16 +705,16 @@ g_object_notify_queue_freeze_cb (gpointer *data,
         nqueue->freeze_count++;
     }
 
-  return nqueue;
+  return NULL;
 }
 
-static GObjectNotifyQueue *
+static void
 g_object_notify_queue_freeze (GObject *object)
 {
-  return _g_datalist_id_update_atomic (&object->qdata,
-                                       quark_notify_queue,
-                                       g_object_notify_queue_freeze_cb,
-                                       object);
+  _g_datalist_id_update_atomic (&object->qdata,
+                                quark_notify_queue,
+                                g_object_notify_queue_freeze_cb,
+                                object);
 }
 
 static gpointer
@@ -742,10 +742,10 @@ g_object_notify_queue_thaw_cb (gpointer *data,
 }
 
 static void
-g_object_notify_queue_thaw (GObject *object,
-                            GObjectNotifyQueue *nqueue,
-                            gboolean take_ref)
+g_object_notify_queue_thaw (GObject *object, gboolean take_ref)
 {
+  GObjectNotifyQueue *nqueue;
+
   nqueue = _g_datalist_id_update_atomic (&object->qdata,
                                          quark_notify_queue,
                                          g_object_notify_queue_thaw_cb,
@@ -846,7 +846,6 @@ out:
 
 static gboolean
 g_object_notify_queue_add (GObject *object,
-                           GObjectNotifyQueue *nqueue,
                            GParamSpec *pspec,
                            gboolean in_init)
 {
@@ -1961,7 +1960,7 @@ g_object_notify_by_spec_internal (GObject    *object,
 
   if (pspec != NULL && needs_notify)
     {
-      if (!g_object_notify_queue_add (object, NULL, pspec, in_init))
+      if (!g_object_notify_queue_add (object, pspec, in_init))
         {
           /*
            * Coverity doesn’t understand the paired ref/unref here and seems to
@@ -2114,7 +2113,7 @@ g_object_thaw_notify (GObject *object)
     }
 #endif
 
-  g_object_notify_queue_thaw (object, NULL, TRUE);
+  g_object_notify_queue_thaw (object, TRUE);
 }
 
 static void
@@ -2198,7 +2197,7 @@ static inline void
 object_set_property (GObject             *object,
 		     GParamSpec          *pspec,
 		     const GValue        *value,
-		     GObjectNotifyQueue  *nqueue,
+		     gboolean             nqueue_is_frozen,
 		     gboolean             user_specified)
 {
   GTypeInstance *inst = (GTypeInstance *) object;
@@ -2257,8 +2256,8 @@ object_set_property (GObject             *object,
     }
 
   if ((pspec->flags & (G_PARAM_EXPLICIT_NOTIFY | G_PARAM_READABLE)) == G_PARAM_READABLE &&
-      nqueue != NULL)
-    g_object_notify_queue_add (object, nqueue, pspec, FALSE);
+      nqueue_is_frozen)
+    g_object_notify_queue_add (object, pspec, FALSE);
 }
 
 static void
@@ -2500,7 +2499,7 @@ g_object_new_with_custom_constructor (GObjectClass          *class,
                                       GObjectConstructParam *params,
                                       guint                  n_params)
 {
-  GObjectNotifyQueue *nqueue = NULL;
+  gboolean nqueue_is_frozen = FALSE;
   gboolean newly_constructed;
   GObjectConstructParam *cparams;
   gboolean free_cparams = FALSE;
@@ -2623,9 +2622,9 @@ g_object_new_with_custom_constructor (GObjectClass          *class,
           /* This may or may not have been setup in g_object_init().
            * If it hasn't, we do it now.
            */
-          nqueue = g_datalist_id_get_data (&object->qdata, quark_notify_queue);
-          if (!nqueue)
-            nqueue = g_object_notify_queue_freeze (object);
+          if (!g_datalist_id_get_data (&object->qdata, quark_notify_queue))
+            g_object_notify_queue_freeze (object);
+          nqueue_is_frozen = TRUE;
         }
     }
 
@@ -2636,11 +2635,10 @@ g_object_new_with_custom_constructor (GObjectClass          *class,
   /* set remaining properties */
   for (i = 0; i < n_params; i++)
     if (!(params[i].pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY)))
-      object_set_property (object, params[i].pspec, params[i].value, nqueue, TRUE);
+      object_set_property (object, params[i].pspec, params[i].value, nqueue_is_frozen, TRUE);
 
-  /* If nqueue is non-NULL then we are frozen.  Thaw it. */
-  if (nqueue)
-    g_object_notify_queue_thaw (object, nqueue, FALSE);
+  if (nqueue_is_frozen)
+    g_object_notify_queue_thaw (object, FALSE);
 
   return object;
 }
@@ -2650,7 +2648,7 @@ g_object_new_internal (GObjectClass          *class,
                        GObjectConstructParam *params,
                        guint                  n_params)
 {
-  GObjectNotifyQueue *nqueue = NULL;
+  gboolean nqueue_is_frozen = FALSE;
   GObject *object;
   guint i;
 
@@ -2672,9 +2670,9 @@ g_object_new_internal (GObjectClass          *class,
           /* This may or may not have been setup in g_object_init().
            * If it hasn't, we do it now.
            */
-          nqueue = g_datalist_id_get_data (&object->qdata, quark_notify_queue);
-          if (!nqueue)
-            nqueue = g_object_notify_queue_freeze (object);
+          if (!g_datalist_id_get_data (&object->qdata, quark_notify_queue))
+            g_object_notify_queue_freeze (object);
+          nqueue_is_frozen = TRUE;
         }
 
       /* We will set exactly n_construct_properties construct
@@ -2702,7 +2700,7 @@ g_object_new_internal (GObjectClass          *class,
           if (value == NULL)
             value = g_param_spec_get_default_value (pspec);
 
-          object_set_property (object, pspec, value, nqueue, user_specified);
+          object_set_property (object, pspec, value, nqueue_is_frozen, user_specified);
         }
     }
 
@@ -2715,10 +2713,10 @@ g_object_new_internal (GObjectClass          *class,
    */
   for (i = 0; i < n_params; i++)
     if (!(params[i].pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY)))
-      object_set_property (object, params[i].pspec, params[i].value, nqueue, TRUE);
+      object_set_property (object, params[i].pspec, params[i].value, nqueue_is_frozen, TRUE);
 
-  if (nqueue)
-    g_object_notify_queue_thaw (object, nqueue, FALSE);
+  if (nqueue_is_frozen)
+    g_object_notify_queue_thaw (object, FALSE);
 
   return object;
 }
@@ -3037,7 +3035,7 @@ g_object_constructor (GType                  type,
   /* set construction parameters */
   if (n_construct_properties)
     {
-      GObjectNotifyQueue *nqueue = g_object_notify_queue_freeze (object);
+      g_object_notify_queue_freeze (object);
       
       /* set construct properties */
       while (n_construct_properties--)
@@ -3046,9 +3044,10 @@ g_object_constructor (GType                  type,
 	  GParamSpec *pspec = construct_params->pspec;
 
 	  construct_params++;
-	  object_set_property (object, pspec, value, nqueue, FALSE);
+	  object_set_property (object, pspec, value, TRUE, FALSE);
 	}
-      g_object_notify_queue_thaw (object, nqueue, FALSE);
+
+      g_object_notify_queue_thaw (object, FALSE);
       /* the notification queue is still frozen from g_object_init(), so
        * we don't need to handle it here, g_object_newv() takes
        * care of that
@@ -3111,7 +3110,7 @@ g_object_setv (GObject       *object,
                const GValue   values[])
 {
   guint i;
-  GObjectNotifyQueue *nqueue = NULL;
+  gboolean nqueue_is_frozen = FALSE;
   GParamSpec *pspec;
   GObjectClass *class;
 
@@ -3125,7 +3124,10 @@ g_object_setv (GObject       *object,
   class = G_OBJECT_GET_CLASS (object);
 
   if (_g_object_has_notify_handler (object))
-    nqueue = g_object_notify_queue_freeze (object);
+    {
+      g_object_notify_queue_freeze (object);
+      nqueue_is_frozen = TRUE;
+    }
 
   for (i = 0; i < n_properties; i++)
     {
@@ -3134,11 +3136,11 @@ g_object_setv (GObject       *object,
       if (!g_object_set_is_valid_property (object, pspec, names[i]))
         break;
 
-      object_set_property (object, pspec, &values[i], nqueue, TRUE);
+      object_set_property (object, pspec, &values[i], nqueue_is_frozen, TRUE);
     }
 
-  if (nqueue)
-    g_object_notify_queue_thaw (object, nqueue, FALSE);
+  if (nqueue_is_frozen)
+    g_object_notify_queue_thaw (object, FALSE);
 
   g_object_unref (object);
 }
@@ -3157,7 +3159,7 @@ g_object_set_valist (GObject	 *object,
 		     const gchar *first_property_name,
 		     va_list	  var_args)
 {
-  GObjectNotifyQueue *nqueue = NULL;
+  gboolean nqueue_is_frozen = FALSE;
   const gchar *name;
   GObjectClass *class;
   
@@ -3166,7 +3168,10 @@ g_object_set_valist (GObject	 *object,
   g_object_ref (object);
 
   if (_g_object_has_notify_handler (object))
-    nqueue = g_object_notify_queue_freeze (object);
+    {
+      g_object_notify_queue_freeze (object);
+      nqueue_is_frozen = TRUE;
+    }
 
   class = G_OBJECT_GET_CLASS (object);
 
@@ -3192,7 +3197,7 @@ g_object_set_valist (GObject	 *object,
 	  break;
 	}
 
-      object_set_property (object, pspec, &value, nqueue, TRUE);
+      object_set_property (object, pspec, &value, nqueue_is_frozen, TRUE);
 
       /* We open-code g_value_unset() here to avoid the
        * cost of looking up the GTypeValueTable again.
@@ -3203,8 +3208,8 @@ g_object_set_valist (GObject	 *object,
       name = va_arg (var_args, gchar*);
     }
 
-  if (nqueue)
-    g_object_notify_queue_thaw (object, nqueue, FALSE);
+  if (nqueue_is_frozen)
+    g_object_notify_queue_thaw (object, FALSE);
 
   g_object_unref (object);
 }
@@ -4375,7 +4380,7 @@ g_object_unref (gpointer _object)
   gint old_ref;
   GToggleNotify toggle_notify;
   gpointer toggle_data;
-  GObjectNotifyQueue *nqueue;
+  gboolean nqueue_is_frozen;
   GType obj_gtype;
 
   g_return_if_fail (G_IS_OBJECT (object));
@@ -4463,7 +4468,8 @@ retry_beginning:
    * which happens to be the same lock that is also taken by toggle_refs_check_and_ref(),
    * that is very important. See also the code comment in toggle_refs_check_and_ref().
    */
-  nqueue = g_object_notify_queue_freeze (object);
+  g_object_notify_queue_freeze (object);
+  nqueue_is_frozen = TRUE;
 
   TRACE (GOBJECT_OBJECT_DISPOSE (object, G_TYPE_FROM_INSTANCE (object), 1));
   G_OBJECT_GET_CLASS (object)->dispose (object);
@@ -4477,12 +4483,12 @@ retry_decrement:
   /* Here, old_ref is 1 if we just come from dispose(). If the object was resurrected,
    * we can hit `goto retry_decrement` and be here with a larger old_ref. */
 
-  if (old_ref > 1 && nqueue)
+  if (old_ref > 1 && nqueue_is_frozen)
     {
       /* If the object was resurrected, we need to unfreeze the notify
        * queue. */
-      g_object_notify_queue_thaw (object, nqueue, FALSE);
-      nqueue = NULL;
+      g_object_notify_queue_thaw (object, FALSE);
+      nqueue_is_frozen = FALSE;
 
       /* Note at this point, @old_ref might be wrong.
        *
