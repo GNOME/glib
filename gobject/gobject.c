@@ -211,14 +211,14 @@ static void object_interface_check_properties           (gpointer        check_d
 static void                weak_locations_free_unlocked (GSList **weak_locations);
 
 /* --- typedefs --- */
-typedef struct _GObjectNotifyQueue            GObjectNotifyQueue;
 
-struct _GObjectNotifyQueue
+typedef struct
 {
-  GSList  *pspecs;
-  guint16  n_pspecs;
-  guint16  freeze_count;
-};
+  guint16 freeze_count;
+  guint16 len;
+  guint16 alloc;
+  GParamSpec *pspecs[1];
+} GObjectNotifyQueue;
 
 /* --- variables --- */
 static GQuark	            quark_closure_array = 0;
@@ -303,10 +303,7 @@ object_bit_unlock (GObject *object, guint lock_bit)
 static void
 g_object_notify_queue_free (gpointer data)
 {
-  GObjectNotifyQueue *nqueue = data;
-
-  g_slist_free (nqueue->pspecs);
-  g_free_sized (nqueue, sizeof (GObjectNotifyQueue));
+  g_free (data);
 }
 
 static GObjectNotifyQueue *
@@ -314,10 +311,11 @@ g_object_notify_queue_new (void)
 {
   GObjectNotifyQueue *nqueue;
 
-  nqueue = g_new (GObjectNotifyQueue, 1);
-  *nqueue = (GObjectNotifyQueue){
-    .freeze_count = 1,
-  };
+  nqueue = g_malloc (G_STRUCT_OFFSET (GObjectNotifyQueue, pspecs) + (4 * sizeof (GParamSpec *)));
+
+  nqueue->freeze_count = 1;
+  nqueue->alloc = 4;
+  nqueue->len = 0;
 
   return nqueue;
 }
@@ -340,7 +338,7 @@ g_object_notify_queue_freeze_cb (GQuark key_id,
     }
   else
     {
-      if (nqueue->freeze_count >= 65535)
+      if (nqueue->freeze_count == G_MAXUINT16)
         {
           g_critical ("Free queue for %s (%p) is larger than 65535,"
                       " called g_object_freeze_notify() too often."
@@ -378,10 +376,6 @@ g_object_notify_queue_thaw_cb (GQuark key_id,
   NotifyQueueThawData *nqdata = user_data;
   GObjectNotifyQueue *nqueue = *data;
 
-#if G_ENABLE_DEBUG
-  g_assert (!nqdata->nqueue || nqdata->nqueue == nqueue);
-#endif
-
   if (G_UNLIKELY (!nqueue || nqueue->freeze_count == 0))
     {
       g_critical ("%s: property-changed notification for %s(%p) is not frozen",
@@ -403,12 +397,6 @@ g_object_notify_queue_thaw (GObject *object,
                             GObjectNotifyQueue *nqueue,
                             gboolean take_ref)
 {
-  GParamSpec *pspecs_stack[16];
-  GParamSpec **pspecs_heap = NULL;
-  GParamSpec **pspecs = pspecs_stack;
-  guint n_pspecs;
-  GSList *slist;
-
   nqueue = datalist_id_update_atomic (object,
                                       quark_notify_queue,
                                       g_object_notify_queue_thaw_cb,
@@ -420,41 +408,35 @@ g_object_notify_queue_thaw (GObject *object,
   if (!nqueue)
     return;
 
-  if (nqueue->n_pspecs == 0)
-    goto out;
-
-  if (nqueue->n_pspecs > G_N_ELEMENTS (pspecs_stack))
+  if (nqueue->len > 0)
     {
-      pspecs_heap = g_new (GParamSpec *, nqueue->n_pspecs);
-      pspecs = pspecs_heap;
+      guint16 i;
+      guint16 j;
+
+      /* Reverse the list. This is the order that we historically had. */
+      for (i = 0, j = nqueue->len - 1u; i < j; i++, j--)
+        {
+          GParamSpec *tmp;
+
+          tmp = nqueue->pspecs[i];
+          nqueue->pspecs[i] = nqueue->pspecs[j];
+          nqueue->pspecs[j] = tmp;
+        }
+
+      if (take_ref)
+        g_object_ref (object);
+
+      G_OBJECT_GET_CLASS (object)->dispatch_properties_changed (object, nqueue->len, nqueue->pspecs);
+
+      if (take_ref)
+        g_object_unref (object);
     }
 
-  n_pspecs = 0;
-  for (slist = nqueue->pspecs; slist; slist = slist->next)
-    pspecs[n_pspecs++] = slist->data;
-#if G_ENABLE_DEBUG
-  g_assert (n_pspecs == nqueue->n_pspecs);
-#endif
-
-  if (take_ref)
-    g_object_ref (object);
-
-  G_OBJECT_GET_CLASS (object)->dispatch_properties_changed (object, n_pspecs, pspecs);
-
-  if (take_ref)
-    g_object_unref (object);
-
-  if (pspecs_heap)
-    g_free (pspecs_heap);
-
-out:
   g_object_notify_queue_free (nqueue);
 }
 
 typedef struct
 {
-  GObject *object;
-  GObjectNotifyQueue *nqueue;
   GParamSpec *pspec;
   gboolean in_init;
 } NotifyQueueAddData;
@@ -467,10 +449,7 @@ g_object_notify_queue_add_cb (GQuark key_id,
 {
   NotifyQueueAddData *nqdata = user_data;
   GObjectNotifyQueue *nqueue = *data;
-
-#if G_ENABLE_DEBUG
-  g_assert (!nqdata->nqueue || nqdata->nqueue == nqueue);
-#endif
+  guint16 i;
 
   if (!nqueue)
     {
@@ -494,15 +473,34 @@ g_object_notify_queue_add_cb (GQuark key_id,
       *data = nqueue;
       *destroy_notify = g_object_notify_queue_free;
     }
-
-  g_assert (nqueue->n_pspecs < 65535);
-
-  if (!g_slist_find (nqueue->pspecs, nqdata->pspec))
+  else
     {
-      nqueue->pspecs = g_slist_prepend (nqueue->pspecs, nqdata->pspec);
-      nqueue->n_pspecs++;
+      for (i = 0; i < nqueue->len; i++)
+        {
+          if (nqueue->pspecs[i] == nqdata->pspec)
+            goto out;
+        }
+
+      if (G_UNLIKELY (nqueue->len == nqueue->alloc))
+        {
+          guint32 alloc;
+
+          alloc = ((guint32) nqueue->alloc) * 2u;
+          if (alloc >= G_MAXUINT16)
+            {
+              g_assert (nqueue->len < G_MAXUINT16);
+              alloc = G_MAXUINT16;
+            }
+          nqueue = g_realloc (nqueue, G_STRUCT_OFFSET (GObjectNotifyQueue, pspecs) + (alloc * sizeof (GParamSpec *)));
+          nqueue->alloc = alloc;
+
+          *data = nqueue;
+        }
     }
 
+  nqueue->pspecs[nqueue->len++] = nqdata->pspec;
+
+out:
   return GINT_TO_POINTER (TRUE);
 }
 
@@ -518,8 +516,6 @@ g_object_notify_queue_add (GObject *object,
                                       quark_notify_queue,
                                       g_object_notify_queue_add_cb,
                                       &((NotifyQueueAddData){
-                                          .object = object,
-                                          .nqueue = nqueue,
                                           .pspec = pspec,
                                           .in_init = in_init,
                                       }));
