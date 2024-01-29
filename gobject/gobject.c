@@ -123,8 +123,7 @@ enum {
  * parallel as possible. The alternative would be to add individual locking
  * integers to GObjectPrivate. But increasing memory usage for more parallelism
  * (per-object!) is not worth it. */
-#define OPTIONAL_BIT_LOCK_WEAK_REFS      1
-#define OPTIONAL_BIT_LOCK_TOGGLE_REFS    2
+#define OPTIONAL_BIT_LOCK_TOGGLE_REFS 1
 
 #if SIZEOF_INT == 4 && GLIB_SIZEOF_VOID_P >= 8
 #define HAVE_OPTIONAL_FLAGS_IN_GOBJECT 1
@@ -3362,6 +3361,41 @@ weak_refs_notify (gpointer data)
   g_free (wstack);
 }
 
+static gpointer
+g_object_weak_ref_cb (GQuark key_id,
+                      gpointer *data,
+                      GDestroyNotify *destroy_notify,
+                      gpointer user_data)
+{
+  GObject *object  = ((gpointer *) user_data)[0];
+  GWeakNotify notify = ((gpointer *) user_data)[1];
+  gpointer notify_data = ((gpointer *) user_data)[2];
+  WeakRefStack *wstack = *data;
+  guint i;
+
+  if (!wstack)
+    {
+      wstack = g_new (WeakRefStack, 1);
+      wstack->object = object;
+      wstack->n_weak_refs = 1;
+      i = 0;
+
+      *destroy_notify = weak_refs_notify;
+    }
+  else
+    {
+      i = wstack->n_weak_refs++;
+      wstack = g_realloc (wstack, sizeof (*wstack) + sizeof (wstack->weak_refs[0]) * i);
+    }
+
+  *data = wstack;
+
+  wstack->weak_refs[i].notify = notify;
+  wstack->weak_refs[i].data = notify_data;
+
+  return NULL;
+}
+
 /**
  * g_object_weak_ref: (skip)
  * @object: #GObject to reference weakly
@@ -3380,35 +3414,59 @@ weak_refs_notify (gpointer data)
  * Use #GWeakRef if thread-safety is required.
  */
 void
-g_object_weak_ref (GObject    *object,
-		   GWeakNotify notify,
-		   gpointer    data)
+g_object_weak_ref (GObject *object,
+                   GWeakNotify notify,
+                   gpointer data)
 {
-  WeakRefStack *wstack;
-  guint i;
-  
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (notify != NULL);
   g_return_if_fail (g_atomic_int_get (&object->ref_count) >= 1);
 
-  object_bit_lock (object, OPTIONAL_BIT_LOCK_WEAK_REFS);
-  wstack = g_datalist_id_remove_no_notify (&object->qdata, quark_weak_notifies);
+  datalist_id_update_atomic (object,
+                             quark_weak_notifies,
+                             g_object_weak_ref_cb,
+                             ((gpointer[]){ object, notify, data }));
+}
+
+static gpointer
+g_object_weak_unref_cb (GQuark key_id,
+                          gpointer *data,
+                          GDestroyNotify *destroy_notify,
+                          gpointer user_data)
+{
+  GWeakNotify notify = ((gpointer *) user_data)[0];
+  gpointer notify_data = ((gpointer *) user_data)[1];
+  WeakRefStack *wstack = *data;
+  gboolean found_one = FALSE;
+  guint i;
+
   if (wstack)
     {
-      i = wstack->n_weak_refs++;
-      wstack = g_realloc (wstack, sizeof (*wstack) + sizeof (wstack->weak_refs[0]) * i);
+      for (i = 0; i < wstack->n_weak_refs; i++)
+        {
+          if (wstack->weak_refs[i].notify != notify ||
+              wstack->weak_refs[i].data != notify_data)
+            continue;
+
+
+          wstack->n_weak_refs -= 1;
+          if (wstack->n_weak_refs == 0)
+            {
+              g_free (wstack);
+              *data = NULL;
+            }
+          else if (i != wstack->n_weak_refs)
+            wstack->weak_refs[i] = wstack->weak_refs[wstack->n_weak_refs];
+
+          found_one = TRUE;
+          break;
+        }
     }
-  else
-    {
-      wstack = g_renew (WeakRefStack, NULL, 1);
-      wstack->object = object;
-      wstack->n_weak_refs = 1;
-      i = 0;
-    }
-  wstack->weak_refs[i].notify = notify;
-  wstack->weak_refs[i].data = data;
-  g_datalist_id_set_data_full (&object->qdata, quark_weak_notifies, wstack, weak_refs_notify);
-  object_bit_unlock (object, OPTIONAL_BIT_LOCK_WEAK_REFS);
+
+  if (!found_one)
+    g_critical ("%s: couldn't find weak ref %p(%p)", G_STRFUNC, notify, notify_data);
+
+  return NULL;
 }
 
 /**
@@ -3420,37 +3478,17 @@ g_object_weak_ref (GObject    *object,
  * Removes a weak reference callback to an object.
  */
 void
-g_object_weak_unref (GObject    *object,
-		     GWeakNotify notify,
-		     gpointer    data)
+g_object_weak_unref (GObject *object,
+                     GWeakNotify notify,
+                     gpointer data)
 {
-  WeakRefStack *wstack;
-  gboolean found_one = FALSE;
-
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (notify != NULL);
 
-  object_bit_lock (object, OPTIONAL_BIT_LOCK_WEAK_REFS);
-  wstack = g_datalist_id_get_data (&object->qdata, quark_weak_notifies);
-  if (wstack)
-    {
-      guint i;
-
-      for (i = 0; i < wstack->n_weak_refs; i++)
-	if (wstack->weak_refs[i].notify == notify &&
-	    wstack->weak_refs[i].data == data)
-	  {
-	    found_one = TRUE;
-	    wstack->n_weak_refs -= 1;
-	    if (i != wstack->n_weak_refs)
-	      wstack->weak_refs[i] = wstack->weak_refs[wstack->n_weak_refs];
-
-	    break;
-	  }
-    }
-  object_bit_unlock (object, OPTIONAL_BIT_LOCK_WEAK_REFS);
-  if (!found_one)
-    g_critical ("%s: couldn't find weak ref %p(%p)", G_STRFUNC, notify, data);
+  datalist_id_update_atomic (object,
+                             quark_weak_notifies,
+                             g_object_weak_unref_cb,
+                             ((gpointer[]){ notify, data }));
 }
 
 /**
