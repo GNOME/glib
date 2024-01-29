@@ -36,10 +36,10 @@
  * Do not call this function; it is used to share private
  * API between glib, gobject, and gio.
  */
-GLibPrivateVTable *
+const GLibPrivateVTable *
 glib__private__ (void)
 {
-  static GLibPrivateVTable table = {
+  static const GLibPrivateVTable table = {
     g_wakeup_new,
     g_wakeup_free,
     g_wakeup_get_pollfd,
