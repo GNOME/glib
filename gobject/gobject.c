@@ -125,9 +125,8 @@ enum {
  * integers to GObjectPrivate. But increasing memory usage for more parallelism
  * (per-object!) is not worth it. */
 #define OPTIONAL_BIT_LOCK_WEAK_REFS      1
-#define OPTIONAL_BIT_LOCK_NOTIFY         2
-#define OPTIONAL_BIT_LOCK_TOGGLE_REFS    3
-#define OPTIONAL_BIT_LOCK_CLOSURE_ARRAY  4
+#define OPTIONAL_BIT_LOCK_TOGGLE_REFS    2
+#define OPTIONAL_BIT_LOCK_CLOSURE_ARRAY  3
 
 #if SIZEOF_INT == 4 && GLIB_SIZEOF_VOID_P >= 8
 #define HAVE_OPTIONAL_FLAGS_IN_GOBJECT 1
@@ -705,15 +704,10 @@ g_object_notify_queue_freeze_cb (GQuark key_id,
 static GObjectNotifyQueue *
 g_object_notify_queue_freeze (GObject *object)
 {
-  GObjectNotifyQueue *nqueue;
-
-  object_bit_lock (object, OPTIONAL_BIT_LOCK_NOTIFY);
-  nqueue = _g_datalist_id_update_atomic (&object->qdata,
-                                         quark_notify_queue,
-                                         g_object_notify_queue_freeze_cb,
-                                         object);
-  object_bit_unlock (object, OPTIONAL_BIT_LOCK_NOTIFY);
-  return nqueue;
+  return _g_datalist_id_update_atomic (&object->qdata,
+                                       quark_notify_queue,
+                                       g_object_notify_queue_freeze_cb,
+                                       object);
 }
 
 static gpointer
@@ -758,14 +752,10 @@ g_object_notify_queue_thaw (GObject *object,
   guint n_pspecs;
   GSList *slist;
 
-  object_bit_lock (object, OPTIONAL_BIT_LOCK_NOTIFY);
-
   nqueue = _g_datalist_id_update_atomic (&object->qdata,
                                          quark_notify_queue,
                                          g_object_notify_queue_thaw_cb,
                                          ((gpointer[]){ object, nqueue }));
-
-  object_bit_unlock (object, OPTIONAL_BIT_LOCK_NOTIFY);
 
   if (!nqueue)
     return;
@@ -864,8 +854,6 @@ g_object_notify_queue_add (GObject *object,
 {
   gpointer result;
 
-  object_bit_lock (object, OPTIONAL_BIT_LOCK_NOTIFY);
-
   result = _g_datalist_id_update_atomic (&object->qdata,
                                          quark_notify_queue,
                                          g_object_notify_queue_add_cb,
@@ -875,8 +863,6 @@ g_object_notify_queue_add (GObject *object,
                                              .pspec = pspec,
                                              .in_init = in_init,
                                          }));
-
-  object_bit_unlock (object, OPTIONAL_BIT_LOCK_NOTIFY);
 
   return GPOINTER_TO_INT (result);
 }
