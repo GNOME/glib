@@ -682,7 +682,8 @@ g_object_notify_queue_freeze_cb (gpointer *data,
                                  GDestroyNotify *destroy_notify,
                                  gpointer user_data)
 {
-  GObject *object = user_data;
+  GObject *object = ((gpointer *) user_data)[0];
+  gboolean freeze_always = GPOINTER_TO_INT (((gpointer *) user_data)[1]);
   GObjectNotifyQueue *nqueue = *data;
 
   if (!nqueue)
@@ -690,6 +691,13 @@ g_object_notify_queue_freeze_cb (gpointer *data,
       /* The nqueue doesn't exist yet. We create it, and freeze thus 1 time. */
       *data = g_object_notify_queue_new_frozen ();
       *destroy_notify = g_free;
+    }
+  else if (!freeze_always)
+    {
+      /* The caller only wants to ensure we are frozen once. If we are already frozen,
+       * don't freeze another time.
+       *
+       * This is only relevant during the object initialization. */
     }
   else
     {
@@ -708,12 +716,12 @@ g_object_notify_queue_freeze_cb (gpointer *data,
 }
 
 static void
-g_object_notify_queue_freeze (GObject *object)
+g_object_notify_queue_freeze (GObject *object, gboolean freeze_always)
 {
   _g_datalist_id_update_atomic (&object->qdata,
                                 quark_notify_queue,
                                 g_object_notify_queue_freeze_cb,
-                                object);
+                                ((gpointer[]){ object, GINT_TO_POINTER (!!freeze_always) }));
 }
 
 static gpointer
@@ -1770,7 +1778,7 @@ g_object_init (GObject		*object,
   if (CLASS_HAS_PROPS (class) && CLASS_NEEDS_NOTIFY (class))
     {
       /* freeze object's notification queue, g_object_new_internal() preserves pairedness */
-      g_object_notify_queue_freeze (object);
+      g_object_notify_queue_freeze (object, TRUE);
     }
 
   /* mark object in-construction for notify_queue_thaw() and to allow construct-only properties */
@@ -1959,7 +1967,7 @@ g_object_freeze_notify (GObject *object)
     }
 #endif
 
-  g_object_notify_queue_freeze (object);
+  g_object_notify_queue_freeze (object, TRUE);
 }
 
 static inline void
@@ -2636,8 +2644,7 @@ g_object_new_with_custom_constructor (GObjectClass          *class,
           /* This may or may not have been setup in g_object_init().
            * If it hasn't, we do it now.
            */
-          if (!g_datalist_id_get_data (&object->qdata, quark_notify_queue))
-            g_object_notify_queue_freeze (object);
+          g_object_notify_queue_freeze (object, FALSE);
           nqueue_is_frozen = TRUE;
         }
     }
@@ -2684,8 +2691,7 @@ g_object_new_internal (GObjectClass          *class,
           /* This may or may not have been setup in g_object_init().
            * If it hasn't, we do it now.
            */
-          if (!g_datalist_id_get_data (&object->qdata, quark_notify_queue))
-            g_object_notify_queue_freeze (object);
+          g_object_notify_queue_freeze (object, FALSE);
           nqueue_is_frozen = TRUE;
         }
 
@@ -3049,7 +3055,7 @@ g_object_constructor (GType                  type,
   /* set construction parameters */
   if (n_construct_properties)
     {
-      g_object_notify_queue_freeze (object);
+      g_object_notify_queue_freeze (object, TRUE);
       
       /* set construct properties */
       while (n_construct_properties--)
@@ -3139,7 +3145,7 @@ g_object_setv (GObject       *object,
 
   if (_g_object_has_notify_handler (object))
     {
-      g_object_notify_queue_freeze (object);
+      g_object_notify_queue_freeze (object, TRUE);
       nqueue_is_frozen = TRUE;
     }
 
@@ -3183,7 +3189,7 @@ g_object_set_valist (GObject	 *object,
 
   if (_g_object_has_notify_handler (object))
     {
-      g_object_notify_queue_freeze (object);
+      g_object_notify_queue_freeze (object, TRUE);
       nqueue_is_frozen = TRUE;
     }
 
@@ -4482,7 +4488,7 @@ retry_beginning:
    * which happens to be the same lock that is also taken by toggle_refs_check_and_ref(),
    * that is very important. See also the code comment in toggle_refs_check_and_ref().
    */
-  g_object_notify_queue_freeze (object);
+  g_object_notify_queue_freeze (object, TRUE);
   nqueue_is_frozen = TRUE;
 
   TRACE (GOBJECT_OBJECT_DISPOSE (object, G_TYPE_FROM_INSTANCE (object), 1));
