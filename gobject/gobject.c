@@ -808,54 +808,83 @@ out:
   g_object_notify_queue_free (nqueue);
 }
 
-static gboolean
-g_object_notify_queue_add (GObject            *object,
-                           GObjectNotifyQueue *nqueue,
-                           GParamSpec         *pspec,
-                           gboolean            in_init)
+typedef struct
 {
-  object_bit_lock (object, OPTIONAL_BIT_LOCK_NOTIFY);
+  GObject *object;
+  GObjectNotifyQueue *nqueue;
+  GParamSpec *pspec;
+  gboolean in_init;
+} NotifyQueueAddData;
+
+static gpointer
+g_object_notify_queue_add_cb (gpointer *data,
+                              GDestroyNotify *destroy_notify,
+                              gpointer user_data)
+{
+  NotifyQueueAddData *nqdata = user_data;
+  GObjectNotifyQueue *nqueue = *data;
+
+#if G_ENABLE_DEBUG
+  g_assert (!nqdata->nqueue || nqdata->nqueue == nqueue);
+#endif
 
   if (!nqueue)
     {
-      /* We are called without an nqueue. Figure out whether a notification
-       * should be queued. */
-      nqueue = g_datalist_id_get_data (&object->qdata, quark_notify_queue);
-
-      if (!nqueue)
+      if (!nqdata->in_init)
         {
-          if (!in_init)
-            {
-              /* We don't have a notify queue and are not in_init. The event
-               * is not to be queued. The caller will dispatch directly. */
-              object_bit_unlock (object, OPTIONAL_BIT_LOCK_NOTIFY);
-              return FALSE;
-            }
-
-          /* We are "in_init", but did not freeze the queue in g_object_init
-           * yet. Instead, we gained a notify handler in instance init, so now
-           * we need to freeze just-in-time.
-           *
-           * Note that this freeze will be balanced at the end of object
-           * initialization.
-           */
-          nqueue = g_object_notify_queue_new_frozen ();
-          g_datalist_id_set_data_full (&object->qdata, quark_notify_queue,
-                                       nqueue, g_object_notify_queue_free);
+          /* We are not in-init and are currently not frozen. There is nothing
+           * to do. We return FALSE to the caller, which then will dispatch
+           * the event right away. */
+          return GINT_TO_POINTER (FALSE);
         }
+
+      /* If we are "in_init", we always want to create a queue now.
+       *
+       * Note in that case, the freeze will be balanced at the end of object
+       * initialization.
+       *
+       * We only ensure that a nqueue exists. If it doesn't exist, we create
+       * it (and freeze once). If it already exists (and is frozen), we don't
+       * freeze an additional time. */
+      nqueue = g_object_notify_queue_new_frozen ();
+      *data = nqueue;
+      *destroy_notify = g_object_notify_queue_free;
     }
 
   g_assert (nqueue->n_pspecs < 65535);
 
-  if (g_slist_find (nqueue->pspecs, pspec) == NULL)
+  if (!g_slist_find (nqueue->pspecs, nqdata->pspec))
     {
-      nqueue->pspecs = g_slist_prepend (nqueue->pspecs, pspec);
+      nqueue->pspecs = g_slist_prepend (nqueue->pspecs, nqdata->pspec);
       nqueue->n_pspecs++;
     }
 
+  return GINT_TO_POINTER (TRUE);
+}
+
+static gboolean
+g_object_notify_queue_add (GObject *object,
+                           GObjectNotifyQueue *nqueue,
+                           GParamSpec *pspec,
+                           gboolean in_init)
+{
+  gpointer result;
+
+  object_bit_lock (object, OPTIONAL_BIT_LOCK_NOTIFY);
+
+  result = _g_datalist_id_update_atomic (&object->qdata,
+                                         quark_notify_queue,
+                                         g_object_notify_queue_add_cb,
+                                         &((NotifyQueueAddData){
+                                             .object = object,
+                                             .nqueue = nqueue,
+                                             .pspec = pspec,
+                                             .in_init = in_init,
+                                         }));
+
   object_bit_unlock (object, OPTIONAL_BIT_LOCK_NOTIFY);
 
-  return TRUE;
+  return GPOINTER_TO_INT (result);
 }
 
 #ifdef	G_ENABLE_DEBUG
