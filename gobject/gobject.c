@@ -4159,12 +4159,22 @@ g_object_force_floating (GObject *object)
   floating_flag_handler (object, +1);
 }
 
-typedef struct {
+typedef struct
+{
+  GToggleNotify notify;
+  gpointer data;
+} ToggleRefTuple;
+
+typedef struct
+{
+  GObject *object;
+  ToggleRefTuple tuple;
+} ToggleRefCallbackData;
+
+typedef struct
+{
   guint n_toggle_refs;
-  struct {
-    GToggleNotify notify;
-    gpointer    data;
-  } toggle_refs[1];  /* flexible array */
+  ToggleRefTuple toggle_refs[1]; /* flexible array */
 } ToggleRefStack;
 
 static gpointer
@@ -4270,6 +4280,38 @@ toggle_refs_check_and_ref_or_deref (GObject *object,
   return TRUE;
 }
 
+static gpointer
+toggle_refs_ref_cb (gpointer *data,
+                    GDestroyNotify *destroy_notify,
+                    gpointer user_data)
+{
+  ToggleRefCallbackData *trdata = user_data;
+  ToggleRefStack *tstack = *data;
+  guint i;
+
+  if (!tstack)
+    {
+      tstack = g_new (ToggleRefStack, 1);
+      tstack->n_toggle_refs = 1;
+      i = 0;
+
+      g_datalist_set_flags (&trdata->object->qdata, OBJECT_HAS_TOGGLE_REF_FLAG);
+
+      *destroy_notify = g_free;
+    }
+  else
+    {
+      i = tstack->n_toggle_refs++;
+      tstack = g_realloc (tstack, sizeof (*tstack) + sizeof (tstack->toggle_refs[0]) * i);
+    }
+
+  *data = tstack;
+
+  tstack->toggle_refs[i] = trdata->tuple;
+
+  return NULL;
+}
+
 /**
  * g_object_add_toggle_ref: (skip)
  * @object: a #GObject
@@ -4317,13 +4359,10 @@ toggle_refs_check_and_ref_or_deref (GObject *object,
  * Since: 2.8
  */
 void
-g_object_add_toggle_ref (GObject       *object,
-			 GToggleNotify  notify,
-			 gpointer       data)
+g_object_add_toggle_ref (GObject *object,
+                         GToggleNotify notify,
+                         gpointer data)
 {
-  ToggleRefStack *tstack;
-  guint i;
-  
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (notify != NULL);
   g_return_if_fail (g_atomic_int_get (&object->ref_count) >= 1);
@@ -4331,29 +4370,18 @@ g_object_add_toggle_ref (GObject       *object,
   g_object_ref (object);
 
   object_bit_lock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
-  tstack = g_datalist_id_remove_no_notify (&object->qdata, quark_toggle_refs);
-  if (tstack)
-    {
-      i = tstack->n_toggle_refs++;
-      /* allocate i = tstate->n_toggle_refs - 1 positions beyond the 1 declared
-       * in tstate->toggle_refs */
-      tstack = g_realloc (tstack, sizeof (*tstack) + sizeof (tstack->toggle_refs[0]) * i);
-    }
-  else
-    {
-      tstack = g_renew (ToggleRefStack, NULL, 1);
-      tstack->n_toggle_refs = 1;
-      i = 0;
-    }
 
-  /* Set a flag for fast lookup after adding the first toggle reference */
-  if (tstack->n_toggle_refs == 1)
-    g_datalist_set_flags (&object->qdata, OBJECT_HAS_TOGGLE_REF_FLAG);
-  
-  tstack->toggle_refs[i].notify = notify;
-  tstack->toggle_refs[i].data = data;
-  g_datalist_id_set_data_full (&object->qdata, quark_toggle_refs, tstack,
-			       (GDestroyNotify)g_free);
+  _g_datalist_id_update_atomic (&object->qdata,
+                                quark_toggle_refs,
+                                toggle_refs_ref_cb,
+                                &((ToggleRefCallbackData){
+                                    .object = object,
+                                    .tuple = (ToggleRefTuple) {
+                                      .notify = notify,
+                                      .data = data,
+                                    },
+                                }));
+
   object_bit_unlock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
 }
 
