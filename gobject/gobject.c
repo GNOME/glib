@@ -4299,6 +4299,30 @@ typedef struct {
   } toggle_refs[1];  /* flexible array */
 } ToggleRefStack;
 
+static gpointer
+toggle_refs_check_and_ref_cb (gpointer *data,
+                              GDestroyNotify *destroy_notify,
+                              gpointer user_data)
+{
+  GToggleNotify *toggle_notify = ((gpointer *) user_data)[0];
+  gpointer *toggle_data = ((gpointer *) user_data)[1];
+  ToggleRefStack *tstack = *data;
+
+  if (G_UNLIKELY (tstack->n_toggle_refs != 1))
+    {
+      /* We only reach this line after we checked that the ref-count was 1
+       * and that OBJECT_HAS_TOGGLE_REF(). We expect that there is exactly
+       * one toggle reference registered. */
+      g_critical ("Unexpected number of toggle-refs. g_object_add_toggle_ref() must be paired with g_object_remove_toggle_ref()");
+      *toggle_notify = NULL;
+      return NULL;
+    }
+
+  *toggle_notify = tstack->toggle_refs[0].notify;
+  *toggle_data = tstack->toggle_refs[0].data;
+  return NULL;
+}
+
 G_ALWAYS_INLINE static inline gboolean
 toggle_refs_check_and_ref_or_deref (GObject *object,
                                     gboolean is_ref,
@@ -4319,6 +4343,15 @@ toggle_refs_check_and_ref_or_deref (GObject *object,
 
   object_bit_lock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
 
+  /* This is called from g_object_ref()/g_object_unref() and a hot path.
+   *
+   * We hack the GData open and take the g_datalist_lock() outside. Then we
+   * perform checks, that most likely will tell us that there is not toggle
+   * notifications. Only if we have a toggle notification, we call
+   * _g_datalist_id_update_atomic_full(). */
+
+  g_datalist_lock (&object->qdata);
+
   /* @old_ref is mainly an (out) parameter. On failure to compare-and-exchange,
    * we MUST return the new value which the caller will use for retry.*/
 
@@ -4335,32 +4368,36 @@ toggle_refs_check_and_ref_or_deref (GObject *object,
    * After this point with is_ref=FALSE and success=TRUE, @object must no
    * longer be accessed.
    *
-   * The exception is here. While we still hold the object lock, we know that
-   * @object could not be destroyed, because g_object_unref() also needs to
-   * acquire the same lock during g_object_notify_queue_freeze(). Thus, we know
-   * object cannot yet be destroyed and we can access it until the unlock
-   * below. */
+   * The exception is here. While we still hold the lock, we know that @object
+   * could not be destroyed, because g_object_unref() also needs to acquire the
+   * same lock before finalizing @object. Thus, we know object cannot yet be
+   * destroyed and we can access it until the unlock below. */
 
-  if (success && OBJECT_HAS_TOGGLE_REF (object))
+  if (G_UNLIKELY (!success))
     {
-      ToggleRefStack *tstackptr;
-
-      tstackptr = g_datalist_id_get_data (&object->qdata, quark_toggle_refs);
-
-      if (tstackptr->n_toggle_refs != 1)
-        {
-          g_critical ("Unexpected number of toggle-refs. g_object_add_toggle_ref() must be paired with g_object_remove_toggle_ref()");
-        }
-      else
-        {
-          *toggle_notify = tstackptr->toggle_refs[0].notify;
-          *toggle_data = tstackptr->toggle_refs[0].data;
-        }
+      g_datalist_unlock (&object->qdata);
+      object_bit_unlock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
+      return FALSE;
     }
 
-  object_bit_unlock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
+  if (G_LIKELY (!OBJECT_HAS_TOGGLE_REF (object)))
+    {
+      g_datalist_unlock (&object->qdata);
+      object_bit_unlock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
+      return TRUE;
+    }
 
-  return success;
+  /* slow-path. We have a toggle reference. Call into g_datalist_id_update_atomic().
+   *
+   * Note that _g_datalist_id_update_atomic_full() will release the lock! */
+  _g_datalist_id_update_atomic_full (&object->qdata,
+                                     quark_toggle_refs,
+                                     TRUE,
+                                     toggle_refs_check_and_ref_cb,
+                                     (gpointer[2]){ toggle_notify, toggle_data });
+
+  object_bit_unlock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
+  return TRUE;
 }
 
 /**
@@ -4750,9 +4787,10 @@ retry_beginning:
    * notification queue gets automatically drained when g_object_finalize() is
    * reached and the qdata is cleared.
    *
-   * Important: Note that g_object_notify_queue_freeze() takes a object_bit_lock(),
-   * which happens to be the same lock that is also taken by toggle_refs_check_and_ref(),
-   * that is very important. See also the code comment in toggle_refs_check_and_ref().
+   * Important: Note that g_object_notify_queue_freeze() takes an object lock.
+   * That happens to be the same lock that is also taken by
+   * toggle_refs_check_and_ref_or_deref(), that is very important. See also the
+   * code comment in toggle_refs_check_and_ref_or_deref().
    */
   g_object_notify_queue_freeze (object, TRUE);
   nqueue_is_frozen = TRUE;
