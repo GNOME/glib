@@ -4848,3 +4848,9 @@ g_type_ensure (GType type)
   if (G_UNLIKELY (type == (GType)-1))
     g_error ("can't happen");
 }
+
+void
+g_destroy_notify_assert_not_reached (gpointer object)
+{
+  g_return_if_reached ();
+}

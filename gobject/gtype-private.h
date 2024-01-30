@@ -99,6 +99,8 @@ gboolean    _g_object_has_signal_handler     (GObject     *object);
 void        _g_object_set_has_signal_handler (GObject     *object,
                                               guint        signal_id);
 
+void g_destroy_notify_assert_not_reached (gpointer object);
+
 /**
  * _G_DEFINE_TYPE_EXTENDED_WITH_PRELUDE:
  *
