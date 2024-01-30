@@ -87,7 +87,7 @@ try:
                 self.dbusmock.EmitWarning(level)
                 return GLib.SOURCE_CONTINUE
 
-            idle_id = GLib.idle_add(self.emit_warning, 0)
+            idle_id = GLib.idle_add(emit_warning, 0)
             while self.last_warning != 0:
                 self.main_context.iteration(True)
             GLib.source_remove(idle_id)
