@@ -4515,6 +4515,46 @@ g_object_add_toggle_ref (GObject       *object,
   object_bit_unlock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
 }
 
+static gpointer
+toggle_refs_unref_cb (gpointer *data,
+                      GDestroyNotify *destroy_notify,
+                      gpointer user_data)
+{
+  ToggleRefCallbackData *trdata = user_data;
+  ToggleRefStack *tstack = *data;
+  gboolean found_one = FALSE;
+  guint i;
+
+  if (tstack)
+    {
+      for (i = 0; i < tstack->n_toggle_refs; i++)
+        {
+          if (tstack->toggle_refs[i].notify == trdata->tuple.notify &&
+              (tstack->toggle_refs[i].data == trdata->tuple.data || trdata->tuple.data == NULL))
+            {
+              found_one = TRUE;
+              break;
+            }
+        }
+    }
+
+  if (G_LIKELY (found_one))
+    {
+
+      tstack->n_toggle_refs -= 1;
+      if (tstack->n_toggle_refs == 0)
+        {
+          g_datalist_unset_flags (&trdata->object->qdata, OBJECT_HAS_TOGGLE_REF_FLAG);
+          g_free (tstack);
+          *data = NULL;
+        }
+      else if (i != tstack->n_toggle_refs)
+        tstack->toggle_refs[i] = tstack->toggle_refs[tstack->n_toggle_refs];
+    }
+
+  return GINT_TO_POINTER (found_one);
+}
+
 /**
  * g_object_remove_toggle_ref: (skip)
  * @object: a #GObject
@@ -4539,42 +4579,36 @@ g_object_remove_toggle_ref (GObject       *object,
 			    GToggleNotify  notify,
 			    gpointer       data)
 {
-  ToggleRefStack *tstack;
-  gboolean found_one = FALSE;
+  gboolean found_one;
+  gpointer result;
 
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (notify != NULL);
 
   object_bit_lock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
-  tstack = g_datalist_id_get_data (&object->qdata, quark_toggle_refs);
-  if (tstack)
-    {
-      guint i;
 
-      for (i = 0; i < tstack->n_toggle_refs; i++)
-	if (tstack->toggle_refs[i].notify == notify &&
-	    (tstack->toggle_refs[i].data == data || data == NULL))
-	  {
-	    found_one = TRUE;
-	    tstack->n_toggle_refs -= 1;
-	    if (i != tstack->n_toggle_refs)
-	      tstack->toggle_refs[i] = tstack->toggle_refs[tstack->n_toggle_refs];
+  result = _g_datalist_id_update_atomic (&object->qdata,
+                                         quark_toggle_refs,
+                                         toggle_refs_unref_cb,
+                                         &((ToggleRefCallbackData){
+                                             .object = object,
+                                             .tuple = {
+                                                 .notify = notify,
+                                                 .data = data,
+                                             },
+                                         }));
 
-	    if (tstack->n_toggle_refs == 0)
-	      {
-	        g_datalist_unset_flags (&object->qdata, OBJECT_HAS_TOGGLE_REF_FLAG);
-	        g_datalist_id_set_data_full (&object->qdata, quark_toggle_refs, NULL, NULL);
-	      }
-
-	    break;
-	  }
-    }
   object_bit_unlock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
 
-  if (found_one)
-    g_object_unref (object);
-  else
-    g_critical ("%s: couldn't find toggle ref %p(%p)", G_STRFUNC, notify, data);
+  found_one = GPOINTER_TO_INT (result);
+
+  if (!found_one)
+    {
+      g_critical ("%s: couldn't find toggle ref %p(%p)", G_STRFUNC, notify, data);
+      return;
+    }
+
+  g_object_unref (object);
 }
 
 /* Internal implementation of g_object_ref() which doesn't call out to user code.
