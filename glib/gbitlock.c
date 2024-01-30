@@ -342,6 +342,10 @@ g_bit_unlock (volatile gint *address,
   g_atomic_int_and (address_nonvolatile, ~mask);
 #endif
 
+  /* Warning: unlocking may allow another thread to proceed and destroy the
+   * memory that @address points to. We thus must not dereference it anymore.
+   */
+
   {
     guint class = bit_lock_contended_class (address_nonvolatile);
 
@@ -598,6 +602,10 @@ void
 
     g_atomic_pointer_and (pointer_address, ~mask);
 #endif
+
+    /* Warning: unlocking may allow another thread to proceed and destroy the
+     * memory that @address points to. We thus must not dereference it anymore.
+     */
 
     {
       guint class = bit_lock_contended_class (address_nonvolatile);

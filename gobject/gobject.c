@@ -644,6 +644,9 @@ object_bit_unlock (GObject *object, guint lock_bit)
   _object_bit_is_locked = 0;
 #endif
 
+  /* Warning: after unlock, @object may be a dangling pointer (destroyed on
+   * another thread) and must not be touched anymore. */
+
   g_bit_unlock ((gint *) object_get_optional_flags_p (object), _OPTIONAL_BIT_LOCK);
 }
 
@@ -3977,6 +3980,20 @@ toggle_refs_check_and_ref_or_deref (GObject *object,
                                                     ref_next,
                                                     old_ref);
 
+  /* Note that if we are called during g_object_unref (@is_ref set to FALSE),
+   * then we drop the ref count from 2 to 1 and give up our reference. We thus
+   * no longer hold a strong reference and another thread may race against
+   * destroying the object.
+   *
+   * After this point with is_ref=FALSE and success=TRUE, @object must no
+   * longer be accessed.
+   *
+   * The exception is here. While we still hold the object lock, we know that
+   * @object could not be destroyed, because g_object_unref() also needs to
+   * acquire the same lock during g_object_notify_queue_freeze(). Thus, we know
+   * object cannot yet be destroyed and we can access it until the unlock
+   * below. */
+
   if (success && OBJECT_HAS_TOGGLE_REF (object))
     {
       ToggleRefStack *tstackptr;
@@ -4385,6 +4402,10 @@ retry_beginning:
    * notifications. If the instance gets through to finalize(), the
    * notification queue gets automatically drained when g_object_finalize() is
    * reached and the qdata is cleared.
+   *
+   * Important: Note that g_object_notify_queue_freeze() takes a object_bit_lock(),
+   * which happens to be the same lock that is also taken by toggle_refs_check_and_ref(),
+   * that is very important. See also the code comment in toggle_refs_check_and_ref().
    */
   nqueue = g_object_notify_queue_freeze (object);
 
