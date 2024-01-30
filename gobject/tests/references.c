@@ -282,6 +282,39 @@ test_references (void)
   g_assert_true (object_destroyed);
 }
 
+/*****************************************************************************/
+
+static void notify_two (gpointer data, GObject *former_object);
+
+static void
+notify_one (gpointer data, GObject *former_object)
+{
+  g_object_weak_unref (data, notify_two, former_object);
+}
+
+static void
+notify_two (gpointer data, GObject *former_object)
+{
+  g_object_weak_unref (data, notify_one, former_object);
+}
+
+static void
+test_references_two (void)
+{
+  GObject *obj;
+
+  /* https://gitlab.gnome.org/GNOME/gtk/-/issues/5542#note_1688809 */
+
+  obj = g_object_new (G_TYPE_OBJECT, NULL);
+
+  g_object_weak_ref (obj, notify_one, obj);
+  g_object_weak_ref (obj, notify_two, obj);
+
+  g_object_unref (obj);
+}
+
+/*****************************************************************************/
+
 int
 main (int   argc,
       char *argv[])
@@ -293,6 +326,7 @@ main (int   argc,
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/gobject/references", test_references);
+  g_test_add_func ("/gobject/references_two", test_references_two);
 
   return g_test_run ();
 }
