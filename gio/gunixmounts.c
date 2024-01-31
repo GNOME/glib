@@ -2053,6 +2053,12 @@ mount_monitor_start (void)
           if (ret < 0)
             g_warning ("mnt_monitor_enable_userspace failed: %s", g_strerror (-ret));
 
+#ifdef HAVE_MNT_MONITOR_VEIL_KERNEL
+          ret = mnt_monitor_veil_kernel (proc_mounts_monitor, TRUE);
+          if (ret < 0)
+            g_warning ("mnt_monitor_veil_kernel failed: %s", g_strerror (-ret));
+#endif
+
           ret = mnt_monitor_get_fd (proc_mounts_monitor);
           if (ret >= 0)
             {
