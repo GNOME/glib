@@ -106,6 +106,17 @@ weak_ref2 (gpointer data,
 }
 
 static void
+weak_ref3 (gpointer data,
+           GObject *object)
+{
+  GWeakRef *weak_ref = data;
+
+  g_assert_null (g_weak_ref_get (weak_ref));
+
+  weak_ref2_notified = TRUE;
+}
+
+static void
 toggle_ref1 (gpointer data,
              GObject *object,
              gboolean is_last_ref)
@@ -154,6 +165,7 @@ static void
 test_references (void)
 {
   GObject *object;
+  GWeakRef weak_ref;
 
   /* Test basic weak reference operation */
   global_object = object = g_object_new (TEST_TYPE_OBJECT, NULL);
@@ -190,6 +202,17 @@ test_references (void)
   g_assert_false (weak_ref1_notified);
   g_assert_true (weak_ref2_notified);
   g_assert_true (object_destroyed);
+
+  /* Test that within a GWeakNotify the GWeakRef is NULL already. */
+  weak_ref2_notified = FALSE;
+  object = g_object_new (G_TYPE_OBJECT, NULL);
+  g_weak_ref_init (&weak_ref, object);
+  g_assert_true (object == g_weak_ref_get (&weak_ref));
+  g_object_weak_ref (object, weak_ref3, &weak_ref);
+  g_object_unref (object);
+  g_object_unref (object);
+  g_assert_true (weak_ref2_notified);
+  g_weak_ref_clear (&weak_ref);
 
   /* Test basic toggle reference operation */
   global_object = object = g_object_new (TEST_TYPE_OBJECT, NULL);
