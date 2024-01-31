@@ -1762,6 +1762,7 @@ require_internal (GIRepository           *repository,
     bytes = g_mapped_file_get_bytes (mfile);
     typelib = gi_typelib_new_from_bytes (bytes, &temp_error);
     g_bytes_unref (bytes);
+    g_clear_pointer (&mfile, g_mapped_file_unref);
 
     if (!typelib)
       {
