@@ -23,6 +23,7 @@
 #include <glib.h>
 #include "gwakeup.h"
 #include "gstdioprivate.h"
+#include "gdatasetprivate.h"
 
 /* gcc defines __SANITIZE_ADDRESS__, clang sets the address_sanitizer
  * feature flag.
@@ -291,6 +292,11 @@ typedef struct {
   /* See gutils.c */
   gboolean (* g_set_prgname_once) (const gchar *prgname);
 
+  gpointer (*g_datalist_id_update_atomic) (GData **datalist,
+                                           GQuark key_id,
+                                           GDataListUpdateAtomicFunc callback,
+                                           gpointer user_data);
+
   /* Add other private functions here, initialize them in glib-private.c */
 } GLibPrivateVTable;
 
@@ -326,5 +332,9 @@ guint g_uint_hash (gconstpointer v);
 #else
 #undef G_THREAD_LOCAL
 #endif
+
+/* Convenience wrapper to call private g_datalist_id_update_atomic() function. */
+#define _g_datalist_id_update_atomic(datalist, key_id, callback, user_data) \
+  (GLIB_PRIVATE_CALL (g_datalist_id_update_atomic) ((datalist), (key_id), (callback), (user_data)))
 
 #endif /* __GLIB_PRIVATE_H__ */
