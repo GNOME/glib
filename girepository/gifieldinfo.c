@@ -255,7 +255,7 @@ gi_field_info_get_field (GIFieldInfo *field_info,
           break;
         case GI_TYPE_TAG_ARRAY:
           /* We don't check the array type and that it is fixed-size,
-             we trust g-ir-compiler to do the right thing */
+             we trust gi-compile-repository to do the right thing */
           value->v_pointer = G_STRUCT_MEMBER_P (mem, offset);
           result = TRUE;
           break;

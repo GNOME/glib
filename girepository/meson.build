@@ -241,3 +241,5 @@ endif
 if build_tests
   subdir('tests')
 endif
+
+subdir('compiler')
