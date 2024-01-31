@@ -152,6 +152,7 @@ test_repository_arg_info (RepositoryFixture *fx,
   GIFunctionInfo *method_info = NULL;
   GIArgInfo *arg_info = NULL;
   GITypeInfo *type_info = NULL;
+  GITypeInfo type_info_stack;
   unsigned int idx;
 
   g_test_summary ("Test retrieving GIArgInfos from a typelib");
@@ -188,7 +189,13 @@ test_repository_arg_info (RepositoryFixture *fx,
   g_assert_true (gi_type_info_is_pointer (type_info));
   g_assert_cmpint (gi_type_info_get_tag (type_info), ==, GI_TYPE_TAG_UTF8);
 
+  gi_arg_info_load_type (arg_info, &type_info_stack);
+  g_assert_true (gi_type_info_is_pointer (&type_info_stack) == gi_type_info_is_pointer (type_info));
+  g_assert_cmpint (gi_type_info_get_tag (&type_info_stack), ==, gi_type_info_get_tag (type_info));
+
+  gi_base_info_clear (&type_info_stack);
   g_clear_pointer (&type_info, gi_base_info_unref);
+
   g_clear_pointer (&arg_info, gi_base_info_unref);
   g_clear_pointer (&method_info, gi_base_info_unref);
   g_clear_pointer (&object_info, gi_base_info_unref);
@@ -237,9 +244,11 @@ test_repository_callable_info (RepositoryFixture *fx,
   GIFunctionInfo *method_info = NULL;
   GICallableInfo *callable_info;
   GITypeInfo *type_info = NULL;
+  GITypeInfo type_info_stack;
   GIAttributeIter iter = GI_ATTRIBUTE_ITER_INIT;
   const char *name, *value;
   GIArgInfo *arg_info = NULL;
+  GIArgInfo arg_info_stack;
 
   g_test_summary ("Test retrieving GICallableInfos from a typelib");
 
@@ -260,6 +269,12 @@ test_repository_callable_info (RepositoryFixture *fx,
   g_assert_nonnull (type_info);
   g_assert_true (gi_type_info_is_pointer (type_info));
   g_assert_cmpint (gi_type_info_get_tag (type_info), ==, GI_TYPE_TAG_VOID);
+
+  gi_callable_info_load_return_type (callable_info, &type_info_stack);
+  g_assert_true (gi_type_info_is_pointer (&type_info_stack) == gi_type_info_is_pointer (type_info));
+  g_assert_cmpint (gi_type_info_get_tag (&type_info_stack), ==, gi_type_info_get_tag (type_info));
+
+  gi_base_info_clear (&type_info_stack);
   g_clear_pointer (&type_info, gi_base_info_unref);
 
   /* This method has no attributes */
@@ -275,6 +290,12 @@ test_repository_callable_info (RepositoryFixture *fx,
 
   arg_info = gi_callable_info_get_arg (callable_info, 0);
   g_assert_nonnull (arg_info);
+
+  gi_callable_info_load_arg (callable_info, 0, &arg_info_stack);
+  g_assert_cmpint (gi_arg_info_get_direction (&arg_info_stack), ==, gi_arg_info_get_direction (arg_info));
+  g_assert_true (gi_arg_info_may_be_null (&arg_info_stack) == gi_arg_info_may_be_null (arg_info));
+
+  gi_base_info_clear (&arg_info_stack);
   g_clear_pointer (&arg_info, gi_base_info_unref);
 
   g_assert_cmpint (gi_callable_info_get_instance_ownership_transfer (callable_info), ==, GI_TRANSFER_NOTHING);
