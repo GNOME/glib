@@ -2102,6 +2102,10 @@ libmount_dep = []
 if host_system == 'linux'
   libmount_dep = dependency('mount', version : '>=2.23', required : get_option('libmount'))
   glib_conf.set('HAVE_LIBMOUNT', libmount_dep.found())
+
+  if libmount_dep.found() and cc.has_function('mnt_monitor_veil_kernel', dependencies: libmount_dep)
+    glib_conf.set('HAVE_MNT_MONITOR_VEIL_KERNEL', 1)
+  endif
 endif
 
 # gnutls is used optionally by GHmac
