@@ -105,3 +105,14 @@ the source is finalized, and is designed for releasing references like this.
 One important caveat of this second approach is that it will keep the object
 alive indefinitely if the main loop is stopped before the `GSource` is
 invoked, which may be undesirable.
+
+## Tutorial
+
+`GMainContext` is complicated, and can be particularly intimidating for
+developers new to working with GLib. Unfortunately, improper use of
+`GMainContext` often results in bugs that may be difficult to debug. The
+[Main Contexts tutorial](https://developer.gnome.org/documentation/tutorials/main-contexts.html)
+provides valuable guidance for developers working with `GMainContext`
+and is highly recommended reading. In particular, the section
+[Using GMainContext in a Library](https://developer.gnome.org/documentation/tutorials/main-contexts.html#using-gmaincontext-in-a-library)
+documents several pitfalls that library authors should avoid.
