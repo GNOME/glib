@@ -767,6 +767,56 @@ test_weak_ref_in_toggle_notify (void)
   g_assert_null (g_weak_ref_get (&weak));
 }
 
+static void
+test_weak_ref_many (void)
+{
+  const guint N = g_test_slow ()
+                      ? G_MAXUINT16
+                      : 211;
+  const guint PRIME = 1048583;
+  GObject *obj;
+  GWeakRef *weak_refs;
+  GWeakRef weak_ref1;
+  guint j;
+  guint n;
+  guint i;
+
+  obj = g_object_new (G_TYPE_OBJECT, NULL);
+
+  weak_refs = g_new (GWeakRef, N);
+
+  /* We register them in a somewhat juggled order. That's because below, we will clear them
+   * again, and we don't want to always clear them in the same order as they were registered.
+   * For that, we calculate the actual index by jumping around by adding a prime number. */
+  j = (g_test_rand_int () % (N + 1));
+  for (i = 0; i < N; i++)
+    {
+      j = (j + PRIME) % N;
+      g_weak_ref_init (&weak_refs[j], obj);
+    }
+
+  g_weak_ref_init (&weak_ref1, obj);
+  g_assert_true (obj == g_weak_ref_get (&weak_ref1));
+  g_object_unref (obj);
+  g_weak_ref_clear (&weak_ref1);
+
+  n = g_test_rand_int () % (N + 1u);
+  for (i = 0; i < N; i++)
+    g_weak_ref_set (&weak_refs[i], i < n ? NULL : obj);
+
+  g_object_unref (obj);
+
+  for (i = 0; i < N; i++)
+    g_assert_null (g_weak_ref_get (&weak_refs[i]));
+
+  /* The API would expect us to also call g_weak_ref_clear() on all references
+   * to clean up.  In practice, they are already all NULL, so we don't need
+   * that (it would have no effect, with the current implementation of
+   * GWeakRef). */
+
+  g_free (weak_refs);
+}
+
 /*****************************************************************************/
 
 #define CONCURRENT_N_OBJS 5
@@ -1584,6 +1634,7 @@ main (int argc, char **argv)
   g_test_add_func ("/object/weak-ref/on-run-dispose", test_weak_ref_on_run_dispose);
   g_test_add_func ("/object/weak-ref/on-toggle-notify", test_weak_ref_on_toggle_notify);
   g_test_add_func ("/object/weak-ref/in-toggle-notify", test_weak_ref_in_toggle_notify);
+  g_test_add_func ("/object/weak-ref/many", test_weak_ref_many);
   g_test_add_data_func ("/object/weak-ref/concurrent/0", GINT_TO_POINTER (0), test_weak_ref_concurrent);
   g_test_add_data_func ("/object/weak-ref/concurrent/1", GINT_TO_POINTER (1), test_weak_ref_concurrent);
   g_test_add_func ("/object/toggle-ref", test_toggle_ref);
