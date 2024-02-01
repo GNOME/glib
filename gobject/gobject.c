@@ -266,7 +266,19 @@ typedef struct
    * used for g_bit_lock(). */
   gint atomic_field;
 
-  GSList *list;    /* (element-type GWeakRef) (owned) */
+  guint16 len;
+
+  /* Only relevant when len > 1. In that case, it's the allocated size of
+   * "list.many" array.  */
+  guint16 alloc;
+
+  /* Only relevant when len > 0. In that case, either "one" or "many" union
+   * field is in use. */
+  union
+  {
+    GWeakRef *one;
+    GWeakRef **many;
+  } list;
 } WeakRefData;
 
 /* We choose bit 30, and not bit 31. Bit 31 would be the sign for gint, so it
@@ -332,7 +344,7 @@ weak_ref_data_unref (WeakRefData *wrdata)
    * should have been cleared.
    *
    * Calling weak_ref_data_clear_list() should be unnecessary. */
-  g_assert (!wrdata->list);
+  g_assert (wrdata->len == 0);
 #endif
 
   g_free_sized (wrdata, sizeof (WeakRefData));
@@ -366,14 +378,15 @@ weak_ref_data_get_or_create_cb (GQuark key_id,
   if (!wrdata)
     {
       wrdata = g_new (WeakRefData, 1);
-      *wrdata = (WeakRefData){
-        /* The initial ref-count is 1. This one is owned by the GData until the
-         * object gets destroyed.
-         *
-         * The WEAK_REF_DATA_LOCK_BIT bit is of course initially unset.  */
-        .atomic_field = 1,
-        .list = NULL,
-      };
+
+      /* The initial ref-count is 1. This one is owned by the GData until the
+       * object gets destroyed.
+       *
+       * The WEAK_REF_DATA_LOCK_BIT bit is of course initially unset.  */
+      wrdata->atomic_field = 1;
+      wrdata->len = 0;
+      /* Other fields are left uninitialized. They are only considered with a positive @len. */
+
       *data = wrdata;
       *destroy_notify = (GDestroyNotify) weak_ref_data_unref;
 
@@ -424,6 +437,110 @@ weak_ref_data_get_surely (GObject *object)
   g_assert (wrdata);
 #endif
   return wrdata;
+}
+
+static gint32
+weak_ref_data_list_find (WeakRefData *wrdata, GWeakRef *weak_ref)
+{
+  if (wrdata->len == 1u)
+    {
+      if (wrdata->list.one == weak_ref)
+        return 0;
+    }
+  else
+    {
+      guint16 i;
+
+      for (i = 0; i < wrdata->len; i++)
+        {
+          if (wrdata->list.many[i] == weak_ref)
+            return i;
+        }
+    }
+
+  return -1;
+}
+
+static gboolean
+weak_ref_data_list_add (WeakRefData *wrdata, GWeakRef *weak_ref)
+{
+  if (wrdata->len == 0u)
+    wrdata->list.one = weak_ref;
+  else
+    {
+      if (wrdata->len == 1u)
+        {
+          GWeakRef *weak_ref2 = wrdata->list.one;
+
+          wrdata->alloc = 4u;
+          wrdata->list.many = g_new (GWeakRef *, wrdata->alloc);
+          wrdata->list.many[0] = weak_ref2;
+        }
+      else if (wrdata->len == wrdata->alloc)
+        {
+          guint16 alloc;
+
+          alloc = wrdata->alloc * 2u;
+          if (G_UNLIKELY (alloc < wrdata->len))
+            {
+              if (wrdata->len == G_MAXUINT16)
+                return FALSE;
+              alloc = G_MAXUINT16;
+            }
+          wrdata->list.many = g_renew (GWeakRef *, wrdata->list.many, alloc);
+          wrdata->alloc = alloc;
+        }
+
+      wrdata->list.many[wrdata->len] = weak_ref;
+    }
+
+  wrdata->len++;
+  return TRUE;
+}
+
+static GWeakRef *
+weak_ref_data_list_remove (WeakRefData *wrdata, guint16 idx, gboolean allow_shrink)
+{
+  GWeakRef *weak_ref;
+
+#if G_ENABLE_DEBUG
+  g_assert (idx < wrdata->len);
+#endif
+
+  wrdata->len--;
+
+  if (wrdata->len == 0u)
+    {
+      weak_ref = wrdata->list.one;
+    }
+  else
+    {
+      weak_ref = wrdata->list.many[idx];
+
+      if (wrdata->len == 1u)
+        {
+          GWeakRef *weak_ref2 = wrdata->list.many[idx == 0 ? 1 : 0];
+
+          g_free (wrdata->list.many);
+          wrdata->list.one = weak_ref2;
+        }
+      else
+        {
+          wrdata->list.many[idx] = wrdata->list.many[wrdata->len];
+
+          if (allow_shrink && G_UNLIKELY (wrdata->len <= wrdata->alloc / 4u))
+            {
+              /* Shrink the buffer. When 75% are empty, shrink it to 50%. */
+              if (wrdata->alloc == G_MAXUINT16)
+                wrdata->alloc = ((guint32) G_MAXUINT16 + 1u) / 2u;
+              else
+                wrdata->alloc /= 2u;
+              wrdata->list.many = g_renew (GWeakRef *, wrdata->list.many, wrdata->alloc);
+            }
+        }
+    }
+
+  return weak_ref;
 }
 
 static gboolean
@@ -5329,12 +5446,14 @@ _weak_ref_unlock_and_set (GWeakRef *weak_ref, GObject *object)
 static void
 weak_ref_data_clear_list (WeakRefData *wrdata, GObject *object)
 {
-  while (wrdata->list)
+  while (wrdata->len > 0u)
     {
-      GWeakRef *weak_ref = wrdata->list->data;
+      GWeakRef *weak_ref;
       gpointer ptr;
 
-      wrdata->list = g_slist_remove (wrdata->list, weak_ref);
+      /* pass "allow_shrink=FALSE", so we don't reallocate needlessly. We
+       * anyway are about to clear the entire list. */
+      weak_ref = weak_ref_data_list_remove (wrdata, wrdata->len - 1u, FALSE);
 
       /* Fast-path. Most likely @weak_ref is currently not locked, so we can
        * just atomically set the pointer to NULL. */
@@ -5446,17 +5565,13 @@ _weak_ref_set (GWeakRef *weak_ref,
 
   if (old_object)
     {
-#if G_ENABLE_DEBUG
-      g_assert (g_slist_find (old_wrdata->list, weak_ref));
-#endif
-      if (!old_wrdata->list)
-        {
-          g_critical ("unexpected missing GWeakRef data");
-        }
+      gint32 idx;
+
+      idx = weak_ref_data_list_find (old_wrdata, weak_ref);
+      if (idx < 0)
+        g_critical ("unexpected missing GWeakRef data");
       else
-        {
-          old_wrdata->list = g_slist_remove (old_wrdata->list, weak_ref);
-        }
+        weak_ref_data_list_remove (old_wrdata, idx, TRUE);
     }
 
   weak_ref_data_unlock (old_wrdata);
@@ -5464,7 +5579,7 @@ _weak_ref_set (GWeakRef *weak_ref,
   if (new_object)
     {
 #if G_ENABLE_DEBUG
-      g_assert (!g_slist_find (new_wrdata->list, weak_ref));
+      g_assert (weak_ref_data_list_find (new_wrdata, weak_ref) < 0);
 #endif
       if (g_atomic_int_get (&new_object->ref_count) < 1)
         {
@@ -5473,7 +5588,11 @@ _weak_ref_set (GWeakRef *weak_ref,
         }
       else
         {
-          new_wrdata->list = g_slist_prepend (new_wrdata->list, weak_ref);
+          if (!weak_ref_data_list_add (new_wrdata, weak_ref))
+            {
+              g_critical ("Too many GWeakRef registered");
+              new_object = NULL;
+            }
         }
     }
 

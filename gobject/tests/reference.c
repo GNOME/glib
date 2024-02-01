@@ -795,10 +795,13 @@ test_weak_ref_many (void)
       g_weak_ref_init (&weak_refs[j], obj);
     }
 
-  g_weak_ref_init (&weak_ref1, obj);
-  g_assert_true (obj == g_weak_ref_get (&weak_ref1));
-  g_object_unref (obj);
-  g_weak_ref_clear (&weak_ref1);
+  if (N == G_MAXUINT16)
+    {
+      g_test_expect_message ("GLib-GObject", G_LOG_LEVEL_CRITICAL, "*Too many GWeakRef registered");
+      g_weak_ref_init (&weak_ref1, obj);
+      g_test_assert_expected_messages ();
+      g_assert_null (g_weak_ref_get (&weak_ref1));
+    }
 
   n = g_test_rand_int () % (N + 1u);
   for (i = 0; i < N; i++)
