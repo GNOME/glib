@@ -57,7 +57,14 @@ struct _GIBaseInfo
   uint32_t offset;
 
   uint32_t type_is_embedded : 1; /* Used by GITypeInfo */
+
+  /* A copy of GIBaseInfo is exposed publicly for stack-allocated derivatives
+   * such as GITypeInfo, so its size is now ABI. */
+  void *padding[6];
 };
+
+G_STATIC_ASSERT (sizeof (GIBaseInfo) == sizeof (GIBaseInfoStack));
+G_STATIC_ASSERT (G_ALIGNOF (GIBaseInfo) == G_ALIGNOF (GIBaseInfoStack));
 
 /* Subtypes */
 struct _GICallableInfo
@@ -196,18 +203,15 @@ struct _GIFieldInfo
 void gi_field_info_class_init (gpointer g_class,
                                gpointer class_data);
 
-struct _GIArgInfo
-{
-  GIBaseInfo parent;
-};
+/* GIArgInfo is stack-allocatable so it can be used with
+ * gi_callable_info_load_return_type() and gi_callable_info_load_arg(), so its
+ * definition is actually public in gitypes.h. */
 
 void gi_arg_info_class_init (gpointer g_class,
                              gpointer class_data);
 
-struct _GITypeInfo
-{
-  GIBaseInfo parent;
-};
+/* GITypeInfo is stack-allocatable so it can be used with
+ * gi_arg_info_load_type(), so its definition is actually public in gitypes.h. */
 
 void gi_type_info_class_init (gpointer g_class,
                               gpointer class_data);

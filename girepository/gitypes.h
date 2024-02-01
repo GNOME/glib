@@ -41,6 +41,17 @@ G_BEGIN_DECLS
 typedef struct _GIBaseInfo GIBaseInfo;
 typedef struct _GIBaseInfoClass GIBaseInfoClass;
 
+typedef struct
+{
+  /*< private >*/
+  GTypeInstance parent_instance;
+
+  int dummy0;
+  void *dummy1[3];
+  uint32_t dummy2[2];
+  void *dummy3[6];
+} GIBaseInfoStack;
+
 /* Documented in gicallableinfo.c */
 typedef struct _GICallableInfo GICallableInfo;
 GI_AVAILABLE_IN_ALL GType gi_callable_info_get_type (void);
@@ -110,11 +121,23 @@ typedef struct _GIFieldInfo GIFieldInfo;
 GI_AVAILABLE_IN_ALL GType gi_field_info_get_type (void);
 
 /* Documented in giarginfo.c */
-typedef struct _GIArgInfo GIArgInfo;
+typedef struct
+{
+  /*< private >*/
+  GIBaseInfoStack parent;
+
+  void *padding[6];
+} GIArgInfo;
 GI_AVAILABLE_IN_ALL GType gi_arg_info_get_type (void);
 
 /* Documented in gitypeinfo.c */
-typedef struct _GITypeInfo GITypeInfo;
+typedef struct
+{
+  /*< private >*/
+  GIBaseInfoStack parent;
+
+  void *padding[6];
+} GITypeInfo;
 GI_AVAILABLE_IN_ALL GType gi_type_info_get_type (void);
 
 /* Documented in giunresolvedinfo.c */
