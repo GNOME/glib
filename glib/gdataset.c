@@ -234,18 +234,22 @@ g_datalist_clear (GData **datalist)
   g_return_if_fail (datalist != NULL);
 
   data = g_datalist_lock_and_get (datalist);
+
+  if (!data)
+    {
+      g_datalist_unlock (datalist);
+      return;
+    }
+
   g_datalist_unlock_and_set (datalist, NULL);
 
-  if (data)
+  for (i = 0; i < data->len; i++)
     {
-      for (i = 0; i < data->len; i++)
-        {
-          if (data->data[i].data && data->data[i].destroy)
-            data->data[i].destroy (data->data[i].data);
-        }
-
-      g_free (data);
+      if (data->data[i].data && data->data[i].destroy)
+        data->data[i].destroy (data->data[i].data);
     }
+
+  g_free (data);
 }
 
 /* HOLDS: g_dataset_global_lock */
