@@ -200,6 +200,11 @@ datalist_remove (GData *data, guint32 idx)
   g_assert (idx < data->len);
 #endif
 
+  /* g_data_remove_internal() relies on the fact, that this function removes
+   * the entry similar to g_array_remove_index_fast(). That is, the entries up
+   * to @idx are left unchanged, and the last entry at moved to position @idx.
+   * */
+
   data->len--;
 
   if (idx != data->len)
@@ -481,10 +486,10 @@ g_data_remove_internal (GData  **datalist,
   GData *d;
   GDataElt *old;
   GDataElt *old_to_free = NULL;
-  GDataElt *data;
-  GDataElt *data_end;
+  GData *d_to_free;
   gsize found_keys;
-  gboolean free_d = FALSE;
+  gsize i_keys;
+  guint32 i_data;
 
   d = g_datalist_lock_and_get (datalist);
 
@@ -510,68 +515,50 @@ g_data_remove_internal (GData  **datalist,
       old = old_to_free;
     }
 
-  data = d->data;
-  data_end = data + d->len;
+  i_data = 0;
   found_keys = 0;
-
-  while (data < data_end && found_keys < n_keys)
+  while (i_data < d->len && found_keys < n_keys)
     {
+      GDataElt *data = &d->data[i_data];
       gboolean remove = FALSE;
 
-      for (gsize i = 0; i < n_keys; i++)
+      for (i_keys = 0; i_keys < n_keys; i_keys++)
         {
-          if (data->key == keys[i])
+          if (data->key == keys[i_keys])
             {
-              old[i] = *data;
+              /* We must invoke the destroy notifications in the order of @keys.
+               * Hence, build up the list @old at index @i_keys. */
+              old[i_keys] = *data;
+              found_keys++;
               remove = TRUE;
               break;
             }
         }
 
-      if (remove)
+      if (!remove)
         {
-          GDataElt *data_last = data_end - 1;
-
-          found_keys++;
-
-          if (data < data_last)
-            *data = *data_last;
-
-          data_end--;
-          d->len--;
-
-          /* We don't bother to shrink, but if all data are now gone
-           * we at least free the memory
-           */
-          if (d->len == 0)
-            {
-              free_d = TRUE;
-              break;
-            }
+          i_data++;
+          continue;
         }
-      else
-        {
-          data++;
-        }
+
+      datalist_remove (d, i_data);
     }
 
-  if (free_d)
+  if (found_keys > 0 && datalist_shrink (&d, &d_to_free))
     {
-      g_datalist_unlock_and_set (datalist, NULL);
-      g_free (d);
+      g_datalist_unlock_and_set (datalist, d);
+      if (d_to_free)
+        g_free (d_to_free);
     }
   else
     g_datalist_unlock (datalist);
 
   if (found_keys > 0)
     {
-      for (gsize i = 0; i < n_keys; i++)
+      for (i_keys = 0; i_keys < n_keys; i_keys++)
         {
-          /* If keys[i] was not found, then old[i].destroy is NULL.
-           * Call old[i].destroy() only if keys[i] was found, and
-           * is associated with a destroy notifier: */
-          if (old[i].destroy)
-            old[i].destroy (old[i].data);
+          if (old[i_keys].destroy)
+            old[i_keys].destroy (old[i_keys].data);
         }
     }
 
