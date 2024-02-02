@@ -262,20 +262,49 @@ object_get_optional_flags_p (GObject *object)
  * and has a separate lifetime from the object. */
 typedef struct
 {
-  gatomicrefcount ref_count;
-  gint lock_flags; /* (atomic) */
+  /* This is both an atomic ref-count and bit 30 (WEAK_REF_DATA_LOCK_BIT) is
+   * used for g_bit_lock(). */
+  gint atomic_field;
+
   GSList *list;    /* (element-type GWeakRef) (owned) */
 } WeakRefData;
+
+/* We choose bit 30, and not bit 31. Bit 31 would be the sign for gint, so it
+ * a bit awkward to use. Note that it probably also would work fine.
+ *
+ * But 30 is ok, because it still leaves us space for 2^30-1 references, which
+ * is more than we ever need. */
+#define WEAK_REF_DATA_LOCK_BIT 30
 
 static void weak_ref_data_clear_list (WeakRefData *wrdata, GObject *object);
 
 static WeakRefData *
 weak_ref_data_ref (WeakRefData *wrdata)
 {
+  gint ref;
+
 #if G_ENABLE_DEBUG
   g_assert (wrdata);
 #endif
-  g_atomic_ref_count_inc (&wrdata->ref_count);
+
+  ref = g_atomic_int_add (&wrdata->atomic_field, 1);
+
+#if G_ENABLE_DEBUG
+  /* Overflow is almost impossible to happen, because the user would need to
+   * spawn that many operating system threads, that all call
+   * g_weak_ref_{set,get}() in parallel.
+   *
+   * Still, assert in debug mode. */
+  g_assert (ref < G_MAXINT32);
+
+  /* the real ref-count would be the following: */
+  ref = (ref + 1) & ~(1 << WEAK_REF_DATA_LOCK_BIT);
+
+  /* assert that the ref-count is still in the valid range. */
+  g_assert (ref > 0 && ref < (1 << WEAK_REF_DATA_LOCK_BIT));
+#endif
+  (void) ref;
+
   return wrdata;
 }
 
@@ -285,7 +314,16 @@ weak_ref_data_unref (WeakRefData *wrdata)
   if (!wrdata)
     return;
 
-  if (!g_atomic_ref_count_dec (&wrdata->ref_count))
+  /* Note that we also use WEAK_REF_DATA_LOCK_BIT on "atomic_field" as a bit
+   * lock. However, we will always keep the @wrdata alive (having a reference)
+   * while holding a lock (otherwise, we couldn't unlock anymore). Thus, at the
+   * point when we decrement the ref-count to zero, we surely also have the
+   * @wrdata unlocked.
+   *
+   * This means, using "aomit_field" both as ref-count and the lock bit is
+   * fine. */
+
+  if (!g_atomic_int_dec_and_test (&wrdata->atomic_field))
     return;
 
 #if G_ENABLE_DEBUG
@@ -306,14 +344,14 @@ weak_ref_data_lock (WeakRefData *wrdata)
   /* Note that while holding a _weak_ref_lock() on the @weak_ref, we MUST not acquire a
    * weak_ref_data_lock() on the @wrdata. The other way around! */
   if (wrdata)
-    g_bit_lock (&wrdata->lock_flags, 0);
+    g_bit_lock (&wrdata->atomic_field, WEAK_REF_DATA_LOCK_BIT);
 }
 
 static void
 weak_ref_data_unlock (WeakRefData *wrdata)
 {
   if (wrdata)
-    g_bit_unlock (&wrdata->lock_flags, 0);
+    g_bit_unlock (&wrdata->atomic_field, WEAK_REF_DATA_LOCK_BIT);
 }
 
 static gpointer
@@ -330,9 +368,10 @@ weak_ref_data_get_or_create_cb (GQuark key_id,
       wrdata = g_new (WeakRefData, 1);
       *wrdata = (WeakRefData){
         /* The initial ref-count is 1. This one is owned by the GData until the
-         * object gets destroyed. */
-        .ref_count = 1,
-        .lock_flags = 0,
+         * object gets destroyed.
+         *
+         * The WEAK_REF_DATA_LOCK_BIT bit is of course initially unset.  */
+        .atomic_field = 1,
         .list = NULL,
       };
       *data = wrdata;
