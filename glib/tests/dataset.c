@@ -286,6 +286,84 @@ test_datalist_id_remove_multiple (void)
 }
 
 static void
+test_datalist_id_remove_multiple_resize (void)
+{
+  GQuark *quarks;
+  GQuark *quarks2;
+  const guint N = 1000;
+  const guint PRIME = 1048583u;
+  guint i;
+  char sbuf[100];
+  GData *list = NULL;
+  guint i_run;
+
+  quarks = g_new (GQuark, N);
+  quarks2 = g_new (GQuark, N);
+
+  for (i = 0; i < N; i++)
+    {
+      g_snprintf (sbuf, sizeof (sbuf), "%d", i);
+      quarks[i] = g_quark_from_string (sbuf);
+    }
+
+  for (i = 0; i < N; i++)
+    g_datalist_id_set_data (&list, quarks[i], GINT_TO_POINTER (i));
+
+  /* Now we perform a list of random operations (remove/add quarks). */
+  for (i_run = 0; TRUE; i_run++)
+    {
+      int MODE = ((guint) g_test_rand_int ()) % 4;
+      guint n;
+      guint j;
+
+      n = ((guint) g_test_rand_int ()) % (N + 1);
+      j = ((guint) g_test_rand_int ()) % N;
+
+      if (i_run > 20)
+        {
+          /* After a few runs, we only remove elements, until the list
+           * is empty. */
+          if (!list)
+            break;
+          MODE = 0;
+          if (i_run > 30)
+            n = N;
+        }
+
+      switch (MODE)
+        {
+        case 0:
+        case 1:
+        case 2:
+          /* Mode: add or remove a number of random quarks. */
+          for (i = 0; i < n; i++)
+            {
+              j = (j + PRIME) % N;
+              if (MODE == 0)
+                g_datalist_id_remove_data (&list, quarks[j]);
+              else
+                g_datalist_id_set_data (&list, quarks[j], GINT_TO_POINTER (j));
+            }
+          break;
+        case 3:
+          /* Mode: remove a list of (random) quarks. */
+          n = n % 16;
+          for (i = 0; i < n; i++)
+            {
+              j = (j + PRIME) % N;
+              quarks2[i] = quarks[j];
+            }
+
+          g_datalist_id_remove_multiple (&list, quarks2, n);
+          break;
+        }
+    }
+
+  g_free (quarks);
+  g_free (quarks2);
+}
+
+static void
 destroy_func (gpointer data)
 {
   destroy_count++;
@@ -389,6 +467,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/datalist/id", test_datalist_id);
   g_test_add_func ("/datalist/recursive-clear", test_datalist_clear);
   g_test_add_func ("/datalist/id-remove-multiple", test_datalist_id_remove_multiple);
+  g_test_add_func ("/datalist/id-remove-multiple/resize", test_datalist_id_remove_multiple_resize);
   g_test_add_func ("/datalist/id-remove-multiple-destroy-order",
                    test_datalist_id_remove_multiple_destroy_order);
   g_test_add_func ("/datalist/update-atomic", test_datalist_update_atomic);
