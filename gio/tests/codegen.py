@@ -479,7 +479,7 @@ G_END_DECLS
         self.assertEqual("", res.out)
         with open("test-org.project.Bar.Frobnicator.xml", "r") as f:
             xml_data = f.readlines()
-            self.assertTrue(len(xml_data) != 0)
+            self.assertNotEqual(len(xml_data), 0)
 
     def test_generate_md(self):
         """Test the basic functionality of the markdown generator."""
@@ -499,7 +499,7 @@ G_END_DECLS
         self.assertEqual("", res.out)
         with open("test-org.project.Bar.Frobnicator.md", "r") as f:
             rst = f.readlines()
-            self.assertTrue(len(rst) != 0)
+            self.assertNotEqual(len(rst), 0)
 
     def test_generate_rst(self):
         """Test the basic functionality of the rst generator."""
@@ -519,7 +519,7 @@ G_END_DECLS
         self.assertEqual("", res.out)
         with open("test-org.project.Bar.Frobnicator.rst", "r") as f:
             rst = f.readlines()
-            self.assertTrue(len(rst) != 0)
+            self.assertNotEqual(len(rst), 0)
 
     def test_generate_rst_method(self):
         """Test generating a method documentation with the rst generator."""
@@ -1472,7 +1472,7 @@ G_END_DECLS
         self.assertEqual("", res.err)
         self.assertEqual("", res.out)
         with open("test-org.project.Bar.Frobnicator.xml", "r") as f:
-            self.assertTrue(ET.parse(f) is not None)
+            self.assertIsNotNone(ET.parse(f))
 
     def test_indentation_preservation_in_comments(self):
         """Test if the parser preserves relative indentation in XML comments"""
