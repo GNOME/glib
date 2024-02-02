@@ -12,7 +12,7 @@ if get_option('documentation') and enable_gir
     '--quiet',
     '--no-namespace-dir',
     '--fatal-warnings',
-    '--add-include-path=@0@'.format(meson.current_build_dir() / '../../introspection'),
+    '--add-include-path=@0@'.format(meson.current_build_dir() / '../../girepository/introspection'),
   ]
 
   docs_dir = glib_datadir / 'doc' / 'glib-2.0'
