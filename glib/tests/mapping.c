@@ -189,8 +189,6 @@ test_private (void)
 
   /* Cleaning left over files */
   g_remove ("maptest");
-
-  g_test_message ("test_private: ok");
 }
 
 static void
@@ -283,8 +281,6 @@ test_child_private (void)
   /* Cleaning left over files */
   g_remove ("mapchild");
   g_remove ("maptest");
-
-  g_test_message ("test_child_private: ok");
 }
 
 int
@@ -303,6 +299,7 @@ main (int argc,
     }
 #endif
 
+  g_test_init (&argc, &argv, NULL);
   local_argv = argv;
 
   if (argc > 1)
@@ -310,8 +307,6 @@ main (int argc,
       child_main ();
       return EXIT_SUCCESS;
     }
-
-  g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/mapping/flags", test_mapping_flags);
   g_test_add_func ("/mapping/private", test_private);

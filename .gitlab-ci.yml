@@ -346,6 +346,8 @@ G_DISABLE_ASSERT:
   image: $FEDORA_IMAGE
   stage: build
   needs: []
+  variables:
+    MESON_TEST_TIMEOUT_MULTIPLIER: 15
   script:
     - meson setup ${MESON_COMMON_OPTIONS}
             --werror
@@ -356,7 +358,8 @@ G_DISABLE_ASSERT:
             -Dintrospection=enabled
             _build
     - meson compile -C _build
-    - bash -x ./.gitlab-ci/run-tests.sh
+    # Also take the opportunity to run the thorough tests (which are slow)
+    - bash -x ./.gitlab-ci/run-tests.sh --setup thorough
   artifacts:
     reports:
       junit:

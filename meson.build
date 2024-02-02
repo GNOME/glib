@@ -193,6 +193,13 @@ add_test_setup('unstable_tests',
   #suites: ['flaky', 'unstable']
 )
 
+add_test_setup('thorough',
+  exclude_suites: ['flaky', 'failing', 'performance'],
+  env: common_test_env,
+  timeout_multiplier: 20,
+  exe_wrapper: [find_program('./.gitlab-ci/thorough-test-wrapper.sh', required: true)],
+)
+
 # Allow the tests to be easily run under valgrind using --setup=valgrind
 valgrind = find_program('valgrind', required: false)
 valgrind_suppression_file = files('tools' / 'glib.supp')[0]
