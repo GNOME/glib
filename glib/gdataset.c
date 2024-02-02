@@ -736,12 +736,16 @@ g_datalist_id_set_data_full (GData	  **datalist,
  * g_datalist_id_remove_multiple:
  * @datalist: a datalist
  * @keys: (array length=n_keys): keys to remove
- * @n_keys: length of @keys, must be <= 16
+ * @n_keys: length of @keys.
  *
  * Removes multiple keys from a datalist.
  *
  * This is more efficient than calling g_datalist_id_remove_data()
  * multiple times in a row.
+ *
+ * Before 2.80, @n_keys had to be not larger than 16. Now it can be larger, but
+ * note that GData does a linear search, so an excessive number of keys will
+ * perform badly.
  *
  * Since: 2.74
  */
@@ -750,8 +754,6 @@ g_datalist_id_remove_multiple (GData  **datalist,
                                GQuark  *keys,
                                gsize    n_keys)
 {
-  g_return_if_fail (n_keys <= 16);
-
   g_data_remove_internal (datalist, keys, n_keys);
 }
 

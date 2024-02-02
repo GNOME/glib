@@ -347,7 +347,6 @@ test_datalist_id_remove_multiple_resize (void)
           break;
         case 3:
           /* Mode: remove a list of (random) quarks. */
-          n = n % 16;
           for (i = 0; i < n; i++)
             {
               j = (j + PRIME) % N;
