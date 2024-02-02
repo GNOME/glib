@@ -193,6 +193,41 @@ datalist_append (GData **data, GQuark key_id, gpointer new_data, GDestroyNotify 
   return reallocated;
 }
 
+static void
+datalist_remove (GData *data, guint32 idx)
+{
+#if G_ENABLE_DEBUG
+  g_assert (idx < data->len);
+#endif
+
+  data->len--;
+
+  if (idx != data->len)
+    data->data[idx] = data->data[data->len];
+}
+
+static gboolean
+datalist_shrink (GData **data, GData **d_to_free)
+{
+  GData *d;
+
+  d = *data;
+
+  if (d->len == 0)
+    {
+      /* The list became empty. We drop the allocated memory altogether. */
+
+      /* The caller will free the buffer after releasing the lock, to minimize
+       * the time we hold the lock. Transfer it out. */
+      *d_to_free = d;
+      *data = NULL;
+      return TRUE;
+    }
+
+  /* not reallocated. */
+  return FALSE;
+}
+
 static GDataElt *
 datalist_find (GData *data, GQuark key_id, guint32 *out_idx)
 {
@@ -352,33 +387,26 @@ g_data_set_internal (GData	  **datalist,
     {
       if (data)
         {
+          GData *d_to_free;
+
           old = *data;
-          if (idx != d->len - 1u)
-            *data = d->data[d->len - 1u];
-          d->len--;
 
-          /* We don't bother to shrink, but if all data are now gone
-           * we at least free the memory
-           */
-          if (d->len == 0)
+          datalist_remove (d, idx);
+          if (datalist_shrink (&d, &d_to_free))
             {
-              /* datalist may be situated in dataset, so must not be
-               * unlocked when we free it
-               */
-              g_datalist_unlock_and_set (datalist, NULL);
-
-              g_free (d);
+              g_datalist_unlock_and_set (datalist, d);
 
               /* the dataset destruction *must* be done
                * prior to invocation of the data destroy function
                */
-              if (dataset)
+              if (dataset && !d)
                 g_dataset_destroy_internal (dataset);
+
+              if (d_to_free)
+                g_free (d_to_free);
             }
           else
-            {
-              g_datalist_unlock (datalist);
-            }
+            g_datalist_unlock (datalist);
 
           /* We found and removed an old value
            * the GData struct *must* already be unlinked
@@ -896,24 +924,18 @@ g_datalist_id_update_atomic (GData **datalist,
 
   if (data && !new_data)
     {
+      GData *d_to_free;
+
       /* Remove. The callback indicates to drop the entry.
        *
        * The old data->data was stolen by callback(). */
-      d->len--;
-
-      /* We don't bother to shrink, but if all data are now gone
-       * we at least free the memory
-       */
-      if (d->len == 0)
+      datalist_remove (d, idx);
+      if (datalist_shrink (&d, &d_to_free))
         {
-          g_datalist_unlock_and_set (datalist, NULL);
-          g_free (d);
+          g_datalist_unlock_and_set (datalist, d);
+          if (d_to_free)
+            g_free (d_to_free);
           to_unlock = FALSE;
-        }
-      else
-        {
-          if (idx != d->len)
-            *data = d->data[d->len];
         }
     }
   else if (data)
@@ -1112,10 +1134,9 @@ g_datalist_id_replace_data (GData          **datalist,
 {
   gpointer val = NULL;
   GData *d;
-  GData *new_d = NULL;
   GDataElt *data;
-  gboolean free_d = FALSE;
-  gboolean set_new_d = FALSE;
+  GData *d_to_free = NULL;
+  gboolean set_d = FALSE;
   guint32 idx;
 
   g_return_val_if_fail (datalist != NULL, FALSE);
@@ -1141,18 +1162,9 @@ g_datalist_id_replace_data (GData          **datalist,
             }
           else
             {
-              if (idx != d->len - 1u)
-                *data = d->data[d->len - 1u];
-              d->len--;
-
-              /* We don't bother to shrink, but if all data are now gone
-               * we at least free the memory
-               */
-              if (d->len == 0)
-                {
-                  set_new_d = TRUE;
-                  free_d = TRUE;
-                }
+              datalist_remove (d, idx);
+              if (datalist_shrink (&d, &d_to_free))
+                set_d = TRUE;
             }
         }
     }
@@ -1161,18 +1173,17 @@ g_datalist_id_replace_data (GData          **datalist,
     {
       if (datalist_append (&d, key_id, newval, destroy))
         {
-          new_d = d;
-          set_new_d = TRUE;
+          set_d = TRUE;
         }
     }
 
-  if (set_new_d)
-    g_datalist_unlock_and_set (datalist, new_d);
+  if (set_d)
+    g_datalist_unlock_and_set (datalist, d);
   else
     g_datalist_unlock (datalist);
 
-  if (free_d)
-    g_free (d);
+  if (d_to_free)
+    g_free (d_to_free);
 
   return val == oldval;
 }
