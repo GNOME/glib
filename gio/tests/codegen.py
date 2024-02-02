@@ -41,6 +41,10 @@ import taptestrunner
 Result = collections.namedtuple("Result", ("info", "out", "err", "subs"))
 
 
+def on_win32():
+    return sys.platform.find("win") != -1
+
+
 class TestCodegen(unittest.TestCase):
     """Integration test for running gdbus-codegen.
 
@@ -351,9 +355,10 @@ class TestCodegen(unittest.TestCase):
         with self.assertRaises(subprocess.CalledProcessError):
             self.runCodegen()
 
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_empty_interface_header(self):
         """Test generating a header with an empty interface file."""
-        result = self.runCodegenWithInterface("", "--output", "stdout", "--header")
+        result = self.runCodegenWithInterface("", "--output", "/dev/stdout", "--header")
         self.assertEqual("", result.err)
         self.assertEqual(
             """{standard_top_comment}
@@ -374,9 +379,10 @@ G_END_DECLS
             result.out.strip(),
         )
 
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_empty_interface_body(self):
         """Test generating a body with an empty interface file."""
-        result = self.runCodegenWithInterface("", "--output", "stdout", "--body")
+        result = self.runCodegenWithInterface("", "--output", "/dev/stdout", "--body")
         self.assertEqual("", result.err)
         self.assertEqual(
             """{standard_top_comment}
@@ -395,6 +401,7 @@ G_END_DECLS
             result.out.strip(),
         )
 
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_reproducible(self):
         """Test builds are reproducible regardless of file ordering."""
         xml_contents1 = """
@@ -437,7 +444,7 @@ G_END_DECLS
                     xml_file1.name,
                     xml_file2.name,
                     "--output",
-                    "stdout",
+                    "/dev/stdout",
                     header_or_body,
                 )
                 self.assertEqual("", result1.err)
@@ -446,7 +453,7 @@ G_END_DECLS
                     xml_file2.name,
                     xml_file1.name,
                     "--output",
-                    "stdout",
+                    "/dev/stdout",
                     header_or_body,
                 )
                 self.assertEqual("", result2.err)
@@ -646,32 +653,35 @@ G_END_DECLS
                 rst,
             )
 
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_glib_min_required_invalid(self):
         """Test running with an invalid --glib-min-required."""
         with self.assertRaises(subprocess.CalledProcessError):
             self.runCodegenWithInterface(
                 "",
                 "--output",
-                "stdout",
+                "/dev/stdout",
                 "--body",
                 "--glib-min-required",
                 "hello mum",
             )
 
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_glib_min_required_too_low(self):
         """Test running with a --glib-min-required which is too low (and hence
         probably a typo)."""
         with self.assertRaises(subprocess.CalledProcessError):
             self.runCodegenWithInterface(
-                "", "--output", "stdout", "--body", "--glib-min-required", "2.6"
+                "", "--output", "/dev/stdout", "--body", "--glib-min-required", "2.6"
             )
 
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_glib_min_required_major_only(self):
         """Test running with a --glib-min-required which contains only a major version."""
         result = self.runCodegenWithInterface(
             "",
             "--output",
-            "stdout",
+            "/dev/stdout",
             "--header",
             "--glib-min-required",
             "3",
@@ -681,38 +691,43 @@ G_END_DECLS
         self.assertEqual("", result.err)
         self.assertNotEqual("", result.out.strip())
 
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_glib_min_required_with_micro(self):
         """Test running with a --glib-min-required which contains a micro version."""
         result = self.runCodegenWithInterface(
-            "", "--output", "stdout", "--header", "--glib-min-required", "2.46.2"
+            "", "--output", "/dev/stdout", "--header", "--glib-min-required", "2.46.2"
         )
         self.assertEqual("", result.err)
         self.assertNotEqual("", result.out.strip())
 
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_glib_max_allowed_too_low(self):
         """Test running with a --glib-max-allowed which is too low (and hence
         probably a typo)."""
         with self.assertRaises(subprocess.CalledProcessError):
             self.runCodegenWithInterface(
-                "", "--output", "stdout", "--body", "--glib-max-allowed", "2.6"
+                "", "--output", "/dev/stdout", "--body", "--glib-max-allowed", "2.6"
             )
 
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_glib_max_allowed_major_only(self):
         """Test running with a --glib-max-allowed which contains only a major version."""
         result = self.runCodegenWithInterface(
-            "", "--output", "stdout", "--header", "--glib-max-allowed", "3"
+            "", "--output", "/dev/stdout", "--header", "--glib-max-allowed", "3"
         )
         self.assertEqual("", result.err)
         self.assertNotEqual("", result.out.strip())
 
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_glib_max_allowed_with_micro(self):
         """Test running with a --glib-max-allowed which contains a micro version."""
         result = self.runCodegenWithInterface(
-            "", "--output", "stdout", "--header", "--glib-max-allowed", "2.46.2"
+            "", "--output", "/dev/stdout", "--header", "--glib-max-allowed", "2.46.2"
         )
         self.assertEqual("", result.err)
         self.assertNotEqual("", result.out.strip())
 
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_glib_max_allowed_unstable(self):
         """Test running with a --glib-max-allowed which is unstable. It should
         be rounded up to the next stable version number, and hence should not
@@ -720,7 +735,7 @@ G_END_DECLS
         result = self.runCodegenWithInterface(
             "",
             "--output",
-            "stdout",
+            "/dev/stdout",
             "--header",
             "--glib-max-allowed",
             "2.63",
@@ -730,6 +745,7 @@ G_END_DECLS
         self.assertEqual("", result.err)
         self.assertNotEqual("", result.out.strip())
 
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_glib_max_allowed_less_than_min_required(self):
         """Test running with a --glib-max-allowed which is less than
         --glib-min-required."""
@@ -737,7 +753,7 @@ G_END_DECLS
             self.runCodegenWithInterface(
                 "",
                 "--output",
-                "stdout",
+                "/dev/stdout",
                 "--body",
                 "--glib-max-allowed",
                 "2.62",
@@ -745,6 +761,7 @@ G_END_DECLS
                 "2.64",
             )
 
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_dbus_types(self):
         bad_types = [
             "{vs}",  # Bad dictionary key type
@@ -781,7 +798,7 @@ G_END_DECLS
                 </node>"""
             with self.assertRaises(subprocess.CalledProcessError):
                 self.runCodegenWithInterface(
-                    interface_xml, "--output", "stdout", "--body"
+                    interface_xml, "--output", "/dev/stdout", "--body"
                 )
         good_types = [
             "si{s{b(ybnqiuxtdh)}}{yv}{nv}{dv}",
@@ -798,10 +815,11 @@ G_END_DECLS
                   </interface>
                 </node>"""
             result = self.runCodegenWithInterface(
-                interface_xml, "--output", "stdout", "--body"
+                interface_xml, "--output", "/dev/stdout", "--body"
             )
             self.assertEqual("", result.err)
 
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_unix_fd_types_and_annotations(self):
         """Test an interface with `h` arguments, no annotation, and GLib < 2.64.
 
@@ -829,7 +847,7 @@ G_END_DECLS
 
         # Try without specifying --glib-min-required.
         result = self.runCodegenWithInterface(
-            interface_xml, "--output", "stdout", "--header"
+            interface_xml, "--output", "/dev/stdout", "--header"
         )
         self.assertEqual("", result.err)
         self.assertEqual(result.out.strip().count("GUnixFDList"), 6)
@@ -838,7 +856,7 @@ G_END_DECLS
         result = self.runCodegenWithInterface(
             interface_xml,
             "--output",
-            "stdout",
+            "/dev/stdout",
             "--header",
             "--glib-min-required",
             "2.32",
@@ -852,7 +870,7 @@ G_END_DECLS
         result = self.runCodegenWithInterface(
             interface_xml,
             "--output",
-            "stdout",
+            "/dev/stdout",
             "--header",
             "--glib-min-required",
             "2.64",
@@ -860,6 +878,7 @@ G_END_DECLS
         self.assertEqual("", result.err)
         self.assertEqual(result.out.strip().count("GUnixFDList"), 18)
 
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_call_flags_and_timeout_method_args(self):
         """Test that generated method call functions have @call_flags and
         @timeout_msec args if and only if GLib >= 2.64.
@@ -873,7 +892,7 @@ G_END_DECLS
 
         # Try without specifying --glib-min-required.
         result = self.runCodegenWithInterface(
-            interface_xml, "--output", "stdout", "--header"
+            interface_xml, "--output", "/dev/stdout", "--header"
         )
         self.assertEqual("", result.err)
         self.assertEqual(result.out.strip().count("GDBusCallFlags call_flags,"), 0)
@@ -883,7 +902,7 @@ G_END_DECLS
         result = self.runCodegenWithInterface(
             interface_xml,
             "--output",
-            "stdout",
+            "/dev/stdout",
             "--header",
             "--glib-min-required",
             "2.32",
@@ -897,7 +916,7 @@ G_END_DECLS
         result = self.runCodegenWithInterface(
             interface_xml,
             "--output",
-            "stdout",
+            "/dev/stdout",
             "--header",
             "--glib-min-required",
             "2.64",
@@ -906,6 +925,7 @@ G_END_DECLS
         self.assertEqual(result.out.strip().count("GDBusCallFlags call_flags,"), 2)
         self.assertEqual(result.out.strip().count("gint timeout_msec,"), 2)
 
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_generate_signal_id_simple_signal(self):
         """Test that signals IDs are used to emit signals"""
         interface_xml = """
@@ -919,7 +939,7 @@ G_END_DECLS
             </node>"""
 
         result = self.runCodegenWithInterface(
-            interface_xml, "--output", "stdout", "--body"
+            interface_xml, "--output", "/dev/stdout", "--body"
         )
         stripped_out = result.out.strip()
         self.assertFalse(result.err)
@@ -937,6 +957,7 @@ G_END_DECLS
                 1,
             )
 
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_generate_signal_id_multiple_signals_types(self):
         """Test that signals IDs are used to emit signals for all types"""
 
@@ -957,7 +978,7 @@ G_END_DECLS
             </node>"""
 
         result = self.runCodegenWithInterface(
-            interface_xml, "--output", "stdout", "--body"
+            interface_xml, "--output", "/dev/stdout", "--body"
         )
         stripped_out = result.out.strip()
         self.assertFalse(result.err)
@@ -976,6 +997,7 @@ G_END_DECLS
                 1,
             )
 
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_generate_signal_id_multiple_signal_args_types(self):
         """Test that signals IDs are used to emit signals for all types"""
 
@@ -994,7 +1016,7 @@ G_END_DECLS
             </node>"""
 
         result = self.runCodegenWithInterface(
-            interface_xml, "--output", "stdout", "--body"
+            interface_xml, "--output", "/dev/stdout", "--body"
         )
         stripped_out = result.out.strip()
         self.assertFalse(result.err)
@@ -1014,6 +1036,7 @@ G_END_DECLS
             1,
         )
 
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_generate_signals_marshaller_simple_signal(self):
         """Test that signals marshaller is generated for simple signal"""
         interface_xml = """
@@ -1027,7 +1050,7 @@ G_END_DECLS
             </node>"""
 
         result = self.runCodegenWithInterface(
-            interface_xml, "--output", "stdout", "--body"
+            interface_xml, "--output", "/dev/stdout", "--body"
         )
         stripped_out = result.out.strip()
         self.assertFalse(result.err)
@@ -1043,6 +1066,7 @@ G_END_DECLS
         self.assertIs(stripped_out.count(f"{func_name} ("), 1)
         self.assertIs(stripped_out.count("g_cclosure_marshal_VOID__VOID (closure"), 2)
 
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_generate_signals_marshaller_single_typed_args(self):
         """Test that signals marshaller is generated for each known type"""
         for t, props in self.ARGUMENTS_TYPES.items():
@@ -1058,7 +1082,7 @@ G_END_DECLS
             </node>"""
 
             result = self.runCodegenWithInterface(
-                interface_xml, "--output", "stdout", "--body"
+                interface_xml, "--output", "/dev/stdout", "--body"
             )
             stripped_out = result.out.strip()
             self.assertFalse(result.err)
@@ -1089,6 +1113,7 @@ G_END_DECLS
                     1,
                 )
 
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_generate_signals_marshallers_multiple_args(self):
         """Test that signals marshallers are generated"""
         generated_args = [
@@ -1107,7 +1132,7 @@ G_END_DECLS
             </node>"""
 
         result = self.runCodegenWithInterface(
-            interface_xml, "--output", "stdout", "--body"
+            interface_xml, "--output", "/dev/stdout", "--body"
         )
         stripped_out = result.out.strip()
         self.assertFalse(result.err)
@@ -1132,6 +1157,7 @@ G_END_DECLS
             )
             index += 1
 
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_generate_methods_marshaller_simple_method(self):
         """Test that methods marshaller is generated for simple method"""
         interface_xml = """
@@ -1145,7 +1171,7 @@ G_END_DECLS
             </node>"""
 
         result = self.runCodegenWithInterface(
-            interface_xml, "--output", "stdout", "--body"
+            interface_xml, "--output", "/dev/stdout", "--body"
         )
         stripped_out = result.out.strip()
         self.assertFalse(result.err)
@@ -1176,6 +1202,7 @@ G_END_DECLS
             stripped_out.count("_g_dbus_codegen_marshal_BOOLEAN__OBJECT (closure"), 2
         )
 
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_generate_methods_marshaller_single_typed_in_args(self):
         """Test that methods marshallers are generated for each known type"""
         for t, props in self.ARGUMENTS_TYPES.items():
@@ -1190,7 +1217,7 @@ G_END_DECLS
             </node>"""
 
             result = self.runCodegenWithInterface(
-                interface_xml, "--output", "stdout", "--body"
+                interface_xml, "--output", "/dev/stdout", "--body"
             )
             stripped_out = result.out.strip()
             self.assertFalse(result.err)
@@ -1214,6 +1241,7 @@ G_END_DECLS
                 1,
             )
 
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_generate_methods_marshaller_single_typed_out_args(self):
         """Test that methods marshallers are generated for each known type"""
         for t, props in self.ARGUMENTS_TYPES.items():
@@ -1228,7 +1256,7 @@ G_END_DECLS
             </node>"""
 
             result = self.runCodegenWithInterface(
-                interface_xml, "--output", "stdout", "--body"
+                interface_xml, "--output", "/dev/stdout", "--body"
             )
             stripped_out = result.out.strip()
             self.assertFalse(result.err)
@@ -1247,6 +1275,7 @@ G_END_DECLS
             )
             self.assertIs(stripped_out.count("(param_values + 2)"), 0)
 
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_generate_methods_marshallers_multiple_in_args(self):
         """Test that methods marshallers are generated"""
         generated_args = [
@@ -1272,7 +1301,7 @@ G_END_DECLS
             </node>"""
 
         result = self.runCodegenWithInterface(
-            interface_xml, "--output", "stdout", "--body"
+            interface_xml, "--output", "/dev/stdout", "--body"
         )
         stripped_out = result.out.strip()
         self.assertFalse(result.err)
@@ -1315,6 +1344,7 @@ G_END_DECLS
         self.assertIs(stripped_out.count(f"{func_name},"), 1)
         self.assertIs(stripped_out.count(f"{func_name} ("), 1)
 
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_generate_methods_marshallers_multiple_out_args(self):
         """Test that methods marshallers are generated"""
         generated_args = [
@@ -1332,7 +1362,7 @@ G_END_DECLS
             </node>"""
 
         result = self.runCodegenWithInterface(
-            interface_xml, "--output", "stdout", "--body"
+            interface_xml, "--output", "/dev/stdout", "--body"
         )
         stripped_out = result.out.strip()
         self.assertFalse(result.err)
@@ -1362,6 +1392,7 @@ G_END_DECLS
             1,
         )
 
+    @unittest.skipIf(on_win32(), "requires /dev/stdout")
     def test_generate_methods_marshallers_with_unix_fds(self):
         """Test an interface with `h` arguments"""
         interface_xml = """
@@ -1376,7 +1407,7 @@ G_END_DECLS
             </node>"""
 
         result = self.runCodegenWithInterface(
-            interface_xml, "--output", "stdout", "--body"
+            interface_xml, "--output", "/dev/stdout", "--body"
         )
         stripped_out = result.out.strip()
         self.assertFalse(result.err)
