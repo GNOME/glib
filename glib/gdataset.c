@@ -40,6 +40,7 @@
 
 #include "gslice.h"
 #include "gdatasetprivate.h"
+#include "gutilsprivate.h"
 #include "ghash.h"
 #include "gquark.h"
 #include "gstrfuncs.h"
@@ -164,18 +165,26 @@ datalist_append (GData **data, GQuark key_id, gpointer new_data, GDestroyNotify 
   GData *d;
 
   d = *data;
-
   if (!d)
     {
-      d = g_malloc (sizeof (GData));
+      d = g_malloc (G_STRUCT_OFFSET (GData, data) + 2u * sizeof (GDataElt));
       d->len = 0;
-      d->alloc = 1;
+      d->alloc = 2u;
       *data = d;
       reallocated = TRUE;
     }
   else if (d->len == d->alloc)
     {
       d->alloc = d->alloc * 2u;
+#if G_ENABLE_DEBUG
+      /* d->alloc is always a power of two. It thus overflows the first time
+       * when going to (G_MAXUINT32+1), or when requesting 2^31+1 elements.
+       *
+       * This is not handled, and we just crash. That's because we track the GData
+       * in a linear list, which horribly degrades long before we add 2 billion entries.
+       * Don't ever try to do that. */
+      g_assert (d->alloc > d->len);
+#endif
       d = g_realloc (d, G_STRUCT_OFFSET (GData, data) + d->alloc * sizeof (GDataElt));
       *data = d;
       reallocated = TRUE;
@@ -214,9 +223,19 @@ datalist_remove (GData *data, guint32 idx)
 static gboolean
 datalist_shrink (GData **data, GData **d_to_free)
 {
+  guint32 alloc_by_4;
+  guint32 v;
   GData *d;
 
   d = *data;
+
+  alloc_by_4 = d->alloc / 4u;
+
+  if (G_LIKELY (d->len > alloc_by_4))
+    {
+      /* No shrinking */
+      return FALSE;
+    }
 
   if (d->len == 0)
     {
@@ -229,8 +248,30 @@ datalist_shrink (GData **data, GData **d_to_free)
       return TRUE;
     }
 
-  /* not reallocated. */
-  return FALSE;
+  /* If the buffer is filled not more than 25%. Shrink to double the current length. */
+
+  v = d->len;
+  if (v != alloc_by_4)
+    {
+      /* d->alloc is a power of two. Usually, we remove one element at a
+       * time, then we will just reach reach a quarter of that.
+       *
+       * However, with g_datalist_id_remove_multiple(), len can be smaller
+       * at once. In that case, find first the next power of two. */
+      v = g_nearest_pow (v);
+    }
+  v *= 2u;
+
+#if G_ENABLE_DEBUG
+  g_assert (v > d->len);
+  g_assert (v <= d->alloc / 2u);
+#endif
+
+  d->alloc = v;
+  d = g_realloc (d, G_STRUCT_OFFSET (GData, data) + (v * sizeof (GDataElt)));
+  *d_to_free = NULL;
+  *data = d;
+  return TRUE;
 }
 
 static GDataElt *
