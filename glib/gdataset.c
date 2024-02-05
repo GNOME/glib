@@ -158,6 +158,13 @@ g_datalist_unlock_and_set (GData **datalist, gpointer ptr)
   g_pointer_bit_unlock_and_set ((void **) datalist, DATALIST_LOCK_BIT, ptr, G_DATALIST_FLAGS_MASK_INTERNAL);
 }
 
+static gsize
+datalist_alloc_size (guint32 alloc)
+{
+  return G_STRUCT_OFFSET (GData, data) +
+         (((gsize) alloc) * sizeof (GDataElt));
+}
+
 static gboolean
 datalist_append (GData **data, GQuark key_id, gpointer new_data, GDestroyNotify destroy_func)
 {
@@ -167,7 +174,7 @@ datalist_append (GData **data, GQuark key_id, gpointer new_data, GDestroyNotify 
   d = *data;
   if (!d)
     {
-      d = g_malloc (G_STRUCT_OFFSET (GData, data) + 2u * sizeof (GDataElt));
+      d = g_malloc (datalist_alloc_size (2u));
       d->len = 0;
       d->alloc = 2u;
       *data = d;
@@ -185,7 +192,7 @@ datalist_append (GData **data, GQuark key_id, gpointer new_data, GDestroyNotify 
        * Don't ever try to do that. */
       g_assert (d->alloc > d->len);
 #endif
-      d = g_realloc (d, G_STRUCT_OFFSET (GData, data) + d->alloc * sizeof (GDataElt));
+      d = g_realloc (d, datalist_alloc_size (d->alloc));
       *data = d;
       reallocated = TRUE;
     }
@@ -268,7 +275,7 @@ datalist_shrink (GData **data, GData **d_to_free)
 #endif
 
   d->alloc = v;
-  d = g_realloc (d, G_STRUCT_OFFSET (GData, data) + (v * sizeof (GDataElt)));
+  d = g_realloc (d, datalist_alloc_size (v));
   *d_to_free = NULL;
   *data = d;
   return TRUE;
