@@ -26,5 +26,8 @@ if get_option('documentation') and enable_gir
     ],
     build_by_default: true,
     depend_files: expand_content_files,
+    install: true,
+    install_dir: docs_dir,
+    install_tag: 'doc',
   )
 endif
