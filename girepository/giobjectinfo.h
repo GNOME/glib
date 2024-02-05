@@ -156,7 +156,7 @@ GIFunctionInfo *  gi_object_info_find_method      (GIObjectInfo *info,
 GI_AVAILABLE_IN_ALL
 GIFunctionInfo *  gi_object_info_find_method_using_interfaces (GIObjectInfo  *info,
                                                                const char    *name,
-                                                               GIObjectInfo **implementor);
+                                                               GIBaseInfo   **declarer);
 
 
 GI_AVAILABLE_IN_ALL
@@ -186,7 +186,7 @@ GIVFuncInfo *     gi_object_info_find_vfunc       (GIObjectInfo *info,
 GI_AVAILABLE_IN_ALL
 GIVFuncInfo *     gi_object_info_find_vfunc_using_interfaces (GIObjectInfo  *info,
                                                               const char    *name,
-                                                              GIObjectInfo **implementor);
+                                                              GIBaseInfo   **declarer);
 
 GI_AVAILABLE_IN_ALL
 unsigned int      gi_object_info_get_n_constants  (GIObjectInfo *info);
