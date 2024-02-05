@@ -1,4 +1,8 @@
 if get_option('documentation') and enable_gir
+  expand_content_files = [
+    'migrating-gi.md',
+  ]
+
   girepository_toml = configure_file(
     input: 'girepository.toml.in',
     output: 'girepository.toml',
@@ -21,5 +25,6 @@ if get_option('documentation') and enable_gir
       '@INPUT1@',
     ],
     build_by_default: true,
+    depend_files: expand_content_files,
   )
 endif
