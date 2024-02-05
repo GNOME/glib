@@ -211,7 +211,8 @@ void gi_arg_info_class_init (gpointer g_class,
                              gpointer class_data);
 
 /* GITypeInfo is stack-allocatable so it can be used with
- * gi_arg_info_load_type(), so its definition is actually public in gitypes.h. */
+ * gi_arg_info_load_type_info(), so its definition is actually public in
+ * gitypes.h. */
 
 void gi_type_info_class_init (gpointer g_class,
                               gpointer class_data);

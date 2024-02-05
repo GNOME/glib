@@ -95,6 +95,6 @@ GI_AVAILABLE_IN_ALL
 GITypeInfo *           gi_arg_info_get_type_info          (GIArgInfo *info);
 
 GI_AVAILABLE_IN_ALL
-void                   gi_arg_info_load_type              (GIArgInfo *info,
+void                   gi_arg_info_load_type_info         (GIArgInfo *info,
                                                            GITypeInfo *type);
 G_END_DECLS

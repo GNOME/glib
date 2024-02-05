@@ -207,7 +207,7 @@ gi_callable_info_get_ffi_arg_types (GICallableInfo *callable_info,
         GITypeInfo arg_type;
 
         gi_callable_info_load_arg (callable_info, i, &arg_info);
-        gi_arg_info_load_type (&arg_info, &arg_type);
+        gi_arg_info_load_type_info (&arg_info, &arg_type);
         switch (gi_arg_info_get_direction (&arg_info))
           {
             case GI_DIRECTION_IN:
