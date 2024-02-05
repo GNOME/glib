@@ -165,6 +165,26 @@ datalist_alloc_size (guint32 alloc)
          (((gsize) alloc) * sizeof (GDataElt));
 }
 
+static GData *
+datalist_realloc (GData *data, guint32 alloc, gboolean *out_reallocated)
+{
+  guintptr data_old;
+  gboolean reallocated;
+
+  data_old = (guintptr) ((gpointer) data);
+
+  data = g_realloc (data, datalist_alloc_size (alloc));
+
+  reallocated = (((guintptr) ((gpointer) (data))) != data_old);
+
+  data->alloc = alloc;
+
+  if (out_reallocated)
+    *out_reallocated = reallocated;
+
+  return data;
+}
+
 static gboolean
 datalist_append (GData **data, GQuark key_id, gpointer new_data, GDestroyNotify destroy_func)
 {
@@ -182,7 +202,8 @@ datalist_append (GData **data, GQuark key_id, gpointer new_data, GDestroyNotify 
     }
   else if (d->len == d->alloc)
     {
-      d->alloc = d->alloc * 2u;
+      guint32 alloc = d->alloc * 2u;
+
 #if G_ENABLE_DEBUG
       /* d->alloc is always a power of two. It thus overflows the first time
        * when going to (G_MAXUINT32+1), or when requesting 2^31+1 elements.
@@ -190,11 +211,10 @@ datalist_append (GData **data, GQuark key_id, gpointer new_data, GDestroyNotify 
        * This is not handled, and we just crash. That's because we track the GData
        * in a linear list, which horribly degrades long before we add 2 billion entries.
        * Don't ever try to do that. */
-      g_assert (d->alloc > d->len);
+      g_assert (alloc > d->len);
 #endif
-      d = g_realloc (d, datalist_alloc_size (d->alloc));
+      d = datalist_realloc (d, alloc, &reallocated);
       *data = d;
-      reallocated = TRUE;
     }
   else
     reallocated = FALSE;
@@ -230,6 +250,7 @@ datalist_remove (GData *data, guint32 idx)
 static gboolean
 datalist_shrink (GData **data, GData **d_to_free)
 {
+  gboolean reallocated;
   guint32 alloc_by_4;
   guint32 v;
   GData *d;
@@ -274,11 +295,10 @@ datalist_shrink (GData **data, GData **d_to_free)
   g_assert (v <= d->alloc / 2u);
 #endif
 
-  d->alloc = v;
-  d = g_realloc (d, datalist_alloc_size (v));
+  d = datalist_realloc (d, v, &reallocated);
   *d_to_free = NULL;
   *data = d;
-  return TRUE;
+  return reallocated;
 }
 
 static void
