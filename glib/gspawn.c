@@ -1194,13 +1194,10 @@ write_err_and_exit (gint fd, gint msg)
 
 /* This function is called between fork() and exec() and hence must be
  * async-signal-safe (see signal-safety(7)). */
-static int
-set_cloexec (void *data, gint fd)
+static void
+set_cloexec (int fd)
 {
-  if (fd >= GPOINTER_TO_INT (data))
-    fcntl (fd, F_SETFD, FD_CLOEXEC);
-
-  return 0;
+  fcntl (fd, F_SETFD, FD_CLOEXEC);
 }
 
 /* This function is called between fork() and exec() and hence must be
@@ -1396,7 +1393,7 @@ do_exec (gint                  child_err_report_fd,
         write_err_and_exit (child_err_report_fd,
                             CHILD_DUPFD_FAILED);
 
-      set_cloexec (GINT_TO_POINTER(0), stdin_fd);
+      set_cloexec (stdin_fd);
     }
   else if (!child_inherits_stdin)
     {
@@ -1434,7 +1431,7 @@ do_exec (gint                  child_err_report_fd,
         write_err_and_exit (child_err_report_fd,
                             CHILD_DUPFD_FAILED);
 
-      set_cloexec (GINT_TO_POINTER(0), stdout_fd);
+      set_cloexec (stdout_fd);
     }
   else if (stdout_to_null)
     {
@@ -1466,7 +1463,7 @@ do_exec (gint                  child_err_report_fd,
         write_err_and_exit (child_err_report_fd,
                             CHILD_DUPFD_FAILED);
 
-      set_cloexec (GINT_TO_POINTER(0), stderr_fd);
+      set_cloexec (stderr_fd);
     }
   else if (stderr_to_null)
     {
@@ -1491,7 +1488,7 @@ do_exec (gint                  child_err_report_fd,
         {
           if (safe_dup2 (child_err_report_fd, 3) < 0)
             write_err_and_exit (child_err_report_fd, CHILD_DUPFD_FAILED);
-          set_cloexec (GINT_TO_POINTER (0), 3);
+          set_cloexec (3);
           if (g_closefrom (4) < 0)
             write_err_and_exit (child_err_report_fd, CHILD_CLOSE_FAILED);
           child_err_report_fd = 3;
@@ -1505,7 +1502,7 @@ do_exec (gint                  child_err_report_fd,
   else
     {
       /* We need to do child_err_report_fd anyway */
-      set_cloexec (GINT_TO_POINTER (0), child_err_report_fd);
+      set_cloexec (child_err_report_fd);
     }
 
   /*
