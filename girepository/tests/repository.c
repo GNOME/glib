@@ -199,7 +199,7 @@ test_repository_arg_info (RepositoryFixture *fx,
   g_assert_true (gi_type_info_is_pointer (type_info));
   g_assert_cmpint (gi_type_info_get_tag (type_info), ==, GI_TYPE_TAG_UTF8);
 
-  gi_arg_info_load_type (arg_info, &type_info_stack);
+  gi_arg_info_load_type_info (arg_info, &type_info_stack);
   g_assert_true (gi_type_info_is_pointer (&type_info_stack) == gi_type_info_is_pointer (type_info));
   g_assert_cmpint (gi_type_info_get_tag (&type_info_stack), ==, gi_type_info_get_tag (type_info));
 

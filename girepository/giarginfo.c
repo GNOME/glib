@@ -344,7 +344,7 @@ gi_arg_info_get_type_info (GIArgInfo *info)
 }
 
 /**
- * gi_arg_info_load_type:
+ * gi_arg_info_load_type_info:
  * @info: a #GIArgInfo
  * @type: (out caller-allocates): Initialized with information about type of @info
  *
@@ -360,8 +360,8 @@ gi_arg_info_get_type_info (GIArgInfo *info)
  * Since: 2.80
  */
 void
-gi_arg_info_load_type (GIArgInfo  *info,
-                       GITypeInfo *type)
+gi_arg_info_load_type_info (GIArgInfo  *info,
+                            GITypeInfo *type)
 {
   GIRealInfo *rinfo = (GIRealInfo*) info;
 
