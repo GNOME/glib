@@ -90,6 +90,9 @@ test_repository_info (RepositoryFixture *fx,
 
   object_info = GI_OBJECT_INFO (gi_repository_find_by_name (fx->repository, "GObject", "Object"));
   g_assert_nonnull (object_info);
+  g_assert_true (GI_IS_OBJECT_INFO (object_info));
+  g_assert_true (GI_IS_REGISTERED_TYPE_INFO (object_info));
+  g_assert_true (GI_IS_BASE_INFO (object_info));
 
   g_assert_cmpint (gi_base_info_get_info_type (GI_BASE_INFO (object_info)), ==, GI_INFO_TYPE_OBJECT);
   g_assert_cmpstr (gi_base_info_get_name (GI_BASE_INFO (object_info)), ==, "Object");
@@ -103,6 +106,9 @@ test_repository_info (RepositoryFixture *fx,
 
   signal_info = gi_object_info_find_signal (object_info, "notify");
   g_assert_nonnull (signal_info);
+  g_assert_true (GI_IS_SIGNAL_INFO (signal_info));
+  g_assert_true (GI_IS_CALLABLE_INFO (signal_info));
+  g_assert_true (GI_IS_BASE_INFO (signal_info));
 
   g_assert_cmpint (gi_signal_info_get_flags (signal_info), ==,
                    G_SIGNAL_RUN_FIRST | G_SIGNAL_NO_RECURSE | G_SIGNAL_DETAILED | G_SIGNAL_NO_HOOKS | G_SIGNAL_ACTION);
@@ -111,6 +117,10 @@ test_repository_info (RepositoryFixture *fx,
 
   method_info = gi_object_info_find_method (object_info, "get_property");
   g_assert_nonnull (method_info);
+  g_assert_true (GI_IS_FUNCTION_INFO (method_info));
+  g_assert_true (GI_IS_CALLABLE_INFO (method_info));
+  g_assert_true (GI_IS_BASE_INFO (method_info));
+
   g_assert_true (gi_callable_info_is_method (GI_CALLABLE_INFO (method_info)));
   g_assert_cmpuint (gi_callable_info_get_n_args (GI_CALLABLE_INFO (method_info)), ==, 2);
   g_clear_pointer (&method_info, gi_base_info_unref);

@@ -58,7 +58,7 @@ G_BEGIN_DECLS
  *
  * Since: 2.80
  */
-#define GI_IS_REGISTERED_TYPE_INFO(info) (G_TYPE_CHECK_INSTANCE_TYPE ((info), GI_TYPE_OBJECT_INFO))
+#define GI_IS_REGISTERED_TYPE_INFO(info) (G_TYPE_CHECK_INSTANCE_TYPE ((info), GI_TYPE_REGISTERED_TYPE_INFO))
 
 GI_AVAILABLE_IN_ALL
 const char *           gi_registered_type_info_get_type_name (GIRegisteredTypeInfo *info);

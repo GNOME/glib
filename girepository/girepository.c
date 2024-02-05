@@ -1653,6 +1653,8 @@ gi_repository_enumerate_versions (GIRepository *repository,
   const char *loaded_version;
   char **ret;
 
+  g_return_val_if_fail (GI_IS_REPOSITORY (repository), NULL);
+
   candidates = enumerate_namespace_versions (namespace_,
                                              (const char * const *) repository->typelib_search_path->pdata,
                                              repository->typelib_search_path->len);
