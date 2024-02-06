@@ -151,19 +151,30 @@ gi_union_info_is_discriminated (GIUnionInfo *info)
 /**
  * gi_union_info_get_discriminator_offset:
  * @info: a #GIUnionInfo
+ * @out_offset: (out) (optional): return location for the offset, in bytes, of
+ *   the discriminator
  *
- * Returns the offset of the discriminator field in the structure.
+ * Obtain the offset of the discriminator field within the structure.
  *
- * Returns: offset, in bytes, of the discriminator
+ * The union must be discriminated, or `FALSE` will be returned.
+ *
+ * Returns: `TRUE` if the union is discriminated
  * Since: 2.80
  */
-size_t
-gi_union_info_get_discriminator_offset (GIUnionInfo *info)
+gboolean
+gi_union_info_get_discriminator_offset (GIUnionInfo *info,
+                                        size_t      *out_offset)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   UnionBlob *blob = (UnionBlob *)&rinfo->typelib->data[rinfo->offset];
+  size_t discriminator_offset;
 
-  return blob->discriminator_offset;
+  discriminator_offset = (blob->discriminated) ? blob->discriminator_offset : 0;
+
+  if (out_offset != NULL)
+    *out_offset = discriminator_offset;
+
+  return blob->discriminated;
 }
 
 /**

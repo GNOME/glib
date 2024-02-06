@@ -1283,7 +1283,7 @@ write_union_info (const char *ns,
       size_t offset;
       GITypeInfo *type;
 
-      offset = gi_union_info_get_discriminator_offset (info);
+      gi_union_info_get_discriminator_offset (info, &offset);
       type = gi_union_info_get_discriminator_type (info);
 
       xml_start_element (file, "discriminator");

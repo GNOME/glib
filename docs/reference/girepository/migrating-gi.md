@@ -72,5 +72,6 @@ your code if integer type warnings are enabled.
 | `g_type_info_get_array_length` | [method@GIRepository.TypeInfo.get_array_length_index] |
 | `g_typelib_new_from_*` | All replaced with `gi_typelib_new_from_bytes()` |
 | `GI_FUNCTION_THROWS` and `GI_VFUNC_THROWS` | [method@GIRepository.CallableInfo.can_throw_gerror] |
+| `g_union_info_get_discriminator_offset` | Split success and failure return values out into a new out-argument and return value |
 | `g_union_info_get_copy_function` | [method@GIRepository.UnionInfo.get_copy_function_name] |
 | `g_union_info_get_free_function` | [method@GIRepository.UnionInfo.get_free_function_name] |
