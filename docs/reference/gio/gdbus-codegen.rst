@@ -305,6 +305,10 @@ The following options are supported:
   This might make it necessary to use ``cc -include foo.h``, or generate a
   filename like ``foo-impl.h`` and ``#include`` it into a wrapper ``.c`` file.
 
+  For ``--header`` and ``--interface-info-header``, there is no obvious
+  name for a traditional multiple-inclusion guard when writing to standard
+  output, so using the ``--pragma-once`` option is recommended.
+
   In the rare situation that the intended output filename starts with ``-``,
   it should be prefixed with ``./``.
 
