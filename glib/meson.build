@@ -147,15 +147,11 @@ glib_headers = files(
   'glib.h',
   'glib-object.h',
 )
-if host_system != 'windows'
-  glib_headers += files('glib-unix.h')
-endif
 install_headers(glib_headers, install_dir : glib_includedir)
 
 if host_system != 'windows'
-  # Expose as variable to be used by gobject-introspection
-  # when it includes GLib as a subproject
-  glib_unix_h = files('glib-unix.h')
+  glib_unix_headers = files('glib-unix.h')
+  install_headers(glib_unix_headers, install_dir : glib_includedir)
 endif
 
 if host_system == 'windows'
@@ -251,11 +247,15 @@ glib_sub_headers = files(
   'gvarianttype.h',
   'gvariant.h',
   'gversion.h',
-  'gwin32.h',
   'gprintf.h',
 )
 
 install_headers(glib_sub_headers, install_dir : glib_sub_includedir)
+
+if host_system == 'windows'
+  glib_win32_headers = files('gwin32.h')
+  install_headers(glib_win32_headers, install_dir : glib_sub_includedir)
+endif
 
 glib_deprecated_sources = files(
   'deprecated/gallocator.c',
