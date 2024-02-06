@@ -40,7 +40,7 @@ show_class_hierarchy = true
 base_url = "https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/"
 
 [extra]
-urlmap_file = "urlmap.js"
+urlmap_file = "../urlmap.js"
 # The same order will be used when generating the index
 content_files = [
   "modules.md",

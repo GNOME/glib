@@ -39,7 +39,7 @@ show_index_summary = true
 show_class_hierarchy = true
 
 [extra]
-urlmap_file = "urlmap.js"
+urlmap_file = "../urlmap.js"
 # The same order will be used when generating the index
 content_files = [
   "concepts.md",
