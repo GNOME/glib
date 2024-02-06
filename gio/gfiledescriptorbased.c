@@ -35,7 +35,7 @@
  *
  * Note that `<gio/gfiledescriptorbased.h>` belongs to the UNIX-specific
  * GIO interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config
- * file when using it.
+ * file or the `GioUnix-2.0` GIR namespace when using it.
  *
  * Since: 2.24
  **/
