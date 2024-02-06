@@ -57,6 +57,9 @@ def generate_namespace(namespace):
 
 
 def generate_header_guard(header_name):
+    if header_name == "-":
+        return "STDOUT"
+
     # There might be more characters that are safe to use than these, but lets
     # stay conservative.
     safe_valid_chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"

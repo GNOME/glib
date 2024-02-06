@@ -66,7 +66,7 @@ def find_prop(iface, prop):
 
 @contextmanager
 def file_or_stdout(filename):
-    if filename is None or filename == "stdout":
+    if filename is None or filename == "-":
         yield sys.stdout
     else:
         with open(filename, "w") as outfile:
