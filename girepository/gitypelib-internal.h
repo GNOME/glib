@@ -179,6 +179,7 @@ Changes since 0.1:
  * Since: 2.80
  */
 typedef enum {
+  /* The values here must be kept in sync with GIInfoType */
   BLOB_TYPE_INVALID,
   BLOB_TYPE_FUNCTION,
   BLOB_TYPE_CALLBACK,
