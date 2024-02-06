@@ -111,7 +111,6 @@ gio_gir_sources = [
   gio_base_sources,
   application_sources,
   gdbus_sources,
-  appinfo_sources,
   contenttype_sources,
   unix_sources,
   win32_sources,
