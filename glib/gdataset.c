@@ -314,15 +314,12 @@ datalist_append (GData **data, GQuark key_id, gpointer new_data, GDestroyNotify 
     {
       guint32 alloc = d->alloc * 2u;
 
-#if G_ENABLE_DEBUG
-      /* d->alloc is always a power of two. It thus overflows the first time
-       * when going to (G_MAXUINT32+1), or when requesting 2^31+1 elements.
-       *
-       * This is not handled, and we just crash. That's because we track the GData
-       * in a linear list, which horribly degrades long before we add 2 billion entries.
-       * Don't ever try to do that. */
-      g_assert (alloc > d->len);
-#endif
+      if (G_UNLIKELY (alloc < d->alloc))
+        {
+          if (d->alloc == G_MAXUINT32)
+            g_error ("GData cannot contain more than 4294967295 entries");
+          alloc = G_MAXUINT32;
+        }
       d = datalist_realloc (d, alloc, &reallocated);
       *data = d;
     }
@@ -413,8 +410,9 @@ datalist_shrink (GData **data, GData **d_to_free)
   v = d->len;
   if (v != alloc_by_4)
     {
-      /* d->alloc is a power of two. Usually, we remove one element at a
-       * time, then we will just reach reach a quarter of that.
+      /* d->alloc is a power of two (unless it's G_MAXUINT32). Usually, we
+       * remove one element at a time, then we will just reach reach a quarter
+       * of that.
        *
        * However, with g_datalist_id_remove_multiple(), len can be smaller
        * at once. In that case, find first the next power of two. */
@@ -424,7 +422,7 @@ datalist_shrink (GData **data, GData **d_to_free)
 
 #if G_ENABLE_DEBUG
   g_assert (v > d->len);
-  g_assert (v <= d->alloc / 2u);
+  g_assert (v <= (d->alloc == G_MAXUINT32 ? 0x80000000u : d->alloc / 2u));
 #endif
 
   d = datalist_realloc (d, v, &reallocated);
