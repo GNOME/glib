@@ -183,7 +183,8 @@ gi_union_info_get_discriminator_offset (GIUnionInfo *info,
  *
  * Obtain the type information of the union discriminator.
  *
- * Returns: (transfer full): the [type@GIRepository.TypeInfo], free it with
+ * Returns: (transfer full) (nullable): the [type@GIRepository.TypeInfo], or
+ *   `NULL` if the union is not discriminated. Free it with
  *   [method@GIRepository.BaseInfo.unref] when done.
  * Since: 2.80
  */
@@ -191,6 +192,10 @@ GITypeInfo *
 gi_union_info_get_discriminator_type (GIUnionInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
+  UnionBlob *blob = (UnionBlob *)&rinfo->typelib->data[rinfo->offset];
+
+  if (!blob->discriminated)
+    return NULL;
 
   return gi_type_info_new ((GIBaseInfo*)info, rinfo->typelib, rinfo->offset + 24);
 }
