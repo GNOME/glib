@@ -2925,17 +2925,30 @@ test_has_prefix (gconstpointer a,
     return g_strcmp0 (test_run_name_local, test_path_skipped_local);
 }
 
+static gboolean test_should_run (const char *test_path,
+                                 const char *cmp_path);
+
 static gboolean
-test_case_run (GTestCase *tc)
+test_case_run (GTestCase  *tc,
+               const char *test_run_name,
+               const char *path)
 {
-  gchar *old_base = g_strdup (test_uri_base);
+  gchar *old_base = NULL;
   GSList **old_free_list, *filename_free_list = NULL;
   gboolean success = G_TEST_RUN_SUCCESS;
+  gboolean free_test_data = TRUE;
 
+  old_base = g_strdup (test_uri_base);
   old_free_list = test_filename_free_list;
   test_filename_free_list = &filename_free_list;
 
-  if (++test_run_count <= test_startup_skip_count)
+  if (!test_should_run (test_run_name, path))
+    {
+      /* Silently skip the test and return success. This happens if it’s a
+       * /subprocess path. */
+      success = G_TEST_RUN_SKIPPED;
+    }
+  else if (++test_run_count <= test_startup_skip_count)
     g_test_log (G_TEST_LOG_SKIP_CASE, test_run_name, NULL, 0, NULL);
   else if (test_run_list)
     {
@@ -2982,6 +2995,7 @@ test_case_run (GTestCase *tc)
                 }
               if (tc->fixture_teardown)
                 tc->fixture_teardown (fixture, tc->test_data);
+              free_test_data = FALSE;
               if (tc->fixture_size)
                 g_free (fixture);
               g_timer_stop (test_run_timer);
@@ -2998,6 +3012,13 @@ test_case_run (GTestCase *tc)
       g_clear_pointer (&test_run_msg, g_free);
       g_timer_destroy (test_run_timer);
     }
+
+  /* In case the test didn’t run (due to being skipped or an error), the test
+   * data may still need to be freed, as the client’s main() function may have
+   * passed ownership of it into g_test_add_data_func_full() with a
+   * #GDestroyNotify. */
+  if (free_test_data && tc->fixture_size == 0 && tc->fixture_teardown != NULL)
+    tc->fixture_teardown (tc->test_data, tc->test_data);
 
   g_slist_free_full (filename_free_list, g_free);
   test_filename_free_list = old_free_list;
@@ -3064,11 +3085,10 @@ g_test_run_suite_internal (GTestSuite *suite,
 
       test_run_name = g_build_path ("/", old_name, tc->name, NULL);
       test_run_name_path = g_build_path (G_DIR_SEPARATOR_S, old_name_path, tc->name, NULL);
-      if (test_should_run (test_run_name, path))
-        {
-          if (!test_case_run (tc))
-            n_bad++;
-        }
+
+      if (!test_case_run (tc, test_run_name, path))
+        n_bad++;
+
       g_free (test_run_name);
       g_free (test_run_name_path);
     }
