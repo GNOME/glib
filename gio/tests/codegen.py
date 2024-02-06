@@ -145,6 +145,7 @@ class TestCodegen(unittest.TestCase):
             "#ifdef G_OS_UNIX\n"
             "#  include <gio/gunixfdlist.h>\n"
             "#endif",
+            "interface_info_header_includes": "#include <string.h>",
             "private_gvalues_getters": """#ifdef G_ENABLE_DEBUG
 #define g_marshal_value_peek_boolean(v)  g_value_get_boolean (v)
 #define g_marshal_value_peek_char(v)     g_value_get_schar (v)
@@ -353,7 +354,32 @@ class TestCodegen(unittest.TestCase):
 
     def test_empty_interface_header(self):
         """Test generating a header with an empty interface file."""
-        result = self.runCodegenWithInterface("", "--output", "stdout", "--header")
+        result = self.runCodegenWithInterface("", "--output", "-", "--header")
+        self.assertEqual("", result.err)
+        self.assertEqual(
+            """{standard_top_comment}
+
+#ifndef __STDOUT__
+#define __STDOUT__
+
+#include <gio/gio.h>
+
+G_BEGIN_DECLS
+
+
+G_END_DECLS
+
+#endif /* __STDOUT__ */""".format(
+                **result.subs
+            ),
+            result.out.strip(),
+        )
+
+    def test_empty_interface_info_header(self):
+        """Test generating a header with an empty interface file."""
+        result = self.runCodegenWithInterface(
+            "", "--output", "-", "--interface-info-header"
+        )
         self.assertEqual("", result.err)
         self.assertEqual(
             """{standard_top_comment}
@@ -376,20 +402,35 @@ G_END_DECLS
 
     def test_empty_interface_body(self):
         """Test generating a body with an empty interface file."""
-        result = self.runCodegenWithInterface("", "--output", "stdout", "--body")
+        result = self.runCodegenWithInterface("", "--output", "-", "--body")
         self.assertEqual("", result.err)
         self.assertEqual(
             """{standard_top_comment}
 
 {standard_config_h_include}
 
-#include "stdout.h"
-
 {standard_header_includes}
 
 {private_gvalues_getters}
 
 {standard_typedefs_and_helpers}""".format(
+                **result.subs
+            ),
+            result.out.strip(),
+        )
+
+    def test_empty_interface_info_body(self):
+        """Test generating a body with an empty interface file."""
+        result = self.runCodegenWithInterface(
+            "", "--output", "-", "--interface-info-body"
+        )
+        self.assertEqual("", result.err)
+        self.assertEqual(
+            """{standard_top_comment}
+
+{standard_config_h_include}
+
+{interface_info_header_includes}""".format(
                 **result.subs
             ),
             result.out.strip(),
@@ -437,7 +478,7 @@ G_END_DECLS
                     xml_file1.name,
                     xml_file2.name,
                     "--output",
-                    "stdout",
+                    "-",
                     header_or_body,
                 )
                 self.assertEqual("", result1.err)
@@ -446,7 +487,7 @@ G_END_DECLS
                     xml_file2.name,
                     xml_file1.name,
                     "--output",
-                    "stdout",
+                    "-",
                     header_or_body,
                 )
                 self.assertEqual("", result2.err)
@@ -652,7 +693,7 @@ G_END_DECLS
             self.runCodegenWithInterface(
                 "",
                 "--output",
-                "stdout",
+                "-",
                 "--body",
                 "--glib-min-required",
                 "hello mum",
@@ -663,7 +704,7 @@ G_END_DECLS
         probably a typo)."""
         with self.assertRaises(subprocess.CalledProcessError):
             self.runCodegenWithInterface(
-                "", "--output", "stdout", "--body", "--glib-min-required", "2.6"
+                "", "--output", "-", "--body", "--glib-min-required", "2.6"
             )
 
     def test_glib_min_required_major_only(self):
@@ -671,7 +712,7 @@ G_END_DECLS
         result = self.runCodegenWithInterface(
             "",
             "--output",
-            "stdout",
+            "-",
             "--header",
             "--glib-min-required",
             "3",
@@ -684,7 +725,7 @@ G_END_DECLS
     def test_glib_min_required_with_micro(self):
         """Test running with a --glib-min-required which contains a micro version."""
         result = self.runCodegenWithInterface(
-            "", "--output", "stdout", "--header", "--glib-min-required", "2.46.2"
+            "", "--output", "-", "--header", "--glib-min-required", "2.46.2"
         )
         self.assertEqual("", result.err)
         self.assertNotEqual("", result.out.strip())
@@ -694,13 +735,13 @@ G_END_DECLS
         probably a typo)."""
         with self.assertRaises(subprocess.CalledProcessError):
             self.runCodegenWithInterface(
-                "", "--output", "stdout", "--body", "--glib-max-allowed", "2.6"
+                "", "--output", "-", "--body", "--glib-max-allowed", "2.6"
             )
 
     def test_glib_max_allowed_major_only(self):
         """Test running with a --glib-max-allowed which contains only a major version."""
         result = self.runCodegenWithInterface(
-            "", "--output", "stdout", "--header", "--glib-max-allowed", "3"
+            "", "--output", "-", "--header", "--glib-max-allowed", "3"
         )
         self.assertEqual("", result.err)
         self.assertNotEqual("", result.out.strip())
@@ -708,7 +749,7 @@ G_END_DECLS
     def test_glib_max_allowed_with_micro(self):
         """Test running with a --glib-max-allowed which contains a micro version."""
         result = self.runCodegenWithInterface(
-            "", "--output", "stdout", "--header", "--glib-max-allowed", "2.46.2"
+            "", "--output", "-", "--header", "--glib-max-allowed", "2.46.2"
         )
         self.assertEqual("", result.err)
         self.assertNotEqual("", result.out.strip())
@@ -720,7 +761,7 @@ G_END_DECLS
         result = self.runCodegenWithInterface(
             "",
             "--output",
-            "stdout",
+            "-",
             "--header",
             "--glib-max-allowed",
             "2.63",
@@ -737,7 +778,7 @@ G_END_DECLS
             self.runCodegenWithInterface(
                 "",
                 "--output",
-                "stdout",
+                "-",
                 "--body",
                 "--glib-max-allowed",
                 "2.62",
@@ -780,9 +821,7 @@ G_END_DECLS
                   </interface>
                 </node>"""
             with self.assertRaises(subprocess.CalledProcessError):
-                self.runCodegenWithInterface(
-                    interface_xml, "--output", "stdout", "--body"
-                )
+                self.runCodegenWithInterface(interface_xml, "--output", "-", "--body")
         good_types = [
             "si{s{b(ybnqiuxtdh)}}{yv}{nv}{dv}",
             "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
@@ -798,7 +837,7 @@ G_END_DECLS
                   </interface>
                 </node>"""
             result = self.runCodegenWithInterface(
-                interface_xml, "--output", "stdout", "--body"
+                interface_xml, "--output", "-", "--body"
             )
             self.assertEqual("", result.err)
 
@@ -829,7 +868,7 @@ G_END_DECLS
 
         # Try without specifying --glib-min-required.
         result = self.runCodegenWithInterface(
-            interface_xml, "--output", "stdout", "--header"
+            interface_xml, "--output", "-", "--header"
         )
         self.assertEqual("", result.err)
         self.assertEqual(result.out.strip().count("GUnixFDList"), 6)
@@ -838,7 +877,7 @@ G_END_DECLS
         result = self.runCodegenWithInterface(
             interface_xml,
             "--output",
-            "stdout",
+            "-",
             "--header",
             "--glib-min-required",
             "2.32",
@@ -852,7 +891,7 @@ G_END_DECLS
         result = self.runCodegenWithInterface(
             interface_xml,
             "--output",
-            "stdout",
+            "-",
             "--header",
             "--glib-min-required",
             "2.64",
@@ -873,7 +912,7 @@ G_END_DECLS
 
         # Try without specifying --glib-min-required.
         result = self.runCodegenWithInterface(
-            interface_xml, "--output", "stdout", "--header"
+            interface_xml, "--output", "-", "--header"
         )
         self.assertEqual("", result.err)
         self.assertEqual(result.out.strip().count("GDBusCallFlags call_flags,"), 0)
@@ -883,7 +922,7 @@ G_END_DECLS
         result = self.runCodegenWithInterface(
             interface_xml,
             "--output",
-            "stdout",
+            "-",
             "--header",
             "--glib-min-required",
             "2.32",
@@ -897,7 +936,7 @@ G_END_DECLS
         result = self.runCodegenWithInterface(
             interface_xml,
             "--output",
-            "stdout",
+            "-",
             "--header",
             "--glib-min-required",
             "2.64",
@@ -918,9 +957,7 @@ G_END_DECLS
               </interface>
             </node>"""
 
-        result = self.runCodegenWithInterface(
-            interface_xml, "--output", "stdout", "--body"
-        )
+        result = self.runCodegenWithInterface(interface_xml, "--output", "-", "--body")
         stripped_out = result.out.strip()
         self.assertFalse(result.err)
         self.assertIs(stripped_out.count("g_signal_emit_by_name ("), 0)
@@ -956,9 +993,7 @@ G_END_DECLS
               </interface>
             </node>"""
 
-        result = self.runCodegenWithInterface(
-            interface_xml, "--output", "stdout", "--body"
-        )
+        result = self.runCodegenWithInterface(interface_xml, "--output", "-", "--body")
         stripped_out = result.out.strip()
         self.assertFalse(result.err)
         self.assertIs(stripped_out.count("g_signal_emit_by_name ("), 0)
@@ -993,9 +1028,7 @@ G_END_DECLS
               </interface>
             </node>"""
 
-        result = self.runCodegenWithInterface(
-            interface_xml, "--output", "stdout", "--body"
-        )
+        result = self.runCodegenWithInterface(interface_xml, "--output", "-", "--body")
         stripped_out = result.out.strip()
         self.assertFalse(result.err)
         self.assertIs(stripped_out.count("g_signal_emit_by_name ("), 0)
@@ -1026,9 +1059,7 @@ G_END_DECLS
               </interface>
             </node>"""
 
-        result = self.runCodegenWithInterface(
-            interface_xml, "--output", "stdout", "--body"
-        )
+        result = self.runCodegenWithInterface(interface_xml, "--output", "-", "--body")
         stripped_out = result.out.strip()
         self.assertFalse(result.err)
         self.assertIs(stripped_out.count("g_cclosure_marshal_generic"), 0)
@@ -1058,7 +1089,7 @@ G_END_DECLS
             </node>"""
 
             result = self.runCodegenWithInterface(
-                interface_xml, "--output", "stdout", "--body"
+                interface_xml, "--output", "-", "--body"
             )
             stripped_out = result.out.strip()
             self.assertFalse(result.err)
@@ -1106,9 +1137,7 @@ G_END_DECLS
               </interface>
             </node>"""
 
-        result = self.runCodegenWithInterface(
-            interface_xml, "--output", "stdout", "--body"
-        )
+        result = self.runCodegenWithInterface(interface_xml, "--output", "-", "--body")
         stripped_out = result.out.strip()
         self.assertFalse(result.err)
         self.assertIs(stripped_out.count("g_cclosure_marshal_generic"), 0)
@@ -1144,9 +1173,7 @@ G_END_DECLS
               </interface>
             </node>"""
 
-        result = self.runCodegenWithInterface(
-            interface_xml, "--output", "stdout", "--body"
-        )
+        result = self.runCodegenWithInterface(interface_xml, "--output", "-", "--body")
         stripped_out = result.out.strip()
         self.assertFalse(result.err)
         self.assertIs(stripped_out.count("g_cclosure_marshal_generic"), 0)
@@ -1190,7 +1217,7 @@ G_END_DECLS
             </node>"""
 
             result = self.runCodegenWithInterface(
-                interface_xml, "--output", "stdout", "--body"
+                interface_xml, "--output", "-", "--body"
             )
             stripped_out = result.out.strip()
             self.assertFalse(result.err)
@@ -1228,7 +1255,7 @@ G_END_DECLS
             </node>"""
 
             result = self.runCodegenWithInterface(
-                interface_xml, "--output", "stdout", "--body"
+                interface_xml, "--output", "-", "--body"
             )
             stripped_out = result.out.strip()
             self.assertFalse(result.err)
@@ -1271,9 +1298,7 @@ G_END_DECLS
               </interface>
             </node>"""
 
-        result = self.runCodegenWithInterface(
-            interface_xml, "--output", "stdout", "--body"
-        )
+        result = self.runCodegenWithInterface(interface_xml, "--output", "-", "--body")
         stripped_out = result.out.strip()
         self.assertFalse(result.err)
         self.assertIs(stripped_out.count("g_cclosure_marshal_generic"), 0)
@@ -1331,9 +1356,7 @@ G_END_DECLS
               </interface>
             </node>"""
 
-        result = self.runCodegenWithInterface(
-            interface_xml, "--output", "stdout", "--body"
-        )
+        result = self.runCodegenWithInterface(interface_xml, "--output", "-", "--body")
         stripped_out = result.out.strip()
         self.assertFalse(result.err)
         self.assertIs(stripped_out.count("g_cclosure_marshal_generic"), 0)
@@ -1375,9 +1398,7 @@ G_END_DECLS
               </interface>
             </node>"""
 
-        result = self.runCodegenWithInterface(
-            interface_xml, "--output", "stdout", "--body"
-        )
+        result = self.runCodegenWithInterface(interface_xml, "--output", "-", "--body")
         stripped_out = result.out.strip()
         self.assertFalse(result.err)
         self.assertIs(stripped_out.count("g_cclosure_marshal_generic"), 0)

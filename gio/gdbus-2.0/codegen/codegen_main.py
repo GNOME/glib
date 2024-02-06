@@ -66,7 +66,7 @@ def find_prop(iface, prop):
 
 @contextmanager
 def file_or_stdout(filename):
-    if filename is None or filename == "stdout":
+    if filename is None or filename == "-":
         yield sys.stdout
     else:
         with open(filename, "w") as outfile:
@@ -336,7 +336,11 @@ def codegen_main():
             print_error("Using --body requires --output")
 
         c_file = args.output
-        header_name = os.path.splitext(os.path.basename(c_file))[0] + ".h"
+
+        if c_file == "-":
+            header_name = ""
+        else:
+            header_name = os.path.splitext(os.path.basename(c_file))[0] + ".h"
     elif args.interface_info_header:
         if args.output is None:
             print_error("Using --interface-info-header requires --output")
@@ -358,7 +362,11 @@ def codegen_main():
             )
 
         c_file = args.output
-        header_name = os.path.splitext(os.path.basename(c_file))[0] + ".h"
+
+        if c_file == "-":
+            header_name = ""
+        else:
+            header_name = os.path.splitext(os.path.basename(c_file))[0] + ".h"
 
     # Check the minimum GLib version. The minimum --glib-min-required is 2.30,
     # because that’s when gdbus-codegen was introduced. Support 1, 2 or 3

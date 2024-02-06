@@ -57,6 +57,9 @@ def generate_namespace(namespace):
 
 
 def generate_header_guard(header_name):
+    if header_name == "-":
+        return "STDOUT"
+
     # There might be more characters that are safe to use than these, but lets
     # stay conservative.
     safe_valid_chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -1121,15 +1124,13 @@ class InterfaceInfoBodyCodeGenerator:
 
         self.outfile.write("\n")
         self.outfile.write(
-            "#ifdef HAVE_CONFIG_H\n"
-            '#  include "config.h"\n'
-            "#endif\n"
-            "\n"
-            '#include "%s"\n'
-            "\n"
-            "#include <string.h>\n" % (self.header_name)
+            "#ifdef HAVE_CONFIG_H\n" '#  include "config.h"\n' "#endif\n" "\n"
         )
-        self.outfile.write("\n")
+
+        if self.header_name:
+            self.outfile.write('#include "%s"\n\n' % (self.header_name))
+
+        self.outfile.write("#include <string.h>\n\n")
 
     # ----------------------------------------------------------------------------------------------------
 
@@ -1469,19 +1470,20 @@ class CodeGenerator:
     def generate_body_preamble(self):
         basenames = ", ".join(self.input_files_basenames)
         self.outfile.write(LICENSE_STR.format(config.VERSION, basenames))
+
         if self.symbol_decoration_define is not None:
             self.outfile.write("\n")
             self.outfile.write("#define %s\n" % self.symbol_decoration_define)
+
         self.outfile.write("\n")
         self.outfile.write(
-            "#ifdef HAVE_CONFIG_H\n"
-            '#  include "config.h"\n'
-            "#endif\n"
-            "\n"
-            '#include "%s"\n'
-            "\n"
-            "#include <string.h>\n" % (self.header_name)
+            "#ifdef HAVE_CONFIG_H\n" '#  include "config.h"\n' "#endif\n" "\n"
         )
+
+        if self.header_name:
+            self.outfile.write('#include "%s"\n\n' % (self.header_name))
+
+        self.outfile.write("#include <string.h>\n")
 
         self.outfile.write(
             "#ifdef G_OS_UNIX\n" "#  include <gio/gunixfdlist.h>\n" "#endif\n" "\n"
