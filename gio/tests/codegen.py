@@ -145,6 +145,7 @@ class TestCodegen(unittest.TestCase):
             "#ifdef G_OS_UNIX\n"
             "#  include <gio/gunixfdlist.h>\n"
             "#endif",
+            "interface_info_header_includes": "#include <string.h>",
             "private_gvalues_getters": """#ifdef G_ENABLE_DEBUG
 #define g_marshal_value_peek_boolean(v)  g_value_get_boolean (v)
 #define g_marshal_value_peek_char(v)     g_value_get_schar (v)
@@ -390,6 +391,25 @@ G_END_DECLS
 {private_gvalues_getters}
 
 {standard_typedefs_and_helpers}""".format(
+                **result.subs
+            ),
+            result.out.strip(),
+        )
+
+    def test_empty_interface_info_body(self):
+        """Test generating a body with an empty interface file."""
+        result = self.runCodegenWithInterface(
+            "", "--output", "-", "--interface-info-body"
+        )
+        self.assertEqual("", result.err)
+        self.assertEqual(
+            """{standard_top_comment}
+
+{standard_config_h_include}
+
+#include "-.h"
+
+{interface_info_header_includes}""".format(
                 **result.subs
             ),
             result.out.strip(),
