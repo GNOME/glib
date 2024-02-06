@@ -11,10 +11,13 @@ pacman --noconfirm -S --needed \
     lcov \
     "${MINGW_PACKAGE_PREFIX}"-ccache \
     "${MINGW_PACKAGE_PREFIX}"-gettext \
+    "${MINGW_PACKAGE_PREFIX}"-gi-docgen \
+    "${MINGW_PACKAGE_PREFIX}"-gobject-introspection \
     "${MINGW_PACKAGE_PREFIX}"-libffi \
     "${MINGW_PACKAGE_PREFIX}"-meson \
     "${MINGW_PACKAGE_PREFIX}"-pcre2 \
     "${MINGW_PACKAGE_PREFIX}"-python3 \
+    "${MINGW_PACKAGE_PREFIX}"-python-docutils \
     "${MINGW_PACKAGE_PREFIX}"-python-pip \
     "${MINGW_PACKAGE_PREFIX}"-toolchain \
     "${MINGW_PACKAGE_PREFIX}"-zlib \
@@ -33,7 +36,12 @@ DIR="$(pwd)"
 export PATH CFLAGS
 
 # shellcheck disable=SC2086
-meson setup ${MESON_COMMON_OPTIONS} --werror _build
+meson setup ${MESON_COMMON_OPTIONS} \
+    --werror \
+    -Ddocumentation=true \
+    -Dintrospection=enabled \
+    -Dman-pages=enabled \
+    _build
 
 meson compile -C _build
 
@@ -59,3 +67,9 @@ if [[ "$CFLAGS" == *"-coverage"* ]]; then
         --capture \
         --output-file "${DIR}/_coverage/${CI_JOB_NAME}.lcov"
 fi
+
+# Copy the built documentation to an artifact directory. The build for docs.gtk.org
+# can then pull it from there — see https://gitlab.gnome.org/GNOME/gtk/-/blob/docs-gtk-org/README.md
+mkdir -p _reference/
+mv _build/docs/reference/glib/glib-win32/ _reference/glib-win32/
+mv _build/docs/reference/gio/gio-win32/ _reference/gio-win32/

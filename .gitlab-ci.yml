@@ -198,9 +198,11 @@ fedora-x86_64:
     # can then pull it from there — see https://gitlab.gnome.org/GNOME/gtk/-/blob/docs-gtk-org/README.md
     - mkdir -p _reference/
     - mv _build/docs/reference/glib/glib/ _reference/glib/
+    - mv _build/docs/reference/glib/glib-unix/ _reference/glib-unix/
     - mv _build/docs/reference/gmodule/gmodule/ _reference/gmodule/
     - mv _build/docs/reference/gobject/gobject/ _reference/gobject/
     - mv _build/docs/reference/gio/gio/ _reference/gio/
+    - mv _build/docs/reference/gio/gio-unix/ _reference/gio-unix/
     - mv _build/docs/reference/girepository/girepository/ _reference/girepository/
   artifacts:
     reports:
@@ -476,7 +478,7 @@ cross-mingw64:
       - _build/gobject/libgobject-2.0-0.dll
 
 msys2-mingw32:
-  extends: .only-default
+  extends: .only-default-and-merges
   stage: build
   tags:
     - win32-ps
@@ -501,6 +503,7 @@ msys2-mingw32:
     paths:
       - _build/meson-logs
       - _coverage/
+      - _reference/
 
 msys2-clang64:
   extends: .only-schedules-or-manual
