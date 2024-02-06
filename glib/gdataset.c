@@ -1419,37 +1419,56 @@ g_datalist_id_replace_data (GData          **datalist,
  *          is not found.
  **/
 gpointer
-g_datalist_get_data (GData	 **datalist,
-		     const gchar *key)
+g_datalist_get_data (GData **datalist,
+                     const gchar *key)
 {
+  GQuark key_id;
+  GHashTable *index;
   gpointer res = NULL;
+  GDataElt *data_elt;
   GData *d;
-  GDataElt *data, *data_end;
 
   g_return_val_if_fail (datalist != NULL, NULL);
 
   d = g_datalist_lock_and_get (datalist);
-  if (d)
+
+  if (!d)
+    goto out;
+
+  index = datalist_index_get (d);
+
+  if (G_LIKELY (!index))
     {
-      data = d->data;
-      data_end = data + d->len;
-      while (data < data_end)
-	{
-	  /* Here we intentionally compare by strings, instead of calling
-	   * g_quark_try_string() first.
-	   *
-	   * See commit 1cceda49b60b ('Make g_datalist_get_data not look up the
-	   * quark').
-	   */
-	  if (g_strcmp0 (g_quark_to_string (data->key), key) == 0)
-	    {
-	      res = data->data;
-	      break;
-	    }
-	  data++;
-	}
+      guint32 i;
+
+      for (i = 0; i < d->len; i++)
+        {
+          data_elt = &d->data[i];
+          /* Here we intentionally compare by strings, instead of calling
+           * g_quark_try_string() first.
+           *
+           * See commit 1cceda49b60b ('Make g_datalist_get_data not look up the
+           * quark').
+           */
+          if (g_strcmp0 (g_quark_to_string (data_elt->key), key) == 0)
+            {
+              res = data_elt->data;
+              goto out;
+            }
+        }
+      goto out;
     }
 
+  key_id = g_quark_try_string (key);
+  if (key_id == 0 && key)
+    goto out;
+
+  data_elt = g_hash_table_lookup (index, &key_id);
+
+  if (data_elt)
+    res = data_elt->data;
+
+out:
   g_datalist_unlock (datalist);
 
   return res;
