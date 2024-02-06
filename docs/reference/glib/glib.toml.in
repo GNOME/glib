@@ -75,8 +75,6 @@ content_files = [
   "checked-math.md",
   "threads.md",
   "spawn.md",
-  "unix.md",
-  "windows.md",
   "random.md",
   "numerical.md",
   "markup.md",

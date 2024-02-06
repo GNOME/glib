@@ -91,10 +91,14 @@ if get_option('documentation') and enable_gir
     'string-utils.md',
     'types.md',
     'unicode.md',
-    'unix.md',
     'uuid.md',
     'version.md',
     'warnings.md',
+  ]
+  expand_content_unix_files = [
+    'unix.md',
+  ]
+  expand_content_win32_files = [
     'windows.md',
   ]
 
@@ -118,4 +122,48 @@ if get_option('documentation') and enable_gir
     install_dir: docs_dir,
     install_tag: 'doc',
   )
+
+  if host_system == 'windows'
+    glib_win32_toml = configure_file(input: 'glib-win32.toml.in', output: 'glib-win32.toml', configuration: toml_conf)
+
+    custom_target('glib-win32-docs',
+      input: [ glib_win32_toml, glib_win32_gir[0] ],
+      output: 'glib-win32',
+      command: [
+        gidocgen,
+        'generate',
+        gidocgen_common_args,
+        '--config=@INPUT0@',
+        '--output-dir=@OUTPUT@',
+        '--content-dir=@0@'.format(meson.current_source_dir()),
+        '@INPUT1@',
+      ],
+      build_by_default: true,
+      depend_files: expand_content_win32_files,
+      install: true,
+      install_dir: docs_dir,
+      install_tag: 'doc',
+    )
+  else
+    glib_unix_toml = configure_file(input: 'glib-unix.toml.in', output: 'glib-unix.toml', configuration: toml_conf)
+
+    custom_target('glib-unix-docs',
+      input: [ glib_unix_toml, glib_unix_gir[0] ],
+      output: 'glib-unix',
+      command: [
+        gidocgen,
+        'generate',
+        gidocgen_common_args,
+        '--config=@INPUT0@',
+        '--output-dir=@OUTPUT@',
+        '--content-dir=@0@'.format(meson.current_source_dir()),
+        '@INPUT1@',
+      ],
+      build_by_default: true,
+      depend_files: expand_content_unix_files,
+      install: true,
+      install_dir: docs_dir,
+      install_tag: 'doc',
+    )
+  endif
 endif

@@ -13,23 +13,23 @@ file when using it.
 
 There are three main classes:
 
- * [struct@Gio.UnixMountEntry]
- * [struct@Gio.UnixMountPoint]
- * [class@Gio.UnixMountMonitor]
+ * [struct@GioUnix.UnixMountEntry]
+ * [struct@GioUnix.UnixMountPoint]
+ * [class@GioUnix.UnixMountMonitor]
 
 Various helper functions for querying mounts:
 
- * [func@Gio.unix_mount_points_get]
- * [func@Gio.UnixMountPoint.at]
- * [func@Gio.unix_mounts_get]
- * [func@Gio.unix_mount_at]
- * [func@Gio.unix_mount_for]
- * [func@Gio.unix_mounts_changed_since]
- * [func@Gio.unix_mount_points_changed_since]
+ * [func@GioUnix.unix_mount_points_get]
+ * [func@GioUnix.UnixMountPoint.at]
+ * [func@GioUnix.unix_mounts_get]
+ * [func@GioUnix.unix_mount_at]
+ * [func@GioUnix.unix_mount_for]
+ * [func@GioUnix.unix_mounts_changed_since]
+ * [func@GioUnix.unix_mount_points_changed_since]
 
 And several helper functions for checking the type of a mount or path:
 
- * [func@Gio.unix_is_mount_path_system_internal]
- * [func@Gio.unix_is_system_fs_type]
- * [func@Gio.unix_is_system_device_path]
+ * [func@GioUnix.unix_is_mount_path_system_internal]
+ * [func@GioUnix.unix_is_system_fs_type]
+ * [func@GioUnix.unix_is_system_device_path]
 

@@ -3,16 +3,17 @@
 # Copyright 2023 Philip Withnall
 
 [library]
-name = "Gio"
+name = "GLibWin32"
 version = "@VERSION@"
 browse_url = "https://gitlab.gnome.org/GNOME/glib/"
 repository_url = "https://gitlab.gnome.org/GNOME/glib.git"
 website_url = "https://www.gtk.org"
-docs_urls = "https://docs.gtk.org/gio/"
+docs_url = "https://docs.gtk.org/glib-win32/"
 authors = "GLib Development Team"
 license = "LGPL-2.1-or-later"
-description = "Gio is a library providing useful classes for general purpose I/O, networking, IPC, settings, and other high level application functionality"
-dependencies = [ "GLib-2.0", "GModule-2.0", "GObject-2.0" ]
+description = "Windows-specific APIs in GLib"
+dependencies = [ "GLib-2.0" ]
+related = [ "GModule-2.0", "GObject-2.0", "Gio-2.0" ]
 devhelp = true
 search_index = true
 
@@ -21,15 +22,20 @@ search_index = true
   description = "The base utility library"
   docs_url = "https://docs.gtk.org/glib/"
 
-  [dependencies."GModule-2.0"]
+  [related."GModule-2.0"]
   name = "GModule"
   description = "Portable API for dynamically loading modules"
   docs_url = "https://docs.gtk.org/gmodule/"
 
-  [dependencies."GObject-2.0"]
+  [related."GObject-2.0"]
   name = "GObject"
   description = "The base type system library"
   docs_url = "https://docs.gtk.org/gobject/"
+
+  [related."Gio-2.0"]
+  name = "GIO"
+  description = "GObject Interfaces and Objects, Networking, IPC, and I/O"
+  docs_url = "https://docs.gtk.org/gio/"
 
 [theme]
 name = "basic"
@@ -40,32 +46,6 @@ show_class_hierarchy = true
 urlmap_file = "../urlmap.js"
 # The same order will be used when generating the index
 content_files = [
-  "overview.md",
-  "file-attributes.md",
-  "tls-overview.md",
-
-  "error.md",
-
-  "pollable-utils.md",
-
-  "dbus-error.md",
-  "dbus-introspection.md",
-  "dbus-name-owning.md",
-  "dbus-name-watching.md",
-  "dbus-utils.md",
-  "menu-exporter.md",
-
-  "networking.md",
-
-  "migrating-gdbus.md",
-  "migrating-gconf.md",
-  "migrating-gnome-vfs.md",
-  "migrating-posix.md",
-
-  "io-scheduler.md",
+  "windows.md",
 ]
-content_images = [
-  "gvfs-overview.png",
-  "menu-example.png",
-  "menu-model.png",
-]
+content_images = []

@@ -14,12 +14,12 @@ To use these functions, you must explicitly include the
 
 ## File Descriptors
 
- * [func@GLib.unix_open_pipe]
- * [func@GLib.unix_set_fd_nonblocking]
+ * [func@GLibUnix.unix_open_pipe]
+ * [func@GLibUnix.unix_set_fd_nonblocking]
 
 ## Pipes
 
-The [struct@GLib.UnixPipe] structure can be used to conveniently open and
+The [struct@GLibUnix.UnixPipe] structure can be used to conveniently open and
 manipulate a Unix pipe.
 
 <!-- FIXME: https://gitlab.gnome.org/GNOME/gi-docgen/-/issues/173 -->
@@ -33,16 +33,16 @@ The methods for it are all static inline for efficiency. They are:
 
 ## Signals
 
- * [func@GLib.unix_signal_add]
- * [func@GLib.unix_signal_add_full]
- * [func@GLib.unix_signal_source_new]
+ * [func@GLibUnix.unix_signal_add]
+ * [func@GLibUnix.unix_signal_add_full]
+ * [func@GLibUnix.unix_signal_source_new]
 
 ## Polling
 
- * [func@GLib.unix_fd_add]
- * [func@GLib.unix_fd_add_full]
- * [func@GLib.unix_fd_source_new]
+ * [func@GLibUnix.unix_fd_add]
+ * [func@GLibUnix.unix_fd_add_full]
+ * [func@GLibUnix.unix_fd_source_new]
 
 ## User Database
 
- * [func@GLib.unix_get_passwd_entry]
+ * [func@GLibUnix.unix_get_passwd_entry]
