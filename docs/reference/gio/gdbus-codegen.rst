@@ -296,6 +296,10 @@ The following options are supported:
   is not allowed along with ``--output``, because the latter is used to generate
   only one file.
 
+  Since GLib 2.80, if *OUTFILE* is the literal string ``-``, the header
+  or source code will be written to standard output. To write to a file
+  starting with ``-``, it should be prefixed with ``./``.
+
 ``--annotate`` *ELEMENT* *KEY* *VALUE*
 
   Used to inject D-Bus annotations into the given XML files. It can be used with
