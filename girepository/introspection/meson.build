@@ -49,6 +49,61 @@ glib_gir = gnome.generate_gir(libglib,
   ],
 )
 
+if host_system == 'windows'
+  glib_win32_gir = gnome.generate_gir(libglib,
+    sources: [
+      gi_gen_shared_sources,
+      glib_win32_headers,
+    ],
+    namespace: 'GLibWin32',
+    nsversion: '2.0',
+    identifier_prefix: gi_identifier_prefix,
+    symbol_prefix: gi_symbol_prefix,
+    export_packages: 'glib-2.0',
+    header: 'glib.h',
+    includes: [ glib_gir[0] ],
+    install: true,
+    dependencies: [
+      libgobject_dep,
+    ],
+    env: gi_gen_env_variables,
+    extra_args: gir_args + [
+      '-DGLIB_COMPILATION',
+      '-DGETTEXT_PACKAGE="dummy"',
+      '--symbol-prefix=glib',
+      '--library-path=' + meson.current_build_dir(),
+      '--library=gobject-2.0',
+    ],
+  )
+else
+  glib_unix_gir = gnome.generate_gir(libglib,
+    sources: [
+      gi_gen_shared_sources,
+      glib_unix_headers,
+    ],
+    namespace: 'GLibUnix',
+    nsversion: '2.0',
+    identifier_prefix: gi_identifier_prefix,
+    symbol_prefix: gi_symbol_prefix,
+    export_packages: 'glib-2.0',
+    header: 'glib.h',
+    includes: [ glib_gir[0] ],
+    install: true,
+    dependencies: [
+      libgobject_dep,
+    ],
+    env: gi_gen_env_variables,
+    extra_args: gir_args + [
+      '-DGLIB_COMPILATION',
+      '-DGETTEXT_PACKAGE="dummy"',
+      '--symbol-prefix=glib',
+      '--library-path=' + meson.current_build_dir(),
+      '--library=gobject-2.0',
+      '--c-include=glib-unix.h',
+    ],
+  )
+endif
+
 # GObject
 gobject_gir = gnome.generate_gir(libgobject,
   sources: [
@@ -112,31 +167,13 @@ gio_gir_sources = [
   application_sources,
   gdbus_sources,
   contenttype_sources,
-  unix_sources,
-  win32_sources,
   settings_sources,
 ]
-gio_gir_packages = [ 'gio-2.0' ]
 gio_gir_args = [
   '-DGIO_COMPILATION',
   '-DG_SETTINGS_ENABLE_BACKEND',
   '--symbol-prefix=gio',
 ]
-if host_system == 'windows'
-  gio_gir_sources += gio_win32_include_headers
-  foreach h: gio_win32_include_headers
-    gio_gir_args += '--c-include=@0@'.format(h)
-  endforeach
-  gio_gir_packages += 'gio-win32-2.0'
-  gio_gir_args += '--pkg=gio-win32-2.0'
-else
-  gio_gir_sources += gio_unix_include_headers
-  foreach h: gio_unix_include_headers
-    gio_gir_args += '--c-include=@0@'.format(h)
-  endforeach
-  gio_gir_packages += 'gio-unix-2.0'
-  gio_gir_args += '--pkg=gio-unix-2.0'
-endif
 
 gio_gir = gnome.generate_gir(libgio,
   sources: gio_gir_sources,
@@ -144,7 +181,7 @@ gio_gir = gnome.generate_gir(libgio,
   nsversion: '2.0',
   identifier_prefix: gi_identifier_prefix,
   symbol_prefix: gi_symbol_prefix,
-  export_packages: gio_gir_packages,
+  export_packages: [ 'gio-2.0' ],
   header: 'gio/gio.h',
   includes: [ glib_gir[0], gmodule_gir[0], gobject_gir[0] ],
   install: true,
@@ -157,6 +194,57 @@ gio_gir = gnome.generate_gir(libgio,
   extra_args: gir_args + gio_gir_args,
 )
 
+if host_system == 'windows'
+  gio_win32_gir_c_includes = []
+  foreach h: gio_win32_include_headers
+    gio_win32_gir_c_includes += '--c-include=@0@'.format(h)
+  endforeach
+
+  gio_win32_gir = gnome.generate_gir(libgio,
+    sources: gio_win32_include_headers + win32_sources,
+    namespace: 'GioWin32',
+    nsversion: '2.0',
+    identifier_prefix: gi_identifier_prefix,
+    symbol_prefix: gi_symbol_prefix,
+    export_packages: [ 'gio-win32-2.0' ],
+    header: 'gio/gio.h',
+    includes: [ glib_gir[0], gmodule_gir[0], gobject_gir[0], gio_gir[0] ],
+    install: true,
+    dependencies: [
+      libglib_dep,
+      libgobject_dep,
+      libgmodule_dep,
+    ],
+    env: gi_gen_env_variables,
+    extra_args: gir_args + gio_gir_args + [ '--pkg=gio-win32-2.0' ] + gio_win32_gir_c_includes,
+  )
+else
+  gio_unix_gir_c_includes = []
+  foreach h: gio_unix_include_headers
+    gio_unix_gir_c_includes += '--c-include=@0@'.format(h)
+  endforeach
+
+  gio_unix_gir = gnome.generate_gir(libgio,
+    sources: gio_unix_include_headers + unix_sources,
+    namespace: 'GioUnix',
+    nsversion: '2.0',
+    identifier_prefix: gi_identifier_prefix,
+    symbol_prefix: gi_symbol_prefix,
+    export_packages: [ 'gio-unix-2.0' ],
+    header: 'gio/gio.h',
+    includes: [ glib_gir[0], gmodule_gir[0], gobject_gir[0], gio_gir[0] ],
+    install: true,
+    dependencies: [
+      libglib_dep,
+      libgobject_dep,
+      libgmodule_dep,
+    ],
+    env: gi_gen_env_variables,
+    extra_args: gir_args + gio_gir_args + [ '--pkg=gio-unix-2.0' ] + gio_unix_gir_c_includes,
+  )
+endif
+
+# GIRepository
 libgirepository_gir_sources = [
   gi_visibility_h,
   girepo_headers,
