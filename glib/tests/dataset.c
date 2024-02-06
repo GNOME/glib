@@ -305,6 +305,7 @@ test_datalist_id_remove_multiple_resize (void)
 {
   GQuark *quarks;
   GQuark *quarks2;
+  gboolean *has;
   const guint N = 1000;
   const guint PRIME = 1048583u;
   guint i;
@@ -314,6 +315,7 @@ test_datalist_id_remove_multiple_resize (void)
 
   quarks = g_new (GQuark, N);
   quarks2 = g_new (GQuark, N);
+  has = g_new0 (gboolean, N);
 
   for (i = 0; i < N; i++)
     {
@@ -322,12 +324,15 @@ test_datalist_id_remove_multiple_resize (void)
     }
 
   for (i = 0; i < N; i++)
-    g_datalist_id_set_data (&list, quarks[i], GINT_TO_POINTER (i));
+    {
+      g_datalist_id_set_data (&list, quarks[i], (gpointer) g_quark_to_string (quarks[i]));
+      has[i] = TRUE;
+    }
 
   /* Now we perform a list of random operations (remove/add quarks). */
   for (i_run = 0; TRUE; i_run++)
     {
-      int MODE = ((guint) g_test_rand_int ()) % 4;
+      int MODE = ((guint) g_test_rand_int ()) % 6;
       guint n;
       guint j;
 
@@ -355,9 +360,15 @@ test_datalist_id_remove_multiple_resize (void)
             {
               j = (j + PRIME) % N;
               if (MODE == 0)
-                g_datalist_id_remove_data (&list, quarks[j]);
+                {
+                  g_datalist_id_remove_data (&list, quarks[j]);
+                  has[j] = FALSE;
+                }
               else
-                g_datalist_id_set_data (&list, quarks[j], GINT_TO_POINTER (j));
+                {
+                  g_datalist_id_set_data (&list, quarks[j], (gpointer) g_quark_to_string (quarks[j]));
+                  has[j] = TRUE;
+                }
             }
           break;
         case 3:
@@ -366,15 +377,59 @@ test_datalist_id_remove_multiple_resize (void)
             {
               j = (j + PRIME) % N;
               quarks2[i] = quarks[j];
+              has[j] = FALSE;
             }
 
           g_datalist_id_remove_multiple (&list, quarks2, n);
           break;
+        case 4:
+          /* Mode: lookup string via g_datalist_get_data()*/
+          for (i = 0; i < n; i++)
+            {
+              const char *data;
+              const char *data2;
+              const char *key;
+
+              j = (j + PRIME) % N;
+
+              key = g_quark_to_string (quarks[j]);
+
+              data = g_datalist_id_get_data (&list, quarks[j]);
+              data2 = g_datalist_get_data (&list, key);
+              g_assert_true (data == data2);
+              if (data)
+                g_assert_true (data == key);
+              g_assert_true ((!!data) == has[j]);
+            }
+          break;
+        case 5:
+          /* Fill/empty the list completely. */
+          switch (((guint) g_test_rand_int ()) % 5)
+            {
+            case 0:
+              g_datalist_clear (&list);
+              for (i = 0; i < N; i++)
+                has[i] = FALSE;
+              break;
+            case 1:
+              for (i = 0; i < N; i++)
+                {
+                  j = (j + PRIME) % N;
+                  g_datalist_id_set_data (&list, quarks[j], (gpointer) g_quark_to_string (quarks[j]));
+                  has[i] = TRUE;
+                }
+              break;
+            default:
+              /* Most of the time we do nothing. The case where we fill/empty
+               * the list entirely is less interesting. */
+              break;
+            }
         }
     }
 
   g_free (quarks);
   g_free (quarks2);
+  g_free (has);
 }
 
 static void
