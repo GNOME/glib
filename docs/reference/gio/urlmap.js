@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 // SPDX-FileCopyrightText: 2023 Matthias Clasen
 var baseURLs = [
-    [ 'GdkPixbuf', 'https://docs.gtk.org/gdk-pixbuf/' ],
     [ 'GLib', 'https://docs.gtk.org/glib/' ],
     [ 'GModule', 'https://docs.gtk.org/gmodule/' ],
     [ 'GObject', 'https://docs.gtk.org/gobject/' ],
