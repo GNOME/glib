@@ -297,8 +297,16 @@ The following options are supported:
   only one file.
 
   Since GLib 2.80, if *OUTFILE* is the literal string ``-``, the header
-  or source code will be written to standard output. To write to a file
-  starting with ``-``, it should be prefixed with ``./``.
+  or source code will be written to standard output.
+
+  For ``--body`` and ``--interface-info-body``, the generated code will not
+  automatically ``#include`` a corresponding header file when writing to
+  standard output, because there is no obvious name for that header file.
+  This might make it necessary to use ``cc -include foo.h``, or generate a
+  filename like ``foo-impl.h`` and ``#include`` it into a wrapper ``.c`` file.
+
+  In the rare situation that the intended output filename starts with ``-``,
+  it should be prefixed with ``./``.
 
 ``--annotate`` *ELEMENT* *KEY* *VALUE*
 

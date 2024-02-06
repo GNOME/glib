@@ -409,8 +409,6 @@ G_END_DECLS
 
 {standard_config_h_include}
 
-#include "-.h"
-
 {standard_header_includes}
 
 {private_gvalues_getters}
@@ -431,8 +429,6 @@ G_END_DECLS
             """{standard_top_comment}
 
 {standard_config_h_include}
-
-#include "-.h"
 
 {interface_info_header_includes}""".format(
                 **result.subs
