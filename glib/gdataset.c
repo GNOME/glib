@@ -723,7 +723,9 @@ g_data_remove_internal (GData  **datalist,
   GData *d_to_free;
   gsize found_keys;
   gsize i_keys;
-  guint32 i_data;
+
+  if (n_keys == 0)
+    return;
 
   d = g_datalist_lock_and_get (datalist);
 
@@ -749,33 +751,23 @@ g_data_remove_internal (GData  **datalist,
       old = old_to_free;
     }
 
-  i_data = 0;
   found_keys = 0;
-  while (i_data < d->len && found_keys < n_keys)
+  for (i_keys = 0; i_keys < n_keys; i_keys++)
     {
-      GDataElt *data = &d->data[i_data];
-      gboolean remove = FALSE;
+      GDataElt *data_elt;
+      guint32 idx;
 
-      for (i_keys = 0; i_keys < n_keys; i_keys++)
-        {
-          if (data->key == keys[i_keys])
-            {
-              /* We must invoke the destroy notifications in the order of @keys.
-               * Hence, build up the list @old at index @i_keys. */
-              old[i_keys] = *data;
-              found_keys++;
-              remove = TRUE;
-              break;
-            }
-        }
+      data_elt = datalist_find (d, keys[i_keys], &idx);
+      if (!data_elt)
+        continue;
 
-      if (!remove)
-        {
-          i_data++;
-          continue;
-        }
-
-      datalist_remove (d, i_data);
+      /* We must destroy the keys in the order in which they are specified.
+       * We achieve that here.
+       *
+       * Note that even if @keys contains duplicates, we correctly only
+       * find them once, as we remove the found entry right away. */
+      old[found_keys++] = *data_elt;
+      datalist_remove (d, idx);
     }
 
   if (found_keys > 0 && datalist_shrink (&d, &d_to_free))
@@ -787,13 +779,10 @@ g_data_remove_internal (GData  **datalist,
   else
     g_datalist_unlock (datalist);
 
-  if (found_keys > 0)
+  for (i_keys = 0; i_keys < found_keys; i_keys++)
     {
-      for (i_keys = 0; i_keys < n_keys; i_keys++)
-        {
-          if (old[i_keys].destroy)
-            old[i_keys].destroy (old[i_keys].data);
-        }
+      if (old[i_keys].destroy)
+        old[i_keys].destroy (old[i_keys].data);
     }
 
   if (G_UNLIKELY (old_to_free))
@@ -996,9 +985,8 @@ g_datalist_id_set_data_full (GData	  **datalist,
  * This is more efficient than calling g_datalist_id_remove_data()
  * multiple times in a row.
  *
- * Before 2.80, @n_keys had to be not larger than 16. Now it can be larger, but
- * note that GData does a linear search, so an excessive number of keys will
- * perform badly.
+ * Before 2.80, @n_keys had to be not larger than 16.
+ * Since 2.84, performance is improved for larger number of keys.
  *
  * Since: 2.74
  */
