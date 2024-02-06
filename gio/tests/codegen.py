@@ -375,6 +375,31 @@ G_END_DECLS
             result.out.strip(),
         )
 
+    def test_empty_interface_info_header(self):
+        """Test generating a header with an empty interface file."""
+        result = self.runCodegenWithInterface(
+            "", "--output", "-", "--interface-info-header"
+        )
+        self.assertEqual("", result.err)
+        self.assertEqual(
+            """{standard_top_comment}
+
+#ifndef __STDOUT__
+#define __STDOUT__
+
+#include <gio/gio.h>
+
+G_BEGIN_DECLS
+
+
+G_END_DECLS
+
+#endif /* __STDOUT__ */""".format(
+                **result.subs
+            ),
+            result.out.strip(),
+        )
+
     def test_empty_interface_body(self):
         """Test generating a body with an empty interface file."""
         result = self.runCodegenWithInterface("", "--output", "-", "--body")
