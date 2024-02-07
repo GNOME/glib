@@ -1023,6 +1023,7 @@ static __uint128_t v1 = 100;
 static __uint128_t v2 = 10;
 static __uint128_t u;
 u = v1 / v2;
+(void) u;
 }'''
 if cc.compiles(uint128_t_src, name : '__uint128_t available')
   glib_conf.set('HAVE_UINT128_T', 1)
