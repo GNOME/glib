@@ -172,6 +172,9 @@ gi_callable_info_is_method (GICallableInfo *info)
  *
  * Obtain the return type of a callable item as a [class@GIRepository.TypeInfo].
  *
+ * If the callable doesn’t return anything, a [class@GIRepository.TypeInfo] of
+ * type [enum@GIRepository.TypeTag.VOID] will be returned.
+ *
  * Returns: (transfer full): the [class@GIRepository.TypeInfo]. Free the struct
  *   by calling [method@GIRepository.BaseInfo.unref] when done.
  * Since: 2.80
