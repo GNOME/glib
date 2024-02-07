@@ -137,9 +137,11 @@ sh-and-py-check:
   allow_failure: false
   script:
     - git config --global --add safe.directory "${PWD}"
-    - .gitlab-ci/run-shellcheck.sh
-    - .gitlab-ci/run-black.sh
-    - .gitlab-ci/run-flake8.sh
+    - tests/shellcheck.sh
+    - tests/black.sh
+    - tests/flake8.sh
+  variables:
+    LINT_WARNINGS_ARE_ERRORS: '1'
   only:
     changes:
       - "**/*.py"
@@ -151,7 +153,9 @@ style-check-mandatory:
   stage: style-check
   allow_failure: false
   script:
-    - .gitlab-ci/run-reuse.sh
+    - tests/reuse.sh
+  variables:
+    LINT_WARNINGS_ARE_ERRORS: '1'
 
 fedora-x86_64:
   extends:

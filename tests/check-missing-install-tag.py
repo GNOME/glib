@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# Copyright © 2022 Collabora, Ltd.
+# Copyright © 2022-2024 Collabora, Ltd.
 #
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
@@ -18,19 +18,33 @@ from pathlib import Path
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("builddir", type=Path)
+    parser.add_argument("builddir", type=Path, nargs="?", default=".")
     args = parser.parse_args()
 
-    success = True
+    print("# TAP version 13")
+
+    count = 0
+    bad = 0
     path = args.builddir / "meson-info" / "intro-install_plan.json"
     with path.open(encoding="utf-8") as f:
         install_plan = json.load(f)
         for target in install_plan.values():
             for info in target.values():
+                count += 1
+
                 if not info["tag"]:
-                    print("Missing install_tag for", info["destination"])
-                    success = False
-    return 0 if success else 1
+                    bad += 1
+                    dest = info["destination"]
+                    print(f"not ok {bad} - Missing install_tag for {dest}")
+
+    if bad == 0:
+        print(f"ok 1 - All {count} installed files have install_tag")
+        print("1..1")
+        return 0
+    else:
+        print(f"# {bad}/{count} installed files do not have install_tag")
+        print(f"1..{bad}")
+        return 1
 
 
 if __name__ == "__main__":
