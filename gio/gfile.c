@@ -3378,10 +3378,24 @@ file_copy_fallback (GFile                  *source,
   if (!info)
     goto out;
 
+  if (!g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_TYPE))
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                   _("Cannot retrieve attribute %s"), G_FILE_ATTRIBUTE_STANDARD_TYPE);
+      goto out;
+    }
+
   /* Maybe copy the symlink? */
   if ((flags & G_FILE_COPY_NOFOLLOW_SYMLINKS) &&
       g_file_info_get_file_type (info) == G_FILE_TYPE_SYMBOLIC_LINK)
     {
+      if (!g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET))
+        {
+          g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                       _("Cannot retrieve attribute %s"), G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET);
+          goto out;
+        }
+
       target = g_file_info_get_symlink_target (info);
       if (target)
         {
