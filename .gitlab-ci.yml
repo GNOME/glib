@@ -426,7 +426,7 @@ cross-android_arm64:
   image: $FEDORA_IMAGE
   script:
     # FIXME: add --werror
-    - meson setup ${MESON_COMMON_OPTIONS} --cross-file=.gitlab-ci/cross_file_android_arm64_31.txt _build
+    - meson setup ${MESON_COMMON_OPTIONS} --cross-file=.gitlab-ci/cross_file_android_arm64_31.txt -Dman-pages=enabled -Ddocumentation=true -Dintrospection=enabled -Dtests=false -Dinstalled_tests=false _build
     - meson compile -C _build
 
 cross-mingw64:
@@ -438,7 +438,7 @@ cross-mingw64:
     PYTHONUTF8: "1"
   script:
     # FIXME: Add --werror
-    - meson setup ${MESON_COMMON_OPTIONS} --cross-file=/opt/cross_file_mingw64.txt _build
+    - meson setup ${MESON_COMMON_OPTIONS} --cross-file=/opt/cross_file_mingw64.txt -Dman-pages=enabled -Ddocumentation=true -Dintrospection=enabled -Dtests=false -Dinstalled_tests=false _build
     - meson compile -C _build
   artifacts:
     reports:
