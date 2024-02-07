@@ -507,6 +507,7 @@ struct_members = [
                            #include <dirent.h>''' ],
   [ 'statvfs', 'f_basetype', '#include <sys/statvfs.h>' ],
   [ 'statvfs', 'f_fstypename', '#include <sys/statvfs.h>' ],
+  [ 'statvfs', 'f_type', '#include <sys/statvfs.h>' ],
   [ 'tm', 'tm_gmtoff', '#include <time.h>' ],
   [ 'tm', '__tm_gmtoff', '#include <time.h>' ],
 ]
