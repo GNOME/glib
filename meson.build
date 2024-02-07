@@ -1119,7 +1119,7 @@ if cc.compiles('''#include <fcntl.h>
                   #include <sys/types.h>
                   #include <sys/stat.h>
                   void some_func (void) {
-                    open(0, O_DIRECTORY, 0);
+                    open(".", O_DIRECTORY, 0);
                   }''', name : 'open() option O_DIRECTORY')
   glib_conf.set('HAVE_OPEN_O_DIRECTORY', 1)
 endif
