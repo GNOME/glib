@@ -36,6 +36,10 @@ G_BEGIN_DECLS
 
 typedef struct _GITypelib GITypelib;
 
+#define GI_TYPE_TYPELIB (gi_typelib_get_type ())
+GI_AVAILABLE_IN_ALL
+GType gi_typelib_get_type (void) G_GNUC_CONST;
+
 GI_AVAILABLE_IN_ALL
 GITypelib *    gi_typelib_new_from_bytes       (GBytes  *bytes,
                                                 GError **error);

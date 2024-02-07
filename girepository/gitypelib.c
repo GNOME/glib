@@ -41,6 +41,8 @@
  * Since: 2.80
  */
 
+G_DEFINE_BOXED_TYPE (GITypelib, gi_typelib, gi_typelib_ref, gi_typelib_unref)
+
 typedef struct {
   GITypelib *typelib;
   GSList *context_stack;
