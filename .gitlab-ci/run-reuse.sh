@@ -26,9 +26,9 @@ files_without_license_information_max=417
 # output rather than the current human-readable output.
 lint_output="$(reuse lint || true)"
 
-files_with_copyright_information="$(echo "${lint_output}" | awk '/^\* Files with copyright information: / { print $6 }')"
-files_with_license_information="$(echo "${lint_output}" | awk '/^\* Files with license information: / { print $6 }')"
-total_files="$(echo "${lint_output}" | awk '/^\* Files with copyright information: / { print $8 }')"
+files_with_copyright_information="$(echo "${lint_output}" | awk '/^\* [fF]iles with copyright information: / { print $6 }')"
+files_with_license_information="$(echo "${lint_output}" | awk '/^\* [fF]iles with license information: / { print $6 }')"
+total_files="$(echo "${lint_output}" | awk '/^\* [fF]iles with copyright information: / { print $8 }')"
 error=0
 
 files_without_copyright_information="$(( total_files - files_with_copyright_information ))"
