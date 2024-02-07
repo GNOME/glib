@@ -267,6 +267,9 @@ gi_repository_prepend_search_path (GIRepository *repository,
  * The list is internal to [class@GIRepository.Repository] and should not be
  * freed, nor should its string elements.
  *
+ * The list is guaranteed to be `NULL` terminated. The `NULL` terminator is not
+ * counted in @n_paths_out.
+ *
  * Returns: (element-type filename) (transfer none) (array length=n_paths_out): list of search paths, most
  *   important first
  * Since: 2.80
@@ -335,6 +338,9 @@ gi_repository_prepend_library_path (GIRepository *repository,
  *
  * The list is internal to [class@GIRepository.Repository] and should not be
  * freed, nor should its string elements.
+ *
+ * The list is guaranteed to be `NULL` terminated. The `NULL` terminator is not
+ * counted in @n_paths_out.
  *
  * Returns: (element-type filename) (transfer none) (array length=n_paths_out): list of search paths, most
  *   important first
@@ -1274,6 +1280,9 @@ gi_repository_get_version (GIRepository *repository,
  * The list is internal to [class@GIRepository.Repository] and should not be
  * freed, nor should its string elements.
  *
+ * The list is guaranteed to be `NULL` terminated. The `NULL` terminator is not
+ * counted in @out_n_elements.
+ *
  * Returns: (nullable) (array length=out_n_elements) (transfer none): Array of
  *   paths to shared libraries, or `NULL` if none are associated
  * Since: 2.80
@@ -1666,6 +1675,9 @@ find_namespace_latest (const char          *namespace,
  *
  * Obtain an unordered list of versions (either currently loaded or
  * available) for @namespace_ in this @repository.
+ *
+ * The list is guaranteed to be `NULL` terminated. The `NULL` terminator is not
+ * counted in @n_versions_out.
  *
  * Returns: (element-type utf8) (transfer full) (array length=n_versions_out): the array of versions.
  * Since: 2.80
