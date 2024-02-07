@@ -23,14 +23,14 @@ int main ()
   /* On BeOS, this would crash and show a dialog box.  Avoid the crash.  */
   return 1;
 #endif
-  if (sprintf (buf, "%.4000d %d", 1, 33, 44) < 4000 + 3)
+  if (sprintf (buf, "%.4000d %d", 1, 33) < 4000 + 3)
     result |= 1;
-  if (sprintf (buf, "%.4000f %d", 1.0, 33, 44) < 4000 + 5)
+  if (sprintf (buf, "%.4000f %d", 1.0, 33) < 4000 + 5)
     result |= 2;
-  if (sprintf (buf, "%.511f %d", 1.0, 33, 44) < 511 + 5
+  if (sprintf (buf, "%.511f %d", 1.0, 33) < 511 + 5
       || buf[0] != '1')
     result |= 4;
-  if (sprintf (buf, "%.999f %d", 1.0, 33, 44) < 999 + 5
+  if (sprintf (buf, "%.999f %d", 1.0, 33) < 999 + 5
       || buf[0] != '1')
     result |= 4;
   return result;
