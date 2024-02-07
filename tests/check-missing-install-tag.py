@@ -18,7 +18,7 @@ from pathlib import Path
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("builddir", type=Path, nargs="?", default=".")
+    parser.add_argument("builddir", type=Path, nargs="?", default='.')
     args = parser.parse_args()
 
     print("# TAP version 13")
