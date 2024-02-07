@@ -519,7 +519,16 @@ foreach m : struct_members
   else
     header_check_prefix = header_check_prefix + '#include <sys/stat.h>'
   endif
-  if cc.has_member('struct ' + m[0], m[1], prefix : header_check_prefix)
+  # Reimplement cc.has_member() to workaround compiler warning
+  # FIXME: https://github.com/mesonbuild/meson/pull/12818
+  code = header_check_prefix + '''
+    void bar(void) {
+        struct ''' + m[0] + ''' foo;
+        (void) ( foo.''' + m[1] + ''' );
+        (void) foo;
+    }
+    '''
+  if cc.compiles(code, name : 'type "struct ' + m[0] + '" has member "' + m[1] + '"')
     define = 'HAVE_STRUCT_@0@_@1@'.format(m[0].to_upper(), m[1].underscorify().to_upper())
     glib_conf.set(define, 1)
     glib_conf_prefix = glib_conf_prefix + '#define @0@ 1\n'.format(define)
@@ -1554,6 +1563,7 @@ if long_long_size == long_size
                     int main () {
                       int64_t i1 = 1;
                       long *i2 = &i1;
+                      (void) i2;
                       return 1;
                     }''', name : 'int64_t is long')
     int64_t_typedef = 'long'
@@ -1566,9 +1576,12 @@ if long_long_size == long_size
                       int main () {
                         int64_t i1 = 1;
                         long long *i2 = &i1;
+                        (void) i2;
                         return 1;
                       }''', name : 'int64_t is long long')
     int64_t_typedef = 'long long'
+  else
+    error('Cannot detect int64_t typedef')
   endif
 endif
 
