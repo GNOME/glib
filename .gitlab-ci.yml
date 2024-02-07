@@ -128,8 +128,10 @@ style-check-advisory:
   stage: style-check
   allow_failure: true
   script:
-    - .gitlab-ci/run-style-check-diff.sh
-    - .gitlab-ci/run-check-todos.sh
+    - failed=
+    - .gitlab-ci/run-style-check-diff.sh || failed=1
+    - .gitlab-ci/run-check-todos.sh || failed=1
+    - test -z "$failed"
 
 sh-and-py-check:
   extends:
@@ -139,9 +141,11 @@ sh-and-py-check:
   stage: style-check
   allow_failure: false
   script:
-    - tests/shellcheck.sh
-    - tests/black.sh
-    - tests/flake8.sh
+    - failed=
+    - tests/shellcheck.sh || failed=1
+    - tests/black.sh || failed=1
+    - tests/flake8.sh || failed=1
+    - test -z "$failed"
   variables:
     LINT_WARNINGS_ARE_ERRORS: '1'
   only:
