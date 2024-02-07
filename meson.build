@@ -1553,6 +1553,7 @@ if long_long_size == long_size
                     int main () {
                       int64_t i1 = 1;
                       long *i2 = &i1;
+                      (void) i2;
                       return 1;
                     }''', name : 'int64_t is long')
     int64_t_typedef = 'long'
@@ -1565,9 +1566,12 @@ if long_long_size == long_size
                       int main () {
                         int64_t i1 = 1;
                         long long *i2 = &i1;
+                        (void) i2;
                         return 1;
                       }''', name : 'int64_t is long long')
     int64_t_typedef = 'long long'
+  else
+    error('Cannot detect int64_t typedef')
   endif
 endif
 
