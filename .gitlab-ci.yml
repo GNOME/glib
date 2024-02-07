@@ -111,8 +111,7 @@ variables:
     - cp -r $HOME/subprojects/* subprojects/
 
 # FIXME: Work around https://gitlab.com/gitlab-org/gitlab/-/issues/391756
-.only-default-with-git:
-  extends: .only-default
+.with-git:
   before_script:
    - rm -rf subprojects/gvdb
    - git config --global --add safe.directory "${PWD}"
@@ -122,7 +121,9 @@ variables:
     GIT_SUBMODULE_DEPTH: 1
 
 style-check-advisory:
-  extends: .only-default-with-git
+  extends:
+    - .only-default
+    - .with-git
   image: $DEBIAN_IMAGE
   stage: style-check
   allow_failure: true
@@ -131,12 +132,13 @@ style-check-advisory:
     - .gitlab-ci/run-check-todos.sh
 
 sh-and-py-check:
-  extends: .only-default
+  extends:
+    - .only-default
+    - .with-git
   image: $DEBIAN_IMAGE
   stage: style-check
   allow_failure: false
   script:
-    - git config --global --add safe.directory "${PWD}"
     - tests/shellcheck.sh
     - tests/black.sh
     - tests/flake8.sh
@@ -148,7 +150,9 @@ sh-and-py-check:
       - "**/*.sh"
 
 style-check-mandatory:
-  extends: .only-default-with-git
+  extends:
+    - .only-default
+    - .with-git
   image: $DEBIAN_IMAGE
   stage: style-check
   allow_failure: false
@@ -161,6 +165,7 @@ fedora-x86_64:
   extends:
     - .build-linux
     - .only-default-and-merges
+    - .with-git
   image: $FEDORA_IMAGE
   stage: build
   needs: []
@@ -211,6 +216,7 @@ debian-stable-x86_64:
   extends:
     - .build-linux
     - .only-default
+    - .with-git
   image: $DEBIAN_IMAGE
   stage: build
   needs: []
@@ -242,6 +248,7 @@ debian-stable-x86_64:
 hurd-i386:
   extends:
     - .only-schedules-or-manual
+    - .with-git
   stage: build
   tags:
     - hurd
@@ -278,6 +285,7 @@ muslc-alpine-x86_64:
   extends:
     - .build-linux
     - .only-schedules-or-manual
+    - .with-git
   image: $ALPINE_IMAGE
   stage: build
   needs: []
@@ -347,6 +355,7 @@ G_DISABLE_ASSERT:
   extends:
     - .build-linux
     - .only-schedules-or-manual
+    - .with-git
   image: $FEDORA_IMAGE
   stage: build
   needs: []
@@ -381,6 +390,7 @@ valgrind:
   extends:
     - .build-linux
     - .only-schedules-or-manual
+    - .with-git
   image: $FEDORA_IMAGE
   stage: analysis
   needs: []
