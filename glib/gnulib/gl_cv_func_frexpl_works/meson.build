@@ -86,6 +86,7 @@ int main()
         long double y = frexpl (x, &exp);
         /* On machines with IEEE854 arithmetic: x = 1.68105e-4932,
            exp = -16382, y = 0.5.  On Mac OS X 10.5: exp = -16384, y = 0.5.  */
+        (void) y;
         if (exp != LDBL_MIN_EXP - 1)
           result |= 8;
       }
