@@ -218,7 +218,7 @@ main (int argc, char **argv)
   g_debug ("[building] start");
 
   {
-    GITypelib *typelib;
+    GITypelib *typelib = NULL;
 
     if (shlibs)
       {
@@ -238,8 +238,8 @@ main (int argc, char **argv)
 
     if (!write_out_typelib (NULL, typelib))
       return 1;
-    gi_typelib_free (typelib);
-    typelib = NULL;
+
+    g_clear_pointer (&typelib, gi_typelib_unref);
   }
 
   g_debug ("[building] done");

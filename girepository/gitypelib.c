@@ -2353,6 +2353,7 @@ gi_typelib_new_from_bytes (GBytes *bytes,
     return NULL;
 
   meta = g_slice_new0 (GITypelib);
+  g_atomic_ref_count_init (&meta->ref_count);
   meta->bytes = g_bytes_ref (bytes);
   meta->data = data;
   meta->len = len;
@@ -2362,26 +2363,52 @@ gi_typelib_new_from_bytes (GBytes *bytes,
 }
 
 /**
- * gi_typelib_free:
+ * gi_typelib_ref:
+ * @typelib: (transfer none): a #GITypelib
+ *
+ * Increment the reference count of a [type@GIRepository.Typelib].
+ *
+ * Returns: (transfer full): the same @typelib pointer
+ * Since: 2.80
+ */
+GITypelib *
+gi_typelib_ref (GITypelib *typelib)
+{
+  g_return_val_if_fail (typelib != NULL, NULL);
+
+  g_atomic_ref_count_inc (&typelib->ref_count);
+
+  return typelib;
+}
+
+/**
+ * gi_typelib_unref:
  * @typelib: (transfer full): a #GITypelib
  *
- * Free a [type@GIRepository.Typelib].
+ * Decrement the reference count of a [type@GIRepository.Typelib].
+ *
+ * Once the reference count reaches zero, the typelib is freed.
  *
  * Since: 2.80
  */
 void
-gi_typelib_free (GITypelib *typelib)
+gi_typelib_unref (GITypelib *typelib)
 {
-  g_clear_pointer (&typelib->bytes, g_bytes_unref);
+  g_return_if_fail (typelib != NULL);
 
-  g_clear_pointer (&typelib->library_paths, g_ptr_array_unref);
-
-  if (typelib->modules)
+  if (g_atomic_ref_count_dec (&typelib->ref_count))
     {
-      g_list_foreach (typelib->modules, (GFunc) (void *) g_module_close, NULL);
-      g_list_free (typelib->modules);
+      g_clear_pointer (&typelib->bytes, g_bytes_unref);
+
+      g_clear_pointer (&typelib->library_paths, g_ptr_array_unref);
+
+      if (typelib->modules)
+        {
+          g_list_foreach (typelib->modules, (GFunc) (void *) g_module_close, NULL);
+          g_list_free (typelib->modules);
+        }
+      g_slice_free (GITypelib, typelib);
     }
-  g_slice_free (GITypelib, typelib);
 }
 
 /**

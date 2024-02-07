@@ -1313,6 +1313,7 @@ typedef struct {
 
 struct _GITypelib {
   /*< private >*/
+  gatomicrefcount ref_count;
   const uint8_t *data;  /* just a cached pointer to inside @bytes */
   size_t len;
   GBytes *bytes;  /* (owned) */
