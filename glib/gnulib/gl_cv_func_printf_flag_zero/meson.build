@@ -15,7 +15,7 @@ static char buf[100];
 static double zero = 0.0;
 int main ()
 {
-  if (sprintf (buf, "%010f", 1.0 / zero, 33, 44, 55) < 0
+  if (sprintf (buf, "%010f", 1.0 / zero) < 0
       || (strcmp (buf, "       inf") != 0
           && strcmp (buf, "  infinity") != 0))
     return 1;

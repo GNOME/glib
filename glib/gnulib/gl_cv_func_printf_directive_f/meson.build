@@ -15,7 +15,7 @@ static double zero = 0.0;
 int main ()
 {
   int result = 0;
-  if (sprintf (buf, "%F %d", 1234567.0, 33, 44, 55) < 0
+  if (sprintf (buf, "%F %d", 1234567.0, 33) < 0
       || strcmp (buf, "1234567.000000 33") != 0)
     result |= 1;
   if (sprintf (buf, "%F", 1.0 / zero) < 0
