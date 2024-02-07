@@ -48,3 +48,15 @@ License: CC-BY-SA-3.0
 Files: girepository/cmph/*
 Copyright: CMPH contributors
 License: LGPL-2.1-only or MPL-1.1
+
+# gnulib is a copylib. Adding copyright/license data to the files there would
+# cause divergence from upstream. See glib/gnulib/README.
+Files: glib/gnulib/*
+Copyright: gnulib contributors
+License: LGPL-2.1-or-later
+
+# libcharset is a copylib. Adding copyright/license data to the files there
+# would cause divergence from upstream. See glib/libcharset/README.
+Files: glib/libcharset/*
+Copyright: libcharset contributors
+License: LGPL-2.1-or-later
