@@ -1310,6 +1310,7 @@ endif
 if cc.links('''#include <langinfo.h>
                int main (int argc, char ** argv) {
                  char *codeset = nl_langinfo (CODESET);
+                 (void) codeset;
                  return 0;
                }''', name : 'nl_langinfo and CODESET')
   glib_conf.set('HAVE_LANGINFO_CODESET', 1)
@@ -1437,6 +1438,7 @@ endif
 if cc.links('''#include <langinfo.h>
                int main (int argc, char ** argv) {
                  char *codeset = nl_langinfo (_NL_TIME_CODESET);
+                 (void) codeset;
                  return 0;
                }''', name : 'nl_langinfo and _NL_TIME_CODESET')
   glib_conf.set('HAVE_LANGINFO_TIME_CODESET', 1)
@@ -1507,6 +1509,7 @@ if cc.compiles('''#include <sys/types.h>
                   #include <inttypes.h>
                   void some_func (void) {
                     uintmax_t i = (uintmax_t) -1;
+                    (void) i;
                   }''', name : 'uintmax_t in inttypes.h')
   glib_conf.set('HAVE_INTTYPES_H_WITH_UINTMAX', 1)
   found_uintmax_t = true
@@ -1519,6 +1522,7 @@ if cc.compiles('''#include <sys/types.h>
                   #include <stdint.h>
                   void some_func (void) {
                     uintmax_t i = (uintmax_t) -1;
+                    (void) i;
                   }''', name : 'uintmax_t in stdint.h')
   glib_conf.set('HAVE_STDINT_H_WITH_UINTMAX', 1)
   found_uintmax_t = true
