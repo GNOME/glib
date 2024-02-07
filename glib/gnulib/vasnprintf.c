@@ -864,7 +864,13 @@ convert_to_decimal (mpn_t a, size_t extra_zeroes)
   size_t c_len = 9 * ((size_t)(a_len * (GMP_LIMB_BITS * 0.03345f)) + 1);
   /* We need extra_zeroes bytes for zeroes, followed by c_len bytes for the
      digits of a, followed by 1 byte for the terminating NUL.  */
-  char *c_ptr = (char *) malloc (xsum (xsum (extra_zeroes, c_len), 1));
+
+  size_t n_alloc = xsum3 (extra_zeroes, c_len, 1);
+
+  if (size_overflow_p (n_alloc))
+    return NULL;
+
+  char *c_ptr = (char *) malloc (n_alloc);
   if (c_ptr != NULL)
     {
       char *d_ptr = c_ptr;
