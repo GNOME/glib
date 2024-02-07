@@ -1330,6 +1330,7 @@ if cc.links('''#include <langinfo.h>
                  str = nl_langinfo (ABMON_12);
                  str = nl_langinfo (DAY_1);
                  str = nl_langinfo (ABDAY_7);
+                 (void) str;
                  return 0;
                }''', name : 'nl_langinfo (PM_STR)')
   have_langinfo_time = true
@@ -1345,6 +1346,7 @@ if cc.links('''#include <langinfo.h>
                  str = nl_langinfo (ERA_D_FMT);
                  str = nl_langinfo (ERA_T_FMT);
                  str = nl_langinfo (_NL_TIME_ERA_NUM_ENTRIES);
+                 (void) str;
                  return 0;
                }''', name : 'nl_langinfo (ERA)')
   glib_conf.set('HAVE_LANGINFO_ERA', 1)
@@ -1366,6 +1368,7 @@ if cc.links('''#include <langinfo.h>
                  str = nl_langinfo (_NL_CTYPE_OUTDIGIT7_MB);
                  str = nl_langinfo (_NL_CTYPE_OUTDIGIT8_MB);
                  str = nl_langinfo (_NL_CTYPE_OUTDIGIT9_MB);
+                 (void) str;
                  return 0;
                }''', name : 'nl_langinfo (_NL_CTYPE_OUTDIGITn_MB)')
   glib_conf.set('HAVE_LANGINFO_OUTDIGIT', 1)
@@ -1393,6 +1396,7 @@ if cc.links('''#ifndef _GNU_SOURCE
                  str = nl_langinfo (ALTMON_10);
                  str = nl_langinfo (ALTMON_11);
                  str = nl_langinfo (ALTMON_12);
+                 (void) str;
                  return 0;
                }''', name : 'nl_langinfo (ALTMON_n)')
   glib_conf.set('HAVE_LANGINFO_ALTMON', 1)
@@ -1420,6 +1424,7 @@ if cc.links('''#ifndef _GNU_SOURCE
                  str = nl_langinfo (_NL_ABALTMON_10);
                  str = nl_langinfo (_NL_ABALTMON_11);
                  str = nl_langinfo (_NL_ABALTMON_12);
+                 (void) str;
                  return 0;
                }''', name : 'nl_langinfo (_NL_ABALTMON_n)')
   glib_conf.set('HAVE_LANGINFO_ABALTMON', 1)
