@@ -1089,6 +1089,8 @@ g_local_file_query_filesystem_info (GFile         *file,
   fstype = statfs_buffer.f_fstypename;
 #elif defined(HAVE_STRUCT_STATVFS_F_BASETYPE)
   fstype = statfs_buffer.f_basetype;
+#elif defined(HAVE_STRUCT_STATVFS_F_TYPE)
+  fstype = get_fs_type (statfs_buffer.f_type);
 #else
   fstype = NULL;
 #endif
