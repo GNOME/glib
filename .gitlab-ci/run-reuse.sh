@@ -16,8 +16,8 @@ git submodule update --init
 # suitable copyright/licensing information has increased from a baseline
 # FIXME: Eventually this script can check whether *any* files are missing
 # information. But for now, let’s slowly improve the baseline.
-files_without_copyright_information_max=407
-files_without_license_information_max=559
+files_without_copyright_information_max=346
+files_without_license_information_max=417
 
 # The || true is because `reuse lint` will exit with status 1 if the project is not compliant
 # FIXME: Once https://github.com/fsfe/reuse-tool/issues/512 or
