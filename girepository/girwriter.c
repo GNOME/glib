@@ -1373,7 +1373,7 @@ gi_ir_writer_write (const char *filename,
               "            xmlns:c=\"http://www.gtk.org/introspection/c/1.0\"\n"
               "            xmlns:glib=\"http://www.gtk.org/introspection/glib/1.0\"");
 
-  dependencies = gi_repository_get_immediate_dependencies (repository, ns);
+  dependencies = gi_repository_get_immediate_dependencies (repository, ns, NULL);
   if (dependencies != NULL)
     {
       for (i = 0; dependencies[i]; i++)

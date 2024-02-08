@@ -41,6 +41,7 @@ test_repository_basic (RepositoryFixture *fx,
 {
   const char * const * search_paths;
   char **namespaces = NULL;
+  size_t n_namespaces;
   const char *expected_namespaces[] = { "GLib", NULL };
   char **versions;
   size_t n_versions;
@@ -64,8 +65,9 @@ test_repository_basic (RepositoryFixture *fx,
   g_assert_cmpuint (g_strv_length ((char **) search_paths), >, 0);
   g_assert_cmpstr (search_paths[0], ==, fx->gobject_typelib_dir);
 
-  namespaces = gi_repository_get_loaded_namespaces (fx->repository);
+  namespaces = gi_repository_get_loaded_namespaces (fx->repository, &n_namespaces);
   g_assert_cmpstrv (namespaces, expected_namespaces);
+  g_assert_cmpuint (n_namespaces, ==, g_strv_length ((char **) expected_namespaces));
   g_strfreev (namespaces);
 
   prefix = gi_repository_get_c_prefix (fx->repository, "GLib");
@@ -142,11 +144,13 @@ test_repository_dependencies (RepositoryFixture *fx,
 {
   GError *error = NULL;
   char **dependencies;
+  size_t n_dependencies;
 
   g_test_summary ("Test ensures namespace dependencies are correctly exposed");
 
-  dependencies = gi_repository_get_dependencies (fx->repository, "GObject");
+  dependencies = gi_repository_get_dependencies (fx->repository, "GObject", &n_dependencies);
   g_assert_cmpuint (g_strv_length (dependencies), ==, 1);
+  g_assert_cmpuint (n_dependencies, ==, 1);
   g_assert_true (g_strv_contains ((const char **) dependencies, "GLib-2.0"));
 
   g_clear_error (&error);

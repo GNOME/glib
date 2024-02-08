@@ -133,14 +133,17 @@ GITypelib *    gi_repository_require_private (GIRepository           *repository
 
 GI_AVAILABLE_IN_ALL
 char       ** gi_repository_get_immediate_dependencies (GIRepository *repository,
-                                                        const char   *namespace_);
+                                                        const char   *namespace_,
+                                                        size_t       *n_dependencies_out);
 
 GI_AVAILABLE_IN_ALL
 char       ** gi_repository_get_dependencies (GIRepository *repository,
-                                              const char   *namespace_);
+                                              const char   *namespace_,
+                                              size_t       *n_dependencies_out);
 
 GI_AVAILABLE_IN_ALL
-char       ** gi_repository_get_loaded_namespaces (GIRepository *repository);
+char       ** gi_repository_get_loaded_namespaces (GIRepository *repository,
+                                                   size_t       *n_namespaces_out);
 
 GI_AVAILABLE_IN_ALL
 GIBaseInfo *  gi_repository_find_by_gtype (GIRepository *repository,
