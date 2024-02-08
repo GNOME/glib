@@ -26,6 +26,7 @@
 #include <glib.h>
 #include <glib-object.h>
 
+#include "girepository-private.h"
 #include "gitypes.h"
 
 G_BEGIN_DECLS
@@ -49,5 +50,12 @@ GType           gi_base_info_type_register_static    (const char     *type_name,
                                                       GClassInitFunc  class_init,
                                                       GType           parent_type,
                                                       GTypeFlags      type_flags);
+
+GIInfoType             gi_base_info_get_info_type    (GIBaseInfo   *info);
+
+GIBaseInfo *           gi_base_info_new              (GIInfoType  type,
+                                                      GIBaseInfo *container,
+                                                      GITypelib  *typelib,
+                                                      size_t      offset);
 
 G_END_DECLS

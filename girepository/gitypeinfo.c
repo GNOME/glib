@@ -178,8 +178,9 @@ gi_type_info_get_param_type (GITypeInfo  *info,
  *
  * You can then inspect the type of the returned [class@GIRepository.BaseInfo]
  * to further query whether it is a concrete [class@GObject.Object], an
- * interface, a structure, etc., using
- * [method@GIRepository.BaseInfo.get_info_type].
+ * interface, a structure, etc., using the type checking macros like
+ * [func@GIRepository.IS_OBJECT_INFO], or raw [type@GObject.Type]s with
+ * [func@GObject.TYPE_FROM_INSTANCE].
  *
  * Returns: (transfer full) (nullable): The [class@GIRepository.BaseInfo], or
  *   `NULL`. Free it with gi_base_info_unref() when done.

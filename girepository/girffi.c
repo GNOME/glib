@@ -32,6 +32,7 @@
 #include <unistd.h>
 #endif
 #include "girffi.h"
+#include "gibaseinfo-private.h"
 #include "girepository.h"
 #include "girepository-private.h"
 

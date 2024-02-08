@@ -98,9 +98,6 @@ GI_AVAILABLE_IN_ALL
 void                   gi_base_info_clear            (void         *info);
 
 GI_AVAILABLE_IN_ALL
-GIInfoType             gi_base_info_get_info_type    (GIBaseInfo   *info);
-
-GI_AVAILABLE_IN_ALL
 const char *           gi_base_info_get_name         (GIBaseInfo   *info);
 
 GI_AVAILABLE_IN_ALL
@@ -128,11 +125,5 @@ GITypelib *            gi_base_info_get_typelib      (GIBaseInfo   *info);
 GI_AVAILABLE_IN_ALL
 gboolean               gi_base_info_equal            (GIBaseInfo *info1,
                                                       GIBaseInfo *info2);
-
-GI_AVAILABLE_IN_ALL
-GIBaseInfo *           gi_base_info_new              (GIInfoType  type,
-                                                      GIBaseInfo *container,
-                                                      GITypelib  *typelib,
-                                                      size_t      offset);
 
 G_END_DECLS

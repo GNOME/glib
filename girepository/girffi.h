@@ -92,7 +92,7 @@ void          gi_type_info_extract_ffi_return_value (GITypeInfo                 
 
 GI_AVAILABLE_IN_ALL
 void          gi_type_tag_extract_ffi_return_value (GITypeTag         return_tag,
-                                                    GIInfoType        interface_type,
+                                                    GType             interface_type,
                                                     GIFFIReturnValue *ffi_value,
                                                     GIArgument       *arg);
 

@@ -502,7 +502,7 @@ gi_callable_info_iterate_return_attributes (GICallableInfo   *info,
 /**
  * gi_type_tag_extract_ffi_return_value:
  * @return_tag: [type@GIRepository.TypeTag] of the return value
- * @interface_type: [type@GIRepository.InfoType] of the underlying interface type
+ * @interface_type: [type@GObject.Type] of the underlying interface type
  * @ffi_value: pointer to [type@GIRepository.FFIReturnValue] union containing
  *   the return value from `ffi_call()`
  * @arg: (out caller-allocates): pointer to an allocated
@@ -523,7 +523,7 @@ gi_callable_info_iterate_return_attributes (GICallableInfo   *info,
  */
 void
 gi_type_tag_extract_ffi_return_value (GITypeTag         return_tag,
-                                      GIInfoType        interface_type,
+                                      GType             interface_type,
                                       GIFFIReturnValue *ffi_value,
                                       GIArgument       *arg)
 {
@@ -561,15 +561,11 @@ gi_type_tag_extract_ffi_return_value (GITypeTag         return_tag,
         arg->v_double = ffi_value->v_double;
         break;
     case GI_TYPE_TAG_INTERFACE:
-        switch(interface_type) {
-        case GI_INFO_TYPE_ENUM:
-        case GI_INFO_TYPE_FLAGS:
-            arg->v_int32 = (int32_t) ffi_value->v_long;
-            break;
-        default:
-            arg->v_pointer = (void *) ffi_value->v_pointer;
-            break;
-        }
+        if (interface_type == GI_TYPE_ENUM_INFO ||
+            interface_type == GI_TYPE_FLAGS_INFO)
+          arg->v_int32 = (int32_t) ffi_value->v_long;
+        else
+          arg->v_pointer = (void *) ffi_value->v_pointer;
         break;
     default:
         arg->v_pointer = (void *) ffi_value->v_pointer;
@@ -601,12 +597,12 @@ gi_type_info_extract_ffi_return_value (GITypeInfo       *return_info,
                                        GIArgument       *arg)
 {
   GITypeTag return_tag = gi_type_info_get_tag (return_info);
-  GIInfoType interface_type = GI_INFO_TYPE_INVALID;
+  GType interface_type = G_TYPE_INVALID;
 
   if (return_tag == GI_TYPE_TAG_INTERFACE)
     {
       GIBaseInfo *interface_info = gi_type_info_get_interface (return_info);
-      interface_type = gi_base_info_get_info_type (interface_info);
+      interface_type = G_TYPE_FROM_INSTANCE (interface_info);
       gi_base_info_unref (interface_info);
     }
 

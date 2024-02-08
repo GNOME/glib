@@ -32,6 +32,7 @@
 #include <glib.h>
 #include <glib/gprintf.h>
 #include <gmodule.h>
+#include "gibaseinfo-private.h"
 #include "girepository.h"
 #include "gitypelib-internal.h"
 #include "girepository-private.h"

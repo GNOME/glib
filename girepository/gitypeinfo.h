@@ -94,10 +94,6 @@ GI_AVAILABLE_IN_ALL
 const char *           gi_type_tag_to_string            (GITypeTag   type);
 
 GI_AVAILABLE_IN_ALL
-const char *           gi_info_type_to_string           (GIInfoType  type);
-
-
-GI_AVAILABLE_IN_ALL
 gboolean               gi_type_info_is_pointer          (GITypeInfo *info);
 
 GI_AVAILABLE_IN_ALL
