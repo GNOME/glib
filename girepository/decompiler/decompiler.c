@@ -27,14 +27,15 @@
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <gmodule.h>
+#include <girepository.h>
 
-#include "girwriter.h"
-#include "girepository.h"
+#include "girwriter-private.h"
 #include "gitypelib-internal.h"
 
 int
 main (int argc, char *argv[])
 {
+  GIRepository *repository = NULL;
   gboolean shlib = FALSE;
   gchar *output = NULL;
   gchar **includedirs = NULL;
@@ -53,12 +54,10 @@ main (int argc, char *argv[])
       { "all", 0, 0, G_OPTION_ARG_NONE, &show_all, "show all available information", NULL, },
       { "version", 0, 0, G_OPTION_ARG_NONE, &show_version, "show program's version number and exit", NULL },
       { G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &input, NULL, NULL },
-      { NULL, }
+      G_OPTION_ENTRY_NULL
     };
 
   g_log_set_always_fatal (G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL);
-
-  g_typelib_check_sanity ();
 
   setlocale (LC_ALL, "");
 
@@ -73,8 +72,8 @@ main (int argc, char *argv[])
 
   if (show_version)
     {
-      g_printf ("g-ir-generate %u.%u.%u\n",
-                GI_MAJOR_VERSION, GI_MINOR_VERSION, GI_MICRO_VERSION);
+      g_printf ("gi-decompile-typelib %u.%u.%u\n",
+                GLIB_MAJOR_VERSION, GLIB_MINOR_VERSION, GLIB_MICRO_VERSION);
       return 0;
     }
 
@@ -85,14 +84,17 @@ main (int argc, char *argv[])
       return 1;
     }
 
+  repository = gi_repository_new ();
+
   if (includedirs != NULL)
     for (i = 0; includedirs[i]; i++)
-      g_irepository_prepend_search_path (includedirs[i]);
+      gi_repository_prepend_search_path (repository, includedirs[i]);
 
   for (i = 0; input[i]; i++)
     {
       const char *namespace;
-      GMappedFile *mfile;
+      GMappedFile *mfile = NULL;
+      GBytes *bytes = NULL;
       GITypelib *typelib;
 
       error = NULL;
@@ -100,21 +102,23 @@ main (int argc, char *argv[])
       if (!mfile)
 	g_error ("failed to read '%s': %s", input[i], error->message);
 
+      bytes = g_mapped_file_get_bytes (mfile);
+      g_clear_pointer (&mfile, g_mapped_file_unref);
+
       if (input[i + 1] && output)
 	needs_prefix = TRUE;
       else
 	needs_prefix = FALSE;
 
-      typelib = g_typelib_new_from_mapped_file (mfile, &error);
+      typelib = gi_typelib_new_from_bytes (bytes, &error);
       if (!typelib)
 	g_error ("failed to create typelib '%s': %s", input[i], error->message);
 
-      namespace = g_irepository_load_typelib (g_irepository_get_default (), typelib, 0,
-					      &error);
+      namespace = gi_repository_load_typelib (repository, typelib, 0, &error);
       if (namespace == NULL)
 	g_error ("failed to load typelib: %s", error->message);
-      
-      gir_writer_write (output, namespace, needs_prefix, show_all);
+
+      gi_ir_writer_write (output, namespace, needs_prefix, show_all);
 
       /* when writing to stdout, stop after the first module */
       if (input[i + 1] && !output)
@@ -125,6 +129,8 @@ main (int argc, char *argv[])
 	  break;
 	}
     }
+
+  g_clear_object (&repository);
 
   return 0;
 }
