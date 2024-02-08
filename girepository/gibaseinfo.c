@@ -366,7 +366,7 @@ gi_info_new_full (GIInfoType    type,
 }
 
 /**
- * gi_info_new:
+ * gi_base_info_new:
  * @type: type of the info to create
  * @container: (nullable): info which contains this one
  * @typelib: typelib containing the info
@@ -380,10 +380,10 @@ gi_info_new_full (GIInfoType    type,
  * Since: 2.80
  */
 GIBaseInfo *
-gi_info_new (GIInfoType     type,
-             GIBaseInfo    *container,
-             GITypelib     *typelib,
-             size_t         offset)
+gi_base_info_new (GIInfoType  type,
+                  GIBaseInfo *container,
+                  GITypelib  *typelib,
+                  size_t      offset)
 {
   return gi_info_new_full (type, ((GIRealInfo*)container)->repository, container, typelib, offset);
 }
@@ -510,8 +510,8 @@ gi_type_info_new (GIBaseInfo *container,
 {
   SimpleTypeBlob *type = (SimpleTypeBlob *)&typelib->data[offset];
 
-  return (GITypeInfo *) gi_info_new (GI_INFO_TYPE_TYPE, container, typelib,
-                                     (type->flags.reserved == 0 && type->flags.reserved2 == 0) ? offset : type->offset);
+  return (GITypeInfo *) gi_base_info_new (GI_INFO_TYPE_TYPE, container, typelib,
+                                          (type->flags.reserved == 0 && type->flags.reserved2 == 0) ? offset : type->offset);
 }
 
 /*< private >

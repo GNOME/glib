@@ -50,6 +50,7 @@ your code if integer type warnings are enabled.
 | `g_arg_info_load_type` | [method@GIRepository.ArgInfo.load_type_info] |
 | - | [method@GIRepository.BaseInfo.ref] and [method@GIRepository.BaseInfo.unref] |
 | `g_base_info_get_type` | [method@GIRepository.BaseInfo.get_info_type] |
+| `g_info_new` | [ctor@GIRepository.BaseInfo.new] |
 | `g_callable_info_invoke` arguments | `is_method` and `throws` dropped in [method@GIRepository.CallableInfo.invoke] |
 | `g_constant_info_get_type` | [method@GIRepository.ConstantInfo.get_type_info] |
 | `g_field_info_get_type` | [method@GIRepository.FieldInfo.get_type_info] |

@@ -80,9 +80,9 @@ gi_union_info_get_field (GIUnionInfo *info,
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header = (Header *)rinfo->typelib->data;
 
-  return (GIFieldInfo *) gi_info_new (GI_INFO_TYPE_FIELD, (GIBaseInfo*)info, rinfo->typelib,
-                                      rinfo->offset + header->union_blob_size +
-                                      n * header->field_blob_size);
+  return (GIFieldInfo *) gi_base_info_new (GI_INFO_TYPE_FIELD, (GIBaseInfo*)info, rinfo->typelib,
+                                           rinfo->offset + header->union_blob_size +
+                                           n * header->field_blob_size);
 }
 
 /**
@@ -126,8 +126,8 @@ gi_union_info_get_method (GIUnionInfo *info,
   offset = rinfo->offset + header->union_blob_size
     + blob->n_fields * header->field_blob_size
     + n * header->function_blob_size;
-  return (GIFunctionInfo *) gi_info_new (GI_INFO_TYPE_FUNCTION, (GIBaseInfo*)info,
-                                         rinfo->typelib, offset);
+  return (GIFunctionInfo *) gi_base_info_new (GI_INFO_TYPE_FUNCTION, (GIBaseInfo*)info,
+                                              rinfo->typelib, offset);
 }
 
 /**
@@ -233,8 +233,8 @@ gi_union_info_get_discriminator (GIUnionInfo *info,
         + blob->n_functions * header->function_blob_size
         + n * header->constant_blob_size;
 
-      return (GIConstantInfo *) gi_info_new (GI_INFO_TYPE_CONSTANT, (GIBaseInfo*)info,
-                                             rinfo->typelib, offset);
+      return (GIConstantInfo *) gi_base_info_new (GI_INFO_TYPE_CONSTANT, (GIBaseInfo*)info,
+                                                  rinfo->typelib, offset);
     }
 
   return NULL;

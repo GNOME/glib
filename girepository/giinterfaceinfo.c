@@ -152,8 +152,8 @@ gi_interface_info_get_property (GIInterfaceInfo *info,
     + (blob->n_prerequisites + (blob->n_prerequisites % 2)) * 2
     + n * header->property_blob_size;
 
-  return (GIPropertyInfo *) gi_info_new (GI_INFO_TYPE_PROPERTY, (GIBaseInfo*)info,
-                                         rinfo->typelib, offset);
+  return (GIPropertyInfo *) gi_base_info_new (GI_INFO_TYPE_PROPERTY, (GIBaseInfo*)info,
+                                              rinfo->typelib, offset);
 }
 
 /**
@@ -211,8 +211,8 @@ gi_interface_info_get_method (GIInterfaceInfo *info,
     + blob->n_properties * header->property_blob_size
     + n * header->function_blob_size;
 
-  return (GIFunctionInfo *) gi_info_new (GI_INFO_TYPE_FUNCTION, (GIBaseInfo*)info,
-                                         rinfo->typelib, offset);
+  return (GIFunctionInfo *) gi_base_info_new (GI_INFO_TYPE_FUNCTION, (GIBaseInfo*)info,
+                                              rinfo->typelib, offset);
 }
 
 /**
@@ -301,8 +301,8 @@ gi_interface_info_get_signal (GIInterfaceInfo *info,
     + blob->n_methods * header->function_blob_size
     + n * header->signal_blob_size;
 
-  return (GISignalInfo *) gi_info_new (GI_INFO_TYPE_SIGNAL, (GIBaseInfo*)info,
-                                       rinfo->typelib, offset);
+  return (GISignalInfo *) gi_base_info_new (GI_INFO_TYPE_SIGNAL, (GIBaseInfo*)info,
+                                            rinfo->typelib, offset);
 }
 
 /**
@@ -398,8 +398,8 @@ gi_interface_info_get_vfunc (GIInterfaceInfo *info,
     + blob->n_signals * header->signal_blob_size
     + n * header->vfunc_blob_size;
 
-  return (GIVFuncInfo *) gi_info_new (GI_INFO_TYPE_VFUNC, (GIBaseInfo*)info,
-                                      rinfo->typelib, offset);
+  return (GIVFuncInfo *) gi_base_info_new (GI_INFO_TYPE_VFUNC, (GIBaseInfo*)info,
+                                           rinfo->typelib, offset);
 }
 
 /**
@@ -499,8 +499,8 @@ gi_interface_info_get_constant (GIInterfaceInfo *info,
     + blob->n_vfuncs * header->vfunc_blob_size
     + n * header->constant_blob_size;
 
-  return (GIConstantInfo *) gi_info_new (GI_INFO_TYPE_CONSTANT, (GIBaseInfo*)info,
-                                         rinfo->typelib, offset);
+  return (GIConstantInfo *) gi_base_info_new (GI_INFO_TYPE_CONSTANT, (GIBaseInfo*)info,
+                                              rinfo->typelib, offset);
 }
 
 /**

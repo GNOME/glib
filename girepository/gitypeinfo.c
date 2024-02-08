@@ -211,8 +211,8 @@ gi_type_info_get_interface (GITypeInfo *info)
             g_assert_not_reached ();
             return NULL;
         }
-      return (GIBaseInfo *) gi_info_new (info_type, (GIBaseInfo*)info, rinfo->typelib,
-                                         rinfo->offset);
+      return (GIBaseInfo *) gi_base_info_new (info_type, (GIBaseInfo*)info, rinfo->typelib,
+                                              rinfo->offset);
     }
   else
     {

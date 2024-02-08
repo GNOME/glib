@@ -130,7 +130,7 @@ gboolean               gi_base_info_equal            (GIBaseInfo *info1,
                                                       GIBaseInfo *info2);
 
 GI_AVAILABLE_IN_ALL
-GIBaseInfo *           gi_info_new                   (GIInfoType  type,
+GIBaseInfo *           gi_base_info_new              (GIInfoType  type,
                                                       GIBaseInfo *container,
                                                       GITypelib  *typelib,
                                                       size_t      offset);

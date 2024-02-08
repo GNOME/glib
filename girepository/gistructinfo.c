@@ -111,8 +111,8 @@ gi_struct_info_get_field (GIStructInfo *info,
 
   g_return_val_if_fail (n <= G_MAXUINT16, NULL);
 
-  return (GIFieldInfo *) gi_info_new (GI_INFO_TYPE_FIELD, (GIBaseInfo*)info, rinfo->typelib,
-                                      gi_struct_get_field_offset (info, n));
+  return (GIFieldInfo *) gi_base_info_new (GI_INFO_TYPE_FIELD, (GIBaseInfo*)info, rinfo->typelib,
+                                           gi_struct_get_field_offset (info, n));
 }
 
 /**
@@ -143,10 +143,10 @@ gi_struct_info_find_field (GIStructInfo *info,
 
       if (strcmp (name, fname) == 0)
         {
-          return (GIFieldInfo *) gi_info_new (GI_INFO_TYPE_FIELD,
-                                              (GIBaseInfo* )info,
-                                              rinfo->typelib,
-                                              offset);
+          return (GIFieldInfo *) gi_base_info_new (GI_INFO_TYPE_FIELD,
+                                                   (GIBaseInfo* )info,
+                                                   rinfo->typelib,
+                                                   offset);
         }
 
       offset += header->field_blob_size;
@@ -198,8 +198,8 @@ gi_struct_info_get_method (GIStructInfo *info,
   g_return_val_if_fail (n <= G_MAXUINT16, NULL);
 
   offset = gi_struct_get_field_offset (info, blob->n_fields) + n * header->function_blob_size;
-  return (GIFunctionInfo *) gi_info_new (GI_INFO_TYPE_FUNCTION, (GIBaseInfo*)info,
-                                         rinfo->typelib, offset);
+  return (GIFunctionInfo *) gi_base_info_new (GI_INFO_TYPE_FUNCTION, (GIBaseInfo*)info,
+                                              rinfo->typelib, offset);
 }
 
 /**

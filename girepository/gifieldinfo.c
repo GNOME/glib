@@ -158,9 +158,9 @@ gi_field_info_get_type_info (GIFieldInfo *info)
 
   if (blob->has_embedded_type)
     {
-      type_info = (GIRealInfo *) gi_info_new (GI_INFO_TYPE_TYPE,
-                                              (GIBaseInfo*)info, rinfo->typelib,
-                                              rinfo->offset + header->field_blob_size);
+      type_info = (GIRealInfo *) gi_base_info_new (GI_INFO_TYPE_TYPE,
+                                                   (GIBaseInfo*)info, rinfo->typelib,
+                                                   rinfo->offset + header->field_blob_size);
       type_info->type_is_embedded = TRUE;
     }
   else
