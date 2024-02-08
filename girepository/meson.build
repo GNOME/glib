@@ -44,7 +44,6 @@ gi_visibility_h = custom_target(
 girepo_headers = files(
   'giarginfo.h',
   'gibaseinfo.h',
-  'giboxedinfo.h',
   'gicallableinfo.h',
   'gicallbackinfo.h',
   'giconstantinfo.h',
@@ -148,7 +147,6 @@ girepo_sources = files(
   'gdump.c',
   'giarginfo.c',
   'gibaseinfo.c',
-  'giboxedinfo.c',
   'gicallableinfo.c',
   'gicallbackinfo.c',
   'giconstantinfo.c',

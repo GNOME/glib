@@ -1421,8 +1421,7 @@ gi_ir_writer_write (const char *filename,
             write_function_info (ns, (GIFunctionInfo *)info, xml);
           else if (GI_IS_CALLBACK_INFO (info))
             write_callback_info (ns, (GICallbackInfo *)info, xml);
-          else if (GI_IS_STRUCT_INFO (info) ||
-                   GI_IS_BOXED_INFO (info))
+          else if (GI_IS_STRUCT_INFO (info))
             write_struct_info (ns, (GIStructInfo *)info, xml);
           else if (GI_IS_UNION_INFO (info))
             write_union_info (ns, (GIUnionInfo *)info, xml);

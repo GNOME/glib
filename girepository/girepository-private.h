@@ -72,8 +72,6 @@ G_STATIC_ASSERT (G_ALIGNOF (GIBaseInfo) == G_ALIGNOF (GIBaseInfoStack));
  * @GI_INFO_TYPE_FUNCTION: function, see [class@GIRepository.FunctionInfo]
  * @GI_INFO_TYPE_CALLBACK: callback, see [class@GIRepository.FunctionInfo]
  * @GI_INFO_TYPE_STRUCT: struct, see [class@GIRepository.StructInfo]
- * @GI_INFO_TYPE_BOXED: boxed, see [class@GIRepository.StructInfo] or
- *   [class@GIRepository.UnionInfo]
  * @GI_INFO_TYPE_ENUM: enum, see [class@GIRepository.EnumInfo]
  * @GI_INFO_TYPE_FLAGS: flags, see [class@GIRepository.EnumInfo]
  * @GI_INFO_TYPE_OBJECT: object, see [class@GIRepository.ObjectInfo]
@@ -113,12 +111,13 @@ typedef enum
   GI_INFO_TYPE_FUNCTION,
   GI_INFO_TYPE_CALLBACK,
   GI_INFO_TYPE_STRUCT,
-  GI_INFO_TYPE_BOXED,
-  GI_INFO_TYPE_ENUM,             /*  5 */
-  GI_INFO_TYPE_FLAGS,
-  GI_INFO_TYPE_OBJECT,
-  GI_INFO_TYPE_INTERFACE,
-  GI_INFO_TYPE_CONSTANT,
+  /* 4 is skipped, it used to be BOXED, but was removed in girepository 2.80.
+   * It is still part of the binary format in GITypelibBlobType. */
+  GI_INFO_TYPE_ENUM = 5,             /*  5 */
+  GI_INFO_TYPE_FLAGS = 6,
+  GI_INFO_TYPE_OBJECT = 7,
+  GI_INFO_TYPE_INTERFACE = 8,
+  GI_INFO_TYPE_CONSTANT = 9,
   /* 10 is skipped, it used to be used, but was removed before girepository-2.0
    * It is, however, part of the binary format in GITypelibBlobType */
   GI_INFO_TYPE_UNION = 11,
@@ -226,14 +225,6 @@ struct _GIInterfaceInfo
 
 void gi_interface_info_class_init (gpointer g_class,
                                    gpointer class_data);
-
-struct _GIBoxedInfo
-{
-  GIRegisteredTypeInfo parent;
-};
-
-void gi_boxed_info_class_init (gpointer g_class,
-                               gpointer class_data);
 
 struct _GIConstantInfo
 {

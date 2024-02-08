@@ -2065,8 +2065,6 @@ gi_info_type_to_string (GIInfoType type)
       return "callback";
     case GI_INFO_TYPE_STRUCT:
       return "struct";
-    case GI_INFO_TYPE_BOXED:
-      return "boxed";
     case GI_INFO_TYPE_ENUM:
       return "enum";
     case GI_INFO_TYPE_FLAGS:

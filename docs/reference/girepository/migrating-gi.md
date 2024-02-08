@@ -81,6 +81,7 @@ your code if integer type warnings are enabled.
 | `g_union_info_get_copy_function` | [method@GIRepository.UnionInfo.get_copy_function_name] |
 | `g_union_info_get_free_function` | [method@GIRepository.UnionInfo.get_free_function_name] |
 | `GIInfoType` | Use [type@GObject.Type] directly |
+| `GI_INFO_TYPE_BOXED` | Dropped in favour of [method@GIRepository.RegisteredTypeInfo.is_boxed] |
 
 ## Utility program renames from version 1.0 to 2.0
 
