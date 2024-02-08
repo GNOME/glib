@@ -660,7 +660,7 @@ write_struct_info (const char   *ns,
   type_name = gi_registered_type_info_get_type_name ((GIRegisteredTypeInfo*)info);
   type_init = gi_registered_type_info_get_type_init_function_name ((GIRegisteredTypeInfo*)info);
 
-  if (GI_IS_BOXED_INFO (info))
+  if (gi_registered_type_info_is_boxed (GI_REGISTERED_TYPE_INFO (info)))
     {
       xml_start_element (file, "glib:boxed");
       xml_printf (file, " glib:name=\"%s\"", name);
@@ -1257,6 +1257,7 @@ write_union_info (const char *ns,
   type_name = gi_registered_type_info_get_type_name ((GIRegisteredTypeInfo*)info);
   type_init = gi_registered_type_info_get_type_init_function_name ((GIRegisteredTypeInfo*)info);
 
+  /* FIXME: Add support for boxed unions */
   xml_start_element (file, "union");
   xml_printf (file, " name=\"%s\"", name);
 

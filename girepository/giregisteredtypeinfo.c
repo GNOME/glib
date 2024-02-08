@@ -50,6 +50,13 @@
  * Most users want to call [method@GIRepository.RegisteredTypeInfo.get_g_type]
  * and don’t worry about the rest of the details.
  *
+ * If the registered type is a subtype of `G_TYPE_BOXED`,
+ * [method@GIRepository.RegisteredTypeInfo.is_boxed] will return true, and
+ * [method@GIRepository.RegisteredTypeInfo.get_type_name] is guaranteed to
+ * return a non-`NULL` value. This is relevant for the
+ * [class@GIRepository.StructInfo] and [class@GIRepository.UnionInfo]
+ * subclasses.
+ *
  * Since: 2.80
  */
 
@@ -153,6 +160,63 @@ gi_registered_type_info_get_g_type (GIRegisteredTypeInfo *info)
     return G_TYPE_NONE;
 
   return (* get_type_func) ();
+}
+
+/**
+ * gi_registered_type_info_is_boxed:
+ * @info: a #GIRegisteredTypeInfo
+ *
+ * Get whether the registered type is a boxed type.
+ *
+ * A boxed type is a subtype of the fundamental `G_TYPE_BOXED` type.
+ * It’s a type which has registered a [type@GObject.Type], and which has
+ * associated copy and free functions.
+ *
+ * Most boxed types are `struct`s; some are `union`s; and it’s possible for a
+ * boxed type to be neither, but that is currently unsupported by
+ * libgirepository. It’s also possible for a `struct` or `union` to have
+ * associated copy and/or free functions *without* being a boxed type, by virtue
+ * of not having registered a [type@GObject.Type].
+ *
+ * This function will return false for [type@GObject.Type]s which are not boxed,
+ * such as classes or interfaces. It will also return false for the `struct`s
+ * associated with a class or interface, which return true from
+ * [method@GIRepository.StructInfo.is_gtype_struct].
+ *
+ * Returns: true if @info is a boxed type
+ * Since: 2.80
+ */
+gboolean
+gi_registered_type_info_is_boxed (GIRegisteredTypeInfo *info)
+{
+  GIBaseInfo *base_info = GI_BASE_INFO (info);
+  const RegisteredTypeBlob *blob;
+
+  g_return_val_if_fail (GI_IS_REGISTERED_TYPE_INFO (info), G_TYPE_INVALID);
+
+  blob = (const RegisteredTypeBlob *) &base_info->typelib->data[base_info->offset];
+
+  if (blob->blob_type == BLOB_TYPE_BOXED)
+    {
+      return TRUE;
+    }
+  else if (blob->blob_type == BLOB_TYPE_STRUCT)
+    {
+      const StructBlob *struct_blob = (const StructBlob *) &base_info->typelib->data[base_info->offset];
+
+      return !struct_blob->unregistered;
+    }
+  else if (blob->blob_type == BLOB_TYPE_UNION)
+    {
+      const UnionBlob *union_blob = (const UnionBlob *) &base_info->typelib->data[base_info->offset];
+
+      return !union_blob->unregistered;
+    }
+
+  /* We don’t currently support boxed ‘other’ types (boxed types which aren’t
+   * a struct or union. */
+
+  return FALSE;
 }
 
 void
