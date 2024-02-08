@@ -537,6 +537,9 @@ g_winhttp_file_query_info (GFile                *file,
       g_free (display_name);
     }
 
+  if (_g_file_attribute_matcher_matches_id (matcher, G_FILE_ATTRIBUTE_ID_STANDARD_TYPE))
+    g_file_info_set_file_type (info, G_FILE_TYPE_REGULAR);
+
   content_length = NULL;
   if (_g_winhttp_query_header (winhttp_file->vfs,
                                request,
