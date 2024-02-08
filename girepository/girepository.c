@@ -185,11 +185,11 @@ gi_repository_init (GIRepository *repository)
   repository->typelibs
     = g_hash_table_new_full (g_str_hash, g_str_equal,
                              (GDestroyNotify) g_free,
-                             (GDestroyNotify) gi_typelib_free);
+                             (GDestroyNotify) gi_typelib_unref);
   repository->lazy_typelibs
     = g_hash_table_new_full (g_str_hash, g_str_equal,
                              (GDestroyNotify) g_free,
-                             (GDestroyNotify) NULL);
+                             (GDestroyNotify) gi_typelib_unref);
   repository->info_by_gtype
     = g_hash_table_new_full (g_direct_hash, g_direct_equal,
                              (GDestroyNotify) NULL,
@@ -519,7 +519,7 @@ register_internal (GIRepository *repository,
       g_assert (!g_hash_table_lookup (repository->lazy_typelibs,
                                       namespace));
       g_hash_table_insert (repository->lazy_typelibs,
-                           build_typelib_key (namespace, source), (void *)typelib);
+                           build_typelib_key (namespace, source), gi_typelib_ref (typelib));
     }
   else
     {
@@ -540,7 +540,7 @@ register_internal (GIRepository *repository,
 
       g_hash_table_insert (repository->typelibs,
                            g_steal_pointer (&key),
-                           (void *)typelib);
+                           gi_typelib_ref (typelib));
     }
 
   /* These types might be resolved now, clear the cache */
@@ -709,7 +709,7 @@ gi_repository_get_dependencies (GIRepository *repository,
 /**
  * gi_repository_load_typelib:
  * @repository: A #GIRepository
- * @typelib: the typelib to load
+ * @typelib: (transfer none): the typelib to load
  * @flags: flags affecting the loading operation
  * @error: return location for a [type@GLib.Error], or `NULL`
  *
@@ -1745,6 +1745,7 @@ require_internal (GIRepository           *repository,
   GITypelib *ret = NULL;
   Header *header;
   GITypelib *typelib = NULL;
+  GITypelib *typelib_owned = NULL;
   const char *typelib_namespace, *typelib_version;
   gboolean allow_lazy = (flags & GI_REPOSITORY_LOAD_FLAG_LAZY) > 0;
   gboolean is_lazy;
@@ -1801,7 +1802,7 @@ require_internal (GIRepository           *repository,
     GBytes *bytes = NULL;
 
     bytes = g_mapped_file_get_bytes (mfile);
-    typelib = gi_typelib_new_from_bytes (bytes, &temp_error);
+    typelib_owned = typelib = gi_typelib_new_from_bytes (bytes, &temp_error);
     g_bytes_unref (bytes);
     g_clear_pointer (&mfile, g_mapped_file_unref);
 
@@ -1828,7 +1829,6 @@ require_internal (GIRepository           *repository,
                    "Typelib file %s for namespace '%s' contains "
                    "namespace '%s' which doesn't match the file name",
                    path, namespace, typelib_namespace);
-      gi_typelib_free (typelib);
       goto out;
     }
   if (version != NULL && strcmp (typelib_version, version) != 0)
@@ -1838,18 +1838,15 @@ require_internal (GIRepository           *repository,
                    "Typelib file %s for namespace '%s' contains "
                    "version '%s' which doesn't match the expected version '%s'",
                    path, namespace, typelib_version, version);
-      gi_typelib_free (typelib);
       goto out;
     }
 
   if (!register_internal (repository, path, allow_lazy,
                           typelib, error))
-    {
-      gi_typelib_free (typelib);
-      goto out;
-    }
+    goto out;
   ret = typelib;
  out:
+  g_clear_pointer (&typelib_owned, gi_typelib_unref);
   g_free (tmp_version);
   g_free (path);
   return ret;
