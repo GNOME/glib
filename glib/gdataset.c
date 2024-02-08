@@ -274,6 +274,22 @@ datalist_shrink (GData **data, GData **d_to_free)
   return TRUE;
 }
 
+static void
+datalist_destroy (GData *data)
+{
+  guint32 i;
+
+  /* Must be called without lock. Will free @data and invoke the
+   * destroy() notifications. */
+  for (i = 0; i < data->len; i++)
+    {
+      if (data->data[i].destroy)
+        data->data[i].destroy (data->data[i].data);
+    }
+
+  g_free (data);
+}
+
 static GDataElt *
 datalist_find (GData *data, GQuark key_id, guint32 *out_idx)
 {
@@ -310,7 +326,6 @@ void
 g_datalist_clear (GData **datalist)
 {
   GData *data;
-  guint i;
 
   g_return_if_fail (datalist != NULL);
 
@@ -324,13 +339,7 @@ g_datalist_clear (GData **datalist)
 
   g_datalist_unlock_and_set (datalist, NULL);
 
-  for (i = 0; i < data->len; i++)
-    {
-      if (data->data[i].data && data->data[i].destroy)
-        data->data[i].destroy (data->data[i].data);
-    }
-
-  g_free (data);
+  datalist_destroy (data);
 }
 
 /* HOLDS: g_dataset_global_lock */
@@ -359,7 +368,6 @@ g_dataset_destroy_internal (GDataset *dataset)
   while (dataset)
     {
       GData *data;
-      guint i;
 
       data = G_DATALIST_GET_POINTER (&dataset->datalist);
 
@@ -376,12 +384,7 @@ g_dataset_destroy_internal (GDataset *dataset)
 
       G_UNLOCK (g_dataset_global);
 
-      for (i = 0; i < data->len; i++)
-        {
-          if (data->data[i].data && data->data[i].destroy)
-            data->data[i].destroy (data->data[i].data);
-        }
-      g_free (data);
+      datalist_destroy (data);
 
       G_LOCK (g_dataset_global);
       dataset = g_dataset_lookup (dataset_location);
