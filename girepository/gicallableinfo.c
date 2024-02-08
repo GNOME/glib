@@ -379,8 +379,8 @@ gi_callable_info_get_arg (GICallableInfo *info,
   offset = signature_offset (info);
   header = (Header *)rinfo->typelib->data;
 
-  return (GIArgInfo *) gi_info_new (GI_INFO_TYPE_ARG, (GIBaseInfo*)info, rinfo->typelib,
-                                    offset + header->signature_blob_size + n * header->arg_blob_size);
+  return (GIArgInfo *) gi_base_info_new (GI_INFO_TYPE_ARG, (GIBaseInfo*)info, rinfo->typelib,
+                                         offset + header->signature_blob_size + n * header->arg_blob_size);
 }
 
 /**

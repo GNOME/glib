@@ -124,7 +124,7 @@ gi_enum_info_get_value (GIEnumInfo *info,
   offset = rinfo->offset + header->enum_blob_size
     + n * header->value_blob_size;
 
-  return (GIValueInfo *) gi_info_new (GI_INFO_TYPE_VALUE, (GIBaseInfo*)info, rinfo->typelib, offset);
+  return (GIValueInfo *) gi_base_info_new (GI_INFO_TYPE_VALUE, (GIBaseInfo*)info, rinfo->typelib, offset);
 }
 
 /**
@@ -181,8 +181,8 @@ gi_enum_info_get_method (GIEnumInfo *info,
     + blob->n_values * header->value_blob_size
     + n * header->function_blob_size;
 
-  return (GIFunctionInfo *) gi_info_new (GI_INFO_TYPE_FUNCTION, (GIBaseInfo*)info,
-                                         rinfo->typelib, offset);
+  return (GIFunctionInfo *) gi_base_info_new (GI_INFO_TYPE_FUNCTION, (GIBaseInfo*)info,
+                                              rinfo->typelib, offset);
 }
 
 /**
