@@ -45,6 +45,7 @@ show_class_hierarchy = true
 urlmap_file = "urlmap.js"
 # The same order will be used when generating the index
 content_files = [
+  "migrating-gi.md",
 ]
 content_images = [
 ]
