@@ -71,6 +71,8 @@ if host_system == 'windows'
       '-DGLIB_COMPILATION',
       '-DGETTEXT_PACKAGE="dummy"',
       '--symbol-prefix=glib',
+      '--symbol-prefix=g_win32',
+      '--identifier-prefix=GWin32',
       '--library-path=' + meson.current_build_dir(),
       '--library=gobject-2.0',
     ],
@@ -97,6 +99,8 @@ else
       '-DGLIB_COMPILATION',
       '-DGETTEXT_PACKAGE="dummy"',
       '--symbol-prefix=glib',
+      '--symbol-prefix=g_unix',
+      '--identifier-prefix=GUnix',
       '--library-path=' + meson.current_build_dir(),
       '--library=gobject-2.0',
       '--c-include=glib-unix.h',
@@ -216,7 +220,11 @@ if host_system == 'windows'
       libgmodule_dep,
     ],
     env: gi_gen_env_variables,
-    extra_args: gir_args + gio_gir_args + [ '--pkg=gio-win32-2.0' ] + gio_win32_gir_c_includes,
+    extra_args: gir_args + gio_gir_args + gio_win32_gir_c_includes + [
+      '--pkg=gio-win32-2.0',
+      '--symbol-prefix=g_win32',
+      '--identifier-prefix=GWin32'
+    ],
   )
 else
   gio_unix_gir_c_includes = []
@@ -240,7 +248,11 @@ else
       libgmodule_dep,
     ],
     env: gi_gen_env_variables,
-    extra_args: gir_args + gio_gir_args + [ '--pkg=gio-unix-2.0' ] + gio_unix_gir_c_includes,
+    extra_args: gir_args + gio_gir_args + gio_unix_gir_c_includes + [
+      '--pkg=gio-unix-2.0',
+      '--symbol-prefix=g_unix',
+      '--identifier-prefix=GUnix'
+    ],
   )
 endif
 

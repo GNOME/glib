@@ -13,23 +13,23 @@ file or the `GioUnix-2.0` GIR namespace when using it.
 
 There are three main classes:
 
- * [struct@GioUnix.UnixMountEntry]
- * [struct@GioUnix.UnixMountPoint]
- * [class@GioUnix.UnixMountMonitor]
+ * [struct@GioUnix.MountEntry]
+ * [struct@GioUnix.MountPoint]
+ * [class@GioUnix.MountMonitor]
 
 Various helper functions for querying mounts:
 
- * [func@GioUnix.unix_mount_points_get]
- * [func@GioUnix.UnixMountPoint.at]
- * [func@GioUnix.unix_mounts_get]
- * [func@GioUnix.unix_mount_at]
- * [func@GioUnix.unix_mount_for]
- * [func@GioUnix.unix_mounts_changed_since]
- * [func@GioUnix.unix_mount_points_changed_since]
+ * [func@GioUnix.mount_points_get]
+ * [func@GioUnix.MountPoint.at]
+ * [func@GioUnix.mounts_get]
+ * [func@GioUnix.mount_at]
+ * [func@GioUnix.mount_for]
+ * [func@GioUnix.mounts_changed_since]
+ * [func@GioUnix.mount_points_changed_since]
 
 And several helper functions for checking the type of a mount or path:
 
- * [func@GioUnix.unix_is_mount_path_system_internal]
- * [func@GioUnix.unix_is_system_fs_type]
- * [func@GioUnix.unix_is_system_device_path]
+ * [func@GioUnix.is_mount_path_system_internal]
+ * [func@GioUnix.is_system_fs_type]
+ * [func@GioUnix.is_system_device_path]
 
