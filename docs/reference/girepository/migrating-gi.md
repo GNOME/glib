@@ -90,3 +90,6 @@ your code if integer type warnings are enabled.
 | `g-ir-generate`  | `gi-decompile-typelib`  |
 | `g-ir-inspect`   | `gi-inspect-typelib`    |
 
+In addition, the `--version` option for `g-ir-inspect` has been renamed to
+`--typelib-version` in `gi-inspect-typelib`.
+
