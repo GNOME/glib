@@ -475,7 +475,8 @@ gi_info_from_entry (GIRepository *repository,
   DirEntry *entry = gi_typelib_get_dir_entry (typelib, index);
 
   if (entry->local)
-    result = gi_info_new_full (entry->blob_type, repository, NULL, typelib, entry->offset);
+    result = gi_info_new_full (gi_typelib_blob_type_to_info_type (entry->blob_type),
+                               repository, NULL, typelib, entry->offset);
   else
     {
       const char *namespace = gi_typelib_get_string (typelib, entry->offset);

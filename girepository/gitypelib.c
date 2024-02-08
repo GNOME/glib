@@ -43,6 +43,16 @@
 
 G_DEFINE_BOXED_TYPE (GITypelib, gi_typelib, gi_typelib_ref, gi_typelib_unref)
 
+GIInfoType
+gi_typelib_blob_type_to_info_type (GITypelibBlobType blob_type)
+{
+  switch (blob_type)
+    {
+    default:
+      return (GIInfoType) blob_type;
+    }
+}
+
 typedef struct {
   GITypelib *typelib;
   GSList *context_stack;

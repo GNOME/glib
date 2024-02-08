@@ -865,7 +865,7 @@ gi_repository_get_info (GIRepository *repository,
   entry = gi_typelib_get_dir_entry (typelib, idx + 1);
   g_return_val_if_fail (entry != NULL, NULL);
 
-  return gi_info_new_full (entry->blob_type,
+  return gi_info_new_full (gi_typelib_blob_type_to_info_type (entry->blob_type),
                            repository,
                            NULL, typelib, entry->offset);
 }
@@ -966,7 +966,7 @@ gi_repository_find_by_gtype (GIRepository *repository,
 
   if (entry != NULL)
     {
-      cached = gi_info_new_full (entry->blob_type,
+      cached = gi_info_new_full (gi_typelib_blob_type_to_info_type (entry->blob_type),
                                  repository,
                                  NULL, data.result_typelib, entry->offset);
 
@@ -1015,7 +1015,7 @@ gi_repository_find_by_name (GIRepository *repository,
   entry = gi_typelib_get_dir_entry_by_name (typelib, name);
   if (entry == NULL)
     return NULL;
-  return gi_info_new_full (entry->blob_type,
+  return gi_info_new_full (gi_typelib_blob_type_to_info_type (entry->blob_type),
                            repository,
                            NULL, typelib, entry->offset);
 }
@@ -1086,7 +1086,7 @@ gi_repository_find_by_error_domain (GIRepository *repository,
 
   if (data.result != NULL)
     {
-      cached = (GIEnumInfo *) gi_info_new_full (data.result->blob_type,
+      cached = (GIEnumInfo *) gi_info_new_full (gi_typelib_blob_type_to_info_type (data.result->blob_type),
                                                 repository,
                                                 NULL, data.result_typelib, data.result->offset);
 
