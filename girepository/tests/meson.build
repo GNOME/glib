@@ -33,6 +33,9 @@ if enable_gir
     'throws' : {
       'depends': [glib_gir, gio_gir],
     },
+    'union-info' : {
+      'depends': [glib_gir],
+    },
   }
 endif
 

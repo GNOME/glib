@@ -241,6 +241,7 @@ typedef union _GIArgument GIArgument;
  */
 typedef enum
 {
+  /* The values here must be kept in sync with GITypelibBlobType */
   GI_INFO_TYPE_INVALID,
   GI_INFO_TYPE_FUNCTION,
   GI_INFO_TYPE_CALLBACK,
@@ -251,17 +252,19 @@ typedef enum
   GI_INFO_TYPE_OBJECT,
   GI_INFO_TYPE_INTERFACE,
   GI_INFO_TYPE_CONSTANT,
-  GI_INFO_TYPE_UNION,            /* 10 */
-  GI_INFO_TYPE_VALUE,
-  GI_INFO_TYPE_SIGNAL,
-  GI_INFO_TYPE_VFUNC,
-  GI_INFO_TYPE_PROPERTY,
-  GI_INFO_TYPE_FIELD,            /* 15 */
-  GI_INFO_TYPE_ARG,
-  GI_INFO_TYPE_TYPE,
-  GI_INFO_TYPE_UNRESOLVED,
-  GI_INFO_TYPE_CALLABLE,
-  GI_INFO_TYPE_REGISTERED_TYPE,  /* 20 */
+  /* 10 is skipped, it used to be used, but was removed before girepository-2.0
+   * It is, however, part of the binary format in GITypelibBlobType */
+  GI_INFO_TYPE_UNION = 11,
+  GI_INFO_TYPE_VALUE = 12,
+  GI_INFO_TYPE_SIGNAL = 13,
+  GI_INFO_TYPE_VFUNC = 14,
+  GI_INFO_TYPE_PROPERTY = 15,
+  GI_INFO_TYPE_FIELD = 16,
+  GI_INFO_TYPE_ARG = 17,
+  GI_INFO_TYPE_TYPE = 18,
+  GI_INFO_TYPE_UNRESOLVED = 19,
+  GI_INFO_TYPE_CALLABLE = 20,
+  GI_INFO_TYPE_REGISTERED_TYPE = 21,
   /* keep GI_INFO_TYPE_N_TYPES in sync with this */
 } GIInfoType;
 

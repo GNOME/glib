@@ -76,7 +76,8 @@ GI_AVAILABLE_IN_ALL
 gboolean         gi_union_info_is_discriminated         (GIUnionInfo *info);
 
 GI_AVAILABLE_IN_ALL
-size_t           gi_union_info_get_discriminator_offset (GIUnionInfo *info);
+gboolean         gi_union_info_get_discriminator_offset (GIUnionInfo *info,
+                                                         size_t      *out_offset);
 
 GI_AVAILABLE_IN_ALL
 GITypeInfo *     gi_union_info_get_discriminator_type   (GIUnionInfo *info);
