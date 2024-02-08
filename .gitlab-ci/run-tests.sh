@@ -2,8 +2,6 @@
 
 set -ex
 
-./.gitlab-ci/check-missing-install-tag.py _build
-
 meson test -v \
         -C _build \
         --timeout-multiplier "${MESON_TEST_TIMEOUT_MULTIPLIER}" \

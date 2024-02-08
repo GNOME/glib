@@ -171,6 +171,10 @@ common_test_env = [
   'MALLOC_CHECK_=2',
 ]
 
+if get_option('werror')
+  common_test_env += 'LINT_WARNINGS_ARE_ERRORS=1'
+endif
+
 # Note: this may cause the tests output not to be printed when running in
 # verbose mode, see https://github.com/mesonbuild/meson/issues/11185
 # Can be changed it to 'exitcode' if required during development.
@@ -2559,6 +2563,7 @@ subdir('gmodule')
 subdir('gio')
 subdir('girepository')
 subdir('fuzzing')
+subdir('tests')
 
 # xgettext is optional (on Windows for instance)
 if find_program('xgettext', required : get_option('nls')).found()
