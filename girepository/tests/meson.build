@@ -17,6 +17,9 @@ if enable_gir
       'dependencies': [libffi_dep],
       'depends': [glib_gir],
     },
+    'object-info' : {
+      'depends': [gio_gir],
+    },
     'repository' : {
       'depends': [glib_gir, gio_gir, gobject_gir],
     },

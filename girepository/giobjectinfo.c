@@ -496,9 +496,10 @@ gi_object_info_find_method (GIObjectInfo *info,
  * gi_object_info_find_method_using_interfaces:
  * @info: a #GIObjectInfo
  * @name: name of method to obtain
- * @implementor: (out) (transfer full) (optional) (nullable): The implementor of
- *   the interface, or `NULL` to ignore. If no method is found, this will return
- *   `NULL`.
+ * @declarer: (out) (transfer full) (optional) (nullable): The
+ *   [class@GIRepository.ObjectInfo] or [class@GIRepository.InterfaceInfo] which
+ *   declares the method, or `NULL` to ignore. If no method is found, this will
+ *   return `NULL`.
  *
  * Obtain a method of the object given a @name, searching both the
  * object @info and any interfaces it implements.
@@ -516,14 +517,14 @@ gi_object_info_find_method (GIObjectInfo *info,
 GIFunctionInfo *
 gi_object_info_find_method_using_interfaces (GIObjectInfo  *info,
                                              const char    *name,
-                                             GIObjectInfo **implementor)
+                                             GIBaseInfo   **declarer)
 {
   GIFunctionInfo *result = NULL;
-  GIObjectInfo *implementor_result = NULL;
+  GIBaseInfo *declarer_result = NULL;
 
   result = gi_object_info_find_method (info, name);
   if (result)
-    implementor_result = (GIObjectInfo *) gi_base_info_ref ((GIBaseInfo*) info);
+    declarer_result = gi_base_info_ref (info);
 
   if (result == NULL)
     {
@@ -541,17 +542,19 @@ gi_object_info_find_method_using_interfaces (GIObjectInfo  *info,
 
           if (result != NULL)
             {
-              implementor_result = (GIObjectInfo *) iface_info;
+              declarer_result = GI_BASE_INFO (g_steal_pointer (&iface_info));
               break;
             }
           gi_base_info_unref ((GIBaseInfo*) iface_info);
         }
     }
-  if (implementor)
-    *implementor = implementor_result;
-  else if (implementor_result != NULL)
-    gi_base_info_unref ((GIBaseInfo*) implementor_result);
-  return result;
+
+  if (declarer)
+    *declarer = g_steal_pointer (&declarer_result);
+
+  g_clear_pointer (&declarer_result, gi_base_info_unref);
+
+  return g_steal_pointer (&result);
 }
 
 /**
@@ -766,9 +769,10 @@ gi_object_info_find_vfunc (GIObjectInfo *info,
  * gi_object_info_find_vfunc_using_interfaces:
  * @info: a #GIObjectInfo
  * @name: name of vfunc to obtain
- * @implementor: (out) (transfer full) (optional) (nullable): The implementor of
- *   the interface, or `NULL` to ignore. If no vfunc is found, this will return
- *   `NULL`.
+ * @declarer: (out) (transfer full) (optional) (nullable): The
+ *   [class@GIRepository.ObjectInfo] or [class@GIRepository.InterfaceInfo] which
+ *   declares the vfunc, or `NULL` to ignore. If no vfunc is found, this will
+ *   return `NULL`.
  *
  * Locate a virtual function slot with name @name, searching both the object
  * @info and any interfaces it implements.
@@ -791,14 +795,14 @@ gi_object_info_find_vfunc (GIObjectInfo *info,
 GIVFuncInfo *
 gi_object_info_find_vfunc_using_interfaces (GIObjectInfo  *info,
                                             const char    *name,
-                                            GIObjectInfo **implementor)
+                                            GIBaseInfo   **declarer)
 {
   GIVFuncInfo *result = NULL;
-  GIObjectInfo *implementor_result = NULL;
+  GIBaseInfo *declarer_result = NULL;
 
   result = gi_object_info_find_vfunc (info, name);
   if (result)
-    implementor_result = (GIObjectInfo *) gi_base_info_ref ((GIBaseInfo*) info);
+    declarer_result = gi_base_info_ref (info);
 
   if (result == NULL)
     {
@@ -816,17 +820,19 @@ gi_object_info_find_vfunc_using_interfaces (GIObjectInfo  *info,
 
           if (result != NULL)
             {
-              implementor_result = (GIObjectInfo *) iface_info;
+              declarer_result = GI_BASE_INFO (g_steal_pointer (&iface_info));
               break;
             }
           gi_base_info_unref ((GIBaseInfo*) iface_info);
         }
     }
-  if (implementor)
-    *implementor = implementor_result;
-  else if (implementor_result != NULL)
-    gi_base_info_unref ((GIBaseInfo*) implementor_result);
-  return result;
+
+  if (declarer)
+    *declarer = g_steal_pointer (&declarer_result);
+
+  g_clear_pointer (&declarer_result, gi_base_info_unref);
+
+  return g_steal_pointer (&result);
 }
 
 /**

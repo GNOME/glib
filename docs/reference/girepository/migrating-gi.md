@@ -53,6 +53,7 @@ your code if integer type warnings are enabled.
 | `g_callable_info_invoke` arguments | `is_method` and `throws` dropped in [method@GIRepository.CallableInfo.invoke] |
 | `g_constant_info_get_type` | [method@GIRepository.ConstantInfo.get_type_info] |
 | `g_field_info_get_type` | [method@GIRepository.FieldInfo.get_type_info] |
+| `g_object_info_find_method_using_interfaces` and `g_object_info_find_vfunc_using_interfaces` | The `implementor` out argument has been renamed to `declarer` and is now of type [type@GIRepository.BaseInfo] |
 | `g_object_info_get_type_init` | [method@GIRepository.ObjectInfo.get_type_init_function_name] |
 | `g_object_info_get_ref_function` | [method@GIRepository.ObjectInfo.get_ref_function_name] |
 | `g_object_info_get_unref_function` | [method@GIRepository.ObjectInfo.get_unref_function_name] |
