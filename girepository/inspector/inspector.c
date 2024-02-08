@@ -27,29 +27,23 @@
 #include <locale.h>
 
 static void
-print_shlibs (const gchar *namespace)
+print_shlibs (GIRepository *repository,
+              const gchar  *namespace)
 {
-  guint i = 0;
-
   /* Finding the shared library we depend on (if any) */
-  const gchar *shlibs = g_irepository_get_shared_library (NULL, namespace);
-  if (shlibs && shlibs[0] != '\0')
-    {
-      /* shlibs is a comma-separated list of libraries */
-      GStrv libs = g_strsplit (shlibs, ",", -1);
-      for (i = 0; libs[i]; i++)
-        g_print ("shlib: %s\n", libs[i]);
-      g_strfreev (libs);
-    }
+  const char * const *shlibs = gi_repository_get_shared_libraries (repository, namespace, NULL);
+  for (size_t i = 0; shlibs != NULL && shlibs[i] != NULL; i++)
+    g_print ("shlib: %s\n", shlibs[i]);
 }
 
 static void
-print_typelibs (const gchar *namespace)
+print_typelibs (GIRepository *repository,
+                const gchar  *namespace)
 {
   guint i = 0;
 
   /* Finding all the typelib-based Requires */
-  GStrv deps = g_irepository_get_dependencies (NULL, namespace);
+  GStrv deps = gi_repository_get_dependencies (repository, namespace, NULL);
   if (deps)
     {
       for (i = 0; deps[i]; i++)
@@ -65,6 +59,7 @@ main (gint   argc,
   gint status = EXIT_SUCCESS;
 
   GError *error = NULL;
+  GIRepository *repository = NULL;
   GITypelib *typelib = NULL;
 
   gchar *version = NULL;
@@ -74,10 +69,10 @@ main (gint   argc,
   const gchar *namespace = NULL;
   const GOptionEntry options[] = {
     { "version", 0, 0, G_OPTION_ARG_STRING, &version, "Typelib version to inspect", "VERSION" },
-    { "print-shlibs", 0, 0, G_OPTION_ARG_NONE, &opt_shlibs, "List the shared libraries the typelib requires" },
-    { "print-typelibs", 0, 0, G_OPTION_ARG_NONE, &opt_typelibs, "List other typelibs the inspected typelib requires" },
+    { "print-shlibs", 0, 0, G_OPTION_ARG_NONE, &opt_shlibs, "List the shared libraries the typelib requires", NULL },
+    { "print-typelibs", 0, 0, G_OPTION_ARG_NONE, &opt_typelibs, "List other typelibs the inspected typelib requires", NULL },
     { G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_STRING_ARRAY, &namespaces, "The typelib to inspect", "NAMESPACE" },
-    { NULL },
+    G_OPTION_ENTRY_NULL
   };
   GOptionContext *context = NULL;
 
@@ -114,7 +109,8 @@ main (gint   argc,
       goto out;
     }
 
-  typelib = g_irepository_require (NULL, namespace, version, 0, &error);
+  repository = gi_repository_new ();
+  typelib = gi_repository_require (repository, namespace, version, 0, &error);
   if (!typelib)
     {
       status = EXIT_FAILURE;
@@ -123,16 +119,15 @@ main (gint   argc,
     }
 
   if (opt_shlibs)
-    print_shlibs (namespace);
+    print_shlibs (repository, namespace);
   if (opt_typelibs)
-    print_typelibs (namespace);
+    print_typelibs (repository, namespace);
 
 out:
   g_option_context_free (context);
   if (error)
     g_error_free (error);
-  if (typelib)
-    g_typelib_free (typelib);
+  g_clear_object (&repository);
   g_strfreev (namespaces);
   g_free (version);
 
