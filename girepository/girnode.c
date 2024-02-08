@@ -25,7 +25,7 @@
 #include "config.h"
 
 #include "girnode-private.h"
-
+#include "girepository-private.h"
 #include "gitypelib-internal.h"
 
 #include <stdio.h>

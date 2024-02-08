@@ -96,7 +96,6 @@ test_repository_info (RepositoryFixture *fx,
   g_assert_true (GI_IS_REGISTERED_TYPE_INFO (object_info));
   g_assert_true (GI_IS_BASE_INFO (object_info));
 
-  g_assert_cmpint (gi_base_info_get_info_type (GI_BASE_INFO (object_info)), ==, GI_INFO_TYPE_OBJECT);
   g_assert_cmpstr (gi_base_info_get_name (GI_BASE_INFO (object_info)), ==, "Object");
   g_assert_cmpstr (gi_base_info_get_namespace (GI_BASE_INFO (object_info)), ==, "GObject");
 

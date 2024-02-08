@@ -49,8 +49,8 @@ your code if integer type warnings are enabled.
 | `g_arg_info_get_type` | [method@GIRepository.ArgInfo.get_type_info] |
 | `g_arg_info_load_type` | [method@GIRepository.ArgInfo.load_type_info] |
 | - | [method@GIRepository.BaseInfo.ref] and [method@GIRepository.BaseInfo.unref] |
-| `g_base_info_get_type` | [method@GIRepository.BaseInfo.get_info_type] |
-| `g_info_new` | [ctor@GIRepository.BaseInfo.new] |
+| `g_base_info_get_type` | Use type checking macros like [func@GIRepository.IS_OBJECT_INFO], or raw [type@GObject.Type]s with [func@GObject.TYPE_FROM_INSTANCE] |
+| `g_info_new` | Removed with no replacement, use [method@GIRepository.find_by_name] and related APIs |
 | `g_callable_info_invoke` arguments | `is_method` and `throws` dropped in [method@GIRepository.CallableInfo.invoke] |
 | `g_constant_info_get_type` | [method@GIRepository.ConstantInfo.get_type_info] |
 | `g_field_info_get_type` | [method@GIRepository.FieldInfo.get_type_info] |
@@ -79,3 +79,4 @@ your code if integer type warnings are enabled.
 | `g_union_info_get_discriminator_offset` | Split success and failure return values out into a new out-argument and return value |
 | `g_union_info_get_copy_function` | [method@GIRepository.UnionInfo.get_copy_function_name] |
 | `g_union_info_get_free_function` | [method@GIRepository.UnionInfo.get_free_function_name] |
+| `GIInfoType` | Use [type@GObject.Type] directly |

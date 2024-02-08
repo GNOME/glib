@@ -26,7 +26,9 @@
 
 #include "girwriter-private.h"
 
+#include "gibaseinfo-private.h"
 #include "girepository.h"
+#include "girepository-private.h"
 #include "gitypelib-internal.h"
 
 #include <errno.h>

@@ -650,7 +650,7 @@ gi_base_info_get_info_type (GIBaseInfo *info)
  *
  * Obtain the name of the @info.
  *
- * What the name represents depends on the [type@GIRepository.InfoType] of the
+ * What the name represents depends on the type of the
  * @info. For instance for [class@GIRepository.FunctionInfo] it is the name of
  * the function.
  *
