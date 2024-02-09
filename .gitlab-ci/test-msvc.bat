@@ -19,17 +19,8 @@ meson compile -C _build || goto :error
 meson test -v -C _build --timeout-multiplier %MESON_TEST_TIMEOUT_MULTIPLIER% || goto :error
 meson test -v -C _build --timeout-multiplier %MESON_TEST_TIMEOUT_MULTIPLIER% --setup=unstable_tests --suite=failing --suite=flaky
 
-:: Workaround meson issue https://github.com/mesonbuild/meson/issues/9894
-python -c "n = '_build/meson-logs/testlog.junit.xml'; c = open(n, 'rb').read().replace(b'\x1b', b''); open(n, 'wb').write(c)" || goto :error
-python -c "n = '_build/meson-logs/testlog-unstable_tests.junit.xml'; c = open(n, 'rb').read().replace(b'\x1b', b''); open(n, 'wb').write(c)"
-
 :: FIXME: can we get code coverage support?
 
 goto :EOF
 :error
-
-:: Workaround meson issue https://github.com/mesonbuild/meson/issues/9894
-python -c "n = '_build/meson-logs/testlog.junit.xml'; c = open(n, 'rb').read().replace(b'\x1b', b''); open(n, 'wb').write(c)"
-python -c "n = '_build/meson-logs/testlog-unstable_tests.junit.xml'; c = open(n, 'rb').read().replace(b'\x1b', b''); open(n, 'wb').write(c)"
-
 exit /b 1
