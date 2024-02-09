@@ -34,6 +34,7 @@ main (int argc, char **argv)
                            G_APPLICATION_HANDLES_COMMAND_LINE);
   g_signal_connect (app, "command-line", G_CALLBACK (command_line), NULL);
   g_application_set_inactivity_timeout (app, 10000);
+  g_application_set_version (app, "2.3");
 
   status = g_application_run (app, argc, argv);
 
