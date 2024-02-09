@@ -331,7 +331,6 @@ glib_sources += files(
   'gtimer.c',
   'gtimezone.c',
   'gtrace.c',
-  'gtrace-private.h',
   'gtranslit.c',
   'gtrashstack.c',
   'gtree.c',
@@ -341,9 +340,7 @@ glib_sources += files(
   'gunicollate.c',
   'gunidecomp.c',
   'guri.c',
-  'guriprivate.h',
   'gutils.c',
-  'gutilsprivate.h',
   'guuid.c',
   'gvariant.c',
   'gvariant-core.c',
@@ -374,7 +371,7 @@ if host_system == 'windows'
     glib_sources += files('dirent/wdirent.c')
   endif
 else
-  glib_sources += files('glib-unix.c', 'glib-unixprivate.h', 'gspawn.c', 'giounix.c')
+  glib_sources += files('glib-unix.c', 'gspawn.c', 'giounix.c')
   platform_deps = []
 endif
 
