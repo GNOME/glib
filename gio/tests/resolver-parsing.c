@@ -26,6 +26,7 @@
 
 #define GIO_COMPILATION
 #include "gthreadedresolver.h"
+#include "gthreadedresolver-private.h"
 #undef GIO_COMPILATION
 
 #ifdef HAVE_DN_COMP

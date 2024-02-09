@@ -21,6 +21,7 @@
 #include "gio/gnetworking.h"
 
 #include "../gio/gthreadedresolver.h"
+#include "../gio/gthreadedresolver-private.h"
 
 static void
 test_for_rrtype (const guint8 *data,

@@ -30,6 +30,7 @@
 
 #include "glib/glib-private.h"
 #include "gthreadedresolver.h"
+#include "gthreadedresolver-private.h"
 #include "gnetworkingprivate.h"
 
 #include "gcancellable.h"
