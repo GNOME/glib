@@ -139,6 +139,12 @@ GIO_AVAILABLE_IN_ALL
 void                    g_application_set_application_id                (GApplication             *application,
                                                                          const gchar              *application_id);
 
+GIO_AVAILABLE_IN_2_80
+const gchar *           g_application_get_version                       (GApplication             *application);
+GIO_AVAILABLE_IN_2_80
+void                    g_application_set_version                       (GApplication             *application,
+                                                                         const gchar              *version);
+
 GIO_AVAILABLE_IN_2_34
 GDBusConnection *       g_application_get_dbus_connection               (GApplication             *application);
 GIO_AVAILABLE_IN_2_34

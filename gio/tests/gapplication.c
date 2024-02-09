@@ -369,6 +369,7 @@ properties (void)
   GDBusConnection *c;
   GObject *app;
   gchar *id;
+  gchar *version;
   GApplicationFlags flags;
   gboolean registered;
   guint timeout;
@@ -381,19 +382,24 @@ properties (void)
 
   app = g_object_new (G_TYPE_APPLICATION,
                       "application-id", "org.gtk.TestApplication",
+                      "version", "1.0",
                       NULL);
 
   g_object_get (app,
                 "application-id", &id,
+                "version", &version,
                 "flags", &flags,
                 "is-registered", &registered,
                 "inactivity-timeout", &timeout,
                 NULL);
 
   g_assert_cmpstr (id, ==, "org.gtk.TestApplication");
+  g_assert_cmpstr (version, ==, "1.0");
   g_assert_cmpint (flags, ==, G_APPLICATION_DEFAULT_FLAGS);
   g_assert (!registered);
   g_assert_cmpint (timeout, ==, 0);
+
+  g_clear_pointer (&version, g_free);
 
   ret = g_application_register (G_APPLICATION (app), NULL, &error);
   g_assert (ret);
@@ -1082,6 +1088,37 @@ test_api (void)
   g_test_assert_expected_messages ();
 
   g_object_unref (action);
+  g_object_unref (app);
+}
+
+static void
+test_version (void)
+{
+  GApplication *app;
+  gchar *version = NULL;
+  gchar *version_orig = NULL;
+
+  app = g_application_new ("org.gtk.TestApplication", 0);
+
+  version_orig = "1.2";
+  g_object_set (G_OBJECT (app), "version", version_orig, NULL);
+  g_object_get (app, "version", &version, NULL);
+  g_assert_cmpstr (version, ==, version_orig);
+  g_free (version);
+
+  /* test attempting to set the same version again */
+  version_orig = "1.2";
+  g_object_set (G_OBJECT (app), "version", version_orig, NULL);
+  g_object_get (app, "version", &version, NULL);
+  g_assert_cmpstr (version, ==, version_orig);
+  g_free (version);
+
+  version_orig = "2.4";
+  g_object_set (G_OBJECT (app), "version", version_orig, NULL);
+  g_object_get (app, "version", &version, NULL);
+  g_assert_cmpstr (version, ==, version_orig);
+  g_free (version);
+
   g_object_unref (app);
 }
 
@@ -1830,6 +1867,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gapplication/test-handle-local-options2", test_handle_local_options_failure);
   g_test_add_func ("/gapplication/test-handle-local-options3", test_handle_local_options_passthrough);
   g_test_add_func ("/gapplication/api", test_api);
+  g_test_add_func ("/gapplication/version", test_version);
   g_test_add_data_func ("/gapplication/replace", GINT_TO_POINTER (TRUE), test_replace);
   g_test_add_data_func ("/gapplication/no-replace", GINT_TO_POINTER (FALSE), test_replace);
   g_test_add_func ("/gapplication/dbus/activate", test_dbus_activate);

@@ -227,6 +227,7 @@ struct _GApplicationPrivate
 {
   GApplicationFlags  flags;
   gchar             *id;
+  gchar             *version;
   gchar             *resource_path;
 
   GActionGroup      *actions;
@@ -264,6 +265,7 @@ enum
 {
   PROP_NONE,
   PROP_APPLICATION_ID,
+  PROP_VERSION,
   PROP_FLAGS,
   PROP_RESOURCE_BASE_PATH,
   PROP_IS_REGISTERED,
@@ -478,11 +480,13 @@ g_application_pack_option_entries (GApplication *application,
 static GVariantDict *
 g_application_parse_command_line (GApplication   *application,
                                   gchar        ***arguments,
+                                  gboolean       *print_version,
                                   GError        **error)
 {
   gboolean become_service = FALSE;
   gchar *app_id = NULL;
   gboolean replace = FALSE;
+  gboolean version = FALSE;
   GVariantDict *dict = NULL;
   GOptionContext *context;
   GOptionGroup *gapplication_group;
@@ -564,6 +568,17 @@ g_application_parse_command_line (GApplication   *application,
       g_option_group_add_entries (gapplication_group, entries);
     }
 
+  if (application->priv->version)
+    {
+      GOptionEntry entries[] = {
+        { "version", '\0', 0, G_OPTION_ARG_NONE, &version,
+          N_("Print the application version"), NULL },
+        G_OPTION_ENTRY_NULL
+      };
+
+      g_option_group_add_entries (gapplication_group, entries);
+    }
+
   /* Allow replacing if the application allows it */
   if (application->priv->flags & G_APPLICATION_ALLOW_REPLACEMENT)
     {
@@ -579,6 +594,8 @@ g_application_parse_command_line (GApplication   *application,
   /* Now we parse... */
   if (!g_option_context_parse_strv (context, arguments, error))
     goto out;
+
+  *print_version = version;
 
   /* Check for --gapplication-service */
   if (become_service)
@@ -1101,13 +1118,29 @@ g_application_real_local_command_line (GApplication   *application,
   GError *error = NULL;
   GVariantDict *options;
   gint n_args;
+  gboolean print_version = FALSE;
 
-  options = g_application_parse_command_line (application, arguments, &error);
+  options = g_application_parse_command_line (application, arguments, &print_version, &error);
   if (!options)
     {
       g_printerr ("%s\n", error->message);
       g_error_free (error);
       *exit_status = 1;
+      return TRUE;
+    }
+
+  /* Exit quickly with --version? */
+  if (print_version)
+    {
+      const char *prgname = g_get_prgname ();
+
+      g_assert (application->priv->version != NULL);
+
+      if (prgname != NULL)
+        g_print ("%s %s\n", prgname, application->priv->version);
+      else
+        g_print ("%s\n", application->priv->version);
+      *exit_status = EXIT_SUCCESS;
       return TRUE;
     }
 
@@ -1236,6 +1269,10 @@ g_application_set_property (GObject      *object,
                                         g_value_get_string (value));
       break;
 
+    case PROP_VERSION:
+      g_application_set_version (application, g_value_get_string (value));
+      break;
+
     case PROP_FLAGS:
       g_application_set_flags (application, g_value_get_flags (value));
       break;
@@ -1304,6 +1341,11 @@ g_application_get_property (GObject    *object,
     case PROP_APPLICATION_ID:
       g_value_set_string (value,
                           g_application_get_application_id (application));
+      break;
+
+    case PROP_VERSION:
+      g_value_set_string (value,
+                          g_application_get_version (application));
       break;
 
     case PROP_FLAGS:
@@ -1401,6 +1443,7 @@ g_application_finalize (GObject *object)
   g_free (application->priv->parameter_string);
   g_free (application->priv->summary);
   g_free (application->priv->description);
+  g_free (application->priv->version);
 
   g_slist_free_full (application->priv->option_strings, g_free);
 
@@ -1495,6 +1538,18 @@ g_application_class_init (GApplicationClass *class)
     g_param_spec_string ("application-id", NULL, NULL,
                          NULL, G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
                          G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GApplication:version:
+   *
+   * The human-readable version number of the application.
+   *
+   * Since: 2.80
+   */
+  g_object_class_install_property (object_class, PROP_VERSION,
+    g_param_spec_string ("version", NULL, NULL,
+                         NULL, G_PARAM_READWRITE |
+                         G_PARAM_STATIC_STRINGS | G_PARAM_EXPLICIT_NOTIFY));
 
   /**
    * GApplication:flags:
@@ -1886,6 +1941,50 @@ g_application_set_application_id (GApplication *application,
       g_object_notify (G_OBJECT (application), "application-id");
     }
 }
+
+/**
+ * g_application_get_version:
+ * @application: a #GApplication
+ *
+ * Gets the version of @application.
+ *
+ * Returns: (nullable): the version of @application
+ *
+ * Since: 2.80
+ **/
+const gchar *
+g_application_get_version (GApplication *application)
+{
+  g_return_val_if_fail (G_IS_APPLICATION (application), NULL);
+
+  return application->priv->version;
+}
+
+/**
+ * g_application_set_version
+ * @application: a #GApplication
+ * @version: the version of @application
+ *
+ * Sets the version number of @application. This will be used to implement
+ * a `--version` command line argument
+ *
+ * The application version can only be modified if @application has not yet
+ * been registered.
+ *
+ * Since: 2.80
+ **/
+void
+g_application_set_version (GApplication *application,
+                           const gchar  *version)
+{
+  g_return_if_fail (G_IS_APPLICATION (application));
+  g_return_if_fail (version != NULL);
+  g_return_if_fail (!application->priv->is_registered);
+
+  if (g_set_str (&application->priv->version, version))
+    g_object_notify (G_OBJECT (application), "version");
+}
+
 
 /**
  * g_application_get_flags:
