@@ -24,6 +24,10 @@ gicompilerepository = executable('gi-compile-repository', 'compiler.c',
   c_args: custom_c_args,
 )
 
-# Replace the default g-ir-compiler target with the version we
-# just built.
-meson.override_find_program('g-ir-compiler', gicompilerepository)
+# Only override the user-installed compiler if we need to generate the GIRs
+# GLib, Gio, and GObject...
+if enable_gir
+  # Replace the default g-ir-compiler target with the version we
+  # just built.
+  meson.override_find_program('g-ir-compiler', gicompilerepository)
+endif
