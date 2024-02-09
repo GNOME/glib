@@ -140,7 +140,7 @@ test_pipe_struct (void)
 
   g_test_summary ("Test GUnixPipe structure");
 
-  res = g_unix_pipe_open (&pair, FD_CLOEXEC, &error);
+  res = g_unix_pipe_open (&pair, O_CLOEXEC, &error);
   g_assert_no_error (error);
   g_assert_true (res);
 
@@ -199,7 +199,7 @@ test_pipe_struct_auto (void)
           GError *error = NULL;
           gboolean res;
 
-          res = g_unix_pipe_open (&pair, FD_CLOEXEC, &error);
+          res = g_unix_pipe_open (&pair, O_CLOEXEC, &error);
           g_assert_no_error (error);
           g_assert_true (res);
 
