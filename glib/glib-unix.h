@@ -173,7 +173,7 @@ G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 /**
  * g_unix_pipe_open:
  * @self: A pair of file descriptors
- * @flags: Flags to pass to g_unix_open_pipe(), typically `FD_CLOEXEC`
+ * @flags: Flags to pass to g_unix_open_pipe(), typically `O_CLOEXEC`
  * @error: Used to report an error on failure
  *
  * Open a pipe. This is the same as g_unix_open_pipe(), but uses the
