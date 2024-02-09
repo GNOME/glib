@@ -67,6 +67,7 @@ your code if integer type warnings are enabled.
 | `g_irepository_get_search_path` and `g_irepository_get_library_path` | Now return arrays rather than linked lists |
 | `g_irepository_enumerate_versions` | Now returns an array rather than a linked list |
 | `g_irepository_get_immediate_dependencies`, `g_irepository_get_dependencies` and `g_irepository_get_loaded_namespaces` | Now additionally return a length argument |
+| `g_irepository_get_shared_library` | [method@GIRepository.get_shared_libraries] |
 | `g_irepository_dump` | Takes structured `input_filename` and `output_filename` arguments rather than a single formatted string |
 | `g_function_invoker_destroy` | `gi_function_invoker_clear()` |
 | `g_struct_info_get_copy_function` | [method@GIRepository.StructInfo.get_copy_function_name] |
@@ -80,3 +81,15 @@ your code if integer type warnings are enabled.
 | `g_union_info_get_copy_function` | [method@GIRepository.UnionInfo.get_copy_function_name] |
 | `g_union_info_get_free_function` | [method@GIRepository.UnionInfo.get_free_function_name] |
 | `GIInfoType` | Use [type@GObject.Type] directly |
+
+## Utility program renames from version 1.0 to 2.0
+
+| girepository-1.0 | girepository-2.0        |
+|------------------|-------------------------|
+| `g-ir-compiler`  | `gi-compile-repository` |
+| `g-ir-generate`  | `gi-decompile-typelib`  |
+| `g-ir-inspect`   | `gi-inspect-typelib`    |
+
+In addition, the `--version` option for `g-ir-inspect` has been renamed to
+`--typelib-version` in `gi-inspect-typelib`.
+

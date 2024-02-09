@@ -243,3 +243,5 @@ if build_tests
 endif
 
 subdir('compiler')
+subdir('decompiler')
+subdir('inspector')
