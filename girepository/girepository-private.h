@@ -23,7 +23,6 @@
 
 #pragma once
 
-#include <ffi.h>
 #include <glib.h>
 
 #define __GIREPOSITORY_H_INSIDE__
