@@ -155,7 +155,7 @@ cmph_t *brz_new(cmph_config_t *mph, double c)
 	// Clustering the keys by graph id.
 	if (mph->verbosity)
 	{
-		fprintf(stderr, "Partioning the set of keys.\n");	
+		fprintf(stderr, "Partitioning the set of keys.\n");
 	}
 		
 	while(1)
