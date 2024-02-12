@@ -1,3 +1,124 @@
+Overview of changes in GLib 2.79.2, 2024-02-12
+==============================================
+
+* More work to reduce lock contention and improve performance in GObject (#743,
+  !3869, !3873, work by Thomas Haller)
+
+* More API changes to libgirepository, which is now stable as of this release
+  (#3155, #3217, #3218, #3231, #3234, #3243, #3244, #3245, #3246, work by
+  Philip Chimento, Evan Welsh, Philip Withnall)
+
+* Import `g-ir-compiler`, `g-ir-generate` and `g-ir-inspect` from
+  gobject-introspection.git and update them to work with girepository-2.0,
+  renaming them to `gi-compile-repository`, `gi-decompile-typelib` and
+  `gi-inspect-typelib` (see docs/reference/girepository/migrating-gi.md) (!3853,
+  !3909, work by Evan Welsh, Philip Withnall)
+
+* Add new `GLibUnix-2.0.gir`, `GLibWin32-2.0.gir`, `GioUnix-2.0.gir` and
+  `GioWin32-2.0.gir` GIRs which contain platform specific APIs, and are the
+  preferred way for third parties to access those APIs in future; although
+  platform specific APIs which were already exposed in `GLib-2.0.gir` and
+  `Gio-2.0.gir` continue to be listed there; the underlying `.so` files have not
+  changed (!3892, work by Philip Withnall)
+
+* Bugs fixed:
+  - #743 GLib weak refs depend on cascade of locks, including global ones, which
+    makes them non-scalable
+  - #2887 memory-monitor-dbus.test fails in installed-tests suite (Philip
+    Withnall)
+  - #3198 Support --version in standard GApplication command line arguments
+    (Maxim Moskalets)
+  - #3217 Feedback on gobject-introspection: APIs for stack-allocated
+    introspection info (Philip Withnall)
+  - #3218 Segfault in gi_function_info_prep_invoker (Philip Withnall)
+  - #3231 New functions in the glib introspection data (Philip Withnall)
+  - #3234 Reference cycle between GIRepository and GIBaseInfos cached by it
+    (Philip Withnall)
+  - #3236 threaded_resolver_worker_cb leaks memory when lookup fails and
+    connection is already canceled (Philip Withnall)
+  - #3238 Python packaging module is missing on Hurd CI runner (Philip Withnall)
+  - #3240 Missing preconditions checks in GArray (Tobias Stoeckmann)
+  - #3242 Memory leak in gresources over libelf (Maxim Moskalets)
+  - #3243 Feedback on girepository 2.0: Naming of get_type_info vs load_type
+    (Philip Withnall)
+  - #3244 Feedback on girepository 2.0: Where to find uninstalled typelibs
+    (Philip Withnall)
+  - #3245 Feedback on girepository 2.0: GIBoxedInfo's place in the type
+    hierarchy (Philip Withnall)
+  - #3246 Wrong out parameter type in
+    gi_object_info_find_method_using_interfaces (Philip Withnall)
+  - #3247 safe_closefrom(), safe_fdwalk_set_cloexec() as public API (Simon
+    McVittie)
+  - !3797 Refactor GIRepository GIR generation to avoid cyclical dependency
+  - !3807 gprintf/gstrfuncs: Improve and port doc comments to gi-docgen
+  - !3824 gconvert: match GNU iconv behaviour on FreeBSD
+  - !3838 build: Add thorough test setup
+  - !3843 Add more test coverage for girepository
+  - !3845 gunixmounts: Use libmnt_monitor API for monitoring
+  - !3847 ci: Add ability to run manually some specific jobs
+  - !3848 Fix build with introspection on Windows
+  - !3849 girepository: Remove GI_FUNCTION_THROWS and GI_VFUNC_THROWS flags
+  - !3850 [th/strdup-in-ascii-strdown] glib: use g_strdup() in
+    g_ascii_strdown(),g_ascii_strup()
+  - !3851 ci: Fix post-merge CI pipelines
+  - !3853 girepository: Update gir-compiler and use it to compile GIRs
+  - !3854 girnode: Document ownership and element types of internal structs
+  - !3855 gitypelib: Replace multiple constructors with
+    gi_typelib_new_from_bytes()
+  - !3856 girepository: Drop gi_repository_get_default()
+  - !3859 [th/glib-private-const] glib: return const pointer from
+    glib__private__()
+  - !3860 tests: Fix typo in memory-monitor-portal.py.in
+  - !3861 girepository: Fix a memory leak of a mapped file
+  - !3865 [th/test-weak-notify] gobject/tests: add test checking that GWeakRef
+    is cleared in GWeakNotify
+  - !3866 [th/gobject-carray-comment] gobject: remove obsolete code comment
+    about CArray
+  - !3868 Link to the main context tutorial from the main loop docs
+  - !3869 [th/optimize-weak-ref-list] rework GObject's `WeakRefData` to track
+    references in an array instead of GSList
+  - !3870 Revert "Don't skip dbus-codegen tests on Win32"
+  - !3871 docs: Fix include path for the build
+  - !3872 gio: tests: Use slightly more explicit assert functions
+  - !3873 [th/datalist-shrink] shrink the interal buffer of `GData`
+  - !3874 Don't skip dbus-codegen tests on Win32
+  - !3876 build: Only override g-ir-compiler when GIR generation is enabled
+  - !3877 Various girepository fixes
+  - !3879 [th/gdataset-comment] gdataset: add code comment to
+    g_datalist_get_data()
+  - !3881 docs: Add migration guide for libgirepository
+  - !3886 codegen: Use `-` instead of `stdout` for output to stdout
+  - !3887 gtestutils: Ensure test_data is freed even if a test is skipped
+  - !3888 gitypes: Fix integer values of GIInfoType and add unit tests for
+    GIUnionInfo
+  - !3892 introspection: Generate separate GIR files and documentation for
+    platform specific APIs
+  - !3893 glocalfile: Support statvfs.f_type
+  - !3894 Minor fixes/docs changes to GFileDescriptorBased and GTask
+  - !3895 [th/meson-werror-fixes] some fixes for meson detection failure with
+    -Werror
+  - !3896 reuse: Add dep5 lines for gnulib and libcharset
+  - !3897 reuse: Fix screen-scraping expression for version 2.x
+  - !3898 Incorporate some lint checks into `meson test`
+  - !3900 gitypelib: Switch to refcounting
+  - !3901 girepository: Add length ‘out’ arguments to several getter methods
+  - !3902 gicallableinfo: Clarify docs for callables with no return type
+  - !3903 gibaseinfo: Rename gi_info_new() to gi_base_info_new()
+  - !3904 [th/meson-werror-fixes-2] more workarounds for compiler warnings in
+    meson compiler checks
+  - !3909 Rename g-ir-generate and g-ir-inspect and update to girepository-2.0
+  - !3911 glib/tests/unix: Mostly pass O_CLOEXEC to g_unix_pipe_open()
+  - !3912 glib-unix: Fix reference to FD_CLOEXEC in docs for g_unix_pipe_open()
+  - !3913 cmph: Fix a typo
+  - !3914 Revert "ci: Remove not-printable chars from generated junit file"
+  - !3916 tests: Skip lint tests if bash is not available
+  - !3917 ci: Build and tar libgirepository documentation
+
+* Translation updates:
+  - Georgian (Ekaterine Papava)
+  - Russian (Artur S0)
+
+
 Overview of changes in GLib 2.79.1, 2024-01-22
 ==============================================
 
