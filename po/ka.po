@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2023-12-20 00:43+0000\n"
-"PO-Revision-Date: 2024-01-08 05:28+0100\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues/new\n"
+"POT-Creation-Date: 2024-02-09 10:04+0000\n"
+"PO-Revision-Date: 2024-02-12 14:03+0100\n"
 "Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: Georgian <(nothing)>\n"
 "Language: ka\n"
@@ -39,34 +39,38 @@ msgstr ""
 msgid "Failed to find default application for URI Scheme ‘%s’"
 msgstr "ჩავარდა ნაგულისხმევი აპლიკაციის პოვნის მცდელობა URI-ის სქემისთვის '%s'"
 
-#: gio/gapplication.c:503
+#: gio/gapplication.c:507
 msgid "GApplication Options:"
 msgstr "GApplication-ის მორგება:"
 
-#: gio/gapplication.c:503
+#: gio/gapplication.c:507
 msgid "Show GApplication options"
 msgstr "GApplication პარამეტრების ჩვენება"
 
-#: gio/gapplication.c:548
+#: gio/gapplication.c:552
 msgid "Enter GApplication service mode (use from D-Bus service files)"
 msgstr ""
 "Gapplication-ის სერვისის რეჟიმში შესვლა (გამოიყენება D-Bus-ის სერვისის "
 "ფაილებიდან)"
 
-#: gio/gapplication.c:560
+#: gio/gapplication.c:564
 msgid "Override the application’s ID"
 msgstr "აპლიკაციის ID-ის გადაფარვა"
 
-#: gio/gapplication.c:572
+#: gio/gapplication.c:575
+msgid "Print the application version"
+msgstr "აპლიკაციის ვერსიის გამოტანა"
+
+#: gio/gapplication.c:587
 msgid "Replace the running instance"
 msgstr "გაშვებული ინტერფეისის შეცვლა"
 
 #: gio/gapplication-tool.c:47 gio/gapplication-tool.c:48 gio/gio-tool.c:230
-#: gio/gresource-tool.c:496 gio/gsettings-tool.c:586
+#: gio/gresource-tool.c:497 gio/gsettings-tool.c:586
 msgid "Print help"
 msgstr "დახმარების ჩვენება"
 
-#: gio/gapplication-tool.c:49 gio/gresource-tool.c:497 gio/gresource-tool.c:565
+#: gio/gapplication-tool.c:49 gio/gresource-tool.c:498 gio/gresource-tool.c:566
 msgid "[COMMAND]"
 msgstr "[ბრძანება]"
 
@@ -137,7 +141,7 @@ msgstr "აპლიკაციის იდენტიფიკატორ�
 
 #: gio/gapplication-tool.c:76 gio/glib-compile-resources.c:822
 #: gio/glib-compile-resources.c:828 gio/glib-compile-resources.c:858
-#: gio/gresource-tool.c:503 gio/gresource-tool.c:569
+#: gio/gresource-tool.c:504 gio/gresource-tool.c:570
 msgid "FILE"
 msgstr "PROFILEID"
 
@@ -163,7 +167,7 @@ msgstr "პარამეტრი"
 msgid "Optional parameter to the action invocation, in GVariant format"
 msgstr "ქმედების ჩაწოდების არასავალდებული პარამეტრი ფორმატში GVariant"
 
-#: gio/gapplication-tool.c:100 gio/gresource-tool.c:534
+#: gio/gapplication-tool.c:100 gio/gresource-tool.c:535
 #: gio/gsettings-tool.c:678
 #, c-format
 msgid ""
@@ -177,7 +181,7 @@ msgstr ""
 msgid "Usage:\n"
 msgstr "გამოყენება:\n"
 
-#: gio/gapplication-tool.c:118 gio/gresource-tool.c:559
+#: gio/gapplication-tool.c:118 gio/gresource-tool.c:560
 #: gio/gsettings-tool.c:713
 msgid "Arguments:\n"
 msgstr "არგუმენტები:\n"
@@ -300,7 +304,7 @@ msgstr "ნაკადი უკვე დახურულია"
 msgid "Truncate not supported on base stream"
 msgstr "საბაზისო ნაკადის წაკვეთა შეუძლებელია"
 
-#: gio/gcancellable.c:326 gio/gdbusconnection.c:1844 gio/gdbusprivate.c:1432
+#: gio/gcancellable.c:326 gio/gdbusconnection.c:1844 gio/gdbusprivate.c:1434
 #: gio/gsimpleasyncresult.c:871 gio/gsimpleasyncresult.c:897
 #, c-format
 msgid "Operation was cancelled"
@@ -319,13 +323,13 @@ msgid "Not enough space in destination"
 msgstr "დანიშნულების წერტილში საკმარისი ადგილი არაა"
 
 #: gio/gcharsetconverter.c:354 gio/gdatainputstream.c:842
-#: gio/gdatainputstream.c:1260 glib/gconvert.c:351 glib/gconvert.c:783
+#: gio/gdatainputstream.c:1260 glib/gconvert.c:360 glib/gconvert.c:792
 #: glib/giochannel.c:1565 glib/giochannel.c:1607 glib/giochannel.c:2467
 #: glib/gutf8.c:958 glib/gutf8.c:1412
 msgid "Invalid byte sequence in conversion input"
 msgstr "შეტანილ ტექსტში ბაიტების მიმდევრობა მცდარია"
 
-#: gio/gcharsetconverter.c:359 glib/gconvert.c:359 glib/gconvert.c:697
+#: gio/gcharsetconverter.c:359 glib/gconvert.c:368 glib/gconvert.c:706
 #: glib/giochannel.c:1572 glib/giochannel.c:2482
 #, c-format
 msgid "Error during conversion: %s"
@@ -335,12 +339,12 @@ msgstr "გარდაქმნის შეცდომა: %s"
 msgid "Cancellable initialization not supported"
 msgstr "გაუქმებადი ინიციალიზაცია მხარდაჭერილი არაა"
 
-#: gio/gcharsetconverter.c:468 glib/gconvert.c:224 glib/giochannel.c:1393
+#: gio/gcharsetconverter.c:468 glib/gconvert.c:233 glib/giochannel.c:1393
 #, c-format
 msgid "Conversion from character set “%s” to “%s” is not supported"
 msgstr "კოდური გვერდის \"%s\" გარდაქმნა \"%s\" კოდირებაში მხარდაუჭერელია"
 
-#: gio/gcharsetconverter.c:472 glib/gconvert.c:228
+#: gio/gcharsetconverter.c:472 glib/gconvert.c:237
 #, c-format
 msgid "Could not open converter from “%s” to “%s”"
 msgstr "ვერ ხერხდება \"%s\" - \"%s\" გარდამქმნელის გახსნა"
@@ -770,63 +774,74 @@ msgstr "%s-სთვის ქვეხე უკვე გატანილი
 msgid "Object does not exist at path “%s”"
 msgstr "ობიექტი არ არსებობს ბილიკზე \"%s\""
 
-#: gio/gdbusmessage.c:1303
+#: gio/gdbusmessage.c:1351
+#, c-format
+msgid "%s message: %s header field is invalid; expected a value of type ‘%s’"
+msgstr ""
+
+#: gio/gdbusmessage.c:1374
+#, c-format
+msgid "%s message: %s header field is missing or invalid"
+msgstr "%s შეტყობინება: %s თავსართის ველი აკლია ან არასწორია"
+
+#: gio/gdbusmessage.c:1413
+#, c-format
+msgid "%s message: INVALID header field supplied"
+msgstr ""
+
+#: gio/gdbusmessage.c:1424
+#, c-format
+msgid ""
+"%s message: PATH header field is using the reserved value /org/freedesktop/"
+"DBus/Local"
+msgstr ""
+"%s შეტყობინება: PATH თავსართის ველი იყენებს დაცულ მნიშვნელობას /org/"
+"freedesktop/DBus/Local"
+
+#: gio/gdbusmessage.c:1437
+#, c-format
+msgid ""
+"%s message: INTERFACE header field does not contain a valid interface name"
+msgstr ""
+"%s შეტყობინება: INTERFACE თავსართის ველი სწორ ინტერფეისის სახელს არ შეიცავს"
+
+#: gio/gdbusmessage.c:1446
+#, c-format
+msgid ""
+"%s message: INTERFACE header field is using the reserved value org."
+"freedesktop.DBus.Local"
+msgstr ""
+"%s შეტყობინება: INTERFACE თავსართის ველი იყენებს დაცულ მნიშვნელობას org."
+"freedesktop.DBus.Local"
+
+#: gio/gdbusmessage.c:1459
+#, c-format
+msgid "%s message: MEMBER header field does not contain a valid member name"
+msgstr "%s შეტყობინება: MEMBER თავსართის ველი სწორი წევრის სახელს არ შეიცავს"
+
+#: gio/gdbusmessage.c:1472
+#, c-format
+msgid "%s message: ERROR_NAME header field does not contain a valid error name"
+msgstr ""
+"%s შეტყობინება: ERROR_NAME თავსართის ველი სწორ შეცდომის სახელს არ შეიცავს"
+
+#: gio/gdbusmessage.c:1511
 msgid "type is INVALID"
 msgstr "ტიპი არასწორია"
 
-#: gio/gdbusmessage.c:1321
-msgid "METHOD_CALL message: PATH or MEMBER header field is missing or invalid"
-msgstr ""
-"METHOD_CALL შეტყობინება: PATH ან MEMBER თავსართის ველი აკლია ან არასწორია"
-
-#: gio/gdbusmessage.c:1337
-msgid "METHOD_RETURN message: REPLY_SERIAL header field is missing or invalid"
-msgstr ""
-"METHOD_RETURN შეტყობინება: REPLY_SERIAL თავსართის ველი აკლია ან არასწორია"
-
-#: gio/gdbusmessage.c:1357
-msgid ""
-"ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing or invalid"
-msgstr ""
-"ERROR შეტყობინება: REPLY_SERIAL ან ERROR_NAME თავსართის ველი აკლია ან "
-"არასწორია"
-
-#: gio/gdbusmessage.c:1381
-msgid ""
-"SIGNAL message: PATH, INTERFACE or MEMBER header field is missing or invalid"
-msgstr ""
-"SIGNAL შეტყობინება: PATH, INTERFACE ან MEMBER თავსართის ველი აკლია ან "
-"არასწორია"
-
-#: gio/gdbusmessage.c:1389
-msgid ""
-"SIGNAL message: The PATH header field is using the reserved value /org/"
-"freedesktop/DBus/Local"
-msgstr ""
-"SIGNAL შეტყობინება: PATH თავსართის ველი იყენებს დაცულ მნიშვნელობას /org/"
-"freedesktop/DBus/Local"
-
-#: gio/gdbusmessage.c:1397
-msgid ""
-"SIGNAL message: The INTERFACE header field is using the reserved value org."
-"freedesktop.DBus.Local"
-msgstr ""
-"SIGNAL შეტყობინება: INTERFACE თავსართის ველი იყენებს დაცულ მნიშვნელობას org."
-"freedesktop.DBus.Local"
-
-#: gio/gdbusmessage.c:1446 gio/gdbusmessage.c:1506
+#: gio/gdbusmessage.c:1581 gio/gdbusmessage.c:1641
 #, c-format
 msgid "Wanted to read %lu byte but only got %lu"
 msgid_plural "Wanted to read %lu bytes but only got %lu"
 msgstr[0] "მინდოდა წამეკითხა %lu ბაიტი, მაგრამ მივიღე მხოლოდ %lu"
 
-#: gio/gdbusmessage.c:1460
+#: gio/gdbusmessage.c:1595
 #, c-format
 msgid "Expected NUL byte after the string “%s” but found byte %d"
 msgstr ""
 "სტრიქონის \"%s\" შემდეგ მოველოდი ბაიტს NUL, მაგრამ აღმოჩენილია ბაიტი %d"
 
-#: gio/gdbusmessage.c:1479
+#: gio/gdbusmessage.c:1614
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
@@ -835,23 +850,23 @@ msgstr ""
 "მოველოდი სწორ UTF-8 სტრიქონს, მაგრამ ბაიტის წანაცვლებაზე %d (სტრიქონის "
 "სიგრძეა %d) აღმოჩენილია არასწორი ბაიტები. სწორი UTF-8 ამ დრომდე იყო \"%s\""
 
-#: gio/gdbusmessage.c:1543 gio/gdbusmessage.c:1819 gio/gdbusmessage.c:2030
+#: gio/gdbusmessage.c:1678 gio/gdbusmessage.c:1954 gio/gdbusmessage.c:2165
 msgid "Value nested too deeply"
 msgstr "მნიშვნელობა მეტისმეტად ღრმადაა ჩადგმული"
 
-#: gio/gdbusmessage.c:1711
+#: gio/gdbusmessage.c:1846
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus object path"
 msgstr ""
 "დამუშავებული მნიშვნელობა \"%s\" სწორ D-Bus-ის ობიექტის ბილიკს არ წარმოადგენს"
 
-#: gio/gdbusmessage.c:1735
+#: gio/gdbusmessage.c:1870
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature"
 msgstr ""
 "დამუშავებული მნიშვნელობა \"%s\" სწორ D-Bus-ის ხელმოწერას არ წარმოადგენს"
 
-#: gio/gdbusmessage.c:1786
+#: gio/gdbusmessage.c:1921
 #, c-format
 msgid ""
 "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
@@ -860,7 +875,7 @@ msgid_plural ""
 msgstr[0] ""
 "შემხვდა მასივი სიგრძით %u ბაიტი. მაქსიმალური სიგრძეა 2<<26 ბაიტი (64 მიბ)."
 
-#: gio/gdbusmessage.c:1806
+#: gio/gdbusmessage.c:1941
 #, c-format
 msgid ""
 "Encountered array of type “a%c”, expected to have a length a multiple of %u "
@@ -869,18 +884,18 @@ msgstr ""
 "შემხვდა მასივი ტიპით \"a%c\". მოველოდი, რომ %u ბაიტის ნამრავლის სიგრძე "
 "ექნებოდა, მაგრამ ის %u ბაიტის სიგრძისაა"
 
-#: gio/gdbusmessage.c:1960 gio/gdbusmessage.c:2687
+#: gio/gdbusmessage.c:2095 gio/gdbusmessage.c:2822
 msgid "Empty structures (tuples) are not allowed in D-Bus"
 msgstr "D-Bus-ში ცარიელი სტრუქტურები (კორტეჟები) მხარდაჭერილი არაა"
 
-#: gio/gdbusmessage.c:2014
+#: gio/gdbusmessage.c:2149
 #, c-format
 msgid "Parsed value “%s” for variant is not a valid D-Bus signature"
 msgstr ""
 "ვარიანტისთვის დამუშავებული მნიშვნელობა \"%s\" სწორ D-Bus-ის ხელმოწერას არ "
 "წარმოადგენს"
 
-#: gio/gdbusmessage.c:2055
+#: gio/gdbusmessage.c:2190
 #, c-format
 msgid ""
 "Error deserializing GVariant with type string “%s” from the D-Bus wire format"
@@ -888,7 +903,7 @@ msgstr ""
 "D-Bus-ის მავთულის ფორმატიდან GVariant-ის სტრიქონის ტიპით \"%s\" "
 "დესერიალიზაციის შეცდომა"
 
-#: gio/gdbusmessage.c:2240
+#: gio/gdbusmessage.c:2375
 #, c-format
 msgid ""
 "Invalid endianness value. Expected 0x6c (“l”) or 0x42 (“B”) but found value "
@@ -897,30 +912,30 @@ msgstr ""
 "არასწორი ბოლოიანობის მნიშვნელობა. მოველოდი 0x6c (“l”) ან 0x42 (“B”) მაგრამ "
 "მიღებულია მნიშვნელობა: 0x%02x"
 
-#: gio/gdbusmessage.c:2259
+#: gio/gdbusmessage.c:2394
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr "არასწორი პროტოკოლის ძირითადი ვერსია. მოველოდი 1, აღმოჩენილია %d"
 
-#: gio/gdbusmessage.c:2317 gio/gdbusmessage.c:2923
+#: gio/gdbusmessage.c:2452 gio/gdbusmessage.c:3058
 msgid "Signature header found but is not of type signature"
 msgstr "აღმოჩენილია ხელმოწერის თავსართი, მაგრამ ის ხელმოწერის ტიპი არაა"
 
-#: gio/gdbusmessage.c:2329
+#: gio/gdbusmessage.c:2464
 #, c-format
 msgid "Signature header with signature “%s” found but message body is empty"
 msgstr ""
 "აღმოჩენილია ხელმოწერის თავსართი ხელმოწერით \"%s\", მაგრამ შეტყობინების "
 "სხეული ცარიელია"
 
-#: gio/gdbusmessage.c:2344
+#: gio/gdbusmessage.c:2479
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature (for body)"
 msgstr ""
 "დამუშავებული მნიშვნელობა \"%s\" სწორ D-Bus-ის ხელმოწერას არ წარმოადგენს "
 "(სხეულისთვის)"
 
-#: gio/gdbusmessage.c:2384
+#: gio/gdbusmessage.c:2519
 #, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
@@ -928,11 +943,11 @@ msgstr[0] ""
 "შეტყობინებაში ხელმოწერის თავსართი აღმოჩენილი არაა, მაგრამ შეტყობინების "
 "სხეული %u ბაიტია"
 
-#: gio/gdbusmessage.c:2394
+#: gio/gdbusmessage.c:2529
 msgid "Cannot deserialize message: "
 msgstr "დესერიალიზაცია შეუძლებელია შეტყობინებისთვის: "
 
-#: gio/gdbusmessage.c:2740
+#: gio/gdbusmessage.c:2875
 #, c-format
 msgid ""
 "Error serializing GVariant with type string “%s” to the D-Bus wire format"
@@ -940,7 +955,7 @@ msgstr ""
 "D-Bus-ის მავთულის ფორმატიდან GVariant-ის სტრიქონის ტიპით \"%s\" "
 "სერიალიზაციის შეცდომა"
 
-#: gio/gdbusmessage.c:2877
+#: gio/gdbusmessage.c:3012
 #, c-format
 msgid ""
 "Number of file descriptors in message (%d) differs from header field (%d)"
@@ -948,18 +963,18 @@ msgstr ""
 "დესკრიპტორების რაოდენობა შეტყობინებაში (%d) განსხვავდება თავსართის ველისგან "
 "(%d)"
 
-#: gio/gdbusmessage.c:2885
+#: gio/gdbusmessage.c:3020
 msgid "Cannot serialize message: "
 msgstr "სერიალიზაცია შეუძლებელია შეტყობინებისთვის: "
 
-#: gio/gdbusmessage.c:2938
+#: gio/gdbusmessage.c:3073
 #, c-format
 msgid "Message body has signature “%s” but there is no signature header"
 msgstr ""
 "შეტყობინების სხეულს გააჩნია ხელმოწერა \"%s\", მაგრამ ხელმოწერის თავსართი "
 "აღმოჩენილი არაა"
 
-#: gio/gdbusmessage.c:2948
+#: gio/gdbusmessage.c:3083
 #, c-format
 msgid ""
 "Message body has type signature “%s” but signature in the header field is "
@@ -968,39 +983,39 @@ msgstr ""
 "შეტყობინების სხეულს გააჩნია ხელმოწერა \"%s\", მაგრამ ხელმოწერა, რომელიც "
 "თავსართის ველშია, \"%s\"-ია"
 
-#: gio/gdbusmessage.c:2964
+#: gio/gdbusmessage.c:3099
 #, c-format
 msgid "Message body is empty but signature in the header field is “(%s)”"
 msgstr ""
 "შეტყობინების სხეული ცარელია, მაგრამ ხელმოწერა თავსართის ველში \"(%s)\"-ის "
 "ტოლია"
 
-#: gio/gdbusmessage.c:3538
+#: gio/gdbusmessage.c:3673
 #, c-format
 msgid "Error return with body of type “%s”"
 msgstr "\"%s\" ტიპის სხეულით დაბრუნების შეცდომა"
 
-#: gio/gdbusmessage.c:3546
+#: gio/gdbusmessage.c:3681
 msgid "Error return with empty body"
 msgstr "შეცდომა ცარიელი სხეულით დაბრუნდა"
 
-#: gio/gdbusprivate.c:2199
+#: gio/gdbusprivate.c:2201
 #, c-format
 msgid "(Type any character to close this window)\n"
 msgstr "(ფანჯრის დასახურად დააჭირეთ ნებისმიერ კლავიშას)\n"
 
-#: gio/gdbusprivate.c:2385
+#: gio/gdbusprivate.c:2387
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
 msgstr "სესიის dbus გაშვებული არაა და ავტომატური გაშვება ჩავარდა"
 
-#: gio/gdbusprivate.c:2408
+#: gio/gdbusprivate.c:2410
 #, c-format
 msgid "Unable to get Hardware profile: %s"
 msgstr "აპარატურის პროფილის მიღების შეცდომა: %s"
 
 #. Translators: Both placeholders are file paths
-#: gio/gdbusprivate.c:2464
+#: gio/gdbusprivate.c:2466
 #, c-format
 msgid "Unable to load %s or %s: "
 msgstr "%s-ის ან %s-ის ჩატვირთვის შეცდომა: "
@@ -1447,7 +1462,7 @@ msgstr "GEmblemedIcon-სთვის GEmblem-ს ველოდებოდი
 msgid "Containing mount does not exist"
 msgstr "შეცველი მიმაგრება არ არსებობს"
 
-#: gio/gfile.c:2650 gio/glocalfile.c:2518
+#: gio/gfile.c:2650 gio/glocalfile.c:2520
 msgid "Can’t copy over directory"
 msgstr "საქაღალდეზე ზემოდან კოპირება შეუძლებელია"
 
@@ -1565,7 +1580,7 @@ msgid "Truncate not supported on stream"
 msgstr "ნაკადის მოკვეთა მხარდაუჭერელია"
 
 #: gio/ghttpproxy.c:93 gio/gresolver.c:529 gio/gresolver.c:682
-#: glib/gconvert.c:1743
+#: glib/gconvert.c:1752
 msgid "Invalid hostname"
 msgstr "ჰოსტის არასწორი სახელი"
 
@@ -1598,37 +1613,37 @@ msgstr "HTTP პროქსის პასუხი მეტისმეტ�
 msgid "HTTP proxy server closed connection unexpectedly."
 msgstr "HTTP პროქსისთან მიერთება მოულოდნელად დაიხურა."
 
-#: gio/gicon.c:297
+#: gio/gicon.c:298
 #, c-format
 msgid "Wrong number of tokens (%d)"
 msgstr "კოდების არასწორი რაოდენობა (%d)"
 
-#: gio/gicon.c:317
+#: gio/gicon.c:318
 #, c-format
 msgid "No type for class name %s"
 msgstr "ტიპი კლასის სახელისთვის %s მითითებული არაა"
 
-#: gio/gicon.c:327
+#: gio/gicon.c:328
 #, c-format
 msgid "Type %s does not implement the GIcon interface"
 msgstr "ტიპი %s GIcon ინტერფეისის განხორციელებას არ ახდენს"
 
-#: gio/gicon.c:338
+#: gio/gicon.c:339
 #, c-format
 msgid "Type %s is not classed"
 msgstr "ტიპი %s klasSi araa"
 
-#: gio/gicon.c:352
+#: gio/gicon.c:353
 #, c-format
 msgid "Malformed version number: %s"
 msgstr "არასწორი ვერსიის ნომერი: %s"
 
-#: gio/gicon.c:366
+#: gio/gicon.c:367
 #, c-format
 msgid "Type %s does not implement from_tokens() on the GIcon interface"
 msgstr "ტიპი %s GIcon ინტერფეისზე from_tokens()-ის განხორციელებას არ ახდენს"
 
-#: gio/gicon.c:468
+#: gio/gicon.c:469
 msgid "Can’t handle the supplied version of the icon encoding"
 msgstr "ხატულის კოდირების მითითებული ვერსიის დამუშავება შეუძლებელია"
 
@@ -2991,126 +3006,126 @@ msgstr "'%s'-სთვის ფაილური სისტემის ი�
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
 #.
-#: gio/glocalfile.c:1148
+#: gio/glocalfile.c:1150
 #, c-format
 msgid "Containing mount for file %s not found"
 msgstr "შემცველი მიმაგრების წერტილი ფაილისთვის '%s' აღმოჩენილი არაა"
 
-#: gio/glocalfile.c:1171
+#: gio/glocalfile.c:1173
 msgid "Can’t rename root directory"
 msgstr "საქაღალდის '/' სახელის გადარქმევა შეუძლებელია"
 
-#: gio/glocalfile.c:1189 gio/glocalfile.c:1212
+#: gio/glocalfile.c:1191 gio/glocalfile.c:1214
 #, c-format
 msgid "Error renaming file %s: %s"
 msgstr "შეცდომა სახელის გადარქმევისას ფაილისთვის %s: %s"
 
-#: gio/glocalfile.c:1196
+#: gio/glocalfile.c:1198
 msgid "Can’t rename file, filename already exists"
 msgstr ""
 "ფაილის სახელის გადარქმევა შეუძლებელია, რადგან ფაილის სახელი უკვე არსებობს"
 
-#: gio/glocalfile.c:1209 gio/glocalfile.c:2412 gio/glocalfile.c:2440
-#: gio/glocalfile.c:2579 gio/glocalfileoutputstream.c:658
+#: gio/glocalfile.c:1211 gio/glocalfile.c:2414 gio/glocalfile.c:2442
+#: gio/glocalfile.c:2581 gio/glocalfileoutputstream.c:658
 msgid "Invalid filename"
 msgstr "ფაილის არასწორი სახელი"
 
-#: gio/glocalfile.c:1377 gio/glocalfile.c:1388
+#: gio/glocalfile.c:1379 gio/glocalfile.c:1390
 #, c-format
 msgid "Error opening file %s: %s"
 msgstr "ფაილის (%s) გახსნის შეცდომა: %s"
 
-#: gio/glocalfile.c:1513
+#: gio/glocalfile.c:1515
 #, c-format
 msgid "Error removing file %s: %s"
 msgstr "ფაილის (%s) წაშლის შეცდომა: %s"
 
-#: gio/glocalfile.c:2007 gio/glocalfile.c:2018 gio/glocalfile.c:2045
+#: gio/glocalfile.c:2009 gio/glocalfile.c:2020 gio/glocalfile.c:2047
 #, c-format
 msgid "Error trashing file %s: %s"
 msgstr "ფაილის (%s) ნაგვის ყუთში გადატანის შეცდომა: %s"
 
-#: gio/glocalfile.c:2065
+#: gio/glocalfile.c:2067
 #, c-format
 msgid "Unable to create trash directory %s: %s"
 msgstr "სანაგვის საქაღალდის (%s) შექმნის შეცდომა: %s"
 
-#: gio/glocalfile.c:2086
+#: gio/glocalfile.c:2088
 #, c-format
 msgid "Unable to find toplevel directory to trash %s"
 msgstr "%s-ის წასაშლელად ზედა საქაღალდის პოვნა შეუძლებელი იყო"
 
-#: gio/glocalfile.c:2094
+#: gio/glocalfile.c:2096
 #, c-format
 msgid "Trashing on system internal mounts is not supported"
 msgstr ""
 "სისტემურ შიდა მიმაგრების წერტილებზე ნაგვის ყუთის შექმნა მხარდაჭერილი არაა"
 
-#: gio/glocalfile.c:2180 gio/glocalfile.c:2208
+#: gio/glocalfile.c:2182 gio/glocalfile.c:2210
 #, c-format
 msgid "Unable to find or create trash directory %s to trash %s"
 msgstr "სანაგვე საქაღალდის (%s) შექმნა შეუძლებელია %s-ის წასაშლელად"
 
-#: gio/glocalfile.c:2252
+#: gio/glocalfile.c:2254
 #, c-format
 msgid "Unable to create trashing info file for %s: %s"
 msgstr "წაშლის ინფორმაციის ფაილის (%s) შექმნის შეცდომა: %s"
 
-#: gio/glocalfile.c:2323
+#: gio/glocalfile.c:2325
 #, c-format
 msgid "Unable to trash file %s across filesystem boundaries"
 msgstr "ფაილის (%s) წაშლა ფაილური სისტემის საზღვრებს მიღმა შეუძლებელია"
 
-#: gio/glocalfile.c:2327 gio/glocalfile.c:2383
+#: gio/glocalfile.c:2329 gio/glocalfile.c:2385
 #, c-format
 msgid "Unable to trash file %s: %s"
 msgstr "ფაილის (%s) წაშლა შეუძლებელია: %s"
 
-#: gio/glocalfile.c:2389
+#: gio/glocalfile.c:2391
 #, c-format
 msgid "Unable to trash file %s"
 msgstr "ფაილის (%s) წაშლა შეუძლებელია"
 
-#: gio/glocalfile.c:2415
+#: gio/glocalfile.c:2417
 #, c-format
 msgid "Error creating directory %s: %s"
 msgstr "საქაღალდის (%s) შექმნის შეცდომა: %s"
 
-#: gio/glocalfile.c:2444
+#: gio/glocalfile.c:2446
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "ფაილურ სისტემას სიმბმულების მხარდაჭერა არ გააჩნია"
 
-#: gio/glocalfile.c:2447
+#: gio/glocalfile.c:2449
 #, c-format
 msgid "Error making symbolic link %s: %s"
 msgstr "სიმბოლური ბმულის ('%s') შექმნის შეცდომა:%s"
 
-#: gio/glocalfile.c:2490 gio/glocalfile.c:2525 gio/glocalfile.c:2582
+#: gio/glocalfile.c:2492 gio/glocalfile.c:2527 gio/glocalfile.c:2584
 #, c-format
 msgid "Error moving file %s: %s"
 msgstr "ფაილის (%s) გადატანის შეცდომა: %s"
 
-#: gio/glocalfile.c:2513
+#: gio/glocalfile.c:2515
 msgid "Can’t move directory over directory"
 msgstr "საქაღალდის საქაღალდეზე გადატანა შეუძლებელია"
 
-#: gio/glocalfile.c:2539 gio/glocalfileoutputstream.c:1110
+#: gio/glocalfile.c:2541 gio/glocalfileoutputstream.c:1110
 #: gio/glocalfileoutputstream.c:1124 gio/glocalfileoutputstream.c:1139
 #: gio/glocalfileoutputstream.c:1156 gio/glocalfileoutputstream.c:1170
 msgid "Backup file creation failed"
 msgstr "მარქაფის ფაილის შექმნის შეცდომა"
 
-#: gio/glocalfile.c:2558
+#: gio/glocalfile.c:2560
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "სამიზნე ფაილის წაშლა შეუძლებელია: %s"
 
-#: gio/glocalfile.c:2572
+#: gio/glocalfile.c:2574
 msgid "Move between mounts not supported"
 msgstr "მიმაგრების წერტილებს შორის გადატანა მხარდაჭერილი არაა"
 
-#: gio/glocalfile.c:2748
+#: gio/glocalfile.c:2750
 #, c-format
 msgid "Could not determine the disk usage of %s: %s"
 msgstr "დისკზე %s-ის მიერ დაკავებული ადგილის გამოთვლის შეცდომა: %s"
@@ -3411,11 +3426,11 @@ msgstr ""
 msgid "Hostname “%s” contains “[” but not “]”"
 msgstr "ჰოსტის სახელი “%s” შეიცავს “[”-ს, მაგრამ არა “]”-ს"
 
-#: gio/gnetworkmonitorbase.c:221 gio/gnetworkmonitorbase.c:325
+#: gio/gnetworkmonitorbase.c:221 gio/gnetworkmonitorbase.c:326
 msgid "Network unreachable"
 msgstr "ქსელი მიუწვდომელია"
 
-#: gio/gnetworkmonitorbase.c:259 gio/gnetworkmonitorbase.c:289
+#: gio/gnetworkmonitorbase.c:259 gio/gnetworkmonitorbase.c:290
 msgid "Host unreachable"
 msgstr "ჰოსტი მიუწვდომელია"
 
@@ -3456,7 +3471,7 @@ msgstr "%s-სთვის გადაცემული ვექტორე�
 msgid "Source stream is already closed"
 msgstr "შეყვანის ნაკადი უკვე დახურულია"
 
-#: gio/gproxyaddressenumerator.c:328 gio/gproxyaddressenumerator.c:346
+#: gio/gproxyaddressenumerator.c:328 gio/gproxyaddressenumerator.c:348
 msgid "Unspecified proxy lookup failure"
 msgstr "მიუთითებელი პროქსის მოძებნის შეცდომა"
 
@@ -3479,15 +3494,15 @@ msgstr "%s განხორციელებული არაა"
 msgid "Invalid domain"
 msgstr "დომენის არასწორი სახელი"
 
-#: gio/gresource.c:704 gio/gresource.c:966 gio/gresource.c:1006
-#: gio/gresource.c:1130 gio/gresource.c:1202 gio/gresource.c:1276
-#: gio/gresource.c:1357 gio/gresourcefile.c:482 gio/gresourcefile.c:606
+#: gio/gresource.c:706 gio/gresource.c:968 gio/gresource.c:1008
+#: gio/gresource.c:1132 gio/gresource.c:1204 gio/gresource.c:1278
+#: gio/gresource.c:1359 gio/gresourcefile.c:482 gio/gresourcefile.c:606
 #: gio/gresourcefile.c:757
 #, c-format
 msgid "The resource at “%s” does not exist"
 msgstr "რესურსი მისამართზე \"%s\" არ არსებობს"
 
-#: gio/gresource.c:871
+#: gio/gresource.c:873
 #, c-format
 msgid "The resource at “%s” failed to decompress"
 msgstr "რესურის, მისამართზე \"%s\", გაშლა ჩავარდა"
@@ -3505,26 +3520,26 @@ msgstr "რესურსი მისამართზე '%s' საქა�
 msgid "Input stream doesn’t implement seek"
 msgstr "შეყვანის ნაკადს გადახვევის ფუნქცია განხორციელებული არ აქვს"
 
-#: gio/gresource-tool.c:502
+#: gio/gresource-tool.c:503
 msgid "List sections containing resources in an elf FILE"
 msgstr ""
 
-#: gio/gresource-tool.c:508
+#: gio/gresource-tool.c:509
 msgid ""
 "List resources\n"
 "If SECTION is given, only list resources in this section\n"
 "If PATH is given, only list matching resources"
 msgstr ""
 
-#: gio/gresource-tool.c:511 gio/gresource-tool.c:521
+#: gio/gresource-tool.c:512 gio/gresource-tool.c:522
 msgid "FILE [PATH]"
 msgstr "ფაილი [ბილიკი]"
 
-#: gio/gresource-tool.c:512 gio/gresource-tool.c:522 gio/gresource-tool.c:529
+#: gio/gresource-tool.c:513 gio/gresource-tool.c:523 gio/gresource-tool.c:530
 msgid "SECTION"
 msgstr "სექცია"
 
-#: gio/gresource-tool.c:517
+#: gio/gresource-tool.c:518
 msgid ""
 "List resources with details\n"
 "If SECTION is given, only list resources in this section\n"
@@ -3532,15 +3547,15 @@ msgid ""
 "Details include the section, size and compression"
 msgstr ""
 
-#: gio/gresource-tool.c:527
+#: gio/gresource-tool.c:528
 msgid "Extract a resource file to stdout"
 msgstr "რესურსის ფაილის stdout-ზე გაშლა"
 
-#: gio/gresource-tool.c:528
+#: gio/gresource-tool.c:529
 msgid "FILE PATH"
 msgstr "ფაილის ბილიკი"
 
-#: gio/gresource-tool.c:542
+#: gio/gresource-tool.c:543
 msgid ""
 "Usage:\n"
 "  gresource [--section SECTION] COMMAND [ARGS…]\n"
@@ -3556,7 +3571,7 @@ msgid ""
 "\n"
 msgstr ""
 
-#: gio/gresource-tool.c:556
+#: gio/gresource-tool.c:557
 #, c-format
 msgid ""
 "Usage:\n"
@@ -3571,19 +3586,19 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: gio/gresource-tool.c:563
+#: gio/gresource-tool.c:564
 msgid "  SECTION   An (optional) elf section name\n"
 msgstr "  სექცია   (არასავალდებულო) elf სექციის სახელი\n"
 
-#: gio/gresource-tool.c:567 gio/gsettings-tool.c:720
+#: gio/gresource-tool.c:568 gio/gsettings-tool.c:720
 msgid "  COMMAND   The (optional) command to explain\n"
 msgstr "  ბრძანება   (არასავალდებულო) ასახსნელი ბრძანება\n"
 
-#: gio/gresource-tool.c:573
+#: gio/gresource-tool.c:574
 msgid "  FILE      An elf file (a binary or a shared library)\n"
 msgstr "  ფაილი      elf ფაილი (გამშვები ან გაზიარებული ბიბლიოთეკა)\n"
 
-#: gio/gresource-tool.c:576
+#: gio/gresource-tool.c:577
 msgid ""
 "  FILE      An elf file (a binary or a shared library)\n"
 "            or a compiled resource file\n"
@@ -3591,19 +3606,19 @@ msgstr ""
 "  ფაილი      elf ფაილი (გამშვები ან გაზიარებული ბიბლიოთეკა)\n"
 "               ან აგებული რესურსის ფაილი\n"
 
-#: gio/gresource-tool.c:580
+#: gio/gresource-tool.c:581
 msgid "[PATH]"
 msgstr "[ბილიკი]"
 
-#: gio/gresource-tool.c:582
+#: gio/gresource-tool.c:583
 msgid "  PATH      An (optional) resource path (may be partial)\n"
 msgstr ""
 
-#: gio/gresource-tool.c:583
+#: gio/gresource-tool.c:584
 msgid "PATH"
 msgstr "ბილიკი"
 
-#: gio/gresource-tool.c:585
+#: gio/gresource-tool.c:586
 msgid "  PATH      A resource path\n"
 msgstr "  ბილიკი      რესურსის ბილიკი\n"
 
@@ -3814,7 +3829,7 @@ msgid "Socket is already closed"
 msgstr "სოკეტი უკვე დახურულია"
 
 #: gio/gsocket.c:465 gio/gsocket.c:3291 gio/gsocket.c:4664 gio/gsocket.c:4722
-#: gio/gthreadedresolver.c:1452
+#: gio/gthreadedresolver.c:1453
 msgid "Socket I/O timed out"
 msgstr "სოკეტის I/O ვადა გავიდა"
 
@@ -4271,7 +4286,7 @@ msgstr "შეცდომა ფაილის დესკრიპტორ�
 msgid "Error closing file descriptor: %s"
 msgstr "შეცდომა ფაილის დესკრიპტორის დახურვისას: %s"
 
-#: gio/gunixmounts.c:2814 gio/gunixmounts.c:2867
+#: gio/gunixmounts.c:2890 gio/gunixmounts.c:2943
 msgid "Filesystem root"
 msgstr "ფაილური სისტემის საწყისი საქაღალდე"
 
@@ -4439,50 +4454,50 @@ msgstr "პროგრამას სახელით \"%s\" სანიშ
 msgid "Failed to expand exec line “%s” with URI “%s”"
 msgstr ""
 
-#: glib/gconvert.c:370
+#: glib/gconvert.c:379
 msgid "Unrepresentable character in conversion input"
 msgstr ""
 
-#: glib/gconvert.c:397 glib/gutf8.c:954 glib/gutf8.c:1167 glib/gutf8.c:1304
+#: glib/gconvert.c:406 glib/gutf8.c:954 glib/gutf8.c:1167 glib/gutf8.c:1304
 #: glib/gutf8.c:1408
 msgid "Partial character sequence at end of input"
 msgstr "არასრული სიმბოლო შეტანის ტექსტის ბოლოს"
 
-#: glib/gconvert.c:668
+#: glib/gconvert.c:677
 #, c-format
 msgid "Cannot convert fallback “%s” to codeset “%s”"
 msgstr "ვერ ხერხდება \"%s\" სიმბოლოს გარდაქმნა კოდირებაში \"%s\""
 
-#: glib/gconvert.c:840
+#: glib/gconvert.c:849
 msgid "Embedded NUL byte in conversion input"
 msgstr "გადაყვანისას შეყვანაში ჩაშენებული NUL ბაიტი"
 
-#: glib/gconvert.c:861
+#: glib/gconvert.c:870
 msgid "Embedded NUL byte in conversion output"
 msgstr "გადაყვანისას გამოტანაში ჩაშენებული NUL ბაიტი"
 
-#: glib/gconvert.c:1599
+#: glib/gconvert.c:1608
 #, c-format
 msgid "The URI “%s” is not an absolute URI using the “file” scheme"
 msgstr ""
 "URI \"%s\" არ გახლავთ აბსოლუტური იდენტიფიკატორი \"file\" სქემის გამოყენებისას"
 
-#: glib/gconvert.c:1629
+#: glib/gconvert.c:1638
 #, c-format
 msgid "The URI “%s” is invalid"
 msgstr "URI იდენტიფიკატორი \"%s\" მცდარია"
 
-#: glib/gconvert.c:1642
+#: glib/gconvert.c:1651
 #, c-format
 msgid "The hostname of the URI “%s” is invalid"
 msgstr "URI იდენტიფიკატორის \"%s\" ჰოსტის სახელი მცდარია"
 
-#: glib/gconvert.c:1659
+#: glib/gconvert.c:1668
 #, c-format
 msgid "The URI “%s” contains invalidly escaped characters"
 msgstr "URI იდენტიფიკატორი \"%s\" შეიცავ მცდარ საკონტროლო სიმბოლოებს"
 
-#: glib/gconvert.c:1733
+#: glib/gconvert.c:1742
 #, c-format
 msgid "The pathname “%s” is not an absolute path"
 msgstr "ბილიკი \"%s\" აბსოლუტური არ გახლავთ"
@@ -4889,13 +4904,13 @@ msgid "Dec"
 msgstr "დეკ"
 
 #. Translators: 'before midday' indicator
-#: glib/gdatetime.c:589
+#: glib/gdatetime.c:592
 msgctxt "GDateTime"
 msgid "AM"
 msgstr "AM"
 
 #. Translators: 'after midday' indicator
-#: glib/gdatetime.c:592
+#: glib/gdatetime.c:595
 msgctxt "GDateTime"
 msgid "PM"
 msgstr "PM"
@@ -5853,21 +5868,21 @@ msgstr ""
 "მოულოდნელი შეცდომა ფუნქციაში g_io_channel_win32_poll() ქვეპროცესიდან "
 "მონაცემთა წაკითხვისას"
 
-#: glib/gstrfuncs.c:3334 glib/gstrfuncs.c:3436
+#: glib/gstrfuncs.c:3339 glib/gstrfuncs.c:3441
 msgid "Empty string is not a number"
 msgstr "ცარიელი სტრიქონი რიცხვი არაა"
 
-#: glib/gstrfuncs.c:3358
+#: glib/gstrfuncs.c:3363
 #, c-format
 msgid "“%s” is not a signed number"
 msgstr "\"%s\" ნიშნიანი რიცხვი არაა"
 
-#: glib/gstrfuncs.c:3368 glib/gstrfuncs.c:3472
+#: glib/gstrfuncs.c:3373 glib/gstrfuncs.c:3477
 #, c-format
 msgid "Number “%s” is out of bounds [%s, %s]"
 msgstr "რიცხვი \"%s\" დიაპაზონს გარეთაა [%s, %s]"
 
-#: glib/gstrfuncs.c:3462
+#: glib/gstrfuncs.c:3467
 #, c-format
 msgid "“%s” is not an unsigned number"
 msgstr "\"%s\" უნიშნო რიცხვი არაა"
@@ -6162,6 +6177,11 @@ msgstr "%.1f პბ"
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f ებ"
+
+#~ msgid ""
+#~ "METHOD_RETURN message: REPLY_SERIAL header field is missing or invalid"
+#~ msgstr ""
+#~ "METHOD_RETURN შეტყობინება: REPLY_SERIAL თავსართის ველი აკლია ან არასწორია"
 
 #, c-format
 #~ msgid "Could not allocate %lu byte to read file “%s”"
