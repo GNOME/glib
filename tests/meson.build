@@ -8,14 +8,16 @@ lint_scripts = [
   'shellcheck.sh',
 ]
 
-foreach test_name : lint_scripts
-  test(
-    test_name, files(test_name),
-    env : common_test_env,
-    suite : 'lint',
-    protocol : 'tap',
-  )
-endforeach
+if have_bash
+  foreach test_name : lint_scripts
+    test(
+      test_name, files(test_name),
+      env : common_test_env,
+      suite : 'lint',
+      protocol : 'tap',
+    )
+  endforeach
+endif
 
 test(
   'check-missing-install-tag.py',
